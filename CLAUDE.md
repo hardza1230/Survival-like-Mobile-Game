@@ -66,6 +66,10 @@
 - **ตัวละคร 3 ตัว (`CHARACTERS`+`CHAR_ORDER`):** momo🍡(bomb) · mint🌿(freeze,+HP30) · cocoa🍫(blackhole,+dmg10%)
   แต่ละตัว "อัลติต่างกัน" (`ACTIVES`: bomb/freeze/blackhole) + โบนัสพาสซีฟ (`bonus`) · **หน้าเลือกตัวละคร** `buildChars()`
   ปลดด้วย Sugar (Save.chars/character) · อัลติ+โบนัสใส่ตอน `applyMeta()` · เพิ่มตัวใหม่แค่เติมใน CHARACTERS+ACTIVES
+- **ระบบพัฒนาตัวละคร (เลเวล+Talent Tree):** แต่ละตัวมีเลเวล/EXP/แต้ม แยกกัน (`Save.cp(id)`={lvl,exp,tp,tal})
+  · ได้ EXP ตอนจบด่าน/ตาย/ชนะ (`gainCharExp`) · `charExpNeed(l)` · ทุกเลเวล +1 แต้ม
+  · ผัง `TALENTS` 6 สาย (hp/dmg/spd/cdr/magnet/ult) ลงแต้มในหน้า `buildTalent()` (hub ปุ่ม 🌟 พรสวรรค์)
+  · ผลใส่ตอน `applyMeta()` → ตัวคูณ `p.cdMul/ultPow/ultCdMul` (อ่านใน cooldown tick + useActive)
 - **สกิลอัพ = ปลดเอฟเฟกต์ใหม่** (ไม่ใช่แค่ +ตัวเลข) กำหนดใน `SKILL_TIERS` + การ์ดโชว์ว่าเลเวลนี้ปลดอะไร
   เช่น sprinkle: L3 ทะลุ, L5 เด้ง, L6 5เม็ดทะลุหมด · thunder: L3 แตกลูก(chain) · chili: L3 2ชั้น L6 3ชั้น
   · boomer: L5 เด้งออกอีกรอบ · star: L6 วงคู่ · frost: L5 ระเบิดใส่ตัวที่แช่อยู่

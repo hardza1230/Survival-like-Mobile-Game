@@ -175,6 +175,18 @@ const CHARACTERS = {
 };
 const CHAR_ORDER=['momo','mint','cocoa'];
 
+/* ---- TALENTS: ผังพรสวรรค์ (แยกแต้มต่อตัวละคร) · ลง 1 แต้ม/rank · ผลใส่ตอน applyMeta ---- */
+const TALENTS = [
+  { id:'hp',    emoji:'❤️', name:'พลังชีวิต', max:5, per:'HP สูงสุด +8%', apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
+  { id:'dmg',   emoji:'💥', name:'พลังโจมตี', max:5, per:'ดาเมจ +6%',     apply:(p,r)=>{ p.dmgMul*=(1+0.06*r); } },
+  { id:'spd',   emoji:'👟', name:'ฝีเท้า',    max:3, per:'ความเร็ว +4%',   apply:(p,r)=>{ p.baseSpeed*=(1+0.04*r); } },
+  { id:'cdr',   emoji:'⏱️', name:'ร่ายไว',    max:3, per:'คูลดาวน์สกิล -6%', apply:(p,r)=>{ p.cdMul*=(1-0.06*r); } },
+  { id:'magnet',emoji:'🧲', name:'จมูกไว',    max:3, per:'ระยะดูด +15%',    apply:(p,r)=>{ p.pickup*=(1+0.15*r); } },
+  { id:'ult',   emoji:'✨', name:'อัลติทรงพลัง', max:3, per:'อัลติแรง +15% · คูล -8%', apply:(p,r)=>{ p.ultPow*=(1+0.15*r); p.ultCdMul*=(1-0.08*r); } },
+];
+// EXP ที่ต้องใช้เพื่อขึ้นจากเลเวล l → l+1
+function charExpNeed(l){ return 40 + l*35; }
+
 /* ---- SKILL_TIERS: อธิบายว่า "แต่ละเลเวล" ปลดเอฟเฟกต์อะไร (โชว์บนการ์ด) ---- */
 const SKILL_TIERS = {
   sprinkle:{ 2:'ยิงทีละ 2 เม็ด', 3:'ลูกใหญ่ขึ้น + ทะลุศัตรู', 4:'ยิงทีละ 3 เม็ด กระจายกว้าง', 5:'ลูกกวาดเด้งไปเป้าถัดไป', 6:'ยิง 5 เม็ด ทะลุทุกตัว สายรุ้ง!' },
@@ -222,7 +234,7 @@ const GEAR = {
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
-  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, ownedGear:[], character:'momo', chars:[] },
+  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, ownedGear:[], character:'momo', chars:[], charProg:{} },
   load(){ try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
     if(!this.data.upgrades)this.data.upgrades={};
     if(!this.data.gear)this.data.gear={};
@@ -232,10 +244,13 @@ const Save = {
     for(const id of ['w_spoon','c_none']) if(!this.data.ownedGear.includes(id))this.data.ownedGear.push(id);
     if(!this.data.chars||!this.data.chars.length)this.data.chars=['momo'];
     if(!this.data.character)this.data.character='momo';
+    if(!this.data.charProg)this.data.charProg={};
     return this.data; },
   save(){ try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} },
   addSugar(n){ this.data.sugar=(this.data.sugar||0)+n; this.save(); },
   spend(n){ if((this.data.sugar||0)>=n){ this.data.sugar-=n; this.save(); return true; } return false; },
+  // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
+  cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
 };
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
@@ -389,9 +404,9 @@ class Game extends Phaser.Scene {
   /* ---------- ACTIVE SKILL ---------- */
   useActive(){
     if(this.activeCd>0||this.state!=='play') return;
-    const a=this.active, lvl=a.lvl;
+    const a=this.active, lvl=a.lvl, up=this.player.ultPow||1, uc=this.player.ultCdMul||1;
     if(a.key==='bomb'){
-      const r=130+lvl*18, dmg=(16+lvl*7);
+      const r=130+lvl*18, dmg=(16+lvl*7)*up;
       const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,14,COLORS.pink,0.4).setDepth(3));
       this.tweens.add({targets:ring,radius:r,alpha:0,duration:340,onComplete:()=>ring.destroy()});
       this.cameras.main.shake(140,0.006);
@@ -401,9 +416,9 @@ class Game extends Phaser.Scene {
           const ang=Math.atan2(e.y-this.player.y,e.x-this.player.x);
           e.setVelocity(Math.cos(ang)*420,Math.sin(ang)*420); e.knock=0.28;
         }});
-      this.activeCd=6; this._activeMax=6;
+      this.activeCd=6*uc; this._activeMax=this.activeCd;
     } else if(a.key==='nova'){
-      const n=8+lvl*2, dmg=(5+lvl*2)*this.player.dmgMul;
+      const n=8+lvl*2, dmg=(5+lvl*2)*this.player.dmgMul*up;
       for(let i=0;i<n;i++){ const ang=(i/n)*Math.PI*2;
         let b=this.bullets.getFirstDead(false);
         if(!b) b=this.bullets.create(this.player.x,this.player.y,'spark');
@@ -411,16 +426,16 @@ class Game extends Phaser.Scene {
         b.setScale(1.3).setTint(0xffe9a8); b.dmg=dmg; b.life=1.0; b.body.setAllowGravity(false); this.camWorld(b);
         this.physics.velocityFromRotation(ang,430,b.body.velocity);
       }
-      this.activeCd=5; this._activeMax=5;
+      this.activeCd=5*uc; this._activeMax=this.activeCd;
     } else if(a.key==='freeze'){
-      const r=210, dur=1.4+lvl*0.35;
+      const r=210, dur=(1.4+lvl*0.35)*up;
       const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,14,COLORS.ice,0.4).setDepth(3));
       this.tweens.add({targets:ring,radius:r,alpha:0,duration:300,onComplete:()=>ring.destroy()});
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
         if(this.dist(e.x,e.y,this.player.x,this.player.y)<r){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }});
-      this.activeCd=7; this._activeMax=7;
+      this.activeCd=7*uc; this._activeMax=this.activeCd;
     } else if(a.key==='blackhole'){
-      const cx=this.player.x, cy=this.player.y, R=280, dmg=(20+lvl*8)*this.player.dmgMul;
+      const cx=this.player.x, cy=this.player.y, R=280, dmg=(20+lvl*8)*this.player.dmgMul*up;
       const vortex=this.camWorld(this.add.circle(cx,cy,18,0x8b5cf0,0.55).setDepth(3));
       this.tweens.add({targets:vortex,radius:150,alpha:0,duration:650,onComplete:()=>vortex.destroy()});
       // ดูดศัตรูเข้าหาจุดกึ่งกลาง
@@ -433,7 +448,7 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:ring,radius:210,alpha:0,duration:320,onComplete:()=>ring.destroy()});
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<210) this.damage(e,dmg,e.x,e.y); });
         Sfx.boom(); });
-      this.activeCd=8; this._activeMax=8;
+      this.activeCd=8*uc; this._activeMax=this.activeCd;
     }
     Sfx.ult();
     this.flashBtn(this.skillBtn);
@@ -593,7 +608,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(14,38,80,34,()=>{ this.menuScreen='hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='talent')this.buildTalent(); else this.buildHub(); }
   buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
   buildHub(){
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
@@ -604,15 +619,39 @@ class Game extends Phaser.Scene {
     const ch=CHARACTERS[this.character||'momo'];
     const charTxt=this.add.text(w/2,h*0.35,`${ch.emoji} ${ch.name} · อัลติ ${ACTIVES[ch.active].emoji}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
     this.menu.add([bg,sugar,emoji,title,charTxt]);
-    const bw=Math.min(w-60,300), bx=w/2, bh=52;
-    const mk=(cy,label,color,fn)=>{ const g=this.add.graphics(); g.fillStyle(color,1); g.fillRoundedRect(bx-bw/2,cy-bh/2,bw,bh,16);
-      g.lineStyle(2,0xffffff,0.25); g.strokeRoundedRect(bx-bw/2,cy-bh/2,bw,bh,16);
-      const t=this.add.text(bx,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
+    const bw=Math.min(w-60,300), bx=w/2, bh=46;
+    const mk=(cy,label,color,fn)=>{ const g=this.add.graphics(); g.fillStyle(color,1); g.fillRoundedRect(bx-bw/2,cy-bh/2,bw,bh,15);
+      g.lineStyle(2,0xffffff,0.25); g.strokeRoundedRect(bx-bw/2,cy-bh/2,bw,bh,15);
+      const t=this.add.text(bx,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#fff'}).setOrigin(0.5);
       this.menu.add([g,t]); this._zone(bx-bw/2,cy-bh/2,bw,bh,fn); };
-    mk(h*0.47,'▶ เริ่มเล่น',COLORS.pink,()=>{ this.menuScreen='stage'; this.buildMenuScreen(); });
-    mk(h*0.585,'🎭 เลือกตัวละคร',COLORS.toast,()=>{ this.menuScreen='char'; this.buildMenuScreen(); });
-    mk(h*0.70,'⚙️ อัพเกรดตัวละคร',COLORS.grape,()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); });
-    mk(h*0.815,'🎽 ของสวมใส่',COLORS.mint,()=>{ this.menuScreen='gear'; this.buildMenuScreen(); });
+    mk(h*0.44,'▶ เริ่มเล่น',COLORS.pink,()=>{ this.menuScreen='stage'; this.buildMenuScreen(); });
+    mk(h*0.545,'🎭 เลือกตัวละคร',COLORS.toast,()=>{ this.menuScreen='char'; this.buildMenuScreen(); });
+    mk(h*0.65,'🌟 พรสวรรค์',0xf6a5c0,()=>{ this.menuScreen='talent'; this.buildMenuScreen(); });
+    mk(h*0.755,'⚙️ อัพเกรดรวม',COLORS.grape,()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); });
+    mk(h*0.86,'🎽 ของสวมใส่',COLORS.mint,()=>{ this.menuScreen='gear'; this.buildMenuScreen(); });
+    this.menu.setVisible(true);
+  }
+  buildTalent(){
+    this.menu.removeAll(true); this.tapZones=[];
+    const id=this.character||Save.data.character||'momo', c=CHARACTERS[id], cp=Save.cp(id), w=this.W;
+    this._screenBg('พรสวรรค์ '+c.emoji+' '+c.name);
+    // หัว: เลเวล + หลอด EXP + แต้มเหลือ
+    const need=charExpNeed(cp.lvl), y0=this.H*0.115;
+    const lv=this.add.text(w/2,y0,'เลเวล '+cp.lvl+'  ·  แต้มเหลือ '+(cp.tp||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:(cp.tp>0?'#ffd166':'#c7bdd6')}).setOrigin(0.5);
+    const bw=Math.min(w-60,300), bx=w/2-bw/2, by=y0+20, g=this.add.graphics();
+    g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,by,bw,10,5);
+    g.fillStyle(0x8fd0ff,1); const f=Phaser.Math.Clamp(cp.exp/need,0,1); if(f>0)g.fillRoundedRect(bx,by,Math.max(6,bw*f),10,5);
+    const ex=this.add.text(w/2,by+18,'EXP '+cp.exp+' / '+need+'  (เล่นจบด่าน/ตายเพื่อเก็บ EXP)',{fontFamily:'sans-serif',fontSize:'11px',color:'#9a90ab'}).setOrigin(0.5);
+    this.menu.add([lv,g,ex]);
+    // รายการพรสวรรค์
+    let y=this.H*0.24;
+    TALENTS.forEach(t=>{ const r=(cp.tal&&cp.tal[t.id])||0, maxed=r>=t.max, canBuy=!maxed&&(cp.tp||0)>0;
+      this._rowBtn(y,52,t.emoji,t.name+'  '+r+'/'+t.max,t.per+' /แต้ม',
+        maxed?'MAX':(canBuy?'+ ลง 1':'ต้องมีแต้ม'),
+        maxed?'#ffd166':(canBuy?'#8bd3a0':'#7a7088'),
+        (maxed||!canBuy)?null:()=>{ if((cp.tp||0)>0&&r<t.max){ cp.tal[t.id]=r+1; cp.tp--; Save.save(); Sfx.select(); this.buildMenuScreen(); } });
+      y+=56;
+    });
     this.menu.setVisible(true);
   }
   buildChars(){
@@ -672,6 +711,7 @@ class Game extends Phaser.Scene {
   }
   applyMeta(){
     const p=this.player;
+    p.cdMul=1; p.ultPow=1; p.ultCdMul=1;   // ตัวคูณจากพรสวรรค์ (รีเซ็ตก่อน)
     // เลือกตัวละคร → กำหนดอัลติ + ไอคอนปุ่ม
     this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
     const ch=CHARACTERS[this.character];
@@ -684,7 +724,16 @@ class Game extends Phaser.Scene {
       if(ch.bonus.spd)p.baseSpeed*=ch.bonus.spd; }
     for(const k in UPGRADES){ const l=Save.data.upgrades[k]||0; if(l>0)UPGRADES[k].apply(p,l); }
     for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]); if(it&&it.apply)it.apply(p); }
+    // พรสวรรค์ของตัวละครนี้
+    const cp=Save.cp(this.character);
+    for(const t of TALENTS){ const r=(cp.tal&&cp.tal[t.id])||0; if(r>0)t.apply(p,r); }
     p.hp=p.maxhp;
+  }
+  // ให้ EXP ตัวละครปัจจุบัน + คำนวณเลเวล/แต้ม (คืน obj สรุปเพื่อโชว์)
+  gainCharExp(n){
+    if(!n||n<=0)return; const cp=Save.cp(this.character); cp.exp=(cp.exp||0)+Math.round(n);
+    let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
+    Save.save(); this._lastExpGain=Math.round(n); this._lastLvlUps=ups; return ups;
   }
   showMenu(){ this.state='menu'; this.menuScreen='hub'; this.buildMenuScreen(); this.hudVisible(false); }
   startRun(idx){
@@ -800,6 +849,7 @@ class Game extends Phaser.Scene {
     Sfx.clear();
     const last=this.stageIndex>=STAGES.length-1;
     Save.addSugar(this.sugarStage);                                   // ฝาก Sugar
+    this.gainCharExp(40 + this.stageIndex*25);                        // EXP ตัวละคร (โบนัสเคลียร์ด่าน)
     if(!last && (Save.data.unlockedStage||0) < this.stageIndex+1){ Save.data.unlockedStage=this.stageIndex+1; Save.save(); }
     this.showStageSummary(last);
   }
@@ -812,12 +862,13 @@ class Game extends Phaser.Scene {
     const em=this.add.text(w/2,h*0.2,'✨',{fontSize:'60px'}).setOrigin(0.5);
     const t=this.add.text(w/2,h*0.31,'เคลียร์ '+st.emoji+' '+st.name+'!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166',align:'center',wordWrap:{width:w*0.85}}).setOrigin(0.5);
     const mm=Math.floor(this.elapsed/60), ss=Math.floor(this.elapsed%60);
+    const cp=Save.cp(this.character), ch=CHARACTERS[this.character];
     const rows=[
       ['⏱ เวลารวม', mm+':'+ss.toString().padStart(2,'0')],
       ['☠ กำจัด', String(this.kills)],
-      ['⭐ เลเวล', 'Lv '+this.level],
       ['🍬 Sugar ด่านนี้', '+'+this.sugarStage],
-      ['💰 Sugar รวม', String(Save.data.sugar)],
+      [ch.emoji+' EXP ตัวละคร', '+'+(this._lastExpGain||0)],
+      ['🌟 เลเวลตัวละคร', 'Lv '+cp.lvl+(this._lastLvlUps>0?'  (เลเวลอัพ! +'+this._lastLvlUps+' แต้ม)':'')],
     ];
     const box=[bg,em,t]; let y=h*0.42;
     rows.forEach(r=>{ const l=this.add.text(w/2-120,y,r[0],{fontFamily:'sans-serif',fontSize:'15px',color:'#c7bdd6'}).setOrigin(0,0.5);
@@ -844,6 +895,7 @@ class Game extends Phaser.Scene {
   }
   victory(){
     this.state='win'; this.physics.pause(); this.player.setVelocity(0,0);
+    this.gainCharExp(this.kills+200);
     Sfx.victory();
     const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x14101a,0.9).setOrigin(0,0);
@@ -1109,7 +1161,7 @@ class Game extends Phaser.Scene {
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
 
   /* ---------- DEATH ---------- */
-  die(){ if(this.state==='dead')return; this.state='dead'; Sfx.dead(); Save.addSugar(this.sugarStage); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0); this.buildOver(); }
+  die(){ if(this.state==='dead')return; this.state='dead'; Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0); this.buildOver(); }
   buildOver(){ const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
     const em=this.add.text(w/2,h*0.26,'🫠',{fontSize:'64px'}).setOrigin(0.5);
@@ -1178,7 +1230,7 @@ class Game extends Phaser.Scene {
 
     // auto-cast skills tick
     for(const key in this.skills){ if(SKILLDEFS[key].orbit) continue;
-      this.skillCd[key]-=dt; if(this.skillCd[key]<=0){ this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key]); } }
+      this.skillCd[key]-=dt; if(this.skillCd[key]<=0){ this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key])*(this.player.cdMul||1); } }
     if(this.ringBalls.length){ this.ringRot=(this.ringRot||0)+dt*(this.ringSpin||2.6);
       this.ringBalls.forEach(b=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+(b.ang0||0);
         b.setPosition(this.player.x+Math.cos(a)*(b.rr||54),this.player.y+Math.sin(a)*(b.rr||54)); }); }
