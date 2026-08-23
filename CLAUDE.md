@@ -21,7 +21,7 @@
 
 ## 3. โครงไฟล์
 - `index.html` — หน้าเกม (โหลด phaser.min.js + game.js)
-- `game.js` — โค้ดเกมทั้งหมด (คลาส Boot สร้างกราฟิกจากรูปทรง, คลาส Game = ฉากเล่น)
+- `game.js` — โค้ดเกมทั้งหมด (คลาส Boot วาดกราฟิกด้วย **Canvas 2D** `createCanvas`, คลาส Game = ฉากเล่น)
 - `phaser.min.js` — เอนจิน Phaser 3.80.1 (vendored, มาจาก npm)
 - `LORE.md` — เนื้อเรื่องโลก Mochitopia
 - `CLAUDE.md` — ไฟล์นี้
@@ -49,6 +49,9 @@
   เวฟหนักขึ้น: ปล่อยศัตรู 2 ระลอก + **elite** (isElite, สีส้ม อึด xp/sugar เยอะ) จากด่าน 2
   **ตัวบอกความคืบหน้า:** `drawWavePips()` (จุดเวฟ + จุดชมพู=มินิ + จุดแดง=บอส) + timeTxt โชว์ "เหลือ N"
   **หน้าสรุปด่าน:** `showStageSummary()` → แตะ `continueFromSummary()` ไปด่านต่อไป/victory
+- **กราฟิก (ลงแล้ว! วาดด้วย Canvas 2D ใน Boot):** ตัวละคร 3 แบบต่างหน้าตา (char_momo/mint/cocoa —
+  บอดี้ไล่เฉด เงานุ่ม แก้มชมพู ตาวาว + ท็อปปิ้ง) · ศัตรูหน้าโกรธไล่เฉด · ลูกกวาด glossy · กระสุน/อนุภาคเรืองแสง · **vignette** ขอบจอ
+  · player.setTexture('char_'+character) + aura สีตามตัวใน `applyMeta()` · **หมายเหตุ:** ขนาด texture โตขึ้น → ปรับ setCircle offset แล้ว
 - **ศัตรู:** 3 ชนิด (basic/fast/tank) + บอส, มี object pooling
 - **UI:** การ์ดเลเวลอัพมุมโค้ง, ปุ่มโค้ง, HP/XP bar, หลอดบอส, แบนเนอร์ด่าน+lore
 - **ตัวละคร 3 ตัว (`CHARACTERS`+`CHAR_ORDER`):** momo🍡(bomb) · mint🌿(freeze,+HP30) · cocoa🍫(blackhole,+dmg10%)
