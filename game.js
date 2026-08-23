@@ -408,7 +408,7 @@ class Game extends Phaser.Scene {
         let b=this.bullets.getFirstDead(false);
         if(!b) b=this.bullets.create(this.player.x,this.player.y,'spark');
         else { b.setActive(true).setVisible(true); b.body.enable=true; b.setPosition(this.player.x,this.player.y); }
-        b.setScale(1.3).setTint(0xffe9a8); b.dmg=dmg; b.life=1.0; b.body.setAllowGravity(false);
+        b.setScale(1.3).setTint(0xffe9a8); b.dmg=dmg; b.life=1.0; b.body.setAllowGravity(false); this.camWorld(b);
         this.physics.velocityFromRotation(ang,430,b.body.velocity);
       }
       this.activeCd=5; this._activeMax=5;
@@ -748,7 +748,7 @@ class Game extends Phaser.Scene {
     const s=(1+this.stageIndex*0.35)*(1+this.waveIndex*0.06);
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=18; e.xp=8;
     e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
-    e.setScale(1.3).setTint(0xffb15a);
+    e.setScale(1.3).setTint(0xffb15a); this.camWorld(e);
   }
   spawnNormalWave(){
     const w=this.waveIndex, si=this.stageIndex, mine=w;
@@ -771,7 +771,7 @@ class Game extends Phaser.Scene {
     b.setScale(1.7).setCircle(26,5,5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.42; b.maxhp=b.hp; b.spd=54; b.dmg=Math.round(st.bossDmg*0.7); b.xp=15; b.frozen=0; b.knock=0;
     b.tintColor=st.tint; b.setTint(st.tint);
-    this.boss=b; this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
+    this.boss=b; this.camWorld(b); this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
   }
   spawnFinalBoss(){
@@ -782,7 +782,7 @@ class Game extends Phaser.Scene {
     b.setScale(2.5).setCircle(26,5,5); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(1+this.stageIndex*0.04); b.maxhp=b.hp; b.spd=44; b.dmg=st.bossDmg; b.xp=30; b.frozen=0; b.knock=0;
     b.tintColor=st.tint; b.setTint(st.tint);
-    this.boss=b; this.bossName.setText('👹 '+st.boss); this.bossUI.forEach(o=>o.setVisible(true));
+    this.boss=b; this.camWorld(b); this.bossName.setText('👹 '+st.boss); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=1; this.updateWaveText();
   }
   onWaveCleared(){
@@ -960,7 +960,7 @@ class Game extends Phaser.Scene {
     if(type==='fast'){ e.hp=6*s; e.spd=116; e.dmg=7; e.xp=1; e.setCircle(15,4,4); }
     else if(type==='tank'){ e.hp=42*s; e.spd=36; e.dmg=15; e.xp=4; e.setCircle(26,5,5); }
     else { e.hp=11*s; e.spd=54; e.dmg=8; e.xp=1; e.setCircle(17,5,5); }
-    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(1).clearTint();
+    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(1).clearTint(); this.camWorld(e);
   }
 
   /* ---------- COMBAT ---------- */
@@ -968,7 +968,7 @@ class Game extends Phaser.Scene {
     let b=this.bullets.getFirstDead(false);
     if(!b) b=this.bullets.create(x,y,'spark');
     else { b.setActive(true).setVisible(true); b.body.enable=true; b.setPosition(x,y); }
-    b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0); b.body.setAllowGravity(false);
+    b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0); b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
     b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0;
     return b;
@@ -1089,7 +1089,7 @@ class Game extends Phaser.Scene {
   killBullet(b){ b.setActive(false).setVisible(false); b.body.enable=false; b.body.stop(); }
   dropOrb(x,y){ let o=this.orbs.getFirstDead(false);
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
-    o.body.setAllowGravity(false); o.setScale(1); this.tweens.add({targets:o,scale:{from:0.2,to:1},duration:200}); }
+    o.body.setAllowGravity(false); o.setScale(1); this.camWorld(o); this.tweens.add({targets:o,scale:{from:0.2,to:1},duration:200}); }
   collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); o.body.enable=false; Sfx.xp(); this.gainXp(1); }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     this.player.iframe=0.6; this.player.hp-=e.dmg; Sfx.hurt(); this.cameras.main.shake(120,0.008);
