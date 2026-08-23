@@ -329,7 +329,7 @@ class Game extends Phaser.Scene {
     // แยกสิ่งที่แต่ละกล้องเรนเดอร์
     this._worldObjs=[this.gridBg,this.aura,this.player,this.enemies,this.orbs,this.bullets];
     this.uiCam.ignore(this._worldObjs);
-    const ui=[this.vig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.menu,this.lvlUp,this.over,this.joyBase,this.joyKnob]
+    const ui=[this.vig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.fpsTxt,this.menu,this.lvlUp,this.over,this.joyBase,this.joyKnob]
       .concat(this.hudList||[],this.bossUI||[]).filter(Boolean);
     this.cameras.main.ignore(ui);
     if(this.skillBar)this.camUI(this.skillBar);
@@ -480,6 +480,11 @@ class Game extends Phaser.Scene {
     // mute button (มุมขวาบน) — แสดงตลอดเวลา
     this.muteBtn=this.add.circle(w-30,pad+64,18,0x000000,0.32).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.3);
     this.muteTxt=this.add.text(w-30,pad+64,Sfx.muted?'🔇':'🔊',{fontSize:'17px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    // ตัววัด FPS + ความละเอียด (ไว้ดีบั๊ก — เอาออกทีหลังได้)
+    this.fpsTxt=this.add.text(w-30,pad+88,'',{fontFamily:'monospace',fontSize:'10px',color:'#8fd0ff'}).setOrigin(1,0).setScrollFactor(1).setDepth(59);
+    this.time.addEvent({delay:400,loop:true,callback:()=>{ if(!this.fpsTxt)return;
+      const fps=Math.round(this.game.loop.actualFps), bw=Math.round(this.scale.width);
+      this.fpsTxt.setText(fps+'fps · '+bw+'p · x'+this.DPR); }});
 
     this.hudList=[this.dashBtn,this.dashTxt,this.skillBtn,this.skillEmoji,this.skillCdTxt,this.skillRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG];
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar];
