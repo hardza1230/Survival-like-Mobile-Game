@@ -32,8 +32,12 @@
 - **สกิลออโต้แคสต์ 7 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง)
 - **เลเวลอัพเน้นสกิล** (พาสซีฟเป็นของเสริม) — เลือกด้วยการแตะ (hit-test เอง ไม่ใช้ setInteractive กับ shape)
-- **ระบบด่าน (STAGES):** 5 โซนครัว แต่ละด่าน = รอดครบเวลา → บอสปิดด่าน → ผ่าน → ฟื้น HP → ด่านต่อไป
-  ล้มบอสด่าน 5 (เชฟขม) = **ชนะเกม** (มีหน้า victory)
+- **ระบบด่าน (STAGES) แบบ Archero:** 5 โซนครัว แต่ละด่าน = เคลียร์ศัตรูเป็น "เวฟ" (`waves` ต่อด่าน)
+  → กลางด่านเจอ **มินิบอส** (`miniAt`, `mini`) → จบเวฟทั้งหมดเจอ **บอสใหญ่** (`boss/bossHp/bossDmg`)
+  → ล้มบอส = ผ่านด่าน (ฟื้น HP 35%) → ด่านต่อไป · ล้มบอสด่าน 5 = **ชนะเกม**
+  กลไก: `startWave/spawnNormalWave/spawnMiniBoss/spawnFinalBoss/onWaveCleared/onStageClear`
+  ตัวนับ `this.waveAlive` (ลดใน killEnemy) = 0 เมื่อไหร่ → เวฟถัดไป · `this.mode`= wave/mini/boss/breather/clear
+  เดินด่านด้วย "การเคลียร์" ไม่ใช่ตัวจับเวลาแล้ว (เอา stageTime/spawnWave ออก)
 - **ศัตรู:** 3 ชนิด (basic/fast/tank) + บอส, มี object pooling
 - **UI:** การ์ดเลเวลอัพมุมโค้ง, ปุ่มโค้ง, HP/XP bar, หลอดบอส, แบนเนอร์ด่าน+lore
 - **อัลติกดเอง (ผูกกับตัวละคร):** ดู`CHARACTERS` — ตอนนี้มี `momo` (อัลติ=bomb).
