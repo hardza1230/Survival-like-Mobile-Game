@@ -55,6 +55,25 @@ const ACTIVES = {
   freeze:{ name:'Brain Freeze', emoji:'❄️', desc:'แช่แข็งศัตรูรอบตัวชั่วขณะ' },
 };
 
+/* ---- STAGES: 5 โซนของครัว + บอสปิดด่าน ---- */
+const STAGES = [
+  { name:'ตู้กับข้าว',   en:'The Pantry',  emoji:'🥫', grid:0x2a2233, tint:0x8bd3a0,
+    lore:'ที่ซ่อนแรกของ Sour Horde — ฝูงมดและแมลงเปรี้ยวคลานออกจากมุมมืด',
+    dur:45, boss:'ราชินีมดเปรี้ยว', bossHp:420, bossDmg:20 },
+  { name:'อ่างล้างจาน',  en:'The Sink',    emoji:'🚰', grid:0x1f2a33, tint:0x8fc7ff,
+    lore:'น้ำเน่านองเต็มอ่าง ฟองสบู่มีชีวิตพยายามจมโมโม่ให้เปียกโชก',
+    dur:52, boss:'ปีศาจฟองน้ำ', bossHp:680, bossDmg:24 },
+  { name:'เตาไฟ',        en:'The Stove',   emoji:'🔥', grid:0x33231f, tint:0xff8a5a,
+    lore:'เปลวไฟลุกโชน กระทะและพริกร้อนระอุเข้าจู่โจมไม่ยั้ง',
+    dur:60, boss:'มิสเตอร์เตาปิ้ง', bossHp:1000, bossDmg:28 },
+  { name:'ช่องแช่แข็ง',  en:'The Freezer', emoji:'❄️', grid:0x1f2733, tint:0x9fe0ff,
+    lore:'ความหนาวเยือกแข็ง โกเลมไอศกรีมตื่นจากน้ำแข็งนิรันดร์',
+    dur:66, boss:'โกเลมไอศกรีม', bossHp:1400, bossDmg:32 },
+  { name:'เตาอบใหญ่',    en:'The Grand Oven', emoji:'👨‍🍳', grid:0x2e1f2b, tint:0xff5f97,
+    lore:'ใจกลางคำสาป — เชฟขมรอโมโม่อยู่ ทำลายเขาเพื่อปลดปล่อยครัว!',
+    dur:72, boss:'เชฟขม (The Bitter Chef)', bossHp:2400, bossDmg:38 },
+];
+
 class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
 
@@ -65,7 +84,7 @@ class Game extends Phaser.Scene {
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
-    this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,1,0x3a2f47,0.25).setDepth(-10);
+    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,1,0x3a2f47,0.25).setDepth(-10);
 
     this.player=this.physics.add.sprite(0,0,'mochi').setDepth(5);
     this.player.setCircle(24,4,4); this.player.setCollideWorldBounds(true);
@@ -103,7 +122,7 @@ class Game extends Phaser.Scene {
   setupInput(){
     this.input.on('pointerdown',(p)=>{
       if(this.state==='menu'){ this.startRun(); return; }
-      if(this.state==='dead'){ this.scene.restart(); return; }
+      if(this.state==='dead'||this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='levelup'){ this.pickCardAt(p.y); return; }
       if(this.state!=='play') return;
       // skill button (right, upper of the two)
@@ -132,8 +151,9 @@ class Game extends Phaser.Scene {
     if(!this.dashReady||this.state!=='play') return;
     this.dashReady=false; this.dashCd=1.1; this.dashTime=0.16;
     const d=this.moveDir.clone().normalize();
-    this.player.setVelocity(d.x*360,d.y*360);   // basic, short — won't fly off screen
-    this.player.iframe=Math.max(this.player.iframe,0.25);
+    this.dashTime=0.2;
+    this.player.setVelocity(d.x*560,d.y*560);   // basic dash — a bit farther, still on-screen
+    this.player.iframe=Math.max(this.player.iframe,0.28);
     this.player.setTint(0xfff6bd);
     this.time.delayedCall(160,()=>this.player.clearTint());
     this.squash(this.player,1.3,0.75);
@@ -200,9 +220,21 @@ class Game extends Phaser.Scene {
     this.timeTxt=this.add.text(w/2,pad+30,'0:00',{fontFamily:'sans-serif',fontSize:'20px',color:'#ffffff'}).setOrigin(0.5,0).setScrollFactor(0).setDepth(51);
     this.killTxt=this.add.text(w-pad,pad+32,'☠ 0',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(1,0).setScrollFactor(0).setDepth(51);
     this.lvlTxt=this.add.text(pad,pad+32,'Lv 1',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(0,0).setScrollFactor(0).setDepth(51);
+    this.stageTxt=this.add.text(w/2,pad+54,'',{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5,0).setScrollFactor(0).setDepth(51);
 
-    this.hudList=[this.dashBtn,this.dashTxt,this.skillBtn,this.skillEmoji,this.skillCdTxt,this.hpBgW,this.hpBar,this.xpBgW,this.xpBar,this.timeTxt,this.killTxt,this.lvlTxt];
+    // boss HP bar (hidden until boss)
+    this.bossName=this.add.text(w/2,pad+74,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(0).setDepth(52);
+    this.bossBgW=this.add.rectangle(w/2,pad+92,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(0).setDepth(51);
+    this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+94,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(0).setDepth(52);
+
+    // center banner
+    this.bannerT=this.add.text(w/2,this.H*0.32,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',align:'center'}).setOrigin(0.5).setScrollFactor(0).setDepth(60).setVisible(false);
+    this.bannerS=this.add.text(w/2,this.H*0.4,'',{fontFamily:'sans-serif',fontSize:'15px',color:'#e6dcf0',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5).setScrollFactor(0).setDepth(60).setVisible(false);
+
+    this.hudList=[this.dashBtn,this.dashTxt,this.skillBtn,this.skillEmoji,this.skillCdTxt,this.hpBgW,this.hpBar,this.xpBgW,this.xpBar,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt];
+    this.bossUI=[this.bossName,this.bossBgW,this.bossBar];
     this.hudList.forEach(o=>o.setVisible(false));
+    this.bossUI.forEach(o=>o.setVisible(false));
   }
   hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); }
 
@@ -211,7 +243,11 @@ class Game extends Phaser.Scene {
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-70,this.H-90); this.dashTxt.setPosition(this.W-70,this.H-90);
       this.skillBtn.setPosition(this.W-70,this.H-196); this.skillEmoji.setPosition(this.W-70,this.H-200); this.skillCdTxt.setPosition(this.W-70,this.H-168);
       this.hpBgW.width=this._barW; this.xpBgW.width=this._barW;
-      this.timeTxt.setPosition(this.W/2,pad+30); this.killTxt.setPosition(this.W-pad,pad+32); }
+      this.timeTxt.setPosition(this.W/2,pad+30); this.killTxt.setPosition(this.W-pad,pad+32);
+      this.stageTxt.setPosition(this.W/2,pad+54);
+      this.bossName.setPosition(this.W/2,pad+74); this.bossBgW.setPosition(this.W/2,pad+92); this.bossBgW.width=this._barW*0.8;
+      this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+94);
+      this.bannerT.setPosition(this.W/2,this.H*0.32); this.bannerS.setPosition(this.W/2,this.H*0.4); }
     if(this.state==='menu') this.buildStartMenu();
     if(this.state==='dead') this.buildOver();
   }
@@ -240,6 +276,60 @@ class Game extends Phaser.Scene {
     if(this.state!=='menu')return;
     this.menu.setVisible(false); this.hudVisible(true);
     this.state='play'; this.elapsed=0; this.spawnTimer=0;
+    this.stageIndex=0; this.boss=null; this.bossSpawned=false;
+    this.startStage(0);
+  }
+
+  /* ---------- STAGES ---------- */
+  startStage(i){
+    const st=STAGES[i]; this.stageIndex=i;
+    this.stageTime=st.dur; this.bossSpawned=false; this.boss=null;
+    this.bossUI.forEach(o=>o.setVisible(false));
+    this.gridBg.fillColor=st.grid;
+    this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name}`);
+    this.showBanner(`${st.emoji} ด่าน ${i+1}: ${st.name}`, st.lore, 3200);
+  }
+  showBanner(title,sub,ms){
+    this.bannerT.setText(title).setVisible(true).setAlpha(0);
+    this.bannerS.setText(sub||'').setVisible(true).setAlpha(0);
+    this.tweens.add({targets:[this.bannerT,this.bannerS],alpha:1,duration:250});
+    this.time.delayedCall(ms,()=>{ this.tweens.add({targets:[this.bannerT,this.bannerS],alpha:0,duration:400,
+      onComplete:()=>{ this.bannerT.setVisible(false); this.bannerS.setVisible(false); }}); });
+  }
+  spawnBoss(){
+    const st=STAGES[this.stageIndex]; this.bossSpawned=true;
+    this.showBanner('⚠ บอสมาแล้ว!', st.boss, 2600);
+    this.cameras.main.shake(300,0.01);
+    const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)*0.5;
+    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_tank');
+    b.setScale(2.4).setCircle(26,3,3); b.isBoss=true;
+    b.hp=st.bossHp*(1+this.stageIndex*0.05); b.maxhp=b.hp; b.spd=42; b.dmg=st.bossDmg; b.xp=30; b.frozen=0; b.knock=0;
+    b.tintColor=st.tint; b.setTint(st.tint);
+    this.boss=b;
+    this.bossName.setText(st.boss); this.bossUI.forEach(o=>o.setVisible(true));
+  }
+  onBossDead(){
+    this.boss=null; this.bossUI.forEach(o=>o.setVisible(false));
+    // clear remaining trash enemies for a breather
+    this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss){ e.setActive(false).setVisible(false); e.body.enable=false; } });
+    this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.35); // heal reward
+    if(this.stageIndex>=STAGES.length-1){ this.victory(); return; }
+    this.showBanner('✨ เคลียร์ด่าน!', 'ฟื้น HP · เตรียมลุยโซนต่อไป', 2400);
+    this.time.delayedCall(2600,()=>{ if(this.state==='play') this.startStage(this.stageIndex+1); });
+  }
+  victory(){
+    this.state='win'; this.physics.pause(); this.player.setVelocity(0,0);
+    const w=this.W,h=this.H; this.over.removeAll(true);
+    const bg=this.add.rectangle(0,0,w,h,0x14101a,0.9).setOrigin(0,0);
+    const em=this.add.text(w/2,h*0.24,'🏆',{fontSize:'70px'}).setOrigin(0.5);
+    const t=this.add.text(w/2,h*0.37,'ชนะแล้ว! คำสาปถูกทำลาย',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd166',align:'center',wordWrap:{width:w*0.85}}).setOrigin(0.5);
+    const lore=this.add.text(w/2,h*0.47,'โมโม่ล้มเชฟขมได้สำเร็จ ครัวใหญ่กลับมาหอมหวานอีกครั้ง 🍡',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
+    const mm=Math.floor(this.elapsed/60), ss=Math.floor(this.elapsed%60);
+    const stat=this.add.text(w/2,h*0.56,`เวลา ${mm}:${ss.toString().padStart(2,'0')}  ·  กำจัด ${this.kills}  ·  Lv ${this.level}`,{fontFamily:'sans-serif',fontSize:'15px',color:'#9a90ab'}).setOrigin(0.5);
+    const btn=this.add.rectangle(w/2,h*0.68,210,58,COLORS.pink,1).setStrokeStyle(3,0xffffff,0.3);
+    const bt=this.add.text(w/2,h*0.68,'↻ เล่นอีกครั้ง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
+    btn.setInteractive({useHandCursor:true}).on('pointerdown',()=>this.scene.restart());
+    this.over.add([bg,em,t,lore,stat,btn,bt]); this.over.setVisible(true);
   }
 
   /* ---------- LEVEL UP ---------- */
@@ -314,11 +404,12 @@ class Game extends Phaser.Scene {
 
   /* ---------- SPAWN ---------- */
   spawnWave(dt){
-    this.spawnTimer-=dt; const t=this.elapsed;
-    const interval=Math.max(0.2,0.9-t*0.006); if(this.spawnTimer>0)return; this.spawnTimer=interval;
-    const batch=1+Math.floor(t/25);
+    if(this.boss) return;                 // focus on boss, pause trash spawns
+    this.spawnTimer-=dt; const t=this.elapsed, si=this.stageIndex||0;
+    const interval=Math.max(0.18,0.85-t*0.005-si*0.03); if(this.spawnTimer>0)return; this.spawnTimer=interval;
+    const batch=1+Math.floor(t/22)+Math.floor(si/2);
     for(let i=0;i<batch;i++){ let type='basic'; const r=Math.random();
-      if(t>20&&r<0.28)type='fast'; if(t>45&&r>0.85)type='tank'; this.spawnEnemy(type); }
+      if(si>=1&&r<0.3)type='fast'; if(si>=2&&r>0.86)type='tank'; this.spawnEnemy(type); }
   }
   spawnEnemy(type){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)*0.62+40;
@@ -326,11 +417,11 @@ class Game extends Phaser.Scene {
     let e=this.enemies.getFirstDead(false); const key=type==='fast'?'e_fast':type==='tank'?'e_tank':'e_basic';
     if(!e) e=this.enemies.create(x,y,key);
     else { e.setTexture(key); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
-    const s=1+this.elapsed*0.004;
+    const s=(1+this.elapsed*0.004)*(1+(this.stageIndex||0)*0.35);
     if(type==='fast'){ e.hp=6*s; e.spd=116; e.dmg=7; e.xp=1; e.setCircle(15,2,2); }
     else if(type==='tank'){ e.hp=42*s; e.spd=36; e.dmg=15; e.xp=4; e.setCircle(26,3,3); }
     else { e.hp=11*s; e.spd=54; e.dmg=8; e.xp=1; e.setCircle(17,3,3); }
-    e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(1).clearTint();
+    e.isBoss=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(1).clearTint();
   }
 
   /* ---------- COMBAT ---------- */
@@ -358,12 +449,16 @@ class Game extends Phaser.Scene {
     return best; }
   hitEnemy(bullet,enemy){ if(!bullet.active||!enemy.active)return; this.damage(enemy,bullet.dmg,bullet.x,bullet.y); this.killBullet(bullet); }
   damage(e,amount,x,y){ if(!e.active)return; e.hp-=amount;
-    e.setTintFill(0xffffff); this.time.delayedCall(60,()=>{ if(e.active&&!e.frozen) e.clearTint(); else if(e.active&&e.frozen) e.setTint(COLORS.ice); });
+    e.setTintFill(0xffffff); this.time.delayedCall(60,()=>{ if(!e.active)return;
+      if(e.frozen) e.setTint(COLORS.ice); else if(e.isBoss&&e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });
     this.popDmg(Math.round(amount),x,y); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ this.kills++; this.killTxt.setText('☠ '+this.kills);
-    this.burst(e.x,e.y,e.texture.key==='e_tank'?0x8b5cf0:0xffd166);
-    for(let i=0;i<(e.xp||1);i++) this.dropOrb(e.x+Phaser.Math.Between(-12,12),e.y+Phaser.Math.Between(-12,12));
-    e.setActive(false).setVisible(false); e.body.enable=false; }
+    const isBoss=e.isBoss;
+    this.burst(e.x,e.y,isBoss?0xffd166:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
+    if(isBoss){ this.cameras.main.shake(400,0.012); this.burst(e.x,e.y,0xff9ec4); }
+    for(let i=0;i<(e.xp||1);i++) this.dropOrb(e.x+Phaser.Math.Between(-18,18),e.y+Phaser.Math.Between(-18,18));
+    e.setActive(false).setVisible(false); e.body.enable=false; e.isBoss=false; e.setScale(1);
+    if(isBoss) this.onBossDead(); }
   killBullet(b){ b.setActive(false).setVisible(false); b.body.enable=false; b.body.stop(); }
   dropOrb(x,y){ let o=this.orbs.getFirstDead(false);
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
@@ -442,10 +537,22 @@ class Game extends Phaser.Scene {
     if(this.ringBalls.length){ this.ringRot=(this.ringRot||0)+dt*2.6; const R=54;
       this.ringBalls.forEach((b,i)=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+i*(Math.PI*2/this.ringBalls.length); b.setPosition(this.player.x+Math.cos(a)*R,this.player.y+Math.sin(a)*R); }); }
 
+    // STAGE timer → boss → clear
+    if(!this.boss){
+      if(!this.bossSpawned){
+        this.stageTime-=dt;
+        if(this.stageTime<=0) this.spawnBoss();
+      }
+    } else {
+      this.bossBar.width=Math.max(0,(this._barW*0.8-4)*(this.boss.hp/this.boss.maxhp));
+    }
+
     this.spawnWave(dt);
     this.hpBar.width=Math.max(0,(this._barW-4)*(this.player.hp/this.player.maxhp));
     this.xpBar.width=(this._barW-4)*(this.xp/this.xpNext);
-    const mm=Math.floor(this.elapsed/60), ss=Math.floor(this.elapsed%60); this.timeTxt.setText(mm+':'+ss.toString().padStart(2,'0'));
+    // timer shows countdown to boss (or "BOSS")
+    if(this.boss){ this.timeTxt.setText('BOSS'); }
+    else { const r=Math.max(0,Math.ceil(this.stageTime)); this.timeTxt.setText('⏳ '+Math.floor(r/60)+':'+(r%60).toString().padStart(2,'0')); }
   }
 }
 
