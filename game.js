@@ -266,7 +266,8 @@ class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
 
   create(){
-    this.W=this.scale.width; this.H=this.scale.height;
+    this.DPR=RENDER_DPR;                                   // ตัวคูณความละเอียดจอ
+    this.W=this.scale.width/this.DPR; this.H=this.scale.height/this.DPR;  // พิกัดใช้งาน = CSS px (เหมือนเดิม)
     this.state='menu'; this.elapsed=0; this.kills=0;
     this.level=1; this.xp=0; this.xpNext=5;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
@@ -275,7 +276,7 @@ class Game extends Phaser.Scene {
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,1,0x3a2f47,0.25).setDepth(-10);
     // vignette ขอบจอมืดนุ่ม เพิ่มมิติ (ติดกล้อง)
-    this.vig=this.add.image(this.W/2,this.H/2,'vignette').setScrollFactor(0).setDepth(40).setDisplaySize(this.W,this.H);
+    this.vig=this.add.image(this.W/2,this.H/2,'vignette').setScrollFactor(1).setDepth(40).setDisplaySize(this.W,this.H);
 
     // soft glow aura ใต้ตัวละคร (UX polish)
     this.aura=this.add.circle(0,0,32,COLORS.mochiEdge,0.14).setDepth(4);
@@ -311,14 +312,36 @@ class Game extends Phaser.Scene {
     this.lvlCards=[]; this.dmgPool=[]; this.tapZones=[]; this.menuScreen='hub';
 
     this.buildHUD(); this.buildMenus(); this.showMenu();
+    this.setupCameras();
     this.setupInput();
     this.scale.on('resize',this.onResize,this);
   }
+
+  /* กล้อง 2 ตัว: main=โลก (follow), ui=อินเทอร์เฟซ (คงที่) — ทั้งคู่ zoom=DPR ให้คมชัด
+     พิกัดยังเป็น CSS px แต่ backing เป็นความละเอียดจริงของจอ */
+  setupCameras(){
+    const D=this.DPR, fw=this.scale.width, fh=this.scale.height;
+    this.cameras.main.setZoom(D);
+    // ui camera: เต็มจอ, zoom D, เลื่อน scroll ให้พิกัด CSS (0..W) เต็มจอพอดี
+    this.uiCam=this.cameras.add(0,0,fw,fh);
+    this.uiCam.setZoom(D);
+    this.uiCam.centerOn(this.W/2,this.H/2);   // จุดหมุน zoom = กึ่งกลาง UI (พิกัด CSS)
+    // แยกสิ่งที่แต่ละกล้องเรนเดอร์
+    this._worldObjs=[this.gridBg,this.aura,this.player,this.enemies,this.orbs,this.bullets];
+    this.uiCam.ignore(this._worldObjs);
+    const ui=[this.vig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.menu,this.lvlUp,this.over,this.joyBase,this.joyKnob]
+      .concat(this.hudList||[],this.bossUI||[]).filter(Boolean);
+    this.cameras.main.ignore(ui);
+    if(this.skillBar)this.camUI(this.skillBar);
+  }
+  camWorld(o){ if(this.uiCam)this.uiCam.ignore(o); return o; }   // FX ของโลก: ให้ ui กล้องข้าม
+  camUI(o){ if(this.cameras&&this.cameras.main)this.cameras.main.ignore(o); return o; }  // UI: ให้กล้องโลกข้าม
 
   /* ---------- INPUT ---------- */
   setupInput(){
     this.input.on('pointerdown',(p)=>{
       Sfx.unlock();
+      p={x:p.x/this.DPR,y:p.y/this.DPR,id:p.id};   // แปลงพิกัดจริง → CSS px
       // mute toggle (มุมขวาบน) — เช็คก่อนทุกอย่างเพื่อไม่ให้ไปโดนจอย
       if(this.muteBtn && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<26){
         const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
@@ -338,6 +361,7 @@ class Game extends Phaser.Scene {
     });
     this.input.on('pointermove',(p)=>{
       if(!this.joy.active||p.id!==this.joy.id) return;
+      p={x:p.x/this.DPR,y:p.y/this.DPR,id:p.id};
       let dx=p.x-this.joy.bx, dy=p.y-this.joy.by; const len=Math.hypot(dx,dy), max=60;
       if(len>max){ dx=dx/len*max; dy=dy/len*max; }
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
@@ -368,7 +392,7 @@ class Game extends Phaser.Scene {
     const a=this.active, lvl=a.lvl;
     if(a.key==='bomb'){
       const r=130+lvl*18, dmg=(16+lvl*7);
-      const ring=this.add.circle(this.player.x,this.player.y,14,COLORS.pink,0.4).setDepth(3);
+      const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,14,COLORS.pink,0.4).setDepth(3));
       this.tweens.add({targets:ring,radius:r,alpha:0,duration:340,onComplete:()=>ring.destroy()});
       this.cameras.main.shake(140,0.006);
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
@@ -390,14 +414,14 @@ class Game extends Phaser.Scene {
       this.activeCd=5; this._activeMax=5;
     } else if(a.key==='freeze'){
       const r=210, dur=1.4+lvl*0.35;
-      const ring=this.add.circle(this.player.x,this.player.y,14,COLORS.ice,0.4).setDepth(3);
+      const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,14,COLORS.ice,0.4).setDepth(3));
       this.tweens.add({targets:ring,radius:r,alpha:0,duration:300,onComplete:()=>ring.destroy()});
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
         if(this.dist(e.x,e.y,this.player.x,this.player.y)<r){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }});
       this.activeCd=7; this._activeMax=7;
     } else if(a.key==='blackhole'){
       const cx=this.player.x, cy=this.player.y, R=280, dmg=(20+lvl*8)*this.player.dmgMul;
-      const vortex=this.add.circle(cx,cy,18,0x8b5cf0,0.55).setDepth(3);
+      const vortex=this.camWorld(this.add.circle(cx,cy,18,0x8b5cf0,0.55).setDepth(3));
       this.tweens.add({targets:vortex,radius:150,alpha:0,duration:650,onComplete:()=>vortex.destroy()});
       // ดูดศัตรูเข้าหาจุดกึ่งกลาง
       this.enemies.children.iterate(e=>{ if(!e||!e.active||e.isBoss)return;
@@ -405,7 +429,7 @@ class Game extends Phaser.Scene {
       // ระเบิดหลังดูด
       this.time.delayedCall(520,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
         this.cameras.main.shake(240,0.011);
-        const ring=this.add.circle(cx,cy,18,0xd0a8ff,0.5).setDepth(3);
+        const ring=this.camWorld(this.add.circle(cx,cy,18,0xd0a8ff,0.5).setDepth(3));
         this.tweens.add({targets:ring,radius:210,alpha:0,duration:320,onComplete:()=>ring.destroy()});
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<210) this.damage(e,dmg,e.x,e.y); });
         Sfx.boom(); });
@@ -419,43 +443,43 @@ class Game extends Phaser.Scene {
   /* ---------- HUD ---------- */
   buildHUD(){
     const pad=14, w=this.W; this._pad=pad; this._barW=w-2*pad;
-    this.joyBase=this.add.circle(0,0,62,0xffffff,0.10).setScrollFactor(0).setDepth(50).setVisible(false).setStrokeStyle(2,0xffffff,0.25);
-    this.joyKnob=this.add.circle(0,0,26,0xffffff,0.22).setScrollFactor(0).setDepth(51).setVisible(false);
+    this.joyBase=this.add.circle(0,0,62,0xffffff,0.10).setScrollFactor(1).setDepth(50).setVisible(false).setStrokeStyle(2,0xffffff,0.25);
+    this.joyKnob=this.add.circle(0,0,26,0xffffff,0.22).setScrollFactor(1).setDepth(51).setVisible(false);
 
     // dash button (lower right)
-    this.dashBtn=this.add.circle(w-70,this.H-90,44,COLORS.mint,0.18).setScrollFactor(0).setDepth(50).setStrokeStyle(2,COLORS.mint,0.7);
-    this.dashTxt=this.add.text(w-70,this.H-90,'พุ่ง',{fontFamily:'sans-serif',fontSize:'16px',color:'#bff3e8'}).setOrigin(0.5).setScrollFactor(0).setDepth(51);
+    this.dashBtn=this.add.circle(w-70,this.H-90,44,COLORS.mint,0.18).setScrollFactor(1).setDepth(50).setStrokeStyle(2,COLORS.mint,0.7);
+    this.dashTxt=this.add.text(w-70,this.H-90,'พุ่ง',{fontFamily:'sans-serif',fontSize:'16px',color:'#bff3e8'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
     // skill button (above dash)
-    this.skillBtn=this.add.circle(w-70,this.H-196,46,COLORS.pink,0.20).setScrollFactor(0).setDepth(50).setStrokeStyle(2,COLORS.pink,0.8);
-    this.skillEmoji=this.add.text(w-70,this.H-200,ACTIVES[this.active.key].emoji,{fontSize:'30px'}).setOrigin(0.5).setScrollFactor(0).setDepth(51);
-    this.skillCdTxt=this.add.text(w-70,this.H-168,'',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffd9e6'}).setOrigin(0.5).setScrollFactor(0).setDepth(52);
+    this.skillBtn=this.add.circle(w-70,this.H-196,46,COLORS.pink,0.20).setScrollFactor(1).setDepth(50).setStrokeStyle(2,COLORS.pink,0.8);
+    this.skillEmoji=this.add.text(w-70,this.H-200,ACTIVES[this.active.key].emoji,{fontSize:'30px'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
+    this.skillCdTxt=this.add.text(w-70,this.H-168,'',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffd9e6'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
     // cooldown ring รอบปุ่มอัลติ
-    this.skillRing=this.add.graphics().setScrollFactor(0).setDepth(52);
+    this.skillRing=this.add.graphics().setScrollFactor(1).setDepth(52);
 
     // top bars: HP + XP (โค้งมน วาดด้วย graphics)
-    this.barG=this.add.graphics().setScrollFactor(0).setDepth(50);
-    this.hpIcon=this.add.text(pad+4,pad+7,'❤️',{fontSize:'12px'}).setOrigin(0.5).setScrollFactor(0).setDepth(52);
-    this.xpIcon=this.add.text(pad+4,pad+24,'⭐',{fontSize:'10px'}).setOrigin(0.5).setScrollFactor(0).setDepth(52);
+    this.barG=this.add.graphics().setScrollFactor(1).setDepth(50);
+    this.hpIcon=this.add.text(pad+4,pad+7,'❤️',{fontSize:'12px'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
+    this.xpIcon=this.add.text(pad+4,pad+24,'⭐',{fontSize:'10px'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
 
-    this.timeTxt=this.add.text(w/2,pad+30,'0:00',{fontFamily:'sans-serif',fontSize:'20px',color:'#ffffff'}).setOrigin(0.5,0).setScrollFactor(0).setDepth(51);
-    this.killTxt=this.add.text(w-pad,pad+32,'☠ 0',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(1,0).setScrollFactor(0).setDepth(51);
-    this.lvlTxt=this.add.text(pad,pad+32,'Lv 1',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(0,0).setScrollFactor(0).setDepth(51);
-    this.stageTxt=this.add.text(w/2,pad+54,'',{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5,0).setScrollFactor(0).setDepth(51);
+    this.timeTxt=this.add.text(w/2,pad+30,'0:00',{fontFamily:'sans-serif',fontSize:'20px',color:'#ffffff'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    this.killTxt=this.add.text(w-pad,pad+32,'☠ 0',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);
+    this.lvlTxt=this.add.text(pad,pad+32,'Lv 1',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
+    this.stageTxt=this.add.text(w/2,pad+54,'',{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     // wave progress pips (บอกว่าใกล้จบเวฟ/ถึงบอสหรือยัง)
-    this.pipG=this.add.graphics().setScrollFactor(0).setDepth(51);
+    this.pipG=this.add.graphics().setScrollFactor(1).setDepth(51);
 
     // boss HP bar (hidden until boss)
-    this.bossName=this.add.text(w/2,pad+74,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(0).setDepth(52);
-    this.bossBgW=this.add.rectangle(w/2,pad+92,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(0).setDepth(51);
-    this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+94,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(0).setDepth(52);
+    this.bossName=this.add.text(w/2,pad+74,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(52);
+    this.bossBgW=this.add.rectangle(w/2,pad+92,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+94,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(1).setDepth(52);
 
     // center banner
-    this.bannerT=this.add.text(w/2,this.H*0.32,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',align:'center'}).setOrigin(0.5).setScrollFactor(0).setDepth(60).setVisible(false);
-    this.bannerS=this.add.text(w/2,this.H*0.4,'',{fontFamily:'sans-serif',fontSize:'15px',color:'#e6dcf0',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5).setScrollFactor(0).setDepth(60).setVisible(false);
+    this.bannerT=this.add.text(w/2,this.H*0.32,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
+    this.bannerS=this.add.text(w/2,this.H*0.4,'',{fontFamily:'sans-serif',fontSize:'15px',color:'#e6dcf0',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
 
     // mute button (มุมขวาบน) — แสดงตลอดเวลา
-    this.muteBtn=this.add.circle(w-30,pad+64,18,0x000000,0.32).setScrollFactor(0).setDepth(58).setStrokeStyle(1.5,0xffffff,0.3);
-    this.muteTxt=this.add.text(w-30,pad+64,Sfx.muted?'🔇':'🔊',{fontSize:'17px'}).setOrigin(0.5).setScrollFactor(0).setDepth(59);
+    this.muteBtn=this.add.circle(w-30,pad+64,18,0x000000,0.32).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.3);
+    this.muteTxt=this.add.text(w-30,pad+64,Sfx.muted?'🔇':'🔊',{fontSize:'17px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
 
     this.hudList=[this.dashBtn,this.dashTxt,this.skillBtn,this.skillEmoji,this.skillCdTxt,this.skillRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG];
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar];
@@ -484,7 +508,8 @@ class Game extends Phaser.Scene {
   /* แถบไอคอนสกิลด้านล่าง — บอกว่ามีสกิลอะไร เลเวลเท่าไหร่ */
   buildSkillBar(){
     if(this.skillBar)this.skillBar.destroy();
-    this.skillBar=this.add.container(0,0).setScrollFactor(0).setDepth(53);
+    this.skillBar=this.add.container(0,0).setScrollFactor(1).setDepth(53);
+    this.camUI(this.skillBar);
     this.skillChips={};
     const keys=Object.keys(this.skills); if(!keys.length){ this.checkCombos(); return; }
     const cw=Math.min(38,Math.floor((this.W-16)/keys.length)), rad=Math.min(16,cw/2-3), fs=Math.round(rad)+'px';
@@ -516,7 +541,8 @@ class Game extends Phaser.Scene {
   }
 
   onResize(gs){
-    if(!gs)return; this.W=gs.width; this.H=gs.height; const pad=this._pad; this._barW=this.W-2*pad;
+    if(!gs)return; const D=this.DPR||1; this.W=gs.width/D; this.H=gs.height/D; const pad=this._pad; this._barW=this.W-2*pad;
+    if(this.uiCam){ this.uiCam.setSize(gs.width,gs.height); this.uiCam.setZoom(D); this.uiCam.centerOn(this.W/2,this.H/2); }
     if(this.vig)this.vig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-70,this.H-90); this.dashTxt.setPosition(this.W-70,this.H-90);
       this.skillBtn.setPosition(this.W-70,this.H-196); this.skillEmoji.setPosition(this.W-70,this.H-200); this.skillCdTxt.setPosition(this.W-70,this.H-168);
@@ -533,9 +559,9 @@ class Game extends Phaser.Scene {
 
   /* ---------- MENUS ---------- */
   buildMenus(){
-    this.menu=this.add.container(0,0).setScrollFactor(0).setDepth(100);
-    this.lvlUp=this.add.container(0,0).setScrollFactor(0).setDepth(100).setVisible(false);
-    this.over=this.add.container(0,0).setScrollFactor(0).setDepth(100).setVisible(false);
+    this.menu=this.add.container(0,0).setScrollFactor(1).setDepth(100);
+    this.lvlUp=this.add.container(0,0).setScrollFactor(1).setDepth(100).setVisible(false);
+    this.over=this.add.container(0,0).setScrollFactor(1).setDepth(100).setVisible(false);
     this.buildStartMenu();
   }
   /* ===== HUB MENU + SUB-SCREENS (tap-zone hit-test) ===== */
@@ -907,7 +933,7 @@ class Game extends Phaser.Scene {
     this.ringSpin=2.6+lvl*0.28;               // L3 หมุนเร็วขึ้น
     for(let i=0;i<count;i++){
       const onOuter=!twoRing||(i%2===0);
-      const b=this.physics.add.image(0,0,'dot').setTint(onOuter?0xffe08a:0xfff2a8).setScale(size).setDepth(4);
+      const b=this.camWorld(this.physics.add.image(0,0,'dot').setTint(onOuter?0xffe08a:0xfff2a8).setScale(size).setDepth(4));
       b.setCircle(5); b.body.setAllowGravity(false); b.dmg=4+lvl*1.5; b.hitCd=0;
       b.rr=onOuter?rOuter:rInner; b.ang0=(i/count)*Math.PI*2;
       this.physics.add.overlap(b,this.enemies,(ball,en)=>{ if(ball.hitCd>0)return; ball.hitCd=0.12;
@@ -968,7 +994,7 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(ang,470,b.body.velocity); } Sfx.shoot(); }
     else if(key==='chili'){ const rings=lvl>=6?3:lvl>=3?2:1, baseR=(80+lvl*14)*(cf.firestorm?1.2:1), dmg=(8+lvl*2.4)*dm, knock=lvl>=4;
       for(let ri=0;ri<rings;ri++){ const r=baseR*(1-ri*0.26);
-        const ring=this.add.circle(this.player.x,this.player.y,10,ri%2?0xffb15a:0xff7a4d,0.4).setDepth(3);
+        const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,10,ri%2?0xffb15a:0xff7a4d,0.4).setDepth(3));
         this.tweens.add({targets:ring,radius:r,alpha:0,duration:300+ri*70,onComplete:()=>ring.destroy()}); }
       if(lvl>=6)this.cameras.main.shake(120,0.005);
       this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<baseR){
@@ -997,7 +1023,7 @@ class Game extends Phaser.Scene {
         b.boomer=true; b.bt=0; b.bdur=0.44; b.rebound=rebound; b.spin=true;
         this.physics.velocityFromRotation(ang,430,b.body.velocity); } Sfx.shoot(); }
     else if(key==='frost'){ const r=140+lvl*14, dur=1+lvl*0.22, dmg=lvl>=3?(6+lvl*2)*dm:0, shatter=lvl>=5;
-      const ring=this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3);
+      const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
       this.tweens.add({targets:ring,radius:r,alpha:0,duration:320,onComplete:()=>ring.destroy()});
       this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,this.player.x,this.player.y)<r){
         if(shatter&&e.frozen>0){ this.damage(e,(14+lvl*3)*dm,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
@@ -1015,16 +1041,16 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(ang,200,b.body.velocity); } Sfx.shoot(); }
   }
   chainBolt(x1,y1,x2,y2){
-    const g=this.add.graphics().setDepth(7); g.lineStyle(2.5,0xbfe3ff,1);
+    const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(2.5,0xbfe3ff,1);
     g.beginPath(); g.moveTo(x1,y1);
     const mx=(x1+x2)/2+Phaser.Math.Between(-12,12), my=(y1+y2)/2+Phaser.Math.Between(-12,12);
     g.lineTo(mx,my); g.lineTo(x2,y2); g.strokePath();
     this.tweens.add({targets:g,alpha:0,duration:180,onComplete:()=>g.destroy()});
   }
   zap(x,y){
-    const g=this.add.graphics().setDepth(7); g.lineStyle(3,0xfff2a8,1);
+    const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(3,0xfff2a8,1);
     g.beginPath(); g.moveTo(x,y-260); g.lineTo(x+Phaser.Math.Between(-14,14),y-130); g.lineTo(x,y); g.strokePath();
-    const fl=this.add.circle(x,y,22,0xfff2a8,0.6).setDepth(7);
+    const fl=this.camWorld(this.add.circle(x,y,22,0xfff2a8,0.6).setDepth(7));
     this.tweens.add({targets:[g,fl],alpha:0,duration:200,onComplete:()=>{ g.destroy(); fl.destroy(); }});
   }
   nearestEnemy(maxD){ let best=null,bd=maxD*maxD;
@@ -1068,11 +1094,11 @@ class Game extends Phaser.Scene {
 
   /* ---------- FX ---------- */
   popDmg(n,x,y){ let t=this.dmgPool.pop();
-    if(!t) t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff2a8'}).setDepth(20).setOrigin(0.5);
+    if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff2a8'}).setDepth(20).setOrigin(0.5); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
     t.setText(n).setPosition(x,y-10).setAlpha(1);
     this.tweens.add({targets:t,y:y-40,alpha:0,duration:520,onComplete:()=>{ t.setVisible(false); this.dmgPool.push(t); }}); }
-  burst(x,y,color){ for(let i=0;i<7;i++){ const p=this.add.image(x,y,'dot').setTint(color).setDepth(6).setScale(Phaser.Math.FloatBetween(0.5,1.1));
+  burst(x,y,color){ for(let i=0;i<7;i++){ const p=this.camWorld(this.add.image(x,y,'dot').setTint(color).setDepth(6).setScale(Phaser.Math.FloatBetween(0.5,1.1)));
     const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
     this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
@@ -1160,11 +1186,20 @@ class Game extends Phaser.Scene {
   }
 }
 
-new Phaser.Game({
+// เรนเดอร์ที่ความละเอียดจริงของจอ (แก้ภาพเบลอบน Retina/high-DPI)
+// gameSize = ขนาดจอ × DPR → canvas คมชัด, แล้วชดเชยด้วย camera zoom = DPR
+const RENDER_DPR = Math.max(1, Math.min(window.devicePixelRatio||1, 2));
+window.__g = new Phaser.Game({
   type: Phaser.AUTO,
   backgroundColor: '#241d2e',
-  scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.CENTER_BOTH },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: Math.round(window.innerWidth*RENDER_DPR),
+    height: Math.round(window.innerHeight*RENDER_DPR),
+  },
   physics: { default:'arcade', arcade:{ gravity:{y:0}, debug:false } },
-  render: { antialias:true },
+  render: { antialias:true, roundPixels:false },
   scene: [Boot, Game],
 });
+window.addEventListener('resize',()=>{ const g=window.__g; if(g&&g.scale) g.scale.resize(Math.round(window.innerWidth*RENDER_DPR),Math.round(window.innerHeight*RENDER_DPR)); });

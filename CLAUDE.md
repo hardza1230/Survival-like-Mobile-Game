@@ -78,7 +78,15 @@
   เสียง: ยิง/เก็บ xp/ตีตาย/โดนตี/พุ่ง/อัลติ/ฟ้าผ่า/ระเบิด/แช่แข็ง/เลเวลอัพ/เลือกการ์ด/บอส/เคลียร์/ชนะ/แพ้
   (ปลดล็อกเสียงตอนแตะครั้งแรก `Sfx.unlock()`, เสียงถี่ ๆ มี throttle กันรก)
 
+- **คมชัดบนจอ high-DPI (Retina):** เรนเดอร์ที่ความละเอียดจริง — `RENDER_DPR`=min(devicePixelRatio,2),
+  config `Scale.FIT` ขนาด = จอ×DPR (backing คมชัด) · `this.W/H = scale.width/DPR` (พิกัดยังเป็น CSS px เหมือนเดิม)
+  · **2 กล้อง:** main(โลก, follow, zoom=DPR) + `uiCam`(UI, นิ่ง, zoom=DPR, `centerOn(W/2,H/2)`) ใน `setupCameras()`
+  · UI ต้องเป็น **scrollFactor(1)** (ไม่ใช่ 0 — เพราะ sf0 ไม่รับ zoom) · แยกเรนเดอร์ด้วย `camWorld()`/`camUI()` (ignore)
+  · input แปลงพิกัด `p.x/DPR` เป็น CSS · **หมายเหตุ:** เพิ่ม world FX ใหม่ต้องห่อ `this.camWorld(...)`, UI ใหม่ห่อ `camUI`
+
 ### บั๊กที่เคยเจอ & วิธีแก้ (กันพลาดซ้ำ)
+- **ภาพเบลอบนมือถือ (high-DPI):** RESIZE ล็อก canvas backing = ขนาด CSS → เบลอ. แก้ด้วย FIT+physical size+2กล้อง (ข้างบน)
+- **scrollFactor(0) ไม่รับ camera zoom** → UI ที่ตั้ง sf0 จะเรนเดอร์ 1:1 (มุมซ้ายบน) เมื่อกล้อง zoom; ต้องใช้ sf1
 - **Phaser `setInteractive()` กับ shape (rectangle) กดไม่ค่อยติดบนมือถือ** → ใช้ "แตะที่ไหนก็ได้" +
   ตรวจตำแหน่งแตะเอง (ดู `pickCardAt`, pointerdown handler) แทน
 - **scale config ห้ามใส่ `width:'100%'`** → ทำให้พิกัดแตะเพี้ยน ใช้ `Scale.RESIZE` เฉย ๆ
