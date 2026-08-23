@@ -147,12 +147,31 @@ class Game extends Phaser.Scene {
 
     // damage number pool
     this.dmgPool = [];
+
+    // keep everything reachable when mobile viewport resizes (URL bar, rotation)
+    this.scale.on('resize', this.onResize, this);
+  }
+
+  onResize(gameSize){
+    if(!gameSize) return;
+    this.W = gameSize.width; this.H = gameSize.height;
+    const pad=this._pad; this._barW=this.W-2*pad;
+    if(this.dashBtn){ this.dashBtn.setPosition(this.W-70,this.H-90); this.dashTxt.setPosition(this.W-70,this.H-90); }
+    if(this.timeTxt){
+      this.timeTxt.setPosition(this.W/2,pad+56);
+      this.toastLabel.setPosition(this.W/2,pad+42);
+      this.killTxt.setPosition(this.W-pad,pad+58);
+      if(this.hpBgW){ this.hpBgW.width=this._barW; this.xpBgW.width=this._barW; this.toastBgW.width=this._barW; }
+    }
+    if(this.state==='menu') this.buildStartMenu();
+    if(this.state==='dead') this.buildOver();
   }
 
   /* ---------------- INPUT ---------------- */
   setupInput(){
     this.input.on('pointerdown', (p)=>{
-      if(this.state==='menu' || this.state==='dead') return;
+      if(this.state==='menu'){ this.startRun(); return; }   // tap anywhere to start
+      if(this.state==='dead'){ this.scene.restart(); return; } // tap anywhere to retry
       if(this.state==='levelup') return;
       if(p.x > this.W*0.55){ this.doDash(); return; } // right side = dash
       // left side = joystick
@@ -205,13 +224,13 @@ class Game extends Phaser.Scene {
 
     // top bars
     const barW=w-2*pad;
-    this.add.rectangle(pad,pad,barW,14,0x000000,0.35).setOrigin(0,0).setScrollFactor(0).setDepth(50);
+    this.hpBgW=this.add.rectangle(pad,pad,barW,14,0x000000,0.35).setOrigin(0,0).setScrollFactor(0).setDepth(50);
     this.hpBar=this.add.rectangle(pad+2,pad+2,barW-4,10,0xff5f7a,1).setOrigin(0,0).setScrollFactor(0).setDepth(51);
     // xp
-    this.add.rectangle(pad,pad+20,barW,8,0x000000,0.35).setOrigin(0,0).setScrollFactor(0).setDepth(50);
+    this.xpBgW=this.add.rectangle(pad,pad+20,barW,8,0x000000,0.35).setOrigin(0,0).setScrollFactor(0).setDepth(50);
     this.xpBar=this.add.rectangle(pad+2,pad+22,0,4,0x8bd3a0,1).setOrigin(0,0).setScrollFactor(0).setDepth(51);
     // toast meter
-    this.add.rectangle(pad,pad+34,barW,12,0x000000,0.35).setOrigin(0,0).setScrollFactor(0).setDepth(50);
+    this.toastBgW=this.add.rectangle(pad,pad+34,barW,12,0x000000,0.35).setOrigin(0,0).setScrollFactor(0).setDepth(50);
     this.toastBar=this.add.rectangle(pad+2,pad+36,0,8,COLORS.soft,1).setOrigin(0,0).setScrollFactor(0).setDepth(51);
     // golden zone marks
     this.add.rectangle(pad+2+(barW-4)*0.55,pad+36,2,8,0xffffff,0.5).setOrigin(0,0).setScrollFactor(0).setDepth(52);
@@ -231,27 +250,29 @@ class Game extends Phaser.Scene {
 
   /* ---------------- MENUS ---------------- */
   buildMenus(){
-    const w=this.W,h=this.H;
-    // start menu
     this.menu=this.add.container(0,0).setScrollFactor(0).setDepth(100);
-    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.86).setOrigin(0,0);
-    const emoji=this.add.text(w/2,h*0.3,'🍡',{fontSize:'72px'}).setOrigin(0.5);
-    const title=this.add.text(w/2,h*0.44,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff8fb5'}).setOrigin(0.5);
-    const sub=this.add.text(w/2,h*0.5,'โมจิจอมตะกละ · เอาชีวิตรอด',{fontFamily:'sans-serif',fontSize:'15px',color:'#c7bdd6'}).setOrigin(0.5);
-    const btn=this.add.rectangle(w/2,h*0.62,190,58,COLORS.pink,1).setStrokeStyle(3,0xffffff,0.3);
-    const btxt=this.add.text(w/2,h*0.62,'▶ เริ่มเล่น',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffffff'}).setOrigin(0.5);
-    const help=this.add.text(w/2,h*0.74,'ซ้าย: ลากนิ้วเพื่อเดิน   ·   ขวา: แตะเพื่อสลิง\nอาวุธยิงเอง · เก็บลูกกวาดเพื่อเลเวลอัพ',{fontFamily:'sans-serif',fontSize:'13px',color:'#9a90ab',align:'center'}).setOrigin(0.5);
+    this.lvlUp=this.add.container(0,0).setScrollFactor(0).setDepth(100).setVisible(false);
+    this.over=this.add.container(0,0).setScrollFactor(0).setDepth(100).setVisible(false);
+    this.buildStartMenu();
+  }
+  buildStartMenu(){
+    const w=this.W,h=this.H;
+    this.menu.removeAll(true);
+    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.9).setOrigin(0,0);
+    const emoji=this.add.text(w/2,h*0.28,'🍡',{fontSize:'72px'}).setOrigin(0.5);
+    const title=this.add.text(w/2,h*0.43,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff8fb5'}).setOrigin(0.5);
+    const sub=this.add.text(w/2,h*0.49,'โมจิจอมตะกละ · เอาชีวิตรอด',{fontFamily:'sans-serif',fontSize:'15px',color:'#c7bdd6'}).setOrigin(0.5);
+    const btn=this.add.rectangle(w/2,h*0.61,210,62,COLORS.pink,1).setStrokeStyle(3,0xffffff,0.35);
+    const btxt=this.add.text(w/2,h*0.61,'▶ เริ่มเล่น',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
+    const help=this.add.text(w/2,h*0.75,'แตะตรงไหนก็เริ่มได้\nซ้าย: ลากนิ้วเพื่อเดิน   ·   ขวา: แตะเพื่อสลิง',{fontFamily:'sans-serif',fontSize:'13px',color:'#9a90ab',align:'center'}).setOrigin(0.5);
     btn.setInteractive({useHandCursor:true}).on('pointerdown',()=>this.startRun());
     this.menu.add([bg,emoji,title,sub,btn,btxt,help]);
-
-    // level up overlay
-    this.lvlUp=this.add.container(0,0).setScrollFactor(0).setDepth(100).setVisible(false);
-    // gameover overlay
-    this.over=this.add.container(0,0).setScrollFactor(0).setDepth(100).setVisible(false);
+    this.menu.setVisible(true);
   }
   showMenu(){ this.state='menu'; this.menu.setVisible(true); this.hudVisible(false); }
 
   startRun(){
+    if(this.state!=='menu') return;
     this.menu.setVisible(false); this.hudVisible(true);
     this.state='play'; this.time0=this.time.now; this.elapsed=0;
     this.spawnTimer=0; this.nextBoss=999;
@@ -481,17 +502,21 @@ class Game extends Phaser.Scene {
     if(this.state==='dead')return;
     this.state='dead'; this.physics.pause();
     this.player.setVelocity(0,0);
+    this.buildOver();
+  }
+  buildOver(){
     const w=this.W,h=this.H;
     this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.85).setOrigin(0,0);
-    const em=this.add.text(w/2,h*0.28,'🫠',{fontSize:'64px'}).setOrigin(0.5);
-    const t=this.add.text(w/2,h*0.4,'โมจิละลายแล้ว!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'28px',color:'#ff8fb5'}).setOrigin(0.5);
+    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
+    const em=this.add.text(w/2,h*0.26,'🫠',{fontSize:'64px'}).setOrigin(0.5);
+    const t=this.add.text(w/2,h*0.39,'โมจิละลายแล้ว!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'28px',color:'#ff8fb5'}).setOrigin(0.5);
     const mm=Math.floor(this.elapsed/60), ss=Math.floor(this.elapsed%60);
-    const stat=this.add.text(w/2,h*0.5,`รอดได้ ${mm}:${ss.toString().padStart(2,'0')}   ·   กำจัด ${this.kills}   ·   Lv ${this.level}`,{fontFamily:'sans-serif',fontSize:'16px',color:'#c7bdd6'}).setOrigin(0.5);
-    const btn=this.add.rectangle(w/2,h*0.64,200,56,COLORS.pink,1).setStrokeStyle(3,0xffffff,0.3);
-    const bt=this.add.text(w/2,h*0.64,'↻ เล่นอีกครั้ง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
+    const stat=this.add.text(w/2,h*0.49,`รอดได้ ${mm}:${ss.toString().padStart(2,'0')}   ·   กำจัด ${this.kills}   ·   Lv ${this.level}`,{fontFamily:'sans-serif',fontSize:'16px',color:'#c7bdd6'}).setOrigin(0.5);
+    const btn=this.add.rectangle(w/2,h*0.63,210,58,COLORS.pink,1).setStrokeStyle(3,0xffffff,0.3);
+    const bt=this.add.text(w/2,h*0.63,'↻ เล่นอีกครั้ง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
+    const hint=this.add.text(w/2,h*0.73,'(แตะตรงไหนก็ได้)',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);
     btn.setInteractive({useHandCursor:true}).on('pointerdown',()=>this.scene.restart());
-    this.over.add([bg,em,t,stat,btn,bt]); this.over.setVisible(true);
+    this.over.add([bg,em,t,stat,btn,bt,hint]); this.over.setVisible(true);
   }
 
   /* ---------------- UPDATE ---------------- */
@@ -617,7 +642,7 @@ Game.prototype.damage = function(e,amount,x,y){ _origDamage.call(this,e,amount*(
 new Phaser.Game({
   type: Phaser.AUTO,
   backgroundColor: '#241d2e',
-  scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.CENTER_BOTH, width:'100%', height:'100%' },
+  scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.CENTER_BOTH },
   physics: { default:'arcade', arcade:{ gravity:{y:0}, debug:false } },
   render: { antialias:true, roundPixels:false },
   scene: [Boot, Game],
