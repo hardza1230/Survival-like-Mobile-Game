@@ -29,15 +29,22 @@
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: prototype เล่นได้ + ระบบสกิล + 5 ด่าน)
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:
 - **คุม:** จอยสติ๊กลอย (ซ้าย) + ปุ่มพุ่ง/dash (ขวาล่าง) + ปุ่มอัลติกดเอง (ชมพู)
-- **สกิลออโต้แคสต์ 7 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
-  whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง)
+- **สกิลออโต้แคสต์ 9 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
+  whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
+- **ระบบคอมโบสกิล (`COMBOS`):** มีสกิลคู่ครบ = ปลดโบนัส (ธง `this.comboFlags` อ่านตอน cast + แบนเนอร์)
+  storm(thunder+frost), firestorm(chili+whirl), ricochet(sprinkle+boomer), fizz(popcorn+bubble) · `checkCombos()`
+- **Sugar + Save (`Save` → localStorage 'mochi_save'):** เก็บ sugar/unlockedStage เอาไว้ต่อยอดร้านค้า/อัพเกรด(รอบหน้า)
+  เก็บ Sugar จากการฆ่า (บอส40/มินิ18/elite4/ธรรมดา1) ฝากตอนจบด่าน+ตาย
 - **เลเวลอัพเน้นสกิล** (พาสซีฟเป็นของเสริม) — เลือกด้วยการแตะ (hit-test เอง ไม่ใช้ setInteractive กับ shape)
 - **ระบบด่าน (STAGES) แบบ Archero:** 5 โซนครัว แต่ละด่าน = เคลียร์ศัตรูเป็น "เวฟ" (`waves` ต่อด่าน)
   → กลางด่านเจอ **มินิบอส** (`miniAt`, `mini`) → จบเวฟทั้งหมดเจอ **บอสใหญ่** (`boss/bossHp/bossDmg`)
   → ล้มบอส = ผ่านด่าน (ฟื้น HP 35%) → ด่านต่อไป · ล้มบอสด่าน 5 = **ชนะเกม**
   กลไก: `startWave/spawnNormalWave/spawnMiniBoss/spawnFinalBoss/onWaveCleared/onStageClear`
-  ตัวนับ `this.waveAlive` (ลดใน killEnemy) = 0 เมื่อไหร่ → เวฟถัดไป · `this.mode`= wave/mini/boss/breather/clear
+  ตัวนับ `this.waveAlive` (ลดใน killEnemy) = 0 เมื่อไหร่ → เวฟถัดไป · `this.mode`= wave/mini/boss/breather/clear/summary
   เดินด่านด้วย "การเคลียร์" ไม่ใช่ตัวจับเวลาแล้ว (เอา stageTime/spawnWave ออก)
+  เวฟหนักขึ้น: ปล่อยศัตรู 2 ระลอก + **elite** (isElite, สีส้ม อึด xp/sugar เยอะ) จากด่าน 2
+  **ตัวบอกความคืบหน้า:** `drawWavePips()` (จุดเวฟ + จุดชมพู=มินิ + จุดแดง=บอส) + timeTxt โชว์ "เหลือ N"
+  **หน้าสรุปด่าน:** `showStageSummary()` → แตะ `continueFromSummary()` ไปด่านต่อไป/victory
 - **ศัตรู:** 3 ชนิด (basic/fast/tank) + บอส, มี object pooling
 - **UI:** การ์ดเลเวลอัพมุมโค้ง, ปุ่มโค้ง, HP/XP bar, หลอดบอส, แบนเนอร์ด่าน+lore
 - **อัลติกดเอง (ผูกกับตัวละคร):** ดู`CHARACTERS` — ตอนนี้มี `momo` (อัลติ=bomb).
