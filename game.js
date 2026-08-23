@@ -69,33 +69,78 @@ const Sfx = {
   dead(){ this.seq([440,349,262,196],'sawtooth',0.2,0.14); },
 };
 
+/* ============================================================
+   Boot — วาดกราฟิกน่ารักด้วย Canvas 2D (self-contained ไม่โหลดไฟล์นอก)
+   ตัวละคร/ศัตรูมีเฉดสี เงานุ่ม แก้มชมพู ตาวาว หน้าตาต่างกัน
+   ============================================================ */
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
   create(){
-    const g = this.make.graphics({ x:0, y:0, add:false });
-    const blob=(key,fill,edge,size,eyes)=>{ g.clear();
-      g.fillStyle(edge,1); g.fillRoundedRect(0,0,size,size,size*0.42);
-      g.fillStyle(fill,1); g.fillRoundedRect(size*0.09,size*0.09,size*0.82,size*0.82,size*0.36);
-      if(eyes){ g.fillStyle(0x2b2233,1); g.fillCircle(size*0.36,size*0.5,size*0.06); g.fillCircle(size*0.64,size*0.5,size*0.06); }
-      g.generateTexture(key,size,size); };
-    blob('mochi',COLORS.mochi,COLORS.mochiEdge,56,true);
-    const enemy=(key,fill,edge,size)=>{ g.clear();
-      g.fillStyle(edge,1); g.fillRoundedRect(0,0,size,size,size*0.4);
-      g.fillStyle(fill,1); g.fillRoundedRect(size*0.1,size*0.1,size*0.8,size*0.8,size*0.34);
-      g.fillStyle(0xffffff,1); g.fillCircle(size*0.36,size*0.46,size*0.11); g.fillCircle(size*0.64,size*0.46,size*0.11);
-      g.fillStyle(0x2b2233,1); g.fillCircle(size*0.36,size*0.49,size*0.055); g.fillCircle(size*0.64,size*0.49,size*0.055);
-      g.lineStyle(Math.max(2,size*0.05),0x2b2233,1);
-      g.beginPath(); g.moveTo(size*0.26,size*0.30); g.lineTo(size*0.44,size*0.38); g.strokePath();
-      g.beginPath(); g.moveTo(size*0.74,size*0.30); g.lineTo(size*0.56,size*0.38); g.strokePath();
-      g.generateTexture(key,size,size); };
-    enemy('e_basic',0x8bd3a0,0x57a878,40);
-    enemy('e_fast',0x8fc7ff,0x5a90d6,34);
-    enemy('e_tank',0xc7a8ff,0x8b5cf0,58);
-    g.clear(); g.fillStyle(0xffe9a8,1); g.fillCircle(9,9,9); g.fillStyle(COLORS.candy,1); g.fillCircle(9,9,6.5);
-    g.fillStyle(0xffffff,0.8); g.fillCircle(6.5,6.5,2); g.generateTexture('candy',18,18);
-    g.clear(); g.fillStyle(0xffffff,1); g.fillCircle(6,6,6); g.fillStyle(COLORS.pink,1); g.fillCircle(6,6,4); g.generateTexture('spark',12,12);
-    g.clear(); g.fillStyle(0xffffff,1); g.fillCircle(5,5,5); g.generateTexture('dot',10,10);
-    g.destroy();
+    const mk=(key,size,draw)=>{ if(this.textures.exists(key))this.textures.remove(key);
+      const t=this.textures.createCanvas(key,size,size); if(!t)return; draw(t.getContext(),size); t.refresh(); };
+    const rr=(c,x,y,w,h,r)=>{ c.beginPath();
+      if(c.roundRect){ c.roundRect(x,y,w,h,r); }
+      else { c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); } };
+    const TAU=Math.PI*2;
+
+    // ---- ตัวละครน่ารัก (บอดี้กลม เงา แก้ม ตาวาว + ท็อปปิ้ง) ----
+    const drawChar=(c,s,o)=>{ const cx=s/2, cy=s*0.54, R=s*0.40;
+      c.clearRect(0,0,s,s);
+      c.fillStyle='rgba(20,10,25,0.18)'; c.beginPath(); c.ellipse(cx,s*0.92,R*0.72,R*0.2,0,0,TAU); c.fill();
+      const g=c.createRadialGradient(cx-R*0.4,cy-R*0.5,R*0.15,cx,cy,R*1.25);
+      g.addColorStop(0,o.c1); g.addColorStop(1,o.c2);
+      c.fillStyle=g; rr(c,cx-R,cy-R,2*R,2*R*0.92,R*0.72); c.fill();
+      c.lineWidth=s*0.028; c.strokeStyle=o.edge; c.stroke();
+      c.fillStyle='rgba(255,255,255,0.45)'; c.beginPath(); c.ellipse(cx-R*0.32,cy-R*0.48,R*0.36,R*0.2,-0.4,0,TAU); c.fill();
+      c.fillStyle=o.cheek; c.beginPath(); c.arc(cx-R*0.52,cy+R*0.2,R*0.15,0,TAU); c.arc(cx+R*0.52,cy+R*0.2,R*0.15,0,TAU); c.fill();
+      c.fillStyle='#3b2b3a'; c.beginPath(); c.ellipse(cx-R*0.34,cy-R*0.02,R*0.12,R*0.17,0,0,TAU); c.ellipse(cx+R*0.34,cy-R*0.02,R*0.12,R*0.17,0,0,TAU); c.fill();
+      c.fillStyle='#fff'; c.beginPath(); c.arc(cx-R*0.29,cy-R*0.1,R*0.05,0,TAU); c.arc(cx+R*0.39,cy-R*0.1,R*0.05,0,TAU); c.fill();
+      c.strokeStyle='#3b2b3a'; c.lineWidth=s*0.022; c.lineCap='round'; c.beginPath(); c.arc(cx,cy+R*0.1,R*0.14,0.16*Math.PI,0.84*Math.PI); c.stroke();
+      if(o.top)o.top(c,cx,cy-R,R,s);
+    };
+    const strawberry=(c,cx,ty,R,s)=>{ c.fillStyle='#5ec26a'; c.beginPath(); c.ellipse(cx,ty-R*0.02,R*0.16,R*0.08,0,0,TAU); c.fill();
+      c.fillStyle='#ff5a6e'; c.beginPath(); c.moveTo(cx-R*0.16,ty); c.quadraticCurveTo(cx,ty+R*0.02,cx+R*0.16,ty); c.quadraticCurveTo(cx,ty+R*0.34,cx-R*0.16,ty); c.fill();
+      c.fillStyle='#ffe08a'; c.beginPath(); c.arc(cx,ty+R*0.12,R*0.02,0,TAU); c.arc(cx-R*0.06,ty+R*0.06,R*0.02,0,TAU); c.arc(cx+R*0.06,ty+R*0.06,R*0.02,0,TAU); c.fill(); };
+    const mintleaf=(c,cx,ty,R,s)=>{ c.fillStyle='#4fbf85'; c.beginPath(); c.ellipse(cx-R*0.08,ty,R*0.15,R*0.08,-0.5,0,TAU); c.ellipse(cx+R*0.08,ty,R*0.15,R*0.08,0.5,0,TAU); c.fill(); };
+    const cocoaswirl=(c,cx,ty,R,s)=>{ c.strokeStyle='#4a2c1a'; c.lineWidth=s*0.05; c.lineCap='round'; c.beginPath(); c.arc(cx,ty+R*0.06,R*0.13,-0.3,Math.PI*1.5); c.stroke(); };
+
+    mk('char_momo',60,(c,s)=>drawChar(c,s,{c1:'#fff2f7',c2:'#ffcfe2',edge:'#ff9ec4',cheek:'rgba(255,140,185,0.55)',top:strawberry}));
+    mk('char_mint',60,(c,s)=>drawChar(c,s,{c1:'#eafff5',c2:'#b6f0d6',edge:'#57c99a',cheek:'rgba(110,215,165,0.5)',top:mintleaf}));
+    mk('char_cocoa',60,(c,s)=>drawChar(c,s,{c1:'#e6c39c',c2:'#a9744a',edge:'#6b4632',cheek:'rgba(255,170,140,0.5)',top:cocoaswirl}));
+    mk('mochi',60,(c,s)=>drawChar(c,s,{c1:'#fff2f7',c2:'#ffcfe2',edge:'#ff9ec4',cheek:'rgba(255,140,185,0.55)',top:strawberry}));
+
+    // ---- ศัตรู "สายเปรี้ยว" หน้าโกรธ ----
+    const drawEnemy=(c,s,o)=>{ const cx=s/2, cy=s*0.54, R=s*0.40;
+      c.clearRect(0,0,s,s);
+      c.fillStyle='rgba(20,10,25,0.22)'; c.beginPath(); c.ellipse(cx,s*0.92,R*0.68,R*0.18,0,0,TAU); c.fill();
+      const g=c.createRadialGradient(cx-R*0.4,cy-R*0.5,R*0.15,cx,cy,R*1.25);
+      g.addColorStop(0,o.c1); g.addColorStop(1,o.c2);
+      c.fillStyle=g; rr(c,cx-R,cy-R,2*R,2*R*0.92,o.spiky?R*0.34:R*0.62); c.fill();
+      c.lineWidth=s*0.03; c.strokeStyle=o.edge; c.stroke();
+      c.fillStyle='#fff'; c.beginPath(); c.arc(cx-R*0.32,cy,R*0.17,0,TAU); c.arc(cx+R*0.32,cy,R*0.17,0,TAU); c.fill();
+      c.fillStyle='#2b2233'; c.beginPath(); c.arc(cx-R*0.28,cy+R*0.04,R*0.08,0,TAU); c.arc(cx+R*0.36,cy+R*0.04,R*0.08,0,TAU); c.fill();
+      c.strokeStyle='#2b2233'; c.lineCap='round'; c.lineWidth=s*0.055;
+      c.beginPath(); c.moveTo(cx-R*0.52,cy-R*0.34); c.lineTo(cx-R*0.14,cy-R*0.12); c.stroke();
+      c.beginPath(); c.moveTo(cx+R*0.52,cy-R*0.34); c.lineTo(cx+R*0.14,cy-R*0.12); c.stroke();
+      c.lineWidth=s*0.03; c.beginPath(); c.arc(cx,cy+R*0.6,R*0.15,1.15*Math.PI,1.85*Math.PI); c.stroke();
+    };
+    mk('e_basic',44,(c,s)=>drawEnemy(c,s,{c1:'#b6ec9e',c2:'#6cbf6a',edge:'#4f9a55'}));
+    mk('e_fast',38,(c,s)=>drawEnemy(c,s,{c1:'#bfe2ff',c2:'#6fb3f0',edge:'#4f8fd6'}));
+    mk('e_tank',62,(c,s)=>drawEnemy(c,s,{c1:'#e0c8ff',c2:'#a97fe0',edge:'#7a4fd0',spiky:true}));
+
+    // ---- ลูกกวาด (glossy) / กระสุน / อนุภาค / vignette ----
+    mk('candy',20,(c,s)=>{ const cx=s/2,r=s*0.42; const g=c.createRadialGradient(cx-2,cx-2,1,cx,cx,r);
+      g.addColorStop(0,'#fff3b0'); g.addColorStop(1,'#f0a92e'); c.fillStyle=g; c.beginPath(); c.arc(cx,cx,r,0,TAU); c.fill();
+      c.strokeStyle='#c9832a'; c.lineWidth=1.3; c.stroke();
+      c.fillStyle='rgba(255,255,255,0.85)'; c.beginPath(); c.arc(cx-r*0.35,cx-r*0.35,r*0.22,0,TAU); c.fill(); });
+    mk('spark',16,(c,s)=>{ const cx=s/2; const g=c.createRadialGradient(cx,cx,0,cx,cx,cx);
+      g.addColorStop(0,'#ffffff'); g.addColorStop(0.55,'rgba(255,255,255,0.9)'); g.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=g; c.beginPath(); c.arc(cx,cx,cx,0,TAU); c.fill(); });
+    mk('dot',12,(c,s)=>{ const cx=s/2; const g=c.createRadialGradient(cx,cx,0,cx,cx,cx);
+      g.addColorStop(0,'#ffffff'); g.addColorStop(1,'rgba(255,255,255,0)'); c.fillStyle=g; c.beginPath(); c.arc(cx,cx,cx,0,TAU); c.fill(); });
+    mk('vignette',256,(c,s)=>{ const g=c.createRadialGradient(s/2,s/2,s*0.28,s/2,s/2,s*0.62);
+      g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(8,4,12,0.5)'); c.fillStyle=g; c.fillRect(0,0,s,s); });
+
     this.scene.start('Game');
   }
 }
@@ -229,13 +274,15 @@ class Game extends Phaser.Scene {
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,1,0x3a2f47,0.25).setDepth(-10);
+    // vignette ขอบจอมืดนุ่ม เพิ่มมิติ (ติดกล้อง)
+    this.vig=this.add.image(this.W/2,this.H/2,'vignette').setScrollFactor(0).setDepth(40).setDisplaySize(this.W,this.H);
 
     // soft glow aura ใต้ตัวละคร (UX polish)
     this.aura=this.add.circle(0,0,32,COLORS.mochiEdge,0.14).setDepth(4);
     this.tweens.add({targets:this.aura,scale:{from:0.9,to:1.15},alpha:{from:0.14,to:0.05},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
 
     this.player=this.physics.add.sprite(0,0,'mochi').setDepth(5);
-    this.player.setCircle(24,4,4); this.player.setCollideWorldBounds(true);
+    this.player.setCircle(24,6,6); this.player.setCollideWorldBounds(true);
     this.player.hp=100; this.player.maxhp=100; this.player.baseSpeed=210;
     this.player.iframe=0; this.player.pickup=80; this.player.dmgMul=1;
     this.cameras.main.startFollow(this.player,true,0.16,0.16);
@@ -470,6 +517,7 @@ class Game extends Phaser.Scene {
 
   onResize(gs){
     if(!gs)return; this.W=gs.width; this.H=gs.height; const pad=this._pad; this._barW=this.W-2*pad;
+    if(this.vig)this.vig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-70,this.H-90); this.dashTxt.setPosition(this.W-70,this.H-90);
       this.skillBtn.setPosition(this.W-70,this.H-196); this.skillEmoji.setPosition(this.W-70,this.H-200); this.skillCdTxt.setPosition(this.W-70,this.H-168);
       this.timeTxt.setPosition(this.W/2,pad+30); this.killTxt.setPosition(this.W-pad,pad+32);
@@ -598,6 +646,8 @@ class Game extends Phaser.Scene {
     const ch=CHARACTERS[this.character];
     this.active={ key:ch.active, lvl:1 };
     if(this.skillEmoji)this.skillEmoji.setText(ACTIVES[ch.active].emoji);
+    if(this.textures.exists('char_'+this.character))this.player.setTexture('char_'+this.character);
+    if(this.aura)this.aura.setFillStyle(ch.color||COLORS.mochiEdge,0.14);
     // โบนัสตัวละคร
     if(ch.bonus){ if(ch.bonus.maxhp)p.maxhp+=ch.bonus.maxhp; if(ch.bonus.dmgMul)p.dmgMul*=ch.bonus.dmgMul;
       if(ch.bonus.spd)p.baseSpeed*=ch.bonus.spd; }
@@ -666,7 +716,7 @@ class Game extends Phaser.Scene {
     if(!e) e=this.enemies.create(x,y,'e_tank'); else { e.setTexture('e_tank'); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
     const s=(1+this.stageIndex*0.35)*(1+this.waveIndex*0.06);
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=18; e.xp=8;
-    e.setCircle(26,3,3); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
+    e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
     e.setScale(1.3).setTint(0xffb15a);
   }
   spawnNormalWave(){
@@ -687,7 +737,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)*0.5;
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_tank');
-    b.setScale(1.7).setCircle(26,3,3); b.isMini=true; b.isBoss=false;
+    b.setScale(1.7).setCircle(26,5,5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.42; b.maxhp=b.hp; b.spd=54; b.dmg=Math.round(st.bossDmg*0.7); b.xp=15; b.frozen=0; b.knock=0;
     b.tintColor=st.tint; b.setTint(st.tint);
     this.boss=b; this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
@@ -698,7 +748,7 @@ class Game extends Phaser.Scene {
     this.showBanner('👹 บอสใหญ่มาแล้ว!', st.boss, 2400); Sfx.bossWarn(); this.cameras.main.shake(300,0.01);
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)*0.5;
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_tank');
-    b.setScale(2.5).setCircle(26,3,3); b.isBoss=true; b.isMini=false;
+    b.setScale(2.5).setCircle(26,5,5); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(1+this.stageIndex*0.04); b.maxhp=b.hp; b.spd=44; b.dmg=st.bossDmg; b.xp=30; b.frozen=0; b.knock=0;
     b.tintColor=st.tint; b.setTint(st.tint);
     this.boss=b; this.bossName.setText('👹 '+st.boss); this.bossUI.forEach(o=>o.setVisible(true));
@@ -876,9 +926,9 @@ class Game extends Phaser.Scene {
     else { e.setTexture(key); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
     // สเกลตามด่าน+เวฟ (Archero: ยิ่งลึกยิ่งอึด)
     const s=(1+(this.stageIndex||0)*0.35)*(1+(this.waveIndex||0)*0.06);
-    if(type==='fast'){ e.hp=6*s; e.spd=116; e.dmg=7; e.xp=1; e.setCircle(15,2,2); }
-    else if(type==='tank'){ e.hp=42*s; e.spd=36; e.dmg=15; e.xp=4; e.setCircle(26,3,3); }
-    else { e.hp=11*s; e.spd=54; e.dmg=8; e.xp=1; e.setCircle(17,3,3); }
+    if(type==='fast'){ e.hp=6*s; e.spd=116; e.dmg=7; e.xp=1; e.setCircle(15,4,4); }
+    else if(type==='tank'){ e.hp=42*s; e.spd=36; e.dmg=15; e.xp=4; e.setCircle(26,5,5); }
+    else { e.hp=11*s; e.spd=54; e.dmg=8; e.xp=1; e.setCircle(17,5,5); }
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(1).clearTint();
   }
 
