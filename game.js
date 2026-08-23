@@ -286,7 +286,7 @@ class Game extends Phaser.Scene {
     this.player.setCircle(24,6,6); this.player.setCollideWorldBounds(true);
     this.player.hp=100; this.player.maxhp=100; this.player.baseSpeed=210;
     this.player.iframe=0; this.player.pickup=80; this.player.dmgMul=1;
-    this.cameras.main.startFollow(this.player,true,0.16,0.16);
+    this.cameras.main.startFollow(this.player,false,0.2,0.2);  // roundPixels=false → กล้องเลื่อนลื่น ไม่กระตุกเป็นขั้น
 
     this.enemies=this.physics.add.group({maxSize:600});
     this.bullets=this.physics.add.group({maxSize:500});
@@ -1193,7 +1193,8 @@ class Game extends Phaser.Scene {
 
 // เรนเดอร์ที่ความละเอียดจริงของจอ (แก้ภาพเบลอบน Retina/high-DPI)
 // gameSize = ขนาดจอ × DPR → canvas คมชัด, แล้วชดเชยด้วย camera zoom = DPR
-const RENDER_DPR = Math.max(1, Math.min(window.devicePixelRatio||1, 3));
+// ปัด DPR เป็นจำนวนเต็ม (เช่น 2.125 → 2) กัน "ชิมเมอร์" ตอนขยับจากสเกลทศนิยม + แคปที่ 3
+const RENDER_DPR = Math.max(1, Math.min(Math.round(window.devicePixelRatio||1), 3));
 window.__g = new Phaser.Game({
   type: Phaser.AUTO,
   backgroundColor: '#241d2e',
