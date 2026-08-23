@@ -33,8 +33,12 @@
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
 - **ระบบคอมโบสกิล (`COMBOS`):** มีสกิลคู่ครบ = ปลดโบนัส (ธง `this.comboFlags` อ่านตอน cast + แบนเนอร์)
   storm(thunder+frost), firestorm(chili+whirl), ricochet(sprinkle+boomer), fizz(popcorn+bubble) · `checkCombos()`
-- **Sugar + Save (`Save` → localStorage 'mochi_save'):** เก็บ sugar/unlockedStage เอาไว้ต่อยอดร้านค้า/อัพเกรด(รอบหน้า)
+- **Sugar + Save (`Save` → localStorage 'mochi_save'):** เก็บ sugar/unlockedStage/upgrades/gear
   เก็บ Sugar จากการฆ่า (บอส40/มินิ18/elite4/ธรรมดา1) ฝากตอนจบด่าน+ตาย
+- **เมนูฮับ + ซับสกรีน (tap-zone hit-test, ไม่ใช้ setInteractive):** `buildHub/buildStageSelect/buildUpgrade/buildGear`
+  · `this.menuScreen`=hub/stage/upgrade/gear, `handleTap()`+`_zone()`+`_rowBtn()`+`_screenBg()` (ปุ่มกลับ)
+  · **เลือกด่าน:** ปลดตาม `Save.unlockedStage` · **อัพเกรดถาวร (`UPGRADES`):** hp/dmg/spd/magnet ซื้อด้วย Sugar
+  · **ของสวมใส่ (`GEAR`):** ช่อง weapon/charm ซื้อ+สวมใส่ · ผลรวมใส่ตอน `applyMeta()` ใน startRun(idx)
 - **เลเวลอัพเน้นสกิล** (พาสซีฟเป็นของเสริม) — เลือกด้วยการแตะ (hit-test เอง ไม่ใช้ setInteractive กับ shape)
 - **ระบบด่าน (STAGES) แบบ Archero:** 5 โซนครัว แต่ละด่าน = เคลียร์ศัตรูเป็น "เวฟ" (`waves` ต่อด่าน)
   → กลางด่านเจอ **มินิบอส** (`miniAt`, `mini`) → จบเวฟทั้งหมดเจอ **บอสใหญ่** (`boss/bossHp/bossDmg`)
