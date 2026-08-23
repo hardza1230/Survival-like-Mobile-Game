@@ -1188,7 +1188,7 @@ class Game extends Phaser.Scene {
 
 // เรนเดอร์ที่ความละเอียดจริงของจอ (แก้ภาพเบลอบน Retina/high-DPI)
 // gameSize = ขนาดจอ × DPR → canvas คมชัด, แล้วชดเชยด้วย camera zoom = DPR
-const RENDER_DPR = Math.max(1, Math.min(window.devicePixelRatio||1, 2));
+const RENDER_DPR = Math.max(1, Math.min(window.devicePixelRatio||1, 3));
 window.__g = new Phaser.Game({
   type: Phaser.AUTO,
   backgroundColor: '#241d2e',
