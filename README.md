@@ -35,6 +35,21 @@ npx serve .      # หรือ  python3 -m http.server
 > หมายเหตุ: นี่คือ **debug APK** (สำหรับทดสอบ/ติดตั้งเอง). ตอนขึ้น Play Store จริงต้องทำ
 > **signed release AAB** (เพิ่ม keystore + `assembleRelease`/`bundleRelease`) — ทำเป็นสเต็ปถัดไป
 
+## 🔄 อัปเดตเกมโดยไม่ต้องลง APK ใหม่ (Live update ผ่าน GitHub Pages)
+APK ถูกตั้งให้เป็น **"ตัวหุ้ม" ที่โหลดตัวเกมจาก GitHub Pages** ทุกครั้งที่เปิดแอป
+(`capacitor.config.json` → `server.url`) ⇒ **แก้ `game.js` แล้ว push = แอปอัปเดตเองตอนเปิดครั้งถัดไป ไม่ต้องติดตั้งใหม่**
+
+**ตั้งครั้งเดียว (ทำครั้งแรกครั้งเดียว):**
+1. GitHub → repo → **Settings → Pages** → หัวข้อ *Build and deployment* → **Source: GitHub Actions**
+2. รอ workflow **"Deploy Web (GitHub Pages)"** รันจนเขียว → เว็บเกมจะอยู่ที่
+   `https://hardza1230.github.io/Survival-like-Mobile-Game/`
+3. build APK (workflow "Build Android APK") **หลังจาก** ตั้ง Pages แล้ว → ติดตั้ง APK ตัวนี้ลงมือถือ **ครั้งเดียว**
+
+**ต่อจากนั้นเวลาจะอัปเดตเกม:** แค่แก้โค้ด + push → Pages redeploy อัตโนมัติ → เปิดแอปใหม่ก็เห็นเวอร์ชันล่าสุด
+
+> ⚠️ ข้อแลกเปลี่ยน: โหมดนี้แอปต้อง **ต่อเน็ต** ตอนเปิด (โหลดจาก Pages). ถ้าต้องการเล่นออฟไลน์ได้ + ยังอัปเดตเองได้
+> ค่อยเปลี่ยนไปใช้ OTA แบบ bundle (เช่น Capgo) ตอนเตรียมขึ้นสโตร์จริง — เอา `server.url` ออกแล้วฝัง www ในแอปแทน
+
 ### ไฟล์ที่เกี่ยวกับ build
 - `package.json` — dependency Capacitor
 - `capacitor.config.json` — appId `com.mochimayhem.game`, ชื่อ **Mochi Mayhem**, webDir `www`

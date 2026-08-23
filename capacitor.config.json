@@ -3,6 +3,10 @@
   "appName": "Mochi Mayhem",
   "webDir": "www",
   "backgroundColor": "#241d2e",
+  "server": {
+    "url": "https://hardza1230.github.io/Survival-like-Mobile-Game/",
+    "cleartext": false
+  },
   "android": {
     "backgroundColor": "#241d2e"
   }
