@@ -51,8 +51,9 @@
   **หน้าสรุปด่าน:** `showStageSummary()` → แตะ `continueFromSummary()` ไปด่านต่อไป/victory
 - **ศัตรู:** 3 ชนิด (basic/fast/tank) + บอส, มี object pooling
 - **UI:** การ์ดเลเวลอัพมุมโค้ง, ปุ่มโค้ง, HP/XP bar, หลอดบอส, แบนเนอร์ด่าน+lore
-- **อัลติกดเอง (ผูกกับตัวละคร):** ดู`CHARACTERS` — ตอนนี้มี `momo` (อัลติ=bomb).
-  ตัวละครใหม่ในอนาคตแค่เพิ่มใน CHARACTERS + ผูก active key (nova/freeze/...) → ต่างตัวต่างอัลติ
+- **ตัวละคร 3 ตัว (`CHARACTERS`+`CHAR_ORDER`):** momo🍡(bomb) · mint🌿(freeze,+HP30) · cocoa🍫(blackhole,+dmg10%)
+  แต่ละตัว "อัลติต่างกัน" (`ACTIVES`: bomb/freeze/blackhole) + โบนัสพาสซีฟ (`bonus`) · **หน้าเลือกตัวละคร** `buildChars()`
+  ปลดด้วย Sugar (Save.chars/character) · อัลติ+โบนัสใส่ตอน `applyMeta()` · เพิ่มตัวใหม่แค่เติมใน CHARACTERS+ACTIVES
 - **สกิลอัพ = ปลดเอฟเฟกต์ใหม่** (ไม่ใช่แค่ +ตัวเลข) กำหนดใน `SKILL_TIERS` + การ์ดโชว์ว่าเลเวลนี้ปลดอะไร
   เช่น sprinkle: L3 ทะลุ, L5 เด้ง, L6 5เม็ดทะลุหมด · thunder: L3 แตกลูก(chain) · chili: L3 2ชั้น L6 3ชั้น
   · boomer: L5 เด้งออกอีกรอบ · star: L6 วงคู่ · frost: L5 ระเบิดใส่ตัวที่แช่อยู่
