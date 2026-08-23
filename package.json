@@ -1,0 +1,17 @@
+{
+  "name": "mochi-mayhem",
+  "version": "1.0.0",
+  "description": "Mochi Mayhem — cute survival-like mobile game (Phaser 3 + Capacitor)",
+  "private": true,
+  "scripts": {
+    "build:www": "node scripts/build-www.mjs",
+    "check": "node --check game.js"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}

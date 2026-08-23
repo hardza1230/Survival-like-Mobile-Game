@@ -25,6 +25,10 @@
 - `phaser.min.js` — เอนจิน Phaser 3.80.1 (vendored, มาจาก npm)
 - `LORE.md` — เนื้อเรื่องโลก Mochitopia
 - `CLAUDE.md` — ไฟล์นี้
+- **Build APK (Capacitor):** `package.json` + `capacitor.config.json` (appId com.mochimayhem.game, webDir www)
+  + `scripts/build-www.mjs` (ประกอบ www/) + `.github/workflows/android.yml` (build บน GitHub Actions → APK artifact,
+  push tag `v*` = ออก Release). โฟลเดอร์ `android/`,`www/`,`node_modules/` สร้างตอน build ไม่ commit.
+  **ยังเป็น debug APK** — ขึ้นสโตร์จริงต้องเพิ่ม keystore + signed release AAB (`bundleRelease`)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: prototype เล่นได้ + ระบบสกิล + 5 ด่าน)
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:

@@ -1,0 +1,9 @@
+{
+  "appId": "com.mochimayhem.game",
+  "appName": "Mochi Mayhem",
+  "webDir": "www",
+  "backgroundColor": "#241d2e",
+  "android": {
+    "backgroundColor": "#241d2e"
+  }
+}
