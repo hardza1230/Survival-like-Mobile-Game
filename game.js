@@ -146,12 +146,44 @@ const COMBOS = [
   { key:'fizz',      a:'popcorn',  b:'bubble',  emoji:'🍿🫧', name:'โซดาแตกฟอง',   desc:'ป๊อปคอร์น+ฟองใหญ่ขึ้นทั้งคู่ · ดาเมจ +25%' },
 ];
 
-/* ---- Save: เก็บ Sugar + ความคืบหน้า ลง localStorage (กันหาย) ---- */
+/* ---- UPGRADES: อัพเกรดตัวละครถาวร (ซื้อด้วย Sugar, เก็บใน Save.upgrades[key]=lvl) ---- */
+const UPGRADES = {
+  hp:     { emoji:'❤️', name:'พลังชีวิต', unit:'HP สูงสุด +20/เลเวล', max:8, cost:l=>30+l*25,  apply:(p,l)=>{ p.maxhp+=20*l; } },
+  dmg:    { emoji:'💥', name:'พลังโจมตี', unit:'ดาเมจ +6%/เลเวล',     max:8, cost:l=>35+l*30,  apply:(p,l)=>{ p.dmgMul*=(1+0.06*l); } },
+  spd:    { emoji:'👟', name:'ความเร็ว',  unit:'เดินเร็ว +4%/เลเวล',   max:6, cost:l=>30+l*25,  apply:(p,l)=>{ p.baseSpeed*=(1+0.04*l); } },
+  magnet: { emoji:'🧲', name:'แม่เหล็ก',  unit:'ระยะดูด +12%/เลเวล',   max:6, cost:l=>25+l*20,  apply:(p,l)=>{ p.pickup*=(1+0.12*l); } },
+};
+const UPG_ORDER=['hp','dmg','spd','magnet'];
+
+/* ---- GEAR: ของสวมใส่ 2 ช่อง (weapon/charm) ซื้อด้วย Sugar แล้วสวมใส่ ---- */
+const GEAR = {
+  weapon: [
+    { id:'w_spoon', emoji:'🥄', name:'ช้อนไม้',      cost:0,   desc:'ดาเมจ +5%',  apply:p=>{ p.dmgMul*=1.05; } },
+    { id:'w_chop',  emoji:'🥢', name:'ตะเกียบเหล็ก', cost:120, desc:'ดาเมจ +12%', apply:p=>{ p.dmgMul*=1.12; } },
+    { id:'w_knife', emoji:'🔪', name:'มีดเชฟ',       cost:300, desc:'ดาเมจ +22%', apply:p=>{ p.dmgMul*=1.22; } },
+  ],
+  charm: [
+    { id:'c_none',   emoji:'▫️', name:'ไม่สวม',       cost:0,   desc:'-',            apply:p=>{} },
+    { id:'c_ribbon', emoji:'🎀', name:'โบว์นำโชค',   cost:100, desc:'HP สูงสุด +30', apply:p=>{ p.maxhp+=30; } },
+    { id:'c_clover', emoji:'🍀', name:'โคลเวอร์',    cost:150, desc:'ระยะดูด +40%',  apply:p=>{ p.pickup*=1.4; } },
+    { id:'c_star',   emoji:'⭐', name:'ดาวประกาย',   cost:260, desc:'ดาเมจ +8% · HP +15', apply:p=>{ p.dmgMul*=1.08; p.maxhp+=15; } },
+  ],
+};
+
+/* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
-  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{} },
-  load(){ try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){} return this.data; },
+  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, ownedGear:[] },
+  load(){ try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
+    if(!this.data.upgrades)this.data.upgrades={};
+    if(!this.data.gear)this.data.gear={};
+    if(!this.data.ownedGear)this.data.ownedGear=[];
+    if(!this.data.gear.weapon)this.data.gear.weapon='w_spoon';
+    if(!this.data.gear.charm)this.data.gear.charm='c_none';
+    for(const id of ['w_spoon','c_none']) if(!this.data.ownedGear.includes(id))this.data.ownedGear.push(id);
+    return this.data; },
   save(){ try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} },
   addSugar(n){ this.data.sugar=(this.data.sugar||0)+n; this.save(); },
+  spend(n){ if((this.data.sugar||0)>=n){ this.data.sugar-=n; this.save(); return true; } return false; },
 };
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
@@ -222,7 +254,7 @@ class Game extends Phaser.Scene {
 
     this.input.addPointer(2);
     this.joy={active:false,id:-1,bx:0,by:0,dx:0,dy:0};
-    this.lvlCards=[]; this.dmgPool=[];
+    this.lvlCards=[]; this.dmgPool=[]; this.tapZones=[]; this.menuScreen='hub';
 
     this.buildHUD(); this.buildMenus(); this.showMenu();
     this.setupInput();
@@ -236,7 +268,7 @@ class Game extends Phaser.Scene {
       // mute toggle (มุมขวาบน) — เช็คก่อนทุกอย่างเพื่อไม่ให้ไปโดนจอย
       if(this.muteBtn && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<26){
         const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
-      if(this.state==='menu'){ this.startRun(); return; }
+      if(this.state==='menu'){ this.handleTap(p.x,p.y); return; }
       if(this.state==='dead'||this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='summary'){ Sfx.select(); this.continueFromSummary(); return; }
       if(this.state==='levelup'){ this.pickCardAt(p.y); return; }
@@ -436,29 +468,105 @@ class Game extends Phaser.Scene {
     this.over=this.add.container(0,0).setScrollFactor(0).setDepth(100).setVisible(false);
     this.buildStartMenu();
   }
-  buildStartMenu(){
-    const w=this.W,h=this.H; this.menu.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.9).setOrigin(0,0);
-    const emoji=this.add.text(w/2,h*0.27,'🍡',{fontSize:'72px'}).setOrigin(0.5);
-    const title=this.add.text(w/2,h*0.42,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff8fb5'}).setOrigin(0.5);
-    const sub=this.add.text(w/2,h*0.48,'โมจิจอมตะกละ · เอาชีวิตรอด',{fontFamily:'sans-serif',fontSize:'15px',color:'#c7bdd6'}).setOrigin(0.5);
-    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-110,h*0.60-32,220,64,22);
-    btn.lineStyle(3,0xffffff,0.35); btn.strokeRoundedRect(w/2-110,h*0.60-32,220,64,22);
-    const btxt=this.add.text(w/2,h*0.60,'▶ เริ่มเล่น',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
-    const ch=CHARACTERS[this.character||'momo'];
-    const charTxt=this.add.text(w/2,h*0.535,`${ch.emoji} ${ch.name} · อัลติ: ${ACTIVES[ch.active].emoji} ${ACTIVES[ch.active].name}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
-    const sugar=this.add.text(w/2,h*0.155,'🍬 Sugar: '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffe08a'}).setOrigin(0.5);
-    const help=this.add.text(w/2,h*0.75,'แตะตรงไหนก็เริ่มได้\nซ้าย: ลากนิ้วเดิน  ·  ขวา: แตะพุ่ง  ·  ปุ่มชมพู: อัลติ',{fontFamily:'sans-serif',fontSize:'13px',color:'#9a90ab',align:'center'}).setOrigin(0.5);
-    this.menu.add([bg,emoji,title,sub,charTxt,sugar,btn,btxt,help]); this.menu.setVisible(true);
+  /* ===== HUB MENU + SUB-SCREENS (tap-zone hit-test) ===== */
+  _zone(x,y,w,h,fn){ this.tapZones.push({x,y,w,h,fn}); }
+  handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
+    if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){ Sfx.select(); z.fn(); return; } } }
+  _rowBtn(y,h,emoji,name,sub,rightLabel,rightColor,fn){
+    const w=Math.min(this.W-32,400), x=this.W/2-w/2;
+    const g=this.add.graphics(); g.fillStyle(0x2c2338,fn?1:0.6); g.fillRoundedRect(x,y,w,h,15);
+    g.lineStyle(2,fn?0x4a4059:0x39304a,1); g.strokeRoundedRect(x,y,w,h,15);
+    const em=this.add.text(x+28,y+h/2,emoji,{fontSize:'24px'}).setOrigin(0.5);
+    const nm=this.add.text(x+54,y+h*0.34,name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:fn?'#ffffff':'#9a90ab'}).setOrigin(0,0.5);
+    const ds=this.add.text(x+54,y+h*0.72,sub,{fontFamily:'sans-serif',fontSize:'11.5px',color:'#b7abc9',wordWrap:{width:w-150}}).setOrigin(0,0.5);
+    const rt=this.add.text(x+w-14,y+h/2,rightLabel,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:rightColor}).setOrigin(1,0.5);
+    this.menu.add([g,em,nm,ds,rt]); if(fn)this._zone(x,y,w,h,fn);
   }
-  showMenu(){ this.state='menu'; this.menu.setVisible(true); this.hudVisible(false); }
-  startRun(){
-    if(this.state!=='menu')return;
+  _screenBg(title){ const w=this.W,h=this.H;
+    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.97).setOrigin(0,0);
+    const t=this.add.text(w/2,52,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ff8fb5'}).setOrigin(0.5);
+    const sugar=this.add.text(w-16,54,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffe08a'}).setOrigin(1,0.5);
+    this.menu.add([bg,t,sugar]);
+    const bg2=this.add.graphics(); bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(14,38,80,34,12); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(14,38,80,34,12);
+    const bt=this.add.text(54,55,'‹ กลับ',{fontFamily:'sans-serif',fontSize:'14px',color:'#cbbfda'}).setOrigin(0.5);
+    this.menu.add([bg2,bt]); this._zone(14,38,80,34,()=>{ this.menuScreen='hub'; this.buildMenuScreen(); });
+  }
+  buildMenuScreen(){ const s=this.menuScreen||'hub';
+    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else this.buildHub(); }
+  buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
+  buildHub(){
+    const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
+    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.94).setOrigin(0,0);
+    const sugar=this.add.text(w/2,h*0.08,'🍬 Sugar: '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(0.5);
+    const emoji=this.add.text(w/2,h*0.19,'🍡',{fontSize:'60px'}).setOrigin(0.5);
+    const title=this.add.text(w/2,h*0.29,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ff8fb5'}).setOrigin(0.5);
+    const ch=CHARACTERS[this.character||'momo'];
+    const charTxt=this.add.text(w/2,h*0.35,`${ch.emoji} ${ch.name} · อัลติ ${ACTIVES[ch.active].emoji}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
+    this.menu.add([bg,sugar,emoji,title,charTxt]);
+    const bw=Math.min(w-60,300), bx=w/2;
+    const mk=(cy,label,color,fn)=>{ const g=this.add.graphics(); g.fillStyle(color,1); g.fillRoundedRect(bx-bw/2,cy-28,bw,56,18);
+      g.lineStyle(2,0xffffff,0.25); g.strokeRoundedRect(bx-bw/2,cy-28,bw,56,18);
+      const t=this.add.text(bx,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
+      this.menu.add([g,t]); this._zone(bx-bw/2,cy-28,bw,56,fn); };
+    mk(h*0.5,'▶ เริ่มเล่น',COLORS.pink,()=>{ this.menuScreen='stage'; this.buildMenuScreen(); });
+    mk(h*0.62,'⚙️ อัพเกรดตัวละคร',COLORS.grape,()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); });
+    mk(h*0.74,'🎽 ของสวมใส่',COLORS.mint,()=>{ this.menuScreen='gear'; this.buildMenuScreen(); });
+    this.menu.setVisible(true);
+  }
+  buildStageSelect(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกด่าน');
+    const unlocked=Save.data.unlockedStage||0, y0=this.H*0.14;
+    STAGES.forEach((st,i)=>{ const y=y0+i*72, locked=i>unlocked;
+      this._rowBtn(y,62,st.emoji,'ด่าน '+(i+1)+': '+st.name,
+        locked?'ผ่านด่านก่อนหน้าเพื่อปลดล็อก':(st.waves+' เวฟ · มินิ + บอสใหญ่'),
+        locked?'🔒':'▶ เล่น', locked?'#7a7088':'#8bd3a0', locked?null:()=>{ this.startRun(i); });
+    });
+    this.menu.setVisible(true);
+  }
+  buildUpgrade(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัพเกรดตัวละคร');
+    const y0=this.H*0.14;
+    UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.data.upgrades[k]||0, y=y0+i*72;
+      const maxed=lvl>=u.max, cost=maxed?0:u.cost(lvl), afford=(Save.data.sugar||0)>=cost;
+      this._rowBtn(y,62,u.emoji,u.name+'  Lv '+lvl+'/'+u.max,u.unit,
+        maxed?'MAX':'🍬'+cost, maxed?'#ffd166':(afford?'#8bd3a0':'#e0788a'),
+        maxed?null:()=>{ if(Save.spend(cost)){ Save.data.upgrades[k]=lvl+1; Save.save(); Sfx.clear(); } this.buildMenuScreen(); });
+    });
+    this.menu.setVisible(true);
+  }
+  buildGear(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('ของสวมใส่');
+    let y=this.H*0.125;
+    [['weapon','⚔ อาวุธ'],['charm','🧿 เครื่องราง']].forEach(([slot,label])=>{
+      const hdr=this.add.text(this.W/2,y,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5);
+      this.menu.add(hdr); y+=22;
+      GEAR[slot].forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), equipped=Save.data.gear[slot]===it.id, afford=(Save.data.sugar||0)>=it.cost;
+        this._rowBtn(y,46,it.emoji,it.name,it.desc,
+          equipped?'ใส่อยู่ ✓':(owned?'สวมใส่':'🍬'+it.cost),
+          equipped?'#ffd166':(owned?'#8bd3a0':(afford?'#bfe8ff':'#e0788a')),
+          equipped?null:()=>{ if(owned){ Save.data.gear[slot]=it.id; Save.save(); }
+            else if(Save.spend(it.cost)){ Save.data.ownedGear.push(it.id); Save.data.gear[slot]=it.id; Save.save(); Sfx.clear(); }
+            this.buildMenuScreen(); });
+        y+=52;
+      });
+      y+=6;
+    });
+    this.menu.setVisible(true);
+  }
+  applyMeta(){
+    const p=this.player;
+    for(const k in UPGRADES){ const l=Save.data.upgrades[k]||0; if(l>0)UPGRADES[k].apply(p,l); }
+    for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]); if(it&&it.apply)it.apply(p); }
+    p.hp=p.maxhp;
+  }
+  showMenu(){ this.state='menu'; this.menuScreen='hub'; this.buildMenuScreen(); this.hudVisible(false); }
+  startRun(idx){
+    if(this.state!=='menu')return; idx=idx||0;
     this.menu.setVisible(false); this.hudVisible(true);
     this.state='play'; this.elapsed=0; this.sugarStage=0; this.sugarRun=0;
-    this.stageIndex=0; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
-    this.buildSkillBar();
-    this.startStage(0);
+    this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
+    this.applyMeta(); this.buildSkillBar();
+    this.startStage(idx);
   }
   _busy(){ return this.state==='play'||this.state==='levelup'; }  // ยังเล่นอยู่ (levelup แค่พักชั่วคราว)
 
