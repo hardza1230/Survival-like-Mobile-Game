@@ -968,7 +968,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n;
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.32+2); this.pendingLvl=(this.pendingLvl||0)+1; }
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.32+2); this.pendingLvl=(this.pendingLvl||0)+1; this.jelly(0,3.2); }  // เลเวลอัพ = เด้งดีใจ
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
@@ -1232,7 +1232,7 @@ class Game extends Phaser.Scene {
     const st=this.orbStyle(value); o.value=value; o.setTint(st.tint);
     o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o);
     this.tweens.add({targets:o,scale:{from:st.sc*0.2,to:st.sc},duration:200}); }
-  collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); o.body.enable=false; o.clearTint(); Sfx.xp(); this.gainXp(o.value||1); }
+  collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9); this.gainXp(o.value||1); }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     this.player.iframe=0.6; this.player.hp-=e.dmg*(this.player.dmgTakenMul||1); Sfx.hurt(); this.cameras.main.shake(120,0.008);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
@@ -1304,6 +1304,30 @@ class Game extends Phaser.Scene {
     const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
     this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
+  // อนิเมชันตัวละคร: สปริงเจลลี่ (เด้งดึ๋งมีโมเมนตัม) + หายใจ + ส่ายตัวเวลาเดิน + เอนตามทิศ
+  animatePlayer(dt){
+    const p=this.player; if(!p||!p.body)return;
+    if(this._sqVX===undefined){ this._sqVX=0; this._sqVY=0; this._wob=0; this._lean=0; }
+    // สปริง: ดีดกลับสู่ 1 แบบ underdamped → overshoot เด้งนุ่ม
+    const stiff=210, damp=12;
+    this._sqVX += (-(this._sqX-1)*stiff - this._sqVX*damp)*dt;
+    this._sqVY += (-(this._sqY-1)*stiff - this._sqVY*damp)*dt;
+    this._sqX += this._sqVX*dt; this._sqY += this._sqVY*dt;
+    // กันหลุดขอบ (นิ่งเมื่อเข้าใกล้ 1)
+    this._sqX=Phaser.Math.Clamp(this._sqX,0.55,1.6); this._sqY=Phaser.Math.Clamp(this._sqY,0.55,1.6);
+    const sp=p.body.velocity.length(), moving=sp>24;
+    // จังหวะเดิน (เด้งถี่+แรงตอนวิ่ง) / หายใจเบา ๆ ตอนอยู่เฉย
+    this._wob += dt*(moving?13:3.4);
+    const breathe=Math.sin(this._wob)*(moving?0.11:0.05);
+    // ส่ายตัว (waddle) + เอนไปทางที่วิ่ง
+    const waddle=moving?Math.sin(this._wob*0.5)*0.10:0;
+    const leanT=moving?Phaser.Math.Clamp(p.body.velocity.x/1100,-0.16,0.16):0;
+    this._lean += (leanT-this._lean)*Math.min(1,dt*7);
+    p.rotation = waddle + this._lean;
+    p.setScale(this._sqX*(1-breathe), this._sqY*(1+breathe));
+  }
+  // ดีดสปริงตัวละคร (อิมพัลส์นุ่ม ๆ) — vx,vy = แรงกระแทกใส่สเกล X,Y
+  jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
   die(){ if(this.state==='dead')return; this.state='dead'; Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0); this.buildOver(); }
@@ -1325,7 +1349,7 @@ class Game extends Phaser.Scene {
 
     if(this.joy.active&&(this.joy.dx||this.joy.dy)){ this.moveDir.set(this.joy.dx,this.joy.dy); if(this.moveDir.lengthSq()>0.04)this.moveDir.normalize(); }
 
-    if(this.dashTime>0){ this.dashTime-=dt; }
+    if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; } }  // ลงพื้นหลังพุ่ง = ย่อตัวเด้ง
     else {
       const spd=this.player.baseSpeed;
       if(this.joy.active&&(Math.abs(this.joy.dx)+Math.abs(this.joy.dy))>0.12) this.player.setVelocity(this.joy.dx*spd,this.joy.dy*spd);
@@ -1334,12 +1358,7 @@ class Game extends Phaser.Scene {
 
     if(this.player.iframe>0)this.player.iframe-=dt;
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
-    // เจลลี่โมจิ: อิมพัลส์ squash คืนสู่ 1 + วอกแวกหายใจ (แรงขึ้นตอนวิ่ง) → ตัวนุ่มเด้ง
-    const ease=Math.min(1,dt*11);
-    this._sqX+=(1-this._sqX)*ease; this._sqY+=(1-this._sqY)*ease;
-    const sp=this.player.body?this.player.body.velocity.length():0;
-    const wob=Math.sin(this.elapsed*(6+sp*0.006))*(0.035+Math.min(sp/2600,0.05));
-    this.player.setScale(this._sqX*(1-wob), this._sqY*(1+wob));
+    this.animatePlayer(dt);
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.dashBtn.setFillStyle(COLORS.mint,this.dashReady?0.28:0.10);
     // active cd (+ ริงคูลดาวน์ + เด้งตอนพร้อม)

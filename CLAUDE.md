@@ -49,8 +49,10 @@
   · โหนด signature = ธงยกระดับอัลติเฉพาะตัว (twinBomb=บอมบ์2ระลอก, deepFreeze=แช่กว้าง+นาน, bigVoid=หลุมใหญ่ดูดแรง) อ่านใน useActive
   · เกราะ mint: `p.dmgTakenMul` ลดดาเมจใน hurtPlayer + touchEnemy
 - **โทนพาสเทล:** `COLORS` (bg 0x3b3357, ขอบชมพูนุ่ม), gridBg + STAGES.grid สว่างขึ้น, config backgroundColor #3a3355
-- **โมจิเจลลี่ (squash&stretch):** `this._sqX/_sqY` อิมพัลส์ ease กลับ 1 ทุกเฟรม + วอกแวกหายใจ (`Math.sin`) แรงขึ้นตอนวิ่ง
-  · พุ่ง=ยืด(1.35/0.7) · โดนตี=แบน(0.7/1.3) · setScale ต่อเฟรมใน update (ไม่ใช้ tween กันชนกัน)
+- **โมจิเจลลี่ (squash&stretch) แบบสปริง:** `animatePlayer(dt)` — สปริง underdamped (stiff 210/damp 12) กับ `_sqX/_sqY`+`_sqVX/_sqVY`
+  → ดีดกลับ 1 แบบ overshoot เด้งดึ๋ง (ไม่ใช่ ease เฉย ๆ) · หายใจ/ส่ายตัว (waddle) + เอนตามทิศเวลาเดิน (`p.rotation`)
+  · `jelly(vx,vy)` = อิมพัลส์นุ่ม (เก็บออร์บ/เลเวลอัพเด้งดีใจ) · พุ่ง=ยืด(1.35/0.7) แล้วลงพื้นย่อ(0.8/1.22) · โดนตี=แบน(0.7/1.3)
+  · setScale+setRotation ต่อเฟรมใน update (ไม่ใช้ tween กันชนกัน) · body เป็นวงกลม rotation ไม่กระทบฟิสิกส์
 - **คุม:** จอยสติ๊กลอย (ซ้าย) + ปุ่มพุ่ง/dash (ขวาล่าง) + ปุ่มอัลติกดเอง (ชมพู)
 - **สกิลออโต้แคสต์ 9 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
