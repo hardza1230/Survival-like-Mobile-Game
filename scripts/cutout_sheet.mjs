@@ -25,12 +25,16 @@ const pngB64 = await p.evaluate(async ({dataUrl, CELL, COLS, ROWS, SELECT})=>{
     const cv=document.createElement('canvas'); cv.width=qw; cv.height=qh;
     const ctx=cv.getContext('2d'); ctx.drawImage(img, qx,qy,qw,qh, 0,0,qw,qh);
     const id=ctx.getImageData(0,0,qw,qh), d=id.data;
-    const isWhite=(i)=>d[i]>=TH&&d[i+1]>=TH&&d[i+2]>=TH;
+    // "พื้นหลัง" = สว่าง + เกือบไม่มีสี (ขาว หรือ เทาอ่อน=เงา/เส้นกรอบ) แต่ไม่กินขอบตัวละครที่มีสี
+    const isBg=(i)=>{ const r=d[i],g=d[i+1],b=d[i+2];
+      const mn=Math.min(r,g,b), mx=Math.max(r,g,b); return mn>=198 && (mx-mn)<=26; };
     const bg=new Uint8Array(qw*qh), st=[];
-    for(let x=0;x<qw;x++){ st.push([x,0]); st.push([x,qh-1]); }
-    for(let y=0;y<qh;y++){ st.push([0,y]); st.push([qw-1,y]); }
-    while(st.length){ const [x,y]=st.pop(); if(x<0||y<0||x>=qw||y>=qh)continue;
-      const pi=y*qw+x; if(bg[pi])continue; if(!isWhite(pi*4))continue;
+    const ins=Math.max(2,Math.round(qw*0.03));   // เว้นขอบใน = ตัดเส้นกรอบตารางระหว่างช่องทิ้ง
+    for(let y=0;y<qh;y++)for(let x=0;x<qw;x++){ if(x<ins||y<ins||x>=qw-ins||y>=qh-ins) bg[y*qw+x]=1; }
+    for(let x=ins;x<qw-ins;x++){ st.push([x,ins],[x,qh-1-ins]); }
+    for(let y=ins;y<qh-ins;y++){ st.push([ins,y],[qw-1-ins,y]); }
+    while(st.length){ const [x,y]=st.pop(); if(x<ins||y<ins||x>=qw-ins||y>=qh-ins)continue;
+      const pi=y*qw+x; if(bg[pi])continue; if(!isBg(pi*4))continue;
       bg[pi]=1; st.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]); }
     for(let i=0;i<qw*qh;i++) if(bg[i]) d[i*4+3]=0;
     // halo erode 2 passes
