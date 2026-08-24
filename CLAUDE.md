@@ -60,8 +60,12 @@
   · `jelly(vx,vy)` = อิมพัลส์นุ่ม (เก็บออร์บ/เลเวลอัพเด้งดีใจ) · พุ่ง=ยืด(1.35/0.7) แล้วลงพื้นย่อ(0.8/1.22) · โดนตี=แบน(0.7/1.3)
   · setScale+setRotation ต่อเฟรมใน update (ไม่ใช้ tween กันชนกัน) · body เป็นวงกลม rotation ไม่กระทบฟิสิกส์
 - **คุม:** จอยสติ๊กลอย (ซ้าย) + ปุ่มพุ่ง/dash (ขวาล่าง) + ปุ่มอัลติกดเอง (ชมพู)
+- **ปุ่มหยุด (⏸ ข้าง mute):** `togglePause` (state 'paused' + physics.pause) → เมนู `buildPause` (เล่นต่อ/ออกจากด่าน `exitStage`) · hit-test `_pauseBtns`
+- **ไอเทมในด่าน:** ❤️ `heal` (ฟื้น 18%+6, ดรอปจากบอส/มินิแน่นอน·elite 50%·ธรรมดา 3%·กล่อง) · 📦 `crate` (โหลแยมทุบได้ ดรอปออร์บ/heal/sugar) — กลุ่ม `heals`/`crates`, `dropHeal/collectHeal/spawnCrate/hitCrate/breakCrate`, เคลียร์ด้วย `clearPickups`
+- **บาลานซ์ (จูนล่าสุด):** ศัตรู HP ×~1.5 + scaling แรงขึ้น `(1+idx*0.55)(1+wave*0.11)` · ฝูงถล่ม (`swarm` ด่าน≥3/เวฟท้าย) ปล่อย 3 ระลอก + elite ×2 · บอส HP ×1.4 + เฟส 3
 - **สกิลออโต้แคสต์ 9 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
+  · +3 สกิลใหม่: **aura**(🌸 ออร่ารอบตัวตลอด/awaken ดูดศัตรู) · **fork**(🍴 ส้อมทะลุแนว) · **mine**(🧁 คัพเค้กระเบิดดัก) — รวม 12 สกิล build หลากหลาย
 - **ระบบคอมโบสกิล (`COMBOS`):** มีสกิลคู่ครบ = ปลดโบนัส (ธง `this.comboFlags` อ่านตอน cast + แบนเนอร์)
   storm(thunder+frost), firestorm(chili+whirl), ricochet(sprinkle+boomer), fizz(popcorn+bubble) · `checkCombos()`
 - **Sugar + Save (`Save` → localStorage 'mochi_save'):** เก็บ sugar/unlockedStage/upgrades/gear
