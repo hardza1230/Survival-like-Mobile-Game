@@ -82,6 +82,8 @@ const ASSET_IMAGES = {};
 const ASSET_SHEETS = {
   char_momo: { url:'assets/char_momo_sheet.png', frame:128 },
 };
+let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
+function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
 const CF = { idle:0, squash:1, stretch:2, blink:3 };
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
@@ -89,8 +91,8 @@ function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
   preload(){
-    for(const k in ASSET_IMAGES) this.load.image(k, ASSET_IMAGES[k]);
-    for(const k in ASSET_SHEETS) this.load.spritesheet(k, ASSET_SHEETS[k].url, { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
+    for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
+    for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
     // ถ้ารูปโหลดไม่ได้ (เช่นเปิดแบบไฟล์เดียว) ให้ข้ามไป ใช้กราฟิกโค้ดแทน (ไม่ให้ค้าง)
     this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; });
   }

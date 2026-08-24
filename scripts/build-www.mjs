@@ -8,13 +8,17 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const www = join(root, 'www');
 mkdirSync(www, { recursive: true });
 
-// คัดลอกไฟล์เกม
-for (const f of ['game.js', 'phaser.min.js']) {
-  const src = join(root, f);
-  if (!existsSync(src)) { console.error('missing:', f); process.exit(1); }
-  copyFileSync(src, join(www, f));
-  console.log('copied', f);
-}
+const ver = Date.now();
+
+// phaser: คัดลอกตรง ๆ
+copyFileSync(join(root, 'phaser.min.js'), join(www, 'phaser.min.js'));
+console.log('copied phaser.min.js');
+
+// game.js: ฝังเลข build ลง ASSET_VER → รูปใน assets/ ถูก cache-bust ด้วย (แก้รูปแล้วโหลดใหม่เสมอ)
+let gjs = readFileSync(join(root, 'game.js'), 'utf8');
+gjs = gjs.replace(/ASSET_VER\s*=\s*''/, "ASSET_VER='" + ver + "'");
+writeFileSync(join(www, 'game.js'), gjs);
+console.log('game.js built with ASSET_VER=' + ver);
 
 // คัดลอกโฟลเดอร์รูป assets/ (ถ้ามี) — รูปจริงของตัวละคร/ศัตรู ฯลฯ
 const assetsDir = join(root, 'assets');
@@ -25,7 +29,6 @@ if (existsSync(assetsDir)) {
 }
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)
-const ver = Date.now();
 let html = readFileSync(join(root, 'index.html'), 'utf8');
 html = html.replace(/game\.js(\?v=\d+)?/g, 'game.js?v=' + ver);
 writeFileSync(join(www, 'index.html'), html);
