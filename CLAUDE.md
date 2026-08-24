@@ -65,7 +65,7 @@
 - **บาลานซ์ (จูนล่าสุด):** ศัตรู HP ×~1.5 + scaling แรงขึ้น `(1+idx*0.55)(1+wave*0.11)` · ฝูงถล่ม (`swarm` ด่าน≥3/เวฟท้าย) ปล่อย 3 ระลอก + elite ×2 · บอส HP ×1.4 + เฟส 3
 - **สกิลออโต้แคสต์ 9 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
-  · +3 สกิลใหม่: **aura**(🌸 ออร่ารอบตัวตลอด/awaken ดูดศัตรู) · **fork**(🍴 ส้อมทะลุแนว) · **mine**(🧁 คัพเค้กระเบิดดัก) — รวม 12 สกิล build หลากหลาย
+  · +8 สกิลใหม่: **aura**(🌸 ออร่ารอบตัว) · **fork**(🍴 ส้อมทะลุ) · **mine**(🧁 คัพเค้กระเบิด) · **beam**(🔆 ลำแสงแนวตรง `fireBeam`) · **meteor**(🍩 โดนัทหล่น AoE `meteorStrike`) · **cloud**(☕ หมอกพิษ DoT ติ๊ก) · **rocket**(🚀 จรวดไล่เป้าระเบิด `b.explode`+`explodeAt`) · **wave**(🌊 คลื่นขยายผลัก `creamWave`) — **รวม 17 สกิล** build หลากหลาย
 - **ระบบคอมโบสกิล (`COMBOS`):** มีสกิลคู่ครบ = ปลดโบนัส (ธง `this.comboFlags` อ่านตอน cast + แบนเนอร์)
   storm(thunder+frost), firestorm(chili+whirl), ricochet(sprinkle+boomer), fizz(popcorn+bubble) · `checkCombos()`
 - **Sugar + Save (`Save` → localStorage 'mochi_save'):** เก็บ sugar/unlockedStage/upgrades/gear

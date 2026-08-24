@@ -218,6 +218,16 @@ const SKILLDEFS = {
     awaken:{ name:'พายุส้อม', emoji:'🍴', desc:'ส้อม 10 เล่มพุ่งทุกทิศ ทะลุหมด!' } },
   mine:    { name:'Cupcake Mine',   emoji:'🧁', max:6, desc:'วางคัพเค้กระเบิดดักศัตรู',
     awaken:{ name:'ทุ่นหวานถล่ม', emoji:'🧁', desc:'วาง 4 ลูก ระเบิดใหญ่มาก!' } },
+  beam:    { name:'Caramel Beam',   emoji:'🔆', max:6, desc:'ยิงลำแสงคาราเมลทะลุเป็นแนวตรง',
+    awaken:{ name:'ลำแสงมรณะ', emoji:'🔆', desc:'3 ลำกว้าง เผาทะลุทั้งแนว!' } },
+  meteor:  { name:'Donut Drop',     emoji:'🍩', max:6, desc:'โดนัทหล่นจากฟ้าระเบิดใส่ศัตรู',
+    awaken:{ name:'ฝนโดนัท', emoji:'🍩', desc:'10 ลูกถล่มทั้งจอ!' } },
+  cloud:   { name:'Mocha Mist',     emoji:'☕', max:6, desc:'ปล่อยไอมอคค่าพิษ ดาเมจต่อเนื่อง',
+    awaken:{ name:'หมอกมรณะ', emoji:'☕', desc:'กลุ่มใหญ่ ดาเมจสูง อยู่นาน!' } },
+  rocket:  { name:'Candy Rocket',   emoji:'🚀', max:6, desc:'ยิงจรวดลูกอมไล่เป้า ระเบิด AoE',
+    awaken:{ name:'ฝูงจรวด', emoji:'🚀', desc:'6 ลูกไล่เป้า ระเบิดใหญ่!' } },
+  wave:    { name:'Cream Wave',     emoji:'🌊', max:6, desc:'ปล่อยคลื่นครีมขยายผลักศัตรู',
+    awaken:{ name:'สึนามิครีม', emoji:'🌊', desc:'คลื่นยักษ์ 3 ระลอก!' } },
 };
 const SKILL_AWAKEN_LV = 7;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (6)
 const ACTIVES = {
@@ -280,6 +290,11 @@ const SKILL_TIERS = {
   aura:    { 2:'ออร่ากว้างขึ้น', 3:'ดาเมจขึ้น', 4:'กว้างมาก', 5:'ดาเมจแรง', 6:'ออร่าหวานเต็มพิกัด!' },
   fork:    { 2:'ขว้าง 3 เล่ม', 3:'เล่มใหญ่ เร็วขึ้น', 4:'ขว้าง 4 เล่ม', 5:'ทะลุถี่ขึ้น', 6:'ขว้าง 5 เล่ม พายุส้อม!' },
   mine:    { 2:'ระเบิดกว้างขึ้น', 3:'ดาเมจขึ้น', 4:'วาง 2 ลูก', 5:'ระเบิดใหญ่มาก', 6:'วางถี่ ดาเมจสูง!' },
+  beam:    { 2:'ลำแสงยาวขึ้น', 3:'กว้าง+ดาเมจขึ้น', 4:'เผาแรงขึ้น', 5:'ทะลุไกลมาก', 6:'ลำแสงมหากาฬ!' },
+  meteor:  { 2:'3 ลูก', 3:'ระเบิดกว้างขึ้น', 4:'4 ลูก ดาเมจสูง', 5:'ลูกใหญ่มาก', 6:'6 ลูกถล่ม!' },
+  cloud:   { 2:'กลุ่มกว้างขึ้น', 3:'ดาเมจ/ติ๊กสูงขึ้น', 4:'กว้างมาก', 5:'อยู่นานขึ้น', 6:'หมอกพิษเต็มพิกัด!' },
+  rocket:  { 2:'2 ลูก', 3:'ระเบิดกว้างขึ้น', 4:'3 ลูก ไล่แม่น', 5:'ระเบิดใหญ่', 6:'4 ลูก จรวดถล่ม!' },
+  wave:    { 2:'คลื่นกว้างขึ้น', 3:'ดาเมจ+ผลักแรง', 4:'ไกลมาก', 5:'คลื่นใหญ่', 6:'สึนามิครีม!' },
 };
 
 /* ---- COMBOS: มีสกิลคู่ที่เข้าคู่กัน = ปลดโบนัส (ใช้ธง this.comboFlags ตอน cast) ---- */
@@ -1230,7 +1245,7 @@ class Game extends Phaser.Scene {
     else { b.setActive(true).setVisible(true); b.body.enable=true; b.setPosition(x,y); }
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0); b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
-    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0;
+    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0;
     return b;
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "เอฟเฟกต์" ไม่ใช่ยิงถี่ขึ้น
@@ -1251,6 +1266,11 @@ class Game extends Phaser.Scene {
       case 'aura':     return Math.max(0.7,1.1-lvl*0.05);
       case 'fork':     return Math.max(1.2,1.8-lvl*0.08);
       case 'mine':     return Math.max(1.8,2.6-lvl*0.1);
+      case 'beam':     return Math.max(1.0,1.6-lvl*0.08);
+      case 'meteor':   return Math.max(1.6,2.4-lvl*0.1);
+      case 'cloud':    return Math.max(2.0,3.0-lvl*0.1);
+      case 'rocket':   return Math.max(1.2,1.8-lvl*0.08);
+      case 'wave':     return Math.max(1.4,2.2-lvl*0.08);
       default: return 1.6;
     }
   }
@@ -1331,7 +1351,60 @@ class Game extends Phaser.Scene {
           const ring=this.camWorld(this.add.circle(mx,my,10,0xff9ec4,0.5).setDepth(3));
           this.tweens.add({targets:ring,radius:r,alpha:0,duration:280,onComplete:()=>ring.destroy()});
           this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,mx,my)<r) this.damage(e,dmg,e.x,e.y); }); Sfx.boom(); }); } }
+    else if(key==='beam'){ const t=this.nearestEnemy(900); if(!t)return;
+      const beams=aw?3:1, len=(760+lvl*30)*(aw?1.25:1), wide=(12+lvl*3)*(aw?1.4:1), dmg=(11+lvl*3.6)*dm*(aw?1.4:1);
+      const base=Math.atan2(t.y-this.player.y,t.x-this.player.x);
+      for(let k=0;k<beams;k++) this.fireBeam(base+(k-(beams-1)/2)*0.18,len,wide,dmg); Sfx.zap(); }
+    else if(key==='meteor'){ const n=aw?10:lvl>=6?6:lvl>=4?4:lvl>=2?3:2, r=(58+lvl*8)*(aw?1.3:1), dmg=(14+lvl*4)*dm*(aw?1.4:1);
+      const cands=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<560)cands.push(e); });
+      for(let i=0;i<n;i++){ let tx,ty; if(cands.length){ const e=cands[Math.floor(Math.random()*cands.length)]; tx=e.x+Phaser.Math.Between(-24,24); ty=e.y+Phaser.Math.Between(-24,24); }
+        else { tx=this.player.x+Phaser.Math.Between(-220,220); ty=this.player.y+Phaser.Math.Between(-220,220); }
+        this.meteorStrike(tx,ty,r,dmg,i*70); } Sfx.shoot(); }
+    else if(key==='cloud'){ const t=this.nearestEnemy(620)||this.player, cx=t.x, cy=t.y;
+      const r=(70+lvl*12)*(aw?1.5:1), dmg=(3+lvl*1.2)*dm*(aw?1.6:1), dur=(aw?4:2+lvl*0.3);
+      const cloud=this.camWorld(this.add.circle(cx,cy,r,0x9a7ce6,0.16).setDepth(2).setStrokeStyle(2,0xb79ae8,0.45));
+      this.tweens.add({targets:cloud,scale:{from:0.5,to:1},duration:300});
+      const ticks=Math.max(1,Math.floor(dur/0.3));
+      for(let k=1;k<=ticks;k++) this.time.delayedCall(k*300,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r) this.damage(e,dmg,e.x,e.y); }); });
+      this.tweens.add({targets:cloud,alpha:0,delay:Math.max(0,dur*1000-350),duration:400,onComplete:()=>cloud.destroy()}); Sfx.frost(); }
+    else if(key==='rocket'){ const cnt=aw?6:lvl>=6?4:lvl>=4?3:lvl>=2?2:1, dmg=(10+lvl*3)*dm*(aw?1.4:1), er=(50+lvl*6)*(aw?1.4:1);
+      for(let s=0;s<cnt;s++){ const t=this.nearestEnemy(780), base=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):this.moveDir.angle();
+        const b=this.getBullet(this.player.x,this.player.y,0xff8b6b,1.3+lvl*0.08); b.dmg=dmg; b.life=2.2; b.homing=(aw?400:280); b.explode=er; b.spin=true;
+        this.physics.velocityFromRotation(base+(s-(cnt-1)/2)*0.3,300,b.body.velocity); } Sfx.shoot(); }
+    else if(key==='wave'){ const rings=aw?3:1, maxR=(150+lvl*20)*(aw?1.4:1), dmg=(8+lvl*2.6)*dm*(aw?1.4:1);
+      for(let k=0;k<rings;k++) this.creamWave(maxR,dmg,k*180); Sfx.boom(); }
   }
+  fireBeam(ang,len,wide,dmg){
+    const px=this.player.x, py=this.player.y;
+    const g=this.camWorld(this.add.rectangle(px,py,len,wide,0xffe08a,0.75).setOrigin(0,0.5).setDepth(6)); g.setRotation(ang);
+    this.tweens.add({targets:g,alpha:0,scaleY:0.3,duration:260,onComplete:()=>g.destroy()});
+    const dx=Math.cos(ang),dy=Math.sin(ang);
+    this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-px, ry=e.y-py;
+      const proj=rx*dx+ry*dy; if(proj<0||proj>len)return; if(Math.abs(-rx*dy+ry*dx)<wide/2+16) this.damage(e,dmg,e.x,e.y); });
+  }
+  meteorStrike(x,y,r,dmg,delay){
+    this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+      const warn=this.camWorld(this.add.circle(x,y,r,0xffb15a,0.14).setDepth(2).setStrokeStyle(2,0xffb15a,0.6));
+      const don=this.camWorld(this.add.circle(x,y-260,9,0xd9a066,1).setDepth(7).setStrokeStyle(3,0xa6702e,1));
+      this.tweens.add({targets:don,y:y,duration:300,ease:'Quad.in',onComplete:()=>{ don.destroy(); warn.destroy();
+        const boom=this.camWorld(this.add.circle(x,y,10,0xffcf70,0.5).setDepth(3));
+        this.tweens.add({targets:boom,radius:r,alpha:0,duration:260,onComplete:()=>boom.destroy()});
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); });
+        this.cameras.main.shake(80,0.004); Sfx.boom(); }}); });
+  }
+  creamWave(maxR,dmg,delay){
+    this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+      const px=this.player.x, py=this.player.y, hit=new Set();
+      const ring=this.camWorld(this.add.circle(px,py,10,0xbfe8ff,0).setDepth(3).setStrokeStyle(5,0xffffff,0.85));
+      this.tweens.add({targets:ring,radius:maxR,alpha:{from:0.9,to:0},duration:420,ease:'Quad.out',
+        onUpdate:()=>{ const rr=ring.radius; this.enemies.children.iterate(e=>{ if(e&&e.active&&!hit.has(e)){ const d=this.dist(e.x,e.y,px,py);
+          if(d<rr&&d>rr-46){ hit.add(e); this.damage(e,dmg,e.x,e.y); if(!e.isBoss){ const a=Math.atan2(e.y-py,e.x-px); e.setVelocity(Math.cos(a)*260,Math.sin(a)*260); e.knock=0.2; } } } }); },
+        onComplete:()=>ring.destroy() }); });
+  }
+  explodeAt(x,y,r,dmg){ const ring=this.camWorld(this.add.circle(x,y,10,0xffb08a,0.5).setDepth(3));
+    this.tweens.add({targets:ring,radius:r,alpha:0,duration:240,onComplete:()=>ring.destroy()}); this.burst(x,y,0xff8b6b);
+    this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); }); Sfx.boom(); }
   // ประกายวาววับตอนสกิลตื่นรู้ (Awaken) ทำงาน
   awakenSpark(key){ const c=this.camWorld(this.add.circle(this.player.x,this.player.y,8,0xfff2a8,0.8).setDepth(6));
     this.tweens.add({targets:c,radius:34,alpha:0,duration:280,onComplete:()=>c.destroy()}); }
@@ -1354,6 +1427,7 @@ class Game extends Phaser.Scene {
   hitEnemy(bullet,enemy){ if(!bullet.active||!enemy.active)return;
     if(bullet.pierce){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.16; this.damage(enemy,bullet.dmg,bullet.x,bullet.y); return; }
     this.damage(enemy,bullet.dmg,bullet.x,bullet.y);
+    if(bullet.explode){ this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8); this.killBullet(bullet); return; }   // จรวดระเบิด AoE
     if(bullet.bounce>0){ bullet.bounce--;
       let nb=null,nd=360*360;
       this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==enemy){ const d=(o.x-bullet.x)**2+(o.y-bullet.y)**2; if(d<nd){nd=d;nb=o;} } });
