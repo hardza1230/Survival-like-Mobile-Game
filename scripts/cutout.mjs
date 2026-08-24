@@ -18,17 +18,18 @@ const pngB64 = await p.evaluate(async ({dataUrl, OUTSIZE})=>{
   const ctx=cv.getContext('2d'); ctx.drawImage(img,0,0);
   const id=ctx.getImageData(0,0,W,H); const d=id.data;
   const idx=(x,y)=>(y*W+x)*4;
-  const isWhite=(i,th)=>d[i]>=th && d[i+1]>=th && d[i+2]>=th;
-  // BFS flood-fill from all border pixels through near-white → mark background
+  // "พื้นหลัง" = สว่าง + เกือบไม่มีสี (ขาว/เทาอ่อน=เงา) แต่ไม่กินขอบตัวที่มีสี
+  const isBg=(i)=>{ const r=d[i],g=d[i+1],b=d[i+2];
+    const mn=Math.min(r,g,b), mx=Math.max(r,g,b); return mn>=198 && (mx-mn)<=26; };
+  // BFS flood-fill from all border pixels through background → mark background
   const bg=new Uint8Array(W*H);
   const stack=[];
-  const TH=238;
   for(let x=0;x<W;x++){ stack.push([x,0]); stack.push([x,H-1]); }
   for(let y=0;y<H;y++){ stack.push([0,y]); stack.push([W-1,y]); }
   while(stack.length){ const [x,y]=stack.pop();
     if(x<0||y<0||x>=W||y>=H) continue;
     const pi=y*W+x; if(bg[pi]) continue;
-    if(!isWhite(idx(x,y),TH)) continue;
+    if(!isBg(idx(x,y))) continue;
     bg[pi]=1;
     stack.push([x+1,y]); stack.push([x-1,y]); stack.push([x,y+1]); stack.push([x,y-1]);
   }

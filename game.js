@@ -78,7 +78,13 @@ const Sfx = {
    key ต้องตรงกับ texture ที่เกมใช้ (char_momo/char_mint/char_cocoa/e_basic/...) · ไฟล์อยู่โฟลเดอร์ assets/
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
-const ASSET_IMAGES = {};
+const ASSET_IMAGES = {
+  e_basic:   'assets/e_basic.png',
+  e_fast:    'assets/e_fast.png',
+  e_tank:    'assets/e_tank.png',
+  e_shooter: 'assets/e_shooter.png',
+  e_bomber:  'assets/e_bomber.png',
+};
 const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
   char_mint:  { url:'assets/char_mint_sheet.png',  frame:128 },
@@ -152,6 +158,8 @@ class Boot extends Phaser.Scene {
     mk('e_basic',44,(c,s)=>drawEnemy(c,s,{c1:'#b6ec9e',c2:'#6cbf6a',edge:'#4f9a55'}));
     mk('e_fast',38,(c,s)=>drawEnemy(c,s,{c1:'#bfe2ff',c2:'#6fb3f0',edge:'#4f8fd6'}));
     mk('e_tank',62,(c,s)=>drawEnemy(c,s,{c1:'#e0c8ff',c2:'#a97fe0',edge:'#7a4fd0',spiky:true}));
+    // e_brute = ตัวถึกโปรซีเจอรัล (ย้อมสีได้) ใช้กับ elite/มินิ/บอส — แยกจากรูปจริง e_tank กันสีเพี้ยนตอน setTint
+    mk('e_brute',62,(c,s)=>drawEnemy(c,s,{c1:'#e6d8ff',c2:'#b79ae8',edge:'#7a4fd0',spiky:true}));
 
     // ---- ลูกกวาด (glossy) / กระสุน / อนุภาค / vignette ----
     mk('candy',20,(c,s)=>{ const cx=s/2,r=s*0.42; const g=c.createRadialGradient(cx-2,cx-2,1,cx,cx,r);
@@ -875,7 +883,7 @@ class Game extends Phaser.Scene {
     const s=(1+this.stageIndex*0.35)*(1+this.waveIndex*0.06);
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=18; e.xp=8;
     e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
-    e.setScale(1.3).setTint(0xffb15a); this.camWorld(e);
+    e.setScale(1.55).clearTint(); this.camWorld(e);   // elite = ตัวถึก (รูปจริง) ตัวใหญ่กว่าปกติ
   }
   spawnNormalWave(){
     const w=this.waveIndex, si=this.stageIndex, mine=w;
@@ -894,7 +902,7 @@ class Game extends Phaser.Scene {
     const adds=2+this.stageIndex;
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_tank');
+    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_brute');
     b.setScale(1.7).setCircle(26,5,5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.5; b.maxhp=b.hp; b.spd=52; b.dmg=Math.round(st.bossDmg*0.7); b.xp=15; b.frozen=0; b.knock=0;
     b.tintColor=st.tint; b.setTint(st.tint);
@@ -906,7 +914,7 @@ class Game extends Phaser.Scene {
     const st=STAGES[this.stageIndex]; this.mode='boss';
     this.showBanner('👹 บอสใหญ่มาแล้ว!', st.boss, 2400); Sfx.bossWarn(); this.cameras.main.shake(300,0.01);
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_tank');
+    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_brute');
     b.setScale(2.5).setCircle(26,5,5); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(1.15+this.stageIndex*0.05); b.maxhp=b.hp; b.spd=40; b.dmg=st.bossDmg; b.xp=30; b.frozen=0; b.knock=0;
     b.tintColor=st.tint; b.setTint(st.tint);
@@ -1091,7 +1099,7 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.62+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);
-    const key=(type==='fast'||type==='shooter')?'e_fast':type==='tank'?'e_tank':'e_basic';
+    const key=type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='tank'?'e_tank':'e_basic';
     if(!e) e=this.enemies.create(x,y,key);
     else { e.setTexture(key); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
@@ -1103,8 +1111,7 @@ class Game extends Phaser.Scene {
     else if(type==='bomber'){ e.hp=16*s; e.spd=66; e.dmg=10; e.xp=2; e.bomber=true; e.setCircle(17,5,5); }
     else { e.hp=13*s; e.spd=56; e.dmg=9; e.xp=1; e.setCircle(17,5,5); }
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(1).clearTint();
-    if(e.shooter)e.setTint(0xffd27f); else if(e.bomber)e.setTint(0xff8b6b);   // สีบอกชนิดพิเศษ
-    this.camWorld(e);
+    this.camWorld(e);   // รูปจริงมีสีในตัวแล้ว ไม่ต้องย้อม
   }
 
   /* ---------- COMBAT ---------- */

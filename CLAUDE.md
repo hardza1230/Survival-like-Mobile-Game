@@ -90,6 +90,8 @@
   · **hazard (`spawnHazard`)**: วงอันตรายบนพื้น เตือนก่อนแล้วระเบิด · ล้างด้วย `clearFoes()` ตอนจบเวฟ/ด่าน
   · **หมายเหตุ:** foeBullets ต้อง `camWorld()` ตอน spawn (กัน 2-camera ghost) — ทำใน foeShot แล้ว
 - **ศัตรู:** 5 ชนิด (basic/fast/tank/shooter/bomber) + บอส, มี object pooling
+  · **รูปจริง (AI):** e_basic/e_fast/e_tank/e_shooter/e_bomber (ASSET_IMAGES, ตัดพื้นใส native size 38-62px) · แต่ละชนิดมี texture ของตัวเอง (ไม่ย้อมสีร่วมแล้ว)
+  · **e_brute** = ตัวถึกโปรซีเจอรัล (ย้อมสีได้) ใช้กับมินิ/บอส (ยังเป็น phase 2 รอรูปบอสจริง) · elite = e_tank รูปจริง scale 1.55 (ตัวใหญ่=elite)
 - **UI:** การ์ดเลเวลอัพมุมโค้ง, ปุ่มโค้ง, HP/XP bar, หลอดบอส, แบนเนอร์ด่าน+lore
 - **ตัวละคร 3 ตัว (`CHARACTERS`+`CHAR_ORDER`):** momo🍡(bomb) · mint🌿(freeze,+HP30) · cocoa🍫(blackhole,+dmg10%)
   แต่ละตัว "อัลติต่างกัน" (`ACTIVES`: bomb/freeze/blackhole) + โบนัสพาสซีฟ (`bonus`) · **หน้าเลือกตัวละคร** `buildChars()`
