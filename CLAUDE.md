@@ -61,7 +61,13 @@
 - **กราฟิก (ลงแล้ว! วาดด้วย Canvas 2D ใน Boot):** ตัวละคร 3 แบบต่างหน้าตา (char_momo/mint/cocoa —
   บอดี้ไล่เฉด เงานุ่ม แก้มชมพู ตาวาว + ท็อปปิ้ง) · ศัตรูหน้าโกรธไล่เฉด · ลูกกวาด glossy · กระสุน/อนุภาคเรืองแสง · **vignette** ขอบจอ
   · player.setTexture('char_'+character) + aura สีตามตัวใน `applyMeta()` · **หมายเหตุ:** ขนาด texture โตขึ้น → ปรับ setCircle offset แล้ว
-- **ศัตรู:** 3 ชนิด (basic/fast/tank) + บอส, มี object pooling
+- **บอสมีแพทเทิร์นโจมตี (`bossThink`):** slam(AoE เตือนก่อน) · radial(ยิงรอบทิศ) · aimed(ยิงเล็ง) · charge(พุ่ง) · summon(เรียกลูกน้อง)
+  · เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) · `b.atks` ต่างกันตามด่าน · มินิบอสได้ subset
+- **ศัตรูมีลูกเล่น:** shooter(ยิงระยะไกล พังการ kite, สีเหลือง) · bomber(ระเบิดตอนตาย, สีส้ม) · elite · ผสมในเวฟตามด่าน
+- **กระสุนศัตรู (`foeBullets` + `foeShot`/`hitByFoe`):** บอส/shooter ยิงใส่เรา · `hurtPlayer()` โดนแล้วเสีย HP (dash หลบได้)
+  · **hazard (`spawnHazard`)**: วงอันตรายบนพื้น เตือนก่อนแล้วระเบิด · ล้างด้วย `clearFoes()` ตอนจบเวฟ/ด่าน
+  · **หมายเหตุ:** foeBullets ต้อง `camWorld()` ตอน spawn (กัน 2-camera ghost) — ทำใน foeShot แล้ว
+- **ศัตรู:** 5 ชนิด (basic/fast/tank/shooter/bomber) + บอส, มี object pooling
 - **UI:** การ์ดเลเวลอัพมุมโค้ง, ปุ่มโค้ง, HP/XP bar, หลอดบอส, แบนเนอร์ด่าน+lore
 - **ตัวละคร 3 ตัว (`CHARACTERS`+`CHAR_ORDER`):** momo🍡(bomb) · mint🌿(freeze,+HP30) · cocoa🍫(blackhole,+dmg10%)
   แต่ละตัว "อัลติต่างกัน" (`ACTIVES`: bomb/freeze/blackhole) + โบนัสพาสซีฟ (`bonus`) · **หน้าเลือกตัวละคร** `buildChars()`
