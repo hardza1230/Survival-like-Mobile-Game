@@ -35,8 +35,22 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: prototype เล่นได้ + ระบบสกิล + 5 ด่าน)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: + Skill Awaken + จอกว้างขึ้น + ออร์บสีตามค่า + พรสวรรค์เฉพาะตัว + โทนพาสเทล + โมจิเจลลี่)
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:
+- **Skill Awaken (ตื่นรู้):** สกิลถึง MAX (Lv6) แล้วเลเวลอัพอีก = การ์ด "⚡ ตื่นรู้" เปลี่ยนรูปแบบสกิลให้โกง (Lv7=`SKILL_AWAKEN_LV`)
+  ทุกสกิลมี `d.awaken{name,emoji,desc}` · castSkill อ่าน `aw=lvl>=7` เพิ่มจำนวน/ดาเมจ/ธง (sprinkle 8เม็ด homing, thunder 8จุด, chili 5ชั้น, whirl 16ทิศ, boomer 6ชิ้นเด้ง2, frost แช่ทั้งจอ, popcorn 20, bubble 8, star=วงกาแล็กซี3ชั้นใน rebuildRing)
+  · `cdOf` → Lv7 ร่ายถี่ขึ้น 0.62× (`_cdBase`) · แถบสกิลโชว์ ⚡ + ไอคอน awaken · `awakenSpark()` ประกาย
+- **จอกว้างขึ้น (`this.viewZoom`=0.82):** กล้อง main zoom = DPR×viewZoom (มองกว้าง +22% แต่ backing ยังคมชัด)
+  · รัศมี spawn ศัตรูหาร viewZoom (`/this.viewZoom`) กันเกิดในจอ
+- **ออร์บ EXP สีตามค่า (`orbStyle(v)`):** ศัตรูอึด = ดรอปออร์บ**เม็ดเดียว**ค่าสูง (สี: ขาว1/เขียว2/ฟ้า5/ม่วง10/ทอง20) แทนหลายเม็ด (ลด object)
+  · `dropOrb(x,y,value)` ตั้ง `o.value`+tint+scale · `collectOrb` gain `o.value` · killEnemy ดรอป 1 เม็ดค่า e.xp
+- **แยกหน้าพัฒนา 2 แบบชัด:** 🌟 พรสวรรค์ (เฉพาะตัว) = `CHAR_TALENTS` ต่อตัวละคร (TP จากเลเวลตัวละคร) · ⚙️ อัพเกรดฐาน (ทุกตัว) = `UPGRADES` (Sugar, ใช้ทุกตัว)
+  · **พรสวรรค์คนละสาย:** momo=สมดุล(hp/dmg/cdr/🧨twinBomb) · mint=แทงค์(hp/🛡️armor→dmgTakenMul/magnet/❄️deepFreeze) · cocoa=จอมพลัง(dmg/spd/ult/🕳️bigVoid)
+  · โหนด signature = ธงยกระดับอัลติเฉพาะตัว (twinBomb=บอมบ์2ระลอก, deepFreeze=แช่กว้าง+นาน, bigVoid=หลุมใหญ่ดูดแรง) อ่านใน useActive
+  · เกราะ mint: `p.dmgTakenMul` ลดดาเมจใน hurtPlayer + touchEnemy
+- **โทนพาสเทล:** `COLORS` (bg 0x3b3357, ขอบชมพูนุ่ม), gridBg + STAGES.grid สว่างขึ้น, config backgroundColor #3a3355
+- **โมจิเจลลี่ (squash&stretch):** `this._sqX/_sqY` อิมพัลส์ ease กลับ 1 ทุกเฟรม + วอกแวกหายใจ (`Math.sin`) แรงขึ้นตอนวิ่ง
+  · พุ่ง=ยืด(1.35/0.7) · โดนตี=แบน(0.7/1.3) · setScale ต่อเฟรมใน update (ไม่ใช้ tween กันชนกัน)
 - **คุม:** จอยสติ๊กลอย (ซ้าย) + ปุ่มพุ่ง/dash (ขวาล่าง) + ปุ่มอัลติกดเอง (ชมพู)
 - **สกิลออโต้แคสต์ 9 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
