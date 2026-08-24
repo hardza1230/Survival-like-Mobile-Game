@@ -24,9 +24,10 @@
 - `game.js` — โค้ดเกมทั้งหมด (คลาส Boot วาดกราฟิกด้วย **Canvas 2D** `createCanvas`, คลาส Game = ฉากเล่น)
 - `phaser.min.js` — เอนจิน Phaser 3.80.1 (vendored, มาจาก npm)
 - `assets/` — รูปจริง (AI/วาดมือ) โหลดแทนกราฟิกโค้ด · `ASSET_IMAGES`=รูปนิ่ง · `ASSET_SHEETS`=สไปรต์สตริปหลายเฟรม (game.js)
-  · **มีแล้ว:** char_momo_sheet.png (สไปรต์ 4 เฟรม 128px: [0 idle,1 squash,2 stretch,3 blink] · ลำดับ `CF`)
+  · **มีแล้ว:** char_momo_sheet.png (สไปรต์ 8 เฟรม 128px `CF`: [0 idle,1 blink,2 squash,3 stretch,4 cheer,5 hurt,6 ko,7 cast])
   · Boot.preload โหลด image/spritesheet → mk() ข้ามการวาดโค้ดถ้ามีรูป (`isArtKey`) · `setCharScale()` ปรับ `_pBase`=60/frame + body radius 24 คงที่ (โชว์เท่ากราฟิกเดิม 60px) + ตั้ง `_hasFrames`
-  · **อนิเมชันเฟรม (`updatePose`)**: ปกติ=ยืน+กะพริบเป็นจังหวะ · พุ่ง=ยืด · ลงพื้น/โดนตี=ย่อ (`poseFlash`) — ทำงานทับระบบเจลลี่สปริง (frame=ท่า, scale=ความเด้ง ไม่ตีกัน)
+  · **อนิเมชันเฟรม (`updatePose`+`poseFlash`)**: ปกติ=ยืน+กะพริบ · พุ่ง=stretch · ลงพื้น=squash · โดนตี=hurt · เคลียร์เวฟ=cheer · ตาย=ko · กดอัลติ=cast — ทำงานทับเจลลี่สปริง (frame=ท่า, scale=ความเด้ง ไม่ตีกัน)
+  · ตัด/เลือกเฟรมจากตาราง AI: `scripts/cutout_sheet.mjs SRC OUT CELL COLS ROWS "idx,idx,..."` (เลือก/เรียงช่องที่ต้องการ)
   · เพิ่มรูปใหม่: ตัดพื้นใส/ตัดสตริป (scripts/cutout.mjs, cutout_sheet.mjs) → assets/ → เติม key · build-www คัดลอก assets/ · pages.yml trigger รวม assets/**
 - `LORE.md` — เนื้อเรื่องโลก Mochitopia
 - `CLAUDE.md` — ไฟล์นี้

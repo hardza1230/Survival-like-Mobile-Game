@@ -85,7 +85,8 @@ const ASSET_SHEETS = {
 let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
 function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
-const CF = { idle:0, squash:1, stretch:2, blink:3 };
+// [0 idle,1 blink,2 squash,3 stretch(พุ่ง),4 cheer(ดีใจ),5 hurt(เจ็บ),6 ko(สลบ),7 cast(ร่ายอัลติ)]
+const CF = { idle:0, blink:1, squash:2, stretch:3, cheer:4, hurt:5, ko:6, cast:7 };
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 
 class Boot extends Phaser.Scene {
@@ -456,6 +457,7 @@ class Game extends Phaser.Scene {
   /* ---------- ACTIVE SKILL ---------- */
   useActive(){
     if(this.activeCd>0||this.state!=='play') return;
+    this.poseFlash(CF.cast,400);   // ร่ายอัลติ = หน้ามุ่งมั่นเปล่งพลัง
     const a=this.active, lvl=a.lvl, up=this.player.ultPow||1, uc=this.player.ultCdMul||1;
     if(a.key==='bomb'){
       const r=130+lvl*18, dmg=(16+lvl*7)*up;
@@ -915,7 +917,7 @@ class Game extends Phaser.Scene {
     this.boss=null; this.bossUI.forEach(o=>o.setVisible(false)); this.clearFoes();
     const st=STAGES[this.stageIndex], next=this.waveIndex+1;
     if(next>=st.waves){ this.spawnFinalBoss(); return; }
-    this.mode='breather'; this.updateWaveText();
+    this.mode='breather'; this.updateWaveText(); this.poseFlash(CF.cheer,700);   // เคลียร์เวฟ = ดีใจ
     this.time.delayedCall(750,()=>{ if(this._busy()) this.startWave(next); });
   }
   onStageClear(){
@@ -1258,14 +1260,14 @@ class Game extends Phaser.Scene {
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     this.player.iframe=0.6; this.player.hp-=e.dmg*(this.player.dmgTakenMul||1); Sfx.hurt(); this.cameras.main.shake(120,0.008);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
-    this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.squash,200);   // โดนตี = แบนกระแทก (เจลลี่)
+    this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
     if(this.player.hp<=0) this.die(); }
   // โดนกระสุน/สแลม/hazard ของศัตรู (iframe สั้นกว่า → หลบยาก)
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
     dmg*=(this.player.dmgTakenMul||1);   // เกราะ (พรสวรรค์ mint)
     this.player.iframe=ix||0.5; this.player.hp-=dmg; Sfx.hurt(); this.cameras.main.shake(150,0.009);
-    this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.squash,180);
+    this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>{ if(this.player.active)this.player.clearTint(); });
     if(this.player.hp<=0) this.die(); }
   hitByFoe(player,b){ if(!b.active)return; this.killFoe(b); this.hurtPlayer(b.dmg||10,0.5); }
@@ -1380,7 +1382,9 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){ if(this.state==='dead')return; this.state='dead'; Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0); this.buildOver(); }
+  die(){ if(this.state==='dead')return; this.state='dead'; Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0);
+    if(this._hasFrames){ this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }   // สลบ (X_X)
+    this.buildOver(); }
   buildOver(){ const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
     const em=this.add.text(w/2,h*0.26,'🫠',{fontSize:'64px'}).setOrigin(0.5);

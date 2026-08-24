@@ -6,13 +6,15 @@ const OUT = process.argv[3];
 const CELL = parseInt(process.argv[4]||'128',10);   // ขนาดเฟรมปลายทาง
 const COLS = parseInt(process.argv[5]||'2',10);
 const ROWS = parseInt(process.argv[6]||'2',10);
+// เลือกเฉพาะบางช่อง (index เรียงซ้าย→ขวา บน→ล่าง) เรียงตามลำดับที่ต้องการ · ว่าง=ทุกช่อง
+const SELECT = (process.argv[7]||'').split(',').map(s=>s.trim()).filter(s=>s!=='').map(Number);
 
 const jpg = readFileSync(SRC);
 const dataUrl = 'data:image/jpeg;base64,'+jpg.toString('base64');
 
 const b = await chromium.launch();
 const p = await b.newPage();
-const pngB64 = await p.evaluate(async ({dataUrl, CELL, COLS, ROWS})=>{
+const pngB64 = await p.evaluate(async ({dataUrl, CELL, COLS, ROWS, SELECT})=>{
   const img = new Image();
   await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; img.src=dataUrl; });
   const W=img.naturalWidth, H=img.naturalHeight;
@@ -47,8 +49,9 @@ const pngB64 = await p.evaluate(async ({dataUrl, CELL, COLS, ROWS})=>{
     return { canvas:cv, bbox:{minx,miny,maxx,maxy,w:maxx-minx+1,h:maxy-miny+1,cx:(minx+maxx)/2,cy:(miny+maxy)/2} };
   }
 
-  const quads=[];
+  let quads=[];
   for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++) quads.push(processQuad(c*qw, r*qh));
+  if(SELECT.length) quads = SELECT.map(i=>quads[i]);   // เลือก/เรียงเฉพาะช่องที่ต้องการ
 
   // สเกลร่วม: ให้เฟรมสูงสุด/กว้างสุดพอดีเซลล์ (คงสัดส่วนต่างของแต่ละท่า)
   let maxH=0,maxW=0; for(const q of quads){ maxH=Math.max(maxH,q.bbox.h); maxW=Math.max(maxW,q.bbox.w); }
@@ -62,7 +65,7 @@ const pngB64 = await p.evaluate(async ({dataUrl, CELL, COLS, ROWS})=>{
     sc.drawImage(q.canvas, bb.minx,bb.miny,bb.w,bb.h, dx,dy,dw,dh);
   });
   return strip.toDataURL('image/png').split(',')[1];
-}, {dataUrl, CELL, COLS, ROWS});
+}, {dataUrl, CELL, COLS, ROWS, SELECT});
 await b.close();
 writeFileSync(OUT, Buffer.from(pngB64,'base64'));
 console.log('wrote strip', OUT, CELL+'x'+CELL, 'x', COLS*ROWS, 'frames');
