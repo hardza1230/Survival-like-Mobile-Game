@@ -9,6 +9,7 @@ on:
       - "game.js"
       - "index.html"
       - "phaser.min.js"
+      - "assets/**"
       - "scripts/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:

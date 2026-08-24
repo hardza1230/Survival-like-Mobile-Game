@@ -1,6 +1,6 @@
 // ประกอบโฟลเดอร์ www/ ที่ Capacitor ใช้ (webDir) จากไฟล์เกมที่ root
 // คัดลอก index.html + game.js + phaser.min.js เข้า www/ (ไม่ commit www/ — สร้างตอน build)
-import { mkdirSync, copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, copyFileSync, existsSync, readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -14,6 +14,14 @@ for (const f of ['game.js', 'phaser.min.js']) {
   if (!existsSync(src)) { console.error('missing:', f); process.exit(1); }
   copyFileSync(src, join(www, f));
   console.log('copied', f);
+}
+
+// คัดลอกโฟลเดอร์รูป assets/ (ถ้ามี) — รูปจริงของตัวละคร/ศัตรู ฯลฯ
+const assetsDir = join(root, 'assets');
+if (existsSync(assetsDir)) {
+  const dst = join(www, 'assets');
+  mkdirSync(dst, { recursive: true });
+  for (const f of readdirSync(assetsDir)) { copyFileSync(join(assetsDir, f), join(dst, f)); console.log('copied assets/' + f); }
 }
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)

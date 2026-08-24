@@ -74,10 +74,23 @@ const Sfx = {
    Boot — วาดกราฟิกน่ารักด้วย Canvas 2D (self-contained ไม่โหลดไฟล์นอก)
    ตัวละคร/ศัตรูมีเฉดสี เงานุ่ม แก้มชมพู ตาวาว หน้าตาต่างกัน
    ============================================================ */
+/* ---- ASSET_IMAGES: รูปจริง (AI/วาดมือ) ที่โหลดแทนกราฟิกโค้ด · เพิ่มไฟล์ = เติม key ที่นี่ ----
+   key ต้องตรงกับ texture ที่เกมใช้ (char_momo/char_mint/char_cocoa/e_basic/...) · ไฟล์อยู่โฟลเดอร์ assets/ */
+const ASSET_IMAGES = {
+  char_momo: 'assets/char_momo.png',
+};
+const ART_SRC = 128;   // ขนาดต้นฉบับของไฟล์รูป (px) ใช้คำนวณสเกลให้เท่ากราฟิกโค้ดเดิม (60px)
+
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
+  preload(){
+    for(const k in ASSET_IMAGES) this.load.image(k, ASSET_IMAGES[k]);
+    // ถ้ารูปโหลดไม่ได้ (เช่นเปิดแบบไฟล์เดียว) ให้ข้ามไป ใช้กราฟิกโค้ดแทน (ไม่ให้ค้าง)
+    this.load.on('loaderror',(f)=>{ if(ASSET_IMAGES[f.key]){ delete ASSET_IMAGES[f.key]; } });
+  }
   create(){
-    const mk=(key,size,draw)=>{ if(this.textures.exists(key))this.textures.remove(key);
+    const mk=(key,size,draw)=>{ if(ASSET_IMAGES[key]&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
+      if(this.textures.exists(key))this.textures.remove(key);
       const t=this.textures.createCanvas(key,size,size); if(!t)return; draw(t.getContext(),size); t.refresh(); };
     const rr=(c,x,y,w,h,r)=>{ c.beginPath();
       if(c.roundRect){ c.roundRect(x,y,w,h,r); }
@@ -766,6 +779,7 @@ class Game extends Phaser.Scene {
     this.active={ key:ch.active, lvl:1 };
     if(this.skillEmoji)this.skillEmoji.setText(ACTIVES[ch.active].emoji);
     if(this.textures.exists('char_'+this.character))this.player.setTexture('char_'+this.character);
+    this.setCharScale('char_'+this.character);   // รูปจริงตัวใหญ่ → ปรับสเกล/ขอบชนให้เท่ากราฟิกโค้ดเดิม (60px)
     if(this.aura)this.aura.setFillStyle(ch.color||COLORS.mochiEdge,0.14);
     // โบนัสตัวละคร
     if(ch.bonus){ if(ch.bonus.maxhp)p.maxhp+=ch.bonus.maxhp; if(ch.bonus.dmgMul)p.dmgMul*=ch.bonus.dmgMul;
@@ -1304,6 +1318,13 @@ class Game extends Phaser.Scene {
     const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
     this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
+  // ปรับสเกล+ขอบชนของตัวละครให้เท่ากราฟิกเดิม (60px) ไม่ว่ารูปจริงจะกี่พิกเซล
+  setCharScale(key){
+    const src=(this.textures.exists(key)&&this.textures.get(key).getSourceImage&&this.textures.get(key).getSourceImage()?this.textures.get(key).getSourceImage().width:0)||60;
+    this._pBase=60/src;                    // โค้ด 60→1 · รูป 128→0.469 (โชว์เท่ากัน)
+    const r=24, off=Math.max(0,(src-2*r)/2);
+    if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);  // world radius คงที่ 24 (body ไม่สเกลตาม setScale)
+  }
   // อนิเมชันตัวละคร: สปริงเจลลี่ (เด้งดึ๋งมีโมเมนตัม) + หายใจ + ส่ายตัวเวลาเดิน + เอนตามทิศ
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
@@ -1324,7 +1345,8 @@ class Game extends Phaser.Scene {
     const leanT=moving?Phaser.Math.Clamp(p.body.velocity.x/1100,-0.16,0.16):0;
     this._lean += (leanT-this._lean)*Math.min(1,dt*7);
     p.rotation = waddle + this._lean;
-    p.setScale(this._sqX*(1-breathe), this._sqY*(1+breathe));
+    const base=this._pBase||1;
+    p.setScale(base*this._sqX*(1-breathe), base*this._sqY*(1+breathe));
   }
   // ดีดสปริงตัวละคร (อิมพัลส์นุ่ม ๆ) — vx,vy = แรงกระแทกใส่สเกล X,Y
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }

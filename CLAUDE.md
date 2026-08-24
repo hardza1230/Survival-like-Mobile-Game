@@ -23,6 +23,9 @@
 - `index.html` — หน้าเกม (โหลด phaser.min.js + game.js)
 - `game.js` — โค้ดเกมทั้งหมด (คลาส Boot วาดกราฟิกด้วย **Canvas 2D** `createCanvas`, คลาส Game = ฉากเล่น)
 - `phaser.min.js` — เอนจิน Phaser 3.80.1 (vendored, มาจาก npm)
+- `assets/` — รูปจริง (AI/วาดมือ) ที่โหลดแทนกราฟิกโค้ด · ลงทะเบียนใน `ASSET_IMAGES` (game.js) · **มีแล้ว:** char_momo.png (โมจิสตรอว์เบอร์รี AI, ตัดพื้นใส 128px)
+  · Boot.preload โหลดรูป → mk() ข้ามการวาดโค้ดถ้ามีรูป · `setCharScale()` ปรับ `_pBase`=60/ต้นฉบับ + body radius 24 คงที่ (โชว์เท่ากราฟิกเดิม 60px)
+  · เพิ่มรูปใหม่: ตัดพื้นใส (scripts/cutout.mjs) → assets/ → เติม key ใน ASSET_IMAGES · build-www คัดลอก assets/ · pages.yml trigger รวม assets/**
 - `LORE.md` — เนื้อเรื่องโลก Mochitopia
 - `CLAUDE.md` — ไฟล์นี้
 - **Build APK (Capacitor):** `package.json` + `capacitor.config.json` (appId com.mochimayhem.game, webDir www)
