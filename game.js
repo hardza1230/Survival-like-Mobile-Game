@@ -74,22 +74,28 @@ const Sfx = {
    Boot — วาดกราฟิกน่ารักด้วย Canvas 2D (self-contained ไม่โหลดไฟล์นอก)
    ตัวละคร/ศัตรูมีเฉดสี เงานุ่ม แก้มชมพู ตาวาว หน้าตาต่างกัน
    ============================================================ */
-/* ---- ASSET_IMAGES: รูปจริง (AI/วาดมือ) ที่โหลดแทนกราฟิกโค้ด · เพิ่มไฟล์ = เติม key ที่นี่ ----
-   key ต้องตรงกับ texture ที่เกมใช้ (char_momo/char_mint/char_cocoa/e_basic/...) · ไฟล์อยู่โฟลเดอร์ assets/ */
-const ASSET_IMAGES = {
-  char_momo: 'assets/char_momo.png',
+/* ---- รูปจริง (AI/วาดมือ) ที่โหลดแทนกราฟิกโค้ด · เพิ่มไฟล์ = เติม key ที่นี่ ----
+   key ต้องตรงกับ texture ที่เกมใช้ (char_momo/char_mint/char_cocoa/e_basic/...) · ไฟล์อยู่โฟลเดอร์ assets/
+   · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
+     เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
+const ASSET_IMAGES = {};
+const ASSET_SHEETS = {
+  char_momo: { url:'assets/char_momo_sheet.png', frame:128 },
 };
-const ART_SRC = 128;   // ขนาดต้นฉบับของไฟล์รูป (px) ใช้คำนวณสเกลให้เท่ากราฟิกโค้ดเดิม (60px)
+// เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
+const CF = { idle:0, squash:1, stretch:2, blink:3 };
+function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
   preload(){
     for(const k in ASSET_IMAGES) this.load.image(k, ASSET_IMAGES[k]);
+    for(const k in ASSET_SHEETS) this.load.spritesheet(k, ASSET_SHEETS[k].url, { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
     // ถ้ารูปโหลดไม่ได้ (เช่นเปิดแบบไฟล์เดียว) ให้ข้ามไป ใช้กราฟิกโค้ดแทน (ไม่ให้ค้าง)
-    this.load.on('loaderror',(f)=>{ if(ASSET_IMAGES[f.key]){ delete ASSET_IMAGES[f.key]; } });
+    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; });
   }
   create(){
-    const mk=(key,size,draw)=>{ if(ASSET_IMAGES[key]&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
+    const mk=(key,size,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
       if(this.textures.exists(key))this.textures.remove(key);
       const t=this.textures.createCanvas(key,size,size); if(!t)return; draw(t.getContext(),size); t.refresh(); };
     const rr=(c,x,y,w,h,r)=>{ c.beginPath();
@@ -1250,13 +1256,14 @@ class Game extends Phaser.Scene {
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     this.player.iframe=0.6; this.player.hp-=e.dmg*(this.player.dmgTakenMul||1); Sfx.hurt(); this.cameras.main.shake(120,0.008);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
-    this._sqX=0.7; this._sqY=1.3;   // โดนตี = แบนกระแทก (เจลลี่)
+    this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.squash,200);   // โดนตี = แบนกระแทก (เจลลี่)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
     if(this.player.hp<=0) this.die(); }
   // โดนกระสุน/สแลม/hazard ของศัตรู (iframe สั้นกว่า → หลบยาก)
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
     dmg*=(this.player.dmgTakenMul||1);   // เกราะ (พรสวรรค์ mint)
     this.player.iframe=ix||0.5; this.player.hp-=dmg; Sfx.hurt(); this.cameras.main.shake(150,0.009);
+    this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.squash,180);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>{ if(this.player.active)this.player.clearTint(); });
     if(this.player.hp<=0) this.die(); }
   hitByFoe(player,b){ if(!b.active)return; this.killFoe(b); this.hurtPlayer(b.dmg||10,0.5); }
@@ -1320,11 +1327,30 @@ class Game extends Phaser.Scene {
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
   // ปรับสเกล+ขอบชนของตัวละครให้เท่ากราฟิกเดิม (60px) ไม่ว่ารูปจริงจะกี่พิกเซล
   setCharScale(key){
-    const src=(this.textures.exists(key)&&this.textures.get(key).getSourceImage&&this.textures.get(key).getSourceImage()?this.textures.get(key).getSourceImage().width:0)||60;
+    // ขนาด "เฟรม" (สไปรต์สตริปใช้ frame width ไม่ใช่ความกว้างสตริปทั้งแผ่น)
+    const src = (ASSET_SHEETS[key]&&ASSET_SHEETS[key].frame)
+      || (this.player&&this.player.frame&&this.player.frame.width)
+      || 60;
     this._pBase=60/src;                    // โค้ด 60→1 · รูป 128→0.469 (โชว์เท่ากัน)
+    this._hasFrames = !!ASSET_SHEETS[key] && this.textures.exists(key) && this.textures.get(key).frameTotal>1;
+    if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
     if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);  // world radius คงที่ 24 (body ไม่สเกลตาม setScale)
   }
+  // เลือกเฟรมท่าทาง: พุ่ง=ยืด · โดนตี=ย่อ · ปกติ=ยืน+กะพริบเป็นระยะ (เฉพาะตัวที่มีสไปรต์หลายเฟรม)
+  updatePose(dt){
+    if(!this._hasFrames)return;
+    if(this._poseHold>0){ this._poseHold-=dt; return; }   // ค้างท่า event อยู่ (ยืด/ย่อ)
+    // ท่าตามสถานะ
+    if(this.dashTime>0){ this.player.setFrame(CF.stretch); return; }
+    // กะพริบตาเป็นจังหวะ
+    this._blinkT-=dt;
+    if(this._blinkT<=0){ this.player.setFrame(CF.blink);
+      if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
+    else this.player.setFrame(CF.idle);
+  }
+  // สั่งค้างท่า event ชั่วครู่ (ใช้ตอนพุ่ง/โดนตี)
+  poseFlash(frame,ms){ if(!this._hasFrames)return; this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   // อนิเมชันตัวละคร: สปริงเจลลี่ (เด้งดึ๋งมีโมเมนตัม) + หายใจ + ส่ายตัวเวลาเดิน + เอนตามทิศ
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
@@ -1371,7 +1397,7 @@ class Game extends Phaser.Scene {
 
     if(this.joy.active&&(this.joy.dx||this.joy.dy)){ this.moveDir.set(this.joy.dx,this.joy.dy); if(this.moveDir.lengthSq()>0.04)this.moveDir.normalize(); }
 
-    if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; } }  // ลงพื้นหลังพุ่ง = ย่อตัวเด้ง
+    if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; this.poseFlash(CF.squash,150); } }  // ลงพื้นหลังพุ่ง = ย่อตัวเด้ง
     else {
       const spd=this.player.baseSpeed;
       if(this.joy.active&&(Math.abs(this.joy.dx)+Math.abs(this.joy.dy))>0.12) this.player.setVelocity(this.joy.dx*spd,this.joy.dy*spd);
@@ -1380,7 +1406,7 @@ class Game extends Phaser.Scene {
 
     if(this.player.iframe>0)this.player.iframe-=dt;
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
-    this.animatePlayer(dt);
+    this.animatePlayer(dt); this.updatePose(dt);
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.dashBtn.setFillStyle(COLORS.mint,this.dashReady?0.28:0.10);
     // active cd (+ ริงคูลดาวน์ + เด้งตอนพร้อม)

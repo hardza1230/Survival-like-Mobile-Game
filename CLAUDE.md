@@ -23,9 +23,11 @@
 - `index.html` — หน้าเกม (โหลด phaser.min.js + game.js)
 - `game.js` — โค้ดเกมทั้งหมด (คลาส Boot วาดกราฟิกด้วย **Canvas 2D** `createCanvas`, คลาส Game = ฉากเล่น)
 - `phaser.min.js` — เอนจิน Phaser 3.80.1 (vendored, มาจาก npm)
-- `assets/` — รูปจริง (AI/วาดมือ) ที่โหลดแทนกราฟิกโค้ด · ลงทะเบียนใน `ASSET_IMAGES` (game.js) · **มีแล้ว:** char_momo.png (โมจิสตรอว์เบอร์รี AI, ตัดพื้นใส 128px)
-  · Boot.preload โหลดรูป → mk() ข้ามการวาดโค้ดถ้ามีรูป · `setCharScale()` ปรับ `_pBase`=60/ต้นฉบับ + body radius 24 คงที่ (โชว์เท่ากราฟิกเดิม 60px)
-  · เพิ่มรูปใหม่: ตัดพื้นใส (scripts/cutout.mjs) → assets/ → เติม key ใน ASSET_IMAGES · build-www คัดลอก assets/ · pages.yml trigger รวม assets/**
+- `assets/` — รูปจริง (AI/วาดมือ) โหลดแทนกราฟิกโค้ด · `ASSET_IMAGES`=รูปนิ่ง · `ASSET_SHEETS`=สไปรต์สตริปหลายเฟรม (game.js)
+  · **มีแล้ว:** char_momo_sheet.png (สไปรต์ 4 เฟรม 128px: [0 idle,1 squash,2 stretch,3 blink] · ลำดับ `CF`)
+  · Boot.preload โหลด image/spritesheet → mk() ข้ามการวาดโค้ดถ้ามีรูป (`isArtKey`) · `setCharScale()` ปรับ `_pBase`=60/frame + body radius 24 คงที่ (โชว์เท่ากราฟิกเดิม 60px) + ตั้ง `_hasFrames`
+  · **อนิเมชันเฟรม (`updatePose`)**: ปกติ=ยืน+กะพริบเป็นจังหวะ · พุ่ง=ยืด · ลงพื้น/โดนตี=ย่อ (`poseFlash`) — ทำงานทับระบบเจลลี่สปริง (frame=ท่า, scale=ความเด้ง ไม่ตีกัน)
+  · เพิ่มรูปใหม่: ตัดพื้นใส/ตัดสตริป (scripts/cutout.mjs, cutout_sheet.mjs) → assets/ → เติม key · build-www คัดลอก assets/ · pages.yml trigger รวม assets/**
 - `LORE.md` — เนื้อเรื่องโลก Mochitopia
 - `CLAUDE.md` — ไฟล์นี้
 - **Build APK (Capacitor):** `package.json` + `capacitor.config.json` (appId com.mochimayhem.game, webDir www)
