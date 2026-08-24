@@ -80,7 +80,9 @@ const Sfx = {
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {};
 const ASSET_SHEETS = {
-  char_momo: { url:'assets/char_momo_sheet.png', frame:128 },
+  char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
+  char_mint:  { url:'assets/char_mint_sheet.png',  frame:128 },
+  char_cocoa: { url:'assets/char_cocoa_sheet.png', frame:128 },
 };
 let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
 function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
