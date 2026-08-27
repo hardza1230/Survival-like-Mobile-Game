@@ -337,9 +337,9 @@ const COMBOS = [
 
 /* ---- UPGRADES: อัพเกรดตัวละครถาวร (ซื้อด้วย Sugar, เก็บใน Save.upgrades[key]=lvl) ---- */
 const UPGRADES = {
-  hp:     { emoji:'❤️', name:'พลังชีวิต', unit:'HP สูงสุด +20/เลเวล', max:8, cost:l=>30+l*25,  apply:(p,l)=>{ p.maxhp+=20*l; } },
-  dmg:    { emoji:'💥', name:'พลังโจมตี', unit:'ดาเมจ +6%/เลเวล',     max:8, cost:l=>35+l*30,  apply:(p,l)=>{ p.dmgMul*=(1+0.06*l); } },
-  spd:    { emoji:'👟', name:'ความเร็ว',  unit:'เดินเร็ว +4%/เลเวล',   max:6, cost:l=>30+l*25,  apply:(p,l)=>{ p.baseSpeed*=(1+0.04*l); } },
+  hp:     { emoji:'❤️', name:'พลังชีวิต', unit:'HP สูงสุด +14/เลเวล', max:8, cost:l=>35+l*30,  apply:(p,l)=>{ p.maxhp+=14*l; } },
+  dmg:    { emoji:'💥', name:'พลังโจมตี', unit:'ดาเมจ +4%/เลเวล',     max:8, cost:l=>45+l*35,  apply:(p,l)=>{ p.dmgMul*=(1+0.04*l); } },
+  spd:    { emoji:'👟', name:'ความเร็ว',  unit:'เดินเร็ว +3%/เลเวล',   max:6, cost:l=>30+l*25,  apply:(p,l)=>{ p.baseSpeed*=(1+0.03*l); } },
   magnet: { emoji:'🧲', name:'แม่เหล็ก',  unit:'ระยะดูด +12%/เลเวล',   max:6, cost:l=>25+l*20,  apply:(p,l)=>{ p.pickup*=(1+0.12*l); } },
 };
 const UPG_ORDER=['hp','dmg','spd','magnet'];
@@ -384,6 +384,9 @@ const Save = {
   cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
   gearLv(id){ return (this.data.gearLv&&this.data.gearLv[id])||0; },
   enhance(id){ this.data.gearLv[id]=(this.gearLv(id))+1; this.save(); },
+  reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{} };
+    this.load(); },
 };
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
@@ -408,6 +411,15 @@ const STAGES = [
     lore:'ใจกลางคำสาป — เชฟขมรอโมโม่อยู่ ทำลายเขาเพื่อปลดปล่อยครัว!',
     waves:8, miniAt:4, mini:'ผู้ช่วยเชฟหุ่นเหล็ก',
     boss:'เชฟขม (The Bitter Chef)', bossHp:2400, bossDmg:38 },
+];
+
+/* ---- CHAPTERS: กรุ๊ปด่านเป็น "บท" · บทที่ 1 = 5 ด่านครัว (เล่นได้) · บท 2-5 = เร็ว ๆ นี้ ---- */
+const CHAPTERS = [
+  { name:'บทที่ 1 · ครัวต้องสาป', emoji:'🍳', desc:'5 ด่านครัว — ตู้กับข้าว → เตาอบใหญ่', ready:true },
+  { name:'บทที่ 2 · ตู้เย็นนรก',   emoji:'🧊', desc:'ดินแดนเยือกแข็งของ Frost Horde', ready:false },
+  { name:'บทที่ 3 · สวนขนมหวาน',  emoji:'🍰', desc:'ป่าลูกกวาดและปีศาจน้ำตาล', ready:false },
+  { name:'บทที่ 4 · โรงงานขนม',    emoji:'🏭', desc:'สายพานเครื่องจักรและหุ่นเหล็ก', ready:false },
+  { name:'บทที่ 5 · ปราสาทจอมหิว', emoji:'👑', desc:'บอสลับ The Great Hunger รออยู่', ready:false },
 ];
 
 class Game extends Phaser.Scene {
@@ -794,6 +806,14 @@ class Game extends Phaser.Scene {
     mk(h*0.65,'🌟 พรสวรรค์ (เฉพาะตัว)',0xf6a5c0,()=>{ this.menuScreen='talent'; this.buildMenuScreen(); });
     mk(h*0.755,'⚙️ อัพเกรดฐาน (ทุกตัว)',COLORS.grape,()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); });
     mk(h*0.86,'🎽 ของสวมใส่',COLORS.mint,()=>{ this.menuScreen='gear'; this.buildMenuScreen(); });
+    // ปุ่มรีเซ็ตเซฟ (สำหรับเทส) — แตะ 2 ครั้งยืนยัน
+    const rt=this.add.text(w/2,h*0.955, this._resetConfirm?'⚠️ แตะอีกครั้งเพื่อล้างทั้งหมด':'🗑️ รีเซ็ตความคืบหน้า',
+      {fontFamily:'sans-serif',fontSize:'13px',color:this._resetConfirm?'#ff8fb5':'#7a7088'}).setOrigin(0.5);
+    this.menu.add(rt);
+    this._zone(w/2-110,h*0.955-16,220,32,()=>{
+      if(this._resetConfirm){ Save.reset(); this._resetConfirm=false; this.character='momo'; if(this.skillEmoji)this.skillEmoji.setText(ACTIVES[CHARACTERS.momo.active].emoji); Sfx.clear(); this.buildMenuScreen(); }
+      else { this._resetConfirm=true; Sfx.select(); this.buildMenuScreen(); this.time.delayedCall(3000,()=>{ if(this._resetConfirm){ this._resetConfirm=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); } }); }
+    });
     this.menu.setVisible(true);
   }
   buildTalent(){
@@ -838,12 +858,14 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildStageSelect(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกด่าน');
-    const unlocked=Save.data.unlockedStage||0, y0=this.H*0.14;
-    STAGES.forEach((st,i)=>{ const y=y0+i*72, locked=i>unlocked;
-      this._rowBtn(y,62,st.emoji,'ด่าน '+(i+1)+': '+st.name,
-        locked?'ผ่านด่านก่อนหน้าเพื่อปลดล็อก':(st.waves+' เวฟ · มินิ + บอสใหญ่'),
-        locked?'🔒':'▶ เล่น', locked?'#7a7088':'#8bd3a0', locked?null:()=>{ this.startRun(i); });
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกบท');
+    const note=this.add.text(this.W/2,this.H*0.115,'แต่ละบทเริ่มจากด่าน 1 เสมอ · เคลียร์ให้ครบทั้งบท',{fontFamily:'sans-serif',fontSize:'12px',color:'#b7abc9'}).setOrigin(0.5);
+    this.menu.add(note);
+    const y0=this.H*0.17;
+    CHAPTERS.forEach((ch,i)=>{ const y=y0+i*74;
+      this._rowBtn(y,62,ch.emoji,ch.name,ch.desc,
+        ch.ready?'▶ เริ่มบท':'🔒 เร็ว ๆ นี้', ch.ready?'#8bd3a0':'#7a7088',
+        ch.ready?()=>{ this.startRun(0); }:()=>{ Sfx.select(); });
     });
     this.menu.setVisible(true);
   }
