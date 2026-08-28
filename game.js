@@ -241,42 +241,42 @@ class Boot extends Phaser.Scene {
 
 /* ---- SKILLS: auto-cast, flashy, stackable ---- */
 const SKILLDEFS = {
-  sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', max:6, desc:'ยิงลูกกวาดใส่ศัตรูใกล้สุด',
+  sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', max:5, desc:'ยิงลูกกวาดใส่ศัตรูใกล้สุด',
     awaken:{ name:'พายุสายรุ้ง', emoji:'🌈', desc:'ยิง 8 เม็ดไล่เป้าอัตโนมัติ ทะลุ+เด้ง ร่ายถี่ยิบ!' } },
-  star:    { name:'Star Guard',     emoji:'🌟', max:6, desc:'ดาวหมุนรอบตัวคุ้มกัน', orbit:true,
+  star:    { name:'Star Guard',     emoji:'🌟', max:5, desc:'ดาวหมุนรอบตัวคุ้มกัน', orbit:true,
     awaken:{ name:'วงกาแล็กซี', emoji:'💫', desc:'ดาว 3 วง หมุนไว ดาเมจมหาศาล!' } },
-  chili:   { name:'Chili Nova',     emoji:'🌶️', max:6, desc:'ระเบิดเผ็ดรอบตัวเป็นวง',
+  chili:   { name:'Chili Nova',     emoji:'🌶️', max:5, desc:'ระเบิดเผ็ดรอบตัวเป็นวง',
     awaken:{ name:'ภูเขาไฟ', emoji:'🌋', desc:'ระเบิด 5 ชั้น วงกว้างมหึมา สะเทือนจอ!' } },
-  thunder: { name:'Thunder Drop',   emoji:'⚡', max:6, desc:'ฟ้าผ่าสุ่มลงศัตรูรอบตัว',
+  thunder: { name:'Thunder Drop',   emoji:'⚡', max:5, desc:'ฟ้าผ่าสุ่มลงศัตรูรอบตัว',
     awaken:{ name:'พายุนิรันดร์', emoji:'🌩️', desc:'ฟ้าผ่า 8 จุด แตกลูกลามทั้งสนาม!' } },
-  whirl:   { name:'Cream Whirl',    emoji:'🍥', max:6, desc:'ครีมหมุนกระจายรอบทิศ',
+  whirl:   { name:'Cream Whirl',    emoji:'🍥', max:5, desc:'ครีมหมุนกระจายรอบทิศ',
     awaken:{ name:'ทอร์นาโดครีม', emoji:'🌪️', desc:'16 ทิศ ใบพัดยักษ์ ทะลุทุกตัว!' } },
-  boomer:  { name:'Boomerang Cookie',emoji:'🍪', max:6, desc:'คุกกี้พุ่งออกแล้วบินกลับ ทะลุศัตรู',
+  boomer:  { name:'Boomerang Cookie',emoji:'🍪', max:5, desc:'คุกกี้พุ่งออกแล้วบินกลับ ทะลุศัตรู',
     awaken:{ name:'เฮอริเคนคุกกี้', emoji:'🍪', desc:'6 ชิ้นยักษ์ เด้ง 2 รอบ ฟันถี่!' } },
-  frost:   { name:'Frost Pulse',    emoji:'❄️', max:6, desc:'คลื่นเย็นแช่แข็งศัตรูใกล้ตัว',
+  frost:   { name:'Frost Pulse',    emoji:'❄️', max:5, desc:'คลื่นเย็นแช่แข็งศัตรูใกล้ตัว',
     awaken:{ name:'ศูนย์สัมบูรณ์', emoji:'🧊', desc:'แช่ทั้งจอ + ระเบิดน้ำแข็งดาเมจสูง!' } },
-  popcorn: { name:'Popcorn Pop',    emoji:'🍿', max:6, desc:'ป๊อปคอร์นแตกกระจายรอบตัวมั่ว ๆ',
+  popcorn: { name:'Popcorn Pop',    emoji:'🍿', max:5, desc:'ป๊อปคอร์นแตกกระจายรอบตัวมั่ว ๆ',
     awaken:{ name:'ป๊อปคอร์นถล่มโลก', emoji:'🍿', desc:'20 เม็ดถล่มจอ ทะลุ ยิงไกล!' } },
-  bubble:  { name:'Bubble Homing',  emoji:'🫧', max:6, desc:'ฟองสบู่วิ่งไล่ศัตรูอัตโนมัติ',
+  bubble:  { name:'Bubble Homing',  emoji:'🫧', max:5, desc:'ฟองสบู่วิ่งไล่ศัตรูอัตโนมัติ',
     awaken:{ name:'ฝูงฟองล่า', emoji:'🫧', desc:'8 ฟองไล่แม่นยำ ทะลุศัตรู!' } },
-  aura:    { name:'Sweet Aura',     emoji:'🌸', max:6, desc:'ออร่าหวานทำดาเมจศัตรูรอบตัวตลอดเวลา',
+  aura:    { name:'Sweet Aura',     emoji:'🌸', max:5, desc:'ออร่าหวานทำดาเมจศัตรูรอบตัวตลอดเวลา',
     awaken:{ name:'พายุกลีบหวาน', emoji:'🌸', desc:'ออร่ากว้างมาก ดาเมจสูง ดูดศัตรูเข้า!' } },
-  fork:    { name:'Fork Fling',     emoji:'🍴', max:6, desc:'ขว้างส้อมทะลุศัตรูเป็นแนว',
+  fork:    { name:'Fork Fling',     emoji:'🍴', max:5, desc:'ขว้างส้อมทะลุศัตรูเป็นแนว',
     awaken:{ name:'พายุส้อม', emoji:'🍴', desc:'ส้อม 10 เล่มพุ่งทุกทิศ ทะลุหมด!' } },
-  mine:    { name:'Cupcake Mine',   emoji:'🧁', max:6, desc:'วางคัพเค้กระเบิดดักศัตรู',
+  mine:    { name:'Cupcake Mine',   emoji:'🧁', max:5, desc:'วางคัพเค้กระเบิดดักศัตรู',
     awaken:{ name:'ทุ่นหวานถล่ม', emoji:'🧁', desc:'วาง 4 ลูก ระเบิดใหญ่มาก!' } },
-  beam:    { name:'Caramel Beam',   emoji:'🔆', max:6, desc:'ยิงลำแสงคาราเมลทะลุเป็นแนวตรง',
+  beam:    { name:'Caramel Beam',   emoji:'🔆', max:5, desc:'ยิงลำแสงคาราเมลทะลุเป็นแนวตรง',
     awaken:{ name:'ลำแสงมรณะ', emoji:'🔆', desc:'3 ลำกว้าง เผาทะลุทั้งแนว!' } },
-  meteor:  { name:'Donut Drop',     emoji:'🍩', max:6, desc:'โดนัทหล่นจากฟ้าระเบิดใส่ศัตรู',
+  meteor:  { name:'Donut Drop',     emoji:'🍩', max:5, desc:'โดนัทหล่นจากฟ้าระเบิดใส่ศัตรู',
     awaken:{ name:'ฝนโดนัท', emoji:'🍩', desc:'10 ลูกถล่มทั้งจอ!' } },
-  cloud:   { name:'Mocha Mist',     emoji:'☕', max:6, desc:'ปล่อยไอมอคค่าพิษ ดาเมจต่อเนื่อง',
+  cloud:   { name:'Mocha Mist',     emoji:'☕', max:5, desc:'ปล่อยไอมอคค่าพิษ ดาเมจต่อเนื่อง',
     awaken:{ name:'หมอกมรณะ', emoji:'☕', desc:'กลุ่มใหญ่ ดาเมจสูง อยู่นาน!' } },
-  rocket:  { name:'Candy Rocket',   emoji:'🚀', max:6, desc:'ยิงจรวดลูกอมไล่เป้า ระเบิด AoE',
+  rocket:  { name:'Candy Rocket',   emoji:'🚀', max:5, desc:'ยิงจรวดลูกอมไล่เป้า ระเบิด AoE',
     awaken:{ name:'ฝูงจรวด', emoji:'🚀', desc:'6 ลูกไล่เป้า ระเบิดใหญ่!' } },
-  wave:    { name:'Cream Wave',     emoji:'🌊', max:6, desc:'ปล่อยคลื่นครีมขยายผลักศัตรู',
+  wave:    { name:'Cream Wave',     emoji:'🌊', max:5, desc:'ปล่อยคลื่นครีมขยายผลักศัตรู',
     awaken:{ name:'สึนามิครีม', emoji:'🌊', desc:'คลื่นยักษ์ 3 ระลอก!' } },
 };
-const SKILL_AWAKEN_LV = 7;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (6)
+const SKILL_AWAKEN_LV = 6;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (5 ดาว)
 const SKILL_CAP  = 6;        // ล็อกสกิลโจมตี ≤ 6 อย่าง/รอบ (แบบ Vampire Survivors)
 const PASSIVE_CAP = 6;       // ล็อกสกิลติดตัว ≤ 6 อย่าง/รอบ
 /* ---- PASSIVES: สกิลติดตัวแบบเลเวลได้ (คนละหมวดกับสกิลโจมตี) · apply(p)=ผล 1 rank ---- */
@@ -371,12 +371,12 @@ const SKILL_TIERS = {
   wave:    { 2:'คลื่นกว้างขึ้น', 3:'ดาเมจ+ผลักแรง', 4:'ไกลมาก', 5:'คลื่นใหญ่', 6:'สึนามิครีม!' },
 };
 
-/* ---- COMBOS: มีสกิลคู่ที่เข้าคู่กัน = ปลดโบนัส (ใช้ธง this.comboFlags ตอน cast) ---- */
+/* ---- COMBOS: สกิลโจมตี (a) + สกิลติดตัว (b) เข้าคู่กัน = ปลดโบนัส (ธง this.comboFlags ตอน cast) ---- */
 const COMBOS = [
-  { key:'storm',     a:'thunder',  b:'frost',   emoji:'❄️⚡', name:'พายุน้ำแข็ง',   desc:'ฟ้าผ่าแรงขึ้น 40% · แช่นานขึ้น' },
-  { key:'firestorm', a:'chili',    b:'whirl',   emoji:'🌶️🍥', name:'พายุเพลิง',     desc:'ครีมหมุนติดไฟแรงขึ้น · วงพริกกว้างขึ้น' },
-  { key:'ricochet',  a:'sprinkle', b:'boomer',  emoji:'🍬🍪', name:'ลูกกวาดพเนจร', desc:'ลูกกวาดเด้งเพิ่ม · คุกกี้ทะลุถี่ขึ้น' },
-  { key:'fizz',      a:'popcorn',  b:'bubble',  emoji:'🍿🫧', name:'โซดาแตกฟอง',   desc:'ป๊อปคอร์น+ฟองใหญ่ขึ้นทั้งคู่ · ดาเมจ +25%' },
+  { key:'storm',     a:'thunder',  b:'crit',   emoji:'⚡🎯', name:'ฟ้าคริติคอล',  desc:'ฟ้าผ่าแรงขึ้น 40%' },
+  { key:'firestorm', a:'chili',    b:'power',  emoji:'🌶️💥', name:'พายุเพลิง',    desc:'วงพริก/ครีมหมุนแรงขึ้น' },
+  { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'ลูกกวาดพเนจร', desc:'ลูกกวาด/คุกกี้เด้งเพิ่ม' },
+  { key:'fizz',      a:'popcorn',  b:'magnet', emoji:'🍿🧲', name:'โซดาแตกฟอง',   desc:'ป๊อปคอร์น/ฟองแรงขึ้น +25%' },
 ];
 
 /* ---- UPGRADES (ระบบ "พรสวรรค์"): 3 สแตตถาวร HP/ATK/DEF ที่ต้องอัพให้เต็มแล้ว "เลื่อนยศ" ----
@@ -527,7 +527,7 @@ class Game extends Phaser.Scene {
     this.viewZoom=0.82;                                    // <1 = ซูมออก มองกว้างขึ้น (เห็นโลกมากขึ้น ~22%)
     this.W=this.scale.width/this.DPR; this.H=this.scale.height/this.DPR;  // พิกัดใช้งาน = CSS px (เหมือนเดิม)
     this.state='menu'; this.elapsed=0; this.kills=0;
-    this.level=1; this.xp=0; this.xpNext=4;
+    this.level=1; this.xp=0; this.xpNext=3;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
@@ -847,7 +847,7 @@ class Game extends Phaser.Scene {
   checkCombos(){
     this.comboFlags={};
     for(const c of COMBOS){
-      if((this.skills[c.a]||0)>0 && (this.skills[c.b]||0)>0){
+      if((this.skills[c.a]||0)>0 && (this.passives[c.b]||0)>0){   // สกิลโจมตี a + สกิลติดตัว b
         this.comboFlags[c.key]=true;
         if(!this.combosOwned[c.key]){ this.combosOwned[c.key]=true;
           if(this.state==='play'||this.state==='levelup'){ this.showBanner('✨ คอมโบปลดล็อก! '+c.emoji, c.name+' — '+c.desc, 2600); Sfx.clear(); } }
@@ -1419,7 +1419,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n;
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.22+3); this.pendingLvl=(this.pendingLvl||0)+1; this.jelly(0,3.2); }  // เลเวลอัพ = เด้งดีใจ
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.14+2); this.pendingLvl=(this.pendingLvl||0)+1; this.jelly(0,3.2); }  // เลเวลอัพ = เด้งดีใจ (โค้งนุ่มขึ้น แบบ VS)
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
@@ -1455,10 +1455,11 @@ class Game extends Phaser.Scene {
       const ds=this.add.text(lx+80,y+52,o.desc,{fontFamily:'sans-serif',fontSize:'12px',color:'#d6cce6',wordWrap:{width:cardW-96}}).setOrigin(0,0);
       const rm=this.add.text(lx+cardW-14,y+14,remain,{fontFamily:'sans-serif',fontSize:'10px',color:'#9a90ab'}).setOrigin(1,0);
       this.lvlUp.add([g,em,starT,badge,nm,ds,rm]);
-      // ---- แถบคอมโบ (ล่างการ์ด) — เฉพาะสกิลโจมตีที่อยู่ในคู่คอมโบ ----
-      if(o.type==='atk'||o.type==='awk'){ const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
-        if(combo){ const partner=combo.a===o.key?combo.b:combo.a, have=(this.skills[partner]||0)>0;
-          const pe=SKILLDEFS[partner]?SKILLDEFS[partner].emoji:'❓', cy=y+ch-19;
+      // ---- แถบคอมโบ (ล่างการ์ด) — สกิลโจมตี (a) จับคู่สกิลติดตัว (b) ----
+      { const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
+        if(combo){ const isAtk=combo.a===o.key, partner=isAtk?combo.b:combo.a;
+          const pe=isAtk?(PASSIVES[partner]?PASSIVES[partner].emoji:'❓'):(SKILLDEFS[partner]?SKILLDEFS[partner].emoji:'❓');
+          const have=isAtk?((this.passives[partner]||0)>0):((this.skills[partner]||0)>0), cy=y+ch-19;
           const cg=this.add.graphics(); cg.fillStyle(have?0x2f4a38:0x39304a,1); cg.fillRoundedRect(lx+80,cy-2,cardW-94,20,7); this.lvlUp.add(cg);
           const ct=this.add.text(lx+86,cy+8,o.emoji+' + '+pe+' = '+combo.emoji+' '+combo.name+(have?'  ✓':'  (ต้องมี '+pe+')'),
             {fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:have?'#a8f0c0':'#c9b9e0'}).setOrigin(0,0.5);

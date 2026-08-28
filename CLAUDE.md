@@ -49,13 +49,14 @@
   · **ล็อกจอแนวตั้ง (portrait only):** index.html `#rotate` overlay ตอน landscape + `screen.orientation.lock('portrait')`
   · **การ์ดเลเวลอัพใหม่:** แถบบน `drawHeldBar()` โชว์สกิล/พรที่ถือ · การ์ดมี ★ ดาว(เลเวล/max)+ "อีก N ดาวจะตัน" · สีหมวด (โจมตี=ส้ม/ติดตัว=เขียว/ขั้นสุด=ทอง) · แถบคอมโบ "A+B=ผล ✓/✗" · **หน้าหยุดเกมโชว์ `drawHeldBar` ด้วย**
   · dead code เหลือ: `CHAR_TALENTS/charTalents/gainCharExp` (ไม่เรียกใช้แล้ว)
+  · **สกิล max = 5 ดาว** (เดิม 6) awaken=Lv6 · **COMBOS = สกิลโจมตี(a)+สกิลติดตัว(b)** (เดิม โจมตี+โจมตี) `checkCombos` เช็ก `skills[a]&&passives[b]` · การ์ดคอมโบโชว์ทั้งฝั่งโจมตี+ติดตัว · **XP โค้งนุ่ม/ไวขึ้น (VS-like):** xpNext เริ่ม 3 ×1.14+2
 
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:
 - **ล็อกสกิล 2 หมวด/รอบ (แบบ Vampire Survivors):** สกิล**โจมตี** ≤ 6 (`SKILL_CAP`, จาก `SKILLDEFS`) + สกิล**ติดตัว** ≤ 6 (`PASSIVE_CAP`, จาก `PASSIVES`)
   · `this.skills`/`this.passives` (reset ใน startRun + create) · `rollUpgrades` เสนอ "สกิลใหม่" เฉพาะเมื่อยังไม่เต็มโควตา (`atkOwned<SKILL_CAP`/`pasOwned<PASSIVE_CAP`) · เต็มแล้วเหลือแต่การ์ดอัพเลเวล → สกิลถึง MAX ไวขึ้น = เจอ Awaken ไวขึ้น
   · **`PASSIVES` (8 ตัว เลเวลได้ max5):** heart❤️(hp) power💥(dmg) swift👟(spd) magnet🧲(pickup) haste⏩(cdMul) crit🎯(critChance) guard🛡️(dmgTakenMul) regen💗(regen) — `apply(p)` = ผล 1 rank (mutate player) · startRun รีเซ็ตสแตตฐาน (maxhp/baseSpeed/pickup/dmgMul) กันทบข้ามรอบ
   · **Awaken การันตีโผล่:** `rollUpgrades` มี `awakenPool` แยก — ถ้ามีสกิล MAX ที่มี awaken → **ดันการ์ด ⚡ ตื่นรู้ ≥1 ใบทุกครั้ง** (เดิมต้องสุ่มเจอ = เจอยากมาก) + การันตีสกิลติดตัว ≥1 ใบด้วย
-- **Skill Awaken (ตื่นรู้):** สกิลถึง MAX (Lv6) แล้วเลเวลอัพอีก = การ์ด "⚡ ตื่นรู้" เปลี่ยนรูปแบบสกิลให้โกง (Lv7=`SKILL_AWAKEN_LV`)
+- **Skill Awaken (ตื่นรู้):** สกิลถึง MAX (5 ดาว/Lv5) แล้วเลเวลอัพอีก = การ์ด "⚡ ตื่นรู้" เปลี่ยนรูปแบบสกิลให้โกง (Lv6=`SKILL_AWAKEN_LV`) · ทุกสกิล `d.max`=5
   ทุกสกิลมี `d.awaken{name,emoji,desc}` · castSkill อ่าน `aw=lvl>=7` เพิ่มจำนวน/ดาเมจ/ธง (sprinkle 8เม็ด homing, thunder 8จุด, chili 5ชั้น, whirl 16ทิศ, boomer 6ชิ้นเด้ง2, frost แช่ทั้งจอ, popcorn 20, bubble 8, star=วงกาแล็กซี3ชั้นใน rebuildRing)
   · `cdOf` → Lv7 ร่ายถี่ขึ้น 0.62× (`_cdBase`) · แถบสกิลโชว์ ⚡ + ไอคอน awaken · `awakenSpark()` ประกาย
 - **จอกว้างขึ้น (`this.viewZoom`=0.82):** กล้อง main zoom = DPR×viewZoom (มองกว้าง +22% แต่ backing ยังคมชัด)
