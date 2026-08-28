@@ -375,12 +375,23 @@ const COMBOS = [
 
 /* ---- UPGRADES: อัพเกรดตัวละครถาวร (ซื้อด้วย Sugar, เก็บใน Save.upgrades[key]=lvl) ---- */
 const UPGRADES = {
-  hp:     { emoji:'❤️', name:'พลังชีวิต', unit:'HP สูงสุด +14/เลเวล', max:8, cost:l=>35+l*30,  apply:(p,l)=>{ p.maxhp+=14*l; } },
-  dmg:    { emoji:'💥', name:'พลังโจมตี', unit:'ดาเมจ +4%/เลเวล',     max:8, cost:l=>45+l*35,  apply:(p,l)=>{ p.dmgMul*=(1+0.04*l); } },
-  spd:    { emoji:'👟', name:'ความเร็ว',  unit:'เดินเร็ว +3%/เลเวล',   max:6, cost:l=>30+l*25,  apply:(p,l)=>{ p.baseSpeed*=(1+0.03*l); } },
-  magnet: { emoji:'🧲', name:'แม่เหล็ก',  unit:'ระยะดูด +12%/เลเวล',   max:6, cost:l=>25+l*20,  apply:(p,l)=>{ p.pickup*=(1+0.12*l); } },
+  hp:     { emoji:'❤️', tag:'HP',  name:'พลังชีวิต', unit:'HP สูงสุด +14/เลเวล', color:0xff5f7a, max:8, cost:l=>35+l*30,  apply:(p,l)=>{ p.maxhp+=14*l; },              show:l=>'+'+(14*l)+' HP' },
+  dmg:    { emoji:'⚔️', tag:'ATK', name:'พลังโจมตี', unit:'ดาเมจ +4%/เลเวล',     color:0xf0a54a, max:8, cost:l=>45+l*35,  apply:(p,l)=>{ p.dmgMul*=(1+0.04*l); },        show:l=>'+'+(4*l)+'% ATK' },
+  def:    { emoji:'🛡️', tag:'DEF', name:'ป้องกัน',   unit:'ลดดาเมจที่รับ 3%/เลเวล', color:0x6ec6ff, max:6, cost:l=>40+l*32, apply:(p,l)=>{ p.dmgTakenMul*=Math.pow(0.97,l); }, show:l=>'-'+Math.round((1-Math.pow(0.97,l))*100)+'% DMG' },
+  spd:    { emoji:'👟', tag:'SPD', name:'ความเร็ว',  unit:'เดินเร็ว +3%/เลเวล',   color:0x66d3b3, max:6, cost:l=>30+l*25,  apply:(p,l)=>{ p.baseSpeed*=(1+0.03*l); },     show:l=>'+'+(3*l)+'% SPD' },
+  magnet: { emoji:'🧲', tag:'MAG', name:'แม่เหล็ก',  unit:'ระยะดูด +12%/เลเวล',   color:0xa98cf0, max:6, cost:l=>25+l*20,  apply:(p,l)=>{ p.pickup*=(1+0.12*l); },        show:l=>'+'+(12*l)+'% ดูด' },
 };
-const UPG_ORDER=['hp','dmg','spd','magnet'];
+const UPG_ORDER=['hp','dmg','def','spd','magnet'];
+/* ---- ระดับขั้น (rank) จากผลรวมเลเวลอัพเกรด — ถึงขั้นใหม่ได้โบนัส Sugar (แจกครั้งเดียว) ---- */
+const RANK_TIERS = [
+  { name:'มือใหม่',      reward:0 },
+  { name:'ผู้ฝึกหัด',    reward:120 },
+  { name:'นักผจญภัย',    reward:220 },
+  { name:'ผู้ชำนาญครัว', reward:360 },
+  { name:'ยอดฝีมือ',     reward:560 },
+  { name:'ตำนานครัว',    reward:900 },
+];
+const RANK_STEP = 6;   // ทุก 6 เลเวลรวม = ขึ้น 1 ขั้น
 
 /* ---- GEAR: ของสวมใส่ 2 ช่อง (weapon/charm) ซื้อด้วย Sugar แล้วสวมใส่ ---- */
 // ของสวมใส่ · ตีบวกได้ (lv=ระดับตีบวก 0..enhMax) เพิ่มพลังต่อระดับ
@@ -402,7 +413,7 @@ const GEAR = {
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
-  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{} },
+  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rankClaimed:0 },
   load(){ try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
     if(!this.data.upgrades)this.data.upgrades={};
     if(!this.data.gear)this.data.gear={};
@@ -422,6 +433,15 @@ const Save = {
   cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
   gearLv(id){ return (this.data.gearLv&&this.data.gearLv[id])||0; },
   enhance(id){ this.data.gearLv[id]=(this.gearLv(id))+1; this.save(); },
+  // ระดับขั้น: จากผลรวมเลเวลอัพเกรดทั้งหมด → index ขั้น + ความคืบหน้าไปขั้นถัดไป
+  upgTotal(){ let t=0; for(const k in this.data.upgrades) t+=this.data.upgrades[k]||0; return t; },
+  rankInfo(){ const total=this.upgTotal(); const idx=Math.min(RANK_TIERS.length-1, Math.floor(total/RANK_STEP));
+    const inStep=total-idx*RANK_STEP, atMax=idx>=RANK_TIERS.length-1;
+    return { total, idx, inStep, need:RANK_STEP, atMax, name:RANK_TIERS[idx].name, nextName:atMax?null:RANK_TIERS[idx+1].name, nextReward:atMax?0:RANK_TIERS[idx+1].reward }; },
+  // แจกโบนัส Sugar ทุกขั้นใหม่ที่เพิ่งถึง (คืนจำนวนที่แจก เพื่อโชว์แบนเนอร์)
+  claimRanks(){ const idx=this.rankInfo().idx; let got=0;
+    while((this.data.rankClaimed||0)<idx){ this.data.rankClaimed=(this.data.rankClaimed||0)+1; got+=RANK_TIERS[this.data.rankClaimed].reward; }
+    if(got>0){ this.data.sugar=(this.data.sugar||0)+got; } this.save(); return got; },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
     this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{} };
     this.load(); },
@@ -942,15 +962,53 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildUpgrade(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัพเกรดฐาน (ทุกตัวละคร)');
-    const y0=this.H*0.155;
-    const note=this.add.text(this.W/2,this.H*0.108,'ซื้อด้วย 🍬 Sugar · ใช้กับทุกตัวละคร',{fontFamily:'sans-serif',fontSize:'12px',color:'#b7abc9'}).setOrigin(0.5);
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัพเกรดฐาน');
+    const w=this.W,h=this.H, ri=Save.rankInfo();
+    // ---- แถบระดับขั้น (rank) ----
+    const ry=Math.max(h*0.11, 84);   // อย่าให้ทับหัวข้อ (จอแนวนอนเตี้ย)
+    const rk=this.add.text(w/2,ry,'ระดับขั้นปัจจุบัน',{fontFamily:'sans-serif',fontSize:'12px',color:'#b7abc9'}).setOrigin(0.5);
+    const rn=this.add.text(w/2,ry+20,'⭐ '+ri.name+' ขั้น '+(ri.idx+1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffd166'}).setOrigin(0.5);
+    this.menu.add([rk,rn]);
+    const barW=Math.min(w-70,440), bx=w/2-barW/2, by=ry+44, barH=12;
+    const bg=this.add.graphics(); bg.fillStyle(0x2c2338,1); bg.fillRoundedRect(bx,by,barW,barH,6);
+    const frac=ri.atMax?1:Phaser.Math.Clamp(ri.inStep/ri.need,0,1);
+    bg.fillStyle(0xffc24a,1); if(frac>0)bg.fillRoundedRect(bx,by,Math.max(barH,barW*frac),barH,6);
+    this.menu.add(bg);
+    // ปลายซ้าย/ขวา = ขั้นนี้/ขั้นถัดไป + หมุดรางวัล
+    const lend=this.add.text(bx,by+22,'ขั้น '+(ri.idx+1),{fontFamily:'sans-serif',fontSize:'11px',color:'#cbbfda'}).setOrigin(0,0.5);
+    this.menu.add(lend);
+    if(!ri.atMax){
+      const rend=this.add.text(bx+barW,by+22,'ขั้น '+(ri.idx+2),{fontFamily:'sans-serif',fontSize:'11px',color:'#cbbfda'}).setOrigin(1,0.5);
+      const rewC=this.add.graphics(); rewC.fillStyle(0x2c2338,1); rewC.fillCircle(bx+barW,by+barH/2,13); rewC.lineStyle(2,0xffc24a,1); rewC.strokeCircle(bx+barW,by+barH/2,13);
+      const rewE=this.add.text(bx+barW,by+barH/2,'🍬',{fontSize:'14px'}).setOrigin(0.5);
+      const rewT=this.add.text(bx+barW,by-14,'+'+ri.nextReward,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a'}).setOrigin(0.5);
+      // หมุดตำแหน่งปัจจุบัน
+      const px=bx+Math.max(barH,barW*frac); const pin=this.add.graphics(); pin.fillStyle(0xa98cf0,1); pin.fillCircle(px,by+barH/2,9); pin.lineStyle(2,0xffffff,0.6); pin.strokeCircle(px,by+barH/2,9);
+      const pinT=this.add.text(px,by+barH/2,String(ri.inStep),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#fff'}).setOrigin(0.5);
+      this.menu.add([rend,rewC,rewE,rewT,pin,pinT]);
+    } else { const mx=this.add.text(bx+barW,by+22,'ขั้นสูงสุด ✓',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd166'}).setOrigin(1,0.5); this.menu.add(mx); }
+    const note=this.add.text(w/2,by+42,'อัปเกรดสแตตเพื่อสะสมขั้น · ถึงขั้นใหม่รับโบนัส 🍬',{fontFamily:'sans-serif',fontSize:'11px',color:'#8f849f'}).setOrigin(0.5);
     this.menu.add(note);
-    UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.data.upgrades[k]||0, y=y0+i*72;
+    // ---- การ์ดอัปเกรดสแตต (กริดปรับตามความกว้าง) ----
+    const cols=(w>=620?3:2), gapX=12, marginX=18, availW=w-marginX*2;
+    const cardW=(availW-gapX*(cols-1))/cols, cardH=Math.min(cardW*1.12,150), gapY=12, top=by+60;
+    UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.data.upgrades[k]||0;
       const maxed=lvl>=u.max, cost=maxed?0:u.cost(lvl), afford=(Save.data.sugar||0)>=cost;
-      this._rowBtn(y,62,u.emoji,u.name+'  Lv '+lvl+'/'+u.max,u.unit,
-        maxed?'MAX':'🍬'+cost, maxed?'#ffd166':(afford?'#8bd3a0':'#e0788a'),
-        maxed?null:()=>{ if(Save.spend(cost)){ Save.data.upgrades[k]=lvl+1; Save.save(); Sfx.clear(); } this.buildMenuScreen(); });
+      const col=i%cols, row=Math.floor(i/cols);
+      const x=marginX+col*(cardW+gapX), y=top+row*(cardH+gapY);
+      const g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
+      g.lineStyle(2.5,maxed?0xffd166:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
+      g.fillStyle(u.color,0.16); g.fillRoundedRect(x,y,cardW,cardH*0.5,16);   // ครึ่งบนสีจาง
+      const badge=this.add.text(x+10,y+8,'Lv '+lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(0,0);
+      const tag=this.add.text(x+cardW-10,y+8,u.tag,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbbfda'}).setOrigin(1,0);
+      const em=this.add.text(x+cardW/2,y+cardH*0.4,u.emoji,{fontSize:Math.round(cardH*0.34)+'px'}).setOrigin(0.5);
+      const gain=this.add.text(x+cardW/2,y+cardH*0.68,(lvl>0?u.show(lvl):u.show(1)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#8bd3a0'}).setOrigin(0.5);
+      // แถบราคาล่าง
+      const pillY=y+cardH-26; const pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(x+10,pillY,cardW-20,20,8);
+      const pt=this.add.text(x+cardW/2,pillY+10,maxed?'สูงสุดแล้ว':('🍬 '+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12.5px',color:maxed?'#ffd166':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
+      this.menu.add([g,badge,tag,em,gain,pg,pt]);
+      if(!maxed) this._zone(x,y,cardW,cardH,()=>{ if(Save.spend(cost)){ Save.data.upgrades[k]=lvl+1; Save.save(); Sfx.clear();
+        const got=Save.claimRanks(); if(got>0&&this.showBanner)this.showBanner('⭐ เลื่อนขั้น!','รับโบนัส 🍬 '+got,2200); } this.buildMenuScreen(); });
     });
     this.menu.setVisible(true);
   }
