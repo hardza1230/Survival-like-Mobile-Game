@@ -131,6 +131,8 @@
   · UI ต้องเป็น **scrollFactor(1)** (ไม่ใช่ 0 — เพราะ sf0 ไม่รับ zoom) · แยกเรนเดอร์ด้วย `camWorld()`/`camUI()` (ignore)
   · input แปลงพิกัด `p.x/DPR` เป็น CSS · **หมายเหตุ:** เพิ่ม world FX ใหม่ต้องห่อ `this.camWorld(...)`, UI ใหม่ห่อ `camUI`
 
+- **faux-2.5D (โหมดทดลอง `this.iso`=true):** เงาวงรีใต้ทุกตัว (`drawShadows` วาดใน `shadowG` ทุกเฟรม) + จัดลำดับความลึกตามแกน Y (`setDepth(e.y)` สำหรับ player/enemies/crates/heals) · กริดพื้น depth -100000, เงา -99000, กระสุน/ออร์บ depth 8-9หมื่น (ลอยบน) · **ยังเป็นพื้นแบน** — ถ้าจะ 2.5D เต็มต้องอาร์ตมุม ¾ + พื้นเพอร์สเปกทีฟ
+
 ### บั๊กที่เคยเจอ & วิธีแก้ (กันพลาดซ้ำ)
 - **ภาพเบลอบนมือถือ (high-DPI):** RESIZE ล็อก canvas backing = ขนาด CSS → เบลอ. แก้ด้วย FIT+physical size+2กล้อง (ข้างบน)
 - **scrollFactor(0) ไม่รับ camera zoom** → UI ที่ตั้ง sf0 จะเรนเดอร์ 1:1 (มุมซ้ายบน) เมื่อกล้อง zoom; ต้องใช้ sf1

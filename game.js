@@ -435,12 +435,15 @@ class Game extends Phaser.Scene {
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
-    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,1,COLORS.grid,0.35).setDepth(-10);
+    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,1,COLORS.grid,0.35).setDepth(-100000);
+    // faux-2.5D: เลเยอร์เงาใต้ตัว (วาดใหม่ทุกเฟรม) + จัดลำดับความลึกตามแกน Y
+    this.iso=true;   // สวิตช์เปิด/ปิดโหมด 2.5D เบา ๆ
+    this.shadowG=this.add.graphics().setDepth(-99000);
     // vignette ขอบจอมืดนุ่ม เพิ่มมิติ (ติดกล้อง)
     this.vig=this.add.image(this.W/2,this.H/2,'vignette').setScrollFactor(1).setDepth(40).setDisplaySize(this.W,this.H);
 
     // soft glow aura ใต้ตัวละคร (UX polish)
-    this.aura=this.add.circle(0,0,32,COLORS.mochiEdge,0.14).setDepth(4);
+    this.aura=this.add.circle(0,0,32,COLORS.mochiEdge,0.14).setDepth(-90000);
     this.tweens.add({targets:this.aura,scale:{from:0.9,to:1.15},alpha:{from:0.14,to:0.05},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
 
     this.player=this.physics.add.sprite(0,0,'mochi').setDepth(5);
@@ -495,7 +498,7 @@ class Game extends Phaser.Scene {
     this.uiCam.setZoom(D);
     this.uiCam.centerOn(this.W/2,this.H/2);   // จุดหมุน zoom = กึ่งกลาง UI (พิกัด CSS)
     // แยกสิ่งที่แต่ละกล้องเรนเดอร์
-    this._worldObjs=[this.gridBg,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates];
+    this._worldObjs=[this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates];
     this.uiCam.ignore(this._worldObjs);
     const ui=[this.vig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.pauseBtn,this.pauseTxt,this.pauseUI,this.fpsTxt,this.menu,this.lvlUp,this.over,this.joyBase,this.joyKnob]
       .concat(this.hudList||[],this.bossUI||[]).filter(Boolean);
@@ -1271,7 +1274,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<count;i++){
       const tier=aw?(i%3):(twoRing?(i%2===0?0:2):0);   // aw: 3 ชั้น (0=นอก,1=กลาง,2=ใน)
       const rr=tier===0?rOuter:tier===1?rMid:rInner;
-      const b=this.camWorld(this.physics.add.image(0,0,'dot').setTint(tier===0?0xffe08a:tier===1?0xffd0e8:0xfff2a8).setScale(size).setDepth(4));
+      const b=this.camWorld(this.physics.add.image(0,0,'dot').setTint(tier===0?0xffe08a:tier===1?0xffd0e8:0xfff2a8).setScale(size).setDepth(88000));
       b.setCircle(5); b.body.setAllowGravity(false); b.dmg=(4+lvl*1.5)*(aw?1.6:1); b.hitCd=0;
       b.rr=rr; b.ang0=(i/count)*Math.PI*2;
       this.physics.add.overlap(b,this.enemies,(ball,en)=>{ if(ball.hitCd>0)return; ball.hitCd=0.12;
@@ -1306,7 +1309,7 @@ class Game extends Phaser.Scene {
     let b=this.bullets.getFirstDead(false);
     if(!b) b=this.bullets.create(x,y,'spark');
     else { b.setActive(true).setVisible(true); b.body.enable=true; b.setPosition(x,y); }
-    b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0); b.body.setAllowGravity(false); this.camWorld(b);
+    b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
     b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0;
     return b;
@@ -1536,13 +1539,13 @@ class Game extends Phaser.Scene {
   }
   dropOrb(x,y,value){ value=value||1; let o=this.orbs.getFirstDead(false);
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
-    const st=this.orbStyle(value); o.value=value; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0);
+    const st=this.orbStyle(value); o.value=value; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
     o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o); }
   collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9); this.gainXp(o.value||1); }
   // ---- ไอเทมฟื้นฟู HP ----
   dropHeal(x,y){ let h=this.heals.getFirstDead(false);
     if(!h) h=this.heals.create(x,y,'heal'); else { h.setActive(true).setVisible(true); h.body.enable=true; h.setPosition(x,y); }
-    h.body.setAllowGravity(false); h.setScale(1); this.camWorld(h);
+    h.body.setAllowGravity(false); h.setScale(1); this.camWorld(h); if(this.iso)h.setDepth(h.y);
     this.tweens.add({targets:h,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); h.body.enable=false;
     const amt=Math.round(this.player.maxhp*0.18)+6; this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
@@ -1554,7 +1557,7 @@ class Game extends Phaser.Scene {
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let c=this.crates.getFirstDead(false);
     if(!c) c=this.crates.create(x,y,'crate'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
-    c.body.setAllowGravity(false); c.body.setImmovable(true); c.setCircle(18,4,4); c.hp=20+this.stageIndex*10; c.setScale(1).clearTint(); this.camWorld(c);
+    c.body.setAllowGravity(false); c.body.setImmovable(true); c.setCircle(18,4,4); c.hp=20+this.stageIndex*10; c.setScale(1).clearTint(); this.camWorld(c); if(this.iso)c.setDepth(c.y);
     this.tweens.add({targets:c,scale:{from:0.2,to:1},duration:220,ease:'Back.out'}); }
   hitCrate(bullet,c){ if(!c.active||!bullet.active)return;
     c.hp-=(bullet.dmg||5)*this.player.dmgMul; c.setTintFill(0xffffff); this.time.delayedCall(50,()=>{ if(c.active)c.clearTint(); });
@@ -1585,7 +1588,7 @@ class Game extends Phaser.Scene {
   foeShot(x,y,ang,speed,dmg,tint,scale){
     let b=this.foeBullets.getFirstDead(false);
     if(!b) b=this.foeBullets.create(x,y,'spark'); else { b.setActive(true).setVisible(true); b.body.enable=true; b.setPosition(x,y); }
-    b.setScale(scale||1.4).setTint(tint||0xff6b8a); b.body.setAllowGravity(false); b.dmg=dmg; b.life=3.0; this.camWorld(b);
+    b.setScale(scale||1.4).setTint(tint||0xff6b8a).setDepth(90000); b.body.setAllowGravity(false); b.dmg=dmg; b.life=3.0; this.camWorld(b);
     this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
   // hazard: วงอันตรายบนพื้น (เตือนก่อน → ระเบิด → จาง)
   spawnHazard(x,y,r,dmg,tint){
@@ -1668,6 +1671,14 @@ class Game extends Phaser.Scene {
     const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
     this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
+  // faux-2.5D: วาดเงาวงรีใต้ทุกตัวในเลเยอร์เดียว (เรียกทุกเฟรม)
+  drawShadows(){
+    const g=this.shadowG; if(!g)return; g.clear(); g.fillStyle(0x0a0510,0.28);
+    const p=this.player; g.fillEllipse(p.x, p.y+22, 34, 13);
+    this.enemies.children.iterate(e=>{ if(e&&e.active){ const w=(e.displayWidth||30); g.fillEllipse(e.x, e.y+(e.displayHeight||30)*0.32, w*0.74, w*0.28); } });
+    this.crates.children.iterate(c=>{ if(c&&c.active) g.fillEllipse(c.x, c.y+16, 30, 11); });
+    this.heals.children.iterate(h=>{ if(h&&h.active) g.fillEllipse(h.x, h.y+11, 20, 8); });
+  }
   // ปรับสเกล+ขอบชนของตัวละครให้เท่ากราฟิกเดิม (60px) ไม่ว่ารูปจริงจะกี่พิกเซล
   setCharScale(key){
     // ขนาด "เฟรม" (สไปรต์สตริปใช้ frame width ไม่ใช่ความกว้างสตริปทั้งแผ่น)
@@ -1753,6 +1764,7 @@ class Game extends Phaser.Scene {
     if(this.player.regen && this.player.hp<this.player.maxhp) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.regen*dt);  // ฟื้นตัว (พรสวรรค์)
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
     this.animatePlayer(dt); this.updatePose(dt);
+    if(this.iso){ this.player.setDepth(this.player.y); this.drawShadows(); }
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.dashBtn.setFillStyle(COLORS.mint,this.dashReady?0.28:0.10);
     // active cd (+ ริงคูลดาวน์ + เด้งตอนพร้อม)
@@ -1764,6 +1776,7 @@ class Game extends Phaser.Scene {
 
     // enemies
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
+      if(this.iso)e.setDepth(e.y);   // จัดลำดับความลึกตามแกน Y (ตัวล่างจอ = อยู่หน้า)
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0)e.clearTint(); return; }
       if(e.knock>0){ e.knock-=dt; return; }
       const dx=this.player.x-e.x, dy=this.player.y-e.y, ang=Math.atan2(dy,dx);
