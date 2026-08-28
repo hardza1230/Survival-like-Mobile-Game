@@ -1008,7 +1008,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- STAGES / WAVES (Archero-style) ---------- */
   startStage(i){
-    const st=STAGES[i]; this.stageIndex=i; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
+    const st=STAGES[i]; this.stageIndex=i; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;
     this.bossUI.forEach(o=>o.setVisible(false));
     this.gridBg.fillColor=st.grid;
     this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name}`);
@@ -1018,11 +1018,10 @@ class Game extends Phaser.Scene {
   }
   updateWaveText(){
     const st=STAGES[this.stageIndex]; if(!st)return;
-    const left=Math.max(0,this.waveAlive||0);
     if(this.mode==='boss') this.timeTxt.setText('👹 บอสใหญ่');
-    else if(this.mode==='mini') this.timeTxt.setText('💢 มินิบอส · เหลือ '+left);
+    else if(this.mode==='mini') this.timeTxt.setText('💢 มินิบอส — จัดการให้ได้!');
     else if(this.mode==='breather') this.timeTxt.setText('เวฟถัดไป…');
-    else this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · เหลือ '+left);
+    else this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer||0))+' วิ');
     this.drawWavePips();
   }
   drawWavePips(){
@@ -1043,9 +1042,18 @@ class Game extends Phaser.Scene {
   startWave(w){
     const st=STAGES[this.stageIndex]; this.waveIndex=w; this.boss=null;
     this.bossUI.forEach(o=>o.setVisible(false));
-    if(w===st.miniAt){ this.mode='mini'; this.spawnMiniBoss(); }
-    else { this.mode='wave'; this.spawnNormalWave(); }
+    if(w===st.miniAt){ this.mode='mini'; this.setupSpawnRates(w); this.spawnAcc=this.spawnInterval*1.2; this.spawnMiniBoss(); }
+    else { this.mode='wave'; this.startSurvivalWave(w); }
     this.updateWaveText();
+  }
+  // อัตราเกิดมอนสเตอร์ (ยิ่งด่านลึก/เวฟท้าย = เกิดถี่+เยอะ+เพดานสูง)
+  setupSpawnRates(w){
+    const si=this.stageIndex;
+    this.spawnInterval=Math.max(0.42, 1.25 - si*0.1 - w*0.06);   // วินาที/ระลอก
+    this.spawnBatch=3 + si + Math.floor(w*0.7);                   // ตัว/ระลอก
+    this.maxLive=Math.min(100, 50 + si*14 + w*4);                 // เพดานตัวมีชีวิต (กันเครื่องหน่วง)
+    this.eliteEvery=Math.max(5, 10 - si);                        // วินาที/elite
+    this.eliteAcc=this.eliteEvery;
   }
   spawnWaveEnemy(){ let type='basic'; const r=Math.random(), si=this.stageIndex;
     if(si>=1&&r<0.30)type='fast';
@@ -1063,20 +1071,40 @@ class Game extends Phaser.Scene {
     e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
     e.setScale(1.55).clearTint(); this.camWorld(e);   // elite = ตัวถึก (รูปจริง) ตัวใหญ่กว่าปกติ
   }
-  spawnNormalWave(){
-    const w=this.waveIndex, si=this.stageIndex, mine=w;
-    const swarm=si>=2 || (si>=1&&w>=3);   // ด่านหลัง/เวฟท้าย = ฝูงถล่ม
-    const count=Math.min(90, (swarm?14:10) + w*4 + si*6);   // ฝูงเยอะขึ้นมาก
-    // ปล่อยเป็น 3 ระลอก (ฝูงถล่มต่อเนื่อง) — ระลอกหลังเช็คว่ายังอยู่เวฟเดิม
-    const b1=Math.ceil(count*0.5), b2=Math.ceil(count*0.28), b3=count-b1-b2;
-    for(let i=0;i<b1;i++) this.spawnWaveEnemy();
-    const more=(n,delay)=>{ if(n<=0)return; this.time.delayedCall(delay,()=>{ if(this._busy()&&this.mode==='wave'&&this.waveIndex===mine){ for(let i=0;i<n;i++) this.spawnWaveEnemy(); } }); };
-    more(b2,1300); more(b3,swarm?2600:3200);
-    // elite ตัวอึด (ด่าน 2 ขึ้นไป) — ท้าทาย + ให้ xp/sugar เยอะ · ฝูงถล่มมี elite เพิ่ม
-    let elites=0; if(si>=1&&w>=1){ elites=(1+Math.floor(si/2))*(swarm?2:1); for(let i=0;i<elites;i++) this.spawnElite(); }
-    this.waveAlive=count+elites;
+  // เวฟธรรมดา = "เอาชีวิตรอดตามเวลา" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
+  startSurvivalWave(w){
+    const si=this.stageIndex;
+    this.setupSpawnRates(w);
+    this.waveDur=Math.round(20 + si*3 + w*2);   // วินาทีที่ต้องรอด (ยิ่งลึก/ท้าย = นานขึ้น)
+    this.waveTimer=this.waveDur; this.spawnAcc=0;
+    // ระลอกเปิดตัว = ถล่มทันทีให้จอแน่น
+    const burst=Math.min(this.maxLive, 12 + si*4 + w*2);
+    for(let i=0;i<burst;i++) this.spawnWaveEnemy();
+    if(si>=1) for(let i=0;i<1+Math.floor(si/2);i++) this.spawnElite();
     // กล่อง/โหลทุบได้ (ธีมครัว) — ทุบเอาของ (ออร์บ/ฟื้นฟู)
     const nc=2+Math.floor(si*0.6); for(let i=0;i<nc;i++) this.spawnCrate();
+  }
+  // ล้างมอนธรรมดาที่ค้าง (เก็บบอส/มินิไว้) — ใช้ตอนจบเวฟ/รอดครบเวลา
+  clearEnemies(){ this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } }); }
+  // เรียกทุกเฟรม: คุมนับเวลา + เกิดมอนต่อเนื่อง
+  tickStage(dt){
+    if(this.mode==='wave'){
+      this.waveTimer-=dt;
+      this.spawnAcc-=dt;
+      if(this.spawnAcc<=0){ this.spawnAcc=this.spawnInterval;
+        const live=this.enemies.countActive(true);
+        if(live<this.maxLive){ const n=Math.min(this.spawnBatch, this.maxLive-live); for(let i=0;i<n;i++) this.spawnWaveEnemy(); } }
+      if(this.stageIndex>=1){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
+      const st=STAGES[this.stageIndex];
+      if(st)this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+' วิ');
+      if(this.waveTimer<=0) this.onWaveCleared();
+    } else if(this.mode==='mini'){
+      // ระหว่างสู้มินิ = ยังมีลูกน้องไหลมาเรื่อย ๆ (กดดันต่อเนื่อง แต่เบากว่า)
+      this.spawnAcc-=dt;
+      if(this.spawnAcc<=0){ this.spawnAcc=this.spawnInterval*1.7;
+        const live=this.enemies.countActive(true);
+        if(live<this.maxLive*0.7){ const n=Math.max(1,Math.floor(this.spawnBatch*0.5)); for(let i=0;i<n;i++) this.spawnWaveEnemy(); } }
+    }
   }
   spawnMiniBoss(){
     const st=STAGES[this.stageIndex];
@@ -1137,8 +1165,9 @@ class Game extends Phaser.Scene {
   clearPickups(alsoHeals){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active){ this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false; } });
     if(alsoHeals&&this.heals)this.heals.children.iterate(h=>{ if(h&&h.active){ this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false; } }); }
   onWaveCleared(){
-    this.boss=null; Sfx.bgmIntense(false); this.bossUI.forEach(o=>o.setVisible(false)); this.clearFoes();
+    this.boss=null; Sfx.bgmIntense(false); this.bossUI.forEach(o=>o.setVisible(false)); this.clearFoes(); this.clearEnemies();
     const st=STAGES[this.stageIndex], next=this.waveIndex+1;
+    this.mode='breather';   // กัน tickStage เกิดมอนต่อระหว่างสลับเวฟ
     if(next>=st.waves){ this.spawnFinalBoss(); return; }
     this.clearPickups(false);   // เก็บกล่องที่ไม่ได้ทุบ (ออร์บ/ฟื้นฟูยังอยู่)
     this.mode='breather'; this.updateWaveText(); this.poseFlash(CF.cheer,700);   // เคลียร์เวฟ = ดีใจ
@@ -1559,10 +1588,9 @@ class Game extends Phaser.Scene {
     // เก็บ Sugar (สกุลเงินเมต้า ใช้รอบหน้า)
     const sug=isBoss?40:isMini?18:isElite?4:1; this.sugarStage+=sug; this.sugarRun+=sug;
     e.setActive(false).setVisible(false); e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.setScale(1);
-    this.waveAlive=Math.max(0,(this.waveAlive||0)-1);
     if(isBoss){ this.onStageClear(); return; }
-    if(this.state==='play' && (this.mode==='wave'||this.mode==='mini')){ this.updateWaveText();
-      if(this.waveAlive<=0) this.onWaveCleared(); } }
+    if(isMini){ this.onWaveCleared(); return; }   // มินิบอสตาย = ผ่านเวฟ (เวฟธรรมดาคุมด้วยเวลาใน tickStage) }
+  }
   killBullet(b){ b.setActive(false).setVisible(false); b.body.enable=false; b.body.stop(); }
   // สีออร์บตามค่า EXP: ยิ่งค่ามาก สียิ่งพรีเมียม (เขียว→ฟ้า→ม่วง→ทอง) + เม็ดใหญ่ขึ้น
   orbStyle(v){
@@ -1808,6 +1836,7 @@ class Game extends Phaser.Scene {
     else { this.skillBtn.setFillStyle(COLORS.pink,0.22); this.skillCdTxt.setText(''); this.skillEmoji.setAlpha(1); this._actReady=true;
       if(wasReady===false)this.flashBtn(this.skillBtn); }
     this.drawSkillRing();
+    this.tickStage(dt);   // นับเวลาเวฟ + เกิดมอนต่อเนื่อง
 
     // enemies
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;

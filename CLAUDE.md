@@ -66,7 +66,7 @@
 - **คุม:** จอยสติ๊กลอย (ซ้าย) + ปุ่มพุ่ง/dash (ขวาล่าง) + ปุ่มอัลติกดเอง (ชมพู)
 - **ปุ่มหยุด (⏸ ข้าง mute):** `togglePause` (state 'paused' + physics.pause) → เมนู `buildPause` (เล่นต่อ/ออกจากด่าน `exitStage`) · hit-test `_pauseBtns`
 - **ไอเทมในด่าน:** ❤️ `heal` (ฟื้น 18%+6, ดรอปจากบอส/มินิแน่นอน·elite 50%·ธรรมดา 3%·กล่อง) · 📦 `crate` (โหลแยมทุบได้ ดรอปออร์บ/heal/sugar) — กลุ่ม `heals`/`crates`, `dropHeal/collectHeal/spawnCrate/hitCrate/breakCrate`, เคลียร์ด้วย `clearPickups`
-- **บาลานซ์ (จูนล่าสุด):** ศัตรู HP ×~1.5 + scaling แรงขึ้น `(1+idx*0.55)(1+wave*0.11)` · ฝูงถล่ม (`swarm` ด่าน≥3/เวฟท้าย) ปล่อย 3 ระลอก + elite ×2 · บอส HP ×1.4 + เฟส 3
+- **บาลานซ์ (จูนล่าสุด):** ศัตรู HP ×~1.5 + scaling แรงขึ้น `(1+idx*0.55)(1+wave*0.11)` · เวฟธรรมดาเกิดมอนต่อเนื่องตามเวลา (`tickStage`/`setupSpawnRates`) จนถึงเพดาน maxLive · บอส HP ×1.4 + เฟส 3
 - **สกิลออโต้แคสต์ 9 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
   · +8 สกิลใหม่: **aura**(🌸 ออร่ารอบตัว) · **fork**(🍴 ส้อมทะลุ) · **mine**(🧁 คัพเค้กระเบิด) · **beam**(🔆 ลำแสงแนวตรง `fireBeam`) · **meteor**(🍩 โดนัทหล่น AoE `meteorStrike`) · **cloud**(☕ หมอกพิษ DoT ติ๊ก) · **rocket**(🚀 จรวดไล่เป้าระเบิด `b.explode`+`explodeAt`) · **wave**(🌊 คลื่นขยายผลัก `creamWave`) — **รวม 17 สกิล** build หลากหลาย
@@ -81,14 +81,14 @@
 - **เลเวลอัพเน้นสกิล** (พาสซีฟเป็นของเสริม) — เลือกด้วยการแตะ (hit-test เอง ไม่ใช้ setInteractive กับ shape)
 - **ระบบบท (CHAPTERS):** กรุ๊ปด่านเป็น "บท" · บท 1 = 5 ด่านครัว (STAGES, เล่นได้) · บท 2-5 = ล็อค "เร็ว ๆ นี้" · `buildStageSelect`=เลือกบท → `startRun(0)` เริ่มด่าน 1 เสมอ (เอา per-stage picker ออก)
 - **รีเซ็ตเซฟ (`Save.reset`):** ปุ่ม 🗑️ ในฮับ (แตะ 2 ครั้งยืนยัน `_resetConfirm`) ล้าง localStorage + คืนค่าเริ่มต้น (สำหรับเทส/แก้ account เทพเกิน) · UPGRADES ลดพลัง (hp+14/dmg+4%/spd+3% ต่อเลเวล)
-- **ระบบด่าน (STAGES) แบบ Archero:** 5 โซนครัว แต่ละด่าน = เคลียร์ศัตรูเป็น "เวฟ" (`waves` ต่อด่าน)
-  → กลางด่านเจอ **มินิบอส** (`miniAt`, `mini`) → จบเวฟทั้งหมดเจอ **บอสใหญ่** (`boss/bossHp/bossDmg`)
+- **ระบบด่าน (STAGES) แบบ survival — เวฟธรรมดา = "เอาชีวิตรอดตามเวลา":** 5 โซนครัว แต่ละด่าน = หลายเวฟ (`waves`)
+  → เวฟธรรมดา = **นับถอยหลัง** (`waveTimer`, `waveDur`=20+ด่าน×3+เวฟ×2 วิ) + มอนเกิด**ต่อเนื่องเป็นฝูง**จนจอเต็ม (รอดครบเวลา = ผ่านเวฟ, ไม่นับจำนวนแล้ว)
+  → กลางด่านเจอ **มินิบอส** (`miniAt`, `mini`) — ฆ่ามินิ = ผ่านเวฟ (ระหว่างสู้มีลูกน้องไหลมาเรื่อย) → จบเวฟทั้งหมดเจอ **บอสใหญ่** (`boss/bossHp/bossDmg`)
   → ล้มบอส = ผ่านด่าน (ฟื้น HP 35%) → ด่านต่อไป · ล้มบอสด่าน 5 = **ชนะเกม**
-  กลไก: `startWave/spawnNormalWave/spawnMiniBoss/spawnFinalBoss/onWaveCleared/onStageClear`
-  ตัวนับ `this.waveAlive` (ลดใน killEnemy) = 0 เมื่อไหร่ → เวฟถัดไป · `this.mode`= wave/mini/boss/breather/clear/summary
-  เดินด่านด้วย "การเคลียร์" ไม่ใช่ตัวจับเวลาแล้ว (เอา stageTime/spawnWave ออก)
-  เวฟหนักขึ้น: ปล่อยศัตรู 2 ระลอก + **elite** (isElite, สีส้ม อึด xp/sugar เยอะ) จากด่าน 2
-  **ตัวบอกความคืบหน้า:** `drawWavePips()` (จุดเวฟ + จุดชมพู=มินิ + จุดแดง=บอส) + timeTxt โชว์ "เหลือ N"
+  กลไก: `tickStage(dt)` (นับเวลา+เกิดมอนต่อเนื่อง เรียกทุกเฟรมใน update) · `setupSpawnRates(w)` (spawnInterval/spawnBatch/maxLive≤100/elite) · `startSurvivalWave/spawnMiniBoss/spawnFinalBoss/onWaveCleared(+clearEnemies)/onStageClear`
+  · `this.mode`= wave/mini/boss/breather/clear/summary · killEnemy: บอส→onStageClear · มินิ→onWaveCleared · มอนธรรมดา = เวลาคุม (ไม่เคลียร์ตามจำนวน)
+  เวฟหนักขึ้น: มอนไหลไม่หยุด (เพดาน maxLive) + **elite** (isElite, ตัวใหญ่ อึด xp/sugar เยอะ) โผล่เป็นระยะจากด่าน 2
+  **ตัวบอกความคืบหน้า:** `drawWavePips()` (จุดเวฟ + จุดชมพู=มินิ + จุดแดง=บอส) + timeTxt โชว์ "⏳ N วิ"
   **หน้าสรุปด่าน:** `showStageSummary()` → แตะ `continueFromSummary()` ไปด่านต่อไป/victory
 - **กราฟิก (ลงแล้ว! วาดด้วย Canvas 2D ใน Boot):** ตัวละคร 3 แบบต่างหน้าตา (char_momo/mint/cocoa —
   บอดี้ไล่เฉด เงานุ่ม แก้มชมพู ตาวาว + ท็อปปิ้ง) · ศัตรูหน้าโกรธไล่เฉด · ลูกกวาด glossy · กระสุน/อนุภาคเรืองแสง · **vignette** ขอบจอ
