@@ -9,10 +9,28 @@
     touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:none;}
   canvas{display:block;touch-action:none;}
   *{-webkit-tap-highlight-color:transparent;}
+  /* ล็อกจอแนวตั้ง (portrait only) — แนวนอนขึ้นป้ายให้หมุนกลับ */
+  #rotate{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;
+    align-items:center;justify-content:center;gap:14px;background:#241d2e;color:#ffd9a8;
+    font-family:sans-serif;text-align:center;padding:24px;}
+  #rotate .ico{font-size:64px;animation:rk 1.6s ease-in-out infinite;}
+  #rotate .t{font-size:20px;font-weight:bold;color:#ff8fb5;}
+  #rotate .s{font-size:14px;color:#c7bdd6;}
+  @keyframes rk{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
+  @media (orientation:landscape){ #rotate{display:flex;} canvas{visibility:hidden;} }
 </style>
 </head>
 <body>
+<div id="rotate">
+  <div class="ico">📱</div>
+  <div class="t">หมุนจอเป็นแนวตั้ง</div>
+  <div class="s">Mochi Mayhem เล่นในแนวตั้ง (Portrait) เท่านั้น</div>
+</div>
 <script src="phaser.min.js"></script>
 <script src="game.js"></script>
+<script>
+  // พยายามล็อก orientation (ได้ผลบนบางเบราว์เซอร์/PWA/Capacitor) — ถ้าไม่ได้ ใช้ป้าย #rotate แทน
+  (function(){ try{ var o=screen.orientation; if(o&&o.lock)o.lock('portrait').catch(function(){}); }catch(e){} })();
+</script>
 </body>
 </html>

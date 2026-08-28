@@ -41,7 +41,15 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: + ล็อกสกิล 6โจมตี/6ติดตัว + Awaken การันตีโผล่)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v1.3.0 ระบบยศ prestige + flat dmg + portrait lock + การ์ดเลเวลอัพใหม่)
+- **v1.3.0 การเปลี่ยนใหญ่:**
+  · **ระบบ "พรสวรรค์" (แทนอัพเกรดฐาน+ตัดพรสวรรค์เฉพาะตัวออก):** เหลือ 3 สแตต **HP/ATK(flat)/DEF** (ตัด spd/magnet) · อัพให้เต็มทั้ง 3 (Lv `TAL_MAX`=5) → **เลื่อนยศ** (`Save.promote`) rank++ + โบนัส 🍬 · การ์ดรีเซ็ต Lv0 + ราคา ×(1+rank·0.8) · ผลรวมใช้จริง `Save.talTotal(k)`=rank·5+เลเวลรอบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ วนไม่จบ) · `UPGRADES`={hp,dmg,def} base/per, `talCost/talAllMax/talFilled/buyTal/promote`, `rankName()`
+  · **ATK = flat damage:** `p.flatDmg` บวกใน `damage()` ทุกครั้งที่โดน (per=2/เลเวล กันเวอร์) · `dmgTakenMul` มีพื้น 0.35 กันเกราะโกง
+  · **จบเวฟไม่เคลียร์มอน:** `onWaveCleared(keep)` — เวลาเวฟหมด→`keep=true` (มอนเดิมอยู่ต่อ เวฟถัดไปไหลต่อ, `startSurvivalWave(w,seamless)` ข้ามระลอกเปิดตัว) · มินิ/บอสยังเคลียร์
+  · **ล็อกจอแนวตั้ง (portrait only):** index.html `#rotate` overlay ตอน landscape + `screen.orientation.lock('portrait')`
+  · **การ์ดเลเวลอัพใหม่:** แถบบน `drawHeldBar()` โชว์สกิล/พรที่ถือ · การ์ดมี ★ ดาว(เลเวล/max)+ "อีก N ดาวจะตัน" · สีหมวด (โจมตี=ส้ม/ติดตัว=เขียว/ขั้นสุด=ทอง) · แถบคอมโบ "A+B=ผล ✓/✗" · **หน้าหยุดเกมโชว์ `drawHeldBar` ด้วย**
+  · dead code เหลือ: `CHAR_TALENTS/charTalents/gainCharExp` (ไม่เรียกใช้แล้ว)
+
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:
 - **ล็อกสกิล 2 หมวด/รอบ (แบบ Vampire Survivors):** สกิล**โจมตี** ≤ 6 (`SKILL_CAP`, จาก `SKILLDEFS`) + สกิล**ติดตัว** ≤ 6 (`PASSIVE_CAP`, จาก `PASSIVES`)
   · `this.skills`/`this.passives` (reset ใน startRun + create) · `rollUpgrades` เสนอ "สกิลใหม่" เฉพาะเมื่อยังไม่เต็มโควตา (`atkOwned<SKILL_CAP`/`pasOwned<PASSIVE_CAP`) · เต็มแล้วเหลือแต่การ์ดอัพเลเวล → สกิลถึง MAX ไวขึ้น = เจอ Awaken ไวขึ้น
