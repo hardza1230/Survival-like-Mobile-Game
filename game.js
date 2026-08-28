@@ -14,6 +14,23 @@ const COLORS = {
   grid: 0x4f456e,
 };
 
+/* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
+const GAME_VERSION = '1.2.0';
+const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
+const CHANGELOG = [
+  { v:'1.2.0', date:'2026-08-28', title:'อัปเกรด & อุปกรณ์โฉมใหม่', items:[
+    'หน้าอัปเกรดฐานใหม่: แถบ "ระดับขั้น" + รางวัลหมุด + การ์ด HP/ATK/DEF',
+    'หน้าอุปกรณ์ใหม่: 6 ช่องรอบตัวละคร + คลังไอเทม + ผสม/ตีบวก',
+    'เพิ่มหน้าดาวน์โหลด + แสดงเวอร์ชันในเกม' ] },
+  { v:'1.1.0', date:'2026-08-28', title:'เวฟเอาชีวิตรอด', items:[
+    'เวฟธรรมดาเปลี่ยนเป็นนับถอยหลัง — มอนสเตอร์รุมเป็นฝูงจนจอเต็ม',
+    'ล็อกสกิลโจมตี 6 + สกิลติดตัว 6 ต่อรอบ (แบบ Vampire Survivors)',
+    'สกิลขั้นสุด (ตื่นรู้) การันตีโผล่บ่อยขึ้น' ] },
+  { v:'1.0.0', date:'2026-08-27', title:'เปิดตัว Mochi Mayhem', items:[
+    '5 ด่านครัว + บอส 5 ตัว, ตัวละคร 3 ตัว, สกิล 17 อย่าง',
+    'ระบบพรสวรรค์ ของสวมใส่ อัพเกรด และเสียง/เพลงสังเคราะห์' ] },
+];
+
 /* ============================================================
    Sfx — เสียงน่ารักสังเคราะห์ด้วย Web Audio (ไม่ต้องมีไฟล์เสียง)
    โทนกลม/นุ่ม (sine/triangle) + สเกลเมเจอร์ = ฟังสดใสน่ารัก
@@ -810,7 +827,33 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(14,38,80,34,()=>{ this.menuScreen='hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='talent')this.buildTalent(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='talent')this.buildTalent(); else if(s==='news')this.buildNews(); else this.buildHub(); }
+  // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
+  buildNews(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต & ดาวน์โหลด');
+    const w=this.W,h=this.H;
+    const cur=this.add.text(w/2,h*0.1,'เวอร์ชันปัจจุบัน  v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(0.5);
+    this.menu.add(cur);
+    // ปุ่มดาวน์โหลด APK (เปิดหน้า releases ในเบราว์เซอร์)
+    const dlW=Math.min(w-40,320), dx=w/2-dlW/2, dy=h*0.15;
+    const dg=this.add.graphics(); dg.fillStyle(COLORS.mint,1); dg.fillRoundedRect(dx,dy,dlW,44,14); dg.lineStyle(2,0xffffff,0.3); dg.strokeRoundedRect(dx,dy,dlW,44,14);
+    const dt=this.add.text(w/2,dy+22,'📥 ดาวน์โหลดแอป (APK)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#12331f'}).setOrigin(0.5);
+    this.menu.add([dg,dt]); this._zone(dx,dy,dlW,44,()=>{ try{ window.open(RELEASES_URL,'_blank'); }catch(e){} });
+    // รายการบันทึกอัปเดต (เลื่อนดูไม่ได้ — โชว์ 3 เวอร์ชันล่าสุดพอ)
+    let y=h*0.27;
+    for(const c of CHANGELOG.slice(0,3)){
+      const cw=Math.min(w-32,420), cx=w/2-cw/2;
+      const head=this.add.text(cx+4,y,'v'+c.v+'  ·  '+c.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ff9ec4'}).setOrigin(0,0);
+      const dd=this.add.text(cx+cw-4,y+2,c.date,{fontFamily:'sans-serif',fontSize:'11px',color:'#7a7088'}).setOrigin(1,0);
+      this.menu.add([head,dd]); y+=24;
+      for(const it of c.items){
+        const li=this.add.text(cx+10,y,'•  '+it,{fontFamily:'sans-serif',fontSize:'12.5px',color:'#c7bdd6',wordWrap:{width:cw-20}}).setOrigin(0,0);
+        this.menu.add(li); y+=li.height+4;
+      }
+      y+=12;
+    }
+    this.menu.setVisible(true);
+  }
   buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
   buildHub(){
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
@@ -821,6 +864,10 @@ class Game extends Phaser.Scene {
     const ch=CHARACTERS[this.character||'momo'];
     const charTxt=this.add.text(w/2,h*0.35,`${ch.emoji} ${ch.name} · อัลติ ${ACTIVES[ch.active].emoji}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
     this.menu.add([bg,sugar,emoji,title,charTxt]);
+    // ป้ายเวอร์ชัน (มุมขวาบน) — แตะดูอัปเดต/ดาวน์โหลด
+    const vg=this.add.graphics(); vg.fillStyle(0x2c2338,0.9); vg.fillRoundedRect(w-118,12,104,30,10); vg.lineStyle(1.5,0x4a4059,1); vg.strokeRoundedRect(w-118,12,104,30,10);
+    const vt=this.add.text(w-66,27,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#bfe8ff'}).setOrigin(0.5);
+    this.menu.add([vg,vt]); this._zone(w-118,12,104,30,()=>{ this.menuScreen='news'; this.buildMenuScreen(); });
     const bw=Math.min(w-60,300), bx=w/2, bh=46;
     const mk=(cy,label,color,fn)=>{ const g=this.add.graphics(); g.fillStyle(color,1); g.fillRoundedRect(bx-bw/2,cy-bh/2,bw,bh,15);
       g.lineStyle(2,0xffffff,0.25); g.strokeRoundedRect(bx-bw/2,cy-bh/2,bw,bh,15);

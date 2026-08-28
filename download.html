@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mochi Mayhem — ดาวน์โหลด</title>
+<style>
+  :root{ --bg:#241a33; --card:#2c2338; --edge:#4a4059; --pink:#ff8fb5; --mint:#66d3b3; --gold:#ffe08a; --text:#efe6f7; --sub:#b7abc9; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Thai",sans-serif;
+    background:radial-gradient(120% 90% at 50% 0%, #3b3357 0%, #241a33 60%, #1a1420 100%);
+    color:var(--text); min-height:100vh; padding:28px 18px 60px; }
+  .wrap{ max-width:640px; margin:0 auto; }
+  .hero{ text-align:center; padding:24px 0 10px; }
+  .logo{ font-size:64px; line-height:1; }
+  h1{ font-size:34px; color:var(--pink); margin:6px 0 2px; letter-spacing:.5px; }
+  .tag{ color:var(--sub); font-size:14px; }
+  .verchip{ display:inline-block; margin-top:14px; background:var(--card); border:1px solid var(--edge);
+    border-radius:999px; padding:7px 16px; font-weight:700; color:var(--gold); font-size:15px; }
+  .btns{ display:flex; flex-direction:column; gap:12px; margin:24px 0 8px; }
+  a.btn{ display:block; text-align:center; text-decoration:none; font-weight:800; font-size:17px;
+    padding:16px; border-radius:16px; color:#12331f; box-shadow:0 6px 0 rgba(0,0,0,.18); transition:transform .05s; }
+  a.btn:active{ transform:translateY(2px); box-shadow:0 4px 0 rgba(0,0,0,.18); }
+  a.dl{ background:linear-gradient(180deg,#7ee0bf,#4fc79f); }
+  a.play{ background:linear-gradient(180deg,#ffa9c9,#ff85b3); color:#3a0f24; }
+  .note{ text-align:center; color:var(--sub); font-size:12.5px; margin:6px 4px 22px; line-height:1.6; }
+  h2{ font-size:18px; color:var(--pink); margin:26px 0 12px; }
+  .log{ background:var(--card); border:1px solid var(--edge); border-radius:16px; padding:16px 16px 6px; margin-bottom:14px; }
+  .lv{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+  .lv b{ color:#ff9ec4; font-size:16px; }
+  .lv .d{ color:#7a7088; font-size:12px; }
+  ul{ list-style:none; margin:10px 0 8px; }
+  li{ position:relative; padding:5px 0 5px 18px; color:var(--sub); font-size:13.5px; line-height:1.5; }
+  li:before{ content:"•"; position:absolute; left:2px; color:var(--mint); font-weight:800; }
+  .foot{ text-align:center; color:#6b6379; font-size:11.5px; margin-top:26px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="logo">🍡</div>
+    <h1>MOCHI MAYHEM</h1>
+    <div class="tag">เกมเอาชีวิตรอด ตะลุยครัวปีศาจ · น่ารักโหดมัน</div>
+    <div class="verchip" id="verchip">v…</div>
+  </div>
+  <div class="btns">
+    <a class="btn dl" id="dlbtn" href="https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest">📥 ดาวน์โหลดแอป (APK)</a>
+    <a class="btn play" href="./index.html">▶ เล่นบนเบราว์เซอร์เลย</a>
+  </div>
+  <div class="note">
+    Android: เปิดไฟล์ APK แล้วอนุญาต "ติดตั้งจากแหล่งที่ไม่รู้จัก" ครั้งแรก · เกมอัปเดตแพตช์อัตโนมัติเมื่อต่อเน็ต
+  </div>
+  <h2>บันทึกอัปเดต</h2>
+  <div id="changelog"></div>
+  <div class="foot">© Mochi Mayhem · ทำโดยทีมงานตัวเล็ก 🐾</div>
+</div>
+<script>
+(async function(){
+  let data=null;
+  try{ const r=await fetch('./version.json?_='+Date.now()); if(r.ok) data=await r.json(); }catch(e){}
+  if(!data) return;
+  document.getElementById('verchip').textContent='เวอร์ชันปัจจุบัน v'+data.version;
+  const box=document.getElementById('changelog');
+  (data.changelog||[]).forEach(function(c){
+    const d=document.createElement('div'); d.className='log';
+    const head=document.createElement('div'); head.className='lv';
+    head.innerHTML='<b>v'+c.v+' · '+ (c.title||'') +'</b><span class="d">'+(c.date||'')+'</span>';
+    const ul=document.createElement('ul');
+    (c.items||[]).forEach(function(it){ const li=document.createElement('li'); li.textContent=it; ul.appendChild(li); });
+    d.appendChild(head); d.appendChild(ul); box.appendChild(d);
+  });
+})();
+</script>
+</body>
+</html>

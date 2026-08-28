@@ -20,6 +20,22 @@ gjs = gjs.replace(/ASSET_VER\s*=\s*''/, "ASSET_VER='" + ver + "'");
 writeFileSync(join(www, 'game.js'), gjs);
 console.log('game.js built with ASSET_VER=' + ver);
 
+// version.json: ดึง GAME_VERSION + CHANGELOG จาก game.js (แหล่งเดียว กันข้อมูลไม่ตรงกับหน้า download)
+try {
+  const verM = gjs.match(/GAME_VERSION\s*=\s*'([^']+)'/);
+  const clM  = gjs.match(/const\s+CHANGELOG\s*=\s*(\[[\s\S]*?\]);/);
+  const version = verM ? verM[1] : '0.0.0';
+  const changelog = clM ? (new Function('return ' + clM[1]))() : [];
+  writeFileSync(join(www, 'version.json'), JSON.stringify({ version, changelog }, null, 1));
+  console.log('version.json built: v' + version + ' (' + changelog.length + ' entries)');
+} catch (e) { console.warn('version.json skipped:', e.message); }
+
+// download.html: หน้าแลนดิ้งดาวน์โหลด (โหลด version.json ไปแสดง)
+if (existsSync(join(root, 'download.html'))) {
+  copyFileSync(join(root, 'download.html'), join(www, 'download.html'));
+  console.log('copied download.html');
+}
+
 // คัดลอกโฟลเดอร์รูป assets/ (ถ้ามี) — รูปจริงของตัวละคร/ศัตรู ฯลฯ
 const assetsDir = join(root, 'assets');
 if (existsSync(assetsDir)) {

@@ -8,6 +8,7 @@ on:
     paths:
       - "game.js"
       - "index.html"
+      - "download.html"
       - "phaser.min.js"
       - "assets/**"
       - "scripts/**"
