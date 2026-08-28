@@ -254,6 +254,27 @@ const SKILLDEFS = {
     awaken:{ name:'สึนามิครีม', emoji:'🌊', desc:'คลื่นยักษ์ 3 ระลอก!' } },
 };
 const SKILL_AWAKEN_LV = 7;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (6)
+const SKILL_CAP  = 6;        // ล็อกสกิลโจมตี ≤ 6 อย่าง/รอบ (แบบ Vampire Survivors)
+const PASSIVE_CAP = 6;       // ล็อกสกิลติดตัว ≤ 6 อย่าง/รอบ
+/* ---- PASSIVES: สกิลติดตัวแบบเลเวลได้ (คนละหมวดกับสกิลโจมตี) · apply(p)=ผล 1 rank ---- */
+const PASSIVES = {
+  heart: { name:'หัวใจหวาน',  emoji:'❤️', color:0xff5f7a, max:5, desc:'HP สูงสุด +22 + ฟื้นทันที',
+    apply(p){ p.maxhp+=22; p.hp=Math.min(p.maxhp,p.hp+22); } },
+  power: { name:'พลังหวาน',   emoji:'💥', color:COLORS.grape, max:5, desc:'ดาเมจทุกอย่าง +11%',
+    apply(p){ p.dmgMul*=1.11; } },
+  swift: { name:'เท้าลื่น',   emoji:'👟', color:COLORS.mint, max:5, desc:'ความเร็ว +9%',
+    apply(p){ p.baseSpeed*=1.09; } },
+  magnet:{ name:'จมูกไว',     emoji:'🧲', color:COLORS.toast, max:5, desc:'ระยะดูดลูกกวาด +30%',
+    apply(p){ p.pickup*=1.3; } },
+  haste: { name:'มือไว',      emoji:'⏩', color:0x8fd0ff, max:5, desc:'ร่ายสกิลถี่ขึ้น 8%',
+    apply(p){ p.cdMul=(p.cdMul||1)*0.92; } },
+  crit:  { name:'ตาแม่น',     emoji:'🎯', color:0xffd166, max:5, desc:'โอกาสคริติคอล +6% (×1.8)',
+    apply(p){ p.critChance=(p.critChance||0)+0.06; } },
+  guard: { name:'เกราะนุ่ม',  emoji:'🛡️', color:0xa0e0c0, max:5, desc:'ลดดาเมจที่รับ 8%',
+    apply(p){ p.dmgTakenMul=(p.dmgTakenMul||1)*0.92; } },
+  regen: { name:'ฟื้นฟู',     emoji:'💗', color:0xff9ec4, max:5, desc:'ฟื้น HP +1.2/วินาที',
+    apply(p){ p.regen=(p.regen||0)+1.2; } },
+};
 const ACTIVES = {
   bomb:     { name:'Sugar Bomb',   emoji:'💣', desc:'ระเบิดพลังรอบตัว + ผลักศัตรู' },
   nova:     { name:'Sprinkle Nova',emoji:'✨', desc:'ยิงลูกกวาดกระจายรอบทิศ' },
@@ -468,7 +489,8 @@ class Game extends Phaser.Scene {
     this.physics.add.overlap(this.player,this.heals,this.collectHeal,null,this);
     this.physics.add.overlap(this.bullets,this.crates,this.hitCrate,null,this);
 
-    this.skills={ sprinkle:1 };            // auto-cast skills owned {key:level}
+    this.skills={ sprinkle:1 };            // auto-cast skills owned {key:level}  (≤ SKILL_CAP)
+    this.passives={};                      // passive skills owned {key:level}   (≤ PASSIVE_CAP)
     this.skillCd={}; for(const k in SKILLDEFS) this.skillCd[k]=0;
     this.whirlAng=0;
     this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';  // ตัวละครที่เลือก (จาก Save)
@@ -977,6 +999,8 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(false); this.hudVisible(true);
     this.state='play'; this.elapsed=0; this.sugarStage=0; this.sugarRun=0;
     this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
+    this.skills={ sprinkle:1 }; this.passives={};   // เริ่มรอบใหม่ = ล้างสกิล/พาสซีฟ (กันค้างจากรอบก่อนตอนออกจากด่าน)
+    this.player.maxhp=100; this.player.baseSpeed=210; this.player.pickup=80; this.player.dmgMul=1;  // รีเซ็ตสแตตฐาน (กันพาสซีฟ/พรสวรรค์ทบจากรอบก่อน)
     this.applyMeta(); this.buildSkillBar();
     this.startStage(idx);
   }
@@ -1235,28 +1259,39 @@ class Game extends Phaser.Scene {
     this.state='play'; this.physics.resume();
   }
   rollUpgrades(n){
-    const skillPool=[], passPool=[];
-    const S=(color,emoji,title,desc,apply)=>skillPool.push({kind:'✦ สกิล',badgeColor:'#ff8fb5',color,emoji,title,desc,apply});
-    const P=(color,emoji,title,desc,apply)=>passPool.push({kind:'▲ พาสซีฟ',badgeColor:'#8bd3a0',color,emoji,title,desc,apply});
-    // auto-cast skills — new + upgrades (อัพ = ปลดเอฟเฟกต์ใหม่ ไม่ใช่แค่ตัวเลข)
+    const skillPool=[], passPool=[], awakenPool=[];
+    const S=(color,emoji,title,desc,apply)=>skillPool.push({kind:'✦ สกิลโจมตี',badgeColor:'#ff8fb5',color,emoji,title,desc,apply});
+    const P=(color,emoji,title,desc,apply)=>passPool.push({kind:'▲ สกิลติดตัว',badgeColor:'#8bd3a0',color,emoji,title,desc,apply,pas:true});
+    const A=(color,emoji,title,desc,apply)=>awakenPool.push({kind:'⚡ ขั้นสุด',badgeColor:'#ffcf5a',color,emoji,title,desc,apply,awk:true});
+    const atkOwned=Object.keys(this.skills).length;      // ล็อกโจมตี ≤ SKILL_CAP
+    const pasOwned=Object.keys(this.passives).length;    // ล็อกติดตัว ≤ PASSIVE_CAP
+    // --- สกิลโจมตี (auto-cast) — สกิลใหม่เฉพาะเมื่อยังไม่เต็มโควตา ---
     for(const key in SKILLDEFS){ const d=SKILLDEFS[key], cur=this.skills[key]||0;
-      if(cur===0) S(COLORS.pink,d.emoji,d.name,'✨ สกิลใหม่ — '+d.desc,()=>{ this.skills[key]=1; if(key==='star')this.rebuildRing(); this.buildSkillBar(); });
+      if(cur===0){ if(atkOwned<SKILL_CAP) S(COLORS.pink,d.emoji,d.name,'✨ สกิลใหม่ — '+d.desc,()=>{ this.skills[key]=1; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
       else if(cur<d.max){ const nx=cur+1, tier=(SKILL_TIERS[key]&&SKILL_TIERS[key][nx])||'แรงขึ้น';
         S(COLORS.grape,d.emoji,d.name+' → Lv'+nx,'🔺 '+tier,()=>{ this.skills[key]++; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
-      else if(cur===d.max && d.awaken){   // MAX แล้ว → เสนอ "ตื่นรู้" (Awaken) เปลี่ยนรูปแบบสกิลให้โกง
+      else if(cur===d.max && d.awaken){   // MAX แล้ว → "ตื่นรู้" (Awaken) เปลี่ยนรูปแบบสกิลให้โกง (การันตีโผล่)
         const a=d.awaken;
-        S(0xffb020,a.emoji,'⚡ ตื่นรู้: '+a.name,'💥 '+a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ สกิลตื่นรู้! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
+        A(0xffb020,a.emoji,'⚡ ตื่นรู้: '+a.name,'💥 '+a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ สกิลตื่นรู้! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
     }
-    // passives (kept few)
-    P(0xff5f7a,'❤️','หัวใจหวาน','HP สูงสุด +25 และฟื้นทันที',()=>{ this.player.maxhp+=25; this.player.hp=Math.min(this.player.maxhp,this.player.hp+25); });
-    P(COLORS.mint,'👟','เท้าลื่น','ความเร็ว +12%',()=>{ this.player.baseSpeed*=1.12; });
-    P(COLORS.toast,'🧲','จมูกไว','ระยะดูดลูกกวาด +40%',()=>{ this.player.pickup*=1.4; });
-    P(COLORS.grape,'💥','พลังหวาน','ดาเมจทุกอย่าง +12%',()=>{ this.player.dmgMul*=1.12; });
-    // skills-first: fill mostly from skillPool, at most 1 passive per level-up
-    Phaser.Utils.Array.Shuffle(skillPool); Phaser.Utils.Array.Shuffle(passPool);
-    const out=skillPool.slice(0,n);
-    if(out.length<n){ out.push(...passPool.slice(0,n-out.length)); }
-    else if(Math.random()<0.5 && out.length===n){ out[n-1]=passPool[0]; } // sometimes offer 1 passive
+    // --- สกิลติดตัว (passive แบบเลเวลได้) — ตัวใหม่เฉพาะเมื่อยังไม่เต็มโควตา ---
+    for(const key in PASSIVES){ const d=PASSIVES[key], cur=this.passives[key]||0;
+      if(cur===0){ if(pasOwned<PASSIVE_CAP) P(d.color,d.emoji,d.name,'✨ ติดตัวใหม่ — '+d.desc,()=>{ this.passives[key]=1; d.apply(this.player); }); }
+      else if(cur<d.max){ P(d.color,d.emoji,d.name+' → Lv'+(cur+1),'🔺 '+d.desc,()=>{ this.passives[key]++; d.apply(this.player); }); }
+    }
+    Phaser.Utils.Array.Shuffle(skillPool); Phaser.Utils.Array.Shuffle(passPool); Phaser.Utils.Array.Shuffle(awakenPool);
+    const out=[];
+    // 1) การันตีสกิลขั้นสุด (Awaken) อย่างน้อย 1 ใบเสมอถ้ามีสิทธิ์ (เดิมเจอยากมาก)
+    if(awakenPool.length) out.push(awakenPool.shift());
+    // 2) เติมด้วยสกิลโจมตีเป็นหลัก
+    for(const o of skillPool){ if(out.length>=n) break; out.push(o); }
+    // 3) เว้นที่ให้สกิลติดตัวอย่างน้อย 1 ใบเสมอ (ถ้ามีให้เลือก)
+    if(passPool.length && !out.some(o=>o.pas)){
+      if(out.length<n) out.push(passPool[0]);
+      else out[out.length-1]=passPool[0];   // สลับใบสุดท้ายเป็น passive (awaken ที่การันตีไว้ยังอยู่)
+    }
+    // 4) เติมช่องที่เหลือด้วยของสำรองทั้งหมด กันการ์ดไม่ครบตอนตัวเลือกน้อย
+    for(const o of [...skillPool, ...passPool, ...awakenPool]){ if(out.length>=n) break; if(!out.includes(o)) out.push(o); }
     Phaser.Utils.Array.Shuffle(out);
     return out.slice(0,n);
   }

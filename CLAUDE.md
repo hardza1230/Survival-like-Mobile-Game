@@ -41,8 +41,12 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: + Skill Awaken + จอกว้างขึ้น + ออร์บสีตามค่า + พรสวรรค์เฉพาะตัว + โทนพาสเทล + โมจิเจลลี่)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: + ล็อกสกิล 6โจมตี/6ติดตัว + Awaken การันตีโผล่)
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:
+- **ล็อกสกิล 2 หมวด/รอบ (แบบ Vampire Survivors):** สกิล**โจมตี** ≤ 6 (`SKILL_CAP`, จาก `SKILLDEFS`) + สกิล**ติดตัว** ≤ 6 (`PASSIVE_CAP`, จาก `PASSIVES`)
+  · `this.skills`/`this.passives` (reset ใน startRun + create) · `rollUpgrades` เสนอ "สกิลใหม่" เฉพาะเมื่อยังไม่เต็มโควตา (`atkOwned<SKILL_CAP`/`pasOwned<PASSIVE_CAP`) · เต็มแล้วเหลือแต่การ์ดอัพเลเวล → สกิลถึง MAX ไวขึ้น = เจอ Awaken ไวขึ้น
+  · **`PASSIVES` (8 ตัว เลเวลได้ max5):** heart❤️(hp) power💥(dmg) swift👟(spd) magnet🧲(pickup) haste⏩(cdMul) crit🎯(critChance) guard🛡️(dmgTakenMul) regen💗(regen) — `apply(p)` = ผล 1 rank (mutate player) · startRun รีเซ็ตสแตตฐาน (maxhp/baseSpeed/pickup/dmgMul) กันทบข้ามรอบ
+  · **Awaken การันตีโผล่:** `rollUpgrades` มี `awakenPool` แยก — ถ้ามีสกิล MAX ที่มี awaken → **ดันการ์ด ⚡ ตื่นรู้ ≥1 ใบทุกครั้ง** (เดิมต้องสุ่มเจอ = เจอยากมาก) + การันตีสกิลติดตัว ≥1 ใบด้วย
 - **Skill Awaken (ตื่นรู้):** สกิลถึง MAX (Lv6) แล้วเลเวลอัพอีก = การ์ด "⚡ ตื่นรู้" เปลี่ยนรูปแบบสกิลให้โกง (Lv7=`SKILL_AWAKEN_LV`)
   ทุกสกิลมี `d.awaken{name,emoji,desc}` · castSkill อ่าน `aw=lvl>=7` เพิ่มจำนวน/ดาเมจ/ธง (sprinkle 8เม็ด homing, thunder 8จุด, chili 5ชั้น, whirl 16ทิศ, boomer 6ชิ้นเด้ง2, frost แช่ทั้งจอ, popcorn 20, bubble 8, star=วงกาแล็กซี3ชั้นใน rebuildRing)
   · `cdOf` → Lv7 ร่ายถี่ขึ้น 0.62× (`_cdBase`) · แถบสกิลโชว์ ⚡ + ไอคอน awaken · `awakenSpark()` ประกาย
