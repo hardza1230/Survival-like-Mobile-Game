@@ -878,7 +878,7 @@ class Game extends Phaser.Scene {
     if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='talent')this.buildTalent(); else if(s==='news')this.buildNews(); else this.buildHub(); }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต & ดาวน์โหลด');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
     const w=this.W,h=this.H;
     const cur=this.add.text(w/2,h*0.1,'เวอร์ชันปัจจุบัน  v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(0.5);
     this.menu.add(cur);
