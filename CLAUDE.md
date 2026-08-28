@@ -76,8 +76,9 @@
   เก็บ Sugar จากการฆ่า (บอส40/มินิ18/elite4/ธรรมดา1) ฝากตอนจบด่าน+ตาย
 - **เมนูฮับ + ซับสกรีน (tap-zone hit-test, ไม่ใช้ setInteractive):** `buildHub/buildStageSelect/buildUpgrade/buildGear`
   · `this.menuScreen`=hub/stage/upgrade/gear, `handleTap()`+`_zone()`+`_rowBtn()`+`_screenBg()` (ปุ่มกลับ)
-  · **เลือกด่าน:** ปลดตาม `Save.unlockedStage` · **อัพเกรดถาวร (`UPGRADES`):** hp/dmg/spd/magnet ซื้อด้วย Sugar
-  · **ของสวมใส่ (`GEAR`):** ช่อง weapon/charm ซื้อ+สวมใส่ · ผลรวมใส่ตอน `applyMeta()` ใน startRun(idx)
+  · **เลือกด่าน:** ปลดตาม `Save.unlockedStage`
+  · **อัพเกรดฐาน (`UPGRADES` = hp/dmg/def/spd/magnet) โฉม isekai-drifter (`buildUpgrade`):** แถบ **ระดับขั้น (rank)** จากผลรวมเลเวล (`Save.rankInfo/claimRanks`, `RANK_TIERS`/`RANK_STEP`) ถึงขั้นใหม่รับโบนัส Sugar · การ์ดสแตต (Lv/tag/ไอคอน/+ค่า/ราคา) กริดปรับตามจอ · ซื้อด้วย Sugar
+  · **ของสวมใส่ (`GEAR` 6 ช่อง: weapon/gloves/armor/boots/amulet/ring) โฉม isekai-drifter (`buildGear`):** portrait ตัวละครกลาง + 6 ช่องซ้าย3/ขวา3 (`GEAR_SLOTS`, `this.gearSlot`=ช่องที่เลือก) · แตะช่อง→โชว์คลังไอเทมของช่องนั้นด้านล่าง (สวมใส่/ซื้อ/⚒️ผสม-ตีบวก) · ผลรวมใส่ตอน `applyMeta()`
 - **เลเวลอัพเน้นสกิล** (พาสซีฟเป็นของเสริม) — เลือกด้วยการแตะ (hit-test เอง ไม่ใช้ setInteractive กับ shape)
 - **ระบบบท (CHAPTERS):** กรุ๊ปด่านเป็น "บท" · บท 1 = 5 ด่านครัว (STAGES, เล่นได้) · บท 2-5 = ล็อค "เร็ว ๆ นี้" · `buildStageSelect`=เลือกบท → `startRun(0)` เริ่มด่าน 1 เสมอ (เอา per-stage picker ออก)
 - **รีเซ็ตเซฟ (`Save.reset`):** ปุ่ม 🗑️ ในฮับ (แตะ 2 ครั้งยืนยัน `_resetConfirm`) ล้าง localStorage + คืนค่าเริ่มต้น (สำหรับเทส/แก้ account เทพเกิน) · UPGRADES ลดพลัง (hp+14/dmg+4%/spd+3% ต่อเลเวล)

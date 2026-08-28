@@ -397,17 +397,45 @@ const RANK_STEP = 6;   // ทุก 6 เลเวลรวม = ขึ้น 1 
 // ของสวมใส่ · ตีบวกได้ (lv=ระดับตีบวก 0..enhMax) เพิ่มพลังต่อระดับ
 const GEAR_ENH_MAX = 5;
 function gearEnhCost(lv){ return 60+lv*55; }   // 🍬 ค่าตีบวก +1..+5 (60/115/170/225/280)
+// 6 ช่องสวมใส่ (แบบ isekai drifter) · แต่ละช่องมีของ "ไม่สวม" ฟรี + ของซื้อ 2 ชิ้น · ตีบวกได้
+const GEAR_SLOTS = [
+  { slot:'weapon', label:'อาวุธ',   emoji:'⚔️' },
+  { slot:'gloves', label:'ถุงมือ',  emoji:'🧤' },
+  { slot:'armor',  label:'เกราะ',   emoji:'🛡️' },
+  { slot:'boots',  label:'รองเท้า', emoji:'👢' },
+  { slot:'amulet', label:'สร้อย',   emoji:'📿' },
+  { slot:'ring',   label:'แหวน',    emoji:'💍' },
+];
 const GEAR = {
   weapon: [
     { id:'w_spoon', emoji:'🥄', name:'ช้อนไม้',      cost:0,   enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',  apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
     { id:'w_chop',  emoji:'🥢', name:'ตะเกียบเหล็ก', cost:120, enh:true, desc:'ดาเมจ +12% (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); } },
     { id:'w_knife', emoji:'🔪', name:'มีดเชฟ',       cost:300, enh:true, desc:'ดาเมจ +22% (+4%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.22+0.04*lv); } },
   ],
-  charm: [
-    { id:'c_none',   emoji:'▫️', name:'ไม่สวม',       cost:0,   enh:false, desc:'-',            apply:(p,lv)=>{} },
-    { id:'c_ribbon', emoji:'🎀', name:'โบว์นำโชค',   cost:100, enh:true, desc:'HP สูงสุด +30 (+10/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
-    { id:'c_clover', emoji:'🍀', name:'โคลเวอร์',    cost:150, enh:true, desc:'ระยะดูด +40% (+8%/ตีบวก)',  apply:(p,lv)=>{ p.pickup*=(1+0.4+0.08*lv); } },
-    { id:'c_star',   emoji:'⭐', name:'ดาวประกาย',   cost:260, enh:true, desc:'ดาเมจ +8% · HP +15 (+2%·+8/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
+  gloves: [
+    { id:'gl_none', emoji:'🧤', name:'ไม่สวม',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'gl_mitt', emoji:'🧤', name:'ถุงมือเตาอบ',  cost:140, enh:true, desc:'คริ +5% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
+    { id:'gl_iron', emoji:'🥊', name:'นวมเหล็ก',      cost:320, enh:true, desc:'คริ +9% · ดาเมจ +4% (+1%·+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
+  ],
+  armor: [
+    { id:'ar_none',  emoji:'🥋', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'ar_apron', emoji:'🥋', name:'ผ้ากันเปื้อน', cost:130, enh:true, desc:'HP +45 (+12/ตีบวก)',        apply:(p,lv)=>{ p.maxhp+=45+12*lv; } },
+    { id:'ar_plate', emoji:'🛡️', name:'เกราะฝาหม้อ',  cost:340, enh:true, desc:'HP +90 · ลดดาเมจ 6% (+18HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=90+18*lv; p.dmgTakenMul*=Math.pow(0.94,1+lv*0.5); } },
+  ],
+  boots: [
+    { id:'bo_none',  emoji:'👢', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'bo_soft',  emoji:'👟', name:'รองเท้านุ่ม',  cost:110, enh:true, desc:'ความเร็ว +8% (+2%/ตีบวก)',   apply:(p,lv)=>{ p.baseSpeed*=(1+0.08+0.02*lv); } },
+    { id:'bo_swift', emoji:'👢', name:'บูตว่องไว',    cost:300, enh:true, desc:'ความเร็ว +14% · ดูด +15% (+3%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=(1+0.14+0.03*lv); p.pickup*=(1+0.15+0.03*lv); } },
+  ],
+  amulet: [
+    { id:'am_none',   emoji:'📿', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'am_ribbon', emoji:'🎀', name:'โบว์นำโชค',  cost:100, enh:true, desc:'HP +30 (+10/ตีบวก)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
+    { id:'am_star',   emoji:'⭐', name:'ดาวประกาย',  cost:260, enh:true, desc:'ดาเมจ +8% · HP +15 (+2%·+8/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
+  ],
+  ring: [
+    { id:'ri_none',   emoji:'💍', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'ri_copper', emoji:'💍', name:'แหวนทองแดง', cost:120, enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
+    { id:'ri_gold',   emoji:'💛', name:'แหวนทองคำ',  cost:320, enh:true, desc:'ดาเมจ +12% · ฟื้น +0.8/วิ (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
   ],
 };
 
@@ -419,9 +447,9 @@ const Save = {
     if(!this.data.gear)this.data.gear={};
     if(!this.data.gearLv)this.data.gearLv={};
     if(!this.data.ownedGear)this.data.ownedGear=[];
-    if(!this.data.gear.weapon)this.data.gear.weapon='w_spoon';
-    if(!this.data.gear.charm)this.data.gear.charm='c_none';
-    for(const id of ['w_spoon','c_none']) if(!this.data.ownedGear.includes(id))this.data.ownedGear.push(id);
+    const gearDefaults={ weapon:'w_spoon', gloves:'gl_none', armor:'ar_none', boots:'bo_none', amulet:'am_none', ring:'ri_none' };
+    for(const slot in gearDefaults){ if(!this.data.gear[slot])this.data.gear[slot]=gearDefaults[slot];
+      if(!this.data.ownedGear.includes(gearDefaults[slot]))this.data.ownedGear.push(gearDefaults[slot]); }
     if(!this.data.chars||!this.data.chars.length)this.data.chars=['momo'];
     if(!this.data.character)this.data.character='momo';
     if(!this.data.charProg)this.data.charProg={};
@@ -1013,25 +1041,48 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildGear(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('ของสวมใส่');
-    let y=this.H*0.125;
-    [['weapon','⚔ อาวุธ'],['charm','🧿 เครื่องราง']].forEach(([slot,label])=>{
-      const hdr=this.add.text(this.W/2,y,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5);
-      this.menu.add(hdr); y+=22;
-      GEAR[slot].forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), equipped=Save.data.gear[slot]===it.id;
-        const lv=Save.gearLv(it.id), canEnh=it.enh&&lv<GEAR_ENH_MAX, ecost=gearEnhCost(lv);
-        const nm=it.name+(lv>0?'  +'+lv:'');
-        let label,color,fn;
-        if(equipped && canEnh){ const afEnh=(Save.data.sugar||0)>=ecost; label='⚒️ +'+(lv+1)+' 🍬'+ecost; color=afEnh?'#ffd166':'#e0788a';
-          fn=()=>{ if(Save.spend(ecost)){ Save.enhance(it.id); Sfx.clear(); } this.buildMenuScreen(); }; }
-        else if(equipped){ label='ใส่อยู่ ✓'; color='#ffd166'; fn=null; }
-        else if(owned){ label='สวมใส่'; color='#8bd3a0'; fn=()=>{ Save.data.gear[slot]=it.id; Save.save(); this.buildMenuScreen(); }; }
-        else { const af=(Save.data.sugar||0)>=it.cost; label='🍬'+it.cost; color=af?'#bfe8ff':'#e0788a';
-          fn=()=>{ if(Save.spend(it.cost)){ Save.data.ownedGear.push(it.id); Save.data.gear[slot]=it.id; Save.save(); Sfx.clear(); } this.buildMenuScreen(); }; }
-        this._rowBtn(y,46,it.emoji,nm,it.desc,label,color,fn);
-        y+=52;
-      });
-      y+=6;
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อุปกรณ์');
+    const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
+    const sel=this.gearSlot||'weapon';
+    const cy0=78, topH=Math.min(h*0.34,250);
+    // ---- ตัวละคร (portrait) ตรงกลาง ----
+    const pcx=w/2, pcy=cy0+topH*0.44, pbW=Math.min(w*0.42,190), pbH=topH*0.86;
+    const pbg=this.add.graphics(); pbg.fillStyle(0x241a33,0.7); pbg.fillRoundedRect(pcx-pbW/2,cy0+4,pbW,pbH,18); pbg.lineStyle(2,0x4a4059,0.8); pbg.strokeRoundedRect(pcx-pbW/2,cy0+4,pbW,pbH,18);
+    this.menu.add(pbg);
+    if(this.textures.exists('char_'+id)){ const sp=this.add.image(pcx,pcy,'char_'+id,0).setScale((topH*0.7)/128); this.menu.add(sp); }
+    else { const em=this.add.text(pcx,pcy,CHARACTERS[id].emoji,{fontSize:Math.round(topH*0.5)+'px'}).setOrigin(0.5); this.menu.add(em); }
+    // ---- 6 ช่องสวมใส่ (ซ้าย 3 / ขวา 3) ----
+    const rowY=[cy0+topH*0.14, cy0+topH*0.44, cy0+topH*0.74];
+    const leftX=Math.max(44,w*0.135), rightX=Math.min(w-44,w*0.865), ss=Math.min(56,topH*0.24);
+    const layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
+    layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];
+      const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
+      const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
+      const g=this.add.graphics(); g.fillStyle(isSel?0x3a3550:0x2c2338,1); g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
+      g.lineStyle(isSel?3:2, isSel?0xffd166:(on?0x8bd3a0:0x4a4059), 1); g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
+      const em=this.add.text(sx,y-2,on?it.emoji:def.emoji,{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
+      this.menu.add([g,em]);
+      if(topH>=180){ const lb=this.add.text(sx,y+ss/2+9,def.label,{fontFamily:'sans-serif',fontSize:'10px',color:isSel?'#ffd166':'#9a90ab'}).setOrigin(0.5); this.menu.add(lb); }   // ซ่อนป้ายตอนจอเตี้ย (แนวนอน) กันทับ
+      if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
+      this._zone(sx-ss/2,y-ss/2,ss,ss+14,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
+    });
+    // ---- คลังไอเทมของช่องที่เลือก ----
+    const selDef=GEAR_SLOTS.find(g=>g.slot===sel);
+    let y=cy0+topH+10;
+    const hdr=this.add.text(w/2,y,selDef.emoji+' '+selDef.label+' — เลือกสวมใส่ / ตีบวก',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
+    this.menu.add(hdr); y+=22;
+    GEAR[sel].forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), equipped=Save.data.gear[sel]===it.id;
+      const lv=Save.gearLv(it.id), canEnh=it.enh&&lv<GEAR_ENH_MAX, ecost=gearEnhCost(lv);
+      const nm=it.name+(lv>0?'  +'+lv:'');
+      let label,color,fn;
+      if(equipped && canEnh){ const afEnh=(Save.data.sugar||0)>=ecost; label='⚒️ ผสม +'+(lv+1)+' 🍬'+ecost; color=afEnh?'#ffd166':'#e0788a';
+        fn=()=>{ if(Save.spend(ecost)){ Save.enhance(it.id); Sfx.clear(); } this.buildMenuScreen(); }; }
+      else if(equipped){ label='ใส่อยู่ ✓'; color='#ffd166'; fn=null; }
+      else if(owned){ label='สวมใส่'; color='#8bd3a0'; fn=()=>{ Save.data.gear[sel]=it.id; Save.save(); Sfx.select(); this.buildMenuScreen(); }; }
+      else { const af=(Save.data.sugar||0)>=it.cost; label='🍬'+it.cost; color=af?'#bfe8ff':'#e0788a';
+        fn=()=>{ if(Save.spend(it.cost)){ Save.data.ownedGear.push(it.id); Save.data.gear[sel]=it.id; Save.save(); Sfx.clear(); } this.buildMenuScreen(); }; }
+      this._rowBtn(y,44,it.emoji,nm,it.desc,label,color,fn);
+      y+=50;
     });
     this.menu.setVisible(true);
   }
