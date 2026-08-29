@@ -15,9 +15,13 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.8.0';
+const GAME_VERSION = '1.8.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.8.1', date:'2026-08-29', title:'ปรับปรุงความเสถียร & แก้ไขหน้าจอโหลดค้าง', items:[
+    'ป้องกันปัญหาแคช WebView ค้าง ด้วย Meta Headers และ Cache Buster ล่าสุด',
+    'เพิ่มระบบ Error Boundary แสดงแจ้งเตือนพร้อมปุ่มล้างแคชหากโหลดสะดุด',
+    'ปรับปรุงหน้าต่างแจ้งเตือนหมุนหน้าจอ (Orientation) ให้ยืดหยุ่นและไม่บล็อกเกม' ] },
   { v:'1.8.0', date:'2026-08-29', title:'ระบบโจมตีพื้นฐานเฉพาะตัวละคร (Survivor Style)', items:[
     'ยกเลิกปุ่มกดใช้สกิล — ตัวละครโจมตีอัตโนมัติด้วยอาวุธเริ่มต้นและเอกลักษณ์เฉพาะตัว (แบบ Vampire Survivors / Isekai Drifter)',
     'โมโม่ 🍡 เริ่มต้นด้วย Sprinkle Spray ยิงเกล็ดน้ำตาลรัวไล่เป้า',
