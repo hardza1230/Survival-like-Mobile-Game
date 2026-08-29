@@ -22,7 +22,8 @@ const CHANGELOG = [
     'พื้นหลังครัวจริงทั้ง 5 โซน (ตู้กับข้าว/อ่าง/เตาไฟ/แช่แข็ง/เตาอบ) แทนพื้นตาราง',
     'ศัตรูพุ่งโฉบ (Dasher) + ถึกบีบวง (Siege) เป็นอาร์ตจริง',
     'มินิบอส 5 ด่านมีหน้าตาเฉพาะตัว',
-    'ไอเทมหีบสมบัติ / โหลแยม / แม่เหล็ก เป็นอาร์ตจริง' ] },
+    'ไอเทมหีบสมบัติ / โหลแยม / แม่เหล็ก เป็นอาร์ตจริง',
+    'เอฟเฟกต์สกิลใหม่: พริกระเบิด, คลื่นน้ำแข็ง, โดนัทหล่น + วงเตือนอันตราย (telegraph)' ] },
   { v:'1.4.0', date:'2026-08-29', title:'AI ศัตรูใหม่ + บอสถึกขึ้น + หีบสมบัติ + ระบบดรอป/กล่องสุ่ม', items:[
     'ศัตรูรูปแบบใหม่: พุ่งโฉบ (Dasher), ถึกบีบวงล้อม (Siege) + อีเวนต์ฝูงบุก (Swarm) ทุกทิศ',
     'บอส/มินิบอสถึกขึ้นตามความเก่งผู้เล่น + แพทเทิร์นใหม่ (เกลียวหมุน, วงล้อมเว้นช่อง)',
@@ -150,6 +151,7 @@ const ASSET_IMAGES = {
   mb1:'assets/mb1.png', mb2:'assets/mb2.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // มินิบอส 5 ด่าน
   chest:'assets/chest.png', crate:'assets/crate.png', vac:'assets/vac.png',   // ไอเทม (รูปจริง แทนกราฟิกโค้ด)
   bg1:'assets/bg1.png', bg2:'assets/bg2.png', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png',   // พื้นหลัง 5 โซนครัว
+  fx_chili:'assets/fx_chili.png', fx_frost:'assets/fx_frost.png', fx_hazard:'assets/fx_hazard.png', fx_donut:'assets/fx_donut.png',   // VFX สกิล/telegraph
 };
 const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
@@ -1703,7 +1705,8 @@ class Game extends Phaser.Scene {
         b.dmg=(5+lvl*1.6)*dm*(aw?1.5:1); b.life=aw?1.6:1.2; b.pierce=pierce; b.bounce=bounce; if(aw)b.homing=260;
         this.physics.velocityFromRotation(ang,470,b.body.velocity); } Sfx.shoot(); }
     else if(key==='chili'){ const rings=aw?5:lvl>=6?3:lvl>=3?2:1, baseR=(80+lvl*14)*(cf.firestorm?1.2:1)*(aw?1.7:1), dmg=(8+lvl*2.4)*dm*(aw?1.6:1), knock=lvl>=4||aw;
-      for(let ri=0;ri<rings;ri++){ const r=baseR*(1-ri*(aw?0.16:0.26));
+      if(this.textures.exists('fx_chili')) this.fxBurst('fx_chili',this.player.x,this.player.y,baseR,aw?460:360);
+      else for(let ri=0;ri<rings;ri++){ const r=baseR*(1-ri*(aw?0.16:0.26));   // fallback วงโค้ด ถ้ารูปโหลดไม่ได้
         const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,10,ri%2?0xffb15a:0xff7a4d,0.4).setDepth(3));
         this.tweens.add({targets:ring,radius:r,alpha:0,duration:300+ri*70,onComplete:()=>ring.destroy()}); }
       if(lvl>=6||aw)this.cameras.main.shake(aw?220:120,aw?0.011:0.005);
@@ -1735,8 +1738,9 @@ class Game extends Phaser.Scene {
         b.boomer=true; b.bt=0; b.bdur=0.44; b.rebound=rebound; b.spin=true; if(aw)b.reb=-1;   // reb=-1 → เด้งได้ 2 รอบ (0,1)
         this.physics.velocityFromRotation(ang,430,b.body.velocity); } Sfx.shoot(); }
     else if(key==='frost'){ const r=(140+lvl*14)*(aw?2.6:1), dur=(1+lvl*0.22)*(aw?1.6:1), dmg=(lvl>=3||aw)?(6+lvl*2)*dm*(aw?1.8:1):0, shatter=lvl>=5||aw;
-      const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
-      this.tweens.add({targets:ring,radius:r,alpha:0,duration:320,onComplete:()=>ring.destroy()});
+      if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
+      else { const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
+        this.tweens.add({targets:ring,radius:r,alpha:0,duration:320,onComplete:()=>ring.destroy()}); }
       this.enemies.children.iterate(e=>{ if(e&&e.active&&(aw||(!e.isBoss&&!e.isMini))&&this.dist(e.x,e.y,this.player.x,this.player.y)<r){
         if(shatter&&e.frozen>0){ this.damage(e,(14+lvl*3)*dm,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
         if(!e.isBoss&&!e.isMini){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }
@@ -1805,7 +1809,10 @@ class Game extends Phaser.Scene {
   meteorStrike(x,y,r,dmg,delay){
     this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const warn=this.camWorld(this.add.circle(x,y,r,0xffb15a,0.14).setDepth(2).setStrokeStyle(2,0xffb15a,0.6));
-      const don=this.camWorld(this.add.circle(x,y-260,9,0xd9a066,1).setDepth(7).setStrokeStyle(3,0xa6702e,1));
+      const donArt=this.textures.exists('fx_donut');
+      const don = donArt
+        ? this.camWorld(this.add.image(x,y-260,'fx_donut').setDepth(7).setScale((r*1.5)/96))
+        : this.camWorld(this.add.circle(x,y-260,9,0xd9a066,1).setDepth(7).setStrokeStyle(3,0xa6702e,1));
       this.tweens.add({targets:don,y:y,duration:300,ease:'Quad.in',onComplete:()=>{ don.destroy(); warn.destroy();
         const boom=this.camWorld(this.add.circle(x,y,10,0xffcf70,0.5).setDepth(3));
         this.tweens.add({targets:boom,radius:r,alpha:0,duration:260,onComplete:()=>boom.destroy()});
@@ -1995,11 +2002,17 @@ class Game extends Phaser.Scene {
     this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
   // hazard: วงอันตรายบนพื้น (เตือนก่อน → ระเบิด → จาง)
   spawnHazard(x,y,r,dmg,tint){
-    const warn=this.camWorld(this.add.circle(x,y,r,tint||0xff5a4d,0.12).setDepth(2).setStrokeStyle(3,tint||0xff5a4d,0.7));
-    this.tweens.add({targets:warn,alpha:{from:0.12,to:0.32},duration:260,yoyo:true,repeat:1});
+    const useArt=this.textures.exists('fx_hazard');
+    let warn;
+    if(useArt){ const base=this.textures.get('fx_hazard').getSourceImage().width||256, sc=(r*2*1.25)/base;
+      warn=this.camWorld(this.add.image(x,y,'fx_hazard').setDepth(2).setScale(sc, sc*0.82).setAlpha(0.5));
+      this.tweens.add({targets:warn,alpha:{from:0.5,to:0.9},scaleX:sc*1.04,duration:260,yoyo:true,repeat:1}); }
+    else { warn=this.camWorld(this.add.circle(x,y,r,tint||0xff5a4d,0.12).setDepth(2).setStrokeStyle(3,tint||0xff5a4d,0.7));
+      this.tweens.add({targets:warn,alpha:{from:0.12,to:0.32},duration:260,yoyo:true,repeat:1}); }
     this.time.delayedCall(760,()=>{ if(this.state!=='play'&&this.state!=='levelup'){ warn.destroy(); return; }
       const boom=this.camWorld(this.add.circle(x,y,r,tint||0xff5a4d,0.5).setDepth(2));
-      this.tweens.add({targets:[warn,boom],alpha:0,scale:1.08,duration:280,onComplete:()=>{ warn.destroy(); boom.destroy(); }});
+      this.tweens.add({targets:boom,alpha:0,scale:1.15,duration:280,onComplete:()=>boom.destroy()});
+      this.tweens.add({targets:warn,alpha:0,duration:220,onComplete:()=>warn.destroy()});
       if(this.dist(this.player.x,this.player.y,x,y)<r+8) this.hurtPlayer(dmg,0.5);
       Sfx.boom(); });
   }
@@ -2084,6 +2097,14 @@ class Game extends Phaser.Scene {
     const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
     this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
+  // VFX ระเบิดวง (รูปจริง) — ขยายจากเล็ก→เต็มรัศมี แล้วจางหาย · โอเวอร์เลย์แบนราบ (oval) เข้ากับมุมกล้อง
+  fxBurst(key,x,y,radius,dur,spin){
+    if(!this.textures.exists(key))return null;
+    const base=this.textures.get(key).getSourceImage().width||256, full=(radius*2*1.15)/base;
+    const im=this.camWorld(this.add.image(x,y,key).setDepth(6).setScale(full*0.35, full*0.35*0.82));
+    const t={scaleX:full, scaleY:full*0.82, alpha:{from:0.95,to:0}, duration:dur, ease:'Quad.out', onComplete:()=>im.destroy()};
+    if(spin)im.setRotation(Math.random()*Math.PI*2);
+    this.tweens.add({targets:im, ...t}); return im; }
   // faux-2.5D: วาดเงาวงรีใต้ทุกตัวในเลเยอร์เดียว (เรียกทุกเฟรม)
   drawShadows(){
     const g=this.shadowG; if(!g)return; g.clear(); g.fillStyle(0x0a0510,0.28);
