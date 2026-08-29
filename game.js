@@ -15,9 +15,11 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.6.2';
+const GAME_VERSION = '1.6.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.6.3', date:'2026-08-29', title:'ปุ่มเมนูโฉมใหม่ (แบนโมเดิร์น)', items:[
+    'เปลี่ยนปุ่มเมนู+หน้าหยุดเกมเป็นปุ่มโค้งไล่เฉด + ไอคอนวงกลม + เงานุ่ม สะอาดขึ้น' ] },
   { v:'1.6.2', date:'2026-08-29', title:'จัดปุ่มเมนูให้สวยขึ้น', items:[
     'ปุ่มเมนูมีช่องว่าง+เงาชัดเจน ไม่ชิด/ซ้อนกันบนจอสูง · ขนาดพอดีขึ้น' ] },
   { v:'1.6.1', date:'2026-08-29', title:'ปุ่มลูกกวาดโฉมใหม่', items:[
@@ -165,7 +167,6 @@ const ASSET_IMAGES = {
   char_taro:'assets/char_taro.png', char_sesame:'assets/char_sesame.png',   // ตัวละครใหม่ (รูปนิ่ง + เจลลี่)
   ic_sprinkle:'assets/ic_sprinkle.png', ic_star:'assets/ic_star.png', ic_chili:'assets/ic_chili.png', ic_frost:'assets/ic_frost.png',
   ic_bubble:'assets/ic_bubble.png', ic_heart:'assets/ic_heart.png', ic_magnet:'assets/ic_magnet.png', ic_sugar:'assets/ic_sugar.png',   // ไอคอนสกิล/พร/น้ำตาล (มีบางตัว · ที่เหลือใช้อีโมจิ)
-  ui_btn_pink:'assets/ui_btn_pink.png', ui_btn_mint:'assets/ui_btn_mint.png',   // ปุ่มลูกกวาด (รูปจริง · สตรอว์เบอร์รีด้านซ้าย)
 };
 // map สกิล/พร → ไอคอนรูปจริง (มีเท่าที่อาร์ตทำมา · null=ใช้อีโมจิ)
 const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', chili:'ic_chili', frost:'ic_frost', bubble:'ic_bubble' };
@@ -972,14 +973,23 @@ class Game extends Phaser.Scene {
   /* ===== HUB MENU + SUB-SCREENS (tap-zone hit-test) ===== */
   _zone(x,y,w,h,fn){ this.tapZones.push({x,y,w,h,fn}); }
   // ปุ่มลูกกวาด (รูปจริง) — สตรอว์เบอร์รีอยู่ซ้าย ข้อความเลื่อนไปขวา · มี fallback graphics ถ้ารูปโหลดไม่ได้
-  uiPillBtn(cont, cx, cy, w, h, tex, label, textColor, fn){
-    const sh=this.add.graphics(); sh.fillStyle(0x000000,0.22); sh.fillRoundedRect(cx-w/2, cy-h/2+6, w, h, h*0.5); cont.add(sh);  // เงาใต้ปุ่ม
-    if(this.textures.exists(tex)){ const img=this.add.image(cx,cy,tex).setDisplaySize(w,h); cont.add(img); }
-    else { const g=this.add.graphics(); g.fillStyle(tex==='ui_btn_mint'?COLORS.mint:COLORS.pink,1); g.fillRoundedRect(cx-w/2,cy-h/2,w,h,h*0.5);
-      g.lineStyle(2,0xffffff,0.3); g.strokeRoundedRect(cx-w/2,cy-h/2,w,h,h*0.5); cont.add(g); }
-    const t=this.add.text(cx+w*0.14, cy, label, {fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(h*0.32)+'px',color:textColor||'#8a3d5a'}).setOrigin(0.5);
-    t.setStroke('#ffffff',2); t.setShadow(0,2,'rgba(120,40,70,0.28)',3);
-    cont.add(t); if(fn)this._zone(cx-w/2,cy-h/2,w,h,fn); }
+  _lighten(c,amt){ const r=(c>>16)&255,g=(c>>8)&255,b=c&255;
+    return ((Math.round(r+(255-r)*amt))<<16)|((Math.round(g+(255-g)*amt))<<8)|Math.round(b+(255-b)*amt); }
+  _darken(c,amt){ const r=(c>>16)&255,g=(c>>8)&255,b=c&255;
+    return ((Math.round(r*(1-amt)))<<16)|((Math.round(g*(1-amt)))<<8)|Math.round(b*(1-amt)); }
+  // ปุ่มแบนโมเดิร์น: โค้งมน + ไล่เฉด + กลอสบน + ไอคอนวงกลมซ้าย + เงานุ่ม
+  uiPillBtn(cont, cx, cy, w, h, color, emoji, label, fn){
+    const r=Math.min(h*0.36,24), x=cx-w/2, y=cy-h/2, g=this.add.graphics();
+    g.fillStyle(0x000000,0.26); g.fillRoundedRect(x,y+5,w,h,r);                                  // เงาใต้ปุ่ม
+    g.fillGradientStyle(this._lighten(color,0.22),this._lighten(color,0.22),color,color,1); g.fillRoundedRect(x,y,w,h,r);  // ตัวปุ่มไล่เฉด
+    g.fillStyle(0xffffff,0.20); g.fillRoundedRect(x+4,y+4,w-8,h*0.40,{tl:r,tr:r,bl:5,br:5});     // กลอสบน
+    g.lineStyle(2,this._lighten(color,0.45),0.7); g.strokeRoundedRect(x,y,w,h,r);                 // ขอบสว่าง
+    cont.add(g);
+    const icx=x+h*0.56, ig=this.add.graphics(); ig.fillStyle(this._darken(color,0.14),0.55); ig.fillCircle(icx,cy,h*0.32); cont.add(ig);
+    const em=this.add.text(icx,cy-1,emoji,{fontSize:Math.round(h*0.4)+'px'}).setOrigin(0.5); cont.add(em);
+    const t=this.add.text(x+h*1.06,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(h*0.34)+'px',color:'#ffffff'}).setOrigin(0,0.5);
+    t.setShadow(0,2,'rgba(0,0,0,0.32)',3); cont.add(t);
+    if(fn)this._zone(x,y,w,h,fn); }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
     if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){ Sfx.select(); z.fn(); return; } } }
   _rowBtn(y,h,emoji,name,sub,rightLabel,rightColor,fn){
@@ -1044,16 +1054,16 @@ class Game extends Phaser.Scene {
     const vt=this.add.text(w-66,27,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#bfe8ff'}).setOrigin(0.5);
     this.menu.add([vg,vt]); this._zone(w-118,12,104,30,()=>{ this.menuScreen='news'; this.buildMenuScreen(); });
     const items=[
-      ['▶ เริ่มเล่น','ui_btn_pink','#8a3d5a',()=>{ this.menuScreen='stage'; this.buildMenuScreen(); }],
-      ['🎭 เลือกตัวละคร','ui_btn_mint','#2f7a63',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
-      ['🌟 พรสวรรค์','ui_btn_pink','#8a3d5a',()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); }],
-      ['🎽 ของสวมใส่','ui_btn_mint','#2f7a63',()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
+      [COLORS.pink, '▶','เริ่มเล่น',      ()=>{ this.menuScreen='stage'; this.buildMenuScreen(); }],
+      [COLORS.toast,'🎭','เลือกตัวละคร',  ()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
+      [COLORS.grape,'🌟','พรสวรรค์',       ()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); }],
+      [COLORS.mint, '🎽','ของสวมใส่',      ()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
     ];
     // จัดปุ่มให้พอดีในช่วง 0.40–0.90 ของจอ + มีช่องว่างชัดเจนเสมอ (กันปุ่มชิด/ซ้อนบนจอสูง)
-    const bx=w/2, bw=Math.min(w-56,320), n=items.length, top=h*0.40, bottom=h*0.90;
-    const gap=Math.max(14,h*0.02), bh=Math.min((bottom-top-gap*(n-1))/n, bw/3.04, 84);
+    const bx=w/2, bw=Math.min(w-56,330), n=items.length, top=h*0.40, bottom=h*0.90;
+    const gap=Math.max(14,h*0.02), bh=Math.min((bottom-top-gap*(n-1))/n, 76);
     const stackH=bh*n+gap*(n-1), y0=top+(bottom-top-stackH)/2+bh/2;
-    items.forEach(([label,tex,tc,fn],i)=> this.uiPillBtn(this.menu, bx, y0+i*(bh+gap), bw, bh, tex, label, tc, fn));
+    items.forEach(([color,emoji,label,fn],i)=> this.uiPillBtn(this.menu, bx, y0+i*(bh+gap), bw, bh, color, emoji, label, fn));
     // ปุ่มรีเซ็ตเซฟ (สำหรับเทส) — แตะ 2 ครั้งยืนยัน
     const rt=this.add.text(w/2,h*0.955, this._resetConfirm?'⚠️ แตะอีกครั้งเพื่อล้างทั้งหมด':'🗑️ รีเซ็ตความคืบหน้า',
       {fontFamily:'sans-serif',fontSize:'13px',color:this._resetConfirm?'#ff8fb5':'#7a7088'}).setOrigin(0.5);
@@ -1251,16 +1261,11 @@ class Game extends Phaser.Scene {
     const ph=this.add.text(px+14,panelY+10,'ถือครองอยู่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
     this.drawHeldBar(this.pauseUI, panelY+28);
-    const bw=Math.min(w-80,300), bx=w/2, bh=Math.min(bw/3.04,82);
-    const mk=(cy,label,tex,tc,fn)=>{
-      const sh=this.add.graphics(); sh.fillStyle(0x000000,0.22); sh.fillRoundedRect(bx-bw/2,cy-bh/2+6,bw,bh,bh*0.5); this.pauseUI.add(sh);
-      if(this.textures.exists(tex)){ this.pauseUI.add(this.add.image(bx,cy,tex).setDisplaySize(bw,bh)); }
-      else { const g=this.add.graphics(); g.fillStyle(tex==='ui_btn_mint'?COLORS.mint:COLORS.pink,1); g.fillRoundedRect(bx-bw/2,cy-bh/2,bw,bh,bh*0.5); this.pauseUI.add(g); }
-      const lt=this.add.text(bx+bw*0.14,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(bh*0.3)+'px',color:tc}).setOrigin(0.5);
-      lt.setStroke('#ffffff',2); lt.setShadow(0,2,'rgba(120,40,70,0.28)',3);
-      this.pauseUI.add(lt); this._pauseBtns.push({x:bx-bw/2,y:cy-bh/2,w:bw,h:bh,fn}); };
-    mk(h*0.55,'▶ เล่นต่อ','ui_btn_mint','#2f7a63',()=>this.togglePause());
-    mk(h*0.55+bh+16,'🏠 ออกจากด่าน','ui_btn_pink','#8a3d5a',()=>this.exitStage());
+    const bw=Math.min(w-70,300), bx=w/2, bh=72;
+    this.uiPillBtn(this.pauseUI, bx, h*0.55, bw, bh, COLORS.mint, '▶','เล่นต่อ', null);
+    this._pauseBtns.push({x:bx-bw/2,y:h*0.55-bh/2,w:bw,h:bh,fn:()=>this.togglePause()});
+    this.uiPillBtn(this.pauseUI, bx, h*0.55+bh+16, bw, bh, COLORS.grape, '🏠','ออกจากด่าน', null);
+    this._pauseBtns.push({x:bx-bw/2,y:h*0.55+bh+16-bh/2,w:bw,h:bh,fn:()=>this.exitStage()});
     this.pauseUI.setVisible(true);
   }
   exitStage(){
