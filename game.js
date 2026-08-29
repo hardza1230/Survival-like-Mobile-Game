@@ -15,9 +15,13 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.6.3';
+const GAME_VERSION = '1.7.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.7.0', date:'2026-08-29', title:'ระบบเสียงจริง + ปรับปรุงปุ่มแดช & สไปรต์มอนสเตอร์', items:[
+    'เชื่อมต่อเสียงประกอบ (BGM ประจำ 5 ด่าน + Main Theme) และเอฟเฟกต์ SFX จริงจากไฟล์เสียง',
+    'ปรับปรุง Layout ปุ่ม Dash และ Joystick ให้เล่นมือเดียว (ขวา/ซ้าย) สะดวก ไม่เผลอโดนแดช',
+    'แยกสไปรต์มอนสเตอร์และบอสให้คมชัด โหลดถูกต้อง ไม่มีเศษสไปรต์ชีท' ] },
   { v:'1.6.3', date:'2026-08-29', title:'ปุ่มเมนูโฉมใหม่ (แบนโมเดิร์น)', items:[
     'เปลี่ยนปุ่มเมนู+หน้าหยุดเกมเป็นปุ่มโค้งไล่เฉด + ไอคอนวงกลม + เงานุ่ม สะอาดขึ้น' ] },
   { v:'1.6.2', date:'2026-08-29', title:'จัดปุ่มเมนูให้สวยขึ้น', items:[
@@ -62,11 +66,12 @@ const CHANGELOG = [
 ];
 
 /* ============================================================
-   Sfx — เสียงน่ารักสังเคราะห์ด้วย Web Audio (ไม่ต้องมีไฟล์เสียง)
-   โทนกลม/นุ่ม (sine/triangle) + สเกลเมเจอร์ = ฟังสดใสน่ารัก
+   Sfx — จัดการเสียงเอฟเฟกต์ (SFX) และดนตรีประกอบ (BGM)
+   เล่นไฟล์เสียงจริงจาก assets/audio/ พร้อม fallback เสียงสังเคราะห์
    ============================================================ */
 const Sfx = {
   ctx:null, master:null, muted:false, _noise:null, _last:{},
+  _currentBgm:null, _currentBgmKey:'',
   ensure(){
     if(this.ctx) return this.ctx;
     const AC=window.AudioContext||window.webkitAudioContext; if(!AC)return null;
@@ -76,10 +81,24 @@ const Sfx = {
     for(let i=0;i<len;i++) d[i]=Math.random()*2-1; this._noise=buf;
     return this.ctx;
   },
-  unlock(){ this.ensure(); if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume(); this.startBgm(); },
-  toggle(){ this.muted=!this.muted; if(this.master)this.master.gain.value=this.muted?0:0.35; return this.muted; },
-  // throttle เสียงที่ยิงถี่ (เช่น เก็บ xp / ยิงกระสุน) ไม่ให้รก
+  unlock(){ this.ensure(); if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume(); if(!this._currentBgm)this.playMainBgm(); },
+  toggle(){
+    this.muted=!this.muted;
+    if(this.master)this.master.gain.value=this.muted?0:0.35;
+    if(window.__g && window.__g.sound) window.__g.sound.mute=this.muted;
+    return this.muted;
+  },
   _ok(key,gap){ const t=(this.ctx?this.ctx.currentTime:0); if((this._last[key]||-9)+gap>t)return false; this._last[key]=t; return true; },
+  playFile(key, vol=0.5){
+    if(this.muted) return false;
+    try {
+      if(window.__g && window.__g.sound && window.__g.sound.get(key)){
+        window.__g.sound.play(key, { volume: vol });
+        return true;
+      }
+    } catch(e){}
+    return false;
+  },
   tone(freq,dur,type='sine',vol=0.3,slideTo=0,delay=0){
     if(!this.ctx||this.muted)return;
     const t0=this.ctx.currentTime+delay, o=this.ctx.createOscillator(), g=this.ctx.createGain();
@@ -99,24 +118,58 @@ const Sfx = {
     node.connect(g); g.connect(this.master); s.start(t0); s.stop(t0+dur+0.02);
   },
   seq(notes,type='triangle',vol=0.26,step=0.1){ notes.forEach((f,i)=>this.tone(f,step*1.7,type,vol,0,i*step)); },
-  // --- เสียงเอฟเฟกต์น่ารัก ---
-  shoot(){ if(this._ok('shoot',0.05)) this.tone(880,0.05,'triangle',0.07,1500); },
-  pop(){ if(this._ok('pop',0.03)) this.tone(560,0.09,'square',0.13,200); },
-  xp(){ if(this._ok('xp',0.05)) this.tone(700,0.06,'sine',0.11,1040); },
-  hurt(){ this.tone(320,0.18,'sawtooth',0.2,90); },
-  dash(){ this.noise(0.16,0.12,0,true); this.tone(620,0.14,'sine',0.09,1150); },
-  ult(){ this.seq([660,880,1180],'triangle',0.2,0.06); },
-  zap(){ if(this._ok('zap',0.05)){ this.noise(0.07,0.13,0,true); this.tone(1550,0.09,'square',0.1,420); } },
-  boom(){ if(this._ok('boom',0.08)){ this.noise(0.2,0.16); this.tone(170,0.22,'sine',0.16,60); } },
-  frost(){ if(this._ok('frost',0.1)) this.seq([1200,1500,1900],'sine',0.12,0.05); },
-  levelup(){ this.seq([523,659,784,1047],'triangle',0.24,0.1); },
-  select(){ this.tone(920,0.08,'square',0.17,1360); },
-  bossWarn(){ this.tone(120,0.5,'sawtooth',0.22,70); this.tone(90,0.6,'square',0.13,0,0.1); },
-  clear(){ this.seq([659,784,1047,1319],'triangle',0.24,0.12); },
+
+  // --- เสียงเอฟเฟกต์ (SFX) ---
+  shoot(){ if(this._ok('shoot',0.05)){ if(!this.playFile('sfx_shoot', 0.45)) this.tone(880,0.05,'triangle',0.07,1500); } },
+  pop(){ if(this._ok('pop',0.03)){ if(!this.playFile('sfx_hit', 0.4)) this.tone(560,0.09,'square',0.13,200); } },
+  xp(){ if(this._ok('xp',0.04)){ if(!this.playFile('sfx_xp', 0.4)) this.tone(700,0.06,'sine',0.11,1040); } },
+  hurt(){ if(!this.playFile('sfx_hit', 0.6)) this.tone(320,0.18,'sawtooth',0.2,90); },
+  dash(){ if(!this.playFile('sfx_dash', 0.6)){ this.noise(0.16,0.12,0,true); this.tone(620,0.14,'sine',0.09,1150); } },
+  ult(type){
+    if(type==='vortex' && this.playFile('sfx_ult_vortex', 0.7)) return;
+    if(!this.playFile('sfx_ult_bomb', 0.7)) this.seq([660,880,1180],'triangle',0.2,0.06);
+  },
+  zap(){ if(this._ok('zap',0.05)){ if(!this.playFile('sfx_donut', 0.5)){ this.noise(0.07,0.13,0,true); this.tone(1550,0.09,'square',0.1,420); } } },
+  boom(){ if(this._ok('boom',0.08)){ if(!this.playFile('sfx_chili', 0.6)){ this.noise(0.2,0.16); this.tone(170,0.22,'sine',0.16,60); } } },
+  frost(){ if(this._ok('frost',0.1)){ if(!this.playFile('sfx_frost', 0.6)) this.seq([1200,1500,1900],'sine',0.12,0.05); } },
+  levelup(){ if(!this.playFile('sfx_levelup', 0.65)) this.seq([523,659,784,1047],'triangle',0.24,0.1); },
+  chest(){ if(!this.playFile('sfx_chest', 0.7)) this.seq([587,740,880,1175],'triangle',0.25,0.09); },
+  select(){ if(!this.playFile('sfx_btn', 0.5)) this.tone(920,0.08,'square',0.17,1360); },
+  bossWarn(){ if(!this.playFile('sfx_hazard', 0.7)){ this.tone(120,0.5,'sawtooth',0.22,70); this.tone(90,0.6,'square',0.13,0,0.1); } },
+  clear(){ if(!this.playFile('sfx_levelup', 0.6)) this.seq([659,784,1047,1319],'triangle',0.24,0.12); },
   victory(){ this.seq([523,659,784,1047,1319,1568],'triangle',0.28,0.14); },
   dead(){ this.seq([440,349,262,196],'sawtooth',0.2,0.14); },
   heal(){ if(this._ok('heal',0.1)) this.seq([784,988,1319],'sine',0.16,0.06); },
-  // ===== เพลงพื้นหลัง (BGM สังเคราะห์เอง วนลูป) =====
+
+  // ===== เพลงพื้นหลัง (BGM จริง + สังเคราะห์ fallback) =====
+  playStageBgm(stageNum=1){
+    const key = 'bgm_stage' + Math.max(1, Math.min(5, stageNum));
+    if(this._currentBgmKey === key && this._currentBgm && this._currentBgm.isPlaying) return;
+    this.stopBgm();
+    if(window.__g && window.__g.sound && window.__g.sound.get(key)){
+      try {
+        this._currentBgm = window.__g.sound.add(key, { loop:true, volume: this.muted?0:0.45 });
+        this._currentBgm.play();
+        this._currentBgmKey = key;
+        return;
+      } catch(e){}
+    }
+    this.startBgm();
+  },
+  playMainBgm(){
+    const key = 'bgm_main';
+    if(this._currentBgmKey === key && this._currentBgm && this._currentBgm.isPlaying) return;
+    this.stopBgm();
+    if(window.__g && window.__g.sound && window.__g.sound.get(key)){
+      try {
+        this._currentBgm = window.__g.sound.add(key, { loop:true, volume: this.muted?0:0.45 });
+        this._currentBgm.play();
+        this._currentBgmKey = key;
+        return;
+      } catch(e){}
+    }
+    this.startBgm();
+  },
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
   _bgmNote(freq,dur,type,vol,delay){ if(!this.ctx||!this._bgmGain)return;
     const t0=this.ctx.currentTime+delay, o=this.ctx.createOscillator(), g=this.ctx.createGain();
@@ -126,16 +179,19 @@ const Sfx = {
   startBgm(){ this.ensure(); if(!this.ctx||this._bgmTimer)return;
     if(!this._bgmGain){ this._bgmGain=this.ctx.createGain(); this._bgmGain.gain.value=0.5; this._bgmGain.connect(this.master); }
     this._bgmStep=0; this._bgmLoop(); },
-  stopBgm(){ if(this._bgmTimer){ clearTimeout(this._bgmTimer); this._bgmTimer=null; } },
-  bgmIntense(on){ this._bgmIntense=!!on; },
+  stopBgm(){
+    if(this._currentBgm){ try{ this._currentBgm.stop(); this._currentBgm.destroy(); }catch(e){} this._currentBgm=null; this._currentBgmKey=''; }
+    if(this._bgmTimer){ clearTimeout(this._bgmTimer); this._bgmTimer=null; }
+  },
+  bgmIntense(on){ this._bgmIntense=!!on; if(this._currentBgm && this._currentBgm.isPlaying){ this._currentBgm.setVolume(this.muted?0:(on?0.55:0.45)); } },
   _bgmLoop(){
-    const roots=[130.81,110.00,174.61,196.00];   // C · Am · F · G (โปรเกรสชันสดใส)
+    const roots=[130.81,110.00,174.61,196.00];
     const root=roots[this._bgmStep%roots.length];
     const bar=this._bgmIntense?1.35:1.9, beat=bar/4, base=root*2;
-    this._bgmNote(root,beat*3.6,'sine',0.5,0);                  // เบสนุ่ม
-    const arp=[base,base*1.25,base*1.5,base*2];                 // อาร์เพจโจเมเจอร์
+    this._bgmNote(root,beat*3.6,'sine',0.5,0);
+    const arp=[base,base*1.25,base*1.5,base*2];
     arp.forEach((f,i)=>this._bgmNote(f,beat*0.9,'triangle',this._bgmIntense?0.24:0.2,i*beat));
-    if(this._bgmStep%2===0) this._bgmNote(base*2,beat*0.6,'sine',0.12,beat*2);   // ประกายบน
+    if(this._bgmStep%2===0) this._bgmNote(base*2,beat*0.6,'sine',0.12,beat*2);
     this._bgmStep++;
     this._bgmTimer=setTimeout(()=>this._bgmLoop(), bar*1000);
   },
@@ -176,6 +232,30 @@ const ASSET_SHEETS = {
   char_mint:  { url:'assets/char_mint_sheet.png',  frame:128 },
   char_cocoa: { url:'assets/char_cocoa_sheet.png', frame:128 },
 };
+
+/* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
+const ASSET_AUDIO = {
+  sfx_shoot:      'assets/audio/sfx/sfx_skill_sprinkle.wav',
+  sfx_hit:        'assets/audio/sfx/sfx_hit_monster.wav',
+  sfx_xp:         'assets/audio/sfx/sfx_pickup_sugar.wav',
+  sfx_dash:       'assets/audio/sfx/sfx_jump_squish.wav',
+  sfx_levelup:    'assets/audio/sfx/sfx_levelup_fanfare.wav',
+  sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
+  sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
+  sfx_chili:      'assets/audio/sfx/sfx_skill_chili.wav',
+  sfx_frost:      'assets/audio/sfx/sfx_skill_frost.wav',
+  sfx_ult_bomb:   'assets/audio/sfx/sfx_ult_sugarbomb.wav',
+  sfx_ult_vortex: 'assets/audio/sfx_vfx_ult_cocoavortex.wav',
+  sfx_donut:      'assets/audio/sfx_vfx_proj_donut.wav',
+  sfx_hazard:     'assets/audio/sfx_vfx_telegraph_hazard.wav',
+  bgm_main:       'assets/audio/bgm/bgm_main_theme.wav',
+  bgm_stage1:     'assets/audio/bgm/bgm_stage1_pantry.wav',
+  bgm_stage2:     'assets/audio/bgm/bgm_stage2_sink.wav',
+  bgm_stage3:     'assets/audio/bgm/bgm_stage3_stove.wav',
+  bgm_stage4:     'assets/audio/bgm/bgm_stage4_freezer.wav',
+  bgm_stage5:     'assets/audio/bgm/bgm_stage5_oven.wav',
+};
+
 let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
 function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
@@ -188,8 +268,9 @@ class Boot extends Phaser.Scene {
   preload(){
     for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
     for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
-    // ถ้ารูปโหลดไม่ได้ (เช่นเปิดแบบไฟล์เดียว) ให้ข้ามไป ใช้กราฟิกโค้ดแทน (ไม่ให้ค้าง)
-    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; });
+    for(const k in ASSET_AUDIO) this.load.audio(k, verUrl(ASSET_AUDIO[k]));
+    // ถ้ารูป/เสียงโหลดไม่ได้ ให้ข้ามไป ใช้กราฟิก/เสียงสังเคราะห์แทน (ไม่ให้ค้าง)
+    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_AUDIO[f.key]; });
   }
   create(){
     const mk=(key,size,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
@@ -686,15 +767,16 @@ class Game extends Phaser.Scene {
   camUI(o){ if(this.cameras&&this.cameras.main)this.cameras.main.ignore(o); return o; }  // UI: ให้กล้องโลกข้าม
 
   /* ---------- INPUT ---------- */
+  /* ---------- INPUT ---------- */
   setupInput(){
     this.input.on('pointerdown',(p)=>{
       Sfx.unlock();
       p={x:p.x/this.DPR,y:p.y/this.DPR,id:p.id};   // แปลงพิกัดจริง → CSS px
       // mute toggle (มุมขวาบน) — เช็คก่อนทุกอย่างเพื่อไม่ให้ไปโดนจอย
-      if(this.muteBtn && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<26){
+      if(this.muteBtn && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<28){
         const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
       // pause button (เฉพาะตอนเล่น/พัก)
-      if(this.pauseBtn && this.pauseBtn.visible && (this.state==='play'||this.state==='paused') && this.dist(p.x,p.y,this.pauseBtn.x,this.pauseBtn.y)<26){
+      if(this.pauseBtn && this.pauseBtn.visible && (this.state==='play'||this.state==='paused') && this.dist(p.x,p.y,this.pauseBtn.x,this.pauseBtn.y)<28){
         this.togglePause(); return; }
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } }
@@ -704,11 +786,14 @@ class Game extends Phaser.Scene {
       if(this.state==='summary'){ Sfx.select(); this.continueFromSummary(); return; }
       if(this.state==='levelup'){ this.pickCardAt(p.y); return; }
       if(this.state!=='play') return;
-      // skill button (right, upper of the two)
-      if(this.dist(p.x,p.y,this.skillBtn.x,this.skillBtn.y)<52){ this.useActive(); return; }
-      // dash: any tap on right half
-      if(p.x>this.W*0.5){ this.doDash(); return; }
-      // left half → joystick
+
+      // ปรับปรุงใหม่: กดปุ่มอัลติเฉพาะในขอบเขตปุ่ม (รัศมี 46px)
+      if(this.skillBtn && this.skillBtn.visible && this.dist(p.x,p.y,this.skillBtn.x,this.skillBtn.y)<46){ this.useActive(); return; }
+
+      // ปรับปรุงใหม่: กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (รัศมี 44px) กันมือขวาเผลอโดนตอนลากเดิน
+      if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<44){ this.doDash(); return; }
+
+      // แตะจุดอื่นทั้งหมด (ซ้าย/ขวา/กลาง) = จอยสติ๊กลอย ควบคุมทิศทางเดินอิสระด้วยนิ้วเดียว
       this.joy.active=true; this.joy.id=p.id; this.joy.bx=p.x; this.joy.by=p.y; this.joy.dx=0; this.joy.dy=0;
       this.joyBase.setPosition(p.x,p.y).setVisible(true);
       this.joyKnob.setPosition(p.x,p.y).setVisible(true);
@@ -735,6 +820,7 @@ class Game extends Phaser.Scene {
     this.player.setVelocity(d.x*560,d.y*560);   // basic dash — a bit farther, still on-screen
     this.player.iframe=Math.max(this.player.iframe,0.28);
     Sfx.dash();
+    this.flashBtn(this.dashBtn);
     this.player.setTint(0xfff6bd);
     this.time.delayedCall(160,()=>this.player.clearTint());
     this._sqX=1.35; this._sqY=0.7;   // ยืดตอนพุ่ง (เจลลี่)
@@ -767,6 +853,7 @@ class Game extends Phaser.Scene {
           if(this.dist(e.x,e.y,this.player.x,this.player.y)<r2){ this.damage(e,dmg*this.player.dmgMul*0.9,e.x,e.y);
             const ang=Math.atan2(e.y-this.player.y,e.x-this.player.x); e.setVelocity(Math.cos(ang)*460,Math.sin(ang)*460); e.knock=0.28; } }); }); }
       this.activeCd=6*uc; this._activeMax=this.activeCd;
+      Sfx.ult('bomb');
     } else if(a.key==='nova'){
       const n=8+lvl*2, dmg=(5+lvl*2)*this.player.dmgMul*up;
       for(let i=0;i<n;i++){ const ang=(i/n)*Math.PI*2;
@@ -777,6 +864,7 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(ang,430,b.body.velocity);
       }
       this.activeCd=5*uc; this._activeMax=this.activeCd;
+      Sfx.ult('nova');
     } else if(a.key==='freeze'){
       const df=this.player.deepFreeze?1:0;   // เยือกลึก (พรสวรรค์ mint)
       const r=210+df*120, dur=(1.4+lvl*0.35)*up*(1+df*0.6);
@@ -785,6 +873,7 @@ class Game extends Phaser.Scene {
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
         if(this.dist(e.x,e.y,this.player.x,this.player.y)<r){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }});
       this.activeCd=7*uc; this._activeMax=this.activeCd;
+      Sfx.frost();
     } else if(a.key==='blackhole'){
       const bv=this.player.bigVoid?1:0;   // หลุมนิรันดร์ (พรสวรรค์ cocoa)
       const cx=this.player.x, cy=this.player.y, R=280+bv*140, dmg=(20+lvl*8)*this.player.dmgMul*up*(1+bv*0.4);
@@ -804,8 +893,10 @@ class Game extends Phaser.Scene {
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<er) this.damage(e,dmg,e.x,e.y); });
         Sfx.boom(); });
       this.activeCd=8*uc; this._activeMax=this.activeCd;
+      Sfx.ult('vortex');
+    } else {
+      Sfx.ult();
     }
-    Sfx.ult();
     this.flashBtn(this.skillBtn);
   }
   flashBtn(b){ this.tweens.add({targets:b,scale:{from:1.25,to:1},duration:220,ease:'Back.out'}); }
@@ -816,13 +907,17 @@ class Game extends Phaser.Scene {
     this.joyBase=this.add.circle(0,0,62,0xffffff,0.10).setScrollFactor(1).setDepth(50).setVisible(false).setStrokeStyle(2,0xffffff,0.25);
     this.joyKnob=this.add.circle(0,0,26,0xffffff,0.22).setScrollFactor(1).setDepth(51).setVisible(false);
 
-    // dash button (lower right)
-    this.dashBtn=this.add.circle(w-70,this.H-90,44,COLORS.mint,0.18).setScrollFactor(1).setDepth(50).setStrokeStyle(2,COLORS.mint,0.7);
-    this.dashTxt=this.add.text(w-70,this.H-90,'พุ่ง',{fontFamily:'sans-serif',fontSize:'16px',color:'#bff3e8'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
-    // skill button (above dash)
-    this.skillBtn=this.add.circle(w-70,this.H-196,46,COLORS.pink,0.20).setScrollFactor(1).setDepth(50).setStrokeStyle(2,COLORS.pink,0.8);
-    this.skillEmoji=this.add.text(w-70,this.H-200,ACTIVES[this.active.key].emoji,{fontSize:'30px'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
-    this.skillCdTxt=this.add.text(w-70,this.H-168,'',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffd9e6'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
+    // ปรับปรุงใหม่: dash button ขนาดพอดีมือขวา (มุมขวาล่าง)
+    const dbX = w - 58, dbY = this.H - 78, dbR = 36;
+    this.dashBtn=this.add.circle(dbX,dbY,dbR,COLORS.mint,0.22).setScrollFactor(1).setDepth(50).setStrokeStyle(2.5,COLORS.mint,0.85);
+    this.dashTxt=this.add.text(dbX,dbY,'💨\nพุ่ง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#bff3e8',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
+    this.dashRing=this.add.graphics().setScrollFactor(1).setDepth(52);
+
+    // ปรับปรุงใหม่: skill button (อยู่เหนือปุ่มแดช)
+    const sbX = w - 58, sbY = this.H - 162, sbR = 38;
+    this.skillBtn=this.add.circle(sbX,sbY,sbR,COLORS.pink,0.22).setScrollFactor(1).setDepth(50).setStrokeStyle(2.5,COLORS.pink,0.9);
+    this.skillEmoji=this.add.text(sbX,sbY-2,ACTIVES[this.active.key].emoji,{fontSize:'26px'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
+    this.skillCdTxt=this.add.text(sbX,sbY+18,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9e6'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
     // cooldown ring รอบปุ่มอัลติ
     this.skillRing=this.add.graphics().setScrollFactor(1).setDepth(52);
 
@@ -859,7 +954,7 @@ class Game extends Phaser.Scene {
       const fps=Math.round(this.game.loop.actualFps), bw=Math.round(this.scale.width);
       this.fpsTxt.setText(fps+'fps · '+bw+'p · x'+this.DPR); }});
 
-    this.hudList=[this.dashBtn,this.dashTxt,this.skillBtn,this.skillEmoji,this.skillCdTxt,this.skillRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG,this.pauseBtn,this.pauseTxt];
+    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.skillBtn,this.skillEmoji,this.skillCdTxt,this.skillRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG,this.pauseBtn,this.pauseTxt];
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar];
     this.hudList.forEach(o=>o.setVisible(false));
     this.bossUI.forEach(o=>o.setVisible(false));
@@ -879,9 +974,17 @@ class Game extends Phaser.Scene {
     const g=this.skillRing; if(!g)return; g.clear(); const b=this.skillBtn; if(!b||!b.visible)return;
     if(this.activeCd>0 && this._activeMax>0){
       const frac=Phaser.Math.Clamp(1-this.activeCd/this._activeMax,0,1);
-      g.lineStyle(4,0xffd166,0.9); g.beginPath();
-      g.arc(b.x,b.y,50,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
-    } else { g.lineStyle(3,0xffe9a8,0.5); g.strokeCircle(b.x,b.y,50); }
+      g.lineStyle(3.5,0xffd166,0.9); g.beginPath();
+      g.arc(b.x,b.y,42,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
+    } else { g.lineStyle(2.5,0xffe9a8,0.45); g.strokeCircle(b.x,b.y,42); }
+  }
+  drawDashRing(){
+    const g=this.dashRing; if(!g)return; g.clear(); const b=this.dashBtn; if(!b||!b.visible)return;
+    if(!this.dashReady && this.dashCd>0){
+      const frac=Phaser.Math.Clamp(1-this.dashCd/1.1,0,1);
+      g.lineStyle(3.5,0x66d3b3,0.9); g.beginPath();
+      g.arc(b.x,b.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
+    } else { g.lineStyle(2,0xbff3e8,0.35); g.strokeCircle(b.x,b.y,40); }
   }
   /* แถบ "ถือครองอยู่" — โชว์สกิลโจมตี + สกิลติดตัวที่มีตอนนี้ (ใช้ในเลเวลอัพ/หยุดเกม) · คืน y ล่างสุด */
   drawHeldBar(cont, topY){
@@ -1238,7 +1341,7 @@ class Game extends Phaser.Scene {
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
     Save.save(); this._lastExpGain=Math.round(n); this._lastLvlUps=ups; return ups;
   }
-  showMenu(){ this.state='menu'; Sfx.bgmIntense(false); this.menuScreen='hub'; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
+  showMenu(){ this.state='menu'; Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen='hub'; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
   togglePause(){
     if(this.state==='play'){ this.state='paused'; this.physics.pause();
@@ -1292,6 +1395,7 @@ class Game extends Phaser.Scene {
   /* ---------- STAGES / WAVES (Archero-style) ---------- */
   startStage(i){
     const st=STAGES[i]; this.stageIndex=i; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;
+    Sfx.playStageBgm(i+1);
     this.bossUI.forEach(o=>o.setVisible(false));
     this.gridBg.fillColor=st.grid;
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
@@ -2255,8 +2359,8 @@ class Game extends Phaser.Scene {
     const wasReady=this._actReady;
     if(this.activeCd>0){ this.activeCd-=dt; this.skillBtn.setFillStyle(COLORS.pink,0.10); this.skillCdTxt.setText(Math.ceil(this.activeCd)); this.skillEmoji.setAlpha(0.4); this._actReady=false; }
     else { this.skillBtn.setFillStyle(COLORS.pink,0.22); this.skillCdTxt.setText(''); this.skillEmoji.setAlpha(1); this._actReady=true;
-      if(wasReady===false)this.flashBtn(this.skillBtn); }
     this.drawSkillRing();
+    this.drawDashRing();
     this.tickStage(dt);   // นับเวลาเวฟ + เกิดมอนต่อเนื่อง
 
     // enemies
@@ -2322,6 +2426,7 @@ class Game extends Phaser.Scene {
     }
     this.drawBars();
   }
+}
 }
 
 // เรนเดอร์ที่ความละเอียดจริงของจอ (แก้ภาพเบลอบน Retina/high-DPI)

@@ -36,17 +36,24 @@ if (existsSync(join(root, 'download.html'))) {
   console.log('copied download.html');
 }
 
-// คัดลอกโฟลเดอร์รูป assets/ (ถ้ามี) — รูปจริงของตัวละคร/ศัตรู ฯลฯ
+// คัดลอกโฟลเดอร์ assets/ (รูปจริง + เสียง audio + bg)
+function copyDirRecursive(srcDir, dstDir) {
+  mkdirSync(dstDir, { recursive: true });
+  for (const f of readdirSync(srcDir)) {
+    if (f === 'assets' || f === '__pycache__' || f === '.DS_Store') continue; // ข้าม assets/assets/ ต้นฉบับดิบ
+    const src = join(srcDir, f);
+    const dst = join(dstDir, f);
+    if (statSync(src).isDirectory()) {
+      copyDirRecursive(src, dst);
+    } else {
+      copyFileSync(src, dst);
+      console.log('copied ' + join(dstDir, f).replace(root, ''));
+    }
+  }
+}
 const assetsDir = join(root, 'assets');
 if (existsSync(assetsDir)) {
-  const dst = join(www, 'assets');
-  mkdirSync(dst, { recursive: true });
-  // คัดลอกเฉพาะไฟล์รูประดับบนสุด (ข้ามโฟลเดอร์ย่อย เช่น assets/assets/ ที่เป็นต้นฉบับดิบ ไม่ต้อง deploy)
-  for (const f of readdirSync(assetsDir)) {
-    const src = join(assetsDir, f);
-    if (!statSync(src).isFile()) { console.log('skip dir assets/' + f); continue; }
-    copyFileSync(src, join(dst, f)); console.log('copied assets/' + f);
-  }
+  copyDirRecursive(assetsDir, join(www, 'assets'));
 }
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)
