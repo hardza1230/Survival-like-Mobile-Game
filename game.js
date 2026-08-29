@@ -15,9 +15,11 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.6.0';
+const GAME_VERSION = '1.6.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.6.1', date:'2026-08-29', title:'ปุ่มลูกกวาดโฉมใหม่', items:[
+    'ปุ่มเมนู + หน้าหยุดเกม เปลี่ยนเป็นปุ่มลูกกวาดสตรอว์เบอร์รีน่ารัก' ] },
   { v:'1.6.0', date:'2026-08-29', title:'ตัวละครใหม่ 2 ตัว + ไอคอนสกิล + เอฟเฟกต์อัลติ', items:[
     'ตัวละครเล่นได้ใหม่: ตาโร่ 🍠 (ว่องไว) และ งาดำ ⚫ (นักสู้คาดผ้า)',
     'ไอคอนสกิล/พร เป็นรูปจริงในแถบสกิล + การ์ดเลเวลอัพ (บางตัว)',
@@ -161,6 +163,7 @@ const ASSET_IMAGES = {
   char_taro:'assets/char_taro.png', char_sesame:'assets/char_sesame.png',   // ตัวละครใหม่ (รูปนิ่ง + เจลลี่)
   ic_sprinkle:'assets/ic_sprinkle.png', ic_star:'assets/ic_star.png', ic_chili:'assets/ic_chili.png', ic_frost:'assets/ic_frost.png',
   ic_bubble:'assets/ic_bubble.png', ic_heart:'assets/ic_heart.png', ic_magnet:'assets/ic_magnet.png', ic_sugar:'assets/ic_sugar.png',   // ไอคอนสกิล/พร/น้ำตาล (มีบางตัว · ที่เหลือใช้อีโมจิ)
+  ui_btn_pink:'assets/ui_btn_pink.png', ui_btn_mint:'assets/ui_btn_mint.png',   // ปุ่มลูกกวาด (รูปจริง · สตรอว์เบอร์รีด้านซ้าย)
 };
 // map สกิล/พร → ไอคอนรูปจริง (มีเท่าที่อาร์ตทำมา · null=ใช้อีโมจิ)
 const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', chili:'ic_chili', frost:'ic_frost', bubble:'ic_bubble' };
@@ -966,6 +969,14 @@ class Game extends Phaser.Scene {
   }
   /* ===== HUB MENU + SUB-SCREENS (tap-zone hit-test) ===== */
   _zone(x,y,w,h,fn){ this.tapZones.push({x,y,w,h,fn}); }
+  // ปุ่มลูกกวาด (รูปจริง) — สตรอว์เบอร์รีอยู่ซ้าย ข้อความเลื่อนไปขวา · มี fallback graphics ถ้ารูปโหลดไม่ได้
+  uiPillBtn(cont, cx, cy, w, h, tex, label, textColor, fn){
+    if(this.textures.exists(tex)){ const img=this.add.image(cx,cy,tex).setDisplaySize(w,h); cont.add(img); }
+    else { const g=this.add.graphics(); g.fillStyle(tex==='ui_btn_mint'?COLORS.mint:COLORS.pink,1); g.fillRoundedRect(cx-w/2,cy-h/2,w,h,h*0.4);
+      g.lineStyle(2,0xffffff,0.25); g.strokeRoundedRect(cx-w/2,cy-h/2,w,h,h*0.4); cont.add(g); }
+    const t=this.add.text(cx+w*0.13, cy, label, {fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(h*0.3)+'px',color:textColor||'#8a3d5a'}).setOrigin(0.5);
+    t.setStroke('#ffffff',3); t.setShadow(0,1,'rgba(120,40,70,0.35)',2);
+    cont.add(t); if(fn)this._zone(cx-w/2,cy-h/2,w,h,fn); }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
     if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){ Sfx.select(); z.fn(); return; } } }
   _rowBtn(y,h,emoji,name,sub,rightLabel,rightColor,fn){
@@ -1029,15 +1040,15 @@ class Game extends Phaser.Scene {
     const vg=this.add.graphics(); vg.fillStyle(0x2c2338,0.9); vg.fillRoundedRect(w-118,12,104,30,10); vg.lineStyle(1.5,0x4a4059,1); vg.strokeRoundedRect(w-118,12,104,30,10);
     const vt=this.add.text(w-66,27,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#bfe8ff'}).setOrigin(0.5);
     this.menu.add([vg,vt]); this._zone(w-118,12,104,30,()=>{ this.menuScreen='news'; this.buildMenuScreen(); });
-    const bw=Math.min(w-60,300), bx=w/2, bh=46;
-    const mk=(cy,label,color,fn)=>{ const g=this.add.graphics(); g.fillStyle(color,1); g.fillRoundedRect(bx-bw/2,cy-bh/2,bw,bh,15);
-      g.lineStyle(2,0xffffff,0.25); g.strokeRoundedRect(bx-bw/2,cy-bh/2,bw,bh,15);
-      const t=this.add.text(bx,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#fff'}).setOrigin(0.5);
-      this.menu.add([g,t]); this._zone(bx-bw/2,cy-bh/2,bw,bh,fn); };
-    mk(h*0.46,'▶ เริ่มเล่น',COLORS.pink,()=>{ this.menuScreen='stage'; this.buildMenuScreen(); });
-    mk(h*0.57,'🎭 เลือกตัวละคร',COLORS.toast,()=>{ this.menuScreen='char'; this.buildMenuScreen(); });
-    mk(h*0.68,'🌟 พรสวรรค์',COLORS.grape,()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); });
-    mk(h*0.79,'🎽 ของสวมใส่',COLORS.mint,()=>{ this.menuScreen='gear'; this.buildMenuScreen(); });
+    const bw=Math.min(w-44,330), bx=w/2, bh=Math.min(bw/3.04,104);
+    const items=[
+      ['▶ เริ่มเล่น','ui_btn_pink','#8a3d5a',()=>{ this.menuScreen='stage'; this.buildMenuScreen(); }],
+      ['🎭 เลือกตัวละคร','ui_btn_mint','#2f7a63',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
+      ['🌟 พรสวรรค์','ui_btn_pink','#8a3d5a',()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); }],
+      ['🎽 ของสวมใส่','ui_btn_mint','#2f7a63',()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
+    ];
+    const y0=h*0.42, gapY=Math.min(bh+8, h*0.115);
+    items.forEach(([label,tex,tc,fn],i)=> this.uiPillBtn(this.menu, bx, y0+i*gapY, bw, bh, tex, label, tc, fn));
     // ปุ่มรีเซ็ตเซฟ (สำหรับเทส) — แตะ 2 ครั้งยืนยัน
     const rt=this.add.text(w/2,h*0.955, this._resetConfirm?'⚠️ แตะอีกครั้งเพื่อล้างทั้งหมด':'🗑️ รีเซ็ตความคืบหน้า',
       {fontFamily:'sans-serif',fontSize:'13px',color:this._resetConfirm?'#ff8fb5':'#7a7088'}).setOrigin(0.5);
@@ -1235,13 +1246,15 @@ class Game extends Phaser.Scene {
     const ph=this.add.text(px+14,panelY+10,'ถือครองอยู่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
     this.drawHeldBar(this.pauseUI, panelY+28);
-    const bw=Math.min(w-80,280), bx=w/2, bh=54;
-    const mk=(cy,label,color,fn)=>{ const g=this.add.graphics(); g.fillStyle(color,1); g.fillRoundedRect(bx-bw/2,cy-bh/2,bw,bh,16);
-      g.lineStyle(2,0xffffff,0.25); g.strokeRoundedRect(bx-bw/2,cy-bh/2,bw,bh,16);
-      const lt=this.add.text(bx,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
-      this.pauseUI.add([g,lt]); this._pauseBtns.push({x:bx-bw/2,y:cy-bh/2,w:bw,h:bh,fn}); };
-    mk(h*0.50,'▶ เล่นต่อ',COLORS.mint,()=>this.togglePause());
-    mk(h*0.62,'🏠 ออกจากด่าน',COLORS.grape,()=>this.exitStage());
+    const bw=Math.min(w-70,300), bx=w/2, bh=Math.min(bw/3.04,100);
+    const mk=(cy,label,tex,tc,fn)=>{
+      if(this.textures.exists(tex)){ this.pauseUI.add(this.add.image(bx,cy,tex).setDisplaySize(bw,bh)); }
+      else { const g=this.add.graphics(); g.fillStyle(tex==='ui_btn_mint'?COLORS.mint:COLORS.pink,1); g.fillRoundedRect(bx-bw/2,cy-bh/2,bw,bh,bh*0.4); this.pauseUI.add(g); }
+      const lt=this.add.text(bx+bw*0.13,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(bh*0.28)+'px',color:tc}).setOrigin(0.5);
+      lt.setStroke('#ffffff',3); lt.setShadow(0,1,'rgba(120,40,70,0.35)',2);
+      this.pauseUI.add(lt); this._pauseBtns.push({x:bx-bw/2,y:cy-bh/2,w:bw,h:bh,fn}); };
+    mk(h*0.52,'▶ เล่นต่อ','ui_btn_mint','#2f7a63',()=>this.togglePause());
+    mk(h*0.52+bh+10,'🏠 ออกจากด่าน','ui_btn_pink','#8a3d5a',()=>this.exitStage());
     this.pauseUI.setVisible(true);
   }
   exitStage(){
