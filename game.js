@@ -15,9 +15,14 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.4.0';
+const GAME_VERSION = '1.5.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.5.0', date:'2026-08-29', title:'ลงกราฟิกจริง! พื้นหลัง 5 โซน + ศัตรู/มินิบอส/ไอเทมใหม่', items:[
+    'พื้นหลังครัวจริงทั้ง 5 โซน (ตู้กับข้าว/อ่าง/เตาไฟ/แช่แข็ง/เตาอบ) แทนพื้นตาราง',
+    'ศัตรูพุ่งโฉบ (Dasher) + ถึกบีบวง (Siege) เป็นอาร์ตจริง',
+    'มินิบอส 5 ด่านมีหน้าตาเฉพาะตัว',
+    'ไอเทมหีบสมบัติ / โหลแยม / แม่เหล็ก เป็นอาร์ตจริง' ] },
   { v:'1.4.0', date:'2026-08-29', title:'AI ศัตรูใหม่ + บอสถึกขึ้น + หีบสมบัติ + ระบบดรอป/กล่องสุ่ม', items:[
     'ศัตรูรูปแบบใหม่: พุ่งโฉบ (Dasher), ถึกบีบวงล้อม (Siege) + อีเวนต์ฝูงบุก (Swarm) ทุกทิศ',
     'บอส/มินิบอสถึกขึ้นตามความเก่งผู้เล่น + แพทเทิร์นใหม่ (เกลียวหมุน, วงล้อมเว้นช่อง)',
@@ -141,6 +146,10 @@ const ASSET_IMAGES = {
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   boss1:'assets/boss1.png', boss2:'assets/boss2.png', boss3:'assets/boss3.png',
   boss4:'assets/boss4.png', boss5:'assets/boss5.png',   // บอสใหญ่ 5 ด่าน
+  e_dasher:'assets/e_dasher.png', e_siege:'assets/e_siege.png',   // ศัตรูใหม่ (รูปจริง แทนการย้อมสี)
+  mb1:'assets/mb1.png', mb2:'assets/mb2.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // มินิบอส 5 ด่าน
+  chest:'assets/chest.png', crate:'assets/crate.png', vac:'assets/vac.png',   // ไอเทม (รูปจริง แทนกราฟิกโค้ด)
+  bg1:'assets/bg1.png', bg2:'assets/bg2.png', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png',   // พื้นหลัง 5 โซนครัว
 };
 const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
@@ -569,7 +578,10 @@ class Game extends Phaser.Scene {
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
-    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,1,COLORS.grid,0.35).setDepth(-100000);
+    // พื้นหลังโซนครัว (รูปจริง) — เลเยอร์ใต้สุด + กริดเส้นจาง ๆ ทับไว้เป็นจุดอ้างอิงการเคลื่อนที่
+    this.bgTile=this.camWorld(this.add.tileSprite(0,0,WORLD,WORLD,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(0.9));
+    this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.6;
+    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.22).setDepth(-100000);
     // faux-2.5D: เลเยอร์เงาใต้ตัว (วาดใหม่ทุกเฟรม) + จัดลำดับความลึกตามแกน Y
     this.iso=true;   // สวิตช์เปิด/ปิดโหมด 2.5D เบา ๆ
     this.shadowG=this.add.graphics().setDepth(-99000);
@@ -639,7 +651,7 @@ class Game extends Phaser.Scene {
     this.uiCam.setZoom(D);
     this.uiCam.centerOn(this.W/2,this.H/2);   // จุดหมุน zoom = กึ่งกลาง UI (พิกัด CSS)
     // แยกสิ่งที่แต่ละกล้องเรนเดอร์
-    this._worldObjs=[this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots];
+    this._worldObjs=[this.bgTile,this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots];
     this.uiCam.ignore(this._worldObjs);
     const ui=[this.vig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.pauseBtn,this.pauseTxt,this.pauseUI,this.fpsTxt,this.menu,this.lvlUp,this.over,this.joyBase,this.joyKnob]
       .concat(this.hudList||[],this.bossUI||[]).filter(Boolean);
@@ -1232,6 +1244,7 @@ class Game extends Phaser.Scene {
     const st=STAGES[i]; this.stageIndex=i; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;
     this.bossUI.forEach(o=>o.setVisible(false));
     this.gridBg.fillColor=st.grid;
+    if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
     this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name}`);
     this.showBanner(`${st.emoji} ด่าน ${i+1}: ${st.name}`, st.lore, 3000);
     this.updateWaveText();
@@ -1352,10 +1365,11 @@ class Game extends Phaser.Scene {
     const adds=2+this.stageIndex;
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_brute');
-    b.setScale(1.7).setCircle(26,5,5); b.isMini=true; b.isBoss=false;
+    const mkey='mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
+    b.setScale(mArt?1.15:1.7).setCircle(mArt?52:26, mArt?18:5, mArt?18:5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.62*this.bossHpMul(); b.maxhp=b.hp; b.spd=54; b.dmg=Math.round(st.bossDmg*0.75); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;
-    b.tintColor=st.tint; b.setTint(st.tint);
+    if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.atkCd=1.6; b.phase2=false; b.atks=['slam','aimed']; if(this.stageIndex>=1)b.atks.push('radial','spiral'); if(this.stageIndex>=3)b.atks.push('charge','trap');
     this.boss=b; this.camWorld(b); this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
@@ -1622,7 +1636,7 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.62+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);
-    const key=type==='fast'||type==='dasher'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='tank'||type==='siege'?'e_tank':'e_basic';
+    const key=type==='dasher'?'e_dasher':type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='siege'?'e_siege':type==='tank'?'e_tank':'e_basic';
     if(!e) e=this.enemies.create(x,y,key);
     else { e.setTexture(key); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
@@ -1633,8 +1647,8 @@ class Game extends Phaser.Scene {
     else if(type==='tank'){ e.hp=80*s; e.spd=36; e.dmg=18; e.xp=4; e.setCircle(26,5,5); }
     else if(type==='shooter'){ e.hp=19*s; e.spd=62; e.dmg=9; e.xp=2; e.shooter=true; e.shootCd=Phaser.Math.FloatBetween(1.1,2.0); e.setCircle(17,5,5); }
     else if(type==='bomber'){ e.hp=24*s; e.spd=70; e.dmg=12; e.xp=2; e.bomber=true; e.setCircle(17,5,5); }
-    else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(15,4,4); e.tintColor=0xffb04d; scale=1.05; }  // สายพุ่งโฉบ
-    else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(30,3,3); e.tintColor=0xff6a8a; scale=1.85; }  // ถึกโหด เดินบีบวงช้า ๆ
+    else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
+    else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(scale);
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
@@ -2028,7 +2042,7 @@ class Game extends Phaser.Scene {
       Sfx.zap(); b.atkCd=1.9*fast;
     } else if(pick==='charge'){ // พุ่งชาร์จใส่ผู้เล่น (เตือนด้วยจอวาบ)
       const ang=Math.atan2(this.player.y-b.y,this.player.x-b.x);
-      b.setTintFill(0xffffff); this.time.delayedCall(260,()=>{ if(!b.active)return; if(!b.isMini)b.clearTint(); else if(b.tintColor)b.setTint(b.tintColor);
+      b.setTintFill(0xffffff); this.time.delayedCall(260,()=>{ if(!b.active)return; if(b.tintColor)b.setTint(b.tintColor); else b.clearTint();
         b.setVelocity(Math.cos(ang)*(560+this.stageIndex*20),Math.sin(ang)*(560+this.stageIndex*20)); b.knock=0.45; });
       b.atkCd=2.8*fast;
     } else if(pick==='summon'){ // เรียกลูกน้อง
@@ -2187,11 +2201,11 @@ class Game extends Phaser.Scene {
       if(e.dasher){   // สายพุ่งโฉบ: เข้าหา → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่
         e.dashT-=dt;
         if(e.dashState==='chase'){ e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
-          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.4; e.setVelocity(0,0); e.setScale((e.scaleX||1.05)*1.12); } }
+          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.4; e.setVelocity(0,0); e.setScale(1.12); } }
         else if(e.dashState==='wind'){ e.setVelocity(0,0); e.setTintFill(0xffffff);
-          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang; if(e.tintColor)e.setTint(e.tintColor); this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
+          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang; if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
         else if(e.dashState==='dash'){ this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
-          if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); e.setScale(1.05); } }
+          if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); e.setScale(1.0); } }
         return; }
       e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
     });
