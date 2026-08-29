@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "notebooks": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\norrasates\\.antigravity-ide\\extensions\\googlecloudtools.datacloud-0.9.1-universal\\mcp_servers\\cli\\mcp_proxy_bundle.js",
+        "notebooks-antigravityide"
+      ]
+    },
+    "visualization": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\norrasates\\.antigravity-ide\\extensions\\googlecloudtools.datacloud-0.9.1-universal\\mcp_servers\\cli\\mcp_proxy_bundle.js",
+        "visualization-antigravityide"
+      ]
+    },
+    "data-agent-kit": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\norrasates\\.antigravity-ide\\extensions\\googlecloudtools.datacloud-0.9.1-universal\\mcp_servers\\cli\\mcp_proxy_bundle.js",
+        "dataAgentKit-antigravityide"
+      ]
+    },
+    "spritecook": {
+      "serverUrl": "https://api.spritecook.ai/mcp/",
+      "headers": {
+        "Authorization": "Bearer sc_live_8dc49c44b1543cc516e23213c941b903e703b930d6c60ec2"
+      }
+    },
+    "lyria-music": {
+      "command": "python",
+      "args": [
+        "c:\\Users\\norrasates\\Desktop\\Mochi MeyHem\\scripts\\lyria_mcp_server.py"
+      ],
+      "env": {
+        "GEMINI_API_KEY": "AIzaSyACCx1SyEnCg9G7YTsqCO8vO7hXe2TLJLA"
+      }
+    }
+  }
+}

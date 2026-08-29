@@ -7,3 +7,5 @@ android/
 www/
 *.apk
 package-lock.json
+__pycache__/
+*.pyc

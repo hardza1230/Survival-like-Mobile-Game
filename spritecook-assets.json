@@ -1,0 +1,156 @@
+{
+  "assets": [
+    {
+      "key": "icon_skill_star",
+      "asset_id": "3d22d495-3514-4776-91c5-ab916970c366",
+      "prompt": "Kawaii glowing cute candy star guard skill icon for mobile game, yellow gold glossy jelly star, sparkling sprinkles, soft pastel colors, cute round shape, transparent background",
+      "file_path": "./assets/icons/icon_skill_star.png",
+      "sheet_path": "./assets/icons/icon_skill_star_sheet.png",
+      "created_at": "2026-08-29T06:38:33.617Z"
+    },
+    {
+      "key": "icon_skill_chili",
+      "asset_id": "3a61aedd-4912-44f4-a557-0153d23ca54a",
+      "prompt": "Kawaii cute spicy chili pepper nova explosion skill icon for mobile game, glossy candy chili, cute red-orange jelly sparks, soft pastel colors, soft dark outline, transparent background",
+      "file_path": "./assets/icons/icon_skill_chili.png",
+      "sheet_path": "./assets/icons/icon_skill_chili_sheet.png",
+      "created_at": "2026-08-29T06:38:58.818Z"
+    },
+    {
+      "key": "icon_skill_frost",
+      "asset_id": "724a818d-e912-4bc5-90fe-7de0532c8d11",
+      "prompt": "Kawaii cute ice candy frost pulse skill icon for mobile game, pale blue snowflake crystal jelly, sparkling cool glow, soft pastel colors, round cute shape, transparent background",
+      "file_path": "./assets/icons/icon_skill_frost.png",
+      "sheet_path": "./assets/icons/icon_skill_frost_sheet.png",
+      "created_at": "2026-08-29T06:39:24.030Z"
+    },
+    {
+      "key": "icon_skill_bubble",
+      "asset_id": "e5c8182d-2cb2-4e11-9ecd-45d04a0fa82e",
+      "prompt": "Kawaii cute shiny rainbow soap bubble homing skill icon for mobile game, pastel holographic jelly sphere, glistening highlights, soft dark outline, transparent background",
+      "file_path": "./assets/icons/icon_skill_bubble.png",
+      "sheet_path": "./assets/icons/icon_skill_bubble_sheet.png",
+      "created_at": "2026-08-29T06:39:52.179Z"
+    },
+    {
+      "key": "icon_pas_heart",
+      "asset_id": "5812bf1c-68a2-4b16-a583-1ca9be41fcbb",
+      "prompt": "Kawaii cute pink jelly sweet heart passive skill icon for mobile game, glossy strawberry candy heart, healing soft glow, cute round shape, transparent background",
+      "file_path": "./assets/icons/icon_pas_heart.png",
+      "sheet_path": "./assets/icons/icon_pas_heart_sheet.png",
+      "created_at": "2026-08-29T06:40:17.626Z"
+    },
+    {
+      "key": "icon_pas_magnet",
+      "asset_id": "44948efb-f970-4a31-a1a4-de053b345706",
+      "prompt": "Kawaii cute candy horseshoe magnet passive skill icon for mobile game, pastel red and silver rounded magnet with sweet candy sparkles, transparent background",
+      "file_path": "./assets/icons/icon_pas_magnet.png",
+      "sheet_path": "./assets/icons/icon_pas_magnet_sheet.png",
+      "created_at": "2026-08-29T06:40:39.970Z"
+    },
+    {
+      "key": "icon_sugar",
+      "asset_id": "9ac5d29a-0fca-4d4b-9111-129de8da1c29",
+      "prompt": "Kawaii golden candy sugar crystal coin currency icon for mobile game, glistening sweet gold wrapped candy or golden sugar gem, glossy jelly highlights, transparent background",
+      "file_path": "./assets/icons/icon_sugar.png",
+      "sheet_path": "./assets/icons/icon_sugar_sheet.png",
+      "created_at": "2026-08-29T06:41:02.392Z"
+    },
+    {
+      "key": "ui_button_pink",
+      "asset_id": "7e71d04e-7687-4ae4-acbb-6adea24446de",
+      "prompt": "Kawaii cute rounded mobile game action button, strawberry mochi pink color, soft pill shape with 3D jelly bevel and glossy highlight, dessert theme, transparent background",
+      "file_path": "./assets/ui/ui_button_pink.png",
+      "sheet_path": "./assets/ui/ui_button_pink_sheet.png",
+      "created_at": "2026-08-29T06:41:24.590Z"
+    },
+    {
+      "key": "vfx_chili_nova",
+      "asset_id": "8a3ac23b-34ad-4134-aa5f-7e1fb85691b4",
+      "prompt": "Kawaii spicy chili nova explosion VFX shockwave ring for mobile game, fiery orange-red candy flame blast wave with chili spark particles, glowing dessert fire burst, transparent background",
+      "file_path": "./assets/vfx/vfx_chili_nova.png",
+      "sheet_path": "./assets/vfx/vfx_chili_nova_sheet.png",
+      "created_at": "2026-08-29T07:01:35.285Z"
+    },
+    {
+      "key": "vfx_frost_pulse",
+      "asset_id": "5d427e5c-04e2-480a-915a-9b45dde1e96c",
+      "prompt": "Kawaii ice candy frost pulse freeze shockwave ring VFX for mobile game, pale blue crystalline ice snowflake blast wave, glowing icy sparkles, translucent freeze aura, transparent background",
+      "file_path": "./assets/vfx/vfx_frost_pulse.png",
+      "sheet_path": "./assets/vfx/vfx_frost_pulse_sheet.png",
+      "created_at": "2026-08-29T07:02:39.520Z"
+    },
+    {
+      "key": "vfx_ult_sugarbomb",
+      "asset_id": "353d886b-7a0d-4b48-9cb7-ef644f201ebe",
+      "prompt": "Kawaii strawberry mochi sugar bomb ultimate explosion VFX for mobile game, pastel pink sweet explosion shockwave, heart sparkles, strawberry jam blast ripples, transparent background",
+      "file_path": "./assets/vfx/vfx_ult_sugarbomb.png",
+      "sheet_path": "./assets/vfx/vfx_ult_sugarbomb_sheet.png",
+      "created_at": "2026-08-29T07:03:50.213Z"
+    },
+    {
+      "key": "vfx_ult_cocoavortex",
+      "asset_id": "7bacb4c2-61b4-477b-bb14-85569cacba1a",
+      "prompt": "Kawaii dark chocolate cocoa swirl vortex black hole VFX for mobile game, glossy chocolate syrup spiral whirlpool, purple magical sprinkles, suction lines, transparent background",
+      "file_path": "./assets/vfx/vfx_ult_cocoavortex.png",
+      "sheet_path": "./assets/vfx/vfx_ult_cocoavortex_sheet.png",
+      "created_at": "2026-08-29T07:05:12.579Z"
+    },
+    {
+      "key": "vfx_telegraph_hazard",
+      "asset_id": "aee7a1c3-5699-4513-ac95-7a26cf18c702",
+      "prompt": "Kawaii mobile game red warning telegraph hazard ground circle ring, glowing orange-red striped warning danger zone outline, cute candy hazard circle, transparent background",
+      "file_path": "./assets/vfx/vfx_telegraph_hazard.png",
+      "sheet_path": "./assets/vfx/vfx_telegraph_hazard_sheet.png",
+      "created_at": "2026-08-29T07:05:47.191Z"
+    },
+    {
+      "key": "vfx_proj_donut",
+      "asset_id": "c5186331-94bd-4362-90d9-0ffc9fd17afc",
+      "prompt": "Kawaii glazed strawberry donut meteor projectile falling from above with motion trails, glowing sugar sprinkles tail, sweet dessert asteroid VFX, transparent background",
+      "file_path": "./assets/vfx/vfx_proj_donut.png",
+      "sheet_path": "./assets/vfx/vfx_proj_donut_sheet.png",
+      "created_at": "2026-08-29T07:07:08.443Z"
+    },
+    {
+      "key": "heroes_sheet",
+      "asset_id": "406ec1cb-935c-427c-850e-485d82b3a1b2",
+      "prompt": "Kawaii round mochi hero characters sprite sheet: Taro lavender purple mochi hero with swirl sprout, Black sesame grey mochi hero with red warrior headband, cute bouncy round bodies, sparkling eyes, blush cheeks, transparent background",
+      "file_path": "./assets/characters/heroes_taro_sesame_sheet.png",
+      "sheet_path": "./assets/characters/heroes_taro_sesame_sheet.png",
+      "created_at": "2026-08-29T07:22:26.395Z"
+    },
+    {
+      "key": "items_sheet",
+      "asset_id": "d531e931-2e7f-430d-ad65-a6a99e1ab189",
+      "prompt": "Kawaii mobile game item pickup asset sheet: golden chocolate treasure chest, sparkling blue EXP sugar cubes, healing strawberry jam jar with heart, gold magnet pickup, dessert theme, transparent background",
+      "file_path": "./assets/items/items_pickup_sheet.png",
+      "sheet_path": "./assets/items/items_pickup_sheet.png",
+      "created_at": "2026-08-29T07:22:53.631Z"
+    },
+    {
+      "key": "special_enemies_sheet",
+      "asset_id": "397d89d0-9da0-4fb9-a717-4738271e62b3",
+      "prompt": "Kawaii mobile game enemy monster sheet: Sour dasher ant with speed trail puffs, Cupcake siege mortar cannon shooting candy pellets, dessert theme, cute angry faces, transparent background",
+      "file_path": "./assets/enemies/enemies_dasher_siege_sheet.png",
+      "sheet_path": "./assets/enemies/enemies_dasher_siege_sheet.png",
+      "created_at": "2026-08-29T07:23:23.884Z"
+    },
+    {
+      "key": "boss_bitter_chef",
+      "asset_id": "e1d8511c-7ceb-4866-8511-ce280913afb4",
+      "prompt": "Kawaii ultimate final boss monster The Bitter Chef, dark fantasy dessert villain with dark chocolate drip aura, tall dirty chef hat, glowing magenta purple eyes, holding cursed whisk, menacing cute chibi villain, transparent background",
+      "file_path": "./assets/enemies/boss_5_bitter_chef_sheet.png",
+      "sheet_path": "./assets/enemies/boss_5_bitter_chef_sheet.png",
+      "created_at": "2026-08-29T07:23:54.155Z"
+    },
+    {
+      "key": "ui_card_frame",
+      "asset_id": "560f970c-1425-43e4-993e-be146dcce364",
+      "prompt": "Kawaii mobile game level up upgrade skill selection card frame container, glossy pastel pink and gold border, rounded corners, dessert theme UI box, transparent background",
+      "file_path": "./assets/ui/ui_card_frame_sheet.png",
+      "sheet_path": "./assets/ui/ui_card_frame_sheet.png",
+      "created_at": "2026-08-29T07:24:19.263Z"
+    }
+  ]
+}
