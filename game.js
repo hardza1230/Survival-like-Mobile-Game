@@ -1063,7 +1063,7 @@ class Game extends Phaser.Scene {
     const emoji=this.add.text(w/2,h*0.19,'🍡',{fontSize:'60px'}).setOrigin(0.5);
     const title=this.add.text(w/2,h*0.29,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ff8fb5'}).setOrigin(0.5);
     const ch=CHARACTERS[this.character||'momo'];
-    const charTxt=this.add.text(w/2,h*0.35,`${ch.emoji} ${ch.name} · อัลติ ${ACTIVES[ch.active].emoji}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
+    const charTxt=this.add.text(w/2,h*0.35,`${ch.emoji} ${ch.name} · อาวุธ: ${ch.weaponName}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
     this.menu.add([bg,sugar,emoji,title,charTxt]);
     // ป้ายเวอร์ชัน (มุมขวาบน) — แตะดูอัปเดต/ดาวน์โหลด
     const vg=this.add.graphics(); vg.fillStyle(0x2c2338,0.9); vg.fillRoundedRect(w-118,12,104,30,10); vg.lineStyle(1.5,0x4a4059,1); vg.strokeRoundedRect(w-118,12,104,30,10);
