@@ -1440,7 +1440,8 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const mkey='mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
-    b.setScale(mArt?1.15:1.7).setCircle(mArt?52:26, mArt?18:5, mArt?18:5); b.isMini=true; b.isBoss=false;
+    const mScale=mArt?1.15:1.7; b.baseScale=mScale; b._sqX=1; b._sqY=1;
+    b.setScale(mScale).setCircle(mArt?52:26, mArt?18:5, mArt?18:5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.62*this.bossHpMul(); b.maxhp=b.hp; b.spd=54; b.dmg=Math.round(st.bossDmg*0.75); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.atkCd=1.6; b.phase2=false; b.atks=['slam','aimed']; if(this.stageIndex>=1)b.atks.push('radial','spiral'); if(this.stageIndex>=3)b.atks.push('charge','trap');
@@ -1454,7 +1455,8 @@ class Game extends Phaser.Scene {
     const bkey='boss'+(this.stageIndex+1);
     const b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     const isArt=this.textures.exists(bkey);
-    b.setScale(isArt?1.55:2.5); b.setCircle(isArt?54:26, isArt?16:5, isArt?16:5); b.isBoss=true; b.isMini=false;
+    const fScale=isArt?1.55:2.5; b.baseScale=fScale; b._sqX=1; b._sqY=1;
+    b.setScale(fScale).setCircle(isArt?54:26, isArt?16:5, isArt?16:5); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(1.4+this.stageIndex*0.08)*this.bossHpMul(); b.maxhp=b.hp; b.spd=40; b.dmg=st.bossDmg; b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.atkCd=1.4; b.phase2=false; b.atks=['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -1726,9 +1728,9 @@ class Game extends Phaser.Scene {
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
     else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
-    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(scale);
+    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
-    this.camWorld(e);   // รูปจริงมีสีในตัวแล้ว (dasher/siege ย้อมสีบอกชนิด)
+    this.camWorld(e);
   }
 
   /* ---------- COMBAT ---------- */
@@ -1946,8 +1948,10 @@ class Game extends Phaser.Scene {
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.8); crit=true; }
     e.hp-=amount;
+    e._sqX = 1.35; e._sqY = 0.70;   // เอฟเฟกต์ยุบตัวเมื่อโดนตี (Hit squash)
+    if(crit){ this.hitStop(35); this.cameras.main.shake(90, 0.005); }
     e.setTintFill(crit?0xffe08a:0xffffff); this.time.delayedCall(60,()=>{ if(!e.active)return;
-      if(e.frozen) e.setTint(COLORS.ice); else if(e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });  // รูปจริงมีสีในตัว (mini/dasher/siege คงสีเดิม)
+      if(e.frozen) e.setTint(COLORS.ice); else if(e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ this.kills++; this.killTxt.setText('☠ '+this.kills);
     if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
@@ -2168,12 +2172,48 @@ class Game extends Phaser.Scene {
     }
   }
 
-  /* ---------- FX ---------- */
-  popDmg(n,x,y,crit){ let t=this.dmgPool.pop();
-    if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px'}).setDepth(20).setOrigin(0.5); this.camWorld(t); }
+  /* ---------- FX & ANIMATIONS ---------- */
+  hitStop(ms){
+    if(this._isHitStop) return;
+    this._isHitStop = true;
+    const oldSpd = this.physics.world.timeScale;
+    this.physics.world.timeScale = 0.05;
+    this.time.delayedCall(ms, () => {
+      this.physics.world.timeScale = oldSpd;
+      this._isHitStop = false;
+    });
+  }
+  popDmg(n,x,y,crit){
+    let t=this.dmgPool.pop();
+    if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px'}).setDepth(99999).setOrigin(0.5); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
-    t.setText(crit?(n+'!'):n).setColor(crit?'#ffd23f':'#fff2a8').setFontSize(crit?'22px':'15px').setPosition(x,y-10).setAlpha(1).setScale(crit?1.2:1);
-    this.tweens.add({targets:t,y:y-(crit?54:40),alpha:0,duration:crit?620:520,onComplete:()=>{ t.setVisible(false); this.dmgPool.push(t); }}); }
+    const str = crit ? ('💥 '+n) : n;
+    t.setText(str).setColor(crit?'#ffd23f':'#ffffff').setFontSize(crit?'22px':'15px').setPosition(x+Phaser.Math.Between(-8,8),y-12).setAlpha(1).setScale(crit?1.5:1.0);
+    this.tweens.add({
+      targets:t,
+      y:y-(crit?60:42),
+      scale:crit?1.0:0.9,
+      alpha:0,
+      duration:crit?640:500,
+      ease:crit?'Back.out':'Linear',
+      onComplete:()=>{ t.setVisible(false); this.dmgPool.push(t); }
+    });
+  }
+  spawnGhostTrail(){
+    const p=this.player; if(!p)return;
+    const g=this.camWorld(this.add.image(p.x,p.y,p.texture.key,p.frame?p.frame.name:0)
+      .setDepth(p.depth-1)
+      .setScale(p.scaleX,p.scaleY)
+      .setRotation(p.rotation)
+      .setFlipX(p.flipX)
+      .setAlpha(0.65)
+      .setTint(0x8fd0ff));
+    this.tweens.add({targets:g,alpha:0,scaleX:g.scaleX*0.85,scaleY:g.scaleY*0.85,duration:240,onComplete:()=>g.destroy()});
+  }
+  spawnDust(x,y){
+    const d=this.camWorld(this.add.circle(x+Phaser.Math.Between(-6,6),y,Phaser.Math.Between(4,7),0xffffff,0.35).setDepth(2));
+    this.tweens.add({targets:d,y:y-8,alpha:0,scale:1.6,duration:260,onComplete:()=>d.destroy()});
+  }
   burst(x,y,color){ for(let i=0;i<7;i++){ const p=this.camWorld(this.add.image(x,y,'dot').setTint(color).setDepth(6).setScale(Phaser.Math.FloatBetween(0.5,1.1)));
     const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
     this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
@@ -2196,59 +2236,69 @@ class Game extends Phaser.Scene {
   }
   // ปรับสเกล+ขอบชนของตัวละครให้เท่ากราฟิกเดิม (60px) ไม่ว่ารูปจริงจะกี่พิกเซล
   setCharScale(key){
-    // ขนาด "เฟรม" (สไปรต์สตริปใช้ frame width ไม่ใช่ความกว้างสตริปทั้งแผ่น)
     const src = (ASSET_SHEETS[key]&&ASSET_SHEETS[key].frame)
       || (this.player&&this.player.frame&&this.player.frame.width)
       || 60;
-    this._pBase=60/src;                    // โค้ด 60→1 · รูป 128→0.469 (โชว์เท่ากัน)
+    this._pBase=60/src;
     this._hasFrames = !!ASSET_SHEETS[key] && this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
-    if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);  // world radius คงที่ 24 (body ไม่สเกลตาม setScale)
+    if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);
   }
-  // เลือกเฟรมท่าทาง: พุ่ง=ยืด · โดนตี=ย่อ · ปกติ=ยืน+กะพริบเป็นระยะ (เฉพาะตัวที่มีสไปรต์หลายเฟรม)
+  // เลือกเฟรมท่าทาง: พุ่ง=ยืด · วิ่ง=สลับก้าว · โดนตี=ย่อ · ปกติ=ยืน+กะพริบตา
   updatePose(dt){
     if(!this._hasFrames)return;
-    if(this._poseHold>0){ this._poseHold-=dt; return; }   // ค้างท่า event อยู่ (ยืด/ย่อ)
-    // ท่าตามสถานะ
+    if(this._poseHold>0){ this._poseHold-=dt; return; }
     if(this.dashTime>0){ this.player.setFrame(CF.stretch); return; }
-    // กะพริบตาเป็นจังหวะ
+    const moving = this.player.body && this.player.body.velocity.length() > 24;
+    if(moving){
+      const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
+      const frames = [CF.idle, CF.squash, CF.stretch, CF.blink];
+      this.player.setFrame(frames[stepIdx] || CF.idle);
+      return;
+    }
     this._blinkT-=dt;
     if(this._blinkT<=0){ this.player.setFrame(CF.blink);
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  // สั่งค้างท่า event ชั่วครู่ (ใช้ตอนพุ่ง/โดนตี)
   poseFlash(frame,ms){ if(!this._hasFrames)return; this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
-  // อนิเมชันตัวละคร: สปริงเจลลี่ (เด้งดึ๋งมีโมเมนตัม) + หายใจ + ส่ายตัวเวลาเดิน + เอนตามทิศ
+  // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
     if(this._sqVX===undefined){ this._sqVX=0; this._sqVY=0; this._wob=0; this._lean=0; }
-    // สปริง: ดีดกลับสู่ 1 แบบ underdamped → overshoot เด้งนุ่ม
     const stiff=210, damp=12;
     this._sqVX += (-(this._sqX-1)*stiff - this._sqVX*damp)*dt;
     this._sqVY += (-(this._sqY-1)*stiff - this._sqVY*damp)*dt;
     this._sqX += this._sqVX*dt; this._sqY += this._sqVY*dt;
-    // กันหลุดขอบ (นิ่งเมื่อเข้าใกล้ 1)
     this._sqX=Phaser.Math.Clamp(this._sqX,0.55,1.6); this._sqY=Phaser.Math.Clamp(this._sqY,0.55,1.6);
     const sp=p.body.velocity.length(), moving=sp>24;
-    // จังหวะเดิน (เด้งถี่+แรงตอนวิ่ง) / หายใจเบา ๆ ตอนอยู่เฉย
-    this._wob += dt*(moving?13:3.4);
+    // หันหน้าซ้าย-ขวาตามทิศทางการวิ่ง
+    if(Math.abs(p.body.velocity.x)>15) p.setFlipX(p.body.velocity.x < 0);
+    this._wob += dt*(moving?14:3.4);
     const breathe=Math.sin(this._wob)*(moving?0.11:0.05);
-    // ส่ายตัว (waddle) + เอนไปทางที่วิ่ง
     const waddle=moving?Math.sin(this._wob*0.5)*0.10:0;
     const leanT=moving?Phaser.Math.Clamp(p.body.velocity.x/1100,-0.16,0.16):0;
     this._lean += (leanT-this._lean)*Math.min(1,dt*7);
     p.rotation = waddle + this._lean;
     const base=this._pBase||1;
     p.setScale(base*this._sqX*(1-breathe), base*this._sqY*(1+breathe));
+    // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
+    if(moving){
+      this._dustT = (this._dustT || 0) - dt;
+      if(this._dustT <= 0){ this._dustT = 0.16; this.spawnDust(p.x, p.y+22); }
+    }
+    // ปล่อยเงาตามตัว (Ghost Trail) ตอนพุ่ง Dash
+    if(this.dashTime > 0){
+      this._ghostT = (this._ghostT || 0) - dt;
+      if(this._ghostT <= 0){ this._ghostT = 0.04; this.spawnGhostTrail(); }
+    }
   }
-  // ดีดสปริงตัวละคร (อิมพัลส์นุ่ม ๆ) — vx,vy = แรงกระแทกใส่สเกล X,Y
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
   die(){ if(this.state==='dead')return; this.state='dead'; Sfx.bgmIntense(false); Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0);
-    if(this._hasFrames){ this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }   // สลบ (X_X)
+    if(this._hasFrames){ this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
     this.buildOver(); }
   buildOver(){ const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
@@ -2268,7 +2318,7 @@ class Game extends Phaser.Scene {
 
     if(this.joy.active&&(this.joy.dx||this.joy.dy)){ this.moveDir.set(this.joy.dx,this.joy.dy); if(this.moveDir.lengthSq()>0.04)this.moveDir.normalize(); }
 
-    if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; this.poseFlash(CF.squash,150); } }  // ลงพื้นหลังพุ่ง = ย่อตัวเด้ง
+    if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; this.poseFlash(CF.squash,150); } }
     else {
       const spd=this.player.baseSpeed;
       if(this.joy.active&&(Math.abs(this.joy.dx)+Math.abs(this.joy.dy))>0.12) this.player.setVelocity(this.joy.dx*spd,this.joy.dy*spd);
@@ -2276,33 +2326,50 @@ class Game extends Phaser.Scene {
     }
 
     if(this.player.iframe>0)this.player.iframe-=dt;
-    if(this.player.regen && this.player.hp<this.player.maxhp) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.regen*dt);  // ฟื้นตัว (พรสวรรค์)
+    if(this.player.regen && this.player.hp<this.player.maxhp) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.regen*dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
     this.animatePlayer(dt); this.updatePose(dt);
     if(this.iso){ this.player.setDepth(this.player.y); this.drawShadows(); }
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     if(this.dashBtn) this.dashBtn.setFillStyle(COLORS.mint,this.dashReady?0.28:0.10);
     this.drawDashRing();
-    this.tickStage(dt);   // นับเวลาเวฟ + เกิดมอนต่อเนื่อง
+    this.tickStage(dt);
 
     // enemies
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
-      if(this.iso)e.setDepth(e.y);   // จัดลำดับความลึกตามแกน Y (ตัวล่างจอ = อยู่หน้า)
+      if(this.iso)e.setDepth(e.y);
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
       const dx=this.player.x-e.x, dy=this.player.y-e.y, ang=Math.atan2(dy,dx), dd=Math.hypot(dx,dy);
+      // หันหน้าเข้าหาผู้เล่นเสมอ
+      e.setFlipX(dx < 0);
+      // แอนิเมชันก้าวเดินส่ายดึ๋งๆ (Waddle & Bounce)
+      e.stepT = (e.stepT || (Math.random()*10)) + dt * (e.spd > 80 ? 12 : 7);
+      const waddle = Math.sin(e.stepT) * (e.dasher ? 0.14 : 0.08);
+      const bounce = Math.abs(Math.sin(e.stepT)) * 0.08;
+      e.rotation = waddle;
+      // ฟื้นตัวจาก Squash ตอนโดนตี
+      if(e._sqX === undefined){ e._sqX = 1; e._sqY = 1; }
+      e._sqX += (1 - e._sqX) * Math.min(1, dt * 14);
+      e._sqY += (1 - e._sqY) * Math.min(1, dt * 14);
+      const bScale = e.baseScale || 1;
+      e.setScale(bScale * e._sqX * (1 - bounce*0.4), bScale * e._sqY * (1 + bounce));
+
       if(e.shooter){ e.shootCd-=dt;
-        if(dd<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);   // ยืนระยะแล้วยิง
+        if(dd<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);
           if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2); this.foeShot(e.x,e.y,ang,225+this.stageIndex*15,e.dmg,0xffd27f); Sfx.zap(); }
           return; } }
       if(e.dasher){   // สายพุ่งโฉบ: เข้าหา → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่
         e.dashT-=dt;
         if(e.dashState==='chase'){ e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
-          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.4; e.setVelocity(0,0); e.setScale(1.12); } }
-        else if(e.dashState==='wind'){ e.setVelocity(0,0); e.setTintFill(0xffffff);
-          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang; if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
+          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.42; e.setVelocity(0,0); } }
+        else if(e.dashState==='wind'){
+          e.setVelocity(0,0); e.setTintFill(0xffffff);
+          e.x += (Math.random() - 0.5) * 5;   // ตัวสั่นตอนชาร์จ
+          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang; if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
+            this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
         else if(e.dashState==='dash'){ this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
-          if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); e.setScale(1.0); } }
+          if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); } }
         return; }
       e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
     });
