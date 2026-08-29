@@ -41,7 +41,17 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v1.3.0 ระบบยศ prestige + flat dmg + portrait lock + การ์ดเลเวลอัพใหม่)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v1.4.0 AI ศัตรูใหม่ + บอสถึก + หีบสมบัติ + ระบบดรอป/gacha + กล้องกว้าง)
+- **v1.4.0 การเปลี่ยนใหญ่:**
+  · **ศัตรูชนิดใหม่:** `dasher` (เข้าหา→หน่วงเล็ง(wind)→พุ่งเร็ว 4.6× (dash)→พัก · state machine ใน enemies loop, ย้อมส้ม `e.tintColor`) · `siege` (HP 260× สูง, ช้า spd24, ตัวใหญ่ 1.85, ย้อมชมพู) · เพิ่มใน `spawnWaveEnemy` (si≥1 dasher, si≥2 siege) · `e.tintColor` ต้องคงสีตอน damage/frozen restore
+  · **Swarm Event:** `spawnSwarm()` — ฝูง 14+si·4 ตัวแห่จากทุกทิศ · `swarmAcc` timer ใน tickStage (14-22 วิ) reset ตอน startRun
+  · **บอสถึกขึ้น:** `bossHpMul()` = min(6, (1+rank·0.5)(1+level·0.045)) คูณ HP มินิ+บอส (กันตายใน 1 วิ) · แพทเทิร์นใหม่ `spiral`(เกลียวหมุน) + `trap`(วงล้อมเว้นช่อง บังคับวิ่งหนี) ใน bossThink
+  · **หีบสมบัติ:** บอสตาย→`onBossDown` (mode 'reward', spawn 'chest') · เดินชน `collectChest`→`_chestReward=true`+`openLevelUp` (สุ่มสกิล) · `closeLevelUp` เช็ก `_chestReward`→`onStageClear` · กลุ่ม `chests`
+  · **ไอเทมแม่เหล็ก (vacuum):** `spawnVac/collectVac` — ดูดออร์บทั้งจอ (`o._vac=true` → orb loop บินเข้าตัวไม่สน pickup range) · ดรอปจากมินิ/elite/กล่อง/ธรรมดา(น้อย) · กลุ่ม `vacs` texture 'vac'
+  · **แก้บั๊ก crate hitbox:** สกิล AoE ไม่เคยตีกล่อง → เพิ่ม `crateHit(c,amt)`(+flatDmg) + `hitCratesInRadius(x,y,r,amt)` เรียกใน chili/thunder/frost/aura/meteor/cloud/mine/explodeAt/creamWave/bomb ult · crate HP ลด (14+si·6)
+  · **กล้องกว้างขึ้น:** `viewZoom` 0.82→0.70
+  · **ระบบอุปกรณ์ใหม่ (เลิกซื้อ):** GEAR item มี `tier`(start/common/rare) · ดรอปในด่าน=common (`grantGear('common')` จาก loot/gift) · gacha (`gachaRoll` 68% common/32% rare, `GACHA_COST`=220) ปุ่มในหน้า gear · ไม่เป็นเจ้าของ=ล็อก (ไม่มีปุ่มซื้อ) · `GEAR_ALL/gearPool/TIER_LABEL` · เก็บใน `Save.data.ownedGear` · กลุ่ม `loots` texture 'gift'
+
 - **v1.3.0 การเปลี่ยนใหญ่:**
   · **ระบบ "พรสวรรค์" (แทนอัพเกรดฐาน+ตัดพรสวรรค์เฉพาะตัวออก):** เหลือ 3 สแตต **HP/ATK(flat)/DEF** (ตัด spd/magnet) · อัพให้เต็มทั้ง 3 (Lv `TAL_MAX`=5) → **เลื่อนยศ** (`Save.promote`) rank++ + โบนัส 🍬 · การ์ดรีเซ็ต Lv0 + ราคา ×(1+rank·0.8) · ผลรวมใช้จริง `Save.talTotal(k)`=rank·5+เลเวลรอบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ วนไม่จบ) · `UPGRADES`={hp,dmg,def} base/per, `talCost/talAllMax/talFilled/buyTal/promote`, `rankName()`
   · **ATK = flat damage:** `p.flatDmg` บวกใน `damage()` ทุกครั้งที่โดน (per=2/เลเวล กันเวอร์) · `dmgTakenMul` มีพื้น 0.35 กันเกราะโกง

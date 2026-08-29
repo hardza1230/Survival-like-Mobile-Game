@@ -15,9 +15,16 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.3.0';
+const GAME_VERSION = '1.4.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.4.0', date:'2026-08-29', title:'AI ศัตรูใหม่ + บอสถึกขึ้น + หีบสมบัติ + ระบบดรอป/กล่องสุ่ม', items:[
+    'ศัตรูรูปแบบใหม่: พุ่งโฉบ (Dasher), ถึกบีบวงล้อม (Siege) + อีเวนต์ฝูงบุก (Swarm) ทุกทิศ',
+    'บอส/มินิบอสถึกขึ้นตามความเก่งผู้เล่น + แพทเทิร์นใหม่ (เกลียวหมุน, วงล้อมเว้นช่อง)',
+    'ล้มบอส = ดรอปหีบสมบัติ เดินไปเก็บเพื่อสุ่มรับสกิล',
+    'ไอเทมแม่เหล็ก 🧲 ดูดเม็ด EXP ทั้งจอ + แก้บั๊กสกิล AoE ตีกล่องไม่โดน',
+    'มุมกล้องกว้างขึ้น มองเห็นรอบตัวมากขึ้น',
+    'อุปกรณ์เลิกใช้เงินซื้อ — ได้จากดรอปในด่าน (ธรรมดา) + เปิดกล่องสุ่มหาของแรร์' ] },
   { v:'1.3.0', date:'2026-08-28', title:'ระบบยศ + จูนสมดุล + พอร์ตเทรต', items:[
     'ระบบพรสวรรค์ใหม่: อัพ HP/ATK/DEF ให้เต็ม แล้ว "เลื่อนยศ" — ยศสูงขึ้น สแตตติดตัวเพิ่ม แต่ราคาแพงขึ้นเรื่อย ๆ',
     'พลังโจมตีเป็น flat damage + จูนสมดุลไม่ให้ดาเมจเวอร์',
@@ -234,6 +241,30 @@ class Boot extends Phaser.Scene {
       c.fillStyle=g; rr(c,s*0.18,s*0.28,s*0.64,s*0.6,s*0.14); c.fill(); c.lineWidth=s*0.045; c.strokeStyle='#b9702e'; c.stroke();
       c.fillStyle='#c8e6a0'; rr(c,s*0.24,s*0.14,s*0.52,s*0.18,s*0.08); c.fill(); c.strokeStyle='#8fb85f'; c.lineWidth=s*0.04; c.stroke();
       c.fillStyle='rgba(255,255,255,0.4)'; rr(c,s*0.26,s*0.36,s*0.14,s*0.4,s*0.06); c.fill(); });
+    // หีบสมบัติ (ดรอปจากบอส) — เดินไปเก็บเพื่อสุ่มสกิล
+    mk('chest',40,(c,s)=>{ const cx=s/2; c.fillStyle='rgba(20,10,25,0.2)'; c.beginPath(); c.ellipse(cx,s*0.9,s*0.34,s*0.09,0,0,TAU); c.fill();
+      const g=c.createLinearGradient(0,s*0.3,0,s*0.85); g.addColorStop(0,'#a9744a'); g.addColorStop(1,'#6b4632');
+      c.fillStyle=g; rr(c,s*0.16,s*0.42,s*0.68,s*0.42,s*0.06); c.fill();
+      const lid=c.createLinearGradient(0,s*0.24,0,s*0.5); lid.addColorStop(0,'#c89a5e'); lid.addColorStop(1,'#8a5e3a');
+      c.fillStyle=lid; rr(c,s*0.16,s*0.26,s*0.68,s*0.2,s*0.09); c.fill();
+      c.strokeStyle='#ffd166'; c.lineWidth=s*0.05; c.strokeRect(s*0.17,s*0.44,s*0.66,s*0.02);   // แถบทอง
+      c.fillStyle='#ffe08a'; rr(c,s*0.44,s*0.4,s*0.12,s*0.18,s*0.03); c.fill();   // ตัวล็อก
+      c.fillStyle='#b9862e'; c.beginPath(); c.arc(cx,s*0.52,s*0.045,0,TAU); c.fill(); });
+    // ของสวมใส่ดรอป (loot) — กล่องของขวัญ
+    mk('gift',28,(c,s)=>{ const cx=s/2; c.fillStyle='rgba(20,10,25,0.18)'; c.beginPath(); c.ellipse(cx,s*0.88,s*0.3,s*0.08,0,0,TAU); c.fill();
+      const g=c.createLinearGradient(0,s*0.35,0,s*0.85); g.addColorStop(0,'#7fd0ff'); g.addColorStop(1,'#4f9fe0');
+      c.fillStyle=g; rr(c,s*0.22,s*0.42,s*0.56,s*0.42,s*0.05); c.fill();
+      c.fillStyle='#ffd166'; rr(c,s*0.22,s*0.34,s*0.56,s*0.12,s*0.04); c.fill();   // ฝา
+      c.fillStyle='#ff8fb5'; c.fillRect(s*0.46,s*0.34,s*0.08,s*0.5);               // ริบบิ้นแนวตั้ง
+      c.beginPath(); c.moveTo(cx,s*0.32); c.lineTo(s*0.36,s*0.2); c.lineTo(s*0.46,s*0.32); c.closePath(); c.fill();  // โบว์
+      c.beginPath(); c.moveTo(cx,s*0.32); c.lineTo(s*0.64,s*0.2); c.lineTo(s*0.54,s*0.32); c.closePath(); c.fill(); });
+    // ไอเทมแม่เหล็ก (vacuum) — ดูดออร์บ EXP ทั้งจอ
+    mk('vac',26,(c,s)=>{ c.fillStyle='rgba(20,10,25,0.16)'; c.beginPath(); c.ellipse(s/2,s*0.9,s*0.3,s*0.08,0,0,TAU); c.fill();
+      c.lineCap='round'; c.strokeStyle='#ff5a6e'; c.lineWidth=s*0.17;   // เกือกม้าแม่เหล็กสีแดง (U คว่ำ)
+      c.beginPath(); c.moveTo(s*0.30,s*0.34); c.lineTo(s*0.30,s*0.56); c.stroke();
+      c.beginPath(); c.moveTo(s*0.70,s*0.34); c.lineTo(s*0.70,s*0.56); c.stroke();
+      c.beginPath(); c.arc(s*0.5,s*0.56,s*0.20,0,Math.PI,false); c.stroke();
+      c.fillStyle='#dcdce8'; c.fillRect(s*0.215,s*0.28,s*0.17,s*0.09); c.fillRect(s*0.615,s*0.28,s*0.17,s*0.09); })   // ปลายสีเงิน;
 
     this.scene.start('Game');
   }
@@ -417,36 +448,42 @@ const GEAR_SLOTS = [
 ];
 const GEAR = {
   weapon: [
-    { id:'w_spoon', emoji:'🥄', name:'ช้อนไม้',      cost:0,   enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',  apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
-    { id:'w_chop',  emoji:'🥢', name:'ตะเกียบเหล็ก', cost:120, enh:true, desc:'ดาเมจ +12% (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); } },
-    { id:'w_knife', emoji:'🔪', name:'มีดเชฟ',       cost:300, enh:true, desc:'ดาเมจ +22% (+4%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.22+0.04*lv); } },
+    { id:'w_spoon', tier:"start", emoji:'🥄', name:'ช้อนไม้',      cost:0,   enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',  apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
+    { id:'w_chop', tier:"common",  emoji:'🥢', name:'ตะเกียบเหล็ก', cost:120, enh:true, desc:'ดาเมจ +12% (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); } },
+    { id:'w_knife', tier:"rare", emoji:'🔪', name:'มีดเชฟ',       cost:300, enh:true, desc:'ดาเมจ +22% (+4%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.22+0.04*lv); } },
   ],
   gloves: [
-    { id:'gl_none', emoji:'🧤', name:'ไม่สวม',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'gl_mitt', emoji:'🧤', name:'ถุงมือเตาอบ',  cost:140, enh:true, desc:'คริ +5% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
-    { id:'gl_iron', emoji:'🥊', name:'นวมเหล็ก',      cost:320, enh:true, desc:'คริ +9% · ดาเมจ +4% (+1%·+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
+    { id:'gl_none', tier:"start", emoji:'🧤', name:'ไม่สวม',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'gl_mitt', tier:"common", emoji:'🧤', name:'ถุงมือเตาอบ',  cost:140, enh:true, desc:'คริ +5% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
+    { id:'gl_iron', tier:"rare", emoji:'🥊', name:'นวมเหล็ก',      cost:320, enh:true, desc:'คริ +9% · ดาเมจ +4% (+1%·+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
   ],
   armor: [
-    { id:'ar_none',  emoji:'🥋', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'ar_apron', emoji:'🥋', name:'ผ้ากันเปื้อน', cost:130, enh:true, desc:'HP +45 (+12/ตีบวก)',        apply:(p,lv)=>{ p.maxhp+=45+12*lv; } },
-    { id:'ar_plate', emoji:'🛡️', name:'เกราะฝาหม้อ',  cost:340, enh:true, desc:'HP +90 · ลดดาเมจ 6% (+18HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=90+18*lv; p.dmgTakenMul*=Math.pow(0.94,1+lv*0.5); } },
+    { id:'ar_none', tier:"start",  emoji:'🥋', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'ar_apron', tier:"common", emoji:'🥋', name:'ผ้ากันเปื้อน', cost:130, enh:true, desc:'HP +45 (+12/ตีบวก)',        apply:(p,lv)=>{ p.maxhp+=45+12*lv; } },
+    { id:'ar_plate', tier:"rare", emoji:'🛡️', name:'เกราะฝาหม้อ',  cost:340, enh:true, desc:'HP +90 · ลดดาเมจ 6% (+18HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=90+18*lv; p.dmgTakenMul*=Math.pow(0.94,1+lv*0.5); } },
   ],
   boots: [
-    { id:'bo_none',  emoji:'👢', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'bo_soft',  emoji:'👟', name:'รองเท้านุ่ม',  cost:110, enh:true, desc:'ความเร็ว +8% (+2%/ตีบวก)',   apply:(p,lv)=>{ p.baseSpeed*=(1+0.08+0.02*lv); } },
-    { id:'bo_swift', emoji:'👢', name:'บูตว่องไว',    cost:300, enh:true, desc:'ความเร็ว +14% · ดูด +15% (+3%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=(1+0.14+0.03*lv); p.pickup*=(1+0.15+0.03*lv); } },
+    { id:'bo_none', tier:"start",  emoji:'👢', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'bo_soft', tier:"common",  emoji:'👟', name:'รองเท้านุ่ม',  cost:110, enh:true, desc:'ความเร็ว +8% (+2%/ตีบวก)',   apply:(p,lv)=>{ p.baseSpeed*=(1+0.08+0.02*lv); } },
+    { id:'bo_swift', tier:"rare", emoji:'👢', name:'บูตว่องไว',    cost:300, enh:true, desc:'ความเร็ว +14% · ดูด +15% (+3%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=(1+0.14+0.03*lv); p.pickup*=(1+0.15+0.03*lv); } },
   ],
   amulet: [
-    { id:'am_none',   emoji:'📿', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'am_ribbon', emoji:'🎀', name:'โบว์นำโชค',  cost:100, enh:true, desc:'HP +30 (+10/ตีบวก)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
-    { id:'am_star',   emoji:'⭐', name:'ดาวประกาย',  cost:260, enh:true, desc:'ดาเมจ +8% · HP +15 (+2%·+8/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
+    { id:'am_none', tier:"start",   emoji:'📿', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'am_ribbon', tier:"common", emoji:'🎀', name:'โบว์นำโชค',  cost:100, enh:true, desc:'HP +30 (+10/ตีบวก)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
+    { id:'am_star', tier:"rare",   emoji:'⭐', name:'ดาวประกาย',  cost:260, enh:true, desc:'ดาเมจ +8% · HP +15 (+2%·+8/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
   ],
   ring: [
-    { id:'ri_none',   emoji:'💍', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'ri_copper', emoji:'💍', name:'แหวนทองแดง', cost:120, enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
-    { id:'ri_gold',   emoji:'💛', name:'แหวนทองคำ',  cost:320, enh:true, desc:'ดาเมจ +12% · ฟื้น +0.8/วิ (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
+    { id:'ri_none', tier:"start",   emoji:'💍', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'ri_copper', tier:"common", emoji:'💍', name:'แหวนทองแดง', cost:120, enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
+    { id:'ri_gold', tier:"rare",   emoji:'💛', name:'แหวนทองคำ',  cost:320, enh:true, desc:'ดาเมจ +12% · ฟื้น +0.8/วิ (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
   ],
 };
+
+/* ---- ระบบได้รับอุปกรณ์: ดรอปในด่าน (common) + เปิดกล่องสุ่ม/gacha (หา rare) · ยกเลิกการซื้อ ---- */
+const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
+function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
+const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
+const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'} };
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
@@ -524,7 +561,7 @@ class Game extends Phaser.Scene {
 
   create(){
     this.DPR=RENDER_DPR;                                   // ตัวคูณความละเอียดจอ
-    this.viewZoom=0.82;                                    // <1 = ซูมออก มองกว้างขึ้น (เห็นโลกมากขึ้น ~22%)
+    this.viewZoom=0.70;                                    // <1 = ซูมออก มองกว้างขึ้น (เห็นโลกมากขึ้น ~43%)
     this.W=this.scale.width/this.DPR; this.H=this.scale.height/this.DPR;  // พิกัดใช้งาน = CSS px (เหมือนเดิม)
     this.state='menu'; this.elapsed=0; this.kills=0;
     this.level=1; this.xp=0; this.xpNext=3;
@@ -556,6 +593,9 @@ class Game extends Phaser.Scene {
     this.foeBullets=this.physics.add.group({maxSize:300});   // กระสุนศัตรู/บอส
     this.heals =this.physics.add.group({maxSize:60});        // ไอเทมฟื้นฟู HP
     this.crates=this.physics.add.group({maxSize:40});        // กล่อง/โหลทุบได้ (ธีมครัว)
+    this.chests=this.physics.add.group({maxSize:6});         // หีบสมบัติ (ดรอปจากบอส → สุ่มสกิล)
+    this.vacs  =this.physics.add.group({maxSize:8});         // ไอเทมแม่เหล็ก (ดูดออร์บทั้งจอ)
+    this.loots =this.physics.add.group({maxSize:12});        // ของสวมใส่ดรอปในด่าน (low tier)
 
     this.ringBalls=[];
     this.physics.add.overlap(this.bullets,this.enemies,this.hitEnemy,null,this);
@@ -564,6 +604,9 @@ class Game extends Phaser.Scene {
     this.physics.add.overlap(this.player,this.foeBullets,this.hitByFoe,null,this);
     this.physics.add.overlap(this.player,this.heals,this.collectHeal,null,this);
     this.physics.add.overlap(this.bullets,this.crates,this.hitCrate,null,this);
+    this.physics.add.overlap(this.player,this.chests,this.collectChest,null,this);
+    this.physics.add.overlap(this.player,this.vacs,this.collectVac,null,this);
+    this.physics.add.overlap(this.player,this.loots,this.collectLoot,null,this);
 
     this.skills={ sprinkle:1 };            // auto-cast skills owned {key:level}  (≤ SKILL_CAP)
     this.passives={};                      // passive skills owned {key:level}   (≤ PASSIVE_CAP)
@@ -596,7 +639,7 @@ class Game extends Phaser.Scene {
     this.uiCam.setZoom(D);
     this.uiCam.centerOn(this.W/2,this.H/2);   // จุดหมุน zoom = กึ่งกลาง UI (พิกัด CSS)
     // แยกสิ่งที่แต่ละกล้องเรนเดอร์
-    this._worldObjs=[this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates];
+    this._worldObjs=[this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots];
     this.uiCam.ignore(this._worldObjs);
     const ui=[this.vig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.pauseBtn,this.pauseTxt,this.pauseUI,this.fpsTxt,this.menu,this.lvlUp,this.over,this.joyBase,this.joyKnob]
       .concat(this.hudList||[],this.bossUI||[]).filter(Boolean);
@@ -677,6 +720,7 @@ class Game extends Phaser.Scene {
           const ang=Math.atan2(e.y-this.player.y,e.x-this.player.x);
           e.setVelocity(Math.cos(ang)*420,Math.sin(ang)*420); e.knock=0.28;
         }});
+      this.hitCratesInRadius(this.player.x,this.player.y,r,dmg*this.player.dmgMul);
       // ระเบิดคู่ (พรสวรรค์ momo): ระลอกสองใหญ่กว่า หน่วงเล็กน้อย
       if(this.player.twinBomb){ this.time.delayedCall(230,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
         const r2=r*1.35, ring2=this.camWorld(this.add.circle(this.player.x,this.player.y,14,COLORS.candy,0.4).setDepth(3));
@@ -1071,22 +1115,33 @@ class Game extends Phaser.Scene {
       if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
       this._zone(sx-ss/2,y-ss/2,ss,ss+14,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
     });
+    // ---- ปุ่มเปิดกล่องสุ่ม (gacha) — วิธีเดียวที่ได้ของแรร์ ----
+    const gbx=w/2, gby=cy0+topH-28, gbw=Math.min(w*0.6,210), gbh=28;
+    const afG=(Save.data.sugar||0)>=GACHA_COST;
+    const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gbx-gbw/2,gby,gbw,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gbx-gbw/2,gby,gbw,gbh,10);
+    const gbt=this.add.text(gbx,gby+gbh/2,'🎁 เปิดกล่องสุ่ม 🍬'+GACHA_COST,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    this.menu.add([gbg,gbt]);
+    this._zone(gbx-gbw/2,gby,gbw,gbh,()=>{ if((Save.data.sugar||0)>=GACHA_COST && Save.spend(GACHA_COST)){
+      const it=this.gachaRoll(); Sfx.clear();
+      if(it){ const tl=TIER_LABEL[it.tier]; this.showBanner('🎁 ได้ '+it.emoji+' '+it.name,'ระดับ: '+tl.name,2200); }
+      else { Save.addSugar(120); this.showBanner('🎁 ของครบทุกชิ้นแล้ว','คืน 🍬 120',1800); }
+    } else Sfx.select(); this.buildMenuScreen(); });
     // ---- คลังไอเทมของช่องที่เลือก ----
     const selDef=GEAR_SLOTS.find(g=>g.slot===sel);
     let y=cy0+topH+10;
-    const hdr=this.add.text(w/2,y,selDef.emoji+' '+selDef.label+' — เลือกสวมใส่ / ตีบวก',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
+    const hdr=this.add.text(w/2,y,selDef.emoji+' '+selDef.label+' — สวมใส่ / ตีบวก (ได้ของจากดรอป+กล่องสุ่ม)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);
     this.menu.add(hdr); y+=22;
     GEAR[sel].forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), equipped=Save.data.gear[sel]===it.id;
       const lv=Save.gearLv(it.id), canEnh=it.enh&&lv<GEAR_ENH_MAX, ecost=gearEnhCost(lv);
-      const nm=it.name+(lv>0?'  +'+lv:'');
+      const tl=TIER_LABEL[it.tier]||TIER_LABEL.common;
+      const nm=it.name+(it.tier==='rare'?' ⭐':'')+(lv>0?'  +'+lv:'');
       let label,color,fn;
       if(equipped && canEnh){ const afEnh=(Save.data.sugar||0)>=ecost; label='⚒️ ผสม +'+(lv+1)+' 🍬'+ecost; color=afEnh?'#ffd166':'#e0788a';
         fn=()=>{ if(Save.spend(ecost)){ Save.enhance(it.id); Sfx.clear(); } this.buildMenuScreen(); }; }
       else if(equipped){ label='ใส่อยู่ ✓'; color='#ffd166'; fn=null; }
       else if(owned){ label='สวมใส่'; color='#8bd3a0'; fn=()=>{ Save.data.gear[sel]=it.id; Save.save(); Sfx.select(); this.buildMenuScreen(); }; }
-      else { const af=(Save.data.sugar||0)>=it.cost; label='🍬'+it.cost; color=af?'#bfe8ff':'#e0788a';
-        fn=()=>{ if(Save.spend(it.cost)){ Save.data.ownedGear.push(it.id); Save.data.gear[sel]=it.id; Save.save(); Sfx.clear(); } this.buildMenuScreen(); }; }
-      this._rowBtn(y,44,it.emoji,nm,it.desc,label,color,fn);
+      else { label='🔒 '+tl.name; color=tl.color; fn=null; }   // ยังไม่มี = ล็อก (หาจากดรอป/กล่องสุ่ม) — ไม่มีการซื้อ
+      this._rowBtn(y,44,owned?it.emoji:'❔',nm,owned?it.desc:'ยังไม่มี — หาได้จากดรอปในด่าน หรือเปิดกล่องสุ่ม',label,color,fn);
       y+=50;
     });
     this.menu.setVisible(true);
@@ -1165,7 +1220,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(false); this.hudVisible(true);
     this.state='play'; this.elapsed=0; this.sugarStage=0; this.sugarRun=0;
     this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
-    this.skills={ sprinkle:1 }; this.passives={};   // เริ่มรอบใหม่ = ล้างสกิล/พาสซีฟ (กันค้างจากรอบก่อนตอนออกจากด่าน)
+    this.skills={ sprinkle:1 }; this.passives={}; this.swarmAcc=null;   // เริ่มรอบใหม่ = ล้างสกิล/พาสซีฟ + รีเซ็ต Swarm timer
     this.player.maxhp=100; this.player.baseSpeed=210; this.player.pickup=80; this.player.dmgMul=1;  // รีเซ็ตสแตตฐาน (กันพาสซีฟ/พรสวรรค์ทบจากรอบก่อน)
     this.applyMeta(); this.buildSkillBar();
     this.startStage(idx);
@@ -1220,13 +1275,23 @@ class Game extends Phaser.Scene {
     this.maxLive=Math.min(100, 50 + si*14 + w*4);                 // เพดานตัวมีชีวิต (กันเครื่องหน่วง)
     this.eliteEvery=Math.max(5, 10 - si);                        // วินาที/elite
     this.eliteAcc=this.eliteEvery;
+    if(this.swarmAcc==null) this.swarmAcc=Phaser.Math.FloatBetween(10,16);   // Swarm Event ครั้งแรก
   }
   spawnWaveEnemy(){ let type='basic'; const r=Math.random(), si=this.stageIndex;
-    if(si>=1&&r<0.30)type='fast';
-    if(si>=2&&r>0.86)type='tank';
-    if(si>=1&&r>0.62&&r<0.76)type='shooter';   // ตัวยิงระยะไกล (พังการ kite)
-    if(si>=2&&r>0.76&&r<0.86)type='bomber';     // ตัวระเบิดตอนตาย
+    if(si>=1&&r<0.26)type='fast';
+    if(si>=1&&r>=0.26&&r<0.40)type='dasher';    // สายพุ่งโฉบ (บังคับให้หลบ)
+    if(si>=1&&r>0.60&&r<0.72)type='shooter';    // ตัวยิงระยะไกล (พังการ kite)
+    if(si>=2&&r>0.72&&r<0.82)type='bomber';     // ตัวระเบิดตอนตาย
+    if(si>=2&&r>0.90&&r<0.955)type='tank';
+    if(si>=2&&r>=0.955)type='siege';            // ถึกโหด เดินบีบวงล้อม
     this.spawnEnemy(type); }
+  // Swarm Event: ฝูงมอนแห่กรูเข้ามาจากทุกทิศพร้อมกัน (spawnEnemy สุ่มมุมรอบตัวอยู่แล้ว)
+  spawnSwarm(){
+    const si=this.stageIndex, n=Math.min(this.maxLive-this.enemies.countActive(true), 14+si*4);
+    if(n<=4)return;
+    for(let i=0;i<n;i++){ const t=Math.random()<0.3?'dasher':(Math.random()<0.5?'fast':'basic'); this.spawnEnemy(t); }
+    this.showBanner('🌊 ฝูงบุก!','ระวังรอบด้าน — หลบให้ดี', 1600); Sfx.bossWarn(); this.cameras.main.shake(200,0.006);
+  }
   spawnElite(){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
@@ -1267,6 +1332,7 @@ class Game extends Phaser.Scene {
         const live=this.enemies.countActive(true);
         if(live<this.maxLive){ const n=Math.min(this.spawnBatch, this.maxLive-live); for(let i=0;i<n;i++) this.spawnWaveEnemy(); } }
       if(this.stageIndex>=1){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
+      if(this.swarmAcc!=null){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
       const st=STAGES[this.stageIndex];
       if(st)this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+' วิ');
       if(this.waveTimer<=0) this.onWaveCleared(true);   // จบเวลา = ไปเวฟถัดไปแบบไหลต่อ (มอนสเตอร์ไม่หาย)
@@ -1278,6 +1344,8 @@ class Game extends Phaser.Scene {
         if(live<this.maxLive*0.7){ const n=Math.max(1,Math.floor(this.spawnBatch*0.5)); for(let i=0;i<n;i++) this.spawnWaveEnemy(); } }
     }
   }
+  // สเกล HP บอสตามความเก่งผู้เล่น (ยศ + เลเวลในรอบ) — กันบอสตายใน 1 วิ ช่วงเลทเกม
+  bossHpMul(){ return Math.min(6, (1+(Save.data.rank||0)*0.5) * (1+(this.level||1)*0.045)); }
   spawnMiniBoss(){
     const st=STAGES[this.stageIndex];
     this.showBanner('💢 มินิบอส!', st.mini, 2000); Sfx.bossWarn(); Sfx.bgmIntense(true); this.cameras.main.shake(200,0.008);
@@ -1286,9 +1354,9 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad,'e_brute');
     b.setScale(1.7).setCircle(26,5,5); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*0.62; b.maxhp=b.hp; b.spd=54; b.dmg=Math.round(st.bossDmg*0.75); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;
+    b.hp=st.bossHp*0.62*this.bossHpMul(); b.maxhp=b.hp; b.spd=54; b.dmg=Math.round(st.bossDmg*0.75); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;
     b.tintColor=st.tint; b.setTint(st.tint);
-    b.atkCd=1.6; b.phase2=false; b.atks=['slam','aimed']; if(this.stageIndex>=1)b.atks.push('radial'); if(this.stageIndex>=3)b.atks.push('charge');
+    b.atkCd=1.6; b.phase2=false; b.atks=['slam','aimed']; if(this.stageIndex>=1)b.atks.push('radial','spiral'); if(this.stageIndex>=3)b.atks.push('charge','trap');
     this.boss=b; this.camWorld(b); this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
   }
@@ -1300,9 +1368,9 @@ class Game extends Phaser.Scene {
     const b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     const isArt=this.textures.exists(bkey);
     b.setScale(isArt?1.55:2.5); b.setCircle(isArt?54:26, isArt?16:5, isArt?16:5); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(1.4+this.stageIndex*0.08); b.maxhp=b.hp; b.spd=40; b.dmg=st.bossDmg; b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;
+    b.hp=st.bossHp*(1.4+this.stageIndex*0.08)*this.bossHpMul(); b.maxhp=b.hp; b.spd=40; b.dmg=st.bossDmg; b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.atkCd=1.4; b.phase2=false; b.atks=['slam','radial','aimed','charge']; if(this.stageIndex>=1)b.atks.push('summon');
+    b.atkCd=1.4; b.phase2=false; b.atks=['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     this.boss=b; this.camWorld(b); this.bossName.setText('👹 '+st.boss); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=1; this.updateWaveText();
     this.bossIntro(b, st.boss);
@@ -1335,7 +1403,7 @@ class Game extends Phaser.Scene {
   }
   clearFoes(){ this.foeBullets.children.iterate(b=>{ if(b&&b.active)this.killFoe(b); }); }
   clearPickups(alsoHeals){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active){ this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false; } });
-    if(alsoHeals&&this.heals)this.heals.children.iterate(h=>{ if(h&&h.active){ this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false; } }); }
+    if(alsoHeals){ for(const grp of [this.heals,this.vacs,this.loots,this.chests]){ if(grp)grp.children.iterate(o=>{ if(o&&o.active){ this.tweens.killTweensOf(o); if(o._glow){this.tweens.killTweensOf(o._glow);o._glow.destroy();o._glow=null;} o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; } }); } } }
   onWaveCleared(keep){
     // keep=true (จบเวลาเวฟธรรมดา) → ไม่ล้างมอนสเตอร์ ให้เวฟถัดไปไหลต่อทันที
     this.boss=null; Sfx.bgmIntense(false); this.bossUI.forEach(o=>o.setVisible(false)); this.clearFoes(); if(!keep)this.clearEnemies();
@@ -1347,6 +1415,11 @@ class Game extends Phaser.Scene {
     if(keep&&this.showBanner)this.showBanner('🌊 เวฟ '+(next+1),st.name,1100);
     this.time.delayedCall(keep?300:750,()=>{ if(this._busy()) this.startWave(next, keep); });
   }
+  // บอสตาย → ดรอปหีบสมบัติ + หยุดสปอน รอผู้เล่นเดินไปเก็บ (collectChest → openLevelUp → onStageClear)
+  onBossDown(x,y){ this.boss=null; this.mode='reward'; this.bossUI.forEach(o=>o.setVisible(false));
+    Sfx.bgmIntense(false); this.clearFoes(); this.clearEnemies();
+    this.spawnChest(x,y);
+    this.showBanner('🎁 ล้มบอสแล้ว!','เดินไปเก็บหีบสมบัติเพื่อรับสกิล',2400); }
   onStageClear(){
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); e.body.enable=false; } });
@@ -1431,7 +1504,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.add(bg);
     // ---- แถบบนสุด: สกิล/พร ที่ถือครองอยู่ ----
     const heldBot=this.drawHeldBar(this.lvlUp, 14);
-    const t=this.add.text(w/2,heldBot+8,'⭐ เลเวลอัพ! แตะเลือก 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166'}).setOrigin(0.5,0);
+    const t=this.add.text(w/2,heldBot+8,this._chestReward?'🎁 หีบสมบัติ! สุ่มรับสกิล':'⭐ เลเวลอัพ! แตะเลือก 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166'}).setOrigin(0.5,0);
     this.lvlUp.add(t);
     const opts=this.rollUpgrades(3);
     const cardW=Math.min(w-32,400), lx=w/2-cardW/2;
@@ -1481,6 +1554,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
     if(this.pendingLvl>0){ this.openLevelUp(); return; }
     this.state='play'; this.physics.resume();
+    if(this._chestReward){ this._chestReward=false; this.time.delayedCall(180,()=>{ if(this.state==='play')this.onStageClear(); }); }
   }
   rollUpgrades(n){
     const skillPool=[], passPool=[], awakenPool=[];
@@ -1548,19 +1622,23 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.62+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);
-    const key=type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='tank'?'e_tank':'e_basic';
+    const key=type==='fast'||type==='dasher'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='tank'||type==='siege'?'e_tank':'e_basic';
     if(!e) e=this.enemies.create(x,y,key);
     else { e.setTexture(key); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
     const s=(1+(this.stageIndex||0)*0.55)*(1+(this.waveIndex||0)*0.11);
-    e.shooter=false; e.bomber=false; e.shootCd=0;
+    e.shooter=false; e.bomber=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
+    let scale=1;
     if(type==='fast'){ e.hp=10*s; e.spd=122; e.dmg=9; e.xp=1; e.setCircle(15,4,4); }
     else if(type==='tank'){ e.hp=80*s; e.spd=36; e.dmg=18; e.xp=4; e.setCircle(26,5,5); }
     else if(type==='shooter'){ e.hp=19*s; e.spd=62; e.dmg=9; e.xp=2; e.shooter=true; e.shootCd=Phaser.Math.FloatBetween(1.1,2.0); e.setCircle(17,5,5); }
     else if(type==='bomber'){ e.hp=24*s; e.spd=70; e.dmg=12; e.xp=2; e.bomber=true; e.setCircle(17,5,5); }
+    else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(15,4,4); e.tintColor=0xffb04d; scale=1.05; }  // สายพุ่งโฉบ
+    else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(30,3,3); e.tintColor=0xff6a8a; scale=1.85; }  // ถึกโหด เดินบีบวงช้า ๆ
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
-    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(1).clearTint();
-    this.camWorld(e);   // รูปจริงมีสีในตัวแล้ว ไม่ต้องย้อม
+    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.setScale(scale);
+    if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
+    this.camWorld(e);   // รูปจริงมีสีในตัวแล้ว (dasher/siege ย้อมสีบอกชนิด)
   }
 
   /* ---------- COMBAT ---------- */
@@ -1618,10 +1696,12 @@ class Game extends Phaser.Scene {
       this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<baseR){
         this.damage(e,dmg,e.x,e.y);
         if(knock&&!e.isBoss){ const a=Math.atan2(e.y-this.player.y,e.x-this.player.x); e.setVelocity(Math.cos(a)*300,Math.sin(a)*300); e.knock=0.2; } }});
+      this.hitCratesInRadius(this.player.x,this.player.y,baseR,dmg);
       Sfx.boom(); }
     else if(key==='thunder'){ const strikes=aw?8:lvl>=6?4:lvl>=4?3:lvl>=2?2:1, chain=aw?3:lvl>=5?2:lvl>=3?1:0, dmg=(10+lvl*3.4)*dm*(cf.storm?1.4:1)*(aw?1.4:1);
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
       Phaser.Utils.Array.Shuffle(cand);
+      this.hitCratesInRadius(this.player.x,this.player.y,aw?760:520,dmg);   // ฟ้าผ่าก็ทุบกล่องในระยะ
       for(let i=0;i<Math.min(strikes,cand.length);i++){ let e=cand[i]; this.zap(e.x,e.y); this.damage(e,dmg,e.x,e.y);
         let from=e; const hit=new Set([e]);
         for(let c=0;c<chain;c++){ let nb=null,nd=(aw?210:150)**2;
@@ -1646,7 +1726,7 @@ class Game extends Phaser.Scene {
       this.enemies.children.iterate(e=>{ if(e&&e.active&&(aw||(!e.isBoss&&!e.isMini))&&this.dist(e.x,e.y,this.player.x,this.player.y)<r){
         if(shatter&&e.frozen>0){ this.damage(e,(14+lvl*3)*dm,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
         if(!e.isBoss&&!e.isMini){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }
-        if(dmg>0)this.damage(e,dmg,e.x,e.y); } }); Sfx.frost(); }
+        if(dmg>0)this.damage(e,dmg,e.x,e.y); } }); this.hitCratesInRadius(this.player.x,this.player.y,r,Math.max(dmg,8)); Sfx.frost(); }
     else if(key==='popcorn'){ const cnt=aw?20:lvl>=6?10:lvl>=4?8:lvl>=2?6:4, dmg=(4+lvl*1.5)*dm*(cf.fizz?1.25:1)*(aw?1.5:1);
       const pierce=lvl>=4||aw, big=(lvl>=3?1.3:1.0)*(cf.fizz?1.25:1)*(aw?1.4:1), speed=(lvl>=5?420:340)*(aw?1.3:1);
       for(let i=0;i<cnt;i++){ const ang=Math.random()*Math.PI*2;
@@ -1661,7 +1741,7 @@ class Game extends Phaser.Scene {
       const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,r,0xff9ec4,0.10).setDepth(3).setStrokeStyle(2,0xffb6e1,0.55));
       this.tweens.add({targets:ring,alpha:0,scale:1.06,duration:300,onComplete:()=>ring.destroy()});
       this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<r){ this.damage(e,dmg,e.x,e.y);
-        if(aw&&!e.isBoss){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); e.setVelocity(Math.cos(a)*140,Math.sin(a)*140); e.knock=0.15; } } }); }
+        if(aw&&!e.isBoss){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); e.setVelocity(Math.cos(a)*140,Math.sin(a)*140); e.knock=0.15; } } }); this.hitCratesInRadius(this.player.x,this.player.y,r,dmg); }
     else if(key==='fork'){ const cnt=aw?10:lvl>=6?5:lvl>=4?4:lvl>=2?3:2, dmg=(9+lvl*3)*dm*(aw?1.4:1);
       const t=this.nearestEnemy(760), base=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):this.moveDir.angle();
       for(let s=0;s<cnt;s++){ const ang=aw?base+(s/cnt)*Math.PI*2:base+(s-(cnt-1)/2)*0.16;
@@ -1675,7 +1755,7 @@ class Game extends Phaser.Scene {
           this.tweens.killTweensOf(mine); mine.destroy();
           const ring=this.camWorld(this.add.circle(mx,my,10,0xff9ec4,0.5).setDepth(3));
           this.tweens.add({targets:ring,radius:r,alpha:0,duration:280,onComplete:()=>ring.destroy()});
-          this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,mx,my)<r) this.damage(e,dmg,e.x,e.y); }); Sfx.boom(); }); } }
+          this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,mx,my)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(mx,my,r,dmg); Sfx.boom(); }); } }
     else if(key==='beam'){ const t=this.nearestEnemy(900); if(!t)return;
       const beams=aw?3:1, len=(760+lvl*30)*(aw?1.25:1), wide=(12+lvl*3)*(aw?1.4:1), dmg=(11+lvl*3.6)*dm*(aw?1.4:1);
       const base=Math.atan2(t.y-this.player.y,t.x-this.player.x);
@@ -1691,7 +1771,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:cloud,scale:{from:0.5,to:1},duration:300});
       const ticks=Math.max(1,Math.floor(dur/0.3));
       for(let k=1;k<=ticks;k++) this.time.delayedCall(k*300,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
-        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r) this.damage(e,dmg,e.x,e.y); }); });
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(cx,cy,r,dmg); });
       this.tweens.add({targets:cloud,alpha:0,delay:Math.max(0,dur*1000-350),duration:400,onComplete:()=>cloud.destroy()}); Sfx.frost(); }
     else if(key==='rocket'){ const cnt=aw?6:lvl>=6?4:lvl>=4?3:lvl>=2?2:1, dmg=(10+lvl*3)*dm*(aw?1.4:1), er=(50+lvl*6)*(aw?1.4:1);
       for(let s=0;s<cnt;s++){ const t=this.nearestEnemy(780), base=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):this.moveDir.angle();
@@ -1715,12 +1795,13 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:don,y:y,duration:300,ease:'Quad.in',onComplete:()=>{ don.destroy(); warn.destroy();
         const boom=this.camWorld(this.add.circle(x,y,10,0xffcf70,0.5).setDepth(3));
         this.tweens.add({targets:boom,radius:r,alpha:0,duration:260,onComplete:()=>boom.destroy()});
-        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); });
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(x,y,r,dmg);
         this.cameras.main.shake(80,0.004); Sfx.boom(); }}); });
   }
   creamWave(maxR,dmg,delay){
     this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const px=this.player.x, py=this.player.y, hit=new Set();
+      this.hitCratesInRadius(px,py,maxR,dmg);
       const ring=this.camWorld(this.add.circle(px,py,10,0xbfe8ff,0).setDepth(3).setStrokeStyle(5,0xffffff,0.85));
       this.tweens.add({targets:ring,radius:maxR,alpha:{from:0.9,to:0},duration:420,ease:'Quad.out',
         onUpdate:()=>{ const rr=ring.radius; this.enemies.children.iterate(e=>{ if(e&&e.active&&!hit.has(e)){ const d=this.dist(e.x,e.y,px,py);
@@ -1729,7 +1810,7 @@ class Game extends Phaser.Scene {
   }
   explodeAt(x,y,r,dmg){ const ring=this.camWorld(this.add.circle(x,y,10,0xffb08a,0.5).setDepth(3));
     this.tweens.add({targets:ring,radius:r,alpha:0,duration:240,onComplete:()=>ring.destroy()}); this.burst(x,y,0xff8b6b);
-    this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); }); Sfx.boom(); }
+    this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(x,y,r,dmg); Sfx.boom(); }
   // ประกายวาววับตอนสกิลตื่นรู้ (Awaken) ทำงาน
   awakenSpark(key){ const c=this.camWorld(this.add.circle(this.player.x,this.player.y,8,0xfff2a8,0.8).setDepth(6));
     this.tweens.add({targets:c,radius:34,alpha:0,duration:280,onComplete:()=>c.destroy()}); }
@@ -1764,7 +1845,7 @@ class Game extends Phaser.Scene {
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.8); crit=true; }
     e.hp-=amount;
     e.setTintFill(crit?0xffe08a:0xffffff); this.time.delayedCall(60,()=>{ if(!e.active)return;
-      if(e.frozen) e.setTint(COLORS.ice); else if(e.isMini&&e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });  // รูปจริงมีสีในตัว
+      if(e.frozen) e.setTint(COLORS.ice); else if(e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });  // รูปจริงมีสีในตัว (mini/dasher/siege คงสีเดิม)
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ this.kills++; this.killTxt.setText('☠ '+this.kills);
     if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
@@ -1775,6 +1856,8 @@ class Game extends Phaser.Scene {
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     this.dropOrb(e.x,e.y,e.xp||1);   // ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isBoss||isMini||(isElite&&Math.random()<0.5)||(!big&&Math.random()<0.03)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // ไอเทมฟื้นฟู (บอส/มินิแน่นอน · elite 50% · ธรรมดา 3%)
+    if(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008)) this.spawnVac(e.x,e.y);   // ไอเทมแม่เหล็ก (สุ่มน้อย · มินิแน่นอน)
+    if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y);         // ของสวมใส่ดรอป (low tier · โอกาสน้อย)
     // bomber: ระเบิดตอนตาย (เตือนสั้น ๆ ด้วยวง แล้วโดนถ้าอยู่ใกล้)
     if(e.bomber){ const bx=e.x,by=e.y, r=70;
       const ring=this.camWorld(this.add.circle(bx,by,10,0xff7a4d,0.5).setDepth(3));
@@ -1784,7 +1867,7 @@ class Game extends Phaser.Scene {
     // เก็บ Sugar (สกุลเงินเมต้า ใช้รอบหน้า)
     const sug=isBoss?40:isMini?18:isElite?4:1; this.sugarStage+=sug; this.sugarRun+=sug;
     e.setActive(false).setVisible(false); e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.setScale(1);
-    if(isBoss){ this.onStageClear(); return; }
+    if(isBoss){ this.onBossDown(e.x,e.y); return; }   // บอสตาย = ดรอปหีบสมบัติ → เดินเก็บ = สุ่มสกิล → เคลียร์ด่าน
     if(isMini){ this.onWaveCleared(); return; }   // มินิบอสตาย = ผ่านเวฟ (เวฟธรรมดาคุมด้วยเวลาใน tickStage) }
   }
   killBullet(b){ b.setActive(false).setVisible(false); b.body.enable=false; b.body.stop(); }
@@ -1798,7 +1881,7 @@ class Game extends Phaser.Scene {
   }
   dropOrb(x,y,value){ value=value||1; let o=this.orbs.getFirstDead(false);
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
-    const st=this.orbStyle(value); o.value=value; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
+    const st=this.orbStyle(value); o.value=value; o._vac=false; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
     o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o); }
   collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9); this.gainXp(o.value||1); }
   // ---- ไอเทมฟื้นฟู HP ----
@@ -1816,18 +1899,65 @@ class Game extends Phaser.Scene {
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let c=this.crates.getFirstDead(false);
     if(!c) c=this.crates.create(x,y,'crate'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
-    c.body.setAllowGravity(false); c.body.setImmovable(true); c.setCircle(18,4,4); c.hp=20+this.stageIndex*10; c.setScale(1).clearTint(); this.camWorld(c); if(this.iso)c.setDepth(c.y);
+    c.body.setAllowGravity(false); c.body.setImmovable(true); c.setCircle(18,4,4); c.hp=14+this.stageIndex*6; c.maxhp=c.hp; c.setScale(1).clearTint(); this.camWorld(c); if(this.iso)c.setDepth(c.y);
     this.tweens.add({targets:c,scale:{from:0.2,to:1},duration:220,ease:'Back.out'}); }
-  hitCrate(bullet,c){ if(!c.active||!bullet.active)return;
-    c.hp-=(bullet.dmg||5)*this.player.dmgMul; c.setTintFill(0xffffff); this.time.delayedCall(50,()=>{ if(c.active)c.clearTint(); });
-    if(!bullet.pierce) this.killBullet(bullet);
+  // ดาเมจใส่กล่อง (รวม flat damage) + เอฟเฟกต์ + แตก — ใช้ร่วมทั้งกระสุนและ AoE
+  crateHit(c,amount){ if(!c||!c.active)return; c.hp-=amount+(this.player.flatDmg||0);
+    c.setTintFill(0xffffff); this.time.delayedCall(50,()=>{ if(c.active)c.clearTint(); });
     if(c.hp<=0) this.breakCrate(c); }
-  breakCrate(c){ const x=c.x,y=c.y; c.setActive(false).setVisible(false); c.body.enable=false;
+  hitCrate(bullet,c){ if(!c.active||!bullet.active)return;
+    this.crateHit(c,(bullet.dmg||5)*this.player.dmgMul);
+    if(!bullet.pierce) this.killBullet(bullet); }
+  // สกิล AoE (ระเบิด/ฟ้าผ่า/ออร่า ฯลฯ) ก็ต้องตีกล่องแตกได้ด้วย (แก้บั๊กบางสกิลตีกล่องไม่โดน)
+  hitCratesInRadius(x,y,r,amount){ if(!this.crates)return;
+    this.crates.children.iterate(c=>{ if(c&&c.active&&this.dist(c.x,c.y,x,y)<r+18) this.crateHit(c,amount); }); }
+  breakCrate(c){ const x=c.x,y=c.y; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); c.body.enable=false;
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.cameras.main.shake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดรอปออร์บ
     if(Math.random()<0.5) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // ครึ่งนึงดรอปฟื้นฟู
+    if(Math.random()<0.10) this.spawnLoot(x,y);   // โอกาสเล็ก ๆ ได้ของสวมใส่ (low tier)
+    if(Math.random()<0.07) this.spawnVac(x,y);    // โอกาสเล็ก ๆ ได้แม่เหล็ก
     if(Math.random()<0.25) this.sugarStage+=3;
   }
+  // ---- ไอเทมแม่เหล็ก (vacuum): เก็บแล้วดูดออร์บ EXP ทั้งจอเข้าตัวทันที ----
+  spawnVac(x,y){ let v=this.vacs.getFirstDead(false);
+    if(!v) v=this.vacs.create(x,y,'vac'); else { v.setActive(true).setVisible(true); v.body.enable=true; v.setPosition(x,y); }
+    v.body.setAllowGravity(false); v.setScale(1); this.camWorld(v); if(this.iso)v.setDepth(v.y);
+    this.tweens.add({targets:v,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+  collectVac(player,v){ if(!v.active)return; this.tweens.killTweensOf(v); v.setActive(false).setVisible(false); v.body.enable=false;
+    Sfx.heal(); this.burst(v.x,v.y,0xff5a6e); this.showBanner('🧲 แม่เหล็ก!','ดูดเม็ด EXP ทั้งจอ',1200);
+    this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
+  }
+  // ---- ของสวมใส่ดรอป (loot) — สุ่มของ common ในด่าน (โอกาสน้อย) ----
+  spawnLoot(x,y){ let g=this.loots.getFirstDead(false);
+    if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
+    g.body.setAllowGravity(false); g.setScale(1); this.camWorld(g); if(this.iso)g.setDepth(g.y);
+    this.tweens.add({targets:g,y:y-6,duration:640,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+  collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); g.setActive(false).setVisible(false); g.body.enable=false;
+    Sfx.select(); this.burst(g.x,g.y,0x7fd0ff);
+    const got=this.grantGear('common');   // ดรอปในด่าน = เน้น common
+    if(got) this.showBanner('🎁 ได้ของสวมใส่!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name,1600);
+    else { this.sugarStage+=5; this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🍬 +5',1200); }
+  }
+  // ---- หีบสมบัติ (ดรอปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
+  spawnChest(x,y){ let c=this.chests.getFirstDead(false);
+    if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
+    c.body.setAllowGravity(false); c.setScale(1); this.camWorld(c); if(this.iso)c.setDepth(c.y);
+    this.tweens.add({targets:c,scale:{from:0.3,to:1.1},duration:400,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const gl=this.camWorld(this.add.circle(x,y,26,0xffd166,0.25).setDepth(3)); c._glow=gl;
+    this.tweens.add({targets:gl,radius:40,alpha:{from:0.25,to:0},duration:900,repeat:-1,ease:'Quad.out'}); }
+  collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); c.body.enable=false;
+    if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
+    Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
+    this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
+  // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังไม่มี) — คืน item หรือ null ถ้ามีครบแล้ว
+  grantGear(tier){ const owned=Save.data.ownedGear;
+    let pool=gearPool(tier).filter(it=>!owned.includes(it.id));
+    if(!pool.length && tier==='common') pool=gearPool('rare').filter(it=>!owned.includes(it.id));
+    if(!pool.length) return null;
+    const it=Phaser.Utils.Array.GetRandom(pool); owned.push(it.id); Save.save(); return it; }
+  gachaRoll(){ const roll=Math.random()<0.68?'common':'rare'; let it=this.grantGear(roll);
+    if(!it) it=this.grantGear(roll==='common'?'rare':'common'); return it; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     this.player.iframe=0.6; this.player.hp-=e.dmg*(this.player.dmgTakenMul||1); Sfx.hurt(); this.cameras.main.shake(120,0.008);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
@@ -1917,6 +2047,16 @@ class Game extends Phaser.Scene {
           onUpdate:()=>{ const rr=r2.radius,d=this.dist(this.player.x,this.player.y,px,py); if(!h2&&Math.abs(d-rr)<28){ h2=true; this.hurtPlayer(Math.round((14+this.stageIndex*5)*pw),0.6); } },
           onComplete:()=>r2.destroy() }); }); }
       Sfx.zap(); this.cameras.main.shake(160,0.006); b.atkCd=2.6*fast;
+    } else if(pick==='spiral'){ // ยิงเป็นเกลียวหมุน — ต้องวิ่งหนีเป็นวง
+      const arms=b.isBoss?3:2, spd=165+this.stageIndex*10, dmg=Math.round((7+this.stageIndex*2.4)*pw), a0=Math.random()*Math.PI*2;
+      for(let k=0;k<10;k++) this.time.delayedCall(k*60,()=>{ if(!b.active||this.state!=='play')return;
+        for(let arm=0;arm<arms;arm++) this.foeShot(b.x,b.y,a0+k*0.5+arm*(Math.PI*2/arms),spd,dmg,0xffd0e8); });
+      Sfx.zap(); b.atkCd=3.0*fast;
+    } else if(pick==='trap'){ // วงกับดักล้อมผู้เล่น เว้นช่องเดียว — บังคับให้วิ่งหนีออกช่อง
+      const n=10, R=150, gap=Math.floor(Math.random()*n), dmg=Math.round((12+this.stageIndex*4)*pw);
+      for(let i=0;i<n;i++){ if(i===gap||i===(gap+1)%n)continue; const a=(i/n)*Math.PI*2;
+        this.spawnHazard(this.player.x+Math.cos(a)*R,this.player.y+Math.sin(a)*R,58,dmg,0xff7a4d); }
+      this.showBanner('⚠️ วงล้อม!','วิ่งออกทางช่องว่าง!',900); b.atkCd=3.0*fast;
     }
   }
 
@@ -2037,13 +2177,22 @@ class Game extends Phaser.Scene {
     // enemies
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
       if(this.iso)e.setDepth(e.y);   // จัดลำดับความลึกตามแกน Y (ตัวล่างจอ = อยู่หน้า)
-      if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0)e.clearTint(); return; }
+      if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
-      const dx=this.player.x-e.x, dy=this.player.y-e.y, ang=Math.atan2(dy,dx);
-      if(e.shooter){ e.shootCd-=dt; const d=Math.hypot(dx,dy);
-        if(d<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);   // ยืนระยะแล้วยิง
+      const dx=this.player.x-e.x, dy=this.player.y-e.y, ang=Math.atan2(dy,dx), dd=Math.hypot(dx,dy);
+      if(e.shooter){ e.shootCd-=dt;
+        if(dd<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);   // ยืนระยะแล้วยิง
           if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2); this.foeShot(e.x,e.y,ang,225+this.stageIndex*15,e.dmg,0xffd27f); Sfx.zap(); }
           return; } }
+      if(e.dasher){   // สายพุ่งโฉบ: เข้าหา → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่
+        e.dashT-=dt;
+        if(e.dashState==='chase'){ e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
+          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.4; e.setVelocity(0,0); e.setScale((e.scaleX||1.05)*1.12); } }
+        else if(e.dashState==='wind'){ e.setVelocity(0,0); e.setTintFill(0xffffff);
+          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang; if(e.tintColor)e.setTint(e.tintColor); this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
+        else if(e.dashState==='dash'){ this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
+          if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); e.setScale(1.05); } }
+        return; }
       e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
     });
 
@@ -2051,7 +2200,7 @@ class Game extends Phaser.Scene {
     this.orbs.children.iterate(o=>{ if(!o||!o.active)return;
       o.rotation+=dt*2.2; const bob=1+Math.sin(this.elapsed*5+o.x*0.05)*0.12; o.setScale((o._sc||1)*bob);
       const d=this.dist(o.x,o.y,this.player.x,this.player.y);
-      if(d<this.player.pickup){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*380,Math.sin(ang)*380); }
+      if(o._vac || d<this.player.pickup){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x), sp=o._vac?560:380; o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp); }
       else o.setVelocity(0,0); });
 
     // bullets life + boomerang return/rebound + spin + pierce cd
