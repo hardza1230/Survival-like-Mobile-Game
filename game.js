@@ -104,7 +104,7 @@ const Sfx = {
   playFile(key, vol=0.5){
     if(this.muted) return false;
     try {
-      if(window.__g && window.__g.sound && window.__g.sound.get(key)){
+      if(window.__g && window.__g.cache && window.__g.cache.audio && window.__g.cache.audio.exists(key)){
         window.__g.sound.play(key, { volume: vol });
         return true;
       }
@@ -158,7 +158,7 @@ const Sfx = {
     const key = 'bgm_stage' + Math.max(1, Math.min(5, stageNum));
     if(this._currentBgmKey === key && this._currentBgm && this._currentBgm.isPlaying) return;
     this.stopBgm();
-    if(window.__g && window.__g.sound && window.__g.sound.get(key)){
+    if(window.__g && window.__g.cache && window.__g.cache.audio && window.__g.cache.audio.exists(key)){
       try {
         this._currentBgm = window.__g.sound.add(key, { loop:true, volume: this.muted?0:0.45 });
         this._currentBgm.play();
@@ -172,7 +172,7 @@ const Sfx = {
     const key = 'bgm_main';
     if(this._currentBgmKey === key && this._currentBgm && this._currentBgm.isPlaying) return;
     this.stopBgm();
-    if(window.__g && window.__g.sound && window.__g.sound.get(key)){
+    if(window.__g && window.__g.cache && window.__g.cache.audio && window.__g.cache.audio.exists(key)){
       try {
         this._currentBgm = window.__g.sound.add(key, { loop:true, volume: this.muted?0:0.45 });
         this._currentBgm.play();
@@ -1390,7 +1390,8 @@ class Game extends Phaser.Scene {
     const s=(1+this.stageIndex*0.35)*(1+this.waveIndex*0.06);
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=18; e.xp=8;
     e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
-    e.setScale(1.55).clearTint(); this.camWorld(e);   // elite = ตัวถึก (รูปจริง) ตัวใหญ่กว่าปกติ
+    e.shooter=false; e.bomber=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;   // ล้างธงจาก pooled enemy
+    e.baseScale=1.55; e._sqX=1; e._sqY=1; e.setScale(1.55).clearTint(); this.camWorld(e);   // elite = ตัวถึก ตัวใหญ่กว่าปกติ (baseScale ให้ waddle ใช้ไม่หด)
   }
   // เวฟธรรมดา = "เอาชีวิตรอดตามเวลา" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){
