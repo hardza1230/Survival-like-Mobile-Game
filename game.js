@@ -134,7 +134,7 @@ const Sfx = {
   // --- เสียงเอฟเฟกต์ (SFX) ---
   shoot(){ if(this._ok('shoot',0.05)){ if(!this.playFile('sfx_shoot', 0.45)) this.tone(880,0.05,'triangle',0.07,1500); } },
   pop(){ if(this._ok('pop',0.03)){ if(!this.playFile('sfx_hit', 0.4)) this.tone(560,0.09,'square',0.13,200); } },
-  xp(){ if(this._ok('xp',0.04)){ if(!this.playFile('sfx_xp', 0.4)) this.tone(700,0.06,'sine',0.11,1040); } },
+  xp(){ if(this._ok('xp',0.09)){ if(!this.playFile('sfx_xp', 0.16)) this.tone(700,0.06,'sine',0.07,1040); } },
   hurt(){ if(!this.playFile('sfx_hit', 0.6)) this.tone(320,0.18,'sawtooth',0.2,90); },
   dash(){ if(!this.playFile('sfx_dash', 0.6)){ this.noise(0.16,0.12,0,true); this.tone(620,0.14,'sine',0.09,1150); } },
   ult(type){
