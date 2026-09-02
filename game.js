@@ -15,9 +15,12 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.8.1';
+const GAME_VERSION = '1.8.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.8.2', date:'2026-09-02', title:'ไอคอนสกิลโจมตีเป็นอาร์ตจริงครบทุกตัว', items:[
+    'สกิลโจมตีทั้ง 17 ตัวมีไอคอนลูกกวาดน่ารักของตัวเอง (เลิกใช้อีโมจิ) — โผล่ในแถบสกิล การ์ดเลเวลอัพ และแถบถือครอง',
+    'ไอคอนใหม่ 12 ตัว: ฟ้าผ่า/ครีมหมุน/คุกกี้/ป๊อปคอร์น/ออร่าดอกไม้/ส้อม/คัพเค้ก/ลำแสง/โดนัท/เมฆมอคค่า/จรวด/คลื่นครีม' ] },
   { v:'1.8.1', date:'2026-08-29', title:'ปรับปรุงความเสถียร & แก้ไขหน้าจอโหลดค้าง', items:[
     'ป้องกันปัญหาแคช WebView ค้าง ด้วย Meta Headers และ Cache Buster ล่าสุด',
     'เพิ่มระบบ Error Boundary แสดงแจ้งเตือนพร้อมปุ่มล้างแคชหากโหลดสะดุด',
@@ -235,7 +238,7 @@ const ASSET_IMAGES = {
   char_taro:'assets/char_taro.png', char_sesame:'assets/char_sesame.png',   // ตัวละครใหม่ (รูปนิ่ง + เจลลี่)
   ic_sprinkle:'assets/ic_sprinkle.png', ic_star:'assets/ic_star.png', ic_chili:'assets/ic_chili.png', ic_frost:'assets/ic_frost.png',
   ic_bubble:'assets/ic_bubble.png', ic_heart:'assets/ic_heart.png', ic_magnet:'assets/ic_magnet.png', ic_sugar:'assets/ic_sugar.png',
-  // ไอคอนสกิลโจมตีชุดใหม่ (12 ตัว · แผ่นเดียว gen แล้วหั่น) → ครบ 17 สกิลโจมตี ไม่ต้องใช้อีโมจิแล้ว
+  // ไอคอนสกิลโจมตีชุดใหม่ (12 ตัว · gen แผ่นเดียว 4×3 หั่นด้วย scripts/cut-skill-icons.mjs) → ครบ 17 สกิลโจมตี
   ic_thunder:'assets/ic_thunder.png', ic_whirl:'assets/ic_whirl.png', ic_boomer:'assets/ic_boomer.png', ic_popcorn:'assets/ic_popcorn.png',
   ic_aura:'assets/ic_aura.png', ic_fork:'assets/ic_fork.png', ic_mine:'assets/ic_mine.png', ic_beam:'assets/ic_beam.png',
   ic_meteor:'assets/ic_meteor.png', ic_cloud:'assets/ic_cloud.png', ic_rocket:'assets/ic_rocket.png', ic_wave:'assets/ic_wave.png',
@@ -249,24 +252,6 @@ const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
   char_mint:  { url:'assets/char_mint_sheet.png',  frame:128 },
   char_cocoa: { url:'assets/char_cocoa_sheet.png', frame:128 },
-  // Phase 2: Extended sprites with 25+ frame animations (idle/walk/run/attack/hurt)
-  char_momo_extended:  { url:'assets/char_momo_extended.png',  frame:128 },
-  char_mint_extended:  { url:'assets/char_mint_extended.png',  frame:128 },
-  char_cocoa_extended: { url:'assets/char_cocoa_extended.png', frame:128 },
-  char_taro_extended:  { url:'assets/char_taro_extended.png',  frame:128 },
-  char_sesame_extended:{ url:'assets/char_sesame_extended.png',frame:128 },
-  e_basic_extended:    { url:'assets/e_basic_extended.png',    frame:128 },
-  e_fast_extended:     { url:'assets/e_fast_extended.png',     frame:128 },
-  e_tank_extended:     { url:'assets/e_tank_extended.png',     frame:128 },
-  e_shooter_extended:  { url:'assets/e_shooter_extended.png',  frame:128 },
-  e_bomber_extended:   { url:'assets/e_bomber_extended.png',   frame:128 },
-  e_dasher_extended:   { url:'assets/e_dasher_extended.png',   frame:128 },
-  e_siege_extended:    { url:'assets/e_siege_extended.png',    frame:128 },
-  boss1_extended: { url:'assets/boss1_extended.png', frame:128 },
-  boss2_extended: { url:'assets/boss2_extended.png', frame:128 },
-  boss3_extended: { url:'assets/boss3_extended.png', frame:128 },
-  boss4_extended: { url:'assets/boss4_extended.png', frame:128 },
-  boss5_extended: { url:'assets/boss5_extended.png', frame:128 },
 };
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
@@ -299,130 +284,14 @@ function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
 const CF = { idle:0, blink:1, squash:2, stretch:3, cheer:4, hurt:5, ko:6, cast:7 };
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 
-/* ---- Phase 2: Animation Definitions (25+ frame sprites) ----
-   ตัวละคร/ศัตรู/บอสแต่ละตัวมี animation cycle:
-   idle (breathe) → walk → run → attack → hurt
-   เฟรมเรียงในสไปรต์ชีท (extended) ตามลำดับด้านล่าง
-   Example layout (char_momo_extended.png, 2304×384, 18 cols × 3 rows):
-   Row 0: idle[0-5] + walk[6-13]  (14 frames)
-   Row 1: run[14-21] + attack[22-31] (18 frames)
-   Row 2: hurt[32-35] + [reserved]
-*/
-const ANIMATION_DEFS = {
-  // ผู้เล่น (มีตัวละคร 5 ตัว)
-  char_momo_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
-    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
-    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
-    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
-  },
-  char_mint_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
-    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
-    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
-    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
-  },
-  char_cocoa_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
-    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
-    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
-    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
-  },
-  char_taro_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
-    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
-    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
-    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
-  },
-  char_sesame_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
-    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
-    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
-    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
-  },
-  // ศัตรู (idle + walk + attack = 24 frames)
-  e_basic_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:14, repeat:-1 },
-    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:18, repeat:0 },
-  },
-  e_fast_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:16, repeat:-1 },
-    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:20, repeat:0 },
-  },
-  e_tank_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:8, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
-    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
-  },
-  e_shooter_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:13, repeat:-1 },
-    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:18, repeat:0 },
-  },
-  e_bomber_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:14, repeat:-1 },
-    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:18, repeat:0 },
-  },
-  e_dasher_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:14, repeat:-1 },
-    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:20, repeat:0 },
-  },
-  e_siege_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:8, repeat:-1 },
-    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:10, repeat:-1 },
-    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
-  },
-  // บอส (idle + attack wind-up = 24+ frames)
-  boss1_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
-  },
-  boss2_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
-  },
-  boss3_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
-  },
-  boss4_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
-  },
-  boss5_extended: {
-    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
-    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
-  },
-};
-
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
   preload(){
     for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
     for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
     for(const k in ASSET_AUDIO) this.load.audio(k, verUrl(ASSET_AUDIO[k]));
-    // Phase 1: Tilemap assets (แผนที่ + tileset)
-    const stages = ['pantry', 'sink', 'stove', 'fridge', 'final_pantry'];
-    stages.forEach(stage => {
-      this.load.image(`tileset_${stage}`, verUrl(`assets/tilesets/${stage}_32x32.png`));
-      this.load.tilemapTiledJSON(`map_${stage}`, verUrl(`assets/maps/${stage}.json`));
-    });
-    // ถ้ารูป/เสียง/แผนที่โหลดไม่ได้ ให้ข้ามไป ใช้กราฟิก/เสียงสังเคราะห์แทน (ไม่ให้ค้าง)
-    this.load.on('loaderror',(f)=>{
-      delete ASSET_IMAGES[f.key];
-      delete ASSET_SHEETS[f.key];
-      delete ASSET_AUDIO[f.key];
-      // ถ้าแผนที่/tileset โหลดไม่ได้ ก็ข้ามไป ใช้กริดเดิมแทน
-    });
+    // ถ้ารูป/เสียงโหลดไม่ได้ ให้ข้ามไป ใช้กราฟิก/เสียงสังเคราะห์แทน (ไม่ให้ค้าง)
+    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_AUDIO[f.key]; });
   }
   create(){
     const mk=(key,size,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
@@ -527,18 +396,6 @@ class Boot extends Phaser.Scene {
       c.beginPath(); c.moveTo(s*0.70,s*0.34); c.lineTo(s*0.70,s*0.56); c.stroke();
       c.beginPath(); c.arc(s*0.5,s*0.56,s*0.20,0,Math.PI,false); c.stroke();
       c.fillStyle='#dcdce8'; c.fillRect(s*0.215,s*0.28,s*0.17,s*0.09); c.fillRect(s*0.615,s*0.28,s*0.17,s*0.09); })   // ปลายสีเงิน;
-
-    // Register all animations from ANIMATION_DEFS
-    Object.entries(ANIMATION_DEFS).forEach(([key, anims]) => {
-      Object.entries(anims).forEach(([animKey, config]) => {
-        this.anims.create({
-          key: `${key}_${animKey}`,
-          frames: this.anims.generateFrameNumbers(key, config),
-          frameRate: config.frameRate,
-          repeat: config.repeat
-        });
-      });
-    });
 
     this.scene.start('Game');
   }
@@ -803,23 +660,23 @@ const Save = {
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
 const STAGES = [
-  { key:'pantry', name:'ตู้กับข้าว',   en:'The Pantry',  emoji:'🥫', grid:0x4a4360, tint:0x8bd3a0,
+  { name:'ตู้กับข้าว',   en:'The Pantry',  emoji:'🥫', grid:0x4a4360, tint:0x8bd3a0,
     lore:'ที่ซ่อนแรกของ Sour Horde — ฝูงมดและแมลงเปรี้ยวคลานออกจากมุมมืด',
     waves:5, miniAt:2, mini:'มดทหารยักษ์',
     boss:'ราชินีมดเปรี้ยว', bossHp:420, bossDmg:20 },
-  { key:'sink', name:'อ่างล้างจาน',  en:'The Sink',    emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
+  { name:'อ่างล้างจาน',  en:'The Sink',    emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
     lore:'น้ำเน่านองเต็มอ่าง ฟองสบู่มีชีวิตพยายามจมโมโม่ให้เปียกโชก',
     waves:6, miniAt:3, mini:'ฟองสบู่เดือด',
     boss:'ปีศาจฟองน้ำ', bossHp:680, bossDmg:24 },
-  { key:'stove', name:'เตาไฟ',        en:'The Stove',   emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
+  { name:'เตาไฟ',        en:'The Stove',   emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
     lore:'เปลวไฟลุกโชน กระทะและพริกร้อนระอุเข้าจู่โจมไม่ยั้ง',
     waves:6, miniAt:3, mini:'กระทะเดือดดาล',
     boss:'มิสเตอร์เตาปิ้ง', bossHp:1000, bossDmg:28 },
-  { key:'fridge', name:'ช่องแช่แข็ง',  en:'The Freezer', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
+  { name:'ช่องแช่แข็ง',  en:'The Freezer', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
     lore:'ความหนาวเยือกแข็ง โกเลมไอศกรีมตื่นจากน้ำแข็งนิรันดร์',
     waves:7, miniAt:3, mini:'ก้อนน้ำแข็งยักษ์',
     boss:'โกเลมไอศกรีม', bossHp:1400, bossDmg:32 },
-  { key:'final_pantry', name:'เตาอบใหญ่',    en:'The Grand Oven', emoji:'👨‍🍳', grid:0x574055, tint:0xff5f97,
+  { name:'เตาอบใหญ่',    en:'The Grand Oven', emoji:'👨‍🍳', grid:0x574055, tint:0xff5f97,
     lore:'ใจกลางคำสาป — เชฟขมรอโมโม่อยู่ ทำลายเขาเพื่อปลดปล่อยครัว!',
     waves:8, miniAt:4, mini:'ผู้ช่วยเชฟหุ่นเหล็ก',
     boss:'เชฟขม (The Bitter Chef)', bossHp:2400, bossDmg:38 },
@@ -1476,84 +1333,8 @@ class Game extends Phaser.Scene {
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
     this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name}`);
     this.showBanner(`${st.emoji} ด่าน ${i+1}: ${st.name}`, st.lore, 3000);
-    this.setupTilemap(st.key);   // Phase 1: Load tilemap if available
     this.updateWaveText();
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
-  }
-
-  // Phase 1: Tilemap Setup — แทนกริดพื้นฐาน (fallback ถ้าไม่มีไฟล์)
-  setupTilemap(stageKey){
-    // ล้างแผนที่เก่า
-    if(this.tilemap){ this.tilemap.destroy(); this.tilemap=null; }
-    if(this.collisionLayer){ this.collisionLayer.destroy(); this.collisionLayer=null; }
-
-    // ตรวจเช็กว่าแผนที่มี (ถ้า Boot.preload โหลดได้)
-    const mapKey=`map_${stageKey}`, tilesetKey=`tileset_${stageKey}`;
-    if(!this.cache.tilemap.has(mapKey) || !this.textures.exists(tilesetKey)){
-      // Fallback: ใช้กริดดั้งเดิม (กราฟิกโค้ด + static bg)
-      return;
-    }
-
-    try {
-      // สร้างแผนที่จาก JSON (Tiled export)
-      const tilemap=this.make.tilemap({ key:mapKey });
-      const tileset=tilemap.addTilesetImage(`${stageKey}_tileset`, tilesetKey);
-      if(!tileset) return;   // Tileset ไม่ตรงกับชื่อ
-
-      // สร้าง layer (background: visual, collision: physics)
-      const bgLayer=tilemap.createLayer('background', tileset, 0, 0);
-      if(bgLayer) bgLayer.setDepth(-100000).setAlpha(0.9);   // ใต้กริด
-
-      const collisionLayer=tilemap.createLayer('collision', tileset, 0, 0);
-      if(collisionLayer){
-        collisionLayer.setCollisionByProperty({ collides:true });   // tiles ที่มี collides=true เป็นผนัง
-        collisionLayer.setVisible(false);   // ซ่อนระบบหรือแสดง debug
-        this.physics.add.collider(this.player, collisionLayer);   // Player ชนกับผนัง
-        if(this.enemies) this.physics.add.collider(this.enemies, collisionLayer);   // ศัตรูชนกับผนัง
-      }
-
-      // Object layer: spawn points, boss arena, item zones
-      this.setupTilemapObjects(tilemap, stageKey);
-
-      // เก็บสำหรับอ้างอิงภายหลัง
-      this.tilemap=tilemap;
-      this.collisionLayer=collisionLayer;
-
-      // ปรับกล้องให้ตามขอบแผนที่
-      if(bgLayer||collisionLayer){
-        const w=tilemap.widthInPixels, h=tilemap.heightInPixels;
-        this.cameras.main.setBounds(0, 0, w, h);
-        this.physics.world.setBounds(0, 0, w, h);
-      }
-    } catch(e){
-      console.warn('Tilemap setup failed:', e);   // อย่างเดิม ถ้ามีปัญหา ใช้ fallback
-    }
-  }
-
-  // ประมวลผล Object Layer จาก Tiled (spawn points, mini boss, chest drop, etc.)
-  setupTilemapObjects(tilemap, stageKey){
-    const objLayer=tilemap.getObjectLayer('objects');
-    if(!objLayer || !objLayer.objects) return;
-
-    objLayer.objects.forEach(obj=>{
-      if(obj.name==='player_spawn'){
-        // ตั้งตำแหน่ง Player ที่จุดเกิดแรก
-        const x=obj.x + (obj.width||0)/2;
-        const y=obj.y + (obj.height||0)/2;
-        if(this.player) this.player.setPosition(x, y);
-      }
-      else if(obj.name==='mini_boss_spawn'){
-        // บันทึกตำแหน่งมินิบอส (ไม่เกิด ใช้ในระหว่างเวฟ)
-        this._miniBossSpawnX=obj.x + (obj.width||0)/2;
-        this._miniBossSpawnY=obj.y + (obj.height||0)/2;
-      }
-      else if(obj.name==='chest_drop'){
-        // ตำแหน่งหีบสมบัติเมื่อบอสตาย
-        this._chestSpawnX=obj.x + (obj.width||0)/2;
-        this._chestSpawnY=obj.y + (obj.height||0)/2;
-      }
-      // ขยายได้: treasure, secret passage, hazard zone, etc.
-    });
   }
   updateWaveText(){
     const st=STAGES[this.stageIndex]; if(!st)return;
@@ -2343,17 +2124,6 @@ class Game extends Phaser.Scene {
     if(b._aura){ b._aura.setPosition(b.x,b.y); b._aura.setScale(1+Math.sin(b._breathe*1.5)*0.12).setAlpha(0.12+Math.abs(Math.sin(b._breathe))*0.1); }  // ออร่าคลั่ง
     if(b.frozen>0)return;
     if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt;
-
-    // Play frame-based animations if extended spritesheet is loaded
-    const bossNum = b.isBoss ? (this.stageIndex + 1) : 0;
-    const animKey = `boss${bossNum}_extended`;
-    if(this.textures.exists(animKey)) {
-      if(b.atkCd > 0) {
-        b.play(`${animKey}_idle`, true);
-      } else {
-        b.play(`${animKey}_attack`, true);
-      }
-    }
     // เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) — เอฟเฟกต์โกรธ
     if(!b.phase2 && b.hp<=b.maxhp*0.5){ b.phase2=true; b.spd*=1.28; b.atkCd=0.6;
       this.showBanner('🔥 บอสโกรธ!','เฟส 2 — โจมตีดุขึ้น!',1500); this.cameras.main.shake(420,0.014); this.screenFlash(0xff4d5a,0.3,420);
@@ -2537,18 +2307,6 @@ class Game extends Phaser.Scene {
       this._ghostT = (this._ghostT || 0) - dt;
       if(this._ghostT <= 0){ this._ghostT = 0.04; this.spawnGhostTrail(); }
     }
-
-    // Play frame-based animations if extended spritesheet is loaded
-    const charKey = `char_${this.character}_extended`;
-    if(this.textures.exists(charKey)) {
-      if(sp > 150) {
-        p.play(`${charKey}_run`, true);
-      } else if(sp > 50) {
-        p.play(`${charKey}_walk`, true);
-      } else {
-        p.play(`${charKey}_idle`, true);
-      }
-    }
   }
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
@@ -2628,32 +2386,6 @@ class Game extends Phaser.Scene {
           if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); } }
         return; }
       e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
-
-      // Play frame-based animations if extended spritesheet is loaded
-      const aiType = e.ai || 'basic';
-      const animKey = `e_${aiType}_extended`;
-      if(this.textures.exists(animKey)) {
-        if(e.shooter) {
-          if(dd < 300) {
-            e.play(`${animKey}_attack`, true);
-          } else {
-            e.play(`${animKey}_idle`, true);
-          }
-        } else if(e.dasher) {
-          if(e.dashState === 'wind') {
-            e.play(`${animKey}_attack`, true);
-          } else {
-            e.play(`${animKey}_walk`, true);
-          }
-        } else {
-          const sp = e.body.velocity.length();
-          if(sp > 50) {
-            e.play(`${animKey}_walk`, true);
-          } else {
-            e.play(`${animKey}_idle`, true);
-          }
-        }
-      }
     });
 
     // orb vacuum + ออร์บมีชีวิต (หมุนช้า + เต้นวิบวับ)

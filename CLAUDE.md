@@ -33,7 +33,7 @@
   · **VFX (v1.5.0):** `fx_chili/fx_frost/fx_hazard`(256) + `fx_donut`(96) · helper `fxBurst(key,x,y,radius,dur,spin)` (image ขยาย+จาง แบน oval) · เสียบใน chili/frost/spawnHazard/meteorStrike (มี fallback วงโค้ดถ้าโหลดไม่ได้)
   · **v1.6.0:** ตัวละครใหม่ `char_taro/char_sesame`(128, รูปนิ่ง `_hasFrames`=false → เจลลี่อย่างเดียว) เพิ่มใน CHARACTERS+CHAR_ORDER (taro=nova/spd, sesame=freeze/hp+dmg) · VFX อัลติ `fx_ult_bomb/fx_ult_vortex`(256) เสียบใน useActive bomb/blackhole · ไอคอน `ic_*`(64) map `SKILL_ICON`/`PASS_ICON` (มีบางตัว) helper `iconKey(k,isPass)` เสียบใน buildSkillBar+drawHeldBar+openLevelUp (fallback อีโมจิ) · boss5 = อาร์ตเชฟขมใหม่ · **build-www.mjs ข้ามโฟลเดอร์ย่อยตอน copy (กัน EISDIR จาก assets/assets/)**
   · **v1.6.3:** ปุ่มเมนูเป็น **แบนโมเดิร์น** (เลิกใช้อาร์ตลูกกวาด `ui_btn_*` แล้ว) · helper `uiPillBtn(cont,cx,cy,w,h,color,emoji,label,fn)` วาดด้วย graphics: เงา+ไล่เฉด(`_lighten/_darken`)+กลอสบน+ขอบสว่าง+ไอคอนวงกลมซ้าย+ข้อความขาว · buildHub 4 ปุ่ม(pink/toast/grape/mint) fit-to-band 0.40–0.90 มีช่องว่างเสมอ · buildPause 2 ปุ่ม (fn=null แล้ว push `_pauseBtns` เอง)
-  · **ยังไม่ได้ใช้ (เหลือใน assets/assets/):** `ui_card_frame` (พาเนลตกแต่งหลายช่อง มีโบว์/สตรอว์เบอร์รีตายตัว → 9-slice ไม่ได้ ต้องอาร์ตกรอบเรียบ ๆ), **สกิลโจมตี 17 ตัวมีไอคอนครบแล้ว** (gen แผ่นเดียว 4×3 → หั่นด้วย `scripts/cut-skill-icons.mjs` ลบพื้น checkerboard ด้วย flood-fill) · เหลือ **ไอคอนพร 6 ตัว (passive) ยังใช้อีโมจิ**, sprite sheet เวอร์ชันอนิเมชัน (_sheet), heroes_taro_sesame_sheet — ดู ART_BIBLE.md
+  · **ยังไม่ได้ใช้ (เหลือใน assets/assets/):** `ui_card_frame` (พาเนลตกแต่งหลายช่อง มีโบว์/สตรอว์เบอร์รีตายตัว → 9-slice ไม่ได้ ต้องอาร์ตกรอบเรียบ ๆ), ไอคอนสกิลที่เหลือ (12 สกิล+6พรยังใช้อีโมจิ), sprite sheet เวอร์ชันอนิเมชัน (_sheet), heroes_taro_sesame_sheet — ดู ART_BIBLE.md
 - `ART_BIBLE.md` — คัมภีร์อาร์ต/ดีไซน์ละเอียด (lore/สี/ตัวละคร/ศัตรู/บอส/สกิล/UI/ไอคอน/แอนิเมชัน) สำหรับ AI ทำอาร์ต
 - `LORE.md` — เนื้อเรื่องโลก Mochitopia
 - `CLAUDE.md` — ไฟล์นี้
@@ -47,52 +47,7 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: Phase 4 Asset Generation ✅)
-- **Phase 1: Tilemap System (✅ FRAMEWORK COMPLETE):**
-  · `ASSET_SHEETS` + Boot.preload รองรับภาษา tilemap/tileset assets
-  · `setupTilemap()` → `setupTilemapObjects()` โครงสร้าง collision layer + spawn points
-  · Graceful fallback เมื่อ tilemap assets missing (ใช้ static background เดิม)
-  · Tilemap JSON loading พร้อมอัตโนมัติ
-
-- **Phase 2: 25+ Frame Sprite Animation (✅ FRAMEWORK COMPLETE):**
-  · `ANIMATION_DEFS` registry: player(36)/enemy(24)/boss(24+ frames)
-  · Boot.create() อัตโนมัติ register animation ทั้งหมด
-  · animatePlayer(dt) → dispatch idle/walk/run ตามความเร็ว
-  · Enemy loop → dispatch idle/walk/attack ตามสถานะ AI (shooter/dasher/normal)
-  · bossThink(dt) → dispatch idle/attack ตามคูลดาวน์
-  · Texture exist check graceful fallback → ใช้โครงสร้าง procedural
-  · Animation system พร้อม + PNG spritesheet จริงทั้งหมด
-
-- **Phase 3: Tilemap System Generation (✅ COMPLETE):**
-  · `scripts/generate-tilemaps.mjs` สร้าง 5 stage tilesets + maps
-  · ✅ 5 tileset PNG (32x32px, 6KB each): pantry/sink/stove/fridge/final_pantry
-  · ✅ 5 tileset TSX (tileset definition XML)
-  · ✅ 5 tilemap JSON (Tiled editor format, 6.6KB each) with collision + objects layer
-  · ✅ Spawn points: player_spawn (center), mini_boss_spawn (corner), chest_drop (opposite)
-  · ✅ Boot.preload() loads tilesets/maps, setupTilemap() integrates into gameplay
-  · Graceful fallback when missing: uses static background grid
-
-- **Phase 4: Extended Sprite Sheet Generation (✅ COMPLETE):**
-  · `scripts/generate-sprites.mjs` สร้าง procedural character sprite sheets
-  · ✅ 5 Character sheets (128px frame): char_{momo,mint,cocoa,taro,sesame}_extended.png
-    - 36 frames each: idle(6) + walk(8) + run(8) + attack(10) + hurt(4)
-    - 233.9 KB total
-  · ✅ 7 Enemy sheets (128px frame): e_{basic,fast,tank,shooter,bomber,dasher,siege}_extended.png
-    - 24 frames each: idle(6) + walk(8) + attack(10)
-    - 176.2 KB total
-  · ✅ 5 Boss sheets (128px frame): boss{1-5}_extended.png
-    - 24 frames each: idle(6) + attack(18)
-    - 102.7 KB total
-  · ✅ All sprites registered in ASSET_SHEETS + ANIMATION_DEFS
-  · ✅ Boot.preload() auto-loads, animation dispatch works with graceful fallback
-  · ✅ build-www.mjs copies all assets to www/
-  · Total asset footprint: ~513 KB (sprites only)
-
-- **ถัดไป (Priority 🟡 MEDIUM):**
-  1. ทดสอบ tilemap integration: map loading, collision, object spawning, animation dispatch
-  2. บาลานซ์ difficulty ตามการเปลี่ยนแปลง animation/tilemap
-  3. (Optional) แทน procedural sprites ด้วย Kenney.nl/custom art
-  4. Endgame: Ascension + Daily + Endless
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v1.4.0 AI ศัตรูใหม่ + บอสถึก + หีบสมบัติ + ระบบดรอป/gacha + กล้องกว้าง)
 - **v1.4.0 การเปลี่ยนใหญ่:**
   · **ศัตรูชนิดใหม่:** `dasher` (เข้าหา→หน่วงเล็ง(wind)→พุ่งเร็ว 4.6× (dash)→พัก · state machine ใน enemies loop, ย้อมส้ม `e.tintColor`) · `siege` (HP 260× สูง, ช้า spd24, ตัวใหญ่ 1.85, ย้อมชมพู) · เพิ่มใน `spawnWaveEnemy` (si≥1 dasher, si≥2 siege) · `e.tintColor` ต้องคงสีตอน damage/frozen restore
   · **Swarm Event:** `spawnSwarm()` — ฝูง 14+si·4 ตัวแห่จากทุกทิศ · `swarmAcc` timer ใน tickStage (14-22 วิ) reset ตอน startRun
