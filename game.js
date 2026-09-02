@@ -663,6 +663,7 @@ const Save = {
     if(!this.data.chars||!this.data.chars.length)this.data.chars=['momo'];
     if(!this.data.character)this.data.character='momo';
     if(!this.data.charProg)this.data.charProg={};
+    if(!this.data.bestiary)this.data.bestiary={};
     return this.data; },
   save(){ try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} },
   addSugar(n){ this.data.sugar=(this.data.sugar||0)+n; this.save(); },
@@ -683,9 +684,43 @@ const Save = {
     this.data.rank=rank+1; for(const k of UPG_ORDER) this.data.upgrades[k]=0;
     this.data.sugar=(this.data.sugar||0)+rew; this.save(); return rew; },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
-    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0 };
-    this.load(); },
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{} }; this.load(); },
+  // ---- Bestiary (Monster Card) ----
+  kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
+  addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
+    this.data.bestiary[type]=(this.data.bestiary[type]||0)+1; },
 };
+
+/* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
+const BESTIARY_THRESHOLDS = [10, 50, 200, 600, 2000];
+const BESTIARY = [
+  { id:'basic',   emoji:'🟢', name:'สไลม์เปรี้ยว',  tex:'e_basic',   desc:'มอนสเตอร์ขนมเปรี้ยวพื้นฐาน',
+    bonus:[{hp:3},{hp:6},{hp:10},{hp:15,def:0.02},{hp:25,def:0.04}] },
+  { id:'fast',    emoji:'🔵', name:'สไลม์เร็ว',      tex:'e_fast',    desc:'เคลื่อนที่ไว เข้าถึงเร็ว',
+    bonus:[{spd:0.02},{spd:0.04},{spd:0.06},{spd:0.08,cdr:0.02},{spd:0.12,cdr:0.04}] },
+  { id:'tank',    emoji:'🟣', name:'สไลม์ถึก',       tex:'e_tank',    desc:'ตัวใหญ่ ทนทาน HP เยอะ',
+    bonus:[{def:0.02},{def:0.04},{def:0.06},{def:0.08,hp:10},{def:0.12,hp:20}] },
+  { id:'shooter', emoji:'🟡', name:'สไลม์ปืน',       tex:'e_shooter', desc:'ยิงกระสุนระยะไกล',
+    bonus:[{dmg:0.02},{dmg:0.04},{dmg:0.06},{dmg:0.08,crit:0.02},{dmg:0.12,crit:0.04}] },
+  { id:'bomber',  emoji:'🟠', name:'สไลม์ระเบิด',    tex:'e_bomber',  desc:'ระเบิดตอนตาย — อยู่ใกล้โดนด้วย!',
+    bonus:[{crit:0.02},{crit:0.03},{crit:0.05},{crit:0.06,dmg:0.04},{crit:0.08,dmg:0.06}] },
+  { id:'dasher',  emoji:'🐜', name:'มดนักจู่โจม',    tex:'e_dasher',  desc:'รอจังหวะ แล้วพุ่งใส่เร็วจี๋!',
+    bonus:[{cdr:0.02},{cdr:0.03},{cdr:0.05},{cdr:0.06,spd:0.04},{cdr:0.08,spd:0.06}] },
+  { id:'siege',   emoji:'🧁', name:'คัพเค้กปืนใหญ่', tex:'e_siege',   desc:'ถึกโหด เดินบีบวงช้าๆ แต่ทำลายล้างสูง',
+    bonus:[{hp:5,def:0.01},{hp:10,def:0.02},{hp:15,def:0.03},{hp:20,def:0.04,dmg:0.03},{hp:30,def:0.06,dmg:0.05}] },
+  { id:'mini',    emoji:'👹', name:'มินิบอส',         tex:'mb1',       desc:'หัวหน้าฝูง — แข็งแกร่งกว่าปกติ',
+    bonus:[{dmg:0.03},{dmg:0.05},{dmg:0.08},{dmg:0.10,hp:15},{dmg:0.14,hp:25}] },
+  { id:'boss',    emoji:'👑', name:'บอสใหญ่',         tex:'boss1',     desc:'ราชาแห่งโซนครัว — ท้าทายที่สุด!',
+    bonus:[{hp:8,dmg:0.03},{hp:15,dmg:0.05},{hp:25,dmg:0.08,def:0.03},{hp:35,dmg:0.10,def:0.05},{hp:50,dmg:0.14,def:0.08,crit:0.05}] },
+];
+function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
+function bestiaryAllBonus(){
+  const out={hp:0,dmg:0,def:0,spd:0,cdr:0,crit:0};
+  for(const m of BESTIARY){ const lv=bestiaryLv(m.id); if(lv<1)continue;
+    const b=m.bonus[lv-1]; if(b.hp)out.hp+=b.hp; if(b.dmg)out.dmg+=b.dmg; if(b.def)out.def+=b.def;
+    if(b.spd)out.spd+=b.spd; if(b.cdr)out.cdr+=b.cdr; if(b.crit)out.crit+=b.crit; }
+  return out;
+}
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
 const STAGES = [
@@ -1070,7 +1105,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(14,38,80,34,()=>{ this.menuScreen='hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else this.buildHub(); }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
@@ -1097,6 +1132,64 @@ class Game extends Phaser.Scene {
     }
     this.menu.setVisible(true);
   }
+  buildBestiary(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 สมุดมอนสเตอร์');
+    const w=this.W,h=this.H;
+    // สรุปโบนัสรวม
+    const bb=bestiaryAllBonus(), parts=[];
+    if(bb.hp)parts.push('HP+'+bb.hp); if(bb.dmg)parts.push('ATK+'+Math.round(bb.dmg*100)+'%');
+    if(bb.def)parts.push('DEF+'+Math.round(bb.def*100)+'%'); if(bb.spd)parts.push('SPD+'+Math.round(bb.spd*100)+'%');
+    if(bb.cdr)parts.push('CDR+'+Math.round(bb.cdr*100)+'%'); if(bb.crit)parts.push('CRIT+'+Math.round(bb.crit*100)+'%');
+    const sumTxt=this.add.text(w/2,82,parts.length?('โบนัสรวม: '+parts.join(' · ')):'ฆ่ามอนสเตอร์เพื่อสะสมโบนัสถาวร!',
+      {fontFamily:'sans-serif',fontSize:'12px',color:'#ffe08a',wordWrap:{width:w-40}}).setOrigin(0.5);
+    this.menu.add(sumTxt);
+    // การ์ดมอนสเตอร์ — 2 คอลัมน์
+    const cols=2, cardW=Math.min((w-48)/cols, 180), gap=10, marginX=(w-cardW*cols-gap*(cols-1))/2;
+    const cardH=118; let y0=104;
+    const starColors=['#4a4059','#8bd3a0','#7fc9ff','#b98cff','#ffd166','#ff8fb5'];
+    BESTIARY.forEach((m,idx)=>{
+      const col=idx%cols, row=Math.floor(idx/cols);
+      const cx=marginX+col*(cardW+gap), cy=y0+row*(cardH+gap);
+      const lv=bestiaryLv(m.id), kills=Save.kills(m.id);
+      const next=lv<5?BESTIARY_THRESHOLDS[lv]:null;
+      const g=this.add.graphics();
+      g.fillStyle(lv>0?0x2c2338:0x201a2a,1); g.fillRoundedRect(cx,cy,cardW,cardH,12);
+      g.lineStyle(2,lv>=5?0xffd166:(lv>0?0x4a4059:0x39304a),1); g.strokeRoundedRect(cx,cy,cardW,cardH,12);
+      if(lv>=5){ g.fillStyle(0xffd166,0.08); g.fillRoundedRect(cx,cy,cardW,cardH,12); }
+      // icon
+      const hasTex=this.textures.exists(m.tex);
+      const icon=hasTex?this.add.image(cx+28,cy+30,m.tex).setDisplaySize(36,36):
+        this.add.text(cx+28,cy+30,m.emoji,{fontSize:'28px'}).setOrigin(0.5);
+      if(!hasTex)icon.setOrigin(0.5);
+      // ชื่อ
+      const nm=this.add.text(cx+52,cy+12,m.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:lv>0?'#ffffff':'#7a7088'}).setOrigin(0,0);
+      // ดาว ★
+      let starStr='';
+      for(let s=0;s<5;s++) starStr+=(s<lv?'★':'☆');
+      const stars=this.add.text(cx+52,cy+28,starStr,{fontFamily:'sans-serif',fontSize:'13px',color:starColors[lv]||'#4a4059'}).setOrigin(0,0);
+      // จำนวนฆ่า + progress
+      const killStr='กำจัด: '+kills+(next?' / '+next:'');
+      const kt=this.add.text(cx+8,cy+52,killStr,{fontFamily:'sans-serif',fontSize:'10.5px',color:'#b7abc9'}).setOrigin(0,0);
+      // progress bar
+      const barW=cardW-16, barH=6, bx=cx+8, by=cy+66;
+      g.fillStyle(0x1a1420,1); g.fillRoundedRect(bx,by,barW,barH,3);
+      const pct=next?Math.min(1,kills/next):1;
+      const barColor=lv>=5?0xffd166:(lv>=3?0xb98cff:0x8bd3a0);
+      if(pct>0){ g.fillStyle(barColor,1); g.fillRoundedRect(bx,by,Math.max(6,barW*pct),barH,3); }
+      // bonus text
+      const bDef=lv>0?m.bonus[lv-1]:m.bonus[0];
+      const bParts=[];
+      if(bDef.hp)bParts.push('HP+'+bDef.hp); if(bDef.dmg)bParts.push('ATK+'+Math.round(bDef.dmg*100)+'%');
+      if(bDef.def)bParts.push('DEF+'+Math.round(bDef.def*100)+'%'); if(bDef.spd)bParts.push('SPD+'+Math.round(bDef.spd*100)+'%');
+      if(bDef.cdr)bParts.push('CDR+'+Math.round(bDef.cdr*100)+'%'); if(bDef.crit)bParts.push('CRIT+'+Math.round(bDef.crit*100)+'%');
+      const bLabel=lv>0?bParts.join(' '):(lv===0?('ถัดไป: '+bParts.join(' ')):'');
+      const bt=this.add.text(cx+8,cy+78,bLabel,{fontFamily:'sans-serif',fontSize:'10px',color:lv>0?'#8bd3a0':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
+      // desc
+      const desc=this.add.text(cx+8,cy+94,m.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#7a7088',wordWrap:{width:cardW-16}}).setOrigin(0,0);
+      this.menu.add([g,icon,nm,stars,kt,bt,desc]);
+    });
+    this.menu.setVisible(true);
+  }
   buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
   buildHub(){
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
@@ -1116,6 +1209,7 @@ class Game extends Phaser.Scene {
       [COLORS.toast,'🎭','เลือกตัวละคร',  ()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
       [COLORS.grape,'🌟','พรสวรรค์',       ()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); }],
       [COLORS.mint, '🎽','ของสวมใส่',      ()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
+      [0xf0a92e,    '📖','สมุดมอนสเตอร์', ()=>{ this.menuScreen='bestiary'; this.buildMenuScreen(); }],
     ];
     // จัดปุ่มให้พอดีในช่วง 0.40–0.90 ของจอ + มีช่องว่างชัดเจนเสมอ (กันปุ่มชิด/ซ้อนบนจอสูง)
     const bx=w/2, bw=Math.min(w-56,330), n=items.length, top=h*0.40, bottom=h*0.90;
@@ -1289,6 +1383,10 @@ class Game extends Phaser.Scene {
     // พรสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลรอบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
     for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]); if(it&&it.apply)it.apply(p, Save.gearLv(it.id)); }
+    // Bestiary bonuses (ถาวรจากการสะสมฆ่ามอนสเตอร์)
+    const bb=bestiaryAllBonus();
+    if(bb.hp)p.maxhp+=bb.hp; if(bb.dmg)p.dmgMul*=(1+bb.dmg); if(bb.def)p.dmgTakenMul*=(1-bb.def);
+    if(bb.spd)p.baseSpeed*=(1+bb.spd); if(bb.cdr)p.cdMul*=(1-bb.cdr); if(bb.crit)p.critChance+=bb.crit;
     p.dmgTakenMul=Math.max(0.35,p.dmgTakenMul);   // กันเกราะโกงเกิน (รับดาเมจอย่างน้อย 35%)
     p.hp=p.maxhp;
   }
@@ -2009,6 +2107,9 @@ class Game extends Phaser.Scene {
   killEnemy(e){ this.kills++; this.killTxt.setText('☠ '+this.kills);
     if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
     const isBoss=e.isBoss, isMini=e.isMini, isElite=e.isElite, big=isBoss||isMini; if(!big) Sfx.pop();
+    // Bestiary: นับจำนวนที่ฆ่าตามชนิด
+    const btype=isBoss?'boss':isMini?'mini':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture.key==='e_fast'?'fast':e.texture.key==='e_tank'||isElite?'tank':'basic');
+    Save.addKill(btype);
     const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
     this.burst(e.x,e.y,deathColor);
     this.vfxDeathPoof(e.x,e.y,deathColor,big||isElite);
