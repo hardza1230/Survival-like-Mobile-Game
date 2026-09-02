@@ -9,3 +9,6 @@ www/
 package-lock.json
 __pycache__/
 *.pyc
+
+# preview/debug artifacts จากสคริปต์ตัดอาร์ต (ไม่ commit)
+scripts/_*.png
