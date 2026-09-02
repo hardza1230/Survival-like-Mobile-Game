@@ -15,9 +15,12 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.8.2';
+const GAME_VERSION = '1.8.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.8.3', date:'2026-09-02', title:'แก้ขนาดไอคอนล้นกรอบ + การ์ดเลเวลอัพโฉมใหม่', items:[
+    'แก้ไอคอนสกิลใหม่แสดงใหญ่เกินจนล้นกรอบการ์ด/แถบสกิล (ปรับให้พอดีทุกขนาดจอ)',
+    'การ์ดเลเวลอัพดีไซน์ใหม่: เงานุ่ม ไล่เฉดสีตามหมวด กลอสด้านบน ขอบ 2 ชั้น และวงไอคอนมีขอบเรืองแสง' ] },
   { v:'1.8.2', date:'2026-09-02', title:'ไอคอนสกิลโจมตีเป็นอาร์ตจริงครบทุกตัว', items:[
     'สกิลโจมตีทั้ง 17 ตัวมีไอคอนลูกกวาดน่ารักของตัวเอง (เลิกใช้อีโมจิ) — โผล่ในแถบสกิล การ์ดเลเวลอัพ และแถบถือครอง',
     'ไอคอนใหม่ 12 ตัว: ฟ้าผ่า/ครีมหมุน/คุกกี้/ป๊อปคอร์น/ออร่าดอกไม้/ส้อม/คัพเค้ก/ลำแสง/โดนัท/เมฆมอคค่า/จรวด/คลื่นครีม' ] },
@@ -947,7 +950,7 @@ class Game extends Phaser.Scene {
       const d=SKILLDEFS[k], lvl=this.skills[k], awk=lvl>=SKILL_AWAKEN_LV, maxed=lvl>=d.max;
       const bg=this.add.circle(x,y,rad,0x2c2338,0.72).setStrokeStyle(2,awk?0xffb020:(maxed?0xffd166:0xff8fb5),awk?1:0.9);
       const ik=awk?null:this.iconKey(k,false);
-      let em; if(ik){ const sc=(rad*1.85)/64; em=this.add.image(x,y-1,ik).setScale(sc); em._baseScale=sc; }
+      let em; if(ik){ em=this.add.image(x,y-1,ik).setDisplaySize(rad*1.85,rad*1.85); em._baseScale=em.scaleX; }
       else { em=this.add.text(x,y-1,awk&&d.awaken?d.awaken.emoji:d.emoji,{fontSize:fs}).setOrigin(0.5); em._baseScale=1; }
       const lv=this.add.text(x+rad*0.75,y+rad*0.7,awk?'⚡':(maxed?'MAX':('L'+lvl)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:awk?'#ffcf40':(maxed?'#ffd166':'#ffd9e6')}).setOrigin(0.5);
       this.skillBar.add([bg,em,lv]); this.skillChips[k]={bg,em};
@@ -1616,13 +1619,19 @@ class Game extends Phaser.Scene {
     opts.forEach((o,i)=>{
       const y=startY+i*(ch+gap);
       const g=this.add.graphics();
-      g.fillStyle(0x2c2338,1); g.fillRoundedRect(lx,y,cardW,ch,18);
-      g.fillStyle(o.color,0.12); g.fillRoundedRect(lx,y,cardW,ch,18);           // พื้นสีตามหมวด
-      g.lineStyle(3,o.color,1); g.strokeRoundedRect(lx,y,cardW,ch,18);
-      g.fillStyle(o.color,0.9); g.fillRoundedRect(lx,y,6,ch,{tl:18,bl:18,tr:0,br:0});  // แถบสีซ้าย = หมวด
-      g.fillStyle(o.color,0.22); g.fillCircle(lx+42,y+40,28);
+      const cr=20;
+      g.fillStyle(0x14101c,0.45); g.fillRoundedRect(lx+2,y+5,cardW,ch,cr);               // เงานุ่มใต้การ์ด
+      g.fillStyle(0x2c2338,1); g.fillRoundedRect(lx,y,cardW,ch,cr);                        // พื้นเข้ม
+      g.fillGradientStyle(this._lighten(o.color,0.10),this._lighten(o.color,0.10),o.color,o.color,0.16); g.fillRoundedRect(lx,y,cardW,ch,cr);  // ไล่เฉดสีหมวด (บนสว่างล่างเข้ม)
+      g.fillStyle(0xffffff,0.055); g.fillRoundedRect(lx,y,cardW,ch*0.46,{tl:cr,tr:cr,bl:0,br:0});  // กลอสบน
+      g.lineStyle(2.5,o.color,0.95); g.strokeRoundedRect(lx,y,cardW,ch,cr);                // ขอบสีหมวด
+      g.lineStyle(1,this._lighten(o.color,0.5),0.45); g.strokeRoundedRect(lx+1.5,y+1.5,cardW-3,ch-3,cr-2);  // เส้นในสว่าง
+      g.fillStyle(o.color,1); g.fillRoundedRect(lx,y,5,ch,{tl:cr,bl:cr,tr:0,br:0});        // แถบสีซ้าย = หมวด
+      g.fillStyle(0x241d30,0.92); g.fillCircle(lx+42,y+40,27);                              // วงไอคอน ดิสก์เข้ม
+      g.fillStyle(o.color,0.28); g.fillCircle(lx+42,y+40,27);                               // อมสีหมวด
+      g.lineStyle(2,this._lighten(o.color,0.45),0.75); g.strokeCircle(lx+42,y+40,27);       // ริงสว่าง
       const oik=o.type==='awk'?null:this.iconKey(o.key,o.type==='pas');
-      const em = oik ? this.add.image(lx+42,y+40,oik).setScale(56/64) : this.add.text(lx+42,y+40,o.emoji,{fontSize:'32px'}).setOrigin(0.5);
+      const em = oik ? this.add.image(lx+42,y+40,oik).setDisplaySize(50,50) : this.add.text(lx+42,y+40,o.emoji,{fontSize:'32px'}).setOrigin(0.5);
       const emBase=em.scaleX||1;
       // ดาวบอกเลเวล (เต็ม/ว่าง) + ป้ายหมวดสี
       let stars=''; for(let s=0;s<o.max;s++) stars+=(s<o.lvl?'★':'☆');
