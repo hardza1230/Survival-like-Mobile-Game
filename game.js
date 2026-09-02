@@ -407,6 +407,24 @@ class Boot extends Phaser.Scene {
       c.beginPath(); c.moveTo(s*0.70,s*0.34); c.lineTo(s*0.70,s*0.56); c.stroke();
       c.beginPath(); c.arc(s*0.5,s*0.56,s*0.20,0,Math.PI,false); c.stroke();
       c.fillStyle='#dcdce8'; c.fillRect(s*0.215,s*0.28,s*0.17,s*0.09); c.fillRect(s*0.615,s*0.28,s*0.17,s*0.09); })   // ปลายสีเงิน;
+    // ---- VFX textures ----
+    mk('vfx_ring',64,(c,s)=>{ const cx=s/2; const g=c.createRadialGradient(cx,cx,s*0.28,cx,cx,s*0.5);
+      g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(0.5,'rgba(255,255,255,0.9)'); g.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=g; c.beginPath(); c.arc(cx,cx,s*0.5,0,TAU); c.fill(); });
+    mk('vfx_poof',48,(c,s)=>{ const cx=s/2; for(let i=0;i<6;i++){
+      const a=i/6*TAU, r=s*0.18, px=cx+Math.cos(a)*r, py=cx+Math.sin(a)*r;
+      const g=c.createRadialGradient(px,py,0,px,py,s*0.22);
+      g.addColorStop(0,'rgba(255,255,255,0.7)'); g.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=g; c.beginPath(); c.arc(px,py,s*0.22,0,TAU); c.fill(); }
+      const g2=c.createRadialGradient(cx,cx,0,cx,cx,s*0.2);
+      g2.addColorStop(0,'rgba(255,255,255,0.85)'); g2.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=g2; c.beginPath(); c.arc(cx,cx,s*0.2,0,TAU); c.fill(); });
+    mk('vfx_glow',32,(c,s)=>{ const cx=s/2; const g=c.createRadialGradient(cx,cx,0,cx,cx,cx);
+      g.addColorStop(0,'rgba(255,255,255,0.95)'); g.addColorStop(0.4,'rgba(255,255,255,0.5)'); g.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=g; c.beginPath(); c.arc(cx,cx,cx,0,TAU); c.fill(); });
+    mk('vfx_line',32,(c,s)=>{ const g=c.createLinearGradient(0,s/2,s,s/2);
+      g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(0.3,'rgba(255,255,255,0.8)'); g.addColorStop(0.7,'rgba(255,255,255,0.8)'); g.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=g; c.fillRect(0,s*0.38,s,s*0.24); });
 
     this.scene.start('Game');
   }
@@ -1606,7 +1624,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n;
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.14+2); this.pendingLvl=(this.pendingLvl||0)+1; this.jelly(0,3.2); }  // เลเวลอัพ = เด้งดีใจ (โค้งนุ่มขึ้น แบบ VS)
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.14+2); this.pendingLvl=(this.pendingLvl||0)+1; this.jelly(0,3.2); this.vfxLevelUp(); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
@@ -1762,6 +1780,7 @@ class Game extends Phaser.Scene {
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
     this.camWorld(e);
+    this.vfxSpawnPoof(x,y);
   }
 
   /* ---------- COMBAT ---------- */
@@ -1802,7 +1821,9 @@ class Game extends Phaser.Scene {
   }
   castSkill(key,lvl){
     const dm=this.player.dmgMul, cf=this.comboFlags||{}, aw=lvl>=SKILL_AWAKEN_LV; this.pulseSkill(key);
-    if(aw&&Math.random()<0.5)this.awakenSpark(key);   // ประกายบอกว่าสกิลตื่นรู้
+    if(aw&&Math.random()<0.5)this.awakenSpark(key);
+    const _castColors={sprinkle:0xffb6e1,star:0xffe08a,chili:0xff7a4d,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff};
+    this.vfxCastGlow(_castColors[key]||0xffffff);
     if(key==='sprinkle'){ const t=this.nearestEnemy(aw?900:640); if(!t)return;
       let shots=aw?8:lvl>=6?5:lvl>=4?3:lvl>=2?2:1;
       if(this.player.twinSprinkle) shots+=2;
@@ -1981,13 +2002,16 @@ class Game extends Phaser.Scene {
     e.hp-=amount;
     e._sqX = 1.35; e._sqY = 0.70;   // เอฟเฟกต์ยุบตัวเมื่อโดนตี (Hit squash)
     if(crit){ this.hitStop(35); this.cameras.main.shake(90, 0.005); }
+    this.vfxHitRing(x,y,crit?0xffd166:0xffffff,crit);
     e.setTintFill(crit?0xffe08a:0xffffff); this.time.delayedCall(60,()=>{ if(!e.active)return;
       if(e.frozen) e.setTint(COLORS.ice); else if(e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ this.kills++; this.killTxt.setText('☠ '+this.kills);
     if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
     const isBoss=e.isBoss, isMini=e.isMini, isElite=e.isElite, big=isBoss||isMini; if(!big) Sfx.pop();
-    this.burst(e.x,e.y,big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166)));
+    const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
+    this.burst(e.x,e.y,deathColor);
+    this.vfxDeathPoof(e.x,e.y,deathColor,big||isElite);
     if(big){ this.cameras.main.shake(isBoss?400:220,isBoss?0.012:0.008); this.burst(e.x,e.y,0xff9ec4); if(isMini)Sfx.clear(); }
     if(e._aura){ e._aura.destroy(); e._aura=null; }   // เก็บออร่าคลั่ง
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
@@ -2020,7 +2044,8 @@ class Game extends Phaser.Scene {
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
     const st=this.orbStyle(value); o.value=value; o._vac=false; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
     o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o); }
-  collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9); this.gainXp(o.value||1); }
+  collectOrb(player,o){ if(!o.active)return; const ox=o.x,oy=o.y,ov=o.value||1; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9);
+    this.vfxCollectSparkle(ox,oy,this.orbStyle(ov).tint); this.gainXp(ov); }
   // ---- ไอเทมฟื้นฟู HP ----
   dropHeal(x,y){ let h=this.heals.getFirstDead(false);
     if(!h) h=this.heals.create(x,y,'heal'); else { h.setActive(true).setVisible(true); h.body.enable=true; h.setPosition(x,y); }
@@ -2028,7 +2053,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:h,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
     const amt=Math.round(this.player.maxhp*0.18)+6; this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
-    Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.burst(h.x,h.y,0xff8fb5); }
+    Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5); }
   popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+n+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
     this.tweens.add({targets:t,y:y-56,alpha:0,duration:700,onComplete:()=>t.destroy()}); }
   // ---- กล่อง/โหลทุบได้ (ธีมครัว) ----
@@ -2106,6 +2131,8 @@ class Game extends Phaser.Scene {
     dmg*=(this.player.dmgTakenMul||1);   // เกราะ (พรสวรรค์ mint)
     this.player.iframe=ix||0.5; this.player.hp-=dmg; Sfx.hurt(); this.cameras.main.shake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
+    this.vfxHurtFlash();
+    this.vfxHitRing(this.player.x,this.player.y,0xff5a6e,false);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>{ if(this.player.active)this.player.clearTint(); });
     if(this.player.hp<=0) this.die(); }
   hitByFoe(player,b){ if(!b.active)return; this.killFoe(b); this.hurtPlayer(b.dmg||10,0.5); }
@@ -2257,6 +2284,67 @@ class Game extends Phaser.Scene {
     const t={scaleX:full, scaleY:full*0.82, alpha:{from:0.95,to:0}, duration:dur, ease:'Quad.out', onComplete:()=>im.destroy()};
     if(spin)im.setRotation(Math.random()*Math.PI*2);
     this.tweens.add({targets:im, ...t}); return im; }
+  // --- VFX: hit impact ring (expanding ring + sparks) --- throttled for performance
+  vfxHitRing(x,y,color,big){
+    if(!big){ this._hitVfxT=this._hitVfxT||0; const now=this.time.now; if(now-this._hitVfxT<60)return; this._hitVfxT=now; }
+    const r=big?1.8:1.0;
+    const ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(color).setDepth(7).setScale(0.15*r,0.12*r).setAlpha(0.85));
+    this.tweens.add({targets:ring,scaleX:1.6*r,scaleY:1.3*r,alpha:0,duration:big?320:220,ease:'Quad.out',onComplete:()=>ring.destroy()});
+    for(let i=0;i<(big?5:3);i++){
+      const a=Math.random()*Math.PI*2, sp=Phaser.Math.Between(30,big?120:70);
+      const p=this.camWorld(this.add.image(x,y,'spark').setTint(color).setDepth(7).setScale(Phaser.Math.FloatBetween(0.3,0.7)).setAlpha(0.9));
+      this.tweens.add({targets:p,x:x+Math.cos(a)*sp,y:y+Math.sin(a)*sp,alpha:0,scale:0,duration:Phaser.Math.Between(180,300),onComplete:()=>p.destroy()});
+    }
+  }
+  // --- VFX: death poof (smoke cloud) ---
+  vfxDeathPoof(x,y,color,big){
+    const sc=big?2.2:1.0;
+    const poof=this.camWorld(this.add.image(x,y,'vfx_poof').setTint(color).setDepth(7).setScale(0.2*sc).setAlpha(0.9));
+    this.tweens.add({targets:poof,scaleX:1.8*sc,scaleY:1.5*sc,alpha:0,duration:big?420:280,ease:'Quad.out',onComplete:()=>poof.destroy()});
+    const halo=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(0xffffff).setDepth(6).setScale(0.1*sc,0.08*sc).setAlpha(0.6));
+    this.tweens.add({targets:halo,scaleX:1.2*sc,scaleY:1.0*sc,alpha:0,duration:big?360:240,ease:'Quad.out',onComplete:()=>halo.destroy()});
+  }
+  // --- VFX: skill cast glow (radial flash at caster) ---
+  vfxCastGlow(color){
+    const p=this.player; if(!p)return;
+    const glow=this.camWorld(this.add.image(p.x,p.y,'vfx_glow').setTint(color).setDepth(5).setScale(0.5).setAlpha(0.75));
+    this.tweens.add({targets:glow,scale:2.8,alpha:0,duration:300,ease:'Quad.out',onComplete:()=>glow.destroy()});
+  }
+  // --- VFX: speed lines during dash ---
+  vfxSpeedLine(x,y,ang){
+    const ln=this.camWorld(this.add.image(x,y,'vfx_line').setTint(0xbfe8ff).setDepth(4).setRotation(ang+Math.PI).setScale(1.2,0.6).setAlpha(0.65));
+    this.tweens.add({targets:ln,scaleX:2.0,alpha:0,duration:200,onComplete:()=>ln.destroy()});
+  }
+  // --- VFX: enemy spawn poof --- throttled
+  vfxSpawnPoof(x,y){
+    this._spawnVfxT=this._spawnVfxT||0; const now=this.time.now; if(now-this._spawnVfxT<120)return; this._spawnVfxT=now;
+    const p=this.camWorld(this.add.image(x,y,'vfx_poof').setTint(0xb98cff).setDepth(3).setScale(0.1).setAlpha(0.55));
+    this.tweens.add({targets:p,scale:0.8,alpha:0,duration:260,ease:'Quad.out',onComplete:()=>p.destroy()});
+  }
+  // --- VFX: hurt vignette flash ---
+  vfxHurtFlash(){
+    const f=this.add.rectangle(this.W/2,this.H/2,this.W,this.H,0xff3344,0.18).setScrollFactor(1).setDepth(79);
+    this.camUI(f); this.tweens.add({targets:f,alpha:0,duration:280,onComplete:()=>f.destroy()});
+  }
+  // --- VFX: level up celebration burst ---
+  vfxLevelUp(){
+    const p=this.player; if(!p)return;
+    const ring=this.camWorld(this.add.image(p.x,p.y,'vfx_ring').setTint(0xffe08a).setDepth(8).setScale(0.2,0.16).setAlpha(0.9));
+    this.tweens.add({targets:ring,scaleX:3.2,scaleY:2.6,alpha:0,duration:450,ease:'Quad.out',onComplete:()=>ring.destroy()});
+    for(let i=0;i<8;i++){
+      const a=i/8*Math.PI*2, sp=Phaser.Math.Between(50,120);
+      const s=this.camWorld(this.add.image(p.x,p.y,'dot').setTint([0xffe08a,0xff8fb5,0xbfe8ff,0xb6f0d6][i%4]).setDepth(8).setScale(Phaser.Math.FloatBetween(0.6,1.2)));
+      this.tweens.add({targets:s,x:p.x+Math.cos(a)*sp,y:p.y+Math.sin(a)*sp,alpha:0,scale:0,duration:Phaser.Math.Between(300,500),onComplete:()=>s.destroy()});
+    }
+  }
+  // --- VFX: collect sparkle (orb pickup) ---
+  vfxCollectSparkle(x,y,color){
+    for(let i=0;i<4;i++){
+      const a=Math.random()*Math.PI*2, r=Phaser.Math.Between(12,32);
+      const s=this.camWorld(this.add.image(x,y,'spark').setTint(color).setDepth(7).setScale(Phaser.Math.FloatBetween(0.25,0.55)).setAlpha(0.8));
+      this.tweens.add({targets:s,x:x+Math.cos(a)*r,y:y+Math.sin(a)*r-14,alpha:0,scale:0,duration:Phaser.Math.Between(160,280),onComplete:()=>s.destroy()});
+    }
+  }
   // faux-2.5D: วาดเงาวงรีใต้ทุกตัวในเลเยอร์เดียว (เรียกทุกเฟรม)
   drawShadows(){
     const g=this.shadowG; if(!g)return; g.clear(); g.fillStyle(0x0a0510,0.28);
@@ -2319,10 +2407,15 @@ class Game extends Phaser.Scene {
       this._dustT = (this._dustT || 0) - dt;
       if(this._dustT <= 0){ this._dustT = 0.16; this.spawnDust(p.x, p.y+22); }
     }
-    // ปล่อยเงาตามตัว (Ghost Trail) ตอนพุ่ง Dash
+    // ปล่อยเงาตามตัว (Ghost Trail) + เส้นความเร็ว ตอนพุ่ง Dash
     if(this.dashTime > 0){
       this._ghostT = (this._ghostT || 0) - dt;
       if(this._ghostT <= 0){ this._ghostT = 0.04; this.spawnGhostTrail(); }
+      this._lineT = (this._lineT || 0) - dt;
+      if(this._lineT <= 0){ this._lineT = 0.06;
+        const da=Math.atan2(p.body.velocity.y,p.body.velocity.x);
+        this.vfxSpeedLine(p.x+Phaser.Math.Between(-10,10),p.y+Phaser.Math.Between(-8,8),da);
+      }
     }
   }
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
