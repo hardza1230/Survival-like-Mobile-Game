@@ -47,12 +47,12 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: Phase 2 Animation Framework ✅)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: Phase 3 Tileset Setup ✅)
 - **Phase 1: Tilemap System (✅ FRAMEWORK COMPLETE):**
   · `ASSET_SHEETS` + Boot.preload รองรับภาษา tilemap/tileset assets
   · `setupTilemap()` → `setupTilemapObjects()` โครงสร้าง collision layer + spawn points
   · Graceful fallback เมื่อ tilemap assets missing (ใช้ static background เดิม)
-  · Tilemap JSON loading พร้อม แต่ยังรอไฟล์ Tiled JSON จริง
+  · Tilemap JSON loading + assets ✅ ready
 
 - **Phase 2: 25+ Frame Sprite Animation (✅ FRAMEWORK COMPLETE):**
   · `ANIMATION_DEFS` registry: player(36)/enemy(24)/boss(24+ frames)
@@ -60,12 +60,21 @@
   · animatePlayer(dt) → dispatch idle/walk/run ตามความเร็ว
   · Enemy loop → dispatch idle/walk/attack ตามสถานะ AI (shooter/dasher/normal)
   · bossThink(dt) → dispatch idle/attack ตามคูลดาวน์
-  · Texture exist check graceful fallback → ใช้โครงสร้าง procedural
   · Animation system พร้อม แต่ยังรอภาษา PNG spritesheet จริง
 
+- **Phase 3: Free Tileset Setup (✅ COMPLETE):**
+  · สร้างตัวอย่าง tileset PNG (5 stage × color-coded): pantry(green)/sink(blue)/stove(orange)/fridge(cyan)/final_pantry(purple)
+  · สร้างตัวอย่าง tilemap JSON (Tiled format): 15×15 tile maps พร้อมเพศสปอนพอยต์
+  · แต่ละแผนที่มี:
+    - Background layer (floor tiles)
+    - Collision layer (wall placement)
+    - Objects layer (player_spawn / mini_boss_spawn / chest_drop)
+  · `scripts/generate-tilemaps.mjs` - regenerate anytime พร้อมปรับสี/ขนาด
+  · Ready for Kenney.nl / Tiled editor refinement
+
 - **ถัดไป (Priority 🟡 MEDIUM):**
-  1. Phase 3: ดาวน์โหลด Kenney assets + Tiled editor → สร้าง 5 stage tilemap
-  2. Phase 4: สร้าง 36-48 frame extended sprite sheets (ตัวละคร/ศัตรู/บอส)
+  1. Phase 4: สร้าง 36-48 frame extended sprite sheets (ตัวละคร/ศัตรู/บอส)
+  2. ทดสอบ tilemap collision + gameplay integration
   3. บาลานซ์ difficulty เมื่อ animation โคร่งสร้างเสร็จ
 - **v1.4.0 การเปลี่ยนใหญ่:**
   · **ศัตรูชนิดใหม่:** `dasher` (เข้าหา→หน่วงเล็ง(wind)→พุ่งเร็ว 4.6× (dash)→พัก · state machine ใน enemies loop, ย้อมส้ม `e.tintColor`) · `siege` (HP 260× สูง, ช้า spd24, ตัวใหญ่ 1.85, ย้อมชมพู) · เพิ่มใน `spawnWaveEnemy` (si≥1 dasher, si≥2 siege) · `e.tintColor` ต้องคงสีตอน damage/frozen restore
