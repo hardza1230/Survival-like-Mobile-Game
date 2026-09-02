@@ -15,9 +15,12 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.8.1';
+const GAME_VERSION = '1.8.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.8.2', date:'2026-09-02', title:'ไอคอนสกิลโจมตีเป็นอาร์ตจริงครบทุกตัว', items:[
+    'สกิลโจมตีทั้ง 17 ตัวมีไอคอนลูกกวาดน่ารักของตัวเอง (เลิกใช้อีโมจิ) — โผล่ในแถบสกิล การ์ดเลเวลอัพ และแถบถือครอง',
+    'ไอคอนใหม่ 12 ตัว: ฟ้าผ่า/ครีมหมุน/คุกกี้/ป๊อปคอร์น/ออร่าดอกไม้/ส้อม/คัพเค้ก/ลำแสง/โดนัท/เมฆมอคค่า/จรวด/คลื่นครีม' ] },
   { v:'1.8.1', date:'2026-08-29', title:'ปรับปรุงความเสถียร & แก้ไขหน้าจอโหลดค้าง', items:[
     'ป้องกันปัญหาแคช WebView ค้าง ด้วย Meta Headers และ Cache Buster ล่าสุด',
     'เพิ่มระบบ Error Boundary แสดงแจ้งเตือนพร้อมปุ่มล้างแคชหากโหลดสะดุด',
@@ -234,10 +237,16 @@ const ASSET_IMAGES = {
   fx_ult_bomb:'assets/fx_ult_bomb.png', fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
   char_taro:'assets/char_taro.png', char_sesame:'assets/char_sesame.png',   // ตัวละครใหม่ (รูปนิ่ง + เจลลี่)
   ic_sprinkle:'assets/ic_sprinkle.png', ic_star:'assets/ic_star.png', ic_chili:'assets/ic_chili.png', ic_frost:'assets/ic_frost.png',
-  ic_bubble:'assets/ic_bubble.png', ic_heart:'assets/ic_heart.png', ic_magnet:'assets/ic_magnet.png', ic_sugar:'assets/ic_sugar.png',   // ไอคอนสกิล/พร/น้ำตาล (มีบางตัว · ที่เหลือใช้อีโมจิ)
+  ic_bubble:'assets/ic_bubble.png', ic_heart:'assets/ic_heart.png', ic_magnet:'assets/ic_magnet.png', ic_sugar:'assets/ic_sugar.png',
+  // ไอคอนสกิลโจมตีชุดใหม่ (12 ตัว · gen แผ่นเดียว 4×3 หั่นด้วย scripts/cut-skill-icons.mjs) → ครบ 17 สกิลโจมตี
+  ic_thunder:'assets/ic_thunder.png', ic_whirl:'assets/ic_whirl.png', ic_boomer:'assets/ic_boomer.png', ic_popcorn:'assets/ic_popcorn.png',
+  ic_aura:'assets/ic_aura.png', ic_fork:'assets/ic_fork.png', ic_mine:'assets/ic_mine.png', ic_beam:'assets/ic_beam.png',
+  ic_meteor:'assets/ic_meteor.png', ic_cloud:'assets/ic_cloud.png', ic_rocket:'assets/ic_rocket.png', ic_wave:'assets/ic_wave.png',
 };
 // map สกิล/พร → ไอคอนรูปจริง (มีเท่าที่อาร์ตทำมา · null=ใช้อีโมจิ)
-const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', chili:'ic_chili', frost:'ic_frost', bubble:'ic_bubble' };
+const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', chili:'ic_chili', frost:'ic_frost', bubble:'ic_bubble',
+  thunder:'ic_thunder', whirl:'ic_whirl', boomer:'ic_boomer', popcorn:'ic_popcorn', aura:'ic_aura', fork:'ic_fork',
+  mine:'ic_mine', beam:'ic_beam', meteor:'ic_meteor', cloud:'ic_cloud', rocket:'ic_rocket', wave:'ic_wave' };
 const PASS_ICON  = { heart:'ic_heart', magnet:'ic_magnet' };
 const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
