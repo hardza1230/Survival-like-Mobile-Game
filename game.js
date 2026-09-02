@@ -243,6 +243,24 @@ const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
   char_mint:  { url:'assets/char_mint_sheet.png',  frame:128 },
   char_cocoa: { url:'assets/char_cocoa_sheet.png', frame:128 },
+  // Phase 2: Extended sprites with 25+ frame animations (idle/walk/run/attack/hurt)
+  char_momo_extended:  { url:'assets/char_momo_extended.png',  frame:128 },
+  char_mint_extended:  { url:'assets/char_mint_extended.png',  frame:128 },
+  char_cocoa_extended: { url:'assets/char_cocoa_extended.png', frame:128 },
+  char_taro_extended:  { url:'assets/char_taro_extended.png',  frame:128 },
+  char_sesame_extended:{ url:'assets/char_sesame_extended.png',frame:128 },
+  e_basic_extended:    { url:'assets/e_basic_extended.png',    frame:128 },
+  e_fast_extended:     { url:'assets/e_fast_extended.png',     frame:128 },
+  e_tank_extended:     { url:'assets/e_tank_extended.png',     frame:128 },
+  e_shooter_extended:  { url:'assets/e_shooter_extended.png',  frame:128 },
+  e_bomber_extended:   { url:'assets/e_bomber_extended.png',   frame:128 },
+  e_dasher_extended:   { url:'assets/e_dasher_extended.png',   frame:128 },
+  e_siege_extended:    { url:'assets/e_siege_extended.png',    frame:128 },
+  boss1_extended: { url:'assets/boss1_extended.png', frame:128 },
+  boss2_extended: { url:'assets/boss2_extended.png', frame:128 },
+  boss3_extended: { url:'assets/boss3_extended.png', frame:128 },
+  boss4_extended: { url:'assets/boss4_extended.png', frame:128 },
+  boss5_extended: { url:'assets/boss5_extended.png', frame:128 },
 };
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
@@ -274,6 +292,111 @@ function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
 // [0 idle,1 blink,2 squash,3 stretch(พุ่ง),4 cheer(ดีใจ),5 hurt(เจ็บ),6 ko(สลบ),7 cast(ร่ายอัลติ)]
 const CF = { idle:0, blink:1, squash:2, stretch:3, cheer:4, hurt:5, ko:6, cast:7 };
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
+
+/* ---- Phase 2: Animation Definitions (25+ frame sprites) ----
+   ตัวละคร/ศัตรู/บอสแต่ละตัวมี animation cycle:
+   idle (breathe) → walk → run → attack → hurt
+   เฟรมเรียงในสไปรต์ชีท (extended) ตามลำดับด้านล่าง
+   Example layout (char_momo_extended.png, 2304×384, 18 cols × 3 rows):
+   Row 0: idle[0-5] + walk[6-13]  (14 frames)
+   Row 1: run[14-21] + attack[22-31] (18 frames)
+   Row 2: hurt[32-35] + [reserved]
+*/
+const ANIMATION_DEFS = {
+  // ผู้เล่น (มีตัวละคร 5 ตัว)
+  char_momo_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
+    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
+    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
+    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
+  },
+  char_mint_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
+    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
+    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
+    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
+  },
+  char_cocoa_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
+    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
+    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
+    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
+  },
+  char_taro_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
+    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
+    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
+    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
+  },
+  char_sesame_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
+    run:    { frames:[14,15,16,17,18,19,20,21], frameRate:16, repeat:-1 },
+    attack: { frames:[22,23,24,25,26,27,28,29,30,31], frameRate:20, repeat:0 },
+    hurt:   { frames:[32,33,34,35], frameRate:12, repeat:0 },
+  },
+  // ศัตรู (idle + walk + attack = 24 frames)
+  e_basic_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:14, repeat:-1 },
+    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:18, repeat:0 },
+  },
+  e_fast_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:16, repeat:-1 },
+    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:20, repeat:0 },
+  },
+  e_tank_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:8, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:12, repeat:-1 },
+    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
+  },
+  e_shooter_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:13, repeat:-1 },
+    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:18, repeat:0 },
+  },
+  e_bomber_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:14, repeat:-1 },
+    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:18, repeat:0 },
+  },
+  e_dasher_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:14, repeat:-1 },
+    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:20, repeat:0 },
+  },
+  e_siege_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:8, repeat:-1 },
+    walk:   { frames:[6,7,8,9,10,11,12,13], frameRate:10, repeat:-1 },
+    attack: { frames:[14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
+  },
+  // บอส (idle + attack wind-up = 24+ frames)
+  boss1_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
+  },
+  boss2_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
+  },
+  boss3_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
+  },
+  boss4_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
+  },
+  boss5_extended: {
+    idle:   { frames:[0,1,2,3,4,5], frameRate:10, repeat:-1 },
+    attack: { frames:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], frameRate:16, repeat:0 },
+  },
+};
 
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
@@ -398,6 +521,18 @@ class Boot extends Phaser.Scene {
       c.beginPath(); c.moveTo(s*0.70,s*0.34); c.lineTo(s*0.70,s*0.56); c.stroke();
       c.beginPath(); c.arc(s*0.5,s*0.56,s*0.20,0,Math.PI,false); c.stroke();
       c.fillStyle='#dcdce8'; c.fillRect(s*0.215,s*0.28,s*0.17,s*0.09); c.fillRect(s*0.615,s*0.28,s*0.17,s*0.09); })   // ปลายสีเงิน;
+
+    // Register all animations from ANIMATION_DEFS
+    Object.entries(ANIMATION_DEFS).forEach(([key, anims]) => {
+      Object.entries(anims).forEach(([animKey, config]) => {
+        this.anims.create({
+          key: `${key}_${animKey}`,
+          frames: this.anims.generateFrameNumbers(key, config),
+          frameRate: config.frameRate,
+          repeat: config.repeat
+        });
+      });
+    });
 
     this.scene.start('Game');
   }
@@ -2202,6 +2337,17 @@ class Game extends Phaser.Scene {
     if(b._aura){ b._aura.setPosition(b.x,b.y); b._aura.setScale(1+Math.sin(b._breathe*1.5)*0.12).setAlpha(0.12+Math.abs(Math.sin(b._breathe))*0.1); }  // ออร่าคลั่ง
     if(b.frozen>0)return;
     if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt;
+
+    // Play frame-based animations if extended spritesheet is loaded
+    const bossNum = b.isBoss ? (this.stageIndex + 1) : 0;
+    const animKey = `boss${bossNum}_extended`;
+    if(this.textures.exists(animKey)) {
+      if(b.atkCd > 0) {
+        b.play(`${animKey}_idle`, true);
+      } else {
+        b.play(`${animKey}_attack`, true);
+      }
+    }
     // เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) — เอฟเฟกต์โกรธ
     if(!b.phase2 && b.hp<=b.maxhp*0.5){ b.phase2=true; b.spd*=1.28; b.atkCd=0.6;
       this.showBanner('🔥 บอสโกรธ!','เฟส 2 — โจมตีดุขึ้น!',1500); this.cameras.main.shake(420,0.014); this.screenFlash(0xff4d5a,0.3,420);
@@ -2385,6 +2531,18 @@ class Game extends Phaser.Scene {
       this._ghostT = (this._ghostT || 0) - dt;
       if(this._ghostT <= 0){ this._ghostT = 0.04; this.spawnGhostTrail(); }
     }
+
+    // Play frame-based animations if extended spritesheet is loaded
+    const charKey = `char_${this.character}_extended`;
+    if(this.textures.exists(charKey)) {
+      if(sp > 150) {
+        p.play(`${charKey}_run`, true);
+      } else if(sp > 50) {
+        p.play(`${charKey}_walk`, true);
+      } else {
+        p.play(`${charKey}_idle`, true);
+      }
+    }
   }
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
@@ -2464,6 +2622,32 @@ class Game extends Phaser.Scene {
           if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); } }
         return; }
       e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
+
+      // Play frame-based animations if extended spritesheet is loaded
+      const aiType = e.ai || 'basic';
+      const animKey = `e_${aiType}_extended`;
+      if(this.textures.exists(animKey)) {
+        if(e.shooter) {
+          if(dd < 300) {
+            e.play(`${animKey}_attack`, true);
+          } else {
+            e.play(`${animKey}_idle`, true);
+          }
+        } else if(e.dasher) {
+          if(e.dashState === 'wind') {
+            e.play(`${animKey}_attack`, true);
+          } else {
+            e.play(`${animKey}_walk`, true);
+          }
+        } else {
+          const sp = e.body.velocity.length();
+          if(sp > 50) {
+            e.play(`${animKey}_walk`, true);
+          } else {
+            e.play(`${animKey}_idle`, true);
+          }
+        }
+      }
     });
 
     // orb vacuum + ออร์บมีชีวิต (หมุนช้า + เต้นวิบวับ)
