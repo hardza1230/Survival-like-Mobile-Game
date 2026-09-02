@@ -1406,7 +1406,7 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);
-    if(!e) e=this.enemies.create(x,y,'e_tank'); else { e.setTexture('e_tank'); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
+    if(!e) e=this.enemies.create(x,y,'e_tank'); else { e.setTexture('e_tank'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     const s=(1+this.stageIndex*0.35)*(1+this.waveIndex*0.06);
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=18; e.xp=8;
     e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
@@ -1536,7 +1536,7 @@ class Game extends Phaser.Scene {
     this.showBanner('🎁 ล้มบอสแล้ว!','เดินไปเก็บหีบสมบัติเพื่อรับสกิล',2400); }
   onStageClear(){
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
-    this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); e.body.enable=false; } });
+    this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.waveAlive=0; this.pipG.clear();
     this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.35); // heal reward
     Sfx.clear();
@@ -1747,7 +1747,7 @@ class Game extends Phaser.Scene {
     let e=this.enemies.getFirstDead(false);
     const key=type==='dasher'?'e_dasher':type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='siege'?'e_siege':type==='tank'?'e_tank':'e_basic';
     if(!e) e=this.enemies.create(x,y,key);
-    else { e.setTexture(key); e.setActive(true).setVisible(true); e.body.enable=true; e.setPosition(x,y); }
+    else { e.setTexture(key); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
     const s=(1+(this.stageIndex||0)*0.55)*(1+(this.waveIndex||0)*0.11);
     e.shooter=false; e.bomber=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
@@ -1768,8 +1768,8 @@ class Game extends Phaser.Scene {
   getBullet(x,y,tint,scale){
     let b=this.bullets.getFirstDead(false);
     if(!b) b=this.bullets.create(x,y,'spark');
-    else { b.setActive(true).setVisible(true); b.body.enable=true; b.setPosition(x,y); }
-    b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); b.body.setAllowGravity(false); this.camWorld(b);
+    else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
+    b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
     b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0;
     return b;
@@ -1972,7 +1972,7 @@ class Game extends Phaser.Scene {
     if(bullet.bounce>0){ bullet.bounce--;
       let nb=null,nd=360*360;
       this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==enemy){ const d=(o.x-bullet.x)**2+(o.y-bullet.y)**2; if(d<nd){nd=d;nb=o;} } });
-      if(nb){ const sp=bullet.body.velocity.length()||460, ang=Math.atan2(nb.y-bullet.y,nb.x-bullet.x);
+      if(nb&&bullet.body){ const sp=bullet.body.velocity.length()||460, ang=Math.atan2(nb.y-bullet.y,nb.x-bullet.x);
         this.physics.velocityFromRotation(ang,sp,bullet.body.velocity); return; } }
     this.killBullet(bullet); }
   damage(e,amount,x,y){ if(!e.active)return;
@@ -2003,11 +2003,11 @@ class Game extends Phaser.Scene {
       if(this.dist(this.player.x,this.player.y,bx,by)<r) this.hurtPlayer(Math.round(12+this.stageIndex*4),0.5); }
     // เก็บ Sugar (สกุลเงินเมต้า ใช้รอบหน้า)
     const sug=isBoss?40:isMini?18:isElite?4:1; this.sugarStage+=sug; this.sugarRun+=sug;
-    e.setActive(false).setVisible(false); e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.setScale(1);
+    e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.dasher=false; e.siege=false; e.dashState=null; e.clearTint(); e.setScale(1);
     if(isBoss){ this.onBossDown(e.x,e.y); return; }   // บอสตาย = ดรอปหีบสมบัติ → เดินเก็บ = สุ่มสกิล → เคลียร์ด่าน
     if(isMini){ this.onWaveCleared(); return; }   // มินิบอสตาย = ผ่านเวฟ (เวฟธรรมดาคุมด้วยเวลาใน tickStage) }
   }
-  killBullet(b){ b.setActive(false).setVisible(false); b.body.enable=false; b.body.stop(); }
+  killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
   // สีออร์บตามค่า EXP: ยิ่งค่ามาก สียิ่งพรีเมียม (เขียว→ฟ้า→ม่วง→ทอง) + เม็ดใหญ่ขึ้น
   orbStyle(v){
     if(v>=20) return {tint:0xffd75e, sc:1.7};   // ทอง = ค่าสูงสุด (บอส)
@@ -2020,13 +2020,13 @@ class Game extends Phaser.Scene {
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
     const st=this.orbStyle(value); o.value=value; o._vac=false; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
     o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o); }
-  collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9); this.gainXp(o.value||1); }
+  collectOrb(player,o){ if(!o.active)return; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9); this.gainXp(o.value||1); }
   // ---- ไอเทมฟื้นฟู HP ----
   dropHeal(x,y){ let h=this.heals.getFirstDead(false);
     if(!h) h=this.heals.create(x,y,'heal'); else { h.setActive(true).setVisible(true); h.body.enable=true; h.setPosition(x,y); }
     h.body.setAllowGravity(false); h.setScale(1); this.camWorld(h); if(this.iso)h.setDepth(h.y);
     this.tweens.add({targets:h,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); h.body.enable=false;
+  collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
     const amt=Math.round(this.player.maxhp*0.18)+6; this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
     Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.burst(h.x,h.y,0xff8fb5); }
   popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+n+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
@@ -2048,7 +2048,7 @@ class Game extends Phaser.Scene {
   // สกิล AoE (ระเบิด/ฟ้าผ่า/ออร่า ฯลฯ) ก็ต้องตีกล่องแตกได้ด้วย (แก้บั๊กบางสกิลตีกล่องไม่โดน)
   hitCratesInRadius(x,y,r,amount){ if(!this.crates)return;
     this.crates.children.iterate(c=>{ if(c&&c.active&&this.dist(c.x,c.y,x,y)<r+18) this.crateHit(c,amount); }); }
-  breakCrate(c){ const x=c.x,y=c.y; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); c.body.enable=false;
+  breakCrate(c){ const x=c.x,y=c.y; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.cameras.main.shake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดรอปออร์บ
     if(Math.random()<0.5) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // ครึ่งนึงดรอปฟื้นฟู
@@ -2061,7 +2061,7 @@ class Game extends Phaser.Scene {
     if(!v) v=this.vacs.create(x,y,'vac'); else { v.setActive(true).setVisible(true); v.body.enable=true; v.setPosition(x,y); }
     v.body.setAllowGravity(false); v.setScale(1); this.camWorld(v); if(this.iso)v.setDepth(v.y);
     this.tweens.add({targets:v,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectVac(player,v){ if(!v.active)return; this.tweens.killTweensOf(v); v.setActive(false).setVisible(false); v.body.enable=false;
+  collectVac(player,v){ if(!v.active)return; this.tweens.killTweensOf(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
     Sfx.heal(); this.burst(v.x,v.y,0xff5a6e); this.showBanner('🧲 แม่เหล็ก!','ดูดเม็ด EXP ทั้งจอ',1200);
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }
@@ -2070,7 +2070,7 @@ class Game extends Phaser.Scene {
     if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
     g.body.setAllowGravity(false); g.setScale(1); this.camWorld(g); if(this.iso)g.setDepth(g.y);
     this.tweens.add({targets:g,y:y-6,duration:640,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); g.setActive(false).setVisible(false); g.body.enable=false;
+  collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false;
     Sfx.select(); this.burst(g.x,g.y,0x7fd0ff);
     const got=this.grantGear('common');   // ดรอปในด่าน = เน้น common
     if(got) this.showBanner('🎁 ได้ของสวมใส่!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name,1600);
@@ -2083,7 +2083,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:c,scale:{from:0.3,to:1.1},duration:400,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const gl=this.camWorld(this.add.circle(x,y,26,0xffd166,0.25).setDepth(3)); c._glow=gl;
     this.tweens.add({targets:gl,radius:40,alpha:{from:0.25,to:0},duration:900,repeat:-1,ease:'Quad.out'}); }
-  collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); c.body.enable=false;
+  collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
@@ -2113,9 +2113,9 @@ class Game extends Phaser.Scene {
   // ยิงกระสุนศัตรู 1 นัด
   foeShot(x,y,ang,speed,dmg,tint,scale){
     let b=this.foeBullets.getFirstDead(false);
-    if(!b) b=this.foeBullets.create(x,y,'spark'); else { b.setActive(true).setVisible(true); b.body.enable=true; b.setPosition(x,y); }
-    b.setScale(scale||1.4).setTint(tint||0xff6b8a).setDepth(90000); b.body.setAllowGravity(false); b.dmg=dmg; b.life=3.0; this.camWorld(b);
-    this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
+    if(!b) b=this.foeBullets.create(x,y,'spark'); else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
+    b.setScale(scale||1.4).setTint(tint||0xff6b8a).setDepth(90000); if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.life=3.0; this.camWorld(b);
+    if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
   // hazard: วงอันตรายบนพื้น (เตือนก่อน → ระเบิด → จาง)
   spawnHazard(x,y,r,dmg,tint){
     const useArt=this.textures.exists('fx_hazard');
@@ -2398,8 +2398,8 @@ class Game extends Phaser.Scene {
           e.setVelocity(0,0); e.setTintFill(0xffffff);
           e.x += (Math.random() - 0.5) * 5;   // ตัวสั่นตอนชาร์จ
           if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang; if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
-            this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
-        else if(e.dashState==='dash'){ this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
+            if(e.body)this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
+        else if(e.dashState==='dash'){ if(e.body)this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
           if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); } }
         return; }
       e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
