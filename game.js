@@ -281,8 +281,19 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
     for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
     for(const k in ASSET_AUDIO) this.load.audio(k, verUrl(ASSET_AUDIO[k]));
-    // ถ้ารูป/เสียงโหลดไม่ได้ ให้ข้ามไป ใช้กราฟิก/เสียงสังเคราะห์แทน (ไม่ให้ค้าง)
-    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_AUDIO[f.key]; });
+    // Phase 1: Tilemap assets (แผนที่ + tileset)
+    const stages = ['pantry', 'sink', 'stove', 'fridge', 'final_pantry'];
+    stages.forEach(stage => {
+      this.load.image(`tileset_${stage}`, verUrl(`assets/tilesets/${stage}_32x32.png`));
+      this.load.tilemapTiledJSON(`map_${stage}`, verUrl(`assets/maps/${stage}.json`));
+    });
+    // ถ้ารูป/เสียง/แผนที่โหลดไม่ได้ ให้ข้ามไป ใช้กราฟิก/เสียงสังเคราะห์แทน (ไม่ให้ค้าง)
+    this.load.on('loaderror',(f)=>{
+      delete ASSET_IMAGES[f.key];
+      delete ASSET_SHEETS[f.key];
+      delete ASSET_AUDIO[f.key];
+      // ถ้าแผนที่/tileset โหลดไม่ได้ ก็ข้ามไป ใช้กริดเดิมแทน
+    });
   }
   create(){
     const mk=(key,size,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
@@ -651,23 +662,23 @@ const Save = {
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
 const STAGES = [
-  { name:'ตู้กับข้าว',   en:'The Pantry',  emoji:'🥫', grid:0x4a4360, tint:0x8bd3a0,
+  { key:'pantry', name:'ตู้กับข้าว',   en:'The Pantry',  emoji:'🥫', grid:0x4a4360, tint:0x8bd3a0,
     lore:'ที่ซ่อนแรกของ Sour Horde — ฝูงมดและแมลงเปรี้ยวคลานออกจากมุมมืด',
     waves:5, miniAt:2, mini:'มดทหารยักษ์',
     boss:'ราชินีมดเปรี้ยว', bossHp:420, bossDmg:20 },
-  { name:'อ่างล้างจาน',  en:'The Sink',    emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
+  { key:'sink', name:'อ่างล้างจาน',  en:'The Sink',    emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
     lore:'น้ำเน่านองเต็มอ่าง ฟองสบู่มีชีวิตพยายามจมโมโม่ให้เปียกโชก',
     waves:6, miniAt:3, mini:'ฟองสบู่เดือด',
     boss:'ปีศาจฟองน้ำ', bossHp:680, bossDmg:24 },
-  { name:'เตาไฟ',        en:'The Stove',   emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
+  { key:'stove', name:'เตาไฟ',        en:'The Stove',   emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
     lore:'เปลวไฟลุกโชน กระทะและพริกร้อนระอุเข้าจู่โจมไม่ยั้ง',
     waves:6, miniAt:3, mini:'กระทะเดือดดาล',
     boss:'มิสเตอร์เตาปิ้ง', bossHp:1000, bossDmg:28 },
-  { name:'ช่องแช่แข็ง',  en:'The Freezer', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
+  { key:'fridge', name:'ช่องแช่แข็ง',  en:'The Freezer', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
     lore:'ความหนาวเยือกแข็ง โกเลมไอศกรีมตื่นจากน้ำแข็งนิรันดร์',
     waves:7, miniAt:3, mini:'ก้อนน้ำแข็งยักษ์',
     boss:'โกเลมไอศกรีม', bossHp:1400, bossDmg:32 },
-  { name:'เตาอบใหญ่',    en:'The Grand Oven', emoji:'👨‍🍳', grid:0x574055, tint:0xff5f97,
+  { key:'final_pantry', name:'เตาอบใหญ่',    en:'The Grand Oven', emoji:'👨‍🍳', grid:0x574055, tint:0xff5f97,
     lore:'ใจกลางคำสาป — เชฟขมรอโมโม่อยู่ ทำลายเขาเพื่อปลดปล่อยครัว!',
     waves:8, miniAt:4, mini:'ผู้ช่วยเชฟหุ่นเหล็ก',
     boss:'เชฟขม (The Bitter Chef)', bossHp:2400, bossDmg:38 },
@@ -1324,8 +1335,84 @@ class Game extends Phaser.Scene {
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
     this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name}`);
     this.showBanner(`${st.emoji} ด่าน ${i+1}: ${st.name}`, st.lore, 3000);
+    this.setupTilemap(st.key);   // Phase 1: Load tilemap if available
     this.updateWaveText();
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
+  }
+
+  // Phase 1: Tilemap Setup — แทนกริดพื้นฐาน (fallback ถ้าไม่มีไฟล์)
+  setupTilemap(stageKey){
+    // ล้างแผนที่เก่า
+    if(this.tilemap){ this.tilemap.destroy(); this.tilemap=null; }
+    if(this.collisionLayer){ this.collisionLayer.destroy(); this.collisionLayer=null; }
+
+    // ตรวจเช็กว่าแผนที่มี (ถ้า Boot.preload โหลดได้)
+    const mapKey=`map_${stageKey}`, tilesetKey=`tileset_${stageKey}`;
+    if(!this.cache.tilemap.has(mapKey) || !this.textures.exists(tilesetKey)){
+      // Fallback: ใช้กริดดั้งเดิม (กราฟิกโค้ด + static bg)
+      return;
+    }
+
+    try {
+      // สร้างแผนที่จาก JSON (Tiled export)
+      const tilemap=this.make.tilemap({ key:mapKey });
+      const tileset=tilemap.addTilesetImage(`${stageKey}_tileset`, tilesetKey);
+      if(!tileset) return;   // Tileset ไม่ตรงกับชื่อ
+
+      // สร้าง layer (background: visual, collision: physics)
+      const bgLayer=tilemap.createLayer('background', tileset, 0, 0);
+      if(bgLayer) bgLayer.setDepth(-100000).setAlpha(0.9);   // ใต้กริด
+
+      const collisionLayer=tilemap.createLayer('collision', tileset, 0, 0);
+      if(collisionLayer){
+        collisionLayer.setCollisionByProperty({ collides:true });   // tiles ที่มี collides=true เป็นผนัง
+        collisionLayer.setVisible(false);   // ซ่อนระบบหรือแสดง debug
+        this.physics.add.collider(this.player, collisionLayer);   // Player ชนกับผนัง
+        if(this.enemies) this.physics.add.collider(this.enemies, collisionLayer);   // ศัตรูชนกับผนัง
+      }
+
+      // Object layer: spawn points, boss arena, item zones
+      this.setupTilemapObjects(tilemap, stageKey);
+
+      // เก็บสำหรับอ้างอิงภายหลัง
+      this.tilemap=tilemap;
+      this.collisionLayer=collisionLayer;
+
+      // ปรับกล้องให้ตามขอบแผนที่
+      if(bgLayer||collisionLayer){
+        const w=tilemap.widthInPixels, h=tilemap.heightInPixels;
+        this.cameras.main.setBounds(0, 0, w, h);
+        this.physics.world.setBounds(0, 0, w, h);
+      }
+    } catch(e){
+      console.warn('Tilemap setup failed:', e);   // อย่างเดิม ถ้ามีปัญหา ใช้ fallback
+    }
+  }
+
+  // ประมวลผล Object Layer จาก Tiled (spawn points, mini boss, chest drop, etc.)
+  setupTilemapObjects(tilemap, stageKey){
+    const objLayer=tilemap.getObjectLayer('objects');
+    if(!objLayer || !objLayer.objects) return;
+
+    objLayer.objects.forEach(obj=>{
+      if(obj.name==='player_spawn'){
+        // ตั้งตำแหน่ง Player ที่จุดเกิดแรก
+        const x=obj.x + (obj.width||0)/2;
+        const y=obj.y + (obj.height||0)/2;
+        if(this.player) this.player.setPosition(x, y);
+      }
+      else if(obj.name==='mini_boss_spawn'){
+        // บันทึกตำแหน่งมินิบอส (ไม่เกิด ใช้ในระหว่างเวฟ)
+        this._miniBossSpawnX=obj.x + (obj.width||0)/2;
+        this._miniBossSpawnY=obj.y + (obj.height||0)/2;
+      }
+      else if(obj.name==='chest_drop'){
+        // ตำแหน่งหีบสมบัติเมื่อบอสตาย
+        this._chestSpawnX=obj.x + (obj.width||0)/2;
+        this._chestSpawnY=obj.y + (obj.height||0)/2;
+      }
+      // ขยายได้: treasure, secret passage, hazard zone, etc.
+    });
   }
   updateWaveText(){
     const st=STAGES[this.stageIndex]; if(!st)return;
