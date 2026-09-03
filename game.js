@@ -270,6 +270,7 @@ const ASSET_SHEETS = {
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
   fx_beam: { url:'assets/fx_beam_sheet.png', fw:352, fh:366, frames:8, rate:26, anchor:'left' },
+  fx_boom: { url:'assets/fx_boom_sheet.png', fw:352, fh:366, frames:8, rate:24, anchor:'center' },
 };
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
@@ -2116,8 +2117,12 @@ class Game extends Phaser.Scene {
           if(d<rr&&d>rr-46){ hit.add(e); this.damage(e,dmg,e.x,e.y); if(!e.isBoss){ const a=Math.atan2(e.y-py,e.x-px); e.setVelocity(Math.cos(a)*260,Math.sin(a)*260); e.knock=0.2; } } } }); },
         onComplete:()=>ring.destroy() }); });
   }
-  explodeAt(x,y,r,dmg){ const ring=this.camWorld(this.add.circle(x,y,10,0xffb08a,0.5).setDepth(3));
-    this.tweens.add({targets:ring,radius:r,alpha:0,duration:240,onComplete:()=>ring.destroy()}); this.burst(x,y,0xff8b6b);
+  explodeAt(x,y,r,dmg){
+    if(this.textures.exists('fx_boom')&&this.anims.exists('fx_boom')){
+      this.spawnFxAnim('fx_boom',x,y,{scale:(2*r)/ASSET_FX.fx_boom.fw*1.15,depth:5,anchor:'center'});
+    } else { const ring=this.camWorld(this.add.circle(x,y,10,0xffb08a,0.5).setDepth(3));
+      this.tweens.add({targets:ring,radius:r,alpha:0,duration:240,onComplete:()=>ring.destroy()}); }
+    this.burst(x,y,0xff8b6b);
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(x,y,r,dmg); Sfx.boom(); }
   // ประกายวาววับตอนสกิลตื่นรู้ (Awaken) ทำงาน
   awakenSpark(key){ const c=this.camWorld(this.add.circle(this.player.x,this.player.y,8,0xfff2a8,0.8).setDepth(6));
