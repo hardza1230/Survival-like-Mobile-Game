@@ -265,6 +265,13 @@ const ASSET_SHEETS = {
   char_cocoa: { url:'assets/char_cocoa_sheet.png', frame:128 },
 };
 
+/* ---- VFX flipbook sheets (อนิเมชันหลายเฟรม เล่นไล่เฟรม) ----
+   เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
+   frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
+const ASSET_FX = {
+  fx_beam: { url:'assets/fx_beam_sheet.png', fw:352, fh:366, frames:8, rate:26, anchor:'left' },
+};
+
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
 const ASSET_AUDIO = {
   sfx_shoot:      'assets/audio/sfx/sfx_skill_sprinkle.wav',
@@ -300,9 +307,10 @@ class Boot extends Phaser.Scene {
   preload(){
     for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
     for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
+    for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     for(const k in ASSET_AUDIO) this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     // ถ้ารูป/เสียงโหลดไม่ได้ ให้ข้ามไป ใช้กราฟิก/เสียงสังเคราะห์แทน (ไม่ให้ค้าง)
-    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_AUDIO[f.key]; });
+    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_FX[f.key]; delete ASSET_AUDIO[f.key]; });
   }
   create(){
     const mk=(key,size,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
@@ -425,6 +433,11 @@ class Boot extends Phaser.Scene {
     mk('vfx_line',32,(c,s)=>{ const g=c.createLinearGradient(0,s/2,s,s/2);
       g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(0.3,'rgba(255,255,255,0.8)'); g.addColorStop(0.7,'rgba(255,255,255,0.8)'); g.addColorStop(1,'rgba(255,255,255,0)');
       c.fillStyle=g; c.fillRect(0,s*0.38,s,s*0.24); });
+
+    // ---- สร้างอนิเมชัน flipbook ของ VFX (เล่นครั้งเดียวจบ) ----
+    for(const k in ASSET_FX){ if(!this.textures.exists(k))continue; const fx=ASSET_FX[k];
+      if(this.anims.exists(k))continue;
+      this.anims.create({ key:k, frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}), frameRate:fx.rate, repeat:0 }); }
 
     this.scene.start('Game');
   }
@@ -2056,10 +2069,26 @@ class Game extends Phaser.Scene {
     else if(key==='wave'){ const rings=aw?3:1, maxR=(150+lvl*20)*(aw?1.4:1), dmg=(8+lvl*2.6)*dm*(aw?1.4:1);
       for(let k=0;k<rings;k++) this.creamWave(maxR,dmg,k*180); Sfx.boom(); }
   }
+  // เล่น VFX flipbook (sprite animation) ครั้งเดียวแล้วทำลาย · additive blend (พื้นดำหาย + เรืองแสง)
+  spawnFxAnim(key,x,y,o={}){
+    if(!this.textures.exists(key)||!this.anims.exists(key))return null;
+    const fx=ASSET_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
+    s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(Phaser.BlendModes.ADD);
+    const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5,0.5);
+    if(o.rotation!=null)s.setRotation(o.rotation);
+    s.setScale(o.scaleX!=null?o.scaleX:(o.scale!=null?o.scale:1), o.scaleY!=null?o.scaleY:(o.scale!=null?o.scale:1));
+    if(o.alpha!=null)s.setAlpha(o.alpha);
+    s.play(key); s.once('animationcomplete',()=>s.destroy()); return s;
+  }
   fireBeam(ang,len,wide,dmg){
     const px=this.player.x, py=this.player.y;
-    const g=this.camWorld(this.add.rectangle(px,py,len,wide,0xffe08a,0.75).setOrigin(0,0.5).setDepth(6)); g.setRotation(ang);
-    this.tweens.add({targets:g,alpha:0,scaleY:0.3,duration:260,onComplete:()=>g.destroy()});
+    if(this.textures.exists('fx_beam')&&this.anims.exists('fx_beam')){
+      const sx=len/ASSET_FX.fx_beam.fw, sy=0.42*(wide/15);
+      this.spawnFxAnim('fx_beam',px,py,{rotation:ang,scaleX:sx,scaleY:sy,depth:6,anchor:'left'});
+    } else {
+      const g=this.camWorld(this.add.rectangle(px,py,len,wide,0xffe08a,0.75).setOrigin(0,0.5).setDepth(6)); g.setRotation(ang);
+      this.tweens.add({targets:g,alpha:0,scaleY:0.3,duration:260,onComplete:()=>g.destroy()});
+    }
     const dx=Math.cos(ang),dy=Math.sin(ang);
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-px, ry=e.y-py;
       const proj=rx*dx+ry*dy; if(proj<0||proj>len)return; if(Math.abs(-rx*dy+ry*dx)<wide/2+16) this.damage(e,dmg,e.x,e.y); });
