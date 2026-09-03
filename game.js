@@ -826,9 +826,34 @@ class Game extends Phaser.Scene {
 
     this.buildHUD(); this.buildMenus(); this.showMenu();
     this.setupCameras();
+    this.setupParticles();
     this.setupInput();
     this.scale.on('resize',this.onResize,this);
   }
+
+  /* ---------- PARTICLE EMITTERS (native, reused) ----------
+     สร้าง emitter ถาวรไม่กี่ตัว แล้วสั่ง burst ที่พิกัดไหนก็ได้ด้วย emitParticleAt
+     → reuse ตัวเดียวทุกครั้ง (ไม่สร้าง GameObject ใหม่ต่อการตาย/ตี) + วาด batch เดียว = ลื่นบนมือถือ
+     ทุกตัว emitting:false (นิ่งจนกว่าจะสั่ง) และ camWorld (ให้กล้อง UI ข้าม) */
+  setupParticles(){
+    const add=(tex,cfg,depth)=>{
+      if(!this.textures||!this.textures.exists(tex))return null;
+      const em=this.add.particles(0,0,tex,Object.assign({emitting:false},cfg));
+      if(em){ em.setDepth(depth); this.camWorld(em); }
+      return em;
+    };
+    // ประกายกระแทก (ตี/เก็บ) — เรืองแสงพุ่งออกแล้วจางหด
+    this.pSpark=add('spark',{ speed:{min:40,max:170}, scale:{start:0.55,end:0}, alpha:{start:0.95,end:0},
+      lifespan:{min:200,max:360}, blendMode:'ADD', rotate:{min:0,max:360} }, 9);
+    // ควันตาย — ก้อนนุ่มขยายแล้วจาง ลอยขึ้นเล็กน้อย
+    this.pSmoke=add('vfx_poof',{ speed:{min:12,max:60}, scale:{start:0.28,end:0.95}, alpha:{start:0.7,end:0},
+      lifespan:{min:280,max:460}, gravityY:-40, rotate:{min:-40,max:40} }, 7);
+    // ฝุ่นดีใจ (เลเวลอัพ/ฉลอง) — เม็ดกลมพุ่งกว้างแล้วร่วง
+    this.pDust=add('dot',{ speed:{min:60,max:150}, scale:{start:0.9,end:0}, alpha:{start:1,end:0},
+      lifespan:{min:340,max:560}, gravityY:120, blendMode:'ADD' }, 9);
+  }
+  // burst ผ่าน emitter ที่ reuse ได้ (ตั้งสีก่อนแล้วพ่น) — fallback เงียบถ้า emitter ไม่พร้อม
+  _emit(em,x,y,color,n){ if(!em)return false; if(color!=null&&em.setParticleTint)em.setParticleTint(color); em.emitParticleAt(x,y,n); return true; }
 
   /* กล้อง 2 ตัว: main=โลก (follow), ui=อินเทอร์เฟซ (คงที่) — ทั้งคู่ zoom=DPR ให้คมชัด
      พิกัดยังเป็น CSS px แต่ backing เป็นความละเอียดจริงของจอ */
@@ -2391,19 +2416,15 @@ class Game extends Phaser.Scene {
     const r=big?1.8:1.0;
     const ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(color).setDepth(7).setScale(0.15*r,0.12*r).setAlpha(0.85));
     this.tweens.add({targets:ring,scaleX:1.6*r,scaleY:1.3*r,alpha:0,duration:big?320:220,ease:'Quad.out',onComplete:()=>ring.destroy()});
-    for(let i=0;i<(big?5:3);i++){
-      const a=Math.random()*Math.PI*2, sp=Phaser.Math.Between(30,big?120:70);
-      const p=this.camWorld(this.add.image(x,y,'spark').setTint(color).setDepth(7).setScale(Phaser.Math.FloatBetween(0.3,0.7)).setAlpha(0.9));
-      this.tweens.add({targets:p,x:x+Math.cos(a)*sp,y:y+Math.sin(a)*sp,alpha:0,scale:0,duration:Phaser.Math.Between(180,300),onComplete:()=>p.destroy()});
-    }
+    this._emit(this.pSpark,x,y,color,big?8:4);
   }
   // --- VFX: death poof (smoke cloud) ---
   vfxDeathPoof(x,y,color,big){
     const sc=big?2.2:1.0;
-    const poof=this.camWorld(this.add.image(x,y,'vfx_poof').setTint(color).setDepth(7).setScale(0.2*sc).setAlpha(0.9));
-    this.tweens.add({targets:poof,scaleX:1.8*sc,scaleY:1.5*sc,alpha:0,duration:big?420:280,ease:'Quad.out',onComplete:()=>poof.destroy()});
     const halo=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(0xffffff).setDepth(6).setScale(0.1*sc,0.08*sc).setAlpha(0.6));
     this.tweens.add({targets:halo,scaleX:1.2*sc,scaleY:1.0*sc,alpha:0,duration:big?360:240,ease:'Quad.out',onComplete:()=>halo.destroy()});
+    this._emit(this.pSmoke,x,y,color,big?14:6);
+    this._emit(this.pSpark,x,y,color,big?7:3);
   }
   // --- VFX: skill cast glow (radial flash at caster) ---
   vfxCastGlow(color){
@@ -2432,20 +2453,11 @@ class Game extends Phaser.Scene {
     const p=this.player; if(!p)return;
     const ring=this.camWorld(this.add.image(p.x,p.y,'vfx_ring').setTint(0xffe08a).setDepth(8).setScale(0.2,0.16).setAlpha(0.9));
     this.tweens.add({targets:ring,scaleX:3.2,scaleY:2.6,alpha:0,duration:450,ease:'Quad.out',onComplete:()=>ring.destroy()});
-    for(let i=0;i<8;i++){
-      const a=i/8*Math.PI*2, sp=Phaser.Math.Between(50,120);
-      const s=this.camWorld(this.add.image(p.x,p.y,'dot').setTint([0xffe08a,0xff8fb5,0xbfe8ff,0xb6f0d6][i%4]).setDepth(8).setScale(Phaser.Math.FloatBetween(0.6,1.2)));
-      this.tweens.add({targets:s,x:p.x+Math.cos(a)*sp,y:p.y+Math.sin(a)*sp,alpha:0,scale:0,duration:Phaser.Math.Between(300,500),onComplete:()=>s.destroy()});
-    }
+    const cols=[0xffe08a,0xff8fb5,0xbfe8ff,0xb6f0d6];
+    cols.forEach(c=>this._emit(this.pDust,p.x,p.y,c,4));   // ฝุ่นหลากสีพุ่งฉลอง
   }
   // --- VFX: collect sparkle (orb pickup) ---
-  vfxCollectSparkle(x,y,color){
-    for(let i=0;i<4;i++){
-      const a=Math.random()*Math.PI*2, r=Phaser.Math.Between(12,32);
-      const s=this.camWorld(this.add.image(x,y,'spark').setTint(color).setDepth(7).setScale(Phaser.Math.FloatBetween(0.25,0.55)).setAlpha(0.8));
-      this.tweens.add({targets:s,x:x+Math.cos(a)*r,y:y+Math.sin(a)*r-14,alpha:0,scale:0,duration:Phaser.Math.Between(160,280),onComplete:()=>s.destroy()});
-    }
-  }
+  vfxCollectSparkle(x,y,color){ this._emit(this.pSpark,x,y-6,color,4); }
   // faux-2.5D: วาดเงาวงรีใต้ทุกตัวในเลเยอร์เดียว (เรียกทุกเฟรม)
   drawShadows(){
     const g=this.shadowG; if(!g)return; g.clear(); g.fillStyle(0x0a0510,0.28);
