@@ -275,6 +275,9 @@ const ASSET_FX = {
   fx_vortex:   { url:'assets/fx_vortex_sheet.png',   fw:352, fh:366, frames:8, rate:22, anchor:'center' },
   fx_slash:    { url:'assets/fx_slash_sheet.png',    fw:352, fh:366, frames:8, rate:30, anchor:'left'   },
   fx_levelup:  { url:'assets/fx_levelup_sheet.png',  fw:61,  fh:64,  frames:8, rate:24, anchor:'center' },
+  fx_thunder:  { url:'assets/fx_thunder_sheet.png',  fw:61,  fh:64,  frames:8, rate:30, anchor:'bottom' },
+  fx_heal:     { url:'assets/fx_heal_sheet.png',     fw:352, fh:366, frames:8, rate:22, anchor:'center' },
+  fx_wave:     { url:'assets/fx_wave_sheet.png',     fw:352, fh:366, frames:8, rate:26, anchor:'center' },
 };
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
@@ -2085,7 +2088,7 @@ class Game extends Phaser.Scene {
     if(!this.textures.exists(key)||!this.anims.exists(key))return null;
     const fx=ASSET_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
     s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(Phaser.BlendModes.ADD);
-    const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5,0.5);
+    const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5, ax==='bottom'?1:0.5);
     if(o.rotation!=null)s.setRotation(o.rotation);
     s.setScale(o.scaleX!=null?o.scaleX:(o.scale!=null?o.scale:1), o.scaleY!=null?o.scaleY:(o.scale!=null?o.scale:1));
     if(o.alpha!=null)s.setAlpha(o.alpha);
@@ -2121,6 +2124,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const px=this.player.x, py=this.player.y, hit=new Set();
       this.hitCratesInRadius(px,py,maxR,dmg);
+      if(this.textures.exists('fx_wave')&&this.anims.exists('fx_wave')) this.spawnFxAnim('fx_wave',px,py,{scale:(2*maxR)/ASSET_FX.fx_wave.fw,depth:3,anchor:'center'});
       const ring=this.camWorld(this.add.circle(px,py,10,0xbfe8ff,0).setDepth(3).setStrokeStyle(5,0xffffff,0.85));
       this.tweens.add({targets:ring,radius:maxR,alpha:{from:0.9,to:0},duration:420,ease:'Quad.out',
         onUpdate:()=>{ const rr=ring.radius; this.enemies.children.iterate(e=>{ if(e&&e.active&&!hit.has(e)){ const d=this.dist(e.x,e.y,px,py);
@@ -2145,6 +2149,11 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:g,alpha:0,duration:180,onComplete:()=>g.destroy()});
   }
   zap(x,y){
+    if(this.textures.exists('fx_thunder')&&this.anims.exists('fx_thunder')){
+      this.spawnFxAnim('fx_thunder',x,y,{scaleY:280/ASSET_FX.fx_thunder.fh,scaleX:2.4,depth:7,anchor:'bottom'});
+      const fl=this.camWorld(this.add.circle(x,y,22,0xbfe3ff,0.55).setDepth(7));
+      this.tweens.add({targets:fl,alpha:0,scale:1.6,duration:220,onComplete:()=>fl.destroy()}); return;
+    }
     const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(3,0xfff2a8,1);
     g.beginPath(); g.moveTo(x,y-260); g.lineTo(x+Phaser.Math.Between(-14,14),y-130); g.lineTo(x,y); g.strokePath();
     const fl=this.camWorld(this.add.circle(x,y,22,0xfff2a8,0.6).setDepth(7));
@@ -2223,7 +2232,8 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:h,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
     const amt=Math.round(this.player.maxhp*0.18)+6; this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
-    Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5); }
+    Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5);
+    if(this.textures.exists('fx_heal')&&this.anims.exists('fx_heal')) this.spawnFxAnim('fx_heal',this.player.x,this.player.y,{scale:150/ASSET_FX.fx_heal.fw,depth:8,anchor:'center'}); }
   popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+n+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
     this.tweens.add({targets:t,y:y-56,alpha:0,duration:700,onComplete:()=>t.destroy()}); }
   // ---- กล่อง/โหลทุบได้ (ธีมครัว) ----
