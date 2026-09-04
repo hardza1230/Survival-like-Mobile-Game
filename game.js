@@ -244,6 +244,9 @@ const ASSET_IMAGES = {
   fx_chili:'assets/fx_chili.png', fx_frost:'assets/fx_frost.png', fx_hazard:'assets/fx_hazard.png', fx_donut:'assets/fx_donut.png',   // VFX สกิล/telegraph
   fx_ult_bomb:'assets/fx_ult_bomb.png', fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
+  p_shelf:'assets/p_shelf.png', p_spicerack:'assets/p_spicerack.png', p_cupboard:'assets/p_cupboard.png', p_boxes:'assets/p_boxes.png', p_crate:'assets/p_crate.png', p_sugarbarrel:'assets/p_sugarbarrel.png',   // props ฉากด่าน 1 (คีย์เขียว)
+  p_flour:'assets/p_flour.png', p_candybarrel:'assets/p_candybarrel.png', p_sack:'assets/p_sack.png', p_flourspill:'assets/p_flourspill.png', p_cans:'assets/p_cans.png', p_jars:'assets/p_jars.png',
+  p_rollingpin:'assets/p_rollingpin.png', p_jamspice:'assets/p_jamspice.png', p_honey:'assets/p_honey.png', p_board:'assets/p_board.png', p_measure:'assets/p_measure.png', p_mouse:'assets/p_mouse.png',
   char_taro:'assets/char_taro.png', char_sesame:'assets/char_sesame.png',   // ตัวละครใหม่ (รูปนิ่ง + เจลลี่)
   ic_sprinkle:'assets/ic_sprinkle.png', ic_star:'assets/ic_star.png', ic_chili:'assets/ic_chili.png', ic_frost:'assets/ic_frost.png',
   ic_bubble:'assets/ic_bubble.png', ic_heart:'assets/ic_heart.png', ic_magnet:'assets/ic_magnet.png', ic_sugar:'assets/ic_sugar.png',
@@ -452,7 +455,8 @@ class Boot extends Phaser.Scene {
       this.anims.create({ key:k, frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}), frameRate:fx.rate, repeat:fx.loop?-1:0 }); }
 
     // ---- Props ประดับฉาก (placeholder กล่อง ๆ — สลับอาร์ต AI ทีหลัง) ----
-    const mkRect=(key,w,h,draw)=>{ if(this.textures.exists(key))this.textures.remove(key);
+    const mkRect=(key,w,h,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;   // มีรูป AI แล้ว ไม่วาดทับ (procedural = fallback)
+      if(this.textures.exists(key))this.textures.remove(key);
       const t=this.textures.createCanvas(key,w,h); if(!t)return; draw(t.getContext(),w,h); t.refresh(); };
     const lg=(c,x0,y0,x1,y1,a,b)=>{ const g=c.createLinearGradient(x0,y0,x1,y1); g.addColorStop(0,a); g.addColorStop(1,b); return g; };
     const gShadow=(c,w,h)=>{ c.fillStyle='rgba(20,10,25,0.22)'; c.beginPath(); c.ellipse(w/2,h-7,w*0.40,h*0.09,0,0,TAU); c.fill(); };
@@ -796,12 +800,14 @@ function bestiaryAllBonus(){
 /* ---- STAGE_PROPS: เลย์เอาต์ props ต่อด่าน [key,x,y,solid,scale] — ทำแผนที่ให้เป็น "ห้อง" ที่ออกแบบไว้ ----
    ผู้เล่นเกิดที่ (0,0) · solid=true แลนด์มาร์กชนได้ · ที่เหลือเดินทะลุ · เว้นกลางห้องโล่งให้สู้ */
 const STAGE_PROPS = {
-  0: (()=>{ const a=[];                                            // ด่าน 1: ห้องแพนทรี
-    for(let x=-680;x<=700;x+=230){ a.push(['p_shelf',x,-1100,false,1],['p_shelf',x,1100,false,1]); }   // ชั้นวางขอบบน/ล่าง
-    for(let y=-820;y<=740;y+=260){ a.push(['p_crate',-820,y,false,1],['p_crate',820,y,false,1]); }       // ลังขอบซ้าย/ขวา
-    a.push(['p_jars',-720,-960,false,1.1],['p_flour',700,-980,false,1.05],['p_jars',740,960,false,1],['p_flour',-720,980,false,1.05]);  // มุมห้อง
-    a.push(['p_cans',430,-360,true,1.1],['p_crate',-470,430,true,1.25],['p_cans',-360,-560,true,1.0],['p_crate',520,520,true,1.15]);    // แลนด์มาร์กชนได้
-    a.push(['p_box',300,280,false,1],['p_jars',-320,-240,false,1],['p_box',-540,-100,false,1],['p_flour',500,150,false,1],['p_box',160,-540,false,1],['p_jars',360,600,false,1],['p_flour',-260,620,false,1]);  // ของประดับกระจาย
+  0: (()=>{ const a=[];                                            // ด่าน 1: ห้องแพนทรี (props อาร์ต AI)
+    let xs=-680; for(const k of ['p_shelf','p_cupboard','p_spicerack','p_shelf','p_cupboard','p_spicerack']){ a.push([k,xs,-1120,false,0.9]); xs+=275; }   // ขอบบน
+    xs=-680; for(const k of ['p_spicerack','p_shelf','p_cupboard','p_spicerack','p_shelf','p_cupboard']){ a.push([k,xs,1120,false,0.9]); xs+=275; }        // ขอบล่าง
+    let ys=-780; for(const k of ['p_crate','p_boxes','p_sugarbarrel','p_crate','p_boxes','p_candybarrel']){ a.push([k,-850,ys,false,0.85]); ys+=300; }      // ขอบซ้าย
+    ys=-780; for(const k of ['p_boxes','p_candybarrel','p_crate','p_sugarbarrel','p_boxes','p_crate']){ a.push([k,850,ys,false,0.85]); ys+=300; }           // ขอบขวา
+    a.push(['p_sack',-700,-960,false,0.9],['p_flour',700,-960,false,0.9],['p_sack',700,960,false,0.9],['p_flour',-700,960,false,0.9]);   // มุมห้อง
+    a.push(['p_cans',420,-380,true,1.15],['p_sugarbarrel',-460,430,true,1.1],['p_cupboard',-360,-540,true,1.0],['p_crate',520,520,true,1.05]);   // แลนด์มาร์กชนได้
+    a.push(['p_jars',300,280,false,0.85],['p_honey',-320,-240,false,0.85],['p_rollingpin',-540,-80,false,0.85],['p_board',500,160,false,0.85],['p_jamspice',180,-560,false,0.8],['p_measure',360,600,false,0.8],['p_flourspill',-260,620,false,0.85],['p_mouse',-120,-330,false,0.7]);  // ของประดับ
     return a; })(),
 };
 
@@ -851,9 +857,9 @@ class Game extends Phaser.Scene {
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     // พื้นหลังโซนครัว (รูปจริง) — เลเยอร์ใต้สุด + กริดเส้นจาง ๆ ทับไว้เป็นจุดอ้างอิงการเคลื่อนที่
-    this.bgTile=this.camWorld(this.add.tileSprite(0,0,WORLD,WORLD,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(0.9));
+    this.bgTile=this.camWorld(this.add.tileSprite(0,0,WORLD,WORLD,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(1));
     this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.6;
-    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.22).setDepth(-100000);
+    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.10).setDepth(-100000);   // เส้นกริดจางลง (พื้นสวยแล้ว)
     // faux-2.5D: เลเยอร์เงาใต้ตัว (วาดใหม่ทุกเฟรม) + จัดลำดับความลึกตามแกน Y
     this.iso=true;   // สวิตช์เปิด/ปิดโหมด 2.5D เบา ๆ
     this.shadowG=this.add.graphics().setDepth(-99000);
