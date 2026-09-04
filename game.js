@@ -269,8 +269,12 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
-  fx_beam: { url:'assets/fx_beam_sheet.png', fw:352, fh:366, frames:8, rate:26, anchor:'left' },
-  fx_boom: { url:'assets/fx_boom_sheet.png', fw:352, fh:366, frames:8, rate:24, anchor:'center' },
+  fx_beam:     { url:'assets/fx_beam_sheet.png',     fw:352, fh:366, frames:8, rate:26, anchor:'left'   },
+  fx_boom:     { url:'assets/fx_boom_sheet.png',     fw:352, fh:366, frames:8, rate:24, anchor:'center' },
+  fx_frostnova:{ url:'assets/fx_frostnova_sheet.png',fw:352, fh:366, frames:8, rate:24, anchor:'center' },
+  fx_vortex:   { url:'assets/fx_vortex_sheet.png',   fw:352, fh:366, frames:8, rate:22, anchor:'center' },
+  fx_slash:    { url:'assets/fx_slash_sheet.png',    fw:352, fh:366, frames:8, rate:30, anchor:'left'   },
+  fx_levelup:  { url:'assets/fx_levelup_sheet.png',  fw:61,  fh:64,  frames:8, rate:24, anchor:'center' },
 };
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
@@ -1997,7 +2001,11 @@ class Game extends Phaser.Scene {
       const big=((lvl>=3?1.4:1.1)+(cf.firestorm?0.3:0))*(aw?1.5:1), speed=(lvl>=3?340:300)*(aw?1.2:1), pierce=lvl>=6||aw, tint=aw?0xffd166:(cf.firestorm?0xffa54d:0x8fd0ff); this.whirlAng+=0.5;
       for(let i=0;i<cnt;i++){ const ang=this.whirlAng+(i/cnt)*Math.PI*2;
         const b=this.getBullet(this.player.x,this.player.y,tint,big); b.dmg=dmg; b.life=aw?1.3:0.95; b.pierce=pierce; b.hitGapV=0.14;
-        this.physics.velocityFromRotation(ang,speed,b.body.velocity); } Sfx.shoot(); }
+        this.physics.velocityFromRotation(ang,speed,b.body.velocity); }
+      if(this.textures.exists('fx_slash')&&this.anims.exists('fx_slash')){ const t=this.nearestEnemy(500), sa=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):this.whirlAng;
+        const off=44, sc=(150+lvl*14)/ASSET_FX.fx_slash.fw;
+        this.spawnFxAnim('fx_slash',this.player.x+Math.cos(sa)*off,this.player.y+Math.sin(sa)*off,{rotation:sa,scale:sc,depth:6,anchor:'center'}); }
+      Sfx.shoot(); }
     else if(key==='boomer'){ const cnt=aw?6:lvl>=6?4:lvl>=4?3:lvl>=2?2:1, dmg=(8+lvl*2.6)*dm*(aw?1.4:1);
       const big=(1.4+lvl*0.1)*(aw?1.4:1), rebound=lvl>=5||aw; let gap=lvl>=3?0.10:0.16; if(cf.ricochet)gap*=0.7; if(aw)gap*=0.7;
       for(let s=0;s<cnt;s++){ const t=this.nearestEnemy(760);
@@ -2008,7 +2016,8 @@ class Game extends Phaser.Scene {
     else if(key==='frost'){
       const df=this.player.deepFreeze?1.4:1;
       const r=(140+lvl*14)*(aw?2.6:1)*df, dur=(1+lvl*0.22)*(aw?1.6:1)*df, dmg=(lvl>=3||aw||this.player.deepFreeze)?(6+lvl*2)*dm*(aw?1.8:1)*df:0, shatter=lvl>=5||aw||this.player.deepFreeze;
-      if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
+      if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova')) this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r)/ASSET_FX.fx_frostnova.fw,depth:3,anchor:'center'});
+      else if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
       else { const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
         this.tweens.add({targets:ring,radius:r,alpha:0,duration:320,onComplete:()=>ring.destroy()}); }
       this.enemies.children.iterate(e=>{ if(e&&e.active&&(aw||(!e.isBoss&&!e.isMini))&&this.dist(e.x,e.y,this.player.x,this.player.y)<r){
@@ -2059,6 +2068,7 @@ class Game extends Phaser.Scene {
       const r=(70+lvl*12)*(aw?1.5:1), dmg=(3+lvl*1.2)*dm*(aw?1.6:1), dur=(aw?4:2+lvl*0.3);
       const cloud=this.camWorld(this.add.circle(cx,cy,r,0x9a7ce6,0.16).setDepth(2).setStrokeStyle(2,0xb79ae8,0.45));
       this.tweens.add({targets:cloud,scale:{from:0.5,to:1},duration:300});
+      if(this.textures.exists('fx_vortex')&&this.anims.exists('fx_vortex')) this.spawnFxAnim('fx_vortex',cx,cy,{scale:(2*r)/ASSET_FX.fx_vortex.fw,depth:3,anchor:'center'});
       const ticks=Math.max(1,Math.floor(dur/0.3));
       for(let k=1;k<=ticks;k++) this.time.delayedCall(k*300,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(cx,cy,r,dmg); });
@@ -2485,8 +2495,9 @@ class Game extends Phaser.Scene {
   // --- VFX: level up celebration burst ---
   vfxLevelUp(){
     const p=this.player; if(!p)return;
-    const ring=this.camWorld(this.add.image(p.x,p.y,'vfx_ring').setTint(0xffe08a).setDepth(8).setScale(0.2,0.16).setAlpha(0.9));
-    this.tweens.add({targets:ring,scaleX:3.2,scaleY:2.6,alpha:0,duration:450,ease:'Quad.out',onComplete:()=>ring.destroy()});
+    if(this.textures.exists('fx_levelup')&&this.anims.exists('fx_levelup')) this.spawnFxAnim('fx_levelup',p.x,p.y,{scale:220/ASSET_FX.fx_levelup.fw,depth:8,anchor:'center'});
+    else { const ring=this.camWorld(this.add.image(p.x,p.y,'vfx_ring').setTint(0xffe08a).setDepth(8).setScale(0.2,0.16).setAlpha(0.9));
+      this.tweens.add({targets:ring,scaleX:3.2,scaleY:2.6,alpha:0,duration:450,ease:'Quad.out',onComplete:()=>ring.destroy()}); }
     const cols=[0xffe08a,0xff8fb5,0xbfe8ff,0xb6f0d6];
     cols.forEach(c=>this._emit(this.pDust,p.x,p.y,c,4));   // ฝุ่นหลากสีพุ่งฉลอง
   }
