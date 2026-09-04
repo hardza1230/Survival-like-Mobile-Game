@@ -451,6 +451,51 @@ class Boot extends Phaser.Scene {
       if(this.anims.exists(k))continue;
       this.anims.create({ key:k, frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}), frameRate:fx.rate, repeat:fx.loop?-1:0 }); }
 
+    // ---- Props ประดับฉาก (placeholder กล่อง ๆ — สลับอาร์ต AI ทีหลัง) ----
+    const mkRect=(key,w,h,draw)=>{ if(this.textures.exists(key))this.textures.remove(key);
+      const t=this.textures.createCanvas(key,w,h); if(!t)return; draw(t.getContext(),w,h); t.refresh(); };
+    const lg=(c,x0,y0,x1,y1,a,b)=>{ const g=c.createLinearGradient(x0,y0,x1,y1); g.addColorStop(0,a); g.addColorStop(1,b); return g; };
+    const gShadow=(c,w,h)=>{ c.fillStyle='rgba(20,10,25,0.22)'; c.beginPath(); c.ellipse(w/2,h-7,w*0.40,h*0.09,0,0,TAU); c.fill(); };
+    // ชั้นวางไม้ 2 ชั้น + โหลข้างบน
+    mkRect('p_shelf',200,132,(c,w,h)=>{ gShadow(c,w,h);
+      c.fillStyle='#7a4d2b'; c.fillRect(w*0.13,h*0.30,11,h*0.60); c.fillRect(w*0.83,h*0.30,11,h*0.60);
+      for(const yy of [h*0.30,h*0.60]){ c.fillStyle=lg(c,0,yy,0,yy+20,'#c98a4e','#95602f'); rr(c,w*0.05,yy,w*0.90,20,5); c.fill(); c.strokeStyle='rgba(70,40,20,0.55)'; c.lineWidth=2; c.stroke(); }
+      const jar=(jx,jy,col)=>{ c.fillStyle=col; rr(c,jx,jy,26,30,7); c.fill(); c.fillStyle='#f4e6c8'; rr(c,jx+3,jy-6,20,8,3); c.fill(); c.fillStyle='rgba(255,255,255,0.4)'; rr(c,jx+4,jy+4,6,16,3); c.fill(); };
+      jar(w*0.20,h*0.30-30,'#e8637a'); jar(w*0.44,h*0.30-30,'#f0a92e'); jar(w*0.68,h*0.30-30,'#a06be0'); });
+    // ลังไม้ (กากบาท)
+    mkRect('p_crate',112,120,(c,w,h)=>{ gShadow(c,w,h);
+      c.fillStyle=lg(c,0,0,0,h,'#c07f42','#8a562d'); rr(c,w*0.10,h*0.12,w*0.80,h*0.78,8); c.fill();
+      c.strokeStyle='#6d4423'; c.lineWidth=6; c.stroke();
+      c.lineWidth=7; c.strokeStyle='rgba(120,75,38,0.85)'; c.beginPath(); c.moveTo(w*0.14,h*0.16); c.lineTo(w*0.86,h*0.86); c.moveTo(w*0.86,h*0.16); c.lineTo(w*0.14,h*0.86); c.stroke();
+      c.fillStyle='rgba(255,240,210,0.18)'; rr(c,w*0.14,h*0.16,w*0.72,10,4); c.fill(); });
+    // กระป๋องยักษ์ (แลนด์มาร์ก) โลหะ + แถบฉลาก
+    mkRect('p_cans',126,168,(c,w,h)=>{ gShadow(c,w,h);
+      c.fillStyle=lg(c,w*0.15,0,w*0.85,0,'#aeb7c4','#e6ecf3'); rr(c,w*0.16,h*0.14,w*0.68,h*0.78,10); c.fill();
+      c.fillStyle='rgba(255,255,255,0.5)'; rr(c,w*0.24,h*0.16,10,h*0.72,5); c.fill();
+      c.fillStyle=lg(c,0,h*0.36,0,h*0.72,'#ff6d7e','#e23b57'); c.fillRect(w*0.16,h*0.40,w*0.68,h*0.34);
+      c.fillStyle='#fff3d6'; c.beginPath(); c.arc(w*0.5,h*0.57,15,0,TAU); c.fill();
+      c.fillStyle='#8fbf5a'; c.beginPath(); c.arc(w*0.5,h*0.57,9,0,TAU); c.fill();
+      c.fillStyle='#c9d2dc'; rr(c,w*0.14,h*0.10,w*0.72,10,5); c.fill(); });
+    // โหลแยม 3 ใบ
+    mkRect('p_jars',124,92,(c,w,h)=>{ gShadow(c,w,h);
+      const jar=(jx,s,col)=>{ c.fillStyle=col; rr(c,jx,h*0.30,34*s,44*s,9); c.fill(); c.strokeStyle='rgba(90,50,60,0.35)'; c.lineWidth=2; c.stroke();
+        c.fillStyle='#f4e6c8'; rr(c,jx+3,h*0.30-9,28*s,11,4); c.fill(); c.fillStyle='rgba(255,255,255,0.42)'; rr(c,jx+5,h*0.36,8,20*s,4); c.fill(); };
+      jar(w*0.06,1.05,'#e8637a'); jar(w*0.66,0.95,'#f0a92e'); jar(w*0.37,1.15,'#c0507a'); });
+    // ถุงแป้ง + แป้งหก
+    mkRect('p_flour',132,94,(c,w,h)=>{ gShadow(c,w,h);
+      c.fillStyle='rgba(245,240,228,0.85)'; c.beginPath(); c.ellipse(w*0.62,h*0.86,w*0.36,h*0.13,0,0,TAU); c.fill();
+      c.fillStyle=lg(c,0,h*0.2,0,h*0.9,'#f0e6cf','#d8cbac'); rr(c,w*0.16,h*0.24,w*0.56,h*0.62,10); c.fill();
+      c.strokeStyle='rgba(150,130,95,0.5)'; c.lineWidth=2; c.stroke();
+      c.fillStyle='#b98a4a'; c.font='bold 15px sans-serif'; c.fillText('🌾',w*0.30,h*0.62);
+      c.fillStyle='rgba(255,255,255,0.9)'; c.beginPath(); c.arc(w*0.80,h*0.5,4,0,TAU); c.arc(w*0.86,h*0.62,3,0,TAU); c.arc(w*0.74,h*0.72,3,0,TAU); c.fill(); });
+    // กล่องกระดาษเปิดฝา
+    mkRect('p_box',100,92,(c,w,h)=>{ gShadow(c,w,h);
+      c.fillStyle=lg(c,0,0,0,h,'#d2a76d','#b07f45'); rr(c,w*0.16,h*0.34,w*0.68,h*0.54,6); c.fill();
+      c.strokeStyle='#8a6335'; c.lineWidth=4; c.stroke();
+      c.fillStyle='#c49a5f'; c.beginPath(); c.moveTo(w*0.16,h*0.36); c.lineTo(w*0.30,h*0.16); c.lineTo(w*0.44,h*0.36); c.closePath(); c.fill();
+      c.beginPath(); c.moveTo(w*0.84,h*0.36); c.lineTo(w*0.70,h*0.16); c.lineTo(w*0.56,h*0.36); c.closePath(); c.fill();
+      c.fillStyle='rgba(90,60,30,0.35)'; c.fillRect(w*0.16,h*0.55,w*0.68,3); });
+
     this.scene.start('Game');
   }
 }
@@ -748,6 +793,18 @@ function bestiaryAllBonus(){
 }
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
+/* ---- STAGE_PROPS: เลย์เอาต์ props ต่อด่าน [key,x,y,solid,scale] — ทำแผนที่ให้เป็น "ห้อง" ที่ออกแบบไว้ ----
+   ผู้เล่นเกิดที่ (0,0) · solid=true แลนด์มาร์กชนได้ · ที่เหลือเดินทะลุ · เว้นกลางห้องโล่งให้สู้ */
+const STAGE_PROPS = {
+  0: (()=>{ const a=[];                                            // ด่าน 1: ห้องแพนทรี
+    for(let x=-680;x<=700;x+=230){ a.push(['p_shelf',x,-1100,false,1],['p_shelf',x,1100,false,1]); }   // ชั้นวางขอบบน/ล่าง
+    for(let y=-820;y<=740;y+=260){ a.push(['p_crate',-820,y,false,1],['p_crate',820,y,false,1]); }       // ลังขอบซ้าย/ขวา
+    a.push(['p_jars',-720,-960,false,1.1],['p_flour',700,-980,false,1.05],['p_jars',740,960,false,1],['p_flour',-720,980,false,1.05]);  // มุมห้อง
+    a.push(['p_cans',430,-360,true,1.1],['p_crate',-470,430,true,1.25],['p_cans',-360,-560,true,1.0],['p_crate',520,520,true,1.15]);    // แลนด์มาร์กชนได้
+    a.push(['p_box',300,280,false,1],['p_jars',-320,-240,false,1],['p_box',-540,-100,false,1],['p_flour',500,150,false,1],['p_box',160,-540,false,1],['p_jars',360,600,false,1],['p_flour',-260,620,false,1]);  // ของประดับกระจาย
+    return a; })(),
+};
+
 const STAGES = [
   { name:'ตู้กับข้าว',   en:'The Pantry',  emoji:'🥫', grid:0x4a4360, tint:0x8bd3a0,
     lore:'ที่ซ่อนแรกของ Sour Horde — ฝูงมดและแมลงเปรี้ยวคลานออกจากมุมมืด',
@@ -823,8 +880,12 @@ class Game extends Phaser.Scene {
     this.chests=this.physics.add.group({maxSize:6});         // หีบสมบัติ (ดรอปจากบอส → สุ่มสกิล)
     this.vacs  =this.physics.add.group({maxSize:8});         // ไอเทมแม่เหล็ก (ดูดออร์บทั้งจอ)
     this.loots =this.physics.add.group({maxSize:12});        // ของสวมใส่ดรอปในด่าน (low tier)
+    this.decoProps=this.add.group();                         // props ประดับ (เดินทะลุได้)
+    this.solidProps=this.physics.add.staticGroup();          // props แลนด์มาร์ก (ชนได้)
 
     this.ringBalls=[];
+    this.physics.add.collider(this.player,this.solidProps);
+    this.physics.add.collider(this.enemies,this.solidProps);
     this.physics.add.overlap(this.bullets,this.enemies,this.hitEnemy,null,this);
     this.physics.add.overlap(this.player,this.enemies,this.touchEnemy,null,this);
     this.physics.add.overlap(this.player,this.orbs,this.collectOrb,null,this);
@@ -1503,12 +1564,24 @@ class Game extends Phaser.Scene {
   _busy(){ return this.state==='play'||this.state==='levelup'; }  // ยังเล่นอยู่ (levelup แค่พักชั่วคราว)
 
   /* ---------- STAGES / WAVES (Archero-style) ---------- */
+  clearStageProps(){ if(this.decoProps)this.decoProps.clear(true,true); if(this.solidProps)this.solidProps.clear(true,true); }
+  // จัดวาง props เป็น "ห้อง" รอบจุดเกิด (0,0) — เดินเรื่องด้วยเลย์เอาต์ที่ตั้งใจ ไม่ใช่พื้นลอย ๆ
+  buildStageProps(i){
+    this.clearStageProps();
+    const add=(key,x,y,solid,sc)=>{ if(!this.textures.exists(key))return; sc=sc||1;
+      if(solid){ const s=this.solidProps.create(x,y,key); s.setScale(sc).setDepth(y).refreshBody();
+        const iw=s.width,ih=s.height; s.body.setSize(iw*0.7,ih*0.42); s.body.setOffset(iw*0.15,ih*0.5); }   // hitbox แค่โคน ~ครึ่งล่าง เดินลื่น
+      else { const im=this.add.image(x,y,key).setScale(sc).setDepth(y); this.camWorld(im); this.decoProps.add(im); } };
+    const L=STAGE_PROPS[i]; if(!L)return;
+    for(const p of L) add(p[0],p[1],p[2],p[3],p[4]);
+  }
   startStage(i){
     const st=STAGES[i]; this.stageIndex=i; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;
     Sfx.playStageBgm(i+1);
     this.bossUI.forEach(o=>o.setVisible(false));
     this.gridBg.fillColor=st.grid;
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
+    this.buildStageProps(i);   // จัดวาง props ประดับ + แลนด์มาร์ก (ทำแผนที่ให้เป็นห้องจริง)
     this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name}`);
     this.showBanner(`${st.emoji} ด่าน ${i+1}: ${st.name}`, st.lore, 3000);
     this.updateWaveText();
