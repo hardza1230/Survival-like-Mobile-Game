@@ -1893,7 +1893,7 @@ class Game extends Phaser.Scene {
       const tier=aw?(i%3):(twoRing?(i%2===0?0:2):0);   // aw: 3 ชั้น (0=นอก,1=กลาง,2=ใน)
       const rr=tier===0?rOuter:tier===1?rMid:rInner;
       const b=this.camWorld(this.physics.add.image(0,0,'dot').setTint(tier===0?0xffe08a:tier===1?0xffd0e8:0xfff2a8).setScale(size).setDepth(88000));
-      b.setCircle(5); b.body.setAllowGravity(false); b.dmg=(4+lvl*1.5)*(aw?1.6:1)*(isSesame?1.15:1); b.hitCd=0;
+      b.setCircle(4,2,2); b.body.setAllowGravity(false); b.dmg=(4+lvl*1.5)*(aw?1.6:1)*(isSesame?1.15:1); b.hitCd=0;   // hitbox แน่นขึ้น+อยู่กลางดวง (เดิม 5 เยื้องมุม = โกง)
       b.rr=rr; b.ang0=(i/count)*Math.PI*2;
       this.physics.add.overlap(b,this.enemies,(ball,en)=>{ if(ball.hitCd>0)return; ball.hitCd=isSesame?0.09:0.12;
         this.damage(en,ball.dmg*this.player.dmgMul,ball.x,ball.y);
@@ -2019,7 +2019,7 @@ class Game extends Phaser.Scene {
     else if(key==='frost'){
       const df=this.player.deepFreeze?1.4:1;
       const r=(140+lvl*14)*(aw?2.6:1)*df, dur=(1+lvl*0.22)*(aw?1.6:1)*df, dmg=(lvl>=3||aw||this.player.deepFreeze)?(6+lvl*2)*dm*(aw?1.8:1)*df:0, shatter=lvl>=5||aw||this.player.deepFreeze;
-      if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova')) this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r)/ASSET_FX.fx_frostnova.fw,depth:3,anchor:'center'});
+      if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova')) this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r)/ASSET_FX.fx_frostnova.fw*0.82,depth:3,anchor:'center',alpha:Math.min(1,0.5+lvl*0.1)});
       else if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
       else { const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
         this.tweens.add({targets:ring,radius:r,alpha:0,duration:320,onComplete:()=>ring.destroy()}); }
@@ -2124,7 +2124,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const px=this.player.x, py=this.player.y, hit=new Set();
       this.hitCratesInRadius(px,py,maxR,dmg);
-      if(this.textures.exists('fx_wave')&&this.anims.exists('fx_wave')) this.spawnFxAnim('fx_wave',px,py,{scale:(2*maxR)/ASSET_FX.fx_wave.fw,depth:3,anchor:'center'});
+      if(this.textures.exists('fx_wave')&&this.anims.exists('fx_wave')){ const wl=this.skills.wave||1; this.spawnFxAnim('fx_wave',px,py,{scale:(2*maxR)/ASSET_FX.fx_wave.fw,depth:3,anchor:'center',alpha:Math.min(1,0.5+wl*0.1)}); }
       const ring=this.camWorld(this.add.circle(px,py,10,0xbfe8ff,0).setDepth(3).setStrokeStyle(5,0xffffff,0.85));
       this.tweens.add({targets:ring,radius:maxR,alpha:{from:0.9,to:0},duration:420,ease:'Quad.out',
         onUpdate:()=>{ const rr=ring.radius; this.enemies.children.iterate(e=>{ if(e&&e.active&&!hit.has(e)){ const d=this.dist(e.x,e.y,px,py);
@@ -2467,10 +2467,10 @@ class Game extends Phaser.Scene {
   // --- VFX: hit impact ring (expanding ring + sparks) --- throttled for performance
   vfxHitRing(x,y,color,big){
     if(!big){ this._hitVfxT=this._hitVfxT||0; const now=this.time.now; if(now-this._hitVfxT<60)return; this._hitVfxT=now; }
-    const r=big?1.8:1.0;
-    const ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(color).setDepth(7).setScale(0.15*r,0.12*r).setAlpha(0.85));
-    this.tweens.add({targets:ring,scaleX:1.6*r,scaleY:1.3*r,alpha:0,duration:big?320:220,ease:'Quad.out',onComplete:()=>ring.destroy()});
-    this._emit(this.pSpark,x,y,color,big?8:4);
+    const r=big?1.6:0.85;
+    const ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(color).setDepth(7).setScale(0.15*r,0.12*r).setAlpha(big?0.6:0.3));  // เบาลง ไม่สาดขาวเต็มจอ
+    this.tweens.add({targets:ring,scaleX:1.4*r,scaleY:1.15*r,alpha:0,duration:big?300:200,ease:'Quad.out',onComplete:()=>ring.destroy()});
+    this._emit(this.pSpark,x,y,color,big?7:3);
   }
   // --- VFX: death poof (smoke cloud) ---
   vfxDeathPoof(x,y,color,big){
