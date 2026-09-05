@@ -285,6 +285,13 @@ const ASSET_FX = {
   fx_bubble:   { url:'assets/fx_bubble_sheet.png',   fw:352, fh:366, frames:8, rate:22, anchor:'center' },
   fx_popcorn:  { url:'assets/fx_popcorn_sheet.png',  fw:352, fh:366, frames:8, rate:24, anchor:'center' },
   fx_aura:     { url:'assets/fx_aura_sheet.png',     fw:352, fh:366, frames:8, rate:14, anchor:'center', loop:true },   // ออร่าถาวร วนลูป
+  fx_chilinova:{ url:'assets/fx_chilinova_sheet.png',fw:286, fh:192, frames:8, rate:24, anchor:'center' },
+  fx_mine:     { url:'assets/fx_mine_sheet.png',     fw:61,  fh:192, frames:8, rate:24, anchor:'center' },
+  fx_donutimpact:{ url:'assets/fx_donutimpact_sheet.png',fw:286,fh:192,frames:8,rate:24, anchor:'center' },
+  fx_bossnova: { url:'assets/fx_bossnova_sheet.png', fw:286, fh:192, frames:8, rate:22, anchor:'center' },
+  fx_bosssummon:{ url:'assets/fx_bosssummon_sheet.png',fw:61, fh:192, frames:8, rate:20, anchor:'center' },
+  fx_bossportal:{ url:'assets/fx_bossportal_sheet.png',fw:127,fh:192, frames:8, rate:20, anchor:'center' },
+  fx_enrage:   { url:'assets/fx_enrage_sheet.png',   fw:61,  fh:192, frames:8, rate:16, anchor:'center', loop:true },   // ออร่าคลั่งบอส วนลูป
 };
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
@@ -2082,7 +2089,8 @@ class Game extends Phaser.Scene {
     else if(key==='chili'){
       const isTaro=this.character==='taro';
       const rings=aw?5:lvl>=6?3:lvl>=3?2:1, baseR=(80+lvl*14)*(cf.firestorm?1.2:1)*(aw?1.7:1)*(isTaro?1.25:1), dmg=(8+lvl*2.4)*dm*(aw?1.6:1), knock=lvl>=4||aw||isTaro;
-      if(this.textures.exists('fx_chili')) this.fxBurst('fx_chili',this.player.x,this.player.y,baseR,aw?460:360);
+      if(this.anims.exists('fx_chilinova')) this.spawnFxAnim('fx_chilinova',this.player.x,this.player.y,{scale:(2*baseR)/ASSET_FX.fx_chilinova.fw,depth:4,anchor:'center',alpha:Math.min(1,0.55+lvl*0.09)});
+      else if(this.textures.exists('fx_chili')) this.fxBurst('fx_chili',this.player.x,this.player.y,baseR,aw?460:360);
       else for(let ri=0;ri<rings;ri++){ const r=baseR*(1-ri*(aw?0.16:0.26));
         const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,10,ri%2?0xffb15a:0xff7a4d,0.4).setDepth(3));
         this.tweens.add({targets:ring,radius:r,alpha:0,duration:300+ri*70,onComplete:()=>ring.destroy()}); }
@@ -2161,8 +2169,9 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:mine,scale:{from:0.6,to:1.1},yoyo:true,repeat:-1,duration:360});
         this.time.delayedCall(1300,()=>{ if(this.state!=='play'&&this.state!=='levelup'){ mine.destroy(); return; }
           this.tweens.killTweensOf(mine); mine.destroy();
-          const ring=this.camWorld(this.add.circle(mx,my,10,0xff9ec4,0.5).setDepth(3));
-          this.tweens.add({targets:ring,radius:r,alpha:0,duration:280,onComplete:()=>ring.destroy()});
+          if(this.anims.exists('fx_mine')) this.spawnFxAnim('fx_mine',mx,my,{scale:(2*r)/ASSET_FX.fx_mine.fw*0.5,depth:4,anchor:'center'});
+          else { const ring=this.camWorld(this.add.circle(mx,my,10,0xff9ec4,0.5).setDepth(3));
+            this.tweens.add({targets:ring,radius:r,alpha:0,duration:280,onComplete:()=>ring.destroy()}); }
           this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,mx,my)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(mx,my,r,dmg); Sfx.boom(); }); } }
     else if(key==='beam'){ const t=this.nearestEnemy(900); if(!t)return;
       const beams=aw?3:1, len=(760+lvl*30)*(aw?1.25:1), wide=(12+lvl*3)*(aw?1.4:1), dmg=(11+lvl*3.6)*dm*(aw?1.4:1);
@@ -2196,7 +2205,7 @@ class Game extends Phaser.Scene {
   spawnFxAnim(key,x,y,o={}){
     if(!this.textures.exists(key)||!this.anims.exists(key))return null;
     const fx=ASSET_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
-    s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(Phaser.BlendModes.ADD);
+    s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(o.add?Phaser.BlendModes.ADD:Phaser.BlendModes.NORMAL);   // NORMAL = โชว์สีจริง ไม่ล้นขาวบนพื้นสว่าง
     const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5, ax==='bottom'?1:0.5);
     if(o.rotation!=null)s.setRotation(o.rotation);
     s.setScale(o.scaleX!=null?o.scaleX:(o.scale!=null?o.scale:1), o.scaleY!=null?o.scaleY:(o.scale!=null?o.scale:1));
@@ -2208,7 +2217,7 @@ class Game extends Phaser.Scene {
     if(this._auraFx&&this._auraFx.active)return;
     if(!(this.textures.exists('fx_aura')&&this.anims.exists('fx_aura')))return;
     const s=this.camWorld(this.add.sprite(this.player.x,this.player.y,'fx_aura',0));
-    s.setDepth(3).setBlendMode(Phaser.BlendModes.ADD).setOrigin(0.5,0.5);
+    s.setDepth(3).setBlendMode(Phaser.BlendModes.NORMAL).setOrigin(0.5,0.5);
     s.play('fx_aura'); this._auraFx=s;
   }
   // เรียกทุกเฟรม: ออร่าตามตัว + tick ดาเมจต่อเนื่อง (มีสกิล aura เท่านั้น)
@@ -2245,8 +2254,9 @@ class Game extends Phaser.Scene {
         ? this.camWorld(this.add.image(x,y-260,'fx_donut').setDepth(7).setScale((r*1.5)/96))
         : this.camWorld(this.add.circle(x,y-260,9,0xd9a066,1).setDepth(7).setStrokeStyle(3,0xa6702e,1));
       this.tweens.add({targets:don,y:y,duration:300,ease:'Quad.in',onComplete:()=>{ don.destroy(); warn.destroy();
-        const boom=this.camWorld(this.add.circle(x,y,10,0xffcf70,0.5).setDepth(3));
-        this.tweens.add({targets:boom,radius:r,alpha:0,duration:260,onComplete:()=>boom.destroy()});
+        if(this.anims.exists('fx_donutimpact')) this.spawnFxAnim('fx_donutimpact',x,y,{scale:(2*r)/ASSET_FX.fx_donutimpact.fw,depth:4,anchor:'center'});
+        else { const boom=this.camWorld(this.add.circle(x,y,10,0xffcf70,0.5).setDepth(3));
+          this.tweens.add({targets:boom,radius:r,alpha:0,duration:260,onComplete:()=>boom.destroy()}); }
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(x,y,r,dmg);
         this.cameras.main.shake(80,0.004); Sfx.boom(); }}); });
   }
@@ -2480,14 +2490,17 @@ class Game extends Phaser.Scene {
     if(b._baseScale===undefined)b._baseScale=b.scaleX;
     b._breathe=(b._breathe||0)+dt*(b.phase2?5:3.2);
     b.setScale(b._baseScale*(1+Math.sin(b._breathe)*(b.phase2?0.06:0.035)));
-    if(b._aura){ b._aura.setPosition(b.x,b.y); b._aura.setScale(1+Math.sin(b._breathe*1.5)*0.12).setAlpha(0.12+Math.abs(Math.sin(b._breathe))*0.1); }  // ออร่าคลั่ง
+    if(b._aura){ b._aura.setPosition(b.x,b.y);   // ออร่าคลั่ง
+      if(b._auraIsFx) b._aura.setScale((b._baseScale||1)*2.4*(1+Math.sin(b._breathe*1.5)*0.06));
+      else b._aura.setScale(1+Math.sin(b._breathe*1.5)*0.12).setAlpha(0.12+Math.abs(Math.sin(b._breathe))*0.1); }
     if(b.frozen>0)return;
     if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt;
     // เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) — เอฟเฟกต์โกรธ
     if(!b.phase2 && b.hp<=b.maxhp*0.5){ b.phase2=true; b.spd*=1.28; b.atkCd=0.6;
       this.showBanner('🔥 บอสโกรธ!','เฟส 2 — โจมตีดุขึ้น!',1500); this.cameras.main.shake(420,0.014); this.screenFlash(0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');   // ปลดท่าคลื่นสังหาร
-      if(!b._aura) b._aura=this.camWorld(this.add.circle(b.x,b.y,58,0xff5a4d,0.14).setDepth(3));   // ออร่าคลั่งถาวร
+      if(!b._aura){ if(this.anims.exists('fx_enrage')){ b._aura=this.camWorld(this.add.sprite(b.x,b.y,'fx_enrage',0)).setDepth(3).setBlendMode(Phaser.BlendModes.NORMAL); b._aura.play('fx_enrage'); b._auraIsFx=true; }
+        else b._aura=this.camWorld(this.add.circle(b.x,b.y,58,0xff5a4d,0.14).setDepth(3)); }   // ออร่าคลั่งถาวร (AI flipbook ถ้ามี)
       for(let i=0;i<2;i++){ const r=this.camWorld(this.add.circle(b.x,b.y,20,0xff5a4d,0).setDepth(6).setStrokeStyle(4,0xff7a5a,0.9));
         this.tweens.add({targets:r,radius:150,alpha:{from:0.9,to:0},duration:500,delay:i*100,onComplete:()=>r.destroy()}); } }
     // เฟส 3 (บอสใหญ่) ตอนเลือด 25% — คลั่ง
@@ -2517,10 +2530,13 @@ class Game extends Phaser.Scene {
         b.setVelocity(Math.cos(ang)*(560+this.stageIndex*20),Math.sin(ang)*(560+this.stageIndex*20)); b.knock=0.45; });
       b.atkCd=2.8*fast;
     } else if(pick==='summon'){ // เรียกลูกน้อง
+      if(this.anims.exists('fx_bossportal')) this.spawnFxAnim('fx_bossportal',b.x,b.y+30,{scale:1.6,depth:2,anchor:'center'});
+      else if(this.anims.exists('fx_bosssummon')) this.spawnFxAnim('fx_bosssummon',b.x,b.y+30,{scale:2.2,depth:2,anchor:'center'});
       const n=2+this.stageIndex+(b.phase3?2:0); for(let i=0;i<n;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
       Sfx.bossWarn(); b.atkCd=3.2*fast;
     } else if(pick==='nova'){ // คลื่นสังหารขยายจากบอส — ต้องหลบให้อยู่ในวง/นอกวง
       const px=b.x,py=b.y, maxR=220+this.stageIndex*22; let hitOnce=false;
+      if(this.anims.exists('fx_bossnova')) this.spawnFxAnim('fx_bossnova',px,py,{scale:(2*maxR)/ASSET_FX.fx_bossnova.fw,depth:4,anchor:'center'});
       const ring=this.camWorld(this.add.circle(px,py,20,0xff5a7a,0).setDepth(4).setStrokeStyle(7,0xff8fb5,0.95));
       this.tweens.add({targets:ring,radius:maxR,alpha:{from:0.95,to:0},duration:720,ease:'Quad.out',
         onUpdate:()=>{ const rr=ring.radius, d=this.dist(this.player.x,this.player.y,px,py);
