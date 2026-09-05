@@ -1541,7 +1541,9 @@ class Game extends Phaser.Scene {
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
   setGameSpeed(s){ this.gameSpeed=s;
-    if(this.physics&&this.physics.world&&!this._isHitStop) this.physics.world.timeScale=s;
+    // Arcade physics.world.timeScale is INVERTED (bigger = slower step), so use 1/s
+    // to actually move bodies (player/enemies/bullets) faster along with timers/tweens/dt.
+    if(this.physics&&this.physics.world&&!this._isHitStop) this.physics.world.timeScale=1/s;
     if(this.tweens) this.tweens.timeScale=s;
     if(this.time) this.time.timeScale=s;
     if(this.speedTxt) this.speedTxt.setText('x'+s); }
@@ -2572,7 +2574,7 @@ class Game extends Phaser.Scene {
     if(this._isHitStop) return;
     this._isHitStop = true;
     const oldSpd = this.physics.world.timeScale;
-    this.physics.world.timeScale = 0.05;
+    this.physics.world.timeScale = 12;   // inverted: big = near-freeze (impact punch)
     this.time.delayedCall(ms, () => {
       this.physics.world.timeScale = oldSpd;
       this._isHitStop = false;
