@@ -15,9 +15,12 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.9.1';
+const GAME_VERSION = '1.9.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.9.2', date:'2026-09-05', title:'แก้เกมค้าง/เด้ง error ตอนของบนจอเยอะมาก (โดยเฉพาะ x3)', items:[
+    'แก้บั๊กเกมเด้ง "Cannot read properties of null" ตอนหัวใจ/ออร์บ/ไอเทมเกิดล้นจอ (pool เต็ม) — ตอนนี้ข้ามอย่างปลอดภัย ไม่ crash แล้ว',
+    'กระสุน/ศัตรูล้นก็รีไซเคิลตัวเก่าแทนการพัง' ] },
   { v:'1.9.1', date:'2026-09-05', title:'ปุ่มเร่งเวลาเร่งทั้งเกม + ศัตรู/บอสขยับมีชีวิต', items:[
     'ปุ่ม x2/x3 เร่ง**ทั้งเกม**แล้ว (ตัวละคร/ศัตรู/กระสุนเร็วขึ้นพร้อมกัน ไม่ใช่แค่โจมตี) + คริกระแทกหยุดเวลาสั้นๆ ให้รู้สึกหนักแน่น',
     'มดนักจู่โจมวิ่งขยับขาเป็นจังหวะ (4 เฟรม) แทนภาพนิ่ง',
@@ -1698,6 +1701,7 @@ class Game extends Phaser.Scene {
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);
     if(!e) e=this.enemies.create(x,y,'e_tank'); else { e.setTexture('e_tank'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
+    if(!e){ e=this.enemies.getFirstAlive(); if(!e)return; e.setTexture('e_tank'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool เต็ม → รีไซเคิล (มินิบอสต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
     const s=(1+this.stageIndex*0.35)*(1+this.waveIndex*0.06);
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=18; e.xp=8;
     e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
@@ -1769,7 +1773,8 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
     const bkey='boss'+(this.stageIndex+1);
-    const b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
+    let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
+    if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool เต็ม → รีไซเคิล/เคลียร์ กันบอสเป็น null
     const isArt=this.textures.exists(bkey);
     const fScale=isArt?1.55:2.5; b.baseScale=fScale; b._sqX=1; b._sqY=1;
     b.setScale(fScale).setCircle(isArt?54:26, isArt?16:5, isArt?16:5); b.isBoss=true; b.isMini=false;
@@ -2040,6 +2045,7 @@ class Game extends Phaser.Scene {
     const key=type==='dasher'?'e_dasher':type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='siege'?'e_siege':type==='tank'?'e_tank':'e_basic';
     if(!e) e=this.enemies.create(x,y,key);
     else { e.setTexture(key); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
+    if(!e)return;   // pool เต็ม (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
     const s=(1+(this.stageIndex||0)*0.55)*(1+(this.waveIndex||0)*0.11);
     e.shooter=false; e.bomber=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
@@ -2065,6 +2071,7 @@ class Game extends Phaser.Scene {
     let b=this.bullets.getFirstDead(false);
     if(!b) b=this.bullets.create(x,y,'spark');
     else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
+    if(!b){ b=this.bullets.getFirstAlive(); if(!b)return null; b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }   // pool เต็ม → รีไซเคิลกระสุนที่เก่าสุด (กัน null.body crash ตอน x3)
     if(b.texture&&b.texture.key!=='spark')b.setTexture('spark');   // คืนรูปกระสุนปกติ (กัน proj_* ค้างจาก pool)
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
@@ -2391,6 +2398,7 @@ class Game extends Phaser.Scene {
   }
   dropOrb(x,y,value){ value=value||1; let o=this.orbs.getFirstDead(false);
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
+    if(!o)return;   // pool เต็ม (maxSize) → ข้าม กันอ่าน .body ของ null (crash ตอน x3 มอนตายเยอะ)
     const st=this.orbStyle(value); o.value=value; o._vac=false; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
     o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o); }
   collectOrb(player,o){ if(!o.active)return; const ox=o.x,oy=o.y,ov=o.value||1; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); Sfx.xp(); this.jelly(0.9,-0.9);
@@ -2398,6 +2406,7 @@ class Game extends Phaser.Scene {
   // ---- ไอเทมฟื้นฟู HP ----
   dropHeal(x,y){ let h=this.heals.getFirstDead(false);
     if(!h) h=this.heals.create(x,y,'heal'); else { h.setActive(true).setVisible(true); h.body.enable=true; h.setPosition(x,y); }
+    if(!h)return;
     h.body.setAllowGravity(false); h.setScale(1); this.camWorld(h); if(this.iso)h.setDepth(h.y);
     this.tweens.add({targets:h,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
@@ -2411,6 +2420,7 @@ class Game extends Phaser.Scene {
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let c=this.crates.getFirstDead(false);
     if(!c) c=this.crates.create(x,y,'crate'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
+    if(!c)return;
     c.body.setAllowGravity(false); c.body.setImmovable(true); c.setCircle(18,4,4); c.hp=14+this.stageIndex*6; c.maxhp=c.hp; c.setScale(1).clearTint(); this.camWorld(c); if(this.iso)c.setDepth(c.y);
     this.tweens.add({targets:c,scale:{from:0.2,to:1},duration:220,ease:'Back.out'}); }
   // ดาเมจใส่กล่อง (รวม flat damage) + เอฟเฟกต์ + แตก — ใช้ร่วมทั้งกระสุนและ AoE
@@ -2434,6 +2444,7 @@ class Game extends Phaser.Scene {
   // ---- ไอเทมแม่เหล็ก (vacuum): เก็บแล้วดูดออร์บ EXP ทั้งจอเข้าตัวทันที ----
   spawnVac(x,y){ let v=this.vacs.getFirstDead(false);
     if(!v) v=this.vacs.create(x,y,'vac'); else { v.setActive(true).setVisible(true); v.body.enable=true; v.setPosition(x,y); }
+    if(!v)return;
     v.body.setAllowGravity(false); v.setScale(1); this.camWorld(v); if(this.iso)v.setDepth(v.y);
     this.tweens.add({targets:v,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectVac(player,v){ if(!v.active)return; this.tweens.killTweensOf(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
@@ -2443,6 +2454,7 @@ class Game extends Phaser.Scene {
   // ---- ของสวมใส่ดรอป (loot) — สุ่มของ common ในด่าน (โอกาสน้อย) ----
   spawnLoot(x,y){ let g=this.loots.getFirstDead(false);
     if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
+    if(!g)return;
     g.body.setAllowGravity(false); g.setScale(1); this.camWorld(g); if(this.iso)g.setDepth(g.y);
     this.tweens.add({targets:g,y:y-6,duration:640,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false;
@@ -2454,6 +2466,7 @@ class Game extends Phaser.Scene {
   // ---- หีบสมบัติ (ดรอปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
   spawnChest(x,y){ let c=this.chests.getFirstDead(false);
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
+    if(!c)return;
     c.body.setAllowGravity(false); c.setScale(1); this.camWorld(c); if(this.iso)c.setDepth(c.y);
     this.tweens.add({targets:c,scale:{from:0.3,to:1.1},duration:400,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const gl=this.camWorld(this.add.circle(x,y,26,0xffd166,0.25).setDepth(3)); c._glow=gl;
@@ -2491,6 +2504,7 @@ class Game extends Phaser.Scene {
   foeShot(x,y,ang,speed,dmg,tint,scale){
     let b=this.foeBullets.getFirstDead(false);
     if(!b) b=this.foeBullets.create(x,y,'spark'); else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
+    if(!b)return null;   // pool เต็ม → ข้ามการยิง กัน null crash
     b.setScale(scale||1.4).setTint(tint||0xff6b8a).setDepth(90000); if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.life=3.0; this.camWorld(b);
     if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
   // hazard: วงอันตรายบนพื้น (เตือนก่อน → ระเบิด → จาง)
@@ -2855,7 +2869,7 @@ class Game extends Phaser.Scene {
       b.life-=dt; if(b.hitCd>0)b.hitCd-=dt;
       if(b.spin)b.rotation+=dt*14;
       else if(b.faceVel&&b.body&&(b.body.velocity.x||b.body.velocity.y))b.rotation=Math.atan2(b.body.velocity.y,b.body.velocity.x);   // จรวด/ส้อมหันตามทิศพุ่ง
-      if(b.homing){ const t=this.nearestEnemy(520); if(t){ const desired=Math.atan2(t.y-b.y,t.x-b.x);
+      if(b.homing&&b.body){ const t=this.nearestEnemy(520); if(t){ const desired=Math.atan2(t.y-b.y,t.x-b.x);
         const cur=Math.atan2(b.body.velocity.y,b.body.velocity.x), turn=b.homing*0.02*dt;
         const d=Phaser.Math.Angle.Wrap(desired-cur), step=Phaser.Math.Clamp(d,-turn,turn);
         this.physics.velocityFromRotation(cur+step,240,b.body.velocity); } }
