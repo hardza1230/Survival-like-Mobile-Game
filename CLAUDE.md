@@ -200,6 +200,12 @@
 - ตรวจโค้ดก่อน publish เสมอ: `node --check game.js`
 
 ## 8. คอนเวนชัน
-- ทำงานบนสาขา `claude/vampire-survival-mobile-game-yo9e8w`, commit บ่อย, push ด้วย `-u origin <branch>`
+- **ทำงานสาขาเดียวเท่านั้น: `claude/vampire-survival-mobile-game-yo9e8w`** — commit บ่อย, push ด้วย `-u origin <branch>`
+  · **⚠️ สำคัญ (v1.9.0):** GitHub Pages (live update) deploy ได้จาก **สาขานี้สาขาเดียว** เท่านั้น
+    สาขาอื่น (เช่น `claude/project-planning-review-xf1mui` ที่ระบบเคยมอบหมาย) **deploy ล้มเหลวทุกครั้ง**
+    (github-pages environment ไม่อนุญาต) → push ไปแล้วเกม live ไม่อัปเดต
+  · ถ้าเซสชันถูกมอบหมายสาขาอื่นมา **ให้ย้ายมาทำบนสาขา vampire นี้เสมอ** (เจ้าของอนุมัติแล้ว "ทำขาเดียว")
+    ไม่ต้อง mirror 2 สาขาอีกต่อไป
+- **อย่าลืม bump `GAME_VERSION` + เพิ่ม `CHANGELOG` ใน game.js ทุกครั้งที่มีของใหม่** ไม่งั้นหน้าอัปเดตในเกมจะโชว์เวอร์ชันเดิม (เจ้าของดูเลขนี้เช็คว่าอัปเดตขึ้นไหม)
 - commit message ภาษาอังกฤษ อธิบายชัด; อย่าใส่ชื่อรุ่นโมเดลในไฟล์/commit
 - ภาษาที่คุยกับเจ้าของ: **ไทย**
