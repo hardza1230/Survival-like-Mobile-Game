@@ -243,7 +243,7 @@ const ASSET_IMAGES = {
   e_bomber:  'assets/e_bomber.png',
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   boss1:'assets/boss1.png', boss2:'assets/boss2.png', boss3:'assets/boss3.png',
-  boss4:'assets/boss4.png', boss5:'assets/boss5.png',   // บอสใหญ่ 5 ด่าน
+  boss4:'assets/boss4.png',   // บอสใหญ่ (boss5 = สไปรต์อนิเมชัน ดู ASSET_SHEETS)
   mb1:'assets/mb1.png', mb2:'assets/mb2.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // มินิบอส 5 ด่าน
   chest:'assets/chest.png', crate:'assets/crate.png', vac:'assets/vac.png',   // ไอเทม (รูปจริง แทนกราฟิกโค้ด)
   bg1:'assets/bg1.png', bg2:'assets/bg2.png', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png',   // พื้นหลัง 5 โซนครัว
@@ -276,6 +276,7 @@ const ASSET_SHEETS = {
   // ศัตรูอนิเมชัน (walk/attack cycle) — frame=ขนาดเดิม (setScale/setCircle เดิมใช้ได้ ไม่ต้องแก้)
   e_dasher:   { url:'assets/e_dasher_sheet.png',   frame:88,  anim:{frames:4, rate:13} },  // มดวิ่ง 4 เฟรม
   e_siege:    { url:'assets/e_siege_sheet.png',    frame:110, anim:{frames:4, rate:7}  },  // ปืนคัพเค้ก idle/ยิง 4 เฟรม
+  boss5:      { url:'assets/boss5_sheet.png',      frame:160, anim:{frames:3, rate:4, yoyo:true} },  // เชฟขม idle: IDLE/HOVER/ACTIVE (ยกที่ตีเรืองแสง)
 };
 
 /* ---- VFX flipbook sheets (อนิเมชันหลายเฟรม เล่นไล่เฟรม) ----
@@ -477,7 +478,7 @@ class Boot extends Phaser.Scene {
     // ---- อนิเมชันศัตรู (walk/attack loop จาก ASSET_SHEETS ที่มี .anim) ----
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!sh.anim)continue;
       if(!this.textures.exists(k)||this.anims.exists(k+'_walk'))continue;
-      this.anims.create({ key:k+'_walk', frames:this.anims.generateFrameNumbers(k,{start:0,end:sh.anim.frames-1}), frameRate:sh.anim.rate, repeat:-1 }); }
+      this.anims.create({ key:k+'_walk', frames:this.anims.generateFrameNumbers(k,{start:0,end:sh.anim.frames-1}), frameRate:sh.anim.rate, repeat:-1, yoyo:!!sh.anim.yoyo }); }
 
     // ---- Props ประดับฉาก (placeholder กล่อง ๆ — สลับอาร์ต AI ทีหลัง) ----
     const mkRect=(key,w,h,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;   // มีรูป AI แล้ว ไม่วาดทับ (procedural = fallback)
@@ -1770,6 +1771,7 @@ class Game extends Phaser.Scene {
     b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul(); b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.35); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึก+แรงขึ้นมาก
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.atkCd=1.4; b.phase2=false; b.atks=['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
+    if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); } else if(b.anims){ b.anims.stop(); b.setFrame(0); }
     this.boss=b; this.camWorld(b); this.bossName.setText('👹 '+st.boss); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=1; this.updateWaveText();
     this.bossIntro(b, st.boss);
