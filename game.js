@@ -15,9 +15,13 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.9.2';
+const GAME_VERSION = '1.9.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.9.3', date:'2026-09-05', title:'บอส + มินิบอสดุขึ้น สวนกลับบ่อยขึ้น', items:[
+    'บอส/มินิบอสโจมตีถี่ขึ้น ~30% (คูลดาวน์ทุกท่าสั้นลง) กดดันมากขึ้น',
+    'มินิบอสมีท่าโจมตีเยอะขึ้น (ยิงรอบทิศ/เกลียว/พุ่ง/เรียกลูกน้อง) + แรงขึ้น',
+    'เฟสโกรธ/คลั่งร่ายไวขึ้นอีก' ] },
   { v:'1.9.2', date:'2026-09-05', title:'แก้เกมค้าง/เด้ง error ตอนของบนจอเยอะมาก (โดยเฉพาะ x3)', items:[
     'แก้บั๊กเกมเด้ง "Cannot read properties of null" ตอนหัวใจ/ออร์บ/ไอเทมเกิดล้นจอ (pool เต็ม) — ตอนนี้ข้ามอย่างปลอดภัย ไม่ crash แล้ว',
     'กระสุน/ศัตรูล้นก็รีไซเคิลตัวเก่าแทนการพัง' ] },
@@ -1764,7 +1768,7 @@ class Game extends Phaser.Scene {
     b.setScale(mScale).setCircle(mArt?52:26, mArt?18:5, mArt?18:5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.95*this.bossHpMul(); b.maxhp=b.hp; b.spd=60; b.dmg=Math.round(st.bossDmg*1.05); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึก+ดุขึ้น
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.atkCd=1.6; b.phase2=false; b.atks=['slam','aimed']; if(this.stageIndex>=1)b.atks.push('radial','spiral'); if(this.stageIndex>=3)b.atks.push('charge','trap');
+    b.atkCd=0.9; b.phase2=false; b.atks=['slam','aimed','radial']; if(this.stageIndex>=1)b.atks.push('spiral','charge'); if(this.stageIndex>=3)b.atks.push('trap','summon');   // มินิดุขึ้น: ท่าเยอะ+ร่ายไว
     this.boss=b; this.camWorld(b); this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
   }
@@ -1780,7 +1784,7 @@ class Game extends Phaser.Scene {
     b.setScale(fScale).setCircle(isArt?54:26, isArt?16:5, isArt?16:5); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul(); b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.35); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึก+แรงขึ้นมาก
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.atkCd=1.4; b.phase2=false; b.atks=['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
+    b.atkCd=0.8; b.phase2=false; b.atks=['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); } else if(b.anims){ b.anims.stop(); b.setFrame(0); }
     this.boss=b; this.camWorld(b); this.bossName.setText('👹 '+st.boss); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=1; this.updateWaveText();
@@ -2547,32 +2551,32 @@ class Game extends Phaser.Scene {
       this.showBanner('💢 คลั่งสุดขีด!','เฟสสุดท้าย — ระวังให้ดี!',1600); this.cameras.main.shake(520,0.016); this.screenFlash(0xff2d4a,0.4,500); }
     if(b.atkCd>0)return;
     const atks=b.atks||['slam']; const pick=atks[Math.floor(Math.random()*atks.length)];
-    const dm=1+this.stageIndex*0.12, pw=b.isBoss?1:0.7, fast=b.phase3?0.55:b.phase2?0.75:1;
+    const dm=1+this.stageIndex*0.12, pw=b.isBoss?1:0.9, fast=b.phase3?0.5:b.phase2?0.7:1;   // มินิแรงขึ้น (0.7→0.9), เฟสดุร่ายไวขึ้น
     if(pick==='slam'){ // สแลม AoE ตรงตำแหน่งผู้เล่น (เตือนก่อน หลบได้) · เฟส 3 = 3 จุด
       const hits=b.phase3?3:1;
       for(let i=0;i<hits;i++){ const tx=this.player.x+Phaser.Math.Between(-i*70,i*70), ty=this.player.y+Phaser.Math.Between(-i*70,i*70);
         this.spawnHazard(tx,ty,80+this.stageIndex*8, Math.round((16+this.stageIndex*6)*pw), 0xff5a4d); }
-      b.atkCd=2.2*fast;
+      b.atkCd=1.5*fast;
     } else if(pick==='radial'){ // ยิงรอบทิศ (เฟส 3 = 2 วงหมุนต่าง)
       const n=(b.isBoss?10:7)+this.stageIndex+(b.phase3?6:0); const spd=150+this.stageIndex*12, dmg=Math.round((8+this.stageIndex*3)*pw);
       const off=Math.random()*Math.PI;
       for(let i=0;i<n;i++) this.foeShot(b.x,b.y,off+(i/n)*Math.PI*2,spd,dmg,0xffa54d);
       if(b.phase3) for(let i=0;i<n;i++) this.foeShot(b.x,b.y,-off+(i/n)*Math.PI*2,spd*0.7,dmg,0xff8fb5);
-      Sfx.zap(); b.atkCd=2.4*fast;
+      Sfx.zap(); b.atkCd=1.6*fast;
     } else if(pick==='aimed'){ // ยิงกระจายเล็งผู้เล่น
       const base=Math.atan2(this.player.y-b.y,this.player.x-b.x), shots=b.phase3?7:b.phase2?5:3, spd=210+this.stageIndex*12, dmg=Math.round((10+this.stageIndex*3)*pw);
       for(let s=0;s<shots;s++) this.foeShot(b.x,b.y,base+(s-(shots-1)/2)*0.20,spd,dmg,0xff6b8a);
-      Sfx.zap(); b.atkCd=1.9*fast;
+      Sfx.zap(); b.atkCd=1.3*fast;
     } else if(pick==='charge'){ // พุ่งชาร์จใส่ผู้เล่น (เตือนด้วยจอวาบ)
       const ang=Math.atan2(this.player.y-b.y,this.player.x-b.x);
       b.setTintFill(0xffffff); this.time.delayedCall(260,()=>{ if(!b.active)return; if(b.tintColor)b.setTint(b.tintColor); else b.clearTint();
         b.setVelocity(Math.cos(ang)*(560+this.stageIndex*20),Math.sin(ang)*(560+this.stageIndex*20)); b.knock=0.45; });
-      b.atkCd=2.8*fast;
+      b.atkCd=1.9*fast;
     } else if(pick==='summon'){ // เรียกลูกน้อง
       if(this.anims.exists('fx_bosssummon')) this.spawnFxAnim('fx_bosssummon',b.x,b.y+30,{scale:2.4,depth:2,anchor:'center'});
       else if(this.anims.exists('fx_bossportal')) this.spawnFxAnim('fx_bossportal',b.x,b.y+30,{scale:1.6,depth:2,anchor:'center'});
       const n=2+this.stageIndex+(b.phase3?2:0); for(let i=0;i<n;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
-      Sfx.bossWarn(); b.atkCd=3.2*fast;
+      Sfx.bossWarn(); b.atkCd=2.3*fast;
     } else if(pick==='nova'){ // คลื่นสังหารขยายจากบอส — ต้องหลบให้อยู่ในวง/นอกวง
       const px=b.x,py=b.y, maxR=220+this.stageIndex*22; let hitOnce=false;
       if(this.anims.exists('fx_bossnova')) this.spawnFxAnim('fx_bossnova',px,py,{scale:(2*maxR)/ASSET_FX.fx_bossnova.fw,depth:4,anchor:'center'});
@@ -2586,17 +2590,17 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:r2,radius:maxR,alpha:{from:0.9,to:0},duration:720,ease:'Quad.out',
           onUpdate:()=>{ const rr=r2.radius,d=this.dist(this.player.x,this.player.y,px,py); if(!h2&&Math.abs(d-rr)<28){ h2=true; this.hurtPlayer(Math.round((14+this.stageIndex*5)*pw),0.6); } },
           onComplete:()=>r2.destroy() }); }); }
-      Sfx.zap(); this.cameras.main.shake(160,0.006); b.atkCd=2.6*fast;
+      Sfx.zap(); this.cameras.main.shake(160,0.006); b.atkCd=1.8*fast;
     } else if(pick==='spiral'){ // ยิงเป็นเกลียวหมุน — ต้องวิ่งหนีเป็นวง
       const arms=b.isBoss?3:2, spd=165+this.stageIndex*10, dmg=Math.round((7+this.stageIndex*2.4)*pw), a0=Math.random()*Math.PI*2;
       for(let k=0;k<10;k++) this.time.delayedCall(k*60,()=>{ if(!b.active||this.state!=='play')return;
         for(let arm=0;arm<arms;arm++) this.foeShot(b.x,b.y,a0+k*0.5+arm*(Math.PI*2/arms),spd,dmg,0xffd0e8); });
-      Sfx.zap(); b.atkCd=3.0*fast;
+      Sfx.zap(); b.atkCd=2.1*fast;
     } else if(pick==='trap'){ // วงกับดักล้อมผู้เล่น เว้นช่องเดียว — บังคับให้วิ่งหนีออกช่อง
       const n=10, R=150, gap=Math.floor(Math.random()*n), dmg=Math.round((12+this.stageIndex*4)*pw);
       for(let i=0;i<n;i++){ if(i===gap||i===(gap+1)%n)continue; const a=(i/n)*Math.PI*2;
         this.spawnHazard(this.player.x+Math.cos(a)*R,this.player.y+Math.sin(a)*R,58,dmg,0xff7a4d); }
-      this.showBanner('⚠️ วงล้อม!','วิ่งออกทางช่องว่าง!',900); b.atkCd=3.0*fast;
+      this.showBanner('⚠️ วงล้อม!','วิ่งออกทางช่องว่าง!',900); b.atkCd=2.1*fast;
     }
   }
 
