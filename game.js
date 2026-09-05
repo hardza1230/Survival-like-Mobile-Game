@@ -244,7 +244,6 @@ const ASSET_IMAGES = {
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   boss1:'assets/boss1.png', boss2:'assets/boss2.png', boss3:'assets/boss3.png',
   boss4:'assets/boss4.png', boss5:'assets/boss5.png',   // บอสใหญ่ 5 ด่าน
-  e_dasher:'assets/e_dasher.png', e_siege:'assets/e_siege.png',   // ศัตรูใหม่ (รูปจริง แทนการย้อมสี)
   mb1:'assets/mb1.png', mb2:'assets/mb2.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // มินิบอส 5 ด่าน
   chest:'assets/chest.png', crate:'assets/crate.png', vac:'assets/vac.png',   // ไอเทม (รูปจริง แทนกราฟิกโค้ด)
   bg1:'assets/bg1.png', bg2:'assets/bg2.png', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png',   // พื้นหลัง 5 โซนครัว
@@ -274,6 +273,9 @@ const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_sheet.png',  frame:128 },
   char_mint:  { url:'assets/char_mint_sheet.png',  frame:128 },
   char_cocoa: { url:'assets/char_cocoa_sheet.png', frame:128 },
+  // ศัตรูอนิเมชัน (walk/attack cycle) — frame=ขนาดเดิม (setScale/setCircle เดิมใช้ได้ ไม่ต้องแก้)
+  e_dasher:   { url:'assets/e_dasher_sheet.png',   frame:88,  anim:{frames:4, rate:13} },  // มดวิ่ง 4 เฟรม
+  e_siege:    { url:'assets/e_siege_sheet.png',    frame:110, anim:{frames:4, rate:7}  },  // ปืนคัพเค้ก idle/ยิง 4 เฟรม
 };
 
 /* ---- VFX flipbook sheets (อนิเมชันหลายเฟรม เล่นไล่เฟรม) ----
@@ -471,6 +473,11 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_FX){ if(!this.textures.exists(k))continue; const fx=ASSET_FX[k];
       if(this.anims.exists(k))continue;
       this.anims.create({ key:k, frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}), frameRate:fx.rate, repeat:fx.loop?-1:0 }); }
+
+    // ---- อนิเมชันศัตรู (walk/attack loop จาก ASSET_SHEETS ที่มี .anim) ----
+    for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!sh.anim)continue;
+      if(!this.textures.exists(k)||this.anims.exists(k+'_walk'))continue;
+      this.anims.create({ key:k+'_walk', frames:this.anims.generateFrameNumbers(k,{start:0,end:sh.anim.frames-1}), frameRate:sh.anim.rate, repeat:-1 }); }
 
     // ---- Props ประดับฉาก (placeholder กล่อง ๆ — สลับอาร์ต AI ทีหลัง) ----
     const mkRect=(key,w,h,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;   // มีรูป AI แล้ว ไม่วาดทับ (procedural = fallback)
@@ -2038,6 +2045,9 @@ class Game extends Phaser.Scene {
     else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
+    // เล่นอนิเมชันเดิน/ยิงถ้าเป็นชนิดที่มีชีต (ไม่งั้นหยุด anim ที่ค้างจาก pool + คืนเฟรมนิ่ง)
+    if(this.anims.exists(key+'_walk')){ e.setFlipX(false); e.play(key+'_walk',true); }
+    else if(e.anims){ e.anims.stop(); e.setFrame(0); e.setFlipX(false); }
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
     this.camWorld(e);
     this.vfxSpawnPoof(x,y);
