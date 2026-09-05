@@ -12,6 +12,7 @@
     "@capacitor/core": "^6.1.2"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.1.2"
+    "@capacitor/cli": "^6.1.2",
+    "canvas": "^3.2.3"
   }
 }
