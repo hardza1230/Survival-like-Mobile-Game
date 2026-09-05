@@ -285,13 +285,13 @@ const ASSET_FX = {
   fx_bubble:   { url:'assets/fx_bubble_sheet.png',   fw:352, fh:366, frames:8, rate:22, anchor:'center' },
   fx_popcorn:  { url:'assets/fx_popcorn_sheet.png',  fw:352, fh:366, frames:8, rate:24, anchor:'center' },
   fx_aura:     { url:'assets/fx_aura_sheet.png',     fw:352, fh:366, frames:8, rate:14, anchor:'center', loop:true },   // ออร่าถาวร วนลูป
-  fx_chilinova:{ url:'assets/fx_chilinova_sheet.png',fw:286, fh:192, frames:8, rate:24, anchor:'center' },
-  fx_mine:     { url:'assets/fx_mine_sheet.png',     fw:61,  fh:192, frames:8, rate:24, anchor:'center' },
-  fx_donutimpact:{ url:'assets/fx_donutimpact_sheet.png',fw:286,fh:192,frames:8,rate:24, anchor:'center' },
-  fx_bossnova: { url:'assets/fx_bossnova_sheet.png', fw:286, fh:192, frames:8, rate:22, anchor:'center' },
-  fx_bosssummon:{ url:'assets/fx_bosssummon_sheet.png',fw:61, fh:192, frames:8, rate:20, anchor:'center' },
-  fx_bossportal:{ url:'assets/fx_bossportal_sheet.png',fw:127,fh:192, frames:8, rate:20, anchor:'center' },
-  fx_enrage:   { url:'assets/fx_enrage_sheet.png',   fw:61,  fh:192, frames:8, rate:16, anchor:'center', loop:true },   // ออร่าคลั่งบอส วนลูป
+  fx_chilinova:{ url:'assets/fx_chilinova_sheet.png',fw:286, fh:286, frames:8, rate:24, anchor:'center' },
+  fx_mine:     { url:'assets/fx_mine_sheet.png',     fw:61,  fh:70,  frames:8, rate:24, anchor:'center' },
+  fx_donutimpact:{ url:'assets/fx_donutimpact_sheet.png',fw:286,fh:92,frames:8,rate:24, anchor:'center' },
+  fx_bossnova: { url:'assets/fx_bossnova_sheet.png', fw:286, fh:64,  frames:8, rate:22, anchor:'center' },
+  fx_bosssummon:{ url:'assets/fx_bosssummon_sheet.png',fw:61, fh:68,  frames:8, rate:20, anchor:'center' },
+  fx_bossportal:{ url:'assets/fx_bossportal_sheet.png',fw:127,fh:127, frames:8, rate:20, anchor:'center' },
+  fx_enrage:   { url:'assets/fx_enrage_sheet.png',   fw:61,  fh:61,  frames:8, rate:16, anchor:'center', loop:true },   // ออร่าคลั่งบอส วนลูป
 };
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
@@ -812,13 +812,13 @@ function bestiaryAllBonus(){
    ผู้เล่นเกิดที่ (0,0) · solid=true แลนด์มาร์กชนได้ · ที่เหลือเดินทะลุ · เว้นกลางห้องโล่งให้สู้ */
 const STAGE_PROPS = {
   0: (()=>{ const a=[];                                            // ด่าน 1: ห้องแพนทรี (props อาร์ต AI)
-    let xs=-680; for(const k of ['p_shelf','p_cupboard','p_spicerack','p_shelf','p_cupboard','p_spicerack']){ a.push([k,xs,-1120,false,0.9]); xs+=275; }   // ขอบบน
-    xs=-680; for(const k of ['p_spicerack','p_shelf','p_cupboard','p_spicerack','p_shelf','p_cupboard']){ a.push([k,xs,1120,false,0.9]); xs+=275; }        // ขอบล่าง
-    let ys=-780; for(const k of ['p_crate','p_boxes','p_sugarbarrel','p_crate','p_boxes','p_candybarrel']){ a.push([k,-850,ys,false,0.85]); ys+=300; }      // ขอบซ้าย
-    ys=-780; for(const k of ['p_boxes','p_candybarrel','p_crate','p_sugarbarrel','p_boxes','p_crate']){ a.push([k,850,ys,false,0.85]); ys+=300; }           // ขอบขวา
-    a.push(['p_sack',-700,-960,false,0.9],['p_flour',700,-960,false,0.9],['p_sack',700,960,false,0.9],['p_flour',-700,960,false,0.9]);   // มุมห้อง
-    a.push(['p_cans',420,-380,true,1.15],['p_sugarbarrel',-460,430,true,1.1],['p_cupboard',-360,-540,true,1.0],['p_crate',520,520,true,1.05]);   // แลนด์มาร์กชนได้
-    a.push(['p_jars',300,280,false,0.85],['p_honey',-320,-240,false,0.85],['p_rollingpin',-540,-80,false,0.85],['p_board',500,160,false,0.85],['p_jamspice',180,-560,false,0.8],['p_measure',360,600,false,0.8],['p_flourspill',-260,620,false,0.85],['p_mouse',-120,-330,false,0.7]);  // ของประดับ
+    let xs=-700; for(const k of ['p_shelf','p_cupboard','p_spicerack','p_shelf','p_cupboard','p_spicerack']){ a.push([k,xs,-1140,false,0.6]); xs+=285; }   // ขอบบน
+    xs=-700; for(const k of ['p_spicerack','p_shelf','p_cupboard','p_spicerack','p_shelf','p_cupboard']){ a.push([k,xs,1140,false,0.6]); xs+=285; }        // ขอบล่าง
+    let ys=-820; for(const k of ['p_crate','p_boxes','p_sugarbarrel','p_crate','p_boxes','p_candybarrel']){ a.push([k,-880,ys,false,0.58]); ys+=320; }      // ขอบซ้าย
+    ys=-820; for(const k of ['p_boxes','p_candybarrel','p_crate','p_sugarbarrel','p_boxes','p_crate']){ a.push([k,880,ys,false,0.58]); ys+=320; }           // ขอบขวา
+    a.push(['p_sack',-720,-1000,false,0.6],['p_flour',720,-1000,false,0.6],['p_sack',720,1000,false,0.6],['p_flour',-720,1000,false,0.6]);   // มุมห้อง
+    a.push(['p_cans',520,-480,true,0.8],['p_sugarbarrel',-540,520,true,0.78]);   // แลนด์มาร์กชนได้ (แค่ 2 ชิ้น วางห่างกลาง)
+    a.push(['p_cupboard',-460,-620,false,0.6],['p_crate',600,600,false,0.58],['p_jars',360,320,false,0.55],['p_honey',-360,-280,false,0.55],['p_rollingpin',-600,-100,false,0.55],['p_board',560,200,false,0.55],['p_jamspice',220,-640,false,0.52],['p_measure',420,680,false,0.52],['p_flourspill',-300,700,false,0.55],['p_mouse',-160,-380,false,0.5]);  // ของประดับ
     return a; })(),
 };
 
@@ -1599,8 +1599,7 @@ class Game extends Phaser.Scene {
   buildStageProps(i){
     this.clearStageProps();
     const add=(key,x,y,solid,sc)=>{ if(!this.textures.exists(key))return; sc=sc||1;
-      if(solid){ const s=this.solidProps.create(x,y,key); s.setScale(sc).setDepth(y).refreshBody();
-        const iw=s.width,ih=s.height; s.body.setSize(iw*0.7,ih*0.42); s.body.setOffset(iw*0.15,ih*0.5); }   // hitbox แค่โคน ~ครึ่งล่าง เดินลื่น
+      if(solid){ const s=this.solidProps.create(x,y,key); s.setScale(sc).setDepth(y).refreshBody(); }   // box เต็ม ตำแหน่งถูก (กันวาป) — เล็กลงตาม scale
       else { const im=this.add.image(x,y,key).setScale(sc).setDepth(y); this.camWorld(im); this.decoProps.add(im); } };
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L) add(p[0],p[1],p[2],p[3],p[4]);
@@ -2530,8 +2529,8 @@ class Game extends Phaser.Scene {
         b.setVelocity(Math.cos(ang)*(560+this.stageIndex*20),Math.sin(ang)*(560+this.stageIndex*20)); b.knock=0.45; });
       b.atkCd=2.8*fast;
     } else if(pick==='summon'){ // เรียกลูกน้อง
-      if(this.anims.exists('fx_bossportal')) this.spawnFxAnim('fx_bossportal',b.x,b.y+30,{scale:1.6,depth:2,anchor:'center'});
-      else if(this.anims.exists('fx_bosssummon')) this.spawnFxAnim('fx_bosssummon',b.x,b.y+30,{scale:2.2,depth:2,anchor:'center'});
+      if(this.anims.exists('fx_bosssummon')) this.spawnFxAnim('fx_bosssummon',b.x,b.y+30,{scale:2.4,depth:2,anchor:'center'});
+      else if(this.anims.exists('fx_bossportal')) this.spawnFxAnim('fx_bossportal',b.x,b.y+30,{scale:1.6,depth:2,anchor:'center'});
       const n=2+this.stageIndex+(b.phase3?2:0); for(let i=0;i<n;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
       Sfx.bossWarn(); b.atkCd=3.2*fast;
     } else if(pick==='nova'){ // คลื่นสังหารขยายจากบอส — ต้องหลบให้อยู่ในวง/นอกวง
