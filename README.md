@@ -62,6 +62,7 @@ APK ถูกตั้งให้เป็น **"ตัวหุ้ม" ที�
 เคลือบ 3 ชนิด (Sprinkle/Sugar Ring/Chili), passive, Toast Meter, จอเมนู/เลเวลอัพ/ตาย
 
 ## ถัดไป (roadmap)
+- แผนรีเวิร์กตัวละคร/ศัตรู/แอนิเมชัน/VFX/เสียง: [`ART_AUDIO_REWORK_PLAN.md`](ART_AUDIO_REWORK_PLAN.md)
 - กราฟิก AI แทนรูปทรง (โมจิ/ศัตรู/ฉาก)
 - ระบบ Fusion (ผสมเคลือบ 2 ชนิด)
 - อาร์คีไทป์บิลด์ + บอส
