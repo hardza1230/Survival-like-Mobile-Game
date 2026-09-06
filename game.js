@@ -15,9 +15,13 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.9.3';
+const GAME_VERSION = '1.9.4';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.9.4', date:'2026-09-06', title:'โมโม่ Strawberry Fighter — สไปรต์นักสู้ใหม่ครบทุกท่า', items:[
+    'เปลี่ยนโมโม่จากตัวขนมก้อนเป็นนักสู้สาว Strawberry ผมชมพู ชุดแดง–ขาว และตาสีเขียว',
+    'ครบ 8 ท่าที่เกมใช้จริง: ยืน กะพริบ ย่อ พุ่ง ดีใจ เจ็บ สลบ และร่ายพลังสตรอว์เบอร์รี',
+    'คงรหัสตัวละครเดิมไว้ จึงใช้เซฟ เลเวล และพรสวรรค์ของโมโม่เดิมต่อได้ทันที' ] },
   { v:'1.9.3', date:'2026-09-05', title:'บอส + มินิบอสดุขึ้น สวนกลับบ่อยขึ้น', items:[
     'บอส/มินิบอสโจมตีถี่ขึ้น ~30% (คูลดาวน์ทุกท่าสั้นลง) กดดันมากขึ้น',
     'มินิบอสมีท่าโจมตีเยอะขึ้น (ยิงรอบทิศ/เกลียว/พุ่ง/เรียกลูกน้อง) + แรงขึ้น',
@@ -282,7 +286,8 @@ const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', chili:'ic_chili', f
   mine:'ic_mine', beam:'ic_beam', meteor:'ic_meteor', cloud:'ic_cloud', rocket:'ic_rocket', wave:'ic_wave' };
 const PASS_ICON  = { heart:'ic_heart', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_regen' };
 const ASSET_SHEETS = {
-  char_momo:  { url:'assets/char_momo_v2_transparent_sheet.png', frame:128 },
+  // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
+  char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
   char_mint:  { url:'assets/char_mint_sheet.png',  frame:128 },
   char_cocoa: { url:'assets/char_cocoa_sheet.png', frame:128 },
   // ศัตรูอนิเมชัน (walk/attack cycle) — frame=ขนาดเดิม (setScale/setCircle เดิมใช้ได้ ไม่ต้องแก้)
@@ -344,11 +349,6 @@ function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
 // [0 idle,1 blink,2 squash,3 stretch(พุ่ง),4 cheer(ดีใจ),5 hurt(เจ็บ),6 ko(สลบ),7 cast(ร่ายอัลติ)]
 const CF = { idle:0, blink:1, squash:2, stretch:3, cheer:4, hurt:5, ko:6, cast:7 };
-// โมโม v2: 24 เฟรม (6x4) มี idle/run/dash/cast/hurt/cheer/ko แยกชัดเจน
-const MOMO_V2 = {
-  idle:[0,1,2,3,4,5], run:[6,7,8,9,10,11], dash:[12,13,14,15,16,17], cast:[18,19,20],
-  hurt:21, cheer:22, ko:23
-};
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 
 class Boot extends Phaser.Scene {
@@ -2727,8 +2727,7 @@ class Game extends Phaser.Scene {
       || 60;
     this._pBase=60/src;
     this._hasFrames = !!ASSET_SHEETS[key] && this.textures.exists(key) && this.textures.get(key).frameTotal>1;
-    this._momoV2 = key==='char_momo' && this._hasFrames && this.textures.get(key).frameTotal>=24;
-    if(this._hasFrames){ this.player.setFrame(this._momoV2?MOMO_V2.idle[0]:CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
+    if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
     if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);
   }
@@ -2736,18 +2735,6 @@ class Game extends Phaser.Scene {
   updatePose(dt){
     if(!this._hasFrames)return;
     if(this._poseHold>0){ this._poseHold-=dt; return; }
-    if(this._momoV2){
-      if(this.dashTime>0){
-        const elapsed=Phaser.Math.Clamp(1-this.dashTime/0.2,0,0.999);
-        this.player.setFrame(MOMO_V2.dash[Math.floor(elapsed*MOMO_V2.dash.length)]);
-        return;
-      }
-      const moving=this.player.body && this.player.body.velocity.length()>24;
-      const frames=moving?MOMO_V2.run:MOMO_V2.idle;
-      const rate=moving?7:2;
-      this.player.setFrame(frames[Math.floor(this._wob*rate)%frames.length]);
-      return;
-    }
     if(this.dashTime>0){ this.player.setFrame(CF.stretch); return; }
     const moving = this.player.body && this.player.body.velocity.length() > 24;
     if(moving){
@@ -2761,13 +2748,7 @@ class Game extends Phaser.Scene {
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(!this._hasFrames)return;
-    if(this._momoV2){
-      const map={}; map[CF.squash]=MOMO_V2.dash[4]; map[CF.cheer]=MOMO_V2.cheer; map[CF.hurt]=MOMO_V2.hurt;
-      map[CF.ko]=MOMO_V2.ko; map[CF.cast]=MOMO_V2.cast[0]; this.player.setFrame(map[frame]===undefined?MOMO_V2.idle[0]:map[frame]);
-    } else this.player.setFrame(frame);
-    this._poseHold=(ms||160)/1000;
-  }
+  poseFlash(frame,ms){ if(!this._hasFrames)return; this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
@@ -2808,7 +2789,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- DEATH ---------- */
   die(){ if(this.state==='dead')return; this.state='dead'; Sfx.bgmIntense(false); Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0);
-    if(this._hasFrames){ this.player.setFrame(this._momoV2?MOMO_V2.ko:CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
+    if(this._hasFrames){ this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
     this.buildOver(); }
   buildOver(){ const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
