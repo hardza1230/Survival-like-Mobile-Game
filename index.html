@@ -20,7 +20,7 @@
   #rotate .s{font-size:14px;color:#c7bdd6;}
   #rotate .btn-bypass{margin-top:14px;padding:10px 20px;background:#ff85b3;color:#fff;border-radius:12px;border:none;font-weight:bold;font-size:14px;cursor:pointer;}
   @keyframes rk{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
-  @media (orientation:landscape) and (max-height: 500px){ #rotate{display:flex;} canvas{visibility:hidden;} }
+  @media (orientation:portrait){ #rotate{display:flex;} canvas{visibility:hidden;} }
   #err-box{position:fixed;bottom:20px;left:20px;right:20px;z-index:10000;display:none;background:rgba(30,15,35,0.95);border:2px solid #ff5a7a;border-radius:14px;padding:16px;color:#fff;font-family:sans-serif;text-align:center;}
   #err-box button{margin-top:10px;padding:8px 16px;background:#66d3b3;border:none;border-radius:8px;font-weight:bold;color:#12331f;cursor:pointer;}
   #game-loader{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;
@@ -104,9 +104,9 @@
   </div>
 </div>
 <div id="rotate">
-  <div class="ico">📱</div>
-  <div class="t">หมุนจอเป็นแนวตั้ง</div>
-  <div class="s">Mochi Mayhem เล่นในแนวตั้ง (Portrait) เท่านั้น</div>
+  <div class="ico">↻</div>
+  <div class="t">หมุนจอเป็นแนวนอน</div>
+  <div class="s">Mochi Mayhem ออกแบบใหม่สำหรับ Landscape เพื่อให้เห็นสนามและการ์ดครบ 4 ใบ</div>
   <button class="btn-bypass" onclick="document.getElementById('rotate').style.display='none';">เล่นต่อ</button>
 </div>
 <div id="err-box">
@@ -116,7 +116,7 @@
 <script src="phaser.min.js"></script>
 <script src="game.js"></script>
 <script>
-  (function(){ try{ var o=screen.orientation; if(o&&o.lock)o.lock('portrait').catch(function(){}); }catch(e){} })();
+  (function(){ try{ var o=screen.orientation; if(o&&o.lock)o.lock('landscape').catch(function(){}); }catch(e){} })();
 </script>
 </body>
 </html>

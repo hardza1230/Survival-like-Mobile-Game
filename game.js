@@ -26,9 +26,14 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.2.0';
+const GAME_VERSION = '2.3.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'2.3.0', date:'2026-09-07', title:'Landscape Card Draft + Sesame Hotfix', items:[
+    'เปลี่ยนเกมเป็นแนวนอนทั้ง Web และ Android พร้อมหน้าต่างแนะนำให้หมุนจอ',
+    'ออกแบบหน้าการ์ดใหม่เป็นการ์ดแนวตั้ง 4 ใบ อ่านหมวด เลเวล และคู่ Evolution ได้ในหน้าจอเดียว',
+    'แก้ Sesame เข้าเกมไม่ได้จาก Star Guard เรียก animation บนวัตถุผิดชนิด',
+    'ขยาย Mint และ Cocoa ให้ใกล้เคียง Strawberry และทำกระสุนศัตรูด่าน 1 ใหม่ให้ตัดพื้นชัดเจน' ] },
   { v:'2.2.0', date:'2026-09-07', title:'Awakened Mint & Cocoa + Rotting Drain Rebuild', items:[
     'สร้าง Mint และ Cocoa ร่างนักสู้ 8 เฟรม พร้อมใช้งานจริงแทน Core placeholder เดิม',
     'สร้างฉากด่าน 2 ใหม่ มอนสเตอร์ท่อระบาย 5 บทบาท มินิบอส Valve Maw และบอส Sovereign Clogmaw',
@@ -323,7 +328,8 @@ const ASSET_IMAGES = {
   p_flour:'assets/p_flour.png', p_candybarrel:'assets/p_candybarrel.png', p_sack:'assets/p_sack.png', p_flourspill:'assets/p_flourspill.png', p_cans:'assets/p_cans.png', p_jars:'assets/p_jars.png',
   p_rollingpin:'assets/p_rollingpin.png', p_jamspice:'assets/p_jamspice.png', p_honey:'assets/p_honey.png', p_board:'assets/p_board.png', p_measure:'assets/p_measure.png', p_mouse:'assets/p_mouse.png',
   char_taro:'assets/char_taro.png', char_sesame:'assets/char_sesame.png',   // ตัวละครใหม่ (รูปนิ่ง + เจลลี่)
-  ui_skill_card:'assets/ui/ui_skill_card.png',
+  ui_card_attack:'assets/ui/ui_card_attack.png', ui_card_power:'assets/ui/ui_card_power.png',
+  ui_card_passive:'assets/ui/ui_card_passive.png', ui_card_awakened:'assets/ui/ui_card_awakened.png',
   ic_sprinkle:'assets/ic_sprinkle.png', ic_star:'assets/ic_star.png', ic_frost:'assets/ic_frost.png',
   ic_bubble:'assets/ic_bubble.png', ic_heart:'assets/ic_heart.png', ic_magnet:'assets/ic_magnet.png', ic_sugar:'assets/ic_sugar.png',
   // ไอคอนสกิลโจมตีชุดใหม่ (12 ตัว · gen แผ่นเดียว 4×3 หั่นด้วย scripts/cut-skill-icons.mjs) → ครบ 17 สกิลโจมตี
@@ -1188,7 +1194,7 @@ class Game extends Phaser.Scene {
       if(this.state==='menu'){ this.handleTap(p.x,p.y); return; }
       if(this.state==='dead'||this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='summary'){ Sfx.select(); this.continueFromSummary(); return; }
-      if(this.state==='levelup'){ this.pickCardAt(p.y); return; }
+      if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
 
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
@@ -1306,8 +1312,8 @@ class Game extends Phaser.Scene {
   }
   /* แถบ "ถือครองอยู่" — โชว์สกิลโจมตี + สกิลติดตัวที่มีตอนนี้ (ใช้ในเลเวลอัพ/หยุดเกม) · คืน y ล่างสุด */
   drawHeldBar(cont, topY){
-    const chip=30, gap=5, labelX=20, chipX0=58;
-    const rowFn=(y,label,labelColor,keys,emojiOf,lvlOf,chipColor,awkOf,isPass)=>{
+    const landscape=this.W>this.H, chip=landscape?26:30, gap=landscape?4:5;
+    const rowFn=(y,label,labelColor,keys,emojiOf,lvlOf,chipColor,awkOf,isPass,labelX,chipX0)=>{
       const lab=this.add.text(labelX,y+chip/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:labelColor}).setOrigin(0,0.5);
       cont.add(lab);
       if(!keys.length){ const none=this.add.text(chipX0,y+chip/2,'— ยังไม่มี',{fontFamily:'sans-serif',fontSize:'11px',color:'#6a6078'}).setOrigin(0,0.5); cont.add(none); return; }
@@ -1321,8 +1327,14 @@ class Game extends Phaser.Scene {
         cont.add([g,em,lt]); x+=chip+gap; });
     };
     const atk=Object.keys(this.skills||{}), pas=Object.keys(this.passives||{});
-    rowFn(topY,       '⚔️ สกิล','#f0a54a', atk, k=>SKILLDEFS[k]?SKILLDEFS[k].emoji:'❓', k=>this.skills[k], 0xf0a54a, k=>this.skills[k]>=SKILL_AWAKEN_LV, false);
-    rowFn(topY+chip+8,'✨ พร',  '#66d3b3', pas, k=>PASSIVES[k]?PASSIVES[k].emoji:'❓', k=>this.passives[k], 0x66d3b3, null, true);
+    if(landscape){
+      const half=this.W/2;
+      rowFn(topY,'⚔️ สกิล','#f0a54a',atk,k=>SKILLDEFS[k]?SKILLDEFS[k].emoji:'❓',k=>this.skills[k],0xf0a54a,k=>this.skills[k]>=SKILL_AWAKEN_LV,false,12,58);
+      rowFn(topY,'✨ พร','#66d3b3',pas,k=>PASSIVES[k]?PASSIVES[k].emoji:'❓',k=>this.passives[k],0x66d3b3,null,true,half+4,half+48);
+      return topY+chip+6;
+    }
+    rowFn(topY,       '⚔️ สกิล','#f0a54a', atk, k=>SKILLDEFS[k]?SKILLDEFS[k].emoji:'❓', k=>this.skills[k], 0xf0a54a, k=>this.skills[k]>=SKILL_AWAKEN_LV, false,20,58);
+    rowFn(topY+chip+8,'✨ พร',  '#66d3b3', pas, k=>PASSIVES[k]?PASSIVES[k].emoji:'❓', k=>this.passives[k], 0x66d3b3, null, true,20,58);
     return topY+chip*2+8+6;
   }
   /* แถบไอคอนสกิลด้านล่าง — บอกว่ามีสกิลอะไร เลเวลเท่าไหร่ */
@@ -1413,8 +1425,8 @@ class Game extends Phaser.Scene {
     if(fn)this._zone(x,y,w,h,fn); }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
     if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){ Sfx.select(); z.fn(); return; } } }
-  _rowBtn(y,h,emoji,name,sub,rightLabel,rightColor,fn){
-    const w=Math.min(this.W-32,400), x=this.W/2-w/2;
+  _rowBtn(y,h,emoji,name,sub,rightLabel,rightColor,fn,xOverride,wOverride){
+    const w=wOverride||Math.min(this.W-32,400), x=xOverride==null?this.W/2-w/2:xOverride;
     const g=this.add.graphics(); g.fillStyle(0x2c2338,fn?1:0.6); g.fillRoundedRect(x,y,w,h,15);
     g.lineStyle(2,fn?0x4a4059:0x39304a,1); g.strokeRoundedRect(x,y,w,h,15);
     const em=this.add.text(x+28,y+h/2,emoji,{fontSize:'24px'}).setOrigin(0.5);
@@ -1557,18 +1569,22 @@ class Game extends Phaser.Scene {
   }
   buildChars(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('นักสู้แห่ง Mochi Core');
-    const formNote=this.add.text(this.W/2,this.H*0.112,'Core Form โมจิเด้งดึ๋ง  ⇄  Awakened Form นักสู้แบบคน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff'}).setOrigin(0.5);
+    const landscape=this.W>this.H;
+    const formNote=this.add.text(this.W/2,landscape?78:this.H*0.112,'Core Form โมจิเด้งดึ๋ง  ⇄  Awakened Form นักสู้แบบคน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff'}).setOrigin(0.5);
     this.menu.add(formNote);
-    const y0=this.H*0.15;
-    CHAR_ORDER.forEach((id,i)=>{ const c=CHARACTERS[id], y=y0+i*92;
+    const cols=landscape?2:1;
+    const cardW=landscape?Math.min(360,(this.W-38)/2):Math.min(this.W-32,400);
+    const rowH=landscape?68:80, gap=landscape?8:12, totalW=cardW*cols+(cols-1)*10;
+    const x0=(this.W-totalW)/2, y0=landscape?94:this.H*0.15;
+    CHAR_ORDER.forEach((id,i)=>{ const c=CHARACTERS[id], col=i%cols, row=Math.floor(i/cols), y=y0+row*(rowH+gap), x=x0+col*(cardW+10);
       const owned=Save.data.chars.includes(id), selected=Save.data.character===id, afford=(Save.data.sugar||0)>=c.cost;
-      this._rowBtn(y,80,c.emoji,c.name+' · '+c.weaponName,c.desc,
+      this._rowBtn(y,rowH,c.emoji,c.name+' · '+c.weaponName,c.desc,
         selected?'เลือกอยู่ ✓':(owned?'เลือก':'🍬'+c.cost),
         selected?'#ffd166':(owned?'#8bd3a0':(afford?'#bfe8ff':'#e0788a')),
         selected?null:()=>{
           if(owned){ Save.data.character=id; Save.save(); this.character=id; }
           else if(Save.spend(c.cost)){ Save.data.chars.push(id); Save.data.character=id; Save.save(); this.character=id; Sfx.clear(); }
-          this.buildMenuScreen(); });
+          this.buildMenuScreen(); },x,cardW);
     });
     this.menu.setVisible(true);
   }
@@ -2200,56 +2216,54 @@ class Game extends Phaser.Scene {
     this.state='levelup'; this.physics.pause();
     Sfx.levelup();
     const w=this.W,h=this.H; this.lvlUp.removeAll(true); this.lvlCards=[];
-    const bg=this.add.rectangle(0,0,w,h,0x211526,0.9).setOrigin(0,0);
+    const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
-    // ---- แถบบนสุด: สกิล/พร ที่ถือครองอยู่ ----
-    const heldBot=this.drawHeldBar(this.lvlUp, 14);
-    const t=this.add.text(w/2,heldBot+8,this._chestReward?'🎁 หีบสมบัติ! สุ่มรับสกิล':'⭐ เลเวลอัพ! แตะเลือก 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166'}).setOrigin(0.5,0);
+    const heldBot=this.drawHeldBar(this.lvlUp, 8);
+    const t=this.add.text(w/2,heldBot,this._chestReward?'🎁 หีบสมบัติ — เลือก 1 ใบ':'⭐ LEVEL UP — เลือก 1 จาก 4',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe07a'}).setOrigin(0.5,0);
     this.lvlUp.add(t);
-    const opts=this.rollUpgrades(2);
-    const cardW=Math.min(w-32,400), lx=w/2-cardW/2;
-    const startY=heldBot+44, gap=18;
-    const avail=h-startY-18, ch=Math.min(170,(avail-gap)/2);     // 2 ใบใหญ่ อ่านง่ายและลดโอกาส build เก่งเร็วเกิน
+    const opts=this.rollUpgrades(4);
+    const gap=8, side=10, startY=heldBot+27;
+    const cardW=Math.min(178,(w-side*2-gap*3)/4), ch=Math.min(h-startY-8,cardW*1.62);
+    const total=cardW*4+gap*3, lx=(w-total)/2;
     opts.forEach((o,i)=>{
-      const y=startY+i*(ch+gap);
-      const cardArt=this.add.image(lx+cardW/2,y+ch/2,'ui_skill_card').setDisplaySize(cardW+12,ch+10);
-      const g=this.add.graphics();
-      const cr=20;
-      g.fillStyle(o.color,0.14);g.fillRoundedRect(lx+126,y+15,cardW-145,ch-30,14);
-      g.lineStyle(2,o.color,0.75);g.strokeRoundedRect(lx+126,y+15,cardW-145,ch-30,14);
+      const x=lx+i*(cardW+gap), y=startY;
+      const artKey=o.type==='awk'?'ui_card_awakened':o.type==='pas'?'ui_card_passive':o.isNew?'ui_card_attack':'ui_card_power';
+      const cardArt=this.add.image(x+cardW/2,y+ch/2,artKey).setDisplaySize(cardW,ch);
       const oik=o.type==='awk'?null:this.iconKey(o.key,o.type==='pas');
-      const em = oik ? this.add.image(lx+67,y+ch*0.46,oik).setDisplaySize(64,64) : this.add.text(lx+67,y+ch*0.46,o.emoji,{fontSize:'42px'}).setOrigin(0.5);
+      const iconSize=Math.min(54,cardW*0.35);
+      const em = oik ? this.add.image(x+cardW/2,y+ch*0.195,oik).setDisplaySize(iconSize,iconSize) : this.add.text(x+cardW/2,y+ch*0.195,o.emoji,{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       const emBase=em.scaleX||1;
-      // ดาวบอกเลเวล (เต็ม/ว่าง) + ป้ายหมวดสี
       let stars=''; for(let s=0;s<o.max;s++) stars+=(s<o.lvl?'★':'☆');
-      const starT=this.add.text(lx+67,y+ch-34,stars,{fontFamily:'sans-serif',fontSize:o.max>6?'9px':'11px',color:o.type==='awk'?'#ffcf5a':'#ffd166'}).setOrigin(0.5);
-      const remain=o.type==='awk'?'ขั้นสุดยอด':(o.lvl>=o.max?'สูงสุดแล้ว!':'อีก '+(o.max-o.lvl)+' ดาวจะตัน');
-      const badge=this.add.text(lx+138,y+22,'● '+o.kind+(o.isNew?' · ใหม่!':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:o.badgeColor}).setOrigin(0,0);
-      const nm=this.add.text(lx+138,y+40,o.title+(o.type!=='awk'?'  Lv'+o.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff'}).setOrigin(0,0);
-      const ds=this.add.text(lx+138,y+64,o.desc,{fontFamily:'sans-serif',fontSize:'12px',color:'#f0e8f7',wordWrap:{width:cardW-158}}).setOrigin(0,0);
-      const rm=this.add.text(lx+cardW-22,y+22,remain,{fontFamily:'sans-serif',fontSize:'10px',color:'#cbbdd7'}).setOrigin(1,0);
-      this.lvlUp.add([cardArt,g,em,starT,badge,nm,ds,rm]);
-      // ---- แถบคอมโบ (ล่างการ์ด) — สกิลโจมตี (a) จับคู่สกิลติดตัว (b) ----
-      { const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
-        if(combo){ const isAtk=combo.a===o.key, partner=isAtk?combo.b:combo.a;
-          const attack=SKILLDEFS[combo.a],passive=PASSIVES[combo.b];
-          const pe=isAtk?(passive?passive.emoji:'❓'):(attack?attack.emoji:'❓');
-          const have=isAtk?((this.passives[partner]||0)>0):((this.skills[partner]||0)>0), cy=y+ch-29;
-          const cg=this.add.graphics(); cg.fillStyle(have?0x2f4a38:0x39304a,0.96); cg.fillRoundedRect(lx+132,cy-2,cardW-154,22,7); this.lvlUp.add(cg);
-          const pair=(attack?attack.name:combo.a)+' + '+(passive?passive.name:combo.b)+' → '+combo.name;
-          const ct=this.add.text(lx+138,cy+9,'จับคู่: '+pair+(have?'  ✓ พร้อม':'  · ขาด '+pe),
-            {fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:have?'#a8f0c0':'#d8c8ee',wordWrap:{width:cardW-170}}).setOrigin(0,0.5);
-          this.lvlUp.add(ct); }
+      const starT=this.add.text(x+cardW/2,y+ch*0.755,stars,{fontFamily:'sans-serif',fontSize:o.max>6?'8px':'10px',color:'#ffe07a'}).setOrigin(0.5);
+      const badge=this.add.text(x+cardW/2,y+6,(o.type==='awk'?'AWAKEN':o.type==='pas'?'PASSIVE':'ATTACK')+(o.isNew?' · NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:o.badgeColor}).setOrigin(0.5,0);
+      const nm=this.add.text(x+cardW/2,y+ch*0.375,o.title+(o.type!=='awk'?'  Lv'+o.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'10px':'12px',color:'#fff8e8',align:'center',wordWrap:{width:cardW-22}}).setOrigin(0.5,0);
+      const ds=this.add.text(x+cardW/2,y+ch*0.475,o.desc,{fontFamily:'sans-serif',fontSize:cardW<145?'8px':'9px',color:'#f3eaf6',align:'center',wordWrap:{width:cardW-24}}).setOrigin(0.5,0);
+      this.lvlUp.add([cardArt,em,starT,badge,nm,ds]);
+      const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
+      if(combo){
+        const attack=SKILLDEFS[combo.a], passive=PASSIVES[combo.b];
+        const haveA=(this.skills[combo.a]||0)>0, haveP=(this.passives[combo.b]||0)>0;
+        const ai=this.iconKey(combo.a,false), pi=this.iconKey(combo.b,true), sy=y+ch*0.905, ss=Math.min(25,cardW*0.17);
+        const aObj=ai?this.add.image(x+cardW*0.35,sy,ai).setDisplaySize(ss,ss):this.add.text(x+cardW*0.35,sy,attack?attack.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
+        const pObj=pi?this.add.image(x+cardW*0.65,sy,pi).setDisplaySize(ss,ss):this.add.text(x+cardW*0.65,sy,passive?passive.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
+        if(!haveA)aObj.setAlpha(0.48); if(!haveP)pObj.setAlpha(0.48);
+        const plus=this.add.text(x+cardW/2,sy,'+',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe07a'}).setOrigin(0.5);
+        const ct=this.add.text(x+cardW/2,y+ch*0.805,'คู่: '+(attack?attack.name:combo.a)+' + '+(passive?passive.name:combo.b)+'\n→ '+combo.name,
+          {fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'7px':'8px',color:(haveA&&haveP)?'#baffc7':'#eadcf2',align:'center',wordWrap:{width:cardW-20}}).setOrigin(0.5,0);
+        this.lvlUp.add([ct,aObj,pObj,plus]);
+      }else{
+        const ct=this.add.text(x+cardW/2,y+ch*0.84,'ไม่มีคู่ Evolution',{fontFamily:'sans-serif',fontSize:'8px',color:'#c8bbd2'}).setOrigin(0.5);
+        this.lvlUp.add(ct);
       }
-      this.lvlCards.push({top:y,bottom:y+ch,apply:o.apply});
-      cardArt.setAlpha(0);g.setAlpha(0); em.setScale(emBase*0.2);
-      this.tweens.add({targets:[cardArt,g,badge,nm,ds,starT,rm],alpha:{from:0,to:1},duration:220,delay:i*90});
+      this.lvlCards.push({left:x,right:x+cardW,top:y,bottom:y+ch,apply:o.apply});
+      cardArt.setAlpha(0); em.setScale(emBase*0.2);
+      this.tweens.add({targets:[cardArt,badge,nm,ds,starT],alpha:{from:0,to:1},duration:220,delay:i*70});
       this.tweens.add({targets:em,scale:{from:emBase*0.2,to:emBase},duration:320,delay:i*70,ease:'Back.out'});
     });
     this.lvlUp.setVisible(true);
   }
-  pickCardAt(py){
-    const c=this.lvlCards.find(c=>py>=c.top&&py<=c.bottom);
+  pickCardAt(px,py){
+    const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c) return;
     Sfx.select(); c.apply(); this.closeLevelUp();
   }
@@ -2313,7 +2327,8 @@ class Game extends Phaser.Scene {
     for(let i=0;i<count;i++){
       const tier=aw?(i%3):(twoRing?(i%2===0?0:2):0);   // aw: 3 ชั้น (0=นอก,1=กลาง,2=ใน)
       const rr=tier===0?rOuter:tier===1?rMid:rInner;
-      const b=this.camWorld(this.physics.add.image(0,0,'fx_star_guard').setScale(size).setDepth(88000));
+      // Star Guard เป็น flipbook จึงต้องใช้ Sprite (Image ไม่มี .play และทำให้ Sesame เข้าเกมไม่ได้)
+      const b=this.camWorld(this.physics.add.sprite(0,0,'fx_star_guard',0).setScale(size).setDepth(88000));
       if(this.anims.exists('fx_star_guard_walk'))b.play('fx_star_guard_walk',true);
       b.setCircle(38,26,26); b.body.setAllowGravity(false); b.dmg=(4+lvl*1.5)*(BALANCE.skillPower.star||1)*(aw?1.45:1)*(isSesame?1.10:1); b.hitCd=0;
       b.rr=rr; b.ang0=(i/count)*Math.PI*2;
@@ -2833,7 +2848,9 @@ class Game extends Phaser.Scene {
     let b=this.foeBullets.getFirstDead(false);
     if(!b) b=this.foeBullets.create(x,y,'proj_enemy'); else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
     if(!b)return null;   // pool เต็ม → ข้ามการยิง กัน null crash
-    b.setTexture('proj_enemy').setScale((scale||1.4)*0.25).setTint(tint||0xff6b8a).setDepth(90000); if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.life=3.0; this.camWorld(b);
+    b.setTexture('proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
+    if(this.stageIndex===0)b.clearTint(); else b.setTint(tint||0xff6b8a);
+    if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.life=3.0; this.camWorld(b);
     if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
   // hazard บอส: วงเตือน vector โปร่งใสจริง → ระเบิดหลัง 760ms
   spawnHazard(x,y,r,dmg,tint){
@@ -3114,7 +3131,9 @@ class Game extends Phaser.Scene {
     const src = (ASSET_SHEETS[key]&&ASSET_SHEETS[key].frame)
       || (this.player&&this.player.frame&&this.player.frame.width)
       || 60;
-    this._pBase=60/src;
+    // Mint/Cocoa เป็นทรงตัวละครผอมกว่า Strawberry จึงต้องขยายตาม optical size ไม่ใช่ดูแค่ขนาด canvas 128px
+    const visualScale=key==='char_mint'?1.28:key==='char_cocoa'?1.30:1;
+    this._pBase=(60/src)*visualScale;
     this._charKey=key;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }

@@ -49,6 +49,9 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
+      - name: Lock gameplay to landscape
+        run: node scripts/set-android-landscape.mjs
+
       - name: Sync Capacitor
         run: npx cap sync android
 
