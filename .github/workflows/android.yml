@@ -8,6 +8,7 @@ on:
       - "game.js"
       - "index.html"
       - "phaser.min.js"
+      - "assets/**"
       - "package.json"
       - "capacitor.config.json"
       - "scripts/**"

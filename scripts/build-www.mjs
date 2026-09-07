@@ -3,6 +3,7 @@
 import { mkdirSync, copyFileSync, existsSync, readFileSync, writeFileSync, rmSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { inflateSync } from 'node:zlib';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const www = join(root, 'www');
@@ -41,6 +42,24 @@ const builtAssets = join(www, 'assets');
 if (existsSync(builtAssets)) rmSync(builtAssets, { recursive:true, force:true });
 const assetRefs = [...gjs.matchAll(/["'](assets\/[A-Za-z0-9_./ -]+)["']/g)].map(m=>m[1]);
 const uniqueAssets = [...new Set(assetRefs)].sort();
+
+// กัน regression แบบ e_ant_scout เดิม: แถบดำทึบยาวติดมากับ PNG แม้เกมยังไม่ได้โจมตี
+function assertNoOpaqueBlackBar(rel) {
+  if (!/assets\/generated\/e_ant_[^/]+\.png$/.test(rel)) return;
+  const png=readFileSync(join(root,rel));let pos=8,w=0,h=0,depth=0,type=0;const chunks=[];
+  while(pos<png.length){const len=png.readUInt32BE(pos),tag=png.toString('ascii',pos+4,pos+8),data=png.subarray(pos+8,pos+8+len);pos+=12+len;
+    if(tag==='IHDR'){w=data.readUInt32BE(0);h=data.readUInt32BE(4);depth=data[8];type=data[9];}
+    else if(tag==='IDAT')chunks.push(data);else if(tag==='IEND')break;}
+  if(depth!==8||type!==6)return; // ตัวตรวจนี้ตั้งใจสำหรับ RGBA 8-bit; format อื่นยังให้ build ทำงานตามปกติ
+  const raw=inflateSync(Buffer.concat(chunks)),stride=w*4,prev=Buffer.alloc(stride),row=Buffer.alloc(stride);let off=0,maxRun=0;
+  const paeth=(a,b,c)=>{const p=a+b-c,pa=Math.abs(p-a),pb=Math.abs(p-b),pc=Math.abs(p-c);return pa<=pb&&pa<=pc?a:pb<=pc?b:c;};
+  for(let y=0;y<h;y++){const filter=raw[off++];for(let x=0;x<stride;x++){const v=raw[off++],a=x>=4?row[x-4]:0,b=prev[x],c=x>=4?prev[x-4]:0;
+      row[x]=(v+(filter===1?a:filter===2?b:filter===3?Math.floor((a+b)/2):filter===4?paeth(a,b,c):0))&255;}
+    let run=0;for(let x=0;x<w;x++){const i=x*4,black=row[i]<12&&row[i+1]<12&&row[i+2]<12&&row[i+3]>240;run=black?run+1:0;maxRun=Math.max(maxRun,run);}row.copy(prev);}
+  if(maxRun>=Math.max(28,Math.floor(w*0.35)))throw new Error('Opaque black bar detected in '+rel+' (run '+maxRun+'px)');
+}
+uniqueAssets.forEach(assertNoOpaqueBlackBar);
+console.log('validated ant sprite alpha: no opaque black bars');
 let copiedBytes = 0;
 for (const rel of uniqueAssets) {
   const src = join(root, rel), dst = join(www, rel);
