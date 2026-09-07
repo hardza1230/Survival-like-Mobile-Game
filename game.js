@@ -362,6 +362,36 @@ class Boot extends Phaser.Scene {
     this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_FX[f.key]; delete ASSET_AUDIO[f.key]; });
   }
   create(){
+    // สร้าง run cycle 2 ก้าวสำหรับ Strawberry Fighter จากชีตต้นฉบับ:
+    // เฟรมแรกใช้ท่าวิ่งเดิม ส่วนเฟรมสองกลับเฉพาะช่วงขาเพื่อให้ก้าวซ้าย/ขวาสลับจริง
+    const buildStrawberryWalkSheet=()=>{
+      const source=this.textures.get('char_momo');
+      if(!source||source.key==='__MISSING'||this.textures.exists('char_momo_walk'))return;
+      const img=source.getSourceImage(), fw=128, total=8;
+      if(!img||img.width<fw*total||img.height<fw)return;
+      const tex=this.textures.createCanvas('char_momo_walk',fw*total,fw);
+      if(!tex)return;
+      const c=tex.getContext();
+      c.clearRect(0,0,fw*total,fw);
+      c.drawImage(img,0,0,fw*total,fw,0,0,fw*total,fw);
+      // CF.squash (2) และ CF.stretch (3) กลายเป็นก้าววิ่งคู่กันสำหรับ Momo/Strawberry เท่านั้น
+      c.clearRect(fw*2,0,fw,fw);
+      c.drawImage(img,fw*3,0,fw,fw,fw*2,0,fw,fw);
+      c.clearRect(fw*3,0,fw,fw);
+      c.drawImage(img,fw*3,0,fw,fw,fw*3,0,fw,fw);
+      // คงศีรษะ/ลำตัวเดิม แล้วกลับเงาสะท้อนเฉพาะขาใต้ชายกระโปรง
+      const legY=82, legH=fw-legY, centerX=fw*3+fw/2;
+      c.save();
+      c.beginPath(); c.rect(fw*3,legY,fw,legH); c.clip();
+      c.clearRect(fw*3,legY,fw,legH);
+      c.translate(centerX*2,0); c.scale(-1,1);
+      c.drawImage(img,fw*3,legY,fw,legH,fw*3,legY,fw,legH);
+      c.restore();
+      for(let i=0;i<total;i++)tex.add(i,0,i*fw,0,fw,fw);
+      tex.refresh();
+    };
+    buildStrawberryWalkSheet();
+
     const mk=(key,size,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
       if(this.textures.exists(key))this.textures.remove(key);
       const t=this.textures.createCanvas(key,size,size); if(!t)return; draw(t.getContext(),size); t.refresh(); };
@@ -1536,8 +1566,11 @@ class Game extends Phaser.Scene {
     // เลือกตัวละคร
     this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
     const ch=CHARACTERS[this.character];
-    if(this.textures.exists('char_'+this.character))this.player.setTexture('char_'+this.character);
-    this.setCharScale('char_'+this.character);   // รูปจริงตัวใหญ่ → ปรับสเกล/ขอบชนให้เท่ากราฟิกโค้ดเดิม (60px)
+    const baseCharKey='char_'+this.character;
+    const visualCharKey=this.character==='momo'&&this.textures.exists('char_momo_walk')
+      ?'char_momo_walk':baseCharKey;
+    if(this.textures.exists(visualCharKey))this.player.setTexture(visualCharKey);
+    this.setCharScale(visualCharKey);   // รูปจริงตัวใหญ่ → ปรับสเกล/ขอบชนให้เท่ากราฟิกโค้ดเดิม (60px)
     if(this.aura)this.aura.setFillStyle(ch.color||COLORS.mochiEdge,0.14);
     // โบนัสตัวละคร
     if(ch.bonus){ if(ch.bonus.maxhp)p.maxhp+=ch.bonus.maxhp; if(ch.bonus.dmgMul)p.dmgMul*=ch.bonus.dmgMul;
@@ -2726,7 +2759,8 @@ class Game extends Phaser.Scene {
       || (this.player&&this.player.frame&&this.player.frame.width)
       || 60;
     this._pBase=60/src;
-    this._hasFrames = !!ASSET_SHEETS[key] && this.textures.exists(key) && this.textures.get(key).frameTotal>1;
+    this._charKey=key;
+    this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
     if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);
@@ -2738,9 +2772,15 @@ class Game extends Phaser.Scene {
     if(this.dashTime>0){ this.player.setFrame(CF.stretch); return; }
     const moving = this.player.body && this.player.body.velocity.length() > 24;
     if(moving){
-      const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
-      const frames = [CF.idle, CF.squash, CF.stretch, CF.blink];
-      this.player.setFrame(frames[stepIdx] || CF.idle);
+      if(this._charKey==='char_momo_walk'){
+        // 2 เฟรมนี้มีขาคนละข้างยื่นนำ จึงอ่านเป็นการวิ่งชัดแม้ตัวละครแสดงผลเพียง 60px
+        const runStep=Math.floor(this._wob/(Math.PI*0.72))%2;
+        this.player.setFrame(runStep===0?CF.squash:CF.stretch);
+      }else{
+        const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
+        const frames = [CF.idle, CF.squash, CF.stretch, CF.blink];
+        this.player.setFrame(frames[stepIdx] || CF.idle);
+      }
       return;
     }
     this._blinkT-=dt;
