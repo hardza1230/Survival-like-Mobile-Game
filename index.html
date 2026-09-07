@@ -8,9 +8,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Mochi Mayhem</title>
 <style>
-  html,body{height:100%;margin:0;padding:0;overflow:hidden;background:#241d2e;
+  html,body{position:fixed;inset:0;width:100vw;height:100dvh;margin:0;padding:0;overflow:hidden;background:#241d2e;
     touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:none;}
-  canvas{display:block;touch-action:none;}
+  canvas{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
+    display:block!important;margin:0!important;padding:0!important;touch-action:none;background:#241d2e;}
   *{-webkit-tap-highlight-color:transparent;}
   #rotate{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;
     align-items:center;justify-content:center;gap:14px;background:#241d2e;color:#ffd9a8;
@@ -89,6 +90,15 @@
     if('caches' in window){ caches.keys().then(function(names){ return Promise.all(names.map(function(n){return caches.delete(n);})); }).finally(function(){window.location.reload();}); }
     else window.location.reload();
   }
+  window.enterGameFullscreen=function(){
+    try{
+      var root=document.documentElement;
+      if(!document.fullscreenElement&&root.requestFullscreen)root.requestFullscreen({navigationUI:'hide'}).catch(function(){});
+      var o=screen.orientation;if(o&&o.lock)o.lock('landscape').catch(function(){});
+    }catch(e){}
+  };
+  window.addEventListener('pointerdown',window.enterGameFullscreen,{once:true,capture:true});
+  window.addEventListener('touchstart',window.enterGameFullscreen,{once:true,capture:true,passive:true});
 </script>
 </head>
 <body>
@@ -116,7 +126,7 @@
 <script src="phaser.min.js"></script>
 <script src="game.js"></script>
 <script>
-  (function(){ try{ var o=screen.orientation; if(o&&o.lock)o.lock('landscape').catch(function(){}); }catch(e){} })();
+  (function(){ try{ window.enterGameFullscreen(); }catch(e){} })();
 </script>
 </body>
 </html>
