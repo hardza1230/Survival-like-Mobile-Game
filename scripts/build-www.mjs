@@ -1,6 +1,6 @@
 // ประกอบโฟลเดอร์ www/ ที่ Capacitor ใช้ (webDir) จากไฟล์เกมที่ root
 // คัดลอก index.html + game.js + phaser.min.js เข้า www/ (ไม่ commit www/ — สร้างตอน build)
-import { mkdirSync, copyFileSync, existsSync, readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { mkdirSync, copyFileSync, existsSync, readFileSync, writeFileSync, rmSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -36,25 +36,20 @@ if (existsSync(join(root, 'download.html'))) {
   console.log('copied download.html');
 }
 
-// คัดลอกโฟลเดอร์ assets/ (รูปจริง + เสียง audio + bg)
-function copyDirRecursive(srcDir, dstDir) {
-  mkdirSync(dstDir, { recursive: true });
-  for (const f of readdirSync(srcDir)) {
-    if (f === 'assets' || f === '__pycache__' || f === '.DS_Store') continue; // ข้าม assets/assets/ ต้นฉบับดิบ
-    const src = join(srcDir, f);
-    const dst = join(dstDir, f);
-    if (statSync(src).isDirectory()) {
-      copyDirRecursive(src, dst);
-    } else {
-      copyFileSync(src, dst);
-      console.log('copied ' + join(dstDir, f).replace(root, ''));
-    }
-  }
+// คัดลอกเฉพาะ runtime assets ที่ game.js อ้างจริง ไม่ขน raw/source/ไฟล์ซ้ำทั้ง 86MB เข้า APK และ Pages
+const builtAssets = join(www, 'assets');
+if (existsSync(builtAssets)) rmSync(builtAssets, { recursive:true, force:true });
+const assetRefs = [...gjs.matchAll(/["'](assets\/[A-Za-z0-9_./ -]+)["']/g)].map(m=>m[1]);
+const uniqueAssets = [...new Set(assetRefs)].sort();
+let copiedBytes = 0;
+for (const rel of uniqueAssets) {
+  const src = join(root, rel), dst = join(www, rel);
+  if (!existsSync(src)) throw new Error('Missing runtime asset: ' + rel);
+  mkdirSync(dirname(dst), { recursive:true });
+  copyFileSync(src, dst);
+  copiedBytes += statSync(src).size;
 }
-const assetsDir = join(root, 'assets');
-if (existsSync(assetsDir)) {
-  copyDirRecursive(assetsDir, join(www, 'assets'));
-}
+console.log('copied ' + uniqueAssets.length + ' runtime assets (' + (copiedBytes/1024/1024).toFixed(1) + ' MB)');
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)
 let html = readFileSync(join(root, 'index.html'), 'utf8');
