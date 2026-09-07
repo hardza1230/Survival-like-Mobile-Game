@@ -15,9 +15,13 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.9.4';
+const GAME_VERSION = '1.9.5';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.9.5', date:'2026-09-07', title:'เข้าเกมไวขึ้น + หน้าโหลดบอกสถานะจริง', items:[
+    'โหลดเฉพาะเพลงเมนูตอนเปิดเกม ลดข้อมูลและเวลาถอดรหัสเสียงเริ่มต้น',
+    'เพลงประจำด่านโหลดเมื่อเลือกด่าน พร้อมแสดงความคืบหน้าบนหน้าเตรียมด่าน',
+    'เพิ่มปุ่มลองใหม่อัตโนมัติเมื่อโหลดนานผิดปกติ โดยไม่ลบเซฟเกม' ] },
   { v:'1.9.4', date:'2026-09-06', title:'โมโม่ Strawberry Fighter — สไปรต์นักสู้ใหม่ครบทุกท่า', items:[
     'เปลี่ยนโมโม่จากตัวขนมก้อนเป็นนักสู้สาว Strawberry ผมชมพู ชุดแดง–ขาว และตาสีเขียว',
     'ครบ 8 ท่าที่เกมใช้จริง: ยืน กะพริบ ย่อ พุ่ง ดีใจ เจ็บ สลบ และร่ายพลังสตรอว์เบอร์รี',
@@ -369,7 +373,11 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
     for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
-    for(const k in ASSET_AUDIO) this.load.audio(k, verUrl(ASSET_AUDIO[k]));
+    // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
+    for(const k in ASSET_AUDIO){
+      if(k.startsWith('bgm_stage'))continue;
+      this.load.audio(k, verUrl(ASSET_AUDIO[k]));
+    }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำรอง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
     this.load.on('loaderror',(f)=>{
       this._loadFailures++;
@@ -1661,6 +1669,28 @@ class Game extends Phaser.Scene {
     this.clearFoes(); this.clearPickups(true); if(this.pipG)this.pipG.clear();
     this.showMenu();
   }
+  ensureStageAudio(idx,done){
+    const key='bgm_stage'+Math.max(1,Math.min(5,(idx||0)+1));
+    const url=ASSET_AUDIO[key];
+    if(!url||this.cache.audio.exists(key)){ done(); return; }
+
+    const loader=window.GameLoader;
+    let finished=false;
+    const finish=()=>{ if(finished)return; finished=true; done(); };
+    this.load.on('progress',(value)=>{
+      if(loader)loader.set(0.08+value*0.24,'กำลังโหลดเพลงประจำด่าน...');
+    });
+    this.load.once('loaderror',(file)=>{
+      if(file&&file.key===key){
+        delete ASSET_AUDIO[key];
+        if(loader)loader.set(0.30,'เพลงโหลดไม่ได้ — ใช้เสียงสำรองแทน');
+      }
+    });
+    this.load.once('complete',finish);
+    this.load.audio(key,verUrl(url));
+    this.load.start();
+  }
+
   startRun(idx){
     if(this.state!=='menu')return;
     idx=idx||0;
@@ -1668,9 +1698,11 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(false);
     if(window.GameLoader)window.GameLoader.show('กำลังเตรียมด่าน...',0.08);
 
-    // แบ่งงานสร้างด่านเป็นช่วงสั้น ๆ เพื่อให้มือถือวาดหน้าโหลดได้และไม่ดูเหมือนเกมค้าง
-    this.time.delayedCall(45,()=>{
-      try{
+    // เพลงหลายด่านเป็นไฟล์ใหญ่ จึงโหลดเฉพาะด่านที่เลือกภายในหน้านี้
+    this.ensureStageAudio(idx,()=>{
+      // แบ่งงานสร้างด่านเป็นช่วงสั้น ๆ เพื่อให้มือถือวาดหน้าโหลดได้และไม่ดูเหมือนเกมค้าง
+      this.time.delayedCall(45,()=>{
+        try{
         if(window.GameLoader)window.GameLoader.set(0.38,'กำลังเตรียมตัวละครและสกิล...');
         this.hudVisible(true);
         this.elapsed=0; this.sugarStage=0; this.sugarRun=0;
@@ -1697,12 +1729,13 @@ class Game extends Phaser.Scene {
             }
           });
         });
-      }catch(err){
-        this.state='menu';
-        if(window.GameLoader)window.GameLoader.hide();
-        this.menu.setVisible(true);
-        throw err;
-      }
+        }catch(err){
+          this.state='menu';
+          if(window.GameLoader)window.GameLoader.hide();
+          this.menu.setVisible(true);
+          throw err;
+        }
+      });
     });
   }
   _busy(){ return this.state==='play'||this.state==='levelup'; }  // ยังเล่นอยู่ (levelup แค่พักชั่วคราว)
