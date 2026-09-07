@@ -263,7 +263,7 @@ const ASSET_IMAGES = {
   mb1:'assets/mb1.png', mb2:'assets/mb2.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // มินิบอส 5 ด่าน
   chest:'assets/chest.png', crate:'assets/crate.png', vac:'assets/vac.png',   // ไอเทม (รูปจริง แทนกราฟิกโค้ด)
   bg1:'assets/bg1.png', bg2:'assets/bg2.png', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png',   // พื้นหลัง 5 โซนครัว
-  fx_chili:'assets/fx_chili.png', fx_frost:'assets/fx_frost.png', fx_hazard:'assets/fx_hazard.png', fx_donut:'assets/fx_donut.png',   // VFX สกิล/telegraph
+  fx_frost:'assets/fx_frost.png', fx_donut:'assets/fx_donut.png',   // VFX รูปจริงที่ผ่านการตรวจ alpha แล้ว
   fx_ult_bomb:'assets/fx_ult_bomb.png', fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
   p_shelf:'assets/p_shelf.png', p_spicerack:'assets/p_spicerack.png', p_cupboard:'assets/p_cupboard.png', p_boxes:'assets/p_boxes.png', p_crate:'assets/p_crate.png', p_sugarbarrel:'assets/p_sugarbarrel.png',   // props ฉากด่าน 1 (คีย์เขียว)
@@ -1806,7 +1806,7 @@ class Game extends Phaser.Scene {
     b.setScale(mScale).setCircle(mArt?52:26, mArt?18:5, mArt?18:5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.95*this.bossHpMul(); b.maxhp=b.hp; b.spd=60; b.dmg=Math.round(st.bossDmg*1.05); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึก+ดุขึ้น
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.atkCd=0.9; b.phase2=false; b.atks=['slam','aimed','radial']; if(this.stageIndex>=1)b.atks.push('spiral','charge'); if(this.stageIndex>=3)b.atks.push('trap','summon');   // มินิดุขึ้น: ท่าเยอะ+ร่ายไว
+    b.atkCd=1.1; b.phase2=false; b.atks=['slam','aimed','radial']; if(this.stageIndex>=2)b.atks.push('charge'); if(this.stageIndex>=4)b.atks.push('summon');   // มินิบอสใช้ชุดท่ากระชับ อ่านง่าย และไม่ทับกันเต็มจอ
     this.boss=b; this.camWorld(b); this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
   }
@@ -2161,18 +2161,26 @@ class Game extends Phaser.Scene {
         b.dmg=(5+lvl*1.6)*dm*(aw?1.5:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.6:1.2; b.pierce=pierce; b.bounce=bounce; if(aw||this.player.twinSprinkle)b.homing=280;
         this.physics.velocityFromRotation(ang,470,b.body.velocity); } Sfx.shoot(); }
     else if(key==='chili'){
+      // CHILLI NOVA REWORK: ระเบิดทันที + สะเก็ดพริก + พื้นที่เผาเป็นจังหวะ
       const isTaro=this.character==='taro';
-      const rings=aw?5:lvl>=6?3:lvl>=3?2:1, baseR=(80+lvl*14)*(cf.firestorm?1.2:1)*(aw?1.7:1)*(isTaro?1.25:1), dmg=(8+lvl*2.4)*dm*(aw?1.6:1), knock=lvl>=4||aw||isTaro;
-      if(this.anims.exists('fx_chilinova')) this.spawnFxAnim('fx_chilinova',this.player.x,this.player.y,{scale:(2*baseR)/ASSET_FX.fx_chilinova.fw,depth:4,anchor:'center',alpha:Math.min(1,0.55+lvl*0.09)});
-      else if(this.textures.exists('fx_chili')) this.fxBurst('fx_chili',this.player.x,this.player.y,baseR,aw?460:360);
-      else for(let ri=0;ri<rings;ri++){ const r=baseR*(1-ri*(aw?0.16:0.26));
-        const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,10,ri%2?0xffb15a:0xff7a4d,0.4).setDepth(3));
-        this.tweens.add({targets:ring,radius:r,alpha:0,duration:300+ri*70,onComplete:()=>ring.destroy()}); }
-      if(lvl>=6||aw||isTaro)this.cameras.main.shake(aw?220:120,aw?0.011:0.005);
-      this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<baseR){
+      const baseR=(92+lvl*15)*(cf.firestorm?1.2:1)*(aw?1.65:1)*(isTaro?1.2:1);
+      const dmg=(9+lvl*2.6)*dm*(aw?1.55:1), knock=lvl>=3||aw||isTaro;
+      const burnPulses=aw?4:lvl>=5?3:2, burnDmg=dmg*(aw?0.30:0.22);
+      const px=this.player.x, py=this.player.y;
+      this.vfxChilliNova(px,py,baseR,lvl,aw||isTaro);
+      this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<baseR){
         this.damage(e,dmg,e.x,e.y);
-        if(knock&&!e.isBoss){ const a=Math.atan2(e.y-this.player.y,e.x-this.player.x); e.setVelocity(Math.cos(a)*(isTaro?440:300),Math.sin(a)*(isTaro?440:300)); e.knock=0.25; } }});
-      this.hitCratesInRadius(this.player.x,this.player.y,baseR,dmg);
+        if(knock&&!e.isBoss&&!e.isMini){ const a=Math.atan2(e.y-py,e.x-px); e.setVelocity(Math.cos(a)*(isTaro?430:320),Math.sin(a)*(isTaro?430:320)); e.knock=0.28; }
+      }});
+      for(let pulse=1;pulse<=burnPulses;pulse++)this.time.delayedCall(pulse*260,()=>{
+        if(this.state!=='play'&&this.state!=='levelup')return;
+        const rr=baseR*(0.70+pulse*0.04);
+        const ember=this.camWorld(this.add.circle(px,py,rr,0xff3b20,0.035).setDepth(2).setStrokeStyle(3,pulse%2?0xffd166:0xff5a36,0.72));
+        this.tweens.add({targets:ember,alpha:0,scale:1.06,duration:240,onComplete:()=>ember.destroy()});
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<rr)this.damage(e,burnDmg,e.x,e.y); });
+      });
+      this.hitCratesInRadius(px,py,baseR,dmg);
+      if(lvl>=5||aw||isTaro)this.cameras.main.shake(aw?210:120,aw?0.010:0.005);
       Sfx.boom(); }
     else if(key==='thunder'){ const strikes=aw?8:lvl>=6?4:lvl>=4?3:lvl>=2?2:1, chain=aw?3:lvl>=5?2:lvl>=3?1:0, dmg=(10+lvl*3.4)*dm*(cf.storm?1.4:1)*(aw?1.4:1);
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
@@ -2549,21 +2557,35 @@ class Game extends Phaser.Scene {
     if(!b)return null;   // pool เต็ม → ข้ามการยิง กัน null crash
     b.setScale(scale||1.4).setTint(tint||0xff6b8a).setDepth(90000); if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.life=3.0; this.camWorld(b);
     if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
-  // hazard: วงอันตรายบนพื้น (เตือนก่อน → ระเบิด → จาง)
+  // Chilli Nova ใหม่: วงความร้อน 3 ชั้น + สะเก็ดพริกพุ่งรอบทิศ (procedural alpha แท้)
+  vfxChilliNova(x,y,r,lvl,aw){
+    const colors=[0xff3b20,0xff7a24,0xffd166], rings=aw?3:2;
+    const core=this.camWorld(this.add.circle(x,y,18,0xff6a2a,0.32).setDepth(3));
+    this.tweens.add({targets:core,radius:r*0.72,alpha:0,duration:420,ease:'Cubic.out',onComplete:()=>core.destroy()});
+    for(let i=0;i<rings;i++){ const ring=this.camWorld(this.add.circle(x,y,16,0xff5a36,0.04).setDepth(4).setStrokeStyle(7-i*2,colors[i],0.92));
+      this.tweens.add({targets:ring,radius:r*(1-i*0.13),alpha:0,duration:380+i*110,delay:i*55,ease:'Quad.out',onComplete:()=>ring.destroy()}); }
+    const count=(aw?16:10)+Math.min(6,lvl);
+    for(let i=0;i<count;i++){ const a=(i/count)*Math.PI*2+Math.random()*0.10, dist=r*(0.72+Math.random()*0.28);
+      const pepper=this.camWorld(this.add.ellipse(x,y,20,8,i%3===0?0xffd13b:0xff3b24,0.96).setDepth(6).setRotation(a).setStrokeStyle(2,0x7a1515,0.9));
+      const leaf=this.camWorld(this.add.triangle(x,y,0,-5,8,0,0,5,0x68c96f,0.95).setDepth(6).setRotation(a+Math.PI));
+      const dur=300+Math.random()*170, tx=x+Math.cos(a)*dist,ty=y+Math.sin(a)*dist;
+      this.tweens.add({targets:[pepper,leaf],x:tx,y:ty,rotation:a+Math.PI*1.5,alpha:0,scale:0.45,duration:dur,ease:'Quad.out',onComplete:()=>{pepper.destroy();leaf.destroy();}});
+    }
+  }
+  // hazard บอส: วงเตือน vector โปร่งใสจริง → ระเบิดหลัง 760ms
   spawnHazard(x,y,r,dmg,tint){
-    const useArt=this.textures.exists('fx_hazard');
-    let warn;
-    if(useArt){ const base=this.textures.get('fx_hazard').getSourceImage().width||256, sc=(r*2*1.25)/base;
-      warn=this.camWorld(this.add.image(x,y,'fx_hazard').setDepth(2).setScale(sc, sc*0.82).setAlpha(0.5));
-      this.tweens.add({targets:warn,alpha:{from:0.5,to:0.9},scaleX:sc*1.04,duration:260,yoyo:true,repeat:1}); }
-    else { warn=this.camWorld(this.add.circle(x,y,r,tint||0xff5a4d,0.12).setDepth(2).setStrokeStyle(3,tint||0xff5a4d,0.7));
-      this.tweens.add({targets:warn,alpha:{from:0.12,to:0.32},duration:260,yoyo:true,repeat:1}); }
-    this.time.delayedCall(760,()=>{ if(this.state!=='play'&&this.state!=='levelup'){ warn.destroy(); return; }
-      const boom=this.camWorld(this.add.circle(x,y,r,tint||0xff5a4d,0.5).setDepth(2));
-      this.tweens.add({targets:boom,alpha:0,scale:1.15,duration:280,onComplete:()=>boom.destroy()});
-      this.tweens.add({targets:warn,alpha:0,duration:220,onComplete:()=>warn.destroy()});
-      if(this.dist(this.player.x,this.player.y,x,y)<r+8) this.hurtPlayer(dmg,0.5);
-      Sfx.boom(); });
+    const color=tint||0xff5a4d;
+    const warn=this.camWorld(this.add.circle(x,y,r,color,0.07).setDepth(2).setStrokeStyle(4,color,0.82));
+    const inner=this.camWorld(this.add.circle(x,y,r*0.30,color,0.035).setDepth(2).setStrokeStyle(2,0xffe2b8,0.72));
+    this.tweens.add({targets:warn,alpha:{from:0.18,to:0.55},scale:{from:0.94,to:1.03},duration:190,yoyo:true,repeat:1});
+    this.tweens.add({targets:inner,radius:r*0.88,alpha:{from:0.12,to:0.50},duration:700,ease:'Linear'});
+    this.time.delayedCall(760,()=>{ if(this.state!=='play'&&this.state!=='levelup'){ warn.destroy();inner.destroy();return; }
+      const boom=this.camWorld(this.add.circle(x,y,r,color,0.48).setDepth(2).setStrokeStyle(7,0xfff0c8,0.9));
+      this.tweens.add({targets:boom,alpha:0,scale:1.18,duration:280,onComplete:()=>boom.destroy()});
+      this.tweens.add({targets:[warn,inner],alpha:0,duration:180,onComplete:()=>{warn.destroy();inner.destroy();}});
+      if(this.dist(this.player.x,this.player.y,x,y)<r+8)this.hurtPlayer(dmg,0.5);
+      Sfx.boom();
+    });
   }
   /* ---------- BOSS AI: แพทเทิร์นโจมตี + เฟส ---------- */
   bossThink(b,dt){
@@ -2580,8 +2602,7 @@ class Game extends Phaser.Scene {
     if(!b.phase2 && b.hp<=b.maxhp*0.5){ b.phase2=true; b.spd*=1.28; b.atkCd=0.6;
       this.showBanner('🔥 บอสโกรธ!','เฟส 2 — โจมตีดุขึ้น!',1500); this.cameras.main.shake(420,0.014); this.screenFlash(0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');   // ปลดท่าคลื่นสังหาร
-      if(!b._aura){ if(this.anims.exists('fx_enrage')){ b._aura=this.camWorld(this.add.sprite(b.x,b.y,'fx_enrage',0)).setDepth(3).setBlendMode(Phaser.BlendModes.NORMAL); b._aura.play('fx_enrage'); b._auraIsFx=true; }
-        else b._aura=this.camWorld(this.add.circle(b.x,b.y,58,0xff5a4d,0.14).setDepth(3)); }   // ออร่าคลั่งถาวร (AI flipbook ถ้ามี)
+      if(!b._aura)b._aura=this.camWorld(this.add.circle(b.x,b.y,58,0xff3b45,0.09).setDepth(3).setStrokeStyle(4,0xff786f,0.65));   // ออร่าคลั่งโปร่งใสจริง
       for(let i=0;i<2;i++){ const r=this.camWorld(this.add.circle(b.x,b.y,20,0xff5a4d,0).setDepth(6).setStrokeStyle(4,0xff7a5a,0.9));
         this.tweens.add({targets:r,radius:150,alpha:{from:0.9,to:0},duration:500,delay:i*100,onComplete:()=>r.destroy()}); } }
     // เฟส 3 (บอสใหญ่) ตอนเลือด 25% — คลั่ง
@@ -2589,7 +2610,7 @@ class Game extends Phaser.Scene {
       this.showBanner('💢 คลั่งสุดขีด!','เฟสสุดท้าย — ระวังให้ดี!',1600); this.cameras.main.shake(520,0.016); this.screenFlash(0xff2d4a,0.4,500); }
     if(b.atkCd>0)return;
     const atks=b.atks||['slam']; const pick=atks[Math.floor(Math.random()*atks.length)];
-    const dm=1+this.stageIndex*0.12, pw=b.isBoss?1:0.9, fast=b.phase3?0.5:b.phase2?0.7:1;   // มินิแรงขึ้น (0.7→0.9), เฟสดุร่ายไวขึ้น
+    const dm=1+this.stageIndex*0.12, pw=b.isBoss?1:0.9, fast=b.phase3?0.72:b.phase2?0.85:1;   // เว้นจังหวะให้ telegraph จบก่อนเริ่มท่าถัดไป
     if(pick==='slam'){ // สแลม AoE ตรงตำแหน่งผู้เล่น (เตือนก่อน หลบได้) · เฟส 3 = 3 จุด
       const hits=b.phase3?3:1;
       for(let i=0;i<hits;i++){ const tx=this.player.x+Phaser.Math.Between(-i*70,i*70), ty=this.player.y+Phaser.Math.Between(-i*70,i*70);
@@ -2605,19 +2626,24 @@ class Game extends Phaser.Scene {
       const base=Math.atan2(this.player.y-b.y,this.player.x-b.x), shots=b.phase3?7:b.phase2?5:3, spd=210+this.stageIndex*12, dmg=Math.round((10+this.stageIndex*3)*pw);
       for(let s=0;s<shots;s++) this.foeShot(b.x,b.y,base+(s-(shots-1)/2)*0.20,spd,dmg,0xff6b8a);
       Sfx.zap(); b.atkCd=1.3*fast;
-    } else if(pick==='charge'){ // พุ่งชาร์จใส่ผู้เล่น (เตือนด้วยจอวาบ)
-      const ang=Math.atan2(this.player.y-b.y,this.player.x-b.x);
-      b.setTintFill(0xffffff); this.time.delayedCall(260,()=>{ if(!b.active)return; if(b.tintColor)b.setTint(b.tintColor); else b.clearTint();
-        b.setVelocity(Math.cos(ang)*(560+this.stageIndex*20),Math.sin(ang)*(560+this.stageIndex*20)); b.knock=0.45; });
-      b.atkCd=1.9*fast;
-    } else if(pick==='summon'){ // เรียกลูกน้อง
-      if(this.anims.exists('fx_bosssummon')) this.spawnFxAnim('fx_bosssummon',b.x,b.y+30,{scale:2.4,depth:2,anchor:'center'});
-      else if(this.anims.exists('fx_bossportal')) this.spawnFxAnim('fx_bossportal',b.x,b.y+30,{scale:1.6,depth:2,anchor:'center'});
-      const n=2+this.stageIndex+(b.phase3?2:0); for(let i=0;i<n;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
-      Sfx.bossWarn(); b.atkCd=2.3*fast;
+    } else if(pick==='charge'){ // เส้นแดงบอกทิศ 420ms ก่อนพุ่ง — ผู้เล่นอ่านและหลบได้
+      const tx=this.player.x,ty=this.player.y,ang=Math.atan2(ty-b.y,tx-b.x);
+      const aim=this.camWorld(this.add.graphics().setDepth(3));
+      aim.lineStyle(b.isBoss?8:6,0xff3b45,0.68); aim.lineBetween(b.x,b.y,tx,ty);
+      aim.lineStyle(2,0xffe7c2,0.9); aim.lineBetween(b.x,b.y,tx,ty);
+      this.tweens.add({targets:aim,alpha:{from:0.25,to:1},duration:110,yoyo:true,repeat:2,onComplete:()=>aim.destroy()});
+      b.setTintFill(0xffffff); this.time.delayedCall(420,()=>{ if(!b.active)return; if(b.tintColor)b.setTint(b.tintColor); else b.clearTint();
+        b.setVelocity(Math.cos(ang)*(520+this.stageIndex*18),Math.sin(ang)*(520+this.stageIndex*18)); b.knock=0.45; });
+      b.atkCd=2.0*fast;
+    } else if(pick==='summon'){ // วงเรียกลูกน้องแบบสะอาด ไม่มีแถบขาวจาก sprite
+      for(let i=0;i<3;i++){ const portal=this.camWorld(this.add.circle(b.x,b.y+24,18,0x6f35a8,0.08).setDepth(2).setStrokeStyle(4-i,0xc58cff,0.82));
+        this.tweens.add({targets:portal,radius:62+i*14,alpha:0,rotation:Math.PI,duration:620,delay:i*90,onComplete:()=>portal.destroy()}); }
+      const n=2+this.stageIndex+(b.phase3?2:0); this.time.delayedCall(360,()=>{ if(!b.active)return; for(let i=0;i<n;i++)this.spawnEnemy(Math.random()<0.5?'fast':'basic'); });
+      Sfx.bossWarn(); b.atkCd=2.4*fast;
     } else if(pick==='nova'){ // คลื่นสังหารขยายจากบอส — ต้องหลบให้อยู่ในวง/นอกวง
       const px=b.x,py=b.y, maxR=220+this.stageIndex*22; let hitOnce=false;
-      if(this.anims.exists('fx_bossnova')) this.spawnFxAnim('fx_bossnova',px,py,{scale:(2*maxR)/ASSET_FX.fx_bossnova.fw,depth:4,anchor:'center'});
+      for(let i=0;i<3;i++){ const echo=this.camWorld(this.add.circle(px,py,18,0xff315f,0.025).setDepth(3).setStrokeStyle(3,0xff8fb5,0.48));
+        this.tweens.add({targets:echo,radius:maxR,alpha:0,duration:720,delay:i*80,ease:'Quad.out',onComplete:()=>echo.destroy()}); }
       const ring=this.camWorld(this.add.circle(px,py,20,0xff5a7a,0).setDepth(4).setStrokeStyle(7,0xff8fb5,0.95));
       this.tweens.add({targets:ring,radius:maxR,alpha:{from:0.95,to:0},duration:720,ease:'Quad.out',
         onUpdate:()=>{ const rr=ring.radius, d=this.dist(this.player.x,this.player.y,px,py);
