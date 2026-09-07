@@ -15,9 +15,14 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '1.9.7';
+const GAME_VERSION = '1.9.8';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'1.9.8', date:'2026-09-07', title:'Level Design 5 นาที + ประตูบอส + Evolution แบบจับคู่', items:[
+    'รีเวิร์กทุกด่านเป็น 5 เวฟที่มีบทบาทต่างกัน ใช้เวลาราว 5 นาที พร้อมช่วงพักและสัญญาณเตือนมินิบอส/บอส',
+    'ล้มบอสแล้วเกิดประตู ผู้เล่นต้องเดินเข้าเองเพื่อไปด่านถัดไป และรีเซ็ตสกิล/Passive ทุกด่าน',
+    'ขั้นตื่นรู้ต้องมี Skill เลเวลเต็มและ Passive คู่กัน เพิ่มลูกศรชี้บอส/ประตู และทำพร็อพด่าน 1 ชนได้จริง',
+    'แก้ Cream Whirl ให้เหลือเฉพาะกระสุนครีมกระจาย ไม่ซ้อนเอฟเฟกต์ฟัน' ] },
   { v:'1.9.7', date:'2026-09-07', title:'ราชินีมดกรด + Bubble Prison + Cupcake Sentry', items:[
     'Bubble เปลี่ยนเป็น Bubble Prison: จับเป้าหมาย หยุดการเคลื่อนที่ แล้วระเบิดเป็นดาเมจวงกว้าง',
     'Cupcake เปลี่ยนเป็นป้อม Sentry ยิงครีมอัตโนมัติชั่วคราว ก่อนระเบิดปิดท้าย',
@@ -569,6 +574,8 @@ class Boot extends Phaser.Scene {
       if(this.anims.exists(k))continue;
       this.anims.create({ key:k, frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}), frameRate:fx.rate, repeat:fx.loop?-1:0 }); }
 
+    if(this.textures.exists('fx_bossportal')&&!this.anims.exists('portal_idle'))
+      this.anims.create({key:'portal_idle',frames:this.anims.generateFrameNumbers('fx_bossportal',{start:0,end:ASSET_FX.fx_bossportal.frames-1}),frameRate:12,repeat:-1});
     // ---- อนิเมชันศัตรู (walk/attack loop จาก ASSET_SHEETS ที่มี .anim) ----
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!sh.anim)continue;
       if(!this.textures.exists(k)||this.anims.exists(k+'_walk'))continue;
@@ -767,6 +774,19 @@ const COMBOS = [
   { key:'firestorm', a:'chili',    b:'power',  emoji:'🌶️💥', name:'พายุเพลิง',    desc:'วงพริก/ครีมหมุนแรงขึ้น' },
   { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'ลูกกวาดพเนจร', desc:'ลูกกวาด/คุกกี้เด้งเพิ่ม' },
   { key:'fizz',      a:'popcorn',  b:'magnet', emoji:'🍿🧲', name:'โซดาแตกฟอง',   desc:'ป๊อปคอร์น/ฟองแรงขึ้น +25%' },
+  { key:'guardian',  a:'star',     b:'guard',  emoji:'🌟🛡️', name:'วงดาวพิทักษ์', desc:'เงื่อนไขวิวัฒนาการ Star Guard' },
+  { key:'cyclone',   a:'whirl',    b:'haste',  emoji:'🍥⏩', name:'ครีมไซโคลน', desc:'เงื่อนไขวิวัฒนาการ Cream Whirl' },
+  { key:'cookie',    a:'boomer',   b:'swift',  emoji:'🍪👟', name:'คุกกี้ความเร็วสูง', desc:'เงื่อนไขวิวัฒนาการ Boomerang' },
+  { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'พายุเยียวยา', desc:'เงื่อนไขวิวัฒนาการ Frost Pulse' },
+  { key:'prison',    a:'bubble',   b:'guard',  emoji:'🫧🛡️', name:'เรือนจำฟอง', desc:'เงื่อนไขวิวัฒนาการ Bubble Prison' },
+  { key:'garden',    a:'aura',     b:'regen',  emoji:'🌸💗', name:'สวนหวานนิรันดร์', desc:'เงื่อนไขวิวัฒนาการ Sweet Aura' },
+  { key:'cutlery',   a:'fork',     b:'crit',   emoji:'🍴🎯', name:'พายุส้อมแม่นยำ', desc:'เงื่อนไขวิวัฒนาการ Fork Fling' },
+  { key:'bakery',    a:'mine',     b:'haste',  emoji:'🧁⏩', name:'กองทัพเบเกอรี', desc:'เงื่อนไขวิวัฒนาการ Cupcake Sentry' },
+  { key:'sunray',    a:'beam',     b:'power',  emoji:'🔆💥', name:'ลำแสงจักรพรรดิ', desc:'เงื่อนไขวิวัฒนาการ Caramel Beam' },
+  { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'ฝนโดนัทติดตาม', desc:'เงื่อนไขวิวัฒนาการ Donut Drop' },
+  { key:'mist',      a:'cloud',    b:'regen',  emoji:'☕💗', name:'หมอกมอคค่านิรันดร์', desc:'เงื่อนไขวิวัฒนาการ Mocha Mist' },
+  { key:'arsenal',   a:'rocket',   b:'crit',   emoji:'🚀🎯', name:'คลังจรวดลูกกวาด', desc:'เงื่อนไขวิวัฒนาการ Candy Rocket' },
+  { key:'tsunami',   a:'wave',     b:'guard',  emoji:'🌊🛡️', name:'สึนามิครีม', desc:'เงื่อนไขวิวัฒนาการ Cream Wave' },
 ];
 
 /* ---- UPGRADES (ระบบ "พรสวรรค์"): 3 สแตตถาวร HP/ATK/DEF ที่ต้องอัพให้เต็มแล้ว "เลื่อนยศ" ----
@@ -939,19 +959,19 @@ const STAGES = [
     boss:'จักรพรรดินีมดกรดมรกต', bossHp:560, bossDmg:22 },
   { name:'อ่างล้างจาน',  en:'The Sink',    emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
     lore:'น้ำเน่านองเต็มอ่าง ฟองสบู่มีชีวิตพยายามจมโมโม่ให้เปียกโชก',
-    waves:6, miniAt:3, mini:'ฟองสบู่เดือด',
+    waves:5, miniAt:2, mini:'ฟองสบู่เดือด',
     boss:'ปีศาจฟองน้ำ', bossHp:680, bossDmg:24 },
   { name:'เตาไฟ',        en:'The Stove',   emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
     lore:'เปลวไฟลุกโชน กระทะและพริกร้อนระอุเข้าจู่โจมไม่ยั้ง',
-    waves:6, miniAt:3, mini:'กระทะเดือดดาล',
+    waves:5, miniAt:2, mini:'กระทะเดือดดาล',
     boss:'มิสเตอร์เตาปิ้ง', bossHp:1000, bossDmg:28 },
   { name:'ช่องแช่แข็ง',  en:'The Freezer', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
     lore:'ความหนาวเยือกแข็ง โกเลมไอศกรีมตื่นจากน้ำแข็งนิรันดร์',
-    waves:7, miniAt:3, mini:'ก้อนน้ำแข็งยักษ์',
+    waves:5, miniAt:2, mini:'ก้อนน้ำแข็งยักษ์',
     boss:'โกเลมไอศกรีม', bossHp:1400, bossDmg:32 },
   { name:'เตาอบใหญ่',    en:'The Grand Oven', emoji:'👨‍🍳', grid:0x574055, tint:0xff5f97,
     lore:'ใจกลางคำสาป — เชฟขมรอโมโม่อยู่ ทำลายเขาเพื่อปลดปล่อยครัว!',
-    waves:8, miniAt:4, mini:'ผู้ช่วยเชฟหุ่นเหล็ก',
+    waves:5, miniAt:2, mini:'ผู้ช่วยเชฟหุ่นเหล็ก',
     boss:'เชฟขม (The Bitter Chef)', bossHp:2400, bossDmg:38 },
 ];
 
@@ -1007,6 +1027,7 @@ class Game extends Phaser.Scene {
     this.chests=this.physics.add.group({maxSize:6});         // หีบสมบัติ (ดรอปจากบอส → สุ่มสกิล)
     this.vacs  =this.physics.add.group({maxSize:8});         // ไอเทมแม่เหล็ก (ดูดออร์บทั้งจอ)
     this.loots =this.physics.add.group({maxSize:12});        // ของสวมใส่ดรอปในด่าน (low tier)
+    this.portals=this.physics.add.group({maxSize:1});           // ประตูไปด่านถัดไป — ผู้เล่นต้องเดินเข้าเอง
     this.decoProps=this.add.group();                         // props ประดับ (เดินทะลุได้)
     this.solidProps=this.physics.add.staticGroup();          // props แลนด์มาร์ก (ชนได้)
 
@@ -1022,6 +1043,7 @@ class Game extends Phaser.Scene {
     this.physics.add.overlap(this.player,this.chests,this.collectChest,null,this);
     this.physics.add.overlap(this.player,this.vacs,this.collectVac,null,this);
     this.physics.add.overlap(this.player,this.loots,this.collectLoot,null,this);
+    this.physics.add.overlap(this.player,this.portals,this.enterPortal,null,this);
 
     this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';  // ตัวละครที่เลือก (จาก Save)
     const starter=CHARACTERS[this.character].starter||'sprinkle';
@@ -1078,7 +1100,7 @@ class Game extends Phaser.Scene {
     this.uiCam.setZoom(D);
     this.uiCam.centerOn(this.W/2,this.H/2);   // จุดหมุน zoom = กึ่งกลาง UI (พิกัด CSS)
     // แยกสิ่งที่แต่ละกล้องเรนเดอร์
-    this._worldObjs=[this.bgTile,this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots];
+    this._worldObjs=[this.bgTile,this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots,this.portals];
     this.uiCam.ignore(this._worldObjs);
     const ui=[this.vig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.pauseBtn,this.pauseTxt,this.pauseUI,this.fpsTxt,this.menu,this.lvlUp,this.over,this.joyBase,this.joyKnob]
       .concat(this.hudList||[],this.bossUI||[]).filter(Boolean);
@@ -1197,7 +1219,9 @@ class Game extends Phaser.Scene {
       this.fpsTxt.setText(fps+'fps · '+bw+'p · x'+this.DPR); }});
 
     this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt];
-    this.bossUI=[this.bossName,this.bossBgW,this.bossBar];
+    this.objectiveArrow=this.add.text(w/2,pad+112,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
+    this.objectiveDist=this.add.text(w/2,pad+139,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
+    this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.objectiveArrow,this.objectiveDist];
     this.hudList.forEach(o=>o.setVisible(false));
     this.bossUI.forEach(o=>o.setVisible(false));
   }
@@ -1767,13 +1791,16 @@ class Game extends Phaser.Scene {
   buildStageProps(i){
     this.clearStageProps();
     const add=(key,x,y,solid,sc)=>{ if(!this.textures.exists(key))return; sc=sc||1;
-      if(solid){ const s=this.solidProps.create(x,y,key); s.setScale(sc).setDepth(y).refreshBody(); }   // box เต็ม ตำแหน่งถูก (กันวาป) — เล็กลงตาม scale
-      else { const im=this.add.image(x,y,key).setScale(sc).setDepth(y); this.camWorld(im); this.decoProps.add(im); } };
+      const physical=i===0&&key!=='p_flourspill';
+      if(solid||physical){ const s=this.solidProps.create(x,y,key); s.setScale(sc).setDepth(y).refreshBody();
+        if(s.body){const bw=Math.max(24,s.displayWidth*0.72),bh=Math.max(18,s.displayHeight*0.34);s.body.setSize(bw,bh);s.body.setOffset((s.displayWidth-bw)/2,s.displayHeight-bh);}
+      }else{ const im=this.add.image(x,y,key).setScale(sc).setDepth(y); this.camWorld(im); this.decoProps.add(im); }
+    };
     const L=STAGE_PROPS[i]; if(!L)return;
-    for(const p of L) add(p[0],p[1],p[2],p[3],p[4]);
+    for(const p of L)add(p[0],p[1],p[2],p[3],p[4]);
   }
   startStage(i){
-    const st=STAGES[i]; this.stageIndex=i; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;
+    const st=STAGES[i]; this.clearExitPortal(); this.stageIndex=i; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;
     Sfx.playStageBgm(i+1);
     this.bossUI.forEach(o=>o.setVisible(false));
     this.gridBg.fillColor=st.grid;
@@ -1787,6 +1814,9 @@ class Game extends Phaser.Scene {
   updateWaveText(){
     const st=STAGES[this.stageIndex]; if(!st)return;
     if(this.mode==='boss') this.timeTxt.setText('👹 บอสใหญ่');
+    else if(this.mode==='bossWarning') this.timeTxt.setText('⚠️ บอสใหญ่กำลังมา!');
+    else if(this.mode==='miniWarning') this.timeTxt.setText('⚠️ มินิบอสกำลังมา!');
+    else if(this.mode==='portal') this.timeTxt.setText('🌀 เดินเข้าประตูไปด่านถัดไป');
     else if(this.mode==='mini') this.timeTxt.setText('💢 มินิบอส — จัดการให้ได้!');
     else if(this.mode==='breather') this.timeTxt.setText('เวฟถัดไป…');
     else this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer||0))+' วิ');
@@ -1807,38 +1837,38 @@ class Game extends Phaser.Scene {
     // ปลายแถว = บอสใหญ่
     g.fillStyle(0xff5f97,1); g.fillCircle(x0+n*seg+4,y+h/2,4);
   }
-  startWave(w, seamless){
-    const st=STAGES[this.stageIndex]; this.waveIndex=w; this.boss=null;
+  waveProfile(w){
+    const si=this.stageIndex;
+    const profiles=[
+      {name:'เปิดทาง',desc:'ฝูงพื้นฐานค่อย ๆ เข้ามา',dur:48,interval:1.55,batch:2,max:28,types:si===0?['basic','basic','acid']:['basic','basic','fast']},
+      {name:'ฝูงสายฟ้า',desc:'ศัตรูเร็วบุกเป็นกลุ่ม — อย่าหยุดนิ่ง',dur:50,interval:1.05,batch:3,max:42,types:['fast','fast','dasher','basic']},
+      {name:'ผู้คุมด่าน',desc:'มินิบอสพร้อมกองหนุน',dur:0,interval:1.45,batch:2,max:34,types:si===0?['acid','basic','acid']:['basic','shooter','fast']},
+      {name:'กำแพงเหล็ก',desc:'ตัวถึกและแนวยิงไกลบีบพื้นที่',dur:52,interval:1.35,batch:2,max:36,types:si<2?['tank','basic','acid','shooter']:['tank','siege','shooter','basic']},
+      {name:'บททดสอบสุดท้าย',desc:'เวฟผสมก่อนเผชิญหน้าบอส',dur:56,interval:0.92,batch:4,max:52,types:si===0?['acid','dasher','tank','basic']:['fast','dasher','shooter','bomber','tank','siege']}
+    ];
+    return profiles[w]||profiles[profiles.length-1];
+  }
+  startWave(w,seamless){
+    const st=STAGES[this.stageIndex],p=this.waveProfile(w);this.waveIndex=w;this.boss=null;
     this.bossUI.forEach(o=>o.setVisible(false));
-    if(w===st.miniAt){ this.mode='mini'; this.setupSpawnRates(w); this.spawnAcc=this.spawnInterval*1.2; this.spawnMiniBoss(); }
-    else { this.mode='wave'; this.startSurvivalWave(w, seamless); }
+    if(w===st.miniAt){this.mode='miniWarning';this.setupSpawnRates(w);this.updateWaveText();
+      this.showBanner('⚠️ มินิบอสใน 3 วินาที',st.mini+' — เตรียมหาที่ว่างหลบ',2400);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);
+      this.time.delayedCall(2800,()=>{if(this._busy()&&this.mode==='miniWarning')this.spawnMiniBoss();});
+    }else{this.mode='wave';this.startSurvivalWave(w,false);this.showBanner('เวฟ '+(w+1)+' · '+p.name,p.desc,1800);}
     this.updateWaveText();
   }
-  // อัตราเกิดมอนสเตอร์ (ยิ่งด่านลึก/เวฟท้าย = เกิดถี่+เยอะ+เพดานสูง)
   setupSpawnRates(w){
-    const si=this.stageIndex;
-    this.spawnInterval=Math.max(0.42, 1.25 - si*0.1 - w*0.06);   // วินาที/ระลอก
-    this.spawnBatch=3 + si + Math.floor(w*0.7);                   // ตัว/ระลอก
-    this.maxLive=Math.min(100, 50 + si*14 + w*4);                 // เพดานตัวมีชีวิต (กันเครื่องหน่วง)
-    this.eliteEvery=Math.max(5, 10 - si);                        // วินาที/elite
-    this.eliteAcc=this.eliteEvery;
-    if(this.swarmAcc==null) this.swarmAcc=Phaser.Math.FloatBetween(10,16);   // Swarm Event ครั้งแรก
+    const p=this.waveProfile(w),si=this.stageIndex;this.waveTypes=p.types.slice();
+    this.spawnInterval=Math.max(0.72,p.interval-si*0.025);this.spawnBatch=p.batch+Math.floor(si/2);
+    this.maxLive=Math.min(70,p.max+si*3);this.eliteEvery=16+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;
+    this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
-  spawnWaveEnemy(){ let type='basic'; const r=Math.random(), si=this.stageIndex;
-    if(si===0&&r<0.24)type='acid';                 // มดกรดประจำด่าน 1
-    if(si>=1&&r<0.26)type='fast';
-    if(si>=1&&r>=0.26&&r<0.40)type='dasher';    // สายพุ่งโฉบ (บังคับให้หลบ)
-    if(si>=1&&r>0.60&&r<0.72)type='shooter';    // ตัวยิงระยะไกล (พังการ kite)
-    if(si>=2&&r>0.72&&r<0.82)type='bomber';     // ตัวระเบิดตอนตาย
-    if(si>=2&&r>0.90&&r<0.955)type='tank';
-    if(si>=2&&r>=0.955)type='siege';            // ถึกโหด เดินบีบวงล้อม
-    this.spawnEnemy(type); }
-  // Swarm Event: ฝูงมอนแห่กรูเข้ามาจากทุกทิศพร้อมกัน (spawnEnemy สุ่มมุมรอบตัวอยู่แล้ว)
+  spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
   spawnSwarm(){
-    const si=this.stageIndex, n=Math.min(this.maxLive-this.enemies.countActive(true), 14+si*4);
-    if(n<=4)return;
-    for(let i=0;i<n;i++){ const t=Math.random()<0.3?'dasher':(Math.random()<0.5?'fast':'basic'); this.spawnEnemy(t); }
-    this.showBanner('🌊 ฝูงบุก!','ระวังรอบด้าน — หลบให้ดี', 1600); Sfx.bossWarn(); this.cameras.main.shake(200,0.006);
+    const n=Math.min(this.maxLive-this.enemies.countActive(true),10+this.stageIndex*2+this.waveIndex*2);if(n<=4)return;
+    const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['fast','basic'];
+    for(let i=0;i<n;i++)this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));
+    this.showBanner('🌊 ฝูงเสริมบุก!','ระวังรอบด้าน — มีช่องให้ฝ่าออก',1500);Sfx.bossWarn();this.cameras.main.shake(180,0.005);
   }
   spawnElite(){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
@@ -1856,13 +1886,13 @@ class Game extends Phaser.Scene {
   startSurvivalWave(w, seamless){
     const si=this.stageIndex;
     this.setupSpawnRates(w);
-    this.waveDur=Math.round(13 + si*2 + w*1.5);   // วินาทีที่ต้องรอด (ลดลงจากเดิม 20+si*3+w*2 — เดินเรื่องไวขึ้น)
+    this.waveDur=this.waveProfile(w).dur;               // เวฟละ 48–56 วิ รวมบอส/พัก ≈ 5 นาทีต่อด่าน
     this.waveTimer=this.waveDur; this.spawnAcc=0;
     // ระลอกเปิดตัว — เวฟที่ไหลต่อ (seamless) ข้ามการถล่มเปิดตัว เพราะมอนสเตอร์เดิมยังเต็มจออยู่
     if(!seamless){
-      const burst=Math.min(this.maxLive, 12 + si*4 + w*2);
+      const burst=Math.min(this.maxLive, 5 + w*2 + si);
       for(let i=0;i<burst;i++) this.spawnWaveEnemy();
-      if(si>=1) for(let i=0;i<1+Math.floor(si/2);i++) this.spawnElite();
+      if(this.waveAllowsElite) for(let i=0;i<1+Math.floor(si/3);i++)this.spawnElite();
     } else {
       const live=this.enemies.countActive(true);   // เติมให้ถึงราวครึ่งเพดานถ้ามอนเดิมเหลือน้อย
       const fill=Math.max(0, Math.min(this.maxLive, Math.floor(this.maxLive*0.55))-live);
@@ -1881,7 +1911,7 @@ class Game extends Phaser.Scene {
       if(this.spawnAcc<=0){ this.spawnAcc=this.spawnInterval;
         const live=this.enemies.countActive(true);
         if(live<this.maxLive){ const n=Math.min(this.spawnBatch, this.maxLive-live); for(let i=0;i<n;i++) this.spawnWaveEnemy(); } }
-      if(this.stageIndex>=1){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
+      if(this.waveAllowsElite){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
       if(this.swarmAcc!=null){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
       const st=STAGES[this.stageIndex];
       if(st)this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+' วิ');
@@ -1962,21 +1992,41 @@ class Game extends Phaser.Scene {
   clearPickups(alsoHeals){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active){ this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false; } });
     if(alsoHeals){ for(const grp of [this.heals,this.vacs,this.loots,this.chests]){ if(grp)grp.children.iterate(o=>{ if(o&&o.active){ this.tweens.killTweensOf(o); if(o._glow){this.tweens.killTweensOf(o._glow);o._glow.destroy();o._glow=null;} o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; } }); } } }
   onWaveCleared(keep){
-    // keep=true (จบเวลาเวฟธรรมดา) → ไม่ล้างมอนสเตอร์ ให้เวฟถัดไปไหลต่อทันที
-    this.boss=null; Sfx.bgmIntense(false); this.bossUI.forEach(o=>o.setVisible(false)); this.clearFoes(); if(!keep)this.clearEnemies();
-    const st=STAGES[this.stageIndex], next=this.waveIndex+1;
-    this.mode='breather';   // กัน tickStage เกิดมอนต่อระหว่างสลับเวฟ
-    if(next>=st.waves){ this.spawnFinalBoss(); return; }
-    this.clearPickups(false);   // เก็บกล่องที่ไม่ได้ทุบ (ออร์บ/ฟื้นฟูยังอยู่)
-    this.updateWaveText(); this.poseFlash(CF.cheer,600);
-    if(keep&&this.showBanner)this.showBanner('🌊 เวฟ '+(next+1),st.name,1100);
-    this.time.delayedCall(keep?300:750,()=>{ if(this._busy()) this.startWave(next, keep); });
+    this.boss=null;Sfx.bgmIntense(false);this.bossUI.forEach(o=>o.setVisible(false));this.clearFoes();this.clearEnemies();
+    const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
+    if(next>=st.waves){this.mode='bossWarning';this.updateWaveText();this.showBanner('⚠️ บอสใหญ่ใน 3 วินาที',st.boss+' กำลังเข้าสนาม',2600);Sfx.bossWarn();this.screenFlash(0xff315f,0.20,650);
+      this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='bossWarning')this.spawnFinalBoss();});return;}
+    this.showBanner('พักหายใจ 3 วินาที','เวฟ '+(next+1)+' กำลังมา',2400);
+    this.time.delayedCall(3400,()=>{if(this._busy()&&this.mode==='breather')this.startWave(next,false);});
   }
   // บอสตาย → ดรอปหีบสมบัติ + หยุดสปอน รอผู้เล่นเดินไปเก็บ (collectChest → openLevelUp → onStageClear)
-  onBossDown(x,y){ this.boss=null; this.mode='reward'; this.bossUI.forEach(o=>o.setVisible(false));
-    Sfx.bgmIntense(false); this.clearFoes(); this.clearEnemies();
-    this.spawnChest(x,y);
-    this.showBanner('🎁 ล้มบอสแล้ว!','เดินไปเก็บหีบสมบัติเพื่อรับสกิล',2400); }
+  onBossDown(x,y){
+    this.boss=null;this.mode='portal';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bgmIntense(false);this.clearFoes();this.clearEnemies();
+    this.spawnExitPortal(x,y);this.showBanner('🌀 ประตูเปิดแล้ว!','เดินตามลูกศรและเข้าประตูด้วยตัวเอง',2800);
+  }
+  clearExitPortal(){if(!this.portals)return;this.portals.children.iterate(p=>{if(p&&p.active){this.tweens.killTweensOf(p);p.setActive(false).setVisible(false);if(p.body)p.body.enable=false;}});this.portalTarget=null;}
+  spawnExitPortal(x,y){
+    let p=this.portals.getFirstDead(false);if(!p)p=this.portals.create(x,y,'fx_bossportal',0);else{p.setTexture('fx_bossportal',0);p.setActive(true).setVisible(true);if(p.body)p.body.enable=true;p.setPosition(x,y);}
+    if(!p)return;p.used=false;p.setCircle(38,25,25).setScale(1.25).setDepth(y+2);this.camWorld(p);if(this.anims.exists('portal_idle'))p.play('portal_idle',true);
+    this.tweens.add({targets:p,scale:{from:1.08,to:1.34},y:y-10,yoyo:true,repeat:-1,duration:760,ease:'Sine.inOut'});this.portalTarget=p;
+    this.objectiveArrow.setVisible(true);this.objectiveDist.setVisible(true);
+  }
+  enterPortal(player,p){
+    if(!p.active||p.used||this.mode!=='portal')return;p.used=true;this.mode='transition';this.tweens.killTweensOf(p);p.setActive(false).setVisible(false);if(p.body)p.body.enable=false;this.portalTarget=null;
+    const last=this.stageIndex>=STAGES.length-1;Save.addSugar(this.sugarStage);this.gainCharExp(40+this.stageIndex*25);
+    if(!last&&(Save.data.unlockedStage||0)<this.stageIndex+1){Save.data.unlockedStage=this.stageIndex+1;Save.save();}
+    this.screenFlash(0xb98cff,0.75,520);Sfx.clear();
+    if(last){this.time.delayedCall(500,()=>this.victory());return;}
+    const next=this.stageIndex+1;this.time.delayedCall(520,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);});
+  }
+  resetStageLoadout(){
+    this.clearFoes();this.clearEnemies();this.clearPickups(true);this.ringBalls.forEach(b=>b.destroy());this.ringBalls=[];
+    this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});if(this._auraFx){this._auraFx.destroy();this._auraFx=null;}
+    const starter=CHARACTERS[this.character].starter||'sprinkle';this.skills={[starter]:1};this.passives={};this.comboFlags={};this.combosOwned={};
+    this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=3;this.pendingLvl=0;this.sugarStage=0;
+    this.player.maxhp=100;this.player.baseSpeed=210;this.player.pickup=80;this.player.dmgMul=1;this.applyMeta();this.player.hp=this.player.maxhp;
+    this.player.setPosition(0,0).setVelocity(0,0);if(starter==='star')this.rebuildRing();this.buildSkillBar();this.lvlTxt.setText('Lv 1');
+  }
   onStageClear(){
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
@@ -2133,18 +2183,18 @@ class Game extends Phaser.Scene {
       if(cur===0){ if(atkOwned<SKILL_CAP) S(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.skills[key]=1; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
       else if(cur<d.max){ const nx=cur+1, tier=(SKILL_TIERS[key]&&SKILL_TIERS[key][nx])||'แรงขึ้น';
         S(key,nx,d.max,d.emoji,d.name,tier,false,()=>{ this.skills[key]++; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
-      else if(cur===d.max && d.awaken){   // MAX แล้ว → "ตื่นรู้" (Awaken) เปลี่ยนรูปแบบสกิลให้โกง (การันตีโผล่)
+      else if(cur===d.max && d.awaken && COMBOS.some(c=>c.a===key&&(this.passives[c.b]||0)>0)){   // MAX + มี Passive คู่กันเท่านั้นจึงวิวัฒนาการ
         const a=d.awaken;
         A(key,a.emoji,'ตื่นรู้: '+a.name,a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ สกิลตื่นรู้! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
     }
     // --- สกิลติดตัว (passive แบบเลเวลได้) — ตัวใหม่เฉพาะเมื่อยังไม่เต็มโควตา ---
     for(const key in PASSIVES){ const d=PASSIVES[key], cur=this.passives[key]||0;
-      if(cur===0){ if(pasOwned<PASSIVE_CAP) P(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.passives[key]=1; d.apply(this.player); }); }
-      else if(cur<d.max){ P(key,cur+1,d.max,d.emoji,d.name,d.desc,false,()=>{ this.passives[key]++; d.apply(this.player); }); }
+      if(cur===0){ if(pasOwned<PASSIVE_CAP) P(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.passives[key]=1; d.apply(this.player); this.buildSkillBar(); }); }
+      else if(cur<d.max){ P(key,cur+1,d.max,d.emoji,d.name,d.desc,false,()=>{ this.passives[key]++; d.apply(this.player); this.buildSkillBar(); }); }
     }
     Phaser.Utils.Array.Shuffle(skillPool); Phaser.Utils.Array.Shuffle(passPool); Phaser.Utils.Array.Shuffle(awakenPool);
     const out=[];
-    // 1) การันตีสกิลขั้นสุด (Awaken) อย่างน้อย 1 ใบเสมอถ้ามีสิทธิ์ (เดิมเจอยากมาก)
+    // 1) การันตี Evolution เมื่ออาวุธ MAX และถือ Passive คู่กันแล้วเท่านั้น
     if(awakenPool.length) out.push(awakenPool.shift());
     // 2) เติมด้วยสกิลโจมตีเป็นหลัก
     for(const o of skillPool){ if(out.length>=n) break; out.push(o); }
@@ -2303,9 +2353,6 @@ class Game extends Phaser.Scene {
       for(let i=0;i<cnt;i++){ const ang=this.whirlAng+(i/cnt)*Math.PI*2;
         const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.32+lvl*0.018+(aw?0.08:0)); b.setTexture('proj_whirl').setTint(0xffffff); b.spin=true; b.dmg=dmg; b.life=aw?1.3:0.95; b.pierce=pierce; b.hitGapV=0.14;
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); }
-      if(this.textures.exists('fx_slash')&&this.anims.exists('fx_slash')){ const t=this.nearestEnemy(500), sa=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):this.whirlAng;
-        const off=44, sc=(150+lvl*14)/ASSET_FX.fx_slash.fw;
-        this.spawnFxAnim('fx_slash',this.player.x+Math.cos(sa)*off,this.player.y+Math.sin(sa)*off,{rotation:sa,scale:sc,depth:6,anchor:'center'}); }
       Sfx.shoot(); }
     else if(key==='boomer'){ const cnt=aw?6:lvl>=6?4:lvl>=4?3:lvl>=2?2:1, dmg=(8+lvl*2.6)*dm*(aw?1.4:1);
       const big=(1.4+lvl*0.1)*(aw?1.4:1), rebound=lvl>=5||aw; let gap=lvl>=3?0.10:0.16; if(cf.ricochet)gap*=0.7; if(aw)gap*=0.7;
@@ -3052,6 +3099,15 @@ class Game extends Phaser.Scene {
     const hint=this.add.text(w/2,h*0.72,'(แตะตรงไหนก็ได้)',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);
     this.over.add([bg,em,t,stat,btn,bt,hint]); this.over.setVisible(true); }
 
+  updateObjectiveArrow(){
+    const target=(this.boss&&this.boss.active)?this.boss:(this.portalTarget&&this.portalTarget.active?this.portalTarget:null);
+    if(!target){if(this.objectiveArrow)this.objectiveArrow.setVisible(false);if(this.objectiveDist)this.objectiveDist.setVisible(false);return;}
+    const dx=target.x-this.player.x,dy=target.y-this.player.y,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
+    const cx=this.W/2,cy=this.H/2,margin=64,ca=Math.cos(a),sa=Math.sin(a);
+    const tx=Math.abs(ca)>0.001?(cx-margin)/Math.abs(ca):9999,ty=Math.abs(sa)>0.001?(cy-margin-65)/Math.abs(sa):9999,t=Math.min(tx,ty);
+    this.objectiveArrow.setPosition(cx+ca*t,cy+sa*t).setRotation(a).setVisible(true).setColor(this.mode==='portal'?'#c99cff':'#ffef7a');
+    this.objectiveDist.setPosition(cx+ca*t,cy+sa*t+27).setText((this.mode==='portal'?'ประตู ':'BOSS ')+Math.round(d)+'m').setVisible(true);
+  }
   /* ---------- UPDATE ---------- */
   update(time,delta){
     let dt=delta/1000; if(this.state!=='play')return; dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
@@ -3162,6 +3218,7 @@ class Game extends Phaser.Scene {
       this.bossThink(this.boss,dt);
       this.bossBar.width=Math.max(0,(this._barW*0.8-4)*(this.boss.hp/this.boss.maxhp));
     }
+    this.updateObjectiveArrow();
     this.drawBars();
   }
 }
