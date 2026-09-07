@@ -23,8 +23,46 @@
   @media (orientation:landscape) and (max-height: 500px){ #rotate{display:flex;} canvas{visibility:hidden;} }
   #err-box{position:fixed;bottom:20px;left:20px;right:20px;z-index:10000;display:none;background:rgba(30,15,35,0.95);border:2px solid #ff5a7a;border-radius:14px;padding:16px;color:#fff;font-family:sans-serif;text-align:center;}
   #err-box button{margin-top:10px;padding:8px 16px;background:#66d3b3;border:none;border-radius:8px;font-weight:bold;color:#12331f;cursor:pointer;}
+  #game-loader{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 38%,#51334f 0,#2f2439 48%,#211a2a 100%);
+    color:#fff;font-family:system-ui,-apple-system,"Noto Sans Thai",sans-serif;transition:opacity .22s ease;}
+  #game-loader .card{width:min(78vw,360px);text-align:center;}
+  #game-loader .berry{font-size:72px;line-height:1;filter:drop-shadow(0 7px 10px #160d18);
+    animation:berryBounce 1.15s ease-in-out infinite;}
+  #game-loader .title{margin-top:15px;font-size:27px;font-weight:900;color:#ffb5cf;letter-spacing:.3px;}
+  #game-loader .status{min-height:23px;margin-top:10px;font-size:15px;color:#f5e8f0;}
+  #game-loader .track{height:15px;margin-top:16px;padding:3px;border-radius:999px;background:#17121e;
+    box-shadow:inset 0 1px 5px #0008,0 0 0 2px #ffffff18;}
+  #game-loader .fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#ff628f,#ffb04c);
+    box-shadow:0 0 13px #ff718d99;transition:width .18s ease;}
+  #game-loader .percent{margin-top:8px;font-size:13px;font-weight:800;color:#ffd69b;}
+  #game-loader .tip{margin-top:22px;font-size:12px;line-height:1.5;color:#ae9fba;}
+  @keyframes berryBounce{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
 </style>
 <script>
+  window.GameLoader = {
+    show:function(label,progress){
+      var root=document.getElementById('game-loader');
+      if(!root)return;
+      root.style.display='flex'; root.style.pointerEvents='auto';
+      requestAnimationFrame(function(){root.style.opacity='1';});
+      this.set(progress == null ? 0 : progress,label);
+    },
+    set:function(progress,label){
+      var fill=document.getElementById('load-fill'), pct=document.getElementById('load-percent');
+      var status=document.getElementById('load-status');
+      var p=Math.max(0,Math.min(1,Number(progress)||0));
+      if(fill)fill.style.width=Math.round(p*100)+'%';
+      if(pct)pct.textContent=Math.round(p*100)+'%';
+      if(status&&label)status.textContent=label;
+    },
+    hide:function(){
+      var root=document.getElementById('game-loader');
+      if(!root)return;
+      root.style.opacity='0'; root.style.pointerEvents='none';
+      setTimeout(function(){ if(root.style.opacity==='0')root.style.display='none'; },240);
+    }
+  };
   window.addEventListener('error', function(e){
     var box = document.getElementById('err-box');
     var txt = document.getElementById('err-msg');
@@ -33,14 +71,27 @@
       txt.textContent = 'เกิดข้อผิดพลาด: ' + (e.message || e);
     }
   });
+  window.addEventListener('unhandledrejection',function(e){
+    var box=document.getElementById('err-box'), txt=document.getElementById('err-msg');
+    if(box&&txt){ box.style.display='block'; txt.textContent='เปิดเกมไม่สำเร็จ: '+((e.reason&&e.reason.message)||e.reason||'กรุณาลองใหม่'); }
+  });
   function clearCacheAndReload(){
-    try { localStorage.removeItem('mochi_save'); } catch(e){}
-    if('caches' in window){ caches.keys().then(function(names){ for(var n of names) caches.delete(n); }); }
-    window.location.reload(true);
+    if('caches' in window){ caches.keys().then(function(names){ return Promise.all(names.map(function(n){return caches.delete(n);})); }).finally(function(){window.location.reload();}); }
+    else window.location.reload();
   }
 </script>
 </head>
 <body>
+<div id="game-loader" role="status" aria-live="polite">
+  <div class="card">
+    <div class="berry">🍓</div>
+    <div class="title">Mochi Mayhem</div>
+    <div class="status" id="load-status">กำลังเปิดครัวขนม...</div>
+    <div class="track"><div class="fill" id="load-fill"></div></div>
+    <div class="percent" id="load-percent">0%</div>
+    <div class="tip">ครั้งแรกอาจใช้เวลาสักครู่<br>เกมกำลังเตรียมภาพ เสียง และตัวละคร</div>
+  </div>
+</div>
 <div id="rotate">
   <div class="ico">📱</div>
   <div class="t">หมุนจอเป็นแนวตั้ง</div>
