@@ -37,6 +37,8 @@
     box-shadow:0 0 13px #ff718d99;transition:width .18s ease;}
   #game-loader .percent{margin-top:8px;font-size:13px;font-weight:800;color:#ffd69b;}
   #game-loader .tip{margin-top:22px;font-size:12px;line-height:1.5;color:#ae9fba;}
+  #load-retry{display:none;margin:16px auto 0;padding:10px 20px;border:0;border-radius:12px;
+    background:#ff85b3;color:#fff;font-size:14px;font-weight:800;box-shadow:0 5px 14px #120b1488;cursor:pointer;}
   @keyframes berryBounce{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
 </style>
 <script>
@@ -46,6 +48,13 @@
       if(!root)return;
       root.style.display='flex'; root.style.pointerEvents='auto';
       requestAnimationFrame(function(){root.style.opacity='1';});
+      var retry=document.getElementById('load-retry'); if(retry)retry.style.display='none';
+      clearTimeout(this._slowTimer);
+      this._slowTimer=setTimeout(function(){
+        var status=document.getElementById('load-status'), btn=document.getElementById('load-retry');
+        if(status)status.textContent='ใช้เวลานานกว่าปกติ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่';
+        if(btn)btn.style.display='block';
+      },20000);
       this.set(progress == null ? 0 : progress,label);
     },
     set:function(progress,label){
@@ -59,6 +68,7 @@
     hide:function(){
       var root=document.getElementById('game-loader');
       if(!root)return;
+      clearTimeout(this._slowTimer);
       root.style.opacity='0'; root.style.pointerEvents='none';
       setTimeout(function(){ if(root.style.opacity==='0')root.style.display='none'; },240);
     }
@@ -90,6 +100,7 @@
     <div class="track"><div class="fill" id="load-fill"></div></div>
     <div class="percent" id="load-percent">0%</div>
     <div class="tip">ครั้งแรกอาจใช้เวลาสักครู่<br>เกมกำลังเตรียมภาพ เสียง และตัวละคร</div>
+    <button id="load-retry" onclick="clearCacheAndReload()">↻ ลองโหลดใหม่</button>
   </div>
 </div>
 <div id="rotate">
