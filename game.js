@@ -15,9 +15,13 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.0.0';
+const GAME_VERSION = '2.0.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'2.0.1', date:'2026-09-07', title:'Mochi Core × Awakened Fighter', items:[
+    'วางตัวตนใหม่ให้ตัวละครทุกคนมี 2 ร่าง: Core Form โมจิน่ารัก และ Awakened Form นักสู้แบบคน',
+    'เพิ่มคำอธิบายใน Hub และหน้าเลือกตัวละคร เพื่อเชื่อม Strawberry Fighter กับโลก Mochitopia',
+    'คงชื่อ Mochi Mayhem และใช้ FLAVORBOUND เป็นชื่อภาค/แกนเรื่องสำหรับตัวละครสะสมในอนาคต' ] },
   { v:'2.0.0', date:'2026-09-07', title:'รังมดเปรี้ยว + Boss Cinematic 3 เฟส', items:[
     'เปลี่ยนด่าน 1 เป็นถ้ำรังมดเปรี้ยว พร้อมมด 6 วรรณะและวัตถุฉากที่ชนได้จริง',
     'เพิ่ม WARNING กลางจอ กล้องแพนหาบอส ราชินีมุดจากหลุมและคำราม ก่อนแพนกลับมาที่ผู้เล่น',
@@ -707,24 +711,24 @@ const PASSIVES = {
 /* ---- CHARACTERS: แต่ละตัวมีอาวุธโจมตีพื้นฐานเฉพาะตัว (Starter Weapon) + โบนัสสแตต ---- */
 const CHARACTERS = {
   momo: {
-    name:'โมโม่', emoji:'🍡', starter:'sprinkle', weaponName:'Sprinkle Spray 🍬', cost:0, color:0xff9ec4,
-    desc:'สายยิงรัว — เริ่มด้วย Sprinkle Spray ยิงเกล็ดน้ำตาลไล่เป้าเร็ว', bonus:{}
+    name:'โมโม่ · สตรอว์เบอร์รี', emoji:'🍓', starter:'sprinkle', weaponName:'Sprinkle Spray 🍬', cost:0, color:0xff9ec4,
+    desc:'Awakened Fighter จากหัวใจโมจิสตรอว์เบอร์รี — ยิงรัว คล่องตัว และเด้งหลบได้', bonus:{}
   },
   mint: {
     name:'มินต์', emoji:'🌿', starter:'frost', weaponName:'Frost Pulse ❄️', cost:150, color:0x8fd0ff,
-    desc:'สายเย็นอึด (+HP 30) — เริ่มด้วย Frost Pulse แช่แข็งและสโลว์รอบตัว', bonus:{maxhp:30}
+    desc:'Mochi Core รสมินต์ (+HP 30) — ผู้พิทักษ์น้ำแข็งที่ยังรอปลุกร่าง Awakened', bonus:{maxhp:30}
   },
   cocoa:{
     name:'โกโก้', emoji:'🍫', starter:'meteor', weaponName:'Donut Drop 🍩', cost:400, color:0x8b5cf0,
-    desc:'สายระเบิดหนัก (+ดาเมจ 15%) — เริ่มด้วย Donut Drop ทิ้งโดนัทระเบิด AoE', bonus:{dmgMul:1.15}
+    desc:'Mochi Core รสโกโก้ (+ดาเมจ 15%) — จอมพลังที่ยังรอปลุกร่าง Awakened', bonus:{dmgMul:1.15}
   },
   taro: {
     name:'ตาโร่', emoji:'🍠', starter:'chili', weaponName:'Chili Nova 🌶️', cost:250, color:0xb388ff,
-    desc:'เผือกว่องไว (+ความเร็ว 8%) — เริ่มด้วย Chili Nova คลื่นระเบิดพริกผลักศัตรู', bonus:{spd:1.08}
+    desc:'Mochi Core รสเผือก (+ความเร็ว 8%) — นักวิ่งที่ยังรอปลุกร่าง Awakened', bonus:{spd:1.08}
   },
   sesame:{
     name:'งาดำ', emoji:'⚫', starter:'star', weaponName:'Star Guard 🌟', cost:550, color:0x8a8f9c,
-    desc:'นักสู้เกราะหมุน (+HP 20 · ดาเมจ 8%) — เริ่มด้วย Star Guard ดาวคุ้มกันหมุนรอบตัว', bonus:{maxhp:20,dmgMul:1.08}
+    desc:'Mochi Core งาดำ (+HP 20 · ดาเมจ 8%) — อัศวินที่ยังรอปลุกร่าง Awakened', bonus:{maxhp:20,dmgMul:1.08}
   },
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];
@@ -1476,11 +1480,12 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.94).setOrigin(0,0);
     const sugar=this.add.text(w/2,h*0.08,'🍬 Sugar: '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(0.5);
-    const emoji=this.add.text(w/2,h*0.19,'🍡',{fontSize:'60px'}).setOrigin(0.5);
-    const title=this.add.text(w/2,h*0.29,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ff8fb5'}).setOrigin(0.5);
+    const emoji=this.add.text(w/2,h*0.19,'🍡✨',{fontSize:'54px'}).setOrigin(0.5);
+    const title=this.add.text(w/2,h*0.285,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ff8fb5'}).setOrigin(0.5);
+    const subtitle=this.add.text(w/2,h*0.325,'FLAVORBOUND · หัวใจโมจิ ปลุกพลังเป็นนักสู้',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff'}).setOrigin(0.5);
     const ch=CHARACTERS[this.character||'momo'];
-    const charTxt=this.add.text(w/2,h*0.35,`${ch.emoji} ${ch.name} · อาวุธ: ${ch.weaponName}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
-    this.menu.add([bg,sugar,emoji,title,charTxt]);
+    const charTxt=this.add.text(w/2,h*0.36,`${ch.emoji} ${ch.name} · อาวุธ: ${ch.weaponName}`,{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5);
+    this.menu.add([bg,sugar,emoji,title,subtitle,charTxt]);
     // ป้ายเวอร์ชัน (มุมขวาบน) — แตะดูอัปเดต/ดาวน์โหลด
     const vg=this.add.graphics(); vg.fillStyle(0x2c2338,0.9); vg.fillRoundedRect(w-118,12,104,30,10); vg.lineStyle(1.5,0x4a4059,1); vg.strokeRoundedRect(w-118,12,104,30,10);
     const vt=this.add.text(w-66,27,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#bfe8ff'}).setOrigin(0.5);
@@ -1508,7 +1513,9 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildChars(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกตัวละคร');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('นักสู้แห่ง Mochi Core');
+    const formNote=this.add.text(this.W/2,this.H*0.112,'Core Form โมจิเด้งดึ๋ง  ⇄  Awakened Form นักสู้แบบคน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff'}).setOrigin(0.5);
+    this.menu.add(formNote);
     const y0=this.H*0.15;
     CHAR_ORDER.forEach((id,i)=>{ const c=CHARACTERS[id], y=y0+i*92;
       const owned=Save.data.chars.includes(id), selected=Save.data.character===id, afford=(Save.data.sugar||0)>=c.cost;
