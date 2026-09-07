@@ -1908,6 +1908,7 @@ class Game extends Phaser.Scene {
     b.setScale(mScale).setCircle(mArt?52:26, mArt?18:5, mArt?18:5); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*0.95*this.bossHpMul(); b.maxhp=b.hp; b.spd=60; b.dmg=Math.round(st.bossDmg*1.05); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึก+ดุขึ้น
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
+    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=1.1; b.phase2=false; b.atks=['slam','aimed','radial']; if(this.stageIndex>=2)b.atks.push('charge'); if(this.stageIndex>=4)b.atks.push('summon');   // มินิบอสใช้ชุดท่ากระชับ อ่านง่าย และไม่ทับกันเต็มจอ
     this.boss=b; this.camWorld(b); this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
@@ -1924,6 +1925,7 @@ class Game extends Phaser.Scene {
     b.setScale(fScale).setCircle(isArt?54:26, isArt?16:5, isArt?16:5); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul(); b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.35); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึก+แรงขึ้นมาก
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
+    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.8; b.phase2=false; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); } else if(b.anims){ b.anims.stop(); b.setFrame(0); }
     this.boss=b; this.camWorld(b); this.bossName.setText('👹 '+st.boss); this.bossUI.forEach(o=>o.setVisible(true));
@@ -2572,7 +2574,7 @@ class Game extends Phaser.Scene {
       if(this.dist(this.player.x,this.player.y,bx,by)<r) this.hurtPlayer(Math.round(12+this.stageIndex*4),0.5); }
     // เก็บ Sugar (สกุลเงินเมต้า ใช้รอบหน้า)
     const sug=isBoss?40:isMini?18:isElite?4:1; this.sugarStage+=sug; this.sugarRun+=sug;
-    e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.dasher=false; e.siege=false; e.dashState=null; e.clearTint(); e.setScale(1);
+    e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.clearTint(); e.setScale(1);
     if(isBoss){ this.onBossDown(e.x,e.y); return; }   // บอสตาย = ดรอปหีบสมบัติ → เดินเก็บ = สุ่มสกิล → เคลียร์ด่าน
     if(isMini){ this.onWaveCleared(); return; }   // มินิบอสตาย = ผ่านเวฟ (เวฟธรรมดาคุมด้วยเวลาใน tickStage) }
   }
