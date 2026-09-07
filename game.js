@@ -15,9 +15,13 @@ const COLORS = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.0.1';
+const GAME_VERSION = '2.0.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
 const CHANGELOG = [
+  { v:'2.0.2', date:'2026-09-07', title:'Ant Queen Climb + Stage/Boss Music Mix', items:[
+    'ปรับคัตซีนราชินีให้หลุมอยู่ด้านหลัง ใช้ mask ซ่อนลำตัว แล้วค่อย ๆ เกาะขอบและไต่ขึ้นเป็นหลายจังหวะ',
+    'ใช้ Clockmaker’s Tea Break ในด่านรังมด และสลับเป็น Gates of the Calamity เมื่อบอสใหญ่ปรากฏ',
+    'รีมิกซ์ SFX ใหม่: ลด master/volume, เพิ่ม cooldown เสียงถี่, ลดเสียงซ้อน และ duck เพลงเฉพาะเสียงสำคัญ' ] },
   { v:'2.0.1', date:'2026-09-07', title:'Mochi Core × Awakened Fighter', items:[
     'วางตัวตนใหม่ให้ตัวละครทุกคนมี 2 ร่าง: Core Form โมจิน่ารัก และ Awakened Form นักสู้แบบคน',
     'เพิ่มคำอธิบายใน Hub และหน้าเลือกตัวละคร เพื่อเชื่อม Strawberry Fighter กับโลก Mochitopia',
@@ -148,7 +152,7 @@ const Sfx = {
     if(this.ctx) return this.ctx;
     const AC=window.AudioContext||window.webkitAudioContext; if(!AC)return null;
     this.ctx=new AC();
-    this.master=this.ctx.createGain(); this.master.gain.value=0.35; this.master.connect(this.ctx.destination);
+    this.master=this.ctx.createGain(); this.master.gain.value=0.24; this.master.connect(this.ctx.destination);
     const len=Math.floor(this.ctx.sampleRate*0.4), buf=this.ctx.createBuffer(1,len,this.ctx.sampleRate), d=buf.getChannelData(0);
     for(let i=0;i<len;i++) d[i]=Math.random()*2-1; this._noise=buf;
     return this.ctx;
@@ -156,20 +160,20 @@ const Sfx = {
   unlock(){ this.ensure(); if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume(); if(!this._currentBgm)this.playMainBgm(); },
   toggle(){
     this.muted=!this.muted;
-    if(this.master)this.master.gain.value=this.muted?0:0.35;
+    if(this.master)this.master.gain.value=this.muted?0:0.24;
     if(window.__g && window.__g.sound) window.__g.sound.mute=this.muted;
     return this.muted;
   },
   _ok(key,gap){ const t=(this.ctx?this.ctx.currentTime:0); if((this._last[key]||-9)+gap>t)return false; this._last[key]=t; return true; },
   playFile(key, vol=0.5){
-    if(this.muted) return false;
-    try {
-      if(window.__g && window.__g.cache && window.__g.cache.audio && window.__g.cache.audio.exists(key)){
-        window.__g.sound.play(key, { volume: vol });
-        return true;
-      }
-    } catch(e){}
+    if(this.muted)return false;
+    try{if(window.__g&&window.__g.cache&&window.__g.cache.audio&&window.__g.cache.audio.exists(key)){window.__g.sound.play(key,{volume:Math.min(0.42,vol*0.68)});return true;}}catch(e){}
     return false;
+  },
+  duckBgm(ms=520,amount=0.48){
+    const bg=this._currentBgm;if(!bg||!bg.isPlaying||this.muted)return;
+    const normal=this._bgmIntense?0.34:(this._currentBgmKey==='bgm_main'?0.28:0.30);bg.setVolume(normal*amount);clearTimeout(this._duckTimer);
+    this._duckTimer=setTimeout(()=>{if(bg===this._currentBgm&&bg.isPlaying)bg.setVolume(this.muted?0:normal);},ms);
   },
   tone(freq,dur,type='sine',vol=0.3,slideTo=0,delay=0){
     if(!this.ctx||this.muted)return;
@@ -191,57 +195,37 @@ const Sfx = {
   },
   seq(notes,type='triangle',vol=0.26,step=0.1){ notes.forEach((f,i)=>this.tone(f,step*1.7,type,vol,0,i*step)); },
 
-  // --- เสียงเอฟเฟกต์ (SFX) ---
-  shoot(){ if(this._ok('shoot',0.05)){ if(!this.playFile('sfx_shoot', 0.45)) this.tone(880,0.05,'triangle',0.07,1500); } },
-  pop(){ if(this._ok('pop',0.03)){ if(!this.playFile('sfx_hit', 0.4)) this.tone(560,0.09,'square',0.13,200); } },
-  xp(){ if(this._ok('xp',0.09)){ if(!this.playFile('sfx_xp', 0.16)) this.tone(700,0.06,'sine',0.07,1040); } },
-  hurt(){ if(!this.playFile('sfx_hit', 0.6)) this.tone(320,0.18,'sawtooth',0.2,90); },
-  dash(){ if(!this.playFile('sfx_dash', 0.6)){ this.noise(0.16,0.12,0,true); this.tone(620,0.14,'sine',0.09,1150); } },
-  ult(type){
-    if(type==='vortex' && this.playFile('sfx_ult_vortex', 0.7)) return;
-    if(!this.playFile('sfx_ult_bomb', 0.7)) this.seq([660,880,1180],'triangle',0.2,0.06);
-  },
-  zap(){ if(this._ok('zap',0.05)){ if(!this.playFile('sfx_donut', 0.5)){ this.noise(0.07,0.13,0,true); this.tone(1550,0.09,'square',0.1,420); } } },
-  boom(){ if(this._ok('boom',0.08)){ if(!this.playFile('sfx_chili', 0.6)){ this.noise(0.2,0.16); this.tone(170,0.22,'sine',0.16,60); } } },
-  frost(){ if(this._ok('frost',0.1)){ if(!this.playFile('sfx_frost', 0.6)) this.seq([1200,1500,1900],'sine',0.12,0.05); } },
-  levelup(){ if(!this.playFile('sfx_levelup', 0.65)) this.seq([523,659,784,1047],'triangle',0.24,0.1); },
-  chest(){ if(!this.playFile('sfx_chest', 0.7)) this.seq([587,740,880,1175],'triangle',0.25,0.09); },
-  select(){ if(!this.playFile('sfx_btn', 0.5)) this.tone(920,0.08,'square',0.17,1360); },
-  bossWarn(){ if(!this.playFile('sfx_hazard', 0.7)){ this.tone(120,0.5,'sawtooth',0.22,70); this.tone(90,0.6,'square',0.13,0,0.1); } },
-  clear(){ if(!this.playFile('sfx_levelup', 0.6)) this.seq([659,784,1047,1319],'triangle',0.24,0.12); },
-  victory(){ this.seq([523,659,784,1047,1319,1568],'triangle',0.28,0.14); },
-  dead(){ this.seq([440,349,262,196],'sawtooth',0.2,0.14); },
-  heal(){ if(this._ok('heal',0.1)) this.seq([784,988,1319],'sine',0.16,0.06); },
+  // --- SFX mix: เสียงถี่เบา/ห่างขึ้น และเสียงสำคัญ duck เพลงชั่วคราว ---
+  shoot(){if(this._ok('shoot',0.12)){if(!this.playFile('sfx_shoot',0.25))this.tone(920,0.045,'triangle',0.035,1280);}},
+  pop(){if(this._ok('pop',0.11)){if(!this.playFile('sfx_hit',0.22))this.tone(430,0.055,'sine',0.045,240);}},
+  xp(){if(this._ok('xp',0.16)){if(!this.playFile('sfx_xp',0.16))this.tone(760,0.05,'sine',0.035,1020);}},
+  hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
+  dash(){if(this._ok('dash',0.25)){if(!this.playFile('sfx_dash',0.34))this.noise(0.11,0.055,0,true);}},
+  ult(type){if(!this._ok('ult',0.5))return;this.duckBgm(650,0.42);if(type==='vortex'&&this.playFile('sfx_ult_vortex',0.48))return;if(!this.playFile('sfx_ult_bomb',0.48))this.seq([660,880,1180],'triangle',0.10,0.07);},
+  zap(){if(this._ok('zap',0.18)){if(!this.playFile('sfx_donut',0.28))this.tone(1250,0.07,'triangle',0.055,540);}},
+  boom(){if(this._ok('boom',0.24)){if(!this.playFile('sfx_chili',0.38))this.tone(150,0.18,'sine',0.08,65);}},
+  frost(){if(this._ok('frost',0.24)){if(!this.playFile('sfx_frost',0.34))this.seq([1050,1450],'sine',0.055,0.06);}},
+  levelup(){if(!this._ok('levelup',0.6))return;this.duckBgm(650,0.45);if(!this.playFile('sfx_levelup',0.46))this.seq([523,659,784,1047],'triangle',0.12,0.1);},
+  chest(){if(!this._ok('chest',0.7))return;this.duckBgm(700,0.42);if(!this.playFile('sfx_chest',0.48))this.seq([587,740,880,1175],'triangle',0.12,0.09);},
+  select(){if(this._ok('select',0.16)&&!this.playFile('sfx_btn',0.28))this.tone(880,0.055,'sine',0.055,1200);},
+  bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
+  clear(){if(!this._ok('clear',0.8))return;this.duckBgm(650,0.48);if(!this.playFile('sfx_levelup',0.42))this.seq([659,784,1047],'triangle',0.11,0.12);},
+  victory(){this.duckBgm(1000,0.3);this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
+  dead(){this.duckBgm(900,0.3);this.seq([392,311,247,196],'sine',0.10,0.14);},
+  heal(){if(this._ok('heal',0.28))this.seq([784,988,1319],'sine',0.07,0.06);},
 
   // ===== เพลงพื้นหลัง (BGM จริง + สังเคราะห์ fallback) =====
-  playStageBgm(stageNum=1){
-    const key = 'bgm_stage' + Math.max(1, Math.min(5, stageNum));
-    if(this._currentBgmKey === key && this._currentBgm && this._currentBgm.isPlaying) return;
-    this.stopBgm();
-    if(window.__g && window.__g.cache && window.__g.cache.audio && window.__g.cache.audio.exists(key)){
-      try {
-        this._currentBgm = window.__g.sound.add(key, { loop:true, volume: this.muted?0:0.45 });
-        this._currentBgm.play();
-        this._currentBgmKey = key;
-        return;
-      } catch(e){}
-    }
-    this.startBgm();
+  _playTrack(key,volume){
+    if(this._currentBgmKey===key&&this._currentBgm&&this._currentBgm.isPlaying){this._currentBgm.setVolume(this.muted?0:volume);return true;}
+    if(!(window.__g&&window.__g.cache&&window.__g.cache.audio&&window.__g.cache.audio.exists(key)))return false;
+    const old=this._currentBgm;try{const next=window.__g.sound.add(key,{loop:true,volume:0});next.play();this._currentBgm=next;this._currentBgmKey=key;
+      if(window.__g.tweens)window.__g.tweens.add({targets:next,volume:this.muted?0:volume,duration:650,ease:'Sine.inOut'});else next.setVolume(this.muted?0:volume);
+      if(old){if(window.__g.tweens)window.__g.tweens.add({targets:old,volume:0,duration:480,onComplete:()=>{try{old.stop();old.destroy();}catch(e){}}});else{old.stop();old.destroy();}}return true;
+    }catch(e){return false;}
   },
-  playMainBgm(){
-    const key = 'bgm_main';
-    if(this._currentBgmKey === key && this._currentBgm && this._currentBgm.isPlaying) return;
-    this.stopBgm();
-    if(window.__g && window.__g.cache && window.__g.cache.audio && window.__g.cache.audio.exists(key)){
-      try {
-        this._currentBgm = window.__g.sound.add(key, { loop:true, volume: this.muted?0:0.45 });
-        this._currentBgm.play();
-        this._currentBgmKey = key;
-        return;
-      } catch(e){}
-    }
-    this.startBgm();
-  },
+  playStageBgm(stageNum=1){const key='bgm_stage'+Math.max(1,Math.min(5,stageNum));this._bgmIntense=false;if(!this._playTrack(key,0.30)){this.stopBgm();this.startBgm();}},
+  playBossBgm(stageNum=1){const key='bgm_boss'+Math.max(1,Math.min(5,stageNum));this._bgmIntense=true;if(!this._playTrack(key,0.34))this.bgmIntense(true);},
+  playMainBgm(){this._bgmIntense=false;if(!this._playTrack('bgm_main',0.28)){this.stopBgm();this.startBgm();}},
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
   _bgmNote(freq,dur,type,vol,delay){ if(!this.ctx||!this._bgmGain)return;
     const t0=this.ctx.currentTime+delay, o=this.ctx.createOscillator(), g=this.ctx.createGain();
@@ -255,7 +239,7 @@ const Sfx = {
     if(this._currentBgm){ try{ this._currentBgm.stop(); this._currentBgm.destroy(); }catch(e){} this._currentBgm=null; this._currentBgmKey=''; }
     if(this._bgmTimer){ clearTimeout(this._bgmTimer); this._bgmTimer=null; }
   },
-  bgmIntense(on){ this._bgmIntense=!!on; if(this._currentBgm && this._currentBgm.isPlaying){ this._currentBgm.setVolume(this.muted?0:(on?0.55:0.45)); } },
+  bgmIntense(on){this._bgmIntense=!!on;if(this._currentBgm&&this._currentBgm.isPlaying)this._currentBgm.setVolume(this.muted?0:(on?0.34:(this._currentBgmKey==='bgm_main'?0.28:0.30)));},
   _bgmLoop(){
     const roots=[130.81,110.00,174.61,196.00];
     const root=roots[this._bgmStep%roots.length];
@@ -382,7 +366,8 @@ const ASSET_AUDIO = {
   sfx_donut:      'assets/audio/sfx_vfx_proj_donut.wav',
   sfx_hazard:     'assets/audio/sfx_vfx_telegraph_hazard.wav',
   bgm_main:       'assets/audio/bgm/bgm_main_theme.wav',
-  bgm_stage1:     'assets/audio/bgm/bgm_stage1_pantry.wav',
+  bgm_stage1:     'assets/audio/bgm/clockmakers_tea_break.mp3',
+  bgm_boss1:      'assets/audio/bgm/gates_of_the_calamity.mp3',
   bgm_stage2:     'assets/audio/bgm/bgm_stage2_sink.wav',
   bgm_stage3:     'assets/audio/bgm/bgm_stage3_stove.wav',
   bgm_stage4:     'assets/audio/bgm/bgm_stage4_freezer.wav',
@@ -416,7 +401,7 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
-      if(k.startsWith('bgm_stage'))continue;
+      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss'))continue;
       this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำรอง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
@@ -1735,25 +1720,12 @@ class Game extends Phaser.Scene {
     this.showMenu();
   }
   ensureStageAudio(idx,done){
-    const key='bgm_stage'+Math.max(1,Math.min(5,(idx||0)+1));
-    const url=ASSET_AUDIO[key];
-    if(!url||this.cache.audio.exists(key)){ done(); return; }
-
-    const loader=window.GameLoader;
-    let finished=false;
-    const finish=()=>{ if(finished)return; finished=true; done(); };
-    this.load.on('progress',(value)=>{
-      if(loader)loader.set(0.08+value*0.24,'กำลังโหลดเพลงประจำด่าน...');
-    });
-    this.load.once('loaderror',(file)=>{
-      if(file&&file.key===key){
-        delete ASSET_AUDIO[key];
-        if(loader)loader.set(0.30,'เพลงโหลดไม่ได้ — ใช้เสียงสำรองแทน');
-      }
-    });
-    this.load.once('complete',finish);
-    this.load.audio(key,verUrl(url));
-    this.load.start();
+    const stage=Math.max(1,Math.min(5,(idx||0)+1)),keys=['bgm_stage'+stage];if(stage===1)keys.push('bgm_boss1');
+    const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
+    const loader=window.GameLoader;let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
+    this.load.on('progress',value=>{if(loader)loader.set(0.08+value*0.24,'กำลังโหลดเพลงด่านและเพลงบอส...');});
+    this.load.on('loaderror',file=>{if(file&&pending.includes(file.key)){delete ASSET_AUDIO[file.key];if(loader)loader.set(0.30,'เพลงบางไฟล์โหลดไม่ได้ — ใช้เสียงสำรองแทน');}});
+    this.load.once('complete',finish);pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
   }
 
   startRun(idx){
@@ -1984,26 +1956,26 @@ class Game extends Phaser.Scene {
   }
   // ฉากปรากฏตัวบอส: WARNING → แพนหา → โผล่จากหลุม/คำราม → แพนกลับ
   bossIntro(b,name){
-    const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55;
-    this.state='cinematic'; this.mode='bossIntro'; this.player.setVelocity(0,0); b.setVelocity(0,0);
-    b.setVisible(false).setScale(base*0.28); if(b.body)b.body.enable=false;
-    Sfx.bossWarn(); Sfx.bgmIntense(true);
+    const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y,holeY=targetY+72;
+    this.state='cinematic';this.mode='bossIntro';this.player.setVelocity(0,0);b.setVelocity(0,0);b.setVisible(false).setScale(base*0.82).setDepth(targetY+1);if(b.body)b.body.enable=false;
+    Sfx.playBossBgm(this.stageIndex+1);Sfx.bossWarn();
     const band=this.add.rectangle(this.W/2,this.H/2,this.W,128,0x17090d,0.92).setScrollFactor(1).setDepth(120);
     const warn=this.add.text(this.W/2,this.H/2-18,'⚠  W A R N I N G  ⚠',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff355e',stroke:'#41000e',strokeThickness:7}).setOrigin(0.5).setScrollFactor(1).setDepth(121);
     const sub=this.add.text(this.W/2,this.H/2+27,name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff1a8'}).setOrigin(0.5).setScrollFactor(1).setDepth(121);
-    [band,warn,sub].forEach(o=>this.camUI(o)); this.tweens.add({targets:[band,warn,sub],alpha:{from:0,to:1},duration:180,yoyo:true,hold:760,onComplete:()=>{band.destroy();warn.destroy();sub.destroy();}});
-    cam.stopFollow(); this.time.delayedCall(850,()=>{cam.pan(b.x,b.y,850,'Sine.easeInOut');});
-    this.time.delayedCall(1600,()=>{
-      if(!b.active)return; const hole=this.camWorld(this.add.image(b.x,b.y+42,'nest_hole').setScale(0.82).setDepth(b.y-2));
-      this.tweens.add({targets:hole,scale:{from:0.35,to:0.9},alpha:{from:0.35,to:1},duration:360,ease:'Back.out'});
-      b.setVisible(true).setAlpha(0).setScale(base*0.35).setY(b.y+70); this.bossPose(b,2,620);
-      this.tweens.add({targets:b,y:b.y-70,alpha:1,scale:base,duration:680,ease:'Back.out',onComplete:()=>{
-        this.bossPose(b,6,1050); this.cameras.main.shake(520,0.018); this.screenFlash(0x9dff45,0.34,420);
-        for(let i=0;i<3;i++){const r=this.camWorld(this.add.circle(b.x,b.y,25,0,0).setDepth(6).setStrokeStyle(5,0x9dff45,0.9));this.tweens.add({targets:r,radius:190+i*55,alpha:0,duration:650+i*100,delay:i*90,onComplete:()=>r.destroy()});}
-      }});
+    [band,warn,sub].forEach(o=>this.camUI(o));this.tweens.add({targets:[band,warn,sub],alpha:{from:0,to:1},duration:180,yoyo:true,hold:760,onComplete:()=>{band.destroy();warn.destroy();sub.destroy();}});
+    cam.stopFollow();this.time.delayedCall(850,()=>cam.pan(b.x,targetY,850,'Sine.easeInOut'));
+    this.time.delayedCall(1600,()=>{if(!b.active)return;
+      const hole=this.camWorld(this.add.image(b.x,holeY,'nest_hole').setScale(0.88).setDepth(targetY-5).setAlpha(0));
+      const lip=this.camWorld(this.add.graphics().setDepth(targetY+2));lip.lineStyle(7,0x3b2418,0.95);lip.beginPath();lip.arc(b.x,holeY+12,72,0.08*Math.PI,0.92*Math.PI,false);lip.strokePath();
+      this.decoProps.add(hole);this.decoProps.add(lip);this.tweens.add({targets:hole,alpha:1,scale:{from:0.45,to:0.88},duration:380,ease:'Sine.out'});
+      const maskShape=this.make.graphics({x:0,y:0,add:false});maskShape.fillStyle(0xffffff);maskShape.fillRect(-WORLD,-WORLD,WORLD*2,holeY+18+WORLD);b.setMask(maskShape.createGeometryMask());
+      b.setVisible(true).setAlpha(1).setPosition(b.x,holeY+104).setScale(base*0.82);this.bossPose(b,1,520);
+      this.time.delayedCall(180,()=>{if(!b.active)return;this.vfxSpawnPoof(b.x-42,holeY+8);this.tweens.add({targets:b,y:holeY+64,x:b.x-10,duration:430,ease:'Sine.out',onComplete:()=>{if(b.active)this.bossPose(b,2,600);}});});
+      this.time.delayedCall(650,()=>{if(!b.active)return;this.vfxSpawnPoof(b.x+38,holeY+5);this.tweens.add({targets:b,y:holeY+22,x:b.x+16,scale:base*0.92,duration:520,ease:'Sine.inOut',onComplete:()=>{if(b.active)this.bossPose(b,3,520);}});});
+      this.time.delayedCall(1210,()=>{if(!b.active)return;this.tweens.add({targets:b,y:targetY,x:b.x-6,scale:base,duration:560,ease:'Back.out',onComplete:()=>{if(!b.active)return;b.clearMask(true);this.bossPose(b,6,1050);this.cameras.main.shake(460,0.014);this.screenFlash(0x9dff45,0.28,420);for(let i=0;i<3;i++){const r=this.camWorld(this.add.circle(b.x,b.y,25,0,0).setDepth(6).setStrokeStyle(5,0x9dff45,0.85));this.tweens.add({targets:r,radius:190+i*55,alpha:0,duration:650+i*100,delay:i*90,onComplete:()=>r.destroy()});}}});});
     });
-    this.time.delayedCall(3250,()=>cam.pan(px,py,780,'Sine.easeInOut'));
-    this.time.delayedCall(4050,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.45;this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง!',2200);});
+    this.time.delayedCall(3650,()=>cam.pan(px,py,780,'Sine.easeInOut'));
+    this.time.delayedCall(4450,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.clearMask();b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง!',2200);});
   }
   // จอวาบเต็มหน้าจอ (บนกล้อง UI) — ใช้ตอนบอสปรากฏ/เข้าเฟส/ตาย
   screenFlash(color,alpha,dur){
@@ -2031,7 +2003,7 @@ class Game extends Phaser.Scene {
   }
   // บอสตาย → ดรอปหีบสมบัติ + หยุดสปอน รอผู้เล่นเดินไปเก็บ (collectChest → openLevelUp → onStageClear)
   onBossDown(x,y){
-    this.boss=null;this.mode='portal';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bgmIntense(false);this.clearFoes();this.clearEnemies();this.clearBossObjects();
+    this.boss=null;this.mode='portal';this.bossUI.forEach(o=>o.setVisible(false));Sfx.playStageBgm(this.stageIndex+1);this.clearFoes();this.clearEnemies();this.clearBossObjects();
     this.spawnExitPortal(x,y);this.showBanner('🌀 ประตูเปิดแล้ว!','เดินตามลูกศรและเข้าประตูด้วยตัวเอง',2800);
   }
   clearExitPortal(){if(!this.portals)return;this.portals.children.iterate(p=>{if(p&&p.active){this.tweens.killTweensOf(p);p.setActive(false).setVisible(false);if(p.body)p.body.enable=false;}});this.portalTarget=null;}
