@@ -70,7 +70,7 @@
   · **ระบบ "พรสวรรค์" (แทนอัพเกรดฐาน+ตัดพรสวรรค์เฉพาะตัวออก):** เหลือ 3 สแตต **HP/ATK(flat)/DEF** (ตัด spd/magnet) · อัพให้เต็มทั้ง 3 (Lv `TAL_MAX`=5) → **เลื่อนยศ** (`Save.promote`) rank++ + โบนัส 🍬 · การ์ดรีเซ็ต Lv0 + ราคา ×(1+rank·0.8) · ผลรวมใช้จริง `Save.talTotal(k)`=rank·5+เลเวลรอบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ วนไม่จบ) · `UPGRADES`={hp,dmg,def} base/per, `talCost/talAllMax/talFilled/buyTal/promote`, `rankName()`
   · **ATK = flat damage:** `p.flatDmg` บวกใน `damage()` ทุกครั้งที่โดน (per=2/เลเวล กันเวอร์) · `dmgTakenMul` มีพื้น 0.35 กันเกราะโกง
   · **จบเวฟไม่เคลียร์มอน:** `onWaveCleared(keep)` — เวลาเวฟหมด→`keep=true` (มอนเดิมอยู่ต่อ เวฟถัดไปไหลต่อ, `startSurvivalWave(w,seamless)` ข้ามระลอกเปิดตัว) · มินิ/บอสยังเคลียร์
-  · **ล็อกจอแนวตั้ง (portrait only):** index.html `#rotate` overlay ตอน landscape + `screen.orientation.lock('portrait')`
+  · **ประวัติ:** เคยล็อกจอแนวตั้งใน v1.3.0 แต่ยกเลิกแล้ว — ตั้งแต่ v2.3.2 APK บังคับ `landscape` แบบ native และไม่มี `#rotate` overlay
   · **การ์ดเลเวลอัพใหม่:** แถบบน `drawHeldBar()` โชว์สกิล/พรที่ถือ · การ์ดมี ★ ดาว(เลเวล/max)+ "อีก N ดาวจะตัน" · สีหมวด (โจมตี=ส้ม/ติดตัว=เขียว/ขั้นสุด=ทอง) · แถบคอมโบ "A+B=ผล ✓/✗" · **หน้าหยุดเกมโชว์ `drawHeldBar` ด้วย**
   · dead code เหลือ: `CHAR_TALENTS/charTalents/gainCharExp` (ไม่เรียกใช้แล้ว)
   · **สกิล max = 5 ดาว** (เดิม 6) awaken=Lv6 · **COMBOS = สกิลโจมตี(a)+สกิลติดตัว(b)** (เดิม โจมตี+โจมตี) `checkCombos` เช็ก `skills[a]&&passives[b]` · การ์ดคอมโบโชว์ทั้งฝั่งโจมตี+ติดตัว · **XP โค้งนุ่ม/ไวขึ้น (VS-like):** xpNext เริ่ม 3 ×1.14+2
@@ -163,16 +163,17 @@
   เสียง: ยิง/เก็บ xp/ตีตาย/โดนตี/พุ่ง/อัลติ/ฟ้าผ่า/ระเบิด/แช่แข็ง/เลเวลอัพ/เลือกการ์ด/บอส/เคลียร์/ชนะ/แพ้
   (ปลดล็อกเสียงตอนแตะครั้งแรก `Sfx.unlock()`, เสียงถี่ ๆ มี throttle กันรก)
 
-- **คมชัดบนจอ high-DPI (Retina):** เรนเดอร์ที่ความละเอียดจริง — `RENDER_DPR`=min(devicePixelRatio,2),
-  config `Scale.FIT` ขนาด = จอ×DPR (backing คมชัด) · `this.W/H = scale.width/DPR` (พิกัดยังเป็น CSS px เหมือนเดิม)
-  · **2 กล้อง:** main(โลก, follow, zoom=DPR) + `uiCam`(UI, นิ่ง, zoom=DPR, `centerOn(W/2,H/2)`) ใน `setupCameras()`
-  · UI ต้องเป็น **scrollFactor(1)** (ไม่ใช่ 0 — เพราะ sf0 ไม่รับ zoom) · แยกเรนเดอร์ด้วย `camWorld()`/`camUI()` (ignore)
-  · input แปลงพิกัด `p.x/DPR` เป็น CSS · **หมายเหตุ:** เพิ่ม world FX ใหม่ต้องห่อ `this.camWorld(...)`, UI ใหม่ห่อ `camUI`
+- **คมชัดบนจอ high-DPI (Retina) ตั้งแต่ v2.3.2:** `Scale.RESIZE` ใช้ logical CSS px โดยตรง (`W/H = scale.width/height`, input ไม่หาร DPR)
+  และใช้ `config.resolution=RENDER_DPR` ให้ Phaser ขยาย backing canvas เอง ห้ามคูณ game size หรือ camera zoom ด้วย DPR ซ้ำ
+  · **2 กล้อง:** main(โลก, follow, zoom=`viewZoom`) + `uiCam`(UI, นิ่ง, zoom=1, `centerOn(W/2,H/2)`) ใน `setupCameras()`
+  · UI ใช้ **scrollFactor(1)** และแยกเรนเดอร์ด้วย `camWorld()`/`camUI()` (ignore)
+  · **หมายเหตุ:** เพิ่ม world FX ใหม่ต้องห่อ `this.camWorld(...)`, UI ใหม่ห่อ `camUI`
 
 - **faux-2.5D (โหมดทดลอง `this.iso`=true):** เงาวงรีใต้ทุกตัว (`drawShadows` วาดใน `shadowG` ทุกเฟรม) + จัดลำดับความลึกตามแกน Y (`setDepth(e.y)` สำหรับ player/enemies/crates/heals) · กริดพื้น depth -100000, เงา -99000, กระสุน/ออร์บ depth 8-9หมื่น (ลอยบน) · **ยังเป็นพื้นแบน** — ถ้าจะ 2.5D เต็มต้องอาร์ตมุม ¾ + พื้นเพอร์สเปกทีฟ
 
 ### บั๊กที่เคยเจอ & วิธีแก้ (กันพลาดซ้ำ)
-- **ภาพเบลอบนมือถือ (high-DPI):** RESIZE ล็อก canvas backing = ขนาด CSS → เบลอ. แก้ด้วย FIT+physical size+2กล้อง (ข้างบน)
+- **UI ขยาย 2–2.5 เท่า/เมนูหลุดขอบใน v2.3.1:** `Scale.RESIZE` คืน logical CSS px อยู่แล้ว แต่โค้ดยังคูณ game size และหาร `W/H` ด้วย DPR ตามวิธีเก่า → layout เหลือพื้นที่ครึ่งเดียวแล้วกล้องขยายซ้ำ · แก้ด้วย logical CSS size + `config.resolution` (ข้างบน)
+- **ภาพเบลอบนมือถือ (high-DPI):** อย่าขยาย logical game size เอง ให้ใช้ `config.resolution=RENDER_DPR` เพื่อเพิ่ม backing resolution โดยไม่เปลี่ยน layout/input
 - **scrollFactor(0) ไม่รับ camera zoom** → UI ที่ตั้ง sf0 จะเรนเดอร์ 1:1 (มุมซ้ายบน) เมื่อกล้อง zoom; ต้องใช้ sf1
 - **`camera.ignore(group)` เป็น snapshot** → กลุ่ม (enemies/bullets/orbs) ว่างตอน setup เลยไม่กันสมาชิกที่เกิดทีหลัง
   → ศัตรูเกิดใหม่เรนเดอร์บน uiCam ด้วย = "ภาพซ้อนค้าง". แก้ด้วยเรียก `this.camWorld(obj)` ทุกครั้งที่ spawn (spawnEnemy/getBullet/dropOrb/มินิ/บอส/elite/nova)

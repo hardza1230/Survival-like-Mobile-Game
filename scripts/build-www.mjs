@@ -37,6 +37,12 @@ if (existsSync(join(root, 'download.html'))) {
   console.log('copied download.html');
 }
 
+// PWA/installed web app: เปิดแบบ fullscreen และล็อก landscape ตาม manifest
+if (existsSync(join(root, 'manifest.webmanifest'))) {
+  copyFileSync(join(root, 'manifest.webmanifest'), join(www, 'manifest.webmanifest'));
+  console.log('copied manifest.webmanifest');
+}
+
 // คัดลอกเฉพาะ runtime assets ที่ game.js อ้างจริง ไม่ขน raw/source/ไฟล์ซ้ำทั้ง 86MB เข้า APK และ Pages
 const builtAssets = join(www, 'assets');
 if (existsSync(builtAssets)) rmSync(builtAssets, { recursive:true, force:true });

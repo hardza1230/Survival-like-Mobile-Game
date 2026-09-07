@@ -27,7 +27,7 @@
 | UI บีบและซ้อนกัน | ตำแหน่งเดิมใช้ `h * ratio` หลายชั้น เมื่อพื้นที่จริงประมาณ 768×345 CSS px ระยะห่างจึงหายไป | ออกแบบ layout ต่อหน้าใหม่ โดยยึดความสูงขั้นต่ำ และใช้หลายคอลัมน์แทน vertical stack |
 | ตัวละครเล็ก/ขนาดไม่เท่ากัน | ขนาด canvas ของ sprite ไม่เท่ากับขนาด silhouette ที่มองเห็นจริง | กำหนด optical baseline 90px แล้วชดเชยรายตัว เช่น Mint ×1.08 และ Cocoa ×1.10 |
 | UI เปลี่ยนขนาดแล้วเพี้ยน | Canvas เปลี่ยนตาม viewport แต่ UI ที่สร้างไว้ยังใช้พิกัดเก่า | ฟังทั้ง Phaser resize และ `visualViewport.resize` แล้ว rebuild UI ที่เป็น stateful เช่น Pause และ Level Up |
-| ภาพหรือ input ไม่ตรงตำแหน่ง | เกมเรนเดอร์ด้วย DPR แต่ layout/input ใช้คนละหน่วย | เก็บ `W/H` เป็น CSS pixel (`scale / DPR`) และหาร pointer coordinate ด้วย DPR ก่อน hit test |
+| ภาพหรือ input ไม่ตรงตำแหน่ง | v2.3.1 ใช้ `Scale.RESIZE` แต่ยังคูณ/หาร DPR แบบระบบเดิม ทำให้ UI ถูกขยายซ้ำ | ใช้ `W/H = scale.width/height`, pointer logical coordinate โดยตรง และใช้ `config.resolution` เพิ่มความคมชัด |
 
 ## 3. หลักการ Fullscreen บน Android
 
@@ -46,7 +46,7 @@ Fullscreen ของเว็บและ Fullscreen ของ APK เป็น�
 - รองรับจอมีรอยบากด้วย cutout mode `shortEdges`
 - ตั้ง system bar ให้โปร่งใส
 - เรียก immersive ซ้ำใน `onWindowFocusChanged`
-- บังคับ orientation เป็น `sensorLandscape`
+- บังคับ orientation เป็น `landscape` ทั้ง manifest และ `setRequestedOrientation()` โดยไม่แสดงหน้าขอหมุนจอ
 - ใช้ค่า fullscreen เดียวกันกับ launch/splash theme
 
 > การแก้ `MainActivity`, theme หรือ manifest ต้องติดตั้ง APK ใหม่ การอัปเดต GitHub Pages อย่างเดียวไม่สามารถเปลี่ยน native shell ที่ติดตั้งอยู่ได้
@@ -122,9 +122,9 @@ Fullscreen ของเว็บและ Fullscreen ของ APK เป็น�
 
 ## 7. Phaser, DPR และกล้อง
 
-- Canvas backing resolution ควรคำนึงถึง DPR เพื่อความคมชัด
-- Layout ใช้ CSS pixel เพื่อให้คำนวณง่ายและสอดคล้องกับ viewport
-- Input ต้องแปลงจาก physical pixel เป็น CSS pixel ก่อนตรวจตำแหน่ง
+- ใน `Scale.RESIZE`, `scale.width/height` และ pointer เป็น logical CSS pixel อยู่แล้ว
+- Layout ใช้ `W/H = scale.width/height` และ input ใช้ pointer coordinate โดยตรง
+- ความคมชัดใช้ `config.resolution=RENDER_DPR`; ห้ามคูณ game size หรือ camera zoom ด้วย DPR ซ้ำ
 - UI และ world ควรอยู่คนละกล้อง/มีระบบ ignore ชัดเจน
 - เมื่อสร้าง world object ใหม่ ต้องผูกเข้ากล้อง world ทันที เพราะ `camera.ignore(group)` ไม่ได้ครอบสมาชิกที่เพิ่มทีหลังเสมอไป
 - การปรับ camera zoom เปลี่ยนขนาดที่ผู้เล่นมองเห็นของทั้งโลก ไม่ใช่เฉพาะตัวละคร จึงต้องตรวจศัตรู กระสุน hitbox และระยะมองพร้อมกัน

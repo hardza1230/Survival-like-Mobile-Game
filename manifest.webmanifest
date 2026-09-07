@@ -1,0 +1,10 @@
+{
+  "name": "Mochi Mayhem",
+  "short_name": "Mochi Mayhem",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#241d2e",
+  "theme_color": "#241d2e"
+}

@@ -9,6 +9,7 @@ on:
       - "game.js"
       - "index.html"
       - "download.html"
+      - "manifest.webmanifest"
       - "phaser.min.js"
       - "assets/**"
       - "scripts/**"

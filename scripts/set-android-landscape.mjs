@@ -7,9 +7,9 @@ if (!activity) throw new Error('Main activity tag not found');
 
 let tag = activity[0];
 if (/android:screenOrientation=/.test(tag)) {
-  tag = tag.replace(/android:screenOrientation="[^"]*"/, 'android:screenOrientation="sensorLandscape"');
+  tag = tag.replace(/android:screenOrientation="[^"]*"/, 'android:screenOrientation="landscape"');
 } else {
-  tag = tag.replace('<activity', '<activity\n            android:screenOrientation="sensorLandscape"');
+  tag = tag.replace('<activity', '<activity\n            android:screenOrientation="landscape"');
 }
 xml = xml.replace(activity[0], tag);
 fs.writeFileSync(manifest, xml);
@@ -18,6 +18,7 @@ const activityPath = 'android/app/src/main/java/com/mochimayhem/game/MainActivit
 fs.writeFileSync(activityPath, `package com.mochimayhem.game;
 
 import android.graphics.Color;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -29,24 +30,47 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+        applyImmersiveMode();
+        scheduleImmersiveMode();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        applyImmersiveMode();
+        scheduleImmersiveMode();
+    }
+
+    private void scheduleImmersiveMode() {
+        View decor = getWindow().getDecorView();
+        decor.postDelayed(this::applyImmersiveMode, 80);
+        decor.postDelayed(this::applyImmersiveMode, 400);
+    }
+
+    private void applyImmersiveMode() {
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            getWindow().setStatusBarContrastEnforced(false);
+            getWindow().setNavigationBarContrastEnforced(false);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             WindowManager.LayoutParams attrs = getWindow().getAttributes();
             attrs.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             getWindow().setAttributes(attrs);
         }
-        hideSystemBars();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) hideSystemBars();
-    }
-
-    private void hideSystemBars() {
+        View decor = getWindow().getDecorView();
+        decor.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+            View.SYSTEM_UI_FLAG_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             getWindow().setDecorFitsSystemWindows(false);
             WindowInsetsController controller = getWindow().getInsetsController();
@@ -54,15 +78,15 @@ public class MainActivity extends BridgeActivity {
                 controller.hide(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
                 controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
             }
-        } else {
-            getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            );
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            applyImmersiveMode();
+            scheduleImmersiveMode();
         }
     }
 }
@@ -74,11 +98,16 @@ const fullscreenItems = `
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>`;
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>`;
 for (const styleName of ['AppTheme.NoActionBar', 'AppTheme.NoActionBarLaunch']) {
   const openTag = new RegExp(`(<style\\s+name="${styleName}"[^>]*>)`);
   if (!openTag.test(styles)) throw new Error(`Android style not found: ${styleName}`);
   styles = styles.replace(openTag, `$1${fullscreenItems}`);
 }
 fs.writeFileSync(stylesPath, styles);
-console.log('Android orientation: sensorLandscape + immersive edge-to-edge');
+console.log('Android orientation: forced landscape + immersive edge-to-edge');

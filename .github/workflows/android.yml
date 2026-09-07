@@ -11,6 +11,7 @@ on:
       - "assets/**"
       - "package.json"
       - "capacitor.config.json"
+      - "manifest.webmanifest"
       - "scripts/**"
       - ".github/workflows/android.yml"
     tags: [ "v*" ]
@@ -49,7 +50,7 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
-      - name: Lock gameplay to landscape
+      - name: Force landscape and fullscreen
         run: node scripts/set-android-landscape.mjs
 
       - name: Sync Capacitor
@@ -69,12 +70,15 @@ jobs:
           path: mochi-mayhem-debug.apk
           if-no-files-found: error
 
-      # ออก Release พร้อมไฟล์ APK — โหลดครั้งเดียวจบ (หลังจากนั้นเกมอัพเดตเองจาก Pages)
-      # ทำงานเมื่อ push tag v* (ใช้ชื่อ tag นั้น) หรือกดรันเอง/ตั้งเวลา (ใช้ tag เลื่อน "latest" = APK ล่าสุดเสมอ)
-      - name: Publish Release
-        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+      # สาขาหลักของเกมอัปเดต release tag "latest" ทุก push เพื่อให้ native shell ใหม่ถึงผู้ทดสอบทันที
+      # tag v* ยังสร้าง release แยกรุ่นตามปกติ; workflow_dispatch ใช้ latest เช่นกัน
+      - name: Publish rolling latest APK
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/claude/vampire-survival-mobile-game-yo9e8w'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
           name: ${{ github.ref_type == 'tag' && github.ref_name || 'Mochi Mayhem (APK ล่าสุด)' }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          overwrite_files: true
           files: mochi-mayhem-debug.apk

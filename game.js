@@ -26,9 +26,14 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.3.1';
-const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/latest';
+const GAME_VERSION = '2.3.2';
+const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.3.2', date:'2026-09-08', title:'Forced Landscape + Screen Fit Hotfix', items:[
+    'บังคับ APK เป็นแนวนอนทันทีโดยไม่แสดงหน้าขอให้หมุนจอ',
+    'ซ่อน status/navigation bar ตั้งแต่ก่อน WebView เปิด และเรียก immersive ซ้ำหลังกลับเข้าแอป',
+    'แก้การคำนวณ DPR ของ Phaser RESIZE ที่ทำให้ UI ขยายเกินจอและเมนูด้านขวาหลุดขอบ',
+    'เปลี่ยนลิงก์ดาวน์โหลดให้ชี้ APK rolling latest โดยตรง เพื่อให้ native shell เป็นรุ่นล่าสุดเสมอ' ] },
   { v:'2.3.1', date:'2026-09-07', title:'Landscape UI Repair + True Fullscreen', items:[
     'จัดหน้า Hub, ตัวละคร, ด่าน, พรสวรรค์, อุปกรณ์, สมุดมอนสเตอร์, Pause และการ์ดใหม่สำหรับจอแนวนอน',
     'เปิด Android แบบ immersive edge-to-edge ซ่อน status/navigation bar และรองรับจอมีรอยบาก',
@@ -1054,9 +1059,9 @@ class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
 
   create(){
-    this.DPR=RENDER_DPR;                                   // ตัวคูณความละเอียดจอ
+    this.renderDPR=RENDER_DPR;                             // ใช้เพิ่มความคมชัดเท่านั้น ห้ามนำไปหาร layout/input
     this.viewZoom=0.84;                                    // แนวนอน: ซูมเข้าเล็กน้อยเพื่อให้ตัวละคร/กระสุนอ่านง่าย
-    this.W=this.scale.width/this.DPR; this.H=this.scale.height/this.DPR;  // พิกัดใช้งาน = CSS px (เหมือนเดิม)
+    this.W=this.scale.width; this.H=this.scale.height;      // RESIZE คืน logical CSS px อยู่แล้ว
     this.state='menu'; this.elapsed=0; this.kills=0;
     this.level=1; this.xp=0; this.xpNext=5;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
@@ -1160,15 +1165,15 @@ class Game extends Phaser.Scene {
   // burst ผ่าน emitter ที่ reuse ได้ (ตั้งสีก่อนแล้วพ่น) — fallback เงียบถ้า emitter ไม่พร้อม
   _emit(em,x,y,color,n){ if(!em)return false; if(color!=null&&em.setParticleTint)em.setParticleTint(color); em.emitParticleAt(x,y,n); return true; }
 
-  /* กล้อง 2 ตัว: main=โลก (follow), ui=อินเทอร์เฟซ (คงที่) — ทั้งคู่ zoom=DPR ให้คมชัด
-     พิกัดยังเป็น CSS px แต่ backing เป็นความละเอียดจริงของจอ */
+  /* กล้อง 2 ตัว: main=โลก (follow), ui=อินเทอร์เฟซ (คงที่)
+     พิกัด/กล้องเป็น CSS px; config.resolution ดูแล backing canvas สำหรับจอ high-DPI */
   setupCameras(){
-    const D=this.DPR, fw=this.scale.width, fh=this.scale.height;
-    this.cameras.main.setZoom(D*this.viewZoom);   // ซูมออกตาม viewZoom → มองกว้างขึ้น (แต่ backing ยังคมชัดเต็มจอ)
-    // ui camera: เต็มจอ, zoom D, เลื่อน scroll ให้พิกัด CSS (0..W) เต็มจอพอดี
+    const fw=this.scale.width, fh=this.scale.height;
+    this.cameras.main.setZoom(this.viewZoom);     // ซูมออกตาม viewZoom → มองกว้างขึ้น
+    // ui camera: เต็มจอ logical size และ zoom 1 → bounds ตรงกับ W/H และ input
     this.uiCam=this.cameras.add(0,0,fw,fh);
-    this.uiCam.setZoom(D);
-    this.uiCam.centerOn(this.W/2,this.H/2);   // จุดหมุน zoom = กึ่งกลาง UI (พิกัด CSS)
+    this.uiCam.setZoom(1);
+    this.uiCam.centerOn(this.W/2,this.H/2);
     // แยกสิ่งที่แต่ละกล้องเรนเดอร์
     this._worldObjs=[this.bgTile,this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots,this.portals,this.bossObjects];
     this.uiCam.ignore(this._worldObjs);
@@ -1184,7 +1189,7 @@ class Game extends Phaser.Scene {
   setupInput(){
     this.input.on('pointerdown',(p)=>{
       Sfx.unlock();
-      p={x:p.x/this.DPR,y:p.y/this.DPR,id:p.id};   // แปลงพิกัดจริง → CSS px
+      p={x:p.x,y:p.y,id:p.id};                    // Phaser pointer เป็น logical CSS px อยู่แล้ว
       // mute toggle (มุมขวาบน)
       if(this.muteBtn && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<28){
         const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
@@ -1212,7 +1217,7 @@ class Game extends Phaser.Scene {
     });
     this.input.on('pointermove',(p)=>{
       if(!this.joy.active||p.id!==this.joy.id) return;
-      p={x:p.x/this.DPR,y:p.y/this.DPR,id:p.id};
+      p={x:p.x,y:p.y,id:p.id};
       let dx=p.x-this.joy.bx, dy=p.y-this.joy.by; const len=Math.hypot(dx,dy), max=60;
       if(len>max){ dx=dx/len*max; dy=dy/len*max; }
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
@@ -1287,7 +1292,7 @@ class Game extends Phaser.Scene {
     this.fpsTxt.setVisible(/[?&]debug=1\b/.test(location.search));
     this.time.addEvent({delay:400,loop:true,callback:()=>{ if(!this.fpsTxt)return;
       const fps=Math.round(this.game.loop.actualFps), bw=Math.round(this.scale.width);
-      this.fpsTxt.setText(fps+'fps · '+bw+'p · x'+this.DPR); }});
+      this.fpsTxt.setText(fps+'fps · '+bw+'p · x'+this.renderDPR); }});
 
     this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt];
     this.objectiveArrow=this.add.text(w/2,pad+112,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
@@ -1382,9 +1387,9 @@ class Game extends Phaser.Scene {
   }
 
   onResize(gs){
-    if(!gs)return; const D=this.DPR||1; this.W=gs.width/D; this.H=gs.height/D; const pad=this._pad; this._barW=this.W-2*pad;
-    if(this.cameras&&this.cameras.main){ this.cameras.main.setSize(gs.width,gs.height); this.cameras.main.setZoom(D*(this.viewZoom||1)); }  // กันหมุนจอแล้วกล้องโลกเพี้ยน
-    if(this.uiCam){ this.uiCam.setSize(gs.width,gs.height); this.uiCam.setZoom(D); this.uiCam.centerOn(this.W/2,this.H/2); }
+    if(!gs)return; this.W=gs.width; this.H=gs.height; const pad=this._pad; this._barW=this.W-2*pad;
+    if(this.cameras&&this.cameras.main){ this.cameras.main.setSize(gs.width,gs.height); this.cameras.main.setZoom(this.viewZoom||1); }
+    if(this.uiCam){ this.uiCam.setSize(gs.width,gs.height); this.uiCam.setZoom(1); this.uiCam.centerOn(this.W/2,this.H/2); }
     if(this.vig)this.vig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-58,this.H-78); this.dashTxt.setPosition(this.W-58,this.H-78);
       this.timeTxt.setPosition(this.W/2,pad+30); this.killTxt.setPosition(this.W-pad,pad+32);
@@ -3379,18 +3384,18 @@ class Game extends Phaser.Scene {
   }
 }
 
-// เรนเดอร์ที่ความละเอียดจริงของจอ (แก้ภาพเบลอบน Retina/high-DPI)
-// gameSize = ขนาดจอ × DPR → canvas คมชัด, แล้วชดเชยด้วย camera zoom = DPR
-// 2.5x ยังคมบนจอ 1080p แต่ลด pixel fill ~31% จาก 3x ช่วย Android กลับเข้าใกล้ 60fps
+// logical gameSize = CSS px เสมอ; Phaser ใช้ resolution สร้าง backing canvas คมชัดตาม DPR
+// ห้ามคูณ width/height ด้วย DPR ในโหมด RESIZE เพราะ ScaleManager คืน CSS px อยู่แล้ว
 const RENDER_DPR = Math.max(1, Math.min(window.devicePixelRatio||1, 2.5));
 window.__g = new Phaser.Game({
   type: Phaser.AUTO,
   backgroundColor: '#3a3355',
+  resolution: RENDER_DPR,
   scale: {
     mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.NO_CENTER,
-    width: Math.round(window.innerWidth*RENDER_DPR),
-    height: Math.round(window.innerHeight*RENDER_DPR),
+    width: window.innerWidth,
+    height: window.innerHeight,
   },
   physics: { default:'arcade', arcade:{ gravity:{y:0}, debug:false } },
   render: { antialias:true, roundPixels:false },
@@ -3399,7 +3404,7 @@ window.__g = new Phaser.Game({
 // ปรับขนาดตอนหมุนจอ/เปลี่ยนขนาด — debounce กันค่าเพี้ยนช่วงหมุน + อ่านค่าจริงหลังหมุนเสร็จ
 let _rzT=null;
 function _applyResize(){ const g=window.__g; if(!g||!g.scale)return;
-  const w=Math.round(window.innerWidth*RENDER_DPR), h=Math.round(window.innerHeight*RENDER_DPR);
+  const w=window.innerWidth, h=window.innerHeight;
   g.scale.resize(w,h); g.scale.refresh(); }
 function _scheduleResize(){ clearTimeout(_rzT); _rzT=setTimeout(_applyResize,160); _applyResize(); }
 window.addEventListener('resize', _scheduleResize);

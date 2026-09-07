@@ -65,7 +65,7 @@
 
 | ID | เคส/ข้อกำหนด | Known fix / Regression check |
 |---|---|---|
-| UI-01 | เกมต้องเป็นแนวนอน | Android ใช้ `sensorLandscape`; web ต้องจัด layout แนวนอนจริง ไม่ใช่แค่หมุน viewport |
+| UI-01 | เกมต้องเป็นแนวนอน | Android ใช้ `landscape` แบบ native โดยไม่มีหน้าขอหมุน; PWA manifest ใช้ `orientation: landscape` |
 | UI-02 | มีขอบขาวซ้าย–ขวา | Phaser `RESIZE` + canvas fixed `100vw × 100dvh`; ตรวจ body margin/background/overflow |
 | UI-03 | ต้อง fullscreen ตั้งแต่หน้าโหลดใน APK | native immersive ใน `onCreate()` และ fullscreen ทั้ง main/launch theme |
 | UI-04 | Browser ไม่ fullscreen อัตโนมัติ | Fullscreen API เรียกหลัง first user gesture ตามข้อจำกัด browser |
@@ -74,6 +74,7 @@
 | UI-07 | การ์ด 4 ใบมีข้อความ/ไอคอนซ้อน | จำกัดบรรทัด แยกโซน stars/evolution และตรวจ bounds ทุกใบ |
 | UI-08 | Talent/Gear/Character/Bestiary ล้นจอ | ใช้ layout รายหน้าและทดสอบความสูง 320–345 CSS px |
 | UI-09 | ตัวละคร gameplay ยังเล็ก | ตรวจ optical scale พร้อม world camera zoom, shadow, aura และ hitbox |
+| UI-10 | v2.3.1 UI ขยายเกินจอ/ปุ่มด้านขวาหลุด | `Scale.RESIZE` ต้องใช้ CSS px โดยตรงและแยก DPR ไปไว้ที่ `config.resolution`; ห้ามหาร layout หรือ input ด้วย DPR ซ้ำ |
 
 ## G. State และ Lifecycle ที่ต้องระวัง
 
@@ -113,4 +114,3 @@ Overlay ใหม่ต้องตรวจ active overlay ก่อนเป�
 - [ ] ติดตั้ง APK ใหม่เมื่อมี native change
 - [ ] มีภาพยืนยันจากเครื่องจริงในสัดส่วนอย่างน้อย 16:9 และ 20:9
 - [ ] เพิ่มเคสนี้ใน regression list หากมีโอกาสกลับมาเกิดซ้ำ
-
