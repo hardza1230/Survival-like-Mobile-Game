@@ -354,12 +354,30 @@ function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
   preload(){
+    this._loadFailures=0;
+    const loader=window.GameLoader;
+    if(loader)loader.show('กำลังโหลดภาพ เสียง และตัวละคร...',0);
+    this.load.on('progress',(value)=>{
+      if(loader)loader.set(value,this._loadFailures?'กำลังโหลดต่อ (ข้ามไฟล์ที่มีปัญหา '+this._loadFailures+' ไฟล์)...':'กำลังโหลด asset เกม...');
+    });
+    this.load.on('fileprogress',(file)=>{
+      if(!loader)return;
+      const name=(file&&file.key?String(file.key):'asset').replace(/[_-]+/g,' ');
+      const current=this.load.progress||0;
+      loader.set(current,'กำลังเตรียม '+name+'...');
+    });
     for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
     for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     for(const k in ASSET_AUDIO) this.load.audio(k, verUrl(ASSET_AUDIO[k]));
-    // ถ้ารูป/เสียงโหลดไม่ได้ ให้ข้ามไป ใช้กราฟิก/เสียงสังเคราะห์แทน (ไม่ให้ค้าง)
-    this.load.on('loaderror',(f)=>{ delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_FX[f.key]; delete ASSET_AUDIO[f.key]; });
+    // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำรอง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
+    this.load.on('loaderror',(f)=>{
+      this._loadFailures++;
+      delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_FX[f.key]; delete ASSET_AUDIO[f.key];
+    });
+    this.load.once('complete',()=>{
+      if(loader)loader.set(1,this._loadFailures?'พร้อมเล่น (ใช้ asset สำรอง '+this._loadFailures+' ไฟล์)':'พร้อมเล่น!');
+    });
   }
   create(){
     // สร้าง run cycle 2 ก้าวสำหรับ Strawberry Fighter จากชีตต้นฉบับ:
@@ -574,6 +592,7 @@ class Boot extends Phaser.Scene {
       c.fillStyle='rgba(90,60,30,0.35)'; c.fillRect(w*0.16,h*0.55,w*0.68,3); });
 
     this.scene.start('Game');
+    if(window.GameLoader)window.GameLoader.hide();
   }
 }
 
@@ -1643,20 +1662,48 @@ class Game extends Phaser.Scene {
     this.showMenu();
   }
   startRun(idx){
-    if(this.state!=='menu')return; idx=idx||0;
-    this.menu.setVisible(false); this.hudVisible(true);
-    this.state='play'; this.elapsed=0; this.sugarStage=0; this.sugarRun=0;
-    this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
-    this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
-    const starter=CHARACTERS[this.character].starter||'sprinkle';
-    this.skills={ [starter]: 1 }; this.passives={}; this.swarmAcc=null;   // เริ่มรอบใหม่ = ปลดอาวุธเริ่มต้นประจำตัว Lv1
-    if(this._auraFx){this._auraFx.destroy();this._auraFx=null;} this._auraTick=0;   // ล้างออร่าถาวรจากรอบก่อน
-    this.setGameSpeed(1);   // รีเซ็ตความเร็วเกมทุกรอบ
-    this.player.maxhp=100; this.player.baseSpeed=210; this.player.pickup=80; this.player.dmgMul=1;  // รีเซ็ตสแตตฐาน
-    this.applyMeta();
-    if(starter==='star') this.rebuildRing();
-    this.buildSkillBar();
-    this.startStage(idx);
+    if(this.state!=='menu')return;
+    idx=idx||0;
+    this.state='loading';
+    this.menu.setVisible(false);
+    if(window.GameLoader)window.GameLoader.show('กำลังเตรียมด่าน...',0.08);
+
+    // แบ่งงานสร้างด่านเป็นช่วงสั้น ๆ เพื่อให้มือถือวาดหน้าโหลดได้และไม่ดูเหมือนเกมค้าง
+    this.time.delayedCall(45,()=>{
+      try{
+        if(window.GameLoader)window.GameLoader.set(0.38,'กำลังเตรียมตัวละครและสกิล...');
+        this.hudVisible(true);
+        this.elapsed=0; this.sugarStage=0; this.sugarRun=0;
+        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
+        this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
+        const starter=CHARACTERS[this.character].starter||'sprinkle';
+        this.skills={ [starter]: 1 }; this.passives={}; this.swarmAcc=null;
+        if(this._auraFx){this._auraFx.destroy();this._auraFx=null;} this._auraTick=0;
+        this.setGameSpeed(1);
+        this.player.maxhp=100; this.player.baseSpeed=210; this.player.pickup=80; this.player.dmgMul=1;
+
+        this.time.delayedCall(35,()=>{
+          if(window.GameLoader)window.GameLoader.set(0.72,'กำลังจัดฉากและศัตรู...');
+          this.applyMeta();
+          if(starter==='star')this.rebuildRing();
+          this.buildSkillBar();
+
+          this.time.delayedCall(35,()=>{
+            this.state='play';
+            this.startStage(idx);
+            if(window.GameLoader){
+              window.GameLoader.set(1,'พร้อมลุย!');
+              this.time.delayedCall(140,()=>window.GameLoader.hide());
+            }
+          });
+        });
+      }catch(err){
+        this.state='menu';
+        if(window.GameLoader)window.GameLoader.hide();
+        this.menu.setVisible(true);
+        throw err;
+      }
+    });
   }
   _busy(){ return this.state==='play'||this.state==='levelup'; }  // ยังเล่นอยู่ (levelup แค่พักชั่วคราว)
 
