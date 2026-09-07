@@ -1711,7 +1711,7 @@ class Game extends Phaser.Scene {
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
     this.boss=null; if(this.bossUI)this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
-    this.clearFoes(); this.clearPickups(true); if(this.pipG)this.pipG.clear();
+    this.clearFoes(); this.clearPickups(true); this.clearExitPortal(); if(this.pipG)this.pipG.clear();
     this.showMenu();
   }
   ensureStageAudio(idx,done){
@@ -2017,7 +2017,10 @@ class Game extends Phaser.Scene {
     if(!last&&(Save.data.unlockedStage||0)<this.stageIndex+1){Save.data.unlockedStage=this.stageIndex+1;Save.save();}
     this.screenFlash(0xb98cff,0.75,520);Sfx.clear();
     if(last){this.time.delayedCall(500,()=>this.victory());return;}
-    const next=this.stageIndex+1;this.time.delayedCall(520,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);});
+    const next=this.stageIndex+1;this.player.setVelocity(0,0);this.state='loading';
+    if(window.GameLoader)window.GameLoader.show('กำลังเปิดประตูไปด่านถัดไป...',0.18);
+    this.time.delayedCall(520,()=>this.ensureStageAudio(next,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);
+      if(window.GameLoader){window.GameLoader.set(1,'เข้าสู่ด่านใหม่!');this.time.delayedCall(160,()=>window.GameLoader.hide());}}));
   }
   resetStageLoadout(){
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.ringBalls.forEach(b=>b.destroy());this.ringBalls=[];
