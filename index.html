@@ -88,7 +88,7 @@
     try{
       var root=document.documentElement;
       if(!document.fullscreenElement&&root.requestFullscreen)root.requestFullscreen({navigationUI:'hide'}).catch(function(){});
-      var o=screen.orientation;if(o&&o.lock)o.lock('landscape').catch(function(){});
+      var o=screen.orientation;if(o&&o.lock)o.lock('portrait').catch(function(){});
     }catch(e){}
   };
   window.addEventListener('pointerdown',window.enterGameFullscreen,{once:true,capture:true});
