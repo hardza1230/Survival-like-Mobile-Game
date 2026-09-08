@@ -7,9 +7,9 @@ if (!activity) throw new Error('Main activity tag not found');
 
 let tag = activity[0];
 if (/android:screenOrientation=/.test(tag)) {
-  tag = tag.replace(/android:screenOrientation="[^"]*"/, 'android:screenOrientation="landscape"');
+  tag = tag.replace(/android:screenOrientation="[^"]*"/, 'android:screenOrientation="portrait"');
 } else {
-  tag = tag.replace('<activity', '<activity\n            android:screenOrientation="landscape"');
+  tag = tag.replace('<activity', '<activity\n            android:screenOrientation="portrait"');
 }
 xml = xml.replace(activity[0], tag);
 fs.writeFileSync(manifest, xml);
@@ -30,7 +30,7 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         applyImmersiveMode();
@@ -110,4 +110,4 @@ for (const styleName of ['AppTheme.NoActionBar', 'AppTheme.NoActionBarLaunch']) 
   styles = styles.replace(openTag, `$1${fullscreenItems}`);
 }
 fs.writeFileSync(stylesPath, styles);
-console.log('Android orientation: forced landscape + immersive edge-to-edge');
+console.log('Android orientation: forced portrait + immersive edge-to-edge');
