@@ -26,9 +26,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.0';
+const GAME_VERSION = '2.4.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.1', date:'2026-09-08', title:'Royal Menu & Illustrated Chapters', items:[
+    'ยกระดับปุ่มหน้าเมนูเป็นป้ายแฟนตาซีหลายชั้น พร้อมกรอบทอง ตราไอคอน และอัญมณีประจำหมวด',
+    'สร้างหน้าเลือกด่านใหม่ด้วยภาพฉากจริงของแต่ละบท แถบสถานะ ปุ่มเล่น และลำดับข้อมูลที่อ่านชัด',
+    'ปรับแสง เงา ขอบ และพื้นที่แตะให้ดูมีมิติ โดยยังคงข้อความคมชัดบนจอมือถือ' ] },
   { v:'2.4.0', date:'2026-09-08', title:'Strawberry Kitchen Main Menu', items:[
     'สร้าง Key Art หน้าเมนูใหม่ทั้งภาพในธีม Strawberry Fantasy Kitchen',
     'เปลี่ยนเมนูเป็นการ์ดกระจกเข้มพร้อมแถบสี ไอคอน และลำดับชั้นข้อมูลใหม่',
@@ -1447,21 +1451,57 @@ class Game extends Phaser.Scene {
     const t=this.add.text(x+h*1.06,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(h*0.34)+'px',color:'#ffffff'}).setOrigin(0,0.5);
     t.setShadow(0,2,'rgba(0,0,0,0.32)',3); cont.add(t);
     if(fn)this._zone(x,y,w,h,fn); }
-  // การ์ดเมนูหลัก: glass panel + accent + icon medallion + chevron
+  // ป้ายเมนูแฟนตาซี: กรอบโลหะสองชั้น + ตราอัญมณี + แสงเฉพาะหมวด
   uiMenuCard(cont,cx,cy,w,h,color,emoji,label,sub,fn,primary){
-    const x=cx-w/2,y=cy-h/2,r=15,g=this.add.graphics();
-    g.fillStyle(0x090713,0.72);g.fillRoundedRect(x+2,y+4,w,h,r);
-    g.fillStyle(primary?0x3a1429:0x171222,0.90);g.fillRoundedRect(x,y,w,h,r);
-    g.fillGradientStyle(this._lighten(color,0.18),color,color,this._darken(color,0.2),primary?0.34:0.18);g.fillRoundedRect(x,y,6,h,{tl:r,tr:2,bl:r,br:2});
-    g.lineStyle(primary?2:1.4,primary?this._lighten(color,0.45):0xffffff,primary?0.92:0.18);g.strokeRoundedRect(x,y,w,h,r);
-    const icx=x+h*0.54;g.fillStyle(color,primary?0.95:0.74);g.fillCircle(icx,cy,h*0.31);g.lineStyle(1.5,0xffffff,0.35);g.strokeCircle(icx,cy,h*0.31);cont.add(g);
+    const x=cx-w/2,y=cy-h/2,r=Math.min(17,h*0.34),g=this.add.graphics();
+    const gold=primary?0xffd68a:this._lighten(color,0.44),face=primary?0x44142d:0x171020;
+    g.fillStyle(0x000000,0.48);g.fillRoundedRect(x+2,y+6,w,h,r);
+    g.fillStyle(gold,0.24);g.fillRoundedRect(x-2,y-2,w+4,h+4,r+2);
+    g.fillStyle(0x090611,0.96);g.fillRoundedRect(x,y,w,h,r);
+    g.lineStyle(primary?2.4:1.8,gold,primary?0.96:0.72);g.strokeRoundedRect(x,y,w,h,r);
+    g.fillGradientStyle(this._lighten(face,0.16),face,face,this._darken(face,0.28),1);g.fillRoundedRect(x+3,y+3,w-6,h-6,Math.max(8,r-3));
+    g.fillGradientStyle(this._lighten(color,0.25),color,this._darken(color,0.12),this._darken(color,0.38),primary?0.38:0.19);g.fillRoundedRect(x+5,y+5,w-10,h-10,Math.max(7,r-5));
+    g.lineStyle(1,0xffffff,primary?0.30:0.16);g.strokeRoundedRect(x+5,y+5,w-10,h-10,Math.max(7,r-5));
+    g.lineStyle(1.2,gold,0.65);g.lineBetween(x+18,y+5,x+w-18,y+5);
+    g.fillStyle(gold,0.92);g.fillCircle(x+11,cy,2.2);g.fillCircle(x+w-11,cy,2.2);
+    const icx=x+h*0.57,ir=h*0.31;
+    g.fillStyle(0x08050d,0.88);g.fillCircle(icx,cy,ir+4);
+    g.lineStyle(2,gold,0.95);g.strokeCircle(icx,cy,ir+3);
+    g.fillGradientStyle(this._lighten(color,0.34),color,color,this._darken(color,0.35),1);g.fillCircle(icx,cy,ir);
+    g.lineStyle(1,0xffffff,0.42);g.strokeCircle(icx,cy,ir-2);cont.add(g);
     const em=this.add.text(icx,cy-1,emoji,{fontSize:Math.round(h*0.36)+'px'}).setOrigin(0.5);
-    const tx=x+h*1.02,nm=this.add.text(tx,sub?cy-7:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:primary?'17px':'15px',color:'#fff8f2'}).setOrigin(0,0.5);
-    nm.setShadow(0,2,'#000000',3);
-    const more=this.add.text(x+w-18,cy,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'25px',color:primary?'#ffe5a6':'#b9aec5'}).setOrigin(0.5);
-    cont.add([em,nm,more]);
-    if(sub){const st=this.add.text(tx,cy+11,sub,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#afa5ba'}).setOrigin(0,0.5);cont.add(st);}
+    const tx=x+h*1.08,nm=this.add.text(tx,sub?cy-7:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:primary?'17px':'15px',color:'#fffaf3'}).setOrigin(0,0.5);
+    nm.setShadow(0,2,'#000000',4);
+    const gemX=x+w-20,gem=this.add.graphics();gem.fillStyle(gold,0.95);gem.fillPoints([{x:gemX,y:cy-6},{x:gemX+6,y:cy},{x:gemX,y:cy+6},{x:gemX-6,y:cy}],true);gem.lineStyle(1,0xffffff,0.5);gem.strokePoints([{x:gemX,y:cy-6},{x:gemX+6,y:cy},{x:gemX,y:cy+6},{x:gemX-6,y:cy}],true);cont.add(gem);
+    cont.add([em,nm]);
+    if(sub){const st=this.add.text(tx,cy+11,sub,{fontFamily:'sans-serif',fontSize:'9.5px',color:primary?'#ffd9df':'#c4b8cb'}).setOrigin(0,0.5);cont.add(st);}
     if(fn)this._zone(x,y,w,h,fn);
+  }
+  _coverImage(x,y,w,h,key){
+    const img=this.add.image(x+w/2,y+h/2,key),fw=img.frame.realWidth||img.frame.width,fh=img.frame.realHeight||img.frame.height;
+    const scale=Math.max(w/fw,h/fh),cw=w/scale,ch=h/scale;
+    img.setCrop((fw-cw)/2,(fh-ch)/2,cw,ch).setDisplaySize(w,h);return img;
+  }
+  // การ์ดบทแบบภาพประกอบ — ภาพฉากจริง + overlay อ่านง่าย + status ที่เป็นส่วนหนึ่งของกรอบ
+  uiStageCard(cont,x,y,w,h,st,index,open,fn){
+    const colors=[0xb9e85d,0x6ed7df,0xff9a62,0x9bdfff,0xff78a9],color=colors[index%colors.length],r=17;
+    const shadow=this.add.graphics();shadow.fillStyle(0x000000,0.55);shadow.fillRoundedRect(x+3,y+6,w,h,r);shadow.fillStyle(color,0.18);shadow.fillRoundedRect(x-2,y-2,w+4,h+4,r+2);cont.add(shadow);
+    const artKey='bg'+(index+1),art=this.textures.exists(artKey)?this._coverImage(x+2,y+2,w-4,h-4,artKey):null;if(art)cont.add(art);
+    const shade=this.add.graphics();
+    shade.fillGradientStyle(0x090711,0x090711,0x090711,0x090711,0.18,0.72,0.92,0.92);shade.fillRoundedRect(x+2,y+2,w-4,h-4,r-2);
+    if(!open){shade.fillStyle(0x100d18,0.64);shade.fillRoundedRect(x+2,y+2,w-4,h-4,r-2);}
+    shade.lineStyle(2.2,open?color:0x625872,open?0.95:0.62);shade.strokeRoundedRect(x,y,w,h,r);
+    shade.lineStyle(1,0xffffff,0.25);shade.strokeRoundedRect(x+4,y+4,w-8,h-8,r-4);
+    shade.fillStyle(open?color:0x625872,0.96);shade.fillRoundedRect(x+10,y+10,54,20,7);
+    const actionW=open?68:64,actionX=x+w-actionW-10;shade.fillStyle(open?0x11261f:0x211c29,0.93);shade.fillRoundedRect(actionX,y+h-35,actionW,25,9);shade.lineStyle(1.3,open?color:0x625872,0.8);shade.strokeRoundedRect(actionX,y+h-35,actionW,25,9);cont.add(shade);
+    const chapter=this.add.text(x+37,y+20,'บท '+String(index+1).padStart(2,'0'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#172014':'#ddd5e5'}).setOrigin(0.5);
+    const icon=this.add.text(x+19,y+h-25,open?st.emoji:'🔒',{fontSize:'22px'}).setOrigin(0.5);
+    const name=this.add.text(x+39,y+43,st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:h<92?'13px':'15px',color:open?'#fffaf2':'#c4bdca',stroke:'#120a16',strokeThickness:3}).setOrigin(0,0.5);
+    const en=this.add.text(x+39,y+61,st.en.toUpperCase(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:open?Phaser.Display.Color.IntegerToColor(color).rgba:'#82798d'}).setOrigin(0,0.5);
+    const desc=open?st.lore:('ผ่านบท '+index+' เพื่อปลดล็อกเส้นทางนี้');
+    const lore=this.add.text(x+39,y+h-25,desc,{fontFamily:'sans-serif',fontSize:h<92?'8px':'9px',color:open?'#ddd4df':'#8f8798',wordWrap:{width:w-39-actionW-28},maxLines:2}).setOrigin(0,0.5);
+    const action=this.add.text(actionX+actionW/2,y+h-22.5,open?'เล่น  ▶':'ล็อก',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#d8ffe5':'#9b91a5'}).setOrigin(0.5);
+    cont.add([chapter,icon,name,en,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
     if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){ Sfx.select(); z.fn(); return; } } }
@@ -1642,13 +1682,12 @@ class Game extends Phaser.Scene {
   buildStageSelect(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกบท');
     const unlocked=Math.max(0,Save.data.unlockedStage||0);
-    const note=this.add.text(this.W/2,this.W<=this.H?86:55,'เลือกด่านที่ปลดล็อกแล้ว',{fontFamily:'sans-serif',fontSize:'12px',color:'#b7abc9'}).setOrigin(0.5);
+    const note=this.add.text(this.W/2,this.W<=this.H?83:55,'CHAPTER SELECT  ·  เลือกเส้นทางผจญภัย',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d3bce1'}).setOrigin(0.5);
     this.menu.add(note);
-    const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-32,400):Math.min(360,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
-    const rows=Math.ceil(STAGES.length/cols),y0=portrait?106:69,rowH=Math.min(portrait?88:76,(this.H-y0-18-gapY*(rows-1))/rows);
+    const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-28,410):Math.min(370,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
+    const rows=Math.ceil(STAGES.length/cols),y0=portrait?100:69,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
     STAGES.forEach((st,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked;
-      this._rowBtn(y,rowH,st.emoji,'ด่าน '+(i+1)+' · '+st.name,open?st.lore:'เคลียร์ด่าน '+i+' เพื่อปลดล็อก',
-        open?'▶ เล่น':'🔒 ล็อก',open?'#8bd3a0':'#7a7088',open?()=>this.startRun(i):()=>Sfx.select(),x,cardW);
+      this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.startRun(i));
     });
     this.menu.setVisible(true);
   }
