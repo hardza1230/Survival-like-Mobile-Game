@@ -26,9 +26,14 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.3';
+const GAME_VERSION = '2.4.4';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.4', date:'2026-09-08', title:'Fit & Feel Tuning', items:[
+    'ปรับขนาดตัวละครให้สมดุลตาม "รอยเท้าจริง" ของอาร์ต — สตรอว์เบอร์รีเล็กลง มินต์/โกโก้ใหญ่ขึ้น ทุกตัวดูขนาดพอ ๆ กัน',
+    'จัดไอคอนสกิลบนการ์ดเลเวลอัพให้อยู่ตรงกลางช่องกรอบพอดี ไม่ล้นออกนอกกรอบ',
+    'หลุม (nest_hole) ในด่าน 1 กลายเป็นสิ่งกีดขวางจริง เดินทะลุไม่ได้แล้ว',
+    'บอสด่าน 1 (ราชินีมด) ปรากฏตัวแบบเรืองแสง+คำราม ไม่โผล่ขึ้นมาจากหลุมอีกต่อไป' ] },
   { v:'2.4.3', date:'2026-09-08', title:'True Retina Canvas Fix', items:[
     'แก้ Canvas backing buffer ให้ใช้ physical pixels จริง แทนการปล่อยให้ WebView ขยายภาพจากความละเอียด CSS',
     'แยก logical layout ออกจากความละเอียดจอด้วย camera scale และแปลง input ให้แตะตรงตำแหน่งเดิม',
@@ -1035,7 +1040,7 @@ function bestiaryAllBonus(){
    ผู้เล่นเกิดที่ (0,0) · solid=true แลนด์มาร์กชนได้ · ที่เหลือเดินทะลุ · เว้นกลางห้องโล่งให้สู้ */
 const STAGE_PROPS = {
   0: [
-    ['nest_hole',-1050,-760,false,0.78],['nest_hole',1080,720,false,0.72],['nest_hole',1050,-820,false,0.66],
+    ['nest_hole',-1050,-760,true,0.78],['nest_hole',1080,720,true,0.72],['nest_hole',1050,-820,true,0.66],
     ['nest_obelisk',-760,-660,true,0.64],['nest_obelisk',760,650,true,0.64],
     ['nest_crystal',-820,420,true,0.58],['nest_crystal',820,-420,true,0.58],
     ['nest_crystal',-1120,120,true,0.50],['nest_crystal',1120,-100,true,0.50],
@@ -2165,9 +2170,9 @@ class Game extends Phaser.Scene {
     this.waveAlive=1; this.updateWaveText();
     this.bossIntro(b, st.boss);
   }
-  // ฉากปรากฏตัวบอส: WARNING → แพนหา → โผล่จากหลุม/คำราม → แพนกลับ
+  // ฉากปรากฏตัวบอส: WARNING → แพนหา → ปรากฏตัว/คำราม → แพนกลับ
   bossIntro(b,name){
-    const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y,holeY=targetY+72;
+    const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y;
     this.state='cinematic';this.mode='bossIntro';this.player.setVelocity(0,0);b.setVelocity(0,0);b.setVisible(false).setScale(base*0.82).setDepth(targetY+1);if(b.body)b.body.enable=false;
     Sfx.playBossBgm(this.stageIndex+1);Sfx.bossWarn();
     const band=this.add.rectangle(this.W/2,this.H/2,this.W,128,0x17090d,0.92).setScrollFactor(1).setDepth(120);
@@ -2188,18 +2193,16 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(1650,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setScale(base*0.25);const glow=this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(STAGES[this.stageIndex].tint).setScale(0.2).setDepth(b.y-1));this.tweens.add({targets:[b,glow],alpha:1,scale:base,duration:850,ease:'Back.out',onComplete:()=>glow.destroy()});});
       this.time.delayedCall(3000,()=>cam.pan(px,py,760,'Sine.easeInOut'));this.time.delayedCall(3800,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setScale(base);this.state='play';this.mode='boss';b.atkCd=1.6;});return;
     }
+    // ด่าน 1 (ราชินีมด): ปรากฏตัวแบบเรืองแสง + คำราม (ไม่โผล่จากหลุมแล้ว)
     this.time.delayedCall(1600,()=>{if(!b.active)return;
-      const hole=this.camWorld(this.add.image(b.x,holeY,'nest_hole').setScale(0.88).setDepth(targetY-5).setAlpha(0));
-      const lip=this.camWorld(this.add.graphics().setDepth(targetY+2));lip.lineStyle(7,0x3b2418,0.95);lip.beginPath();lip.arc(b.x,holeY+12,72,0.08*Math.PI,0.92*Math.PI,false);lip.strokePath();
-      this.decoProps.add(hole);this.decoProps.add(lip);this.tweens.add({targets:hole,alpha:1,scale:{from:0.45,to:0.88},duration:380,ease:'Sine.out'});
-      const maskShape=this.make.graphics({x:0,y:0,add:false});maskShape.fillStyle(0xffffff);maskShape.fillRect(-WORLD,-WORLD,WORLD*2,holeY+18+WORLD);b.setMask(maskShape.createGeometryMask());
-      b.setVisible(true).setAlpha(1).setPosition(b.x,holeY+104).setScale(base*0.82);this.bossPose(b,1,520);
-      this.time.delayedCall(180,()=>{if(!b.active)return;this.vfxSpawnPoof(b.x-42,holeY+8);this.tweens.add({targets:b,y:holeY+64,x:b.x-10,duration:430,ease:'Sine.out',onComplete:()=>{if(b.active)this.bossPose(b,2,600);}});});
-      this.time.delayedCall(650,()=>{if(!b.active)return;this.vfxSpawnPoof(b.x+38,holeY+5);this.tweens.add({targets:b,y:holeY+22,x:b.x+16,scale:base*0.92,duration:520,ease:'Sine.inOut',onComplete:()=>{if(b.active)this.bossPose(b,3,520);}});});
-      this.time.delayedCall(1210,()=>{if(!b.active)return;this.tweens.add({targets:b,y:targetY,x:b.x-6,scale:base,duration:560,ease:'Back.out',onComplete:()=>{if(!b.active)return;b.clearMask(true);this.bossPose(b,6,1050);this.cameras.main.shake(460,0.014);this.screenFlash(0x9dff45,0.28,420);for(let i=0;i<3;i++){const r=this.camWorld(this.add.circle(b.x,b.y,25,0,0).setDepth(6).setStrokeStyle(5,0x9dff45,0.85));this.tweens.add({targets:r,radius:190+i*55,alpha:0,duration:650+i*100,delay:i*90,onComplete:()=>r.destroy()});}}});});
+      b.setVisible(true).setAlpha(0).setPosition(b.x,targetY).setScale(base*0.25);this.bossPose(b,1,520);
+      const glow=this.camWorld(this.add.image(b.x,targetY,'vfx_glow').setTint(STAGES[0].tint||0x9dff45).setScale(0.2).setDepth(targetY-1));
+      this.tweens.add({targets:[b,glow],alpha:1,scale:base,duration:850,ease:'Back.out',onComplete:()=>{glow.destroy();if(!b.active)return;
+        this.bossPose(b,6,1050);this.cameras.main.shake(460,0.014);this.screenFlash(0x9dff45,0.28,420);
+        for(let i=0;i<3;i++){const r=this.camWorld(this.add.circle(b.x,b.y,25,0,0).setDepth(6).setStrokeStyle(5,0x9dff45,0.85));this.tweens.add({targets:r,radius:190+i*55,alpha:0,duration:650+i*100,delay:i*90,onComplete:()=>r.destroy()});}}});
     });
-    this.time.delayedCall(3650,()=>cam.pan(px,py,780,'Sine.easeInOut'));
-    this.time.delayedCall(4450,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.clearMask();b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง!',2200);});
+    this.time.delayedCall(3200,()=>cam.pan(px,py,780,'Sine.easeInOut'));
+    this.time.delayedCall(4000,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง!',2200);});
   }
   // จอวาบเต็มหน้าจอ (บนกล้อง UI) — ใช้ตอนบอสปรากฏ/เข้าเฟส/ตาย
   screenFlash(color,alpha,dur){
@@ -2353,8 +2356,10 @@ class Game extends Phaser.Scene {
       const artKey=o.type==='awk'?'ui_card_awakened':o.type==='pas'?'ui_card_passive':o.isNew?'ui_card_attack':'ui_card_power';
       const cardArt=this.add.image(x+cardW/2,y+ch/2,artKey).setDisplaySize(cardW,ch);
       const oik=o.type==='awk'?null:this.iconKey(o.key,o.type==='pas');
-      const iconSize=Math.min(portrait?62:54,cardW*0.35);
-      const em = oik ? this.add.image(x+cardW/2,y+ch*0.195,oik).setDisplaySize(iconSize,iconSize) : this.add.text(x+cardW/2,y+ch*0.195,o.emoji,{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
+      // ช่องไอคอนในกรอบการ์ดอยู่ที่ ~26% ของความสูง สูง ~22% → วางไอคอนตรงกลางช่องและย่อให้พอดีกรอบ
+      const iconY=y+ch*0.26;
+      const iconSize=Math.min(portrait?56:50,ch*0.19);
+      const em = oik ? this.add.image(x+cardW/2,iconY,oik).setDisplaySize(iconSize,iconSize) : this.add.text(x+cardW/2,iconY,o.emoji,{fontSize:Math.round(iconSize*0.82)+'px'}).setOrigin(0.5);
       const emBase=em.scaleX||1;
       let stars=''; for(let s=0;s<o.max;s++) stars+=(s<o.lvl?'★':'☆');
       const starT=this.add.text(x+cardW/2,y+ch*0.755,stars,{fontFamily:'sans-serif',fontSize:o.max>6?'8px':'10px',color:'#ffe07a'}).setOrigin(0.5);
@@ -3255,9 +3260,12 @@ class Game extends Phaser.Scene {
     const src = (ASSET_SHEETS[key]&&ASSET_SHEETS[key].frame)
       || (this.player&&this.player.frame&&this.player.frame.width)
       || 60;
-    // เป้าหมาย 90px ก่อนคูณกล้อง: อ่าน silhouette ได้บนจอแนวนอนโดยไม่กลืนกับพื้น
-    const visualScale=key==='char_mint'?1.08:key==='char_cocoa'?1.10:1;
-    this._pBase=(90/src)*visualScale;
+    // ปรับสเกลตาม "รอยเท้าจริง" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
+    // strawberry(momo) ตัวอ้วน/กว้าง → เล็กลง · mint/cocoa ตัวผอมสูง → ใหญ่ขึ้น (แก้ปัญหา momo ใหญ่ไป มินต์/โกโก้เล็กไป)
+    const baseKey=key.replace('_walk','');
+    const FP={ char_momo:102, char_mint:82.5, char_cocoa:81.5, char_taro:107, char_sesame:117 }[baseKey];
+    const TARGET=66;   // รอยเท้าเฉลี่ย (px) ที่ต้องการก่อนคูณกล้อง
+    this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
