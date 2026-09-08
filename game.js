@@ -26,9 +26,14 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.8';
+const GAME_VERSION = '2.4.9';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.9', date:'2026-09-08', title:'Wave Rework', items:[
+    'คืนระบบคอมโบเป็นเงื่อนไขปลด Awaken (ต้องมี passive คู่ที่ถูกต้อง) แต่ไม่มีโบนัส status เสริมแล้ว',
+    'หมดเวลาเวฟแล้วต้องกำจัดศัตรูที่เหลือให้หมดก่อน จึงจะไปเวฟถัดไป (มีลูกศรชี้ตัวที่เหลือ)',
+    'ศัตรูในเวฟเกิดเป็นวงกลมล้อมรอบแล้วค่อย ๆ บีบวงเข้ามา',
+    'ด่าน 1 เวฟแรก ลดจำนวนมอนสเตอร์ที่ยิงได้ (acid) ลง' ] },
   { v:'2.4.8', date:'2026-09-08', title:'Systems Rework', items:[
     'โชว์ตัวเลข HP บอสบนหลอดเลือด',
     'บอสเรียกองครักษ์ (มินิบอส) 2 ตนออกมาช่วยตอนปรากฏตัว',
@@ -2062,7 +2067,7 @@ class Game extends Phaser.Scene {
       {name:'น้ำเสียล้นท่อ',desc:'ทุกวรรณะไหลมาพร้อมกันก่อนถึงห้องปีศาจฟองน้ำ',dur:54,interval:0.98,batch:3,max:46,types:['fast','dasher','shooter','bomber','tank','basic']}
     ];return drain[w]||drain[drain.length-1];}
     const profiles=[
-      {name:'เปิดทาง',desc:'ฝูงพื้นฐานค่อย ๆ เข้ามา',dur:48,interval:1.55,batch:2,max:28,types:si===0?['basic','basic','acid']:['basic','basic','fast']},
+      {name:'เปิดทาง',desc:'ฝูงพื้นฐานค่อย ๆ เข้ามา',dur:48,interval:1.55,batch:2,max:28,types:si===0?['basic','basic','basic','basic','acid']:['basic','basic','fast']},
       {name:'ฝูงสายฟ้า',desc:'ศัตรูเร็วบุกเป็นกลุ่ม — อย่าหยุดนิ่ง',dur:50,interval:1.05,batch:3,max:42,types:['fast','fast','dasher','basic']},
       {name:'ผู้คุมด่าน',desc:'มินิบอสพร้อมกองหนุน',dur:0,interval:1.45,batch:2,max:34,types:si===0?['acid','basic','acid']:['basic','shooter','fast']},
       {name:'กำแพงเหล็ก',desc:'ตัวถึกและแนวยิงไกลบีบพื้นที่',dur:52,interval:1.35,batch:2,max:36,types:si<2?['tank','basic','acid','shooter']:['tank','siege','shooter','basic']},
@@ -2086,6 +2091,14 @@ class Game extends Phaser.Scene {
     this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
   spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
+  // เกิดมอนเป็น "วงกลม" รอบผู้เล่นแล้วบีบวงเข้ามา (chase AI ทำให้ค่อย ๆ หุบวง)
+  spawnWaveRing(n){
+    if(n<=0)return; const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];
+    const base=Math.random()*Math.PI*2, step=Math.PI*2/n, jitter=step*0.26;
+    const rad=Math.max(this.W,this.H)/this.viewZoom*0.62+40;
+    for(let i=0;i<n;i++){ const ang=base+i*step+Phaser.Math.FloatBetween(-jitter,jitter);
+      this.spawnEnemy(Phaser.Utils.Array.GetRandom(types),ang,rad*Phaser.Math.FloatBetween(0.94,1.06)); }
+  }
   spawnSwarm(){
     const n=Math.min(this.maxLive-this.enemies.countActive(true),10+this.stageIndex*2+this.waveIndex*2);if(n<=4)return;
     const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['fast','basic'];
@@ -2113,12 +2126,12 @@ class Game extends Phaser.Scene {
     // ระลอกเปิดตัว — เวฟที่ไหลต่อ (seamless) ข้ามการถล่มเปิดตัว เพราะมอนสเตอร์เดิมยังเต็มจออยู่
     if(!seamless){
       const burst=Math.min(this.maxLive, 5 + w*2 + si);
-      for(let i=0;i<burst;i++) this.spawnWaveEnemy();
+      this.spawnWaveRing(burst);   // ระลอกเปิดตัวเป็นวงกลมล้อมรอบแล้วบีบเข้า
       if(this.waveAllowsElite) for(let i=0;i<1+Math.floor(si/3);i++)this.spawnElite();
     } else {
       const live=this.enemies.countActive(true);   // เติมให้ถึงราวครึ่งเพดานถ้ามอนเดิมเหลือน้อย
       const fill=Math.max(0, Math.min(this.maxLive, Math.floor(this.maxLive*0.55))-live);
-      for(let i=0;i<fill;i++) this.spawnWaveEnemy();
+      this.spawnWaveRing(fill);
     }
     // กล่อง/โหลทุบได้ (ธีมครัว) — ทุบเอาของ (ออร์บ/ฟื้นฟู)
     const nc=2+Math.floor(si*0.6); for(let i=0;i<nc;i++) this.spawnCrate();
@@ -2132,12 +2145,17 @@ class Game extends Phaser.Scene {
       this.spawnAcc-=dt;
       if(this.spawnAcc<=0){ this.spawnAcc=this.spawnInterval;
         const live=this.enemies.countActive(true);
-        if(live<this.maxLive){ const n=Math.min(this.spawnBatch, this.maxLive-live); for(let i=0;i<n;i++) this.spawnWaveEnemy(); } }
+        if(live<this.maxLive){ const n=Math.min(this.spawnBatch, this.maxLive-live); this.spawnWaveRing(n); } }
       if(this.waveAllowsElite){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
       if(this.swarmAcc!=null){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
       const st=STAGES[this.stageIndex];
       if(st)this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+' วิ');
-      if(this.waveTimer<=0) this.onWaveCleared(true);   // จบเวลา = ไปเวฟถัดไปแบบไหลต่อ (มอนสเตอร์ไม่หาย)
+      if(this.waveTimer<=0){ this.mode='waveclear'; this.showBanner('⏳ หมดเวลา!','กำจัดศัตรูที่เหลือให้หมดเพื่อไปเวฟถัดไป',1800); }   // หมดเวลา = หยุดสปอน + ต้องเคลียร์ให้หมดก่อน
+    } else if(this.mode==='waveclear'){
+      // หยุดเกิดมอนใหม่ · รอผู้เล่นกำจัดที่เหลือให้หมดจึงไปเวฟถัดไป
+      const st=STAGES[this.stageIndex], live=this.enemies.countActive(true);
+      if(st)this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · 🧹 เคลียร์ที่เหลือ '+live+' ตัว');
+      if(live<=0) this.onWaveCleared(false);
     } else if(this.mode==='mini'){
       // ระหว่างสู้มินิ = ยังมีลูกน้องไหลมาเรื่อย ๆ (กดดันต่อเนื่อง แต่เบากว่า)
       this.spawnAcc-=dt;
@@ -2414,9 +2432,19 @@ class Game extends Phaser.Scene {
       const shortDesc=o.desc.length>58?o.desc.slice(0,57)+'…':o.desc;
       const ds=this.add.text(x+cardW/2,y+ch*0.475,shortDesc,{fontFamily:'sans-serif',fontSize:cardW<145?'8px':portrait?'10px':'9px',color:'#f3eaf6',align:'center',wordWrap:{width:cardW-24}}).setOrigin(0.5,0);
       this.lvlUp.add([cardArt,em,starT,badge,nm,ds]);
-      // สกิลหลักที่ MAX แล้วโชว์ว่าพร้อม Awaken (ไม่มีระบบคอมโบแล้ว) — เพิ่มหลังกรอบเพื่อให้อยู่บนสุด
-      if(o.type!=='awk' && !o.pas && o.max && o.lvl>=o.max && SKILLDEFS[o.key] && SKILLDEFS[o.key].awaken){
-        this.lvlUp.add(this.add.text(x+cardW/2,y+ch*0.80,'⚡ พร้อมตื่นรู้!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(0.5));
+      // คู่ที่ต้องมีเพื่อ "ตื่นรู้" (Awaken) — สกิลโจมตี a + สกิลติดตัว b · ไม่มีโบนัส status แล้ว แค่เป็นเงื่อนไขปลด Awaken
+      const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
+      if(combo){
+        const attack=SKILLDEFS[combo.a], passive=PASSIVES[combo.b];
+        const haveA=(this.skills[combo.a]||0)>0, haveP=(this.passives[combo.b]||0)>0;
+        const ai=this.iconKey(combo.a,false), pi=this.iconKey(combo.b,true), sy=y+ch*0.855, ss=Math.min(24,cardW*0.16);
+        const aObj=ai?this.add.image(x+cardW*0.35,sy,ai).setDisplaySize(ss,ss):this.add.text(x+cardW*0.35,sy,attack?attack.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
+        const pObj=pi?this.add.image(x+cardW*0.65,sy,pi).setDisplaySize(ss,ss):this.add.text(x+cardW*0.65,sy,passive?passive.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
+        if(!haveA)aObj.setAlpha(0.48); if(!haveP)pObj.setAlpha(0.48);
+        const plus=this.add.text(x+cardW/2,sy,'+',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe07a'}).setOrigin(0.5);
+        const ct=this.add.text(x+cardW/2,y+ch*0.765,'คู่ตื่นรู้\n'+combo.name,
+          {fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'7px':'8px',color:(haveA&&haveP)?'#baffc7':'#eadcf2',align:'center',wordWrap:{width:cardW-30}}).setOrigin(0.5,0);
+        this.lvlUp.add([ct,aObj,pObj,plus]);
       }
       this.lvlCards.push({left:x,right:x+cardW,top:y,bottom:y+ch,apply:o.apply});
       cardArt.setAlpha(0); em.setScale(emBase*0.2);
@@ -2450,7 +2478,7 @@ class Game extends Phaser.Scene {
       if(cur===0){ if(atkOwned<SKILL_CAP) S(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.skills[key]=1; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
       else if(cur<d.max){ const nx=cur+1, tier=(SKILL_TIERS[key]&&SKILL_TIERS[key][nx])||'แรงขึ้น';
         S(key,nx,d.max,d.emoji,d.name,tier,false,()=>{ this.skills[key]++; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
-      else if(cur===d.max && d.awaken){   // MAX แล้วปลด Awaken ได้เลย (ไม่ต้องมี Passive คู่)
+      else if(cur===d.max && d.awaken && COMBOS.some(c=>c.a===key&&(this.passives[c.b]||0)>0)){   // MAX + ถือ Passive คู่ที่ถูกต้องจึงตื่นรู้ได้ (แบบเดิม · แต่คอมโบไม่ให้โบนัส status แล้ว)
         const a=d.awaken;
         A(key,a.emoji,'ตื่นรู้: '+a.name,a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ สกิลตื่นรู้! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
     }
@@ -2503,8 +2531,8 @@ class Game extends Phaser.Scene {
   }
 
   /* ---------- SPAWN ---------- */
-  spawnEnemy(type){
-    const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.62+40;
+  spawnEnemy(type,angOverride,radOverride){
+    const ang=angOverride!=null?angOverride:Math.random()*Math.PI*2, rad=radOverride!=null?radOverride:Math.max(this.W,this.H)/this.viewZoom*0.62+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);
     let key=type==='acid'?'e_acid':type==='dasher'?'e_dasher':type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='siege'?'e_siege':type==='tank'?'e_tank':'e_basic';
@@ -3385,8 +3413,10 @@ class Game extends Phaser.Scene {
     const hint=this.add.text(w/2,h*0.72,'(แตะตรงไหนก็ได้)',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);
     this.over.add([bg,em,t,stat,btn,bt,hint]); this.over.setVisible(true); }
 
+  _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   updateObjectiveArrow(){
-    const target=(this.boss&&this.boss.active)?this.boss:(this.portalTarget&&this.portalTarget.active?this.portalTarget:null);
+    let target=(this.boss&&this.boss.active)?this.boss:(this.portalTarget&&this.portalTarget.active?this.portalTarget:null);
+    if(!target && this.mode==='waveclear') target=this._nearestEnemy();   // ชี้ไปหาศัตรูที่เหลือตอนต้องเคลียร์
     if(!target){if(this.objectiveArrow)this.objectiveArrow.setVisible(false);if(this.objectiveDist)this.objectiveDist.setVisible(false);return;}
     const dx=target.x-this.player.x,dy=target.y-this.player.y,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
     const cx=this.W/2,cy=this.H/2,margin=64,ca=Math.cos(a),sa=Math.sin(a);
