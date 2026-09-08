@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.5.1 รางวัลจบด่าน + กลับหน้าเลือกด่าน + motion บอสด่าน 2 + ล้างขอบไอคอน)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.6.0 Flavorbound lore + skill expansion + Taro/Sesame)
+- **v2.6.0:** Bear-Sigil Donut กระแทกหลายครั้ง/ทิ้ง glaze/ปิด shockwave · เพิ่ม active 6 แบบใหม่ (`mirror/memory/thread/decoy/triseal/echoStep`) และ passive 4 แบบ · หน้าเมตาเปลี่ยนเป็นวิหารสายใยรสชาติ · แบนเนอร์แต่ละเวฟเป็น story beat เฉพาะด่าน · Taro/Sesame ใช้ Awakened sprite sheet 8 เฟรมและมี `CHAR_TALENTS` ของตัวเอง
 - **v2.5.1:** ฆ่าบอสแล้วสุ่มรางวัลเป็น Sugar/อุปกรณ์และเปิดหน้าสรุปทันที (ไม่มีประตูพาไปด่านถัดไป) · ปุ่มสรุปกลับหน้าเลือกด่าน · บอส/มินิบอสด่าน 2 มี squash, sway และ attack kick · ล้างเกาะพิกเซลขาวจากไอคอน Card ด้วย `scripts/clean_skill_icon_artifacts.py`
 - **v1.4.0 การเปลี่ยนใหญ่:**
   · **ศัตรูชนิดใหม่:** `dasher` (เข้าหา→หน่วงเล็ง(wind)→พุ่งเร็ว 4.6× (dash)→พัก · state machine ใน enemies loop, ย้อมส้ม `e.tintColor`) · `siege` (HP 260× สูง, ช้า spd24, ตัวใหญ่ 1.85, ย้อมชมพู) · เพิ่มใน `spawnWaveEnemy` (si≥1 dasher, si≥2 siege) · `e.tintColor` ต้องคงสีตอน damage/frozen restore
@@ -68,7 +69,7 @@
   · **ระบบอุปกรณ์ใหม่ (เลิกซื้อ):** GEAR item มี `tier`(start/common/rare) · ดรอปในด่าน=common (`grantGear('common')` จาก loot/gift) · gacha (`gachaRoll` 68% common/32% rare, `GACHA_COST`=220) ปุ่มในหน้า gear · ไม่เป็นเจ้าของ=ล็อก (ไม่มีปุ่มซื้อ) · `GEAR_ALL/gearPool/TIER_LABEL` · เก็บใน `Save.data.ownedGear` · กลุ่ม `loots` texture 'gift'
 
 - **v1.3.0 การเปลี่ยนใหญ่:**
-  · **ระบบ "พรสวรรค์" (แทนอัพเกรดฐาน+ตัดพรสวรรค์เฉพาะตัวออก):** เหลือ 3 สแตต **HP/ATK(flat)/DEF** (ตัด spd/magnet) · อัพให้เต็มทั้ง 3 (Lv `TAL_MAX`=5) → **เลื่อนยศ** (`Save.promote`) rank++ + โบนัส 🍬 · การ์ดรีเซ็ต Lv0 + ราคา ×(1+rank·0.8) · ผลรวมใช้จริง `Save.talTotal(k)`=rank·5+เลเวลรอบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ วนไม่จบ) · `UPGRADES`={hp,dmg,def} base/per, `talCost/talAllMax/talFilled/buyTal/promote`, `rankName()`
+  · **ระบบ "สายใยรสชาติ":** กลไกเมตา 3 สแตตถาวรใช้ชื่อในโลกเกม **CORE/FLAVOR/BOND** · เติมครบ (Lv `TAL_MAX`=5) → **ประสานสายใย** (`Save.promote`) rank++ + โบนัส 🍬 · การ์ดรีเซ็ต Lv0 + ราคา ×(1+rank·0.8) · ผลรวมใช้จริง `Save.talTotal(k)`=rank·5+เลเวลรอบนี้
   · **ATK = flat damage:** `p.flatDmg` บวกใน `damage()` ทุกครั้งที่โดน (per=2/เลเวล กันเวอร์) · `dmgTakenMul` มีพื้น 0.35 กันเกราะโกง
   · **จบเวฟไม่เคลียร์มอน:** `onWaveCleared(keep)` — เวลาเวฟหมด→`keep=true` (มอนเดิมอยู่ต่อ เวฟถัดไปไหลต่อ, `startSurvivalWave(w,seamless)` ข้ามระลอกเปิดตัว) · มินิ/บอสยังเคลียร์
   · **ประวัติ:** เคยล็อกจอแนวตั้งใน v1.3.0 แต่ยกเลิกแล้ว — ตั้งแต่ v2.3.2 APK บังคับ `landscape` แบบ native และไม่มี `#rotate` overlay
@@ -79,7 +80,7 @@
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:
 - **ล็อกสกิล 2 หมวด/รอบ (แบบ Vampire Survivors):** สกิล**โจมตี** ≤ 6 (`SKILL_CAP`, จาก `SKILLDEFS`) + สกิล**ติดตัว** ≤ 6 (`PASSIVE_CAP`, จาก `PASSIVES`)
   · `this.skills`/`this.passives` (reset ใน startRun + create) · `rollUpgrades` เสนอ "สกิลใหม่" เฉพาะเมื่อยังไม่เต็มโควตา (`atkOwned<SKILL_CAP`/`pasOwned<PASSIVE_CAP`) · เต็มแล้วเหลือแต่การ์ดอัพเลเวล → สกิลถึง MAX ไวขึ้น = เจอ Awaken ไวขึ้น
-  · **`PASSIVES` (8 ตัว เลเวลได้ max5):** heart❤️(hp) power💥(dmg) swift👟(spd) magnet🧲(pickup) haste⏩(cdMul) crit🎯(critChance) guard🛡️(dmgTakenMul) regen💗(regen) — `apply(p)` = ผล 1 rank (mutate player) · startRun รีเซ็ตสแตตฐาน (maxhp/baseSpeed/pickup/dmgMul) กันทบข้ามรอบ
+  · **`PASSIVES` (12 ตัว เลเวลได้ max5):** ชุดเดิม 8 + `flavorCore/memoryThread/bitterResolve/returningTaste` — `apply(p)` = ผล 1 rank (mutate player)
   · **Awaken การันตีโผล่:** `rollUpgrades` มี `awakenPool` แยก — ถ้ามีสกิล MAX ที่มี awaken → **ดันการ์ด ⚡ ตื่นรู้ ≥1 ใบทุกครั้ง** (เดิมต้องสุ่มเจอ = เจอยากมาก) + การันตีสกิลติดตัว ≥1 ใบด้วย
 - **Skill Awaken (ตื่นรู้):** สกิลถึง MAX (5 ดาว/Lv5) แล้วเลเวลอัพอีก = การ์ด "⚡ ตื่นรู้" เปลี่ยนรูปแบบสกิลให้โกง (Lv6=`SKILL_AWAKEN_LV`) · ทุกสกิล `d.max`=5
   ทุกสกิลมี `d.awaken{name,emoji,desc}` · castSkill อ่าน `aw=lvl>=7` เพิ่มจำนวน/ดาเมจ/ธง (sprinkle 8เม็ด homing, thunder 8จุด, chili 5ชั้น, whirl 16ทิศ, boomer 6ชิ้นเด้ง2, frost แช่ทั้งจอ, popcorn 20, bubble 8, star=วงกาแล็กซี3ชั้นใน rebuildRing)
@@ -103,7 +104,7 @@
 - **บาลานซ์ (จูนล่าสุด):** ศัตรู HP ×~1.5 + scaling แรงขึ้น `(1+idx*0.55)(1+wave*0.11)` · เวฟธรรมดาเกิดมอนต่อเนื่องตามเวลา (`tickStage`/`setupSpawnRates`) จนถึงเพดาน maxLive · บอส HP ×1.4 + เฟส 3
 - **สกิลออโต้แคสต์ 9 อย่าง** (ใน `SKILLDEFS`): sprinkle, star(orbit), chili, thunder(ฟ้าผ่า),
   whirl(ครีมหมุน), boomer(บูมเมอแรงทะลุ), frost(แช่แข็ง), popcorn(กระจายมั่ว), bubble(ฟองไล่/homing)
-  · +8 สกิลใหม่: **aura**(🌸 ออร่ารอบตัว) · **fork**(🍴 ส้อมทะลุ) · **mine**(🧁 คัพเค้กระเบิด) · **beam**(🔆 ลำแสงแนวตรง `fireBeam`) · **meteor**(🍩 โดนัทหล่น AoE `meteorStrike`) · **cloud**(☕ หมอกพิษ DoT ติ๊ก) · **rocket**(🚀 จรวดไล่เป้าระเบิด `b.explode`+`explodeAt`) · **wave**(🌊 คลื่นขยายผลัก `creamWave`) — **รวม 17 สกิล** build หลากหลาย
+  · ชุดเดิม 17 + **6 สกิล Flavorbound:** `mirror` สะท้อนกระสุน · `memory` สะสมดาเมจระเบิดซ้ำ · `thread` ผูก/แชร์ดาเมจ · `decoy` เปลี่ยนเป้าหมาย AI · `triseal` วางตราสามจุด · `echoStep` ระเบิดตามรอยเดิน — **รวม 23 สกิล**
 - **ระบบคอมโบสกิล (`COMBOS`):** มีสกิลคู่ครบ = ปลดโบนัส (ธง `this.comboFlags` อ่านตอน cast + แบนเนอร์)
   storm(thunder+frost), firestorm(chili+whirl), ricochet(sprinkle+boomer), fizz(popcorn+bubble) · `checkCombos()`
 - **Sugar + Save (`Save` → localStorage 'mochi_save'):** เก็บ sugar/unlockedStage/upgrades/gear
