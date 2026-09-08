@@ -26,9 +26,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.4';
+const GAME_VERSION = '2.4.5';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.5', date:'2026-09-08', title:'Card & Character Polish', items:[
+    'ลดการย่อแกน Y ของการ์ดเลเวลอัพ (สัดส่วนใกล้อาร์ตจริง) กรอบดูสมส่วนขึ้น',
+    'เลื่อนแถวไอคอน "คู่ Evolution" ขึ้นมานั่งบนแผ่นทองของกรอบ ไม่ตกไปที่ปลายแหลม/ลายขอบล่างอีก',
+    'ย่อสตรอว์เบอร์รี (momo) ลงอีกนิดให้ขนาดใกล้ตัวอื่น' ] },
   { v:'2.4.4', date:'2026-09-08', title:'Fit & Feel Tuning', items:[
     'ปรับขนาดตัวละครให้สมดุลตาม "รอยเท้าจริง" ของอาร์ต — สตรอว์เบอร์รีเล็กลง มินต์/โกโก้ใหญ่ขึ้น ทุกตัวดูขนาดพอ ๆ กัน',
     'จัดไอคอนสกิลบนการ์ดเลเวลอัพให้อยู่ตรงกลางช่องกรอบพอดี ไม่ล้นออกนอกกรอบ',
@@ -2349,7 +2353,7 @@ class Game extends Phaser.Scene {
     const opts=this.rollUpgrades(4);
     const portrait=w<=h,cols=portrait?2:4,gap=portrait?10:8,side=portrait?12:10,startY=heldBot+31;
     const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
-    const ch=Math.min(cardW*(portrait?1.46:1.72),(h-startY-12-gap*(rows-1))/rows);
+    const ch=Math.min(cardW*(portrait?1.62:1.72),(h-startY-12-gap*(rows-1))/rows);   // เข้าใกล้สัดส่วนจริงของอาร์ต (224×400≈1.79) ลดการย่อแกน Y
     const total=cardW*cols+gap*(cols-1), lx=(w-total)/2;
     opts.forEach((o,i)=>{
       const col=i%cols,row=Math.floor(i/cols),x=lx+col*(cardW+gap), y=startY+row*(ch+gap);
@@ -2362,7 +2366,7 @@ class Game extends Phaser.Scene {
       const em = oik ? this.add.image(x+cardW/2,iconY,oik).setDisplaySize(iconSize,iconSize) : this.add.text(x+cardW/2,iconY,o.emoji,{fontSize:Math.round(iconSize*0.82)+'px'}).setOrigin(0.5);
       const emBase=em.scaleX||1;
       let stars=''; for(let s=0;s<o.max;s++) stars+=(s<o.lvl?'★':'☆');
-      const starT=this.add.text(x+cardW/2,y+ch*0.755,stars,{fontFamily:'sans-serif',fontSize:o.max>6?'8px':'10px',color:'#ffe07a'}).setOrigin(0.5);
+      const starT=this.add.text(x+cardW/2,y+ch*0.70,stars,{fontFamily:'sans-serif',fontSize:o.max>6?'8px':'10px',color:'#ffe07a'}).setOrigin(0.5);
       const badge=this.add.text(x+cardW/2,y+6,(o.type==='awk'?'AWAKEN':o.type==='pas'?'PASSIVE':'ATTACK')+(o.isNew?' · NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:o.badgeColor}).setOrigin(0.5,0);
       const nm=this.add.text(x+cardW/2,y+ch*0.375,o.title+(o.type!=='awk'?'  Lv'+o.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'10px':portrait?'13px':'12px',color:'#fff8e8',align:'center',wordWrap:{width:cardW-22}}).setOrigin(0.5,0);
       const shortDesc=o.desc.length>58?o.desc.slice(0,57)+'…':o.desc;
@@ -2372,16 +2376,16 @@ class Game extends Phaser.Scene {
       if(combo){
         const attack=SKILLDEFS[combo.a], passive=PASSIVES[combo.b];
         const haveA=(this.skills[combo.a]||0)>0, haveP=(this.passives[combo.b]||0)>0;
-        const ai=this.iconKey(combo.a,false), pi=this.iconKey(combo.b,true), sy=y+ch*0.905, ss=Math.min(25,cardW*0.17);
+        const ai=this.iconKey(combo.a,false), pi=this.iconKey(combo.b,true), sy=y+ch*0.855, ss=Math.min(24,cardW*0.16);
         const aObj=ai?this.add.image(x+cardW*0.35,sy,ai).setDisplaySize(ss,ss):this.add.text(x+cardW*0.35,sy,attack?attack.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
         const pObj=pi?this.add.image(x+cardW*0.65,sy,pi).setDisplaySize(ss,ss):this.add.text(x+cardW*0.65,sy,passive?passive.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
         if(!haveA)aObj.setAlpha(0.48); if(!haveP)pObj.setAlpha(0.48);
         const plus=this.add.text(x+cardW/2,sy,'+',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe07a'}).setOrigin(0.5);
-        const ct=this.add.text(x+cardW/2,y+ch*0.805,'คู่ Evolution\n'+combo.name,
+        const ct=this.add.text(x+cardW/2,y+ch*0.765,'คู่ Evolution\n'+combo.name,
           {fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'7px':'8px',color:(haveA&&haveP)?'#baffc7':'#eadcf2',align:'center',wordWrap:{width:cardW-30}}).setOrigin(0.5,0);
         this.lvlUp.add([ct,aObj,pObj,plus]);
       }else{
-        const ct=this.add.text(x+cardW/2,y+ch*0.84,'ไม่มีคู่ Evolution',{fontFamily:'sans-serif',fontSize:'8px',color:'#c8bbd2'}).setOrigin(0.5);
+        const ct=this.add.text(x+cardW/2,y+ch*0.79,'ไม่มีคู่ Evolution',{fontFamily:'sans-serif',fontSize:'8px',color:'#c8bbd2'}).setOrigin(0.5);
         this.lvlUp.add(ct);
       }
       this.lvlCards.push({left:x,right:x+cardW,top:y,bottom:y+ch,apply:o.apply});
@@ -3263,7 +3267,7 @@ class Game extends Phaser.Scene {
     // ปรับสเกลตาม "รอยเท้าจริง" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
     // strawberry(momo) ตัวอ้วน/กว้าง → เล็กลง · mint/cocoa ตัวผอมสูง → ใหญ่ขึ้น (แก้ปัญหา momo ใหญ่ไป มินต์/โกโก้เล็กไป)
     const baseKey=key.replace('_walk','');
-    const FP={ char_momo:102, char_mint:82.5, char_cocoa:81.5, char_taro:107, char_sesame:117 }[baseKey];
+    const FP={ char_momo:110, char_mint:82.5, char_cocoa:81.5, char_taro:107, char_sesame:117 }[baseKey];
     const TARGET=66;   // รอยเท้าเฉลี่ย (px) ที่ต้องการก่อนคูณกล้อง
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
