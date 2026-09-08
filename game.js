@@ -26,9 +26,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.3.2';
+const GAME_VERSION = '2.3.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.3.3', date:'2026-09-08', title:'Portrait Fullscreen + Mobile Screen Fit', items:[
+    'คืนโหมดแนวตั้งสำหรับเว็บ PWA และ Android APK',
+    'บังคับ canvas ให้เต็มจอมือถือและรักษาสัดส่วนภาพโดยไม่เกิดขอบดำ',
+    'บังคับซ่อนแถบสถานะ/แถบนำทางและเข้า immersive fullscreen ตั้งแต่เปิดแอป' ] },
   { v:'2.3.2', date:'2026-09-08', title:'Forced Landscape + Screen Fit Hotfix', items:[
     'บังคับ APK เป็นแนวนอนทันทีโดยไม่แสดงหน้าขอให้หมุนจอ',
     'ซ่อน status/navigation bar ตั้งแต่ก่อน WebView เปิด และเรียก immersive ซ้ำหลังกลับเข้าแอป',
@@ -1543,13 +1547,14 @@ class Game extends Phaser.Scene {
   buildHub(){
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.94).setOrigin(0,0);
-    const left=w*0.27;
-    const sugar=this.add.text(left,28,'🍬 Sugar: '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(0.5);
-    const emoji=this.add.text(left,h*0.29,'🍡✨',{fontSize:Math.min(50,h*0.14)+'px'}).setOrigin(0.5);
-    const title=this.add.text(left,h*0.45,'MOCHI\nMAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(30,h*0.085)+'px',color:'#ff8fb5',align:'center',lineSpacing:-5}).setOrigin(0.5);
-    const subtitle=this.add.text(left,h*0.59,'FLAVORBOUND',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff'}).setOrigin(0.5);
+    const portrait=w<=h;
+    const center=w/2;
+    const sugar=this.add.text(portrait?center: w*0.27,portrait?34:28,'🍬 Sugar: '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'16px':'17px',color:'#ffe08a'}).setOrigin(0.5);
+    const emoji=this.add.text(portrait?center:w*0.27,portrait?h*0.19:h*0.29,'🍡✨',{fontSize:Math.min(portrait?62:50,h*(portrait?0.09:0.14))+'px'}).setOrigin(0.5);
+    const title=this.add.text(portrait?center:w*0.27,portrait?h*0.29:h*0.45,'MOCHI\nMAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(portrait?34:30,h*(portrait?0.055:0.085))+'px',color:'#ff8fb5',align:'center',lineSpacing:-5}).setOrigin(0.5);
+    const subtitle=this.add.text(portrait?center:w*0.27,portrait?h*0.385:h*0.59,'FLAVORBOUND',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff'}).setOrigin(0.5);
     const ch=CHARACTERS[this.character||'momo'];
-    const charTxt=this.add.text(left,h*0.68,`${ch.emoji} ${ch.name}\nอาวุธ: ${ch.weaponName}`,{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w*0.42}}).setOrigin(0.5);
+    const charTxt=this.add.text(portrait?center:w*0.27,portrait?h*0.45:h*0.68,`${ch.emoji} ${ch.name}\nอาวุธ: ${ch.weaponName}`,{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:portrait?w-48:w*0.42}}).setOrigin(0.5);
     this.menu.add([bg,sugar,emoji,title,subtitle,charTxt]);
     // ป้ายเวอร์ชัน (มุมขวาบน) — แตะดูอัปเดต/ดาวน์โหลด
     const vg=this.add.graphics(); vg.fillStyle(0x2c2338,0.9); vg.fillRoundedRect(w-118,12,104,30,10); vg.lineStyle(1.5,0x4a4059,1); vg.strokeRoundedRect(w-118,12,104,30,10);
@@ -1562,10 +1567,12 @@ class Game extends Phaser.Scene {
       [COLORS.mint, '🎽','ของสวมใส่',      ()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
       [0xf0a92e,    '📖','สมุดมอนสเตอร์', ()=>{ this.menuScreen='bestiary'; this.buildMenuScreen(); }],
     ];
-    // แนวนอน: เมนู 2 คอลัมน์ ไม่บีบความสูงจนตัวหนังสือเล็ก
-    const areaL=Math.max(w*0.47,330), areaR=w-18, cols=2, gapX=10, gapY=12;
-    const bw=Math.min(205,(areaR-areaL-gapX)/2), bh=Math.min(58,(h-72-gapY*2)/3);
-    const totalW=bw*2+gapX, x0=areaL+(areaR-areaL-totalW)/2+bw/2, y0=74+bh/2;
+    const left=portrait?center:w*0.27;
+    const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
+    const cols=portrait?1:2, gapX=portrait?0:10, gapY=portrait?8:12;
+    const bw=portrait?Math.min(w-32,390):Math.min(205,(areaR-areaL-gapX)/2);
+    const bh=portrait?Math.min(52,Math.max(44,(h-490-gapY*4)/5)):Math.min(58,(h-72-gapY*2)/3);
+    const totalW=bw*cols+gapX*(cols-1), x0=portrait?center:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?Math.min(h-300, h*0.53)+bh/2;
     items.forEach(([color,emoji,label,fn],i)=>{
       const col=i%cols,row=Math.floor(i/cols);
       this.uiPillBtn(this.menu,x0+col*(bw+gapX),y0+row*(bh+gapY),bw,bh,color,emoji,label,fn);
