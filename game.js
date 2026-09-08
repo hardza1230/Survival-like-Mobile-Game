@@ -26,9 +26,11 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.5';
+const GAME_VERSION = '2.4.6';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.6', date:'2026-09-08', title:'Full-Cover Menu Art', items:[
+    'แก้ภาพเมนู/การ์ดบทให้คลุมเต็มกล่องจริง (cover-crop สเกลถูกต้อง) ไม่เห็นพื้นด่านโผล่ขอบบนอีก' ] },
   { v:'2.4.5', date:'2026-09-08', title:'Card & Character Polish', items:[
     'ลดการย่อแกน Y ของการ์ดเลเวลอัพ (สัดส่วนใกล้อาร์ตจริง) กรอบดูสมส่วนขึ้น',
     'เลื่อนแถวไอคอน "คู่ Evolution" ขึ้นมานั่งบนแผ่นทองของกรอบ ไม่ตกไปที่ปลายแหลม/ลายขอบล่างอีก',
@@ -1494,9 +1496,11 @@ class Game extends Phaser.Scene {
     if(fn)this._zone(x,y,w,h,fn);
   }
   _coverImage(x,y,w,h,key){
-    const img=this.add.image(x+w/2,y+h/2,key),fw=img.frame.realWidth||img.frame.width,fh=img.frame.realHeight||img.frame.height;
+    const img=this.add.image(x+w/2,y+h/2,key).setOrigin(0.5),fw=img.frame.realWidth||img.frame.width,fh=img.frame.realHeight||img.frame.height;
+    // cover-crop: สเกลเท่ากันทั้งสองแกนให้ภาพคลุมเต็มกล่อง แล้วครอบ texture ตรงกลางให้พอดี w×h
+    // (เดิมใช้ setDisplaySize(w,h) หลัง crop ทำให้สเกลเพี้ยน ภาพคลุมไม่เต็ม เห็นพื้นด้านหลังโผล่ขอบบน)
     const scale=Math.max(w/fw,h/fh),cw=w/scale,ch=h/scale;
-    img.setCrop((fw-cw)/2,(fh-ch)/2,cw,ch).setDisplaySize(w,h);return img;
+    img.setScale(scale).setCrop((fw-cw)/2,(fh-ch)/2,cw,ch);return img;
   }
   // การ์ดบทแบบภาพประกอบ — ภาพฉากจริง + overlay อ่านง่าย + status ที่เป็นส่วนหนึ่งของกรอบ
   uiStageCard(cont,x,y,w,h,st,index,open,fn){
