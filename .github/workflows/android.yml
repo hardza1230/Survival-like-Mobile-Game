@@ -57,7 +57,7 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
-      - name: Force landscape and fullscreen
+      - name: Force portrait and fullscreen
         run: node scripts/set-android-landscape.mjs
 
       - name: Sync Capacitor
