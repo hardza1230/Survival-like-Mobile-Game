@@ -37,7 +37,7 @@ if (existsSync(join(root, 'download.html'))) {
   console.log('copied download.html');
 }
 
-// PWA/installed web app: เปิดแบบ fullscreen และล็อก landscape ตาม manifest
+// PWA/installed web app: เปิดแบบ fullscreen และล็อก portrait ตาม manifest
 if (existsSync(join(root, 'manifest.webmanifest'))) {
   copyFileSync(join(root, 'manifest.webmanifest'), join(www, 'manifest.webmanifest'));
   console.log('copied manifest.webmanifest');
