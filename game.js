@@ -1572,7 +1572,7 @@ class Game extends Phaser.Scene {
     const cols=portrait?1:2, gapX=portrait?0:10, gapY=portrait?8:12;
     const bw=portrait?Math.min(w-32,390):Math.min(205,(areaR-areaL-gapX)/2);
     const bh=portrait?Math.min(52,Math.max(44,(h-490-gapY*4)/5)):Math.min(58,(h-72-gapY*2)/3);
-    const totalW=bw*cols+gapX*(cols-1), x0=portrait?center:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?Math.min(h-300, h*0.53)+bh/2;
+    const totalW=bw*cols+gapX*(cols-1), x0=portrait?center:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?Math.min(h-300, h*0.53)+bh/2:74+bh/2;
     items.forEach(([color,emoji,label,fn],i)=>{
       const col=i%cols,row=Math.floor(i/cols);
       this.uiPillBtn(this.menu,x0+col*(bw+gapX),y0+row*(bh+gapY),bw,bh,color,emoji,label,fn);
