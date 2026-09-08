@@ -17,18 +17,25 @@ const COLORS = {
 /* ---- BALANCE 2.2: ค่ากลางเดียว ปรับง่ายและกัน power creep ---- */
 const BALANCE = {
   moveSpeed: 172,
+  // ปรับสมดุลใหม่ให้มี trade-off ชัด: ยิงไว = ดาเมจเบา · ออกช้า = ดาเมจหนัก
   skillPower: {
-    sprinkle:0.90, star:0.82, thunder:0.82, whirl:0.94,
-    boomer:0.90, frost:0.78, popcorn:0.96, bubble:0.90, aura:0.76,
-    fork:0.84, mine:0.88, beam:0.82, meteor:0.78, cloud:0.92,
-    rocket:0.86, wave:0.90,
+    sprinkle:0.82, star:0.95, thunder:0.80, whirl:0.88,   // sprinkle/whirl = สายสแปมเบา
+    boomer:1.00, frost:0.72, popcorn:0.78, bubble:1.05, aura:0.72,   // popcorn/aura = สแปมเบา · bubble/frost = คุมพื้นที่
+    fork:0.95, mine:1.00, beam:1.15, meteor:1.18, cloud:0.85,   // beam/meteor = นุ๊กหนักออกช้า
+    rocket:1.12, wave:0.95,
   },
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.9';
+const GAME_VERSION = '2.5.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.5.0', date:'2026-09-08', title:'Balance & Gear Update', items:[
+    'มุมกล้องกว้างขึ้น (zoom 0.84→0.76) เห็นสนามเยอะขึ้น',
+    'ขยาย mint/cocoa ให้ใหญ่ขึ้นอีกในแผนที่',
+    'บาลานซ์สกิลใหม่ทั้งชุดให้มี trade-off ชัด: ยิงไว=ดาเมจเบา (sprinkle/popcorn/aura) · ออกช้า=ดาเมจหนัก (meteor/rocket/beam) · frost/cloud/bubble=สายคุมพื้นที่',
+    'เพิ่มมอนสเตอร์ในสมุด (มดกรดพ่นพิษ) + ลดโบนัสสมุดสะสมลงอีก',
+    'เพิ่มความหลากหลายอุปกรณ์: ไอเทมใหม่ทุกช่อง + เกรดใหม่ "เอปิก 💠" (หาได้จากกล่องสุ่ม)' ] },
   { v:'2.4.9', date:'2026-09-08', title:'Wave Rework', items:[
     'คืนระบบคอมโบเป็นเงื่อนไขปลด Awaken (ต้องมี passive คู่ที่ถูกต้อง) แต่ไม่มีโบนัส status เสริมแล้ว',
     'หมดเวลาเวฟแล้วต้องกำจัดศัตรูที่เหลือให้หมดก่อน จึงจะไปเวฟถัดไป (มีลูกศรชี้ตัวที่เหลือ)',
@@ -950,32 +957,44 @@ const GEAR = {
   weapon: [
     { id:'w_spoon', tier:"start", emoji:'🥄', name:'ช้อนไม้',      cost:0,   enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',  apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
     { id:'w_chop', tier:"common",  emoji:'🥢', name:'ตะเกียบเหล็ก', cost:120, enh:true, desc:'ดาเมจ +12% (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); } },
+    { id:'w_whisk', tier:"common", emoji:'🌀', name:'ตะกร้อตีไข่',  cost:150, enh:true, desc:'ลดคูลดาวน์สกิล 5% (+1%/ตีบวก)', apply:(p,lv)=>{ p.cdMul*=(1-0.05-0.01*lv); } },
     { id:'w_knife', tier:"rare", emoji:'🔪', name:'มีดเชฟ',       cost:300, enh:true, desc:'ดาเมจ +22% (+4%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.22+0.04*lv); } },
+    { id:'w_cleaver', tier:"epic", emoji:'🪓', name:'มีดอีโต้ทองคำ', cost:640, enh:true, desc:'ดาเมจ +30% · คริ +5% (+5%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.30+0.05*lv); p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
   ],
   gloves: [
     { id:'gl_none', tier:"start", emoji:'🧤', name:'ไม่สวม',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'gl_mitt', tier:"common", emoji:'🧤', name:'ถุงมือเตาอบ',  cost:140, enh:true, desc:'คริ +5% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
+    { id:'gl_silk', tier:"common", emoji:'🧵', name:'ถุงมือผ้าไหม', cost:150, enh:true, desc:'ดาเมจ +8% (+2%/ตีบวก)',      apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); } },
     { id:'gl_iron', tier:"rare", emoji:'🥊', name:'นวมเหล็ก',      cost:320, enh:true, desc:'คริ +9% · ดาเมจ +4% (+1%·+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
+    { id:'gl_dragon', tier:"epic", emoji:'🐲', name:'ถุงมือมังกรไฟ', cost:660, enh:true, desc:'คริ +13% · ดาเมจคริแรงขึ้น (+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.13+0.01*lv; p.critMul=(p.critMul||1.8)+0.25+0.05*lv; } },
   ],
   armor: [
     { id:'ar_none', tier:"start",  emoji:'🥋', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'ar_apron', tier:"common", emoji:'🥋', name:'ผ้ากันเปื้อน', cost:130, enh:true, desc:'HP +45 (+12/ตีบวก)',        apply:(p,lv)=>{ p.maxhp+=45+12*lv; } },
+    { id:'ar_quilt', tier:"common", emoji:'🧶', name:'เสื้อนวมหนา', cost:150, enh:true, desc:'ลดดาเมจ 5% (+1%/ตีบวก)',     apply:(p,lv)=>{ p.dmgTakenMul*=Math.pow(0.95,1+lv*0.4); } },
     { id:'ar_plate', tier:"rare", emoji:'🛡️', name:'เกราะฝาหม้อ',  cost:340, enh:true, desc:'HP +90 · ลดดาเมจ 6% (+18HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=90+18*lv; p.dmgTakenMul*=Math.pow(0.94,1+lv*0.5); } },
+    { id:'ar_royal', tier:"epic", emoji:'👑', name:'เกราะราชันครัว', cost:680, enh:true, desc:'HP +140 · ลดดาเมจ 10% (+24HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=140+24*lv; p.dmgTakenMul*=Math.pow(0.90,1+lv*0.5); } },
   ],
   boots: [
     { id:'bo_none', tier:"start",  emoji:'👢', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'bo_soft', tier:"common",  emoji:'👟', name:'รองเท้านุ่ม',  cost:110, enh:true, desc:'ความเร็ว +5% (+1%/ตีบวก)',   apply:(p,lv)=>{ p.baseSpeed*=1+0.05+0.01*lv; } },
+    { id:'bo_magnet', tier:"common", emoji:'🧲', name:'รองเท้าแม่เหล็ก', cost:130, enh:true, desc:'รัศมีดูด +25% (+4%/ตีบวก)', apply:(p,lv)=>{ p.pickup*=1+0.25+0.04*lv; } },
     { id:'bo_swift', tier:"rare", emoji:'👢', name:'บูตว่องไว',    cost:300, enh:true, desc:'ความเร็ว +9% · ดูด +15% (+1.5%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=1+0.09+0.015*lv; p.pickup*=1+0.15+0.03*lv; } },
+    { id:'bo_wind', tier:"epic", emoji:'🌪️', name:'บูตวายุ',       cost:620, enh:true, desc:'ความเร็ว +13% · ลดคูลดาวน์ 5% (+1.5%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=1+0.13+0.015*lv; p.cdMul*=(1-0.05-0.01*lv); } },
   ],
   amulet: [
     { id:'am_none', tier:"start",   emoji:'📿', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'am_ribbon', tier:"common", emoji:'🎀', name:'โบว์นำโชค',  cost:100, enh:true, desc:'HP +30 (+10/ตีบวก)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
+    { id:'am_clover', tier:"common", emoji:'🍀', name:'ใบโคลเวอร์',  cost:120, enh:true, desc:'คริ +4% · ฟื้น +0.5/วิ (+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.04+0.01*lv; p.regen=(p.regen||0)+0.5+0.15*lv; } },
     { id:'am_star', tier:"rare",   emoji:'⭐', name:'ดาวประกาย',  cost:260, enh:true, desc:'ดาเมจ +8% · HP +15 (+2%·+8/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
+    { id:'am_moon', tier:"epic",   emoji:'🌙', name:'จันทราหวาน',  cost:640, enh:true, desc:'ดาเมจ +12% · HP +40 · ฟื้น +1/วิ (+2%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.02*lv); p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
   ],
   ring: [
     { id:'ri_none', tier:"start",   emoji:'💍', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'ri_copper', tier:"common", emoji:'💍', name:'แหวนทองแดง', cost:120, enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
+    { id:'ri_silver', tier:"common", emoji:'💎', name:'แหวนเงินคริ', cost:140, enh:true, desc:'คริ +6% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.06+0.01*lv; } },
     { id:'ri_gold', tier:"rare",   emoji:'💛', name:'แหวนทองคำ',  cost:320, enh:true, desc:'ดาเมจ +12% · ฟื้น +0.8/วิ (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
+    { id:'ri_diamond', tier:"epic", emoji:'💠', name:'แหวนเพชร',    cost:700, enh:true, desc:'ดาเมจ +18% · คริ +8% (+3%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.18+0.03*lv); p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
   ],
 };
 
@@ -983,7 +1002,7 @@ const GEAR = {
 const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
 function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
-const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'} };
+const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'} };
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
@@ -1031,23 +1050,25 @@ const Save = {
 const BESTIARY_THRESHOLDS = [25, 150, 500, 1500, 5000];   // เก็บยากขึ้นมาก (ของเดิม 10/50/200/600/2000)
 const BESTIARY = [
   { id:'basic',   emoji:'🐜', name:'มดงานเปรี้ยว',   tex:'e_ant_worker',  desc:'มดงานพื้นฐานของรัง',
-    bonus:[{hp:2},{hp:4},{hp:6},{hp:9},{hp:14,def:0.01}] },
+    bonus:[{hp:1},{hp:2},{hp:3},{hp:5},{hp:9,def:0.01}] },
   { id:'fast',    emoji:'🐜', name:'มดสอดแนม',        tex:'e_ant_scout',   desc:'ตัวเล็ก วิ่งไว เข้าถึงเร็ว',
-    bonus:[{spd:0.01},{spd:0.02},{spd:0.03},{spd:0.04},{spd:0.06}] },
+    bonus:[{spd:0.008},{spd:0.015},{spd:0.022},{spd:0.03},{spd:0.045}] },
   { id:'tank',    emoji:'🛡️', name:'มดทหารเกราะ',     tex:'e_ant_soldier', desc:'เกราะหนา ทนทาน HP เยอะ',
-    bonus:[{def:0.01},{def:0.015},{def:0.02},{def:0.03},{def:0.04}] },
+    bonus:[{def:0.008},{def:0.012},{def:0.016},{def:0.022},{def:0.03}] },
   { id:'shooter', emoji:'💧', name:'มดพ่นกรด',        tex:'e_ant_spitter', desc:'พ่นกรดใส่ระยะไกล',
-    bonus:[{dmg:0.01},{dmg:0.02},{dmg:0.03},{dmg:0.04},{dmg:0.05}] },
+    bonus:[{dmg:0.008},{dmg:0.015},{dmg:0.022},{dmg:0.03},{dmg:0.04}] },
   { id:'bomber',  emoji:'💥', name:'มดพลีกรด',        tex:'e_ant_drone',   desc:'ระเบิดกรดตอนตาย — อยู่ใกล้โดนด้วย!',
-    bonus:[{crit:0.01},{crit:0.015},{crit:0.02},{crit:0.025},{crit:0.035}] },
+    bonus:[{crit:0.008},{crit:0.012},{crit:0.016},{crit:0.02},{crit:0.028}] },
+  { id:'acid',    emoji:'🟢', name:'มดกรดพ่นพิษ',     tex:'e_acid',        desc:'พ่นแอ่งกรดคอยกัดกร่อน',
+    bonus:[{def:0.008},{def:0.012},{def:0.016},{def:0.02},{def:0.028,hp:6}] },
   { id:'dasher',  emoji:'⚡', name:'มดจู่โจม',         tex:'e_ant_scout',   desc:'รอจังหวะ แล้วพุ่งใส่เร็วจี๋!',
-    bonus:[{cdr:0.01},{cdr:0.02},{cdr:0.03},{cdr:0.04},{cdr:0.05}] },
+    bonus:[{cdr:0.008},{cdr:0.015},{cdr:0.022},{cdr:0.03},{cdr:0.04}] },
   { id:'siege',   emoji:'🧱', name:'มดล้อมรัง',       tex:'e_ant_soldier', desc:'ถึกโหด เดินบีบวงช้า ๆ แต่แรงสูง',
-    bonus:[{hp:3},{hp:6},{hp:9},{hp:12},{hp:18,def:0.02}] },
+    bonus:[{hp:2},{hp:4},{hp:6},{hp:9},{hp:13,def:0.015}] },
   { id:'mini',    emoji:'👑', name:'ราชองครักษ์',      tex:'mb1',       desc:'หัวหน้าฝูง — แข็งแกร่งกว่าปกติ',
-    bonus:[{dmg:0.01},{dmg:0.02},{dmg:0.03},{dmg:0.045},{dmg:0.06,hp:12}] },
+    bonus:[{dmg:0.008},{dmg:0.015},{dmg:0.022},{dmg:0.03},{dmg:0.045,hp:8}] },
   { id:'boss',    emoji:'👹', name:'จักรพรรดินีมด',    tex:'boss1',     desc:'ราชาแห่งโซนครัว — ท้าทายที่สุด!',
-    bonus:[{hp:3,dmg:0.01},{hp:6,dmg:0.02},{hp:10,dmg:0.03,def:0.02},{hp:15,dmg:0.04,def:0.03},{hp:22,dmg:0.05,def:0.04,crit:0.03}] },
+    bonus:[{hp:2,dmg:0.008},{hp:4,dmg:0.015},{hp:7,dmg:0.022,def:0.015},{hp:11,dmg:0.03,def:0.02},{hp:16,dmg:0.04,def:0.03,crit:0.02}] },
 ];
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
 function bestiaryAllBonus(){
@@ -1113,7 +1134,7 @@ class Game extends Phaser.Scene {
 
   create(){
     this.renderDPR=RENDER_DPR;
-    this.viewZoom=0.84;                                    // แนวนอน: ซูมเข้าเล็กน้อยเพื่อให้ตัวละคร/กระสุนอ่านง่าย
+    this.viewZoom=0.76;                                    // มองกว้างขึ้น (เดิม 0.84) — เห็นสนามเยอะขึ้น
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.state='menu'; this.elapsed=0; this.kills=0;
     this.level=1; this.xp=0; this.xpNext=5;
@@ -1789,7 +1810,7 @@ class Game extends Phaser.Scene {
     const rx=leftW+8,rw=w-rx-14,selDef=GEAR_SLOTS.find(g=>g.slot===sel);
     const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · เลือกสวมใส่ / ตีบวก',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
     const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
-    items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':'')+(lv>0?' +'+lv:'');let label,color,fn;
+    items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
       if(equipped&&canEnh){const ok=(Save.data.sugar||0)>=ecost;label='⚒️ +'+(lv+1)+' 🍬'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spend(ecost)){Save.enhance(it.id);Sfx.clear();}this.buildMenuScreen();};}
       else if(equipped){label='ใส่อยู่ ✓';color='#ffd166';fn=null;}else if(owned){label='สวมใส่';color='#8bd3a0';fn=()=>{Save.data.gear[sel]=it.id;Save.save();Sfx.select();this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
       this._rowBtn(80+i*(rowH+rowGap),rowH,owned?it.emoji:'❔',nm,owned?it.desc:'ยังไม่พบไอเทมชิ้นนี้',label,color,fn,rx,rw);
@@ -1842,7 +1863,7 @@ class Game extends Phaser.Scene {
     GEAR[sel].forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), equipped=Save.data.gear[sel]===it.id;
       const lv=Save.gearLv(it.id), canEnh=it.enh&&lv<GEAR_ENH_MAX, ecost=gearEnhCost(lv);
       const tl=TIER_LABEL[it.tier]||TIER_LABEL.common;
-      const nm=it.name+(it.tier==='rare'?' ⭐':'')+(lv>0?'  +'+lv:'');
+      const nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?'  +'+lv:'');
       let label,color,fn;
       if(equipped && canEnh){ const afEnh=(Save.data.sugar||0)>=ecost; label='⚒️ ผสม +'+(lv+1)+' 🍬'+ecost; color=afEnh?'#ffd166':'#e0788a';
         fn=()=>{ if(Save.spend(ecost)){ Save.enhance(it.id); Sfx.clear(); } this.buildMenuScreen(); }; }
@@ -2589,21 +2610,25 @@ class Game extends Phaser.Scene {
   }
   _cdBase(key,lvl){
     switch(key){
-      case 'sprinkle': return Math.max(0.5,0.82-lvl*0.03);
-      case 'thunder':  return Math.max(1.2,1.9-lvl*0.07);
-      case 'whirl':    return Math.max(1.8,2.6-lvl*0.08);
-      case 'boomer':   return Math.max(1.4,2.1-lvl*0.06);
-      case 'frost':    return Math.max(3.0,4.0-lvl*0.12);
-      case 'popcorn':  return Math.max(0.7,1.1-lvl*0.05);
-      case 'bubble':   return Math.max(1.4,2.2-lvl*0.1);
-      case 'aura':     return Math.max(0.7,1.1-lvl*0.05);
-      case 'fork':     return Math.max(1.2,1.8-lvl*0.08);
-      case 'mine':     return Math.max(1.8,2.6-lvl*0.1);
-      case 'beam':     return Math.max(1.0,1.6-lvl*0.08);
-      case 'meteor':   return Math.max(1.6,2.4-lvl*0.1);
-      case 'cloud':    return Math.max(2.0,3.0-lvl*0.1);
-      case 'rocket':   return Math.max(1.2,1.8-lvl*0.08);
+      // สายยิงไว ดาเมจเบา (spam)
+      case 'sprinkle': return Math.max(0.42,0.72-lvl*0.03);
+      case 'popcorn':  return Math.max(0.55,0.95-lvl*0.05);
+      case 'aura':     return Math.max(0.60,1.0-lvl*0.04);
+      case 'whirl':    return Math.max(1.05,1.7-lvl*0.07);
+      // สายกลาง
+      case 'fork':     return Math.max(1.1,1.7-lvl*0.08);
+      case 'boomer':   return Math.max(1.3,2.0-lvl*0.07);
+      case 'thunder':  return Math.max(1.4,2.2-lvl*0.08);
       case 'wave':     return Math.max(1.4,2.2-lvl*0.08);
+      // สายคุมพื้นที่/DoT (ออกช้า)
+      case 'bubble':   return Math.max(1.4,2.2-lvl*0.10);
+      case 'mine':     return Math.max(1.9,2.8-lvl*0.10);
+      case 'cloud':    return Math.max(2.2,3.2-lvl*0.10);
+      case 'frost':    return Math.max(3.0,4.2-lvl*0.14);
+      // สายนุ๊ก ดาเมจหนัก ออกช้า (heavy burst)
+      case 'beam':     return Math.max(1.4,2.2-lvl*0.08);
+      case 'rocket':   return Math.max(1.5,2.3-lvl*0.08);
+      case 'meteor':   return Math.max(2.0,2.9-lvl*0.10);
       default: return 1.6;
     }
   }
@@ -3016,8 +3041,8 @@ class Game extends Phaser.Scene {
     if(!pool.length && tier==='common') pool=gearPool('rare').filter(it=>!owned.includes(it.id));
     if(!pool.length) return null;
     const it=Phaser.Utils.Array.GetRandom(pool); owned.push(it.id); Save.save(); return it; }
-  gachaRoll(){ const roll=Math.random()<0.68?'common':'rare'; let it=this.grantGear(roll);
-    if(!it) it=this.grantGear(roll==='common'?'rare':'common'); return it; }
+  gachaRoll(){ const r=Math.random(), roll=r<0.55?'common':r<0.86?'rare':'epic';   // 55% common · 31% rare · 14% epic
+    for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     this.player.iframe=0.6; this.player.hp-=e.dmg*(this.player.dmgTakenMul||1); Sfx.hurt(); this.cameras.main.shake(120,0.008);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
@@ -3326,7 +3351,7 @@ class Game extends Phaser.Scene {
     // ปรับสเกลตาม "รอยเท้าจริง" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
     // strawberry(momo) ตัวอ้วน/กว้าง → เล็กลง · mint/cocoa ตัวผอมสูง → ใหญ่ขึ้น (แก้ปัญหา momo ใหญ่ไป มินต์/โกโก้เล็กไป)
     const baseKey=key.replace('_walk','');
-    const FP={ char_momo:110, char_mint:72, char_cocoa:72, char_taro:107, char_sesame:117 }[baseKey];
+    const FP={ char_momo:110, char_mint:63, char_cocoa:63, char_taro:107, char_sesame:117 }[baseKey];
     const TARGET=66;   // รอยเท้าเฉลี่ย (px) ที่ต้องการก่อนคูณกล้อง
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
