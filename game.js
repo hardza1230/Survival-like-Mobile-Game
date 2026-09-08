@@ -26,9 +26,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.6';
+const GAME_VERSION = '2.4.7';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.7', date:'2026-09-08', title:'Tougher Boss & Grander Intro', items:[
+    'หลุมด่าน 1 มีกล่องชนกลางปากหลุมคลุมเกือบเต็ม เดินทะลุไม่ได้ทุกมุมแล้ว',
+    'ยืดคัตซีนบอสด่าน 1 ให้ยาว/อลังการขึ้น (ลอยขึ้นช้า ๆ + คำราม 2 จังหวะ ~6.5 วิ)',
+    'บอสใหญ่เลือดหนาขึ้น ×3 ตามคำขอ' ] },
   { v:'2.4.6', date:'2026-09-08', title:'Full-Cover Menu Art', items:[
     'แก้ภาพเมนู/การ์ดบทให้คลุมเต็มกล่องจริง (cover-crop สเกลถูกต้อง) ไม่เห็นพื้นด่านโผล่ขอบบนอีก' ] },
   { v:'2.4.5', date:'2026-09-08', title:'Card & Character Polish', items:[
@@ -1996,7 +2000,12 @@ class Game extends Phaser.Scene {
     const add=(key,x,y,solid,sc)=>{ if(!this.textures.exists(key))return; sc=sc||1;
       const physical=i===0&&key!=='nest_acid'&&key!=='nest_hole';
       if(solid||physical){ const s=this.solidProps.create(x,y,key); s.setScale(sc).setDepth(y).refreshBody();
-        if(s.body){const bw=Math.max(24,s.displayWidth*0.72),bh=Math.max(18,s.displayHeight*0.34);s.body.setSize(bw,bh);s.body.setOffset((s.displayWidth-bw)/2,s.displayHeight-bh);}
+        if(s.body){
+          if(key==='nest_hole'){ // หลุมกลม → กล่องชนอยู่ตรงกลางคลุมเกือบทั้งปาก กันเดินทะลุทุกมุม
+            const d=Math.max(24,Math.min(s.displayWidth,s.displayHeight)*0.72);
+            s.body.setSize(d,d);s.body.setOffset((s.displayWidth-d)/2,(s.displayHeight-d)/2);
+          }else{const bw=Math.max(24,s.displayWidth*0.72),bh=Math.max(18,s.displayHeight*0.34);s.body.setSize(bw,bh);s.body.setOffset((s.displayWidth-bw)/2,s.displayHeight-bh);}
+        }
       }else{ const im=this.add.image(x,y,key).setScale(sc).setDepth(y); this.camWorld(im); this.decoProps.add(im); }
     };
     const L=STAGE_PROPS[i]; if(!L)return;
@@ -2169,7 +2178,7 @@ class Game extends Phaser.Scene {
     const fScale=this.stageIndex===1?0.88:(isArt?1.55:2.5); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===1?68:(isArt?54:26),fOff=this.stageIndex===1?60:(isArt?16:5);
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul(); b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.35); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึก+แรงขึ้นมาก
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*3; b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.35); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึก+แรงขึ้นมาก (×3 ตามคำขอ)
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.8; b.phase2=false; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -2186,7 +2195,7 @@ class Game extends Phaser.Scene {
     const band=this.add.rectangle(this.W/2,this.H/2,this.W,128,0x17090d,0.92).setScrollFactor(1).setDepth(120);
     const warn=this.add.text(this.W/2,this.H/2-18,'⚠  W A R N I N G  ⚠',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff355e',stroke:'#41000e',strokeThickness:7}).setOrigin(0.5).setScrollFactor(1).setDepth(121);
     const sub=this.add.text(this.W/2,this.H/2+27,name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff1a8'}).setOrigin(0.5).setScrollFactor(1).setDepth(121);
-    [band,warn,sub].forEach(o=>this.camUI(o));this.tweens.add({targets:[band,warn,sub],alpha:{from:0,to:1},duration:180,yoyo:true,hold:760,onComplete:()=>{band.destroy();warn.destroy();sub.destroy();}});
+    [band,warn,sub].forEach(o=>this.camUI(o));this.tweens.add({targets:[band,warn,sub],alpha:{from:0,to:1},duration:200,yoyo:true,hold:1050,onComplete:()=>{band.destroy();warn.destroy();sub.destroy();}});
     cam.stopFollow();this.time.delayedCall(850,()=>cam.pan(b.x,targetY,850,'Sine.easeInOut'));
     if(this.stageIndex===1){
       this.time.delayedCall(1600,()=>{if(!b.active)return;const drain=this.camWorld(this.add.image(b.x,targetY+58,'drain_grate').setDepth(targetY-3).setScale(0.9).setAlpha(0));this.decoProps.add(drain);
@@ -2201,16 +2210,19 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(1650,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setScale(base*0.25);const glow=this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(STAGES[this.stageIndex].tint).setScale(0.2).setDepth(b.y-1));this.tweens.add({targets:[b,glow],alpha:1,scale:base,duration:850,ease:'Back.out',onComplete:()=>glow.destroy()});});
       this.time.delayedCall(3000,()=>cam.pan(px,py,760,'Sine.easeInOut'));this.time.delayedCall(3800,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setScale(base);this.state='play';this.mode='boss';b.atkCd=1.6;});return;
     }
-    // ด่าน 1 (ราชินีมด): ปรากฏตัวแบบเรืองแสง + คำราม (ไม่โผล่จากหลุมแล้ว)
-    this.time.delayedCall(1600,()=>{if(!b.active)return;
-      b.setVisible(true).setAlpha(0).setPosition(b.x,targetY).setScale(base*0.25);this.bossPose(b,1,520);
-      const glow=this.camWorld(this.add.image(b.x,targetY,'vfx_glow').setTint(STAGES[0].tint||0x9dff45).setScale(0.2).setDepth(targetY-1));
-      this.tweens.add({targets:[b,glow],alpha:1,scale:base,duration:850,ease:'Back.out',onComplete:()=>{glow.destroy();if(!b.active)return;
-        this.bossPose(b,6,1050);this.cameras.main.shake(460,0.014);this.screenFlash(0x9dff45,0.28,420);
-        for(let i=0;i<3;i++){const r=this.camWorld(this.add.circle(b.x,b.y,25,0,0).setDepth(6).setStrokeStyle(5,0x9dff45,0.85));this.tweens.add({targets:r,radius:190+i*55,alpha:0,duration:650+i*100,delay:i*90,onComplete:()=>r.destroy()});}}});
+    // ด่าน 1 (ราชินีมด): ฉากปรากฏตัวยาว+อลังการ — เรืองแสง → ลอยขึ้นช้า ๆ → คำราม 2 จังหวะ
+    this.time.delayedCall(1950,()=>{if(!b.active)return;
+      b.setVisible(true).setAlpha(0).setPosition(b.x,targetY+46).setScale(base*0.2);this.bossPose(b,1,1000);
+      const glow=this.camWorld(this.add.image(b.x,targetY,'vfx_glow').setTint(STAGES[0].tint||0x9dff45).setScale(0.15).setDepth(targetY-1));
+      this.tweens.add({targets:glow,scale:1.35,alpha:{from:0.95,to:0.45},duration:1350,yoyo:true});
+      this.tweens.add({targets:b,alpha:1,y:targetY,scale:base,duration:1350,ease:'Back.out',onComplete:()=>{if(!b.active)return;glow.destroy();
+        this.bossPose(b,6,1500);this.cameras.main.shake(560,0.016);this.screenFlash(0x9dff45,0.30,470);   // คำรามครั้งที่ 1
+        for(let i=0;i<3;i++){const r=this.camWorld(this.add.circle(b.x,b.y,25,0,0).setDepth(6).setStrokeStyle(6,0x9dff45,0.9));this.tweens.add({targets:r,radius:210+i*60,alpha:0,duration:720+i*110,delay:i*100,onComplete:()=>r.destroy()});}}});
     });
-    this.time.delayedCall(3200,()=>cam.pan(px,py,780,'Sine.easeInOut'));
-    this.time.delayedCall(4000,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง!',2200);});
+    this.time.delayedCall(4100,()=>{if(!b.active)return;this.bossPose(b,6,1000);this.cameras.main.shake(380,0.013);this.screenFlash(0xff6a8f,0.16,400);   // คำรามครั้งที่ 2 (ย้ำ)
+      for(let i=0;i<2;i++){const r=this.camWorld(this.add.circle(b.x,b.y,20,0,0).setDepth(6).setStrokeStyle(5,0xff9ec4,0.8));this.tweens.add({targets:r,radius:160+i*55,alpha:0,duration:620+i*100,delay:i*90,onComplete:()=>r.destroy()});}});
+    this.time.delayedCall(5600,()=>cam.pan(px,py,950,'Sine.easeInOut'));
+    this.time.delayedCall(6650,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง!',2400);});
   }
   // จอวาบเต็มหน้าจอ (บนกล้อง UI) — ใช้ตอนบอสปรากฏ/เข้าเฟส/ตาย
   screenFlash(color,alpha,dur){
