@@ -26,9 +26,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.1';
+const GAME_VERSION = '2.4.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.2', date:'2026-09-08', title:'FHD+ Clarity & Native Portrait Art', items:[
+    'เปลี่ยนภาพเมนูเป็นงาน Art ความละเอียด 1440×3200 ที่จัดสัดส่วนสำหรับจอมือถือ 9:20 โดยตรง',
+    'ใช้การวางภาพแบบ cover crop แทนการยืดภาพ และเพิ่มคุณภาพ Canvas สูงสุดเป็น DPR 3 บนเครื่องที่รองรับ',
+    'ลดความฟุ้งของเงาและเส้นขอบข้อความ เพื่อให้เมนูอ่านคมชัดบนจอ FHD+' ] },
   { v:'2.4.1', date:'2026-09-08', title:'Royal Menu & Illustrated Chapters', items:[
     'ยกระดับปุ่มหน้าเมนูเป็นป้ายแฟนตาซีหลายชั้น พร้อมกรอบทอง ตราไอคอน และอัญมณีประจำหมวด',
     'สร้างหน้าเลือกด่านใหม่ด้วยภาพฉากจริงของแต่ละบท แถบสถานะ ปุ่มเล่น และลำดับข้อมูลที่อ่านชัด',
@@ -317,7 +321,7 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
-  menu_hub_v2:'assets/ui/menu_hub_v2.jpg',
+  menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   e_basic:   'assets/e_basic.png',
   e_fast:    'assets/e_fast.png',
   e_tank:    'assets/e_tank.png',
@@ -1471,7 +1475,7 @@ class Game extends Phaser.Scene {
     g.lineStyle(1,0xffffff,0.42);g.strokeCircle(icx,cy,ir-2);cont.add(g);
     const em=this.add.text(icx,cy-1,emoji,{fontSize:Math.round(h*0.36)+'px'}).setOrigin(0.5);
     const tx=x+h*1.08,nm=this.add.text(tx,sub?cy-7:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:primary?'17px':'15px',color:'#fffaf3'}).setOrigin(0,0.5);
-    nm.setShadow(0,2,'#000000',4);
+    nm.setShadow(0,2,'#000000',2);
     const gemX=x+w-20,gem=this.add.graphics();gem.fillStyle(gold,0.95);gem.fillPoints([{x:gemX,y:cy-6},{x:gemX+6,y:cy},{x:gemX,y:cy+6},{x:gemX-6,y:cy}],true);gem.lineStyle(1,0xffffff,0.5);gem.strokePoints([{x:gemX,y:cy-6},{x:gemX+6,y:cy},{x:gemX,y:cy+6},{x:gemX-6,y:cy}],true);cont.add(gem);
     cont.add([em,nm]);
     if(sub){const st=this.add.text(tx,cy+11,sub,{fontFamily:'sans-serif',fontSize:'9.5px',color:primary?'#ffd9df':'#c4b8cb'}).setOrigin(0,0.5);cont.add(st);}
@@ -1496,7 +1500,7 @@ class Game extends Phaser.Scene {
     const actionW=open?68:64,actionX=x+w-actionW-10;shade.fillStyle(open?0x11261f:0x211c29,0.93);shade.fillRoundedRect(actionX,y+h-35,actionW,25,9);shade.lineStyle(1.3,open?color:0x625872,0.8);shade.strokeRoundedRect(actionX,y+h-35,actionW,25,9);cont.add(shade);
     const chapter=this.add.text(x+37,y+20,'บท '+String(index+1).padStart(2,'0'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#172014':'#ddd5e5'}).setOrigin(0.5);
     const icon=this.add.text(x+19,y+h-25,open?st.emoji:'🔒',{fontSize:'22px'}).setOrigin(0.5);
-    const name=this.add.text(x+39,y+43,st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:h<92?'13px':'15px',color:open?'#fffaf2':'#c4bdca',stroke:'#120a16',strokeThickness:3}).setOrigin(0,0.5);
+    const name=this.add.text(x+39,y+43,st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:h<92?'13px':'15px',color:open?'#fffaf2':'#c4bdca',stroke:'#120a16',strokeThickness:2}).setOrigin(0,0.5);
     const en=this.add.text(x+39,y+61,st.en.toUpperCase(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:open?Phaser.Display.Color.IntegerToColor(color).rgba:'#82798d'}).setOrigin(0,0.5);
     const desc=open?st.lore:('ผ่านบท '+index+' เพื่อปลดล็อกเส้นทางนี้');
     const lore=this.add.text(x+39,y+h-25,desc,{fontFamily:'sans-serif',fontSize:h<92?'8px':'9px',color:open?'#ddd4df':'#8f8798',wordWrap:{width:w-39-actionW-28},maxLines:2}).setOrigin(0,0.5);
@@ -1615,13 +1619,13 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
     const portrait=w<=h;
     const center=w/2;
-    const bg=this.textures.exists('menu_hub_v2')?this.add.image(center,h/2,'menu_hub_v2').setDisplaySize(w,h):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0,0);
+    const bg=this.textures.exists('menu_hub_v3')?this._coverImage(0,0,w,h,'menu_hub_v3'):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0,0);
     const shade=this.add.graphics();shade.fillGradientStyle(0x100817,0x100817,0x090611,0x090611,0.05,0.05,0.50,0.88);shade.fillRect(0,0,w,h);
     const topG=this.add.graphics();topG.fillStyle(0x090713,0.72);topG.fillRoundedRect(12,13,96,32,12);topG.lineStyle(1.2,0xffffff,0.18);topG.strokeRoundedRect(12,13,96,32,12);
     const sugar=this.add.text(24,29,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffe5a6'}).setOrigin(0,0.5);
     const logoY=portrait?h*0.505:h*0.47;
     const title=this.add.text(center,logoY,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(31,w*0.082)+'px',color:'#fff4ef',stroke:'#4b102b',strokeThickness:5,align:'center'}).setOrigin(0.5);
-    title.setShadow(0,4,'#000000',8);
+    title.setShadow(0,3,'#000000',4);
     const subtitle=this.add.text(center,logoY+27,'F L A V O R B O U N D',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd27d'}).setOrigin(0.5);
     const ch=CHARACTERS[this.character||'momo'];
     const charTxt=this.add.text(center,logoY+47,`${ch.emoji} ${ch.name}  ·  ${ch.weaponName}`,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d8c4',align:'center'}).setOrigin(0.5);
@@ -3465,7 +3469,9 @@ class Game extends Phaser.Scene {
 
 // logical gameSize = CSS px เสมอ; Phaser ใช้ resolution สร้าง backing canvas คมชัดตาม DPR
 // ห้ามคูณ width/height ด้วย DPR ในโหมด RESIZE เพราะ ScaleManager คืน CSS px อยู่แล้ว
-const RENDER_DPR = Math.max(1, Math.min(window.devicePixelRatio||1, 2.5));
+const DEVICE_DPR = window.devicePixelRatio||1;
+const LOW_MEMORY_DEVICE = Number(navigator.deviceMemory||8)<=4;
+const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, LOW_MEMORY_DEVICE?2.25:3));
 window.__g = new Phaser.Game({
   type: Phaser.AUTO,
   backgroundColor: '#3a3355',
@@ -3477,7 +3483,7 @@ window.__g = new Phaser.Game({
     height: window.innerHeight,
   },
   physics: { default:'arcade', arcade:{ gravity:{y:0}, debug:false } },
-  render: { antialias:true, roundPixels:false },
+  render: { antialias:true, antialiasGL:true, roundPixels:false, powerPreference:'high-performance' },
   scene: [Boot, Game],
 });
 // ปรับขนาดตอนหมุนจอ/เปลี่ยนขนาด — debounce กันค่าเพี้ยนช่วงหมุน + อ่านค่าจริงหลังหมุนเสร็จ
