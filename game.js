@@ -26,9 +26,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.3.3';
+const GAME_VERSION = '2.3.4';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.3.4', date:'2026-09-08', title:'Portrait UI Clarity Pass', items:[
+    'จัดหน้าเลือกด่าน พรสวรรค์ สมุดมอนสเตอร์ และ Level Up ใหม่สำหรับจอแนวตั้ง',
+    'แยกข้อมูล HUD เป็นหลายแถวเพื่อไม่ให้ข้อความและปุ่มควบคุมซ้อนกัน',
+    'เพิ่มขนาดการ์ด ไอคอน และพื้นที่แตะ พร้อมปรับตำแหน่งตามขนาดจออัตโนมัติ' ] },
   { v:'2.3.3', date:'2026-09-08', title:'Portrait Fullscreen + Mobile Screen Fit', items:[
     'คืนโหมดแนวตั้งสำหรับเว็บ PWA และ Android APK',
     'บังคับ canvas ให้เต็มจอมือถือและรักษาสัดส่วนภาพโดยไม่เกิดขอบดำ',
@@ -1266,31 +1270,31 @@ class Game extends Phaser.Scene {
     this.hpIcon=this.add.text(pad+4,pad+7,'❤️',{fontSize:'12px'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
     this.xpIcon=this.add.text(pad+4,pad+24,'⭐',{fontSize:'10px'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
 
-    this.timeTxt=this.add.text(w/2,pad+30,'0:00',{fontFamily:'sans-serif',fontSize:'20px',color:'#ffffff'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
-    this.killTxt=this.add.text(w-pad,pad+32,'☠ 0',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);
-    this.lvlTxt=this.add.text(pad,pad+32,'Lv 1',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
-    this.stageTxt=this.add.text(w/2,pad+54,'',{fontFamily:'sans-serif',fontSize:'13px',color:'#ffd9a8'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    this.lvlTxt=this.add.text(pad,pad+34,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
+    this.killTxt=this.add.text(w-pad,pad+34,'☠ 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);
+    this.timeTxt=this.add.text(w/2,pad+52,'0:00',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',align:'center',wordWrap:{width:w-48}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    this.stageTxt=this.add.text(w/2,pad+76,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     // wave progress pips (บอกว่าใกล้จบเวฟ/ถึงบอสหรือยัง)
     this.pipG=this.add.graphics().setScrollFactor(1).setDepth(51);
 
     // boss HP bar (hidden until boss)
-    this.bossName=this.add.text(w/2,pad+74,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(52);
-    this.bossBgW=this.add.rectangle(w/2,pad+92,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
-    this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+94,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(1).setDepth(52);
+    this.bossName=this.add.text(w/2,pad+136,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(52);
+    this.bossBgW=this.add.rectangle(w/2,pad+154,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+156,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(1).setDepth(52);
 
     // center banner
     this.bannerT=this.add.text(w/2,this.H*0.32,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
     this.bannerS=this.add.text(w/2,this.H*0.4,'',{fontFamily:'sans-serif',fontSize:'15px',color:'#e6dcf0',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
 
     // mute button (มุมขวาบน) — แสดงตลอดเวลา
-    this.muteBtn=this.add.circle(w-30,pad+64,18,0x000000,0.32).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.3);
-    this.muteTxt=this.add.text(w-30,pad+64,Sfx.muted?'🔇':'🔊',{fontSize:'17px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    this.muteBtn=this.add.circle(w-28,pad+113,17,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.muteTxt=this.add.text(w-28,pad+113,Sfx.muted?'🔇':'🔊',{fontSize:'15px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
     // pause button (ซ้ายของ mute)
-    this.pauseBtn=this.add.circle(w-72,pad+64,18,0x000000,0.32).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.3);
-    this.pauseTxt=this.add.text(w-72,pad+64,'⏸',{fontSize:'15px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    this.pauseBtn=this.add.circle(w-68,pad+113,17,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.pauseTxt=this.add.text(w-68,pad+113,'⏸',{fontSize:'14px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
     // ปุ่มเร่งความเร็วเกม (x1/x2/x3 แบบ Godot time_scale)
-    this.speedBtn=this.add.circle(w-114,pad+64,18,0x000000,0.32).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.3);
-    this.speedTxt=this.add.text(w-114,pad+64,'x'+(this.gameSpeed||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#bff5d8'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    this.speedBtn=this.add.circle(w-108,pad+113,17,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.speedTxt=this.add.text(w-108,pad+113,'x'+(this.gameSpeed||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bff5d8'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
     // ตัววัด FPS + ความละเอียด (ไว้ดีบั๊ก — เอาออกทีหลังได้)
     this.fpsTxt=this.add.text(w-30,pad+88,'',{fontFamily:'monospace',fontSize:'10px',color:'#8fd0ff'}).setOrigin(1,0).setScrollFactor(1).setDepth(59);
     this.fpsTxt.setVisible(/[?&]debug=1\b/.test(location.search));
@@ -1299,8 +1303,8 @@ class Game extends Phaser.Scene {
       this.fpsTxt.setText(fps+'fps · '+bw+'p · x'+this.renderDPR); }});
 
     this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt];
-    this.objectiveArrow=this.add.text(w/2,pad+112,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
-    this.objectiveDist=this.add.text(w/2,pad+139,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
+    this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
+    this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.objectiveArrow,this.objectiveDist];
     this.hudList.forEach(o=>o.setVisible(false));
     this.bossUI.forEach(o=>o.setVisible(false));
@@ -1396,15 +1400,16 @@ class Game extends Phaser.Scene {
     if(this.uiCam){ this.uiCam.setSize(gs.width,gs.height); this.uiCam.setZoom(1); this.uiCam.centerOn(this.W/2,this.H/2); }
     if(this.vig)this.vig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-58,this.H-78); this.dashTxt.setPosition(this.W-58,this.H-78);
-      this.timeTxt.setPosition(this.W/2,pad+30); this.killTxt.setPosition(this.W-pad,pad+32);
-      this.stageTxt.setPosition(this.W/2,pad+54);
+      this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(this.W-pad,pad+34);
+      this.timeTxt.setPosition(this.W/2,pad+52).setWordWrapWidth(this.W-48);
+      this.stageTxt.setPosition(this.W/2,pad+76).setWordWrapWidth(this.W-40);
       if(this.skills&&(this.state==='play'||this.state==='levelup')){ this.buildSkillBar(); this.drawWavePips(); }
-      if(this.muteBtn){ this.muteBtn.setPosition(this.W-30,pad+64); this.muteTxt.setPosition(this.W-30,pad+64); }
-      if(this.pauseBtn){ this.pauseBtn.setPosition(this.W-72,pad+64); this.pauseTxt.setPosition(this.W-72,pad+64); }
-      if(this.speedBtn){ this.speedBtn.setPosition(this.W-114,pad+64); this.speedTxt.setPosition(this.W-114,pad+64); }
+      if(this.muteBtn){ this.muteBtn.setPosition(this.W-28,pad+113); this.muteTxt.setPosition(this.W-28,pad+113); }
+      if(this.pauseBtn){ this.pauseBtn.setPosition(this.W-68,pad+113); this.pauseTxt.setPosition(this.W-68,pad+113); }
+      if(this.speedBtn){ this.speedBtn.setPosition(this.W-108,pad+113); this.speedTxt.setPosition(this.W-108,pad+113); }
       if(this.state==='paused') this.buildPause();
-      this.bossName.setPosition(this.W/2,pad+74); this.bossBgW.setPosition(this.W/2,pad+92); this.bossBgW.width=this._barW*0.8;
-      this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+94);
+      this.bossName.setPosition(this.W/2,pad+136); this.bossBgW.setPosition(this.W/2,pad+154); this.bossBgW.width=this._barW*0.8;
+      this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+156);
       this.bannerT.setPosition(this.W/2,this.H*0.32); this.bannerS.setPosition(this.W/2,this.H*0.4); }
     if(this.state==='menu') this.buildStartMenu();
     if(this.state==='dead') this.buildOver();
@@ -1477,12 +1482,14 @@ class Game extends Phaser.Scene {
     const dg=this.add.graphics(); dg.fillStyle(COLORS.mint,1); dg.fillRoundedRect(dx,dy,dlW,dlH,11); dg.lineStyle(2,0xffffff,0.3); dg.strokeRoundedRect(dx,dy,dlW,dlH,11);
     const dt=this.add.text(w/2,dy+dlH/2,'📥 ดาวน์โหลด APK ล่าสุด',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#12331f'}).setOrigin(0.5);
     this.menu.add([dg,dt]); this._zone(dx,dy,dlW,dlH,()=>{ try{ window.open(RELEASES_URL,'_blank'); }catch(e){} });
-    const gap=9,cw=(w-28-gap*2)/3,y=110;
+    const portrait=w<=h, cols=portrait?1:3, gap=portrait?8:9, y=portrait?116:110;
+    const cw=portrait?w-28:(w-28-gap*2)/3;
+    const cardH=portrait?Math.max(112,Math.min(170,(h-y-18-gap*2)/3)):h-y-12;
     CHANGELOG.slice(0,3).forEach((c,i)=>{
-      const cx=14+i*(cw+gap),g=this.add.graphics();g.fillStyle(0x2c2338,0.9);g.fillRoundedRect(cx,y,cw,h-y-12,12);g.lineStyle(1.5,0x4a4059,0.9);g.strokeRoundedRect(cx,y,cw,h-y-12,12);this.menu.add(g);
-      const head=this.add.text(cx+10,y+10,'v'+c.v+' · '+c.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ff9ec4',wordWrap:{width:cw-20}}).setOrigin(0,0);
-      const dd=this.add.text(cx+10,y+35,c.date,{fontFamily:'sans-serif',fontSize:'8px',color:'#7a7088'}).setOrigin(0,0);this.menu.add([head,dd]);
-      let iy=y+52;c.items.slice(0,4).forEach(it=>{const short=it.length>65?it.slice(0,64)+'…':it;const li=this.add.text(cx+10,iy,'• '+short,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#c7bdd6',wordWrap:{width:cw-20}}).setOrigin(0,0);this.menu.add(li);iy+=li.height+5;});
+      const cx=14+(i%cols)*(cw+gap), cy=y+Math.floor(i/cols)*(cardH+gap),g=this.add.graphics();g.fillStyle(0x2c2338,0.94);g.fillRoundedRect(cx,cy,cw,cardH,12);g.lineStyle(1.5,0x4a4059,0.9);g.strokeRoundedRect(cx,cy,cw,cardH,12);this.menu.add(g);
+      const head=this.add.text(cx+12,cy+10,'v'+c.v+' · '+c.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'12px':'11px',color:'#ff9ec4',wordWrap:{width:cw-24}}).setOrigin(0,0);
+      const dd=this.add.text(cx+cw-12,cy+12,c.date,{fontFamily:'sans-serif',fontSize:'9px',color:'#7a7088'}).setOrigin(1,0);this.menu.add([head,dd]);
+      let iy=cy+36;c.items.slice(0,portrait?3:4).forEach(it=>{const short=it.length>80?it.slice(0,79)+'…':it;const li=this.add.text(cx+12,iy,'• '+short,{fontFamily:'sans-serif',fontSize:portrait?'10px':'8.5px',color:'#c7bdd6',wordWrap:{width:cw-24}}).setOrigin(0,0);this.menu.add(li);iy+=li.height+5;});
     });
     this.menu.setVisible(true);
   }
@@ -1497,9 +1504,8 @@ class Game extends Phaser.Scene {
     const sumTxt=this.add.text(w/2,53,parts.length?('โบนัสรวม: '+parts.join(' · ')):'ฆ่ามอนสเตอร์เพื่อสะสมโบนัสถาวร!',
       {fontFamily:'sans-serif',fontSize:'10px',color:'#ffe08a',wordWrap:{width:w-180}}).setOrigin(0.5);
     this.menu.add(sumTxt);
-    // แนวนอน: 3 คอลัมน์ × 3 แถว แสดงครบ 9 ชนิดโดยไม่หลุดจอ
-    const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols,marginX=14;
-    const y0=66,cardH=Math.min(86,(h-y0-14-gap*2)/3);
+    const portrait=w<=h, cols=portrait?2:3, gap=7,cardW=(w-28-gap*(cols-1))/cols,marginX=14;
+    const rows=Math.ceil(BESTIARY.length/cols), y0=portrait?82:66,cardH=Math.min(portrait?106:86,(h-y0-14-gap*(rows-1))/rows);
     const starColors=['#4a4059','#8bd3a0','#7fc9ff','#b98cff','#ffd166','#ff8fb5'];
     BESTIARY.forEach((m,idx)=>{
       const col=idx%cols, row=Math.floor(idx/cols);
@@ -1512,8 +1518,8 @@ class Game extends Phaser.Scene {
       if(lv>=5){ g.fillStyle(0xffd166,0.08); g.fillRoundedRect(cx,cy,cardW,cardH,12); }
       // icon
       const hasTex=this.textures.exists(m.tex);
-      const icon=hasTex?this.add.image(cx+25,cy+25,m.tex).setDisplaySize(31,31):
-        this.add.text(cx+25,cy+25,m.emoji,{fontSize:'24px'}).setOrigin(0.5);
+      const icon=hasTex?this.add.image(cx+25,cy+25,m.tex).setDisplaySize(portrait?36:31,portrait?36:31):
+        this.add.text(cx+25,cy+25,m.emoji,{fontSize:portrait?'27px':'24px'}).setOrigin(0.5);
       if(!hasTex)icon.setOrigin(0.5);
       // ชื่อ
       const nm=this.add.text(cx+47,cy+9,m.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:lv>0?'#ffffff':'#7a7088'}).setOrigin(0,0);
@@ -1538,7 +1544,7 @@ class Game extends Phaser.Scene {
       if(bDef.cdr)bParts.push('CDR+'+Math.round(bDef.cdr*100)+'%'); if(bDef.crit)bParts.push('CRIT+'+Math.round(bDef.crit*100)+'%');
       const bLabel=lv>0?bParts.join(' '):(lv===0?('ถัดไป: '+bParts.join(' ')):'');
       const bt=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontSize:'8.5px',color:lv>0?'#8bd3a0':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
-      const desc=this.add.text(cx+8,cy+75,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:'7.5px',color:'#7a7088'}).setOrigin(0,0);
+      const desc=this.add.text(cx+8,cy+75,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8.5px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
       this.menu.add([g,icon,nm,stars,kt,bt,desc]);
     });
     this.menu.setVisible(true);
@@ -1549,7 +1555,7 @@ class Game extends Phaser.Scene {
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.94).setOrigin(0,0);
     const portrait=w<=h;
     const center=w/2;
-    const sugar=this.add.text(portrait?center: w*0.27,portrait?34:28,'🍬 Sugar: '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'16px':'17px',color:'#ffe08a'}).setOrigin(0.5);
+    const sugar=this.add.text(portrait?14:w*0.27,portrait?27:28,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'14px':'17px',color:'#ffe08a'}).setOrigin(portrait?0:0.5,0.5);
     const emoji=this.add.text(portrait?center:w*0.27,portrait?h*0.19:h*0.29,'🍡✨',{fontSize:Math.min(portrait?62:50,h*(portrait?0.09:0.14))+'px'}).setOrigin(0.5);
     const title=this.add.text(portrait?center:w*0.27,portrait?h*0.29:h*0.45,'MOCHI\nMAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(portrait?34:30,h*(portrait?0.055:0.085))+'px',color:'#ff8fb5',align:'center',lineSpacing:-5}).setOrigin(0.5);
     const subtitle=this.add.text(portrait?center:w*0.27,portrait?h*0.385:h*0.59,'FLAVORBOUND',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff'}).setOrigin(0.5);
@@ -1611,11 +1617,11 @@ class Game extends Phaser.Scene {
   buildStageSelect(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกบท');
     const unlocked=Math.max(0,Save.data.unlockedStage||0);
-    const note=this.add.text(this.W/2,55,'บทที่ 1 · ทางขึ้นจากใต้ครัว — เลือกด่านที่ปลดล็อกแล้ว',{fontFamily:'sans-serif',fontSize:'11px',color:'#b7abc9'}).setOrigin(0.5);
+    const note=this.add.text(this.W/2,this.W<=this.H?86:55,'เลือกด่านที่ปลดล็อกแล้ว',{fontFamily:'sans-serif',fontSize:'12px',color:'#b7abc9'}).setOrigin(0.5);
     this.menu.add(note);
-    const cols=2,gapX=10,gapY=8,cardW=Math.min(360,(this.W-38)/2),totalW=cardW*2+gapX,x0=(this.W-totalW)/2;
-    const rowH=Math.min(76,(this.H-76-gapY*2)/3),y0=69;
-    STAGES.forEach((st,i)=>{ const col=i%2,row=Math.floor(i/2),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked;
+    const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-32,400):Math.min(360,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
+    const rows=Math.ceil(STAGES.length/cols),y0=portrait?106:69,rowH=Math.min(portrait?88:76,(this.H-y0-18-gapY*(rows-1))/rows);
+    STAGES.forEach((st,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked;
       this._rowBtn(y,rowH,st.emoji,'ด่าน '+(i+1)+' · '+st.name,open?st.lore:'เคลียร์ด่าน '+i+' เพื่อปลดล็อก',
         open?'▶ เล่น':'🔒 ล็อก',open?'#8bd3a0':'#7a7088',open?()=>this.startRun(i):()=>Sfx.select(),x,cardW);
     });
@@ -1624,12 +1630,11 @@ class Game extends Phaser.Scene {
   buildUpgrade(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('พรสวรรค์');
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
-    // แนวนอน: สรุปยศด้านบน + การ์ด 3 ใบเรียงกัน ไม่ใช้แถวสูงแบบ portrait
-    const ry=55;
+    const portrait=w<=h,ry=portrait?82:55;
     const rk=this.add.text(w/2,ry,'ยศปัจจุบัน',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9'}).setOrigin(0.5);
     const rn=this.add.text(w/2,ry+17,'⭐ '+rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
     this.menu.add([rk,rn]);
-    const barW=Math.min(w-180,420), bx=w/2-barW/2, by=86, barH=9, need=UPG_ORDER.length*TAL_MAX;
+    const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?126:86, barH=9, need=UPG_ORDER.length*TAL_MAX;
     const frac=Phaser.Math.Clamp(Save.talFilled()/need,0,1);
     const bg=this.add.graphics(); bg.fillStyle(0x2c2338,1); bg.fillRoundedRect(bx,by,barW,barH,6);
     bg.fillStyle(allMax?0x8bd3a0:0xffc24a,1); if(frac>0)bg.fillRoundedRect(bx,by,Math.max(barH,barW*frac),barH,6);
@@ -1637,10 +1642,10 @@ class Game extends Phaser.Scene {
     const prog=this.add.text(w/2,by+17,'ความคืบหน้ารอบนี้ '+Save.talFilled()+' / '+need+(allMax?' · พร้อมเลื่อนยศ':''),
       {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':'#8f849f'}).setOrigin(0.5);
     this.menu.add(prog);
-    const marginX=16,gapX=10,cardW=(w-marginX*2-gapX*2)/3,cardH=Math.min(132,h-170),top=112;
+    const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-238-gapY*2)/3):Math.min(132,h-170),top=portrait?166:112;
     UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.talLvl(k), tot=Save.talTotal(k), maxed=lvl>=TAL_MAX;
       const cost=maxed?0:Save.talCost(k), afford=(Save.data.sugar||0)>=cost;
-      const x=marginX+i*(cardW+gapX), y=top;
+      const x=portrait?marginX:marginX+i*(cardW+gapX), y=portrait?top+i*(cardH+gapY):top;
       const g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
       g.lineStyle(2.5,maxed?0x8bd3a0:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
       g.fillStyle(u.color,0.14); g.fillRoundedRect(x,y,64,cardH,16);
@@ -1656,7 +1661,7 @@ class Game extends Phaser.Scene {
       this.menu.add([g,em,st,tag,nm,gain,pg,pt]);
       if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); } else { Sfx.select(); } this.buildMenuScreen(); });
     });
-    const py=h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
+    const py=portrait?Math.min(h-58,top+UPG_ORDER.length*(cardH+gapY)+4):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
     const pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
     pg.lineStyle(2,allMax?0xffe08a:0x4a4059,allMax?1:0.6); pg.strokeRoundedRect(pbx-bw/2,py,bw,ph,14);
     const pl=this.add.text(pbx,py+14,allMax?('⭐ เลื่อนยศ → '+rankName(rank+1)):'⭐ เลื่อนยศ · อัพให้ครบก่อน',
@@ -1823,11 +1828,13 @@ class Game extends Phaser.Scene {
     const ph=this.add.text(px+14,panelY+8,'ถือครองอยู่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
     this.drawHeldBar(this.pauseUI,panelY+27);
-    const gap=16,bw=Math.min(270,(w-56-gap)/2),bh=54,by=Math.max(196,h-68),left=w/2-gap/2-bw/2,right=w/2+gap/2+bw/2;
+    const portrait=w<=h,gap=portrait?12:16,bw=portrait?Math.min(w-48,330):Math.min(270,(w-56-gap)/2),bh=54;
+    const by=portrait?h-138:Math.max(196,h-68),left=portrait?w/2:w/2-gap/2-bw/2,right=portrait?w/2:w/2+gap/2+bw/2;
     this.uiPillBtn(this.pauseUI,left,by,bw,bh,COLORS.mint,'▶','เล่นต่อ',null);
     this._pauseBtns.push({x:left-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.togglePause()});
-    this.uiPillBtn(this.pauseUI,right,by,bw,bh,COLORS.grape,'🏠','ออกจากด่าน',null);
-    this._pauseBtns.push({x:right-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.exitStage()});
+    const exitY=portrait?by+bh+gap:by;
+    this.uiPillBtn(this.pauseUI,right,exitY,bw,bh,COLORS.grape,'🏠','ออกจากด่าน',null);
+    this._pauseBtns.push({x:right-bw/2,y:exitY-bh/2,w:bw,h:bh,fn:()=>this.exitStage()});
     this.pauseUI.setVisible(true);
   }
   exitStage(){
@@ -1938,7 +1945,7 @@ class Game extends Phaser.Scene {
     const g=this.pipG; if(!g)return; g.clear();
     const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
     const n=st.waves, seg=Math.min(20,(this.W*0.62)/n), w=seg-3, h=6;
-    const x0=this.W/2-(n*seg)/2, y=this._pad+72;
+    const x0=this.W/2-(n*seg)/2, y=this._pad+100;
     for(let i=0;i<n;i++){ const x=x0+i*seg;
       let col=0x4a4059, a=0.7;                       // ยังไม่ถึง
       if(i<this.waveIndex){ col=0x8bd3a0; a=0.9; }    // ผ่านแล้ว
@@ -2266,23 +2273,24 @@ class Game extends Phaser.Scene {
     const t=this.add.text(w/2,heldBot,this._chestReward?'🎁 หีบสมบัติ — เลือก 1 ใบ':'⭐ LEVEL UP — เลือก 1 จาก 4',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe07a'}).setOrigin(0.5,0);
     this.lvlUp.add(t);
     const opts=this.rollUpgrades(4);
-    const gap=8, side=10, startY=heldBot+27;
-    const cardW=Math.min(178,(w-side*2-gap*3)/4), ch=Math.min(h-startY-7,cardW*1.72);
-    const total=cardW*4+gap*3, lx=(w-total)/2;
+    const portrait=w<=h,cols=portrait?2:4,gap=portrait?10:8,side=portrait?12:10,startY=heldBot+31;
+    const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
+    const ch=Math.min(cardW*(portrait?1.46:1.72),(h-startY-12-gap*(rows-1))/rows);
+    const total=cardW*cols+gap*(cols-1), lx=(w-total)/2;
     opts.forEach((o,i)=>{
-      const x=lx+i*(cardW+gap), y=startY;
+      const col=i%cols,row=Math.floor(i/cols),x=lx+col*(cardW+gap), y=startY+row*(ch+gap);
       const artKey=o.type==='awk'?'ui_card_awakened':o.type==='pas'?'ui_card_passive':o.isNew?'ui_card_attack':'ui_card_power';
       const cardArt=this.add.image(x+cardW/2,y+ch/2,artKey).setDisplaySize(cardW,ch);
       const oik=o.type==='awk'?null:this.iconKey(o.key,o.type==='pas');
-      const iconSize=Math.min(54,cardW*0.35);
+      const iconSize=Math.min(portrait?62:54,cardW*0.35);
       const em = oik ? this.add.image(x+cardW/2,y+ch*0.195,oik).setDisplaySize(iconSize,iconSize) : this.add.text(x+cardW/2,y+ch*0.195,o.emoji,{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       const emBase=em.scaleX||1;
       let stars=''; for(let s=0;s<o.max;s++) stars+=(s<o.lvl?'★':'☆');
       const starT=this.add.text(x+cardW/2,y+ch*0.755,stars,{fontFamily:'sans-serif',fontSize:o.max>6?'8px':'10px',color:'#ffe07a'}).setOrigin(0.5);
       const badge=this.add.text(x+cardW/2,y+6,(o.type==='awk'?'AWAKEN':o.type==='pas'?'PASSIVE':'ATTACK')+(o.isNew?' · NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:o.badgeColor}).setOrigin(0.5,0);
-      const nm=this.add.text(x+cardW/2,y+ch*0.375,o.title+(o.type!=='awk'?'  Lv'+o.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'10px':'12px',color:'#fff8e8',align:'center',wordWrap:{width:cardW-22}}).setOrigin(0.5,0);
+      const nm=this.add.text(x+cardW/2,y+ch*0.375,o.title+(o.type!=='awk'?'  Lv'+o.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'10px':portrait?'13px':'12px',color:'#fff8e8',align:'center',wordWrap:{width:cardW-22}}).setOrigin(0.5,0);
       const shortDesc=o.desc.length>58?o.desc.slice(0,57)+'…':o.desc;
-      const ds=this.add.text(x+cardW/2,y+ch*0.475,shortDesc,{fontFamily:'sans-serif',fontSize:cardW<145?'8px':'9px',color:'#f3eaf6',align:'center',wordWrap:{width:cardW-24}}).setOrigin(0.5,0);
+      const ds=this.add.text(x+cardW/2,y+ch*0.475,shortDesc,{fontFamily:'sans-serif',fontSize:cardW<145?'8px':portrait?'10px':'9px',color:'#f3eaf6',align:'center',wordWrap:{width:cardW-24}}).setOrigin(0.5,0);
       this.lvlUp.add([cardArt,em,starT,badge,nm,ds]);
       const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
       if(combo){
