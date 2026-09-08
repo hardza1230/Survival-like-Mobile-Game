@@ -26,9 +26,17 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.4.7';
+const GAME_VERSION = '2.4.8';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.4.8', date:'2026-09-08', title:'Systems Rework', items:[
+    'โชว์ตัวเลข HP บอสบนหลอดเลือด',
+    'บอสเรียกองครักษ์ (มินิบอส) 2 ตนออกมาช่วยตอนปรากฏตัว',
+    'ยกเลิกระบบคอมโบสกิล+พาสซีฟ (ไม่มี effect/state พิเศษ) เหลือแต่ Awaken ของสกิลหลัก — สกิลหลักถึง MAX ก็ตื่นรู้ได้เลย',
+    'รื้อสมุดมอนสเตอร์ให้ไอคอนตรงกับสไปรต์จริง (มดในรัง) + เก็บยากขึ้น + ลดโบนัสลงกันโกง',
+    'แสดงเงิน 🍬 ที่ได้รอบนี้บนจอแบบเรียลไทม์',
+    'ขยาย mint/cocoa ให้ใกล้เคียง strawberry',
+    'Frost Pulse สร้างดาเมจจริงทุกเลเวล (ไม่ใช่แค่แช่) + แรงขึ้น' ] },
   { v:'2.4.7', date:'2026-09-08', title:'Tougher Boss & Grander Intro', items:[
     'หลุมด่าน 1 มีกล่องชนกลางปากหลุมคลุมเกือบเต็ม เดินทะลุไม่ได้ทุกมุมแล้ว',
     'ยืดคัตซีนบอสด่าน 1 ให้ยาว/อลังการขึ้น (ลอยขึ้นช้า ๆ + คำราม 2 จังหวะ ~6.5 วิ)',
@@ -756,7 +764,7 @@ const SKILLDEFS = {
     awaken:{ name:'ทอร์นาโดครีม', emoji:'🌪️', desc:'16 ทิศ ใบพัดยักษ์ ทะลุทุกตัว!' } },
   boomer:  { name:'Boomerang Cookie',emoji:'🍪', max:5, desc:'คุกกี้พุ่งออกแล้วบินกลับ ทะลุศัตรู',
     awaken:{ name:'เฮอริเคนคุกกี้', emoji:'🍪', desc:'6 ชิ้นยักษ์ เด้ง 2 รอบ ฟันถี่!' } },
-  frost:   { name:'Frost Pulse',    emoji:'❄️', max:5, desc:'คลื่นเย็นแช่แข็งศัตรูใกล้ตัว',
+  frost:   { name:'Frost Pulse',    emoji:'❄️', max:5, desc:'คลื่นเย็นสร้างดาเมจ + แช่แข็งศัตรูรอบตัว',
     awaken:{ name:'ศูนย์สัมบูรณ์', emoji:'🧊', desc:'แช่ทั้งจอ + ระเบิดน้ำแข็งดาเมจสูง!' } },
   popcorn: { name:'Popcorn Pop',    emoji:'🍿', max:5, desc:'ป๊อปคอร์นแตกกระจายรอบตัวมั่ว ๆ',
     awaken:{ name:'ป๊อปคอร์นถล่มโลก', emoji:'🍿', desc:'20 เม็ดถล่มจอ ทะลุ ยิงไกล!' } },
@@ -864,7 +872,7 @@ const SKILL_TIERS = {
   thunder: { 2:'ฟ้าผ่า 2 จุดพร้อมกัน', 3:'ไฟฟ้าแตกลูกไปตัวข้าง ๆ', 4:'ฟ้าผ่า 3 จุด', 5:'แตกลูกต่อ 2 ตัว', 6:'ฟ้าผ่า 4 จุด แตกลูกทุกจุด!' },
   whirl:   { 2:'ใบพัดครีม 8 ทิศ', 3:'ใบพัดใหญ่ บินไกลขึ้น', 4:'ใบพัด 10 ทิศ', 5:'ใบพัดใหญ่มาก', 6:'12 ทิศ ทะลุศัตรู!' },
   boomer:  { 2:'ขว้าง 2 ชิ้น', 3:'ใหญ่ขึ้น + ฟันถี่ขึ้น', 4:'ขว้าง 3 ชิ้น', 5:'บินกลับแล้วเด้งออกอีกรอบ', 6:'ขว้าง 4 ชิ้น พายุคุกกี้!' },
-  frost:   { 2:'รัศมีกว้างขึ้น', 3:'แช่นานขึ้น + มีดาเมจ', 4:'รัศมีใหญ่มาก', 5:'ระเบิดน้ำแข็งใส่ตัวที่แช่อยู่', 6:'แช่หนัก + ดาเมจสูง!' },
+  frost:   { 2:'รัศมี+ดาเมจกว้างขึ้น', 3:'ระเบิดน้ำแข็งใส่ตัวที่แช่อยู่', 4:'รัศมีใหญ่มาก', 5:'ดาเมจสูง + แช่นานขึ้น', 6:'แช่หนัก + ดาเมจสูงมาก!' },
   popcorn: { 2:'+2 เม็ด', 3:'เม็ดใหญ่ขึ้น', 4:'ทะลุศัตรู + เม็ดเยอะ', 5:'ยิงไกลขึ้น', 6:'ป๊อปคอร์นถล่มจอ!' },
   bubble:  { 2:'+1 ฟอง', 3:'จับนาน+ระเบิดกว้างขึ้น', 4:'+1 ฟอง ไล่แม่นขึ้น', 5:'ระเบิดแรงขึ้น', 6:'เรือนจำฟองลูกโซ่!' },
   aura:    { 2:'รัศมีกลีบกว้างขึ้น', 3:'Bloom แตกเป็นดาเมจวง', 4:'Bloom ทำให้ศัตรูช้าลง', 5:'แตกกว้างและสะสมเร็วขึ้น', 6:'กลีบสองวง + ฟื้น HP เมื่อ Bloom แตก' },
@@ -1015,26 +1023,26 @@ const Save = {
 };
 
 /* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
-const BESTIARY_THRESHOLDS = [10, 50, 200, 600, 2000];
+const BESTIARY_THRESHOLDS = [25, 150, 500, 1500, 5000];   // เก็บยากขึ้นมาก (ของเดิม 10/50/200/600/2000)
 const BESTIARY = [
-  { id:'basic',   emoji:'🟢', name:'สไลม์เปรี้ยว',  tex:'e_basic',   desc:'มอนสเตอร์ขนมเปรี้ยวพื้นฐาน',
-    bonus:[{hp:3},{hp:6},{hp:10},{hp:15,def:0.02},{hp:25,def:0.04}] },
-  { id:'fast',    emoji:'🔵', name:'สไลม์เร็ว',      tex:'e_fast',    desc:'เคลื่อนที่ไว เข้าถึงเร็ว',
-    bonus:[{spd:0.02},{spd:0.04},{spd:0.06},{spd:0.08,cdr:0.02},{spd:0.12,cdr:0.04}] },
-  { id:'tank',    emoji:'🟣', name:'สไลม์ถึก',       tex:'e_tank',    desc:'ตัวใหญ่ ทนทาน HP เยอะ',
-    bonus:[{def:0.02},{def:0.04},{def:0.06},{def:0.08,hp:10},{def:0.12,hp:20}] },
-  { id:'shooter', emoji:'🟡', name:'สไลม์ปืน',       tex:'e_shooter', desc:'ยิงกระสุนระยะไกล',
-    bonus:[{dmg:0.02},{dmg:0.04},{dmg:0.06},{dmg:0.08,crit:0.02},{dmg:0.12,crit:0.04}] },
-  { id:'bomber',  emoji:'🟠', name:'สไลม์ระเบิด',    tex:'e_bomber',  desc:'ระเบิดตอนตาย — อยู่ใกล้โดนด้วย!',
-    bonus:[{crit:0.02},{crit:0.03},{crit:0.05},{crit:0.06,dmg:0.04},{crit:0.08,dmg:0.06}] },
-  { id:'dasher',  emoji:'🐜', name:'มดนักจู่โจม',    tex:'e_dasher',  desc:'รอจังหวะ แล้วพุ่งใส่เร็วจี๋!',
-    bonus:[{cdr:0.02},{cdr:0.03},{cdr:0.05},{cdr:0.06,spd:0.04},{cdr:0.08,spd:0.06}] },
-  { id:'siege',   emoji:'🧁', name:'คัพเค้กปืนใหญ่', tex:'e_siege',   desc:'ถึกโหด เดินบีบวงช้าๆ แต่ทำลายล้างสูง',
-    bonus:[{hp:5,def:0.01},{hp:10,def:0.02},{hp:15,def:0.03},{hp:20,def:0.04,dmg:0.03},{hp:30,def:0.06,dmg:0.05}] },
-  { id:'mini',    emoji:'👹', name:'มินิบอส',         tex:'mb1',       desc:'หัวหน้าฝูง — แข็งแกร่งกว่าปกติ',
-    bonus:[{dmg:0.03},{dmg:0.05},{dmg:0.08},{dmg:0.10,hp:15},{dmg:0.14,hp:25}] },
-  { id:'boss',    emoji:'👑', name:'บอสใหญ่',         tex:'boss1',     desc:'ราชาแห่งโซนครัว — ท้าทายที่สุด!',
-    bonus:[{hp:8,dmg:0.03},{hp:15,dmg:0.05},{hp:25,dmg:0.08,def:0.03},{hp:35,dmg:0.10,def:0.05},{hp:50,dmg:0.14,def:0.08,crit:0.05}] },
+  { id:'basic',   emoji:'🐜', name:'มดงานเปรี้ยว',   tex:'e_ant_worker',  desc:'มดงานพื้นฐานของรัง',
+    bonus:[{hp:2},{hp:4},{hp:6},{hp:9},{hp:14,def:0.01}] },
+  { id:'fast',    emoji:'🐜', name:'มดสอดแนม',        tex:'e_ant_scout',   desc:'ตัวเล็ก วิ่งไว เข้าถึงเร็ว',
+    bonus:[{spd:0.01},{spd:0.02},{spd:0.03},{spd:0.04},{spd:0.06}] },
+  { id:'tank',    emoji:'🛡️', name:'มดทหารเกราะ',     tex:'e_ant_soldier', desc:'เกราะหนา ทนทาน HP เยอะ',
+    bonus:[{def:0.01},{def:0.015},{def:0.02},{def:0.03},{def:0.04}] },
+  { id:'shooter', emoji:'💧', name:'มดพ่นกรด',        tex:'e_ant_spitter', desc:'พ่นกรดใส่ระยะไกล',
+    bonus:[{dmg:0.01},{dmg:0.02},{dmg:0.03},{dmg:0.04},{dmg:0.05}] },
+  { id:'bomber',  emoji:'💥', name:'มดพลีกรด',        tex:'e_ant_drone',   desc:'ระเบิดกรดตอนตาย — อยู่ใกล้โดนด้วย!',
+    bonus:[{crit:0.01},{crit:0.015},{crit:0.02},{crit:0.025},{crit:0.035}] },
+  { id:'dasher',  emoji:'⚡', name:'มดจู่โจม',         tex:'e_ant_scout',   desc:'รอจังหวะ แล้วพุ่งใส่เร็วจี๋!',
+    bonus:[{cdr:0.01},{cdr:0.02},{cdr:0.03},{cdr:0.04},{cdr:0.05}] },
+  { id:'siege',   emoji:'🧱', name:'มดล้อมรัง',       tex:'e_ant_soldier', desc:'ถึกโหด เดินบีบวงช้า ๆ แต่แรงสูง',
+    bonus:[{hp:3},{hp:6},{hp:9},{hp:12},{hp:18,def:0.02}] },
+  { id:'mini',    emoji:'👑', name:'ราชองครักษ์',      tex:'mb1',       desc:'หัวหน้าฝูง — แข็งแกร่งกว่าปกติ',
+    bonus:[{dmg:0.01},{dmg:0.02},{dmg:0.03},{dmg:0.045},{dmg:0.06,hp:12}] },
+  { id:'boss',    emoji:'👹', name:'จักรพรรดินีมด',    tex:'boss1',     desc:'ราชาแห่งโซนครัว — ท้าทายที่สุด!',
+    bonus:[{hp:3,dmg:0.01},{hp:6,dmg:0.02},{hp:10,dmg:0.03,def:0.02},{hp:15,dmg:0.04,def:0.03},{hp:22,dmg:0.05,def:0.04,crit:0.03}] },
 ];
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
 function bestiaryAllBonus(){
@@ -1303,6 +1311,7 @@ class Game extends Phaser.Scene {
 
     this.lvlTxt=this.add.text(pad,pad+34,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
     this.killTxt=this.add.text(w-pad,pad+34,'☠ 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);
+    this.runSugarTxt=this.add.text(w-pad,pad+52,'🍬 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);   // เงินที่ได้รอบนี้ (realtime)
     this.timeTxt=this.add.text(w/2,pad+52,'0:00',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',align:'center',wordWrap:{width:w-48}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     this.stageTxt=this.add.text(w/2,pad+76,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     // wave progress pips (บอกว่าใกล้จบเวฟ/ถึงบอสหรือยัง)
@@ -1312,6 +1321,7 @@ class Game extends Phaser.Scene {
     this.bossName=this.add.text(w/2,pad+136,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(52);
     this.bossBgW=this.add.rectangle(w/2,pad+154,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+156,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(1).setDepth(52);
+    this.bossHpTxt=this.add.text(w/2,pad+161,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#5a0d28',strokeThickness:2}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53);
 
     // center banner
     this.bannerT=this.add.text(w/2,this.H*0.32,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
@@ -1333,10 +1343,10 @@ class Game extends Phaser.Scene {
       const fps=Math.round(this.game.loop.actualFps), logicalW=Math.round(this.scale.width/RENDER_DPR), backingW=this.game.canvas.width;
       this.fpsTxt.setText(fps+'fps · '+logicalW+'→'+backingW+'p · x'+this.renderDPR); }});
 
-    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.lvlTxt,this.stageTxt,this.pipG,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt];
+    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
-    this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.objectiveArrow,this.objectiveDist];
+    this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.bossHpTxt,this.objectiveArrow,this.objectiveDist];
     this.hudList.forEach(o=>o.setVisible(false));
     this.bossUI.forEach(o=>o.setVisible(false));
   }
@@ -1413,17 +1423,8 @@ class Game extends Phaser.Scene {
   pulseSkill(k){ const c=this.skillChips&&this.skillChips[k]; if(!c)return; const bs=c.em._baseScale||1;
     this.tweens.add({targets:[c.em],scale:{from:bs*1.4,to:bs},duration:240,ease:'Back.out'});
     this.tweens.add({targets:[c.bg],scale:{from:1.25,to:1},duration:240,ease:'Back.out'}); }
-  /* คอมโบสกิล: มีสกิลคู่ครบ = ปลดโบนัส (ธง comboFlags ใช้ตอน cast) */
-  checkCombos(){
-    this.comboFlags={};
-    for(const c of COMBOS){
-      if((this.skills[c.a]||0)>0 && (this.passives[c.b]||0)>0){   // สกิลโจมตี a + สกิลติดตัว b
-        this.comboFlags[c.key]=true;
-        if(!this.combosOwned[c.key]){ this.combosOwned[c.key]=true;
-          if(this.state==='play'||this.state==='levelup'){ this.showBanner('✨ คอมโบปลดล็อก! '+c.emoji, c.name+' — '+c.desc, 2600); Sfx.clear(); } }
-      }
-    }
-  }
+  /* คอมโบสกิลถูกยกเลิกแล้ว — เหลือแต่ระบบ Awaken บนสกิลหลัก (no-op กันโค้ดที่ยังเรียกอยู่) */
+  checkCombos(){ this.comboFlags={}; }
 
   onResize(gs){
     if(!gs)return; this.W=gs.width/RENDER_DPR; this.H=gs.height/RENDER_DPR; const pad=this._pad; this._barW=this.W-2*pad;
@@ -1432,6 +1433,7 @@ class Game extends Phaser.Scene {
     if(this.vig)this.vig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-58,this.H-78); this.dashTxt.setPosition(this.W-58,this.H-78);
       this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(this.W-pad,pad+34);
+      if(this.runSugarTxt)this.runSugarTxt.setPosition(this.W-pad,pad+52);
       this.timeTxt.setPosition(this.W/2,pad+52).setWordWrapWidth(this.W-48);
       this.stageTxt.setPosition(this.W/2,pad+76).setWordWrapWidth(this.W-40);
       if(this.skills&&(this.state==='play'||this.state==='levelup')){ this.buildSkillBar(); this.drawWavePips(); }
@@ -1441,6 +1443,7 @@ class Game extends Phaser.Scene {
       if(this.state==='paused') this.buildPause();
       this.bossName.setPosition(this.W/2,pad+136); this.bossBgW.setPosition(this.W/2,pad+154); this.bossBgW.width=this._barW*0.8;
       this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+156);
+      if(this.bossHpTxt)this.bossHpTxt.setPosition(this.W/2,pad+161);
       this.bannerT.setPosition(this.W/2,this.H*0.32); this.bannerS.setPosition(this.W/2,this.H*0.4); }
     if(this.state==='menu') this.buildStartMenu();
     if(this.state==='dead') this.buildOver();
@@ -1957,7 +1960,7 @@ class Game extends Phaser.Scene {
         try{
         if(window.GameLoader)window.GameLoader.set(0.38,'กำลังเตรียมตัวละครและสกิล...');
         this.hudVisible(true);
-        this.elapsed=0; this.sugarStage=0; this.sugarRun=0;
+        this.elapsed=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         const starter=CHARACTERS[this.character].starter||'sprinkle';
@@ -2165,6 +2168,29 @@ class Game extends Phaser.Scene {
     this.boss=b; this.camWorld(b); this.bossName.setText('💢 '+st.mini); this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
   }
+  // บอสเรียกลูกน้อง "มินิบอส" ออกมาช่วยตอนปรากฏตัว (flag เป็น elite เพื่อไม่ให้ตายแล้วจบเวฟ)
+  spawnBossEscorts(n){
+    const st=STAGES[this.stageIndex]; if(!st)return;
+    const mkey='mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const cx=this.boss?this.boss.x:this.player.x, cy=this.boss?this.boss.y:this.player.y;
+    for(let i=0;i<n;i++){
+      const ang=(i/n)*Math.PI*2+Phaser.Math.FloatBetween(-0.4,0.4), rad=190+Phaser.Math.Between(0,90);
+      const ex=cx+Math.cos(ang)*rad, ey=cy+Math.sin(ang)*rad;
+      let e=this.enemies.getFirstDead(false);
+      if(!e) e=this.enemies.create(ex,ey,mArt?mkey:'e_brute');
+      else { e.setTexture(mArt?mkey:'e_brute'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(ex,ey); }
+      if(!e)continue;
+      const sc=this.stageIndex===1?0.72:(mArt?0.98:1.45); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
+      const rr=mArt?46:24, off=mArt?18:5; e.setCircle(rr,off,off);
+      e.isBoss=false; e.isMini=false; e.isElite=true;   // elite = ตายแล้วไม่ทริกเกอร์จบเวฟ
+      e.hp=st.bossHp*0.45*this.bossHpMul(); e.maxhp=e.hp; e.spd=66; e.dmg=Math.round(st.bossDmg*0.9); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;
+      e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.bloomStacks=0; e.bloomUntil=0;
+      if(mArt){ e.tintColor=null; e.clearTint(); } else { e.tintColor=st.tint; e.setTint(st.tint); }
+      if(this.anims.exists((mArt?mkey:'e_brute')+'_walk')) e.play((mArt?mkey:'e_brute')+'_walk',true); else if(e.anims){ e.anims.stop(); e.setFrame(0); }
+      this.camWorld(e); this.vfxSpawnPoof(ex,ey);
+    }
+    this.cameras.main.shake(180,0.006);
+  }
   spawnFinalBoss(){
     if(this.state==='levelup'){this._queuedBossIntro='final';return;}
     if(this.state!=='play')return;
@@ -2203,12 +2229,12 @@ class Game extends Phaser.Scene {
         for(let i=0;i<10;i++){const bubble=this.camWorld(this.add.image(b.x+Phaser.Math.Between(-55,55),targetY+60,'bubble').setDepth(targetY+3).setScale(Phaser.Math.FloatBetween(0.5,1.2)).setAlpha(0.8));this.tweens.add({targets:bubble,y:targetY-Phaser.Math.Between(35,130),x:bubble.x+Phaser.Math.Between(-30,30),alpha:0,duration:620+i*35,delay:i*45,onComplete:()=>bubble.destroy()});}
         this.tweens.add({targets:b,y:targetY,scale:base,alpha:1,duration:920,ease:'Back.out',onComplete:()=>{this.cameras.main.shake(420,0.012);this.screenFlash(0x7fe8d2,0.25,420);}});});
       this.time.delayedCall(3100,()=>cam.pan(px,py,760,'Sine.easeInOut'));
-      this.time.delayedCall(3900,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);this.state='play';this.mode='boss';b.atkCd=1.7;this.showBanner('🫧 วาล์วแตกแล้ว','ฟองขังทำให้ช้าลง—หนีแรงดูดและหาช่องระหว่างคลื่น!',2300);});
+      this.time.delayedCall(3900,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);this.state='play';this.mode='boss';b.atkCd=1.7;this.spawnBossEscorts(2);this.showBanner('🫧 วาล์วแตกแล้ว','ฟองขังทำให้ช้าลง—หนีแรงดูดและหาช่องระหว่างคลื่น!',2300);});
       return;
     }
     if(this.stageIndex!==0){
       this.time.delayedCall(1650,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setScale(base*0.25);const glow=this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(STAGES[this.stageIndex].tint).setScale(0.2).setDepth(b.y-1));this.tweens.add({targets:[b,glow],alpha:1,scale:base,duration:850,ease:'Back.out',onComplete:()=>glow.destroy()});});
-      this.time.delayedCall(3000,()=>cam.pan(px,py,760,'Sine.easeInOut'));this.time.delayedCall(3800,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setScale(base);this.state='play';this.mode='boss';b.atkCd=1.6;});return;
+      this.time.delayedCall(3000,()=>cam.pan(px,py,760,'Sine.easeInOut'));this.time.delayedCall(3800,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setScale(base);this.state='play';this.mode='boss';b.atkCd=1.6;this.spawnBossEscorts(2);});return;
     }
     // ด่าน 1 (ราชินีมด): ฉากปรากฏตัวยาว+อลังการ — เรืองแสง → ลอยขึ้นช้า ๆ → คำราม 2 จังหวะ
     this.time.delayedCall(1950,()=>{if(!b.active)return;
@@ -2222,7 +2248,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(4100,()=>{if(!b.active)return;this.bossPose(b,6,1000);this.cameras.main.shake(380,0.013);this.screenFlash(0xff6a8f,0.16,400);   // คำรามครั้งที่ 2 (ย้ำ)
       for(let i=0;i<2;i++){const r=this.camWorld(this.add.circle(b.x,b.y,20,0,0).setDepth(6).setStrokeStyle(5,0xff9ec4,0.8));this.tweens.add({targets:r,radius:160+i*55,alpha:0,duration:620+i*100,delay:i*90,onComplete:()=>r.destroy()});}});
     this.time.delayedCall(5600,()=>cam.pan(px,py,950,'Sine.easeInOut'));
-    this.time.delayedCall(6650,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง!',2400);});
+    this.time.delayedCall(6650,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.spawnBossEscorts(2);this.showBanner('👑 ราชินีตื่นแล้ว','ทำลายรังและผลึก เพื่อตัดกำลังของนาง! (มีองครักษ์ 2 ตน)',2400);});
   }
   // จอวาบเต็มหน้าจอ (บนกล้อง UI) — ใช้ตอนบอสปรากฏ/เข้าเฟส/ตาย
   screenFlash(color,alpha,dur){
@@ -2388,21 +2414,9 @@ class Game extends Phaser.Scene {
       const shortDesc=o.desc.length>58?o.desc.slice(0,57)+'…':o.desc;
       const ds=this.add.text(x+cardW/2,y+ch*0.475,shortDesc,{fontFamily:'sans-serif',fontSize:cardW<145?'8px':portrait?'10px':'9px',color:'#f3eaf6',align:'center',wordWrap:{width:cardW-24}}).setOrigin(0.5,0);
       this.lvlUp.add([cardArt,em,starT,badge,nm,ds]);
-      const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
-      if(combo){
-        const attack=SKILLDEFS[combo.a], passive=PASSIVES[combo.b];
-        const haveA=(this.skills[combo.a]||0)>0, haveP=(this.passives[combo.b]||0)>0;
-        const ai=this.iconKey(combo.a,false), pi=this.iconKey(combo.b,true), sy=y+ch*0.855, ss=Math.min(24,cardW*0.16);
-        const aObj=ai?this.add.image(x+cardW*0.35,sy,ai).setDisplaySize(ss,ss):this.add.text(x+cardW*0.35,sy,attack?attack.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
-        const pObj=pi?this.add.image(x+cardW*0.65,sy,pi).setDisplaySize(ss,ss):this.add.text(x+cardW*0.65,sy,passive?passive.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
-        if(!haveA)aObj.setAlpha(0.48); if(!haveP)pObj.setAlpha(0.48);
-        const plus=this.add.text(x+cardW/2,sy,'+',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe07a'}).setOrigin(0.5);
-        const ct=this.add.text(x+cardW/2,y+ch*0.765,'คู่ Evolution\n'+combo.name,
-          {fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'7px':'8px',color:(haveA&&haveP)?'#baffc7':'#eadcf2',align:'center',wordWrap:{width:cardW-30}}).setOrigin(0.5,0);
-        this.lvlUp.add([ct,aObj,pObj,plus]);
-      }else{
-        const ct=this.add.text(x+cardW/2,y+ch*0.79,'ไม่มีคู่ Evolution',{fontFamily:'sans-serif',fontSize:'8px',color:'#c8bbd2'}).setOrigin(0.5);
-        this.lvlUp.add(ct);
+      // สกิลหลักที่ MAX แล้วโชว์ว่าพร้อม Awaken (ไม่มีระบบคอมโบแล้ว) — เพิ่มหลังกรอบเพื่อให้อยู่บนสุด
+      if(o.type!=='awk' && !o.pas && o.max && o.lvl>=o.max && SKILLDEFS[o.key] && SKILLDEFS[o.key].awaken){
+        this.lvlUp.add(this.add.text(x+cardW/2,y+ch*0.80,'⚡ พร้อมตื่นรู้!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(0.5));
       }
       this.lvlCards.push({left:x,right:x+cardW,top:y,bottom:y+ch,apply:o.apply});
       cardArt.setAlpha(0); em.setScale(emBase*0.2);
@@ -2436,7 +2450,7 @@ class Game extends Phaser.Scene {
       if(cur===0){ if(atkOwned<SKILL_CAP) S(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.skills[key]=1; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
       else if(cur<d.max){ const nx=cur+1, tier=(SKILL_TIERS[key]&&SKILL_TIERS[key][nx])||'แรงขึ้น';
         S(key,nx,d.max,d.emoji,d.name,tier,false,()=>{ this.skills[key]++; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
-      else if(cur===d.max && d.awaken && COMBOS.some(c=>c.a===key&&(this.passives[c.b]||0)>0)){   // MAX + มี Passive คู่กันเท่านั้นจึงวิวัฒนาการ
+      else if(cur===d.max && d.awaken){   // MAX แล้วปลด Awaken ได้เลย (ไม่ต้องมี Passive คู่)
         const a=d.awaken;
         A(key,a.emoji,'ตื่นรู้: '+a.name,a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ สกิลตื่นรู้! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
     }
@@ -2566,7 +2580,7 @@ class Game extends Phaser.Scene {
     }
   }
   castSkill(key,lvl){
-    const dm=this.player.dmgMul*(BALANCE.skillPower[key]||1), cf=this.comboFlags||{}, aw=lvl>=SKILL_AWAKEN_LV; this.pulseSkill(key);
+    const dm=this.player.dmgMul*(BALANCE.skillPower[key]||1), cf={}, aw=lvl>=SKILL_AWAKEN_LV; this.pulseSkill(key);   // cf ปิดแล้ว (เลิกระบบคอมโบ) — เหลือแต่ Awaken
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff};
     this.vfxCastGlow(_castColors[key]||0xffffff);
@@ -2606,15 +2620,15 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(ang,430,b.body.velocity); } Sfx.shoot(); }
     else if(key==='frost'){
       const df=this.player.deepFreeze?1.4:1;
-      const r=(140+lvl*14)*(aw?2.6:1)*df, dur=(1+lvl*0.22)*(aw?1.6:1)*df, dmg=(lvl>=3||aw||this.player.deepFreeze)?(6+lvl*2)*dm*(aw?1.8:1)*df:0, shatter=lvl>=5||aw||this.player.deepFreeze;
+      const r=(150+lvl*16)*(aw?2.6:1)*df, dur=(1.1+lvl*0.24)*(aw?1.6:1)*df, dmg=(11+lvl*5)*dm*(aw?1.9:1)*df, shatter=lvl>=3||aw||this.player.deepFreeze;   // แช่ + ดาเมจจริงทุกเลเวล (แรงขึ้น)
       if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova')) this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r)/ASSET_FX.fx_frostnova.fw*0.82,depth:3,anchor:'center',alpha:Math.min(1,0.5+lvl*0.1)});
       else if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
       else { const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
         this.tweens.add({targets:ring,radius:r,alpha:0,duration:320,onComplete:()=>ring.destroy()}); }
-      this.enemies.children.iterate(e=>{ if(e&&e.active&&(aw||(!e.isBoss&&!e.isMini))&&this.dist(e.x,e.y,this.player.x,this.player.y)<r){
-        if(shatter&&e.frozen>0){ this.damage(e,(14+lvl*3)*dm*df,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
+      this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>=r)return;
+        if(shatter&&e.frozen>0){ this.damage(e,(16+lvl*4)*dm*df,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
         if(!e.isBoss&&!e.isMini){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }
-        if(dmg>0)this.damage(e,dmg,e.x,e.y); } }); this.hitCratesInRadius(this.player.x,this.player.y,r,Math.max(dmg,8)); Sfx.frost(); }
+        this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r,Math.max(dmg,10)); Sfx.frost(); }
     else if(key==='popcorn'){ const cnt=aw?20:lvl>=6?10:lvl>=4?8:lvl>=2?6:4, dmg=(4+lvl*1.5)*dm*(cf.fizz?1.25:1)*(aw?1.5:1);
       const big=(lvl>=3?1.3:1.0)*(cf.fizz?1.25:1)*(aw?1.4:1), speed=(lvl>=5?420:340)*(aw?1.3:1), bounce=aw?6:(lvl>=3?4:2);   // ป๊อบคอนเด้ง ๆ ไปเด้งมา (bounce ระหว่างศัตรู)
       for(let i=0;i<cnt;i++){ const ang=Math.random()*Math.PI*2;
@@ -2875,6 +2889,7 @@ class Game extends Phaser.Scene {
       if(this.dist(this.player.x,this.player.y,bx,by)<r) this.hurtPlayer(Math.round(12+this.stageIndex*4),0.5); }
     // เก็บ Sugar (สกุลเงินเมต้า ใช้รอบหน้า)
     const sug=isBoss?40:isMini?18:isElite?4:1; this.sugarStage+=sug; this.sugarRun+=sug;
+    if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // อัปเดตเงินรอบนี้แบบ realtime
     e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.bloomStacks=0;e.bloomUntil=0;e.clearTint();e.setScale(1);
     if(isBoss){ this.onBossDown(e.x,e.y); return; }   // บอสตาย = ดรอปหีบสมบัติ → เดินเก็บ = สุ่มสกิล → เคลียร์ด่าน
     if(isMini){ this.onWaveCleared(); return; }   // มินิบอสตาย = ผ่านเวฟ (เวฟธรรมดาคุมด้วยเวลาใน tickStage) }
@@ -2931,7 +2946,7 @@ class Game extends Phaser.Scene {
     if(Math.random()<0.5) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // ครึ่งนึงดรอปฟื้นฟู
     if(Math.random()<0.10) this.spawnLoot(x,y);   // โอกาสเล็ก ๆ ได้ของสวมใส่ (low tier)
     if(Math.random()<0.07) this.spawnVac(x,y);    // โอกาสเล็ก ๆ ได้แม่เหล็ก
-    if(Math.random()<0.25) this.sugarStage+=3;
+    if(Math.random()<0.25){ this.sugarStage+=3; this.sugarRun+=3; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); }
   }
   // ---- ไอเทมแม่เหล็ก (vacuum): เก็บแล้วดูดออร์บ EXP ทั้งจอเข้าตัวทันที ----
   spawnVac(x,y){ let v=this.vacs.getFirstDead(false);
@@ -3283,7 +3298,7 @@ class Game extends Phaser.Scene {
     // ปรับสเกลตาม "รอยเท้าจริง" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
     // strawberry(momo) ตัวอ้วน/กว้าง → เล็กลง · mint/cocoa ตัวผอมสูง → ใหญ่ขึ้น (แก้ปัญหา momo ใหญ่ไป มินต์/โกโก้เล็กไป)
     const baseKey=key.replace('_walk','');
-    const FP={ char_momo:110, char_mint:82.5, char_cocoa:81.5, char_taro:107, char_sesame:117 }[baseKey];
+    const FP={ char_momo:110, char_mint:72, char_cocoa:72, char_taro:107, char_sesame:117 }[baseKey];
     const TARGET=66;   // รอยเท้าเฉลี่ย (px) ที่ต้องการก่อนคูณกล้อง
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
@@ -3492,6 +3507,7 @@ class Game extends Phaser.Scene {
     if(this.boss && this.boss.active){
       this.bossThink(this.boss,dt);
       this.bossBar.width=Math.max(0,(this._barW*0.8-4)*(this.boss.hp/this.boss.maxhp));
+      if(this.bossHpTxt)this.bossHpTxt.setText(Math.max(0,Math.ceil(this.boss.hp)).toLocaleString()+' / '+Math.ceil(this.boss.maxhp).toLocaleString());
     }
     this.updateObjectiveArrow();
     this.drawBars();
