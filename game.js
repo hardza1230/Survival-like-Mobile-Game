@@ -28,9 +28,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.7.1';
+const GAME_VERSION = '2.7.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.7.2', date:'2026-09-09', title:'Complete Skill Motion', items:[
+    'เติม motion ระหว่างใช้งานให้ Star Guard, Memory Jam, Flavor Thread, Core Decoy และ Triad Seal ไม่เหลือเป็นภาพนิ่ง',
+    'Star Guard มีวงโคจรหายใจ ดาวกระพริบต่างจังหวะ และประกายสกัดกระสุนที่อ่านตำแหน่งได้ชัด',
+    'ลดความอลังการ Mirror Glaze: วงสะท้อนบางลง กระสุนสะท้อนเล็กลง และตัดสายฟ้าซ้ำที่บดบังสนาม' ] },
   { v:'2.7.1', date:'2026-09-09', title:'Distinct Flavor Arsenal', items:[
     'วาดไอคอนสกิลโจมตีใหม่ครบ 22 แบบด้วย art direction เดียวกัน ขอบโปร่งใสสะอาดและอ่านชัดบนมือถือ',
     'เพิ่มป้ายบทบาทในคัมภีร์และรายละเอียดสกิล เพื่อเปรียบเทียบหน้าที่ของแต่ละตัวเลือกได้ทันที',
@@ -1309,7 +1313,7 @@ class Game extends Phaser.Scene {
     this.decoProps=this.add.group();                         // props ประดับ (เดินทะลุได้)
     this.solidProps=this.physics.add.staticGroup();          // props แลนด์มาร์ก (ชนได้)
 
-    this.ringBalls=[];
+    this.ringBalls=[];this.starGuardFields=[];
     this.physics.add.collider(this.player,this.solidProps);
     this.physics.add.collider(this.enemies,this.solidProps);
     this.physics.add.collider(this.player,this.bossObjects);
@@ -2201,7 +2205,7 @@ class Game extends Phaser.Scene {
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.passives={}; this.uniqueCd=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=5;this.pendingLvl=0;this._queuedBossIntro=null;
-        this.ringBalls.forEach(b=>b.destroy());this.ringBalls=[];
+        this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
         this.setGameSpeed(1);
@@ -2583,7 +2587,7 @@ class Game extends Phaser.Scene {
   }
   resetStageLoadout(){
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];
-    this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.ringBalls.forEach(b=>b.destroy());this.ringBalls=[];
+    this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.skills={};this.passives={};this.comboFlags={};this.combosOwned={};this.uniqueCd=0;this.stageKills=0;
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=5;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
@@ -2786,8 +2790,12 @@ class Game extends Phaser.Scene {
     Phaser.Utils.Array.Shuffle(out);
     return out.slice(0,n);
   }
+  clearStarGuardFx(){
+    (this.ringBalls||[]).forEach(b=>{if(b&&b.active)b.destroy();});this.ringBalls=[];
+    (this.starGuardFields||[]).forEach(f=>{if(f&&f.active)f.destroy();});this.starGuardFields=[];
+  }
   rebuildRing(){
-    this.ringBalls.forEach(b=>b.destroy()); this.ringBalls=[];
+    this.clearStarGuardFx();
     const lvl=this.skills.star||0; if(lvl<1)return;
     const isSesame=this.character==='sesame';
     const aw=lvl>=SKILL_AWAKEN_LV;            // ตื่นรู้: วงกาแล็กซี 3 ชั้น
@@ -2798,6 +2806,9 @@ class Game extends Phaser.Scene {
     const size=(0.20+lvl*0.012)*(aw?1.25:1)*(isSesame?1.10:1); // sprite 128px แสดงผลราว 26–43px
     const spark=lvl>=5||isSesame;             // กระจายประกายเมื่อชน
     this.ringSpin=(aw?4.6:2.6+lvl*0.28)*(isSesame?1.3:1);      // หมุนเร็วขึ้น 30%
+    // เส้นทางโคจรโปร่งบางช่วยให้ Star Guard อ่านระยะป้องกันได้ โดยไม่เพิ่มแสงทึบกลางสนาม
+    const fieldRadii=aw?[rOuter,rMid,rInner]:[rOuter];
+    fieldRadii.forEach((rr,i)=>{const f=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(i===0?0xffe08a:0xffb6e1).setDepth(3).setDisplaySize(rr*2,rr*1.64).setAlpha(i===0?0.22:0.13));f._phase=i*1.7;f._spinDir=i%2?-1:1;this.starGuardFields.push(f);});
     for(let i=0;i<count;i++){
       const tier=aw?(i%3):(twoRing?(i%2===0?0:2):0);   // aw: 3 ชั้น (0=นอก,1=กลาง,2=ใน)
       const rr=tier===0?rOuter:tier===1?rMid:rInner;
@@ -2805,7 +2816,7 @@ class Game extends Phaser.Scene {
       const b=this.camWorld(this.physics.add.sprite(0,0,'fx_star_guard',0).setScale(size).setDepth(88000));
       if(this.anims.exists('fx_star_guard_walk'))b.play('fx_star_guard_walk',true);
       b.setCircle(38,26,26); b.body.setAllowGravity(false); b.dmg=(4+lvl*1.5)*(BALANCE.skillPower.star||1)*(aw?1.45:1)*(isSesame?1.10:1); b.hitCd=0;
-      b.rr=rr; b.ang0=(i/count)*Math.PI*2;
+      b.rr=rr; b.ang0=(i/count)*Math.PI*2;b._baseScale=size;b._motionPhase=(i/count)*Math.PI*2;
       this.physics.add.overlap(b,this.enemies,(ball,en)=>{ if(ball.hitCd>0)return; ball.hitCd=isSesame?0.09:0.12;
         this.damage(en,ball.dmg*this.player.dmgMul,ball.x,ball.y);
         if(spark)this.burst(ball.x,ball.y,0xffe08a); });
@@ -3033,47 +3044,50 @@ class Game extends Phaser.Scene {
   }
   castMirrorGlaze(lvl,aw,dm){
     const r=(125+lvl*15)*(this.player.mirrorWard?1.22:1)*(aw?1.2:1),duration=(1.15+lvl*0.14+(aw?0.8:0))*1000,max=3+lvl+(aw?5:0)+(this.player.mirrorWard?3:0);
-    const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x9fe8ff).setDepth(5).setScale((r*2)/256).setAlpha(0.72));
-    this.tweens.add({targets:ring,rotation:Math.PI*2,duration,repeat:0});let reflected=0;
+    // Mirror Glaze ต้องอ่านเป็นเกราะสะท้อน ไม่ใช่อัลติ: วงบาง ค่อย ๆ หายใจ และไม่มีสายฟ้าซ้อนสนาม
+    const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x9fe8ff).setDepth(5).setScale((r*2)/256).setAlpha(0.28));
+    this.tweens.add({targets:ring,rotation:Math.PI*0.55,scaleX:ring.scaleX*1.035,scaleY:ring.scaleY*1.035,alpha:{from:0.20,to:0.32},yoyo:true,duration:Math.max(360,duration*0.48),repeat:1});let reflected=0;
     const pulse=this.time.addEvent({delay:120,loop:true,callback:()=>{if(!ring.active)return;ring.setPosition(this.player.x,this.player.y);
       this.foeBullets.children.iterate(f=>{if(!f||!f.active||reflected>=max||this.dist(f.x,f.y,this.player.x,this.player.y)>r)return;
-        const x=f.x,y=f.y;this.killFoe(f);const b=this.getBullet(x,y,0x9fe8ff,0.32);if(!b)return;b.dmg=(8+lvl*2.4)*dm;b.life=2;b.homing=aw?520:360;b.pierce=aw;b.faceVel=true;
-        const t=this.nearestEnemy(800),a=t?Math.atan2(t.y-y,t.x-x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,420,b.body.velocity);this.chainBolt(x,y,x+Math.cos(a)*38,y+Math.sin(a)*38);reflected++;});
+        const x=f.x,y=f.y;this.killFoe(f);const b=this.getBullet(x,y,0xffffff,0.18);if(!b)return;b.setTexture('proj_sprinkle').setTint(0x9fe8ff);b.dmg=(8+lvl*2.4)*dm;b.life=2;b.homing=aw?520:360;b.pierce=aw;b.faceVel=true;
+        const t=this.nearestEnemy(800),a=t?Math.atan2(t.y-y,t.x-x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,420,b.body.velocity);this.vfxHitRing(x,y,0x9fe8ff,false);reflected++;});
     }});
-    if(aw)for(let i=0;i<3;i++){const a=i*Math.PI*2/3,b=this.getBullet(this.player.x,this.player.y,0x9fe8ff,0.30);if(!b)continue;b.dmg=(8+lvl*2.4)*dm;b.life=2;b.homing=480;b.pierce=true;b.faceVel=true;this.physics.velocityFromRotation(a,390,b.body.velocity);}
+    if(aw)for(let i=0;i<3;i++){const a=i*Math.PI*2/3,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.17);if(!b)continue;b.setTexture('proj_sprinkle').setTint(0x9fe8ff);b.dmg=(8+lvl*2.4)*dm;b.life=2;b.homing=480;b.pierce=true;b.faceVel=true;this.physics.velocityFromRotation(a,390,b.body.velocity);}
     this.time.delayedCall(duration,()=>{pulse.remove(false);if(ring.active)this.tweens.add({targets:ring,alpha:0,duration:180,onComplete:()=>ring.destroy()});});Sfx.zap();
   }
   castMemoryJam(lvl,aw,dm){
     const count=aw?3:(lvl>=4?2:1),cand=[];this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<700)cand.push(e);});
     cand.sort((a,b)=>b.hp-a.hp);for(let i=0;i<Math.min(count,cand.length);i++){const e=cand[i],token=Symbol('memory');e._memoryToken=token;e._memoryStored=0;e._memoryRatio=(0.35+lvl*0.06)*(1+(this.player.memoryAmp||0))*(aw?1.3:1);e._memoryRadius=(75+lvl*9)*(aw?1.25:1);
-      const mark=this.camWorld(this.add.image(e.x,e.y,'ic_memory').setDepth(90002).setScale(0.24).setAlpha(0.9));e._memoryMarkObj=mark;
-      this.tweens.add({targets:mark,rotation:Math.PI*2,duration:650,repeat:Math.max(1,lvl-1)});
-      this.time.delayedCall((1.8+lvl*0.18)*1000,()=>{if(mark.active)mark.destroy();if(e._memoryToken===token)this.resolveMemoryMark(e);});
+      const mark=this.camWorld(this.add.image(e.x,e.y,'ic_memory').setDepth(90002).setScale(0.20).setAlpha(0.84));e._memoryMarkObj=mark;mark._follow=e;
+      this.tweens.add({targets:mark,rotation:Math.PI*2,scale:{from:0.17,to:0.25},alpha:{from:0.62,to:0.94},yoyo:true,duration:520,repeat:-1,ease:'Sine.inOut'});
+      this.time.delayedCall((1.8+lvl*0.18)*1000,()=>{if(mark.active){this.tweens.killTweensOf(mark);mark.destroy();}if(e._memoryToken===token)this.resolveMemoryMark(e);});
     } Sfx.clear();
   }
   resolveMemoryMark(marked){
     if(!marked||!marked._memoryToken)return;const stored=marked._memoryStored||0,ratio=marked._memoryRatio||0,r=marked._memoryRadius||80,x=marked.x,y=marked.y;
-    marked._memoryToken=null;marked._memoryStored=0;if(marked._memoryMarkObj&&marked._memoryMarkObj.active)marked._memoryMarkObj.destroy();marked._memoryMarkObj=null;if(stored<=0)return;this.burst(x,y,0xd59cff);
+    marked._memoryToken=null;marked._memoryStored=0;if(marked._memoryMarkObj&&marked._memoryMarkObj.active){this.tweens.killTweensOf(marked._memoryMarkObj);marked._memoryMarkObj.destroy();}marked._memoryMarkObj=null;if(stored<=0)return;this.burst(x,y,0xd59cff);
     this.enemies.children.iterate(e=>{if(e&&e.active&&(e!==marked||marked.hp>0)&&this.dist(e.x,e.y,x,y)<r)this.damage(e,stored*ratio,e.x,e.y);});
   }
   castFlavorThread(lvl,aw,dm){
     const count=aw?7:(3+Math.floor(lvl/2)),cand=[];this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<620)cand.push(e);});
     cand.sort((a,b)=>this.dist(a.x,a.y,this.player.x,this.player.y)-this.dist(b.x,b.y,this.player.x,this.player.y));const linked=cand.slice(0,count);if(linked.length<2)return;
     const cx=linked.reduce((s,e)=>s+e.x,0)/linked.length,cy=linked.reduce((s,e)=>s+e.y,0)/linked.length,ticks=aw?6:4,dmg=(4+lvl*1.8)*dm;
-    for(let i=0;i<linked.length;i++)this.chainBolt(linked[i].x,linked[i].y,linked[(i+1)%linked.length].x,linked[(i+1)%linked.length].y);
-    for(let n=0;n<ticks;n++)this.time.delayedCall(n*180,()=>{linked.forEach(e=>{if(!e.active)return;this.damage(e,dmg,e.x,e.y);if(!e.isBoss&&!e.isMini){const a=Math.atan2(cy-e.y,cx-e.x);e.setVelocity(Math.cos(a)*150,Math.sin(a)*150);e.knock=0.10;}});});Sfx.zap();
+    const knot=this.camWorld(this.add.image(cx,cy,'ic_thread').setDepth(90001).setScale(0.13).setAlpha(0.78));
+    this.tweens.add({targets:knot,rotation:Math.PI*2,scale:{from:0.10,to:0.18},alpha:{from:0.48,to:0.86},duration:ticks*90,yoyo:true,repeat:1,ease:'Sine.inOut',onComplete:()=>knot.destroy()});
+    for(let n=0;n<ticks;n++)this.time.delayedCall(n*180,()=>{for(let i=0;i<linked.length;i++){const a=linked[i],b=linked[(i+1)%linked.length];if(a.active&&b.active)this.chainBolt(a.x,a.y,b.x,b.y);}linked.forEach(e=>{if(!e.active)return;this.damage(e,dmg,e.x,e.y);if(!e.isBoss&&!e.isMini){const a=Math.atan2(cy-e.y,cx-e.x);e.setVelocity(Math.cos(a)*150,Math.sin(a)*150);e.knock=0.10;}});});Sfx.zap();
   }
   castCoreDecoy(lvl,aw,dm){
     const dir=this.moveDir&&this.moveDir.lengthSq()>0.04?this.moveDir:new Phaser.Math.Vector2(1,0),x=this.player.x+dir.x*105,y=this.player.y+dir.y*105,dur=2.2+lvl*0.25+(aw?1.2:0),r=(95+lvl*11)*(aw?1.25:1),dmg=(12+lvl*3.2)*dm*(aw?1.3:1);
-    const core=this.camWorld(this.add.image(x,y,'ic_decoy').setDepth(90000).setScale(0.42).setAlpha(0.95));this.tweens.add({targets:core,scale:{from:0.34,to:0.48},yoyo:true,repeat:-1,duration:300});
+    const core=this.camWorld(this.add.image(x,y,'ic_decoy').setDepth(90000).setScale(0.42).setAlpha(0.95));this.tweens.add({targets:core,scale:{from:0.34,to:0.48},rotation:{from:-0.08,to:0.08},yoyo:true,repeat:-1,duration:300});
+    const lure=this.time.addEvent({delay:460,loop:true,callback:()=>{if(!core.active)return;const wave=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(0x8fe8d0).setDepth(4).setScale(0.10).setAlpha(0.34));this.tweens.add({targets:wave,scale:(r*1.55)/256,alpha:0,duration:420,ease:'Quad.out',onComplete:()=>wave.destroy()});}});
     this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r*3){e._decoyT=dur;e._decoyX=x;e._decoyY=y;}});
-    this.time.delayedCall(dur*1000,()=>{this.tweens.killTweensOf(core);core.destroy();this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.damage(e,dmg,e.x,e.y);});this.burst(x,y,0x8fe8d0);if(aw)this.time.delayedCall(220,()=>{this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r*1.25)this.damage(e,dmg*0.7,e.x,e.y);});});if(aw)this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.04);Sfx.boom();});
+    this.time.delayedCall(dur*1000,()=>{lure.remove(false);this.tweens.killTweensOf(core);core.destroy();this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.damage(e,dmg,e.x,e.y);});this.burst(x,y,0x8fe8d0);if(aw)this.time.delayedCall(220,()=>{this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r*1.25)this.damage(e,dmg*0.7,e.x,e.y);});});if(aw)this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.04);Sfx.boom();});
   }
   castTriadSeal(lvl,aw,dm){
     if(!this._triSeals)this._triSeals=[];const t=this.nearestEnemy(640),x=t?t.x:this.player.x+Phaser.Math.Between(-170,170),y=t?t.y:this.player.y+Phaser.Math.Between(-170,170);
-    const seal=this.camWorld(this.add.image(x,y,'ic_triseal').setDepth(3).setScale(0.30).setAlpha(0.82));this._triSeals.push({x,y,obj:seal});if(this._triSeals.length<3)return;
+    const seal=this.camWorld(this.add.image(x,y,'ic_triseal').setDepth(3).setScale(0.30).setAlpha(0.82));this.tweens.add({targets:seal,rotation:Math.PI*2,scale:{from:0.25,to:0.34},alpha:{from:0.58,to:0.90},duration:760,yoyo:true,repeat:-1,ease:'Sine.inOut'});this._triSeals.push({x,y,obj:seal});if(this._triSeals.length<3)return;
     const pts=this._triSeals.splice(0,3),cx=pts.reduce((s,p)=>s+p.x,0)/3,cy=pts.reduce((s,p)=>s+p.y,0)/3,r=(125+lvl*14)*(aw?1.25:1),dmg=(18+lvl*4)*dm*(aw?1.32:1);
-    for(let i=0;i<3;i++)this.chainBolt(pts[i].x,pts[i].y,pts[(i+1)%3].x,pts[(i+1)%3].y);pts.forEach(p=>{if(p.obj.active)p.obj.destroy();});
+    for(let i=0;i<3;i++)this.chainBolt(pts[i].x,pts[i].y,pts[(i+1)%3].x,pts[(i+1)%3].y);const core=this.camWorld(this.add.image(cx,cy,'ic_triseal').setDepth(5).setScale(0.10).setAlpha(0.84));this.tweens.add({targets:core,rotation:-Math.PI,scale:(r*1.15)/128,alpha:0,duration:360,ease:'Quad.out',onComplete:()=>core.destroy()});pts.forEach(p=>{if(p.obj.active){this.tweens.killTweensOf(p.obj);this.tweens.add({targets:p.obj,scale:0.05,alpha:0,duration:240,onComplete:()=>p.obj.destroy()});}});
     if(lvl>=3||aw){const lineHit=new Set();this.enemies.children.iterate(e=>{if(!e||!e.active)return;for(let i=0;i<3;i++){const a=pts[i],b=pts[(i+1)%3],vx=b.x-a.x,vy=b.y-a.y,l2=vx*vx+vy*vy,q=Phaser.Math.Clamp(((e.x-a.x)*vx+(e.y-a.y)*vy)/(l2||1),0,1),d=this.dist(e.x,e.y,a.x+q*vx,a.y+q*vy);if(d<28+(aw?18:0)){lineHit.add(e);break;}}});lineHit.forEach(e=>this.damage(e,dmg*0.55,e.x,e.y));}
     const blast=()=>{this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r)this.damage(e,dmg,e.x,e.y);});this.burst(cx,cy,0xffd166);Sfx.boom();};blast();if(aw)this.time.delayedCall(300,blast);
   }
@@ -3908,9 +3922,13 @@ class Game extends Phaser.Scene {
     for(const key in this.skills){ if(SKILLDEFS[key].orbit) continue;
       this.skillCd[key]-=dt; if(this.skillCd[key]<=0){ this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key])*(this.player.cdMul||1); } }
     if(this.ringBalls.length){ this.ringRot=(this.ringRot||0)+dt*(this.ringSpin||2.6);
-      this.ringBalls.forEach(b=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+(b.ang0||0);
-        b.setPosition(this.player.x+Math.cos(a)*(b.rr||54),this.player.y+Math.sin(a)*(b.rr||54)); }); }
-    this._starGuardTick=(this._starGuardTick||0)-dt;if(this.ringBalls.length&&this._starGuardTick<=0){this._starGuardTick=0.12;this.foeBullets.children.iterate(f=>{if(!f||!f.active)return;for(const star of this.ringBalls){if(this.dist(f.x,f.y,star.x,star.y)<30){this.killFoe(f);this.burst(star.x,star.y,0xffe08a);break;}}});}
+      this.ringBalls.forEach(b=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+(b.ang0||0),pulse=1+Math.sin(this.elapsed*7+(b._motionPhase||0))*0.11;
+        b.setPosition(this.player.x+Math.cos(a)*(b.rr||54),this.player.y+Math.sin(a)*(b.rr||54)).setScale((b._baseScale||0.24)*pulse).setRotation(a+this.elapsed*1.8); });
+      (this.starGuardFields||[]).forEach(f=>{if(!f.active)return;f.setPosition(this.player.x,this.player.y).setRotation((f.rotation||0)+dt*0.32*f._spinDir).setAlpha((f._phase?0.12:0.19)+Math.sin(this.elapsed*3.2+(f._phase||0))*0.035);}); }
+    this._starGuardTick=(this._starGuardTick||0)-dt;if(this.ringBalls.length&&this._starGuardTick<=0){this._starGuardTick=0.12;this.foeBullets.children.iterate(f=>{if(!f||!f.active)return;for(const star of this.ringBalls){if(this.dist(f.x,f.y,star.x,star.y)<30){const x=star.x,y=star.y;this.killFoe(f);this.vfxHitRing(x,y,0xffe08a,false);break;}}});}
+
+    // เครื่องหมาย Memory Jam ต้องเกาะเป้าหมายขณะเป้าหมายเคลื่อนที่ ไม่ทิ้งภาพนิ่งไว้บนพื้น
+    this.enemies.children.iterate(e=>{if(e&&e.active&&e._memoryMarkObj&&e._memoryMarkObj.active)e._memoryMarkObj.setPosition(e.x,e.y-8);});
 
     // กระสุนศัตรู (อายุ)
     this.foeBullets.children.iterate(b=>{ if(!b||!b.active)return; b.life-=dt; if(b.life<=0)this.killFoe(b); });
