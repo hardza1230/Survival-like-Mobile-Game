@@ -28,9 +28,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.7.2';
+const GAME_VERSION = '2.7.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.7.3', date:'2026-09-09', title:'Clean Cut Guardian Stars', items:[
+    'ลบพื้นลายตารางและเศษพิกเซลรอบไอคอนสกิลทั้งชุด ให้โปร่งใสจริงบนการ์ดทุกสี',
+    'เปลี่ยน Star Guard ในสนามเป็นดาวห้าแฉก silhouette ใหญ่ อ่านชัดบนมือถือ พร้อมจังหวะเต้นและ afterimage',
+    'ลดวงบอกระยะ Star Guard เป็นเส้นชมพูบาง เพื่อไม่ให้ดูเป็นวงกลมสีเหลือง' ] },
   { v:'2.7.2', date:'2026-09-09', title:'Complete Skill Motion', items:[
     'เติม motion ระหว่างใช้งานให้ Star Guard, Memory Jam, Flavor Thread, Core Decoy และ Triad Seal ไม่เหลือเป็นภาพนิ่ง',
     'Star Guard มีวงโคจรหายใจ ดาวกระพริบต่างจังหวะ และประกายสกัดกระสุนที่อ่านตำแหน่งได้ชัด',
@@ -2793,6 +2797,7 @@ class Game extends Phaser.Scene {
   clearStarGuardFx(){
     (this.ringBalls||[]).forEach(b=>{if(b&&b.active)b.destroy();});this.ringBalls=[];
     (this.starGuardFields||[]).forEach(f=>{if(f&&f.active)f.destroy();});this.starGuardFields=[];
+    this._starTrailTick=0;this._starTrailIndex=0;
   }
   rebuildRing(){
     this.clearStarGuardFx();
@@ -2803,18 +2808,17 @@ class Game extends Phaser.Scene {
     const rOuter=(aw?78:48+lvl*3)*(isSesame?1.15:1);          // วงคุ้มกันกว้างขึ้น
     const rMid=rOuter*0.72, rInner=rOuter*0.5;
     const twoRing=lvl>=6&&!aw;                // L6 วงคู่
-    const size=(0.20+lvl*0.012)*(aw?1.25:1)*(isSesame?1.10:1); // sprite 128px แสดงผลราว 26–43px
+    const size=(0.27+lvl*0.012)*(aw?1.18:1)*(isSesame?1.08:1); // ดาวห้าแฉกอ่านชัดราว 34–48px บนมือถือ
     const spark=lvl>=5||isSesame;             // กระจายประกายเมื่อชน
     this.ringSpin=(aw?4.6:2.6+lvl*0.28)*(isSesame?1.3:1);      // หมุนเร็วขึ้น 30%
     // เส้นทางโคจรโปร่งบางช่วยให้ Star Guard อ่านระยะป้องกันได้ โดยไม่เพิ่มแสงทึบกลางสนาม
     const fieldRadii=aw?[rOuter,rMid,rInner]:[rOuter];
-    fieldRadii.forEach((rr,i)=>{const f=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(i===0?0xffe08a:0xffb6e1).setDepth(3).setDisplaySize(rr*2,rr*1.64).setAlpha(i===0?0.22:0.13));f._phase=i*1.7;f._spinDir=i%2?-1:1;this.starGuardFields.push(f);});
+    fieldRadii.forEach((rr,i)=>{const f=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(i===0?0xff9ec4:0xffd166).setDepth(3).setDisplaySize(rr*2,rr*1.64).setAlpha(i===0?0.12:0.07));f._phase=i*1.7;f._spinDir=i%2?-1:1;this.starGuardFields.push(f);});
     for(let i=0;i<count;i++){
       const tier=aw?(i%3):(twoRing?(i%2===0?0:2):0);   // aw: 3 ชั้น (0=นอก,1=กลาง,2=ใน)
       const rr=tier===0?rOuter:tier===1?rMid:rInner;
-      // Star Guard เป็น flipbook จึงต้องใช้ Sprite (Image ไม่มี .play และทำให้ Sesame เข้าเกมไม่ได้)
-      const b=this.camWorld(this.physics.add.sprite(0,0,'fx_star_guard',0).setScale(size).setDepth(88000));
-      if(this.anims.exists('fx_star_guard_walk'))b.play('fx_star_guard_walk',true);
+      // ใช้ silhouette จากไอคอนแทน flipbook เดิมซึ่งมีดาวจริงเล็กเกินไปจนเห็นเป็นวงเหลืองเมื่อย่อ
+      const b=this.camWorld(this.physics.add.sprite(0,0,'ic_star').setScale(size).setDepth(88000));
       b.setCircle(38,26,26); b.body.setAllowGravity(false); b.dmg=(4+lvl*1.5)*(BALANCE.skillPower.star||1)*(aw?1.45:1)*(isSesame?1.10:1); b.hitCd=0;
       b.rr=rr; b.ang0=(i/count)*Math.PI*2;b._baseScale=size;b._motionPhase=(i/count)*Math.PI*2;
       this.physics.add.overlap(b,this.enemies,(ball,en)=>{ if(ball.hitCd>0)return; ball.hitCd=isSesame?0.09:0.12;
@@ -3924,7 +3928,8 @@ class Game extends Phaser.Scene {
     if(this.ringBalls.length){ this.ringRot=(this.ringRot||0)+dt*(this.ringSpin||2.6);
       this.ringBalls.forEach(b=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+(b.ang0||0),pulse=1+Math.sin(this.elapsed*7+(b._motionPhase||0))*0.11;
         b.setPosition(this.player.x+Math.cos(a)*(b.rr||54),this.player.y+Math.sin(a)*(b.rr||54)).setScale((b._baseScale||0.24)*pulse).setRotation(a+this.elapsed*1.8); });
-      (this.starGuardFields||[]).forEach(f=>{if(!f.active)return;f.setPosition(this.player.x,this.player.y).setRotation((f.rotation||0)+dt*0.32*f._spinDir).setAlpha((f._phase?0.12:0.19)+Math.sin(this.elapsed*3.2+(f._phase||0))*0.035);}); }
+      (this.starGuardFields||[]).forEach(f=>{if(!f.active)return;f.setPosition(this.player.x,this.player.y).setRotation((f.rotation||0)+dt*0.32*f._spinDir).setAlpha((f._phase?0.055:0.10)+Math.sin(this.elapsed*3.2+(f._phase||0))*0.018);});
+      this._starTrailTick=(this._starTrailTick||0)-dt;if(this._starTrailTick<=0){this._starTrailTick=0.11;this._starTrailIndex=((this._starTrailIndex||0)+1)%this.ringBalls.length;const s=this.ringBalls[this._starTrailIndex],ghost=this.camWorld(this.add.image(s.x,s.y,'ic_star').setDepth(4).setScale((s._baseScale||0.28)*0.72).setRotation(s.rotation).setAlpha(0.22));this.tweens.add({targets:ghost,scale:ghost.scaleX*0.45,alpha:0,duration:180,onComplete:()=>ghost.destroy()});} }
     this._starGuardTick=(this._starGuardTick||0)-dt;if(this.ringBalls.length&&this._starGuardTick<=0){this._starGuardTick=0.12;this.foeBullets.children.iterate(f=>{if(!f||!f.active)return;for(const star of this.ringBalls){if(this.dist(f.x,f.y,star.x,star.y)<30){const x=star.x,y=star.y;this.killFoe(f);this.vfxHitRing(x,y,0xffe08a,false);break;}}});}
 
     // เครื่องหมาย Memory Jam ต้องเกาะเป้าหมายขณะเป้าหมายเคลื่อนที่ ไม่ทิ้งภาพนิ่งไว้บนพื้น
