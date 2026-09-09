@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.7.0 Wrath of the Flavor Tyrant)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.7.1 Distinct Flavor Arsenal)
+- **v2.7.1:** เปลี่ยน `assets/ic_*.png` ของสกิลโจมตีครบ 22 ภาพเป็นชุด 2.5D confectionery fantasy เดียวกัน ขนาด 128×128 alpha จริง · เพิ่ม `role` ใน `SKILLDEFS` และแสดงในคัมภีร์/รายละเอียด/การ์ดเลือกเริ่มต้น · แยกกลไกสกิลที่ทับกัน: Thunder ล่า HP สูง, Popcorn ระยะประชิดผลัก, Bubble จับตัวแกร่ง, Fork กรวยหน้า, Rocket ล็อกตัวแกร่ง, Wave เน้นผลัก, Star สกัดกระสุน, Mocha เล็งกลุ่มหนาแน่น
 - **v2.7.0:** เพิ่ม `stageKills` นับลูกน้องที่กำจัดต่อด่าน · `bossRageInfo()` แบ่งความโกรธ 5 ระดับและสเกล HP/ดาเมจ/ความเร็ว/คูลดาวน์บอส · `rollStageReward()` เพิ่มคุณภาพรางวัลตามความโกรธ · แยก `CHARACTER_UNIQUES` ออกจาก attack pool พร้อมปุ่ม Unique ข้าง Dash · `openStartingSkillChoice()` ให้เลือกสกิลโจมตี Lv1 1 จาก 4 ก่อน `startStage()`
 - **v2.6.1:** เพิ่ม Hub menu `คัมภีร์แก่นรส` (`menuScreen='skills'`) · `buildSkillArchive()` แบ่ง Attack/Passive และ paginate ตามแนวจอ · แตะการ์ดเปิด `buildSkillArchiveDetail()` เพื่อดู tier, Awaken และคู่ `COMBOS`
 - **v2.6.0:** Bear-Sigil Donut กระแทกหลายครั้ง/ทิ้ง glaze/ปิด shockwave · เพิ่ม active 6 แบบใหม่ (`mirror/memory/thread/decoy/triseal/echoStep`) และ passive 4 แบบ · หน้าเมตาเปลี่ยนเป็นวิหารสายใยรสชาติ · แบนเนอร์แต่ละเวฟเป็น story beat เฉพาะด่าน · Taro/Sesame ใช้ Awakened sprite sheet 8 เฟรมและมี `CHAR_TALENTS` ของตัวเอง
