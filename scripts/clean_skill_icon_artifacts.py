@@ -83,11 +83,41 @@ def remove_neutral_speckles(pixels: np.ndarray) -> bool:
     return changed
 
 
+def remove_edge_export_speckles(pixels: np.ndarray) -> bool:
+    """Remove tiny, muted islands left on the 8 px crop boundary.
+
+    The generated icon batch used an 8 px inset.  A few exports retained two
+    narrow checker-fringe islands exactly on that boundary (most visibly on
+    Mirror Glaze and Rocket Cookie).  Restricting this cleanup to very small,
+    low-chroma edge components preserves the intentional colorful sparks.
+    """
+    components, count = label(pixels[:, :, 3] > 30)
+    changed = False
+    height, width = pixels.shape[:2]
+    for component_id in range(1, count + 1):
+        ys, xs = np.where(components == component_id)
+        if not len(xs) or len(xs) > 24:
+            continue
+        touches_inset = (
+            xs.min() <= 8 or ys.min() <= 8 or
+            xs.max() >= width - 9 or ys.max() >= height - 9
+        )
+        if not touches_inset:
+            continue
+        rgb = pixels[ys, xs, :3].astype(np.int16)
+        chroma = (rgb.max(axis=1) - rgb.min(axis=1)).mean()
+        if chroma < 70:
+            pixels[ys, xs, 3] = 0
+            changed = True
+    return changed
+
+
 def clean_icon(path: Path) -> bool:
     image = Image.open(path).convert("RGBA")
     pixels = np.array(image)
     changed = remove_checkerboard(pixels)
     changed = remove_neutral_speckles(pixels) or changed
+    changed = remove_edge_export_speckles(pixels) or changed
     changed = remove_white_islands(pixels) or changed
     if changed:
         Image.fromarray(pixels).save(path)

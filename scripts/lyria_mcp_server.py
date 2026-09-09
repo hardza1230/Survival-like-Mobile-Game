@@ -12,10 +12,16 @@ import base64
 import numpy as np
 import wave
 
-API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyACCx1SyEnCg9G7YTsqCO8vO7hXe2TLJLA")
+API_KEY = os.environ.get("GEMINI_API_KEY")
+
+
+def require_api_key():
+    if not API_KEY:
+        raise RuntimeError("GEMINI_API_KEY is not set")
+    return API_KEY
 
 def handle_get_models(args):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models?key={API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models?key={require_api_key()}"
     req = urllib.request.Request(url)
     with urllib.request.urlopen(req) as resp:
         data = json.loads(resp.read().decode())
@@ -59,6 +65,10 @@ def handle_generate_music(args):
     prompt = args.get("prompt", "Cute kawaii chiptune game music with marimba 124 BPM")
     output_file = args.get("output_file", "assets/audio/bgm/lyria_music.wav")
     model = args.get("model", "models/lyria-3-pro-preview")
+
+    if not API_KEY:
+        sys.stderr.write("GEMINI_API_KEY is not set. Using high-quality synthesis pipeline.\n")
+        return generate_procedural_fallback(prompt, output_file)
     
     # Try calling Lyria endpoint
     url = f"https://generativelanguage.googleapis.com/v1beta/{model}:predict?key={API_KEY}"

@@ -24,7 +24,7 @@
     "spritecook": {
       "serverUrl": "https://api.spritecook.ai/mcp/",
       "headers": {
-        "Authorization": "Bearer sc_live_8dc49c44b1543cc516e23213c941b903e703b930d6c60ec2"
+        "Authorization": "Bearer ${SPRITECOOK_API_KEY}"
       }
     },
     "lyria-music": {
@@ -33,7 +33,7 @@
         "c:\\Users\\norrasates\\Desktop\\Mochi MeyHem\\scripts\\lyria_mcp_server.py"
       ],
       "env": {
-        "GEMINI_API_KEY": "AIzaSyACCx1SyEnCg9G7YTsqCO8vO7hXe2TLJLA"
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
       }
     }
   }
