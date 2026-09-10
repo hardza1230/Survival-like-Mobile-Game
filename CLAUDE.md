@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.8.3 12-Frame Fighter Standard)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.8.4 Lore-Bound Mint & Chocolate)
+- **v2.8.4:** รีดีไซน์ Mint เป็นผู้พิทักษ์ลมเย็นที่มีโล่ใบมิ้นต์/เกราะน้ำแข็ง และ Chocolate เป็นจอมพลังถุงมือหนัก/ตราหมี · สร้าง action sheet 8 ท่า + run atlas 12 เฟรมใหม่ทั้งคู่ พร้อม alpha โปร่งใสและสัดส่วนอ่านง่ายบนมือถือ
 - **v2.8.3:** ใช้ Momo Strawberry เป็นต้นแบบสัดส่วนและงานเส้นของ Mint/Chocolate · ตัวละครทั้งสามมี run atlas 4×3 รวม 12 เฟรม เฟรมละ 128px เล่นที่ 16 FPS · ขนาดแสดงผลเท่ากันและสลับกลับ action sheet สำหรับท่ายืน/Dash/เจ็บ/ใช้สกิล/KO
 - **v2.8.2:** เปลี่ยน `char_momo_run_sheet.png` เป็น atlas 5×5 ขนาด 640×640 (25 เฟรมจริง เฟรมละ 128px) · เล่นเฉพาะตอนเคลื่อนที่ที่ 25 FPS · ท่า action เดิมยังสลับกลับไปใช้ `char_momo_fighter_sheet.png`
 - **v2.8.1:** เลเวลอัพเลือก 1 จาก 4 โดยการ์ด responsive ยังอ่านข้อความครบ · ลดภาพ Momo ลง 15% (คง hitbox เดิม) · เพิ่ม `char_momo_run_sheet.png` เป็น run cycle 8 เฟรมที่ 12 fps และสลับกลับชีต action เดิมเมื่อยืน/Dash/เจ็บ/KO

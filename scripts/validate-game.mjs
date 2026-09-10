@@ -31,6 +31,13 @@ if (!source.includes('Math.floor(this._charRunT*16)%12')) {
 }
 
 for (const fighter of ['momo', 'mint', 'cocoa']) {
+  const actionName = fighter === 'momo' ? 'char_momo_fighter_sheet.png' : `char_${fighter}_awakened_sheet.png`;
+  const action = fs.readFileSync(new URL(`../assets/${actionName}`, import.meta.url));
+  const actionWidth = action.readUInt32BE(16);
+  const actionHeight = action.readUInt32BE(20);
+  if (actionWidth !== 1024 || actionHeight !== 128) {
+    throw new Error(`Expected ${fighter} 8x1 action sheet at 1024x128, found ${actionWidth}x${actionHeight}`);
+  }
   const run = fs.readFileSync(new URL(`../assets/char_${fighter}_run_sheet.png`, import.meta.url));
   const width = run.readUInt32BE(16);
   const height = run.readUInt32BE(20);
@@ -39,4 +46,4 @@ for (const fighter of ['momo', 'mint', 'cocoa']) {
   }
 }
 
-console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, and three 12-frame fighter run atlases`);
+console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, three 8-frame action sheets, and three 12-frame run atlases`);

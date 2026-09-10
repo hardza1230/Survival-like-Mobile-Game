@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.8.3';
+const GAME_VERSION = '2.8.4';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.8.4', date:'2026-09-10', title:'Lore-Bound Mint & Chocolate', items:[
+    'ออกแบบ Mint ใหม่เป็นผู้พิทักษ์ลมเย็น ใช้โล่ใบมิ้นต์ เกราะน้ำแข็ง และท่าร่ายเขตคุ้มกันตามบทบาทสายแทงค์',
+    'ออกแบบ Chocolate ใหม่เป็นจอมพลังตราหมี ใช้ถุงมือช็อกโกแลตหนักและท่าทุบวงแผ่นดินไหวตาม Unique Skill',
+    'สร้าง action sheet 8 ท่าและ run cycle 12 เฟรมใหม่ทั้งสองตัว พร้อม alpha โปร่งใสและ silhouette ที่อ่านง่ายบนมือถือ' ] },
   { v:'2.8.3', date:'2026-09-10', title:'12-Frame Fighter Standard', items:[
     'ปรับ run cycle ของ Momo เป็น 12 เฟรมที่กระชับและอ่านท่าทางชัดขึ้นสำหรับเกม survival-like',
     'สร้าง Mint และ Chocolate ใหม่โดยยึดสัดส่วน เส้น และรูปแบบชีตของ Momo Strawberry เป็นมาตรฐานเดียวกัน',
