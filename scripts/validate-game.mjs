@@ -22,8 +22,8 @@ if (missingCombos.length || orphanCombos.length) {
   throw new Error(`Skill/combo mismatch. Missing: ${missingCombos.join(', ') || '-'}; orphaned: ${orphanCombos.join(', ') || '-'}`);
 }
 
-if (!source.includes('rollUpgrades(2)') || !source.includes("slice(0,3)")) {
+if (!source.includes('rollUpgrades(4)') || !source.includes("slice(0,3)")) {
   throw new Error('Readable-card choice counts changed unexpectedly');
 }
 
-console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, and readable card counts`);
+console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, and 3 starting cards`);

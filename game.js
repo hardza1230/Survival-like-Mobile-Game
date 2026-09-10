@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 103379)
+Total output lines: 3947
+
 /* ============================================================
    MOCHI MAYHEM — Prototype (Phaser 3)  v3
    - Floating joystick (left) + basic Dash button (right)
@@ -27,9 +30,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.8.0';
+const GAME_VERSION = '2.8.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.8.1', date:'2026-09-10', title:'Four Choices & Smooth Momo', items:[
+    'คืนตัวเลือกตอนเลเวลอัพเป็น 4 การ์ดต่อครั้ง พร้อมย่อความสูงให้เห็นครบและอ่านข้อความได้บนมือถือ',
+    'ลดขนาดแสดงผล Momo ลง 15% เพื่อไม่ให้บังสนาม โดยคงขอบชนและสมดุลเกมเดิม',
+    'เพิ่ม run cycle แยก 8 เฟรมที่แขน ขา และเส้นผมเคลื่อนไหวต่อเนื่อง พร้อมคงท่ายืน Dash เจ็บ และ KO เดิม' ] },
   { v:'2.8.0', date:'2026-09-10', title:'Readable Skill Cards', items:[
     'เปลี่ยนการ์ดเลือกสกิลเป็นแผงเรียบคอนทราสต์สูง ไอคอนใหญ่ และข้อความไม่ชนกรอบบนมือถือ',
     'หน้าจอเริ่มด่านสุ่มให้เลือก 3 ใบแบบแถวใหญ่; เลเวลอัพเลือก 1 จาก 2 เพื่ออ่านและตัดสินใจง่ายขึ้น',
@@ -465,6 +472,7 @@ const PASS_ICON  = { heart:'ic_heart', magnet:'ic_magnet', power:'ic_power', swi
 const ASSET_SHEETS = {
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
   char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
+  char_momo_run:{ url:'assets/char_momo_run_sheet.png', frame:128 },
   char_mint:  { url:'assets/char_mint_awakened_sheet.png',  frame:128 },
   char_cocoa: { url:'assets/char_cocoa_awakened_sheet.png', frame:128 },
   char_taro:  { url:'assets/char_taro_awakened_sheet.png', frame:128 },
@@ -566,36 +574,6 @@ class Boot extends Phaser.Scene {
     });
   }
   create(){
-    // สร้าง run cycle 2 ก้าวสำหรับ Strawberry Fighter จากชีตต้นฉบับ:
-    // เฟรมแรกใช้ท่าวิ่งเดิม ส่วนเฟรมสองกลับเฉพาะช่วงขาเพื่อให้ก้าวซ้าย/ขวาสลับจริง
-    const buildStrawberryWalkSheet=()=>{
-      const source=this.textures.get('char_momo');
-      if(!source||source.key==='__MISSING'||this.textures.exists('char_momo_walk'))return;
-      const img=source.getSourceImage(), fw=128, total=8;
-      if(!img||img.width<fw*total||img.height<fw)return;
-      const tex=this.textures.createCanvas('char_momo_walk',fw*total,fw);
-      if(!tex)return;
-      const c=tex.getContext();
-      c.clearRect(0,0,fw*total,fw);
-      c.drawImage(img,0,0,fw*total,fw,0,0,fw*total,fw);
-      // CF.squash (2) และ CF.stretch (3) กลายเป็นก้าววิ่งคู่กันสำหรับ Momo/Strawberry เท่านั้น
-      c.clearRect(fw*2,0,fw,fw);
-      c.drawImage(img,fw*3,0,fw,fw,fw*2,0,fw,fw);
-      c.clearRect(fw*3,0,fw,fw);
-      c.drawImage(img,fw*3,0,fw,fw,fw*3,0,fw,fw);
-      // คงศีรษะ/ลำตัวเดิม แล้วกลับเงาสะท้อนเฉพาะขาใต้ชายกระโปรง
-      const legY=82, legH=fw-legY, centerX=fw*3+fw/2;
-      c.save();
-      c.beginPath(); c.rect(fw*3,legY,fw,legH); c.clip();
-      c.clearRect(fw*3,legY,fw,legH);
-      c.translate(centerX*2,0); c.scale(-1,1);
-      c.drawImage(img,fw*3,legY,fw,legH,fw*3,legY,fw,legH);
-      c.restore();
-      for(let i=0;i<total;i++)tex.add(i,0,i*fw,0,fw,fw);
-      tex.refresh();
-    };
-    buildStrawberryWalkSheet();
-
     // มดด่าน 1 ใช้ขอบเรืองแสงบาง ๆ จาก texture จริง ช่วยแยกตัวจากพื้นรังโดยไม่เพิ่ม Graphics ต่อศัตรูทุกเฟรม
     const buildReadableAnt=(key)=>{
       const source=this.textures.get(key); if(!source||source.key==='__MISSING'||this.textures.exists(key+'_readable'))return;
@@ -1810,99 +1788,7 @@ class Game extends Phaser.Scene {
       if(bDef.def)bParts.push('DEF+'+Math.round(bDef.def*100)+'%'); if(bDef.spd)bParts.push('SPD+'+Math.round(bDef.spd*100)+'%');
       if(bDef.cdr)bParts.push('CDR+'+Math.round(bDef.cdr*100)+'%'); if(bDef.crit)bParts.push('CRIT+'+Math.round(bDef.crit*100)+'%');
       const bLabel=lv>0?bParts.join(' '):(lv===0?('ถัดไป: '+bParts.join(' ')):'');
-      const bt=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontSize:'8.5px',color:lv>0?'#8bd3a0':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
-      const desc=this.add.text(cx+8,cy+75,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8.5px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
-      this.menu.add([g,icon,nm,stars,kt,bt,desc]);
-    });
-    this.menu.setVisible(true);
-  }
-  buildSkillArchive(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('คัมภีร์แก่นรส');
-    const w=this.W,h=this.H,portrait=w<=h,tab=this._skillArchiveTab||'attack';
-    const tabY=portrait?82:50,tabH=32,tabGap=8,tabW=Math.min(150,(w-40-tabGap)/2),tabX=w/2-tabW-tabGap/2;
-    const drawTab=(x,label,on,fn)=>{const g=this.add.graphics();g.fillStyle(on?(label.includes('โจมตี')?0x60331d:0x174739):0x292032,0.96);g.fillRoundedRect(x,tabY,tabW,tabH,10);g.lineStyle(1.8,on?(label.includes('โจมตี')?0xf0a54a:0x66d3b3):0x51445f,1);g.strokeRoundedRect(x,tabY,tabW,tabH,10);const t=this.add.text(x+tabW/2,tabY+tabH/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#ffffff':'#998da7'}).setOrigin(0.5);this.menu.add([g,t]);this._zone(x,tabY,tabW,tabH,fn);};
-    drawTab(tabX,'⚔️ สกิลโจมตี '+Object.keys(SKILLDEFS).length,tab==='attack',()=>{this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildSkillArchive();});
-    drawTab(tabX+tabW+tabGap,'✨ พรติดตัว '+Object.keys(PASSIVES).length,tab==='passive',()=>{this._skillArchiveTab='passive';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildSkillArchive();});
-    if(this._skillArchiveSelected){this.buildSkillArchiveDetail(this._skillArchiveSelected,portrait,tabY+tabH+10);this.menu.setVisible(true);return;}
-    const isPass=tab==='passive',defs=isPass?PASSIVES:SKILLDEFS,keys=Object.keys(defs),cols=portrait?2:4,rows=portrait?3:2,perPage=cols*rows;
-    const pages=Math.max(1,Math.ceil(keys.length/perPage));this._skillArchivePage=Phaser.Math.Clamp(this._skillArchivePage||0,0,pages-1);const page=this._skillArchivePage;
-    const gap=portrait?8:7,side=14,top=tabY+tabH+12,bottom=h-(portrait?54:42),cardW=(w-side*2-gap*(cols-1))/cols,cardH=(bottom-top-gap*(rows-1))/rows;
-    keys.slice(page*perPage,page*perPage+perPage).forEach((key,i)=>{const d=defs[key],col=i%cols,row=Math.floor(i/cols),x=side+col*(cardW+gap),y=top+row*(cardH+gap),color=isPass?(d.color||COLORS.mint):0xf0a54a;
-      const g=this.add.graphics();g.fillStyle(0x211929,0.97);g.fillRoundedRect(x,y,cardW,cardH,12);g.fillStyle(color,0.13);g.fillRoundedRect(x+3,y+3,cardW-6,cardH-6,9);g.lineStyle(1.7,color,0.82);g.strokeRoundedRect(x,y,cardW,cardH,12);
-      const ik=this.iconKey(key,isPass),iconSize=Math.min(portrait?44:38,cardH*0.36),ic=ik?this.add.image(x+cardW/2,y+iconSize*0.62+5,ik).setDisplaySize(iconSize,iconSize):this.add.text(x+cardW/2,y+iconSize*0.62+5,d.emoji,{fontSize:Math.round(iconSize*0.78)+'px'}).setOrigin(0.5);
-      const nm=this.add.text(x+cardW/2,y+iconSize+10,d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<150?'9px':'10.5px',color:'#fff7ed',align:'center',wordWrap:{width:cardW-12},maxLines:1}).setOrigin(0.5,0);
-      const role=this.add.text(x+cardW/2,y+iconSize+25,!isPass&&d.role?d.role:'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ffc978',align:'center',wordWrap:{width:cardW-12},maxLines:1}).setOrigin(0.5,0);
-      const pair=isPass?COMBOS.filter(c=>c.b===key).map(c=>SKILLDEFS[c.a]&&SKILLDEFS[c.a].name).filter(Boolean).join(', '):((COMBOS.find(c=>c.a===key)||{}).name||'ไม่มีคู่ Awaken');
-      const desc=this.add.text(x+8,y+cardH-34,d.desc,{fontFamily:'sans-serif',fontSize:cardW<150?'7.5px':'8px',color:'#c9bdd2',align:'center',wordWrap:{width:cardW-16},maxLines:2}).setOrigin(0,1);
-      const ft=this.add.text(x+cardW/2,y+cardH-8,(isPass?'คู่กับ: ':'คู่ตื่นรู้: ')+(pair||'—'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:isPass?'#8fe6c5':'#ffd08a',align:'center',wordWrap:{width:cardW-12},maxLines:1}).setOrigin(0.5,1);
-      this.menu.add([g,ic,nm,role,desc,ft]);this._zone(x,y,cardW,cardH,()=>{this._skillArchiveSelected={key,isPass};this.buildSkillArchive();});
-    });
-    const navY=h-(portrait?31:20),navW=92,navH=28;
-    const pageTxt=this.add.text(w/2,navY,'หน้า '+(page+1)+' / '+pages,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d8cce0'}).setOrigin(0.5);this.menu.add(pageTxt);
-    const nav=(cx,label,enabled,fn)=>{const g=this.add.graphics();g.fillStyle(enabled?0x463653:0x28212e,1);g.fillRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);g.lineStyle(1,enabled?0xa98cf0:0x44394d,1);g.strokeRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);const t=this.add.text(cx,navY,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:enabled?'#f5eaff':'#665d70'}).setOrigin(0.5);this.menu.add([g,t]);if(enabled)this._zone(cx-navW/2,navY-navH/2,navW,navH,fn);};
-    nav(w/2-120,'‹ ก่อนหน้า',page>0,()=>{this._skillArchivePage--;this.buildSkillArchive();});nav(w/2+120,'ถัดไป ›',page<pages-1,()=>{this._skillArchivePage++;this.buildSkillArchive();});
-    this.menu.setVisible(true);
-  }
-  buildSkillArchiveDetail(sel,portrait,top){
-    const w=this.W,h=this.H,d=sel.isPass?PASSIVES[sel.key]:SKILLDEFS[sel.key];if(!d){this._skillArchiveSelected=null;this.buildSkillArchive();return;}
-    const panelX=16,panelW=w-32,panelY=top,panelH=h-top-16,g=this.add.graphics(),color=sel.isPass?(d.color||COLORS.mint):0xf0a54a;
-    g.fillStyle(0x1f1728,0.98);g.fillRoundedRect(panelX,panelY,panelW,panelH,16);g.lineStyle(2,color,0.9);g.strokeRoundedRect(panelX,panelY,panelW,panelH,16);g.fillStyle(color,0.11);g.fillRoundedRect(panelX+4,panelY+4,panelW-8,Math.min(panelH-8,portrait?118:72),12);this.menu.add(g);
-    const ik=this.iconKey(sel.key,sel.isPass),size=portrait?72:58,ix=panelX+18+size/2,iy=panelY+16+size/2,ic=ik?this.add.image(ix,iy,ik).setDisplaySize(size,size):this.add.text(ix,iy,d.emoji,{fontSize:Math.round(size*0.75)+'px'}).setOrigin(0.5);
-    const tx=ix+size/2+14,title=this.add.text(tx,panelY+17,d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'18px':'16px',color:'#fff7ed'}).setOrigin(0,0);
-    const type=this.add.text(tx,panelY+43,sel.isPass?'PASSIVE · สูงสุด 5 ดาว':'ATTACK · '+d.role+' · สูงสุด 5 ดาว',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sel.isPass?'#8fe6c5':'#ffd08a',wordWrap:{width:panelX+panelW-tx-14}}).setOrigin(0,0);
-    const desc=this.add.text(tx,panelY+59,d.desc,{fontFamily:'sans-serif',fontSize:portrait?'11px':'9px',color:'#d8cce0',wordWrap:{width:panelX+panelW-tx-14},maxLines:portrait?3:2}).setOrigin(0,0);this.menu.add([ic,title,type,desc]);
-    let body='';if(sel.isPass){const pairs=COMBOS.filter(c=>c.b===sel.key);body='ผลต่อเลเวล\n'+d.desc+'\n\nคู่สายใยสำหรับปลด Awaken\n'+(pairs.length?pairs.map(c=>'• '+SKILLDEFS[c.a].name+' → '+SKILLDEFS[c.a].awaken.name).join('\n'):'• ยังไม่มีสกิลที่ใช้พรนี้เป็นคู่');}
-    else{const tiers=SKILL_TIERS[sel.key]||{},combo=COMBOS.find(c=>c.a===sel.key);body='พัฒนาการของสกิล\n• Lv1 — '+d.desc+'\n'+[2,3,4,5].map(l=>'• Lv'+l+' — '+(tiers[l]||'เพิ่มประสิทธิภาพ')).join('\n')+'\n\n⚡ Awaken: '+d.awaken.name+'\n'+d.awaken.desc+'\nคู่ที่ต้องมี: '+(combo&&PASSIVES[combo.b]?PASSIVES[combo.b].name:'ไม่มี');}
-    const bodyY=panelY+(portrait?112:84),bodyTxt=this.add.text(panelX+18,bodyY,body,{fontFamily:'sans-serif',fontSize:portrait?'11px':'9px',color:'#ddd1e5',lineSpacing:portrait?5:2,wordWrap:{width:panelW-36},maxLines:portrait?14:9}).setOrigin(0,0);this.menu.add(bodyTxt);
-    const bw=Math.min(180,panelW-36),bh=30,bx=panelX+panelW/2-bw/2,by=panelY+panelH-bh-12,bg=this.add.graphics();bg.fillStyle(0x3c3048,1);bg.fillRoundedRect(bx,by,bw,bh,10);bg.lineStyle(1.4,0xa98cf0,1);bg.strokeRoundedRect(bx,by,bw,bh,10);const bt=this.add.text(bx+bw/2,by+bh/2,'‹ กลับรายการสกิล',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([bg,bt]);this._zone(bx,by,bw,bh,()=>{this._skillArchiveSelected=null;this.buildSkillArchive();});
-  }
-  buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
-  buildHub(){
-    const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
-    const portrait=w<=h;
-    const center=w/2;
-    const bg=this.textures.exists('menu_hub_v3')?this._coverImage(0,0,w,h,'menu_hub_v3'):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0,0);
-    const shade=this.add.graphics();shade.fillGradientStyle(0x100817,0x100817,0x090611,0x090611,0.05,0.05,0.50,0.88);shade.fillRect(0,0,w,h);
-    const topG=this.add.graphics();topG.fillStyle(0x090713,0.72);topG.fillRoundedRect(12,13,96,32,12);topG.lineStyle(1.2,0xffffff,0.18);topG.strokeRoundedRect(12,13,96,32,12);
-    const sugar=this.add.text(24,29,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffe5a6'}).setOrigin(0,0.5);
-    const logoY=portrait?h*0.505:h*0.47;
-    const title=this.add.text(center,logoY,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(31,w*0.082)+'px',color:'#fff4ef',stroke:'#4b102b',strokeThickness:5,align:'center'}).setOrigin(0.5);
-    title.setShadow(0,3,'#000000',4);
-    const subtitle=this.add.text(center,logoY+27,'F L A V O R B O U N D',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd27d'}).setOrigin(0.5);
-    const ch=CHARACTERS[this.character||'momo'];
-    const charTxt=this.add.text(center,logoY+47,`${ch.emoji} ${ch.name}  ·  ${CHARACTER_UNIQUES[ch.unique].name}`,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d8c4',align:'center'}).setOrigin(0.5);
-    this.menu.add([bg,shade,topG,sugar,title,subtitle,charTxt]);
-    // ป้ายเวอร์ชัน (มุมขวาบน) — แตะดูอัปเดต/ดาวน์โหลด
-    const vg=this.add.graphics(); vg.fillStyle(0x090713,0.72); vg.fillRoundedRect(w-106,13,94,32,12); vg.lineStyle(1.2,0xffffff,0.18); vg.strokeRoundedRect(w-106,13,94,32,12);
-    const vt=this.add.text(w-59,29,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#eadff2'}).setOrigin(0.5);
-    this.menu.add([vg,vt]); this._zone(w-106,13,94,32,()=>{ this.menuScreen='news'; this.buildMenuScreen(); });
-    const items=[
-      [COLORS.pink, '▶','เริ่มผจญภัย','เลือกด่านและเข้าสู่ครัว',()=>{ this.menuScreen='stage'; this.buildMenuScreen(); }],
-      [COLORS.toast,'🍓','นักสู้','เลือกและปลุกพลังตัวละคร',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
-      [COLORS.grape,'✦','สายใยรสชาติ','ประสานแก่นพลังถาวร',()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); }],
-      [COLORS.mint, '◆','อุปกรณ์','สวมใส่และตีบวก',()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
-      [0x8f7de8,     '✧','คัมภีร์แก่นรส','ดูสกิล พร และคู่ Awaken ทั้งหมด',()=>{ this.menuScreen='skills';this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildMenuScreen(); }],
-      [0xf0a92e,    '☷','สมุดมอนสเตอร์','ดูการค้นพบและโบนัส',()=>{ this.menuScreen='bestiary'; this.buildMenuScreen(); }],
-    ];
-    const left=portrait?center:w*0.27;
-    const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
-    const cols=portrait?1:2, gapX=portrait?0:10, gapY=portrait?8:12;
-    const bw=portrait?Math.min(w-32,390):Math.min(205,(areaR-areaL-gapX)/2);
-    const menuTop=Math.max(logoY+72,h*0.57),menuBottom=h-42;
-    const menuRows=Math.ceil(items.length/cols);
-    const bh=portrait?Math.min(54,Math.max(38,(menuBottom-menuTop-gapY*(menuRows-1))/menuRows)):Math.min(58,(h-72-gapY*(menuRows-1))/menuRows);
-    const totalW=bw*cols+gapX*(cols-1), x0=portrait?center:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?menuTop+bh/2:74+bh/2;
-    items.forEach(([color,emoji,label,sub,fn],i)=>{
-      const col=i%cols,row=Math.floor(i/cols);
-      this.uiMenuCard(this.menu,x0+col*(bw+gapX),y0+row*(bh+gapY),bw,bh,color,emoji,label,sub,fn,i===0);
-    });
-    // ปุ่มรีเซ็ตเซฟ (สำหรับเทส) — แตะ 2 ครั้งยืนยัน
-    const rt=this.add.text(left,h-22, this._resetConfirm?'⚠️ แตะอีกครั้งเพื่อล้างทั้งหมด':'🗑️ รีเซ็ตความคืบหน้า',
-      {fontFamily:'sans-serif',fontSize:'11px',color:this._resetConfirm?'#ff8fb5':'#7a7088'}).setOrigin(0.5);
-    this.menu.add(rt);
-    this._zone(left-110,h-38,220,32,()=>{
-      if(this._resetConfirm){ Save.reset(); this._resetConfirm=false; this.character='momo'; Sfx.clear(); this.buildMenuScreen(); }
-      else { this._resetConfirm=true; Sfx.select(); this.buildMenuScreen(); this.time.delayedCall(3000,()=>{ if(this._resetConfirm){ this._resetConfirm=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); } }); }
+      const b…3379 tokens truncated…else { this._resetConfirm=true; Sfx.select(); this.buildMenuScreen(); this.time.delayedCall(3000,()=>{ if(this._resetConfirm){ this._resetConfirm=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); } }); }
     });
     this.menu.setVisible(true);
   }
@@ -2079,10 +1965,8 @@ class Game extends Phaser.Scene {
     this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
     const ch=CHARACTERS[this.character];
     const baseCharKey='char_'+this.character;
-    const visualCharKey=this.character==='momo'&&this.textures.exists('char_momo_walk')
-      ?'char_momo_walk':baseCharKey;
-    if(this.textures.exists(visualCharKey))this.player.setTexture(visualCharKey);
-    this.setCharScale(visualCharKey);   // รูปจริงตัวใหญ่ → ปรับสเกล/ขอบชนให้เท่ากราฟิกโค้ดเดิม (60px)
+    if(this.textures.exists(baseCharKey))this.player.setTexture(baseCharKey);
+    this.setCharScale(baseCharKey);   // รูปจริงตัวใหญ่ → ปรับสเกล/ขอบชนให้สมดุลกับตัวละครอื่น
     if(this.aura)this.aura.setFillStyle(ch.color||COLORS.mochiEdge,0.14);
     // โบนัสตัวละคร
     if(ch.bonus){ if(ch.bonus.maxhp)p.maxhp+=ch.bonus.maxhp; if(ch.bonus.dmgMul)p.dmgMul*=ch.bonus.dmgMul;
@@ -2713,13 +2597,13 @@ class Game extends Phaser.Scene {
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
     const heldBot=this.drawHeldBar(this.lvlUp, 8);
-    const t=this.add.text(w/2,heldBot,this._chestReward?'🎁 หีบสมบัติ — เลือก 1 ใบ':'⭐ LEVEL UP — เลือก 1 จาก 2',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe07a'}).setOrigin(0.5,0);
+    const t=this.add.text(w/2,heldBot,this._chestReward?'🎁 หีบสมบัติ — เลือก 1 ใบ':'⭐ LEVEL UP — เลือก 1 จาก 4',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe07a'}).setOrigin(0.5,0);
     this.lvlUp.add(t);
-    const opts=this.rollUpgrades(2);
+    const opts=this.rollUpgrades(4);
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+31;
     const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
     const finalCardW=portrait?(w-side*2):cardW;
-    const ch=Math.min(portrait?174:310,(h-startY-12-gap*(rows-1))/rows);
+    const ch=Math.min(portrait?150:220,(h-startY-12-gap*(rows-1))/rows);
     const total=finalCardW*cols+gap*(cols-1), lx=(w-total)/2;
     opts.forEach((o,i)=>{
       const col=i%cols,row=Math.floor(i/cols),x=lx+col*(finalCardW+gap), y=startY+row*(ch+gap);
@@ -3704,9 +3588,9 @@ class Game extends Phaser.Scene {
       || 60;
     // ปรับสเกลตาม "รอยเท้าจริง" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
     // strawberry(momo) ตัวอ้วน/กว้าง → เล็กลง · mint/cocoa ตัวผอมสูง → ใหญ่ขึ้น (แก้ปัญหา momo ใหญ่ไป มินต์/โกโก้เล็กไป)
-    const baseKey=key.replace('_walk','');
+    const baseKey=key.replace('_run','');
     const FP={ char_momo:110, char_mint:63, char_cocoa:63, char_taro:107, char_sesame:117 }[baseKey];
-    const TARGET=66;   // รอยเท้าเฉลี่ย (px) ที่ต้องการก่อนคูณกล้อง
+    const TARGET=baseKey==='char_momo'?56:66;   // Momo เล็กกว่าค่าเดิม 15% เพื่อลดการบังสนามบนมือถือ
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
@@ -3718,13 +3602,17 @@ class Game extends Phaser.Scene {
   updatePose(dt){
     if(!this._hasFrames)return;
     if(this._poseHold>0){ this._poseHold-=dt; return; }
-    if(this.dashTime>0){ this.player.setFrame(CF.stretch); return; }
+    const momoRun=this.character==='momo'&&this.textures.exists('char_momo_run');
+    if(this.dashTime>0){
+      if(momoRun&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo');
+      this.player.setFrame(CF.stretch); return;
+    }
     const moving = this.player.body && this.player.body.velocity.length() > 24;
     if(moving){
-      if(this._charKey==='char_momo_walk'){
-        // 2 เฟรมนี้มีขาคนละข้างยื่นนำ จึงอ่านเป็นการวิ่งชัดแม้ตัวละครแสดงผลเพียง 60px
-        const runStep=Math.floor(this._wob/(Math.PI*0.72))%2;
-        this.player.setFrame(runStep===0?CF.squash:CF.stretch);
+      if(momoRun){
+        if(this.player.texture.key!=='char_momo_run')this.player.setTexture('char_momo_run');
+        this._momoRunT=(this._momoRunT||0)+dt;
+        this.player.setFrame(Math.floor(this._momoRunT*12)%8);
       }else{
         const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
         const frames = [CF.idle, CF.squash, CF.stretch, CF.blink];
@@ -3732,12 +3620,14 @@ class Game extends Phaser.Scene {
       }
       return;
     }
+    if(momoRun&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo');
+    this._momoRunT=0;
     this._blinkT-=dt;
     if(this._blinkT<=0){ this.player.setFrame(CF.blink);
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(!this._hasFrames)return; this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
+  poseFlash(frame,ms){ if(!this._hasFrames)return; if(this.character==='momo'&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo'); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
@@ -3778,7 +3668,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- DEATH ---------- */
   die(){ if(this.state==='dead')return; this.state='dead'; Sfx.bgmIntense(false); Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0);
-    if(this._hasFrames){ this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
+    if(this._hasFrames){ if(this.character==='momo'&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo'); this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
     this.buildOver(); }
   buildOver(){ const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
