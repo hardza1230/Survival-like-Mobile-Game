@@ -26,4 +26,15 @@ if (!source.includes('rollUpgrades(4)') || !source.includes("slice(0,3)")) {
   throw new Error('Readable-card choice counts changed unexpectedly');
 }
 
-console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, and 3 starting cards`);
+if (!source.includes('Math.floor(this._momoRunT*25)%25')) {
+  throw new Error('Momo must play all 25 run frames at 25 FPS');
+}
+
+const momoRun = fs.readFileSync(new URL('../assets/char_momo_run_sheet.png', import.meta.url));
+const momoRunWidth = momoRun.readUInt32BE(16);
+const momoRunHeight = momoRun.readUInt32BE(20);
+if (momoRunWidth !== 640 || momoRunHeight !== 640) {
+  throw new Error(`Expected Momo 5x5 atlas at 640x640, found ${momoRunWidth}x${momoRunHeight}`);
+}
+
+console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, and Momo's 25-frame run atlas`);

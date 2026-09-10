@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.8.1 Four Choices & Smooth Momo)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.8.2 Momo 25-Frame Run Cycle)
+- **v2.8.2:** เปลี่ยน `char_momo_run_sheet.png` เป็น atlas 5×5 ขนาด 640×640 (25 เฟรมจริง เฟรมละ 128px) · เล่นเฉพาะตอนเคลื่อนที่ที่ 25 FPS · ท่า action เดิมยังสลับกลับไปใช้ `char_momo_fighter_sheet.png`
 - **v2.8.1:** เลเวลอัพเลือก 1 จาก 4 โดยการ์ด responsive ยังอ่านข้อความครบ · ลดภาพ Momo ลง 15% (คง hitbox เดิม) · เพิ่ม `char_momo_run_sheet.png` เป็น run cycle 8 เฟรมที่ 12 fps และสลับกลับชีต action เดิมเมื่อยืน/Dash/เจ็บ/KO
 - **v2.8.0:** รื้อการ์ดเลือกสกิลจากกรอบทองแนวตั้งเป็นการ์ดแบนคอนทราสต์สูง ไอคอนใหญ่ซ้าย/ข้อความขวาบนมือถือ · เริ่มด่านเลือก 1 จาก 3 · ใช้ข้อความ runtime ไม่ bake ลงภาพเพื่อกันล้นเมื่อเปลี่ยนเลเวล/ภาษา · ลด active skill จาก 22 เหลือ 15 โดยถอด aura/fork/wave/memory/thread/triseal/echoStep และ combo ที่เกี่ยวข้อง
 - **v2.7.3:** ทำ alpha cleanup รอบสอง ลบ checkerboard ที่ฝังจริง/โปร่งบางและเศษ neutral speckles ออกจากไอคอน · Star Guard ในสนามเปลี่ยนจาก flipbook ที่ silhouette เล็กเป็น `ic_star` ห้าแฉกขนาดอ่านชัด พร้อม pulse/rotation/afterimage แบบจำกัดจำนวน · วงบอกระยะลดเป็นชมพูบาง

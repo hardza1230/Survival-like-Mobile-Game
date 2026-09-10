@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.8.1';
+const GAME_VERSION = '2.8.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.8.2', date:'2026-09-10', title:'Momo 25-Frame Run Cycle', items:[
+    'ขยาย run cycle ของ Momo จาก 8 เป็น 25 เฟรมจริง ไม่ใช่เพียงเร่งความเร็วการเล่นเฟรมเดิม',
+    'จัด sprite atlas แบบ 5×5 เฟรมละ 128px พร้อมพื้นหลังโปร่งใสและตำแหน่งตัวละครคงที่',
+    'เล่นอนิเมชันวิ่งที่ 25 FPS เพื่อให้แขน ขา เส้นผม และชุดเคลื่อนไหวต่อเนื่องขึ้น' ] },
   { v:'2.8.1', date:'2026-09-10', title:'Four Choices & Smooth Momo', items:[
     'คืนตัวเลือกตอนเลเวลอัพเป็น 4 การ์ดต่อครั้ง พร้อมย่อความสูงให้เห็นครบและอ่านข้อความได้บนมือถือ',
     'ลดขนาดแสดงผล Momo ลง 15% เพื่อไม่ให้บังสนาม โดยคงขอบชนและสมดุลเกมเดิม',
@@ -3701,7 +3705,7 @@ class Game extends Phaser.Scene {
       if(momoRun){
         if(this.player.texture.key!=='char_momo_run')this.player.setTexture('char_momo_run');
         this._momoRunT=(this._momoRunT||0)+dt;
-        this.player.setFrame(Math.floor(this._momoRunT*12)%8);
+        this.player.setFrame(Math.floor(this._momoRunT*25)%25);
       }else{
         const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
         const frames = [CF.idle, CF.squash, CF.stretch, CF.blink];
