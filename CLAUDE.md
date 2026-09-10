@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.7.3 Clean Cut Guardian Stars)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.8.0 Readable Skill Cards)
+- **v2.8.0:** รื้อการ์ดเลือกสกิลจากกรอบทองแนวตั้งเป็นการ์ดแบนคอนทราสต์สูง ไอคอนใหญ่ซ้าย/ข้อความขวาบนมือถือ · เริ่มด่านเลือก 1 จาก 3 · เลเวลอัพเลือก 1 จาก 2 · ใช้ข้อความ runtime ไม่ bake ลงภาพเพื่อกันล้นเมื่อเปลี่ยนเลเวล/ภาษา · ลด active skill จาก 22 เหลือ 15 โดยถอด aura/fork/wave/memory/thread/triseal/echoStep และ combo ที่เกี่ยวข้อง
 - **v2.7.3:** ทำ alpha cleanup รอบสอง ลบ checkerboard ที่ฝังจริง/โปร่งบางและเศษ neutral speckles ออกจากไอคอน · Star Guard ในสนามเปลี่ยนจาก flipbook ที่ silhouette เล็กเป็น `ic_star` ห้าแฉกขนาดอ่านชัด พร้อม pulse/rotation/afterimage แบบจำกัดจำนวน · วงบอกระยะลดเป็นชมพูบาง
 - **v2.7.2:** เติม motion ที่มองเห็นระหว่างใช้งานให้ Star Guard, Memory Jam, Flavor Thread, Core Decoy และ Triad Seal · Star Guard มีวงบอกระยะ/ดาวกระพริบ/impact สกัดกระสุน · Memory mark ติดตามเป้าหมาย · ลด Mirror Glaze เหลือวงบางและ spark ขนาดเล็ก ตัด chain lightning ที่บดบังสนามโดยคง mechanic สะท้อนเดิม
 - **v2.7.1:** เปลี่ยน `assets/ic_*.png` ของสกิลโจมตีครบ 22 ภาพเป็นชุด 2.5D confectionery fantasy เดียวกัน ขนาด 128×128 alpha จริง · เพิ่ม `role` ใน `SKILLDEFS` และแสดงในคัมภีร์/รายละเอียด/การ์ดเลือกเริ่มต้น · แยกกลไกสกิลที่ทับกัน: Thunder ล่า HP สูง, Popcorn ระยะประชิดผลัก, Bubble จับตัวแกร่ง, Fork กรวยหน้า, Rocket ล็อกตัวแกร่ง, Wave เน้นผลัก, Star สกัดกระสุน, Mocha เล็งกลุ่มหนาแน่น
@@ -83,7 +84,7 @@
   · **สกิล max = 5 ดาว** (เดิม 6) awaken=Lv6 · **COMBOS = สกิลโจมตี(a)+สกิลติดตัว(b)** (เดิม โจมตี+โจมตี) `checkCombos` เช็ก `skills[a]&&passives[b]` · การ์ดคอมโบโชว์ทั้งฝั่งโจมตี+ติดตัว · **XP โค้งนุ่ม/ไวขึ้น (VS-like):** xpNext เริ่ม 3 ×1.14+2
 
 เล่นได้จริงบนมือถือแล้ว ระบบที่มี:
-- **ล็อกสกิล 2 หมวด/รอบ (แบบ Vampire Survivors):** สกิล**โจมตี** ≤ 6 (`SKILL_CAP`, จาก `SKILLDEFS`) + สกิล**ติดตัว** ≤ 6 (`PASSIVE_CAP`, จาก `PASSIVES`)
+- **ล็อกสกิล 2 หมวด/รอบ (แบบ Vampire Survivors):** สกิล**โจมตี** ≤ 4 (`SKILL_CAP`, จาก `SKILLDEFS` 15 แบบ) + สกิล**ติดตัว** ≤ 4 (`PASSIVE_CAP`, จาก `PASSIVES`)
   · `this.skills`/`this.passives` (reset ใน startRun + create) · `rollUpgrades` เสนอ "สกิลใหม่" เฉพาะเมื่อยังไม่เต็มโควตา (`atkOwned<SKILL_CAP`/`pasOwned<PASSIVE_CAP`) · เต็มแล้วเหลือแต่การ์ดอัพเลเวล → สกิลถึง MAX ไวขึ้น = เจอ Awaken ไวขึ้น
   · **`PASSIVES` (12 ตัว เลเวลได้ max5):** ชุดเดิม 8 + `flavorCore/memoryThread/bitterResolve/returningTaste` — `apply(p)` = ผล 1 rank (mutate player)
   · **Awaken การันตีโผล่:** `rollUpgrades` มี `awakenPool` แยก — ถ้ามีสกิล MAX ที่มี awaken → **ดันการ์ด ⚡ ตื่นรู้ ≥1 ใบทุกครั้ง** (เดิมต้องสุ่มเจอ = เจอยากมาก) + การันตีสกิลติดตัว ≥1 ใบด้วย

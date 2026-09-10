@@ -20,17 +20,20 @@ const BALANCE = {
   // ปรับสมดุลใหม่ให้มี trade-off ชัด: ยิงไว = ดาเมจเบา · ออกช้า = ดาเมจหนัก
   skillPower: {
     sprinkle:0.82, star:0.95, thunder:0.80, whirl:0.88,   // sprinkle/whirl = สายสแปมเบา
-    boomer:1.00, frost:0.72, popcorn:0.78, bubble:1.05, aura:0.72,   // popcorn/aura = สแปมเบา · bubble/frost = คุมพื้นที่
-    fork:0.95, mine:1.00, beam:1.15, meteor:1.18, cloud:0.85,   // beam/meteor = นุ๊กหนักออกช้า
-    rocket:1.12, wave:0.95,
-    mirror:0.88, memory:0.92, thread:0.74, decoy:0.82, triseal:1.08, echoStep:0.80,
+    boomer:1.00, frost:0.72, popcorn:0.78, bubble:1.05,
+    mine:1.00, beam:1.15, meteor:1.18, cloud:0.85,   // beam/meteor = นุ๊กหนักออกช้า
+    rocket:1.12, mirror:0.88, decoy:0.82,
   },
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.7.3';
+const GAME_VERSION = '2.8.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.8.0', date:'2026-09-10', title:'Readable Skill Cards', items:[
+    'เปลี่ยนการ์ดเลือกสกิลเป็นแผงเรียบคอนทราสต์สูง ไอคอนใหญ่ และข้อความไม่ชนกรอบบนมือถือ',
+    'หน้าจอเริ่มด่านสุ่มให้เลือก 3 ใบแบบแถวใหญ่; เลเวลอัพเลือก 1 จาก 2 เพื่ออ่านและตัดสินใจง่ายขึ้น',
+    'ลดสกิลโจมตีจาก 22 เหลือ 15 โดยตัดสกิลที่บทบาทซ้ำหรือใช้งานเฉพาะสถานการณ์เกินไป' ] },
   { v:'2.7.3', date:'2026-09-09', title:'Clean Cut Guardian Stars', items:[
     'ลบพื้นลายตารางและเศษพิกเซลรอบไอคอนสกิลทั้งชุด ให้โปร่งใสจริงบนการ์ดทุกสี',
     'เปลี่ยน Star Guard ในสนามเป็นดาวห้าแฉก silhouette ใหญ่ อ่านชัดบนมือถือ พร้อมจังหวะเต้นและ afterimage',
@@ -449,11 +452,16 @@ const ASSET_IMAGES = {
 };
 // map สกิล/พร → ไอคอนรูปจริง (มีเท่าที่อาร์ตทำมา · null=ใช้อีโมจิ)
 const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', frost:'ic_frost', bubble:'ic_bubble',
-  thunder:'ic_thunder', whirl:'ic_whirl', boomer:'ic_boomer', popcorn:'ic_popcorn', aura:'ic_aura', fork:'ic_fork',
-  mine:'ic_mine', beam:'ic_beam', meteor:'ic_bear_donut', cloud:'ic_cloud', rocket:'ic_rocket', wave:'ic_wave',
-  mirror:'ic_mirror', memory:'ic_memory', thread:'ic_thread', decoy:'ic_decoy', triseal:'ic_triseal', echoStep:'ic_echo_step' };
+  thunder:'ic_thunder', whirl:'ic_whirl', boomer:'ic_boomer', popcorn:'ic_popcorn',
+  mine:'ic_mine', beam:'ic_beam', meteor:'ic_bear_donut', cloud:'ic_cloud', rocket:'ic_rocket',
+  mirror:'ic_mirror', decoy:'ic_decoy' };
+const SKILL_CARD_COLOR = {
+  sprinkle:0xff76ae, star:0xffc447, thunder:0xffd84d, whirl:0x7ac7ff, boomer:0xf0a13b,
+  frost:0x76d8ff, popcorn:0xffb64d, bubble:0x67dec4, mine:0xff7cae, beam:0xffd166,
+  meteor:0xc58a5b, cloud:0x7ed6aa, rocket:0xff6578, mirror:0x8acbff, decoy:0x78dfca,
+};
 const PASS_ICON  = { heart:'ic_heart', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_regen',
-  flavorCore:'ic_flavor_core', memoryThread:'ic_memory_thread', bitterResolve:'ic_bitter_resolve', returningTaste:'ic_returning_taste' };
+  flavorCore:'ic_flavor_core', bitterResolve:'ic_bitter_resolve', returningTaste:'ic_returning_taste' };
 const ASSET_SHEETS = {
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
   char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
@@ -823,10 +831,6 @@ const SKILLDEFS = {
     awaken:{ name:'ป๊อปคอร์นถล่มโลก', emoji:'🍿', desc:'20 เม็ดถล่มจอ ทะลุ ยิงไกล!' } },
   bubble:  { name:'Bubble Prison',  emoji:'🫧', role:'จับตัวอันตราย · ระเบิด', max:5, desc:'ไล่จับศัตรู HP สูงสุดไว้ในฟอง แล้วระเบิดจาก HP เป้าหมาย',
     awaken:{ name:'เรือนจำฟองแตก', emoji:'🫧', desc:'ยิงหลายฟอง จับนานขึ้น และระเบิดลูกโซ่วงใหญ่!' } },
-  aura:    { name:'Sakura Aura',    emoji:'🌸', role:'ประชิด · สะสม Bloom', max:5, desc:'กลีบสะสม Bloom; ครบ 3 ชั้นระเบิดวงและชะลอ',
-    awaken:{ name:'สวนซากุระนิรันดร์', emoji:'🌸', desc:'กลีบสองวง Bloom แตกกว้างขึ้น พร้อมฟื้น HP เล็กน้อยแบบมีคูลดาวน์' } },
-  fork:    { name:'Fork Fling',     emoji:'🍴', role:'กรวยด้านหน้า · ทะลุ', max:5, desc:'ขว้างส้อมเป็นกรวยแคบด้านหน้า เจาะฝูงที่เรียงตัว',
-    awaken:{ name:'พายุส้อม', emoji:'🍴', desc:'ส้อม 10 เล่มพุ่งทุกทิศ ทะลุหมด!' } },
   mine:    { name:'Cupcake Sentry', emoji:'🧁', role:'ป้อมประจำที่ · DPS', max:5, desc:'วางป้อมยิงอัตโนมัติ คุมตำแหน่งก่อนระเบิดปิดท้าย',
     awaken:{ name:'กองทัพเบเกอรี', emoji:'🧁', desc:'วาง 3 ป้อม ยิงสองนัดพร้อมกัน และอยู่ได้นานขึ้น!' } },
   beam:    { name:'Caramel Beam',   emoji:'🔆', role:'เส้นตรง · Burst หนัก', max:5, desc:'ยิงลำแสงหนักทะลุทั้งแนว แต่ต้องจัดตำแหน่งให้ดี',
@@ -837,20 +841,10 @@ const SKILLDEFS = {
     awaken:{ name:'หมอกมรณะ', emoji:'☕', desc:'กลุ่มใหญ่ ดาเมจสูง อยู่นาน!' } },
   rocket:  { name:'Candy Hunter',   emoji:'🚀', role:'ล่าตัวแกร่ง · AoE', max:5, desc:'จรวดล็อกศัตรู HP สูงสุดและระเบิดใส่ฝูงรอบเป้าหมาย',
     awaken:{ name:'ฝูงจรวด', emoji:'🚀', desc:'6 ลูกไล่เป้า ระเบิดใหญ่!' } },
-  wave:    { name:'Cream Tide',     emoji:'🌊', role:'ผลักฝูง · สร้างพื้นที่', max:5, desc:'คลื่นกว้างดาเมจเบา แต่ผลักศัตรูออกแรงเพื่อเปิดทางหนี',
-    awaken:{ name:'สึนามิครีม', emoji:'🌊', desc:'คลื่นยักษ์ 3 ระลอก!' } },
   mirror:  { name:'Mirror Glaze', emoji:'🪞', role:'สวนกลับ · กระสุนศัตรู', max:5, desc:'กางกระจกเปลี่ยนกระสุนศัตรูเป็นกระสุนรสชาติไล่เป้า',
     awaken:{ name:'กระจกพันรส', emoji:'🪞', desc:'วงสะท้อนใหญ่ขึ้นและยิงเศษกระจกไล่เป้าเพิ่ม!' } },
-  memory:  { name:'Memory Jam', emoji:'🫙', role:'สะสมดาเมจ · บอส', max:5, desc:'ผนึกเป้าหมายแล้วระเบิดซ้ำตามดาเมจที่ทำระหว่างผนึก',
-    awaken:{ name:'แยมแห่งวันวาน', emoji:'🫙', desc:'ประทับหลายเป้าหมายและสะท้อนความเสียหายเป็นวงกว้าง!' } },
-  thread:  { name:'Flavor Thread', emoji:'🧵', role:'เชื่อมฝูง · รวมศูนย์', max:5, desc:'ผูกหลายเป้าหมายให้รับดาเมจพร้อมกันและถูกดึงรวม',
-    awaken:{ name:'สายใย Flavorbound', emoji:'🧵', desc:'ผูกศัตรูเพิ่มและกระชากซ้ำแรงขึ้น!' } },
   decoy:   { name:'Core Decoy', emoji:'💠', role:'ล่อฝูง · เอาตัวรอด', max:5, desc:'ล่อศัตรูออกจากผู้เล่น ก่อนระเบิดและฟื้นพลังเมื่อ Awaken',
     awaken:{ name:'แก่นลวงสมบูรณ์', emoji:'💠', desc:'ล่อได้นาน ระเบิดสองชั้น และทิ้งพลังฟื้นฟู!' } },
-  triseal: { name:'Triad Seal', emoji:'🔺', role:'วางแผนพื้นที่ · ระเบิดใหญ่', max:5, desc:'วางตรา 3 จุดตามเวลา แล้วเชื่อมเป็นเขตชำระล้าง',
-    awaken:{ name:'พันธสัญญาสามรส', emoji:'🔺', desc:'ตรากว้างขึ้นและฟาดศัตรูตลอดแนวทั้งสามด้าน!' } },
-  echoStep:{ name:'Echo Step', emoji:'👣', role:'เส้นทางเคลื่อนที่ · ถอยรบ', max:5, desc:'รอยก้าวย้อนหลังระเบิดตามเส้นทาง เหมาะกับผู้เล่นที่เคลื่อนตลอด',
-    awaken:{ name:'เส้นทางหวนคืน', emoji:'👣', desc:'รอยก้าวมากขึ้น ระเบิดซ้ำ และเร่งความเร็วชั่วคราว!' } },
 };
 const SKILL_AWAKEN_LV = 6;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (5 ดาว)
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
@@ -875,8 +869,6 @@ const PASSIVES = {
     apply(p){ p.regen=(p.regen||0)+1.2; } },
   flavorCore:{ name:'แก่นรสกลมกล่อม', emoji:'💠', color:0xffd166, max:5, desc:'HP +4% และดาเมจ +3%',
     apply(p){ p.maxhp*=1.04; p.dmgMul*=1.03; } },
-  memoryThread:{ name:'สายใยความทรงจำ', emoji:'🧵', color:0xe29aff, max:5, desc:'Memory Jam สะสมดาเมจสะท้อน +18%',
-    apply(p){ p.memoryAmp=(p.memoryAmp||0)+0.18; } },
   bitterResolve:{ name:'ใจต้านความขม', emoji:'🖤', color:0x9fa7c8, max:5, desc:'เมื่อ HP ต่ำกว่า 40% ดาเมจ +8%',
     apply(p){ p.lowHpDmg=(p.lowHpDmg||0)+0.08; } },
   returningTaste:{ name:'รสชาติคืนกลับ', emoji:'✨', color:0xffa7c8, max:5, desc:'ฟื้น HP +0.4/วินาที และคูลดาวน์ -2%',
@@ -969,20 +961,13 @@ const SKILL_TIERS = {
   frost:   { 2:'รัศมี+ดาเมจกว้างขึ้น', 3:'ระเบิดน้ำแข็งใส่ตัวที่แช่อยู่', 4:'รัศมีใหญ่มาก', 5:'ดาเมจสูง + แช่นานขึ้น', 6:'แช่หนัก + ดาเมจสูงมาก!' },
   popcorn: { 2:'+2 เม็ด', 3:'เม็ดใหญ่ขึ้น', 4:'ทะลุศัตรู + เม็ดเยอะ', 5:'ยิงไกลขึ้น', 6:'ป๊อปคอร์นถล่มจอ!' },
   bubble:  { 2:'+1 ฟอง', 3:'จับนาน+ระเบิดกว้างขึ้น', 4:'+1 ฟอง ไล่แม่นขึ้น', 5:'ระเบิดแรงขึ้น', 6:'เรือนจำฟองลูกโซ่!' },
-  aura:    { 2:'รัศมีกลีบกว้างขึ้น', 3:'Bloom แตกเป็นดาเมจวง', 4:'Bloom ทำให้ศัตรูช้าลง', 5:'แตกกว้างและสะสมเร็วขึ้น', 6:'กลีบสองวง + ฟื้น HP เมื่อ Bloom แตก' },
-  fork:    { 2:'ขว้าง 3 เล่ม', 3:'เล่มใหญ่ เร็วขึ้น', 4:'ขว้าง 4 เล่ม', 5:'ทะลุถี่ขึ้น', 6:'ขว้าง 5 เล่ม พายุส้อม!' },
   mine:    { 2:'ยิงไกลขึ้น', 3:'ยิงเร็ว+แรงขึ้น', 4:'วาง 2 ป้อม', 5:'อยู่ได้นานและระเบิดกว้าง', 6:'กองทัพป้อมยิงสองนัด!' },
   beam:    { 2:'ลำแสงยาวขึ้น', 3:'กว้าง+ดาเมจขึ้น', 4:'เผาแรงขึ้น', 5:'ทะลุไกลมาก', 6:'ลำแสงมหากาฬ!' },
   meteor:  { 2:'3 ลูก', 3:'ระเบิดกว้างขึ้น', 4:'4 ลูก ดาเมจสูง', 5:'ลูกใหญ่มาก', 6:'6 ลูกถล่ม!' },
   cloud:   { 2:'กลุ่มกว้างขึ้น', 3:'ดาเมจ/ติ๊กสูงขึ้น', 4:'กว้างมาก', 5:'อยู่นานขึ้น', 6:'หมอกพิษเต็มพิกัด!' },
   rocket:  { 2:'2 ลูก', 3:'ระเบิดกว้างขึ้น', 4:'3 ลูก ไล่แม่น', 5:'ระเบิดใหญ่', 6:'4 ลูก จรวดถล่ม!' },
-  wave:    { 2:'คลื่นกว้างขึ้น', 3:'ดาเมจ+ผลักแรง', 4:'ไกลมาก', 5:'คลื่นใหญ่', 6:'สึนามิครีม!' },
   mirror:  { 2:'วงสะท้อนกว้างขึ้น', 3:'สะท้อนได้มากขึ้น', 4:'เศษกระจกแรงขึ้น', 5:'คงอยู่นานขึ้น', 6:'กระจกพันรสยิงสวนอัตโนมัติ!' },
-  memory:  { 2:'สะสมดาเมจได้นานขึ้น', 3:'ระเบิดความทรงจำกว้างขึ้น', 4:'ประทับ 2 เป้าหมาย', 5:'สะท้อนดาเมจเพิ่ม', 6:'ประทับ 3 เป้าหมายพร้อมกัน!' },
-  thread:  { 2:'ผูก 4 เป้าหมาย', 3:'แชร์ดาเมจแรงขึ้น', 4:'กระชากเข้าศูนย์กลาง', 5:'ผูก 5 เป้าหมาย', 6:'สายใยสองระลอก!' },
   decoy:   { 2:'ล่อฝูงได้นานขึ้น', 3:'รัศมีระเบิดกว้างขึ้น', 4:'ระเบิดแรงขึ้น', 5:'ล่อศัตรูได้ไกลขึ้น', 6:'ระเบิดสองชั้นและฟื้น HP!' },
-  triseal: { 2:'ตราใหญ่ขึ้น', 3:'เส้นผนึกทำดาเมจ', 4:'ระเบิดแรงขึ้น', 5:'วางตราได้ไกลขึ้น', 6:'พันธสัญญาสามรสชำระล้างสองครั้ง!' },
-  echoStep:{ 2:'รอยก้าว 4 จุด', 3:'ระเบิดกว้างขึ้น', 4:'รอยก้าว 5 จุด', 5:'ระเบิดแรงขึ้น', 6:'รอยก้าวคู่และเร่งความเร็ว!' },
 };
 
 /* ---- COMBOS: สกิลโจมตี (a) + สกิลติดตัว (b) เข้าคู่กัน = ปลดโบนัส (ธง this.comboFlags ตอน cast) ---- */
@@ -995,20 +980,13 @@ const COMBOS = [
   { key:'cookie',    a:'boomer',   b:'swift',  emoji:'🍪👟', name:'คุกกี้ความเร็วสูง', desc:'เงื่อนไขวิวัฒนาการ Boomerang' },
   { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'พายุเยียวยา', desc:'เงื่อนไขวิวัฒนาการ Frost Pulse' },
   { key:'prison',    a:'bubble',   b:'guard',  emoji:'🫧🛡️', name:'เรือนจำฟอง', desc:'เงื่อนไขวิวัฒนาการ Bubble Prison' },
-  { key:'garden',    a:'aura',     b:'regen',  emoji:'🌸💗', name:'สวนซากุระนิรันดร์', desc:'Bloom ฟื้น HP เมื่อวิวัฒนาการ' },
-  { key:'cutlery',   a:'fork',     b:'crit',   emoji:'🍴🎯', name:'พายุส้อมแม่นยำ', desc:'เงื่อนไขวิวัฒนาการ Fork Fling' },
   { key:'bakery',    a:'mine',     b:'haste',  emoji:'🧁⏩', name:'กองทัพเบเกอรี', desc:'เงื่อนไขวิวัฒนาการ Cupcake Sentry' },
   { key:'sunray',    a:'beam',     b:'power',  emoji:'🔆💥', name:'ลำแสงจักรพรรดิ', desc:'เงื่อนไขวิวัฒนาการ Caramel Beam' },
   { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'ฝนโดนัทติดตาม', desc:'เงื่อนไขวิวัฒนาการ Donut Drop' },
   { key:'mist',      a:'cloud',    b:'regen',  emoji:'☕💗', name:'หมอกมอคค่านิรันดร์', desc:'เงื่อนไขวิวัฒนาการ Mocha Mist' },
   { key:'arsenal',   a:'rocket',   b:'crit',   emoji:'🚀🎯', name:'คลังจรวดลูกกวาด', desc:'เงื่อนไขวิวัฒนาการ Candy Rocket' },
-  { key:'tsunami',   a:'wave',     b:'guard',  emoji:'🌊🛡️', name:'สึนามิครีม', desc:'เงื่อนไขวิวัฒนาการ Cream Wave' },
   { key:'reflection',a:'mirror',   b:'guard',  emoji:'🪞🛡️', name:'คำสัตย์สะท้อน', desc:'เงื่อนไขวิวัฒนาการ Mirror Glaze' },
-  { key:'remembrance',a:'memory',  b:'memoryThread', emoji:'🫙🧵', name:'รสแห่งวันวาน', desc:'เงื่อนไขวิวัฒนาการ Memory Jam' },
-  { key:'flavorbound',a:'thread',  b:'flavorCore', emoji:'🧵💠', name:'สายใยแก่นรส', desc:'เงื่อนไขวิวัฒนาการ Flavor Thread' },
   { key:'falseCore', a:'decoy',    b:'bitterResolve', emoji:'💠🖤', name:'แก่นต้านความขม', desc:'เงื่อนไขวิวัฒนาการ Core Decoy' },
-  { key:'covenant',  a:'triseal',  b:'power', emoji:'🔺💥', name:'พันธสัญญาสามรส', desc:'เงื่อนไขวิวัฒนาการ Triad Seal' },
-  { key:'returnPath',a:'echoStep', b:'returningTaste', emoji:'👣✨', name:'เส้นทางหวนคืน', desc:'เงื่อนไขวิวัฒนาการ Echo Step' },
 ];
 
 /* ---- UPGRADES (ระบบ "สายใยรสชาติ"): 3 แก่นถาวรที่ต้องประสานให้เต็มแล้วเลื่อนระดับสายใย ----
@@ -2671,13 +2649,50 @@ class Game extends Phaser.Scene {
   }
 
   /* ---------- STARTING ATTACK ---------- */
+  drawReadableChoiceCard(group,o,x,y,w,h,options={}){
+    const type=o.type||'atk',color=type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);
+    const wide=w>=h*1.35, title=o.title||o.name||'', lvl=o.lvl||1;
+    const role=o.role||(type==='atk'&&SKILLDEFS[o.key]?SKILLDEFS[o.key].role:type==='pas'?'พรติดตัว · เพิ่มค่าสถานะ':'ขั้นสุด · Awaken');
+    const badge=options.starting?'สกิลเริ่มต้น · LV1':type==='awk'?'AWAKEN':type==='pas'?'PASSIVE':o.isNew?'ATTACK · NEW':'ATTACK · UPGRADE';
+    const panel=this.add.graphics();panel.fillStyle(0x21172b,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2,color,0.92);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);
+    const iconKey=type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
+    let icon,badgeT,nameT,roleT,descT,starsT,ctaT;
+    if(wide){
+      const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
+      const halo=this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
+      icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
+      badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
+      nameT=this.add.text(textX,y+29,title+(options.starting?'':'  Lv'+lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      roleT=this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      descT=this.add.text(textX,y+75,o.desc||'',{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
+      let stars='';if(!options.starting&&type!=='awk')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
+      starsT=this.add.text(textX,y+h-20,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
+      ctaT=this.add.text(x+w-14,y+h-20,'แตะเลือก  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
+      group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
+    }else{
+      const iconX=x+w/2,iconY=y+h*0.25,iconSize=Math.min(70,h*0.25),textW=w-22;
+      const halo=this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
+      icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
+      badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
+      nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting?'':'  Lv'+lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      roleT=this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      descT=this.add.text(x+w/2,y+h*0.60,o.desc||'',{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
+      let stars='';if(!options.starting&&type!=='awk')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
+      starsT=this.add.text(x+w/2,y+h*0.87,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
+      ctaT=this.add.text(x+w/2,y+h-13,'แตะเลือก  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
+      group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
+    }
+    const baseX=icon.scaleX||1,baseY=icon.scaleY||1;panel.setAlpha(0);icon.setScale(baseX*0.25,baseY*0.25);
+    this.tweens.add({targets:[panel,badgeT,nameT,roleT,descT,starsT,ctaT],alpha:{from:0,to:1},duration:180,delay:(options.index||0)*65});
+    this.tweens.add({targets:icon,scaleX:baseX,scaleY:baseY,duration:280,delay:(options.index||0)*65,ease:'Back.out'});
+  }
   openStartingSkillChoice(){
     this.state='startskill';this.physics.pause();const w=this.W,h=this.H;this.lvlUp.removeAll(true);this.startSkillCards=[];
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.96).setOrigin(0,0);this.lvlUp.add(bg);
     const u=this.uniqueInfo(),title=this.add.text(w/2,22,'⚔️ เลือกสกิลโจมตีเริ่มต้น 1 สกิล',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w>h?'18px':'20px',color:'#ffe07a'}).setOrigin(0.5,0);
     const sub=this.add.text(w/2,50,(CHARACTERS[this.character]||CHARACTERS.momo).emoji+' Unique: '+u.name+' · Dash มีให้ทุกตัวละคร',{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc3dc',align:'center',wordWrap:{width:w-36}}).setOrigin(0.5,0);this.lvlUp.add([title,sub]);
-    const keys=Phaser.Utils.Array.Shuffle(Object.keys(SKILLDEFS).slice()).slice(0,4),portrait=w<=h,cols=portrait?2:4,gap=10,side=12,startY=82,rows=Math.ceil(keys.length/cols),cw=(w-side*2-gap*(cols-1))/cols,ch=Math.min(cw*1.55,(h-startY-14-gap*(rows-1))/rows),left=(w-(cw*cols+gap*(cols-1)))/2;
-    keys.forEach((key,i)=>{const d=SKILLDEFS[key],x=left+(i%cols)*(cw+gap),y=startY+Math.floor(i/cols)*(ch+gap),art=this.add.image(x+cw/2,y+ch/2,'ui_card_attack').setDisplaySize(cw,ch),ik=this.iconKey(key,false),iconY=y+ch*0.27,sz=Math.min(58,ch*0.2),em=ik?this.add.image(x+cw/2,iconY,ik).setDisplaySize(sz,sz):this.add.text(x+cw/2,iconY,d.emoji,{fontSize:Math.round(sz*.82)+'px'}).setOrigin(0.5),badge=this.add.text(x+cw/2,y+7,'ATTACK · START',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffc26b'}).setOrigin(0.5,0),nm=this.add.text(x+cw/2,y+ch*.40,d.name+'  Lv1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'13px':'11px',color:'#fff8e8',align:'center',wordWrap:{width:cw-20}}).setOrigin(0.5,0),ds=this.add.text(x+cw/2,y+ch*.53,'【'+d.role+'】\n'+d.desc,{fontFamily:'sans-serif',fontSize:portrait?'10px':'8.5px',color:'#f3eaf6',align:'center',wordWrap:{width:cw-24},maxLines:4}).setOrigin(0.5,0),pick=this.add.text(x+cw/2,y+ch*.83,'แตะเพื่อเลือก',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);this.lvlUp.add([art,em,badge,nm,ds,pick]);this.startSkillCards.push({left:x,right:x+cw,top:y,bottom:y+ch,key});});
+    const keys=Phaser.Utils.Array.Shuffle(Object.keys(SKILLDEFS).slice()).slice(0,3),portrait=w<=h,cols=portrait?1:3,gap=10,side=portrait?14:10,startY=82,rows=Math.ceil(keys.length/cols),cw=(w-side*2-gap*(cols-1))/cols,ch=Math.min(portrait?158:310,(h-startY-14-gap*(rows-1))/rows),left=(w-(cw*cols+gap*(cols-1)))/2;
+    keys.forEach((key,i)=>{const d=SKILLDEFS[key],x=left+(i%cols)*(cw+gap),y=startY+Math.floor(i/cols)*(ch+gap);this.drawReadableChoiceCard(this.lvlUp,{type:'atk',key,title:d.name,lvl:1,max:d.max,emoji:d.emoji,role:d.role,desc:d.desc},x,y,cw,ch,{starting:true,index:i});this.startSkillCards.push({left:x,right:x+cw,top:y,bottom:y+ch,key});});
     this.lvlUp.setVisible(true);
   }
   pickStartingSkillAt(px,py){
@@ -2698,49 +2713,18 @@ class Game extends Phaser.Scene {
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
     const heldBot=this.drawHeldBar(this.lvlUp, 8);
-    const t=this.add.text(w/2,heldBot,this._chestReward?'🎁 หีบสมบัติ — เลือก 1 ใบ':'⭐ LEVEL UP — เลือก 1 จาก 4',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe07a'}).setOrigin(0.5,0);
+    const t=this.add.text(w/2,heldBot,this._chestReward?'🎁 หีบสมบัติ — เลือก 1 ใบ':'⭐ LEVEL UP — เลือก 1 จาก 2',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe07a'}).setOrigin(0.5,0);
     this.lvlUp.add(t);
-    const opts=this.rollUpgrades(4);
-    const portrait=w<=h,cols=portrait?2:4,gap=portrait?10:8,side=portrait?12:10,startY=heldBot+31;
+    const opts=this.rollUpgrades(2);
+    const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+31;
     const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
-    const ch=Math.min(cardW*(portrait?1.62:1.72),(h-startY-12-gap*(rows-1))/rows);   // เข้าใกล้สัดส่วนจริงของอาร์ต (224×400≈1.79) ลดการย่อแกน Y
-    const total=cardW*cols+gap*(cols-1), lx=(w-total)/2;
+    const finalCardW=portrait?(w-side*2):cardW;
+    const ch=Math.min(portrait?174:310,(h-startY-12-gap*(rows-1))/rows);
+    const total=finalCardW*cols+gap*(cols-1), lx=(w-total)/2;
     opts.forEach((o,i)=>{
-      const col=i%cols,row=Math.floor(i/cols),x=lx+col*(cardW+gap), y=startY+row*(ch+gap);
-      const artKey=o.type==='awk'?'ui_card_awakened':o.type==='pas'?'ui_card_passive':o.isNew?'ui_card_attack':'ui_card_power';
-      const cardArt=this.add.image(x+cardW/2,y+ch/2,artKey).setDisplaySize(cardW,ch);
-      const oik=o.type==='awk'?null:this.iconKey(o.key,o.type==='pas');
-      // ช่องไอคอนในกรอบการ์ดอยู่ที่ ~26% ของความสูง สูง ~22% → วางไอคอนตรงกลางช่องและย่อให้พอดีกรอบ
-      const iconY=y+ch*0.26;
-      const iconSize=Math.min(portrait?56:50,ch*0.19);
-      const em = oik ? this.add.image(x+cardW/2,iconY,oik).setDisplaySize(iconSize,iconSize) : this.add.text(x+cardW/2,iconY,o.emoji,{fontSize:Math.round(iconSize*0.82)+'px'}).setOrigin(0.5);
-      const emBase=em.scaleX||1;
-      let stars=''; for(let s=0;s<o.max;s++) stars+=(s<o.lvl?'★':'☆');
-      const starT=this.add.text(x+cardW/2,y+ch*0.70,stars,{fontFamily:'sans-serif',fontSize:o.max>6?'8px':'10px',color:'#ffe07a'}).setOrigin(0.5);
-      const badge=this.add.text(x+cardW/2,y+6,(o.type==='awk'?'AWAKEN':o.type==='pas'?'PASSIVE':'ATTACK')+(o.isNew?' · NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:o.badgeColor}).setOrigin(0.5,0);
-      const nm=this.add.text(x+cardW/2,y+ch*0.375,o.title+(o.type!=='awk'?'  Lv'+o.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'10px':portrait?'13px':'12px',color:'#fff8e8',align:'center',wordWrap:{width:cardW-22}}).setOrigin(0.5,0);
-      const role=(o.type==='atk'&&SKILLDEFS[o.key]&&SKILLDEFS[o.key].role)?'【'+SKILLDEFS[o.key].role+'】\n':'';
-      const shortDesc=role+(o.desc.length>58?o.desc.slice(0,57)+'…':o.desc);
-      const ds=this.add.text(x+cardW/2,y+ch*0.475,shortDesc,{fontFamily:'sans-serif',fontSize:cardW<145?'8px':portrait?'10px':'9px',color:'#f3eaf6',align:'center',wordWrap:{width:cardW-24}}).setOrigin(0.5,0);
-      this.lvlUp.add([cardArt,em,starT,badge,nm,ds]);
-      // คู่ที่ต้องมีเพื่อ "ตื่นรู้" (Awaken) — สกิลโจมตี a + สกิลติดตัว b · ไม่มีโบนัส status แล้ว แค่เป็นเงื่อนไขปลด Awaken
-      const combo=COMBOS.find(c=>c.a===o.key||c.b===o.key);
-      if(combo){
-        const attack=SKILLDEFS[combo.a], passive=PASSIVES[combo.b];
-        const haveA=(this.skills[combo.a]||0)>0, haveP=(this.passives[combo.b]||0)>0;
-        const ai=this.iconKey(combo.a,false), pi=this.iconKey(combo.b,true), sy=y+ch*0.855, ss=Math.min(24,cardW*0.16);
-        const aObj=ai?this.add.image(x+cardW*0.35,sy,ai).setDisplaySize(ss,ss):this.add.text(x+cardW*0.35,sy,attack?attack.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
-        const pObj=pi?this.add.image(x+cardW*0.65,sy,pi).setDisplaySize(ss,ss):this.add.text(x+cardW*0.65,sy,passive?passive.emoji:'❓',{fontSize:'15px'}).setOrigin(0.5);
-        if(!haveA)aObj.setAlpha(0.48); if(!haveP)pObj.setAlpha(0.48);
-        const plus=this.add.text(x+cardW/2,sy,'+',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe07a'}).setOrigin(0.5);
-        const ct=this.add.text(x+cardW/2,y+ch*0.765,'คู่ตื่นรู้\n'+combo.name,
-          {fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<145?'7px':'8px',color:(haveA&&haveP)?'#baffc7':'#eadcf2',align:'center',wordWrap:{width:cardW-30}}).setOrigin(0.5,0);
-        this.lvlUp.add([ct,aObj,pObj,plus]);
-      }
-      this.lvlCards.push({left:x,right:x+cardW,top:y,bottom:y+ch,apply:o.apply});
-      cardArt.setAlpha(0); em.setScale(emBase*0.2);
-      this.tweens.add({targets:[cardArt,badge,nm,ds,starT],alpha:{from:0,to:1},duration:220,delay:i*70});
-      this.tweens.add({targets:em,scale:{from:emBase*0.2,to:emBase},duration:320,delay:i*70,ease:'Back.out'});
+      const col=i%cols,row=Math.floor(i/cols),x=lx+col*(finalCardW+gap), y=startY+row*(ch+gap);
+      this.drawReadableChoiceCard(this.lvlUp,o,x,y,finalCardW,ch,{index:i});
+      this.lvlCards.push({left:x,right:x+finalCardW,top:y,bottom:y+ch,apply:o.apply});
     });
     this.lvlUp.setVisible(true);
   }

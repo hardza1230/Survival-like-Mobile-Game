@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build:www": "node scripts/build-www.mjs",
-    "check": "node --check game.js"
+    "check": "node --check game.js && node scripts/validate-game.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^6.1.2",
