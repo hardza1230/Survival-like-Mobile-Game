@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.8.2';
+const GAME_VERSION = '2.8.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.8.3', date:'2026-09-10', title:'12-Frame Fighter Standard', items:[
+    'ปรับ run cycle ของ Momo เป็น 12 เฟรมที่กระชับและอ่านท่าทางชัดขึ้นสำหรับเกม survival-like',
+    'สร้าง Mint และ Chocolate ใหม่โดยยึดสัดส่วน เส้น และรูปแบบชีตของ Momo Strawberry เป็นมาตรฐานเดียวกัน',
+    'ตัวละครทั้งสามใช้ run atlas 4×3 เฟรมละ 128px ที่ 16 FPS และสลับกลับชีต action เมื่อยืน Dash เจ็บ ใช้สกิล หรือ KO' ] },
   { v:'2.8.2', date:'2026-09-10', title:'Momo 25-Frame Run Cycle', items:[
     'ขยาย run cycle ของ Momo จาก 8 เป็น 25 เฟรมจริง ไม่ใช่เพียงเร่งความเร็วการเล่นเฟรมเดิม',
     'จัด sprite atlas แบบ 5×5 เฟรมละ 128px พร้อมพื้นหลังโปร่งใสและตำแหน่งตัวละครคงที่',
@@ -475,7 +479,9 @@ const ASSET_SHEETS = {
   char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
   char_momo_run:{ url:'assets/char_momo_run_sheet.png', frame:128 },
   char_mint:  { url:'assets/char_mint_awakened_sheet.png',  frame:128 },
+  char_mint_run:{ url:'assets/char_mint_run_sheet.png', frame:128 },
   char_cocoa: { url:'assets/char_cocoa_awakened_sheet.png', frame:128 },
+  char_cocoa_run:{ url:'assets/char_cocoa_run_sheet.png', frame:128 },
   char_taro:  { url:'assets/char_taro_awakened_sheet.png', frame:128 },
   char_sesame:{ url:'assets/char_sesame_awakened_sheet.png', frame:128 },
   fx_star_guard:{ url:'assets/fx_star_guard_sheet.png', frame:128, anim:{frames:8,rate:14} },
@@ -3680,10 +3686,10 @@ class Game extends Phaser.Scene {
       || (this.player&&this.player.frame&&this.player.frame.width)
       || 60;
     // ปรับสเกลตาม "รอยเท้าจริง" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
-    // strawberry(momo) ตัวอ้วน/กว้าง → เล็กลง · mint/cocoa ตัวผอมสูง → ใหญ่ขึ้น (แก้ปัญหา momo ใหญ่ไป มินต์/โกโก้เล็กไป)
+    // Momo/Mint/Chocolate ใช้สัดส่วนอาร์ตมาตรฐานเดียวกันและแสดงผลขนาดเดียวกัน
     const baseKey=key.replace('_run','');
-    const FP={ char_momo:110, char_mint:63, char_cocoa:63, char_taro:107, char_sesame:117 }[baseKey];
-    const TARGET=baseKey==='char_momo'?56:66;   // Momo เล็กกว่าค่าเดิม 15% เพื่อลดการบังสนามบนมือถือ
+    const FP={ char_momo:110, char_mint:110, char_cocoa:110, char_taro:107, char_sesame:117 }[baseKey];
+    const TARGET=['char_momo','char_mint','char_cocoa'].includes(baseKey)?56:66;
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
@@ -3695,17 +3701,19 @@ class Game extends Phaser.Scene {
   updatePose(dt){
     if(!this._hasFrames)return;
     if(this._poseHold>0){ this._poseHold-=dt; return; }
-    const momoRun=this.character==='momo'&&this.textures.exists('char_momo_run');
+    const baseCharKey='char_'+this.character;
+    const runCharKey=baseCharKey+'_run';
+    const hasRun=this.textures.exists(runCharKey);
     if(this.dashTime>0){
-      if(momoRun&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo');
+      if(hasRun&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
       this.player.setFrame(CF.stretch); return;
     }
     const moving = this.player.body && this.player.body.velocity.length() > 24;
     if(moving){
-      if(momoRun){
-        if(this.player.texture.key!=='char_momo_run')this.player.setTexture('char_momo_run');
-        this._momoRunT=(this._momoRunT||0)+dt;
-        this.player.setFrame(Math.floor(this._momoRunT*25)%25);
+      if(hasRun){
+        if(this.player.texture.key!==runCharKey)this.player.setTexture(runCharKey);
+        this._charRunT=(this._charRunT||0)+dt;
+        this.player.setFrame(Math.floor(this._charRunT*16)%12);
       }else{
         const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
         const frames = [CF.idle, CF.squash, CF.stretch, CF.blink];
@@ -3713,14 +3721,14 @@ class Game extends Phaser.Scene {
       }
       return;
     }
-    if(momoRun&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo');
-    this._momoRunT=0;
+    if(hasRun&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
+    this._charRunT=0;
     this._blinkT-=dt;
     if(this._blinkT<=0){ this.player.setFrame(CF.blink);
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(!this._hasFrames)return; if(this.character==='momo'&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo'); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
+  poseFlash(frame,ms){ if(!this._hasFrames)return; const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
@@ -3761,7 +3769,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- DEATH ---------- */
   die(){ if(this.state==='dead')return; this.state='dead'; Sfx.bgmIntense(false); Sfx.dead(); Save.addSugar(this.sugarStage); this.gainCharExp(this.kills+this.stageIndex*15); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0);
-    if(this._hasFrames){ if(this.character==='momo'&&this.player.texture.key!=='char_momo')this.player.setTexture('char_momo'); this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
+    if(this._hasFrames){ const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
     this.buildOver(); }
   buildOver(){ const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
