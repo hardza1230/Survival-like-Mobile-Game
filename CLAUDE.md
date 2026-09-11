@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.11.0 Animated Clogmaw & Power-Guided Progression)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.12.0 Boss VFX Safety & Deliberate Builds)
+- **v2.12.0:** แก้กล่องดำ 352×366 ระหว่างสู้บอสด่าน 2 ด้วย additive blending เป็นค่าเริ่มต้นของ VFX flipbook และออร่า · Passive card บอกคู่ Awaken/สาย build · จำกัด Awaken ไม่เกิน 2 ต่อด่าน · EXP เริ่ม 7 และโต ×1.20+3 · Unique Lv1–4 เพิ่มวง/ประกาย/แรงสั่น/ฉากจบตามเลเวล · ลดฐานผู้เล่นเป็น HP 90, ดาเมจ 90%, ความเร็ว 166, critical ×1.55 เพื่อเพิ่มน้ำหนัก meta progression
 - **v2.11.0:** คลอกมอว์ด่าน 2 ใช้ flipbook 4×2 จำนวน 8 เฟรม (idle/emerge/roar/prison/suction/overflow/enrage) และ pose ผูกกับท่าจริง · Power Rating รวมโบนัส Stage Mastery ครั้งแรก · ค่าพลังแนะนำใหม่ 100/280/560/940/1450 · Power Guide ช่วย HP/ดาเมจศัตรูเล็กน้อยเมื่อผู้เล่นต่ำกว่าคำแนะนำและเพิ่ม EXP/Sugar catch-up โดยผู้เล่นเหนือคำแนะนำไม่ถูกสเกลตาม · ยกเลิก boss rank scaling เต็มเพื่อให้การพัฒนารู้สึกมีผล
 - **v2.10.0:** Cutscene ก่อนทุกเวฟให้ตัวละครที่เลือกพูดกับตัวเองและเล่า story beat · Unique อัปอัตโนมัติ Lv2/3/4 ที่เลเวลผู้เล่น 3/7/11 โดยไม่เข้า card pool · Power Rating จากเลเวลตัวละคร/ยศ/พร/อุปกรณ์ พร้อมค่าพลังแนะนำรายด่าน · การ์ดเลเวลอัปต้องแตะใบเดิมซ้ำหลัง input lock 550ms · Awaken card บอกคู่ Attack MAX + Passive · เพิ่มไอเทมกิมมิค 5 ด่าน · หัวใจ/แม่เหล็กยังมีฮาโลแต่ไม่ถูกดึงเองและ pickup ฐานกลับเป็น 80 · เปลี่ยนอาร์ต Valve Maw/Clogmaw ด่าน 2
 - **v2.9.1:** เพิ่มฮาโล/วงชีพจร/การลอย/แรงดึงสำหรับไอเทมดรอปและขยายออร์บ EXP · เพิ่ม Unique Skill Lv1–Lv4 ระหว่างรัน การันตีการ์ดที่เลเวล 3/7/11 · จูนคูลดาวน์ตามพลังจริง · Taro มีคลื่นปิดเส้นทางที่โดนแน่นอนและคืน Dash · Sesame มีเขตติดตามตัว ทำดาเมจ ลดความเสียหาย 30% สะท้อนกระสุน และระเบิดปิดเขต
@@ -203,7 +204,7 @@
 ## 5. ถัดไป (roadmap ตามลำดับ "ระบบก่อนกราฟิก")
 1. เทส Power Rating บนเครื่องจริงและปรับค่าพลังแนะนำ 100/280/560/940/1450 จากอัตราชนะจริง
 2. จูน Cutscene ให้กระชับและเพิ่มบทสนทนาเฉพาะตัวละคร×ด่านเมื่อเนื้อเรื่องหลักนิ่ง
-3. จูน timing flipbook คลอกมอว์กับ telegraph/hitbox และความยากด่าน 2 บนจอมือถือจริง
+3. เทส Clogmaw บน Android จริงว่าท่า suction/overflow ไม่มีกรอบดำ และจูน telegraph/hitbox ต่อจากอัตราชนะ
 4. ขยายไอเทมกิมมิคให้มี drop table/ความหายากและ Tutorial ในคัมภีร์
 5. **Endgame:** Ascension, Endless (Midnight Kitchen), leaderboard, Daily และบอสลับ The Great Hunger
 6. *(ขั้นสุดท้าย)* polish กราฟิก/เพลง/เสียง → Capacitor → AdMob/IAP → Play Store

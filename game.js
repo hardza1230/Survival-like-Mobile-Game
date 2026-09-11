@@ -16,7 +16,7 @@ const COLORS = {
 
 /* ---- BALANCE 2.2: ค่ากลางเดียว ปรับง่ายและกัน power creep ---- */
 const BALANCE = {
-  moveSpeed: 172,
+  moveSpeed: 166,
   // ปรับสมดุลใหม่ให้มี trade-off ชัด: ยิงไว = ดาเมจเบา · ออกช้า = ดาเมจหนัก
   skillPower: {
     sprinkle:0.82, star:0.95, thunder:0.80, whirl:0.88,   // sprinkle/whirl = สายสแปมเบา
@@ -27,9 +27,15 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.11.0';
+const GAME_VERSION = '2.12.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.12.0', date:'2026-09-12', title:'Boss VFX Safety & Deliberate Builds', items:[
+    'แก้สี่เหลี่ยมดำระหว่างสู้บอสด่าน 2 โดยบังคับ VFX flipbook พื้นดำทั้งหมดใช้ additive blending รวมออร่าและเอฟเฟกต์เฟสคลั่ง',
+    'การ์ด Passive แสดงสกิลโจมตีที่ใช้ปลุก Awaken ได้ หรือคำแนะนำสาย build สำหรับใบที่ไม่มีคู่โดยตรง',
+    'เพิ่มเพดาน Awaken ไม่เกิน 2 สกิลต่อรอบ และทำโค้ง EXP ชันขึ้นเพื่อลดการหยุดเลือกการ์ดถี่เกินไป',
+    'เพิ่ม Unique Crescendo ให้เอฟเฟกต์วงแหวน ประกาย แรงสั่น และฉากจบเด่นขึ้นทุกเลเวลครบทุกตัวละคร',
+    'ลดพลังฐานผู้เล่นเป็น HP 90, ดาเมจ 90%, ความเร็ว 166 และคริติคอล ×1.55 เพื่อให้การพัฒนาตัวละคร/อุปกรณ์มีน้ำหนักขึ้น' ] },
   { v:'2.11.0', date:'2026-09-12', title:'Animated Clogmaw & Power-Guided Progression', items:[
     'เพิ่ม flipbook คลอกมอว์ 8 เฟรมและผูกท่าโผล่ คำราม ฟองกักตัว แรงดูด น้ำเสียล้น และเฟสคลั่งกับการต่อสู้จริง',
     'ปรับ Power Rating ให้รวมโบนัส Mastery จากการเคลียร์ด่านครั้งแรก และปรับพลังแนะนำเป็น 100/280/560/940/1450',
@@ -863,6 +869,7 @@ const SKILLDEFS = {
     awaken:{ name:'แก่นลวงสมบูรณ์', emoji:'💠', desc:'ล่อได้นาน ระเบิดสองชั้น และทิ้งพลังฟื้นฟู!' } },
 };
 const SKILL_AWAKEN_LV = 6;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (5 ดาว)
+const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
 const PASSIVE_CAP = 4;       // จำกัดพรติดตัว ลด power stacking และทำให้คู่ Evolution มีความหมาย
 /* ---- PASSIVES: สกิลติดตัวแบบเลเวลได้ (คนละหมวดกับสกิลโจมตี) · apply(p)=ผล 1 rank ---- */
@@ -1012,6 +1019,17 @@ const COMBOS = [
   { key:'reflection',a:'mirror',   b:'guard',  emoji:'🪞🛡️', name:'คำสัตย์สะท้อน', desc:'เงื่อนไขวิวัฒนาการ Mirror Glaze' },
   { key:'falseCore', a:'decoy',    b:'bitterResolve', emoji:'💠🖤', name:'แก่นต้านความขม', desc:'เงื่อนไขวิวัฒนาการ Core Decoy' },
 ];
+
+function passivePairHint(key){
+  const pairs=COMBOS.filter(c=>c.b===key).map(c=>{const a=SKILLDEFS[c.a];return a?(a.emoji+' '+a.name):c.a;});
+  if(pairs.length)return 'ปลุก Awaken คู่กับ: '+pairs.join(' / ');
+  const tips={
+    heart:'เหมาะกับ: สายประชิดและสายแทงค์',
+    flavorCore:'เหมาะกับ: ทุก build ที่ต้องการทั้งรุกและรับ',
+    returningTaste:'เหมาะกับ: Unique/สกิลคูลดาวน์ยาว',
+  };
+  return tips[key]||'เหมาะกับ: ทุก build';
+}
 
 /* ---- UPGRADES (ระบบ "สายใยรสชาติ"): 3 แก่นถาวรที่ต้องประสานให้เต็มแล้วเลื่อนระดับสายใย ----
    วนลูป: อัพ 3 สแตตให้เต็ม (Lv TAL_MAX) → เลื่อนยศ (rank++) → สแตตติดตัวเพิ่มถาวร +
@@ -1302,7 +1320,7 @@ class Game extends Phaser.Scene {
     this.viewZoom=0.76;                                    // มองกว้างขึ้น (เดิม 0.84) — เห็นสนามเยอะขึ้น
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.state='menu'; this.elapsed=0; this.kills=0; this.stageKills=0;
-    this.level=1; this.xp=0; this.xpNext=5;
+    this.level=1; this.xp=0; this.xpNext=7;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
@@ -1323,8 +1341,8 @@ class Game extends Phaser.Scene {
 
     this.player=this.physics.add.sprite(0,0,'mochi').setDepth(5);
     this.player.setCircle(24,6,6); this.player.setCollideWorldBounds(true);
-    this.player.hp=100; this.player.maxhp=100; this.player.baseSpeed=BALANCE.moveSpeed;
-    this.player.iframe=0; this.player.pickup=80; this.player.dmgMul=1; this.player.wardGuardT=0;
+    this.player.hp=90; this.player.maxhp=90; this.player.baseSpeed=BALANCE.moveSpeed;
+    this.player.iframe=0; this.player.pickup=80; this.player.dmgMul=0.90; this.player.wardGuardT=0;
     this.cameras.main.startFollow(this.player,false,0.2,0.2);  // roundPixels=false → กล้องเลื่อนลื่น ไม่กระตุกเป็นขั้น
     this._sqX=1; this._sqY=1;   // เจลลี่โมจิ: สเกลกระแทก (squash&stretch) ค่อย ๆ คืนสู่ 1 ทุกเฟรม + วอกแวกเบา ๆ
 
@@ -1489,10 +1507,23 @@ class Game extends Phaser.Scene {
   uniqueCooldown(u){const lv=this.uniqueLevel||1;return u.cd*Math.max(0.80,1-(lv-1)*0.055)*(this.player.cdMul||1);}
   uniquePower(){return 1+((this.uniqueLevel||1)-1)*0.24;}
   refreshUniqueSkillUI(){ const u=this.uniqueInfo(); if(!this.uniqueTxt)return; this.uniqueTxt.setText(u.emoji+'\\nเฉพาะตัว Lv'+(this.uniqueLevel||1)); this.uniqueBtn.setFillStyle(u.color,0.24).setStrokeStyle(2.5,u.color,0.9); }
+  uniqueCrescendo(color,lv,radius){
+    const x=this.player.x,y=this.player.y,rings=lv,base=Math.max(110,radius*0.62);
+    for(let i=0;i<rings;i++)this.time.delayedCall(i*70,()=>{
+      if(this.state!=='play'&&this.state!=='levelup')return;
+      const ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(i%2?0xfff0a6:color).setDepth(7+i).setScale(0.16).setAlpha(Math.max(0.34,0.82-i*0.11)));
+      this.tweens.add({targets:ring,scale:(base*(1+i*0.18)*2)/256,rotation:(i%2?1:-1)*(0.35+lv*0.08),alpha:0,duration:360+i*90,ease:'Quad.out',onComplete:()=>ring.destroy()});
+    });
+    for(let i=0;i<lv*3;i++){const a=i/(lv*3)*Math.PI*2,p=this.camWorld(this.add.circle(x,y,2+lv,color,0.82).setDepth(9));this.tweens.add({targets:p,x:x+Math.cos(a)*base*(0.62+lv*0.10),y:y+Math.sin(a)*base*(0.62+lv*0.10),scale:0.2,alpha:0,duration:300+lv*75,onComplete:()=>p.destroy()});}
+    if(lv>=4&&this.anims.exists('fx_bossnova'))this.spawnFxAnim('fx_bossnova',x,y,{scale:(radius*2)/ASSET_FX.fx_bossnova.fw,depth:8,alpha:0.86});
+    this.screenFlash(color,0.07+lv*0.035,170+lv*55);this.cameras.main.shake(80+lv*45,0.002+lv*0.0015);
+  }
   useCharacterSkill(){
     if(this.state!=='play'||this.uniqueCd>0)return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
-    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseFlash(CF.cast,520);this.screenFlash(u.color,0.12,220);
+    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseFlash(CF.cast,520);
+    const spectacleRadius=c.unique==='mintSanctuary'?195+(ul-1)*20:c.unique==='bearQuake'?170+(ul-1)*17:c.unique==='oathMirror'?180+(ul-1)*18:155+(ul-1)*18;
+    this.uniqueCrescendo(u.color,ul,spectacleRadius);
     if(c.unique==='berryRebound'){
       const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0);
       for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=16*dm*up;b.life=1.65+ul*0.08;b.pierce=ul>=3;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
@@ -2170,7 +2201,7 @@ class Game extends Phaser.Scene {
   applyMeta(){
     const p=this.player;
     p.cdMul=1; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
-    p.critChance=0; p.critMul=1.65; p.regen=0; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0;
+    p.critChance=0; p.critMul=1.55; p.regen=0; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0;
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false;
     // เลือกตัวละคร
     this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
@@ -2281,12 +2312,12 @@ class Game extends Phaser.Scene {
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.passives={}; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
-        this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=5;this.pendingLvl=0;this._queuedBossIntro=null;
+        this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=7;this.pendingLvl=0;this._queuedBossIntro=null;
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
         this.setGameSpeed(1);
-        this.player.maxhp=100; this.player.baseSpeed=BALANCE.moveSpeed; this.player.pickup=80; this.player.dmgMul=1;
+        this.player.maxhp=90; this.player.baseSpeed=BALANCE.moveSpeed; this.player.pickup=80; this.player.dmgMul=0.90;
 
         this.time.delayedCall(35,()=>{
           if(window.GameLoader)window.GameLoader.set(0.72,'กำลังจัดฉากและศัตรู...');
@@ -2696,8 +2727,8 @@ class Game extends Phaser.Scene {
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.skills={};this.passives={};this.comboFlags={};this.combosOwned={};this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
-    this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=5;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
-    this.player.maxhp=100;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=80;this.player.dmgMul=1;this.applyMeta();this.player.hp=this.player.maxhp;
+    this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=7;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
+    this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=80;this.player.dmgMul=0.90;this.applyMeta();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
   onStageClear(){
@@ -2829,7 +2860,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n;
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.16+2); this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.20+3); this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
@@ -2879,20 +2910,21 @@ class Game extends Phaser.Scene {
     const P=(key,lvl,max,emoji,title,desc,isNew,apply)=>passPool.push({type:'pas',key,lvl,max,isNew,kind:'สกิลติดตัว',badgeColor:'#66d3b3',color:0x66d3b3,emoji,title,desc,apply,pas:true});
     const A=(key,emoji,title,desc,apply)=>awakenPool.push({type:'awk',key,lvl:SKILL_AWAKEN_LV,max:SKILL_AWAKEN_LV,kind:'ขั้นสุด (ตื่นรู้)',badgeColor:'#ffcf5a',color:0xffb020,emoji,title,desc,apply,awk:true});
     const atkOwned=Object.keys(this.skills).length;      // ล็อกโจมตี ≤ SKILL_CAP
-    const pasOwned=Object.keys(this.passives).length;    // ล็อกติดตัว ≤ PASSIVE_CAP
+    const pasOwned=Object.keys(this.passives).length;
+    const awakenOwned=Object.values(this.skills).filter(lv=>lv>=SKILL_AWAKEN_LV).length;    // ล็อกติดตัว ≤ PASSIVE_CAP
     // --- สกิลโจมตี (auto-cast) — สกิลใหม่เฉพาะเมื่อยังไม่เต็มโควตา ---
     for(const key in SKILLDEFS){ const d=SKILLDEFS[key], cur=this.skills[key]||0;
       if(cur===0){ if(atkOwned<SKILL_CAP) S(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.skills[key]=1; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
       else if(cur<d.max){ const nx=cur+1, tier=(SKILL_TIERS[key]&&SKILL_TIERS[key][nx])||'แรงขึ้น';
         S(key,nx,d.max,d.emoji,d.name,tier,false,()=>{ this.skills[key]++; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
-      else if(cur===d.max && d.awaken && COMBOS.some(c=>c.a===key&&(this.passives[c.b]||0)>0)){   // MAX + ถือ Passive คู่ที่ถูกต้องจึงตื่นรู้ได้ (แบบเดิม · แต่คอมโบไม่ให้โบนัส status แล้ว)
+      else if(awakenOwned<AWAKEN_CAP && cur===d.max && d.awaken && COMBOS.some(c=>c.a===key&&(this.passives[c.b]||0)>0)){   // MAX + ถือ Passive คู่ที่ถูกต้องจึงตื่นรู้ได้ (แบบเดิม · แต่คอมโบไม่ให้โบนัส status แล้ว)
         const a=d.awaken,combo=COMBOS.find(c=>c.a===key),pair=combo&&PASSIVES[combo.b]?('จับคู่: '+d.emoji+' '+d.name+' MAX + '+PASSIVES[combo.b].emoji+' '+PASSIVES[combo.b].name):'';
         A(key,a.emoji,'ตื่นรู้: '+a.name,pair+' · '+a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ สกิลตื่นรู้! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
     }
     // --- สกิลติดตัว (passive แบบเลเวลได้) — ตัวใหม่เฉพาะเมื่อยังไม่เต็มโควตา ---
     for(const key in PASSIVES){ const d=PASSIVES[key], cur=this.passives[key]||0;
-      if(cur===0){ if(pasOwned<PASSIVE_CAP) P(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.passives[key]=1; d.apply(this.player); this.buildSkillBar(); }); }
-      else if(cur<d.max){ P(key,cur+1,d.max,d.emoji,d.name,d.desc,false,()=>{ this.passives[key]++; d.apply(this.player); this.buildSkillBar(); }); }
+      if(cur===0){ if(pasOwned<PASSIVE_CAP) P(key,1,d.max,d.emoji,d.name,d.desc+' · '+passivePairHint(key),true,()=>{ this.passives[key]=1; d.apply(this.player); this.buildSkillBar(); }); }
+      else if(cur<d.max){ P(key,cur+1,d.max,d.emoji,d.name,d.desc+' · '+passivePairHint(key),false,()=>{ this.passives[key]++; d.apply(this.player); this.buildSkillBar(); }); }
     }
     Phaser.Utils.Array.Shuffle(skillPool); Phaser.Utils.Array.Shuffle(passPool); Phaser.Utils.Array.Shuffle(awakenPool);
     const out=[];
@@ -3244,7 +3276,7 @@ class Game extends Phaser.Scene {
   spawnFxAnim(key,x,y,o={}){
     if(!this.textures.exists(key)||!this.anims.exists(key))return null;
     const fx=ASSET_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
-    s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(o.add?Phaser.BlendModes.ADD:Phaser.BlendModes.NORMAL);   // NORMAL = โชว์สีจริง ไม่ล้นขาวบนพื้นสว่าง
+    s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(o.normal?Phaser.BlendModes.NORMAL:Phaser.BlendModes.ADD);   // ชีต VFX ใช้พื้นดำ: ADD เป็นค่าเริ่มต้นเพื่อไม่ให้เกิดกล่องดำบน WebGL/Android
     const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5, ax==='bottom'?1:0.5);
     if(o.rotation!=null)s.setRotation(o.rotation);
     s.setScale(o.scaleX!=null?o.scaleX:(o.scale!=null?o.scale:1), o.scaleY!=null?o.scaleY:(o.scale!=null?o.scale:1));
@@ -3256,7 +3288,7 @@ class Game extends Phaser.Scene {
     const lvl=this.skills&&this.skills.aura||1,aw=lvl>=SKILL_AWAKEN_LV,want=aw?12:7;
     if(!this._auraFx&&this.textures.exists('fx_aura')&&this.anims.exists('fx_aura')){
       const s=this.camWorld(this.add.sprite(this.player.x,this.player.y,'fx_aura',0));
-      s.setDepth(2).setBlendMode(Phaser.BlendModes.NORMAL).setOrigin(0.5);s.play('fx_aura');this._auraFx=s;
+      s.setDepth(2).setBlendMode(Phaser.BlendModes.ADD).setOrigin(0.5);s.play('fx_aura');this._auraFx=s;
     }
     if(!this._auraPetals)this._auraPetals=[];
     if(this._auraPetals.length!==want){this._auraPetals.forEach(p=>p.destroy());this._auraPetals=[];
@@ -3695,7 +3727,7 @@ class Game extends Phaser.Scene {
       this.showBanner(this.stageIndex===1?'🫧 เฟส 2 · แรงดันพุ่ง':'🔥 บอสโกรธ!',this.stageIndex===1?'วาล์วเปิด—แรงดูดและฟองกักตัวเริ่มทำงาน!':'เฟส 2 — โจมตีดุขึ้น!',1500); if(b.isBoss&&this.stageIndex===0)this.bossPose(b,6,1000); this.cameras.main.shake(420,0.014); this.screenFlash(this.stageIndex===1?0x62e5cf:0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');
       if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 เฟส 2 · รังแตก','ราชินีปลุกผลึกยิงกรด!',1700);for(let i=0;i<3;i++){const a=i*Math.PI*2/3;this.spawnBossObject(i===0?'obelisk':'crystal',b.x+Math.cos(a)*240,b.y+Math.sin(a)*240,14);}}   // ปลดท่าคลื่นสังหาร
-      if(!b._aura&&this.anims.exists('fx_enrage')){ b._aura=this.camWorld(this.add.sprite(b.x,b.y,'fx_enrage',0).setDepth(3).setAlpha(0.72)); b._aura.play('fx_enrage'); b._auraIsFx=true; }
+      if(!b._aura&&this.anims.exists('fx_enrage')){ b._aura=this.camWorld(this.add.sprite(b.x,b.y,'fx_enrage',0).setDepth(3).setAlpha(0.72).setBlendMode(Phaser.BlendModes.ADD)); b._aura.play('fx_enrage'); b._auraIsFx=true; }
       for(let i=0;i<2;i++){ const r=this.camWorld(this.add.circle(b.x,b.y,20,0xff5a4d,0).setDepth(6).setStrokeStyle(4,0xff7a5a,0.9));
         this.tweens.add({targets:r,radius:150,alpha:{from:0.9,to:0},duration:500,delay:i*100,onComplete:()=>r.destroy()}); } }
     // เฟส 3 (บอสใหญ่) ตอนเลือด 25% — คลั่ง
