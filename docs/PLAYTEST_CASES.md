@@ -22,6 +22,7 @@
 | BAL-07 | เวฟตอบสนองต่อความเร็วการกำจัด | ผู้เล่นที่ฆ่าเร็วทำให้ interval สั้นลง/เพดานศัตรูสูงขึ้นภายใน cap แต่ห้ามเพิ่ม damage หรือเปลี่ยนสัดส่วนเป็นตัวยิงไกล |
 | BAL-08 | เวฟต้นต้องเป็นช่วงเรียนรู้ | เวฟแรกมีศัตรูประชิดเป็นหลักและตัวยิงไกลไม่เกินน้ำหนักที่กำหนด; ความหนาแน่นค่อยเพิ่มในเวฟหลัง |
 | BAL-09 | เวลาหมดต้องหยุด spawn แล้วเคลียร์สนาม | mode เปลี่ยนจาก `wave` เป็น `waveclear`, จำนวนศัตรูใหม่ไม่เพิ่ม และเริ่มเวฟถัดไปหลังตัวที่เหลือเป็นศูนย์เท่านั้น |
+| BAL-10 | Power Rating ต้องเทียบข้าม build ได้ | ตรวจสูตรจากเลเวลตัวละคร/ยศ/พร/อุปกรณ์ และเทียบอัตราชนะกับค่าพลังแนะนำ 100/420/780/1250/1850 |
 
 ## B. ศัตรู กระสุน และบอส
 
@@ -45,6 +46,9 @@
 | SKL-05 | Level Up เลือกจาก 4 การ์ด | ทุกใบกดได้ hit zone ตรง และ layout ไม่ล้นที่ 720×320 CSS px |
 | SKL-06 | Artwork การ์ดต้องทำใหม่ทั้งหมด | ใช้ visual language เดียวกัน แยก Attack/Passive ชัด และ artwork ต้องสื่อ mechanic ไม่ใช่เพียง emoji |
 | SKL-07 | รูปแบบการ์ดอ้างอิง Isekai Drifters | ใช้การ์ดแนวตั้งอ่านเร็ว: หมวด, ภาพ, ชื่อ, ผล, ระดับ/ดาว, คู่ Evolution |
+| SKL-08 | Unique ไม่อยู่ใน Level Up card | ที่ Lv3/7/11 ต้องอัปอัตโนมัติและ card pool มีเฉพาะ Attack/Passive/Awaken |
+| SKL-09 | กันแตะการ์ดผิดโดยไม่ตั้งใจ | หลังเปิด overlay ต้องมี input lock 550ms; แตะครั้งแรกเลือกและแตะใบเดิมซ้ำจึงยืนยัน |
+| SKL-10 | Awaken ต้องบอกคู่ชัด | รายละเอียดแสดง `Attack MAX + Passive` พร้อมชื่อและไอคอนของทั้งสองฝั่ง |
 
 ## D. Character และ Sprite
 
@@ -66,6 +70,8 @@
 | VIS-02 | เกมควรลื่นกว่านี้ | profile frame time แยก update/render; ตรวจ overdraw, particles, object pooling, texture swaps และ allocation ใน update loop |
 | VIS-03 | World object โผล่ซ้ำ/ค้างจากกล้อง UI | object ที่ spawn ใหม่ต้องเรียก `camWorld()` เพราะ `camera.ignore(group)` อาจไม่ครอบสมาชิกที่เพิ่มภายหลัง |
 | VIS-04 | Pool เต็มแล้วเกม crash | ทุก `getFirstDead(false)`/`create()` ต้อง guard `null` หรือ recycle ตัวที่ยังมีชีวิตตามความสำคัญของ object |
+| VIS-05 | หัวใจ/แม่เหล็กอ่านชัดแต่ต้องเก็บไว้ได้ | ฮาโล/วงชีพจร/การลอยยังอยู่ แต่ item velocity ต้องเป็นศูนย์และ pickup radius ฐานเท่ากับ 80 |
+| VIS-06 | Stage 2 mini/boss ต้องแยก silhouette | Valve Maw ต้องอ่านเป็นวาล์วกลมพร้อมเกจ; Clogmaw ต้องใหญ่/กว้าง/มีมงกุฎท่อ และ hitbox ไม่เกินตัวภาพ |
 
 ## F. Landscape, Fullscreen และ UI
 
@@ -95,6 +101,8 @@
 5. Gameplay
 
 Overlay ใหม่ต้องตรวจ active overlay ก่อนเปิด และ event ที่ถูกพักต้องเข้า queue แทนการสร้าง UI ทับกัน
+
+Wave Story Cutscene ต้อง pause physics เพียงครั้งเดียว, แตะข้ามได้, auto-close ได้ และเรียก `beginWave()` ครั้งเดียวเท่านั้น โดยไม่ชนกับ Level Up/Boss Intro
 
 ### Object pool reset contract
 
