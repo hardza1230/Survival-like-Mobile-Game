@@ -46,4 +46,19 @@ for (const fighter of ['momo', 'mint', 'cocoa']) {
   }
 }
 
-console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, three 8-frame action sheets, and three 12-frame run atlases`);
+for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
+  const cardName = `card_${fighter}.png`;
+  const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
+  const width = card.readUInt32BE(16);
+  const height = card.readUInt32BE(20);
+  const colorType = card.readUInt8(25);
+  const hasAlpha = [4, 6].includes(colorType) || (colorType === 3 && card.includes(Buffer.from('tRNS')));
+  if (width !== 768 || height !== 1024 || !hasAlpha) {
+    throw new Error(`Expected transparent ${fighter} Character Card at 768x1024, found ${width}x${height} PNG color type ${colorType}`);
+  }
+  if (!source.includes(`card_${fighter}:'assets/character_cards/${cardName}'`)) {
+    throw new Error(`Character Card ${fighter} is not registered in ASSET_IMAGES`);
+  }
+}
+
+console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, five transparent Character Cards, three 8-frame action sheets, and three 12-frame run atlases`);
