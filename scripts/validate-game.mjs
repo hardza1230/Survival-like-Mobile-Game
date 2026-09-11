@@ -62,3 +62,14 @@ for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
 }
 
 console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, five transparent Character Cards, three 8-frame action sheets, and three 12-frame run atlases`);
+
+
+if (!source.includes("const UNIQUE_MAX_LV=4") || !source.includes("uniqueAt={2:3,3:7,4:11}")) {
+  throw new Error('Unique skill run progression contract is missing');
+}
+if (!source.includes('updatePickupReadability()') || !source.includes('this.player.pickup=105')) {
+  throw new Error('Readable pickup cues and attraction contract is missing');
+}
+if (!source.includes('castPathRecall(dm,ul)') || !source.includes('castOathWard(dm,ul)')) {
+  throw new Error('Premium Taro/Sesame unique reworks are missing');
+}
