@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.27.0';
+const GAME_VERSION = '2.27.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.27.1', date:'2026-09-12', title:'Fix Clogmaw Black/White Sprite', items:[
+    'แทนที่ boss2_clogmaw_sheet.png ที่โครงสร้าง PNG เสียกลางไฟล์ด้วยชีต 4×2 โปร่งใสสมบูรณ์ครบ 8 เฟรม',
+    'แก้อาการคลอกมอว์เป็นสี่เหลี่ยมดำ และสี่เหลี่ยมขาวเมื่อโดน hit-flash',
+    'เปิดใช้เฟรมท่า 4–7 สำหรับ prison, suction, overflow และ enrage โดยตรง' ] },
   { v:'2.27.0', date:'2026-09-12', title:'Stage 4 Enemy Family & Frostbite', items:[
     'เพิ่มศัตรูเฉพาะด่าน 4 คุกเย็นน้ำตาลครบ 5 บทบาท: วิญญาณน้ำตาลเยือก เศษน้ำแข็งพุ่ง ป้อมไซรัปเย็น ฟองแรงดันเยือก และผู้คุมประตูเยือกแข็ง',
     'แยก silhouette/ขนาด/hitbox ตามบทบาท basic, fast/dasher, shooter, bomber และ tank/siege พร้อมใช้ผู้คุมประตูเป็น Elite ด่าน 4',
@@ -4000,9 +4004,8 @@ class Game extends Phaser.Scene {
   }
   drainBossPose(b,frame,ms=620){
     if(!b||!b.active||b.texture.key!=='boss2')return;
-    // อาร์ต boss2_clogmaw_sheet.png มีเฟรมจริงแค่ 0–3 (เฟรม 4–7 ว่างเปล่า → เคยเรนเดอร์เป็น sprite ดำ)
-    // จึง map ท่า prison/suction/overflow/enrage (4–7) กลับเข้าเฟรมที่มีจริง กันบอสกลายเป็นสี่เหลี่ยมดำ
-    frame=({0:0,1:1,2:2,3:3,4:3,5:2,6:3,7:2})[frame]??Math.min(frame,3);
+    // ชีต 4×2 ผ่านการซ่อม PNG/alpha และมีภาพครบ 8 เฟรมแล้ว ใช้ท่า 0–7 ได้โดยตรง
+    frame=Phaser.Math.Clamp(frame|0,0,7);
     if(b.anims)b.anims.stop();b.setFrame(frame);b._poseToken=(b._poseToken||0)+1;const token=b._poseToken;
     this.time.delayedCall(ms,()=>{if(b.active&&b.texture.key==='boss2'&&b._poseToken===token&&this.anims.exists('boss2_walk'))b.play('boss2_walk',true);});
   }
