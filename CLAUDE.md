@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.19.0 Tablet Fit)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.20.0 Harder + Skill Tuning)
+- **v2.20.0 (แก้จาก feedback — ยากขึ้น):** `killPowerMul()`=1+min(2.6,stageKills*0.008) คูณ HP ศัตรูปกติ/elite (×1.6/×1.7 base ด้วย) → มอนถึกขึ้นเรื่อย ๆ ตามที่ตายในด่าน · บอสใหญ่ HP ×4.5 · มินิ ×1.7 · `bossHpMul` cap 3.0 · rage tiers HP สูงสุด 3.5 · sprinkle speed 660/820 gap 100/60 cd max(0.6,..) · voidPull อ่อนต้นโตตามเลเวล (r=150+ul*30 ฯลฯ) · **ค่าจูนแรง อาจต้องดึงกลับถ้าโหดเกินหลังเทสจริง**
 - **v2.19.0 (รองรับแท็บเล็ต):** `computeViewZoom()` — camera zoom = `0.76*clamp(W/430,1,2.4)` เรียกใน create + onResize → จอกว้าง (แท็บเล็ต) zoom เข้ามากขึ้นให้เห็นสนามกว้างเท่ามือถือ ตัวละครไม่เล็กจิ๋ว · มือถือ (W<430) คง 0.76 เดิม · **หมายเหตุ:** ปุ่มควบคุม/HUD ยังเป็นขนาด px คงที่ (บนแท็บเล็ตใหญ่จะดูเล็กลงเชิงสัดส่วน — ถ้าจะขยายต้องเพิ่ม uiScale ทีหลัง)
 - **v2.18.0 (แก้จาก feedback เจ้าของ):** `drawComboHints` ไอคอน "มีคู่แล้ว" เคยพองเป็น 128px (tween scale ทับ setDisplaySize) → เปลี่ยนเป็นกระพริบ alpha ไอคอนคง 18px · `castVoidPull` เอา fx_ult_vortex (รูปหมุน) ออกเหลือวงกลมม่วง+ring และดูดมอนจริงด้วย `e.setPosition` lerp (ทับ AI เดินตาม) · `castSkill` sprinkle ยิงทีละนัด staggered (`delayedCall`) + homing เสมอ (awaken 720/เร็ว)
 - **v2.17.0 (Objective ระหว่างสู้บอส/มินิ):** `tickBossObjective`/`startWeakPoint`/`endWeakPoint`/`resetBossObjective` — บอสกางเกราะเป็นระยะ (`_bossShield` ลดดาเมจ ×0.12 ใน `damage()`) ต้องทำลาย crystal จุดอ่อน 3 จุด (`o._weak`, ใช้ `spawnBossObject('crystal')`) เพื่อทลายเกราะ→บอสมึน+โดนก้อนใหญ่ 8% · timeout 9วิเกราะหลุดเอง · เรียกใน update ตอน boss active · reset ที่ spawnMiniBoss/spawnFinalBoss/clearBossObjects

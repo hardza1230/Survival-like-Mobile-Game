@@ -27,9 +27,14 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.19.0';
+const GAME_VERSION = '2.20.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.20.0', date:'2026-09-12', title:'Harder Game, Sprinkle & Void Tuning', items:[
+    'เกมยากขึ้นมาก: ศัตรูถึกขึ้น ×1.6 + สเกลตามจำนวนมอนที่ตายในด่าน (killPowerMul สูงสุด ~3.6×)',
+    'บอสใหญ่ถึกขึ้น (×4.5) · มินิบอส ×1.7 · rage tier แรงขึ้นเยอะ (HP สูงสุด ×3.5 ตามลูกน้องที่ตาย)',
+    'Sprinkle: กระสุนเร็วขึ้นมาก (660/awaken 820) + ยิงเว้นจังหวะ ไม่รัวเป็นพวง (gap/คูลดาวน์เพิ่ม)',
+    'หลุมดำโกโก้: อ่อนช่วงต้น โตชันตามเลเวล (Lv1 เคยเก่งเกิน)' ] },
   { v:'2.19.0', date:'2026-09-12', title:'Tablet Fit: Adaptive Camera Zoom', items:[
     'ปรับ zoom กล้องตามความกว้างจอ (อ้างอิงมือถือ ~430px) → แท็บเล็ต/จอใหญ่ zoom เข้ามากขึ้น เห็นสนามพอ ๆ กับมือถือ ตัวละคร/ศัตรูไม่เล็กจิ๋ว',
     'มือถือเหมือนเดิมทุกอย่าง (zoom 0.76) · แท็บเล็ตแนวตั้ง zoom ~1.4-1.5' ] },
@@ -1620,7 +1625,8 @@ class Game extends Phaser.Scene {
   // Cocoa: หลุมดำช็อกโกแลต — ดูดฝูงศัตรูเข้าหาตัวผู้เล่น ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย
   castVoidPull(dm,ul){
     ul=ul||1;const up=this.uniquePower();
-    const r=200+ul*22, duration=1.9+ul*0.42, pullLerp=0.18+ul*0.02, tickDmg=(7+ul*3)*dm*up;
+    // อ่อนช่วงแรก โตชันตามเลเวล (Lv1 เคยเก่งเกิน)
+    const r=150+ul*30, duration=1.2+ul*0.55, pullLerp=0.09+ul*0.045, tickDmg=(3+ul*4)*dm*up;
     // ออร่าม่วงล้วน (เอารูปอึออก) — วงแกนดำม่วง + วงรัศมีเรือง + อนุภาคหมุนวน
     const core=this.camWorld(this.add.circle(this.player.x,this.player.y,44,0x2a0f3a,0.8).setDepth(6).setStrokeStyle(3,0x8b5cf0,0.9));
     const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x8b5cf0).setDepth(5).setDisplaySize(r*2,r*2).setAlpha(0.34));
@@ -1644,7 +1650,7 @@ class Game extends Phaser.Scene {
       if(core.active)this.tweens.add({targets:core,scale:0.1,alpha:0,duration:180,onComplete:()=>core.destroy()});else core.destroy&&core.destroy();
       if(ring.active)ring.destroy();
       if(this.state!=='play'&&this.state!=='levelup')return;
-      const cx=this.player.x,cy=this.player.y,finR=r*0.9,finDmg=(34+ul*12)*dm*up;   // ยุบระเบิดปิดท้าย
+      const cx=this.player.x,cy=this.player.y,finR=r*0.9,finDmg=(16+ul*16)*dm*up;   // ยุบระเบิดปิดท้าย (อ่อนช่วงแรก โตตามเลเวล)
       this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<finR){this.damage(e,finDmg*((e.isBoss||e.isMini)?0.35:1),e.x,e.y);if(!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-cy,e.x-cx);e.setVelocity(Math.cos(a)*260,Math.sin(a)*260);e.knock=0.2;}}});
       this.vfxHitRing(cx,cy,0x8b5cf0,true);this.burst(cx,cy,0x8b5cf0);this.cameras.main.shake(160,0.006);Sfx.boom();
     });
@@ -2574,7 +2580,7 @@ class Game extends Phaser.Scene {
     let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':'e_tank');
     if(!e) e=this.enemies.create(x,y,eliteKey); else { e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ e=this.enemies.getFirstAlive(); if(!e)return; e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool เต็ม → รีไซเคิล (มินิบอสต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72][this.stageIndex]||2.72,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp;
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72][this.stageIndex]||2.72,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.7*this.killPowerMul();   // elite ถึกขึ้น + สเกลตามมอนที่ตาย
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*[1,1.05,1.12,1.20,1.30][this.stageIndex]*pg.enemyDmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.bloomStacks=0;e.bloomUntil=0;
@@ -2630,14 +2636,16 @@ class Game extends Phaser.Scene {
     }
   }
   // HP บอสไต่ตามเลเวลในรันและ Power Guide แบบอ่อน ๆ เท่านั้น ไม่สเกลตาม rank เต็มจน progression ไร้ความหมาย
-  bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(2.25,(1+Math.max(0,(this.level||1)-1)*0.048)*pg.enemyHp); }
+  bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(3.0,(1+Math.max(0,(this.level||1)-1)*0.055)*pg.enemyHp); }
+  // ยิ่งฆ่ามอนในด่านเยอะ ศัตรู/บอสยิ่งถึกขึ้น (ทวีคูณ) — ทำให้เกมยากขึ้นเรื่อย ๆ ระหว่างด่าน
+  killPowerMul(){ return 1 + Math.min(2.6, (this.stageKills||0)*0.008); }
   bossRageInfo(kills){
     const n=kills==null?(this.stageKills||0):kills,tiers=[
       {min:0,name:'สงบนิ่ง',emoji:'😐',color:0xb8b0c4,hp:1,dmg:1,spd:1,cd:1,reward:1,gear:0.45,minTier:'common'},
-      {min:60,name:'เดือดดาล',emoji:'💢',color:0xffb35c,hp:1.12,dmg:1.08,spd:1.04,cd:0.94,reward:1.18,gear:0.52,minTier:'common'},
-      {min:140,name:'พิโรธ',emoji:'🔥',color:0xff7a4d,hp:1.28,dmg:1.18,spd:1.08,cd:0.87,reward:1.42,gear:0.62,minTier:'rare'},
-      {min:240,name:'คลั่งแค้น',emoji:'👹',color:0xff405c,hp:1.48,dmg:1.30,spd:1.13,cd:0.79,reward:1.75,gear:0.74,minTier:'rare'},
-      {min:360,name:'ทรราชแก่นรส',emoji:'👑',color:0xd95cff,hp:1.72,dmg:1.45,spd:1.18,cd:0.70,reward:2.15,gear:0.88,minTier:'epic'},
+      {min:60,name:'เดือดดาล',emoji:'💢',color:0xffb35c,hp:1.35,dmg:1.14,spd:1.05,cd:0.92,reward:1.25,gear:0.52,minTier:'common'},
+      {min:140,name:'พิโรธ',emoji:'🔥',color:0xff7a4d,hp:1.85,dmg:1.30,spd:1.10,cd:0.84,reward:1.55,gear:0.62,minTier:'rare'},
+      {min:240,name:'คลั่งแค้น',emoji:'👹',color:0xff405c,hp:2.55,dmg:1.50,spd:1.16,cd:0.75,reward:2.00,gear:0.74,minTier:'rare'},
+      {min:360,name:'ทรราชแก่นรส',emoji:'👑',color:0xd95cff,hp:3.5,dmg:1.75,spd:1.22,cd:0.66,reward:2.60,gear:0.88,minTier:'epic'},
     ];let tier=0;for(let i=1;i<tiers.length;i++)if(n>=tiers[i].min)tier=i;return Object.assign({tier,kills:n},tiers[tier]);
   }
   applyBossRage(b,announce){
@@ -2660,7 +2668,7 @@ class Game extends Phaser.Scene {
     const mScale=this.stageIndex===1?0.88:(mArt?1.15:1.7); b.baseScale=mScale; b._sqX=1; b._sqY=1;
     const mRadius=this.stageIndex===1?48:(mArt?52:26),mOff=this.stageIndex===1?48:(mArt?18:5);
     b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.05*this.bossHpMul(); b.maxhp=b.hp; b.spd=72; b.dmg=Math.round(st.bossDmg*1.15*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึก+ดุขึ้น (buff จาก feedback)
+    b.hp=st.bossHp*1.7*this.bossHpMul(); b.maxhp=b.hp; b.spd=72; b.dmg=Math.round(st.bossDmg*1.2*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึกขึ้นมาก (feedback: ยากขึ้น)
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.85; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // มินิบอสมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
@@ -2704,7 +2712,7 @@ class Game extends Phaser.Scene {
     const fScale=this.stageIndex===1?0.88:(isArt?1.55:2.5); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===1?68:(isArt?54:26),fOff=this.stageIndex===1?60:(isArt?16:5);
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*3; b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.35*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึก+แรงขึ้นมาก (×3 ตามคำขอ)
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*4.5; b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.45*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึกขึ้นอีก (×4.5) + rage สเกลตามมอนที่ตาย (feedback: ยากขึ้น)
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.8; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -3123,7 +3131,7 @@ class Game extends Phaser.Scene {
     else { e.setTexture(key); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool เต็ม (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05][this.stageIndex]||3.05,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp;
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05][this.stageIndex]||3.05,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*1.6*this.killPowerMul();   // ×1.6 ถึกขึ้น + สเกลตามมอนที่ตายในด่าน
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
     e.bloomStacks=0;e.bloomUntil=0;
     let scale=1;
@@ -3171,7 +3179,7 @@ class Game extends Phaser.Scene {
   _cdBase(key,lvl){
     switch(key){
       // สายยิงไว ดาเมจเบา (spam)
-      case 'sprinkle': return Math.max(0.42,0.72-lvl*0.03);
+      case 'sprinkle': return Math.max(0.6,0.98-lvl*0.03);   // ไม่รัวเกินไป (สตรีมทีละนัด กระสุนเร็ว)
       case 'popcorn':  return Math.max(0.55,0.95-lvl*0.05);
       case 'aura':     return Math.max(0.60,1.0-lvl*0.04);
       case 'whirl':    return Math.max(1.05,1.7-lvl*0.07);
@@ -3207,7 +3215,7 @@ class Game extends Phaser.Scene {
       let shots=aw?8:lvl>=6?5:lvl>=4?3:lvl>=2?2:1;
       if(this.player.twinSprinkle) shots+=2;
       const pierce=lvl>=3||aw, bounce=(lvl>=5?2:0)+(cf.ricochet?1:0)+((aw||this.player.twinSprinkle)?2:0);
-      const homing=aw?720:(lvl>=2?440:320), speed=aw?560:470, gap=aw?32:55;   // โค้งเข้าหาเป้า (awaken โค้งไว+เร็ว) · ยิงทีละนัดแบบสตรีม ไม่ออกเป็นกลุ่ม
+      const homing=aw?760:(lvl>=2?460:340), speed=aw?820:660, gap=aw?60:100;   // กระสุนเร็วขึ้นมาก + ยิงทีละนัดเว้นจังหวะ (ไม่รัวเป็นพวง) · awaken โค้งไว
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
         const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.22+lvl*0.018+(aw?0.07:0)); if(!b)return;
         b.setTexture('proj_sprinkle').setTint(0xffffff); b.faceVel=true;
