@@ -40,6 +40,8 @@
 | ENM-07 | ด่าน 3 ต้องใช้ศัตรูห้องเครื่องพริกเฉพาะธีม | ตรวจ basic/fast-dasher/shooter/bomber/tank-siege ใช้ `e_fire_*` ถูกบทบาท, alpha จริง, ไม่มี tint ค้างจาก pool, hitbox อยู่ใน silhouette และ Elite ใช้โกเลมเตาถ่าน |
 | ENM-08 | ด่าน 4 ต้องใช้ศัตรูคุกเย็นเฉพาะธีมและ Frostbite | ตรวจ `e_ice_*` ถูกบทบาท, alpha จริง, hitbox อยู่ใน silhouette, Elite ใช้ผู้คุมประตูเยือกแข็ง และการชน/กระสุนทำให้ช้าชั่วคราวโดยไม่ค้างข้ามด่าน |
 | ENM-09 | คลอกมอว์ด่าน 2 ห้ามเป็นสี่เหลี่ยมดำ/ขาว | ตรวจชีต 4×2 เปิดได้ครบ 8 เฟรม, alpha โปร่งใสจริง และ `setTintFill` ตอนโดนตีเปลี่ยนเฉพาะตัวบอสโดยไม่เติมพื้นทั้งเซลล์ |
+| ENM-10 | ด่าน 5 ต้องมีศัตรูเฉพาะธีมครบ 5 บทบาท | ตรวจ `e_oven_*` ทุกชนิด, silhouette/hitbox, เวฟแรกไม่มียิงไกล, elite ใช้อัศวินมงกุฎไหม้ และ pool reuse ไม่ค้าง texture/tint |
+| BOS-05 | The Great Hunger ต้องเล่นครบ 4 เฟสและทุกท่าหลบได้ | ตรวจ phase 72/40/14%, telegraph ของ Crown Rain/Cleave/Oven Cross/Void Maw/Eclipse, ช่องกระสุน, แรงดูด, cleanup orbiters และ FPS บน Android |
 
 ## C. Skills, VFX และ Cards
 
