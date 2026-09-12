@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.31.5';
+const GAME_VERSION = '2.31.6';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.31.6', date:'2026-09-12', title:'First-run Tutorial', items:[
+    'เพิ่ม Onboarding 4 หน้า สอนการเดิน Dash อาวุธอัตโนมัติ Unique และการอ่านพื้นที่อันตราย',
+    'ผู้เล่นใหม่เห็น Tutorial หลังเลือกอาวุธครั้งแรก และบันทึกว่าเรียนจบแล้ว',
+    'เพิ่มปุ่มวิธีเล่นใน Hub เพื่อเปิดบทสอนซ้ำได้ทุกเวลา พร้อมปรับ Hub เป็นสองคอลัมน์เมื่อเมนูเยอะ' ] },
   { v:'2.31.5', date:'2026-09-12', title:'Daily Loop', items:[
     'เพิ่ม Daily Reward พร้อม streak สูงสุด 7 วันและป้องกันการรับซ้ำในวันเดียว',
     'เพิ่ม Daily Challenge ที่สุ่มด่านและความยากตามวันที่ พร้อมโบนัส Sugar วันละครั้ง',
@@ -1316,6 +1320,7 @@ const Save = {
     if(!this.data.stageMastery)this.data.stageMastery={};
     if(!this.data.achievements)this.data.achievements={};
     if(!this.data.daily)this.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false};
+    if(this.data.tutorialDone==null)this.data.tutorialDone=false;
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
     Sfx.muted=!this.data.settings.sound;
     return this.data; },
@@ -1344,7 +1349,7 @@ const Save = {
     for(const slot of GEAR_SLOTS){const gid=this.data.gear[slot.slot],it=(GEAR[slot.slot]||[]).find(g=>g.id===gid);if(it)p+=(tierPower[it.tier]||0)+this.gearLv(it.id)*18;}
     const tal=cp.tal||{};for(const k in tal)p+=(tal[k]||0)*26;return Math.max(100,Math.round(p/10)*10); },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
-    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, tutorialDone:false, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
   // ---- Bestiary (Monster Card) ----
   kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
   addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
@@ -1665,6 +1670,7 @@ class Game extends Phaser.Scene {
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } }
         return; }
       if(this.state==='menu'){ this.handleTap(p.x,p.y); return; }
+      if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(this.state==='dead'||this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='summary'){ Sfx.select(); this.continueFromSummary(); return; }
       if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
@@ -2272,6 +2278,26 @@ class Game extends Phaser.Scene {
     if(!d.challengeDone&&unlocked)this._zone(w/2-bw/2,cby-20,bw,40,()=>{this._dailyRun=true;this.stageDiff=spec.diff;this.startRun(spec.stage);});
     this.menu.setVisible(true);
   }
+  startTutorial(done,manual=false){
+    this._tutorialDone=done;this._tutorialStep=0;this._tutorialManual=manual;this.state='tutorial';this.menu.setVisible(false);this.physics.pause();this.drawTutorial();
+  }
+  drawTutorial(){
+    const pages=[
+      {e:'🕹️',t:'ลากเพื่อเคลื่อนที่',d:'แตะพื้นที่ว่างแล้วลากนิ้ว ตัวละครจะเดินตามทิศทางที่ลาก'},
+      {e:'💨',t:'Dash ฝ่าวงล้อม',d:'กดปุ่ม Dash มุมขวาล่างเพื่อพุ่งหลบ กระสุนและพื้นที่สีแดงต้องหลบก่อนระเบิด'},
+      {e:'⚔️',t:'อาวุธโจมตีอัตโนมัติ',d:'อาวุธยิงเอง เลือกการ์ดเมื่อเลเวลอัพเพื่อเพิ่มพลัง และจับคู่พรเพื่อ Awaken'},
+      {e:'✨',t:'ใช้ Unique ให้ถูกจังหวะ',d:'ปุ่มเหนือ Dash คือพลังเฉพาะตัว เก็บไว้ใช้ตอนถูกล้อมหรือเข้าสู่เฟสบอส'},
+    ],p=pages[this._tutorialStep]||pages[0],w=this.W,h=this.H;this.over.removeAll(true);
+    const bg=this.add.rectangle(0,0,w,h,0x08050e,0.95).setOrigin(0,0),card=this.add.graphics();card.fillStyle(0x251b31,0.98);card.fillRoundedRect(24,h*0.18,w-48,h*0.60,22);card.lineStyle(3,0x8fe6cf,0.9);card.strokeRoundedRect(24,h*0.18,w-48,h*0.60,22);
+    const step=this.add.text(w/2,h*0.23,'บทสอน '+(this._tutorialStep+1)+' / '+pages.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#9fdccc'}).setOrigin(0.5),em=this.add.text(w/2,h*0.39,p.e,{fontSize:'78px'}).setOrigin(0.5);
+    const title=this.add.text(w/2,h*0.53,p.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff',align:'center',wordWrap:{width:w-78}}).setOrigin(0.5),desc=this.add.text(w/2,h*0.62,p.d,{fontFamily:'sans-serif',fontSize:'13px',color:'#cfc2d5',align:'center',wordWrap:{width:w-82},lineSpacing:5}).setOrigin(0.5);
+    const hint=this.add.text(w/2,h*0.73,this._tutorialStep===pages.length-1?'แตะเพื่อเริ่มเล่น':'แตะเพื่อดูต่อ  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
+    this.over.add([bg,card,step,em,title,desc,hint]);this.over.setVisible(true);Sfx.select();
+  }
+  advanceTutorial(){
+    if(this._tutorialStep<3){this._tutorialStep++;this.drawTutorial();return;}
+    Save.data.tutorialDone=true;Save.save();this.over.setVisible(false);const done=this._tutorialDone;this._tutorialDone=null;if(done)done();
+  }
   buildAchievements(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement');
     const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=8,side=14,top=portrait?86:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows);
@@ -2327,11 +2353,12 @@ class Game extends Phaser.Scene {
       [0x5f7896,     '⚙','ตั้งค่า','เสียง การสั่น ภาพวาบ และคุณภาพ VFX',()=>{ this.menuScreen='settings'; this.buildMenuScreen(); }],
       [0xc0893e,     '🏆','Achievement','ภารกิจ ความสำเร็จ และรางวัล Sugar',()=>{ this.menuScreen='achievements'; this.buildMenuScreen(); }],
       [0xe06f75,     '📅','ภารกิจประจำวัน','Daily Reward และด่านท้าทายวันนี้',()=>{ this.menuScreen='daily'; this.buildMenuScreen(); }],
+      [0x4f9e8f,     '🎓','วิธีเล่น','ดู Tutorial การควบคุมและระบบต่อสู้',()=>{this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true);}],
     ];
     const left=portrait?center:w*0.27;
     const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
-    const cols=portrait?1:2, gapX=portrait?0:10, gapY=portrait?8:12;
-    const bw=portrait?Math.min(w-32,390):Math.min(205,(areaR-areaL-gapX)/2);
+    const cols=portrait?(items.length>7?2:1):2, gapX=portrait?(cols===2?8:0):10, gapY=portrait?8:12;
+    const bw=portrait?(cols===2?(w-40-gapX)/2:Math.min(w-32,390)):Math.min(205,(areaR-areaL-gapX)/2);
     const menuTop=Math.max(logoY+72,h*0.57),menuBottom=h-42;
     const menuRows=Math.ceil(items.length/cols);
     const bh=portrait?Math.min(54,Math.max(38,(menuBottom-menuTop-gapY*(menuRows-1))/menuRows)):Math.min(58,(h-72-gapY*(menuRows-1))/menuRows);
@@ -3311,7 +3338,9 @@ class Game extends Phaser.Scene {
     this.lvlUp.setVisible(true);
   }
   pickStartingSkillAt(px,py){
-    const c=(this.startSkillCards||[]).find(z=>px>=z.left&&px<=z.right&&py>=z.top&&py<=z.bottom);if(!c)return;Sfx.select();this.skills[c.key]=1;if(c.key==='star')this.rebuildRing();this.lvlUp.setVisible(false);this.physics.resume();this.state='play';this.buildSkillBar();const sw=this.signatureWeaponInfo();this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+sw.name+' + '+SKILLDEFS[c.key].emoji+' '+SKILLDEFS[c.key].name,'อาวุธประจำตัว + อาวุธรองพร้อมรบ · '+this.uniqueInfo().emoji+' Unique พร้อมใช้',1900);
+    const c=(this.startSkillCards||[]).find(z=>px>=z.left&&px<=z.right&&py>=z.top&&py<=z.bottom);if(!c)return;Sfx.select();this.skills[c.key]=1;if(c.key==='star')this.rebuildRing();this.lvlUp.setVisible(false);this.buildSkillBar();const sw=this.signatureWeaponInfo();
+    const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+sw.name+' + '+SKILLDEFS[c.key].emoji+' '+SKILLDEFS[c.key].name,'อาวุธประจำตัว + อาวุธรองพร้อมรบ · '+this.uniqueInfo().emoji+' Unique พร้อมใช้',1900);};
+    if(!Save.data.tutorialDone)this.startTutorial(begin,false);else begin();
   }
 
   /* ---------- LEVEL UP ---------- */
