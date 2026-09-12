@@ -27,9 +27,11 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.24.0';
+const GAME_VERSION = '2.25.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.25.0', date:'2026-09-12', title:'Rainbow Sprinkle Projectiles', items:[
+    'สกิล Sprinkle: เมล็ดสีรุ้งสลับสี (แบบสตรอว์เบอร์รี) เร็วมากแต่เบา (ดาเมจน้อย/อยู่สั้น) เลิกดูเป็นจรวด' ] },
   { v:'2.24.0', date:'2026-09-12', title:'Icon-only Unique Button · Momo Ricochet Seeds', items:[
     'ปุ่มสกิลเฉพาะตัวเป็นไอคอนล้วน (เอาตัวหนังสือออก)',
     'สกิลเฉพาะตัวโมโม่ (สตรอว์เบอร์รี): เมล็ดพุ่งเด้งหาศัตรูตัวใกล้ ๆ อย่างรวดเร็ว (homing+bounce) แทนสายฟ้าชิ่งแบบทาโร่' ] },
@@ -3315,11 +3317,14 @@ class Game extends Phaser.Scene {
       let shots=aw?8:lvl>=6?5:lvl>=4?3:lvl>=2?2:1;
       if(this.player.twinSprinkle) shots+=2;
       const pierce=lvl>=3||aw, bounce=(lvl>=5?2:0)+(cf.ricochet?1:0)+((aw||this.player.twinSprinkle)?2:0);
-      const homing=aw?760:(lvl>=2?460:340), speed=aw?820:660, gap=aw?60:100;   // กระสุนเร็วขึ้นมาก + ยิงทีละนัดเว้นจังหวะ (ไม่รัวเป็นพวง) · awaken โค้งไว
+      // เมล็ดรุ้ง: เร็วมาก แต่ "เบา" (ดาเมจน้อย/อยู่สั้น) — projectile แบบเดียวกับสตรอว์เบอร์รี ไม่หนักเหมือนจรวด
+      const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
+      const homing=aw?520:(lvl>=2?360:260), speed=aw?1180:980, gap=aw?52:90;   // เร็วมาก + โค้งเบา ๆ (ไม่ล็อกหนักแบบจรวด)
+      let idx=0;
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
-        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.22+lvl*0.018+(aw?0.07:0)); if(!b)return;
-        b.setTexture('proj_sprinkle').setTint(0xffffff); b.faceVel=true;
-        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.7:1.3; b.pierce=pierce; b.bounce=bounce; b.homing=homing;
+        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.18+lvl*0.012+(aw?0.05:0)); if(!b)return;   // ตัวเล็กลง = ดูเบา
+        b.setTexture('proj_sprinkle').setTint(RAINBOW[idx++%RAINBOW.length]); b.faceVel=true;
+        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.1:0.85; b.pierce=pierce; b.bounce=bounce; b.homing=homing;   // อยู่สั้น = เบา
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+Phaser.Math.FloatBetween(-0.12,0.12);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
