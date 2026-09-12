@@ -56,7 +56,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.25.3 Sprinkle Straight)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.26.0 Stage 3 Enemy Family)
+- **v2.26.0:** ด่าน 3 ห้องเครื่องพริกเพลิงมีศัตรู PNG โปร่งใสเฉพาะธีมครบ 5 บทบาท: `e_fire_ember`, `e_fire_chili`, `e_fire_grinder`, `e_fire_bomber`, `e_fire_golem` · map เข้า basic/fast-dasher/shooter/bomber/tank-siege พร้อม roleName, optical scale, hitbox และ Elite ของด่าน 3 · ไม่ย้อมศัตรูพื้นฐานแล้ว
 - **v2.25.3 (แก้จาก feedback เจ้าของ):** `sprinkle` — `homing=0` (วิ่งตรงไม่โค้ง) · scale เล็กลง (0.12+lvl*0.008) · life ยาวขึ้น (1.9/aw2.2) กันกระสุนหายกลางทางตอนยิงไกล
 - **v2.25.2 (แก้จาก feedback เจ้าของ):** สกิลเฉพาะตัวโมโม่ (berryRebound) เอา `b.homing=0` (เลิกเป็น homing missile) กลับไปยิงรอบทิศ (radial `velocityFromRotation`) เหมือนเดิม + คง `b.bounce` (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด)
 - **v2.25.1 (แก้จาก feedback เจ้าของ):** `sprinkle` = **ปืนกล 1-hit** · `pierce=false`,`bounce=0` (โดนแล้วหายทันที) · เพิ่มจำนวนนัด/ชุด (4/6/8/11, aw16) + gap สั้น (52/aw38) รัวถี่ · SKILL_TIERS/role/awaken desc อัปเป็นสาย "รัวเร็ว เบา" (เลิก pierce/bounce ในคำอธิบาย)
@@ -231,12 +232,12 @@
 - **ปุ่มเร่งเวลา x2/x3 เร่งแค่โจมตี (v1.9.x):** Arcade `physics.world.timeScale` **กลับด้าน** (ค่ามาก=step ห่าง=ช้าลง) การเคลื่อนที่ทุกอย่างใช้ velocity=physics → `setGameSpeed` ตั้ง `=s` ทำให้ช้าลง (ส่วน time/tween/dt เร็วขึ้น = เร่งแค่ timer/โจมตี) → แก้เป็น **`=1/s`** · hitStop ก็กลับด้าน (0.05=เร็ว 20x ไม่ freeze) → ใช้ค่ามาก (12) = freeze จริง
 
 ## 5. ถัดไป (roadmap ตามลำดับ "ระบบก่อนกราฟิก")
-1. เทส Power Rating บนเครื่องจริงและปรับค่าพลังแนะนำ 100/280/560/940/1450 จากอัตราชนะจริง
-2. จูน Cutscene ให้กระชับและเพิ่มบทสนทนาเฉพาะตัวละคร×ด่านเมื่อเนื้อเรื่องหลักนิ่ง
-3. เทส Clogmaw บน Android จริงว่าท่า suction/overflow ไม่มีกรอบดำ และจูน telegraph/hitbox ต่อจากอัตราชนะ
-4. ขยายไอเทมกิมมิคให้มี drop table/ความหายากและ Tutorial ในคัมภีร์
-5. **Endgame:** Ascension, Endless (Midnight Kitchen), leaderboard, Daily และบอสลับ The Great Hunger
-6. *(ขั้นสุดท้าย)* polish กราฟิก/เพลง/เสียง → Capacitor → AdMob/IAP → Play Store
+1. ทำด่าน 3 ให้ครบ: props ห้องเครื่องพริก → action sheet มิสเตอร์เตาปิ้ง → telegraph/แพตเทิร์นเฉพาะ → เทสมือถือ
+2. ทำด่าน 4 ให้ครบ: ศัตรูคุกเย็น → props น้ำแข็ง/กรง → action sheet โกเลมไอศกรีม → telegraph/แพตเทิร์นเฉพาะ → เทสมือถือ
+3. เทส Power Rating และ difficulty 1–5 ของด่าน 3–4 จากอัตราชนะจริง
+4. จูน Cutscene ตัวละคร×ด่านให้กระชับหลัง gameplay ของด่าน 3–4 นิ่ง
+5. ขยายไอเทมกิมมิคให้มี drop table/ความหายากและ Tutorial ในคัมภีร์
+6. **Endgame:** Ascension, Endless (Midnight Kitchen), leaderboard, Daily และบอสลับ The Great Hunger
 
 ## 6. เอกสารออกแบบ (Artifacts — ความจำภาพ)
 เอกสารเหล่านี้เผยแพร่เป็น artifact แล้ว (ถ้าต้องแก้ให้ publish ทับ URL เดิม):

@@ -37,6 +37,7 @@
 | ENM-04 | ลูกศรชี้บอสไม่ต้องแสดงระยะเป็นเมตร | แสดงเฉพาะทิศ และซ่อนเมื่อบอสอยู่ในพื้นที่มองเห็น |
 | ENM-05 | เลเวลอัพตรงกับบอสเข้า cutscene แล้ว state ชนกัน | ทำ transition queue/lock: cutscene กับ level-up เปิดพร้อมกันไม่ได้ และ resume time/physics เพียงครั้งเดียว |
 | ENM-06 | ด่าน 2 ต้องเป็นฉากใหม่ มี monster และ boss ใหม่ | ห้าม reuse ชุดศัตรู/บอสเดิมเพียงเปลี่ยนสี; ตรวจ lore, silhouette, mechanic และ reward ของด่าน |
+| ENM-07 | ด่าน 3 ต้องใช้ศัตรูห้องเครื่องพริกเฉพาะธีม | ตรวจ basic/fast-dasher/shooter/bomber/tank-siege ใช้ `e_fire_*` ถูกบทบาท, alpha จริง, ไม่มี tint ค้างจาก pool, hitbox อยู่ใน silhouette และ Elite ใช้โกเลมเตาถ่าน |
 
 ## C. Skills, VFX และ Cards
 
