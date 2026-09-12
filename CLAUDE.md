@@ -56,7 +56,12 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.22.0 Difficulty Select)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.23.0 Reroll/Banish + Near-Death)
+- **v2.23.0 (แก้จาก feedback เจ้าของ):**
+  · **Reroll/Banish ตอนเลเวลอัพ:** `REROLL_MAX`=3 / `BANISH_MAX`=2 ต่อด่าน (รีเซ็ตใน startRun) · ปุ่ม 🎲 สุ่มใหม่ (`doReroll`) + 🚫 ลบสกิล (`toggleBanishMode`→`banishCard`) วาดด้วย `drawLevelActionBar(y)` ล่างการ์ด · `this.banishedKeys` เก็บ `'a:'+key`/`'p:'+key` ที่ลบ → `rollUpgrades` ข้าม (skip continue ในลูป SKILLDEFS/PASSIVES) · `pickCardAt` เช็ก `lvlActionBtns` ก่อน + โหมด banish แตะการ์ด=ลบ · reroll/banish เรียก `openLevelUp` ใหม่ (ไม่ลด pendingLvl)
+  · **ลดตัวตีไกลเวฟแรก:** drain[0]/drain[2]/profiles[2] เอา shooter ออก (เหลือ basic/fast) — 3 เวฟแรกเน้นประชิด
+  · **HUD:** ป้ายเลเวลสกิลบนแถบล่าง = จานพื้นเข้ม+ตัวใหญ่ 11px+ขอบ (`buildSkillBar`) · ย้ายปุ่มเฉพาะตัว (`uniqueBtn`) จากซ้ายปุ่มพุ่ง → **เหนือ**ปุ่มพุ่ง (w-58, H-78-80) แก้ทั้ง buildHUD + onResize
+  · **Near-death tension (Fun #6):** `tickNearDeath(dt)` เรียกใน update · HP<30% → `lowHpVig` (vignette tint แดง depth41) เต้น alpha ตาม sin ถี่ขึ้นเมื่อวิกฤต + `Sfx.heartbeat(sev)` + shake เบา · hysteresis คืน >30% ซ่อน · ซ่อนใน die()/hudVisible(false)
 - **v2.22.0 (ระบบเลือกความยาก + กฎเหล็ก):** `DIFFS` 1-5 (hp/dmg/reward) · `this.stageDiff` เลือกใน `openDifficultyChoice(idx)` (เปิดก่อน startRun แทนกดด่านตรง ๆ) · `diffMul()` คูณ HP/ดาเมจศัตรู+บอส และ **รางวัล** (rollStageReward gear chance/tier + sugar per-kill × reward) · **ดึงความยากฐานลง** (enemy ×1.6→base, boss ×4.5→×2.3, mini ×1.7→×1.3, killPowerMul 0.008→0.005, rage tiers hp max 2.4) เพราะบัญชีใหม่ diff1 ต้องผ่านได้ · `Save.data.diffBest[]` จำระดับสูงสุดที่ผ่าน (โชว์ ✓) · โชว์ diff ใน stageTxt · **กฎเหล็ก: ยิ่งยากรางวัลยิ่งดี**
 - **v2.21.0 (แก้จาก feedback):** Awaken ลดความโกง — `cdOf` awaken 0.62→0.85 · ตัวคูณดาเมจ awaken ทุกสกิล 1.4-1.7→1.1-1.2 · ความกว้าง (frost 2.6→1.6 ฯลฯ) ลด · **คงจำนวนกระสุน/counts เดิม = ยังอลังการ** · เปลี่ยนชื่อ rage tier เป็นคำไทยธรรมชาติ (ปกติ/เริ่มโมโห/โกรธจัด/คลั่ง/บ้าคลั่งสุดขีด — เลิก "ทรราชแก่นรส") · **หมายเหตุ: คำไทย lore อื่น ๆ (แก่นรส/สายใย) ยังไม่แตะ รอเจ้าของชี้จุด**
 - **v2.20.0 (แก้จาก feedback — ยากขึ้น):** `killPowerMul()`=1+min(2.6,stageKills*0.008) คูณ HP ศัตรูปกติ/elite (×1.6/×1.7 base ด้วย) → มอนถึกขึ้นเรื่อย ๆ ตามที่ตายในด่าน · บอสใหญ่ HP ×4.5 · มินิ ×1.7 · `bossHpMul` cap 3.0 · rage tiers HP สูงสุด 3.5 · sprinkle speed 660/820 gap 100/60 cd max(0.6,..) · voidPull อ่อนต้นโตตามเลเวล (r=150+ul*30 ฯลฯ) · **ค่าจูนแรง อาจต้องดึงกลับถ้าโหดเกินหลังเทสจริง**
