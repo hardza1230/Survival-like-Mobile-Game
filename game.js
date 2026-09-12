@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.21.0';
+const GAME_VERSION = '2.22.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.22.0', date:'2026-09-12', title:'Difficulty Select 1–5 · Harder = Better Rewards', items:[
+    'เลือกระดับความยาก 1-5 ก่อนเข้าด่าน (5 = นรกแตก) — ศัตรู/บอสถึกขึ้นตามระดับ',
+    '🏆 กฎเหล็ก: ยิ่งยาก รางวัลยิ่งดี (Sugar/ของสวมใส่/โอกาสแรร์-เอปิก ×ตามความยาก)',
+    'ดึงความยากฐาน (ระดับ 1) ลงให้ผ่านได้จริงตั้งแต่บัญชีใหม่ · จำระดับสูงสุดที่ผ่าน (โชว์ ✓)' ] },
   { v:'2.21.0', date:'2026-09-12', title:'Awaken Nerf (Keep Spectacle), Cleaner Thai', items:[
     'ลดความโกงของ Awaken: ดาเมจ/ความเร็วโจมตี/ความกว้างลงมาก (คูลดาวน์ 0.62→0.85 · ตัวคูณดาเมจ 1.4-1.7→1.1-1.2) — แต่คงจำนวนกระสุน/เอฟเฟกต์ให้ยังดูอลังการ',
     'ปรับชื่อระดับความโกรธบอสให้เป็นคำไทยธรรมชาติ (เลิกใช้ "ทรราชแก่นรส")' ] },
@@ -911,6 +915,14 @@ const SKILLDEFS = {
 const SKILL_AWAKEN_LV = 6;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (5 ดาว)
 // Juice: หมุดหมายคอมโบฆ่าต่อเนื่อง {จำนวน: [สเต็ปเสียง, คำชม]}
 const STREAK_MARKS = {10:[0,'ดีย์!'],25:[1,'สุดยอด!'],50:[2,'โหดจัด!'],100:[3,'เทพ!'],200:[4,'อสูร!'],350:[5,'ตำนาน!']};
+// ระดับความยากต่อด่าน (เลือกก่อนเล่น) — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่ "รางวัลยิ่งดี"
+const DIFFS = [
+  {lv:1,name:'ง่าย',   emoji:'🟢',color:0x66d3b3,hp:1.0, dmg:1.0,  reward:1.0},
+  {lv:2,name:'ปกติ',   emoji:'🔵',color:0x6bb8ff,hp:1.4, dmg:1.08, reward:1.4},
+  {lv:3,name:'ยาก',    emoji:'🟡',color:0xffd24d,hp:1.9, dmg:1.18, reward:1.9},
+  {lv:4,name:'โหด',    emoji:'🟠',color:0xff9a4d,hp:2.6, dmg:1.30, reward:2.5},
+  {lv:5,name:'นรกแตก', emoji:'🔴',color:0xff5a6e,hp:3.6, dmg:1.45, reward:3.4},
+];
 const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
 const PASSIVE_CAP = 4;       // จำกัดพรติดตัว ลด power stacking และทำให้คู่ Evolution มีความหมาย
@@ -2162,8 +2174,31 @@ class Game extends Phaser.Scene {
     const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-28,410):Math.min(370,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
     const rows=Math.ceil(STAGES.length/cols),y0=portrait?100:69,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
     STAGES.forEach((st,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked;
-      this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.startRun(i));
+      this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.openDifficultyChoice(i));
     });
+    this.menu.setVisible(true);
+  }
+  // เลือกระดับความยาก 1-5 ก่อนเข้าด่าน — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่รางวัลยิ่งดี
+  openDifficultyChoice(idx){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกความยาก');
+    const st=STAGES[idx],portrait=this.W<=this.H,best=(Save.data.diffBest||[])[idx]||0;
+    const t=this.add.text(this.W/2,portrait?78:52,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe07a'}).setOrigin(0.5);
+    const sub=this.add.text(this.W/2,portrait?98:70,'ยิ่งยาก ศัตรูยิ่งถึก — แต่รางวัลยิ่งดี 🏆',{fontFamily:'sans-serif',fontSize:'10px',color:'#cdbfe0'}).setOrigin(0.5);
+    this.menu.add([t,sub]);
+    const x=Math.max(16,(this.W-Math.min(this.W-28,420))/2),w=Math.min(this.W-28,420),y0=portrait?122:92,gap=8;
+    const rowH=Math.min(portrait?70:52,(this.H-y0-70-gap*4)/5);
+    DIFFS.forEach((d,i)=>{
+      const y=y0+i*(rowH+gap), g=this.add.graphics();
+      g.fillStyle(0x241a30,0.96);g.fillRoundedRect(x,y,w,rowH,12);g.lineStyle(2.5,d.color,0.95);g.strokeRoundedRect(x,y,w,rowH,12);g.fillStyle(d.color,1);g.fillRoundedRect(x,y,7,rowH,4);
+      const cleared=best>=d.lv;
+      const label=this.add.text(x+20,y+rowH*0.30,d.emoji+' ระดับ '+d.lv+' · '+d.name+(cleared?'  ✓':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5);
+      const info=this.add.text(x+20,y+rowH*0.72,'ศัตรู HP ×'+d.hp.toFixed(1)+' · ดาเมจ ×'+d.dmg.toFixed(2),{fontFamily:'sans-serif',fontSize:'10px',color:'#bfb5ca'}).setOrigin(0,0.5);
+      const rw=this.add.text(x+w-16,y+rowH/2,'🏆 รางวัล ×'+d.reward.toFixed(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#'+d.color.toString(16).padStart(6,'0')}).setOrigin(1,0.5);
+      this.menu.add([g,label,info,rw]); this._zone(x,y,w,rowH,()=>{ this.stageDiff=d.lv; this.startRun(idx); });
+    });
+    const by=this.H-52,bg2=this.add.graphics();bg2.fillStyle(0x2a2036,0.96);bg2.fillRoundedRect(x,by,w,38,10);bg2.lineStyle(1.6,0x51445f,1);bg2.strokeRoundedRect(x,by,w,38,10);
+    const bt=this.add.text(this.W/2,by+19,'‹ กลับไปเลือกด่าน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbb8e0'}).setOrigin(0.5);
+    this.menu.add([bg2,bt]); this._zone(x,by,w,38,()=>this.buildStageSelect());
     this.menu.setVisible(true);
   }
   buildUpgrade(){
@@ -2475,7 +2510,7 @@ class Game extends Phaser.Scene {
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
     this.buildStageProps(i);   // จัดวาง props ประดับ + แลนด์มาร์ก (ทำแผนที่ให้เป็นห้องจริง)
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
-    this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name} · ⚡ ${pg.rating}/${pg.recommended}`);
+    const _d=this.diffMul();this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name} · ${_d.emoji}${_d.name} · ⚡ ${pg.rating}/${pg.recommended}`);
     this.showBanner(`${st.emoji} ด่าน ${i+1}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
     this.updateWaveText();
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
@@ -2583,8 +2618,8 @@ class Game extends Phaser.Scene {
     let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':'e_tank');
     if(!e) e=this.enemies.create(x,y,eliteKey); else { e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ e=this.enemies.getFirstAlive(); if(!e)return; e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool เต็ม → รีไซเคิล (มินิบอสต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72][this.stageIndex]||2.72,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.7*this.killPowerMul();   // elite ถึกขึ้น + สเกลตามมอนที่ตาย
-    e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*[1,1.05,1.12,1.20,1.30][this.stageIndex]*pg.enemyDmg); e.xp=8;
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72][this.stageIndex]||2.72,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
+    e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*[1,1.05,1.12,1.20,1.30][this.stageIndex]*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.bloomStacks=0;e.bloomUntil=0;
     e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:1.55); e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);this.camWorld(e);
@@ -2641,14 +2676,15 @@ class Game extends Phaser.Scene {
   // HP บอสไต่ตามเลเวลในรันและ Power Guide แบบอ่อน ๆ เท่านั้น ไม่สเกลตาม rank เต็มจน progression ไร้ความหมาย
   bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(3.0,(1+Math.max(0,(this.level||1)-1)*0.055)*pg.enemyHp); }
   // ยิ่งฆ่ามอนในด่านเยอะ ศัตรู/บอสยิ่งถึกขึ้น (ทวีคูณ) — ทำให้เกมยากขึ้นเรื่อย ๆ ระหว่างด่าน
-  killPowerMul(){ return 1 + Math.min(2.6, (this.stageKills||0)*0.008); }
+  killPowerMul(){ return 1 + Math.min(1.8, (this.stageKills||0)*0.005); }
+  diffMul(){ return DIFFS[Math.max(0,Math.min(4,(this.stageDiff||1)-1))]; }   // ตัวคูณตามระดับความยากที่เลือก
   bossRageInfo(kills){
     const n=kills==null?(this.stageKills||0):kills,tiers=[
       {min:0,name:'ปกติ',emoji:'😐',color:0xb8b0c4,hp:1,dmg:1,spd:1,cd:1,reward:1,gear:0.45,minTier:'common'},
-      {min:60,name:'เริ่มโมโห',emoji:'💢',color:0xffb35c,hp:1.35,dmg:1.14,spd:1.05,cd:0.92,reward:1.25,gear:0.52,minTier:'common'},
-      {min:140,name:'โกรธจัด',emoji:'🔥',color:0xff7a4d,hp:1.85,dmg:1.30,spd:1.10,cd:0.84,reward:1.55,gear:0.62,minTier:'rare'},
-      {min:240,name:'คลั่ง',emoji:'👹',color:0xff405c,hp:2.55,dmg:1.50,spd:1.16,cd:0.75,reward:2.00,gear:0.74,minTier:'rare'},
-      {min:360,name:'บ้าคลั่งสุดขีด',emoji:'👑',color:0xd95cff,hp:3.5,dmg:1.75,spd:1.22,cd:0.66,reward:2.60,gear:0.88,minTier:'epic'},
+      {min:60,name:'เริ่มโมโห',emoji:'💢',color:0xffb35c,hp:1.22,dmg:1.10,spd:1.04,cd:0.93,reward:1.20,gear:0.52,minTier:'common'},
+      {min:140,name:'โกรธจัด',emoji:'🔥',color:0xff7a4d,hp:1.5,dmg:1.22,spd:1.09,cd:0.86,reward:1.45,gear:0.62,minTier:'rare'},
+      {min:240,name:'คลั่ง',emoji:'👹',color:0xff405c,hp:1.9,dmg:1.38,spd:1.14,cd:0.78,reward:1.80,gear:0.74,minTier:'rare'},
+      {min:360,name:'บ้าคลั่งสุดขีด',emoji:'👑',color:0xd95cff,hp:2.4,dmg:1.58,spd:1.20,cd:0.70,reward:2.30,gear:0.88,minTier:'epic'},
     ];let tier=0;for(let i=1;i<tiers.length;i++)if(n>=tiers[i].min)tier=i;return Object.assign({tier,kills:n},tiers[tier]);
   }
   applyBossRage(b,announce){
@@ -2671,7 +2707,7 @@ class Game extends Phaser.Scene {
     const mScale=this.stageIndex===1?0.88:(mArt?1.15:1.7); b.baseScale=mScale; b._sqX=1; b._sqY=1;
     const mRadius=this.stageIndex===1?48:(mArt?52:26),mOff=this.stageIndex===1?48:(mArt?18:5);
     b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.7*this.bossHpMul(); b.maxhp=b.hp; b.spd=72; b.dmg=Math.round(st.bossDmg*1.2*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึกขึ้นมาก (feedback: ยากขึ้น)
+    b.hp=st.bossHp*1.3*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=72; b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอส: ฐานแฟร์ + ระดับความยาก
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.85; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // มินิบอสมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
@@ -2715,7 +2751,7 @@ class Game extends Phaser.Scene {
     const fScale=this.stageIndex===1?0.88:(isArt?1.55:2.5); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===1?68:(isArt?54:26),fOff=this.stageIndex===1?60:(isArt?16:5);
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*4.5; b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.45*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่ถึกขึ้นอีก (×4.5) + rage สเกลตามมอนที่ตาย (feedback: ยากขึ้น)
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*2.3*this.diffMul().hp; b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false;   // บอสใหญ่: ฐานแฟร์ (×2.3) + ระดับความยาก + rage สเกลตามมอนที่ตาย
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.8; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -2791,19 +2827,21 @@ class Game extends Phaser.Scene {
     this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.playStageBgm(this.stageIndex+1);this.clearFoes();this.clearEnemies();this.clearBossObjects();
     const next=this.stageIndex+1,canUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next;
     if(canUnlock){Save.data.unlockedStage=next;Save.save();}
+    if(!Save.data.diffBest)Save.data.diffBest=[];if((this.stageDiff||1)>(Save.data.diffBest[this.stageIndex]||0)){Save.data.diffBest[this.stageIndex]=this.stageDiff||1;Save.save();}   // จำความยากสูงสุดที่ผ่าน
     this._stageReward=this.rollStageReward();
     this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();
     this.showBanner('🎁 เปิดกล่องรางวัล!',this._stageReward.label+(canUnlock?' · ปลดล็อกด่าน '+(next+1):''),2400);
     this.time.delayedCall(900,()=>{if(this.mode==='reward')this.onStageClear();});
   }
   rollStageReward(){
-    const stage=this.stageIndex+1,rage=this._rewardRage||this.bossRageInfo();
-    if(Math.random()<rage.gear){
-      let tier=rage.minTier;if(tier==='common')tier=stage>=4&&Math.random()<0.24?'epic':stage>=2&&Math.random()<0.38?'rare':'common';else if(tier==='rare'&&Math.random()<(rage.tier>=3?0.34:0.18))tier='epic';
+    const stage=this.stageIndex+1,rage=this._rewardRage||this.bossRageInfo(),dr=this.diffMul().reward;   // กฎเหล็ก: ยิ่งยาก รางวัลยิ่งดี
+    const diffHi=(this.stageDiff||1)>=4;   // ความยากสูง = ลุ้นของแรร์/เอปิกมากขึ้น
+    if(Math.random()<Math.min(0.95,rage.gear*dr)){
+      let tier=rage.minTier;if(tier==='common')tier=(stage>=4||diffHi)&&Math.random()<0.24*dr?'epic':(stage>=2||this.stageDiff>=3)&&Math.random()<0.38*dr?'rare':'common';else if(tier==='rare'&&Math.random()<(rage.tier>=3||diffHi?0.40:0.22)*Math.min(1.8,dr))tier='epic';
       const gear=this.grantGear(tier);
       if(gear){const slot=GEAR_SLOTS.find(s=>s.slot===gear.slot);return{type:'gear',emoji:slot?slot.emoji:'🎁',label:rage.emoji+' '+rage.name+' · '+(slot?slot.emoji+' ':'')+gear.name,rage};}
     }
-    const guide=this._powerGuide||this.getPowerGuide(this.stageIndex),sugar=Math.round((30+stage*15+Phaser.Math.Between(0,15))*rage.reward*guide.reward);
+    const guide=this._powerGuide||this.getPowerGuide(this.stageIndex),sugar=Math.round((30+stage*15+Phaser.Math.Between(0,15))*rage.reward*guide.reward*dr);
     this.sugarStage+=sugar;this.sugarRun+=sugar;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     return{type:'sugar',emoji:'🍬',label:rage.emoji+' '+rage.name+' · Sugar +'+sugar,amount:sugar,rage};
   }
@@ -3134,7 +3172,7 @@ class Game extends Phaser.Scene {
     else { e.setTexture(key); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool เต็ม (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05][this.stageIndex]||3.05,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*1.6*this.killPowerMul();   // ×1.6 ถึกขึ้น + สเกลตามมอนที่ตายในด่าน
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05][this.stageIndex]||3.05,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*this.killPowerMul()*this.diffMul().hp;   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
     e.bloomStacks=0;e.bloomUntil=0;
     let scale=1;
@@ -3146,7 +3184,7 @@ class Game extends Phaser.Scene {
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
     else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
-    const dmgCurve=[1,1.05,1.12,1.20,1.30][this.stageIndex]||1.30;e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg));
+    const dmgCurve=[1,1.05,1.12,1.20,1.30][this.stageIndex]||1.30;e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg));
     if(this.stageIndex===0&&type!=='acid'){
       scale=(type==='tank'||type==='siege')?0.86:(type==='fast'||type==='dasher')?0.68:0.74;
       e.setCircle(type==='tank'||type==='siege'?25:20,type==='tank'||type==='siege'?23:28,type==='tank'||type==='siege'?23:28);
@@ -3608,7 +3646,7 @@ class Game extends Phaser.Scene {
       this.burst(bx,by,0xff8b6b); Sfx.boom();
       if(this.dist(this.player.x,this.player.y,bx,by)<r) this.hurtPlayer(Math.round(12+this.stageIndex*4),0.5); }
     // เก็บ Sugar (สกุลเงินเมต้า ใช้รอบหน้า)
-    const sug=isBoss?40:isMini?18:isElite?4:1; this.sugarStage+=sug; this.sugarRun+=sug;
+    const sug=Math.max(1,Math.round((isBoss?40:isMini?18:isElite?4:1)*this.diffMul().reward)); this.sugarStage+=sug; this.sugarRun+=sug;   // ยิ่งยาก Sugar ยิ่งเยอะ
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // อัปเดตเงินรอบนี้แบบ realtime
     e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
