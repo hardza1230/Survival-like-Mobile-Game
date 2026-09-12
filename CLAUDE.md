@@ -56,8 +56,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.25.0 Rainbow Sprinkle)
-- **v2.25.0 (แก้จาก feedback เจ้าของ):** สกิล `sprinkle` — projectile เป็นเมล็ด proj_sprinkle สีรุ้งสลับสี (`RAINBOW[]` cycle ต่อนัด) · เร็วมาก (speed 980/aw1180) แต่ "เบา": ตัวเล็กลง (scale ~0.18), life สั้น (0.85/1.1), homing เบาลง (ไม่ล็อกหนักแบบจรวด) — คงดาเมจ/จำนวนนัดเดิม
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.25.1 Sprinkle Machine Gun)
+- **v2.25.1 (แก้จาก feedback เจ้าของ):** `sprinkle` = **ปืนกล 1-hit** · `pierce=false`,`bounce=0` (โดนแล้วหายทันที) · เพิ่มจำนวนนัด/ชุด (4/6/8/11, aw16) + gap สั้น (52/aw38) รัวถี่ · SKILL_TIERS/role/awaken desc อัปเป็นสาย "รัวเร็ว เบา" (เลิก pierce/bounce ในคำอธิบาย)
+- **v2.25.0 (แก้จาก feedback เจ้าของ):** สกิล `sprinkle` — projectile เป็นเมล็ด proj_sprinkle สีรุ้งสลับสี (`RAINBOW[]` cycle ต่อนัด) · เร็วมาก (speed 980/aw1180) แต่ "เบา": ตัวเล็กลง, life สั้น (0.85/1.1), homing เบาลง
 - **v2.24.0 (แก้จาก feedback เจ้าของ):**
   · **ปุ่มเฉพาะตัว = ไอคอนล้วน:** `uniqueTxt` เหลือแค่ emoji (26px) เอาคำ "เฉพาะตัว Lv" ออก ทั้ง buildHUD + `refreshUniqueSkillUI`
   · **สกิลเฉพาะตัวโมโม่ (berryRebound):** เปลี่ยนจาก `b.chain` (สายฟ้า chainFrom แบบทาโร่) → `b.bounce`+`b.homing` = เมล็ดพุ่งเด้งหาศัตรูตัวใกล้ ๆ อย่างรวดเร็ว (bounce redirect ใน hitEnemy) · bounce=ul>=4?3:ul>=3?2:1

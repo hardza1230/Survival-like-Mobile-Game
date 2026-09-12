@@ -27,9 +27,11 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.25.0';
+const GAME_VERSION = '2.25.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.25.1', date:'2026-09-12', title:'Sprinkle = Machine Gun (1-hit)', items:[
+    'Sprinkle เป็นปืนกล: รัวเมล็ดรุ้งเป็นชุดถี่ ๆ · โดนศัตรู 1 ตัวแล้วหายเลย (ไม่ทะลุ/ไม่เด้ง) · เร็วแต่เบา' ] },
   { v:'2.25.0', date:'2026-09-12', title:'Rainbow Sprinkle Projectiles', items:[
     'สกิล Sprinkle: เมล็ดสีรุ้งสลับสี (แบบสตรอว์เบอร์รี) เร็วมากแต่เบา (ดาเมจน้อย/อยู่สั้น) เลิกดูเป็นจรวด' ] },
   { v:'2.24.0', date:'2026-09-12', title:'Icon-only Unique Button · Momo Ricochet Seeds', items:[
@@ -892,8 +894,8 @@ class Boot extends Phaser.Scene {
 
 /* ---- SKILLS: auto-cast, flashy, stackable ---- */
 const SKILLDEFS = {
-  sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', role:'ยิงเร็ว · เป้าหมายเดี่ยว', max:5, desc:'ยิงลูกกวาดใส่ศัตรูใกล้สุด ต่อเนื่องและไว้ใจได้',
-    awaken:{ name:'พายุสายรุ้ง', emoji:'🌈', desc:'ยิง 8 เม็ดไล่เป้าอัตโนมัติ ทะลุ+เด้ง ร่ายถี่ยิบ!' } },
+  sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', role:'ปืนกล · รัวเร็ว เบา', max:5, desc:'รัวเมล็ดรุ้งใส่ศัตรูใกล้สุดเป็นชุด เร็วแต่เบา · โดนแล้วหาย (1 hit)',
+    awaken:{ name:'พายุสายรุ้ง', emoji:'🌈', desc:'รัว 16 เม็ดสายรุ้ง เร็วยิบ ไล่เป้าอัตโนมัติ!' } },
   star:    { name:'Star Guard',     emoji:'🌟', role:'ป้องกัน · ระยะประชิด', max:5, desc:'ดาวโคจรทำดาเมจและสกัดกระสุนที่เข้าใกล้', orbit:true,
     awaken:{ name:'วงกาแล็กซี', emoji:'💫', desc:'ดาว 3 วง หมุนไว ดาเมจมหาศาล!' } },
   thunder: { name:'Thunder Crown',  emoji:'⚡', role:'ล่าตัวแกร่ง · ลูกโซ่', max:5, desc:'ผ่าเป้าหมาย HP สูงสุด แล้วชิ่งสายฟ้าไปศัตรูรอบข้าง',
@@ -1053,7 +1055,7 @@ function charExpNeed(l){ return 40 + l*35; }
 
 /* ---- SKILL_TIERS: อธิบายว่า "แต่ละเลเวล" ปลดเอฟเฟกต์อะไร (โชว์บนการ์ด) ---- */
 const SKILL_TIERS = {
-  sprinkle:{ 2:'ยิงทีละ 2 เม็ด', 3:'ลูกใหญ่ขึ้น + ทะลุศัตรู', 4:'ยิงทีละ 3 เม็ด กระจายกว้าง', 5:'ลูกกวาดเด้งไปเป้าถัดไป', 6:'ยิง 5 เม็ด ทะลุทุกตัว สายรุ้ง!' },
+  sprinkle:{ 2:'รัว 6 เม็ด/ชุด', 3:'รัวถี่ขึ้น', 4:'รัว 8 เม็ด/ชุด', 5:'รัวไวขึ้นอีก', 6:'รัว 11 เม็ด/ชุด สายรุ้ง!' },
   star:    { 2:'+1 ดวง คุ้มกันแน่นขึ้น', 3:'วงกว้าง + หมุนเร็วขึ้น', 4:'+1 ดวง ดวงใหญ่ขึ้น', 5:'ดาวกระจายประกายเมื่อชน', 6:'วงดาวคู่ ชั้นในชั้นนอก!' },
   thunder: { 2:'ฟ้าผ่า 2 จุดพร้อมกัน', 3:'ไฟฟ้าแตกลูกไปตัวข้าง ๆ', 4:'ฟ้าผ่า 3 จุด', 5:'แตกลูกต่อ 2 ตัว', 6:'ฟ้าผ่า 4 จุด แตกลูกทุกจุด!' },
   whirl:   { 2:'ใบพัดครีม 8 ทิศ', 3:'ใบพัดใหญ่ บินไกลขึ้น', 4:'ใบพัด 10 ทิศ', 5:'ใบพัดใหญ่มาก', 6:'12 ทิศ ทะลุศัตรู!' },
@@ -3314,17 +3316,16 @@ class Game extends Phaser.Scene {
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
     this.vfxCastGlow(_castColors[key]||0xffffff);
     if(key==='sprinkle'){ if(!this.nearestEnemy(aw?900:640))return;
-      let shots=aw?8:lvl>=6?5:lvl>=4?3:lvl>=2?2:1;
-      if(this.player.twinSprinkle) shots+=2;
-      const pierce=lvl>=3||aw, bounce=(lvl>=5?2:0)+(cf.ricochet?1:0)+((aw||this.player.twinSprinkle)?2:0);
-      // เมล็ดรุ้ง: เร็วมาก แต่ "เบา" (ดาเมจน้อย/อยู่สั้น) — projectile แบบเดียวกับสตรอว์เบอร์รี ไม่หนักเหมือนจรวด
+      // ปืนกล: รัวเมล็ดรุ้งเป็นชุด ยิงเร็ว/เบา · โดน 1 ตัวแล้วหายไปเลย (ไม่ทะลุ ไม่เด้ง) · เก็บทีละตัวรัว ๆ
+      let shots=aw?16:lvl>=6?11:lvl>=4?8:lvl>=2?6:4;
+      if(this.player.twinSprinkle) shots+=3;
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
-      const homing=aw?520:(lvl>=2?360:260), speed=aw?1180:980, gap=aw?52:90;   // เร็วมาก + โค้งเบา ๆ (ไม่ล็อกหนักแบบจรวด)
+      const homing=aw?480:(lvl>=2?320:220), speed=aw?1180:980, gap=aw?38:52;   // เร็ว + รัวถี่ (machine gun) + โค้งเบา ๆ
       let idx=0;
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
-        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.18+lvl*0.012+(aw?0.05:0)); if(!b)return;   // ตัวเล็กลง = ดูเบา
+        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.18+lvl*0.012+(aw?0.05:0)); if(!b)return;   // ตัวเล็ก = ดูเบา
         b.setTexture('proj_sprinkle').setTint(RAINBOW[idx++%RAINBOW.length]); b.faceVel=true;
-        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.1:0.85; b.pierce=pierce; b.bounce=bounce; b.homing=homing;   // อยู่สั้น = เบา
+        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.1:0.85; b.pierce=false; b.bounce=0; b.homing=homing;   // 1-hit: โดนแล้วหาย
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+Phaser.Math.FloatBetween(-0.12,0.12);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
