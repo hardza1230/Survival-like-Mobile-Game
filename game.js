@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.31.6';
+const GAME_VERSION = '2.31.7';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.31.7', date:'2026-09-12', title:'Run Results', items:[
+    'ยกเครื่องหน้าสรุปเมื่อแพ้ให้แสดงเวลา ด่าน ความยาก จำนวนฆ่า เลเวล Sugar EXP และสรุป Build',
+    'เพิ่มปุ่มเล่นด่านเดิมอีกครั้งและกลับ Hub แยกชัดเจน แทนการแตะที่ใดก็ได้แล้วเริ่มใหม่',
+    'หน้าสรุปผ่านด่านเพิ่ม Daily Bonus และจำนวนสกิล/พรที่ประกอบเป็น Build' ] },
   { v:'2.31.6', date:'2026-09-12', title:'First-run Tutorial', items:[
     'เพิ่ม Onboarding 4 หน้า สอนการเดิน Dash อาวุธอัตโนมัติ Unique และการอ่านพื้นที่อันตราย',
     'ผู้เล่นใหม่เห็น Tutorial หลังเลือกอาวุธครั้งแรก และบันทึกว่าเรียนจบแล้ว',
@@ -1671,7 +1675,8 @@ class Game extends Phaser.Scene {
         return; }
       if(this.state==='menu'){ this.handleTap(p.x,p.y); return; }
       if(this.state==='tutorial'){this.advanceTutorial();return;}
-      if(this.state==='dead'||this.state==='win'){ this.scene.restart(); return; }
+      if(this.state==='dead'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
+      if(this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='summary'){ Sfx.select(); this.continueFromSummary(); return; }
       if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
       if(this.state==='startskill'){ this.pickStartingSkillAt(p.x,p.y); return; }
@@ -3216,6 +3221,7 @@ class Game extends Phaser.Scene {
       ['🎁 รางวัลกล่อง', reward.label],
       ['⚡ ค่าพลัง', (this._powerBefore||Save.power(this.character))+' → '+(this._powerAfter||Save.power(this.character))+(this._firstMastery?' · Mastery!':'')],
       [ch.emoji+' EXP ตัวละคร', '+'+(this._lastExpGain||0)],
+      ['⚔️ Build', Object.keys(this.skills||{}).length+' อาวุธ · '+Object.keys(this.passives||{}).length+' พร'+(this._dailyBonus?' · Daily +🍬'+this._dailyBonus:'')],
       ['🌟 เลเวลตัวละคร', 'Lv '+cp.lvl+(this._lastLvlUps>0?'  (เลเวลอัพ! +'+this._lastLvlUps+' แต้ม)':'')],
     ];
     const box=[bg,em,t]; let y=h*0.39,step=Math.min(28,(h*0.70-y)/rows.length),rowFont=Math.max(9,Math.min(15,step-2));
@@ -4678,20 +4684,22 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){ if(this.state==='dead')return; this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false); Sfx.dead(); Save.addSugar(this.sugarStage); const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);this.gainCharExp(Math.round((this.kills+this.stageIndex*15)*pg.reward)); this.sugarStage=0; this.physics.pause(); this.player.setVelocity(0,0);
-    if(this._hasFrames){ const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(CF.ko); this.player.setScale(this._pBase||1); this.player.setRotation(0); }
+  die(){ if(this.state==='dead')return; this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();
+    this._deathSugar=this.sugarStage||0;this._deathPowerBefore=Save.power(this.character);Save.addSugar(this._deathSugar);const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),exp=Math.round((this.kills+this.stageIndex*15)*pg.reward);this.gainCharExp(exp);this._deathExp=exp;this._deathPowerAfter=Save.power(this.character);this.sugarStage=0;this.physics.pause();this.player.setVelocity(0,0);
+    if(this._hasFrames){const baseCharKey='char_'+this.character;if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);this.player.setFrame(CF.ko);this.player.setScale(this._pBase||1);this.player.setRotation(0);}
     this.buildOver(); }
-  buildOver(){ const w=this.W,h=this.H; this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.88).setOrigin(0,0);
-    const em=this.add.text(w/2,h*0.26,'🫠',{fontSize:'64px'}).setOrigin(0.5);
-    const t=this.add.text(w/2,h*0.39,'โมจิละลายแล้ว!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'28px',color:'#ff8fb5'}).setOrigin(0.5);
-    const mm=Math.floor(this.elapsed/60), ss=Math.floor(this.elapsed%60);
-    const stat=this.add.text(w/2,h*0.49,`รอดได้ ${mm}:${ss.toString().padStart(2,'0')}  ·  กำจัด ${this.kills}  ·  Lv ${this.level}`,{fontFamily:'sans-serif',fontSize:'16px',color:'#c7bdd6'}).setOrigin(0.5);
-    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-110,h*0.63-30,220,60,22);
-    btn.lineStyle(3,0xffffff,0.3); btn.strokeRoundedRect(w/2-110,h*0.63-30,220,60,22);
-    const bt=this.add.text(w/2,h*0.63,'↻ เล่นอีกครั้ง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
-    const hint=this.add.text(w/2,h*0.72,'(แตะตรงไหนก็ได้)',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);
-    this.over.add([bg,em,t,stat,btn,bt,hint]); this.over.setVisible(true); }
+  buildOver(){const w=this.W,h=this.H;this.over.removeAll(true);this._overBtns=[];
+    const bg=this.add.rectangle(0,0,w,h,0x100b17,0.95).setOrigin(0,0),em=this.add.text(w/2,h*0.12,'🫠',{fontSize:'54px'}).setOrigin(0.5),t=this.add.text(w/2,h*0.22,'โมจิละลายแล้ว!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'27px',color:'#ff8fb5'}).setOrigin(0.5);
+    const mm=Math.floor(this.elapsed/60),ss=Math.floor(this.elapsed%60),st=STAGES[this.stageIndex]||STAGES[0],diff=DIFFS[(this.stageDiff||1)-1]||DIFFS[0],skills=Object.keys(this.skills||{}).map(k=>SKILLDEFS[k]?.name).filter(Boolean),passes=Object.keys(this.passives||{}).map(k=>PASSIVES[k]?.name).filter(Boolean);
+    const panel=this.add.graphics();panel.fillStyle(0x241c2d,0.96);panel.fillRoundedRect(20,h*0.28,w-40,h*0.40,17);panel.lineStyle(2,0x664c72,0.9);panel.strokeRoundedRect(20,h*0.28,w-40,h*0.40,17);
+    const rows=[['🗺 ด่าน',st.emoji+' '+st.name],['🔥 ความยาก',diff.emoji+' '+diff.name],['⏱ เวลารอด',mm+':'+ss.toString().padStart(2,'0')],['☠ กำจัด',String(this.kills)],['🌟 Run Level','Lv '+this.level],['🍬 Sugar','+'+(this._deathSugar||0)],['✨ Character EXP','+'+(this._deathExp||0)],['⚡ ค่าพลัง',(this._deathPowerBefore||0)+' → '+(this._deathPowerAfter||0)]];
+    const box=[bg,em,t,panel];let y=h*0.315,step=(h*0.325)/rows.length;rows.forEach(r=>{const l=this.add.text(34,y,r[0],{fontFamily:'sans-serif',fontSize:'11px',color:'#bfaec8'}).setOrigin(0,0.5),v=this.add.text(w-34,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',wordWrap:{width:w*0.55},align:'right'}).setOrigin(1,0.5);box.push(l,v);y+=step;});
+    const build=this.add.text(w/2,h*0.655,'BUILD · '+(skills.slice(0,3).join(' / ')||'อาวุธเริ่มต้น')+(passes.length?'\nพร: '+passes.slice(0,3).join(' / '):''),{fontFamily:'sans-serif',fontSize:'9px',color:'#d8c4e3',align:'center',wordWrap:{width:w-60},maxLines:2}).setOrigin(0.5);box.push(build);
+    const bw=Math.min(180,(w-52)/2),bh=48,by=h*0.79,left=w/2-bw/2-6,right=w/2+bw/2+6,draw=(cx,color,label)=>{const g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(cx-bw/2,by-bh/2,bw,bh,15);g.lineStyle(2,0xffffff,0.25);g.strokeRoundedRect(cx-bw/2,by-bh/2,bw,bh,15);const tx=this.add.text(cx,by,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(0.5);box.push(g,tx);};
+    draw(left,COLORS.pink,'↻ เล่นด่านเดิม');draw(right,COLORS.grape,'🏠 กลับ Hub');
+    this._overBtns.push({x:left-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>{this.over.setVisible(false);this.physics.resume();this.state='menu';this.startRun(this.stageIndex);}});
+    this._overBtns.push({x:right-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.scene.restart()});
+    const hint=this.add.text(w/2,h*0.90,(Save.data.sugar||0)>=GACHA_COST?'Sugar พอเปิดกล่องอุปกรณ์แล้ว!':'พัฒนาอุปกรณ์และสายใย แล้วกลับมาลองอีกครั้ง',{fontFamily:'sans-serif',fontSize:'10px',color:'#9f91aa'}).setOrigin(0.5);box.push(hint);this.over.add(box);this.over.setVisible(true); }
 
   _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   updateObjectiveArrow(){
