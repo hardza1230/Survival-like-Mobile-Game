@@ -33,7 +33,8 @@ const CHANGELOG = [
   { v:'2.14.0', date:'2026-09-12', title:'Juice: Kill-Streak Combos & Heavy-Hit Impact', items:[
     'เพิ่มระบบคอมโบฆ่าต่อเนื่อง (kill-streak) — ป็อปคอมโบกลางจอ + เสียง pitch สูงขึ้นที่หมุด 10/25/50/100/200/350',
     'ฆ่าตัวใหญ่/elite = hit-stop กระแทกหยุดเสี้ยววินาที ให้รู้สึกหนักแน่น',
-    'รีเซ็ตคอมโบทุกครั้งที่เริ่มรอบ · คอมโบขาดเมื่อหยุดฆ่าเกิน 1.6 วินาที' ] },
+    'รีเซ็ตคอมโบทุกครั้งที่เริ่มรอบ · คอมโบขาดเมื่อหยุดฆ่าเกิน 1.6 วินาที',
+    'บอสใหญ่ตาย: หน่วง 1.6 วินาทีให้เห็นฉากระเบิดอลังการก่อนเปิดกล่องรางวัล + slow-motion กระแทกตอนบอสตาย' ] },
   { v:'2.13.0', date:'2026-09-12', title:'Feedback Fixes: Arc Taro, Card Highlight & Clogmaw Sprite', items:[
     'แก้บอสด่าน 2 เป็น sprite ดำ (ชีตมีเฟรมจริงแค่ 0–3) โดย map ท่า prison/suction/overflow/enrage กลับเข้าเฟรมที่มีจริง',
     'เปลี่ยน Unique ของตาโร่เป็น "สายฟ้าชิ่ง" ยิงจากตัวแล้วลามไปศัตรูตัวต่อ ๆ ไปแบบ Arc (คงการคืน Dash + เร่งฝีเท้า)',
@@ -2700,7 +2701,7 @@ class Game extends Phaser.Scene {
   }
   // ฉากบอสตาย: สโลว์โมชัน + จอวาบ + ระเบิดเป็นชุด + คลื่นกระแทก
   bossDefeat(x,y){
-    Sfx.clear(); this.screenFlash(0xffffff,0.7,420); this.cameras.main.shake(600,0.016);
+    Sfx.clear(); this.hitStop(90); this.screenFlash(0xffffff,0.7,420); this.cameras.main.shake(600,0.016);
     for(let i=0;i<5;i++) this.time.delayedCall(60+i*80,()=>{
       this.burst(x+Phaser.Math.Between(-50,50),y+Phaser.Math.Between(-50,50),[0xffd166,0xff8fb5,0xbfe8ff][i%3]); });
     for(let i=0;i<3;i++){ const ring=this.camWorld(this.add.circle(x,y,20,0xffe08a,0).setDepth(7).setStrokeStyle(5,0xffd166,0.9));
@@ -3509,7 +3510,9 @@ class Game extends Phaser.Scene {
     const sug=isBoss?40:isMini?18:isElite?4:1; this.sugarStage+=sug; this.sugarRun+=sug;
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // อัปเดตเงินรอบนี้แบบ realtime
     e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
-    if(isBoss){ this.onBossDown(e.x,e.y); return; }   // บอสตาย = สุ่ม Sugar/อุปกรณ์ → สรุปด่าน → กลับหน้าเลือกด่าน
+    if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
+      const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
+      this.time.delayedCall(1600,()=>{ if(this.state==='play'||this.state==='levelup') this.onBossDown(bx,by); }); return; }
     if(isMini){ this.onWaveCleared(); return; }   // มินิบอสตาย = ผ่านเวฟ (เวฟธรรมดาคุมด้วยเวลาใน tickStage) }
   }
   killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
