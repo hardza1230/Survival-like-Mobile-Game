@@ -56,7 +56,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.23.0 Reroll/Banish + Near-Death)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.24.0 Icon Unique + Momo Ricochet)
+- **v2.24.0 (แก้จาก feedback เจ้าของ):**
+  · **ปุ่มเฉพาะตัว = ไอคอนล้วน:** `uniqueTxt` เหลือแค่ emoji (26px) เอาคำ "เฉพาะตัว Lv" ออก ทั้ง buildHUD + `refreshUniqueSkillUI`
+  · **สกิลเฉพาะตัวโมโม่ (berryRebound):** เปลี่ยนจาก `b.chain` (สายฟ้า chainFrom แบบทาโร่) → `b.bounce`+`b.homing` = เมล็ดพุ่งเด้งหาศัตรูตัวใกล้ ๆ อย่างรวดเร็ว (bounce redirect ใน hitEnemy) · bounce=ul>=4?3:ul>=3?2:1
 - **v2.23.0 (แก้จาก feedback เจ้าของ):**
   · **Reroll/Banish ตอนเลเวลอัพ:** `REROLL_MAX`=3 / `BANISH_MAX`=2 ต่อด่าน (รีเซ็ตใน startRun) · ปุ่ม 🎲 สุ่มใหม่ (`doReroll`) + 🚫 ลบสกิล (`toggleBanishMode`→`banishCard`) วาดด้วย `drawLevelActionBar(y)` ล่างการ์ด · `this.banishedKeys` เก็บ `'a:'+key`/`'p:'+key` ที่ลบ → `rollUpgrades` ข้าม (skip continue ในลูป SKILLDEFS/PASSIVES) · `pickCardAt` เช็ก `lvlActionBtns` ก่อน + โหมด banish แตะการ์ด=ลบ · reroll/banish เรียก `openLevelUp` ใหม่ (ไม่ลด pendingLvl)
   · **ลดตัวตีไกลเวฟแรก:** drain[0]/drain[2]/profiles[2] เอา shooter ออก (เหลือ basic/fast) — 3 เวฟแรกเน้นประชิด

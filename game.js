@@ -27,9 +27,12 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.23.0';
+const GAME_VERSION = '2.24.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.24.0', date:'2026-09-12', title:'Icon-only Unique Button · Momo Ricochet Seeds', items:[
+    'ปุ่มสกิลเฉพาะตัวเป็นไอคอนล้วน (เอาตัวหนังสือออก)',
+    'สกิลเฉพาะตัวโมโม่ (สตรอว์เบอร์รี): เมล็ดพุ่งเด้งหาศัตรูตัวใกล้ ๆ อย่างรวดเร็ว (homing+bounce) แทนสายฟ้าชิ่งแบบทาโร่' ] },
   { v:'2.23.0', date:'2026-09-12', title:'Reroll/Banish · Fewer Early Ranged · HUD · Near-Death', items:[
     'เลเวลอัพมีปุ่ม 🎲 สุ่มใหม่ (3 ครั้ง/ด่าน) และ 🚫 ลบสกิล (2 ครั้ง/ด่าน) — สกิลที่ลบจะไม่โผล่อีกทั้งด่าน',
     'เวฟแรก ๆ ลดศัตรูตีไกล (shooter) ลงอีก — 3 เวฟแรกเน้นประชิด/ความเร็ว เรียนรู้ก่อน',
@@ -1573,7 +1576,7 @@ class Game extends Phaser.Scene {
   uniqueInfo(){ const c=CHARACTERS[this.character]||CHARACTERS.momo; return CHARACTER_UNIQUES[c.unique]||CHARACTER_UNIQUES.berryRebound; }
   uniqueCooldown(u){const lv=this.uniqueLevel||1;return u.cd*Math.max(0.80,1-(lv-1)*0.055)*(this.player.cdMul||1);}
   uniquePower(){return 1+((this.uniqueLevel||1)-1)*0.24;}
-  refreshUniqueSkillUI(){ const u=this.uniqueInfo(); if(!this.uniqueTxt)return; this.uniqueTxt.setText(u.emoji+'\\nเฉพาะตัว Lv'+(this.uniqueLevel||1)); this.uniqueBtn.setFillStyle(u.color,0.24).setStrokeStyle(2.5,u.color,0.9); }
+  refreshUniqueSkillUI(){ const u=this.uniqueInfo(); if(!this.uniqueTxt)return; this.uniqueTxt.setText(u.emoji); this.uniqueBtn.setFillStyle(u.color,0.24).setStrokeStyle(2.5,u.color,0.9); }
   uniqueCrescendo(color,lv,radius){
     const x=this.player.x,y=this.player.y,rings=lv,base=Math.max(110,radius*0.62);
     for(let i=0;i<rings;i++)this.time.delayedCall(i*70,()=>{
@@ -1592,10 +1595,11 @@ class Game extends Phaser.Scene {
     const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='oathMirror'?180+(ul-1)*18:155+(ul-1)*18;
     this.uniqueCrescendo(u.color,ul,spectacleRadius);
     if(c.unique==='berryRebound'){
-      // Momo: ปลายเกมมีลูกโซ่ (chain) ให้เมล็ดชิ่งต่อ ไม่จืดเหมือนเดิม
-      const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), chain=ul>=4?3:ul>=3?2:0;
-      for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.pierce=ul>=3;b.chain=chain;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
-      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 หัวใจเด้งกลับ Lv'+ul,shots+' เมล็ด'+(chain?' · ชิ่งต่อ '+chain+' ครั้ง':'')+' · ฟื้น HP '+Math.round((0.055+ul*0.018)*100)+'%',800);Sfx.shoot();
+      // Momo: เมล็ดสตรอว์เบอร์รี "พุ่งเด้ง" ไปหาศัตรูตัวใกล้ ๆ อย่างรวดเร็ว (ไม่ใช่สายฟ้าแบบทาโร่)
+      // ใช้ homing (โค้งเข้าหาเป้า) + bounce (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด) แทน chain lightning
+      const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), bounce=ul>=4?3:ul>=3?2:1;
+      for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=340+ul*24;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
+      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 หัวใจเด้งกลับ Lv'+ul,shots+' เมล็ด · พุ่งเด้งหาศัตรู '+bounce+' ตัว · ฟื้น HP '+Math.round((0.055+ul*0.018)*100)+'%',800);Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
       // Mint: ลดรัศมี Lv1 ลงมาก (เดิมกว้างเวอร์) แล้วค่อยโตตามเลเวล
       const r=120+(ul-1)*28+(this.player.deepFreeze?35:0);this.player.iframe=Math.max(this.player.iframe,0.75+ul*0.25);
@@ -1716,7 +1720,7 @@ class Game extends Phaser.Scene {
     this.dashRing=this.add.graphics().setScrollFactor(1).setDepth(52);
     const ubX=w-58,ubY=this.H-78-80;   // ย้ายปุ่มเฉพาะตัวมาไว้ "เหนือ" ปุ่มพุ่ง (เดิมอยู่ซ้ายของพุ่ง)
     this.uniqueBtn=this.add.circle(ubX,ubY,36,0xff76a8,0.22).setScrollFactor(1).setDepth(50).setStrokeStyle(2.5,0xff76a8,0.85);
-    this.uniqueTxt=this.add.text(ubX,ubY,'🍓\nเฉพาะตัว',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4f8',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
+    this.uniqueTxt=this.add.text(ubX,ubY,'🍓',{fontSize:'26px',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);   // ปุ่มเฉพาะตัว = ไอคอนล้วน ไม่มีตัวหนังสือ
     this.uniqueRing=this.add.graphics().setScrollFactor(1).setDepth(52);this.refreshUniqueSkillUI();
 
     // top bars: HP + XP (โค้งมน วาดด้วย graphics)
