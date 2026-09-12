@@ -15,3 +15,6 @@ scripts/_*.png
 
 # ผลลัพธ์บอทเทสอัตโนมัติ (screenshots + report) — ไม่ commit
 scripts/bot-out/
+
+# ผลลัพธ์บอทเทสถ้าเผลอรันที่ root
+/bot-out/
