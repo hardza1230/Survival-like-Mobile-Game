@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.31.0';
+const GAME_VERSION = '2.31.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.31.1', date:'2026-09-12', title:'Settings Menu', items:[
+    'เพิ่มเมนูตั้งค่าจาก Hub: เสียง, Screen Shake, Screen Flash, Damage Number และระดับคุณภาพ VFX',
+    'ทุกตัวเลือกบันทึกลงเซฟและมีผลกับการเล่นจริงทันที',
+    'โหมด VFX ต่ำลดจำนวนรัศมีและอนุภาคช่วงเปลี่ยนเฟสบอสเพื่อช่วยมือถือสเปกต่ำ' ] },
   { v:'2.31.0', date:'2026-09-12', title:'Boss Phase VFX & Gentle Shake', items:[
     'บอสและมินิบอสทุกตัวมี Phase Transition VFX มาตรฐาน: จังหวะหยุดสั้น วงผนึก คลื่นกระแทก รัศมีพลัง และสีประจำเฟส',
     'VFX ทำงานตรงกับช่วงอมตะ และระเบิดวงสุดท้ายเมื่อบอสกลับมารับดาเมจได้',
@@ -1272,12 +1276,13 @@ const GEAR = {
 const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
 function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
+const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
 const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'} };
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
-  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0 },
+  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, settings:Object.assign({},DEFAULT_SETTINGS) },
   load(){ try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
     if(!this.data.upgrades)this.data.upgrades={};
     if(!this.data.gear)this.data.gear={};
@@ -1291,6 +1296,8 @@ const Save = {
     if(!this.data.charProg)this.data.charProg={};
     if(!this.data.bestiary)this.data.bestiary={};
     if(!this.data.stageMastery)this.data.stageMastery={};
+    this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
+    Sfx.muted=!this.data.settings.sound;
     return this.data; },
   save(){ try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} },
   addSugar(n){ this.data.sugar=(this.data.sugar||0)+n; this.save(); },
@@ -1317,7 +1324,7 @@ const Save = {
     for(const slot of GEAR_SLOTS){const gid=this.data.gear[slot.slot],it=(GEAR[slot.slot]||[]).find(g=>g.id===gid);if(it)p+=(tierPower[it.tier]||0)+this.gearLv(it.id)*18;}
     const tal=cp.tal||{};for(const k in tal)p+=(tal[k]||0)*26;return Math.max(100,Math.round(p/10)*10); },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
-    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{} }; this.load(); },
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{}, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
   // ---- Bestiary (Monster Card) ----
   kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
   addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
@@ -2090,7 +2097,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen='hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else this.buildHub(); }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
@@ -2210,6 +2217,20 @@ class Game extends Phaser.Scene {
     const bw=Math.min(180,panelW-36),bh=30,bx=panelX+panelW/2-bw/2,by=panelY+panelH-bh-12,bg=this.add.graphics();bg.fillStyle(0x3c3048,1);bg.fillRoundedRect(bx,by,bw,bh,10);bg.lineStyle(1.4,0xa98cf0,1);bg.strokeRoundedRect(bx,by,bw,bh,10);const bt=this.add.text(bx+bw/2,by+bh/2,'‹ กลับรายการสกิล',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([bg,bt]);this._zone(bx,by,bw,bh,()=>{this._skillArchiveSelected=null;this.buildSkillArchive();});
   }
   buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
+  buildSettings(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('⚙️ ตั้งค่า');
+    const w=this.W,h=this.H,st=Save.data.settings||Object.assign({},DEFAULT_SETTINGS),portrait=w<=h;
+    const rows=[
+      {k:'sound',e:'🔊',n:'เสียงและดนตรี',sub:'เปิดหรือปิดเสียงทั้งหมด',value:()=>st.sound?'เปิด':'ปิด',toggle:()=>{st.sound=!st.sound;Sfx.muted=!st.sound;if(Sfx.master)Sfx.master.gain.value=Sfx.muted?0:0.24;if(this.sound)this.sound.mute=Sfx.muted;}},
+      {k:'shake',e:'📳',n:'Screen Shake',sub:'ปรับแรงสั่นของกล้อง',value:()=>['ปิด','เบา','ปกติ'][st.shake||0],toggle:()=>{st.shake=((st.shake||0)+1)%3;}},
+      {k:'flash',e:'✨',n:'Screen Flash',sub:'แสงวาบตอนท่าใหญ่และเปลี่ยนเฟส',value:()=>st.flash?'เปิด':'ปิด',toggle:()=>{st.flash=!st.flash;}},
+      {k:'damageNumbers',e:'💥',n:'ตัวเลขดาเมจ',sub:'แสดงความเสียหายและคริติคอล',value:()=>st.damageNumbers?'เปิด':'ปิด',toggle:()=>{st.damageNumbers=!st.damageNumbers;}},
+      {k:'vfx',e:'🎆',n:'คุณภาพ VFX',sub:'จำนวนอนุภาคและเอฟเฟกต์บอส',value:()=>['ต่ำ','กลาง','สูง'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
+    ];
+    const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?72:58,(h-top-28-gap*(rows.length-1))/rows.length),rw=Math.min(w-30,520),rx=(w-rw)/2;
+    rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{r.toggle();Save.save();Sfx.select();this.buildSettings();},rx,rw);});
+    const hint=this.add.text(w/2,h-18,'แตะรายการเพื่อเปลี่ยนค่า · บันทึกอัตโนมัติ',{fontFamily:'sans-serif',fontSize:'10px',color:'#8f849f'}).setOrigin(0.5);this.menu.add(hint);this.menu.setVisible(true);
+  }
   buildHub(){
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
     const portrait=w<=h;
@@ -2236,6 +2257,7 @@ class Game extends Phaser.Scene {
       [COLORS.mint, '◆','อุปกรณ์','สวมใส่และตีบวก',()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
       [0x8f7de8,     '✧','คัมภีร์แก่นรส','ดูสกิล พร และคู่ Awaken ทั้งหมด',()=>{ this.menuScreen='skills';this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildMenuScreen(); }],
       [0xf0a92e,    '☷','สมุดมอนสเตอร์','ดูการค้นพบและโบนัส',()=>{ this.menuScreen='bestiary'; this.buildMenuScreen(); }],
+      [0x5f7896,     '⚙','ตั้งค่า','เสียง การสั่น ภาพวาบ และคุณภาพ VFX',()=>{ this.menuScreen='settings'; this.buildMenuScreen(); }],
     ];
     const left=portrait?center:w*0.27;
     const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
@@ -2952,12 +2974,14 @@ class Game extends Phaser.Scene {
   }
   // จอวาบเต็มหน้าจอ (บนกล้อง UI) — ใช้ตอนบอสปรากฏ/เข้าเฟส/ตาย
   screenFlash(color,alpha,dur){
+    if(Save.data.settings&&Save.data.settings.flash===false)return;
     const f=this.add.rectangle(this.W/2,this.H/2,this.W,this.H,color,alpha).setScrollFactor(1).setDepth(80);
     this.camUI(f); this.tweens.add({targets:f,alpha:0,duration:dur,onComplete:()=>f.destroy()});
   }
   // ลด motion sickness บนมือถือ: ทุกจุดสั่นผ่านตัวคูณกลางเดียวกัน
   screenShake(duration,intensity){
-    this.cameras.main.shake(Math.max(35,Math.round(duration*0.65)),Math.max(0.0004,intensity*0.45));
+    const level=Save.data.settings?Number(Save.data.settings.shake):1;if(level<=0)return;const mul=level===2?0.72:0.45;
+    this.cameras.main.shake(Math.max(35,Math.round(duration*(level===2?0.82:0.65))),Math.max(0.0004,intensity*mul));
   }
   // ฉากบอสตาย: สโลว์โมชัน + จอวาบ + ระเบิดเป็นชุด + คลื่นกระแทก
   bossDefeat(x,y){
@@ -4163,7 +4187,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:b._phaseShieldFx,rotation:Math.PI*2,scale:{from:sc*0.88,to:sc*1.08},alpha:{from:0.42,to:0.82},duration:420,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     // มาตรฐาน Phase VFX สำหรับบอสทุกตัว — สั้น อ่านง่าย และไม่บัง telegraph
     this.hitStop(b.isBoss?85:55);this.screenFlash(b._phaseInvulnColor,b.isBoss?0.22:0.14,b.isBoss?420:300);this.screenShake(b.isBoss?360:220,b.isBoss?0.010:0.006);
-    const rays=b.isBoss?8:5;for(let i=0;i<rays;i++){const a=i*TAU/rays,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(b.y+2).setRotation(a).setTint(b._phaseInvulnColor).setScale(0.06,0.24).setAlpha(0.72));this.tweens.add({targets:ray,scaleX:b.isBoss?0.92:0.62,alpha:0,duration:520+i*25,onComplete:()=>ray.destroy()});}
+    const q=Save.data.settings?Number(Save.data.settings.vfx):1,rays=(b.isBoss?8:5)+(q===2?3:q===0?-3:0);for(let i=0;i<rays;i++){const a=i*TAU/rays,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(b.y+2).setRotation(a).setTint(b._phaseInvulnColor).setScale(0.06,0.24).setAlpha(0.72));this.tweens.add({targets:ray,scaleX:b.isBoss?0.92:0.62,alpha:0,duration:520+i*25,onComplete:()=>ray.destroy()});}
     for(let i=0;i<(b.isBoss?3:2);i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y+3).setTint(i%2?0xffffff:b._phaseInvulnColor).setScale(sc*(0.25+i*0.13)).setAlpha(0.76));this.tweens.add({targets:ring,scale:sc*(1.05+i*0.20),rotation:(i%2?1:-1)*Math.PI,alpha:0,duration:620+i*130,onComplete:()=>ring.destroy()});}
     const tag=this.camWorld(this.add.text(b.x,b.y-(b.isBoss?118:82),phaseLabel,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:b.isBoss?'24px':'17px',color:'#ffffff',stroke:'#210026',strokeThickness:6}).setOrigin(0.5).setDepth(b.y+8).setAlpha(0));
     this.tweens.add({targets:tag,y:tag.y-18,alpha:{from:0,to:1},duration:220,yoyo:true,hold:Math.max(240,(duration||1.4)*1000-520),onComplete:()=>tag.destroy()});
@@ -4335,6 +4359,7 @@ class Game extends Phaser.Scene {
     this.screenShake(130,0.004); Sfx.streak(mark[0]);
   }
   popDmg(n,x,y,crit){
+    if(Save.data.settings&&Save.data.settings.damageNumbers===false)return;
     let t=this.dmgPool.pop();
     if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px'}).setDepth(99999).setOrigin(0.5); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
