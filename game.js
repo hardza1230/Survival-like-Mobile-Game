@@ -27,9 +27,12 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.18.0';
+const GAME_VERSION = '2.19.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.19.0', date:'2026-09-12', title:'Tablet Fit: Adaptive Camera Zoom', items:[
+    'ปรับ zoom กล้องตามความกว้างจอ (อ้างอิงมือถือ ~430px) → แท็บเล็ต/จอใหญ่ zoom เข้ามากขึ้น เห็นสนามพอ ๆ กับมือถือ ตัวละคร/ศัตรูไม่เล็กจิ๋ว',
+    'มือถือเหมือนเดิมทุกอย่าง (zoom 0.76) · แท็บเล็ตแนวตั้ง zoom ~1.4-1.5' ] },
   { v:'2.18.0', date:'2026-09-12', title:'Combo Icon Fix, Void Aura & Streamed Sprinkle', items:[
     'แก้ไอคอนคอมโบบนการ์ดที่ "มีคู่แล้ว" พองใหญ่โผล่นอกการ์ด → เหลือไอคอนเล็กในการ์ด กระพริบเมื่อพร้อมคอมโบ',
     'โกโก้ voidPull: เอารูปหมุนเดิมออกเหลือออร่าม่วง + ดูดมอนสเตอร์เข้าหาตัวจริง (ลากตำแหน่งทับ AI เห็นชัด)',
@@ -1350,8 +1353,8 @@ class Game extends Phaser.Scene {
 
   create(){
     this.renderDPR=RENDER_DPR;
-    this.viewZoom=0.76;                                    // มองกว้างขึ้น (เดิม 0.84) — เห็นสนามเยอะขึ้น
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
+    this.computeViewZoom();                                // zoom ปรับตามความกว้างจอ → มือถือ/แท็บเล็ตเห็นสนามพอ ๆ กัน
     this.state='menu'; this.elapsed=0; this.kills=0; this.stageKills=0;
     this.level=1; this.xp=0; this.xpNext=7;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
@@ -1810,8 +1813,10 @@ class Game extends Phaser.Scene {
   /* คอมโบสกิลถูกยกเลิกแล้ว — เหลือแต่ระบบ Awaken บนสกิลหลัก (no-op กันโค้ดที่ยังเรียกอยู่) */
   checkCombos(){ this.comboFlags={}; }
 
+  // zoom กล้องให้ "ความกว้างสนามที่เห็น" คงที่ทุกเครื่อง (อ้างอิงมือถือ ~430px) — แท็บเล็ตจอกว้าง = zoom เข้ามากขึ้น ตัวละครไม่เล็กจิ๋ว
+  computeViewZoom(){ const REF_W=430, BASE=0.76; this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
   onResize(gs){
-    if(!gs)return; this.W=gs.width/RENDER_DPR; this.H=gs.height/RENDER_DPR; const pad=this._pad; this._barW=this.W-2*pad;
+    if(!gs)return; this.W=gs.width/RENDER_DPR; this.H=gs.height/RENDER_DPR; this.computeViewZoom(); const pad=this._pad; this._barW=this.W-2*pad;
     if(this.cameras&&this.cameras.main){ this.cameras.main.setSize(gs.width,gs.height); this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR); }
     if(this.uiCam){ this.uiCam.setSize(gs.width,gs.height); this.uiCam.setZoom(RENDER_DPR); this.uiCam.centerOn(this.W/2,this.H/2); }
     if(this.vig)this.vig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
