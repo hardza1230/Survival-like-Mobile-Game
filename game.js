@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.26.0';
+const GAME_VERSION = '2.27.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.27.0', date:'2026-09-12', title:'Stage 4 Enemy Family & Frostbite', items:[
+    'เพิ่มศัตรูเฉพาะด่าน 4 คุกเย็นน้ำตาลครบ 5 บทบาท: วิญญาณน้ำตาลเยือก เศษน้ำแข็งพุ่ง ป้อมไซรัปเย็น ฟองแรงดันเยือก และผู้คุมประตูเยือกแข็ง',
+    'แยก silhouette/ขนาด/hitbox ตามบทบาท basic, fast/dasher, shooter, bomber และ tank/siege พร้อมใช้ผู้คุมประตูเป็น Elite ด่าน 4',
+    'เพิ่ม Frostbite: การชนและกระสุนน้ำแข็งชะลอผู้เล่นช่วงสั้น ทำให้ด่าน 4 มีจังหวะหลบและคุมพื้นที่เฉพาะตัว' ] },
   { v:'2.26.0', date:'2026-09-12', title:'Stage 3 Enemy Family', items:[
     'เพิ่มศัตรูเฉพาะด่าน 3 ห้องเครื่องพริกเพลิงครบ 5 บทบาท: ถ่านโมจิ พริกพุ่ง เครื่องบดพริก หม้อแรงดัน และโกเลมเตาถ่าน',
     'แยก silhouette/ขนาด/hitbox ตามบทบาท basic, fast/dasher, shooter, bomber และ tank/siege พร้อมใช้โกเลมเป็น Elite ด่าน 3',
@@ -522,6 +526,9 @@ const ASSET_IMAGES = {
   e_fire_ember:'assets/generated/e_fire_ember.png', e_fire_chili:'assets/generated/e_fire_chili.png',
   e_fire_grinder:'assets/generated/e_fire_grinder.png', e_fire_bomber:'assets/generated/e_fire_bomber.png',
   e_fire_golem:'assets/generated/e_fire_golem.png',
+  e_ice_wisp:'assets/generated/e_ice_wisp.png', e_ice_shard:'assets/generated/e_ice_shard.png',
+  e_ice_caster:'assets/generated/e_ice_caster.png', e_ice_bomber:'assets/generated/e_ice_bomber.png',
+  e_ice_guardian:'assets/generated/e_ice_guardian.png',
   boss3:'assets/boss3.png',
   boss4:'assets/boss4.png',   // บอสใหญ่ (boss5 = สไปรต์อนิเมชัน ดู ASSET_SHEETS)
   mb1:'assets/generated/mb1_ant_guard.png', mb2:'assets/generated/mb2_valve_maw.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // มินิบอส 5 ด่าน
@@ -2650,14 +2657,14 @@ class Game extends Phaser.Scene {
   spawnElite(){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
-    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':'e_tank');
+    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':'e_tank');
     if(!e) e=this.enemies.create(x,y,eliteKey); else { e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ e=this.enemies.getFirstAlive(); if(!e)return; e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool เต็ม → รีไซเคิล (มินิบอสต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72][this.stageIndex]||2.72,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*[1,1.05,1.12,1.20,1.30][this.stageIndex]*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
-    e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.bloomStacks=0;e.bloomUntil=0;
-    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:1.55); e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);this.camWorld(e);
+    e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
+    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:1.55); e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);this.camWorld(e);
   }
   // เวฟธรรมดา = "เอาชีวิตรอดตามเวลา" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){
@@ -3243,13 +3250,14 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===0&&this.textures.exists(key+'_readable'))key+='_readable';
     if(this.stageIndex===1) key=(type==='fast'||type==='dasher')?'e_drain_dasher':type==='shooter'?'e_drain_caster':type==='bomber'?'e_drain_bomber':(type==='tank'||type==='siege')?'e_drain_tank':'e_drain_slime';
     if(this.stageIndex===2) key=(type==='fast'||type==='dasher')?'e_fire_chili':type==='shooter'?'e_fire_grinder':type==='bomber'?'e_fire_bomber':(type==='tank'||type==='siege')?'e_fire_golem':'e_fire_ember';
+    if(this.stageIndex===3) key=(type==='fast'||type==='dasher')?'e_ice_shard':type==='shooter'?'e_ice_caster':type==='bomber'?'e_ice_bomber':(type==='tank'||type==='siege')?'e_ice_guardian':'e_ice_wisp';
     if(!e) e=this.enemies.create(x,y,key);
     else { e.setTexture(key); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool เต็ม (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05][this.stageIndex]||3.05,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*this.killPowerMul()*this.diffMul().hp;   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
-    e.bloomStacks=0;e.bloomUntil=0;
+    e.bloomStacks=0;e.bloomUntil=0;e.frostbite=this.stageIndex===3;
     let scale=1;
     if(type==='acid'){ e.hp=26*s; e.spd=52; e.dmg=11; e.xp=2; e.acid=true; e.shootCd=Phaser.Math.FloatBetween(0.8,1.6); e.setCircle(22,26,26); }
     else if(type==='fast'){ e.hp=10*s; e.spd=122; e.dmg=9; e.xp=1; e.setCircle(15,4,4); }
@@ -3267,6 +3275,8 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===1){const role={basic:['ฟองเน่าลูกอ่อน',0.64],fast:['อสูรกระแสไหลย้อน',0.66],dasher:['อสูรกระแสไหลย้อน',0.66],shooter:['ฟองพ่นน้ำเสีย',0.68],bomber:['ถุงแรงดันหมัก',0.70],tank:['ปูตะแกรงเกราะ',0.76],siege:['ปูตะแกรงเกราะ',0.76]}[type]||['ฟองหลุดท่อ',0.64];
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(type==='tank'||type==='siege'?38:30,type==='tank'||type==='siege'?26:34,type==='tank'||type==='siege'?26:34);}
     if(this.stageIndex===2){const role={basic:['ถ่านโมจิเดือด',0.62,24,40,46],fast:['พริกเพลิงพุ่ง',0.58,20,44,50],dasher:['พริกเพลิงพุ่ง',0.58,20,44,50],shooter:['เครื่องบดพริกปืนลม',0.66,24,40,45],bomber:['หม้อแรงดันพริก',0.68,26,38,42],tank:['โกเลมเตาถ่าน',0.78,36,28,36],siege:['โกเลมเตาถ่าน',0.90,36,28,36]}[type]||['ถ่านโมจิเดือด',0.62,24,40,46];
+      e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
+    if(this.stageIndex===3){const role={basic:['วิญญาณน้ำตาลเยือก',0.62,24,40,46],fast:['เศษน้ำแข็งพุ่ง',0.58,20,44,50],dasher:['เศษน้ำแข็งพุ่ง',0.58,20,44,50],shooter:['ป้อมไซรัปเย็น',0.66,24,40,45],bomber:['ฟองแรงดันเยือก',0.68,27,37,41],tank:['ผู้คุมประตูเยือกแข็ง',0.80,36,28,36],siege:['ผู้คุมประตูเยือกแข็ง',0.92,36,28,36]}[type]||['วิญญาณน้ำตาลเยือก',0.62,24,40,46];
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     // เล่นอนิเมชันเดิน/ยิงถ้าเป็นชนิดที่มีชีต (ไม่งั้นหยุด anim ที่ค้างจาก pool + คืนเฟรมนิ่ง)
@@ -3861,6 +3871,7 @@ class Game extends Phaser.Scene {
   gachaRoll(){ const r=Math.random(), roll=r<0.55?'common':r<0.86?'rare':'epic';   // 55% common · 31% rare · 14% epic
     for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
+    if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1; this.player.hp-=e.dmg*(this.player.dmgTakenMul||1)*wardMul; Sfx.hurt(); this.cameras.main.shake(120,0.008);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
@@ -3875,7 +3886,7 @@ class Game extends Phaser.Scene {
     this.vfxHitRing(this.player.x,this.player.y,0xff5a6e,false);
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>{ if(this.player.active)this.player.clearTint(); });
     if(this.player.hp<=0) this.die(); }
-  hitByFoe(player,b){ if(!b.active)return; this.killFoe(b); this.hurtPlayer(b.dmg||10,0.5); }
+  hitByFoe(player,b){ if(!b.active)return; if(b.frost)this.moveSlowT=Math.max(this.moveSlowT||0,0.9); this.killFoe(b); this.hurtPlayer(b.dmg||10,0.5); }
   killFoe(b){ b.setActive(false).setVisible(false); if(b.body){ b.body.enable=false; b.body.stop(); } }
   // ยิงกระสุนศัตรู 1 นัด
   foeShot(x,y,ang,speed,dmg,tint,scale){
@@ -3884,7 +3895,7 @@ class Game extends Phaser.Scene {
     if(!b)return null;   // pool เต็ม → ข้ามการยิง กัน null crash
     b.setTexture('proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
     if(this.stageIndex===0)b.clearTint(); else b.setTint(tint||0xff6b8a);
-    if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.life=3.0; this.camWorld(b);
+    if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.frost=this.stageIndex===3; b.life=3.0; this.camWorld(b);
     if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
   // hazard บอส: วงเตือน vector โปร่งใสจริง → ระเบิดหลัง 760ms
   spawnHazard(x,y,r,dmg,tint){

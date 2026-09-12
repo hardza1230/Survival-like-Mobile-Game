@@ -56,7 +56,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.26.0 Stage 3 Enemy Family)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.27.0 Stage 4 Enemy Family & Frostbite)
+- **v2.27.0:** ด่าน 4 คุกเย็นน้ำตาลมีศัตรู PNG โปร่งใสเฉพาะธีมครบ 5 บทบาท: `e_ice_wisp`, `e_ice_shard`, `e_ice_caster`, `e_ice_bomber`, `e_ice_guardian` · map เข้า basic/fast-dasher/shooter/bomber/tank-siege พร้อม roleName, optical scale, hitbox และ Elite · การชน/กระสุนน้ำแข็งติด Frostbite ชะลอช่วงสั้น
 - **v2.26.0:** ด่าน 3 ห้องเครื่องพริกเพลิงมีศัตรู PNG โปร่งใสเฉพาะธีมครบ 5 บทบาท: `e_fire_ember`, `e_fire_chili`, `e_fire_grinder`, `e_fire_bomber`, `e_fire_golem` · map เข้า basic/fast-dasher/shooter/bomber/tank-siege พร้อม roleName, optical scale, hitbox และ Elite ของด่าน 3 · ไม่ย้อมศัตรูพื้นฐานแล้ว
 - **v2.25.3 (แก้จาก feedback เจ้าของ):** `sprinkle` — `homing=0` (วิ่งตรงไม่โค้ง) · scale เล็กลง (0.12+lvl*0.008) · life ยาวขึ้น (1.9/aw2.2) กันกระสุนหายกลางทางตอนยิงไกล
 - **v2.25.2 (แก้จาก feedback เจ้าของ):** สกิลเฉพาะตัวโมโม่ (berryRebound) เอา `b.homing=0` (เลิกเป็น homing missile) กลับไปยิงรอบทิศ (radial `velocityFromRotation`) เหมือนเดิม + คง `b.bounce` (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด)
@@ -233,7 +234,7 @@
 
 ## 5. ถัดไป (roadmap ตามลำดับ "ระบบก่อนกราฟิก")
 1. ทำด่าน 3 ให้ครบ: props ห้องเครื่องพริก → action sheet มิสเตอร์เตาปิ้ง → telegraph/แพตเทิร์นเฉพาะ → เทสมือถือ
-2. ทำด่าน 4 ให้ครบ: ศัตรูคุกเย็น → props น้ำแข็ง/กรง → action sheet โกเลมไอศกรีม → telegraph/แพตเทิร์นเฉพาะ → เทสมือถือ
+2. ทำด่าน 4 ให้ครบ: ✅ ศัตรูคุกเย็น + Frostbite → props น้ำแข็ง/กรง → action sheet โกเลมไอศกรีม → telegraph/แพตเทิร์นเฉพาะ → เทสมือถือ
 3. เทส Power Rating และ difficulty 1–5 ของด่าน 3–4 จากอัตราชนะจริง
 4. จูน Cutscene ตัวละคร×ด่านให้กระชับหลัง gameplay ของด่าน 3–4 นิ่ง
 5. ขยายไอเทมกิมมิคให้มี drop table/ความหายากและ Tutorial ในคัมภีร์
