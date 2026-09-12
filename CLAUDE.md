@@ -56,7 +56,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.25.2 Momo Radial Bounce)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.25.3 Sprinkle Straight)
+- **v2.25.3 (แก้จาก feedback เจ้าของ):** `sprinkle` — `homing=0` (วิ่งตรงไม่โค้ง) · scale เล็กลง (0.12+lvl*0.008) · life ยาวขึ้น (1.9/aw2.2) กันกระสุนหายกลางทางตอนยิงไกล
 - **v2.25.2 (แก้จาก feedback เจ้าของ):** สกิลเฉพาะตัวโมโม่ (berryRebound) เอา `b.homing=0` (เลิกเป็น homing missile) กลับไปยิงรอบทิศ (radial `velocityFromRotation`) เหมือนเดิม + คง `b.bounce` (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด)
 - **v2.25.1 (แก้จาก feedback เจ้าของ):** `sprinkle` = **ปืนกล 1-hit** · `pierce=false`,`bounce=0` (โดนแล้วหายทันที) · เพิ่มจำนวนนัด/ชุด (4/6/8/11, aw16) + gap สั้น (52/aw38) รัวถี่ · SKILL_TIERS/role/awaken desc อัปเป็นสาย "รัวเร็ว เบา" (เลิก pierce/bounce ในคำอธิบาย)
 - **v2.25.0 (แก้จาก feedback เจ้าของ):** สกิล `sprinkle` — projectile เป็นเมล็ด proj_sprinkle สีรุ้งสลับสี (`RAINBOW[]` cycle ต่อนัด) · เร็วมาก (speed 980/aw1180) แต่ "เบา": ตัวเล็กลง, life สั้น (0.85/1.1), homing เบาลง

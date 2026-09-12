@@ -27,9 +27,11 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.25.2';
+const GAME_VERSION = '2.25.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.25.3', date:'2026-09-12', title:'Sprinkle: Straight, Smaller, Longer Range', items:[
+    'Sprinkle: กระสุนวิ่งตรง (เอา homing ออก) · ตัวเล็กลงอีก · อยู่นานขึ้น (ยิงไกลไม่หายกลางทาง)' ] },
   { v:'2.25.2', date:'2026-09-12', title:'Momo Unique = Radial Bouncing Seeds', items:[
     'สกิลเฉพาะตัวโมโม่: เอา homing ออก (เลิกเป็นมิสไซล์ตามเป้า) กลับไปยิงรอบทิศเหมือนเดิม + คงกลไกเด้ง (bounce)' ] },
   { v:'2.25.1', date:'2026-09-12', title:'Sprinkle = Machine Gun (1-hit)', items:[
@@ -3322,12 +3324,12 @@ class Game extends Phaser.Scene {
       let shots=aw?16:lvl>=6?11:lvl>=4?8:lvl>=2?6:4;
       if(this.player.twinSprinkle) shots+=3;
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
-      const homing=aw?480:(lvl>=2?320:220), speed=aw?1180:980, gap=aw?38:52;   // เร็ว + รัวถี่ (machine gun) + โค้งเบา ๆ
+      const speed=aw?1180:980, gap=aw?38:52;   // เร็ว + รัวถี่ (machine gun) · วิ่งตรง ไม่โค้ง
       let idx=0;
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
-        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.18+lvl*0.012+(aw?0.05:0)); if(!b)return;   // ตัวเล็ก = ดูเบา
+        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[idx++%RAINBOW.length]); b.faceVel=true;
-        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.1:0.85; b.pierce=false; b.bounce=0; b.homing=homing;   // 1-hit: โดนแล้วหาย
+        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?2.2:1.9; b.pierce=false; b.bounce=0; b.homing=0;   // วิ่งตรง 1-hit · อยู่นานขึ้น (ระยะไกลไม่หายกลางทาง)
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+Phaser.Math.FloatBetween(-0.12,0.12);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
