@@ -42,6 +42,7 @@
 | ENM-09 | คลอกมอว์ด่าน 2 ห้ามเป็นสี่เหลี่ยมดำ/ขาว | ตรวจชีต 4×2 เปิดได้ครบ 8 เฟรม, alpha โปร่งใสจริง และ `setTintFill` ตอนโดนตีเปลี่ยนเฉพาะตัวบอสโดยไม่เติมพื้นทั้งเซลล์ |
 | ENM-10 | ด่าน 5 ต้องมีศัตรูเฉพาะธีมครบ 5 บทบาท | ตรวจ `e_oven_*` ทุกชนิด, silhouette/hitbox, เวฟแรกไม่มียิงไกล, elite ใช้อัศวินมงกุฎไหม้ และ pool reuse ไม่ค้าง texture/tint |
 | BOS-05 | The Great Hunger ต้องเล่นครบ 4 เฟสและทุกท่าหลบได้ | ตรวจ phase 72/40/14%, telegraph ของ Crown Rain/Cleave/Oven Cross/Void Maw/Eclipse, ช่องกระสุน, แรงดูด, cleanup orbiters และ FPS บน Android |
+| BOS-06 | บอสทุกตัวห้ามถูก burst ข้ามเฟส | ยิงดาเมจเกิน threshold และยิงซ้ำในเฟรมเดียวกัน ต้องหยุด HP ตรงเส้นเฟส, ขึ้นคำว่า `อมตะ`, ไม่รับดาเมจระหว่างโล่ transition และปลดหลัง transition จบเท่านั้น |
 
 ## C. Skills, VFX และ Cards
 
