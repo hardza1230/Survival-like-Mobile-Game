@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.29.0';
+const GAME_VERSION = '2.30.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.30.0', date:'2026-09-12', title:'The Great Hunger Reborn', items:[
+    'ออกแบบ The Great Hunger ใหม่เป็น Cosmic Devourer: เงาร่างกว้าง มงกุฎแตก ดวงตาหกดวง ปากสุญญะกลางอก และกรงเล็บยักษ์',
+    'ขยายขนาดบอส เพิ่มวงแหวนมงกุฎ ดวงวิญญาณโคจร และฉากปรากฏตัวแบบสุริยุปราคาที่มีเงาครอบสนาม',
+    'ทุกการเปลี่ยนเฟสมี Metamorphosis VFX: คลื่นกระแทก รอยแยกพลัง และวงแหวนที่รุนแรงขึ้น โดยไม่เปลี่ยน hitbox หรือจังหวะหลบท่าเดิม' ] },
   { v:'2.29.0', date:'2026-09-12', title:'Character Profiles & Signature Weapons', items:[
     'สร้างค่าสเตตัสใหม่ให้ตัวละครทั้ง 5: HP, โจมตี, ความเร็ว, ป้องกัน, คริติคอล และคูลดาวน์ พร้อมบทบาทต่างกันชัดเจน',
     'เพิ่มอาวุธประจำตัวเฉพาะคน พร้อม Weapon Mastery ที่เปลี่ยนจำนวนกระสุน พื้นที่ การควบคุม การชิ่ง หรือการสะท้อน',
@@ -792,19 +796,31 @@ class Boot extends Phaser.Scene {
     mk('e_oven_bomb',128,(c,s)=>drawOvenFoe(c,s,{kind:'bomb',c1:'#ff8a5a',c2:'#61233b',edge:'#3c142c',glow:'rgba(255,100,55,0.46)'}));
     mk('e_oven_guard',128,(c,s)=>drawOvenFoe(c,s,{kind:'guard',c1:'#612b72',c2:'#201126',edge:'#f0b84b',glow:'rgba(255,209,92,0.44)'}));
 
-    // The Great Hunger: เงาเชฟสูงผอม + มงกุฎเตาอบ + ปากสุญญะ
-    mk('boss5_ascended',256,(c,s)=>{const cx=s/2,cy=s*0.57;
-      c.clearRect(0,0,s,s);const aura=c.createRadialGradient(cx,cy,8,cx,cy,s*0.48);aura.addColorStop(0,'rgba(255,90,190,0.38)');aura.addColorStop(0.52,'rgba(139,62,198,0.25)');aura.addColorStop(1,'rgba(25,3,35,0)');c.fillStyle=aura;c.fillRect(0,0,s,s);
-      c.fillStyle='rgba(10,2,18,0.34)';c.beginPath();c.ellipse(cx,s*0.91,s*0.31,s*0.065,0,0,TAU);c.fill();
-      const cloak=c.createLinearGradient(cx,30,cx,s*0.91);cloak.addColorStop(0,'#75298b');cloak.addColorStop(0.48,'#32103f');cloak.addColorStop(1,'#110717');
-      c.fillStyle=cloak;c.beginPath();c.moveTo(cx,34);c.bezierCurveTo(cx-67,46,cx-80,151,cx-91,222);c.quadraticCurveTo(cx,246,cx+91,222);c.bezierCurveTo(cx+80,151,cx+67,46,cx,34);c.fill();c.strokeStyle='#b94fd0';c.lineWidth=7;c.stroke();
-      c.fillStyle='#f5e9ff';c.beginPath();c.moveTo(cx-66,65);c.quadraticCurveTo(cx-45,13,cx,22);c.quadraticCurveTo(cx+45,13,cx+66,65);c.quadraticCurveTo(cx,45,cx-66,65);c.fill();c.strokeStyle='#8a5aa0';c.lineWidth=5;c.stroke();
-      c.fillStyle='#ffd166';c.beginPath();c.moveTo(cx-55,55);c.lineTo(cx-38,18);c.lineTo(cx-15,47);c.lineTo(cx,9);c.lineTo(cx+15,47);c.lineTo(cx+39,18);c.lineTo(cx+55,55);c.closePath();c.fill();c.strokeStyle='#9c571e';c.lineWidth=5;c.stroke();
-      c.fillStyle='#efff72';c.beginPath();c.ellipse(cx-30,92,13,8,-0.15,0,TAU);c.ellipse(cx+30,92,13,8,0.15,0,TAU);c.fill();c.fillStyle='#31103a';c.beginPath();c.ellipse(cx-27,92,4,7,0,0,TAU);c.ellipse(cx+27,92,4,7,0,0,TAU);c.fill();
-      const maw=c.createRadialGradient(cx,147,3,cx,147,48);maw.addColorStop(0,'#000');maw.addColorStop(0.55,'#16051e');maw.addColorStop(0.78,'#ff4da8');maw.addColorStop(1,'rgba(255,80,190,0)');c.fillStyle=maw;c.beginPath();c.ellipse(cx,150,57,39,0,0,TAU);c.fill();
-      c.fillStyle='#fff0b8';for(let i=0;i<7;i++){const x=cx-40+i*13;c.beginPath();c.moveTo(x,129);c.lineTo(x+7,147);c.lineTo(x+13,129);c.closePath();c.fill();}
-      c.strokeStyle='#d95cff';c.lineWidth=8;c.lineCap='round';for(const d of [-1,1]){c.beginPath();c.moveTo(cx+d*54,116);c.quadraticCurveTo(cx+d*106,142,cx+d*94,198);c.stroke();c.fillStyle='#ffd166';c.beginPath();c.arc(cx+d*94,198,11,0,TAU);c.fill();}
-      c.fillStyle='rgba(255,255,255,0.72)';c.beginPath();c.ellipse(cx-34,55,10,21,-0.5,0,TAU);c.fill();
+    // The Great Hunger Reborn: Cosmic Devourer — เงากว้าง มงกุฎแตก ดวงตาหกดวง ปากกลางอก และกรงเล็บ
+    mk('boss5_ascended',256,(c,s)=>{const cx=s/2,cy=s*0.56;
+      c.clearRect(0,0,s,s);
+      const aura=c.createRadialGradient(cx,cy,5,cx,cy,s*0.52);aura.addColorStop(0,'rgba(255,58,120,0.50)');aura.addColorStop(0.35,'rgba(174,42,224,0.34)');aura.addColorStop(0.72,'rgba(60,5,82,0.26)');aura.addColorStop(1,'rgba(5,0,12,0)');c.fillStyle=aura;c.fillRect(0,0,s,s);
+      c.fillStyle='rgba(2,0,8,0.48)';c.beginPath();c.ellipse(cx,s*0.92,s*0.43,s*0.07,0,0,TAU);c.fill();
+      // ปีกเงา/ผ้าคลุมแตก ทำ silhouette กว้างกว่าบอสทั่วไป
+      const wing=c.createLinearGradient(cx,42,cx,s*0.88);wing.addColorStop(0,'#52106c');wing.addColorStop(0.42,'#210529');wing.addColorStop(1,'#07020b');c.fillStyle=wing;c.strokeStyle='#9d35bd';c.lineWidth=5;
+      for(const d of [-1,1]){c.beginPath();c.moveTo(cx+d*18,62);c.bezierCurveTo(cx+d*67,46,cx+d*103,71,cx+d*116,116);c.lineTo(cx+d*82,107);c.lineTo(cx+d*109,157);c.lineTo(cx+d*69,143);c.lineTo(cx+d*91,211);c.quadraticCurveTo(cx+d*45,198,cx+d*20,178);c.closePath();c.fill();c.stroke();}
+      // แกนลำตัวเป็นหลุมดำ ไม่ใช่เชฟมนุษย์
+      const body=c.createLinearGradient(cx,34,cx,s*0.91);body.addColorStop(0,'#6a1a80');body.addColorStop(0.3,'#27052f');body.addColorStop(0.78,'#0b020f');body.addColorStop(1,'#020104');c.fillStyle=body;c.beginPath();c.moveTo(cx,32);c.bezierCurveTo(cx-63,41,cx-72,107,cx-67,176);c.lineTo(cx-88,226);c.quadraticCurveTo(cx,247,cx+88,226);c.lineTo(cx+67,176);c.bezierCurveTo(cx+72,107,cx+63,41,cx,32);c.fill();c.strokeStyle='#d94ff0';c.lineWidth=7;c.stroke();
+      // มงกุฎโบราณแตกและเขาคู่
+      c.fillStyle='#09010d';c.strokeStyle='#ffbf3f';c.lineWidth=6;c.beginPath();c.moveTo(cx-72,61);c.lineTo(cx-58,11);c.lineTo(cx-29,47);c.lineTo(cx,-2);c.lineTo(cx+28,47);c.lineTo(cx+61,9);c.lineTo(cx+74,62);c.lineTo(cx+38,51);c.lineTo(cx+18,68);c.lineTo(cx-20,68);c.lineTo(cx-40,51);c.closePath();c.fill();c.stroke();
+      c.fillStyle='#ff3f78';for(const x of [cx-57,cx,cx+59]){c.beginPath();c.arc(x,x===cx?13:28,x===cx?8:6,0,TAU);c.fill();}
+      // ใบหน้าไร้จมูก มีดวงตา 3 คู่
+      for(let row=0;row<3;row++){const yy=76+row*18,spread=22+row*8;for(const d of [-1,1]){c.save();c.translate(cx+d*spread,yy);c.rotate(d*(row-1)*0.12);c.fillStyle='#fff47a';c.beginPath();c.ellipse(0,0,11-row,5.5,0,0,TAU);c.fill();c.fillStyle='#ff245f';c.beginPath();c.ellipse(d*2,0,3,4.5,0,0,TAU);c.fill();c.restore();}}
+      // ปากสุญญะกลางอกหลายชั้น
+      const maw=c.createRadialGradient(cx,151,1,cx,151,58);maw.addColorStop(0,'#000');maw.addColorStop(0.48,'#030006');maw.addColorStop(0.7,'#5b082f');maw.addColorStop(0.86,'#ff265f');maw.addColorStop(1,'rgba(210,45,255,0)');c.fillStyle=maw;c.beginPath();c.ellipse(cx,154,61,48,0,0,TAU);c.fill();
+      c.strokeStyle='#ffcb55';c.lineWidth=4;c.beginPath();c.ellipse(cx,154,48,36,0,0,TAU);c.stroke();
+      c.fillStyle='#fff1bf';for(let i=0;i<10;i++){const a=i*TAU/10,x=cx+Math.cos(a)*43,y=154+Math.sin(a)*31;c.save();c.translate(x,y);c.rotate(a+Math.PI/2);c.beginPath();c.moveTo(-5,0);c.lineTo(0,15);c.lineTo(5,0);c.closePath();c.fill();c.restore();}
+      c.fillStyle='#ff367d';c.beginPath();c.arc(cx,154,10,0,TAU);c.fill();c.fillStyle='#140018';c.beginPath();c.arc(cx,154,5,0,TAU);c.fill();
+      // แขนกรงเล็บยาวโอบผู้เล่น
+      c.strokeStyle='#b936d4';c.lineWidth=13;c.lineCap='round';for(const d of [-1,1]){c.beginPath();c.moveTo(cx+d*54,111);c.quadraticCurveTo(cx+d*112,139,cx+d*100,203);c.stroke();c.fillStyle='#120218';for(let k=0;k<3;k++){c.beginPath();c.moveTo(cx+d*(91+k*7),194+k*3);c.lineTo(cx+d*(122+k*5),216+k*4);c.lineTo(cx+d*(99+k*5),205+k*2);c.closePath();c.fill();c.strokeStyle='#ffbf3f';c.lineWidth=2;c.stroke();}}
+      // รอยแตกพลังบนลำตัว
+      c.strokeStyle='rgba(255,196,63,0.82)';c.lineWidth=3;for(const d of [-1,1]){c.beginPath();c.moveTo(cx+d*17,112);c.lineTo(cx+d*31,126);c.lineTo(cx+d*22,139);c.lineTo(cx+d*39,151);c.stroke();}
+      c.fillStyle='rgba(255,255,255,0.70)';c.beginPath();c.ellipse(cx-48,42,9,19,-0.55,0,TAU);c.fill();
     });
     mk('hunger_seal',160,(c,s)=>{const cx=s/2;c.clearRect(0,0,s,s);const g=c.createRadialGradient(cx,cx,4,cx,cx,cx);g.addColorStop(0,'rgba(255,236,110,0.58)');g.addColorStop(0.38,'rgba(217,92,255,0.24)');g.addColorStop(1,'rgba(40,5,60,0)');c.fillStyle=g;c.fillRect(0,0,s,s);c.strokeStyle='#d95cff';c.lineWidth=7;c.beginPath();c.arc(cx,cx,45,0,TAU);c.stroke();c.strokeStyle='#ffd166';c.lineWidth=4;for(let i=0;i<6;i++){const a=i*TAU/6;c.beginPath();c.moveTo(cx+Math.cos(a)*18,cx+Math.sin(a)*18);c.lineTo(cx+Math.cos(a)*62,cx+Math.sin(a)*62);c.stroke();}});
     mk('crown_oven',196,(c,s)=>{const cx=s/2;c.clearRect(0,0,s,s);c.fillStyle='rgba(12,3,20,0.30)';c.beginPath();c.ellipse(cx,s*0.9,s*0.4,s*0.08,0,0,TAU);c.fill();const g=c.createLinearGradient(0,20,0,s);g.addColorStop(0,'#7b3d87');g.addColorStop(1,'#24102d');c.fillStyle=g;rr(c,27,48,s-54,s-70,22);c.fill();c.strokeStyle='#d95cff';c.lineWidth=6;c.stroke();c.fillStyle='#09040d';rr(c,48,82,s-96,70,15);c.fill();c.fillStyle='#ff6a46';c.beginPath();c.ellipse(cx,116,42,25,0,0,TAU);c.fill();c.fillStyle='#ffd166';c.beginPath();c.moveTo(47,55);c.lineTo(66,18);c.lineTo(cx,50);c.lineTo(130,18);c.lineTo(149,55);c.closePath();c.fill();});
@@ -2860,8 +2876,8 @@ class Game extends Phaser.Scene {
     let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool เต็ม → รีไซเคิล/เคลียร์ กันบอสเป็น null
     const isArt=this.textures.exists(bkey);
-    const fScale=this.stageIndex===4?1.12:(this.stageIndex===1?0.88:(isArt?1.55:2.5)); b.baseScale=fScale; b._sqX=1; b._sqY=1;
-    const fRadius=this.stageIndex===4?66:(this.stageIndex===1?68:(isArt?54:26)),fOff=this.stageIndex===4?62:(this.stageIndex===1?60:(isArt?16:5));
+    const fScale=this.stageIndex===4?1.34:(this.stageIndex===1?0.88:(isArt?1.55:2.5)); b.baseScale=fScale; b._sqX=1; b._sqY=1;
+    const fRadius=this.stageIndex===4?61:(this.stageIndex===1?68:(isArt?54:26)),fOff=this.stageIndex===4?67:(this.stageIndex===1?60:(isArt?16:5));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*2.3*this.diffMul().hp; b.maxhp=b.hp; b.spd=46; b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;   // บอสใหญ่: ฐานแฟร์ (×2.3) + ระดับความยาก + rage สเกลตามมอนที่ตาย
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -2893,16 +2909,22 @@ class Game extends Phaser.Scene {
       return;
     }
     if(this.stageIndex===4){
-      this.time.delayedCall(1450,()=>{if(!b.active)return;
-        this.screenFlash(0x120018,0.78,900);b.setVisible(true).setAlpha(0).setPosition(b.x,targetY+62).setScale(base*0.12);
-        for(let i=0;i<4;i++){const seal=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(targetY-2).setScale(0.18+i*0.08).setAlpha(0.74).setRotation(i*Math.PI/4));this.tweens.add({targets:seal,rotation:(i%2?1:-1)*Math.PI*1.8,scale:1.25+i*0.18,alpha:0,duration:1450+i*120,onComplete:()=>seal.destroy()});}
-        this.tweens.add({targets:b,alpha:1,y:targetY,scale:base,duration:1450,ease:'Back.out',onComplete:()=>{if(!b.active)return;this.cameras.main.shake(700,0.020);this.screenFlash(0xd95cff,0.42,620);Sfx.bossWarn();}});
+      this.time.delayedCall(1180,()=>{if(!b.active)return;
+        const eclipse=this.camWorld(this.add.circle(b.x,targetY,176,0x020006,0.94).setDepth(targetY-4).setStrokeStyle(13,0xd95cff,0.72));
+        const corona=this.camWorld(this.add.image(b.x,targetY,'hunger_seal').setDepth(targetY-5).setScale(0.2).setAlpha(0.9).setTint(0xff3f78));
+        this.tweens.add({targets:eclipse,scale:{from:0.08,to:1.35},alpha:{from:0,to:0.94},duration:1250,ease:'Cubic.out'});
+        this.tweens.add({targets:corona,scale:3.1,rotation:Math.PI*2,alpha:{from:0.95,to:0.24},duration:1900});
+        this.screenFlash(0x050008,0.90,1050);b.setVisible(true).setAlpha(0).setPosition(b.x,targetY+92).setScale(base*0.05);
+        for(let i=0;i<7;i++){const seal=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(targetY-2+i%2).setTint(i%2?0xff3f78:0xffd166).setScale(0.14+i*0.07).setAlpha(0.82).setRotation(i*Math.PI/7));this.tweens.add({targets:seal,rotation:(i%2?1:-1)*Math.PI*2.4,scale:1.45+i*0.13,alpha:0,duration:1350+i*95,onComplete:()=>seal.destroy()});}
+        for(let i=0;i<12;i++){const ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(targetY-1).setRotation(i*TAU/12).setTint(i%2?0xd95cff:0xff3f78).setScale(0.15,0.42).setAlpha(0.76));this.tweens.add({targets:ray,scaleX:1.65,alpha:0,duration:900+i*45,delay:300,onComplete:()=>ray.destroy()});}
+        this.tweens.add({targets:b,alpha:1,y:targetY,scale:base,duration:1700,ease:'Back.out',onComplete:()=>{if(!b.active)return;this.cameras.main.shake(980,0.030);this.screenFlash(0xff3f78,0.52,760);Sfx.bossWarn();eclipse.destroy();corona.destroy();}});
       });
-      this.time.delayedCall(3300,()=>{if(!b.active)return;this.showBanner('🌑 THE GREAT HUNGER','ราชันผู้กลืนรสเสด็จแล้ว — ทำลายมงกุฎก่อนโลกไร้รส!',2400);});
-      this.time.delayedCall(4300,()=>cam.pan(px,py,850,'Sine.easeInOut'));
-      this.time.delayedCall(5250,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);this.state='play';this.mode='boss';b.atkCd=1.35;
-        b._aura=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-1).setAlpha(0.48));b._auraIsFx=true;
-        b._hungerOrbs=[];for(let i=0;i<4;i++)b._hungerOrbs.push(this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(i%2?0xffd166:0xd95cff).setDepth(b.y+2).setScale(0.42).setAlpha(0.8)));
+      this.time.delayedCall(3300,()=>{if(!b.active)return;this.showBanner('🌑 THE GREAT HUNGER','ความหิวดึกดำบรรพ์ตื่นแล้ว — ไม่มีสิ่งใดเหลือให้ต่อรอง!',2600);});
+      this.time.delayedCall(4500,()=>cam.pan(px,py,900,'Sine.easeInOut'));
+      this.time.delayedCall(5550,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);this.state='play';this.mode='boss';b.atkCd=1.35;
+        b._aura=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-2).setAlpha(0.58).setTint(0xff3f78));b._auraIsFx=true;
+        b._hungerHalo=[this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-3).setScale(2.05).setAlpha(0.42).setTint(0xd95cff)),this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-4).setScale(2.62).setAlpha(0.26).setTint(0xffd166))];
+        b._hungerOrbs=[];for(let i=0;i<8;i++)b._hungerOrbs.push(this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(i%3===0?0xffd166:i%2?0xff3f78:0xd95cff).setDepth(b.y+2).setScale(0.38).setAlpha(0.88)));
         this.spawnBossEscorts(3);
       });return;
     }
@@ -3829,6 +3851,7 @@ class Game extends Phaser.Scene {
     if(e._phaseShieldFx){this.tweens.killTweensOf(e._phaseShieldFx);if(e._phaseShieldFx.active)e._phaseShieldFx.destroy();e._phaseShieldFx=null;}
     e._phaseInvuln=0;e._phaseGateLocked=false;
     if(e._hungerOrbs){e._hungerOrbs.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerOrbs=null;}
+    if(e._hungerHalo){e._hungerHalo.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerHalo=null;}
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     this.dropOrb(e.x,e.y,e.xp||1);   // ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isBoss||isMini||(isElite&&Math.random()<0.3)||(!big&&Math.random()<0.015)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // ไอเทมฟื้นฟู (บอส/มินิแน่นอน · elite 30% · ธรรมดา 1.5% — ลดลงให้หัวใจหายากขึ้น)
@@ -4137,6 +4160,14 @@ class Game extends Phaser.Scene {
     return b._phaseInvuln>0;
   }
 
+  greatHungerMetamorph(b,phase,color){
+    if(!b||!b.active)return;const count=phase===4?14:phase===3?11:8,reach=phase===4?330:phase===3?270:220;
+    for(let i=0;i<count;i++){const a=i*TAU/count,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(b.y+5).setRotation(a).setTint(i%3===0?0xffd166:color).setScale(0.08,0.38).setAlpha(0.92));this.tweens.add({targets:ray,scaleX:reach/256,scaleY:phase===4?0.9:0.62,alpha:0,duration:720+i*22,onComplete:()=>ray.destroy()});}
+    for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y+3).setTint(i%2?color:0xffd166).setScale(0.35+i*0.18).setAlpha(0.88));this.tweens.add({targets:ring,scale:phase===4?3.4+i*0.35:2.45+i*0.28,rotation:(i%2?1:-1)*Math.PI*1.4,alpha:0,duration:850+i*130,onComplete:()=>ring.destroy()});}
+    const shadow=this.camWorld(this.add.circle(b.x,b.y,32,0x030006,0.86).setDepth(b.y-2).setStrokeStyle(8,color,0.8));this.tweens.add({targets:shadow,radius:phase===4?240:175,alpha:0,duration:1100,onComplete:()=>shadow.destroy()});
+    this.screenFlash(phase===4?0x030005:color,phase===4?0.82:0.46,phase===4?950:650);this.cameras.main.shake(phase===4?980:700,phase===4?0.032:0.022);Sfx.bossWarn();
+  }
+
   greatHungerAttack(b){
     const fast=b.phase4?0.60:b.phase3?0.70:b.phase2?0.82:1;
     const pool=b.phase4?['eclipse','voidMaw','crownRain','ovenCross','eclipse']:b.phase3?['voidMaw','spiral','lastSupper','ovenCross','crownRain']:b.phase2?['ovenCross','spiral','cleave','crownRain','lastSupper']:['crownRain','cleave','spiral'];
@@ -4186,14 +4217,15 @@ class Game extends Phaser.Scene {
     if(b._aura){ b._aura.setPosition(b.x,b.y);   // ออร่าคลั่ง
       if(b._auraIsFx) b._aura.setScale((b._baseScale||1)*2.4*(1+Math.sin(b._breathe*1.5)*0.06));
       else b._aura.setScale(1+Math.sin(b._breathe*1.5)*0.12).setAlpha(0.12+Math.abs(Math.sin(b._breathe))*0.1); }
-    if(b._hungerOrbs){b._hungerSpin=(b._hungerSpin||0)+dt*(b.phase4?2.2:b.phase3?1.7:1.15);b._hungerOrbs.forEach((o,i)=>{if(!o||!o.active)return;const a=b._hungerSpin+i*TAU/b._hungerOrbs.length,r=(b.phase4?142:b.phase3?124:108);o.setPosition(b.x+Math.cos(a)*r,b.y+Math.sin(a)*r*0.58).setDepth(b.y+(Math.sin(a)>0?3:-2)).setScale(0.34+(Math.sin(a)+1)*0.08);});}
+    if(b._hungerHalo){b._hungerHalo.forEach((h,i)=>{if(!h||!h.active)return;h.setPosition(b.x,b.y).setDepth(b.y-3-i).setRotation((b._hungerSpin||0)*(i?-.34:.48)).setScale((i?2.62:2.05)*(b.phase4?1.24:b.phase3?1.13:b.phase2?1.06:1)).setAlpha((i?0.26:0.42)+(b.phase4?0.12:0));});}
+    if(b._hungerOrbs){b._hungerSpin=(b._hungerSpin||0)+dt*(b.phase4?2.35:b.phase3?1.82:1.18);b._hungerOrbs.forEach((o,i)=>{if(!o||!o.active)return;const a=b._hungerSpin+i*TAU/b._hungerOrbs.length,r=(b.phase4?174:b.phase3?151:b.phase2?132:119);o.setPosition(b.x+Math.cos(a)*r,b.y+Math.sin(a)*r*0.55).setDepth(b.y+(Math.sin(a)>0?5:-4)).setScale((b.phase4?0.50:0.36)+(Math.sin(a)+1)*0.09).setAlpha(0.62+Math.abs(Math.sin(a))*0.34);});}
     if(this.tickBossPhaseTransition(b,dt))return;
     if(b.frozen>0)return;
     if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt/(b.rageCdMul||1);
     if(b.isBoss&&this.stageIndex===4){const f=b.hp/b.maxhp;
-      if(!b.phase2&&f<=0.72){b.phase2=true;this.beginBossPhaseTransition(b,1.8,0xff6a4d);b.spd*=1.16;b.atkCd=0.55;this.showBanner('👑 เฟส 2 · มงกุฎแตก','เตาอบเปิด—กางเขนเพลิงและงานเลี้ยงเริ่มขึ้น!',1800);this.screenFlash(0xff6a4d,0.36,500);this.cameras.main.shake(500,0.015);}
-      else if(!b.phase3&&f<=0.40){b.phase3=true;this.beginBossPhaseTransition(b,1.9,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 เฟส 3 · ร่างแท้แห่งความหิว','แรงดูดสุญญะตื่นขึ้น—อย่าหยุดเคลื่อนที่!',1900);this.screenFlash(0xd95cff,0.48,620);this.cameras.main.shake(620,0.018);}
-      else if(!b.phase4&&f<=0.14){b.phase4=true;this.beginBossPhaseTransition(b,2.2,0xffd166);b.spd*=1.12;b.atkCd=0.24;this.showBanner('🌘 เฟสสุดท้าย · กลืนโลก','สุริยุปราคากำลังลงมา—นี่คือการโจมตีสุดท้าย!',2200);this.screenFlash(0x150019,0.78,800);this.cameras.main.shake(760,0.022);}
+      if(!b.phase2&&f<=0.72){b.phase2=true;this.beginBossPhaseTransition(b,1.8,0xff3f58);this.greatHungerMetamorph(b,2,0xff3f58);b.spd*=1.16;b.atkCd=0.55;this.showBanner('👑 เฟส 2 · มงกุฎแตก','ผนึกแรกพัง—กรงเล็บราชันและเตาเลือดตื่นขึ้น!',1900);}
+      else if(!b.phase3&&f<=0.40){b.phase3=true;this.beginBossPhaseTransition(b,2.0,0xd95cff);this.greatHungerMetamorph(b,3,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 เฟส 3 · ร่างแท้แห่งความหิว','ดวงตาทั้งหกลืมขึ้น—แรงดูดสุญญะกำลังกลืนสนาม!',2050);}
+      else if(!b.phase4&&f<=0.14){b.phase4=true;this.beginBossPhaseTransition(b,2.35,0xffd166);this.greatHungerMetamorph(b,4,0xffd166);b.spd*=1.12;b.atkCd=0.24;this.showBanner('🌘 เฟสสุดท้าย · ผู้กลืนโลก','ท้องฟ้าดับสูญ—สังหารมันก่อนทุกความทรงจำถูกกิน!',2400);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.greatHungerAttack(b);return;}
     // เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) — เอฟเฟกต์โกรธ
     const phase2At=(b.isBoss&&this.stageIndex===0)?0.68:(b.isBoss&&this.stageIndex===1?0.65:0.5),phase3At=(b.isBoss&&this.stageIndex===0)?0.35:(b.isBoss&&this.stageIndex===1?0.32:0.25);
