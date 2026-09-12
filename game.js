@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.31.4';
+const GAME_VERSION = '2.31.5';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.31.5', date:'2026-09-12', title:'Daily Loop', items:[
+    'เพิ่ม Daily Reward พร้อม streak สูงสุด 7 วันและป้องกันการรับซ้ำในวันเดียว',
+    'เพิ่ม Daily Challenge ที่สุ่มด่านและความยากตามวันที่ พร้อมโบนัส Sugar วันละครั้ง',
+    'สถานะรางวัลและ Challenge บันทึกถาวรและรีเฟรชอัตโนมัติเมื่อเปลี่ยนวัน' ] },
   { v:'2.31.4', date:'2026-09-12', title:'Achievements', items:[
     'เพิ่มเมนู Achievement พร้อมภารกิจ 9 แบบ ครอบคลุมการฆ่า ผ่านด่าน Hell อุปกรณ์ ตัวละคร และ Rank',
     'Achievement ตรวจความคืบหน้าจากเซฟเดิมได้ทันที ไม่บังคับให้เริ่มเล่นใหม่',
@@ -1289,6 +1293,8 @@ const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.pus
 function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
 const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
+function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%3)};}
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
 const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'} };
 
@@ -1309,6 +1315,7 @@ const Save = {
     if(!this.data.bestiary)this.data.bestiary={};
     if(!this.data.stageMastery)this.data.stageMastery={};
     if(!this.data.achievements)this.data.achievements={};
+    if(!this.data.daily)this.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false};
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
     Sfx.muted=!this.data.settings.sound;
     return this.data; },
@@ -1337,7 +1344,7 @@ const Save = {
     for(const slot of GEAR_SLOTS){const gid=this.data.gear[slot.slot],it=(GEAR[slot.slot]||[]).find(g=>g.id===gid);if(it)p+=(tierPower[it.tier]||0)+this.gearLv(it.id)*18;}
     const tal=cp.tal||{};for(const k in tal)p+=(tal[k]||0)*26;return Math.max(100,Math.round(p/10)*10); },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
-    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{}, achievements:{}, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
   // ---- Bestiary (Monster Card) ----
   kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
   addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
@@ -2122,7 +2129,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else this.buildHub(); }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
@@ -2242,6 +2249,29 @@ class Game extends Phaser.Scene {
     const bw=Math.min(180,panelW-36),bh=30,bx=panelX+panelW/2-bw/2,by=panelY+panelH-bh-12,bg=this.add.graphics();bg.fillStyle(0x3c3048,1);bg.fillRoundedRect(bx,by,bw,bh,10);bg.lineStyle(1.4,0xa98cf0,1);bg.strokeRoundedRect(bx,by,bw,bh,10);const bt=this.add.text(bx+bw/2,by+bh/2,'‹ กลับรายการสกิล',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([bg,bt]);this._zone(bx,by,bw,bh,()=>{this._skillArchiveSelected=null;this.buildSkillArchive();});
   }
   buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
+  ensureDaily(){
+    const d=Save.data.daily||(Save.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false}),spec=dailySpec();
+    if(d.challengeDay!==spec.key){d.challengeDay=spec.key;d.challengeDone=false;Save.save();}return{data:d,spec};
+  }
+  buildDaily(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📅 ภารกิจประจำวัน');
+    const w=this.W,h=this.H,o=this.ensureDaily(),d=o.data,spec=o.spec,claimed=d.claimDay===spec.key,st=STAGES[spec.stage],unlocked=spec.stage<=(Save.data.unlockedStage||0);
+    const panel=(y,height,color)=>{const g=this.add.graphics();g.fillStyle(0x241d2d,0.98);g.fillRoundedRect(16,y,w-32,height,16);g.lineStyle(2,color,0.9);g.strokeRoundedRect(16,y,w-32,height,16);this.menu.add(g);return g;};
+    const y1=88,h1=Math.min(180,h*0.30);panel(y1,h1,0xffd166);
+    const streak=Math.max(0,d.streak||0),reward=50+Math.min(7,Math.max(1,streak+(claimed?0:1)))*15;
+    const t1=this.add.text(w/2,y1+25,'🎁 DAILY REWARD',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5);
+    const days=this.add.text(w/2,y1+58,Array.from({length:7},(_,i)=>i<streak?'●':'○').join('  '),{fontFamily:'sans-serif',fontSize:'18px',color:'#ffcf5a'}).setOrigin(0.5);
+    const info=this.add.text(w/2,y1+88,claimed?'รับรางวัลวันนี้แล้ว · Streak '+streak+' วัน':'รางวัลวันนี้ 🍬 '+reward+' · รักษา Streak ต่อเนื่อง',{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc2d5'}).setOrigin(0.5);
+    const bw=Math.min(w-70,260),by=y1+h1-38,bg=this.add.graphics();bg.fillStyle(claimed?0x3b3541:0xffb020,1);bg.fillRoundedRect(w/2-bw/2,by-20,bw,40,13);const bt=this.add.text(w/2,by,claimed?'รับแล้ว ✓':'รับรางวัล',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:claimed?'#8f849f':'#21131a'}).setOrigin(0.5);this.menu.add([t1,days,info,bg,bt]);
+    if(!claimed)this._zone(w/2-bw/2,by-20,bw,40,()=>{const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;Save.addSugar(50+d.streak*15);Sfx.clear();this.showBanner('🎁 Daily Reward','Streak '+d.streak+' วัน · รับ 🍬 '+(50+d.streak*15),1700);this.buildDaily();});
+    const y2=y1+h1+14,h2=Math.max(150,h-y2-18);panel(y2,h2,0xd95cff);
+    const diff=DIFFS[spec.diff-1],t2=this.add.text(w/2,y2+24,'⚔️ DAILY CHALLENGE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#e7b7ff'}).setOrigin(0.5);
+    const name=this.add.text(w/2,y2+54,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',wordWrap:{width:w-55},align:'center'}).setOrigin(0.5);
+    const detail=this.add.text(w/2,y2+82,diff.emoji+' '+diff.name+' · โบนัส 🍬 '+(120+spec.diff*30),{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd6a0'}).setOrigin(0.5);
+    const state=d.challengeDone?'สำเร็จแล้ว ✓':unlocked?'เริ่ม Challenge':'🔒 ต้องปลดล็อกด่าน '+(spec.stage+1),cbg=this.add.graphics(),cby=y2+h2-40;cbg.fillStyle(d.challengeDone?0x315142:unlocked?0x8e4fc0:0x3a3341,1);cbg.fillRoundedRect(w/2-bw/2,cby-20,bw,40,13);const cbt=this.add.text(w/2,cby,state,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:d.challengeDone?'#a8f0c0':'#ffffff'}).setOrigin(0.5);this.menu.add([t2,name,detail,cbg,cbt]);
+    if(!d.challengeDone&&unlocked)this._zone(w/2-bw/2,cby-20,bw,40,()=>{this._dailyRun=true;this.stageDiff=spec.diff;this.startRun(spec.stage);});
+    this.menu.setVisible(true);
+  }
   buildAchievements(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement');
     const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=8,side=14,top=portrait?86:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows);
@@ -2296,6 +2326,7 @@ class Game extends Phaser.Scene {
       [0xf0a92e,    '☷','สมุดมอนสเตอร์','ดูการค้นพบและโบนัส',()=>{ this.menuScreen='bestiary'; this.buildMenuScreen(); }],
       [0x5f7896,     '⚙','ตั้งค่า','เสียง การสั่น ภาพวาบ และคุณภาพ VFX',()=>{ this.menuScreen='settings'; this.buildMenuScreen(); }],
       [0xc0893e,     '🏆','Achievement','ภารกิจ ความสำเร็จ และรางวัล Sugar',()=>{ this.menuScreen='achievements'; this.buildMenuScreen(); }],
+      [0xe06f75,     '📅','ภารกิจประจำวัน','Daily Reward และด่านท้าทายวันนี้',()=>{ this.menuScreen='daily'; this.buildMenuScreen(); }],
     ];
     const left=portrait?center:w*0.27;
     const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
@@ -2385,7 +2416,7 @@ class Game extends Phaser.Scene {
       const label=this.add.text(x+20,y+rowH*0.30,d.emoji+' ระดับ '+d.lv+' · '+d.name+(cleared?'  ✓':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5);
       const info=this.add.text(x+20,y+rowH*0.72,'ศัตรู HP ×'+d.hp.toFixed(1)+' · ดาเมจ ×'+d.dmg.toFixed(2),{fontFamily:'sans-serif',fontSize:'10px',color:'#bfb5ca'}).setOrigin(0,0.5);
       const rw=this.add.text(x+w-16,y+rowH/2,'🏆 รางวัล ×'+d.reward.toFixed(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#'+d.color.toString(16).padStart(6,'0')}).setOrigin(1,0.5);
-      this.menu.add([g,label,info,rw]); this._zone(x,y,w,rowH,()=>{ this.stageDiff=d.lv; this.startRun(idx); });
+      this.menu.add([g,label,info,rw]); this._zone(x,y,w,rowH,()=>{ this._dailyRun=false; this.stageDiff=d.lv; this.startRun(idx); });
     });
     const by=this.H-52,bg2=this.add.graphics();bg2.fillStyle(0x2a2036,0.96);bg2.fillRoundedRect(x,by,w,38,10);bg2.lineStyle(1.6,0x51445f,1);bg2.strokeRoundedRect(x,by,w,38,10);
     const bt=this.add.text(this.W/2,by+19,'‹ กลับไปเลือกด่าน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbb8e0'}).setOrigin(0.5);
@@ -3132,7 +3163,8 @@ class Game extends Phaser.Scene {
     Sfx.clear();
     const last=this.stageIndex>=STAGES.length-1,guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
     this._firstMastery=!Save.data.stageMastery[this.stageIndex];if(this._firstMastery){Save.data.stageMastery[this.stageIndex]=true;this.sugarStage+=40+this.stageIndex*25;Save.save();}
-    Save.addSugar(this.sugarStage);                                   // ฝาก Sugar + โบนัส Mastery ครั้งแรก
+    this._dailyBonus=0;if(this._dailyRun){const o=this.ensureDaily();if(!o.data.challengeDone&&o.data.challengeDay===o.spec.key){o.data.challengeDone=true;this._dailyBonus=120+o.spec.diff*30;this.sugarStage+=this._dailyBonus;Save.save();}this._dailyRun=false;}
+    Save.addSugar(this.sugarStage);                                   // ฝาก Sugar + โบนัส Mastery/Daily
     this.gainCharExp(Math.round((75 + this.stageIndex*35)*guide.reward)); // catch-up EXP มากขึ้นเมื่อผ่านด่านด้วยพลังต่ำกว่าคำแนะนำ
     this._powerAfter=Save.power(this.character);
     if(!last && (Save.data.unlockedStage||0) < this.stageIndex+1){ Save.data.unlockedStage=this.stageIndex+1; Save.save(); }
