@@ -55,7 +55,14 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.12.0 Boss VFX Safety & Deliberate Builds)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.13.0 Feedback Fixes)
+- **v2.13.0 (แก้จาก feedback เจ้าของ):**
+  · **บอสด่าน 2 sprite ดำ:** ชีต `boss2_clogmaw_sheet.png` (1024×512, 4×2) มีอาร์ตจริงแค่ **เฟรม 0–3** · เฟรม 4–7 **ว่างเปล่า 100%** → `drainBossPose` เรียกท่า 4–7 (prison/suction/overflow/enrage) เลยเรนเดอร์ดำ · แก้ด้วย map เฟรม 4–7 → {4:3,5:2,6:3,7:2} · **ถ้าจะได้ท่าบอสครบต้องขออาร์ตเติมเฟรม 4–7**
+  · Unique ตาโร่เปลี่ยนจาก Path Recall → **สายฟ้าชิ่ง (Arc)** ยิงจากตัวลามไปศัตรูตัวถัด ๆ ไป (`castPathRecall` เขียนใหม่ ใช้ `chainBolt`) · ยังคง key `pathRecall` เดิม + คืน Dash/haste
+  · การ์ดเลเวลอัพ: แตะครั้งแรก = ไฮไลต์กรอบเรือง (`highlightCard`/`_cardHi`) ก่อนแตะซ้ำยืนยัน
+  · ลดดรอปหัวใจ (elite 30%/ธรรมดา 1.5%/กล่อง 28%) · cutscene ตัด lore + ยืดเวลาอ่านตามความยาว
+  · **หมายเหตุ:** `scripts/validate-game.mjs` **stale อยู่ก่อนแล้ว** (เช็ก `pickup=105`/`uniqueAt` ที่ game.js ปัจจุบันไม่มี) → `npm run check` fail ส่วน validate แต่ `node --check` ผ่าน · ควรรื้อ validator ให้ตรงภายหลัง
+  · **มินิบอสด่าน 2 (Valve Maw) เรนเดอร์เป็นเงาขาว** — ยังไม่ฟันธงว่าบั๊กหรือ telegraph ตั้งใจ (รอเจ้าของยืนยัน)
 - **v2.12.0:** แก้กล่องดำ 352×366 ระหว่างสู้บอสด่าน 2 ด้วย additive blending เป็นค่าเริ่มต้นของ VFX flipbook และออร่า · Passive card บอกคู่ Awaken/สาย build · จำกัด Awaken ไม่เกิน 2 ต่อด่าน · EXP เริ่ม 7 และโต ×1.20+3 · Unique Lv1–4 เพิ่มวง/ประกาย/แรงสั่น/ฉากจบตามเลเวล · ลดฐานผู้เล่นเป็น HP 90, ดาเมจ 90%, ความเร็ว 166, critical ×1.55 เพื่อเพิ่มน้ำหนัก meta progression
 - **v2.11.0:** คลอกมอว์ด่าน 2 ใช้ flipbook 4×2 จำนวน 8 เฟรม (idle/emerge/roar/prison/suction/overflow/enrage) และ pose ผูกกับท่าจริง · Power Rating รวมโบนัส Stage Mastery ครั้งแรก · ค่าพลังแนะนำใหม่ 100/280/560/940/1450 · Power Guide ช่วย HP/ดาเมจศัตรูเล็กน้อยเมื่อผู้เล่นต่ำกว่าคำแนะนำและเพิ่ม EXP/Sugar catch-up โดยผู้เล่นเหนือคำแนะนำไม่ถูกสเกลตาม · ยกเลิก boss rank scaling เต็มเพื่อให้การพัฒนารู้สึกมีผล
 - **v2.10.0:** Cutscene ก่อนทุกเวฟให้ตัวละครที่เลือกพูดกับตัวเองและเล่า story beat · Unique อัปอัตโนมัติ Lv2/3/4 ที่เลเวลผู้เล่น 3/7/11 โดยไม่เข้า card pool · Power Rating จากเลเวลตัวละคร/ยศ/พร/อุปกรณ์ พร้อมค่าพลังแนะนำรายด่าน · การ์ดเลเวลอัปต้องแตะใบเดิมซ้ำหลัง input lock 550ms · Awaken card บอกคู่ Attack MAX + Passive · เพิ่มไอเทมกิมมิค 5 ด่าน · หัวใจ/แม่เหล็กยังมีฮาโลแต่ไม่ถูกดึงเองและ pickup ฐานกลับเป็น 80 · เปลี่ยนอาร์ต Valve Maw/Clogmaw ด่าน 2
