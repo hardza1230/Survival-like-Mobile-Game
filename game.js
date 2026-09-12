@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.16.0';
+const GAME_VERSION = '2.17.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.17.0', date:'2026-09-12', title:'Boss/Miniboss Objective: Weak-Point Shield', items:[
+    'ระหว่างสู้บอส/มินิ บอสจะกางเกราะเป็นระยะ (ลดดาเมจที่รับ 88%)',
+    'ต้องทำลาย "จุดอ่อน" สีทอง 3 จุดที่โผล่รอบบอสเพื่อทลายเกราะ → บอสมึนงง + โดนดาเมจก้อนใหญ่',
+    'ถ้าทำลายไม่ทัน 9 วิ เกราะหลุดเอง (ไม่บล็อกความคืบหน้า) · แก้อาการเบื่อตอนสู้บอส' ] },
   { v:'2.16.0', date:'2026-09-12', title:'Character Rebalance & Denser Waves', items:[
     'โกโก้เปลี่ยน Unique เป็น "หลุมช็อกโกแลตดำ" (voidPull) ดูดฝูงเข้าหาตัวแล้วยุบระเบิด (คอนเซปต์ black hole เดิม)',
     'ลดพลังช่วงต้น: งาดำ (ward ทำดาเมจบอส/มินิ ×0.28-0.30 เลิกละลายบอสใน 1 วิ), มิ้นต์ (รัศมี Lv1 195→120), ทาโร่ Arc (ดาเมจต้นเกมลดลง)',
@@ -2649,7 +2653,7 @@ class Game extends Phaser.Scene {
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.85; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // มินิบอสมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
-    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));
+    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
     this.waveAlive=adds+1;
   }
   // บอสเรียกลูกน้อง "มินิบอส" ออกมาช่วยตอนปรากฏตัว (flag เป็น elite เพื่อไม่ให้ตายแล้วจบเวฟ)
@@ -2694,7 +2698,7 @@ class Game extends Phaser.Scene {
     b.atkCd=0.8; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
     if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); } else if(b.anims){ b.anims.stop(); b.setFrame(0); }
-    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));
+    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
     this.waveAlive=1; this.updateWaveText();
     this.bossIntro(b, st.boss);
   }
@@ -3537,6 +3541,7 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(ang,sp,bullet.body.velocity); return; } }
     this.killBullet(bullet); }
   damage(e,amount,x,y){ if(!e.active)return;
+    if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.12;   // Objective: บอสกางเกราะ ต้องทำลายจุดอ่อนก่อน
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.8); crit=true; }
@@ -3776,8 +3781,34 @@ class Game extends Phaser.Scene {
     this.vfxSpawnPoof(x,y);return o;
   }
   hitBossObject(b,o){if(!b.active||!o.active||o.kind==='acid'||o.kind==='hole')return;const dmg=b.dmg||8;o.hp-=dmg;this.popDmg(Math.round(dmg),o.x,o.y,false);this.vfxHitRing(o.x,o.y,0x9dff45,false);if(!b.pierce)this.killBullet(b);if(o.hp<=0)this.killBossObject(o,false);}
-  killBossObject(o,hatch){if(!o||!o.active)return;const k=o.kind,x=o.x,y=o.y;this.burst(x,y,k==='egg'?0xffd0df:0x9dff45);o.setActive(false).setVisible(false);if(o.body){o.body.enable=false;o.body.checkCollision.none=false;}o.kind=null;if(hatch){const n=k==='mound'?3:2;for(let i=0;i<n;i++)this.spawnEnemy(i%2?'acid':'fast');}}
-  clearBossObjects(){if(!this.bossObjects)return;this.bossObjects.children.iterate(o=>{if(o&&o.active)this.killBossObject(o,false);});}
+  killBossObject(o,hatch){if(!o||!o.active)return;const k=o.kind,x=o.x,y=o.y,wasWeak=o._weak;this.burst(x,y,k==='egg'?0xffd0df:0x9dff45);o.setActive(false).setVisible(false);if(o.body){o.body.enable=false;o.body.checkCollision.none=false;}o.kind=null;o._weak=false;if(hatch){const n=k==='mound'?3:2;for(let i=0;i<n;i++)this.spawnEnemy(i%2?'acid':'fast');}
+    if(wasWeak){this._weakCount=Math.max(0,(this._weakCount||1)-1);this.vfxHitRing(x,y,0xffe07a,true);if(this._weakCount<=0&&this._weakActive)this.time.delayedCall(50,()=>this.endWeakPoint(this.boss,true));}}
+  // Objective ระหว่างสู้บอส/มินิ: บอสกางเกราะเป็นระยะ ต้องทำลาย "จุดอ่อน" 3 จุดเพื่อทลายเกราะ (แก้เบื่อ)
+  tickBossObjective(dt){
+    const b=this.boss; if(!b||!b.active)return;
+    if(this._bossShieldFx&&this._bossShieldFx.active)this._bossShieldFx.setPosition(b.x,b.y);
+    if(this._weakActive){ this._weakTimer-=dt; if(this._weakTimer<=0)this.endWeakPoint(b,false); return; }
+    const frac=b.hp/b.maxhp; if(frac<0.15||frac>0.92)return;
+    this._weakAcc=(this._weakAcc==null?11:this._weakAcc)-dt;
+    if(this._weakAcc<=0)this.startWeakPoint(b);
+  }
+  startWeakPoint(b){
+    this._weakActive=true;this._weakTimer=9;this._bossShield=true;this._weakCount=0;
+    const n=3,rad=180;
+    for(let i=0;i<n;i++){const a=-Math.PI/2+i*Math.PI*2/n,o=this.spawnBossObject('crystal',b.x+Math.cos(a)*rad,b.y+Math.sin(a)*rad,12);if(o){o._weak=true;o.setTint(0xffe07a);this._weakCount++;}}
+    if(this._weakCount===0){this._bossShield=false;this._weakActive=false;this._weakAcc=11;return;}   // ด่านไม่มีอาร์ต crystal → ข้าม
+    this._bossShieldFx=this.camWorld(this.add.image(b.x,b.y,'vfx_ring').setTint(0xffe07a).setDepth(6).setDisplaySize(120,120).setAlpha(0.5));
+    this.tweens.add({targets:this._bossShieldFx,alpha:{from:0.3,to:0.6},scale:{from:0.9,to:1.05},yoyo:true,repeat:-1,duration:520,ease:'Sine.inOut'});
+    this.showBanner('🛡️ บอสกางเกราะ!','ทำลายจุดอ่อน '+this._weakCount+' จุด (สีทอง) เพื่อทลายเกราะ!',2000);Sfx.bossWarn();
+  }
+  endWeakPoint(b,broken){
+    this._weakActive=false;this._bossShield=false;this._weakAcc=broken?13:9;
+    if(this._bossShieldFx){this.tweens.killTweensOf(this._bossShieldFx);if(this._bossShieldFx.active)this._bossShieldFx.destroy();this._bossShieldFx=null;}
+    if(this.bossObjects)this.bossObjects.children.iterate(o=>{if(o&&o.active&&o._weak){o._weak=false;this.killBossObject(o,false);}});
+    if(broken&&b&&b.active){const dmg=b.maxhp*0.08;b.hp-=dmg;this.popDmg(Math.round(dmg),b.x,b.y,true);b.atkCd=Math.max(b.atkCd||1,2.2);b.frozen=Math.max(b.frozen||0,0.6);this.screenFlash(0xffe07a,0.3,360);this.cameras.main.shake(220,0.01);this.hitStop(60);this.showBanner('🛡️ เกราะแตก!','บอสมึนงง — ซัดให้เต็มที่!',1600);Sfx.clear();if(b.hp<=0)this.killEnemy(b);}
+  }
+  resetBossObjective(){this._weakActive=false;this._bossShield=false;this._weakAcc=11;this._weakCount=0;if(this._bossShieldFx){this.tweens.killTweensOf(this._bossShieldFx);if(this._bossShieldFx.active)this._bossShieldFx.destroy();this._bossShieldFx=null;}}
+  clearBossObjects(){this._weakActive=false;if(this.bossObjects)this.bossObjects.children.iterate(o=>{if(o&&o.active){o._weak=false;this.killBossObject(o,false);}});this.resetBossObjective();}
   tickBossObjects(dt){
     if(!this.bossObjects)return;this.bossObjects.children.iterate(o=>{if(!o||!o.active)return;o.life-=dt;o.tick-=dt;if(o.kind==='acid'){if(this.dist(o.x,o.y,this.player.x,this.player.y)<68&&o.tick<=0){o.tick=0.55;this.hurtPlayer(11,0.28);}if(o.life<=0)this.killBossObject(o,false);return;}
       if(o.kind==='hole'){if(o.life<=0)this.killBossObject(o,false);return;}
@@ -4277,6 +4308,7 @@ class Game extends Phaser.Scene {
     // boss/mini HP bar + AI แพทเทิร์นโจมตี
     if(this.boss && this.boss.active){
       this.bossThink(this.boss,dt);
+      this.tickBossObjective(dt);
       this.bossBar.width=Math.max(0,(this._barW*0.8-4)*(this.boss.hp/this.boss.maxhp));
       if(this.bossHpTxt)this.bossHpTxt.setText(Math.max(0,Math.ceil(this.boss.hp)).toLocaleString()+' / '+Math.ceil(this.boss.maxhp).toLocaleString());
     }
