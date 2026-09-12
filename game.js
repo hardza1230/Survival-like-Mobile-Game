@@ -27,9 +27,15 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.12.0';
+const GAME_VERSION = '2.13.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.13.0', date:'2026-09-12', title:'Feedback Fixes: Arc Taro, Card Highlight & Clogmaw Sprite', items:[
+    'แก้บอสด่าน 2 เป็น sprite ดำ (ชีตมีเฟรมจริงแค่ 0–3) โดย map ท่า prison/suction/overflow/enrage กลับเข้าเฟรมที่มีจริง',
+    'เปลี่ยน Unique ของตาโร่เป็น "สายฟ้าชิ่ง" ยิงจากตัวแล้วลามไปศัตรูตัวต่อ ๆ ไปแบบ Arc (คงการคืน Dash + เร่งฝีเท้า)',
+    'ตอนเลือกการ์ดเลเวลอัพ แตะครั้งแรกจะขึ้นกรอบเรืองไฮไลต์การ์ดที่เลือก ก่อนแตะซ้ำเพื่อยืนยัน',
+    'ลดโอกาสดรอปหัวใจฟื้นเลือด (elite 50→30%, ธรรมดา 3→1.5%, กล่อง 50→28%) ให้หัวใจมีค่ามากขึ้น',
+    'Cutscene ก่อนเวฟ: ตัดรายละเอียดส่วนเกินและยืดเวลาตามความยาวประโยคให้อ่านทัน (แตะข้ามได้)' ] },
   { v:'2.12.0', date:'2026-09-12', title:'Boss VFX Safety & Deliberate Builds', items:[
     'แก้สี่เหลี่ยมดำระหว่างสู้บอสด่าน 2 โดยบังคับ VFX flipbook พื้นดำทั้งหมดใช้ additive blending รวมออร่าและเอฟเฟกต์เฟสคลั่ง',
     'การ์ด Passive แสดงสกิลโจมตีที่ใช้ปลุก Awaken ได้ หรือคำแนะนำสาย build สำหรับใบที่ไม่มีคู่โดยตรง',
@@ -925,7 +931,7 @@ const CHARACTER_UNIQUES = {
   berryRebound:{name:'หัวใจสตรอว์เบอร์รีเด้งกลับ',emoji:'🍓',cd:8,color:0xff76a8,desc:'เมล็ดหวานยิงรอบตัวและฟื้น HP — พลังกลางแต่ใช้ได้ถี่'},
   mintSanctuary:{name:'เขตลมหายใจมินต์',emoji:'🌿',cd:11,color:0x72e8d1,desc:'แช่แข็งฝูงวงกว้างและให้ช่วงคุ้มกัน — คูลดาวน์ระดับกลาง'},
   bearQuake:{name:'ตราหมีโกโก้สะเทือน',emoji:'🐻',cd:17,color:0xc28b62,desc:'คลื่นทุบหนักกินพื้นที่กว้าง — รุนแรงมากจึงมีคูลดาวน์นาน'},
-  pathRecall:{name:'เส้นทางหวนคืนของตาโร่',emoji:'🧭',cd:8.5,color:0xb388ff,desc:'ระเบิดย้อนตามทาง ปิดด้วยคลื่นรอบตัว คืน Dash และเร่งฝีเท้า'},
+  pathRecall:{name:'สายฟ้าชิ่งของตาโร่',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'ปล่อยสายฟ้าจากตัว ชิ่งลามไปศัตรูตัวต่อ ๆ ไป (แบบ Arc) แล้วคืน Dash และเร่งฝีเท้า'},
   oathMirror:{name:'เขตกระจกคำสัตย์งาดำ',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'เขตติดตามตัว ทำร้ายฝูง ลดความเสียหาย สะท้อนกระสุน แล้วระเบิด'},
 };
 const UNIQUE_MAX_LV=4;
@@ -933,7 +939,7 @@ const UNIQUE_TIERS={
   berryRebound:{2:'เพิ่มเมล็ดและฟื้น HP มากขึ้น',3:'เมล็ดแรงขึ้นและแผ่วงกว้างกว่าเดิม',4:'Berry Crown ยิง 20+ เมล็ดและฟื้นฟูสูงสุด'},
   mintSanctuary:{2:'วงเย็นกว้างขึ้นและแช่นานขึ้น',3:'เพิ่มเกราะคุ้มกันและพลังคลื่นน้ำแข็ง',4:'Absolute Mint แช่ฝูงวงใหญ่และคุ้มกันยาวขึ้น'},
   bearQuake:{2:'ตราหมีใหญ่ขึ้นและแรงขึ้น',3:'เกิด Aftershock ตามหลังหนึ่งระลอก',4:'Royal Bear Quake สองระลอกวงกว้างเต็มพลัง'},
-  pathRecall:{2:'เพิ่มจำนวนจุดสะท้อนและระยะระเบิด',3:'คลื่นปิดเส้นทางใหญ่ขึ้น พร้อมเร่งฝีเท้านานขึ้น',4:'Grand Recall ระเบิดทางเต็มชุดและคลื่นปิดเส้นทางรุนแรง'},
+  pathRecall:{2:'เพิ่มจำนวนการชิ่งและระยะกระโดด',3:'สายฟ้าแตกเป็นสองสาย ลามกว้างขึ้น',4:'Storm Arc ชิ่งเต็มสนามและดาเมจสูงสุด'},
   oathMirror:{2:'เขตกว้างและพัลส์แรงขึ้น',3:'เขตติดตามตัวนานขึ้นและรับกระสุนได้มากขึ้น',4:'Perfect Oath ฟื้น HP หลังระเบิดพร้อมพลังสะท้อนสูงสุด'},
 };
 
@@ -1543,22 +1549,41 @@ class Game extends Phaser.Scene {
     }
   }
 
-  // Taro: ทุกครั้งมีทั้งระเบิดตามทางและคลื่นปิดรอบตัว จึงมีประโยชน์แม้เส้นทางสั้น
+  // Taro: สายฟ้า Arc — ยิงจากตัวไปเป้าใกล้สุด แล้วชิ่งลามไปศัตรูตัวถัด ๆ ไป (คล้าย Arc ใน PoE)
   castPathRecall(dm,ul){
-    ul=ul||1;const upgraded=!!this.player.echoPath,count=7+ul+(upgraded?2:0),trail=(this._echoTrail||[]).slice(-(44+ul*10+(upgraded?16:0)));
-    const pts=[];for(let i=0;i<count;i++){const idx=Math.max(0,trail.length-1-Math.round(i*Math.max(1,(trail.length-1)/Math.max(1,count-1))));pts.push(trail[idx]||{x:this.player.x-this.moveDir.x*i*24,y:this.player.y-this.moveDir.y*i*24});}
-    let route=0;for(let i=1;i<pts.length;i++)route+=this.dist(pts[i-1].x,pts[i-1].y,pts[i].x,pts[i].y);
-    const routeMul=Phaser.Math.Clamp(0.95+route/600,0.95,1.65),radius=66+ul*7+(upgraded?12:0),damage=16*dm*(1+(ul-1)*0.23)*routeMul;
-    pts.forEach((p,i)=>this.time.delayedCall(i*72,()=>{if(this.state!=='play'&&this.state!=='levelup')return;
-      const mark=this.camWorld(this.add.image(p.x,p.y,'ic_echo_step').setTint(i===pts.length-1?0xffe08a:0xc6a8ff).setDepth(5).setScale(0.12).setAlpha(0.94));
-      this.tweens.add({targets:mark,scale:(radius*1.85)/128,alpha:0,duration:280,onComplete:()=>mark.destroy()});
-      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<radius)this.damage(e,damage*(1+i*0.045),e.x,e.y);});
-      this.vfxHitRing(p.x,p.y,0xb388ff,i===pts.length-1);if(i===pts.length-1)Sfx.boom();
-    }));
-    const finDelay=pts.length*72,finR=125+ul*18+(upgraded?18:0),finDmg=(24+ul*8)*dm*(1+(ul-1)*0.18);
-    this.time.delayedCall(finDelay,()=>{if(this.state!=='play'&&this.state!=='levelup')return;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<finR){this.damage(e,finDmg,e.x,e.y);e.knock=Math.max(e.knock||0,0.22);}});this.vfxHitRing(this.player.x,this.player.y,0xffe08a,true);this.burst(this.player.x,this.player.y,0xb388ff);Sfx.boom();});
+    ul=ul||1;const upgraded=!!this.player.echoPath;
+    const jumps=5+ul+(upgraded?2:0), jumpRange=250+ul*16+(upgraded?40:0), forks=ul>=3?2:1;
+    const dmg=(20+ul*7)*dm*(1+(ul-1)*0.16), color=0xd7b8ff;
+    // หาเป้าเริ่มต้นที่ใกล้ตัวผู้เล่นสุด
+    const first=this.nearestEnemy(760);
+    if(!first){ // ไม่มีเป้า → ปล่อยประจุรอบตัวสั้น ๆ กันเสียเทิร์นฟรี
+      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<220)this.damage(e,dmg,e.x,e.y);});
+      this.vfxHitRing(this.player.x,this.player.y,color,true);
+    }else{
+      const hit=new Set();
+      // แต่ละ "fork" = สายฟ้าหนึ่งสายที่ชิ่งต่อกันเป็นลูกโซ่
+      for(let f=0;f<forks;f++){
+        this.time.delayedCall(f*90,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+          let from={x:this.player.x,y:this.player.y}, cur=(f===0?first:null);
+          if(!cur){ // สายเสริม: เริ่มจากเป้าอื่นที่ยังไม่โดน
+            let best=null,bd=1e9;this.enemies.children.iterate(e=>{if(e&&e.active&&!hit.has(e)){const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<760&&d<bd){bd=d;best=e;}}});cur=best;
+          }
+          for(let j=0;j<jumps&&cur;j++){
+            this.chainBolt(from.x,from.y,cur.x,cur.y);
+            this.damage(cur,dmg*(1-j*0.045),cur.x,cur.y);
+            this.vfxHitRing(cur.x,cur.y,color,false);
+            hit.add(cur);from={x:cur.x,y:cur.y};
+            // หาเป้าถัดไปที่ยังไม่โดน อยู่ในระยะกระโดด
+            let nb=null,nd=jumpRange*jumpRange;
+            this.enemies.children.iterate(o=>{if(o&&o.active&&!hit.has(o)){const d=(o.x-from.x)**2+(o.y-from.y)**2;if(d<nd){nd=d;nb=o;}}});
+            cur=nb;
+          }
+          Sfx.zap();
+        });
+      }
+    }
     this.dashReady=true;this.dashCd=0;this.pathHasteT=1.0+ul*0.38+(upgraded?0.55:0);this.player.iframe=Math.max(this.player.iframe,0.32+ul*0.06);
-    this.showBanner('🧭 เส้นทางหวนคืน Lv'+ul,pts.length+' จุด · คลื่นปิด '+Math.round(finDmg)+' · Dash พร้อมใช้',950);Sfx.dash();
+    this.showBanner('⚡ สายฟ้าชิ่ง Lv'+ul,'ชิ่งสูงสุด '+(jumps*forks)+' ครั้ง · พลัง '+Math.round(dmg)+' · Dash พร้อมใช้',950);Sfx.zap();
   }
 
   // Sesame: เขตติดตามผู้เล่นและมีพัลส์โจมตีเสมอ ไม่ต้องรอกระสุนศัตรูจึงจะคุ้ม
@@ -2431,10 +2456,11 @@ class Game extends Phaser.Scene {
     const dim=this.add.rectangle(0,0,wid,h,0x08060d,0.34).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x17111f,0.97);panel.fillRoundedRect(10,y,wid-20,panelH-10,16);panel.lineStyle(2,c.color,0.9);panel.strokeRoundedRect(10,y,wid-20,panelH-10,16);
     const em=this.add.text(42,y+panelH/2-4,c.emoji,{fontSize:'42px'}).setOrigin(0.5),name=this.add.text(76,y+18,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd166'}).setOrigin(0,0.5);
     const title=this.add.text(76,y+40,beat?beat.title:('เวฟ '+(w+1)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',wordWrap:{width:wid-96}}).setOrigin(0,0.5);
-    const line=this.add.text(76,y+65,'“'+quote+'”',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffe4f0',wordWrap:{width:wid-96},maxLines:2}).setOrigin(0,0);
-    const lore=this.add.text(76,y+101,beat?beat.sub:'',{fontFamily:'sans-serif',fontSize:'9px',color:'#bfb5ca',wordWrap:{width:wid-96},maxLines:2}).setOrigin(0,0);
-    const skip=this.add.text(wid-22,y+panelH-24,'แตะเพื่อไปต่อ  ▶',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#8bd3a0'}).setOrigin(1,0.5);layer.add([dim,panel,em,name,title,line,lore,skip]);
-    let finished=false;const finish=()=>{if(finished)return;finished=true;this._finishStoryCutscene=null;layer.setVisible(false);layer.removeAll(true);this.state='play';this.physics.resume();done();};this._finishStoryCutscene=finish;this.time.delayedCall(2850,finish);
+    const line=this.add.text(76,y+68,'“'+quote+'”',{fontFamily:'sans-serif',fontSize:'14px',color:'#ffe4f0',lineSpacing:3,wordWrap:{width:wid-96},maxLines:3}).setOrigin(0,0);
+    const skip=this.add.text(wid-22,y+panelH-24,'แตะเพื่อไปต่อ  ▶',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#8bd3a0'}).setOrigin(1,0.5);layer.add([dim,panel,em,name,title,line,skip]);
+    // ให้เวลาอ่านตามความยาวประโยค (อ่านไม่ทันในเวอร์ชันก่อน) — แตะข้ามได้เสมอ · ตัด lore ที่รายละเอียดเยอะออก
+    const readMs=Phaser.Math.Clamp(2600+quote.length*70,3600,7000);
+    let finished=false;const finish=()=>{if(finished)return;finished=true;this._finishStoryCutscene=null;layer.setVisible(false);layer.removeAll(true);this.state='play';this.physics.resume();done();};this._finishStoryCutscene=finish;this.time.delayedCall(readMs,finish);
   }
   startWave(w,seamless){
     const beat=(STAGE_STORY_BEATS[this.stageIndex]||[])[w];this.waveIndex=w;this.boss=null;this.bossUI.forEach(o=>o.setVisible(false));
@@ -2871,7 +2897,7 @@ class Game extends Phaser.Scene {
   openLevelUp(){
     this.state='levelup'; this.physics.pause();
     Sfx.levelup();
-    const w=this.W,h=this.H; this.lvlUp.removeAll(true); this.lvlCards=[];
+    const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
     const heldBot=this.drawHeldBar(this.lvlUp, 8);
@@ -2893,8 +2919,20 @@ class Game extends Phaser.Scene {
   pickCardAt(px,py){
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
-    if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();if(this.levelChoiceHint)this.levelChoiceHint.setText('เลือก “'+c.title+'” · แตะใบเดิมอีกครั้งเพื่อยืนยัน');return;}
+    if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('เลือก “'+c.title+'” · แตะใบเดิมอีกครั้งเพื่อยืนยัน');return;}
     Sfx.clear(); c.apply(); this._pendingCardConfirm=null; this.closeLevelUp();
+  }
+  // แตะครั้งแรก = โชว์กรอบเรืองรอบการ์ด ให้ผู้เล่นรู้ว่ากำลังเลือกใบนี้ (ก่อนแตะซ้ำยืนยัน)
+  highlightCard(c){
+    if(!this.lvlUp)return;
+    if(!this._cardHi){this._cardHi=this.add.graphics().setDepth(50);this.lvlUp.add(this._cardHi);}
+    const g=this._cardHi;g.clear();
+    const x=c.left,y=c.top,w=c.right-c.left,h=c.bottom-c.top,r=14;
+    g.fillStyle(0xffe07a,0.12);g.fillRoundedRect(x,y,w,h,r);
+    g.lineStyle(4,0xffe07a,0.95);g.strokeRoundedRect(x,y,w,h,r);
+    g.lineStyle(2,0xffffff,0.7);g.strokeRoundedRect(x+3,y+3,w-6,h-6,r-3);
+    g.setScale(1);this.tweens.killTweensOf(g);
+    this.tweens.add({targets:g,alpha:{from:0.55,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
   closeLevelUp(){
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
@@ -3444,7 +3482,7 @@ class Game extends Phaser.Scene {
     if(e._aura){ e._aura.destroy(); e._aura=null; }   // เก็บออร่าคลั่ง
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     this.dropOrb(e.x,e.y,e.xp||1);   // ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
-    if(isBoss||isMini||(isElite&&Math.random()<0.5)||(!big&&Math.random()<0.03)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // ไอเทมฟื้นฟู (บอส/มินิแน่นอน · elite 50% · ธรรมดา 3%)
+    if(isBoss||isMini||(isElite&&Math.random()<0.3)||(!big&&Math.random()<0.015)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // ไอเทมฟื้นฟู (บอส/มินิแน่นอน · elite 30% · ธรรมดา 1.5% — ลดลงให้หัวใจหายากขึ้น)
     if(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008)) this.spawnVac(e.x,e.y);   // ไอเทมแม่เหล็ก (สุ่มน้อย · มินิแน่นอน)
     if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y);         // ของสวมใส่ดรอป (low tier · โอกาสน้อย)
     // bomber: ระเบิดตอนตาย (เตือนสั้น ๆ ด้วยวง แล้วโดนถ้าอยู่ใกล้)
@@ -3525,7 +3563,7 @@ class Game extends Phaser.Scene {
   breakCrate(c){ const x=c.x,y=c.y; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.cameras.main.shake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดรอปออร์บ
-    if(Math.random()<0.5) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // ครึ่งนึงดรอปฟื้นฟู
+    if(Math.random()<0.28) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // โอกาสดรอปฟื้นฟู (ลดจากครึ่งนึง ให้หัวใจหายากขึ้น)
     if(Math.random()<0.10) this.spawnLoot(x,y);   // โอกาสเล็ก ๆ ได้ของสวมใส่ (low tier)
     if(Math.random()<0.07) this.spawnVac(x,y);    // โอกาสเล็ก ๆ ได้แม่เหล็ก
     if(Math.random()<0.25){ this.sugarStage+=3; this.sugarRun+=3; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); }
@@ -3689,7 +3727,11 @@ class Game extends Phaser.Scene {
     else{this.bossPose(b,6,1200);this.showBanner('☣️ ACID CROWN NOVA','หาช่องว่างระหว่างคลื่น!',900);this.time.delayedCall(360,()=>{if(!b.active)return;this.bossNovaWave(b.x,b.y,285,20,0);if(b.phase3)this.bossNovaWave(b.x,b.y,285,20,380);for(let i=0;i<16;i++)this.foeShot(b.x,b.y,i*Math.PI/8,155+(i%2)*75,12,0xa7ff54,1.3);this.cameras.main.shake(340,0.014);Sfx.bossWarn();});b.atkCd=2.7*fast;}
   }
   drainBossPose(b,frame,ms=620){
-    if(!b||!b.active||b.texture.key!=='boss2')return;if(b.anims)b.anims.stop();b.setFrame(frame);b._poseToken=(b._poseToken||0)+1;const token=b._poseToken;
+    if(!b||!b.active||b.texture.key!=='boss2')return;
+    // อาร์ต boss2_clogmaw_sheet.png มีเฟรมจริงแค่ 0–3 (เฟรม 4–7 ว่างเปล่า → เคยเรนเดอร์เป็น sprite ดำ)
+    // จึง map ท่า prison/suction/overflow/enrage (4–7) กลับเข้าเฟรมที่มีจริง กันบอสกลายเป็นสี่เหลี่ยมดำ
+    frame=({0:0,1:1,2:2,3:3,4:3,5:2,6:3,7:2})[frame]??Math.min(frame,3);
+    if(b.anims)b.anims.stop();b.setFrame(frame);b._poseToken=(b._poseToken||0)+1;const token=b._poseToken;
     this.time.delayedCall(ms,()=>{if(b.active&&b.texture.key==='boss2'&&b._poseToken===token&&this.anims.exists('boss2_walk'))b.play('boss2_walk',true);});
   }
   drainBossAttack(b){
