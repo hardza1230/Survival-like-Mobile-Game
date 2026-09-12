@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.15.0 Combo Hint Cards)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.16.0 Rebalance & Denser Waves)
+- **v2.16.0 (แก้จาก feedback เจ้าของ):** โกโก้ Unique = `voidPull` (`castVoidPull`) หลุมดำดูดฝูง (แทน bearQuake) · nerf ต้นเกม: งาดำ ward ดาเมจบอส/มินิ ×0.28-0.30 (เลิกละลายบอส 1 วิ), มิ้นต์รัศมี Lv1 120 (เดิม 195), ทาโร่ Arc `(9+ul*7)` · โมโม่ berryRebound มี `b.chain` Lv3/4 · `setupSpawnRates` maxLive 95/batch+1/interval เร็วขึ้น · spawnMiniBoss HP×1.05/dmg×1.15/atkCd 0.85 + ท่า nova/spiral/charge · **ยังเหลือ #8 objective ระหว่างสู้บอส/มินิ (กำลังทำต่อ)**
 - **v2.15.0:** การ์ดเลเวลอัพมีไอคอนคู่คอมโบมุมขวาบน (`comboPartners`/`drawComboHints` ใน `drawReadableChoiceCard`) — จางเทาถ้ายังไม่มีอีกครึ่ง · สว่าง+เต้น+ป้าย "🔗 พร้อมคอมโบ" ถ้ามีคู่แล้ว (คำใบ้ให้อัพใบนั้น) · อ่าน `COMBOS` (a=attack,b=passive)
 - **v2.14.0 (Fun Roadmap #1 Juice):** ระบบ kill-streak (`killStreak`/`_lastKillAt`/`STREAK_MARKS`/`showKillStreak`) — ฆ่าต่อเนื่องเร็ว→ป็อปคอมโบกลางจอ+เสียง pitch สูงขึ้นที่หมุด 10/25/50/100/200/350 (ขาดเมื่อหยุดฆ่า >1.6วิ) · `Sfx.streak(step)` · ฆ่าตัวใหญ่/elite = `hitStop(45)` กระแทกฟิน · ดู `docs/FUN_DESIGN_ROADMAP.md` (เหลือ #2-#12)
 - **v2.13.0 (แก้จาก feedback เจ้าของ):**

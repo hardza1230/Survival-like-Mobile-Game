@@ -27,9 +27,15 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.15.0';
+const GAME_VERSION = '2.16.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.16.0', date:'2026-09-12', title:'Character Rebalance & Denser Waves', items:[
+    'โกโก้เปลี่ยน Unique เป็น "หลุมช็อกโกแลตดำ" (voidPull) ดูดฝูงเข้าหาตัวแล้วยุบระเบิด (คอนเซปต์ black hole เดิม)',
+    'ลดพลังช่วงต้น: งาดำ (ward ทำดาเมจบอส/มินิ ×0.28-0.30 เลิกละลายบอสใน 1 วิ), มิ้นต์ (รัศมี Lv1 195→120), ทาโร่ Arc (ดาเมจต้นเกมลดลง)',
+    'โมโม่ปลายเกมมีลูกโซ่ (Lv3 ชิ่ง 2 · Lv4 ชิ่ง 3) แก้อาการจืด',
+    'มอนสเตอร์ต่อจอมากขึ้น (เพดาน 70→95, batch/ความถี่เพิ่ม, elite ถี่ขึ้น)',
+    'มินิบอสแข็ง+ดุขึ้น (HP/ดาเมจ +, โจมตีถี่ขึ้น, เพิ่มท่า nova/spiral/charge)' ] },
   { v:'2.15.0', date:'2026-09-12', title:'Combo Hint Icons on Level-Up Cards', items:[
     'การ์ดเลเวลอัพมีไอคอนคู่คอมโบมุมขวาบน — จางเทาถ้ายังไม่มีอีกครึ่ง',
     'ถ้ามีอีกครึ่งแล้ว (สกิล/พรคู่) ไอคอนจะสว่าง+เต้นเบา พร้อมป้าย "🔗 พร้อมคอมโบ" เป็นคำใบ้ให้อัพใบนี้' ] },
@@ -925,8 +931,8 @@ const CHARACTERS = {
     desc:'Awakened Fighter รสมินต์ (+HP 30) — ผู้พิทักษ์ลมเย็นที่คุมพื้นที่และหยุดฝูง', bonus:{maxhp:30}
   },
   cocoa:{
-    name:'โกโก้', emoji:'🍫', unique:'bearQuake', cost:400, color:0x8b5cf0,
-    desc:'Awakened Fighter รสโกโก้ (+ดาเมจ 12%) — จอมพลังสายหนัก ใช้เวทวงช็อกโกแลตบดขยี้ฝูง', bonus:{dmgMul:1.12}
+    name:'โกโก้', emoji:'🍫', unique:'voidPull', cost:400, color:0x8b5cf0,
+    desc:'Awakened Fighter รสโกโก้ (+ดาเมจ 12%) — เปิดหลุมช็อกโกแลตดำ ดูดฝูงศัตรูเข้าหาตัวแล้วบดขยี้', bonus:{dmgMul:1.12}
   },
   taro: {
     name:'ตาโร่', emoji:'🍠', unique:'pathRecall', cost:250, color:0xb388ff,
@@ -942,6 +948,7 @@ const CHARACTER_UNIQUES = {
   berryRebound:{name:'หัวใจสตรอว์เบอร์รีเด้งกลับ',emoji:'🍓',cd:8,color:0xff76a8,desc:'เมล็ดหวานยิงรอบตัวและฟื้น HP — พลังกลางแต่ใช้ได้ถี่'},
   mintSanctuary:{name:'เขตลมหายใจมินต์',emoji:'🌿',cd:11,color:0x72e8d1,desc:'แช่แข็งฝูงวงกว้างและให้ช่วงคุ้มกัน — คูลดาวน์ระดับกลาง'},
   bearQuake:{name:'ตราหมีโกโก้สะเทือน',emoji:'🐻',cd:17,color:0xc28b62,desc:'คลื่นทุบหนักกินพื้นที่กว้าง — รุนแรงมากจึงมีคูลดาวน์นาน'},
+  voidPull:{name:'หลุมช็อกโกแลตดำ',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'เปิดหลุมดำดูดฝูงศัตรูเข้าหาตัว ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย'},
   pathRecall:{name:'สายฟ้าชิ่งของตาโร่',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'ปล่อยสายฟ้าจากตัว ชิ่งลามไปศัตรูตัวต่อ ๆ ไป (แบบ Arc) แล้วคืน Dash และเร่งฝีเท้า'},
   oathMirror:{name:'เขตกระจกคำสัตย์งาดำ',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'เขตติดตามตัว ทำร้ายฝูง ลดความเสียหาย สะท้อนกระสุน แล้วระเบิด'},
 };
@@ -950,6 +957,7 @@ const UNIQUE_TIERS={
   berryRebound:{2:'เพิ่มเมล็ดและฟื้น HP มากขึ้น',3:'เมล็ดแรงขึ้นและแผ่วงกว้างกว่าเดิม',4:'Berry Crown ยิง 20+ เมล็ดและฟื้นฟูสูงสุด'},
   mintSanctuary:{2:'วงเย็นกว้างขึ้นและแช่นานขึ้น',3:'เพิ่มเกราะคุ้มกันและพลังคลื่นน้ำแข็ง',4:'Absolute Mint แช่ฝูงวงใหญ่และคุ้มกันยาวขึ้น'},
   bearQuake:{2:'ตราหมีใหญ่ขึ้นและแรงขึ้น',3:'เกิด Aftershock ตามหลังหนึ่งระลอก',4:'Royal Bear Quake สองระลอกวงกว้างเต็มพลัง'},
+  voidPull:{2:'หลุมกว้างขึ้นและดูดแรงขึ้น',3:'อยู่นานขึ้น + ดาเมจต่อเนื่องแรงขึ้น',4:'Singularity หลุมยักษ์ดูดทั้งจอและระเบิดปิดรุนแรง'},
   pathRecall:{2:'เพิ่มจำนวนการชิ่งและระยะกระโดด',3:'สายฟ้าแตกเป็นสองสาย ลามกว้างขึ้น',4:'Storm Arc ชิ่งเต็มสนามและดาเมจสูงสุด'},
   oathMirror:{2:'เขตกว้างและพัลส์แรงขึ้น',3:'เขตติดตามตัวนานขึ้นและรับกระสุนได้มากขึ้น',4:'Perfect Oath ฟื้น HP หลังระเบิดพร้อมพลังสะท้อนสูงสุด'},
 };
@@ -1539,20 +1547,20 @@ class Game extends Phaser.Scene {
     if(this.state!=='play'||this.uniqueCd>0)return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
     this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseFlash(CF.cast,520);
-    const spectacleRadius=c.unique==='mintSanctuary'?195+(ul-1)*20:c.unique==='bearQuake'?170+(ul-1)*17:c.unique==='oathMirror'?180+(ul-1)*18:155+(ul-1)*18;
+    const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='oathMirror'?180+(ul-1)*18:155+(ul-1)*18;
     this.uniqueCrescendo(u.color,ul,spectacleRadius);
     if(c.unique==='berryRebound'){
-      const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0);
-      for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=16*dm*up;b.life=1.65+ul*0.08;b.pierce=ul>=3;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
-      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 หัวใจเด้งกลับ Lv'+ul,shots+' เมล็ด · ฟื้น HP '+Math.round((0.055+ul*0.018)*100)+'%',800);Sfx.shoot();
+      // Momo: ปลายเกมมีลูกโซ่ (chain) ให้เมล็ดชิ่งต่อ ไม่จืดเหมือนเดิม
+      const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), chain=ul>=4?3:ul>=3?2:0;
+      for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.pierce=ul>=3;b.chain=chain;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
+      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 หัวใจเด้งกลับ Lv'+ul,shots+' เมล็ด'+(chain?' · ชิ่งต่อ '+chain+' ครั้ง':'')+' · ฟื้น HP '+Math.round((0.055+ul*0.018)*100)+'%',800);Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
-      const r=195+(ul-1)*20+(this.player.deepFreeze?35:0);this.player.iframe=Math.max(this.player.iframe,0.75+ul*0.25);
+      // Mint: ลดรัศมี Lv1 ลงมาก (เดิมกว้างเวอร์) แล้วค่อยโตตามเลเวล
+      const r=120+(ul-1)*28+(this.player.deepFreeze?35:0);this.player.iframe=Math.max(this.player.iframe,0.75+ul*0.25);
       this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<r){this.damage(e,22*dm*up,e.x,e.y);e.frozen=Math.max(e.frozen||0,e.isBoss?0.35+ul*0.10:1.55+ul*0.42);e.setTint(COLORS.ice);}});
       this.creamWave(r,(12+ul*3)*dm*up,0);this.showBanner('🌿 เขตลมหายใจ Lv'+ul,'รัศมี '+r+' · คุ้มกัน '+(0.75+ul*0.25).toFixed(1)+' วิ',850);Sfx.frost();
-    }else if(c.unique==='bearQuake'){
-      const t=this.nearestEnemy(760)||this.player,r=170+(ul-1)*17+(this.player.donutImpact?25:0),hit=40*dm*up;this.bearDonutImpact(t.x,t.y,r,hit,true,true);
-      if(ul>=3)this.time.delayedCall(230,()=>{if(this.state==='play'||this.state==='levelup')this.bearDonutImpact(t.x,t.y,r*(ul>=4?1.02:0.78),hit*(ul>=4?0.68:0.44),true,true);});
-      this.showBanner('🐻 ตราหมีสะเทือน Lv'+ul,ul>=3?'แรงกระแทกสองระลอก · พลัง '+Math.round(hit):'รัศมี '+r+' · พลัง '+Math.round(hit),850);
+    }else if(c.unique==='voidPull'){
+      this.castVoidPull(dm,ul);
     }else if(c.unique==='pathRecall'){
       this.castPathRecall(dm,ul);
     }else{
@@ -1563,8 +1571,9 @@ class Game extends Phaser.Scene {
   // Taro: สายฟ้า Arc — ยิงจากตัวไปเป้าใกล้สุด แล้วชิ่งลามไปศัตรูตัวถัด ๆ ไป (คล้าย Arc ใน PoE)
   castPathRecall(dm,ul){
     ul=ul||1;const upgraded=!!this.player.echoPath;
-    const jumps=5+ul+(upgraded?2:0), jumpRange=250+ul*16+(upgraded?40:0), forks=ul>=3?2:1;
-    const dmg=(20+ul*7)*dm*(1+(ul-1)*0.16), color=0xd7b8ff;
+    const jumps=4+ul+(upgraded?2:0), jumpRange=250+ul*16+(upgraded?40:0), forks=ul>=3?2:1;
+    // ลดพลังช่วงต้น (Lv1 เคยขี้โกง) แต่โตชันขึ้นให้ปลายเกมยังสะใจ
+    const dmg=(9+ul*7)*dm*(1+(ul-1)*0.22), color=0xd7b8ff;
     // หาเป้าเริ่มต้นที่ใกล้ตัวผู้เล่นสุด
     const first=this.nearestEnemy(760);
     if(!first){ // ไม่มีเป้า → ปล่อยประจุรอบตัวสั้น ๆ กันเสียเทิร์นฟรี
@@ -1597,6 +1606,35 @@ class Game extends Phaser.Scene {
     this.showBanner('⚡ สายฟ้าชิ่ง Lv'+ul,'ชิ่งสูงสุด '+(jumps*forks)+' ครั้ง · พลัง '+Math.round(dmg)+' · Dash พร้อมใช้',950);Sfx.zap();
   }
 
+  // Cocoa: หลุมดำช็อกโกแลต — ดูดฝูงศัตรูเข้าหาตัวผู้เล่น ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย
+  castVoidPull(dm,ul){
+    ul=ul||1;const up=this.uniquePower();
+    const r=200+ul*22, duration=1.9+ul*0.42, pullS=150+ul*30, tickDmg=(7+ul*3)*dm*up;
+    const core=this.camWorld((this.textures.exists('fx_ult_vortex')?this.add.image(this.player.x,this.player.y,'fx_ult_vortex'):this.add.circle(this.player.x,this.player.y,40,0x2a0f3a,0.85)).setDepth(6).setAlpha(0.9));
+    if(core.setDisplaySize)core.setDisplaySize(r*1.4,r*1.4);
+    const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x8b5cf0).setDepth(5).setDisplaySize(r*2,r*2).setAlpha(0.34));
+    this.tweens.add({targets:core,rotation:Math.PI*4*duration,duration:duration*1000,ease:'Linear'});
+    this.tweens.add({targets:ring,alpha:{from:0.20,to:0.42},yoyo:true,repeat:-1,duration:400,ease:'Sine.inOut'});
+    let tick=0;
+    const pull=this.time.addEvent({delay:90,loop:true,callback:()=>{
+      const cx=this.player.x,cy=this.player.y; if(core.active)core.setPosition(cx,cy); if(ring.active)ring.setPosition(cx,cy);
+      tick++;
+      this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(e.x,e.y,cx,cy);if(d>r)return;
+        if(!e.isBoss&&!e.isMini){const a=Math.atan2(cy-e.y,cx-e.x);e.setVelocity(Math.cos(a)*pullS,Math.sin(a)*pullS);e.knock=Math.max(e.knock||0,0.08);}   // บอส/มินิดูดไม่ได้ แต่ยังโดนดาเมจ
+        if(tick%2===0)this.damage(e,tickDmg*((e.isBoss||e.isMini)?0.5:1),e.x,e.y);
+      });
+    }});
+    this.showBanner('🕳️ หลุมช็อกโกแลตดำ Lv'+ul,'ดูดฝูงเข้าหาตัว '+duration.toFixed(1)+' วิ · รัศมี '+r,1000);Sfx.ult&&Sfx.ult('vortex');
+    this.time.delayedCall(duration*1000,()=>{
+      pull.remove(false);this.tweens.killTweensOf(core);this.tweens.killTweensOf(ring);
+      if(core.active)this.tweens.add({targets:core,scale:0.1,alpha:0,duration:180,onComplete:()=>core.destroy()});else core.destroy&&core.destroy();
+      if(ring.active)ring.destroy();
+      if(this.state!=='play'&&this.state!=='levelup')return;
+      const cx=this.player.x,cy=this.player.y,finR=r*0.9,finDmg=(34+ul*12)*dm*up;   // ยุบระเบิดปิดท้าย
+      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<finR){this.damage(e,finDmg*((e.isBoss||e.isMini)?0.35:1),e.x,e.y);if(!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-cy,e.x-cx);e.setVelocity(Math.cos(a)*260,Math.sin(a)*260);e.knock=0.2;}}});
+      this.vfxHitRing(cx,cy,0x8b5cf0,true);this.burst(cx,cy,0x8b5cf0);this.cameras.main.shake(160,0.006);Sfx.boom();
+    });
+  }
   // Sesame: เขตติดตามผู้เล่นและมีพัลส์โจมตีเสมอ ไม่ต้องรอกระสุนศัตรูจึงจะคุ้ม
   castOathWard(dm,ul){
     ul=ul||1;const upgraded=!!this.player.mirrorWard;let cx=this.player.x,cy=this.player.y;
@@ -1606,13 +1644,13 @@ class Game extends Phaser.Scene {
     const mirrors=[];for(let i=0;i<mirrorCount;i++){const a=-Math.PI/2+i*Math.PI*2/mirrorCount,m=this.camWorld(this.add.image(cx+Math.cos(a)*r*0.78,cy+Math.sin(a)*r*0.64,'ic_mirror').setDepth(6).setScale(0.22).setAlpha(0.94));m._a=a;mirrors.push(m);}
     let reflected=0,pulseHits=0,pulseN=0;this.player.wardGuardT=Math.max(this.player.wardGuardT||0,duration);
     const pulse=this.time.addEvent({delay:120,loop:true,callback:()=>{if(!ring.active)return;cx=this.player.x;cy=this.player.y;ring.setPosition(cx,cy);mirrors.forEach((m,i)=>{const a=m._a+this.elapsed*(0.75+ul*0.08);m.setPosition(cx+Math.cos(a)*r*0.78,cy+Math.sin(a)*r*0.64).setRotation(a+Math.PI/2);});
-      this.foeBullets.children.iterate(f=>{if(!f||!f.active||reflected>=maxReflect||this.dist(f.x,f.y,cx,cy)>r)return;const x=f.x,y=f.y;this.killFoe(f);const b=this.getBullet(x,y,0xffffff,0.22);if(b){b.setTexture('proj_sprinkle').setTint(0xf4e7bd);b.dmg=14*dm*up;b.life=2;b.homing=520;b.pierce=true;b.faceVel=true;this.physics.velocityFromRotation(Math.random()*Math.PI*2,400,b.body.velocity);}reflected++;this.vfxHitRing(x,y,0xf4e7bd,false);});
-      pulseN++;if(pulseN%6===0){let hit=0;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r){this.damage(e,(8+ul*4)*dm*up,e.x,e.y);e.knock=Math.max(e.knock||0,0.10);hit++;}});pulseHits+=hit;this.vfxHitRing(cx,cy,0xf4e7bd,false);if(hit)this.burst(cx,cy,0xf4e7bd);}
+      this.foeBullets.children.iterate(f=>{if(!f||!f.active||reflected>=maxReflect||this.dist(f.x,f.y,cx,cy)>r)return;const x=f.x,y=f.y;this.killFoe(f);const b=this.getBullet(x,y,0xffffff,0.22);if(b){b.setTexture('proj_sprinkle').setTint(0xf4e7bd);b.dmg=10*dm*up;b.life=2;b.homing=480;b.pierce=true;b.faceVel=true;this.physics.velocityFromRotation(Math.random()*Math.PI*2,400,b.body.velocity);}reflected++;this.vfxHitRing(x,y,0xf4e7bd,false);});
+      pulseN++;if(pulseN%6===0){let hit=0;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r){this.damage(e,(8+ul*4)*dm*up*((e.isBoss||e.isMini)?0.28:1),e.x,e.y);e.knock=Math.max(e.knock||0,0.10);hit++;}});pulseHits+=hit;this.vfxHitRing(cx,cy,0xf4e7bd,false);if(hit)this.burst(cx,cy,0xf4e7bd);}
     }});
     this.showBanner('🪞 เขตกระจกคำสัตย์ Lv'+ul,'เขตติดตามตัว · ลดดาเมจ 30% · สะท้อนสูงสุด '+maxReflect,1000);Sfx.zap();
     this.time.delayedCall(duration*1000,()=>{pulse.remove(false);this.tweens.killTweensOf(ring);if(ring.active)ring.destroy();mirrors.forEach(m=>{this.tweens.killTweensOf(m);if(m.active)m.destroy();});this.player.wardGuardT=0;
       if(this.state!=='play'&&this.state!=='levelup')return;const finR=r*(1.03+Math.min(reflected,14)*0.018),finDmg=(30+reflected*1.7+Math.min(pulseHits,30)*0.8)*dm*up;
-      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<finR)this.damage(e,finDmg,e.x,e.y);});if(ul>=4)this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.10);
+      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<finR)this.damage(e,finDmg*((e.isBoss||e.isMini)?0.30:1),e.x,e.y);});if(ul>=4)this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.10);
       this.vfxHitRing(cx,cy,0xf4e7bd,true);this.showBanner('🪞 คำสัตย์สะท้อนกลับ','พัลส์โดน '+pulseHits+' · สะท้อน '+reflected+' · ระเบิด '+Math.round(finDmg),900);Sfx.boom();
     });
   }
@@ -2488,8 +2526,8 @@ class Game extends Phaser.Scene {
   }
   setupSpawnRates(w){
     const p=this.waveProfile(w),si=this.stageIndex;this.waveTypes=p.types.slice();
-    this.spawnInterval=Math.max(0.72,p.interval-si*0.025);this.spawnBatch=p.batch+Math.floor(si/2);
-    this.maxLive=Math.min(70,p.max+si*3);this.eliteEvery=16+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;
+    this.spawnInterval=Math.max(0.55,p.interval-si*0.03);this.spawnBatch=p.batch+Math.floor(si/2)+1;   // มอนไหลถี่+เป็นชุดใหญ่ขึ้น
+    this.maxLive=Math.min(95,p.max+si*4+6);this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น + elite ถี่ขึ้น
     this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
   spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
@@ -2606,10 +2644,10 @@ class Game extends Phaser.Scene {
     const mScale=this.stageIndex===1?0.88:(mArt?1.15:1.7); b.baseScale=mScale; b._sqX=1; b._sqY=1;
     const mRadius=this.stageIndex===1?48:(mArt?52:26),mOff=this.stageIndex===1?48:(mArt?18:5);
     b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*0.95*this.bossHpMul(); b.maxhp=b.hp; b.spd=60; b.dmg=Math.round(st.bossDmg*1.05*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึก+ดุขึ้น
+    b.hp=st.bossHp*1.05*this.bossHpMul(); b.maxhp=b.hp; b.spd=72; b.dmg=Math.round(st.bossDmg*1.15*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอสถึก+ดุขึ้น (buff จาก feedback)
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
-    b.atkCd=1.1; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial']; if(this.stageIndex>=2)b.atks.push('charge'); if(this.stageIndex>=4)b.atks.push('summon');   // มินิบอสใช้ชุดท่ากระชับ อ่านง่าย และไม่ทับกันเต็มจอ
+    b.atkCd=0.85; b.phase2=false;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // มินิบอสมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));
     this.waveAlive=adds+1;
