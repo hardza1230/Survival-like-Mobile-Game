@@ -27,9 +27,11 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.25.1';
+const GAME_VERSION = '2.25.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.25.2', date:'2026-09-12', title:'Momo Unique = Radial Bouncing Seeds', items:[
+    'สกิลเฉพาะตัวโมโม่: เอา homing ออก (เลิกเป็นมิสไซล์ตามเป้า) กลับไปยิงรอบทิศเหมือนเดิม + คงกลไกเด้ง (bounce)' ] },
   { v:'2.25.1', date:'2026-09-12', title:'Sprinkle = Machine Gun (1-hit)', items:[
     'Sprinkle เป็นปืนกล: รัวเมล็ดรุ้งเป็นชุดถี่ ๆ · โดนศัตรู 1 ตัวแล้วหายเลย (ไม่ทะลุ/ไม่เด้ง) · เร็วแต่เบา' ] },
   { v:'2.25.0', date:'2026-09-12', title:'Rainbow Sprinkle Projectiles', items:[
@@ -1602,7 +1604,7 @@ class Game extends Phaser.Scene {
       // Momo: เมล็ดสตรอว์เบอร์รี "พุ่งเด้ง" ไปหาศัตรูตัวใกล้ ๆ อย่างรวดเร็ว (ไม่ใช่สายฟ้าแบบทาโร่)
       // ใช้ homing (โค้งเข้าหาเป้า) + bounce (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด) แทน chain lightning
       const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), bounce=ul>=4?3:ul>=3?2:1;
-      for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=340+ul*24;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
+      for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=0;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
       this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 หัวใจเด้งกลับ Lv'+ul,shots+' เมล็ด · พุ่งเด้งหาศัตรู '+bounce+' ตัว · ฟื้น HP '+Math.round((0.055+ul*0.018)*100)+'%',800);Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
       // Mint: ลดรัศมี Lv1 ลงมาก (เดิมกว้างเวอร์) แล้วค่อยโตตามเลเวล
