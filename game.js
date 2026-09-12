@@ -27,9 +27,12 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.32.0';
+const GAME_VERSION = '2.32.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.32.1', date:'2026-09-12', title:'Mobile Hub Layout Fix', items:[
+    'แก้ตำแหน่งเมนู Hub แบบสองคอลัมน์บนจอแนวตั้งให้จัดกึ่งกลางพื้นที่จริง',
+    'ป้องกันการ์ดคอลัมน์ขวาและข้อความล้นออกนอกขอบหน้าจอมือถือ' ] },
   { v:'2.32.0', date:'2026-09-12', title:'Illustrated Rewards', items:[
     'เพิ่มภาพ Chapter 1 และภาพเนื้อเรื่องเปิดเกม/ก่อนพบ The Great Hunger',
     'มินิบอสดรอปกล่องสกิล 1 ใบแน่นอน สุ่มอัปเกรดสกิลที่ถืออยู่ 2–5 สกิลตามดวง',
@@ -2374,7 +2377,7 @@ class Game extends Phaser.Scene {
     const menuTop=Math.max(logoY+72,h*0.57),menuBottom=h-42;
     const menuRows=Math.ceil(items.length/cols);
     const bh=portrait?Math.min(54,Math.max(38,(menuBottom-menuTop-gapY*(menuRows-1))/menuRows)):Math.min(58,(h-72-gapY*(menuRows-1))/menuRows);
-    const totalW=bw*cols+gapX*(cols-1), x0=portrait?center:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?menuTop+bh/2:74+bh/2;
+    const totalW=bw*cols+gapX*(cols-1), x0=portrait?(w-totalW)/2+bw/2:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?menuTop+bh/2:74+bh/2;
     items.forEach(([color,emoji,label,sub,fn],i)=>{
       const col=i%cols,row=Math.floor(i/cols);
       this.uiMenuCard(this.menu,x0+col*(bw+gapX),y0+row*(bh+gapY),bw,bh,color,emoji,label,sub,fn,i===0);
