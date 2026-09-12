@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.13.0 Feedback Fixes)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.14.0 Juice #1)
+- **v2.14.0 (Fun Roadmap #1 Juice):** ระบบ kill-streak (`killStreak`/`_lastKillAt`/`STREAK_MARKS`/`showKillStreak`) — ฆ่าต่อเนื่องเร็ว→ป็อปคอมโบกลางจอ+เสียง pitch สูงขึ้นที่หมุด 10/25/50/100/200/350 (ขาดเมื่อหยุดฆ่า >1.6วิ) · `Sfx.streak(step)` · ฆ่าตัวใหญ่/elite = `hitStop(45)` กระแทกฟิน · ดู `docs/FUN_DESIGN_ROADMAP.md` (เหลือ #2-#12)
 - **v2.13.0 (แก้จาก feedback เจ้าของ):**
   · **บอสด่าน 2 sprite ดำ:** ชีต `boss2_clogmaw_sheet.png` (1024×512, 4×2) มีอาร์ตจริงแค่ **เฟรม 0–3** · เฟรม 4–7 **ว่างเปล่า 100%** → `drainBossPose` เรียกท่า 4–7 (prison/suction/overflow/enrage) เลยเรนเดอร์ดำ · แก้ด้วย map เฟรม 4–7 → {4:3,5:2,6:3,7:2} · **ถ้าจะได้ท่าบอสครบต้องขออาร์ตเติมเฟรม 4–7**
   · Unique ตาโร่เปลี่ยนจาก Path Recall → **สายฟ้าชิ่ง (Arc)** ยิงจากตัวลามไปศัตรูตัวถัด ๆ ไป (`castPathRecall` เขียนใหม่ ใช้ `chainBolt`) · ยังคง key `pathRecall` เดิม + คืน Dash/haste

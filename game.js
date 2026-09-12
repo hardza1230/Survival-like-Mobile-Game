@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.13.0';
+const GAME_VERSION = '2.14.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.14.0', date:'2026-09-12', title:'Juice: Kill-Streak Combos & Heavy-Hit Impact', items:[
+    'เพิ่มระบบคอมโบฆ่าต่อเนื่อง (kill-streak) — ป็อปคอมโบกลางจอ + เสียง pitch สูงขึ้นที่หมุด 10/25/50/100/200/350',
+    'ฆ่าตัวใหญ่/elite = hit-stop กระแทกหยุดเสี้ยววินาที ให้รู้สึกหนักแน่น',
+    'รีเซ็ตคอมโบทุกครั้งที่เริ่มรอบ · คอมโบขาดเมื่อหยุดฆ่าเกิน 1.6 วินาที' ] },
   { v:'2.13.0', date:'2026-09-12', title:'Feedback Fixes: Arc Taro, Card Highlight & Clogmaw Sprite', items:[
     'แก้บอสด่าน 2 เป็น sprite ดำ (ชีตมีเฟรมจริงแค่ 0–3) โดย map ท่า prison/suction/overflow/enrage กลับเข้าเฟรมที่มีจริง',
     'เปลี่ยน Unique ของตาโร่เป็น "สายฟ้าชิ่ง" ยิงจากตัวแล้วลามไปศัตรูตัวต่อ ๆ ไปแบบ Arc (คงการคืน Dash + เร่งฝีเท้า)',
@@ -380,6 +384,7 @@ const Sfx = {
   // --- SFX mix: เสียงถี่เบา/ห่างขึ้น และเสียงสำคัญ duck เพลงชั่วคราว ---
   shoot(){if(this._ok('shoot',0.12)){if(!this.playFile('sfx_shoot',0.25))this.tone(920,0.045,'triangle',0.035,1280);}},
   pop(){if(this._ok('pop',0.11)){if(!this.playFile('sfx_hit',0.22))this.tone(430,0.055,'sine',0.045,240);}},
+  streak(step){const base=540+step*150;this.tone(base,0.10,'triangle',0.075,base+300);this.tone(base*1.5,0.11,'sine',0.05,base*1.5+240,0.05);},   // เสียงคอมโบ pitch สูงขึ้นตามสเต็ป
   xp(){if(this._ok('xp',0.16)){if(!this.playFile('sfx_xp',0.16))this.tone(760,0.05,'sine',0.035,1020);}},
   hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
   dash(){if(this._ok('dash',0.25)){if(!this.playFile('sfx_dash',0.34))this.noise(0.11,0.055,0,true);}},
@@ -875,6 +880,8 @@ const SKILLDEFS = {
     awaken:{ name:'แก่นลวงสมบูรณ์', emoji:'💠', desc:'ล่อได้นาน ระเบิดสองชั้น และทิ้งพลังฟื้นฟู!' } },
 };
 const SKILL_AWAKEN_LV = 6;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (5 ดาว)
+// Juice: หมุดหมายคอมโบฆ่าต่อเนื่อง {จำนวน: [สเต็ปเสียง, คำชม]}
+const STREAK_MARKS = {10:[0,'ดีย์!'],25:[1,'สุดยอด!'],50:[2,'โหดจัด!'],100:[3,'เทพ!'],200:[4,'อสูร!'],350:[5,'ตำนาน!']};
 const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
 const PASSIVE_CAP = 4;       // จำกัดพรติดตัว ลด power stacking และทำให้คู่ Evolution มีความหมาย
@@ -2321,6 +2328,7 @@ class Game extends Phaser.Scene {
   startRun(idx){
     if(this.state!=='menu')return;
     idx=idx||0;
+    this.killStreak=0; this._lastKillAt=-9;   // Juice: รีเซ็ตคอมโบฆ่าต่อเนื่องทุกรอบ
     this.state='loading';
     this.menu.setVisible(false);
     if(window.GameLoader)window.GameLoader.show('กำลังเตรียมด่าน...',0.08);
@@ -3469,7 +3477,13 @@ class Game extends Phaser.Scene {
       if(e.frozen) e.setTint(COLORS.ice); else if(e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini;this.kills++;
-    if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ ลูกน้อง '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);}
+    if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ ลูกน้อง '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
+      // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
+      if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
+      this.killStreak=(this.killStreak||0)+1; this._lastKillAt=this.elapsed;
+      if(STREAK_MARKS[this.killStreak])this.showKillStreak(this.killStreak);
+    }
+    if(isElite||isMini)this.hitStop(45);   // Juice: ฆ่าตัวใหญ่/elite = กระแทกหยุดเสี้ยววิ (บอสมีฉากตายของตัวเอง)
     if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
     if(!big) Sfx.pop();
     // Bestiary: นับจำนวนที่ฆ่าตามชนิด
@@ -3841,6 +3855,16 @@ class Game extends Phaser.Scene {
       this.physics.world.timeScale = oldSpd;
       this._isHitStop = false;
     });
+  }
+  // Juice: ป็อปคอมโบกลางจอตอนถึงหมุดหมาย (10/25/50/...) — เด้ง + เสียง + เขย่าเบา
+  showKillStreak(n){
+    const mark=STREAK_MARKS[n]; if(!mark)return;
+    const t=this.add.text(this.W/2,this.H*0.30,'🔥 COMBO x'+n+'\n'+mark[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd23f',align:'center',stroke:'#7a2d00',strokeThickness:5}).setOrigin(0.5).setDepth(99998).setScale(0.4).setAlpha(1);
+    this.camUI(t);
+    this.tweens.add({targets:t,scale:1.12,duration:200,ease:'Back.out',onComplete:()=>{
+      this.tweens.add({targets:t,alpha:0,y:t.y-30,scale:1.0,duration:520,delay:340,onComplete:()=>t.destroy()});
+    }});
+    this.cameras.main.shake(130,0.004); Sfx.streak(mark[0]);
   }
   popDmg(n,x,y,crit){
     let t=this.dmgPool.pop();
