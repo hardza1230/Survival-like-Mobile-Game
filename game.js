@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.31.3';
+const GAME_VERSION = '2.31.4';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.31.4', date:'2026-09-12', title:'Achievements', items:[
+    'เพิ่มเมนู Achievement พร้อมภารกิจ 9 แบบ ครอบคลุมการฆ่า ผ่านด่าน Hell อุปกรณ์ ตัวละคร และ Rank',
+    'Achievement ตรวจความคืบหน้าจากเซฟเดิมได้ทันที ไม่บังคับให้เริ่มเล่นใหม่',
+    'รับ Sugar ได้ครั้งเดียวต่อ Achievement และบันทึกสถานะถาวร' ] },
   { v:'2.31.3', date:'2026-09-12', title:'Chapter Select', items:[
     'แยกหน้าเลือก Chapter ออกจากหน้าเลือกด่าน แก้โครงสร้างเมนูที่เคยแสดงด่านภายใต้ชื่อเลือกบท',
     'Chapter 1 เชื่อมเข้าด่านทั้ง 5 ส่วน Chapter 2–5 แสดงสถานะล็อกและเนื้อเรื่องตัวอย่าง',
@@ -1304,6 +1308,7 @@ const Save = {
     if(!this.data.charProg)this.data.charProg={};
     if(!this.data.bestiary)this.data.bestiary={};
     if(!this.data.stageMastery)this.data.stageMastery={};
+    if(!this.data.achievements)this.data.achievements={};
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
     Sfx.muted=!this.data.settings.sound;
     return this.data; },
@@ -1332,7 +1337,7 @@ const Save = {
     for(const slot of GEAR_SLOTS){const gid=this.data.gear[slot.slot],it=(GEAR[slot.slot]||[]).find(g=>g.id===gid);if(it)p+=(tierPower[it.tier]||0)+this.gearLv(it.id)*18;}
     const tal=cp.tal||{};for(const k in tal)p+=(tal[k]||0)*26;return Math.max(100,Math.round(p/10)*10); },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
-    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{}, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, bestiary:{}, stageMastery:{}, achievements:{}, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
   // ---- Bestiary (Monster Card) ----
   kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
   addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
@@ -1489,6 +1494,18 @@ const CHAPTERS = [
   { name:'บทที่ 3 · โรงงานไร้รส', emoji:'🏭', desc:'กองทัพจักรกลกำลังลบรสชาติออกจากโลก', ready:false },
   { name:'บทที่ 4 · นครน้ำตาลแตกสลาย', emoji:'🏰', desc:'สงครามกลางเมืองของอาณาจักรขนม', ready:false },
   { name:'บทที่ 5 · งานเลี้ยงแห่งความหิว', emoji:'🌑', desc:'เผชิญ The Great Hunger ผู้อยู่เหนือเชฟขม', ready:false },
+];
+
+const ACHIEVEMENTS=[
+  {id:'first',emoji:'⚔️',name:'รสแรกแห่งชัยชนะ',desc:'กำจัดศัตรูตัวแรก',reward:30,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1},
+  {id:'hunter',emoji:'☠️',name:'นักล่าพันรส',desc:'กำจัดศัตรูรวม 1,000 ตัว',reward:180,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1000},
+  {id:'stage1',emoji:'🐜',name:'ผู้พิชิตรังเปรี้ยว',desc:'ผ่านด่าน 1 ครั้งแรก',reward:60,test:d=>!!(d.stageMastery||{})[0]},
+  {id:'hunger',emoji:'🌑',name:'ผู้หยุดความหิว',desc:'กำจัด The Great Hunger',reward:300,test:d=>!!(d.stageMastery||{})[4]},
+  {id:'master',emoji:'🏆',name:'จ้าวแห่งใต้ครัว',desc:'Mastery ครบทั้ง 5 ด่าน',reward:250,test:d=>[0,1,2,3,4].every(i=>(d.stageMastery||{})[i])},
+  {id:'hell',emoji:'🔥',name:'ผู้รอดจากนรก',desc:'ผ่านด่านใดก็ได้ระดับ Hell',reward:220,test:d=>(d.diffBest||[]).some(v=>v>=5)},
+  {id:'collector',emoji:'💎',name:'นักสะสมเครื่องราง',desc:'สะสมอุปกรณ์อย่างน้อย 12 ชิ้น',reward:160,test:d=>(d.ownedGear||[]).length>=12},
+  {id:'family',emoji:'🍡',name:'ครอบครัว Mochi Core',desc:'ปลดล็อกนักสู้ครบ 5 ตัว',reward:220,test:d=>(d.chars||[]).length>=5},
+  {id:'bond',emoji:'⭐',name:'สายใยนิรันดร์',desc:'ประสานสายใยขึ้น Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
 
 class Game extends Phaser.Scene {
@@ -2105,7 +2122,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else this.buildHub(); }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
@@ -2225,6 +2242,18 @@ class Game extends Phaser.Scene {
     const bw=Math.min(180,panelW-36),bh=30,bx=panelX+panelW/2-bw/2,by=panelY+panelH-bh-12,bg=this.add.graphics();bg.fillStyle(0x3c3048,1);bg.fillRoundedRect(bx,by,bw,bh,10);bg.lineStyle(1.4,0xa98cf0,1);bg.strokeRoundedRect(bx,by,bw,bh,10);const bt=this.add.text(bx+bw/2,by+bh/2,'‹ กลับรายการสกิล',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([bg,bt]);this._zone(bx,by,bw,bh,()=>{this._skillArchiveSelected=null;this.buildSkillArchive();});
   }
   buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
+  buildAchievements(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement');
+    const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=8,side=14,top=portrait?86:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows);
+    let done=0;ACHIEVEMENTS.forEach(a=>{if(a.test(Save.data))done++;});
+    const sum=this.add.text(w/2,portrait?69:45,'สำเร็จ '+done+' / '+ACHIEVEMENTS.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a'}).setOrigin(0.5);this.menu.add(sum);
+    ACHIEVEMENTS.forEach((a,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(rh+gap),ok=a.test(Save.data),claimed=!!Save.data.achievements[a.id],g=this.add.graphics();
+      g.fillStyle(claimed?0x20252b:ok?0x342d25:0x241e2c,0.98);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(1.8,claimed?0x537663:ok?0xffd166:0x493e52,1);g.strokeRoundedRect(x,y,cw,rh,12);
+      const em=this.add.text(x+24,y+rh/2,a.emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(ok?1:0.38),nm=this.add.text(x+47,y+12,a.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:ok?'#ffffff':'#82798d'}).setOrigin(0,0);
+      const ds=this.add.text(x+47,y+30,a.desc,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#a99db2'}).setOrigin(0,0),state=this.add.text(x+cw-10,y+rh/2,claimed?'รับแล้ว ✓':ok?'รับ 🍬'+a.reward:'ยังไม่สำเร็จ',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:claimed?'#8bd3a0':ok?'#ffe08a':'#6e6576'}).setOrigin(1,0.5);
+      this.menu.add([g,em,nm,ds,state]);if(ok&&!claimed)this._zone(x,y,cw,rh,()=>{Save.data.achievements[a.id]=true;Save.addSugar(a.reward);Sfx.clear();this.showBanner(a.emoji+' Achievement สำเร็จ!',a.name+' · รับ 🍬 '+a.reward,1600);this.buildAchievements();});
+    });this.menu.setVisible(true);
+  }
   buildSettings(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('⚙️ ตั้งค่า');
     const w=this.W,h=this.H,st=Save.data.settings||Object.assign({},DEFAULT_SETTINGS),portrait=w<=h;
@@ -2266,6 +2295,7 @@ class Game extends Phaser.Scene {
       [0x8f7de8,     '✧','คัมภีร์แก่นรส','ดูสกิล พร และคู่ Awaken ทั้งหมด',()=>{ this.menuScreen='skills';this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildMenuScreen(); }],
       [0xf0a92e,    '☷','สมุดมอนสเตอร์','ดูการค้นพบและโบนัส',()=>{ this.menuScreen='bestiary'; this.buildMenuScreen(); }],
       [0x5f7896,     '⚙','ตั้งค่า','เสียง การสั่น ภาพวาบ และคุณภาพ VFX',()=>{ this.menuScreen='settings'; this.buildMenuScreen(); }],
+      [0xc0893e,     '🏆','Achievement','ภารกิจ ความสำเร็จ และรางวัล Sugar',()=>{ this.menuScreen='achievements'; this.buildMenuScreen(); }],
     ];
     const left=portrait?center:w*0.27;
     const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
