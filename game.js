@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.31.1';
+const GAME_VERSION = '2.31.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.31.2', date:'2026-09-12', title:'Gacha Reveal', items:[
+    'เปิดกล่องอุปกรณ์ด้วยฉากลุ้นสามจังหวะก่อนเผยผล แทนการแจกรางวัลทันที',
+    'สี แสง วงพลัง และข้อความผลลัพธ์เปลี่ยนตามระดับ Common, Rare และ Epic',
+    'ป้องกันการกดซ้ำระหว่างอนิเมชัน และมีปุ่มกลับคลังอุปกรณ์หลังรับของ' ] },
   { v:'2.31.1', date:'2026-09-12', title:'Settings Menu', items:[
     'เพิ่มเมนูตั้งค่าจาก Hub: เสียง, Screen Shake, Screen Flash, Damage Number และระดับคุณภาพ VFX',
     'ทุกตัวเลือกบันทึกลงเซฟและมีผลกับการเล่นจริงทันที',
@@ -2403,7 +2407,7 @@ class Game extends Phaser.Scene {
     const gbw=Math.min(210,panelW-32),gbh=34,gby=h-55,afG=(Save.data.sugar||0)>=GACHA_COST;
     const gbg=this.add.graphics();gbg.fillStyle(afG?0xffb020:0x3a3550,1);gbg.fillRoundedRect(pcx-gbw/2,gby,gbw,gbh,11);gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1);gbg.strokeRoundedRect(pcx-gbw/2,gby,gbw,gbh,11);
     const gbt=this.add.text(pcx,gby+gbh/2,'🎁 เปิดกล่องสุ่ม 🍬'+GACHA_COST,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);this.menu.add([gbg,gbt]);
-    this._zone(pcx-gbw/2,gby,gbw,gbh,()=>{if((Save.data.sugar||0)>=GACHA_COST&&Save.spend(GACHA_COST)){const it=this.gachaRoll();Sfx.clear();if(it){const tl=TIER_LABEL[it.tier];this.showBanner('🎁 ได้ '+it.emoji+' '+it.name,'ระดับ: '+tl.name,2200);}else{Save.addSugar(120);this.showBanner('🎁 ของครบทุกชิ้นแล้ว','คืน 🍬 120',1800);}}else Sfx.select();this.buildMenuScreen();});
+    this._zone(pcx-gbw/2,gby,gbw,gbh,()=>this.openGachaReveal());
     const rx=leftW+8,rw=w-rx-14,selDef=GEAR_SLOTS.find(g=>g.slot===sel);
     const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · เลือกสวมใส่ / ตีบวก',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
     const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
@@ -2447,11 +2451,7 @@ class Game extends Phaser.Scene {
     const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gbx-gbw/2,gby,gbw,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gbx-gbw/2,gby,gbw,gbh,10);
     const gbt=this.add.text(gbx,gby+gbh/2,'🎁 เปิดกล่องสุ่ม 🍬'+GACHA_COST,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
     this.menu.add([gbg,gbt]);
-    this._zone(gbx-gbw/2,gby,gbw,gbh,()=>{ if((Save.data.sugar||0)>=GACHA_COST && Save.spend(GACHA_COST)){
-      const it=this.gachaRoll(); Sfx.clear();
-      if(it){ const tl=TIER_LABEL[it.tier]; this.showBanner('🎁 ได้ '+it.emoji+' '+it.name,'ระดับ: '+tl.name,2200); }
-      else { Save.addSugar(120); this.showBanner('🎁 ของครบทุกชิ้นแล้ว','คืน 🍬 120',1800); }
-    } else Sfx.select(); this.buildMenuScreen(); });
+    this._zone(gbx-gbw/2,gby,gbw,gbh,()=>this.openGachaReveal());
     // ---- คลังไอเทมของช่องที่เลือก ----
     const selDef=GEAR_SLOTS.find(g=>g.slot===sel);
     let y=cy0+topH+10;
@@ -2471,6 +2471,29 @@ class Game extends Phaser.Scene {
       y+=50;
     });
     this.menu.setVisible(true);
+  }
+  openGachaReveal(){
+    if(this._gachaBusy)return;if((Save.data.sugar||0)<GACHA_COST){Sfx.select();this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ '+GACHA_COST+' Sugar เพื่อเปิดกล่อง',1300);return;}
+    if(!Save.spend(GACHA_COST))return;this._gachaBusy=true;this.menu.removeAll(true);this.tapZones=[];
+    const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090510,0.97).setOrigin(0,0),title=this.add.text(w/2,h*0.14,'🎁 กล่องแห่งรสชาติ',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe08a'}).setOrigin(0.5);
+    const glow=this.add.image(w/2,h*0.47,'vfx_glow').setScale(0.4).setAlpha(0.3).setTint(0xffd166),chest=this.add.text(w/2,h*0.47,'🎁',{fontSize:'92px'}).setOrigin(0.5).setScale(0.72);
+    const status=this.add.text(w/2,h*0.66,'กำลังค้นหารสชาติที่ซ่อนอยู่…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#c7bdd6'}).setOrigin(0.5);
+    this.menu.add([bg,title,glow,chest,status]);this.menu.setVisible(true);Sfx.chest();
+    this.tweens.add({targets:chest,rotation:{from:-0.06,to:0.06},scale:{from:0.72,to:0.88},duration:90,yoyo:true,repeat:8});
+    this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.2,alpha:{from:0.2,to:0.78},duration:900,ease:'Cubic.in'});
+    this.time.delayedCall(420,()=>status.setText('COMMON  ·  RARE  ·  EPIC').setColor('#fff0b8'));
+    this.time.delayedCall(920,()=>{
+      const it=this.gachaRoll();let tier=it?it.tier:'common';if(!it)Save.addSugar(120);
+      const color=tier==='epic'?0xc9a3ff:tier==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
+      chest.setRotation(0).setScale(1.05).setText(it?it.emoji:'🍬');glow.setTint(color).setScale(2.8).setAlpha(0.88);
+      this.screenFlash(color,tier==='epic'?0.68:tier==='rare'?0.48:0.30,520);this.screenShake(tier==='epic'?480:260,tier==='epic'?0.014:0.007);Sfx.clear();
+      title.setText(it?(tier==='epic'?'✦ EPIC DROP ✦':tier==='rare'?'★ RARE DROP ★':'COMMON DROP'):'ของครบแล้ว');
+      title.setColor(hex);status.setText(it?(it.name+'\n'+TIER_LABEL[tier].name):'คืน Sugar 120').setColor('#ffffff').setAlign('center').setFontSize('18px');
+      for(let i=0;i<(tier==='epic'?14:8);i++){const a=i*TAU/(tier==='epic'?14:8),p=this.add.image(w/2,h*0.47,'dot').setTint(color).setScale(0.8).setAlpha(0.9);this.menu.add(p);this.tweens.add({targets:p,x:w/2+Math.cos(a)*Math.min(w*0.38,180),y:h*0.47+Math.sin(a)*Math.min(h*0.25,150),alpha:0,duration:700+i*18,onComplete:()=>p.destroy()});}
+      const bw=Math.min(w-60,260),by=h*0.80,btn=this.add.graphics();btn.fillStyle(color,1);btn.fillRoundedRect(w/2-bw/2,by-24,bw,48,16);btn.lineStyle(2,0xffffff,0.42);btn.strokeRoundedRect(w/2-bw/2,by-24,bw,48,16);
+      const bt=this.add.text(w/2,by,'รับรางวัลและกลับคลัง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#17101d'}).setOrigin(0.5);this.menu.add([btn,bt]);
+      this._gachaBusy=false;this._zone(w/2-bw/2,by-24,bw,48,()=>{this.menuScreen='gear';this.buildMenuScreen();});
+    });
   }
   applyMeta(){
     const p=this.player;
