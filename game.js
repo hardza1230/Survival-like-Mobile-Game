@@ -27,9 +27,12 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.14.0';
+const GAME_VERSION = '2.15.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.15.0', date:'2026-09-12', title:'Combo Hint Icons on Level-Up Cards', items:[
+    'การ์ดเลเวลอัพมีไอคอนคู่คอมโบมุมขวาบน — จางเทาถ้ายังไม่มีอีกครึ่ง',
+    'ถ้ามีอีกครึ่งแล้ว (สกิล/พรคู่) ไอคอนจะสว่าง+เต้นเบา พร้อมป้าย "🔗 พร้อมคอมโบ" เป็นคำใบ้ให้อัพใบนี้' ] },
   { v:'2.14.0', date:'2026-09-12', title:'Juice: Kill-Streak Combos & Heavy-Hit Impact', items:[
     'เพิ่มระบบคอมโบฆ่าต่อเนื่อง (kill-streak) — ป็อปคอมโบกลางจอ + เสียง pitch สูงขึ้นที่หมุด 10/25/50/100/200/350',
     'ฆ่าตัวใหญ่/elite = hit-stop กระแทกหยุดเสี้ยววินาที ให้รู้สึกหนักแน่น',
@@ -2875,9 +2878,39 @@ class Game extends Phaser.Scene {
       ctaT=this.add.text(x+w/2,y+h-13,'แตะเลือก  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }
+    this.drawComboHints(group,o,x,y,w,h,wide,options.index||0);
     const baseX=icon.scaleX||1,baseY=icon.scaleY||1;panel.setAlpha(0);icon.setScale(baseX*0.25,baseY*0.25);
     this.tweens.add({targets:[panel,badgeT,nameT,roleT,descT,starsT,ctaT],alpha:{from:0,to:1},duration:180,delay:(options.index||0)*65});
     this.tweens.add({targets:icon,scaleX:baseX,scaleY:baseY,duration:280,delay:(options.index||0)*65,ease:'Back.out'});
+  }
+  // คำใบ้คอมโบบนการ์ด: ไอคอนคู่คอมโบมุมขวาบน — จางถ้ายังไม่มีอีกครึ่ง / สว่าง+เรืองถ้ามีแล้ว (ชี้ว่าควรอัพใบนี้)
+  comboPartners(o){
+    const key=o.key,isAtk=(o.type==='atk'||o.type==='awk'),out=[];
+    for(const c of COMBOS){
+      if(isAtk&&c.a===key){const owned=(this.passives?.[c.b]||0)>0;out.push({pk:c.b,isPass:true,owned,name:c.name});}
+      else if(o.type==='pas'&&c.b===key){const owned=(this.skills?.[c.a]||0)>0;out.push({pk:c.a,isPass:false,owned,name:c.name});}
+    }
+    return out;
+  }
+  drawComboHints(group,o,x,y,w,h,wide,index){
+    if(o.type!=='atk'&&o.type!=='pas'&&o.type!=='awk')return;
+    const partners=this.comboPartners(o); if(!partners.length)return;
+    const anyOwned=partners.some(p=>p.owned);
+    const sz=18,gap=4,pad=10,list=partners.slice(0,3);
+    let cx=x+w-pad-sz/2, cy=y+pad+sz/2;   // เริ่มมุมขวาบน ไล่ลงซ้าย
+    // ป้ายเล็ก "🔗" นำหน้าเมื่อพร้อมคอมโบ ให้สังเกตง่าย
+    if(anyOwned){const tag=this.add.text(x+w-pad,cy+sz/2+6,'🔗 พร้อมคอมโบ',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffe07a'}).setOrigin(1,0);group.add(tag);}
+    list.forEach((p,i)=>{
+      const ix=cx-i*(sz+gap),iy=cy;
+      const ring=this.add.circle(ix,iy,sz/2+2,p.owned?0xffe07a:0x6a6076,p.owned?0.9:0.35).setStrokeStyle(1.5,p.owned?0xffd23f:0x8a7f98,p.owned?1:0.5);
+      const ik=this.iconKey(p.pk,p.isPass);
+      let ic;
+      if(ik)ic=this.add.image(ix,iy,ik).setDisplaySize(sz,sz);
+      else{const em=(p.isPass?(PASSIVES[p.pk]?.emoji):(SKILLDEFS[p.pk]?.emoji))||'✦';ic=this.add.text(ix,iy,em,{fontSize:Math.round(sz*0.72)+'px'}).setOrigin(0.5);}
+      if(!p.owned){ic.setAlpha(0.42);if(ic.setTintFill)ic.setTintFill(0x9a90a8);}   // ยังไม่มีอีกครึ่ง = จางเทา
+      else{ic.setAlpha(1);this.tweens.add({targets:[ring,ic],scale:{from:0.82,to:1.0},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});}   // มีแล้ว = สว่าง+เต้นเบา
+      group.add([ring,ic]);
+    });
   }
   openStartingSkillChoice(){
     this.state='startskill';this.physics.pause();const w=this.W,h=this.H;this.lvlUp.removeAll(true);this.startSkillCards=[];
