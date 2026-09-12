@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.31.2';
+const GAME_VERSION = '2.31.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.31.3', date:'2026-09-12', title:'Chapter Select', items:[
+    'แยกหน้าเลือก Chapter ออกจากหน้าเลือกด่าน แก้โครงสร้างเมนูที่เคยแสดงด่านภายใต้ชื่อเลือกบท',
+    'Chapter 1 เชื่อมเข้าด่านทั้ง 5 ส่วน Chapter 2–5 แสดงสถานะล็อกและเนื้อเรื่องตัวอย่าง',
+    'ปุ่มย้อนกลับในหน้าเลือกด่านกลับไปยัง Chapter Select โดยไม่หลุดไป Hub' ] },
   { v:'2.31.2', date:'2026-09-12', title:'Gacha Reveal', items:[
     'เปิดกล่องอุปกรณ์ด้วยฉากลุ้นสามจังหวะก่อนเผยผล แทนการแจกรางวัลทันที',
     'สี แสง วงพลัง และข้อความผลลัพธ์เปลี่ยนตามระดับ Common, Rare และ Epic',
@@ -2087,7 +2091,7 @@ class Game extends Phaser.Scene {
     const rt=this.add.text(x+w-12,y+h/2,rightLabel,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'11px':'12px',color:rightColor,align:'right',wordWrap:{width:rightW}}).setOrigin(1,0.5);
     this.menu.add([g,em,nm,ds,rt]); if(fn)this._zone(x,y,w,h,fn);
   }
-  _screenBg(title,artKey){ const w=this.W,h=this.H;
+  _screenBg(title,artKey,backScreen){ const w=this.W,h=this.H;
     const compact=w>h;
     const bg=artKey&&this.textures.exists(artKey)?this._coverImage(0,0,w,h,artKey):this.add.rectangle(0,0,w,h,0x1a1420,0.97).setOrigin(0,0);
     const veil=artKey?this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0):null;
@@ -2098,10 +2102,10 @@ class Game extends Phaser.Scene {
     const by=compact?10:38, bh=compact?32:34;
     const bg2=this.add.graphics(); bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(12,by,82,bh,11); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(12,by,82,bh,11);
     const bt=this.add.text(53,by+bh/2,'‹ กลับ',{fontFamily:'sans-serif',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
-    this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen='hub'; this.buildMenuScreen(); });
+    this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else this.buildHub(); }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
@@ -2255,7 +2259,7 @@ class Game extends Phaser.Scene {
     const vt=this.add.text(w-59,29,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#eadff2'}).setOrigin(0.5);
     this.menu.add([vg,vt]); this._zone(w-106,13,94,32,()=>{ this.menuScreen='news'; this.buildMenuScreen(); });
     const items=[
-      [COLORS.pink, '▶','เริ่มผจญภัย','เลือกด่านและเข้าสู่ครัว',()=>{ this.menuScreen='stage'; this.buildMenuScreen(); }],
+      [COLORS.pink, '▶','เริ่มผจญภัย','เลือกด่านและเข้าสู่ครัว',()=>{ this.menuScreen='chapter'; this.buildMenuScreen(); }],
       [COLORS.toast,'🍓','นักสู้','เลือกและปลุกพลังตัวละคร',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
       [COLORS.grape,'✦','สายใยรสชาติ','ประสานแก่นพลังถาวร',()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); }],
       [COLORS.mint, '◆','อุปกรณ์','สวมใส่และตีบวก',()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
@@ -2310,8 +2314,21 @@ class Game extends Phaser.Scene {
     });
     this.menu.setVisible(true);
   }
+  buildChapterSelect(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('เลือก Chapter');
+    const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=9,side=14,top=portrait?88:62;
+    const cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(CHAPTERS.length/cols),ch=Math.min(portrait?94:82,(h-top-16-gap*(rows-1))/rows);
+    CHAPTERS.forEach((c,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),open=!!c.ready,g=this.add.graphics();
+      g.fillStyle(open?0x2d2338:0x1d1924,0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xffc85a:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
+      if(open){g.fillStyle(0xffc85a,0.12);g.fillRoundedRect(x+3,y+3,cw-6,ch-6,12);}
+      const icon=this.add.text(x+30,y+ch/2,open?c.emoji:'🔒',{fontSize:open?'30px':'25px'}).setOrigin(0.5),name=this.add.text(x+57,y+18,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:open?'#fff4df':'#98909f'}).setOrigin(0,0);
+      const desc=this.add.text(x+57,y+40,c.desc,{fontFamily:'sans-serif',fontSize:'9px',color:open?'#cfc2d5':'#746d7a',wordWrap:{width:cw-126},maxLines:2}).setOrigin(0,0);
+      const state=this.add.text(x+cw-13,y+ch/2,open?'เข้าเล่น  ▶':'เร็ว ๆ นี้',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffe08a':'#756d7e'}).setOrigin(1,0.5);
+      this.menu.add([g,icon,name,desc,state]);this._zone(x,y,cw,ch,open?()=>{this.selectedChapter=i;this.menuScreen='stage';this.buildMenuScreen();}:()=>this.showBanner('🔒 '+c.name,'Chapter นี้กำลังพัฒนา',1200));
+    });this.menu.setVisible(true);
+  }
   buildStageSelect(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกบท');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('เลือกด่าน · Chapter 1',null,'chapter');
     const unlocked=Math.max(0,Save.data.unlockedStage||0);
     const note=this.add.text(this.W/2,this.W<=this.H?83:55,'CHAPTER SELECT  ·  พลังปัจจุบัน ⚡ '+Save.power(Save.data.character),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d3bce1'}).setOrigin(0.5);
     this.menu.add(note);
