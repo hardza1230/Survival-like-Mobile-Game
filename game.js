@@ -27,9 +27,13 @@ const BALANCE = {
 };
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.17.0';
+const GAME_VERSION = '2.18.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.18.0', date:'2026-09-12', title:'Combo Icon Fix, Void Aura & Streamed Sprinkle', items:[
+    'แก้ไอคอนคอมโบบนการ์ดที่ "มีคู่แล้ว" พองใหญ่โผล่นอกการ์ด → เหลือไอคอนเล็กในการ์ด กระพริบเมื่อพร้อมคอมโบ',
+    'โกโก้ voidPull: เอารูปหมุนเดิมออกเหลือออร่าม่วง + ดูดมอนสเตอร์เข้าหาตัวจริง (ลากตำแหน่งทับ AI เห็นชัด)',
+    'Sprinkle: ยิงทีละนัดแบบสตรีม (ไม่ออกเป็นกลุ่ม) + โค้งเข้าหาเป้าเสมอ · หลัง Awaken โค้งไว+พุ่งเร็วขึ้น' ] },
   { v:'2.17.0', date:'2026-09-12', title:'Boss/Miniboss Objective: Weak-Point Shield', items:[
     'ระหว่างสู้บอส/มินิ บอสจะกางเกราะเป็นระยะ (ลดดาเมจที่รับ 88%)',
     'ต้องทำลาย "จุดอ่อน" สีทอง 3 จุดที่โผล่รอบบอสเพื่อทลายเกราะ → บอสมึนงง + โดนดาเมจก้อนใหญ่',
@@ -1613,19 +1617,22 @@ class Game extends Phaser.Scene {
   // Cocoa: หลุมดำช็อกโกแลต — ดูดฝูงศัตรูเข้าหาตัวผู้เล่น ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย
   castVoidPull(dm,ul){
     ul=ul||1;const up=this.uniquePower();
-    const r=200+ul*22, duration=1.9+ul*0.42, pullS=150+ul*30, tickDmg=(7+ul*3)*dm*up;
-    const core=this.camWorld((this.textures.exists('fx_ult_vortex')?this.add.image(this.player.x,this.player.y,'fx_ult_vortex'):this.add.circle(this.player.x,this.player.y,40,0x2a0f3a,0.85)).setDepth(6).setAlpha(0.9));
-    if(core.setDisplaySize)core.setDisplaySize(r*1.4,r*1.4);
+    const r=200+ul*22, duration=1.9+ul*0.42, pullLerp=0.18+ul*0.02, tickDmg=(7+ul*3)*dm*up;
+    // ออร่าม่วงล้วน (เอารูปอึออก) — วงแกนดำม่วง + วงรัศมีเรือง + อนุภาคหมุนวน
+    const core=this.camWorld(this.add.circle(this.player.x,this.player.y,44,0x2a0f3a,0.8).setDepth(6).setStrokeStyle(3,0x8b5cf0,0.9));
     const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x8b5cf0).setDepth(5).setDisplaySize(r*2,r*2).setAlpha(0.34));
-    this.tweens.add({targets:core,rotation:Math.PI*4*duration,duration:duration*1000,ease:'Linear'});
     this.tweens.add({targets:ring,alpha:{from:0.20,to:0.42},yoyo:true,repeat:-1,duration:400,ease:'Sine.inOut'});
+    this.tweens.add({targets:core,scale:{from:0.9,to:1.15},yoyo:true,repeat:-1,duration:360,ease:'Sine.inOut'});
     let tick=0;
-    const pull=this.time.addEvent({delay:90,loop:true,callback:()=>{
+    const pull=this.time.addEvent({delay:70,loop:true,callback:()=>{
       const cx=this.player.x,cy=this.player.y; if(core.active)core.setPosition(cx,cy); if(ring.active)ring.setPosition(cx,cy);
       tick++;
       this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(e.x,e.y,cx,cy);if(d>r)return;
-        if(!e.isBoss&&!e.isMini){const a=Math.atan2(cy-e.y,cx-e.x);e.setVelocity(Math.cos(a)*pullS,Math.sin(a)*pullS);e.knock=Math.max(e.knock||0,0.08);}   // บอส/มินิดูดไม่ได้ แต่ยังโดนดาเมจ
-        if(tick%2===0)this.damage(e,tickDmg*((e.isBoss||e.isMini)?0.5:1),e.x,e.y);
+        if(!e.isBoss&&!e.isMini&&d>26){ // ดูดจริง: ลาก "ตำแหน่ง" เข้าหาศูนย์กลาง (ทับ AI เดินตาม เห็นชัดว่าถูกดูด)
+          e.setPosition(e.x+(cx-e.x)*pullLerp, e.y+(cy-e.y)*pullLerp); if(e.body)e.setVelocity(0,0);
+          if(tick%3===0){const p=this.camWorld(this.add.circle(e.x,e.y,3,0xb98cff,0.8).setDepth(9));this.tweens.add({targets:p,x:cx,y:cy,scale:0.2,alpha:0,duration:220,onComplete:()=>p.destroy()});}
+        }
+        if(tick%3===0)this.damage(e,tickDmg*((e.isBoss||e.isMini)?0.5:1),e.x,e.y);
       });
     }});
     this.showBanner('🕳️ หลุมช็อกโกแลตดำ Lv'+ul,'ดูดฝูงเข้าหาตัว '+duration.toFixed(1)+' วิ · รัศมี '+r,1000);Sfx.ult&&Sfx.ult('vortex');
@@ -2950,7 +2957,7 @@ class Game extends Phaser.Scene {
       if(ik)ic=this.add.image(ix,iy,ik).setDisplaySize(sz,sz);
       else{const em=(p.isPass?(PASSIVES[p.pk]?.emoji):(SKILLDEFS[p.pk]?.emoji))||'✦';ic=this.add.text(ix,iy,em,{fontSize:Math.round(sz*0.72)+'px'}).setOrigin(0.5);}
       if(!p.owned){ic.setAlpha(0.42);if(ic.setTintFill)ic.setTintFill(0x9a90a8);}   // ยังไม่มีอีกครึ่ง = จางเทา
-      else{ic.setAlpha(1);this.tweens.add({targets:[ring,ic],scale:{from:0.82,to:1.0},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});}   // มีแล้ว = สว่าง+เต้นเบา
+      else{ic.clearTint&&ic.clearTint();ic.setAlpha(1);this.tweens.add({targets:[ring,ic],alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:520,ease:'Sine.inOut'});}   // มีแล้ว = สว่าง+กระพริบ (ไม่ปรับ scale กันไอคอนพองใหญ่)
       group.add([ring,ic]);
     });
   }
@@ -3191,16 +3198,18 @@ class Game extends Phaser.Scene {
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
     this.vfxCastGlow(_castColors[key]||0xffffff);
-    if(key==='sprinkle'){ const t=this.nearestEnemy(aw?900:640); if(!t)return;
+    if(key==='sprinkle'){ if(!this.nearestEnemy(aw?900:640))return;
       let shots=aw?8:lvl>=6?5:lvl>=4?3:lvl>=2?2:1;
       if(this.player.twinSprinkle) shots+=2;
-      const pierce=lvl>=3||aw; let bounce=lvl>=5?2:0; if(cf.ricochet)bounce+=1; if(aw||this.player.twinSprinkle)bounce+=2;
-      const spread=shots>1?(aw?0.42:0.20):0;
-      for(let s=0;s<shots;s++){ const off=(s-(shots-1)/2)*spread, ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+off;
-        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.22+lvl*0.018+(aw?0.07:0));
+      const pierce=lvl>=3||aw, bounce=(lvl>=5?2:0)+(cf.ricochet?1:0)+((aw||this.player.twinSprinkle)?2:0);
+      const homing=aw?720:(lvl>=2?440:320), speed=aw?560:470, gap=aw?32:55;   // โค้งเข้าหาเป้า (awaken โค้งไว+เร็ว) · ยิงทีละนัดแบบสตรีม ไม่ออกเป็นกลุ่ม
+      const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
+        const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.22+lvl*0.018+(aw?0.07:0)); if(!b)return;
         b.setTexture('proj_sprinkle').setTint(0xffffff); b.faceVel=true;
-        b.dmg=(5+lvl*1.6)*dm*(aw?1.5:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.6:1.2; b.pierce=pierce; b.bounce=bounce; if(aw||this.player.twinSprinkle)b.homing=280;
-        this.physics.velocityFromRotation(ang,470,b.body.velocity); } Sfx.shoot(); }
+        b.dmg=(5+lvl*1.6)*dm*(aw?1.5:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?1.7:1.3; b.pierce=pierce; b.bounce=bounce; b.homing=homing;
+        const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+Phaser.Math.FloatBetween(-0.12,0.12);
+        this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
+      fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
     else if(key==='thunder'){ const strikes=aw?3:lvl>=4?2:1, chain=aw?5:lvl>=5?3:lvl>=3?2:1, dmg=(14+lvl*4.2)*dm*(cf.storm?1.4:1)*(aw?1.5:1);
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
       cand.sort((a,b)=>(b.hp||0)-(a.hp||0));

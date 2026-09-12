@@ -55,7 +55,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.17.0 Boss Objective)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.18.0 Combo/Void/Sprinkle Fixes)
+- **v2.18.0 (แก้จาก feedback เจ้าของ):** `drawComboHints` ไอคอน "มีคู่แล้ว" เคยพองเป็น 128px (tween scale ทับ setDisplaySize) → เปลี่ยนเป็นกระพริบ alpha ไอคอนคง 18px · `castVoidPull` เอา fx_ult_vortex (รูปหมุน) ออกเหลือวงกลมม่วง+ring และดูดมอนจริงด้วย `e.setPosition` lerp (ทับ AI เดินตาม) · `castSkill` sprinkle ยิงทีละนัด staggered (`delayedCall`) + homing เสมอ (awaken 720/เร็ว)
 - **v2.17.0 (Objective ระหว่างสู้บอส/มินิ):** `tickBossObjective`/`startWeakPoint`/`endWeakPoint`/`resetBossObjective` — บอสกางเกราะเป็นระยะ (`_bossShield` ลดดาเมจ ×0.12 ใน `damage()`) ต้องทำลาย crystal จุดอ่อน 3 จุด (`o._weak`, ใช้ `spawnBossObject('crystal')`) เพื่อทลายเกราะ→บอสมึน+โดนก้อนใหญ่ 8% · timeout 9วิเกราะหลุดเอง · เรียกใน update ตอน boss active · reset ที่ spawnMiniBoss/spawnFinalBoss/clearBossObjects
 - **v2.16.0 (แก้จาก feedback เจ้าของ):** โกโก้ Unique = `voidPull` (`castVoidPull`) หลุมดำดูดฝูง (แทน bearQuake) · nerf ต้นเกม: งาดำ ward ดาเมจบอส/มินิ ×0.28-0.30 (เลิกละลายบอส 1 วิ), มิ้นต์รัศมี Lv1 120 (เดิม 195), ทาโร่ Arc `(9+ul*7)` · โมโม่ berryRebound มี `b.chain` Lv3/4 · `setupSpawnRates` maxLive 95/batch+1/interval เร็วขึ้น · spawnMiniBoss HP×1.05/dmg×1.15/atkCd 0.85 + ท่า nova/spiral/charge · **ยังเหลือ #8 objective ระหว่างสู้บอส/มินิ (กำลังทำต่อ)**
 - **v2.15.0:** การ์ดเลเวลอัพมีไอคอนคู่คอมโบมุมขวาบน (`comboPartners`/`drawComboHints` ใน `drawReadableChoiceCard`) — จางเทาถ้ายังไม่มีอีกครึ่ง · สว่าง+เต้น+ป้าย "🔗 พร้อมคอมโบ" ถ้ามีคู่แล้ว (คำใบ้ให้อัพใบนั้น) · อ่าน `COMBOS` (a=attack,b=passive)
