@@ -12,11 +12,11 @@
 //   npm install --no-save playwright        # browser binaries are found via PLAYWRIGHT_BROWSERS_PATH
 //
 // Run:
-//   npm run bot                             # all 5 stages, god-mode, 90s each
+//   npm run bot                             # all 6 stages, god-mode, 90s each
 //   STAGES=1,2 SECS=45 GSPEED=4 node scripts/bot.mjs
 //
 // Env knobs:
-//   STAGES   comma list of 0-based stage indexes   (default 0,1,2,3,4)
+//   STAGES   comma list of 0-based stage indexes   (default 0,1,2,3,4,5)
 //   SECS     real seconds to drive per stage        (default 90)
 //   GSPEED   in-game fast-forward multiplier         (default 4)
 //   GOD      1 = keep bot alive to reach bosses, 0 = die naturally (default 1)
@@ -35,7 +35,7 @@ const ROOT = process.env.GAME_ROOT || path.resolve(__dirname, '..');
 const OUT = process.env.OUT_DIR || path.join(__dirname, 'bot-out');
 fs.mkdirSync(OUT, { recursive: true });
 
-const STAGES = (process.env.STAGES || '0,1,2,3,4').split(',').map(Number);
+const STAGES = (process.env.STAGES || '0,1,2,3,4,5').split(',').map(Number);
 const SECONDS_PER_STAGE = Number(process.env.SECS || 90);
 const GAME_SPEED = Number(process.env.GSPEED || 4);
 const GODMODE = process.env.GOD !== '0';
@@ -57,7 +57,7 @@ function findExec() {
   return undefined;   // let Playwright use its own bundled browser
 }
 
-const MIME = { '.html':'text/html', '.js':'text/javascript', '.json':'application/json',
+const MIME = { '.html':'text/html', '.js':'text/javascript', '.json':'application/json', '.webp':'image/webp',
   '.png':'image/png', '.jpg':'image/jpeg', '.webmanifest':'application/manifest+json',
   '.mp3':'audio/mpeg', '.wav':'audio/wav', '.svg':'image/svg+xml' };
 

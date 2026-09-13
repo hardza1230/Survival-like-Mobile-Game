@@ -73,6 +73,17 @@ for (const [key,file] of Object.entries(stage5Sheets)) {
   if(!source.includes(`${key}:{ url:'assets/${file}', frame:256`))throw new Error(`Stage 5 sheet ${key} is not registered`);
 }
 
+const chapter2Sheets={ch2_enemy_atlas:'ch2_enemy_atlas.png',ch2_prop_atlas:'ch2_prop_atlas.png',mb6_sporewarden:'mb6_sporewarden_sheet.png',boss6_rootmother:'boss6_rootmother_sheet.png'};
+for(const [key,file] of Object.entries(chapter2Sheets)){
+  const sheet=fs.readFileSync(new URL(`../assets/${file}`,import.meta.url));
+  const width=sheet.readUInt32BE(16),height=sheet.readUInt32BE(20),colorType=sheet.readUInt8(25),hasAlpha=[4,6].includes(colorType)||(colorType===3&&sheet.includes(Buffer.from('tRNS')));
+  if(width!==1024||height!==512||!hasAlpha)throw new Error(`Expected transparent Chapter 2 atlas ${file} at 1024x512, found ${width}x${height}`);
+  if(!source.includes(`${key}:{ url:'assets/${file}', frame:256`))throw new Error(`Chapter 2 atlas ${key} is not registered`);
+}
+for(const contract of ["chapter2_cover:'assets/ui/chapter2_cover.webp'","bg6:'assets/bg6.png'","stages:[5,5]","this.buildChapterDepth(i)","this.chapter2Pose(b","this.chapter2DeathGhost(e)","rootmotherAttack(b)"]){
+  if(!source.includes(contract))throw new Error(`Missing Chapter 2 / 2.5D contract: ${contract}`);
+}
+
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
   const cardName = `card_${fighter}.png`;
   const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
@@ -88,7 +99,7 @@ for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
   }
 }
 
-console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, Stage 3–5 boss sheets, seven new Stage 5 action sheets, and character atlases`);
+console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, Stage 3–6 boss sheets, Chapter 2 atlases, and character atlases`);
 
 
 if (!source.includes("const UNIQUE_MAX_LV=4") || !source.includes("uniqueAt={2:3,3:7,4:11}")) {

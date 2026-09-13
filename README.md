@@ -59,11 +59,13 @@ APK ถูกตั้งให้เป็น **"ตัวหุ้ม" ที�
 - `.github/workflows/android.yml` — ขั้นตอน build APK บน GitHub
 - โฟลเดอร์ `android/` และ `www/` **สร้างตอน build** (ไม่ commit)
 
-## สถานะ: v2.34.0 — Chapter 1 + Endgame
-ระบบหลักพร้อมเล่นครบ 5 ด่าน: ตัวละคร 5 คนและอาวุธประจำตัว, สกิล/พร/Awaken, ศัตรูและบอสเฉพาะด่าน,
+## สถานะ: v2.35.0 — Chapter 2 Vertical Slice
+ระบบหลักพร้อมเล่นครบ Chapter 1 และด่านแรกของ Chapter 2: ตัวละคร 5 คนและอาวุธประจำตัว, สกิล/พร/Awaken, ศัตรูและบอสเฉพาะด่าน,
 อุปกรณ์หลายระดับ, Daily, Achievement, Bestiary, Ascension และ Midnight Kitchen Endless พร้อมบอสลับ/อันดับในเครื่อง
 
 ด่าน 5 ใช้กองทัพ Crown Oven ชุดใหม่ทั้งหมด: มอนสเตอร์ 5 บทบาท, Banquet Executioner และ The Great Hunger ร่าง Cosmic Sovereign ที่มี animation 8 ท่าผูกกับการต่อสู้จริง
+
+Chapter 2 เชื่อมจากเมล็ดมงกุฎที่รอดจาก The Great Hunger และเปิดด่าน C2-1 **The Fermented Canopy** พร้อมฉาก parallax 2.5D สามชั้น, ศัตรูสวนหมัก, Sporewarden Mantis และ The Rootmother
 
 ## ถัดไป (roadmap)
 - เล่นทดสอบบนมือถือจริงเพื่อจูน win rate ด่าน 3–4 ทุกระดับความยาก

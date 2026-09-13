@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 const source=fs.readFileSync(new URL('../game.js',import.meta.url),'utf8');
-const recommended=[100,280,560,940,1450];
+const recommended=[100,280,560,940,1450,2200];
 for(let i=1;i<recommended.length;i++){
   const ratio=recommended[i]/recommended[i-1];
   const ceiling=i===1?3.0:2.15;
@@ -22,4 +22,4 @@ for(let i=1;i<difficulties.length;i++){
 for(const token of ["waves:5, recommendedPower:560","waves:5, recommendedPower:940","(this.endlessCycle||0)*0.18","this.secretBoss?1.65:1"]){
   if(!source.includes(token))throw new Error(`Missing balance contract: ${token}`);
 }
-console.log('validated five-stage power curve, five difficulty tiers, Stage 3/4 targets, and Endless scaling');
+console.log('validated six-stage power curve, five difficulty tiers, Stage 3/4 targets, and Endless scaling');
