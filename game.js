@@ -26,10 +26,15 @@ const BALANCE = {
   },
 };
 
+const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
+
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.32.1';
+const GAME_VERSION = '2.32.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.32.2', date:'2026-09-13', title:'Fix "TAU is not defined" (Stage 5 crash)', items:[
+    'แก้เกมค้าง/เด้ง "TAU is not defined" ตอนสู้บอสด่าน 5 (The Great Hunger) — ย้าย TAU เป็นค่าคงที่ระดับ global',
+    'index.html โหลด game.js แบบกันแคชค้าง เพื่อให้ได้เวอร์ชันใหม่เสมอ' ] },
   { v:'2.32.1', date:'2026-09-12', title:'Mobile Hub Layout Fix', items:[
     'แก้ตำแหน่งเมนู Hub แบบสองคอลัมน์บนจอแนวตั้งให้จัดกึ่งกลางพื้นที่จริง',
     'ป้องกันการ์ดคอลัมน์ขวาและข้อความล้นออกนอกขอบหน้าจอมือถือ' ] },
@@ -768,7 +773,6 @@ class Boot extends Phaser.Scene {
     const rr=(c,x,y,w,h,r)=>{ c.beginPath();
       if(c.roundRect){ c.roundRect(x,y,w,h,r); }
       else { c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); } };
-    const TAU=Math.PI*2;
 
     // ---- ตัวละครน่ารัก (บอดี้กลม เงา แก้ม ตาวาว + ท็อปปิ้ง) ----
     const drawChar=(c,s,o)=>{ const cx=s/2, cy=s*0.54, R=s*0.40;
