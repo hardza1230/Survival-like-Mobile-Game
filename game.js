@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.36.1';
+const GAME_VERSION = '2.36.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.36.2', date:'2026-09-13', title:'Fix Boss Zoom (Really Zooms) + Escort Tuning', items:[
+    'แก้ให้กล้องซูมออกจริงตอนสู้บอส/มินิบอส (เปลี่ยนเป็น lerp ต่อเฟรม) · ซูมออกมากขึ้น (บอส ×0.58 · มินิ ×0.68)',
+    'บริวารที่บอสเรียก: ทำให้เล็กกว่ามินิบอสจริงชัดเจน (เป็นลูกน้องชั้นดี ไม่ใช่มินิบอสปลอม) + ถึ/แรงขึ้นเล็กน้อย ไม่กระจอก' ] },
   { v:'2.36.1', date:'2026-09-13', title:'Wider Boss Zoom + Mini-boss Cutscene', items:[
     'ซูมออกตอนสู้บอสมากขึ้น (บอสใหญ่ ×0.68 · มินิบอส ×0.74) เห็นสนามกว้างกว่าเดิม',
     'มินิบอสมี Cutscene สั้น ๆ ตอนโผล่ (กล้องแพนไปเผยตัว + วาบจอ + เขย่า) และแก้ให้เข้าโหมดมินิจริง (HUD/ลูกน้องไหลถูกต้อง)' ] },
@@ -2133,8 +2136,13 @@ class Game extends Phaser.Scene {
   computeViewZoom(){ const REF_W=430, BASE=0.76; this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
   // ตอนสู้บอส/มินิบอส ซูมกล้องออกให้เห็นสนามกว้างขึ้น (มุมสูงกว้างขึ้น) แล้วคืนค่าเมื่อจบ
   applyMainZoom(){ if(this.cameras&&this.cameras.main) this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
-  tweenBossZoom(to){ if(this._bossZoom==null)this._bossZoom=1; this.tweens.add({targets:this,_bossZoom:to,duration:700,ease:'Sine.inOut',onUpdate:()=>this.applyMainZoom(),onComplete:()=>this.applyMainZoom()}); }
-  tickBossZoom(){ const want=this.mode==='boss'?0.68:(this.mode==='mini'?0.74:1); if(this._bossZoomWant!==want){ this._bossZoomWant=want; this.tweenBossZoom(want); } }
+  // lerp ต่อเฟรมตรง ๆ (ชัวร์กว่า tween scene property) — ซูมออกเวลาสู้บอส/มินิ แล้วคืนเมื่อจบ
+  tickBossZoom(){
+    const want=this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1);
+    if(this._bossZoom==null)this._bossZoom=1;
+    if(Math.abs(this._bossZoom-want)>0.003){ this._bossZoom+=(want-this._bossZoom)*0.10; this.applyMainZoom(); }
+    else if(this._bossZoom!==want){ this._bossZoom=want; this.applyMainZoom(); }
+  }
   // Cutscene สั้น ๆ ตอนมินิบอสโผล่ — กล้องแพนไปที่มินิ ค้างแป๊บ แล้วกลับมาตามผู้เล่น (บอสใหญ่มี intro เต็มอยู่แล้ว)
   miniIntro(b){
     if(!b||!b.active||!this.cameras||!this.cameras.main)return; const cam=this.cameras.main, st=STAGES[this.stageIndex];
@@ -3217,10 +3225,10 @@ class Game extends Phaser.Scene {
       if(!e) e=this.enemies.create(ex,ey,mArt?mkey:'e_brute');
       else { e.setTexture(mArt?mkey:'e_brute'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(ex,ey); }
       if(!e)continue;
-      const sc=this.stageIndex===4?0.58:(this.stageIndex===5?0.54:(this.stageIndex===1?0.72:(mArt?0.98:1.45))); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
-      const rr=this.stageIndex===4?54:(this.stageIndex===5?50:(mArt?46:24)), off=this.stageIndex===4?74:(this.stageIndex===5?78:(mArt?18:5)); e.setCircle(rr,off,off);
+      const sc=this.stageIndex===4?0.5:(this.stageIndex===5?0.46:(this.stageIndex===1?0.62:(mArt?0.8:1.25))); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);   // เล็กกว่ามินิบอสจริงชัดเจน (บริวาร ไม่ใช่มินิบอสปลอม)
+      const rr=this.stageIndex===4?46:(this.stageIndex===5?42:(mArt?40:22)), off=this.stageIndex===4?74:(this.stageIndex===5?78:(mArt?16:5)); e.setCircle(rr,off,off);
       e.isBoss=false; e.isMini=false; e.isElite=true;   // elite = ตายแล้วไม่ทริกเกอร์จบเวฟ
-      e.hp=st.bossHp*0.45*this.bossHpMul(); e.maxhp=e.hp; e.spd=66; e.dmg=Math.round(st.bossDmg*0.9); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;
+      e.hp=st.bossHp*0.6*this.bossHpMul(); e.maxhp=e.hp; e.spd=68; e.dmg=Math.round(st.bossDmg*1.0); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;   // ถึก/แรงขึ้นเล็กน้อย ไม่กระจอก
       e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.bloomStacks=0; e.bloomUntil=0;
       if(mArt){ e.tintColor=null; e.clearTint(); } else { e.tintColor=st.tint; e.setTint(st.tint); }
       if(this.anims.exists((mArt?mkey:'e_brute')+'_walk')) e.play((mArt?mkey:'e_brute')+'_walk',true); else if(e.anims){ e.anims.stop(); e.setFrame(0); }
