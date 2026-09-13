@@ -56,10 +56,12 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.36.0 Boss Camera Zoom-Out)
-- **v2.36.0 (จาก feedback เจ้าของ):** กล้องซูมออกตอนสู้บอส/มินิบอส — `this._bossZoom` (default 1, ×0.82 ตอน mode='boss'/'mini') · `applyMainZoom()` ตั้ง cameras.main zoom = viewZoom×DPR×_bossZoom · `tickBossZoom()` (เรียกใน update) tween เข้า/ออกนุ่ม ๆ · setupCameras/onResize ใช้ _bossZoom ด้วย · reset ที่ startStage/exitStage · **หมายเหตุ: spawn radius ยังอิง viewZoom เดิม (มอนอาจเกิดใกล้ขอบจอที่กว้างขึ้นเล็กน้อย ไม่กระทบการเล่น)**
-- **v2.35.x งานอาร์ต/lore (จากอีกเซสชัน):** v2.35.1 hit feedback อ่านง่าย (เลิก white fill) · v2.35.0 Chapter 2 + 2.5D ทดลอง · v2.34 อาร์ตด่าน 5 · v2.33 ด่าน3-4 บอส+endgame
-- **v2.35.1 Readable Hit Feedback (เดิม):**
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.38.0 Berry Core)
+- **v2.38.0:** เพิ่ม `berry` เป็นตัวละครที่ 6 แยกจาก Momo · อาร์ต 2D vector-like clean outline/flat color: `card_berry.png`, action 8×1 และ run 4×3 · signature `jamCannon` (rocket) · Unique `jamOverdrive` เป็น targeted multi-salvo พร้อม talent `pressurizedJam` · Momo และเซฟเดิมไม่ถูกแทนที่
+- **v2.37.0:** เวฟปกติ Chapter 1 สุ่มภารกิจครบ 4 แบบต่อรันโดยไม่ซ้ำ: survive, hunt target Elite, purge cursed cores, capture zone · เพิ่ม progress HUD, objective arrow, Sugar bonus และ cleanup lifecycle · ไม่แทรกเวฟมินิบอส/บอส
+- **v2.36.2:** กล้องบอส/มินิบอสซูมออกด้วย lerp ต่อเฟรม (×0.58/×0.68) · บริวารบอสเล็กกว่ามินิบอสจริงและถูกปรับ HP/ดาเมจให้มีน้ำหนัก
+- **v2.36.1:** เพิ่ม cutscene แพนกล้องเผยตัวมินิบอสและแก้ state เป็น `mini` ให้ HUD/ลูกน้องทำงานถูกต้อง
+- **v2.35.2:** หน้าโหลดมีลูกกวาดลอย แสงเรือง และ safe-area padding สำหรับมือถือ
 - **v2.35.1:** ยกเลิก white fill ตอนศัตรู/บอสรับดาเมจที่ทำให้ artwork กระพริบจนมองไม่เห็น · ใช้ impact ring, particle, damage number และ hit squash แทน · การเตรียมพุ่งใช้เส้นเล็ง/ท่า animation โดยไม่ฟอกสี sprite
 - **v2.35.0:** เชื่อม lore หลัง The Great Hunger เข้าสู่ Chapter 2 · เปิด C2-1 Fermented Canopy · เพิ่มศัตรูสวนหมัก 6 บทบาท, Sporewarden Mantis, The Rootmother, prop/background/cover ใหม่ · ทดลอง 2.5D แบบ mobile-safe ด้วย parallax 3 ชั้น, หมอก, foreground leaves, perspective scale และ Y-depth เดิม · เซฟที่จบ Chapter 1 ปลดล็อกบทใหม่อัตโนมัติ
 - **v2.34.0:** เปลี่ยนภาพด่าน 5 ครบชุด — `boss5_sovereign` + `mb5_banquet_executioner` + มอนสเตอร์ใหม่ 5 บทบาทเป็น action sheet 4×2 · boss/mini pose ผูกกับท่าโจมตีและ phase · มอนสเตอร์ยิง/พุ่งใช้ attack pose · ทุกตัวมี defeat ghost frame · คง phase gate/อมตะระหว่างเปลี่ยนเฟส
@@ -283,7 +285,7 @@
 
 
 ## อัปเดต v2.29.0 — Character Combat Profiles & Signature Weapons
-- ตัวละครทั้ง 5 ตัวมี Combat Profile ใหม่ แยก HP, ATK, SPD, DEF, CRIT, CDR และบทบาท
-- อาวุธประจำตัว: โมโม่=ปืนเมล็ดหัวใจ, มินต์=แกนลมเย็น, โกโก้=ถุงมือตราหมี, ตาโร่=เข็มทิศสายฟ้า, งาดำ=กระจกคำสัตย์
+- ตัวละครทั้ง 6 ตัวมี Combat Profile ใหม่ แยก HP, ATK, SPD, DEF, CRIT, CDR และบทบาท
+- อาวุธประจำตัว: โมโม่=ปืนเมล็ดหัวใจ, มินต์=แกนลมเย็น, โกโก้=ถุงมือตราหมี, ตาโร่=เข็มทิศสายฟ้า, งาดำ=กระจกคำสัตย์, Berry Core=ปืนแกนแยม
 - ผู้เล่นเริ่มด้วยอาวุธประจำตัวและเลือกอาวุธรอง 1 ชิ้น; อาวุธประจำตัวนับรวมในเพดานอาวุธ 4 ช่อง
 - Weapon Mastery มีผลเฉพาะอาวุธประจำตัว และ resetStageLoadout() ต้องคืนอาวุธประจำตัวทุกด่าน

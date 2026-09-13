@@ -22,15 +22,13 @@
   #game-loader{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;overflow:hidden;
     background:radial-gradient(circle at 50% 34%,#5c3a58 0,#33273f 46%,#1d1626 100%);
     color:#fff;font-family:system-ui,-apple-system,"Noto Sans Thai",sans-serif;transition:opacity .22s ease;}
-  /* ลูกกวาดลอยพื้นหลัง — ให้หน้าโหลดมีชีวิต (ไม่ต้องใช้อาร์ต) */
   #game-loader .floaties{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
   #game-loader .floaties span{position:absolute;bottom:-10%;font-size:30px;opacity:.5;
     filter:drop-shadow(0 3px 5px #0006);animation:floatUp linear infinite;}
   #game-loader .card{position:relative;width:min(78vw,360px);text-align:center;
     padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);}
   #game-loader .berry{font-size:76px;line-height:1;filter:drop-shadow(0 7px 10px #160d18);
-    animation:berryBounce 1.15s ease-in-out infinite;
-    text-shadow:0 0 30px #ff7ba6cc,0 0 60px #ff5a8f66;}
+    animation:berryBounce 1.15s ease-in-out infinite;text-shadow:0 0 30px #ff7ba6cc,0 0 60px #ff5a8f66;}
   @keyframes floatUp{0%{transform:translateY(0) rotate(0);opacity:0}
     12%{opacity:.55}88%{opacity:.55}100%{transform:translateY(-118vh) rotate(220deg);opacity:0}}
   #game-loader .title{margin-top:15px;font-size:27px;font-weight:900;color:#ffb5cf;letter-spacing:.3px;}

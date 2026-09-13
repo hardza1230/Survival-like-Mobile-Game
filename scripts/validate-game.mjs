@@ -30,15 +30,16 @@ if (!source.includes('Math.floor(this._charRunT*16)%12')) {
   throw new Error('Fighter run cycles must play all 12 frames at 16 FPS');
 }
 
-for (const fighter of ['momo', 'mint', 'cocoa']) {
-  const actionName = fighter === 'momo' ? 'char_momo_fighter_sheet.png' : `char_${fighter}_awakened_sheet.png`;
+for (const fighter of ['momo', 'mint', 'cocoa', 'berry']) {
+  const actionName = fighter === 'momo' ? 'char_momo_fighter_sheet.png' : fighter === 'berry' ? 'char_berry_core_sheet.png' : `char_${fighter}_awakened_sheet.png`;
   const action = fs.readFileSync(new URL(`../assets/${actionName}`, import.meta.url));
   const actionWidth = action.readUInt32BE(16);
   const actionHeight = action.readUInt32BE(20);
   if (actionWidth !== 1024 || actionHeight !== 128) {
     throw new Error(`Expected ${fighter} 8x1 action sheet at 1024x128, found ${actionWidth}x${actionHeight}`);
   }
-  const run = fs.readFileSync(new URL(`../assets/char_${fighter}_run_sheet.png`, import.meta.url));
+  const runName = fighter === 'berry' ? 'char_berry_core_run_sheet.png' : `char_${fighter}_run_sheet.png`;
+  const run = fs.readFileSync(new URL(`../assets/${runName}`, import.meta.url));
   const width = run.readUInt32BE(16);
   const height = run.readUInt32BE(20);
   if (width !== 512 || height !== 384) {
@@ -85,8 +86,11 @@ for(const contract of ["chapter2_cover:'assets/ui/chapter2_cover.webp'","bg6:'as
 }
 if(source.includes("e.setTintFill(crit?0xffe08a:0xffffff)"))throw new Error('Per-hit white fill obscures enemy artwork');
 if(!source.includes("this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit)"))throw new Error('Readable hit feedback contract is missing');
+for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","purge:{emoji:'💥'","capture:{emoji:'🔷'","this.waveNodes=this.physics.add.group","this.setupWaveObjective(w,p)","this.tickWaveObjective(dt)","this.completeWaveObjective()","if(this.stageIndex>4)return"]){
+  if(!source.includes(contract))throw new Error(`Missing Chapter 1 wave mission contract: ${contract}`);
+}
 
-for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
+for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry']) {
   const cardName = `card_${fighter}.png`;
   const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
   const width = card.readUInt32BE(16);
@@ -106,6 +110,9 @@ console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awa
 
 if (!source.includes("const UNIQUE_MAX_LV=4") || !source.includes("uniqueAt={2:3,3:7,4:11}")) {
   throw new Error('Unique skill run progression contract is missing');
+}
+for(const contract of ["berry:{name:'เบอร์รี่คอร์'","unique:'jamOverdrive'","weapon:'jamCannon'","this.castJamOverdrive(dm,ul)","char_berry: { url:'assets/char_berry_core_sheet.png'","char_berry_run:{ url:'assets/char_berry_core_run_sheet.png'"]){
+  if(!source.includes(contract))throw new Error(`Missing Berry Core character contract: ${contract}`);
 }
 if (!source.includes('updatePickupReadability()') || !source.includes('this.player.pickup=105')) {
   throw new Error('Readable pickup cues and attraction contract is missing');
