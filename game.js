@@ -29,11 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.36.0';
+const GAME_VERSION = '2.36.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.36.1', date:'2026-09-13', title:'Wider Boss Zoom + Mini-boss Cutscene', items:[
+    'ซูมออกตอนสู้บอสมากขึ้น (บอสใหญ่ ×0.68 · มินิบอส ×0.74) เห็นสนามกว้างกว่าเดิม',
+    'มินิบอสมี Cutscene สั้น ๆ ตอนโผล่ (กล้องแพนไปเผยตัว + วาบจอ + เขย่า) และแก้ให้เข้าโหมดมินิจริง (HUD/ลูกน้องไหลถูกต้อง)' ] },
   { v:'2.36.0', date:'2026-09-13', title:'Zoom Out During Boss Fights', items:[
-    'ตอนสู้บอส/มินิบอส กล้องซูมออก (~×0.82) ให้เห็นสนามกว้างขึ้น หลบแพตเทิร์นง่ายขึ้น · คืนซูมปกติเมื่อจบ' ] },
+    'ตอนสู้บอส/มินิบอส กล้องซูมออก ให้เห็นสนามกว้างขึ้น หลบแพตเทิร์นง่ายขึ้น · คืนซูมปกติเมื่อจบ' ] },
   { v:'2.35.2', date:'2026-09-13', title:'Livelier Loading Screen', items:[
     'หน้าโหลดมีลูกกวาดลอย + แสงเรืองใต้สตรอว์เบอร์รี ให้ดูมีชีวิตขึ้น (CSS ล้วน รอภาพอาร์ตเต็มจอทีหลัง)',
     'หมายเหตุ: เต็มจอ/ซ่อนแถบระบบมือถือ = ต้องลง APK ตัวใหม่ (โค้ด immersive อยู่ในตัว build แล้ว · live-update อัปแค่เนื้อเกม)' ] },
@@ -2131,7 +2134,15 @@ class Game extends Phaser.Scene {
   // ตอนสู้บอส/มินิบอส ซูมกล้องออกให้เห็นสนามกว้างขึ้น (มุมสูงกว้างขึ้น) แล้วคืนค่าเมื่อจบ
   applyMainZoom(){ if(this.cameras&&this.cameras.main) this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tweenBossZoom(to){ if(this._bossZoom==null)this._bossZoom=1; this.tweens.add({targets:this,_bossZoom:to,duration:700,ease:'Sine.inOut',onUpdate:()=>this.applyMainZoom(),onComplete:()=>this.applyMainZoom()}); }
-  tickBossZoom(){ const want=(this.mode==='boss'||this.mode==='mini')?0.82:1; if(this._bossZoomWant!==want){ this._bossZoomWant=want; this.tweenBossZoom(want); } }
+  tickBossZoom(){ const want=this.mode==='boss'?0.68:(this.mode==='mini'?0.74:1); if(this._bossZoomWant!==want){ this._bossZoomWant=want; this.tweenBossZoom(want); } }
+  // Cutscene สั้น ๆ ตอนมินิบอสโผล่ — กล้องแพนไปที่มินิ ค้างแป๊บ แล้วกลับมาตามผู้เล่น (บอสใหญ่มี intro เต็มอยู่แล้ว)
+  miniIntro(b){
+    if(!b||!b.active||!this.cameras||!this.cameras.main)return; const cam=this.cameras.main, st=STAGES[this.stageIndex];
+    b.atkCd=Math.max(b.atkCd||0,1.9);   // อย่าเพิ่งโจมตีระหว่างฉาก
+    this.screenFlash(st&&st.tint?st.tint:0xff4d8f,0.18,420); this.screenShake(300,0.011);
+    cam.stopFollow(); cam.pan(b.x,b.y,620,'Sine.easeInOut');
+    this.time.delayedCall(1250,()=>{ if(this.cameras&&this.cameras.main) this.cameras.main.startFollow(this.player,false,0.2,0.2); });
+  }
   onResize(gs){
     if(!gs)return; this.W=gs.width/RENDER_DPR; this.H=gs.height/RENDER_DPR; this.computeViewZoom(); const pad=this._pad; this._barW=this.W-2*pad;
     if(this.cameras&&this.cameras.main){ this.cameras.main.setSize(gs.width,gs.height); this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
@@ -3191,6 +3202,8 @@ class Game extends Phaser.Scene {
     if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
     this.waveAlive=adds+1;
+    this.mode='mini'; this.updateWaveText();   // เข้าโหมดมินิ (เปิด add-flow + กล้องซูมออก)
+    this.miniIntro(b);                          // Cutscene แพนกล้องเผยมินิบอส
   }
   // บอสเรียกลูกน้อง "มินิบอส" ออกมาช่วยตอนปรากฏตัว (flag เป็น elite เพื่อไม่ให้ตายแล้วจบเวฟ)
   spawnBossEscorts(n){
