@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.35.1';
+const GAME_VERSION = '2.35.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.35.2', date:'2026-09-13', title:'Livelier Loading Screen', items:[
+    'หน้าโหลดมีลูกกวาดลอย + แสงเรืองใต้สตรอว์เบอร์รี ให้ดูมีชีวิตขึ้น (CSS ล้วน รอภาพอาร์ตเต็มจอทีหลัง)',
+    'หมายเหตุ: เต็มจอ/ซ่อนแถบระบบมือถือ = ต้องลง APK ตัวใหม่ (โค้ด immersive อยู่ในตัว build แล้ว · live-update อัปแค่เนื้อเกม)' ] },
   { v:'2.35.1', date:'2026-09-13', title:'Readable Hit Feedback', items:[
     'ยกเลิกการฟอกตัวศัตรูและบอสเป็นสีขาวทุกครั้งที่รับดาเมจ เพื่อให้มองเห็นรายละเอียด artwork แม้ใช้สกิลโจมตีถี่',
     'คง damage number, impact ring, particle และ hit squash พร้อมใช้เส้นเล็ง/ท่าเตรียมพุ่งโดยไม่ทับสี sprite' ] },
