@@ -56,7 +56,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.35.1 Readable Hit Feedback)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.36.0 Boss Camera Zoom-Out)
+- **v2.36.0 (จาก feedback เจ้าของ):** กล้องซูมออกตอนสู้บอส/มินิบอส — `this._bossZoom` (default 1, ×0.82 ตอน mode='boss'/'mini') · `applyMainZoom()` ตั้ง cameras.main zoom = viewZoom×DPR×_bossZoom · `tickBossZoom()` (เรียกใน update) tween เข้า/ออกนุ่ม ๆ · setupCameras/onResize ใช้ _bossZoom ด้วย · reset ที่ startStage/exitStage · **หมายเหตุ: spawn radius ยังอิง viewZoom เดิม (มอนอาจเกิดใกล้ขอบจอที่กว้างขึ้นเล็กน้อย ไม่กระทบการเล่น)**
+- **v2.35.x งานอาร์ต/lore (จากอีกเซสชัน):** v2.35.1 hit feedback อ่านง่าย (เลิก white fill) · v2.35.0 Chapter 2 + 2.5D ทดลอง · v2.34 อาร์ตด่าน 5 · v2.33 ด่าน3-4 บอส+endgame
+- **v2.35.1 Readable Hit Feedback (เดิม):**
 - **v2.35.1:** ยกเลิก white fill ตอนศัตรู/บอสรับดาเมจที่ทำให้ artwork กระพริบจนมองไม่เห็น · ใช้ impact ring, particle, damage number และ hit squash แทน · การเตรียมพุ่งใช้เส้นเล็ง/ท่า animation โดยไม่ฟอกสี sprite
 - **v2.35.0:** เชื่อม lore หลัง The Great Hunger เข้าสู่ Chapter 2 · เปิด C2-1 Fermented Canopy · เพิ่มศัตรูสวนหมัก 6 บทบาท, Sporewarden Mantis, The Rootmother, prop/background/cover ใหม่ · ทดลอง 2.5D แบบ mobile-safe ด้วย parallax 3 ชั้น, หมอก, foreground leaves, perspective scale และ Y-depth เดิม · เซฟที่จบ Chapter 1 ปลดล็อกบทใหม่อัตโนมัติ
 - **v2.34.0:** เปลี่ยนภาพด่าน 5 ครบชุด — `boss5_sovereign` + `mb5_banquet_executioner` + มอนสเตอร์ใหม่ 5 บทบาทเป็น action sheet 4×2 · boss/mini pose ผูกกับท่าโจมตีและ phase · มอนสเตอร์ยิง/พุ่งใช้ attack pose · ทุกตัวมี defeat ghost frame · คง phase gate/อมตะระหว่างเปลี่ยนเฟส

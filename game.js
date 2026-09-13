@@ -29,9 +29,11 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.35.2';
+const GAME_VERSION = '2.36.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.36.0', date:'2026-09-13', title:'Zoom Out During Boss Fights', items:[
+    'ตอนสู้บอส/มินิบอส กล้องซูมออก (~×0.82) ให้เห็นสนามกว้างขึ้น หลบแพตเทิร์นง่ายขึ้น · คืนซูมปกติเมื่อจบ' ] },
   { v:'2.35.2', date:'2026-09-13', title:'Livelier Loading Screen', items:[
     'หน้าโหลดมีลูกกวาดลอย + แสงเรืองใต้สตรอว์เบอร์รี ให้ดูมีชีวิตขึ้น (CSS ล้วน รอภาพอาร์ตเต็มจอทีหลัง)',
     'หมายเหตุ: เต็มจอ/ซ่อนแถบระบบมือถือ = ต้องลง APK ตัวใหม่ (โค้ด immersive อยู่ในตัว build แล้ว · live-update อัปแค่เนื้อเกม)' ] },
@@ -1764,7 +1766,8 @@ class Game extends Phaser.Scene {
   /* กล้อง 2 ตัว: viewport เป็น physical pixels แต่ Game Object/layout ยังเป็น CSS px */
   setupCameras(){
     const fw=this.scale.width, fh=this.scale.height;
-    this.cameras.main.setZoom(this.viewZoom*RENDER_DPR);
+    if(this._bossZoom==null)this._bossZoom=1;
+    this.cameras.main.setZoom(this.viewZoom*RENDER_DPR*this._bossZoom);
     // camera zoom ชดเชย backing canvas ที่ใหญ่ขึ้นตาม DPR
     this.uiCam=this.cameras.add(0,0,fw,fh);
     this.uiCam.setZoom(RENDER_DPR);
@@ -2125,9 +2128,13 @@ class Game extends Phaser.Scene {
 
   // zoom กล้องให้ "ความกว้างสนามที่เห็น" คงที่ทุกเครื่อง (อ้างอิงมือถือ ~430px) — แท็บเล็ตจอกว้าง = zoom เข้ามากขึ้น ตัวละครไม่เล็กจิ๋ว
   computeViewZoom(){ const REF_W=430, BASE=0.76; this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
+  // ตอนสู้บอส/มินิบอส ซูมกล้องออกให้เห็นสนามกว้างขึ้น (มุมสูงกว้างขึ้น) แล้วคืนค่าเมื่อจบ
+  applyMainZoom(){ if(this.cameras&&this.cameras.main) this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
+  tweenBossZoom(to){ if(this._bossZoom==null)this._bossZoom=1; this.tweens.add({targets:this,_bossZoom:to,duration:700,ease:'Sine.inOut',onUpdate:()=>this.applyMainZoom(),onComplete:()=>this.applyMainZoom()}); }
+  tickBossZoom(){ const want=(this.mode==='boss'||this.mode==='mini')?0.82:1; if(this._bossZoomWant!==want){ this._bossZoomWant=want; this.tweenBossZoom(want); } }
   onResize(gs){
     if(!gs)return; this.W=gs.width/RENDER_DPR; this.H=gs.height/RENDER_DPR; this.computeViewZoom(); const pad=this._pad; this._barW=this.W-2*pad;
-    if(this.cameras&&this.cameras.main){ this.cameras.main.setSize(gs.width,gs.height); this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR); }
+    if(this.cameras&&this.cameras.main){ this.cameras.main.setSize(gs.width,gs.height); this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
     if(this.uiCam){ this.uiCam.setSize(gs.width,gs.height); this.uiCam.setZoom(RENDER_DPR); this.uiCam.centerOn(this.W/2,this.H/2); }
     if(this.vig)this.vig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.lowHpVig)this.lowHpVig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
@@ -2840,6 +2847,7 @@ class Game extends Phaser.Scene {
   }
   exitStage(){
     this.physics.resume(); this.time.paused=false;   // ปลดหยุดฟิสิกส์+นาฬิกาก่อนออก (ไม่งั้นด่านหน้าค้าง)
+    this._bossZoom=1; this._bossZoomWant=1; this.applyMainZoom();   // คืนซูมกล้องปกติ
     if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸');
     if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
     this.boss=null; if(this.bossUI)this.bossUI.forEach(o=>o.setVisible(false));
@@ -2947,6 +2955,7 @@ class Game extends Phaser.Scene {
   }
   startStage(i){
     const st=STAGES[i]; this.clearExitPortal(); this.clearBossObjects(); this.stageIndex=i; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
+    this._bossZoom=1; this._bossZoomWant=1; this.applyMainZoom();   // คืนซูมกล้องปกติเมื่อเริ่มด่านใหม่
     Sfx.playStageBgm(i+1);
     this.bossUI.forEach(o=>o.setVisible(false));
     this.gridBg.fillColor=st.grid;
@@ -5034,6 +5043,7 @@ class Game extends Phaser.Scene {
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
     this.tickStage(dt);
+    this.tickBossZoom();
     this.tickBossObjects(dt);
 
     // enemies
