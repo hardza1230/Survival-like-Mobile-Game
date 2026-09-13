@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.32.2';
+const GAME_VERSION = '2.32.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.32.3', date:'2026-09-13', title:'Fix Pause Wave Bug + Tidy Top HUD', items:[
+    'แก้บั๊ก: กดหยุด (pause) ตอนช่วงพักระหว่างเวฟ แล้วเวฟถัดไปไม่มา — หยุดนาฬิกาเกมตอนพักด้วย (delayedCall ไม่หายอีก)',
+    'จัด UI ด้านบนใหม่ให้เรียบร้อย: ปุ่มควบคุมรวมเป็นกลุ่มมุมขวาบน · ข้อมูลจัดเป็น 2 บรรทัด (Lv/ฆ่า ซ้าย · สถานะเวฟ/ด่าน กลาง · Sugar ขวา) · ตัดข้อความรก (ค่าพลัง ⚡, คำว่า "ลูกน้อง") ออกจาก HUD' ] },
   { v:'2.32.2', date:'2026-09-13', title:'Fix "TAU is not defined" (Stage 5 crash)', items:[
     'แก้เกมค้าง/เด้ง "TAU is not defined" ตอนสู้บอสด่าน 5 (The Great Hunger) — ย้าย TAU เป็นค่าคงที่ระดับ global',
     'index.html โหลด game.js แบบกันแคชค้าง เพื่อให้ได้เวอร์ชันใหม่เสมอ' ] },
@@ -1889,11 +1892,12 @@ class Game extends Phaser.Scene {
     this.hpIcon=this.add.text(pad+4,pad+7,'❤️',{fontSize:'12px'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
     this.xpIcon=this.add.text(pad+4,pad+24,'⭐',{fontSize:'10px'}).setOrigin(0.5).setScrollFactor(1).setDepth(52);
 
-    this.lvlTxt=this.add.text(pad,pad+34,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
-    this.killTxt=this.add.text(w-pad,pad+34,'☠ ลูกน้อง 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);
-    this.runSugarTxt=this.add.text(w-pad,pad+52,'🍬 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);   // เงินที่ได้รอบนี้ (realtime)
-    this.timeTxt=this.add.text(w/2,pad+52,'0:00',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',align:'center',wordWrap:{width:w-48}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
-    this.stageTxt=this.add.text(w/2,pad+76,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    // แถวข้อมูล 2 บรรทัดใต้หลอด — ซ้าย: Lv/ฆ่า · กลาง: สถานะเวฟ/ด่าน · ขวาบน: ปุ่มควบคุม
+    this.lvlTxt=this.add.text(pad,pad+34,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
+    this.killTxt=this.add.text(pad,pad+56,'☠ 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9cff0'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
+    this.runSugarTxt=this.add.text(w-pad,pad+56,'🍬 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);   // เงินที่ได้รอบนี้ (realtime)
+    this.timeTxt=this.add.text(w/2,pad+34,'0:00',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',align:'center',wordWrap:{width:w-150}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    this.stageTxt=this.add.text(w/2,pad+56,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     // wave progress pips (บอกว่าใกล้จบเวฟ/ถึงบอสหรือยัง)
     this.pipG=this.add.graphics().setScrollFactor(1).setDepth(51);
 
@@ -1907,15 +1911,14 @@ class Game extends Phaser.Scene {
     this.bannerT=this.add.text(w/2,this.H*0.32,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
     this.bannerS=this.add.text(w/2,this.H*0.4,'',{fontFamily:'sans-serif',fontSize:'15px',color:'#e6dcf0',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
 
-    // mute button (มุมขวาบน) — แสดงตลอดเวลา
-    this.muteBtn=this.add.circle(w-28,pad+113,17,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
-    this.muteTxt=this.add.text(w-28,pad+113,Sfx.muted?'🔇':'🔊',{fontSize:'15px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
-    // pause button (ซ้ายของ mute)
-    this.pauseBtn=this.add.circle(w-68,pad+113,17,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
-    this.pauseTxt=this.add.text(w-68,pad+113,'⏸',{fontSize:'14px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
-    // ปุ่มเร่งความเร็วเกม (x1/x2/x3 แบบ Godot time_scale)
-    this.speedBtn=this.add.circle(w-108,pad+113,17,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
-    this.speedTxt=this.add.text(w-108,pad+113,'x'+(this.gameSpeed||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bff5d8'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    // ปุ่มควบคุม (speed/pause/mute) — จัดเป็นกลุ่มเดียวมุมขวาบน อยู่แนวเดียวกับหลอด HP
+    const cbY=pad+14;
+    this.muteBtn=this.add.circle(w-26,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.muteTxt=this.add.text(w-26,cbY,Sfx.muted?'🔇':'🔊',{fontSize:'15px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    this.pauseBtn=this.add.circle(w-62,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.pauseTxt=this.add.text(w-62,cbY,'⏸',{fontSize:'14px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    this.speedBtn=this.add.circle(w-98,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.speedTxt=this.add.text(w-98,cbY,'x'+(this.gameSpeed||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bff5d8'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
     // ตัววัด FPS + ความละเอียด (ไว้ดีบั๊ก — เอาออกทีหลังได้)
     this.fpsTxt=this.add.text(w-30,pad+88,'',{fontFamily:'monospace',fontSize:'10px',color:'#8fd0ff'}).setOrigin(1,0).setScrollFactor(1).setDepth(59);
     this.fpsTxt.setVisible(/[?&]debug=1\b/.test(location.search));
@@ -1933,7 +1936,7 @@ class Game extends Phaser.Scene {
   hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); if(this.skillBar)this.skillBar.setVisible(v); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
   drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
-    const bx=pad+16, bw=this._barW-16;
+    const bx=pad+16, bw=(this.W-112)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);
     g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,pad,bw,14,7);
@@ -2023,14 +2026,15 @@ class Game extends Phaser.Scene {
     if(this.lowHpVig)this.lowHpVig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-58,this.H-78); this.dashTxt.setPosition(this.W-58,this.H-78);
       if(this.uniqueBtn){this.uniqueBtn.setPosition(this.W-58,this.H-78-80);this.uniqueTxt.setPosition(this.W-58,this.H-78-80);}
-      this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(this.W-pad,pad+34);
-      if(this.runSugarTxt)this.runSugarTxt.setPosition(this.W-pad,pad+52);
-      this.timeTxt.setPosition(this.W/2,pad+52).setWordWrapWidth(this.W-48);
-      this.stageTxt.setPosition(this.W/2,pad+76).setWordWrapWidth(this.W-40);
+      this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(pad,pad+56);
+      if(this.runSugarTxt)this.runSugarTxt.setPosition(this.W-pad,pad+56);
+      this.timeTxt.setPosition(this.W/2,pad+34).setWordWrapWidth(this.W-150);
+      this.stageTxt.setPosition(this.W/2,pad+56).setWordWrapWidth(this.W-40);
       if(this.skills&&(this.state==='play'||this.state==='levelup')){ this.buildSkillBar(); this.drawWavePips(); }
-      if(this.muteBtn){ this.muteBtn.setPosition(this.W-28,pad+113); this.muteTxt.setPosition(this.W-28,pad+113); }
-      if(this.pauseBtn){ this.pauseBtn.setPosition(this.W-68,pad+113); this.pauseTxt.setPosition(this.W-68,pad+113); }
-      if(this.speedBtn){ this.speedBtn.setPosition(this.W-108,pad+113); this.speedTxt.setPosition(this.W-108,pad+113); }
+      const cbY=pad+14;
+      if(this.muteBtn){ this.muteBtn.setPosition(this.W-26,cbY); this.muteTxt.setPosition(this.W-26,cbY); }
+      if(this.pauseBtn){ this.pauseBtn.setPosition(this.W-62,cbY); this.pauseTxt.setPosition(this.W-62,cbY); }
+      if(this.speedBtn){ this.speedBtn.setPosition(this.W-98,cbY); this.speedTxt.setPosition(this.W-98,cbY); }
       if(this.state==='paused') this.buildPause();
       this.bossName.setPosition(this.W/2,pad+136); this.bossBgW.setPosition(this.W/2,pad+154); this.bossBgW.width=this._barW*0.8;
       this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+156);
@@ -2673,10 +2677,10 @@ class Game extends Phaser.Scene {
     if(this.time) this.time.timeScale=s;
     if(this.speedTxt) this.speedTxt.setText('x'+s); }
   togglePause(){
-    if(this.state==='play'){ this.state='paused'; this.physics.pause();
+    if(this.state==='play'){ this.state='paused'; this.physics.pause(); this.time.paused=true;   // หยุดนาฬิกาด้วย ไม่งั้น delayedCall (เช่นนับถอยหลังเวฟถัดไป) เดินต่อตอนพัก → เวฟถัดไปหาย
       if(this.joy){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0; this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
       this.buildPause(); this.pauseTxt.setText('▶'); Sfx.select();
-    } else if(this.state==='paused'){ this.state='play'; this.physics.resume();
+    } else if(this.state==='paused'){ this.state='play'; this.physics.resume(); this.time.paused=false;
       if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸'); Sfx.select(); }
   }
   buildPause(){
@@ -2703,7 +2707,7 @@ class Game extends Phaser.Scene {
     this.pauseUI.setVisible(true);
   }
   exitStage(){
-    this.physics.resume();   // ปลดหยุดฟิสิกส์ก่อนออก (ไม่งั้นด่านหน้าค้าง)
+    this.physics.resume(); this.time.paused=false;   // ปลดหยุดฟิสิกส์+นาฬิกาก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸');
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
     this.boss=null; if(this.bossUI)this.bossUI.forEach(o=>o.setVisible(false));
@@ -2736,7 +2740,7 @@ class Game extends Phaser.Scene {
         if(window.GameLoader)window.GameLoader.set(0.38,'กำลังเตรียมตัวละครและสกิล...');
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
-        if(this.killTxt)this.killTxt.setText('☠ ลูกน้อง 0');
+        if(this.killTxt)this.killTxt.setText('☠ 0');
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.passives={}; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
@@ -2805,7 +2809,7 @@ class Game extends Phaser.Scene {
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
     this.buildStageProps(i);   // จัดวาง props ประดับ + แลนด์มาร์ก (ทำแผนที่ให้เป็นห้องจริง)
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
-    const _d=this.diffMul();this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.emoji} ${st.name} · ${_d.emoji}${_d.name} · ⚡ ${pg.rating}/${pg.recommended}`);
+    const _d=this.diffMul();this.stageTxt.setText(`ด่าน ${i+1}/${STAGES.length} · ${st.name} · ${_d.emoji}${_d.name}`);   // กระชับ — เอาค่าพลัง ⚡ ออกจาก HUD (ดูได้ในหน้าเลือกด่าน)
     this.showBanner(`${st.emoji} ด่าน ${i+1}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
     this.updateWaveText();
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
@@ -2825,7 +2829,7 @@ class Game extends Phaser.Scene {
     const g=this.pipG; if(!g)return; g.clear();
     const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
     const n=st.waves, seg=Math.min(20,(this.W*0.62)/n), w=seg-3, h=6;
-    const x0=this.W/2-(n*seg)/2, y=this._pad+100;
+    const x0=this.W/2-(n*seg)/2, y=this._pad+80;
     for(let i=0;i<n;i++){ const x=x0+i*seg;
       let col=0x4a4059, a=0.7;                       // ยังไม่ถึง
       if(i<this.waveIndex){ col=0x8bd3a0; a=0.9; }    // ผ่านแล้ว
@@ -4035,7 +4039,7 @@ class Game extends Phaser.Scene {
       if(e.frozen) e.setTint(COLORS.ice); else if(e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini;this.kills++;
-    if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ ลูกน้อง '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
+    if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
       this.killStreak=(this.killStreak||0)+1; this._lastKillAt=this.elapsed;

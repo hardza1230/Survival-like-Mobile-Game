@@ -56,7 +56,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.32.2 Fix TAU crash)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.32.3 Fix Pause + Tidy HUD)
+- **v2.32.3 (แก้จาก feedback เจ้าของ):** (1) **บั๊ก pause แล้วเวฟไม่มา** — `onWaveCleared` ใช้ `this.time.delayedCall(3400,…)` แต่ `togglePause` เดิมหยุดแค่ physics นาฬิกา `this.time` ยังเดิน → timer นับถอยหลังเวฟถัดไปยิงตอน state='paused' แล้ว `_busy()` เป็น false → เวฟหาย · แก้: `togglePause`/`exitStage` ตั้ง `this.time.paused=true/false` ด้วย · (2) **จัด HUD บน** — ปุ่ม speed/pause/mute รวมกลุ่มมุมขวาบน (cbY=pad+14) · หลอด HP/XP สั้นลงเว้นที่ปุ่ม (drawBars bw=(W-112)-bx) · ข้อมูล 2 บรรทัด: Lv(pad+34)/☠kills(pad+56) ซ้าย · timeTxt(pad+34)/stageTxt(pad+56) กลาง · 🍬sugar ขวา · stageTxt ตัด ⚡rating ออก, killTxt ตัดคำ "ลูกน้อง" · pips ขยับขึ้น pad+80
+- **v2.32.2 (แก้บั๊ก):** `TAU is not defined` ตอนสู้บอสด่าน 5 (The Great Hunger) — Game scene (VFX บอส เช่น เกลียว/สุญญะ/eclipse บรรทัด ~2613/3100/4365+) อ้าง `TAU` แต่เดิมประกาศเฉพาะใน `Boot.create` → **ย้าย `const TAU=Math.PI*2` เป็น global ระดับบนสุด** · index.html โหลด `game.js?v='+Date.now()` กันแคชค้าง
 - **v2.32.2 (แก้บั๊ก):** `TAU is not defined` ตอนสู้บอสด่าน 5 (The Great Hunger) — Game scene (VFX บอส เช่น เกลียว/สุญญะ/eclipse บรรทัด ~2613/3100/4365+) อ้าง `TAU` แต่เดิมประกาศเฉพาะใน `Boot.create` → **ย้าย `const TAU=Math.PI*2` เป็น global ระดับบนสุด** · index.html โหลด `game.js?v='+Date.now()` กันแคชค้าง
 - **v2.28.1 (Boss Phase Gates):**
 - **v2.28.1:** เพิ่ม Phase Gate กลางให้บอส/มินิบอสทุกด่าน · ดาเมจหยุดตรง HP threshold ของเฟสถัดไปและล็อกทันที ป้องกันการโจมตีหลายครั้งในเฟรมเดียวข้ามเฟส · บอสเป็นอมตะพร้อมโล่ภาพระหว่าง transition แล้วปลดเมื่อเปลี่ยนเฟสจบ · The Great Hunger จึงเล่นครบ 4 เฟสเสมอ
