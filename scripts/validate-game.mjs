@@ -49,7 +49,8 @@ for (const fighter of ['momo', 'mint', 'cocoa']) {
 for (const boss of ['boss3', 'boss4']) {
   const sheet = fs.readFileSync(new URL(`../assets/${boss}_sheet.png`, import.meta.url));
   const width = sheet.readUInt32BE(16), height = sheet.readUInt32BE(20), colorType = sheet.readUInt8(25);
-  if (width !== 1024 || height !== 512 || ![4, 6].includes(colorType)) {
+  const hasAlpha = [4, 6].includes(colorType) || (colorType === 3 && sheet.includes(Buffer.from('tRNS')));
+  if (width !== 1024 || height !== 512 || !hasAlpha) {
     throw new Error(`Expected transparent ${boss} 4x2 action sheet at 1024x512, found ${width}x${height} PNG color type ${colorType}`);
   }
   if (!new RegExp(`${boss}:\\s+\\{ url:'assets/${boss}_sheet\\.png', frame:256 \\}`).test(source)) throw new Error(`${boss} action sheet is not registered`);
