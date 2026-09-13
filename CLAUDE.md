@@ -56,7 +56,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.35.0 Chapter 2 · Fermented Canopy)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.35.1 Readable Hit Feedback)
+- **v2.35.1:** ยกเลิก white fill ตอนศัตรู/บอสรับดาเมจที่ทำให้ artwork กระพริบจนมองไม่เห็น · ใช้ impact ring, particle, damage number และ hit squash แทน · การเตรียมพุ่งใช้เส้นเล็ง/ท่า animation โดยไม่ฟอกสี sprite
 - **v2.35.0:** เชื่อม lore หลัง The Great Hunger เข้าสู่ Chapter 2 · เปิด C2-1 Fermented Canopy · เพิ่มศัตรูสวนหมัก 6 บทบาท, Sporewarden Mantis, The Rootmother, prop/background/cover ใหม่ · ทดลอง 2.5D แบบ mobile-safe ด้วย parallax 3 ชั้น, หมอก, foreground leaves, perspective scale และ Y-depth เดิม · เซฟที่จบ Chapter 1 ปลดล็อกบทใหม่อัตโนมัติ
 - **v2.34.0:** เปลี่ยนภาพด่าน 5 ครบชุด — `boss5_sovereign` + `mb5_banquet_executioner` + มอนสเตอร์ใหม่ 5 บทบาทเป็น action sheet 4×2 · boss/mini pose ผูกกับท่าโจมตีและ phase · มอนสเตอร์ยิง/พุ่งใช้ attack pose · ทุกตัวมี defeat ghost frame · คง phase gate/อมตะระหว่างเปลี่ยนเฟส
 - **v2.33.0:** ด่าน 3–4 ได้พร็อพห้อง บอส action sheet 4×2 และแพตเทิร์นเฉพาะ Chili Engine/Frost Prison · เพิ่ม field gear Common/Rare/Epic และแท็บคัมภีร์ไอเทม · เพิ่ม Endgame ที่ปลดหลัง Mastery ครบ: Ascension, Midnight Kitchen Endless, checkpoint, local leaderboard และ The Echo of Hunger ทุก 3 รอบ · `scripts/validate-balance.mjs` ตรวจ power/difficulty/endless contract

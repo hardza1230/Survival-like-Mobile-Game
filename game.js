@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.35.0';
+const GAME_VERSION = '2.35.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.35.1', date:'2026-09-13', title:'Readable Hit Feedback', items:[
+    'ยกเลิกการฟอกตัวศัตรูและบอสเป็นสีขาวทุกครั้งที่รับดาเมจ เพื่อให้มองเห็นรายละเอียด artwork แม้ใช้สกิลโจมตีถี่',
+    'คง damage number, impact ring, particle และ hit squash พร้อมใช้เส้นเล็ง/ท่าเตรียมพุ่งโดยไม่ทับสี sprite' ] },
   { v:'2.35.0', date:'2026-09-13', title:'Chapter 2 · Fermented Canopy', items:[
     'เชื่อมบทสรุป Chapter 1 สู่ Chapter 2: เมล็ดมงกุฎที่รอดจาก The Great Hunger แทงรากขึ้นสู่สวนหมักพิษ',
     'เปิด Chapter 2 และเพิ่มด่านแรก Fermented Canopy พร้อมศัตรู 6 บทบาท มินิบอส Sporewarden Mantis และ The Rootmother',
@@ -4187,9 +4190,9 @@ class Game extends Phaser.Scene {
     e.hp-=amount;
     e._sqX = 1.35; e._sqY = 0.70;   // เอฟเฟกต์ยุบตัวเมื่อโดนตี (Hit squash)
     if(crit){ this.hitStop(35); this.screenShake(90, 0.005); }
-    this.vfxHitRing(x,y,crit?0xffd166:0xffffff,crit);
-    e.setTintFill(crit?0xffe08a:0xffffff); this.time.delayedCall(60,()=>{ if(!e.active)return;
-      if(e.frozen) e.setTint(COLORS.ice); else if(e.tintColor) e.setTint(e.tintColor); else e.clearTint(); });
+    // อย่าฟอก sprite ด้วย setTintFill ตอนโดนตี: สกิลหลาย hit ทำให้ art กระพริบขาวจนอ่าน silhouette ไม่ออก
+    // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
+    this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini;this.kills++;
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
@@ -4718,7 +4721,7 @@ class Game extends Phaser.Scene {
       const chargeLen=this.dist(b.x,b.y,tx,ty);
       const aim=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(3).setRotation(ang).setScale(chargeLen/256,b.isBoss?0.42:0.32).setTint(0xff5a6e));
       this.tweens.add({targets:aim,alpha:{from:0.25,to:1},duration:110,yoyo:true,repeat:2,onComplete:()=>aim.destroy()});
-      b.setTintFill(0xffffff); this.time.delayedCall(420,()=>{ if(!b.active)return; if(b.tintColor)b.setTint(b.tintColor); else b.clearTint();
+      this.time.delayedCall(420,()=>{ if(!b.active)return; if(b.tintColor)b.setTint(b.tintColor); else b.clearTint();
         b.setVelocity(Math.cos(ang)*(520+this.stageIndex*18),Math.sin(ang)*(520+this.stageIndex*18)); b.knock=0.45; });
       b.atkCd=2.0*fast;
     } else if(pick==='summon'){ // วงเรียกลูกน้องแบบสะอาด ไม่มีแถบขาวจาก sprite
@@ -5069,7 +5072,7 @@ class Game extends Phaser.Scene {
         if(e.dashState==='chase'){ e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
           if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.42; e.setVelocity(0,0);if(this.stageIndex===4)this.stage5EnemyPose(e,4,400); } }
         else if(e.dashState==='wind'){
-          e.setVelocity(0,0); e.setTintFill(0xffffff);
+          e.setVelocity(0,0);
           e.x += (Math.random() - 0.5) * 5;   // ตัวสั่นตอนชาร์จ
           if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang;if(this.stageIndex===4)this.stage5EnemyPose(e,5,340); if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
             if(e.body)this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }

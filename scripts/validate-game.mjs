@@ -83,6 +83,8 @@ for(const [key,file] of Object.entries(chapter2Sheets)){
 for(const contract of ["chapter2_cover:'assets/ui/chapter2_cover.webp'","bg6:'assets/bg6.png'","stages:[5,5]","this.buildChapterDepth(i)","this.chapter2Pose(b","this.chapter2DeathGhost(e)","rootmotherAttack(b)"]){
   if(!source.includes(contract))throw new Error(`Missing Chapter 2 / 2.5D contract: ${contract}`);
 }
+if(source.includes("e.setTintFill(crit?0xffe08a:0xffffff)"))throw new Error('Per-hit white fill obscures enemy artwork');
+if(!source.includes("this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit)"))throw new Error('Readable hit feedback contract is missing');
 
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
   const cardName = `card_${fighter}.png`;
