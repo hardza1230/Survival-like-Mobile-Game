@@ -56,7 +56,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.33.0 Stage 3–4 + Endgame)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.34.0 Crown Oven Reborn)
+- **v2.34.0:** เปลี่ยนภาพด่าน 5 ครบชุด — `boss5_sovereign` + `mb5_banquet_executioner` + มอนสเตอร์ใหม่ 5 บทบาทเป็น action sheet 4×2 · boss/mini pose ผูกกับท่าโจมตีและ phase · มอนสเตอร์ยิง/พุ่งใช้ attack pose · ทุกตัวมี defeat ghost frame · คง phase gate/อมตะระหว่างเปลี่ยนเฟส
 - **v2.33.0:** ด่าน 3–4 ได้พร็อพห้อง บอส action sheet 4×2 และแพตเทิร์นเฉพาะ Chili Engine/Frost Prison · เพิ่ม field gear Common/Rare/Epic และแท็บคัมภีร์ไอเทม · เพิ่ม Endgame ที่ปลดหลัง Mastery ครบ: Ascension, Midnight Kitchen Endless, checkpoint, local leaderboard และ The Echo of Hunger ทุก 3 รอบ · `scripts/validate-balance.mjs` ตรวจ power/difficulty/endless contract
 - **v2.32.3 (แก้จาก feedback เจ้าของ):** (1) **บั๊ก pause แล้วเวฟไม่มา** — `onWaveCleared` ใช้ `this.time.delayedCall(3400,…)` แต่ `togglePause` เดิมหยุดแค่ physics นาฬิกา `this.time` ยังเดิน → timer นับถอยหลังเวฟถัดไปยิงตอน state='paused' แล้ว `_busy()` เป็น false → เวฟหาย · แก้: `togglePause`/`exitStage` ตั้ง `this.time.paused=true/false` ด้วย · (2) **จัด HUD บน** — ปุ่ม speed/pause/mute รวมกลุ่มมุมขวาบน (cbY=pad+14) · หลอด HP/XP สั้นลงเว้นที่ปุ่ม (drawBars bw=(W-112)-bx) · ข้อมูล 2 บรรทัด: Lv(pad+34)/☠kills(pad+56) ซ้าย · timeTxt(pad+34)/stageTxt(pad+56) กลาง · 🍬sugar ขวา · stageTxt ตัด ⚡rating ออก, killTxt ตัดคำ "ลูกน้อง" · pips ขยับขึ้น pad+80
 - **v2.32.2 (แก้บั๊ก):** `TAU is not defined` ตอนสู้บอสด่าน 5 (The Great Hunger) — Game scene (VFX บอส เช่น เกลียว/สุญญะ/eclipse บรรทัด ~2613/3100/4365+) อ้าง `TAU` แต่เดิมประกาศเฉพาะใน `Boot.create` → **ย้าย `const TAU=Math.PI*2` เป็น global ระดับบนสุด** · index.html โหลด `game.js?v='+Date.now()` กันแคชค้าง

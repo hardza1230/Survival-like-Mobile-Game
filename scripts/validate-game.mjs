@@ -56,6 +56,23 @@ for (const boss of ['boss3', 'boss4']) {
   if (!new RegExp(`${boss}:\\s+\\{ url:'assets/${boss}_sheet\\.png', frame:256 \\}`).test(source)) throw new Error(`${boss} action sheet is not registered`);
 }
 
+const stage5Sheets = {
+  boss5_sovereign:'boss5_sovereign_sheet.png',
+  mb5_banquet_executioner:'mb5_banquet_executioner_sheet.png',
+  e_void_crumb:'e_void_crumb_sheet.png',
+  e_crown_ripper:'e_crown_ripper_sheet.png',
+  e_banquet_eye:'e_banquet_eye_sheet.png',
+  e_maw_truffle:'e_maw_truffle_sheet.png',
+  e_royal_oven_sentinel:'e_royal_oven_sentinel_sheet.png',
+};
+for (const [key,file] of Object.entries(stage5Sheets)) {
+  const sheet=fs.readFileSync(new URL(`../assets/${file}`,import.meta.url));
+  const width=sheet.readUInt32BE(16),height=sheet.readUInt32BE(20),colorType=sheet.readUInt8(25);
+  const hasAlpha=[4,6].includes(colorType)||(colorType===3&&sheet.includes(Buffer.from('tRNS')));
+  if(width!==1024||height!==512||!hasAlpha)throw new Error(`Expected transparent Stage 5 sheet ${file} at 1024x512, found ${width}x${height}`);
+  if(!source.includes(`${key}:{ url:'assets/${file}', frame:256`))throw new Error(`Stage 5 sheet ${key} is not registered`);
+}
+
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
   const cardName = `card_${fighter}.png`;
   const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
@@ -71,7 +88,7 @@ for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
   }
 }
 
-console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, 4 level-up cards, five transparent Character Cards, three 8-frame action sheets, and three 12-frame run atlases`);
+console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, Stage 3–5 boss sheets, seven new Stage 5 action sheets, and character atlases`);
 
 
 if (!source.includes("const UNIQUE_MAX_LV=4") || !source.includes("uniqueAt={2:3,3:7,4:11}")) {
@@ -85,4 +102,7 @@ if (!source.includes('castPathRecall(dm,ul)') || !source.includes('castOathWard(
 }
 for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)','buildEndgame()','recordEndless(cycle,kills,seconds,character)','The Echo of Hunger']) {
   if (!source.includes(contract)) throw new Error(`Missing Stage 3/4 or endgame contract: ${contract}`);
+}
+for(const contract of ["const bkey=this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper':type==='shooter'?'e_banquet_eye'","this.stage5Pose(b,pose","this.stage5DeathGhost(e)"]){
+  if(!source.includes(contract))throw new Error(`Missing Stage 5 replacement contract: ${contract}`);
 }

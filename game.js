@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.33.0';
+const GAME_VERSION = '2.34.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.34.0', date:'2026-09-13', title:'Crown Oven Reborn', items:[
+    'สร้าง The Great Hunger ใหม่เป็น Cosmic Sovereign พร้อม action sheet 8 ท่าและ pose ที่ผูกกับการโจมตี/เปลี่ยนเฟส/พ่ายแพ้จริง',
+    'แทนมอนสเตอร์ด่าน 5 เดิมครบ 5 บทบาทด้วย Void Crumb, Crown Ripper, Banquet Eye, Maw Truffle และ Royal Oven Sentinel',
+    'สร้างมินิบอส Banquet Executioner ใหม่ พร้อม animation, hitbox และภาพพ่ายแพ้เฉพาะตัว',
+    'คงระบบบอส 4 เฟสและความเป็นอมตะระหว่างเปลี่ยนเฟส พร้อมเพิ่ม regression validation สำหรับ Stage 5 assets' ] },
   { v:'2.33.0', date:'2026-09-13', title:'Stage 3–4 Boss Rework + Endgame', items:[
     'ด่าน 3–4 มีพร็อพห้องเฉพาะ บอส action sheet 8 ท่า และแพตเทิร์นเฉพาะธีมพร้อม telegraph/phase pose',
     'เพิ่ม Endgame หลัง Mastery ครบ: Midnight Kitchen Endless, บอสลับทุก 3 รอบ, checkpoint Sugar และอันดับในเครื่อง',
@@ -673,6 +678,13 @@ const ASSET_SHEETS = {
   boss2:      { url:'assets/generated/boss2_clogmaw_sheet.png', frame:256, anim:{frames:2, rate:3, yoyo:true} },
   boss3:      { url:'assets/boss3_sheet.png', frame:256 },
   boss4:      { url:'assets/boss4_sheet.png', frame:256 },
+  boss5_sovereign:{ url:'assets/boss5_sovereign_sheet.png', frame:256 },
+  mb5_banquet_executioner:{ url:'assets/mb5_banquet_executioner_sheet.png', frame:256, anim:{frames:4,rate:6,yoyo:true} },
+  e_void_crumb:{ url:'assets/e_void_crumb_sheet.png', frame:256, anim:{frames:4,rate:8,yoyo:true} },
+  e_crown_ripper:{ url:'assets/e_crown_ripper_sheet.png', frame:256, anim:{frames:4,rate:12} },
+  e_banquet_eye:{ url:'assets/e_banquet_eye_sheet.png', frame:256, anim:{frames:4,rate:7,yoyo:true} },
+  e_maw_truffle:{ url:'assets/e_maw_truffle_sheet.png', frame:256, anim:{frames:4,rate:8,yoyo:true} },
+  e_royal_oven_sentinel:{ url:'assets/e_royal_oven_sentinel_sheet.png', frame:256, anim:{frames:4,rate:6,yoyo:true} },
   e_acid:     { url:'assets/generated/e_acid_ant_sheet.png', frame:96, anim:{frames:3, rate:9} },
   // ศัตรูอนิเมชัน (walk/attack cycle) — frame=ขนาดเดิม (setScale/setCircle เดิมใช้ได้ ไม่ต้องแก้)
   e_dasher:   { url:'assets/e_dasher_sheet.png',   frame:88,  anim:{frames:4, rate:13} },  // มดวิ่ง 4 เฟรม
@@ -963,6 +975,8 @@ class Boot extends Phaser.Scene {
       this.anims.create({key:'boss2_reveal',frames:[{key:'boss2',frame:2},{key:'boss2',frame:3}],frameRate:4,repeat:0});
     for(const k of ['boss3','boss4'])if(this.textures.exists(k)&&!this.anims.exists(k+'_idle'))
       this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:3,repeat:-1,yoyo:true});
+    if(this.textures.exists('boss5_sovereign')&&!this.anims.exists('boss5_sovereign_idle'))
+      this.anims.create({key:'boss5_sovereign_idle',frames:[{key:'boss5_sovereign',frame:0},{key:'boss5_sovereign',frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
     // ---- อนิเมชันศัตรู (walk/attack loop จาก ASSET_SHEETS ที่มี .anim) ----
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!sh.anim)continue;
       if(!this.textures.exists(k)||this.anims.exists(k+'_walk'))continue;
@@ -1508,7 +1522,7 @@ const STAGES = [
     waves:5, recommendedPower:940, miniAt:2, mini:'ก้อนน้ำแข็งยักษ์', boss:'โกเลมไอศกรีม', bossHp:1400, bossDmg:32 },
   { name:'เตาอบมงกุฎแห่งความหิว', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
     lore:'เตาอบราชันเปิดออก—เชฟขมสลายเป็นภาชนะ และ The Great Hunger ลงมากลืนรสชาติทั้งโลกด้วยตนเอง',
-    waves:5, recommendedPower:1450, miniAt:2, mini:'ผู้ช่วยเชฟหุ่นเหล็ก', boss:'The Great Hunger · ราชันผู้กลืนรส', bossHp:2800, bossDmg:40 },
+    waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner · เพชฌฆาตงานเลี้ยง', boss:'The Great Hunger · ราชันผู้กลืนรส', bossHp:2800, bossDmg:40 },
 ];
 
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
@@ -1544,7 +1558,7 @@ const STAGE_STORY_BEATS = [
   [
     {title:'บันไดสู่มงกุฎขม',sub:'ทุกเส้นทางจากใต้ครัวมาบรรจบที่เตาอบสูงสุด'},
     {title:'โต๊ะเลี้ยงที่ไร้รสชาติ',sub:'อาหารทุกจานเหลือเพียงรูปร่าง—ความหิวได้กินความหมายไปแล้ว'},
-    {title:'ผู้ช่วยเชฟปิดประตูเตา',sub:'หุ่นเหล็กทำตามสูตรซ้ำ ๆ แม้ผู้สร้างจะลืมเหตุผล'},
+    {title:'เพชฌฆาตงานเลี้ยงปิดประตู',sub:'Banquet Executioner ชูศาสตราครัวทั้งหก ปิดทางหนีสู่เตามงกุฎ'},
     {title:'เงาที่อยู่เหนือเชฟ',sub:'เสียงจากเตาเรียกตนเองว่า The Great Hunger'},
     {title:'เชฟขมเผยคำสัตย์',sub:'เขาไม่ใช่ต้นกำเนิด แต่เป็นผู้รับใช้ที่ส่งรสชาติทั้งหมดให้ความหิว'}
   ]
@@ -2919,10 +2933,10 @@ class Game extends Phaser.Scene {
   waveProfile(w){
     const si=this.stageIndex;
     if(si===4){const crown=[
-      {name:'เถ้ารสชาติ',desc:'ประกายเตาอบประชิดเปิดทาง ยังไม่มีศัตรูยิงไกล',dur:50,interval:1.48,batch:2,max:28,pressureCap:0.20,types:['basic','basic','basic','basic','basic','fast']},
-      {name:'คมมีดในเงา',desc:'ใบมีดคำสาปพุ่งตัดแนวพร้อมประกายเตาอบ',dur:52,interval:1.08,batch:3,max:40,pressureCap:0.34,types:['fast','fast','dasher','basic','basic']},
-      {name:'ครัวสุดท้ายปิดตาย',desc:'ผู้ช่วยเชฟหุ่นเหล็กนำกองทัพมงกุฎเข้าปิดประตู',dur:0,interval:1.40,batch:2,max:32,pressureCap:0.40,types:['basic','basic','fast','fast']},
-      {name:'ดวงตาแห่งเตาอบ',desc:'ป้อมดวงตายิงจากแนวหลัง ขณะระเบิดความขมบีบพื้นที่',dur:54,interval:1.24,batch:3,max:42,pressureCap:0.52,types:['tank','siege','shooter','shooter','bomber','basic']},
+      {name:'เศษเสี้ยวสุญญะ',desc:'Void Crumb ลอยจากโต๊ะงานเลี้ยงและเริ่มกลืนเศษรสชาติ',dur:50,interval:1.48,batch:2,max:28,pressureCap:0.20,types:['basic','basic','basic','basic','basic','fast']},
+      {name:'มงกุฎฉีกเงา',desc:'Crown Ripper พุ่งตัดแนวท่ามกลางฝูง Void Crumb',dur:52,interval:1.08,batch:3,max:40,pressureCap:0.34,types:['fast','fast','dasher','basic','basic']},
+      {name:'เพชฌฆาตงานเลี้ยง',desc:'Banquet Executioner นำกองทัพมงกุฎเข้าปิดประตูเตา',dur:0,interval:1.40,batch:2,max:32,pressureCap:0.40,types:['basic','basic','fast','fast']},
+      {name:'เนตรงานเลี้ยง',desc:'Banquet Eye ยิงจากแนวหลัง ขณะ Maw Truffle บีบพื้นที่',dur:54,interval:1.24,batch:3,max:42,pressureCap:0.52,types:['tank','siege','shooter','shooter','bomber','basic']},
       {name:'งานเลี้ยงไร้รส',desc:'กองทัพทุกวรรณะหลั่งไหลมาก่อนราชันผู้กลืนรสเสด็จ',dur:58,interval:0.88,batch:4,max:58,pressureCap:0.66,types:['fast','dasher','shooter','bomber','tank','siege','basic','basic']}
     ];return crown[w]||crown[crown.length-1];}
     if(si===1){const drain=[
@@ -3007,14 +3021,14 @@ class Game extends Phaser.Scene {
   spawnElite(){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
-    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':this.stageIndex===4?'e_oven_guard':'e_tank');
+    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':this.stageIndex===4?'e_royal_oven_sentinel':'e_tank');
     if(!e) e=this.enemies.create(x,y,eliteKey); else { e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ e=this.enemies.getFirstAlive(); if(!e)return; e.setTexture(eliteKey); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool เต็ม → รีไซเคิล (มินิบอสต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72][this.stageIndex]||2.72,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*[1,1.05,1.12,1.20,1.30][this.stageIndex]*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
-    if(this.stageIndex===0)e.setCircle(28,20,20);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
+    if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
-    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.98:1.55);if(this.stageIndex===4)e.roleName='อัศวินมงกุฎไหม้'; e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);this.camWorld(e);
+    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:1.55);if(this.stageIndex===4)e.roleName='ราชองครักษ์เตามงกุฎ'; e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);
   }
   // เวฟธรรมดา = "เอาชีวิตรอดตามเวลา" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){
@@ -3094,23 +3108,24 @@ class Game extends Phaser.Scene {
     const adds=2+this.stageIndex;
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const mkey='mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const mkey=this.stageIndex===4?'mb5_banquet_executioner':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
-    const mScale=this.stageIndex===1?0.88:(mArt?1.15:1.7); b.baseScale=mScale; b._sqX=1; b._sqY=1;
-    const mRadius=this.stageIndex===1?48:(mArt?52:26),mOff=this.stageIndex===1?48:(mArt?18:5);
+    const mScale=this.stageIndex===4?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)); b.baseScale=mScale; b._sqX=1; b._sqY=1;
+    const mRadius=this.stageIndex===4?57:(this.stageIndex===1?48:(mArt?52:26)),mOff=this.stageIndex===4?71:(this.stageIndex===1?48:(mArt?18:5));
     b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*1.3*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=72; b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอส: ฐานแฟร์ + ระดับความยาก
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.85; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // มินิบอสมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
+    if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
     this.waveAlive=adds+1;
   }
   // บอสเรียกลูกน้อง "มินิบอส" ออกมาช่วยตอนปรากฏตัว (flag เป็น elite เพื่อไม่ให้ตายแล้วจบเวฟ)
   spawnBossEscorts(n){
     const st=STAGES[this.stageIndex]; if(!st)return;
-    const mkey='mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const mkey=this.stageIndex===4?'mb5_banquet_executioner':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const cx=this.boss?this.boss.x:this.player.x, cy=this.boss?this.boss.y:this.player.y;
     for(let i=0;i<n;i++){
       const ang=(i/n)*Math.PI*2+Phaser.Math.FloatBetween(-0.4,0.4), rad=190+Phaser.Math.Between(0,90);
@@ -3119,8 +3134,8 @@ class Game extends Phaser.Scene {
       if(!e) e=this.enemies.create(ex,ey,mArt?mkey:'e_brute');
       else { e.setTexture(mArt?mkey:'e_brute'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(ex,ey); }
       if(!e)continue;
-      const sc=this.stageIndex===1?0.72:(mArt?0.98:1.45); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
-      const rr=mArt?46:24, off=mArt?18:5; e.setCircle(rr,off,off);
+      const sc=this.stageIndex===4?0.58:(this.stageIndex===1?0.72:(mArt?0.98:1.45)); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
+      const rr=this.stageIndex===4?54:(mArt?46:24), off=this.stageIndex===4?74:(mArt?18:5); e.setCircle(rr,off,off);
       e.isBoss=false; e.isMini=false; e.isElite=true;   // elite = ตายแล้วไม่ทริกเกอร์จบเวฟ
       e.hp=st.bossHp*0.45*this.bossHpMul(); e.maxhp=e.hp; e.spd=66; e.dmg=Math.round(st.bossDmg*0.9); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;
       e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.bloomStacks=0; e.bloomUntil=0;
@@ -3137,11 +3152,11 @@ class Game extends Phaser.Scene {
     const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
-    const bkey=this.stageIndex===4?'boss5_ascended':'boss'+(this.stageIndex+1);
+    const bkey=this.stageIndex===4?'boss5_sovereign':'boss'+(this.stageIndex+1);
     let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool เต็ม → รีไซเคิล/เคลียร์ กันบอสเป็น null
     const isArt=this.textures.exists(bkey);
-    const fScale=this.stageIndex===4?1.34:([1,2,3].includes(this.stageIndex)?0.88:(isArt?1.55:2.5)); b.baseScale=fScale; b._sqX=1; b._sqY=1;
+    const fScale=this.stageIndex===4?1.08:([1,2,3].includes(this.stageIndex)?0.88:(isArt?1.55:2.5)); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===4?61:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26)),fOff=this.stageIndex===4?67:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
     b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*2.3*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp; b.spd=this.secretBoss?55:46; b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
@@ -3187,6 +3202,7 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(3300,()=>{if(!b.active)return;this.showBanner('🌑 THE GREAT HUNGER','ความหิวดึกดำบรรพ์ตื่นแล้ว — ไม่มีสิ่งใดเหลือให้ต่อรอง!',2600);});
       this.time.delayedCall(4500,()=>cam.pan(px,py,900,'Sine.easeInOut'));
       this.time.delayedCall(5550,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);this.state='play';this.mode='boss';b.atkCd=1.35;
+        if(this.anims.exists('boss5_sovereign_idle'))b.play('boss5_sovereign_idle',true);
         b._aura=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-2).setAlpha(0.58).setTint(0xff3f78));b._auraIsFx=true;
         b._hungerHalo=[this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-3).setScale(2.05).setAlpha(0.42).setTint(0xd95cff)),this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-4).setScale(2.62).setAlpha(0.26).setTint(0xffd166))];
         b._hungerOrbs=[];for(let i=0;i<8;i++)b._hungerOrbs.push(this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(i%3===0?0xffd166:i%2?0xff3f78:0xd95cff).setDepth(b.y+2).setScale(0.38).setAlpha(0.88)));
@@ -3646,7 +3662,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===1) key=(type==='fast'||type==='dasher')?'e_drain_dasher':type==='shooter'?'e_drain_caster':type==='bomber'?'e_drain_bomber':(type==='tank'||type==='siege')?'e_drain_tank':'e_drain_slime';
     if(this.stageIndex===2) key=(type==='fast'||type==='dasher')?'e_fire_chili':type==='shooter'?'e_fire_grinder':type==='bomber'?'e_fire_bomber':(type==='tank'||type==='siege')?'e_fire_golem':'e_fire_ember';
     if(this.stageIndex===3) key=(type==='fast'||type==='dasher')?'e_ice_shard':type==='shooter'?'e_ice_caster':type==='bomber'?'e_ice_bomber':(type==='tank'||type==='siege')?'e_ice_guardian':'e_ice_wisp';
-    if(this.stageIndex===4) key=(type==='fast'||type==='dasher')?'e_oven_blade':type==='shooter'?'e_oven_eye':type==='bomber'?'e_oven_bomb':(type==='tank'||type==='siege')?'e_oven_guard':'e_oven_spark';
+    if(this.stageIndex===4) key=(type==='fast'||type==='dasher')?'e_crown_ripper':type==='shooter'?'e_banquet_eye':type==='bomber'?'e_maw_truffle':(type==='tank'||type==='siege')?'e_royal_oven_sentinel':'e_void_crumb';
     if(!e) e=this.enemies.create(x,y,key);
     else { e.setTexture(key); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool เต็ม (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
@@ -3674,7 +3690,7 @@ class Game extends Phaser.Scene {
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
     if(this.stageIndex===3){const role={basic:['วิญญาณน้ำตาลเยือก',0.62,24,40,46],fast:['เศษน้ำแข็งพุ่ง',0.58,20,44,50],dasher:['เศษน้ำแข็งพุ่ง',0.58,20,44,50],shooter:['ป้อมไซรัปเย็น',0.66,24,40,45],bomber:['ฟองแรงดันเยือก',0.68,27,37,41],tank:['ผู้คุมประตูเยือกแข็ง',0.80,36,28,36],siege:['ผู้คุมประตูเยือกแข็ง',0.92,36,28,36]}[type]||['วิญญาณน้ำตาลเยือก',0.62,24,40,46];
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
-    if(this.stageIndex===4){const role={basic:['เถ้ารสชาติ',0.64,24,40,46],fast:['คมมีดคำสาป',0.60,20,44,50],dasher:['คมมีดคำสาป',0.60,20,44,50],shooter:['ดวงตาแห่งเตาอบ',0.68,24,40,45],bomber:['ระเบิดความขม',0.70,27,37,41],tank:['อัศวินมงกุฎไหม้',0.84,36,28,36],siege:['อัศวินมงกุฎไหม้',0.96,36,28,36]}[type]||['เถ้ารสชาติ',0.64,24,40,46];
+    if(this.stageIndex===4){const role={basic:['เศษเสี้ยวสุญญะ',0.36,45,83,83],fast:['อสูรมงกุฎฉีก',0.34,42,86,86],dasher:['อสูรมงกุฎฉีก',0.34,42,86,86],shooter:['เนตรงานเลี้ยง',0.38,45,83,83],bomber:['ทรัฟเฟิลปากระเบิด',0.40,46,82,82],tank:['ราชองครักษ์เตามงกุฎ',0.48,54,74,74],siege:['ราชองครักษ์เตามงกุฎ',0.56,54,74,74]}[type]||['เศษเสี้ยวสุญญะ',0.36,45,83,83];
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     // เล่นอนิเมชันเดิน/ยิงถ้าเป็นชนิดที่มีชีต (ไม่งั้นหยุด anim ที่ค้างจาก pool + คืนเฟรมนิ่ง)
@@ -4138,6 +4154,7 @@ class Game extends Phaser.Scene {
     e._phaseInvuln=0;e._phaseGateLocked=false;
     if(e._hungerOrbs){e._hungerOrbs.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerOrbs=null;}
     if(e._hungerHalo){e._hungerHalo.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerHalo=null;}
+    this.stage5DeathGhost(e);
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     this.dropOrb(e.x,e.y,e.xp||1);   // ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isBoss||isMini||(isElite&&Math.random()<0.3)||(!big&&Math.random()<0.015)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // ไอเทมฟื้นฟู (บอส/มินิแน่นอน · elite 30% · ธรรมดา 1.5% — ลดลงให้หัวใจหายากขึ้น)
@@ -4480,8 +4497,24 @@ class Game extends Phaser.Scene {
     return b._phaseInvuln>0;
   }
 
+  stage5Pose(b,frame,ms=850){
+    if(!b||!b.active||!['boss5_sovereign','mb5_banquet_executioner'].includes(b.texture.key))return;frame=Phaser.Math.Clamp(frame|0,0,7);
+    b._stage5PoseToken=(b._stage5PoseToken||0)+1;const token=b._stage5PoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
+    this.time.delayedCall(ms,()=>{if(!b.active||b._stage5PoseToken!==token)return;const idle=b.texture.key==='boss5_sovereign'?'boss5_sovereign_idle':b.texture.key+'_walk';if(this.anims.exists(idle))b.play(idle,true);else b.setFrame(0);});
+  }
+  stage5EnemyPose(e,frame,ms=360){
+    const keys=['e_void_crumb','e_crown_ripper','e_banquet_eye','e_maw_truffle','e_royal_oven_sentinel'];if(!e||!e.active||!keys.includes(e.texture.key))return;
+    e._stage5PoseToken=(e._stage5PoseToken||0)+1;const token=e._stage5PoseToken;if(e.anims)e.anims.stop();e.setFrame(Phaser.Math.Clamp(frame|0,0,7));
+    this.time.delayedCall(ms,()=>{if(!e.active||e._stage5PoseToken!==token)return;const walk=e.texture.key+'_walk';if(this.anims.exists(walk))e.play(walk,true);else e.setFrame(0);});
+  }
+  stage5DeathGhost(e){
+    const keys=['boss5_sovereign','mb5_banquet_executioner','e_void_crumb','e_crown_ripper','e_banquet_eye','e_maw_truffle','e_royal_oven_sentinel'];if(!e||!keys.includes(e.texture.key))return;
+    const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,7).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+8).setAlpha(1));
+    const boss=e.isBoss,mini=e.isMini;this.tweens.add({targets:ghost,y:ghost.y+(boss?28:14),scaleX:ghost.scaleX*(boss?1.12:.82),scaleY:ghost.scaleY*(boss?.76:.82),alpha:0,duration:boss?1450:mini?900:520,ease:'Cubic.in',onComplete:()=>ghost.destroy()});
+  }
+
   greatHungerMetamorph(b,phase,color){
-    if(!b||!b.active)return;const count=phase===4?14:phase===3?11:8,reach=phase===4?330:phase===3?270:220;
+    if(!b||!b.active)return;this.stage5Pose(b,6,phase===4?2100:1650);const count=phase===4?14:phase===3?11:8,reach=phase===4?330:phase===3?270:220;
     for(let i=0;i<count;i++){const a=i*TAU/count,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(b.y+5).setRotation(a).setTint(i%3===0?0xffd166:color).setScale(0.08,0.38).setAlpha(0.92));this.tweens.add({targets:ray,scaleX:reach/256,scaleY:phase===4?0.9:0.62,alpha:0,duration:720+i*22,onComplete:()=>ray.destroy()});}
     for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y+3).setTint(i%2?color:0xffd166).setScale(0.35+i*0.18).setAlpha(0.88));this.tweens.add({targets:ring,scale:phase===4?3.4+i*0.35:2.45+i*0.28,rotation:(i%2?1:-1)*Math.PI*1.4,alpha:0,duration:850+i*130,onComplete:()=>ring.destroy()});}
     const shadow=this.camWorld(this.add.circle(b.x,b.y,32,0x030006,0.86).setDepth(b.y-2).setStrokeStyle(8,color,0.8));this.tweens.add({targets:shadow,radius:phase===4?240:175,alpha:0,duration:1100,onComplete:()=>shadow.destroy()});
@@ -4491,7 +4524,8 @@ class Game extends Phaser.Scene {
   greatHungerAttack(b){
     const fast=b.phase4?0.60:b.phase3?0.70:b.phase2?0.82:1;
     const pool=b.phase4?['eclipse','voidMaw','crownRain','ovenCross','eclipse']:b.phase3?['voidMaw','spiral','lastSupper','ovenCross','crownRain']:b.phase2?['ovenCross','spiral','cleave','crownRain','lastSupper']:['crownRain','cleave','spiral'];
-    const pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(12,Math.round(b.dmg*0.45));
+    const pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(12,Math.round(b.dmg*0.45)),pose={crownRain:4,cleave:2,ovenCross:2,spiral:4,voidMaw:3,lastSupper:5,eclipse:6}[pick]??1;
+    this.stage5Pose(b,pose,pick==='eclipse'?1550:pick==='lastSupper'?1150:900);
     if(pick==='crownRain'){
       this.showBanner('👑 ฝนมงกุฎขม','วงเตือนจะไล่ตามเส้นทาง—เปลี่ยนทิศต่อเนื่อง!',850);const n=b.phase4?9:b.phase3?7:b.phase2?6:5;
       for(let i=0;i<n;i++)this.time.delayedCall(i*135,()=>{if(b.active&&this.state==='play')this.spawnHazard(this.player.x+Phaser.Math.Between(-95,95),this.player.y+Phaser.Math.Between(-95,95),58,bd,0xd95cff);});
@@ -4551,7 +4585,7 @@ class Game extends Phaser.Scene {
     const phase2At=(b.isBoss&&this.stageIndex===0)?0.68:(b.isBoss&&this.stageIndex===1?0.65:0.5),phase3At=(b.isBoss&&this.stageIndex===0)?0.35:(b.isBoss&&this.stageIndex===1?0.32:0.25);
     if(!b.phase2 && b.hp<=b.maxhp*phase2At){ b.phase2=true; this.beginBossPhaseTransition(b,b.isBoss?1.55:1.25,this.stageIndex===1?0x62e5cf:0xff6a4d); b.spd*=1.28; b.atkCd=0.6;
       if(this.stageIndex===1&&b.isBoss)this.drainBossPose(b,7,1100);
-      if(b.isBoss&&(this.stageIndex===2||this.stageIndex===3))this.stageBossPose(b,6,1250);
+      if(b.isBoss&&(this.stageIndex===2||this.stageIndex===3))this.stageBossPose(b,6,1250);if(b.isMini&&this.stageIndex===4)this.stage5Pose(b,6,1250);
       this.showBanner(this.stageIndex===1?'🫧 เฟส 2 · แรงดันพุ่ง':this.stageIndex===2?'🔥 เฟส 2 · โอเวอร์ฮีต':this.stageIndex===3?'❄️ เฟส 2 · ผนึกแตก':'🔥 บอสโกรธ!',this.stageIndex===1?'วาล์วเปิด—แรงดูดและฟองกักตัวเริ่มทำงาน!':this.stageIndex===2?'สายพานเร่งและเตาหลอมปล่อยคลื่นไฟ!':this.stageIndex===3?'กรงน้ำแข็งเริ่มปิดพื้นที่เร็วขึ้น!':'เฟส 2 — โจมตีดุขึ้น!',1500); if(b.isBoss&&this.stageIndex===0)this.bossPose(b,6,1000); this.screenShake(420,0.014); this.screenFlash(this.stageIndex===1?0x62e5cf:this.stageIndex===3?0x9fe0ff:0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');
       if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 เฟส 2 · รังแตก','ราชินีปลุกผลึกยิงกรด!',1700);for(let i=0;i<3;i++){const a=i*Math.PI*2/3;this.spawnBossObject(i===0?'obelisk':'crystal',b.x+Math.cos(a)*240,b.y+Math.sin(a)*240,14);}}   // ปลดท่าคลื่นสังหาร
@@ -4571,7 +4605,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===1&&(b.isBoss||b.isMini)){this.drainBossAttack(b);return;}
     if(b.isBoss&&this.stageIndex===2){this.chiliBossAttack(b);return;}
     if(b.isBoss&&this.stageIndex===3){this.frostBossAttack(b);return;}
-    const atks=b.atks||['slam']; const pick=atks[Math.floor(Math.random()*atks.length)];
+    const atks=b.atks||['slam']; const pick=atks[Math.floor(Math.random()*atks.length)];if(b.isMini&&this.stageIndex===4)this.stage5Pose(b,{slam:5,aimed:5,radial:5,nova:6,charge:3,spiral:5,summon:5}[pick]??1,900);
     const dm=1+this.stageIndex*0.12, pw=b.isBoss?1:0.9, fast=b.phase3?0.72:b.phase2?0.85:1;   // เว้นจังหวะให้ telegraph จบก่อนเริ่มท่าถัดไป
     if(pick==='slam'){ // สแลม AoE ตรงตำแหน่งผู้เล่น (เตือนก่อน หลบได้) · เฟส 3 = 3 จุด
       const hits=b.phase3?3:1;
@@ -4937,16 +4971,16 @@ class Game extends Phaser.Scene {
       }
       if(e.shooter){ e.shootCd-=dt;
         if(dd<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);
-          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2); this.foeShot(e.x,e.y,ang,225+this.stageIndex*15,e.dmg,0xffd27f); Sfx.zap(); }
+          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2);if(this.stageIndex===4)this.stage5EnemyPose(e,4,430);this.foeShot(e.x,e.y,ang,225+this.stageIndex*15,e.dmg,0xffd27f); Sfx.zap(); }
           return; } }
       if(e.dasher){   // สายพุ่งโฉบ: เข้าหา → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่
         e.dashT-=dt;
         if(e.dashState==='chase'){ e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
-          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.42; e.setVelocity(0,0); } }
+          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.42; e.setVelocity(0,0);if(this.stageIndex===4)this.stage5EnemyPose(e,4,400); } }
         else if(e.dashState==='wind'){
           e.setVelocity(0,0); e.setTintFill(0xffffff);
           e.x += (Math.random() - 0.5) * 5;   // ตัวสั่นตอนชาร์จ
-          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang; if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
+          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang;if(this.stageIndex===4)this.stage5EnemyPose(e,5,340); if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
             if(e.body)this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
         else if(e.dashState==='dash'){ if(e.body)this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
           if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); } }
