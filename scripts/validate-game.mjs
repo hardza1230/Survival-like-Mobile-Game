@@ -46,6 +46,15 @@ for (const fighter of ['momo', 'mint', 'cocoa']) {
   }
 }
 
+for (const boss of ['boss3', 'boss4']) {
+  const sheet = fs.readFileSync(new URL(`../assets/${boss}_sheet.png`, import.meta.url));
+  const width = sheet.readUInt32BE(16), height = sheet.readUInt32BE(20), colorType = sheet.readUInt8(25);
+  if (width !== 1024 || height !== 512 || ![4, 6].includes(colorType)) {
+    throw new Error(`Expected transparent ${boss} 4x2 action sheet at 1024x512, found ${width}x${height} PNG color type ${colorType}`);
+  }
+  if (!new RegExp(`${boss}:\\s+\\{ url:'assets/${boss}_sheet\\.png', frame:256 \\}`).test(source)) throw new Error(`${boss} action sheet is not registered`);
+}
+
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame']) {
   const cardName = `card_${fighter}.png`;
   const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
@@ -72,4 +81,7 @@ if (!source.includes('updatePickupReadability()') || !source.includes('this.play
 }
 if (!source.includes('castPathRecall(dm,ul)') || !source.includes('castOathWard(dm,ul)')) {
   throw new Error('Premium Taro/Sesame unique reworks are missing');
+}
+for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)','buildEndgame()','recordEndless(cycle,kills,seconds,character)','The Echo of Hunger']) {
+  if (!source.includes(contract)) throw new Error(`Missing Stage 3/4 or endgame contract: ${contract}`);
 }

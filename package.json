@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build:www": "node scripts/build-www.mjs",
-    "check": "node --check game.js && node scripts/validate-game.mjs",
+    "check": "node --check game.js && node scripts/validate-game.mjs && node scripts/validate-balance.mjs",
     "bot": "node scripts/bot.mjs"
   },
   "dependencies": {

@@ -59,14 +59,11 @@ APK ถูกตั้งให้เป็น **"ตัวหุ้ม" ที�
 - `.github/workflows/android.yml` — ขั้นตอน build APK บน GitHub
 - โฟลเดอร์ `android/` และ `www/` **สร้างตอน build** (ไม่ commit)
 
-## สถานะ: Prototype (Phase 1)
-ระบบที่มีแล้ว: จอยสติ๊ก, สลิง+รอยเหนียว, ศัตรู 3 ชนิด (pooled), เก็บของ/เลเวลอัพ,
-เคลือบ 3 ชนิด (Sprinkle/Sugar Ring/Chili), passive, Toast Meter, จอเมนู/เลเวลอัพ/ตาย
+## สถานะ: v2.33.0 — Chapter 1 + Endgame
+ระบบหลักพร้อมเล่นครบ 5 ด่าน: ตัวละคร 5 คนและอาวุธประจำตัว, สกิล/พร/Awaken, ศัตรูและบอสเฉพาะด่าน,
+อุปกรณ์หลายระดับ, Daily, Achievement, Bestiary, Ascension และ Midnight Kitchen Endless พร้อมบอสลับ/อันดับในเครื่อง
 
 ## ถัดไป (roadmap)
-- แผนรีเวิร์กตัวละคร/ศัตรู/แอนิเมชัน/VFX/เสียง: [`ART_AUDIO_REWORK_PLAN.md`](ART_AUDIO_REWORK_PLAN.md)
-- กราฟิก AI แทนรูปทรง (โมจิ/ศัตรู/ฉาก)
-- ระบบ Fusion (ผสมเคลือบ 2 ชนิด)
-- อาร์คีไทป์บิลด์ + บอส
-- Meta-progression (Souls/ร้านอัปเกรด)
-- แปลงเป็นแอปด้วย Capacitor + AdMob → ขึ้น Play Store
+- เล่นทดสอบบนมือถือจริงเพื่อจูน win rate ด่าน 3–4 ทุกระดับความยาก
+- ปรับความยาว cutscene และความชัดของ telegraph จากผล playtest
+- เตรียม signed release AAB, store listing และวงจรทดสอบก่อนขึ้น Play Store

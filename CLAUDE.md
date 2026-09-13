@@ -56,7 +56,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.32.3 Fix Pause + Tidy HUD)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.33.0 Stage 3–4 + Endgame)
+- **v2.33.0:** ด่าน 3–4 ได้พร็อพห้อง บอส action sheet 4×2 และแพตเทิร์นเฉพาะ Chili Engine/Frost Prison · เพิ่ม field gear Common/Rare/Epic และแท็บคัมภีร์ไอเทม · เพิ่ม Endgame ที่ปลดหลัง Mastery ครบ: Ascension, Midnight Kitchen Endless, checkpoint, local leaderboard และ The Echo of Hunger ทุก 3 รอบ · `scripts/validate-balance.mjs` ตรวจ power/difficulty/endless contract
 - **v2.32.3 (แก้จาก feedback เจ้าของ):** (1) **บั๊ก pause แล้วเวฟไม่มา** — `onWaveCleared` ใช้ `this.time.delayedCall(3400,…)` แต่ `togglePause` เดิมหยุดแค่ physics นาฬิกา `this.time` ยังเดิน → timer นับถอยหลังเวฟถัดไปยิงตอน state='paused' แล้ว `_busy()` เป็น false → เวฟหาย · แก้: `togglePause`/`exitStage` ตั้ง `this.time.paused=true/false` ด้วย · (2) **จัด HUD บน** — ปุ่ม speed/pause/mute รวมกลุ่มมุมขวาบน (cbY=pad+14) · หลอด HP/XP สั้นลงเว้นที่ปุ่ม (drawBars bw=(W-112)-bx) · ข้อมูล 2 บรรทัด: Lv(pad+34)/☠kills(pad+56) ซ้าย · timeTxt(pad+34)/stageTxt(pad+56) กลาง · 🍬sugar ขวา · stageTxt ตัด ⚡rating ออก, killTxt ตัดคำ "ลูกน้อง" · pips ขยับขึ้น pad+80
 - **v2.32.2 (แก้บั๊ก):** `TAU is not defined` ตอนสู้บอสด่าน 5 (The Great Hunger) — Game scene (VFX บอส เช่น เกลียว/สุญญะ/eclipse บรรทัด ~2613/3100/4365+) อ้าง `TAU` แต่เดิมประกาศเฉพาะใน `Boot.create` → **ย้าย `const TAU=Math.PI*2` เป็น global ระดับบนสุด** · index.html โหลด `game.js?v='+Date.now()` กันแคชค้าง
 - **v2.32.2 (แก้บั๊ก):** `TAU is not defined` ตอนสู้บอสด่าน 5 (The Great Hunger) — Game scene (VFX บอส เช่น เกลียว/สุญญะ/eclipse บรรทัด ~2613/3100/4365+) อ้าง `TAU` แต่เดิมประกาศเฉพาะใน `Boot.create` → **ย้าย `const TAU=Math.PI*2` เป็น global ระดับบนสุด** · index.html โหลด `game.js?v='+Date.now()` กันแคชค้าง
@@ -240,12 +241,9 @@
 - **ปุ่มเร่งเวลา x2/x3 เร่งแค่โจมตี (v1.9.x):** Arcade `physics.world.timeScale` **กลับด้าน** (ค่ามาก=step ห่าง=ช้าลง) การเคลื่อนที่ทุกอย่างใช้ velocity=physics → `setGameSpeed` ตั้ง `=s` ทำให้ช้าลง (ส่วน time/tween/dt เร็วขึ้น = เร่งแค่ timer/โจมตี) → แก้เป็น **`=1/s`** · hitStop ก็กลับด้าน (0.05=เร็ว 20x ไม่ freeze) → ใช้ค่ามาก (12) = freeze จริง
 
 ## 5. ถัดไป (roadmap ตามลำดับ "ระบบก่อนกราฟิก")
-1. ทำด่าน 3 ให้ครบ: props ห้องเครื่องพริก → action sheet มิสเตอร์เตาปิ้ง → telegraph/แพตเทิร์นเฉพาะ → เทสมือถือ
-2. ทำด่าน 4 ให้ครบ: ✅ ศัตรูคุกเย็น + Frostbite → props น้ำแข็ง/กรง → action sheet โกเลมไอศกรีม → telegraph/แพตเทิร์นเฉพาะ → เทสมือถือ
-3. เทส Power Rating และ difficulty 1–5 ของด่าน 3–4 จากอัตราชนะจริง
-4. จูน Cutscene ตัวละคร×ด่านให้กระชับหลัง gameplay ของด่าน 3–4 นิ่ง
-5. ขยายไอเทมกิมมิคให้มี drop table/ความหายากและ Tutorial ในคัมภีร์
-6. **Endgame:** Ascension, Endless (Midnight Kitchen), leaderboard, Daily และบอสลับ The Great Hunger
+1. เทส Power Rating และ difficulty 1–5 ของด่าน 3–4 จากอัตราชนะจริงบนมือถือ (ตัวตรวจเชิงสูตรมีแล้ว)
+2. จูน Cutscene ตัวละคร×ด่านและ telegraph จากผล playtest จริง
+3. เตรียม signed AAB / store listing / release QA สำหรับ Play Store
 
 ## 6. เอกสารออกแบบ (Artifacts — ความจำภาพ)
 เอกสารเหล่านี้เผยแพร่เป็น artifact แล้ว (ถ้าต้องแก้ให้ publish ทับ URL เดิม):
