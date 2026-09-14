@@ -22,9 +22,14 @@ if (missingCombos.length || orphanCombos.length) {
   throw new Error(`Skill/combo mismatch. Missing: ${missingCombos.join(', ') || '-'}; orphaned: ${orphanCombos.join(', ') || '-'}`);
 }
 
-if (!source.includes('rollUpgrades(4)') || !source.includes("slice(0,3)")) {
+if (!source.includes('rollUpgrades(this.usesBasicAttackBuild()?3:4)') || !source.includes("slice(0,3)")) {
   throw new Error('Readable-card choice counts changed unexpectedly');
 }
+for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n)","b.mastery>=4&&!b.mutation","b.mastery>=12&&!b.evolved"]){
+  if(!source.includes(contract))throw new Error(`Missing character-first Basic Attack contract: ${contract}`);
+}
+if(source.includes("(!big&&Math.random()<0.015)"))throw new Error('Normal monsters must not drop healing hearts');
+if(!source.includes("isElite&&Math.random()<0.18"))throw new Error('Elite healing-heart reward contract is missing');
 
 if (!source.includes('Math.floor(this._charRunT*16)%12')) {
   throw new Error('Fighter run cycles must play all 12 frames at 16 FPS');
