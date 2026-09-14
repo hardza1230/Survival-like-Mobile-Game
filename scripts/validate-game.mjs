@@ -25,7 +25,7 @@ if (missingCombos.length || orphanCombos.length) {
 if (!source.includes('rollUpgrades(this.usesBasicAttackBuild()?3:4)') || !source.includes("slice(0,3)")) {
   throw new Error('Readable-card choice counts changed unexpectedly');
 }
-for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n)","b.mastery>=4&&!b.mutation","b.mastery>=12&&!b.evolved"]){
+for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaCombo(lvl,dm,basic)","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n)","b.mastery>=4&&!b.mutation","b.mastery>=12&&!b.evolved"]){
   if(!source.includes(contract))throw new Error(`Missing character-first Basic Attack contract: ${contract}`);
 }
 if(source.includes("(!big&&Math.random()<0.015)"))throw new Error('Normal monsters must not drop healing hearts');

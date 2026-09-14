@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.40.0';
+const GAME_VERSION = '2.41.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.41.0', date:'2026-09-14', title:'Cocoa Melee Combo', items:[
+    'เปลี่ยน Basic Attack ของ Cocoa เป็น Bear Core Combo ระยะประชิด 3 จังหวะ: แย็บ ฮุกกวาด และทุบพื้น',
+    'เพิ่มการ์ดพัฒนาระยะหมัด ความแรง ความเร็ว และพลังท่าปิดคอมโบ พร้อมสาย Rushdown หรือ Earthbreaker',
+    'เพิ่ม Evolution Titan Bear Finale และจำกัด VFX ให้เป็นวงโจมตีที่อ่านระยะได้ชัดบนมือถือ' ] },
   { v:'2.40.0', date:'2026-09-14', title:'Character-first Basic Attacks', items:[
     'Momo และ Berry Core เริ่มด่านด้วย Basic Attack ประจำตัวทันที ไม่สุ่มอาวุธรอง และไม่สะสมสกิลยิงเต็มหน้าจอ',
     'เลเวลอัพของทั้งสองตัวเหลือ 3 ใบ: ตัวเลือกพัฒนา Basic Attack 2 ใบ และสายเอาตัวรอด 1 ใบ',
@@ -1212,6 +1216,15 @@ const BASIC_ATTACKS = {
     mutations:[
       {id:'ricochet',name:'ทางเด้งหัวใจ',emoji:'💞',desc:'เมล็ดเด้งหาเป้าหมายใหม่ได้ 2 ครั้ง'},
       {id:'fan',name:'ทางกลีบกระจาย',emoji:'🌸',desc:'ยิงเป็นพัดกว้างขึ้นและเพิ่มกระสุน 2 นัด'}]},
+  cocoa:{name:'Bear Core Combo',emoji:'🐻',skill:'meteor',color:0x8b5cf0,evolution:'Titan Bear Finale',
+    upgrades:[
+      {id:'power',name:'หมัดโกโก้เข้ม',emoji:'💥',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
+      {id:'rate',name:'จังหวะนักสู้',emoji:'⏩',max:5,desc:'ออกหมัดเร็วขึ้น 8% ต่อขั้น'},
+      {id:'size',name:'ช่วงแขนโมจิ',emoji:'🥊',max:3,desc:'ระยะและวงกวาดของหมัด +12% ต่อขั้น'},
+      {id:'combo',name:'แรงส่งท่าปิด',emoji:'🐻',max:3,desc:'หมัดที่ 3 แรงขึ้น 18% ต่อขั้น'}],
+    mutations:[
+      {id:'rush',name:'สาย Rushdown',emoji:'💨',desc:'คอมโบเร็วขึ้น 18% และฮุกกวาดกว้างขึ้น'},
+      {id:'breaker',name:'สาย Earthbreaker',emoji:'💢',desc:'ท่าทุบพื้นแรงขึ้น 25% และเกิดคลื่นกระแทกซ้ำ'}]},
   berry:{name:'Jam Cannon',emoji:'💗',skill:'rocket',color:0xff5f88,evolution:'Jam Supernova',
     upgrades:[
       {id:'power',name:'แรงดันแยม',emoji:'💥',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
@@ -3730,7 +3743,7 @@ class Game extends Phaser.Scene {
   signatureWeaponInfo(){const ch=CHARACTERS[this.character]||CHARACTERS.momo;return SIGNATURE_WEAPONS[ch.weapon]||SIGNATURE_WEAPONS.berryBlaster;}
   usesBasicAttackBuild(){return !!BASIC_ATTACKS[this.character];}
   basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
-  initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},mutation:null,evolved:false,mastery:0};this.syncBasicAttack();}
+  initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9};this.syncBasicAttack();}
   syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b.mastery=Object.values(b.ranks||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
@@ -4026,9 +4039,10 @@ class Game extends Phaser.Scene {
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "เอฟเฟกต์" ไม่ใช่ยิงถี่ขึ้น
   cdOf(key,lvl){
-    const base=lvl>=SKILL_AWAKEN_LV?this._cdBase(key,SKILL_AWAKEN_LV)*0.85:this._cdBase(key,lvl);
+    let base=lvl>=SKILL_AWAKEN_LV?this._cdBase(key,SKILL_AWAKEN_LV)*0.85:this._cdBase(key,lvl);
     const sw=this.signatureWeaponInfo(),b=this.basicAttackInfo()?.skill===key?this.basicAttack:null;
-    const basicRate=b?Math.pow(0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0):1;
+    if(b&&this.character==='cocoa'&&key==='meteor')base=0.64;
+    const basicRate=b?Math.pow(0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
     return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate;
   }
   _cdBase(key,lvl){
@@ -4068,6 +4082,7 @@ class Game extends Phaser.Scene {
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
     this.vfxCastGlow(_castColors[key]||0xffffff);
+    if(key==='meteor'&&basic&&this.character==='cocoa'){this.castCocoaCombo(lvl,dm,basic);return;}
     if(key==='sprinkle'){ if(!this.nearestEnemy(aw?900:640))return;
       // ปืนกล: รัวเมล็ดรุ้งเป็นชุด ยิงเร็ว/เบา · โดน 1 ตัวแล้วหายไปเลย (ไม่ทะลุ ไม่เด้ง) · เก็บทีละตัวรัว ๆ
       let shots=aw?16:lvl>=6?11:lvl>=4?8:lvl>=2?6:4;
@@ -4177,6 +4192,25 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(base+(s-(cnt-1)/2)*0.3,300,b.body.velocity); } Sfx.shoot(); }
     else if(key==='wave'){ const rings=aw?3:1, maxR=(165+lvl*22)*(aw?1.2:1), dmg=(4+lvl*1.5)*dm*(aw?1.15:1);
       for(let k=0;k<rings;k++) this.creamWave(maxR,dmg,k*180,aw?520:390); Sfx.boom(); }
+  }
+  castCocoaCombo(lvl,dm,basic){
+    const now=this.elapsed||0;if(now-(basic.lastComboAt||-9)>1.45)basic.comboStep=0;
+    const step=(basic.comboStep||0)+1;basic.comboStep=step>=3?0:step;basic.lastComboAt=now;
+    const target=this.nearestEnemy(230),ang=target?Math.atan2(target.y-this.player.y,target.x-this.player.x):(this.moveDir?.angle()||0);
+    const sizeMul=1+(basic.ranks.size||0)*0.12,reach=(step===3?142:step===2?118:100)*sizeMul,arc=(step===1?1.30:step===2?2.15:TAU)*(basic.mutation==='rush'&&step===2?1.18:1);
+    const finisherMul=1+(basic.ranks.combo||0)*0.18,mutationMul=basic.mutation==='breaker'&&step===3?1.25:1,evoMul=basic.evolved?1.16:1;
+    const amount=(8+lvl*1.7)*(step===1?0.78:step===2?1.02:1.62)*dm*(step===3?finisherMul:1)*mutationMul*evoMul;
+    const strike=(radius,mul=1)=>{this.enemies.children.iterate(e=>{if(!e||!e.active)return;const dx=e.x-this.player.x,dy=e.y-this.player.y,dist=Math.hypot(dx,dy),inside=step===3?dist<=radius:(dist<=radius&&Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(dy,dx)-ang))<=arc/2);if(!inside)return;this.damage(e,amount*mul,e.x,e.y);if(step===3&&e.active&&!e.isBoss&&!e.isMini){e.setVelocity(Math.cos(Math.atan2(dy,dx))*260,Math.sin(Math.atan2(dy,dx))*260);e.knock=0.20;}});this.hitCratesInRadius(this.player.x,this.player.y,radius,amount*mul);};
+    this.player.setFlipX(Math.cos(ang)<0);
+    if(step<3){
+      const slash=this.camWorld(this.add.graphics().setDepth(7));slash.lineStyle(step===1?7:10,step===1?0xd7b8ff:0xffc477,0.92);slash.beginPath();slash.arc(this.player.x,this.player.y,reach*0.78,ang-arc/2,ang+arc/2,false);slash.strokePath();this.tweens.add({targets:slash,alpha:0,duration:170,onComplete:()=>slash.destroy()});
+      this.vfxHitRing(this.player.x+Math.cos(ang)*reach*0.72,this.player.y+Math.sin(ang)*reach*0.72,step===1?0xd7b8ff:0xffc477,false);strike(reach);Sfx.shoot();
+    }else{
+      const wave=()=>{if(this.textures.exists('vfx_bear_shockwave')){const fx=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_bear_shockwave').setDepth(6).setScale(0.16).setAlpha(0.88));this.tweens.add({targets:fx,scale:(reach*2.35)/256,alpha:0,duration:330,onComplete:()=>fx.destroy()});}else this.vfxHitRing(this.player.x,this.player.y,0xffa54d,true);};
+      wave();strike(reach);this.burst(this.player.x,this.player.y,0xffa54d);this.screenShake(95,0.0035);Sfx.boom();
+      if(basic.mutation==='breaker'||basic.evolved)this.time.delayedCall(210,()=>{if(this.state!=='play')return;wave();strike(reach*(basic.evolved?1.18:1.06),basic.evolved?0.72:0.55);});
+      if(basic.evolved){const heal=Math.max(1,this.player.maxhp*0.02);this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);}
+    }
   }
   castBearDonut(lvl,aw,dm){
     const sig=this.player.donutImpact?1.28:1,wm=this.signatureWeaponInfo().skill==='meteor'?(this.player.weaponAreaMul||1):1,hits=aw?6:(2+Math.floor(lvl/2)), r=(68+lvl*8)*(aw?1.22:1)*sig*wm;
