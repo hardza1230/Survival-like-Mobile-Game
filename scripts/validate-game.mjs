@@ -28,6 +28,16 @@ if (!source.includes('rollUpgrades(this.usesBasicAttackBuild()?3:4)') || !source
 for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaCombo(lvl,dm,basic)","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n)","b.mastery>=4&&!b.mutation","b.mastery>=12&&!b.evolved"]){
   if(!source.includes(contract))throw new Error(`Missing character-first Basic Attack contract: ${contract}`);
 }
+const levelUpIcons=['momo_power','momo_rate','momo_size','momo_volley','cocoa_power','cocoa_rate','cocoa_size','cocoa_combo','berry_power','berry_rate','berry_size','berry_cluster','sweet_recovery','mochi_vitality','flavor_regeneration','sugar_on_kill'];
+for(const icon of levelUpIcons){
+  const file=fs.readFileSync(new URL(`../assets/icons/levelup/${icon}.png`,import.meta.url));
+  const width=file.readUInt32BE(16),height=file.readUInt32BE(20),colorType=file.readUInt8(25),hasAlpha=[4,6].includes(colorType)||(colorType===3&&file.includes(Buffer.from('tRNS')));
+  if(width!==128||height!==128||!hasAlpha)throw new Error(`Expected transparent level-up icon ${icon}.png at 128x128, found ${width}x${height}`);
+  if(!source.includes(`assets/icons/levelup/${icon}.png`))throw new Error(`Level-up icon ${icon} is not registered`);
+}
+for(const contract of ["iconKey:'ic_momo_power'","iconKey:'ic_cocoa_combo'","iconKey:'ic_berry_cluster'","iconKey:'ic_sweet_recovery'","heart:'ic_mochi_vitality'","regen:'ic_flavor_regen'","sugarOnKill:'ic_sugar_on_kill'"]){
+  if(!source.includes(contract))throw new Error(`Missing readable level-up icon mapping: ${contract}`);
+}
 if(source.includes("(!big&&Math.random()<0.015)"))throw new Error('Normal monsters must not drop healing hearts');
 if(!source.includes("isElite&&Math.random()<0.18"))throw new Error('Elite healing-heart reward contract is missing');
 

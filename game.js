@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.41.0';
+const GAME_VERSION = '2.42.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.42.0', date:'2026-09-14', title:'Readable Level-Up Icons', items:[
+    'เพิ่มไอคอนการ์ดเลเวลอัพใหม่ 16 ภาพ สไตล์ 2D cartoon เส้นหนา อ่านง่ายบนมือถือ',
+    'แยกภาพอัปเกรด Basic Attack ของ Momo, Cocoa และ Berry Core ให้สื่อดาเมจ ความเร็ว ระยะ และจำนวนกระสุนเฉพาะใบ',
+    'แยกสัญลักษณ์ Sweet Recovery, Mochi Vitality, Flavor Regeneration และ Sugar on Kill ไม่ใช้รูปหัวใจซ้ำกันแล้ว' ] },
   { v:'2.41.0', date:'2026-09-14', title:'Cocoa Melee Combo', items:[
     'เปลี่ยน Basic Attack ของ Cocoa เป็น Bear Core Combo ระยะประชิด 3 จังหวะ: แย็บ ฮุกกวาด และทุบพื้น',
     'เพิ่มการ์ดพัฒนาระยะหมัด ความแรง ความเร็ว และพลังท่าปิดคอมโบ พร้อมสาย Rushdown หรือ Earthbreaker',
@@ -689,6 +693,15 @@ const ASSET_IMAGES = {
   ic_crit:'assets/ic_crit.png', ic_guard:'assets/ic_guard.png', ic_regen:'assets/ic_regen.png',
   ic_flavor_core:'assets/ic_flavor_core.png', ic_memory_thread:'assets/ic_memory_thread.png',
   ic_bitter_resolve:'assets/ic_bitter_resolve.png', ic_returning_taste:'assets/ic_returning_taste.png',
+  // ไอคอนการ์ดเลเวลอัพ — ภาพเฉพาะใบเพื่อแยกดาเมจ/ความเร็ว/ระยะ/เอฟเฟกต์ได้ทันทีบนมือถือ
+  ic_momo_power:'assets/icons/levelup/momo_power.png', ic_momo_rate:'assets/icons/levelup/momo_rate.png',
+  ic_momo_size:'assets/icons/levelup/momo_size.png', ic_momo_volley:'assets/icons/levelup/momo_volley.png',
+  ic_cocoa_power:'assets/icons/levelup/cocoa_power.png', ic_cocoa_rate:'assets/icons/levelup/cocoa_rate.png',
+  ic_cocoa_size:'assets/icons/levelup/cocoa_size.png', ic_cocoa_combo:'assets/icons/levelup/cocoa_combo.png',
+  ic_berry_power:'assets/icons/levelup/berry_power.png', ic_berry_rate:'assets/icons/levelup/berry_rate.png',
+  ic_berry_size:'assets/icons/levelup/berry_size.png', ic_berry_cluster:'assets/icons/levelup/berry_cluster.png',
+  ic_sweet_recovery:'assets/icons/levelup/sweet_recovery.png', ic_mochi_vitality:'assets/icons/levelup/mochi_vitality.png',
+  ic_flavor_regen:'assets/icons/levelup/flavor_regeneration.png', ic_sugar_on_kill:'assets/icons/levelup/sugar_on_kill.png',
 };
 // map สกิล/พร → ไอคอนรูปจริง (มีเท่าที่อาร์ตทำมา · null=ใช้อีโมจิ)
 const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', frost:'ic_frost', bubble:'ic_bubble',
@@ -700,7 +713,7 @@ const SKILL_CARD_COLOR = {
   frost:0x76d8ff, popcorn:0xffb64d, bubble:0x67dec4, mine:0xff7cae, beam:0xffd166,
   meteor:0xc58a5b, cloud:0x7ed6aa, rocket:0xff6578, mirror:0x8acbff, decoy:0x78dfca,
 };
-const PASS_ICON  = { heart:'ic_heart', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_regen',
+const PASS_ICON  = { heart:'ic_mochi_vitality', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_flavor_regen', sugarOnKill:'ic_sugar_on_kill',
   flavorCore:'ic_flavor_core', bitterResolve:'ic_bitter_resolve', returningTaste:'ic_returning_taste' };
 const ASSET_SHEETS = {
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
@@ -1209,28 +1222,28 @@ const SIGNATURE_WEAPONS = {
 const BASIC_ATTACKS = {
   momo:{name:'Heart Seed Blaster',emoji:'🍓',skill:'sprinkle',color:0xff76a8,evolution:'Heartstorm Blaster',
     upgrades:[
-      {id:'power',name:'เมล็ดเข้มข้น',emoji:'💥',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
-      {id:'rate',name:'ไกปืนโมจิ',emoji:'⏩',max:5,desc:'ยิงเร็วขึ้น 8% ต่อขั้น'},
-      {id:'size',name:'เมล็ดอวบ',emoji:'🔴',max:3,desc:'กระสุนใหญ่ขึ้น 14% ต่อขั้น'},
-      {id:'volley',name:'แตกกิ่งหวาน',emoji:'🌱',max:3,desc:'เพิ่มเมล็ดในชุดยิง 1 นัดต่อขั้น'}],
+      {id:'power',name:'เมล็ดเข้มข้น',emoji:'💥',iconKey:'ic_momo_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
+      {id:'rate',name:'ไกปืนโมจิ',emoji:'⏩',iconKey:'ic_momo_rate',max:5,desc:'ยิงเร็วขึ้น 8% ต่อขั้น'},
+      {id:'size',name:'เมล็ดอวบ',emoji:'🔴',iconKey:'ic_momo_size',max:3,desc:'กระสุนใหญ่ขึ้น 14% ต่อขั้น'},
+      {id:'volley',name:'แตกกิ่งหวาน',emoji:'🌱',iconKey:'ic_momo_volley',max:3,desc:'เพิ่มเมล็ดในชุดยิง 1 นัดต่อขั้น'}],
     mutations:[
       {id:'ricochet',name:'ทางเด้งหัวใจ',emoji:'💞',desc:'เมล็ดเด้งหาเป้าหมายใหม่ได้ 2 ครั้ง'},
       {id:'fan',name:'ทางกลีบกระจาย',emoji:'🌸',desc:'ยิงเป็นพัดกว้างขึ้นและเพิ่มกระสุน 2 นัด'}]},
   cocoa:{name:'Bear Core Combo',emoji:'🐻',skill:'meteor',color:0x8b5cf0,evolution:'Titan Bear Finale',
     upgrades:[
-      {id:'power',name:'หมัดโกโก้เข้ม',emoji:'💥',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
-      {id:'rate',name:'จังหวะนักสู้',emoji:'⏩',max:5,desc:'ออกหมัดเร็วขึ้น 8% ต่อขั้น'},
-      {id:'size',name:'ช่วงแขนโมจิ',emoji:'🥊',max:3,desc:'ระยะและวงกวาดของหมัด +12% ต่อขั้น'},
-      {id:'combo',name:'แรงส่งท่าปิด',emoji:'🐻',max:3,desc:'หมัดที่ 3 แรงขึ้น 18% ต่อขั้น'}],
+      {id:'power',name:'หมัดโกโก้เข้ม',emoji:'💥',iconKey:'ic_cocoa_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
+      {id:'rate',name:'จังหวะนักสู้',emoji:'⏩',iconKey:'ic_cocoa_rate',max:5,desc:'ออกหมัดเร็วขึ้น 8% ต่อขั้น'},
+      {id:'size',name:'ช่วงแขนโมจิ',emoji:'🥊',iconKey:'ic_cocoa_size',max:3,desc:'ระยะและวงกวาดของหมัด +12% ต่อขั้น'},
+      {id:'combo',name:'แรงส่งท่าปิด',emoji:'🐻',iconKey:'ic_cocoa_combo',max:3,desc:'หมัดที่ 3 แรงขึ้น 18% ต่อขั้น'}],
     mutations:[
       {id:'rush',name:'สาย Rushdown',emoji:'💨',desc:'คอมโบเร็วขึ้น 18% และฮุกกวาดกว้างขึ้น'},
       {id:'breaker',name:'สาย Earthbreaker',emoji:'💢',desc:'ท่าทุบพื้นแรงขึ้น 25% และเกิดคลื่นกระแทกซ้ำ'}]},
   berry:{name:'Jam Cannon',emoji:'💗',skill:'rocket',color:0xff5f88,evolution:'Jam Supernova',
     upgrades:[
-      {id:'power',name:'แรงดันแยม',emoji:'💥',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
-      {id:'rate',name:'ลูกเลื่อนหวาน',emoji:'⏩',max:5,desc:'ยิงเร็วขึ้น 8% ต่อขั้น'},
-      {id:'size',name:'หัวรบอวบ',emoji:'🔴',max:3,desc:'จรวดและวงระเบิดใหญ่ขึ้น 14% ต่อขั้น'},
-      {id:'cluster',name:'ห้องแยมคู่',emoji:'💗',max:3,desc:'เพิ่มจรวดในชุดยิง 1 ลูกต่อขั้น'}],
+      {id:'power',name:'แรงดันแยม',emoji:'💥',iconKey:'ic_berry_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
+      {id:'rate',name:'ลูกเลื่อนหวาน',emoji:'⏩',iconKey:'ic_berry_rate',max:5,desc:'ยิงเร็วขึ้น 8% ต่อขั้น'},
+      {id:'size',name:'หัวรบอวบ',emoji:'🔴',iconKey:'ic_berry_size',max:3,desc:'จรวดและวงระเบิดใหญ่ขึ้น 14% ต่อขั้น'},
+      {id:'cluster',name:'ห้องแยมคู่',emoji:'💗',iconKey:'ic_berry_cluster',max:3,desc:'เพิ่มจรวดในชุดยิง 1 ลูกต่อขั้น'}],
     mutations:[
       {id:'seeker',name:'ทางล่าแกน',emoji:'🎯',desc:'ล็อกเป้าไวขึ้นและระเบิดแรงขึ้น 20%'},
       {id:'sticky',name:'ทางแยมเหนียว',emoji:'🫙',desc:'วงระเบิดใหญ่ขึ้น 35% และตรึงมอนสเตอร์ชั่วขณะ'}]},
@@ -3866,7 +3879,7 @@ class Game extends Phaser.Scene {
   }
   rollBasicAttackUpgrades(n){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
-    const iconKey=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey,...extra});
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey:u.iconKey||fallbackIcon,...extra});
     let attackPool=[];
     for(const u of d.upgrades){const cur=b.ranks[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;attackPool.push(makeCard(u,{lvl:cur+1,max:u.max,apply:()=>{b.ranks[u.id]=(b.ranks[u.id]||0)+1;this.syncBasicAttack();}}));}
     if(b.mastery>=4&&!b.mutation){
@@ -3883,7 +3896,7 @@ class Game extends Phaser.Scene {
     const survival=[];const pasOwned=Object.keys(this.passives).length;
     for(const key in PASSIVES){if(this.banishedKeys?.['p:'+key])continue;const p=PASSIVES[key],cur=this.passives[key]||0;if(cur>=p.max||(cur===0&&pasOwned>=3))continue;survival.push({type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,kind:'สกิลติดตัว',badgeColor:'#66d3b3',color:p.color,emoji:p.emoji,title:p.name,desc:p.desc,apply:()=>{this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);this.buildSkillBar();}});}
     const hpFrac=this.player.hp/Math.max(1,this.player.maxhp);
-    if(hpFrac<0.999){const amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1))),heal={type:'heal',key:'sweetRecovery',lvl:1,max:1,kind:'ฟื้นฟูทันที',emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};survival.push(heal);if(hpFrac<0.40)survival.push({...heal});}
+    if(hpFrac<0.999){const amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1))),heal={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,kind:'ฟื้นฟูทันที',emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};survival.push(heal);if(hpFrac<0.40)survival.push({...heal});}
     Phaser.Utils.Array.Shuffle(survival);
     const fallback={type:'util',key:'sugarCache',lvl:1,max:1,emoji:'🍬',title:'Sugar Cache',desc:'รับ Sugar 8 หน่วยทันที · ไม่ใช้ช่อง Passive',apply:()=>{this.sugarStage+=8;this.sugarRun+=8;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);}};
     chosen.push(survival[0]||fallback);
@@ -3899,7 +3912,7 @@ class Game extends Phaser.Scene {
     const hpFrac=this.player.hp/Math.max(1,this.player.maxhp);
     if(hpFrac<0.999){
       const amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)));
-      const recovery={type:'heal',key:'sweetRecovery',lvl:1,max:1,kind:'ฟื้นฟูทันที',badgeColor:'#ff8fb5',color:0xff6f9d,emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};
+      const recovery={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,kind:'ฟื้นฟูทันที',badgeColor:'#ff8fb5',color:0xff6f9d,emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};
       recoveryPool.push(recovery);
       if(hpFrac<0.40)recoveryPool.push({...recovery});
     }
