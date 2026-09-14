@@ -185,7 +185,7 @@ assets/incoming/          ← โฟลเดอร์กลางรับง�
 | ตัว | ธีม | Action sheet (128px) | Run atlas | Card 768×1024 | สถานะ |
 |-----|-----|----------------------|-----------|----------------|--------|
 | Momo 🍡 | โมจิสตรอว์เบอร์รี | `char_momo_fighter_sheet.png` 8 เฟรม | `char_momo_run_sheet.png` 5×5=25 เฟรม | `card_momo.png` | ✅ |
-| Mint 🌿 | ผู้พิทักษ์ลมเย็น | `char_mint_awakened_sheet.png` | `char_mint_run_sheet.png` 4×3=12 | `card_mint.png` | ✅ |
+| Mint 🌿 | Frostleaf Sentinel — โล่ใบไม้/เข็มน้ำแข็ง | `char_mint_frostleaf_sheet.png` | `char_mint_frostleaf_run_sheet.png` 4×3=12 | `card_mint_frostleaf.png` | ✅ |
 | Cocoa/Chocolate 🍫 | จอมพลังถุงมือ | `char_cocoa_awakened_sheet.png` | `char_cocoa_run_sheet.png` 4×3=12 | `card_cocoa.png` | ✅ |
 | Taro 🍠 | นักสำรวจเผือก | `char_taro_awakened_sheet.png` | (ไม่มี run แยก) | `card_taro.png` | ✅ 🔧 อาจเพิ่ม run |
 | Sesame ⚫ | สถาปนิกตรา | `char_sesame_awakened_sheet.png` | (ไม่มี run แยก) | `card_sesame.png` | ✅ 🔧 อาจเพิ่ม run |

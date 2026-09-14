@@ -46,20 +46,33 @@ if (!source.includes('Math.floor(this._charRunT*16)%12')) {
 }
 
 for (const fighter of ['momo', 'mint', 'cocoa', 'berry']) {
-  const actionName = fighter === 'momo' ? 'char_momo_fighter_sheet.png' : fighter === 'berry' ? 'char_berry_core_sheet.png' : `char_${fighter}_awakened_sheet.png`;
+  const actionName = fighter === 'momo' ? 'char_momo_fighter_sheet.png'
+    : fighter === 'mint' ? 'char_mint_frostleaf_sheet.png'
+    : fighter === 'berry' ? 'char_berry_core_sheet.png'
+    : `char_${fighter}_awakened_sheet.png`;
   const action = fs.readFileSync(new URL(`../assets/${actionName}`, import.meta.url));
   const actionWidth = action.readUInt32BE(16);
   const actionHeight = action.readUInt32BE(20);
-  if (actionWidth !== 1024 || actionHeight !== 128) {
-    throw new Error(`Expected ${fighter} 8x1 action sheet at 1024x128, found ${actionWidth}x${actionHeight}`);
+  const actionColorType = action.readUInt8(25);
+  const actionHasAlpha = [4, 6].includes(actionColorType) || (actionColorType === 3 && action.includes(Buffer.from('tRNS')));
+  if (actionWidth !== 1024 || actionHeight !== 128 || !actionHasAlpha) {
+    throw new Error(`Expected transparent ${fighter} 8x1 action sheet at 1024x128, found ${actionWidth}x${actionHeight} PNG color type ${actionColorType}`);
   }
-  const runName = fighter === 'berry' ? 'char_berry_core_run_sheet.png' : `char_${fighter}_run_sheet.png`;
+  const runName = fighter === 'mint' ? 'char_mint_frostleaf_run_sheet.png'
+    : fighter === 'berry' ? 'char_berry_core_run_sheet.png'
+    : `char_${fighter}_run_sheet.png`;
   const run = fs.readFileSync(new URL(`../assets/${runName}`, import.meta.url));
   const width = run.readUInt32BE(16);
   const height = run.readUInt32BE(20);
-  if (width !== 512 || height !== 384) {
-    throw new Error(`Expected ${fighter} 4x3 run atlas at 512x384, found ${width}x${height}`);
+  const runColorType = run.readUInt8(25);
+  const runHasAlpha = [4, 6].includes(runColorType) || (runColorType === 3 && run.includes(Buffer.from('tRNS')));
+  if (width !== 512 || height !== 384 || !runHasAlpha) {
+    throw new Error(`Expected transparent ${fighter} 4x3 run atlas at 512x384, found ${width}x${height} PNG color type ${runColorType}`);
   }
+  const escapedActionName = actionName.replaceAll('.', '\\.')
+  const escapedRunName = runName.replaceAll('.', '\\.')
+  if (!new RegExp(`char_${fighter}:\\s+\\{ url:'assets/${escapedActionName}',\\s+frame:128 \\}`).test(source)) throw new Error(`${fighter} action sheet is not registered`);
+  if (!new RegExp(`char_${fighter}_run:\\s*\\{ url:'assets/${escapedRunName}',\\s+frame:128 \\}`).test(source)) throw new Error(`${fighter} run atlas is not registered`);
 }
 
 for (const boss of ['boss3', 'boss4']) {
@@ -106,7 +119,7 @@ for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","purge:{emoji
 }
 
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry']) {
-  const cardName = `card_${fighter}.png`;
+  const cardName = fighter === 'mint' ? 'card_mint_frostleaf.png' : `card_${fighter}.png`;
   const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
   const width = card.readUInt32BE(16);
   const height = card.readUInt32BE(20);

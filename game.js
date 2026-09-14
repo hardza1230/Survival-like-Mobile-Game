@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.42.0';
+const GAME_VERSION = '2.43.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.43.0', date:'2026-09-14', title:'Mint — Frostleaf Sentinel', items:[
+    'ยกเครื่องภาพตัวละคร Mint เป็น Frostleaf Sentinel พร้อมเกราะใบไม้ โล่คริสตัล และเข็มน้ำแข็งประจำตัว',
+    'เพิ่ม Character Card ใหม่, Action sheet 8 เฟรม และ Run atlas 12 เฟรมสำหรับ Mint',
+    'คงคีย์ตัวละครและเซฟเดิมไว้ทั้งหมด เพื่อให้ผู้เล่นเดิมอัปเดตต่อได้ทันที' ] },
   { v:'2.42.0', date:'2026-09-14', title:'Readable Level-Up Icons', items:[
     'เพิ่มไอคอนการ์ดเลเวลอัพใหม่ 16 ภาพ สไตล์ 2D cartoon เส้นหนา อ่านง่ายบนมือถือ',
     'แยกภาพอัปเกรด Basic Attack ของ Momo, Cocoa และ Berry Core ให้สื่อดาเมจ ความเร็ว ระยะ และจำนวนกระสุนเฉพาะใบ',
@@ -632,7 +636,7 @@ const ASSET_IMAGES = {
   chapter1_cover:'assets/ui/chapter1_cover.webp',
   chapter2_cover:'assets/ui/chapter2_cover.webp',
   story_intro_fall:'assets/story/intro_fall.webp', story_final_hunger:'assets/story/final_hunger.webp',
-  card_momo:'assets/character_cards/card_momo.png', card_mint:'assets/character_cards/card_mint.png',
+  card_momo:'assets/character_cards/card_momo.png', card_mint:'assets/character_cards/card_mint_frostleaf.png',
   card_cocoa:'assets/character_cards/card_cocoa.png', card_taro:'assets/character_cards/card_taro.png',
   card_sesame:'assets/character_cards/card_sesame.png', card_berry:'assets/character_cards/card_berry.png',
   e_basic:   'assets/e_basic.png',
@@ -719,8 +723,9 @@ const ASSET_SHEETS = {
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
   char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
   char_momo_run:{ url:'assets/char_momo_run_sheet.png', frame:128 },
-  char_mint:  { url:'assets/char_mint_awakened_sheet.png',  frame:128 },
-  char_mint_run:{ url:'assets/char_mint_run_sheet.png', frame:128 },
+  // Frostleaf Sentinel — คง key char_mint เพื่อรองรับเซฟเดิม
+  char_mint:  { url:'assets/char_mint_frostleaf_sheet.png',  frame:128 },
+  char_mint_run:{ url:'assets/char_mint_frostleaf_run_sheet.png', frame:128 },
   char_cocoa: { url:'assets/char_cocoa_awakened_sheet.png', frame:128 },
   char_cocoa_run:{ url:'assets/char_cocoa_run_sheet.png', frame:128 },
   char_berry: { url:'assets/char_berry_core_sheet.png', frame:128 },
