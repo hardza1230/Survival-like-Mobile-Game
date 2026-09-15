@@ -29,9 +29,11 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.43.0';
+const GAME_VERSION = '2.43.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.43.1', date:'2026-09-15', title:'Fix Stage 2 Boss Black Box', items:[
+    'แก้บอสด่าน 2 (Clogmaw) เป็นกล่องดำ — ไฟล์ boss2_clogmaw_sheet.png เป็น PNG ที่ zlib เสียกลางไฟล์ → decode ไม่ได้ · สร้างชีต 1024×512 ใหม่จากเฟรมอาร์ตจริงที่ยังดี (นิ่ง 1 ท่าไปก่อน รอชีตอนิเมชันจริง 8 เฟรม)' ] },
   { v:'2.43.0', date:'2026-09-14', title:'Mint — Frostleaf Sentinel', items:[
     'ยกเครื่องภาพตัวละคร Mint เป็น Frostleaf Sentinel พร้อมเกราะใบไม้ โล่คริสตัล และเข็มน้ำแข็งประจำตัว',
     'เพิ่ม Character Card ใหม่, Action sheet 8 เฟรม และ Run atlas 12 เฟรมสำหรับ Mint',
