@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.63.0';
+const GAME_VERSION = '2.64.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.64.0', date:'2026-09-16', title:'Fix mini-boss freeze & level-up overlap', items:[
+    'แก้เกมค้างหลังกำจัดมินิบอส — ไทม์เมอร์เริ่มเวฟถัดไปเคยถูกข้ามถ้าตอนนั้นติดหน้ากล่องสุ่ม/เลเวลอัพ (scheduleStageEvent รอจนกลับมาเล่นจริงแล้วค่อยยิง)',
+    'แก้แบนเนอร์/หน้ารางวัลด่านต่อไปเด้งทับหน้าการ์ดเลเวลอัพ — เลื่อนไปแสดงหลังปิดการ์ด กันแตะโดนแล้วการ์ดเปลี่ยน',
+    'เวฟถัดไป · บอส · มินิบอส · กล่องรางวัลจบด่าน ทุกจุดผ่าน scheduleStageEvent = ทนต่อ modal (levelup/rolling/pause)' ] },
   { v:'2.63.0', date:'2026-09-16', title:'Mint Needles & Sesame Circle Rework', items:[
     'มินต์เปลี่ยน Basic Attack เป็น "ปาเข็มน้ำแข็ง" เจาะทะลุ + แช่/ชะลอ (แทน frost nova) · อัปเกรดปรับเป็นสายเข็ม (ทะลุ/จำนวนดอก/แตกสะเก็ด)',
     'Unique มินต์เป็น "พายุหิมะเพชร (Diamond Dust)" — พายุหิมะถล่มพื้นที่ตามตัว ฟาดซ้ำ ๆ แช่ฝูง + คุ้มกัน',
@@ -3536,7 +3540,7 @@ class Game extends Phaser.Scene {
     const st=STAGES[this.stageIndex],p=this.waveProfile(w);
     if(w===st.miniAt){this.mode='miniWarning';this.setupSpawnRates(w);this.updateWaveText();
       this.showBanner('⚠️ '+(beat?beat.title:st.mini),beat?beat.sub:(st.mini+' — เตรียมหาที่ว่างหลบ'),2600);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);
-      this.time.delayedCall(2800,()=>{if(this.mode!=='miniWarning')return;if(this.state==='levelup')this._queuedBossIntro='mini';else if(this.state==='play')this.spawnMiniBoss();});
+      this.scheduleStageEvent(2800,'miniWarning',()=>this.spawnMiniBoss());
     }else{this.mode='wave';this.startSurvivalWave(w,false);this.setupWaveObjective(w,p);const o=this.waveObjective;
       this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('บทที่ '+(w+1))),o?((beat?beat.title+' · ':'')+o.desc):(beat?beat.sub:p.desc),2400);}
     this.updateWaveText();
@@ -3893,13 +3897,24 @@ class Game extends Phaser.Scene {
   clearFoes(){ this.foeBullets.children.iterate(b=>{ if(b&&b.active)this.killFoe(b); }); }
   clearPickups(alsoHeals){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active){ this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false; } });
     if(alsoHeals){ for(const grp of [this.heals,this.vacs,this.loots,this.chests,this.gimmicks]){ if(grp)grp.children.iterate(o=>{ if(o&&o.active){ this.tweens.killTweensOf(o); if(o._glow){this.tweens.killTweensOf(o._glow);o._glow.destroy();o._glow=null;} this.hidePickupCue(o); o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; } }); } } }
+  // ตั้งเวลาเหตุการณ์ประจำด่าน (เริ่มเวฟ/บอส/รางวัล) แบบทนต่อ modal: ถ้าตอนถึงเวลายังติดหน้าเลเวลอัพ/กล่องสุ่ม/pause
+  // จะ "รอ" แล้วยิงเมื่อกลับมาเล่นจริง (state==='play') — กันบั๊กเวฟไม่มา/เกมค้างหลังมินิบอส
+  scheduleStageEvent(delayMs,mode,fn){
+    this.time.delayedCall(delayMs,()=>{
+      if(this.state==='menu'||this.state==='dead')return;   // ออกจากด่าน/ตาย = ยกเลิก
+      if(this.mode!==mode)return;                            // โหมดเปลี่ยน (ถูก override) = ยกเลิก
+      if(this.state!=='play'){ this.scheduleStageEvent(350,mode,fn); return; }   // ยังติด modal (levelup/rolling/paused) → รอแล้วลองใหม่
+      fn();
+    });
+  }
   onWaveCleared(keep){
     this.boss=null;Sfx.bgmIntense(false);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();
     const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
-    if(next>=st.waves){const rage=this.bossRageInfo();this.mode='bossWarning';this.updateWaveText();this.showBanner('⚠️ '+rage.emoji+' บอส '+rage.name,st.boss+' · ลูกน้อง '+rage.kills+' · รางวัล x'+rage.reward.toFixed(2),2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);
-      this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='bossWarning')this.spawnFinalBoss();});return;}
-    this.showBanner('พักหายใจ 3 วินาที','เวฟ '+(next+1)+' กำลังมา',2400);
-    this.time.delayedCall(3400,()=>{if(this._busy()&&this.mode==='breather')this.startWave(next,false);});
+    if(next>=st.waves){this.mode='bossWarning';this.updateWaveText();
+      this.scheduleStageEvent(300,'bossWarning',()=>{const rage=this.bossRageInfo();this.showBanner('⚠️ '+rage.emoji+' บอส '+rage.name,st.boss+' · ลูกน้อง '+rage.kills+' · รางวัล x'+rage.reward.toFixed(2),2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);
+        this.scheduleStageEvent(3000,'bossWarning',()=>this.spawnFinalBoss());});return;}
+    this.scheduleStageEvent(300,'breather',()=>{this.showBanner('พักหายใจ 3 วินาที','เวฟ '+(next+1)+' กำลังมา',2400);
+      this.scheduleStageEvent(3200,'breather',()=>this.startWave(next,false));});
   }
   // บอสตาย → เปิดกล่องรางวัลจบด่าน (Sugar/อุปกรณ์) แล้วกลับหน้าเลือกด่าน
   onBossDown(x,y){
@@ -5021,7 +5036,7 @@ class Game extends Phaser.Scene {
     e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
-      this.time.delayedCall(1600,()=>{ if(this.state==='play'||this.state==='levelup') this.onBossDown(bx,by); }); return; }
+      this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // รอจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(isMini){ this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(); return; }   // มินิบอสตาย = ดรอปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
   killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
