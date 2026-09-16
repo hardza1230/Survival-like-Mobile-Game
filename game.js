@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.43.1';
+const GAME_VERSION = '2.44.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.44.0', date:'2026-09-16', title:'Recipe System (Prototype)', items:[
+    'ปลุกระบบคอมโบที่เคยตายให้กลับมาเป็น "ระบบทำอาหาร": สกิลโจมตี = วัตถุดิบ · สกิลติดตัว = เครื่องปรุง · มีคู่ครบ = ปรุงเมนู',
+    'ปรุงเมนูครั้งแรก = โมเมนต์ทำอาหาร (แบนเนอร์ 🍳 ปรุงเมนู! + เสียง) พร้อมบัฟดาเมจเล็ก +5% ต่อเมนู',
+    'การ์ดเลเวลอัพเปลี่ยนป้ายคำใบ้เป็น "🍳 ปรุงเมนูได้!" เพื่อสื่อว่าอัพใบนี้แล้วจะปรุงเมนูได้' ] },
   { v:'2.43.1', date:'2026-09-15', title:'Fix Stage 2 Boss Black Box', items:[
     'แก้บอสด่าน 2 (Clogmaw) เป็นกล่องดำ — ไฟล์ boss2_clogmaw_sheet.png เป็น PNG ที่ zlib เสียกลางไฟล์ → decode ไม่ได้ · สร้างชีต 1024×512 ใหม่จากเฟรมอาร์ตจริงที่ยังดี (นิ่ง 1 ท่าไปก่อน รอชีตอนิเมชันจริง 8 เฟรม)' ] },
   { v:'2.43.0', date:'2026-09-14', title:'Mint — Frostleaf Sentinel', items:[
@@ -2247,8 +2251,29 @@ class Game extends Phaser.Scene {
   pulseSkill(k){ const c=this.skillChips&&this.skillChips[k]; if(!c)return; const bs=c.em._baseScale||1;
     this.tweens.add({targets:[c.em],scale:{from:bs*1.4,to:bs},duration:240,ease:'Back.out'});
     this.tweens.add({targets:[c.bg],scale:{from:1.25,to:1},duration:240,ease:'Back.out'}); }
-  /* คอมโบสกิลถูกยกเลิกแล้ว — เหลือแต่ระบบ Awaken บนสกิลหลัก (no-op กันโค้ดที่ยังเรียกอยู่) */
-  checkCombos(){ this.comboFlags={}; }
+  /* ---- ระบบทำอาหาร (Recipe) — วัตถุดิบ(สกิลโจมตี a) + เครื่องปรุง(สกิลติดตัว b) = ปรุงเมนู ----
+     ปลุก COMBOS เดิมที่เคยตายให้กลับมามีความหมาย: มีคู่ครบ = "ปรุงเมนู" ครั้งเดียว → บัฟเล็ก + โมเมนต์ทำอาหาร */
+  checkCombos(){
+    this.comboFlags={};
+    if(!this.combosOwned)this.combosOwned={};
+    for(const c of COMBOS){
+      const hasA=(this.skills&&this.skills[c.a]>0);
+      const hasB=(this.passives&&this.passives[c.b]>0);
+      if(hasA&&hasB){
+        this.comboFlags[c.key]=true;
+        if(!this.combosOwned[c.key]){ this.combosOwned[c.key]=true; this.cookDish(c); }
+      }
+    }
+  }
+  // ปรุงเมนูใหม่: บัฟดาเมจเล็ก (prototype) + แบนเนอร์ "ปรุงเมนู!" + เสียง
+  cookDish(c){
+    if(this.player)this.player.dmgMul=Math.min(3.25,(this.player.dmgMul||1)*1.05);
+    const ai=SKILLDEFS[c.a], bi=PASSIVES[c.b];
+    const recipe=((ai&&ai.emoji)||'🍬')+' + '+((bi&&bi.emoji)||'✨');
+    this.dishCount=(this.dishCount||0)+1;
+    this.showBanner('🍳 ปรุงเมนู! '+c.emoji+' '+c.name, recipe+' → '+c.desc+' · ดาเมจ +5%',1700);
+    Sfx.clear(); if(Sfx.pop)Sfx.pop();
+  }
 
   // zoom กล้องให้ "ความกว้างสนามที่เห็น" คงที่ทุกเครื่อง (อ้างอิงมือถือ ~430px) — แท็บเล็ตจอกว้าง = zoom เข้ามากขึ้น ตัวละครไม่เล็กจิ๋ว
   computeViewZoom(){ const REF_W=430, BASE=0.76; this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
@@ -3609,7 +3634,7 @@ class Game extends Phaser.Scene {
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
-    this.skills={};this.basicAttack=null;this.passives={};this.comboFlags={};this.combosOwned={};this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
+    this.skills={};this.basicAttack=null;this.passives={};this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX;this.banishLeft=BANISH_MAX;this.banishedKeys={};
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=7;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
@@ -3747,7 +3772,7 @@ class Game extends Phaser.Scene {
     const sz=18,gap=4,pad=10,list=partners.slice(0,3);
     let cx=x+w-pad-sz/2, cy=y+pad+sz/2;   // เริ่มมุมขวาบน ไล่ลงซ้าย
     // ป้ายเล็ก "🔗" นำหน้าเมื่อพร้อมคอมโบ ให้สังเกตง่าย
-    if(anyOwned){const tag=this.add.text(x+w-pad,cy+sz/2+6,'🔗 พร้อมคอมโบ',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffe07a'}).setOrigin(1,0);group.add(tag);}
+    if(anyOwned){const tag=this.add.text(x+w-pad,cy+sz/2+6,'🍳 ปรุงเมนูได้!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffe07a'}).setOrigin(1,0);group.add(tag);}
     list.forEach((p,i)=>{
       const ix=cx-i*(sz+gap),iy=cy;
       const ring=this.add.circle(ix,iy,sz/2+2,p.owned?0xffe07a:0x6a6076,p.owned?0.9:0.35).setStrokeStyle(1.5,p.owned?0xffd23f:0x8a7f98,p.owned?1:0.5);
