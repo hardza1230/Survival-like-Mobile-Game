@@ -29,9 +29,11 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.52.0';
+const GAME_VERSION = '2.52.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.52.1', date:'2026-09-16', title:'Cleanup', items:[
+    'เก็บกวาด dead code: `bearQuake` (โกโก้ใช้ voidPull แล้ว) และ `bestiaryAllBonus` (Bestiary ให้ Sugar แทนสแตตตั้งแต่ v2.45)' ] },
   { v:'2.52.0', date:'2026-09-16', title:'Rank Perks', items:[
     'พัฒนาระบบ Rank: ทุก rank ได้ 1 แต้ม (RP) ลงใน perk ถาวรที่เลือกเอง — เปลี่ยน Rank จากไต่ +สแตตซ้ำ ๆ เป็นการสร้าง build ระยะยาว',
     'Perk 7 แบบ: 🎲 +reroll · 🚫 +banish · 🎁 ดวงกล่อง (box drop) · 🍬 โลภหวาน (Sugar) · ❤️ แก่นอึด (HP) · 💥 แก่นแรง (ดาเมจ) · 🕯️ เทียนคืนชีพ (ฟื้น 1 ครั้ง/ด่าน)',
@@ -1323,7 +1325,6 @@ const BASIC_ATTACKS = {
 const CHARACTER_UNIQUES = {
   berryRebound:{name:'หัวใจสตรอว์เบอร์รีเด้งกลับ',emoji:'🍓',cd:8,color:0xff76a8,desc:'เมล็ดหวานยิงรอบตัวและฟื้น HP — พลังกลางแต่ใช้ได้ถี่'},
   mintSanctuary:{name:'เขตลมหายใจมินต์',emoji:'🌿',cd:11,color:0x72e8d1,desc:'แช่แข็งฝูงวงกว้างและให้ช่วงคุ้มกัน — คูลดาวน์ระดับกลาง'},
-  bearQuake:{name:'ตราหมีโกโก้สะเทือน',emoji:'🐻',cd:17,color:0xc28b62,desc:'คลื่นทุบหนักกินพื้นที่กว้าง — รุนแรงมากจึงมีคูลดาวน์นาน'},
   voidPull:{name:'หลุมช็อกโกแลตดำ',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'เปิดหลุมดำดูดฝูงศัตรูเข้าหาตัว ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย'},
   pathRecall:{name:'สายฟ้าชิ่งของตาโร่',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'ปล่อยสายฟ้าจากตัว ชิ่งลามไปศัตรูตัวต่อ ๆ ไป (แบบ Arc) แล้วคืน Dash และเร่งฝีเท้า'},
   oathMirror:{name:'เขตกระจกคำสัตย์งาดำ',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'เขตติดตามตัว ทำร้ายฝูง ลดความเสียหาย สะท้อนกระสุน แล้วระเบิด'},
@@ -1334,7 +1335,6 @@ const uniqueAt={2:3,3:7,4:11};   // run level milestones shared by UI, progressi
 const UNIQUE_TIERS={
   berryRebound:{2:'เพิ่มเมล็ดและฟื้น HP มากขึ้น',3:'เมล็ดแรงขึ้นและแผ่วงกว้างกว่าเดิม',4:'Berry Crown ยิง 20+ เมล็ดและฟื้นฟูสูงสุด'},
   mintSanctuary:{2:'วงเย็นกว้างขึ้นและแช่นานขึ้น',3:'เพิ่มเกราะคุ้มกันและพลังคลื่นน้ำแข็ง',4:'Absolute Mint แช่ฝูงวงใหญ่และคุ้มกันยาวขึ้น'},
-  bearQuake:{2:'ตราหมีใหญ่ขึ้นและแรงขึ้น',3:'เกิด Aftershock ตามหลังหนึ่งระลอก',4:'Royal Bear Quake สองระลอกวงกว้างเต็มพลัง'},
   voidPull:{2:'หลุมกว้างขึ้นและดูดแรงขึ้น',3:'อยู่นานขึ้น + ดาเมจต่อเนื่องแรงขึ้น',4:'Singularity หลุมยักษ์ดูดทั้งจอและระเบิดปิดรุนแรง'},
   pathRecall:{2:'เพิ่มจำนวนการชิ่งและระยะกระโดด',3:'สายฟ้าแตกเป็นสองสาย ลามกว้างขึ้น',4:'Storm Arc ชิ่งเต็มสนามและดาเมจสูงสุด'},
   oathMirror:{2:'เขตกว้างและพัลส์แรงขึ้น',3:'เขตติดตามตัวนานขึ้นและรับกระสุนได้มากขึ้น',4:'Perfect Oath ฟื้น HP หลังระเบิดพร้อมพลังสะท้อนสูงสุด'},
@@ -1664,13 +1664,6 @@ const BESTIARY = [
     bonus:[{hp:2,dmg:0.008},{hp:4,dmg:0.015},{hp:7,dmg:0.022,def:0.015},{hp:11,dmg:0.03,def:0.02},{hp:16,dmg:0.04,def:0.03,crit:0.02}] },
 ];
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
-function bestiaryAllBonus(){
-  const out={hp:0,dmg:0,def:0,spd:0,cdr:0,crit:0};
-  for(const m of BESTIARY){ const lv=bestiaryLv(m.id); if(lv<1)continue;
-    const b=m.bonus[lv-1]; if(b.hp)out.hp+=b.hp; if(b.dmg)out.dmg+=b.dmg; if(b.def)out.def+=b.def;
-    if(b.spd)out.spd+=b.spd; if(b.cdr)out.cdr+=b.cdr; if(b.crit)out.crit+=b.crit; }
-  return out;
-}
 
 /* ---- STAGES: 5 โซนครัว · แต่ละด่าน = เวฟ → มินิบอส (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
 /* ---- STAGE_PROPS: เลย์เอาต์ props ต่อด่าน [key,x,y,solid,scale] — ทำแผนที่ให้เป็น "ห้อง" ที่ออกแบบไว้ ----
