@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.53.0';
+const GAME_VERSION = '2.54.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.54.0', date:'2026-09-16', title:'Card Rarity + Faster Reading', items:[
+    'การ์ดอัพเกรดสุ่มความหายาก (แบบ Death Must Die): ธรรมดา/หายาก/เอพิก/เลเจนดารี — ยิ่งหายากยิ่งได้หลายเลเวลรวด (+1/+2/+3/+4) = ลุ้นทุกเลเวลอัพ + build หลากหลายขึ้น',
+    'สีเฟรม = ความหายาก (เห็นทอง=เอาเลย) + ป้าย ◆ ชัด + โชว์ Lv→Lv ที่จะกระโดด → อ่านการ์ดได้ปราดเดียว ไม่ต้องอ่านนาน',
+    'ลดเวลาล็อกอินพุตหน้าเลเวลอัพ 550ms → 300ms กดยืนยันได้ไวขึ้น' ] },
   { v:'2.53.0', date:'2026-09-16', title:'Simpler Difficulty (3 tiers + auto)', items:[
     'ลดระดับความยากจาก 5 → 3 ระดับ (ปกติ/ยาก/นรก) ลดความซับซ้อนและภาระบาลานซ์ · คงกฎเหล็ก "ยิ่งยากรางวัลยิ่งดี"',
     'เพิ่มปุ่ม "▶ เล่นเลย" ที่แนะนำระดับอัตโนมัติจาก Power Rating — กดเดียวจบ ไม่ต้องคิด · ระดับที่แนะนำมีป้าย ⭐',
@@ -1218,6 +1222,15 @@ const DIFFS = [
   {lv:2,name:'ยาก',  emoji:'🟡',color:0xffd24d,hp:1.75,dmg:1.18, reward:1.85},
   {lv:3,name:'นรก',  emoji:'🔴',color:0xff5a6e,hp:2.8, dmg:1.38, reward:3.0},
 ];
+/* ---- Card Rarity (แบบ Death Must Die): การ์ดอัพเกรดสุ่มความหายาก → ยิ่งหายากยิ่งได้หลายเลเวลรวด ----
+   สีความหายาก = สัญญาณอ่านเร็ว (เห็นทอง=เอาเลย) · ranks = จำนวนเลเวลที่ได้จากการ์ดใบเดียว */
+const RARITIES = [
+  { id:'common', name:'ธรรมดา',    ranks:1, color:0x9aa6b8, weight:56 },
+  { id:'rare',   name:'หายาก',     ranks:2, color:0x5ad1ff, weight:27 },
+  { id:'epic',   name:'เอพิก',     ranks:3, color:0xc07bff, weight:13 },
+  { id:'legend', name:'เลเจนดารี', ranks:4, color:0xffcf40, weight:4  },
+];
+function rollRarity(){ const tot=RARITIES.reduce((s,r)=>s+r.weight,0); let x=Math.random()*tot; for(const r of RARITIES){ x-=r.weight; if(x<=0)return r; } return RARITIES[0]; }
 const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
 const PASSIVE_CAP = 4;       // จำกัดพรติดตัว ลด power stacking และทำให้คู่ Evolution มีความหมาย
@@ -3884,10 +3897,12 @@ class Game extends Phaser.Scene {
 
   /* ---------- STARTING ATTACK ---------- */
   drawReadableChoiceCard(group,o,x,y,w,h,options={}){
-    const type=o.type||'atk',color=type==='basic'?(o.color||0xff8fb5):type==='heal'?0xff6f9d:type==='util'?0xffd166:type==='uni'?(o.color||0xff76a8):type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);
-    const wide=w>=h*1.35, title=o.title||o.name||'', lvl=o.lvl||1;
+    const type=o.type||'atk';let color=type==='basic'?(o.color||0xff8fb5):type==='heal'?0xff6f9d:type==='util'?0xffd166:type==='uni'?(o.color||0xff76a8):type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);
+    const rar=o.rarity; if(rar)color=rar.color;   // สีเฟรม = ความหายาก (สัญญาณอ่านเร็ว)
+    const wide=w>=h*1.35, title=o.title||o.name||'', lvl=o.lvl||1, jump=rar&&rar.ranks>1?('→Lv'+(lvl+rar.ranks-1)):'';
     const role=o.role||(type==='basic'?'Basic Attack · พัฒนาตัวละคร':type==='heal'?'ฟื้นฟูทันที · ไม่ใช้ช่อง Passive':type==='util'?'Utility · ใช้ทันที':type==='atk'&&SKILLDEFS[o.key]?SKILLDEFS[o.key].role:type==='uni'?'ท่าเฉพาะตัว · พัฒนาระหว่างรัน':type==='pas'?'พรติดตัว · เพิ่มค่าสถานะ':'ขั้นสุด · Awaken');
-    const badge=options.starting?'สกิลเริ่มต้น · LV1':type==='basic'?(o.evolution?'BASIC · EVOLUTION':o.mutation?'BASIC · MUTATION':'BASIC · UPGRADE'):type==='heal'?'RECOVERY':type==='util'?'UTILITY':type==='uni'?'UNIQUE · EVOLVE':type==='awk'?'AWAKEN':type==='pas'?'PASSIVE':o.isNew?'ATTACK · NEW':'ATTACK · UPGRADE';
+    const badge0=options.starting?'สกิลเริ่มต้น · LV1':type==='basic'?(o.evolution?'BASIC · EVOLUTION':o.mutation?'BASIC · MUTATION':'BASIC · UPGRADE'):type==='heal'?'RECOVERY':type==='util'?'UTILITY':type==='uni'?'UNIQUE · EVOLVE':type==='awk'?'AWAKEN':type==='pas'?'PASSIVE':o.isNew?'ATTACK · NEW':'ATTACK · UPGRADE';
+    const badge=rar?('◆ '+rar.name.toUpperCase()+(rar.ranks>1?' +'+rar.ranks:'')):badge0;   // rarity เด่นสุด อ่านปราดเดียว
     const panel=this.add.graphics();panel.fillStyle(0x21172b,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2,color,0.92);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);
     const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
     let icon,badgeT,nameT,roleT,descT,starsT,ctaT;
@@ -3896,7 +3911,7 @@ class Game extends Phaser.Scene {
       const halo=this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
-      nameT=this.add.text(textX,y+29,title+(options.starting?'':'  Lv'+lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      nameT=this.add.text(textX,y+29,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       descT=this.add.text(textX,y+75,o.desc||'',{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
@@ -3908,7 +3923,7 @@ class Game extends Phaser.Scene {
       const halo=this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
-      nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting?'':'  Lv'+lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       roleT=this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       descT=this.add.text(x+w/2,y+h*0.60,o.desc||'',{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
@@ -3995,7 +4010,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.add(bg);
     const heldBot0=this.drawHeldBar(this.lvlUp, 8);
     const heldBot=this.usesBasicAttackBuild()?this.drawRecipePanel(this.lvlUp,heldBot0+2):heldBot0;   // โชว์สูตร recipe เฉพาะ character-first
-    const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 หีบสมบัติ — แตะใบเดิมซ้ำเพื่อยืนยัน':'⭐ LEVEL UP — แตะเลือก แล้วแตะใบเดิมซ้ำเพื่อยืนยัน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+550;
+    const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 หีบสมบัติ — แตะใบเดิมซ้ำเพื่อยืนยัน':'⭐ LEVEL UP — แตะเลือก แล้วแตะใบเดิมซ้ำเพื่อยืนยัน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
     this.lvlUp.add(t);
     this.banishMode=false;
     const opts=this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._lvlOpts=opts;
@@ -4095,19 +4110,20 @@ class Game extends Phaser.Scene {
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const atk=[];
     for(const u of d.upgrades){const cur=b.ranks[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
-      atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,apply:()=>{b.ranks[u.id]=(b.ranks[u.id]||0)+1;this.syncBasicAttack();}})});}
+      const rr=rollRarity(); atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,apply:()=>{b.ranks[u.id]=Math.min(u.max,(b.ranks[u.id]||0)+rr.ranks);this.syncBasicAttack();}})});}
     // ตัวเลือกเสริมประจำทุกตัว (Overdrive/Combat Tempo) — ขยาย pool ให้ ≥6 แบบ ลดการเจอใบเดิมซ้ำ
     const extra=[{id:'overdrive',name:'Overdrive',emoji:'🔥',max:8,desc:'ดาเมจ Basic Attack +5% ต่อขั้น'},{id:'tempo',name:'Combat Tempo',emoji:'💨',max:8,desc:'ยิง Basic Attack เร็วขึ้น 3% ต่อขั้น'}];
-    for(const u of extra){const cur=b.ranks[u.id]||0;if(cur>=u.max)continue;atk.push({w:atk.length?1.4:2.5,card:makeCard(u,{lvl:cur+1,max:u.max,apply:()=>{b.ranks[u.id]=(b.ranks[u.id]||0)+1;this.syncBasicAttack();}})});}
+    for(const u of extra){const cur=b.ranks[u.id]||0;if(cur>=u.max)continue;const rr=rollRarity();atk.push({w:atk.length?1.4:2.5,card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,apply:()=>{b.ranks[u.id]=Math.min(u.max,(b.ranks[u.id]||0)+rr.ranks);this.syncBasicAttack();}})});}
     // สายติดตัว (passive) — 12 แบบ = แหล่งความหลากหลายหลัก · boost คู่ที่ปรุงเมนูได้ (recipe)
     const cookB=new Set(COMBOS.filter(c=>this.skills[c.a]>0).map(c=>c.b));
     const pas=[];const pasOwned=Object.keys(this.passives).length;
     for(const key in PASSIVES){if(this.banishedKeys?.['p:'+key])continue;const p=PASSIVES[key],cur=this.passives[key]||0;if(cur>=p.max||(cur===0&&pasOwned>=4))continue;
       const cooks=cookB.has(key)&&cur===0;
-      pas.push({w:cooks?6:2.4,card:{type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,kind:cooks?'สกิลติดตัว 🍳':'สกิลติดตัว',badgeColor:'#66d3b3',color:p.color,emoji:p.emoji,title:p.name,desc:cooks?('🍳 ปรุงเมนูได้! · '+p.desc):p.desc,apply:()=>{this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);this.buildSkillBar();}}});}
+      const rr=rollRarity(),grant=Math.min(p.max-cur,rr.ranks);
+      pas.push({w:cooks?6:2.4,card:{type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,rarity:rr,kind:cooks?'สกิลติดตัว 🍳':'สกิลติดตัว',badgeColor:'#66d3b3',color:rr.color,emoji:p.emoji,title:p.name,desc:cooks?('🍳 ปรุงเมนูได้! · '+p.desc):p.desc,apply:()=>{for(let n=0;n<grant;n++){this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);}this.buildSkillBar();}}});}
     const hpFrac=this.player.hp/Math.max(1,this.player.maxhp);
     let healCard=null;
-    if(hpFrac<0.999){const amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,kind:'ฟื้นฟูทันที',emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}
+    if(hpFrac<0.999){const rr=rollRarity(),amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)*(1+(rr.ranks-1)*0.5)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,rarity:rr,color:rr.color,kind:'ฟื้นฟูทันที',emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}
     const pick=(arr)=>{if(!arr.length)return null;let tot=arr.reduce((s,x)=>s+x.w,0),r=Math.random()*tot;for(let i=0;i<arr.length;i++){r-=arr[i].w;if(r<=0)return arr.splice(i,1)[0].card;}return arr.splice(0,1)[0].card;};
     const out=[];
     const a1=pick(atk); if(a1)out.push(a1);          // การันตี 1 สายโจมตี
