@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.50.0';
+const GAME_VERSION = '2.51.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.51.0', date:'2026-09-16', title:'Evolutions Change Mechanics', items:[
+    'Evolution ของแต่ละตัวเปลี่ยน "กลไก" จริง ไม่ใช่แค่ +เลข (แบบ weapon evolution ของ Survivor.io):',
+    'โมโม่=เมล็ดทะลุ+ตามเป้า · ตาโร่=พายุสายฟ้าทั้งจอ · มินต์=โนวาสองระลอก+แตกน้ำแข็งเสมอ · โกโก้=ทุกลูกทิ้งช็อคเวฟ+สแลมเพิ่ม · งาดำ=กระจกยิงสวนเองอัตโนมัติ',
+    'การ์ด Evolution บอกกลไกที่เปลี่ยนชัดเจน เพื่อให้ผู้เล่นเห็นคุณค่าของร่างพิเศษ' ] },
   { v:'2.50.0', date:'2026-09-16', title:'Recipe Goals Visible (Survivor.io-style)', items:[
     'เพิ่มพาเนล "🍳 สูตรที่ปรุงได้" บนหน้าเลเวลอัพและหน้าหยุดเกม — โชว์ว่าต้องเก็บสกิลติดตัวตัวไหนถึงจะปรุงเมนู (คล้าย weapon evolution ของ Survivor.io)',
     'แต่ละสูตรบอกชื่อเมนู + สถานะ: ยังไม่ได้ (เทา, เก็บ passive ที่ต้องการ) · เก็บครบแล้ว (เขียว) · ปรุงแล้ว ✓ (ทอง)',
@@ -4009,7 +4013,8 @@ class Game extends Phaser.Scene {
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     if(b.mastery>=12&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
-      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'วิวัฒนาการขั้นสุด — ยกระดับ Basic Attack ทั้งหมด!'};
+      const EVO_DESC={sprinkle:'เมล็ดทะลุทุกตัว + วิ่งตามเป้า (เปลี่ยนจากปืนกล 1-hit เป็นพายุเมล็ดทะลุ)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'โนวาสองระลอก + แตกน้ำแข็งเสมอ + วงกว้างขึ้น',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'กระจกยิงลำแสงสวนเองทุกจังหวะ + วง/สะท้อนมากขึ้น'};
+      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
     // ----- รอบปกติ: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญหา +ยิง ออกถี่) -----
@@ -4244,14 +4249,16 @@ class Game extends Phaser.Scene {
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
         const shotIndex=idx++,sizeMul=basic?1+(basic.ranks.size||0)*0.14:1,b=this.getBullet(this.player.x,this.player.y,0xffffff,(0.12+lvl*0.008+(aw?0.03:0))*sizeMul); if(!b)return;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
-        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1); b.life=aw?2.2:1.9; b.pierce=false; b.bounce=basic?((basic.mutation==='ricochet'?2:0)+(basic.evolved?1:0)):0; b.homing=0;
+        const evo=basic&&basic.evolved;
+        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=evo?560:0;   // EVO: เมล็ดทะลุทุกตัว + ตามเป้า (เปลี่ยนจากปืนกล 1-hit เป็นพายุเมล็ดทะลุ)
         const fan=basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0,ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(-0.08,0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
     else if(key==='thunder'){
       // Basic Attack ของตาโร่ (Rift Bolt Compass): arc=จำนวนชิ่ง · surge=จำนวนจุดฟาด · chainlord/stormcaller=สายกลายรูป
-      const bArc=(basic?.ranks.arc||0)+(basic?.mutation==='chainlord'?2:0), bSurge=(basic?.ranks.surge||0)+(basic?.mutation==='stormcaller'?2:0);
-      const bChainRange=basic?.mutation==='chainlord'?1.4:1, bDmgMut=basic?.mutation==='stormcaller'?1.2:1;
+      const tEvo=basic&&basic.evolved;   // EVO: พายุสายฟ้าทั้งจอ — ฟาดหลายจุด + ชิ่งไกล/ยาวขึ้นมาก
+      const bArc=(basic?.ranks.arc||0)+(basic?.mutation==='chainlord'?2:0)+(tEvo?3:0), bSurge=(basic?.ranks.surge||0)+(basic?.mutation==='stormcaller'?2:0)+(tEvo?2:0);
+      const bChainRange=(basic?.mutation==='chainlord'?1.4:1)*(tEvo?1.5:1), bDmgMut=(basic?.mutation==='stormcaller'?1.2:1)*(tEvo?1.2:1);
       const strikes=(aw?3:lvl>=4?2:1)+bSurge, chain=(aw?5:lvl>=5?3:lvl>=3?2:1)+(sw.skill===key?(this.player.weaponChains||0):0)+bArc, dmg=(14+lvl*4.2)*dm*(cf.storm?1.4:1)*(aw?1.15:1)*bDmgMut;
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
       cand.sort((a,b)=>(b.hp||0)-(a.hp||0));
@@ -4281,8 +4288,15 @@ class Game extends Phaser.Scene {
       // Basic Attack ของมินต์ (Frost Core Nova): chill=รัศมี · linger=ระยะเวลา · blizzard/permafrost=สายกลายรูป
       const bChill=1+(basic?.ranks.chill||0)*0.12*(basic?.mutation==='blizzard'?1:1)+(basic?.mutation==='blizzard'?0.25:0);
       const bLinger=(1+(basic?.ranks.linger||0)*0.15)*(basic?.mutation==='permafrost'?1.5:1);
-      const bShatterDmg=basic?.mutation==='permafrost'?1.4:1, bAlwaysShatter=basic?.mutation==='blizzard';
-      const r=(150+lvl*16)*(aw?1.6:1)*df*wm*bChill, dur=(1.1+lvl*0.24)*(aw?1.3:1)*df*wc*bLinger, dmg=(6+lvl*2.4)*dm*(aw?1.2:1)*df, shatter=lvl>=3||aw||this.player.deepFreeze||bAlwaysShatter;
+      const fEvo=basic&&basic.evolved;   // EVO (Glacier Sovereign): โนวาสองระลอก + แตกน้ำแข็งเสมอ + วงใหญ่ขึ้น
+      const bShatterDmg=basic?.mutation==='permafrost'?1.4:1, bAlwaysShatter=(basic?.mutation==='blizzard')||fEvo;
+      const r=(150+lvl*16)*(aw?1.6:1)*df*wm*bChill*(fEvo?1.25:1), dur=(1.1+lvl*0.24)*(aw?1.3:1)*df*wc*bLinger, dmg=(6+lvl*2.4)*dm*(aw?1.2:1)*df, shatter=lvl>=3||aw||this.player.deepFreeze||bAlwaysShatter;
+      if(fEvo)this.time.delayedCall(240,()=>{ if(this.state!=='play')return; const r2=r*1.15;
+        if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova'))this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r2)/ASSET_FX.fx_frostnova.fw*0.82,depth:3,anchor:'center',alpha:0.7});
+        this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>=r2)return;
+          if(e.frozen>0){ this.damage(e,(16+lvl*4)*dm*df*bShatterDmg,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
+          if(!e.isBoss&&!e.isMini){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }
+          this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r2,Math.max(dmg,10)); Sfx.frost(); });
       if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova')) this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r)/ASSET_FX.fx_frostnova.fw*0.82,depth:3,anchor:'center',alpha:Math.min(1,0.5+lvl*0.1)});
       else if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
       else { const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
@@ -4327,7 +4341,7 @@ class Game extends Phaser.Scene {
       const beams=aw?3:1, len=(760+lvl*30)*(aw?1.25:1), wide=(12+lvl*3)*(aw?1.2:1), dmg=(11+lvl*3.6)*dm*(aw?1.15:1);
       const base=Math.atan2(t.y-this.player.y,t.x-this.player.x);
       for(let k=0;k<beams;k++) this.fireBeam(base+(k-(beams-1)/2)*0.18,len,wide,dmg); Sfx.zap(); }
-    else if(key==='meteor'){ this.castBearDonut(lvl,aw,dm); }
+    else if(key==='meteor'){ this.castBearDonut(lvl,aw,dm,basic&&basic.evolved); }
     else if(key==='mirror'){ this.castMirrorGlaze(lvl,aw,dm,basic); }
     else if(key==='memory'){ this.castMemoryJam(lvl,aw,dm); }
     else if(key==='thread'){ this.castFlavorThread(lvl,aw,dm); }
@@ -4370,13 +4384,14 @@ class Game extends Phaser.Scene {
       if(basic.evolved){const heal=Math.max(1,this.player.maxhp*0.02);this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);}
     }
   }
-  castBearDonut(lvl,aw,dm){
-    const sig=this.player.donutImpact?1.28:1,wm=this.signatureWeaponInfo().skill==='meteor'?(this.player.weaponAreaMul||1):1,hits=aw?6:(2+Math.floor(lvl/2)), r=(68+lvl*8)*(aw?1.22:1)*sig*wm;
+  castBearDonut(lvl,aw,dm,evo){
+    // EVO (Titan Bear Finale): สแลมเพิ่ม + วงกว้างขึ้น + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)
+    const sig=this.player.donutImpact?1.28:1,wm=this.signatureWeaponInfo().skill==='meteor'?(this.player.weaponAreaMul||1):1,hits=(aw?6:(2+Math.floor(lvl/2)))+(evo?2:0), r=(68+lvl*8)*(aw?1.22:1)*sig*wm*(evo?1.2:1);
     const dmg=(12+lvl*3.5)*dm*(aw?1.1:1)*sig;
     for(let i=0;i<hits;i++)this.time.delayedCall(i*170,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const t=this.nearestEnemy(620),x=t?t.x+Phaser.Math.Between(-20,20):this.player.x+Phaser.Math.Between(-190,190),y=t?t.y+Phaser.Math.Between(-20,20):this.player.y+Phaser.Math.Between(-190,190);
       const donut=this.camWorld(this.add.image(x,y-190,'proj_bear_donut').setDepth(90001).setScale(0.34).setAlpha(0.95));
-      this.tweens.add({targets:donut,y,scale:0.58,duration:210,ease:'Quad.in',onComplete:()=>{donut.destroy();this.bearDonutImpact(x,y,r,dmg,i===hits-1,aw);}});
+      this.tweens.add({targets:donut,y,scale:0.58,duration:210,ease:'Quad.in',onComplete:()=>{donut.destroy();this.bearDonutImpact(x,y,r,dmg,i===hits-1||!!evo,aw);}});
     }); Sfx.shoot();
   }
   bearDonutImpact(x,y,r,dmg,final,aw){
@@ -4396,11 +4411,14 @@ class Game extends Phaser.Scene {
     // Basic Attack ของงาดำ (Oath Mirror Field): radius=รัศมี · pane=จำนวนสะท้อน · fortress/retaliate=สายกลายรูป
     const bRad=(1+(basic?.ranks.radius||0)*0.12)*(basic?.mutation==='fortress'?1.25:1);
     const bPane=(basic?.ranks.pane||0)*2, bDur=basic?.mutation==='fortress'?1.3:1, bPierce=basic?.mutation==='retaliate', bDmgMut=basic?.mutation==='retaliate'?1.3:1;
-    const r=(125+lvl*15)*(this.player.mirrorWard?1.22:1)*(aw?1.2:1)*wm*bRad,duration=(1.15+lvl*0.14+(aw?0.8:0))*1000*bDur,max=3+lvl+(aw?5:0)+(this.player.mirrorWard?3:0)+wr+bPane;
+    const mEvo=basic&&basic.evolved;   // EVO (Absolute Oath Mirror): กระจกยิงลำแสงสวนเองทุกจังหวะ (ไม่ต้องรอโดนกระสุน) + วง/สะท้อนมากขึ้น
+    const r=(125+lvl*15)*(this.player.mirrorWard?1.22:1)*(aw?1.2:1)*wm*bRad*(mEvo?1.2:1),duration=(1.15+lvl*0.14+(aw?0.8:0))*1000*bDur*(mEvo?1.35:1),max=3+lvl+(aw?5:0)+(this.player.mirrorWard?3:0)+wr+bPane+(mEvo?6:0);
     // Mirror Glaze ต้องอ่านเป็นเกราะสะท้อน ไม่ใช่อัลติ: วงบาง ค่อย ๆ หายใจ และไม่มีสายฟ้าซ้อนสนาม
     const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x9fe8ff).setDepth(5).setScale((r*2)/256).setAlpha(0.28));
     this.tweens.add({targets:ring,rotation:Math.PI*0.55,scaleX:ring.scaleX*1.035,scaleY:ring.scaleY*1.035,alpha:{from:0.20,to:0.32},yoyo:true,duration:Math.max(360,duration*0.48),repeat:1});let reflected=0;
+    let evoTick=0;
     const pulse=this.time.addEvent({delay:120,loop:true,callback:()=>{if(!ring.active)return;ring.setPosition(this.player.x,this.player.y);
+      if(mEvo&&(evoTick++%3===0)){const t=this.nearestEnemy(760),b=this.getBullet(this.player.x,this.player.y,0xffffff,0.2);if(b){b.setTexture('proj_sprinkle').setTint(0x9fe8ff);b.dmg=(9+lvl*2.6)*dm;b.life=2;b.homing=520;b.pierce=true;b.faceVel=true;const a=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,440,b.body.velocity);}}
       this.foeBullets.children.iterate(f=>{if(!f||!f.active||reflected>=max||this.dist(f.x,f.y,this.player.x,this.player.y)>r)return;
         const x=f.x,y=f.y;this.killFoe(f);const b=this.getBullet(x,y,0xffffff,0.18);if(!b)return;b.setTexture('proj_sprinkle').setTint(0x9fe8ff);b.dmg=(8+lvl*2.4)*dm*bDmgMut;b.life=2;b.homing=aw?520:360;b.pierce=aw||bPierce;b.faceVel=true;
         const t=this.nearestEnemy(800),a=t?Math.atan2(t.y-y,t.x-x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,420,b.body.velocity);this.vfxHitRing(x,y,0x9fe8ff,false);reflected++;});
