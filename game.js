@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.45.0';
+const GAME_VERSION = '2.46.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.46.0', date:'2026-09-16', title:'All Characters Go Character-First', items:[
+    'ยกมินต์ ตาโร่ และงาดำ เป็นระบบ Character-first เหมือนโมโม่/โกโก้ — เริ่มด่านด้วย Basic Attack ประจำตัวทันที ไม่ต้องสะสมสกิลหลายชนิด',
+    'มินต์=Frost Core Nova (วง/ระยะแช่แข็ง) · ตาโร่=Rift Bolt Compass (จำนวนชิ่ง/จุดฟาด) · งาดำ=Oath Mirror Field (บานสะท้อน/รัศมี) — แต่ละตัวมีสายอัพเกรด, สายกลายรูป (Mutation) และ Evolution',
+    'พักตัวละครเบอร์รี่คอร์ไว้ก่อน (นำออกจากหน้าเลือก) — เซฟที่เลือกเบอร์รี่จะคืนเป็นโมโม่อัตโนมัติ' ] },
   { v:'2.45.0', date:'2026-09-16', title:'Consolidate Stat Sources', items:[
     'ยุบแหล่งสแตตที่ทับซ้อน: Bestiary และ Ascension ไม่ให้ค่าพลังดิบ (HP/ATK/DEF) อีกต่อไป',
     'Bestiary → ปลดขั้นแล้วรับ 🍬 Sugar ทันที (คัมภีร์กลายเป็นแหล่งรายได้ ไม่ใช่พลังลับที่คุมบาลานซ์ยาก)',
@@ -1225,7 +1229,7 @@ const CHARACTERS = {
   sesame:{name:'งาดำ',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'สถาปนิกแนวรับ',desc:'ตั้งกระจกคุ้มกัน สะท้อนกระสุน และฟื้นตัวระหว่างยื้อสนาม',stats:{hp:34,dmg:0.96,spd:0.93,def:0.82,crit:0.01,cdr:0.98,regenFlat:0.65},rating:{hp:5,atk:3,spd:2,def:5}},
   berry:{name:'เบอร์รี่คอร์',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'ป้อมยิงเคลื่อนที่',desc:'Round but Relentless — ยิงระเบิดหนักและเร่งปืนล็อกเป้ากวาดฝูงเป็นชุด',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
-const CHAR_ORDER=['momo','mint','cocoa','taro','sesame','berry'];
+const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // เบอร์รี่คอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'ปืนเมล็ดหัวใจ',emoji:'🍓',skill:'sprinkle',dmgMul:1.08,cdMul:0.90,shots:2,trait:'ยิงเพิ่ม 2 นัด · คูลดาวน์ -10%'},
   mintNova:{name:'แกนลมเย็นมินต์',emoji:'❄️',skill:'frost',dmgMul:0.96,cdMul:0.86,areaMul:1.14,controlMul:1.18,trait:'วงกว้าง +14% · แช่นาน +18%'},
@@ -1263,6 +1267,33 @@ const BASIC_ATTACKS = {
     mutations:[
       {id:'seeker',name:'ทางล่าแกน',emoji:'🎯',desc:'ล็อกเป้าไวขึ้นและระเบิดแรงขึ้น 20%'},
       {id:'sticky',name:'ทางแยมเหนียว',emoji:'🫙',desc:'วงระเบิดใหญ่ขึ้น 35% และตรึงมอนสเตอร์ชั่วขณะ'}]},
+  mint:{name:'Frost Core Nova',emoji:'❄️',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
+    upgrades:[
+      {id:'power',name:'แกนเย็นเข้ม',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
+      {id:'rate',name:'ลมหายใจถี่',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'ปล่อยโนวาเร็วขึ้น 8% ต่อขั้น'},
+      {id:'chill',name:'วงเยือกแข็ง',emoji:'🧊',iconKey:'ic_mint_chill',max:3,desc:'รัศมีวงแช่แข็ง +12% ต่อขั้น'},
+      {id:'linger',name:'น้ำแข็งเกาะนาน',emoji:'❄️',iconKey:'ic_mint_linger',max:3,desc:'ระยะเวลาแช่แข็ง +15% ต่อขั้น'}],
+    mutations:[
+      {id:'blizzard',name:'สายพายุหิมะ',emoji:'🌨️',desc:'วงกว้างขึ้น 25% และแตกน้ำแข็งใส่ตัวที่แช่อยู่เสมอ'},
+      {id:'permafrost',name:'สายเยือกนิรันดร์',emoji:'🥶',desc:'แช่นานขึ้น 50% และดาเมจต่อตัวที่แช่อยู่ +40%'}]},
+  taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
+    upgrades:[
+      {id:'power',name:'ประจุเข้มข้น',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
+      {id:'rate',name:'จังหวะสายฟ้า',emoji:'⏩',iconKey:'ic_taro_rate',max:5,desc:'ปล่อยสายฟ้าเร็วขึ้น 8% ต่อขั้น'},
+      {id:'arc',name:'สายชิ่งต่อเนื่อง',emoji:'🔗',iconKey:'ic_taro_arc',max:3,desc:'สายฟ้าชิ่งเพิ่ม +1 เป้าต่อขั้น'},
+      {id:'surge',name:'ลำสายฟ้าคู่',emoji:'⚡',iconKey:'ic_taro_surge',max:3,desc:'ฟาดพร้อมกันเพิ่ม +1 จุดต่อขั้น'}],
+    mutations:[
+      {id:'chainlord',name:'สายเจ้าโซ่',emoji:'⛓️',desc:'ชิ่งเพิ่ม 2 เป้าและระยะชิ่งกว้างขึ้น 40%'},
+      {id:'stormcaller',name:'สายเรียกพายุ',emoji:'🌩️',desc:'ฟาดพร้อมกันเพิ่ม 2 จุดและดาเมจ +20%'}]},
+  sesame:{name:'Oath Mirror Field',emoji:'🪞',skill:'mirror',color:0x8a8f9c,evolution:'Absolute Oath Mirror',
+    upgrades:[
+      {id:'power',name:'คำสัตย์เข้ม',emoji:'💥',iconKey:'ic_sesame_power',max:5,desc:'ดาเมจกระสุนสะท้อน +12% ต่อขั้น'},
+      {id:'rate',name:'ตั้งเขตไว',emoji:'⏩',iconKey:'ic_sesame_rate',max:5,desc:'ตั้งเขตกระจกเร็วขึ้น 8% ต่อขั้น'},
+      {id:'pane',name:'บานกระจกเสริม',emoji:'🪟',iconKey:'ic_sesame_pane',max:3,desc:'สะท้อนได้เพิ่ม +2 นัดต่อขั้น'},
+      {id:'radius',name:'เขตแผ่กว้าง',emoji:'🛡️',iconKey:'ic_sesame_radius',max:3,desc:'รัศมีเขตกระจก +12% ต่อขั้น'}],
+    mutations:[
+      {id:'fortress',name:'สายป้อมกระจก',emoji:'🏰',desc:'เขตกว้างขึ้น 25% และอยู่นานขึ้น 30%'},
+      {id:'retaliate',name:'สายสวนกลับ',emoji:'💢',desc:'กระสุนสะท้อนทะลุทะลวงและแรงขึ้น 30%'}]},
 };
 const CHARACTER_UNIQUES = {
   berryRebound:{name:'หัวใจสตรอว์เบอร์รีเด้งกลับ',emoji:'🍓',cd:8,color:0xff76a8,desc:'เมล็ดหวานยิงรอบตัวและฟื้น HP — พลังกลางแต่ใช้ได้ถี่'},
@@ -1497,6 +1528,7 @@ const Save = {
       if(!this.data.ownedGear.includes(gearDefaults[slot]))this.data.ownedGear.push(gearDefaults[slot]); }
     if(!this.data.chars||!this.data.chars.length)this.data.chars=['momo'];
     if(!this.data.character)this.data.character='momo';
+    if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (เบอร์รี่) → คืนเป็นโมโม่
     if(!this.data.charProg)this.data.charProg={};
     if(!this.data.bestiary)this.data.bestiary={};
     if(!this.data.stageMastery)this.data.stageMastery={};
@@ -4144,13 +4176,17 @@ class Game extends Phaser.Scene {
         const fan=basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0,ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(-0.08,0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
-    else if(key==='thunder'){ const strikes=aw?3:lvl>=4?2:1, chain=(aw?5:lvl>=5?3:lvl>=3?2:1)+(sw.skill===key?(this.player.weaponChains||0):0), dmg=(14+lvl*4.2)*dm*(cf.storm?1.4:1)*(aw?1.15:1);
+    else if(key==='thunder'){
+      // Basic Attack ของตาโร่ (Rift Bolt Compass): arc=จำนวนชิ่ง · surge=จำนวนจุดฟาด · chainlord/stormcaller=สายกลายรูป
+      const bArc=(basic?.ranks.arc||0)+(basic?.mutation==='chainlord'?2:0), bSurge=(basic?.ranks.surge||0)+(basic?.mutation==='stormcaller'?2:0);
+      const bChainRange=basic?.mutation==='chainlord'?1.4:1, bDmgMut=basic?.mutation==='stormcaller'?1.2:1;
+      const strikes=(aw?3:lvl>=4?2:1)+bSurge, chain=(aw?5:lvl>=5?3:lvl>=3?2:1)+(sw.skill===key?(this.player.weaponChains||0):0)+bArc, dmg=(14+lvl*4.2)*dm*(cf.storm?1.4:1)*(aw?1.15:1)*bDmgMut;
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
       cand.sort((a,b)=>(b.hp||0)-(a.hp||0));
       this.hitCratesInRadius(this.player.x,this.player.y,aw?760:520,dmg);   // ฟ้าผ่าก็ทุบกล่องในระยะ
       for(let i=0;i<Math.min(strikes,cand.length);i++){ let e=cand[i]; this.zap(e.x,e.y); this.damage(e,dmg,e.x,e.y);
         let from=e; const hit=new Set([e]);
-        for(let c=0;c<chain;c++){ let nb=null,nd=(aw?210:150)**2;
+        for(let c=0;c<chain;c++){ let nb=null,nd=((aw?210:150)*bChainRange)**2;
           this.enemies.children.iterate(o=>{ if(o&&o.active&&!hit.has(o)){ const d=(o.x-from.x)**2+(o.y-from.y)**2; if(d<nd){nd=d;nb=o;} } });
           if(!nb)break; this.chainBolt(from.x,from.y,nb.x,nb.y); this.damage(nb,dmg*0.7,nb.x,nb.y); hit.add(nb); from=nb; } }
       Sfx.zap(); }
@@ -4170,13 +4206,17 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(ang,430,b.body.velocity); } Sfx.shoot(); }
     else if(key==='frost'){
       const df=this.player.deepFreeze?1.4:1,wm=sw.skill===key?(this.player.weaponAreaMul||1):1,wc=sw.skill===key?(this.player.weaponControlMul||1):1;
-      const r=(150+lvl*16)*(aw?1.6:1)*df*wm, dur=(1.1+lvl*0.24)*(aw?1.3:1)*df*wc, dmg=(6+lvl*2.4)*dm*(aw?1.2:1)*df, shatter=lvl>=3||aw||this.player.deepFreeze;
+      // Basic Attack ของมินต์ (Frost Core Nova): chill=รัศมี · linger=ระยะเวลา · blizzard/permafrost=สายกลายรูป
+      const bChill=1+(basic?.ranks.chill||0)*0.12*(basic?.mutation==='blizzard'?1:1)+(basic?.mutation==='blizzard'?0.25:0);
+      const bLinger=(1+(basic?.ranks.linger||0)*0.15)*(basic?.mutation==='permafrost'?1.5:1);
+      const bShatterDmg=basic?.mutation==='permafrost'?1.4:1, bAlwaysShatter=basic?.mutation==='blizzard';
+      const r=(150+lvl*16)*(aw?1.6:1)*df*wm*bChill, dur=(1.1+lvl*0.24)*(aw?1.3:1)*df*wc*bLinger, dmg=(6+lvl*2.4)*dm*(aw?1.2:1)*df, shatter=lvl>=3||aw||this.player.deepFreeze||bAlwaysShatter;
       if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova')) this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r)/ASSET_FX.fx_frostnova.fw*0.82,depth:3,anchor:'center',alpha:Math.min(1,0.5+lvl*0.1)});
       else if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
       else { const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
         this.tweens.add({targets:ring,radius:r,alpha:0,duration:320,onComplete:()=>ring.destroy()}); }
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>=r)return;
-        if(shatter&&e.frozen>0){ this.damage(e,(16+lvl*4)*dm*df,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
+        if(shatter&&e.frozen>0){ this.damage(e,(16+lvl*4)*dm*df*bShatterDmg,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
         if(!e.isBoss&&!e.isMini){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }
         this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r,Math.max(dmg,10)); Sfx.frost(); }
     else if(key==='popcorn'){ const cnt=aw?18:lvl>=4?10:lvl>=2?7:5, dmg=(7+lvl*2.3)*dm*(aw?1.12:1);
@@ -4216,7 +4256,7 @@ class Game extends Phaser.Scene {
       const base=Math.atan2(t.y-this.player.y,t.x-this.player.x);
       for(let k=0;k<beams;k++) this.fireBeam(base+(k-(beams-1)/2)*0.18,len,wide,dmg); Sfx.zap(); }
     else if(key==='meteor'){ this.castBearDonut(lvl,aw,dm); }
-    else if(key==='mirror'){ this.castMirrorGlaze(lvl,aw,dm); }
+    else if(key==='mirror'){ this.castMirrorGlaze(lvl,aw,dm,basic); }
     else if(key==='memory'){ this.castMemoryJam(lvl,aw,dm); }
     else if(key==='thread'){ this.castFlavorThread(lvl,aw,dm); }
     else if(key==='decoy'){ this.castCoreDecoy(lvl,aw,dm); }
@@ -4279,15 +4319,18 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:wave,scale:(r*3.4)/256,alpha:0,duration:430,onComplete:()=>wave.destroy()});
       this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r*1.7)this.damage(e,dmg*(aw?1.05:0.8),e.x,e.y);});Sfx.boom();}
   }
-  castMirrorGlaze(lvl,aw,dm){
+  castMirrorGlaze(lvl,aw,dm,basic){
     const wm=this.signatureWeaponInfo().skill==='mirror'?(this.player.weaponAreaMul||1):1,wr=this.signatureWeaponInfo().skill==='mirror'?(this.player.weaponReflect||0):0;
-    const r=(125+lvl*15)*(this.player.mirrorWard?1.22:1)*(aw?1.2:1)*wm,duration=(1.15+lvl*0.14+(aw?0.8:0))*1000,max=3+lvl+(aw?5:0)+(this.player.mirrorWard?3:0)+wr;
+    // Basic Attack ของงาดำ (Oath Mirror Field): radius=รัศมี · pane=จำนวนสะท้อน · fortress/retaliate=สายกลายรูป
+    const bRad=(1+(basic?.ranks.radius||0)*0.12)*(basic?.mutation==='fortress'?1.25:1);
+    const bPane=(basic?.ranks.pane||0)*2, bDur=basic?.mutation==='fortress'?1.3:1, bPierce=basic?.mutation==='retaliate', bDmgMut=basic?.mutation==='retaliate'?1.3:1;
+    const r=(125+lvl*15)*(this.player.mirrorWard?1.22:1)*(aw?1.2:1)*wm*bRad,duration=(1.15+lvl*0.14+(aw?0.8:0))*1000*bDur,max=3+lvl+(aw?5:0)+(this.player.mirrorWard?3:0)+wr+bPane;
     // Mirror Glaze ต้องอ่านเป็นเกราะสะท้อน ไม่ใช่อัลติ: วงบาง ค่อย ๆ หายใจ และไม่มีสายฟ้าซ้อนสนาม
     const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x9fe8ff).setDepth(5).setScale((r*2)/256).setAlpha(0.28));
     this.tweens.add({targets:ring,rotation:Math.PI*0.55,scaleX:ring.scaleX*1.035,scaleY:ring.scaleY*1.035,alpha:{from:0.20,to:0.32},yoyo:true,duration:Math.max(360,duration*0.48),repeat:1});let reflected=0;
     const pulse=this.time.addEvent({delay:120,loop:true,callback:()=>{if(!ring.active)return;ring.setPosition(this.player.x,this.player.y);
       this.foeBullets.children.iterate(f=>{if(!f||!f.active||reflected>=max||this.dist(f.x,f.y,this.player.x,this.player.y)>r)return;
-        const x=f.x,y=f.y;this.killFoe(f);const b=this.getBullet(x,y,0xffffff,0.18);if(!b)return;b.setTexture('proj_sprinkle').setTint(0x9fe8ff);b.dmg=(8+lvl*2.4)*dm;b.life=2;b.homing=aw?520:360;b.pierce=aw;b.faceVel=true;
+        const x=f.x,y=f.y;this.killFoe(f);const b=this.getBullet(x,y,0xffffff,0.18);if(!b)return;b.setTexture('proj_sprinkle').setTint(0x9fe8ff);b.dmg=(8+lvl*2.4)*dm*bDmgMut;b.life=2;b.homing=aw?520:360;b.pierce=aw||bPierce;b.faceVel=true;
         const t=this.nearestEnemy(800),a=t?Math.atan2(t.y-y,t.x-x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,420,b.body.velocity);this.vfxHitRing(x,y,0x9fe8ff,false);reflected++;});
     }});
     if(aw)for(let i=0;i<3;i++){const a=i*Math.PI*2/3,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.17);if(!b)continue;b.setTexture('proj_sprinkle').setTint(0x9fe8ff);b.dmg=(8+lvl*2.4)*dm;b.life=2;b.homing=480;b.pierce=true;b.faceVel=true;this.physics.velocityFromRotation(a,390,b.body.velocity);}
