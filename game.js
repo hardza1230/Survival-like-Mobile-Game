@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.48.0';
+const GAME_VERSION = '2.49.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.49.0', date:'2026-09-16', title:'Card Variety + Box Drop Rates', items:[
+    'การ์ดเลเวลอัพหลากหลายขึ้น: การันตี 1 สายโจมตี + 1 สายติดตัว/รอบ · ยิ่งอัพใบเดิมสูง ยิ่งเจอน้อยลง (แก้ +ยิง ออกถี่)',
+    'สายติดตัว (passive) มีบทบาทเด่นขึ้น + boost คู่ที่ปรุงเมนูได้ (ป้าย 🍳 ปรุงเมนูได้!) · เพิ่มตัวเลือกเสริม Overdrive/Combat Tempo ทุกตัว (pool ≥6 แบบ)',
+    'Mutation/Evolution เป็น "ช่วงพิเศษ" แยกจอ ไม่ปนการ์ดปกติ (mutation เลือกทั้งจอ · evolution การ์ดเดียวเด่น) พร้อมแบนเนอร์',
+    'กล่องสูตรลับเปลี่ยนเป็นดรอปจากการฆ่ามอนสเตอร์ (RNG): elite 5% · ธรรมดา 0.6% (สูงสุด 3 กล่องพร้อมกัน) แทนการโผล่ตามเวลา' ] },
   { v:'2.48.0', date:'2026-09-16', title:'In-Stage Upgrade Boxes', items:[
     'เพิ่มกล่องสูตรลับในแมพ (ฟ้า) โผล่เป็นระยะ — เก็บแล้วเลือกอัปเกรดเอง 1 ใบ โดยไม่ต้องรอเลเวลอัพ',
     'กล่องมินิบอส (ม่วง) = สุ่มรางวัลให้ พร้อมอนิเมชันสล็อตหมุนช้าลงจนหยุดที่รางวัล + แสงวาบ/เสียง ให้ลุ้น',
@@ -3430,9 +3435,6 @@ class Game extends Phaser.Scene {
         if(live<dynamicMax){const n=Math.min(dynamicBatch,dynamicMax-live);this.spawnWaveRing(n);} }
       if(this.waveAllowsElite){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
       if(this.swarmAcc!=null){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
-      // กล่องสูตรลับในแมพ (เลือกเอง 1 ใบ) โผล่เป็นระยะ — อัปเกรดโดยไม่ต้องรอเลเวล
-      this._boxAcc=(this._boxAcc==null?Phaser.Math.FloatBetween(26,38):this._boxAcc)-dt;
-      if(this._boxAcc<=0){ this._boxAcc=Phaser.Math.FloatBetween(40,58); this.spawnMapBox(); }
       const st=STAGES[this.stageIndex];
       if(st)this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+' วิ');
       if(this.waveTimer<=0){
@@ -3967,28 +3969,45 @@ class Game extends Phaser.Scene {
   rollBasicAttackUpgrades(n){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey:u.iconKey||fallbackIcon,...extra});
-    let attackPool=[];
-    for(const u of d.upgrades){const cur=b.ranks[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;attackPool.push(makeCard(u,{lvl:cur+1,max:u.max,apply:()=>{b.ranks[u.id]=(b.ranks[u.id]||0)+1;this.syncBasicAttack();}}));}
-    if(b.mastery>=4&&!b.mutation){
-      attackPool=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]).map(u=>makeCard(u,{mutation:true,apply:()=>{b.mutation=u.id;this.syncBasicAttack();this.showBanner(u.emoji+' '+u.name,'เลือกสายกลายรูปแล้ว · อีกสายถูกล็อก',1700);}}));
-    }else{
-      Phaser.Utils.Array.Shuffle(attackPool);
-      if(b.mastery>=12&&!b.evolved&&!this.banishedKeys?.['b:evolution']){const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'วิวัฒนาการ Basic Attack ขั้นสุดโดยคงจำนวนเอฟเฟกต์ให้อ่านสนามได้'};attackPool.unshift(makeCard(evo,{evolution:true,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}}));}
+    // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) ครั้งเดียว: การ์ดทั้งจอเป็น mutation ล้วน
+    if(b.mastery>=5&&!b.mutation){
+      const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
+      if(muts.length){ this.showBanner('⭐ จุดแยกสายกลายรูป!','เลือกสไตล์การเล่น 1 สาย (ล็อกอีกสาย)',1500);
+        return muts.map(u=>makeCard(u,{mutation:true,special:true,apply:()=>{b.mutation=u.id;this.syncBasicAttack();this.showBanner(u.emoji+' '+u.name,'เลือกสายกลายรูปแล้ว · อีกสายถูกล็อก',1700);}})); }
     }
-    if(attackPool.length<2){
-      const endless=[{id:'overdrive',name:'Overdrive',emoji:'💥',max:20,desc:'ดาเมจ Basic Attack +5%'},{id:'tempo',name:'Combat Tempo',emoji:'⏩',max:20,desc:'ยิง Basic Attack เร็วขึ้น 3%'}];
-      for(const u of endless){const cur=b.ranks[u.id]||0;if(cur>=u.max||attackPool.some(o=>o.key===u.id))continue;attackPool.push(makeCard(u,{lvl:cur+1,max:u.max,apply:()=>{b.ranks[u.id]=(b.ranks[u.id]||0)+1;this.syncBasicAttack();}}));}
+    // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
+    if(b.mastery>=12&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
+      this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
+      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'วิวัฒนาการขั้นสุด — ยกระดับ Basic Attack ทั้งหมด!'};
+      return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
-    const chosen=attackPool.slice(0,2);
-    const survival=[];const pasOwned=Object.keys(this.passives).length;
-    for(const key in PASSIVES){if(this.banishedKeys?.['p:'+key])continue;const p=PASSIVES[key],cur=this.passives[key]||0;if(cur>=p.max||(cur===0&&pasOwned>=3))continue;survival.push({type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,kind:'สกิลติดตัว',badgeColor:'#66d3b3',color:p.color,emoji:p.emoji,title:p.name,desc:p.desc,apply:()=>{this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);this.buildSkillBar();}});}
+    // ----- รอบปกติ: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญหา +ยิง ออกถี่) -----
+    // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
+    const atk=[];
+    for(const u of d.upgrades){const cur=b.ranks[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
+      atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,apply:()=>{b.ranks[u.id]=(b.ranks[u.id]||0)+1;this.syncBasicAttack();}})});}
+    // ตัวเลือกเสริมประจำทุกตัว (Overdrive/Combat Tempo) — ขยาย pool ให้ ≥6 แบบ ลดการเจอใบเดิมซ้ำ
+    const extra=[{id:'overdrive',name:'Overdrive',emoji:'🔥',max:8,desc:'ดาเมจ Basic Attack +5% ต่อขั้น'},{id:'tempo',name:'Combat Tempo',emoji:'💨',max:8,desc:'ยิง Basic Attack เร็วขึ้น 3% ต่อขั้น'}];
+    for(const u of extra){const cur=b.ranks[u.id]||0;if(cur>=u.max)continue;atk.push({w:atk.length?1.4:2.5,card:makeCard(u,{lvl:cur+1,max:u.max,apply:()=>{b.ranks[u.id]=(b.ranks[u.id]||0)+1;this.syncBasicAttack();}})});}
+    // สายติดตัว (passive) — 12 แบบ = แหล่งความหลากหลายหลัก · boost คู่ที่ปรุงเมนูได้ (recipe)
+    const cookB=new Set(COMBOS.filter(c=>this.skills[c.a]>0).map(c=>c.b));
+    const pas=[];const pasOwned=Object.keys(this.passives).length;
+    for(const key in PASSIVES){if(this.banishedKeys?.['p:'+key])continue;const p=PASSIVES[key],cur=this.passives[key]||0;if(cur>=p.max||(cur===0&&pasOwned>=4))continue;
+      const cooks=cookB.has(key)&&cur===0;
+      pas.push({w:cooks?6:2.4,card:{type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,kind:cooks?'สกิลติดตัว 🍳':'สกิลติดตัว',badgeColor:'#66d3b3',color:p.color,emoji:p.emoji,title:p.name,desc:cooks?('🍳 ปรุงเมนูได้! · '+p.desc):p.desc,apply:()=>{this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);this.buildSkillBar();}}});}
     const hpFrac=this.player.hp/Math.max(1,this.player.maxhp);
-    if(hpFrac<0.999){const amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1))),heal={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,kind:'ฟื้นฟูทันที',emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};survival.push(heal);if(hpFrac<0.40)survival.push({...heal});}
-    Phaser.Utils.Array.Shuffle(survival);
-    const fallback={type:'util',key:'sugarCache',lvl:1,max:1,emoji:'🍬',title:'Sugar Cache',desc:'รับ Sugar 8 หน่วยทันที · ไม่ใช้ช่อง Passive',apply:()=>{this.sugarStage+=8;this.sugarRun+=8;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);}};
-    chosen.push(survival[0]||fallback);
-    Phaser.Utils.Array.Shuffle(chosen);
-    return chosen.slice(0,n);
+    let healCard=null;
+    if(hpFrac<0.999){const amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,kind:'ฟื้นฟูทันที',emoji:'💖',title:'Sweet Recovery',desc:'ฟื้น HP ทันที '+amount+' หน่วย · ไม่ใช้ช่อง Passive',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}
+    const pick=(arr)=>{if(!arr.length)return null;let tot=arr.reduce((s,x)=>s+x.w,0),r=Math.random()*tot;for(let i=0;i<arr.length;i++){r-=arr[i].w;if(r<=0)return arr.splice(i,1)[0].card;}return arr.splice(0,1)[0].card;};
+    const out=[];
+    const a1=pick(atk); if(a1)out.push(a1);          // การันตี 1 สายโจมตี
+    const p1=pick(pas); if(p1)out.push(p1);          // การันตี 1 สายติดตัว (เพิ่มบทบาท passive)
+    const rest=[...atk,...pas]; while(out.length<n&&rest.length){const c=pick(rest);if(c)out.push(c);else break;}
+    if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
+    else if(out.length<n&&healCard)out.push(healCard);
+    if(!out.length)out.push({type:'util',key:'sugarCache',lvl:1,max:1,emoji:'🍬',title:'Sugar Cache',desc:'รับ Sugar 8 หน่วยทันที',apply:()=>{this.sugarStage+=8;this.sugarRun+=8;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);}});
+    Phaser.Utils.Array.Shuffle(out);
+    return out.slice(0,n);
   }
   rollUpgrades(n){
     if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n);
@@ -4621,6 +4640,8 @@ class Game extends Phaser.Scene {
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     this.dropOrb(e.x,e.y,e.xp||1);   // ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isBoss||isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดรอป
+    // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
+    if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=isElite?0.05:0.006; if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
     if(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008)) this.spawnVac(e.x,e.y);   // ไอเทมแม่เหล็ก (สุ่มน้อย · มินิแน่นอน)
     if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
     // bomber: ระเบิดตอนตาย (เตือนสั้น ๆ ด้วยวง แล้วโดนถ้าอยู่ใกล้)
@@ -4750,9 +4771,6 @@ class Game extends Phaser.Scene {
     else {const refund=tier==='epic'?60:tier==='rare'?25:8;this.sugarStage+=refund;this.sugarRun+=refund;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🍬 +'+refund,1200);}
   }
   // ---- หีบสมบัติ (ดรอปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
-  // กล่องสูตรลับในแมพ — วางห่างผู้เล่นเล็กน้อยให้ต้องเดินไปเก็บ
-  spawnMapBox(){ if(!this.chests)return; const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*(0.28+Math.random()*0.22);
-    const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad; this.spawnChest(x,y,'pick'); }
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
     if(!c)return;
