@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.59.0';
+const GAME_VERSION = '2.60.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.60.0', date:'2026-09-16', title:'Animated Opening Scene', items:[
+    'เพิ่มฉากเปิดแบบเคลื่อนไหวหลังโหลด Asset สำเร็จ ก่อนเข้าสู่เมนูเกม พร้อม Momo พอร์ทัล แสง และประกายธีมครัวมหัศจรรย์',
+    'แตะหรือกดปุ่มเพื่อข้ามได้ และรองรับ Reduce Motion เพื่อให้เข้าเกมเร็วและสบายตา' ] },
   { v:'2.59.0', date:'2026-09-16', title:'New Magic Circle Art', items:[
     'เปลี่ยนวงเวทกระจกที่ดูเบี้ยว (ยืมวงกระแทกมาใช้) เป็นอาร์ตวงเวทใหม่ที่สมมาตรเป๊ะ โปร่งใส โทนขาว',
     'ใช้ในเขตยึดครอง (capture), สนามกระจกงาดำ และ Oath Ward — ย่อแบนวางพื้นแล้วไม่บิดอีก' ] },
@@ -1191,8 +1194,70 @@ class Boot extends Phaser.Scene {
     mkRect('ice_chain',182,72,(c,w,h)=>{gShadow(c,w,h);c.strokeStyle='#8ddcf8';c.lineWidth=8;for(let i=0;i<6;i++){c.beginPath();c.ellipse(18+i*29,h/2,18,10,i%2?-.45:.45,0,TAU);c.stroke();}c.strokeStyle='rgba(255,255,255,.58)';c.lineWidth=2;for(let i=0;i<6;i++){c.beginPath();c.ellipse(18+i*29,h/2-2,17,9,i%2?-.45:.45,0,TAU);c.stroke();}});
     mkRect('ice_pool',158,82,(c,w,h)=>{const q=c.createRadialGradient(w/2,h/2,3,w/2,h/2,w*.48);q.addColorStop(0,'rgba(230,255,255,.78)');q.addColorStop(.55,'rgba(92,199,241,.50)');q.addColorStop(1,'rgba(49,117,180,0)');c.fillStyle=q;c.beginPath();c.ellipse(w/2,h/2,w*.48,h*.38,0,0,TAU);c.fill();});
 
-    this.scene.start('Game');
-    if(window.GameLoader)window.GameLoader.hide();
+    this.scene.start('Opening');
+  }
+}
+
+/* ---- OPENING: short hand-off after assets are ready, before the menu is built ---- */
+class Opening extends Phaser.Scene {
+  constructor(){ super('Opening'); }
+  create(){
+    const W=this.scale.width,H=this.scale.height,cx=W/2,cy=H/2;
+    const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.cameras.main.setBackgroundColor('#17101f');
+
+    const bg=this.add.image(cx,cy,'bg1').setDisplaySize(W*1.08,H*1.08).setAlpha(0);
+    const shade=this.add.rectangle(cx,cy,W,H,0x170d20,0.5);
+    const portal=this.add.sprite(cx,cy+H*0.06,'fx_bossportal',0)
+      .setScale(Math.max(1.2,Math.min(W,H)/180)).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD);
+    if(this.anims.exists('portal_idle'))portal.play('portal_idle');
+
+    const rays=this.add.graphics().setBlendMode(Phaser.BlendModes.ADD).setAlpha(0);
+    for(let i=0;i<12;i++){
+      const a=i*TAU/12,inner=Math.min(W,H)*0.10,outer=Math.max(W,H)*0.62;
+      rays.fillStyle(i%2?0xff8eb9:0xffd37a,0.055);
+      rays.beginPath();rays.moveTo(cx+Math.cos(a-0.055)*inner,cy+H*0.06+Math.sin(a-0.055)*inner);
+      rays.lineTo(cx+Math.cos(a+0.055)*inner,cy+H*0.06+Math.sin(a+0.055)*inner);
+      rays.lineTo(cx+Math.cos(a)*outer,cy+H*0.06+Math.sin(a)*outer);rays.closePath();rays.fillPath();
+    }
+
+    const hero=this.add.sprite(cx,cy+H*0.34,'char_momo',CF.idle)
+      .setScale(Math.max(0.72,Math.min(W,H)/560)).setAlpha(0);
+    const title=this.add.text(cx,cy-H*0.28,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(30,Math.min(54,W*0.068))+'px',color:'#fff5f7',stroke:'#651b46',strokeThickness:8,align:'center'}).setOrigin(0.5).setAlpha(0).setScale(0.82);
+    const sub=this.add.text(cx,cy-H*0.19,'ประตูสู่ครัวมหัศจรรย์กำลังเปิด',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(13,Math.min(21,W*0.026))+'px',color:'#ffd78d',align:'center'}).setOrigin(0.5).setAlpha(0);
+    const skip=this.add.text(cx,H-Math.max(28,H*0.06),'แตะเพื่อข้าม',{fontFamily:'sans-serif',fontSize:Math.max(11,Math.min(16,W*0.02))+'px',color:'#eadbea'}).setOrigin(0.5).setAlpha(0);
+
+    const sparkles=[];
+    for(let i=0;i<18;i++){
+      const a=Math.random()*TAU,r=Math.min(W,H)*(0.12+Math.random()*0.28);
+      const s=this.add.circle(cx+Math.cos(a)*r,cy+H*0.06+Math.sin(a)*r,1.5+Math.random()*3,i%3===0?0xffd166:0xff9ec4,0);
+      sparkles.push(s);
+      this.tweens.add({targets:s,alpha:{from:0,to:0.9},scale:{from:0.3,to:1.5},duration:500+Math.random()*500,delay:850+Math.random()*900,yoyo:true,repeat:-1});
+    }
+
+    let leaving=false;
+    const finish=()=>{
+      if(leaving)return; leaving=true; this.input.enabled=false;
+      this.cameras.main.fadeOut(reduced?80:380,20,10,28);
+      this.cameras.main.once('camerafadeoutcomplete',()=>this.scene.start('Game'));
+    };
+    this.time.delayedCall(reduced?900:4200,finish);
+    this.time.delayedCall(reduced?100:650,()=>{
+      if(leaving)return;
+      this.input.once('pointerdown',finish);
+      this.input.keyboard&&this.input.keyboard.once('keydown',finish);
+      this.tweens.add({targets:skip,alpha:0.68,duration:320});
+    });
+
+    this.tweens.add({targets:bg,alpha:1,displayWidth:W,displayHeight:H,duration:reduced?80:1100,ease:'Sine.out'});
+    this.tweens.add({targets:rays,alpha:1,duration:reduced?80:1800,ease:'Sine.out'});
+    this.tweens.add({targets:portal,alpha:0.92,scaleX:portal.scaleX*1.12,scaleY:portal.scaleY*1.12,duration:reduced?80:900,ease:'Back.out'});
+    this.tweens.add({targets:title,alpha:1,scale:1,duration:reduced?80:720,delay:reduced?0:420,ease:'Back.out'});
+    this.tweens.add({targets:sub,alpha:1,y:sub.y+6,duration:reduced?80:600,delay:reduced?0:780,ease:'Sine.out'});
+    this.tweens.add({targets:hero,alpha:1,y:cy+H*0.20,duration:reduced?80:900,delay:reduced?0:1250,ease:'Back.out'});
+    this.tweens.add({targets:hero,scaleX:hero.scaleX*1.04,scaleY:hero.scaleY*0.96,duration:700,delay:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    this.cameras.main.fadeIn(reduced?80:350,23,16,31);
+    this.time.delayedCall(50,()=>{ if(window.GameLoader)window.GameLoader.hide(); });
   }
 }
 
@@ -5863,7 +5928,7 @@ window.__g = new Phaser.Game({
   },
   physics: { default:'arcade', arcade:{ gravity:{y:0}, debug:false } },
   render: { antialias:true, antialiasGL:true, roundPixels:false, powerPreference:'high-performance' },
-  scene: [Boot, Game],
+  scene: [Boot, Opening, Game],
 });
 // ปรับขนาดตอนหมุนจอ/เปลี่ยนขนาด — debounce กันค่าเพี้ยนช่วงหมุน + อ่านค่าจริงหลังหมุนเสร็จ
 let _rzT=null;
