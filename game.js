@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.44.0';
+const GAME_VERSION = '2.45.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.45.0', date:'2026-09-16', title:'Consolidate Stat Sources', items:[
+    'ยุบแหล่งสแตตที่ทับซ้อน: Bestiary และ Ascension ไม่ให้ค่าพลังดิบ (HP/ATK/DEF) อีกต่อไป',
+    'Bestiary → ปลดขั้นแล้วรับ 🍬 Sugar ทันที (คัมภีร์กลายเป็นแหล่งรายได้ ไม่ใช่พลังลับที่คุมบาลานซ์ยาก)',
+    'Ascension → คงการรับ Sugar ก้อนใหญ่ตอน Ascend แทนการบวกสแตตถาวร',
+    'เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank (พรถาวร) · Talent เฉพาะตัว · Gear — บาลานซ์คุมง่ายขึ้น' ] },
   { v:'2.44.0', date:'2026-09-16', title:'Recipe System (Prototype)', items:[
     'ปลุกระบบคอมโบที่เคยตายให้กลับมาเป็น "ระบบทำอาหาร": สกิลโจมตี = วัตถุดิบ · สกิลติดตัว = เครื่องปรุง · มีคู่ครบ = ปรุงเมนู',
     'ปรุงเมนูครั้งแรก = โมเมนต์ทำอาหาร (แบนเนอร์ 🍳 ปรุงเมนู! + เสียง) พร้อมบัฟดาเมจเล็ก +5% ต่อเมนู',
@@ -1541,7 +1546,13 @@ const Save = {
   // ---- Bestiary (Monster Card) ----
   kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
   addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
-    this.data.bestiary[type]=(this.data.bestiary[type]||0)+1; },
+    const before=this.data.bestiary[type]||0, after=before+1;
+    this.data.bestiary[type]=after;
+    // ปลดขั้น Bestiary = รับ Sugar (แทนที่โบนัสสแตตเดิม) — คืนจำนวน Sugar ที่ได้ให้ผู้เรียกโชว์ป้าย
+    let sugar=0;
+    for(const t of BESTIARY_THRESHOLDS){ if(before<t&&after>=t)sugar+=40; }
+    if(sugar){ this.data.sugar=(this.data.sugar||0)+sugar; this.save(); }
+    return sugar; },
 };
 
 /* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
@@ -2459,11 +2470,8 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 สมุดมอนสเตอร์');
     const w=this.W,h=this.H;
     // สรุปโบนัสรวม
-    const bb=bestiaryAllBonus(), parts=[];
-    if(bb.hp)parts.push('HP+'+bb.hp); if(bb.dmg)parts.push('ATK+'+Math.round(bb.dmg*100)+'%');
-    if(bb.def)parts.push('DEF+'+Math.round(bb.def*100)+'%'); if(bb.spd)parts.push('SPD+'+Math.round(bb.spd*100)+'%');
-    if(bb.cdr)parts.push('CDR+'+Math.round(bb.cdr*100)+'%'); if(bb.crit)parts.push('CRIT+'+Math.round(bb.crit*100)+'%');
-    const sumTxt=this.add.text(w/2,53,parts.length?('โบนัสรวม: '+parts.join(' · ')):'ฆ่ามอนสเตอร์เพื่อสะสมโบนัสถาวร!',
+    const totLv=BESTIARY.reduce((a,m)=>a+bestiaryLv(m.id),0);
+    const sumTxt=this.add.text(w/2,53,'ฆ่ามอนสเตอร์ครบขั้น = รับ 🍬 Sugar ทันที · ปลดขั้นแล้ว '+totLv+' ขั้น',
       {fontFamily:'sans-serif',fontSize:'10px',color:'#ffe08a',wordWrap:{width:w-180}}).setOrigin(0.5);
     this.menu.add(sumTxt);
     const portrait=w<=h, cols=portrait?2:3, gap=7,cardW=(w-28-gap*(cols-1))/cols,marginX=14;
@@ -2498,14 +2506,9 @@ class Game extends Phaser.Scene {
       const pct=next?Math.min(1,kills/next):1;
       const barColor=lv>=5?0xffd166:(lv>=3?0xb98cff:0x8bd3a0);
       if(pct>0){ g.fillStyle(barColor,1); g.fillRoundedRect(bx,by,Math.max(6,barW*pct),barH,3); }
-      // bonus text
-      const bDef=lv>0?m.bonus[lv-1]:m.bonus[0];
-      const bParts=[];
-      if(bDef.hp)bParts.push('HP+'+bDef.hp); if(bDef.dmg)bParts.push('ATK+'+Math.round(bDef.dmg*100)+'%');
-      if(bDef.def)bParts.push('DEF+'+Math.round(bDef.def*100)+'%'); if(bDef.spd)bParts.push('SPD+'+Math.round(bDef.spd*100)+'%');
-      if(bDef.cdr)bParts.push('CDR+'+Math.round(bDef.cdr*100)+'%'); if(bDef.crit)bParts.push('CRIT+'+Math.round(bDef.crit*100)+'%');
-      const bLabel=lv>0?bParts.join(' '):(lv===0?('ถัดไป: '+bParts.join(' ')):'');
-      const bt=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontSize:'8.5px',color:lv>0?'#8bd3a0':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
+      // bonus text — ปลดขั้นแล้วได้ Sugar (ไม่ใช่สแตต)
+      const bLabel=lv>0?('ปลดแล้ว '+lv+' ขั้น · 🍬 +'+(lv*40)):'ปลดขั้นแรก: 🍬 +40';
+      const bt=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontSize:'8.5px',color:lv>0?'#ffd166':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
       const desc=this.add.text(cx+8,cy+75,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8.5px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
       this.menu.add([g,icon,nm,stars,kt,bt,desc]);
     });
@@ -2592,7 +2595,7 @@ class Game extends Phaser.Scene {
     const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 ต้องทำ Mastery ครบทั้ง 5 ด่าน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
     const card=(y,color,title,desc,label,fn)=>{const cw=Math.min(w-32,520),x=(w-cw)/2,ch=Math.min(132,h*0.22),g=this.add.graphics();g.fillStyle(0x251a32,0.97);g.fillRoundedRect(x,y,cw,ch,17);g.lineStyle(2,color,0.9);g.strokeRoundedRect(x,y,cw,ch,17);const t=this.add.text(x+18,y+17,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff'}),d=this.add.text(x+18,y+47,desc,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',wordWrap:{width:cw-36},lineSpacing:4}),b=this.add.text(x+cw-18,y+ch-18,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0.5);this.menu.add([g,t,d,b]);if(fn)this._zone(x,y,cw,ch,fn);};
     const y1=100,y2=y1+Math.min(145,h*0.24);card(y1,0xd58cff,'🌙 Midnight Kitchen · Endless','วน 5 เวฟแล้วสู้บอส ศัตรูแรงขึ้นทุกรอบ · ทุก 3 รอบ The Echo of Hunger จะปรากฏ\nสถิติสูงสุด '+best+' รอบ',unlocked?'แตะเพื่อเริ่ม':'ยังไม่ปลดล็อก',unlocked?()=>{this._endlessRequested=true;this.stageDiff=Math.max(2,Math.min(5,(Save.data.diffBest?.[4]||2)));this.startRun(4);}:null);
-    const confirm=this._ascendConfirm;card(y2,0xffa952,'☀ Ascension '+asc,'เริ่มเส้นทางด่านใหม่ โดยรีเซ็ต Mastery/ด่านที่ปลดล็อก แต่เก็บตัวละคร Gear Rank และรับ HP/ATK ถาวรต่อ Ascension',canAscend?(confirm?'⚠ แตะอีกครั้งเพื่อยืนยัน':'Ascend · รับ Sugar '+(350+(asc+1)*150)):'ต้องทำ Mastery รอบนี้ให้ครบ',canAscend?()=>{if(this._ascendConfirm){const r=Save.ascend();this._ascendConfirm=false;Sfx.clear();this.showBanner('☀ ASCENSION '+Save.data.ascension,'พลังถาวรเพิ่มขึ้น · Sugar +'+r,2200);}else{this._ascendConfirm=true;Sfx.select();}this.buildEndgame();}:null);
+    const confirm=this._ascendConfirm;card(y2,0xffa952,'☀ Ascension '+asc,'เริ่มเส้นทางด่านใหม่ โดยรีเซ็ต Mastery/ด่านที่ปลดล็อก แต่เก็บตัวละคร Gear Rank และรับ Sugar ก้อนใหญ่ต่อ Ascension',canAscend?(confirm?'⚠ แตะอีกครั้งเพื่อยืนยัน':'Ascend · รับ Sugar '+(350+(asc+1)*150)):'ต้องทำ Mastery รอบนี้ให้ครบ',canAscend?()=>{if(this._ascendConfirm){const r=Save.ascend();this._ascendConfirm=false;Sfx.clear();this.showBanner('☀ ASCENSION '+Save.data.ascension,'พลังถาวรเพิ่มขึ้น · Sugar +'+r,2200);}else{this._ascendConfirm=true;Sfx.select();}this.buildEndgame();}:null);
     const board=(Save.data.endlessBoard||[]),top=y2+Math.min(150,h*0.25),head=this.add.text(w/2,top,'🏆 อันดับ Endless ในเครื่อง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#bfe8ff'}).setOrigin(0.5);this.menu.add(head);
     const lines=board.length?board.map((r,i)=>(i+1)+'. รอบ '+r.cycle+' · ☠'+r.kills+' · '+Math.floor(r.seconds/60)+':'+String(r.seconds%60).padStart(2,'0')+' · '+(CHARACTERS[r.character]?.name||r.character)).join('\n'):'ยังไม่มีสถิติ';const list=this.add.text(w/2,top+24,lines,{fontFamily:'sans-serif',fontSize:'10px',color:'#d8c4e3',align:'center',lineSpacing:5}).setOrigin(0.5,0);this.menu.add(list);this.menu.setVisible(true);
   }
@@ -2948,11 +2951,9 @@ class Game extends Phaser.Scene {
     // พรสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลรอบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
     for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]); if(it&&it.apply)it.apply(p, Save.gearLv(it.id)); }
-    // Bestiary bonuses (ถาวรจากการสะสมฆ่ามอนสเตอร์)
-    const bb=bestiaryAllBonus();
-    if(bb.hp)p.maxhp+=bb.hp; if(bb.dmg)p.dmgMul*=(1+bb.dmg); if(bb.def)p.dmgTakenMul*=(1-bb.def);
-    if(bb.spd)p.baseSpeed*=(1+bb.spd); if(bb.cdr)p.cdMul*=(1-bb.cdr); if(bb.crit)p.critChance+=bb.crit;
-    const asc=Math.min(20,Save.data.ascension||0);if(asc){p.maxhp*=1+asc*0.05;p.dmgMul*=1+asc*0.04;p.regen+=asc*0.10;}
+    // หมายเหตุ: Bestiary + Ascension ไม่ให้สแตตรบแล้ว (ยุบแหล่งสแตตที่ทับซ้อน v2.45.0)
+    //  · Bestiary → ให้ Sugar ตอนปลดขั้น (ใน Save.addKill)  · Ascension → ให้ Sugar ก้อนใหญ่ตอน Ascend
+    //  เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank (พรถาวร) · Talent เฉพาะตัว · Gear
     p.baseSpeed=Math.min(BALANCE.moveSpeed*1.35,p.baseSpeed);   // meta หลายระบบรวมกันต้องไม่ทำให้เดินเร็วเกินอ่านสนาม
     p.cdMul=Math.max(0.72,p.cdMul);p.critChance=Math.min(0.40,p.critChance);p.dmgMul=Math.min(3.25,p.dmgMul);
     p.dmgTakenMul=Math.max(0.35,p.dmgTakenMul);   // กันเกราะโกงเกิน (รับดาเมจอย่างน้อย 35%)
@@ -4539,7 +4540,8 @@ class Game extends Phaser.Scene {
     if(!big) Sfx.pop();
     // Bestiary: นับจำนวนที่ฆ่าตามชนิด
     const btype=isBoss?'boss':isMini?'mini':e.acid?'acid':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture.key==='e_fast'?'fast':e.texture.key==='e_tank'||isElite?'tank':'basic');
-    Save.addKill(btype);
+    const bSugar=Save.addKill(btype);
+    if(bSugar){ this.showBanner('📖 คัมภีร์ปลดขั้นใหม่','+🍬 '+bSugar,1100); Sfx.chest&&Sfx.chest(); }
     const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
     this.burst(e.x,e.y,deathColor);
     this.vfxDeathPoof(e.x,e.y,deathColor,big||isElite);
