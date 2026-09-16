@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.49.0';
+const GAME_VERSION = '2.50.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.50.0', date:'2026-09-16', title:'Recipe Goals Visible (Survivor.io-style)', items:[
+    'เพิ่มพาเนล "🍳 สูตรที่ปรุงได้" บนหน้าเลเวลอัพและหน้าหยุดเกม — โชว์ว่าต้องเก็บสกิลติดตัวตัวไหนถึงจะปรุงเมนู (คล้าย weapon evolution ของ Survivor.io)',
+    'แต่ละสูตรบอกชื่อเมนู + สถานะ: ยังไม่ได้ (เทา, เก็บ passive ที่ต้องการ) · เก็บครบแล้ว (เขียว) · ปรุงแล้ว ✓ (ทอง)',
+    'เปลี่ยน recipe จากของที่ซ่อนอยู่ ให้เป็นเป้าหมายที่ผู้เล่นเห็นและไล่ล่าได้' ] },
   { v:'2.49.0', date:'2026-09-16', title:'Card Variety + Box Drop Rates', items:[
     'การ์ดเลเวลอัพหลากหลายขึ้น: การันตี 1 สายโจมตี + 1 สายติดตัว/รอบ · ยิ่งอัพใบเดิมสูง ยิ่งเจอน้อยลง (แก้ +ยิง ออกถี่)',
     'สายติดตัว (passive) มีบทบาทเด่นขึ้น + boost คู่ที่ปรุงเมนูได้ (ป้าย 🍳 ปรุงเมนูได้!) · เพิ่มตัวเลือกเสริม Overdrive/Combat Tempo ทุกตัว (pool ≥6 แบบ)',
@@ -2285,6 +2289,31 @@ class Game extends Phaser.Scene {
     rowFn(topY+chip+8,'✨ พร',  '#66d3b3', pas, k=>PASSIVES[k]?PASSIVES[k].emoji:'❓', k=>this.passives[k], 0x66d3b3, null, true,20,58);
     return topY+chip*2+8+6;
   }
+  /* พาเนล "สูตรที่ปรุงได้" — โชว์เป้าหมาย recipe/evolution แบบ Survivor.io: อาวุธ + passive ที่ต้องเก็บ = เมนู
+     คืนค่า y ล่างสุด · ใช้ทั้งหน้าเลเวลอัพและหน้าหยุดเกม */
+  drawRecipePanel(cont,y){
+    const basic=this.basicAttackInfo(); if(!basic)return y;
+    const combos=COMBOS.filter(c=>c.a===basic.skill); if(!combos.length)return y;
+    const w=this.W, sx=10, avail=w-sx*2;
+    const hd=this.add.text(sx,y,'🍳 สูตรที่ปรุงได้ (เก็บของติดตัวให้ครบคู่):',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(0,0);
+    cont.add(hd);
+    const rowY=y+15, n=combos.length, gap=6, cw=(avail-gap*(n-1))/n, ch=34;
+    combos.forEach((c,i)=>{
+      const cooked=!!(this.combosOwned&&this.combosOwned[c.key]);
+      const owned=(this.passives&&this.passives[c.b]>0);
+      const pas=PASSIVES[c.b], x=sx+i*(cw+gap);
+      const col=cooked?0xffd166:(owned?0x66d3b3:0x4a4059);
+      const g=this.add.graphics(); g.fillStyle(cooked?0x3a2f1a:0x241a33,0.95); g.fillRoundedRect(x,rowY,cw,ch,8); g.lineStyle(1.5,col,cooked?1:0.75); g.strokeRoundedRect(x,rowY,cw,ch,8);
+      cont.add(g);
+      // บรรทัด 1: ชื่อเมนู (+ ✓ ถ้าปรุงแล้ว)
+      const nm=this.add.text(x+6,rowY+5,(cooked?'✓ ':'')+c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:cooked?'#ffe08a':'#ffffff',wordWrap:{width:cw-12}}).setOrigin(0,0);
+      // บรรทัด 2: สถานะ — ต้องเก็บ passive ตัวไหน
+      const sub=cooked?'ปรุงแล้ว!':('เก็บ '+(pas?pas.emoji+' '+pas.name:c.b));
+      const st=this.add.text(x+6,rowY+ch-11,sub,{fontFamily:'sans-serif',fontSize:'8px',color:cooked?'#ffd166':(owned?'#66d3b3':'#b7abc9')}).setOrigin(0,0.5);
+      cont.add([nm,st]);
+    });
+    return rowY+ch+4;
+  }
   /* แถบไอคอนสกิลด้านล่าง — บอกว่ามีสกิลอะไร เลเวลเท่าไหร่ */
   buildSkillBar(){
     if(this.skillBar)this.skillBar.destroy();
@@ -3051,7 +3080,8 @@ class Game extends Phaser.Scene {
     const pnl=this.add.graphics(); pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,panelH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,panelH,14);
     const ph=this.add.text(px+14,panelY+8,'ถือครองอยู่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
-    this.drawHeldBar(this.pauseUI,panelY+27);
+    const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);
+    if(this.usesBasicAttackBuild())this.drawRecipePanel(this.pauseUI,heldBot+6);   // โชว์สูตร recipe ในหน้าหยุดเกมด้วย
     const portrait=w<=h,gap=portrait?12:16,bw=portrait?Math.min(w-48,330):Math.min(270,(w-56-gap)/2),bh=54;
     const by=portrait?h-138:Math.max(196,h-68),left=portrait?w/2:w/2-gap/2-bw/2,right=portrait?w/2:w/2+gap/2+bw/2;
     this.uiPillBtn(this.pauseUI,left,by,bw,bh,COLORS.mint,'▶','เล่นต่อ',null);
@@ -3885,12 +3915,13 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
-    const heldBot=this.drawHeldBar(this.lvlUp, 8);
-    const t=this.add.text(w/2,heldBot,this._chestReward?'🎁 หีบสมบัติ — แตะใบเดิมซ้ำเพื่อยืนยัน':'⭐ LEVEL UP — แตะเลือก แล้วแตะใบเดิมซ้ำเพื่อยืนยัน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+550;
+    const heldBot0=this.drawHeldBar(this.lvlUp, 8);
+    const heldBot=this.usesBasicAttackBuild()?this.drawRecipePanel(this.lvlUp,heldBot0+2):heldBot0;   // โชว์สูตร recipe เฉพาะ character-first
+    const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 หีบสมบัติ — แตะใบเดิมซ้ำเพื่อยืนยัน':'⭐ LEVEL UP — แตะเลือก แล้วแตะใบเดิมซ้ำเพื่อยืนยัน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+550;
     this.lvlUp.add(t);
     this.banishMode=false;
     const opts=this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._lvlOpts=opts;
-    const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+31;
+    const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
     const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
     const finalCardW=portrait?(w-side*2):cardW;
     const ch=Math.min(portrait?150:220,(h-startY-52-gap*(rows-1))/rows);   // เว้นล่าง 40px ให้ปุ่มสุ่มใหม่/ลบสกิล
