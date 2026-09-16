@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.54.0';
+const GAME_VERSION = '2.55.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.55.0', date:'2026-09-16', title:'Fix Purge Objective + Cleaner Hub', items:[
+    'แก้บั๊ก: ภารกิจ "ทำลายแกนคำสาป" ตัวที่ไม่ยิงกระสุน (ตาโร่ฟ้าผ่า/มินต์แช่/โกโก้/งาดำ) ทำลายเองไม่ได้ — ตอนนี้สกิล AoE ทำลายแกนได้ + เข้าใกล้ชำระล้างเร็วขึ้น',
+    'จัดหน้า Hub ให้สะอาด: รวมปุ่มจาก 11 เหลือ 6 กลุ่ม — 🎒 คลัง&พลัง · 🎉 กิจกรรม · 📖 คัมภีร์ · ⚙ อื่นๆ (แตะเข้าไปเจอเมนูย่อย)' ] },
   { v:'2.54.0', date:'2026-09-16', title:'Card Rarity + Faster Reading', items:[
     'การ์ดอัพเกรดสุ่มความหายาก (แบบ Death Must Die): ธรรมดา/หายาก/เอพิก/เลเจนดารี — ยิ่งหายากยิ่งได้หลายเลเวลรวด (+1/+2/+3/+4) = ลุ้นทุกเลเวลอัพ + build หลากหลายขึ้น',
     'สีเฟรม = ความหายาก (เห็นทอง=เอาเลย) + ป้าย ◆ ชัด + โชว์ Lv→Lv ที่จะกระโดด → อ่านการ์ดได้ปราดเดียว ไม่ต้องอ่านนาน',
@@ -1498,6 +1501,22 @@ const RANK_PERKS = [
   { id:'might',   emoji:'💥', name:'แก่นแรง',     max:5, desc:'ดาเมจ +5% ต่อขั้น' },
   { id:'revive',  emoji:'🕯️', name:'เทียนคืนชีพ', max:1, desc:'ล้มแล้วฟื้น 1 ครั้ง/ด่าน ที่ HP 45%' },
 ];
+/* ---- HUB_GROUPS: รวมปุ่มเมนูย่อยเป็นกลุ่ม ให้หน้า Hub สะอาดขึ้น (rows: [targetScreen,emoji,label,sub]) ---- */
+const HUB_GROUPS = {
+  gLoadout:{ title:'🎒 คลัง & พลัง', rows:[
+    ['upgrade','✦','สายใยรสชาติ & Rank','พลังถาวร + 🏅 Rank Perks'],
+    ['gear','◆','อุปกรณ์','สวมใส่และตีบวก'] ] },
+  gCodex:{ title:'📖 คัมภีร์', rows:[
+    ['skills','✧','คัมภีร์แก่นรส','สกิล พร และคู่ Awaken'],
+    ['bestiary','☷','สมุดมอนสเตอร์','การค้นพบและโบนัส'] ] },
+  gActivity:{ title:'🎉 กิจกรรม', rows:[
+    ['daily','📅','ภารกิจประจำวัน','Daily Reward และด่านท้าทาย'],
+    ['achievements','🏆','Achievement','ความสำเร็จและรางวัล Sugar'],
+    ['endgame','🌙','Endgame','Ascension · Endless · บอสลับ'] ] },
+  gMore:{ title:'⚙ อื่น ๆ', rows:[
+    ['settings','⚙','ตั้งค่า','เสียง การสั่น ภาพวาบ และ VFX'],
+    ['__tutorial','🎓','วิธีเล่น','ดู Tutorial การควบคุมและระบบต่อสู้'] ] },
+};
 
 /* ---- GEAR: ของสวมใส่ 2 ช่อง (weapon/charm) ซื้อด้วย Sugar แล้วสวมใส่ ---- */
 // ของสวมใส่ · ตีบวกได้ (lv=ระดับตีบวก 0..enhMax) เพิ่มพลังต่อระดับ
@@ -2564,7 +2583,24 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+  // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
+  buildHubGroup(key){
+    this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
+    const w=this.W,h=this.H,portrait=w<=h,rows=grp.rows;
+    const bw=Math.min(w-28,440),x=(w-bw)/2,y0=portrait?116:92,gap=10,rh=Math.min(portrait?80:64,(h-y0-56-gap*(rows.length-1))/rows.length);
+    rows.forEach(([target,emoji,label,sub],i)=>{ const y=y0+i*(rh+gap);
+      const g=this.add.graphics(); g.fillStyle(0x241a30,0.96); g.fillRoundedRect(x,y,bw,rh,14); g.lineStyle(2,0x6a5b86,0.85); g.strokeRoundedRect(x,y,bw,rh,14); g.fillStyle(0x8f7de8,1); g.fillRoundedRect(x,y,7,rh,4);
+      const ic=this.add.circle(x+40,y+rh/2,21,0x3a2f50,1); const em=this.add.text(x+40,y+rh/2,emoji,{fontSize:'22px'}).setOrigin(0.5);
+      const nm=this.add.text(x+72,y+rh*0.34,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5);
+      const ds=this.add.text(x+72,y+rh*0.68,sub,{fontFamily:'sans-serif',fontSize:'10px',color:'#bfb5ca',wordWrap:{width:bw-160}}).setOrigin(0,0.5);
+      const ar=this.add.text(x+bw-16,y+rh/2,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5);
+      this.menu.add([g,ic,em,nm,ds,ar]);
+      this._zone(x,y,bw,rh,()=>{ if(target==='__tutorial'){ this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true); }
+        else { if(target==='skills'){this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;} this.menuScreen=target; this.buildMenuScreen(); } });
+    });
+    this.menu.setVisible(true);
+  }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
@@ -2788,19 +2824,14 @@ class Game extends Phaser.Scene {
     const items=[
       [COLORS.pink, '▶','เริ่มผจญภัย','เลือกด่านและเข้าสู่ครัว',()=>{ this.menuScreen='chapter'; this.buildMenuScreen(); }],
       [COLORS.toast,'🍓','นักสู้','เลือกและปลุกพลังตัวละคร',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
-      [COLORS.grape,'✦','สายใยรสชาติ','ประสานแก่นพลังถาวร',()=>{ this.menuScreen='upgrade'; this.buildMenuScreen(); }],
-      [COLORS.mint, '◆','อุปกรณ์','สวมใส่และตีบวก',()=>{ this.menuScreen='gear'; this.buildMenuScreen(); }],
-      [0x8f7de8,     '✧','คัมภีร์แก่นรส','ดูสกิล พร และคู่ Awaken ทั้งหมด',()=>{ this.menuScreen='skills';this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildMenuScreen(); }],
-      [0xf0a92e,    '☷','สมุดมอนสเตอร์','ดูการค้นพบและโบนัส',()=>{ this.menuScreen='bestiary'; this.buildMenuScreen(); }],
-      [0x5f7896,     '⚙','ตั้งค่า','เสียง การสั่น ภาพวาบ และคุณภาพ VFX',()=>{ this.menuScreen='settings'; this.buildMenuScreen(); }],
-      [0xc0893e,     '🏆','Achievement','ภารกิจ ความสำเร็จ และรางวัล Sugar',()=>{ this.menuScreen='achievements'; this.buildMenuScreen(); }],
-      [0xe06f75,     '📅','ภารกิจประจำวัน','Daily Reward และด่านท้าทายวันนี้',()=>{ this.menuScreen='daily'; this.buildMenuScreen(); }],
-      [0x34265f,     '🌙','Endgame','Ascension · Endless · บอสลับ',()=>{ this.menuScreen='endgame'; this.buildMenuScreen(); }],
-      [0x4f9e8f,     '🎓','วิธีเล่น','ดู Tutorial การควบคุมและระบบต่อสู้',()=>{this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true);}],
+      [COLORS.grape,'🎒','คลัง & พลัง','สายใยรสชาติ · Rank Perks · อุปกรณ์',()=>{ this.menuScreen='gLoadout'; this.buildMenuScreen(); }],
+      [0xe06f75,    '🎉','กิจกรรม','Daily · Achievement · Endgame',()=>{ this.menuScreen='gActivity'; this.buildMenuScreen(); }],
+      [0x8f7de8,    '📖','คัมภีร์','สกิล/พร และสมุดมอนสเตอร์',()=>{ this.menuScreen='gCodex'; this.buildMenuScreen(); }],
+      [0x5f7896,    '⚙','อื่น ๆ','ตั้งค่า และวิธีเล่น',()=>{ this.menuScreen='gMore'; this.buildMenuScreen(); }],
     ];
     const left=portrait?center:w*0.27;
     const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
-    const cols=portrait?(items.length>7?2:1):2, gapX=portrait?(cols===2?8:0):10, gapY=portrait?8:12;
+    const cols=portrait?(items.length>4?2:1):2, gapX=portrait?(cols===2?8:0):10, gapY=portrait?8:12;
     const bw=portrait?(cols===2?(w-40-gapX)/2:Math.min(w-32,390)):Math.min(205,(areaR-areaL-gapX)/2);
     const menuTop=Math.max(logoY+72,h*0.57),menuBottom=h-42;
     const menuRows=Math.ceil(items.length/cols);
@@ -3516,7 +3547,7 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done)return;
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);});
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
-    else if(o.type==='purge'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode)return;n._purifyCd-=dt;if(this.dist(this.player.x,this.player.y,n.x,n.y)<=105&&n._purifyCd<=0){n._purifyCd=.45;n.hp-=Math.max(3,n.maxhp*.06);this.vfxHitRing(n.x,n.y,o.color,false);if(n.hp<=0)this.destroyWaveObjectiveNode(n);}});
+    else if(o.type==='purge'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode)return;n._purifyCd-=dt;if(this.dist(this.player.x,this.player.y,n.x,n.y)<=130&&n._purifyCd<=0){n._purifyCd=.4;n.hp-=Math.max(5,n.maxhp*.12);this.vfxHitRing(n.x,n.y,o.color,false);if(n.hp<=0)this.destroyWaveObjectiveNode(n);}});
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
       o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}
     this.renderWaveObjectiveHUD();
@@ -4859,8 +4890,9 @@ class Game extends Phaser.Scene {
     this.crateHit(c,(bullet.dmg||5)*this.player.dmgMul);
     if(!bullet.pierce) this.killBullet(bullet); }
   // สกิล AoE (ระเบิด/ฟ้าผ่า/ออร่า ฯลฯ) ก็ต้องตีกล่องแตกได้ด้วย (แก้บั๊กบางสกิลตีกล่องไม่โดน)
-  hitCratesInRadius(x,y,r,amount){ if(!this.crates)return;
-    this.crates.children.iterate(c=>{ if(c&&c.active&&this.dist(c.x,c.y,x,y)<r+18) this.crateHit(c,amount); }); }
+  hitCratesInRadius(x,y,r,amount){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active&&this.dist(c.x,c.y,x,y)<r+18) this.crateHit(c,amount); });
+    // แกนคำสาป (purge) โดนสกิล AoE ด้วย — ไม่งั้นตัวที่ไม่ยิงกระสุน (ทาโร่ฟ้าผ่า/มินต์แช่/โกโก้/งาดำ) ทำลายไม่ได้
+    if(this.waveNodes)this.waveNodes.children.iterate(n=>{ if(n&&n.active&&n._waveObjectiveNode&&this.dist(n.x,n.y,x,y)<r+18){ n.hp-=amount; this.popDmg(Math.round(amount),n.x,n.y,false); this.vfxHitRing(n.x,n.y,this.waveObjective?.color||0xffd166,false); if(n.hp<=0)this.destroyWaveObjectiveNode(n); } }); }
   breakCrate(c){ const x=c.x,y=c.y; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.screenShake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดรอปออร์บ
