@@ -56,7 +56,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.38.0 Berry Core)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.45.0 Consolidate Stat Sources)
+- **v2.45.0 (ยุบแหล่งสแตตทับซ้อน — จากรีวิวทิศทางเกมกับเจ้าของ):** Bestiary + Ascension เลิกให้ค่าพลังดิบ (HP/ATK/DEF) · Bestiary → ปลดขั้นรับ 🍬 Sugar ทันที (`Save.addKill` คืนจำนวน Sugar, killEnemy โชว์แบนเนอร์) · Ascension → คงรับ Sugar ก้อนใหญ่ตอน Ascend · `applyMeta` ตัดบล็อก bestiaryAllBonus + ascension stat ออก (ฟังก์ชัน bestiaryAllBonus เหลือเป็น dead code) · UI คัมภีร์/Endgame แก้ข้อความเป็น Sugar · **เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank / Talent เฉพาะตัว / Gear** · ⚠️ พลังฐานลดลงเล็กน้อย รอ playtest จริงเพื่อจูนชดเชย
+- **v2.44.0 (Recipe prototype — จุดขายธีมทำอาหาร):** ปลุกระบบ COMBOS ที่เคยตาย (`checkCombos` เป็น no-op + ไม่มีที่อ่าน `comboFlags`) ให้กลับมา = "ระบบทำอาหาร" · สกิลโจมตี=วัตถุดิบ · สกิลติดตัว=เครื่องปรุง · ครบคู่=ปรุงเมนู (`cookDish` บัฟ dmg +5%/เมนู + แบนเนอร์ 🍳 + เสียง, ครั้งเดียวต่อเมนูผ่าน `combosOwned`) · การ์ดเลเวลอัพป้าย "🍳 ปรุงเมนูได้!" · **หมายเหตุ: Momo/Berry (character-first ไม่เก็บสกิลรอง) แทบไม่ได้ปรุง — ถ้าจะทำเต็มระบบต้องให้ basic attack นับเป็นวัตถุดิบ**
 - **v2.38.0:** เพิ่ม `berry` เป็นตัวละครที่ 6 แยกจาก Momo · อาร์ต 2D vector-like clean outline/flat color: `card_berry.png`, action 8×1 และ run 4×3 · signature `jamCannon` (rocket) · Unique `jamOverdrive` เป็น targeted multi-salvo พร้อม talent `pressurizedJam` · Momo และเซฟเดิมไม่ถูกแทนที่
 - **v2.37.0:** เวฟปกติ Chapter 1 สุ่มภารกิจครบ 4 แบบต่อรันโดยไม่ซ้ำ: survive, hunt target Elite, purge cursed cores, capture zone · เพิ่ม progress HUD, objective arrow, Sugar bonus และ cleanup lifecycle · ไม่แทรกเวฟมินิบอส/บอส
 - **v2.36.2:** กล้องบอส/มินิบอสซูมออกด้วย lerp ต่อเฟรม (×0.58/×0.68) · บริวารบอสเล็กกว่ามินิบอสจริงและถูกปรับ HP/ดาเมจให้มีน้ำหนัก
