@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.57.0';
+const GAME_VERSION = '2.58.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.58.0', date:'2026-09-16', title:'Rework Mint & Sesame + Lower Boss HP', items:[
+    'Mint ได้ "สนามน้ำแข็งถาวร" รอบตัว — ดาเมจ+แช่ต่อเนื่องทุก 0.4 วิ (คุมฝูง + มี DPS ตลอด ไม่ใช่รอ nova ช้า ๆ)',
+    'งาดำได้ "กระจกโคจรยิงลำแสงสวนอัตโนมัติ" — ยิงเองไม่ต้องรอศัตรูยิง (เดิมกระจกสะท้อนใช้ได้เฉพาะตอนโดนยิง = อ่อน)',
+    'ลด HP บอสใหญ่ (×2.3→×1.75) และมินิบอส (×1.3→×1.0) ให้สู้ไม่ยืดเยื้อ' ] },
   { v:'2.57.0', date:'2026-09-16', title:'Nerf Green Pillars + Mint vs Bosses', items:[
     'เสาบอส (คริสตัล/โอเบลิสก์เขียว) ไม่โกงแล้ว: ลด HP ให้ทำลายได้จริง + ยิงช้าลง/ช้าลง/ลดจำนวนนัด → หลบทัน โดยเฉพาะสายดาเมจต่ำ',
     'แก้ Mint สู้มินิบอส/บอสยาก: บอส/มินิแช่แข็งไม่ได้ (ไม่มี shatter) → frost ทำดาเมจใส่บอส/มินิ ×1.7 ชดเชย (คงเอกลักษณ์คุมฝูงแต่ไม่จนมุมกับตัวใหญ่)' ] },
@@ -3178,7 +3182,7 @@ class Game extends Phaser.Scene {
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
     Save.save(); this._lastExpGain=Math.round(n); this._lastLvlUps=ups; return ups;
   }
-  showMenu(){ this.state='menu'; Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen='hub'; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
+  showMenu(){ this.state='menu'; this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen='hub'; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
   setGameSpeed(s){ this.gameSpeed=s;
@@ -3220,7 +3224,7 @@ class Game extends Phaser.Scene {
     this.pauseUI.setVisible(true);
   }
   exitStage(){
-    this.physics.resume(); this.time.paused=false;   // ปลดหยุดฟิสิกส์+นาฬิกาก่อนออก (ไม่งั้นด่านหน้าค้าง)
+    this.physics.resume(); this.time.paused=false; this.clearCharSignature();   // ปลดหยุดฟิสิกส์+นาฬิกาก่อนออก (ไม่งั้นด่านหน้าค้าง)
     this._bossZoom=1;this.applyMainZoom();
     if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸');
     if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
@@ -3648,7 +3652,7 @@ class Game extends Phaser.Scene {
     const mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===1?0.88:(mArt?1.15:1.7))); b.baseScale=mScale; b._sqX=1; b._sqY=1;
     const mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===1?48:(mArt?52:26))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===1?48:(mArt?18:5)));
     b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.3*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=72; b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอส: ฐานแฟร์ + ระดับความยาก
+    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=72;   // มินิบอส HP ×1.3→×1.0 (ลดตาม feedback) b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอส: ฐานแฟร์ + ระดับความยาก
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.85; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // มินิบอสมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
@@ -3697,7 +3701,7 @@ class Game extends Phaser.Scene {
     const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?0.88:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*2.3*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp; b.spd=this.secretBoss?55:46; b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*1.75*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP ×2.3→×1.75 (ลดตาม feedback) b.spd=this.secretBoss?55:46; b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.8; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -3849,7 +3853,7 @@ class Game extends Phaser.Scene {
   }
   resetStageLoadout(){
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];
-    this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();
+    this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.skills={};this.basicAttack=null;this.passives={};this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive");
@@ -4651,6 +4655,35 @@ class Game extends Phaser.Scene {
     if(aw&&this.player.hp<this.player.maxhp&&(this._sakuraHealCd||0)<=0){this.player.hp=Math.min(this.player.maxhp,this.player.hp+1.5);this._sakuraHealCd=1.8;this.popHeal(this.player.x,this.player.y,2);}
   }
   // Sakura Aura: กลีบอ่านระยะได้ + สะสม Bloom แทนการเผาดาเมจฟรีทุกเฟรม
+  // ---- Signature aura ประจำตัว (rework Mint + งาดำ ให้แข็งแรงขึ้น มี DPS always-on) ----
+  clearCharSignature(){ if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} }
+  tickCharSignature(dt){
+    const ch=this.character;
+    // 🌿 Mint — สนามน้ำแข็งถาวรรอบตัว: ดาเมจ+แช่ต่อเนื่อง (คุมฝูง + DPS ทุกวินาที)
+    if(ch==='mint'){
+      const lvl=this.skills.frost||1, R=118+lvl*15;
+      if(!this._mintField)this._mintField=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setDepth(2).setTint(0x8fd0ff).setAlpha(0.12));
+      this._mintField.setPosition(this.player.x,this.player.y).setScale((R*2)/256).setAlpha(0.10+0.03*Math.sin(this.elapsed*3));
+      this._mintFieldT=(this._mintFieldT||0)-dt;
+      if(this._mintFieldT<=0){ this._mintFieldT=0.4; const dmg=(4+lvl*1.7)*(this.player.dmgMul||1);
+        this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>R)return;
+          this.damage(e,(e.isBoss||e.isMini)?dmg*1.5:dmg,e.x,e.y);
+          if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,0.55); e.setVelocity(e.body.velocity.x*0.4,e.body.velocity.y*0.4); e.setTint(COLORS.ice); } });
+        this.hitCratesInRadius(this.player.x,this.player.y,R,dmg); }
+    } else if(this._mintField){ this._mintField.destroy(); this._mintField=null; }
+    // ⚫ งาดำ — กระจกโคจรยิงลำแสงสวนอัตโนมัติ (proactive ไม่ต้องรอศัตรูยิง = ใช้ได้เสมอ)
+    if(ch==='sesame'){
+      const lvl=this.skills.mirror||1;
+      if(!this._sesShards){ this._sesShards=[]; for(let i=0;i<3;i++)this._sesShards.push(this.camWorld(this.add.image(this.player.x,this.player.y,'proj_sprinkle').setTint(0x9fe8ff).setDepth(9).setScale(0.55).setAlpha(0.9))); }
+      this._sesA=(this._sesA||0)+dt*2.4;
+      this._sesShards.forEach((s,i)=>{ const a=this._sesA+i*Math.PI*2/this._sesShards.length; s.setPosition(this.player.x+Math.cos(a)*58,this.player.y+Math.sin(a)*42).setRotation(a); });
+      this._sesFireT=(this._sesFireT||0)-dt;
+      if(this._sesFireT<=0){ this._sesFireT=Math.max(0.42,0.72-lvl*0.045); const shots=1+Math.floor(lvl/2), dmg=(8+lvl*2.6)*(this.player.dmgMul||1);
+        for(let k=0;k<shots;k++){ const t=this.nearestEnemy(760); if(!t)break; const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.22); if(!b)break;
+          b.setTexture('proj_sprinkle').setTint(0x9fe8ff); b.dmg=dmg; b.life=2; b.homing=460; b.pierce=lvl>=4; b.faceVel=true;
+          const a=Math.atan2(t.y-this.player.y,t.x-this.player.x)+(k-(shots-1)/2)*0.2; this.physics.velocityFromRotation(a,440,b.body.velocity); } }
+    } else if(this._sesShards){ this._sesShards.forEach(s=>s&&s.destroy()); this._sesShards=null; }
+  }
   tickAura(dt){
     const lvl=this.skills&&this.skills.aura;if(!lvl){this.clearAuraFx();return;}
     const aw=lvl>=SKILL_AWAKEN_LV,r=(72+lvl*13)*(aw?1.35:1);this.ensureAuraFx();this._auraAngle=(this._auraAngle||0)+dt*(aw?1.45:1.05);this._sakuraHealCd=Math.max(0,(this._sakuraHealCd||0)-dt);
@@ -5693,6 +5726,7 @@ class Game extends Phaser.Scene {
     this.updatePickupReadability();
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
+    this.tickCharSignature(dt);
     this.tickStage(dt);
     this.tickBossZoom();
     this.tickBossObjects(dt);
