@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.58.0';
+const GAME_VERSION = '2.59.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.59.0', date:'2026-09-16', title:'New Magic Circle Art', items:[
+    'เปลี่ยนวงเวทกระจกที่ดูเบี้ยว (ยืมวงกระแทกมาใช้) เป็นอาร์ตวงเวทใหม่ที่สมมาตรเป๊ะ โปร่งใส โทนขาว',
+    'ใช้ในเขตยึดครอง (capture), สนามกระจกงาดำ และ Oath Ward — ย่อแบนวางพื้นแล้วไม่บิดอีก' ] },
   { v:'2.58.0', date:'2026-09-16', title:'Rework Mint & Sesame + Lower Boss HP', items:[
     'Mint ได้ "สนามน้ำแข็งถาวร" รอบตัว — ดาเมจ+แช่ต่อเนื่องทุก 0.4 วิ (คุมฝูง + มี DPS ตลอด ไม่ใช่รอ nova ช้า ๆ)',
     'งาดำได้ "กระจกโคจรยิงลำแสงสวนอัตโนมัติ" — ยิงเองไม่ต้องรอศัตรูยิง (เดิมกระจกสะท้อนใช้ได้เฉพาะตอนโดนยิง = อ่อน)',
@@ -735,6 +738,7 @@ const ASSET_IMAGES = {
   vfx_ring:'assets/generated/vfx_hit_ring.png', vfx_poof:'assets/generated/vfx_spawn_poof.png',
   vfx_glow:'assets/generated/vfx_cast_glow.png', vfx_line:'assets/generated/vfx_speed_line.png',
   vfx_chain_bolt:'assets/generated/vfx_chain_bolt.png', vfx_telegraph:'assets/generated/vfx_telegraph.png',
+  vfx_magic_circle:'assets/generated/vfx_magic_circle.png',   // วงเวทกระจกสมมาตร (โซน/สนาม)
   vfx_cloud_field:'assets/generated/vfx_cloud_field.png',
   vfx_cream_ring:'assets/generated/vfx_cream_ring.png',
   nest_hole:'assets/generated/nest_hole.png', nest_eggs:'assets/generated/nest_eggs.png',
@@ -2223,7 +2227,7 @@ class Game extends Phaser.Scene {
   castOathWard(dm,ul){
     ul=ul||1;const upgraded=!!this.player.mirrorWard;let cx=this.player.x,cy=this.player.y;
     const r=145+ul*13+(upgraded?20:0),duration=4.0+ul*0.62+(upgraded?0.9:0),maxReflect=14+ul*5+(upgraded?8:0),mirrorCount=3+(ul>=3?1:0)+(upgraded?1:0),up=1+(ul-1)*0.22;
-    const ring=this.camWorld(this.add.image(cx,cy,'vfx_ring').setTint(0xf4e7bd).setDepth(4).setDisplaySize(r*2,r*1.72).setAlpha(0.36));
+    const ring=this.camWorld(this.add.image(cx,cy,'vfx_magic_circle').setTint(0xf4e7bd).setDepth(4).setDisplaySize(r*2,r*1.72).setAlpha(0.5));
     this.tweens.add({targets:ring,rotation:Math.PI*0.45,alpha:{from:0.24,to:0.44},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
     const mirrors=[];for(let i=0;i<mirrorCount;i++){const a=-Math.PI/2+i*Math.PI*2/mirrorCount,m=this.camWorld(this.add.image(cx+Math.cos(a)*r*0.78,cy+Math.sin(a)*r*0.64,'ic_mirror').setDepth(6).setScale(0.22).setAlpha(0.94));m._a=a;mirrors.push(m);}
     let reflected=0,pulseHits=0,pulseN=0;this.player.wardGuardT=Math.max(this.player.wardGuardT||0,duration);
@@ -3543,7 +3547,7 @@ class Game extends Phaser.Scene {
   spawnCaptureZone(){
     const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=112;
     this._captureZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,.12).setStrokeStyle(4,o.color,.82).setDepth(pos.y-2));this._captureZone.radiusGoal=r;
-    this._captureRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_ring').setTint(o.color).setDisplaySize(r*2,r*1.72).setDepth(pos.y-1).setAlpha(.58));
+    this._captureRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_magic_circle').setTint(o.color).setDisplaySize(r*2,r*1.72).setDepth(pos.y-1).setAlpha(.7));
     this.tweens.add({targets:this._captureRing,rotation:TAU,alpha:{from:.36,to:.68},duration:1800,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
   spawnObjectiveElite(){
@@ -4547,7 +4551,7 @@ class Game extends Phaser.Scene {
     const mEvo=basic&&basic.evolved;   // EVO (Absolute Oath Mirror): กระจกยิงลำแสงสวนเองทุกจังหวะ (ไม่ต้องรอโดนกระสุน) + วง/สะท้อนมากขึ้น
     const r=(125+lvl*15)*(this.player.mirrorWard?1.22:1)*(aw?1.2:1)*wm*bRad*(mEvo?1.2:1),duration=(1.15+lvl*0.14+(aw?0.8:0))*1000*bDur*(mEvo?1.35:1),max=3+lvl+(aw?5:0)+(this.player.mirrorWard?3:0)+wr+bPane+(mEvo?6:0);
     // Mirror Glaze ต้องอ่านเป็นเกราะสะท้อน ไม่ใช่อัลติ: วงบาง ค่อย ๆ หายใจ และไม่มีสายฟ้าซ้อนสนาม
-    const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x9fe8ff).setDepth(5).setScale((r*2)/256).setAlpha(0.28));
+    const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_magic_circle').setTint(0x9fe8ff).setDepth(5).setDisplaySize(r*2,r*2).setAlpha(0.42));
     this.tweens.add({targets:ring,rotation:Math.PI*0.55,scaleX:ring.scaleX*1.035,scaleY:ring.scaleY*1.035,alpha:{from:0.20,to:0.32},yoyo:true,duration:Math.max(360,duration*0.48),repeat:1});let reflected=0;
     let evoTick=0;
     const pulse=this.time.addEvent({delay:120,loop:true,callback:()=>{if(!ring.active)return;ring.setPosition(this.player.x,this.player.y);
