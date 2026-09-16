@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.46.0';
+const GAME_VERSION = '2.47.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.47.0', date:'2026-09-16', title:'Recipes for Everyone + Slower Leveling', items:[
+    'ระบบทำอาหารใช้ได้กับทุกตัวแล้ว: Basic Attack ประจำตัว + สกิลติดตัว (passive) ที่เก็บได้ = ปรุงเมนู',
+    'ขยายสูตรเป็น 15 เมนู แต่ละตัวมีหลายสูตรและให้เอฟเฟกต์ต่างกัน (คูลดาวน์/คริ/เกราะ/ฟื้น/ความเร็ว) ไม่ใช่ +ดาเมจเฉย ๆ',
+    'ชะลอการเลเวลอัพช่วงต้นให้ค่อย ๆ ขึ้น (EXP เริ่ม 10 โต ×1.26+4) — เดิมขึ้นไวเกินไป' ] },
   { v:'2.46.0', date:'2026-09-16', title:'All Characters Go Character-First', items:[
     'ยกมินต์ ตาโร่ และงาดำ เป็นระบบ Character-first เหมือนโมโม่/โกโก้ — เริ่มด่านด้วย Basic Attack ประจำตัวทันที ไม่ต้องสะสมสกิลหลายชนิด',
     'มินต์=Frost Core Nova (วง/ระยะแช่แข็ง) · ตาโร่=Rift Bolt Compass (จำนวนชิ่ง/จุดฟาด) · งาดำ=Oath Mirror Field (บานสะท้อน/รัศมี) — แต่ละตัวมีสายอัพเกรด, สายกลายรูป (Mutation) และ Evolution',
@@ -1388,22 +1392,30 @@ const SKILL_TIERS = {
 };
 
 /* ---- COMBOS: สกิลโจมตี (a) + สกิลติดตัว (b) เข้าคู่กัน = ปลดโบนัส (ธง this.comboFlags ตอน cast) ---- */
+/* ---- COMBOS = "สูตรอาหาร": สกิลโจมตี/Basic Attack (a) + สกิลติดตัว (b) = ปรุงเมนู ----
+   character-first: syncBasicAttack ตั้ง this.skills[สกิลพื้นฐาน] ให้ → สูตรที่ a=สกิลพื้นฐานของตัวนั้นปรุงได้เลยเมื่อเก็บ passive b
+   effect(p) = ผลบัฟตอนปรุง (สแตตผู้เล่น ไหลเข้าระบบเอง) · ไม่มี effect = default +5% ดาเมจใน cookDish */
 const COMBOS = [
-  { key:'storm',     a:'thunder',  b:'crit',   emoji:'⚡🎯', name:'ฟ้าคริติคอล',  desc:'ฟ้าผ่าแรงขึ้น 40%' },
-  { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'ลูกกวาดพเนจร', desc:'ลูกกวาด/คุกกี้เด้งเพิ่ม' },
-  { key:'fizz',      a:'popcorn',  b:'magnet', emoji:'🍿🧲', name:'โซดาแตกฟอง',   desc:'ป๊อปคอร์น/ฟองแรงขึ้น +25%' },
-  { key:'guardian',  a:'star',     b:'guard',  emoji:'🌟🛡️', name:'วงดาวพิทักษ์', desc:'เงื่อนไขวิวัฒนาการ Star Guard' },
-  { key:'cyclone',   a:'whirl',    b:'haste',  emoji:'🍥⏩', name:'ครีมไซโคลน', desc:'เงื่อนไขวิวัฒนาการ Cream Whirl' },
-  { key:'cookie',    a:'boomer',   b:'swift',  emoji:'🍪👟', name:'คุกกี้ความเร็วสูง', desc:'เงื่อนไขวิวัฒนาการ Boomerang' },
-  { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'พายุเยียวยา', desc:'เงื่อนไขวิวัฒนาการ Frost Pulse' },
-  { key:'prison',    a:'bubble',   b:'guard',  emoji:'🫧🛡️', name:'เรือนจำฟอง', desc:'เงื่อนไขวิวัฒนาการ Bubble Prison' },
-  { key:'bakery',    a:'mine',     b:'haste',  emoji:'🧁⏩', name:'กองทัพเบเกอรี', desc:'เงื่อนไขวิวัฒนาการ Cupcake Sentry' },
-  { key:'sunray',    a:'beam',     b:'power',  emoji:'🔆💥', name:'ลำแสงจักรพรรดิ', desc:'เงื่อนไขวิวัฒนาการ Caramel Beam' },
-  { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'ฝนโดนัทติดตาม', desc:'เงื่อนไขวิวัฒนาการ Donut Drop' },
-  { key:'mist',      a:'cloud',    b:'regen',  emoji:'☕💗', name:'หมอกมอคค่านิรันดร์', desc:'เงื่อนไขวิวัฒนาการ Mocha Mist' },
-  { key:'arsenal',   a:'rocket',   b:'crit',   emoji:'🚀🎯', name:'คลังจรวดลูกกวาด', desc:'เงื่อนไขวิวัฒนาการ Candy Rocket' },
-  { key:'reflection',a:'mirror',   b:'guard',  emoji:'🪞🛡️', name:'คำสัตย์สะท้อน', desc:'เงื่อนไขวิวัฒนาการ Mirror Glaze' },
-  { key:'falseCore', a:'decoy',    b:'bitterResolve', emoji:'💠🖤', name:'แก่นต้านความขม', desc:'เงื่อนไขวิวัฒนาการ Core Decoy' },
+  // 🍓 โมโม่ (sprinkle)
+  { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'ลูกกวาดพเนจร', desc:'ยิงถี่ขึ้น · คูลดาวน์ -6%', effect:p=>{p.cdMul*=0.94;} },
+  { key:'sugarshot', a:'sprinkle', b:'crit',   emoji:'🍬🎯', name:'เมล็ดเสี้ยนคม', desc:'คริติคอล +4%', effect:p=>{p.critChance+=0.04;} },
+  { key:'candycore', a:'sprinkle', b:'power',  emoji:'🍬💥', name:'เมล็ดหนักหน่วง', desc:'ดาเมจ +7%', effect:p=>{p.dmgMul*=1.07;} },
+  // 🍫 โกโก้ (meteor)
+  { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'ฝนโดนัทติดตาม', desc:'ระยะเก็บของ +20%', effect:p=>{p.pickup*=1.20;} },
+  { key:'titanjab',  a:'meteor',   b:'power',  emoji:'🍩💥', name:'หมัดยักษ์โกโก้', desc:'ดาเมจ +8%', effect:p=>{p.dmgMul*=1.08;} },
+  { key:'bearhide',  a:'meteor',   b:'guard',  emoji:'🍩🛡️', name:'เกราะหมีระเบิด', desc:'ลดดาเมจรับ -6%', effect:p=>{p.dmgTakenMul*=0.94;} },
+  // 🌿 มินต์ (frost)
+  { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'พายุเยียวยา', desc:'ฟื้น HP +0.6/วิ', effect:p=>{p.regen+=0.6;} },
+  { key:'icewall',   a:'frost',    b:'guard',  emoji:'❄️🛡️', name:'กำแพงน้ำแข็ง', desc:'ลดดาเมจรับ -6%', effect:p=>{p.dmgTakenMul*=0.94;} },
+  { key:'coldsnap',  a:'frost',    b:'haste',  emoji:'❄️⏩', name:'โนวาถี่ยิบ', desc:'คูลดาวน์ -6%', effect:p=>{p.cdMul*=0.94;} },
+  // 🍠 ตาโร่ (thunder)
+  { key:'storm',     a:'thunder',  b:'crit',   emoji:'⚡🎯', name:'ฟ้าคริติคอล', desc:'คริติคอล +5%', effect:p=>{p.critChance+=0.05;} },
+  { key:'thunderrun',a:'thunder',  b:'swift',  emoji:'⚡👟', name:'สายฟ้าพเนจร', desc:'ความเร็ว +6%', effect:p=>{p.baseSpeed*=1.06;} },
+  { key:'rollingarc',a:'thunder',  b:'haste',  emoji:'⚡⏩', name:'สายฟ้ารัว', desc:'คูลดาวน์ -6%', effect:p=>{p.cdMul*=0.94;} },
+  // ⚫ งาดำ (mirror)
+  { key:'reflection',a:'mirror',   b:'guard',  emoji:'🪞🛡️', name:'คำสัตย์สะท้อน', desc:'ลดดาเมจรับ -7%', effect:p=>{p.dmgTakenMul*=0.93;} },
+  { key:'mirrormend',a:'mirror',   b:'regen',  emoji:'🪞💗', name:'กระจกเยียวยา', desc:'ฟื้น HP +0.6/วิ', effect:p=>{p.regen+=0.6;} },
+  { key:'oathkeep',  a:'mirror',   b:'returningTaste', emoji:'🪞🔁', name:'คำสัตย์ก้องคืน', desc:'ดาเมจ +6%', effect:p=>{p.dmgMul*=1.06;} },
 ];
 
 function passivePairHint(key){
@@ -1804,7 +1816,7 @@ class Game extends Phaser.Scene {
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.computeViewZoom();                                // zoom ปรับตามความกว้างจอ → มือถือ/แท็บเล็ตเห็นสนามพอ ๆ กัน
     this.state='menu'; this.elapsed=0; this.kills=0; this.stageKills=0;
-    this.level=1; this.xp=0; this.xpNext=7;
+    this.level=1; this.xp=0; this.xpNext=10;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
@@ -2310,11 +2322,14 @@ class Game extends Phaser.Scene {
   }
   // ปรุงเมนูใหม่: บัฟดาเมจเล็ก (prototype) + แบนเนอร์ "ปรุงเมนู!" + เสียง
   cookDish(c){
-    if(this.player)this.player.dmgMul=Math.min(3.25,(this.player.dmgMul||1)*1.05);
+    if(this.player){
+      if(c.effect)c.effect(this.player); else this.player.dmgMul=Math.min(3.25,(this.player.dmgMul||1)*1.05);
+      this.player.dmgMul=Math.min(3.25,this.player.dmgMul);this.player.dmgTakenMul=Math.max(0.35,this.player.dmgTakenMul);this.player.critChance=Math.min(0.40,this.player.critChance);this.player.cdMul=Math.max(0.72,this.player.cdMul);this.player.baseSpeed=Math.min(BALANCE.moveSpeed*1.35,this.player.baseSpeed);
+    }
     const ai=SKILLDEFS[c.a], bi=PASSIVES[c.b];
     const recipe=((ai&&ai.emoji)||'🍬')+' + '+((bi&&bi.emoji)||'✨');
     this.dishCount=(this.dishCount||0)+1;
-    this.showBanner('🍳 ปรุงเมนู! '+c.emoji+' '+c.name, recipe+' → '+c.desc+' · ดาเมจ +5%',1700);
+    this.showBanner('🍳 ปรุงเมนู! '+c.emoji+' '+c.name, recipe+' → '+c.desc,1700);
     Sfx.clear(); if(Sfx.pop)Sfx.pop();
   }
 
@@ -3076,7 +3091,7 @@ class Game extends Phaser.Scene {
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
-        this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=7;this.pendingLvl=0;this._queuedBossIntro=null;
+        this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
         this.rerollLeft=REROLL_MAX;this.banishLeft=BANISH_MAX;this.banishedKeys={};   // โควตาสุ่มใหม่/ลบสกิล ต่อรอบ
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
@@ -3669,7 +3684,7 @@ class Game extends Phaser.Scene {
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.skills={};this.basicAttack=null;this.passives={};this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX;this.banishLeft=BANISH_MAX;this.banishedKeys={};
-    this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=7;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
+    this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
@@ -3847,7 +3862,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n;
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.20+3); this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+4); this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
