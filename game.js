@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.61.0';
+const GAME_VERSION = '2.62.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.62.0', date:'2026-09-16', title:'Enter the Mochi World', items:[
+    'เปลี่ยนฉากเปิดเป็นการเคลื่อนกล้องผ่านอุโมงค์ขนมเข้าสู่แสงและโลก Mochi Mayhem โดยไม่มีตัวละครปรากฏ',
+    'เพิ่มแสงขยาย เส้นความเร็ว ฝุ่นน้ำตาล การซูมแบบ cinematic และแฟลชเปลี่ยนฉากสำหรับหน้าจอมือถือแนวตั้ง' ] },
   { v:'2.61.0', date:'2026-09-16', title:'Original Opening Artwork', items:[
     'สร้างภาพฉากครัวเวทและ Strawberry Guardian ใหม่สำหรับฉากเปิดโดยเฉพาะ ไม่ยืมพื้นหลัง ตัวละคร หรือพอร์ทัลเดิมในเกม',
     'ปรับลำดับแอนิเมชันใหม่ให้แสงจากเตาเวทเปิดทาง ก่อนผู้พิทักษ์พุ่งออกมาและโลโก้ปรากฏ' ] },
@@ -704,8 +707,7 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
-  opening_kitchen_v2:'assets/opening_kitchen_v2.webp',
-  opening_guardian_v2:'assets/opening_guardian_v2.webp',
+  opening_world_gate_v3:'assets/opening_world_gate_v3.webp',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   chapter1_cover:'assets/ui/chapter1_cover.webp',
   chapter2_cover:'assets/ui/chapter2_cover.webp',
@@ -1209,41 +1211,39 @@ class Opening extends Phaser.Scene {
   create(){
     const W=this.scale.width,H=this.scale.height,cx=W/2,cy=H/2;
     const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.cameras.main.setBackgroundColor('#17101f');
+    const gx=cx,gy=cy-H*0.07;
+    this.cameras.main.setBackgroundColor('#2b142f');
 
-    const bg=this.add.image(cx,cy,'opening_kitchen_v2').setDisplaySize(W*1.08,H*1.08).setAlpha(0);
-    const shade=this.add.rectangle(cx,cy,W,H,0x170d20,0.5);
-    const gateGlow=this.add.ellipse(cx,cy+H*0.04,W*0.27,H*0.58,0xffd083,0)
-      .setBlendMode(Phaser.BlendModes.ADD);
+    const bg=this.add.image(cx,cy,'opening_world_gate_v3').setDisplaySize(W*1.04,H*1.04).setAlpha(0);
+    const shade=this.add.rectangle(cx,cy,W,H,0x210f2a,0.48);
+    const gateGlow=this.add.ellipse(gx,gy,W*0.22,H*0.38,0xffe6a3,0)
+      .setBlendMode(Phaser.BlendModes.ADD).setScale(0.55);
 
     const rays=this.add.graphics().setBlendMode(Phaser.BlendModes.ADD).setAlpha(0);
-    for(let i=0;i<12;i++){
-      const a=i*TAU/12,inner=Math.min(W,H)*0.10,outer=Math.max(W,H)*0.62;
-      rays.fillStyle(i%2?0xff8eb9:0xffd37a,0.055);
-      rays.beginPath();rays.moveTo(cx+Math.cos(a-0.055)*inner,cy+H*0.06+Math.sin(a-0.055)*inner);
-      rays.lineTo(cx+Math.cos(a+0.055)*inner,cy+H*0.06+Math.sin(a+0.055)*inner);
-      rays.lineTo(cx+Math.cos(a)*outer,cy+H*0.06+Math.sin(a)*outer);rays.closePath();rays.fillPath();
+    for(let i=0;i<16;i++){
+      const a=i*TAU/16,inner=Math.min(W,H)*0.035,outer=Math.max(W,H)*0.72;
+      rays.fillStyle(i%2?0xffa6ca:0xffe7a0,0.042);
+      rays.beginPath();rays.moveTo(gx+Math.cos(a-0.035)*inner,gy+Math.sin(a-0.035)*inner);
+      rays.lineTo(gx+Math.cos(a+0.035)*inner,gy+Math.sin(a+0.035)*inner);
+      rays.lineTo(gx+Math.cos(a)*outer,gy+Math.sin(a)*outer);rays.closePath();rays.fillPath();
     }
 
-    const heroScale=Math.min(W*0.40/939,H*0.72/1024);
-    const hero=this.add.image(cx,cy+H*0.30,'opening_guardian_v2')
-      .setScale(heroScale*0.72).setAlpha(0).setAngle(-5);
-    const title=this.add.text(cx,cy-H*0.28,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(30,Math.min(54,W*0.068))+'px',color:'#fff5f7',stroke:'#651b46',strokeThickness:8,align:'center'}).setOrigin(0.5).setAlpha(0).setScale(0.82);
-    const sub=this.add.text(cx,cy-H*0.19,'ประตูสู่ครัวมหัศจรรย์กำลังเปิด',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(13,Math.min(21,W*0.026))+'px',color:'#ffd78d',align:'center'}).setOrigin(0.5).setAlpha(0);
+    const title=this.add.text(cx,H*0.17,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(28,Math.min(52,W*0.064))+'px',color:'#fff8f2',stroke:'#7a2853',strokeThickness:7,align:'center'}).setOrigin(0.5).setAlpha(0).setScale(0.9);
+    const sub=this.add.text(cx,H*0.27,'กำลังเข้าสู่โลกแห่งรสชาติ...',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(12,Math.min(19,W*0.023))+'px',color:'#ffe6a8',align:'center'}).setOrigin(0.5).setAlpha(0);
     const skip=this.add.text(cx,H-Math.max(28,H*0.06),'แตะเพื่อข้าม',{fontFamily:'sans-serif',fontSize:Math.max(11,Math.min(16,W*0.02))+'px',color:'#eadbea'}).setOrigin(0.5).setAlpha(0);
+    const flash=this.add.rectangle(cx,cy,W,H,0xfff7df,0).setBlendMode(Phaser.BlendModes.ADD);
 
-    const sparkles=[];
-    for(let i=0;i<18;i++){
-      const a=Math.random()*TAU,r=Math.min(W,H)*(0.12+Math.random()*0.28);
-      const s=this.add.circle(cx+Math.cos(a)*r,cy+H*0.06+Math.sin(a)*r,1.5+Math.random()*3,i%3===0?0xffd166:0xff9ec4,0);
-      sparkles.push(s);
-      this.tweens.add({targets:s,alpha:{from:0,to:0.9},scale:{from:0.3,to:1.5},duration:500+Math.random()*500,delay:850+Math.random()*900,yoyo:true,repeat:-1});
+    for(let i=0;i<26;i++){
+      const a=Math.random()*TAU,start=4+Math.random()*Math.min(W,H)*0.07,end=Math.max(W,H)*(0.42+Math.random()*0.28);
+      const s=this.add.circle(gx+Math.cos(a)*start,gy+Math.sin(a)*start,1+Math.random()*2.4,i%3===0?0xffd36b:0xffb0d4,0)
+        .setBlendMode(Phaser.BlendModes.ADD);
+      this.tweens.add({targets:s,x:gx+Math.cos(a)*end,y:gy+Math.sin(a)*end,alpha:{from:0,to:0.9},scale:{from:0.25,to:2.6},duration:700+Math.random()*650,delay:400+Math.random()*1500,repeat:-1,ease:'Quad.in'});
     }
 
     let leaving=false;
     const finish=()=>{
       if(leaving)return; leaving=true; this.input.enabled=false;
-      this.cameras.main.fadeOut(reduced?80:380,20,10,28);
+      this.cameras.main.fadeOut(reduced?80:260,255,247,223);
       this.cameras.main.once('camerafadeoutcomplete',()=>this.scene.start('Game'));
     };
     this.time.delayedCall(reduced?900:4200,finish);
@@ -1254,13 +1254,13 @@ class Opening extends Phaser.Scene {
       this.tweens.add({targets:skip,alpha:0.68,duration:320});
     });
 
-    this.tweens.add({targets:bg,alpha:1,displayWidth:W,displayHeight:H,duration:reduced?80:1100,ease:'Sine.out'});
-    this.tweens.add({targets:rays,alpha:1,duration:reduced?80:1800,ease:'Sine.out'});
-    this.tweens.add({targets:gateGlow,alpha:{from:0,to:0.42},scaleX:{from:0.55,to:1.16},scaleY:{from:0.55,to:1.16},duration:reduced?80:1150,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    this.tweens.add({targets:title,alpha:1,scale:1,duration:reduced?80:720,delay:reduced?0:420,ease:'Back.out'});
-    this.tweens.add({targets:sub,alpha:1,y:sub.y+6,duration:reduced?80:600,delay:reduced?0:780,ease:'Sine.out'});
-    this.tweens.add({targets:hero,alpha:1,y:cy+H*0.14,scale:heroScale,angle:0,duration:reduced?80:980,delay:reduced?0:1050,ease:'Back.out'});
-    this.tweens.add({targets:hero,y:cy+H*0.125,angle:1.5,duration:850,delay:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    this.tweens.add({targets:bg,alpha:1,displayWidth:W*1.50,displayHeight:H*1.50,duration:reduced?80:4050,ease:'Sine.in'});
+    this.tweens.add({targets:shade,alpha:0.04,duration:reduced?80:3300,ease:'Quad.in'});
+    this.tweens.add({targets:rays,alpha:0.9,scale:1.7,duration:reduced?80:3600,ease:'Quad.in'});
+    this.tweens.add({targets:gateGlow,alpha:0.68,scale:2.4,duration:reduced?80:3500,ease:'Quad.in'});
+    this.tweens.add({targets:title,alpha:1,scale:1,duration:reduced?80:650,delay:reduced?0:280,yoyo:true,hold:900,ease:'Sine.inOut'});
+    this.tweens.add({targets:sub,alpha:1,duration:reduced?80:520,delay:reduced?0:620,yoyo:true,hold:760,ease:'Sine.inOut'});
+    this.tweens.add({targets:flash,alpha:0.92,duration:reduced?80:620,delay:reduced?500:3350,ease:'Quad.in'});
     this.cameras.main.fadeIn(reduced?80:350,23,16,31);
     this.time.delayedCall(50,()=>{ if(window.GameLoader)window.GameLoader.hide(); });
   }
