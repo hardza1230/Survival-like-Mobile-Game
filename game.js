@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.55.0';
+const GAME_VERSION = '2.56.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.56.0', date:'2026-09-16', title:'Fix Mint Squish + Dasher Telegraph', items:[
+    'แก้บั๊ก Mint ถูกบีบ/ตัวหดตอนหยุดเดิน — ชีต idle วาดตัวเล็กกว่าชีตวิ่ง · เพิ่มตัวคูณสเกลตอนโชว์ชีต action (CHAR_ACTION_SCALE) ให้ขนาดตรงกัน',
+    'ศัตรูสายพุ่ง (dasher) มีเส้นเตือนทิศพุ่งตอนชาร์จ (แบบ Archero) + ชาร์จนานขึ้นเล็กน้อย ให้หลบทัน' ] },
   { v:'2.55.0', date:'2026-09-16', title:'Fix Purge Objective + Cleaner Hub', items:[
     'แก้บั๊ก: ภารกิจ "ทำลายแกนคำสาป" ตัวที่ไม่ยิงกระสุน (ตาโร่ฟ้าผ่า/มินต์แช่/โกโก้/งาดำ) ทำลายเองไม่ได้ — ตอนนี้สกิล AoE ทำลายแกนได้ + เข้าใกล้ชำระล้างเร็วขึ้น',
     'จัดหน้า Hub ให้สะอาด: รวมปุ่มจาก 11 เหลือ 6 กลุ่ม — 🎒 คลัง&พลัง · 🎉 กิจกรรม · 📖 คัมภีร์ · ⚙ อื่นๆ (แตะเข้าไปเจอเมนูย่อย)' ] },
@@ -1234,6 +1237,8 @@ const RARITIES = [
   { id:'legend', name:'เลเจนดารี', ranks:4, color:0xffcf40, weight:4  },
 ];
 function rollRarity(){ const tot=RARITIES.reduce((s,r)=>s+r.weight,0); let x=Math.random()*tot; for(const r of RARITIES){ x-=r.weight; if(x<=0)return r; } return RARITIES[0]; }
+/* ตัวคูณสเกลตอนโชว์ชีต action (idle/พุ่ง/โดนตี ฯลฯ) เฉพาะตัวที่อาร์ต action เล็กกว่าอาร์ต run — กันตัวหดตอนหยุดเดิน */
+const CHAR_ACTION_SCALE = { mint: 1.5 };
 const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
 const PASSIVE_CAP = 4;       // จำกัดพรติดตัว ลด power stacking และทำให้คู่ Evolution มีความหมาย
@@ -4781,7 +4786,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;
+  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -4824,6 +4829,7 @@ class Game extends Phaser.Scene {
     const sug=Math.max(1,Math.round((isBoss?40:isMini?18:isElite?4:1)*this.diffMul().reward)); this.sugarStage+=sug; this.sugarRun+=sug;   // ยิ่งยาก Sugar ยิ่งเยอะ
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // อัปเดตเงินรอบนี้แบบ realtime
     if(e._objectiveMark){if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;}if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
+    if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
     e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
@@ -5576,7 +5582,10 @@ class Game extends Phaser.Scene {
     const leanT=moving?Phaser.Math.Clamp(p.body.velocity.x/1100,-0.16,0.16):0;
     this._lean += (leanT-this._lean)*Math.min(1,dt*7);
     p.rotation = waddle + this._lean;
-    const base=this._pBase||1;
+    // ชดเชยชีตตัวละครที่ "อาร์ต idle เล็กกว่าอาร์ต run" (เช่น Mint Frostleaf) → กันตัวหด/บีบตอนหยุดเดิน
+    const runKey='char_'+this.character+'_run';
+    const actMul=(this.player.texture.key!==runKey && CHAR_ACTION_SCALE[this.character])||1;
+    const base=(this._pBase||1)*actMul;
     p.setScale(base*this._sqX*(1-breathe), base*this._sqY*(1+breathe));
     // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
     if(moving){
@@ -5722,11 +5731,15 @@ class Game extends Phaser.Scene {
       if(e.dasher){   // สายพุ่งโฉบ: เข้าหา → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่
         e.dashT-=dt;
         if(e.dashState==='chase'){ e.setVelocity(Math.cos(ang)*e.spd,Math.sin(ang)*e.spd);
-          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.42; e.setVelocity(0,0);if(this.stageIndex===4)this.stage5EnemyPose(e,4,400); } }
+          if(e.dashT<=0 && dd<360){ e.dashState='wind'; e.dashT=0.5; e.setVelocity(0,0);if(this.stageIndex===4)this.stage5EnemyPose(e,4,400);   // wind ยาวขึ้นเล็กน้อยให้อ่านทัน
+            if(!e._dashTel){ e._dashTel=this.camWorld(this.add.image(e.x,e.y,'vfx_line').setDepth(3).setTint(0xff5a3c).setAlpha(0)); this.tweens.add({targets:e._dashTel,alpha:0.8,duration:160}); } } }
         else if(e.dashState==='wind'){
           e.setVelocity(0,0);
           e.x += (Math.random() - 0.5) * 5;   // ตัวสั่นตอนชาร์จ
+          // เส้นเตือนทิศพุ่ง (แบบ Archero) — เล็งไปที่ผู้เล่นตอนชาร์จ ให้หลบทัน
+          if(e._dashTel){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x),len=Math.min(dd,320); e._dashTel.setPosition(e.x+Math.cos(a)*len/2,e.y+Math.sin(a)*len/2).setRotation(a).setDisplaySize(len,9); }
           if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang;if(this.stageIndex===4)this.stage5EnemyPose(e,5,340); if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
+            if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
             if(e.body)this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
         else if(e.dashState==='dash'){ if(e.body)this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
           if(e.dashT<=0){ e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.9,1.8); } }
