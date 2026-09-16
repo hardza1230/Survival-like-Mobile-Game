@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.60.0';
+const GAME_VERSION = '2.61.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.61.0', date:'2026-09-16', title:'Original Opening Artwork', items:[
+    'สร้างภาพฉากครัวเวทและ Strawberry Guardian ใหม่สำหรับฉากเปิดโดยเฉพาะ ไม่ยืมพื้นหลัง ตัวละคร หรือพอร์ทัลเดิมในเกม',
+    'ปรับลำดับแอนิเมชันใหม่ให้แสงจากเตาเวทเปิดทาง ก่อนผู้พิทักษ์พุ่งออกมาและโลโก้ปรากฏ' ] },
   { v:'2.60.0', date:'2026-09-16', title:'Animated Opening Scene', items:[
     'เพิ่มฉากเปิดแบบเคลื่อนไหวหลังโหลด Asset สำเร็จ ก่อนเข้าสู่เมนูเกม พร้อม Momo พอร์ทัล แสง และประกายธีมครัวมหัศจรรย์',
     'แตะหรือกดปุ่มเพื่อข้ามได้ และรองรับ Reduce Motion เพื่อให้เข้าเกมเร็วและสบายตา' ] },
@@ -701,6 +704,8 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  opening_kitchen_v2:'assets/opening_kitchen_v2.webp',
+  opening_guardian_v2:'assets/opening_guardian_v2.webp',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   chapter1_cover:'assets/ui/chapter1_cover.webp',
   chapter2_cover:'assets/ui/chapter2_cover.webp',
@@ -1206,11 +1211,10 @@ class Opening extends Phaser.Scene {
     const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.cameras.main.setBackgroundColor('#17101f');
 
-    const bg=this.add.image(cx,cy,'bg1').setDisplaySize(W*1.08,H*1.08).setAlpha(0);
+    const bg=this.add.image(cx,cy,'opening_kitchen_v2').setDisplaySize(W*1.08,H*1.08).setAlpha(0);
     const shade=this.add.rectangle(cx,cy,W,H,0x170d20,0.5);
-    const portal=this.add.sprite(cx,cy+H*0.06,'fx_bossportal',0)
-      .setScale(Math.max(1.2,Math.min(W,H)/180)).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD);
-    if(this.anims.exists('portal_idle'))portal.play('portal_idle');
+    const gateGlow=this.add.ellipse(cx,cy+H*0.04,W*0.27,H*0.58,0xffd083,0)
+      .setBlendMode(Phaser.BlendModes.ADD);
 
     const rays=this.add.graphics().setBlendMode(Phaser.BlendModes.ADD).setAlpha(0);
     for(let i=0;i<12;i++){
@@ -1221,8 +1225,9 @@ class Opening extends Phaser.Scene {
       rays.lineTo(cx+Math.cos(a)*outer,cy+H*0.06+Math.sin(a)*outer);rays.closePath();rays.fillPath();
     }
 
-    const hero=this.add.sprite(cx,cy+H*0.34,'char_momo',CF.idle)
-      .setScale(Math.max(0.72,Math.min(W,H)/560)).setAlpha(0);
+    const heroScale=Math.min(W*0.40/939,H*0.72/1024);
+    const hero=this.add.image(cx,cy+H*0.30,'opening_guardian_v2')
+      .setScale(heroScale*0.72).setAlpha(0).setAngle(-5);
     const title=this.add.text(cx,cy-H*0.28,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(30,Math.min(54,W*0.068))+'px',color:'#fff5f7',stroke:'#651b46',strokeThickness:8,align:'center'}).setOrigin(0.5).setAlpha(0).setScale(0.82);
     const sub=this.add.text(cx,cy-H*0.19,'ประตูสู่ครัวมหัศจรรย์กำลังเปิด',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(13,Math.min(21,W*0.026))+'px',color:'#ffd78d',align:'center'}).setOrigin(0.5).setAlpha(0);
     const skip=this.add.text(cx,H-Math.max(28,H*0.06),'แตะเพื่อข้าม',{fontFamily:'sans-serif',fontSize:Math.max(11,Math.min(16,W*0.02))+'px',color:'#eadbea'}).setOrigin(0.5).setAlpha(0);
@@ -1251,11 +1256,11 @@ class Opening extends Phaser.Scene {
 
     this.tweens.add({targets:bg,alpha:1,displayWidth:W,displayHeight:H,duration:reduced?80:1100,ease:'Sine.out'});
     this.tweens.add({targets:rays,alpha:1,duration:reduced?80:1800,ease:'Sine.out'});
-    this.tweens.add({targets:portal,alpha:0.92,scaleX:portal.scaleX*1.12,scaleY:portal.scaleY*1.12,duration:reduced?80:900,ease:'Back.out'});
+    this.tweens.add({targets:gateGlow,alpha:{from:0,to:0.42},scaleX:{from:0.55,to:1.16},scaleY:{from:0.55,to:1.16},duration:reduced?80:1150,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     this.tweens.add({targets:title,alpha:1,scale:1,duration:reduced?80:720,delay:reduced?0:420,ease:'Back.out'});
     this.tweens.add({targets:sub,alpha:1,y:sub.y+6,duration:reduced?80:600,delay:reduced?0:780,ease:'Sine.out'});
-    this.tweens.add({targets:hero,alpha:1,y:cy+H*0.20,duration:reduced?80:900,delay:reduced?0:1250,ease:'Back.out'});
-    this.tweens.add({targets:hero,scaleX:hero.scaleX*1.04,scaleY:hero.scaleY*0.96,duration:700,delay:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    this.tweens.add({targets:hero,alpha:1,y:cy+H*0.14,scale:heroScale,angle:0,duration:reduced?80:980,delay:reduced?0:1050,ease:'Back.out'});
+    this.tweens.add({targets:hero,y:cy+H*0.125,angle:1.5,duration:850,delay:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     this.cameras.main.fadeIn(reduced?80:350,23,16,31);
     this.time.delayedCall(50,()=>{ if(window.GameLoader)window.GameLoader.hide(); });
   }
