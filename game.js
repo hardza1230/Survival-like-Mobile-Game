@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.47.0';
+const GAME_VERSION = '2.48.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.48.0', date:'2026-09-16', title:'In-Stage Upgrade Boxes', items:[
+    'เพิ่มกล่องสูตรลับในแมพ (ฟ้า) โผล่เป็นระยะ — เก็บแล้วเลือกอัปเกรดเอง 1 ใบ โดยไม่ต้องรอเลเวลอัพ',
+    'กล่องมินิบอส (ม่วง) = สุ่มรางวัลให้ พร้อมอนิเมชันสล็อตหมุนช้าลงจนหยุดที่รางวัล + แสงวาบ/เสียง ให้ลุ้น',
+    'รางวัลกล่องใช้ระบบการ์ดเดิม จึงทำงานกับทุกตัวละคร (character-first) และเคารพเพดานสแตต' ] },
   { v:'2.47.0', date:'2026-09-16', title:'Recipes for Everyone + Slower Leveling', items:[
     'ระบบทำอาหารใช้ได้กับทุกตัวแล้ว: Basic Attack ประจำตัว + สกิลติดตัว (passive) ที่เก็บได้ = ปรุงเมนู',
     'ขยายสูตรเป็น 15 เมนู แต่ละตัวมีหลายสูตรและให้เอฟเฟกต์ต่างกัน (คูลดาวน์/คริ/เกราะ/ฟื้น/ความเร็ว) ไม่ใช่ +ดาเมจเฉย ๆ',
@@ -3092,7 +3096,7 @@ class Game extends Phaser.Scene {
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
-        this.rerollLeft=REROLL_MAX;this.banishLeft=BANISH_MAX;this.banishedKeys={};   // โควตาสุ่มใหม่/ลบสกิล ต่อรอบ
+        this.rerollLeft=REROLL_MAX;this.banishLeft=BANISH_MAX;this.banishedKeys={};this._boxAcc=null;   // โควตาสุ่มใหม่/ลบสกิล ต่อรอบ
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
@@ -3426,6 +3430,9 @@ class Game extends Phaser.Scene {
         if(live<dynamicMax){const n=Math.min(dynamicBatch,dynamicMax-live);this.spawnWaveRing(n);} }
       if(this.waveAllowsElite){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
       if(this.swarmAcc!=null){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
+      // กล่องสูตรลับในแมพ (เลือกเอง 1 ใบ) โผล่เป็นระยะ — อัปเกรดโดยไม่ต้องรอเลเวล
+      this._boxAcc=(this._boxAcc==null?Phaser.Math.FloatBetween(26,38):this._boxAcc)-dt;
+      if(this._boxAcc<=0){ this._boxAcc=Phaser.Math.FloatBetween(40,58); this.spawnMapBox(); }
       const st=STAGES[this.stageIndex];
       if(st)this.timeTxt.setText('⚔ เวฟ '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+' วิ');
       if(this.waveTimer<=0){
@@ -3683,7 +3690,7 @@ class Game extends Phaser.Scene {
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.skills={};this.basicAttack=null;this.passives={};this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
-    this.rerollLeft=REROLL_MAX;this.banishLeft=BANISH_MAX;this.banishedKeys={};
+    this.rerollLeft=REROLL_MAX;this.banishLeft=BANISH_MAX;this.banishedKeys={};this._boxAcc=null;
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
@@ -4743,16 +4750,64 @@ class Game extends Phaser.Scene {
     else {const refund=tier==='epic'?60:tier==='rare'?25:8;this.sugarStage+=refund;this.sugarRun+=refund;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🍬 +'+refund,1200);}
   }
   // ---- หีบสมบัติ (ดรอปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
+  // กล่องสูตรลับในแมพ — วางห่างผู้เล่นเล็กน้อยให้ต้องเดินไปเก็บ
+  spawnMapBox(){ if(!this.chests)return; const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*(0.28+Math.random()*0.22);
+    const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad; this.spawnChest(x,y,'pick'); }
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
     if(!c)return;
-    c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c); this.showPickupCue(c,kind==='mini'?0xd58cff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
+    c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c); this.showPickupCue(c,kind==='mini'?0xd58cff:kind==='pick'?0x66e0ff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
     this.tweens.add({targets:c,y:y-12,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); this.hidePickupCue(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
-    const kind=c.rewardKind;c.rewardKind=null;if(kind==='mini'){this.openMiniSkillChest();return;}
+    const kind=c.rewardKind;c.rewardKind=null;
+    if(kind==='mini'){this.openRollBox('🎁 กล่องมินิบอส');return;}   // มินิบอส = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
+  // กล่องสุ่ม (มินิบอส): หมุนสล็อตแล้วลงที่รางวัลเดียว — ตื่นเต้นกว่าเลือกเอง
+  openRollBox(titleText){
+    const winner=(this.rollUpgrades(1)||[])[0];
+    if(!winner){ const sugar=40;this.sugarStage+=sugar;this.sugarRun+=sugar;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 กล่องสุ่ม','อัปเกรดเต็มแล้ว · Sugar +'+sugar,1800);return; }
+    const reel=[winner]; for(let i=0;i<7;i++){ const r=(this.rollUpgrades(1)||[])[0]; if(r)reel.push(r); }
+    this.playRollAnimation(reel,winner,titleText||'🎁 กล่องสุ่ม',()=>{ winner.apply(); });
+  }
+  playRollAnimation(reel,winner,titleText,onDone){
+    if(this.state==='rolling')return;
+    this._prevRollState=this.state; this.state='rolling'; this.physics.pause();
+    const w=this.W,h=this.H;
+    const cont=this.add.container(0,0).setScrollFactor(1).setDepth(95); this.camUI(cont);
+    const bg=this.add.rectangle(0,0,w,h,0x120c1a,0.82).setOrigin(0,0);
+    const ttl=this.add.text(w/2,h*0.26,titleText,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166'}).setOrigin(0.5);
+    const cardW=Math.min(w-70,300),cardH=132,cx=w/2,cy=h*0.5;
+    const g=this.add.graphics(); const drawCard=(color)=>{g.clear();g.fillStyle(0x241a33,0.98);g.fillRoundedRect(cx-cardW/2,cy-cardH/2,cardW,cardH,18);g.lineStyle(3,color||0xffd166,0.95);g.strokeRoundedRect(cx-cardW/2,cy-cardH/2,cardW,cardH,18);};
+    drawCard(0xffd166);
+    const em=this.add.text(cx,cy-24,'🎁',{fontSize:'46px'}).setOrigin(0.5);
+    const nm=this.add.text(cx,cy+34,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff',align:'center',wordWrap:{width:cardW-24}}).setOrigin(0.5);
+    const sub=this.add.text(w/2,cy+cardH/2+22,'กำลังสุ่ม...',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6'}).setOrigin(0.5);
+    cont.add([bg,ttl,g,em,nm,sub]);
+    const delays=[45,45,50,55,65,80,100,125,155,195,245,310]; let step=0;
+    const show=(card)=>{ drawCard(card.color||0xffd166); em.setText(card.emoji||'🎁'); nm.setText(card.title||''); em.setScale(1); this.tweens.add({targets:em,scale:{from:0.8,to:1},duration:90}); if(Sfx.select)Sfx.select(); };
+    const tick=()=>{
+      const last=step>=delays.length-1;
+      show(last?winner:Phaser.Utils.Array.GetRandom(reel));
+      if(last){ this.time.delayedCall(240,()=>this.landRollBox(cont,g,em,nm,sub,cx,cy,cardW,cardH,winner,onDone)); return; }
+      this.time.delayedCall(delays[step++],tick);
+    };
+    tick();
+  }
+  landRollBox(cont,g,em,nm,sub,cx,cy,cardW,cardH,winner,onDone){
+    g.clear();g.fillStyle(0x2c2038,1);g.fillRoundedRect(cx-cardW/2,cy-cardH/2,cardW,cardH,18);g.lineStyle(4,winner.color||0xffd166,1);g.strokeRoundedRect(cx-cardW/2,cy-cardH/2,cardW,cardH,18);
+    sub.setText('✨ '+(winner.desc||'ได้รับรางวัล!')).setColor('#ffe08a');
+    this.tweens.add({targets:[em,nm],scale:{from:1.25,to:1},duration:320,ease:'Back.out'});
+    this.screenFlash(winner.color||0xffe08a,0.35,300); if(Sfx.clear)Sfx.clear(); this.burst(this.player.x,this.player.y,winner.color||0xffd166); this.vfxLevelUp&&this.vfxLevelUp();
+    this.time.delayedCall(950,()=>{
+      this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{cont.destroy(true);
+        this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play'); if(this.state!=='paused')this.physics.resume();
+        if(onDone)onDone();
+      }});
+    });
+  }
   openMiniSkillChest(){
     const r=Math.random(),wanted=r<0.46?2:r<0.78?3:r<0.94?4:5,pool=Phaser.Utils.Array.Shuffle(Object.keys(this.skills).filter(k=>SKILLDEFS[k]&&this.skills[k]<SKILLDEFS[k].max)),chosen=pool.slice(0,wanted);
     if(!chosen.length){const sugar=35;this.sugarStage+=sugar;this.sugarRun+=sugar;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 กล่องมินิบอส','สกิลเต็มแล้ว · แปลงเป็น Sugar +'+sugar,2200);return;}
