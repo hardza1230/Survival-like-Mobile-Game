@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.52.1';
+const GAME_VERSION = '2.53.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.53.0', date:'2026-09-16', title:'Simpler Difficulty (3 tiers + auto)', items:[
+    'ลดระดับความยากจาก 5 → 3 ระดับ (ปกติ/ยาก/นรก) ลดความซับซ้อนและภาระบาลานซ์ · คงกฎเหล็ก "ยิ่งยากรางวัลยิ่งดี"',
+    'เพิ่มปุ่ม "▶ เล่นเลย" ที่แนะนำระดับอัตโนมัติจาก Power Rating — กดเดียวจบ ไม่ต้องคิด · ระดับที่แนะนำมีป้าย ⭐',
+    'ยังเลือกระดับเองได้ครบด้านล่าง · daily/endless/achievement ปรับให้เข้ากับ 3 ระดับ' ] },
   { v:'2.52.1', date:'2026-09-16', title:'Cleanup', items:[
     'เก็บกวาด dead code: `bearQuake` (โกโก้ใช้ voidPull แล้ว) และ `bestiaryAllBonus` (Bestiary ให้ Sugar แทนสแตตตั้งแต่ v2.45)' ] },
   { v:'2.52.0', date:'2026-09-16', title:'Rank Perks', items:[
@@ -1208,12 +1212,11 @@ const SKILL_AWAKEN_LV = 6;   // เลเวลตื่นรู้ (Awaken) �
 // Juice: หมุดหมายคอมโบฆ่าต่อเนื่อง {จำนวน: [สเต็ปเสียง, คำชม]}
 const STREAK_MARKS = {10:[0,'ดีย์!'],25:[1,'สุดยอด!'],50:[2,'โหดจัด!'],100:[3,'เทพ!'],200:[4,'อสูร!'],350:[5,'ตำนาน!']};
 // ระดับความยากต่อด่าน (เลือกก่อนเล่น) — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่ "รางวัลยิ่งดี"
+/* ระดับความยาก 3 ระดับ (ลดจาก 5 เพื่อลดความซับซ้อน/ภาระบาลานซ์ · v2.53) · กฎเหล็ก: ยิ่งยากรางวัลยิ่งดี */
 const DIFFS = [
-  {lv:1,name:'ง่าย',   emoji:'🟢',color:0x66d3b3,hp:1.0, dmg:1.0,  reward:1.0},
-  {lv:2,name:'ปกติ',   emoji:'🔵',color:0x6bb8ff,hp:1.4, dmg:1.08, reward:1.4},
-  {lv:3,name:'ยาก',    emoji:'🟡',color:0xffd24d,hp:1.9, dmg:1.18, reward:1.9},
-  {lv:4,name:'โหด',    emoji:'🟠',color:0xff9a4d,hp:2.6, dmg:1.30, reward:2.5},
-  {lv:5,name:'นรกแตก', emoji:'🔴',color:0xff5a6e,hp:3.6, dmg:1.45, reward:3.4},
+  {lv:1,name:'ปกติ', emoji:'🟢',color:0x66d3b3,hp:1.0, dmg:1.0,  reward:1.0},
+  {lv:2,name:'ยาก',  emoji:'🟡',color:0xffd24d,hp:1.75,dmg:1.18, reward:1.85},
+  {lv:3,name:'นรก',  emoji:'🔴',color:0xff5a6e,hp:2.8, dmg:1.38, reward:3.0},
 ];
 const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
@@ -1547,7 +1550,7 @@ function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
 const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
 function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%3)};}
+function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%2)};}   // diff 2-3 (นรกสูงสุด)
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
 const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'} };
 const FIELD_DROP_TABLE={
@@ -1835,7 +1838,7 @@ const ACHIEVEMENTS=[
   {id:'stage1',emoji:'🐜',name:'ผู้พิชิตรังเปรี้ยว',desc:'ผ่านด่าน 1 ครั้งแรก',reward:60,test:d=>!!(d.stageMastery||{})[0]},
   {id:'hunger',emoji:'🌑',name:'ผู้หยุดความหิว',desc:'กำจัด The Great Hunger',reward:300,test:d=>!!(d.stageMastery||{})[4]},
   {id:'master',emoji:'🏆',name:'จ้าวแห่งใต้ครัว',desc:'Mastery ครบทั้ง 5 ด่าน',reward:250,test:d=>[0,1,2,3,4].every(i=>(d.stageMastery||{})[i])},
-  {id:'hell',emoji:'🔥',name:'ผู้รอดจากนรก',desc:'ผ่านด่านใดก็ได้ระดับ Hell',reward:220,test:d=>(d.diffBest||[]).some(v=>v>=5)},
+  {id:'hell',emoji:'🔥',name:'ผู้รอดจากนรก',desc:'ผ่านด่านใดก็ได้ระดับ นรก',reward:220,test:d=>(d.diffBest||[]).some(v=>v>=3)},
   {id:'collector',emoji:'💎',name:'นักสะสมเครื่องราง',desc:'สะสมอุปกรณ์อย่างน้อย 12 ชิ้น',reward:160,test:d=>(d.ownedGear||[]).length>=12},
   {id:'family',emoji:'🍡',name:'ครอบครัว Mochi Core',desc:'ปลดล็อกนักสู้ครบ 5 ตัว',reward:220,test:d=>(d.chars||[]).length>=5},
   {id:'bond',emoji:'⭐',name:'สายใยนิรันดร์',desc:'ประสานสายใยขึ้น Rank 1',reward:200,test:d=>(d.rank||0)>=1},
@@ -2699,7 +2702,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('ปลายทางเหนือความหิว');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
     const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 ต้องทำ Mastery ครบทั้ง 5 ด่าน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
     const card=(y,color,title,desc,label,fn)=>{const cw=Math.min(w-32,520),x=(w-cw)/2,ch=Math.min(132,h*0.22),g=this.add.graphics();g.fillStyle(0x251a32,0.97);g.fillRoundedRect(x,y,cw,ch,17);g.lineStyle(2,color,0.9);g.strokeRoundedRect(x,y,cw,ch,17);const t=this.add.text(x+18,y+17,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff'}),d=this.add.text(x+18,y+47,desc,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',wordWrap:{width:cw-36},lineSpacing:4}),b=this.add.text(x+cw-18,y+ch-18,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0.5);this.menu.add([g,t,d,b]);if(fn)this._zone(x,y,cw,ch,fn);};
-    const y1=100,y2=y1+Math.min(145,h*0.24);card(y1,0xd58cff,'🌙 Midnight Kitchen · Endless','วน 5 เวฟแล้วสู้บอส ศัตรูแรงขึ้นทุกรอบ · ทุก 3 รอบ The Echo of Hunger จะปรากฏ\nสถิติสูงสุด '+best+' รอบ',unlocked?'แตะเพื่อเริ่ม':'ยังไม่ปลดล็อก',unlocked?()=>{this._endlessRequested=true;this.stageDiff=Math.max(2,Math.min(5,(Save.data.diffBest?.[4]||2)));this.startRun(4);}:null);
+    const y1=100,y2=y1+Math.min(145,h*0.24);card(y1,0xd58cff,'🌙 Midnight Kitchen · Endless','วน 5 เวฟแล้วสู้บอส ศัตรูแรงขึ้นทุกรอบ · ทุก 3 รอบ The Echo of Hunger จะปรากฏ\nสถิติสูงสุด '+best+' รอบ',unlocked?'แตะเพื่อเริ่ม':'ยังไม่ปลดล็อก',unlocked?()=>{this._endlessRequested=true;this.stageDiff=Math.max(2,Math.min(3,(Save.data.diffBest?.[4]||2)));this.startRun(4);}:null);
     const confirm=this._ascendConfirm;card(y2,0xffa952,'☀ Ascension '+asc,'เริ่มเส้นทางด่านใหม่ โดยรีเซ็ต Mastery/ด่านที่ปลดล็อก แต่เก็บตัวละคร Gear Rank และรับ Sugar ก้อนใหญ่ต่อ Ascension',canAscend?(confirm?'⚠ แตะอีกครั้งเพื่อยืนยัน':'Ascend · รับ Sugar '+(350+(asc+1)*150)):'ต้องทำ Mastery รอบนี้ให้ครบ',canAscend?()=>{if(this._ascendConfirm){const r=Save.ascend();this._ascendConfirm=false;Sfx.clear();this.showBanner('☀ ASCENSION '+Save.data.ascension,'พลังถาวรเพิ่มขึ้น · Sugar +'+r,2200);}else{this._ascendConfirm=true;Sfx.select();}this.buildEndgame();}:null);
     const board=(Save.data.endlessBoard||[]),top=y2+Math.min(150,h*0.25),head=this.add.text(w/2,top,'🏆 อันดับ Endless ในเครื่อง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#bfe8ff'}).setOrigin(0.5);this.menu.add(head);
     const lines=board.length?board.map((r,i)=>(i+1)+'. รอบ '+r.cycle+' · ☠'+r.kills+' · '+Math.floor(r.seconds/60)+':'+String(r.seconds%60).padStart(2,'0')+' · '+(CHARACTERS[r.character]?.name||r.character)).join('\n'):'ยังไม่มีสถิติ';const list=this.add.text(w/2,top+24,lines,{fontFamily:'sans-serif',fontSize:'10px',color:'#d8c4e3',align:'center',lineSpacing:5}).setOrigin(0.5,0);this.menu.add(list);this.menu.setVisible(true);
@@ -2863,13 +2866,22 @@ class Game extends Phaser.Scene {
     const t=this.add.text(this.W/2,portrait?78:52,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe07a'}).setOrigin(0.5);
     const sub=this.add.text(this.W/2,portrait?98:70,'ยิ่งยาก ศัตรูยิ่งถึก — แต่รางวัลยิ่งดี 🏆',{fontFamily:'sans-serif',fontSize:'10px',color:'#cdbfe0'}).setOrigin(0.5);
     this.menu.add([t,sub]);
-    const x=Math.max(16,(this.W-Math.min(this.W-28,420))/2),w=Math.min(this.W-28,420),y0=portrait?122:92,gap=8;
-    const rowH=Math.min(portrait?70:52,(this.H-y0-70-gap*4)/5);
+    const x=Math.max(16,(this.W-Math.min(this.W-28,420))/2),w=Math.min(this.W-28,420),gap=8;
+    const rec=this.recommendedDiff(idx),recD=DIFFS[rec-1];
+    // ▶ ปุ่มเล่นเลย (แนะนำอัตโนมัติจาก Power) — กดเดียวจบ ไม่ต้องคิด
+    const pby=portrait?116:88,pbh=46,pg=this.add.graphics();
+    pg.fillStyle(0x2f4a38,1);pg.fillRoundedRect(x,pby,w,pbh,13);pg.lineStyle(2.5,0x66e0a0,1);pg.strokeRoundedRect(x,pby,w,pbh,13);
+    const pl=this.add.text(x+16,pby+pbh*0.32,'▶ เล่นเลย',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff'}).setOrigin(0,0.5);
+    const pr=this.add.text(x+w-16,pby+pbh*0.32,'แนะนำ: '+recD.emoji+' '+recD.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#a8f0c0'}).setOrigin(1,0.5);
+    const ps=this.add.text(x+16,pby+pbh*0.74,'ปรับให้พอดีกับพลังของคุณ · เลือกระดับเองด้านล่างได้',{fontFamily:'sans-serif',fontSize:'9px',color:'#bfe8cf'}).setOrigin(0,0.5);
+    this.menu.add([pg,pl,pr,ps]); this._zone(x,pby,w,pbh,()=>{ this._dailyRun=false; this.stageDiff=rec; this.startRun(idx); });
+    const y0=pby+pbh+12;
+    const rowH=Math.min(portrait?66:50,(this.H-y0-64-gap*2)/DIFFS.length);
     DIFFS.forEach((d,i)=>{
-      const y=y0+i*(rowH+gap), g=this.add.graphics();
-      g.fillStyle(0x241a30,0.96);g.fillRoundedRect(x,y,w,rowH,12);g.lineStyle(2.5,d.color,0.95);g.strokeRoundedRect(x,y,w,rowH,12);g.fillStyle(d.color,1);g.fillRoundedRect(x,y,7,rowH,4);
+      const y=y0+i*(rowH+gap), g=this.add.graphics(), isRec=d.lv===rec;
+      g.fillStyle(0x241a30,0.96);g.fillRoundedRect(x,y,w,rowH,12);g.lineStyle(isRec?3:2.5,d.color,isRec?1:0.9);g.strokeRoundedRect(x,y,w,rowH,12);g.fillStyle(d.color,1);g.fillRoundedRect(x,y,7,rowH,4);
       const cleared=best>=d.lv;
-      const label=this.add.text(x+20,y+rowH*0.30,d.emoji+' ระดับ '+d.lv+' · '+d.name+(cleared?'  ✓':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5);
+      const label=this.add.text(x+20,y+rowH*0.30,d.emoji+' '+d.name+(cleared?'  ✓':'')+(isRec?'   ⭐แนะนำ':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5);
       const info=this.add.text(x+20,y+rowH*0.72,'ศัตรู HP ×'+d.hp.toFixed(1)+' · ดาเมจ ×'+d.dmg.toFixed(2),{fontFamily:'sans-serif',fontSize:'10px',color:'#bfb5ca'}).setOrigin(0,0.5);
       const rw=this.add.text(x+w-16,y+rowH/2,'🏆 รางวัล ×'+d.reward.toFixed(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#'+d.color.toString(16).padStart(6,'0')}).setOrigin(1,0.5);
       this.menu.add([g,label,info,rw]); this._zone(x,y,w,rowH,()=>{ this._dailyRun=false; this.stageDiff=d.lv; this.startRun(idx); });
@@ -3552,7 +3564,9 @@ class Game extends Phaser.Scene {
   bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(3.0,(1+Math.max(0,(this.level||1)-1)*0.055)*pg.enemyHp); }
   // ยิ่งฆ่ามอนในด่านเยอะ ศัตรู/บอสยิ่งถึกขึ้น (ทวีคูณ) — ทำให้เกมยากขึ้นเรื่อย ๆ ระหว่างด่าน
   killPowerMul(){ return (1 + Math.min(1.8, (this.stageKills||0)*0.005))*(this.endlessMode?1+(this.endlessCycle||0)*0.18:1); }
-  diffMul(){ return DIFFS[Math.max(0,Math.min(4,(this.stageDiff||1)-1))]; }   // ตัวคูณตามระดับความยากที่เลือก
+  diffMul(){ return DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))]; }   // ตัวคูณตามระดับความยากที่เลือก
+  // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
+  recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }
   bossRageInfo(kills){
     const n=kills==null?(this.stageKills||0):kills,tiers=[
       {min:0,name:'ปกติ',emoji:'😐',color:0xb8b0c4,hp:1,dmg:1,spd:1,cd:1,reward:1,gear:0.45,minTier:'common'},
