@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.56.0';
+const GAME_VERSION = '2.57.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.57.0', date:'2026-09-16', title:'Nerf Green Pillars + Mint vs Bosses', items:[
+    'เสาบอส (คริสตัล/โอเบลิสก์เขียว) ไม่โกงแล้ว: ลด HP ให้ทำลายได้จริง + ยิงช้าลง/ช้าลง/ลดจำนวนนัด → หลบทัน โดยเฉพาะสายดาเมจต่ำ',
+    'แก้ Mint สู้มินิบอส/บอสยาก: บอส/มินิแช่แข็งไม่ได้ (ไม่มี shatter) → frost ทำดาเมจใส่บอส/มินิ ×1.7 ชดเชย (คงเอกลักษณ์คุมฝูงแต่ไม่จนมุมกับตัวใหญ่)' ] },
   { v:'2.56.0', date:'2026-09-16', title:'Fix Mint Squish + Dasher Telegraph', items:[
     'แก้บั๊ก Mint ถูกบีบ/ตัวหดตอนหยุดเดิน — ชีต idle วาดตัวเล็กกว่าชีตวิ่ง · เพิ่มตัวคูณสเกลตอนโชว์ชีต action (CHAR_ACTION_SCALE) ให้ขนาดตรงกัน',
     'ศัตรูสายพุ่ง (dasher) มีเส้นเตือนทิศพุ่งตอนชาร์จ (แบบ Archero) + ชาร์จนานขึ้นเล็กน้อย ให้หลบทัน' ] },
@@ -4422,7 +4425,7 @@ class Game extends Phaser.Scene {
         this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>=r2)return;
           if(e.frozen>0){ this.damage(e,(16+lvl*4)*dm*df*bShatterDmg,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
           if(!e.isBoss&&!e.isMini){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }
-          this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r2,Math.max(dmg,10)); Sfx.frost(); });
+          this.damage(e,(e.isBoss||e.isMini)?dmg*1.7:dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r2,Math.max(dmg,10)); Sfx.frost(); });
       if(this.textures.exists('fx_frostnova')&&this.anims.exists('fx_frostnova')) this.spawnFxAnim('fx_frostnova',this.player.x,this.player.y,{scale:(2*r)/ASSET_FX.fx_frostnova.fw*0.82,depth:3,anchor:'center',alpha:Math.min(1,0.5+lvl*0.1)});
       else if(this.textures.exists('fx_frost')) this.fxBurst('fx_frost',this.player.x,this.player.y,r,aw?520:380,true);
       else { const ring=this.camWorld(this.add.circle(this.player.x,this.player.y,12,COLORS.ice,0.4).setDepth(3));
@@ -4430,7 +4433,7 @@ class Game extends Phaser.Scene {
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>=r)return;
         if(shatter&&e.frozen>0){ this.damage(e,(16+lvl*4)*dm*df*bShatterDmg,e.x,e.y); this.burst(e.x,e.y,0x8fd0ff); }
         if(!e.isBoss&&!e.isMini){ e.frozen=dur; e.setVelocity(0,0); e.setTint(COLORS.ice); }
-        this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r,Math.max(dmg,10)); Sfx.frost(); }
+        this.damage(e,(e.isBoss||e.isMini)?dmg*1.7:dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r,Math.max(dmg,10)); Sfx.frost(); }   // บอส/มินิแช่ไม่ได้ → ชดเชยด้วยดาเมจเย็นเจาะเกราะ (แก้ Mint สู้มินิยาก)
     else if(key==='popcorn'){ const cnt=aw?18:lvl>=4?10:lvl>=2?7:5, dmg=(7+lvl*2.3)*dm*(aw?1.12:1);
       const speed=(lvl>=5?430:350)*(aw?1.2:1), bounce=aw?1:0;
       for(let i=0;i<cnt;i++){ const ang=Math.random()*Math.PI*2;
@@ -5076,7 +5079,7 @@ class Game extends Phaser.Scene {
   spawnBossObject(kind,x,y,life=10){
     const map={hole:'nest_hole',egg:'nest_eggs',crystal:'nest_crystal',obelisk:'nest_obelisk',mound:'nest_mound',acid:'nest_acid'},key=map[kind];if(!key||!this.textures.exists(key))return null;
     let o=this.bossObjects.getFirstDead(false);if(!o)o=this.bossObjects.create(x,y,key);else{o.setTexture(key);o.setActive(true).setVisible(true);if(o.body)o.body.enable=true;o.setPosition(x,y);}
-    if(!o)return null;o.kind=kind;o.life=life;o.tick=Phaser.Math.FloatBetween(0.7,1.6);o.hp=kind==='egg'?80:kind==='crystal'?105:kind==='obelisk'?150:kind==='mound'?175:999;o.maxhp=o.hp;o.setScale(kind==='acid'?0.62:kind==='egg'?0.54:0.66).setDepth(y-1).clearTint();this.camWorld(o);
+    if(!o)return null;o.kind=kind;o.life=life;o.tick=Phaser.Math.FloatBetween(1.0,1.9);o.hp=kind==='egg'?70:kind==='crystal'?68:kind==='obelisk'?95:kind==='mound'?150:999;o.maxhp=o.hp;   // ลด HP ให้ทำลายได้จริง (โดยเฉพาะสายดาเมจต่ำอย่าง Mint)o.setScale(kind==='acid'?0.62:kind==='egg'?0.54:0.66).setDepth(y-1).clearTint();this.camWorld(o);
     const ghost=kind==='acid'||kind==='hole';if(o.body){o.body.setAllowGravity(false);o.body.setImmovable(!ghost);o.body.setSize(ghost?1:80,ghost?1:58,true);if(ghost)o.body.checkCollision.none=true;else o.body.checkCollision.none=false;}
     this.vfxSpawnPoof(x,y);return o;
   }
@@ -5114,8 +5117,8 @@ class Game extends Phaser.Scene {
       if(o.kind==='hole'){if(o.life<=0)this.killBossObject(o,false);return;}
       if(o.kind==='egg'&&o.life<=0){this.killBossObject(o,true);return;}
       if(o.tick<=0){
-        if(o.kind==='crystal'){o.tick=2.0;const a=Math.atan2(this.player.y-o.y,this.player.x-o.x);this.foeShot(o.x,o.y,a,230,11,0x86ff48,1.05);}
-        else if(o.kind==='obelisk'){o.tick=2.8;for(let i=0;i<8;i++)this.foeShot(o.x,o.y,i*Math.PI/4,155,9,0xc7ff66,0.9);}
+        if(o.kind==='crystal'){o.tick=2.7;const a=Math.atan2(this.player.y-o.y,this.player.x-o.x);this.foeShot(o.x,o.y,a,175,10,0x86ff48,1.05);}   // ยิงช้าลง+ช้าลง หลบทันขึ้น
+        else if(o.kind==='obelisk'){o.tick=3.4;for(let i=0;i<6;i++)this.foeShot(o.x,o.y,i*Math.PI/3,135,8,0xc7ff66,0.9);}   // 8→6 นัด ช้าลง
         else if(o.kind==='mound'){o.tick=3.4;this.spawnEnemy(Math.random()<0.55?'fast':'acid');}
       }
       if(o.life<=0)this.killBossObject(o,o.kind==='mound');
