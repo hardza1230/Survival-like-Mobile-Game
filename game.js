@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.65.0';
+const GAME_VERSION = '2.66.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.66.0', date:'2026-09-17', title:'Fix Strawberry shots, hunt target & arrow', items:[
+    'Strawberry เริ่มยิง 1 นัดจริง — เดิมปืนประจำตัว (berryBlaster) บวก +2 นัดตลอด ตอนนี้ +0 (ชดเชยด้วยดาเมจ +14% / คูลดาวน์ -12%)',
+    'ภารกิจล่าเป้าหมาย: เป้าหมายถึกขึ้น (HP ×1.6 เดิม ×0.68 อ่อนไป) + เพิ่มออร่าเรืองสีชมพูหมุนรอบตัว + ป้าย 🎯 เด้ง ให้เห็นชัดว่าตัวไหน',
+    'แก้บั๊กป้าย/ออร่าเป้าหมายไม่วิ่งตามตัว (เช็คผิดตัวแปร) → ตอนนี้ตามติดตลอด',
+    'แก้ลูกศรชี้เป้าหมายเพี้ยน — วัดมุมจากจุดกึ่งกลางกล้องจริง (เดิมสมมติผู้เล่นอยู่กลางจอเป๊ะ แต่กล้อง lerp ทำให้เพี้ยน)' ] },
   { v:'2.65.0', date:'2026-09-17', title:'Strawberry & cleaner opening', items:[
     'เปลี่ยนชื่อตัวละครโมโม่เป็น "Strawberry"',
     'Basic Attack ของ Strawberry เริ่มยิง 1 นัด แล้วค่อยเพิ่มตามเลเวล/อัปเกรด (เดิมเริ่ม 4)',
@@ -1372,7 +1377,7 @@ const CHARACTERS = {
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // เบอร์รี่คอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
 const SIGNATURE_WEAPONS = {
-  berryBlaster:{name:'ปืนเมล็ดหัวใจ',emoji:'🍓',skill:'sprinkle',dmgMul:1.08,cdMul:0.90,shots:2,trait:'ยิงเพิ่ม 2 นัด · คูลดาวน์ -10%'},
+  berryBlaster:{name:'ปืนเมล็ดหัวใจ',emoji:'🍓',skill:'sprinkle',dmgMul:1.14,cdMul:0.88,shots:0,trait:'ดาเมจ +14% · คูลดาวน์ -12%'},
   mintNova:{name:'แกนลมเย็นมินต์',emoji:'❄️',skill:'frost',dmgMul:0.96,cdMul:0.86,areaMul:1.14,controlMul:1.18,trait:'วงกว้าง +14% · แช่นาน +18%'},
   bearGauntlet:{name:'ถุงมือตราหมีโกโก้',emoji:'🐻',skill:'meteor',dmgMul:1.15,cdMul:1.05,areaMul:1.18,trait:'แรงและกว้างขึ้น · แลกคูลดาวน์ +5%'},
   riftCompass:{name:'เข็มทิศสายฟ้ารอยแยก',emoji:'🧭',skill:'thunder',dmgMul:1.02,cdMul:0.86,chains:2,trait:'ชิ่งเพิ่ม 2 เป้า · คูลดาวน์ -14%'},
@@ -3578,7 +3583,7 @@ class Game extends Phaser.Scene {
     let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':this.stageIndex===4?'e_royal_oven_sentinel':this.stageIndex===5?'ch2_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:0;
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool เต็ม → รีไซเคิล (มินิบอสต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
-    if(e._objectiveMark){if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;}e._waveObjectiveTarget=false;
+    this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72,3.35][this.stageIndex]||3.35,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*([1,1.05,1.12,1.20,1.30,1.42][this.stageIndex]||1.42)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
@@ -3652,8 +3657,15 @@ class Game extends Phaser.Scene {
   }
   spawnObjectiveElite(){
     const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done)return;const e=this.spawnElite();if(!e)return;
-    e.hp*=.68;e.maxhp=e.hp;e._waveObjectiveTarget=true;e._objectiveMark=this.camWorld(this.add.text(e.x,e.y-72,'🎯',{fontSize:'25px',stroke:'#2a102f',strokeThickness:5}).setOrigin(.5).setDepth(e.y+8));
+    e.hp*=1.6;e.maxhp=e.hp;e._waveObjectiveTarget=true;   // เป้าหมายล่า = ถึกกว่าปกติ (เดิม ×0.68 อ่อนไป)
+    e.setScale((e.scaleX||1)*1.12);
+    // ออร่าเรืองรอบตัว (วงแหวนหมุน + เต้น) ให้เห็นชัดว่าตัวไหนเป็นเป้าหมาย
+    e._objectiveAura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0xff5a8a).setDepth(e.y-1).setScale(0.42).setAlpha(0.85).setBlendMode(Phaser.BlendModes.ADD));
+    this.tweens.add({targets:e._objectiveAura,scale:{from:0.42,to:0.58},alpha:{from:0.9,to:0.45},rotation:TAU,duration:620,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    e._objectiveMark=this.camWorld(this.add.text(e.x,e.y-72,'🎯',{fontSize:'27px',stroke:'#2a102f',strokeThickness:5}).setOrigin(.5).setDepth(e.y+8));
+    this.tweens.add({targets:e._objectiveMark,y:e.y-80,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
+  clearObjectiveTargetFx(e){ if(e._objectiveAura){this.tweens.killTweensOf(e._objectiveAura);if(e._objectiveAura.active)e._objectiveAura.destroy();e._objectiveAura=null;} if(e._objectiveMark){this.tweens.killTweensOf(e._objectiveMark);if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;} }
   onWaveObjectiveTargetDown(e){
     const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done)return;o.progress++;this.renderWaveObjectiveHUD();
     if(o.progress>=o.target){this.completeWaveObjective();return;}
@@ -3661,7 +3673,7 @@ class Game extends Phaser.Scene {
   }
   tickWaveObjective(dt){
     const o=this.waveObjective;if(!o||o.done)return;
-    this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);});
+    this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
     else if(o.type==='purge'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode)return;n._purifyCd-=dt;if(this.dist(this.player.x,this.player.y,n.x,n.y)<=130&&n._purifyCd<=0){n._purifyCd=.4;n.hp-=Math.max(5,n.maxhp*.12);this.vfxHitRing(n.x,n.y,o.color,false);if(n.hp<=0)this.destroyWaveObjectiveNode(n);}});
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
@@ -3682,7 +3694,7 @@ class Game extends Phaser.Scene {
   }
   clearWaveObjective(){
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
-    if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;if(e._objectiveMark){if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;}e._waveObjectiveTarget=false;});
+    if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;});
     for(const k of ['_captureZone','_captureRing']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);
   }
@@ -4390,7 +4402,7 @@ class Game extends Phaser.Scene {
     if(!e) e=this.enemies.create(x,y,key,this.stageIndex===5?ch2Frame:0);
     else { e.setTexture(key,this.stageIndex===5?ch2Frame:0); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool เต็ม (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
-    if(e._objectiveMark){if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;}e._waveObjectiveTarget=false;
+    this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+เวฟ (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05,3.72][this.stageIndex]||3.72,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*this.killPowerMul()*this.diffMul().hp;   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
@@ -5030,7 +5042,7 @@ class Game extends Phaser.Scene {
     // เก็บ Sugar (สกุลเงินเมต้า ใช้รอบหน้า)
     const sug=Math.max(1,Math.round((isBoss?40:isMini?18:isElite?4:1)*this.diffMul().reward)); this.sugarStage+=sug; this.sugarRun+=sug;   // ยิ่งยาก Sugar ยิ่งเยอะ
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // อัปเดตเงินรอบนี้แบบ realtime
-    if(e._objectiveMark){if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;}if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
+    this.clearObjectiveTargetFx(e);if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
     e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
@@ -5842,7 +5854,9 @@ class Game extends Phaser.Scene {
     if(!target&&this.mode==='wave')target=this._nearestWaveObjective();
     if(!target && this.mode==='waveclear') target=this._nearestEnemy();   // ชี้ไปหาศัตรูที่เหลือตอนต้องเคลียร์
     if(!target){if(this.objectiveArrow)this.objectiveArrow.setVisible(false);if(this.objectiveDist)this.objectiveDist.setVisible(false);return;}
-    const dx=target.x-this.player.x,dy=target.y-this.player.y,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
+    // ลูกศรหมุนรอบ "จุดกึ่งกลางจอ" → ต้องวัดมุมจากจุดกึ่งกลางกล้อง (โลก) ไม่ใช่ตำแหน่งผู้เล่น (กล้อง lerp/deadzone ทำให้ผู้เล่นไม่อยู่กลางจอเป๊ะ = ลูกศรเพี้ยน)
+    const cam=this.cameras.main,wv=cam.worldView,ox=wv.centerX,oy=wv.centerY;
+    const dx=target.x-ox,dy=target.y-oy,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
     const cx=this.W/2,cy=this.H/2,margin=64,ca=Math.cos(a),sa=Math.sin(a);
     const tx=Math.abs(ca)>0.001?(cx-margin)/Math.abs(ca):9999,ty=Math.abs(sa)>0.001?(cy-margin-65)/Math.abs(sa):9999,t=Math.min(tx,ty);
     this.objectiveArrow.setPosition(cx+ca*t,cy+sa*t).setRotation(a).setVisible(true).setColor(this.mode==='portal'?'#c99cff':'#ffef7a');
