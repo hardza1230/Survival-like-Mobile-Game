@@ -29,9 +29,11 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.72.0';
+const GAME_VERSION = '2.72.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.72.1', date:'2026-09-17', title:'Overhead HP bar fix (DPR)', items:[
+    'แก้หลอดเลือดเหนือหัวไม่ขึ้น — คำนวณพิกัดจอผิด (ติด DPR/zoom ของ uiCam) → แปลงเป็นสัดส่วน 0–1 × ขนาดจอ logical แล้วแสดงถูกตำแหน่ง' ] },
   { v:'2.72.0', date:'2026-09-17', title:'Overhead HP fix, capture, idle pressure', items:[
     'แก้หลอดเลือด/เลเวลเหนือหัวให้ติดตัวผู้เล่นเป๊ะ (คำนวณจากกล้อง screen-space) + เอาหลอด HP ด้านบนออก (เหลือแถบ XP บาง ๆ)',
     'แก้ภารกิจยึดเขต: ยืนในวงเวทแล้วนับเวลาแน่นอน (ขยายรัศมีเขต 112→140)',
@@ -2497,9 +2499,10 @@ class Game extends Phaser.Scene {
   // หลอดเลือด+เลเวลเหนือหัวผู้เล่น (แบบ Archero) — screen-space คำนวณจากกล้อง ให้ติดตัวเสมอ
   drawOverheadStatus(hpf){
     const og=this.pOverG; if(!og||!this.player)return; og.clear();
-    const cam=this.cameras.main, z=cam.zoom||1;
-    const ox=(this.player.x-cam.worldView.x)*z;
-    let oy=(this.player.y-cam.worldView.y)*z - 46;
+    const cam=this.cameras.main, wv=cam.worldView; if(!wv||!wv.width||!wv.height)return;
+    // แปลงตำแหน่งผู้เล่น (world) → พิกัดจอ logical (0..this.W/H) ที่ uiCam ใช้ · หาร width/height กัน DPR/zoom
+    const ox=(this.player.x-wv.x)/wv.width*this.W;
+    let oy=(this.player.y-wv.y)/wv.height*this.H - 42;
     oy=Phaser.Math.Clamp(oy, this._pad+66, this.H-150);   // กันหลุดขอบบน/ล่าง
     const w=72,h=9,bx=ox-w/2;
     og.fillStyle(0x000000,0.55); og.fillRoundedRect(bx-2,oy-2,w+4,h+4,5);
