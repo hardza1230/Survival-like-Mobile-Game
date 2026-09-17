@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.72.1';
+const GAME_VERSION = '2.72.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.72.2', date:'2026-09-17', title:'Fix HP NaN + capture zone', items:[
+    'แก้ HP ขึ้น NaN — touchEnemy ไม่กัน e.dmg ที่เป็น NaN ทำให้เลือดกลายเป็น NaN ค้าง · เพิ่ม guard + safety net คืนค่าเลือดถ้าเพี้ยน',
+    'แก้ภารกิจยืนในวงไม่นับ — else-if chain ที่เพิ่งแก้ purge ไปบล็อก case capture (ย้ายการเคลียร์หลอดแกนออกจาก chain)' ] },
   { v:'2.72.1', date:'2026-09-17', title:'Overhead HP bar fix (DPR)', items:[
     'แก้หลอดเลือดเหนือหัวไม่ขึ้น — คำนวณพิกัดจอผิด (ติด DPR/zoom ของ uiCam) → แปลงเป็นสัดส่วน 0–1 × ขนาดจอ logical แล้วแสดงถูกตำแหน่ง' ] },
   { v:'2.72.0', date:'2026-09-17', title:'Overhead HP fix, capture, idle pressure', items:[
@@ -3780,9 +3783,10 @@ class Game extends Phaser.Scene {
         ng.fillStyle(0x000000,0.55);ng.fillRoundedRect(bx-2,by-2,bw+4,8,4);ng.fillStyle(0x24122c,1);ng.fillRoundedRect(bx,by,bw,4,2);
         if(hf>0){ng.fillStyle(o.color||0xc77bff,1);ng.fillRoundedRect(bx,by,Math.max(2,bw*hf),4,2);}
       });
-    }else if(this.objNodeG){this.objNodeG.clear();}
+    }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
       o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}
+    if(o.type!=='purge'&&this.objNodeG)this.objNodeG.clear();   // เคลียร์หลอดแกน (แยกจาก else-if chain กันไปบล็อก capture)
     this.renderWaveObjectiveHUD();
   }
   renderWaveObjectiveHUD(){
@@ -5349,13 +5353,14 @@ class Game extends Phaser.Scene {
     for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
-    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1; this.player.hp-=e.dmg*(this.player.dmgTakenMul||1)*wardMul; Sfx.hurt(); this.screenShake(120,0.008);
+    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
     if(this.player.hp<=0) this.die(); }
   // โดนกระสุน/สแลม/hazard ของศัตรู (iframe สั้นกว่า → หลบยาก)
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
+    if(!Number.isFinite(dmg))dmg=10;   // guard NaN
     dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1);   // เกราะ + เขตคำสัตย์
     this.player.iframe=ix||0.5; this.player.hp-=dmg; Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
@@ -6052,6 +6057,8 @@ class Game extends Phaser.Scene {
     { const movingNow=this.player.body&&this.player.body.velocity.length()>40; this._idleT=movingNow?0:Math.min(14,(this._idleT||0)+dt); this._idleP=Math.min(0.7,Math.max(0,(this._idleT-1.5))*0.075); }
 
     if(this.player.iframe>0)this.player.iframe-=dt;
+    if(!Number.isFinite(this.player.maxhp)||this.player.maxhp<=0)this.player.maxhp=90;
+    if(!Number.isFinite(this.player.hp))this.player.hp=this.player.maxhp;   // safety net: กัน HP ค้าง NaN
     const regenPerSec=Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
     if(regenPerSec>0&&this.player.hp<this.player.maxhp)this.player.hp=Math.min(this.player.maxhp,this.player.hp+regenPerSec*dt);
     this.tickNearDeath(dt);
