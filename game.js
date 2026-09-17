@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.77.0';
+const GAME_VERSION = '2.78.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.78.0', date:'2026-09-17', title:'Mint → Frost Lance + Flicker faster + Cocoa regen', items:[
+    'มิ้นต์เปลี่ยน Basic Attack เป็น "Frost Lance" หอกน้ำแข็งทะลุแนว — พุ่งเจาะทะลุทุกตัว + ทิ้ง "สายธารน้ำแข็ง" บนแนว (DoT ต่อเนื่อง + ชะลอตัวที่เดินผ่าน)',
+    'อัปเกรด: power=ดาเมจ · rate=ชาร์จไว · chill=ทะลุไกล+สายธารยาว · linger=สายธารอยู่นานขึ้น · blizzard=แตกเกล็ด · permafrost=แช่ลึก+DoT+40% · Evo=หอก 3 เล่มสามง่าม',
+    'เอาลูกบอลโคจรออก (ซ้ำกับออร่างาดำ) — มิ้นต์เป็นสายพุ่งหอกชัดเจน',
+    'Flicker Strike (โกโก้) คูลดาวน์ 6.5→4.5 วิ · โกโก้ regen เลือด 0.35→0.75/วิ',
+  ]},
   { v:'2.77.0', date:'2026-09-17', title:'Fix stage-1 boss (ant queen) invisible', items:[
     'แก้บั๊กบอสด่าน 1 (จักรพรรดินีมดกรด) ไม่ปรากฏตัว — บรรทัดตั้งค่าบอสถูกยุบรวมจน // คอมเมนต์กลืน b.spd/b.dmg/b.xp/b.frozen/phase → บอส spd=undefined → ความเร็ว NaN → ตำแหน่งเป็น NaN → เรนเดอร์ไม่ขึ้น (เห็นแค่หลอดเลือด+ลูกน้อง)',
     'เพิ่ม safety ใน bossThink: spd หลุด→คืน 94, ตำแหน่งเป็น NaN→รีเซ็ตข้างผู้เล่น',
@@ -1422,7 +1428,7 @@ const PASSIVES = {
 const CHARACTERS = {
   momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'มือปืนคล่องตัว',desc:'Sweet but Strong — ยิงรัว เคลื่อนที่ไว และคริติคอลสม่ำเสมอ',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
   mint:{name:'มินต์',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'ผู้ควบคุมฝูง',desc:'Cool and Agile — แช่แข็งวงกว้าง วิ่งไว และร่ายสกิลถี่',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
-  cocoa:{name:'โกโก้',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'จอมพลังแนวหน้า',desc:'Warm and Tough — ทุบหนัก พื้นที่กว้าง และยืนแลกได้ดี',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.35},rating:{hp:5,atk:5,spd:2,def:4}},
+  cocoa:{name:'โกโก้',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'จอมพลังแนวหน้า',desc:'Warm and Tough — ทุบหนัก พื้นที่กว้าง ยืนแลกได้ดี และฟื้นเลือดไว',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.75},rating:{hp:5,atk:5,spd:2,def:4}},
   taro:{name:'ตาโร่',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'นักสำรวจสายฟ้า',desc:'อ่านเส้นทาง หลบไว และส่งสายฟ้าชิ่งกวาดเป้าหมายต่อเนื่อง',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
   sesame:{name:'งาดำ',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'สถาปนิกแนวรับ',desc:'ตั้งกระจกคุ้มกัน สะท้อนกระสุน และฟื้นตัวระหว่างยื้อสนาม',stats:{hp:34,dmg:0.96,spd:0.93,def:0.82,crit:0.01,cdr:0.98,regenFlat:0.65},rating:{hp:5,atk:3,spd:2,def:5}},
   berry:{name:'เบอร์รี่คอร์',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'ป้อมยิงเคลื่อนที่',desc:'Round but Relentless — ยิงระเบิดหนักและเร่งปืนล็อกเป้ากวาดฝูงเป็นชุด',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
@@ -1465,15 +1471,15 @@ const BASIC_ATTACKS = {
     mutations:[
       {id:'seeker',name:'ทางล่าแกน',emoji:'🎯',desc:'ล็อกเป้าไวขึ้นและระเบิดแรงขึ้น 20%'},
       {id:'sticky',name:'ทางแยมเหนียว',emoji:'🫙',desc:'วงระเบิดใหญ่ขึ้น 35% และตรึงมอนสเตอร์ชั่วขณะ'}]},
-  mint:{name:'Ice Orbit Balls',emoji:'❄️',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
+  mint:{name:'Frost Lance',emoji:'🧊',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
     upgrades:[
-      {id:'power',name:'บอลเย็นเยือก',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'ดาเมจลูกบอลน้ำแข็ง +12% ต่อขั้น'},
-      {id:'rate',name:'หมุนวนเร็ว',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'ลูกบอลหมุนเร็วขึ้น 8% ต่อขั้น'},
-      {id:'chill',name:'เพิ่มลูกบอลโคจร',emoji:'🧊',iconKey:'ic_mint_chill',max:3,desc:'เพิ่มลูกบอลน้ำแข็งที่โคจรรอบตัว +1 ต่อขั้น'},
-      {id:'linger',name:'บอลพองโต',emoji:'❄️',iconKey:'ic_mint_linger',max:3,desc:'ลูกบอลใหญ่ขึ้น + แช่นานขึ้น ต่อขั้น'}],
+      {id:'power',name:'ปลายหอกคม',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'ดาเมจหอกน้ำแข็ง +12% ต่อขั้น'},
+      {id:'rate',name:'ชาร์จไว',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'ชาร์จ/ปล่อยหอกเร็วขึ้น 8% ต่อขั้น'},
+      {id:'chill',name:'ด้ามหอกยาว',emoji:'🏹',iconKey:'ic_mint_chill',max:3,desc:'หอกทะลุไกลขึ้น + สายธารน้ำแข็งยาวขึ้น ต่อขั้น'},
+      {id:'linger',name:'สายธารเยือก',emoji:'❄️',iconKey:'ic_mint_linger',max:3,desc:'สายธารน้ำแข็งอยู่นานขึ้น (DoT+ชะลอ) ต่อขั้น'}],
     mutations:[
-      {id:'blizzard',name:'สายบอลแตกกระจาย',emoji:'🌨️',desc:'ลูกบอลแตกสะเก็ดใส่ตัวที่แช่อยู่ ทำดาเมจซ้ำ'},
-      {id:'permafrost',name:'สายเยือกนิรันดร์',emoji:'🥶',desc:'แช่แข็งนานขึ้น และดาเมจต่อตัวที่แช่อยู่ +40%'}]},
+      {id:'blizzard',name:'สายหอกแตกเกล็ด',emoji:'🌨️',desc:'หอกแตกสะเก็ดน้ำแข็งใส่ตัวที่แช่อยู่ ทำดาเมจซ้ำ'},
+      {id:'permafrost',name:'สายเยือกนิรันดร์',emoji:'🥶',desc:'สายธารแช่แข็งลึกขึ้น และดาเมจต่อเนื่อง +40%'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
       {id:'power',name:'ประจุเข้มข้น',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
@@ -1497,7 +1503,7 @@ const CHARACTER_UNIQUES = {
   berryRebound:{name:'หัวใจสตรอว์เบอร์รีเด้งกลับ',emoji:'🍓',cd:8,color:0xff76a8,desc:'เมล็ดหวานยิงรอบตัวและฟื้น HP — พลังกลางแต่ใช้ได้ถี่'},
   mintSanctuary:{name:'พายุหิมะเพชร',emoji:'❄️',cd:11,color:0x8fd0ff,desc:'เรียกพายุหิมะถล่มพื้นที่กว้างตามตัว ฝนเกล็ดน้ำแข็งฟาดซ้ำ ๆ แช่ฝูง + คุ้มกันช่วงสั้น'},
   voidPull:{name:'หลุมช็อกโกแลตดำ',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'เปิดหลุมดำดูดฝูงศัตรูเข้าหาตัว ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย'},
-  flickerStrike:{name:'แฟลชหมัดหมี',emoji:'⚡',cd:6.5,color:0x9f6bff,desc:'วาร์ปฟันศัตรูรัว ๆ ต่อเนื่อง (แบบ Flicker Strike) คูลดาวน์เร็ว อมตะช่วงคอมโบ'},
+  flickerStrike:{name:'แฟลชหมัดหมี',emoji:'⚡',cd:4.5,color:0x9f6bff,desc:'วาร์ปฟันศัตรูรัว ๆ ต่อเนื่อง (แบบ Flicker Strike) คูลดาวน์เร็ว อมตะช่วงคอมโบ'},
   pathRecall:{name:'สายฟ้าชิ่งของตาโร่',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'ปล่อยสายฟ้าจากตัว ชิ่งลามไปศัตรูตัวต่อ ๆ ไป (แบบ Arc) แล้วคืน Dash และเร่งฝีเท้า'},
   oathMirror:{name:'โดมคำสัตย์',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'กางโดมกระจกคุ้มกัน ลดดาเมจหนัก ลบกระสุนศัตรูทั้งหมดในเขต พัลส์กระแทกซ้ำ ๆ แล้วปิดท้ายด้วยกระจกแตก'},
   jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'เร่งปืนเมล็ดหัวใจ ยิงล็อกเป้าเป็นชุดต่อเนื่องและเพิ่มจำนวนลำกล้องตามเลเวล'},
@@ -4448,7 +4454,7 @@ class Game extends Phaser.Scene {
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     if(b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
-      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'ลูกบอลน้ำแข็งแต่ละลูกแตกเกล็ดเล็ก ๆ กระจายรอบตัวเองต่อเนื่อง + สะบัดออกทะลุทุกตัว',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
+      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'ปล่อยหอกน้ำแข็งพร้อมกัน 3 เล่ม (สามง่าม) ทะลุแนว + สายธารน้ำแข็งกว้างและแช่ลึกขึ้น',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
@@ -4720,8 +4726,8 @@ class Game extends Phaser.Scene {
         b.boomer=true; b.bt=0; b.bdur=0.44; b.rebound=rebound; b.spin=true; if(aw)b.reb=-1;   // reb=-1 → เด้งได้ 2 รอบ (0,1)
         this.physics.velocityFromRotation(ang,430,b.body.velocity); } Sfx.shoot(); }
     else if(key==='frost'){
-      // Basic Attack ของมินต์เปลี่ยนเป็น "ปาเข็มน้ำแข็ง" (ยิงเข็มเจาะ+แช่) — frost nova เดิมยังใช้กับสกิลทั่วไปตัวอื่น
-      if(basic&&this.character==='mint'){ this.castIceOrbBurst(lvl,aw,dm,basic); return; }
+      // Basic Attack ของมินต์ = "Frost Lance" หอกน้ำแข็งทะลุแนว + สายธาร DoT/ชะลอ — frost nova เดิมยังใช้กับสกิลทั่วไปตัวอื่น
+      if(basic&&this.character==='mint'){ this.castFrostLance(lvl,aw,dm,basic); return; }
       const df=this.player.deepFreeze?1.4:1,wm=sw.skill===key?(this.player.weaponAreaMul||1):1,wc=sw.skill===key?(this.player.weaponControlMul||1):1;
       // Basic Attack ของมินต์ (Frost Core Nova): chill=รัศมี · linger=ระยะเวลา · blizzard/permafrost=สายกลายรูป
       const bChill=1+(basic?.ranks.chill||0)*0.12*(basic?.mutation==='blizzard'?1:1)+(basic?.mutation==='blizzard'?0.25:0);
@@ -4864,15 +4870,48 @@ class Game extends Phaser.Scene {
     this.vfxHitRing(this.player.x,this.player.y,0xf4e7bd,true); Sfx.zap();
   }
   // ❄️ Mint active cast: สะบัดเกล็ดน้ำแข็งกระเด็นออกรอบทิศ (เจาะ+แช่) · คู่กับเกล็ดโคจรใน tickCharSignature
-  castIceOrbBurst(lvl,aw,dm,basic){
-    const n=aw?14:(6+(basic?.ranks.chill||0)*2), dmg=(7+lvl*2.4)*dm*(aw?1.15:1), base=(this._mintOrbA||0);
-    const shatter=(basic?.mutation==='blizzard')||(basic&&basic.evolved), freeze=(0.55+lvl*0.08)*(basic?.mutation==='permafrost'?1.6:1);
-    const frozenBonus=basic?.mutation==='permafrost'?1.4:1.15, sizeMul=1+(basic?.ranks.linger||0)*0.06;
-    for(let i=0;i<n;i++){ const a=base+i*TAU/n, b=this.getBullet(this.player.x,this.player.y,0xffffff,0.4*sizeMul); if(!b)continue;
-      b.setTexture('proj_sprinkle').setTint(0x9fe8ff); b.faceVel=true; b.dmg=dmg; b.life=aw?1.6:1.3; b.pierce=true; b.hitGapV=0.12; b.homing=(basic&&basic.evolved)?360:0;
-      b.iceNeedle={freeze,frozenBonus,shatter,dmg,lvl};
-      this.physics.velocityFromRotation(a,aw?900:760,b.body.velocity); }
-    this.hitCratesInRadius(this.player.x,this.player.y,130,dmg); Sfx.frost();
+  // ❄️ Frost Lance — หอกน้ำแข็งทะลุแนว: ชาร์จสั้น ๆ แล้วพุ่งหอกเจาะทะลุ + ทิ้ง "สายธารน้ำแข็ง" ไว้บนแนว (DoT + ชะลอตัวที่เดินผ่าน)
+  castFrostLance(lvl,aw,dm,basic){
+    const evo=basic&&basic.evolved, permafrost=basic?.mutation==='permafrost', blizzard=basic?.mutation==='blizzard';
+    const t=this.nearestEnemy(1000);
+    const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._lanceAng||0));
+    this._lanceAng=ang;
+    const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
+    const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1);
+    const streamDur=(2.4+lvl*0.2+(basic?.ranks.linger||0)*0.6)*(permafrost?1.4:1);
+    const lances=evo?3:1, spread=0.17;
+    // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
+    const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
+    this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
+    const lanceKey=this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer';
+    for(let L=0;L<lances;L++){ const a=ang+(L-(lances-1)/2)*spread;
+      // หอกวิ่งเจาะทะลุ
+      const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
+        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.55+lvl*0.045); b.faceVel=true; b.dmg=dmg; b.life=range/900+0.15; b.pierce=true; b.hitGapV=0.1;
+        b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
+        this.physics.velocityFromRotation(a,900,b.body.velocity); }
+      // วาง "สายธารน้ำแข็ง" เป็นปล้อง ๆ ตามแนวหอก (DoT + ชะลอ)
+      if(!this._frostStreams)this._frostStreams=[];
+      const segs=Math.round(range/46), sdmg=(4+lvl*1.5)*dm, r=(30+lvl*1.6)*(evo?1.35:1);
+      for(let s=1;s<=segs;s++){ const d=s*46, x=this.player.x+Math.cos(a)*d, y=this.player.y+Math.sin(a)*d;
+        const img=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0x8fd0ff).setDepth(2).setScale(r/48).setAlpha(0.34));
+        this._frostStreams.push({img,x,y,r,life:streamDur,max:streamDur,tick:Math.random()*0.2,dmg:sdmg,slow:permafrost?0.5:0.22,shatter:blizzard}); }
+    }
+    this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
+  }
+  // ประมวลผลสายธารน้ำแข็ง: ทุก 0.4 วิ ทำ DoT + ชะลอ (frozen สั้น ๆ เป็นจังหวะ = สโลว์) ให้ศัตรูในปล้อง แล้วค่อย ๆ จาง
+  tickFrostStreams(dt){
+    if(!this._frostStreams||!this._frostStreams.length)return;
+    for(let i=this._frostStreams.length-1;i>=0;i--){ const st=this._frostStreams[i];
+      st.life-=dt; st.tick-=dt;
+      if(st.img&&st.img.active)st.img.setAlpha(0.30*Math.max(0,st.life/st.max)+0.05);
+      if(st.tick<=0){ st.tick=0.4; const r2=st.r*st.r;
+        this.enemies.children.iterate(e=>{ if(!e||!e.active)return; if((e.x-st.x)**2+(e.y-st.y)**2>r2)return;
+          this.damage(e,st.dmg*((e.isBoss||e.isMini)?1.25:1),e.x,e.y);
+          if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,st.slow); e.setTint(COLORS.ice);
+            if(st.shatter&&(e.frozen||0)>0&&Math.random()<0.2){ this.burst(e.x,e.y,0x8fd0ff); this.damage(e,st.dmg*0.7,e.x,e.y); } } }); }
+      if(st.life<=0){ if(st.img&&st.img.active)st.img.destroy(); this._frostStreams.splice(i,1); }
+    }
   }
   castMirrorGlaze(lvl,aw,dm,basic){
     const wm=this.signatureWeaponInfo().skill==='mirror'?(this.player.weaponAreaMul||1):1,wr=this.signatureWeaponInfo().skill==='mirror'?(this.player.weaponReflect||0):0;
@@ -4991,29 +5030,12 @@ class Game extends Phaser.Scene {
   }
   // Sakura Aura: กลีบอ่านระยะได้ + สะสม Bloom แทนการเผาดาเมจฟรีทุกเฟรม
   // ---- Signature aura ประจำตัว (rework Mint + งาดำ ให้แข็งแรงขึ้น มี DPS always-on) ----
-  clearCharSignature(){ if(this._mintOrbs){this._mintOrbs.forEach(o=>o&&o.destroy());this._mintOrbs=null;} if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesField){this._sesField.destroy();this._sesField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} }
+  clearCharSignature(){ if(this._frostStreams){this._frostStreams.forEach(s=>s&&s.img&&s.img.destroy());this._frostStreams=null;} if(this._mintOrbs){this._mintOrbs.forEach(o=>o&&o.destroy());this._mintOrbs=null;} if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesField){this._sesField.destroy();this._sesField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} }
   tickCharSignature(dt){
     const ch=this.character;
-    // ❄️ Mint — ลูกบอลน้ำแข็งกลม ๆ โคจรรอบตัว: บินชนศัตรู = ดาเมจ + แช่ · เริ่ม 2 ลูก · Evo = แต่ละลูกแตกเกล็ดเล็กรอบตัวเอง
-    if(ch==='mint'){
-      const lvl=this.skills.frost||1, bb=this.basicAttack;
-      const count=2+Math.min(4,(bb?.ranks.chill||0))+(bb?.evolved?1:0);   // เริ่ม 2 ลูก
-      const R=64+lvl*4, spd=2.0+lvl*0.14+(bb?.ranks.rate||0)*0.12, dsz=20+lvl*0.6+(bb?.ranks.linger||0)*6;   // ขนาดลูกบอล (px)
-      const orbKey=this.textures.exists('proj_iceball')?'proj_iceball':'bubble';   // ใช้อาร์ตจริงถ้ามี ไม่งั้นลูกฟอง (กลม) ชั่วคราว
-      if(!this._mintOrbs||this._mintOrbs.length!==count){ if(this._mintOrbs)this._mintOrbs.forEach(o=>o&&o.destroy());
-        this._mintOrbs=[]; for(let i=0;i<count;i++)this._mintOrbs.push(this.camWorld(this.add.image(this.player.x,this.player.y,orbKey).setTint(0xafe8ff).setDepth(9).setAlpha(0.95))); }
-      this._mintOrbA=(this._mintOrbA||0)+dt*spd; const pl=1+Math.sin(this.elapsed*6)*0.10;
-      this._mintOrbs.forEach((o,i)=>{ const a=this._mintOrbA+i*TAU/count; o.setPosition(this.player.x+Math.cos(a)*R,this.player.y+Math.sin(a)*R*0.72).setDisplaySize(dsz*pl,dsz*pl).setDepth(this.player.y+(Math.sin(a)>0?4:-4)); });
-      this._mintOrbT=(this._mintOrbT||0)-dt;
-      if(this._mintOrbT<=0){ this._mintOrbT=0.22; const dmg=(3.5+lvl*1.5)*(this.player.dmgMul||1),cr=dsz*0.6+16,freeze=0.5*(bb?.mutation==='permafrost'?1.6:1),fb=bb?.mutation==='permafrost'?1.4:1,shatterMut=bb?.mutation==='blizzard';
-        for(const o of this._mintOrbs){ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,o.x,o.y)>cr)return;
-          const froz=e.frozen>0; this.damage(e,(e.isBoss||e.isMini)?dmg*1.4:dmg*(froz?fb:1),e.x,e.y);
-          if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,freeze); e.setTint(COLORS.ice); }
-          if(shatterMut&&froz&&Math.random()<0.25){ this.burst(o.x,o.y,0x8fd0ff); this.damage(e,dmg*0.8,e.x,e.y); } }); } }
-      // Evo: แต่ละลูกบอลแตกเกล็ดน้ำแข็งเล็ก ๆ กระจายรอบตัวเองเป็นระยะ
-      if(bb&&bb.evolved){ this._mintFlingT=(this._mintFlingT||0)-dt; if(this._mintFlingT<=0){ this._mintFlingT=0.85; const sdmg=(4+lvl*1.2)*(this.player.dmgMul||1);
-        for(const o of this._mintOrbs){ for(let s=0;s<3;s++){ const a=Math.random()*TAU, b2=this.getBullet(o.x,o.y,0xffffff,0.22); if(!b2)break; b2.setTexture('proj_sprinkle').setTint(0xcaf3ff); b2.faceVel=true; b2.dmg=sdmg; b2.life=0.55; b2.pierce=true; b2.hitGapV=0.1; b2.iceNeedle={freeze:0.4,frozenBonus:1.15,shatter:false,dmg:sdmg,lvl}; this.physics.velocityFromRotation(a,300,b2.body.velocity); } } this.burst(this.player.x,this.player.y,0xbdf0ff); } }
-    } else if(this._mintOrbs){ this._mintOrbs.forEach(o=>o&&o.destroy()); this._mintOrbs=null; }
+    // ❄️ Mint — Frost Lance เป็น Basic Attack แล้ว (ยิงเป็นจังหวะใน castSkill) · signature นี้แค่ดูแล "สายธารน้ำแข็ง" ที่หอกทิ้งไว้
+    this.tickFrostStreams(dt);
+    if(ch!=='mint'&&this._frostStreams&&this._frostStreams.length){ this._frostStreams.forEach(s=>s.img&&s.img.active&&s.img.destroy()); this._frostStreams=null; }
     // 🪞 งาดำ — วงเวทกระจกถาวรรอบตัว (aura ไม่หาย): ทำดาเมจศัตรูในเขต + ลบกระสุนศัตรูที่เข้าเขต (ward) · ไม่มีจรวด/ไม่ยิง projectile
     if(ch==='sesame'){
       const lvl=this.skills.mirror||1, R=88+lvl*13+(this.player.mirrorWard?18:0);   // เล็กช่วงเลเวลแรก แล้วค่อยโต
