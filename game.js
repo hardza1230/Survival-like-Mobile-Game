@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.71.0';
+const GAME_VERSION = '2.72.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.72.0', date:'2026-09-17', title:'Overhead HP fix, capture, idle pressure', items:[
+    'แก้หลอดเลือด/เลเวลเหนือหัวให้ติดตัวผู้เล่นเป๊ะ (คำนวณจากกล้อง screen-space) + เอาหลอด HP ด้านบนออก (เหลือแถบ XP บาง ๆ)',
+    'แก้ภารกิจยึดเขต: ยืนในวงเวทแล้วนับเวลาแน่นอน (ขยายรัศมีเขต 112→140)',
+    'เพิ่มความกดดัน: ยิ่งยืนนิ่งนาน มอนสเตอร์ยิ่งไหลมาเยอะ+ถี่ขึ้น (กันแคมป์)' ] },
   { v:'2.71.0', date:'2026-09-17', title:'Cloud save (Supabase)', items:[
     'เพิ่มเซฟขึ้นคลาวด์ผ่าน Supabase (Anonymous auth ผูกกับเครื่อง) — กันเซฟหายเวลาล้างเบราว์เซอร์/ลงแอปใหม่',
     'ซิงค์อัตโนมัติ: โหลดเกมดึงเซฟล่าสุดจากคลาวด์ · ทุกครั้งที่เซฟจะอัปขึ้นคลาวด์ (ถ่วง 1.5 วิ)',
@@ -2467,10 +2471,10 @@ class Game extends Phaser.Scene {
       const fps=Math.round(this.game.loop.actualFps), logicalW=Math.round(this.scale.width/RENDER_DPR), backingW=this.game.canvas.width;
       this.fpsTxt.setText(fps+'fps · '+logicalW+'→'+backingW+'p · x'+this.renderDPR); }});
 
-    // Archero-style overhead: หลอดเลือด + เลเวล + ตัวเลข ลอยเหนือหัวผู้เล่น (world-space ตามตัว)
-    this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(90050); this.camWorld(this.pOverG);
-    this.pOverLv=this.add.text(0,0,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:4}).setOrigin(0.5,1).setScrollFactor(1).setDepth(90052); this.camWorld(this.pOverLv);
-    this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(90053); this.camWorld(this.pOverHp);
+    // Archero-style overhead: หลอดเลือด + เลเวล + ตัวเลข เหนือหัวผู้เล่น (screen-space บน uiCam = ติดตัวเป๊ะ)
+    this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(80); this.camUI(this.pOverG);
+    this.pOverLv=this.add.text(0,0,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:4}).setOrigin(0.5,1).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
+    this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
     this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
@@ -2484,21 +2488,25 @@ class Game extends Phaser.Scene {
     const bx=pad+16, bw=(this.W-112)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);
-    g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,pad,bw,14,7);
-    if(hpf>0){ g.fillStyle(0xff5f7a,1); g.fillRoundedRect(bx+2,pad+2,Math.max(8,(bw-4)*hpf),10,5); }
-    g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,pad+20,bw,8,4);
-    if(xpf>0){ g.fillStyle(0x8bd3a0,1); g.fillRoundedRect(bx+2,pad+22,Math.max(4,(bw-4)*xpf),4,2); }
+    // เอาหลอด HP ด้านบนออก (ย้ายไปเหนือหัวผู้เล่นแทน) · เหลือแถบ XP บาง ๆ ไว้ดูความคืบหน้าเลเวล
+    if(this.hpIcon)this.hpIcon.setVisible(false); if(this.xpIcon)this.xpIcon.setPosition(pad+4,pad+6);
+    g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,pad+2,bw,8,4);
+    if(xpf>0){ g.fillStyle(0x8bd3a0,1); g.fillRoundedRect(bx+2,pad+4,Math.max(4,(bw-4)*xpf),4,2); }
     this.drawOverheadStatus(hpf);
   }
-  // หลอดเลือด+เลเวลลอยเหนือหัวผู้เล่น (แบบ Archero) — ตัวเลขชัดเจน
+  // หลอดเลือด+เลเวลเหนือหัวผู้เล่น (แบบ Archero) — screen-space คำนวณจากกล้อง ให้ติดตัวเสมอ
   drawOverheadStatus(hpf){
     const og=this.pOverG; if(!og||!this.player)return; og.clear();
-    const ox=this.player.x, oy=this.player.y-52, w=72, h=9;
-    og.fillStyle(0x000000,0.55); og.fillRoundedRect(ox-w/2-2,oy-2,w+4,h+4,5);
-    og.fillStyle(0x3a1a24,1); og.fillRoundedRect(ox-w/2,oy,w,h,4);
+    const cam=this.cameras.main, z=cam.zoom||1;
+    const ox=(this.player.x-cam.worldView.x)*z;
+    let oy=(this.player.y-cam.worldView.y)*z - 46;
+    oy=Phaser.Math.Clamp(oy, this._pad+66, this.H-150);   // กันหลุดขอบบน/ล่าง
+    const w=72,h=9,bx=ox-w/2;
+    og.fillStyle(0x000000,0.55); og.fillRoundedRect(bx-2,oy-2,w+4,h+4,5);
+    og.fillStyle(0x3a1a24,1); og.fillRoundedRect(bx,oy,w,h,4);
     const col=hpf>0.5?0x5ef07a:(hpf>0.25?0xffd166:0xff5f5f);
-    if(hpf>0){ og.fillStyle(col,1); og.fillRoundedRect(ox-w/2,oy,Math.max(3,w*hpf),h,4); }
-    og.lineStyle(1.5,0xffffff,0.25); og.strokeRoundedRect(ox-w/2,oy,w,h,4);
+    if(hpf>0){ og.fillStyle(col,1); og.fillRoundedRect(bx,oy,Math.max(3,w*hpf),h,4); }
+    og.lineStyle(1.5,0xffffff,0.25); og.strokeRoundedRect(bx,oy,w,h,4);
     if(this.pOverHp)this.pOverHp.setPosition(ox,oy+h/2+0.5).setText(Math.max(0,Math.ceil(this.player.hp))+' / '+Math.round(this.player.maxhp));
     if(this.pOverLv)this.pOverLv.setPosition(ox,oy-3).setText('Lv '+(this.level||1));
   }
@@ -3731,8 +3739,8 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(o&&o.type==='purge'&&!o.done){o.progress++;this.renderWaveObjectiveHUD();if(o.progress>=o.target)this.completeWaveObjective();}
   }
   spawnCaptureZone(){
-    const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=112;
-    this._captureZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,.12).setStrokeStyle(4,o.color,.82).setDepth(pos.y-2));this._captureZone.radiusGoal=r;
+    const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=140;
+    this._captureZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,.12).setStrokeStyle(4,o.color,.82).setDepth(pos.y-2));this._captureZone.radiusGoal=r;   // ขยายเขต (112→140) ให้ยืนในวงแล้วนับแน่นอน
     this._captureRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_magic_circle').setTint(o.color).setDisplaySize(r*2,r*1.72).setDepth(pos.y-1).setAlpha(.7));
     this.tweens.add({targets:this._captureRing,rotation:TAU,alpha:{from:.36,to:.68},duration:1800,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
@@ -3802,9 +3810,9 @@ class Game extends Phaser.Scene {
       this.tickWaveObjective(dt);
       if(this.mode!=='wave')return;
       this.spawnAcc-=dt;
-      if(this.spawnAcc<=0){const pressure=this.wavePressure(),dynamicInterval=this.spawnInterval*(1-pressure*0.28);this.spawnAcc=dynamicInterval;
+      if(this.spawnAcc<=0){const idleP=this._idleP||0,pressure=Math.min(1,this.wavePressure()+idleP),dynamicInterval=this.spawnInterval*(1-pressure*0.32);this.spawnAcc=dynamicInterval;
         const live=this.enemies.countActive(true);
-        const dynamicMax=Math.min(74,this.maxLive+Math.round(pressure*8)),dynamicBatch=this.spawnBatch+(pressure>=0.50?1:0);
+        const dynamicMax=Math.min(74+Math.round(idleP*26),this.maxLive+Math.round(pressure*10)),dynamicBatch=this.spawnBatch+(pressure>=0.50?1:0)+(idleP>=0.45?1:0);
         if(live<dynamicMax){const n=Math.min(dynamicBatch,dynamicMax-live);this.spawnWaveRing(n);} }
       if(this.waveAllowsElite){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
       if(this.swarmAcc!=null){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
@@ -6037,6 +6045,8 @@ class Game extends Phaser.Scene {
       else { this.player.setVelocity(this.player.body.velocity.x*0.8,this.player.body.velocity.y*0.8); if(this.player.body.velocity.length()<8)this.player.setVelocity(0,0); }
     }
     if(this.drainPull&&this.drainPull.t>0){this.drainPull.t-=dt;const a=Math.atan2(this.drainPull.y-this.player.y,this.drainPull.x-this.player.x),v=this.player.body.velocity,s=this.drainPull.strength||120;this.player.setVelocity(v.x+Math.cos(a)*s,v.y+Math.sin(a)*s);if(this.drainPull.t<=0)this.drainPull=null;}
+    // ยิ่งยืนนิ่งนาน มอนยิ่งไหลมาเยอะ (กันแคมป์ + เพิ่มความกดดัน)
+    { const movingNow=this.player.body&&this.player.body.velocity.length()>40; this._idleT=movingNow?0:Math.min(14,(this._idleT||0)+dt); this._idleP=Math.min(0.7,Math.max(0,(this._idleT-1.5))*0.075); }
 
     if(this.player.iframe>0)this.player.iframe-=dt;
     const regenPerSec=Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
