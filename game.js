@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.75.0';
+const GAME_VERSION = '2.76.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.76.0', date:'2026-09-17', title:'Mint ice balls (start 2) + Evo shards', items:[
+    'มิ้นต์เปลี่ยนเกล็ดโคจรเป็น "ลูกบอลน้ำแข็งกลม ๆ" บินชนศัตรู · เริ่มแรก 2 ลูก (เพิ่มด้วยการ์ด chill)',
+    'Evo เปลี่ยนเป็น: แต่ละลูกบอลแตกเกล็ดน้ำแข็งเล็ก ๆ กระจายรอบตัวเองต่อเนื่อง',
+    'ใช้ texture ลูกฟองกลมชั่วคราว — พอมีอาร์ตจริง (proj_iceball) จะสลับให้อัตโนมัติ' ] },
   { v:'2.75.0', date:'2026-09-17', title:'Cocoa unique: Flicker Strike', items:[
     'เปลี่ยนท่าไม้ตายโกโก้จากหลุมดำ → "Flicker Strike" (แบบ PoE) — วาร์ปฟันศัตรูรัว ๆ ต่อเนื่อง สายคอมโบประชิด',
     'คูลดาวน์เร็ว (6.5วิ) · อมตะช่วงคอมโบ · จำนวนครั้ง/ดาเมจโตตามเลเวล Unique · Lv4 ฟื้น HP ต่อครั้ง',
@@ -1457,14 +1461,14 @@ const BASIC_ATTACKS = {
     mutations:[
       {id:'seeker',name:'ทางล่าแกน',emoji:'🎯',desc:'ล็อกเป้าไวขึ้นและระเบิดแรงขึ้น 20%'},
       {id:'sticky',name:'ทางแยมเหนียว',emoji:'🫙',desc:'วงระเบิดใหญ่ขึ้น 35% และตรึงมอนสเตอร์ชั่วขณะ'}]},
-  mint:{name:'Ice Orbit Shards',emoji:'❄️',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
+  mint:{name:'Ice Orbit Balls',emoji:'❄️',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
     upgrades:[
-      {id:'power',name:'เกล็ดคมกริบ',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'ดาเมจเกล็ดน้ำแข็ง +12% ต่อขั้น'},
-      {id:'rate',name:'หมุนวนเร็ว',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'เกล็ดหมุนเร็วขึ้น + สะบัดถี่ขึ้น 8% ต่อขั้น'},
-      {id:'chill',name:'เพิ่มเกล็ดโคจร',emoji:'🧊',iconKey:'ic_mint_chill',max:3,desc:'เพิ่มลูกเกล็ดที่โคจรรอบตัว +1 ต่อขั้น'},
-      {id:'linger',name:'เกล็ดพองโต',emoji:'❄️',iconKey:'ic_mint_linger',max:3,desc:'เกล็ดใหญ่ขึ้น + แช่นานขึ้น ต่อขั้น'}],
+      {id:'power',name:'บอลเย็นเยือก',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'ดาเมจลูกบอลน้ำแข็ง +12% ต่อขั้น'},
+      {id:'rate',name:'หมุนวนเร็ว',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'ลูกบอลหมุนเร็วขึ้น 8% ต่อขั้น'},
+      {id:'chill',name:'เพิ่มลูกบอลโคจร',emoji:'🧊',iconKey:'ic_mint_chill',max:3,desc:'เพิ่มลูกบอลน้ำแข็งที่โคจรรอบตัว +1 ต่อขั้น'},
+      {id:'linger',name:'บอลพองโต',emoji:'❄️',iconKey:'ic_mint_linger',max:3,desc:'ลูกบอลใหญ่ขึ้น + แช่นานขึ้น ต่อขั้น'}],
     mutations:[
-      {id:'blizzard',name:'สายเกล็ดแตกกระจาย',emoji:'🌨️',desc:'เกล็ดแตกสะเก็ดใส่ตัวที่แช่อยู่ ทำดาเมจซ้ำ'},
+      {id:'blizzard',name:'สายบอลแตกกระจาย',emoji:'🌨️',desc:'ลูกบอลแตกสะเก็ดใส่ตัวที่แช่อยู่ ทำดาเมจซ้ำ'},
       {id:'permafrost',name:'สายเยือกนิรันดร์',emoji:'🥶',desc:'แช่แข็งนานขึ้น และดาเมจต่อตัวที่แช่อยู่ +40%'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
@@ -4438,7 +4442,7 @@ class Game extends Phaser.Scene {
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     if(b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
-      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'เกล็ดโคจรกระเด็นไล่ล่าศัตรูเอง (homing) + สะบัดออกทะลุทุกตัว + แตกสะเก็ดเสมอ',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
+      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'ลูกบอลน้ำแข็งแต่ละลูกแตกเกล็ดเล็ก ๆ กระจายรอบตัวเองต่อเนื่อง + สะบัดออกทะลุทุกตัว',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
@@ -4984,24 +4988,25 @@ class Game extends Phaser.Scene {
   clearCharSignature(){ if(this._mintOrbs){this._mintOrbs.forEach(o=>o&&o.destroy());this._mintOrbs=null;} if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesField){this._sesField.destroy();this._sesField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} }
   tickCharSignature(dt){
     const ch=this.character;
-    // ❄️ Mint — เกล็ดน้ำแข็งโคจรรอบตัว: ชนศัตรู = ดาเมจ + แช่ · อัปเกรดเพิ่มลูก/เร็ว/ใหญ่ · Evo = เกล็ดกระเด็นไล่ล่า
+    // ❄️ Mint — ลูกบอลน้ำแข็งกลม ๆ โคจรรอบตัว: บินชนศัตรู = ดาเมจ + แช่ · เริ่ม 2 ลูก · Evo = แต่ละลูกแตกเกล็ดเล็กรอบตัวเอง
     if(ch==='mint'){
       const lvl=this.skills.frost||1, bb=this.basicAttack;
-      const count=3+Math.min(4,(bb?.ranks.chill||0))+(bb?.evolved?1:0);
-      const R=64+lvl*4, spd=2.0+lvl*0.14+(bb?.ranks.rate||0)*0.12, sc=0.52+(bb?.ranks.linger||0)*0.09;
+      const count=2+Math.min(4,(bb?.ranks.chill||0))+(bb?.evolved?1:0);   // เริ่ม 2 ลูก
+      const R=64+lvl*4, spd=2.0+lvl*0.14+(bb?.ranks.rate||0)*0.12, dsz=20+lvl*0.6+(bb?.ranks.linger||0)*6;   // ขนาดลูกบอล (px)
+      const orbKey=this.textures.exists('proj_iceball')?'proj_iceball':'bubble';   // ใช้อาร์ตจริงถ้ามี ไม่งั้นลูกฟอง (กลม) ชั่วคราว
       if(!this._mintOrbs||this._mintOrbs.length!==count){ if(this._mintOrbs)this._mintOrbs.forEach(o=>o&&o.destroy());
-        this._mintOrbs=[]; for(let i=0;i<count;i++)this._mintOrbs.push(this.camWorld(this.add.image(this.player.x,this.player.y,'proj_sprinkle').setTint(0x9fe8ff).setDepth(9).setBlendMode(Phaser.BlendModes.ADD))); }
-      this._mintOrbA=(this._mintOrbA||0)+dt*spd; const pl=1+Math.sin(this.elapsed*6)*0.12;
-      this._mintOrbs.forEach((o,i)=>{ const a=this._mintOrbA+i*TAU/count; o.setPosition(this.player.x+Math.cos(a)*R,this.player.y+Math.sin(a)*R*0.72).setScale(sc*pl).setRotation(a).setDepth(this.player.y+(Math.sin(a)>0?4:-4)); });
+        this._mintOrbs=[]; for(let i=0;i<count;i++)this._mintOrbs.push(this.camWorld(this.add.image(this.player.x,this.player.y,orbKey).setTint(0xafe8ff).setDepth(9).setAlpha(0.95))); }
+      this._mintOrbA=(this._mintOrbA||0)+dt*spd; const pl=1+Math.sin(this.elapsed*6)*0.10;
+      this._mintOrbs.forEach((o,i)=>{ const a=this._mintOrbA+i*TAU/count; o.setPosition(this.player.x+Math.cos(a)*R,this.player.y+Math.sin(a)*R*0.72).setDisplaySize(dsz*pl,dsz*pl).setDepth(this.player.y+(Math.sin(a)>0?4:-4)); });
       this._mintOrbT=(this._mintOrbT||0)-dt;
-      if(this._mintOrbT<=0){ this._mintOrbT=0.22; const dmg=(3.5+lvl*1.5)*(this.player.dmgMul||1),cr=24+sc*22,freeze=0.5*(bb?.mutation==='permafrost'?1.6:1),fb=bb?.mutation==='permafrost'?1.4:1,shatter=bb?.mutation==='blizzard';
+      if(this._mintOrbT<=0){ this._mintOrbT=0.22; const dmg=(3.5+lvl*1.5)*(this.player.dmgMul||1),cr=dsz*0.6+16,freeze=0.5*(bb?.mutation==='permafrost'?1.6:1),fb=bb?.mutation==='permafrost'?1.4:1,shatterMut=bb?.mutation==='blizzard';
         for(const o of this._mintOrbs){ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,o.x,o.y)>cr)return;
           const froz=e.frozen>0; this.damage(e,(e.isBoss||e.isMini)?dmg*1.4:dmg*(froz?fb:1),e.x,e.y);
           if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,freeze); e.setTint(COLORS.ice); }
-          if(shatter&&froz&&Math.random()<0.25){ this.burst(o.x,o.y,0x8fd0ff); this.damage(e,dmg*0.8,e.x,e.y); } }); } }
-      // Evo: เกล็ดกระเด็นไล่ล่าศัตรูเป็นระยะ
-      if(bb&&bb.evolved){ this._mintFlingT=(this._mintFlingT||0)-dt; if(this._mintFlingT<=0){ this._mintFlingT=1.0; const t=this.nearestEnemy(760);
-        if(t){ const bt=this.getBullet(this.player.x,this.player.y,0xffffff,sc); if(bt){ bt.setTexture('proj_sprinkle').setTint(0x9fe8ff); bt.faceVel=true; bt.dmg=(6+lvl*2)*(this.player.dmgMul||1); bt.life=1.7; bt.pierce=true; bt.hitGapV=0.12; bt.homing=470; bt.iceNeedle={freeze:0.6,frozenBonus:1.3,shatter:bb?.mutation==='blizzard',dmg:(6+lvl*2),lvl}; const a=Math.atan2(t.y-this.player.y,t.x-this.player.x); this.physics.velocityFromRotation(a,620,bt.body.velocity); } } } }
+          if(shatterMut&&froz&&Math.random()<0.25){ this.burst(o.x,o.y,0x8fd0ff); this.damage(e,dmg*0.8,e.x,e.y); } }); } }
+      // Evo: แต่ละลูกบอลแตกเกล็ดน้ำแข็งเล็ก ๆ กระจายรอบตัวเองเป็นระยะ
+      if(bb&&bb.evolved){ this._mintFlingT=(this._mintFlingT||0)-dt; if(this._mintFlingT<=0){ this._mintFlingT=0.85; const sdmg=(4+lvl*1.2)*(this.player.dmgMul||1);
+        for(const o of this._mintOrbs){ for(let s=0;s<3;s++){ const a=Math.random()*TAU, b2=this.getBullet(o.x,o.y,0xffffff,0.22); if(!b2)break; b2.setTexture('proj_sprinkle').setTint(0xcaf3ff); b2.faceVel=true; b2.dmg=sdmg; b2.life=0.55; b2.pierce=true; b2.hitGapV=0.1; b2.iceNeedle={freeze:0.4,frozenBonus:1.15,shatter:false,dmg:sdmg,lvl}; this.physics.velocityFromRotation(a,300,b2.body.velocity); } } this.burst(this.player.x,this.player.y,0xbdf0ff); } }
     } else if(this._mintOrbs){ this._mintOrbs.forEach(o=>o&&o.destroy()); this._mintOrbs=null; }
     // 🪞 งาดำ — วงเวทกระจกถาวรรอบตัว (aura ไม่หาย): ทำดาเมจศัตรูในเขต + ลบกระสุนศัตรูที่เข้าเขต (ward) · ไม่มีจรวด/ไม่ยิง projectile
     if(ch==='sesame'){
