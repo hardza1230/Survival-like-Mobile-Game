@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.84.0';
+const GAME_VERSION = '2.85.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.85.0', date:'2026-09-17', title:'บอสด่าน 2-4 ตัวใหญ่ขึ้น', items:[
+    'บอสด่าน 2/3/4 ตัวใหญ่ขึ้น (สเกล 0.88 → 1.18) — อลังการขึ้น (hitbox โตตามอัตโนมัติ)',
+  ]},
   { v:'2.84.0', date:'2026-09-17', title:'Boss BGM 1-5 + live stat readout + spaced cores', items:[
     'ใส่เพลงบอสครบ 5 ด่าน (bgm_boss1..5) — โหลดเพลงบอสของด่านนั้นอัตโนมัติ',
     'เพิ่มสรุปสเตตย่อ ๆ ขณะเล่น (มุมซ้ายบน): ❤ เลือด · ♻ ฟื้น/วิ · ⚔ โจมตี% · 🛡 ป้องกัน% · 🎯 คริ%',
@@ -4035,7 +4038,7 @@ class Game extends Phaser.Scene {
     let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool เต็ม → รีไซเคิล/เคลียร์ กันบอสเป็น null
     const isArt=this.textures.exists(bkey);
-    const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?0.88:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;
+    const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?1.18:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;   // บอสด่าน 2-4 ตัวใหญ่ขึ้น (0.88→1.18)
     const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=ปกติ 1=ยาก 2=นรก
