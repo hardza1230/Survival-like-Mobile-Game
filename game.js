@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.80.0';
+const GAME_VERSION = '2.81.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.81.0', date:'2026-09-17', title:'Frost Lance → Shatter Lance', items:[
+    'เปลี่ยนหอกน้ำแข็งเป็นสาย "Shatter Lance": หอกทะลุแนวแล้วแตกเป็นสะเก็ดน้ำแข็งกระจายพัดกว้างที่ปลายทาง (เจาะ+แช่)',
+    'เลิกใช้สายธารน้ำแข็งบนพื้น (ที่ทำให้กระตุก) — เบาเครื่องขึ้น อิมแพกต์ชัดขึ้น',
+    'อัปเกรด: chill=ทะลุไกล+สะเก็ดเพิ่ม · linger=สะเก็ดเพิ่ม+กระจายกว้าง · Evo=หอก 3 เล่ม แต่ละเล่มแตกสะเก็ด',
+  ]},
   { v:'2.80.0', date:'2026-09-17', title:'Flicker FX + menu BGM + easy-boss fix HP + lance perf', items:[
     'ลงเอฟเฟกต์จริง Flicker Strike (โกโก้) — รอยฟันม่วง 8 เฟรม เด้งตอนวาร์ปเข้าฟันแต่ละครั้ง',
     'เปลี่ยนเพลงหน้าเมนูหลักเป็น Main menu.mp3',
@@ -1488,11 +1493,11 @@ const BASIC_ATTACKS = {
     upgrades:[
       {id:'power',name:'ปลายหอกคม',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'ดาเมจหอกน้ำแข็ง +12% ต่อขั้น'},
       {id:'rate',name:'ชาร์จไว',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'ชาร์จ/ปล่อยหอกเร็วขึ้น 8% ต่อขั้น'},
-      {id:'chill',name:'ด้ามหอกยาว',emoji:'🏹',iconKey:'ic_mint_chill',max:3,desc:'หอกทะลุไกลขึ้น + สายธารน้ำแข็งยาวขึ้น ต่อขั้น'},
-      {id:'linger',name:'สายธารเยือก',emoji:'❄️',iconKey:'ic_mint_linger',max:3,desc:'สายธารน้ำแข็งอยู่นานขึ้น (DoT+ชะลอ) ต่อขั้น'}],
+      {id:'chill',name:'ด้ามหอกยาว',emoji:'🏹',iconKey:'ic_mint_chill',max:3,desc:'หอกทะลุไกลขึ้น + สะเก็ดแตกเพิ่มจำนวน ต่อขั้น'},
+      {id:'linger',name:'สะเก็ดกระจาย',emoji:'💠',iconKey:'ic_mint_linger',max:3,desc:'สะเก็ดน้ำแข็งเพิ่มจำนวน + กระจายกว้างขึ้น ต่อขั้น'}],
     mutations:[
-      {id:'blizzard',name:'สายหอกแตกเกล็ด',emoji:'🌨️',desc:'หอกแตกสะเก็ดน้ำแข็งใส่ตัวที่แช่อยู่ ทำดาเมจซ้ำ'},
-      {id:'permafrost',name:'สายเยือกนิรันดร์',emoji:'🥶',desc:'สายธารแช่แข็งลึกขึ้น และดาเมจต่อเนื่อง +40%'}]},
+      {id:'blizzard',name:'สายหอกแตกเกล็ด',emoji:'🌨️',desc:'หอก/สะเก็ดแตกซ้ำใส่ตัวที่แช่อยู่ ทำดาเมจเพิ่ม'},
+      {id:'permafrost',name:'สายเยือกนิรันดร์',emoji:'🥶',desc:'สะเก็ดแช่แข็งลึกขึ้น และดาเมจหอก +40%'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
       {id:'power',name:'ประจุเข้มข้น',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
@@ -4472,7 +4477,7 @@ class Game extends Phaser.Scene {
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     if(b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
-      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'ปล่อยหอกน้ำแข็งพร้อมกัน 3 เล่ม (สามง่าม) ทะลุแนว + สายธารน้ำแข็งกว้างและแช่ลึกขึ้น',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
+      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'ปล่อยหอก 3 เล่ม (สามง่าม) ทะลุแนว + แต่ละเล่มแตกสะเก็ดน้ำแข็งกระจายที่ปลายทาง',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
@@ -4888,7 +4893,7 @@ class Game extends Phaser.Scene {
     this.vfxHitRing(this.player.x,this.player.y,0xf4e7bd,true); Sfx.zap();
   }
   // ❄️ Mint active cast: สะบัดเกล็ดน้ำแข็งกระเด็นออกรอบทิศ (เจาะ+แช่) · คู่กับเกล็ดโคจรใน tickCharSignature
-  // ❄️ Frost Lance — หอกน้ำแข็งทะลุแนว: ชาร์จสั้น ๆ แล้วพุ่งหอกเจาะทะลุ + ทิ้ง "สายธารน้ำแข็ง" ไว้บนแนว (DoT + ชะลอตัวที่เดินผ่าน)
+  // ❄️ Frost Lance (Shatter Lance) — ชาร์จสั้น ๆ พุ่งหอกเจาะทะลุ แล้ว "แตกเป็นสะเก็ดน้ำแข็ง" กระจายที่ปลายทาง (แบบลูกซอง)
   castFrostLance(lvl,aw,dm,basic){
     const evo=basic&&basic.evolved, permafrost=basic?.mutation==='permafrost', blizzard=basic?.mutation==='blizzard';
     const t=this.nearestEnemy(1000);
@@ -4896,27 +4901,40 @@ class Game extends Phaser.Scene {
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1);
-    const streamDur=(2.4+lvl*0.2+(basic?.ranks.linger||0)*0.6)*(permafrost?1.4:1);
-    const lances=evo?3:1, spread=0.17, centerL=(lances-1)/2;
+    const lances=evo?3:1, spread=0.17, centerL=(lances-1)/2, flightT=range/900;
+    // จำนวน/สเปกสะเก็ด — chill=+จำนวน · linger=+จำนวน+กระจายกว้าง · evo แบ่งต่อแฉกให้ไม่ล้น
+    const shardBase=6+Math.min(4,(basic?.ranks.chill||0))+Math.min(4,(basic?.ranks.linger||0))+(aw?3:0);
+    const shardPer=evo?Math.max(3,Math.round(shardBase*0.55)):shardBase;
+    const shardDmg=dmg*0.55, shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
     const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
     const lanceKey=this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer';
-    if(!this._frostStreams)this._frostStreams=[];
     for(let L=0;L<lances;L++){ const a=ang+(L-centerL)*spread;
       // หอกวิ่งเจาะทะลุ (ทุกแฉกทำดาเมจ)
       const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
-        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.55+lvl*0.045); b.faceVel=true; b.dmg=dmg; b.life=range/900+0.15; b.pierce=true; b.hitGapV=0.1;
+        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.55+lvl*0.045); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.15; b.pierce=true; b.hitGapV=0.1;
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
+      // ปลายทาง → แตกเป็นสะเก็ดกระจายรอบทิศ (shotgun)
+      const ex=this.player.x+Math.cos(a)*range, ey=this.player.y+Math.sin(a)*range;
+      this.time.delayedCall(flightT*1000,()=>this.frostShatterBurst(ex,ey,a,shardPer,shardDmg,shardFreeze,shardFB,blizzard,lvl));
     }
-    // วาง "สายธารน้ำแข็ง" แค่แนวกลางเส้นเดียว (แม้ evo 3 แฉก) — กันกระตุก: ปล้องน้อย+กว้าง + tick กระจายเฟส
-    const segSpacing=evo?70:58, segs=Math.min(evo?7:9,Math.round(range/segSpacing)), sdmg=(4+lvl*1.5)*dm, r=(34+lvl*1.7)*(evo?1.25:1);
-    for(let s=1;s<=segs;s++){ const d=s*segSpacing, x=this.player.x+Math.cos(ang)*d, y=this.player.y+Math.sin(ang)*d;
-      const img=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0x8fd0ff).setDepth(2).setScale(r/48).setAlpha(0.34));
-      this._frostStreams.push({img,x,y,r,life:streamDur,max:streamDur,tick:Math.random()*0.4,dmg:sdmg,slow:permafrost?0.5:0.22,shatter:blizzard}); }
-    if(this._frostStreams.length>60){ const drop=this._frostStreams.splice(0,this._frostStreams.length-60); drop.forEach(s=>s.img&&s.img.active&&s.img.destroy()); }   // กันสะสมล้น
     this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
+  }
+  // แตกสะเก็ดน้ำแข็งที่ปลายหอก: โนวาวาบ + ยิงสะเก็ดกระจาย(เจาะ+แช่)
+  frostShatterBurst(x,y,baseAng,count,sdmg,freeze,fb,blizzard,lvl){
+    if(this.state!=='play'&&this.state!=='levelup')return;
+    this.burst(x,y,0x8fd0ff);
+    const ring=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0xbdf0ff).setDepth(6).setScale(0.2).setAlpha(0.85));
+    this.tweens.add({targets:ring,scale:1.1,alpha:0,duration:260,onComplete:()=>ring.destroy()});
+    const arc=Math.PI*1.15;   // กระจายพัดกว้าง (ไม่ครบวง เน้นไปข้างหน้า)
+    for(let i=0;i<count;i++){ const a=baseAng+(i/(count-1||1)-0.5)*arc+Phaser.Math.FloatBetween(-0.08,0.08);
+      const b=this.getBullet(x,y,0xffffff,0.28); if(!b)break;
+      b.setTexture('proj_sprinkle').setTint(0xcaf3ff); b.faceVel=true; b.dmg=sdmg; b.life=0.42; b.pierce=true; b.hitGapV=0.1;
+      b.iceNeedle={freeze,frozenBonus:fb,shatter:blizzard,dmg:sdmg,lvl};
+      this.physics.velocityFromRotation(a,520+Math.random()*120,b.body.velocity); }
+    this.hitCratesInRadius(x,y,90,sdmg);
   }
   // ประมวลผลสายธารน้ำแข็ง: ทุก 0.4 วิ ทำ DoT + ชะลอ (frozen สั้น ๆ เป็นจังหวะ = สโลว์) ให้ศัตรูในปล้อง แล้วค่อย ๆ จาง
   tickFrostStreams(dt){
