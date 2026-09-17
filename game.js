@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.72.2';
+const GAME_VERSION = '2.73.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.73.0', date:'2026-09-17', title:'Onboarding: gradual menu unlock', items:[
+    'ค่อย ๆ ปลดล็อกเมนู Hub ตามด่านที่ผ่าน — คนใหม่ไม่เจอทุกอย่างพร้อมกัน (คลัง&พลัง/คัมภีร์ ปลดหลังผ่านด่าน 1 · กิจกรรม ปลดหลังด่าน 2)',
+    'เมนูที่ยังไม่ปลด = การ์ดล็อกสีเทา + บอกเงื่อนไข · แจ้งเตือน "ปลดล็อกเมนูใหม่!" ครั้งเดียวเมื่อผ่านด่าน',
+    'Tutorial สอนเล่นครั้งแรก (เคลื่อนที่ · Dash · การ์ดเลเวลอัพ · Unique) ยังอยู่ครบ' ] },
   { v:'2.72.2', date:'2026-09-17', title:'Fix HP NaN + capture zone', items:[
     'แก้ HP ขึ้น NaN — touchEnemy ไม่กัน e.dmg ที่เป็น NaN ทำให้เลือดกลายเป็น NaN ค้าง · เพิ่ม guard + safety net คืนค่าเลือดถ้าเพี้ยน',
     'แก้ภารกิจยืนในวงไม่นับ — else-if chain ที่เพิ่งแก้ purge ไปบล็อก case capture (ย้ายการเคลียร์หลอดแกนออกจาก chain)' ] },
@@ -3058,10 +3062,17 @@ class Game extends Phaser.Scene {
     const menuRows=Math.ceil(items.length/cols);
     const bh=portrait?Math.min(54,Math.max(38,(menuBottom-menuTop-gapY*(menuRows-1))/menuRows)):Math.min(58,(h-72-gapY*(menuRows-1))/menuRows);
     const totalW=bw*cols+gapX*(cols-1), x0=portrait?(w-totalW)/2+bw/2:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?menuTop+bh/2:74+bh/2;
+    // ค่อย ๆ ปลดล็อกเมนู — คนใหม่ไม่เจอทุกอย่างพร้อมกัน (ปลดตามด่านที่ผ่าน)
+    const us=Save.data.unlockedStage||0, need=[0,0,1,2,1,0];   // idx: เริ่ม/นักสู้/คลัง/กิจกรรม/คัมภีร์/อื่นๆ
     items.forEach(([color,emoji,label,sub,fn],i)=>{
-      const col=i%cols,row=Math.floor(i/cols);
-      this.uiMenuCard(this.menu,x0+col*(bw+gapX),y0+row*(bh+gapY),bw,bh,color,emoji,label,sub,fn,i===0);
+      const col=i%cols,row=Math.floor(i/cols),cx=x0+col*(bw+gapX),cy=y0+row*(bh+gapY);
+      if(us<need[i]){ const msg='🔒 ปลดล็อกเมื่อผ่านด่าน '+need[i];
+        this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'ผ่านด่าน '+need[i]+' เพื่อปลดล็อก',()=>{this.showBanner('🔒 ยังปลดล็อกไม่ได้',label+' — '+'ผ่านด่าน '+need[i]+' ก่อน',1500);Sfx.select&&Sfx.select();},false); }
+      else this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0);
     });
+    // แจ้งเตือนเมื่อมีเมนูใหม่เพิ่งปลดล็อก (ครั้งเดียว)
+    const seen=Save.data.hubUnlockSeen||0;
+    if(us>seen){ if(need.some(n=>n>seen&&n<=us))this.time.delayedCall(350,()=>{if(this.state==='menu'&&this.menuScreen==='hub')this.showBanner('🔓 ปลดล็อกเมนูใหม่!','มีเมนูใหม่ให้ใช้แล้ว — ลองสำรวจดู',2200);}); Save.data.hubUnlockSeen=us; Save.save(); }
     // ปุ่มรีเซ็ตเซฟย้ายไปหน้า "ตั้งค่า" แล้ว (buildSettings) — กันกดพลาดตั้งแต่หน้าแรก
     this.menu.setVisible(true);
   }
