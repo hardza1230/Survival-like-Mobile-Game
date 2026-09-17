@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.68.0';
+const GAME_VERSION = '2.69.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.69.0', date:'2026-09-17', title:'Purge cores, spawn tuning, rarer cards', items:[
+    'ภารกิจแกนคำสาป: แกนถึกขึ้น (HP 34→95) + ยิงสวนใส่ผู้เล่น (ไม่ใช่เป้านิ่ง) + มีหลอดเลือดชัดเจนเหนือแกน',
+    'ด่าน 3 ขึ้นไป: มอนสเตอร์แน่นขึ้น (batch/เพดานฝูงมากขึ้น) แต่ลดสัดส่วนตัวตีไกล (shooter) ลง = เน้นประชิด ไม่ยิงรัวจนหลบไม่ทัน',
+    'การ์ดของหายากเจอยากขึ้น (rare/epic/legend weight ลด)',
+    'Mutation ออกช้าลง (mastery 5→8) · Evolution ช้าลง (12→20)' ] },
   { v:'2.68.0', date:'2026-09-17', title:'Fix vanishing boss + Archero HUD', items:[
     'แก้ "บอสหายไป" ตัวจริง — บอสความเร็วแค่ 46 (องครักษ์ 68) เลยตามผู้เล่นไม่ทัน ถูกลากหลุดออกนอกจอ (เห็นแต่ลูกน้อง) → เร่งบอสเป็น 94 / มินิบอส 96 ให้เกาะติด + safety ให้บอสมองเห็นเสมอตอนสู้',
     'เพิ่มหลอดเลือด + เลเวล + ตัวเลข HP ลอยเหนือหัวผู้เล่นแบบ Archero (สีเปลี่ยนตามเลือด เขียว/เหลือง/แดง)' ] },
@@ -1334,10 +1339,10 @@ const DIFFS = [
 /* ---- Card Rarity (แบบ Death Must Die): การ์ดอัพเกรดสุ่มความหายาก → ยิ่งหายากยิ่งได้หลายเลเวลรวด ----
    สีความหายาก = สัญญาณอ่านเร็ว (เห็นทอง=เอาเลย) · ranks = จำนวนเลเวลที่ได้จากการ์ดใบเดียว */
 const RARITIES = [
-  { id:'common', name:'ธรรมดา',    ranks:1, color:0x9aa6b8, weight:56 },
-  { id:'rare',   name:'หายาก',     ranks:2, color:0x5ad1ff, weight:27 },
-  { id:'epic',   name:'เอพิก',     ranks:3, color:0xc07bff, weight:13 },
-  { id:'legend', name:'เลเจนดารี', ranks:4, color:0xffcf40, weight:4  },
+  { id:'common', name:'ธรรมดา',    ranks:1, color:0x9aa6b8, weight:68 },
+  { id:'rare',   name:'หายาก',     ranks:2, color:0x5ad1ff, weight:22 },
+  { id:'epic',   name:'เอพิก',     ranks:3, color:0xc07bff, weight:8  },
+  { id:'legend', name:'เลเจนดารี', ranks:4, color:0xffcf40, weight:2  },   // ของหายากเจอยากขึ้น (เดิม 56/27/13/4)
 ];
 function rollRarity(){ const tot=RARITIES.reduce((s,r)=>s+r.weight,0); let x=Math.random()*tot; for(const r of RARITIES){ x-=r.weight; if(x<=0)return r; } return RARITIES[0]; }
 /* ตัวคูณสเกลตอนโชว์ชีต action (idle/พุ่ง/โดนตี ฯลฯ) เฉพาะตัวที่อาร์ต action เล็กกว่าอาร์ต run — กันตัวหดตอนหยุดเดิน */
@@ -3576,8 +3581,10 @@ class Game extends Phaser.Scene {
   }
   setupSpawnRates(w){
     const p=this.waveProfile(w),si=this.stageIndex;this.waveTypes=p.types.slice();
-    this.spawnInterval=Math.max(0.55,p.interval-si*0.03);this.spawnBatch=p.batch+Math.floor(si/2)+1;   // มอนไหลถี่+เป็นชุดใหญ่ขึ้น
-    this.maxLive=Math.min(95,p.max+si*4+6);this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น + elite ถี่ขึ้น
+    // ด่าน 3 ขึ้นไป (si>=2): เพิ่มจำนวนมอน (แน่นขึ้น) + ลดสัดส่วนตัวตีไกล (shooter) ให้เน้นประชิด
+    if(si>=2){ let sh=0; this.waveTypes=this.waveTypes.map(t=>{ if(t==='shooter'){ sh++; return sh>1?'basic':t; } return t; }); }   // เหลือ shooter ได้มากสุด 1 ช่องในลิสต์ = ตัวตีไกลออกน้อยลง
+    this.spawnInterval=Math.max(0.5,p.interval-si*0.03-(si>=2?0.14:0));this.spawnBatch=p.batch+Math.floor(si/2)+1+(si>=2?1:0);   // มอนไหลถี่+เป็นชุดใหญ่ขึ้น (ด่านหลังแน่นกว่า)
+    this.maxLive=Math.min(115,p.max+si*(si>=2?7:4)+6+(si>=2?12:0));this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
     this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
   spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
@@ -3661,7 +3668,7 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.type!=='purge')return;const pos=this.objectivePosition(i,n,230,400);
     let node=this.waveNodes.getFirstDead(false);if(!node)node=this.waveNodes.create(pos.x,pos.y,'nest_crystal');else{node.setTexture('nest_crystal').setActive(true).setVisible(true).setPosition(pos.x,pos.y);if(node.body)node.body.enable=true;}
     if(!node)return;const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),mul=(1+this.stageIndex*.55+this.waveIndex*.14)*pg.enemyHp*this.diffMul().hp;
-    node.hp=Math.round(34*mul);node.maxhp=node.hp;node._purifyCd=0;node._waveObjectiveNode=true;node.setScale(.62).setTint(o.color).setDepth(node.y+1);this.camWorld(node);
+    node.hp=Math.round(95*mul);node.maxhp=node.hp;node._purifyCd=0;node._shootCd=Phaser.Math.FloatBetween(1.6,2.6);node._waveObjectiveNode=true;node.setScale(.66).setTint(o.color).setDepth(node.y+1);this.camWorld(node);   // ถึกขึ้น (34→95) + ยิงกลับได้
     if(node.body){node.body.setAllowGravity(false);node.body.setImmovable(true);node.body.setCircle(42,22,22);}
     node._objectiveCue=this.camWorld(this.add.image(node.x,node.y,'vfx_ring').setTint(o.color).setDepth(node.y).setDisplaySize(112,92).setAlpha(.52));
     this.tweens.add({targets:node._objectiveCue,rotation:TAU,alpha:{from:.34,to:.62},duration:1500,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.vfxSpawnPoof(node.x,node.y);
@@ -3700,7 +3707,20 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done)return;
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
-    else if(o.type==='purge'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode)return;n._purifyCd-=dt;if(this.dist(this.player.x,this.player.y,n.x,n.y)<=130&&n._purifyCd<=0){n._purifyCd=.4;n.hp-=Math.max(5,n.maxhp*.12);this.vfxHitRing(n.x,n.y,o.color,false);if(n.hp<=0)this.destroyWaveObjectiveNode(n);}});
+    else if(o.type==='purge'&&this.waveNodes){
+      if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
+      const ng=this.objNodeG;ng.clear();
+      this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode)return;
+        // ชำระล้างด้วยการเข้าใกล้ (ดาเมจคงที่ ให้แกนที่ถึกใช้เวลานานขึ้นจริง)
+        n._purifyCd-=dt;if(this.dist(this.player.x,this.player.y,n.x,n.y)<=130&&n._purifyCd<=0){n._purifyCd=.4;n.hp-=Math.max(8,12+this.stageIndex*4);this.vfxHitRing(n.x,n.y,o.color,false);if(n.hp<=0){this.destroyWaveObjectiveNode(n);return;}}
+        // แกนคำสาปยิงสวน (ช้า อ่านทัน) — ไม่ใช่เป้านิ่ง
+        n._shootCd-=dt;if(n._shootCd<=0){n._shootCd=Phaser.Math.FloatBetween(2.0,3.0);const a=Math.atan2(this.player.y-n.y,this.player.x-n.x);this.foeShot(n.x,n.y,a,150,8+this.stageIndex*2,o.color||0xc77bff,1.0);if(this.stageIndex>=2){this.foeShot(n.x,n.y,a+0.35,150,8+this.stageIndex*2,o.color||0xc77bff,1.0);this.foeShot(n.x,n.y,a-0.35,150,8+this.stageIndex*2,o.color||0xc77bff,1.0);}}
+        // หลอดเลือดชัดเจนเหนือแกน
+        const hf=Phaser.Math.Clamp(n.hp/n.maxhp,0,1),bw=54,bx=n.x-bw/2,by=n.y-46;
+        ng.fillStyle(0x000000,0.55);ng.fillRoundedRect(bx-2,by-2,bw+4,8,4);ng.fillStyle(0x24122c,1);ng.fillRoundedRect(bx,by,bw,4,2);
+        if(hf>0){ng.fillStyle(o.color||0xc77bff,1);ng.fillRoundedRect(bx,by,Math.max(2,bw*hf),4,2);}
+      });
+    }else if(this.objNodeG){this.objNodeG.clear();}
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
       o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}
     this.renderWaveObjectiveHUD();
@@ -3721,6 +3741,7 @@ class Game extends Phaser.Scene {
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;});
     for(const k of ['_captureZone','_captureRing']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}
+    if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);
   }
   // ล้างมอนธรรมดาที่ค้าง (เก็บบอส/มินิไว้) — ใช้ตอนจบเวฟ/รอดครบเวลา
@@ -4289,13 +4310,13 @@ class Game extends Phaser.Scene {
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey:u.iconKey||fallbackIcon,...extra});
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) ครั้งเดียว: การ์ดทั้งจอเป็น mutation ล้วน
-    if(b.mastery>=5&&!b.mutation){
+    if(b.mastery>=8&&!b.mutation){   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
       const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
       if(muts.length){ this.showBanner('⭐ จุดแยกสายกลายรูป!','เลือกสไตล์การเล่น 1 สาย (ล็อกอีกสาย)',1500);
         return muts.map(u=>makeCard(u,{mutation:true,special:true,apply:()=>{b.mutation=u.id;this.syncBasicAttack();this.showBanner(u.emoji+' '+u.name,'เลือกสายกลายรูปแล้ว · อีกสายถูกล็อก',1700);}})); }
     }
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
-    if(b.mastery>=12&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
+    if(b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
       const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'เข็มทะลุทุกตัว + วิ่งตามเป้า + แตกสะเก็ดเสมอ + ปาเข็มถี่ขึ้น',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
