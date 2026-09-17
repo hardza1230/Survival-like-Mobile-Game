@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.69.0';
+const GAME_VERSION = '2.70.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.70.0', date:'2026-09-17', title:'Monetization: rewarded ads (v1)', items:[
+    'เพิ่มโครงระบบรายได้: โฆษณาแบบรับรางวัล (Rewarded Ad) — พร้อมต่อ AdMob จริงตอนขึ้นสโตร์ (ตอนนี้เดโมจำลอง 3 วิ)',
+    'ตายแล้ว "ฟื้นคืนชีพด้วยโฆษณา" ได้ 1 ครั้ง/รอบ (HP 50%) · หน้าสรุปด่าน "รับ Sugar x2 ด้วยโฆษณา"',
+    'วางโครง IAP (Store.owns/noAds flag) + จุดต่อ billing เผื่อขาย "ตัดโฆษณา" ในอนาคต',
+    'บล็อกอินพุตระหว่างเล่นโฆษณา · โฆษณาไม่โผล่ในโหมด Endless' ] },
   { v:'2.69.0', date:'2026-09-17', title:'Purge cores, spawn tuning, rarer cards', items:[
     'ภารกิจแกนคำสาป: แกนถึกขึ้น (HP 34→95) + ยิงสวนใส่ผู้เล่น (ไม่ใช่เป้านิ่ง) + มีหลอดเลือดชัดเจนเหนือแกน',
     'ด่าน 3 ขึ้นไป: มอนสเตอร์แน่นขึ้น (batch/เพดานฝูงมากขึ้น) แต่ลดสัดส่วนตัวตีไกล (shooter) ลง = เน้นประชิด ไม่ยิงรัวจนหลบไม่ทัน',
@@ -1694,6 +1699,19 @@ const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.pus
 function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
 const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
+// ---- Monetization: rewarded ads + IAP (จุดต่อ Capacitor AdMob/Billing · ตอนนี้ยังไม่มี plugin = ใช้เดโมจำลอง) ----
+// ⚙️ ขึ้นสโตร์จริง: npm i @capacitor-community/admob → ใส่ ad unit id ที่ ADMOB_REWARD_ID แล้วต่อใน Game.showRewardedAd
+const ADMOB_REWARD_ID = '';   // ← ใส่ Rewarded Ad Unit ID ตอน integrate จริง
+const AdManager = {
+  plugin(){ try{ const C=window.Capacitor; return (C&&C.Plugins&&C.Plugins.AdMob)||window.AdMob||null; }catch(e){ return null; } },
+  hasRealAds(){ const p=this.plugin(); return !!(ADMOB_REWARD_ID && p && p.showRewardVideoAd); },
+};
+const Store = {
+  products:[ {id:'noads',emoji:'🚫',name:'ตัดโฆษณาคั่น',desc:'ปิดโฆษณาคั่นถาวร (ยังดูโฆษณารับรางวัลได้ตามใจ)'} ],
+  owns(id){ return id==='noads' ? !!Save.data.noAds : false; },
+  // TODO: ต่อ in-app billing จริง (Google Play) — ตอนนี้ยังไม่เปิดขาย
+  canBuy(){ try{ const C=window.Capacitor; return !!(C&&C.Plugins&&(C.Plugins.Purchases||C.Plugins.InAppPurchase||C.Plugins.CapacitorPurchases)); }catch(e){ return false; } },
+};
 function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%2)};}   // diff 2-3 (นรกสูงสุด)
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
@@ -1708,7 +1726,7 @@ function rollFieldGearTier(stageIndex,difficulty,boost=0){
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
-  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], settings:Object.assign({},DEFAULT_SETTINGS) },
+  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
   load(){ try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
     if(!this.data.upgrades)this.data.upgrades={};
     if(!this.data.gear)this.data.gear={};
@@ -2130,6 +2148,7 @@ class Game extends Phaser.Scene {
   setupInput(){
     this.input.on('pointerdown',(p)=>{
       Sfx.unlock();
+      if(this._adBusy)return;   // กำลังเล่นโฆษณา = บล็อกอินพุตอื่น
       p={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id};
       // mute toggle (มุมขวาบน)
       if(this.muteBtn && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<28){
@@ -2146,7 +2165,7 @@ class Game extends Phaser.Scene {
       if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(this.state==='dead'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
-      if(this.state==='summary'){ Sfx.select(); this.continueFromSummary(); return; }
+      if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } Sfx.select(); this.continueFromSummary(); return; }
       if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
       if(this.state==='startskill'){ this.pickStartingSkillAt(p.x,p.y); return; }
@@ -3402,7 +3421,7 @@ class Game extends Phaser.Scene {
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
-        this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive");   // โควตาสุ่มใหม่/ลบสกิล ต่อรอบ
+        this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive");this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อรอบ
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
@@ -4047,6 +4066,7 @@ class Game extends Phaser.Scene {
     this.gainCharExp(Math.round((75 + this.stageIndex*35)*guide.reward)); // catch-up EXP มากขึ้นเมื่อผ่านด่านด้วยพลังต่ำกว่าคำแนะนำ
     this._powerAfter=Save.power(this.character);
     if(!last && (Save.data.unlockedStage||0) < this.stageIndex+1){ Save.data.unlockedStage=this.stageIndex+1; Save.save(); }
+    this._summaryDoubled=false;   // รีเซ็ตสิทธิ์ดูโฆษณา x2 ต่อการเคลียร์ด่าน
     this.showStageSummary(last);
   }
   /* หน้าสรุปด่าน — แตะเพื่อไปต่อ */
@@ -4075,11 +4095,20 @@ class Game extends Phaser.Scene {
     rows.forEach(r=>{ const l=this.add.text(w/2-120,y,r[0],{fontFamily:'sans-serif',fontSize:rowFont+'px',color:'#c7bdd6'}).setOrigin(0,0.5);
       const v=this.add.text(w/2+120,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:'#ffffff'}).setOrigin(1,0.5);
       box.push(l,v); y+=step; });
+    this._summaryBtns=[]; this._summaryBonus=this.sugarStage;   // เก็บ Sugar ด่านนี้ไว้ทำ x2 ด้วยโฆษณา
+    // 📺 รับ Sugar x2 (ดูโฆษณา · ครั้งเดียว)
+    if(this._summaryBonus>0&&!this._summaryDoubled){ const dw=Math.min(300,w-52),dh=44,dy=h*0.72,dg=this.add.graphics();
+      dg.fillStyle(0xd8a33a,1);dg.fillRoundedRect(w/2-dw/2,dy-dh/2,dw,dh,16);dg.lineStyle(2,0xffffff,0.3);dg.strokeRoundedRect(w/2-dw/2,dy-dh/2,dw,dh,16);
+      const dt2=this.add.text(w/2,dy,'📺 รับ Sugar x2 (+'+this._summaryBonus+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff'}).setOrigin(0.5);
+      box.push(dg,dt2); this._summaryBtns.push({x:w/2-dw/2,y:dy-dh/2,w:dw,h:dh,fn:()=>this.showRewardedAd('รับ Sugar เพิ่มอีกเท่าตัว (+'+this._summaryBonus+')',()=>this.adDoubleSugar())}); }
     const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-120,h*0.82-30,240,60,22);
     const bt=this.add.text(w/2,h*0.82,last?'🏆 ดูบทสรุป':'🗺 กลับหน้าเลือกด่าน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
     box.push(btn,bt); this.over.add(box); this.over.setVisible(true);
-    this.sugarStage=0;
+    // (คง this.sugarStage ไว้เพื่อ re-render ตอนกด x2 · จะรีเซ็ตใน continueFromSummary)
   }
+  adDoubleSugar(){ if(this._summaryDoubled)return; this._summaryDoubled=true; const bonus=this._summaryBonus||0; if(bonus>0)Save.addSugar(bonus);
+    if(this.showBanner)this.showBanner('🍬 Sugar x2!','รับเพิ่มอีก +'+bonus+' จากโฆษณา',1700); Sfx.clear&&Sfx.clear();
+    if(this.state==='summary')this.showStageSummary(this._summaryLast); }
   continueFromSummary(){
     if(this.state!=='summary')return;
     this.over.setVisible(false); this.physics.resume(); this.state='play';
@@ -5887,11 +5916,47 @@ class Game extends Phaser.Scene {
     const rows=[['🗺 ด่าน',st.emoji+' '+st.name],['🔥 ความยาก',diff.emoji+' '+diff.name],['⏱ เวลารอด',mm+':'+ss.toString().padStart(2,'0')],['☠ กำจัด',String(this.kills)],['🌟 Run Level','Lv '+this.level],['🍬 Sugar','+'+(this._deathSugar||0)],['✨ Character EXP','+'+(this._deathExp||0)],['⚡ ค่าพลัง',(this._deathPowerBefore||0)+' → '+(this._deathPowerAfter||0)]];
     const box=[bg,em,t,panel];let y=h*0.315,step=(h*0.325)/rows.length;rows.forEach(r=>{const l=this.add.text(34,y,r[0],{fontFamily:'sans-serif',fontSize:'11px',color:'#bfaec8'}).setOrigin(0,0.5),v=this.add.text(w-34,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',wordWrap:{width:w*0.55},align:'right'}).setOrigin(1,0.5);box.push(l,v);y+=step;});
     const build=this.add.text(w/2,h*0.655,'BUILD · '+(skills.slice(0,3).join(' / ')||'อาวุธเริ่มต้น')+(passes.length?'\nพร: '+passes.slice(0,3).join(' / '):''),{fontFamily:'sans-serif',fontSize:'9px',color:'#d8c4e3',align:'center',wordWrap:{width:w-60},maxLines:2}).setOrigin(0.5);box.push(build);
+    // 📺 ฟื้นคืนชีพด้วยโฆษณา (ครั้งเดียวต่อรอบ) — ไม่โผล่ในโหมด Endless (ตายแล้วจบรอบ)
+    if(!this._adRevived&&!this.endlessMode){ const rvw=Math.min(300,w-52),rvh=44,rvy=h*0.725,rg=this.add.graphics();
+      rg.fillStyle(0x2fae6a,1);rg.fillRoundedRect(w/2-rvw/2,rvy-rvh/2,rvw,rvh,16);rg.lineStyle(2,0xffffff,0.3);rg.strokeRoundedRect(w/2-rvw/2,rvy-rvh/2,rvw,rvh,16);
+      const rvt=this.add.text(w/2,rvy,'📺 ฟื้นคืนชีพ (ดูโฆษณา)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0.5);
+      box.push(rg,rvt); this._overBtns.push({x:w/2-rvw/2,y:rvy-rvh/2,w:rvw,h:rvh,fn:()=>this.showRewardedAd('ฟื้นคืนชีพกลับเข้าสนาม · HP 50%',()=>this.adRevive())}); }
     const bw=Math.min(180,(w-52)/2),bh=48,by=h*0.79,left=w/2-bw/2-6,right=w/2+bw/2+6,draw=(cx,color,label)=>{const g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(cx-bw/2,by-bh/2,bw,bh,15);g.lineStyle(2,0xffffff,0.25);g.strokeRoundedRect(cx-bw/2,by-bh/2,bw,bh,15);const tx=this.add.text(cx,by,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(0.5);box.push(g,tx);};
     draw(left,COLORS.pink,'↻ เล่นด่านเดิม');draw(right,COLORS.grape,'🏠 กลับ Hub');
     this._overBtns.push({x:left-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>{this.over.setVisible(false);this.physics.resume();this.state='menu';if(this.endlessMode)this._endlessRequested=true;this.startRun(this.stageIndex);}});
     this._overBtns.push({x:right-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.scene.restart()});
     const hint=this.add.text(w/2,h*0.90,(Save.data.sugar||0)>=GACHA_COST?'Sugar พอเปิดกล่องอุปกรณ์แล้ว!':'พัฒนาอุปกรณ์และสายใย แล้วกลับมาลองอีกครั้ง',{fontFamily:'sans-serif',fontSize:'10px',color:'#9f91aa'}).setOrigin(0.5);box.push(hint);this.over.add(box);this.over.setVisible(true); }
+  // ---- Rewarded Ad: แสดงโฆษณาแล้วให้รางวัล (ตอนนี้เดโมจำลอง · ต่อ AdMob จริงได้ที่ hasRealAds/plugin) ----
+  showRewardedAd(label,onReward){
+    if(this._adBusy)return;
+    if(AdManager.hasRealAds()){ this._adBusy=true; const p=AdManager.plugin();
+      try{ Promise.resolve(p.prepareRewardVideoAd?p.prepareRewardVideoAd({adId:ADMOB_REWARD_ID}):null)
+        .then(()=>p.showRewardVideoAd()).then(()=>{this._adBusy=false;onReward&&onReward();})
+        .catch(()=>{this._adBusy=false;this._playSimAd(label,onReward);}); return; }catch(e){ this._adBusy=false; } }
+    this._playSimAd(label,onReward);
+  }
+  _playSimAd(label,onReward){
+    if(this._adBusy)return; this._adBusy=true; const w=this.W,h=this.H;
+    const c=this.add.container(0,0).setScrollFactor(1).setDepth(99999); this.camUI(c);
+    const bg=this.add.rectangle(0,0,w,h,0x05030a,0.93).setOrigin(0).setScrollFactor(1);
+    const tag=this.add.text(w/2,h*0.33,'📺 โฆษณา',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffe08a'}).setOrigin(0.5).setScrollFactor(1);
+    const sub=this.add.text(w/2,h*0.41,label||'ดูโฆษณาเพื่อรับรางวัล',{fontFamily:'sans-serif',fontSize:'14px',color:'#e6dcf0',align:'center',wordWrap:{width:w-70}}).setOrigin(0.5).setScrollFactor(1);
+    const cd=this.add.text(w/2,h*0.53,'3',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'64px',color:'#ffffff'}).setOrigin(0.5).setScrollFactor(1);
+    const note=this.add.text(w/2,h*0.64,'(เดโม — จะแทนด้วยโฆษณาจริงตอนขึ้น Play Store)',{fontFamily:'sans-serif',fontSize:'10px',color:'#8f849f'}).setOrigin(0.5).setScrollFactor(1);
+    c.add([bg,tag,sub,cd,note]);
+    let n=3; const tick=()=>{ n--; if(n>0){ cd.setText(String(n)); this.time.delayedCall(700,tick); }
+      else { cd.setText('🎁'); Sfx.clear&&Sfx.clear(); this.time.delayedCall(520,()=>{ c.destroy(true); this._adBusy=false; onReward&&onReward(); }); } };
+    this.time.delayedCall(700,tick);
+  }
+  // ฟื้นคืนชีพจากโฆษณา (ครั้งเดียวต่อรอบ)
+  adRevive(){
+    this._adRevived=true; if(this.over)this.over.setVisible(false); this.state='play'; this.physics.resume();
+    this.player.hp=Math.round(this.player.maxhp*0.5); if(this.player.body)this.player.body.enable=true;
+    this.player.iframe=2.6; this.player.wardGuardT=1.8; this.clearFoes();
+    if(this._hasFrames){ const bk='char_'+this.character; if(this.textures.exists(bk))this.player.setTexture(bk); this.player.setFrame(CF.idle); this.player.setScale(this._pBase||1); }
+    this.screenFlash(0xffe08a,0.5,420); Sfx.clear&&Sfx.clear();
+    if(this.showBanner)this.showBanner('✨ ฟื้นคืนชีพ!','ดูโฆษณาแล้ว—กลับมาสู้ต่อ · HP 50%',1800);
+  }
 
   _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   _nearestWaveObjective(){
