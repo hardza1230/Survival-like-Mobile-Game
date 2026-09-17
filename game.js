@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.81.0';
+const GAME_VERSION = '2.82.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.82.0', date:'2026-09-17', title:'Mint = burst monster (shatter on contact)', items:[
+    'หอกน้ำแข็งแตกเป็นสะเก็ด "ทันทีที่กระทบเป้า" (ไม่รอสุดระยะ) แล้วหอกหัก → มิ้นต์เป็นสายเบิสเคลียร์ฝูง',
+    'ยิงพลาดทุกตัวถึงจะไปแตกที่สุดระยะ (fallback)',
+  ]},
   { v:'2.81.0', date:'2026-09-17', title:'Frost Lance → Shatter Lance', items:[
     'เปลี่ยนหอกน้ำแข็งเป็นสาย "Shatter Lance": หอกทะลุแนวแล้วแตกเป็นสะเก็ดน้ำแข็งกระจายพัดกว้างที่ปลายทาง (เจาะ+แช่)',
     'เลิกใช้สายธารน้ำแข็งบนพื้น (ที่ทำให้กระตุก) — เบาเครื่องขึ้น อิมแพกต์ชัดขึ้น',
@@ -4654,7 +4658,7 @@ class Game extends Phaser.Scene {
     if(b.texture&&b.texture.key!=='proj_sprinkle')b.setTexture('proj_sprinkle');   // คืนรูป projectile เริ่มต้น (กันรูปสกิลก่อนหน้าค้างจาก pool)
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
-    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null; b.pierceLeft=0;
+    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null;
     return b;
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "เอฟเฟกต์" ไม่ใช่ยิงถี่ขึ้น
@@ -4911,14 +4915,16 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
     const lanceKey=this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer';
     for(let L=0;L<lances;L++){ const a=ang+(L-centerL)*spread;
-      // หอกวิ่งเจาะทะลุ (ทุกแฉกทำดาเมจ)
+      const st={done:false};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
+      // หอกวิ่ง — แตกทันทีที่กระทบเป้าตัวแรก (burst monster)
       const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
-        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.55+lvl*0.045); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.15; b.pierce=true; b.hitGapV=0.1;
+        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.55+lvl*0.045); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.15; b.hitGapV=0.1;
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
+        b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
-      // ปลายทาง → แตกเป็นสะเก็ดกระจายรอบทิศ (shotgun)
+      // ถ้าพลาดทุกตัว → แตกที่สุดระยะ (fallback)
       const ex=this.player.x+Math.cos(a)*range, ey=this.player.y+Math.sin(a)*range;
-      this.time.delayedCall(flightT*1000,()=>this.frostShatterBurst(ex,ey,a,shardPer,shardDmg,shardFreeze,shardFB,blizzard,lvl));
+      this.time.delayedCall(flightT*1000,()=>{ if(!st.done){ st.done=true; this.frostShatterBurst(ex,ey,a,shardPer,shardDmg,shardFreeze,shardFB,blizzard,lvl); } });
     }
     this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
   }
@@ -5198,6 +5204,9 @@ class Game extends Phaser.Scene {
       this.damage(enemy,bullet.dmg*(frozenNow?nd.frozenBonus:1),bullet.x,bullet.y);
       if(enemy.active&&!enemy.isBoss&&!enemy.isMini){ enemy.frozen=Math.max(enemy.frozen||0,nd.freeze); enemy.setVelocity(enemy.body.velocity.x*0.4,enemy.body.velocity.y*0.4); enemy.setTint(COLORS.ice); }
       if(nd.shatter){ const r=52+nd.lvl*5; this.burst(bullet.x,bullet.y,0x8fd0ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&e!==enemy&&this.dist(e.x,e.y,bullet.x,bullet.y)<r)this.damage(e,nd.dmg*0.5,e.x,e.y); }); }
+      // Frost Lance: กระทบเป้า = แตกเป็นสะเก็ดทันที (แล้วหอกหัก)
+      if(bullet.shatterInfo&&bullet.shatterState&&!bullet.shatterState.done){ const si=bullet.shatterInfo; bullet.shatterState.done=true;
+        this.frostShatterBurst(bullet.x,bullet.y,si.ang,si.count,si.dmg,si.freeze,si.fb,si.blizzard,si.lvl); this.killBullet(bullet); return; }
       bullet.pierceLeft=(bullet.pierceLeft||1)-1; if(bullet.pierceLeft<=0)this.killBullet(bullet); return; }
     if(bullet.pierce){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.16; this.damage(enemy,bullet.dmg,bullet.x,bullet.y); this.chainFrom(bullet,enemy); return; }
     this.damage(enemy,bullet.dmg,bullet.x,bullet.y);if(enemy.active&&bullet.knockback&&!enemy.isBoss&&!enemy.isMini){const a=Math.atan2(enemy.y-this.player.y,enemy.x-this.player.x);enemy.setVelocity(Math.cos(a)*bullet.knockback,Math.sin(a)*bullet.knockback);enemy.knock=0.22;} this.chainFrom(bullet,enemy);
