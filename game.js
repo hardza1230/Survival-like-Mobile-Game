@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.83.0';
+const GAME_VERSION = '2.84.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.84.0', date:'2026-09-17', title:'Boss BGM 1-5 + live stat readout + spaced cores', items:[
+    'ใส่เพลงบอสครบ 5 ด่าน (bgm_boss1..5) — โหลดเพลงบอสของด่านนั้นอัตโนมัติ',
+    'เพิ่มสรุปสเตตย่อ ๆ ขณะเล่น (มุมซ้ายบน): ❤ เลือด · ♻ ฟื้น/วิ · ⚔ โจมตี% · 🛡 ป้องกัน% · 🎯 คริ%',
+    'ภารกิจทำลายแกนคำสาป: แกนเกิดห่างกันขึ้น (วงกว้างขึ้น + เว้นระยะกัน ~260)',
+  ]},
   { v:'2.83.0', date:'2026-09-17', title:'Fix box RNG + remove pillar-summon', items:[
     'แก้บั๊กกล่องมินิบอสสุ่มได้อันเดิมตลอด (พอถึง mastery≥8 กล่องไปโดนช่วง mutation/evolution เลยได้อันเดิม) — กล่องข้ามช่วงพิเศษ สุ่มอัปเกรดปกติแทน',
     'เอา "สกิลเรียกเสา" (ผลึก/โอเบลิสก์ ที่ยิงไกลโกง) ออกจากบอสและมอนสเตอร์ทุกตัว + ปิดระบบเกราะจุดอ่อนที่อิงเสา (บอสซัดตรงได้ตลอด)',
@@ -977,7 +982,11 @@ const ASSET_AUDIO = {
   sfx_hazard:     'assets/audio/sfx_vfx_telegraph_hazard.wav',
   bgm_main:       'assets/audio/bgm/Main menu.mp3',
   bgm_stage1:     'assets/audio/bgm/clockmakers_tea_break.mp3',
-  bgm_boss1:      'assets/audio/bgm/gates_of_the_calamity.mp3',
+  bgm_boss1:      'assets/audio/bgm/bgm_boss1.mp3',
+  bgm_boss2:      'assets/audio/bgm/bgm_boss2.mp3',
+  bgm_boss3:      'assets/audio/bgm/bgm_boss3.mp3',
+  bgm_boss4:      'assets/audio/bgm/bgm_boss4.mp3',
+  bgm_boss5:      'assets/audio/bgm/bgm_boss5.mp3',
   bgm_stage2:     'assets/audio/bgm/bgm_stage2_sink.wav',
   bgm_stage3:     'assets/audio/bgm/bgm_stage3_stove.wav',
   bgm_stage4:     'assets/audio/bgm/bgm_stage4_freezer.wav',
@@ -2524,6 +2533,8 @@ class Game extends Phaser.Scene {
     // แถวข้อมูล 2 บรรทัดใต้หลอด — ซ้าย: Lv/ฆ่า · กลาง: สถานะเวฟ/ด่าน · ขวาบน: ปุ่มควบคุม
     this.lvlTxt=this.add.text(pad,pad+34,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
     this.killTxt=this.add.text(pad,pad+56,'☠ 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9cff0'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
+    // สรุปสเตตย่อ ๆ ขณะเล่น (เลือด/ฟื้น/โจมตี/ป้องกัน)
+    this.statTxt=this.add.text(pad,pad+75,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#bfe8d6'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
     this.runSugarTxt=this.add.text(w-pad,pad+56,'🍬 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);   // เงินที่ได้รอบนี้ (realtime)
     this.timeTxt=this.add.text(w/2,pad+34,'0:00',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',align:'center',wordWrap:{width:w-150}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     this.stageTxt=this.add.text(w/2,pad+56,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
@@ -2562,7 +2573,7 @@ class Game extends Phaser.Scene {
     this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(80); this.camUI(this.pOverG);
     this.pOverLv=this.add.text(0,0,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:4}).setOrigin(0.5,1).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
     this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
-    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp];
+    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.bossHpTxt,this.objectiveArrow,this.objectiveDist];
@@ -2580,6 +2591,11 @@ class Game extends Phaser.Scene {
     g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,pad+2,bw,8,4);
     if(xpf>0){ g.fillStyle(0x8bd3a0,1); g.fillRoundedRect(bx+2,pad+4,Math.max(4,(bw-4)*xpf),4,2); }
     this.drawOverheadStatus(hpf);
+    if(this.statTxt){ const p=this.player;
+      const regen=Math.min(p.maxhp*0.03,(p.regen||0)+(p.regenFlat||0)+p.maxhp*(p.regenPct||0));
+      const atkPct=Math.round((p.dmgMul||1)*100), defPct=Math.round((1-(p.dmgTakenMul||1))*100), critPct=Math.round((p.critChance||0)*100);
+      this.statTxt.setText(`❤ ${Math.max(0,Math.round(p.hp))}/${Math.round(p.maxhp)}   ♻ ${regen.toFixed(1)}/s   ⚔ ${atkPct}%   🛡 ${defPct}%`+(critPct>0?`   🎯 ${critPct}%`:''));
+    }
   }
   // หลอดเลือด+เลเวลเหนือหัวผู้เล่น (แบบ Archero) — screen-space คำนวณจากกล้อง ให้ติดตัวเสมอ
   drawOverheadStatus(hpf){
@@ -2744,6 +2760,7 @@ class Game extends Phaser.Scene {
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-58,this.H-78); this.dashTxt.setPosition(this.W-58,this.H-78);
       if(this.uniqueBtn){this.uniqueBtn.setPosition(this.W-58,this.H-78-80);this.uniqueTxt.setPosition(this.W-58,this.H-78-80);}
       this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(pad,pad+56);
+      if(this.statTxt)this.statTxt.setPosition(pad,pad+75);
       if(this.runSugarTxt)this.runSugarTxt.setPosition(this.W-pad,pad+56);
       this.timeTxt.setPosition(this.W/2,pad+34).setWordWrapWidth(this.W-150);
       this.stageTxt.setPosition(this.W/2,pad+56).setWordWrapWidth(this.W-40);
@@ -3525,7 +3542,7 @@ class Game extends Phaser.Scene {
     this.showMenu();
   }
   ensureStageAudio(idx,done){
-    const stage=Math.max(1,Math.min(5,(idx||0)+1)),keys=['bgm_stage'+stage];if(stage===1)keys.push('bgm_boss1');
+    const stage=Math.max(1,Math.min(5,(idx||0)+1)),keys=['bgm_stage'+stage,'bgm_boss'+stage];   // โหลดเพลงด่าน + เพลงบอสของด่านนั้น
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
     const loader=window.GameLoader;let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
     this.load.on('progress',value=>{if(loader)loader.set(0.08+value*0.24,'กำลังโหลดเพลงด่านและเพลงบอส...');});
@@ -3817,7 +3834,12 @@ class Game extends Phaser.Scene {
     return pos;
   }
   spawnWaveObjectiveNode(i,n){
-    const o=this.waveObjective;if(!o||o.type!=='purge')return;const pos=this.objectivePosition(i,n,230,400);
+    const o=this.waveObjective;if(!o||o.type!=='purge')return;
+    // เกิดห่างกันขึ้น: วงกว้างขึ้น + เว้นระยะจากแกนอื่นอย่างน้อย ~260
+    let pos=this.objectivePosition(i,n,340,560);
+    for(let tryN=0;tryN<6;tryN++){ let tooClose=false;
+      this.waveNodes.children.iterate(nd=>{ if(nd&&nd.active&&nd._waveObjectiveNode&&this.dist(pos.x,pos.y,nd.x,nd.y)<260)tooClose=true; });
+      if(!tooClose)break; pos=this.objectivePosition(i,n,340,560); }
     let node=this.waveNodes.getFirstDead(false);if(!node)node=this.waveNodes.create(pos.x,pos.y,'nest_crystal');else{node.setTexture('nest_crystal').setActive(true).setVisible(true).setPosition(pos.x,pos.y);if(node.body)node.body.enable=true;}
     if(!node)return;const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),mul=(1+this.stageIndex*.55+this.waveIndex*.14)*pg.enemyHp*this.diffMul().hp;
     node.hp=Math.round(95*mul);node.maxhp=node.hp;node._purifyCd=0;node._shootCd=Phaser.Math.FloatBetween(1.6,2.6);node._waveObjectiveNode=true;node.setScale(.66).setTint(o.color).setDepth(node.y+1);this.camWorld(node);   // ถึกขึ้น (34→95) + ยิงกลับได้
