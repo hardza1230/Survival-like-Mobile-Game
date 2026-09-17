@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.78.0';
+const GAME_VERSION = '2.79.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.79.0', date:'2026-09-17', title:'Real art: Frost Lance + new Mint sprites', items:[
+    'ลงอาร์ตจริง: หอกน้ำแข็ง proj_frostlance (ตัด/ย่อจากอาร์ตเจ้าของ) → มิ้นต์ยิงหอกน้ำแข็งรูปจริงแล้ว',
+    'ตัวมิ้นต์ใหม่: ชีตท่า 8 เฟรม (มีท่าชาร์จปาหอก) + ชีตวิ่ง 12 เฟรม — สัดส่วนท่า/วิ่งตรงกัน เลิกใช้ CHAR_ACTION_SCALE',
+    'เพิ่มใบสั่งงานอาร์ต VFX ช็อกโกแลตที่ขาด (fx_bearslash รอยกรงเล็บหมี + fx_flickerblink สตรีควาร์ป)',
+  ]},
   { v:'2.78.0', date:'2026-09-17', title:'Mint → Frost Lance + Flicker faster + Cocoa regen', items:[
     'มิ้นต์เปลี่ยน Basic Attack เป็น "Frost Lance" หอกน้ำแข็งทะลุแนว — พุ่งเจาะทะลุทุกตัว + ทิ้ง "สายธารน้ำแข็ง" บนแนว (DoT ต่อเนื่อง + ชะลอตัวที่เดินผ่าน)',
     'อัปเกรด: power=ดาเมจ · rate=ชาร์จไว · chill=ทะลุไกล+สายธารยาว · linger=สายธารอยู่นานขึ้น · blizzard=แตกเกล็ด · permafrost=แช่ลึก+DoT+40% · Evo=หอก 3 เล่มสามง่าม',
@@ -819,6 +824,7 @@ const ASSET_IMAGES = {
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
   // projectile sprite จริง — แทน spark/circle vector เดิม
   proj_sprinkle:'assets/generated/proj_sprinkle.png', proj_whirl:'assets/generated/proj_whirl.png',
+  proj_frostlance:'assets/generated/proj_frostlance.png',   // หอกน้ำแข็งของมิ้นต์ (Frost Lance)
   proj_popcorn:'assets/generated/proj_popcorn.png', bubble:'assets/generated/proj_bubble.png',
   proj_enemy:'assets/generated/proj_enemy.png', proj_mine:'assets/generated/proj_mine.png',
   // static VFX sprite จริง — ขยาย/หมุน/เฟดด้วย tween แทนการวาด vector ทุกครั้ง
@@ -1391,7 +1397,7 @@ const RARITIES = [
 ];
 function rollRarity(){ const tot=RARITIES.reduce((s,r)=>s+r.weight,0); let x=Math.random()*tot; for(const r of RARITIES){ x-=r.weight; if(x<=0)return r; } return RARITIES[0]; }
 /* ตัวคูณสเกลตอนโชว์ชีต action (idle/พุ่ง/โดนตี ฯลฯ) เฉพาะตัวที่อาร์ต action เล็กกว่าอาร์ต run — กันตัวหดตอนหยุดเดิน */
-const CHAR_ACTION_SCALE = { mint: 1.5 };
+const CHAR_ACTION_SCALE = {};   // ชีตท่า/วิ่งของมิ้นต์ใหม่สัดส่วนตรงกันแล้ว ไม่ต้องคูณชดเชย
 const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
 const SKILL_CAP  = 4;        // จำกัดสายโจมตีให้ต้องเลือก build จริง ไม่กวาดทุกสกิลในรอบเดียว
 const PASSIVE_CAP = 4;       // จำกัดพรติดตัว ลด power stacking และทำให้คู่ Evolution มีความหมาย
