@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.64.0';
+const GAME_VERSION = '2.65.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.65.0', date:'2026-09-17', title:'Strawberry & cleaner opening', items:[
+    'เปลี่ยนชื่อตัวละครโมโม่เป็น "Strawberry"',
+    'Basic Attack ของ Strawberry เริ่มยิง 1 นัด แล้วค่อยเพิ่มตามเลเวล/อัปเกรด (เดิมเริ่ม 4)',
+    'ฉากเปิดก่อนเข้าเมนูเป็นภาพล้วน — เอาตัวหนังสือ (ชื่อเกม/คำโปรย/แตะเพื่อข้าม) ที่ลอยขึ้นออก (ยังแตะเพื่อข้ามได้)' ] },
   { v:'2.64.0', date:'2026-09-16', title:'Fix mini-boss freeze & level-up overlap', items:[
     'แก้เกมค้างหลังกำจัดมินิบอส — ไทม์เมอร์เริ่มเวฟถัดไปเคยถูกข้ามถ้าตอนนั้นติดหน้ากล่องสุ่ม/เลเวลอัพ (scheduleStageEvent รอจนกลับมาเล่นจริงแล้วค่อยยิง)',
     'แก้แบนเนอร์/หน้ารางวัลด่านต่อไปเด้งทับหน้าการ์ดเลเวลอัพ — เลื่อนไปแสดงหลังปิดการ์ด กันแตะโดนแล้วการ์ดเปลี่ยน',
@@ -1238,9 +1242,7 @@ class Opening extends Phaser.Scene {
       rays.lineTo(gx+Math.cos(a)*outer,gy+Math.sin(a)*outer);rays.closePath();rays.fillPath();
     }
 
-    const title=this.add.text(cx,H*0.17,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(28,Math.min(52,W*0.064))+'px',color:'#fff8f2',stroke:'#7a2853',strokeThickness:7,align:'center'}).setOrigin(0.5).setAlpha(0).setScale(0.9);
-    const sub=this.add.text(cx,H*0.27,'กำลังเข้าสู่โลกแห่งรสชาติ...',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(12,Math.min(19,W*0.023))+'px',color:'#ffe6a8',align:'center'}).setOrigin(0.5).setAlpha(0);
-    const skip=this.add.text(cx,H-Math.max(28,H*0.06),'แตะเพื่อข้าม',{fontFamily:'sans-serif',fontSize:Math.max(11,Math.min(16,W*0.02))+'px',color:'#eadbea'}).setOrigin(0.5).setAlpha(0);
+    // ฉากเปิด = ภาพล้วน (เจ้าของขอไม่มีตัวหนังสือลอยขึ้น) — เอา title/sub/skip text ออก แต่ยังแตะเพื่อข้ามได้
     const flash=this.add.rectangle(cx,cy,W,H,0xfff7df,0).setBlendMode(Phaser.BlendModes.ADD);
 
     for(let i=0;i<26;i++){
@@ -1261,15 +1263,12 @@ class Opening extends Phaser.Scene {
       if(leaving)return;
       this.input.once('pointerdown',finish);
       this.input.keyboard&&this.input.keyboard.once('keydown',finish);
-      this.tweens.add({targets:skip,alpha:0.68,duration:320});
     });
 
     this.tweens.add({targets:bg,alpha:1,displayWidth:W*1.50,displayHeight:H*1.50,duration:reduced?80:4050,ease:'Sine.in'});
     this.tweens.add({targets:shade,alpha:0.04,duration:reduced?80:3300,ease:'Quad.in'});
     this.tweens.add({targets:rays,alpha:0.9,scale:1.7,duration:reduced?80:3600,ease:'Quad.in'});
     this.tweens.add({targets:gateGlow,alpha:0.68,scale:2.4,duration:reduced?80:3500,ease:'Quad.in'});
-    this.tweens.add({targets:title,alpha:1,scale:1,duration:reduced?80:650,delay:reduced?0:280,yoyo:true,hold:900,ease:'Sine.inOut'});
-    this.tweens.add({targets:sub,alpha:1,duration:reduced?80:520,delay:reduced?0:620,yoyo:true,hold:760,ease:'Sine.inOut'});
     this.tweens.add({targets:flash,alpha:0.92,duration:reduced?80:620,delay:reduced?500:3350,ease:'Quad.in'});
     this.cameras.main.fadeIn(reduced?80:350,23,16,31);
     this.time.delayedCall(50,()=>{ if(window.GameLoader)window.GameLoader.hide(); });
@@ -1364,7 +1363,7 @@ const PASSIVES = {
 };
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 const CHARACTERS = {
-  momo:{name:'โมโม่ · สตรอว์เบอร์รี',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'มือปืนคล่องตัว',desc:'Sweet but Strong — ยิงรัว เคลื่อนที่ไว และคริติคอลสม่ำเสมอ',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
+  momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'มือปืนคล่องตัว',desc:'Sweet but Strong — ยิงรัว เคลื่อนที่ไว และคริติคอลสม่ำเสมอ',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
   mint:{name:'มินต์',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'ผู้ควบคุมฝูง',desc:'Cool and Agile — แช่แข็งวงกว้าง วิ่งไว และร่ายสกิลถี่',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'โกโก้',emoji:'🍫',unique:'voidPull',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'จอมพลังแนวหน้า',desc:'Warm and Tough — ทุบหนัก พื้นที่กว้าง และยืนแลกได้ดี',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.35},rating:{hp:5,atk:5,spd:2,def:4}},
   taro:{name:'ตาโร่',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'นักสำรวจสายฟ้า',desc:'อ่านเส้นทาง หลบไว และส่งสายฟ้าชิ่งกวาดเป้าหมายต่อเนื่อง',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
@@ -4489,7 +4488,7 @@ class Game extends Phaser.Scene {
     if(key==='meteor'&&basic&&this.character==='cocoa'){this.castCocoaCombo(lvl,dm,basic);return;}
     if(key==='sprinkle'){ if(!this.nearestEnemy(aw?900:640))return;
       // ปืนกล: รัวเมล็ดรุ้งเป็นชุด ยิงเร็ว/เบา · โดน 1 ตัวแล้วหายไปเลย (ไม่ทะลุ ไม่เด้ง) · เก็บทีละตัวรัว ๆ
-      let shots=aw?16:lvl>=6?11:lvl>=4?8:lvl>=2?6:4;
+      let shots=aw?16:lvl>=6?11:lvl>=4?7:lvl>=3?4:lvl>=2?2:1;   // เริ่มยิง 1 นัด แล้วค่อยเพิ่มตามเลเวล/อัปเกรด
       if(basic)shots=Math.min(12,shots+(basic.ranks.volley||0)+(basic.mutation==='fan'?2:0)+(basic.evolved?2:0));
       if(this.player.twinSprinkle) shots+=3;if(sw.skill===key)shots+=this.player.weaponShots||0;if(basic)shots=Math.min(12,shots);
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
