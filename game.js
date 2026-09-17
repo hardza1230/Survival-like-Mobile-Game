@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.74.0';
+const GAME_VERSION = '2.75.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.75.0', date:'2026-09-17', title:'Cocoa unique: Flicker Strike', items:[
+    'เปลี่ยนท่าไม้ตายโกโก้จากหลุมดำ → "Flicker Strike" (แบบ PoE) — วาร์ปฟันศัตรูรัว ๆ ต่อเนื่อง สายคอมโบประชิด',
+    'คูลดาวน์เร็ว (6.5วิ) · อมตะช่วงคอมโบ · จำนวนครั้ง/ดาเมจโตตามเลเวล Unique · Lv4 ฟื้น HP ต่อครั้ง',
+    'มี afterimage ตอนวาร์ป + hitStop ทุกครั้งที่ฟัน = ฟีลกระแทกฟิน' ] },
   { v:'2.74.0', date:'2026-09-17', title:'Mint rework: Ice Orbit Shards', items:[
     'มิ้นต์เปลี่ยนจากสนามออร่า (ซ้ำกับงาดำ) → "เกล็ดน้ำแข็งโคจร" หมุนรอบตัว ชนศัตรู = ดาเมจ + แช่',
     'อัปเกรด: เพิ่มลูกเกล็ด (chill) · หมุนเร็ว (rate) · เกล็ดใหญ่+แช่นาน (linger) · แตกสะเก็ด/เยือกนิรันดร์ (mutation)',
@@ -1410,7 +1414,7 @@ const PASSIVES = {
 const CHARACTERS = {
   momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'มือปืนคล่องตัว',desc:'Sweet but Strong — ยิงรัว เคลื่อนที่ไว และคริติคอลสม่ำเสมอ',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
   mint:{name:'มินต์',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'ผู้ควบคุมฝูง',desc:'Cool and Agile — แช่แข็งวงกว้าง วิ่งไว และร่ายสกิลถี่',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
-  cocoa:{name:'โกโก้',emoji:'🍫',unique:'voidPull',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'จอมพลังแนวหน้า',desc:'Warm and Tough — ทุบหนัก พื้นที่กว้าง และยืนแลกได้ดี',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.35},rating:{hp:5,atk:5,spd:2,def:4}},
+  cocoa:{name:'โกโก้',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'จอมพลังแนวหน้า',desc:'Warm and Tough — ทุบหนัก พื้นที่กว้าง และยืนแลกได้ดี',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.35},rating:{hp:5,atk:5,spd:2,def:4}},
   taro:{name:'ตาโร่',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'นักสำรวจสายฟ้า',desc:'อ่านเส้นทาง หลบไว และส่งสายฟ้าชิ่งกวาดเป้าหมายต่อเนื่อง',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
   sesame:{name:'งาดำ',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'สถาปนิกแนวรับ',desc:'ตั้งกระจกคุ้มกัน สะท้อนกระสุน และฟื้นตัวระหว่างยื้อสนาม',stats:{hp:34,dmg:0.96,spd:0.93,def:0.82,crit:0.01,cdr:0.98,regenFlat:0.65},rating:{hp:5,atk:3,spd:2,def:5}},
   berry:{name:'เบอร์รี่คอร์',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'ป้อมยิงเคลื่อนที่',desc:'Round but Relentless — ยิงระเบิดหนักและเร่งปืนล็อกเป้ากวาดฝูงเป็นชุด',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
@@ -1485,6 +1489,7 @@ const CHARACTER_UNIQUES = {
   berryRebound:{name:'หัวใจสตรอว์เบอร์รีเด้งกลับ',emoji:'🍓',cd:8,color:0xff76a8,desc:'เมล็ดหวานยิงรอบตัวและฟื้น HP — พลังกลางแต่ใช้ได้ถี่'},
   mintSanctuary:{name:'พายุหิมะเพชร',emoji:'❄️',cd:11,color:0x8fd0ff,desc:'เรียกพายุหิมะถล่มพื้นที่กว้างตามตัว ฝนเกล็ดน้ำแข็งฟาดซ้ำ ๆ แช่ฝูง + คุ้มกันช่วงสั้น'},
   voidPull:{name:'หลุมช็อกโกแลตดำ',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'เปิดหลุมดำดูดฝูงศัตรูเข้าหาตัว ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย'},
+  flickerStrike:{name:'แฟลชหมัดหมี',emoji:'⚡',cd:6.5,color:0x9f6bff,desc:'วาร์ปฟันศัตรูรัว ๆ ต่อเนื่อง (แบบ Flicker Strike) คูลดาวน์เร็ว อมตะช่วงคอมโบ'},
   pathRecall:{name:'สายฟ้าชิ่งของตาโร่',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'ปล่อยสายฟ้าจากตัว ชิ่งลามไปศัตรูตัวต่อ ๆ ไป (แบบ Arc) แล้วคืน Dash และเร่งฝีเท้า'},
   oathMirror:{name:'โดมคำสัตย์',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'กางโดมกระจกคุ้มกัน ลดดาเมจหนัก ลบกระสุนศัตรูทั้งหมดในเขต พัลส์กระแทกซ้ำ ๆ แล้วปิดท้ายด้วยกระจกแตก'},
   jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'เร่งปืนเมล็ดหัวใจ ยิงล็อกเป้าเป็นชุดต่อเนื่องและเพิ่มจำนวนลำกล้องตามเลเวล'},
@@ -1495,6 +1500,7 @@ const UNIQUE_TIERS={
   berryRebound:{2:'เพิ่มเมล็ดและฟื้น HP มากขึ้น',3:'เมล็ดแรงขึ้นและแผ่วงกว้างกว่าเดิม',4:'Berry Crown ยิง 20+ เมล็ดและฟื้นฟูสูงสุด'},
   mintSanctuary:{2:'พายุกว้างขึ้นและฟาดแรงขึ้น',3:'อยู่นานขึ้น + แช่แข็งลึกขึ้น',4:'Absolute Blizzard พายุยักษ์ถล่มทั้งจอและคุ้มกันยาวสุด'},
   voidPull:{2:'หลุมกว้างขึ้นและดูดแรงขึ้น',3:'อยู่นานขึ้น + ดาเมจต่อเนื่องแรงขึ้น',4:'Singularity หลุมยักษ์ดูดทั้งจอและระเบิดปิดรุนแรง'},
+  flickerStrike:{2:'วาร์ปฟันเพิ่มจำนวนครั้ง + ดาเมจแรงขึ้น',3:'วงฟันกว้างขึ้น + กระแทกไกลขึ้น',4:'Blur Rampage วาร์ปฟันทั้งจอ ฟื้น HP ต่อครั้ง'},
   pathRecall:{2:'เพิ่มจำนวนการชิ่งและระยะกระโดด',3:'สายฟ้าแตกเป็นสองสาย ลามกว้างขึ้น',4:'Storm Arc ชิ่งเต็มสนามและดาเมจสูงสุด'},
   oathMirror:{2:'โดมกว้างและพัลส์แรงขึ้น',3:'กางนานขึ้นและกระแทกถี่ขึ้น',4:'Perfect Oath ฟื้น HP หลังกระจกแตกพร้อมพลังกระแทกสูงสุด'},
   jamOverdrive:{2:'เพิ่มลำกล้องและจำนวนชุดยิง',3:'ยิงถี่ขึ้นพร้อมเจาะศัตรูหนึ่งตัว',4:'Berry Barrage สามลำกล้องเจาะฝูงเต็มกำลัง'},
@@ -2276,7 +2282,7 @@ class Game extends Phaser.Scene {
     if(this.state!=='play'||this.uniqueCd>0)return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
     this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseFlash(CF.cast,520);
-    const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='oathMirror'?180+(ul-1)*18:c.unique==='jamOverdrive'?170+(ul-1)*20:155+(ul-1)*18;
+    const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='flickerStrike'?100+(ul-1)*10:c.unique==='oathMirror'?180+(ul-1)*18:c.unique==='jamOverdrive'?170+(ul-1)*20:155+(ul-1)*18;
     this.uniqueCrescendo(u.color,ul,spectacleRadius);
     if(c.unique==='berryRebound'){
       // Momo: เมล็ดสตรอว์เบอร์รี "พุ่งเด้ง" ไปหาศัตรูตัวใกล้ ๆ อย่างรวดเร็ว (ไม่ใช่สายฟ้าแบบทาโร่)
@@ -2288,6 +2294,8 @@ class Game extends Phaser.Scene {
       this.castDiamondDust(dm,ul);
     }else if(c.unique==='voidPull'){
       this.castVoidPull(dm,ul);
+    }else if(c.unique==='flickerStrike'){
+      this.castFlickerStrike(dm,ul);
     }else if(c.unique==='pathRecall'){
       this.castPathRecall(dm,ul);
     }else if(c.unique==='jamOverdrive'){
@@ -2315,6 +2323,28 @@ class Game extends Phaser.Scene {
     }});
     this.time.delayedCall(dur*1000,()=>{storm.remove(false);this.tweens.killTweensOf(field);if(field.active)this.tweens.add({targets:field,alpha:0,duration:200,onComplete:()=>field.destroy()});});
     this.showBanner('❄️ พายุหิมะเพชร Lv'+ul,'ฝนเกล็ดน้ำแข็ง '+dur.toFixed(1)+' วิ · รัศมี '+r+' · แช่ฝูง + คุ้มกัน',950);Sfx.frost();
+  }
+  // ⚡ โกโก้ Unique — Flicker Strike: วาร์ปไปฟันศัตรูรัว ๆ ต่อเนื่อง (สายคอมโบประชิด) อมตะช่วงคอมโบ · คูลดาวน์เร็ว
+  blinkTo(x,y){ const lim=WORLD/2-40; x=Phaser.Math.Clamp(x,-lim,lim); y=Phaser.Math.Clamp(y,-lim,lim);
+    if(this.textures.exists(this.player.texture.key)){ const g=this.camWorld(this.add.image(this.player.x,this.player.y,this.player.texture.key,this.player.frame&&this.player.frame.name).setDepth((this.player.y||0)-1).setAlpha(0.55).setTintFill(0x9f6bff).setScale(this.player.scaleX,this.player.scaleY).setFlipX(this.player.flipX)); this.tweens.add({targets:g,alpha:0,duration:220,onComplete:()=>g.destroy()}); }
+    this.player.setPosition(x,y); if(this.player.body)this.player.setVelocity(0,0); }
+  castFlickerStrike(dm,ul){
+    ul=ul||1; const up=this.uniquePower();
+    const hits=5+ul*2, dmg=(14+ul*5)*dm*up, radius=(70+ul*7)*(this.player.donutImpact?1.15:1), gap=82;
+    this.player.iframe=Math.max(this.player.iframe||0,0.25+hits*gap/1000+0.2);   // อมตะตลอดคอมโบ (แบบ Flicker Strike)
+    const hitSet=new Set();
+    const strike=(k)=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+      let t=null,bd=1e18; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2, pen=hitSet.has(e)?360*360:0; if(d+pen<bd){bd=d+pen;t=e;} });
+      if(!t){ const a=(this.moveDir&&this.moveDir.lengthSq()>0.04)?this.moveDir.angle():Math.random()*TAU; this.blinkTo(this.player.x+Math.cos(a)*130,this.player.y+Math.sin(a)*130); Sfx.dash&&Sfx.dash(); return; }
+      const a=Math.atan2(this.player.y-t.y,this.player.x-t.x); this.blinkTo(t.x+Math.cos(a)*34,t.y+Math.sin(a)*34);
+      this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,t.x,t.y)<radius){ this.damage(e,dmg,e.x,e.y); if(!e.isBoss&&!e.isMini){ const ka=Math.atan2(e.y-t.y,e.x-t.x); e.setVelocity(Math.cos(ka)*(150+ul*20),Math.sin(ka)*(150+ul*20)); e.knock=0.1; } } });
+      this.hitCratesInRadius(t.x,t.y,radius,dmg); hitSet.add(t);
+      this.vfxHitRing(t.x,t.y,0x9f6bff,false); this.burst(t.x,t.y,0xb98bff); this.poseFlash(CF.cast,140); this.hitStop(20);
+      if(ul>=4)this.player.hp=Math.min(this.player.maxhp,this.player.hp+Math.max(1,this.player.maxhp*0.01));   // Lv4: ฟื้น HP ต่อครั้ง
+      Sfx.dash&&Sfx.dash(); };
+    for(let k=0;k<hits;k++)this.time.delayedCall(k*gap,()=>strike(k));
+    this.time.delayedCall(hits*gap+120,()=>{ if(this.state==='play'||this.state==='levelup')this.screenShake(200,0.007); });
+    this.showBanner('⚡ Flicker Strike Lv'+ul,'วาร์ปฟันรัว '+hits+' ครั้ง · อมตะช่วงคอมโบ',900);Sfx.clear&&Sfx.clear();
   }
   // Berry Core: ป้อมยิงเคลื่อนที่ — ล็อกเป้าใกล้สุดแล้วยิงเป็นชุด ไม่ซ้ำกับเมล็ดรอบทิศแบบ Momo
   castJamOverdrive(dm,ul){
