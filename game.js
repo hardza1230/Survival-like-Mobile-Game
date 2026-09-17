@@ -29,9 +29,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.67.0';
+const GAME_VERSION = '2.68.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.68.0', date:'2026-09-17', title:'Fix vanishing boss + Archero HUD', items:[
+    'แก้ "บอสหายไป" ตัวจริง — บอสความเร็วแค่ 46 (องครักษ์ 68) เลยตามผู้เล่นไม่ทัน ถูกลากหลุดออกนอกจอ (เห็นแต่ลูกน้อง) → เร่งบอสเป็น 94 / มินิบอส 96 ให้เกาะติด + safety ให้บอสมองเห็นเสมอตอนสู้',
+    'เพิ่มหลอดเลือด + เลเวล + ตัวเลข HP ลอยเหนือหัวผู้เล่นแบบ Archero (สีเปลี่ยนตามเลือด เขียว/เหลือง/แดง)' ] },
   { v:'2.67.0', date:'2026-09-17', title:'No homing + boss/pillar rework', items:[
     'กระสุน Strawberry พุ่งตรงเร็วเสมอ ไม่เป็น homing แล้ว (รวมร่าง EVO ก็พุ่งตรงทะลุ ไม่โค้งตามเป้า)',
     'แก้ "บอสด่าน 1 เหมือนหายไป" — เกราะจุดอ่อนเดิมลดดาเมจ 88% (บอสแทบอมตะ) → เหลือ 55% + เฉพาะเฟส 2 + เว้นช่วงนานขึ้น = ซัดบอสเข้าตลอด มองเห็นชัด',
@@ -2410,7 +2413,11 @@ class Game extends Phaser.Scene {
       const fps=Math.round(this.game.loop.actualFps), logicalW=Math.round(this.scale.width/RENDER_DPR), backingW=this.game.canvas.width;
       this.fpsTxt.setText(fps+'fps · '+logicalW+'→'+backingW+'p · x'+this.renderDPR); }});
 
-    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt];
+    // Archero-style overhead: หลอดเลือด + เลเวล + ตัวเลข ลอยเหนือหัวผู้เล่น (world-space ตามตัว)
+    this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(90050); this.camWorld(this.pOverG);
+    this.pOverLv=this.add.text(0,0,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:4}).setOrigin(0.5,1).setScrollFactor(1).setDepth(90052); this.camWorld(this.pOverLv);
+    this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(90053); this.camWorld(this.pOverHp);
+    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.bossHpTxt,this.objectiveArrow,this.objectiveDist];
@@ -2427,6 +2434,19 @@ class Game extends Phaser.Scene {
     if(hpf>0){ g.fillStyle(0xff5f7a,1); g.fillRoundedRect(bx+2,pad+2,Math.max(8,(bw-4)*hpf),10,5); }
     g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,pad+20,bw,8,4);
     if(xpf>0){ g.fillStyle(0x8bd3a0,1); g.fillRoundedRect(bx+2,pad+22,Math.max(4,(bw-4)*xpf),4,2); }
+    this.drawOverheadStatus(hpf);
+  }
+  // หลอดเลือด+เลเวลลอยเหนือหัวผู้เล่น (แบบ Archero) — ตัวเลขชัดเจน
+  drawOverheadStatus(hpf){
+    const og=this.pOverG; if(!og||!this.player)return; og.clear();
+    const ox=this.player.x, oy=this.player.y-52, w=72, h=9;
+    og.fillStyle(0x000000,0.55); og.fillRoundedRect(ox-w/2-2,oy-2,w+4,h+4,5);
+    og.fillStyle(0x3a1a24,1); og.fillRoundedRect(ox-w/2,oy,w,h,4);
+    const col=hpf>0.5?0x5ef07a:(hpf>0.25?0xffd166:0xff5f5f);
+    if(hpf>0){ og.fillStyle(col,1); og.fillRoundedRect(ox-w/2,oy,Math.max(3,w*hpf),h,4); }
+    og.lineStyle(1.5,0xffffff,0.25); og.strokeRoundedRect(ox-w/2,oy,w,h,4);
+    if(this.pOverHp)this.pOverHp.setPosition(ox,oy+h/2+0.5).setText(Math.max(0,Math.ceil(this.player.hp))+' / '+Math.round(this.player.maxhp));
+    if(this.pOverLv)this.pOverLv.setPosition(ox,oy-3).setText('Lv '+(this.level||1));
   }
   drawDashRing(){
     const g=this.dashRing; if(!g)return; g.clear(); const b=this.dashBtn; if(!b||!b.visible)return;
@@ -3773,7 +3793,7 @@ class Game extends Phaser.Scene {
     const mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===1?0.88:(mArt?1.15:1.7))); b.baseScale=mScale; b._sqX=1; b._sqY=1;
     const mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===1?48:(mArt?52:26))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===1?48:(mArt?18:5)));
     b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=72;   // มินิบอส HP ×1.3→×1.0 (ลดตาม feedback) b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอส: ฐานแฟร์ + ระดับความยาก
+    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=96;   // มินิบอส HP ×1.3→×1.0 · เร่งความเร็ว 72→96 ให้เกาะติดผู้เล่น (กันบอสลากออกนอกจอ) b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // มินิบอส: ฐานแฟร์ + ระดับความยาก
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.85; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // มินิบอสมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
@@ -3822,7 +3842,7 @@ class Game extends Phaser.Scene {
     const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?0.88:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*1.75*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP ×2.3→×1.75 (ลดตาม feedback) b.spd=this.secretBoss?55:46; b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*1.75*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP ×2.3→×1.75 (ลดตาม feedback) b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "บอสหาย" · เร่งให้เกาะติด b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.8; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -5516,6 +5536,7 @@ class Game extends Phaser.Scene {
   }
 
   bossThink(b,dt){
+    if(!b.visible)b.setVisible(true); if(b.alpha<1)b.setAlpha(1);   // safety: บอสต้องมองเห็นเสมอตอนสู้ (กันค้างล่องหนจาก tween คัตซีน)
     // หายใจ "มีชีวิต" (สเกลเต้นเบา ๆ) — วิชวลล้วน ไม่กระทบ body
     if(b._baseScale===undefined)b._baseScale=b.scaleX;
     b._breathe=(b._breathe||0)+dt*(b.phase2?5:3.2);
