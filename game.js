@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.82.0';
+const GAME_VERSION = '2.83.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.83.0', date:'2026-09-17', title:'Fix box RNG + remove pillar-summon', items:[
+    'แก้บั๊กกล่องมินิบอสสุ่มได้อันเดิมตลอด (พอถึง mastery≥8 กล่องไปโดนช่วง mutation/evolution เลยได้อันเดิม) — กล่องข้ามช่วงพิเศษ สุ่มอัปเกรดปกติแทน',
+    'เอา "สกิลเรียกเสา" (ผลึก/โอเบลิสก์ ที่ยิงไกลโกง) ออกจากบอสและมอนสเตอร์ทุกตัว + ปิดระบบเกราะจุดอ่อนที่อิงเสา (บอสซัดตรงได้ตลอด)',
+    'บอสด่าน 1 เฟส 2 เปลี่ยนจากเรียกเสาเป็นเรียกฝูงมดกรดแทน',
+  ]},
   { v:'2.82.0', date:'2026-09-17', title:'Mint = burst monster (shatter on contact)', items:[
     'หอกน้ำแข็งแตกเป็นสะเก็ด "ทันทีที่กระทบเป้า" (ไม่รอสุดระยะ) แล้วหอกหัก → มิ้นต์เป็นสายเบิสเคลียร์ฝูง',
     'ยิงพลาดทุกตัวถึงจะไปแตกที่สุดระยะ (fallback)',
@@ -4469,17 +4474,18 @@ class Game extends Phaser.Scene {
     if(queued)this.time.delayedCall(80,()=>{if(this.state!=='play')return;if(queued==='mini'&&this.mode==='miniWarning')this.spawnMiniBoss();else if(queued==='final')this.spawnFinalBoss();});
     if(this._chestReward){ this._chestReward=false; this.time.delayedCall(180,()=>{ if(this.state==='play')this.onStageClear(); }); }
   }
-  rollBasicAttackUpgrades(n){
+  rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
+    const noSpecial=opts&&opts.noSpecial;   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey:u.iconKey||fallbackIcon,...extra});
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) ครั้งเดียว: การ์ดทั้งจอเป็น mutation ล้วน
-    if(b.mastery>=8&&!b.mutation){   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
+    if(!noSpecial&&b.mastery>=8&&!b.mutation){   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
       const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
       if(muts.length){ this.showBanner('⭐ จุดแยกสายกลายรูป!','เลือกสไตล์การเล่น 1 สาย (ล็อกอีกสาย)',1500);
         return muts.map(u=>makeCard(u,{mutation:true,special:true,apply:()=>{b.mutation=u.id;this.syncBasicAttack();this.showBanner(u.emoji+' '+u.name,'เลือกสายกลายรูปแล้ว · อีกสายถูกล็อก',1700);}})); }
     }
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
-    if(b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
+    if(!noSpecial&&b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
       const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'ปล่อยหอก 3 เล่ม (สามง่าม) ทะลุแนว + แต่ละเล่มแตกสะเก็ดน้ำแข็งกระจายที่ปลายทาง',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
@@ -4514,8 +4520,8 @@ class Game extends Phaser.Scene {
     Phaser.Utils.Array.Shuffle(out);
     return out.slice(0,n);
   }
-  rollUpgrades(n){
-    if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n);
+  rollUpgrades(n,opts){
+    if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n,opts);
     const skillPool=[], passPool=[], awakenPool=[], recoveryPool=[];
     const S=(key,lvl,max,emoji,title,desc,isNew,apply)=>skillPool.push({type:'atk',key,lvl,max,isNew,kind:'สกิลโจมตี',badgeColor:'#f0a54a',color:0xf0a54a,emoji,title,desc,apply});
     const P=(key,lvl,max,emoji,title,desc,isNew,apply)=>passPool.push({type:'pas',key,lvl,max,isNew,kind:'สกิลติดตัว',badgeColor:'#66d3b3',color:0x66d3b3,emoji,title,desc,apply,pas:true});
@@ -5417,9 +5423,9 @@ class Game extends Phaser.Scene {
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
   // กล่องสุ่ม (มินิบอส): หมุนสล็อตแล้วลงที่รางวัลเดียว — ตื่นเต้นกว่าเลือกเอง
   openRollBox(titleText){
-    const winner=(this.rollUpgrades(1)||[])[0];
+    const winner=(this.rollUpgrades(1,{noSpecial:true})||[])[0];
     if(!winner){ const sugar=40;this.sugarStage+=sugar;this.sugarRun+=sugar;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 กล่องสุ่ม','อัปเกรดเต็มแล้ว · Sugar +'+sugar,1800);return; }
-    const reel=[winner]; for(let i=0;i<7;i++){ const r=(this.rollUpgrades(1)||[])[0]; if(r)reel.push(r); }
+    const reel=[winner]; for(let i=0;i<7;i++){ const r=(this.rollUpgrades(1,{noSpecial:true})||[])[0]; if(r)reel.push(r); }
     this.playRollAnimation(reel,winner,titleText||'🎁 กล่องสุ่ม',()=>{ winner.apply(); });
   }
   playRollAnimation(reel,winner,titleText,onDone){
@@ -5530,6 +5536,7 @@ class Game extends Phaser.Scene {
   }
 
   spawnBossObject(kind,x,y,life=10){
+    if(kind==='crystal'||kind==='obelisk')return null;   // เอา "สกิลเรียกเสา" (ผลึก/โอเบลิสก์) ออกจากบอส/มอนทุกตัว — ยิงไกลโกง + น่ารำคาญ
     const map={hole:'nest_hole',egg:'nest_eggs',crystal:'nest_crystal',obelisk:'nest_obelisk',mound:'nest_mound',acid:'nest_acid'},key=map[kind];if(!key||!this.textures.exists(key))return null;
     let o=this.bossObjects.getFirstDead(false);if(!o)o=this.bossObjects.create(x,y,key);else{o.setTexture(key);o.setActive(true).setVisible(true);if(o.body)o.body.enable=true;o.setPosition(x,y);}
     if(!o)return null;o.kind=kind;o.life=life;o.tick=Phaser.Math.FloatBetween(1.0,1.9);o.hp=kind==='egg'?70:kind==='crystal'?68:kind==='obelisk'?95:kind==='mound'?150:999;o.maxhp=o.hp;   // ลด HP ให้ทำลายได้จริง (โดยเฉพาะสายดาเมจต่ำอย่าง Mint)o.setScale(kind==='acid'?0.62:kind==='egg'?0.54:0.66).setDepth(y-1).clearTint();this.camWorld(o);
@@ -5540,7 +5547,7 @@ class Game extends Phaser.Scene {
   killBossObject(o,hatch){if(!o||!o.active)return;const k=o.kind,x=o.x,y=o.y,wasWeak=o._weak;this.burst(x,y,k==='egg'?0xffd0df:0x9dff45);o.setActive(false).setVisible(false);if(o.body){o.body.enable=false;o.body.checkCollision.none=false;}o.kind=null;o._weak=false;if(hatch){const n=k==='mound'?3:2;for(let i=0;i<n;i++)this.spawnEnemy(i%2?'acid':'fast');}
     if(wasWeak){this._weakCount=Math.max(0,(this._weakCount||1)-1);this.vfxHitRing(x,y,0xffe07a,true);if(this._weakCount<=0&&this._weakActive)this.time.delayedCall(50,()=>this.endWeakPoint(this.boss,true));}}
   // Objective ระหว่างสู้บอส/มินิ: บอสกางเกราะเป็นระยะ ต้องทำลาย "จุดอ่อน" 3 จุดเพื่อทลายเกราะ (แก้เบื่อ)
-  tickBossObjectiveGate(b){ return b&&b.active&&b.isBoss&&b.phase2; }   // เกราะจุดอ่อนเฉพาะเฟส 2+ (เฟสแรกซัดบอสตรง ๆ ได้เลย)
+  tickBossObjectiveGate(b){ return false; }   // ปิดระบบเกราะจุดอ่อน (อิงเสาผลึกที่เอาออกแล้ว) — บอสซัดตรง ๆ ได้ตลอด
   tickBossObjective(dt){
     const b=this.boss; if(!b||!b.active)return;
     if(this._bossShieldFx&&this._bossShieldFx.active)this._bossShieldFx.setPosition(b.x,b.y);
@@ -5581,7 +5588,7 @@ class Game extends Phaser.Scene {
     });
   }
   royalGuardAttack(b){
-    const pick=Phaser.Utils.Array.GetRandom(b.phase2?['charge','prison','summon','slam']:['charge','prison','slam']),px=this.player.x,py=this.player.y;
+    const pick=Phaser.Utils.Array.GetRandom(b.phase2?['charge','summon','slam']:['charge','slam']),px=this.player.x,py=this.player.y;   // เอา 'prison' (กรงเสาผลึก) ออก
     if(pick==='charge'){const a=Math.atan2(py-b.y,px-b.x),len=this.dist(b.x,b.y,px,py),line=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setRotation(a).setScale(len/256,0.42).setTint(0xff4f45).setDepth(4));this.tweens.add({targets:line,alpha:{from:0.2,to:1},duration:120,yoyo:true,repeat:2,onComplete:()=>line.destroy()});this.time.delayedCall(420,()=>{if(b.active){b.setVelocity(Math.cos(a)*680,Math.sin(a)*680);b.knock=0.5;}});b.atkCd=2.0;}
     else if(pick==='prison'){this.showBanner('💎 กรงผลึกกรด','ทำลายผลึกเพื่อเปิดทาง!',850);for(let i=0;i<3;i++){const a=Math.PI/2+i*Math.PI*2/3;this.spawnBossObject('crystal',px+Math.cos(a)*135,py+Math.sin(a)*135,7);}b.atkCd=3.0;}   // 4→3 ผลึก เว้นช่องหนีมากขึ้น
     else if(pick==='summon'){this.showBanner('🐜 เรียกหน่วยสอดแนม','องครักษ์กำลังล้อมคุณ!',850);for(let i=0;i<4;i++)this.spawnEnemy(i%2?'fast':'basic');b.atkCd=2.7;}
@@ -5594,7 +5601,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(ms,()=>{if(b.active&&b.texture.key==='boss1'&&b._poseToken===token){if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);else b.setFrame(0);}});
   }
   antQueenAttack(b){
-    const fast=b.phase3?0.72:b.phase2?0.84:1,pool=b.phase3?['slam','acid','brood','rush','nova','collapse','nova']:b.phase2?['slam','acid','brood','rush','crystal','nova']:['slam','acid','brood','rush'];
+    const fast=b.phase3?0.72:b.phase2?0.84:1,pool=b.phase3?['slam','acid','brood','rush','nova','collapse','nova']:b.phase2?['slam','acid','brood','rush','nova']:['slam','acid','brood','rush'];   // เอา 'crystal' (เสาผลึก) ออก
     const pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y;
     if(pick==='slam'){this.bossPose(b,2,900);const n=b.phase3?3:b.phase2?2:1;for(let i=0;i<n;i++)this.time.delayedCall(280+i*130,()=>{if(b.active){this.bossPose(b,3,420);this.spawnHazard(px+Phaser.Math.Between(-70,70),py+Phaser.Math.Between(-70,70),100,22,0x75ff4b);}});b.atkCd=2.2*fast;}
     else if(pick==='acid'){this.bossPose(b,4,900);this.time.delayedCall(320,()=>{if(!b.active)return;const n=b.phase3?16:b.phase2?12:9,a0=Math.random()*Math.PI*2;for(let i=0;i<n;i++)this.foeShot(b.x,b.y,a0+i/n*Math.PI*2,180+(i%2)*55,12,0x74ff38,1.2);for(let i=0;i<(b.phase3?5:3);i++)this.spawnBossObject('acid',px+Phaser.Math.Between(-190,190),py+Phaser.Math.Between(-190,190),8);Sfx.zap();});b.atkCd=2.1*fast;}
@@ -5786,7 +5793,7 @@ class Game extends Phaser.Scene {
       if(this.stageIndex===5)this.chapter2Pose(b,6,1450);
       this.showBanner(this.stageIndex===1?'🫧 เฟส 2 · แรงดันพุ่ง':this.stageIndex===2?'🔥 เฟส 2 · โอเวอร์ฮีต':this.stageIndex===3?'❄️ เฟส 2 · ผนึกแตก':this.stageIndex===5?'🌱 เฟส 2 · รากเจาะสนาม':'🔥 บอสโกรธ!',this.stageIndex===1?'วาล์วเปิด—แรงดูดและฟองกักตัวเริ่มทำงาน!':this.stageIndex===2?'สายพานเร่งและเตาหลอมปล่อยคลื่นไฟ!':this.stageIndex===3?'กรงน้ำแข็งเริ่มปิดพื้นที่เร็วขึ้น!':this.stageIndex===5?'Rootmother เปิดทางน้ำเลี้ยงพิษและเร่งฤดูกาลทั้งสวน!':'เฟส 2 — โจมตีดุขึ้น!',1500); if(b.isBoss&&this.stageIndex===0)this.bossPose(b,6,1000); this.screenShake(420,0.014); this.screenFlash(this.stageIndex===1?0x62e5cf:this.stageIndex===3?0x9fe0ff:this.stageIndex===5?0x56e5bd:0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');
-      if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 เฟส 2 · รังแตก','ราชินีปลุกผลึกกรด!',1700);for(let i=0;i<2;i++){const a=Math.PI/4+i*Math.PI;this.spawnBossObject('crystal',b.x+Math.cos(a)*240,b.y+Math.sin(a)*240,12);}}   // 3→2 ผลึก · เลิก obelisk
+      if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 เฟส 2 · รังแตก','ราชินีเรียกฝูงมดกรด!',1700);for(let i=0;i<3;i++)this.spawnEnemy(i%2?'acid':'fast');}   // เลิกเรียกเสาผลึก → เรียกลูกน้องแทน
       if(!b._aura&&this.anims.exists('fx_enrage')){ b._aura=this.camWorld(this.add.sprite(b.x,b.y,'fx_enrage',0).setDepth(3).setAlpha(0.72).setBlendMode(Phaser.BlendModes.ADD)); b._aura.play('fx_enrage'); b._auraIsFx=true; }
       for(let i=0;i<2;i++){ const r=this.camWorld(this.add.circle(b.x,b.y,20,0xff5a4d,0).setDepth(6).setStrokeStyle(4,0xff7a5a,0.9));
         this.tweens.add({targets:r,radius:150,alpha:{from:0.9,to:0},duration:500,delay:i*100,onComplete:()=>r.destroy()}); } }
