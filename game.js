@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.76.0';
+const GAME_VERSION = '2.77.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.77.0', date:'2026-09-17', title:'Fix stage-1 boss (ant queen) invisible', items:[
+    'แก้บั๊กบอสด่าน 1 (จักรพรรดินีมดกรด) ไม่ปรากฏตัว — บรรทัดตั้งค่าบอสถูกยุบรวมจน // คอมเมนต์กลืน b.spd/b.dmg/b.xp/b.frozen/phase → บอส spd=undefined → ความเร็ว NaN → ตำแหน่งเป็น NaN → เรนเดอร์ไม่ขึ้น (เห็นแค่หลอดเลือด+ลูกน้อง)',
+    'เพิ่ม safety ใน bossThink: spd หลุด→คืน 94, ตำแหน่งเป็น NaN→รีเซ็ตข้างผู้เล่น',
+  ]},
   { v:'2.76.0', date:'2026-09-17', title:'Mint ice balls (start 2) + Evo shards', items:[
     'มิ้นต์เปลี่ยนเกล็ดโคจรเป็น "ลูกบอลน้ำแข็งกลม ๆ" บินชนศัตรู · เริ่มแรก 2 ลูก (เพิ่มด้วยการ์ด chill)',
     'Evo เปลี่ยนเป็น: แต่ละลูกบอลแตกเกล็ดน้ำแข็งเล็ก ๆ กระจายรอบตัวเองต่อเนื่อง',
@@ -3977,7 +3981,9 @@ class Game extends Phaser.Scene {
     const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?0.88:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*1.75*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP ×2.3→×1.75 (ลดตาม feedback) b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "บอสหาย" · เร่งให้เกาะติด b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*1.75*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP ×2.3→×1.75 (ลดตาม feedback)
+    b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "บอสหาย" · เร่งให้เกาะติด
+    b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
     b.atkCd=0.8; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -5680,6 +5686,8 @@ class Game extends Phaser.Scene {
 
   bossThink(b,dt){
     if(!b.visible)b.setVisible(true); if(b.alpha<1)b.setAlpha(1);   // safety: บอสต้องมองเห็นเสมอตอนสู้ (กันค้างล่องหนจาก tween คัตซีน)
+    if(!Number.isFinite(b.spd))b.spd=94;   // safety: กัน spd หลุด (undefined→NaN velocity→ตำแหน่ง NaN→บอสล่องหน)
+    if(!Number.isFinite(b.x)||!Number.isFinite(b.y)){ b.setPosition(this.player.x+140,this.player.y); if(b.body)b.body.reset(b.x,b.y); }   // ตำแหน่งเสีย → รีเซ็ตข้างผู้เล่น
     // หายใจ "มีชีวิต" (สเกลเต้นเบา ๆ) — วิชวลล้วน ไม่กระทบ body
     if(b._baseScale===undefined)b._baseScale=b.scaleX;
     b._breathe=(b._breathe||0)+dt*(b.phase2?5:3.2);
