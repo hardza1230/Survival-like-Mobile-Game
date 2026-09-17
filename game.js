@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.79.0';
+const GAME_VERSION = '2.80.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.80.0', date:'2026-09-17', title:'Flicker FX + menu BGM + easy-boss fix HP + lance perf', items:[
+    'ลงเอฟเฟกต์จริง Flicker Strike (โกโก้) — รอยฟันม่วง 8 เฟรม เด้งตอนวาร์ปเข้าฟันแต่ละครั้ง',
+    'เปลี่ยนเพลงหน้าเมนูหลักเป็น Main menu.mp3',
+    'บอสระดับ "ปกติ (ง่าย)" = เลือด Fix ตายตัว ไม่มีตัวคูณ · ยาก = เริ่มคูณ · นรก = คูณโหดมาก (×1.6 บน HP นรก)',
+    'แก้หอกน้ำแข็งกระตุกตอน 3 แฉก (evo): สายธารน้ำแข็งเหลือแนวกลางเส้นเดียว + ปล้องน้อย/กว้าง + tick กระจายเฟส + cap 60 ปล้อง',
+  ]},
   { v:'2.79.0', date:'2026-09-17', title:'Real art: Frost Lance + new Mint sprites', items:[
     'ลงอาร์ตจริง: หอกน้ำแข็ง proj_frostlance (ตัด/ย่อจากอาร์ตเจ้าของ) → มิ้นต์ยิงหอกน้ำแข็งรูปจริงแล้ว',
     'ตัวมิ้นต์ใหม่: ชีตท่า 8 เฟรม (มีท่าชาร์จปาหอก) + ชีตวิ่ง 12 เฟรม — สัดส่วนท่า/วิ่งตรงกัน เลิกใช้ CHAR_ACTION_SCALE',
@@ -920,6 +926,7 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
+  fx_flickerstrike:{ url:'assets/generated/fx_flickerstrike_sheet.png', fw:256, fh:256, frames:8, rate:34, anchor:'center' },   // เอฟเฟกต์ฟันของโกโก้ (Flicker Strike)
   fx_beam:     { url:'assets/fx_beam_sheet.png',     fw:352, fh:366, frames:8, rate:26, anchor:'left'   },
   fx_boom:     { url:'assets/fx_boom_sheet.png',     fw:352, fh:366, frames:8, rate:24, anchor:'center' },
   fx_frostnova:{ url:'assets/fx_frostnova_sheet.png',fw:352, fh:366, frames:8, rate:24, anchor:'center' },
@@ -954,7 +961,7 @@ const ASSET_AUDIO = {
   sfx_ult_vortex: 'assets/audio/sfx_vfx_ult_cocoavortex.wav',
   sfx_donut:      'assets/audio/sfx_vfx_proj_donut.wav',
   sfx_hazard:     'assets/audio/sfx_vfx_telegraph_hazard.wav',
-  bgm_main:       'assets/audio/bgm/bgm_main_theme.wav',
+  bgm_main:       'assets/audio/bgm/Main menu.mp3',
   bgm_stage1:     'assets/audio/bgm/clockmakers_tea_break.mp3',
   bgm_boss1:      'assets/audio/bgm/gates_of_the_calamity.mp3',
   bgm_stage2:     'assets/audio/bgm/bgm_stage2_sink.wav',
@@ -2359,7 +2366,9 @@ class Game extends Phaser.Scene {
       const a=Math.atan2(this.player.y-t.y,this.player.x-t.x); this.blinkTo(t.x+Math.cos(a)*34,t.y+Math.sin(a)*34);
       this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,t.x,t.y)<radius){ this.damage(e,dmg,e.x,e.y); if(!e.isBoss&&!e.isMini){ const ka=Math.atan2(e.y-t.y,e.x-t.x); e.setVelocity(Math.cos(ka)*(150+ul*20),Math.sin(ka)*(150+ul*20)); e.knock=0.1; } } });
       this.hitCratesInRadius(t.x,t.y,radius,dmg); hitSet.add(t);
-      this.vfxHitRing(t.x,t.y,0x9f6bff,false); this.burst(t.x,t.y,0xb98bff); this.poseFlash(CF.cast,140); this.hitStop(20);
+      if(this.textures.exists('fx_flickerstrike')&&this.anims.exists('fx_flickerstrike')){ this.spawnFxAnim('fx_flickerstrike',t.x,t.y,{scale:(radius*2.1)/256,rotation:a+Math.PI/4+Phaser.Math.FloatBetween(-0.3,0.3),depth:9,alpha:0.95}); }
+      else this.vfxHitRing(t.x,t.y,0x9f6bff,false);
+      this.burst(t.x,t.y,0xb98bff); this.poseFlash(CF.cast,140); this.hitStop(20);
       if(ul>=4)this.player.hp=Math.min(this.player.maxhp,this.player.hp+Math.max(1,this.player.maxhp*0.01));   // Lv4: ฟื้น HP ต่อครั้ง
       Sfx.dash&&Sfx.dash(); };
     for(let k=0;k<hits;k++)this.time.delayedCall(k*gap,()=>strike(k));
@@ -3993,7 +4002,10 @@ class Game extends Phaser.Scene {
     const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?0.88:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;
     const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*this.bossHpMul()*1.75*this.diffMul().hp*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP ×2.3→×1.75 (ลดตาม feedback)
+    const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=ปกติ 1=ยาก 2=นรก
+    // ปกติ (ง่าย) = เลือด Fix ตายตัว ไม่มีตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
+    const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "บอสหาย" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -4885,24 +4897,25 @@ class Game extends Phaser.Scene {
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1);
     const streamDur=(2.4+lvl*0.2+(basic?.ranks.linger||0)*0.6)*(permafrost?1.4:1);
-    const lances=evo?3:1, spread=0.17;
+    const lances=evo?3:1, spread=0.17, centerL=(lances-1)/2;
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
     const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
     const lanceKey=this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer';
-    for(let L=0;L<lances;L++){ const a=ang+(L-(lances-1)/2)*spread;
-      // หอกวิ่งเจาะทะลุ
+    if(!this._frostStreams)this._frostStreams=[];
+    for(let L=0;L<lances;L++){ const a=ang+(L-centerL)*spread;
+      // หอกวิ่งเจาะทะลุ (ทุกแฉกทำดาเมจ)
       const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
         b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.55+lvl*0.045); b.faceVel=true; b.dmg=dmg; b.life=range/900+0.15; b.pierce=true; b.hitGapV=0.1;
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
-      // วาง "สายธารน้ำแข็ง" เป็นปล้อง ๆ ตามแนวหอก (DoT + ชะลอ)
-      if(!this._frostStreams)this._frostStreams=[];
-      const segs=Math.round(range/46), sdmg=(4+lvl*1.5)*dm, r=(30+lvl*1.6)*(evo?1.35:1);
-      for(let s=1;s<=segs;s++){ const d=s*46, x=this.player.x+Math.cos(a)*d, y=this.player.y+Math.sin(a)*d;
-        const img=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0x8fd0ff).setDepth(2).setScale(r/48).setAlpha(0.34));
-        this._frostStreams.push({img,x,y,r,life:streamDur,max:streamDur,tick:Math.random()*0.2,dmg:sdmg,slow:permafrost?0.5:0.22,shatter:blizzard}); }
     }
+    // วาง "สายธารน้ำแข็ง" แค่แนวกลางเส้นเดียว (แม้ evo 3 แฉก) — กันกระตุก: ปล้องน้อย+กว้าง + tick กระจายเฟส
+    const segSpacing=evo?70:58, segs=Math.min(evo?7:9,Math.round(range/segSpacing)), sdmg=(4+lvl*1.5)*dm, r=(34+lvl*1.7)*(evo?1.25:1);
+    for(let s=1;s<=segs;s++){ const d=s*segSpacing, x=this.player.x+Math.cos(ang)*d, y=this.player.y+Math.sin(ang)*d;
+      const img=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0x8fd0ff).setDepth(2).setScale(r/48).setAlpha(0.34));
+      this._frostStreams.push({img,x,y,r,life:streamDur,max:streamDur,tick:Math.random()*0.4,dmg:sdmg,slow:permafrost?0.5:0.22,shatter:blizzard}); }
+    if(this._frostStreams.length>60){ const drop=this._frostStreams.splice(0,this._frostStreams.length-60); drop.forEach(s=>s.img&&s.img.active&&s.img.destroy()); }   // กันสะสมล้น
     this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
   }
   // ประมวลผลสายธารน้ำแข็ง: ทุก 0.4 วิ ทำ DoT + ชะลอ (frozen สั้น ๆ เป็นจังหวะ = สโลว์) ให้ศัตรูในปล้อง แล้วค่อย ๆ จาง
