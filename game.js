@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.70.0';
+const GAME_VERSION = '2.71.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.71.0', date:'2026-09-17', title:'Cloud save (Supabase)', items:[
+    'เพิ่มเซฟขึ้นคลาวด์ผ่าน Supabase (Anonymous auth ผูกกับเครื่อง) — กันเซฟหายเวลาล้างเบราว์เซอร์/ลงแอปใหม่',
+    'ซิงค์อัตโนมัติ: โหลดเกมดึงเซฟล่าสุดจากคลาวด์ · ทุกครั้งที่เซฟจะอัปขึ้นคลาวด์ (ถ่วง 1.5 วิ)',
+    'ถ้าคลาวด์ล่ม/ปิดเน็ต เกมยังเล่นได้ปกติด้วยเซฟ localStorage (degrade graceful)' ] },
   { v:'2.70.0', date:'2026-09-17', title:'Monetization: rewarded ads (v1)', items:[
     'เพิ่มโครงระบบรายได้: โฆษณาแบบรับรางวัล (Rewarded Ad) — พร้อมต่อ AdMob จริงตอนขึ้นสโตร์ (ตอนนี้เดโมจำลอง 3 วิ)',
     'ตายแล้ว "ฟื้นคืนชีพด้วยโฆษณา" ได้ 1 ครั้ง/รอบ (HP 50%) · หน้าสรุปด่าน "รับ Sugar x2 ด้วยโฆษณา"',
@@ -1753,7 +1757,16 @@ const Save = {
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
     Sfx.muted=!this.data.settings.sound;
     return this.data; },
-  save(){ try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} },
+  save(){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
+  // ---- Cloud sync (Supabase) ----
+  async syncCloud(){ if(typeof Cloud==='undefined')return; const ok=await Cloud.init(); if(!ok)return;
+    const remote=await Cloud.pull();
+    if(remote&&typeof remote==='object'){
+      if((remote.rev||0)>(this.data.rev||0)){ this.data=Object.assign(this.data,remote); try{localStorage.setItem('mochi_save',JSON.stringify(this.data));}catch(e){} this.load(); this._cloudAdopted=true; }
+      else if((this.data.rev||0)>(remote.rev||0)){ Cloud.push(this.data); }
+    } else { Cloud.push(this.data); }   // ยังไม่มีบนเมฆ = อัปเซฟปัจจุบันขึ้นไป
+    this._cloudReady=true;
+  },
   addSugar(n){ this.data.sugar=(this.data.sugar||0)+n; this.save(); },
   spend(n){ if((this.data.sugar||0)>=n){ this.data.sugar-=n; this.save(); return true; } return false; },
   // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
@@ -1803,6 +1816,22 @@ const Save = {
     for(const t of BESTIARY_THRESHOLDS){ if(before<t&&after>=t)sugar+=40; }
     if(sugar){ this.data.sugar=(this.data.sugar||0)+sugar; this.save(); }
     return sugar; },
+};
+/* ---- Cloud: เซฟขึ้น Supabase (Anonymous auth ผูกกับ device) กันเซฟหาย ---- */
+const CLOUD_URL='https://tohsnflngkfoutqcfrwi.supabase.co';
+const CLOUD_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvaHNuZmxuZ2tmb3V0cWNmcndpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MjE3NzYsImV4cCI6MjEwNTE5Nzc3Nn0.EX6rE5skhsJq9jpwRvloDimZoPi5Mnhz-wpTwnx6ej4';
+const Cloud = {
+  sb:null, user:null, ready:false, _pushT:null,
+  enabled(){ try{ return !!(window.supabase&&CLOUD_URL&&CLOUD_KEY); }catch(e){ return false; } },
+  async init(){ if(this.ready)return true; if(!this.enabled())return false;
+    try{ this.sb=window.supabase.createClient(CLOUD_URL,CLOUD_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:'mochi_sb_auth'}});
+      let sess=(await this.sb.auth.getSession()).data.session;
+      if(!sess){ const r=await this.sb.auth.signInAnonymously(); if(r.error){ console.warn('[cloud] anon sign-in ปิดอยู่?',r.error.message); return false; } sess=r.data.session; }
+      this.user=sess.user; this.ready=true; return true;
+    }catch(e){ console.warn('[cloud] init',e); return false; } },
+  async pull(){ if(!this.ready)return null; try{ const {data,error}=await this.sb.from('game_saves').select('data').eq('user_id',this.user.id).maybeSingle(); if(error){console.warn('[cloud] pull',error.message);return null;} return data?data.data:null; }catch(e){ return null; } },
+  async push(data){ if(!this.ready)return; try{ await this.sb.from('game_saves').upsert({user_id:this.user.id,data,updated_at:new Date().toISOString()}); }catch(e){ console.warn('[cloud] push',e); } },
+  queuePush(data){ if(!this.ready)return; clearTimeout(this._pushT); this._pushT=setTimeout(()=>this.push(data),1500); },
 };
 
 /* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
@@ -2017,6 +2046,7 @@ class Game extends Phaser.Scene {
     this.state='menu'; this.elapsed=0; this.kills=0; this.stageKills=0;
     this.level=1; this.xp=0; this.xpNext=10;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
+    if(!Save._cloudReady&&Save.syncCloud){ Save.syncCloud().then(()=>{ if(Save._cloudAdopted&&this.state==='menu'){ this.buildMenuScreen&&this.buildMenuScreen(); if(this.showBanner)this.showBanner('☁️ ซิงค์คลาวด์','โหลดความคืบหน้าล่าสุดจากคลาวด์แล้ว',1600); } }); }   // ซิงค์เซฟกับ Supabase (กันเซฟหาย)
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
