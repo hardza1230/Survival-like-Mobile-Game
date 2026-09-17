@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.66.0';
+const GAME_VERSION = '2.67.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.67.0', date:'2026-09-17', title:'No homing + boss/pillar rework', items:[
+    'กระสุน Strawberry พุ่งตรงเร็วเสมอ ไม่เป็น homing แล้ว (รวมร่าง EVO ก็พุ่งตรงทะลุ ไม่โค้งตามเป้า)',
+    'แก้ "บอสด่าน 1 เหมือนหายไป" — เกราะจุดอ่อนเดิมลดดาเมจ 88% (บอสแทบอมตะ) → เหลือ 55% + เฉพาะเฟส 2 + เว้นช่วงนานขึ้น = ซัดบอสเข้าตลอด มองเห็นชัด',
+    'Rework สกิลเรียกเสา (ผลึก/โอเบลิสก์): ลดจำนวนเสา, ยิงช้าลง/นัดน้อยลง, เลิกใช้โอเบลิสก์ยิงรอบทิศในท่าบอส, จุดอ่อน (สีทอง) ไม่ยิงใส่ผู้เล่นแล้ว (แค่ทำลาย)',
+    'มินิบอสไม่กางเกราะจุดอ่อนแล้ว (ตีเข้าตรง ๆ)' ] },
   { v:'2.66.0', date:'2026-09-17', title:'Fix Strawberry shots, hunt target & arrow', items:[
     'Strawberry เริ่มยิง 1 นัดจริง — เดิมปืนประจำตัว (berryBlaster) บวก +2 นัดตลอด ตอนนี้ +0 (ชดเชยด้วยดาเมจ +14% / คูลดาวน์ -12%)',
     'ภารกิจล่าเป้าหมาย: เป้าหมายถึกขึ้น (HP ×1.6 เดิม ×0.68 อ่อนไป) + เพิ่มออร่าเรืองสีชมพูหมุนรอบตัว + ป้าย 🎯 เด้ง ให้เห็นชัดว่าตัวไหน',
@@ -4272,7 +4277,7 @@ class Game extends Phaser.Scene {
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     if(b.mastery>=12&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
-      const EVO_DESC={sprinkle:'เมล็ดทะลุทุกตัว + วิ่งตามเป้า (เปลี่ยนจากปืนกล 1-hit เป็นพายุเมล็ดทะลุ)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'เข็มทะลุทุกตัว + วิ่งตามเป้า + แตกสะเก็ดเสมอ + ปาเข็มถี่ขึ้น',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
+      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'เข็มทะลุทุกตัว + วิ่งตามเป้า + แตกสะเก็ดเสมอ + ปาเข็มถี่ขึ้น',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
@@ -4510,7 +4515,7 @@ class Game extends Phaser.Scene {
         const shotIndex=idx++,sizeMul=basic?1+(basic.ranks.size||0)*0.14:1,b=this.getBullet(this.player.x,this.player.y,0xffffff,(0.12+lvl*0.008+(aw?0.03:0))*sizeMul); if(!b)return;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
-        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=evo?560:0;   // EVO: เมล็ดทะลุทุกตัว + ตามเป้า (เปลี่ยนจากปืนกล 1-hit เป็นพายุเมล็ดทะลุ)
+        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // พุ่งตรงเร็วเสมอ (ไม่ homing) · EVO = ทะลุทุกตัว (ไม่โค้งตามเป้า)
         const fan=basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0,ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(-0.08,0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
@@ -4981,7 +4986,7 @@ class Game extends Phaser.Scene {
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('อมตะ',x,y,false);}return;
     }
-    if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.12;   // Objective: บอสกางเกราะ ต้องทำลายจุดอ่อนก่อน
+    if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบอมตะ = เหมือนบอสหาย) ยังตีเข้าได้
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.8); crit=true; }
@@ -5298,17 +5303,19 @@ class Game extends Phaser.Scene {
   killBossObject(o,hatch){if(!o||!o.active)return;const k=o.kind,x=o.x,y=o.y,wasWeak=o._weak;this.burst(x,y,k==='egg'?0xffd0df:0x9dff45);o.setActive(false).setVisible(false);if(o.body){o.body.enable=false;o.body.checkCollision.none=false;}o.kind=null;o._weak=false;if(hatch){const n=k==='mound'?3:2;for(let i=0;i<n;i++)this.spawnEnemy(i%2?'acid':'fast');}
     if(wasWeak){this._weakCount=Math.max(0,(this._weakCount||1)-1);this.vfxHitRing(x,y,0xffe07a,true);if(this._weakCount<=0&&this._weakActive)this.time.delayedCall(50,()=>this.endWeakPoint(this.boss,true));}}
   // Objective ระหว่างสู้บอส/มินิ: บอสกางเกราะเป็นระยะ ต้องทำลาย "จุดอ่อน" 3 จุดเพื่อทลายเกราะ (แก้เบื่อ)
+  tickBossObjectiveGate(b){ return b&&b.active&&b.isBoss&&b.phase2; }   // เกราะจุดอ่อนเฉพาะเฟส 2+ (เฟสแรกซัดบอสตรง ๆ ได้เลย)
   tickBossObjective(dt){
     const b=this.boss; if(!b||!b.active)return;
     if(this._bossShieldFx&&this._bossShieldFx.active)this._bossShieldFx.setPosition(b.x,b.y);
     if(this._weakActive){ this._weakTimer-=dt; if(this._weakTimer<=0)this.endWeakPoint(b,false); return; }
+    if(!this.tickBossObjectiveGate(b))return;   // เฉพาะเฟส 2+
     const frac=b.hp/b.maxhp; if(frac<0.15||frac>0.92)return;
-    this._weakAcc=(this._weakAcc==null?11:this._weakAcc)-dt;
+    this._weakAcc=(this._weakAcc==null?16:this._weakAcc)-dt;
     if(this._weakAcc<=0)this.startWeakPoint(b);
   }
   startWeakPoint(b){
-    this._weakActive=true;this._weakTimer=9;this._bossShield=true;this._weakCount=0;
-    const n=3,rad=180;
+    this._weakActive=true;this._weakTimer=7;this._bossShield=true;this._weakCount=0;
+    const n=2,rad=175;   // 3→2 จุด · โผล่นานสุด 7 วิ (เดิม 9)
     for(let i=0;i<n;i++){const a=-Math.PI/2+i*Math.PI*2/n,o=this.spawnBossObject('crystal',b.x+Math.cos(a)*rad,b.y+Math.sin(a)*rad,12);if(o){o._weak=true;o.setTint(0xffe07a);this._weakCount++;}}
     if(this._weakCount===0){this._bossShield=false;this._weakActive=false;this._weakAcc=11;return;}   // ด่านไม่มีอาร์ต crystal → ข้าม
     this._bossShieldFx=this.camWorld(this.add.image(b.x,b.y,'vfx_ring').setTint(0xffe07a).setDepth(6).setDisplaySize(120,120).setAlpha(0.5));
@@ -5316,7 +5323,7 @@ class Game extends Phaser.Scene {
     this.showBanner('🛡️ บอสกางเกราะ!','ทำลายจุดอ่อน '+this._weakCount+' จุด (สีทอง) เพื่อทลายเกราะ!',2000);Sfx.bossWarn();
   }
   endWeakPoint(b,broken){
-    this._weakActive=false;this._bossShield=false;this._weakAcc=broken?13:9;
+    this._weakActive=false;this._bossShield=false;this._weakAcc=broken?20:15;   // เว้นช่วงนานขึ้น (เกราะไม่ถี่)
     if(this._bossShieldFx){this.tweens.killTweensOf(this._bossShieldFx);if(this._bossShieldFx.active)this._bossShieldFx.destroy();this._bossShieldFx=null;}
     if(this.bossObjects)this.bossObjects.children.iterate(o=>{if(o&&o.active&&o._weak){o._weak=false;this.killBossObject(o,false);}});
     if(broken&&b&&b.active){const dmg=b.maxhp*0.08;b.hp-=dmg;this.popDmg(Math.round(dmg),b.x,b.y,true);b.atkCd=Math.max(b.atkCd||1,2.2);b.frozen=Math.max(b.frozen||0,0.6);this.screenFlash(0xffe07a,0.3,360);this.screenShake(220,0.01);this.hitStop(60);this.showBanner('🛡️ เกราะแตก!','บอสมึนงง — ซัดให้เต็มที่!',1600);Sfx.clear();if(b.hp<=0)this.killEnemy(b);}
@@ -5328,8 +5335,9 @@ class Game extends Phaser.Scene {
       if(o.kind==='hole'){if(o.life<=0)this.killBossObject(o,false);return;}
       if(o.kind==='egg'&&o.life<=0){this.killBossObject(o,true);return;}
       if(o.tick<=0){
-        if(o.kind==='crystal'){o.tick=2.7;const a=Math.atan2(this.player.y-o.y,this.player.x-o.x);this.foeShot(o.x,o.y,a,175,10,0x86ff48,1.05);}   // ยิงช้าลง+ช้าลง หลบทันขึ้น
-        else if(o.kind==='obelisk'){o.tick=3.4;for(let i=0;i<6;i++)this.foeShot(o.x,o.y,i*Math.PI/3,135,8,0xc7ff66,0.9);}   // 8→6 นัด ช้าลง
+        if(o._weak){o.tick=1.5;}   // จุดอ่อน (สีทอง) = แค่ทำลาย ไม่ยิงใส่ผู้เล่น (เดิมยิงด้วย = โหดซ้อน)
+        else if(o.kind==='crystal'){o.tick=3.4;const a=Math.atan2(this.player.y-o.y,this.player.x-o.x);this.foeShot(o.x,o.y,a,145,10,0x86ff48,1.05);}   // ยิงช้าลง+ช้าลง หลบทันขึ้น
+        else if(o.kind==='obelisk'){o.tick=4.4;for(let i=0;i<4;i++)this.foeShot(o.x,o.y,i*Math.PI/2,120,8,0xc7ff66,0.9);}   // 6→4 นัด ช้าลงอีก
         else if(o.kind==='mound'){o.tick=3.4;this.spawnEnemy(Math.random()<0.55?'fast':'acid');}
       }
       if(o.life<=0)this.killBossObject(o,o.kind==='mound');
@@ -5338,7 +5346,7 @@ class Game extends Phaser.Scene {
   royalGuardAttack(b){
     const pick=Phaser.Utils.Array.GetRandom(b.phase2?['charge','prison','summon','slam']:['charge','prison','slam']),px=this.player.x,py=this.player.y;
     if(pick==='charge'){const a=Math.atan2(py-b.y,px-b.x),len=this.dist(b.x,b.y,px,py),line=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setRotation(a).setScale(len/256,0.42).setTint(0xff4f45).setDepth(4));this.tweens.add({targets:line,alpha:{from:0.2,to:1},duration:120,yoyo:true,repeat:2,onComplete:()=>line.destroy()});this.time.delayedCall(420,()=>{if(b.active){b.setVelocity(Math.cos(a)*680,Math.sin(a)*680);b.knock=0.5;}});b.atkCd=2.0;}
-    else if(pick==='prison'){this.showBanner('💎 กรงผลึกกรด','ทำลายผลึกเพื่อเปิดทาง!',850);for(let i=0;i<4;i++){const a=i*Math.PI/2;this.spawnBossObject('crystal',px+Math.cos(a)*115,py+Math.sin(a)*115,8);}b.atkCd=3.0;}
+    else if(pick==='prison'){this.showBanner('💎 กรงผลึกกรด','ทำลายผลึกเพื่อเปิดทาง!',850);for(let i=0;i<3;i++){const a=Math.PI/2+i*Math.PI*2/3;this.spawnBossObject('crystal',px+Math.cos(a)*135,py+Math.sin(a)*135,7);}b.atkCd=3.0;}   // 4→3 ผลึก เว้นช่องหนีมากขึ้น
     else if(pick==='summon'){this.showBanner('🐜 เรียกหน่วยสอดแนม','องครักษ์กำลังล้อมคุณ!',850);for(let i=0;i<4;i++)this.spawnEnemy(i%2?'fast':'basic');b.atkCd=2.7;}
     else{this.spawnHazard(px,py,105,20,0xff6d4a);b.atkCd=2.2;}
   }
@@ -5355,7 +5363,7 @@ class Game extends Phaser.Scene {
     else if(pick==='acid'){this.bossPose(b,4,900);this.time.delayedCall(320,()=>{if(!b.active)return;const n=b.phase3?16:b.phase2?12:9,a0=Math.random()*Math.PI*2;for(let i=0;i<n;i++)this.foeShot(b.x,b.y,a0+i/n*Math.PI*2,180+(i%2)*55,12,0x74ff38,1.2);for(let i=0;i<(b.phase3?5:3);i++)this.spawnBossObject('acid',px+Phaser.Math.Between(-190,190),py+Phaser.Math.Between(-190,190),8);Sfx.zap();});b.atkCd=2.1*fast;}
     else if(pick==='brood'){this.bossPose(b,5,1100);this.showBanner('🥚 BROOD COMMAND','ทำลายไข่ก่อนมดฟัก!',900);for(let i=0;i<(b.phase3?4:3);i++){const a=i*Math.PI*2/(b.phase3?4:3);this.spawnBossObject('egg',b.x+Math.cos(a)*175,b.y+Math.sin(a)*175,6.5);}b.atkCd=2.9*fast;}
     else if(pick==='rush'){this.bossPose(b,2,780);const a=Math.atan2(py-b.y,px-b.x),len=this.dist(b.x,b.y,px,py),aim=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(3).setRotation(a).setScale(len/256,0.46).setTint(0x75ff4b));this.tweens.add({targets:aim,alpha:{from:0.2,to:1},duration:110,yoyo:true,repeat:3,onComplete:()=>aim.destroy()});this.time.delayedCall(500,()=>{if(b.active){this.bossPose(b,3,500);b.setVelocity(Math.cos(a)*650,Math.sin(a)*650);b.knock=0.5;}});b.atkCd=2.1*fast;}
-    else if(pick==='crystal'){this.bossPose(b,4,1000);this.showBanner('💎 ACID CRYSTAL ARRAY','ผลึกจะยิงตามตำแหน่งของคุณ!',900);for(let i=0;i<3;i++){const a=i*Math.PI*2/3;this.spawnBossObject(i===0?'obelisk':'crystal',px+Math.cos(a)*230,py+Math.sin(a)*230,11);}b.atkCd=3.0*fast;}
+    else if(pick==='crystal'){this.bossPose(b,4,1000);this.showBanner('💎 ผลึกกรด','ทำลายผลึก—มันยิงช้า หลบได้!',900);for(let i=0;i<2;i++){const a=Math.PI/4+i*Math.PI;this.spawnBossObject('crystal',px+Math.cos(a)*230,py+Math.sin(a)*230,9);}b.atkCd=3.4*fast;}   // 3→2 ผลึก · เลิกใช้ obelisk (ยิงรอบทิศโหด)
     else if(pick==='collapse'){this.bossPose(b,6,1250);this.showBanner('⛰️ รังถล่ม!','ทำลายกองเพาะ—อย่าหยุดเคลื่อนที่!',1000);for(let i=0;i<2;i++)this.spawnBossObject('mound',b.x+(i?1:-1)*220,b.y+Phaser.Math.Between(-120,120),13);for(let i=0;i<4;i++)this.spawnBossObject('acid',px+Phaser.Math.Between(-240,240),py+Phaser.Math.Between(-240,240),9);b.atkCd=3.4*fast;}
     else{this.bossPose(b,6,1200);this.showBanner('☣️ ACID CROWN NOVA','หาช่องว่างระหว่างคลื่น!',900);this.time.delayedCall(360,()=>{if(!b.active)return;this.bossNovaWave(b.x,b.y,285,20,0);if(b.phase3)this.bossNovaWave(b.x,b.y,285,20,380);for(let i=0;i<16;i++)this.foeShot(b.x,b.y,i*Math.PI/8,155+(i%2)*75,12,0xa7ff54,1.3);this.screenShake(340,0.014);Sfx.bossWarn();});b.atkCd=2.7*fast;}
   }
@@ -5538,7 +5546,7 @@ class Game extends Phaser.Scene {
       if(this.stageIndex===5)this.chapter2Pose(b,6,1450);
       this.showBanner(this.stageIndex===1?'🫧 เฟส 2 · แรงดันพุ่ง':this.stageIndex===2?'🔥 เฟส 2 · โอเวอร์ฮีต':this.stageIndex===3?'❄️ เฟส 2 · ผนึกแตก':this.stageIndex===5?'🌱 เฟส 2 · รากเจาะสนาม':'🔥 บอสโกรธ!',this.stageIndex===1?'วาล์วเปิด—แรงดูดและฟองกักตัวเริ่มทำงาน!':this.stageIndex===2?'สายพานเร่งและเตาหลอมปล่อยคลื่นไฟ!':this.stageIndex===3?'กรงน้ำแข็งเริ่มปิดพื้นที่เร็วขึ้น!':this.stageIndex===5?'Rootmother เปิดทางน้ำเลี้ยงพิษและเร่งฤดูกาลทั้งสวน!':'เฟส 2 — โจมตีดุขึ้น!',1500); if(b.isBoss&&this.stageIndex===0)this.bossPose(b,6,1000); this.screenShake(420,0.014); this.screenFlash(this.stageIndex===1?0x62e5cf:this.stageIndex===3?0x9fe0ff:this.stageIndex===5?0x56e5bd:0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');
-      if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 เฟส 2 · รังแตก','ราชินีปลุกผลึกยิงกรด!',1700);for(let i=0;i<3;i++){const a=i*Math.PI*2/3;this.spawnBossObject(i===0?'obelisk':'crystal',b.x+Math.cos(a)*240,b.y+Math.sin(a)*240,14);}}   // ปลดท่าคลื่นสังหาร
+      if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 เฟส 2 · รังแตก','ราชินีปลุกผลึกกรด!',1700);for(let i=0;i<2;i++){const a=Math.PI/4+i*Math.PI;this.spawnBossObject('crystal',b.x+Math.cos(a)*240,b.y+Math.sin(a)*240,12);}}   // 3→2 ผลึก · เลิก obelisk
       if(!b._aura&&this.anims.exists('fx_enrage')){ b._aura=this.camWorld(this.add.sprite(b.x,b.y,'fx_enrage',0).setDepth(3).setAlpha(0.72).setBlendMode(Phaser.BlendModes.ADD)); b._aura.play('fx_enrage'); b._auraIsFx=true; }
       for(let i=0;i<2;i++){ const r=this.camWorld(this.add.circle(b.x,b.y,20,0xff5a4d,0).setDepth(6).setStrokeStyle(4,0xff7a5a,0.9));
         this.tweens.add({targets:r,radius:150,alpha:{from:0.9,to:0},duration:500,delay:i*100,onComplete:()=>r.destroy()}); } }
