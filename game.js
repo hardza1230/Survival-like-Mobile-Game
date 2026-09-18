@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.88.0';
+const GAME_VERSION = '2.89.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.89.0', date:'2026-09-18', title:'โมโม่สอนเล่น (Tutorial ครูโมโม่)', items:[
+    'รื้อ Tutorial เป็นครู "โมโม่" พูดสอนทีละบท มีรูปตัวละคร + บับเบิลคำพูดน่ารัก',
+    '9 บท: ทักทาย · เดิน · อาวุธยิงเอง · Dash · เลเวลอัพการ์ด · ปรุงเมนูสูตร · Unique · เก็บ Sugar · พร้อมลุย',
+    'ปุ่ม "ข้าม" สำหรับคนที่เล่นเป็นแล้ว · ผู้เล่นใหม่เห็นอัตโนมัติครั้งแรก (ดูซ้ำได้ที่เมนู อื่น ๆ → วิธีเล่น)',
+  ]},
   { v:'2.88.0', date:'2026-09-18', title:'อุปกรณ์สุ่มคุณสมบัติ (Affix / Loot Chase E)', items:[
     'ของทุกชิ้น (ยกเว้นเริ่มต้น) สุ่ม "คุณสมบัติเสริม" ✨ ตอนได้มา — ดาเมจ/HP/คริ/คูลดาวน์/ความเร็ว/ลดดาเมจ/ดูดของ/ฟื้น',
     'จำนวน affix ตามระดับ: ธรรมดา 1 · แรร์/เอปิก 2 · ตำนาน 3',
@@ -3183,22 +3188,55 @@ class Game extends Phaser.Scene {
   startTutorial(done,manual=false){
     this._tutorialDone=done;this._tutorialStep=0;this._tutorialManual=manual;this.state='tutorial';this.menu.setVisible(false);this.physics.pause();this.drawTutorial();
   }
+  // 🍓 โมโม่เป็นครูสอนเล่น — พูดทีละสเต็ป มีรูปโมโม่ + บับเบิลคำพูด
+  tutorialPages(){
+    return [
+      {e:'👋',t:'สวัสดี! เราชื่อโมโม่นะ',d:'ยินดีต้อนรับสู่ Mochi Mayhem! เดี๋ยวเราสอนวิธีเล่นให้เอง แตะหน้าจอเพื่อไปต่อได้เลย~'},
+      {e:'🕹️',t:'ขยับตัวด้วยจอยสติ๊ก',d:'แตะค้างแล้วลากนิ้วที่ครึ่งซ้ายของจอ ตัวเราจะเดินตามทิศที่ลาก · เดินหนีศัตรูไว ๆ นะ!'},
+      {e:'⚔️',t:'อาวุธยิงเอง!',d:'ไม่ต้องกดยิง อาวุธประจำตัวโจมตีศัตรูที่ใกล้สุดให้อัตโนมัติ · หน้าที่เราคือหลบและเล็งทิศให้ดี'},
+      {e:'💨',t:'Dash หลบให้ทัน',d:'กดปุ่มพุ่งมุมขวาล่างเพื่อฉีกตัวหลบ · เห็นพื้นแดงหรือกระสุนบอสพุ่งมา ให้ Dash ออกก่อนโดน!'},
+      {e:'⭐',t:'เลเวลอัพ = เลือกการ์ด',d:'เก็บเม็ด EXP จนเต็มหลอด จะได้เลือกการ์ดเพิ่มพลัง · เก็บใบเดิมซ้ำ ๆ ให้ถึง MAX แล้วจะ "ตื่นรู้" แรงขึ้นอีก!'},
+      {e:'🍳',t:'ปรุงเมนูสูตรลับ',d:'อาวุธของเรา + สกิลติดตัวที่ถูกคู่ = ปรุงเมนูพิเศษ! ดูช่อง "สูตรที่ปรุงได้" ตอนเลเวลอัพ แล้วไล่เก็บให้ครบ'},
+      {e:'✨',t:'พลังเฉพาะตัว (Unique)',d:'ปุ่มเหนือ Dash คือท่าไม้ตายของเรา · เก็บไว้ปล่อยตอนถูกล้อมหนัก ๆ หรือสู้บอสจะคุ้มสุด'},
+      {e:'🎒',t:'เก็บ Sugar ไปพัฒนา',d:'ฆ่าศัตรู/ผ่านด่านได้ 🍬 Sugar เอาไปอัพพลังถาวร ซื้อ/ตีบวกอุปกรณ์ · ยิ่งเล่นยิ่งแกร่งขึ้นเรื่อย ๆ!'},
+      {e:'🔥',t:'พร้อมลุยแล้ว!',d:'ยิ่งด่านยาก รางวัลยิ่งดีนะ! ค่อย ๆ ไต่ระดับไป · ไปสนุกกับครัวป่วน ๆ กันเลย~ 🍡'},
+    ];
+  }
   drawTutorial(){
-    const pages=[
-      {e:'🕹️',t:'ลากเพื่อเคลื่อนที่',d:'แตะพื้นที่ว่างแล้วลากนิ้ว ตัวละครจะเดินตามทิศทางที่ลาก'},
-      {e:'💨',t:'Dash ฝ่าวงล้อม',d:'กดปุ่ม Dash มุมขวาล่างเพื่อพุ่งหลบ กระสุนและพื้นที่สีแดงต้องหลบก่อนระเบิด'},
-      {e:'⚔️',t:'อาวุธโจมตีอัตโนมัติ',d:'อาวุธยิงเอง เลือกการ์ดเมื่อเลเวลอัพเพื่อเพิ่มพลัง และจับคู่พรเพื่อ Awaken'},
-      {e:'✨',t:'ใช้ Unique ให้ถูกจังหวะ',d:'ปุ่มเหนือ Dash คือพลังเฉพาะตัว เก็บไว้ใช้ตอนถูกล้อมหรือเข้าสู่เฟสบอส'},
-    ],p=pages[this._tutorialStep]||pages[0],w=this.W,h=this.H;this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x08050e,0.95).setOrigin(0,0),card=this.add.graphics();card.fillStyle(0x251b31,0.98);card.fillRoundedRect(24,h*0.18,w-48,h*0.60,22);card.lineStyle(3,0x8fe6cf,0.9);card.strokeRoundedRect(24,h*0.18,w-48,h*0.60,22);
-    const step=this.add.text(w/2,h*0.23,'บทสอน '+(this._tutorialStep+1)+' / '+pages.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#9fdccc'}).setOrigin(0.5),em=this.add.text(w/2,h*0.39,p.e,{fontSize:'78px'}).setOrigin(0.5);
-    const title=this.add.text(w/2,h*0.53,p.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff',align:'center',wordWrap:{width:w-78}}).setOrigin(0.5),desc=this.add.text(w/2,h*0.62,p.d,{fontFamily:'sans-serif',fontSize:'13px',color:'#cfc2d5',align:'center',wordWrap:{width:w-82},lineSpacing:5}).setOrigin(0.5);
-    const hint=this.add.text(w/2,h*0.73,this._tutorialStep===pages.length-1?'แตะเพื่อเริ่มเล่น':'แตะเพื่อดูต่อ  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
-    this.over.add([bg,card,step,em,title,desc,hint]);this.over.setVisible(true);Sfx.select();
+    const pages=this._tutPages||(this._tutPages=this.tutorialPages());
+    const p=pages[this._tutorialStep]||pages[0],w=this.W,h=this.H,last=this._tutorialStep===pages.length-1;this.over.removeAll(true);
+    const bg=this.add.rectangle(0,0,w,h,0x08050e,0.93).setOrigin(0,0);this.over.add(bg);
+    // ---- รูปโมโม่ (ครู) มุมล่างซ้าย ----
+    const teachH=Math.min(h*0.42,300), teachW=teachH*0.75, tx=w*0.06+teachW/2, ty=h-teachH*0.5-6;
+    if(this.textures.exists('card_momo')){ const im=this.add.image(tx,ty,'card_momo'); const s=Math.min(teachW/im.width,teachH/im.height); im.setScale(s); this.over.add(im); }
+    else if(this.textures.exists('char_momo')){ const im=this.add.image(tx,ty,'char_momo').setDisplaySize(teachH*0.7,teachH*0.7); this.over.add(im); }
+    else { const em=this.add.text(tx,ty,'🍓',{fontSize:Math.round(teachH*0.5)+'px'}).setOrigin(0.5); this.over.add(em); }
+    // ตัวเด้งเบา ๆ ให้มีชีวิต
+    if(this.over.list.length){ const teacher=this.over.list[this.over.list.length-1]; this.tweens.add({targets:teacher,y:teacher.y-8,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+    // ---- บับเบิลคำพูด ด้านบน ----
+    const bx=24,bw=w-48,byy=h*0.10,bh=h*0.40, card=this.add.graphics();
+    card.fillStyle(0xfff6fb,0.98);card.fillRoundedRect(bx,byy,bw,bh,22);card.lineStyle(3,0xff9ec4,1);card.strokeRoundedRect(bx,byy,bw,bh,22);
+    // หางบับเบิลชี้ไปหาโมโม่
+    card.fillStyle(0xfff6fb,0.98);card.fillTriangle(bx+34,byy+bh-2, bx+64,byy+bh-2, bx+20,byy+bh+26);
+    this.over.add(card);
+    const step=this.add.text(bx+bw-14,byy+12,'บทที่ '+(this._tutorialStep+1)+'/'+pages.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#d98cae'}).setOrigin(1,0);
+    const em=this.add.text(bx+26,byy+18,p.e,{fontSize:'40px'}).setOrigin(0,0);
+    const name=this.add.text(bx+80,byy+22,'โมโม่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ff6f9c'}).setOrigin(0,0);
+    const title=this.add.text(bx+26,byy+70,p.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#3a2740',wordWrap:{width:bw-52}}).setOrigin(0,0);
+    const desc=this.add.text(bx+26,byy+70+title.height+10,p.d,{fontFamily:'sans-serif',fontSize:'13.5px',color:'#5a4a63',wordWrap:{width:bw-52},lineSpacing:6}).setOrigin(0,0);
+    const hint=this.add.text(w/2,h-24,last?'👆 แตะเพื่อเริ่มเล่น!':'แตะเพื่อฟังต่อ  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
+    this.over.add([step,em,name,title,desc,hint]);this.over.setVisible(true);Sfx.select();
+    // ปุ่มข้าม (ยกเว้นหน้าสุดท้าย)
+    if(!last){ const sk=this.add.text(w-16,byy-4,'ข้าม ✕',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#c7bdd6'}).setOrigin(1,1); this.over.add(sk); this._tutSkip={x:w-70,y:byy-18,w:70,h:24}; }
+    else this._tutSkip=null;
   }
   advanceTutorial(){
-    if(this._tutorialStep<3){this._tutorialStep++;this.drawTutorial();return;}
-    Save.data.tutorialDone=true;Save.save();this.over.setVisible(false);const done=this._tutorialDone;this._tutorialDone=null;if(done)done();
+    const pages=this._tutPages||this.tutorialPages();
+    // แตะปุ่มข้าม = จบเลย
+    const pt=this.input.activePointer, sk=this._tutSkip;
+    if(sk&&pt&&pt.x>=sk.x&&pt.x<=sk.x+sk.w&&pt.y>=sk.y&&pt.y<=sk.y+sk.h){ this._tutorialStep=pages.length-1; }
+    if(this._tutorialStep<pages.length-1){this._tutorialStep++;this.drawTutorial();return;}
+    Save.data.tutorialDone=true;Save.save();this.over.setVisible(false);this._tutPages=null;this._tutSkip=null;const done=this._tutorialDone;this._tutorialDone=null;if(done)done();
   }
   buildAchievements(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement');
