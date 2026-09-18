@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.93.0';
+const GAME_VERSION = '2.94.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.94.0', date:'2026-09-18', title:'ครูเบอร์รี่สอนเล่นแบบลงมือจริง', items:[
+    'เปลี่ยนครูสอนเป็น เบอร์รี่ 🍓',
+    'Tutorial ผู้เล่นใหม่เป็นแบบ interactive — ครูพูดสั้น ๆ + ให้ลองทำจริง ผ่านแล้วค่อยไปบทถัดไป',
+    '6 บท: เดิน · กำจัดศัตรู 3 ตัว · Dash · เลเวลอัพ · Unique · จบ (สอนระหว่างเล่นด่านจริง)',
+  ]},
   { v:'2.93.0', date:'2026-09-18', title:'แหล่ง currency ให้คนขยัน', items:[
     'ล้มบอส = การันตี currency ก้อนใหญ่ (ยิ่งด่าน/ยากสูง ยิ่งเยอะ+ดี)',
     'ฆ่ามินิบอส = การันตี currency 1-2 ชิ้น',
@@ -2458,7 +2463,7 @@ class Game extends Phaser.Scene {
 
   doDash(){
     if(!this.dashReady||this.state!=='play') return;
-    this.dashReady=false; this.dashCd=1.1; this.dashTime=0.16;
+    this.dashReady=false; this.dashCd=1.1; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
     this.player.setVelocity(d.x*560,d.y*560);
@@ -2488,7 +2493,7 @@ class Game extends Phaser.Scene {
   useCharacterSkill(){
     if(this.state!=='play'||this.uniqueCd>0)return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
-    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseFlash(CF.cast,520);
+    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseFlash(CF.cast,520);this._coachUnique=(this._coachUnique||0)+1;
     const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='flickerStrike'?100+(ul-1)*10:c.unique==='oathMirror'?180+(ul-1)*18:c.unique==='jamOverdrive'?170+(ul-1)*20:155+(ul-1)*18;
     this.uniqueCrescendo(u.color,ul,spectacleRadius);
     if(c.unique==='berryRebound'){
@@ -3267,7 +3272,7 @@ class Game extends Phaser.Scene {
   // 🍓 โมโม่เป็นครูสอนเล่น — พูดทีละสเต็ป มีรูปโมโม่ + บับเบิลคำพูด
   tutorialPages(){
     return [
-      {e:'👋',t:'สวัสดี! เราชื่อโมโม่นะ',d:'ยินดีต้อนรับสู่ Mochi Mayhem! เดี๋ยวเราสอนวิธีเล่นให้เอง แตะหน้าจอเพื่อไปต่อได้เลย~'},
+      {e:'👋',t:'สวัสดี! เราชื่อเบอร์รี่นะ',d:'ยินดีต้อนรับสู่ Mochi Mayhem! เดี๋ยวเราสอนวิธีเล่นให้เอง แตะหน้าจอเพื่อไปต่อได้เลย~'},
       {e:'🕹️',t:'ขยับตัวด้วยจอยสติ๊ก',d:'แตะค้างแล้วลากนิ้วที่ครึ่งซ้ายของจอ ตัวเราจะเดินตามทิศที่ลาก · เดินหนีศัตรูไว ๆ นะ!'},
       {e:'⚔️',t:'อาวุธยิงเอง!',d:'ไม่ต้องกดยิง อาวุธประจำตัวโจมตีศัตรูที่ใกล้สุดให้อัตโนมัติ · หน้าที่เราคือหลบและเล็งทิศให้ดี'},
       {e:'💨',t:'Dash หลบให้ทัน',d:'กดปุ่มพุ่งมุมขวาล่างเพื่อฉีกตัวหลบ · เห็นพื้นแดงหรือกระสุนบอสพุ่งมา ให้ Dash ออกก่อนโดน!'},
@@ -3284,8 +3289,7 @@ class Game extends Phaser.Scene {
     const bg=this.add.rectangle(0,0,w,h,0x08050e,0.93).setOrigin(0,0);this.over.add(bg);
     // ---- รูปโมโม่ (ครู) มุมล่างซ้าย ----
     const teachH=Math.min(h*0.42,300), teachW=teachH*0.75, tx=w*0.06+teachW/2, ty=h-teachH*0.5-6;
-    if(this.textures.exists('card_momo')){ const im=this.add.image(tx,ty,'card_momo'); const s=Math.min(teachW/im.width,teachH/im.height); im.setScale(s); this.over.add(im); }
-    else if(this.textures.exists('char_momo')){ const im=this.add.image(tx,ty,'char_momo').setDisplaySize(teachH*0.7,teachH*0.7); this.over.add(im); }
+    if(this.textures.exists('card_berry')){ const im=this.add.image(tx,ty,'card_berry'); const s=Math.min(teachW/im.width,teachH/im.height); im.setScale(s); this.over.add(im); }
     else { const em=this.add.text(tx,ty,'🍓',{fontSize:Math.round(teachH*0.5)+'px'}).setOrigin(0.5); this.over.add(em); }
     // ตัวเด้งเบา ๆ ให้มีชีวิต
     if(this.over.list.length){ const teacher=this.over.list[this.over.list.length-1]; this.tweens.add({targets:teacher,y:teacher.y-8,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
@@ -3297,7 +3301,7 @@ class Game extends Phaser.Scene {
     this.over.add(card);
     const step=this.add.text(bx+bw-14,byy+12,'บทที่ '+(this._tutorialStep+1)+'/'+pages.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#d98cae'}).setOrigin(1,0);
     const em=this.add.text(bx+26,byy+18,p.e,{fontSize:'40px'}).setOrigin(0,0);
-    const name=this.add.text(bx+80,byy+22,'โมโม่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ff6f9c'}).setOrigin(0,0);
+    const name=this.add.text(bx+80,byy+22,'เบอร์รี่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ff6f9c'}).setOrigin(0,0);
     const title=this.add.text(bx+26,byy+70,p.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#3a2740',wordWrap:{width:bw-52}}).setOrigin(0,0);
     const desc=this.add.text(bx+26,byy+70+title.height+10,p.d,{fontFamily:'sans-serif',fontSize:'13.5px',color:'#5a4a63',wordWrap:{width:bw-52},lineSpacing:6}).setOrigin(0,0);
     const hint=this.add.text(w/2,h-24,last?'👆 แตะเพื่อเริ่มเล่น!':'แตะเพื่อฟังต่อ  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
@@ -3922,6 +3926,7 @@ class Game extends Phaser.Scene {
   }
   exitStage(){
     this.physics.resume(); this.time.paused=false; this.clearCharSignature();   // ปลดหยุดฟิสิกส์+นาฬิกาก่อนออก (ไม่งั้นด่านหน้าค้าง)
+    if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} this._coach=null;
     this._bossZoom=1;this.applyMainZoom();
     if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸');
     if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
@@ -4771,7 +4776,38 @@ class Game extends Phaser.Scene {
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Basic Attack ประจำตัว · '+this.uniqueInfo().emoji+' Unique พร้อมใช้':'อาวุธประจำตัว + อาวุธรองพร้อมรบ · '+this.uniqueInfo().emoji+' Unique พร้อมใช้',1900);};
     const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','ตกสู่ใต้ครัว','พื้นตู้เสบียงพังลงใต้เท้า—โมจิสตรอว์เบอร์รีร่วงสู่รังมดเปรี้ยว ที่ซึ่งคำสาปแห่งความหิวเริ่มเคลื่อนไหว',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','เมล็ดที่ความหิวทิ้งไว้','เมื่อ The Great Hunger แตกสลาย เมล็ดมงกุฎกลับแทงรากขึ้นฟ้า—ความทรงจำที่เพิ่งคืนมาจึงเบ่งบานผิดฤดูในสวนหมักพิษ',begin);}else begin();};
-    if(!Save.data.tutorialDone)this.startTutorial(launch,false);else launch();
+    // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูเบอร์รี่สอนแบบ "พูด+ลองทำ+ผ่านค่อยไปต่อ"
+    if(!Save.data.tutorialDone){ const wrapped=()=>{ begin(); this.startCoach(); }; if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','ตกสู่ใต้ครัว','พื้นตู้เสบียงพังลงใต้เท้า—โมจิสตรอว์เบอร์รีร่วงสู่รังมดเปรี้ยว ที่ซึ่งคำสาปแห่งความหิวเริ่มเคลื่อนไหว',wrapped);}else wrapped(); return; }
+    launch();
+  }
+  /* ---- 🍓 ครูเบอร์รี่สอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
+  coachSteps(){ return [
+    { say:'สวัสดี! เราเบอร์รี่นะ~ ลองลากนิ้วขยับตัวดูสิ!', goal:'ลองเดินไปมา', check:c=>this.dist(this.player.x,this.player.y,c.px,c.py)>150 },
+    { say:'เยี่ยม! อาวุธยิงเอง — เดินเข้าหาศัตรูแล้วกำจัดมัน 3 ตัว', goal:c=>'กำจัดศัตรู '+Math.min(3,this.kills-c.kills)+'/3', check:c=>this.kills-c.kills>=3 },
+    { say:'ระวังตัว! กดปุ่มพุ่ง (Dash) มุมขวาล่างเพื่อหลบ', goal:'ใช้ Dash 1 ครั้ง', check:c=>(this._coachDash||0)-c.dash>=1 },
+    { say:'เก็บเม็ด EXP จนเต็มหลอด แล้วเลือกการ์ดเพิ่มพลัง!', goal:'เลเวลอัพ 1 ครั้ง', check:c=>this.level>c.lvl },
+    { say:'ท่าไม้ตาย! กดปุ่ม Unique เหนือปุ่มพุ่ง (ถ้ายังไม่พร้อม รอสักครู่)', goal:'ใช้ Unique 1 ครั้ง', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:16 },
+    { say:'เก่งมาก! พร้อมลุยแล้ว ไปสนุกกับครัวป่วน ๆ กันเลย~ 🍓', goal:'แตะเพื่อจบบทเรียน', tap:true },
+  ]; }
+  startCoach(){ this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,t:0}; this._coachNext(); }
+  _coachNext(){ const c=this._coach; if(!c)return; c.step++; const steps=this.coachSteps();
+    if(c.step>=steps.length){ this._coachFinish(); return; }
+    c.px=this.player.x; c.py=this.player.y; c.kills=this.kills; c.dash=this._coachDash||0; c.uniq=this._coachUnique||0; c.lvl=this.level; c.t=0; c.done=false;
+    this.drawCoachBubble(steps[c.step]); Sfx.select&&Sfx.select(); }
+  _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} this._coach=null; Save.data.tutorialDone=true; Save.save(); if(this.showBanner)this.showBanner('🎓 จบบทเรียน!','ลุยเก็บของ + คราฟต์ได้เลย~',1600); }
+  drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
+    const bx=10,by=54,bw=w-20,bh=58, g=this.add.graphics(); g.fillStyle(0x2a1030,0.94); g.fillRoundedRect(bx,by,bw,bh,14); g.lineStyle(2,0xff5f88,1); g.strokeRoundedRect(bx,by,bw,bh,14); cont.add(g);
+    if(this.textures.exists('card_berry')){ const im=this.add.image(bx+26,by+bh/2,'card_berry'); const s=Math.min(44/im.width,52/im.height); im.setScale(s); cont.add(im); }
+    else { cont.add(this.add.text(bx+8,by+bh/2,'🍓',{fontSize:'30px'}).setOrigin(0,0.5)); }
+    cont.add(this.add.text(bx+54,by+8,'เบอร์รี่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ff8fb5'}).setOrigin(0,0));
+    cont.add(this.add.text(bx+54,by+22,step.say,{fontFamily:'sans-serif',fontSize:'11px',color:'#fff',wordWrap:{width:bw-64}}).setOrigin(0,0));
+    const goalStr=typeof step.goal==='function'?step.goal(this._coach):step.goal;
+    this._coachGoalTxt=this.add.text(bx+bw-10,by+bh-8,'🎯 '+goalStr,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe08a'}).setOrigin(1,1); cont.add(this._coachGoalTxt);
+    this._coachUI=cont; }
+  tickTutorialCoach(dt){ const c=this._coach; if(!c||this.state!=='play')return; const steps=this.coachSteps(),step=steps[c.step]; if(!step)return; c.t+=dt;
+    if(this._coachGoalTxt&&typeof step.goal==='function')this._coachGoalTxt.setText('🎯 '+step.goal(c));
+    if(step.tap){ if(this.input.activePointer&&this.input.activePointer.isDown&&c.t>0.4)this._coachNext(); return; }
+    if((step.check&&step.check(c))||(step.timeout&&c.t>=step.timeout)){ if(!c.done){c.done=true; this.showBanner&&this.showBanner('✅ ผ่าน!','เก่งมาก~',900); this.time.delayedCall(700,()=>this._coachNext());} }
   }
   openStartingSkillChoice(){
     if(this.usesBasicAttackBuild()){this.state='startskill';this.physics.pause();this.lvlUp.setVisible(false);this.time.delayedCall(0,()=>this.launchStageLoadout());return;}
@@ -6632,6 +6668,7 @@ class Game extends Phaser.Scene {
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
     this.tickCharSignature(dt);
+    if(this._coach)this.tickTutorialCoach(dt);
     this.tickStage(dt);
     this.tickBossZoom();
     this.tickBossObjects(dt);
