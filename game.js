@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.86.0';
+const GAME_VERSION = '2.87.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.87.0', date:'2026-09-18', title:'ยกเครื่องระบบอุปกรณ์ (Gear Rework A-D)', items:[
+    'ชุดอุปกรณ์ (Set Bonus): ชุดเชฟราชัน 👑 + ชุดจอมวายุ 🌪️ — สวมครบ 2/3 ชิ้น = โบนัสพิเศษ',
+    'อุปกรณ์ตำนาน 🌟 (Legend) มีเอฟเฟกต์จริง: ดาบดาวตก (ประหารเลือดต่ำ) · สร้อยฟีนิกซ์ (คืนชีพ 1 ครั้ง/ด่าน) · บูตดาวหาง (ฆ่าฟื้น HP)',
+    '🏆 กฎเหล็ก: ยิ่งยากดรอปยิ่งดี — ของตำนานดรอปเฉพาะความยากสูง (นรก)',
+    'เศษอุปกรณ์ 🔩 (จากของซ้ำ) → ปุ่มหลอมของตำนาน (🔩45) การันตีได้ของตำนานที่ยังไม่มี',
+    'หน้าอุปกรณ์โชว์สถานะชุด + จำนวนเศษ · กล่องสุ่มมีโอกาสได้ตำนาน 5%',
+  ]},
   { v:'2.86.0', date:'2026-09-18', title:'ระบบครัว/สูตรอาหารเป็นแกน (Recipe Rework)', items:[
     'สูตรเด่น ⭐ (Signature Dish) ต่ออาวุธ — ผลแรงกว่าปกติ (ดาเมจ/คริ/ลดดาเมจ/คูลดาวน์) เป็นเป้าหมายไล่ล่า',
     'สูตรธรรมดา ปรับให้ชัดเป็นสายเล่น (แต่ละอาวุธเลือกได้หลายทาง = build variety)',
@@ -1746,49 +1753,63 @@ const GEAR = {
     { id:'w_chop', tier:"common",  emoji:'🥢', name:'ตะเกียบเหล็ก', cost:120, enh:true, desc:'ดาเมจ +12% (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); } },
     { id:'w_whisk', tier:"common", emoji:'🌀', name:'ตะกร้อตีไข่',  cost:150, enh:true, desc:'ลดคูลดาวน์สกิล 5% (+1%/ตีบวก)', apply:(p,lv)=>{ p.cdMul*=(1-0.05-0.01*lv); } },
     { id:'w_knife', tier:"rare", emoji:'🔪', name:'มีดเชฟ',       cost:300, enh:true, desc:'ดาเมจ +22% (+4%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.22+0.04*lv); } },
-    { id:'w_cleaver', tier:"epic", emoji:'🪓', name:'มีดอีโต้ทองคำ', cost:640, enh:true, desc:'ดาเมจ +30% · คริ +5% (+5%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.30+0.05*lv); p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
+    { id:'w_cleaver', tier:"epic", set:'chef', emoji:'🪓', name:'มีดอีโต้ทองคำ', cost:640, enh:true, desc:'ดาเมจ +30% · คริ +5% (+5%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.30+0.05*lv); p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
+    { id:'lg_starcleaver', tier:"legend", emoji:'🌟', name:'ดาบดาวตก', cost:0, enh:true, fx:'execute', desc:'ดาเมจ +38% · ศัตรูเลือดต่ำกว่า 40% รับดาเมจเพิ่ม +15% (+5%·+3%/ตีบวก) 🌟', apply:(p,lv)=>{ p.dmgMul*=(1+0.38+0.05*lv); p.lowHpDmg=(p.lowHpDmg||0)+0.15+0.03*lv; } },
   ],
   gloves: [
     { id:'gl_none', tier:"start", emoji:'🧤', name:'ไม่สวม',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'gl_mitt', tier:"common", emoji:'🧤', name:'ถุงมือเตาอบ',  cost:140, enh:true, desc:'คริ +5% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
     { id:'gl_silk', tier:"common", emoji:'🧵', name:'ถุงมือผ้าไหม', cost:150, enh:true, desc:'ดาเมจ +8% (+2%/ตีบวก)',      apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); } },
     { id:'gl_iron', tier:"rare", emoji:'🥊', name:'นวมเหล็ก',      cost:320, enh:true, desc:'คริ +9% · ดาเมจ +4% (+1%·+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
-    { id:'gl_dragon', tier:"epic", emoji:'🐲', name:'ถุงมือมังกรไฟ', cost:660, enh:true, desc:'คริ +13% · ดาเมจคริแรงขึ้น (+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.13+0.01*lv; p.critMul=(p.critMul||1.8)+0.25+0.05*lv; } },
+    { id:'gl_dragon', tier:"epic", set:'chef', emoji:'🐲', name:'ถุงมือมังกรไฟ', cost:660, enh:true, desc:'คริ +13% · ดาเมจคริแรงขึ้น (+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.13+0.01*lv; p.critMul=(p.critMul||1.8)+0.25+0.05*lv; } },
   ],
   armor: [
     { id:'ar_none', tier:"start",  emoji:'🥋', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'ar_apron', tier:"common", emoji:'🥋', name:'ผ้ากันเปื้อน', cost:130, enh:true, desc:'HP +45 (+12/ตีบวก)',        apply:(p,lv)=>{ p.maxhp+=45+12*lv; } },
     { id:'ar_quilt', tier:"common", emoji:'🧶', name:'เสื้อนวมหนา', cost:150, enh:true, desc:'ลดดาเมจ 5% (+1%/ตีบวก)',     apply:(p,lv)=>{ p.dmgTakenMul*=Math.pow(0.95,1+lv*0.4); } },
     { id:'ar_plate', tier:"rare", emoji:'🛡️', name:'เกราะฝาหม้อ',  cost:340, enh:true, desc:'HP +90 · ลดดาเมจ 6% (+18HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=90+18*lv; p.dmgTakenMul*=Math.pow(0.94,1+lv*0.5); } },
-    { id:'ar_royal', tier:"epic", emoji:'👑', name:'เกราะราชันครัว', cost:680, enh:true, desc:'HP +140 · ลดดาเมจ 10% (+24HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=140+24*lv; p.dmgTakenMul*=Math.pow(0.90,1+lv*0.5); } },
+    { id:'ar_royal', tier:"epic", set:'chef', emoji:'👑', name:'เกราะราชันครัว', cost:680, enh:true, desc:'HP +140 · ลดดาเมจ 10% (+24HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=140+24*lv; p.dmgTakenMul*=Math.pow(0.90,1+lv*0.5); } },
   ],
   boots: [
     { id:'bo_none', tier:"start",  emoji:'👢', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'bo_soft', tier:"common",  emoji:'👟', name:'รองเท้านุ่ม',  cost:110, enh:true, desc:'ความเร็ว +5% (+1%/ตีบวก)',   apply:(p,lv)=>{ p.baseSpeed*=1+0.05+0.01*lv; } },
     { id:'bo_magnet', tier:"common", emoji:'🧲', name:'รองเท้าแม่เหล็ก', cost:130, enh:true, desc:'รัศมีดูด +25% (+4%/ตีบวก)', apply:(p,lv)=>{ p.pickup*=1+0.25+0.04*lv; } },
     { id:'bo_swift', tier:"rare", emoji:'👢', name:'บูตว่องไว',    cost:300, enh:true, desc:'ความเร็ว +9% · ดูด +15% (+1.5%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=1+0.09+0.015*lv; p.pickup*=1+0.15+0.03*lv; } },
-    { id:'bo_wind', tier:"epic", emoji:'🌪️', name:'บูตวายุ',       cost:620, enh:true, desc:'ความเร็ว +13% · ลดคูลดาวน์ 5% (+1.5%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=1+0.13+0.015*lv; p.cdMul*=(1-0.05-0.01*lv); } },
+    { id:'bo_wind', tier:"epic", set:'wind', emoji:'🌪️', name:'บูตวายุ',       cost:620, enh:true, desc:'ความเร็ว +13% · ลดคูลดาวน์ 5% (+1.5%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=1+0.13+0.015*lv; p.cdMul*=(1-0.05-0.01*lv); } },
+    { id:'lg_comet', tier:"legend", emoji:'☄️', name:'บูตดาวหาง', cost:0, enh:true, fx:'lifekill', desc:'ความเร็ว +16% · รัศมีดูด +30% · ฆ่าศัตรูฟื้น +2 HP (+1.5%·+1HP/ตีบวก) ☄️', apply:(p,lv)=>{ p.baseSpeed*=1+0.16+0.015*lv; p.pickup*=1+0.30+0.04*lv; p.lifeOnKill=(p.lifeOnKill||0)+2+lv; } },
   ],
   amulet: [
     { id:'am_none', tier:"start",   emoji:'📿', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'am_ribbon', tier:"common", emoji:'🎀', name:'โบว์นำโชค',  cost:100, enh:true, desc:'HP +30 (+10/ตีบวก)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
     { id:'am_clover', tier:"common", emoji:'🍀', name:'ใบโคลเวอร์',  cost:120, enh:true, desc:'คริ +4% · ฟื้น +0.5/วิ (+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.04+0.01*lv; p.regen=(p.regen||0)+0.5+0.15*lv; } },
     { id:'am_star', tier:"rare",   emoji:'⭐', name:'ดาวประกาย',  cost:260, enh:true, desc:'ดาเมจ +8% · HP +15 (+2%·+8/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
-    { id:'am_moon', tier:"epic",   emoji:'🌙', name:'จันทราหวาน',  cost:640, enh:true, desc:'ดาเมจ +12% · HP +40 · ฟื้น +1/วิ (+2%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.02*lv); p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
+    { id:'am_moon', tier:"epic", set:'wind',  emoji:'🌙', name:'จันทราหวาน',  cost:640, enh:true, desc:'ดาเมจ +12% · HP +40 · ฟื้น +1/วิ (+2%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.02*lv); p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
+    { id:'lg_phoenix', tier:"legend", emoji:'🔥', name:'สร้อยฟีนิกซ์', cost:0, enh:true, fx:'revive', desc:'HP +120 · ฟื้น +1.5/วิ · คืนชีพ 1 ครั้ง/ด่าน (+20HP/ตีบวก) 🔥', apply:(p,lv)=>{ p.maxhp+=120+20*lv; p.regen=(p.regen||0)+1.5+0.3*lv; p._gearRevive=(p._gearRevive||0)+1; } },
   ],
   ring: [
     { id:'ri_none', tier:"start",   emoji:'💍', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'ri_copper', tier:"common", emoji:'💍', name:'แหวนทองแดง', cost:120, enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
     { id:'ri_silver', tier:"common", emoji:'💎', name:'แหวนเงินคริ', cost:140, enh:true, desc:'คริ +6% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.06+0.01*lv; } },
     { id:'ri_gold', tier:"rare",   emoji:'💛', name:'แหวนทองคำ',  cost:320, enh:true, desc:'ดาเมจ +12% · ฟื้น +0.8/วิ (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
-    { id:'ri_diamond', tier:"epic", emoji:'💠', name:'แหวนเพชร',    cost:700, enh:true, desc:'ดาเมจ +18% · คริ +8% (+3%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.18+0.03*lv); p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
+    { id:'ri_diamond', tier:"epic", set:'wind', emoji:'💠', name:'แหวนเพชร',    cost:700, enh:true, desc:'ดาเมจ +18% · คริ +8% (+3%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.18+0.03*lv); p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
   ],
 };
+/* ---- GEAR SETS: สวมของชุดเดียวกันครบจำนวน = โบนัสพิเศษ (นับ id ที่สวมใน applyMeta) ---- */
+const GEAR_SETS = {
+  chef:{ name:'ชุดเชฟราชัน', emoji:'👑', bonuses:{
+    2:{ desc:'2 ชิ้น: ดาเมจ +10%', apply:p=>{ p.dmgMul*=1.10; } },
+    3:{ desc:'3 ชิ้น: คริ +10% · ดาเมจคริแรงขึ้น', apply:p=>{ p.critChance=(p.critChance||0)+0.10; p.critMul=(p.critMul||1.8)+0.3; } } } },
+  wind:{ name:'ชุดจอมวายุ', emoji:'🌪️', bonuses:{
+    2:{ desc:'2 ชิ้น: ลดคูลดาวน์ -8%', apply:p=>{ p.cdMul=Math.max(0.6,(p.cdMul||1)*0.92); } },
+    3:{ desc:'3 ชิ้น: ความเร็ว +10% · ดาเมจ +8%', apply:p=>{ p.baseSpeed*=1.10; p.dmgMul*=1.08; } } } },
+};
+function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
 /* ---- ระบบได้รับอุปกรณ์: ดรอปในด่าน (common) + เปิดกล่องสุ่ม/gacha (หา rare) · ยกเลิกการซื้อ ---- */
 const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
 function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
+const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังไม่มี)
 const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
 // ---- Monetization: rewarded ads + IAP (จุดต่อ Capacitor AdMob/Billing · ตอนนี้ยังไม่มี plugin = ใช้เดโมจำลอง) ----
 // ⚙️ ขึ้นสโตร์จริง: npm i @capacitor-community/admob → ใส่ ad unit id ที่ ADMOB_REWARD_ID แล้วต่อใน Game.showRewardedAd
@@ -1806,13 +1827,15 @@ const Store = {
 function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%2)};}   // diff 2-3 (นรกสูงสุด)
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
-const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'} };
+const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'}, legend:{name:'ตำนาน',color:'#ff8f3a'} };
 const FIELD_DROP_TABLE={
-  common:{emoji:'●',name:'COMMON',color:0x8bd3a0},rare:{emoji:'◆',name:'RARE',color:0xffcf5a},epic:{emoji:'✦',name:'EPIC',color:0xc9a3ff}
+  common:{emoji:'●',name:'COMMON',color:0x8bd3a0},rare:{emoji:'◆',name:'RARE',color:0xffcf5a},epic:{emoji:'✦',name:'EPIC',color:0xc9a3ff},legend:{emoji:'🌟',name:'LEGEND',color:0xff8f3a}
 };
+// 🏆 กฎเหล็ก: ยิ่งยาก tier ยิ่งดี — legend ดรอปเฉพาะความยากสูง (นรก)
 function rollFieldGearTier(stageIndex,difficulty,boost=0){
+  const legend=Phaser.Math.Clamp((difficulty-2)*0.04+(stageIndex-2)*0.006+boost*0.02,0,0.14);
   const rare=Phaser.Math.Clamp(0.05+stageIndex*0.035+(difficulty-1)*0.025+boost*0.08,0.05,0.48),epic=Phaser.Math.Clamp((stageIndex-1)*0.012+(difficulty-1)*0.012+boost*0.035,0,0.20),r=Math.random();
-  return r<epic?'epic':r<epic+rare?'rare':'common';
+  return r<legend?'legend':r<legend+epic?'epic':r<legend+epic+rare?'rare':'common';
 }
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
@@ -1837,6 +1860,7 @@ const Save = {
     if(this.data.stageMastery[4])this.data.unlockedStage=Math.max(5,this.data.unlockedStage||0);
     if(!this.data.achievements)this.data.achievements={};
     if(!this.data.cookbook)this.data.cookbook={};   // สูตรที่เคยปรุงสำเร็จ (ถาวรข้ามรัน) → สมุดสูตร + รางวัล Sugar ครั้งแรก
+    if(this.data.shards==null)this.data.shards=0;   // 🔩 เศษอุปกรณ์ (จากของซ้ำ) → หลอมของตำนาน
     if(this.data.ascension==null)this.data.ascension=0;
     if(this.data.endlessBest==null)this.data.endlessBest=0;
     if(!Array.isArray(this.data.endlessBoard))this.data.endlessBoard=[];
@@ -1865,6 +1889,10 @@ const Save = {
   // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
   cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
   gearLv(id){ return (this.data.gearLv&&this.data.gearLv[id])||0; },
+  gearReviveCount(){ let n=0; for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===this.data.gear[slot]); if(it&&it.fx==='revive')n++; } return n; },   // อุปกรณ์ตำนานคืนชีพที่สวมอยู่
+  // 🔩 เศษอุปกรณ์: ได้จากของซ้ำ · ใช้หลอมของตำนาน
+  addShards(n){ this.data.shards=(this.data.shards||0)+n; this.save(); },
+  spendShards(n){ if((this.data.shards||0)>=n){ this.data.shards-=n; this.save(); return true; } return false; },
   enhance(id){ this.data.gearLv[id]=(this.gearLv(id))+1; this.save(); },
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลรอบปัจจุบัน (0..TAL_MAX)
   talLvl(k){ return this.data.upgrades[k]||0; },
@@ -3450,22 +3478,33 @@ class Game extends Phaser.Scene {
       if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
       this._zone(sx-ss/2,y-ss/2,ss,ss+14,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
     });
-    // ---- ปุ่มเปิดกล่องสุ่ม (gacha) — วิธีเดียวที่ได้ของแรร์ ----
-    const gbx=w/2, gby=cy0+topH-28, gbw=Math.min(w*0.6,210), gbh=28;
+    // ---- ปุ่มกล่องสุ่ม (gacha) + หลอมตำนาน (forge ด้วย 🔩) ----
+    const gby=cy0+topH-28, gbh=28, gap2=8, half=Math.min(w*0.44,150);
+    const gcx=w/2-half/2-gap2/2, fcx=w/2+half/2+gap2/2;
     const afG=(Save.data.sugar||0)>=GACHA_COST;
-    const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gbx-gbw/2,gby,gbw,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gbx-gbw/2,gby,gbw,gbh,10);
-    const gbt=this.add.text(gbx,gby+gbh/2,'🎁 เปิดกล่องสุ่ม 🍬'+GACHA_COST,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
-    this.menu.add([gbg,gbt]);
-    this._zone(gbx-gbw/2,gby,gbw,gbh,()=>this.openGachaReveal());
+    const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gcx-half/2,gby,half,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gcx-half/2,gby,half,gbh,10);
+    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 สุ่ม 🍬'+GACHA_COST,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    this.menu.add([gbg,gbt]); this._zone(gcx-half/2,gby,half,gbh,()=>this.openGachaReveal());
+    const afF=(Save.data.shards||0)>=LEGEND_FORGE_COST;
+    const fbg=this.add.graphics(); fbg.fillStyle(afF?0xff8f3a:0x3a3550,1); fbg.fillRoundedRect(fcx-half/2,gby,half,gbh,10); fbg.lineStyle(1.5,afF?0xffd0a0:0x4a4059,1); fbg.strokeRoundedRect(fcx-half/2,gby,half,gbh,10);
+    const fbt=this.add.text(fcx,gby+gbh/2,'🌟 หลอม 🔩'+LEGEND_FORGE_COST,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afF?'#fff':'#7a7088'}).setOrigin(0.5);
+    this.menu.add([fbg,fbt]); this._zone(fcx-half/2,gby,half,gbh,()=>this.forgeLegend());
     // ---- คลังไอเทมของช่องที่เลือก ----
     const selDef=GEAR_SLOTS.find(g=>g.slot===sel);
     let y=cy0+topH+10;
-    const hdr=this.add.text(w/2,y,selDef.emoji+' '+selDef.label+' — สวมใส่ / ตีบวก (ได้ของจากดรอป+กล่องสุ่ม)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);
-    this.menu.add(hdr); y+=22;
+    const hdr=this.add.text(w/2,y,selDef.emoji+' '+selDef.label+'  ·  🔩'+(Save.data.shards||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);
+    this.menu.add(hdr); y+=18;
+    // สถานะชุด (Set Bonus) ที่กำลังทำงาน
+    const setCounts=gearSetCounts(); const setLines=[];
+    for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid],cnt=setCounts[sid]||0; if(cnt<=0)continue;
+      let active=0; for(const need in def.bonuses)if(cnt>=+need)active=Math.max(active,+need);
+      setLines.push(def.emoji+' '+def.name+' '+cnt+'/3'+(active?' ✓'+active+'ชิ้น':'')); }
+    if(setLines.length){ const st=this.add.text(w/2,y,setLines.join('   '),{fontFamily:'sans-serif',fontSize:'9.5px',color:'#8bd3ff'}).setOrigin(0.5); this.menu.add(st); y+=15; }
+    y+=6;
     GEAR[sel].forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), equipped=Save.data.gear[sel]===it.id;
       const lv=Save.gearLv(it.id), canEnh=it.enh&&lv<GEAR_ENH_MAX, ecost=gearEnhCost(lv);
       const tl=TIER_LABEL[it.tier]||TIER_LABEL.common;
-      const nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?'  +'+lv:'');
+      const nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':it.tier==='legend'?' 🌟':'')+(it.set?' ['+(GEAR_SETS[it.set]?GEAR_SETS[it.set].emoji:'')+']':'')+(lv>0?'  +'+lv:'');
       let label,color,fn;
       if(equipped && canEnh){ const afEnh=(Save.data.sugar||0)>=ecost; label='⚒️ ผสม +'+(lv+1)+' 🍬'+ecost; color=afEnh?'#ffd166':'#e0788a';
         fn=()=>{ if(Save.spend(ecost)){ Save.enhance(it.id); Sfx.clear(); } this.buildMenuScreen(); }; }
@@ -3476,6 +3515,17 @@ class Game extends Phaser.Scene {
       y+=50;
     });
     this.menu.setVisible(true);
+  }
+  // 🌟 หลอมของตำนาน: ใช้ 🔩 เศษ สุ่มของ legend ที่ยังไม่มี (ถ้ามีครบแล้ว = คืนเศษ)
+  forgeLegend(){
+    if((Save.data.shards||0)<LEGEND_FORGE_COST){ Sfx.select(); this.showBanner('🔩 เศษไม่พอ','ต้องใช้ '+LEGEND_FORGE_COST+' เศษ (ได้จากของซ้ำ)',1400); return; }
+    const owned=Save.data.ownedGear, pool=gearPool('legend').filter(it=>!owned.includes(it.id));
+    if(!pool.length){ Sfx.select(); this.showBanner('🌟 มีของตำนานครบแล้ว','ไม่มีของตำนานให้หลอมเพิ่ม',1500); return; }
+    if(!Save.spendShards(LEGEND_FORGE_COST))return;
+    const it=Phaser.Utils.Array.GetRandom(pool); owned.push(it.id); Save.save();
+    Sfx.clear(); this.screenFlash(0xff8f3a,0.8,520); this.screenShake(600,0.02);
+    this.showBanner('🌟 หลอมสำเร็จ!',(GEAR_SLOTS.find(s=>s.slot===it.slot).emoji)+' '+it.name+' · ตำนาน',2000);
+    this.buildMenuScreen();
   }
   openGachaReveal(){
     if(this._gachaBusy)return;if((Save.data.sugar||0)<GACHA_COST){Sfx.select();this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ '+GACHA_COST+' Sugar เพื่อเปิดกล่อง',1300);return;}
@@ -3488,12 +3538,12 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.2,alpha:{from:0.2,to:0.78},duration:900,ease:'Cubic.in'});
     this.time.delayedCall(420,()=>status.setText('COMMON  ·  RARE  ·  EPIC').setColor('#fff0b8'));
     this.time.delayedCall(920,()=>{
-      const it=this.gachaRoll();let tier=it?it.tier:'common';if(!it)Save.addSugar(120);
-      const color=tier==='epic'?0xc9a3ff:tier==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
-      chest.setRotation(0).setScale(1.05).setText(it?it.emoji:'🍬');glow.setTint(color).setScale(2.8).setAlpha(0.88);
-      this.screenFlash(color,tier==='epic'?0.68:tier==='rare'?0.48:0.30,520);this.screenShake(tier==='epic'?480:260,tier==='epic'?0.014:0.007);Sfx.clear();
-      title.setText(it?(tier==='epic'?'✦ EPIC DROP ✦':tier==='rare'?'★ RARE DROP ★':'COMMON DROP'):'ของครบแล้ว');
-      title.setColor(hex);status.setText(it?(it.name+'\n'+TIER_LABEL[tier].name):'คืน Sugar 120').setColor('#ffffff').setAlign('center').setFontSize('18px');
+      const it=this.gachaRoll();let tier=it?it.tier:'common';if(!it){Save.addSugar(120);Save.addShards(6);}
+      const color=tier==='legend'?0xff8f3a:tier==='epic'?0xc9a3ff:tier==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
+      chest.setRotation(0).setScale(1.05).setText(it?it.emoji:'🔩');glow.setTint(color).setScale(2.8).setAlpha(0.88);
+      this.screenFlash(color,tier==='legend'?0.85:tier==='epic'?0.68:tier==='rare'?0.48:0.30,520);this.screenShake(tier==='legend'?620:tier==='epic'?480:260,tier==='legend'?0.02:tier==='epic'?0.014:0.007);Sfx.clear();
+      title.setText(it?(tier==='legend'?'🌟 LEGEND DROP 🌟':tier==='epic'?'✦ EPIC DROP ✦':tier==='rare'?'★ RARE DROP ★':'COMMON DROP'):'ของครบแล้ว');
+      title.setColor(hex);status.setText(it?(it.name+'\n'+TIER_LABEL[tier].name):'คืน 🍬120 · 🔩6').setColor('#ffffff').setAlign('center').setFontSize('18px');
       for(let i=0;i<(tier==='epic'?14:8);i++){const a=i*TAU/(tier==='epic'?14:8),p=this.add.image(w/2,h*0.47,'dot').setTint(color).setScale(0.8).setAlpha(0.9);this.menu.add(p);this.tweens.add({targets:p,x:w/2+Math.cos(a)*Math.min(w*0.38,180),y:h*0.47+Math.sin(a)*Math.min(h*0.25,150),alpha:0,duration:700+i*18,onComplete:()=>p.destroy()});}
       const bw=Math.min(w-60,260),by=h*0.80,btn=this.add.graphics();btn.fillStyle(color,1);btn.fillRoundedRect(w/2-bw/2,by-24,bw,48,16);btn.lineStyle(2,0xffffff,0.42);btn.strokeRoundedRect(w/2-bw/2,by-24,bw,48,16);
       const bt=this.add.text(w/2,by,'รับรางวัลและกลับคลัง',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#17101d'}).setOrigin(0.5);this.menu.add([btn,bt]);
@@ -3504,7 +3554,7 @@ class Game extends Phaser.Scene {
     const p=this.player;
     p.cdMul=1; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0;
-    p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false;
+    p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
     p.weaponDmgMul=1;p.weaponCdMul=1;p.weaponShots=0;p.weaponAreaMul=1;p.weaponControlMul=1;p.weaponChains=0;p.weaponReflect=0;
     // เลือกตัวละคร
     this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
@@ -3527,6 +3577,9 @@ class Game extends Phaser.Scene {
     // พรสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลรอบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
     for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]); if(it&&it.apply)it.apply(p, Save.gearLv(it.id)); }
+    // ชุดอุปกรณ์ (Set Bonus): สวมของชุดเดียวกันครบ 2/3 ชิ้น = โบนัสสะสม
+    const setCounts=gearSetCounts();
+    for(const sid in setCounts){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(setCounts[sid]>=+need&&def.bonuses[need].apply)def.bonuses[need].apply(p); } }
     // Rank Perks (ถาวร เลือกเอง) — vigor/might บวกสแตต · greed/boxLuck ตั้งตัวคูณรันนี้
     const rp=Save.data.rankPerks||{};
     if(rp.vigor)p.maxhp*=1+0.06*rp.vigor;
@@ -3628,7 +3681,7 @@ class Game extends Phaser.Scene {
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
-        this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive");this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อรอบ
+        this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อรอบ
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
@@ -4266,7 +4319,7 @@ class Game extends Phaser.Scene {
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.skills={};this.basicAttack=null;this.passives={};this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
-    this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive");
+    this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
@@ -5485,7 +5538,7 @@ class Game extends Phaser.Scene {
     const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;g.clearTint();Sfx.select();this.burst(g.x,g.y,rarity.color);
     const got=this.grantGear(tier);
     if(got) this.showBanner(rarity.emoji+' '+rarity.name+' DROP!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name+' · '+TIER_LABEL[tier].name,1800);
-    else {const refund=tier==='epic'?60:tier==='rare'?25:8;this.sugarStage+=refund;this.sugarRun+=refund;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🍬 +'+refund,1200);}
+    else {const refund=tier==='legend'?90:tier==='epic'?60:tier==='rare'?25:8;const sh=tier==='legend'?12:tier==='epic'?6:tier==='rare'?3:1;this.sugarStage+=refund;this.sugarRun+=refund;Save.addShards(sh);if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🍬 +'+refund+' · 🔩 +'+sh,1300);}
   }
   // ---- หีบสมบัติ (ดรอปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
@@ -5555,8 +5608,8 @@ class Game extends Phaser.Scene {
     if(!pool.length && tier==='common') pool=gearPool('rare').filter(it=>!owned.includes(it.id));
     if(!pool.length) return null;
     const it=Phaser.Utils.Array.GetRandom(pool); owned.push(it.id); Save.save(); return it; }
-  gachaRoll(){ const r=Math.random(), roll=r<0.55?'common':r<0.86?'rare':'epic';   // 55% common · 31% rare · 14% epic
-    for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t); if(it)return it; } return null; }
+  gachaRoll(){ const r=Math.random(), roll=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend';   // 50% common · 30% rare · 15% epic · 5% legend
+    for(const t of [roll,'epic','rare','common','legend']){ const it=this.grantGear(t); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
