@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.87.0';
+const GAME_VERSION = '2.88.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.88.0', date:'2026-09-18', title:'อุปกรณ์สุ่มคุณสมบัติ (Affix / Loot Chase E)', items:[
+    'ของทุกชิ้น (ยกเว้นเริ่มต้น) สุ่ม "คุณสมบัติเสริม" ✨ ตอนได้มา — ดาเมจ/HP/คริ/คูลดาวน์/ความเร็ว/ลดดาเมจ/ดูดของ/ฟื้น',
+    'จำนวน affix ตามระดับ: ธรรมดา 1 · แรร์/เอปิก 2 · ตำนาน 3',
+    'ปุ่ม 🎲 สุ่มคุณสมบัติใหม่ (🔩15) ในหน้าอุปกรณ์ — ไล่หาโรลที่ดีที่สุด (loot chase)',
+    'หน้าอุปกรณ์โชว์ affix ของชิ้นที่สวมอยู่',
+  ]},
   { v:'2.87.0', date:'2026-09-18', title:'ยกเครื่องระบบอุปกรณ์ (Gear Rework A-D)', items:[
     'ชุดอุปกรณ์ (Set Bonus): ชุดเชฟราชัน 👑 + ชุดจอมวายุ 🌪️ — สวมครบ 2/3 ชิ้น = โบนัสพิเศษ',
     'อุปกรณ์ตำนาน 🌟 (Legend) มีเอฟเฟกต์จริง: ดาบดาวตก (ประหารเลือดต่ำ) · สร้อยฟีนิกซ์ (คืนชีพ 1 ครั้ง/ด่าน) · บูตดาวหาง (ฆ่าฟื้น HP)',
@@ -1805,11 +1811,29 @@ const GEAR_SETS = {
 };
 function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
+/* ---- AFFIX (E): ของแต่ละชิ้นสุ่มคุณสมบัติเสริมตอนได้มา (loot chase) · reroll ด้วย 🔩 ---- */
+const AFFIX_POOL = [
+  { id:'dmg',   emoji:'💥', label:'ดาเมจ',      lo:3, hi:9,  fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
+  { id:'hp',    emoji:'❤️', label:'HP',         lo:15,hi:50, fmt:v=>'+'+v,       apply:(p,v)=>{ p.maxhp+=v; } },
+  { id:'crit',  emoji:'🎯', label:'คริ',        lo:2, hi:6,  fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
+  { id:'cd',    emoji:'⏩', label:'คูลดาวน์',   lo:2, hi:6,  fmt:v=>'-'+v+'%',   apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
+  { id:'spd',   emoji:'👟', label:'ความเร็ว',   lo:2, hi:6,  fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
+  { id:'def',   emoji:'🛡️', label:'ลดดาเมจ',    lo:2, hi:6,  fmt:v=>'-'+v+'%',   apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
+  { id:'pick',  emoji:'🧲', label:'ดูดของ',     lo:8, hi:22, fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.pickup*=(1+v/100); } },
+  { id:'regen', emoji:'💗', label:'ฟื้น/วิ',    lo:3, hi:10, fmt:v=>'+'+(v/10),  apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
+];
+const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
+function rollAffixes(tier){ const n=AFFIX_COUNT[tier]||0; if(!n)return []; const pool=AFFIX_POOL.slice(), out=[];
+  for(let i=0;i<n&&pool.length;i++){ const idx=Math.floor(Math.random()*pool.length), a=pool.splice(idx,1)[0]; out.push({id:a.id,v:a.lo+Math.floor(Math.random()*(a.hi-a.lo+1))}); }
+  return out; }
+function affixDef(id){ return AFFIX_POOL.find(a=>a.id===id); }
+
 /* ---- ระบบได้รับอุปกรณ์: ดรอปในด่าน (common) + เปิดกล่องสุ่ม/gacha (หา rare) · ยกเลิกการซื้อ ---- */
 const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
 function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 ครั้ง
 const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังไม่มี)
+const AFFIX_REROLL_COST = 15;   // 🔩 สุ่มคุณสมบัติเสริมของชิ้นที่สวมอยู่ใหม่
 const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
 // ---- Monetization: rewarded ads + IAP (จุดต่อ Capacitor AdMob/Billing · ตอนนี้ยังไม่มี plugin = ใช้เดโมจำลอง) ----
 // ⚙️ ขึ้นสโตร์จริง: npm i @capacitor-community/admob → ใส่ ad unit id ที่ ADMOB_REWARD_ID แล้วต่อใน Game.showRewardedAd
@@ -1861,6 +1885,7 @@ const Save = {
     if(!this.data.achievements)this.data.achievements={};
     if(!this.data.cookbook)this.data.cookbook={};   // สูตรที่เคยปรุงสำเร็จ (ถาวรข้ามรัน) → สมุดสูตร + รางวัล Sugar ครั้งแรก
     if(this.data.shards==null)this.data.shards=0;   // 🔩 เศษอุปกรณ์ (จากของซ้ำ) → หลอมของตำนาน
+    if(!this.data.gearAffix)this.data.gearAffix={};   // affix ต่อชิ้น (E: loot chase)
     if(this.data.ascension==null)this.data.ascension=0;
     if(this.data.endlessBest==null)this.data.endlessBest=0;
     if(!Array.isArray(this.data.endlessBoard))this.data.endlessBoard=[];
@@ -1893,6 +1918,10 @@ const Save = {
   // 🔩 เศษอุปกรณ์: ได้จากของซ้ำ · ใช้หลอมของตำนาน
   addShards(n){ this.data.shards=(this.data.shards||0)+n; this.save(); },
   spendShards(n){ if((this.data.shards||0)>=n){ this.data.shards-=n; this.save(); return true; } return false; },
+  // affix ต่อชิ้น (E): สุ่มครั้งแรกที่ได้/ใส่ · reroll ด้วยเศษ
+  gearAffixes(id){ return (this.data.gearAffix&&this.data.gearAffix[id])||[]; },
+  ensureAffix(id,tier){ if(!this.data.gearAffix)this.data.gearAffix={}; if(!this.data.gearAffix[id]){ this.data.gearAffix[id]=rollAffixes(tier); this.save(); } return this.data.gearAffix[id]; },
+  rerollAffix(id,tier){ if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=rollAffixes(tier); this.save(); return this.data.gearAffix[id]; },
   enhance(id){ this.data.gearLv[id]=(this.gearLv(id))+1; this.save(); },
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลรอบปัจจุบัน (0..TAL_MAX)
   talLvl(k){ return this.data.upgrades[k]||0; },
@@ -3500,6 +3529,18 @@ class Game extends Phaser.Scene {
       let active=0; for(const need in def.bonuses)if(cnt>=+need)active=Math.max(active,+need);
       setLines.push(def.emoji+' '+def.name+' '+cnt+'/3'+(active?' ✓'+active+'ชิ้น':'')); }
     if(setLines.length){ const st=this.add.text(w/2,y,setLines.join('   '),{fontFamily:'sans-serif',fontSize:'9.5px',color:'#8bd3ff'}).setOrigin(0.5); this.menu.add(st); y+=15; }
+    // คุณสมบัติเสริม (affix) ของชิ้นที่สวมในช่องนี้ + ปุ่มสุ่มใหม่ (E)
+    const eqIt=GEAR[sel].find(g=>g.id===Save.data.gear[sel]);
+    if(eqIt&&eqIt.tier!=='start'){
+      const affs=Save.gearAffixes(eqIt.id);
+      const affStr=affs.length?affs.map(a=>{const ad=affixDef(a.id);return ad?ad.emoji+ad.label+' '+ad.fmt(a.v):'';}).filter(Boolean).join('  '):'ไม่มีคุณสมบัติเสริม';
+      const at=this.add.text(12,y,'✨ '+affStr,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#c9a3ff',wordWrap:{width:w-120}}).setOrigin(0,0); this.menu.add(at);
+      const afR=(Save.data.shards||0)>=AFFIX_REROLL_COST, rbw=92,rbh=22,rbx=w-12-rbw,rby=y-2;
+      const rbg=this.add.graphics(); rbg.fillStyle(afR?0xc9a3ff:0x3a3550,1); rbg.fillRoundedRect(rbx,rby,rbw,rbh,8); rbg.lineStyle(1.2,afR?0xe0c8ff:0x4a4059,1); rbg.strokeRoundedRect(rbx,rby,rbw,rbh,8);
+      const rbt=this.add.text(rbx+rbw/2,rby+rbh/2,'🎲 สุ่ม 🔩'+AFFIX_REROLL_COST,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:afR?'#fff':'#7a7088'}).setOrigin(0.5);
+      this.menu.add([rbg,rbt]); this._zone(rbx,rby,rbw,rbh,()=>this.rerollGearAffix(sel));
+      y+=20;
+    }
     y+=6;
     GEAR[sel].forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), equipped=Save.data.gear[sel]===it.id;
       const lv=Save.gearLv(it.id), canEnh=it.enh&&lv<GEAR_ENH_MAX, ecost=gearEnhCost(lv);
@@ -3526,6 +3567,14 @@ class Game extends Phaser.Scene {
     Sfx.clear(); this.screenFlash(0xff8f3a,0.8,520); this.screenShake(600,0.02);
     this.showBanner('🌟 หลอมสำเร็จ!',(GEAR_SLOTS.find(s=>s.slot===it.slot).emoji)+' '+it.name+' · ตำนาน',2000);
     this.buildMenuScreen();
+  }
+  // 🎲 สุ่มคุณสมบัติเสริม (affix) ของชิ้นที่สวมในช่องนี้ใหม่ (loot chase)
+  rerollGearAffix(slot){
+    const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]);
+    if(!it||it.tier==='start'){ Sfx.select(); this.showBanner('✨ สุ่มไม่ได้','ช่องนี้ไม่มีของที่สุ่มคุณสมบัติได้',1300); return; }
+    if((Save.data.shards||0)<AFFIX_REROLL_COST){ Sfx.select(); this.showBanner('🔩 เศษไม่พอ','ต้องใช้ '+AFFIX_REROLL_COST+' เศษ',1300); return; }
+    if(!Save.spendShards(AFFIX_REROLL_COST))return;
+    Save.rerollAffix(it.id,it.tier); Sfx.clear(); this.buildMenuScreen();
   }
   openGachaReveal(){
     if(this._gachaBusy)return;if((Save.data.sugar||0)<GACHA_COST){Sfx.select();this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ '+GACHA_COST+' Sugar เพื่อเปิดกล่อง',1300);return;}
@@ -3576,7 +3625,8 @@ class Game extends Phaser.Scene {
     for(const def of myTalDefs){ const r=ctals[def.id]||0; if(r>0&&def.apply) def.apply(p,r); }
     // พรสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลรอบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
-    for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]); if(it&&it.apply)it.apply(p, Save.gearLv(it.id)); }
+    for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]); if(it&&it.apply){ it.apply(p, Save.gearLv(it.id));
+      if(it.tier!=='start'){ const affs=Save.ensureAffix(it.id,it.tier); for(const a of affs){ const ad=affixDef(a.id); if(ad)ad.apply(p,a.v); } } } }
     // ชุดอุปกรณ์ (Set Bonus): สวมของชุดเดียวกันครบ 2/3 ชิ้น = โบนัสสะสม
     const setCounts=gearSetCounts();
     for(const sid in setCounts){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(setCounts[sid]>=+need&&def.bonuses[need].apply)def.bonuses[need].apply(p); } }
