@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.92.0';
+const GAME_VERSION = '2.93.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.93.0', date:'2026-09-18', title:'แหล่ง currency ให้คนขยัน', items:[
+    'ล้มบอส = การันตี currency ก้อนใหญ่ (ยิ่งด่าน/ยากสูง ยิ่งเยอะ+ดี)',
+    'ฆ่ามินิบอส = การันตี currency 1-2 ชิ้น',
+    'ฆ่า elite = ลุ้นดรอป currency 50%',
+    'เกรด orb ตามความยาก: นรก=ตำนาน · ยาก=เอปิก · ปกติ=แรร์ (กฎเหล็ก)',
+  ]},
   { v:'2.92.0', date:'2026-09-18', title:'ตลาดโมจิ (PoE Phase 4 — NPC Bazaar)', items:[
     'ตลาดโมจิ 🏪 (เมนู คลัง&พลัง) — 3 แท็บ: ซื้อ · เสี่ยงดวง · ขาย',
     'ซื้อ: ร้านหมุนเวียนรายวัน ขายของฐาน + currency ด้วย 🍬',
@@ -4539,6 +4545,8 @@ class Game extends Phaser.Scene {
   // บอสตาย → เปิดกล่องรางวัลจบด่าน (Sugar/อุปกรณ์) แล้วกลับหน้าเลือกด่าน
   onBossDown(x,y){
     this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.playStageBgm(this.stageIndex+1);this.clearFoes();this.clearEnemies();this.clearBossObjects();
+    // 🧪 ล้มบอส = การันตี currency ก้อนใหญ่ (ยิ่งด่าน/ยากสูง ยิ่งเยอะ+ดี — กฎเหล็ก)
+    this.grantCurrencyReward(2+(this.stageIndex||0)+((this.stageDiff||1)-1)*2,this.currencyTierFor(),'🏆 ล้มบอส! รับ currency');
     if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
       this.showBanner('🌙 ENDLESS รอบ '+cleared+' สำเร็จ','Checkpoint บันทึกแล้ว · Sugar +'+bonus+(cleared%3===0?' · โค่นบอสลับ!':''),2600);this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='breather')this.startWave(0,false);});return;}
     const next=this.stageIndex+1,canUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next;
@@ -5660,6 +5668,9 @@ class Game extends Phaser.Scene {
       if(STREAK_MARKS[this.killStreak])this.showKillStreak(this.killStreak);
     }
     if(isElite||isMini)this.hitStop(45);   // Juice: ฆ่าตัวใหญ่/elite = กระแทกหยุดเสี้ยววิ (บอสมีฉากตายของตัวเอง)
+    // 🧪 currency ให้คนขยัน: elite = ลุ้นดรอป · มินิบอส = การันตี (เกรดตามความยาก)
+    if(isMini) this.grantCurrencyReward(1+Math.floor(Math.random()*2),this.currencyTierFor(),'🧪 มินิบอสล้ม!');
+    else if(isElite && Math.random()<0.5) this.grantCurrencyReward(1,this.currencyTierFor(),null);
     if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
     if(this.player.lifeOnKill&&(!this._lifeOnKillCd||this._lifeOnKillCd<=0)){this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifeOnKill*(this.player.healEffect||1));this._lifeOnKillCd=0.45;}
     if(!big) Sfx.pop();
@@ -5821,6 +5832,12 @@ class Game extends Phaser.Scene {
     const pools={ common:['scour','annul','transmute','alt'], rare:['transmute','alt','regal','annul'], epic:['alt','regal','chaos','exalt','divine'], legend:['regal','chaos','exalt','exalt','divine','divine'] };
     if(Math.random()>0.72)return null; const p=pools[tier]||pools.common; return p[Math.floor(Math.random()*p.length)];
   }
+  // เกรด orb pool ตามความยาก+ด่าน (คนขยัน/เล่นยาก ได้ของดี — กฎเหล็ก)
+  currencyTierFor(){ const diff=this.stageDiff||1, st=this.stageIndex||0; if(diff>=3)return 'legend'; if(diff>=2)return st>=3?'legend':'epic'; return st>=3?'epic':'rare'; }
+  // แจก currency แน่นอน N ชิ้น (ข้าม 28% miss ของ rollCurrencyDrop) + แบนเนอร์
+  grantCurrencyReward(n,tier,head){ const pools={ common:['scour','annul','transmute','alt'], rare:['transmute','alt','regal','annul'], epic:['alt','regal','chaos','exalt','divine'], legend:['regal','chaos','exalt','exalt','divine','divine'] };
+    const p=pools[tier]||pools.common, got={}; for(let i=0;i<n;i++){ const k=p[Math.floor(Math.random()*p.length)]; got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
+    if(head&&this.showBanner){ const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner(head,txt,1800); } return got; }
   // ---- หีบสมบัติ (ดรอปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
