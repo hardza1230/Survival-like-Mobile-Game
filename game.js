@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.89.0';
+const GAME_VERSION = '2.90.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.90.0', date:'2026-09-18', title:'ไอเทมแบบ PoE Phase 1 (Prefix/Suffix + Tier)', items:[
+    'คุณสมบัติเสริมแยกเป็น Prefix (สายรุก) / Suffix (สายรับ) แบบ Path of Exile',
+    'Affix Tier T1-T5 — T1 แรงสุดและหายากสุด (ไล่หาโรลเทพ) · ฐานดีกว่าโรลได้ tier สูงกว่า',
+    'ชื่อไอเทมประกอบจาก affix เช่น "คมกริบ มีดเชฟ แห่งราชสีห์"',
+    'หน้าอุปกรณ์โชว์ชื่อไอเทม + tier ของแต่ละ affix · สุ่มใหม่ (🎲) ได้ tier ต่างกันทุกครั้ง',
+  ]},
   { v:'2.89.0', date:'2026-09-18', title:'โมโม่สอนเล่น (Tutorial ครูโมโม่)', items:[
     'รื้อ Tutorial เป็นครู "โมโม่" พูดสอนทีละบท มีรูปตัวละคร + บับเบิลคำพูดน่ารัก',
     '9 บท: ทักทาย · เดิน · อาวุธยิงเอง · Dash · เลเวลอัพการ์ด · ปรุงเมนูสูตร · Unique · เก็บ Sugar · พร้อมลุย',
@@ -1816,22 +1822,39 @@ const GEAR_SETS = {
 };
 function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
-/* ---- AFFIX (E): ของแต่ละชิ้นสุ่มคุณสมบัติเสริมตอนได้มา (loot chase) · reroll ด้วย 🔩 ---- */
+/* ---- AFFIX (Phase 1 PoE): prefix/suffix + tier T1-T5 · ของแต่ละชิ้นสุ่มตอนได้มา · reroll ด้วย 🔩 ----
+   tiers[]=[T1,T2,T3,T4,T5] แต่ละอันเป็น [lo,hi] · T1=แรงสุด (หายาก) · pre/suf=คำประกอบชื่อไอเทม */
 const AFFIX_POOL = [
-  { id:'dmg',   emoji:'💥', label:'ดาเมจ',      lo:3, hi:9,  fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
-  { id:'hp',    emoji:'❤️', label:'HP',         lo:15,hi:50, fmt:v=>'+'+v,       apply:(p,v)=>{ p.maxhp+=v; } },
-  { id:'crit',  emoji:'🎯', label:'คริ',        lo:2, hi:6,  fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
-  { id:'cd',    emoji:'⏩', label:'คูลดาวน์',   lo:2, hi:6,  fmt:v=>'-'+v+'%',   apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
-  { id:'spd',   emoji:'👟', label:'ความเร็ว',   lo:2, hi:6,  fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
-  { id:'def',   emoji:'🛡️', label:'ลดดาเมจ',    lo:2, hi:6,  fmt:v=>'-'+v+'%',   apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
-  { id:'pick',  emoji:'🧲', label:'ดูดของ',     lo:8, hi:22, fmt:v=>'+'+v+'%',   apply:(p,v)=>{ p.pickup*=(1+v/100); } },
-  { id:'regen', emoji:'💗', label:'ฟื้น/วิ',    lo:3, hi:10, fmt:v=>'+'+(v/10),  apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
+  // ── Prefix (สายรุก) ──
+  { id:'dmg',   kind:'prefix', emoji:'💥', label:'ดาเมจ',    pre:'คมกริบ',  fmt:v=>'+'+v+'%',  tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
+  { id:'crit',  kind:'prefix', emoji:'🎯', label:'คริ',      pre:'เฉียบ',   fmt:v=>'+'+v+'%',  tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
+  { id:'critdmg',kind:'prefix',emoji:'💢', label:'ดาเมจคริ', pre:'ดุร้าย',  fmt:v=>'+'+v+'%',  tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
+  { id:'cd',    kind:'prefix', emoji:'⏩', label:'คูลดาวน์', pre:'ว่องไว',  fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
+  // ── Suffix (สายรับ/utility) ──
+  { id:'hp',    kind:'suffix', emoji:'❤️', label:'HP',       suf:'ราชสีห์', fmt:v=>'+'+v,      tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
+  { id:'def',   kind:'suffix', emoji:'🛡️', label:'ลดดาเมจ',  suf:'ศิลา',    fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
+  { id:'spd',   kind:'suffix', emoji:'👟', label:'ความเร็ว',  suf:'สายลม',   fmt:v=>'+'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
+  { id:'pick',  kind:'suffix', emoji:'🧲', label:'ดูดของ',    suf:'แม่เหล็ก',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
+  { id:'regen', kind:'suffix', emoji:'💗', label:'ฟื้น/วิ',   suf:'พุน้ำหวาน',fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]],   apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
 ];
 const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
-function rollAffixes(tier){ const n=AFFIX_COUNT[tier]||0; if(!n)return []; const pool=AFFIX_POOL.slice(), out=[];
-  for(let i=0;i<n&&pool.length;i++){ const idx=Math.floor(Math.random()*pool.length), a=pool.splice(idx,1)[0]; out.push({id:a.id,v:a.lo+Math.floor(Math.random()*(a.hi-a.lo+1))}); }
-  return out; }
+// item level → tier ดีสุดที่สุ่มได้ (ฐานดี = โรลได้ดีกว่า): legend→T1, epic→T2, rare→T3, common→T4
+const BASE_BEST_TIER = { start:5, common:4, rare:3, epic:2, legend:1 };
 function affixDef(id){ return AFFIX_POOL.find(a=>a.id===id); }
+// สุ่ม tier ระหว่าง best..5 · ถ่วงให้ tier แย่เจอบ่อย (T1 หายาก = loot chase)
+function rollTier(best){ const list=[]; let tot=0; for(let t=best;t<=5;t++){ const w=t*t; list.push([t,w]); tot+=w; } let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return 5; }
+function rollOneAffix(mod,best){ const t=rollTier(best), band=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v}; }
+function rollAffixes(baseTier){ const n=AFFIX_COUNT[baseTier]||0; if(!n)return []; const best=BASE_BEST_TIER[baseTier]||4;
+  const pre=AFFIX_POOL.filter(a=>a.kind==='prefix'), suf=AFFIX_POOL.filter(a=>a.kind==='suffix');
+  // แบ่งจำนวน prefix/suffix ให้สมดุล (n=1 สุ่มฝั่ง, n=2 1+1, n=3 2+1 สลับ)
+  let nPre,nSuf; if(n===1){ if(Math.random()<0.5){nPre=1;nSuf=0;}else{nPre=0;nSuf=1;} } else if(n===2){ nPre=1;nSuf=1; } else { if(Math.random()<0.5){nPre=2;nSuf=1;}else{nPre=1;nSuf=2;} }
+  const out=[], pick=(arr,k)=>{ const p=arr.slice(); for(let i=0;i<k&&p.length;i++){ const m=p.splice(Math.floor(Math.random()*p.length),1)[0]; out.push(rollOneAffix(m,best)); } };
+  pick(pre,nPre); pick(suf,nSuf); return out; }
+// ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
+function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
+  const best=(kind)=>{ let b=null; for(const a of affs){ const d=affixDef(a.id); if(d&&d.kind===kind&&(!b||a.t<b.t))b=a; } return b?affixDef(b.id):null; };
+  const pre=best('prefix'), suf=best('suffix');
+  return (pre&&pre.pre?pre.pre+' ':'')+baseName+(suf&&suf.suf?' แห่ง'+suf.suf:''); }
 
 /* ---- ระบบได้รับอุปกรณ์: ดรอปในด่าน (common) + เปิดกล่องสุ่ม/gacha (หา rare) · ยกเลิกการซื้อ ---- */
 const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
@@ -3571,7 +3594,10 @@ class Game extends Phaser.Scene {
     const eqIt=GEAR[sel].find(g=>g.id===Save.data.gear[sel]);
     if(eqIt&&eqIt.tier!=='start'){
       const affs=Save.gearAffixes(eqIt.id);
-      const affStr=affs.length?affs.map(a=>{const ad=affixDef(a.id);return ad?ad.emoji+ad.label+' '+ad.fmt(a.v):'';}).filter(Boolean).join('  '):'ไม่มีคุณสมบัติเสริม';
+      // ชื่อไอเทมแบบ PoE (prefix ฐาน suffix)
+      const iname=gearAffixName(eqIt.name,affs);
+      const nt=this.add.text(12,y,'🏷️ '+iname,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a8',wordWrap:{width:w-24}}).setOrigin(0,0); this.menu.add(nt); y+=14;
+      const affStr=affs.length?affs.map(a=>{const ad=affixDef(a.id);return ad?ad.emoji+ad.label+' '+ad.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean).join('   '):'ไม่มีคุณสมบัติเสริม';
       const at=this.add.text(12,y,'✨ '+affStr,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#c9a3ff',wordWrap:{width:w-120}}).setOrigin(0,0); this.menu.add(at);
       const afR=(Save.data.shards||0)>=AFFIX_REROLL_COST, rbw=92,rbh=22,rbx=w-12-rbw,rby=y-2;
       const rbg=this.add.graphics(); rbg.fillStyle(afR?0xc9a3ff:0x3a3550,1); rbg.fillRoundedRect(rbx,rby,rbw,rbh,8); rbg.lineStyle(1.2,afR?0xe0c8ff:0x4a4059,1); rbg.strokeRoundedRect(rbx,rby,rbw,rbh,8);
