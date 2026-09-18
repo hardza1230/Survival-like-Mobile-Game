@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.91.0';
+const GAME_VERSION = '2.92.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.92.0', date:'2026-09-18', title:'ตลาดโมจิ (PoE Phase 4 — NPC Bazaar)', items:[
+    'ตลาดโมจิ 🏪 (เมนู คลัง&พลัง) — 3 แท็บ: ซื้อ · เสี่ยงดวง · ขาย',
+    'ซื้อ: ร้านหมุนเวียนรายวัน ขายของฐาน + currency ด้วย 🍬',
+    'เสี่ยงดวง: กล่องอุปกรณ์ปริศนา (ลุ้นแรร์/เอปิก/ตำนาน) + กล่อง currency',
+    'ขาย: แปลงเศษ 🔩 → 🍬 · ขาย currency ส่วนเกินแลก 🍬',
+  ]},
   { v:'2.91.0', date:'2026-09-18', title:'ไอเทมแบบ PoE Phase 2 (Currency Crafting)', items:[
     'โต๊ะคราฟต์ 🧪 (เมนู คลัง&พลัง) — ใช้ currency ปั้น affix ของไอเทมที่สวม',
     'Currency 8 แบบ: 🔵Transmute 🟢Alt 🟡Regal 🟠Chaos 🔴Exalt ⚪Divine 🟣Annul ⚫Scour',
@@ -1744,7 +1750,8 @@ const HUB_GROUPS = {
   gLoadout:{ title:'🎒 คลัง & พลัง', rows:[
     ['upgrade','✦','สายใยรสชาติ & Rank','พลังถาวร + 🏅 Rank Perks'],
     ['gear','◆','อุปกรณ์','สวมใส่และตีบวก'],
-    ['craft','🧪','โต๊ะคราฟต์','ใช้ currency ปั้น affix (prefix/suffix)'] ] },
+    ['craft','🧪','โต๊ะคราฟต์','ใช้ currency ปั้น affix (prefix/suffix)'],
+    ['bazaar','🏪','ตลาดโมจิ','ซื้อ · เสี่ยงดวง · ขายแลก 🍬'] ] },
   gCodex:{ title:'📖 คัมภีร์', rows:[
     ['skills','✧','คัมภีร์แก่นรส','สกิล พร และคู่ Awaken'],
     ['cookbook','🍳','สมุดสูตรอาหาร','สูตรที่ค้นพบ + สูตรเด่น ⭐'],
@@ -1878,6 +1885,13 @@ const CURRENCY = [
   { key:'scour',     emoji:'⚫', name:'ล้างรส',         desc:'ลบ affix ทั้งหมด → Common' },
 ];
 function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
+// ราคา currency เป็น Sugar (ซื้อ = เต็มราคา · ขาย = 60%)
+const CURRENCY_BUY = { transmute:40, alt:60, regal:120, chaos:160, exalt:320, divine:320, scour:30, annul:90 };
+// ราคาซื้อของฐานตาม tier
+const GEAR_BUY = { start:0, common:160, rare:420, epic:820, legend:0 };
+// เมล็ดสุ่มรายวัน (ร้านหมุนเวียน) — mulberry32
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function bazaarDaySeed(){ const d=new Date(); return d.getUTCFullYear()*10000+(d.getUTCMonth()+1)*100+d.getUTCDate(); }
 
 /* ---- ระบบได้รับอุปกรณ์: ดรอปในด่าน (common) + เปิดกล่องสุ่ม/gacha (หา rare) · ยกเลิกการซื้อ ---- */
 const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
@@ -3036,7 +3050,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='craft')this.buildCraftBench(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -3734,6 +3748,57 @@ class Game extends Phaser.Scene {
       this.menu.add([nm2,dd]); this._zone(cx,cy,cw,ch,()=>this.applyCurrency(c.key)); });
     this.menu.setVisible(true);
   }
+  /* ---- 🏪 NPC Bazaar (Phase 4): ซื้อ · เสี่ยงดวง · ขาย (single-player) ---- */
+  bazaarStock(){ const rng=mulberry32(bazaarDaySeed()); const bases=GEAR_ALL.filter(it=>it.tier!=='start'&&it.tier!=='legend');
+    const gear=[]; const used=new Set(); for(let i=0;i<3&&bases.length;i++){ let it,guard=0; do{ it=bases[Math.floor(rng()*bases.length)]; }while(used.has(it.id)&&guard++<20); used.add(it.id); gear.push(it); }
+    const ckeys=CURRENCY.map(c=>c.key); const cur=[]; const cu=new Set(); for(let i=0;i<3;i++){ let k,guard=0; do{ k=ckeys[Math.floor(rng()*ckeys.length)]; }while(cu.has(k)&&guard++<20); cu.add(k); cur.push({key:k,qty:1+Math.floor(rng()*3)}); }
+    return {gear,cur}; }
+  buildBazaar(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏪 ตลาดโมจิ','','gLoadout');
+    const w=this.W,h=this.H, tab=this._bazTab||'buy';
+    // ทรัพยากรบนหัว
+    const res=this.add.text(w/2,52,'🍬 '+(Save.data.sugar||0)+'   🔩 '+(Save.data.shards||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(0.5); this.menu.add(res);
+    // แท็บ
+    const tabs=[['buy','🛒 ซื้อ'],['gamble','🎲 เสี่ยงดวง'],['sell','💰 ขาย']], tw=(w-28)/3, ty=66;
+    tabs.forEach(([k,lbl],i)=>{ const x=14+i*tw, on=k===tab; const g=this.add.graphics(); g.fillStyle(on?0xff8f3a:0x2c2338,1); g.fillRoundedRect(x+2,ty,tw-4,28,8); g.lineStyle(1.4,on?0xffd0a0:0x4a4059,1); g.strokeRoundedRect(x+2,ty,tw-4,28,8);
+      const t=this.add.text(x+tw/2,ty+14,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#fff':'#9a90ab'}).setOrigin(0.5); this.menu.add([g,t]); this._zone(x+2,ty,tw-4,28,()=>{ this._bazTab=k; this.buildBazaar(); }); });
+    let y=ty+40;
+    if(tab==='buy'){
+      const hd=this.add.text(14,y,'ร้านหมุนเวียนรายวัน (รีเฟรชทุกวัน)',{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
+      const st=this.bazaarStock();
+      st.gear.forEach(it=>{ const owned=Save.data.ownedGear.includes(it.id), cost=GEAR_BUY[it.tier]||200, tl=TIER_LABEL[it.tier]||TIER_LABEL.common, af=(Save.data.sugar||0)>=cost;
+        const label=owned?'มีแล้ว ✓':('ซื้อ 🍬'+cost), color=owned?'#7a7088':(af?'#8bd3a0':'#e0788a');
+        this._rowBtn(y,40,it.emoji,it.name+' · '+tl.name,it.desc,label,color,owned?null:()=>this.bazaarBuyGear(it.id)); y+=46; });
+      st.cur.forEach(c=>{ const d=currencyDef(c.key), cost=(CURRENCY_BUY[c.key]||60)*c.qty, af=(Save.data.sugar||0)>=cost;
+        this._rowBtn(y,40,d.emoji,d.name+' ×'+c.qty,d.desc,'ซื้อ 🍬'+cost,af?'#8bd3a0':'#e0788a',()=>this.bazaarBuyCurrency(c.key,c.qty,cost)); y+=46; });
+    } else if(tab==='gamble'){
+      const hd=this.add.text(14,y,'กล่องปริศนา — ลุ้นของสุ่ม (ilvl ตามด่านที่ปลด)',{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
+      this._rowBtn(y,48,'🎁','กล่องอุปกรณ์ปริศนา','สุ่มอุปกรณ์ 1 ชิ้น (ลุ้นแรร์/เอปิก) · ซ้ำ=แปลงเป็น 🔩+currency','สุ่ม 🍬180',(Save.data.sugar||0)>=180?'#ffd166':'#e0788a',()=>this.bazaarGambleGear()); y+=54;
+      this._rowBtn(y,48,'🧪','กล่อง currency','สุ่ม currency 2-4 ชิ้น (ลุ้น orb ระดับสูง)','สุ่ม 🍬120',(Save.data.sugar||0)>=120?'#ffd166':'#e0788a',()=>this.bazaarGambleCurrency()); y+=54;
+    } else { // sell
+      const hd=this.add.text(14,y,'ขายส่วนเกินแลก 🍬 (ขาย currency ได้ 60% ราคาซื้อ)',{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
+      const sh=Save.data.shards||0;
+      this._rowBtn(y,40,'🔩','เศษอุปกรณ์ ×'+sh,'แปลงเศษทั้งหมดเป็น 🍬 (×2 ต่อเศษ)',sh>0?'ขาย +🍬'+(sh*2):'ไม่มีเศษ',sh>0?'#8bd3a0':'#7a7088',sh>0?()=>this.bazaarSellShards():null); y+=46;
+      CURRENCY.forEach(c=>{ const n=Save.currency(c.key); if(n<=0)return; const val=Math.round((CURRENCY_BUY[c.key]||60)*0.6);
+        this._rowBtn(y,40,c.emoji,c.name+' ×'+n,'ขาย 1 ชิ้น','ขาย +🍬'+val,'#8bd3a0',()=>this.bazaarSellCurrency(c.key,val)); y+=46; });
+    }
+    this.menu.setVisible(true);
+  }
+  bazaarBuyGear(id){ const it=GEAR_ALL.find(g=>g.id===id); if(!it)return; if(Save.data.ownedGear.includes(id))return; const cost=GEAR_BUY[it.tier]||200;
+    if(!Save.spend(cost)){ Sfx.select(); this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ '+cost+' Sugar',1300); return; }
+    Save.data.ownedGear.push(id); Save.ensureAffix(id,it.tier); Save.save(); Sfx.clear(); this.showBanner('🛒 ซื้อสำเร็จ',it.emoji+' '+it.name,1400); this.buildBazaar(); }
+  bazaarBuyCurrency(key,qty,cost){ if(!Save.spend(cost)){ Sfx.select(); this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ '+cost+' Sugar',1300); return; }
+    Save.addCurrency(key,qty); Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 ซื้อสำเร็จ',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
+  bazaarGambleGear(){ if(!Save.spend(180)){ Sfx.select(); this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ 180 Sugar',1300); return; }
+    const r=Math.random(), tier=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend'; const got=this.grantGear(tier);
+    if(got){ Save.ensureAffix(got.id,got.tier); Sfx.clear(); this.screenFlash(0xffd166,0.5,400); this.showBanner('🎁 ได้ของ!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name+' · '+(TIER_LABEL[tier]||TIER_LABEL.common).name,1700); }
+    else { const ck=this.rollCurrencyDrop('epic')||'alt'; Save.addShards(6); Save.addCurrency(ck,1); Sfx.select(); this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🔩+6 · '+currencyDef(ck).emoji+currencyDef(ck).name,1500); }
+    this.buildBazaar(); }
+  bazaarGambleCurrency(){ if(!Save.spend(120)){ Sfx.select(); this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ 120 Sugar',1300); return; }
+    const n=2+Math.floor(Math.random()*3), got={}; for(let i=0;i<n;i++){ const k=this.rollCurrencyDrop('epic')||'alt'; got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
+    Sfx.clear(); this.screenFlash(0xc9a3ff,0.4,350); const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner('🧪 ได้ currency!',txt,1600); this.buildBazaar(); }
+  bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 ขายเศษ','+🍬'+(sh*2),1300); this.buildBazaar(); }
+  bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
   openGachaReveal(){
     if(this._gachaBusy)return;if((Save.data.sugar||0)<GACHA_COST){Sfx.select();this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ '+GACHA_COST+' Sugar เพื่อเปิดกล่อง',1300);return;}
     if(!Save.spend(GACHA_COST))return;this._gachaBusy=true;this.menu.removeAll(true);this.tapZones=[];
