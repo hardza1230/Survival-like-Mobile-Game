@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.90.0';
+const GAME_VERSION = '2.91.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.91.0', date:'2026-09-18', title:'ไอเทมแบบ PoE Phase 2 (Currency Crafting)', items:[
+    'โต๊ะคราฟต์ 🧪 (เมนู คลัง&พลัง) — ใช้ currency ปั้น affix ของไอเทมที่สวม',
+    'Currency 8 แบบ: 🔵Transmute 🟢Alt 🟡Regal 🟠Chaos 🔴Exalt ⚪Divine 🟣Annul ⚫Scour',
+    'ไอเทมมีระดับ Common/Magic/Rare — คราฟต์เปลี่ยนระดับ + เพิ่ม/ลบ/สุ่ม affix ได้',
+    'Currency ดรอปในด่านพร้อมของ — ยิ่งด่านยาก/tier สูง ยิ่งได้ orb ระดับสูง (กฎเหล็ก)',
+  ]},
   { v:'2.90.0', date:'2026-09-18', title:'ไอเทมแบบ PoE Phase 1 (Prefix/Suffix + Tier)', items:[
     'คุณสมบัติเสริมแยกเป็น Prefix (สายรุก) / Suffix (สายรับ) แบบ Path of Exile',
     'Affix Tier T1-T5 — T1 แรงสุดและหายากสุด (ไล่หาโรลเทพ) · ฐานดีกว่าโรลได้ tier สูงกว่า',
@@ -1737,7 +1743,8 @@ const RANK_PERKS = [
 const HUB_GROUPS = {
   gLoadout:{ title:'🎒 คลัง & พลัง', rows:[
     ['upgrade','✦','สายใยรสชาติ & Rank','พลังถาวร + 🏅 Rank Perks'],
-    ['gear','◆','อุปกรณ์','สวมใส่และตีบวก'] ] },
+    ['gear','◆','อุปกรณ์','สวมใส่และตีบวก'],
+    ['craft','🧪','โต๊ะคราฟต์','ใช้ currency ปั้น affix (prefix/suffix)'] ] },
   gCodex:{ title:'📖 คัมภีร์', rows:[
     ['skills','✧','คัมภีร์แก่นรส','สกิล พร และคู่ Awaken'],
     ['cookbook','🍳','สมุดสูตรอาหาร','สูตรที่ค้นพบ + สูตรเด่น ⭐'],
@@ -1856,6 +1863,22 @@ function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
   const pre=best('prefix'), suf=best('suffix');
   return (pre&&pre.pre?pre.pre+' ':'')+baseName+(suf&&suf.suf?' แห่ง'+suf.suf:''); }
 
+/* ---- CURRENCY (Phase 2): คราฟต์ affix ของไอเทม แบบ Path of Exile ---- */
+const RARITY_SLOTS = { common:{p:0,s:0}, magic:{p:1,s:1}, rare:{p:3,s:3} };
+const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
+function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
+const CURRENCY = [
+  { key:'transmute', emoji:'🔵', name:'น้ำตาลวิเศษ',   desc:'Common → Magic (เติม 1 affix)' },
+  { key:'alt',       emoji:'🟢', name:'ครีมแปรผัน',    desc:'สุ่ม affix ของ Magic ใหม่' },
+  { key:'regal',     emoji:'🟡', name:'คำสั่งราชวัง',   desc:'Magic → Rare (+1 affix)' },
+  { key:'chaos',     emoji:'🟠', name:'ความโกลาหล',    desc:'สุ่ม affix ทั้งหมดของ Rare ใหม่' },
+  { key:'exalt',     emoji:'🔴', name:'แก่นรสสูงสุด',   desc:'เพิ่ม 1 affix (ถ้ายังไม่เต็ม)' },
+  { key:'divine',    emoji:'⚪', name:'พรวิเศษ',        desc:'สุ่มค่าใหม่ คงชนิด+tier' },
+  { key:'annul',     emoji:'🟣', name:'ลบเลือน',        desc:'ลบ affix สุ่ม 1 อัน' },
+  { key:'scour',     emoji:'⚫', name:'ล้างรส',         desc:'ลบ affix ทั้งหมด → Common' },
+];
+function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
+
 /* ---- ระบบได้รับอุปกรณ์: ดรอปในด่าน (common) + เปิดกล่องสุ่ม/gacha (หา rare) · ยกเลิกการซื้อ ---- */
 const GEAR_ALL=[]; for(const _s in GEAR) for(const _it of GEAR[_s]) GEAR_ALL.push(Object.assign({slot:_s},_it));
 function gearPool(tier){ return GEAR_ALL.filter(it=>it.tier===tier); }
@@ -1914,6 +1937,8 @@ const Save = {
     if(!this.data.cookbook)this.data.cookbook={};   // สูตรที่เคยปรุงสำเร็จ (ถาวรข้ามรัน) → สมุดสูตร + รางวัล Sugar ครั้งแรก
     if(this.data.shards==null)this.data.shards=0;   // 🔩 เศษอุปกรณ์ (จากของซ้ำ) → หลอมของตำนาน
     if(!this.data.gearAffix)this.data.gearAffix={};   // affix ต่อชิ้น (E: loot chase)
+    if(!this.data.gearRarity)this.data.gearRarity={};   // rarity ที่คราฟต์ (common/magic/rare) ต่อชิ้น
+    if(!this.data.currency)this.data.currency={};   // 🧪 currency คราฟต์ (Phase 2)
     if(this.data.ascension==null)this.data.ascension=0;
     if(this.data.endlessBest==null)this.data.endlessBest=0;
     if(!Array.isArray(this.data.endlessBoard))this.data.endlessBoard=[];
@@ -1950,6 +1975,14 @@ const Save = {
   gearAffixes(id){ return (this.data.gearAffix&&this.data.gearAffix[id])||[]; },
   ensureAffix(id,tier){ if(!this.data.gearAffix)this.data.gearAffix={}; if(!this.data.gearAffix[id]){ this.data.gearAffix[id]=rollAffixes(tier); this.save(); } return this.data.gearAffix[id]; },
   rerollAffix(id,tier){ if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=rollAffixes(tier); this.save(); return this.data.gearAffix[id]; },
+  setAffixes(id,arr){ if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=arr; this.save(); },
+  // rarity ที่คราฟต์ (default จากฐาน)
+  gearRarity(id,baseTier){ return (this.data.gearRarity&&this.data.gearRarity[id])||baseDefaultRarity(baseTier); },
+  setGearRarity(id,r){ if(!this.data.gearRarity)this.data.gearRarity={}; this.data.gearRarity[id]=r; this.save(); },
+  // 🧪 currency
+  currency(k){ return (this.data.currency&&this.data.currency[k])||0; },
+  addCurrency(k,n){ if(!this.data.currency)this.data.currency={}; this.data.currency[k]=(this.data.currency[k]||0)+n; this.save(); },
+  spendCurrency(k,n){ if((this.currency(k))>=n){ this.data.currency[k]-=n; this.save(); return true; } return false; },
   enhance(id){ this.data.gearLv[id]=(this.gearLv(id))+1; this.save(); },
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลรอบปัจจุบัน (0..TAL_MAX)
   talLvl(k){ return this.data.upgrades[k]||0; },
@@ -3003,7 +3036,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='craft')this.buildCraftBench(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -3639,6 +3672,67 @@ class Game extends Phaser.Scene {
     if((Save.data.shards||0)<AFFIX_REROLL_COST){ Sfx.select(); this.showBanner('🔩 เศษไม่พอ','ต้องใช้ '+AFFIX_REROLL_COST+' เศษ',1300); return; }
     if(!Save.spendShards(AFFIX_REROLL_COST))return;
     Save.rerollAffix(it.id,it.tier); Sfx.clear(); this.buildMenuScreen();
+  }
+  /* ---- 🧪 Craft Bench (Phase 2): ใช้ currency คราฟต์ affix ของไอเทมที่สวม ---- */
+  // เติม affix 1 อันตามช่องว่างของ rarity · คืน true ถ้าเติมได้
+  _addAffixTo(affs,baseTier,rarity){ const slots=RARITY_SLOTS[rarity]||RARITY_SLOTS.magic, best=BASE_BEST_TIER[baseTier]||4;
+    const cnt=(k)=>affs.filter(a=>affixDef(a.id)&&affixDef(a.id).kind===k).length;
+    const room=[]; if(cnt('prefix')<slots.p)room.push('prefix'); if(cnt('suffix')<slots.s)room.push('suffix');
+    if(!room.length)return false; const kind=room[Math.floor(Math.random()*room.length)];
+    const have=new Set(affs.map(a=>a.id));
+    const pool=AFFIX_POOL.filter(a=>a.kind===kind&&!have.has(a.id)); if(!pool.length)return false;
+    affs.push(rollOneAffix(pool[Math.floor(Math.random()*pool.length)],best)); return true; }
+  applyCurrency(key){
+    const slot=this.gearSlot||'weapon', it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]);
+    if(!it||it.tier==='start'){ Sfx.select(); this.showBanner('🧪 คราฟต์ไม่ได้','ช่องนี้ไม่มีของให้คราฟต์',1300); return; }
+    if(Save.currency(key)<1){ Sfx.select(); const c=currencyDef(key); this.showBanner((c?c.emoji:'🧪')+' ไม่มี currency','หา '+(c?c.name:key)+' จากดรอปในด่านก่อน',1400); return; }
+    const id=it.id, baseTier=it.tier; let affs=Save.gearAffixes(id).slice(); let rar=Save.gearRarity(id,baseTier);
+    const slots=RARITY_SLOTS[rar]||RARITY_SLOTS.magic, full=affs.length>=slots.p+slots.s;
+    let ok=false,msg='';
+    switch(key){
+      case 'transmute': if(rar==='common'){ rar='magic'; affs=[]; this._addAffixTo(affs,baseTier,'magic'); ok=true; msg='กลายเป็น Magic'; } else msg='ใช้ได้กับ Common เท่านั้น'; break;
+      case 'alt':       if(rar==='magic'){ affs=[]; this._addAffixTo(affs,baseTier,'magic'); if(Math.random()<0.6)this._addAffixTo(affs,baseTier,'magic'); ok=true; msg='สุ่ม affix ใหม่'; } else msg='ใช้ได้กับ Magic เท่านั้น'; break;
+      case 'regal':     if(rar==='magic'){ rar='rare'; this._addAffixTo(affs,baseTier,'rare'); ok=true; msg='กลายเป็น Rare!'; } else msg='ใช้ได้กับ Magic เท่านั้น'; break;
+      case 'chaos':     if(rar==='rare'){ const n=Math.max(1,affs.length); affs=[]; for(let i=0;i<n;i++)this._addAffixTo(affs,baseTier,'rare'); ok=true; msg='สุ่ม affix ทั้งหมดใหม่'; } else msg='ใช้ได้กับ Rare เท่านั้น'; break;
+      case 'exalt':     if(rar==='common'){ msg='ต้อง Magic/Rare ก่อน'; } else if(full){ msg='affix เต็มแล้ว'; } else { ok=this._addAffixTo(affs,baseTier,rar); msg=ok?'เพิ่ม affix ใหม่!':'ไม่มีช่องว่าง'; } break;
+      case 'divine':    if(affs.length){ for(const a of affs){ const d=affixDef(a.id); if(d&&d.tiers){ const band=d.tiers[(a.t||3)-1]||d.tiers[2]; a.v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); } } ok=true; msg='สุ่มค่าใหม่ (คง tier)'; } else msg='ไม่มี affix'; break;
+      case 'annul':     if(affs.length){ affs.splice(Math.floor(Math.random()*affs.length),1); ok=true; msg='ลบ affix 1 อัน'; } else msg='ไม่มี affix'; break;
+      case 'scour':     if(affs.length||rar!=='common'){ affs=[]; rar='common'; ok=true; msg='ล้างเป็น Common'; } else msg='ว่างอยู่แล้ว'; break;
+    }
+    if(!ok){ Sfx.select(); this.showBanner('🧪 คราฟต์ไม่สำเร็จ',msg,1400); return; }
+    Save.spendCurrency(key,1); Save.setAffixes(id,affs); Save.setGearRarity(id,rar);
+    const c=currencyDef(key); Sfx.clear(); this.screenFlash(0xc9a3ff,0.4,300);
+    this.showBanner((c?c.emoji:'🧪')+' '+(c?c.name:key),msg+' · '+gearAffixName(it.name,affs),1600);
+    this.buildCraftBench();
+  }
+  buildCraftBench(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🧪 โต๊ะคราฟต์','','gLoadout');
+    const w=this.W,h=this.H, slot=this.gearSlot||'weapon', it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]);
+    // เลือกช่อง (แถวไอคอน 6 ช่อง)
+    let y=64; const slots=GEAR_SLOTS, sw=Math.min(46,(w-28)/6), sy=y+sw/2;
+    slots.forEach((sd,i)=>{ const x=14+sw/2+i*((w-28)/6), on=sd.slot===slot; const eq=GEAR[sd.slot].find(g=>g.id===Save.data.gear[sd.slot]);
+      const g=this.add.graphics(); g.fillStyle(on?0x3a3550:0x2c2338,1); g.fillRoundedRect(x-sw/2,y,sw,sw,10); g.lineStyle(on?3:1.5,on?0xc9a3ff:0x4a4059,1); g.strokeRoundedRect(x-sw/2,y,sw,sw,10);
+      const em=this.add.text(x,y+sw/2,eq&&eq.id.indexOf('_none')<0?eq.emoji:sd.emoji,{fontSize:Math.round(sw*0.5)+'px'}).setOrigin(0.5); this.menu.add([g,em]);
+      this._zone(x-sw/2,y,sw,sw,()=>{ this.gearSlot=sd.slot; this.buildCraftBench(); }); });
+    y=sy+sw/2+14;
+    if(!it||it.tier==='start'){ const t=this.add.text(w/2,y+20,'ช่องนี้ยังไม่มีของให้คราฟต์',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5); this.menu.add(t); this.menu.setVisible(true); return; }
+    // การ์ดไอเทม (ชื่อ + rarity + affix)
+    const affs=Save.gearAffixes(it.id), rar=Save.gearRarity(it.id,it.tier), rl=RARITY_LABEL[rar]||RARITY_LABEL.magic;
+    const card=this.add.graphics(); card.fillStyle(0x241a33,0.95); card.fillRoundedRect(14,y,w-28,84,14); card.lineStyle(2,Phaser.Display.Color.HexStringToColor(rl.color).color,1); card.strokeRoundedRect(14,y,w-28,84,14); this.menu.add(card);
+    const nm=this.add.text(24,y+10,it.emoji+' '+gearAffixName(it.name,affs),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:rl.color,wordWrap:{width:w-48}}).setOrigin(0,0); this.menu.add(nm);
+    const rt=this.add.text(w-24,y+10,rl.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:rl.color}).setOrigin(1,0); this.menu.add(rt);
+    const astr=affs.length?affs.map(a=>{const d=affixDef(a.id);return d?d.emoji+d.label+' '+d.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean).join('\n'):'(ไม่มี affix)';
+    const at=this.add.text(24,y+34,astr,{fontFamily:'sans-serif',fontSize:'10px',color:'#c9a3ff',lineSpacing:3,wordWrap:{width:w-48}}).setOrigin(0,0); this.menu.add(at);
+    y+=94;
+    // ปุ่ม currency (กริด 2 คอลัมน์)
+    const cols=2, gap=8, cw=(w-28-gap)/cols, ch=44;
+    CURRENCY.forEach((c,i)=>{ const cx=14+(i%cols)*(cw+gap), cy=y+Math.floor(i/cols)*(ch+gap), have=Save.currency(c.key), can=have>0;
+      const g=this.add.graphics(); g.fillStyle(can?0x2f2740:0x241a2e,1); g.fillRoundedRect(cx,cy,cw,ch,10); g.lineStyle(1.4,can?0xc9a3ff:0x3a3550,1); g.strokeRoundedRect(cx,cy,cw,ch,10); this.menu.add(g);
+      const em=this.add.text(cx+8,cy+ch/2,c.emoji,{fontSize:'20px'}).setOrigin(0,0.5); this.menu.add(em);
+      const nm2=this.add.text(cx+34,cy+7,c.name+'  ×'+have,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:can?'#fff':'#7a7088'}).setOrigin(0,0);
+      const dd=this.add.text(cx+34,cy+23,c.desc,{fontFamily:'sans-serif',fontSize:'8px',color:'#a99fbb',wordWrap:{width:cw-40}}).setOrigin(0,0);
+      this.menu.add([nm2,dd]); this._zone(cx,cy,cw,ch,()=>this.applyCurrency(c.key)); });
+    this.menu.setVisible(true);
   }
   openGachaReveal(){
     if(this._gachaBusy)return;if((Save.data.sugar||0)<GACHA_COST){Sfx.select();this.showBanner('🍬 Sugar ไม่พอ','ต้องใช้ '+GACHA_COST+' Sugar เพื่อเปิดกล่อง',1300);return;}
@@ -5651,8 +5745,16 @@ class Game extends Phaser.Scene {
   collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false;
     const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;g.clearTint();Sfx.select();this.burst(g.x,g.y,rarity.color);
     const got=this.grantGear(tier);
-    if(got) this.showBanner(rarity.emoji+' '+rarity.name+' DROP!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name+' · '+TIER_LABEL[tier].name,1800);
-    else {const refund=tier==='legend'?90:tier==='epic'?60:tier==='rare'?25:8;const sh=tier==='legend'?12:tier==='epic'?6:tier==='rare'?3:1;this.sugarStage+=refund;this.sugarRun+=refund;Save.addShards(sh);if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🍬 +'+refund+' · 🔩 +'+sh,1300);}
+    // 🧪 currency ดรอปพร้อมของ (ยิ่ง tier สูงยิ่งดี — เคารพกฎเหล็ก)
+    const ck=this.rollCurrencyDrop(tier); if(ck)Save.addCurrency(ck,1);
+    const cn=ck?(' · '+(currencyDef(ck).emoji)+currencyDef(ck).name):'';
+    if(got) this.showBanner(rarity.emoji+' '+rarity.name+' DROP!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name+' · '+TIER_LABEL[tier].name+cn,1800);
+    else {const refund=tier==='legend'?90:tier==='epic'?60:tier==='rare'?25:8;const sh=tier==='legend'?12:tier==='epic'?6:tier==='rare'?3:1;this.sugarStage+=refund;this.sugarRun+=refund;Save.addShards(sh);if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 ของซ้ำ','แปลงเป็น 🍬 +'+refund+' · 🔩 +'+sh+cn,1300);}
+  }
+  // สุ่ม currency ดรอปตาม tier ของ loot (นรก/ของสูง = ได้ orb ระดับสูง)
+  rollCurrencyDrop(tier){
+    const pools={ common:['scour','annul','transmute','alt'], rare:['transmute','alt','regal','annul'], epic:['alt','regal','chaos','exalt','divine'], legend:['regal','chaos','exalt','exalt','divine','divine'] };
+    if(Math.random()>0.72)return null; const p=pools[tier]||pools.common; return p[Math.floor(Math.random()*p.length)];
   }
   // ---- หีบสมบัติ (ดรอปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
