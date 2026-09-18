@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.85.0';
+const GAME_VERSION = '2.86.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.86.0', date:'2026-09-18', title:'ระบบครัว/สูตรอาหารเป็นแกน (Recipe Rework)', items:[
+    'สูตรเด่น ⭐ (Signature Dish) ต่ออาวุธ — ผลแรงกว่าปกติ (ดาเมจ/คริ/ลดดาเมจ/คูลดาวน์) เป็นเป้าหมายไล่ล่า',
+    'สูตรธรรมดา ปรับให้ชัดเป็นสายเล่น (แต่ละอาวุธเลือกได้หลายทาง = build variety)',
+    'สมุดสูตรอาหาร 🍳 (เมนู คัมภีร์) — บันทึกสูตรที่เคยปรุงถาวรข้ามรัน · โชว์สูตรลับที่ยังไม่พบ',
+    'ค้นพบสูตรครั้งแรก = รับ 🍬 Sugar ถาวร (ปกติ +12 · สูตรเด่น +30) + ป้าย 🆕',
+    'พาเนลสูตรในเกมโชว์ ⭐ สูตรเด่น / ✓ ปรุงแล้ว / 📖 เคยค้นพบ',
+  ]},
   { v:'2.85.0', date:'2026-09-17', title:'บอสด่าน 2-4 ตัวใหญ่ขึ้น', items:[
     'บอสด่าน 2/3/4 ตัวใหญ่ขึ้น (สเกล 0.88 → 1.18) — อลังการขึ้น (hitbox โตตามอัตโนมัติ)',
   ]},
@@ -1634,27 +1641,29 @@ const SKILL_TIERS = {
 /* ---- COMBOS = "สูตรอาหาร": สกิลโจมตี/Basic Attack (a) + สกิลติดตัว (b) = ปรุงเมนู ----
    character-first: syncBasicAttack ตั้ง this.skills[สกิลพื้นฐาน] ให้ → สูตรที่ a=สกิลพื้นฐานของตัวนั้นปรุงได้เลยเมื่อเก็บ passive b
    effect(p) = ผลบัฟตอนปรุง (สแตตผู้เล่น ไหลเข้าระบบเอง) · ไม่มี effect = default +5% ดาเมจใน cookDish */
+/* sig:true = "สูตรเด่น" (Signature Dish) ⭐ ของแต่ละอาวุธ — ผลแรงกว่าปกติ + รางวัลค้นพบมากกว่า
+   สูตรธรรมดา = สายเสริม build ให้เลือกทางเล่น · character-first: a = สกิลพื้นฐานของตัวนั้น (เก็บ passive b ให้ครบ = ปรุง) */
 const COMBOS = [
-  // 🍓 โมโม่ (sprinkle)
-  { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'ลูกกวาดพเนจร', desc:'ยิงถี่ขึ้น · คูลดาวน์ -6%', effect:p=>{p.cdMul*=0.94;} },
-  { key:'sugarshot', a:'sprinkle', b:'crit',   emoji:'🍬🎯', name:'เมล็ดเสี้ยนคม', desc:'คริติคอล +4%', effect:p=>{p.critChance+=0.04;} },
-  { key:'candycore', a:'sprinkle', b:'power',  emoji:'🍬💥', name:'เมล็ดหนักหน่วง', desc:'ดาเมจ +7%', effect:p=>{p.dmgMul*=1.07;} },
-  // 🍫 โกโก้ (meteor)
-  { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'ฝนโดนัทติดตาม', desc:'ระยะเก็บของ +20%', effect:p=>{p.pickup*=1.20;} },
-  { key:'titanjab',  a:'meteor',   b:'power',  emoji:'🍩💥', name:'หมัดยักษ์โกโก้', desc:'ดาเมจ +8%', effect:p=>{p.dmgMul*=1.08;} },
-  { key:'bearhide',  a:'meteor',   b:'guard',  emoji:'🍩🛡️', name:'เกราะหมีระเบิด', desc:'ลดดาเมจรับ -6%', effect:p=>{p.dmgTakenMul*=0.94;} },
-  // 🌿 มินต์ (frost)
-  { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'พายุเยียวยา', desc:'ฟื้น HP +0.6/วิ', effect:p=>{p.regen+=0.6;} },
-  { key:'icewall',   a:'frost',    b:'guard',  emoji:'❄️🛡️', name:'กำแพงน้ำแข็ง', desc:'ลดดาเมจรับ -6%', effect:p=>{p.dmgTakenMul*=0.94;} },
-  { key:'coldsnap',  a:'frost',    b:'haste',  emoji:'❄️⏩', name:'โนวาถี่ยิบ', desc:'คูลดาวน์ -6%', effect:p=>{p.cdMul*=0.94;} },
-  // 🍠 ตาโร่ (thunder)
-  { key:'storm',     a:'thunder',  b:'crit',   emoji:'⚡🎯', name:'ฟ้าคริติคอล', desc:'คริติคอล +5%', effect:p=>{p.critChance+=0.05;} },
-  { key:'thunderrun',a:'thunder',  b:'swift',  emoji:'⚡👟', name:'สายฟ้าพเนจร', desc:'ความเร็ว +6%', effect:p=>{p.baseSpeed*=1.06;} },
-  { key:'rollingarc',a:'thunder',  b:'haste',  emoji:'⚡⏩', name:'สายฟ้ารัว', desc:'คูลดาวน์ -6%', effect:p=>{p.cdMul*=0.94;} },
-  // ⚫ งาดำ (mirror)
-  { key:'reflection',a:'mirror',   b:'guard',  emoji:'🪞🛡️', name:'คำสัตย์สะท้อน', desc:'ลดดาเมจรับ -7%', effect:p=>{p.dmgTakenMul*=0.93;} },
-  { key:'mirrormend',a:'mirror',   b:'regen',  emoji:'🪞💗', name:'กระจกเยียวยา', desc:'ฟื้น HP +0.6/วิ', effect:p=>{p.regen+=0.6;} },
-  { key:'oathkeep',  a:'mirror',   b:'returningTaste', emoji:'🪞🔁', name:'คำสัตย์ก้องคืน', desc:'ดาเมจ +6%', effect:p=>{p.dmgMul*=1.06;} },
+  // 🍓 โมโม่ (sprinkle) — สายยิงรัวคริติคอล
+  { key:'candycore', a:'sprinkle', b:'power',  sig:true, emoji:'🍬💥', name:'พราลีนหัวใจระเบิด', desc:'⭐ ดาเมจ +13% · คริติคอล +3%', effect:p=>{p.dmgMul*=1.13;p.critChance+=0.03;} },
+  { key:'sugarshot', a:'sprinkle', b:'crit',   emoji:'🍬🎯', name:'เมล็ดเสี้ยนคม', desc:'คริติคอล +5%', effect:p=>{p.critChance+=0.05;} },
+  { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'ลูกกวาดพเนจร', desc:'คูลดาวน์ -7%', effect:p=>{p.cdMul*=0.93;} },
+  // 🍫 โกโก้ (meteor) — สายทุบหนักแนวหน้า
+  { key:'titanjab',  a:'meteor',   b:'power',  sig:true, emoji:'🍩💥', name:'ซันเดย์หมัดยักษ์', desc:'⭐ ดาเมจ +14% · ลดดาเมจรับ -5%', effect:p=>{p.dmgMul*=1.14;p.dmgTakenMul*=0.95;} },
+  { key:'bearhide',  a:'meteor',   b:'guard',  emoji:'🍩🛡️', name:'เกราะหมีระเบิด', desc:'ลดดาเมจรับ -7%', effect:p=>{p.dmgTakenMul*=0.93;} },
+  { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'ฝนโดนัทติดตาม', desc:'ระยะเก็บของ +25%', effect:p=>{p.pickup*=1.25;} },
+  // 🌿 มินต์ (frost) — สายควบคุมฝูง
+  { key:'coldsnap',  a:'frost',    b:'haste',  sig:true, emoji:'❄️⏩', name:'พาร์เฟต์เยือกแข็ง', desc:'⭐ คูลดาวน์ -10% · ฟื้น HP +0.4/วิ', effect:p=>{p.cdMul*=0.90;p.regen+=0.4;} },
+  { key:'icewall',   a:'frost',    b:'guard',  emoji:'❄️🛡️', name:'กำแพงน้ำแข็ง', desc:'ลดดาเมจรับ -7%', effect:p=>{p.dmgTakenMul*=0.93;} },
+  { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'พายุเยียวยา', desc:'ฟื้น HP +0.8/วิ', effect:p=>{p.regen+=0.8;} },
+  // 🍠 ตาโร่ (thunder) — สายชิ่งไว
+  { key:'storm',     a:'thunder',  b:'crit',   sig:true, emoji:'⚡🎯', name:'ซอร์เบต์ฟ้าคำราม', desc:'⭐ คริติคอล +7% · ความเร็ว +4%', effect:p=>{p.critChance+=0.07;p.baseSpeed*=1.04;} },
+  { key:'thunderrun',a:'thunder',  b:'swift',  emoji:'⚡👟', name:'สายฟ้าพเนจร', desc:'ความเร็ว +7%', effect:p=>{p.baseSpeed*=1.07;} },
+  { key:'rollingarc',a:'thunder',  b:'haste',  emoji:'⚡⏩', name:'สายฟ้ารัว', desc:'คูลดาวน์ -7%', effect:p=>{p.cdMul*=0.93;} },
+  // ⚫ งาดำ (mirror) — สายแนวรับ
+  { key:'reflection',a:'mirror',   b:'guard',  sig:true, emoji:'🪞🛡️', name:'ซันเดย์คำสัตย์', desc:'⭐ ลดดาเมจรับ -12% · ดาเมจ +5%', effect:p=>{p.dmgTakenMul*=0.88;p.dmgMul*=1.05;} },
+  { key:'mirrormend',a:'mirror',   b:'regen',  emoji:'🪞💗', name:'กระจกเยียวยา', desc:'ฟื้น HP +0.8/วิ', effect:p=>{p.regen+=0.8;} },
+  { key:'oathkeep',  a:'mirror',   b:'returningTaste', emoji:'🪞🔁', name:'คำสัตย์ก้องคืน', desc:'ดาเมจ +7%', effect:p=>{p.dmgMul*=1.07;} },
 ];
 
 function passivePairHint(key){
@@ -1707,6 +1716,7 @@ const HUB_GROUPS = {
     ['gear','◆','อุปกรณ์','สวมใส่และตีบวก'] ] },
   gCodex:{ title:'📖 คัมภีร์', rows:[
     ['skills','✧','คัมภีร์แก่นรส','สกิล พร และคู่ Awaken'],
+    ['cookbook','🍳','สมุดสูตรอาหาร','สูตรที่ค้นพบ + สูตรเด่น ⭐'],
     ['bestiary','☷','สมุดมอนสเตอร์','การค้นพบและโบนัส'] ] },
   gActivity:{ title:'🎉 กิจกรรม', rows:[
     ['daily','📅','ภารกิจประจำวัน','Daily Reward และด่านท้าทาย'],
@@ -1826,6 +1836,7 @@ const Save = {
     // เซฟเดิมที่จบ Chapter 1 แล้วต้องเห็น Chapter 2 ทันทีหลังอัปเดต
     if(this.data.stageMastery[4])this.data.unlockedStage=Math.max(5,this.data.unlockedStage||0);
     if(!this.data.achievements)this.data.achievements={};
+    if(!this.data.cookbook)this.data.cookbook={};   // สูตรที่เคยปรุงสำเร็จ (ถาวรข้ามรัน) → สมุดสูตร + รางวัล Sugar ครั้งแรก
     if(this.data.ascension==null)this.data.ascension=0;
     if(this.data.endlessBest==null)this.data.endlessBest=0;
     if(!Array.isArray(this.data.endlessBoard))this.data.endlessBoard=[];
@@ -1845,6 +1856,11 @@ const Save = {
     this._cloudReady=true;
   },
   addSugar(n){ this.data.sugar=(this.data.sugar||0)+n; this.save(); },
+  // สมุดสูตร: บันทึกสูตรที่ปรุงสำเร็จถาวร · คืนรางวัล Sugar เฉพาะครั้งแรกที่ค้นพบ (0 = เคยมีแล้ว)
+  cookbookHas(key){ return !!(this.data.cookbook&&this.data.cookbook[key]); },
+  cookbookCount(){ return this.data.cookbook?Object.keys(this.data.cookbook).length:0; },
+  discoverDish(key,sig){ if(!this.data.cookbook)this.data.cookbook={}; if(this.data.cookbook[key])return 0;
+    this.data.cookbook[key]=1; const rew=sig?30:12; this.data.sugar=(this.data.sugar||0)+rew; this.save(); return rew; },
   spend(n){ if((this.data.sugar||0)>=n){ this.data.sugar-=n; this.save(); return true; } return false; },
   // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
   cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
@@ -2668,12 +2684,14 @@ class Game extends Phaser.Scene {
     combos.forEach((c,i)=>{
       const cooked=!!(this.combosOwned&&this.combosOwned[c.key]);
       const owned=(this.passives&&this.passives[c.b]>0);
+      const known=Save.cookbookHas(c.key);   // เคยค้นพบสูตรนี้ในรันก่อน ๆ
       const pas=PASSIVES[c.b], x=sx+i*(cw+gap);
-      const col=cooked?0xffd166:(owned?0x66d3b3:0x4a4059);
-      const g=this.add.graphics(); g.fillStyle(cooked?0x3a2f1a:0x241a33,0.95); g.fillRoundedRect(x,rowY,cw,ch,8); g.lineStyle(1.5,col,cooked?1:0.75); g.strokeRoundedRect(x,rowY,cw,ch,8);
+      const col=cooked?(c.sig?0xffb020:0xffd166):(owned?0x66d3b3:0x4a4059);
+      const g=this.add.graphics(); g.fillStyle(cooked?(c.sig?0x40320f:0x3a2f1a):0x241a33,0.95); g.fillRoundedRect(x,rowY,cw,ch,8); g.lineStyle(c.sig?2:1.5,col,cooked?1:0.75); g.strokeRoundedRect(x,rowY,cw,ch,8);
       cont.add(g);
-      // บรรทัด 1: ชื่อเมนู (+ ✓ ถ้าปรุงแล้ว)
-      const nm=this.add.text(x+6,rowY+5,(cooked?'✓ ':'')+c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:cooked?'#ffe08a':'#ffffff',wordWrap:{width:cw-12}}).setOrigin(0,0);
+      // บรรทัด 1: ชื่อเมนู (⭐ สูตรเด่น · ✓ ปรุงแล้ว · 📖 เคยค้นพบ)
+      const tag=(c.sig?'⭐':'')+(cooked?'✓':(known?'📖':''));
+      const nm=this.add.text(x+6,rowY+5,(tag?tag+' ':'')+c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:cooked?'#ffe08a':(c.sig?'#ffd6a0':'#ffffff'),wordWrap:{width:cw-12}}).setOrigin(0,0);
       // บรรทัด 2: สถานะ — ต้องเก็บ passive ตัวไหน
       const sub=cooked?'ปรุงแล้ว!':('เก็บ '+(pas?pas.emoji+' '+pas.name:c.b));
       const st=this.add.text(x+6,rowY+ch-11,sub,{fontFamily:'sans-serif',fontSize:'8px',color:cooked?'#ffd166':(owned?'#66d3b3':'#b7abc9')}).setOrigin(0,0.5);
@@ -2734,7 +2752,11 @@ class Game extends Phaser.Scene {
     const ai=SKILLDEFS[c.a], bi=PASSIVES[c.b];
     const recipe=((ai&&ai.emoji)||'🍬')+' + '+((bi&&bi.emoji)||'✨');
     this.dishCount=(this.dishCount||0)+1;
-    this.showBanner('🍳 ปรุงเมนู! '+c.emoji+' '+c.name, recipe+' → '+c.desc,1700);
+    // สมุดสูตร: ค้นพบครั้งแรก = รางวัล Sugar ถาวร + ป้ายพิเศษ
+    const rew=Save.discoverDish(c.key,c.sig);
+    const head=(c.sig?'⭐ สูตรเด่น! ':'🍳 ปรุงเมนู! ')+c.emoji+' '+c.name;
+    let sub=recipe+' → '+c.desc; if(rew>0)sub='🆕 สูตรใหม่! +🍬'+rew+' · '+c.desc;
+    this.showBanner(head, sub, c.sig?2100:1700);   // รางวัลค้นพบเข้าคลัง Sugar ถาวรทันที (Save.discoverDish บันทึกแล้ว)
     Sfx.clear(); if(Sfx.pop)Sfx.pop();
   }
 
@@ -2896,7 +2918,7 @@ class Game extends Phaser.Scene {
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -2933,6 +2955,38 @@ class Game extends Phaser.Scene {
       const head=this.add.text(cx+12,cy+10,'v'+c.v+' · '+c.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'12px':'11px',color:'#ff9ec4',wordWrap:{width:cw-24}}).setOrigin(0,0);
       const dd=this.add.text(cx+cw-12,cy+12,c.date,{fontFamily:'sans-serif',fontSize:'9px',color:'#7a7088'}).setOrigin(1,0);this.menu.add([head,dd]);
       let iy=cy+36;c.items.slice(0,portrait?3:4).forEach(it=>{const short=it.length>80?it.slice(0,79)+'…':it;const li=this.add.text(cx+12,iy,'• '+short,{fontFamily:'sans-serif',fontSize:portrait?'10px':'8.5px',color:'#c7bdd6',wordWrap:{width:cw-24}}).setOrigin(0,0);this.menu.add(li);iy+=li.height+5;});
+    });
+    this.menu.setVisible(true);
+  }
+  // 🍳 สมุดสูตร — โชว์สูตร (COMBOS) แยกตามตัวละคร · ค้นพบแล้ว (Save.cookbook) / ยังไม่พบ / สูตรเด่น ⭐
+  buildCookbook(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 สมุดสูตรอาหาร','',this.menuScreenBack||'gCodex');
+    const w=this.W,h=this.H, portrait=w<=h;
+    const total=COMBOS.length, found=COMBOS.filter(c=>Save.cookbookHas(c.key)).length;
+    const sumTxt=this.add.text(w/2,53,'ปรุงสูตร (อาวุธ + สกิลติดตัวที่ถูกคู่) ในด่าน = ปลดถาวร · ค้นพบแล้ว '+found+' / '+total+' สูตร',
+      {fontFamily:'sans-serif',fontSize:'10px',color:'#ffe08a',wordWrap:{width:w-170}}).setOrigin(0.5);
+    this.menu.add(sumTxt);
+    // จัดกลุ่มตามสกิลพื้นฐาน (อาวุธ) เรียงตามลำดับตัวละคร
+    const byChar=CHAR_ORDER.map(id=>({id,ba:BASIC_ATTACKS[id]})).filter(o=>o.ba);
+    let y=portrait?76:70; const sx=14, aw=w-28;
+    byChar.forEach(o=>{
+      const ba=o.ba, ch=CHARACTERS[o.id], recs=COMBOS.filter(c=>c.a===ba.skill);
+      if(!recs.length)return;
+      const hd=this.add.text(sx,y,ba.emoji+' '+ba.name+'  ('+(ch?ch.name:o.id)+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ff9ec4'}).setOrigin(0,0);
+      this.menu.add(hd); y+=18;
+      const cols=portrait?1:3, gap=6, cw=(aw-gap*(cols-1))/cols, rh=34;
+      recs.forEach((c,i)=>{
+        const known=Save.cookbookHas(c.key), pas=PASSIVES[c.b];
+        const col=i%cols, row=Math.floor(i/cols), x=sx+col*(cw+gap), ry=y+row*(rh+gap);
+        const bc=known?(c.sig?0xffb020:0xffd166):0x4a4059;
+        const g=this.add.graphics(); g.fillStyle(known?(c.sig?0x40320f:0x2f2718):0x241a33,0.95); g.fillRoundedRect(x,ry,cw,rh,8); g.lineStyle(c.sig?2:1.4,bc,known?1:0.6); g.strokeRoundedRect(x,ry,cw,rh,8); this.menu.add(g);
+        const tag=(c.sig?'⭐ ':'')+(known?'✓ ':'🔒 ');
+        const nm=this.add.text(x+7,ry+5,tag+c.emoji+' '+(known?c.name:'สูตรลับ'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:known?'#ffe08a':'#8a7fa0',wordWrap:{width:cw-14}}).setOrigin(0,0);
+        const sub=known?c.desc:('เก็บ '+(pas?pas.emoji+' '+pas.name:c.b)+' คู่กับอาวุธ');
+        const st=this.add.text(x+7,ry+rh-11,sub,{fontFamily:'sans-serif',fontSize:'8px',color:known?'#c7bdd6':'#8a7fa0',wordWrap:{width:cw-14}}).setOrigin(0,0.5);
+        this.menu.add([nm,st]);
+      });
+      y+=Math.ceil(recs.length/cols)*(rh+gap)+8;
     });
     this.menu.setVisible(true);
   }
