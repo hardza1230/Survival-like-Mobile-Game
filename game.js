@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.99.0';
+const GAME_VERSION = '2.99.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.99.1', date:'2026-09-19', title:'แก้บั๊ก: เปิดเมนูแล้วเด้ง (quest)', items:[
+    'แก้ผู้เล่นเก่าที่เคยผ่านด่านแล้วเปิดหน้าหลักครั้งแรกอาจเด้ง (quest สำเร็จค้างเรียก banner ก่อนมี HUD)',
+    'ป้องกัน showBanner ถูกเรียกตอนยังไม่มี HUD',
+  ]},
   { v:'2.99.0', date:'2026-09-19', title:'เพิ่มอาร์ต Props ฉากด่าน 2–5', items:[
     'เพิ่ม Props อาร์ตจริง 14 ชิ้นสำหรับฉากท่อระบายน้ำ เตาหลอม น้ำแข็ง และห้องบอส',
     'แก้การโหลด asset ให้ใช้ภาพ Props ใหม่แทน procedural fallback',
@@ -3492,7 +3496,7 @@ class Game extends Phaser.Scene {
   // ---- Quest chain + badge helpers ----
   claimReadyQuests(){ const d=Save.data; if(!d.questClaimed)d.questClaimed={}; let claimed=null,total=0;
     for(const q of QUESTS){ if(q.done(d)&&!d.questClaimed[q.id]){ d.questClaimed[q.id]=1; d.sugar=(d.sugar||0)+q.r; total+=q.r; claimed=q; } }
-    if(claimed){ Save.save(); if(this.showBanner)this.showBanner('🎯 ภารกิจสำเร็จ! +🍬'+total,claimed.t,2000); Sfx.clear&&Sfx.clear(); }
+    if(claimed){ Save.save(); if(this.menuToast)this.menuToast('🎯 ภารกิจสำเร็จ! +🍬'+total+' · '+claimed.t,'#ffe08a'); Sfx.clear&&Sfx.clear(); }   // ใช้ menuToast (ปลอดภัยในเมนู) แทน showBanner ที่ bannerT ยังไม่ถูกสร้างตอนอยู่ Hub
   }
   nextQuest(){ const d=Save.data; for(const q of QUESTS){ if(!q.done(d))return q; } return null; }
   hasActivityBadge(){ try{ const d=Save.data; const daily=(d.daily&&d.daily.claimDay)!==localDayKey();
@@ -4839,6 +4843,7 @@ class Game extends Phaser.Scene {
     this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='stage';this.buildMenuScreen();
   }
   showBanner(title,sub,ms){
+    if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังไม่มี HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash
     this.bannerT.setText(title).setVisible(true).setAlpha(0).setScale(0.7);
     this.bannerS.setText(sub||'').setVisible(true).setAlpha(0);
     this.tweens.add({targets:[this.bannerT,this.bannerS],alpha:1,duration:250});
