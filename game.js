@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '3.0.0';
+const GAME_VERSION = '3.1.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'3.1.0', date:'2026-09-19', title:'English UI (Phase 2) — skills & cards', items:[
+    'Translated skills, passives, characters, talents, uniques, combos, affixes and tier text',
+    'Level-up cards, Awaken cards and difficulty tiers now in English',
+    'Story, gear/craft/bazaar menus and changelog translate next',
+  ]},
   { v:'3.0.0', date:'2026-09-19', title:'English UI (Phase 1) — global launch', items:[
     'Game language switched to English for the global market',
     'Phase 1 translated: main menu, settings, difficulty, tutorial, HUD, pause',
@@ -1488,40 +1493,40 @@ class Opening extends Phaser.Scene {
 
 /* ---- SKILLS: auto-cast, flashy, stackable ---- */
 const SKILLDEFS = {
-  sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', role:'ปืนกล · รัวเร็ว เบา', max:5, desc:'รัวเมล็ดรุ้งใส่ศัตรูใกล้สุดเป็นชุด เร็วแต่เบา · โดนแล้วหาย (1 hit)',
-    awaken:{ name:'พายุสายรุ้ง', emoji:'🌈', desc:'รัว 16 เม็ดสายรุ้ง เร็วยิบ ไล่เป้าอัตโนมัติ!' } },
-  star:    { name:'Star Guard',     emoji:'🌟', role:'ป้องกัน · ระยะประชิด', max:5, desc:'ดาวโคจรทำดาเมจและสกัดกระสุนที่เข้าใกล้', orbit:true,
-    awaken:{ name:'วงกาแล็กซี', emoji:'💫', desc:'ดาว 3 วง หมุนไว ดาเมจมหาศาล!' } },
-  thunder: { name:'Thunder Crown',  emoji:'⚡', role:'ล่าตัวแกร่ง · ลูกโซ่', max:5, desc:'ผ่าเป้าหมาย HP สูงสุด แล้วชิ่งสายฟ้าไปศัตรูรอบข้าง',
-    awaken:{ name:'พายุนิรันดร์', emoji:'🌩️', desc:'ฟ้าผ่า 8 จุด แตกลูกลามทั้งสนาม!' } },
-  whirl:   { name:'Cream Whirl',    emoji:'🍥', role:'กวาดฝูง · รอบทิศ', max:5, desc:'ปล่อยใบครีมหมุนรอบทิศ กวาดศัตรูจำนวนมาก',
-    awaken:{ name:'ทอร์นาโดครีม', emoji:'🌪️', desc:'16 ทิศ ใบพัดยักษ์ ทะลุทุกตัว!' } },
-  boomer:  { name:'Boomerang Cookie',emoji:'🍪', role:'ไป–กลับ · จัดแนว', max:5, desc:'คุกกี้ทะลุศัตรูขาไปและขากลับ รับคืนแล้วลดเวลาร่ายถัดไป',
-    awaken:{ name:'เฮอริเคนคุกกี้', emoji:'🍪', desc:'6 ชิ้นยักษ์ เด้ง 2 รอบ ฟันถี่!' } },
-  frost:   { name:'Frost Pulse',    emoji:'❄️', role:'หยุดฝูง · คุมพื้นที่', max:5, desc:'หยุดศัตรูรอบตัว; เป้าหมายที่แข็งอยู่จะแตกเป็นดาเมจเพิ่ม',
-    awaken:{ name:'ศูนย์สัมบูรณ์', emoji:'🧊', desc:'แช่ทั้งจอ + ระเบิดน้ำแข็งดาเมจสูง!' } },
-  popcorn: { name:'Popcorn Burst',  emoji:'🍿', role:'ประชิด · กระแทกหนี', max:5, desc:'ระเบิดป๊อปคอร์นระยะสั้น ดาเมจสูงและผลักฝูงออกจากตัว',
-    awaken:{ name:'ป๊อปคอร์นถล่มโลก', emoji:'🍿', desc:'20 เม็ดถล่มจอ ทะลุ ยิงไกล!' } },
-  bubble:  { name:'Bubble Prison',  emoji:'🫧', role:'จับตัวอันตราย · ระเบิด', max:5, desc:'ไล่จับศัตรู HP สูงสุดไว้ในฟอง แล้วระเบิดจาก HP เป้าหมาย',
-    awaken:{ name:'เรือนจำฟองแตก', emoji:'🫧', desc:'ยิงหลายฟอง จับนานขึ้น และระเบิดลูกโซ่วงใหญ่!' } },
-  mine:    { name:'Cupcake Sentry', emoji:'🧁', role:'ป้อมประจำที่ · DPS', max:5, desc:'วางป้อมยิงอัตโนมัติ คุมตำแหน่งก่อนระเบิดปิดท้าย',
-    awaken:{ name:'กองทัพเบเกอรี', emoji:'🧁', desc:'วาง 3 ป้อม ยิงสองนัดพร้อมกัน และอยู่ได้นานขึ้น!' } },
-  beam:    { name:'Caramel Beam',   emoji:'🔆', role:'เส้นตรง · Burst หนัก', max:5, desc:'ยิงลำแสงหนักทะลุทั้งแนว แต่ต้องจัดตำแหน่งให้ดี',
-    awaken:{ name:'ลำแสงมรณะ', emoji:'🔆', desc:'3 ลำกว้าง เผาทะลุทั้งแนว!' } },
-  meteor:  { name:'Bear-Sigil Donut', emoji:'🍩', role:'กระแทกซ้ำ · พื้นที่เคลือบ', max:5, desc:'ตราหมีกระแทกเป้าหมายซ้ำ ทิ้ง Glaze ชะลอในพื้นที่',
-    awaken:{ name:'ราชันตราหมี', emoji:'🐻', desc:'กระแทกถี่ขึ้น เคลือบพื้นที่กว้าง และปิดด้วยคลื่นตราหมี!' } },
-  cloud:   { name:'Mocha Mist',     emoji:'☕', role:'DoT · จุดฝูงหนาแน่น', max:5, desc:'วางหมอกพิษตรงกลุ่มศัตรูที่หนาแน่นที่สุด ดาเมจต่อเนื่อง',
-    awaken:{ name:'หมอกมรณะ', emoji:'☕', desc:'กลุ่มใหญ่ ดาเมจสูง อยู่นาน!' } },
-  rocket:  { name:'Candy Hunter',   emoji:'🚀', role:'ล่าตัวแกร่ง · AoE', max:5, desc:'จรวดล็อกศัตรู HP สูงสุดและระเบิดใส่ฝูงรอบเป้าหมาย',
-    awaken:{ name:'ฝูงจรวด', emoji:'🚀', desc:'6 ลูกไล่เป้า ระเบิดใหญ่!' } },
-  mirror:  { name:'Mirror Glaze', emoji:'🪞', role:'สวนกลับ · กระสุนศัตรู', max:5, desc:'กางกระจกเปลี่ยนกระสุนศัตรูเป็นกระสุนรสชาติไล่เป้า',
-    awaken:{ name:'กระจกพันรส', emoji:'🪞', desc:'วงสะท้อนใหญ่ขึ้นและยิงเศษกระจกไล่เป้าเพิ่ม!' } },
-  decoy:   { name:'Core Decoy', emoji:'💠', role:'ล่อฝูง · เอาตัวรอด', max:5, desc:'ล่อศัตรูออกจากผู้เล่น ก่อนระเบิดและฟื้นพลังเมื่อ Awaken',
-    awaken:{ name:'แก่นลวงสมบูรณ์', emoji:'💠', desc:'ล่อได้นาน ระเบิดสองชั้น และทิ้งพลังฟื้นฟู!' } },
+  sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', role:'Machine gun · fast, light', max:5, desc:'Sprays rainbow seeds at the nearest enemies — fast but light · single hit',
+    awaken:{ name:'Rainbow Storm', emoji:'🌈', desc:'16 homing rainbow seeds, blazing fast!' } },
+  star:    { name:'Star Guard',     emoji:'🌟', role:'Defense · close range', max:5, desc:'Orbiting stars deal damage and block incoming bullets', orbit:true,
+    awaken:{ name:'Galaxy Ring', emoji:'💫', desc:'3 rings of stars, spinning fast — massive damage!' } },
+  thunder: { name:'Thunder Crown',  emoji:'⚡', role:'Elite hunter · chain', max:5, desc:'Strikes the highest-HP target, then chains to nearby enemies',
+    awaken:{ name:'Eternal Storm', emoji:'🌩️', desc:'8 strikes that fork across the whole field!' } },
+  whirl:   { name:'Cream Whirl',    emoji:'🍥', role:'Crowd sweep · all directions', max:5, desc:'Spins cream blades in all directions to sweep crowds',
+    awaken:{ name:'Cream Tornado', emoji:'🌪️', desc:'16 directions, giant blades that pierce everything!' } },
+  boomer:  { name:'Boomerang Cookie',emoji:'🍪', role:'Out & back · line up', max:5, desc:'Cookie pierces out and back; catching it cuts the next cooldown',
+    awaken:{ name:'Cookie Hurricane', emoji:'🍪', desc:'6 giant cookies, bounce twice, rapid hits!' } },
+  frost:   { name:'Frost Pulse',    emoji:'❄️', role:'Freeze crowd · area control', max:5, desc:'Freezes nearby enemies; frozen targets shatter for bonus damage',
+    awaken:{ name:'Absolute Zero', emoji:'🧊', desc:'Freezes the whole screen + high-damage ice blast!' } },
+  popcorn: { name:'Popcorn Burst',  emoji:'🍿', role:'Close range · knockback', max:5, desc:'Short-range popcorn burst — high damage, knocks crowds away',
+    awaken:{ name:'Popcorn Apocalypse', emoji:'🍿', desc:'20 kernels blanket the screen, piercing and long-range!' } },
+  bubble:  { name:'Bubble Prison',  emoji:'🫧', role:'Trap threats · burst', max:5, desc:'Traps the highest-HP enemy in a bubble, then bursts based on its HP',
+    awaken:{ name:'Bursting Prison', emoji:'🫧', desc:'Fires many bubbles, holds longer, chain-bursts wide!' } },
+  mine:    { name:'Cupcake Sentry', emoji:'🧁', role:'Turret · DPS', max:5, desc:'Deploys an auto-firing turret that holds ground, then explodes',
+    awaken:{ name:'Bakery Army', emoji:'🧁', desc:'Deploys 3 turrets, double-shots, lasts longer!' } },
+  beam:    { name:'Caramel Beam',   emoji:'🔆', role:'Straight line · heavy burst', max:5, desc:'Fires a heavy beam that pierces the whole line — positioning matters',
+    awaken:{ name:'Death Ray', emoji:'🔆', desc:'3 wide beams that burn through everything!' } },
+  meteor:  { name:'Bear-Sigil Donut', emoji:'🍩', role:'Repeat slam · glazed area', max:5, desc:'Bear sigil slams the target repeatedly, leaving slowing Glaze',
+    awaken:{ name:'Bear-Sigil King', emoji:'🐻', desc:'Slams faster, glazes a wide area, ends with a bear shockwave!' } },
+  cloud:   { name:'Mocha Mist',     emoji:'☕', role:'DoT · dense crowds', max:5, desc:'Drops toxic mist on the densest cluster for continuous damage',
+    awaken:{ name:'Deadly Mist', emoji:'☕', desc:'Bigger cloud, high damage, long duration!' } },
+  rocket:  { name:'Candy Hunter',   emoji:'🚀', role:'Elite hunter · AoE', max:5, desc:'Rocket locks the highest-HP enemy and blasts the crowd around it',
+    awaken:{ name:'Rocket Swarm', emoji:'🚀', desc:'6 homing rockets, big blasts!' } },
+  mirror:  { name:'Mirror Glaze', emoji:'🪞', role:'Reflect · enemy bullets', max:5, desc:'Raises a mirror that turns enemy bullets into homing flavor shots',
+    awaken:{ name:'Thousand-Flavor Mirror', emoji:'🪞', desc:'Bigger reflect ring plus homing glass shards!' } },
+  decoy:   { name:'Core Decoy', emoji:'💠', role:'Lure crowd · survive', max:5, desc:'Lures enemies away, then explodes and heals when Awakened',
+    awaken:{ name:'Perfect Decoy', emoji:'💠', desc:'Lures longer, double explosion, drops healing!' } },
 };
 const SKILL_AWAKEN_LV = 6;   // เลเวลตื่นรู้ (Awaken) — หลังจาก max (5 ดาว)
 // Juice: หมุดหมายคอมโบฆ่าต่อเนื่อง {จำนวน: [สเต็ปเสียง, คำชม]}
-const STREAK_MARKS = {10:[0,'ดีย์!'],25:[1,'สุดยอด!'],50:[2,'โหดจัด!'],100:[3,'เทพ!'],200:[4,'อสูร!'],350:[5,'ตำนาน!']};
+const STREAK_MARKS = {10:[0,'Nice!'],25:[1,'Great!'],50:[2,'Savage!'],100:[3,'Godlike!'],200:[4,'Demonic!'],350:[5,'Legend!']};
 // ระดับความยากต่อด่าน (เลือกก่อนเล่น) — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่ "รางวัลยิ่งดี"
 /* ระดับความยาก 3 ระดับ (ลดจาก 5 เพื่อลดความซับซ้อน/ภาระบาลานซ์ · v2.53) · กฎเหล็ก: ยิ่งยากรางวัลยิ่งดี */
 const DIFFS = [
@@ -1532,10 +1537,10 @@ const DIFFS = [
 /* ---- Card Rarity (แบบ Death Must Die): การ์ดอัพเกรดสุ่มความหายาก → ยิ่งหายากยิ่งได้หลายเลเวลรวด ----
    สีความหายาก = สัญญาณอ่านเร็ว (เห็นทอง=เอาเลย) · ranks = จำนวนเลเวลที่ได้จากการ์ดใบเดียว */
 const RARITIES = [
-  { id:'common', name:'ธรรมดา',    ranks:1, color:0x9aa6b8, weight:68 },
-  { id:'rare',   name:'หายาก',     ranks:2, color:0x5ad1ff, weight:22 },
-  { id:'epic',   name:'เอพิก',     ranks:3, color:0xc07bff, weight:8  },
-  { id:'legend', name:'เลเจนดารี', ranks:4, color:0xffcf40, weight:2  },   // ของหายากเจอยากขึ้น (เดิม 56/27/13/4)
+  { id:'common', name:'Common',    ranks:1, color:0x9aa6b8, weight:68 },
+  { id:'rare',   name:'Rare',     ranks:2, color:0x5ad1ff, weight:22 },
+  { id:'epic',   name:'Epic',     ranks:3, color:0xc07bff, weight:8  },
+  { id:'legend', name:'Legendary', ranks:4, color:0xffcf40, weight:2  },   // ของหายากเจอยากขึ้น (เดิม 56/27/13/4)
 ];
 function rollRarity(){ const tot=RARITIES.reduce((s,r)=>s+r.weight,0); let x=Math.random()*tot; for(const r of RARITIES){ x-=r.weight; if(x<=0)return r; } return RARITIES[0]; }
 /* ตัวคูณสเกลตอนโชว์ชีต action (idle/พุ่ง/โดนตี ฯลฯ) เฉพาะตัวที่อาร์ต action เล็กกว่าอาร์ต run — กันตัวหดตอนหยุดเดิน */
@@ -1547,173 +1552,173 @@ const REROLL_MAX = 3;        // สุ่มการ์ดเลเวลอั
 const BANISH_MAX = 2;        // ลบสกิลออกจากกองการ์ด (ไม่โผล่อีกทั้งด่าน) ได้ N ครั้ง/ด่าน
 /* ---- PASSIVES: สกิลติดตัวแบบเลเวลได้ (คนละหมวดกับสกิลโจมตี) · apply(p)=ผล 1 rank ---- */
 const PASSIVES = {
-  heart: { name:'Mochi Vitality', emoji:'❤️', color:0xff5f7a, max:5, desc:'HP สูงสุด +10% และฟื้นเท่ากับ HP ที่เพิ่ม',
+  heart: { name:'Mochi Vitality', emoji:'❤️', color:0xff5f7a, max:5, desc:'+10% max HP and heals by the amount gained',
     apply(p){ const before=p.maxhp;p.maxhp*=1.10;p.hp=Math.min(p.maxhp,p.hp+(p.maxhp-before)); } },
-  power: { name:'พลังหวาน',   emoji:'💥', color:COLORS.grape, max:5, desc:'ดาเมจทุกอย่าง +7%',
+  power: { name:'Sweet Power',   emoji:'💥', color:COLORS.grape, max:5, desc:'+7% to all damage',
     apply(p){ p.dmgMul*=1.07; } },
-  swift: { name:'เท้าลื่น',   emoji:'👟', color:COLORS.mint, max:5, desc:'ความเร็ว +5% (มีเพดาน)',
+  swift: { name:'Slick Feet',   emoji:'👟', color:COLORS.mint, max:5, desc:'+5% move speed (capped)',
     apply(p){ p.baseSpeed=Math.min(BALANCE.moveSpeed*1.28,p.baseSpeed*1.05); } },
-  magnet:{ name:'จมูกไว',     emoji:'🧲', color:COLORS.toast, max:5, desc:'ระยะดูดลูกกวาด +30%',
+  magnet:{ name:'Keen Nose',     emoji:'🧲', color:COLORS.toast, max:5, desc:'+30% pickup range',
     apply(p){ p.pickup*=1.3; } },
-  haste: { name:'มือไว',      emoji:'⏩', color:0x8fd0ff, max:5, desc:'ร่ายสกิลถี่ขึ้น 5%',
+  haste: { name:'Quick Hands',      emoji:'⏩', color:0x8fd0ff, max:5, desc:'Cast 5% more often',
     apply(p){ p.cdMul=Math.max(0.76,(p.cdMul||1)*0.95); } },
-  crit:  { name:'ตาแม่น',     emoji:'🎯', color:0xffd166, max:5, desc:'โอกาสคริติคอล +4% (×1.65)',
+  crit:  { name:'Sharp Eye',     emoji:'🎯', color:0xffd166, max:5, desc:'+4% crit chance (×1.65)',
     apply(p){ p.critChance=Math.min(0.35,(p.critChance||0)+0.04); } },
-  guard: { name:'เกราะนุ่ม',  emoji:'🛡️', color:0xa0e0c0, max:5, desc:'ลดดาเมจที่รับ 8%',
+  guard: { name:'Soft Armor',  emoji:'🛡️', color:0xa0e0c0, max:5, desc:'Take 8% less damage',
     apply(p){ p.dmgTakenMul=(p.dmgTakenMul||1)*0.92; } },
-  regen: { name:'Flavor Regeneration', emoji:'💗', color:0xff9ec4, max:5, desc:'ฟื้น 0.20% ของ HP สูงสุด/วินาที',
+  regen: { name:'Flavor Regeneration', emoji:'💗', color:0xff9ec4, max:5, desc:'Regenerate 0.20% max HP per second',
     apply(p){ p.regenPct=(p.regenPct||0)+0.002; } },
-  sugarOnKill:{ name:'Sugar on Kill', emoji:'🍬', color:0xffd166, max:5, desc:'สังหารแล้วฟื้น 1 HP มีคูลดาวน์ 0.45 วิ',
+  sugarOnKill:{ name:'Sugar on Kill', emoji:'🍬', color:0xffd166, max:5, desc:'Heal 1 HP on kill (0.45s cooldown)',
     apply(p){ p.lifeOnKill=(p.lifeOnKill||0)+1; } },
-  flavorCore:{ name:'แก่นรสกลมกล่อม', emoji:'💠', color:0xffd166, max:5, desc:'HP +4% และดาเมจ +3%',
+  flavorCore:{ name:'Balanced Core', emoji:'💠', color:0xffd166, max:5, desc:'+4% HP and +3% damage',
     apply(p){ p.maxhp*=1.04; p.dmgMul*=1.03; } },
-  bitterResolve:{ name:'ใจต้านความขม', emoji:'🖤', color:0x9fa7c8, max:5, desc:'เมื่อ HP ต่ำกว่า 40% ดาเมจ +8%',
+  bitterResolve:{ name:'Bitter Resolve', emoji:'🖤', color:0x9fa7c8, max:5, desc:'+8% damage while below 40% HP',
     apply(p){ p.lowHpDmg=(p.lowHpDmg||0)+0.08; } },
-  returningTaste:{ name:'รสชาติคืนกลับ', emoji:'✨', color:0xffa7c8, max:5, desc:'ฟื้น 0.08% HP สูงสุด/วินาที และคูลดาวน์ -2%',
+  returningTaste:{ name:'Returning Taste', emoji:'✨', color:0xffa7c8, max:5, desc:'Regen 0.08% max HP per second and -2% cooldown',
     apply(p){ p.regenPct=(p.regenPct||0)+0.0008; p.cdMul=Math.max(0.76,(p.cdMul||1)*0.98); } },
 };
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 const CHARACTERS = {
-  momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'มือปืนคล่องตัว',desc:'Sweet but Strong — ยิงรัว เคลื่อนที่ไว และคริติคอลสม่ำเสมอ',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
-  mint:{name:'มินต์',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'ผู้ควบคุมฝูง',desc:'Cool and Agile — แช่แข็งวงกว้าง วิ่งไว และร่ายสกิลถี่',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
-  cocoa:{name:'โกโก้',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'จอมพลังแนวหน้า',desc:'Warm and Tough — ทุบหนัก พื้นที่กว้าง ยืนแลกได้ดี และฟื้นเลือดไว',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.75},rating:{hp:5,atk:5,spd:2,def:4}},
-  taro:{name:'ตาโร่',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'นักสำรวจสายฟ้า',desc:'อ่านเส้นทาง หลบไว และส่งสายฟ้าชิ่งกวาดเป้าหมายต่อเนื่อง',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
-  sesame:{name:'งาดำ',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'สถาปนิกแนวรับ',desc:'ตั้งกระจกคุ้มกัน สะท้อนกระสุน และฟื้นตัวระหว่างยื้อสนาม',stats:{hp:34,dmg:0.96,spd:0.93,def:0.82,crit:0.01,cdr:0.98,regenFlat:0.65},rating:{hp:5,atk:3,spd:2,def:5}},
-  berry:{name:'เบอร์รี่คอร์',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'ป้อมยิงเคลื่อนที่',desc:'Round but Relentless — ยิงระเบิดหนักและเร่งปืนล็อกเป้ากวาดฝูงเป็นชุด',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
+  momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'Nimble gunner',desc:'Sweet but Strong — rapid fire, fast movement, steady crits',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
+  mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — wide freezes, fast, casts often',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
+  cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline powerhouse',desc:'Warm and Tough — heavy hits, wide area, tanky, fast heals',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.75},rating:{hp:5,atk:5,spd:2,def:4}},
+  taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
+  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Defensive architect',desc:'Sets protective mirrors, reflects bullets, and heals while holding ground',stats:{hp:34,dmg:0.96,spd:0.93,def:0.82,crit:0.01,cdr:0.98,regenFlat:0.65},rating:{hp:5,atk:3,spd:2,def:5}},
+  berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // เบอร์รี่คอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
 const SIGNATURE_WEAPONS = {
-  berryBlaster:{name:'ปืนเมล็ดหัวใจ',emoji:'🍓',skill:'sprinkle',dmgMul:1.14,cdMul:0.88,shots:0,trait:'ดาเมจ +14% · คูลดาวน์ -12%'},
-  mintNova:{name:'แกนเกล็ดน้ำแข็งมินต์',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.84,areaMul:1.14,controlMul:1.18,trait:'เกล็ดโคจรแรงขึ้น · คูลดาวน์สะบัด -16%'},
-  bearGauntlet:{name:'ถุงมือตราหมีโกโก้',emoji:'🐻',skill:'meteor',dmgMul:1.15,cdMul:1.05,areaMul:1.18,trait:'แรงและกว้างขึ้น · แลกคูลดาวน์ +5%'},
-  riftCompass:{name:'เข็มทิศสายฟ้ารอยแยก',emoji:'🧭',skill:'thunder',dmgMul:1.02,cdMul:0.86,chains:2,trait:'ชิ่งเพิ่ม 2 เป้า · คูลดาวน์ -14%'},
-  oathMirror:{name:'กระจกคำสัตย์งาดำ',emoji:'🪞',skill:'mirror',dmgMul:0.96,cdMul:0.88,areaMul:1.12,reflect:2,trait:'สะท้อนเพิ่ม 2 นัด · เขตกว้าง +12%'},
-  jamCannon:{name:'ปืนแกนแยม',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'ระเบิดแรง +10% · คูลดาวน์ -8%'},
+  berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.14,cdMul:0.88,shots:0,trait:'+14% damage · -12% cooldown'},
+  mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.84,areaMul:1.14,controlMul:1.18,trait:'Stronger orbiting shards · -16% cooldown'},
+  bearGauntlet:{name:'Cocoa Bear Gauntlet',emoji:'🐻',skill:'meteor',dmgMul:1.15,cdMul:1.05,areaMul:1.18,trait:'Harder and wider · +5% cooldown trade-off'},
+  riftCompass:{name:'Rift Lightning Compass',emoji:'🧭',skill:'thunder',dmgMul:1.02,cdMul:0.86,chains:2,trait:'+2 chain targets · -14% cooldown'},
+  oathMirror:{name:'Sesame Oath Mirror',emoji:'🪞',skill:'mirror',dmgMul:0.96,cdMul:0.88,areaMul:1.12,reflect:2,trait:'+2 reflected shots · +12% area'},
+  jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
 };
 /* ---- BASIC ATTACK PROTOTYPE: ตัวละครเป็นแกน build แทนการสะสม auto-skill หลายชนิด ---- */
 const BASIC_ATTACKS = {
   momo:{name:'Heart Seed Blaster',emoji:'🍓',skill:'sprinkle',color:0xff76a8,evolution:'Heartstorm Blaster',
     upgrades:[
-      {id:'power',name:'เมล็ดเข้มข้น',emoji:'💥',iconKey:'ic_momo_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
-      {id:'rate',name:'ไกปืนโมจิ',emoji:'⏩',iconKey:'ic_momo_rate',max:5,desc:'ยิงเร็วขึ้น 8% ต่อขั้น'},
-      {id:'size',name:'เมล็ดอวบ',emoji:'🔴',iconKey:'ic_momo_size',max:3,desc:'กระสุนใหญ่ขึ้น 14% ต่อขั้น'},
-      {id:'volley',name:'แตกกิ่งหวาน',emoji:'🌱',iconKey:'ic_momo_volley',max:3,desc:'เพิ่มเมล็ดในชุดยิง 1 นัดต่อขั้น'}],
+      {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'rate',name:'Mochi Trigger',emoji:'⏩',iconKey:'ic_momo_rate',max:5,desc:'+8% fire rate per rank'},
+      {id:'size',name:'Plump Seeds',emoji:'🔴',iconKey:'ic_momo_size',max:3,desc:'+14% projectile size per rank'},
+      {id:'volley',name:'Sweet Branching',emoji:'🌱',iconKey:'ic_momo_volley',max:3,desc:'+1 seed per volley per rank'}],
     mutations:[
-      {id:'ricochet',name:'ทางเด้งหัวใจ',emoji:'💞',desc:'เมล็ดเด้งหาเป้าหมายใหม่ได้ 2 ครั้ง'},
-      {id:'fan',name:'ทางกลีบกระจาย',emoji:'🌸',desc:'ยิงเป็นพัดกว้างขึ้นและเพิ่มกระสุน 2 นัด'}]},
+      {id:'ricochet',name:'Heart Ricochet',emoji:'💞',desc:'Seeds bounce to 2 new targets'},
+      {id:'fan',name:'Petal Spread',emoji:'🌸',desc:'Wider fan and +2 shots'}]},
   cocoa:{name:'Bear Core Combo',emoji:'🐻',skill:'meteor',color:0x8b5cf0,evolution:'Titan Bear Finale',
     upgrades:[
-      {id:'power',name:'หมัดโกโก้เข้ม',emoji:'💥',iconKey:'ic_cocoa_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
-      {id:'rate',name:'จังหวะนักสู้',emoji:'⏩',iconKey:'ic_cocoa_rate',max:5,desc:'ออกหมัดเร็วขึ้น 8% ต่อขั้น'},
-      {id:'size',name:'ช่วงแขนโมจิ',emoji:'🥊',iconKey:'ic_cocoa_size',max:3,desc:'ระยะและวงกวาดของหมัด +12% ต่อขั้น'},
-      {id:'combo',name:'แรงส่งท่าปิด',emoji:'🐻',iconKey:'ic_cocoa_combo',max:3,desc:'หมัดที่ 3 แรงขึ้น 18% ต่อขั้น'}],
+      {id:'power',name:'Heavy Cocoa Punch',emoji:'💥',iconKey:'ic_cocoa_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'rate',name:'Fighter Rhythm',emoji:'⏩',iconKey:'ic_cocoa_rate',max:5,desc:'+8% attack speed per rank'},
+      {id:'size',name:'Mochi Reach',emoji:'🥊',iconKey:'ic_cocoa_size',max:3,desc:'+12% punch range & arc per rank'},
+      {id:'combo',name:'Finisher Force',emoji:'🐻',iconKey:'ic_cocoa_combo',max:3,desc:'3rd punch +18% per rank'}],
     mutations:[
-      {id:'rush',name:'สาย Rushdown',emoji:'💨',desc:'คอมโบเร็วขึ้น 18% และฮุกกวาดกว้างขึ้น'},
-      {id:'breaker',name:'สาย Earthbreaker',emoji:'💢',desc:'ท่าทุบพื้นแรงขึ้น 25% และเกิดคลื่นกระแทกซ้ำ'}]},
+      {id:'rush',name:'Rushdown',emoji:'💨',desc:'Combo 18% faster and wider hooks'},
+      {id:'breaker',name:'Earthbreaker',emoji:'💢',desc:'Ground slam +25% with a repeat shockwave'}]},
   berry:{name:'Jam Cannon',emoji:'💗',skill:'rocket',color:0xff5f88,evolution:'Jam Supernova',
     upgrades:[
-      {id:'power',name:'แรงดันแยม',emoji:'💥',iconKey:'ic_berry_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
-      {id:'rate',name:'ลูกเลื่อนหวาน',emoji:'⏩',iconKey:'ic_berry_rate',max:5,desc:'ยิงเร็วขึ้น 8% ต่อขั้น'},
-      {id:'size',name:'หัวรบอวบ',emoji:'🔴',iconKey:'ic_berry_size',max:3,desc:'จรวดและวงระเบิดใหญ่ขึ้น 14% ต่อขั้น'},
-      {id:'cluster',name:'ห้องแยมคู่',emoji:'💗',iconKey:'ic_berry_cluster',max:3,desc:'เพิ่มจรวดในชุดยิง 1 ลูกต่อขั้น'}],
+      {id:'power',name:'Jam Pressure',emoji:'💥',iconKey:'ic_berry_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'rate',name:'Sweet Slide',emoji:'⏩',iconKey:'ic_berry_rate',max:5,desc:'+8% fire rate per rank'},
+      {id:'size',name:'Plump Warhead',emoji:'🔴',iconKey:'ic_berry_size',max:3,desc:'+14% rocket & blast size per rank'},
+      {id:'cluster',name:'Twin Jam Chamber',emoji:'💗',iconKey:'ic_berry_cluster',max:3,desc:'+1 rocket per volley per rank'}],
     mutations:[
-      {id:'seeker',name:'ทางล่าแกน',emoji:'🎯',desc:'ล็อกเป้าไวขึ้นและระเบิดแรงขึ้น 20%'},
-      {id:'sticky',name:'ทางแยมเหนียว',emoji:'🫙',desc:'วงระเบิดใหญ่ขึ้น 35% และตรึงมอนสเตอร์ชั่วขณะ'}]},
+      {id:'seeker',name:'Core Seeker',emoji:'🎯',desc:'Faster lock-on and +20% blast'},
+      {id:'sticky',name:'Sticky Jam',emoji:'🫙',desc:'+35% blast radius and briefly pins enemies'}]},
   mint:{name:'Frost Lance',emoji:'🧊',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
     upgrades:[
-      {id:'power',name:'ปลายหอกคม',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'ดาเมจหอกน้ำแข็ง +12% ต่อขั้น'},
-      {id:'rate',name:'ชาร์จไว',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'ชาร์จ/ปล่อยหอกเร็วขึ้น 8% ต่อขั้น'},
-      {id:'chill',name:'ด้ามหอกยาว',emoji:'🏹',iconKey:'ic_mint_chill',max:3,desc:'หอกทะลุไกลขึ้น + สะเก็ดแตกเพิ่มจำนวน ต่อขั้น'},
-      {id:'linger',name:'สะเก็ดกระจาย',emoji:'💠',iconKey:'ic_mint_linger',max:3,desc:'สะเก็ดน้ำแข็งเพิ่มจำนวน + กระจายกว้างขึ้น ต่อขั้น'}],
+      {id:'power',name:'Sharp Lance Tip',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'+12% ice lance damage per rank'},
+      {id:'rate',name:'Fast Charge',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'+8% charge/release speed per rank'},
+      {id:'chill',name:'Long Shaft',emoji:'🏹',iconKey:'ic_mint_chill',max:3,desc:'Lance pierces farther + more shards per rank'},
+      {id:'linger',name:'Scattering Shards',emoji:'💠',iconKey:'ic_mint_linger',max:3,desc:'More ice shards + wider spread per rank'}],
     mutations:[
-      {id:'blizzard',name:'สายหอกแตกเกล็ด',emoji:'🌨️',desc:'หอก/สะเก็ดแตกซ้ำใส่ตัวที่แช่อยู่ ทำดาเมจเพิ่ม'},
-      {id:'permafrost',name:'สายเยือกนิรันดร์',emoji:'🥶',desc:'สะเก็ดแช่แข็งลึกขึ้น และดาเมจหอก +40%'}]},
+      {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',desc:'Lance/shards re-shatter frozen targets for bonus damage'},
+      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',desc:'Deeper freeze and +40% lance damage'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
-      {id:'power',name:'ประจุเข้มข้น',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'ดาเมจ Basic Attack +12% ต่อขั้น'},
-      {id:'rate',name:'จังหวะสายฟ้า',emoji:'⏩',iconKey:'ic_taro_rate',max:5,desc:'ปล่อยสายฟ้าเร็วขึ้น 8% ต่อขั้น'},
-      {id:'arc',name:'สายชิ่งต่อเนื่อง',emoji:'🔗',iconKey:'ic_taro_arc',max:3,desc:'สายฟ้าชิ่งเพิ่ม +1 เป้าต่อขั้น'},
-      {id:'surge',name:'ลำสายฟ้าคู่',emoji:'⚡',iconKey:'ic_taro_surge',max:3,desc:'ฟาดพร้อมกันเพิ่ม +1 จุดต่อขั้น'}],
+      {id:'power',name:'Dense Charge',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'rate',name:'Lightning Rhythm',emoji:'⏩',iconKey:'ic_taro_rate',max:5,desc:'+8% lightning cast speed per rank'},
+      {id:'arc',name:'Chain Bolt',emoji:'🔗',iconKey:'ic_taro_arc',max:3,desc:'+1 chain target per rank'},
+      {id:'surge',name:'Twin Bolt',emoji:'⚡',iconKey:'ic_taro_surge',max:3,desc:'+1 simultaneous strike per rank'}],
     mutations:[
-      {id:'chainlord',name:'สายเจ้าโซ่',emoji:'⛓️',desc:'ชิ่งเพิ่ม 2 เป้าและระยะชิ่งกว้างขึ้น 40%'},
-      {id:'stormcaller',name:'สายเรียกพายุ',emoji:'🌩️',desc:'ฟาดพร้อมกันเพิ่ม 2 จุดและดาเมจ +20%'}]},
+      {id:'chainlord',name:'Chainlord',emoji:'⛓️',desc:'+2 chains and +40% chain range'},
+      {id:'stormcaller',name:'Stormcaller',emoji:'🌩️',desc:'+2 simultaneous strikes and +20% damage'}]},
   sesame:{name:'Oath Circle Aura',emoji:'🪞',skill:'mirror',color:0x8a8f9c,evolution:'Absolute Oath Mirror',
     upgrades:[
-      {id:'power',name:'คำสัตย์เข้ม',emoji:'💥',iconKey:'ic_sesame_power',max:5,desc:'ดาเมจวงเวท +12% ต่อขั้น'},
-      {id:'rate',name:'พัลส์กระจกไว',emoji:'⏩',iconKey:'ic_sesame_rate',max:5,desc:'พัลส์กระแทกเร็วขึ้น 8% ต่อขั้น'},
-      {id:'pane',name:'บานกระจกเสริม',emoji:'🪟',iconKey:'ic_sesame_pane',max:3,desc:'พลังพัลส์กระแทก +15% ต่อขั้น'},
-      {id:'radius',name:'เขตแผ่กว้าง',emoji:'🛡️',iconKey:'ic_sesame_radius',max:3,desc:'รัศมีวงเวท +12% ต่อขั้น'}],
+      {id:'power',name:'Strong Oath',emoji:'💥',iconKey:'ic_sesame_power',max:5,desc:'+12% circle damage per rank'},
+      {id:'rate',name:'Fast Mirror Pulse',emoji:'⏩',iconKey:'ic_sesame_rate',max:5,desc:'+8% pulse speed per rank'},
+      {id:'pane',name:'Extra Pane',emoji:'🪟',iconKey:'ic_sesame_pane',max:3,desc:'+15% pulse power per rank'},
+      {id:'radius',name:'Wide Zone',emoji:'🛡️',iconKey:'ic_sesame_radius',max:3,desc:'+12% circle radius per rank'}],
     mutations:[
-      {id:'fortress',name:'สายป้อมกระจก',emoji:'🏰',desc:'วงเวทกว้างขึ้น 25%'},
-      {id:'retaliate',name:'สายสวนกลับ',emoji:'💢',desc:'พัลส์แรงขึ้น 30% และชะลอศัตรูที่โดน'}]},
+      {id:'fortress',name:'Mirror Fortress',emoji:'🏰',desc:'+25% circle radius'},
+      {id:'retaliate',name:'Retaliation',emoji:'💢',desc:'+30% pulse power and slows hit enemies'}]},
 };
 const CHARACTER_UNIQUES = {
-  berryRebound:{name:'หัวใจสตรอว์เบอร์รีเด้งกลับ',emoji:'🍓',cd:8,color:0xff76a8,desc:'เมล็ดหวานยิงรอบตัวและฟื้น HP — พลังกลางแต่ใช้ได้ถี่'},
-  mintSanctuary:{name:'พายุหิมะเพชร',emoji:'❄️',cd:11,color:0x8fd0ff,desc:'เรียกพายุหิมะถล่มพื้นที่กว้างตามตัว ฝนเกล็ดน้ำแข็งฟาดซ้ำ ๆ แช่ฝูง + คุ้มกันช่วงสั้น'},
-  voidPull:{name:'หลุมช็อกโกแลตดำ',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'เปิดหลุมดำดูดฝูงศัตรูเข้าหาตัว ทำดาเมจต่อเนื่อง แล้วยุบระเบิดปิดท้าย'},
-  flickerStrike:{name:'แฟลชหมัดหมี',emoji:'⚡',cd:4.5,color:0x9f6bff,desc:'วาร์ปฟันศัตรูรัว ๆ ต่อเนื่อง (แบบ Flicker Strike) คูลดาวน์เร็ว อมตะช่วงคอมโบ'},
-  pathRecall:{name:'สายฟ้าชิ่งของตาโร่',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'ปล่อยสายฟ้าจากตัว ชิ่งลามไปศัตรูตัวต่อ ๆ ไป (แบบ Arc) แล้วคืน Dash และเร่งฝีเท้า'},
-  oathMirror:{name:'โดมคำสัตย์',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'กางโดมกระจกคุ้มกัน ลดดาเมจหนัก ลบกระสุนศัตรูทั้งหมดในเขต พัลส์กระแทกซ้ำ ๆ แล้วปิดท้ายด้วยกระจกแตก'},
-  jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'เร่งปืนเมล็ดหัวใจ ยิงล็อกเป้าเป็นชุดต่อเนื่องและเพิ่มจำนวนลำกล้องตามเลเวล'},
+  berryRebound:{name:'Strawberry Rebound',emoji:'🍓',cd:8,color:0xff76a8,desc:'Fires sweet seeds all around and heals HP — moderate power, low cooldown'},
+  mintSanctuary:{name:'Diamond Dust',emoji:'❄️',cd:11,color:0x8fd0ff,desc:'Summons a wide snowstorm around you, raining ice shards that hit repeatedly, freezing crowds + brief guard'},
+  voidPull:{name:'Dark Chocolate Void',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'Opens a black hole that pulls enemies in for continuous damage, then implodes'},
+  flickerStrike:{name:'Bear Flicker',emoji:'⚡',cd:4.5,color:0x9f6bff,desc:'Warp-strikes enemies rapidly with a short cooldown, invulnerable during the combo'},
+  pathRecall:{name:'Taro Chain Bolt',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'Fires lightning that chains from enemy to enemy, then refunds Dash and boosts speed'},
+  oathMirror:{name:'Oath Dome',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'Raises a protective mirror dome, cuts damage, clears all enemy bullets inside, pulses repeatedly, then ends with a glass shatter'},
+  jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'Overdrives the heart-seed gun, firing lock-on barrages and adding barrels as it levels'},
 };
 const UNIQUE_MAX_LV=4;
 const uniqueAt={2:3,3:7,4:11};   // run level milestones shared by UI, progression, and validation
 const UNIQUE_TIERS={
-  berryRebound:{2:'เพิ่มเมล็ดและฟื้น HP มากขึ้น',3:'เมล็ดแรงขึ้นและแผ่วงกว้างกว่าเดิม',4:'Berry Crown ยิง 20+ เมล็ดและฟื้นฟูสูงสุด'},
-  mintSanctuary:{2:'พายุกว้างขึ้นและฟาดแรงขึ้น',3:'อยู่นานขึ้น + แช่แข็งลึกขึ้น',4:'Absolute Blizzard พายุยักษ์ถล่มทั้งจอและคุ้มกันยาวสุด'},
-  voidPull:{2:'หลุมกว้างขึ้นและดูดแรงขึ้น',3:'อยู่นานขึ้น + ดาเมจต่อเนื่องแรงขึ้น',4:'Singularity หลุมยักษ์ดูดทั้งจอและระเบิดปิดรุนแรง'},
-  flickerStrike:{2:'วาร์ปฟันเพิ่มจำนวนครั้ง + ดาเมจแรงขึ้น',3:'วงฟันกว้างขึ้น + กระแทกไกลขึ้น',4:'Blur Rampage วาร์ปฟันทั้งจอ ฟื้น HP ต่อครั้ง'},
-  pathRecall:{2:'เพิ่มจำนวนการชิ่งและระยะกระโดด',3:'สายฟ้าแตกเป็นสองสาย ลามกว้างขึ้น',4:'Storm Arc ชิ่งเต็มสนามและดาเมจสูงสุด'},
-  oathMirror:{2:'โดมกว้างและพัลส์แรงขึ้น',3:'กางนานขึ้นและกระแทกถี่ขึ้น',4:'Perfect Oath ฟื้น HP หลังกระจกแตกพร้อมพลังกระแทกสูงสุด'},
-  jamOverdrive:{2:'เพิ่มลำกล้องและจำนวนชุดยิง',3:'ยิงถี่ขึ้นพร้อมเจาะศัตรูหนึ่งตัว',4:'Berry Barrage สามลำกล้องเจาะฝูงเต็มกำลัง'},
+  berryRebound:{2:'More seeds and more HP recovery',3:'Stronger seeds with a wider spread',4:'Berry Crown fires 20+ seeds with max healing'},
+  mintSanctuary:{2:'Wider storm that hits harder',3:'Lasts longer + deeper freeze',4:'Absolute Blizzard — a giant storm covers the screen with the longest guard'},
+  voidPull:{2:'Wider hole that pulls harder',3:'Lasts longer + stronger DoT',4:'Singularity — a giant hole pulls the whole screen and ends in a violent blast'},
+  flickerStrike:{2:'More warp-strikes + higher damage',3:'Wider strike arc + longer reach',4:'Blur Rampage — warp-strike the whole screen, healing each hit'},
+  pathRecall:{2:'More chains and jump range',3:'Bolt splits into two, spreading wider',4:'Storm Arc — chains across the field with max damage'},
+  oathMirror:{2:'Wider dome and stronger pulses',3:'Lasts longer and pulses faster',4:'Perfect Oath — heals HP after the shatter with max pulse power'},
+  jamOverdrive:{2:'More barrels and salvos',3:'Fires faster and pierces one enemy',4:'Berry Barrage — three barrels pierce the crowd at full power'},
 };
 
 /* ---- TALENTS: ผังพรสวรรค์ (แยกแต้มต่อตัวละคร) · ลง 1 แต้ม/rank · ผลใส่ตอน applyMeta ---- */
 /* ---- CHAR_TALENTS: "พรสวรรค์เฉพาะตัว" — ยกระดับ Unique Skill และสไตล์เล่นของตัวละคร ---- */
 const CHAR_TALENTS = {
   momo: [   // สายสมดุล — เก่งรอบด้าน + คริติคอล
-    { id:'hp',      emoji:'❤️', name:'พลังชีวิต',  max:5, per:'HP สูงสุด +8%',   apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
-    { id:'dmg',     emoji:'💥', name:'พลังโจมตี',  max:5, per:'ดาเมจ +6%',       apply:(p,r)=>{ p.dmgMul*=(1+0.06*r); } },
-    { id:'crit',    emoji:'🎯', name:'จุดตาย',     max:4, per:'โอกาสคริติคอล +5% (ตีแรง ×1.8)', apply:(p,r)=>{ p.critChance+=0.05*r; } },
-    { id:'cdr',     emoji:'⏱️', name:'ร่ายไว',     max:4, per:'คูลดาวน์สกิล -5%', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
-    { id:'regen',   emoji:'💗', name:'ฟื้นตัว',    max:3, per:'ฟื้น HP +0.5/วิ',  apply:(p,r)=>{ p.regen+=0.5*r; } },
-    { id:'twinSprinkle',emoji:'🍓', name:'เมล็ดหัวใจพร่างพราย', max:1, per:'✦ Unique: หัวใจสตรอว์เบอร์รีเพิ่มเมล็ดระเบิดเป็น 16 ทิศ!', apply:(p,r)=>{ p.twinSprinkle=true; } },
+    { id:'hp',      emoji:'❤️', name:'Vitality',  max:5, per:'+8% max HP',   apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
+    { id:'dmg',     emoji:'💥', name:'Attack Power',  max:5, per:'+6% damage',       apply:(p,r)=>{ p.dmgMul*=(1+0.06*r); } },
+    { id:'crit',    emoji:'🎯', name:'Critical',     max:4, per:'+5% crit chance (×1.8)', apply:(p,r)=>{ p.critChance+=0.05*r; } },
+    { id:'cdr',     emoji:'⏱️', name:'Fast Cast',     max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
+    { id:'regen',   emoji:'💗', name:'Regen',    max:3, per:'+0.5 HP/s',  apply:(p,r)=>{ p.regen+=0.5*r; } },
+    { id:'twinSprinkle',emoji:'🍓', name:'Radiant Heart Seeds', max:1, per:'✦ Unique: Strawberry Rebound bursts seeds in 16 directions!', apply:(p,r)=>{ p.twinSprinkle=true; } },
   ],
   mint: [   // สายแทงค์ — อึดโหด ดูดเลือด ฟื้นตัว
-    { id:'hp',       emoji:'❤️', name:'ร่างอึด',    max:6, per:'HP สูงสุด +12%',  apply:(p,r)=>{ p.maxhp*=(1+0.12*r); } },
-    { id:'armor',    emoji:'🛡️', name:'เกราะน้ำแข็ง', max:5, per:'ลดดาเมจที่รับ -6%', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
-    { id:'regen',    emoji:'💗', name:'ฟื้นฟูเย็น',  max:4, per:'ฟื้น HP +0.7/วิ',  apply:(p,r)=>{ p.regen+=0.7*r; } },
-    { id:'lifesteal',emoji:'🍓', name:'ดูดหวาน',    max:3, per:'ฆ่าศัตรูฟื้น +0.7 HP', apply:(p,r)=>{ p.lifesteal+=0.7*r; } },
-    { id:'magnet',   emoji:'🧲', name:'จมูกไว',     max:3, per:'ระยะดูด +15%',     apply:(p,r)=>{ p.pickup*=(1+0.15*r); } },
-    { id:'deepFreeze',emoji:'🌿', name:'ลมหายใจเหนือรอยแยก', max:1, per:'✦ Unique: เขตลมหายใจมินต์ขยายรัศมี!', apply:(p,r)=>{ p.deepFreeze=true; } },
+    { id:'hp',       emoji:'❤️', name:'Tough Body',    max:6, per:'+12% max HP',  apply:(p,r)=>{ p.maxhp*=(1+0.12*r); } },
+    { id:'armor',    emoji:'🛡️', name:'Ice Armor', max:5, per:'-6% damage taken', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
+    { id:'regen',    emoji:'💗', name:'Cool Recovery',  max:4, per:'+0.7 HP/s',  apply:(p,r)=>{ p.regen+=0.7*r; } },
+    { id:'lifesteal',emoji:'🍓', name:'Sweet Leech',    max:3, per:'+0.7 HP on kill', apply:(p,r)=>{ p.lifesteal+=0.7*r; } },
+    { id:'magnet',   emoji:'🧲', name:'Keen Nose',     max:3, per:'+15% pickup range',     apply:(p,r)=>{ p.pickup*=(1+0.15*r); } },
+    { id:'deepFreeze',emoji:'🌿', name:'Breath Over the Rift', max:1, per:'✦ Unique: Mint\'s breath zone expands its radius!', apply:(p,r)=>{ p.deepFreeze=true; } },
   ],
   cocoa: [   // สายจอมพลัง — ดาเมจ/คริติคอลจัดเต็ม
-    { id:'dmg',     emoji:'💥', name:'พลังทำลาย',  max:6, per:'ดาเมจ +10%',      apply:(p,r)=>{ p.dmgMul*=(1+0.10*r); } },
-    { id:'crit',    emoji:'🎯', name:'สังหาร',     max:5, per:'โอกาสคริติคอล +6% (ตีแรง ×1.8)', apply:(p,r)=>{ p.critChance+=0.06*r; } },
-    { id:'spd',     emoji:'👟', name:'ฝีเท้า',     max:3, per:'ความเร็ว +5%',    apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
-    { id:'lifesteal',emoji:'🩸', name:'กระหาย',    max:3, per:'ฆ่าศัตรูฟื้น +0.6 HP', apply:(p,r)=>{ p.lifesteal+=0.6*r; } },
-    { id:'donutImpact', emoji:'🐻', name:'ตราหมีราชัน', max:1, per:'✦ Unique: ตราหมีโกโก้สะเทือนกว้างขึ้น!', apply:(p,r)=>{ p.donutImpact=true; } },
+    { id:'dmg',     emoji:'💥', name:'Destruction',  max:6, per:'+10% damage',      apply:(p,r)=>{ p.dmgMul*=(1+0.10*r); } },
+    { id:'crit',    emoji:'🎯', name:'Slayer',     max:5, per:'+6% crit chance (×1.8)', apply:(p,r)=>{ p.critChance+=0.06*r; } },
+    { id:'spd',     emoji:'👟', name:'Footwork',     max:3, per:'+5% move speed',    apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
+    { id:'lifesteal',emoji:'🩸', name:'Bloodthirst',    max:3, per:'+0.6 HP on kill', apply:(p,r)=>{ p.lifesteal+=0.6*r; } },
+    { id:'donutImpact', emoji:'🐻', name:'Bear-Sigil King', max:1, per:'✦ Unique: Cocoa\'s bear sigil shakes a wider area!', apply:(p,r)=>{ p.donutImpact=true; } },
   ],
   taro: [
-    { id:'hp', emoji:'❤️', name:'เสบียงนักสำรวจ', max:4, per:'HP สูงสุด +8%', apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
-    { id:'spd', emoji:'👟', name:'อ่านทางรอยแยก', max:6, per:'ความเร็ว +5%', apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
-    { id:'cdr', emoji:'⏱️', name:'จังหวะหวนคืน', max:4, per:'คูลดาวน์สกิล -5%', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
-    { id:'crit', emoji:'🎯', name:'เข็มทิศแก่นรส', max:4, per:'โอกาสคริติคอล +5%', apply:(p,r)=>{ p.critChance+=0.05*r; } },
-    { id:'echoPath', emoji:'🧭', name:'แผนที่เสียงสะท้อน', max:1, per:'✦ Unique: บันทึกเส้นทางเพิ่ม ระเบิดกว้าง และเร่งฝีเท้านานขึ้น!', apply:(p,r)=>{ p.echoPath=true; } },
+    { id:'hp', emoji:'❤️', name:'Explorer Rations', max:4, per:'+8% max HP', apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
+    { id:'spd', emoji:'👟', name:'Read the Rift', max:6, per:'+5% move speed', apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
+    { id:'cdr', emoji:'⏱️', name:'Recall Rhythm', max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
+    { id:'crit', emoji:'🎯', name:'Flavor Compass', max:4, per:'+5% crit chance', apply:(p,r)=>{ p.critChance+=0.05*r; } },
+    { id:'echoPath', emoji:'🧭', name:'Echo Map', max:1, per:'✦ Unique: records a longer path, wider blast, and longer speed boost!', apply:(p,r)=>{ p.echoPath=true; } },
   ],
   sesame: [
-    { id:'hp', emoji:'❤️', name:'แก่นงาดำมั่นคง', max:6, per:'HP สูงสุด +11%', apply:(p,r)=>{ p.maxhp*=(1+0.11*r); } },
-    { id:'armor', emoji:'🛡️', name:'สถาปัตย์คำสัตย์', max:5, per:'ลดดาเมจที่รับ -6%', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
-    { id:'regen', emoji:'💗', name:'ตะเกียงคืนรส', max:4, per:'ฟื้น HP +0.6/วิ', apply:(p,r)=>{ p.regen+=0.6*r; } },
-    { id:'dmg', emoji:'💥', name:'ผนึกสวนกลับ', max:4, per:'ดาเมจ +6%', apply:(p,r)=>{ p.dmgMul*=(1+0.06*r); } },
-    { id:'mirrorWard', emoji:'🪞', name:'สถาปัตย์กระจกสมบูรณ์', max:1, per:'✦ Unique: เพิ่มกระจก ระยะเวลา และจำนวนกระสุนที่สะท้อนได้!', apply:(p,r)=>{ p.mirrorWard=true; } },
+    { id:'hp', emoji:'❤️', name:'Steady Sesame Core', max:6, per:'+11% max HP', apply:(p,r)=>{ p.maxhp*=(1+0.11*r); } },
+    { id:'armor', emoji:'🛡️', name:'Oath Architecture', max:5, per:'-6% damage taken', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
+    { id:'regen', emoji:'💗', name:'Flavor Lantern', max:4, per:'+0.6 HP/s', apply:(p,r)=>{ p.regen+=0.6*r; } },
+    { id:'dmg', emoji:'💥', name:'Counter Seal', max:4, per:'+6% damage', apply:(p,r)=>{ p.dmgMul*=(1+0.06*r); } },
+    { id:'mirrorWard', emoji:'🪞', name:'Perfect Mirror Architecture', max:1, per:'✦ Unique: more mirrors, duration, and reflected shots!', apply:(p,r)=>{ p.mirrorWard=true; } },
   ],
   berry: [
-    { id:'dmg', emoji:'💥', name:'แรงดันแกนแยม', max:5, per:'ดาเมจ +7%', apply:(p,r)=>{ p.dmgMul*=(1+0.07*r); } },
-    { id:'cdr', emoji:'⏱️', name:'ไกหัวใจไว', max:4, per:'คูลดาวน์สกิล -5%', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
-    { id:'hp', emoji:'❤️', name:'โมจิอัดแน่น', max:4, per:'HP สูงสุด +9%', apply:(p,r)=>{ p.maxhp*=(1+0.09*r); } },
-    { id:'crit', emoji:'🎯', name:'ศูนย์เล็งเมล็ด', max:4, per:'โอกาสคริติคอล +5%', apply:(p,r)=>{ p.critChance+=0.05*r; } },
-    { id:'pressurizedJam', emoji:'💗', name:'ห้องแรงดันคู่', max:1, per:'✦ Unique: Jam Overdrive เพิ่ม 2 ชุดยิงและกระสุนต่อลำกล้อง!', apply:(p,r)=>{ p.pressurizedJam=true; } },
+    { id:'dmg', emoji:'💥', name:'Jam Core Pressure', max:5, per:'+7% damage', apply:(p,r)=>{ p.dmgMul*=(1+0.07*r); } },
+    { id:'cdr', emoji:'⏱️', name:'Fast Heart Trigger', max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
+    { id:'hp', emoji:'❤️', name:'Packed Mochi', max:4, per:'+9% max HP', apply:(p,r)=>{ p.maxhp*=(1+0.09*r); } },
+    { id:'crit', emoji:'🎯', name:'Seed Sights', max:4, per:'+5% crit chance', apply:(p,r)=>{ p.critChance+=0.05*r; } },
+    { id:'pressurizedJam', emoji:'💗', name:'Twin Pressure Chamber', max:1, per:'✦ Unique: Jam Overdrive adds 2 salvos and rounds per barrel!', apply:(p,r)=>{ p.pressurizedJam=true; } },
   ],
 };
 function charTalents(c){ return CHAR_TALENTS[c]||CHAR_TALENTS.momo; }
@@ -1722,21 +1727,21 @@ function charExpNeed(l){ return 40 + l*35; }
 
 /* ---- SKILL_TIERS: อธิบายว่า "แต่ละเลเวล" ปลดเอฟเฟกต์อะไร (โชว์บนการ์ด) ---- */
 const SKILL_TIERS = {
-  sprinkle:{ 2:'รัว 6 เม็ด/ชุด', 3:'รัวถี่ขึ้น', 4:'รัว 8 เม็ด/ชุด', 5:'รัวไวขึ้นอีก', 6:'รัว 11 เม็ด/ชุด สายรุ้ง!' },
-  star:    { 2:'+1 ดวง คุ้มกันแน่นขึ้น', 3:'วงกว้าง + หมุนเร็วขึ้น', 4:'+1 ดวง ดวงใหญ่ขึ้น', 5:'ดาวกระจายประกายเมื่อชน', 6:'วงดาวคู่ ชั้นในชั้นนอก!' },
-  thunder: { 2:'ฟ้าผ่า 2 จุดพร้อมกัน', 3:'ไฟฟ้าแตกลูกไปตัวข้าง ๆ', 4:'ฟ้าผ่า 3 จุด', 5:'แตกลูกต่อ 2 ตัว', 6:'ฟ้าผ่า 4 จุด แตกลูกทุกจุด!' },
-  whirl:   { 2:'ใบพัดครีม 8 ทิศ', 3:'ใบพัดใหญ่ บินไกลขึ้น', 4:'ใบพัด 10 ทิศ', 5:'ใบพัดใหญ่มาก', 6:'12 ทิศ ทะลุศัตรู!' },
-  boomer:  { 2:'ขว้าง 2 ชิ้น', 3:'ใหญ่ขึ้น + ฟันถี่ขึ้น', 4:'ขว้าง 3 ชิ้น', 5:'บินกลับแล้วเด้งออกอีกรอบ', 6:'ขว้าง 4 ชิ้น พายุคุกกี้!' },
-  frost:   { 2:'รัศมี+ดาเมจกว้างขึ้น', 3:'ระเบิดน้ำแข็งใส่ตัวที่แช่อยู่', 4:'รัศมีใหญ่มาก', 5:'ดาเมจสูง + แช่นานขึ้น', 6:'แช่หนัก + ดาเมจสูงมาก!' },
-  popcorn: { 2:'+2 เม็ด', 3:'เม็ดใหญ่ขึ้น', 4:'ทะลุศัตรู + เม็ดเยอะ', 5:'ยิงไกลขึ้น', 6:'ป๊อปคอร์นถล่มจอ!' },
-  bubble:  { 2:'+1 ฟอง', 3:'จับนาน+ระเบิดกว้างขึ้น', 4:'+1 ฟอง ไล่แม่นขึ้น', 5:'ระเบิดแรงขึ้น', 6:'เรือนจำฟองลูกโซ่!' },
-  mine:    { 2:'ยิงไกลขึ้น', 3:'ยิงเร็ว+แรงขึ้น', 4:'วาง 2 ป้อม', 5:'อยู่ได้นานและระเบิดกว้าง', 6:'กองทัพป้อมยิงสองนัด!' },
-  beam:    { 2:'ลำแสงยาวขึ้น', 3:'กว้าง+ดาเมจขึ้น', 4:'เผาแรงขึ้น', 5:'ทะลุไกลมาก', 6:'ลำแสงมหากาฬ!' },
-  meteor:  { 2:'3 ลูก', 3:'ระเบิดกว้างขึ้น', 4:'4 ลูก ดาเมจสูง', 5:'ลูกใหญ่มาก', 6:'6 ลูกถล่ม!' },
-  cloud:   { 2:'กลุ่มกว้างขึ้น', 3:'ดาเมจ/ติ๊กสูงขึ้น', 4:'กว้างมาก', 5:'อยู่นานขึ้น', 6:'หมอกพิษเต็มพิกัด!' },
-  rocket:  { 2:'2 ลูก', 3:'ระเบิดกว้างขึ้น', 4:'3 ลูก ไล่แม่น', 5:'ระเบิดใหญ่', 6:'4 ลูก จรวดถล่ม!' },
-  mirror:  { 2:'วงสะท้อนกว้างขึ้น', 3:'สะท้อนได้มากขึ้น', 4:'เศษกระจกแรงขึ้น', 5:'คงอยู่นานขึ้น', 6:'กระจกพันรสยิงสวนอัตโนมัติ!' },
-  decoy:   { 2:'ล่อฝูงได้นานขึ้น', 3:'รัศมีระเบิดกว้างขึ้น', 4:'ระเบิดแรงขึ้น', 5:'ล่อศัตรูได้ไกลขึ้น', 6:'ระเบิดสองชั้นและฟื้น HP!' },
+  sprinkle:{ 2:'6 seeds/volley', 3:'Faster fire', 4:'8 seeds/volley', 5:'Even faster', 6:'11 rainbow seeds/volley!' },
+  star:    { 2:'+1 star, tighter guard', 3:'Wider ring + faster spin', 4:'+1 bigger star', 5:'Stars spark on hit', 6:'Twin star ring, inner & outer!' },
+  thunder: { 2:'2 strikes at once', 3:'Forks to nearby enemies', 4:'3 strikes', 5:'Forks to 2 more', 6:'4 strikes, forks everywhere!' },
+  whirl:   { 2:'Cream blades, 8 dirs', 3:'Bigger blades, fly farther', 4:'10 directions', 5:'Huge blades', 6:'12 dirs, pierce enemies!' },
+  boomer:  { 2:'Throw 2', 3:'Bigger + faster hits', 4:'Throw 3', 5:'Returns then bounces out again', 6:'Throw 4, cookie storm!' },
+  frost:   { 2:'Wider radius + damage', 3:'Ice blast on frozen targets', 4:'Very large radius', 5:'High damage + longer freeze', 6:'Heavy freeze + very high damage!' },
+  popcorn: { 2:'+2 kernels', 3:'Bigger kernels', 4:'Pierce + more kernels', 5:'Longer range', 6:'Popcorn blankets the screen!' },
+  bubble:  { 2:'+1 bubble', 3:'Longer hold + wider burst', 4:'+1 bubble, better tracking', 5:'Stronger burst', 6:'Chain bubble prison!' },
+  mine:    { 2:'Longer range', 3:'Faster + stronger fire', 4:'Deploy 2 turrets', 5:'Lasts longer, wide blast', 6:'Turret army, double-shots!' },
+  beam:    { 2:'Longer beam', 3:'Wider + more damage', 4:'Burns harder', 5:'Pierces very far', 6:'Cataclysm beam!' },
+  meteor:  { 2:'3 hits', 3:'Wider blast', 4:'4 hits, high damage', 5:'Huge hits', 6:'6-hit barrage!' },
+  cloud:   { 2:'Wider cloud', 3:'Higher damage/tick', 4:'Very wide', 5:'Lasts longer', 6:'Toxic mist everywhere!' },
+  rocket:  { 2:'2 rockets', 3:'Wider blast', 4:'3 rockets, precise', 5:'Big blast', 6:'4 rockets, barrage!' },
+  mirror:  { 2:'Wider reflect ring', 3:'Reflects more', 4:'Stronger shards', 5:'Lasts longer', 6:'Thousand-Flavor auto-return fire!' },
+  decoy:   { 2:'Lures longer', 3:'Wider blast radius', 4:'Stronger blast', 5:'Lures from farther', 6:'Double blast and heals HP!' },
 };
 
 /* ---- COMBOS: สกิลโจมตี (a) + สกิลติดตัว (b) เข้าคู่กัน = ปลดโบนัส (ธง this.comboFlags ตอน cast) ---- */
@@ -1747,36 +1752,36 @@ const SKILL_TIERS = {
    สูตรธรรมดา = สายเสริม build ให้เลือกทางเล่น · character-first: a = สกิลพื้นฐานของตัวนั้น (เก็บ passive b ให้ครบ = ปรุง) */
 const COMBOS = [
   // 🍓 โมโม่ (sprinkle) — สายยิงรัวคริติคอล
-  { key:'candycore', a:'sprinkle', b:'power',  sig:true, emoji:'🍬💥', name:'พราลีนหัวใจระเบิด', desc:'⭐ ดาเมจ +13% · คริติคอล +3%', effect:p=>{p.dmgMul*=1.13;p.critChance+=0.03;} },
-  { key:'sugarshot', a:'sprinkle', b:'crit',   emoji:'🍬🎯', name:'เมล็ดเสี้ยนคม', desc:'คริติคอล +5%', effect:p=>{p.critChance+=0.05;} },
-  { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'ลูกกวาดพเนจร', desc:'คูลดาวน์ -7%', effect:p=>{p.cdMul*=0.93;} },
+  { key:'candycore', a:'sprinkle', b:'power',  sig:true, emoji:'🍬💥', name:'Bursting Heart Praline', desc:'⭐ +13% damage · +3% crit', effect:p=>{p.dmgMul*=1.13;p.critChance+=0.03;} },
+  { key:'sugarshot', a:'sprinkle', b:'crit',   emoji:'🍬🎯', name:'Sharp Splinter Seed', desc:'+5% crit', effect:p=>{p.critChance+=0.05;} },
+  { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'Wandering Candy', desc:'-7% cooldown', effect:p=>{p.cdMul*=0.93;} },
   // 🍫 โกโก้ (meteor) — สายทุบหนักแนวหน้า
-  { key:'titanjab',  a:'meteor',   b:'power',  sig:true, emoji:'🍩💥', name:'ซันเดย์หมัดยักษ์', desc:'⭐ ดาเมจ +14% · ลดดาเมจรับ -5%', effect:p=>{p.dmgMul*=1.14;p.dmgTakenMul*=0.95;} },
-  { key:'bearhide',  a:'meteor',   b:'guard',  emoji:'🍩🛡️', name:'เกราะหมีระเบิด', desc:'ลดดาเมจรับ -7%', effect:p=>{p.dmgTakenMul*=0.93;} },
-  { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'ฝนโดนัทติดตาม', desc:'ระยะเก็บของ +25%', effect:p=>{p.pickup*=1.25;} },
+  { key:'titanjab',  a:'meteor',   b:'power',  sig:true, emoji:'🍩💥', name:'Titan Punch Sundae', desc:'⭐ +14% damage · -5% damage taken', effect:p=>{p.dmgMul*=1.14;p.dmgTakenMul*=0.95;} },
+  { key:'bearhide',  a:'meteor',   b:'guard',  emoji:'🍩🛡️', name:'Bursting Bear Armor', desc:'-7% damage taken', effect:p=>{p.dmgTakenMul*=0.93;} },
+  { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'Homing Donut Rain', desc:'+25% pickup range', effect:p=>{p.pickup*=1.25;} },
   // 🌿 มินต์ (frost) — สายควบคุมฝูง
-  { key:'coldsnap',  a:'frost',    b:'haste',  sig:true, emoji:'❄️⏩', name:'พาร์เฟต์เยือกแข็ง', desc:'⭐ คูลดาวน์ -10% · ฟื้น HP +0.4/วิ', effect:p=>{p.cdMul*=0.90;p.regen+=0.4;} },
-  { key:'icewall',   a:'frost',    b:'guard',  emoji:'❄️🛡️', name:'กำแพงน้ำแข็ง', desc:'ลดดาเมจรับ -7%', effect:p=>{p.dmgTakenMul*=0.93;} },
-  { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'พายุเยียวยา', desc:'ฟื้น HP +0.8/วิ', effect:p=>{p.regen+=0.8;} },
+  { key:'coldsnap',  a:'frost',    b:'haste',  sig:true, emoji:'❄️⏩', name:'Frozen Parfait', desc:'⭐ -10% cooldown · +0.4 HP/s', effect:p=>{p.cdMul*=0.90;p.regen+=0.4;} },
+  { key:'icewall',   a:'frost',    b:'guard',  emoji:'❄️🛡️', name:'Ice Wall', desc:'-7% damage taken', effect:p=>{p.dmgTakenMul*=0.93;} },
+  { key:'blizzard',  a:'frost',    b:'regen',  emoji:'❄️💗', name:'Healing Storm', desc:'+0.8 HP/s', effect:p=>{p.regen+=0.8;} },
   // 🍠 ตาโร่ (thunder) — สายชิ่งไว
-  { key:'storm',     a:'thunder',  b:'crit',   sig:true, emoji:'⚡🎯', name:'ซอร์เบต์ฟ้าคำราม', desc:'⭐ คริติคอล +7% · ความเร็ว +4%', effect:p=>{p.critChance+=0.07;p.baseSpeed*=1.04;} },
-  { key:'thunderrun',a:'thunder',  b:'swift',  emoji:'⚡👟', name:'สายฟ้าพเนจร', desc:'ความเร็ว +7%', effect:p=>{p.baseSpeed*=1.07;} },
-  { key:'rollingarc',a:'thunder',  b:'haste',  emoji:'⚡⏩', name:'สายฟ้ารัว', desc:'คูลดาวน์ -7%', effect:p=>{p.cdMul*=0.93;} },
+  { key:'storm',     a:'thunder',  b:'crit',   sig:true, emoji:'⚡🎯', name:'Thunder Sorbet', desc:'⭐ +7% crit · +4% move speed', effect:p=>{p.critChance+=0.07;p.baseSpeed*=1.04;} },
+  { key:'thunderrun',a:'thunder',  b:'swift',  emoji:'⚡👟', name:'Wandering Bolt', desc:'+7% move speed', effect:p=>{p.baseSpeed*=1.07;} },
+  { key:'rollingarc',a:'thunder',  b:'haste',  emoji:'⚡⏩', name:'Rolling Bolts', desc:'-7% cooldown', effect:p=>{p.cdMul*=0.93;} },
   // ⚫ งาดำ (mirror) — สายแนวรับ
-  { key:'reflection',a:'mirror',   b:'guard',  sig:true, emoji:'🪞🛡️', name:'ซันเดย์คำสัตย์', desc:'⭐ ลดดาเมจรับ -12% · ดาเมจ +5%', effect:p=>{p.dmgTakenMul*=0.88;p.dmgMul*=1.05;} },
-  { key:'mirrormend',a:'mirror',   b:'regen',  emoji:'🪞💗', name:'กระจกเยียวยา', desc:'ฟื้น HP +0.8/วิ', effect:p=>{p.regen+=0.8;} },
-  { key:'oathkeep',  a:'mirror',   b:'returningTaste', emoji:'🪞🔁', name:'คำสัตย์ก้องคืน', desc:'ดาเมจ +7%', effect:p=>{p.dmgMul*=1.07;} },
+  { key:'reflection',a:'mirror',   b:'guard',  sig:true, emoji:'🪞🛡️', name:'Oath Sundae', desc:'⭐ -12% damage taken · +5% damage', effect:p=>{p.dmgTakenMul*=0.88;p.dmgMul*=1.05;} },
+  { key:'mirrormend',a:'mirror',   b:'regen',  emoji:'🪞💗', name:'Healing Mirror', desc:'+0.8 HP/s', effect:p=>{p.regen+=0.8;} },
+  { key:'oathkeep',  a:'mirror',   b:'returningTaste', emoji:'🪞🔁', name:'Echoing Oath', desc:'+7% damage', effect:p=>{p.dmgMul*=1.07;} },
 ];
 
 function passivePairHint(key){
   const pairs=COMBOS.filter(c=>c.b===key).map(c=>{const a=SKILLDEFS[c.a];return a?(a.emoji+' '+a.name):c.a;});
-  if(pairs.length)return 'ปลุก Awaken คู่กับ: '+pairs.join(' / ');
+  if(pairs.length)return 'Awaken pairs with: '+pairs.join(' / ');
   const tips={
-    heart:'เหมาะกับ: สายประชิดและสายแทงค์',
-    flavorCore:'เหมาะกับ: ทุก build ที่ต้องการทั้งรุกและรับ',
-    returningTaste:'เหมาะกับ: Unique/สกิลคูลดาวน์ยาว',
+    heart:'Good for: melee and tank builds',
+    flavorCore:'Good for: any build wanting offense + defense',
+    returningTaste:'Good for: Unique / long-cooldown skills',
   };
-  return tips[key]||'เหมาะกับ: ทุก build';
+  return tips[key]||'Good for: any build';
 }
 
 /* ---- UPGRADES (ระบบ "สายใยรสชาติ"): 3 แก่นถาวรที่ต้องประสานให้เต็มแล้วเลื่อนระดับสายใย ----
@@ -1785,12 +1790,12 @@ function passivePairHint(key){
    ผลรวมที่ใช้จริง = rank·TAL_MAX + เลเวลรอบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ · ดาเมจเป็น flat กันเวอร์) */
 const TAL_MAX = 5;   // แต่ละสแตตอัพได้ Lv1..TAL_MAX ต่อรอบยศ
 const UPGRADES = {
-  hp:  { emoji:'❤️', tag:'CORE', name:'แก่นชีวิต', unit:'HP สูงสุด +16/เลเวล', color:0xff5f7a, base:30, per:16,
+  hp:  { emoji:'❤️', tag:'CORE', name:'Life Core', unit:'+16 max HP/level', color:0xff5f7a, base:30, per:16,
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
-  dmg: { emoji:'✨', tag:'FLAVOR', name:'ประกายรส', unit:'ดาเมจตรง +2/เลเวล',  color:0xf0a54a, base:45, per:2,
-         apply:(p,tot)=>{ p.flatDmg=(p.flatDmg||0)+2*tot; },           show:tot=>'+'+(2*tot)+' ดาเมจ' },
-  def: { emoji:'🛡️', tag:'BOND', name:'เปลือกคำสัตย์', unit:'ลดดาเมจที่รับ ~1.5%/เลเวล', color:0x6ec6ff, base:40, per:1,
-         apply:(p,tot)=>{ p.dmgTakenMul*=Math.pow(0.985,tot); },       show:tot=>'-'+Math.round((1-Math.pow(0.985,tot))*100)+'% ดาเมจรับ' },
+  dmg: { emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+2 flat damage/level',  color:0xf0a54a, base:45, per:2,
+         apply:(p,tot)=>{ p.flatDmg=(p.flatDmg||0)+2*tot; },           show:tot=>'+'+(2*tot)+' DMG' },
+  def: { emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'~1.5% less damage taken/level', color:0x6ec6ff, base:40, per:1,
+         apply:(p,tot)=>{ p.dmgTakenMul*=Math.pow(0.985,tot); },       show:tot=>'-'+Math.round((1-Math.pow(0.985,tot))*100)+'% DMG taken' },
 };
 const UPG_ORDER=['hp','dmg','def'];
 /* ---- ยศ (rank): ไต่ไปเรื่อย ๆ · ชื่อวนถึงตัวสุดท้ายแล้วต่อท้าย +N ---- */
@@ -1921,16 +1926,16 @@ function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.dat
    tiers[]=[T1,T2,T3,T4,T5] แต่ละอันเป็น [lo,hi] · T1=แรงสุด (หายาก) · pre/suf=คำประกอบชื่อไอเทม */
 const AFFIX_POOL = [
   // ── Prefix (สายรุก) ──
-  { id:'dmg',   kind:'prefix', emoji:'💥', label:'ดาเมจ',    pre:'คมกริบ',  fmt:v=>'+'+v+'%',  tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
-  { id:'crit',  kind:'prefix', emoji:'🎯', label:'คริ',      pre:'เฉียบ',   fmt:v=>'+'+v+'%',  tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
-  { id:'critdmg',kind:'prefix',emoji:'💢', label:'ดาเมจคริ', pre:'ดุร้าย',  fmt:v=>'+'+v+'%',  tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
-  { id:'cd',    kind:'prefix', emoji:'⏩', label:'คูลดาวน์', pre:'ว่องไว',  fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
+  { id:'dmg',   kind:'prefix', emoji:'💥', label:'Damage',   pre:'Keen',  fmt:v=>'+'+v+'%',  tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
+  { id:'crit',  kind:'prefix', emoji:'🎯', label:'Crit',     pre:'Sharp',   fmt:v=>'+'+v+'%',  tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
+  { id:'critdmg',kind:'prefix',emoji:'💢', label:'Crit DMG', pre:'Fierce',  fmt:v=>'+'+v+'%',  tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
+  { id:'cd',    kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift',  fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
   // ── Suffix (สายรับ/utility) ──
-  { id:'hp',    kind:'suffix', emoji:'❤️', label:'HP',       suf:'ราชสีห์', fmt:v=>'+'+v,      tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
-  { id:'def',   kind:'suffix', emoji:'🛡️', label:'ลดดาเมจ',  suf:'ศิลา',    fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
-  { id:'spd',   kind:'suffix', emoji:'👟', label:'ความเร็ว',  suf:'สายลม',   fmt:v=>'+'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
-  { id:'pick',  kind:'suffix', emoji:'🧲', label:'ดูดของ',    suf:'แม่เหล็ก',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
-  { id:'regen', kind:'suffix', emoji:'💗', label:'ฟื้น/วิ',   suf:'พุน้ำหวาน',fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]],   apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
+  { id:'hp',    kind:'suffix', emoji:'❤️', label:'HP',       suf:'of the Lion', fmt:v=>'+'+v,      tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
+  { id:'def',   kind:'suffix', emoji:'🛡️', label:'Defense',  suf:'of Stone',    fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
+  { id:'spd',   kind:'suffix', emoji:'👟', label:'Speed',    suf:'of the Wind',   fmt:v=>'+'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
+  { id:'pick',  kind:'suffix', emoji:'🧲', label:'Pickup',   suf:'of Magnetism',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
+  { id:'regen', kind:'suffix', emoji:'💗', label:'Regen/s',  suf:'of the Spring',fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]],   apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
 ];
 const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
 // item level → tier ดีสุดที่สุ่มได้ (ฐานดี = โรลได้ดีกว่า): legend→T1, epic→T2, rare→T3, common→T4
@@ -1997,7 +2002,7 @@ const Store = {
 function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%2)};}   // diff 2-3 (นรกสูงสุด)
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
-const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'ธรรมดา',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'}, legend:{name:'ตำนาน',color:'#ff8f3a'} };
+const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'Common',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'}, legend:{name:'ตำนาน',color:'#ff8f3a'} };
 const FIELD_DROP_TABLE={
   common:{emoji:'●',name:'COMMON',color:0x8bd3a0},rare:{emoji:'◆',name:'RARE',color:0xffcf5a},epic:{emoji:'✦',name:'EPIC',color:0xc9a3ff},legend:{emoji:'🌟',name:'LEGEND',color:0xff8f3a}
 };
@@ -4997,8 +5002,8 @@ class Game extends Phaser.Scene {
     if(this.usesBasicAttackBuild()){this.state='startskill';this.physics.pause();this.lvlUp.setVisible(false);this.time.delayedCall(0,()=>this.launchStageLoadout());return;}
     this.state='startskill';this.physics.pause();const w=this.W,h=this.H;this.lvlUp.removeAll(true);this.startSkillCards=[];
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.96).setOrigin(0,0);this.lvlUp.add(bg);
-    const u=this.uniqueInfo(),sw=this.signatureWeaponInfo(),title=this.add.text(w/2,18,'⚔️ เลือกอาวุธรอง 1 ชิ้น',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w>h?'18px':'20px',color:'#ffe07a'}).setOrigin(0.5,0);
-    const sub=this.add.text(w/2,45,sw.emoji+' อาวุธประจำตัว: '+sw.name+' · '+sw.trait+'\n'+u.emoji+' Unique: '+u.name,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',align:'center',lineSpacing:2,wordWrap:{width:w-30}}).setOrigin(0.5,0);this.lvlUp.add([title,sub]);
+    const u=this.uniqueInfo(),sw=this.signatureWeaponInfo(),title=this.add.text(w/2,18,'⚔️ Pick 1 secondary weapon',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w>h?'18px':'20px',color:'#ffe07a'}).setOrigin(0.5,0);
+    const sub=this.add.text(w/2,45,sw.emoji+' Signature: '+sw.name+' · '+sw.trait+'\n'+u.emoji+' Unique: '+u.name,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',align:'center',lineSpacing:2,wordWrap:{width:w-30}}).setOrigin(0.5,0);this.lvlUp.add([title,sub]);
     const keys=Phaser.Utils.Array.Shuffle(Object.keys(SKILLDEFS).filter(k=>k!==sw.skill)).slice(0,3),portrait=w<=h,cols=portrait?1:3,gap=10,side=portrait?14:10,startY=86,rows=Math.ceil(keys.length/cols),cw=(w-side*2-gap*(cols-1))/cols,ch=Math.min(portrait?158:310,(h-startY-14-gap*(rows-1))/rows),left=(w-(cw*cols+gap*(cols-1)))/2;
     keys.forEach((key,i)=>{const d=SKILLDEFS[key],x=left+(i%cols)*(cw+gap),y=startY+Math.floor(i/cols)*(ch+gap);this.drawReadableChoiceCard(this.lvlUp,{type:'atk',key,title:d.name,lvl:1,max:d.max,emoji:d.emoji,role:d.role,desc:d.desc},x,y,cw,ch,{starting:true,index:i});this.startSkillCards.push({left:x,right:x+cw,top:y,bottom:y+ch,key});});
     this.lvlUp.setVisible(true);
@@ -5027,7 +5032,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.add(bg);
     const heldBot0=this.drawHeldBar(this.lvlUp, 8);
     const heldBot=this.usesBasicAttackBuild()?this.drawRecipePanel(this.lvlUp,heldBot0+2):heldBot0;   // โชว์สูตร recipe เฉพาะ character-first
-    const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 หีบสมบัติ — แตะใบเดิมซ้ำเพื่อยืนยัน':'⭐ LEVEL UP — แตะเลือก แล้วแตะใบเดิมซ้ำเพื่อยืนยัน',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
+    const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap the same card again to confirm':'⭐ LEVEL UP — tap to choose, tap again to confirm',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
     this.lvlUp.add(t);
     this.banishMode=false;
     const opts=this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._lvlOpts=opts;
@@ -5057,8 +5062,8 @@ class Game extends Phaser.Scene {
       if(enabled)this.lvlActionBtns.push({left:x,right:x+bw,top:y,bottom:y+bh,fn});
     };
     const rr=this.rerollLeft||0,bb=this.banishLeft||0;
-    mk(x0,'🎲 สุ่มใหม่ ('+rr+')',rr>0,false,()=>this.doReroll());
-    mk(x0+bw+gap,(this.banishMode?'🚫 แตะการ์ดที่จะลบ':'🚫 ลบสกิล ('+bb+')'),bb>0,this.banishMode,()=>this.toggleBanishMode());
+    mk(x0,'🎲 Reroll ('+rr+')',rr>0,false,()=>this.doReroll());
+    mk(x0+bw+gap,(this.banishMode?'🚫 Tap a card to remove':'🚫 Banish ('+bb+')'),bb>0,this.banishMode,()=>this.toggleBanishMode());
   }
   doReroll(){
     if((this.rerollLeft||0)<=0)return; this.rerollLeft--; Sfx.select(); this.banishMode=false;
@@ -5066,7 +5071,7 @@ class Game extends Phaser.Scene {
   }
   toggleBanishMode(){
     if((this.banishLeft||0)<=0)return; this.banishMode=!this.banishMode; this._pendingCardConfirm=null; Sfx.select();
-    if(this.levelChoiceHint)this.levelChoiceHint.setText(this.banishMode?'🚫 โหมดลบ — แตะการ์ดที่ไม่อยากให้โผล่อีกทั้งด่าน':'⭐ LEVEL UP — แตะเลือก แล้วแตะใบเดิมซ้ำเพื่อยืนยัน');
+    if(this.levelChoiceHint)this.levelChoiceHint.setText(this.banishMode?'🚫 Banish mode — tap a card to remove it for this stage':'⭐ LEVEL UP — tap to choose, tap again to confirm');
     this.drawLevelActionBar(this.H-40);
   }
   pickCardAt(px,py){
@@ -5076,7 +5081,7 @@ class Game extends Phaser.Scene {
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this.banishMode){ this.banishCard(c); return; }
-    if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('เลือก “'+c.title+'” · แตะใบเดิมอีกครั้งเพื่อยืนยัน');return;}
+    if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
     Sfx.clear(); c.apply(); this._pendingCardConfirm=null; this.closeLevelUp();
   }
   banishCard(c){
@@ -5121,8 +5126,8 @@ class Game extends Phaser.Scene {
     // ✨ ช่วงพิเศษ #2 — Evolution ครั้งเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     if(!noSpecial&&b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
       this.showBanner('✨ พร้อมวิวัฒนาการ!','อัปเกรดขั้นสุดของ Basic Attack',1600);
-      const EVO_DESC={sprinkle:'เมล็ดพุ่งตรงเร็ว ทะลุทุกตัว (พายุเมล็ดทะลุ ไม่โค้งตามเป้า)',thunder:'พายุสายฟ้าทั้งจอ — ฟาดหลายจุด ชิ่งไกลและยาวขึ้นมาก',frost:'ปล่อยหอก 3 เล่ม (สามง่าม) ทะลุแนว + แต่ละเล่มแตกสะเก็ดน้ำแข็งกระจายที่ปลายทาง',meteor:'สแลมเพิ่ม + ทุกลูกทิ้งช็อคเวฟ (ไม่ใช่แค่ลูกสุดท้าย)',mirror:'พัลส์กระจกกระแทกสองระลอก + เขตวงเวทกว้างและแรงขึ้น'};
-      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'ยกระดับ Basic Attack ทั้งหมด!')};
+      const EVO_DESC={sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'Two mirror pulse waves + a wider, stronger circle'};
+      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
     // ----- รอบปกติ: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญหา +ยิง ออกถี่) -----
@@ -5173,11 +5178,11 @@ class Game extends Phaser.Scene {
     // --- สกิลโจมตี (auto-cast) — สกิลใหม่เฉพาะเมื่อยังไม่เต็มโควตา ---
     for(const key in SKILLDEFS){ if(this.banishedKeys&&this.banishedKeys['a:'+key])continue; const d=SKILLDEFS[key], cur=this.skills[key]||0;
       if(cur===0){ if(atkOwned<SKILL_CAP) S(key,1,d.max,d.emoji,d.name,d.desc,true,()=>{ this.skills[key]=1; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
-      else if(cur<d.max){ const nx=cur+1, tier=(SKILL_TIERS[key]&&SKILL_TIERS[key][nx])||'แรงขึ้น';
+      else if(cur<d.max){ const nx=cur+1, tier=(SKILL_TIERS[key]&&SKILL_TIERS[key][nx])||'Stronger';
         S(key,nx,d.max,d.emoji,d.name,tier,false,()=>{ this.skills[key]++; if(key==='star')this.rebuildRing(); this.buildSkillBar(); }); }
       else if(awakenOwned<AWAKEN_CAP && cur===d.max && d.awaken && COMBOS.some(c=>c.a===key&&(this.passives[c.b]||0)>0)){   // MAX + ถือ Passive คู่ที่ถูกต้องจึงตื่นรู้ได้ (แบบเดิม · แต่คอมโบไม่ให้โบนัส status แล้ว)
-        const a=d.awaken,combo=COMBOS.find(c=>c.a===key),pair=combo&&PASSIVES[combo.b]?('จับคู่: '+d.emoji+' '+d.name+' MAX + '+PASSIVES[combo.b].emoji+' '+PASSIVES[combo.b].name):'';
-        A(key,a.emoji,'ตื่นรู้: '+a.name,pair+' · '+a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ สกิลตื่นรู้! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
+        const a=d.awaken,combo=COMBOS.find(c=>c.a===key),pair=combo&&PASSIVES[combo.b]?('Pair: '+d.emoji+' '+d.name+' MAX + '+PASSIVES[combo.b].emoji+' '+PASSIVES[combo.b].name):'';
+        A(key,a.emoji,'Awaken: '+a.name,pair+' · '+a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ Skill Awakened! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }
     }
     // --- สกิลติดตัว (passive แบบเลเวลได้) — ตัวใหม่เฉพาะเมื่อยังไม่เต็มโควตา ---
     for(const key in PASSIVES){ if(this.banishedKeys&&this.banishedKeys['p:'+key])continue; const d=PASSIVES[key], cur=this.passives[key]||0;
