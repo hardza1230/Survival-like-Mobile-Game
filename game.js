@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '3.5.0';
+const GAME_VERSION = '3.6.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'3.6.0', date:'2026-09-19', title:'Animated main menu — layered parallax', items:[
+    'Added visible layered parallax motion to the main-menu artwork',
+    'Added subtle sparkles and moving light effects for a livelier presentation',
+  ]},
   { v:'3.5.0', date:'2026-09-19', title:'English UI (Phase 5) — 100% English', items:[
     'Translated every remaining in-game string: skill/boss banners, phase telegraphs, enemy names, wave beats, results & victory screens, gacha boxes, revive/death panels',
     'The game is now fully English for the global launch',
