@@ -2797,19 +2797,35 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:bg, x:baseX+4, y:baseY-3, scaleX:baseSX*1.045, scaleY:baseSY*1.045,
         duration:10000, yoyo:true, repeat:-1, ease:'Sine.inOut'});
     }
-    // Main Menu layered foreground: independent glow + floating sparkles for a lightweight parallax feel
-    const motion=this.add.container(0,0).setDepth(2);
+    // Main Menu parallax layers: visible separation between background, midground and foreground
+    const midground=this.add.container(0,0).setDepth(2);
+    const foreground=this.add.container(0,0).setDepth(3);
+
+    // Midground: large soft candy lights drift at a different speed than the background
+    const midLights=[
+      [w*0.16,h*0.30,Math.min(w,h)*0.28,0xff85b3,0.10],
+      [w*0.88,h*0.55,Math.min(w,h)*0.34,0x66d3b3,0.08],
+      [w*0.52,h*0.78,Math.min(w,h)*0.24,0xa98cf0,0.08],
+    ];
+    midLights.forEach(([x,y,size,color,alpha],i)=>{
+      const orb=this.add.ellipse(x,y,size,size,color,alpha); midground.add(orb);
+      this.tweens.add({targets:orb,x:x+(i%2?18:-14),y:y-(i+1)*8,scaleX:1.12,scaleY:0.88,
+        duration:6500+i*900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    });
+
+    // Foreground: clearly readable floating motes and a slow light sweep
     const sparkleColors=[0xffd166,0xff9ec4,0xa8e6cf,0xbfe8ff,0xfff3d6];
-    for(let i=0;i<9;i++){
-      const sx=18+((i*73)%Math.max(24,w-36)), sy=h*(0.18+((i*37)%62)/100), sz=2+(i%3);
-      const sp=this.add.ellipse(sx,sy,sz,sz,sparkleColors[i%sparkleColors.length],0.48);
-      motion.add(sp);
-      this.tweens.add({targets:sp,y:sy-10-(i%3)*6,alpha:{from:0.16,to:0.72},duration:1800+(i%4)*420,
-        delay:i*180,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    for(let i=0;i<12;i++){
+      const sx=16+((i*67)%Math.max(28,w-32)), sy=h*(0.14+((i*41)%70)/100), sz=2+(i%3)*1.4;
+      const sp=this.add.ellipse(sx,sy,sz*2.2,sz*2.2,sparkleColors[i%sparkleColors.length],0.78);
+      foreground.add(sp);
+      this.tweens.add({targets:sp,x:sx+(i%2?10:-8),y:sy-18-(i%4)*7,alpha:{from:0.18,to:0.95},
+        duration:1300+(i%5)*260,delay:i*120,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     }
-    const sweep=this.add.rectangle(-w*0.18,h*0.43,w*0.52,3,0xfff3d6,0.11).setAngle(-18);
-    motion.add(sweep);
-    this.tweens.add({targets:sweep,x:w*1.18,duration:12500,repeat:-1,repeatDelay:4200,ease:'Sine.inOut'});
+    const sweep=this.add.rectangle(-w*0.25,h*0.40,w*0.62,7,0xfff3d6,0.18).setAngle(-18);
+    foreground.add(sweep);
+    this.tweens.add({targets:sweep,x:w*1.25,duration:7200,repeat:-1,repeatDelay:2200,ease:'Sine.inOut'});
+
     const shade=this.add.graphics();shade.fillGradientStyle(0x100817,0x100817,0x090611,0x090611,0.05,0.05,0.50,0.88);shade.fillRect(0,0,w,h);
     const topG=this.add.graphics();topG.fillStyle(0x090713,0.72);topG.fillRoundedRect(12,13,96,32,12);topG.lineStyle(1.2,0xffffff,0.18);topG.strokeRoundedRect(12,13,96,32,12);
     const sugar=this.add.text(24,29,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffe5a6'}).setOrigin(0,0.5);
@@ -2819,7 +2835,7 @@ class Game extends Phaser.Scene {
     const subtitle=this.add.text(center,logoY+27,'F L A V O R B O U N D',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd27d'}).setOrigin(0.5);
     const ch=CHARACTERS[this.character||'momo'];
     const charTxt=this.add.text(center,logoY+47,`${ch.emoji} ${ch.name}  ·  ${CHARACTER_UNIQUES[ch.unique].name}`,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d8c4',align:'center'}).setOrigin(0.5);
-    this.menu.add([bg,motion,shade,topG,sugar,title,subtitle,charTxt]);
+    this.menu.add([bg,midground,foreground,shade,topG,sugar,title,subtitle,charTxt]);
     // ป้ายเวอร์ชัน (มุมขวาบน) — แตะดูUpdates/ดาวน์โหลด
     const vg=this.add.graphics(); vg.fillStyle(0x090713,0.72); vg.fillRoundedRect(w-106,13,94,32,12); vg.lineStyle(1.2,0xffffff,0.18); vg.strokeRoundedRect(w-106,13,94,32,12);
     const vt=this.add.text(w-59,29,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#eadff2'}).setOrigin(0.5);
