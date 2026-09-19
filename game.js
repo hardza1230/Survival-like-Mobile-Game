@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '3.3.0';
+const GAME_VERSION = '3.4.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'3.4.0', date:'2026-09-19', title:'English UI (Phase 4a) — story & chapters', items:[
+    'Translated stage story beats, character reactions, chapters, achievements, wave objectives and gimmicks',
+    'Remaining in-game skill/boss banners and enemy names translate next',
+  ]},
   { v:'3.3.0', date:'2026-09-19', title:'English UI (Phase 3b) — all menu screens', items:[
     'Translated Gear, Craft, Bazaar, Cookbook, Bestiary, Daily, Achievements, Endgame and the How-to-Play screens',
     'In-game story beats, wave banners and per-stage enemy names translate next',
@@ -2301,101 +2305,101 @@ const STAGES = [
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
 const STAGE_STORY_BEATS = [
   [
-    {title:'รอยแยกใต้ตู้กับข้าว',sub:'ผลึกกรดส่งเสียงเรียกมดงานให้ปิดทางกลับของโมโม่'},
-    {title:'กลิ่นเปรี้ยวกลบความทรงจำ',sub:'มดสอดแนมลืมชื่อของตน และจำได้เพียงคำสั่งจากผลึก'},
-    {title:'ราชองครักษ์เฝ้ารังไข่',sub:'เขี้ยวทับทิมยอมรับคำสาปเพื่อปกป้องทายาทของรัง'},
-    {title:'คำสัตย์ของจักรพรรดินี',sub:'กองทหารเปิดทางสู่ห้องฟัก—เบื้องหลังคือสัญญาที่แลกอิสรภาพกับชีวิตลูก'},
-    {title:'ตราเตาอบใต้ผลึก',sub:'รอยไหม้รูปมงกุฎชี้ว่าเชฟขมกำลังสูบกรดขึ้นไปยังชั้นบน'}
+    {title:'Crack Beneath the Pantry',sub:'The acid crystal calls the workers to seal Momo\'s way back'},
+    {title:'A Sour Scent Buries Memory',sub:'The scouts forget their names, recalling only the crystal orders'},
+    {title:'The Guard of the Egg Nest',sub:'Ruby Fang accepts the curse to protect the nest heirs'},
+    {title:'The Empress Oath',sub:'The legion opens the hatchery — a pact trading freedom for her children lives'},
+    {title:'The Oven Mark Below',sub:'A crown-shaped burn shows the Bitter Chef siphoning acid upward'}
   ],
   [
-    {title:'กรดไหลสู่ท่อโบราณ',sub:'ของเสียจากรังหมักตัวจนฟองและตะแกรงเริ่มมีเจตจำนง'},
-    {title:'เสียงกระซิบในน้ำเสีย',sub:'ความทรงจำที่ถูกชะล้างรวมร่างเป็นฝูงผู้เฝ้าท่อ'},
-    {title:'วาล์วมอว์กักแรงดัน',sub:'ผู้เฝ้าท่อยอมแตกสลาย ดีกว่าปล่อยคำสาปไหลย้อนกลับ'},
-    {title:'ชีพจรใต้ตะแกรง',sub:'ทุกท่อบีบตัวพร้อมกัน ราวกับระบบระบายน้ำกลายเป็นหัวใจ'},
-    {title:'คลอกมอว์ตื่นจากตะกอน',sub:'จ้าวท่ออุดตันเก็บกรดไว้ส่งต่อให้เครื่องจักรพริกเพลิง'}
+    {title:'Acid Floods the Old Drains',sub:'Nest waste ferments until foam and grates gain a will'},
+    {title:'Whispers in the Sewage',sub:'Washed-away memories merge into pipe wardens'},
+    {title:'Valve Maw Holds the Pressure',sub:'The warden would rather shatter than let the curse flow back'},
+    {title:'A Pulse Beneath the Grate',sub:'Every pipe contracts at once, as if the drains became a heart'},
+    {title:'Clogmaw Wakes from the Sludge',sub:'The clog lord hoards acid to feed the chili engine'}
   ],
   [
-    {title:'เครื่องจักรกลืนกรด',sub:'เตาหลอมเปลี่ยนกรดจากรังให้เป็นเชื้อเพลิงคำสาป'},
-    {title:'พริกเพลิงถูกบังคับให้ลุก',sub:'ประกายรสเผ็ดร้องขอให้ปลดโซ่จากเฟืองเหล็ก'},
-    {title:'กระทะเดือดดาลขวางทาง',sub:'ผู้คุมเตาเหวี่ยงความร้อนเพื่อรักษาแรงดันของโรงงาน'},
-    {title:'สายพานส่งความขม',sub:'ลังเชื้อเพลิงทุกใบประทับตรามงกุฎเดียวกับผลึกกรด'},
-    {title:'มิสเตอร์เตาปิ้งเร่งเครื่อง',sub:'เครื่องจักรคำสาปกำลังส่งพลังขึ้นสู่คุกเย็นน้ำตาล'}
+    {title:'The Acid-Eating Machine',sub:'The furnace turns nest acid into cursed fuel'},
+    {title:'Chilies Forced to Burn',sub:'Spicy sparks beg to be freed from the iron gears'},
+    {title:'The Boiling Pan Blocks the Way',sub:'The stove warden hurls heat to keep the factory pressure'},
+    {title:'The Belt of Bitterness',sub:'Every fuel crate bears the same crown mark as the acid crystal'},
+    {title:'Mr. Griddle Revs Up',sub:'The cursed machine sends power up to the Sugar Frost Prison'}
   ],
   [
-    {title:'เสียงหวานใต้ชั้นน้ำแข็ง',sub:'วิญญาณรสชาติถูกแช่แข็งไว้เป็นแบตเตอรี่ของเตาอบ'},
-    {title:'โซ่เย็นกัดกินชื่อเดิม',sub:'ผู้ถูกจองจำเริ่มลืมว่าตนเคยเป็นรสชาติใด'},
-    {title:'ผู้คุมก้อนน้ำแข็งมาถึง',sub:'มันปกป้องห้องขังตามคำสั่งที่ไม่เคยตั้งคำถาม'},
-    {title:'สายใยอุ่นละลายผนึก',sub:'ความทรงจำของ Flavorbound ทำให้กำแพงคุกแตกร้าว'},
-    {title:'โกเลมไอศกรีมยืนหยัด',sub:'เชื้อเพลิงทั้งหมดถูกรวมไว้ในร่างผู้คุมตัวสุดท้าย'}
+    {title:'Sweet Voices Under the Ice',sub:'Flavor spirits are frozen as the oven batteries'},
+    {title:'Cold Chains Eat Old Names',sub:'The prisoners forget which flavor they once were'},
+    {title:'The Ice Warden Arrives',sub:'It guards the cells by orders it never questions'},
+    {title:'Warm Threads Melt the Seal',sub:'Flavorbound memories crack the prison walls'},
+    {title:'The Ice Cream Golem Stands',sub:'All the fuel is gathered into the final warden'}
   ],
   [
-    {title:'บันไดสู่มงกุฎขม',sub:'ทุกเส้นทางจากใต้ครัวมาบรรจบที่เตาอบสูงสุด'},
-    {title:'โต๊ะเลี้ยงที่ไร้รสชาติ',sub:'อาหารทุกจานเหลือเพียงรูปร่าง—ความหิวได้กินความหมายไปแล้ว'},
-    {title:'เพชฌฆาตงานเลี้ยงปิดประตู',sub:'Banquet Executioner ชูศาสตราครัวทั้งหก ปิดทางหนีสู่เตามงกุฎ'},
-    {title:'เงาที่อยู่เหนือเชฟ',sub:'เสียงจากเตาเรียกตนเองว่า The Great Hunger'},
-    {title:'เชฟขมเผยคำสัตย์',sub:'เขาไม่ใช่ต้นกำเนิด แต่เป็นผู้รับใช้ที่ส่งรสชาติทั้งหมดให้ความหิว'}
+    {title:'Stairway to the Bitter Crown',sub:'Every path from below the kitchen meets at the highest oven'},
+    {title:'A Banquet Without Flavor',sub:'Every dish is just a shape — Hunger has eaten the meaning'},
+    {title:'The Banquet Executioner Seals the Door',sub:'It raises all six kitchen blades, cutting off escape to the crown oven'},
+    {title:'The Shadow Above the Chef',sub:'The voice from the oven calls itself The Great Hunger'},
+    {title:'The Bitter Chef Confession',sub:'He is not the origin, but a servant feeding all flavor to Hunger'}
   ],
   [
-    {title:'รากแทงทะลุเตามงกุฎ',sub:'เมล็ดสีทองที่ซ่อนในแกนเตาตื่นขึ้น และลากความทรงจำทั้งหมดขึ้นสู่สวนเหนือครัว'},
-    {title:'ผลไม้จำชื่อเจ้าของได้',sub:'Ferment Sprout งอกจากรสชาติที่กลับคืน แต่ทุกผลเรียกชื่อคนคนเดียวกัน—Rootmother'},
-    {title:'Sporewarden ปิดเรือนยอด',sub:'ตั๊กแตนกล้วยไม้กางเคียวใบไม้ ไม่ยอมให้ใครเข้าใกล้เมล็ดมงกุฎ'},
-    {title:'ฤดูกาลทั้งสี่เบ่งบานพร้อมกัน',sub:'พิษหมักเร่งเวลา ดอกไม้เกิด แก่ และตายในลมหายใจเดียว'},
-    {title:'เสียงแม่ใต้รากแรก',sub:'ผู้ที่ปลูกเมล็ดมงกุฎกำลังรออยู่ และเรียก The Great Hunger ว่า “ลูกที่หลงทาง”'}
+    {title:'Roots Pierce the Crown Oven',sub:'The golden seed hidden in the core wakes and drags all memory up to the garden'},
+    {title:'Fruit That Remembers Its Owner',sub:'Ferment Sprouts grow from returned flavor, but every one calls a single name — Rootmother'},
+    {title:'Sporewarden Seals the Canopy',sub:'The orchid mantis raises leaf scythes, letting no one near the crown seed'},
+    {title:'All Four Seasons Bloom at Once',sub:'Ferment toxin speeds time — flowers are born, age and die in one breath'},
+    {title:'A Mother Voice Below the First Root',sub:'The one who planted the crown seed waits, calling The Great Hunger a lost child'}
   ]
 ];
 const STORY_REACTIONS = {
-  momo:['ฉันจะตามกลิ่นคำสาปไปเอง','เสียงพวกนี้ไม่ได้อยากสู้... ฉันต้องรีบช่วย','ผู้เฝ้าทางกำลังมา ตั้งสติไว้โมโม่','ใกล้ถึงต้นตอแล้ว ห้ามถอย','จบเรื่องนี้ แล้วเอารสชาติของทุกคนคืนมา'],
-  mint:['ลมหายใจของที่นี่ผิดปกติ ฉันจะทำให้มันสงบ','ยังมีชีวิตอยู่ใต้คำสาป ฉันสัมผัสได้','ผู้เฝ้าทางไม่ได้ชั่วร้าย เราต้องหยุดคำสาป','แรงกดดันสูงขึ้น... สร้างพื้นที่ปลอดภัยไว้','ฉันจะปกป้องทุกความทรงจำที่ยังเหลือ'],
-  cocoa:['ถ้ามันขวางทาง ก็ทุบให้เปิดเอง','มีบางอย่างร้องขอความช่วยเหลืออยู่ข้างหน้า','ตัวใหญ่กำลังมา ดี—จะได้ถามให้รู้เรื่อง','พื้นสั่นแรงขึ้น ฉันยังยืนไหว','หมัดสุดท้ายนี้เพื่อทุกคนที่ถูกขโมยรสชาติ'],
-  taro:['ร่องรอยนี้วนกลับไปหาต้นเหตุ ฉันจำทางได้','เสียงสะท้อนกำลังบอกเส้นทางลับ','ผู้เฝ้าทางซ่อนความจริงไว้หลังแรงดัน','ทุกเส้นทางมาบรรจบตรงหน้าเรา','ฉันจะเดินย้อนคำสาปกลับไปหาคนที่สร้างมัน'],
-  sesame:['ตราคำสาปกำลังขยาย ฉันจะวางเขตต้านไว้','ความทรงจำเหล่านี้ยังสะท้อนกลับมาได้','ผู้เฝ้าทางรักษาคำสัตย์บางอย่างอยู่','กำแพงสุดท้ายเริ่มแตกร้าว เตรียมตราให้พร้อม','คำสัตย์ของฉันจะไม่ยอมให้ความขมกลืนใครอีก']
+  momo:["I'll follow the curse's scent myself","These voices don't want to fight... I must hurry","A warden is coming — stay focused, Momo","The source is close — no retreat","End this and take back everyone's flavor"],
+  mint:["The air here is wrong — I'll calm it","Something still lives under the curse — I can feel it","The warden isn't evil — we must stop the curse","The pressure rises... make a safe space","I'll protect every memory that remains"],
+  cocoa:["If it blocks the way, I'll smash it open","Something ahead is crying for help","A big one's coming — good, I'll get answers","The ground shakes harder — I can still stand","This last punch is for everyone whose flavor was stolen"],
+  taro:["This trail loops back to the source — I remember the way","The echoes reveal a hidden path","The warden hides the truth behind the pressure","Every path converges right ahead","I'll trace the curse back to whoever made it"],
+  sesame:["The curse mark is spreading — I'll set a ward","These memories can still be reflected back","The warden keeps some oath","The last wall is cracking — ready the seals","My oath won't let the bitterness devour anyone again"]
 };
 const STAGE_GIMMICKS = [
-  {name:'ผลึกกลิ่นนำทาง',emoji:'💚',tex:'nest_crystal',color:0x9dff45,desc:'ดูดเฉพาะ EXP รอบตัว 520 หน่วย'},
-  {name:'ฟองอากาศสะอาด',emoji:'🫧',tex:'bubble',color:0x72e8d1,desc:'ล้างสถานะช้า ฟื้น HP และคุ้มกันชั่วคราว'},
-  {name:'แกนเร่งพริก',emoji:'🔥',tex:'ic_power',color:0xff8a5a,desc:'รีเซ็ตคูลดาวน์สกิลทั้งหมดและเร่งฝีเท้า'},
-  {name:'กระดิ่งเกล็ดเย็น',emoji:'❄️',tex:'ic_frost',color:0x9fe0ff,desc:'แช่แข็งศัตรูทั่วสนามชั่วคราว'},
-  {name:'เมล็ดความทรงจำ',emoji:'✨',tex:'ic_memory',color:0xd59cff,desc:'ฟื้น HP และเปลี่ยนความทรงจำเป็น Sugar'},
-  {name:'หยดน้ำหมักบริสุทธิ์',emoji:'🌱',tex:'ic_regen',color:0x56e5bd,desc:'ฟื้น HP ล้างสถานะช้า และเร่งคูลดาวน์ชั่วคราว'}
+  {name:'Scent Crystal',emoji:'💚',tex:'nest_crystal',color:0x9dff45,desc:'Vacuums EXP within 520 units'},
+  {name:'Clean Bubble',emoji:'🫧',tex:'bubble',color:0x72e8d1,desc:'Clears slow, heals HP and brief guard'},
+  {name:'Chili Overcore',emoji:'🔥',tex:'ic_power',color:0xff8a5a,desc:'Resets all skill cooldowns and boosts speed'},
+  {name:'Frost Bell',emoji:'❄️',tex:'ic_frost',color:0x9fe0ff,desc:'Briefly freezes all enemies on the field'},
+  {name:'Memory Seed',emoji:'✨',tex:'ic_memory',color:0xd59cff,desc:'Heals HP and turns memories into Sugar'},
+  {name:'Pure Ferment Drop',emoji:'🌱',tex:'ic_regen',color:0x56e5bd,desc:'Heals HP, clears slow, briefly speeds cooldowns'}
 ];
 
 /* ภารกิจสุ่มประจำเวฟ Chapter 1 — เปลี่ยนสิ่งที่ผู้เล่นต้องทำโดยไม่เพิ่มภาระระบบฟิสิกส์หนัก */
 const WAVE_OBJECTIVES = {
-  survive:{emoji:'⏳',name:'ยืนหยัดฝ่าฝูง',desc:'เอาชีวิตรอดจนเวลาหมด'},
-  hunt:{emoji:'🎯',name:'ล่าเป้าหมายอันตราย',desc:'กำจัด Elite ที่มีตราเป้าหมาย'},
-  purge:{emoji:'💥',name:'ทำลายแกนคำสาป',desc:'โจมตีหรือเข้าใกล้เพื่อชำระล้างแกนคำสาป'},
-  capture:{emoji:'🔷',name:'ยึดเขตพลังงาน',desc:'ยืนในวงพลังจนมาตรวัดเต็ม'}
+  survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
+  hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite'},
+  purge:{emoji:'💥',name:'Purge the Cursed Cores',desc:'Attack or approach to cleanse the cursed cores'},
+  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the power ring until the meter fills'}
 };
 const CH1_OBJECTIVE_COLORS=[0x9dff45,0x72e8d1,0xff8a5a,0x9fe0ff,0xd59cff];
 
 const STAGE_SWARM_BEATS = [
-  {title:'ผลึกกรดร้องเรียกทั้งรัง',sub:'มดทุกวรรณะหันมาปกป้องห้องฟักพร้อมกัน'},
-  {title:'แรงดันน้ำเสียปะทุ',sub:'ฝูงจากท่อข้างเคียงถูกดันเข้ามาในห้องเดียวกัน'},
-  {title:'สัญญาณเตาหลอมดังขึ้น',sub:'เครื่องจักรปล่อยหน่วยเฝ้าเตาจากทุกสายพาน'},
-  {title:'ผนึกห้องขังแตก',sub:'ผู้คุมและวิญญาณที่หลงลืมทะลักออกมาพร้อมกัน'},
-  {title:'เสียงเรียกของความหิว',sub:'ผู้รับใช้จากทุกชั้นครัวตอบรับมงกุฎขม'},
-  {title:'เรือนยอดเบ่งบานผิดฤดู',sub:'ราก พืชพิษ และเศษความทรงจำตื่นพร้อมกันทั่วสวนหมัก'}
+  {title:'The Acid Crystal Summons the Nest',sub:'Every ant caste turns to defend the hatchery at once'},
+  {title:'Sewage Pressure Bursts',sub:'Swarms from nearby pipes are forced into the same room'},
+  {title:'The Furnace Alarm Blares',sub:'The machine releases furnace guards from every belt'},
+  {title:'The Cell Seal Breaks',sub:'Wardens and forgotten spirits pour out together'},
+  {title:'The Call of Hunger',sub:'Servants from every kitchen floor answer the bitter crown'},
+  {title:'The Canopy Blooms Off-Season',sub:'Roots, toxic plants and memory fragments wake across the ferment garden'}
 ];
 
 /* ---- CHAPTERS: แต่ละบทชี้ช่วง global stage index ของตน ---- */
 const CHAPTERS = [
-  { name:'บทที่ 1 · ทางขึ้นจากใต้ครัว', emoji:'🐜', desc:'รังมดเปรี้ยว → เตาอบราชันขม', ready:true, stages:[0,4] },
-  { name:'บทที่ 2 · สวนหมักพิษ', emoji:'🌿', desc:'เมล็ดมงกุฎพาความทรงจำขึ้นสู่เรือนยอดที่เบ่งบานผิดฤดู', ready:true, stages:[5,5] },
-  { name:'บทที่ 3 · โรงงานไร้รส', emoji:'🏭', desc:'กองทัพจักรกลกำลังลบรสชาติออกจากโลก', ready:false },
-  { name:'บทที่ 4 · นครน้ำตาลแตกสลาย', emoji:'🏰', desc:'สงครามกลางเมืองของอาณาจักรขนม', ready:false },
-  { name:'บทที่ 5 · บัลลังก์เมล็ดแรก', emoji:'🌑', desc:'เผชิญผู้ปลูกมงกุฎและต้นกำเนิดวงจรความหิว', ready:false },
+  { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
+  { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,5] },
+  { name:'Chapter 3 · The Flavorless Factory', emoji:'🏭', desc:'A machine army is erasing flavor from the world', ready:false },
+  { name:'Chapter 4 · The Shattered Sugar City', emoji:'🏰', desc:'A civil war of the candy kingdom', ready:false },
+  { name:'Chapter 5 · Throne of the First Seed', emoji:'🌑', desc:'Face the crown planter and the origin of the hunger cycle', ready:false },
 ];
 
 const ACHIEVEMENTS=[
-  {id:'first',emoji:'⚔️',name:'รสแรกแห่งชัยชนะ',desc:'กำจัดศัตรูตัวแรก',reward:30,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1},
-  {id:'hunter',emoji:'☠️',name:'นักล่าพันรส',desc:'กำจัดศัตรูรวม 1,000 ตัว',reward:180,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1000},
-  {id:'stage1',emoji:'🐜',name:'ผู้พิชิตรังเปรี้ยว',desc:'ผ่านด่าน 1 ครั้งแรก',reward:60,test:d=>!!(d.stageMastery||{})[0]},
-  {id:'hunger',emoji:'🌑',name:'ผู้หยุดความหิว',desc:'กำจัด The Great Hunger',reward:300,test:d=>!!(d.stageMastery||{})[4]},
-  {id:'master',emoji:'🏆',name:'จ้าวแห่งใต้ครัว',desc:'Mastery ครบทั้ง 5 ด่าน',reward:250,test:d=>[0,1,2,3,4].every(i=>(d.stageMastery||{})[i])},
-  {id:'hell',emoji:'🔥',name:'ผู้รอดจากนรก',desc:'ผ่านด่านใดก็ได้ระดับ นรก',reward:220,test:d=>(d.diffBest||[]).some(v=>v>=3)},
-  {id:'collector',emoji:'💎',name:'นักสะสมเครื่องราง',desc:'สะสมอุปกรณ์อย่างน้อย 12 ชิ้น',reward:160,test:d=>(d.ownedGear||[]).length>=12},
-  {id:'family',emoji:'🍡',name:'ครอบครัว Mochi Core',desc:'ปลดล็อกนักสู้ครบ 5 ตัว',reward:220,test:d=>(d.chars||[]).length>=5},
-  {id:'bond',emoji:'⭐',name:'สายใยนิรันดร์',desc:'ประสานสายใยขึ้น Rank 1',reward:200,test:d=>(d.rank||0)>=1},
+  {id:'first',emoji:'⚔️',name:'First Taste of Victory',desc:'Defeat your first enemy',reward:30,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1},
+  {id:'hunter',emoji:'☠️',name:'Thousand-Flavor Hunter',desc:'Defeat 1,000 enemies total',reward:180,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1000},
+  {id:'stage1',emoji:'🐜',name:'Sour Nest Conqueror',desc:'Clear Stage 1 for the first time',reward:60,test:d=>!!(d.stageMastery||{})[0]},
+  {id:'hunger',emoji:'🌑',name:'Hunger Ender',desc:'Defeat The Great Hunger',reward:300,test:d=>!!(d.stageMastery||{})[4]},
+  {id:'master',emoji:'🏆',name:'Lord of the Under-Kitchen',desc:'Mastery on all 5 stages',reward:250,test:d=>[0,1,2,3,4].every(i=>(d.stageMastery||{})[i])},
+  {id:'hell',emoji:'🔥',name:'Hell Survivor',desc:'Clear any stage on Hell',reward:220,test:d=>(d.diffBest||[]).some(v=>v>=3)},
+  {id:'collector',emoji:'💎',name:'Charm Collector',desc:'Collect at least 12 items',reward:160,test:d=>(d.ownedGear||[]).length>=12},
+  {id:'family',emoji:'🍡',name:'The Mochi Core Family',desc:'Unlock all 5 fighters',reward:220,test:d=>(d.chars||[]).length>=5},
+  {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
 
 class Game extends Phaser.Scene {
@@ -3428,7 +3432,7 @@ class Game extends Phaser.Scene {
     // หางบับเบิลชี้ไปหาโมโม่
     card.fillStyle(0xfff6fb,0.98);card.fillTriangle(bx+34,byy+bh-2, bx+64,byy+bh-2, bx+20,byy+bh+26);
     this.over.add(card);
-    const step=this.add.text(bx+bw-14,byy+12,'บทที่ '+(this._tutorialStep+1)+'/'+pages.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#d98cae'}).setOrigin(1,0);
+    const step=this.add.text(bx+bw-14,byy+12,'Part '+(this._tutorialStep+1)+'/'+pages.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#d98cae'}).setOrigin(1,0);
     const em=this.add.text(bx+26,byy+18,p.e,{fontSize:'40px'}).setOrigin(0,0);
     const name=this.add.text(bx+80,byy+22,'เบอร์รี่',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ff6f9c'}).setOrigin(0,0);
     const title=this.add.text(bx+26,byy+70,p.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#3a2740',wordWrap:{width:bw-52}}).setOrigin(0,0);
@@ -4323,7 +4327,7 @@ class Game extends Phaser.Scene {
       this.showBanner('⚠️ '+(beat?beat.title:st.mini),beat?beat.sub:(st.mini+' — เตรียมหาที่ว่างหลบ'),2600);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);
       this.scheduleStageEvent(2800,'miniWarning',()=>this.spawnMiniBoss());
     }else{this.mode='wave';this.startSurvivalWave(w,false);this.setupWaveObjective(w,p);const o=this.waveObjective;
-      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('บทที่ '+(w+1))),o?((beat?beat.title+' · ':'')+o.desc):(beat?beat.sub:p.desc),2400);}
+      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((beat?beat.title+' · ':'')+o.desc):(beat?beat.sub:p.desc),2400);}
     this.updateWaveText();
   }
   setupSpawnRates(w){
@@ -4608,8 +4612,8 @@ class Game extends Phaser.Scene {
   spawnFinalBoss(){
     if(this.state==='levelup'){this._queuedBossIntro='final';return;}
     if(this.state!=='play')return;
-    if(this.stageIndex===4&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('story_final_hunger','FINAL ENCOUNTER','THE GREAT HUNGER','เงามงกุฎกลืนแสงทั้งครัว—หกดวงตาจ้องลงมา และความหิวที่ไร้ก้นบึ้งตื่นขึ้นแล้ว',()=>this.spawnFinalBoss());return;}
-    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · ROOT THRONE','THE ROOTMOTHER','รากแรกแหวกเรือนยอดขึ้นเป็นบัลลังก์—นางเรียก The Great Hunger ว่าลูก และเมล็ดมงกุฎในอกเริ่มเต้นอีกครั้ง',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===4&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('story_final_hunger','FINAL ENCOUNTER','THE GREAT HUNGER','The crown shadow swallows all light — six eyes stare down, and the bottomless hunger awakens',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · ROOT THRONE','THE ROOTMOTHER','The first root splits the canopy into a throne — she calls The Great Hunger her child, and the crown seed in your chest beats again',()=>this.spawnFinalBoss());return;}
     const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
@@ -4964,9 +4968,9 @@ class Game extends Phaser.Scene {
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
-    const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','ตกสู่ใต้ครัว','พื้นตู้เสบียงพังลงใต้เท้า—โมจิสตรอว์เบอร์รีร่วงสู่รังมดเปรี้ยว ที่ซึ่งคำสาปแห่งความหิวเริ่มเคลื่อนไหว',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','เมล็ดที่ความหิวทิ้งไว้','เมื่อ The Great Hunger แตกสลาย เมล็ดมงกุฎกลับแทงรากขึ้นฟ้า—ความทรงจำที่เพิ่งคืนมาจึงเบ่งบานผิดฤดูในสวนหมักพิษ',begin);}else begin();};
+    const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Seed Hunger Left Behind','When The Great Hunger shattered, the crown seed rooted skyward — the memories just returned now bloom out of season in the ferment garden',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูเบอร์รี่สอนแบบ "พูด+ลองทำ+ผ่านค่อยไปต่อ"
-    if(!Save.data.tutorialDone){ this._inTutorial=true; const wrapped=()=>{ begin(); this.startCoach(); }; if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','ตกสู่ใต้ครัว','พื้นตู้เสบียงพังลงใต้เท้า—โมจิสตรอว์เบอร์รีร่วงสู่รังมดเปรี้ยว ที่ซึ่งคำสาปแห่งความหิวเริ่มเคลื่อนไหว',wrapped);}else wrapped(); return; }
+    if(!Save.data.tutorialDone){ this._inTutorial=true; const wrapped=()=>{ begin(); this.startCoach(); }; if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',wrapped);}else wrapped(); return; }
     launch();
   }
   /* ---- 🍓 ครูเบอร์รี่สอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
