@@ -57,7 +57,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v2.98.0 Quest chain + badge แดง)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v3.5.0 — เกมเป็นภาษาอังกฤษ 100%)
+- **v3.0.0–v3.5.0 (English UI — global launch):** แปลข้อความผู้เล่นทั้งเกมเป็นอังกฤษล้วน (เมนู/การ์ด/สกิล/story/แบนเนอร์บอส+เฟส/ชื่อศัตรูรายด่าน/wave beats/หน้าสรุป+ชนะ/กล่องสุ่ม/หน้าฟื้นคืนชีพ/CHANGELOG) · verified 0 error (headless probe hub+news) · CHANGELOG เก่า (ไทย v1.0.0–v2.99.1) ยุบเป็น summary อังกฤษ 1 entry · **ต่อไปเขียนข้อความ user-facing เป็นอังกฤษเสมอ (comment เป็นไทยได้)**
 - **v2.98.0 (Quest + badge):** `QUESTS` เส้นทางเป้าหมาย 11 ด่าน (ผ่านด่าน/ปรุงสูตร/Rank/gear/legend/นรก) · buildHub โชว์ "🎯 ภารกิจถัดไป" + `claimReadyQuests` แจก 🍬 อัตโนมัติ (`Save.data.questClaimed`) · `drawBadgeDot` จุดแดงเต้น: `hasNewsBadge` (เทียบ `Save.data.seenVersion` เคลียร์ใน buildNews) บนป้ายเวอร์ชัน · `hasActivityBadge` (daily ยังไม่รับ/achievement เคลม) บนการ์ดกิจกรรม
 - **v2.97.0 (tutorial freeze + newbie + difficulty lock):** `_inTutorial` = อมตะ(hurtPlayer/touchEnemy return) + tickStage freeze + เคลียร์สนามต่อบท (`tutorialSetupStep`: spawn 5 บทฆ่า, openLevelUp บทเลเวล) · playWaveCutscene/banner ข้ามตอน tutorial · `newbieEase()` ลด HP มอนด่าน1/ต้นด่าน/ก่อนจบ tutorial · openDifficultyChoice ล็อกระดับที่ยังไม่ผ่าน (`maxUnlocked=best+1`)
 - **v2.96.0 (Google login ในแอป Android native)** + store prep (privacy.html, appicon_512, STORE_LISTING, Signed AAB workflow — build ผ่านแล้ว):
@@ -324,6 +325,7 @@
 - **อย่าลืม bump `GAME_VERSION` + เพิ่ม `CHANGELOG` ใน game.js ทุกครั้งที่มีของใหม่** ไม่งั้นหน้าอัปเดตในเกมจะโชว์เวอร์ชันเดิม (เจ้าของดูเลขนี้เช็คว่าอัปเดตขึ้นไหม)
 - commit message ภาษาอังกฤษ อธิบายชัด; อย่าใส่ชื่อรุ่นโมเดลในไฟล์/commit
 - ภาษาที่คุยกับเจ้าของ: **ไทย**
+- **🌐 ข้อความในเกม = ภาษาอังกฤษล้วน (v3.5.0):** เจ้าของเจาะตลาดโลก → **ทุก string ที่ผู้เล่นเห็นต้องเป็นอังกฤษ** (เมนู/การ์ด/แบนเนอร์/ชื่อศัตรู/บอส/story/CHANGELOG) · เขียนโค้ดใหม่ให้ข้อความ user-facing เป็นอังกฤษตั้งแต่แรก · **โค้ด comment เป็นไทยได้** (โน้ตพัฒนา ไม่ถึงผู้เล่น) · ใช้ typographic apostrophe `’` ในข้อความอังกฤษที่อยู่ใน single-quoted literal (กัน syntax พัง) · เช็ค: ไม่มี Thai char ใน quoted string (`node --check` + สแกน `[฀-๿]` ใน literal)
 
 
 ## อัปเดต v2.29.0 — Character Combat Profiles & Signature Weapons
