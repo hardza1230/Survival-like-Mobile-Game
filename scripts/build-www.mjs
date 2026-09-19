@@ -37,6 +37,12 @@ if (existsSync(join(root, 'download.html'))) {
   console.log('copied download.html');
 }
 
+// privacy.html: นโยบายความเป็นส่วนตัว (บังคับสำหรับ Play Store) — เสิร์ฟที่ /privacy.html
+if (existsSync(join(root, 'privacy.html'))) {
+  copyFileSync(join(root, 'privacy.html'), join(www, 'privacy.html'));
+  console.log('copied privacy.html');
+}
+
 // PWA/installed web app: เปิดแบบ fullscreen และล็อก portrait ตาม manifest
 if (existsSync(join(root, 'manifest.webmanifest'))) {
   copyFileSync(join(root, 'manifest.webmanifest'), join(www, 'manifest.webmanifest'));
