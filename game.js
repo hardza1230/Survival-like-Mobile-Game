@@ -2791,6 +2791,12 @@ class Game extends Phaser.Scene {
     const portrait=w<=h;
     const center=w/2;
     const bg=this.textures.exists('menu_hub_v3')?this._coverImage(0,0,w,h,'menu_hub_v3'):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0,0);
+    // Main Menu motion: subtle camera drift on the existing background (mobile-safe)
+    if(bg && bg.type==='Image'){
+      const baseX=bg.x, baseY=bg.y, baseSX=bg.scaleX, baseSY=bg.scaleY;
+      this.tweens.add({targets:bg, x:baseX+4, y:baseY-3, scaleX:baseSX*1.045, scaleY:baseSY*1.045,
+        duration:10000, yoyo:true, repeat:-1, ease:'Sine.inOut'});
+    }
     const shade=this.add.graphics();shade.fillGradientStyle(0x100817,0x100817,0x090611,0x090611,0.05,0.05,0.50,0.88);shade.fillRect(0,0,w,h);
     const topG=this.add.graphics();topG.fillStyle(0x090713,0.72);topG.fillRoundedRect(12,13,96,32,12);topG.lineStyle(1.2,0xffffff,0.18);topG.strokeRoundedRect(12,13,96,32,12);
     const sugar=this.add.text(24,29,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffe5a6'}).setOrigin(0,0.5);
