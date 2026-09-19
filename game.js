@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.95.0';
+const GAME_VERSION = '2.95.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.95.1', date:'2026-09-19', title:'แก้ปุ่มล็อกอิน Google กดแล้วเงียบ', items:[
+    'Google login ทำงานได้เองโดยไม่ต้องพึ่ง Anonymous sign-in (เดิม anon ปิดอยู่เลยเด้งออกเงียบ)',
+    'เพิ่มข้อความแจ้งผลในหน้าเมนู (เดิม banner ไม่โชว์ตอนอยู่เมนู)',
+    'อัปเดตแถวบัญชีอัตโนมัติหลังกลับจากหน้า Google',
+  ]},
   { v:'2.95.0', date:'2026-09-19', title:'Cloud Save + เข้าสู่ระบบด้วย Google', items:[
     'เพิ่มการเข้าสู่ระบบด้วยบัญชี Google (หน้าตั้งค่า) เพื่อกันเซฟหาย + เล่นข้ามเครื่อง',
     'ผูก Google เข้ากับความคืบหน้าปัจจุบัน (linkIdentity) — ของเดิมในเครื่องไม่หาย',
@@ -2064,9 +2069,13 @@ const CLOUD_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 const Cloud = {
   sb:null, user:null, ready:false, _pushT:null,
   enabled(){ try{ return !!(window.supabase&&CLOUD_URL&&CLOUD_KEY); }catch(e){ return false; } },
-  async init(){ if(this.ready)return true; if(!this.enabled())return false;
-    try{ this.sb=window.supabase.createClient(CLOUD_URL,CLOUD_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:'mochi_sb_auth'}});
-      let sess=(await this.sb.auth.getSession()).data.session;
+  // สร้าง client (ไม่ล็อกอิน) — ใช้ได้แม้ Anonymous ปิดอยู่ · เก็บ session ที่มีอยู่แล้ว (เช่น Google หลัง redirect)
+  async ensureClient(){ if(this.sb)return true; if(!this.enabled())return false;
+    try{ this.sb=window.supabase.createClient(CLOUD_URL,CLOUD_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'mochi_sb_auth'}});
+      const sess=(await this.sb.auth.getSession()).data.session; if(sess)this.user=sess.user; return true;
+    }catch(e){ console.warn('[cloud] ensureClient',e); return false; } },
+  async init(){ if(this.ready)return true; if(!(await this.ensureClient()))return false;
+    try{ let sess=(await this.sb.auth.getSession()).data.session;
       if(!sess){ const r=await this.sb.auth.signInAnonymously(); if(r.error){ console.warn('[cloud] anon sign-in ปิดอยู่?',r.error.message); return false; } sess=r.data.session; }
       this.user=sess.user; this.ready=true; return true;
     }catch(e){ console.warn('[cloud] init',e); return false; } },
@@ -2076,11 +2085,13 @@ const Cloud = {
   // ---- Google login (บัญชีถาวร ข้ามเครื่อง) ----
   isGoogle(){ try{ return !!(this.user&&this.user.app_metadata&&this.user.app_metadata.provider==='google'); }catch(e){ return false; } },
   accountLabel(){ try{ if(this.isGoogle())return this.user.email||'บัญชี Google'; return this.user?'บัญชีชั่วคราว (เครื่องนี้)':'ยังไม่เชื่อมต่อ'; }catch(e){ return 'ยังไม่เชื่อมต่อ'; } },
-  async signInGoogle(){ if(!(await this.init()))return {ok:false,msg:'คลาวด์ยังไม่พร้อม'};
+  async signInGoogle(){ if(!(await this.ensureClient()))return {ok:false,msg:'คลาวด์ยังไม่พร้อม (SDK โหลดไม่ได้)'};
     try{ const redirectTo=(location.origin+location.pathname);
-      // ผูก Google เข้ากับบัญชีชั่วคราวปัจจุบัน (เก็บ progress เดิม) ถ้าลิงก์ไม่ได้ค่อย sign-in ตรง
-      let r=await this.sb.auth.linkIdentity({provider:'google',options:{redirectTo}});
-      if(r.error){ r=await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo}}); }
+      // มี session อยู่แล้ว (anon) → ผูก Google เก็บ progress เดิม · ไม่มี → sign-in Google ตรง (ไม่ต้องพึ่ง anon)
+      const sess=(await this.sb.auth.getSession()).data.session;
+      let r = sess ? await this.sb.auth.linkIdentity({provider:'google',options:{redirectTo}})
+                   : await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo}});
+      if(r.error && sess){ r=await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo}}); }
       if(r.error)return {ok:false,msg:r.error.message};
       return {ok:true,redirect:true};   // เบราว์เซอร์จะรีไดเรกต์ไป Google แล้วกลับมา
     }catch(e){ return {ok:false,msg:String(e&&e.message||e)}; } },
@@ -3365,6 +3376,8 @@ class Game extends Phaser.Scene {
     const isG=(typeof Cloud!=='undefined'&&Cloud.isGoogle&&Cloud.isGoogle());
     const label=(typeof Cloud!=='undefined'&&Cloud.accountLabel)?Cloud.accountLabel():'ยังไม่เชื่อมต่อ';
     this._rowBtn(accY,rowH,isG?'✅':'☁️','บัญชี Cloud Save',isG?('เชื่อม Google: '+label):'เชื่อม Google เพื่อกันเซฟหาย + เล่นข้ามเครื่อง',isG?'ออกจากระบบ':'เข้าสู่ระบบ Google',isG?'#e0788a':'#8bd3a0',()=>this.doGoogleAuth(isG),rx,rw);
+    // โหลดสถานะบัญชีจากคลาวด์ (async) แล้ว rebuild ให้แถวอัปเดต (เช่น หลังกลับจาก Google redirect โชว์อีเมล)
+    if(typeof Cloud!=='undefined'&&Cloud.ensureClient&&!this._acctChecked){ this._acctChecked=true; Cloud.ensureClient().then(()=>{ if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); }); }
     // 🗑️ รีเซ็ตความคืบหน้า — ซ่อนลึกในหน้าตั้งค่า + ต้องยืนยัน 3 ครั้งกันกดพลาด (เดิมอยู่หน้า Hub แรกเข้าถึงง่ายไป)
     const rc=this._resetTaps||0;
     const labels=['🗑️ รีเซ็ตความคืบหน้า (แตะค้างเพื่อล้าง)','⚠️ แตะยืนยันอีก 2 ครั้ง','⚠️ แตะยืนยันอีก 1 ครั้ง'];
@@ -3377,20 +3390,25 @@ class Game extends Phaser.Scene {
     });
     const hint=this.add.text(w/2,h-14,'แตะรายการเพื่อเปลี่ยนค่า · บันทึกอัตโนมัติ',{fontFamily:'sans-serif',fontSize:'10px',color:'#8f849f'}).setOrigin(0.5);this.menu.add(hint);this.menu.setVisible(true);
   }
+  // toast ที่เห็นได้ในหน้าเมนู (showBanner ผูกกล้องโลก ไม่โชว์ตอนอยู่เมนู)
+  menuToast(msg,color){ if(this._toast){this._toast.destroy();this._toast=null;} if(this._toastBg){this._toastBg.destroy();this._toastBg=null;}
+    const w=this.W,y=this.H-88; const g=this.add.graphics(); g.fillStyle(0x1c1626,0.94); g.fillRoundedRect(w/2-170,y-20,340,40,12); g.lineStyle(1.6,0x4a4059,1); g.strokeRoundedRect(w/2-170,y-20,340,40,12);
+    const t=this.add.text(w/2,y,msg,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:color||'#ffe08a',align:'center',wordWrap:{width:320}}).setOrigin(0.5);
+    if(this.menu){this.menu.add([g,t]);} this._toast=t; this._toastBg=g;
+    this.time.delayedCall(2600,()=>{ if(this._toast===t){t.destroy();g.destroy();this._toast=null;this._toastBg=null;} }); }
   // เข้าสู่ระบบ / ออกจากระบบ Google สำหรับ Cloud Save
   doGoogleAuth(signedIn){
     Sfx.select();
-    if(typeof Cloud==='undefined'||!Cloud.enabled||!Cloud.enabled()){ this.showBanner('☁️ คลาวด์ยังไม่พร้อม','อุปกรณ์นี้เชื่อมต่อคลาวด์ไม่ได้ ลองใหม่ภายหลัง',1800); return; }
+    if(typeof Cloud==='undefined'||!Cloud.enabled||!Cloud.enabled()){ this.menuToast('☁️ เชื่อมคลาวด์ไม่ได้ (โหลด SDK ไม่ขึ้น) ลองต่อเน็ตแล้วรีเฟรช','#ff9bb5'); return; }
     if(signedIn){
-      // ออกจากระบบ Google → กลับเป็นบัญชีชั่วคราวของเครื่อง
-      Cloud.signOut().then(()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud(); this.showBanner('👋 ออกจากระบบแล้ว','เซฟยังอยู่ในเครื่องนี้ · เข้าสู่ระบบใหม่เพื่อซิงค์',1800); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); });
+      Cloud.signOut().then(()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud(); this.menuToast('👋 ออกจากระบบแล้ว เซฟยังอยู่ในเครื่องนี้','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); });
       return;
     }
-    this.showBanner('☁️ กำลังเชื่อม Google','จะเปิดหน้า Google ให้ล็อกอิน แล้วกลับมาที่เกมเอง',2000);
+    this.menuToast('☁️ กำลังเปิดหน้า Google…','#8bd3a0');
     Cloud.signInGoogle().then(r=>{
-      if(!(r&&r.ok)){ this.showBanner('⚠️ เชื่อมไม่สำเร็จ',(r&&r.msg)||'ลองใหม่อีกครั้ง',2400); }
+      if(!(r&&r.ok)){ this.menuToast('⚠️ '+((r&&r.msg)||'เชื่อมไม่สำเร็จ ลองใหม่'),'#ff9bb5'); }
       // r.ok=true → เบราว์เซอร์รีไดเรกต์ไป Google เอง (ไม่ต้องทำอะไรต่อ)
-    });
+    }).catch(e=>{ this.menuToast('⚠️ '+String(e&&e.message||e),'#ff9bb5'); });
   }
   buildHub(){
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
