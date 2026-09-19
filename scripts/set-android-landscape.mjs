@@ -12,6 +12,20 @@ if (/android:screenOrientation=/.test(tag)) {
   tag = tag.replace('<activity', '<activity\n            android:screenOrientation="portrait"');
 }
 xml = xml.replace(activity[0], tag);
+
+// Deep-link intent filter สำหรับ Google OAuth callback (com.mochimayhem.game://login-callback)
+// เพื่อให้หลังล็อกอิน Google ใน Custom Tab เด้งกลับเข้าแอปได้ (Capacitor App plugin จับ appUrlOpen)
+if (!/android:scheme="com\.mochimayhem\.game"/.test(xml)) {
+  const deepLink = `
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.mochimayhem.game" />
+            </intent-filter>
+        `;
+  xml = xml.replace('</activity>', deepLink + '</activity>');
+}
 fs.writeFileSync(manifest, xml);
 
 const activityPath = 'android/app/src/main/java/com/mochimayhem/game/MainActivity.java';

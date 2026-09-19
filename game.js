@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.95.1';
+const GAME_VERSION = '2.96.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.96.0', date:'2026-09-19', title:'Google login เข้าในแอป Android ได้ (native)', items:[
+    'แอป Android: ล็อกอิน Google เปิด Custom Tab แล้วเด้งกลับเข้าแอปผ่าน deep link (WebView เดิม Google บล็อก)',
+    'เพิ่มปลั๊กอิน Capacitor App/Browser + intent filter + PKCE flow',
+    'แก้ระบบ build APK ที่เคยล้มเหลว (Android SDK package)',
+    '⚠️ ต้องลง APK ตัวใหม่ + เพิ่ม redirect URL ใน Supabase',
+  ]},
   { v:'2.95.1', date:'2026-09-19', title:'แก้ปุ่มล็อกอิน Google กดแล้วเงียบ', items:[
     'Google login ทำงานได้เองโดยไม่ต้องพึ่ง Anonymous sign-in (เดิม anon ปิดอยู่เลยเด้งออกเงียบ)',
     'เพิ่มข้อความแจ้งผลในหน้าเมนู (เดิม banner ไม่โชว์ตอนอยู่เมนู)',
@@ -2067,13 +2073,29 @@ const Save = {
 const CLOUD_URL='https://tohsnflngkfoutqcfrwi.supabase.co';
 const CLOUD_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvaHNuZmxuZ2tmb3V0cWNmcndpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MjE3NzYsImV4cCI6MjEwNTE5Nzc3Nn0.EX6rE5skhsJq9jpwRvloDimZoPi5Mnhz-wpTwnx6ej4';
 const Cloud = {
-  sb:null, user:null, ready:false, _pushT:null,
+  sb:null, user:null, ready:false, _pushT:null, _deeplinkBound:false, _onLogin:null,
   enabled(){ try{ return !!(window.supabase&&CLOUD_URL&&CLOUD_KEY); }catch(e){ return false; } },
-  // สร้าง client (ไม่ล็อกอิน) — ใช้ได้แม้ Anonymous ปิดอยู่ · เก็บ session ที่มีอยู่แล้ว (เช่น Google หลัง redirect)
-  async ensureClient(){ if(this.sb)return true; if(!this.enabled())return false;
-    try{ this.sb=window.supabase.createClient(CLOUD_URL,CLOUD_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'mochi_sb_auth'}});
-      const sess=(await this.sb.auth.getSession()).data.session; if(sess)this.user=sess.user; return true;
+  // แอป Android/iOS (Capacitor) หรือไม่
+  native(){ try{ return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()); }catch(e){ return false; } },
+  // สร้าง client (ไม่ล็อกอิน) — ใช้ได้แม้ Anonymous ปิดอยู่ · เก็บ session ที่มีอยู่แล้ว (เช่น Google หลัง redirect) · pkce = ปลอดภัย + รองรับ deep link
+  async ensureClient(){ if(this.sb){ this.bindDeepLink(); return true; } if(!this.enabled())return false;
+    try{ this.sb=window.supabase.createClient(CLOUD_URL,CLOUD_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce',storageKey:'mochi_sb_auth'}});
+      const sess=(await this.sb.auth.getSession()).data.session; if(sess)this.user=sess.user; this.bindDeepLink(); return true;
     }catch(e){ console.warn('[cloud] ensureClient',e); return false; } },
+  // ในแอป: ดักการเด้งกลับจาก Custom Tab (com.mochimayhem.game://login-callback) แล้วแลก code เป็น session
+  bindDeepLink(){ if(this._deeplinkBound||!this.native())return;
+    try{ const App=window.Capacitor.Plugins.App; if(!App)return;
+      App.addListener('appUrlOpen', async (ev)=>{ const url=ev&&ev.url; if(!url||url.indexOf('login-callback')<0)return;
+        try{ const qs=(url.split('?')[1]||'').split('#')[0], p=new URLSearchParams(qs), code=p.get('code');
+          if(code){ await this.sb.auth.exchangeCodeForSession(code); }
+          else { const hp=new URLSearchParams(url.split('#')[1]||''), at=hp.get('access_token'), rt=hp.get('refresh_token'); if(at&&rt)await this.sb.auth.setSession({access_token:at,refresh_token:rt}); }
+          const s=(await this.sb.auth.getSession()).data.session; if(s){ this.user=s.user; this.ready=true; }
+        }catch(e){ console.warn('[cloud] deeplink',e); }
+        try{ const B=window.Capacitor.Plugins.Browser; if(B)await B.close(); }catch(e){}
+        try{ if(this._onLogin)this._onLogin(); }catch(e){}
+      });
+      this._deeplinkBound=true;
+    }catch(e){ console.warn('[cloud] bindDeepLink',e); } },
   async init(){ if(this.ready)return true; if(!(await this.ensureClient()))return false;
     try{ let sess=(await this.sb.auth.getSession()).data.session;
       if(!sess){ const r=await this.sb.auth.signInAnonymously(); if(r.error){ console.warn('[cloud] anon sign-in ปิดอยู่?',r.error.message); return false; } sess=r.data.session; }
@@ -2086,8 +2108,17 @@ const Cloud = {
   isGoogle(){ try{ return !!(this.user&&this.user.app_metadata&&this.user.app_metadata.provider==='google'); }catch(e){ return false; } },
   accountLabel(){ try{ if(this.isGoogle())return this.user.email||'บัญชี Google'; return this.user?'บัญชีชั่วคราว (เครื่องนี้)':'ยังไม่เชื่อมต่อ'; }catch(e){ return 'ยังไม่เชื่อมต่อ'; } },
   async signInGoogle(){ if(!(await this.ensureClient()))return {ok:false,msg:'คลาวด์ยังไม่พร้อม (SDK โหลดไม่ได้)'};
-    try{ const redirectTo=(location.origin+location.pathname);
-      // มี session อยู่แล้ว (anon) → ผูก Google เก็บ progress เดิม · ไม่มี → sign-in Google ตรง (ไม่ต้องพึ่ง anon)
+    try{
+      // ในแอป Android: เปิด Custom Tab ล็อกอิน แล้วเด้งกลับผ่าน deep link (WebView ล็อกอิน Google ตรง ๆ ไม่ได้)
+      if(this.native()){
+        this.bindDeepLink();
+        const {data,error}=await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:'com.mochimayhem.game://login-callback',skipBrowserRedirect:true}});
+        if(error)return {ok:false,msg:error.message};
+        if(data&&data.url){ const B=window.Capacitor.Plugins.Browser; if(!B)return {ok:false,msg:'ปลั๊กอิน Browser ไม่พร้อม (ต้องลง APK ใหม่)'}; await B.open({url:data.url,presentationStyle:'popover'}); return {ok:true,native:true}; }
+        return {ok:false,msg:'ขอ URL ล็อกอินไม่สำเร็จ'};
+      }
+      // เว็บ: redirect ในหน้า · มี session (anon) → ผูก Google เก็บ progress เดิม · ไม่มี → sign-in ตรง
+      const redirectTo=(location.origin+location.pathname);
       const sess=(await this.sb.auth.getSession()).data.session;
       let r = sess ? await this.sb.auth.linkIdentity({provider:'google',options:{redirectTo}})
                    : await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo}});
@@ -2311,6 +2342,8 @@ class Game extends Phaser.Scene {
     this.level=1; this.xp=0; this.xpNext=10;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
     if(!Save._cloudReady&&Save.syncCloud){ Save.syncCloud().then(()=>{ if(Save._cloudAdopted&&this.state==='menu'){ this.buildMenuScreen&&this.buildMenuScreen(); if(this.showBanner)this.showBanner('☁️ ซิงค์คลาวด์','โหลดความคืบหน้าล่าสุดจากคลาวด์แล้ว',1600); } }); }   // ซิงค์เซฟกับ Supabase (กันเซฟหาย)
+    // ในแอป: หลังล็อกอิน Google เด้งกลับผ่าน deep link → ซิงค์ + อัปเดตหน้าตั้งค่า + แจ้งผล
+    if(typeof Cloud!=='undefined'){ Cloud._onLogin=()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud(); this._acctChecked=false; if(this.menuToast)this.menuToast('✅ เข้าสู่ระบบ Google แล้ว','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); }; if(Cloud.bindDeepLink)Cloud.ensureClient&&Cloud.ensureClient(); }
 
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);

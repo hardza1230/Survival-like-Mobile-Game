@@ -40,6 +40,9 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # ระบุ package เอง (เลี่ยง default 'tools' ที่ถูกถอดออกจาก cmdline-tools ใหม่ → build เดิมล้มที่ตรงนี้)
+          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
 
       # เก็บ debug signing key เดิมไว้ข้าม runner เพื่อให้ APK รุ่นถัดไปติดตั้งทับได้
       - name: Restore stable debug signing key
