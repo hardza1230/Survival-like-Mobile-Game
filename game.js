@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.94.0';
+const GAME_VERSION = '2.95.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.95.0', date:'2026-09-19', title:'Cloud Save + เข้าสู่ระบบด้วย Google', items:[
+    'เพิ่มการเข้าสู่ระบบด้วยบัญชี Google (หน้าตั้งค่า) เพื่อกันเซฟหาย + เล่นข้ามเครื่อง',
+    'ผูก Google เข้ากับความคืบหน้าปัจจุบัน (linkIdentity) — ของเดิมในเครื่องไม่หาย',
+    'มีปุ่มออกจากระบบ · โชว์อีเมลบัญชีที่เชื่อมอยู่',
+  ]},
   { v:'2.94.0', date:'2026-09-18', title:'ครูเบอร์รี่สอนเล่นแบบลงมือจริง', items:[
     'เปลี่ยนครูสอนเป็น เบอร์รี่ 🍓',
     'Tutorial ผู้เล่นใหม่เป็นแบบ interactive — ครูพูดสั้น ๆ + ให้ลองทำจริง ผ่านแล้วค่อยไปบทถัดไป',
@@ -2068,6 +2073,18 @@ const Cloud = {
   async pull(){ if(!this.ready)return null; try{ const {data,error}=await this.sb.from('game_saves').select('data').eq('user_id',this.user.id).maybeSingle(); if(error){console.warn('[cloud] pull',error.message);return null;} return data?data.data:null; }catch(e){ return null; } },
   async push(data){ if(!this.ready)return; try{ await this.sb.from('game_saves').upsert({user_id:this.user.id,data,updated_at:new Date().toISOString()}); }catch(e){ console.warn('[cloud] push',e); } },
   queuePush(data){ if(!this.ready)return; clearTimeout(this._pushT); this._pushT=setTimeout(()=>this.push(data),1500); },
+  // ---- Google login (บัญชีถาวร ข้ามเครื่อง) ----
+  isGoogle(){ try{ return !!(this.user&&this.user.app_metadata&&this.user.app_metadata.provider==='google'); }catch(e){ return false; } },
+  accountLabel(){ try{ if(this.isGoogle())return this.user.email||'บัญชี Google'; return this.user?'บัญชีชั่วคราว (เครื่องนี้)':'ยังไม่เชื่อมต่อ'; }catch(e){ return 'ยังไม่เชื่อมต่อ'; } },
+  async signInGoogle(){ if(!(await this.init()))return {ok:false,msg:'คลาวด์ยังไม่พร้อม'};
+    try{ const redirectTo=(location.origin+location.pathname);
+      // ผูก Google เข้ากับบัญชีชั่วคราวปัจจุบัน (เก็บ progress เดิม) ถ้าลิงก์ไม่ได้ค่อย sign-in ตรง
+      let r=await this.sb.auth.linkIdentity({provider:'google',options:{redirectTo}});
+      if(r.error){ r=await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo}}); }
+      if(r.error)return {ok:false,msg:r.error.message};
+      return {ok:true,redirect:true};   // เบราว์เซอร์จะรีไดเรกต์ไป Google แล้วกลับมา
+    }catch(e){ return {ok:false,msg:String(e&&e.message||e)}; } },
+  async signOut(){ try{ if(this.sb)await this.sb.auth.signOut(); }catch(e){} this.user=null;this.ready=false; },
 };
 
 /* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
@@ -3340,8 +3357,14 @@ class Game extends Phaser.Scene {
       {k:'damageNumbers',e:'💥',n:'ตัวเลขดาเมจ',sub:'แสดงความเสียหายและคริติคอล',value:()=>st.damageNumbers?'เปิด':'ปิด',toggle:()=>{st.damageNumbers=!st.damageNumbers;}},
       {k:'vfx',e:'🎆',n:'คุณภาพ VFX',sub:'จำนวนอนุภาคและเอฟเฟกต์บอส',value:()=>['ต่ำ','กลาง','สูง'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
     ];
-    const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?72:58,(h-top-28-gap*(rows.length-1))/rows.length),rw=Math.min(w-30,520),rx=(w-rw)/2;
+    const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
+    const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?68:54,(h-top-28-gap*(nRows-1))/nRows),rw=Math.min(w-30,520),rx=(w-rw)/2;
     rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{r.toggle();Save.save();Sfx.select();this.buildSettings();},rx,rw);});
+    // ☁️ บัญชี Cloud Save + เข้าสู่ระบบด้วย Google
+    const accY=top+rows.length*(rowH+gap);
+    const isG=(typeof Cloud!=='undefined'&&Cloud.isGoogle&&Cloud.isGoogle());
+    const label=(typeof Cloud!=='undefined'&&Cloud.accountLabel)?Cloud.accountLabel():'ยังไม่เชื่อมต่อ';
+    this._rowBtn(accY,rowH,isG?'✅':'☁️','บัญชี Cloud Save',isG?('เชื่อม Google: '+label):'เชื่อม Google เพื่อกันเซฟหาย + เล่นข้ามเครื่อง',isG?'ออกจากระบบ':'เข้าสู่ระบบ Google',isG?'#e0788a':'#8bd3a0',()=>this.doGoogleAuth(isG),rx,rw);
     // 🗑️ รีเซ็ตความคืบหน้า — ซ่อนลึกในหน้าตั้งค่า + ต้องยืนยัน 3 ครั้งกันกดพลาด (เดิมอยู่หน้า Hub แรกเข้าถึงง่ายไป)
     const rc=this._resetTaps||0;
     const labels=['🗑️ รีเซ็ตความคืบหน้า (แตะค้างเพื่อล้าง)','⚠️ แตะยืนยันอีก 2 ครั้ง','⚠️ แตะยืนยันอีก 1 ครั้ง'];
@@ -3353,6 +3376,21 @@ class Game extends Phaser.Scene {
       clearTimeout(this._resetTapTimer); this._resetTapTimer=setTimeout(()=>{ if(this._resetTaps){ this._resetTaps=0; if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); } },2600);
     });
     const hint=this.add.text(w/2,h-14,'แตะรายการเพื่อเปลี่ยนค่า · บันทึกอัตโนมัติ',{fontFamily:'sans-serif',fontSize:'10px',color:'#8f849f'}).setOrigin(0.5);this.menu.add(hint);this.menu.setVisible(true);
+  }
+  // เข้าสู่ระบบ / ออกจากระบบ Google สำหรับ Cloud Save
+  doGoogleAuth(signedIn){
+    Sfx.select();
+    if(typeof Cloud==='undefined'||!Cloud.enabled||!Cloud.enabled()){ this.showBanner('☁️ คลาวด์ยังไม่พร้อม','อุปกรณ์นี้เชื่อมต่อคลาวด์ไม่ได้ ลองใหม่ภายหลัง',1800); return; }
+    if(signedIn){
+      // ออกจากระบบ Google → กลับเป็นบัญชีชั่วคราวของเครื่อง
+      Cloud.signOut().then(()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud(); this.showBanner('👋 ออกจากระบบแล้ว','เซฟยังอยู่ในเครื่องนี้ · เข้าสู่ระบบใหม่เพื่อซิงค์',1800); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); });
+      return;
+    }
+    this.showBanner('☁️ กำลังเชื่อม Google','จะเปิดหน้า Google ให้ล็อกอิน แล้วกลับมาที่เกมเอง',2000);
+    Cloud.signInGoogle().then(r=>{
+      if(!(r&&r.ok)){ this.showBanner('⚠️ เชื่อมไม่สำเร็จ',(r&&r.msg)||'ลองใหม่อีกครั้ง',2400); }
+      // r.ok=true → เบราว์เซอร์รีไดเรกต์ไป Google เอง (ไม่ต้องทำอะไรต่อ)
+    });
   }
   buildHub(){
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
