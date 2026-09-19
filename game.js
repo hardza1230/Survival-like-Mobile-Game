@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.97.0';
+const GAME_VERSION = '2.98.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.98.0', date:'2026-09-19', title:'ระบบเป้าหมาย (Quest) + จุดแดงแจ้งเตือน', items:[
+    'เพิ่ม "🎯 ภารกิจถัดไป" ที่หน้าหลัก — ร้อยทุกระบบเป็นเส้นทาง (ผ่านด่าน · ปรุงสูตร · ล่าของตำนาน) พร้อมรางวัล 🍬',
+    'จุดแดงเล็ก ๆ แจ้งเตือนของใหม่: มีอัปเดต · Daily/Achievement รอรับ',
+  ]},
   { v:'2.97.0', date:'2026-09-19', title:'สอนเล่นแบบ freeze-time + ด่าน 1 ง่ายขึ้น + ล็อกความยาก', items:[
     'บทสอน = อมตะ + หยุดเวลา (freeze) สนามโล่งจนกว่าจะทำสำเร็จ ค่อยไปบทถัดไป',
     'สอนฆ่า = สปอนมอนอ่อน ๆ ให้ลอง · สอนเลเวล = เปิดการ์ดให้เลือกจริง',
@@ -1799,6 +1803,21 @@ const HUB_GROUPS = {
     ['__tutorial','🎓','วิธีเล่น','ดู Tutorial การควบคุมและระบบต่อสู้'] ] },
 };
 
+/* ---- QUESTS: เส้นทางเป้าหมาย (Player Journey) — ร้อยทุกระบบเข้าด้วยกัน โชว์ "ภารกิจถัดไป" ที่หน้าหลัก ---- */
+const QUESTS = [
+  { id:'s1',     t:'ผ่านด่าน 1 — รังมดเปรี้ยว',        r:60,  go:'chapter',  done:d=>!!(d.stageMastery||{})[0] },
+  { id:'cook1',  t:'ปรุงเมนูแรกในครัว',                 r:50,  go:'chapter',  done:d=>Object.keys(d.cookbook||{}).length>=1 },
+  { id:'rank1',  t:'เก็บสายใยรสชาติจนได้ Rank แรก',      r:60,  go:'gLoadout', done:d=>(d.rank||0)>=1 },
+  { id:'gear3',  t:'สะสมอุปกรณ์ 3 ชิ้น',                r:70,  go:'gLoadout', done:d=>(d.ownedGear||[]).length>=3 },
+  { id:'s2',     t:'ผ่านด่าน 2 — ท่อระบายเน่า',         r:90,  go:'chapter',  done:d=>!!(d.stageMastery||{})[1] },
+  { id:'cook3',  t:'ค้นพบสูตรอาหาร 3 อย่าง',            r:80,  go:'gCodex',   done:d=>Object.keys(d.cookbook||{}).length>=3 },
+  { id:'s3',     t:'ผ่านด่าน 3 — ห้องเครื่องพริกเพลิง', r:110, go:'chapter',  done:d=>!!(d.stageMastery||{})[2] },
+  { id:'legend', t:'ล่าของตำนาน (Legend) 1 ชิ้น',       r:150, go:'gLoadout', done:d=>(d.ownedGear||[]).some(id=>String(id).startsWith('lg_')) },
+  { id:'s4',     t:'ผ่านด่าน 4 — คุกเย็นน้ำตาล',        r:140, go:'chapter',  done:d=>!!(d.stageMastery||{})[3] },
+  { id:'hell1',  t:'ผ่านด่านใดก็ได้ระดับ นรก',          r:180, go:'chapter',  done:d=>(d.diffBest||[]).some(v=>v>=3) },
+  { id:'s5',     t:'ล้ม The Great Hunger (ด่าน 5)',      r:250, go:'chapter',  done:d=>!!(d.stageMastery||{})[4] },
+];
+
 /* ---- GEAR: ของสวมใส่ 2 ช่อง (weapon/charm) ซื้อด้วย Sugar แล้วสวมใส่ ---- */
 // ของสวมใส่ · ตีบวกได้ (lv=ระดับตีบวก 0..enhMax) เพิ่มพลังต่อระดับ
 const GEAR_ENH_MAX = 5;
@@ -3149,6 +3168,7 @@ class Game extends Phaser.Scene {
   }
   // หน้าอัปเดต/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกอัปเดต + ลิงก์ดาวน์โหลดแอป
   buildNews(){
+    if(Save.data.seenVersion!==GAME_VERSION){ Save.data.seenVersion=GAME_VERSION; Save.save(); }   // เปิดดูข่าว = เคลียร์ badge อัปเดต
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('อัปเดต');
     const w=this.W,h=this.H;
     const cur=this.add.text(w/2,53,'เวอร์ชันปัจจุบัน v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
@@ -3450,7 +3470,19 @@ class Game extends Phaser.Scene {
       // r.ok=true → เบราว์เซอร์รีไดเรกต์ไป Google เอง (ไม่ต้องทำอะไรต่อ)
     }).catch(e=>{ this.menuToast('⚠️ '+String(e&&e.message||e),'#ff9bb5'); });
   }
+  // ---- Quest chain + badge helpers ----
+  claimReadyQuests(){ const d=Save.data; if(!d.questClaimed)d.questClaimed={}; let claimed=null,total=0;
+    for(const q of QUESTS){ if(q.done(d)&&!d.questClaimed[q.id]){ d.questClaimed[q.id]=1; d.sugar=(d.sugar||0)+q.r; total+=q.r; claimed=q; } }
+    if(claimed){ Save.save(); if(this.showBanner)this.showBanner('🎯 ภารกิจสำเร็จ! +🍬'+total,claimed.t,2000); Sfx.clear&&Sfx.clear(); }
+  }
+  nextQuest(){ const d=Save.data; for(const q of QUESTS){ if(!q.done(d))return q; } return null; }
+  hasActivityBadge(){ try{ const d=Save.data; const daily=(d.daily&&d.daily.claimDay)!==localDayKey();
+    const ach=ACHIEVEMENTS.some(a=>a.test(d)&&!(d.achievements||{})[a.id]); return daily||ach; }catch(e){ return false; } }
+  hasNewsBadge(){ return Save.data.seenVersion!==GAME_VERSION; }
+  drawBadgeDot(cont,x,y){ const g=this.add.graphics(); g.fillStyle(0x000000,0.4); g.fillCircle(x+1,y+1,7); g.fillStyle(0xff3b5c,1); g.fillCircle(x,y,6.5); g.lineStyle(1.5,0xffffff,0.95); g.strokeCircle(x,y,6.5); cont.add(g);
+    this.tweens.add({targets:g,alpha:{from:1,to:0.45},duration:640,yoyo:true,repeat:-1}); return g; }
   buildHub(){
+    this.claimReadyQuests();
     const w=this.W,h=this.H; this.menu.removeAll(true); this.tapZones=[];
     const portrait=w<=h;
     const center=w/2;
@@ -3469,6 +3501,15 @@ class Game extends Phaser.Scene {
     const vg=this.add.graphics(); vg.fillStyle(0x090713,0.72); vg.fillRoundedRect(w-106,13,94,32,12); vg.lineStyle(1.2,0xffffff,0.18); vg.strokeRoundedRect(w-106,13,94,32,12);
     const vt=this.add.text(w-59,29,'v'+GAME_VERSION+'  📢',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#eadff2'}).setOrigin(0.5);
     this.menu.add([vg,vt]); this._zone(w-106,13,94,32,()=>{ this.menuScreen='news'; this.buildMenuScreen(); });
+    if(this.hasNewsBadge())this.drawBadgeDot(this.menu,w-16,15);   // 🔴 มีอัปเดตใหม่
+    // 🎯 ภารกิจถัดไป (Quest chain) — บอกเป้าหมายให้ผู้เล่นรู้ว่าจะเล่นเพื่ออะไร
+    const nq=this.nextQuest();
+    if(nq){ const qx=12,qy=50,qw=w-24,qh=32, qg=this.add.graphics();
+      qg.fillStyle(0x2a1c3a,0.9); qg.fillRoundedRect(qx,qy,qw,qh,10); qg.lineStyle(1.6,0xffd166,0.8); qg.strokeRoundedRect(qx,qy,qw,qh,10);
+      const qt=this.add.text(qx+10,qy+9,'🎯 ภารกิจถัดไป: '+nq.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe6a3',wordWrap:{width:qw-92}}).setOrigin(0,0);
+      const qr=this.add.text(qx+qw-10,qy+qh/2,'🍬'+nq.r+' ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a8f0c0'}).setOrigin(1,0.5);
+      this.menu.add([qg,qt,qr]); this._zone(qx,qy,qw,qh,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=nq.go; this.buildMenuScreen(); });
+    }
     const items=[
       [COLORS.pink, '▶','เริ่มผจญภัย','เลือกด่านและเข้าสู่ครัว',()=>{ this.menuScreen='chapter'; this.buildMenuScreen(); }],
       [COLORS.toast,'🍓','นักสู้','เลือกและปลุกพลังตัวละคร',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
@@ -3491,7 +3532,8 @@ class Game extends Phaser.Scene {
       const col=i%cols,row=Math.floor(i/cols),cx=x0+col*(bw+gapX),cy=y0+row*(bh+gapY);
       if(us<need[i]){ const msg='🔒 ปลดล็อกเมื่อผ่านด่าน '+need[i];
         this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'ผ่านด่าน '+need[i]+' เพื่อปลดล็อก',()=>{this.showBanner('🔒 ยังปลดล็อกไม่ได้',label+' — '+'ผ่านด่าน '+need[i]+' ก่อน',1500);Sfx.select&&Sfx.select();},false); }
-      else this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0);
+      else { this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0);
+        if(i===3&&this.hasActivityBadge())this.drawBadgeDot(this.menu,cx+bw/2-8,cy-bh/2+8); }   // 🔴 Daily/Achievement รอรับ
     });
     // แจ้งเตือนเมื่อมีเมนูใหม่เพิ่งปลดล็อก (ครั้งเดียว)
     const seen=Save.data.hubUnlockSeen||0;
