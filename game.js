@@ -924,6 +924,14 @@ const ASSET_IMAGES = {
   e_ice_wisp:'assets/generated/e_ice_wisp.png', e_ice_shard:'assets/generated/e_ice_shard.png',
   e_ice_caster:'assets/generated/e_ice_caster.png', e_ice_bomber:'assets/generated/e_ice_bomber.png',
   e_ice_guardian:'assets/generated/e_ice_guardian.png',
+  // Props อาร์ตจริงสำหรับฉากด่าน 2–5
+  drain_grate:'assets/generated/drain_grate.png', drain_pipe:'assets/generated/drain_pipe.png',
+  drain_sludge:'assets/generated/drain_sludge.png', drain_bubbles:'assets/generated/drain_bubbles.png',
+  stove_furnace:'assets/generated/stove_furnace.png', stove_pipe:'assets/generated/stove_pipe.png',
+  stove_gear:'assets/generated/stove_gear.png', stove_belt:'assets/generated/stove_belt.png',
+  ice_cage:'assets/generated/ice_cage.png', ice_crystal:'assets/generated/ice_crystal.png',
+  ice_chain:'assets/generated/ice_chain.png', ice_pool:'assets/generated/ice_pool.png',
+  crown_oven:'assets/generated/crown_oven.png', hunger_seal:'assets/generated/hunger_seal.png',
   // boss3/boss4 ใช้ action sheet ใน ASSET_SHEETS เพื่อผูก pose กับ telegraph จริง
   mb1:'assets/generated/mb1_ant_guard.png', mb2:'assets/generated/mb2_valve_maw.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // มินิบอส 5 ด่าน
   chest:'assets/chest.png', crate:'assets/crate.png', vac:'assets/vac.png',   // ไอเทม (รูปจริง แทนกราฟิกโค้ด)
