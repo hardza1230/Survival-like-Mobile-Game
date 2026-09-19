@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '3.1.0';
+const GAME_VERSION = '3.2.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'3.2.0', date:'2026-09-19', title:'English UI (Phase 3) — gear & stages', items:[
+    'Translated equipment, currencies, rank perks, gear sets and stage/boss names',
+    'Menu screens now show English data; remaining screen labels & story translate next',
+  ]},
   { v:'3.1.0', date:'2026-09-19', title:'English UI (Phase 2) — skills & cards', items:[
     'Translated skills, passives, characters, talents, uniques, combos, affixes and tier text',
     'Level-up cards, Awaken cards and difficulty tiers now in English',
@@ -1800,21 +1804,21 @@ const UPGRADES = {
 const UPG_ORDER=['hp','dmg','def'];
 /* ---- ยศ (rank): ไต่ไปเรื่อย ๆ · ชื่อวนถึงตัวสุดท้ายแล้วต่อท้าย +N ---- */
 const RANK_TIERS = [
-  { name:'เศษรสแรกตื่น' }, { name:'ผู้ฟังความทรงจำ' }, { name:'ผู้ผูกพันแก่น' },
-  { name:'ผู้พิทักษ์ Mochitopia' }, { name:'ผู้ต้านความขม' }, { name:'Flavorbound' },
+  { name:'First Awakened Taste' }, { name:'Memory Listener' }, { name:'Core Binder' },
+  { name:'Guardian of Mochitopia' }, { name:'Bitter Defier' }, { name:'Flavorbound' },
 ];
 function rankName(rank){ const n=RANK_TIERS.length; if(rank<n)return RANK_TIERS[rank].name;
   return RANK_TIERS[n-1].name+' +'+(rank-n+1); }
 function promoteReward(rank){ return 50+rank*40; }   // 🍬 โบนัสตอนเลื่อนยศ
 /* ---- RANK PERKS: ทุก rank ได้ 1 แต้ม (RP) ลงใน perk ถาวรที่เลือกเอง (depth + การตัดสินใจ) ---- */
 const RANK_PERKS = [
-  { id:'reroll',  emoji:'🎲', name:'ไพ่สำรอง',   max:3, desc:'+1 สุ่มการ์ดใหม่ (reroll) ต่อด่าน' },
-  { id:'banish',  emoji:'🚫', name:'คัดทิ้ง',     max:2, desc:'+1 ลบการ์ด (banish) ต่อด่าน' },
-  { id:'boxLuck', emoji:'🎁', name:'ดวงกล่อง',    max:3, desc:'โอกาสดรอปกล่องสูตรลับ +30% ต่อขั้น' },
-  { id:'greed',   emoji:'🍬', name:'โลภหวาน',     max:5, desc:'รับ Sugar จากรางวัลในด่าน +8% ต่อขั้น' },
-  { id:'vigor',   emoji:'❤️', name:'แก่นอึด',     max:5, desc:'HP สูงสุด +6% ต่อขั้น' },
-  { id:'might',   emoji:'💥', name:'แก่นแรง',     max:5, desc:'ดาเมจ +5% ต่อขั้น' },
-  { id:'revive',  emoji:'🕯️', name:'เทียนคืนชีพ', max:1, desc:'ล้มแล้วฟื้น 1 ครั้ง/ด่าน ที่ HP 45%' },
+  { id:'reroll',  emoji:'🎲', name:'Spare Cards', max:3, desc:'+1 card reroll per stage' },
+  { id:'banish',  emoji:'🚫', name:'Cull', max:2, desc:'+1 card banish per stage' },
+  { id:'boxLuck', emoji:'🎁', name:'Box Luck', max:3, desc:'+30% secret box drop chance per rank' },
+  { id:'greed',   emoji:'🍬', name:'Sweet Greed', max:5, desc:'+8% Sugar from stage rewards per rank' },
+  { id:'vigor',   emoji:'❤️', name:'Vigor', max:5, desc:'+6% max HP per rank' },
+  { id:'might',   emoji:'💥', name:'Might', max:5, desc:'+5% damage per rank' },
+  { id:'revive',  emoji:'🕯️', name:'Revival Candle', max:1, desc:'Revive once per stage at 45% HP' },
 ];
 /* ---- HUB_GROUPS: รวมปุ่มเมนูย่อยเป็นกลุ่ม ให้หน้า Hub สะอาดขึ้น (rows: [targetScreen,emoji,label,sub]) ---- */
 const HUB_GROUPS = {
@@ -1857,68 +1861,68 @@ const GEAR_ENH_MAX = 5;
 function gearEnhCost(lv){ return 60+lv*55; }   // 🍬 ค่าตีบวก +1..+5 (60/115/170/225/280)
 // 6 ช่องสวมใส่ (แบบ isekai drifter) · แต่ละช่องมีของ "ไม่สวม" ฟรี + ของซื้อ 2 ชิ้น · ตีบวกได้
 const GEAR_SLOTS = [
-  { slot:'weapon', label:'อาวุธ',   emoji:'⚔️' },
-  { slot:'gloves', label:'ถุงมือ',  emoji:'🧤' },
-  { slot:'armor',  label:'เกราะ',   emoji:'🛡️' },
-  { slot:'boots',  label:'รองเท้า', emoji:'👢' },
-  { slot:'amulet', label:'สร้อย',   emoji:'📿' },
-  { slot:'ring',   label:'แหวน',    emoji:'💍' },
+  { slot:'weapon', label:'Weapon',   emoji:'⚔️' },
+  { slot:'gloves', label:'Gloves',  emoji:'🧤' },
+  { slot:'armor',  label:'Armor',   emoji:'🛡️' },
+  { slot:'boots',  label:'Boots', emoji:'👢' },
+  { slot:'amulet', label:'Amulet',   emoji:'📿' },
+  { slot:'ring',   label:'Ring',    emoji:'💍' },
 ];
 const GEAR = {
   weapon: [
-    { id:'w_spoon', tier:"start", emoji:'🥄', name:'ช้อนไม้',      cost:0,   enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',  apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
-    { id:'w_chop', tier:"common",  emoji:'🥢', name:'ตะเกียบเหล็ก', cost:120, enh:true, desc:'ดาเมจ +12% (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); } },
-    { id:'w_whisk', tier:"common", emoji:'🌀', name:'ตะกร้อตีไข่',  cost:150, enh:true, desc:'ลดคูลดาวน์สกิล 5% (+1%/ตีบวก)', apply:(p,lv)=>{ p.cdMul*=(1-0.05-0.01*lv); } },
-    { id:'w_knife', tier:"rare", emoji:'🔪', name:'มีดเชฟ',       cost:300, enh:true, desc:'ดาเมจ +22% (+4%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.22+0.04*lv); } },
-    { id:'w_cleaver', tier:"epic", set:'chef', emoji:'🪓', name:'มีดอีโต้ทองคำ', cost:640, enh:true, desc:'ดาเมจ +30% · คริ +5% (+5%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.30+0.05*lv); p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
-    { id:'lg_starcleaver', tier:"legend", emoji:'🌟', name:'ดาบดาวตก', cost:0, enh:true, fx:'execute', desc:'ดาเมจ +38% · ศัตรูเลือดต่ำกว่า 40% รับดาเมจเพิ่ม +15% (+5%·+3%/ตีบวก) 🌟', apply:(p,lv)=>{ p.dmgMul*=(1+0.38+0.05*lv); p.lowHpDmg=(p.lowHpDmg||0)+0.15+0.03*lv; } },
+    { id:'w_spoon', tier:"start", emoji:'🥄', name:'Wooden Spoon',  cost:0,   enh:true, desc:'+5% damage (+2%/enh)',  apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
+    { id:'w_chop', tier:"common",  emoji:'🥢', name:'Iron Chopsticks', cost:120, enh:true, desc:'+12% damage (+3%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); } },
+    { id:'w_whisk', tier:"common", emoji:'🌀', name:'Egg Whisk',  cost:150, enh:true, desc:'-5% skill cooldown (+1%/enh)', apply:(p,lv)=>{ p.cdMul*=(1-0.05-0.01*lv); } },
+    { id:'w_knife', tier:"rare", emoji:'🔪', name:'Chef Knife',    cost:300, enh:true, desc:'+22% damage (+4%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.22+0.04*lv); } },
+    { id:'w_cleaver', tier:"epic", set:'chef', emoji:'🪓', name:'Golden Cleaver', cost:640, enh:true, desc:'+30% damage · +5% crit (+5%·+1%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.30+0.05*lv); p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
+    { id:'lg_starcleaver', tier:"legend", emoji:'🌟', name:'Starfall Blade', cost:0, enh:true, fx:'execute', desc:'+38% damage · enemies below 40% HP take +15% damage (+5%·+3%/enh) 🌟', apply:(p,lv)=>{ p.dmgMul*=(1+0.38+0.05*lv); p.lowHpDmg=(p.lowHpDmg||0)+0.15+0.03*lv; } },
   ],
   gloves: [
-    { id:'gl_none', tier:"start", emoji:'🧤', name:'ไม่สวม',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'gl_mitt', tier:"common", emoji:'🧤', name:'ถุงมือเตาอบ',  cost:140, enh:true, desc:'คริ +5% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
-    { id:'gl_silk', tier:"common", emoji:'🧵', name:'ถุงมือผ้าไหม', cost:150, enh:true, desc:'ดาเมจ +8% (+2%/ตีบวก)',      apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); } },
-    { id:'gl_iron', tier:"rare", emoji:'🥊', name:'นวมเหล็ก',      cost:320, enh:true, desc:'คริ +9% · ดาเมจ +4% (+1%·+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
-    { id:'gl_dragon', tier:"epic", set:'chef', emoji:'🐲', name:'ถุงมือมังกรไฟ', cost:660, enh:true, desc:'คริ +13% · ดาเมจคริแรงขึ้น (+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.13+0.01*lv; p.critMul=(p.critMul||1.8)+0.25+0.05*lv; } },
+    { id:'gl_none', tier:"start", emoji:'🧤', name:'None',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'gl_mitt', tier:"common", emoji:'🧤', name:'Oven Mitt',  cost:140, enh:true, desc:'+5% crit (+1%/enh)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
+    { id:'gl_silk', tier:"common", emoji:'🧵', name:'Silk Gloves', cost:150, enh:true, desc:'+8% damage (+2%/enh)',      apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); } },
+    { id:'gl_iron', tier:"rare", emoji:'🥊', name:'Iron Fists',      cost:320, enh:true, desc:'+9% crit · +4% damage (+1%·+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
+    { id:'gl_dragon', tier:"epic", set:'chef', emoji:'🐲', name:'Fire Dragon Gloves', cost:660, enh:true, desc:'+13% crit · stronger crit DMG (+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.13+0.01*lv; p.critMul=(p.critMul||1.8)+0.25+0.05*lv; } },
   ],
   armor: [
-    { id:'ar_none', tier:"start",  emoji:'🥋', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'ar_apron', tier:"common", emoji:'🥋', name:'ผ้ากันเปื้อน', cost:130, enh:true, desc:'HP +45 (+12/ตีบวก)',        apply:(p,lv)=>{ p.maxhp+=45+12*lv; } },
-    { id:'ar_quilt', tier:"common", emoji:'🧶', name:'เสื้อนวมหนา', cost:150, enh:true, desc:'ลดดาเมจ 5% (+1%/ตีบวก)',     apply:(p,lv)=>{ p.dmgTakenMul*=Math.pow(0.95,1+lv*0.4); } },
-    { id:'ar_plate', tier:"rare", emoji:'🛡️', name:'เกราะฝาหม้อ',  cost:340, enh:true, desc:'HP +90 · ลดดาเมจ 6% (+18HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=90+18*lv; p.dmgTakenMul*=Math.pow(0.94,1+lv*0.5); } },
-    { id:'ar_royal', tier:"epic", set:'chef', emoji:'👑', name:'เกราะราชันครัว', cost:680, enh:true, desc:'HP +140 · ลดดาเมจ 10% (+24HP/ตีบวก)', apply:(p,lv)=>{ p.maxhp+=140+24*lv; p.dmgTakenMul*=Math.pow(0.90,1+lv*0.5); } },
+    { id:'ar_none', tier:"start",  emoji:'🥋', name:'None',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'ar_apron', tier:"common", emoji:'🥋', name:'Apron', cost:130, enh:true, desc:'+45 HP (+12/enh)',        apply:(p,lv)=>{ p.maxhp+=45+12*lv; } },
+    { id:'ar_quilt', tier:"common", emoji:'🧶', name:'Thick Quilt Coat', cost:150, enh:true, desc:'-5% damage taken (+1%/enh)',     apply:(p,lv)=>{ p.dmgTakenMul*=Math.pow(0.95,1+lv*0.4); } },
+    { id:'ar_plate', tier:"rare", emoji:'🛡️', name:'Pot-Lid Armor',  cost:340, enh:true, desc:'+90 HP · -6% damage taken (+18HP/enh)', apply:(p,lv)=>{ p.maxhp+=90+18*lv; p.dmgTakenMul*=Math.pow(0.94,1+lv*0.5); } },
+    { id:'ar_royal', tier:"epic", set:'chef', emoji:'👑', name:'Kitchen King Armor', cost:680, enh:true, desc:'+140 HP · -10% damage taken (+24HP/enh)', apply:(p,lv)=>{ p.maxhp+=140+24*lv; p.dmgTakenMul*=Math.pow(0.90,1+lv*0.5); } },
   ],
   boots: [
-    { id:'bo_none', tier:"start",  emoji:'👢', name:'ไม่สวม',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'bo_soft', tier:"common",  emoji:'👟', name:'รองเท้านุ่ม',  cost:110, enh:true, desc:'ความเร็ว +5% (+1%/ตีบวก)',   apply:(p,lv)=>{ p.baseSpeed*=1+0.05+0.01*lv; } },
-    { id:'bo_magnet', tier:"common", emoji:'🧲', name:'รองเท้าแม่เหล็ก', cost:130, enh:true, desc:'รัศมีดูด +25% (+4%/ตีบวก)', apply:(p,lv)=>{ p.pickup*=1+0.25+0.04*lv; } },
-    { id:'bo_swift', tier:"rare", emoji:'👢', name:'บูตว่องไว',    cost:300, enh:true, desc:'ความเร็ว +9% · ดูด +15% (+1.5%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=1+0.09+0.015*lv; p.pickup*=1+0.15+0.03*lv; } },
-    { id:'bo_wind', tier:"epic", set:'wind', emoji:'🌪️', name:'บูตวายุ',       cost:620, enh:true, desc:'ความเร็ว +13% · ลดคูลดาวน์ 5% (+1.5%/ตีบวก)', apply:(p,lv)=>{ p.baseSpeed*=1+0.13+0.015*lv; p.cdMul*=(1-0.05-0.01*lv); } },
-    { id:'lg_comet', tier:"legend", emoji:'☄️', name:'บูตดาวหาง', cost:0, enh:true, fx:'lifekill', desc:'ความเร็ว +16% · รัศมีดูด +30% · ฆ่าศัตรูฟื้น +2 HP (+1.5%·+1HP/ตีบวก) ☄️', apply:(p,lv)=>{ p.baseSpeed*=1+0.16+0.015*lv; p.pickup*=1+0.30+0.04*lv; p.lifeOnKill=(p.lifeOnKill||0)+2+lv; } },
+    { id:'bo_none', tier:"start",  emoji:'👢', name:'None',      cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'bo_soft', tier:"common",  emoji:'👟', name:'Soft Shoes',  cost:110, enh:true, desc:'+5% move speed (+1%/enh)',   apply:(p,lv)=>{ p.baseSpeed*=1+0.05+0.01*lv; } },
+    { id:'bo_magnet', tier:"common", emoji:'🧲', name:'Magnet Shoes', cost:130, enh:true, desc:'+25% pickup range (+4%/enh)', apply:(p,lv)=>{ p.pickup*=1+0.25+0.04*lv; } },
+    { id:'bo_swift', tier:"rare", emoji:'👢', name:'Swift Boots',    cost:300, enh:true, desc:'+9% move speed · +15% pickup (+1.5%/enh)', apply:(p,lv)=>{ p.baseSpeed*=1+0.09+0.015*lv; p.pickup*=1+0.15+0.03*lv; } },
+    { id:'bo_wind', tier:"epic", set:'wind', emoji:'🌪️', name:'Gale Boots',       cost:620, enh:true, desc:'+13% move speed · -5% cooldown (+1.5%/enh)', apply:(p,lv)=>{ p.baseSpeed*=1+0.13+0.015*lv; p.cdMul*=(1-0.05-0.01*lv); } },
+    { id:'lg_comet', tier:"legend", emoji:'☄️', name:'Comet Boots', cost:0, enh:true, fx:'lifekill', desc:'+16% move speed · +30% pickup · +2 HP on kill (+1.5%·+1HP/enh) ☄️', apply:(p,lv)=>{ p.baseSpeed*=1+0.16+0.015*lv; p.pickup*=1+0.30+0.04*lv; p.lifeOnKill=(p.lifeOnKill||0)+2+lv; } },
   ],
   amulet: [
-    { id:'am_none', tier:"start",   emoji:'📿', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'am_ribbon', tier:"common", emoji:'🎀', name:'โบว์นำโชค',  cost:100, enh:true, desc:'HP +30 (+10/ตีบวก)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
-    { id:'am_clover', tier:"common", emoji:'🍀', name:'ใบโคลเวอร์',  cost:120, enh:true, desc:'คริ +4% · ฟื้น +0.5/วิ (+1%/ตีบวก)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.04+0.01*lv; p.regen=(p.regen||0)+0.5+0.15*lv; } },
-    { id:'am_star', tier:"rare",   emoji:'⭐', name:'ดาวประกาย',  cost:260, enh:true, desc:'ดาเมจ +8% · HP +15 (+2%·+8/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
-    { id:'am_moon', tier:"epic", set:'wind',  emoji:'🌙', name:'จันทราหวาน',  cost:640, enh:true, desc:'ดาเมจ +12% · HP +40 · ฟื้น +1/วิ (+2%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.02*lv); p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
-    { id:'lg_phoenix', tier:"legend", emoji:'🔥', name:'สร้อยฟีนิกซ์', cost:0, enh:true, fx:'revive', desc:'HP +120 · ฟื้น +1.5/วิ · คืนชีพ 1 ครั้ง/ด่าน (+20HP/ตีบวก) 🔥', apply:(p,lv)=>{ p.maxhp+=120+20*lv; p.regen=(p.regen||0)+1.5+0.3*lv; p._gearRevive=(p._gearRevive||0)+1; } },
+    { id:'am_none', tier:"start",   emoji:'📿', name:'None',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'am_ribbon', tier:"common", emoji:'🎀', name:'Lucky Ribbon',  cost:100, enh:true, desc:'+30 HP (+10/enh)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
+    { id:'am_clover', tier:"common", emoji:'🍀', name:'Clover Leaf',  cost:120, enh:true, desc:'+4% crit · +0.5 regen/s (+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.04+0.01*lv; p.regen=(p.regen||0)+0.5+0.15*lv; } },
+    { id:'am_star', tier:"rare",   emoji:'⭐', name:'Sparkle Star',  cost:260, enh:true, desc:'+8% damage · +15 HP (+2%·+8/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
+    { id:'am_moon', tier:"epic", set:'wind',  emoji:'🌙', name:'Sweet Moon',  cost:640, enh:true, desc:'+12% damage · +40 HP · +1 regen/s (+2%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.02*lv); p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
+    { id:'lg_phoenix', tier:"legend", emoji:'🔥', name:'Phoenix Amulet', cost:0, enh:true, fx:'revive', desc:'+120 HP · +1.5 regen/s · revive once per stage (+20HP/enh) 🔥', apply:(p,lv)=>{ p.maxhp+=120+20*lv; p.regen=(p.regen||0)+1.5+0.3*lv; p._gearRevive=(p._gearRevive||0)+1; } },
   ],
   ring: [
-    { id:'ri_none', tier:"start",   emoji:'💍', name:'ไม่สวม',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'ri_copper', tier:"common", emoji:'💍', name:'แหวนทองแดง', cost:120, enh:true, desc:'ดาเมจ +5% (+2%/ตีบวก)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
-    { id:'ri_silver', tier:"common", emoji:'💎', name:'แหวนเงินคริ', cost:140, enh:true, desc:'คริ +6% (+1%/ตีบวก)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.06+0.01*lv; } },
-    { id:'ri_gold', tier:"rare",   emoji:'💛', name:'แหวนทองคำ',  cost:320, enh:true, desc:'ดาเมจ +12% · ฟื้น +0.8/วิ (+3%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
-    { id:'ri_diamond', tier:"epic", set:'wind', emoji:'💠', name:'แหวนเพชร',    cost:700, enh:true, desc:'ดาเมจ +18% · คริ +8% (+3%·+1%/ตีบวก)', apply:(p,lv)=>{ p.dmgMul*=(1+0.18+0.03*lv); p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
+    { id:'ri_none', tier:"start",   emoji:'💍', name:'None',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
+    { id:'ri_copper', tier:"common", emoji:'💍', name:'Copper Ring', cost:120, enh:true, desc:'+5% damage (+2%/enh)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
+    { id:'ri_silver', tier:"common", emoji:'💎', name:'Silver Crit Ring', cost:140, enh:true, desc:'+6% crit (+1%/enh)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.06+0.01*lv; } },
+    { id:'ri_gold', tier:"rare",   emoji:'💛', name:'Gold Ring',  cost:320, enh:true, desc:'+12% damage · +0.8 regen/s (+3%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
+    { id:'ri_diamond', tier:"epic", set:'wind', emoji:'💠', name:'Diamond Ring',    cost:700, enh:true, desc:'+18% damage · +8% crit (+3%·+1%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.18+0.03*lv); p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
   ],
 };
 /* ---- GEAR SETS: สวมของชุดเดียวกันครบจำนวน = โบนัสพิเศษ (นับ id ที่สวมใน applyMeta) ---- */
 const GEAR_SETS = {
-  chef:{ name:'ชุดเชฟราชัน', emoji:'👑', bonuses:{
-    2:{ desc:'2 ชิ้น: ดาเมจ +10%', apply:p=>{ p.dmgMul*=1.10; } },
-    3:{ desc:'3 ชิ้น: คริ +10% · ดาเมจคริแรงขึ้น', apply:p=>{ p.critChance=(p.critChance||0)+0.10; p.critMul=(p.critMul||1.8)+0.3; } } } },
-  wind:{ name:'ชุดจอมวายุ', emoji:'🌪️', bonuses:{
-    2:{ desc:'2 ชิ้น: ลดคูลดาวน์ -8%', apply:p=>{ p.cdMul=Math.max(0.6,(p.cdMul||1)*0.92); } },
-    3:{ desc:'3 ชิ้น: ความเร็ว +10% · ดาเมจ +8%', apply:p=>{ p.baseSpeed*=1.10; p.dmgMul*=1.08; } } } },
+  chef:{ name:'Royal Chef Set', emoji:'👑', bonuses:{
+    2:{ desc:'2 pcs: +10% damage', apply:p=>{ p.dmgMul*=1.10; } },
+    3:{ desc:'3 pcs: +10% crit · stronger crit DMG', apply:p=>{ p.critChance=(p.critChance||0)+0.10; p.critMul=(p.critMul||1.8)+0.3; } } } },
+  wind:{ name:'Gale Master Set', emoji:'🌪️', bonuses:{
+    2:{ desc:'2 pcs: -8% cooldown', apply:p=>{ p.cdMul=Math.max(0.6,(p.cdMul||1)*0.92); } },
+    3:{ desc:'3 pcs: +10% move speed · +8% damage', apply:p=>{ p.baseSpeed*=1.10; p.dmgMul*=1.08; } } } },
 };
 function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
@@ -1954,21 +1958,21 @@ function rollAffixes(baseTier){ const n=AFFIX_COUNT[baseTier]||0; if(!n)return [
 function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
   const best=(kind)=>{ let b=null; for(const a of affs){ const d=affixDef(a.id); if(d&&d.kind===kind&&(!b||a.t<b.t))b=a; } return b?affixDef(b.id):null; };
   const pre=best('prefix'), suf=best('suffix');
-  return (pre&&pre.pre?pre.pre+' ':'')+baseName+(suf&&suf.suf?' แห่ง'+suf.suf:''); }
+  return (pre&&pre.pre?pre.pre+' ':'')+baseName+(suf&&suf.suf?' '+suf.suf:''); }
 
 /* ---- CURRENCY (Phase 2): คราฟต์ affix ของไอเทม แบบ Path of Exile ---- */
 const RARITY_SLOTS = { common:{p:0,s:0}, magic:{p:1,s:1}, rare:{p:3,s:3} };
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  { key:'transmute', emoji:'🔵', name:'น้ำตาลวิเศษ',   desc:'Common → Magic (เติม 1 affix)' },
-  { key:'alt',       emoji:'🟢', name:'ครีมแปรผัน',    desc:'สุ่ม affix ของ Magic ใหม่' },
-  { key:'regal',     emoji:'🟡', name:'คำสั่งราชวัง',   desc:'Magic → Rare (+1 affix)' },
-  { key:'chaos',     emoji:'🟠', name:'ความโกลาหล',    desc:'สุ่ม affix ทั้งหมดของ Rare ใหม่' },
-  { key:'exalt',     emoji:'🔴', name:'แก่นรสสูงสุด',   desc:'เพิ่ม 1 affix (ถ้ายังไม่เต็ม)' },
-  { key:'divine',    emoji:'⚪', name:'พรวิเศษ',        desc:'สุ่มค่าใหม่ คงชนิด+tier' },
-  { key:'annul',     emoji:'🟣', name:'ลบเลือน',        desc:'ลบ affix สุ่ม 1 อัน' },
-  { key:'scour',     emoji:'⚫', name:'ล้างรส',         desc:'ลบ affix ทั้งหมด → Common' },
+  { key:'transmute', emoji:'🔵', name:'Magic Sugar',   desc:'Common → Magic (add 1 affix)' },
+  { key:'alt',       emoji:'🟢', name:'Shifting Cream',    desc:'Reroll Magic affixes' },
+  { key:'regal',     emoji:'🟡', name:'Royal Decree',   desc:'Magic → Rare (+1 affix)' },
+  { key:'chaos',     emoji:'🟠', name:'Chaos',    desc:'Reroll all Rare affixes' },
+  { key:'exalt',     emoji:'🔴', name:'Exalted Core',   desc:'Add 1 affix (if not full)' },
+  { key:'divine',    emoji:'⚪', name:'Divine Blessing',        desc:'Reroll values, keep type+tier' },
+  { key:'annul',     emoji:'🟣', name:'Annulment',        desc:'Remove 1 random affix' },
+  { key:'scour',     emoji:'⚫', name:'Scour',         desc:'Remove all affixes → Common' },
 ];
 function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
 // ราคา currency เป็น Sugar (ซื้อ = เต็มราคา · ขาย = 60%)
@@ -2002,7 +2006,7 @@ const Store = {
 function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%2)};}   // diff 2-3 (นรกสูงสุด)
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
-const TIER_LABEL = { start:{name:'เริ่มต้น',color:'#9a90ab'}, common:{name:'Common',color:'#8bd3a0'}, rare:{name:'แรร์',color:'#ffcf5a'}, epic:{name:'เอปิก',color:'#c9a3ff'}, legend:{name:'ตำนาน',color:'#ff8f3a'} };
+const TIER_LABEL = { start:{name:'Starter',color:'#9a90ab'}, common:{name:'Common',color:'#8bd3a0'}, rare:{name:'Rare',color:'#ffcf5a'}, epic:{name:'Epic',color:'#c9a3ff'}, legend:{name:'Legend',color:'#ff8f3a'} };
 const FIELD_DROP_TABLE={
   common:{emoji:'●',name:'COMMON',color:0x8bd3a0},rare:{emoji:'◆',name:'RARE',color:0xffcf5a},epic:{emoji:'✦',name:'EPIC',color:0xc9a3ff},legend:{emoji:'🌟',name:'LEGEND',color:0xff8f3a}
 };
@@ -2269,25 +2273,25 @@ const STAGE_PROPS = {
   ],
 };
 const STAGES = [
-  { name:'รังมดเปรี้ยวใต้พื้น', en:'The Sour Ant Nest', emoji:'🐜', grid:0x2d261f, tint:0x8ee04b,
-    lore:'โมโม่ร่วงผ่านรอยแยกใต้ตู้กับข้าว สู่รังที่ผลึกกรดกำลังบิดเบือนมดทั้งอาณาจักร',
-    waves:5, recommendedPower:100, miniAt:2, mini:'ราชองครักษ์เขี้ยวทับทิม',
-    boss:'จักรพรรดินีมดกรดมรกต', bossHp:920, bossDmg:25 },
-  { name:'ท่อระบายฟองเน่า', en:'The Rotting Drain', emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
-    lore:'กรดจากรังไหลเข้าสู่ท่อโบราณ ปลุกสิ่งมีชีวิตจากฟอง น้ำเสีย และเศษตะแกรงให้รวมร่างเป็นกองทัพใหม่',
-    waves:5, recommendedPower:280, miniAt:2, mini:'วาล์วมอว์ ผู้เฝ้าแรงดัน', boss:'คลอกมอว์ จ้าวแห่งท่ออุดตัน', bossHp:1120, bossDmg:24 },
-  { name:'ห้องเครื่องพริกเพลิง', en:'Chili Engine Room', emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
-    lore:'เตาหลอมพริกสูบพลังจากรังมด เพื่อเดินเครื่องจักรคำสาปของเชฟขม',
-    waves:5, recommendedPower:560, miniAt:2, mini:'กระทะเดือดดาล', boss:'มิสเตอร์เตาปิ้ง', bossHp:1000, bossDmg:28 },
-  { name:'คุกเย็นน้ำตาล', en:'Sugar Frost Prison', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
-    lore:'วิญญาณรสหวานถูกแช่แข็งไว้เป็นเชื้อเพลิง ผู้คุมโกเลมไม่ยอมให้ใครหลบหนี',
-    waves:5, recommendedPower:940, miniAt:2, mini:'ก้อนน้ำแข็งยักษ์', boss:'โกเลมไอศกรีม', bossHp:1400, bossDmg:32 },
-  { name:'เตาอบมงกุฎแห่งความหิว', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
-    lore:'เตาอบราชันเปิดออก—เชฟขมสลายเป็นภาชนะ และ The Great Hunger ลงมากลืนรสชาติทั้งโลกด้วยตนเอง',
-    waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner · เพชฌฆาตงานเลี้ยง', boss:'The Great Hunger · ราชันผู้กลืนรส', bossHp:2800, bossDmg:40 },
-  { name:'เรือนยอดหมักเหนือครัว', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1,
-    lore:'เมล็ดมงกุฎที่รอดจาก The Great Hunger แทงรากขึ้นสู่สวนเหนือครัว และบังคับความทรงจำที่คืนมาให้งอกผิดฤดู',
-    waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis · ตั๊กแตนผู้คุมสปอร์', boss:'The Rootmother · มารดารากแรก', bossHp:3600, bossDmg:46 },
+  { name:'The Sour Ant Nest', en:'The Sour Ant Nest', emoji:'🐜', grid:0x2d261f, tint:0x8ee04b,
+    lore:'Momo falls through a crack under the pantry into a nest where acid crystals are warping the whole ant kingdom',
+    waves:5, recommendedPower:100, miniAt:2, mini:'Ruby-Fang Guard',
+    boss:'Emerald Acid Ant Empress', bossHp:920, bossDmg:25 },
+  { name:'The Rotting Drain', en:'The Rotting Drain', emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
+    lore:'Acid from the nest floods the ancient drains, raising creatures of foam, sewage and grate scraps into a new army',
+    waves:5, recommendedPower:280, miniAt:2, mini:'Valve Maw, Pressure Warden', boss:'Clogmaw, Lord of Clogged Pipes', bossHp:1120, bossDmg:24 },
+  { name:'Chili Engine Room', en:'Chili Engine Room', emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
+    lore:'The chili furnace siphons power from the ant nest to run the Bitter Chef cursed machine',
+    waves:5, recommendedPower:560, miniAt:2, mini:'Boiling Pan', boss:'Mr. Griddle', bossHp:1000, bossDmg:28 },
+  { name:'Sugar Frost Prison', en:'Sugar Frost Prison', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
+    lore:'Sweet flavor spirits are frozen as fuel, and the golem wardens let no one escape',
+    waves:5, recommendedPower:940, miniAt:2, mini:'Giant Ice Block', boss:'Ice Cream Golem', bossHp:1400, bossDmg:32 },
+  { name:'The Crown Oven of Hunger', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
+    lore:'The royal oven opens — the Bitter Chef dissolves into a vessel, and The Great Hunger descends to devour all flavor itself',
+    waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'The Great Hunger', bossHp:2800, bossDmg:40 },
+  { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1,
+    lore:'The crown seed that survived The Great Hunger roots upward into the garden above the kitchen, forcing returned memories to bloom out of season',
+    waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:'The Rootmother', bossHp:3600, bossDmg:46 },
 ];
 
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
