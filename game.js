@@ -975,6 +975,13 @@ const ASSET_IMAGES = {
   ic_berry_size:'assets/icons/levelup/berry_size.png', ic_berry_cluster:'assets/icons/levelup/berry_cluster.png',
   ic_sweet_recovery:'assets/icons/levelup/sweet_recovery.png', ic_mochi_vitality:'assets/icons/levelup/mochi_vitality.png',
   ic_flavor_regen:'assets/icons/levelup/flavor_regeneration.png', ic_sugar_on_kill:'assets/icons/levelup/sugar_on_kill.png',
+  // ไอคอนอัปเกรดเฉพาะตัว: Mint / Taro / Sesame
+  ic_mint_power:'assets/icons/levelup/mint_power.png', ic_mint_rate:'assets/icons/levelup/mint_rate.png',
+  ic_mint_chill:'assets/icons/levelup/mint_chill.png', ic_mint_linger:'assets/icons/levelup/mint_linger.png',
+  ic_taro_power:'assets/icons/levelup/taro_power.png', ic_taro_rate:'assets/icons/levelup/taro_rate.png',
+  ic_taro_arc:'assets/icons/levelup/taro_arc.png', ic_taro_surge:'assets/icons/levelup/taro_surge.png',
+  ic_sesame_power:'assets/icons/levelup/sesame_power.png', ic_sesame_rate:'assets/icons/levelup/sesame_rate.png',
+  ic_sesame_pane:'assets/icons/levelup/sesame_pane.png', ic_sesame_radius:'assets/icons/levelup/sesame_radius.png',
 };
 // map สกิล/พร → ไอคอนรูปจริง (มีเท่าที่อาร์ตทำมา · null=ใช้อีโมจิ)
 const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', frost:'ic_frost', bubble:'ic_bubble',
