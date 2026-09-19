@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกอัปเดต (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '2.98.0';
+const GAME_VERSION = '2.99.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'2.99.0', date:'2026-09-19', title:'เพิ่มอาร์ต Props ฉากด่าน 2–5', items:[
+    'เพิ่ม Props อาร์ตจริง 14 ชิ้นสำหรับฉากท่อระบายน้ำ เตาหลอม น้ำแข็ง และห้องบอส',
+    'แก้การโหลด asset ให้ใช้ภาพ Props ใหม่แทน procedural fallback',
+  ]},
   { v:'2.98.0', date:'2026-09-19', title:'ระบบเป้าหมาย (Quest) + จุดแดงแจ้งเตือน', items:[
     'เพิ่ม "🎯 ภารกิจถัดไป" ที่หน้าหลัก — ร้อยทุกระบบเป็นเส้นทาง (ผ่านด่าน · ปรุงสูตร · ล่าของตำนาน) พร้อมรางวัล 🍬',
     'จุดแดงเล็ก ๆ แจ้งเตือนของใหม่: มีอัปเดต · Daily/Achievement รอรับ',
