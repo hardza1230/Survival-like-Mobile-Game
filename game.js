@@ -1574,7 +1574,7 @@ const Save = {
   gearAffixes(ref){ const item=this.gearItem(ref); if(item)return item.affixes||[]; const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearAffix&&this.data.gearAffix[id])||[]; },
   ensureAffix(ref,tier){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,t=base?base.tier:tier;
     if(item){ if(!Array.isArray(item.affixes)){item.affixes=rollAffixes(t,item.itemLevel||1,base);this.save();} return item.affixes; }
-    if(!this.data.gearAffix)this.data.gearAffix={}; if(!this.data.gearAffix[id]){this.data.gearAffix[id]=rollAffixes(tier);this.save();} return this.data.gearAffix[id]; },
+    if(!this.data.gearAffix)this.data.gearAffix={}; if(!this.data.gearAffix[id]){this.data.gearAffix[id]=rollAffixes(t,1,base);this.save();} return this.data.gearAffix[id]; },
   rerollAffix(ref,tier){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,arr=rollAffixes(base?base.tier:tier,item?item.itemLevel:1,base);
     if(item)item.affixes=arr; if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=arr.map(x=>Object.assign({},x)); this.save(); return arr; },
   setAffixes(ref,arr){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,copy=Array.isArray(arr)?arr.map(x=>Object.assign({},x)):[];
