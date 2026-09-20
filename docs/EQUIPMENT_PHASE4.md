@@ -23,3 +23,12 @@ Item Level adds a slot-specific bonus capped at Item Level 100. It never multipl
 ## Weapon line
 
 The weapon roster expands from 6 to 22 bases. Every chapter has common/rare/epic/legend chase options while Chapter 1 retains the starter set. Icons are transparent 256×256 SVG assets; rarity frames remain UI-driven so the same art can be reused across grades and states.
+
+## Final inventory lifecycle (v4.1.0)
+
+- The backpack holds 24 unequipped instances. Equipped items do not consume backpack capacity.
+- Overflow rewards enter a five-slot Reward Inbox.
+- Players can claim an inbox item after freeing backpack space, or dismantle Common/Rare inbox items into shards.
+- Auto-dismantle modes are Off, Common, and Common + Rare. They apply only when the backpack is full.
+- Favorite, locked, equipped, Epic and Legendary items are never auto-dismantled.
+- When a protected Epic/Legend arrives to a full inbox, an eligible Common/Rare inbox item is salvaged first; if none exists, the protected reward is preserved as temporary protected overflow.
