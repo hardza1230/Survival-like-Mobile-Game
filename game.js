@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '3.8.0';
+const GAME_VERSION = '3.9.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'3.9.0', date:'2026-09-20', title:'Equipment compare — stat deltas & quick equip', items:[
+    'Added side-by-side Equipped vs Selected comparison with normalized stat values',
+    'Positive deltas are green, negative deltas are red, with one-tap Quick Equip',
+  ]},
   { v:'3.8.0', date:'2026-09-20', title:'Equipment inventory — instance grid', items:[
     'Added a portrait inventory grid with per-slot new-item alerts, pagination and instance selection',
     'Added Favorite and Lock controls while keeping Equip and Enhance available during the transition',
@@ -1295,6 +1299,29 @@ function rollFieldGearTier(stageIndex,difficulty,boost=0){
   const rare=Phaser.Math.Clamp(0.05+stageIndex*0.035+(difficulty-1)*0.025+boost*0.08,0.05,0.48),epic=Phaser.Math.Clamp((stageIndex-1)*0.012+(difficulty-1)*0.012+boost*0.035,0,0.20),r=Math.random();
   return r<legend?'legend':r<legend+epic?'epic':r<legend+epic+rare?'rare':'common';
 }
+
+/* ---- Equipment compare: normalize every item effect so all deltas use "higher is better" ---- */
+const GEAR_COMPARE_STATS = [
+  {key:'dmg',label:'DMG',pct:true},{key:'hp',label:'HP'},{key:'crit',label:'Crit',pct:true},
+  {key:'critDmg',label:'Crit DMG',pct:true},{key:'cdr',label:'Cooldown',pct:true},{key:'def',label:'Defense',pct:true},
+  {key:'speed',label:'Move Speed',pct:true},{key:'pickup',label:'Pickup',pct:true},{key:'regen',label:'Regen/s'},
+  {key:'lifeKill',label:'HP / Kill'},{key:'execute',label:'Execute DMG',pct:true},{key:'revive',label:'Revive'}
+];
+function gearInstanceStats(item){
+  const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,_gearRevive:0};
+  if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,revive:0};
+  const base=GEAR_ALL.find(g=>g.id===item.baseId); if(base&&base.apply)base.apply(p,item.enhanceLv||0);
+  for(const a of (item.affixes||[])){const d=affixDef(a.id);if(d&&d.apply)d.apply(p,a.v);}
+  return {dmg:(p.dmgMul-1)*100,hp:p.maxhp||0,crit:(p.critChance||0)*100,critDmg:((p.critMul||1.55)-1.55)*100,
+    cdr:(1-(p.cdMul||1))*100,def:(1-(p.dmgTakenMul||1))*100,speed:((p.baseSpeed||1)-1)*100,
+    pickup:((p.pickup||1)-1)*100,regen:p.regen||0,lifeKill:p.lifeOnKill||0,execute:(p.lowHpDmg||0)*100,revive:p._gearRevive||0};
+}
+function gearCompareRows(equipped,selected){
+  const a=gearInstanceStats(equipped),b=gearInstanceStats(selected);
+  return GEAR_COMPARE_STATS.map(d=>Object.assign({},d,{from:a[d.key]||0,to:b[d.key]||0,delta:(b[d.key]||0)-(a[d.key]||0)}))
+    .filter(r=>Math.abs(r.from)>0.001||Math.abs(r.to)>0.001).sort((x,y)=>Math.abs(y.delta)-Math.abs(x.delta));
+}
+function gearStatText(row,value){const n=Math.abs(value-Math.round(value))<0.05?Math.round(value):Math.round(value*10)/10;return (n>0?'+':'')+n+(row.pct?'%':'');}
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
@@ -3225,18 +3252,25 @@ class Game extends Phaser.Scene {
     if(pages>1){ const py=y-1,pw=68,ph=24;
       const pt=this.add.text(w/2,py+ph/2,(page+1)+' / '+pages,{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(pt);
       for(const [dir,label,px] of [[-1,'‹',w/2-76],[1,'›',w/2+76]]){const enabled=(dir<0?page>0:page<pages-1),pg=this.add.graphics();pg.fillStyle(enabled?0x3a3550:0x241a2e,1);pg.fillRoundedRect(px-pw/2,py,pw,ph,8);const tx=this.add.text(px,py+ph/2,label,{fontSize:'18px',color:enabled?'#ffffff':'#5e5062'}).setOrigin(0.5);this.menu.add([pg,tx]);if(enabled)this._zone(px-pw/2,py,pw,ph,()=>{this.gearPageBySlot[sel]=page+dir;this.buildMenuScreen();});} y+=ph+5; }
-    selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId);
-    if(selected&&base){ const tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,affs=selected.affixes||[],eq=Save.isGearEquipped(selected.uid);
-      const detailH=88,dg=this.add.graphics();dg.fillStyle(0x241a33,0.96);dg.fillRoundedRect(14,y,w-28,detailH,12);dg.lineStyle(1.5,Phaser.Display.Color.HexStringToColor(tl.color).color,1);dg.strokeRoundedRect(14,y,w-28,detailH,12);this.menu.add(dg);
-      const name=this.add.text(24,y+8,base.emoji+' '+gearAffixName(base.name,affs)+(selected.enhanceLv?' +'+selected.enhanceLv:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:tl.color,wordWrap:{width:w-110}}).setOrigin(0,0);
-      const state=this.add.text(w-24,y+9,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'9px',color:rl.color}).setOrigin(1,0);
-      const astr=affs.length?affs.map(a=>{const d=affixDef(a.id);return d?d.emoji+d.label+' '+d.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean).join('   '):'No affixes';
-      const at=this.add.text(24,y+31,astr,{fontFamily:'sans-serif',fontSize:'9px',color:'#c9a3ff',wordWrap:{width:w-48}}).setOrigin(0,0);
-      const desc=this.add.text(24,y+58,base.desc,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#a99fbb',wordWrap:{width:w-48}}).setOrigin(0,0);this.menu.add([name,state,at,desc]); y+=detailH+6;
+    selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
+    if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
+      const rows=gearCompareRows(equipped,selected).slice(0,5),panelH=58+Math.max(2,rows.length)*14,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
+      const drawCompareCard=(x,item,itBase,title,on)=>{const itTl=item?(TIER_LABEL[item.grade]||TIER_LABEL.common):TIER_LABEL.start,g=this.add.graphics();g.fillStyle(on?0x332819:0x241a33,0.97);g.fillRoundedRect(x,y,cw,panelH,12);g.lineStyle(on?2:1.5,on?0xffd166:Phaser.Display.Color.HexStringToColor(itTl.color).color,1);g.strokeRoundedRect(x,y,cw,panelH,12);this.menu.add(g);
+        const hd=this.add.text(x+8,y+7,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:on?'#ffd166':'#9a90ab'}).setOrigin(0,0);
+        const name=item&&itBase?itBase.emoji+' '+gearAffixName(itBase.name,item.affixes||[]):'— Empty —';
+        const nm=this.add.text(x+8,y+21,name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:itTl.color,wordWrap:{width:cw-16}}).setOrigin(0,0);this.menu.add([hd,nm]);};
+      drawCompareCard(leftX,equipped,eqBase,'EQUIPPED',false); drawCompareCard(rightX,selected,base,eq?'EQUIPPED NOW':'SELECTED',true);
+      rows.forEach((r,i)=>{const ry=y+44+i*14,from=gearStatText(r,r.from),to=gearStatText(r,r.to),dc=r.delta>0.001?'#7de0a1':r.delta<-0.001?'#ff8da2':'#bbaabd',arrow=r.delta>0.001?' ▲':r.delta<-0.001?' ▼':'';
+        const lt=this.add.text(leftX+8,ry,r.label+' '+from,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#d8c7da'}).setOrigin(0,0);
+        const rt=this.add.text(rightX+8,ry,r.label+' '+to+arrow,{fontFamily:'sans-serif',fontStyle:Math.abs(r.delta)>0.001?'bold':'normal',fontSize:'8.5px',color:dc}).setOrigin(0,0);this.menu.add([lt,rt]);});
+      if(!rows.length){const same=this.add.text(w/2,y+47,eq?'Currently equipped':'No numeric stat difference',{fontFamily:'sans-serif',fontSize:'9px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(same);}
+      const state=this.add.text(rightX+cw-8,y+7,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'8px',color:rl.color}).setOrigin(1,0);this.menu.add(state); y+=panelH+6;
+      const affs=selected.affixes||[],astr=affs.length?affs.map(a=>{const d=affixDef(a.id);return d?d.emoji+d.label+' '+d.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean).join('   '):'No affixes';
+      const aff=this.add.text(16,y,astr,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#c9a3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(aff);y+=Math.max(16,aff.height+4);
       const bgap=6,bw=(w-28-bgap*2)/3,bh=32,drawAction=(i,label,color,fn)=>{const bx=14+i*(bw+bgap),g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,y,bw,bh,9);const t=this.add.text(bx+bw/2,y+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([g,t]);if(fn)this._zone(bx,y,bw,bh,fn);};
       drawAction(0,selected.favorite?'★ Favorite':'☆ Favorite',selected.favorite?0xb88925:0x4a4059,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
       drawAction(1,selected.locked?'🔒 Locked':'🔓 Lock',selected.locked?0x85506f:0x4a4059,()=>{Save.toggleGearLock(selected.uid);this.buildMenuScreen();});
-      if(!eq)drawAction(2,'Equip',0x3f9160,()=>{Save.equipGearInstance(sel,selected.uid);Sfx.select();this.buildMenuScreen();});
+      if(!eq)drawAction(2,'Quick Equip',0x3f9160,()=>{Save.equipGearInstance(sel,selected.uid);Sfx.select();this.buildMenuScreen();});
       else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhCost(lv),afford=(Save.data.sugar||0)>=cost;
         drawAction(2,can?('Enhance '+(lv+1)): 'Equipped ✓',can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{if(Save.spend(cost)){Save.enhance(selected.uid);Sfx.clear();}this.buildMenuScreen();}:null); }
     }
