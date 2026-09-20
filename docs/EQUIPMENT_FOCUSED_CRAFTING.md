@@ -12,11 +12,27 @@
 
 | Craft state | Lines | Progression |
 |---|---:|---|
-| Common | 1 | Magic Sugar opens the first targeted line |
-| Magic | 2 | Shifting Cream replaces a selected line; Exalted Core fills an empty line |
-| Rare | 4 | Chaos replaces one selected line; Exalted Core fills an empty line |
+| Common | 1 | Spark Sugar imprints the first targeted line |
+| Magic | 2 | Twist Cream replaces a selected line; Wish Candy fills an empty line |
+| Rare | 4 | Wild Jam replaces a selected line; Wish Candy fills an empty line |
 
-Royal Decree promotes a full two-line Magic item to Rare and unlocks four lines. Divine Blessing rerolls only the selected value. Annulment removes only the selected line. Scour resets the whole item to Common.
+Crown Icing promotes a full two-line Magic item to Rare and unlocks four lines. Crystal Glaze rerolls only the selected value. Fading Gumdrop removes only the selected line. Plain Dough resets the whole item to Common.
+
+
+## Currency identity and economy
+
+| Color | Player-facing name | Internal key | Primary purpose | Sugar shop price |
+|---|---|---|---|---:|
+| Blue | Spark Sugar | `transmute` | Imprint the first chosen stat on Common gear | 40 |
+| Green | Twist Cream | `alt` | Replace one selected Magic affix | 60 |
+| Yellow | Crown Icing | `regal` | Promote full Magic gear to Rare | 120 |
+| Orange | Wild Jam | `chaos` | Replace one selected Rare affix | 160 |
+| Red | Wish Candy | `exalt` | Add a chosen stat to an empty line | 320 |
+| White | Crystal Glaze | `divine` | Reroll the selected value without changing tier | 320 |
+| Purple | Fading Gumdrop | `annul` | Remove one selected line | 90 |
+| Black | Plain Dough | `scour` | Reset the item to Common with no affixes | 30 |
+
+Internal keys stay unchanged so existing saves remain compatible. The price curve separates common experimentation from build-finishing resources: Spark Sugar, Twist Cream and Plain Dough should remain plentiful; Crown Icing and Wild Jam form the mid-game progression layer; Wish Candy and Crystal Glaze are aspirational Chapter 4–5 resources. Fading Gumdrop should be uncommon despite its lower shop price because targeted removal is strategically powerful.
 
 ## Item-specific pools
 
@@ -32,4 +48,4 @@ Normal affixes declare compatible equipment slots. The Craft screen lists only s
 - its own tier bands, formatter and combat application;
 - `exclusive: true` for distinct UI treatment.
 
-Normal and exclusive pools merge through `craftAffixPoolForItem`. No special mods are active in v4.2.0, so adding one later does not require rebuilding the Craft screen or save schema.
+Normal and exclusive pools merge through `craftAffixPoolForItem`. No special mods are active in v4.2.1, so adding one later does not require rebuilding the Craft screen or save schema.
