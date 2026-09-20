@@ -57,7 +57,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v3.9.0 — Equipment comparison + Quick Equip)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.0.0 — Equipment Phase 4 + 5-Chapter Item Progression)
+- **v4.0.0 (Equipment v2 Phase 4 — Instance crafting + progression):** Craft Bench เลือกชิ้นด้วย UID และป้องกันชิ้น locked · drop/gacha/forge/Bazaar รองรับฐานซ้ำเต็มรูปแบบ · Item Level 1–100 แบ่ง 5 Chapter พร้อม affix tier gate และ power cap · อาวุธ 22 ชิ้นพร้อม vector icon ครบชุด
 - **v3.9.0 (Equipment v2 Phase 3 — Compare):** เปรียบเทียบ Equipped/Selected แบบซ้าย–ขวา · `gearInstanceStats` normalize ผล base+enhance+affix เป็น 12 ค่าสถานะที่ higher-is-better · ค่าดีขึ้นเขียว/ลดลงแดงพร้อม ▲▼ · preview จำนวน Set ก่อน→หลัง · Quick Equip 1 แตะ · **ถัดไป Phase 4: Craft Bench เลือก instance จากคลัง + drop/gacha รองรับของซ้ำเต็มรูปแบบ**
 - **v3.8.0 (Equipment v2 Phase 2 — Inventory grid):** หน้า Equipment แนวตั้งใช้ instance grid 4×2 + pagination · ของใหม่เรียงก่อนและมี badge/จุดแดงราย slot · เลือกชิ้นดูชื่อ/Affix/Grade/Craft State · Favorite/Lock · Equip/Enhance ยังใช้ได้ · Landscape คง legacy UI ที่ sync UID · **ถัดไป Phase 3: side-by-side comparison + stat delta + quick equip**
 - **v3.7.0 (Equipment v2 Phase 1 — Item Instance + migration):** เพิ่ม `gearItems[]` UID เฉพาะต่อชิ้น, `equippedGear`, คลัง metadata 24 ช่อง, `gearInbox`, helpers สำหรับ add/equip/remove/query · migration เซฟเดิมรักษา equipped/enhance/affix/craft state · legacy UI dual-write UID+base ID จนกว่าจะย้ายหน้าจอครบ · acquisition เดิมสร้าง instance แล้ว · **ถัดไป Phase 2: inventory grid + New/Favorite/Lock + compare/equip UI**
