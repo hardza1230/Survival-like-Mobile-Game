@@ -57,7 +57,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v3.7.0 — Equipment v2 item-instance foundation)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v3.8.0 — Equipment inventory instance grid)
+- **v3.8.0 (Equipment v2 Phase 2 — Inventory grid):** หน้า Equipment แนวตั้งใช้ instance grid 4×2 + pagination · ของใหม่เรียงก่อนและมี badge/จุดแดงราย slot · เลือกชิ้นดูชื่อ/Affix/Grade/Craft State · Favorite/Lock · Equip/Enhance ยังใช้ได้ · Landscape คง legacy UI ที่ sync UID · **ถัดไป Phase 3: side-by-side comparison + stat delta + quick equip**
 - **v3.7.0 (Equipment v2 Phase 1 — Item Instance + migration):** เพิ่ม `gearItems[]` UID เฉพาะต่อชิ้น, `equippedGear`, คลัง metadata 24 ช่อง, `gearInbox`, helpers สำหรับ add/equip/remove/query · migration เซฟเดิมรักษา equipped/enhance/affix/craft state · legacy UI dual-write UID+base ID จนกว่าจะย้ายหน้าจอครบ · acquisition เดิมสร้าง instance แล้ว · **ถัดไป Phase 2: inventory grid + New/Favorite/Lock + compare/equip UI**
 - **v3.6.0 (Animated main menu):** layered parallax ชัดเจนขึ้น + sparkle/light motion · bump `GAME_VERSION` และ `CHANGELOG` แล้ว
 - **v3.0.0–v3.5.0 (English UI — global launch):** แปลข้อความผู้เล่นทั้งเกมเป็นอังกฤษล้วน (เมนู/การ์ด/สกิล/story/แบนเนอร์บอส+เฟส/ชื่อศัตรูรายด่าน/wave beats/หน้าสรุป+ชนะ/กล่องสุ่ม/หน้าฟื้นคืนชีพ/CHANGELOG) · verified 0 error (headless probe hub+news) · CHANGELOG เก่า (ไทย v1.0.0–v2.99.1) ยุบเป็น summary อังกฤษ 1 entry · **ต่อไปเขียนข้อความ user-facing เป็นอังกฤษเสมอ (comment เป็นไทยได้)**
