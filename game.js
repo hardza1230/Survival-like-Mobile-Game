@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.8.0';
+const GAME_VERSION = '4.9.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.9.0', date:'2026-09-20', title:'Zone Modifiers (endgame challenge)', items:[
+    'Unlock after clearing the Chapter 1 final boss: stackable Zone Modifiers make a stage harder for bigger rewards',
+    'Toggle Toughened / Ferocious / Swarm Lord / Nightmare from the difficulty screen; effects and reward multipliers stack',
+    'Kept gated so new players learn the core game first before challenge layers appear',
+  ]},
   { v:'4.8.0', date:'2026-09-20', title:'Stats panel, Bestiary stats & character tuning', items:[
     'New Character Stats screen (Gear & Power) shows real numbers — Attack Power, HP, Crit, Defense, Speed, Cooldown, Regen',
     'Bestiary now grants permanent stats again, expanded to 8 kill tiers with much bigger bonuses at high tiers',
@@ -977,6 +982,13 @@ const DIFFS = [
 // Zone Level — ตัวแปรความยากรวมของด่าน (ความคืบหน้าด่าน × ระดับความยาก) = สเกลเดียวที่ระบบอื่นอ้างอิงได้ (Bazaar stock, reward tier ฯลฯ)
 // stageIndex 0..5 · diff 1..3 → Zone 1..18 (ยิ่งสูง = ยิ่งยาก/รางวัลดีขึ้น)
 function stageZoneLevel(stageIndex,diff){ const si=Math.max(0,Math.min(5,Math.floor(Number(stageIndex)||0))); const d=Math.max(1,Math.min(3,Math.floor(Number(diff)||1))); return si*3+d; }
+// Zone Modifiers — affix เสริมความยาก (สแตกได้) ปลดหลังผ่านบอสจบ Chapter 1 · ยิ่งเปิดเยอะยิ่งยาก+รางวัลดี (กฎเหล็ก)
+const ZONE_MODIFIERS = [
+  { id:'toughened', emoji:'🛡️', name:'Toughened',  desc:'+50% enemy HP',            hp:1.5, dmg:1.0,  reward:1.35 },
+  { id:'ferocious', emoji:'😾', name:'Ferocious',  desc:'+35% enemy damage',        hp:1.0, dmg:1.35, reward:1.35 },
+  { id:'swarmlord', emoji:'🐜', name:'Swarm Lord', desc:'+40% enemy HP & damage',   hp:1.4, dmg:1.4,  reward:1.60 },
+  { id:'nightmare', emoji:'💀', name:'Nightmare',  desc:'+90% HP · +45% damage',    hp:1.9, dmg:1.45, reward:2.20 },
+];
 /* ---- Card Rarity (แบบ Death Must Die): การ์ดอัพเกรดสุ่มความหายาก → ยิ่งหายากยิ่งได้หลายเลเวลรวด ----
    สีความหายาก = สัญญาณอ่านเร็ว (เห็นทอง=เอาเลย) · ranks = จำนวนเลเวลที่ได้จากการ์ดใบเดียว */
 const RARITIES = [
@@ -1760,6 +1772,10 @@ const Save = {
   respecPerks(){ this.data.rankPerks={}; this.save(); },
   canAscend(){ return [0,1,2,3,4].every(i=>!!(this.data.stageMastery||{})[i]); },
   endgameUnlocked(){ return (this.data.ascension||0)>0||this.canAscend(); },
+  // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว
+  zoneModsUnlocked(){ return !!(this.data.stageMastery&&this.data.stageMastery[4]); },
+  zoneMods(){ return Array.isArray(this.data.zoneMods)?this.data.zoneMods:[]; },
+  toggleZoneMod(id){ if(!Array.isArray(this.data.zoneMods))this.data.zoneMods=[]; const i=this.data.zoneMods.indexOf(id); if(i>=0)this.data.zoneMods.splice(i,1); else this.data.zoneMods.push(id); this.save(); },
   ascend(){ if(!this.canAscend())return 0;this.data.ascension=(this.data.ascension||0)+1;this.data.stageMastery={};this.data.diffBest=[];this.data.unlockedStage=0;
     const reward=350+this.data.ascension*150;this.data.sugar=(this.data.sugar||0)+reward;this.save();return reward; },
   recordEndless(cycle,kills,seconds,character){const score=Math.round(cycle*100000+kills*100+seconds);this.data.endlessBest=Math.max(this.data.endlessBest||0,cycle);
@@ -3399,9 +3415,46 @@ class Game extends Phaser.Scene {
       if(locked){ this._zone(x,y,w,rowH,()=>{ Sfx.select&&Sfx.select(); this.menuToast&&this.menuToast('🔒 Clear '+DIFFS[d.lv-2].name+' first','#ff9bb5'); }); }
       else this._zone(x,y,w,rowH,()=>{ this._dailyRun=false; this.stageDiff=d.lv; this.startRun(idx); });
     });
-    const by=this.H-52,bg2=this.add.graphics();bg2.fillStyle(0x2a2036,0.96);bg2.fillRoundedRect(x,by,w,38,10);bg2.lineStyle(1.6,0x51445f,1);bg2.strokeRoundedRect(x,by,w,38,10);
-    const bt=this.add.text(this.W/2,by+19,'‹ Back to stages',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbb8e0'}).setOrigin(0.5);
-    this.menu.add([bg2,bt]); this._zone(x,by,w,38,()=>this.buildStageSelect());
+    const by=this.H-52, zmOn=Save.zoneModsUnlocked();
+    if(zmOn){ const half=(w-8)/2;
+      const bg2=this.add.graphics();bg2.fillStyle(0x2a2036,0.96);bg2.fillRoundedRect(x,by,half,38,10);bg2.lineStyle(1.6,0x51445f,1);bg2.strokeRoundedRect(x,by,half,38,10);
+      const bt=this.add.text(x+half/2,by+19,'‹ Back',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbb8e0'}).setOrigin(0.5);
+      this.menu.add([bg2,bt]); this._zone(x,by,half,38,()=>this.buildStageSelect());
+      const nMods=Save.zoneMods().length,mg=this.add.graphics();mg.fillStyle(nMods?0x4a2f2a:0x2a2036,0.96);mg.fillRoundedRect(x+half+8,by,half,38,10);mg.lineStyle(1.6,nMods?0xff8f6a:0x51445f,1);mg.strokeRoundedRect(x+half+8,by,half,38,10);
+      const mt=this.add.text(x+half+8+half/2,by+19,'⚡ Modifiers'+(nMods?' ('+nMods+')':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:nMods?'#ffbfa0':'#cbb8e0'}).setOrigin(0.5);
+      this.menu.add([mg,mt]); this._zone(x+half+8,by,half,38,()=>this.buildZoneModifiers(idx));
+    } else {
+      const bg2=this.add.graphics();bg2.fillStyle(0x2a2036,0.96);bg2.fillRoundedRect(x,by,w,38,10);bg2.lineStyle(1.6,0x51445f,1);bg2.strokeRoundedRect(x,by,w,38,10);
+      const bt=this.add.text(this.W/2,by+19,'‹ Back to stages',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbb8e0'}).setOrigin(0.5);
+      this.menu.add([bg2,bt]); this._zone(x,by,w,38,()=>this.buildStageSelect());
+    }
+    // แถบบอก Zone Modifiers ที่เปิดอยู่ (ถ้ามี)
+    if(zmOn&&Save.zoneMods().length){ const names=Save.zoneMods().map(id=>{const m=ZONE_MODIFIERS.find(x=>x.id===id);return m?m.emoji:'';}).join(' ');
+      const zt=this.add.text(this.W/2,portrait?110:82,'⚡ '+names+'  (harder · better rewards)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffbfa0'}).setOrigin(0.5); this.menu.add(zt); }
+    this.menu.setVisible(true);
+  }
+  // แผงเลือก Zone Modifiers (สแตกได้ · เปิดเยอะ = ยาก+รางวัลดี) — เปิดจากหน้าเลือกความยาก
+  buildZoneModifiers(idx){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚡ Zone Modifiers');
+    const w=this.W,h=this.H,portrait=w<=h,x=Math.max(16,(w-Math.min(w-28,420))/2),cw=Math.min(w-28,420);
+    const active=Save.zoneMods();let rMul=1; for(const id of active){const m=ZONE_MODIFIERS.find(z=>z.id===id);if(m)rMul*=m.reward;}
+    const sub=this.add.text(w/2,portrait?80:74,'Stack challenges for bigger rewards · combined ×'+rMul.toFixed(2),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffbfa0'}).setOrigin(0.5);
+    const sub2=this.add.text(w/2,portrait?96:90,'Applies on top of the difficulty you pick',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5);
+    this.menu.add([sub,sub2]);
+    let y=portrait?112:106; const rh=62,gap=8;
+    ZONE_MODIFIERS.forEach(m=>{ const on=active.includes(m.id),g=this.add.graphics();
+      g.fillStyle(on?0x3a2a26:0x241a30,0.97);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(on?2.5:1.6,on?0xff8f6a:0x4a4055,1);g.strokeRoundedRect(x,y,cw,rh,12);g.fillStyle(on?0xff8f6a:0x4a4055,1);g.fillRoundedRect(x,y,6,rh,4);
+      const em=this.add.text(x+30,y+rh/2,m.emoji,{fontSize:'26px'}).setOrigin(0.5);
+      const nm=this.add.text(x+56,y+13,m.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:on?'#ffe08a':'#e8dcf0'}).setOrigin(0,0);
+      const ds=this.add.text(x+56,y+32,m.desc,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#b7abc9'}).setOrigin(0,0);
+      const rw=this.add.text(x+cw-16,y+18,'🏆 ×'+m.reward.toFixed(2),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd166'}).setOrigin(1,0);
+      const tog=this.add.text(x+cw-16,y+38,on?'✓ ON':'OFF',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#8bd3a0':'#7a7088'}).setOrigin(1,0);
+      this.menu.add([g,em,nm,ds,rw,tog]);
+      this._zone(x,y,cw,rh,()=>{ Save.toggleZoneMod(m.id); Sfx.select&&Sfx.select(); this.buildZoneModifiers(idx); });
+      y+=rh+gap; });
+    const by=h-52,bg2=this.add.graphics();bg2.fillStyle(0x2a2036,0.96);bg2.fillRoundedRect(x,by,cw,38,10);bg2.lineStyle(1.6,0x51445f,1);bg2.strokeRoundedRect(x,by,cw,38,10);
+    const bt=this.add.text(w/2,by+19,'‹ Done',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbb8e0'}).setOrigin(0.5);
+    this.menu.add([bg2,bt]); this._zone(x,by,cw,38,()=>this.openDifficultyChoice(idx));
     this.menu.setVisible(true);
   }
   buildUpgrade(){
@@ -4010,6 +4063,7 @@ class Game extends Phaser.Scene {
   startRun(idx){
     if(this.state!=='menu')return;
     idx=idx||0;
+    this._activeZoneMods=Save.zoneModsUnlocked()?Save.zoneMods().slice():[]; this._zoneMul=this.zoneModMul();   // ล็อก Zone Modifiers ของรันนี้
     this.killStreak=0; this._lastKillAt=-9;   // Juice: รีเซ็ตคอมโบฆ่าต่อเนื่องทุกWaitบ
     this.state='loading';
     this.menu.setVisible(false);
@@ -4419,7 +4473,8 @@ class Game extends Phaser.Scene {
   // ผ่อนความยากให้ผู้เล่นใหม่: Stage 1 + ช่วงต้นStage (ฆ่ายังน้อย) + ยังไม่จบ tutorial → มอนเลือดน้อยลง (แก้ feedback "~4 hits per enemy")
   newbieEase(){ let m=1; if(this.stageIndex===0)m*=0.60; if((this.stageKills||0)<25)m*=0.85; if(!Save.data.tutorialDone)m*=0.8; return m; }
   tutorialActive(){ return !!this._inTutorial; }
-  diffMul(){ return DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))]; }   // ตัวคูณตามระดับความยากที่เลือก
+  zoneModMul(){ let hp=1,dmg=1,reward=1; if(Save.zoneModsUnlocked()){ for(const id of (this._activeZoneMods||[])){ const m=ZONE_MODIFIERS.find(x=>x.id===id); if(m){ hp*=m.hp; dmg*=m.dmg; reward*=m.reward; } } } return {hp,dmg,reward}; }
+  diffMul(){ const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],z=this._zoneMul||{hp:1,dmg:1,reward:1}; return {...d,hp:d.hp*z.hp,dmg:d.dmg*z.dmg,reward:d.reward*z.reward}; }   // ตัวคูณความยาก × Zone Modifiers
   zoneLevel(){ return stageZoneLevel(this.stageIndex||0,this.stageDiff||1); }   // Zone Level ของด่านที่กำลังเล่น
   // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
   recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }

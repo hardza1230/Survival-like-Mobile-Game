@@ -57,7 +57,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.7.0 — batch feedback: item scaling / bazaar / perks tree)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.9.0 — Zone Modifiers / Stats panel / Bestiary stats)
+- **v4.9.0 (Zone Modifiers):** `ZONE_MODIFIERS` 4 affix สแตกได้ (toughened/ferocious/swarmlord/nightmare) · ปลดล็อกหลังผ่านบอสจบ Ch.1 (`Save.zoneModsUnlocked`=stageMastery[4]) · เปิดจากหน้าเลือกความยาก (`buildZoneModifiers`) · `Save.data.zoneMods` + `zoneModMul()` × เข้ากับ `diffMul()` (hp/dmg/reward) · set `_activeZoneMods/_zoneMul` ใน startRun · **gate ไว้กันผู้เล่นใหม่ถาโถม**
+- **v4.8.0 (Stats + Bestiary + tune):** หน้า **Character Stats** (`previewStats/buildStats`, gLoadout) โชว์เลขจริง (Attack Power index ฯลฯ) · **Bestiary คืนสแตตถาวร 8 tier** (`bestiaryTotals` เข้า applyMeta, `BEST_HI_SCALE` tier 6-8) · Momo weapon cd 0.88→0.94 (ช้าลง) · Mint frost = basic ยิงถี่ (special cd + weapon 0.72) + ฟาน 2 หอกโฮมมิ่ง + `frostShatterBurst` AoE การันตีโดน
 - **v4.3.1–v4.7.0 (ชุดแก้ตาม feedback เจ้าของ):**
   · **v4.3.0 fix:** field item SVG เป็นกล่องดำบนมือถือ (ไม่มี width/height + feDropShadow) → ใส่ size + ตัด filter · gacha reveal โชว์อาร์ต gear จริง (เดิมเป็นอีโมจิ) · **craft สุ่ม** (เห็น "POSSIBLE STATS" แล้วกด currency = สุ่มติด 1 อัน ไฮไลท์ทอง — `randomCraftSelected`, `_craftRolledId`)
   · **v4.3.1:** craft bench อ่านง่ายขึ้น — พื้น item/tile tint ตาม rarity + จุดสีมุม, affix/stat มีแถบซ้าย prefix(ส้ม)/suffix(มิ้นต์) + legend, เน้นชื่อ stat
