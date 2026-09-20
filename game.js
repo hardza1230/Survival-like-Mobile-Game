@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.2.2';
+const GAME_VERSION = '4.2.3';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.2.3', date:'2026-09-20', title:'Currency art and mobile UI spacing', items:[
+    'Connected all eight transparent currency icons to Crafting and Bazaar UI',
+    'Reflowed Craft Bench actions into a readable 2×2 grid and added a live Currency Pouch',
+    'Expanded Main Menu cards, shortened subtitles and constrained text to prevent overflow',
+  ]},
   { v:'4.2.2', date:'2026-09-20', title:'Crafting currency drop balance', items:[
     'Made Spark Sugar, Twist Cream and Plain Dough the common experimentation resources',
     'Moved Fading Gumdrop out of common rewards and capped it at a low targeted-removal weight',
@@ -235,6 +240,14 @@ const ASSET_IMAGES = {
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   chapter1_cover:'assets/ui/chapter1_cover.webp',
   chapter2_cover:'assets/ui/chapter2_cover.webp',
+  currency_spark_sugar:'assets/ui/currency/spark-sugar.png',
+  currency_twist_cream:'assets/ui/currency/twist-cream.png',
+  currency_crown_icing:'assets/ui/currency/crown-icing.png',
+  currency_wild_jam:'assets/ui/currency/wild-jam.png',
+  currency_wish_candy:'assets/ui/currency/wish-candy.png',
+  currency_crystal_glaze:'assets/ui/currency/crystal-glaze.png',
+  currency_fading_gumdrop:'assets/ui/currency/fading-gumdrop.png',
+  currency_plain_dough:'assets/ui/currency/plain-dough.png',
   gear_w_spoon:'assets/gear/weapons/w_spoon.svg',
   gear_w_chop:'assets/gear/weapons/w_chop.svg',
   gear_w_whisk:'assets/gear/weapons/w_whisk.svg',
@@ -1332,14 +1345,14 @@ const CRAFT_AFFIX_CAP = {common:1,magic:2,rare:4};
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  {key:'transmute',emoji:'🔵',name:'Spark Sugar',desc:'Imprint a chosen stat on a Common item'},
-  {key:'alt',emoji:'🟢',name:'Twist Cream',desc:'Replace the selected Magic affix'},
-  {key:'regal',emoji:'🟡',name:'Crown Icing',desc:'Promote full Magic gear to Rare and unlock 4 lines'},
-  {key:'chaos',emoji:'🟠',name:'Wild Jam',desc:'Replace the selected Rare affix'},
-  {key:'exalt',emoji:'🔴',name:'Wish Candy',desc:'Add a chosen stat to an empty line'},
-  {key:'divine',emoji:'⚪',name:'Crystal Glaze',desc:'Reroll the selected value without changing its tier'},
-  {key:'annul',emoji:'🟣',name:'Fading Gumdrop',desc:'Remove the selected affix line'},
-  {key:'scour',emoji:'⚫',name:'Plain Dough',desc:'Reset all affixes and return the item to Common'},
+  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Imprint a chosen stat on a Common item'},
+  {key:'alt',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Replace the selected Magic affix'},
+  {key:'regal',emoji:'🟡',asset:'currency_crown_icing',name:'Crown Icing',desc:'Promote full Magic gear to Rare and unlock 4 lines'},
+  {key:'chaos',emoji:'🟠',asset:'currency_wild_jam',name:'Wild Jam',desc:'Replace the selected Rare affix'},
+  {key:'exalt',emoji:'🔴',asset:'currency_wish_candy',name:'Wish Candy',desc:'Add a chosen stat to an empty line'},
+  {key:'divine',emoji:'⚪',asset:'currency_crystal_glaze',name:'Crystal Glaze',desc:'Reroll the selected value without changing its tier'},
+  {key:'annul',emoji:'🟣',asset:'currency_fading_gumdrop',name:'Fading Gumdrop',desc:'Remove the selected affix line'},
+  {key:'scour',emoji:'⚫',asset:'currency_plain_dough',name:'Plain Dough',desc:'Reset all affixes and return the item to Common'},
 ];
 function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
@@ -2625,7 +2638,7 @@ class Game extends Phaser.Scene {
     if(fn)this._zone(x,y,w,h,fn); }
   // ป้ายเมนูแฟนตาซี: กWaitบโลหะสองชั้น + ตราอัญมณี + แสงเฉพาะหมวด
   uiMenuCard(cont,cx,cy,w,h,color,emoji,label,sub,fn,primary){
-    const x=cx-w/2,y=cy-h/2,r=Math.min(17,h*0.34),g=this.add.graphics();
+    const x=cx-w/2,y=cy-h/2,r=Math.min(17,h*0.28),g=this.add.graphics();
     const gold=primary?0xffd68a:this._lighten(color,0.44),face=primary?0x44142d:0x171020;
     g.fillStyle(0x000000,0.48);g.fillRoundedRect(x+2,y+6,w,h,r);
     g.fillStyle(gold,0.24);g.fillRoundedRect(x-2,y-2,w+4,h+4,r+2);
@@ -2635,18 +2648,17 @@ class Game extends Phaser.Scene {
     g.fillGradientStyle(this._lighten(color,0.25),color,this._darken(color,0.12),this._darken(color,0.38),primary?0.38:0.19);g.fillRoundedRect(x+5,y+5,w-10,h-10,Math.max(7,r-5));
     g.lineStyle(1,0xffffff,primary?0.30:0.16);g.strokeRoundedRect(x+5,y+5,w-10,h-10,Math.max(7,r-5));
     g.lineStyle(1.2,gold,0.65);g.lineBetween(x+18,y+5,x+w-18,y+5);
-    g.fillStyle(gold,0.92);g.fillCircle(x+11,cy,2.2);g.fillCircle(x+w-11,cy,2.2);
-    const icx=x+h*0.57,ir=h*0.31;
+    const icx=x+29,ir=Math.min(20,h*0.28);
     g.fillStyle(0x08050d,0.88);g.fillCircle(icx,cy,ir+4);
     g.lineStyle(2,gold,0.95);g.strokeCircle(icx,cy,ir+3);
     g.fillGradientStyle(this._lighten(color,0.34),color,color,this._darken(color,0.35),1);g.fillCircle(icx,cy,ir);
     g.lineStyle(1,0xffffff,0.42);g.strokeCircle(icx,cy,ir-2);cont.add(g);
-    const em=this.add.text(icx,cy-1,emoji,{fontSize:Math.round(h*0.36)+'px'}).setOrigin(0.5);
-    const tx=x+h*1.08,nm=this.add.text(tx,sub?cy-7:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:primary?'17px':'15px',color:'#fffaf3'}).setOrigin(0,0.5);
-    nm.setShadow(0,2,'#000000',2);
-    const gemX=x+w-20,gem=this.add.graphics();gem.fillStyle(gold,0.95);gem.fillPoints([{x:gemX,y:cy-6},{x:gemX+6,y:cy},{x:gemX,y:cy+6},{x:gemX-6,y:cy}],true);gem.lineStyle(1,0xffffff,0.5);gem.strokePoints([{x:gemX,y:cy-6},{x:gemX+6,y:cy},{x:gemX,y:cy+6},{x:gemX-6,y:cy}],true);cont.add(gem);
-    cont.add([em,nm]);
-    if(sub){const st=this.add.text(tx,cy+11,sub,{fontFamily:'sans-serif',fontSize:'9.5px',color:primary?'#ffd9df':'#c4b8cb'}).setOrigin(0,0.5);cont.add(st);}
+    const em=this.add.text(icx,cy-1,emoji,{fontSize:Math.round(ir*1.15)+'px'}).setOrigin(0.5);
+    const gemX=x+w-13,gem=this.add.graphics();gem.fillStyle(gold,0.95);gem.fillPoints([{x:gemX,y:cy-5},{x:gemX+5,y:cy},{x:gemX,y:cy+5},{x:gemX-5,y:cy}],true);gem.lineStyle(1,0xffffff,0.5);gem.strokePoints([{x:gemX,y:cy-5},{x:gemX+5,y:cy},{x:gemX,y:cy+5},{x:gemX-5,y:cy}],true);cont.add(gem);
+    const tx=x+55,textW=Math.max(62,gemX-tx-10),labelSize=label.length>11?12.5:(primary?15:14);
+    const nm=this.add.text(tx,sub?cy-9:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:labelSize+'px',color:'#fffaf3',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5).setMaxLines(1);
+    nm.setShadow(0,2,'#000000',2);cont.add([em,nm]);
+    if(sub){const st=this.add.text(tx,cy+12,sub,{fontFamily:'sans-serif',fontSize:'8.5px',color:primary?'#ffd9df':'#c4b8cb',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5).setMaxLines(1);cont.add(st);}
     if(fn)this._zone(x,y,w,h,fn);
   }
   _coverImage(x,y,w,h,key){
@@ -2682,12 +2694,18 @@ class Game extends Phaser.Scene {
   }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
     if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){ Sfx.select(); z.fn(); return; } } }
-  _rowBtn(y,h,emoji,name,sub,rightLabel,rightColor,fn,xOverride,wOverride){
+  _currencyIcon(key,x,y,size,alpha=1,cont){
+    const d=currencyDef(key),target=cont||this.menu;let icon;
+    if(d&&d.asset&&this.textures.exists(d.asset))icon=this.add.image(x,y,d.asset).setDisplaySize(size,size).setAlpha(alpha);
+    else icon=this.add.text(x,y,d?d.emoji:'?',{fontSize:Math.round(size*.72)+'px'}).setOrigin(.5).setAlpha(alpha);
+    target.add(icon);return icon;
+  }
+  _rowBtn(y,h,iconRef,name,sub,rightLabel,rightColor,fn,xOverride,wOverride){
     const w=wOverride||Math.min(this.W-32,400), x=xOverride==null?this.W/2-w/2:xOverride;
     const compact=h<74, rightW=Math.min(96,w*0.27), textW=Math.max(80,w-62-rightW);
     const g=this.add.graphics(); g.fillStyle(0x2c2338,fn?1:0.6); g.fillRoundedRect(x,y,w,h,15);
     g.lineStyle(2,fn?0x4a4059:0x39304a,1); g.strokeRoundedRect(x,y,w,h,15);
-    const em=this.add.text(x+27,y+h/2,emoji,{fontSize:(compact?'21px':'24px')}).setOrigin(0.5);
+    const em=this.textures.exists(iconRef)?this.add.image(x+27,y+h/2,iconRef).setDisplaySize(compact?29:34,compact?29:34):this.add.text(x+27,y+h/2,iconRef,{fontSize:(compact?'21px':'24px')}).setOrigin(0.5);
     const safeName=compact&&name.length>31?name.slice(0,30)+'…':name;
     const safeSub=compact&&sub.length>46?sub.slice(0,45)+'…':sub;
     const nm=this.add.text(x+52,y+h*(compact?0.34:0.32),safeName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'12px':'14px',color:fn?'#ffffff':'#9a90ab'}).setOrigin(0,0.5);
@@ -3107,20 +3125,20 @@ class Game extends Phaser.Scene {
       this.menu.add([qg,qt,qr]); this._zone(qx,qy,qw,qh,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=nq.go; this.buildMenuScreen(); });
     }
     const items=[
-      [COLORS.pink, '▶','Play','Pick a stage and enter the kitchen',()=>{ this.menuScreen='chapter'; this.buildMenuScreen(); }],
-      [COLORS.toast,'🍓','Heroes','Pick and awaken your character',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
-      [COLORS.grape,'🎒','Gear & Power','Flavor Weave · Rank Perks · Equipment',()=>{ this.menuScreen='gLoadout'; this.buildMenuScreen(); }],
-      [0xe06f75,    '🎉','Activities','Daily · Achievements · Endgame',()=>{ this.menuScreen='gActivity'; this.buildMenuScreen(); }],
-      [0x8f7de8,    '📖','Codex','Skills/passives and Bestiary',()=>{ this.menuScreen='gCodex'; this.buildMenuScreen(); }],
-      [0x5f7896,    '⚙','More','Settings and How to Play',()=>{ this.menuScreen='gMore'; this.buildMenuScreen(); }],
+      [COLORS.pink, '▶','Play','Choose a stage',()=>{ this.menuScreen='chapter'; this.buildMenuScreen(); }],
+      [COLORS.toast,'🍓','Heroes','Choose & awaken',()=>{ this.menuScreen='char'; this.buildMenuScreen(); }],
+      [COLORS.grape,'🎒','Gear & Power','Equipment · Craft',()=>{ this.menuScreen='gLoadout'; this.buildMenuScreen(); }],
+      [0xe06f75,    '🎉','Activities','Daily · Achievements',()=>{ this.menuScreen='gActivity'; this.buildMenuScreen(); }],
+      [0x8f7de8,    '📖','Codex','Skills · Bestiary',()=>{ this.menuScreen='gCodex'; this.buildMenuScreen(); }],
+      [0x5f7896,    '⚙','More','Settings · Guide',()=>{ this.menuScreen='gMore'; this.buildMenuScreen(); }],
     ];
     const left=portrait?center:w*0.27;
-    const areaL=portrait?16:Math.max(w*0.47,330), areaR=portrait?w-16:w-18;
-    const cols=portrait?(items.length>4?2:1):2, gapX=portrait?(cols===2?8:0):10, gapY=portrait?8:12;
-    const bw=portrait?(cols===2?(w-40-gapX)/2:Math.min(w-32,390)):Math.min(205,(areaR-areaL-gapX)/2);
-    const menuTop=Math.max(logoY+72,h*0.57),menuBottom=h-42;
+    const areaL=portrait?12:Math.max(w*0.47,330), areaR=portrait?w-12:w-18;
+    const cols=portrait?(items.length>4?2:1):2, gapX=portrait?(cols===2?6:0):10, gapY=portrait?9:12;
+    const bw=portrait?(cols===2?(areaR-areaL-gapX)/2:Math.min(w-24,390)):Math.min(205,(areaR-areaL-gapX)/2);
+    const menuTop=Math.max(logoY+72,h*0.57),menuBottom=h-24;
     const menuRows=Math.ceil(items.length/cols);
-    const bh=portrait?Math.min(54,Math.max(38,(menuBottom-menuTop-gapY*(menuRows-1))/menuRows)):Math.min(58,(h-72-gapY*(menuRows-1))/menuRows);
+    const bh=portrait?Math.min(76,Math.max(54,(menuBottom-menuTop-gapY*(menuRows-1))/menuRows)):Math.min(58,(h-72-gapY*(menuRows-1))/menuRows);
     const totalW=bw*cols+gapX*(cols-1), x0=portrait?(w-totalW)/2+bw/2:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?menuTop+bh/2:74+bh/2;
     // ค่อย ๆ ปลดLockedเมนู — คนใหม่ไม่เจอทุกอย่างพร้อมกัน (ปลดตามด่านที่ผ่าน)
     const us=Save.data.unlockedStage||0, need=[0,0,1,2,1,0];   // idx: เริ่ม/นักสู้/คลัง/กิจกรรม/คัมภีร์/อื่นๆ
@@ -3483,23 +3501,103 @@ class Game extends Phaser.Scene {
   annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);Sfx.clear();this.showBanner('🟣 Line removed','Select an empty line to add a new stat',1300);this.buildCraftBench();}
   scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;Sfx.clear();this.showBanner('⚫ Item reset','Common · one focused line available',1300);this.buildCraftBench();}
   buildCraftBench(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🧪 Focused Crafting','','gLoadout');
-    const w=this.W,slot=this.gearSlot||'weapon';let y=61;const slots=GEAR_SLOTS,sw=Math.min(42,(w-28)/6);
-    slots.forEach((sd,i)=>{const x=14+sw/2+i*((w-28)/6),on=sd.slot===slot,eq=Save.equippedGearItem(sd.slot),base=eq&&GEAR_ALL.find(g=>g.id===eq.baseId),g=this.add.graphics();g.fillStyle(on?0x3a3550:0x2c2338,1);g.fillRoundedRect(x-sw/2,y,sw,sw,9);g.lineStyle(on?3:1.3,on?0xc9a3ff:0x4a4059,1);g.strokeRoundedRect(x-sw/2,y,sw,sw,9);const em=this.add.text(x,y+sw/2,base&&base.id.indexOf('_none')<0?base.emoji:sd.emoji,{fontSize:Math.round(sw*.48)+'px'}).setOrigin(.5);this.menu.add([g,em]);this._zone(x-sw/2,y,sw,sw,()=>{this.gearSlot=sd.slot;this.craftSelectedUid=null;this.craftLineIndex=0;this.craftTargetId=null;this.buildCraftBench();});});
-    y+=sw+7;const items=Save.gearItemsForSlot(slot).filter(x=>{const b=GEAR_ALL.find(g=>g.id===x.baseId);return b&&b.tier!=='start';});if(!items.length){this.menu.add(this.add.text(w/2,y+36,'No craftable item in this slot',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(.5));this.menu.setVisible(true);return;}
-    let selected=Save.gearItem(this.craftSelectedUid);if(!selected||selected.slot!==slot||!items.some(x=>x.uid===selected.uid)){selected=Save.gearItem(this.gearSelectedUid);if(!selected||selected.slot!==slot)selected=Save.equippedGearItem(slot);if(!selected||!items.some(x=>x.uid===selected.uid))selected=items[0];this.craftSelectedUid=selected.uid;this.craftLineIndex=0;this.craftTargetId=null;}
-    if(!this.craftPageBySlot)this.craftPageBySlot={};const pageSize=4,pages=Math.max(1,Math.ceil(items.length/pageSize));let page=Math.max(0,Math.min(pages-1,this.craftPageBySlot[slot]||0));this.craftPageBySlot[slot]=page;
-    const gap=6,cw=(w-28-gap*3)/4,ch=51;items.slice(page*pageSize,page*pageSize+pageSize).forEach((item,i)=>{const base=GEAR_ALL.find(g=>g.id===item.baseId),x=14+i*(cw+gap),on=item.uid===selected.uid,tl=TIER_LABEL[item.grade]||TIER_LABEL.common,color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,y,cw,ch,9);g.lineStyle(on?3:1.3,on?0xffd166:color,1);g.strokeRoundedRect(x,y,cw,ch,9);const key='gear_'+base.id,em=this.textures.exists(key)?this.add.image(x+cw/2,y+18,key).setDisplaySize(29,29):this.add.text(x+cw/2,y+18,base.emoji,{fontSize:'19px'}).setOrigin(.5),lv=this.add.text(x+cw/2,y+41,'iLv '+(item.itemLevel||1)+(item.locked?' · 🔒':''),{fontFamily:'sans-serif',fontSize:'7px',color:'#d8cde2'}).setOrigin(.5);this.menu.add([g,em,lv]);this._zone(x,y,cw,ch,()=>{this.craftSelectedUid=item.uid;this.gearSelectedUid=item.uid;this.craftLineIndex=0;this.craftTargetId=null;this.buildCraftBench();});});
-    y+=ch+3;if(pages>1){const nav=this.add.text(w/2,y+8,'‹   '+(page+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontSize:'9px',color:'#a99fbb'}).setOrigin(.5);this.menu.add(nav);this._zone(w/2-58,y,46,18,()=>{this.craftPageBySlot[slot]=(page-1+pages)%pages;this.buildCraftBench();});this._zone(w/2+12,y,46,18,()=>{this.craftPageBySlot[slot]=(page+1)%pages;this.buildCraftBench();});y+=20;}
-    const base=GEAR_ALL.find(g=>g.id===selected.baseId),affs=Save.gearAffixes(selected.uid),rar=Save.gearRarity(selected.uid,base.tier),rl=RARITY_LABEL[rar]||RARITY_LABEL.magic,cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),cols=2,lineGap=5,lineW=(w-38-lineGap)/2,lineH=31,rows=Math.ceil(cap/2),cardH=37+rows*(lineH+5);
-    this.craftLineIndex=Math.max(0,Math.min(cap-1,this.craftLineIndex||0));const card=this.add.graphics();card.fillStyle(0x241a33,.97);card.fillRoundedRect(14,y,w-28,cardH,13);card.lineStyle(2,Phaser.Display.Color.HexStringToColor(rl.color).color,1);card.strokeRoundedRect(14,y,w-28,cardH,13);const nm=this.add.text(23,y+8,base.emoji+' '+gearAffixName(base.name,affs),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:rl.color}).setOrigin(0,0),meta=this.add.text(w-23,y+8,rl.name+' · iLv '+(selected.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:rl.color}).setOrigin(1,0);this.menu.add([card,nm,meta]);
-    for(let i=0;i<cap;i++){const col=i%2,row=Math.floor(i/2),x=19+col*(lineW+lineGap),ly=y+31+row*(lineH+5),on=i===this.craftLineIndex,a=affs[i],mod=a&&affixDef(a.id),g=this.add.graphics();g.fillStyle(on?0x403151:0x2b2137,1);g.fillRoundedRect(x,ly,lineW,lineH,8);g.lineStyle(on?2:1,on?0xffd166:0x574764,1);g.strokeRoundedRect(x,ly,lineW,lineH,8);const nextEmpty=i===affs.length,label=mod?(mod.emoji+' '+mod.label+' '+mod.fmt(a.v)+' · T'+(a.t||5)):(nextEmpty?'＋ Add affix here':'🔒 Fill previous line'),tx=this.add.text(x+7,ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'7.7px',color:mod?'#e8dcf0':nextEmpty?'#a99fbb':'#655b6c'}).setOrigin(0,.5);this.menu.add([g,tx]);if(mod||nextEmpty)this._zone(x,ly,lineW,lineH,()=>{this.craftLineIndex=i;this.craftTargetId=mod?mod.id:null;this.buildCraftBench();});}
-    y+=cardH+6;const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id));if(!available.some(m=>m.id===this.craftTargetId))this.craftTargetId=(affs[this.craftLineIndex]&&available.some(m=>m.id===affs[this.craftLineIndex].id))?affs[this.craftLineIndex].id:(available[0]&&available[0].id);
-    const ph=this.add.text(15,y,'CHOOSE DESIRED STAT · tap to target',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#ffd9a8'}).setOrigin(0,0),tierHint=this.add.text(w-15,y,'Item pool '+available.length,{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=16;
-    const pw=(w-34-6)/2,phh=38;available.forEach((mod,i)=>{const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+5),on=mod.id===this.craftTargetId,best=affixBestTierForItem(selected,mod),g=this.add.graphics();g.fillStyle(on?0x493b25:0x2b2137,1);g.fillRoundedRect(x,py,pw,phh,8);g.lineStyle(on?2:1,on?0xffd166:(mod.exclusive?0xff8f3a:0x574764),1);g.strokeRoundedRect(x,py,pw,phh,8);const tx=this.add.text(x+7,py+6,mod.emoji+' '+mod.label+(mod.exclusive?' · EXCLUSIVE':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:on?'#ffe08a':'#e2d6e8'}).setOrigin(0,0),rg=this.add.text(x+7,py+21,'Best T'+best+'  ·  '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'7.2px',color:'#a99fbb'}).setOrigin(0,0);this.menu.add([g,tx,rg]);this._zone(x,py,pw,phh,()=>{this.craftTargetId=mod.id;this.buildCraftBench();});});
-    y+=Math.ceil(available.length/2)*(phh+5)+4;const old=affs[this.craftLineIndex]||null,key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),target=available.find(m=>m.id===this.craftTargetId),have=Save.currency(key),can=!!target&&!selected.locked&&have>0,main=this.add.graphics();main.fillStyle(can?0x3f9160:0x3a3550,1);main.fillRoundedRect(14,y,w-28,38,11);const mt=this.add.text(w/2,y+19,(selected.locked?'🔒 Unlock item':target?(cur.emoji+' Craft '+target.label+' · '+cur.name+' '+have+'/1'):'Choose a stat'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:can?'#fff':'#8d8195'}).setOrigin(.5);this.menu.add([main,mt]);if(target)this._zone(14,y,w-28,38,()=>this.focusedCraftSelected());y+=44;
-    const util=[['🟡 Rare',()=>this.promoteFocusedItem(),!selected.locked&&rar==='magic'&&affs.length>=2&&Save.currency('regal')>0],['⚪ Value',()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>0],['🟣 Remove',()=>this.annulFocusedLine(),!selected.locked&&!!old&&Save.currency('annul')>0],['⚫ Reset',()=>this.scourFocusedItem(),!selected.locked&&(affs.length>0||rar!=='common')&&Save.currency('scour')>0]],ug=5,uw=(w-28-ug*3)/4,uh=29;
-    util.forEach(([label,fn,ok],i)=>{const x=14+i*(uw+ug),g=this.add.graphics();g.fillStyle(ok?0x51405e:0x2b2632,1);g.fillRoundedRect(x,y,uw,uh,8);const tx=this.add.text(x+uw/2,y+uh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:ok?'#eee2f2':'#665d6d'}).setOrigin(.5);this.menu.add([g,tx]);if(ok)this._zone(x,y,uw,uh,fn);});
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Craft Bench','','gLoadout');
+    const w=this.W,h=this.H,slot=this.gearSlot||'weapon';let y=w<=h?80:54;
+    const slots=GEAR_SLOTS,sw=Math.min(42,(w-28)/6);
+    slots.forEach((sd,i)=>{
+      const x=14+sw/2+i*((w-28)/6),on=sd.slot===slot,eq=Save.equippedGearItem(sd.slot),base=eq&&GEAR_ALL.find(g=>g.id===eq.baseId),g=this.add.graphics();
+      g.fillStyle(on?0x3a3550:0x2c2338,1);g.fillRoundedRect(x-sw/2,y,sw,sw,9);g.lineStyle(on?3:1.3,on?0xc9a3ff:0x4a4059,1);g.strokeRoundedRect(x-sw/2,y,sw,sw,9);
+      const em=this.add.text(x,y+sw/2,base&&base.id.indexOf('_none')<0?base.emoji:sd.emoji,{fontSize:Math.round(sw*.48)+'px'}).setOrigin(.5);
+      this.menu.add([g,em]);this._zone(x-sw/2,y,sw,sw,()=>{this.gearSlot=sd.slot;this.craftSelectedUid=null;this.craftLineIndex=0;this.craftTargetId=null;this.buildCraftBench();});
+    });
+    y+=sw+7;
+    const items=Save.gearItemsForSlot(slot).filter(x=>{const b=GEAR_ALL.find(g=>g.id===x.baseId);return b&&b.tier!=='start';});
+    if(!items.length){this.menu.add(this.add.text(w/2,y+42,'No craftable item in this slot',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(.5));this.menu.setVisible(true);return;}
+    let selected=Save.gearItem(this.craftSelectedUid);
+    if(!selected||selected.slot!==slot||!items.some(x=>x.uid===selected.uid)){
+      selected=Save.gearItem(this.gearSelectedUid);if(!selected||selected.slot!==slot)selected=Save.equippedGearItem(slot);
+      if(!selected||!items.some(x=>x.uid===selected.uid))selected=items[0];
+      this.craftSelectedUid=selected.uid;this.craftLineIndex=0;this.craftTargetId=null;
+    }
+    if(!this.craftPageBySlot)this.craftPageBySlot={};
+    const pageSize=4,pages=Math.max(1,Math.ceil(items.length/pageSize));let page=Math.max(0,Math.min(pages-1,this.craftPageBySlot[slot]||0));this.craftPageBySlot[slot]=page;
+    const gap=6,cw=(w-28-gap*3)/4,ch=55;
+    items.slice(page*pageSize,page*pageSize+pageSize).forEach((item,i)=>{
+      const base=GEAR_ALL.find(g=>g.id===item.baseId),x=14+i*(cw+gap),on=item.uid===selected.uid,tl=TIER_LABEL[item.grade]||TIER_LABEL.common,color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();
+      g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,y,cw,ch,9);g.lineStyle(on?3:1.3,on?0xffd166:color,1);g.strokeRoundedRect(x,y,cw,ch,9);
+      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,y+19,artKey).setDisplaySize(31,31):this.add.text(x+cw/2,y+19,base.emoji,{fontSize:'20px'}).setOrigin(.5);
+      const lv=this.add.text(x+cw/2,y+45,'iLv '+(item.itemLevel||1)+(item.locked?' · 🔒':''),{fontFamily:'sans-serif',fontSize:'8px',color:'#d8cde2'}).setOrigin(.5);
+      this.menu.add([g,em,lv]);this._zone(x,y,cw,ch,()=>{this.craftSelectedUid=item.uid;this.gearSelectedUid=item.uid;this.craftLineIndex=0;this.craftTargetId=null;this.buildCraftBench();});
+    });
+    y+=ch+3;
+    if(pages>1){
+      const nav=this.add.text(w/2,y+9,'‹   '+(page+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontSize:'10px',color:'#b9aec8'}).setOrigin(.5);
+      this.menu.add(nav);this._zone(w/2-58,y,46,19,()=>{this.craftPageBySlot[slot]=(page-1+pages)%pages;this.buildCraftBench();});this._zone(w/2+12,y,46,19,()=>{this.craftPageBySlot[slot]=(page+1)%pages;this.buildCraftBench();});y+=21;
+    }
+    const base=GEAR_ALL.find(g=>g.id===selected.baseId),affs=Save.gearAffixes(selected.uid),rar=Save.gearRarity(selected.uid,base.tier),rl=RARITY_LABEL[rar]||RARITY_LABEL.magic;
+    const cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),lineGap=6,lineW=(w-38-lineGap)/2,lineH=36,rows=Math.ceil(cap/2),cardH=41+rows*(lineH+7);
+    this.craftLineIndex=Math.max(0,Math.min(cap-1,this.craftLineIndex||0));
+    const card=this.add.graphics();card.fillStyle(0x241a33,.97);card.fillRoundedRect(14,y,w-28,cardH,13);card.lineStyle(2,Phaser.Display.Color.HexStringToColor(rl.color).color,1);card.strokeRoundedRect(14,y,w-28,cardH,13);
+    const fullName=gearAffixName(base.name,affs),safeName=fullName.length>35?fullName.slice(0,34)+'…':fullName;
+    const nm=this.add.text(23,y+10,base.emoji+' '+safeName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:rl.color}).setOrigin(0,0);
+    const meta=this.add.text(w-23,y+10,rl.name+' · iLv '+(selected.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:rl.color}).setOrigin(1,0);
+    this.menu.add([card,nm,meta]);
+    for(let i=0;i<cap;i++){
+      const col=i%2,row=Math.floor(i/2),x=19+col*(lineW+lineGap),ly=y+34+row*(lineH+7),on=i===this.craftLineIndex,a=affs[i],mod=a&&affixDef(a.id),g=this.add.graphics();
+      g.fillStyle(on?0x403151:0x2b2137,1);g.fillRoundedRect(x,ly,lineW,lineH,8);g.lineStyle(on?2:1,on?0xffd166:0x574764,1);g.strokeRoundedRect(x,ly,lineW,lineH,8);
+      const nextEmpty=i===affs.length,label=mod?(mod.emoji+' '+mod.label+' '+mod.fmt(a.v)+' · T'+(a.t||5)):(nextEmpty?'＋ Add affix here':'🔒 Fill previous line');
+      const tx=this.add.text(x+7,ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'8px',color:mod?'#e8dcf0':nextEmpty?'#b9aec8':'#655b6c'}).setOrigin(0,.5);
+      this.menu.add([g,tx]);if(mod||nextEmpty)this._zone(x,ly,lineW,lineH,()=>{this.craftLineIndex=i;this.craftTargetId=mod?mod.id:null;this.buildCraftBench();});
+    }
+    y+=cardH+7;
+    const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id));
+    if(!available.some(m=>m.id===this.craftTargetId))this.craftTargetId=(affs[this.craftLineIndex]&&available.some(m=>m.id===affs[this.craftLineIndex].id))?affs[this.craftLineIndex].id:(available[0]&&available[0].id);
+    const ph=this.add.text(15,y,'CHOOSE DESIRED STAT',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd9a8'}).setOrigin(0,0);
+    const tierHint=this.add.text(w-15,y,'Pool '+available.length+' · tap to target',{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=17;
+    const pw=(w-34-6)/2,phh=44;
+    available.forEach((mod,i)=>{
+      const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+5),on=mod.id===this.craftTargetId,best=affixBestTierForItem(selected,mod),g=this.add.graphics();
+      g.fillStyle(on?0x493b25:0x2b2137,1);g.fillRoundedRect(x,py,pw,phh,8);g.lineStyle(on?2:1,on?0xffd166:(mod.exclusive?0xff8f3a:0x574764),1);g.strokeRoundedRect(x,py,pw,phh,8);
+      const tx=this.add.text(x+7,py+7,mod.emoji+' '+mod.label+(mod.exclusive?' · EXCLUSIVE':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#e2d6e8'}).setOrigin(0,0);
+      const rg=this.add.text(x+7,py+25,'Best T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'7.3px',color:'#a99fbb'}).setOrigin(0,0);
+      this.menu.add([g,tx,rg]);this._zone(x,py,pw,phh,()=>{this.craftTargetId=mod.id;this.buildCraftBench();});
+    });
+    y+=Math.ceil(available.length/2)*(phh+5)+5;
+    const old=affs[this.craftLineIndex]||null,key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),target=available.find(m=>m.id===this.craftTargetId),have=Save.currency(key),can=!!target&&!selected.locked&&have>0,mainH=50,main=this.add.graphics();
+    main.fillStyle(can?0x3f9160:0x3a3550,1);main.fillRoundedRect(14,y,w-28,mainH,11);main.lineStyle(1,can?0x8bd3a0:0x574764,1);main.strokeRoundedRect(14,y,w-28,mainH,11);
+    if(target&&!selected.locked){
+      this._currencyIcon(key,39,y+mainH/2,32,can?1:.45);
+      const mt=this.add.text(61,y+17,'Craft '+target.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:can?'#fff':'#8d8195'}).setOrigin(0,.5);
+      const cost=this.add.text(61,y+34,cur.name+'  '+have+' / 1',{fontFamily:'sans-serif',fontSize:'8.5px',color:can?'#d8ffe5':'#8d8195'}).setOrigin(0,.5);this.menu.add([main,mt,cost]);
+    }else{
+      const mt=this.add.text(w/2,y+mainH/2,selected.locked?'🔒 Unlock item to craft':'Choose a stat',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#8d8195'}).setOrigin(.5);this.menu.add([main,mt]);
+    }
+    if(target)this._zone(14,y,w-28,mainH,()=>this.focusedCraftSelected());y+=mainH+7;
+    const util=[
+      ['regal','Promote to Rare',()=>this.promoteFocusedItem(),!selected.locked&&rar==='magic'&&affs.length>=2&&Save.currency('regal')>0],
+      ['divine','Reroll Value',()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>0],
+      ['annul','Remove Line',()=>this.annulFocusedLine(),!selected.locked&&!!old&&Save.currency('annul')>0],
+      ['scour','Reset Item',()=>this.scourFocusedItem(),!selected.locked&&(affs.length>0||rar!=='common')&&Save.currency('scour')>0]
+    ],ug=6,uw=(w-34-ug)/2,uh=38;
+    util.forEach(([currencyKey,label,fn,ok],i)=>{
+      const x=14+(i%2)*(uw+ug),uy=y+Math.floor(i/2)*(uh+6),g=this.add.graphics(),n=Save.currency(currencyKey);
+      g.fillStyle(ok?0x51405e:0x2b2632,1);g.fillRoundedRect(x,uy,uw,uh,9);g.lineStyle(1,ok?0x8c72a0:0x393342,1);g.strokeRoundedRect(x,uy,uw,uh,9);
+      this._currencyIcon(currencyKey,x+19,uy+uh/2,25,ok?1:.32);
+      const tx=this.add.text(x+37,uy+uh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:ok?'#eee2f2':'#665d6d'}).setOrigin(0,.5);
+      const ct=this.add.text(x+uw-8,uy+uh/2,'×'+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:ok?'#ffe08a':'#665d6d'}).setOrigin(1,.5);
+      this.menu.add([g,tx,ct]);if(ok)this._zone(x,uy,uw,uh,fn);
+    });
+    y+=2*(uh+6)+3;
+    if(y+70<h-8){
+      const wallet=this.add.graphics();wallet.fillStyle(0x21182c,.96);wallet.fillRoundedRect(14,y,w-28,68,11);wallet.lineStyle(1,0x4a4059,1);wallet.strokeRoundedRect(14,y,w-28,68,11);
+      const wt=this.add.text(22,y+7,'CURRENCY POUCH',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#c9a3ff'}).setOrigin(0,0);
+      const hint=this.add.text(w-22,y+7,'Live inventory',{fontFamily:'sans-serif',fontSize:'7.5px',color:'#81758e'}).setOrigin(1,0);this.menu.add([wallet,wt,hint]);
+      CURRENCY.forEach((d,i)=>{
+        const col=i%4,row=Math.floor(i/4),cellW=(w-44)/4,cx=23+cellW*col+12,cy=y+29+row*25;
+        this._currencyIcon(d.key,cx,cy,22,Save.currency(d.key)>0?1:.3);
+        const ct=this.add.text(cx+15,cy,'×'+Save.currency(d.key),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:Save.currency(d.key)>0?'#e9deef':'#62586c'}).setOrigin(0,.5);this.menu.add(ct);
+      });
+    }
     this.menu.setVisible(true);
   }
   /* ---- 🏪 NPC Bazaar (Phase 4): ซื้อ · เสี่ยงดวง · ขาย (single-player) ---- */
@@ -3523,7 +3621,7 @@ class Game extends Phaser.Scene {
       st.gear.forEach(it=>{ const cost=GEAR_BUY[it.tier]||200,tl=TIER_LABEL[it.tier]||TIER_LABEL.common,af=(Save.data.sugar||0)>=cost;
         this._rowBtn(y,40,it.emoji,it.name+' · '+tl.name+' · Ch.'+(it.chapter||1),it.desc,'Buy another 🍬'+cost,af?'#8bd3a0':'#e0788a',()=>this.bazaarBuyGear(it.id));y+=46; });
       st.cur.forEach(c=>{ const d=currencyDef(c.key), cost=(CURRENCY_BUY[c.key]||60)*c.qty, af=(Save.data.sugar||0)>=cost;
-        this._rowBtn(y,40,d.emoji,d.name+' ×'+c.qty,d.desc,'Buy 🍬'+cost,af?'#8bd3a0':'#e0788a',()=>this.bazaarBuyCurrency(c.key,c.qty,cost)); y+=46; });
+        this._rowBtn(y,40,d.asset,d.name+' ×'+c.qty,d.desc,'Buy 🍬'+cost,af?'#8bd3a0':'#e0788a',()=>this.bazaarBuyCurrency(c.key,c.qty,cost)); y+=46; });
     } else if(tab==='gamble'){
       const hd=this.add.text(14,y,'Mystery box — random loot (ilvl by unlocked stage)',{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
       this._rowBtn(y,48,'🎁','Mystery gear box','Gamble 1 instance · duplicate bases keep different affixes and Item Levels','Gamble 🍬180',(Save.data.sugar||0)>=180?'#ffd166':'#e0788a',()=>this.bazaarGambleGear()); y+=54;
@@ -3533,7 +3631,7 @@ class Game extends Phaser.Scene {
       const sh=Save.data.shards||0;
       this._rowBtn(y,40,'🔩','Gear shards ×'+sh,'Convert all shards to 🍬 (×2 each)',sh>0?'Sell +🍬'+(sh*2):'No shards',sh>0?'#8bd3a0':'#7a7088',sh>0?()=>this.bazaarSellShards():null); y+=46;
       CURRENCY.forEach(c=>{ const n=Save.currency(c.key); if(n<=0)return; const val=Math.round((CURRENCY_BUY[c.key]||60)*0.6);
-        this._rowBtn(y,40,c.emoji,c.name+' ×'+n,'Sell 1','Sell +🍬'+val,'#8bd3a0',()=>this.bazaarSellCurrency(c.key,val)); y+=46; });
+        this._rowBtn(y,40,c.asset,c.name+' ×'+n,'Sell 1','Sell +🍬'+val,'#8bd3a0',()=>this.bazaarSellCurrency(c.key,val)); y+=46; });
     }
     this.menu.setVisible(true);
   }
