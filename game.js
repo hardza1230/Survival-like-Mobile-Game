@@ -1388,11 +1388,12 @@ const Save = {
   gearInventoryItems(slot){ const equipped=new Set(Object.values(this.data.equippedGear||{})); return (this.data.gearItems||[]).filter(x=>x&&!equipped.has(x.uid)&&(!slot||x.slot===slot)); },
   gearInventoryCount(){ return this.gearInventoryItems().length; },
   gearInventoryFull(){ return this.gearInventoryCount()>=(this.data.gearInventoryCap||24); },
-  addGearInstance(baseId,opts={}){ if(this.gearInventoryFull()&&!opts.allowOverflow)return null; const item=this.makeGearInstance(baseId,opts); if(!item)return null;
+  addGearInstance(baseId,opts={}){ if(opts.enforceCapacity&&this.gearInventoryFull())return null; const item=this.makeGearInstance(baseId,opts); if(!item)return null;
     if(!Array.isArray(this.data.gearItems))this.data.gearItems=[]; this.data.gearItems.push(item);
     if(!this.data.ownedGear.includes(baseId))this.data.ownedGear.push(baseId); if(!opts.silent)this.save(); return item; },
   equipGearInstance(slot,uid){ const item=this.gearItem(uid); if(!item||item.slot!==slot)return false;
     this.data.equippedGear[slot]=item.uid; this.data.gear[slot]=item.baseId; item.isNew=false; this.save(); return true; },
+  equipGearBase(slot,baseId){ const item=(this.data.gearItems||[]).find(x=>x&&x.baseId===baseId&&x.slot===slot); return item?this.equipGearInstance(slot,item.uid):false; },
   removeGearInstance(uid){ const item=this.gearItem(uid); if(!item||item.locked||this.isGearEquipped(uid))return false;
     this.data.gearItems=this.data.gearItems.filter(x=>x.uid!==uid); this.save(); return true; },
   gearLv(ref){ const item=this.gearItem(ref); if(item)return item.enhanceLv||0; const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearLv&&this.data.gearLv[id])||0; },
@@ -3138,7 +3139,7 @@ class Game extends Phaser.Scene {
     const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
     items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
       if(equipped&&canEnh){const ok=(Save.data.sugar||0)>=ecost;label='⚒️ +'+(lv+1)+' 🍬'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spend(ecost)){Save.enhance(it.id);Sfx.clear();}this.buildMenuScreen();};}
-      else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{Save.data.gear[sel]=it.id;Save.save();Sfx.select();this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
+      else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{Save.equipGearBase(sel,it.id);Sfx.select();this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
       this._rowBtn(80+i*(rowH+rowGap),rowH,owned?it.emoji:'❔',nm,owned?it.desc:'Not discovered yet',label,color,fn,rx,rw);
     });
     this.menu.setVisible(true);
@@ -3216,7 +3217,7 @@ class Game extends Phaser.Scene {
       if(equipped && canEnh){ const afEnh=(Save.data.sugar||0)>=ecost; label='⚒️ Enhance +'+(lv+1)+' 🍬'+ecost; color=afEnh?'#ffd166':'#e0788a';
         fn=()=>{ if(Save.spend(ecost)){ Save.enhance(it.id); Sfx.clear(); } this.buildMenuScreen(); }; }
       else if(equipped){ label='Equipped ✓'; color='#ffd166'; fn=null; }
-      else if(owned){ label='Equip'; color='#8bd3a0'; fn=()=>{ Save.data.gear[sel]=it.id; Save.save(); Sfx.select(); this.buildMenuScreen(); }; }
+      else if(owned){ label='Equip'; color='#8bd3a0'; fn=()=>{ Save.equipGearBase(sel,it.id); Sfx.select(); this.buildMenuScreen(); }; }
       else { label='🔒 '+tl.name; color=tl.color; fn=null; }   // ยังNone = Locked (หาจากดWaitป/กล่องสุ่ม) — Noneการซื้อ
       this._rowBtn(y,44,owned?it.emoji:'❔',nm,owned?it.desc:'Not owned — from stage drops or gacha boxes',label,color,fn);
       y+=50;
