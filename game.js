@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.9.0';
+const GAME_VERSION = '4.10.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.10.0', date:'2026-09-20', title:'Character tuning & Zone Modifier rerolls', items:[
+    'Zone Modifiers are now rolled with a Chaos currency Reroll (or cleared for a safe run) instead of freely stacked, to keep rewards in check',
+    'Cocoa reworked into a sturdy bruiser: lighter hits, only 2 slams (shockwave needs the Breaker mutation), higher HP and regen',
+    'Taro lightning now strikes the nearest enemy first instead of scattering to far high-HP targets',
+  ]},
   { v:'4.9.0', date:'2026-09-20', title:'Zone Modifiers (endgame challenge)', items:[
     'Unlock after clearing the Chapter 1 final boss: stackable Zone Modifiers make a stage harder for bigger rewards',
     'Toggle Toughened / Ferocious / Swarm Lord / Nightmare from the difficulty screen; effects and reward multipliers stack',
@@ -1036,7 +1041,7 @@ const PASSIVES = {
 const CHARACTERS = {
   momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'Nimble gunner',desc:'Sweet but Strong — rapid fire, fast movement, steady crits',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
   mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — wide freezes, fast, casts often',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
-  cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline powerhouse',desc:'Warm and Tough — heavy hits, wide area, tanky, fast heals',stats:{hp:28,dmg:1.14,spd:0.94,def:0.92,crit:0.03,cdr:1.02,regenFlat:0.75},rating:{hp:5,atk:5,spd:2,def:4}},
+  cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'Warm and Tough — a sturdy melee brawler with high HP and strong regen (trade raw damage for durability)',stats:{hp:46,dmg:1.03,spd:0.94,def:0.88,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
   sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Defensive architect',desc:'Sets protective mirrors, reflects bullets, and heals while holding ground',stats:{hp:34,dmg:0.96,spd:0.93,def:0.82,crit:0.01,cdr:0.98,regenFlat:0.65},rating:{hp:5,atk:3,spd:2,def:5}},
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
@@ -1045,7 +1050,7 @@ const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // Berryคอร์
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.16,cdMul:0.94,shots:0,trait:'+16% damage · steadier fire'},
   mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.72,areaMul:1.18,controlMul:1.18,trait:'Rapid frost lances · -28% cooldown'},
-  bearGauntlet:{name:'Cocoa Bear Gauntlet',emoji:'🐻',skill:'meteor',dmgMul:1.15,cdMul:1.05,areaMul:1.18,trait:'Harder and wider · +5% cooldown trade-off'},
+  bearGauntlet:{name:'Cocoa Bear Gauntlet',emoji:'🐻',skill:'meteor',dmgMul:1.06,cdMul:1.05,areaMul:1.15,trait:'2 heavy slams · shockwave only after Mutation'},
   riftCompass:{name:'Rift Lightning Compass',emoji:'🧭',skill:'thunder',dmgMul:1.02,cdMul:0.86,chains:2,trait:'+2 chain targets · -14% cooldown'},
   oathMirror:{name:'Sesame Oath Mirror',emoji:'🪞',skill:'mirror',dmgMul:0.96,cdMul:0.88,areaMul:1.12,reflect:2,trait:'+2 reflected shots · +12% area'},
   jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
@@ -3442,21 +3447,31 @@ class Game extends Phaser.Scene {
     const sub2=this.add.text(w/2,portrait?96:90,'Applies on top of the difficulty you pick',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5);
     this.menu.add([sub,sub2]);
     let y=portrait?112:106; const rh=62,gap=8;
-    ZONE_MODIFIERS.forEach(m=>{ const on=active.includes(m.id),g=this.add.graphics();
-      g.fillStyle(on?0x3a2a26:0x241a30,0.97);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(on?2.5:1.6,on?0xff8f6a:0x4a4055,1);g.strokeRoundedRect(x,y,cw,rh,12);g.fillStyle(on?0xff8f6a:0x4a4055,1);g.fillRoundedRect(x,y,6,rh,4);
-      const em=this.add.text(x+30,y+rh/2,m.emoji,{fontSize:'26px'}).setOrigin(0.5);
-      const nm=this.add.text(x+56,y+13,m.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:on?'#ffe08a':'#e8dcf0'}).setOrigin(0,0);
-      const ds=this.add.text(x+56,y+32,m.desc,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#b7abc9'}).setOrigin(0,0);
-      const rw=this.add.text(x+cw-16,y+18,'🏆 ×'+m.reward.toFixed(2),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd166'}).setOrigin(1,0);
-      const tog=this.add.text(x+cw-16,y+38,on?'✓ ON':'OFF',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#8bd3a0':'#7a7088'}).setOrigin(1,0);
-      this.menu.add([g,em,nm,ds,rw,tog]);
-      this._zone(x,y,cw,rh,()=>{ Save.toggleZoneMod(m.id); Sfx.select&&Sfx.select(); this.buildZoneModifiers(idx); });
-      y+=rh+gap; });
+    ZONE_MODIFIERS.forEach(m=>{ const on=active.includes(m.id),g=this.add.graphics();   // อ่านอย่างเดียว (เปลี่ยนได้ด้วย Reroll เท่านั้น)
+      g.fillStyle(on?0x3a2a26:0x201a28,0.97);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(on?2.5:1.4,on?0xff8f6a:0x38304a,1);g.strokeRoundedRect(x,y,cw,rh,12);g.fillStyle(on?0xff8f6a:0x38304a,1);g.fillRoundedRect(x,y,6,rh,4);
+      const em=this.add.text(x+30,y+rh/2,m.emoji,{fontSize:'26px'}).setOrigin(0.5).setAlpha(on?1:0.4);
+      const nm=this.add.text(x+56,y+13,m.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:on?'#ffe08a':'#8a7f97'}).setOrigin(0,0);
+      const ds=this.add.text(x+56,y+32,m.desc,{fontFamily:'sans-serif',fontSize:'9.5px',color:on?'#b7abc9':'#6a6076'}).setOrigin(0,0);
+      const rw=this.add.text(x+cw-16,y+18,'🏆 ×'+m.reward.toFixed(2),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:on?'#ffd166':'#6a6076'}).setOrigin(1,0);
+      const tog=this.add.text(x+cw-16,y+38,on?'✓ ROLLED':'—',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#8bd3a0':'#6a6076'}).setOrigin(1,0);
+      this.menu.add([g,em,nm,ds,rw,tog]); y+=rh+gap; });
+    // ปุ่ม Reroll (ใช้ currency) + Clear (ฟรี) — สุ่มชุด mod ใหม่ กันเปิดครบทุกอันฟรี (เฟ้อ)
+    const rerollKey='chaos',cur=currencyDef(rerollKey),have=Save.currency(rerollKey),half=(cw-8)/2,canReroll=have>=1;
+    const rg=this.add.graphics();rg.fillStyle(canReroll?0x4a2f2a:0x2a2036,0.97);rg.fillRoundedRect(x,y,half,42,11);rg.lineStyle(1.8,canReroll?0xff8f6a:0x51445f,1);rg.strokeRoundedRect(x,y,half,42,11);
+    const rt=this.add.text(x+half/2,y+15,'🎲 Reroll mods',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:canReroll?'#ffbfa0':'#8d8195'}).setOrigin(0.5);
+    const rc=this.add.text(x+half/2,y+30,cur.emoji+' '+cur.name+'  '+have+'/1',{fontFamily:'sans-serif',fontSize:'8px',color:canReroll?'#ffd9c0':'#8d8195'}).setOrigin(0.5);
+    this.menu.add([rg,rt,rc]);this._zone(x,y,half,42,()=>this.rerollZoneMods(idx));
+    const cg=this.add.graphics();cg.fillStyle(active.length?0x2a2036:0x24303a,0.97);cg.fillRoundedRect(x+half+8,y,half,42,11);cg.lineStyle(1.8,0x51445f,1);cg.strokeRoundedRect(x+half+8,y,half,42,11);
+    const ct=this.add.text(x+half+8+half/2,y+21,active.length?'✖ Clear (safe run)':'No modifiers',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:active.length?'#cbb8e0':'#7a7088'}).setOrigin(0.5);
+    this.menu.add([cg,ct]);if(active.length)this._zone(x+half+8,y,half,42,()=>{Save.data.zoneMods=[];Save.save();Sfx.select&&Sfx.select();this.buildZoneModifiers(idx);});
     const by=h-52,bg2=this.add.graphics();bg2.fillStyle(0x2a2036,0.96);bg2.fillRoundedRect(x,by,cw,38,10);bg2.lineStyle(1.6,0x51445f,1);bg2.strokeRoundedRect(x,by,cw,38,10);
     const bt=this.add.text(w/2,by+19,'‹ Done',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#cbb8e0'}).setOrigin(0.5);
     this.menu.add([bg2,bt]); this._zone(x,by,cw,38,()=>this.openDifficultyChoice(idx));
     this.menu.setVisible(true);
   }
+  rerollZoneMods(idx){ if(Save.currency('chaos')<1){ Sfx.select&&Sfx.select(); this.menuToast&&this.menuToast('Need '+currencyDef('chaos').emoji+' '+currencyDef('chaos').name+' to reroll','#ff9bb5'); return; }
+    Save.spendCurrency('chaos',1); const n=1+Math.floor(Math.random()*3),pool=ZONE_MODIFIERS.map(m=>m.id),picked=[]; while(picked.length<n&&pool.length)picked.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
+    Save.data.zoneMods=picked; Save.save(); Sfx.clear&&Sfx.clear(); this.buildZoneModifiers(idx); }
   buildUpgrade(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple','ui_talent_hall');
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
@@ -5322,7 +5337,7 @@ class Game extends Phaser.Scene {
       const bChainRange=(basic?.mutation==='chainlord'?1.4:1)*(tEvo?1.5:1), bDmgMut=(basic?.mutation==='stormcaller'?1.2:1)*(tEvo?1.2:1);
       const strikes=(aw?3:lvl>=4?2:1)+bSurge, chain=(aw?5:lvl>=5?3:lvl>=3?2:1)+(sw.skill===key?(this.player.weaponChains||0):0)+bArc, dmg=(14+lvl*4.2)*dm*(cf.storm?1.4:1)*(aw?1.15:1)*bDmgMut;
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
-      cand.sort((a,b)=>(b.hp||0)-(a.hp||0));
+      cand.sort((a,b)=>this.dist(a.x,a.y,this.player.x,this.player.y)-this.dist(b.x,b.y,this.player.x,this.player.y));   // เล็งตัวใกล้สุดก่อน (เดิมเล็ง HP สูง = ผ่ามั่ว)
       this.hitCratesInRadius(this.player.x,this.player.y,aw?760:520,dmg);   // ฟ้าผ่าก็ทุบกล่องในระยะ
       for(let i=0;i<Math.min(strikes,cand.length);i++){ let e=cand[i]; this.zap(e.x,e.y); this.damage(e,dmg,e.x,e.y);
         let from=e; const hit=new Set([e]);
@@ -5404,7 +5419,7 @@ class Game extends Phaser.Scene {
       const beams=aw?3:1, len=(760+lvl*30)*(aw?1.25:1), wide=(12+lvl*3)*(aw?1.2:1), dmg=(11+lvl*3.6)*dm*(aw?1.15:1);
       const base=Math.atan2(t.y-this.player.y,t.x-this.player.x);
       for(let k=0;k<beams;k++) this.fireBeam(base+(k-(beams-1)/2)*0.18,len,wide,dmg); Sfx.zap(); }
-    else if(key==='meteor'){ this.castBearDonut(lvl,aw,dm,basic&&basic.evolved); }
+    else if(key==='meteor'){ this.castBearDonut(lvl,aw,dm,basic&&basic.evolved,basic); }
     else if(key==='mirror'){
       // งาดำเป็น aura ถาวร (tickCharSignature) แล้ว → "cast" = พัลส์กระจกกระแทกในเขต (ไม่ยิง projectile)
       if(basic&&this.character==='sesame'){ this.pulseOathField(lvl,aw,dm,basic); return; }
@@ -5450,14 +5465,15 @@ class Game extends Phaser.Scene {
       if(basic.evolved){const heal=Math.max(1,this.player.maxhp*0.02);this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);}
     }
   }
-  castBearDonut(lvl,aw,dm,evo){
-    // EVO (Titan Bear Finale): สแลมเพิ่ม + วงกว้างขึ้น + ทุกลูกทิ้งช็อคWave (ไม่ใช่แค่ลูกสุดท้าย)
-    const sig=this.player.donutImpact?1.28:1,wm=this.signatureWeaponInfo().skill==='meteor'?(this.player.weaponAreaMul||1):1,hits=(aw?6:(2+Math.floor(lvl/2)))+(evo?2:0), r=(68+lvl*8)*(aw?1.22:1)*sig*wm*(evo?1.2:1);
+  castBearDonut(lvl,aw,dm,evo,basic){
+    // โกโก้ = ต่อยประชิด 2 หมัด (base) · คลื่นสะท้อน (shockwave) ต้อง Mutation 'breaker' หรือ Awaken/Evo ถึงจะมี
+    const breaker=basic?.mutation==='breaker', wave=breaker||!!evo||aw;
+    const sig=this.player.donutImpact?1.28:1,wm=this.signatureWeaponInfo().skill==='meteor'?(this.player.weaponAreaMul||1):1,hits=2+(aw?2:0)+(evo?2:0), r=(68+lvl*8)*(aw?1.22:1)*sig*wm*(evo?1.2:1);
     const dmg=(12+lvl*3.5)*dm*(aw?1.1:1)*sig;
     for(let i=0;i<hits;i++)this.time.delayedCall(i*170,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const t=this.nearestEnemy(620),x=t?t.x+Phaser.Math.Between(-20,20):this.player.x+Phaser.Math.Between(-190,190),y=t?t.y+Phaser.Math.Between(-20,20):this.player.y+Phaser.Math.Between(-190,190);
       const donut=this.camWorld(this.add.image(x,y-190,'proj_bear_donut').setDepth(90001).setScale(0.34).setAlpha(0.95));
-      this.tweens.add({targets:donut,y,scale:0.58,duration:210,ease:'Quad.in',onComplete:()=>{donut.destroy();this.bearDonutImpact(x,y,r,dmg,i===hits-1||!!evo,aw);}});
+      this.tweens.add({targets:donut,y,scale:0.58,duration:210,ease:'Quad.in',onComplete:()=>{donut.destroy();this.bearDonutImpact(x,y,r,dmg,(i===hits-1||!!evo)&&wave,aw);}});
     }); Sfx.shoot();
   }
   bearDonutImpact(x,y,r,dmg,final,aw){
