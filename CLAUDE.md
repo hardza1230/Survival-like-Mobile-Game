@@ -57,7 +57,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.1.0 — Equipment v2 Complete)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.2.0 — Mobile Focused Crafting)
+- **v4.2.0 (Focused Crafting):** เปลี่ยน Craft Bench จาก PoE orb grid เป็น flow มือถือ เลือกบรรทัด → เลือก stat เป้าหมาย → ใช้ currency ตามบริบท · แสดง pool/Tier สูงสุด/value range ต่อไอเทม · เตรียม registry สำหรับ base-exclusive mods
 - **v4.1.0 (Equipment v2 Final — Inventory lifecycle):** Reward Inbox 5 ช่องเมื่อ Bag 24 ช่องเต็ม · Claim/Dismantle ราย UID · Auto-dismantle Off/Common/Common+Rare · Favorite/Locked/Equipped/Epic/Legend ป้องกันการลบอัตโนมัติ · schema v3 migration
 - **v4.0.0 (Equipment v2 Phase 4 — Instance crafting + progression):** Craft Bench เลือกชิ้นด้วย UID และป้องกันชิ้น locked · drop/gacha/forge/Bazaar รองรับฐานซ้ำเต็มรูปแบบ · Item Level 1–100 แบ่ง 5 Chapter พร้อม affix tier gate และ power cap · อาวุธ 22 ชิ้นพร้อม vector icon ครบชุด
 - **v3.9.0 (Equipment v2 Phase 3 — Compare):** เปรียบเทียบ Equipped/Selected แบบซ้าย–ขวา · `gearInstanceStats` normalize ผล base+enhance+affix เป็น 12 ค่าสถานะที่ higher-is-better · ค่าดีขึ้นเขียว/ลดลงแดงพร้อม ▲▼ · preview จำนวน Set ก่อน→หลัง · Quick Equip 1 แตะ · **ถัดไป Phase 4: Craft Bench เลือก instance จากคลัง + drop/gacha รองรับของซ้ำเต็มรูปแบบ**
