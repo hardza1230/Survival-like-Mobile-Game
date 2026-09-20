@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.4.0';
+const GAME_VERSION = '4.5.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.5.0', date:'2026-09-20', title:'Enhancement risk & inline gear actions', items:[
+    'Enhancement now goes to +10: +4 and up can break (drop a level, never below +3), and +8–+10 can destroy the item',
+    'Equipment screen adds a Craft-this shortcut (jump straight to the Craft Bench) and a Sell-for-Sugar action',
+    'Enhance shows success / break / destroy with clear feedback',
+  ]},
   { v:'4.4.0', date:'2026-09-20', title:'Item level scaling, Zone Level & navigation', items:[
     'Item Level now shifts the affix Tier roll in 10-level bands — higher iLv rolls better Tiers more often',
     'Added Zone Level (stage progression × difficulty, 1–18) as a single difficulty scalar for future systems; shown on the stage HUD',
@@ -1278,7 +1283,12 @@ const QUESTS = [
 
 /* ---- GEAR: ของสวมใส่ 2 ช่อง (weapon/charm) ซื้อด้วย Sugar แล้วสวมใส่ ---- */
 // ของสวมใส่ · ตีบวกได้ (lv=ระดับตีบวก 0..enhMax) เพิ่มพลังต่อระดับ
-const GEAR_ENH_MAX = 5;
+const GEAR_ENH_MAX = 10;
+// โอกาสตีบวก lv->lv+1 · +0..+3 ปลอดภัย · +4 ขึ้นไปมีโอกาส "แตก" (ขั้นลดลง 1, ไม่ต่ำกว่า +3) · +8..+10 มีโอกาส "ถูกทำลาย" (ไอเทมหาย)
+function enhanceOdds(lv){ if(lv<4)return{success:1,brk:0,destroy:0};
+  const t={4:[0.72,0.28,0],5:[0.64,0.36,0],6:[0.56,0.44,0],7:[0.48,0.52,0],8:[0.42,0.43,0.15],9:[0.34,0.46,0.20]}[lv]||[0.34,0.46,0.20];
+  return {success:t[0],brk:t[1],destroy:t[2]}; }
+function gearSellSugar(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)*6+Math.max(1,item.itemLevel||1)*2+Math.max(0,item.enhanceLv||0)*10;}
 const GEAR_INBOX_CAP = 5;
 const GEAR_DISMANTLE_BASE = {start:0,common:1,rare:3,epic:7,legend:15};
 function gearDismantleValue(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)+Math.floor(Math.max(1,item.itemLevel||1)/20)+Math.max(0,item.enhanceLv||0)*2;}
@@ -1698,8 +1708,16 @@ const Save = {
   currency(k){ return (this.data.currency&&this.data.currency[k])||0; },
   addCurrency(k,n){ if(!this.data.currency)this.data.currency={}; this.data.currency[k]=(this.data.currency[k]||0)+n; this.save(); },
   spendCurrency(k,n){ if((this.currency(k))>=n){ this.data.currency[k]-=n; this.save(); return true; } return false; },
-  enhance(ref){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,next=this.gearLv(ref)+1;
-    if(item)item.enhanceLv=next; this.data.gearLv[id]=next; this.save(); },
+  enhance(ref){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,lv=this.gearLv(ref);
+    const o=enhanceOdds(lv),r=Math.random(); let result;
+    if(r<o.destroy)result='destroy'; else if(r<o.destroy+o.brk)result='break'; else result='success';
+    if(result==='success'){ const n=lv+1; if(item)item.enhanceLv=n; this.data.gearLv[id]=n; this.save(); return {result,lv:n}; }
+    if(result==='break'){ const n=Math.max(3,lv-1); if(item)item.enhanceLv=n; this.data.gearLv[id]=n; this.save(); return {result,lv:n}; }
+    // destroy: ปลดออกจากช่องถ้าใส่อยู่ แล้วลบไอเทมทิ้ง
+    if(item){ for(const s in this.data.equippedGear){ if(this.data.equippedGear[s]===item.uid){ delete this.data.equippedGear[s]; if(this.data.gear)delete this.data.gear[s]; } } this.data.gearItems=(this.data.gearItems||[]).filter(x=>x&&x.uid!==item.uid); }
+    this.data.gearLv[id]=0; this.save(); return {result:'destroy',lv:0}; },
+  sellGearInstance(uid){ const item=this.gearItem(uid); if(!item||item.locked||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return 0;
+    const sugar=gearSellSugar(item); this.data.gearItems=(this.data.gearItems||[]).filter(x=>x&&x.uid!==uid); this.data.sugar=(this.data.sugar||0)+sugar; this.save(); return sugar; },
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลWaitบปัจจุบัน (0..TAL_MAX)
   talLvl(k){ return this.data.upgrades[k]||0; },
   talTotal(k){ return (this.data.rank||0)*TAL_MAX + this.talLvl(k); },   // ผลรวมที่ใช้จริง (ยศ+Waitบนี้)
@@ -3523,10 +3541,20 @@ class Game extends Phaser.Scene {
       drawAction(0,selected.favorite?'★ Fav':'☆ Fav',selected.favorite?0xb88925:0x4a4059,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
       drawAction(1,selected.locked?'🔒 Locked':'🔓 Lock',selected.locked?0x85506f:0x4a4059,()=>{Save.toggleGearLock(selected.uid);this.buildMenuScreen();});
       if(!eq)drawAction(2,'Quick Equip',0x3f9160,()=>{Save.equipGearInstance(sel,selected.uid);Sfx.select();this.buildMenuScreen();});
-      else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhCost(lv),afford=(Save.data.sugar||0)>=cost;
-        drawAction(2,can?('Enhance +'+(lv+1)):'Equipped ✓',can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{if(Save.spend(cost)){Save.enhance(selected.uid);Sfx.clear();}this.buildMenuScreen();}:null);}
+      else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhCost(lv),afford=(Save.data.sugar||0)>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
+        drawAction(2,can?('Enhance +'+(lv+1)+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.select();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1200);return;} if(Save.spend(cost)){ const res=Save.enhance(selected.uid); Sfx.clear();
+            if(res.result==='success'){this.screenFlash(0xffd166,.4,260);this.showBanner('⚒️ Enhanced!','Now +'+res.lv,1100);}
+            else if(res.result==='break'){this.screenFlash(0xff8a5a,.42,320);this.showBanner('💥 Enhancement broke','Dropped to +'+res.lv,1500);}
+            else {this.gearSelectedUid=null;this.screenFlash(0xff4a5a,.6,440);this.showBanner('💀 Item destroyed','It shattered at high enhancement',1800);} }
+          this.buildMenuScreen(); }:null);}
       const canDis=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',gain=gearDismantleValue(selected);
       drawAction(3,canDis?('Dismantle\n🔩+'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.clear();this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);
+      // แถวสอง: ไปคราฟทันที + ขายเป็น Sugar (ไม่ต้องเข้าๆออกๆ)
+      y+=bh+bgap; const bw2=(w-28-bgap)/2, canCraft=selected.grade!=='start'&&!selected.locked;
+      {const g=this.add.graphics();g.fillStyle(canCraft?0x5a3f8c:0x3a3550,1);g.fillRoundedRect(14,y,bw2,bh,9);const t=this.add.text(14+bw2/2,y+bh/2,'🧪 Craft this',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:canCraft?'#e9dcff':'#8d8195'}).setOrigin(.5);this.menu.add([g,t]);if(canCraft)this._zone(14,y,bw2,bh,()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();});}
+      const canSell=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',sv=gearSellSugar(selected);
+      {const bx=14+bw2+bgap,g=this.add.graphics();g.fillStyle(canSell?0x8d6a3e:0x3a3550,1);g.fillRoundedRect(bx,y,bw2,bh,9);const t=this.add.text(bx+bw2/2,y+bh/2,canSell?('💰 Sell 🍬+'+sv):'Protected',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:canSell?'#ffe6b0':'#8d8195'}).setOrigin(.5);this.menu.add([g,t]);if(canSell)this._zone(bx,y,bw2,bh,()=>{const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.clear();this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}});}
+      y+=bh;
     }
     this.menu.setVisible(true);
   }
