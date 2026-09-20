@@ -34,6 +34,24 @@ Crown Icing promotes a full two-line Magic item to Rare and unlocks four lines. 
 
 Internal keys stay unchanged so existing saves remain compatible. The price curve separates common experimentation from build-finishing resources: Spark Sugar, Twist Cream and Plain Dough should remain plentiful; Crown Icing and Wild Jam form the mid-game progression layer; Wish Candy and Crystal Glaze are aspirational Chapter 4–5 resources. Fading Gumdrop should be uncommon despite its lower shop price because targeted removal is strategically powerful.
 
+### Successful-drop weights
+
+The existing 72% chance for a currency drop remains unchanged. When a currency drop succeeds, its reward pool uses these weights:
+
+| Reward tier | Currency weights |
+|---|---|
+| Common | Spark Sugar 45%, Plain Dough 30%, Twist Cream 25% |
+| Rare | Twist Cream 35%, Spark Sugar 30%, Crown Icing 15%, Plain Dough 15%, Fading Gumdrop 5% |
+| Epic | Twist Cream 25%, Crown Icing 25%, Wild Jam 25%, Fading Gumdrop 10%, Wish Candy 8%, Crystal Glaze 7% |
+| Legendary | Wild Jam 25%, Wish Candy 25%, Crystal Glaze 25%, Crown Icing 15%, Fading Gumdrop 10% |
+
+Fading Gumdrop no longer appears in Common rewards. Wish Candy and Crystal Glaze begin at Epic, while Legendary rewards focus on build-finishing resources.
+
+### Icon assets
+
+The production icon set is stored in `assets/ui/currency/` as eight transparent 512×512 PNG files. Each icon has a different silhouette in addition to its color so it remains identifiable when displayed at mobile UI size.
+
+
 ## Item-specific pools
 
 Normal affixes declare compatible equipment slots. The Craft screen lists only stats that can occur on the selected item and excludes duplicate stats already present on other lines. Item Level and base grade jointly determine the best reachable tier.
@@ -48,4 +66,4 @@ Normal affixes declare compatible equipment slots. The Craft screen lists only s
 - its own tier bands, formatter and combat application;
 - `exclusive: true` for distinct UI treatment.
 
-Normal and exclusive pools merge through `craftAffixPoolForItem`. No special mods are active in v4.2.1, so adding one later does not require rebuilding the Craft screen or save schema.
+Normal and exclusive pools merge through `craftAffixPoolForItem`. No special mods are active in v4.2.2, so adding one later does not require rebuilding the Craft screen or save schema.
