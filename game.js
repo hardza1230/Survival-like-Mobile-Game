@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.14.0';
+const GAME_VERSION = '4.15.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.15.0', date:'2026-09-20', title:'Loot boxes, currency drops & Sesame beam tuning', items:[
+    'Field items now drop as sealed boxes that you collect during the run and open at the stage-end summary for a reveal',
+    'Currency can now drop from ordinary monsters — pickups show a small light beam; the stage summary lists every currency you gained',
+    'Quit Stage now runs a proper stage summary and fully resets the stage (fixes the stage not resetting when picking a new character)',
+    'Minibosses no longer play a camera cutscene',
+    'Sesame Mirror Beam tuned: smaller beam, starts as one, prism-violet colour, new Mirror Mark that shatters for burst damage, and a new Prism Barrage ultimate (no more ring)',
+  ]},
   { v:'4.14.0', date:'2026-09-20', title:'Sesame reworked into a Mirror Beam sniper', items:[
     'Sesame now attacks with a Mirror Beam that auto-targets bosses/minibosses and hits them at FULL damage — fixing how helpless it was against bosses',
     'Standing still charges Focus, making the beam stronger and wider; the bullet Guard still drains and recharges while moving, so in-and-out play is rewarded',
@@ -1138,7 +1145,7 @@ const CHARACTER_UNIQUES = {
   voidPull:{name:'Dark Chocolate Void',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'Opens a black hole that pulls enemies in for continuous damage, then implodes'},
   flickerStrike:{name:'Bear Flicker',emoji:'⚡',cd:4.5,color:0x9f6bff,desc:'Warp-strikes enemies rapidly with a short cooldown, invulnerable during the combo'},
   pathRecall:{name:'Taro Chain Bolt',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'Fires lightning that chains from enemy to enemy, then refunds Dash and boosts speed'},
-  oathMirror:{name:'Oath Dome',emoji:'🪞',cd:12,color:0xd8d9e2,desc:'Raises a protective mirror dome, cuts damage, clears all enemy bullets inside, pulses repeatedly, then ends with a glass shatter'},
+  oathMirror:{name:'Prism Barrage',emoji:'🔮',cd:12,color:0xc86bff,desc:'Channels the mirror, then unleashes sweeping prism beams with a heavy central beam that shreds bosses'},
   jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'Overdrives the heart-seed gun, firing lock-on barrages and adding barrels as it levels'},
 };
 const UNIQUE_MAX_LV=4;
@@ -1149,7 +1156,7 @@ const UNIQUE_TIERS={
   voidPull:{2:'Wider hole that pulls harder',3:'Lasts longer + stronger DoT',4:'Singularity — a giant hole pulls the whole screen and ends in a violent blast'},
   flickerStrike:{2:'More warp-strikes + higher damage',3:'Wider strike arc + longer reach',4:'Blur Rampage — warp-strike the whole screen, healing each hit'},
   pathRecall:{2:'More chains and jump range',3:'Bolt splits into two, spreading wider',4:'Storm Arc — chains across the field with max damage'},
-  oathMirror:{2:'Wider dome and stronger pulses',3:'Lasts longer and pulses faster',4:'Perfect Oath — heals HP after the shatter with max pulse power'},
+  oathMirror:{2:'More beams and volleys',3:'Longer, harder-hitting beams',4:'Perfect Oath — heals HP after the barrage'},
   jamOverdrive:{2:'More barrels and salvos',3:'Fires faster and pierces one enemy',4:'Berry Barrage — three barrels pierce the crowd at full power'},
 };
 
@@ -2495,26 +2502,28 @@ class Game extends Phaser.Scene {
       this.vfxHitRing(cx,cy,0x8b5cf0,true);this.burst(cx,cy,0x8b5cf0);this.screenShake(160,0.006);Sfx.boom();
     });
   }
-  // 🪞 Sesame Unique — Oath Dome: กางโดมกระจกคำสัตย์ ลดดาเมจหนัก + ลบกระสุนศัตรูทั้งหมดในเขต + พัลส์กระแทกซ้ำ ๆ แล้วปิดท้ายด้วยกระจกแตก (None projectile)
+  // 🔮 Sesame Unique — Prism Barrage: หุบพลังกระจกแล้วระดม "ลำแสงพริซึม" กวาดเป็นพัดใส่ศัตรู + ลำกลางเจาะบอสหนัก (สายบีม ไม่ใช่วงแหวนออร่าแล้ว)
   castOathWard(dm,ul){
-    ul=ul||1;const upgraded=!!this.player.mirrorWard;let cx=this.player.x,cy=this.player.y;
-    const r=155+ul*15+(upgraded?24:0),duration=3.6+ul*0.55+(upgraded?0.8:0),mirrorCount=4+(ul>=3?1:0)+(upgraded?1:0),up=1+(ul-1)*0.22;
-    const ring=this.camWorld(this.add.image(cx,cy,'vfx_magic_circle').setTint(0xf4e7bd).setDepth(4).setDisplaySize(r*2,r*2).setAlpha(0.5));
-    this.tweens.add({targets:ring,rotation:Math.PI*0.45,alpha:{from:0.26,to:0.46},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
-    const dome=this.camWorld(this.add.circle(cx,cy,r,0xf4e7bd,0.06).setDepth(3).setStrokeStyle(2.5,0xffe9b0,0.5));
-    const mirrors=[];for(let i=0;i<mirrorCount;i++){const a=-Math.PI/2+i*Math.PI*2/mirrorCount,m=this.camWorld(this.add.image(cx+Math.cos(a)*r*0.82,cy+Math.sin(a)*r*0.82,'ic_mirror').setDepth(6).setScale(0.24).setAlpha(0.94));m._a=a;mirrors.push(m);}
-    let blocked=0,pulseHits=0,pulseN=0;this.player.wardGuardT=Math.max(this.player.wardGuardT||0,duration);this.player.iframe=Math.max(this.player.iframe,0.5+ul*0.12);
-    const pulse=this.time.addEvent({delay:120,loop:true,callback:()=>{if(!ring.active)return;cx=this.player.x;cy=this.player.y;ring.setPosition(cx,cy);dome.setPosition(cx,cy);mirrors.forEach((m,i)=>{const a=m._a+this.elapsed*(0.75+ul*0.08);m.setPosition(cx+Math.cos(a)*r*0.82,cy+Math.sin(a)*r*0.82).setRotation(a+Math.PI/2);});
-      // ลบกระสุนศัตรูทุกนัดที่เข้าโดม (ไม่สร้าง projectile สวนกลับ)
-      this.foeBullets.children.iterate(f=>{if(!f||!f.active||this.dist(f.x,f.y,cx,cy)>r)return;this.vfxHitRing(f.x,f.y,0xf4e7bd,false);this.killFoe(f);blocked++;});
-      pulseN++;if(pulseN%5===0){let hit=0;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r){this.damage(e,(10+ul*4.5)*dm*up*((e.isBoss||e.isMini)?0.40:1),e.x,e.y);e.knock=Math.max(e.knock||0,0.10);hit++;}});pulseHits+=hit;this.vfxHitRing(cx,cy,0xf4e7bd,false);if(hit)this.burst(cx,cy,0xf4e7bd);}
-    }});
-    this.showBanner('🪞 Oath Dome Lv'+ul,'Dome up '+duration.toFixed(1)+'s · big damage cut · clears enemy bullets inside',1000);Sfx.zap();
-    this.time.delayedCall(duration*1000,()=>{pulse.remove(false);this.tweens.killTweensOf(ring);if(ring.active)ring.destroy();if(dome.active)dome.destroy();mirrors.forEach(m=>{this.tweens.killTweensOf(m);if(m.active)m.destroy();});this.player.wardGuardT=0;
-      if(this.state!=='play'&&this.state!=='levelup')return;const finR=r*(1.05+Math.min(pulseHits,30)*0.006),finDmg=(34+blocked*1.4+Math.min(pulseHits,30)*1.0)*dm*up;
-      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<finR){this.damage(e,finDmg*((e.isBoss||e.isMini)?0.35:1),e.x,e.y);if(!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-cy,e.x-cx);e.setVelocity(Math.cos(a)*240,Math.sin(a)*240);e.knock=0.18;}}});if(ul>=4)this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.10);
-      this.vfxHitRing(cx,cy,0xf4e7bd,true);this.screenShake(150,0.005);this.showBanner('🪞 Mirror Shatter','Blocked '+blocked+' · pulse hit '+pulseHits+' · blast '+Math.round(finDmg),900);Sfx.boom();
-    });
+    ul=ul||1; const upgraded=!!this.player.mirrorWard, PRISM=0xc86bff;
+    // เล็งบอส/มินิก่อน ไม่งั้นตัวใกล้สุด
+    let t=null,td=1e9; this.enemies.children.iterate(e=>{ if(e&&e.active&&(e.isBoss||e.isMini)){const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<td){td=d;t=e;}} });
+    if(!t)t=this.nearestEnemy(1400);
+    const baseAng=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):(this._sesBeamAng||0);
+    const volleys=4+ul+(upgraded?2:0), fan=5+ul+(upgraded?2:0), len=520+ul*45, wide=16+ul*2, up=1+(ul-1)*0.25;
+    const beamDmg=(28+ul*10)*dm*up, arc=1.15;   // กวาด ~66°
+    this.player.iframe=Math.max(this.player.iframe,0.4+volleys*0.09);   // อมตะระหว่างระดม
+    // แสงหุบเข้าที่ตัวก่อนยิง (ทางภาพ)
+    const chg=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_glow').setTint(PRISM).setDepth(this.player.y+2).setScale(1.1).setAlpha(0.85));
+    this.tweens.add({targets:chg,scale:0.2,alpha:0,duration:220,onComplete:()=>chg.destroy()});
+    this.showBanner('🔮 Prism Barrage Lv'+ul,'Sweeping mirror beams · '+volleys+' volleys',1000); Sfx.zap();
+    for(let v=0;v<volleys;v++){ this.time.delayedCall(v*140,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+      const tt=(t&&t.active)?t:this.nearestEnemy(1400), ca=tt?Math.atan2(tt.y-this.player.y,tt.x-this.player.x):baseAng;
+      for(let k=0;k<fan;k++){ const a=ca+(k-(fan-1)/2)*(arc/fan); this.fireBeam(a,len,wide,beamDmg,{tint:PRISM,onHit:(e)=>{e.knock=Math.max(e.knock||0,0.08);}}); }
+      this.fireBeam(ca,len,wide*1.7,beamDmg*1.5,{tint:0xffffff});   // ลำกลางสีขาว = เจาะบอสหนัก
+      this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<len*0.6)this.killFoe(f); });
+      this.screenShake(90,0.004); Sfx.zap();
+    }); }
+    if(ul>=4)this.time.delayedCall(volleys*140+80,()=>{ if(this.state==='play')this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.10); });
   }
 
   flashBtn(b){ if(b)this.tweens.add({targets:b,scale:{from:1.25,to:1},duration:220,ease:'Back.out'}); }
@@ -2762,10 +2771,9 @@ class Game extends Phaser.Scene {
     else if(this._bossZoom!==want){this._bossZoom=want;this.applyMainZoom();}
   }
   miniIntro(b){
-    if(!b||!b.active||!this.cameras||!this.cameras.main)return;const cam=this.cameras.main,st=STAGES[this.stageIndex];
-    b.atkCd=Math.max(b.atkCd||0,1.9);this.screenFlash(st&&st.tint?st.tint:0xff4d8f,0.18,420);this.screenShake(300,0.011);
-    cam.stopFollow();cam.pan(b.x,b.y,620,'Sine.easeInOut');
-    this.time.delayedCall(1250,()=>{if(this.cameras&&this.cameras.main)this.cameras.main.startFollow(this.player,false,0.2,0.2);});
+    // เอา cutscene แพนกล้องออก (ตาม feedback) — เหลือแค่ flash/shake สั้น ๆ กล้องยังตามผู้เล่น สู้ต่อได้ทันที
+    if(!b||!b.active)return;const st=STAGES[this.stageIndex];
+    b.atkCd=Math.max(b.atkCd||0,1.2);this.screenFlash(st&&st.tint?st.tint:0xff4d8f,0.14,300);this.screenShake(200,0.008);
   }
   onResize(gs){
     if(!gs)return; this.W=gs.width/RENDER_DPR; this.H=gs.height/RENDER_DPR; this.computeViewZoom(); const pad=this._pad; this._barW=this.W-2*pad;
@@ -4097,11 +4105,25 @@ class Game extends Phaser.Scene {
     this._pauseBtns.push({x:left-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.togglePause()});
     const exitY=portrait?by+bh+gap:by;
     this.uiPillBtn(this.pauseUI,right,exitY,bw,bh,COLORS.grape,'🏠','Quit stage',null);
-    this._pauseBtns.push({x:right-bw/2,y:exitY-bh/2,w:bw,h:bh,fn:()=>this.exitStage()});
+    this._pauseBtns.push({x:right-bw/2,y:exitY-bh/2,w:bw,h:bh,fn:()=>this.quitStage()});
     this.pauseUI.setVisible(true);
   }
+  // กด Quit = สรุปด่านทันที (เปิดกล่อง + โชว์ currency) แล้วรีเซ็ตด่านให้สะอาด (แก้บั๊กด่านไม่ reset ตอนออกกลางคัน)
+  quitStage(){
+    this.physics.resume(); this.time.paused=false;
+    if(this.pauseUI)this.pauseUI.setVisible(false); if(this.pauseTxt)this.pauseTxt.setText('⏸');
+    this._bossZoom=1; this.applyMainZoom();
+    this.boss=null; this.mode='clear'; if(this.bossUI)this.bossUI.forEach(o=>o.setVisible(false));
+    this.enemies.children.iterate(e=>{ if(e&&e.active){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
+    this.clearFoes(); this.clearBossObjects(); this.clearWaveObjective(); this.waveAlive=0; if(this.pipG)this.pipG.clear();
+    this._openedBoxes=this.openRunBoxes();   // เปิดกล่องที่สะสมมา (แจกจริง)
+    Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor((this.kills||0)*0.4));
+    if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);
+    this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
+    this.showStageSummary(false);
+  }
   exitStage(){
-    this.physics.resume(); this.time.paused=false; this.clearCharSignature();   // ปลดหยุดฟิสิกส์+นาฬิกาก่อนออก (ไม่งั้นด่านหน้าค้าง)
+    this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
     if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸');
@@ -4212,6 +4234,7 @@ class Game extends Phaser.Scene {
   }
   startStage(i){
     const st=STAGES[i]; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.stageIndex=i; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
+    this._runBoxes=[]; this._runCurrency={};   // สะสมกล่องไอเทม (เปิดตอนจบด่าน) + currency ที่เก็บได้ในด่านนี้ (โชว์ในสรุป)
     this._bossZoom=1;this.applyMainZoom();
     this._waveObjectiveBag=i<=4?Phaser.Utils.Array.Shuffle(['survive','hunt','purge','capture'].slice()):[];
     Sfx.playStageBgm(i+1);
@@ -4799,6 +4822,7 @@ class Game extends Phaser.Scene {
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.waveAlive=0; this.pipG.clear();
     this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.35); // heal reward
+    this._openedBoxes=this.openRunBoxes();   // เปิดกล่องไอเทมที่สะสมทั้งด่าน (แจกจริง · duplicate → sugarStage ก่อนฝาก)
     Sfx.clear();
     const last=this.stageIndex>=STAGES.length-1,guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
     this._firstMastery=!Save.data.stageMastery[this.stageIndex];if(this._firstMastery){Save.data.stageMastery[this.stageIndex]=true;this.sugarStage+=40+this.stageIndex*25;Save.save();}
@@ -4820,7 +4844,7 @@ class Game extends Phaser.Scene {
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.9).setOrigin(0,0);
     const reward=this._stageReward||{emoji:'🍬',label:'Stage Rewards'};
     const em=this.add.text(w/2,h*0.2,'🎁 '+reward.emoji,{fontSize:'54px'}).setOrigin(0.5);
-    const t=this.add.text(w/2,h*0.31,'Cleared '+st.emoji+' '+st.name+'!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166',align:'center',wordWrap:{width:w*0.85}}).setOrigin(0.5);
+    const t=this.add.text(w/2,h*0.31,(this._quitSummary?'Left ':'Cleared ')+st.emoji+' '+st.name+(this._quitSummary?'':'!'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166',align:'center',wordWrap:{width:w*0.85}}).setOrigin(0.5);
     const mm=Math.floor(this.elapsed/60), ss=Math.floor(this.elapsed%60);
     const cp=Save.cp(this.character), ch=CHARACTERS[this.character];
     const rows=[
@@ -4828,7 +4852,7 @@ class Game extends Phaser.Scene {
       ['☠ Minions Killed', String(this.stageKills||0)],
       ['💢 Boss Rage', (reward.rage||this._rewardRage||this.bossRageInfo()).emoji+' '+(reward.rage||this._rewardRage||this.bossRageInfo()).name+' · x'+(reward.rage||this._rewardRage||this.bossRageInfo()).reward.toFixed(2)],
       ['🍬 Sugar This Stage', '+'+this.sugarStage],
-      ['🎁 Box Reward', reward.label],
+      ['📦 Boxes Opened', String((this._openedBoxes||[]).length)],
       ['⚡ Power', (this._powerBefore||Save.power(this.character))+' → '+(this._powerAfter||Save.power(this.character))+(this._firstMastery?' · Mastery!':'')],
       [ch.emoji+' Character EXP', '+'+(this._lastExpGain||0)],
       ['⚔️ Build', Object.keys(this.skills||{}).length+' weapons · '+Object.keys(this.passives||{}).length+' passives'+(this._dailyBonus?' · Daily +🍬'+this._dailyBonus:'')],
@@ -4838,6 +4862,13 @@ class Game extends Phaser.Scene {
     rows.forEach(r=>{ const l=this.add.text(w/2-120,y,r[0],{fontFamily:'sans-serif',fontSize:rowFont+'px',color:'#c7bdd6'}).setOrigin(0,0.5);
       const v=this.add.text(w/2+120,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:'#ffffff'}).setOrigin(1,0.5);
       box.push(l,v); y+=step; });
+    // 🧪 Currency ที่ได้ในด่านนี้ (แถบไอคอนแบบหน้า Craft) + รายการกล่องที่เปิด
+    const cur=this._runCurrency||{}, curKeys=Object.keys(cur).filter(k=>cur[k]>0);
+    if(curKeys.length){ const cl=this.add.text(w/2,y,'🧪 Currency Gained',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:'#9fe8ff'}).setOrigin(0.5); box.push(cl); y+=step*0.9;
+      const per=Math.min(6,curKeys.length), cw=Math.min(52,(w*0.86)/per); let cx0=w/2-(Math.min(per,curKeys.length)*cw)/2+cw/2;
+      curKeys.slice(0,12).forEach((k,i)=>{ const col=i%per, row2=Math.floor(i/per), ex=w/2-(per*cw)/2+cw/2+col*cw, ey=y+row2*(step*1.1);
+        const d=currencyDef(k), ic=this.add.text(ex,ey,d.emoji,{fontSize:Math.min(20,rowFont+8)+'px'}).setOrigin(0.5), n=this.add.text(ex,ey+13,'x'+cur[k],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5); box.push(ic,n); });
+      y+=step*1.1*Math.ceil(Math.min(curKeys.length,12)/per)+4; }
     this._summaryBtns=[]; this._summaryBonus=this.sugarStage;   // เก็บ Sugar ด่านนี้ไว้ทำ x2 ด้วยโฆษณา
     // 📺 รับ Sugar x2 (ดูโฆษณา · timesเดียว)
     if(this._summaryBonus>0&&!this._summaryDoubled){ const dw=Math.min(300,w-52),dh=44,dy=h*0.72,dg=this.add.graphics();
@@ -4855,8 +4886,8 @@ class Game extends Phaser.Scene {
   continueFromSummary(){
     if(this.state!=='summary')return;
     this.over.setVisible(false); this.physics.resume(); this.state='play';
-    if(this._summaryLast){ this.victory(); return; }
-    this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='stage';this.buildMenuScreen();
+    if(this._summaryLast&&!this._quitSummary){ this._quitSummary=false; this.victory(); return; }
+    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='stage';this.buildMenuScreen();
   }
   showBanner(title,sub,ms){
     if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังNone HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash
@@ -5539,21 +5570,27 @@ class Game extends Phaser.Scene {
   // แก้ปัญหางาดำเอาบอสไม่อยู่: field เดิม tick เบา → beam ลงดาเมจก้อนใหญ่ single-line เจาะทะลุ โดนบอสเต็ม
   castMirrorBeam(lvl,aw,dm,basic){
     const evo=basic&&basic.evolved;
-    // เล็งบอส/มินิก่อน (นี่คือจุดขายใหม่) ไม่งั้นเล็งตัวใกล้สุด
+    // เล็งบอส/มินิก่อน (จุดขาย: งาดำสู้บอสได้) ไม่งั้นเล็งตัวใกล้สุด
     let t=null,td=1e9; this.enemies.children.iterate(e=>{ if(!e||!e.active||!(e.isBoss||e.isMini))return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<td){td=d;t=e;} });
     if(!t)t=this.nearestEnemy(1300);
     const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._sesBeamAng||0));
     this._sesBeamAng=ang;
-    const focus=this._sesFocus||0, focusMul=1+focus*0.9;   // ยืนนิ่งชาร์จ Focus → ลำแสงแรงขึ้นถึง +90%
+    const focus=this._sesFocus||0, focusMul=1+focus*0.9, over=focus>0.85;   // ยืนนิ่งชาร์จ Focus → แรงขึ้น + overcharge เมื่อเกือบเต็ม
     const bRad=1+(basic?.ranks.radius||0)*0.12, bPane=basic?.ranks.pane||0, bPow=basic?.ranks.power||0;
     const len=(360+lvl*26)*bRad*(aw?1.2:1)*(evo?1.15:1);
-    const wide=(18+lvl*1.6+bPane*3+focus*10)*(basic?.mutation==='fortress'?1.3:1);
+    const wide=(10+lvl*0.9+bPane*2+focus*5)*(basic?.mutation==='fortress'?1.25:1);   // ลำแสงเล็กลง (เดิม 18+lvl*1.6)
     const dmg=(20+lvl*6)*dm*(1+bPow*0.12)*focusMul*(evo?1.3:1)*(aw?1.25:1)*(basic?.mutation==='retaliate'?1.25:1);
-    const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0), spread=0.13;   // Lv1 ลำเดียว · pane/awaken/evo/unique = เพิ่มลำ (พัดเล็กน้อย)
-    for(let k=0;k<beams;k++){ const a=ang+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,k===0?dmg:dmg*0.7); }   // ลำหลัก (k0) เล็งตรงเป้า ดาเมจเต็ม
+    const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0), spread=0.12;   // Lv1 ลำเดียว · pane/awaken/evo/unique = เพิ่มลำ
+    const PRISM=0xc86bff;   // สีบีมงาดำ = ม่วงพริซึม (แยกจากสกิลอื่น)
+    // 🔮 ลูกเล่น Mirror Mark: บีมโดน = สะสมรอยกระจก ครบ 5 → แตกระเบิดดาเมจก้อน (โดยเฉพาะบอส)
+    const markHit=(e)=>{ const need=5; e._sesMark=(e._sesMark||0)+(over?2:1); e._sesMarkT=2.2;
+      if(e._sesMark>=need){ e._sesMark=0; const burst=dmg*((e.isBoss||e.isMini)?1.8:2.6); this.damage(e,burst,e.x,e.y);
+        if(this.anims.exists('fx_slash'))this.spawnFxAnim('fx_slash',e.x,e.y,{scale:1.1,depth:8,anchor:'center',tint:PRISM});
+        else this.vfxHitRing(e.x,e.y,PRISM,true); this.popDmg(Math.round(burst),e.x,e.y,true); Sfx.boom(); } };
+    for(let k=0;k<beams;k++){ const a=ang+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,k===0?dmg:dmg*0.7,{tint:PRISM,onHit:markHit}); }
     // คงบทบาทป้องกัน: ลบกระสุนศัตรูรอบตัวเล็กน้อย (ward)
-    this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<70){ this.vfxHitRing(f.x,f.y,0xf4e7bd,false); this.killFoe(f); } });
-    this.vfxHitRing(this.player.x,this.player.y,focus>0.6?0xffe08a:0xf4e7bd,true); Sfx.zap();
+    this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<70){ this.vfxHitRing(f.x,f.y,PRISM,false); this.killFoe(f); } });
+    this.vfxHitRing(this.player.x,this.player.y,over?0xffe08a:PRISM,true); Sfx.zap();
   }
   // ❄️ Mint active cast: สะบัดเกล็ดน้ำแข็งกระเด็นออกWaitบทิศ (เจาะ+แช่) · คู่กับเกล็ดโคจรใน tickCharSignature
   // ❄️ Frost Lance (Shatter Lance) — ชาร์จสั้น ๆ พุ่งหอกเจาะทะลุ แล้ว "shatters into ice shards" กระจายที่ปลายทาง (แบบลูกซอง)
@@ -5714,6 +5751,7 @@ class Game extends Phaser.Scene {
     if(o.rotation!=null)s.setRotation(o.rotation);
     s.setScale(o.scaleX!=null?o.scaleX:(o.scale!=null?o.scale:1), o.scaleY!=null?o.scaleY:(o.scale!=null?o.scale:1));
     if(o.alpha!=null)s.setAlpha(o.alpha);
+    if(o.tint!=null)s.setTint(o.tint);
     s.play(key); s.once('animationcomplete',()=>s.destroy()); return s;
   }
   // ออร่าถาวร: สร้าง sprite วนลูปติดตัว (ครั้งเดียว)
@@ -5779,18 +5817,19 @@ class Game extends Phaser.Scene {
         e.bloomStacks=(e.bloomStacks||0)+1;e.bloomUntil=2.2;const need=e.isBoss||e.isMini?5:3;if(e.bloomStacks>=need){e.bloomStacks=0;this.sakuraBloom(e,lvl,aw);}});
       this.hitCratesInRadius(this.player.x,this.player.y,r,touch);}
   }
-  fireBeam(ang,len,wide,dmg){
+  fireBeam(ang,len,wide,dmg,opt){
+    opt=opt||{}; const tint=opt.tint!=null?opt.tint:0xffe08a, rectColor=opt.tint!=null?opt.tint:0xffe08a;
     const px=this.player.x, py=this.player.y;
     if(this.textures.exists('fx_beam')&&this.anims.exists('fx_beam')){
       const sx=len/ASSET_FX.fx_beam.fw, sy=0.42*(wide/15);
-      this.spawnFxAnim('fx_beam',px,py,{rotation:ang,scaleX:sx,scaleY:sy,depth:6,anchor:'left'});
+      this.spawnFxAnim('fx_beam',px,py,{rotation:ang,scaleX:sx,scaleY:sy,depth:6,anchor:'left',tint:opt.tint!=null?tint:null});
     } else {
-      const g=this.camWorld(this.add.rectangle(px,py,len,wide,0xffe08a,0.75).setOrigin(0,0.5).setDepth(6)); g.setRotation(ang);
+      const g=this.camWorld(this.add.rectangle(px,py,len,wide,rectColor,0.75).setOrigin(0,0.5).setDepth(6)); g.setRotation(ang);
       this.tweens.add({targets:g,alpha:0,scaleY:0.3,duration:260,onComplete:()=>g.destroy()});
     }
-    const dx=Math.cos(ang),dy=Math.sin(ang);
+    const dx=Math.cos(ang),dy=Math.sin(ang), hitW=wide/2+16;
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-px, ry=e.y-py;
-      const proj=rx*dx+ry*dy; if(proj<0||proj>len)return; if(Math.abs(-rx*dy+ry*dx)<wide/2+16) this.damage(e,dmg,e.x,e.y); });
+      const proj=rx*dx+ry*dy; if(proj<0||proj>len)return; if(Math.abs(-rx*dy+ry*dx)<hitW){ this.damage(e,dmg,e.x,e.y); if(opt.onHit&&e.active)opt.onHit(e); } });
   }
   meteorStrike(x,y,r,dmg,delay){
     this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
@@ -5925,6 +5964,8 @@ class Game extends Phaser.Scene {
     // 🧪 currency ให้คนขยัน: elite = ลุ้นดWaitป · Miniboss = การันตี (เกรดตามความยาก)
     if(isMini) this.grantCurrencyReward(1+Math.floor(Math.random()*2),this.currencyTierFor(),'🧪 Miniboss Down!');
     else if(isElite && Math.random()<0.5) this.grantCurrencyReward(1,this.currencyTierFor(),null);
+    // 🧪 มอนธรรมดามีโอกาสดรอป currency เป็นชิ้นในสนาม (เก็บ → สะสมในสรุปด่าน)
+    else if(!big && Math.random()<0.028){ const ck=rollWeightedCurrency(this.currencyTierFor()); if(ck)this.spawnCurrencyDrop(e.x,e.y,ck); }
     if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
     if(this.player.lifeOnKill&&(!this._lifeOnKillCd||this._lifeOnKillCd<=0)){this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifeOnKill*(this.player.healEffect||1));this._lifeOnKillCd=0.45;}
     if(!big) Sfx.pop();
@@ -5977,12 +6018,17 @@ class Game extends Phaser.Scene {
     o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
     o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
   }
-  hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
+  hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
+  // ลำแสงเล็ก ๆ ชี้จุดที่ไอเทม/currency ตก (มองเห็นง่ายขึ้น)
+  spawnDropBeam(o,color){ if(!o)return; const beam=this.camWorld(this.add.image(o.x,o.y-2,'vfx_glow').setTint(color).setDepth((o.depth||80000)-1).setAlpha(0.5).setBlendMode(Phaser.BlendModes.ADD));
+    beam.setDisplaySize(16,120); o._dropBeam=beam;
+    this.tweens.add({targets:beam,alpha:{from:0.5,to:0.16},displayWidth:10,yoyo:true,repeat:-1,duration:640,ease:'Sine.inOut'}); }
   updatePickupReadability(){
     const groups=[this.heals,this.vacs,this.loots,this.chests,this.gimmicks];
     for(const grp of groups){if(!grp)continue;grp.children.iterate(o=>{if(!o||!o.active)return;const pulse=1+Math.sin(this.elapsed*5+(o.x||0)*0.03)*0.12;
       if(o._pickupGlow)o._pickupGlow.setPosition(o.x,o.y+3).setScale(0.30*pulse).setAlpha(0.25+0.10*pulse);
       if(o._pickupRing)o._pickupRing.setPosition(o.x,o.y+5).setScale(0.20+0.035*pulse).setAlpha(0.48+0.16*pulse).setRotation(this.elapsed*0.7);
+      if(o._dropBeam)o._dropBeam.setPosition(o.x,o.y-52);
       // ฮาโลและการลอยช่วยให้อ่านออก แต่ไม่ดึงไอเทมเข้าหาตัว ผู้เล่นจึงเก็บหัวใจ/Magnetไว้ใช้ภายหลังได้
       if(o.body)o.setVelocity(0,0);
     });}
@@ -6072,18 +6118,28 @@ class Game extends Phaser.Scene {
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
     if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
-    if(!g)return;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost);const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
-    g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.32); if(this.iso)g.setDepth(Math.max(80000,g.y));
+    if(!g)return;g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost);const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
+    g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.32);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false;
-    const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;g.clearTint();Sfx.select();this.burst(g.x,g.y,rarity.color);
-    const got=this.grantGear(tier);
-    // 🧪 currency ดWaitปพร้อมของ (ยิ่ง tier สูงยิ่งดี — เคารพกฎเหล็ก)
-    const ck=this.rollCurrencyDrop(tier); if(ck)Save.addCurrency(ck,1);
-    const cn=ck?(' · '+(currencyDef(ck).emoji)+currencyDef(ck).name):'';
-    if(got)this.showBanner(rarity.emoji+' '+rarity.name+' DROP!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name+' · '+TIER_LABEL[tier].name+gearDeliverySuffix(got)+cn,2000);
-    else {const refund=tier==='legend'?90:tier==='epic'?60:tier==='rare'?25:8;const sh=tier==='legend'?12:tier==='epic'?6:tier==='rare'?3:1;this.sugarStage+=refund;this.sugarRun+=refund;Save.addShards(sh);if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🎁 Duplicate','Converted to 🍬 +'+refund+' · 🔩 +'+sh+cn,1300);}
+  // 🧪 Currency ดรอปเป็นชิ้นในสนาม (เก็บ = สะสมเข้า _runCurrency + Save · โชว์ในสรุปด่าน)
+  spawnCurrencyDrop(x,y,key){ let g=this.loots.getFirstDead(false);
+    if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
+    if(!g)return;g.dropType='currency';g.curKey=key;g.lootTier=null;const col=0x9fe8ff;
+    g.body.setAllowGravity(false);g.setTint(col);this.camWorld(g);this.showPickupCue(g,col,1.05);this.spawnDropBeam(g,col); if(this.iso)g.setDepth(Math.max(80000,g.y));
+    this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+  collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false; g.clearTint();
+    if(g.dropType==='currency'&&g.curKey){ const k=g.curKey; Save.addCurrency(k,1); if(!this._runCurrency)this._runCurrency={}; this._runCurrency[k]=(this._runCurrency[k]||0)+1;
+      Sfx.select();this.burst(g.x,g.y,0x9fe8ff); const d=currencyDef(k); this.showBanner('🧪 '+d.emoji+' '+d.name,'Currency collected — see stage summary',1100); return; }
+    // ไอเทม = เก็บเป็น "กล่อง" ไว้ก่อน เปิดลุ้นตอนจบด่าน (suspense)
+    const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;Sfx.select();this.burst(g.x,g.y,rarity.color);
+    if(!this._runBoxes)this._runBoxes=[]; this._runBoxes.push(tier);
+    this.showBanner('📦 '+rarity.emoji+' '+rarity.name+' Box','Collected — opens at stage end · '+this._runBoxes.length+' box'+(this._runBoxes.length>1?'es':''),1300);
   }
+  // เปิดกล่องไอเทมที่สะสมมาทั้งด่าน → แจกจริง คืน list สำหรับหน้าสรุป
+  openRunBoxes(){ const boxes=this._runBoxes||[]; const opened=[]; for(const tier of boxes){ const got=this.grantGear(tier);
+      if(got){ opened.push({emoji:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji, name:got.name, tier}); }
+      else { const refund=tier==='legend'?90:tier==='epic'?60:tier==='rare'?25:8, sh=tier==='legend'?12:tier==='epic'?6:tier==='rare'?3:1; this.sugarStage+=refund; Save.addShards(sh); opened.push({emoji:'🍬', name:'+'+refund+' Sugar · +'+sh+' shards', tier}); } }
+    this._runBoxes=[]; return opened; }
   // สุ่ม currency ดWaitปตาม tier ของ loot (นรก/ของสูง = ได้ orb ระดับสูง)
   rollCurrencyDrop(tier){
     if(Math.random()>0.72)return null;
@@ -6772,6 +6828,7 @@ class Game extends Phaser.Scene {
       this.player.iframe=2.2; this.player.wardGuardT=1.6; if(this.popHeal)this.popHeal(this.player.x,this.player.y,Math.round(this.player.hp));
       if(this.showBanner)this.showBanner('🕯️ Revive Candle!','Revived to fight on · remaining '+this._reviveLeft+' times',1800); return; }
     if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();
+    this._openedBoxes=this.openRunBoxes();   // เปิดกล่องที่สะสมมา (ไม่ให้หายตอนตาย)
     this._deathSugar=this.sugarStage||0;this._deathPowerBefore=Save.power(this.character);Save.addSugar(this._deathSugar);const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),exp=Math.round((this.kills+this.stageIndex*15)*pg.reward);this.gainCharExp(exp);this._deathExp=exp;this._deathPowerAfter=Save.power(this.character);this.sugarStage=0;this.physics.pause();this.player.setVelocity(0,0);
     if(this._hasFrames){const baseCharKey='char_'+this.character;if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);this.player.setFrame(CF.ko);this.player.setScale(this._pBase||1);this.player.setRotation(0);}
     this.buildOver(); }
