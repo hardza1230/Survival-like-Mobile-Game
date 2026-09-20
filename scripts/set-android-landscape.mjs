@@ -1,5 +1,22 @@
 import fs from 'node:fs';
 
+// @capacitor/assets 3.x wraps both adaptive-icon layers in a 16.7% inset.
+// That is useful for a transparent foreground, but this project deliberately
+// uses the complete square artwork as its foreground. The extra inset shrinks
+// the artwork twice and exposes the launcher/theme colour as a dark border.
+// Keep both layers edge-to-edge and let Android apply the device icon mask.
+const adaptiveIcon = `<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@mipmap/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>
+`;
+for (const iconName of ['ic_launcher.xml', 'ic_launcher_round.xml']) {
+  const iconPath = `android/app/src/main/res/mipmap-anydpi-v26/${iconName}`;
+  if (!fs.existsSync(iconPath)) throw new Error(`Adaptive launcher icon not found: ${iconPath}`);
+  fs.writeFileSync(iconPath, adaptiveIcon);
+}
+
 const manifest = 'android/app/src/main/AndroidManifest.xml';
 let xml = fs.readFileSync(manifest, 'utf8');
 const activity = xml.match(/<activity\b[\s\S]*?>/);
@@ -124,4 +141,4 @@ for (const styleName of ['AppTheme.NoActionBar', 'AppTheme.NoActionBarLaunch']) 
   styles = styles.replace(openTag, `$1${fullscreenItems}`);
 }
 fs.writeFileSync(stylesPath, styles);
-console.log('Android orientation: forced portrait + immersive edge-to-edge');
+console.log('Android: launcher artwork edge-to-edge + forced portrait + immersive edge-to-edge');
