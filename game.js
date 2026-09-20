@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.2.4';
+const GAME_VERSION = '4.2.5';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.2.5', date:'2026-09-20', title:'Complete field item art', items:[
+    'Added production vector art for Heal Mochi, Gear Gift and all six chapter gimmick pickups',
+    'Gave every gimmick a unique mobile-readable silhouette instead of reusing skill icons',
+    'Connected field drops to real textures while preserving existing lightweight fallbacks',
+  ]},
   { v:'4.2.4', date:'2026-09-20', title:'Complete wearable equipment art', items:[
     'Added 22 transparent vector icons for every non-starter Gloves, Armor, Boots, Amulet and Ring base',
     'Matched the existing weapon icon system with rarity-scaled silhouettes, materials and glow',
@@ -253,6 +258,14 @@ const ASSET_IMAGES = {
   currency_crystal_glaze:'assets/ui/currency/crystal-glaze.png',
   currency_fading_gumdrop:'assets/ui/currency/fading-gumdrop.png',
   currency_plain_dough:'assets/ui/currency/plain-dough.png',
+  heal:'assets/items/heal_mochi_heart.svg',
+  gift:'assets/items/gear_gift.svg',
+  item_scent_crystal:'assets/items/gimmick_scent_crystal.svg',
+  item_clean_bubble:'assets/items/gimmick_clean_bubble.svg',
+  item_chili_overcore:'assets/items/gimmick_chili_overcore.svg',
+  item_frost_bell:'assets/items/gimmick_frost_bell.svg',
+  item_memory_seed:'assets/items/gimmick_memory_seed.svg',
+  item_ferment_drop:'assets/items/gimmick_ferment_drop.svg',
   gear_w_spoon:'assets/gear/weapons/w_spoon.svg',
   gear_w_chop:'assets/gear/weapons/w_chop.svg',
   gear_w_whisk:'assets/gear/weapons/w_whisk.svg',
@@ -1911,12 +1924,12 @@ const STORY_REACTIONS = {
   sesame:["The curse mark is spreading — I'll set a ward","These memories can still be reflected back","The warden keeps some oath","The last wall is cracking — ready the seals","My oath won't let the bitterness devour anyone again"]
 };
 const STAGE_GIMMICKS = [
-  {name:'Scent Crystal',emoji:'💚',tex:'nest_crystal',color:0x9dff45,desc:'Vacuums EXP within 520 units'},
-  {name:'Clean Bubble',emoji:'🫧',tex:'bubble',color:0x72e8d1,desc:'Clears slow, heals HP and brief guard'},
-  {name:'Chili Overcore',emoji:'🔥',tex:'ic_power',color:0xff8a5a,desc:'Resets all skill cooldowns and boosts speed'},
-  {name:'Frost Bell',emoji:'❄️',tex:'ic_frost',color:0x9fe0ff,desc:'Briefly freezes all enemies on the field'},
-  {name:'Memory Seed',emoji:'✨',tex:'ic_memory',color:0xd59cff,desc:'Heals HP and turns memories into Sugar'},
-  {name:'Pure Ferment Drop',emoji:'🌱',tex:'ic_regen',color:0x56e5bd,desc:'Heals HP, clears slow, briefly speeds cooldowns'}
+  {name:'Scent Crystal',emoji:'💚',tex:'item_scent_crystal',color:0x9dff45,desc:'Vacuums EXP within 520 units'},
+  {name:'Clean Bubble',emoji:'🫧',tex:'item_clean_bubble',color:0x72e8d1,desc:'Clears slow, heals HP and brief guard'},
+  {name:'Chili Overcore',emoji:'🔥',tex:'item_chili_overcore',color:0xff8a5a,desc:'Resets all skill cooldowns and boosts speed'},
+  {name:'Frost Bell',emoji:'❄️',tex:'item_frost_bell',color:0x9fe0ff,desc:'Briefly freezes all enemies on the field'},
+  {name:'Memory Seed',emoji:'✨',tex:'item_memory_seed',color:0xd59cff,desc:'Heals HP and turns memories into Sugar'},
+  {name:'Pure Ferment Drop',emoji:'🌱',tex:'item_ferment_drop',color:0x56e5bd,desc:'Heals HP, clears slow, briefly speeds cooldowns'}
 ];
 
 /* ภารกิจสุ่มประจำWave Chapter 1 — เปลี่ยนสิ่งที่ผู้เล่นต้องทำโดยไม่เพิ่มภาระระบบฟิสิกส์หนัก */
