@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.2.1';
+const GAME_VERSION = '4.2.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.2.2', date:'2026-09-20', title:'Crafting currency drop balance', items:[
+    'Made Spark Sugar, Twist Cream and Plain Dough the common experimentation resources',
+    'Moved Fading Gumdrop out of common rewards and capped it at a low targeted-removal weight',
+    'Reserved Wish Candy and Crystal Glaze primarily for Epic and Legendary reward pools',
+  ]},
   { v:'4.2.1', date:'2026-09-20', title:'Confectionery crafting currencies', items:[
     'Renamed all eight crafting currencies with original Mochi Mayhem confectionery identities',
     'Kept internal currency keys and save data unchanged for full backward compatibility',
@@ -1339,6 +1344,19 @@ const CURRENCY = [
 function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
 const CURRENCY_BUY = { transmute:40, alt:60, regal:120, chaos:160, exalt:320, divine:320, scour:30, annul:90 };
+// Weighted reward pools. Values are percentages within a successful currency drop.
+const CURRENCY_DROP_POOLS = {
+  common:{ transmute:45, scour:30, alt:25 },
+  rare:{ alt:35, transmute:30, regal:15, scour:15, annul:5 },
+  epic:{ alt:25, regal:25, chaos:25, annul:10, exalt:8, divine:7 },
+  legend:{ chaos:25, exalt:25, divine:25, regal:15, annul:10 },
+};
+function rollWeightedCurrency(tier){
+  const pool=CURRENCY_DROP_POOLS[tier]||CURRENCY_DROP_POOLS.common;
+  let roll=Math.random()*100;
+  for(const key of Object.keys(pool)){roll-=pool[key];if(roll<0)return key;}
+  return Object.keys(pool)[0];
+}
 // ราคาซื้อของฐานตาม tier
 const GEAR_BUY = { start:0, common:160, rare:420, epic:820, legend:0 };
 // เมล็ดสุ่มรายวัน (ร้านหมุนเวียน) — mulberry32
@@ -5605,14 +5623,14 @@ class Game extends Phaser.Scene {
   }
   // สุ่ม currency ดWaitปตาม tier ของ loot (นรก/ของสูง = ได้ orb ระดับสูง)
   rollCurrencyDrop(tier){
-    const pools={ common:['scour','annul','transmute','alt'], rare:['transmute','alt','regal','annul'], epic:['alt','regal','chaos','exalt','divine'], legend:['regal','chaos','exalt','exalt','divine','divine'] };
-    if(Math.random()>0.72)return null; const p=pools[tier]||pools.common; return p[Math.floor(Math.random()*p.length)];
+    if(Math.random()>0.72)return null;
+    return rollWeightedCurrency(tier);
   }
   // เกรด orb pool ตามความยาก+Stage (คนขยัน/เล่นยาก ได้ของดี — กฎเหล็ก)
   currencyTierFor(){ const diff=this.stageDiff||1, st=this.stageIndex||0; if(diff>=3)return 'legend'; if(diff>=2)return st>=3?'legend':'epic'; return st>=3?'epic':'rare'; }
   // แจก currency แน่นอน N ชิ้น (ข้าม 28% miss ของ rollCurrencyDrop) + แบนเนอร์
-  grantCurrencyReward(n,tier,head){ const pools={ common:['scour','annul','transmute','alt'], rare:['transmute','alt','regal','annul'], epic:['alt','regal','chaos','exalt','divine'], legend:['regal','chaos','exalt','exalt','divine','divine'] };
-    const p=pools[tier]||pools.common, got={}; for(let i=0;i<n;i++){ const k=p[Math.floor(Math.random()*p.length)]; got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
+  grantCurrencyReward(n,tier,head){
+    const got={}; for(let i=0;i<n;i++){ const k=rollWeightedCurrency(tier); got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
     if(head&&this.showBanner){ const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner(head,txt,1800); } return got; }
   // ---- หีบสมบัติ (ดWaitปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
