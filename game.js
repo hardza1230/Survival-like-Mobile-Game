@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.2.3';
+const GAME_VERSION = '4.2.4';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.2.4', date:'2026-09-20', title:'Complete wearable equipment art', items:[
+    'Added 22 transparent vector icons for every non-starter Gloves, Armor, Boots, Amulet and Ring base',
+    'Matched the existing weapon icon system with rarity-scaled silhouettes, materials and glow',
+    'Connected the new art to Equipment, Compare and Craft screens through gear base texture keys',
+  ]},
   { v:'4.2.3', date:'2026-09-20', title:'Currency art and mobile UI spacing', items:[
     'Connected all eight transparent currency icons to Crafting and Bazaar UI',
     'Reflowed Craft Bench actions into a readable 2×2 grid and added a live Currency Pouch',
@@ -270,6 +275,28 @@ const ASSET_IMAGES = {
   gear_w_crown_cleaver:'assets/gear/weapons/w_crown_cleaver.svg',
   gear_w_hunger_blade:'assets/gear/weapons/w_hunger_blade.svg',
   gear_lg_flavorbound:'assets/gear/weapons/lg_flavorbound.svg',
+  gear_gl_mitt:'assets/gear/gloves/gl_mitt.svg',
+  gear_gl_silk:'assets/gear/gloves/gl_silk.svg',
+  gear_gl_iron:'assets/gear/gloves/gl_iron.svg',
+  gear_gl_dragon:'assets/gear/gloves/gl_dragon.svg',
+  gear_ar_apron:'assets/gear/armor/ar_apron.svg',
+  gear_ar_quilt:'assets/gear/armor/ar_quilt.svg',
+  gear_ar_plate:'assets/gear/armor/ar_plate.svg',
+  gear_ar_royal:'assets/gear/armor/ar_royal.svg',
+  gear_bo_soft:'assets/gear/boots/bo_soft.svg',
+  gear_bo_magnet:'assets/gear/boots/bo_magnet.svg',
+  gear_bo_swift:'assets/gear/boots/bo_swift.svg',
+  gear_bo_wind:'assets/gear/boots/bo_wind.svg',
+  gear_lg_comet:'assets/gear/boots/lg_comet.svg',
+  gear_am_ribbon:'assets/gear/amulets/am_ribbon.svg',
+  gear_am_clover:'assets/gear/amulets/am_clover.svg',
+  gear_am_star:'assets/gear/amulets/am_star.svg',
+  gear_am_moon:'assets/gear/amulets/am_moon.svg',
+  gear_lg_phoenix:'assets/gear/amulets/lg_phoenix.svg',
+  gear_ri_copper:'assets/gear/rings/ri_copper.svg',
+  gear_ri_silver:'assets/gear/rings/ri_silver.svg',
+  gear_ri_gold:'assets/gear/rings/ri_gold.svg',
+  gear_ri_diamond:'assets/gear/rings/ri_diamond.svg',
   story_intro_fall:'assets/story/intro_fall.webp', story_final_hunger:'assets/story/final_hunger.webp',
   card_momo:'assets/character_cards/card_momo.png', card_mint:'assets/character_cards/card_mint_frostleaf.png',
   card_cocoa:'assets/character_cards/card_cocoa.png', card_taro:'assets/character_cards/card_taro.png',
