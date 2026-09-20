@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.13.0';
+const GAME_VERSION = '4.14.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.14.0', date:'2026-09-20', title:'Sesame reworked into a Mirror Beam sniper', items:[
+    'Sesame now attacks with a Mirror Beam that auto-targets bosses/minibosses and hits them at FULL damage — fixing how helpless it was against bosses',
+    'Standing still charges Focus, making the beam stronger and wider; the bullet Guard still drains and recharges while moving, so in-and-out play is rewarded',
+    'Upgrades reinterpreted for the beam (damage / fire rate / extra beams / length); evolved adds an extra beam',
+  ]},
   { v:'4.13.0', date:'2026-09-20', title:'Field readability fixes & Mint spear rework', items:[
     'Fixed the Stage 1 boss acid pools rendering full-size and blocking the whole screen — they are now small, semi-transparent floor puddles under the character',
     'Field items no longer appear giant: pickups now use a fixed on-field size regardless of art resolution (the gift-box icon was rendering at 256px)',
@@ -1058,7 +1063,7 @@ const CHARACTERS = {
   mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — wide freezes, fast, casts often',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'Warm and Tough — a sturdy melee brawler with high HP and strong regen (trade raw damage for durability)',stats:{hp:46,dmg:1.03,spd:0.94,def:0.88,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
-  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Position duelist',desc:'Hold still to charge Focus (bigger, stronger field) but the bullet Guard drains — move to recharge it. Rewards in-and-out play, not standing still',stats:{hp:34,dmg:0.96,spd:0.96,def:0.86,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:3,spd:3,def:4}},
+  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Mirror sniper',desc:'Fires a Mirror Beam that hits bosses at full damage. Hold still to charge Focus — the beam grows stronger and wider — while the bullet Guard drains. Move to recharge Guard. Rewards in-and-out play',stats:{hp:34,dmg:0.96,spd:0.96,def:0.86,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
@@ -1117,12 +1122,12 @@ const BASIC_ATTACKS = {
     mutations:[
       {id:'chainlord',name:'Chainlord',emoji:'⛓️',desc:'+2 chains and +40% chain range'},
       {id:'stormcaller',name:'Stormcaller',emoji:'🌩️',desc:'+2 simultaneous strikes and +20% damage'}]},
-  sesame:{name:'Oath Circle Aura',emoji:'🪞',skill:'mirror',color:0x8a8f9c,evolution:'Absolute Oath Mirror',
+  sesame:{name:'Mirror Beam',emoji:'🪞',skill:'mirror',color:0x8a8f9c,evolution:'Absolute Oath Mirror',
     upgrades:[
-      {id:'power',name:'Strong Oath',emoji:'💥',iconKey:'ic_sesame_power',max:5,desc:'+12% circle damage per rank'},
-      {id:'rate',name:'Fast Mirror Pulse',emoji:'⏩',iconKey:'ic_sesame_rate',max:5,desc:'+8% pulse speed per rank'},
-      {id:'pane',name:'Extra Pane',emoji:'🪟',iconKey:'ic_sesame_pane',max:3,desc:'+15% pulse power per rank'},
-      {id:'radius',name:'Wide Zone',emoji:'🛡️',iconKey:'ic_sesame_radius',max:3,desc:'+12% circle radius per rank'}],
+      {id:'power',name:'Strong Oath',emoji:'💥',iconKey:'ic_sesame_power',max:5,desc:'+12% beam damage per rank'},
+      {id:'rate',name:'Fast Mirror Pulse',emoji:'⏩',iconKey:'ic_sesame_rate',max:5,desc:'+8% fire rate per rank'},
+      {id:'pane',name:'Extra Pane',emoji:'🪟',iconKey:'ic_sesame_pane',max:3,desc:'+1 beam & wider per rank'},
+      {id:'radius',name:'Long Beam',emoji:'🛡️',iconKey:'ic_sesame_radius',max:3,desc:'+12% beam length per rank'}],
     mutations:[
       {id:'fortress',name:'Mirror Fortress',emoji:'🏰',desc:'+25% circle radius'},
       {id:'retaliate',name:'Retaliation',emoji:'💢',desc:'+30% pulse power and slows hit enemies'}]},
@@ -5127,7 +5132,7 @@ class Game extends Phaser.Scene {
     // ✨ ช่วงพิเศษ #2 — Evolution timesเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     if(!noSpecial&&b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
-      const EVO_DESC={sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'Two mirror pulse waves + a wider, stronger circle'};
+      const EVO_DESC={sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
@@ -5313,6 +5318,7 @@ class Game extends Phaser.Scene {
     const sw=this.signatureWeaponInfo(),b=this.basicAttackInfo()?.skill===key?this.basicAttack:null;
     if(b&&this.character==='cocoa'&&key==='meteor')base=0.64;
     if(b&&this.character==='mint'&&key==='frost')base=Math.max(1.25,1.95-lvl*0.08);   // มินต์ = basic attack ยิงถี่ (แทนคูลดาวน์ frost ปกติที่ช้า)
+    if(b&&this.character==='sesame'&&key==='mirror')base=Math.max(0.85,1.45-lvl*0.06);   // งาดำ = Mirror Beam ยิงเป็นจังหวะ (แทน pulse field เดิม)
     const basicRate=b?Math.pow(0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
     return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate;
   }
@@ -5462,7 +5468,7 @@ class Game extends Phaser.Scene {
     else if(key==='meteor'){ this.castBearDonut(lvl,aw,dm,basic&&basic.evolved,basic); }
     else if(key==='mirror'){
       // งาดำเป็น aura ถาวร (tickCharSignature) แล้ว → "cast" = พัลส์กระจกกระแทกในเขต (ไม่ยิง projectile)
-      if(basic&&this.character==='sesame'){ this.pulseOathField(lvl,aw,dm,basic); return; }
+      if(basic&&this.character==='sesame'){ this.castMirrorBeam(lvl,aw,dm,basic); return; }
       this.castMirrorGlaze(lvl,aw,dm,basic); }
     else if(key==='memory'){ this.castMemoryJam(lvl,aw,dm); }
     else if(key==='thread'){ this.castFlavorThread(lvl,aw,dm); }
@@ -5529,20 +5535,25 @@ class Game extends Phaser.Scene {
       this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r*1.7)this.damage(e,dmg*(aw?1.05:0.8),e.x,e.y);});Sfx.boom();}
   }
   // 🪞 งาดำ Basic Attack: พัลส์กระจกกระแทกในเขตวงเวทถาวร (ไม่ยิง projectile) — ทำงานคู่กับ aura ใน tickCharSignature
-  pulseOathField(lvl,aw,dm,basic){
-    const bRad=(1+(basic?.ranks.radius||0)*0.12)*(basic?.mutation==='fortress'?1.25:1);
-    const R=(88+lvl*13+(this.player.mirrorWard?18:0))*bRad*(aw?1.15:1);
-    const bPane=(basic?.ranks.pane||0)*0.15, evo=basic&&basic.evolved, dmgMut=(basic?.mutation==='retaliate'?1.3:1)*(evo?1.25:1);
-    const dmg=(14+lvl*4)*dm*(1+bPane)*dmgMut*(aw?1.2:1);
-    const flash=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_magic_circle').setTint(0xffe9b0).setDepth(5).setDisplaySize(R,R).setAlpha(0.6));
-    this.tweens.add({targets:flash,displayWidth:R*2.1,displayHeight:R*2.1,rotation:Math.PI*0.5,alpha:0,duration:340,ease:'Quad.out',onComplete:()=>flash.destroy()});
-    const hit=(mult)=>{ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>=R)return;
-        this.damage(e,dmg*mult*((e.isBoss||e.isMini)?0.55:1),e.x,e.y);
-        if(!e.isBoss&&!e.isMini){ const a=Math.atan2(e.y-this.player.y,e.x-this.player.x); e.setVelocity(Math.cos(a)*180,Math.sin(a)*180); e.knock=0.12; if(basic?.mutation==='retaliate')e.frozen=Math.max(e.frozen||0,0.4); } });
-      this.hitCratesInRadius(this.player.x,this.player.y,R,dmg); };
-    hit(1); if(evo)this.time.delayedCall(160,()=>{ if(this.state==='play')hit(0.7); });
-    this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<R){ this.vfxHitRing(f.x,f.y,0xf4e7bd,false); this.killFoe(f); } });
-    this.vfxHitRing(this.player.x,this.player.y,0xf4e7bd,true); Sfx.zap();
+  // 🪞 Mirror Beam — งาดำยิง "ลำแสงกระจก" ใส่เป้า (ดาเมจเต็มกับบอส · แรงขึ้นตาม Focus ที่ชาร์จจากการยืนนิ่ง)
+  // แก้ปัญหางาดำเอาบอสไม่อยู่: field เดิม tick เบา → beam ลงดาเมจก้อนใหญ่ single-line เจาะทะลุ โดนบอสเต็ม
+  castMirrorBeam(lvl,aw,dm,basic){
+    const evo=basic&&basic.evolved;
+    // เล็งบอส/มินิก่อน (นี่คือจุดขายใหม่) ไม่งั้นเล็งตัวใกล้สุด
+    let t=null,td=1e9; this.enemies.children.iterate(e=>{ if(!e||!e.active||!(e.isBoss||e.isMini))return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<td){td=d;t=e;} });
+    if(!t)t=this.nearestEnemy(1300);
+    const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._sesBeamAng||0));
+    this._sesBeamAng=ang;
+    const focus=this._sesFocus||0, focusMul=1+focus*0.9;   // ยืนนิ่งชาร์จ Focus → ลำแสงแรงขึ้นถึง +90%
+    const bRad=1+(basic?.ranks.radius||0)*0.12, bPane=basic?.ranks.pane||0, bPow=basic?.ranks.power||0;
+    const len=(360+lvl*26)*bRad*(aw?1.2:1)*(evo?1.15:1);
+    const wide=(18+lvl*1.6+bPane*3+focus*10)*(basic?.mutation==='fortress'?1.3:1);
+    const dmg=(20+lvl*6)*dm*(1+bPow*0.12)*focusMul*(evo?1.3:1)*(aw?1.25:1)*(basic?.mutation==='retaliate'?1.25:1);
+    const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0), spread=0.13;   // Lv1 ลำเดียว · pane/awaken/evo/unique = เพิ่มลำ (พัดเล็กน้อย)
+    for(let k=0;k<beams;k++){ const a=ang+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,k===0?dmg:dmg*0.7); }   // ลำหลัก (k0) เล็งตรงเป้า ดาเมจเต็ม
+    // คงบทบาทป้องกัน: ลบกระสุนศัตรูรอบตัวเล็กน้อย (ward)
+    this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<70){ this.vfxHitRing(f.x,f.y,0xf4e7bd,false); this.killFoe(f); } });
+    this.vfxHitRing(this.player.x,this.player.y,focus>0.6?0xffe08a:0xf4e7bd,true); Sfx.zap();
   }
   // ❄️ Mint active cast: สะบัดเกล็ดน้ำแข็งกระเด็นออกWaitบทิศ (เจาะ+แช่) · คู่กับเกล็ดโคจรใน tickCharSignature
   // ❄️ Frost Lance (Shatter Lance) — ชาร์จสั้น ๆ พุ่งหอกเจาะทะลุ แล้ว "shatters into ice shards" กระจายที่ปลายทาง (แบบลูกซอง)
