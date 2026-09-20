@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.2.5';
+const GAME_VERSION = '4.2.6';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.2.6', date:'2026-09-20', title:'Equipment art visible in every slot', items:[
+    'Replaced emoji-only equipped-slot rendering with the production gear artwork',
+    'Added real gear thumbnails to Equipped and Selected comparison cards',
+    'Kept slot symbols only for empty starter items and as a safe texture fallback',
+  ]},
   { v:'4.2.5', date:'2026-09-20', title:'Complete field item art', items:[
     'Added production vector art for Heal Mochi, Gear Gift and all six chapter gimmick pickups',
     'Gave every gimmick a unique mobile-readable silhouette instead of reusing skill icons',
@@ -3377,7 +3382,7 @@ class Game extends Phaser.Scene {
     const layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
     layout.forEach(([slot,sx,ri])=>{const y=rowY[ri],def=GEAR_SLOTS.find(g=>g.slot===slot),curId=Save.data.gear[slot],it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0],lv=Save.gearLv(it.id),on=!it.id.includes('_none'),isSel=slot===sel;
       const g=this.add.graphics();g.fillStyle(isSel?0x3a3550:0x2c2338,1);g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,11);g.lineStyle(isSel?3:2,isSel?0xffd166:(on?0x8bd3a0:0x4a4059),1);g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,11);
-      const em=this.add.text(sx,y-1,on?it.emoji:def.emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(on?1:0.45);this.menu.add([g,em]);
+      const artKey=on?'gear_'+it.id:null,em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-1,artKey).setDisplaySize(ss*0.72,ss*0.72):this.add.text(sx,y-1,on?it.emoji:def.emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(on?1:0.45);this.menu.add([g,em]);
       if(on&&lv>0){const bd=this.add.text(sx+ss/2-2,y-ss/2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(bd);}this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{this.gearSlot=slot;this.buildMenuScreen();});
     });
     const gbw=Math.min(210,panelW-32),gbh=34,gby=h-55,afG=(Save.data.sugar||0)>=GACHA_COST;
@@ -3415,7 +3420,8 @@ class Game extends Phaser.Scene {
       const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
       const g=this.add.graphics(); g.fillStyle(isSel?0x3a3550:0x2c2338,1); g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
       g.lineStyle(isSel?3:2, isSel?0xffd166:(on?0x8bd3a0:0x4a4059), 1); g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
-      const em=this.add.text(sx,y-2,on?it.emoji:def.emoji,{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
+      const artKey=on?'gear_'+it.id:null;
+      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-2,artKey).setDisplaySize(ss*0.72,ss*0.72):this.add.text(sx,y-2,on?it.emoji:def.emoji,{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
       this.menu.add([g,em]);
       const newN=Save.gearItemsForSlot(slot).filter(x=>x.isNew).length;
       if(newN){ const nd=this.add.circle(sx+ss/2-2,y-ss/2+2,7,0xff5689,1); const nn=this.add.text(nd.x,nd.y,String(Math.min(9,newN)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff'}).setOrigin(0.5); this.menu.add([nd,nn]); }
@@ -3467,8 +3473,10 @@ class Game extends Phaser.Scene {
       const rows=gearCompareRows(equipped,selected).slice(0,5),panelH=58+Math.max(2,rows.length)*14,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
       const drawCompareCard=(x,item,itBase,title,on)=>{const itTl=item?(TIER_LABEL[item.grade]||TIER_LABEL.common):TIER_LABEL.start,g=this.add.graphics();g.fillStyle(on?0x332819:0x241a33,0.97);g.fillRoundedRect(x,y,cw,panelH,12);g.lineStyle(on?2:1.5,on?0xffd166:Phaser.Display.Color.HexStringToColor(itTl.color).color,1);g.strokeRoundedRect(x,y,cw,panelH,12);this.menu.add(g);
         const hd=this.add.text(x+8,y+7,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:on?'#ffd166':'#9a90ab'}).setOrigin(0,0);
-        const name=item&&itBase?itBase.emoji+' '+gearAffixName(itBase.name,item.affixes||[]):'— Empty —';
-        const nm=this.add.text(x+8,y+21,name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:itTl.color,wordWrap:{width:cw-16}}).setOrigin(0,0);this.menu.add([hd,nm]);};
+        const artKey=item&&itBase?'gear_'+itBase.id:null,hasArt=artKey&&this.textures.exists(artKey);
+        const icon=hasArt?this.add.image(x+18,y+34,artKey).setDisplaySize(24,24):null;
+        const name=item&&itBase?(hasArt?'':itBase.emoji+' ')+gearAffixName(itBase.name,item.affixes||[]):'— Empty —';
+        const nm=this.add.text(x+(hasArt?34:8),y+21,name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:itTl.color,wordWrap:{width:cw-(hasArt?42:16)}}).setOrigin(0,0);this.menu.add(icon?[hd,icon,nm]:[hd,nm]);};
       drawCompareCard(leftX,equipped,eqBase,'EQUIPPED',false); drawCompareCard(rightX,selected,base,eq?'EQUIPPED NOW':'SELECTED',true);
       rows.forEach((r,i)=>{const ry=y+44+i*14,from=gearStatText(r,r.from),to=gearStatText(r,r.to),dc=r.delta>0.001?'#7de0a1':r.delta<-0.001?'#ff8da2':'#bbaabd',arrow=r.delta>0.001?' ▲':r.delta<-0.001?' ▼':'';
         const lt=this.add.text(leftX+8,ry,r.label+' '+from,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#d8c7da'}).setOrigin(0,0);
