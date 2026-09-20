@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.2.0';
+const GAME_VERSION = '4.2.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.2.1', date:'2026-09-20', title:'Confectionery crafting currencies', items:[
+    'Renamed all eight crafting currencies with original Mochi Mayhem confectionery identities',
+    'Kept internal currency keys and save data unchanged for full backward compatibility',
+    'Rewrote descriptions around focused line crafting so each resource has one clear purpose',
+  ]},
   { v:'4.2.0', date:'2026-09-20', title:'Mobile focused crafting', items:[
     'Replaced the PoE-style orb grid with a tap-first line crafting flow',
     'Select an affix line, choose the exact stat to search for, then spend the contextual currency',
@@ -1322,14 +1327,14 @@ const CRAFT_AFFIX_CAP = {common:1,magic:2,rare:4};
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  {key:'transmute',emoji:'🔵',name:'Magic Sugar',desc:'Open the first targeted affix line'},
-  {key:'alt',emoji:'🟢',name:'Shifting Cream',desc:'Replace one selected Magic affix'},
-  {key:'regal',emoji:'🟡',name:'Royal Decree',desc:'Promote Magic to Rare; unlock 4 lines'},
-  {key:'chaos',emoji:'🟠',name:'Chaos',desc:'Replace one selected Rare affix'},
-  {key:'exalt',emoji:'🔴',name:'Exalted Core',desc:'Add a chosen stat to an empty line'},
-  {key:'divine',emoji:'⚪',name:'Divine Blessing',desc:'Reroll selected line value only'},
-  {key:'annul',emoji:'🟣',name:'Annulment',desc:'Remove the selected affix line'},
-  {key:'scour',emoji:'⚫',name:'Scour',desc:'Reset all affixes and rarity'},
+  {key:'transmute',emoji:'🔵',name:'Spark Sugar',desc:'Imprint a chosen stat on a Common item'},
+  {key:'alt',emoji:'🟢',name:'Twist Cream',desc:'Replace the selected Magic affix'},
+  {key:'regal',emoji:'🟡',name:'Crown Icing',desc:'Promote full Magic gear to Rare and unlock 4 lines'},
+  {key:'chaos',emoji:'🟠',name:'Wild Jam',desc:'Replace the selected Rare affix'},
+  {key:'exalt',emoji:'🔴',name:'Wish Candy',desc:'Add a chosen stat to an empty line'},
+  {key:'divine',emoji:'⚪',name:'Crystal Glaze',desc:'Reroll the selected value without changing its tier'},
+  {key:'annul',emoji:'🟣',name:'Fading Gumdrop',desc:'Remove the selected affix line'},
+  {key:'scour',emoji:'⚫',name:'Plain Dough',desc:'Reset all affixes and return the item to Common'},
 ];
 function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
@@ -3455,10 +3460,10 @@ class Game extends Phaser.Scene {
     const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key);if(Save.currency(key)<1){Sfx.select();this.showBanner(cur.emoji+' Need '+cur.name,'Available: '+Save.currency(key),1300);return;}
     const rolled=rollOneAffix(mod,affixBestTierForItem(item,mod));if(line<affs.length)affs[line]=rolled;else affs.push(rolled);if(rar==='common')rar='magic';
     Save.spendCurrency(key,1);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);Sfx.clear();this.screenFlash(0x7fb0ff,.38,280);this.showBanner(cur.emoji+' Focused Craft',mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t,1500);this.buildCraftBench();}
-  promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Royal Decree','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');Sfx.clear();this.showBanner('🟡 Promoted to Rare','Four focused affix lines unlocked',1400);this.buildCraftBench();}
-  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<1){Sfx.select();this.showBanner('⚪ Need Divine Blessing','Available: '+Save.currency('divine'),1200);return;}const b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',1);Save.setAffixes(item.uid,affs);Sfx.clear();this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t,1300);this.buildCraftBench();}
-  annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Annulment','Available: '+Save.currency('annul'),1200);return;}affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);Sfx.clear();this.showBanner('🟣 Line removed','Select an empty line to add a new stat',1300);this.buildCraftBench();}
-  scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Scour','Available: '+Save.currency('scour'),1200);return;}Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;Sfx.clear();this.showBanner('⚫ Item reset','Common · one focused line available',1300);this.buildCraftBench();}
+  promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');Sfx.clear();this.showBanner('🟡 Promoted to Rare','Four focused affix lines unlocked',1400);this.buildCraftBench();}
+  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<1){Sfx.select();this.showBanner('⚪ Need Crystal Glaze','Available: '+Save.currency('divine'),1200);return;}const b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',1);Save.setAffixes(item.uid,affs);Sfx.clear();this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t,1300);this.buildCraftBench();}
+  annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);Sfx.clear();this.showBanner('🟣 Line removed','Select an empty line to add a new stat',1300);this.buildCraftBench();}
+  scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;Sfx.clear();this.showBanner('⚫ Item reset','Common · one focused line available',1300);this.buildCraftBench();}
   buildCraftBench(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🧪 Focused Crafting','','gLoadout');
     const w=this.W,slot=this.gearSlot||'weapon';let y=61;const slots=GEAR_SLOTS,sw=Math.min(42,(w-28)/6);
