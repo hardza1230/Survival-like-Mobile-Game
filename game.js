@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.3.0';
+const GAME_VERSION = '4.3.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.3.1', date:'2026-09-20', title:'Craft Bench readability pass', items:[
+    'Gear tiles and the item card are now tinted by rarity (Magic/Rare/Epic/Legend) with a corner rarity dot',
+    'Affix and possible-stat rows show a left colour stripe — orange for Offense (prefix), teal for Utility (suffix) — with an on-screen legend',
+    'Stat names are emphasised and value ranges dimmed so the eye lands on what matters',
+  ]},
   { v:'4.3.0', date:'2026-09-20', title:'Bug fixes: black boxes, gacha art, random crafting', items:[
     'Fixed field items (Scent Crystal, Heal, gimmicks) rendering as black boxes on some devices — gave every item SVG an explicit size and removed the shadow filter that broke in Android WebView',
     'Gacha reveal now shows the real gear artwork instead of a fallback emoji',
@@ -3591,7 +3596,7 @@ class Game extends Phaser.Scene {
     const gap=6,cw=(w-28-gap*3)/4,ch=55;
     items.slice(page*pageSize,page*pageSize+pageSize).forEach((item,i)=>{
       const base=GEAR_ALL.find(g=>g.id===item.baseId),x=14+i*(cw+gap),on=item.uid===selected.uid,tl=TIER_LABEL[item.grade]||TIER_LABEL.common,color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();
-      g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,y,cw,ch,9);g.lineStyle(on?3:1.3,on?0xffd166:color,1);g.strokeRoundedRect(x,y,cw,ch,9);
+      g.fillStyle(on?0x3a3550:this._darken(color,0.58),1);g.fillRoundedRect(x,y,cw,ch,9);g.lineStyle(on?3:1.6,on?0xffd166:color,1);g.strokeRoundedRect(x,y,cw,ch,9);g.fillStyle(color,1);g.fillCircle(x+cw-8,y+8,3.4);   // จุดสีมุม = เกรด rarity (กวาดตาเห็นทันที)
       const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,y+19,artKey).setDisplaySize(31,31):this.add.text(x+cw/2,y+19,base.emoji,{fontSize:'20px'}).setOrigin(.5);
       const lv=this.add.text(x+cw/2,y+45,'iLv '+(item.itemLevel||1)+(item.locked?' · 🔒':''),{fontFamily:'sans-serif',fontSize:'8px',color:'#d8cde2'}).setOrigin(.5);
       this.menu.add([g,em,lv]);this._zone(x,y,cw,ch,()=>{this.craftSelectedUid=item.uid;this.gearSelectedUid=item.uid;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this.buildCraftBench();});
@@ -3604,7 +3609,8 @@ class Game extends Phaser.Scene {
     const base=GEAR_ALL.find(g=>g.id===selected.baseId),affs=Save.gearAffixes(selected.uid),rar=Save.gearRarity(selected.uid,base.tier),rl=RARITY_LABEL[rar]||RARITY_LABEL.magic;
     const cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),lineGap=6,lineW=(w-38-lineGap)/2,lineH=36,rows=Math.ceil(cap/2),cardH=41+rows*(lineH+7);
     this.craftLineIndex=Math.max(0,Math.min(cap-1,this.craftLineIndex||0));
-    const card=this.add.graphics();card.fillStyle(0x241a33,.97);card.fillRoundedRect(14,y,w-28,cardH,13);card.lineStyle(2,Phaser.Display.Color.HexStringToColor(rl.color).color,1);card.strokeRoundedRect(14,y,w-28,cardH,13);
+    const rlC=Phaser.Display.Color.HexStringToColor(rl.color).color;
+    const card=this.add.graphics();card.fillStyle(this._darken(rlC,0.82),.97);card.fillRoundedRect(14,y,w-28,cardH,13);card.fillStyle(rlC,0.14);card.fillRoundedRect(14,y,w-28,24,{tl:13,tr:13,bl:0,br:0});card.lineStyle(2,rlC,1);card.strokeRoundedRect(14,y,w-28,cardH,13);   // พื้นการ์ด tint ตาม rarity + แถบหัวเข้ม
     const fullName=gearAffixName(base.name,affs),safeName=fullName.length>35?fullName.slice(0,34)+'…':fullName;
     const nm=this.add.text(23,y+10,base.emoji+' '+safeName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:rl.color}).setOrigin(0,0);
     const meta=this.add.text(w-23,y+10,rl.name+' · iLv '+(selected.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:rl.color}).setOrigin(1,0);
@@ -3612,21 +3618,25 @@ class Game extends Phaser.Scene {
     for(let i=0;i<cap;i++){
       const col=i%2,row=Math.floor(i/2),x=19+col*(lineW+lineGap),ly=y+34+row*(lineH+7),on=i===this.craftLineIndex,a=affs[i],mod=a&&affixDef(a.id),g=this.add.graphics();
       g.fillStyle(on?0x403151:0x2b2137,1);g.fillRoundedRect(x,ly,lineW,lineH,8);g.lineStyle(on?2:1,on?0xffd166:0x574764,1);g.strokeRoundedRect(x,ly,lineW,lineH,8);
+      if(mod){const kc=mod.kind==='suffix'?0x5ad1c4:0xff9a5a;g.fillStyle(kc,1);g.fillRoundedRect(x,ly,4,lineH,{tl:8,bl:8,tr:0,br:0});}   // แถบซ้าย prefix=ส้ม/suffix=มิ้นต์
       const nextEmpty=i===affs.length,label=mod?(mod.emoji+' '+mod.label+' '+mod.fmt(a.v)+' · T'+(a.t||5)):(nextEmpty?'＋ Add affix here':'🔒 Fill previous line');
-      const tx=this.add.text(x+7,ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'8px',color:mod?'#e8dcf0':nextEmpty?'#b9aec8':'#655b6c'}).setOrigin(0,.5);
+      const tx=this.add.text(x+(mod?11:7),ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'8px',color:mod?'#e8dcf0':nextEmpty?'#b9aec8':'#655b6c'}).setOrigin(0,.5);
       this.menu.add([g,tx]);if(mod||nextEmpty)this._zone(x,ly,lineW,lineH,()=>{this.craftLineIndex=i;this.craftTargetId=mod?mod.id:null;this.buildCraftBench();});
     }
     y+=cardH+7;
     const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id));
     const rolledId=this._craftRolledId;   // ไฮไลท์ stat ที่เพิ่งสุ่มติด
     const ph=this.add.text(15,y,'POSSIBLE STATS',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd9a8'}).setOrigin(0,0);
-    const tierHint=this.add.text(w-15,y,'Random on craft · '+available.length+' possible',{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=17;
+    const tierHint=this.add.text(w-15,y,'🎲 random on craft · '+available.length+' possible',{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=13;
+    const lg=this.add.graphics();lg.fillStyle(0xff9a5a,1);lg.fillCircle(18,y+4,3);lg.fillStyle(0x5ad1c4,1);lg.fillCircle(78,y+4,3);this.menu.add(lg);   // legend หมวด stat
+    this.menu.add([this.add.text(24,y,'Offense',{fontFamily:'sans-serif',fontSize:'7px',color:'#d8b79a'}).setOrigin(0,0),this.add.text(84,y,'Utility',{fontFamily:'sans-serif',fontSize:'7px',color:'#9adfd4'}).setOrigin(0,0)]);y+=15;
     const pw=(w-34-6)/2,phh=44;
     available.forEach((mod,i)=>{
-      const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+5),on=mod.id===rolledId,best=affixBestTierForItem(selected,mod),g=this.add.graphics();
-      g.fillStyle(on?0x4d3d1f:0x2b2137,1);g.fillRoundedRect(x,py,pw,phh,8);g.lineStyle(on?2.5:1,on?0xffd166:(mod.exclusive?0xff8f3a:0x574764),1);g.strokeRoundedRect(x,py,pw,phh,8);
-      const tx=this.add.text(x+7,py+7,(on?'✨ ':'')+mod.emoji+' '+mod.label+(mod.exclusive?' · EXCLUSIVE':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#e2d6e8'}).setOrigin(0,0);
-      const rg=this.add.text(x+7,py+25,'Best T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'7.3px',color:on?'#ffe0b0':'#a99fbb'}).setOrigin(0,0);
+      const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+5),on=mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:(mod.kind==='suffix'?0x5ad1c4:0xff9a5a),g=this.add.graphics();
+      g.fillStyle(on?0x4d3d1f:0x2b2137,1);g.fillRoundedRect(x,py,pw,phh,8);g.lineStyle(on?2.5:1.2,on?0xffd166:kc,on?1:0.85);g.strokeRoundedRect(x,py,pw,phh,8);
+      g.fillStyle(kc,on?1:0.9);g.fillRoundedRect(x,py,4,phh,{tl:8,bl:8,tr:0,br:0});   // แถบซ้าย = หมวด stat
+      const tx=this.add.text(x+11,py+8,(on?'✨ ':'')+mod.emoji+' '+mod.label+(mod.exclusive?' ·EX':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,0);
+      const rg=this.add.text(x+11,py+26,'Best T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'7.3px',color:on?'#ffe0b0':'#948aa6'}).setOrigin(0,0);
       this.menu.add([g,tx,rg]);
     });
     y+=Math.ceil(available.length/2)*(phh+5)+5;
