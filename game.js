@@ -29,7 +29,7 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.18.0';
+const GAME_VERSION = '4.18.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
   { v:'4.18.0', date:'2026-09-20', title:'Training Ground polish — grid floor, spotlights, reward', items:[
@@ -5044,9 +5044,26 @@ class Game extends Phaser.Scene {
   }
   _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.save();
     // 🎁 รางวัลจบสอน = ไอเทมเริ่มต้น (การันตี Rare ให้ผู้เล่นใหม่มีของใส่)
-    let rewardName='a starter item'; if(!Save.data.tutorialRewardGiven){ Save.data.tutorialRewardGiven=true; const got=this.grantGear('rare')||this.grantGear('common'); if(got){ rewardName=GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name; } Save.save(); }
-    if(this.showBanner)this.showBanner('🎓 Tutorial complete!','🎁 Reward: '+rewardName+' · now pick a real stage!',2400); Sfx.chest&&Sfx.chest();
-    this.sugarStage=0; this.time.delayedCall(1400,()=>{ if(this.state==='play'||this.state==='levelup'){ this.exitStage(); this.menuScreen='stage'; if(this.buildMenuScreen)this.buildMenuScreen(); } });   // ออกจาก Training Ground → หน้าเลือกด่านจริง
+    let rewardName='a starter item',rewardEmoji='🎁'; if(!Save.data.tutorialRewardGiven){ Save.data.tutorialRewardGiven=true; const got=this.grantGear('rare')||this.grantGear('common'); if(got){ rewardEmoji=GEAR_SLOTS.find(s=>s.slot===got.slot).emoji; rewardName=got.name; } Save.save(); }
+    this.sugarStage=0; Sfx.clear&&Sfx.clear();
+    // หน้า "จบการสอน" ค้างจนกว่าจะแตะ (ไม่เด้งออกเองให้ดูไม่ทัน)
+    this.showTutorialComplete(rewardEmoji,rewardName);
+  }
+  showTutorialComplete(rewardEmoji,rewardName){
+    this.state='summary'; if(this.physics)this.physics.pause(); if(this.player)this.player.setVelocity(0,0);
+    const w=this.W,h=this.H; this.over.removeAll(true);
+    const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
+    const glow=this.add.image(w/2,h*0.36,'vfx_glow').setTint(0xffd166).setScale(1.5).setAlpha(0.4);
+    const cap=this.add.text(w/2,h*0.30,'🎓',{fontSize:'70px'}).setOrigin(0.5);
+    const t=this.add.text(w/2,h*0.44,'Tutorial Complete!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd166'}).setOrigin(0.5);
+    const rlabel=this.add.text(w/2,h*0.53,'🎁 Starter Reward',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(0.5);
+    const rname=this.add.text(w/2,h*0.585,rewardEmoji+' '+rewardName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffffff',align:'center',wordWrap:{width:w*0.8}}).setOrigin(0.5);
+    const hint=this.add.text(w/2,h*0.70,'Equip it from the Gear menu, then pick a real stage',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
+    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-120,h*0.82-30,240,60,22);
+    const bt=this.add.text(w/2,h*0.82,'🗺 Choose a Stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
+    this.over.add([bg,glow,cap,t,rlabel,rname,hint,btn,bt]); this.over.setVisible(true);
+    this.tweens.add({targets:bt,alpha:{from:0.6,to:1},yoyo:true,repeat:-1,duration:700});
+    this._summaryBtns=[]; this._summaryLast=false;   // แตะที่ไหนก็ได้ = ไปต่อ (ใช้ handler ของ state summary → continueFromSummary → exitStage)
   }
   drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W,h=this.H; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
     // บับเบิลอยู่ "ด้านล่าง" (เหนือปุ่ม dash/unique เล็กน้อย) · ข้อความสั้น + ไฮไลต์สีคำสำคัญ
