@@ -1529,11 +1529,11 @@ const Save = {
   receiveGearInstance(baseId,opts={}){const item=this.makeGearInstance(baseId,opts);if(!item)return null;
     if(!Array.isArray(this.data.gearItems))this.data.gearItems=[];if(!Array.isArray(this.data.gearInbox))this.data.gearInbox=[];
     if(!this.data.ownedGear.includes(baseId))this.data.ownedGear.push(baseId);
-    const mode=this.data.gearAutoDismantle||'off',auto=(mode==='common'&&item.grade==='common')||(mode==='rare'&&(item.grade==='common'||item.grade==='rare'));
+    const mode=this.data.gearAutoDismantle||'off',protectedItem=!!item.favorite||!!item.locked||item.grade==='epic'||item.grade==='legend',auto=!protectedItem&&((mode==='common'&&item.grade==='common')||(mode==='rare'&&(item.grade==='common'||item.grade==='rare')));
     if(this.gearInventoryFull()){
       if(auto){const shards=gearDismantleValue(item);this.data.shards=(this.data.shards||0)+shards;this.save();return{item,destination:'salvaged',shards};}
       if(this.data.gearInbox.length<GEAR_INBOX_CAP){this.data.gearInbox.push(item);this.save();return{item,destination:'inbox'};}
-      if(item.grade==='epic'||item.grade==='legend'){const idx=this.data.gearInbox.findIndex(x=>x&&!x.favorite&&!x.locked&&(x.grade==='common'||x.grade==='rare'));
+      if(protectedItem){const idx=this.data.gearInbox.findIndex(x=>x&&!x.favorite&&!x.locked&&(x.grade==='common'||x.grade==='rare'));
         let displacedShards=0;if(idx>=0){const old=this.data.gearInbox.splice(idx,1)[0];displacedShards=gearDismantleValue(old);this.data.shards=(this.data.shards||0)+displacedShards;}
         this.data.gearInbox.push(item);this.save();return{item,destination:'inbox',overflow:idx<0,displacedShards};}
       const shards=gearDismantleValue(item);this.data.shards=(this.data.shards||0)+shards;this.save();return{item,destination:'salvaged',shards};
