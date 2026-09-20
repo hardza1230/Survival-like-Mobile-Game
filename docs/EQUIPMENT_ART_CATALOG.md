@@ -2,7 +2,7 @@
 
 ## Production status
 
-All 44 equipment bases now have production vector art. The 22 weapon icons were already present; v4.2.4 adds the remaining 22 wearable icons.
+All 44 equipment bases have production art. Version 4.2.7 replaces all 22 wearable SVG icons with individually generated transparent raster PNG artwork; the 22 weapon icons remain in the existing set.
 
 | Slot | Production icons | Folder |
 |---|---:|---|
@@ -29,7 +29,7 @@ Every asset is registered as `gear_<item id>` in `ASSET_IMAGES`. Existing Equipm
 
 ## Visual language
 
-- 256×256 transparent SVG canvas.
+- 256×256 transparent RGBA PNG, downsampled from 1254×1254 Image Generation masters.
 - Thick dark-brown outline matching the weapon set.
 - Soft upper-left lighting, restrained glow and readable silhouettes at mobile size.
 - Common: simple materials and limited decoration.
@@ -40,4 +40,4 @@ Every asset is registered as `gear_<item id>` in `ASSET_IMAGES`. Existing Equipm
 
 ## Future expansion rule
 
-When a new gear base is added, create its icon in the matching slot folder and register it as `gear_<item id>`. Chapter identity should change silhouette and material, not only hue.
+When a new gear base is added, create a transparent raster PNG in the matching slot folder and register it as `gear_<item id>`. Chapter identity should change silhouette and material, not only hue.
