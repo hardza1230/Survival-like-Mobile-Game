@@ -1339,7 +1339,7 @@ function applyItemLevelBonus(p,item){const q=Math.max(0,Math.min(1,((Number(item
   else if(slot==='boots')p.baseSpeed*=1+0.10*q;
   else if(slot==='amulet'){p.maxhp+=Math.round(50*q);p.regen=(p.regen||0)+0.6*q;}
 }
-function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),exact=GEAR_ALL.filter(it=>it.tier===tier&&(it.chapter||1)===ch);return exact.length?exact:GEAR_ALL.filter(it=>it.tier===tier&&(it.chapter||1)<=ch);}
+function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>it.tier===tier&&it.slot==='weapon'&&(it.chapter||1)===ch),support=GEAR_ALL.filter(it=>it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>it.tier===tier&&(it.chapter||1)<=ch);}
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 times
 const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังNone)
 const AFFIX_REROLL_COST = 15;   // 🔩 สุ่มคุณสมบัติเสริมของชิ้นที่สวมอยู่ใหม่
@@ -5626,9 +5626,9 @@ class Game extends Phaser.Scene {
     this.showBanner('🎁 Miniboss Box · upgrade '+chosen.length+' skills',names,3000);this.vfxLevelUp();
   }
   // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังNone) — คืน item หรือ null ถ้ามีครบแล้ว
-  grantGear(tier){ const chapter=itemChapterForStage(this.stageIndex==null?(Save.data.unlockedStage||0):this.stageIndex);
+  grantGear(tier){ const sourceStage=this.state==='play'?this.stageIndex:(Save.data.unlockedStage||0),chapter=itemChapterForStage(sourceStage);
     let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter); if(!pool.length)return null;
-    const it=Phaser.Utils.Array.GetRandom(pool),itemLevel=rollItemLevel(this.stageIndex==null?(Save.data.unlockedStage||0):this.stageIndex,this.difficulty||2);
+    const it=Phaser.Utils.Array.GetRandom(pool),itemLevel=rollItemLevel(sourceStage,this.state==='play'?(this.difficulty||1):2);
     const instance=Save.addGearInstance(it.id,{isNew:true,itemLevel,chapter}); return instance?Object.assign({},it,{instance}):null; }
   gachaRoll(){ const r=Math.random(), roll=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend';   // 50% common · 30% rare · 15% epic · 5% legend
     for(const t of [roll,'epic','rare','common','legend']){ const it=this.grantGear(t); if(it)return it; } return null; }
