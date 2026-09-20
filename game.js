@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.18.1';
+const GAME_VERSION = '4.19.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.19.0', date:'2026-09-20', title:'Strawberry nerf & cooking codex removed', items:[
+    'Strawberry (Momo) toned down a lot: fewer seeds per volley, lower per-seed damage, slower fire, and the signature weapon no longer adds big damage — it was melting minibosses far too fast',
+    'Removed the cooking Codex (Cookbook menu, recipe panels, Dish Cooked banners and cook quests); weapon-and-passive combo bonuses still apply quietly',
+    'Confirmed the stage-clear summary (currency + boxes gained) shows and waits for a tap on every stage',
+  ]},
   { v:'4.18.0', date:'2026-09-20', title:'Training Ground polish — grid floor, spotlights, reward', items:[
     'Training Ground now has its own SVG grid floor so it reads as a real practice arena',
     'Tutorial tips moved to the bottom, shortened to one line with a colour-highlighted keyword',
@@ -1089,7 +1094,7 @@ const CHARACTERS = {
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
 const SIGNATURE_WEAPONS = {
-  berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.16,cdMul:0.94,shots:0,trait:'+16% damage · steadier fire'},
+  berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
   mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.72,areaMul:1.18,controlMul:1.18,trait:'Rapid frost lances · -28% cooldown'},
   bearGauntlet:{name:'Cocoa Bear Gauntlet',emoji:'🐻',skill:'meteor',dmgMul:1.06,cdMul:1.05,areaMul:1.15,trait:'2 heavy slams · shockwave only after Mutation'},
   riftCompass:{name:'Rift Lightning Compass',emoji:'🧭',skill:'thunder',dmgMul:1.02,cdMul:0.86,chains:2,trait:'+2 chain targets · -14% cooldown'},
@@ -1330,7 +1335,6 @@ const HUB_GROUPS = {
     ['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed'] ] },
   gCodex:{ title:'📖 Codex', rows:[
     ['skills','✧','Skill Codex','Skills, passives and Awaken pairs'],
-    ['cookbook','🍳','Cookbook','Discovered recipes + signatures ⭐'],
     ['bestiary','☷','Bestiary','Discoveries and bonuses'] ] },
   gActivity:{ title:'🎉 Activities', rows:[
     ['daily','📅','Daily Missions','Daily reward and challenge stage'],
@@ -1344,11 +1348,9 @@ const HUB_GROUPS = {
 /* ---- QUESTS: เส้นทางเป้าหมาย (Player Journey) — ร้อยทุกระบบเข้าด้วยกัน โชว์ "Next Quest" ที่หน้าหลัก ---- */
 const QUESTS = [
   { id:'s1',     t:'Clear Stage 1 — Sour Ant Nest',        r:60,  go:'chapter',  done:d=>!!(d.stageMastery||{})[0] },
-  { id:'cook1',  t:'Cook your first dish',                 r:50,  go:'chapter',  done:d=>Object.keys(d.cookbook||{}).length>=1 },
   { id:'rank1',  t:'Reach your first Rank',                r:60,  go:'gLoadout', done:d=>(d.rank||0)>=1 },
   { id:'gear3',  t:'Collect 3 pieces of equipment',        r:70,  go:'gLoadout', done:d=>(d.ownedGear||[]).length>=3 },
   { id:'s2',     t:'Clear Stage 2 — Rotten Drain',         r:90,  go:'chapter',  done:d=>!!(d.stageMastery||{})[1] },
-  { id:'cook3',  t:'Discover 3 recipes',                   r:80,  go:'gCodex',   done:d=>Object.keys(d.cookbook||{}).length>=3 },
   { id:'s3',     t:'Clear Stage 3 — Chili Engine Room',    r:110, go:'chapter',  done:d=>!!(d.stageMastery||{})[2] },
   { id:'legend', t:'Hunt 1 Legendary item',                r:150, go:'gLoadout', done:d=>(d.ownedGear||[]).some(id=>String(id).startsWith('lg_')) },
   { id:'s4',     t:'Clear Stage 4 — Sugar Freezer',        r:140, go:'chapter',  done:d=>!!(d.stageMastery||{})[3] },
@@ -2751,7 +2753,10 @@ class Game extends Phaser.Scene {
       const hasB=(this.passives&&this.passives[c.b]>0);
       if(hasA&&hasB){
         this.comboFlags[c.key]=true;
-        if(!this.combosOwned[c.key]){ this.combosOwned[c.key]=true; this.cookDish(c); }
+        // เอาระบบ codex ปรุง (cookbook/banner/discover) ออก — คงเฉพาะโบนัส combo แบบเงียบ ๆ กันบิลด์เสียบาลานซ์
+        if(!this.combosOwned[c.key]){ this.combosOwned[c.key]=true;
+          if(this.player){ if(c.effect)c.effect(this.player); else this.player.dmgMul=Math.min(3.25,(this.player.dmgMul||1)*1.05);
+            this.player.dmgMul=Math.min(3.25,this.player.dmgMul);this.player.dmgTakenMul=Math.max(0.35,this.player.dmgTakenMul);this.player.critChance=Math.min(0.40,this.player.critChance);this.player.cdMul=Math.max(0.72,this.player.cdMul);this.player.baseSpeed=Math.min(BALANCE.moveSpeed*1.35,this.player.baseSpeed); } }
       }
     }
   }
@@ -2937,7 +2942,7 @@ class Game extends Phaser.Scene {
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     this._curMenu=s;
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -4109,8 +4114,7 @@ class Game extends Phaser.Scene {
     const pnl=this.add.graphics(); pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,panelH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,panelH,14);
     const ph=this.add.text(px+14,panelY+8,'Held',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
-    const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);
-    if(this.usesBasicAttackBuild())this.drawRecipePanel(this.pauseUI,heldBot+6);   // โชว์สูตร recipe ในหน้าหยุดเกมด้วย
+    const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const portrait=w<=h,gap=portrait?12:16,bw=portrait?Math.min(w-48,330):Math.min(270,(w-56-gap)/2),bh=54;
     const by=portrait?h-138:Math.max(196,h-68),left=portrait?w/2:w/2-gap/2-bw/2,right=portrait?w/2:w/2+gap/2+bw/2;
     this.uiPillBtn(this.pauseUI,left,by,bw,bh,COLORS.mint,'▶','Resume',null);
@@ -5132,7 +5136,7 @@ class Game extends Phaser.Scene {
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
     const heldBot0=this.drawHeldBar(this.lvlUp, 8);
-    const heldBot=this.usesBasicAttackBuild()?this.drawRecipePanel(this.lvlUp,heldBot0+2):heldBot0;   // โชว์สูตร recipe เฉพาะ character-first
+    const heldBot=heldBot0;   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap the same card again to confirm':'⭐ LEVEL UP — tap to choose, tap again to confirm',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
     this.lvlUp.add(t);
     this.banishMode=false;
@@ -5238,12 +5242,10 @@ class Game extends Phaser.Scene {
       const rr=rollRarity(); atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,apply:()=>{b.ranks[u.id]=Math.min(u.max,(b.ranks[u.id]||0)+rr.ranks);this.syncBasicAttack();}})});}
     // v4.16: เอา Overdrive/Combat Tempo ออก (ซ้ำกับ passive power/haste) — dmg/CD คุมผ่าน passive แกนแทน
     // สายติดตัว (passive) — 12 แบบ = แหล่งความหลากหลายหลัก · boost คู่ที่Cook Dishได้ (recipe)
-    const cookB=new Set(COMBOS.filter(c=>this.skills[c.a]>0).map(c=>c.b));
     const pas=[];const pasOwned=Object.keys(this.passives).length;
     for(const key in PASSIVES){if(this.banishedKeys?.['p:'+key])continue;const p=PASSIVES[key],cur=this.passives[key]||0;if(cur>=p.max||(cur===0&&pasOwned>=4))continue;
-      const cooks=cookB.has(key)&&cur===0;
       const rr=rollRarity(),grant=Math.min(p.max-cur,rr.ranks);
-      pas.push({w:cooks?6:2.4,card:{type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,rarity:rr,kind:cooks?'Passive 🍳':'Passive',badgeColor:'#66d3b3',color:rr.color,emoji:p.emoji,title:p.name,desc:cooks?('🍳 Can cook a dish! · '+p.desc):p.desc,apply:()=>{for(let n=0;n<grant;n++){this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);}this.buildSkillBar();}}});}
+      pas.push({w:2.4,card:{type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,rarity:rr,kind:'Passive',badgeColor:'#66d3b3',color:rr.color,emoji:p.emoji,title:p.name,desc:p.desc,apply:()=>{for(let n=0;n<grant;n++){this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);}this.buildSkillBar();}}});}
     const hpFrac=this.player.hp/Math.max(1,this.player.maxhp);
     let healCard=null;
     if(hpFrac<0.999){const rr=rollRarity(),amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)*(1+(rr.ranks-1)*0.5)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,rarity:rr,color:rr.color,kind:'Instant Heal',emoji:'💖',title:'Sweet Recovery',desc:'Restore HP instantly '+amount+' HP · No passive slot',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}
@@ -5418,7 +5420,7 @@ class Game extends Phaser.Scene {
   _cdBase(key,lvl){
     switch(key){
       // สายยิงไว ดาเมจเบา (spam)
-      case 'sprinkle': return Math.max(0.6,0.98-lvl*0.03);   // ไม่รัวเกินไป (สตรีมทีละนัด กระสุนเร็ว)
+      case 'sprinkle': return Math.max(0.72,1.08-lvl*0.025);   // v4.19 nerf: ยิงช้าลง (เดิม max0.6, 0.98-0.03lvl)
       case 'popcorn':  return Math.max(0.55,0.95-lvl*0.05);
       case 'aura':     return Math.max(0.60,1.0-lvl*0.04);
       case 'whirl':    return Math.max(1.05,1.7-lvl*0.07);
@@ -5455,7 +5457,7 @@ class Game extends Phaser.Scene {
     if(key==='meteor'&&basic&&this.character==='cocoa'){this.castCocoaCombo(lvl,dm,basic);return;}
     if(key==='sprinkle'){ if(!this.nearestEnemy(aw?900:640))return;
       // ปืนกล: รัวเมล็ดรุ้งเป็นชุด ยิงเร็ว/เบา · โดน 1 ตัวแล้วหายไปเลย (ไม่ทะลุ ไม่เด้ง) · เก็บทีละตัวรัว ๆ
-      let shots=aw?16:lvl>=6?11:lvl>=4?7:lvl>=3?4:lvl>=2?2:1;   // เริ่มยิง 1 นัด แล้วค่อยเพิ่มตามเลเวล/อัปเกรด
+      let shots=aw?11:lvl>=6?8:lvl>=4?5:lvl>=3?3:lvl>=2?2:1;   // v4.19 nerf: ลดจำนวนนัด (เดิม 16/11/7/4) — โมโม่แรงเกิน
       if(basic)shots=Math.min(12,shots+(basic.ranks.volley||0)+(basic.mutation==='fan'?2:0)+(basic.evolved?2:0));
       if(this.player.twinSprinkle) shots+=3;if(sw.skill===key)shots+=this.player.weaponShots||0;if(basic)shots=Math.min(12,shots);
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
@@ -5465,7 +5467,7 @@ class Game extends Phaser.Scene {
         const shotIndex=idx++,sizeMul=basic?1+(basic.ranks.size||0)*0.14:1,b=this.getBullet(this.player.x,this.player.y,0xffffff,(0.12+lvl*0.008+(aw?0.03:0))*sizeMul); if(!b)return;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
-        b.dmg=(5+lvl*1.6)*dm*(aw?1.15:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // พุ่งตรงเร็วเสมอ (ไม่ homing) · EVO = ทะลุทุกตัว (ไม่โค้งตามเป้า)
+        b.dmg=(3.5+lvl*1.0)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // v4.19 nerf: ลดดาเมจต่อเมล็ด (เดิม 5+lvl*1.6)
         const fan=basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0,ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(-0.08,0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
