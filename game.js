@@ -1179,7 +1179,7 @@ const GEAR_ENH_MAX = 5;
 const GEAR_INBOX_CAP = 5;
 const GEAR_DISMANTLE_BASE = {start:0,common:1,rare:3,epic:7,legend:15};
 function gearDismantleValue(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)+Math.floor(Math.max(1,item.itemLevel||1)/20)+Math.max(0,item.enhanceLv||0)*2;}
-function gearDeliverySuffix(got){if(!got)return '';if(got.delivery==='inbox')return ' · Sent to Reward Inbox';if(got.delivery==='salvaged')return ' · Auto-dismantled +🔩'+(got.shards||0);return '';}
+function gearDeliverySuffix(got){if(!got)return '';const d=got.delivery||got.destination;if(d==='inbox')return ' · Sent to Reward Inbox';if(d==='salvaged')return ' · Auto-dismantled +🔩'+(got.shards||0);return '';}
 function gearEnhCost(lv){ return 60+lv*55; }   // 🍬 ค่าตีบวก +1..+5 (60/115/170/225/280)
 // 6 ช่องสวมใส่ (แบบ isekai drifter) · แต่ละช่องมีของ "None" ฟรี + ของซื้อ 2 ชิ้น · ตีบวกได้
 const GEAR_SLOTS = [
