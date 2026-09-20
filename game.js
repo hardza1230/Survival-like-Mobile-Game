@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '3.6.0';
+const GAME_VERSION = '3.7.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'3.7.0', date:'2026-09-20', title:'Equipment v2 foundation — item instances', items:[
+    'Added unique item instances so the same gear base can hold different affixes, craft states and enhancement levels',
+    'Added a safe legacy-save migration with 24-slot inventory metadata while preserving equipped gear and progress',
+  ]},
   { v:'3.6.0', date:'2026-09-19', title:'Animated main menu — layered parallax', items:[
     'Added visible layered parallax motion to the main-menu artwork',
     'Added subtle sparkles and moving light effects for a livelier presentation',
@@ -1290,8 +1294,8 @@ function rollFieldGearTier(stageIndex,difficulty,boost=0){
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
-  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
-  load(){ try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
+  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:24, gearInbox:[], gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
+  load(){ let gearMigrated=false; try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
     if(!this.data.upgrades)this.data.upgrades={};
     if(!this.data.gear)this.data.gear={};
     if(!this.data.gearLv)this.data.gearLv={};
@@ -1299,6 +1303,7 @@ const Save = {
     const gearDefaults={ weapon:'w_spoon', gloves:'gl_none', armor:'ar_none', boots:'bo_none', amulet:'am_none', ring:'ri_none' };
     for(const slot in gearDefaults){ if(!this.data.gear[slot])this.data.gear[slot]=gearDefaults[slot];
       if(!this.data.ownedGear.includes(gearDefaults[slot]))this.data.ownedGear.push(gearDefaults[slot]); }
+    gearMigrated=this.migrateGearInstances(gearDefaults);
     if(!this.data.chars||!this.data.chars.length)this.data.chars=['momo'];
     if(!this.data.character)this.data.character='momo';
     if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (Berry) → คืนเป็นโมโม่
@@ -1321,6 +1326,7 @@ const Save = {
     if(this.data.tutorialDone==null)this.data.tutorialDone=false;
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
     Sfx.muted=!this.data.settings.sound;
+    if(gearMigrated){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} }
     return this.data; },
   save(){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
   // ---- Cloud sync (Supabase) ----
@@ -1341,24 +1347,78 @@ const Save = {
   spend(n){ if((this.data.sugar||0)>=n){ this.data.sugar-=n; this.save(); return true; } return false; },
   // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
   cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
-  gearLv(id){ return (this.data.gearLv&&this.data.gearLv[id])||0; },
+  // ---- Equipment v2: unique instances. Legacy maps stay mirrored until every screen uses uid directly. ----
+  nextGearUid(){ this.data.gearUidSeq=(this.data.gearUidSeq||0)+1; return 'gi_'+Date.now().toString(36)+'_'+this.data.gearUidSeq.toString(36); },
+  gearItem(ref){ if(!ref||!Array.isArray(this.data.gearItems))return null; if(typeof ref==='object'&&ref.uid)return ref;
+    let item=this.data.gearItems.find(x=>x&&x.uid===ref); if(item)return item;
+    const equipped=this.data.equippedGear||{}; for(const slot in equipped){ item=this.data.gearItems.find(x=>x&&x.uid===equipped[slot]&&x.baseId===ref); if(item)return item; }
+    return this.data.gearItems.find(x=>x&&x.baseId===ref)||null; },
+  gearBase(ref){ const item=this.gearItem(ref); return item?GEAR_ALL.find(g=>g.id===item.baseId):GEAR_ALL.find(g=>g.id===ref); },
+  makeGearInstance(baseId,opts={}){ const base=GEAR_ALL.find(g=>g.id===baseId); if(!base)return null;
+    const clone=a=>Array.isArray(a)?a.map(x=>Object.assign({},x)):[];
+    return { uid:opts.uid||this.nextGearUid(), baseId, slot:base.slot, grade:base.tier,
+      craftState:opts.craftState||baseDefaultRarity(base.tier), enhanceLv:Math.max(0,Number(opts.enhanceLv)||0),
+      affixes:clone(opts.affixes!=null?opts.affixes:rollAffixes(base.tier)), locked:!!opts.locked,
+      isNew:opts.isNew!==false, acquiredAt:Number(opts.acquiredAt)||Date.now() }; },
+  migrateGearInstances(gearDefaults){ let changed=false;
+    if(!Array.isArray(this.data.gearItems)||Number(this.data.gearSchemaVersion||0)<1){
+      this.data.gearItems=[]; this.data.equippedGear={}; this.data.gearUidSeq=0;
+      const ids=Array.from(new Set((this.data.ownedGear||[]).concat(Object.values(gearDefaults))));
+      for(const baseId of ids){ const base=GEAR_ALL.find(g=>g.id===baseId); if(!base)continue;
+        const item=this.makeGearInstance(baseId,{enhanceLv:(this.data.gearLv||{})[baseId]||0,
+          affixes:(this.data.gearAffix||{})[baseId]||rollAffixes(base.tier),
+          craftState:(this.data.gearRarity||{})[baseId]||baseDefaultRarity(base.tier),isNew:false,acquiredAt:1});
+        if(item)this.data.gearItems.push(item); }
+      for(const slot in gearDefaults){ const baseId=this.data.gear[slot]||gearDefaults[slot]; let item=this.data.gearItems.find(x=>x.baseId===baseId&&x.slot===slot);
+        if(!item){ item=this.makeGearInstance(baseId,{isNew:false,acquiredAt:1}); if(item)this.data.gearItems.push(item); }
+        if(item)this.data.equippedGear[slot]=item.uid; }
+      this.data.gearSchemaVersion=1; changed=true;
+    }
+    if(!this.data.equippedGear||typeof this.data.equippedGear!=='object'){this.data.equippedGear={};changed=true;}
+    if(!Number.isFinite(this.data.gearInventoryCap)||this.data.gearInventoryCap<1){this.data.gearInventoryCap=24;changed=true;}
+    if(!Array.isArray(this.data.gearInbox)){this.data.gearInbox=[];changed=true;}
+    for(const slot in gearDefaults){ let item=this.gearItem(this.data.equippedGear[slot]);
+      if(!item||item.slot!==slot){ const baseId=this.data.gear[slot]||gearDefaults[slot]; item=this.data.gearItems.find(x=>x.baseId===baseId&&x.slot===slot);
+        if(!item){item=this.makeGearInstance(baseId,{isNew:false,acquiredAt:1});if(item)this.data.gearItems.push(item);}
+        if(item){this.data.equippedGear[slot]=item.uid;changed=true;} }
+      if(item&&this.data.gear[slot]!==item.baseId){this.data.gear[slot]=item.baseId;changed=true;} }
+    return changed; },
+  equippedGearItem(slot){ return this.gearItem((this.data.equippedGear||{})[slot]); },
+  isGearEquipped(uid){ return Object.values(this.data.equippedGear||{}).includes(uid); },
+  gearInventoryItems(slot){ const equipped=new Set(Object.values(this.data.equippedGear||{})); return (this.data.gearItems||[]).filter(x=>x&&!equipped.has(x.uid)&&(!slot||x.slot===slot)); },
+  gearInventoryCount(){ return this.gearInventoryItems().length; },
+  gearInventoryFull(){ return this.gearInventoryCount()>=(this.data.gearInventoryCap||24); },
+  addGearInstance(baseId,opts={}){ if(this.gearInventoryFull()&&!opts.allowOverflow)return null; const item=this.makeGearInstance(baseId,opts); if(!item)return null;
+    if(!Array.isArray(this.data.gearItems))this.data.gearItems=[]; this.data.gearItems.push(item);
+    if(!this.data.ownedGear.includes(baseId))this.data.ownedGear.push(baseId); if(!opts.silent)this.save(); return item; },
+  equipGearInstance(slot,uid){ const item=this.gearItem(uid); if(!item||item.slot!==slot)return false;
+    this.data.equippedGear[slot]=item.uid; this.data.gear[slot]=item.baseId; item.isNew=false; this.save(); return true; },
+  removeGearInstance(uid){ const item=this.gearItem(uid); if(!item||item.locked||this.isGearEquipped(uid))return false;
+    this.data.gearItems=this.data.gearItems.filter(x=>x.uid!==uid); this.save(); return true; },
+  gearLv(ref){ const item=this.gearItem(ref); if(item)return item.enhanceLv||0; const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearLv&&this.data.gearLv[id])||0; },
   gearReviveCount(){ let n=0; for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===this.data.gear[slot]); if(it&&it.fx==='revive')n++; } return n; },   // อุปกรณ์ตำนานคืนชีพที่สวมอยู่
   // 🔩 เศษอุปกรณ์: ได้จากของซ้ำ · ใช้หลอมของตำนาน
   addShards(n){ this.data.shards=(this.data.shards||0)+n; this.save(); },
   spendShards(n){ if((this.data.shards||0)>=n){ this.data.shards-=n; this.save(); return true; } return false; },
-  // affix ต่อชิ้น (E): สุ่มครั้งแรกที่ได้/ใส่ · reroll ด้วยเศษ
-  gearAffixes(id){ return (this.data.gearAffix&&this.data.gearAffix[id])||[]; },
-  ensureAffix(id,tier){ if(!this.data.gearAffix)this.data.gearAffix={}; if(!this.data.gearAffix[id]){ this.data.gearAffix[id]=rollAffixes(tier); this.save(); } return this.data.gearAffix[id]; },
-  rerollAffix(id,tier){ if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=rollAffixes(tier); this.save(); return this.data.gearAffix[id]; },
-  setAffixes(id,arr){ if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=arr; this.save(); },
-  // rarity ที่คราฟต์ (default จากฐาน)
-  gearRarity(id,baseTier){ return (this.data.gearRarity&&this.data.gearRarity[id])||baseDefaultRarity(baseTier); },
-  setGearRarity(id,r){ if(!this.data.gearRarity)this.data.gearRarity={}; this.data.gearRarity[id]=r; this.save(); },
+  // affix ต่อ instance; legacy maps are mirrored for compatibility with the current UI.
+  gearAffixes(ref){ const item=this.gearItem(ref); if(item)return item.affixes||[]; const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearAffix&&this.data.gearAffix[id])||[]; },
+  ensureAffix(ref,tier){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,t=base?base.tier:tier;
+    if(item){ if(!Array.isArray(item.affixes)){item.affixes=rollAffixes(t);this.save();} return item.affixes; }
+    if(!this.data.gearAffix)this.data.gearAffix={}; if(!this.data.gearAffix[id]){this.data.gearAffix[id]=rollAffixes(tier);this.save();} return this.data.gearAffix[id]; },
+  rerollAffix(ref,tier){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,arr=rollAffixes(base?base.tier:tier);
+    if(item)item.affixes=arr; if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=arr.map(x=>Object.assign({},x)); this.save(); return arr; },
+  setAffixes(ref,arr){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,copy=Array.isArray(arr)?arr.map(x=>Object.assign({},x)):[];
+    if(item)item.affixes=copy; if(!this.data.gearAffix)this.data.gearAffix={}; this.data.gearAffix[id]=copy.map(x=>Object.assign({},x)); this.save(); },
+  // craft state (common/magic/rare internally) per instance
+  gearRarity(ref,baseTier){ const item=this.gearItem(ref); if(item)return item.craftState||baseDefaultRarity(item.grade||baseTier); const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearRarity&&this.data.gearRarity[id])||baseDefaultRarity(baseTier); },
+  setGearRarity(ref,r){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref; if(item)item.craftState=r;
+    if(!this.data.gearRarity)this.data.gearRarity={}; this.data.gearRarity[id]=r; this.save(); },
   // 🧪 currency
   currency(k){ return (this.data.currency&&this.data.currency[k])||0; },
   addCurrency(k,n){ if(!this.data.currency)this.data.currency={}; this.data.currency[k]=(this.data.currency[k]||0)+n; this.save(); },
   spendCurrency(k,n){ if((this.currency(k))>=n){ this.data.currency[k]-=n; this.save(); return true; } return false; },
-  enhance(id){ this.data.gearLv[id]=(this.gearLv(id))+1; this.save(); },
+  enhance(ref){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,next=this.gearLv(ref)+1;
+    if(item)item.enhanceLv=next; this.data.gearLv[id]=next; this.save(); },
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลWaitบปัจจุบัน (0..TAL_MAX)
   talLvl(k){ return this.data.upgrades[k]||0; },
   talTotal(k){ return (this.data.rank||0)*TAL_MAX + this.talLvl(k); },   // ผลรวมที่ใช้จริง (ยศ+Waitบนี้)
@@ -1391,7 +1451,7 @@ const Save = {
     for(const slot of GEAR_SLOTS){const gid=this.data.gear[slot.slot],it=(GEAR[slot.slot]||[]).find(g=>g.id===gid);if(it)p+=(tierPower[it.tier]||0)+this.gearLv(it.id)*18;}
     const tal=cp.tal||{};for(const k in tal)p+=(tal[k]||0)*26;p+=(this.data.ascension||0)*250;return Math.max(100,Math.round(p/10)*10); },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
-    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, tutorialDone:false, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:24, gearInbox:[], gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, tutorialDone:false, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
   // ---- Bestiary (Monster Card) ----
   kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
   addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
@@ -3169,7 +3229,7 @@ class Game extends Phaser.Scene {
     const owned=Save.data.ownedGear, pool=gearPool('legend').filter(it=>!owned.includes(it.id));
     if(!pool.length){ Sfx.select(); this.showBanner('🌟 All legendaries owned','No more legendaries to forge',1500); return; }
     if(!Save.spendShards(LEGEND_FORGE_COST))return;
-    const it=Phaser.Utils.Array.GetRandom(pool); owned.push(it.id); Save.save();
+    const it=Phaser.Utils.Array.GetRandom(pool); Save.addGearInstance(it.id,{isNew:true});
     Sfx.clear(); this.screenFlash(0xff8f3a,0.8,520); this.screenShake(600,0.02);
     this.showBanner('🌟 Forged!',(GEAR_SLOTS.find(s=>s.slot===it.slot).emoji)+' '+it.name+' · Legend',2000);
     this.buildMenuScreen();
@@ -3281,7 +3341,7 @@ class Game extends Phaser.Scene {
   }
   bazaarBuyGear(id){ const it=GEAR_ALL.find(g=>g.id===id); if(!it)return; if(Save.data.ownedGear.includes(id))return; const cost=GEAR_BUY[it.tier]||200;
     if(!Save.spend(cost)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
-    Save.data.ownedGear.push(id); Save.ensureAffix(id,it.tier); Save.save(); Sfx.clear(); this.showBanner('🛒 Purchased',it.emoji+' '+it.name,1400); this.buildBazaar(); }
+    Save.addGearInstance(id,{isNew:true}); Sfx.clear(); this.showBanner('🛒 Purchased',it.emoji+' '+it.name,1400); this.buildBazaar(); }
   bazaarBuyCurrency(key,qty,cost){ if(!Save.spend(cost)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
     Save.addCurrency(key,qty); Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
   bazaarGambleGear(){ if(!Save.spend(180)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 180 Sugar',1300); return; }
@@ -5441,7 +5501,7 @@ class Game extends Phaser.Scene {
     let pool=gearPool(tier).filter(it=>!owned.includes(it.id));
     if(!pool.length && tier==='common') pool=gearPool('rare').filter(it=>!owned.includes(it.id));
     if(!pool.length) return null;
-    const it=Phaser.Utils.Array.GetRandom(pool); owned.push(it.id); Save.save(); return it; }
+    const it=Phaser.Utils.Array.GetRandom(pool); if(!Save.addGearInstance(it.id,{isNew:true}))return null; return it; }
   gachaRoll(){ const r=Math.random(), roll=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend';   // 50% common · 30% rare · 15% epic · 5% legend
     for(const t of [roll,'epic','rare','common','legend']){ const it=this.grantGear(t); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
