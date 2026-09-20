@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.15.0';
+const GAME_VERSION = '4.16.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.16.0', date:'2026-09-20', title:'Level-up card cleanup — less overlap', items:[
+    'Removed redundant common cards that felt samey on every character: Balanced Core and Returning Taste (they duplicated Sweet Power / Mochi Vitality / Regeneration / Quick Hands)',
+    'Removed the generic Overdrive and Combat Tempo cards — weapon upgrades plus the core passives now cover damage and fire rate',
+    'The level-up passive pool is now 10 distinct cards with clearer roles',
+  ]},
   { v:'4.15.0', date:'2026-09-20', title:'Loot boxes, currency drops & Sesame beam tuning', items:[
     'Field items now drop as sealed boxes that you collect during the run and open at the stage-end summary for a reveal',
     'Currency can now drop from ordinary monsters — pickups show a small light beam; the stage summary lists every currency you gained',
@@ -497,7 +502,7 @@ const SKILL_CARD_COLOR = {
   meteor:0xc58a5b, cloud:0x7ed6aa, rocket:0xff6578, mirror:0x8acbff, decoy:0x78dfca,
 };
 const PASS_ICON  = { heart:'ic_mochi_vitality', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_flavor_regen', sugarOnKill:'ic_sugar_on_kill',
-  flavorCore:'ic_flavor_core', bitterResolve:'ic_bitter_resolve', returningTaste:'ic_returning_taste' };
+  bitterResolve:'ic_bitter_resolve' };
 const ASSET_SHEETS = {
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
   char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
@@ -1057,12 +1062,9 @@ const PASSIVES = {
     apply(p){ p.regenPct=(p.regenPct||0)+0.002; } },
   sugarOnKill:{ name:'Sugar on Kill', emoji:'🍬', color:0xffd166, max:5, desc:'Heal 1 HP on kill (0.45s cooldown)',
     apply(p){ p.lifeOnKill=(p.lifeOnKill||0)+1; } },
-  flavorCore:{ name:'Balanced Core', emoji:'💠', color:0xffd166, max:5, desc:'+4% HP and +3% damage',
-    apply(p){ p.maxhp*=1.04; p.dmgMul*=1.03; } },
   bitterResolve:{ name:'Bitter Resolve', emoji:'🖤', color:0x9fa7c8, max:5, desc:'+8% damage while below 40% HP',
     apply(p){ p.lowHpDmg=(p.lowHpDmg||0)+0.08; } },
-  returningTaste:{ name:'Returning Taste', emoji:'✨', color:0xffa7c8, max:5, desc:'Regen 0.08% max HP per second and -2% cooldown',
-    apply(p){ p.regenPct=(p.regenPct||0)+0.0008; p.cdMul=Math.max(0.76,(p.cdMul||1)*0.98); } },
+  // v4.16: ยุบการ์ดซ้ำ — flavorCore (ซ้ำ power+heart) และ returningTaste (ซ้ำ regen+haste) ถูกเอาออก
 };
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 const CHARACTERS = {
@@ -1257,7 +1259,7 @@ const COMBOS = [
   // ⚫ งาดำ (mirror) — สายแนวรับ
   { key:'reflection',a:'mirror',   b:'guard',  sig:true, emoji:'🪞🛡️', name:'Oath Sundae', desc:'⭐ -12% damage taken · +5% damage', effect:p=>{p.dmgTakenMul*=0.88;p.dmgMul*=1.05;} },
   { key:'mirrormend',a:'mirror',   b:'regen',  emoji:'🪞💗', name:'Healing Mirror', desc:'+0.8 HP/s', effect:p=>{p.regen+=0.8;} },
-  { key:'oathkeep',  a:'mirror',   b:'returningTaste', emoji:'🪞🔁', name:'Echoing Oath', desc:'+7% damage', effect:p=>{p.dmgMul*=1.07;} },
+  { key:'oathkeep',  a:'mirror',   b:'crit', emoji:'🪞🎯', name:'Echoing Oath', desc:'+7% damage', effect:p=>{p.dmgMul*=1.07;} },
 ];
 
 function passivePairHint(key){
@@ -1265,8 +1267,6 @@ function passivePairHint(key){
   if(pairs.length)return 'Awaken pairs with: '+pairs.join(' / ');
   const tips={
     heart:'Good for: melee and tank builds',
-    flavorCore:'Good for: any build wanting offense + defense',
-    returningTaste:'Good for: Unique / long-cooldown skills',
   };
   return tips[key]||'Good for: any build';
 }
@@ -5172,9 +5172,7 @@ class Game extends Phaser.Scene {
     const atk=[];
     for(const u of d.upgrades){const cur=b.ranks[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
       const rr=rollRarity(); atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,apply:()=>{b.ranks[u.id]=Math.min(u.max,(b.ranks[u.id]||0)+rr.ranks);this.syncBasicAttack();}})});}
-    // ตัวเลือกเสริมประจำทุกตัว (Overdrive/Combat Tempo) — ขยาย pool ให้ ≥6 แบบ ลดการเจอใบเดิมซ้ำ
-    const extra=[{id:'overdrive',name:'Overdrive',emoji:'🔥',max:8,desc:'Basic Attack damage +5% per rank'},{id:'tempo',name:'Combat Tempo',emoji:'💨',max:8,desc:'Basic Attack fires 3% faster per rank'}];
-    for(const u of extra){const cur=b.ranks[u.id]||0;if(cur>=u.max)continue;const rr=rollRarity();atk.push({w:atk.length?1.4:2.5,card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,apply:()=>{b.ranks[u.id]=Math.min(u.max,(b.ranks[u.id]||0)+rr.ranks);this.syncBasicAttack();}})});}
+    // v4.16: เอา Overdrive/Combat Tempo ออก (ซ้ำกับ passive power/haste) — dmg/CD คุมผ่าน passive แกนแทน
     // สายติดตัว (passive) — 12 แบบ = แหล่งความหลากหลายหลัก · boost คู่ที่Cook Dishได้ (recipe)
     const cookB=new Set(COMBOS.filter(c=>this.skills[c.a]>0).map(c=>c.b));
     const pas=[];const pasOwned=Object.keys(this.passives).length;
