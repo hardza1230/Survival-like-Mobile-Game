@@ -2,16 +2,16 @@
 
 ## Production status
 
-All 44 equipment bases have production art. Version 4.2.7 replaces all 22 wearable SVG icons with individually generated transparent raster PNG artwork; the 22 weapon icons remain in the existing set.
+All 44 equipment bases now use individually generated transparent raster PNG artwork. Version 4.2.7 replaced the 22 wearable SVGs; version 4.2.8 completes the conversion by replacing all 22 weapon SVGs.
 
 | Slot | Production icons | Folder |
 |---|---:|---|
-| Weapon | 22 | `assets/gear/weapons/` |
-| Gloves | 4 | `assets/gear/gloves/` |
-| Armor | 4 | `assets/gear/armor/` |
-| Boots | 5 | `assets/gear/boots/` |
-| Amulet | 5 | `assets/gear/amulets/` |
-| Ring | 4 | `assets/gear/rings/` |
+| Weapon | 22 PNG | `assets/gear/weapons/` |
+| Gloves | 4 PNG | `assets/gear/gloves/` |
+| Armor | 4 PNG | `assets/gear/armor/` |
+| Boots | 5 PNG | `assets/gear/boots/` |
+| Amulet | 5 PNG | `assets/gear/amulets/` |
+| Ring | 4 PNG | `assets/gear/rings/` |
 
 Starter `None` entries intentionally keep their slot symbols and do not need item art.
 
