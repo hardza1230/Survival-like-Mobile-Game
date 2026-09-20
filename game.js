@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.11.0';
+const GAME_VERSION = '4.12.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.12.0', date:'2026-09-20', title:'Complete Bestiary — every monster tracked', items:[
+    'Bestiary now tracks each boss and miniboss per stage as its own entry (Ant Empress, Clogmaw, Mr. Griddle, Ice Cream Golem, The Great Hunger, The Rootmother and their minibosses)',
+    'Per-monster permanent stat bonuses were kept small so the fuller Bestiary does not inflate power',
+    'Old boss/miniboss kill counts migrate into the Stage 1 entries automatically',
+  ]},
   { v:'4.11.0', date:'2026-09-20', title:'Sesame trade-off rework', items:[
     'Sesame no longer wins by standing still: the mirror field now runs on a Guard meter that drains as it blocks bullets and recharges faster while moving',
     'Standing still builds Focus (bigger, stronger field) but burns Guard — reposition to recharge, rewarding in-and-out play',
@@ -1603,6 +1608,9 @@ const Save = {
     if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (Berry) → คืนเป็นโมโม่
     if(!this.data.charProg)this.data.charProg={};
     if(!this.data.bestiary)this.data.bestiary={};
+    // v4.12: bosses/minibosses แยกรายด่าน (boss0..5 / mini0..5) — เซฟเดิมนับรวมเป็น 'boss'/'mini' → ยกไป entry ด่าน 1
+    if(this.data.bestiary.boss!=null){ this.data.bestiary.boss0=(this.data.bestiary.boss0||0)+this.data.bestiary.boss; delete this.data.bestiary.boss; }
+    if(this.data.bestiary.mini!=null){ this.data.bestiary.mini0=(this.data.bestiary.mini0||0)+this.data.bestiary.mini; delete this.data.bestiary.mini; }
     if(!this.data.rankPerks)this.data.rankPerks={};
     if(!this.data.stageMastery)this.data.stageMastery={};
     // เซฟเดิมที่จบ Chapter 1 แล้วต้องเห็น Chapter 2 ทันทีหลังUpdates
@@ -1890,10 +1898,32 @@ const BESTIARY = [
     bonus:[{cdr:0.008},{cdr:0.015},{cdr:0.022},{cdr:0.03},{cdr:0.04}] },
   { id:'siege',   emoji:'🧱', name:'Siege Ant',       tex:'e_ant_soldier', desc:'Tanky and slow, but hits hard',
     bonus:[{hp:2},{hp:4},{hp:6},{hp:9},{hp:13,def:0.015}] },
-  { id:'mini',    emoji:'👑', name:'Royal Guard',      tex:'mb1',       desc:'Swarm leader — stronger than usual',
-    bonus:[{dmg:0.008},{dmg:0.015},{dmg:0.022},{dmg:0.03},{dmg:0.045,hp:8}] },
-  { id:'boss',    emoji:'👹', name:'Ant Empress',    tex:'boss1',     desc:'Ruler of the kitchen zone — the toughest!',
-    bonus:[{hp:2,dmg:0.008},{hp:4,dmg:0.015},{hp:7,dmg:0.022,def:0.015},{hp:11,dmg:0.03,def:0.02},{hp:16,dmg:0.04,def:0.03,crit:0.02}] },
+  // --- Minibosses (แยกรายด่าน · สแตตเล็กน้อยต่อตัว กันเฟ้อ) ---
+  { id:'mini0', emoji:'👑', name:'Ruby-Fang Guard',        tex:'mb1', desc:'Stage 1 miniboss — nest royal guard',
+    bonus:[{dmg:0.004},{dmg:0.008},{dmg:0.012},{dmg:0.016},{dmg:0.022}] },
+  { id:'mini1', emoji:'🌀', name:'Valve Maw',              tex:'mb2', desc:'Stage 2 miniboss — pressure warden',
+    bonus:[{cdr:0.004},{cdr:0.008},{cdr:0.012},{cdr:0.016},{cdr:0.022}] },
+  { id:'mini2', emoji:'🍳', name:'Boiling Pan',            tex:'mb3', desc:'Stage 3 miniboss — chili engine guard',
+    bonus:[{dmg:0.004},{dmg:0.008},{dmg:0.012},{dmg:0.016},{dmg:0.022}] },
+  { id:'mini3', emoji:'🧊', name:'Giant Ice Block',        tex:'mb4', desc:'Stage 4 miniboss — frost prison warden',
+    bonus:[{def:0.004},{def:0.008},{def:0.011},{def:0.014},{def:0.018}] },
+  { id:'mini4', emoji:'🔪', name:'Banquet Executioner',    tex:'mb5_banquet_executioner', desc:'Stage 5 miniboss — the crown feast',
+    bonus:[{crit:0.004},{crit:0.007},{crit:0.01},{crit:0.013},{crit:0.017}] },
+  { id:'mini5', emoji:'🦗', name:'Sporewarden Mantis',     tex:'mb6_sporewarden', desc:'Chapter 2 miniboss — canopy warden',
+    bonus:[{spd:0.004},{spd:0.008},{spd:0.012},{spd:0.016},{spd:0.022}] },
+  // --- Bosses (แยกรายด่าน · สแตตเล็กน้อยต่อตัว กันเฟ้อ) ---
+  { id:'boss0', emoji:'👑', name:'Emerald Acid Ant Empress', tex:'boss1', desc:'Stage 1 boss — ruler of the sour nest',
+    bonus:[{hp:1,dmg:0.004},{hp:2,dmg:0.008},{hp:3,dmg:0.012},{hp:4,dmg:0.016},{hp:6,dmg:0.02,def:0.008}] },
+  { id:'boss1', emoji:'🚰', name:'Clogmaw',                tex:'boss2', desc:'Stage 2 boss — lord of clogged pipes',
+    bonus:[{hp:1,def:0.004},{hp:2,def:0.007},{hp:3,def:0.01},{hp:4,def:0.013},{hp:6,def:0.017}] },
+  { id:'boss2', emoji:'🔥', name:'Mr. Griddle',            tex:'boss3', desc:'Stage 3 boss — the chili furnace',
+    bonus:[{dmg:0.005},{dmg:0.009},{dmg:0.013},{dmg:0.018},{dmg:0.024,crit:0.008}] },
+  { id:'boss3', emoji:'🍦', name:'Ice Cream Golem',        tex:'boss4', desc:'Stage 4 boss — the frost warden',
+    bonus:[{hp:1,def:0.004},{hp:2,def:0.007},{hp:3,def:0.011},{hp:5,def:0.014},{hp:7,def:0.019}] },
+  { id:'boss4', emoji:'🌑', name:'The Great Hunger',       tex:'boss5_sovereign', desc:'Stage 5 boss — the bottomless hunger',
+    bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016,crit:0.008},{hp:7,dmg:0.022,crit:0.011},{hp:10,dmg:0.028,crit:0.015,def:0.012}] },
+  { id:'boss5', emoji:'🌿', name:'The Rootmother',         tex:'boss6_rootmother', desc:'Chapter 2 boss — the root throne',
+    bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016},{hp:7,dmg:0.022,def:0.01},{hp:10,dmg:0.028,def:0.015,crit:0.012}] },
 ];
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
 // โบนัสสแตตของ tier ที่ระบุ (tier 0-4 = ค่าใน bonus[] · tier 5-7 = สเกลจาก tier 5)
@@ -5883,7 +5913,8 @@ class Game extends Phaser.Scene {
     if(this.player.lifeOnKill&&(!this._lifeOnKillCd||this._lifeOnKillCd<=0)){this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifeOnKill*(this.player.healEffect||1));this._lifeOnKillCd=0.45;}
     if(!big) Sfx.pop();
     // Bestiary: นับจำนวนที่ฆ่าตามชนิด
-    const btype=isBoss?'boss':isMini?'mini':e.acid?'acid':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture.key==='e_fast'?'fast':e.texture.key==='e_tank'||isElite?'tank':'basic');
+    const si=Math.min(5,Math.max(0,this.stageIndex||0));
+    const btype=isBoss?('boss'+si):isMini?('mini'+si):e.acid?'acid':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture.key==='e_fast'?'fast':e.texture.key==='e_tank'||isElite?'tank':'basic');
     const bSugar=Save.addKill(btype);
     if(bSugar){ this.showBanner('📖 Codex Rank Unlocked','+🍬 '+bSugar,1100); Sfx.chest&&Sfx.chest(); }
     const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
