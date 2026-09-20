@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.3.1';
+const GAME_VERSION = '4.4.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.4.0', date:'2026-09-20', title:'Item level scaling, Zone Level & navigation', items:[
+    'Item Level now shifts the affix Tier roll in 10-level bands — higher iLv rolls better Tiers more often',
+    'Added Zone Level (stage progression × difficulty, 1–18) as a single difficulty scalar for future systems; shown on the stage HUD',
+    'Back button now returns to the previous screen instead of jumping straight to the main menu',
+    'Reward Inbox moved to the bottom of the Gear & Power menu',
+  ]},
   { v:'4.3.1', date:'2026-09-20', title:'Craft Bench readability pass', items:[
     'Gear tiles and the item card are now tinted by rarity (Magic/Rare/Epic/Legend) with a corner rarity dot',
     'Affix and possible-stat rows show a left colour stripe — orange for Offense (prefix), teal for Utility (suffix) — with an on-screen legend',
@@ -949,6 +955,9 @@ const DIFFS = [
   {lv:2,name:'Hard',   emoji:'🟡',color:0xffd24d,hp:1.75,dmg:1.18, reward:1.85},
   {lv:3,name:'Hell',   emoji:'🔴',color:0xff5a6e,hp:2.8, dmg:1.38, reward:3.0},
 ];
+// Zone Level — ตัวแปรความยากรวมของด่าน (ความคืบหน้าด่าน × ระดับความยาก) = สเกลเดียวที่ระบบอื่นอ้างอิงได้ (Bazaar stock, reward tier ฯลฯ)
+// stageIndex 0..5 · diff 1..3 → Zone 1..18 (ยิ่งสูง = ยิ่งยาก/รางวัลดีขึ้น)
+function stageZoneLevel(stageIndex,diff){ const si=Math.max(0,Math.min(5,Math.floor(Number(stageIndex)||0))); const d=Math.max(1,Math.min(3,Math.floor(Number(diff)||1))); return si*3+d; }
 /* ---- Card Rarity (แบบ Death Must Die): การ์ดอัพเกรดสุ่มความหายาก → ยิ่งหายากยิ่งได้หลายเลเวลรวด ----
    สีความหายาก = สัญญาณอ่านเร็ว (เห็นทอง=เอาเลย) · ranks = จำนวนเลเวลที่ได้จากการ์ดใบเดียว */
 const RARITIES = [
@@ -1236,9 +1245,9 @@ const HUB_GROUPS = {
   gLoadout:{ title:'🎒 Gear & Power', rows:[
     ['upgrade','✦','Flavor Weave & Rank','Permanent power + 🏅 Rank Perks'],
     ['gear','◆','Equipment','Equip, compare and dismantle'],
-    ['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed'],
-    ['craft','🧪','Focused Crafting','Choose a line, target a stat, then craft'],
-    ['bazaar','🏪','Mochi Bazaar','Buy · Gamble · Sell for 🍬'] ] },
+    ['craft','🧪','Focused Crafting','See possible stats, craft rolls one at random'],
+    ['bazaar','🏪','Mochi Bazaar','Buy · Gamble · Sell for 🍬'],
+    ['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed'] ] },
   gCodex:{ title:'📖 Codex', rows:[
     ['skills','✧','Skill Codex','Skills, passives and Awaken pairs'],
     ['cookbook','🍳','Cookbook','Discovered recipes + signatures ⭐'],
@@ -1394,11 +1403,12 @@ function affixBestTierForItem(item,mod){const base=GEAR_ALL.find(g=>g.id===item.
 function affixBestRangeText(item,mod){if(!mod||!mod.tiers)return'—';const t=affixBestTierForItem(item,mod),b=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1],lo=mod.fmt?mod.fmt(b[0]):b[0],hi=mod.fmt?mod.fmt(b[1]):b[1];return lo===hi?lo:(lo+' – '+hi);}
 function craftCurrencyForLine(rarity,hasLine){if(!hasLine&&rarity==='common')return'transmute';if(!hasLine)return'exalt';return rarity==='rare'?'chaos':'alt';}
 // สุ่ม tier ระหว่าง best..5 · ถ่วงให้ tier แย่เจอบ่อย (T1 หายาก = loot chase)
-function rollTier(best){ const list=[]; let tot=0; for(let t=best;t<=5;t++){ const w=t*t; list.push([t,w]); tot+=w; } let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return 5; }
-function rollOneAffix(mod,best){ const t=rollTier(best), band=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v}; }
+// iLv มีผลกับ Tier ที่ออก: แบ่งช่วงละ 10 เลเวล (step 0..9) → ยิ่ง iLv สูง bias ยิ่งลด = tier แย่ (t สูง) ถูกถ่วงน้อยลง = tier ดีออกบ่อยขึ้น
+function rollTier(best,ilvl){ const step=Math.max(0,Math.min(9,Math.floor(((Number(ilvl)||1)-1)/10))); const bias=1-Math.min(0.62,step*0.075); const list=[]; let tot=0; for(let t=best;t<=5;t++){ const w=t*t*Math.pow(bias,t-best); list.push([t,w]); tot+=w; } let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return best; }
+function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl), band=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v}; }
 function rollAffixes(baseTier,itemLevel=1,base=null){const n=AFFIX_COUNT[baseTier]||0;if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,best=Math.max(BASE_BEST_TIER[baseTier]||4,bestAffixTierForItemLevel(itemLevel));
   const pre=pool.filter(a=>a.kind==='prefix'),suf=pool.filter(a=>a.kind==='suffix');let nPre,nSuf;if(n===1){if(Math.random()<.5){nPre=1;nSuf=0;}else{nPre=0;nSuf=1;}}else if(n===2){nPre=1;nSuf=1;}else{if(Math.random()<.5){nPre=2;nSuf=1;}else{nPre=1;nSuf=2;}}
-  const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=p.splice(Math.floor(Math.random()*p.length),1)[0];out.push(rollOneAffix(m,Math.max(best,m.bestTier||1)));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
+  const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=p.splice(Math.floor(Math.random()*p.length),1)[0];out.push(rollOneAffix(m,Math.max(best,m.bestTier||1),itemLevel));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
   const best=(kind)=>{ let b=null; for(const a of affs){ const d=affixDef(a.id); if(d&&d.kind===kind&&(!b||a.t<b.t))b=a; } return b?affixDef(b.id):null; };
@@ -2789,9 +2799,12 @@ class Game extends Phaser.Scene {
     const by=compact?10:38, bh=compact?32:34;
     const bg2=this.add.graphics(); bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(12,by,82,bh,11); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(12,by,82,bh,11);
     const bt=this.add.text(53,by+bh/2,'‹ Back',{fontFamily:'sans-serif',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
-    this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ this.menuScreen=backScreen||'hub'; this.buildMenuScreen(); });
+    this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); });
   }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
+    if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
+    if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
+    this._curMenu=s;
     if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
@@ -3564,7 +3577,7 @@ class Game extends Phaser.Scene {
     const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===line?'':a.id)),available=pool.filter(m=>!used.has(m.id));
     if(!available.length){Sfx.select();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}
     const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key);if(Save.currency(key)<1){Sfx.select();this.showBanner(cur.emoji+' Need '+cur.name,'Available: '+Save.currency(key),1300);return;}
-    const mod=Phaser.Utils.Array.GetRandom(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod));
+    const mod=Phaser.Utils.Array.GetRandom(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
     if(line<affs.length)affs[line]=rolled;else affs.push(rolled);if(rar==='common')rar='magic';
     Save.spendCurrency(key,1);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
     Sfx.clear();this.screenFlash(0x7fb0ff,.44,320);this.showBanner('🎲 '+cur.emoji+' Rolled!',mod.emoji+' '+mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t,1700);this.buildCraftBench();}
@@ -3965,7 +3978,7 @@ class Game extends Phaser.Scene {
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
     this.buildStageProps(i);this.buildChapterDepth(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
-    const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name}`);
+    const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
     this.showBanner(`${st.emoji} Stage ${stageNo}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
     this.updateWaveText();
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
@@ -4279,6 +4292,7 @@ class Game extends Phaser.Scene {
   newbieEase(){ let m=1; if(this.stageIndex===0)m*=0.60; if((this.stageKills||0)<25)m*=0.85; if(!Save.data.tutorialDone)m*=0.8; return m; }
   tutorialActive(){ return !!this._inTutorial; }
   diffMul(){ return DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))]; }   // ตัวคูณตามระดับความยากที่เลือก
+  zoneLevel(){ return stageZoneLevel(this.stageIndex||0,this.stageDiff||1); }   // Zone Level ของด่านที่กำลังเล่น
   // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
   recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }
   bossRageInfo(kills){
