@@ -51,6 +51,12 @@ Fading Gumdrop no longer appears in Common rewards. Wish Candy and Crystal Glaze
 
 The production icon set is stored in `assets/ui/currency/` as eight transparent 512×512 PNG files. Each icon has a different silhouette in addition to its color so it remains identifiable when displayed at mobile UI size.
 
+### Mobile Craft Bench layout
+
+The Craft Bench uses the production currency art for the main craft action, the four utility actions, the Bazaar currency rows and the live Currency Pouch. Utility actions use a 2×2 grid rather than one compressed row. On screens with enough vertical room, the pouch lists all eight currencies in two columns; it hides automatically when a large compatible affix pool needs the space.
+
+The main menu uses taller cards, fixed icon geometry and short subtitles so labels remain inside each button at portrait width.
+
 
 ## Item-specific pools
 
@@ -66,4 +72,4 @@ Normal affixes declare compatible equipment slots. The Craft screen lists only s
 - its own tier bands, formatter and combat application;
 - `exclusive: true` for distinct UI treatment.
 
-Normal and exclusive pools merge through `craftAffixPoolForItem`. No special mods are active in v4.2.2, so adding one later does not require rebuilding the Craft screen or save schema.
+Normal and exclusive pools merge through `craftAffixPoolForItem`. No special mods are active in v4.2.3, so adding one later does not require rebuilding the Craft screen or save schema.
