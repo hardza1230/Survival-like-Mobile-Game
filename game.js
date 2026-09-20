@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.7.0';
+const GAME_VERSION = '4.8.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.8.0', date:'2026-09-20', title:'Stats panel, Bestiary stats & character tuning', items:[
+    'New Character Stats screen (Gear & Power) shows real numbers — Attack Power, HP, Crit, Defense, Speed, Cooldown, Regen',
+    'Bestiary now grants permanent stats again, expanded to 8 kill tiers with much bigger bonuses at high tiers',
+    'Strawberry fires a little slower; Mint attacks faster and its frost lances home + shatter in a guaranteed AoE so they actually connect',
+  ]},
   { v:'4.7.0', date:'2026-09-20', title:'Flavor Passive tree & faster ranks', items:[
     'Rank Perks are now a 3-tier passive tree: Tier 2 unlocks after 3 points in Tier 1, Tier 3 after 8 points, with two new Mastery nodes (Iron Will, Fortune)',
     'Cores now cap at Lv3 instead of Lv5, so you rank up and earn RP faster',
@@ -1026,8 +1031,8 @@ const CHARACTERS = {
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
 const SIGNATURE_WEAPONS = {
-  berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.14,cdMul:0.88,shots:0,trait:'+14% damage · -12% cooldown'},
-  mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.84,areaMul:1.14,controlMul:1.18,trait:'Stronger orbiting shards · -16% cooldown'},
+  berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.16,cdMul:0.94,shots:0,trait:'+16% damage · steadier fire'},
+  mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.72,areaMul:1.18,controlMul:1.18,trait:'Rapid frost lances · -28% cooldown'},
   bearGauntlet:{name:'Cocoa Bear Gauntlet',emoji:'🐻',skill:'meteor',dmgMul:1.15,cdMul:1.05,areaMul:1.18,trait:'Harder and wider · +5% cooldown trade-off'},
   riftCompass:{name:'Rift Lightning Compass',emoji:'🧭',skill:'thunder',dmgMul:1.02,cdMul:0.86,chains:2,trait:'+2 chain targets · -14% cooldown'},
   oathMirror:{name:'Sesame Oath Mirror',emoji:'🪞',skill:'mirror',dmgMul:0.96,cdMul:0.88,areaMul:1.12,reflect:2,trait:'+2 reflected shots · +12% area'},
@@ -1261,6 +1266,7 @@ const PERK_TIER_REQ = { 2:3, 3:8 };   // แต้มที่ต้องลง
 /* ---- HUB_GROUPS: รวมปุ่มเมนูย่อยเป็นกลุ่ม ให้หน้า Hub สะอาดขึ้น (rows: [targetScreen,emoji,label,sub]) ---- */
 const HUB_GROUPS = {
   gLoadout:{ title:'🎒 Gear & Power', rows:[
+    ['stats','📊','Character Stats','See your real numbers'],
     ['upgrade','✦','Flavor Weave & Rank','Cores, Rank up & 🏅 Passive tree'],
     ['gear','◆','Equipment','Equip, compare and dismantle'],
     ['craft','🧪','Focused Crafting','See possible stats, craft rolls one at random'],
@@ -1838,7 +1844,9 @@ const Cloud = {
 };
 
 /* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
-const BESTIARY_THRESHOLDS = [25, 150, 500, 1500, 5000];   // เก็บยากขึ้นมาก (ของเดิม 10/50/200/600/2000)
+const BESTIARY_THRESHOLDS = [25, 150, 500, 1500, 5000, 15000, 40000, 100000];   // 8 ระดับ · ระดับสูง (6-8) = รางวัลของการฆ่ามอนสะสมเยอะ ๆ
+const BEST_MAX_TIER = BESTIARY_THRESHOLDS.length;
+const BEST_HI_SCALE = [1.7, 2.6, 3.8];   // tier 6/7/8 = สเกลจากโบนัส tier 5 (โตขึ้นเยอะที่ tier สูง)
 const BESTIARY = [
   { id:'basic',   emoji:'🐜', name:'Sour Worker Ant',   tex:'e_ant_worker',  desc:'The nest basic worker',
     bonus:[{hp:1},{hp:2},{hp:3},{hp:5},{hp:9,def:0.01}] },
@@ -1862,6 +1870,11 @@ const BESTIARY = [
     bonus:[{hp:2,dmg:0.008},{hp:4,dmg:0.015},{hp:7,dmg:0.022,def:0.015},{hp:11,dmg:0.03,def:0.02},{hp:16,dmg:0.04,def:0.03,crit:0.02}] },
 ];
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
+// โบนัสสแตตของ tier ที่ระบุ (tier 0-4 = ค่าใน bonus[] · tier 5-7 = สเกลจาก tier 5)
+function bestiaryBonusAt(m,tierIdx){ if(tierIdx<0||!m.bonus)return {}; if(tierIdx<m.bonus.length)return m.bonus[tierIdx]||{}; const base=m.bonus[m.bonus.length-1]||{},sc=BEST_HI_SCALE[tierIdx-m.bonus.length]||3.8,out={}; for(const k in base)out[k]=base[k]*sc; return out; }
+function bestiaryBonusTotal(type){ const m=BESTIARY.find(x=>x.id===type); if(!m)return {}; const lv=bestiaryLv(type),tot={}; for(let i=0;i<lv;i++){ const b=bestiaryBonusAt(m,i); for(const k in b)tot[k]=(tot[k]||0)+b[k]; } return tot; }
+function bestiaryTotals(){ const tot={hp:0,dmg:0,def:0,spd:0,crit:0,cdr:0}; for(const m of BESTIARY){ const b=bestiaryBonusTotal(m.id); for(const k in b)tot[k]=(tot[k]||0)+(b[k]||0); } return tot; }
+function bestiaryBonusText(b){ const parts=[]; if(b.hp)parts.push('+'+Math.round(b.hp)+' HP'); if(b.dmg)parts.push('+'+(b.dmg*100).toFixed(1)+'% DMG'); if(b.def)parts.push('-'+(b.def*100).toFixed(1)+'% DMG taken'); if(b.spd)parts.push('+'+(b.spd*100).toFixed(1)+'% SPD'); if(b.crit)parts.push('+'+(b.crit*100).toFixed(1)+'% Crit'); if(b.cdr)parts.push('-'+(b.cdr*100).toFixed(1)+'% CD'); return parts.join(' · '); }
 
 /* ---- STAGES: 5 โซนครัว · แต่ละStage = Wave → Miniboss (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
 /* ---- STAGE_PROPS: เลย์เอาต์ props ต่อStage [key,x,y,solid,scale] — ทำแผนที่ให้เป็น "Room" ที่ออกแบบไว้ ----
@@ -2838,7 +2851,7 @@ class Game extends Phaser.Scene {
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     this._curMenu=s;
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='cookbook')this.buildCookbook(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -2914,23 +2927,24 @@ class Game extends Phaser.Scene {
   buildBestiary(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 Bestiary');
     const w=this.W,h=this.H;
-    // สรุปโบนัสรวม
+    // สรุปโบนัสรวม (สแตตถาวร + Sugar)
     const totLv=BESTIARY.reduce((a,m)=>a+bestiaryLv(m.id),0);
-    const sumTxt=this.add.text(w/2,53,'Reach kill tiers = get 🍬 Sugar instantly · tiers unlocked '+totLv+' tiers',
-      {fontFamily:'sans-serif',fontSize:'10px',color:'#ffe08a',wordWrap:{width:w-180}}).setOrigin(0.5);
-    this.menu.add(sumTxt);
+    const bt=bestiaryTotals(),bText=bestiaryBonusText(bt)||'no bonus yet';
+    const sumTxt=this.add.text(w/2,50,'Kill tiers ('+totLv+'/'+(BESTIARY.length*BEST_MAX_TIER)+') = permanent stats + 🍬',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5);
+    const sumBonus=this.add.text(w/2,64,'Total: '+bText,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-28},align:'center'}).setOrigin(0.5,0);
+    this.menu.add([sumTxt,sumBonus]);
     const portrait=w<=h, cols=portrait?2:3, gap=7,cardW=(w-28-gap*(cols-1))/cols,marginX=14;
-    const rows=Math.ceil(BESTIARY.length/cols), y0=portrait?82:66,cardH=Math.min(portrait?106:86,(h-y0-14-gap*(rows-1))/rows);
-    const starColors=['#4a4059','#8bd3a0','#7fc9ff','#b98cff','#ffd166','#ff8fb5'];
+    const rows=Math.ceil(BESTIARY.length/cols), y0=portrait?92:72,cardH=Math.min(portrait?108:88,(h-y0-14-gap*(rows-1))/rows);
+    const starColors=['#4a4059','#8bd3a0','#7fc9ff','#b98cff','#ffd166','#ff8fb5','#ff9a5a','#ff5a6e','#ff3d8f'];
     BESTIARY.forEach((m,idx)=>{
       const col=idx%cols, row=Math.floor(idx/cols);
       const cx=marginX+col*(cardW+gap), cy=y0+row*(cardH+gap);
       const lv=bestiaryLv(m.id), kills=Save.kills(m.id);
-      const next=lv<5?BESTIARY_THRESHOLDS[lv]:null;
+      const next=lv<BEST_MAX_TIER?BESTIARY_THRESHOLDS[lv]:null;
       const g=this.add.graphics();
       g.fillStyle(lv>0?0x2c2338:0x201a2a,1); g.fillRoundedRect(cx,cy,cardW,cardH,12);
-      g.lineStyle(2,lv>=5?0xffd166:(lv>0?0x4a4059:0x39304a),1); g.strokeRoundedRect(cx,cy,cardW,cardH,12);
-      if(lv>=5){ g.fillStyle(0xffd166,0.08); g.fillRoundedRect(cx,cy,cardW,cardH,12); }
+      g.lineStyle(2,lv>=BEST_MAX_TIER?0xffd166:(lv>0?0x4a4059:0x39304a),1); g.strokeRoundedRect(cx,cy,cardW,cardH,12);
+      if(lv>=BEST_MAX_TIER){ g.fillStyle(0xffd166,0.08); g.fillRoundedRect(cx,cy,cardW,cardH,12); }
       // icon
       const hasTex=this.textures.exists(m.tex);
       const icon=hasTex?this.add.image(cx+25,cy+25,m.tex).setDisplaySize(portrait?36:31,portrait?36:31):
@@ -2939,9 +2953,7 @@ class Game extends Phaser.Scene {
       // ชื่อ
       const nm=this.add.text(cx+47,cy+9,m.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:lv>0?'#ffffff':'#7a7088'}).setOrigin(0,0);
       // ดาว ★
-      let starStr='';
-      for(let s=0;s<5;s++) starStr+=(s<lv?'★':'☆');
-      const stars=this.add.text(cx+47,cy+25,starStr,{fontFamily:'sans-serif',fontSize:'10px',color:starColors[lv]||'#4a4059'}).setOrigin(0,0);
+      const stars=this.add.text(cx+47,cy+25,'★ Tier '+lv+'/'+BEST_MAX_TIER,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:starColors[lv]||'#4a4059'}).setOrigin(0,0);
       // จำนวนฆ่า + progress
       const killStr='Defeat: '+kills+(next?' / '+next:'');
       const kt=this.add.text(cx+8,cy+44,killStr,{fontFamily:'sans-serif',fontSize:'9px',color:'#b7abc9'}).setOrigin(0,0);
@@ -2951,12 +2963,50 @@ class Game extends Phaser.Scene {
       const pct=next?Math.min(1,kills/next):1;
       const barColor=lv>=5?0xffd166:(lv>=3?0xb98cff:0x8bd3a0);
       if(pct>0){ g.fillStyle(barColor,1); g.fillRoundedRect(bx,by,Math.max(6,barW*pct),barH,3); }
-      // bonus text — ปลดขั้นแล้วได้ Sugar (ไม่ใช่สแตต)
-      const bLabel=lv>0?('Unlocked '+lv+' tiers · 🍬 +'+(lv*40)):'First tier: 🍬 +40';
-      const bt=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontSize:'8.5px',color:lv>0?'#ffd166':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
-      const desc=this.add.text(cx+8,cy+75,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8.5px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
-      this.menu.add([g,icon,nm,stars,kt,bt,desc]);
+      // bonus text — สแตตถาวรสะสม + Sugar
+      const curB=bestiaryBonusTotal(m.id),bStat=bestiaryBonusText(curB);
+      const bLabel=lv>0?((bStat||'—')+'  · 🍬+'+(lv*40)):'Tier 1 → permanent stat + 🍬+40';
+      const blT=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontStyle:lv>0?'bold':'normal',fontSize:'8px',color:lv>0?'#8bd3ff':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
+      const desc=this.add.text(cx+8,cy+cardH-13,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
+      this.menu.add([g,icon,nm,stars,kt,blT,desc]);
     });
+    this.menu.setVisible(true);
+  }
+  // คำนวณสแตตจริงของ loadout (base + char + weapon + Flavor Weave + gear + bestiary + perks) โดยไม่แตะ player จริง
+  previewStats(){
+    const p={maxhp:90,dmgMul:0.90,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
+    const ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,st=ch.stats||{};
+    if(st.hp)p.maxhp+=st.hp; if(st.dmg)p.dmgMul*=st.dmg; if(st.spd)p.baseSpeed*=st.spd; if(st.def)p.dmgTakenMul*=st.def; if(st.crit)p.critChance+=st.crit; if(st.cdr)p.cdMul*=st.cdr; if(st.regenFlat)p.regenFlat+=st.regenFlat;
+    const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul*=(sw.dmgMul||1); p.cdMul*=(sw.cdMul||1); }
+    for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); }
+    for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid)); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
+    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul*=(1+bst.dmg); if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
+    const rp=Save.data.rankPerks||{}; if(rp.vigor)p.maxhp*=1+0.06*rp.vigor; if(rp.might)p.dmgMul*=1+0.05*rp.might; if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
+    p.dmgTakenMul=Math.max(0.35,p.dmgTakenMul); p.critChance=Math.min(0.6,p.critChance); p.cdMul=Math.max(0.5,p.cdMul);
+    return p;
+  }
+  buildStats(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📊 Character Stats');
+    const w=this.W,p=this.previewStats(),ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,pow=Save.power(Save.data.character);
+    let y=58;
+    const hd=this.add.text(w/2,y,ch.emoji+' '+ch.name+'  ·  ⚡ Power '+pow,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5); y+=16;
+    const note=this.add.text(w/2,y,'Real loadout numbers (weapon + weave + gear + bestiary + perks)',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5); this.menu.add([hd,note]); y+=22;
+    const rows=[
+      ['💥','Attack Power',Math.round(p.dmgMul*100)+'',p.flatDmg?('+'+p.flatDmg+' flat per hit'):'base 90 = starting',0xff8f5a],
+      ['❤️','Max HP',Math.round(p.maxhp)+'','',0xff5f7a],
+      ['🎯','Crit Chance',Math.round(p.critChance*100)+'%','×'+p.critMul.toFixed(2)+' crit damage',0xffd166],
+      ['🛡️','Defense',Math.round((1-p.dmgTakenMul)*100)+'% less','damage taken ×'+p.dmgTakenMul.toFixed(2),0x6ec6ff],
+      ['👟','Move Speed',Math.round(p.baseSpeed)+'','',0x8bd3a0],
+      ['⏱️','Cooldown',Math.round((1-p.cdMul)*100)+'% faster','skill cooldown ×'+p.cdMul.toFixed(2),0xb388ff],
+      ['💗','Regen',((p.regen||0)+(p.regenFlat||0)).toFixed(1)+' /s','',0x66d3b3],
+    ];
+    const rh=40,gap=6,cardW=w-28;
+    rows.forEach((r,i)=>{ const ry=y+i*(rh+gap),g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(14,ry,cardW,rh,10); g.lineStyle(1.4,0x4a4059,1); g.strokeRoundedRect(14,ry,cardW,rh,10); g.fillStyle(r[4],0.16); g.fillRoundedRect(14,ry,5,rh,{tl:10,bl:10,tr:0,br:0});
+      const em=this.add.text(32,ry+rh/2,r[0],{fontSize:'19px'}).setOrigin(0.5);
+      const nm=this.add.text(54,ry+8,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e8dcf0'}).setOrigin(0,0);
+      const sub=this.add.text(54,ry+23,r[3],{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(0,0);
+      const val=this.add.text(w-24,ry+rh/2,r[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(1,0.5);
+      this.menu.add([g,em,nm,sub,val]); });
     this.menu.setVisible(true);
   }
   buildSkillArchive(){
@@ -3874,8 +3924,16 @@ class Game extends Phaser.Scene {
     this.rankSugarMul=1+0.08*(rp.greed||0);
     this._boxLuckMul=1+0.30*(rp.boxLuck||0);
     this._currencyLuckMul=1+0.10*(rp.fortune||0);
+    // Bestiary = สแตตถาวรจากการฆ่ามอนสะสม (คืนมาแล้ว v4.8) — hp flat · dmg/def/spd/cdr เป็น % · crit เป็น chance
+    const bst=bestiaryTotals();
+    if(bst.hp)p.maxhp+=bst.hp;
+    if(bst.dmg)p.dmgMul*=(1+bst.dmg);
+    if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def));
+    if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd));
+    if(bst.crit)p.critChance+=bst.crit;
+    if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
     // หมายเหตุ: Bestiary + Ascension ไม่ให้สแตตรบแล้ว (ยุบแหล่งสแตตที่ทับซ้อน v2.45.0)
-    //  · Bestiary → ให้ Sugar ตอนปลดขั้น (ใน Save.addKill)  · Ascension → ให้ Sugar ก้อนใหญ่ตอน Ascend
+    //  · Bestiary → v4.8 คืนสแตตถาวร (bestiaryTotals ด้านบน) + ยังให้ Sugar ตอนปลดขั้น  · Ascension → Sugar ก้อนใหญ่ตอน Ascend
     //  เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank (พรถาวร) · Talent เฉพาะตัว · Gear
     p.baseSpeed=Math.min(BALANCE.moveSpeed*1.35,p.baseSpeed);   // meta หลายระบบรวมกันต้องไม่ทำให้เดินเร็วเกินอ่านสนาม
     p.cdMul=Math.max(0.72,p.cdMul);p.critChance=Math.min(0.40,p.critChance);p.dmgMul=Math.min(3.25,p.dmgMul);
@@ -5144,6 +5202,7 @@ class Game extends Phaser.Scene {
     let base=lvl>=SKILL_AWAKEN_LV?this._cdBase(key,SKILL_AWAKEN_LV)*0.85:this._cdBase(key,lvl);
     const sw=this.signatureWeaponInfo(),b=this.basicAttackInfo()?.skill===key?this.basicAttack:null;
     if(b&&this.character==='cocoa'&&key==='meteor')base=0.64;
+    if(b&&this.character==='mint'&&key==='frost')base=Math.max(1.25,1.95-lvl*0.08);   // มินต์ = basic attack ยิงถี่ (แทนคูลดาวน์ frost ปกติที่ช้า)
     const basicRate=b?Math.pow(0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
     return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate;
   }
@@ -5383,7 +5442,7 @@ class Game extends Phaser.Scene {
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1);
-    const lances=evo?3:1, spread=0.17, centerL=(lances-1)/2, flightT=range/900;
+    const lances=evo?4:2, spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // ยิงเป็นพัด 2 หอก (evo 4) + โฮมมิ่งเบา ๆ = โดนง่ายขึ้น
     // จำนวน/สเปกสะเก็ด — chill=+จำนวน · linger=+จำนวน+กระจายกว้าง · evo แบ่งต่อแฉกให้ไม่ล้น
     const shardBase=6+Math.min(4,(basic?.ranks.chill||0))+Math.min(4,(basic?.ranks.linger||0))+(aw?3:0);
     const shardPer=evo?Math.max(3,Math.round(shardBase*0.55)):shardBase;
@@ -5396,7 +5455,7 @@ class Game extends Phaser.Scene {
       const st={done:false};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
       // หอกวิ่ง — แตกทันทีที่กระทบเป้าตัวแรก (burst monster)
       const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
-        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.55+lvl*0.045); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.15; b.hitGapV=0.1;
+        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.62+lvl*0.05); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.2; b.hitGapV=0.1; b.homing=300+lvl*24;   // โฮมมิ่งเบา = ตามเป้า
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
         b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
@@ -5410,15 +5469,21 @@ class Game extends Phaser.Scene {
   frostShatterBurst(x,y,baseAng,count,sdmg,freeze,fb,blizzard,lvl){
     if(this.state!=='play'&&this.state!=='levelup')return;
     this.burst(x,y,0x8fd0ff);
-    const ring=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0xbdf0ff).setDepth(6).setScale(0.2).setAlpha(0.85));
-    this.tweens.add({targets:ring,scale:1.1,alpha:0,duration:260,onComplete:()=>ring.destroy()});
-    const arc=Math.PI*1.15;   // กระจายพัดกว้าง (ไม่ครบวง เน้นไปข้างหน้า)
+    const bloomR=118+lvl*8+(blizzard?40:0);
+    const ring=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0xbdf0ff).setDepth(6).setScale(0.2).setAlpha(0.9));
+    this.tweens.add({targets:ring,scale:bloomR/60,alpha:0,duration:300,onComplete:()=>ring.destroy()});
+    // การันตีโดน: ระเบิดน้ำแข็ง AoE ในรัศมี (ดาเมจ + แช่) — แก้ปัญหา "ไม่ค่อยโดน"
+    this.enemies.children.iterate(e=>{ if(!e||!e.active)return; if(this.dist(e.x,e.y,x,y)>bloomR)return;
+      this.damage(e,sdmg*1.6*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);
+      if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,freeze*1.2); e.setVelocity(e.body.velocity.x*0.25,e.body.velocity.y*0.25); e.setTint(COLORS.ice); }
+    });
+    const arc=Math.PI*1.15;   // สะเก็ดกระจายพัดกว้าง + โฮมมิ่ง = ตามเก็บตัวรอบนอก
     for(let i=0;i<count;i++){ const a=baseAng+(i/(count-1||1)-0.5)*arc+Phaser.Math.FloatBetween(-0.08,0.08);
       const b=this.getBullet(x,y,0xffffff,0.28); if(!b)break;
-      b.setTexture('proj_sprinkle').setTint(0xcaf3ff); b.faceVel=true; b.dmg=sdmg; b.life=0.42; b.pierce=true; b.hitGapV=0.1;
+      b.setTexture('proj_sprinkle').setTint(0xcaf3ff); b.faceVel=true; b.dmg=sdmg; b.life=0.55; b.pierce=true; b.hitGapV=0.1; b.homing=260;
       b.iceNeedle={freeze,frozenBonus:fb,shatter:blizzard,dmg:sdmg,lvl};
       this.physics.velocityFromRotation(a,520+Math.random()*120,b.body.velocity); }
-    this.hitCratesInRadius(x,y,90,sdmg);
+    this.hitCratesInRadius(x,y,bloomR,sdmg);
   }
   // ประมวลผลIce Torrent: ทุก 0.4s ทำ DoT + ชะลอ (frozen สั้น ๆ เป็นจังหวะ = สโลว์) ให้ศัตรูในปล้อง แล้วค่อย ๆ จาง
   tickFrostStreams(dt){
