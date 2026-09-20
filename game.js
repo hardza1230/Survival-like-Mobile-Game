@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.16.0';
+const GAME_VERSION = '4.17.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.17.0', date:'2026-09-20', title:'Dedicated Training Ground tutorial', items:[
+    'New players now learn in a clean, empty Training Ground instead of the real Stage 1 — no props, no waves, just Berry teaching step by step',
+    'The Chapter 1 story intro is no longer spent during the tutorial, so it plays properly on your first real Stage 1 run',
+    'Finishing the tutorial returns you to the stage-select screen to start a real stage',
+  ]},
   { v:'4.16.0', date:'2026-09-20', title:'Level-up card cleanup — less overlap', items:[
     'Removed redundant common cards that felt samey on every character: Balanced Core and Returning Taste (they duplicated Sweet Power / Mochi Vitality / Regeneration / Quick Hands)',
     'Removed the generic Overdrive and Combat Tempo cards — weapon upgrades plus the core passives now cover damage and fire rate',
@@ -4236,9 +4241,18 @@ class Game extends Phaser.Scene {
     const st=STAGES[i]; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.stageIndex=i; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // สะสมกล่องไอเทม (เปิดตอนจบด่าน) + currency ที่เก็บได้ในด่านนี้ (โชว์ในสรุป)
     this._bossZoom=1;this.applyMainZoom();
+    this.bossUI.forEach(o=>o.setVisible(false));
+    // 🎓 Training Ground — พื้นที่เปล่าสำหรับสอนเล่น (ไม่มี props / ไม่มีเวฟ / พื้นหลังโล่ง) coach คุมการสปอนเอง
+    if(this._inTutorial){ this.clearStageProps(); this.gridBg.fillColor=0x2e2740;
+      if(this.bgTile&&this.textures.exists('bg1'))this.bgTile.setTexture('bg1');
+      this._waveObjectiveBag=[]; this._powerGuide=this.getPowerGuide(0);
+      this.player.setPosition(0,0).setVelocity(0,0);
+      this.stageTxt.setText('🎓 Training Ground'); this.updateWaveText();
+      this.showBanner('🎓 Training Ground','A safe empty space — Berry will teach you step by step',2600);
+      return;   // ไม่ตั้งเวฟ (coach เป็นคนสปอนมอนให้ลอง)
+    }
     this._waveObjectiveBag=i<=4?Phaser.Utils.Array.Shuffle(['survive','hunt','purge','capture'].slice()):[];
     Sfx.playStageBgm(i+1);
-    this.bossUI.forEach(o=>o.setVisible(false));
     this.gridBg.fillColor=st.grid;
     if(this.bgTile&&this.textures.exists('bg'+(i+1))) this.bgTile.setTexture('bg'+(i+1));   // พื้นหลังโซนตามด่าน
     this.buildStageProps(i);this.buildChapterDepth(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
@@ -4995,7 +5009,8 @@ class Game extends Phaser.Scene {
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
     const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Seed Hunger Left Behind','When The Great Hunger shattered, the crown seed rooted skyward — the memories just returned now bloom out of season in the ferment garden',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูBerryสอนแบบ "Talk + try it + pass to continue"
-    if(!Save.data.tutorialDone){ this._inTutorial=true; const wrapped=()=>{ begin(); this.startCoach(); }; if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',wrapped);}else wrapped(); return; }
+    // ผู้เล่นใหม่ → เข้า Training Ground (พื้นที่เปล่า) ให้ครูBerryสอนก่อน · ไม่แตะ story intro (เก็บไว้เล่นตอนลงด่าน 1 จริง)
+    if(!Save.data.tutorialDone){ this._inTutorial=true; begin(); this.startCoach(); return; }
     launch();
   }
   /* ---- 🍓 ครูBerryสอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
@@ -5020,7 +5035,9 @@ class Game extends Phaser.Scene {
     if(step.spawn){ for(let i=0;i<step.spawn;i++){ const a=Math.PI*2*i/step.spawn; this.spawnEnemy('basic', a, 175); } }
     if(step.level){ this.pendingLvl=(this.pendingLvl||0)+1; this.time.delayedCall(220,()=>{ if(this._inTutorial&&this.state==='play')this.openLevelUp(); }); }
   }
-  _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.save(); if(this.showBanner)this.showBanner('🎓 Tutorial complete!','Go loot and craft~',1600); }
+  _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.save(); if(this.showBanner)this.showBanner('🎓 Tutorial complete!','Now pick a real stage and dive in~',1600);
+    this.sugarStage=0; this.time.delayedCall(1200,()=>{ if(this.state==='play'||this.state==='levelup'){ this.exitStage(); this.menuScreen='stage'; if(this.buildMenuScreen)this.buildMenuScreen(); } });   // ออกจาก Training Ground → หน้าเลือกด่านจริง
+  }
   drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
     const bx=10,by=54,bw=w-20,bh=58, g=this.add.graphics(); g.fillStyle(0x2a1030,0.94); g.fillRoundedRect(bx,by,bw,bh,14); g.lineStyle(2,0xff5f88,1); g.strokeRoundedRect(bx,by,bw,bh,14); cont.add(g);
     if(this.textures.exists('card_berry')){ const im=this.add.image(bx+26,by+bh/2,'card_berry'); const s=Math.min(44/im.width,52/im.height); im.setScale(s); cont.add(im); }
