@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.10.0';
+const GAME_VERSION = '4.11.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.11.0', date:'2026-09-20', title:'Sesame trade-off rework', items:[
+    'Sesame no longer wins by standing still: the mirror field now runs on a Guard meter that drains as it blocks bullets and recharges faster while moving',
+    'Standing still builds Focus (bigger, stronger field) but burns Guard — reposition to recharge, rewarding in-and-out play',
+    'Field colour signals state: gold when Focus is high, red when Guard is nearly out',
+  ]},
   { v:'4.10.0', date:'2026-09-20', title:'Character tuning & Zone Modifier rerolls', items:[
     'Zone Modifiers are now rolled with a Chaos currency Reroll (or cleared for a safe run) instead of freely stacked, to keep rewards in check',
     'Cocoa reworked into a sturdy bruiser: lighter hits, only 2 slams (shockwave needs the Breaker mutation), higher HP and regen',
@@ -1043,7 +1048,7 @@ const CHARACTERS = {
   mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — wide freezes, fast, casts often',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'Warm and Tough — a sturdy melee brawler with high HP and strong regen (trade raw damage for durability)',stats:{hp:46,dmg:1.03,spd:0.94,def:0.88,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
-  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Defensive architect',desc:'Sets protective mirrors, reflects bullets, and heals while holding ground',stats:{hp:34,dmg:0.96,spd:0.93,def:0.82,crit:0.01,cdr:0.98,regenFlat:0.65},rating:{hp:5,atk:3,spd:2,def:5}},
+  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Position duelist',desc:'Hold still to charge Focus (bigger, stronger field) but the bullet Guard drains — move to recharge it. Rewards in-and-out play, not standing still',stats:{hp:34,dmg:0.96,spd:0.96,def:0.86,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:3,spd:3,def:4}},
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
@@ -5695,17 +5700,25 @@ class Game extends Phaser.Scene {
     if(ch!=='mint'&&this._frostStreams&&this._frostStreams.length){ this._frostStreams.forEach(s=>s.img&&s.img.active&&s.img.destroy()); this._frostStreams=null; }
     // 🪞 งาดำ — วงเวทกระจกถาวรWaitบตัว (aura ไม่หาย): ทำดาเมจศัตรูในเขต + ลบกระสุนศัตรูที่เข้าเขต (ward) · Noneจรวด/ไม่ยิง projectile
     if(ch==='sesame'){
-      const lvl=this.skills.mirror||1, R=88+lvl*13+(this.player.mirrorWard?18:0);   // เล็กช่วงเลเวลแรก แล้วค่อยโต
-      if(!this._sesField)this._sesField=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_magic_circle').setDepth(2).setTint(0xf4e7bd).setAlpha(0.22));
+      const lvl=this.skills.mirror||1;
+      // Trade-off: ยืนนิ่ง = สะสม Focus (แรง+วงกว้าง) แต่ Guard (บล็อกกระสุน) หมดเร็ว · ต้องขยับเพื่อ recharge Guard = เข้า-ออกเป็นจังหวะ
+      const pv=this.player.body?Math.hypot(this.player.body.velocity.x,this.player.body.velocity.y):0, moving=pv>45;
+      const GMAX=100; if(this._sesGuard==null)this._sesGuard=GMAX;
+      this._sesGuard=Math.min(GMAX,this._sesGuard+dt*(moving?42:9));   // ขยับ = ฟื้น Guard เร็ว · นิ่ง = ฟื้นช้า (บล็อกจนหมดได้)
+      if(this._sesFocus==null)this._sesFocus=0;
+      this._sesFocus=moving?Math.max(0,this._sesFocus-dt*1.7):Math.min(1,this._sesFocus+dt*0.5);   // นิ่ง = Focus โต · ขยับ = สลาย
+      const focusMul=1+this._sesFocus*0.85, gLow=this._sesGuard<24;
+      const R=88+lvl*13+(this.player.mirrorWard?18:0)+this._sesFocus*24;
+      if(!this._sesField)this._sesField=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_magic_circle').setDepth(2).setAlpha(0.22));
       this._sesA=(this._sesA||0)+dt*0.5;
-      this._sesField.setPosition(this.player.x,this.player.y).setDisplaySize(R*2,R*2).setRotation(this._sesA).setAlpha(0.18+0.05*Math.sin(this.elapsed*2.2));
+      this._sesField.setPosition(this.player.x,this.player.y).setDisplaySize(R*2,R*2).setRotation(this._sesA).setTint(gLow?0xff7a7a:(this._sesFocus>0.6?0xffe08a:0xf4e7bd)).setAlpha(0.14+0.08*(this._sesGuard/GMAX)+0.04*Math.sin(this.elapsed*2.2));
       this._sesFieldT=(this._sesFieldT||0)-dt;
-      if(this._sesFieldT<=0){ this._sesFieldT=0.4; const dmg=(6+lvl*2.2)*(this.player.dmgMul||1);
+      if(this._sesFieldT<=0){ this._sesFieldT=0.4; const dmg=(5+lvl*2)*(this.player.dmgMul||1)*focusMul;
         this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,this.player.x,this.player.y)>R)return;
           this.damage(e,(e.isBoss||e.isMini)?dmg*1.35:dmg,e.x,e.y); });
         this.hitCratesInRadius(this.player.x,this.player.y,R,dmg); }
-      // ward: กระสุนศัตรูที่หลุดเข้าเขตถูกลบทิ้ง (สะท้อน/ป้องกันโดยไม่สร้าง projectile ใหม่)
-      this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<R){ this.vfxHitRing(f.x,f.y,0xf4e7bd,false); this.killFoe(f); } });
+      // ward: บล็อกกระสุนได้เฉพาะตอน Guard ยังเหลือ (หมดแล้วกระสุนทะลุ = ต้องขยับหนี)
+      this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<R&&this._sesGuard>=16){ this._sesGuard-=16; this.vfxHitRing(f.x,f.y,gLow?0xff7a7a:0xf4e7bd,false); this.killFoe(f); } });
     } else if(this._sesField){ this._sesField.destroy(); this._sesField=null; }
   }
   tickAura(dt){
