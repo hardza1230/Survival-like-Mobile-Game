@@ -2656,9 +2656,9 @@ class Game extends Phaser.Scene {
     const em=this.add.text(icx,cy-1,emoji,{fontSize:Math.round(ir*1.15)+'px'}).setOrigin(0.5);
     const gemX=x+w-13,gem=this.add.graphics();gem.fillStyle(gold,0.95);gem.fillPoints([{x:gemX,y:cy-5},{x:gemX+5,y:cy},{x:gemX,y:cy+5},{x:gemX-5,y:cy}],true);gem.lineStyle(1,0xffffff,0.5);gem.strokePoints([{x:gemX,y:cy-5},{x:gemX+5,y:cy},{x:gemX,y:cy+5},{x:gemX-5,y:cy}],true);cont.add(gem);
     const tx=x+55,textW=Math.max(62,gemX-tx-10),labelSize=label.length>11?12.5:(primary?15:14);
-    const nm=this.add.text(tx,sub?cy-9:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:labelSize+'px',color:'#fffaf3',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5).setMaxLines(1);
+    const nm=this.add.text(tx,sub?cy-9:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:labelSize+'px',color:'#fffaf3',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5);
     nm.setShadow(0,2,'#000000',2);cont.add([em,nm]);
-    if(sub){const st=this.add.text(tx,cy+12,sub,{fontFamily:'sans-serif',fontSize:'8.5px',color:primary?'#ffd9df':'#c4b8cb',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5).setMaxLines(1);cont.add(st);}
+    if(sub){const st=this.add.text(tx,cy+12,sub,{fontFamily:'sans-serif',fontSize:'8.5px',color:primary?'#ffd9df':'#c4b8cb',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5);cont.add(st);}
     if(fn)this._zone(x,y,w,h,fn);
   }
   _coverImage(x,y,w,h,key){
@@ -3564,13 +3564,13 @@ class Game extends Phaser.Scene {
     });
     y+=Math.ceil(available.length/2)*(phh+5)+5;
     const old=affs[this.craftLineIndex]||null,key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),target=available.find(m=>m.id===this.craftTargetId),have=Save.currency(key),can=!!target&&!selected.locked&&have>0,mainH=50,main=this.add.graphics();
-    main.fillStyle(can?0x3f9160:0x3a3550,1);main.fillRoundedRect(14,y,w-28,mainH,11);main.lineStyle(1,can?0x8bd3a0:0x574764,1);main.strokeRoundedRect(14,y,w-28,mainH,11);
+    main.fillStyle(can?0x3f9160:0x3a3550,1);main.fillRoundedRect(14,y,w-28,mainH,11);main.lineStyle(1,can?0x8bd3a0:0x574764,1);main.strokeRoundedRect(14,y,w-28,mainH,11);this.menu.add(main);
     if(target&&!selected.locked){
       this._currencyIcon(key,39,y+mainH/2,32,can?1:.45);
       const mt=this.add.text(61,y+17,'Craft '+target.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:can?'#fff':'#8d8195'}).setOrigin(0,.5);
-      const cost=this.add.text(61,y+34,cur.name+'  '+have+' / 1',{fontFamily:'sans-serif',fontSize:'8.5px',color:can?'#d8ffe5':'#8d8195'}).setOrigin(0,.5);this.menu.add([main,mt,cost]);
+      const cost=this.add.text(61,y+34,cur.name+'  '+have+' / 1',{fontFamily:'sans-serif',fontSize:'8.5px',color:can?'#d8ffe5':'#8d8195'}).setOrigin(0,.5);this.menu.add([mt,cost]);
     }else{
-      const mt=this.add.text(w/2,y+mainH/2,selected.locked?'🔒 Unlock item to craft':'Choose a stat',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#8d8195'}).setOrigin(.5);this.menu.add([main,mt]);
+      const mt=this.add.text(w/2,y+mainH/2,selected.locked?'🔒 Unlock item to craft':'Choose a stat',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#8d8195'}).setOrigin(.5);this.menu.add(mt);
     }
     if(target)this._zone(14,y,w-28,mainH,()=>this.focusedCraftSelected());y+=mainH+7;
     const util=[
@@ -3581,21 +3581,22 @@ class Game extends Phaser.Scene {
     ],ug=6,uw=(w-34-ug)/2,uh=38;
     util.forEach(([currencyKey,label,fn,ok],i)=>{
       const x=14+(i%2)*(uw+ug),uy=y+Math.floor(i/2)*(uh+6),g=this.add.graphics(),n=Save.currency(currencyKey);
-      g.fillStyle(ok?0x51405e:0x2b2632,1);g.fillRoundedRect(x,uy,uw,uh,9);g.lineStyle(1,ok?0x8c72a0:0x393342,1);g.strokeRoundedRect(x,uy,uw,uh,9);
+      g.fillStyle(ok?0x51405e:0x2b2632,1);g.fillRoundedRect(x,uy,uw,uh,9);g.lineStyle(1,ok?0x8c72a0:0x393342,1);g.strokeRoundedRect(x,uy,uw,uh,9);this.menu.add(g);
       this._currencyIcon(currencyKey,x+19,uy+uh/2,25,ok?1:.32);
       const tx=this.add.text(x+37,uy+uh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:ok?'#eee2f2':'#665d6d'}).setOrigin(0,.5);
       const ct=this.add.text(x+uw-8,uy+uh/2,'×'+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:ok?'#ffe08a':'#665d6d'}).setOrigin(1,.5);
-      this.menu.add([g,tx,ct]);if(ok)this._zone(x,uy,uw,uh,fn);
+      this.menu.add([tx,ct]);if(ok)this._zone(x,uy,uw,uh,fn);
     });
     y+=2*(uh+6)+3;
-    if(y+70<h-8){
-      const wallet=this.add.graphics();wallet.fillStyle(0x21182c,.96);wallet.fillRoundedRect(14,y,w-28,68,11);wallet.lineStyle(1,0x4a4059,1);wallet.strokeRoundedRect(14,y,w-28,68,11);
+    if(y+116<h-8){
+      const wallet=this.add.graphics();wallet.fillStyle(0x21182c,.96);wallet.fillRoundedRect(14,y,w-28,114,11);wallet.lineStyle(1,0x4a4059,1);wallet.strokeRoundedRect(14,y,w-28,114,11);
       const wt=this.add.text(22,y+7,'CURRENCY POUCH',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#c9a3ff'}).setOrigin(0,0);
       const hint=this.add.text(w-22,y+7,'Live inventory',{fontFamily:'sans-serif',fontSize:'7.5px',color:'#81758e'}).setOrigin(1,0);this.menu.add([wallet,wt,hint]);
       CURRENCY.forEach((d,i)=>{
-        const col=i%4,row=Math.floor(i/4),cellW=(w-44)/4,cx=23+cellW*col+12,cy=y+29+row*25;
-        this._currencyIcon(d.key,cx,cy,22,Save.currency(d.key)>0?1:.3);
-        const ct=this.add.text(cx+15,cy,'×'+Save.currency(d.key),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:Save.currency(d.key)>0?'#e9deef':'#62586c'}).setOrigin(0,.5);this.menu.add(ct);
+        const col=i%2,row=Math.floor(i/2),cellW=(w-44)/2,cx=23+cellW*col+11,cy=y+31+row*21;
+        this._currencyIcon(d.key,cx,cy,21,Save.currency(d.key)>0?1:.3);
+        const nm=this.add.text(cx+14,cy-3,d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.2px',color:Save.currency(d.key)>0?'#e9deef':'#62586c'}).setOrigin(0,.5);
+        const ct=this.add.text(cx+14,cy+6,'×'+Save.currency(d.key),{fontFamily:'sans-serif',fontSize:'7px',color:Save.currency(d.key)>0?'#ffe08a':'#62586c'}).setOrigin(0,.5);this.menu.add([nm,ct]);
       });
     }
     this.menu.setVisible(true);
