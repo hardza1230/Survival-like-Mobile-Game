@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.5.0';
+const GAME_VERSION = '4.6.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.6.0', date:'2026-09-20', title:'Mochi Bazaar rework', items:[
+    'Buy tab is now one-time stock that restocks every time you clear a stage; goods scale with the cleared Zone Level',
+    'Gamble now spins like a slot machine and reveals your prize with the real artwork',
+    'Bazaar purchases roll Item Level from the last cleared Zone',
+  ]},
   { v:'4.5.0', date:'2026-09-20', title:'Enhancement risk & inline gear actions', items:[
     'Enhancement now goes to +10: +4 and up can break (drop a level, never below +3), and +8–+10 can destroy the item',
     'Equipment screen adds a Craft-this shortcut (jump straight to the Craft Bench) and a Sell-for-Sugar action',
@@ -3720,10 +3725,13 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   /* ---- 🏪 NPC Bazaar (Phase 4): ซื้อ · เสี่ยงดวง · ขาย (single-player) ---- */
-  bazaarStock(){ const rng=mulberry32(bazaarDaySeed()),chapter=currentItemChapter(); const bases=GEAR_ALL.filter(it=>it.tier!=='start'&&it.tier!=='legend'&&(it.chapter||1)<=chapter);
-    const gear=[]; const used=new Set(); for(let i=0;i<3&&bases.length;i++){ let it,guard=0; do{ it=bases[Math.floor(rng()*bases.length)]; }while(used.has(it.id)&&guard++<20); used.add(it.id); gear.push(it); }
+  // stock หมุนเวียนตาม bazaarSeed (เปลี่ยนทุกครั้งที่ผ่านด่าน) · อ้างอิง Zone Level ของด่านล่าสุด → ยิ่ง Zone สูง ของยิ่งดี
+  bazaarStock(){ const seed=(Save.data.bazaarSeed||0),zone=Math.max(1,Math.min(18,Save.data.bazaarZone||1)),rng=mulberry32(((seed*2654435761)>>>0)^0x9e37);
+    const chapter=Math.max(1,Math.min(5,Math.floor((zone-1)/3)+1)); const bases=GEAR_ALL.filter(it=>it.tier!=='start'&&it.tier!=='legend'&&(it.chapter||1)<=chapter);
+    const tierW=t=>({common:zone<6?5:2,rare:4,epic:zone>=7?4:zone>=4?2:1})[t]||1;
+    const gear=[],used=new Set(); for(let i=0;i<3&&bases.length;i++){ const avail=bases.filter(it=>!used.has(it.id)); if(!avail.length)break; let tot=0; avail.forEach(it=>tot+=tierW(it.tier)); let r=rng()*tot,pick=avail[0]; for(const it of avail){ r-=tierW(it.tier); if(r<=0){pick=it;break;} } used.add(pick.id); gear.push(pick); }
     const ckeys=CURRENCY.map(c=>c.key); const cur=[]; const cu=new Set(); for(let i=0;i<3;i++){ let k,guard=0; do{ k=ckeys[Math.floor(rng()*ckeys.length)]; }while(cu.has(k)&&guard++<20); cu.add(k); cur.push({key:k,qty:1+Math.floor(rng()*3)}); }
-    return {gear,cur}; }
+    return {gear,cur,zone,chapter}; }
   buildBazaar(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏪 Mochi Bazaar','','gLoadout');
     const w=this.W,h=this.H, tab=this._bazTab||'buy';
@@ -3735,14 +3743,14 @@ class Game extends Phaser.Scene {
       const t=this.add.text(x+tw/2,ty+14,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#fff':'#9a90ab'}).setOrigin(0.5); this.menu.add([g,t]); this._zone(x+2,ty,tw-4,28,()=>{ this._bazTab=k; this.buildBazaar(); }); });
     let y=ty+40;
     if(tab==='buy'){
-      const hd=this.add.text(14,y,'Daily rotating shop (refreshes daily)',{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
-      const st=this.bazaarStock();
-      st.gear.forEach(it=>{ const cost=GEAR_BUY[it.tier]||200,tl=TIER_LABEL[it.tier]||TIER_LABEL.common,af=(Save.data.sugar||0)>=cost;
-        this._rowBtn(y,40,it.emoji,it.name+' · '+tl.name+' · Ch.'+(it.chapter||1),it.desc,'Buy another 🍬'+cost,af?'#8bd3a0':'#e0788a',()=>this.bazaarBuyGear(it.id));y+=46; });
-      st.cur.forEach(c=>{ const d=currencyDef(c.key), cost=(CURRENCY_BUY[c.key]||60)*c.qty, af=(Save.data.sugar||0)>=cost;
-        this._rowBtn(y,40,d.asset,d.name+' ×'+c.qty,d.desc,'Buy 🍬'+cost,af?'#8bd3a0':'#e0788a',()=>this.bazaarBuyCurrency(c.key,c.qty,cost)); y+=46; });
+      const st=this.bazaarStock(),bought=Save.data.bazaarBought||[];
+      const hd=this.add.text(14,y,'One-time stock · restocks every stage clear · Zone '+st.zone+' (Ch.'+st.chapter+')',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
+      st.gear.forEach((it,idx)=>{ const key='g'+idx,cost=GEAR_BUY[it.tier]||200,tl=TIER_LABEL[it.tier]||TIER_LABEL.common,sold=bought.includes(key),af=(Save.data.sugar||0)>=cost;
+        this._rowBtn(y,40,it.emoji,it.name+' · '+tl.name+' · Ch.'+(it.chapter||1),it.desc,sold?'SOLD':('Buy 🍬'+cost),sold?'#6a6076':(af?'#8bd3a0':'#e0788a'),sold?null:()=>this.bazaarBuyGear(it.id,key,cost));y+=46; });
+      st.cur.forEach((c,idx)=>{ const key='c'+idx,d=currencyDef(c.key),cost=(CURRENCY_BUY[c.key]||60)*c.qty,sold=bought.includes(key),af=(Save.data.sugar||0)>=cost;
+        this._rowBtn(y,40,d.asset,d.name+' ×'+c.qty,d.desc,sold?'SOLD':('Buy 🍬'+cost),sold?'#6a6076':(af?'#8bd3a0':'#e0788a'),sold?null:()=>this.bazaarBuyCurrency(c.key,c.qty,cost,key)); y+=46; });
     } else if(tab==='gamble'){
-      const hd=this.add.text(14,y,'Mystery box — random loot (ilvl by unlocked stage)',{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
+      const hd=this.add.text(14,y,'Mystery box — spins like a slot machine, then reveals your prize',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
       this._rowBtn(y,48,'🎁','Mystery gear box','Gamble 1 instance · duplicate bases keep different affixes and Item Levels','Gamble 🍬180',(Save.data.sugar||0)>=180?'#ffd166':'#e0788a',()=>this.bazaarGambleGear()); y+=54;
       this._rowBtn(y,48,'🧪','currency box','Random 2-4 currency (chance of high-tier orbs)','Gamble 🍬120',(Save.data.sugar||0)>=120?'#ffd166':'#e0788a',()=>this.bazaarGambleCurrency()); y+=54;
     } else { // sell
@@ -3754,19 +3762,37 @@ class Game extends Phaser.Scene {
     }
     this.menu.setVisible(true);
   }
-  bazaarBuyGear(id){ const it=GEAR_ALL.find(g=>g.id===id);if(!it)return;const cost=GEAR_BUY[it.tier]||200;
+  bazaarBuyGear(id,key,cost){ const it=GEAR_ALL.find(g=>g.id===id);if(!it)return; cost=cost||GEAR_BUY[it.tier]||200;
+    if(key&&(Save.data.bazaarBought||[]).includes(key))return;
     if(!Save.spend(cost)){Sfx.select();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300);return;}
-    const ilvl=currentRewardItemLevel(),delivery=Save.receiveGearInstance(id,{isNew:true,itemLevel:ilvl,chapter:itemChapterFromLevel(ilvl)});Sfx.clear();this.showBanner('🛒 Purchased',it.emoji+' '+it.name+' · iLv '+ilvl+gearDeliverySuffix(delivery),1600);this.buildBazaar(); }
-  bazaarBuyCurrency(key,qty,cost){ if(!Save.spend(cost)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
-    Save.addCurrency(key,qty); Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
-  bazaarGambleGear(){ if(!Save.spend(180)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 180 Sugar',1300); return; }
+    const zone=Math.max(1,Math.min(18,Save.data.bazaarZone||1)),si=Math.floor((zone-1)/3),diff=((zone-1)%3)+1,ilvl=rollItemLevel(si,diff);   // iLv อ้างอิง Zone ของด่านล่าสุด
+    const delivery=Save.receiveGearInstance(id,{isNew:true,itemLevel:ilvl,chapter:itemChapterFromLevel(ilvl)});
+    if(key){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(key);Save.save();}
+    Sfx.clear();this.showBanner('🛒 Purchased',it.emoji+' '+it.name+' · iLv '+ilvl+gearDeliverySuffix(delivery),1600);this.buildBazaar(); }
+  bazaarBuyCurrency(key,qty,cost,slotKey){ if(slotKey&&(Save.data.bazaarBought||[]).includes(slotKey))return; if(!Save.spend(cost)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
+    Save.addCurrency(key,qty); if(slotKey){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(slotKey);Save.save();} Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
+  // ตู้สล็อต: หมุนไอคอนช้าลงเรื่อย ๆ แล้วหยุดที่รางวัล (ลุ้นสนุก)
+  bazaarSlotReveal(pool,land){ if(this._bazBusy)return; this._bazBusy=true; const w=this.W,h=this.H;
+    const veil=this.add.rectangle(0,0,w,h,0x0a0611,0.92).setOrigin(0),title=this.add.text(w/2,h*0.30,'🎰 Rolling…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5),glow=this.add.image(w/2,h*0.47,'vfx_glow').setTint(0xffd166).setScale(0.5).setAlpha(0.25),icon=this.add.text(w/2,h*0.47,'🎁',{fontSize:'72px'}).setOrigin(0.5);
+    this.menu.add([veil,title,glow,icon]); this.menu.setVisible(true);
+    let ticks=0,delay=55; const spin=()=>{ icon.setText(Phaser.Utils.Array.GetRandom(pool)); Sfx.select&&Sfx.select(); ticks++;
+      if(ticks<26){ delay+=ticks>17?(ticks-17)*10:2; this.time.delayedCall(delay,spin); }
+      else { if(land.artKey&&this.textures.exists(land.artKey)){ icon.setText(''); const gi=this.add.image(w/2,h*0.47,land.artKey).setDisplaySize(96,96); const ts=gi.scaleX; gi.setScale(ts*0.3); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:300,ease:'Back.out'}); }
+        else icon.setText(land.emoji||'🎁');
+        title.setText(land.title||'✨ Prize!'); glow.setScale(2.6).setAlpha(0.85); this.screenFlash(0xffd166,0.5,420); Sfx.clear();
+        const sub=this.add.text(w/2,h*0.63,land.sub||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:w-50}}).setOrigin(0.5);
+        const bt=this.add.text(w/2,h*0.74,'Tap to continue',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6'}).setOrigin(0.5); this.menu.add([sub,bt]);
+        this._bazBusy=false; this._zone(0,0,w,h,()=>this.buildBazaar()); }
+    }; spin(); }
+  bazaarGambleGear(){ if(this._bazBusy)return; if(!Save.spend(180)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 180 Sugar',1300); return; }
     const r=Math.random(), tier=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend'; const got=this.grantGear(tier);
-    if(got){Sfx.clear();this.screenFlash(0xffd166,0.5,400);this.showBanner('🎁 New instance!',GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+got.name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got),1900);}
-    else {Save.addSugar(180);Sfx.select();this.showBanner('🎁 No eligible base','Sugar refunded',1500);}
-    this.buildBazaar(); }
-  bazaarGambleCurrency(){ if(!Save.spend(120)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 120 Sugar',1300); return; }
+    if(!got){Save.addSugar(180);Sfx.select();this.showBanner('🎁 No eligible base','Sugar refunded',1500);return;}
+    const artKey=got.instance?('gear_'+got.id):null;
+    this.bazaarSlotReveal(['🥄','🔪','🧤','🛡️','👢','💍','🌙','⭐','💠'],{artKey,emoji:got.emoji,title:'✨ '+got.name+'!',sub:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got)}); }
+  bazaarGambleCurrency(){ if(this._bazBusy)return; if(!Save.spend(120)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 120 Sugar',1300); return; }
     const n=2+Math.floor(Math.random()*3), got={}; for(let i=0;i<n;i++){ const k=this.rollCurrencyDrop('epic')||'alt'; got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
-    Sfx.clear(); this.screenFlash(0xc9a3ff,0.4,350); const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner('🧪 Got currency!',txt,1600); this.buildBazaar(); }
+    const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join('  ');
+    this.bazaarSlotReveal(CURRENCY.map(c=>c.emoji||'🔮'),{emoji:'🧪',title:'🧪 Currency!',sub:txt}); }
   bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 Sold shards','+🍬'+(sh*2),1300); this.buildBazaar(); }
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
   openGachaReveal(){
@@ -4592,6 +4618,8 @@ class Game extends Phaser.Scene {
     this.gainCharExp(Math.round((75 + this.stageIndex*35)*guide.reward)); // catch-up EXP มากขึ้นเมื่อผ่านด่านด้วยพลังต่ำกว่าคำแนะนำ
     this._powerAfter=Save.power(this.character);
     if(!last && (Save.data.unlockedStage||0) < this.stageIndex+1){ Save.data.unlockedStage=this.stageIndex+1; Save.save(); }
+    // Mochi Bazaar restock: ผ่านด่านใดก็ได้ = สุ่มร้านใหม่ · stock อ้างอิง Zone Level ของด่านที่เพิ่งผ่าน
+    Save.data.bazaarSeed=(Save.data.bazaarSeed||0)+1; Save.data.bazaarZone=this.zoneLevel(); Save.data.bazaarBought=[]; Save.save();
     this._summaryDoubled=false;   // รีเซ็ตสิทธิ์ดูโฆษณา x2 ต่อการเคลียร์ด่าน
     this.showStageSummary(last);
   }
