@@ -1322,6 +1322,10 @@ function gearCompareRows(equipped,selected){
     .filter(r=>Math.abs(r.from)>0.001||Math.abs(r.to)>0.001).sort((x,y)=>Math.abs(y.delta)-Math.abs(x.delta));
 }
 function gearStatText(row,value){const n=Math.abs(value-Math.round(value))<0.05?Math.round(value):Math.round(value*10)/10;return (n>0?'+':'')+n+(row.pct?'%':'');}
+function gearSetCompareText(slot,selected){ if(!selected)return ''; const current=gearSetCounts(),next=Object.assign({},current),old=Save.equippedGearItem(slot),oldBase=old&&GEAR_ALL.find(g=>g.id===old.baseId),newBase=GEAR_ALL.find(g=>g.id===selected.baseId);
+  if(oldBase&&oldBase.set)next[oldBase.set]=Math.max(0,(next[oldBase.set]||0)-1); if(newBase&&newBase.set)next[newBase.set]=(next[newBase.set]||0)+1;
+  const ids=Array.from(new Set([oldBase&&oldBase.set,newBase&&newBase.set].filter(Boolean))),parts=[];
+  for(const id of ids){const def=GEAR_SETS[id];if(def&&(current[id]||0)!==(next[id]||0))parts.push(def.emoji+' '+def.name+' '+(current[id]||0)+'/3 → '+(next[id]||0)+'/3');} return parts.join('   '); }
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const Save = {
@@ -3267,6 +3271,7 @@ class Game extends Phaser.Scene {
       const state=this.add.text(rightX+cw-8,y+7,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'8px',color:rl.color}).setOrigin(1,0);this.menu.add(state); y+=panelH+6;
       const affs=selected.affixes||[],astr=affs.length?affs.map(a=>{const d=affixDef(a.id);return d?d.emoji+d.label+' '+d.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean).join('   '):'No affixes';
       const aff=this.add.text(16,y,astr,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#c9a3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(aff);y+=Math.max(16,aff.height+4);
+      const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
       const bgap=6,bw=(w-28-bgap*2)/3,bh=32,drawAction=(i,label,color,fn)=>{const bx=14+i*(bw+bgap),g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,y,bw,bh,9);const t=this.add.text(bx+bw/2,y+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([g,t]);if(fn)this._zone(bx,y,bw,bh,fn);};
       drawAction(0,selected.favorite?'★ Favorite':'☆ Favorite',selected.favorite?0xb88925:0x4a4059,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
       drawAction(1,selected.locked?'🔒 Locked':'🔓 Lock',selected.locked?0x85506f:0x4a4059,()=>{Save.toggleGearLock(selected.uid);this.buildMenuScreen();});
