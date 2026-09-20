@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.6.0';
+const GAME_VERSION = '4.7.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.7.0', date:'2026-09-20', title:'Flavor Passive tree & faster ranks', items:[
+    'Rank Perks are now a 3-tier passive tree: Tier 2 unlocks after 3 points in Tier 1, Tier 3 after 8 points, with two new Mastery nodes (Iron Will, Fortune)',
+    'Cores now cap at Lv3 instead of Lv5, so you rank up and earn RP faster',
+  ]},
   { v:'4.6.0', date:'2026-09-20', title:'Mochi Bazaar rework', items:[
     'Buy tab is now one-time stock that restocks every time you clear a stage; goods scale with the cleared Zone Level',
     'Gamble now spins like a slot machine and reveals your prize with the real artwork',
@@ -1222,7 +1226,7 @@ function passivePairHint(key){
    วนลูป: อัพ 3 สแตตให้Full (Lv TAL_MAX) → เลื่อนยศ (rank++) → สแตตติดตัวเพิ่มถาวร +
    การ์ด 3 ใบรีเซ็ตกลับ Lv0 + ราคาแพงขึ้น (×(1+rank·0.8)) → อัพFullใหม่ → เลื่อนยศ ... ไปเรื่อย ๆ
    ผลรวมที่ใช้จริง = rank·TAL_MAX + เลเวลWaitบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ · ดาเมจเป็น flat กันเวอร์) */
-const TAL_MAX = 5;   // แต่ละสแตตอัพได้ Lv1..TAL_MAX ต่อWaitบยศ
+const TAL_MAX = 3;   // แต่ละแก่นอัพได้ Lv1..TAL_MAX ต่อยศ (v4.7 ลดจาก 5→3 ให้เลื่อนยศ/ได้ RP ไวขึ้น)
 const UPGRADES = {
   hp:  { emoji:'❤️', tag:'CORE', name:'Life Core', unit:'+16 max HP/level', color:0xff5f7a, base:30, per:16,
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
@@ -1241,19 +1245,23 @@ function rankName(rank){ const n=RANK_TIERS.length; if(rank<n)return RANK_TIERS[
   return RANK_TIERS[n-1].name+' +'+(rank-n+1); }
 function promoteReward(rank){ return 50+rank*40; }   // 🍬 โบนัสตอนเลื่อนยศ
 /* ---- RANK PERKS: ทุก rank ได้ 1 แต้ม (RP) ลงใน perk ถาวรที่เลือกเอง (depth + การตัดสินใจ) ---- */
+// ผัง Passive แบ่ง 3 ชั้น: ชั้น 2 ปลดเมื่อลงแต้มชั้น 1 ครบ 3 · ชั้น 3 ปลดเมื่อลงชั้น 1+2 ครบ 8 (ความลึกของระบบ)
 const RANK_PERKS = [
-  { id:'reroll',  emoji:'🎲', name:'Spare Cards', max:3, desc:'+1 card reroll per stage' },
-  { id:'banish',  emoji:'🚫', name:'Cull', max:2, desc:'+1 card banish per stage' },
-  { id:'boxLuck', emoji:'🎁', name:'Box Luck', max:3, desc:'+30% secret box drop chance per rank' },
-  { id:'greed',   emoji:'🍬', name:'Sweet Greed', max:5, desc:'+8% Sugar from stage rewards per rank' },
-  { id:'vigor',   emoji:'❤️', name:'Vigor', max:5, desc:'+6% max HP per rank' },
-  { id:'might',   emoji:'💥', name:'Might', max:5, desc:'+5% damage per rank' },
-  { id:'revive',  emoji:'🕯️', name:'Revival Candle', max:1, desc:'Revive once per stage at 45% HP' },
+  { id:'vigor',   tier:1, emoji:'❤️', name:'Vigor',        max:5, desc:'+6% max HP per rank' },
+  { id:'might',   tier:1, emoji:'💥', name:'Might',        max:5, desc:'+5% damage per rank' },
+  { id:'greed',   tier:1, emoji:'🍬', name:'Sweet Greed',  max:5, desc:'+8% Sugar from stage rewards per rank' },
+  { id:'reroll',  tier:2, emoji:'🎲', name:'Spare Cards',  max:3, desc:'+1 card reroll per stage' },
+  { id:'banish',  tier:2, emoji:'🚫', name:'Cull',         max:2, desc:'+1 card banish per stage' },
+  { id:'boxLuck', tier:2, emoji:'🎁', name:'Box Luck',     max:3, desc:'+30% secret box drop chance per rank' },
+  { id:'ironWill',tier:3, emoji:'🛡️', name:'Iron Will',    max:3, desc:'-4% damage taken per rank' },
+  { id:'fortune', tier:3, emoji:'💠', name:'Fortune',      max:3, desc:'+10% crafting currency from rewards per rank' },
+  { id:'revive',  tier:3, emoji:'🕯️', name:'Revival Candle',max:1, desc:'Revive once per stage at 45% HP' },
 ];
+const PERK_TIER_REQ = { 2:3, 3:8 };   // แต้มที่ต้องลงในชั้นก่อนหน้าเพื่อปลดชั้นนี้
 /* ---- HUB_GROUPS: รวมปุ่มเมนูย่อยเป็นกลุ่ม ให้หน้า Hub สะอาดขึ้น (rows: [targetScreen,emoji,label,sub]) ---- */
 const HUB_GROUPS = {
   gLoadout:{ title:'🎒 Gear & Power', rows:[
-    ['upgrade','✦','Flavor Weave & Rank','Permanent power + 🏅 Rank Perks'],
+    ['upgrade','✦','Flavor Weave & Rank','Cores, Rank up & 🏅 Passive tree'],
     ['gear','◆','Equipment','Equip, compare and dismantle'],
     ['craft','🧪','Focused Crafting','See possible stats, craft rolls one at random'],
     ['bazaar','🏪','Mochi Bazaar','Buy · Gamble · Sell for 🍬'],
@@ -1739,7 +1747,9 @@ const Save = {
   rankPointsTotal(){ return this.data.rank||0; },
   rankPointsSpent(){ let s=0; const rp=this.data.rankPerks||{}; for(const k in rp)s+=rp[k]||0; return s; },
   rankPointsFree(){ return this.rankPointsTotal()-this.rankPointsSpent(); },
-  buyPerk(id){ const def=RANK_PERKS.find(p=>p.id===id); if(!def)return false; if(this.perkLvl(id)>=def.max)return false; if(this.rankPointsFree()<=0)return false;
+  perkTierSpent(tier){ let s=0; for(const pk of RANK_PERKS){ if((pk.tier||1)===tier)s+=this.perkLvl(pk.id); } return s; },
+  perkTierUnlocked(tier){ if((tier||1)<=1)return true; if(tier===2)return this.perkTierSpent(1)>=PERK_TIER_REQ[2]; return (this.perkTierSpent(1)+this.perkTierSpent(2))>=PERK_TIER_REQ[3]; },
+  buyPerk(id){ const def=RANK_PERKS.find(p=>p.id===id); if(!def)return false; if(this.perkLvl(id)>=def.max)return false; if(this.rankPointsFree()<=0)return false; if(!this.perkTierUnlocked(def.tier||1))return false;
     if(!this.data.rankPerks)this.data.rankPerks={}; this.data.rankPerks[id]=this.perkLvl(id)+1; this.save(); return true; },
   respecPerks(){ this.data.rankPerks={}; this.save(); },
   canAscend(){ return [0,1,2,3,4].every(i=>!!(this.data.stageMastery||{})[i]); },
@@ -3396,32 +3406,36 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildRankPerks(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Rank Perks');
-    const w=this.W,h=this.H,portrait=w<=h;
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives');
+    const w=this.W,h=this.H;
     const free=Save.rankPointsFree(),total=Save.rankPointsTotal();
-    const hd=this.add.text(w/2,portrait?70:48,'Rank Points (RP) = your Rank · spend on permanent perks',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9c9e8'}).setOrigin(0.5);
-    const rpTxt=this.add.text(w/2,portrait?88:66,'RP free '+free+' / '+total,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:free>0?'#ffd166':'#8f849f'}).setOrigin(0.5);
-    this.menu.add([hd,rpTxt]);
-    const marginX=14,gapY=8,cols=portrait?1:2,gapX=10,top=portrait?108:92;
-    const cardW=(w-marginX*2-gapX*(cols-1))/cols, rows=Math.ceil(RANK_PERKS.length/cols);
-    const cardH=Math.min(portrait?56:70,(h-top-52-gapY*(rows-1))/rows);
-    RANK_PERKS.forEach((pk,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=marginX+col*(cardW+gapX),y=top+row*(cardH+gapY);
-      const lvl=Save.perkLvl(pk.id),maxed=lvl>=pk.max,canBuy=!maxed&&free>0;
-      const g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,12); g.lineStyle(2,maxed?0x8bd3a0:(canBuy?0xffd166:0x4a4059),0.9); g.strokeRoundedRect(x,y,cardW,cardH,12);
-      g.fillStyle(0xffd166,0.10); g.fillRoundedRect(x,y,52,cardH,12);
-      const em=this.add.text(x+26,y+cardH/2-6,pk.emoji,{fontSize:'23px'}).setOrigin(0.5);
-      let dots=''; for(let s=0;s<pk.max;s++)dots+=(s<lvl?'●':'○');
-      const dt=this.add.text(x+26,y+cardH-11,dots,{fontFamily:'sans-serif',fontSize:'8px',color:maxed?'#8bd3a0':'#ffd166'}).setOrigin(0.5);
-      const nm=this.add.text(x+60,y+8,pk.name+'  Lv'+lvl+'/'+pk.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff'}).setOrigin(0,0);
-      const ds=this.add.text(x+60,y+26,pk.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#b7abc9',wordWrap:{width:cardW-72}}).setOrigin(0,0);
-      const bw=52,bh=24,bx=x+cardW-bw-8,by=y+cardH-bh-7;
-      const bg=this.add.graphics(); bg.fillStyle(maxed?0x2f4a38:(canBuy?0x4a3a1a:0x3a2f38),1); bg.fillRoundedRect(bx,by,bw,bh,8);
-      const bt=this.add.text(bx+bw/2,by+bh/2,maxed?'Full':(canBuy?'+ spent':'—'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:maxed?'#8bd3a0':(canBuy?'#ffe08a':'#7a7088')}).setOrigin(0.5);
-      this.menu.add([g,em,dt,nm,ds,bg,bt]);
-      if(canBuy)this._zone(bx,by,bw,bh,()=>{ if(Save.buyPerk(pk.id)){Sfx.clear();}else{Sfx.select();} this.buildRankPerks(); });
+    const rpTxt=this.add.text(w/2,56,'RP  '+free+' free / '+total,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:free>0?'#ffd166':'#8f849f'}).setOrigin(0.5);
+    const sub=this.add.text(w/2,73,'Earn RP by ranking up the 3 cores · deeper tiers unlock as you invest',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#b7abc9'}).setOrigin(0.5);
+    this.menu.add([rpTxt,sub]);
+    const tierName={1:'TIER 1 · Foundation',2:'TIER 2 · Utility',3:'TIER 3 · Mastery'};
+    const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols,cardH=90; let y=88;
+    [1,2,3].forEach(tier=>{
+      const unlocked=Save.perkTierUnlocked(tier),req=PERK_TIER_REQ[tier]||0,priorSpent=tier===3?(Save.perkTierSpent(1)+Save.perkTierSpent(2)):Save.perkTierSpent(1),perks=RANK_PERKS.filter(p=>(p.tier||1)===tier);
+      const th=this.add.text(14,y,tierName[tier],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:unlocked?'#ffd9a8':'#7a7088'}).setOrigin(0,0);
+      const lk=this.add.text(w-14,y,unlocked?'':('🔒 need '+priorSpent+'/'+req+' pts'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#f0a0b0'}).setOrigin(1,0);
+      this.menu.add([th,lk]);
+      if(tier>1){ const cg=this.add.graphics(); cg.lineStyle(2,unlocked?0xffd166:0x4a4059,0.7); cg.lineBetween(w/2,y-9,w/2,y-2); this.menu.add(cg); }
+      y+=15;
+      perks.forEach((pk,i)=>{ const x=14+i*(cardW+gap),lvl=Save.perkLvl(pk.id),maxed=lvl>=pk.max,canBuy=unlocked&&!maxed&&free>0;
+        const g=this.add.graphics(); g.fillStyle(unlocked?0x2c2338:0x201a28,1); g.fillRoundedRect(x,y,cardW,cardH,10); g.lineStyle(2,maxed?0x8bd3a0:(canBuy?0xffd166:(unlocked?0x4a4059:0x352b40)),0.9); g.strokeRoundedRect(x,y,cardW,cardH,10);
+        const em=this.add.text(x+cardW/2,y+15,pk.emoji,{fontSize:'20px'}).setOrigin(0.5).setAlpha(unlocked?1:0.4);
+        const nm=this.add.text(x+cardW/2,y+31,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:unlocked?'#fff':'#7a7088'}).setOrigin(0.5);
+        const ds=this.add.text(x+cardW/2,y+43,pk.desc,{fontFamily:'sans-serif',fontSize:'7px',color:unlocked?'#b0a4c2':'#5f556e',align:'center',wordWrap:{width:cardW-10}}).setOrigin(0.5,0);
+        let dots=''; for(let s=0;s<pk.max;s++)dots+=(s<lvl?'●':'○'); const dt=this.add.text(x+cardW/2,y+cardH-24,dots,{fontFamily:'sans-serif',fontSize:'8px',color:maxed?'#8bd3a0':(unlocked?'#ffd166':'#5a4f68')}).setOrigin(0.5);
+        const bh=17,by=y+cardH-bh-3,bx=x+6,bw=cardW-12,bg=this.add.graphics(); bg.fillStyle(maxed?0x2f4a38:(canBuy?0x4a3a1a:0x322a3a),1); bg.fillRoundedRect(bx,by,bw,bh,6);
+        const bt=this.add.text(x+cardW/2,by+bh/2,maxed?'MAX':(!unlocked?'🔒 Locked':(canBuy?('Spend →+'+(lvl+1)):(free<=0?'No RP':'Lv'+lvl+'/'+pk.max))),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:maxed?'#8bd3a0':(canBuy?'#ffe08a':'#8d8195')}).setOrigin(0.5);
+        this.menu.add([g,em,nm,ds,dt,bg,bt]);
+        if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.clear();}else Sfx.select(); this.buildRankPerks(); });
+      });
+      y+=cardH+11;
     });
     // ปุ่มรีเซ็ต perk (คืนแต้มทั้งหมด)
-    const ry2=h-44,rw=Math.min(w-40,300);
+    const ry2=Math.min(h-42,y),rw=Math.min(w-40,300);
     const rg=this.add.graphics(); rg.fillStyle(0x3a2f38,1); rg.fillRoundedRect(w/2-rw/2,ry2,rw,34,10); rg.lineStyle(1.5,0x6a4055,0.8); rg.strokeRoundedRect(w/2-rw/2,ry2,rw,34,10);
     const rt=this.add.text(w/2,ry2+17,this._perkResetConfirm?'⚠ Tap again to confirm reset':'♻️ Reset Perks (refund all points)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#f0a0b0'}).setOrigin(0.5);
     this.menu.add([rg,rt]);
@@ -3856,8 +3870,10 @@ class Game extends Phaser.Scene {
     const rp=Save.data.rankPerks||{};
     if(rp.vigor)p.maxhp*=1+0.06*rp.vigor;
     if(rp.might)p.dmgMul*=1+0.05*rp.might;
+    if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
     this.rankSugarMul=1+0.08*(rp.greed||0);
     this._boxLuckMul=1+0.30*(rp.boxLuck||0);
+    this._currencyLuckMul=1+0.10*(rp.fortune||0);
     // หมายเหตุ: Bestiary + Ascension ไม่ให้สแตตรบแล้ว (ยุบแหล่งสแตตที่ทับซ้อน v2.45.0)
     //  · Bestiary → ให้ Sugar ตอนปลดขั้น (ใน Save.addKill)  · Ascension → ให้ Sugar ก้อนใหญ่ตอน Ascend
     //  เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank (พรถาวร) · Talent เฉพาะตัว · Gear
@@ -5879,6 +5895,7 @@ class Game extends Phaser.Scene {
   currencyTierFor(){ const diff=this.stageDiff||1, st=this.stageIndex||0; if(diff>=3)return 'legend'; if(diff>=2)return st>=3?'legend':'epic'; return st>=3?'epic':'rare'; }
   // แจก currency แน่นอน N ชิ้น (ข้าม 28% miss ของ rollCurrencyDrop) + แบนเนอร์
   grantCurrencyReward(n,tier,head){
+    if(n>0)n=Math.max(1,Math.round(n*(this._currencyLuckMul||1)));   // Fortune perk
     const got={}; for(let i=0;i<n;i++){ const k=rollWeightedCurrency(tier); got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
     if(head&&this.showBanner){ const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner(head,txt,1800); } return got; }
   // ---- หีบสมบัติ (ดWaitปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----

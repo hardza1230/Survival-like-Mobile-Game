@@ -57,7 +57,15 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.2.0 — Mobile Focused Crafting)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.7.0 — batch feedback: item scaling / bazaar / perks tree)
+- **v4.3.1–v4.7.0 (ชุดแก้ตาม feedback เจ้าของ):**
+  · **v4.3.0 fix:** field item SVG เป็นกล่องดำบนมือถือ (ไม่มี width/height + feDropShadow) → ใส่ size + ตัด filter · gacha reveal โชว์อาร์ต gear จริง (เดิมเป็นอีโมจิ) · **craft สุ่ม** (เห็น "POSSIBLE STATS" แล้วกด currency = สุ่มติด 1 อัน ไฮไลท์ทอง — `randomCraftSelected`, `_craftRolledId`)
+  · **v4.3.1:** craft bench อ่านง่ายขึ้น — พื้น item/tile tint ตาม rarity + จุดสีมุม, affix/stat มีแถบซ้าย prefix(ส้ม)/suffix(มิ้นต์) + legend, เน้นชื่อ stat
+  · **v4.4.0:** `rollTier(best,ilvl)` — iLv มีผลกับ Tier (ช่วงละ 10 lv, ยิ่งสูง tier ดีบ่อยขึ้น) · **`stageZoneLevel(stageIndex,diff)` = Zone 1..18** สเกลความยากรวม (โชว์ HUD, ใช้ต่อกับ Bazaar) · Back = ย้อนหน้าก่อนหน้า (`_navStack`) · Reward Inbox ย้ายล่างสุด
+  · **v4.5.0:** Enhance → **+10** · +4 ขึ้นไป "แตก" (ลดขั้น, floor +3) · +8..+9 "ทำลาย" (ไอเทมหาย) — `enhanceOdds`, `Save.enhance` คืน {result,lv} · Equipment เพิ่มปุ่ม **🧪 Craft this** (เด้งไปคราฟ) + **Sell 🍬** (`sellGearInstance`)
+  · **v4.6.0:** Mochi Bazaar — Buy เป็น **one-time** restock ทุกครั้งผ่านด่าน (`Save.data.bazaarSeed/bazaarZone/bazaarBought`, restock ใน onStageClear, stock อ้างอิง Zone) · **Gamble = ตู้สล็อต** หมุนแล้วเผยรางวัล (`bazaarSlotReveal`)
+  · **v4.7.0:** Rank Perks → **ผัง Passive 3 ชั้น** (`RANK_PERKS[].tier`, `PERK_TIER_REQ`, `perkTierUnlocked` — ชั้น2 ปลดที่ 3 แต้ม, ชั้น3 ที่ 8) + โหนดใหม่ Iron Will/Fortune · **TAL_MAX 5→3** (แก่นเต็มไวขึ้น = ได้ RP ไวขึ้น)
+- **v4.2.0 (Focused Crafting):** เปลี่ยน Craft Bench จาก PoE orb grid เป็น flow มือถือ เลือกบรรทัด → เลือก stat เป้าหมาย → ใช้ currency ตามบริบท · แสดง pool/Tier สูงสุด/value range ต่อไอเทม · เตรียม registry สำหรับ base-exclusive mods
 - **v4.2.0 (Focused Crafting):** เปลี่ยน Craft Bench จาก PoE orb grid เป็น flow มือถือ เลือกบรรทัด → เลือก stat เป้าหมาย → ใช้ currency ตามบริบท · แสดง pool/Tier สูงสุด/value range ต่อไอเทม · เตรียม registry สำหรับ base-exclusive mods
 - **v4.1.0 (Equipment v2 Final — Inventory lifecycle):** Reward Inbox 5 ช่องเมื่อ Bag 24 ช่องเต็ม · Claim/Dismantle ราย UID · Auto-dismantle Off/Common/Common+Rare · Favorite/Locked/Equipped/Epic/Legend ป้องกันการลบอัตโนมัติ · schema v3 migration
 - **v4.0.0 (Equipment v2 Phase 4 — Instance crafting + progression):** Craft Bench เลือกชิ้นด้วย UID และป้องกันชิ้น locked · drop/gacha/forge/Bazaar รองรับฐานซ้ำเต็มรูปแบบ · Item Level 1–100 แบ่ง 5 Chapter พร้อม affix tier gate และ power cap · อาวุธ 22 ชิ้นพร้อม vector icon ครบชุด
