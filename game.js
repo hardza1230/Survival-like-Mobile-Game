@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.12.0';
+const GAME_VERSION = '4.13.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.13.0', date:'2026-09-20', title:'Field readability fixes & Mint spear rework', items:[
+    'Fixed the Stage 1 boss acid pools rendering full-size and blocking the whole screen — they are now small, semi-transparent floor puddles under the character',
+    'Field items no longer appear giant: pickups now use a fixed on-field size regardless of art resolution (the gift-box icon was rendering at 256px)',
+    'Mint now fires straight ice spears again (no homing) — a single spear at Lv1, two at Lv4+, three when evolved — and the spear is smaller',
+  ]},
   { v:'4.12.0', date:'2026-09-20', title:'Complete Bestiary — every monster tracked', items:[
     'Bestiary now tracks each boss and miniboss per stage as its own entry (Ant Empress, Clogmaw, Mr. Griddle, Ice Cream Golem, The Great Hunger, The Rootmother and their minibosses)',
     'Per-monster permanent stat bonuses were kept small so the fuller Bestiary does not inflate power',
@@ -5548,7 +5553,7 @@ class Game extends Phaser.Scene {
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1);
-    const lances=evo?4:2, spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // ยิงเป็นพัด 2 หอก (evo 4) + โฮมมิ่งเบา ๆ = โดนง่ายขึ้น
+    const lances=evo?3:(lvl>=4?2:1), spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
     // จำนวน/สเปกสะเก็ด — chill=+จำนวน · linger=+จำนวน+กระจายกว้าง · evo แบ่งต่อแฉกให้ไม่ล้น
     const shardBase=6+Math.min(4,(basic?.ranks.chill||0))+Math.min(4,(basic?.ranks.linger||0))+(aw?3:0);
     const shardPer=evo?Math.max(3,Math.round(shardBase*0.55)):shardBase;
@@ -5561,7 +5566,7 @@ class Game extends Phaser.Scene {
       const st={done:false};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
       // หอกวิ่ง — แตกทันทีที่กระทบเป้าตัวแรก (burst monster)
       const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
-        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.62+lvl*0.05); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.2; b.hitGapV=0.1; b.homing=300+lvl*24;   // โฮมมิ่งเบา = ตามเป้า
+        b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.4+lvl*0.028); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.2; b.hitGapV=0.1; b.homing=0;   // ยิงตรง ไม่ตามเป้า + หอกเล็กลง
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
         b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
@@ -5955,7 +5960,9 @@ class Game extends Phaser.Scene {
   killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้
   showPickupCue(o,color,baseScale){
-    if(!o)return;this.hidePickupCue(o);o._pickupColor=color;o._pickupBaseScale=baseScale||1;o.setScale(o._pickupBaseScale).setDepth(80000);
+    if(!o)return;this.hidePickupCue(o);o._pickupColor=color;o._pickupBaseScale=baseScale||1;
+    // ปรับให้ไอเทมมี "ขนาดบนสนาม" คงที่ตาม native width (กันอาร์ต SVG/PNG ความละเอียดสูงเช่น gear_gift.svg 256px โผล่ใหญ่เกินจอ)
+    const nativeW=(o.width||36),target=o._pickupBaseScale*36; o.setScale(nativeW>0?target/nativeW:o._pickupBaseScale).setDepth(80000);
     o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
     o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
   }
@@ -6210,7 +6217,8 @@ class Game extends Phaser.Scene {
     if(kind==='crystal'||kind==='obelisk')return null;   // เอา "pillar-summon skill" (ผลึก/โอเบลิสก์) ออกจากบอส/มอนทุกตัว — ยิงไกลโกง + น่ารำคาญ
     const map={hole:'nest_hole',egg:'nest_eggs',crystal:'nest_crystal',obelisk:'nest_obelisk',mound:'nest_mound',acid:'nest_acid'},key=map[kind];if(!key||!this.textures.exists(key))return null;
     let o=this.bossObjects.getFirstDead(false);if(!o)o=this.bossObjects.create(x,y,key);else{o.setTexture(key);o.setActive(true).setVisible(true);if(o.body)o.body.enable=true;o.setPosition(x,y);}
-    if(!o)return null;o.kind=kind;o.life=life;o.tick=Phaser.Math.FloatBetween(1.0,1.9);o.hp=kind==='egg'?70:kind==='crystal'?68:kind==='obelisk'?95:kind==='mound'?150:999;o.maxhp=o.hp;   // ลด HP ให้ทำลายได้จริง (โดยเฉพาะสายดาเมจต่ำอย่าง Mint)o.setScale(kind==='acid'?0.62:kind==='egg'?0.54:0.66).setDepth(y-1).clearTint();this.camWorld(o);
+    if(!o)return null;o.kind=kind;o.life=life;o.tick=Phaser.Math.FloatBetween(1.0,1.9);o.hp=kind==='egg'?70:kind==='crystal'?68:kind==='obelisk'?95:kind==='mound'?150:999;o.maxhp=o.hp;   // ลด HP ให้ทำลายได้จริง (โดยเฉพาะสายดาเมจต่ำอย่าง Mint)
+    o.setScale(kind==='acid'?0.34:kind==='egg'?0.54:0.66).setDepth(kind==='acid'?(y-100000):(y-1)).clearTint().setAlpha(kind==='acid'?0.5:1);this.camWorld(o);   // acid = บ่อพื้น ย่อเล็ก โปร่ง วางใต้ตัวละคร กันบังจอ
     const ghost=kind==='acid'||kind==='hole';if(o.body){o.body.setAllowGravity(false);o.body.setImmovable(!ghost);o.body.setSize(ghost?1:80,ghost?1:58,true);if(ghost)o.body.checkCollision.none=true;else o.body.checkCollision.none=false;}
     this.vfxSpawnPoof(x,y);return o;
   }
