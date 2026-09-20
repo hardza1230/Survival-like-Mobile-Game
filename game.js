@@ -29,7 +29,7 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.19.0';
+const GAME_VERSION = '4.19.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
   { v:'4.19.0', date:'2026-09-20', title:'Strawberry nerf & cooking codex removed', items:[
@@ -2300,7 +2300,7 @@ class Game extends Phaser.Scene {
       if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(this.state==='dead'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
-      if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } Sfx.select(); this.continueFromSummary(); return; }
+      if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
       if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
       if(this.state==='startskill'){ this.pickStartingSkillAt(p.x,p.y); return; }
@@ -4900,9 +4900,12 @@ class Game extends Phaser.Scene {
       dg.fillStyle(0xd8a33a,1);dg.fillRoundedRect(w/2-dw/2,dy-dh/2,dw,dh,16);dg.lineStyle(2,0xffffff,0.3);dg.strokeRoundedRect(w/2-dw/2,dy-dh/2,dw,dh,16);
       const dt2=this.add.text(w/2,dy,'📺 Get Sugar x2 (+'+this._summaryBonus+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff'}).setOrigin(0.5);
       box.push(dg,dt2); this._summaryBtns.push({x:w/2-dw/2,y:dy-dh/2,w:dw,h:dh,fn:()=>this.showRewardedAd('Get double Sugar (+'+this._summaryBonus+')',()=>this.adDoubleSugar())}); }
-    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-120,h*0.82-30,240,60,22);
-    const bt=this.add.text(w/2,h*0.82,last?'🏆 View Summary':'🗺 Back to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
+    const bw2=240,bh2=60,byc=h*0.82;
+    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22);
+    const bt=this.add.text(w/2,byc,last?'🏆 View Summary':'🗺 Back to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
     box.push(btn,bt); this.over.add(box); this.over.setVisible(true);
+    this._summaryBtns.push({x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.continueFromSummary()});   // ปิดหน้าสรุปได้เฉพาะกดปุ่มนี้
+    this.tweens.add({targets:bt,alpha:{from:0.65,to:1},yoyo:true,repeat:-1,duration:700});
     // (คง this.sugarStage ไว้เพื่อ re-render ตอนกด x2 · จะรีเซ็ตใน continueFromSummary)
   }
   adDoubleSugar(){ if(this._summaryDoubled)return; this._summaryDoubled=true; const bonus=this._summaryBonus||0; if(bonus>0)Save.addSugar(bonus);
@@ -5063,11 +5066,12 @@ class Game extends Phaser.Scene {
     const rlabel=this.add.text(w/2,h*0.53,'🎁 Starter Reward',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(0.5);
     const rname=this.add.text(w/2,h*0.585,rewardEmoji+' '+rewardName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffffff',align:'center',wordWrap:{width:w*0.8}}).setOrigin(0.5);
     const hint=this.add.text(w/2,h*0.70,'Equip it from the Gear menu, then pick a real stage',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
-    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-120,h*0.82-30,240,60,22);
-    const bt=this.add.text(w/2,h*0.82,'🗺 Choose a Stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
+    const bw2=240,bh2=60,byc=h*0.82;
+    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22);
+    const bt=this.add.text(w/2,byc,'🗺 Choose a Stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
     this.over.add([bg,glow,cap,t,rlabel,rname,hint,btn,bt]); this.over.setVisible(true);
     this.tweens.add({targets:bt,alpha:{from:0.6,to:1},yoyo:true,repeat:-1,duration:700});
-    this._summaryBtns=[]; this._summaryLast=false;   // แตะที่ไหนก็ได้ = ไปต่อ (ใช้ handler ของ state summary → continueFromSummary → exitStage)
+    this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.continueFromSummary()}];   // ปิดได้เฉพาะกดปุ่ม
   }
   drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W,h=this.H; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
     // บับเบิลอยู่ "ด้านล่าง" (เหนือปุ่ม dash/unique เล็กน้อย) · ข้อความสั้น + ไฮไลต์สีคำสำคัญ
