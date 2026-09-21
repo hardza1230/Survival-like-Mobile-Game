@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.20.1';
+const GAME_VERSION = '4.21.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.21.0', date:'2026-09-21', title:'Purge reworked — Escort the Wisp', items:[
+    'Purge waves are brand new: instead of blasting stationary cores, a glowing wisp floats out and you escort it from core to core',
+    'Cursed cores are now shielded — they cannot be shot; only the wisp can purify them by channelling while you stand guard',
+    'The wisp only advances and channels while you stay close (escort ring shows your range), and enemies drain its light if they crowd it',
+    'If the wisp is snuffed out it simply relights nearby after a few seconds — no core progress lost',
+    'The objective arrow now points at the wisp so you always know where to be',
+  ]},
   { v:'4.20.0', date:'2026-09-20', title:'Objectives, drops, HUD & character tuning', items:[
     'Only Survive waves are on a countdown now — Hunt / Purge / Capture waves have no timer and must be completed to advance',
     'Level-up cards always grant just +1 star (Epic/Legendary no longer jump multiple ranks at once)',
@@ -2113,7 +2120,7 @@ const STAGE_GIMMICKS = [
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite'},
-  purge:{emoji:'💥',name:'Purge the Cursed Cores',desc:'Attack or approach to cleanse the cursed cores'},
+  purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core and protect it while it purifies'},
   capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the power ring until the meter fills'}
 };
 const CH1_OBJECTIVE_COLORS=[0x9dff45,0x72e8d1,0xff8a5a,0x9fe0ff,0xd59cff];
@@ -4450,7 +4457,7 @@ class Game extends Phaser.Scene {
     else if(type==='hunt'){
       o.target=2+(w>=4?1:0)+(this.stageIndex>=3?1:0);o.desc='Kill the marked Elite targets: '+o.target+' before time runs out';this.spawnObjectiveElite();
     }else if(type==='purge'){
-      o.target=3+(w>=4?1:0);o.desc='Attack or approach to purge the cores: '+o.target+' points';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);
+      o.target=3+(w>=4?1:0);o.desc='Escort the wisp to purify '+o.target+' cores';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);this.spawnPurifyWisp();
     }else{
       o.target=12+w*2;o.desc='Stand in the capture zone for '+o.target+' seconds';this.spawnCaptureZone();
     }
@@ -4470,14 +4477,16 @@ class Game extends Phaser.Scene {
       this.waveNodes.children.iterate(nd=>{ if(nd&&nd.active&&nd._waveObjectiveNode&&this.dist(pos.x,pos.y,nd.x,nd.y)<260)tooClose=true; });
       if(!tooClose)break; pos=this.objectivePosition(i,n,340,560); }
     let node=this.waveNodes.getFirstDead(false);if(!node)node=this.waveNodes.create(pos.x,pos.y,'nest_crystal');else{node.setTexture('nest_crystal').setActive(true).setVisible(true).setPosition(pos.x,pos.y);if(node.body)node.body.enable=true;}
-    if(!node)return;const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),mul=(1+this.stageIndex*.55+this.waveIndex*.14)*pg.enemyHp*this.diffMul().hp;
-    node.hp=Math.round(95*mul);node.maxhp=node.hp;node._purifyCd=0;node._shootCd=Phaser.Math.FloatBetween(1.6,2.6);node._waveObjectiveNode=true;node.setScale(.66).setTint(o.color).setDepth(node.y+1);this.camWorld(node);   // ถึกขึ้น (34→95) + ยิงกลับได้
+    if(!node)return;
+    node.hp=1;node.maxhp=1;node._purifyCd=0;node._waveObjectiveNode=true;node._coreLocked=true;node._purified=false;node.setScale(.66).setTint(o.color).setDepth(node.y+1);this.camWorld(node);   // แกนคำสาป = ทำลายด้วยกระสุนไม่ได้ ต้องให้ Wisp ชำระ
     if(node.body){node.body.setAllowGravity(false);node.body.setImmovable(true);node.body.setCircle(42,22,22);}
     node._objectiveCue=this.camWorld(this.add.image(node.x,node.y,'vfx_ring').setTint(o.color).setDepth(node.y).setDisplaySize(112,92).setAlpha(.52));
     this.tweens.add({targets:node._objectiveCue,rotation:TAU,alpha:{from:.34,to:.62},duration:1500,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.vfxSpawnPoof(node.x,node.y);
   }
   hitWaveNode(b,node){
-    if(!b.active||!node.active||!node._waveObjectiveNode)return;const dmg=b.dmg||8;node.hp-=dmg;this.popDmg(Math.round(dmg),node.x,node.y,false);this.vfxHitRing(node.x,node.y,this.waveObjective?.color||0xffd166,false);if(!b.pierce)this.killBullet(b);if(node.hp<=0)this.destroyWaveObjectiveNode(node);
+    if(!b.active||!node.active||!node._waveObjectiveNode)return;
+    if(node._coreLocked){if(!b.pierce)this.killBullet(b);this.vfxHitRing(node.x,node.y,0x8a5cff,false);return;}   // แกนคำสาปกันกระสุน — สะท้อนเป็นประกาย ไม่ลด HP
+    const dmg=b.dmg||8;node.hp-=dmg;this.popDmg(Math.round(dmg),node.x,node.y,false);this.vfxHitRing(node.x,node.y,this.waveObjective?.color||0xffd166,false);if(!b.pierce)this.killBullet(b);if(node.hp<=0)this.destroyWaveObjectiveNode(node);
   }
   destroyWaveObjectiveNode(node){
     if(!node||!node.active)return;const x=node.x,y=node.y;if(node._objectiveCue){this.tweens.killTweensOf(node._objectiveCue);node._objectiveCue.destroy();node._objectiveCue=null;}
@@ -4490,6 +4499,65 @@ class Game extends Phaser.Scene {
     this._captureRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_magic_circle').setTint(o.color).setDisplaySize(r*2,r*1.72).setDepth(pos.y-1).setAlpha(.7));
     this.tweens.add({targets:this._captureRing,rotation:TAU,alpha:{from:.36,to:.68},duration:1800,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
+  // ===== Escort the Wisp (purge objective) =====
+  _wispTuning(){ return {escortR:180,channel:3.2+this.stageIndex*0.35,speed:88,drainR:56,drain:0.34+this.stageIndex*0.05,regen:0.42,respawn:3.2}; }
+  spawnPurifyWisp(){
+    const o=this.waveObjective;if(!o||o.type!=='purge')return;
+    this.killPurifyWisp(false);
+    const a=Phaser.Math.FloatBetween(0,TAU),x=Phaser.Math.Clamp(this.player.x+Math.cos(a)*70,-WORLD/2+90,WORLD/2-90),y=Phaser.Math.Clamp(this.player.y+Math.sin(a)*70,-WORLD/2+90,WORLD/2-90);
+    const wisp=this.camWorld(this.add.circle(x,y,14,0xfff2b8,1).setDepth(y+2).setStrokeStyle(3,o.color,0.9));
+    wisp._light=1;wisp._state='travel';wisp._channel=0;
+    wisp._glow=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(o.color).setDepth(y+1).setScale(0.5).setAlpha(0.8).setBlendMode(Phaser.BlendModes.ADD));
+    this.tweens.add({targets:wisp._glow,scale:{from:0.5,to:0.72},alpha:{from:0.85,to:0.4},rotation:TAU,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    wisp._bob=this.tweens.add({targets:wisp,scale:{from:0.9,to:1.12},duration:640,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    this._wisp=wisp;this._wispRespawn=0;this.vfxSpawnPoof(x,y);
+    if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
+  }
+  killPurifyWisp(respawn){
+    const w=this._wisp;if(w){if(w._bob)this.tweens.killTweensOf(w);if(w._glow){this.tweens.killTweensOf(w._glow);if(w._glow.active)w._glow.destroy();}this.burst(w.x,w.y,0xfff2b8);if(w.active)w.destroy();this._wisp=null;}
+    const t=this._wispTuning();this._wispRespawn=respawn?t.respawn:0;
+  }
+  nearestCore(){ let best=null,bd=1e9;if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode||!n._coreLocked||n._purified)return;const d=this.dist(n.x,n.y,this._wisp.x,this._wisp.y);if(d<bd){bd=d;best=n;}});return best; }
+  purifyCore(node){
+    if(!node||node._purified)return;node._purified=true;const x=node.x,y=node.y;
+    for(let i=0;i<3;i++)this.time.delayedCall(i*90,()=>this.vfxHitRing(x,y,0xfff2b8,false));
+    this.destroyWaveObjectiveNode(node);   // นับ progress + เช็คจบ
+  }
+  tickPurifyWisp(dt){
+    const o=this.waveObjective;if(!o||o.done)return;const t=this._wispTuning();
+    if(!this._wisp){ this._wispRespawn-=dt; if(this._wispRespawn<=0&&o.progress<o.target)this.spawnPurifyWisp(); this.renderWispHUD(); return; }
+    const w=this._wisp,near=this.dist(this.player.x,this.player.y,w.x,w.y)<=t.escortR;
+    // มอนกัดกินแสง
+    let foes=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,w.x,w.y)<=t.drainR)foes++;});
+    if(foes>0)w._light-=t.drain*foes*dt; else if(near)w._light=Math.min(1,w._light+t.regen*dt);
+    w.setStrokeStyle(3,foes>0?0xff5a6a:o.color,0.9);
+    if(w._light<=0){this.killPurifyWisp(true);this.floatText(w?w.x:this.player.x,(w?w.y:this.player.y)-40,'Wisp snuffed out!',0xff5a6a);this.renderWispHUD();return;}
+    const target=this.nearestCore();
+    if(!target){this.renderWispHUD();return;}
+    w._glow.setPosition(w.x,w.y);
+    if(w._state==='travel'){
+      if(near){const a=Math.atan2(target.y-w.y,target.x-w.x);w.x+=Math.cos(a)*t.speed*dt;w.y+=Math.sin(a)*t.speed*dt;w.setDepth(w.y+2);w._glow.setDepth(w.y+1);}
+      if(this.dist(w.x,w.y,target.x,target.y)<=44){w._state='channel';w._channel=0;}
+    } else {  // channel
+      if(near){w._channel+=dt;const cf=Phaser.Math.Clamp(w._channel/t.channel,0,1);target.setTint(cf>0.5?0xffffff:o.color);target.setScale(0.66*(1+Math.sin(this.time.now/90)*0.06*cf));}
+      if(w._channel>=t.channel){this.purifyCore(target);w._state='travel';w._channel=0;if(o.done)return;}
+    }
+    this.renderWispHUD();
+  }
+  renderWispHUD(){
+    if(!this.objNodeG)return;const g=this.objNodeG;g.clear();const o=this.waveObjective;if(!o||o.type!=='purge'||o.done)return;const t=this._wispTuning(),w=this._wisp;
+    // ไฮไลต์แกนคำสาปที่ยังไม่ถูกชำระ
+    if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode||!n._coreLocked||n._purified)return;g.lineStyle(2,o.color,0.5);g.strokeCircle(n.x,n.y,30);});
+    if(!w)return;
+    // วง escort (จางลงเมื่อไกล)
+    const near=this.dist(this.player.x,this.player.y,w.x,w.y)<=t.escortR;g.lineStyle(2,near?0x9be89b:0xff7a7a,near?0.28:0.5);g.strokeCircle(w.x,w.y,t.escortR);
+    // หลอดแสงของ Wisp
+    const bw=56,bx=w.x-bw/2,by=w.y-40;g.fillStyle(0x000000,0.55);g.fillRoundedRect(bx-2,by-2,bw+4,8,4);g.fillStyle(0x241a10,1);g.fillRoundedRect(bx,by,bw,4,2);
+    if(w._light>0){g.fillStyle(w._light>0.35?0xffe08a:0xff6a5a,1);g.fillRoundedRect(bx,by,Math.max(2,bw*w._light),4,2);}
+    // หลอด channel เมื่อกำลังชำระแกน
+    if(w._state==='channel'){const cf=Phaser.Math.Clamp(w._channel/t.channel,0,1),cx=w.x-bw/2,cy=w.y-52;g.fillStyle(0x000000,0.55);g.fillRoundedRect(cx-2,cy-2,bw+4,8,4);g.fillStyle(0x1a2a24,1);g.fillRoundedRect(cx,cy,bw,4,2);g.fillStyle(0x8affd0,1);g.fillRoundedRect(cx,cy,Math.max(2,bw*cf),4,2);}
+  }
+  floatText(x,y,msg,color){ const t=this.camWorld(this.add.text(x,y,msg,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#'+(color||0xffffff).toString(16).padStart(6,'0'),stroke:'#000',strokeThickness:4}).setOrigin(.5).setDepth(95000));this.tweens.add({targets:t,y:y-28,alpha:{from:1,to:0},duration:1100,ease:'Cubic.out',onComplete:()=>t.destroy()}); }
   spawnObjectiveElite(){
     const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done)return;const e=this.spawnElite();if(!e)return;
     e.hp*=1.6;e.maxhp=e.hp;e._waveObjectiveTarget=true;   // เป้าหมายล่า = ถึกกว่าNormal (เดิม ×0.68 อ่อนไป)
@@ -4510,19 +4578,8 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done)return;
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
-    else if(o.type==='purge'&&this.waveNodes){
-      if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
-      const ng=this.objNodeG;ng.clear();
-      this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode)return;
-        // ชำระล้างด้วยการเข้าใกล้ (ดาเมจคงที่ ให้แกนที่ถึกใช้เวลานานขึ้นจริง)
-        n._purifyCd-=dt;if(this.dist(this.player.x,this.player.y,n.x,n.y)<=130&&n._purifyCd<=0){n._purifyCd=.4;n.hp-=Math.max(8,12+this.stageIndex*4);this.vfxHitRing(n.x,n.y,o.color,false);if(n.hp<=0){this.destroyWaveObjectiveNode(n);return;}}
-        // แกนคำสาปยิงสวน (ช้า อ่านทัน) — ไม่ใช่เป้านิ่ง
-        n._shootCd-=dt;if(n._shootCd<=0){n._shootCd=Phaser.Math.FloatBetween(2.0,3.0);const a=Math.atan2(this.player.y-n.y,this.player.x-n.x);this.foeShot(n.x,n.y,a,150,8+this.stageIndex*2,o.color||0xc77bff,1.0);if(this.stageIndex>=2){this.foeShot(n.x,n.y,a+0.35,150,8+this.stageIndex*2,o.color||0xc77bff,1.0);this.foeShot(n.x,n.y,a-0.35,150,8+this.stageIndex*2,o.color||0xc77bff,1.0);}}
-        // หลอดเลือดชัดเจนNorthแกน
-        const hf=Phaser.Math.Clamp(n.hp/n.maxhp,0,1),bw=54,bx=n.x-bw/2,by=n.y-46;
-        ng.fillStyle(0x000000,0.55);ng.fillRoundedRect(bx-2,by-2,bw+4,8,4);ng.fillStyle(0x24122c,1);ng.fillRoundedRect(bx,by,bw,4,2);
-        if(hf>0){ng.fillStyle(o.color||0xc77bff,1);ng.fillRoundedRect(bx,by,Math.max(2,bw*hf),4,2);}
-      });
+    else if(o.type==='purge'){
+      this.tickPurifyWisp(dt);
     }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
       o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}
@@ -4545,6 +4602,7 @@ class Game extends Phaser.Scene {
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;});
     for(const k of ['_captureZone','_captureRing']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}
+    this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);
   }
@@ -6144,7 +6202,7 @@ class Game extends Phaser.Scene {
   // skills AoE (ระเบิด/ฟ้าผ่า/ออร่า ฯลฯ) ก็ต้องตีกล่องแตกได้ด้วย (แก้บั๊กบางสกิลตีกล่องไม่โดน)
   hitCratesInRadius(x,y,r,amount){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active&&this.dist(c.x,c.y,x,y)<r+18) this.crateHit(c,amount); });
     // แกนคำสาป (purge) โดนสกิล AoE ด้วย — ไม่งั้นตัวที่ไม่ยิงกระสุน (ทาโร่ฟ้าผ่า/มินต์แช่/โกโก้/งาดำ) ทำลายไม่ได้
-    if(this.waveNodes)this.waveNodes.children.iterate(n=>{ if(n&&n.active&&n._waveObjectiveNode&&this.dist(n.x,n.y,x,y)<r+18){ n.hp-=amount; this.popDmg(Math.round(amount),n.x,n.y,false); this.vfxHitRing(n.x,n.y,this.waveObjective?.color||0xffd166,false); if(n.hp<=0)this.destroyWaveObjectiveNode(n); } }); }
+    if(this.waveNodes)this.waveNodes.children.iterate(n=>{ if(n&&n.active&&n._waveObjectiveNode&&!n._coreLocked&&this.dist(n.x,n.y,x,y)<r+18){ n.hp-=amount; this.popDmg(Math.round(amount),n.x,n.y,false); this.vfxHitRing(n.x,n.y,this.waveObjective?.color||0xffd166,false); if(n.hp<=0)this.destroyWaveObjectiveNode(n); } }); }
   breakCrate(c){ const x=c.x,y=c.y; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.screenShake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดWaitปออร์บ
@@ -6953,7 +7011,7 @@ class Game extends Phaser.Scene {
   _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   _nearestWaveObjective(){
     const o=this.waveObjective;if(!o)return null;if(o.type==='capture'&&this._captureZone)return this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal?null:this._captureZone;let best=null,bd=Infinity;
-    if(o.type==='purge'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});
+    if(o.type==='purge'){if(this._wisp&&this._wisp.active)return this.dist(this.player.x,this.player.y,this._wisp.x,this._wisp.y)<=170?null:this._wisp;if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode||n._purified)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});}
     if(o.type==='hunt'&&this.enemies)this.enemies.children.iterate(e=>{if(!e||!e.active||!e._waveObjectiveTarget)return;const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<bd){bd=d;best=e;}});return best;
   }
   updateObjectiveArrow(){
