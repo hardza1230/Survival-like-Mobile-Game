@@ -57,7 +57,15 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.9.0 — Zone Modifiers / Stats panel / Bestiary stats)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.20.1 — Objectives/drops/HUD/character tuning + Training Ground tutorial)
+- **v4.20.1 (fix):** กล่อง loot ไม่เป็นสี่เหลี่ยมดำแล้ว · จัดแบนเนอร์กลางจอให้กระชับ
+- **v4.20.0 (Objectives/drops/HUD/character tuning):** เฉพาะเวฟ **Survive** ที่จับเวลานับถอยหลัง — เวฟ **Hunt/Purge/Capture ไม่มี timer** ต้องทำสำเร็จถึงผ่าน · การ์ดเลเวลอัพให้ **+1 ดาวเสมอ** (Epic/Legend ไม่กระโดดหลายขั้นแล้ว) · currency drop โชว์ไอคอน currency จริง (เลิกกล่องสี) · แก้ HUD บน (จุดเวฟทับบรรทัด HP/atk/def) · แก้ไอเทมค้างหลังออกด่านแล้วเริ่มใหม่ · Strawberry multi-shot หายากลง (ส่วนมาก 1–2 เมล็ด) · Mint ice shard น้อยลง/เร็วขึ้น/ไม่ homing · Sesame ตัดวงเวทตกค้าง (เหลือ beam + Focus)
+- **v4.19.0–v4.19.1 (Strawberry nerf + ถอดระบบครัว):** **Momo/Strawberry จูนลงหนัก** (เมล็ดต่อชุดน้อยลง, ดาเมจต่อเมล็ดต่ำลง, ยิงช้าลง, sig weapon เลิก +ดาเมจก้อนใหญ่ — เดิมละลายมินิบอสไวเกิน) · **ถอด Cooking Codex ออก** (เมนู Cookbook, recipe panel, แบนเนอร์ Dish Cooked, cook quest) — โบนัสคอมโบอาวุธ+passive ยังทำงานเงียบๆ · หน้าสรุปด่าน (currency+box) โชว์+รอแตะทุกด่าน · **v4.19.1:** สรุปด่านปิดได้เฉพาะปุ่มมันเอง
+- **v4.17.0–v4.18.1 (Training Ground tutorial):** ผู้เล่นใหม่เรียนใน **Training Ground** ด่านซ้อมว่างเปล่า (ไม่มี prop/เวฟ, Berry สอนทีละสเต็ป) แทน Stage 1 จริง → story intro Ch.1 ไม่ถูกใช้ทิ้งตอน tutorial · จบ tutorial กลับหน้าเลือกด่าน · **v4.18.0:** SVG grid floor, tip ย้ายล่างบรรทัดเดียวเน้นคำสำคัญ, spotlight เต้นชี้จุด (โซนเดิน/ศัตรูใกล้สุด/ปุ่ม Dash+Unique/การ์ด), รางวัลไอเทมจบ tutorial · **v4.18.1:** จบ tutorial โชว์หน้ารางวัล tap-to-continue
+- **v4.16.0 (level-up card cleanup):** ลบการ์ด common ซ้ำซ้อน (Balanced Core, Returning Taste — ทับ Sweet Power/Mochi Vitality/Regeneration/Quick Hands)
+- **v4.14.0–v4.15.0 (Sesame rework + loot boxes):** รื้อ **Sesame เป็น Mirror Beam sniper** · loot boxes + มอนดรอป currency · quit-summary · จูน Sesame beam
+- **v4.13.0 (fix):** acid pool บอสบังจอ, field item ยักษ์, Mint spear rework
+- **v4.10.0–v4.12.0:** Bestiary ครบทุกด่าน (boss/miniboss ราย stage) · Ascendancy design + endgame lore (Midnight Kitchen) · Sesame Guard/Focus movement trade-off · Zone Modifier currency reroll + จูน Cocoa/Taro
 - **v4.9.0 (Zone Modifiers):** `ZONE_MODIFIERS` 4 affix สแตกได้ (toughened/ferocious/swarmlord/nightmare) · ปลดล็อกหลังผ่านบอสจบ Ch.1 (`Save.zoneModsUnlocked`=stageMastery[4]) · เปิดจากหน้าเลือกความยาก (`buildZoneModifiers`) · `Save.data.zoneMods` + `zoneModMul()` × เข้ากับ `diffMul()` (hp/dmg/reward) · set `_activeZoneMods/_zoneMul` ใน startRun · **gate ไว้กันผู้เล่นใหม่ถาโถม**
 - **v4.8.0 (Stats + Bestiary + tune):** หน้า **Character Stats** (`previewStats/buildStats`, gLoadout) โชว์เลขจริง (Attack Power index ฯลฯ) · **Bestiary คืนสแตตถาวร 8 tier** (`bestiaryTotals` เข้า applyMeta, `BEST_HI_SCALE` tier 6-8) · Momo weapon cd 0.88→0.94 (ช้าลง) · Mint frost = basic ยิงถี่ (special cd + weapon 0.72) + ฟาน 2 หอกโฮมมิ่ง + `frostShatterBurst` AoE การันตีโดน
 - **v4.3.1–v4.7.0 (ชุดแก้ตาม feedback เจ้าของ):**
