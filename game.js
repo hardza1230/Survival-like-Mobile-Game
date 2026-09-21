@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.22.0';
+const GAME_VERSION = '4.23.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.23.0', date:'2026-09-21', title:'Character-only cards + streamlined stage reward', items:[
+    'Level-up cards are now all about your character: the shared passive cards are gone, leaving only your own weapon upgrades plus the Mutation and Evolution milestones',
+    'Beating a boss no longer asks you to pick a mystery box — the reward is rolled and shown straight away, so it is clear what you got',
+    'Gear rewards say to equip them from the Gear menu, so a new drop does not feel like it vanished',
+  ]},
   { v:'4.22.0', date:'2026-09-21', title:'Boss epilogues + early-game loot fix', items:[
     'Clearing a stage boss now shows a short story recap — what just happened and why you press on to the next stage — before the reward summary',
     'Early loot no longer overpowers you: reward gear (gacha, forge, field drops) lags one stage behind, so beating Stage 1 stops handing out Chapter 2 items',
@@ -4891,16 +4896,17 @@ class Game extends Phaser.Scene {
     if(canUnlock){Save.data.unlockedStage=next;Save.save();}
     if(!Save.data.diffBest)Save.data.diffBest=[];if((this.stageDiff||1)>(Save.data.diffBest[this.stageIndex]||0)){Save.data.diffBest[this.stageIndex]=this.stageDiff||1;Save.save();}   // จำความยากสูงสุดที่ผ่าน
     this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();
-    this.time.delayedCall(500,()=>this.showStageChestChoice(canUnlock?('Unlocked Stage '+(next+1)):'Choose your reward fate'));
+    this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked Stage '+(next+1)):null));
   }
-  showStageChestChoice(note){
+  // v4.23: เลิกให้เลือกกล่อง (การเลือกแบบไม่รู้ผล = ไม่มีความหมาย) → สุ่มรางวัลให้เลยแล้วโชว์ผลชัด ๆ
+  revealStageReward(note){
     this.state='rewardChoice';this.physics.pause();this.player.setVelocity(0,0);this.lvlUp.setVisible(false);this.over.removeAll(true);this._rewardBtns=[];
-    const w=this.W,h=this.H,portrait=w<=h,bg=this.add.rectangle(0,0,w,h,0x090611,0.94).setOrigin(0),title=this.add.text(w/2,h*0.13,'Pick one reward box',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe08a'}).setOrigin(0.5),sub=this.add.text(w/2,h*0.19,note,{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc3dc'}).setOrigin(0.5);this.over.add([bg,title,sub]);
-    const choices=[['sugar','🍬','Sugar Box','Guaranteed currency · large amount',0xffa952],['gear','🛡️','Gear Box','High gear chance',0x6ed7df],['fortune','✨','Fortune Box','Gamble for Gear or a Sugar jackpot',0xd58cff]],gap=portrait?10:14,cols=portrait?1:3,cw=portrait?Math.min(w-40,360):Math.min(220,(w-48-gap*2)/3),ch=portrait?Math.min(118,(h*0.67-gap*2)/3):Math.min(230,h*0.55),total=cw*cols+gap*(cols-1),x0=(w-total)/2,y0=portrait?h*0.25:h*0.29;
-    choices.forEach((c,i)=>{const x=portrait?x0:x0+i*(cw+gap),y=portrait?y0+i*(ch+gap):y0,g=this.add.graphics();g.fillStyle(0x251a32,0.98);g.fillRoundedRect(x,y,cw,ch,18);g.lineStyle(3,c[5],0.95);g.strokeRoundedRect(x,y,cw,ch,18);g.fillStyle(c[5],0.14);g.fillRoundedRect(x+5,y+5,cw-10,ch-10,14);const em=this.add.text(x+cw/2,y+ch*(portrait?0.35:0.34),c[1],{fontSize:portrait?'42px':'58px'}).setOrigin(0.5),nm=this.add.text(x+cw/2,y+ch*(portrait?0.62:0.64),c[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0.5),ds=this.add.text(x+cw/2,y+ch*(portrait?0.82:0.82),c[3],{fontFamily:'sans-serif',fontSize:'9px',color:'#d9cfe1',align:'center',wordWrap:{width:cw-20}}).setOrigin(0.5);this.over.add([g,em,nm,ds]);this._rewardBtns.push({x,y,w:cw,h:ch,fn:()=>this.chooseStageChest(c[0])});});this.over.setVisible(true);
-  }
-  chooseStageChest(kind){
-    if(this.state!=='rewardChoice')return;this._rewardBtns=[];this._stageReward=this.rollStageReward(kind);Sfx.clear();this.over.removeAll(true);const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090611,0.96).setOrigin(0),glow=this.add.image(w/2,h*0.43,'vfx_glow').setTint(0xffd166).setScale(1.4).setAlpha(0.45),em=this.add.text(w/2,h*0.40,this._stageReward.emoji,{fontSize:'86px'}).setOrigin(0.5),t=this.add.text(w/2,h*0.57,'Box opened!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffe08a'}).setOrigin(0.5),d=this.add.text(w/2,h*0.64,this._stageReward.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5);this.over.add([bg,glow,em,t,d]);this.screenFlash(0xffd166,0.35,350);this.time.delayedCall(1250,()=>{if(this.state==='rewardChoice'){this.over.setVisible(false);this.onStageClear();}});
+    this._stageReward=this.rollStageReward('fortune');Sfx.clear();
+    const w=this.W,h=this.H,r=this._stageReward,bg=this.add.rectangle(0,0,w,h,0x090611,0.96).setOrigin(0),glow=this.add.image(w/2,h*0.40,'vfx_glow').setTint(r.type==='gear'?0x6ed7df:0xffd166).setScale(1.5).setAlpha(0.5),em=this.add.text(w/2,h*0.38,r.emoji,{fontSize:'86px'}).setOrigin(0.5),t=this.add.text(w/2,h*0.55,r.type==='gear'?'🎁 Gear reward!':'🎁 Reward!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffe08a'}).setOrigin(0.5),d=this.add.text(w/2,h*0.62,r.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5);this.over.add([bg,glow,em,t,d]);
+    if(note){const n=this.add.text(w/2,h*0.70,note,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#9be89b'}).setOrigin(0.5);this.over.add(n);}
+    if(r.type==='gear')this.over.add(this.add.text(w/2,h*0.76,'Equip it from the Gear menu on the Stage Select screen',{fontFamily:'sans-serif',fontSize:'11px',color:'#bfb4cc',align:'center',wordWrap:{width:w-60}}).setOrigin(0.5));
+    this.tweens.add({targets:em,scale:{from:0.4,to:1},duration:420,ease:'Back.out'});this.screenFlash(0xffd166,0.35,350);
+    this.time.delayedCall(1650,()=>{if(this.state==='rewardChoice'){this.over.setVisible(false);this.onStageClear();}});
   }
   rollStageReward(kind='fortune'){
     const stage=this.stageIndex+1,rage=this._rewardRage||this.bossRageInfo(),dr=this.diffMul().reward;   // กฎเหล็ก: ยิ่งยาก better rewards
@@ -5371,22 +5377,15 @@ class Game extends Phaser.Scene {
     const atk=[];
     for(const u of d.upgrades){const cur=b.ranks[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
       const rr=rollRarity(); atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,apply:()=>{b.ranks[u.id]=Math.min(u.max,(b.ranks[u.id]||0)+rr.ranks);this.syncBasicAttack();}})});}
-    // v4.16: เอา Overdrive/Combat Tempo ออก (ซ้ำกับ passive power/haste) — dmg/CD คุมผ่าน passive แกนแทน
-    // สายติดตัว (passive) — 12 แบบ = แหล่งความหลากหลายหลัก · boost คู่ที่Cook Dishได้ (recipe)
-    const pas=[];const pasOwned=Object.keys(this.passives).length;
-    for(const key in PASSIVES){if(this.banishedKeys?.['p:'+key])continue;const p=PASSIVES[key],cur=this.passives[key]||0;if(cur>=p.max||(cur===0&&pasOwned>=4))continue;
-      const rr=rollRarity(),grant=Math.min(p.max-cur,rr.ranks);
-      pas.push({w:2.4,card:{type:'pas',key,lvl:cur+1,max:p.max,isNew:cur===0,rarity:rr,kind:'Passive',badgeColor:'#66d3b3',color:rr.color,emoji:p.emoji,title:p.name,desc:p.desc,apply:()=>{for(let n=0;n<grant;n++){this.passives[key]=(this.passives[key]||0)+1;p.apply(this.player);}this.buildSkillBar();}}});}
+    // v4.23: เลิกแจกการ์ด passive ใช้ร่วม (shared) — เหลือเฉพาะสายอัพเกรดอาวุธประจำตัว + mutation/evo · heal ไว้กันตันจอ/ฉุกเฉิน
     const hpFrac=this.player.hp/Math.max(1,this.player.maxhp);
     let healCard=null;
     if(hpFrac<0.999){const rr=rollRarity(),amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)*(1+(rr.ranks-1)*0.5)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,rarity:rr,color:rr.color,kind:'Instant Heal',emoji:'💖',title:'Sweet Recovery',desc:'Restore HP instantly '+amount+' HP · No passive slot',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}
     const pick=(arr)=>{if(!arr.length)return null;let tot=arr.reduce((s,x)=>s+x.w,0),r=Math.random()*tot;for(let i=0;i<arr.length;i++){r-=arr[i].w;if(r<=0)return arr.splice(i,1)[0].card;}return arr.splice(0,1)[0].card;};
     const out=[];
-    const a1=pick(atk); if(a1)out.push(a1);          // การันตี 1 สายโจมตี
-    const p1=pick(pas); if(p1)out.push(p1);          // การันตี 1 สายติดตัว (เพิ่มบทบาท passive)
-    const rest=[...atk,...pas]; while(out.length<n&&rest.length){const c=pick(rest);if(c)out.push(c);else break;}
+    while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}   // การ์ดอาวุธของตัวละครล้วน
     if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
-    else if(out.length<n&&healCard)out.push(healCard);
+    else if(out.length<n&&healCard){out.push(healCard);healCard=null;}
     if(!out.length)out.push({type:'util',key:'sugarCache',lvl:1,max:1,emoji:'🍬',title:'Sugar Cache',desc:'Gain 8 Sugar instantly',apply:()=>{this.sugarStage+=8;this.sugarRun+=8;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);}});
     Phaser.Utils.Array.Shuffle(out);
     return out.slice(0,n);

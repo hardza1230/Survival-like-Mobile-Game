@@ -57,7 +57,11 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.22.0 — Boss epilogues + early-game loot fix)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.23.0 — Character-only cards + streamlined reward)
+- **v4.23.0 (การ์ดเฉพาะตัวละคร + ตัดเลือกกล่องรางวัล — จาก feedback เจ้าของ):**
+  · **การ์ดเลเวลอัพ:** `rollBasicAttackUpgrades` เอา pool `pas` (PASSIVES ใช้ร่วม 12 แบบ) ออกทั้งหมด → เหลือเฉพาะ `atk` (อัพเกรดอาวุธประจำตัว `d.upgrades`) + mutation(mastery8) + evolution(mastery20) + heal ฉุกเฉิน(กันตันจอ) · **verified: 360 การ์ด = 'basic' ล้วน ไม่มี 'pas'**
+  · **รางวัลจบด่าน:** ตัดหน้า `showStageChestChoice`/`chooseStageChest` (เลือก 1 ใน 3 กล่องแบบไม่รู้ผล = ไร้ความหมาย) → `revealStageReward(note)` สุ่ม 'fortune' ให้เลยแล้วโชว์ผลชัด (gear โชว์ชื่อ+บอกให้ไป Equip ที่เมนู Gear, ไม่มีปุ่มเลือก, auto→onStageClear 1.65s) · **verified: ล้มบอส→rewardChoice, 0 ปุ่ม, โชว์ label**
+- **v4.22.0 (Boss epilogues + early-game loot fix)**
 - **v4.22.0 (Boss story epilogue + แก้ loot โกงต้นเกม — จาก feedback เจ้าของ):**
   · **สรุปเรื่องราวตอนล้มบอส:** `STAGE_EPILOGUE[]` (6 ด่าน) = เกิดอะไรขึ้น + ทำไมไปด่านต่อ · `showStageEpilogue(last)` (state `'epilogue'`, `_epilogueBtns`, handler ที่ pointerdown) โชว์ก่อนหน้าสรุปสถิติ → กด Continue → `showStageSummary` · `onStageClear` route ผ่าน epilogue (path quit stage ไม่ผ่าน) · ไม่มี ep = fallback ไป summary
   · **แก้ item โกงต้นเกม (3 จุด):** (1) `affixCountCap(itemLevel)` — iLv<12=1 mod, <25=2, <45=3 (rollAffixes `Math.min(AFFIX_COUNT,cap)`) กันของด่านแรกมี 3-6 mod · (2) reward gear ตามหลัง 1 ด่าน: `rewardSourceStage()`=unlockedStage-1, `rewardChapter()`, `currentRewardItemLevel` ใช้ diff1 → ผ่านด่าน1 ไม่กระโดด Chapter 2 · (3) `grantGear` menu path ใช้ rewardSourceStage + diff1 (in-play ยังใช้ stageIndex จริง) · **verified: หลังผ่านด่าน1 gacha iLv~5-8 (เดิม 30), max 1 mod (เดิม 3), 0 error**
