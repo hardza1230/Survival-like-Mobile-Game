@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.21.0';
+const GAME_VERSION = '4.22.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.22.0', date:'2026-09-21', title:'Boss epilogues + early-game loot fix', items:[
+    'Clearing a stage boss now shows a short story recap — what just happened and why you press on to the next stage — before the reward summary',
+    'Early loot no longer overpowers you: reward gear (gacha, forge, field drops) lags one stage behind, so beating Stage 1 stops handing out Chapter 2 items',
+    'Low item-level gear now rolls fewer mods (1 under iLv12, 2 under iLv25), so a Stage 1 drop can no longer arrive with a full set of powerful affixes',
+    'Gacha after Stage 1 now gives sensible Chapter 1 gear instead of an item-level 30 armour with +100 HP',
+  ]},
   { v:'4.21.0', date:'2026-09-21', title:'Purge reworked — Escort the Wisp', items:[
     'Purge waves are brand new: instead of blasting stationary cores, a glowing wisp floats out and you escort it from core to core',
     'Cursed cores are now shielded — they cannot be shot; only the wisp can purify them by channelling while you stand guard',
@@ -1509,7 +1515,8 @@ function craftCurrencyForLine(rarity,hasLine){if(!hasLine&&rarity==='common')ret
 // iLv มีผลกับ Tier ที่ออก: แบ่งช่วงละ 10 เลเวล (step 0..9) → ยิ่ง iLv สูง bias ยิ่งลด = tier แย่ (t สูง) ถูกถ่วงน้อยลง = tier ดีออกบ่อยขึ้น
 function rollTier(best,ilvl){ const step=Math.max(0,Math.min(9,Math.floor(((Number(ilvl)||1)-1)/10))); const bias=1-Math.min(0.62,step*0.075); const list=[]; let tot=0; for(let t=best;t<=5;t++){ const w=t*t*Math.pow(bias,t-best); list.push([t,w]); tot+=w; } let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return best; }
 function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl), band=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v}; }
-function rollAffixes(baseTier,itemLevel=1,base=null){const n=AFFIX_COUNT[baseTier]||0;if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,best=Math.max(BASE_BEST_TIER[baseTier]||4,bestAffixTierForItemLevel(itemLevel));
+function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:l<45?3:99;}   // ของเลเวลต่ำ = mod น้อย (กันของด่านแรกโกง) ค่อย ๆ ปลดตาม iLv
+function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel));if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,best=Math.max(BASE_BEST_TIER[baseTier]||4,bestAffixTierForItemLevel(itemLevel));
   const pre=pool.filter(a=>a.kind==='prefix'),suf=pool.filter(a=>a.kind==='suffix');let nPre,nSuf;if(n===1){if(Math.random()<.5){nPre=1;nSuf=0;}else{nPre=0;nSuf=1;}}else if(n===2){nPre=1;nSuf=1;}else{if(Math.random()<.5){nPre=2;nSuf=1;}else{nPre=1;nSuf=2;}}
   const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=p.splice(Math.floor(Math.random()*p.length),1)[0];out.push(rollOneAffix(m,Math.max(best,m.bestTier||1),itemLevel));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
@@ -1570,7 +1577,10 @@ function itemBand(ch){return ITEM_LEVEL_BANDS[clampItemChapter(ch)-1];}
 function itemChapterFromLevel(ilvl){return Math.max(1,Math.min(5,Math.ceil(Math.max(1,Number(ilvl)||1)/20)));}
 function bestAffixTierForItemLevel(ilvl){return itemBand(itemChapterFromLevel(ilvl)).bestAffixTier;}
 function rollItemLevel(stageIndex,difficulty=1,rng=Math.random){const b=itemBand(itemChapterForStage(stageIndex)),d=Math.max(1,Math.min(3,Number(difficulty)||1));return Math.min(b.max,b.min+(d-1)*6+Math.floor(rng()*8));}
-function currentRewardItemLevel(rng=Math.random){return rollItemLevel(Math.max(0,Math.min(4,(Save.data&&Save.data.unlockedStage)||0)),2,rng);}
+// รางวัลนอกด่าน (gacha/forge/menu drop) = ตามหลังความคืบหน้า 1 ด่าน + ยาก normal → ผ่านด่าน 1 จะไม่กระโดดไป Chapter 2 ทันที
+function rewardSourceStage(){return Math.max(0,((Save.data&&Save.data.unlockedStage)||0)-1);}
+function rewardChapter(){return itemChapterForStage(rewardSourceStage());}
+function currentRewardItemLevel(rng=Math.random){return rollItemLevel(rewardSourceStage(),1,rng);}
 function applyItemLevelBonus(p,item){const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
   if(slot==='weapon'||slot==='ring')p.dmgMul*=1+0.24*q;
   else if(slot==='gloves')p.critChance=(p.critChance||0)+0.06*q;
@@ -2100,6 +2110,27 @@ const STAGE_STORY_BEATS = [
     {title:'A Mother Voice Below the First Root',sub:'The one who planted the crown seed waits, calling The Great Hunger a lost child'}
   ]
 ];
+// สรุปเรื่องราวตอนล้มบอสจบด่าน (โชว์ก่อนหน้าสรุปสถิติ) — what happened + why press on
+const STAGE_EPILOGUE = [
+  { title:'The Empress Falls Silent',
+    body:'The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Momo toward the drains where the sour acid still flows.',
+    why:'Follow the poisoned current downstream to find its source.' },
+  { title:'The Pipes Run Clear',
+    body:'Clogmaw bursts and the fermented flood drains away. In the last trickle Momo hears a furnace roar far below — something is boiling the stolen acid into raw power.',
+    why:'Descend to the Chili Engine before it finishes stoking.' },
+  { title:'The Furnace Goes Cold',
+    body:'Mr. Griddle sputters out and his cursed engine stalls. But that heat was feeding a freezer above, where sweet flavor-spirits are being frozen as the next batch of fuel.',
+    why:'Climb to the Sugar Frost Prison and free the captured flavors.' },
+  { title:'The Ice Lets Go',
+    body:'The Golem melts into slush and the frozen spirits drift free, whispering their thanks. They warn of a crown-shaped oven higher up, where the Bitter Chef prepares his final course.',
+    why:'Ascend to the Crown Oven and end the Bitter Chef for good.' },
+  { title:'The Great Hunger Recedes',
+    body:'The Great Hunger collapses and taste floods back into Mochitopia in a rush of color and sound. Yet from the cooling oven a single crown seed rolls free — and roots upward, toward the garden above.',
+    why:'Chapter 1 is complete. Chase the seed into the Fermented Canopy.' },
+  { title:'The Canopy Stills',
+    body:'The Rootmother unwinds into drifting spores and the out-of-season blooms finally settle. The garden falls quiet — but the seed’s vine keeps climbing, past where Momo can yet follow.',
+    why:'The trail leads on. New grounds await in the chapters ahead.' },
+];
 const STORY_REACTIONS = {
   momo:["I'll follow the curse's scent myself","These voices don't want to fight... I must hurry","A warden is coming — stay focused, Momo","The source is close — no retreat","End this and take back everyone's flavor"],
   mint:["The air here is wrong — I'll calm it","Something still lives under the curse — I can feel it","The warden isn't evil — we must stop the curse","The pressure rises... make a safe space","I'll protect every memory that remains"],
@@ -2316,6 +2347,7 @@ class Game extends Phaser.Scene {
       if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(this.state==='dead'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
+      if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
       if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
       if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
@@ -4928,7 +4960,33 @@ class Game extends Phaser.Scene {
     // Mochi Bazaar restock: ผ่านด่านใดก็ได้ = สุ่มร้านใหม่ · stock อ้างอิง Zone Level ของด่านที่เพิ่งผ่าน
     Save.data.bazaarSeed=(Save.data.bazaarSeed||0)+1; Save.data.bazaarZone=this.zoneLevel(); Save.data.bazaarBought=[]; Save.save();
     this._summaryDoubled=false;   // รีเซ็ตสิทธิ์ดูโฆษณา x2 ต่อการเคลียร์ด่าน
-    this.showStageSummary(last);
+    this.showStageEpilogue(last);
+  }
+  /* หน้าสรุปเรื่องราวตอนล้มบอส — เกิดอะไรขึ้น + ทำไมไปด่านต่อไป → แตะไปหน้าสรุปสถิติ */
+  showStageEpilogue(last){
+    const ep=STAGE_EPILOGUE[this.stageIndex];
+    if(!ep){ this.showStageSummary(last); return; }   // ไม่มีเรื่องราว = ข้ามไปหน้าสรุปเลย
+    this.state='epilogue'; this.physics.pause(); this.player.setVelocity(0,0);
+    const w=this.W,h=this.H, st=STAGES[this.stageIndex], tint=st.tint||0xffd166; this.over.removeAll(true);
+    const bg=this.add.rectangle(0,0,w,h,0x0d0a14,0.94).setOrigin(0,0);
+    const glow=this.add.image(w/2,h*0.24,'vfx_glow').setTint(tint).setScale(1.7).setAlpha(0.4);
+    const kicker=this.add.text(w/2,h*0.14,st.emoji+'  '+st.name+'  ·  Cleared',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#'+tint.toString(16).padStart(6,'0')}).setOrigin(0.5);
+    const title=this.add.text(w/2,h*0.22,ep.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a',align:'center',wordWrap:{width:w*0.86}}).setOrigin(0.5);
+    const body=this.add.text(w/2,h*0.44,ep.body,{fontFamily:'sans-serif',fontSize:'15px',color:'#e6ddef',align:'center',lineSpacing:6,wordWrap:{width:w*0.82}}).setOrigin(0.5);
+    const arrow=this.add.text(w/2,h*0.63,'▼',{fontSize:'18px',color:'#'+tint.toString(16).padStart(6,'0')}).setOrigin(0.5);
+    const why=this.add.text(w/2,h*0.70,ep.why,{fontFamily:'sans-serif',fontStyle:'bold italic',fontSize:'15px',color:'#ffffff',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
+    const box=[bg,glow,kicker,title,body,arrow,why];
+    const bw=250,bh=58,byc=h*0.85;
+    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw/2,byc-bh/2,bw,bh,22); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw/2,byc-bh/2,bw,bh,22);
+    const bt=this.add.text(w/2,byc,last?'📜 The Story So Far ▶':'▶ Continue',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
+    box.push(btn,bt); this.over.add(box); this.over.setVisible(true);
+    this._epilogueBtns=[{x:w/2-bw/2,y:byc-bh/2,w:bw,h:bh,fn:()=>{ if(this.state!=='epilogue')return; this.showStageSummary(last); }}];
+    body.setAlpha(0); title.setAlpha(0);
+    this.tweens.add({targets:title,alpha:1,y:{from:h*0.20,to:h*0.22},duration:520,ease:'Cubic.out'});
+    this.tweens.add({targets:body,alpha:1,duration:600,delay:280});
+    this.tweens.add({targets:arrow,y:{from:h*0.63-4,to:h*0.63+4},yoyo:true,repeat:-1,duration:640,ease:'Sine.inOut'});
+    this.tweens.add({targets:bt,alpha:{from:0.7,to:1},yoyo:true,repeat:-1,duration:720});
+    this.screenFlash(tint,0.25,400);
   }
   /* หน้าสรุปStage — แตะเพื่อไปต่อ */
   showStageSummary(last){
@@ -6342,9 +6400,9 @@ class Game extends Phaser.Scene {
     this.showBanner('🎁 Miniboss Box · upgrade '+chosen.length+' skills',names,3000);this.vfxLevelUp();
   }
   // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังNone) — คืน item หรือ null ถ้ามีครบแล้ว
-  grantGear(tier){ const sourceStage=this.state==='play'?this.stageIndex:(Save.data.unlockedStage||0),chapter=itemChapterForStage(sourceStage);
+  grantGear(tier){ const inPlay=this.state==='play',sourceStage=inPlay?this.stageIndex:rewardSourceStage(),chapter=itemChapterForStage(sourceStage);
     let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter); if(!pool.length)return null;
-    const it=Phaser.Utils.Array.GetRandom(pool),itemLevel=rollItemLevel(sourceStage,this.state==='play'?(this.difficulty||1):2),delivery=Save.receiveGearInstance(it.id,{isNew:true,itemLevel,chapter});
+    const it=Phaser.Utils.Array.GetRandom(pool),itemLevel=rollItemLevel(sourceStage,inPlay?(this.difficulty||1):1),delivery=Save.receiveGearInstance(it.id,{isNew:true,itemLevel,chapter});
     return delivery?Object.assign({},it,{instance:delivery.item,delivery:delivery.destination,shards:delivery.shards||0}):null; }
   gachaRoll(){ const r=Math.random(), roll=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend';   // 50% common · 30% rare · 15% epic · 5% legend
     for(const t of [roll,'epic','rare','common','legend']){ const it=this.grantGear(t); if(it)return it; } return null; }
