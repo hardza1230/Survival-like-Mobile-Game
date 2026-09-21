@@ -57,7 +57,15 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.24.0 — Strawberry buff + fighter unlock gate)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.25.0 — Card rarity/boss charge/reward polish/early progression)
+- **v4.25.0 (6 เรื่องจาก feedback เจ้าของ):**
+  · **การ์ด rarity เด่นชัด:** `drawReadableChoiceCard` เพิ่ม `rarIdx` → epic/legend กรอบหนา + glow graphics (2 ชั้น) รอบการ์ด + พื้นอมสี (`_darken(color)`) + legend/epic pulse alpha
+  · **บอสชาร์จแล้วพุ่ง:** helper `chargeTelegraph(b,windMs,dashSpeed,thick)` — ลำแสง vfx_line หนา สว่าง+หนาขึ้นตอนชาร์จ + glow ที่ตัวบอส + follow ตรึงทิศ → พุ่ง (มินิ 780ms/700, บอส 900ms/600+stage*20) แทนเส้นบาง 420ms เดิม
+  · **กล่องสุ่มมินิบอสอลังการ:** `playRollAnimation`/`landRollBox` ใช้ไอคอนจริง (`card.iconKey` image แทน emoji), rays หมุน, halo, ประกายกระจาย 10 จุด, screen flash + hitStop ตอน land
+  · **หน้าสรุปด่านกระชับ:** เหลือ Time/Kills/Sugar/Boxes/Power/Level — ตัด Boss Rage, Character EXP, Build ทิ้ง
+  · **gate หมวด Gear&Power:** `buildHubGroup` — `GATED={gear,craft,bazaar,gearInbox}` ล็อกจน `unlockedStage>=1` · stats + upgrade (3 แก่น Flavor Weave) เปิดตั้งแต่เริ่ม
+  · **รางวัล tutorial = Sugar 140:** `_coachFinish` เลิกแจก gear → `Save.addSugar(140)` (พออัพ 3 แก่นได้: 2× อันเดิม หรือ 3 อันละ 1) · showTutorialComplete hint ชี้ไป Flavor Weave
+- **v4.24.0 (บัฟ Momo + gate ปลดล็อกตัวละคร)**
 - **v4.24.0 (บัฟ Momo + gate ปลดล็อกตัวละคร — จาก feedback เจ้าของ):**
   · **Momo (สตรอเบอร์รี่) แรงขึ้น:** sprinkle basic dmg `(3.5+lvl*1.0)`→`(5.25+lvl*1.5)` (×1.5) → ต้นเกมตี ~4→6 ต่อเมล็ด (บรรทัด ~5600 ใน castSkill sprinkle branch)
   · **ปลดล็อกตัวละครหลังผ่านด่าน 1:** `buildChars` เพิ่ม `charsUnlocked=(unlockedStage>=1)` · ตัวที่ยังไม่มี+ยังไม่ปลด = `locked` (การ์ดหรี่, label '🔒 Clear Stage 1', แตะ=menuToast ไม่ซื้อ) · Momo owned ตลอด เลือกได้ · **verified: locked ก่อนผ่าน, unlocked หลังผ่าน, 0 error**
