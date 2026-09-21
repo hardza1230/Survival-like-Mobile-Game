@@ -29,7 +29,7 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.20.0';
+const GAME_VERSION = '4.20.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
   { v:'4.20.0', date:'2026-09-20', title:'Objectives, drops, HUD & character tuning', items:[
@@ -2593,8 +2593,8 @@ class Game extends Phaser.Scene {
     this.bossHpTxt=this.add.text(w/2,pad+161,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#5a0d28',strokeThickness:2}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53);
 
     // center banner
-    this.bannerT=this.add.text(w/2,this.H*0.32,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
-    this.bannerS=this.add.text(w/2,this.H*0.4,'',{fontFamily:'sans-serif',fontSize:'15px',color:'#e6dcf0',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
+    this.bannerT=this.add.text(w/2,this.H*0.30,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffffff',align:'center',stroke:'#1a1224',strokeThickness:4,wordWrap:{width:w*0.86}}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
+    this.bannerS=this.add.text(w/2,this.H*0.36,'',{fontFamily:'sans-serif',fontSize:'12px',color:'#e6dcf0',align:'center',stroke:'#1a1224',strokeThickness:2,wordWrap:{width:w*0.72},maxLines:2}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
 
     // ปุ่มควบคุม (speed/pause/mute) — จัดเป็นกลุ่มเดียวมุมขวาบน อยู่แนวเดียวกับหลอด HP
     const cbY=pad+14;
@@ -6183,9 +6183,10 @@ class Game extends Phaser.Scene {
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
-    if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
-    if(!g)return;g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost);const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
-    g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.32);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
+    const box=this.textures.exists('chest')?'chest':'gift';   // ใช้ PNG จริง (gear_gift.svg เรนเดอร์ดำบนมือถือ)
+    if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
+    if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost);const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
+    g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // 🧪 Currency ดรอปเป็นชิ้นในสนาม (เก็บ = สะสมเข้า _runCurrency + Save · โชว์ในสรุปด่าน)
   spawnCurrencyDrop(x,y,key){ let g=this.loots.getFirstDead(false);
