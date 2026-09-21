@@ -57,7 +57,11 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.23.0 — Character-only cards + streamlined reward)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.24.0 — Strawberry buff + fighter unlock gate)
+- **v4.24.0 (บัฟ Momo + gate ปลดล็อกตัวละคร — จาก feedback เจ้าของ):**
+  · **Momo (สตรอเบอร์รี่) แรงขึ้น:** sprinkle basic dmg `(3.5+lvl*1.0)`→`(5.25+lvl*1.5)` (×1.5) → ต้นเกมตี ~4→6 ต่อเมล็ด (บรรทัด ~5600 ใน castSkill sprinkle branch)
+  · **ปลดล็อกตัวละครหลังผ่านด่าน 1:** `buildChars` เพิ่ม `charsUnlocked=(unlockedStage>=1)` · ตัวที่ยังไม่มี+ยังไม่ปลด = `locked` (การ์ดหรี่, label '🔒 Clear Stage 1', แตะ=menuToast ไม่ซื้อ) · Momo owned ตลอด เลือกได้ · **verified: locked ก่อนผ่าน, unlocked หลังผ่าน, 0 error**
+- **v4.23.0 (Character-only cards + streamlined reward)**
 - **v4.23.0 (การ์ดเฉพาะตัวละคร + ตัดเลือกกล่องรางวัล — จาก feedback เจ้าของ):**
   · **การ์ดเลเวลอัพ:** `rollBasicAttackUpgrades` เอา pool `pas` (PASSIVES ใช้ร่วม 12 แบบ) ออกทั้งหมด → เหลือเฉพาะ `atk` (อัพเกรดอาวุธประจำตัว `d.upgrades`) + mutation(mastery8) + evolution(mastery20) + heal ฉุกเฉิน(กันตันจอ) · **verified: 360 การ์ด = 'basic' ล้วน ไม่มี 'pas'**
   · **รางวัลจบด่าน:** ตัดหน้า `showStageChestChoice`/`chooseStageChest` (เลือก 1 ใน 3 กล่องแบบไม่รู้ผล = ไร้ความหมาย) → `revealStageReward(note)` สุ่ม 'fortune' ให้เลยแล้วโชว์ผลชัด (gear โชว์ชื่อ+บอกให้ไป Equip ที่เมนู Gear, ไม่มีปุ่มเลือก, auto→onStageClear 1.65s) · **verified: ล้มบอส→rewardChoice, 0 ปุ่ม, โชว์ label**

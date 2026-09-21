@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.23.0';
+const GAME_VERSION = '4.24.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.24.0', date:'2026-09-21', title:'Strawberry damage buff + fighter unlock gate', items:[
+    'Momo (Strawberry) hits harder from the start — her seed shots do about 50% more damage per hit early on',
+    'New fighters now unlock only after you clear Stage 1 of Chapter 1, so newcomers meet Momo first before the roster opens up',
+  ]},
   { v:'4.23.0', date:'2026-09-21', title:'Character-only cards + streamlined stage reward', items:[
     'Level-up cards are now all about your character: the shared passive cards are gone, leaving only your own weapon upgrades plus the Mutation and Evolution milestones',
     'Beating a boss no longer asks you to pick a mystery box — the reward is rolled and shown straight away, so it is clear what you got',
@@ -3467,12 +3471,13 @@ class Game extends Phaser.Scene {
   }
   buildChars(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Fighters of the Mochi Core');
+    const charsUnlocked=(Save.data.unlockedStage||0)>=1;   // v4.23: ปลดล็อกซื้อตัวละครอื่นหลังผ่านด่าน 1 ของ Chapter 1
     const w=this.W,h=this.H,landscape=w>h,cols=landscape?6:2,gap=landscape?7:10,y0=landscape?76:Math.max(92,h*0.105);
     const rows=Math.ceil(CHAR_ORDER.length/cols),side=landscape?10:14,cardW=(w-side*2-gap*(cols-1))/cols;
     const cardH=Math.min(landscape?Math.max(185,h-y0-14):260,(h-y0-14-gap*(rows-1))/rows);
     const formNote=this.add.text(w/2,landscape?59:76,'Choose Character Card · Core Form ⇄ Awakened Form',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'11px',color:'#bfe8ff'}).setOrigin(0.5);this.menu.add(formNote);
     CHAR_ORDER.forEach((id,i)=>{const c=CHARACTERS[id],row=Math.floor(i/cols),col=i%cols,rowCount=Math.min(cols,CHAR_ORDER.length-row*cols),rowW=rowCount*cardW+(rowCount-1)*gap,x0=(w-rowW)/2,x=x0+col*(cardW+gap),y=y0+row*(cardH+gap);
-      const owned=Save.data.chars.includes(id),selected=Save.data.character===id,afford=(Save.data.sugar||0)>=c.cost,border=selected?0xffd166:(owned?0x8bd3a0:(afford?0xbfe8ff:0x665b73));
+      const owned=Save.data.chars.includes(id),selected=Save.data.character===id,locked=!owned&&!charsUnlocked,afford=(Save.data.sugar||0)>=c.cost&&!locked,border=selected?0xffd166:(owned?0x8bd3a0:(locked?0x554a63:(afford?0xbfe8ff:0x665b73)));
       const panel=this.add.graphics();panel.fillStyle(selected?0x35273d:0x241a33,0.94);panel.fillRoundedRect(x,y,cardW,cardH,landscape?12:16);panel.lineStyle(selected?3:1.7,border,selected?1:0.82);panel.strokeRoundedRect(x,y,cardW,cardH,landscape?12:16);this.menu.add(panel);
       const artH=cardH*(landscape?0.50:0.52),art=this._characterCardArt(id,x+cardW/2,y+8+artH/2,cardW*0.92,artH,owned||afford?1:0.42);
       if(!art){const em=this.add.text(x+cardW/2,y+artH/2,c.emoji,{fontSize:landscape?'40px':'54px'}).setOrigin(0.5);this.menu.add(em);}
@@ -3480,8 +3485,8 @@ class Game extends Phaser.Scene {
       const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(x+cardW/2,y+artH+(landscape?19:24),sw.emoji+' '+sw.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'8px':'10px',color:'#f4d694',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
       const r=c.rating,stats=this.add.text(x+cardW/2,y+artH+(landscape?34:42),'❤️'+r.hp+'  💥'+r.atk+'  👟'+r.spd+'  🛡️'+r.def,{fontFamily:'sans-serif',fontSize:landscape?'8px':'9px',color:'#d9c9e8',align:'center'}).setOrigin(0.5,0);
       const role=this.add.text(x+cardW/2,y+artH+(landscape?48:58),c.role,{fontFamily:'sans-serif',fontSize:landscape?'7px':'9px',color:'#aee8dc',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
-      const label=selected?'Selected ✓':(owned?'Tap to select':'🍬 '+c.cost),status=this.add.text(x+cardW/2,y+cardH-12,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'11px',color:selected?'#ffd166':(owned?'#8bd3a0':(afford?'#bfe8ff':'#e0788a'))}).setOrigin(0.5);this.menu.add([name,weapon,stats,role,status]);
-      if(!selected)this._zone(x,y,cardW,cardH,()=>{if(owned){Save.data.character=id;Save.save();this.character=id;Sfx.select();}else if(Save.spend(c.cost)){Save.data.chars.push(id);Save.data.character=id;Save.save();this.character=id;Sfx.clear();}this.buildMenuScreen();});
+      const label=selected?'Selected ✓':(owned?'Tap to select':(locked?'🔒 Clear Stage 1':'🍬 '+c.cost)),status=this.add.text(x+cardW/2,y+cardH-12,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'11px',color:selected?'#ffd166':(owned?'#8bd3a0':(locked?'#9a8fac':(afford?'#bfe8ff':'#e0788a')))}).setOrigin(0.5);this.menu.add([name,weapon,stats,role,status]);
+      if(!selected)this._zone(x,y,cardW,cardH,()=>{if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock more fighters');return;}if(owned){Save.data.character=id;Save.save();this.character=id;Sfx.select();}else if(Save.spend(c.cost)){Save.data.chars.push(id);Save.data.character=id;Save.save();this.character=id;Sfx.clear();}this.buildMenuScreen();});
     });
     this.menu.setVisible(true);
   }
@@ -5597,7 +5602,7 @@ class Game extends Phaser.Scene {
         const shotIndex=idx++,sizeMul=basic?1+(basic.ranks.size||0)*0.14:1,b=this.getBullet(this.player.x,this.player.y,0xffffff,(0.12+lvl*0.008+(aw?0.03:0))*sizeMul); if(!b)return;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
-        b.dmg=(3.5+lvl*1.0)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // v4.19 nerf: ลดดาเมจต่อเมล็ด (เดิม 5+lvl*1.6)
+        b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
         const fan=basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0,ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(-0.08,0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
