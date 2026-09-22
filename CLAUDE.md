@@ -57,7 +57,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.25.0 — Card rarity/boss charge/reward polish/early progression)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.26.0 — Rarity potency มีผลจริง)
+- **v4.26.0 (rarity มีผลในเกม — Potency · จาก feedback เจ้าของ):** เดิม epic/legend ต่างแค่สี · เจ้าของเคยให้กระโดดเลเวล 1→3 แต่ OP · แก้เป็น **Potency**: `RARITIES[].potency` (common1.0/rare1.15/epic1.30/legend1.55) · `b.ranks[id]` = magnitude ถ่วง potency (ค่า scalar power/rate/size/chill/linger/combo/radius แรงกว่าตามความหายาก · read sites เดิมอ่าน b.ranks ได้เลยไม่ต้องแก้) · `b.lv[id]` = เลเวลจำนวนเต็มใหม่ (display/mastery/gate + `COUNT_IDS`={volley,arc,surge,cluster,pane} ที่นับนัด → +1 เต็ม ไม่ใช้ potency) · apply ใน rollBasicAttackUpgrades อัพทั้ง lv(+1) และ ranks(+potency, cap max*1.55) · syncBasicAttack mastery นับจาก b.lv · card desc โชว์ ⚡+N% roll · **epic/legend ออกยากขึ้น** (weight 8→5.5, 2→1.5) · basicAttack รีเซ็ตทุกด่าน = ไม่ต้อง migrate · **verified: legend power mag 1.55 vs common 1.0 (lv เท่ากัน), volley integer, lv ทุกตัว integer, 0 error**
+- **v4.25.0 (Card rarity/boss charge/reward polish/early progression)**
 - **v4.25.0 (6 เรื่องจาก feedback เจ้าของ):**
   · **การ์ด rarity เด่นชัด:** `drawReadableChoiceCard` เพิ่ม `rarIdx` → epic/legend กรอบหนา + glow graphics (2 ชั้น) รอบการ์ด + พื้นอมสี (`_darken(color)`) + legend/epic pulse alpha
   · **บอสชาร์จแล้วพุ่ง:** helper `chargeTelegraph(b,windMs,dashSpeed,thick)` — ลำแสง vfx_line หนา สว่าง+หนาขึ้นตอนชาร์จ + glow ที่ตัวบอส + follow ตรึงทิศ → พุ่ง (มินิ 780ms/700, บอส 900ms/600+stage*20) แทนเส้นบาง 420ms เดิม

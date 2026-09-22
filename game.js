@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.25.0';
+const GAME_VERSION = '4.26.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.26.0', date:'2026-09-22', title:'Rarity now boosts your upgrades', items:[
+    'Rare, Epic and Legendary upgrade cards make that upgrade genuinely stronger — the same level, but a bigger number (Rare +15%, Epic +30%, Legendary +55% to that stat roll)',
+    'Count-based upgrades (extra seeds, chains, rockets) still add a clean +1, so nothing breaks',
+    'Epic and Legendary are rarer now, so a high-rarity pull feels earned',
+  ]},
   { v:'4.25.0', date:'2026-09-21', title:'Card rarity, boss charge, reward polish & early progression', items:[
     'Epic and Legendary level-up cards now stand out — thicker glowing frames, a colored panel and a pulsing aura',
     'Boss and miniboss charges wind up longer with a bold, clear aiming beam that thickens as they charge, then dash',
@@ -1084,11 +1089,11 @@ const ZONE_MODIFIERS = [
 /* ---- Card Rarity (แบบ Death Must Die): การ์ดอัพเกรดสุ่มความหายาก → ยิ่งหายากยิ่งได้หลายเลเวลรวด ----
    สีความหายาก = สัญญาณอ่านเร็ว (เห็นทอง=เอาเลย) · ranks = จำนวนเลเวลที่ได้จากการ์ดใบเดียว */
 const RARITIES = [
-  // v4.20: ทุกการ์ด +1 ดาว/ใบ (เลิกใบ Epic/Legend เพิ่มทีละหลายดาว) — rarity เหลือแค่สี/ความหายากเชิงภาพ
-  { id:'common', name:'Common',    ranks:1, color:0x9aa6b8, weight:68 },
-  { id:'rare',   name:'Rare',     ranks:1, color:0x5ad1ff, weight:22 },
-  { id:'epic',   name:'Epic',     ranks:1, color:0xc07bff, weight:8  },
-  { id:'legend', name:'Legendary', ranks:1, color:0xffcf40, weight:2  },
+  // v4.25: rarity มีผลจริง — potency = ตัวคูณความแรงของค่า scalar ต่อเลเวล (ยิ่งหายาก ตัวเลขยิ่งแรงต่อใบ) · epic/legend ออกยากขึ้น
+  { id:'common', name:'Common',    ranks:1, potency:1.00, color:0x9aa6b8, weight:73 },
+  { id:'rare',   name:'Rare',     ranks:1, potency:1.15, color:0x5ad1ff, weight:20 },
+  { id:'epic',   name:'Epic',     ranks:1, potency:1.30, color:0xc07bff, weight:5.5 },
+  { id:'legend', name:'Legendary', ranks:1, potency:1.55, color:0xffcf40, weight:1.5 },
 ];
 function rollRarity(){ const tot=RARITIES.reduce((s,r)=>s+r.weight,0); let x=Math.random()*tot; for(const r of RARITIES){ x-=r.weight; if(x<=0)return r; } return RARITIES[0]; }
 /* ตัวคูณสเกลตอนโชว์ชีต action (idle/พุ่ง/โดนตี ฯลฯ) เฉพาะตัวที่อาร์ต action เล็กกว่าอาร์ต run — กันตัวหดตอนหยุดเดิน */
@@ -5171,8 +5176,9 @@ class Game extends Phaser.Scene {
   signatureWeaponInfo(){const ch=CHARACTERS[this.character]||CHARACTERS.momo;return SIGNATURE_WEAPONS[ch.weapon]||SIGNATURE_WEAPONS.berryBlaster;}
   usesBasicAttackBuild(){return !!BASIC_ATTACKS[this.character];}
   basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
-  initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9};this.syncBasicAttack();}
-  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b.mastery=Object.values(b.ranks||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
+  initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9};this.syncBasicAttack();}
+  // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
+  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
@@ -5398,8 +5404,13 @@ class Game extends Phaser.Scene {
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const atk=[];
-    for(const u of d.upgrades){const cur=b.ranks[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
-      const rr=rollRarity(); atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,apply:()=>{b.ranks[u.id]=Math.min(u.max,(b.ranks[u.id]||0)+rr.ranks);this.syncBasicAttack();}})});}
+    const COUNT_IDS={volley:1,arc:1,surge:1,cluster:1,pane:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
+    for(const u of d.upgrades){const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
+      const rr=rollRarity(),potNote=(!COUNT_IDS[u.id]&&rr.potency>1)?('  ⚡+'+Math.round((rr.potency-1)*100)+'% roll'):''; atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,desc:u.desc+potNote,apply:()=>{
+        const isCount=COUNT_IDS[u.id],pot=isCount?1:(rr.potency||1);
+        b.lv[u.id]=Math.min(u.max,(b.lv[u.id]||0)+1);
+        b.ranks[u.id]=Math.min(u.max*(isCount?1:1.55),(b.ranks[u.id]||0)+pot);   // scalar = magnitude ถ่วง potency · count = จำนวนเต็ม
+        this.syncBasicAttack();}})});}
     // v4.23: เลิกแจกการ์ด passive ใช้ร่วม (shared) — เหลือเฉพาะสายอัพเกรดอาวุธประจำตัว + mutation/evo · heal ไว้กันตันจอ/ฉุกเฉิน
     const hpFrac=this.player.hp/Math.max(1,this.player.maxhp);
     let healCard=null;
