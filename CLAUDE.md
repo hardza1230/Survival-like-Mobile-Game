@@ -57,7 +57,11 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.35.0 — ตีบวก +4 ขึ้นไปเสี่ยงของแตกหาย เพดาน +10)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.36.0 — วางโครง Chapter 2 ครบ 5 ด่านและล็อกด่านที่ยังไม่ผ่าน QA)
+- **v4.36.0 (Chapter 2 foundation):** ขยายช่วง Chapter 2 เป็น C2-1…C2-5 · เพิ่ม metadata ด่าน Mycelium Marsh/Nectar Hive/Four-Season Conservatory/Root Throne แบบ `ready:false` · stage select/startRun/portal ใช้ readiness guard เดียวกัน · Zone Level และ HP/DMG curve รองรับด่านเกิน index 5 แบบต่อเนื่อง · C2-1 ใช้ objective pool แบบ data-driven และเปลี่ยนบอสเป็น Rootmother's Bud เพื่อเก็บ True Rootmother ไว้ C2-5 · **Commit ถัดไป: C2-2 Mycelium Marsh + monster family**
+
+### สถานะก่อนหน้า
+- **v4.35.0 — ตีบวก +4 ขึ้นไปเสี่ยงของแตกหาย เพดาน +10**
 - **v4.35.0 (ตีบวก +4↑ มีโอกาสของแตกหาย — จาก feedback เจ้าของ):** `enhanceOdds` เดิม +4-7 แค่ลดขั้น (destroy 0), +8-9 ถึงมี destroy · แก้ให้ **destroy เริ่มตั้งแต่ +4** (2%→26% ไต่ขึ้น: 4=.02/5=.05/6=.10/7=.15/8=.20/9=.26) + brk (ลดขั้น) ด้วย · +0-3 ปลอดภัย · เพดานยังเป็น `GEAR_ENH_MAX=10` (มีอยู่แล้ว) · ปุ่ม Enhance โชว์ ⚠ เมื่อ destroy>0 (auto จาก od.destroy) · **verified headless: +3 safe, +4 destroy .02 … +9 .26, MAX=10, 0 pageerror**
 - **v4.34.0 (ตีบวก gear ใช้ 🔩 shards แทน Sugar)**
 - **v4.34.0 (ตีบวกใช้วัสดุจาก dismantle แทน Sugar — จาก feedback เจ้าของ):** Enhance (⚒️) เดิมใช้ 🍬 Sugar (`gearEnhCost`) → เปลี่ยนเป็น 🔩 gear shards (`gearEnhShardCost(lv)=3+lv*2` → +1..+10 = 3/5/…/21) วัสดุตัวเดียวกับที่ได้จาก dismantle · แก้ 2 จุด: instance path (drawAction 2 → `Save.spendShards`) + legacy landscape row · ปุ่มโชว์ `🔩{cost}` · ไม่พอ = banner "dismantle gear to get more" · Sugar ว่างไปใช้ Weave/ตัวละคร/Bazaar · **verified headless: enhance +1 spend 3 shards (100→97), success, costs 3/5/11/21, 0 pageerror**

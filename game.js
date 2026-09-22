@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.35.0';
+const GAME_VERSION = '4.36.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.36.0', date:'2026-09-22', title:'Chapter 2 foundation for five safe stages', items:[
+    'Chapter 2 now reserves five stage slots, C2-1 through C2-5, with unfinished stages visibly locked until their complete encounters pass QA',
+    'Stage selection, direct run entry and stage-to-stage portals now share one readiness guard, so old or unusual saves cannot enter unfinished content',
+    'Zone Level and enemy scaling curves now grow from stage data instead of freezing at the old six-stage limit',
+    'Chapter 2 wave objectives are restored through a stage-defined objective pool, adding Hunt, Purify and Capture variety to the Fermented Canopy',
+    'The current first encounter is now Rootmother’s Bud; the True Rootmother is reserved for the Chapter 2 finale',
+  ]},
   { v:'4.35.0', date:'2026-09-22', title:'High enhancement can shatter your gear', items:[
     'Enhancing to +4 and beyond now carries a real risk: the gear can drop a level, or shatter and be lost entirely (a small chance at +4, climbing toward +9)',
     'The enhancement cap is +10 — pushing a piece all the way is a genuine gamble now',
@@ -1122,7 +1129,9 @@ const DIFFS = [
 ];
 // Zone Level — ตัวแปรความยากรวมของด่าน (ความคืบหน้าด่าน × ระดับความยาก) = สเกลเดียวที่ระบบอื่นอ้างอิงได้ (Bazaar stock, reward tier ฯลฯ)
 // stageIndex 0..5 · diff 1..3 → Zone 1..18 (ยิ่งสูง = ยิ่งยาก/รางวัลดีขึ้น)
-function stageZoneLevel(stageIndex,diff){ const si=Math.max(0,Math.min(5,Math.floor(Number(stageIndex)||0))); const d=Math.max(1,Math.min(3,Math.floor(Number(diff)||1))); return si*3+d; }
+function stageZoneLevel(stageIndex,diff){ const maxStage=Math.max(0,STAGES.length-1),si=Math.max(0,Math.min(maxStage,Math.floor(Number(stageIndex)||0))); const d=Math.max(1,Math.min(3,Math.floor(Number(diff)||1))); return si*3+d; }
+function stageCurveValue(stageIndex,curve,tail=1.18){ const i=Math.max(0,Math.floor(Number(stageIndex)||0)); if(i<curve.length)return curve[i]; return curve[curve.length-1]*Math.pow(tail,i-curve.length+1); }
+function isStageReady(stageIndex){ const st=STAGES[Math.floor(Number(stageIndex))]; return !!st&&st.ready!==false; }
 // Zone Modifiers — affix เสริมความยาก (สแตกได้) ปลดหลังผ่านบอสจบ Chapter 1 · ยิ่งเปิดเยอะยิ่งยาก+รางวัลดี (กฎเหล็ก)
 const ZONE_MODIFIERS = [
   { id:'toughened', emoji:'🛡️', name:'Toughened',  desc:'+50% enemy HP',            hp:1.5, dmg:1.0,  reward:1.35 },
@@ -2134,9 +2143,26 @@ const STAGES = [
   { name:'The Crown Oven of Hunger', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
     lore:'The royal oven opens — the Bitter Chef dissolves into a vessel, and The Great Hunger descends to devour all flavor itself',
     waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'The Great Hunger', bossHp:2800, bossDmg:40 },
-  { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1,
+  { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1, ready:true,
     lore:'The crown seed that survived The Great Hunger roots upward into the garden above the kitchen, forcing returned memories to bloom out of season',
-    waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:'The Rootmother', bossHp:3600, bossDmg:46 },
+    objectives:['survive','hunt','purge','capture'],
+    waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:"Rootmother's Bud", bossHp:3600, bossDmg:46 },
+  { name:'Mycelium Marsh', en:'Mycelium Marsh', emoji:'🍄', grid:0x20372d, tint:0x9ae66e, chapter:1, chapterStage:2, ready:false,
+    lore:'A living fungal marsh breathes through one moving pocket of clean air while the colony hunts everything outside it',
+    objectives:['survive','hunt','cleanAir'],
+    waves:5, recommendedPower:3000, miniAt:2, mini:'Fungal Juggernaut', boss:'Mycelium Behemoth', bossHp:5600, bossDmg:64 },
+  { name:'Nectar Hive', en:'Nectar Hive', emoji:'🐝', grid:0x4b3521, tint:0xffc95c, chapter:1, chapterStage:3, ready:false,
+    lore:'Fermented nectar draws a royal swarm that drains the last memory-bearing flowers from the garden',
+    objectives:['survive','hunt','defendNectar'],
+    waves:5, recommendedPower:4200, miniAt:2, mini:'Royal Stinger', boss:'Ferment Hornet Queen', bossHp:6800, bossDmg:72 },
+  { name:'Four-Season Conservatory', en:'Four-Season Conservatory', emoji:'🌦️', grid:0x29364a, tint:0x8fdcff, chapter:1, chapterStage:4, ready:false,
+    lore:'Time-ferment forces heat, frost, toxic rain and storm to bloom together inside a shattered glass garden',
+    objectives:['survive','hunt','seasonCycle'],
+    waves:5, recommendedPower:5700, miniAt:2, mini:'Season Keeper', boss:'Chronobloom Orchid', bossHp:8200, bossDmg:82 },
+  { name:'Root Throne', en:'Root Throne', emoji:'🌳', grid:0x24172b, tint:0xd56bff, chapter:1, chapterStage:5, ready:false,
+    lore:'All memory roots converge beneath the first crown seed, where their true planter waits on a living throne',
+    objectives:['survive','hunt','breakRoots'],
+    waves:5, recommendedPower:7600, miniAt:2, mini:'Ancient Root Knight', boss:'The True Rootmother', bossHp:11000, bossDmg:95 },
 ];
 
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
@@ -2201,9 +2227,9 @@ const STAGE_EPILOGUE = [
   { title:'The Great Hunger Recedes',
     body:'The Great Hunger collapses and taste floods back into Mochitopia in a rush of color and sound. Yet from the cooling oven a single crown seed rolls free — and roots upward, toward the garden above.',
     why:'Chapter 1 is complete. Chase the seed into the Fermented Canopy.' },
-  { title:'The Canopy Stills',
-    body:'The Rootmother unwinds into drifting spores and the out-of-season blooms finally settle. The garden falls quiet — but the seed’s vine keeps climbing, past where Momo can yet follow.',
-    why:'The trail leads on. New grounds await in the chapters ahead.' },
+  { title:'The First Bloom Withers',
+    body:'Rootmother’s Bud unwinds into drifting spores, revealing that it was only an avatar grown from the crown seed. Beneath the canopy, a fungal pulse answers from the Mycelium Marsh.',
+    why:'Follow the moving pocket of clean air into the marsh and find the body feeding the colony.' },
 ];
 const STORY_REACTIONS = {
   momo:["I'll follow the curse's scent myself","These voices don't want to fight... I must hurry","A warden is coming — stay focused, Momo","The source is close — no retreat","End this and take back everyone's flavor"],
@@ -2242,7 +2268,7 @@ const STAGE_SWARM_BEATS = [
 /* ---- CHAPTERS: แต่ละบทชี้ช่วง global stage index ของตน ---- */
 const CHAPTERS = [
   { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
-  { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,5] },
+  { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,9] },
   { name:'Chapter 3 · The Flavorless Factory', emoji:'🏭', desc:'A machine army is erasing flavor from the world', ready:false },
   { name:'Chapter 4 · The Shattered Sugar City', emoji:'🏰', desc:'A civil war of the candy kingdom', ready:false },
   { name:'Chapter 5 · Throne of the First Seed', emoji:'🌑', desc:'Face the crown planter and the origin of the hunger cycle', ready:false },
@@ -3017,13 +3043,13 @@ class Game extends Phaser.Scene {
     const actionW=open?68:64,actionX=x+w-actionW-10;shade.fillStyle(open?0x11261f:0x211c29,0.93);shade.fillRoundedRect(actionX,y+h-35,actionW,25,9);shade.lineStyle(1.3,open?color:0x625872,0.8);shade.strokeRoundedRect(actionX,y+h-35,actionW,25,9);cont.add(shade);
     const stageLabel=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):String(index+1).padStart(2,'0');
     const chapter=this.add.text(x+37,y+20,'Stage '+stageLabel,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#172014':'#ddd5e5'}).setOrigin(0.5);
-    const icon=this.add.text(x+19,y+h-25,open?st.emoji:'🔒',{fontSize:'22px'}).setOrigin(0.5);
+    const icon=this.add.text(x+19,y+h-25,open?st.emoji:(st.ready===false?'🛠️':'🔒'),{fontSize:'22px'}).setOrigin(0.5);
     const name=this.add.text(x+39,y+43,st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:h<92?'13px':'15px',color:open?'#fffaf2':'#c4bdca',stroke:'#120a16',strokeThickness:2}).setOrigin(0,0.5);
     const en=this.add.text(x+39,y+61,st.en.toUpperCase(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:open?Phaser.Display.Color.IntegerToColor(color).rgba:'#82798d'}).setOrigin(0,0.5);
     const power=this.add.text(x+w-12,y+20,'⚡ '+currentPower+' / suggested '+recommended,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:currentPower>=recommended?'#a8f0c0':'#ffb1bd'}).setOrigin(1,0.5);
-    const desc=open?st.lore:('Clear Chapter '+index+' to unlock this path');
+    const desc=open?st.lore:(st.ready===false?'Boss fight and stage art are still in production':('Clear the previous stage to unlock this path'));
     const lore=this.add.text(x+39,y+h-25,desc,{fontFamily:'sans-serif',fontSize:h<92?'8px':'9px',color:open?'#ddd4df':'#8f8798',wordWrap:{width:w-39-actionW-28},maxLines:2}).setOrigin(0,0.5);
-    const action=this.add.text(actionX+actionW/2,y+h-22.5,open?'Play  ▶':'Locked',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#d8ffe5':'#9b91a5'}).setOrigin(0.5);
+    const action=this.add.text(actionX+actionW/2,y+h-22.5,open?'Play  ▶':(st.ready===false?'Coming soon':'Locked'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#d8ffe5':'#9b91a5'}).setOrigin(0.5);
     cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
@@ -3582,7 +3608,7 @@ class Game extends Phaser.Scene {
     this.menu.add(note);
     const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-28,410):Math.min(370,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
     const rows=Math.ceil(stageIds.length/cols),y0=portrait?100:69,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
-    stageIds.forEach((i,pos)=>{const st=STAGES[i],col=pos%cols,row=Math.floor(pos/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked;
+    stageIds.forEach((i,pos)=>{const st=STAGES[i],col=pos%cols,row=Math.floor(pos/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked&&isStageReady(i);
       this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.openDifficultyChoice(i));
     });
     this.menu.setVisible(true);
@@ -4305,7 +4331,8 @@ class Game extends Phaser.Scene {
 
   startRun(idx){
     if(this.state!=='menu')return;
-    idx=idx||0;
+    idx=Math.max(0,Math.floor(Number(idx)||0));
+    if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
     this._activeZoneMods=Save.zoneModsUnlocked()?Save.zoneMods().slice():[]; this._zoneMul=this.zoneModMul();   // ล็อก Zone Modifiers ของรันนี้
     this.killStreak=0; this._lastKillAt=-9;   // Juice: รีเซ็ตคอมโบฆ่าต่อเนื่องทุกWaitบ
     this.state='loading';
@@ -4407,7 +4434,7 @@ class Game extends Phaser.Scene {
       this.showBanner('🎓 Training Ground','A safe empty space — Berry will teach you step by step',2600);
       return;   // ไม่ตั้งเวฟ (coach เป็นคนสปอนมอนให้ลอง)
     }
-    this._waveObjectiveBag=i<=4?Phaser.Utils.Array.Shuffle(['survive','hunt','purge','capture'].slice()):[];
+    const objectivePool=Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(objectivePool.slice());
     Sfx.playStageBgm(i+1);
     this.gridBg.fillColor=st.grid;
     if(this.bgTile){ this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; if(this.textures.exists('bg'+(i+1)))this.bgTile.setTexture('bg'+(i+1)); }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
@@ -4550,8 +4577,8 @@ class Game extends Phaser.Scene {
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool Full → รีไซเคิล (Minibossต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72,3.35][this.stageIndex]||3.35,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
-    e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*([1,1.05,1.12,1.20,1.30,1.42][this.stageIndex]||1.42)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
+    e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
     e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:this.stageIndex===5?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling'; e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
@@ -4851,7 +4878,7 @@ class Game extends Phaser.Scene {
     if(this.state==='levelup'){this._queuedBossIntro='final';return;}
     if(this.state!=='play')return;
     if(this.stageIndex===4&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('story_final_hunger','FINAL ENCOUNTER','THE GREAT HUNGER','The crown shadow swallows all light — six eyes stare down, and the bottomless hunger awakens',()=>this.spawnFinalBoss());return;}
-    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · ROOT THRONE','THE ROOTMOTHER','The first root splits the canopy into a throne — she calls The Great Hunger her child, and the crown seed in your chest beats again',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · FIRST BLOOM',"ROOTMOTHER'S BUD",'The crown seed tears open a first avatar of the Rootmother — only a fragment of the power waiting deeper in the garden',()=>this.spawnFinalBoss());return;}
     const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
@@ -4984,11 +5011,11 @@ class Game extends Phaser.Scene {
     this.grantCurrencyReward(2+(this.stageIndex||0)+((this.stageDiff||1)-1)*2,this.currencyTierFor(),'🏆 Boss Down! Currency gained');
     if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
       this.showBanner('🌙 ENDLESS round '+cleared+' complete','Checkpoint saved · Sugar +'+bonus+(cleared%3===0?' · secret boss defeated!':''),2600);this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='breather')this.startWave(0,false);});return;}
-    const next=this.stageIndex+1,canUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next;
-    if(canUnlock){Save.data.unlockedStage=next;Save.save();}
+    const next=this.stageIndex+1,progressUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next,canUnlock=progressUnlock&&isStageReady(next);
+    if(progressUnlock){Save.data.unlockedStage=next;Save.save();}
     if(!Save.data.diffBest)Save.data.diffBest=[];if((this.stageDiff||1)>(Save.data.diffBest[this.stageIndex]||0)){Save.data.diffBest[this.stageIndex]=this.stageDiff||1;Save.save();}   // จำความยากสูงสุดที่ผ่าน
     this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();
-    this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked Stage '+(next+1)):null));
+    this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked '+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null)));
   }
   // v4.23: เลิกให้เลือกกล่อง (การเลือกแบบไม่รู้ผล = ไม่มีความหมาย) → สุ่มรางวัลให้เลยแล้วโชว์ผลชัด ๆ
   revealStageReward(note){
@@ -5022,11 +5049,11 @@ class Game extends Phaser.Scene {
   }
   enterPortal(player,p){
     if(!p.active||p.used||this.mode!=='portal')return;p.used=true;this.mode='transition';this.tweens.killTweensOf(p);p.setActive(false).setVisible(false);if(p.body)p.body.enable=false;this.portalTarget=null;
-    const last=this.stageIndex>=STAGES.length-1;Save.addSugar(this.sugarStage);this.gainCharExp(40+this.stageIndex*25);
-    if(!last&&(Save.data.unlockedStage||0)<this.stageIndex+1){Save.data.unlockedStage=this.stageIndex+1;Save.save();}
+    const next=this.stageIndex+1,last=!isStageReady(next);Save.addSugar(this.sugarStage);this.gainCharExp(40+this.stageIndex*25);
+    if(next<STAGES.length&&(Save.data.unlockedStage||0)<next){Save.data.unlockedStage=next;Save.save();}
     this.screenFlash(0xb98cff,0.75,520);Sfx.clear();
     if(last){this.time.delayedCall(500,()=>this.victory());return;}
-    const next=this.stageIndex+1;this.player.setVelocity(0,0);this.state='loading';
+    this.player.setVelocity(0,0);this.state='loading';
     if(window.GameLoader)window.GameLoader.show('Opening the door to the next stage...',0.18);
     this.time.delayedCall(520,()=>this.ensureStageAudio(next,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);
       if(window.GameLoader){window.GameLoader.set(1,'Entering a new stage!');this.time.delayedCall(160,()=>window.GameLoader.hide());}}));
@@ -5048,13 +5075,13 @@ class Game extends Phaser.Scene {
     this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.35); // heal reward
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องไอเทมที่สะสมทั้งด่าน (แจกจริง · duplicate → sugarStage ก่อนฝาก)
     Sfx.clear();
-    const last=this.stageIndex>=STAGES.length-1,guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
+    const next=this.stageIndex+1,last=!isStageReady(next),guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
     this._firstMastery=!Save.data.stageMastery[this.stageIndex];if(this._firstMastery){Save.data.stageMastery[this.stageIndex]=true;this.sugarStage+=40+this.stageIndex*25;Save.save();}
     this._dailyBonus=0;if(this._dailyRun){const o=this.ensureDaily();if(!o.data.challengeDone&&o.data.challengeDay===o.spec.key){o.data.challengeDone=true;this._dailyBonus=120+o.spec.diff*30;this.sugarStage+=this._dailyBonus;Save.save();}this._dailyRun=false;}
     Save.addSugar(this.sugarStage);                                   // ฝาก Sugar + โบนัส Mastery/Daily
     this.gainCharExp(Math.round((75 + this.stageIndex*35)*guide.reward)); // catch-up EXP มากขึ้นเมื่อผ่านด่านด้วยพลังต่ำกว่าคำแนะนำ
     this._powerAfter=Save.power(this.character);
-    if(!last && (Save.data.unlockedStage||0) < this.stageIndex+1){ Save.data.unlockedStage=this.stageIndex+1; Save.save(); }
+    if(next<STAGES.length&&(Save.data.unlockedStage||0)<next){ Save.data.unlockedStage=next; Save.save(); }
     // Mochi Bazaar restock: ผ่านด่านใดก็ได้ = สุ่มร้านใหม่ · stock อ้างอิง Zone Level ของด่านที่เพิ่งผ่าน
     Save.data.bazaarSeed=(Save.data.bazaarSeed||0)+1; Save.data.bazaarZone=this.zoneLevel(); Save.data.bazaarBought=[]; Save.save();
     this._summaryDoubled=false;   // รีเซ็ตสิทธิ์ดูโฆษณา x2 ต่อการเคลียร์ด่าน
@@ -5604,7 +5631,7 @@ class Game extends Phaser.Scene {
     if(!e)return;   // pool Full (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+Wave (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05,3.72][this.stageIndex]||3.72,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
     e.bloomStacks=0;e.bloomUntil=0;e.frostbite=this.stageIndex===3;
     let scale=1;
@@ -5616,7 +5643,7 @@ class Game extends Phaser.Scene {
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
     else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
-    const dmgCurve=[1,1.05,1.12,1.20,1.30,1.42][this.stageIndex]||1.42;e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg));
+    const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg));
     if(this.stageIndex===0&&type!=='acid'){
       scale=(type==='tank'||type==='siege')?0.86:(type==='fast'||type==='dasher')?0.68:0.74;
       e.setCircle(type==='tank'||type==='siege'?25:20,type==='tank'||type==='siege'?23:28,type==='tank'||type==='siege'?23:28);
