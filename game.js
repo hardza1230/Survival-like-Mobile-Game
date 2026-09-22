@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.38.0';
+const GAME_VERSION = '4.39.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.39.0', date:'2026-09-22', title:'Mycelium Behemoth three-phase boss fight', items:[
+    'C2-2 gains an original eight-pose Mycelium Behemoth with a cinematic marsh-heart awakening intro',
+    'The boss has three invulnerable phase transitions at 68 and 34 percent health with escalating attack pools and distinct transformation VFX',
+    'Readable attacks include Root Reaper, Mire Quake, Spore Crown, Mycelial Lattice, Colony Rise and the phase-three Heartstorm ultimate',
+    'The last phase combines a short pull, concentric shockwaves and a radial barrage with visible escape wedges instead of unavoidable screen clutter',
+    'C2-2 remains locked for a dedicated full-run balance and mobile performance QA commit',
+  ]},
   { v:'4.38.0', date:'2026-09-22', title:'Fungal Juggernaut miniboss encounter', items:[
     'C2-2 gains a bespoke four-pose Fungal Juggernaut miniboss with readable wind-up, slam and enraged artwork',
     'The Juggernaut uses Mycelium Quake, a three-charge Stampede, Living Wall area denial, Spore Mortar gaps and Colony Call reinforcements',
@@ -660,6 +667,7 @@ const ASSET_SHEETS = {
   ch2_prop_atlas:{ url:'assets/ch2_prop_atlas.png', frame:256 },
   mb6_sporewarden:{ url:'assets/mb6_sporewarden_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   mb7_fungal_juggernaut:{ url:'assets/mb7_fungal_juggernaut_sheet.png', frame:256, anim:{frames:2,rate:3,yoyo:true} },
+  boss7_mycelium_behemoth:{ url:'assets/boss7_mycelium_behemoth_sheet.png', frame:256, anim:{frames:2,rate:3,yoyo:true} },
   boss6_rootmother:{ url:'assets/boss6_rootmother_sheet.png', frame:256 },
   e_acid:     { url:'assets/generated/e_acid_ant_sheet.png', frame:96, anim:{frames:3, rate:9} },
   // ศัตรูอนิเมชัน (walk/attack cycle) — frame=ขนาดเดิม (setScale/setCircle เดิมใช้ได้ ไม่ต้องแก้)
@@ -4934,15 +4942,16 @@ class Game extends Phaser.Scene {
     if(this.state!=='play')return;
     if(this.stageIndex===4&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('story_final_hunger','FINAL ENCOUNTER','THE GREAT HUNGER','The crown shadow swallows all light — six eyes stare down, and the bottomless hunger awakens',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · FIRST BLOOM',"ROOTMOTHER'S BUD",'The crown seed tears open a first avatar of the Rootmother — only a fragment of the power waiting deeper in the garden',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===6&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg7','CHAPTER 2 · HEART OF THE MARSH','MYCELIUM BEHEMOTH','Every fungal thread pulls tight — the whole marsh rises around one ancient heart',()=>this.spawnFinalBoss());return;}
     const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
-    const bkey=this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':'boss'+(this.stageIndex+1);
+    const bkey=this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':this.stageIndex===6?'boss7_mycelium_behemoth':'boss'+(this.stageIndex+1);
     let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool Full → รีไซเคิล/Cleared กันบอสเป็น null
     const isArt=this.textures.exists(bkey);
-    const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?1.18:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;   // บอสStage 2-4 ตัวใหญ่ขึ้น (0.88→1.18)
-    const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)));
+    const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:(this.stageIndex===6?1.12:([1,2,3].includes(this.stageIndex)?1.18:(isArt?1.55:2.5)))); b.baseScale=fScale; b._sqX=1; b._sqY=1;   // บอสStage 2-4 ตัวใหญ่ขึ้น (0.88→1.18)
+    const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:(this.stageIndex===6?62:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26)))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:(this.stageIndex===6?66:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5))));
     b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
@@ -4951,7 +4960,7 @@ class Game extends Phaser.Scene {
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
+    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.myceliumBehemoth=this.stageIndex===6;
     b.atkCd=0.8; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
     if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
@@ -4999,6 +5008,22 @@ class Game extends Phaser.Scene {
         this.spawnBossEscorts(3);
       });return;
     }
+    if(this.stageIndex===6){
+      this.time.delayedCall(1250,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setScale(base*.08);this.behemothPose(b,6,1700);
+        const heart=this.camWorld(this.add.image(b.x,targetY,'vfx_glow').setTint(0xd95cff).setScale(.18).setDepth(targetY+3).setAlpha(.95));
+        const shadow=this.camWorld(this.add.circle(b.x,targetY+48,34,0x080713,.78).setDepth(targetY-4).setStrokeStyle(8,0x56e5bd,.82));
+        this.tweens.add({targets:shadow,radius:210,alpha:.18,duration:1500,ease:'Cubic.out'});
+        this.tweens.add({targets:heart,scale:1.65,rotation:TAU,alpha:{from:.95,to:.38},duration:1500,onComplete:()=>heart.destroy()});
+        for(let i=0;i<14;i++){const a=i*TAU/14,root=this.camWorld(this.add.image(b.x,targetY+30,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%2?0x56e5bd:0xd95cff).setScale(.06,.34).setAlpha(.82).setDepth(targetY-2));this.tweens.add({targets:root,scaleX:1.7+(i%3)*.18,alpha:0,duration:1050+i*45,onComplete:()=>root.destroy()});}
+        this.tweens.add({targets:b,alpha:1,scale:base,duration:1650,ease:'Back.out',onComplete:()=>{if(!b.active)return;this.behemothPose(b,7,1200);this.screenFlash(0x7d3cff,.48,620);this.screenShake(760,.022);Sfx.bossWarn();shadow.destroy();}});
+      });
+      this.time.delayedCall(3300,()=>{if(b.active)this.showBanner('🍄 MYCELIUM BEHEMOTH','The marsh has one heart — and every creature is part of its body',2500);});
+      this.time.delayedCall(4500,()=>cam.pan(px,py,850,'Sine.easeInOut'));
+      this.time.delayedCall(5450,()=>{if(!b.active)return;cam.startFollow(this.player,false,.2,.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss7_mycelium_behemoth_walk'))b.play('boss7_mycelium_behemoth_walk',true);this.state='play';this.mode='boss';b.atkCd=1.65;
+        for(const t of ['basic','fast','shooter']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-190,190),b.y+Phaser.Math.Between(-120,120));}
+        this.showBanner('🫀 The Marsh Heart Beats','Read the violet core: every major attack begins with a distinct pose',2200);
+      });return;
+    }
     if(this.stageIndex!==0){
       this.time.delayedCall(1650,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setScale(base*0.25);if(this.stageIndex===2||this.stageIndex===3)this.stageBossPose(b,1,1250);if(this.stageIndex===5)this.chapter2Pose(b,1,1350);const glow=this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(STAGES[this.stageIndex].tint).setScale(0.2).setDepth(b.y-1));this.tweens.add({targets:[b,glow],alpha:1,scale:base,duration:850,ease:'Back.out',onComplete:()=>glow.destroy()});});
       this.time.delayedCall(3000,()=>cam.pan(px,py,760,'Sine.easeInOut'));this.time.delayedCall(3800,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setScale(base);const idle=b.texture.key+'_idle';if(this.anims.exists(idle))b.play(idle,true);this.state='play';this.mode='boss';b.atkCd=1.6;this.spawnBossEscorts(2);this.showBanner(this.stageIndex===2?'🔥 Machines at Full Power':this.stageIndex===5?'🌿 The First Root Fully Awakens':'❄️ The Frost Prison Activates',this.stageIndex===2?'Read the conveyor lines and clear the furnace cross!':this.stageIndex===5?'Read the green root lines and the gaps between poison petals!':'Find gaps in the ice cage and don’t back into the blast line!',2100);});return;
@@ -5030,7 +5055,7 @@ class Game extends Phaser.Scene {
   }
   // ฉากบอสตาย: สโลว์โมชัน + จอวาบ + ระเบิดเป็นชุด + คลื่นกระแทก
   bossDefeat(x,y){
-    const grand=this.stageIndex===4;if(grand)this.showBanner('✨ The Hunger Crumbles','All flavor is returning to the world!',2200);
+    const grand=this.stageIndex===4||this.stageIndex===6;if(grand)this.showBanner(this.stageIndex===6?'✨ The Marsh Heart Falls':'✨ The Hunger Crumbles',this.stageIndex===6?'The fungal network releases every trapped memory into the clean air!':'All flavor is returning to the world!',2200);
     Sfx.clear(); this.hitStop(grand?140:90); this.screenFlash(0xffffff,grand?0.92:0.7,grand?680:420); this.screenShake(grand?900:600,grand?0.024:0.016);
     for(let i=0;i<(grand?11:5);i++) this.time.delayedCall(60+i*(grand?70:80),()=>{
       this.burst(x+Phaser.Math.Between(grand?-95:-50,grand?95:50),y+Phaser.Math.Between(grand?-95:-50,grand?95:50),[0xffd166,0xff5f97,0xd95cff,0xbfe8ff][i%4]); });
@@ -6894,8 +6919,44 @@ class Game extends Phaser.Scene {
       this.juggernautPose(b,3,1200);this.showBanner('🕸️ Colony Call','Break the Mold Sacs before the marsh multiplies!',900);const types=['bomber','shooter','fast','bomber'];for(let i=0;i<(b.phase2?4:3);i++)this.time.delayedCall(i*140,()=>{if(b.active)this.spawnEnemy(types[i]);});b.atkCd=3.35*fast;
     }
   }
+  behemothPose(b,frame,ms=1050){
+    if(!b||!b.active||b.texture.key!=='boss7_mycelium_behemoth')return;frame=Phaser.Math.Clamp(frame|0,0,7);
+    b._behemothPoseToken=(b._behemothPoseToken||0)+1;const token=b._behemothPoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
+    this.time.delayedCall(ms,()=>{if(!b.active||b._behemothPoseToken!==token)return;if(this.anims.exists('boss7_mycelium_behemoth_walk'))b.play('boss7_mycelium_behemoth_walk',true);else b.setFrame(0);});
+  }
+  behemothMetamorph(b,phase){
+    if(!b||!b.active)return;const color=phase===3?0xd95cff:0x56e5bd;this.behemothPose(b,phase===3?7:6,phase===3?1900:1550);
+    const rays=phase===3?16:11;for(let i=0;i<rays;i++){const a=i*TAU/rays,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%3?color:0xffffff).setScale(.08,.42).setAlpha(.9).setDepth(b.y+2));this.tweens.add({targets:ray,scaleX:phase===3?2.1:1.55,alpha:0,duration:800+i*35,onComplete:()=>ray.destroy()});}
+    for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setTint(i%2?color:0x86f5ff).setScale(.3+i*.14).setAlpha(.78).setDepth(b.y+3));this.tweens.add({targets:ring,scale:phase===3?3.2+i*.28:2.35+i*.22,rotation:(i%2?1:-1)*TAU,alpha:0,duration:900+i*130,onComplete:()=>ring.destroy()});}
+    this.screenFlash(color,phase===3?.52:.34,phase===3?720:520);this.screenShake(phase===3?760:520,phase===3?.022:.014);Sfx.bossWarn();
+  }
+  myceliumBehemothAttack(b){
+    const fast=b.phase3?.68:b.phase2?.82:1,pool=b.phase3?['heartstorm','rootReaper','lattice','sporeCrown','colonyRise','heartstorm']:b.phase2?['rootReaper','mireQuake','sporeCrown','lattice','colonyRise']:['rootReaper','mireQuake','sporeCrown'];
+    const pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(20,Math.round((b.dmg||46)*.46));
+    if(pick==='rootReaper'){
+      this.behemothPose(b,2,1050);const a=Math.atan2(py-b.y,px-b.x),line=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setScale(Math.max(480,this.dist(b.x,b.y,px,py)+130)/256,.82).setTint(0x56e5bd).setAlpha(.82).setDepth(4));
+      this.showBanner('🌿 Root Reaper','Step off the green line before the claw fans outward!',820);this.tweens.add({targets:line,alpha:{from:.25,to:1},duration:130,yoyo:true,repeat:4,onComplete:()=>line.destroy()});
+      this.time.delayedCall(650,()=>{if(!b.active)return;for(let i=-4;i<=4;i++)this.foeShot(b.x,b.y,a+i*.12,425,bd,i%2?0x56e5bd:0xb46cff,1.05);this.screenShake(260,.009);});b.atkCd=2.65*fast;
+    }else if(pick==='mireQuake'){
+      this.behemothPose(b,3,1300);this.showBanner('🌊 Mire Quake','Three shockwaves expand at different speeds — cross behind each rim!',900);
+      this.bossNovaWave(b.x,b.y,235,bd,300);this.bossNovaWave(b.x,b.y,325,bd+2,720);this.bossNovaWave(b.x,b.y,420,bd+4,1180);b.atkCd=3.35*fast;
+    }else if(pick==='sporeCrown'){
+      this.behemothPose(b,4,1250);this.showBanner('☂️ Spore Crown','The crown opens — move into the missing violet wedge!',850);const n=b.phase3?24:b.phase2?20:16,gap=Phaser.Math.Between(0,n-1);
+      this.time.delayedCall(480,()=>{if(!b.active)return;for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,220+(i%2)*52,bd-3,i%2?0xb46cff:0x6fffe0,1.12);}Sfx.zap();});b.atkCd=2.85*fast;
+    }else if(pick==='lattice'){
+      this.behemothPose(b,5,1400);this.showBanner('🕸️ Mycelial Lattice','Leave the glowing intersections — the center lane stays open!',920);
+      for(const off of [-210,-105,105,210]){this.spawnHazard(px+off,py,55,bd,0x56e5bd);this.spawnHazard(px,py+off,55,bd,0xb46cff);}b.atkCd=3.15*fast;
+    }else if(pick==='colonyRise'){
+      this.behemothPose(b,6,1450);this.showBanner('🍄 Colony Rise','Bulwarks protect the Oracles — break the formation before it closes!',950);const types=b.phase3?['tank','shooter','bomber','fast','tank']:['tank','shooter','bomber','fast'];
+      for(let i=0;i<types.length;i++)this.time.delayedCall(i*140,()=>{if(b.active)this.spawnEnemy(types[i]);});for(let i=0;i<4;i++){const a=i*TAU/4;this.spawnBossObject('acid',px+Math.cos(a)*185,py+Math.sin(a)*185,8);}b.atkCd=3.55*fast;
+    }else{
+      this.behemothPose(b,7,1900);this.showBanner('🫀 HEARTSTORM','Run against the pull, cross the shockwaves, then take the open wedge!',1150);this.screenFlash(0xd95cff,.42,520);this.drainPull={x:b.x,y:b.y,t:2.25,strength:175};
+      this.bossNovaWave(b.x,b.y,270,bd+3,380);this.bossNovaWave(b.x,b.y,370,bd+5,920);
+      this.time.delayedCall(720,()=>{if(!b.active)return;const n=26,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n||i===(gap+3)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,245+(i%2)*42,bd,i%2?0xd95cff:0x56e5bd,1.15);}this.screenShake(520,.017);Sfx.bossWarn();});b.atkCd=4.05*fast;
+    }
+  }
   chapter2DeathGhost(e){
-    if(!e||!['boss6_rootmother','mb6_sporewarden','mb7_fungal_juggernaut'].includes(e.texture.key))return;const boss=e.isBoss;
+    if(!e||!['boss6_rootmother','mb6_sporewarden','mb7_fungal_juggernaut','boss7_mycelium_behemoth'].includes(e.texture.key))return;const boss=e.isBoss;
     const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,7).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+9).setAlpha(1));
     for(let i=0;i<(boss?10:6);i++){const seed=this.camWorld(this.add.image(e.x,e.y,'vfx_glow').setTint(i%3?0x56e5bd:0xffd166).setScale(.08).setDepth(e.y+10).setAlpha(.8));this.tweens.add({targets:seed,x:e.x+Phaser.Math.Between(-150,150),y:e.y-Phaser.Math.Between(50,190),scale:.32,alpha:0,duration:700+i*70,onComplete:()=>seed.destroy()});}
     this.tweens.add({targets:ghost,y:ghost.y+24,scaleX:ghost.scaleX*1.08,scaleY:ghost.scaleY*.78,alpha:0,duration:boss?1500:880,ease:'Cubic.in',onComplete:()=>ghost.destroy()});
@@ -6987,6 +7048,10 @@ class Game extends Phaser.Scene {
       else if(!b.phase3&&f<=0.40){b.phase3=true;this.beginBossPhaseTransition(b,2.0,0xd95cff);this.greatHungerMetamorph(b,3,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 Phase 3 · True Form of Hunger','All six eyes open — the void’s pull is swallowing the field!',2050);}
       else if(!b.phase4&&f<=0.14){b.phase4=true;this.beginBossPhaseTransition(b,2.35,0xffd166);this.greatHungerMetamorph(b,4,0xffd166);b.spd*=1.12;b.atkCd=0.24;this.showBanner('🌘 Final Phase · World Devourer','The sky goes dark — slay it before every memory is eaten!',2400);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.greatHungerAttack(b);return;}
+    if(b.isBoss&&this.stageIndex===6){const f=b.hp/b.maxhp;
+      if(!b.phase2&&f<=.68){b.phase2=true;this.beginBossPhaseTransition(b,1.85,0x56e5bd);this.behemothMetamorph(b,2);b.spd*=1.12;b.atkCd=.5;this.showBanner('🍄 Phase 2 · The Colony Awakens','The whole marsh joins the fight — formations and root lattices activate!',1950);}
+      else if(!b.phase3&&f<=.34){b.phase3=true;this.beginBossPhaseTransition(b,2.15,0xd95cff);this.behemothMetamorph(b,3);b.spd*=1.10;b.atkCd=.3;this.showBanner('🫀 Phase 3 · Heart of the Marsh','The crown opens completely — survive the Heartstorm and destroy its core!',2200);}
+      if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.myceliumBehemothAttack(b);return;}
     // เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) — Effectโกรธ
     const phase2At=(b.isBoss&&this.stageIndex===0)?0.68:(b.isBoss&&this.stageIndex===1?0.65:0.5),phase3At=(b.isBoss&&this.stageIndex===0)?0.35:(b.isBoss&&this.stageIndex===1?0.32:0.25);
     if(!b.phase2 && b.hp<=b.maxhp*phase2At){ b.phase2=true; this.beginBossPhaseTransition(b,b.isBoss?1.55:1.25,this.stageIndex===1?0x62e5cf:0xff6a4d); b.spd*=1.28; b.atkCd=0.6;

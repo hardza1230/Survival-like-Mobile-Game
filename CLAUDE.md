@@ -57,6 +57,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.39.0 — Mycelium Behemoth บอสสามเฟส; C2-2 รอ full-run QA)
+- **v4.39.0 (C2-2 boss):** เพิ่มอาร์ตโปร่งใส 8 เฟรม `boss7_mycelium_behemoth_sheet.png` · ฉากเปิดตัว Marsh Heart · สามเฟสพร้อมอมตะระหว่างเปลี่ยนเฟสที่ 68%/34% HP · ท่า Root Reaper / Mire Quake / Spore Crown / Mycelial Lattice / Colony Rise / Heartstorm · ฉากตายเฉพาะ · validator ครบ · C2-2 ยัง `ready:false` จนผ่าน full-run/mobile QA · **Commit ถัดไป: C2-2 balance QA + unlock**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.38.0 — Fungal Juggernaut miniboss; C2-2 ยังล็อกจนบอสเสร็จ)
 - **v4.38.0 (C2-2 miniboss):** เพิ่มอาร์ตโปร่งใส 4 เฟรม `mb7_fungal_juggernaut_sheet.png` · ท่าเฉพาะ Mycelium Quake / Triple Stampede / Living Wall / Spore Mortar / Colony Call · เปลี่ยนเฟสอมตะชั่วคราวที่ 50% HP พร้อม Bulwark escort · แก้บั๊กค่า `b.dmg` ของมินิบอสถูก comment ทับ · เพิ่ม validator กัน regression · C2-2 ยัง `ready:false` · **Commit ถัดไป: Mycelium Behemoth three-phase boss**
 

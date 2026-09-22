@@ -109,6 +109,12 @@ for(const [key,file] of Object.entries(chapter2Sheets)){
   if(width!==1024||height!==512||!hasAlpha)throw new Error(`Expected transparent Chapter 2 atlas ${file} at 1024x512, found ${width}x${height}`);
   if(!source.includes(`${key}:{ url:'assets/${file}', frame:256`))throw new Error(`Chapter 2 atlas ${key} is not registered`);
 }
+const behemoth=fs.readFileSync(new URL('../assets/boss7_mycelium_behemoth_sheet.png',import.meta.url));
+const behW=behemoth.readUInt32BE(16),behH=behemoth.readUInt32BE(20),behType=behemoth.readUInt8(25),behAlpha=[4,6].includes(behType)||(behType===3&&behemoth.includes(Buffer.from('tRNS')));
+if(behW!==1024||behH!==512||!behAlpha)throw new Error(`Expected transparent Mycelium Behemoth 4x2 sheet at 1024x512, found ${behW}x${behH}`);
+for(const contract of ["boss7_mycelium_behemoth:{ url:'assets/boss7_mycelium_behemoth_sheet.png', frame:256","b.myceliumBehemoth=this.stageIndex===6","myceliumBehemothAttack(b)","behemothMetamorph(b,2)","behemothMetamorph(b,3)","Root Reaper","Mycelial Lattice","HEARTSTORM","this.stageIndex===4||this.stageIndex===6"]){
+  if(!source.includes(contract))throw new Error(`Missing Mycelium Behemoth contract: ${contract}`);
+}
 const juggernaut=fs.readFileSync(new URL('../assets/mb7_fungal_juggernaut_sheet.png',import.meta.url));
 const jugW=juggernaut.readUInt32BE(16),jugH=juggernaut.readUInt32BE(20),jugType=juggernaut.readUInt8(25),jugAlpha=[4,6].includes(jugType)||(jugType===3&&juggernaut.includes(Buffer.from('tRNS')));
 if(jugW!==1024||jugH!==256||!jugAlpha)throw new Error(`Expected transparent Fungal Juggernaut 4x1 sheet at 1024x256, found ${jugW}x${jugH}`);
