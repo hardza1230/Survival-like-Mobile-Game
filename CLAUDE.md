@@ -57,7 +57,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.30.0 — flame-sand reroll (Crystal Glaze) ผลาญ 3/ครั้ง)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.31.0 — gacha ลดเกรด+ลด mod เป็นแหล่งช่วงต้น)
+- **v4.31.0 (gacha เป็นแหล่งช่วงต้น ไม่ใช่ jackpot — จาก feedback เจ้าของ "ยังสุ่มได้ epic/rare mod เยอะ"):** `gachaRoll` weight เดิม common50/rare30/epic15/legend5 → **common68/rare29/epic3, ไม่มี legend** (legend ได้จาก forge/ดรอปนรกเท่านั้น) · `grantGear(tier,opts)` เพิ่ม `opts.gacha` → itemLevel floor ต่ำ `Math.min(11,rollItemLevel(sourceStage,1))` = affixCountCap 1 = **1 mod (magic)** เท่านั้น (เลิก floor 12 ของ v4.29 เฉพาะ gacha) · drops/forge/bazaar path ไม่แตะ (ยังใช้ floor 12) · **verified headless: 300 rolls = common 68%/rare 30%/epic 2%/legend 0%, gacha item = common base iLv 2-7 1 mod, 0 pageerror**
+- **v4.30.0 (flame-sand reroll (Crystal Glaze) ผลาญ 3/ครั้ง)**
 - **v4.30.0 (flame-sand reroll แบบเรียบง่าย + ผลาญเยอะ — จาก feedback เจ้าของ "เหมือน flame sand ใน Torchlight"):** `divine` (⚪ Crystal Glaze) = ตัว reroll ค่า mod ที่เลือก ใช้ได้ **ทุก rarity** (common/magic/rare) อยู่แล้ว → ทำให้เป็น flame-sand หลัก: ปุ่ม Craft Bench "Reroll ×3" · `FLAME_REROLL_COST=3` (const ใกล้ CURRENCY) · `divineFocusedLine` เช็ก/spend 3 แทน 1 + screenFlash ขาว + banner บอก −3 · desc CURRENCY อัปเป็น "burns 3 per use" · **verified headless: reroll common/magic/rare ผลาญ 3 ทุก rarity, 0 pageerror**
 - **v4.29.0 (แก้บั๊กระบบไอเทม + จบด่านกลับเมนู — จาก feedback เจ้าของ):**
   · **จบด่านกลับ hub:** `continueFromSummary` `menuScreen='stage'`→`'hub'`
