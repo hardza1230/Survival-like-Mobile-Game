@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.32.0';
+const GAME_VERSION = '4.33.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.33.0', date:'2026-09-22', title:'One Gacha, pick your item-level band', items:[
+    'Gear Gacha now lives in one place — the Equipment screen; the Bazaar’s gear box now points you there',
+    'Choose an item-level band in steps of ten (1-10, 11-20, up to 51-60); the roll lands somewhere inside that band, and higher bands cost more Sugar',
+    'Gacha now caps at item level 60 — item levels 61-100 come only from stage drops, so the very best bases stay something you fight for',
+  ]},
   { v:'4.32.0', date:'2026-09-22', title:'Choose your Gacha item level', items:[
     'The gear Gacha now lets you pick the base item level with ◄ ► — a higher item level rolls a stronger base (better stats and affix tiers) but costs more Sugar',
     'Gacha gear now rolls between 0 and 1 mod, so the roll is about the base and its level, not a pile of stats',
@@ -1644,8 +1649,8 @@ function applyItemLevelBonus(p,item){const q=Math.max(0,Math.min(1,((Number(item
 }
 function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>it.tier===tier&&it.slot==='weapon'&&(it.chapter||1)===ch),support=GEAR_ALL.filter(it=>it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>it.tier===tier&&(it.chapter||1)<=ch);}
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 times
-// v4.32: gacha เลือก base item level ได้ → iLv สูง = ของแรงกว่า (base stat + affix tier) = แพงขึ้น · mod ยังสุ่ม 0-1 เสมอ
-const GACHA_LEVELS = [ {ilv:1,cost:150}, {ilv:20,cost:400}, {ilv:45,cost:850}, {ilv:70,cost:1500}, {ilv:100,cost:2500} ];
+// v4.33: gacha เลือก "ช่วง" base item level เป็นชั้นละ 10 (สุ่ม iLv ในช่วง) · ยิ่งช่วงสูง = ของแรงกว่า = แพงขึ้น · เพดาน 60 (iLv 61-100 หาได้จาก drop เท่านั้น) · mod ยังสุ่ม 0-1 เสมอ
+const GACHA_LEVELS = [ {lo:1,hi:10,cost:150}, {lo:11,hi:20,cost:320}, {lo:21,hi:30,cost:560}, {lo:31,hi:40,cost:900}, {lo:41,hi:50,cost:1400}, {lo:51,hi:60,cost:2100} ];
 const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังNone)
 const AFFIX_REROLL_COST = 15;   // 🔩 สุ่มคุณสมบัติเสริมของชิ้นที่สวมอยู่ใหม่
 const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
@@ -3758,7 +3763,7 @@ class Game extends Phaser.Scene {
     const glvI=Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
     const gbw=Math.min(230,panelW-32),gbh=34,gby=h-55,gx0=pcx-gbw/2,aw=30,afG=(Save.data.sugar||0)>=gCost;
     const gbg=this.add.graphics();gbg.fillStyle(afG?0xffb020:0x3a3550,1);gbg.fillRoundedRect(gx0,gby,gbw,gbh,11);gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1);gbg.strokeRoundedRect(gx0,gby,gbw,gbh,11);
-    const gbt=this.add.text(pcx,gby+gbh/2,'🎁 Gacha · iLv'+glv.ilv+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    const gbt=this.add.text(pcx,gby+gbh/2,'🎁 Gacha · iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
     const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
     const rArr=this.add.text(gx0+gbw-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI<GACHA_LEVELS.length-1?'#17101d':'#8a7a55'}).setOrigin(0.5);
     this.menu.add([gbg,gbt,lArr,rArr]);
@@ -3812,7 +3817,7 @@ class Game extends Phaser.Scene {
     const glvI=Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
     const afG=(Save.data.sugar||0)>=gCost, gx0=gcx-half/2, aw=22;
     const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gx0,gby,half,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
-    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 iLv'+glv.ilv+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
     const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
     const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:glvI<GACHA_LEVELS.length-1?'#17101d':'#8a7a55'}).setOrigin(0.5);
     this.menu.add([gbg,gbt,lArr,rArr]);
@@ -4078,7 +4083,8 @@ class Game extends Phaser.Scene {
         this._rowBtn(y,40,d.asset,d.name+' ×'+c.qty,d.desc,sold?'SOLD':('Buy 🍬'+cost),sold?'#6a6076':(af?'#8bd3a0':'#e0788a'),sold?null:()=>this.bazaarBuyCurrency(c.key,c.qty,cost,key)); y+=46; });
     } else if(tab==='gamble'){
       const hd=this.add.text(14,y,'Mystery box — spins like a slot machine, then reveals your prize',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
-      this._rowBtn(y,48,'🎁','Mystery gear box','Gamble 1 instance · duplicate bases keep different affixes and Item Levels','Gamble 🍬180',(Save.data.sugar||0)>=180?'#ffd166':'#e0788a',()=>this.bazaarGambleGear()); y+=54;
+      // v4.33: รวมกาชาไว้ที่หน้า Gear จุดเดียว — Bazaar เหลือแต่ currency box
+      this._rowBtn(y,48,'🎁','Gear gacha moved','Roll gear (pick an item-level range) at the Gear & Power → Equipment screen','Go to Equipment','#8bd3a0',()=>{this.menuScreen='gear';this.buildMenuScreen();}); y+=54;
       this._rowBtn(y,48,'🧪','currency box','Random 2-4 currency (chance of high-tier orbs)','Gamble 🍬120',(Save.data.sugar||0)>=120?'#ffd166':'#e0788a',()=>this.bazaarGambleCurrency()); y+=54;
     } else { // sell
       const hd=this.add.text(14,y,'Sell extras for 🍬 (currency sells for 60% of buy price)',{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
@@ -4123,8 +4129,8 @@ class Game extends Phaser.Scene {
   bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 Sold shards','+🍬'+(sh*2),1300); this.buildBazaar(); }
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
   openGachaReveal(){
-    const lvObj=GACHA_LEVELS[Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.ilv;
-    if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.select();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (base iLv '+ilv+')',1300);return;}
+    const lvObj=GACHA_LEVELS[Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.lo+Math.floor(Math.random()*(lvObj.hi-lvObj.lo+1));
+    if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.select();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (iLv '+lvObj.lo+'-'+lvObj.hi+')',1300);return;}
     if(!Save.spend(cost))return;this._gachaBusy=true;this.menu.removeAll(true);this.tapZones=[];
     const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090510,0.97).setOrigin(0,0),title=this.add.text(w/2,h*0.14,'🎁 Flavor box',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe08a'}).setOrigin(0.5);
     const glow=this.add.image(w/2,h*0.47,'vfx_glow').setScale(0.4).setAlpha(0.3).setTint(0xffd166),chest=this.add.text(w/2,h*0.47,'🎁',{fontSize:'92px'}).setOrigin(0.5).setScale(0.72);
