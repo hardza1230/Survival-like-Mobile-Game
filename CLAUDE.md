@@ -57,6 +57,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.40.0 — C2-2 ผ่าน QA gate และปลดล็อกแล้ว)
+- **v4.40.0 (C2-2 QA + unlock):** Mycelium Marsh เปลี่ยนเป็น `ready:true` · ล็อก balance เทียบ C2-1 ที่ HP ≈×1.35 / DMG ≈×1.30 / speed +8% · cap ศัตรูมีชีวิต 104 ตัวเพื่อมือถือ · validator ตรวจ future-stage locks, phase gates, telegraphs และ ratios · ปรับ roadmap เป็น 11 คอมมิต · **เหลือ 5 คอมมิต: C2-3, C2-4, C2-5, chapter balance QA, art polish**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.39.0 — Mycelium Behemoth บอสสามเฟส; C2-2 รอ full-run QA)
 - **v4.39.0 (C2-2 boss):** เพิ่มอาร์ตโปร่งใส 8 เฟรม `boss7_mycelium_behemoth_sheet.png` · ฉากเปิดตัว Marsh Heart · สามเฟสพร้อมอมตะระหว่างเปลี่ยนเฟสที่ 68%/34% HP · ท่า Root Reaper / Mire Quake / Spore Crown / Mycelial Lattice / Colony Rise / Heartstorm · ฉากตายเฉพาะ · validator ครบ · C2-2 ยัง `ready:false` จนผ่าน full-run/mobile QA · **Commit ถัดไป: C2-2 balance QA + unlock**
 

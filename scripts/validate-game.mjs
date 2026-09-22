@@ -130,6 +130,19 @@ for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","capture:{emo
   if(!source.includes(contract))throw new Error(`Missing wave mission contract: ${contract}`);
 }
 if(source.includes("if(this.stageIndex>4)return"))throw new Error('Chapter 2 objectives must not be disabled by a hard-coded stage boundary');
+for(const contract of ["chapterStage:2, ready:true","c2Mycelium:{ hp:1.145, dmg:1.19, speed:1.08, maxLive:104 }","const liveCap=si===6?BALANCE.c2Mycelium.maxLive:115","if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed"]){
+  if(!source.includes(contract))throw new Error(`Missing C2-2 QA/unlock contract: ${contract}`);
+}
+for(const locked of ["chapterStage:3, ready:false","chapterStage:4, ready:false","chapterStage:5, ready:false"]){
+  if(!source.includes(locked))throw new Error(`Future Chapter 2 stage unlocked before QA: ${locked}`);
+}
+const c21Hp=3.72,c22Hp=3.72*1.18*1.145,c21Dmg=1.42,c22Dmg=1.42*1.09*1.19;
+const hpRatio=c22Hp/c21Hp,dmgRatio=c22Dmg/c21Dmg;
+if(hpRatio<1.34||hpRatio>1.37)throw new Error(`C2-2 HP ratio drifted outside QA target: ${hpRatio.toFixed(3)}`);
+if(dmgRatio<1.28||dmgRatio>1.32)throw new Error(`C2-2 damage ratio drifted outside QA target: ${dmgRatio.toFixed(3)}`);
+for(const contract of ["f<=.68","f<=.34","beginBossPhaseTransition(b,1.85","beginBossPhaseTransition(b,2.15","Triple Stampede","HEARTSTORM"]){
+  if(!source.includes(contract))throw new Error(`Missing C2-2 boss QA contract: ${contract}`);
+}
 if(!fs.existsSync(new URL('../assets/bg7.webp',import.meta.url)))throw new Error('Mycelium Marsh background is missing');
 
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry']) {

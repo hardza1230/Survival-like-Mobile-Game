@@ -169,22 +169,27 @@ Each commit must pass syntax/validation checks and keep unfinished content inacc
    - Three phases, two invulnerable transitions, pose atlas, VFX, intro, and death sequence.
    - Unlock C2-2 only after the complete fight passes QA.
 
-6. **feat: add C2-3 Nectar Hive**
+6. **balance: pass C2-2 full-run/mobile QA and unlock**
+   - Lock explicit C2-2 versus C2-1 HP, damage, speed, and live-enemy budgets.
+   - Validate save-safe unlock flow, boss phase gates, telegraphs, and mobile limits.
+   - Unlock Mycelium Marsh while keeping C2-3 through C2-5 inaccessible.
+
+7. **feat: add C2-3 Nectar Hive**
    - New monsters, defend objective, Royal Stinger, and Ferment Hornet Queen.
 
-7. **feat: add C2-4 Four-Season Conservatory**
+8. **feat: add C2-4 Four-Season Conservatory**
    - Seasonal arena system, new monsters, Season Keeper, and Chronobloom Orchid.
 
-8. **feat: add C2-5 Root Throne finale**
+9. **feat: add C2-5 Root Throne finale**
    - Root-disabling objective, final monster family, Ancient Root Knight, and True Rootmother.
    - Chapter epilogue and completion rewards.
 
-9. **balance: complete Chapter 2 progression and mobile QA**
+10. **balance: complete Chapter 2 progression and mobile QA**
    - Full Normal/Hard/Hell tuning.
    - Reward and gear progression.
    - Performance, save migration, unlock flow, and regression tests.
 
-10. **art: final Chapter 2 polish pass**
+11. **art: final Chapter 2 polish pass**
     - Replace remaining placeholders.
     - Standardize scale, ground line, hit flashes, shadows, VFX visibility, and asset compression.
 
