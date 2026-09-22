@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.30.0';
+const GAME_VERSION = '4.31.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.31.0', date:'2026-09-22', title:'Gacha is now an early-game starter, not a jackpot', items:[
+    'The gear Gacha box now mostly rolls Common and Rare bases, with Epic only occasionally and no Legend at all — it’s a steady early source, not a shortcut to top-tier gear',
+    'Gacha gear now comes with a single mod, so the multi-mod power pieces stay something you earn from stage drops and the Craft Bench',
+    'Legendary and heavily-rolled gear now comes from hard-stage drops and crafting, keeping the loot chase meaningful',
+  ]},
   { v:'4.30.0', date:'2026-09-22', title:'Crystal Glaze — a simple stat reroller', items:[
     'Crystal Glaze now works as a single, simple “reroll this stat” tool — pick any mod on any item (Common, Magic, or Rare) and gamble its value for a better roll',
     'Because it can chase a perfect roll, each reroll burns 3 Crystal Glaze at once — a real currency sink for your late-game stockpile',
@@ -6501,13 +6506,17 @@ class Game extends Phaser.Scene {
     this.showBanner('🎁 Miniboss Box · upgrade '+chosen.length+' skills',names,3000);this.vfxLevelUp();
   }
   // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังNone) — คืน item หรือ null ถ้ามีครบแล้ว
-  grantGear(tier){ const inPlay=this.state==='play',sourceStage=inPlay?this.stageIndex:rewardSourceStage(),chapter=itemChapterForStage(sourceStage);
+  grantGear(tier,opts={}){ const inPlay=this.state==='play',sourceStage=inPlay?this.stageIndex:rewardSourceStage(),chapter=itemChapterForStage(sourceStage);
     let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter); if(!pool.length)return null;
-    // v4.29: ของนอกด่าน (gacha/forge/menu) ตั้ง floor iLv 12 → ได้ 2 mod (affixCountCap≥2) ไม่ใช่ 1 mod เสมอ · in-play ใช้ค่าจริง
-    const it=Phaser.Utils.Array.GetRandom(pool),itemLevel=inPlay?rollItemLevel(sourceStage,this.difficulty||1):Math.max(12,rollItemLevel(sourceStage,1)),delivery=Save.receiveGearInstance(it.id,{isNew:true,itemLevel,chapter});
+    // v4.29: ของนอกด่าน (forge/menu) ตั้ง floor iLv 12 → ได้ 2 mod · in-play ใช้ค่าจริง
+    // v4.31: gacha = แหล่งช่วงต้น → บังคับ iLv ต่ำ (≤11) = 1 mod (magic) เท่านั้น ให้ของแรงมาจากดรอป/คราฟต์แทน
+    const it=Phaser.Utils.Array.GetRandom(pool),
+      itemLevel=inPlay?rollItemLevel(sourceStage,this.difficulty||1):(opts.gacha?Math.min(11,rollItemLevel(sourceStage,1)):Math.max(12,rollItemLevel(sourceStage,1))),
+      delivery=Save.receiveGearInstance(it.id,{isNew:true,itemLevel,chapter});
     return delivery?Object.assign({},it,{instance:delivery.item,delivery:delivery.destination,shards:delivery.shards||0}):null; }
-  gachaRoll(){ const r=Math.random(), roll=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend';   // 50% common · 30% rare · 15% epic · 5% legend
-    for(const t of [roll,'epic','rare','common','legend']){ const it=this.grantGear(t); if(it)return it; } return null; }
+  // v4.31: gacha ลดเกรด — ส่วนใหญ่ common/rare, epic หายาก, ไม่มี legend (legend ได้จาก forge/ดรอปนรกเท่านั้น)
+  gachaRoll(){ const r=Math.random(), roll=r<0.68?'common':r<0.97?'rare':'epic';   // 68% common · 29% rare · 3% epic
+    for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t,{gacha:true}); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
