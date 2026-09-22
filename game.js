@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.29.0';
+const GAME_VERSION = '4.30.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.30.0', date:'2026-09-22', title:'Crystal Glaze — a simple stat reroller', items:[
+    'Crystal Glaze now works as a single, simple “reroll this stat” tool — pick any mod on any item (Common, Magic, or Rare) and gamble its value for a better roll',
+    'Because it can chase a perfect roll, each reroll burns 3 Crystal Glaze at once — a real currency sink for your late-game stockpile',
+    'The Craft Bench button now shows the ×3 cost up front so there are no surprises',
+  ]},
   { v:'4.29.0', date:'2026-09-22', title:'Item crafting fixed — currency finally useful', items:[
     'Fixed the crafting bottleneck: Spark Sugar (your most common currency) now imprints stats on Common AND Magic gear, instead of being stuck needing the rare Wish Candy to add a second mod',
     'Wish Candy is now reserved for adding stats to Rare gear, so every currency has a clear job',
@@ -1572,11 +1577,13 @@ const CURRENCY = [
   {key:'regal',emoji:'🟡',asset:'currency_crown_icing',name:'Crown Icing',desc:'Promote full Magic gear to Rare and unlock 4 lines'},
   {key:'chaos',emoji:'🟠',asset:'currency_wild_jam',name:'Wild Jam',desc:'Replace the selected Rare affix'},
   {key:'exalt',emoji:'🔴',asset:'currency_wish_candy',name:'Wish Candy',desc:'Add a chosen stat to an empty line'},
-  {key:'divine',emoji:'⚪',asset:'currency_crystal_glaze',name:'Crystal Glaze',desc:'Reroll the selected value without changing its tier'},
+  {key:'divine',emoji:'⚪',asset:'currency_crystal_glaze',name:'Crystal Glaze',desc:'Reroll the selected stat’s value on any item — burns 3 per use'},
   {key:'annul',emoji:'🟣',asset:'currency_fading_gumdrop',name:'Fading Gumdrop',desc:'Remove the selected affix line'},
   {key:'scour',emoji:'⚫',asset:'currency_plain_dough',name:'Plain Dough',desc:'Reset all affixes and return the item to Common'},
 ];
 function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
+// v4.30: flame-sand แบบ Torchlight — reroll ค่าของ mod ที่เลือก ใช้ได้ทุก rarity แต่ "ผลาญเยอะ" (เผา 3 ต่อครั้ง)
+const FLAME_REROLL_COST = 3;
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
 const CURRENCY_BUY = { transmute:40, alt:60, regal:120, chaos:160, exalt:320, divine:320, scour:30, annul:90 };
 // Weighted reward pools. Values are percentages within a successful currency drop.
@@ -3909,7 +3916,7 @@ class Game extends Phaser.Scene {
     Save.spendCurrency(key,1);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
     Sfx.clear();this.screenFlash(0x7fb0ff,.44,320);this.showBanner('🎲 '+cur.emoji+' Rolled!',mod.emoji+' '+mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t,1700);this.buildCraftBench();}
   promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');Sfx.clear();this.showBanner('🟡 Promoted to Rare','Four focused affix lines unlocked',1400);this.buildCraftBench();}
-  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<1){Sfx.select();this.showBanner('⚪ Need Crystal Glaze','Available: '+Save.currency('divine'),1200);return;}const b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',1);Save.setAffixes(item.uid,affs);Sfx.clear();this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t,1300);this.buildCraftBench();}
+  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
   annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);Sfx.clear();this.showBanner('🟣 Line removed','Select an empty line to add a new stat',1300);this.buildCraftBench();}
   scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;Sfx.clear();this.showBanner('⚫ Item reset','Common · one focused line available',1300);this.buildCraftBench();}
   buildCraftBench(){
@@ -3992,7 +3999,7 @@ class Game extends Phaser.Scene {
     if(available.length>0&&!selected.locked)this._zone(14,y,w-28,mainH,()=>this.randomCraftSelected());y+=mainH+7;
     const util=[
       ['regal','Promote to Rare',()=>this.promoteFocusedItem(),!selected.locked&&rar==='magic'&&affs.length>=2&&Save.currency('regal')>0],
-      ['divine','Reroll Value',()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>0],
+      ['divine','Reroll ×'+FLAME_REROLL_COST,()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>=FLAME_REROLL_COST],
       ['annul','Remove Line',()=>this.annulFocusedLine(),!selected.locked&&!!old&&Save.currency('annul')>0],
       ['scour','Reset Item',()=>this.scourFocusedItem(),!selected.locked&&(affs.length>0||rar!=='common')&&Save.currency('scour')>0]
     ],ug=6,uw=(w-34-ug)/2,uh=38;

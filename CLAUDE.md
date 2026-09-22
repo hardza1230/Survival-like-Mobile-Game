@@ -57,7 +57,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.29.0 — แก้ระบบ craft/currency + จบด่านกลับ hub)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.30.0 — flame-sand reroll (Crystal Glaze) ผลาญ 3/ครั้ง)
+- **v4.30.0 (flame-sand reroll แบบเรียบง่าย + ผลาญเยอะ — จาก feedback เจ้าของ "เหมือน flame sand ใน Torchlight"):** `divine` (⚪ Crystal Glaze) = ตัว reroll ค่า mod ที่เลือก ใช้ได้ **ทุก rarity** (common/magic/rare) อยู่แล้ว → ทำให้เป็น flame-sand หลัก: ปุ่ม Craft Bench "Reroll ×3" · `FLAME_REROLL_COST=3` (const ใกล้ CURRENCY) · `divineFocusedLine` เช็ก/spend 3 แทน 1 + screenFlash ขาว + banner บอก −3 · desc CURRENCY อัปเป็น "burns 3 per use" · **verified headless: reroll common/magic/rare ผลาญ 3 ทุก rarity, 0 pageerror**
 - **v4.29.0 (แก้บั๊กระบบไอเทม + จบด่านกลับเมนู — จาก feedback เจ้าของ):**
   · **จบด่านกลับ hub:** `continueFromSummary` `menuScreen='stage'`→`'hub'`
   · **บั๊ก currency (ต้นเหตุ "อัพไม่ได้/currency ไม่ได้ใช้"):** `craftCurrencyForLine` เดิม magic+ช่องว่าง→`exalt` (หายาก) · transmute ใช้ได้แค่ common แต่ของ drop ไม่เคย common (`baseDefaultRarity` common→magic) → transmute ไร้ประโยชน์ ตัน · **แก้:** `if(!hasLine)return rarity==='rare'?'exalt':'transmute'` → transmute เติม common/magic ได้, exalt เหลือไว้ rare (loop: common→transmute→magic→transmute→magic2→regal→rare→exalt→rare4) · **verified: magic1→transmute→magic2→regal→rare→exalt→rare3, 0 error**
