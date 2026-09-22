@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.34.0';
+const GAME_VERSION = '4.35.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.35.0', date:'2026-09-22', title:'High enhancement can shatter your gear', items:[
+    'Enhancing to +4 and beyond now carries a real risk: the gear can drop a level, or shatter and be lost entirely (a small chance at +4, climbing toward +9)',
+    'The enhancement cap is +10 — pushing a piece all the way is a genuine gamble now',
+    'The Enhance button shows ⚠ when a shatter is possible so you know the stakes before you spend shards',
+  ]},
   { v:'4.34.0', date:'2026-09-22', title:'Enhancing gear now costs shards, not Sugar', items:[
     'Enhancing (⚒️) gear now spends 🔩 gear shards instead of 🍬 Sugar — the same shards you get from dismantling gear you don’t need',
     'Higher enhancement levels cost more shards, so dismantling spare drops now feeds directly into powering up your keepers',
@@ -1444,9 +1449,10 @@ const QUESTS = [
 /* ---- GEAR: ของสวมใส่ 2 ช่อง (weapon/charm) ซื้อด้วย Sugar แล้วสวมใส่ ---- */
 // ของสวมใส่ · ตีบวกได้ (lv=ระดับตีบวก 0..enhMax) เพิ่มพลังต่อระดับ
 const GEAR_ENH_MAX = 10;
-// โอกาสตีบวก lv->lv+1 · +0..+3 ปลอดภัย · +4 ขึ้นไปมีโอกาส "แตก" (ขั้นลดลง 1, ไม่ต่ำกว่า +3) · +8..+10 มีโอกาส "ถูกทำลาย" (ไอเทมหาย)
+// โอกาสตีบวก lv->lv+1 · +0..+3 ปลอดภัย · +4 ขึ้นไปเสี่ยง: "แตก" (ขั้นลดลง 1, ไม่ต่ำกว่า +3) หรือ "ของหาย" (ไอเทมทำลายทิ้ง) · เพดาน +10
+// v4.35: destroy เริ่มมีตั้งแต่ +4 (น้อย ๆ) แล้วไต่ขึ้นเรื่อย ๆ — ยิ่ง +สูงยิ่งเสี่ยงของแตกหาย
 function enhanceOdds(lv){ if(lv<4)return{success:1,brk:0,destroy:0};
-  const t={4:[0.72,0.28,0],5:[0.64,0.36,0],6:[0.56,0.44,0],7:[0.48,0.52,0],8:[0.42,0.43,0.15],9:[0.34,0.46,0.20]}[lv]||[0.34,0.46,0.20];
+  const t={4:[0.76,0.22,0.02],5:[0.68,0.27,0.05],6:[0.58,0.32,0.10],7:[0.50,0.35,0.15],8:[0.42,0.38,0.20],9:[0.34,0.40,0.26]}[lv]||[0.34,0.40,0.26];
   return {success:t[0],brk:t[1],destroy:t[2]}; }
 function gearSellSugar(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)*6+Math.max(1,item.itemLevel||1)*2+Math.max(0,item.enhanceLv||0)*10;}
 const GEAR_INBOX_CAP = 5;
