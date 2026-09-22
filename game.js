@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.27.0';
+const GAME_VERSION = '4.28.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.28.0', date:'2026-09-22', title:'All menus open right after the tutorial', items:[
+    'Finishing the tutorial now unlocks every hub menu at once — Gear & Power (with Flavor Weave), Activities and Codex are no longer locked behind clearing stages',
+    'Inside Gear & Power, Equipment, Crafting and the Bazaar also open as soon as the tutorial is done',
+  ]},
   { v:'4.27.0', date:'2026-09-22', title:'Tutorial guides you to Flavor Weave', items:[
     'After the tutorial, tap "Boost your Cores" to jump straight into Flavor Weave and spend your starter Sugar — with a hint showing you how',
     'Flavor Weave is reachable from the very start (Gear & Power → Flavor Weave), even while Equipment, Crafting and the Bazaar stay locked until Stage 1',
@@ -3023,7 +3027,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,portrait=w<=h,rows=grp.rows;
     const bw=Math.min(w-28,440),x=(w-bw)/2,y0=portrait?116:92,gap=10,rh=Math.min(portrait?80:64,(h-y0-56-gap*(rows.length-1))/rows.length);
     // v4.25: หมวด Gear&Power — เปิด stats/upgrade (3 แก่น) ได้ตั้งแต่เริ่ม · gear/craft/bazaar/inbox ล็อกจนผ่านด่าน 1
-    const GATED=new Set(['gear','craft','bazaar','gearInbox']),afterS1=(Save.data.unlockedStage||0)>=1;
+    const GATED=new Set(['gear','craft','bazaar','gearInbox']),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone;   // v4.28: จบ tutorial = ปลดทุกอย่างในหมวดนี้
     rows.forEach(([target,emoji,label,sub],i)=>{ const y=y0+i*(rh+gap);
       const locked=GATED.has(target)&&!afterS1;
       const g=this.add.graphics(); g.fillStyle(0x241a30,locked?0.7:0.96); g.fillRoundedRect(x,y,bw,rh,14); g.lineStyle(2,locked?0x4a4059:0x6a5b86,0.85); g.strokeRoundedRect(x,y,bw,rh,14); g.fillStyle(locked?0x4a4059:0x8f7de8,1); g.fillRoundedRect(x,y,7,rh,4);
@@ -3471,10 +3475,11 @@ class Game extends Phaser.Scene {
     const bh=portrait?Math.min(76,Math.max(54,(menuBottom-menuTop-gapY*(menuRows-1))/menuRows)):Math.min(58,(h-72-gapY*(menuRows-1))/menuRows);
     const totalW=bw*cols+gapX*(cols-1), x0=portrait?(w-totalW)/2+bw/2:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?menuTop+bh/2:74+bh/2;
     // ค่อย ๆ ปลดLockedเมนู — คนใหม่ไม่เจอทุกอย่างพร้อมกัน (ปลดตามด่านที่ผ่าน)
-    const us=Save.data.unlockedStage||0, need=[0,0,1,2,1,0];   // idx: เริ่ม/นักสู้/คลัง/กิจกรรม/คัมภีร์/อื่นๆ
+    // v4.28: จบ tutorial = ปลดทุกเมนูใน Hub (เดิมล็อกตามด่าน → Weave ที่อยู่ใน Gear&Power เข้าไม่ได้)
+    const tutDone=!!Save.data.tutorialDone, us=Save.data.unlockedStage||0, need=[0,0,1,2,1,0];   // idx: เริ่ม/นักสู้/คลัง/กิจกรรม/คัมภีร์/อื่นๆ
     items.forEach(([color,emoji,label,sub,fn],i)=>{
       const col=i%cols,row=Math.floor(i/cols),cx=x0+col*(bw+gapX),cy=y0+row*(bh+gapY);
-      if(us<need[i]){
+      if(us<need[i]&&!tutDone){
         this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'Clear Stage '+need[i]+' to unlock',()=>{this.menuToast&&this.menuToast('🔒 Locked — clear Stage '+need[i]+' first','#ff9bb5');Sfx.select&&Sfx.select();},false); }
       else { this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0);
         if(i===3&&this.hasActivityBadge())this.drawBadgeDot(this.menu,cx+bw/2-8,cy-bh/2+8); }   // 🔴 Daily/Achievement Waitรับ
