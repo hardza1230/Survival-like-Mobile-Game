@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.26.0';
+const GAME_VERSION = '4.27.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.27.0', date:'2026-09-22', title:'Tutorial guides you to Flavor Weave', items:[
+    'After the tutorial, tap "Boost your Cores" to jump straight into Flavor Weave and spend your starter Sugar — with a hint showing you how',
+    'Flavor Weave is reachable from the very start (Gear & Power → Flavor Weave), even while Equipment, Crafting and the Bazaar stay locked until Stage 1',
+  ]},
   { v:'4.26.0', date:'2026-09-22', title:'Rarity now boosts your upgrades', items:[
     'Rare, Epic and Legendary upgrade cards make that upgrade genuinely stronger — the same level, but a bigger number (Rare +15%, Epic +30%, Legendary +55% to that stat roll)',
     'Count-based upgrades (extra seeds, chains, rockets) still add a clean +1, so nothing breaks',
@@ -3637,6 +3641,7 @@ class Game extends Phaser.Scene {
     const prog=this.add.text(w/2,by+17,'Woven core power '+Save.talFilled()+' / '+need+(allMax?' · ready to weave':''),
       {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':'#8f849f'}).setOrigin(0.5);
     this.menu.add(prog);
+    if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Sugar!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
     const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-238-gapY*2)/3):Math.min(132,h-170),top=portrait?166:112;
     UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.talLvl(k), tot=Save.talTotal(k), maxed=lvl>=TAL_MAX;
       const cost=maxed?0:Save.talCost(k), afford=(Save.data.sugar||0)>=cost;
@@ -3654,7 +3659,7 @@ class Game extends Phaser.Scene {
       const pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(ppx,ppy,pw,ph,10);
       const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🍬 '+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
       this.menu.add([g,em,st,tag,nm,gain,pg,pt]);
-      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); } else { Sfx.select(); } this.buildMenuScreen(); });
+      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); this._tutorialWeaveCoach=false; } else { Sfx.select(); } this.buildMenuScreen(); });
     });
     const py=portrait?Math.min(h-58,top+UPG_ORDER.length*(cardH+gapY)+4):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
     const pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
@@ -5070,6 +5075,14 @@ class Game extends Phaser.Scene {
     if(this._summaryLast&&!this._quitSummary){ this._quitSummary=false; this.victory(); return; }
     this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='stage';this.buildMenuScreen();
   }
+  // v4.27: จบ tutorial → พาเข้าหน้า Flavor Weave ตรง ๆ + สอนให้ใช้ Sugar อัพแก่น (Weave เปิดตั้งแต่เริ่ม แม้ Gear&Power ตัวอื่นยังล็อก)
+  openTutorialWeave(){
+    if(this.state!=='summary')return;
+    this.over.setVisible(false); this.physics.resume(); this.state='play';
+    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this._tutorialWeaveCoach=true;
+    this.exitStage(); this.menuScreen='upgrade'; this.buildMenuScreen();
+    this.menuToast&&this.menuToast('🍓 Tap a core to spend your Sugar and grow stronger!','#ffe08a');
+  }
   showBanner(title,sub,ms){
     if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังNone HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash
     this.bannerT.setText(title).setVisible(true).setAlpha(0).setScale(0.7);
@@ -5227,13 +5240,16 @@ class Game extends Phaser.Scene {
     const t=this.add.text(w/2,h*0.44,'Tutorial Complete!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd166'}).setOrigin(0.5);
     const rlabel=this.add.text(w/2,h*0.53,'🎁 Starter Reward',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(0.5);
     const rname=this.add.text(w/2,h*0.585,rewardEmoji+' '+rewardName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffffff',align:'center',wordWrap:{width:w*0.8}}).setOrigin(0.5);
-    const hint=this.add.text(w/2,h*0.70,'Spend it in Flavor Weave (Gear & Power) to boost your 3 cores, then pick a stage',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
-    const bw2=240,bh2=60,byc=h*0.82;
-    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22);
-    const bt=this.add.text(w/2,byc,'🗺 Choose a Stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
-    this.over.add([bg,glow,cap,t,rlabel,rname,hint,btn,bt]); this.over.setVisible(true);
+    const hint=this.add.text(w/2,h*0.68,'Now spend your Sugar to grow stronger before your first real stage',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
+    // ปุ่มหลัก: ไปหน้า Flavor Weave (สอนอัพแก่น) · ปุ่มรอง: ข้ามไปเลือกด่าน
+    const bw2=250,bh2=56,byc=h*0.78;
+    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,20); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,20);
+    const bt=this.add.text(w/2,byc,'✦ Boost your Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
+    const sy=h*0.90, sg=this.add.graphics(); sg.fillStyle(0x2c2338,0.9); sg.fillRoundedRect(w/2-110,sy-18,220,36,12); sg.lineStyle(1.5,0x6a5b86,0.7); sg.strokeRoundedRect(w/2-110,sy-18,220,36,12);
+    const stt=this.add.text(w/2,sy,'🗺 Skip to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
+    this.over.add([bg,glow,cap,t,rlabel,rname,hint,btn,bt,sg,stt]); this.over.setVisible(true);
     this.tweens.add({targets:bt,alpha:{from:0.6,to:1},yoyo:true,repeat:-1,duration:700});
-    this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.continueFromSummary()}];   // ปิดได้เฉพาะกดปุ่ม
+    this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.openTutorialWeave()},{x:w/2-110,y:sy-18,w:220,h:36,fn:()=>this.continueFromSummary()}];   // ปิดได้เฉพาะกดปุ่ม
   }
   drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W,h=this.H; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
     // บับเบิลอยู่ "ด้านล่าง" (เหนือปุ่ม dash/unique เล็กน้อย) · ข้อความสั้น + ไฮไลต์สีคำสำคัญ
