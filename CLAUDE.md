@@ -57,7 +57,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.34.0 — ตีบวก gear ใช้ 🔩 shards แทน Sugar)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.35.0 — ตีบวก +4 ขึ้นไปเสี่ยงของแตกหาย เพดาน +10)
+- **v4.35.0 (ตีบวก +4↑ มีโอกาสของแตกหาย — จาก feedback เจ้าของ):** `enhanceOdds` เดิม +4-7 แค่ลดขั้น (destroy 0), +8-9 ถึงมี destroy · แก้ให้ **destroy เริ่มตั้งแต่ +4** (2%→26% ไต่ขึ้น: 4=.02/5=.05/6=.10/7=.15/8=.20/9=.26) + brk (ลดขั้น) ด้วย · +0-3 ปลอดภัย · เพดานยังเป็น `GEAR_ENH_MAX=10` (มีอยู่แล้ว) · ปุ่ม Enhance โชว์ ⚠ เมื่อ destroy>0 (auto จาก od.destroy) · **verified headless: +3 safe, +4 destroy .02 … +9 .26, MAX=10, 0 pageerror**
+- **v4.34.0 (ตีบวก gear ใช้ 🔩 shards แทน Sugar)**
 - **v4.34.0 (ตีบวกใช้วัสดุจาก dismantle แทน Sugar — จาก feedback เจ้าของ):** Enhance (⚒️) เดิมใช้ 🍬 Sugar (`gearEnhCost`) → เปลี่ยนเป็น 🔩 gear shards (`gearEnhShardCost(lv)=3+lv*2` → +1..+10 = 3/5/…/21) วัสดุตัวเดียวกับที่ได้จาก dismantle · แก้ 2 จุด: instance path (drawAction 2 → `Save.spendShards`) + legacy landscape row · ปุ่มโชว์ `🔩{cost}` · ไม่พอ = banner "dismantle gear to get more" · Sugar ว่างไปใช้ Weave/ตัวละคร/Bazaar · **verified headless: enhance +1 spend 3 shards (100→97), success, costs 3/5/11/21, 0 pageerror**
 - **v4.33.0 (gacha จุดเดียว + เลือกช่วง iLv ชั้นละ 10 (เพดาน 60))**
 - **v4.33.0 (รวม gacha จุดเดียว + เลือกช่วง item level ชั้นละ 10 — จาก feedback เจ้าของ):** `GACHA_LEVELS` เปลี่ยนเป็น 6 band `{lo,hi,cost}`: 1-10/150 · 11-20/320 · 21-30/560 · 31-40/900 · 41-50/1400 · 51-60/2100 · `openGachaReveal` สุ่ม iLv ในช่วง `[lo,hi]` · stepper (portrait+landscape) โชว์ `iLv{lo}-{hi}` · **เพดาน 60** (iLv 61-100 = drop เท่านั้น) · **รวม gacha เหลือจุดเดียวที่หน้า Gear** — Bazaar gamble tab เอา gear box ออก เหลือปุ่มลิงก์ไปหน้า Equipment + currency box (bazaarGambleGear = dead code) · **verified headless: 6 band สุ่ม iLv ในช่วงถูกต้อง, mod 0-1 ~50/50, 0 pageerror**
