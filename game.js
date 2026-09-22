@@ -29,9 +29,14 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.33.0';
+const GAME_VERSION = '4.34.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.34.0', date:'2026-09-22', title:'Enhancing gear now costs shards, not Sugar', items:[
+    'Enhancing (⚒️) gear now spends 🔩 gear shards instead of 🍬 Sugar — the same shards you get from dismantling gear you don’t need',
+    'Higher enhancement levels cost more shards, so dismantling spare drops now feeds directly into powering up your keepers',
+    'Sugar is freed up for the Flavor Weave, characters, and the Bazaar',
+  ]},
   { v:'4.33.0', date:'2026-09-22', title:'One Gacha, pick your item-level band', items:[
     'Gear Gacha now lives in one place — the Equipment screen; the Bazaar’s gear box now points you there',
     'Choose an item-level band in steps of ten (1-10, 11-20, up to 51-60); the roll lands somewhere inside that band, and higher bands cost more Sugar',
@@ -1448,7 +1453,9 @@ const GEAR_INBOX_CAP = 5;
 const GEAR_DISMANTLE_BASE = {start:0,common:1,rare:3,epic:7,legend:15};
 function gearDismantleValue(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)+Math.floor(Math.max(1,item.itemLevel||1)/20)+Math.max(0,item.enhanceLv||0)*2;}
 function gearDeliverySuffix(got){if(!got)return '';const d=got.delivery||got.destination;if(d==='inbox')return ' · Sent to Reward Inbox';if(d==='salvaged')return ' · Auto-dismantled +🔩'+(got.shards||0);return '';}
-function gearEnhCost(lv){ return 60+lv*55; }   // 🍬 ค่าตีบวก +1..+5 (60/115/170/225/280)
+function gearEnhCost(lv){ return 60+lv*55; }   // 🍬 (legacy · ไม่ใช้แล้ว)
+// v4.34: ตีบวกใช้ 🔩 gear shards (ได้จาก dismantle) แทน Sugar — ยิ่ง +สูง ยิ่งกินวัสดุเยอะ
+function gearEnhShardCost(lv){ return 3+lv*2; }   // 🔩 +1..+10 = 3/5/7/9/11/13/15/17/19/21
 // 6 ช่องสวมใส่ (แบบ isekai drifter) · แต่ละช่องมีของ "None" ฟรี + ของซื้อ 2 ชิ้น · ตีบวกได้
 const GEAR_SLOTS = [
   { slot:'weapon', label:'Weapon',   emoji:'⚔️' },
@@ -3773,8 +3780,8 @@ class Game extends Phaser.Scene {
     const rx=leftW+8,rw=w-rx-14,selDef=GEAR_SLOTS.find(g=>g.slot===sel);
     const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · equip / enhance',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
     const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
-    items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
-      if(equipped&&canEnh){const ok=(Save.data.sugar||0)>=ecost;label='⚒️ +'+(lv+1)+' 🍬'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spend(ecost)){Save.enhance(it.id);Sfx.clear();}this.buildMenuScreen();};}
+    items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhShardCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
+      if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Save.enhance(it.id);Sfx.clear();}else{Sfx.select();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}
       else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{Save.equipGearBase(sel,it.id);Sfx.select();this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
       this._rowBtn(80+i*(rowH+rowGap),rowH,owned?it.emoji:'❔',nm,owned?it.desc:'Not discovered yet',label,color,fn,rx,rw);
     });
@@ -3878,8 +3885,8 @@ class Game extends Phaser.Scene {
       drawAction(0,selected.favorite?'★ Fav':'☆ Fav',selected.favorite?0xb88925:0x4a4059,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
       drawAction(1,selected.locked?'🔒 Locked':'🔓 Lock',selected.locked?0x85506f:0x4a4059,()=>{Save.toggleGearLock(selected.uid);this.buildMenuScreen();});
       if(!eq)drawAction(2,'Quick Equip',0x3f9160,()=>{Save.equipGearInstance(sel,selected.uid);Sfx.select();this.buildMenuScreen();});
-      else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhCost(lv),afford=(Save.data.sugar||0)>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
-        drawAction(2,can?('Enhance +'+(lv+1)+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.select();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1200);return;} if(Save.spend(cost)){ const res=Save.enhance(selected.uid); Sfx.clear();
+      else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhShardCost(lv),afford=(Save.data.shards||0)>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
+        drawAction(2,can?('Enhance +'+(lv+1)+'\n🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.select();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.clear();
             if(res.result==='success'){this.screenFlash(0xffd166,.4,260);this.showBanner('⚒️ Enhanced!','Now +'+res.lv,1100);}
             else if(res.result==='break'){this.screenFlash(0xff8a5a,.42,320);this.showBanner('💥 Enhancement broke','Dropped to +'+res.lv,1500);}
             else {this.gearSelectedUid=null;this.screenFlash(0xff4a5a,.6,440);this.showBanner('💀 Item destroyed','It shattered at high enhancement',1800);} }
