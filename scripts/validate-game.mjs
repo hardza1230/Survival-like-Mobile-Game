@@ -102,21 +102,23 @@ for (const [key,file] of Object.entries(stage5Sheets)) {
   if(!source.includes(`${key}:{ url:'assets/${file}', frame:256`))throw new Error(`Stage 5 sheet ${key} is not registered`);
 }
 
-const chapter2Sheets={ch2_enemy_atlas:'ch2_enemy_atlas.png',ch2_prop_atlas:'ch2_prop_atlas.png',mb6_sporewarden:'mb6_sporewarden_sheet.png',boss6_rootmother:'boss6_rootmother_sheet.png'};
+const chapter2Sheets={ch2_enemy_atlas:'ch2_enemy_atlas.png',ch2_mycelium_enemy_atlas:'ch2_mycelium_enemy_atlas.png',ch2_prop_atlas:'ch2_prop_atlas.png',mb6_sporewarden:'mb6_sporewarden_sheet.png',boss6_rootmother:'boss6_rootmother_sheet.png'};
 for(const [key,file] of Object.entries(chapter2Sheets)){
   const sheet=fs.readFileSync(new URL(`../assets/${file}`,import.meta.url));
   const width=sheet.readUInt32BE(16),height=sheet.readUInt32BE(20),colorType=sheet.readUInt8(25),hasAlpha=[4,6].includes(colorType)||(colorType===3&&sheet.includes(Buffer.from('tRNS')));
   if(width!==1024||height!==512||!hasAlpha)throw new Error(`Expected transparent Chapter 2 atlas ${file} at 1024x512, found ${width}x${height}`);
   if(!source.includes(`${key}:{ url:'assets/${file}', frame:256`))throw new Error(`Chapter 2 atlas ${key} is not registered`);
 }
-for(const contract of ["chapter2_cover:'assets/ui/chapter2_cover.webp'","bg6:'assets/bg6.png'","stages:[5,9]","ready:false","isStageReady(stageIndex)","stageCurveValue(stageIndex","objectivePool=Array.isArray(st.objectives)","this.buildChapterDepth(i)","this.chapter2Pose(b","this.chapter2DeathGhost(e)","rootmotherAttack(b)"]){
+for(const contract of ["chapter2_cover:'assets/ui/chapter2_cover.webp'","bg6:'assets/bg6.png'","bg7:'assets/bg7.webp'","stages:[5,9]","ready:false","isStageReady(stageIndex)","stageCurveValue(stageIndex","objectivePool=Array.isArray(st.objectives)","cleanAir:{emoji:'🫧'","spawnCleanAirZone()","tickCleanAir(dt)","ch2_mycelium_enemy_atlas","mycoRole==='bulwark'","mycoRole==='moldSac'","this.buildChapterDepth(i)","this.chapter2Pose(b","this.chapter2DeathGhost(e)","rootmotherAttack(b)"]){
   if(!source.includes(contract))throw new Error(`Missing Chapter 2 / 2.5D contract: ${contract}`);
 }
 if(source.includes("e.setTintFill(crit?0xffe08a:0xffffff)"))throw new Error('Per-hit white fill obscures enemy artwork');
 if(!source.includes("this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit)"))throw new Error('Readable hit feedback contract is missing');
-for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","purge:{emoji:'💥'","capture:{emoji:'🔷'","this.waveNodes=this.physics.add.group","this.setupWaveObjective(w,p)","this.tickWaveObjective(dt)","this.completeWaveObjective()","if(this.stageIndex>4)return"]){
-  if(!source.includes(contract))throw new Error(`Missing Chapter 1 wave mission contract: ${contract}`);
+for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","capture:{emoji:'🔷'","this.waveNodes=this.physics.add.group","this.setupWaveObjective(w,p)","this.tickWaveObjective(dt)","this.completeWaveObjective()"]){
+  if(!source.includes(contract))throw new Error(`Missing wave mission contract: ${contract}`);
 }
+if(source.includes("if(this.stageIndex>4)return"))throw new Error('Chapter 2 objectives must not be disabled by a hard-coded stage boundary');
+if(!fs.existsSync(new URL('../assets/bg7.webp',import.meta.url)))throw new Error('Mycelium Marsh background is missing');
 
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry']) {
   const cardName = fighter === 'mint' ? 'card_mint_frostleaf.png' : `card_${fighter}.png`;

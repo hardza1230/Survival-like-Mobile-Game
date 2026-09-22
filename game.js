@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.36.0';
+const GAME_VERSION = '4.37.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.37.0', date:'2026-09-22', title:'Mycelium Marsh monster family and moving safe-air objective', items:[
+    'C2-2 now has a complete new fungal monster family with eight original transparent atlas cells: six combat roles, a spawned Sporeling and a Clean-Air Wisp',
+    'Mycelium enemies cooperate: Drifters leave spore pools, Cap Hoppers leap predictively, Puffcap Snipers lead their shots, Mold Sacs split on death, Bulwarks protect nearby allies, and Threadweaver Oracles fire from behind the line',
+    'The Mycelium Marsh has its own illustrated battlefield and five-wave encounter profile tuned substantially above C2-1',
+    'A new moving Clean-Air objective forces repositioning; leaving its ring deals periodic spore damage and pauses objective progress',
+    'C2-2 remains locked until its bespoke miniboss and three-phase boss pass the Chapter 2 QA gate',
+  ]},
   { v:'4.36.0', date:'2026-09-22', title:'Chapter 2 foundation for five safe stages', items:[
     'Chapter 2 now reserves five stage slots, C2-1 through C2-5, with unfinished stages visibly locked until their complete encounters pass QA',
     'Stage selection, direct run entry and stage-to-stage portals now share one readiness guard, so old or unusual saves cannot enter unfinished content',
@@ -452,6 +459,7 @@ const ASSET_IMAGES = {
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   chapter1_cover:'assets/ui/chapter1_cover.webp',
   chapter2_cover:'assets/ui/chapter2_cover.webp',
+  bg7:'assets/bg7.webp',
   currency_spark_sugar:'assets/ui/currency/spark-sugar.png',
   currency_twist_cream:'assets/ui/currency/twist-cream.png',
   currency_crown_icing:'assets/ui/currency/crown-icing.png',
@@ -641,6 +649,7 @@ const ASSET_SHEETS = {
   e_maw_truffle:{ url:'assets/e_maw_truffle_sheet.png', frame:256, anim:{frames:4,rate:8,yoyo:true} },
   e_royal_oven_sentinel:{ url:'assets/e_royal_oven_sentinel_sheet.png', frame:256, anim:{frames:4,rate:6,yoyo:true} },
   ch2_enemy_atlas:{ url:'assets/ch2_enemy_atlas.png', frame:256 },
+  ch2_mycelium_enemy_atlas:{ url:'assets/ch2_mycelium_enemy_atlas.png', frame:256 },
   ch2_prop_atlas:{ url:'assets/ch2_prop_atlas.png', frame:256 },
   mb6_sporewarden:{ url:'assets/mb6_sporewarden_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   boss6_rootmother:{ url:'assets/boss6_rootmother_sheet.png', frame:256 },
@@ -2208,6 +2217,13 @@ const STAGE_STORY_BEATS = [
     {title:'Sporewarden Seals the Canopy',sub:'The orchid mantis raises leaf scythes, letting no one near the crown seed'},
     {title:'All Four Seasons Bloom at Once',sub:'Ferment toxin speeds time — flowers are born, age and die in one breath'},
     {title:'A Mother Voice Below the First Root',sub:'The one who planted the crown seed waits, calling The Great Hunger a lost child'}
+  ],
+  [
+    {title:'The Marsh Draws Its First Breath',sub:'Mycelium Drifters rise wherever the clean air passes'},
+    {title:'Caps Leap Across the Water',sub:'Hoppers predict each retreat and cut the next escape route'},
+    {title:'The Juggernaut Guards the Colony',sub:'A fungal giant seals the safest ground behind living walls'},
+    {title:'Threads Bind the Whole Marsh',sub:'Bulwarks and Oracles protect the colony while Mold Sacs multiply'},
+    {title:'A Heart Beats Under the Mire',sub:'The Mycelium Behemoth pulls every root toward its awakening core'}
   ]
 ];
 // สรุปเรื่องราวตอนล้มบอสจบด่าน (โชว์ก่อนหน้าสรุปสถิติ) — what happened + why press on
@@ -2252,7 +2268,8 @@ const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite'},
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core and protect it while it purifies'},
-  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the power ring until the meter fills'}
+  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the power ring until the meter fills'},
+  cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'}
 };
 const CH1_OBJECTIVE_COLORS=[0x9dff45,0x72e8d1,0xff8a5a,0x9fe0ff,0xd59cff];
 
@@ -2262,7 +2279,8 @@ const STAGE_SWARM_BEATS = [
   {title:'The Furnace Alarm Blares',sub:'The machine releases furnace guards from every belt'},
   {title:'The Cell Seal Breaks',sub:'Wardens and forgotten spirits pour out together'},
   {title:'The Call of Hunger',sub:'Servants from every kitchen floor answer the bitter crown'},
-  {title:'The Canopy Blooms Off-Season',sub:'Roots, toxic plants and memory fragments wake across the ferment garden'}
+  {title:'The Canopy Blooms Off-Season',sub:'Roots, toxic plants and memory fragments wake across the ferment garden'},
+  {title:'The Marsh Breathes as One',sub:'Every fungal body shares the same threads and closes around the pocket of clean air'}
 ];
 
 /* ---- CHAPTERS: แต่ละบทชี้ช่วง global stage index ของตน ---- */
@@ -4394,7 +4412,7 @@ class Game extends Phaser.Scene {
     for(const o of this._chapterDepthObjs||[]){if(!o)continue;this.tweens.killTweensOf(o);if(o.active)o.destroy();}this._chapterDepthObjs=[];
   }
   buildChapterDepth(i){
-    this.clearChapterDepth();this._chapter25D=i===5;if(!this._chapter25D||!this.textures.exists('ch2_prop_atlas'))return;
+    this.clearChapterDepth();this._chapter25D=i===5||i===6;if(!this._chapter25D||!this.textures.exists('ch2_prop_atlas'))return;
     const add=(x,y,frame,scale,depth,scroll,alpha,drift)=>{const o=this.camWorld(this.add.image(x,y,'ch2_prop_atlas',frame).setScale(scale).setDepth(depth).setScrollFactor(scroll).setAlpha(alpha));this._chapterDepthObjs.push(o);if(drift)this.tweens.add({targets:o,y:y+drift,x:x+drift*.25,duration:4200+Math.abs(x)%1700,yoyo:true,repeat:-1,ease:'Sine.inOut'});return o;};
     // back terraces → mid canopy → foreground leaves: parallax ต่างกันแต่None physics จึงเบาสำหรับมือถือ
     add(-720,-520,6,.92,-100001,.46,.24,18);add(680,-610,6,.82,-100001,.52,.20,-15);
@@ -4473,6 +4491,13 @@ class Game extends Phaser.Scene {
   }
   waveProfile(w){
     const si=this.stageIndex;
+    if(si===6){const marsh=[
+      {name:'Marsh Awakening',desc:'Mycelium Drifters teach that every kill can leave dangerous ground behind',dur:52,interval:1.30,batch:2,max:34,pressureCap:0.28,types:['basic','basic','basic','fast']},
+      {name:'Predictive Hunt',desc:'Cap Hoppers and Puffcap Snipers punish straight-line retreat',dur:54,interval:0.98,batch:3,max:46,pressureCap:0.42,types:['fast','dasher','shooter','basic','basic']},
+      {name:'Colony Gate',desc:'The Fungal Juggernaut arrives with Drifters and Hoppers',dur:0,interval:1.20,batch:3,max:40,pressureCap:0.48,types:['basic','fast','dasher','shooter']},
+      {name:'Living Network',desc:'Bulwarks protect the line while Oracles and Mold Sacs close the safe routes',dur:57,interval:1.02,batch:4,max:54,pressureCap:0.62,types:['tank','tank','siege','shooter','bomber','basic']},
+      {name:'Heart Under the Mire',desc:'Every fungal role attacks together before the Behemoth wakes',dur:61,interval:0.76,batch:5,max:68,pressureCap:0.76,types:['fast','dasher','shooter','bomber','tank','siege','basic','basic']}
+    ];return marsh[w]||marsh[marsh.length-1];}
     if(si===5){const canopy=[
       {name:'Ferment Sprout',desc:'Ferment Sprouts grow from memories forced through the seasons',dur:50,interval:1.42,batch:2,max:30,pressureCap:0.22,types:['basic','basic','basic','basic','fast']},
       {name:'Hunting Vines',desc:'Vine Skippers leap across roots while sprouts cut off retreat',dur:52,interval:1.04,batch:3,max:42,pressureCap:0.36,types:['fast','fast','dasher','basic','basic']},
@@ -4605,19 +4630,37 @@ class Game extends Phaser.Scene {
   }
   setupWaveObjective(w,p){
     this.clearWaveObjective();
-    if(this.stageIndex>4)return;   // Waitบแรกเปิดใช้กับ Chapter 1 ตามลำดับงาน
-    if(!this._waveObjectiveBag||!this._waveObjectiveBag.length)this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(['survive','hunt','purge','capture'].slice());
-    const type=this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type],color=CH1_OBJECTIVE_COLORS[this.stageIndex]||0xffd166;
+    if(!this._waveObjectiveBag||!this._waveObjectiveBag.length){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
+    const type=this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
     const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,color,progress:0,target:0,done:false};
     if(type==='survive')o.target=Math.max(1,p.dur||48);
     else if(type==='hunt'){
       o.target=2+(w>=4?1:0)+(this.stageIndex>=3?1:0);o.desc='Kill the marked Elite targets: '+o.target+' before time runs out';this.spawnObjectiveElite();
     }else if(type==='purge'){
       o.target=3+(w>=4?1:0);o.desc='Escort the wisp to purify '+o.target+' cores';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);this.spawnPurifyWisp();
+    }else if(type==='cleanAir'){
+      o.target=Math.max(32,Math.round((p.dur||52)*0.72));o.desc='Stay in the moving clean-air ring for '+o.target+' seconds';this.spawnCleanAirZone();
     }else{
       o.target=12+w*2;o.desc='Stand in the capture zone for '+o.target+' seconds';this.spawnCaptureZone();
     }
     this.renderWaveObjectiveHUD();
+  }
+  spawnCleanAirZone(){
+    const o=this.waveObjective;if(!o||o.type!=='cleanAir')return;const pos=this.objectivePosition(0,1,110,220),r=96;
+    this._cleanAir={x:pos.x,y:pos.y,tx:pos.x,ty:pos.y,t:0,moveIn:4.5,r,damageIn:0};
+    this._cleanAirZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,0.12).setStrokeStyle(5,o.color,0.88).setDepth(1));this._cleanAirZone.radiusGoal=r;
+    this._cleanAirRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_ring').setTint(o.color).setDisplaySize(r*2.15,r*1.58).setAlpha(.72).setDepth(2));
+    this._cleanAirWisp=this.camWorld(this.add.image(pos.x,pos.y-22,'ch2_mycelium_enemy_atlas',7).setScale(.24).setDepth(pos.y+3));
+    this.tweens.add({targets:this._cleanAirRing,rotation:TAU,alpha:{from:.48,to:.82},duration:1700,repeat:-1,ease:'Linear'});
+  }
+  tickCleanAir(dt){
+    const o=this.waveObjective,c=this._cleanAir;if(!o||o.type!=='cleanAir'||!c)return;c.t+=dt;c.moveIn-=dt;
+    if(c.moveIn<=0){const p=this.objectivePosition(0,1,210,420);c.tx=p.x;c.ty=p.y;c.moveIn=5.2;}
+    const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy),step=Math.min(d,46*dt);if(d>1){c.x+=dx/d*step;c.y+=dy/d*step;}
+    for(const q of [this._cleanAirZone,this._cleanAirRing])if(q&&q.active)q.setPosition(c.x,c.y);if(this._cleanAirWisp&&this._cleanAirWisp.active)this._cleanAirWisp.setPosition(c.x,c.y-22+Math.sin(c.t*4)*5).setDepth(c.y+3);
+    const inside=this.dist(this.player.x,this.player.y,c.x,c.y)<=c.r;o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:0),0,o.target);this._cleanAirZone.setFillStyle(o.color,inside?.20:.07);
+    if(!inside){c.damageIn-=dt;if(c.damageIn<=0){c.damageIn=1.15;this.hurtPlayer(Math.round(5+this.stageIndex*1.2),.35);this.vfxHitRing(this.player.x,this.player.y,0xa461d8,false);}}
+    if(o.progress>=o.target)this.completeWaveObjective();
   }
   objectivePosition(i=0,n=1,minR=240,maxR=390){
     const lim=WORLD/2-130;let pos={x:this.player.x,y:this.player.y};
@@ -4737,6 +4780,9 @@ class Game extends Phaser.Scene {
     else if(o.type==='purge'){
       this.tickPurifyWisp(dt);
     }
+    else if(o.type==='cleanAir'){
+      this.tickCleanAir(dt);if(!this.waveObjective)return;
+    }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
       o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}
     if(o.type!=='purge'&&this.objNodeG)this.objNodeG.clear();   // เคลียร์หลอดแกน (แยกจาก else-if chain กันไปบLocked capture)
@@ -4744,7 +4790,7 @@ class Game extends Phaser.Scene {
   }
   renderWaveObjectiveHUD(){
     const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);return;}
-    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':o.type==='capture'?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target;
+    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir')?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target;
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
   }
   completeWaveObjective(){
@@ -4757,7 +4803,7 @@ class Game extends Phaser.Scene {
   clearWaveObjective(){
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;});
-    for(const k of ['_captureZone','_captureRing']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}
+    for(const k of ['_captureZone','_captureRing','_cleanAirZone','_cleanAirRing','_cleanAirWisp']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);
@@ -5625,17 +5671,19 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===2) key=(type==='fast'||type==='dasher')?'e_fire_chili':type==='shooter'?'e_fire_grinder':type==='bomber'?'e_fire_bomber':(type==='tank'||type==='siege')?'e_fire_golem':'e_fire_ember';
     if(this.stageIndex===3) key=(type==='fast'||type==='dasher')?'e_ice_shard':type==='shooter'?'e_ice_caster':type==='bomber'?'e_ice_bomber':(type==='tank'||type==='siege')?'e_ice_guardian':'e_ice_wisp';
     if(this.stageIndex===4) key=(type==='fast'||type==='dasher')?'e_crown_ripper':type==='shooter'?'e_banquet_eye':type==='bomber'?'e_maw_truffle':(type==='tank'||type==='siege')?'e_royal_oven_sentinel':'e_void_crumb';
-    const ch2Frame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5}[type]??0;if(this.stageIndex===5)key='ch2_enemy_atlas';
-    if(!e) e=this.enemies.create(x,y,key,this.stageIndex===5?ch2Frame:0);
-    else { e.setTexture(key,this.stageIndex===5?ch2Frame:0); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
+    const ch2Frame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5}[type]??0,mycoFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,sporeling:6}[type]??0;let atlasFrame=0;
+    if(this.stageIndex===5){key='ch2_enemy_atlas';atlasFrame=ch2Frame;}else if(this.stageIndex===6){key='ch2_mycelium_enemy_atlas';atlasFrame=mycoFrame;}
+    if(!e) e=this.enemies.create(x,y,key,atlasFrame);
+    else { e.setTexture(key,atlasFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool Full (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+Wave (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
-    e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
+    e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;e.mycoRole=null;
     e.bloomStacks=0;e.bloomUntil=0;e.frostbite=this.stageIndex===3;
     let scale=1;
-    if(type==='acid'){ e.hp=26*s; e.spd=52; e.dmg=11; e.xp=2; e.acid=true; e.shootCd=Phaser.Math.FloatBetween(0.8,1.6); e.setCircle(22,26,26); }
+    if(type==='sporeling'){e.hp=7*s;e.spd=96;e.dmg=7;e.xp=0;e.setCircle(13,5,5);scale=.26;}
+    else if(type==='acid'){ e.hp=26*s; e.spd=52; e.dmg=11; e.xp=2; e.acid=true; e.shootCd=Phaser.Math.FloatBetween(0.8,1.6); e.setCircle(22,26,26); }
     else if(type==='fast'){ e.hp=10*s; e.spd=122; e.dmg=9; e.xp=1; e.setCircle(15,4,4); }
     else if(type==='tank'){ e.hp=80*s; e.spd=36; e.dmg=18; e.xp=4; e.setCircle(26,5,5); }
     else if(type==='shooter'){ e.hp=19*s; e.spd=62; e.dmg=9; e.xp=2; e.shooter=true; e.shootCd=Phaser.Math.FloatBetween(1.1,2.0); e.setCircle(17,5,5); }
@@ -5658,13 +5706,15 @@ class Game extends Phaser.Scene {
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
     if(this.stageIndex===5){const role={basic:['Ferment Sprout',0.38,45,83,83],fast:['Vine Hunter',0.38,43,85,85],dasher:['Vine Hunter',0.38,43,85,85],shooter:['Spore Lantern',0.40,44,84,84],bomber:['Rotten Fruit Pod',0.42,47,81,81],tank:['Root-Back Beetle',0.48,53,75,75],siege:['Thorn Oracle',0.48,50,78,78]}[type]||['Ferment Sprout',0.38,45,83,83];
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
+    if(this.stageIndex===6){const role={basic:['Mycelium Drifter','drifter',.39,45,83,83],fast:['Cap Hopper','hopper',.38,43,85,85],dasher:['Cap Hopper','hopper',.38,43,85,85],shooter:['Puffcap Sniper','sniper',.40,45,83,83],bomber:['Mold Sac','moldSac',.42,47,81,81],tank:['Mycelium Bulwark','bulwark',.48,54,74,74],siege:['Threadweaver Oracle','oracle',.44,48,80,80],sporeling:['Sporeling','sporeling',.26,34,94,94]}[type]||['Mycelium Drifter','drifter',.39,45,83,83];
+      e.roleName=role[0];e.mycoRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.mycoRole==='oracle'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.5,2.3);}if(e.mycoRole==='bulwark'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0x9ae66e).setDisplaySize(235,168).setAlpha(.34).setDepth(e.y-1));}}
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     // เล่นอนิเมชันเดิน/ยิงถ้าเป็นชนิดที่มีชีต (ไม่งั้นหยุด anim ที่ค้างจาก pool + คืนเฟรมนิ่ง)
     if(this.anims.exists(key+'_walk')){ e.setFlipX(false); e.play(key+'_walk',true); }
-    else if(e.anims){ e.anims.stop(); e.setFrame(this.stageIndex===5?ch2Frame:0); e.setFlipX(false); }
+    else if(e.anims){ e.anims.stop(); e.setFrame(atlasFrame); e.setFlipX(false); }
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
     this.camWorld(e);
-    this.vfxSpawnPoof(x,y);
+    this.vfxSpawnPoof(x,y);return e;
   }
 
   /* ---------- COMBAT ---------- */
@@ -6256,7 +6306,8 @@ class Game extends Phaser.Scene {
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;
     }
-    if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
+    if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;
+    if(this.stageIndex===6&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'){let guarded=false;this.enemies.children.iterate(o=>{if(!guarded&&o&&o.active&&o!==e&&o.mycoRole==='bulwark'&&this.dist(o.x,o.y,e.x,e.y)<175)guarded=true;});if(guarded)amount*=.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.8); crit=true; }
@@ -6314,6 +6365,8 @@ class Game extends Phaser.Scene {
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
     if(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008)) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
     if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
+    if(this.stageIndex===6&&e.mycoRole==='drifter')this.spawnBossObject('acid',e.x,e.y,4.2);
+    if(this.stageIndex===6&&e.mycoRole==='moldSac'){const sx=e.x,sy=e.y;for(let i=0;i<2;i++)this.time.delayedCall(80+i*90,()=>{if(!this._busy())return;const child=this.spawnEnemy('sporeling');if(child)child.setPosition(sx+Phaser.Math.Between(-34,34),sy+Phaser.Math.Between(-34,34));});}
     // bomber: ระเบิดตอนตาย (เตือนสั้น ๆ ด้วยวง แล้วโดนถ้าอยู่ใกล้)
     if(e.bomber){ const bx=e.x,by=e.y, r=70;
       const ring=this.camWorld(this.add.image(bx,by,'vfx_ring').setTint(0xff7a4d).setDepth(3).setScale(0.08).setAlpha(0.85));
@@ -6325,7 +6378,7 @@ class Game extends Phaser.Scene {
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // UpdatesเงินWaitบนี้แบบ realtime
     this.clearObjectiveTargetFx(e);if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
-    e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
+    e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
@@ -7321,7 +7374,7 @@ class Game extends Phaser.Scene {
     // enemies
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
       if(this.iso)e.setDepth(e.y);
-      if(e.bloomUntil>0){e.bloomUntil-=dt;if(e.bloomUntil<=0)e.bloomStacks=0;}
+      if(e.bloomUntil>0){e.bloomUntil-=dt;if(e.bloomUntil<=0)e.bloomStacks=0;}if(e._aura&&e._aura.active)e._aura.setPosition(e.x,e.y).setDepth(e.y-1);
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
       if(e._decoyT>0)e._decoyT-=dt;
@@ -7350,7 +7403,7 @@ class Game extends Phaser.Scene {
       }
       if(e.shooter){ e.shootCd-=dt;
         if(dd<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);
-          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2);if(this.stageIndex===4)this.stage5EnemyPose(e,4,430);this.foeShot(e.x,e.y,ang,225+this.stageIndex*15,e.dmg,0xffd27f); Sfx.zap(); }
+          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2);if(this.stageIndex===4)this.stage5EnemyPose(e,4,430);let fireAng=ang;if(this.stageIndex===6&&(e.mycoRole==='sniper'||e.mycoRole==='oracle')&&this.player.body){const lead=e.mycoRole==='sniper'?.48:.28,px=this.player.x+this.player.body.velocity.x*lead,py=this.player.y+this.player.body.velocity.y*lead;fireAng=Math.atan2(py-e.y,px-e.x);}this.foeShot(e.x,e.y,fireAng,225+this.stageIndex*15,e.dmg,this.stageIndex===6?0xb46cff:0xffd27f); Sfx.zap(); }
           return; } }
       if(e.dasher){   // สายพุ่งโฉบ: เข้าfind → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่
         e.dashT-=dt;
@@ -7362,7 +7415,7 @@ class Game extends Phaser.Scene {
           e.x += (Math.random() - 0.5) * 5;   // ตัวสั่นตอนชาร์จ
           // เส้นเตือนทิศพุ่ง (แบบ Archero) — เล็งไปที่ผู้เล่นตอนชาร์จ ให้หลบทัน
           if(e._dashTel){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x),len=Math.min(dd,320); e._dashTel.setPosition(e.x+Math.cos(a)*len/2,e.y+Math.sin(a)*len/2).setRotation(a).setDisplaySize(len,9); }
-          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang;if(this.stageIndex===4)this.stage5EnemyPose(e,5,340); if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
+          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=(this.stageIndex===6&&e.mycoRole==='hopper'&&this.player.body)?Math.atan2(this.player.y+this.player.body.velocity.y*.30-e.y,this.player.x+this.player.body.velocity.x*.30-e.x):ang;if(this.stageIndex===4)this.stage5EnemyPose(e,5,340); if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
             if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
             if(e.body)this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
         else if(e.dashState==='dash'){ if(e.body)this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);

@@ -57,7 +57,11 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.36.0 — วางโครง Chapter 2 ครบ 5 ด่านและล็อกด่านที่ยังไม่ผ่าน QA)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.37.0 — C2-2 Mycelium Marsh + monster family; ด่านยังล็อกจนบอสเสร็จ)
+- **v4.37.0 (C2-2 vertical slice — monsters + field rule):** เพิ่มอาร์ต `ch2_mycelium_enemy_atlas.png` 4×2 (Drifter/Hopper/Sniper/Mold Sac/Bulwark/Oracle/Sporeling/Clean-Air Wisp) + พื้น `bg7.webp` · เพิ่ม wave profile 5 ช่วง · AI เฉพาะ: spore pool หลัง Drifter ตาย, Hopper เล็งนำ, Sniper/Oracle ยิงนำ, Mold Sac แตกเป็นลูก, Bulwark ลดดาเมจให้พวกใกล้ · objective Clean Air เคลื่อนที่และทำดาเมจนอกวง · C2-2 ยัง `ready:false` · **Commit ถัดไป: Fungal Juggernaut miniboss**
+
+### สถานะก่อนหน้า
+- **v4.36.0 — วางโครง Chapter 2 ครบ 5 ด่านและล็อกด่านที่ยังไม่ผ่าน QA**
 - **v4.36.0 (Chapter 2 foundation):** ขยายช่วง Chapter 2 เป็น C2-1…C2-5 · เพิ่ม metadata ด่าน Mycelium Marsh/Nectar Hive/Four-Season Conservatory/Root Throne แบบ `ready:false` · stage select/startRun/portal ใช้ readiness guard เดียวกัน · Zone Level และ HP/DMG curve รองรับด่านเกิน index 5 แบบต่อเนื่อง · C2-1 ใช้ objective pool แบบ data-driven และเปลี่ยนบอสเป็น Rootmother's Bud เพื่อเก็บ True Rootmother ไว้ C2-5 · **Commit ถัดไป: C2-2 Mycelium Marsh + monster family**
 
 ### สถานะก่อนหน้า
