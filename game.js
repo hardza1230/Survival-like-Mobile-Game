@@ -29,9 +29,16 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.37.0';
+const GAME_VERSION = '4.38.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.38.0', date:'2026-09-22', title:'Fungal Juggernaut miniboss encounter', items:[
+    'C2-2 gains a bespoke four-pose Fungal Juggernaut miniboss with readable wind-up, slam and enraged artwork',
+    'The Juggernaut uses Mycelium Quake, a three-charge Stampede, Living Wall area denial, Spore Mortar gaps and Colony Call reinforcements',
+    'At half health it becomes briefly invulnerable, flares its mycelium core and summons a Bulwark escort before resuming faster attacks',
+    'Fixed a comment-boundary regression that prevented miniboss damage and combat state values from being initialized',
+    'Mycelium Marsh remains locked until the Mycelium Behemoth boss and full-stage QA are complete',
+  ]},
   { v:'4.37.0', date:'2026-09-22', title:'Mycelium Marsh monster family and moving safe-air objective', items:[
     'C2-2 now has a complete new fungal monster family with eight original transparent atlas cells: six combat roles, a spawned Sporeling and a Clean-Air Wisp',
     'Mycelium enemies cooperate: Drifters leave spore pools, Cap Hoppers leap predictively, Puffcap Snipers lead their shots, Mold Sacs split on death, Bulwarks protect nearby allies, and Threadweaver Oracles fire from behind the line',
@@ -652,6 +659,7 @@ const ASSET_SHEETS = {
   ch2_mycelium_enemy_atlas:{ url:'assets/ch2_mycelium_enemy_atlas.png', frame:256 },
   ch2_prop_atlas:{ url:'assets/ch2_prop_atlas.png', frame:256 },
   mb6_sporewarden:{ url:'assets/mb6_sporewarden_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  mb7_fungal_juggernaut:{ url:'assets/mb7_fungal_juggernaut_sheet.png', frame:256, anim:{frames:2,rate:3,yoyo:true} },
   boss6_rootmother:{ url:'assets/boss6_rootmother_sheet.png', frame:256 },
   e_acid:     { url:'assets/generated/e_acid_ant_sheet.png', frame:96, anim:{frames:3, rate:9} },
   // ศัตรูอนิเมชัน (walk/attack cycle) — frame=ขนาดเดิม (setScale/setCircle เดิมใช้ได้ ไม่ต้องแก้)
@@ -4881,14 +4889,15 @@ class Game extends Phaser.Scene {
     const adds=2+this.stageIndex;
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
-    const mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===1?0.88:(mArt?1.15:1.7))); b.baseScale=mScale; b._sqX=1; b._sqY=1;
-    const mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===1?48:(mArt?52:26))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===1?48:(mArt?18:5)));
+    const mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))); b.baseScale=mScale; b._sqX=1; b._sqY=1;
+    const mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===6?58:(this.stageIndex===1?48:(mArt?52:26)))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===6?70:(this.stageIndex===1?48:(mArt?18:5))));
     b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=96;   // Miniboss HP ×1.3→×1.0 · เร่งความเร็ว 72→96 ให้เกาะติดผู้เล่น (กันบอสลากออกนอกจอ) b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // Miniboss: ฐานแฟร์ + ระดับความยาก
+    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
+    b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
+    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;
     b.atkCd=0.85; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
     if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
@@ -6851,7 +6860,7 @@ class Game extends Phaser.Scene {
   }
   stage5DeathGhost(e){
     const keys=['boss5_sovereign','mb5_banquet_executioner','e_void_crumb','e_crown_ripper','e_banquet_eye','e_maw_truffle','e_royal_oven_sentinel'];if(!e||!keys.includes(e.texture.key))return;
-    const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,7).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+8).setAlpha(1));
+    const deathFrame=e.texture.key==='mb7_fungal_juggernaut'?3:7,ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,deathFrame).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+8).setAlpha(1));
     const boss=e.isBoss,mini=e.isMini;this.tweens.add({targets:ghost,y:ghost.y+(boss?28:14),scaleX:ghost.scaleX*(boss?1.12:.82),scaleY:ghost.scaleY*(boss?.76:.82),alpha:0,duration:boss?1450:mini?900:520,ease:'Cubic.in',onComplete:()=>ghost.destroy()});
   }
 
@@ -6860,8 +6869,33 @@ class Game extends Phaser.Scene {
     b._ch2PoseToken=(b._ch2PoseToken||0)+1;const token=b._ch2PoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
     this.time.delayedCall(ms,()=>{if(!b.active||b._ch2PoseToken!==token)return;const idle=b.texture.key==='boss6_rootmother'?'boss6_rootmother_idle':'mb6_sporewarden_walk';if(this.anims.exists(idle))b.play(idle,true);else b.setFrame(0);});
   }
+  juggernautPose(b,frame,ms=820){
+    if(!b||!b.active||b.texture.key!=='mb7_fungal_juggernaut')return;frame=Phaser.Math.Clamp(frame|0,0,3);
+    b._jugPoseToken=(b._jugPoseToken||0)+1;const token=b._jugPoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
+    this.time.delayedCall(ms,()=>{if(!b.active||b._jugPoseToken!==token)return;if(this.anims.exists('mb7_fungal_juggernaut_walk'))b.play('mb7_fungal_juggernaut_walk',true);else b.setFrame(0);});
+  }
+  fungalJuggernautAttack(b){
+    const fast=b.phase2?.76:1,pool=b.phase2?['quake','stampede','livingWall','sporeMortar','colonyCall','stampede']:['quake','stampede','livingWall','sporeMortar'],pick=Phaser.Utils.Array.GetRandom(pool);
+    const px=this.player.x,py=this.player.y,bd=Math.max(18,Math.round((b.dmg||32)*.54));
+    if(pick==='quake'){
+      this.juggernautPose(b,2,1050);this.showBanner('🍄 Mycelium Quake','Three rings erupt in sequence — cross each wave after it passes!',900);
+      for(let i=0;i<3;i++)this.time.delayedCall(300+i*360,()=>{if(b.active)this.bossNovaWave(b.x,b.y,190+i*72,bd+i*2,0);});b.atkCd=3.15*fast;
+    }else if(pick==='stampede'){
+      this.juggernautPose(b,1,900);this.showBanner('💥 Triple Stampede','Sidestep the violet line — it re-aims between charges!',900);
+      for(let i=0;i<(b.phase2?3:2);i++)this.time.delayedCall(i*780,()=>{if(b.active)this.chargeTelegraph(b,620,720,34);});b.atkCd=(b.phase2?3.1:2.65)*fast;
+    }else if(pick==='livingWall'){
+      this.juggernautPose(b,3,1150);this.showBanner('🛡️ Living Wall','Bulwarks advance while spores seal most of the ring — find the two gaps!',950);
+      const gap=Phaser.Math.Between(0,7);for(let i=0;i<8;i++){if(i===gap||i===(gap+4)%8)continue;const a=i*TAU/8;this.spawnBossObject('acid',px+Math.cos(a)*155,py+Math.sin(a)*155,7.5);}
+      for(let i=0;i<(b.phase2?2:1);i++){const e=this.spawnEnemy('tank');if(e)e.setPosition(b.x+(i?1:-1)*105,b.y+Phaser.Math.Between(-45,45));}b.atkCd=3.25*fast;
+    }else if(pick==='sporeMortar'){
+      this.juggernautPose(b,2,980);this.showBanner('🟣 Spore Mortar','Move through the missing wedges, then leave the impact circle!',900);const n=b.phase2?18:14,gap=Phaser.Math.Between(0,n-1);
+      this.time.delayedCall(360,()=>{if(!b.active)return;for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,205+(i%2)*48,bd-4,i%2?0xb46cff:0x56e5bd,1.08);}this.spawnHazard(px,py,86,bd+5,0xb46cff);});b.atkCd=2.85*fast;
+    }else{
+      this.juggernautPose(b,3,1200);this.showBanner('🕸️ Colony Call','Break the Mold Sacs before the marsh multiplies!',900);const types=['bomber','shooter','fast','bomber'];for(let i=0;i<(b.phase2?4:3);i++)this.time.delayedCall(i*140,()=>{if(b.active)this.spawnEnemy(types[i]);});b.atkCd=3.35*fast;
+    }
+  }
   chapter2DeathGhost(e){
-    if(!e||!['boss6_rootmother','mb6_sporewarden'].includes(e.texture.key))return;const boss=e.isBoss;
+    if(!e||!['boss6_rootmother','mb6_sporewarden','mb7_fungal_juggernaut'].includes(e.texture.key))return;const boss=e.isBoss;
     const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,7).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+9).setAlpha(1));
     for(let i=0;i<(boss?10:6);i++){const seed=this.camWorld(this.add.image(e.x,e.y,'vfx_glow').setTint(i%3?0x56e5bd:0xffd166).setScale(.08).setDepth(e.y+10).setAlpha(.8));this.tweens.add({targets:seed,x:e.x+Phaser.Math.Between(-150,150),y:e.y-Phaser.Math.Between(50,190),scale:.32,alpha:0,duration:700+i*70,onComplete:()=>seed.destroy()});}
     this.tweens.add({targets:ghost,y:ghost.y+24,scaleX:ghost.scaleX*1.08,scaleY:ghost.scaleY*.78,alpha:0,duration:boss?1500:880,ease:'Cubic.in',onComplete:()=>ghost.destroy()});
@@ -6958,7 +6992,7 @@ class Game extends Phaser.Scene {
     if(!b.phase2 && b.hp<=b.maxhp*phase2At){ b.phase2=true; this.beginBossPhaseTransition(b,b.isBoss?1.55:1.25,this.stageIndex===1?0x62e5cf:0xff6a4d); b.spd*=1.28; b.atkCd=0.6;
       if(this.stageIndex===1&&b.isBoss)this.drainBossPose(b,7,1100);
       if(b.isBoss&&(this.stageIndex===2||this.stageIndex===3))this.stageBossPose(b,6,1250);if(b.isMini&&this.stageIndex===4)this.stage5Pose(b,6,1250);
-      if(this.stageIndex===5)this.chapter2Pose(b,6,1450);
+      if(this.stageIndex===5)this.chapter2Pose(b,6,1450);if(b.isMini&&this.stageIndex===6){this.juggernautPose(b,3,1450);for(const t of ['tank','shooter']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-130,130),b.y+Phaser.Math.Between(-90,90));}}
       this.showBanner(this.stageIndex===1?'🫧 Phase 2 · Pressure Surge':this.stageIndex===2?'🔥 Phase 2 · Overheat':this.stageIndex===3?'❄️ Phase 2 · Seal Broken':this.stageIndex===5?'🌱 Phase 2 · Root Breach':'🔥 Boss Enraged!',this.stageIndex===1?'The valve opens — suction and trapping bubbles activate!':this.stageIndex===2?'The conveyors speed up and the furnace unleashes fire waves!':this.stageIndex===3?'The ice cage starts closing in faster!':this.stageIndex===5?'The Rootmother opens toxic sap channels and forces the whole garden’s seasons!':'Phase 2 — attacks grow fiercer!',1500); if(b.isBoss&&this.stageIndex===0)this.bossPose(b,6,1000); this.screenShake(420,0.014); this.screenFlash(this.stageIndex===1?0x62e5cf:this.stageIndex===3?0x9fe0ff:this.stageIndex===5?0x56e5bd:0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');
       if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 Phase 2 · Nest Breach','The Queen summons a swarm of acid ants!',1700);for(let i=0;i<3;i++)this.spawnEnemy(i%2?'acid':'fast');}   // เลิกเรียกเสาผลึก → เรียกลูกน้องแทน
@@ -6974,6 +7008,7 @@ class Game extends Phaser.Scene {
       if(this.stageIndex===0){this.bossPose(b,6,1300);this.spawnBossObject('mound',b.x-230,b.y,16);this.spawnBossObject('mound',b.x+230,b.y,16);} }
     if((b._phaseInvuln||0)>0)return;
     if(b.atkCd>0)return;
+    if(b.isMini&&this.stageIndex===6){this.fungalJuggernautAttack(b);return;}
     if(b.isMini&&b.royalGuard){this.royalGuardAttack(b);return;}
     if(b.isBoss&&this.stageIndex===0){this.antQueenAttack(b);return;}
     if(this.stageIndex===1&&(b.isBoss||b.isMini)){this.drainBossAttack(b);return;}

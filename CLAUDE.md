@@ -57,6 +57,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.38.0 — Fungal Juggernaut miniboss; C2-2 ยังล็อกจนบอสเสร็จ)
+- **v4.38.0 (C2-2 miniboss):** เพิ่มอาร์ตโปร่งใส 4 เฟรม `mb7_fungal_juggernaut_sheet.png` · ท่าเฉพาะ Mycelium Quake / Triple Stampede / Living Wall / Spore Mortar / Colony Call · เปลี่ยนเฟสอมตะชั่วคราวที่ 50% HP พร้อม Bulwark escort · แก้บั๊กค่า `b.dmg` ของมินิบอสถูก comment ทับ · เพิ่ม validator กัน regression · C2-2 ยัง `ready:false` · **Commit ถัดไป: Mycelium Behemoth three-phase boss**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.37.0 — C2-2 Mycelium Marsh + monster family; ด่านยังล็อกจนบอสเสร็จ)
 - **v4.37.0 (C2-2 vertical slice — monsters + field rule):** เพิ่มอาร์ต `ch2_mycelium_enemy_atlas.png` 4×2 (Drifter/Hopper/Sniper/Mold Sac/Bulwark/Oracle/Sporeling/Clean-Air Wisp) + พื้น `bg7.webp` · เพิ่ม wave profile 5 ช่วง · AI เฉพาะ: spore pool หลัง Drifter ตาย, Hopper เล็งนำ, Sniper/Oracle ยิงนำ, Mold Sac แตกเป็นลูก, Bulwark ลดดาเมจให้พวกใกล้ · objective Clean Air เคลื่อนที่และทำดาเมจนอกวง · C2-2 ยัง `ready:false` · **Commit ถัดไป: Fungal Juggernaut miniboss**
 

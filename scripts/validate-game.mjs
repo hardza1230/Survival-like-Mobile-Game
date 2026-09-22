@@ -109,6 +109,12 @@ for(const [key,file] of Object.entries(chapter2Sheets)){
   if(width!==1024||height!==512||!hasAlpha)throw new Error(`Expected transparent Chapter 2 atlas ${file} at 1024x512, found ${width}x${height}`);
   if(!source.includes(`${key}:{ url:'assets/${file}', frame:256`))throw new Error(`Chapter 2 atlas ${key} is not registered`);
 }
+const juggernaut=fs.readFileSync(new URL('../assets/mb7_fungal_juggernaut_sheet.png',import.meta.url));
+const jugW=juggernaut.readUInt32BE(16),jugH=juggernaut.readUInt32BE(20),jugType=juggernaut.readUInt8(25),jugAlpha=[4,6].includes(jugType)||(jugType===3&&juggernaut.includes(Buffer.from('tRNS')));
+if(jugW!==1024||jugH!==256||!jugAlpha)throw new Error(`Expected transparent Fungal Juggernaut 4x1 sheet at 1024x256, found ${jugW}x${jugH}`);
+for(const contract of ["mb7_fungal_juggernaut:{ url:'assets/mb7_fungal_juggernaut_sheet.png', frame:256","b.juggernaut=this.stageIndex===6","fungalJuggernautAttack(b)","if(b.isMini&&this.stageIndex===6)","Triple Stampede","Living Wall","Colony Call","b.dmg=Math.round(st.bossDmg*1.1"]){
+  if(!source.includes(contract))throw new Error(`Missing Fungal Juggernaut contract: ${contract}`);
+}
 for(const contract of ["chapter2_cover:'assets/ui/chapter2_cover.webp'","bg6:'assets/bg6.png'","bg7:'assets/bg7.webp'","stages:[5,9]","ready:false","isStageReady(stageIndex)","stageCurveValue(stageIndex","objectivePool=Array.isArray(st.objectives)","cleanAir:{emoji:'🫧'","spawnCleanAirZone()","tickCleanAir(dt)","ch2_mycelium_enemy_atlas","mycoRole==='bulwark'","mycoRole==='moldSac'","this.buildChapterDepth(i)","this.chapter2Pose(b","this.chapter2DeathGhost(e)","rootmotherAttack(b)"]){
   if(!source.includes(contract))throw new Error(`Missing Chapter 2 / 2.5D contract: ${contract}`);
 }
