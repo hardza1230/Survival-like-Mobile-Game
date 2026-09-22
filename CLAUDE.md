@@ -57,7 +57,12 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.28.0 — เมนูเปิดหมดหลังจบ tutorial)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.29.0 — แก้ระบบ craft/currency + จบด่านกลับ hub)
+- **v4.29.0 (แก้บั๊กระบบไอเทม + จบด่านกลับเมนู — จาก feedback เจ้าของ):**
+  · **จบด่านกลับ hub:** `continueFromSummary` `menuScreen='stage'`→`'hub'`
+  · **บั๊ก currency (ต้นเหตุ "อัพไม่ได้/currency ไม่ได้ใช้"):** `craftCurrencyForLine` เดิม magic+ช่องว่าง→`exalt` (หายาก) · transmute ใช้ได้แค่ common แต่ของ drop ไม่เคย common (`baseDefaultRarity` common→magic) → transmute ไร้ประโยชน์ ตัน · **แก้:** `if(!hasLine)return rarity==='rare'?'exalt':'transmute'` → transmute เติม common/magic ได้, exalt เหลือไว้ rare (loop: common→transmute→magic→transmute→magic2→regal→rare→exalt→rare4) · **verified: magic1→transmute→magic2→regal→rare→exalt→rare3, 0 error**
+  · **gacha "1 mod/magic เสมอ":** `grantGear` menu path floor iLv 12 (`Math.max(12,rollItemLevel(sourceStage,1))`) → affixCountCap≥2 = 2 mod · **verified: gacha ให้ magic+rare, affix dist 1:17/2:23**
+- **v4.28.0 (เมนูเปิดหมดหลังจบ tutorial)**
 - **v4.28.0 (ปลดล็อกเมนูหลังจบ tutorial — จาก feedback+ภาพเจ้าของ):** ต้นเหตุจริงของ "เข้า Weave ไม่ได้" = **hub gate** ที่ `buildHub` (`need=[0,0,1,2,1,0]` ล็อก Gear&Power/Activities/Codex ตาม unlockedStage) — Weave อยู่ใน Gear&Power ที่ล็อก · แก้: gate เปลี่ยนเป็น `if(us<need[i] && !tutDone)` (tutDone=`Save.data.tutorialDone`) → จบ tutorial = ปลดทุกเมนู · `buildHubGroup` GATED afterS1 `||!!Save.data.tutorialDone` (gear/craft/bazaar/inbox เปิดด้วย) · **verified: ก่อน tut ล็อก 3, หลัง tut ล็อก 0, gLoadout ล็อก 0, 0 error** · (char-buy gate ยังคง unlockedStage>=1 ตามเดิม)
 - **v4.27.0 (Tutorial พาเข้า Flavor Weave)**
 - **v4.27.0 (จบ tutorial สอนอัพ Weave — จาก feedback เจ้าของ):** Flavor Weave (หน้า `upgrade`/`buildUpgrade`) ไม่มี gate อยู่แล้ว (เปิดตั้งแต่เริ่ม แม้ gear/craft/bazaar/inbox ล็อกจนผ่านด่าน 1) แต่ผู้เล่นหาไม่เจอ → หน้าจบ tutorial (`showTutorialComplete`) เพิ่ม **2 ปุ่ม**: "✦ Boost your Cores" → `openTutorialWeave()` (exitStage → menuScreen='upgrade' + ตั้ง `_tutorialWeaveCoach` + menuToast) · "🗺 Skip to Stage Select" → continueFromSummary · `buildUpgrade` เมื่อ `_tutorialWeaveCoach` เปลี่ยน prog text เป็น "🍓 Tap a core to spend your Sugar!" (เต้น) · เคลียร์ flag ตอนซื้อแก่นสำเร็จ · **verified: จบ tutorial→2 ปุ่ม, กดแรก→screen upgrade+coach, buyTal ok, 0 error**

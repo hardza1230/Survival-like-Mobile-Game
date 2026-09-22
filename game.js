@@ -29,9 +29,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.28.0';
+const GAME_VERSION = '4.29.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.29.0', date:'2026-09-22', title:'Item crafting fixed — currency finally useful', items:[
+    'Fixed the crafting bottleneck: Spark Sugar (your most common currency) now imprints stats on Common AND Magic gear, instead of being stuck needing the rare Wish Candy to add a second mod',
+    'Wish Candy is now reserved for adding stats to Rare gear, so every currency has a clear job',
+    'Gacha and shop gear roll a higher base item level, so weapons come with two mods and can be Magic or Rare (no longer stuck at one mod)',
+    'Clearing a stage now always returns you to the main menu',
+  ]},
   { v:'4.28.0', date:'2026-09-22', title:'All menus open right after the tutorial', items:[
     'Finishing the tutorial now unlocks every hub menu at once — Gear & Power (with Flavor Weave), Activities and Codex are no longer locked behind clearing stages',
     'Inside Gear & Power, Equipment, Crafting and the Bazaar also open as soon as the tutorial is done',
@@ -1540,7 +1546,8 @@ function craftAffixPoolForItem(item){if(!item)return[];const base=GEAR_ALL.find(
 }
 function affixBestTierForItem(item,mod){const base=GEAR_ALL.find(g=>g.id===item.baseId),baseBest=BASE_BEST_TIER[(base&&base.tier)||item.grade]||4,levelBest=bestAffixTierForItemLevel(item.itemLevel||1),modBest=mod&&mod.bestTier?mod.bestTier:1;return Math.max(baseBest,levelBest,modBest);}
 function affixBestRangeText(item,mod){if(!mod||!mod.tiers)return'—';const t=affixBestTierForItem(item,mod),b=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1],lo=mod.fmt?mod.fmt(b[0]):b[0],hi=mod.fmt?mod.fmt(b[1]):b[1];return lo===hi?lo:(lo+' – '+hi);}
-function craftCurrencyForLine(rarity,hasLine){if(!hasLine&&rarity==='common')return'transmute';if(!hasLine)return'exalt';return rarity==='rare'?'chaos':'alt';}
+// v4.29: เติมช่องว่าง — common/magic ใช้ Spark Sugar (transmute, ได้บ่อย) · rare ใช้ Wish Candy (exalt) · reroll ช่องเดิม: rare=Wild Jam, magic=Twist Cream
+function craftCurrencyForLine(rarity,hasLine){if(!hasLine)return rarity==='rare'?'exalt':'transmute';return rarity==='rare'?'chaos':'alt';}
 // สุ่ม tier ระหว่าง best..5 · ถ่วงให้ tier แย่เจอบ่อย (T1 หายาก = loot chase)
 // iLv มีผลกับ Tier ที่ออก: แบ่งช่วงละ 10 เลเวล (step 0..9) → ยิ่ง iLv สูง bias ยิ่งลด = tier แย่ (t สูง) ถูกถ่วงน้อยลง = tier ดีออกบ่อยขึ้น
 function rollTier(best,ilvl){ const step=Math.max(0,Math.min(9,Math.floor(((Number(ilvl)||1)-1)/10))); const bias=1-Math.min(0.62,step*0.075); const list=[]; let tot=0; for(let t=best;t<=5;t++){ const w=t*t*Math.pow(bias,t-best); list.push([t,w]); tot+=w; } let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return best; }
@@ -1560,7 +1567,7 @@ const CRAFT_AFFIX_CAP = {common:1,magic:2,rare:4};
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Imprint a chosen stat on a Common item'},
+  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Imprint a chosen stat on a Common or Magic item'},
   {key:'alt',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Replace the selected Magic affix'},
   {key:'regal',emoji:'🟡',asset:'currency_crown_icing',name:'Crown Icing',desc:'Promote full Magic gear to Rare and unlock 4 lines'},
   {key:'chaos',emoji:'🟠',asset:'currency_wild_jam',name:'Wild Jam',desc:'Replace the selected Rare affix'},
@@ -5078,7 +5085,7 @@ class Game extends Phaser.Scene {
     if(this.state!=='summary')return;
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     if(this._summaryLast&&!this._quitSummary){ this._quitSummary=false; this.victory(); return; }
-    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='stage';this.buildMenuScreen();
+    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='hub';this.buildMenuScreen();   // v4.29: จบด่านกลับหน้าเมนูหลักเสมอ
   }
   // v4.27: จบ tutorial → พาเข้าหน้า Flavor Weave ตรง ๆ + สอนให้ใช้ Sugar อัพแก่น (Weave เปิดตั้งแต่เริ่ม แม้ Gear&Power ตัวอื่นยังล็อก)
   openTutorialWeave(){
@@ -6489,7 +6496,8 @@ class Game extends Phaser.Scene {
   // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังNone) — คืน item หรือ null ถ้ามีครบแล้ว
   grantGear(tier){ const inPlay=this.state==='play',sourceStage=inPlay?this.stageIndex:rewardSourceStage(),chapter=itemChapterForStage(sourceStage);
     let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter); if(!pool.length)return null;
-    const it=Phaser.Utils.Array.GetRandom(pool),itemLevel=rollItemLevel(sourceStage,inPlay?(this.difficulty||1):1),delivery=Save.receiveGearInstance(it.id,{isNew:true,itemLevel,chapter});
+    // v4.29: ของนอกด่าน (gacha/forge/menu) ตั้ง floor iLv 12 → ได้ 2 mod (affixCountCap≥2) ไม่ใช่ 1 mod เสมอ · in-play ใช้ค่าจริง
+    const it=Phaser.Utils.Array.GetRandom(pool),itemLevel=inPlay?rollItemLevel(sourceStage,this.difficulty||1):Math.max(12,rollItemLevel(sourceStage,1)),delivery=Save.receiveGearInstance(it.id,{isNew:true,itemLevel,chapter});
     return delivery?Object.assign({},it,{instance:delivery.item,delivery:delivery.destination,shards:delivery.shards||0}):null; }
   gachaRoll(){ const r=Math.random(), roll=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend';   // 50% common · 30% rare · 15% epic · 5% legend
     for(const t of [roll,'epic','rare','common','legend']){ const it=this.grantGear(t); if(it)return it; } return null; }
