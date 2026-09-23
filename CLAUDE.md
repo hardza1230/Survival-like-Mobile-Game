@@ -57,7 +57,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.44.0 — Chapter 2 final art/readability polish เสร็จแล้ว)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.45.0 — Affix Forge visual clarity)
+- **v4.45.0:** เปลี่ยนชื่อหน้าคราฟต์เป็น Affix Forge และจัด flow ใหม่เป็น Gear → Affix → Roll · เพิ่มฉากหลังห้องคราฟต์ 2.5D, ใช้อาร์ตอุปกรณ์จริงในแท็บ slot, แยก base quality ออกจากจำนวนช่อง affix, ย่อ random roll pool ให้เหมาะกับมือถือ, เพิ่มแถบผลก่อน→หลังและ double-tap ยืนยัน Remove/Reset · อัปเดตเอกสารให้ตรงกับระบบสุ่มจริง
 - **v4.44.0:** เปลี่ยนไฟล์ PNG เสีย 6 ไฟล์เป็น production art โปร่งใสใหม่ ได้แก่ seasonal/root enemy atlas และบอส C2-2 ถึง C2-5 · ทุกช่องจัดลงกริด 256×256 ด้วย ground line เดียวกันและ silhouette อ่านง่ายบนมือถือ · validator หลักเปลี่ยนเป็น `validate-game-content.mjs` และตรวจ PNG signature/chunk CRC/IEND/zlib stream จริง · ลบ headless auto-playtest bot และอัปเดต README/QA/roadmap · **Chapter 2 implementation และ final art เสร็จแล้ว เหลือ full-run balance/mobile QA บนเครื่องจริง**
 
 ### สถานะก่อนหน้า
