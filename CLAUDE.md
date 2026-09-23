@@ -57,6 +57,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.43.0 — C2-5 Root Throne และเนื้อหา Chapter 2 เสร็จแล้ว)
+- **v4.43.0 (C2-5 complete stage):** เพิ่มฉาก Root Throne, atlas ศัตรูราก 8 ช่อง และ objective Sever the Crown Roots 4 จุด · arena มี throne pulse/crown recall เปลี่ยนพื้นที่ปลอดภัยเป็นระยะ · AI เฉพาะ 7 บทบาท · Ancient Root Knight miniboss · The True Rootmother บอสใหญ่ 4 เฟสที่ 75%/42%/18% พร้อมอินโทร, เมตามอร์ฟ, Memory Eclipse และฉากจบ Chapter 2 · cap ฝูง 88 สำหรับมือถือ · validator ตรวจ readiness, objective, alpha/dimensions และ boss contracts · **เหลือ 2 คอมมิต: Chapter 2 balance/mobile QA และ final art polish**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.42.0 — C2-4 Four-Season Conservatory เสร็จและปลดล็อกแล้ว)
 - **v4.42.0 (C2-4 complete stage):** เพิ่มพื้นเรือนกระจกสี่ฤดูและ atlas ศัตรู 8 ช่อง · arena หมุน Spring/Summer/Autumn/Winter พร้อม event ต่างกัน · objective Stabilize the Seasons ให้ไล่ sanctuary ที่ active · AI เฉพาะ 7 บทบาท · Season Keeper miniboss · Chronobloom Orchid บอส 3 เฟสที่ 72%/38% พร้อมอินโทร/เมตามอร์ฟ/Time Break · cap ฝูง 92 สำหรับมือถือ · validator ตรวจ asset alpha/dimensions, readiness, objective และ boss contracts · **เหลือ 3 คอมมิต: C2-5, chapter balance QA, art polish**
 
