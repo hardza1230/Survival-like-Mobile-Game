@@ -57,6 +57,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.41.0 — C2-3 Nectar Hive เสร็จและปลดล็อกแล้ว)
+- **v4.41.0 (C2-3 complete stage):** เพิ่มพื้น Nectar Hive และ atlas ศัตรู 8 ช่อง · objective Defend Nectar 3 ดอก · AI เฉพาะ 6 บทบาท (ยิงนำ/พุ่งนำ/ระเบิด/เกราะหมู่/กระสุนสามทาง) · Royal Stinger miniboss · Ferment Hornet Queen บอส 3 เฟสที่ 70%/35% พร้อมอินโทร/เมตามอร์ฟ/ท่า Queen’s Decree · validator ตรวจ asset alpha/dimensions, readiness และ boss contracts · **เหลือ 4 คอมมิต: C2-4, C2-5, chapter balance QA, art polish**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.40.0 — C2-2 ผ่าน QA gate และปลดล็อกแล้ว)
 - **v4.40.0 (C2-2 QA + unlock):** Mycelium Marsh เปลี่ยนเป็น `ready:true` · ล็อก balance เทียบ C2-1 ที่ HP ≈×1.35 / DMG ≈×1.30 / speed +8% · cap ศัตรูมีชีวิต 104 ตัวเพื่อมือถือ · validator ตรวจ future-stage locks, phase gates, telegraphs และ ratios · ปรับ roadmap เป็น 11 คอมมิต · **เหลือ 5 คอมมิต: C2-3, C2-4, C2-5, chapter balance QA, art polish**
 
