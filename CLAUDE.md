@@ -57,6 +57,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.42.0 — C2-4 Four-Season Conservatory เสร็จและปลดล็อกแล้ว)
+- **v4.42.0 (C2-4 complete stage):** เพิ่มพื้นเรือนกระจกสี่ฤดูและ atlas ศัตรู 8 ช่อง · arena หมุน Spring/Summer/Autumn/Winter พร้อม event ต่างกัน · objective Stabilize the Seasons ให้ไล่ sanctuary ที่ active · AI เฉพาะ 7 บทบาท · Season Keeper miniboss · Chronobloom Orchid บอส 3 เฟสที่ 72%/38% พร้อมอินโทร/เมตามอร์ฟ/Time Break · cap ฝูง 92 สำหรับมือถือ · validator ตรวจ asset alpha/dimensions, readiness, objective และ boss contracts · **เหลือ 3 คอมมิต: C2-5, chapter balance QA, art polish**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.41.0 — C2-3 Nectar Hive เสร็จและปลดล็อกแล้ว)
 - **v4.41.0 (C2-3 complete stage):** เพิ่มพื้น Nectar Hive และ atlas ศัตรู 8 ช่อง · objective Defend Nectar 3 ดอก · AI เฉพาะ 6 บทบาท (ยิงนำ/พุ่งนำ/ระเบิด/เกราะหมู่/กระสุนสามทาง) · Royal Stinger miniboss · Ferment Hornet Queen บอส 3 เฟสที่ 70%/35% พร้อมอินโทร/เมตามอร์ฟ/ท่า Queen’s Decree · validator ตรวจ asset alpha/dimensions, readiness และ boss contracts · **เหลือ 4 คอมมิต: C2-4, C2-5, chapter balance QA, art polish**
 

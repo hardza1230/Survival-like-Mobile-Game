@@ -130,10 +130,10 @@ for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","capture:{emo
   if(!source.includes(contract))throw new Error(`Missing wave mission contract: ${contract}`);
 }
 if(source.includes("if(this.stageIndex>4)return"))throw new Error('Chapter 2 objectives must not be disabled by a hard-coded stage boundary');
-for(const contract of ["chapterStage:2, ready:true","c2Mycelium:{ hp:1.145, dmg:1.19, speed:1.08, maxLive:104 }","const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:115","if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed"]){
+for(const contract of ["chapterStage:2, ready:true","c2Mycelium:{ hp:1.145, dmg:1.19, speed:1.08, maxLive:104 }","const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:115","if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed"]){
   if(!source.includes(contract))throw new Error(`Missing C2-2 QA/unlock contract: ${contract}`);
 }
-for(const locked of ["chapterStage:4, ready:false","chapterStage:5, ready:false"]){
+for(const locked of ["chapterStage:5, ready:false"]){
   if(!source.includes(locked))throw new Error(`Future Chapter 2 stage unlocked before QA: ${locked}`);
 }
 const c21Hp=3.72,c22Hp=3.72*1.18*1.145,c21Dmg=1.42,c22Dmg=1.42*1.09*1.19;
@@ -173,6 +173,34 @@ for(const [name,wantW,wantH] of nectarPngs){
 }
 if(!fs.existsSync(new URL('../assets/bg8.webp',import.meta.url)))throw new Error('Nectar Hive background is missing');
 
+for(const contract of [
+  "chapterStage:4, ready:true",
+  "c2Seasons:{ hp:1.14, dmg:1.10, speed:1.07, maxLive:92 }",
+  "seasonCycle:{emoji:'🌦️'",
+  "tickSeasonArena(dt)",
+  "spawnSeasonSanctuaries()",
+  "seasonRole==='equinoxGuard'",
+  "seasonRole==='seasonWisp'",
+  "seasonKeeperAttack(b)",
+  "chronobloomAttack(b)",
+  "f<=.72",
+  "f<=.38",
+  "TIME BREAK",
+]) {
+  if(!source.includes(contract))throw new Error(`Missing C2-4 Four-Season contract: ${contract}`);
+}
+const seasonPngs=[
+  ['ch2_seasons_enemy_atlas.png',1024,512],
+  ['mb9_season_keeper_sheet.png',1024,256],
+  ['boss9_chronobloom_orchid_sheet.png',1024,512],
+];
+for(const [name,wantW,wantH] of seasonPngs){
+  const file=fs.readFileSync(new URL(`../assets/${name}`,import.meta.url));
+  const width=file.readUInt32BE(16),height=file.readUInt32BE(20),colorType=file.readUInt8(25),hasAlpha=[4,6].includes(colorType)||(colorType===3&&file.includes(Buffer.from('tRNS')));
+  if(width!==wantW||height!==wantH||!hasAlpha)throw new Error(`Expected transparent ${name} at ${wantW}x${wantH}, found ${width}x${height}`);
+}
+if(!fs.existsSync(new URL('../assets/bg9.webp',import.meta.url)))throw new Error('Four-Season Conservatory background is missing');
+
 for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry']) {
   const cardName = fighter === 'mint' ? 'card_mint_frostleaf.png' : `card_${fighter}.png`;
   const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
@@ -188,7 +216,7 @@ for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry']) {
   }
 }
 
-console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, Stage 3–8 boss sheets, Chapter 2 atlases, objectives, and character atlases`);
+console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awaken combos, Stage 3–9 boss sheets, Chapter 2 atlases, objectives, and character atlases`);
 
 
 if (!source.includes("const UNIQUE_MAX_LV=4") || !source.includes("uniqueAt={2:3,3:7,4:11}")) {
