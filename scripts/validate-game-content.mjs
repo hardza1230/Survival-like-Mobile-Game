@@ -1,6 +1,39 @@
 import fs from 'node:fs';
+import { inflateSync } from 'node:zlib';
 
 const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
+
+const crcTable = Array.from({length:256},(_,n)=>{
+  let c=n;
+  for(let i=0;i<8;i++)c=(c&1)?(0xedb88320^(c>>>1)):(c>>>1);
+  return c>>>0;
+});
+function crc32(buf){
+  let c=0xffffffff;
+  for(const byte of buf)c=crcTable[(c^byte)&255]^(c>>>8);
+  return (c^0xffffffff)>>>0;
+}
+function assertDecodablePng(rel){
+  const file=fs.readFileSync(new URL(`../${rel}`,import.meta.url));
+  if(file.length<33||file.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw new Error(`Invalid PNG signature: ${rel}`);
+  let pos=8,sawHeader=false,sawEnd=false;const idat=[];
+  while(pos<file.length){
+    if(pos+12>file.length)throw new Error(`Truncated PNG chunk header: ${rel}`);
+    const len=file.readUInt32BE(pos),end=pos+12+len;
+    if(end>file.length)throw new Error(`Truncated PNG chunk payload: ${rel}`);
+    const type=file.subarray(pos+4,pos+8),data=file.subarray(pos+8,pos+8+len),stored=file.readUInt32BE(pos+8+len),actual=crc32(Buffer.concat([type,data]));
+    if(stored!==actual)throw new Error(`PNG CRC mismatch in ${type.toString('ascii')} chunk: ${rel}`);
+    const tag=type.toString('ascii');
+    if(tag==='IHDR')sawHeader=true;
+    else if(tag==='IDAT')idat.push(data);
+    else if(tag==='IEND'){sawEnd=true;pos=end;break;}
+    pos=end;
+  }
+  if(!sawHeader||!idat.length||!sawEnd||pos!==file.length)throw new Error(`Incomplete PNG structure: ${rel}`);
+  try{inflateSync(Buffer.concat(idat));}catch(error){throw new Error(`PNG image stream cannot be decoded: ${rel} (${error.message})`);}
+}
+const runtimePngs=[...new Set([...source.matchAll(/["'](assets\/[A-Za-z0-9_./ -]+\.png)["']/g)].map(match=>match[1]))];
+for(const rel of runtimePngs)assertDecodablePng(rel);
 
 function block(pattern, label) {
   const match = source.match(pattern);
@@ -16,16 +49,21 @@ if (skills.length !== 15) {
 
 const comboBlock = block(/const COMBOS = \[([\s\S]*?)\n\];/, 'COMBOS');
 const comboSkills = [...comboBlock.matchAll(/a:'([^']+)'/g)].map(match => match[1]);
-const missingCombos = skills.filter(skill => !comboSkills.includes(skill));
+const signatureComboSkills = ['sprinkle','meteor','frost','thunder','mirror'];
+const missingCombos = signatureComboSkills.filter(skill => !comboSkills.includes(skill));
 const orphanCombos = comboSkills.filter(skill => !skills.includes(skill));
 if (missingCombos.length || orphanCombos.length) {
-  throw new Error(`Skill/combo mismatch. Missing: ${missingCombos.join(', ') || '-'}; orphaned: ${orphanCombos.join(', ') || '-'}`);
+  throw new Error(`Signature combo mismatch. Missing: ${missingCombos.join(', ') || '-'}; orphaned: ${orphanCombos.join(', ') || '-'}`);
+}
+for(const skill of signatureComboSkills){
+  const count=comboSkills.filter(item=>item===skill).length;
+  if(count!==3)throw new Error(`Expected three character-first recipes for ${skill}, found ${count}`);
 }
 
 if (!source.includes('rollUpgrades(this.usesBasicAttackBuild()?3:4)') || !source.includes("slice(0,3)")) {
   throw new Error('Readable-card choice counts changed unexpectedly');
 }
-for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaCombo(lvl,dm,basic)","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n)","b.mastery>=4&&!b.mutation","b.mastery>=12&&!b.evolved"]){
+for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaCombo(lvl,dm,basic)","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n,opts)","b.mastery>=8&&!b.mutation","b.mastery>=20&&!b.evolved"]){
   if(!source.includes(contract))throw new Error(`Missing character-first Basic Attack contract: ${contract}`);
 }
 const levelUpIcons=['momo_power','momo_rate','momo_size','momo_volley','cocoa_power','cocoa_rate','cocoa_size','cocoa_combo','berry_power','berry_rate','berry_size','berry_cluster','sweet_recovery','mochi_vitality','flavor_regeneration','sugar_on_kill'];
@@ -250,7 +288,7 @@ console.log(`validated ${skills.length} attack skills, ${comboSkills.length} awa
 if (!source.includes("const UNIQUE_MAX_LV=4") || !source.includes("uniqueAt={2:3,3:7,4:11}")) {
   throw new Error('Unique skill run progression contract is missing');
 }
-for(const contract of ["berry:{name:'เบอร์รี่คอร์'","unique:'jamOverdrive'","weapon:'jamCannon'","this.castJamOverdrive(dm,ul)","char_berry: { url:'assets/char_berry_core_sheet.png'","char_berry_run:{ url:'assets/char_berry_core_run_sheet.png'"]){
+for(const contract of ["berry:{name:'Berry Core'","unique:'jamOverdrive'","weapon:'jamCannon'","this.castJamOverdrive(dm,ul)","char_berry: { url:'assets/char_berry_core_sheet.png'","char_berry_run:{ url:'assets/char_berry_core_run_sheet.png'"]){
   if(!source.includes(contract))throw new Error(`Missing Berry Core character contract: ${contract}`);
 }
 if (!source.includes('updatePickupReadability()') || !source.includes('this.player.pickup=105')) {

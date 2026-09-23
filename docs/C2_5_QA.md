@@ -1,8 +1,8 @@
 # Chapter 2-5 Root Throne QA
 
-Version: 4.43.0  
+Version: 4.44.0
 Stage index: 9  
-Status: playable and unlocked
+Status: implementation complete, playable and unlocked; manual mobile pass pending
 
 ## Scope
 
@@ -16,9 +16,9 @@ Status: playable and unlocked
 
 ## Automated gates
 
-- Root enemy atlas: 1024×512 PNG with alpha.
+- Root enemy atlas: 1024×512 PNG with alpha and valid PNG chunks/image stream.
 - Ancient Root Knight sheet: 1024×256 PNG with alpha.
-- True Rootmother sheet: 1024×512 PNG with alpha.
+- True Rootmother sheet: 1024×512 PNG with alpha and valid PNG chunks/image stream.
 - Root Throne background exists.
 - Stage is `chapterStage:5, ready:true`.
 - Root balance values remain HP ×1.16, damage ×1.12, speed ×1.08, max live 88.
@@ -43,4 +43,10 @@ Status: playable and unlocked
 ## Follow-up commits
 
 - Chapter 2 full-run balance and mobile performance QA.
-- Final art and readability polish.
+
+## Final art/readability pass — completed in v4.44.0
+
+- Replaced the malformed Root Throne enemy atlas and True Rootmother sheet with valid transparent production art.
+- Standardized every cell to 256×256 with a consistent bottom ground line and mobile-readable silhouette.
+- Preserved role colors: gold for critical warning shapes, magenta for memory/root danger, and dark bark for mass.
+- Added PNG chunk CRC and image-stream validation so corrupt art fails `npm run check` before deployment.

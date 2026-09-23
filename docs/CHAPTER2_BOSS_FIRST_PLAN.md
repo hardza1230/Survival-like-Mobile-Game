@@ -1,6 +1,6 @@
 # Chapter 2 — Boss-First Implementation Plan
 
-> Status: approved design contract. Runtime content stays unchanged until each stage passes its QA gate.
+> Status: implementation and final art pass complete through v4.44.0. Full-run balance/mobile QA remains.
 > Target chapter: **Chapter 2 · The Ferment Garden**
 > Core success metric: memorable, readable boss fights on a vertical mobile screen.
 
@@ -192,6 +192,8 @@ Each commit must pass syntax/validation checks and keep unfinished content inacc
 11. **art: final Chapter 2 polish pass**
     - Replace remaining placeholders.
     - Standardize scale, ground line, hit flashes, shadows, VFX visibility, and asset compression.
+
+Implementation status: commits 1–9 and 11 are complete. Commit 10 remains open until the full chapter is played on representative Android hardware across Normal, Hard, and Hell.
 
 ## 8. QA gate for every playable-stage commit
 

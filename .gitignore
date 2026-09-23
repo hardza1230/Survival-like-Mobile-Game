@@ -12,9 +12,3 @@ __pycache__/
 
 # preview/debug artifacts จากสคริปต์ตัดอาร์ต (ไม่ commit)
 scripts/_*.png
-
-# ผลลัพธ์บอทเทสอัตโนมัติ (screenshots + report) — ไม่ commit
-scripts/bot-out/
-
-# ผลลัพธ์บอทเทสถ้าเผลอรันที่ root
-/bot-out/

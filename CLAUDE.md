@@ -57,8 +57,12 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.44.0 — Chapter 2 final art/readability polish เสร็จแล้ว)
+- **v4.44.0:** เปลี่ยนไฟล์ PNG เสีย 6 ไฟล์เป็น production art โปร่งใสใหม่ ได้แก่ seasonal/root enemy atlas และบอส C2-2 ถึง C2-5 · ทุกช่องจัดลงกริด 256×256 ด้วย ground line เดียวกันและ silhouette อ่านง่ายบนมือถือ · validator หลักเปลี่ยนเป็น `validate-game-content.mjs` และตรวจ PNG signature/chunk CRC/IEND/zlib stream จริง · ลบ headless auto-playtest bot และอัปเดต README/QA/roadmap · **Chapter 2 implementation และ final art เสร็จแล้ว เหลือ full-run balance/mobile QA บนเครื่องจริง**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.43.0 — C2-5 Root Throne และเนื้อหา Chapter 2 เสร็จแล้ว)
-- **v4.43.0 (C2-5 complete stage):** เพิ่มฉาก Root Throne, atlas ศัตรูราก 8 ช่อง และ objective Sever the Crown Roots 4 จุด · arena มี throne pulse/crown recall เปลี่ยนพื้นที่ปลอดภัยเป็นระยะ · AI เฉพาะ 7 บทบาท · Ancient Root Knight miniboss · The True Rootmother บอสใหญ่ 4 เฟสที่ 75%/42%/18% พร้อมอินโทร, เมตามอร์ฟ, Memory Eclipse และฉากจบ Chapter 2 · cap ฝูง 88 สำหรับมือถือ · validator ตรวจ readiness, objective, alpha/dimensions และ boss contracts · **เหลือ 2 คอมมิต: Chapter 2 balance/mobile QA และ final art polish**
+- **v4.43.0 (C2-5 complete stage):** เพิ่มฉาก Root Throne, atlas ศัตรูราก 8 ช่อง และ objective Sever the Crown Roots 4 จุด · arena มี throne pulse/crown recall เปลี่ยนพื้นที่ปลอดภัยเป็นระยะ · AI เฉพาะ 7 บทบาท · Ancient Root Knight miniboss · The True Rootmother บอสใหญ่ 4 เฟสที่ 75%/42%/18% พร้อมอินโทร, เมตามอร์ฟ, Memory Eclipse และฉากจบ Chapter 2 · cap ฝูง 88 สำหรับมือถือ · validator ตรวจ readiness, objective, alpha/dimensions และ boss contracts
 
 ### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.42.0 — C2-4 Four-Season Conservatory เสร็จและปลดล็อกแล้ว)
@@ -243,7 +247,7 @@
   · Unique ตาโร่เปลี่ยนจาก Path Recall → **สายฟ้าชิ่ง (Arc)** ยิงจากตัวลามไปศัตรูตัวถัด ๆ ไป (`castPathRecall` เขียนใหม่ ใช้ `chainBolt`) · ยังคง key `pathRecall` เดิม + คืน Dash/haste
   · การ์ดเลเวลอัพ: แตะครั้งแรก = ไฮไลต์กรอบเรือง (`highlightCard`/`_cardHi`) ก่อนแตะซ้ำยืนยัน
   · ลดดรอปหัวใจ (elite 30%/ธรรมดา 1.5%/กล่อง 28%) · cutscene ตัด lore + ยืดเวลาอ่านตามความยาว
-  · **หมายเหตุ:** `scripts/validate-game.mjs` **stale อยู่ก่อนแล้ว** (เช็ก `pickup=105`/`uniqueAt` ที่ game.js ปัจจุบันไม่มี) → `npm run check` fail ส่วน validate แต่ `node --check` ผ่าน · ควรรื้อ validator ให้ตรงภายหลัง
+  · **หมายเหตุประวัติ:** validator เก่าเคยไม่ตรงกับระบบ character-first; v4.44.0 รวมเหลือ `scripts/validate-game-content.mjs` และทำให้ `npm run check` เป็น gate หลักแล้ว
   · **มินิบอสด่าน 2 (Valve Maw) เรนเดอร์เป็นเงาขาว** — ยังไม่ฟันธงว่าบั๊กหรือ telegraph ตั้งใจ (รอเจ้าของยืนยัน)
 - **v2.12.0:** แก้กล่องดำ 352×366 ระหว่างสู้บอสด่าน 2 ด้วย additive blending เป็นค่าเริ่มต้นของ VFX flipbook และออร่า · Passive card บอกคู่ Awaken/สาย build · จำกัด Awaken ไม่เกิน 2 ต่อด่าน · EXP เริ่ม 7 และโต ×1.20+3 · Unique Lv1–4 เพิ่มวง/ประกาย/แรงสั่น/ฉากจบตามเลเวล · ลดฐานผู้เล่นเป็น HP 90, ดาเมจ 90%, ความเร็ว 166, critical ×1.55 เพื่อเพิ่มน้ำหนัก meta progression
 - **v2.11.0:** คลอกมอว์ด่าน 2 ใช้ flipbook 4×2 จำนวน 8 เฟรม (idle/emerge/roar/prison/suction/overflow/enrage) และ pose ผูกกับท่าจริง · Power Rating รวมโบนัส Stage Mastery ครั้งแรก · ค่าพลังแนะนำใหม่ 100/280/560/940/1450 · Power Guide ช่วย HP/ดาเมจศัตรูเล็กน้อยเมื่อผู้เล่นต่ำกว่าคำแนะนำและเพิ่ม EXP/Sugar catch-up โดยผู้เล่นเหนือคำแนะนำไม่ถูกสเกลตาม · ยกเลิก boss rank scaling เต็มเพื่อให้การพัฒนารู้สึกมีผล
@@ -407,11 +411,8 @@
 - เทสเร็ว: publish `game.js` รวมกับ phaser เป็น artifact HTML แล้วเปิดในเบราว์เซอร์มือถือ
   (ประกอบด้วย: head + `<script>`phaser.min.js`</script>` + `<script>`game.js`</script>`)
 - เทสในเครื่อง: `npx serve .` แล้วเปิด index.html
-- ตรวจโค้ดก่อน publish เสมอ: `node --check game.js`
-- **🤖 บอทเทสอัตโนมัติ (headless):** `npm install --no-save playwright` ครั้งเดียว → `npm run bot`
-  เปิดเกมจริงใน headless Chromium เล่นเองครบ 5 ด่าน จับ runtime/console error + แคปหน้าจอทุกด่าน
-  (ปรับได้ด้วย env `STAGES/SECS/GSPEED/GOD`) · ผลอยู่ `scripts/bot-out/` (gitignore) · คู่มือ `docs/AUTO_PLAYTEST_BOT.md`
-  · ใช้กรองบั๊กเทคนิคก่อน push — **ไม่ตัดสินความสนุก/บาลานซ์แทน** (ยังต้องเล่นจริงเอง)
+- ตรวจโค้ด/asset contract ก่อน publish เสมอ: `npm run check`
+- ทดสอบ flow, balance, touch controls, telegraph และ FPS บนมือถือจริงก่อนปล่อยเวอร์ชัน เพราะ automated validator ไม่แทน manual playtest
 
 ## 8. คอนเวนชัน
 - **ทำงานสาขาเดียวเท่านั้น: `claude/vampire-survival-mobile-game-yo9e8w`** — commit บ่อย, push ด้วย `-u origin <branch>`
