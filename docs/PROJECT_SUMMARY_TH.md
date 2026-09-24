@@ -1,6 +1,6 @@
 # สรุปโปรเจกต์ Mochi Mayhem
 
-อัปเดตล่าสุด: **v4.45.0 — Affix Forge Visual Clarity**
+อัปเดตล่าสุด: **v4.46.0 — Affix Roulette & Expanded Mods**
 เทคโนโลยี: Phaser 3 + Capacitor + GitHub Actions + GitHub Pages
 
 ## สถานะปัจจุบัน
@@ -8,7 +8,7 @@
 - เกม survival-like สำหรับมือถือแนวตั้ง เล่นได้ครบ **10 ด่าน**: Chapter 1 จำนวน 5 ด่าน และ Chapter 2 จำนวน 5 ด่าน
 - ตัวละครเล่นได้ 6 คน พร้อม basic attack/อาวุธประจำตัว, Character Mastery, level-up upgrades และ Unique Skill
 - ระบบเมตาหลักพร้อม: equipment, item level/affix, crafting currencies, enhancement, gacha, Daily, Achievement, Bestiary, Ascension และ Midnight Kitchen Endless
-- Affix Forge ใช้ flow 3 ขั้น Gear → Affix → Roll, แสดง random pool, ผลก่อน→หลัง และยืนยันซ้ำก่อนทำลาย affix
+- Affix Forge ใช้ flow 3 ขั้น Gear → Affix → Roll, มีรูเล็ตสามช่องที่ชะลอก่อนล็อกผล, random pool 15 ม็อด แยก Offense/Defense/Utility, ผลก่อน→หลัง และยืนยันซ้ำก่อนทำลาย affix
 - บอสทุกตัวมี phase transition แบบอมตะชั่วคราวเพื่อป้องกัน burst damage ข้ามเฟส
 - Cloud Save ใช้ Supabase โดยเริ่มจาก anonymous session และสามารถเชื่อม Google เพื่อสำรอง/เล่นข้ามเครื่อง
 
@@ -31,6 +31,7 @@ C2-5 มีเวฟครบ 5 ช่วง, objective Crown Root 4 จุด, 
 - Sprite atlas ใหม่จัดเป็นเซลล์ 256×256, ground line สม่ำเสมอ, silhouette และสีบทบาทอ่านง่ายบนจอมือถือ
 - `npm run check` ตรวจ syntax, content contracts, PNG signature/chunk CRC/image stream และ balance contracts ก่อน build
 - v4.45.0 เพิ่มฉากหลังห้องคราฟต์และปรับลำดับภาพ/ข้อมูลของ Affix Forge สำหรับมือถือ
+- v4.46.0 เพิ่มจังหวะลุ้นแบบรูเล็ตก่อนเปิดผล และเพิ่มม็อดที่มีผลจริงอีก 6 แบบพร้อมสีหมวดที่อ่านง่าย
 
 ## Build และ Release
 

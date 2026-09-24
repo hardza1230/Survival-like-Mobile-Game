@@ -34,9 +34,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.45.0';
+const GAME_VERSION = '4.46.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.46.0', date:'2026-09-24', title:'Affix Roulette and expanded mod pool', items:[
+    'Crafting now plays a slowing three-card roulette reveal before the winning affix locks in, with input safely disabled during the spin',
+    'Expanded the affix pool from 9 to 15 meaningful mods across clearly color-coded Offense, Defense and Utility categories',
+    'Added boss damage, low-health damage, life on kill, emergency guard, experience gain and dash recovery affixes with live gameplay effects',
+    'The mobile pool preview now summarizes category counts and caps visible cards so large item pools do not push actions off-screen',
+  ]},
   { v:'4.45.0', date:'2026-09-23', title:'Affix Forge visual clarity pass', items:[
     'Rebuilt the mobile crafting screen around a clear Gear → Affix → Roll flow with a dedicated confectionery workshop background',
     'Separated base quality from affix capacity, enlarged the selected line state and condensed the random result pool for small screens',
@@ -1647,17 +1653,30 @@ function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.dat
    tiers[]=[T1,T2,T3,T4,T5] แต่ละอันเป็น [lo,hi] · T1=แรงสุด (หายาก) · pre/suf=คำประกอบชื่อไอเทม */
 const AFFIX_POOL = [
   // ── Prefix (สายรุก) ──
-  { id:'dmg', slots:['weapon','gloves','amulet','ring'],   kind:'prefix', emoji:'💥', label:'Damage',   pre:'Keen',  fmt:v=>'+'+v+'%',  tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
-  { id:'crit', slots:['weapon','gloves','amulet','ring'],  kind:'prefix', emoji:'🎯', label:'Crit',     pre:'Sharp',   fmt:v=>'+'+v+'%',  tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
-  { id:'critdmg', slots:['weapon','gloves','ring'],kind:'prefix',emoji:'💢', label:'Crit DMG', pre:'Fierce',  fmt:v=>'+'+v+'%',  tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
-  { id:'cd', slots:['weapon','gloves','amulet','ring'],    kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift',  fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
-  // ── Suffix (สายรับ/utility) ──
-  { id:'hp', slots:['armor','amulet'],    kind:'suffix', emoji:'❤️', label:'HP',       suf:'of the Lion', fmt:v=>'+'+v,      tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
-  { id:'def', slots:['armor','gloves','amulet'],   kind:'suffix', emoji:'🛡️', label:'Defense',  suf:'of Stone',    fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
-  { id:'spd', slots:['boots'],   kind:'suffix', emoji:'👟', label:'Speed',    suf:'of the Wind',   fmt:v=>'+'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
-  { id:'pick', slots:['boots','amulet','ring'],  kind:'suffix', emoji:'🧲', label:'Pickup',   suf:'of Magnetism',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
-  { id:'regen', slots:['armor','amulet','ring'], kind:'suffix', emoji:'💗', label:'Regen/s',  suf:'of the Spring',fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]],   apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
+  { id:'dmg', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'💥', label:'Damage', pre:'Keen', fmt:v=>'+'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
+  { id:'crit', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'🎯', label:'Crit', pre:'Sharp', fmt:v=>'+'+v+'%', tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
+  { id:'critdmg', category:'offense', slots:['weapon','gloves','ring'], kind:'prefix', emoji:'💢', label:'Crit DMG', pre:'Fierce', fmt:v=>'+'+v+'%', tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
+  { id:'cd', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift', fmt:v=>'-'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
+  { id:'bossdmg', category:'offense', slots:['weapon','ring'], kind:'prefix', emoji:'👑', label:'Boss DMG', pre:'Predatory', fmt:v=>'+'+v+'%', tiers:[[17,21],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.bossDmg=(p.bossDmg||0)+v/100; } },
+  { id:'laststand', category:'offense', slots:['weapon','gloves','ring'], kind:'prefix', emoji:'🔥', label:'Low-HP DMG', pre:'Defiant', fmt:v=>'+'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.lowHpDmg=(p.lowHpDmg||0)+v/100; } },
+  // ── Suffix (สายรับ) ──
+  { id:'hp', category:'defense', slots:['armor','amulet'], kind:'suffix', emoji:'❤️', label:'HP', suf:'of the Lion', fmt:v=>'+'+v, tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
+  { id:'def', category:'defense', slots:['armor','gloves','amulet'], kind:'suffix', emoji:'🛡️', label:'Defense', suf:'of Stone', fmt:v=>'-'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
+  { id:'regen', category:'defense', slots:['armor','amulet','ring'], kind:'suffix', emoji:'💗', label:'Regen/s', suf:'of the Spring', fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]], apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
+  { id:'lifekill', category:'defense', slots:['armor','gloves','amulet'], kind:'suffix', emoji:'🍓', label:'HP on Kill', suf:'of Harvest', fmt:v=>'+'+v, tiers:[[5,6],[4,4],[3,3],[2,2],[1,1]], apply:(p,v)=>{ p.lifeOnKill=(p.lifeOnKill||0)+v; } },
+  { id:'crisisguard', category:'defense', slots:['armor','amulet'], kind:'suffix', emoji:'🫧', label:'Emergency Guard', suf:'of Last Shelter', fmt:v=>'-'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.lowHpGuard=(p.lowHpGuard||0)+v/100; } },
+  // ── Suffix (utility) ──
+  { id:'spd', category:'utility', slots:['boots'], kind:'suffix', emoji:'👟', label:'Speed', suf:'of the Wind', fmt:v=>'+'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
+  { id:'pick', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'🧲', label:'Pickup', suf:'of Magnetism', fmt:v=>'+'+v+'%', tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
+  { id:'xp', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'✨', label:'EXP Gain', suf:'of Insight', fmt:v=>'+'+v+'%', tiers:[[17,22],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.xpMul=(p.xpMul||1)*(1+v/100); } },
+  { id:'dash', category:'utility', slots:['boots','ring'], kind:'suffix', emoji:'💨', label:'Dash Recovery', suf:'of Momentum', fmt:v=>'-'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.dashCdMul=(p.dashCdMul||1)*(1-v/100); } },
 ];
+const AFFIX_CATEGORY = {
+  offense:{label:'Offense',color:0xff9a5a,hex:'#ffb07a'},
+  defense:{label:'Defense',color:0x7fb0ff,hex:'#a9c8ff'},
+  utility:{label:'Utility',color:0x5ad1c4,hex:'#91eadf'},
+};
+function affixCategory(mod){return AFFIX_CATEGORY[(mod&&mod.category)||'utility']||AFFIX_CATEGORY.utility;}
 const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
 // item level → tier ดีสุดที่สุ่มได้ (ฐานดี = โรลได้ดีกว่า): legend→T1, epic→T2, rare→T3, common→T4
 const BASE_BEST_TIER = { start:5, common:4, rare:3, epic:2, legend:1 };
@@ -1792,17 +1811,19 @@ const GEAR_COMPARE_STATS = [
   {key:'dmg',label:'DMG',pct:true},{key:'hp',label:'HP'},{key:'crit',label:'Crit',pct:true},
   {key:'critDmg',label:'Crit DMG',pct:true},{key:'cdr',label:'Cooldown',pct:true},{key:'def',label:'Defense',pct:true},
   {key:'speed',label:'Move Speed',pct:true},{key:'pickup',label:'Pickup',pct:true},{key:'regen',label:'Regen/s'},
-  {key:'lifeKill',label:'HP / Kill'},{key:'execute',label:'Execute DMG',pct:true},{key:'revive',label:'Revive'}
+  {key:'lifeKill',label:'HP / Kill'},{key:'execute',label:'Low-HP DMG',pct:true},{key:'bossDmg',label:'Boss DMG',pct:true},
+  {key:'crisisGuard',label:'Emergency Guard',pct:true},{key:'xpGain',label:'EXP Gain',pct:true},{key:'dashRecovery',label:'Dash Recovery',pct:true},{key:'revive',label:'Revive'}
 ];
 function gearInstanceStats(item){
-  const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,_gearRevive:0};
-  if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,revive:0};
+  const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,bossDmg:0,lowHpGuard:0,xpMul:1,dashCdMul:1,_gearRevive:0};
+  if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,bossDmg:0,crisisGuard:0,xpGain:0,dashRecovery:0,revive:0};
   const base=GEAR_ALL.find(g=>g.id===item.baseId); if(base&&base.apply)base.apply(p,item.enhanceLv||0);
   applyItemLevelBonus(p,item);
   for(const a of (item.affixes||[])){const d=affixDef(a.id);if(d&&d.apply)d.apply(p,a.v);}
   return {dmg:(p.dmgMul-1)*100,hp:p.maxhp||0,crit:(p.critChance||0)*100,critDmg:((p.critMul||1.55)-1.55)*100,
     cdr:(1-(p.cdMul||1))*100,def:(1-(p.dmgTakenMul||1))*100,speed:((p.baseSpeed||1)-1)*100,
-    pickup:((p.pickup||1)-1)*100,regen:p.regen||0,lifeKill:p.lifeOnKill||0,execute:(p.lowHpDmg||0)*100,revive:p._gearRevive||0};
+    pickup:((p.pickup||1)-1)*100,regen:p.regen||0,lifeKill:p.lifeOnKill||0,execute:(p.lowHpDmg||0)*100,bossDmg:(p.bossDmg||0)*100,
+    crisisGuard:(p.lowHpGuard||0)*100,xpGain:((p.xpMul||1)-1)*100,dashRecovery:(1-(p.dashCdMul||1))*100,revive:p._gearRevive||0};
 }
 function gearCompareRows(equipped,selected){
   const a=gearInstanceStats(equipped),b=gearInstanceStats(selected);
@@ -2596,7 +2617,7 @@ class Game extends Phaser.Scene {
 
   doDash(){
     if(!this.dashReady||this.state!=='play') return;
-    this.dashReady=false; this.dashCd=1.1; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
+    this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
     this.player.setVelocity(d.x*560,d.y*560);
@@ -2914,7 +2935,7 @@ class Game extends Phaser.Scene {
   drawDashRing(){
     const g=this.dashRing; if(!g)return; g.clear(); const b=this.dashBtn; if(!b||!b.visible)return;
     if(!this.dashReady && this.dashCd>0){
-      const frac=Phaser.Math.Clamp(1-this.dashCd/1.1,0,1);
+      const frac=Phaser.Math.Clamp(1-this.dashCd/(this.dashCdMax||1.1),0,1);
       g.lineStyle(3.5,0x66d3b3,0.9); g.beginPath();
       g.arc(b.x,b.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
     } else { g.lineStyle(2,0xbff3e8,0.35); g.strokeCircle(b.x,b.y,40); }
@@ -4092,7 +4113,7 @@ class Game extends Phaser.Scene {
   // เติม affix 1 อันตามช่องว่างของ rarity · คืน true ถ้าเติมได้
   _craftContext(){const slot=this.gearSlot||'weapon',item=Save.gearItem(this.craftSelectedUid||this.gearSelectedUid)||Save.equippedGearItem(slot),base=item&&GEAR_ALL.find(g=>g.id===item.baseId);return{slot,item,base};}
   // 🎲 คราฟต์แบบสุ่ม: ผู้เล่นเห็นแค่ว่าเป็นอะไรได้บ้าง → ใช้ currency แล้วสุ่ม stat มา 1 อัน แล้วไฮไลท์อันที่ติด
-  randomCraftSelected(){const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.select();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
+  randomCraftSelected(){if(this._craftRolling)return;const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.select();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
     let affs=Save.gearAffixes(item.uid).slice(),rar=Save.gearRarity(item.uid,base.tier),cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),line=Math.max(0,Math.min(cap-1,this.craftLineIndex||0)),old=affs[line]||null;
     const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===line?'':a.id)),available=pool.filter(m=>!used.has(m.id));
     if(!available.length){Sfx.select();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}
@@ -4101,13 +4122,27 @@ class Game extends Phaser.Scene {
     if(line<affs.length)affs[line]=rolled;else affs.push(rolled);if(rar==='common')rar='magic';
     Save.spendCurrency(key,1);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
     this._craftResult={uid:item.uid,title:old?'AFFIX REPLACED':'NEW AFFIX',before:old?(affixDef(old.id).label+' '+affixDef(old.id).fmt(old.v)):'Empty line',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};
-    Sfx.clear();this.screenFlash(0x7fb0ff,.44,320);this.showBanner('🎲 '+cur.emoji+' Rolled!',mod.emoji+' '+mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t,1700);this.buildCraftBench();}
+    this._playAffixRoulette(available,mod,rolled,cur);}
+  _playAffixRoulette(pool,winner,rolled,cur){
+    this._craftRolling=true;this.tapZones=[];const token=(this._craftRollToken||0)+1;this._craftRollToken=token;
+    const w=this.W,h=this.H,cy=h*.49,shade=this.add.rectangle(0,0,w,h,0x0b0711,.84).setOrigin(0),panel=this.add.graphics();
+    panel.fillStyle(0x21172c,.99);panel.fillRoundedRect(18,cy-126,w-36,252,18);panel.lineStyle(2,0xffd166,1);panel.strokeRoundedRect(18,cy-126,w-36,252,18);
+    const title=this.add.text(w/2,cy-99,'🎰 AFFIX ROULETTE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(.5),hint=this.add.text(w/2,cy-76,'Rolling from '+pool.length+' compatible mods…',{fontFamily:'sans-serif',fontSize:'9px',color:'#b9aec8'}).setOrigin(.5);
+    const rows=[-43,0,43].map((dy,i)=>{const g=this.add.graphics(),rw=w-72,rh=36,x=36,y=cy+dy-rh/2,rowY=cy+dy;g.fillStyle(i===1?0x41304d:0x2b2135,i===1?1:.82);g.fillRoundedRect(x,y,rw,rh,9);g.lineStyle(i===1?2:1,i===1?0xffd166:0x594664,1);g.strokeRoundedRect(x,y,rw,rh,9);const t=this.add.text(w/2,rowY,'',{fontFamily:'sans-serif',fontStyle:i===1?'bold':'normal',fontSize:i===1?'13px':'10px',color:'#ffffff'}).setOrigin(.5);return{g,t,rowY};});
+    const footer=this.add.text(w/2,cy+101,cur.emoji+' '+cur.name+' consumed · revealing your result…',{fontFamily:'sans-serif',fontSize:'8px',color:'#8bd3a0'}).setOrigin(.5);
+    this.menu.add([shade,panel,title,hint]);rows.forEach(r=>this.menu.add([r.g,r.t]));this.menu.add(footer);
+    const show=(row,mod,final=false)=>{const c=affixCategory(mod);this.tweens.killTweensOf(row.t);row.t.setText(mod.emoji+'  '+mod.label+(final?'  '+mod.fmt(rolled.v)+' · T'+rolled.t:'')).setColor(final?'#fff3b0':c.hex).setY(row.rowY-6).setAlpha(.42);this.tweens.add({targets:row.t,y:row.rowY,alpha:1,duration:42,ease:'Quad.out'});};
+    const delays=[55,60,68,76,88,102,120,145,175,215,270,340];let step=0;
+    const tick=()=>{if(this._craftRollToken!==token)return;const final=step===delays.length-1,center=final?winner:Phaser.Utils.Array.GetRandom(pool);show(rows[1],center,final);show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));
+      if(step%2===0)Sfx.select();if(final){hint.setText(affixCategory(winner).label.toUpperCase()+' MOD LOCKED').setColor(affixCategory(winner).hex);this.tweens.add({targets:rows[1].t,scale:{from:1,to:1.14},duration:160,yoyo:true});this.screenFlash(affixCategory(winner).color,.52,360);Sfx.clear();this.time.delayedCall(480,()=>{if(this._craftRollToken!==token)return;this._craftRolling=false;this.buildCraftBench();this.showBanner('🎰 '+winner.emoji+' '+winner.label,winner.fmt(rolled.v)+' · Tier '+rolled.t,1700);});return;}this.time.delayedCall(delays[step++],tick);};
+    tick();
+  }
   promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
   divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v),b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'VALUE REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
   annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}const old=affs[line],mod=affixDef(old.id);affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);this._craftResult={uid:item.uid,title:'AFFIX REMOVED',before:mod.label+' '+mod.fmt(old.v),after:'Empty line'};Sfx.clear();this.showBanner('🟣 Line removed','An empty affix line is now available',1300);this.buildCraftBench();}
   scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}const count=Save.gearAffixes(item.uid).length;Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;this._craftResult={uid:item.uid,title:'ITEM RESET',before:count+' affix'+(count===1?'':'es'),after:'0 affixes · 1 slot'};Sfx.clear();this.showBanner('⚫ Item reset','All affixes removed · one line available',1300);this.buildCraftBench();}
   _confirmCraftAction(key,label,fn){if(this._craftConfirm===key){this._craftConfirm=null;fn();return;}this._craftConfirm=key;Sfx.select();this.showBanner('⚠ Confirm '+label,'Tap the same action again within 3 seconds',1800);this.buildCraftBench();this.time.delayedCall(3000,()=>{if(this._craftConfirm===key){this._craftConfirm=null;if(this.menuScreen==='craft')this.buildCraftBench();}});}
-  // v4.45: mobile-first Gear → Affix → Roll layout with contextual result feedback.
+  // v4.46: mobile-first Gear → Affix → Roll layout with category clarity and roulette reveal.
   buildCraftBench(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Affix Forge','craft_bench_bg','gLoadout');
     const w=this.W,h=this.H,portrait=w<=h,slot=this.gearSlot||'weapon';let y=portrait?78:52;
@@ -4137,13 +4172,13 @@ class Game extends Phaser.Scene {
     const rlC=Phaser.Display.Color.HexStringToColor(rl.color).color,card=this.add.graphics();card.fillStyle(0x21182c,.96);card.fillRoundedRect(14,y,w-28,cardH,12);card.fillStyle(rlC,.16);card.fillRoundedRect(14,y,w-28,26,{tl:12,tr:12,bl:0,br:0});card.lineStyle(1.8,rlC,1);card.strokeRoundedRect(14,y,w-28,cardH,12);
     const fullName=gearAffixName(base.name,affs),safeName=fullName.length>34?fullName.slice(0,33)+'…':fullName,nm=this.add.text(22,y+9,safeName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#fff4df'}).setOrigin(0,0),meta=this.add.text(w-22,y+9,baseTl.name+' base · '+affs.length+'/'+cap+' affixes',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:baseTl.color}).setOrigin(1,0);this.menu.add([card,nm,meta]);
     for(let i=0;i<cap;i++){const col=i%2,row=Math.floor(i/2),x=19+col*(lineW+lineGap),ly=y+32+row*(lineH+6),on=i===this.craftLineIndex,a=affs[i],mod=a&&affixDef(a.id),g=this.add.graphics();g.fillStyle(on?0x4b3d2d:0x2a2035,1);g.fillRoundedRect(x,ly,lineW,lineH,8);g.lineStyle(on?2.4:1,on?0xffd166:0x574764,1);g.strokeRoundedRect(x,ly,lineW,lineH,8);
-      if(mod){const kc=mod.kind==='suffix'?0x5ad1c4:0xff9a5a;g.fillStyle(kc,1);g.fillRoundedRect(x,ly,5,lineH,{tl:8,bl:8,tr:0,br:0});}
+      if(mod){const kc=affixCategory(mod).color;g.fillStyle(kc,1);g.fillRoundedRect(x,ly,5,lineH,{tl:8,bl:8,tr:0,br:0});}
       const nextEmpty=i===affs.length,label=mod?(mod.emoji+' '+mod.label+' '+mod.fmt(a.v)+' · T'+(a.t||5)):(nextEmpty?'＋ Empty affix slot':'🔒 Complete prior slot'),tx=this.add.text(x+(mod?11:7),ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'8px',color:mod?'#f4ecf8':nextEmpty?'#e7d8f0':'#74697c'}).setOrigin(0,.5);this.menu.add([g,tx]);if(mod||nextEmpty)this._zone(x,ly,lineW,lineH,()=>{this.craftLineIndex=i;this.craftTargetId=mod?mod.id:null;this._craftRolledId=null;this._craftConfirm=null;this.buildCraftBench();});
     }y+=cardH+5;
-    const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id)),rolledId=this._craftRolledId,visiblePool=portrait?available:available.slice(0,4);
-    const ph=this.add.text(15,y,'RANDOM ROLL POOL · '+available.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffe0a8'}).setOrigin(0,0),tierHint=this.add.text(w-15,y,'orange Offense  ·  mint Utility',{fontFamily:'sans-serif',fontSize:'7.2px',color:'#a99bb4'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=15;
-    const pw=(w-34-6)/2,phh=31;visiblePool.forEach((mod,i)=>{const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+4),on=mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:(mod.kind==='suffix'?0x5ad1c4:0xff9a5a),g=this.add.graphics();g.fillStyle(on?0x4d3d1f:0x251c30,.98);g.fillRoundedRect(x,py,pw,phh,7);g.lineStyle(on?2.3:1,on?0xffd166:kc,1);g.strokeRoundedRect(x,py,pw,phh,7);g.fillStyle(kc,1);g.fillRoundedRect(x,py,4,phh,{tl:7,bl:7,tr:0,br:0});const tx=this.add.text(x+10,py+8,(on?'✨ ':'')+mod.emoji+' '+mod.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,.5),rg=this.add.text(x+10,py+22,'T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'6.8px',color:on?'#ffe0b0':'#a99bb4'}).setOrigin(0,.5);this.menu.add([g,tx,rg]);});y+=Math.ceil(visiblePool.length/2)*(phh+4)+4;
-    if(!portrait&&available.length>visiblePool.length){const more=this.add.text(w/2,y-2,'+'+(available.length-visiblePool.length)+' more possible results',{fontFamily:'sans-serif',fontSize:'7px',color:'#a99bb4'}).setOrigin(.5);this.menu.add(more);y+=8;}
+    const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id)),rolledId=this._craftRolledId,visiblePool=available.slice(0,portrait?6:4),catCount={offense:0,defense:0,utility:0};available.forEach(m=>catCount[m.category]=(catCount[m.category]||0)+1);
+    const ph=this.add.text(15,y,'RANDOM ROLL POOL · '+available.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffe0a8'}).setOrigin(0,0),tierHint=this.add.text(w-15,y,'OFF '+catCount.offense+' · DEF '+catCount.defense+' · UTIL '+catCount.utility,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.2px',color:'#a99bb4'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=15;
+    const pw=(w-34-6)/2,phh=31;visiblePool.forEach((mod,i)=>{const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+4),on=mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:affixCategory(mod).color,g=this.add.graphics();g.fillStyle(on?0x4d3d1f:0x251c30,.98);g.fillRoundedRect(x,py,pw,phh,7);g.lineStyle(on?2.3:1,on?0xffd166:kc,1);g.strokeRoundedRect(x,py,pw,phh,7);g.fillStyle(kc,1);g.fillRoundedRect(x,py,4,phh,{tl:7,bl:7,tr:0,br:0});const tx=this.add.text(x+10,py+8,(on?'✨ ':'')+mod.emoji+' '+mod.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,.5),rg=this.add.text(x+10,py+22,affixCategory(mod).label+' · T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'6.4px',color:on?'#ffe0b0':affixCategory(mod).hex}).setOrigin(0,.5);this.menu.add([g,tx,rg]);});y+=Math.ceil(visiblePool.length/2)*(phh+4)+4;
+    if(available.length>visiblePool.length){const more=this.add.text(w/2,y-2,'+'+(available.length-visiblePool.length)+' more possible results in the roulette',{fontFamily:'sans-serif',fontSize:'7px',color:'#a99bb4'}).setOrigin(.5);this.menu.add(more);y+=8;}
     const result=this._craftResult&&this._craftResult.uid===selected.uid?this._craftResult:null;if(result){const rg=this.add.graphics();rg.fillStyle(0x2d492f,.96);rg.fillRoundedRect(14,y,w-28,34,8);rg.lineStyle(1.5,0x8bd3a0,1);rg.strokeRoundedRect(14,y,w-28,34,8);const rt=this.add.text(22,y+8,'✓ '+result.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:'#bff6cf'}).setOrigin(0,.5),rv=this.add.text(22,y+24,result.before+'  →  '+result.after,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#fff4df'}).setOrigin(0,.5);this.menu.add([rg,rt,rv]);y+=39;}
     const old=affs[this.craftLineIndex]||null,key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),have=Save.currency(key),can=available.length>0&&!selected.locked&&have>0,mainH=52,main=this.add.graphics();main.fillStyle(can?0x347d54:0x302a38,.98);main.fillRoundedRect(14,y,w-28,mainH,11);main.lineStyle(1.5,can?0x8bd3a0:0x574764,1);main.strokeRoundedRect(14,y,w-28,mainH,11);this.menu.add(main);
     if(available.length>0&&!selected.locked){this._currencyIcon(key,40,y+mainH/2,33,can?1:.42);const action=old?'REROLL SELECTED AFFIX':'ROLL NEW AFFIX',mt=this.add.text(63,y+16,action,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:can?'#fff':'#8d8195'}).setOrigin(0,.5),cost=this.add.text(63,y+36,'Random from '+available.length+' · '+cur.name+'  '+have+'/1',{fontFamily:'sans-serif',fontSize:'8px',color:can?'#d8ffe5':'#8d8195'}).setOrigin(0,.5);this.menu.add([mt,cost]);}else{const mt=this.add.text(w/2,y+mainH/2,selected.locked?'🔒 Unlock this item before crafting':'No compatible results remain',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#8d8195'}).setOrigin(.5);this.menu.add(mt);}if(available.length>0&&!selected.locked)this._zone(14,y,w-28,mainH,()=>this.randomCraftSelected());y+=mainH+6;
@@ -4258,6 +4293,7 @@ class Game extends Phaser.Scene {
     const p=this.player;
     p.cdMul=1; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0;
+    p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1;
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
     p.weaponDmgMul=1;p.weaponCdMul=1;p.weaponShots=0;p.weaponAreaMul=1;p.weaponControlMul=1;p.weaponChains=0;p.weaponReflect=0;
     // เลือกตัวละคร
@@ -5620,7 +5656,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
-    this.xp+=n;
+    this.xp+=n*(this.player.xpMul||1);
     while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+4); this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
@@ -6493,6 +6529,7 @@ class Game extends Phaser.Scene {
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;
     }
     if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;
+    if((e.isBoss||e.isMini)&&this.player.bossDmg)amount*=1+this.player.bossDmg;
     if((this.stageIndex>=6&&this.stageIndex<=9)&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'&&e.nectarRole!=='waxGuard'&&e.seasonRole!=='equinoxGuard'&&e.rootRole!=='barkGuard'){let guarded=false;this.enemies.children.iterate(o=>{if(!guarded&&o&&o.active&&o!==e&&((o.mycoRole==='bulwark'&&this.stageIndex===6)||(o.nectarRole==='waxGuard'&&this.stageIndex===7)||(o.seasonRole==='equinoxGuard'&&this.stageIndex===8)||(o.rootRole==='barkGuard'&&this.stageIndex===9))&&this.dist(o.x,o.y,e.x,e.y)<175)guarded=true;});if(guarded)amount*=this.stageIndex===9?.78:this.stageIndex===8?.76:this.stageIndex===7?.74:.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
@@ -6832,7 +6869,7 @@ class Game extends Phaser.Scene {
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
-    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
+    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
@@ -6841,7 +6878,7 @@ class Game extends Phaser.Scene {
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
     if(this._inTutorial)return;   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
-    dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1);   // เกราะ + เขตคำสัตย์
+    dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
     this.player.iframe=ix||0.5; this.player.hp-=dmg; Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
     this.vfxHurtFlash();

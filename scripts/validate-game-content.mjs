@@ -3,6 +3,29 @@ import { inflateSync } from 'node:zlib';
 
 const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
+for(const contract of [
+  "const GAME_VERSION = '4.46.0'",
+  "const AFFIX_CATEGORY = {",
+  "id:'bossdmg', category:'offense'",
+  "id:'laststand', category:'offense'",
+  "id:'lifekill', category:'defense'",
+  "id:'crisisguard', category:'defense'",
+  "id:'xp', category:'utility'",
+  "id:'dash', category:'utility'",
+  "_playAffixRoulette(pool,winner,rolled,cur)",
+  "const delays=[55,60,68,76,88,102,120,145,175,215,270,340]",
+]){
+  if(!source.includes(contract))throw new Error(`Missing Affix Roulette contract: ${contract}`);
+}
+const affixBlock=source.match(/const AFFIX_POOL = \[([\s\S]*?)\n\];\nconst AFFIX_CATEGORY/);
+if(!affixBlock)throw new Error('Cannot find expanded AFFIX_POOL block');
+const affixIds=[...affixBlock[1].matchAll(/id:'([^']+)'/g)].map(match=>match[1]);
+if(affixIds.length!==15||new Set(affixIds).size!==15)throw new Error(`Expected 15 unique affixes, found ${affixIds.length}`);
+for(const category of ['offense','defense','utility']){
+  const count=(affixBlock[1].match(new RegExp(`category:'${category}'`,'g'))||[]).length;
+  if(count<4)throw new Error(`Expected at least four ${category} affixes, found ${count}`);
+}
+
 const crcTable = Array.from({length:256},(_,n)=>{
   let c=n;
   for(let i=0;i<8;i++)c=(c&1)?(0xedb88320^(c>>>1)):(c>>>1);

@@ -59,13 +59,13 @@ APK ถูกตั้งให้เป็น **"ตัวหุ้ม" ที�
 - `.github/workflows/android.yml` — ขั้นตอน build APK บน GitHub
 - โฟลเดอร์ `android/` และ `www/` **สร้างตอน build** (ไม่ commit)
 
-## สถานะ: v4.45.0 — Affix Forge Visual Clarity
+## สถานะ: v4.46.0 — Affix Roulette & Expanded Mods
 
 - Chapter 1 และ Chapter 2 เล่นได้ครบ 10 ด่าน ตั้งแต่ Pantry Raid ถึง **C2-5 Root Throne**
 - C2-5 มี objective ทำลาย Crown Roots, arena event, ศัตรู 7 บทบาท, Ancient Root Knight และ The True Rootmother 4 เฟส พร้อม epilogue
 - Chapter 2 ใช้ภาพศัตรู/บอสแบบโปร่งใสที่แยก silhouette และ pose ชัดบนมือถือ พร้อม validation ตรวจโครงสร้าง PNG จริงก่อน build
 - ตัวละคร 6 คนมีอาวุธประจำตัว, Character Mastery, gear/crafting, Daily, Achievement, Bestiary, Ascension และ Midnight Kitchen Endless
-- หน้า Affix Forge ใช้ flow 3 ขั้น Gear → Affix → Roll, แยกคุณภาพฐานออกจากจำนวนช่อง affix, แสดงผลก่อน→หลัง และยืนยันซ้ำก่อนลบ/รีเซ็ต
+- หน้า Affix Forge ใช้ flow 3 ขั้น Gear → Affix → Roll พร้อมเอฟเฟกต์รูเล็ตชะลอก่อนเปิดผลจริง และม็อด 15 แบบที่แยก Offense/Defense/Utility ชัดเจน
 - ระบบบอสป้องกันการข้าม phase ด้วย burst damage และคงความเป็นอมตะระหว่าง transition
 - การตรวจอัตโนมัติใช้ `npm run check`; balance, touch controls, FPS และ visual readability ต้องยืนยันบนมือถือจริง
 
