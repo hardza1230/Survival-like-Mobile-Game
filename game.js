@@ -34,9 +34,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.47.0';
+const GAME_VERSION = '4.48.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.48.0', date:'2026-09-24', title:'5 new endgame-only mods', items:[
+    'Added 5 rare mods that only appear on high item-level gear (iLv 20-45+): Vampiric (uncapped lifesteal), Berserker (big damage for more damage taken), Sage Focus (much faster cooldown for less crit), Gambler (huge crit damage on rings), Nourished (stronger heal pickups)',
+    'These live in a separate high-level mod pool, so early gear keeps rolling the same 15 mods as before',
+  ]},
   { v:'4.47.0', date:'2026-09-24', title:'Production raster pickups and Training Ground', items:[
     'Replaced Heal Mochi, Gear Gift and all six stage gimmick vectors with individually generated transparent 2.5D PNG art',
     'Replaced the Training Ground SVG grid with a hand-painted raster tile that keeps characters and tutorial cues readable',
@@ -1686,7 +1690,24 @@ function affixCategory(mod){return AFFIX_CATEGORY[(mod&&mod.category)||'utility'
 const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
 // item level → tier ดีสุดที่สุ่มได้ (ฐานดี = โรลได้ดีกว่า): legend→T1, epic→T2, rare→T3, common→T4
 const BASE_BEST_TIER = { start:5, common:4, rare:3, epic:2, legend:1 };
-const SPECIAL_AFFIX_POOL = []; // Future schema: {id,kind,label,tiers,apply,baseIds?,baseTags?,slots?,minItemLevel?,exclusive:true}
+// v4.48: mod พิเศษเฉพาะไอเทม iLv สูง (endgame chase) — hook เข้า field ที่ applyMeta reset/consume อยู่แล้วทั้งหมด (bossDmg/lowHpGuard/xpMul/dashCdMul เดิม + lifesteal/healEffect ที่ยังว่างจากคราวก่อน) ไม่มีกลไกใหม่ กัน regression
+const SPECIAL_AFFIX_POOL = [
+  { id:'vampiric', kind:'suffix', category:'defense', label:'Vampiric', emoji:'🩸', suf:'of the Leech', slots:['weapon','gloves','ring'], minItemLevel:30, bestTier:3,
+    fmt:v=>'+'+(v/10)+' HP', tiers:[[16,22],[11,15],[7,10],[4,6],[2,3]],
+    apply:(p,v)=>{ p.lifesteal=(p.lifesteal||0)+v/10; } }, // ฟื้น HP flat ต่อการฆ่า ไม่มี cooldown (ต่างจาก lifekill ที่มี cd 0.45s) — เก่งตอนฆ่าถี่
+  { id:'berserk', kind:'prefix', category:'offense', label:'Berserker', emoji:'💀', pre:'Berserk', slots:['weapon','gloves'], minItemLevel:45, bestTier:2,
+    fmt:v=>'+'+v+'%', tiers:[[22,28],[16,21],[11,15],[7,10],[4,6]],
+    apply:(p,v)=>{ p.dmgMul*=(1+v/100); p.dmgTakenMul*=(1+v*0.6/100); } }, // glass cannon: ดาเมจแรงขึ้นเยอะ แต่รับดาเมจเพิ่มด้วย
+  { id:'focus', kind:'prefix', category:'offense', label:'Sage Focus', emoji:'🧘', pre:'Focused', slots:['amulet','ring'], minItemLevel:45, bestTier:2,
+    fmt:v=>'-'+v+'%', tiers:[[11,14],[8,10],[6,7],[4,5],[2,3]],
+    apply:(p,v)=>{ p.cdMul=Math.max(0.4,(p.cdMul||1)*(1-v/100)); p.critChance=Math.max(0,(p.critChance||0)-v*0.35/100); } }, // คูลดาวน์ไวมาก แลกคริติคอลลดลง
+  { id:'gambler', kind:'suffix', category:'offense', label:'Gambler', emoji:'🎲', suf:'of Fortune', slots:['ring'], minItemLevel:25, bestTier:3,
+    fmt:v=>'+'+v+'%', tiers:[[70,90],[50,69],[34,49],[22,33],[13,21]],
+    apply:(p,v)=>{ p.critMul=(p.critMul||1.55)+v/100; } }, // เดิมพันคริติคอลก้อนใหญ่ เฉพาะแหวนหายาก ไม่มีข้อเสีย
+  { id:'nourish', kind:'suffix', category:'defense', label:'Nourished', emoji:'💊', suf:'of Nourishment', slots:['armor','amulet'], minItemLevel:20, bestTier:3,
+    fmt:v=>'+'+v+'%', tiers:[[35,50],[25,34],[17,24],[10,16],[5,9]],
+    apply:(p,v)=>{ p.healEffect=(p.healEffect||1)+v/100; } }, // บูมค่าฟื้นจากไอเทม heal ในด่าน
+]; // Future schema: {id,kind,label,tiers,apply,baseIds?,baseTags?,slots?,minItemLevel?,exclusive:true}
 function allAffixDefs(){return AFFIX_POOL.concat(SPECIAL_AFFIX_POOL);}
 function affixDef(id){return allAffixDefs().find(a=>a.id===id);}
 function craftAffixPoolForItem(item){if(!item)return[];const base=GEAR_ALL.find(g=>g.id===item.baseId),tags=new Set((base&&base.craftTags)||[]);
