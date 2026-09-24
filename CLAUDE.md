@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.71.0 — Item drop rebalance: เนื้อเรื่อง iLv 1-60 / Endgame 61-100)
+- **v4.71.0 (เจ้าของเลือก ก. — band 4-5 เป็นของ endgame + ปรับดรอปใหม่):** **บั๊กเดิม:** `itemChapterForStage` = stage+1 → ด่าน 5 (บอสจบ Ch1) ก็ดรอป iLv 81-100 แล้ว, Chapter 2 ทั้งบท clamp อยู่ band 5 · **ใหม่:** `storyItemLevelBase(s)=min(60,1+4s)` · `rollItemLevel(s,d)` = base + (d-1)×3 + rand 0-5 (cap `STORY_ILVL_MAX=60`) → Ch1 ≈1-28 · Ch2 ≈21-48 · Ch3 (ด่าน 10-14) ≈41-60 · `itemChapterForStage` คำนวณจาก iLv · **Endgame:** `rollEndgameItemLevel(d,depth)` = 61 + (d-1)×8 + depth(≤24) + rand 0-5 (cap 100) · `endgameDropActive()` = `storyComplete()` (mastery ด่าน ready สุดท้าย) **และ** อยู่ใน Boss Rush/Endless/Zone Mods · `endgameDepth()` = zoneMods×4 + endlessCycle×2 + rushPos×2 · ของ endgame สุ่ม pool chapter 4/5 (อาวุธ Frost/Void เดิม) · field loot tier +1 boost ใน endgame · แก้ in-play ใช้ `this.stageDiff` (เดิม `this.difficulty` ไม่มีจริง → diff ไม่มีผลกับ iLv) · verified headless ช่วง iLv ทุกด่าน/ความยาก + gate endgame ก่อน/หลังจบเรื่อง, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.70.0 — แผนเนื้อเรื่องเหลือ 3 Chapter → Endgame)
 - **v4.70.0 (เจ้าของตัดสินใจ: เนื้อเรื่อง 3 Chapter แล้วเข้า Endgame · ตัด Ch4/Ch5 เดิมทิ้ง):** `CHAPTERS` เหลือ 3 รายการ — Ch3 = "Throne of the First Seed" (บทสุดท้าย รวมเนื้อหา Ch5 เดิม: คนปลูกมงกุฎ/ต้นตอวงจรความหิว · ธีม Flavorless Factory/Sugar City ถูกตัด) `ready:false` · **ยังไม่แตะ:** item level band 5 ช่วง (`ITEM_LEVEL_BANDS` iLv1-100 ch1-5) + อาวุธ `chapter:4/5` (Frost/Void) — ถือเป็นของระดับ endgame drop ได้ต่อ รอเจ้าของสั่งถ้าจะ remap เป็น 3 band
 

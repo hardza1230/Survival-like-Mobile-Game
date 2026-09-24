@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.70.0';
+const GAME_VERSION = '4.71.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.71.0', date:'2026-09-24', title:'Item drop rebalance', items:['Story drops now scale smoothly: Chapter 1 ≈ iLv 1–26, Chapter 2 ≈ 21–46, Chapter 3 up to 60','Harder difficulty adds item levels (Hard +3, Hell +6)','iLv 61–100 gear drops only in the endgame (Boss Rush, Endless, Zone Modifiers) after finishing the story']},
   { v:'4.70.0', date:'2026-09-24', title:'Story roadmap: 3 chapters', items:['The story is now 3 chapters, followed by the endgame','Chapter 3 · Throne of the First Seed is the final chapter']},
   { v:'4.69.0', date:'2026-09-24', title:'Boss Rush', items:['New mode in Activities: fight every boss you’ve beaten back-to-back','Pick Normal/Hard/Hell — harder pays more Sugar and currency','Level-ups between bosses, HP refill, best time & count saved per difficulty']},
   { v:'4.68.0', date:'2026-09-24', title:'Faster cards & custom controls', items:['Level-up cards show the key number big and green','Settings: Dash/Unique button size (Normal/Large/Extra Large)','Settings: left-handed button side']},
@@ -1893,12 +1894,19 @@ const ITEM_LEVEL_BANDS=[
   {chapter:5,min:81,max:100,bestAffixTier:1,label:'Crown Oven'},
 ];
 function clampItemChapter(ch){return Math.max(1,Math.min(5,Math.floor(Number(ch)||1)));}
-function itemChapterForStage(stageIndex){return clampItemChapter((Number(stageIndex)||0)+1);}
+// v4.71: 3 Chapter story → iLv 1-60 (band 1-3) · band 4-5 (iLv 61-100) = Endgame เท่านั้น
+//   ด่าน s (0..14) เริ่ม iLv 1+4s → Ch1 ≈1-26 · Ch2 ≈21-46 · Ch3 ≈41-60 (เดิม stage+1 = ด่าน 5 ก็ได้ iLv 81-100 แล้ว)
+const STORY_ILVL_MAX=60, ENDGAME_ILVL_MIN=61;
+function storyItemLevelBase(stageIndex){return Math.min(STORY_ILVL_MAX,1+Math.max(0,Number(stageIndex)||0)*4);}
+function itemChapterForStage(stageIndex){return itemChapterFromLevel(storyItemLevelBase(stageIndex));}
 function currentItemChapter(){return itemChapterForStage((Save.data&&Save.data.unlockedStage)||0);}
 function itemBand(ch){return ITEM_LEVEL_BANDS[clampItemChapter(ch)-1];}
 function itemChapterFromLevel(ilvl){return Math.max(1,Math.min(5,Math.ceil(Math.max(1,Number(ilvl)||1)/20)));}
 function bestAffixTierForItemLevel(ilvl){return itemBand(itemChapterFromLevel(ilvl)).bestAffixTier;}
-function rollItemLevel(stageIndex,difficulty=1,rng=Math.random){const b=itemBand(itemChapterForStage(stageIndex)),d=Math.max(1,Math.min(3,Number(difficulty)||1));return Math.min(b.max,b.min+(d-1)*6+Math.floor(rng()*8));}
+function rollItemLevel(stageIndex,difficulty=1,rng=Math.random){const d=Math.max(1,Math.min(3,Number(difficulty)||1));return Math.min(STORY_ILVL_MAX,storyItemLevelBase(stageIndex)+(d-1)*3+Math.floor(rng()*6));}   // กฎเหล็ก: ยาก/นรก +3/+6 iLv
+// Endgame (Boss Rush / Endless / Zone Modifiers หลังจบเนื้อเรื่อง) = iLv 61-100 · ยิ่งยาก/ยิ่งลึก ยิ่งสูง
+function rollEndgameItemLevel(difficulty=1,depth=0,rng=Math.random){const d=Math.max(1,Math.min(3,Number(difficulty)||1));return Math.min(100,ENDGAME_ILVL_MIN+(d-1)*8+Math.min(24,Math.max(0,depth))+Math.floor(rng()*6));}
+function storyComplete(){const m=(Save.data&&Save.data.stageMastery)||{};let last=-1;for(let i=0;i<STAGES.length;i++)if(isStageReady(i))last=i;return last>=0&&!!m[last];}
 // รางวัลนอกด่าน (gacha/forge/menu drop) = ตามหลังความคืบหน้า 1 ด่าน + ยาก normal → ผ่านด่าน 1 จะไม่กระโดดไป Chapter 2 ทันที
 function rewardSourceStage(){return Math.max(0,((Save.data&&Save.data.unlockedStage)||0)-1);}
 function rewardChapter(){return itemChapterForStage(rewardSourceStage());}
@@ -7251,7 +7259,7 @@ class Game extends Phaser.Scene {
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
     const box=this.textures.exists('chest')?'chest':'gift';   // ใช้ PNG จริง (ไม่พึ่ง SVG ที่เคยเรนเดอร์ดำบนมือถือ)
     if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
-    if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost);const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
+    if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost+(this.endgameDropActive()?1:0));const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
     g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // 🧪 Currency ดรอปเป็นชิ้นในสนาม (เก็บ = สะสมเข้า _runCurrency + Save · โชว์ในสรุปด่าน)
@@ -7384,14 +7392,17 @@ class Game extends Phaser.Scene {
     this.showBanner('🎁 Miniboss Box · upgrade '+chosen.length+' skills',names,3000);this.vfxLevelUp();
   }
   // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังNone) — คืน item หรือ null ถ้ามีครบแล้ว
+  // Endgame drop = โหมด endgame (Boss Rush/Endless/Zone Mods) และจบเนื้อเรื่องแล้วเท่านั้น
+  endgameDropActive(){ return storyComplete()&&(!!this.bossRush||!!this.endlessMode||((this._activeZoneMods||[]).length>0)); }
+  endgameDepth(){ return (this._activeZoneMods||[]).length*4+(this.endlessMode?(this.endlessCycle||0)*2:0)+(this.bossRush?(this._rushPos||0)*2:0); }
   grantGear(tier,opts={}){ const inPlay=this.state==='play',sourceStage=inPlay?this.stageIndex:rewardSourceStage();
     // v4.32: gacha เลือก base item level ได้ (opts.itemLevel) → chapter ตาม iLv นั้น · in-play/menu ใช้ stage เดิม
-    const gachaLv=opts.gacha?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||1))):0,
-      chapter=opts.gacha?itemChapterFromLevel(gachaLv):itemChapterForStage(sourceStage);
+    const gachaLv=opts.gacha?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||1))):0,eg=inPlay&&this.endgameDropActive(),
+      chapter=opts.gacha?itemChapterFromLevel(gachaLv):eg?(Math.random()<0.5?4:5):itemChapterForStage(sourceStage);
     let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter); if(!pool.length)return null;
     // v4.29: ของนอกด่าน (forge/menu) ตั้ง floor iLv 12 → ได้ 2 mod · in-play ใช้ค่าจริง
     const it=Phaser.Utils.Array.GetRandom(pool),
-      itemLevel=inPlay?rollItemLevel(sourceStage,this.difficulty||1):(opts.gacha?gachaLv:Math.max(12,rollItemLevel(sourceStage,1))),
+      itemLevel=inPlay?(this.endgameDropActive()?rollEndgameItemLevel(this.stageDiff||1,this.endgameDepth()):rollItemLevel(sourceStage,this.stageDiff||1)):(opts.gacha?gachaLv:Math.max(12,rollItemLevel(sourceStage,1))),
       extra={isNew:true,itemLevel,chapter};
     // v4.32: gacha สุ่ม 0-1 mod เสมอ (50/50) · 0 mod = common (พื้นขาว) · 1 mod = magic
     if(opts.gacha){ const cnt=Math.random()<0.5?0:1, affs=cnt?rollAffixes(it.tier,itemLevel,it).slice(0,1):[]; extra.affixes=affs; extra.craftState=affs.length?'magic':'common'; }
