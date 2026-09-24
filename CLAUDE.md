@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.55.0 — Balance pass: Weave %, เพดานสแตตรวม)
+- **v4.55.0 (Balance review ข้อ 1-3 — จาก feedback เจ้าของ):** (1) Weave `UPGRADES.dmg` เดิม +2 flatDmg บวกทุกฮิต (รวม tick/chain + โดนคริคูณ) → Momo เม็ดละ ~6.75 อัพ 3 เลเวลเกือบ ×2, ตัวยิงถี่ได้เปรียบ Cocoa หลายเท่า · เปลี่ยนเป็น **+3% dmgMul/เลเวล** (flatDmg ยังอยู่ในโค้ดแต่ไม่มีแหล่งแล้ว) · (2) **`STAT_CAPS` + `clampPlayerStats(p)` จุดเดียว** (dmg≤3.25, crit≤0.40, cd≥0.72, dmgTaken≥0.35, speed≤moveSpeed×1.35) ใช้ใน applyMeta/previewStats/cookDish/combos/endless · การ์ด endless: dmg +5% แบบบวก, filter การ์ดที่สแตตตันออก (`capped()`), เพิ่ม `eguard` (-4% dmg taken) · (3) previewStats เดิมใช้เพดาน 0.6/0.5 → หน้า Stats โชว์เกินจริง แก้แล้ว · critMul fallback รวมเป็น 1.55 ทุกที่ · floor คูลดาวน์ระหว่างทางของ set/affix/focus ใช้ STAT_CAPS.cdMulMin · **Art audit (headless): 330 textures โหลดครบ 0 404, ไม่มี texture key ที่โค้ดอ้างแต่ไม่มี, 42 sheets กริดหารลงตัว ไม่มีเฟรมว่าง, 115 sprite ไม่มีพื้นทึบ** · **ยังค้าง: ปรับ def Sesame 0.86→0.94 / Cocoa 0.88→0.84 รอเจ้าของเทสจริง**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.54.0 — แก้ Evolution ไม่ขึ้น)
 - **v4.54.0 (Evolution ไม่เคยขึ้น — จาก feedback เจ้าของ):** gate เดิม `b.mastery>=20` แต่ mastery สูงสุด = ผลรวม max ของ `d.upgrades` (ทุกตัว 5+5+3+3=16) + mutation 1 = **17** → evolution ไม่มีวันออก · แก้เป็น `evoAt=min(14, mastery สูงสุดที่ทำได้จริง (นับ banish))` · **verified headless ทั้ง 5 ตัว: mutation lv9, evolution lv15, 0 error** · ⚠️ ถ้าเพิ่ม/ลด upgrades ในอนาคต ระวัง gate mutation(8)/evo(14) ต้องไม่เกิน mastery สูงสุด
 
