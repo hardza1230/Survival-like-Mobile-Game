@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.59.0 — มอนที่เหลือหนีหายตอนเคลียร์เวฟ)
+- **v4.59.0 (จาก feedback เจ้าของหลังเทส Ch2 เจอมอนค้าง ~90 ตัวตอน waveclear):** tickStage waveclear นับ `_clearT` → ครบ 4 วิ เรียก `fleeRemainingEnemies()` (ครั้งเดียว `_clearFled`, reset ใน onWaveCleared/startRun) · มอนธรรมดาตั้ง `e._fleeing` → enemy loop เปลี่ยนเป้าเป็นทิศตรงข้ามผู้เล่น + tween alpha→0 แล้ว deactivate (ไม่ดรอป/ไม่นับ kill) · **Elite (รวม ambush จาก Bonus Challenge) / บอส / เป้าภารกิจ ยังต้องฆ่าเอง** · spawnEnemy ไม่ reset alpha → คืน alpha=1 ทุกทาง (tween จบ, killEnemy, clearEnemies) · **verified headless C2-5: 94 ตัว → เหลือ elite 2 ใน 6 วิ, ฆ่า elite → breather, ไม่มี alpha ค้าง, 0 error**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.58.0 — ภารกิจมีเดิมพัน: Bonus Challenge + กลไกใหม่)
 - **v4.58.0 (ภารกิจน่าเบื่อ → A+B ตามที่เจ้าของเลือก):** **A. Bonus Challenge ทุกภารกิจ** — `startBonusChallenge(o)` (เรียกท้าย setupWaveObjective) สุ่ม `speed` (เฉพาะ hunt/purge/capture/breakRoots, limit ตามชนิด) / `nohit` (≤2 hits, นับใน hurtPlayer → `onBonusHurt`) / `kills` (25+stage·4, นับใน `objOnKill`) · state `this._bonus` · HUD `waveBonusTxt` (pad+140, อยู่ใน hudList) · สำเร็จ (`resolveBonusChallenge` ใน completeWaveObjective) = `offerRelic()` หน่วง 0.9s (slot เต็ม → currency 2) · พลาด (`failBonus`) = spawnElite ×2 ซุ่มโจมตี · **B. กลไกภารกิจ Ch1:** Capture ยืนเติม ×0.55 + ฆ่ามอนในวง +0.7s (`objOnKill`) · Hunt เป้าวาร์ป 270px เมื่อผู้เล่นเข้าใกล้ <210 (cd 4.5s, `e._blinkCd`) + ทิ้ง spawnHazard ที่เดิม · Purge ทุก 7s spawn 'fast' ×2 `e._wispRaider` (tint แดง) ไล่ Wisp ผ่าน override tx/ty ข้าง decoy ใน enemy loop · flag raider ล้างใน killEnemy/clearWaveObjective · **verified headless ทุกกลไก 0 error** · ภารกิจ Ch2 (cleanAir/defendNectar/seasonCycle/breakRoots) ได้เฉพาะ A
 

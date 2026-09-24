@@ -37,9 +37,12 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.58.0';
+const GAME_VERSION = '4.59.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.59.0', date:'2026-09-24', title:'No more mop-up slog', items:[
+    '🏃 When a wave ends, the leftover swarm now retreats and fades away after 4 seconds — no more hunting down dozens of stragglers. Elites (including ambushes) still have to be defeated',
+  ]},
   { v:'4.58.0', date:'2026-09-24', title:'Objectives with stakes — Bonus Challenges', items:[
     '⭐ Every objective now has a Bonus Challenge (finish fast, take at most 2 hits, or rack up kills). Succeed to earn a 🔮 Relic pick (or crafting currency once your Relic slots are full) — fail and Elite enemies ambush you',
     '🔷 Capture: standing alone fills the ring slowly — kills inside the ring charge it much faster, so pull the swarm in',
@@ -4584,7 +4587,7 @@ class Game extends Phaser.Scene {
         if(this.killTxt)this.killTxt.setText('☠ 0');
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
-        this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
+        this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
         this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
         this.clearStarGuardFx();
@@ -5167,7 +5170,7 @@ class Game extends Phaser.Scene {
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);
   }
   // ล้างมอนธรรมดาที่ค้าง (เก็บบอส/มินิไว้) — ใช้ตอนจบเวฟ/Waitดครบเวลา
-  clearEnemies(){ this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } }); }
+  clearEnemies(){ this.enemies.children.iterate(e=>{ if(e&&e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);} if(e&&e.active&&!e.isBoss&&!e.isMini){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } }); }
   // เรียกทุกเฟรม: คุมนับเวลา + เกิดมอนต่อเนื่อง
   tickStage(dt){
     if(this._inTutorial)return;   // freeze เวลาระหว่างสอน — ไม่สปอน ไม่นับเวลา ไม่ขึ้นWave (สนามควบคุมโดย coach)
@@ -5193,7 +5196,9 @@ class Game extends Phaser.Scene {
     } else if(this.mode==='waveclear'){
       // หยุดเกิดมอนใหม่ · Waitผู้เล่นกำจัดที่เหลือให้หมดจึงไปเวฟถัดไป
       const st=STAGES[this.stageIndex], live=this.enemies.countActive(true);
-      if(st)this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · 🧹 Clear remaining '+live+'');
+      // v4.59: มอนธรรมดาที่เหลือหนีหายไปหลัง 4 วิ (ไม่ต้องไล่เก็บ 90 ตัว) · Elite/ของซุ่มโจมตียังต้องฆ่าเอง
+      this._clearT=(this._clearT||0)+dt; if(this._clearT>=4&&!this._clearFled){ this._clearFled=true; this.fleeRemainingEnemies(); }
+      if(st)this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · '+(this._clearFled?'🏃 Swarm retreating · '+live+' left':'🧹 Clear remaining '+live));
       if(live<=0) this.onWaveCleared(false);
     } else if(this.mode==='mini'){
       // ระหว่างสู้มินิ = ยังมีลูกน้องไหลมาเรื่อย ๆ (กดดันต่อเนื่อง แต่เบากว่า)
@@ -5449,6 +5454,7 @@ class Game extends Phaser.Scene {
     });
   }
   onWaveCleared(keep){
+    this._clearT=0;this._clearFled=false;
     this.boss=null;Sfx.bgmIntense(false);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();
     const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
     if(next>=st.waves){this.mode='bossWarning';this.updateWaveText();
@@ -5952,6 +5958,13 @@ class Game extends Phaser.Scene {
   // ♾️ การ์ดสแตตไม่รู้จบ — เติมช่องที่เหลือหลังอัพเกรดอาวุธตัน (แก้ปัญหา "เลเวลขึ้นแต่ไม่มีอะไรให้อัพ" ~lv15+)
   // stack เก็บใน b.endless[id] (รีเซ็ตทุกด่านผ่าน initBasicAttack) โชว์จำนวนชั้นในการ์ด
   // ===== 🔮 Relic system =====
+  // 🏃 ช่วงเคลียร์: มอนธรรมดาวิ่งหนี + จางหาย (ไม่ดรอป/ไม่นับ kill) · elite/บอส/เป้าภารกิจอยู่ต่อ
+  fleeRemainingEnemies(){
+    let n=0;this.enemies.children.iterate(e=>{ if(!e||!e.active||e.isBoss||e.isMini||e.isElite||e._waveObjectiveTarget||e._fleeing)return; n++; e._fleeing=true;
+      this.tweens.add({targets:e,alpha:0,duration:1600+Math.random()*500,ease:'Quad.in',onComplete:()=>{ if(!e.active||!e._fleeing)return; e._fleeing=false;
+        if(e._aura){e._aura.destroy();e._aura=null;} if(e._dashTel){e._dashTel.destroy();e._dashTel=null;} e.setActive(false).setVisible(false).setAlpha(1); if(e.body)e.body.enable=false; }}); });
+    if(n>0)this.showBanner('🏃 The swarm retreats!',this.enemies.countActive(true)>n?'Defeat the remaining Elites to advance':'The way ahead is clear',1300);
+  }
   resetRelics(){ this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ return RELIC_CAP-((this.relics&&this.relics.length)||0); }
@@ -6822,7 +6835,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(this.waveObjective&&!big)this.objOnKill(e);
+  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -8055,7 +8068,7 @@ class Game extends Phaser.Scene {
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
       if(e._decoyT>0)e._decoyT-=dt;
-      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}
+      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._fleeing){tx=e.x*2-this.player.x;ty=e.y*2-this.player.y;}if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}
       if(this.stageIndex===7&&this.waveObjective&&this.waveObjective.type==='defendNectar'&&['drone','honeyBomb','dartwing'].includes(e.nectarRole)&&this._nectarFlowers){let target=null,bd=Infinity;for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(e.x,e.y,f.x,f.y);if(d<bd){bd=d;target=f;}}if(target){tx=target.x;ty=target.y;}}
       const dx=tx-e.x, dy=ty-e.y, ang=Math.atan2(dy,dx), dd=Math.hypot(dx,dy);
       // หันหน้าเข้าหาผู้เล่นเสมอ
