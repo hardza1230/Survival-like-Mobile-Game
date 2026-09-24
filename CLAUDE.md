@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.73.0 — Chapter 3 เล่นได้ (อาร์ต placeholder))
+- **v4.73.0 (Chapter 3 · Throne of the First Seed — เจ้าของสั่ง: ใช้ SVG/ไอคอนธรรมดาไปก่อน เดี๋ยว AI อีกตัวทำภาพมาใส่):** `STAGES[10..14]` (chapter:2, C3-1..C3-5): Ashen Seedfields 🌾 / Hollow Orchard 🍎 / Glass Greenhouse Ruins 🔮 / The Seed Vault 🗝️ / Throne of the First Seed 👑 · recommendedPower 9800→24500 · bossHp 13500→30000 · bossDmg 105→150 · ใช้ objective ทั่วไป (survive/hunt/purge/capture) + AI บอส/มินิ generic (slam/radial/aimed/charge/spiral/trap/nova) · `CHAPTERS[2]` ready:true stages:[10,14] · chapter gate เปลี่ยนเป็นต้องจบด่านสุดท้ายของบทก่อน (`stageMastery[stages[0]-1]`) · **Placeholder art (วาดด้วย canvas ใน `Boot.buildChapter3Placeholders()`, ไม่ใช่ SVG เพราะ release gate ห้าม SVG):** ศัตรู `c3_e_{basic,fast,shooter,bomber,tank}` (ขนาดเท่า e_* เดิม → hitbox เดิมใช้ได้) · มินิ `c3_mini1-5` + บอส `c3_boss1-5` 140×140 (ใช้ scale/hitbox generic isArt 1.15/1.55) · พื้น `bg11-15` 256 ปูซ้ำ (tileScale 1.12; cover-scaling เฉพาะ i 5-9) · **เปลี่ยนเป็นภาพจริง = ใส่ไฟล์ใน ASSET_IMAGES ด้วย key เดิม → ฟังก์ชันข้ามการวาดเอง** (ถ้าบอสจริงไม่ใช่ 140px ต้องจูน scale/setCircle ใน spawnFinalBoss/spawnMiniBoss) · validator contract bkey ปรับเป็นไม่ผูก prefix · **ผลกระทบ:** `storyComplete()` ตอนนี้ = จบ C3-5 → endgame/ของ iLv61+ ล็อกกลับสำหรับคนที่ยังไม่ Ascend จนจบ Ch3 · **ยังไม่มี:** story beats/epilogue/cutscene บอสเฉพาะ, Bestiary entry ของ Ch3, กิมมิค/objective เฉพาะด่าน, เพลงใหม่ (ใช้เพลงด่าน 5 ซ้ำ) · verified headless ทั้ง 5 ด่าน: มินิ→บอส→rewardChoice ครบ, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.72.0 — Endgame ปลดหลังจบเนื้อเรื่อง)
 - **v4.72.0 (เจ้าของเลือก ก.):** `Save.canAscend()` = `storyComplete()` (เดิมเช็ก stageMastery 0-4 = จบ Ch1) · `zoneModsUnlocked()` = ascension>0 || storyComplete() · `endgameUnlocked()` เดิม (ascension>0 || canAscend) คนที่ Ascend แล้วไม่ถูกล็อก · ข้อความหน้า Endgame → "Finish the story to unlock the endgame" · Boss Rush ยังเปิดตั้งแต่ล้มบอส 2 ตัว (ของ iLv61+ gate ด้วย storyComplete อยู่แล้ว) · verified headless: จบแค่ Ch1 = ล็อก, จบ Ch2 = ปลด, 0 error
 
@@ -492,7 +496,7 @@
 
 ## 5. ถัดไป (อัปเดต v4.71 — เป้าหมายเจ้าของ: ทำเกมให้เสร็จ ~95% ถึง endgame ก่อน · Play Store/รายได้ พักไว้)
 1. ~~Endgame gate~~ ✅ v4.72 ปลดหลังจบเนื้อเรื่อง
-2. **Chapter 3 · Throne of the First Seed** (บทสุดท้าย 5 ด่าน, `CHAPTERS[2]` ready:false) — ต้องทำด่าน/มอน/บอส/อาร์ต
+2. **Chapter 3** ✅ v4.73 เล่นได้ (placeholder) — เหลือ: อาร์ตจริงจาก AI อีกตัว, story/epilogue, Bestiary, กลไกบอสเฉพาะ
 3. Endgame ที่เหลือ: Mochi Rift → Pinnacle Boss (ไอเดียอื่นดูสถานะ v4.69)
 4. เล่นจริงบนมือถือ: Boss Rush balance, Relic, Bonus Challenge, UI v4.63-4.68, Chapter 2 full run
 5. (พักไว้) Play Store: ลบบัญชีในแอป, store listing, keystore, closed test

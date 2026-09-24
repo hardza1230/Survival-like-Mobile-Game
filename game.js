@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.72.0';
+const GAME_VERSION = '4.73.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.73.0', date:'2026-09-24', title:'Chapter 3 · Throne of the First Seed', items:['The final chapter is open: 5 new stages from the Ashen Seedfields to the Throne of the First Seed','5 new minibosses and bosses, ending with The First Planter','Art is temporary placeholder icons — final artwork coming soon']},
   { v:'4.72.0', date:'2026-09-24', title:'Endgame after the story', items:['Ascension, Endless and Zone Modifiers now unlock after finishing the whole story','Players who already Ascended keep their access']},
   { v:'4.71.0', date:'2026-09-24', title:'Item drop rebalance', items:['Story drops now scale smoothly: Chapter 1 ≈ iLv 1–26, Chapter 2 ≈ 21–46, Chapter 3 up to 60','Harder difficulty adds item levels (Hard +3, Hell +6)','iLv 61–100 gear drops only in the endgame (Boss Rush, Endless, Zone Modifiers) after finishing the story']},
   { v:'4.70.0', date:'2026-09-24', title:'Story roadmap: 3 chapters', items:['The story is now 3 chapters, followed by the endgame','Chapter 3 · Throne of the First Seed is the final chapter']},
@@ -929,6 +930,21 @@ class Boot extends Phaser.Scene {
       if(loader)loader.set(1,this._loadFailures?'Ready (using fallback assets '+this._loadFailures+' files)':'Ready!');
     });
   }
+  // 🧩 Chapter 3 placeholder art (วาดด้วยโค้ด) — ถ้ามีไฟล์จริงใน ASSET_IMAGES ที่ key เดียวกัน จะข้ามการวาดเอง
+  //   ศัตรู c3_e_{basic,fast,shooter,bomber,tank} ขนาดเท่า e_* เดิม (hitbox เดิมใช้ได้) · มินิ c3_mini1-5 / บอส c3_boss1-5 = 140px · พื้น bg11-15 = 256px ปูซ้ำได้
+  buildChapter3Placeholders(){
+    const pal=[[0xe0a86a,'🌾'],[0xff7a8f,'🍎'],[0x7fe6ff,'🔮'],[0xffcf5c,'🗝️'],[0xb98cff,'👑']];
+    const hex=c=>'#'+c.toString(16).padStart(6,'0');
+    const blob=(key,w,h,color,emoji,ring)=>{ if(this.textures.exists(key))return; const t=this.textures.createCanvas(key,w,h);if(!t)return;const c=t.getContext(),r=Math.min(w,h)/2-2;
+      const g=c.createRadialGradient(w/2-r*0.3,h/2-r*0.35,r*0.1,w/2,h/2,r);g.addColorStop(0,'#ffffff');g.addColorStop(0.25,hex(color));g.addColorStop(1,'#2a1633');
+      c.fillStyle=g;c.beginPath();c.arc(w/2,h/2,r,0,Math.PI*2);c.fill();c.lineWidth=Math.max(2,r*0.08);c.strokeStyle=ring||'#1a0f22';c.stroke();
+      c.font=Math.round(r*1.05)+'px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(emoji,w/2,h/2+r*0.05);t.refresh(); };
+    const roles={basic:['e_basic','🫘'],fast:['e_fast','💨'],shooter:['e_shooter','🎯'],bomber:['e_bomber','💣'],tank:['e_tank','🛡️']};
+    for(const r in roles){ const src=this.textures.exists(roles[r][0])?this.textures.get(roles[r][0]).getSourceImage():null; blob('c3_e_'+r,(src&&src.width)||48,(src&&src.height)||48,0xb98cff,roles[r][1]); }
+    pal.forEach(([col,em],i)=>{ blob('c3_mini'+(i+1),140,140,col,em,'#ffffff'); blob('c3_boss'+(i+1),140,140,col,'👑','#ffd166');
+      const k='bg'+(11+i); if(!this.textures.exists(k)){ const t=this.textures.createCanvas(k,256,256);if(t){const c=t.getContext();c.fillStyle=hex(Phaser.Display.Color.ValueToColor(col).darken(72).color);c.fillRect(0,0,256,256);
+        c.globalAlpha=0.16;c.fillStyle=hex(col);for(let y=0;y<4;y++)for(let x=0;x<4;x++){c.beginPath();c.arc(32+x*64+(y%2)*32,32+y*64,10,0,Math.PI*2);c.fill();}c.globalAlpha=1;t.refresh();} } });
+  }
   create(){
     // มดStage 1 ใช้ขอบเรืองแสงบาง ๆ จาก texture จริง ช่วยแยกตัวจากพื้นรังโดยไม่เพิ่ม Graphics ต่อศัตรูทุกเฟรม
     const buildReadableAnt=(key)=>{
@@ -938,6 +954,7 @@ class Boot extends Phaser.Scene {
       c.save();c.shadowColor='rgba(218,255,145,0.95)';c.shadowBlur=3.5;c.drawImage(img,0,0);c.restore();c.drawImage(img,0,0);tex.refresh();
     };
     ['e_ant_worker','e_ant_scout','e_ant_spitter','e_ant_soldier','e_ant_drone'].forEach(buildReadableAnt);
+    this.buildChapter3Placeholders();
 
     const mk=(key,size,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;  // มีรูปจริงแล้ว ไม่ต้องวาดทับ
       if(this.textures.exists(key))this.textures.remove(key);
@@ -2431,6 +2448,27 @@ const STAGES = [
     lore:'All memory roots converge beneath the first crown seed, where their true planter waits on a living throne',
     objectives:['survive','hunt','breakRoots'],
     waves:5, recommendedPower:7600, miniAt:2, mini:'Ancient Root Knight', boss:'The True Rootmother', bossHp:11000, bossDmg:95 },
+  // ===== Chapter 3 · Throne of the First Seed (v4.73 · อาร์ตยังเป็น placeholder ที่วาดด้วยโค้ด — key c3_* / bg11-15 รอ AI อีกตัวทำภาพจริงมาใส่ ASSET_IMAGES ทับได้เลย) =====
+  { name:'Ashen Seedfields', en:'Ashen Seedfields', emoji:'🌾', grid:0x2e2622, tint:0xe0a86a, chapter:2, chapterStage:1, ready:true,
+    lore:'Beyond the Root Throne lie fields where every flavor was planted — now scorched grey by the crown planter',
+    objectives:['survive','hunt','purge','capture'],
+    waves:5, recommendedPower:9800, miniAt:2, mini:'Scarecrow Reaper', boss:'The Harvest Colossus', bossHp:13500, bossDmg:105 },
+  { name:'Hollow Orchard', en:'Hollow Orchard', emoji:'🍎', grid:0x2a1f2e, tint:0xff7a8f, chapter:2, chapterStage:2, ready:true,
+    lore:'Fruit trees bloom with empty husks — the planter drank every drop of sweetness from them',
+    objectives:['survive','hunt','capture'],
+    waves:5, recommendedPower:12500, miniAt:2, mini:'Husk Gardener', boss:'The Hollow Bloom', bossHp:16500, bossDmg:115 },
+  { name:'Glass Greenhouse Ruins', en:'Glass Greenhouse Ruins', emoji:'🔮', grid:0x1d2b3a, tint:0x7fe6ff, chapter:2, chapterStage:3, ready:true,
+    lore:'Shattered greenhouses where the first flavors were grown in secret, guarded by crystal sentinels',
+    objectives:['survive','hunt','purge'],
+    waves:5, recommendedPower:15800, miniAt:2, mini:'Prism Sentinel', boss:'The Glass Gardener', bossHp:20000, bossDmg:125 },
+  { name:'The Seed Vault', en:'The Seed Vault', emoji:'🗝️', grid:0x241a1a, tint:0xffcf5c, chapter:2, chapterStage:4, ready:true,
+    lore:'A buried vault holding the last untouched seed of every flavor — and the keepers who serve the planter',
+    objectives:['survive','hunt','capture'],
+    waves:5, recommendedPower:19800, miniAt:2, mini:'Vault Keeper', boss:'The Seedwarden', bossHp:24000, bossDmg:138 },
+  { name:'Throne of the First Seed', en:'Throne of the First Seed', emoji:'👑', grid:0x160f1f, tint:0xb98cff, chapter:2, chapterStage:5, ready:true,
+    lore:'At the root of all hunger sits the one who planted the crown — end the cycle here',
+    objectives:['survive','hunt','purge','capture'],
+    waves:5, recommendedPower:24500, miniAt:2, mini:'Crown Thorn Knight', boss:'The First Planter', bossHp:30000, bossDmg:150 },
 ];
 
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
@@ -2570,7 +2608,7 @@ const CHAPTERS = [
   { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
   { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,9] },
   // v4.70: เจ้าของเปลี่ยนแผนเป็น 3 Chapter แล้วเข้า Endgame (ตัด Ch4/Ch5 เดิมออก) · Ch3 = บทสุดท้าย รวมต้นตอวงจรความหิว
-  { name:'Chapter 3 · Throne of the First Seed', emoji:'🌑', desc:'The final chapter — face the crown planter and end the hunger cycle', ready:false },
+  { name:'Chapter 3 · Throne of the First Seed', emoji:'🌑', desc:'The final chapter — face the crown planter and end the hunger cycle', ready:true, stages:[10,14] },
 ];
 
 const ACHIEVEMENTS=[
@@ -4064,13 +4102,13 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Choose Chapter');
     const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=9,side=14,top=portrait?88:62;
     const cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(CHAPTERS.length/cols),ch=Math.min(portrait?94:82,(h-top-16-gap*(rows-1))/rows);
-    CHAPTERS.forEach((c,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),progressOpen=i===0||!!(Save.data.stageMastery||{})[4],open=!!c.ready&&progressOpen;
+    CHAPTERS.forEach((c,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),progressOpen=i===0||!!(Save.data.stageMastery||{})[((c.stages||[0])[0])-1],open=!!c.ready&&progressOpen;
       const coverKey=i===0?'chapter1_cover':i===1?'chapter2_cover':null,art=coverKey&&this.textures.exists(coverKey)?this._coverImage(x+2,y+2,cw-4,ch-4,coverKey):null;if(art)this.menu.add(art);
       const g=this.add.graphics();g.fillStyle(open?0x17101f:0x1d1924,art?0.48:0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xffc85a:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
       if(open){g.fillStyle(0xffc85a,0.12);g.fillRoundedRect(x+3,y+3,cw-6,ch-6,12);}
       const icon=this.add.text(x+30,y+ch/2,open?c.emoji:'🔒',{fontSize:open?'30px':'25px'}).setOrigin(0.5),name=this.add.text(x+57,y+18,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:open?'#fff4df':'#98909f'}).setOrigin(0,0);
       const desc=this.add.text(x+57,y+40,c.desc,{fontFamily:'sans-serif',fontSize:'9px',color:open?'#cfc2d5':'#746d7a',wordWrap:{width:cw-126},maxLines:2}).setOrigin(0,0);
-      const state=this.add.text(x+cw-13,y+ch/2,open?'Enter  ▶':c.ready?'Clear Chapter 1':'Coming soon',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffe08a':'#756d7e'}).setOrigin(1,0.5);
+      const state=this.add.text(x+cw-13,y+ch/2,open?'Enter  ▶':c.ready?('Clear Chapter '+i):'Coming soon',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffe08a':'#756d7e'}).setOrigin(1,0.5);
       this.menu.add([g,icon,name,desc,state]);this._zone(x,y,cw,ch,open?()=>{this.selectedChapter=i;this.menuScreen='stage';this.buildMenuScreen();}:()=>this.showBanner('🔒 '+c.name,c.ready?'Defeat The Great Hunger and clear Chapter 1 first':'This Chapter is in development',1200));
     });this.menu.setVisible(true);
   }
@@ -4923,7 +4961,7 @@ class Game extends Phaser.Scene {
     if(this.bgTile){ const bgKey='bg'+(i+1); if(this.textures.exists(bgKey))this.bgTile.setTexture(bgKey);
       // v4.50: Chapter 2 bg (bg6-10) เป็นภาพฉากเต็มใบ ไม่ใช่ texture ต่อได้ (seamless) → ปูซ้ำแล้วเห็นลายนางฟ้าเรียงเต็มจอ
       //         แก้: ด่าน 1-5 (bg1-5) คงปูซ้ำ 1.12 เหมือนเดิม · Chapter 2 = ยืดภาพเดียวคลุมทั้งโลก (cover, ไม่ซ้ำ)
-      if(i>=5&&this.textures.exists(bgKey)){ const src=this.textures.get(bgKey).getSourceImage(),cover=Math.max(WORLD/(src.width||WORLD),WORLD/(src.height||WORLD)); this.bgTile.tileScaleX=this.bgTile.tileScaleY=cover; }
+      if(i>=5&&i<10&&this.textures.exists(bgKey)){ const src=this.textures.get(bgKey).getSourceImage(),cover=Math.max(WORLD/(src.width||WORLD),WORLD/(src.height||WORLD)); this.bgTile.tileScaleX=this.bgTile.tileScaleY=cover; }
       else this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
     this.buildStageProps(i);this.buildChapterDepth(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
@@ -5495,7 +5533,7 @@ class Game extends Phaser.Scene {
     const adds=2+this.stageIndex;
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const mkey=this.stageIndex>=10?'c3_mini'+(this.stageIndex-9):this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
     let mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===7?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))));if(this.stageIndex===8)mScale=.82;if(this.stageIndex===9)mScale=.86; b.baseScale=mScale; b._sqX=1; b._sqY=1;
     let mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===6?58:(this.stageIndex===7?55:(this.stageIndex===1?48:(mArt?52:26))))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===6?70:(this.stageIndex===7?73:(this.stageIndex===1?48:(mArt?18:5)))));
@@ -5515,7 +5553,7 @@ class Game extends Phaser.Scene {
   // บอสเรียกลูกน้อง "Miniboss" ออกมาช่วยตอนปรากฏตัว (flag เป็น elite เพื่อไม่ให้ตายแล้วจบเวฟ)
   spawnBossEscorts(n){
     const st=STAGES[this.stageIndex]; if(!st)return;
-    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const mkey=this.stageIndex>=10?'c3_mini'+(this.stageIndex-9):this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const cx=this.boss?this.boss.x:this.player.x, cy=this.boss?this.boss.y:this.player.y;
     for(let i=0;i<n;i++){
       const ang=(i/n)*Math.PI*2+Phaser.Math.FloatBetween(-0.4,0.4), rad=190+Phaser.Math.Between(0,90);
@@ -5547,7 +5585,7 @@ class Game extends Phaser.Scene {
     const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
-    const bkey=this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':this.stageIndex===6?'boss7_mycelium_behemoth':this.stageIndex===7?'boss8_hornet_queen':this.stageIndex===8?'boss9_chronobloom_orchid':this.stageIndex===9?'boss10_true_rootmother':'boss'+(this.stageIndex+1);
+    const bkey=this.stageIndex>=10?'c3_boss'+(this.stageIndex-9):this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':this.stageIndex===6?'boss7_mycelium_behemoth':this.stageIndex===7?'boss8_hornet_queen':this.stageIndex===8?'boss9_chronobloom_orchid':this.stageIndex===9?'boss10_true_rootmother':'boss'+(this.stageIndex+1);
     let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool Full → รีไซเคิล/Cleared กันบอสเป็น null
     const isArt=this.textures.exists(bkey);
@@ -6425,6 +6463,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===1) key=(type==='fast'||type==='dasher')?'e_drain_dasher':type==='shooter'?'e_drain_caster':type==='bomber'?'e_drain_bomber':(type==='tank'||type==='siege')?'e_drain_tank':'e_drain_slime';
     if(this.stageIndex===2) key=(type==='fast'||type==='dasher')?'e_fire_chili':type==='shooter'?'e_fire_grinder':type==='bomber'?'e_fire_bomber':(type==='tank'||type==='siege')?'e_fire_golem':'e_fire_ember';
     if(this.stageIndex===3) key=(type==='fast'||type==='dasher')?'e_ice_shard':type==='shooter'?'e_ice_caster':type==='bomber'?'e_ice_bomber':(type==='tank'||type==='siege')?'e_ice_guardian':'e_ice_wisp';
+    if(this.stageIndex>=10&&this.textures.exists('c3_e_basic')) key=(type==='fast'||type==='dasher')?'c3_e_fast':type==='shooter'?'c3_e_shooter':type==='bomber'?'c3_e_bomber':(type==='tank'||type==='siege')?'c3_e_tank':'c3_e_basic';
     if(this.stageIndex===4) key=(type==='fast'||type==='dasher')?'e_crown_ripper':type==='shooter'?'e_banquet_eye':type==='bomber'?'e_maw_truffle':(type==='tank'||type==='siege')?'e_royal_oven_sentinel':'e_void_crumb';
     const ch2Frame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5}[type]??0,mycoFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,sporeling:6}[type]??0,nectarFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,grub:6}[type]??0,seasonFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0,rootFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0;let atlasFrame=0;
     if(this.stageIndex===5){key='ch2_enemy_atlas';atlasFrame=ch2Frame;}else if(this.stageIndex===6){key='ch2_mycelium_enemy_atlas';atlasFrame=mycoFrame;}else if(this.stageIndex===7){key='ch2_nectar_enemy_atlas';atlasFrame=nectarFrame;}else if(this.stageIndex===8){key='ch2_seasons_enemy_atlas';atlasFrame=seasonFrame;}else if(this.stageIndex===9){key='ch2_root_enemy_atlas';atlasFrame=rootFrame;}

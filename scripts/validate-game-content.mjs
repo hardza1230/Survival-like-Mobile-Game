@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '4.72.0'",
+  "const GAME_VERSION = '4.73.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -349,6 +349,6 @@ if (!source.includes('castPathRecall(dm,ul)') || !source.includes('castOathWard(
 for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)','buildEndgame()','recordEndless(cycle,kills,seconds,character)','The Echo of Hunger']) {
   if (!source.includes(contract)) throw new Error(`Missing Stage 3/4 or endgame contract: ${contract}`);
 }
-for(const contract of ["const bkey=this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper':type==='shooter'?'e_banquet_eye'","this.stage5Pose(b,pose","this.stage5DeathGhost(e)"]){
+for(const contract of ["this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper':type==='shooter'?'e_banquet_eye'","this.stage5Pose(b,pose","this.stage5DeathGhost(e)"]){
   if(!source.includes(contract))throw new Error(`Missing Stage 5 replacement contract: ${contract}`);
 }
