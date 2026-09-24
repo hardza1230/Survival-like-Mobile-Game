@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.69.0';
+const GAME_VERSION = '4.70.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.70.0', date:'2026-09-24', title:'Story roadmap: 3 chapters', items:['The story is now 3 chapters, followed by the endgame','Chapter 3 · Throne of the First Seed is the final chapter']},
   { v:'4.69.0', date:'2026-09-24', title:'Boss Rush', items:['New mode in Activities: fight every boss you’ve beaten back-to-back','Pick Normal/Hard/Hell — harder pays more Sugar and currency','Level-ups between bosses, HP refill, best time & count saved per difficulty']},
   { v:'4.68.0', date:'2026-09-24', title:'Faster cards & custom controls', items:['Level-up cards show the key number big and green','Settings: Dash/Unique button size (Normal/Large/Extra Large)','Settings: left-handed button side']},
   { v:'4.67.0', date:'2026-09-24', title:'What to do next', items:['The hub highlights your best next step after the tutorial','The defeat screen explains what beat you','One tap from defeat to the upgrade that helps most']},
@@ -2559,9 +2560,8 @@ const STAGE_SWARM_BEATS = [
 const CHAPTERS = [
   { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
   { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,9] },
-  { name:'Chapter 3 · The Flavorless Factory', emoji:'🏭', desc:'A machine army is erasing flavor from the world', ready:false },
-  { name:'Chapter 4 · The Shattered Sugar City', emoji:'🏰', desc:'A civil war of the candy kingdom', ready:false },
-  { name:'Chapter 5 · Throne of the First Seed', emoji:'🌑', desc:'Face the crown planter and the origin of the hunger cycle', ready:false },
+  // v4.70: เจ้าของเปลี่ยนแผนเป็น 3 Chapter แล้วเข้า Endgame (ตัด Ch4/Ch5 เดิมออก) · Ch3 = บทสุดท้าย รวมต้นตอวงจรความหิว
+  { name:'Chapter 3 · Throne of the First Seed', emoji:'🌑', desc:'The final chapter — face the crown planter and end the hunger cycle', ready:false },
 ];
 
 const ACHIEVEMENTS=[
