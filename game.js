@@ -37,9 +37,14 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.62.0';
+const GAME_VERSION = '4.63.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.63.0', date:'2026-09-24', title:'Cleaner menus on phones', items:[
+    'Screen titles now shrink to fit between the Back button and your Sugar, so long titles no longer run underneath them',
+    'Fixed text overlapping the title in portrait on the Bestiary, Mochi Bazaar, Updates, Rank Perks, Character Stats and Flavor Weave screens',
+    'The Skills / Relics bar on the level-up and pause screens no longer covers its own labels',
+  ]},
   { v:'4.62.0', date:'2026-09-24', title:'Codex brought up to date', items:[
     'Skill Codex now shows what’s actually in the game: ⚔️ Weapons (each character’s signature upgrades, Mutations and Evolution) and 🔮 Relics (all Relics and Synergy pairs). The retired auto-skill and passive lists are gone',
     'Bestiary adds all 8 Chapter 2 minibosses and bosses from C2-2 to C2-5, and now has pages',
@@ -3083,6 +3088,7 @@ class Game extends Phaser.Scene {
     const rowFn=(y,label,labelColor,keys,emojiOf,lvlOf,chipColor,awkOf,isPass,labelX,chipX0)=>{
       const lab=this.add.text(labelX,y+chip/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:labelColor}).setOrigin(0,0.5);
       cont.add(lab);
+      chipX0=Math.max(chipX0,labelX+lab.width+8);   // v4.63: เริ่มไอคอนหลังป้ายจริง (เดิม x คงที่ → ไอคอนทับคำว่า Skills/Relics)
       if(!keys.length){ const none=this.add.text(chipX0,y+chip/2,'— none yet',{fontFamily:'sans-serif',fontSize:'11px',color:'#6a6078'}).setOrigin(0,0.5); cont.add(none); return; }
       let x=chipX0;
       keys.forEach(k=>{ const awk=awkOf&&awkOf(k), lvl=lvlOf(k), ik=awk?null:this.iconKey(k,isPass);
@@ -3363,12 +3369,16 @@ class Game extends Phaser.Scene {
     const headY=compact?27:52;
     const t=this.add.text(w/2,headY,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'20px':'22px',color:'#ff8fb5'}).setOrigin(0.5);
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'14px':'16px',color:'#ffe08a'}).setOrigin(1,0.5);
+    // v4.63: ชื่อหน้าต้องอยู่ระหว่างปุ่ม Back (ขวาสุด x=94) กับตัวนับ Sugar — ยาวเกินให้ย่อฟอนต์ลง (เดิมจอแนวตั้งชื่อยาววิ่งทับปุ่ม)
+    const room=2*Math.min(w/2-94-8,(w-14-sugar.width-8)-w/2);let fs=compact?20:22;while(t.width>room&&fs>12){fs--;t.setFontSize(fs+'px');}
     this.menu.add(veil?[bg,veil,t,sugar]:[bg,t,sugar]);
     const by=compact?10:38, bh=compact?32:34;
     const bg2=this.add.graphics(); bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(12,by,82,bh,11); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(12,by,82,bh,11);
     const bt=this.add.text(53,by+bh/2,'‹ Back',{fontFamily:'sans-serif',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
     this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); });
   }
+  // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
+  _hdrShift(){ return this.W<=this.H?30:0; }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
@@ -3400,14 +3410,15 @@ class Game extends Phaser.Scene {
     if(Save.data.seenVersion!==GAME_VERSION){ Save.data.seenVersion=GAME_VERSION; Save.save(); }   // เปิดดูข่าว = Cleared badge Updates
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Updates');
     const w=this.W,h=this.H;
-    const cur=this.add.text(w/2,53,'Current version v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
+    const hs=this._hdrShift();
+    const cur=this.add.text(w/2,53+hs,'Current version v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
     this.menu.add(cur);
     // ปุ่มดาวน์โหลด APK (เปิดหน้า releases ในเบราว์เซอร์)
-    const dlW=Math.min(w-40,250),dx=w/2-dlW/2,dy=65,dlH=34;
+    const dlW=Math.min(w-40,250),dx=w/2-dlW/2,dy=65+hs,dlH=34;
     const dg=this.add.graphics(); dg.fillStyle(COLORS.mint,1); dg.fillRoundedRect(dx,dy,dlW,dlH,11); dg.lineStyle(2,0xffffff,0.3); dg.strokeRoundedRect(dx,dy,dlW,dlH,11);
     const dt=this.add.text(w/2,dy+dlH/2,'📥 Download latest APK',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#12331f'}).setOrigin(0.5);
     this.menu.add([dg,dt]); this._zone(dx,dy,dlW,dlH,()=>{ try{ window.open(RELEASES_URL,'_blank'); }catch(e){} });
-    const portrait=w<=h, cols=portrait?1:3, gap=portrait?8:9, y=portrait?116:110;
+    const portrait=w<=h, cols=portrait?1:3, gap=portrait?8:9, y=portrait?116+hs:110;
     const cw=portrait?w-28:(w-28-gap*2)/3;
     // v4.52: แบ่งหน้าดู CHANGELOG ทั้งหมดย้อนหลังได้ (เดิมโชว์แค่ 3 อันล่าสุด) — 3 การ์ด/หน้า + ปุ่ม ‹ › เลื่อน
     const navH=26, perPage=3, pages=Math.max(1,Math.ceil(CHANGELOG.length/perPage));
@@ -3467,12 +3478,13 @@ class Game extends Phaser.Scene {
     // สรุปโบนัสรวม (สแตตถาวร + Sugar)
     const totLv=BESTIARY.reduce((a,m)=>a+bestiaryLv(m.id),0);
     const bt=bestiaryTotals(),bText=bestiaryBonusText(bt)||'no bonus yet';
-    const sumTxt=this.add.text(w/2,50,'Kill tiers ('+totLv+'/'+(BESTIARY.length*BEST_MAX_TIER)+') = permanent stats + 🍬',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5);
-    const sumBonus=this.add.text(w/2,64,'Total: '+bText,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-28},align:'center'}).setOrigin(0.5,0);
+    const hs=this._hdrShift();
+    const sumTxt=this.add.text(w/2,50+hs,'Kill tiers ('+totLv+'/'+(BESTIARY.length*BEST_MAX_TIER)+') = permanent stats + 🍬',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5);
+    const sumBonus=this.add.text(w/2,64+hs,'Total: '+bText,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-28},align:'center'}).setOrigin(0.5,0);
     this.menu.add([sumTxt,sumBonus]);
     const portrait=w<=h, cols=portrait?2:3, gap=7,cardW=(w-28-gap*(cols-1))/cols,marginX=14;
     const rows=portrait?5:3,perPage=cols*rows,pages=Math.max(1,Math.ceil(BESTIARY.length/perPage));this._bestPage=Phaser.Math.Clamp(this._bestPage||0,0,pages-1);   // v4.62: แบ่งหน้า (28 ตัว)
-    const pageItems=BESTIARY.slice(this._bestPage*perPage,this._bestPage*perPage+perPage), y0=portrait?92:72,cardH=Math.min(portrait?108:88,(h-y0-46-gap*(rows-1))/rows);
+    const pageItems=BESTIARY.slice(this._bestPage*perPage,this._bestPage*perPage+perPage), y0=portrait?(92+hs):72,cardH=Math.min(portrait?108:88,(h-y0-46-gap*(rows-1))/rows);
     const starColors=['#4a4059','#8bd3a0','#7fc9ff','#b98cff','#ffd166','#ff8fb5','#ff9a5a','#ff5a6e','#ff3d8f'];
     pageItems.forEach((m,idx)=>{
       const col=idx%cols, row=Math.floor(idx/cols);
@@ -3527,7 +3539,7 @@ class Game extends Phaser.Scene {
   buildStats(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📊 Character Stats');
     const w=this.W,p=this.previewStats(),ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,pow=Save.power(Save.data.character);
-    let y=58;
+    let y=58+this._hdrShift();
     const hd=this.add.text(w/2,y,ch.emoji+' '+ch.name+'  ·  ⚡ Power '+pow,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5); y+=16;
     const note=this.add.text(w/2,y,'Real loadout numbers (weapon + weave + gear + bestiary + perks)',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5); this.menu.add([hd,note]); y+=22;
     const rows=[
@@ -4053,11 +4065,11 @@ class Game extends Phaser.Scene {
     const rn=this.add.text(w/2,ry+17,'⭐ '+rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
     this.menu.add([rk,rn]);
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
-    const rpFree=Save.rankPointsFree(), rkW=124,rkH=30,rkX=w-14-rkW,rkY=portrait?70:44;
+    const rpFree=Save.rankPointsFree(), rkW=124,rkH=30,rkX=portrait?w/2-rkW/2:w-14-rkW,rkY=portrait?ry+32:44;   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
     const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
     const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
     this.menu.add([rkg,rkt]); this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
-    const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?126:86, barH=9, need=UPG_ORDER.length*TAL_MAX;
+    const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?158:86, barH=9, need=UPG_ORDER.length*TAL_MAX;
     const frac=Phaser.Math.Clamp(Save.talFilled()/need,0,1);
     const bg=this.add.graphics(); bg.fillStyle(0x2c2338,1); bg.fillRoundedRect(bx,by,barW,barH,6);
     bg.fillStyle(allMax?0x8bd3a0:0xffc24a,1); if(frac>0)bg.fillRoundedRect(bx,by,Math.max(barH,barW*frac),barH,6);
@@ -4066,7 +4078,7 @@ class Game extends Phaser.Scene {
       {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':'#8f849f'}).setOrigin(0.5);
     this.menu.add(prog);
     if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Sugar!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
-    const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-238-gapY*2)/3):Math.min(132,h-170),top=portrait?166:112;
+    const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-270-gapY*2)/3):Math.min(132,h-170),top=portrait?198:112;
     UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.talLvl(k), tot=Save.talTotal(k), maxed=lvl>=TAL_MAX;
       const cost=maxed?0:Save.talCost(k), afford=(Save.data.sugar||0)>=cost;
       const x=portrait?marginX:marginX+i*(cardW+gapX), y=portrait?top+i*(cardH+gapY):top;
@@ -4101,11 +4113,12 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives');
     const w=this.W,h=this.H;
     const free=Save.rankPointsFree(),total=Save.rankPointsTotal();
-    const rpTxt=this.add.text(w/2,56,'RP  '+free+' free / '+total,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:free>0?'#ffd166':'#8f849f'}).setOrigin(0.5);
-    const sub=this.add.text(w/2,73,'Earn RP by ranking up the 3 cores · deeper tiers unlock as you invest',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#b7abc9'}).setOrigin(0.5);
+    const hs=this._hdrShift();
+    const rpTxt=this.add.text(w/2,56+hs,'RP  '+free+' free / '+total,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:free>0?'#ffd166':'#8f849f'}).setOrigin(0.5);
+    const sub=this.add.text(w/2,73+hs,'Earn RP by ranking up the 3 cores · deeper tiers unlock as you invest',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#b7abc9'}).setOrigin(0.5);
     this.menu.add([rpTxt,sub]);
     const tierName={1:'TIER 1 · Foundation',2:'TIER 2 · Utility',3:'TIER 3 · Mastery'};
-    const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols,cardH=90; let y=88;
+    const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols,cardH=90; let y=88+hs;
     [1,2,3].forEach(tier=>{
       const unlocked=Save.perkTierUnlocked(tier),req=PERK_TIER_REQ[tier]||0,priorSpent=tier===3?(Save.perkTierSpent(1)+Save.perkTierSpent(2)):Save.perkTierSpent(1),perks=RANK_PERKS.filter(p=>(p.tier||1)===tier);
       const th=this.add.text(14,y,tierName[tier],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:unlocked?'#ffd9a8':'#7a7088'}).setOrigin(0,0);
@@ -4441,9 +4454,10 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏪 Mochi Bazaar','','gLoadout');
     const w=this.W,h=this.H, tab=this._bazTab||'buy';
     // ทรัพยากรบนหัว
-    const res=this.add.text(w/2,52,'🍬 '+(Save.data.sugar||0)+'   🔩 '+(Save.data.shards||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(0.5); this.menu.add(res);
+    const hs=this._hdrShift();
+    const res=this.add.text(w/2,52+hs,'🍬 '+(Save.data.sugar||0)+'   🔩 '+(Save.data.shards||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(0.5); this.menu.add(res);
     // แท็บ
-    const tabs=[['buy','🛒 Buy'],['gamble','🎲 Gamble'],['sell','💰 Sell']], tw=(w-28)/3, ty=66;
+    const tabs=[['buy','🛒 Buy'],['gamble','🎲 Gamble'],['sell','💰 Sell']], tw=(w-28)/3, ty=66+hs;
     tabs.forEach(([k,lbl],i)=>{ const x=14+i*tw, on=k===tab; const g=this.add.graphics(); g.fillStyle(on?0xff8f3a:0x2c2338,1); g.fillRoundedRect(x+2,ty,tw-4,28,8); g.lineStyle(1.4,on?0xffd0a0:0x4a4059,1); g.strokeRoundedRect(x+2,ty,tw-4,28,8);
       const t=this.add.text(x+tw/2,ty+14,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#fff':'#9a90ab'}).setOrigin(0.5); this.menu.add([g,t]); this._zone(x+2,ty,tw-4,28,()=>{ this._bazTab=k; this.buildBazaar(); }); });
     let y=ty+40;
@@ -4615,10 +4629,12 @@ class Game extends Phaser.Scene {
     this.pauseUI.add([bg,t,sub]);
     // แผงสกิล/พรที่Owned
     const panelY=82,panelH=72,px=20,pw=w-40;
-    const pnl=this.add.graphics(); pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,panelH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,panelH,14);
+    const pnl=this.add.graphics();
     const ph=this.add.text(px+14,panelY+8,'Held',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
-    const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
+    const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);
+    const pH=Math.max(panelH,heldBot-panelY+6);   // v4.63: กรอบสูงตามเนื้อหาจริง (แถว Relic เคยล้นออกนอกกรอบ)
+    pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,pH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,pH,14);   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const portrait=w<=h,gap=portrait?12:16,bw=portrait?Math.min(w-48,330):Math.min(270,(w-56-gap)/2),bh=54;
     const by=portrait?h-138:Math.max(196,h-68),left=portrait?w/2:w/2-gap/2-bw/2,right=portrait?w/2:w/2+gap/2+bw/2;
     this.uiPillBtn(this.pauseUI,left,by,bw,bh,COLORS.mint,'▶','Resume',null);
