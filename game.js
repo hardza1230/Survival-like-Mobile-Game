@@ -34,9 +34,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.49.0';
+const GAME_VERSION = '4.50.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.50.0', date:'2026-09-24', title:'Fix C2-4 giant enemy & tiled backgrounds', items:[
+    'Fixed the Four-Season Conservatory (C2-4) elite spawning as a huge, hard-to-hit giant — it was using an old scale and hitbox that did not match its Chapter 2 artwork',
+    'Fixed Chapter 2 stage backgrounds tiling and repeating across the screen; the scene art now fills the arena as a single image',
+  ]},
   { v:'4.49.0', date:'2026-09-24', title:'Craft targeting, auto-roll & Legend drop-only', items:[
     'Legend gear is now drop-only — the Forge button has been removed, so Legends come from stage and Hell drops instead of shard forging',
     'Affix Forge: tap any mod in the roll pool to target it, then use Auto-Roll to keep spinning until you land that exact mod (or run out of currency)',
@@ -4592,7 +4596,11 @@ class Game extends Phaser.Scene {
     const objectivePool=Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(objectivePool.slice());
     Sfx.playStageBgm(i+1);
     this.gridBg.fillColor=st.grid;
-    if(this.bgTile){ this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; if(this.textures.exists('bg'+(i+1)))this.bgTile.setTexture('bg'+(i+1)); }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
+    if(this.bgTile){ const bgKey='bg'+(i+1); if(this.textures.exists(bgKey))this.bgTile.setTexture(bgKey);
+      // v4.50: Chapter 2 bg (bg6-10) เป็นภาพฉากเต็มใบ ไม่ใช่ texture ต่อได้ (seamless) → ปูซ้ำแล้วเห็นลายนางฟ้าเรียงเต็มจอ
+      //         แก้: ด่าน 1-5 (bg1-5) คงปูซ้ำ 1.12 เหมือนเดิม · Chapter 2 = ยืดภาพเดียวคลุมทั้งโลก (cover, ไม่ซ้ำ)
+      if(i>=5&&this.textures.exists(bgKey)){ const src=this.textures.get(bgKey).getSourceImage(),cover=Math.max(WORLD/(src.width||WORLD),WORLD/(src.height||WORLD)); this.bgTile.tileScaleX=this.bgTile.tileScaleY=cover; }
+      else this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
     this.buildStageProps(i);this.buildChapterDepth(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
     const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
@@ -4762,9 +4770,9 @@ class Game extends Phaser.Scene {
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
-    if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
+    if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
-    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:this.stageIndex===5?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling'; e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
+    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
   }
   // เวฟธรรมดา = "Survive the timer" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){
