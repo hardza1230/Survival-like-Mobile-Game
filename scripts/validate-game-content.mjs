@@ -3,6 +3,7 @@ import { inflateSync } from 'node:zlib';
 
 const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
+// Affix Forge release gate: keep the roulette reveal and all three mod roles wired into shipped builds.
 for(const contract of [
   "const GAME_VERSION = '4.46.0'",
   "const AFFIX_CATEGORY = {",
