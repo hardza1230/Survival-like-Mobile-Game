@@ -29,9 +29,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.35.0';
+const GAME_VERSION = '4.36.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.36.0', date:'2026-09-24', title:'More item mods to chase', items:[
+    'Added 3 new common mods: Execute (bonus damage below 40% HP), Lifesteal, and Heal Power',
+    'Added 3 rare high-level mods only found on iLv 25+/45+ gear: Berserker (huge damage, but you take more too), Sage Focus (much faster cooldown, less crit), Gambler (massive crit damage on rings)',
+  ]},
   { v:'4.35.0', date:'2026-09-22', title:'High enhancement can shatter your gear', items:[
     'Enhancing to +4 and beyond now carries a real risk: the gear can drop a level, or shatter and be lost entirely (a small chance at +4, climbing toward +9)',
     'The enhancement cap is +10 — pushing a piece all the way is a genuine gamble now',
@@ -1558,17 +1562,31 @@ const AFFIX_POOL = [
   { id:'crit', slots:['weapon','gloves','amulet','ring'],  kind:'prefix', emoji:'🎯', label:'Crit',     pre:'Sharp',   fmt:v=>'+'+v+'%',  tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
   { id:'critdmg', slots:['weapon','gloves','ring'],kind:'prefix',emoji:'💢', label:'Crit DMG', pre:'Fierce',  fmt:v=>'+'+v+'%',  tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
   { id:'cd', slots:['weapon','gloves','amulet','ring'],    kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift',  fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
+  { id:'execute', slots:['weapon','gloves','ring'],kind:'prefix', emoji:'🗡️', label:'Execute',  pre:'Vicious', fmt:v=>'+'+v+'%',  tiers:[[24,32],[17,23],[11,16],[7,10],[4,6]], apply:(p,v)=>{ p.lowHpDmg=(p.lowHpDmg||0)+v/100; } },
   // ── Suffix (สายรับ/utility) ──
   { id:'hp', slots:['armor','amulet'],    kind:'suffix', emoji:'❤️', label:'HP',       suf:'of the Lion', fmt:v=>'+'+v,      tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
   { id:'def', slots:['armor','gloves','amulet'],   kind:'suffix', emoji:'🛡️', label:'Defense',  suf:'of Stone',    fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
   { id:'spd', slots:['boots'],   kind:'suffix', emoji:'👟', label:'Speed',    suf:'of the Wind',   fmt:v=>'+'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
   { id:'pick', slots:['boots','amulet','ring'],  kind:'suffix', emoji:'🧲', label:'Pickup',   suf:'of Magnetism',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
   { id:'regen', slots:['armor','amulet','ring'], kind:'suffix', emoji:'💗', label:'Regen/s',  suf:'of the Spring',fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]],   apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
+  { id:'lifesteal', slots:['weapon','gloves','ring'],kind:'suffix', emoji:'🩸', label:'Lifesteal',suf:'of the Leech',  fmt:v=>'+'+(v/10)+' HP', tiers:[[16,22],[11,15],[7,10],[4,6],[2,3]], apply:(p,v)=>{ p.lifesteal=(p.lifesteal||0)+v/10; } },
+  { id:'healpow', slots:['armor','amulet'],  kind:'suffix', emoji:'💊', label:'Heal Power', suf:'of Nourishment',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[17,24],[10,16],[5,9]], apply:(p,v)=>{ p.healEffect=(p.healEffect||1)+v/100; } },
 ];
 const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
 // item level → tier ดีสุดที่สุ่มได้ (ฐานดี = โรลได้ดีกว่า): legend→T1, epic→T2, rare→T3, common→T4
 const BASE_BEST_TIER = { start:5, common:4, rare:3, epic:2, legend:1 };
-const SPECIAL_AFFIX_POOL = []; // Future schema: {id,kind,label,tiers,apply,baseIds?,baseTags?,slots?,minItemLevel?,exclusive:true}
+// v4.36: mod พิเศษเฉพาะช่อง iLv สูง (endgame chase) — เทรดออฟจริง ไม่ใช่แค่ +เลข ใช้ hook เดิม (dmgMul/dmgTakenMul/cdMul/critChance/critMul) ไม่มีกลไกใหม่
+const SPECIAL_AFFIX_POOL = [
+  { id:'berserk', kind:'prefix', label:'Berserker',  emoji:'💀', pre:'Berserk',  slots:['weapon','gloves'], minItemLevel:45, bestTier:2,
+    fmt:v=>'+'+v+'%', tiers:[[22,28],[16,21],[11,15],[7,10],[4,6]],
+    apply:(p,v)=>{ p.dmgMul*=(1+v/100); p.dmgTakenMul*=(1+v*0.6/100); } }, // เกลือ: ดาเมจแรงขึ้นเยอะ แต่รับดาเมจเพิ่มด้วย (glass cannon)
+  { id:'focus', kind:'prefix', label:'Sage Focus', emoji:'🧘', pre:'Focused', slots:['amulet','ring'], minItemLevel:45, bestTier:2,
+    fmt:v=>'-'+v+'%', tiers:[[11,14],[8,10],[6,7],[4,5],[2,3]],
+    apply:(p,v)=>{ p.cdMul=Math.max(0.4,(p.cdMul||1)*(1-v/100)); p.critChance=Math.max(0,(p.critChance||0)-v*0.35/100); } }, // คูลดาวน์ไวมาก แต่คริติคอลลดลง
+  { id:'gambler', kind:'suffix', label:'Gambler',  emoji:'🎲', suf:'of Fortune', slots:['ring'], minItemLevel:25, bestTier:3,
+    fmt:v=>'+'+v+'%', tiers:[[70,90],[50,69],[34,49],[22,33],[13,21]],
+    apply:(p,v)=>{ p.critMul=(p.critMul||1.55)+v/100; } }, // เดิมพันคริติคอลก้อนใหญ่ ไม่มีข้อเสีย แต่ tier แข่งกับ crit prefix ปกติที่ถูกจำกัดไว้แล้ว
+];
 function allAffixDefs(){return AFFIX_POOL.concat(SPECIAL_AFFIX_POOL);}
 function affixDef(id){return allAffixDefs().find(a=>a.id===id);}
 function craftAffixPoolForItem(item){if(!item)return[];const base=GEAR_ALL.find(g=>g.id===item.baseId),tags=new Set((base&&base.craftTags)||[]);
