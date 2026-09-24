@@ -34,9 +34,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.51.0';
+const GAME_VERSION = '4.52.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.52.0', date:'2026-09-24', title:'Browse the full update history', items:[
+    'The Updates page now pages through every past version instead of only showing the three latest — use the ‹ › arrows to look back through the whole changelog',
+  ]},
   { v:'4.51.0', date:'2026-09-24', title:'Fix immortal Chapter 2 bosses', items:[
     'Fixed Chapter 2 bosses (Mycelium Marsh through Root Throne) sometimes becoming permanently invincible at a phase-change health threshold and never dying',
   ]},
@@ -3302,13 +3305,24 @@ class Game extends Phaser.Scene {
     this.menu.add([dg,dt]); this._zone(dx,dy,dlW,dlH,()=>{ try{ window.open(RELEASES_URL,'_blank'); }catch(e){} });
     const portrait=w<=h, cols=portrait?1:3, gap=portrait?8:9, y=portrait?116:110;
     const cw=portrait?w-28:(w-28-gap*2)/3;
-    const cardH=portrait?Math.max(112,Math.min(170,(h-y-18-gap*2)/3)):h-y-12;
-    CHANGELOG.slice(0,3).forEach((c,i)=>{
+    // v4.52: แบ่งหน้าดู CHANGELOG ทั้งหมดย้อนหลังได้ (เดิมโชว์แค่ 3 อันล่าสุด) — 3 การ์ด/หน้า + ปุ่ม ‹ › เลื่อน
+    const navH=26, perPage=3, pages=Math.max(1,Math.ceil(CHANGELOG.length/perPage));
+    this.newsPage=Math.max(0,Math.min(pages-1,this.newsPage||0));
+    const rows=portrait?perPage:1;
+    const cardH=portrait?Math.max(104,Math.min(170,(h-y-18-navH-gap*2)/rows)):h-y-12-navH;
+    const start=this.newsPage*perPage;
+    CHANGELOG.slice(start,start+perPage).forEach((c,i)=>{
       const cx=14+(i%cols)*(cw+gap), cy=y+Math.floor(i/cols)*(cardH+gap),g=this.add.graphics();g.fillStyle(0x2c2338,0.94);g.fillRoundedRect(cx,cy,cw,cardH,12);g.lineStyle(1.5,0x4a4059,0.9);g.strokeRoundedRect(cx,cy,cw,cardH,12);this.menu.add(g);
       const head=this.add.text(cx+12,cy+10,'v'+c.v+' · '+c.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:portrait?'12px':'11px',color:'#ff9ec4',wordWrap:{width:cw-24}}).setOrigin(0,0);
       const dd=this.add.text(cx+cw-12,cy+12,c.date,{fontFamily:'sans-serif',fontSize:'9px',color:'#7a7088'}).setOrigin(1,0);this.menu.add([head,dd]);
       let iy=cy+36;c.items.slice(0,portrait?3:4).forEach(it=>{const short=it.length>80?it.slice(0,79)+'…':it;const li=this.add.text(cx+12,iy,'• '+short,{fontFamily:'sans-serif',fontSize:portrait?'10px':'8.5px',color:'#c7bdd6',wordWrap:{width:cw-24}}).setOrigin(0,0);this.menu.add(li);iy+=li.height+5;});
     });
+    // แถบเลื่อนหน้า ‹ N / total ›
+    const navY=h-navH-8;
+    const mk=(cx,label,enabled,fn)=>{const bw=46,g=this.add.graphics();g.fillStyle(enabled?0x463653:0x28212e,1);g.fillRoundedRect(cx-bw/2,navY,bw,navH,9);g.lineStyle(1,enabled?0xa98cf0:0x44394d,1);g.strokeRoundedRect(cx-bw/2,navY,bw,navH,9);const t=this.add.text(cx,navY+navH/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:enabled?'#f5eaff':'#665d70'}).setOrigin(0.5);this.menu.add([g,t]);if(enabled)this._zone(cx-bw/2,navY,bw,navH,fn);};
+    mk(w/2-70,'‹',this.newsPage>0,()=>{this.newsPage--;this.buildNews();});
+    const pt=this.add.text(w/2,navY+navH/2,(this.newsPage+1)+' / '+pages,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d4c6df'}).setOrigin(0.5);this.menu.add(pt);
+    mk(w/2+70,'›',this.newsPage<pages-1,()=>{this.newsPage++;this.buildNews();});
     this.menu.setVisible(true);
   }
   // 🍳 สมุดสูตร — โชว์สูตร (COMBOS) แยกตามตัวละคร · ค้นพบแล้ว (Save.cookbook) / ยังไม่พบ / Signature Recipe ⭐
