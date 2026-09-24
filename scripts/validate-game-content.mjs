@@ -327,4 +327,3 @@ for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)','buildEndgame(
 for(const contract of ["const bkey=this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper':type==='shooter'?'e_banquet_eye'","this.stage5Pose(b,pose","this.stage5DeathGhost(e)"]){
   if(!source.includes(contract))throw new Error(`Missing Stage 5 replacement contract: ${contract}`);
 }
-45416a6c3e26e2cb594536e0ad84d441d03d9ed7
