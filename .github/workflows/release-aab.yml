@@ -22,21 +22,25 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
-      - name: Setup Java (JDK 17)
+      - name: Setup Java (JDK 21)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
 
       - name: Install dependencies
         run: npm install
+
+      # ตัวขึ้นสโตร์ฝังเกมในแอป (ไม่โหลดจาก GitHub Pages) — APK ตัวเทสยังใช้ live update
+      - name: Bundle game files in the app (no live server)
+        run: node scripts/strip-live-server.mjs
 
       - name: Assemble web assets (www/)
         run: npm run build:www
@@ -49,6 +53,10 @@ jobs:
 
       - name: Force portrait and fullscreen
         run: node scripts/set-android-landscape.mjs
+
+      # versionCode/versionName จาก GAME_VERSION (Play Store ต้องการ versionCode ที่เพิ่มขึ้นทุกครั้ง)
+      - name: Set app version from GAME_VERSION
+        run: node scripts/set-android-version.mjs
 
       - name: Inject release signing config
         run: node scripts/inject-signing.mjs
