@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.68.0';
+const GAME_VERSION = '4.69.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.69.0', date:'2026-09-24', title:'Boss Rush', items:['New mode in Activities: fight every boss you’ve beaten back-to-back','Pick Normal/Hard/Hell — harder pays more Sugar and currency','Level-ups between bosses, HP refill, best time & count saved per difficulty']},
   { v:'4.68.0', date:'2026-09-24', title:'Faster cards & custom controls', items:['Level-up cards show the key number big and green','Settings: Dash/Unique button size (Normal/Large/Extra Large)','Settings: left-handed button side']},
   { v:'4.67.0', date:'2026-09-24', title:'What to do next', items:['The hub highlights your best next step after the tutorial','The defeat screen explains what beat you','One tap from defeat to the upgrade that helps most']},
   { v:'4.66.0', date:'2026-09-24', title:'Easier taps', items:['Small menu buttons now have a bigger touch area','Buttons flash and ripple when tapped','Menu screens slide in smoothly']},
@@ -1644,7 +1645,8 @@ const HUB_GROUPS = {
   gActivity:{ title:'🎉 Activities', rows:[
     ['daily','📅','Daily Missions','Daily reward and challenge stage'],
     ['achievements','🏆','Achievements','Milestones and Sugar rewards'],
-    ['endgame','🌙','Endgame','Ascension · Endless · secret boss'] ] },
+    ['endgame','🌙','Endgame','Ascension · Endless · secret boss'],
+    ['bossrush','👑','Boss Rush','Fight every boss you’ve beaten back-to-back'] ] },
   gMore:{ title:'⚙ More', rows:[
     ['settings','⚙','Settings','Sound, shake, flash and VFX'],
     ['__tutorial','🎓','How to Play','Replay the controls & combat tutorial'] ] },
@@ -2733,7 +2735,7 @@ class Game extends Phaser.Scene {
         return; }
       if(this.state==='menu'){ this.handleTap(p.x,p.y); return; }
       if(this.state==='tutorial'){this.advanceTutorial();return;}
-      if(this.state==='dead'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
+      if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
       if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
@@ -3420,7 +3422,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -3730,6 +3732,54 @@ class Game extends Phaser.Scene {
     if(!d.challengeDone&&unlocked)this._zone(w/2-bw/2,cby-20,bw,40,()=>{this._dailyRun=true;this.stageDiff=spec.diff;this.startRun(spec.stage);});
     this.menu.setVisible(true);
   }
+  // 👑 BOSS RUSH — สู้บอสทุกตัวที่เคยล้มติดกัน · เลือกความยาก (กฎเหล็ก: ยิ่งยากรางวัลยิ่งดี) · จับเวลา + สถิติดีสุด
+  bossRushList(){ const m=Save.data.stageMastery||[],out=[]; for(let i=0;i<STAGES.length;i++)if(m[i]&&isStageReady(i))out.push(i); return out; }
+  buildBossRush(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('👑 Boss Rush');
+    const w=this.W,h=this.H,portrait=w<=h,list=this.bossRushList(),best=Save.data.bossRushBest||{},top=portrait?100:70,cw=Math.min(w-28,460),cx=(w-cw)/2;
+    const diff=this._rushDiff||1; this._rushDiff=diff;
+    const T=(y,t,sz,c,st)=>{const o=this.add.text(w/2,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-20}}).setOrigin(0.5,0);this.menu.add(o);return o;};
+    T(top,'Fight every boss you’ve defeated, back-to-back.\nNo waves — just bosses. Level-ups between fights.',12,'#e6dcf0');
+    const locked=list.length<2;
+    // รายชื่อบอส
+    const rowY=top+48,rh=Math.min(30,(h*0.40)/Math.max(1,STAGES.length));
+    STAGES.forEach((st,i)=>{ const y=rowY+i*rh,on=list.includes(i); const t=this.add.text(cx+14,y,(on?'✅ ':'🔒 ')+st.emoji+' '+(st.boss||st.name),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:on?'#ffffff':'#6f6578'}).setOrigin(0,0); this.menu.add(t); });
+    let y=rowY+STAGES.length*rh+10;
+    if(locked){ T(y,'🔒 Defeat at least 2 stage bosses to unlock Boss Rush',13,'#ff9bb5','bold'); this.menu.setVisible(true); return; }
+    const b=best[diff]; T(y,'🏆 Best ('+DIFFS[diff-1].name+'): '+(b?(b.n+' bosses · '+this._fmtTime(b.t)):'—'),12,'#ffe08a','bold'); y+=30;
+    // เลือกความยาก
+    const dw=(cw-16)/3; DIFFS.slice(0,3).forEach((d,i)=>{ const x=cx+i*(dw+8),sel=diff===i+1,g=this.add.graphics(); g.fillStyle(sel?0x5a3d7a:0x241a30,1); g.fillRoundedRect(x,y,dw,40,10); g.lineStyle(2,sel?0xffd166:0x4a4059,1); g.strokeRoundedRect(x,y,dw,40,10);
+      const t=this.add.text(x+dw/2,y+20,d.emoji+' '+d.name+'\n×'+d.reward+' reward',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff',align:'center'}).setOrigin(0.5); this.menu.add([g,t]); this._zone(x,y,dw,40,()=>{this._rushDiff=i+1;this.buildBossRush();}); });
+    y+=56;
+    this.uiPillBtn(this.menu,w/2,y+26,Math.min(cw,300),52,COLORS.pink,'👑','Start Boss Rush ('+list.length+')',()=>{ this.stageDiff=this._rushDiff||1; this._bossRushRequested=true; this.startRun(list[0]); });
+    this.menu.setVisible(true);
+  }
+  _fmtTime(t){ t=Math.max(0,Math.round(t||0)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
+  // เข้าบอสถัดไปของ rush (คง build/เลเวลไว้ ไม่ reset loadout)
+  bossRushNext(){ const i=this._rushList[this._rushPos]; this._finalStoryShown=true;
+    this.state='loading'; this.player.setVelocity(0,0);
+    this.ensureStageAudio(i,()=>{ this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects(); this.state='play'; this.startStage(i); }); }
+  bossRushBossDown(){ const d=this.stageDiff||1,dr=this.diffMul().reward,si=this.stageIndex;
+    const sug=Math.round((50+si*25)*dr); this.sugarStage+=sug; this.sugarRun=(this.sugarRun||0)+sug; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
+    this._rushPos++; this._rushDown=this._rushPos;
+    if(this._rushPos>=this._rushList.length){ this.finishBossRush(true); return; }
+    this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.40);
+    this.showBanner('👑 Boss '+this._rushPos+'/'+this._rushList.length+' down!','+🍬'+sug+' · +40% HP · next boss incoming',2200);
+    this.pendingLvl=(this.pendingLvl||0)+2; this.time.delayedCall(2300,()=>{ if(this.state==='play')this.bossRushNext(); else if(this.state==='levelup')this._rushNextPending=true; }); }
+  recordBossRush(){ const d=this.stageDiff||1,n=this._rushDown||0,t=this.elapsed-(this._rushT0||0); if(!Save.data.bossRushBest)Save.data.bossRushBest={};
+    const b=Save.data.bossRushBest[d]; let isBest=false; if(n>0&&(!b||n>b.n||(n===b.n&&t<b.t))){Save.data.bossRushBest[d]={n,t};isBest=true;} Save.save(); return {n,t,isBest}; }
+  finishBossRush(won){ this.bossRush=false; const r=this.recordBossRush(),dr=this.diffMul().reward;
+    if(won){ const bonus=Math.round((120+this._rushList.length*40)*dr); this.sugarStage+=bonus; this.grantCurrencyReward(2+this._rushList.length,this.currencyTierFor(),'👑 Boss Rush complete!'); }
+    const sug=this.sugarStage||0; Save.addSugar(sug); this.sugarStage=0;
+    this.state='rushDone'; this.physics.pause(); this.player.setVelocity(0,0); this.over.removeAll(true); this._overBtns=[];
+    const w=this.W,h=this.H,box=[this.add.rectangle(0,0,w,h,0x0b0714,1).setOrigin(0,0),
+      this.add.text(w/2,h*0.22,won?'👑':'💥',{fontSize:'64px'}).setOrigin(0.5),
+      this.add.text(w/2,h*0.33,won?'Boss Rush Cleared!':'Boss Rush Over',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:won?'#ffe08a':'#ff8fb5'}).setOrigin(0.5),
+      this.add.text(w/2,h*0.45,'Bosses defeated: '+r.n+' / '+this._rushList.length+'\nTime: '+this._fmtTime(r.t)+'\nSugar: +'+sug+(r.isBest?'\n🏆 NEW BEST!':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',lineSpacing:6}).setOrigin(0.5)];
+    const bw=Math.min(240,w-60),by=h*0.66,g=this.add.graphics(); g.fillStyle(COLORS.grape,1); g.fillRoundedRect(w/2-bw/2,by-24,bw,48,15);
+    box.push(g,this.add.text(w/2,by,'↩ Back to Boss Rush',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5));
+    this._overBtns.push({x:w/2-bw/2,y:by-24,w:bw,h:48,fn:()=>{window.__pendingMenu='bossrush';this.scene.restart();}});
+    this.over.add(box); this.over.setVisible(true); }
   buildEndgame(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Beyond Hunger');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
     const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 Complete Mastery on all 5 stages',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
@@ -4728,6 +4778,7 @@ class Game extends Phaser.Scene {
     this.clearFoes(); this.clearBossObjects(); this.clearWaveObjective(); this.clearPickups(true); this.waveAlive=0; if(this.pipG)this.pipG.clear();
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องที่สะสมมา (แจกจริง)
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor((this.kills||0)*0.4));
+    if(this.bossRush){ this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead(); this.finishBossRush(false); return; }
     if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);
     this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
     this.showStageSummary(false);
@@ -4771,7 +4822,7 @@ class Game extends Phaser.Scene {
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         if(this.killTxt)this.killTxt.setText('☠ 0');
-        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.endlessCycle=0;this.secretBoss=false;
+        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;if(this.bossRush){this._rushList=this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
@@ -4870,6 +4921,10 @@ class Game extends Phaser.Scene {
     const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this._stageTxtAt=this.elapsed||0;this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
     this.showBanner(`${st.emoji} Stage ${stageNo}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
     this.updateWaveText();
+    if(this.bossRush){ this._finalStoryShown=true; this.stageTxt.setText('👑 Boss Rush '+(this._rushPos+1)+'/'+this._rushList.length+' · '+st.name);
+      if(this._rushPos===0){ this._rushT0=this.elapsed||0; this.pendingLvl=(this.pendingLvl||0)+6; }
+      if(this.pendingLvl>0)this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
+      this.time.delayedCall(1400,()=>{ if(!this._busy())return; this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); }); return; }
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
   }
   updateWaveText(){
@@ -5655,6 +5710,7 @@ class Game extends Phaser.Scene {
     this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.playStageBgm(this.stageIndex+1);this.clearFoes();this.clearEnemies();this.clearBossObjects();
     // 🧪 ล้มบอส = การันตี currency ก้อนใหญ่ (ยิ่งด่าน/ยากสูง ยิ่งเยอะ+ดี — กฎเหล็ก)
     this.grantCurrencyReward(2+(this.stageIndex||0)+((this.stageDiff||1)-1)*2,this.currencyTierFor(),'🏆 Boss Down! Currency gained');
+    if(this.bossRush){ this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest(); this.mode='breather'; this.bossRushBossDown(); return; }
     if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
       this.showBanner('🌙 ENDLESS round '+cleared+' complete','Checkpoint saved · Sugar +'+bonus+(cleared%3===0?' · secret boss defeated!':''),2600);this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='breather')this.startWave(0,false);});return;}
     const next=this.stageIndex+1,progressUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next,canUnlock=progressUnlock&&isStageReady(next);
@@ -6139,6 +6195,7 @@ class Game extends Phaser.Scene {
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
     if(this.pendingLvl>0){ this.openLevelUp(); return; }
+    if(this._rushNextPending){ this._rushNextPending=false; this.time.delayedCall(60,()=>{ if(this.bossRush)this.bossRushNext(); }); }
     this.state='play'; this.physics.resume();
     const queued=this._queuedBossIntro;this._queuedBossIntro=null;
     if(queued)this.time.delayedCall(80,()=>{if(this.state!=='play')return;if(queued==='mini'&&this.mode==='miniWarning')this.spawnMiniBoss();else if(queued==='final')this.spawnFinalBoss();});
