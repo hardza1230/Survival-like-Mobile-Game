@@ -1,6 +1,6 @@
 # สรุปโปรเจกต์ Mochi Mayhem
 
-อัปเดตล่าสุด: **v4.46.0 — Affix Roulette & Expanded Mods**
+อัปเดตล่าสุด: **v4.47.0 — Production Raster Pickups & Training Ground**
 เทคโนโลยี: Phaser 3 + Capacitor + GitHub Actions + GitHub Pages
 
 ## สถานะปัจจุบัน
@@ -32,6 +32,7 @@ C2-5 มีเวฟครบ 5 ช่วง, objective Crown Root 4 จุด, 
 - `npm run check` ตรวจ syntax, content contracts, PNG signature/chunk CRC/image stream และ balance contracts ก่อน build
 - v4.45.0 เพิ่มฉากหลังห้องคราฟต์และปรับลำดับภาพ/ข้อมูลของ Affix Forge สำหรับมือถือ
 - v4.46.0 เพิ่มจังหวะลุ้นแบบรูเล็ตก่อนเปิดผล และเพิ่มม็อดที่มีผลจริงอีก 6 แบบพร้อมสีหมวดที่อ่านง่าย
+- v4.47.0 เปลี่ยน pickup 8 ชิ้นและพื้น Training Ground จาก SVG เป็นงาน PNG raster จริง พร้อม release gate ตรวจขนาด, alpha, การ decode และการผูกไฟล์ในเกม
 
 ## Build และ Release
 

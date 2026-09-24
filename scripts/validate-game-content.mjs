@@ -3,9 +3,9 @@ import { inflateSync } from 'node:zlib';
 
 const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
-// v4.46 release gate: keep the roulette reveal and all three mod roles wired into shipped builds.
+// v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '4.46.0'",
+  "const GAME_VERSION = '4.47.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -58,6 +58,31 @@ function assertDecodablePng(rel){
 }
 const runtimePngs=[...new Set([...source.matchAll(/["'](assets\/[A-Za-z0-9_./ -]+\.png)["']/g)].map(match=>match[1]))];
 for(const rel of runtimePngs)assertDecodablePng(rel);
+
+const pickupPngs=[
+  'assets/items/heal_mochi_heart.png',
+  'assets/items/gear_gift.png',
+  'assets/items/gimmick_scent_crystal.png',
+  'assets/items/gimmick_clean_bubble.png',
+  'assets/items/gimmick_chili_overcore.png',
+  'assets/items/gimmick_frost_bell.png',
+  'assets/items/gimmick_memory_seed.png',
+  'assets/items/gimmick_ferment_drop.png',
+];
+for(const rel of pickupPngs){
+  const file=fs.readFileSync(new URL(`../${rel}`,import.meta.url));
+  const width=file.readUInt32BE(16),height=file.readUInt32BE(20),colorType=file.readUInt8(25);
+  const hasAlpha=[4,6].includes(colorType)||(colorType===3&&file.includes(Buffer.from('tRNS')));
+  if(width!==256||height!==256||!hasAlpha)throw new Error(`Expected transparent pickup ${rel} at 256x256, found ${width}x${height}`);
+  if(!source.includes(`'${rel}'`))throw new Error(`Raster pickup is not registered: ${rel}`);
+}
+const trainingFloor=fs.readFileSync(new URL('../assets/training_floor.png',import.meta.url));
+const floorWidth=trainingFloor.readUInt32BE(16),floorHeight=trainingFloor.readUInt32BE(20);
+if(floorWidth!==512||floorHeight!==512)throw new Error(`Expected Training Ground raster floor at 512x512, found ${floorWidth}x${floorHeight}`);
+if(!source.includes("train_floor:'assets/training_floor.png'"))throw new Error('Training Ground raster floor is not registered');
+const imageRegistry=source.match(/const ASSET_IMAGES = \{([\s\S]*?)\n\};/);
+if(!imageRegistry)throw new Error('Cannot find ASSET_IMAGES registry');
+if(/\.svg["']/.test(imageRegistry[1]))throw new Error('Runtime SVG remains in ASSET_IMAGES');
 
 function block(pattern, label) {
   const match = source.match(pattern);

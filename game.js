@@ -34,9 +34,15 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.46.0';
+const GAME_VERSION = '4.47.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.47.0', date:'2026-09-24', title:'Production raster pickups and Training Ground', items:[
+    'Replaced Heal Mochi, Gear Gift and all six stage gimmick vectors with individually generated transparent 2.5D PNG art',
+    'Replaced the Training Ground SVG grid with a hand-painted raster tile that keeps characters and tutorial cues readable',
+    'Removed the retired runtime SVG files and added release checks for PNG dimensions, transparency, decoding and registration',
+    'Preserved the Affix Roulette, expanded 15-mod pool and all v4.46 gameplay behavior unchanged',
+  ]},
   { v:'4.46.0', date:'2026-09-24', title:'Affix Roulette and expanded mod pool', items:[
     'Crafting now plays a slowing three-card roulette reveal before the winning affix locks in, with input safely disabled during the spin',
     'Expanded the affix pool from 9 to 15 meaningful mods across clearly color-coded Offense, Defense and Utility categories',
@@ -538,15 +544,15 @@ const ASSET_IMAGES = {
   currency_crystal_glaze:'assets/ui/currency/crystal-glaze.png',
   currency_fading_gumdrop:'assets/ui/currency/fading-gumdrop.png',
   currency_plain_dough:'assets/ui/currency/plain-dough.png',
-  heal:'assets/items/heal_mochi_heart.svg',
-  gift:'assets/items/gear_gift.svg',
-  train_floor:'assets/training_floor.svg',   // 🎓 พื้น grid SVG ของ Training Ground
-  item_scent_crystal:'assets/items/gimmick_scent_crystal.svg',
-  item_clean_bubble:'assets/items/gimmick_clean_bubble.svg',
-  item_chili_overcore:'assets/items/gimmick_chili_overcore.svg',
-  item_frost_bell:'assets/items/gimmick_frost_bell.svg',
-  item_memory_seed:'assets/items/gimmick_memory_seed.svg',
-  item_ferment_drop:'assets/items/gimmick_ferment_drop.svg',
+  heal:'assets/items/heal_mochi_heart.png',
+  gift:'assets/items/gear_gift.png',
+  train_floor:'assets/training_floor.png',   // 🎓 พื้น raster ของ Training Ground
+  item_scent_crystal:'assets/items/gimmick_scent_crystal.png',
+  item_clean_bubble:'assets/items/gimmick_clean_bubble.png',
+  item_chili_overcore:'assets/items/gimmick_chili_overcore.png',
+  item_frost_bell:'assets/items/gimmick_frost_bell.png',
+  item_memory_seed:'assets/items/gimmick_memory_seed.png',
+  item_ferment_drop:'assets/items/gimmick_ferment_drop.png',
   gear_w_spoon:'assets/gear/weapons/w_spoon.png',
   gear_w_chop:'assets/gear/weapons/w_chop.png',
   gear_w_whisk:'assets/gear/weapons/w_whisk.png',
@@ -6611,7 +6617,7 @@ class Game extends Phaser.Scene {
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้
   showPickupCue(o,color,baseScale){
     if(!o)return;this.hidePickupCue(o);o._pickupColor=color;o._pickupBaseScale=baseScale||1;
-    // ปรับให้ไอเทมมี "ขนาดบนสนาม" คงที่ตาม native width (กันอาร์ต SVG/PNG ความละเอียดสูงเช่น gear_gift.svg 256px โผล่ใหญ่เกินจอ)
+    // ปรับให้ไอเทมมี "ขนาดบนสนาม" คงที่ตาม native width (กันอาร์ต PNG ความละเอียดสูงเช่น gear_gift.png 256px โผล่ใหญ่เกินจอ)
     const nativeW=(o.width||36),target=o._pickupBaseScale*36; o.setScale(nativeW>0?target/nativeW:o._pickupBaseScale).setDepth(80000);
     o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
     o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
@@ -6716,7 +6722,7 @@ class Game extends Phaser.Scene {
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
-    const box=this.textures.exists('chest')?'chest':'gift';   // ใช้ PNG จริง (gear_gift.svg เรนเดอร์ดำบนมือถือ)
+    const box=this.textures.exists('chest')?'chest':'gift';   // ใช้ PNG จริง (ไม่พึ่ง SVG ที่เคยเรนเดอร์ดำบนมือถือ)
     if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
     if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost);const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
     g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));

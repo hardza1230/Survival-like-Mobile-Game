@@ -20,6 +20,8 @@
 - **🏆 กฎเหล็ก (กฎหลักของเกม):** เลือกระดับความยากได้ 1-5 ต่อด่าน · **ยิ่งยาก รางวัลยิ่งดี** — ทุกระบบรางวัลใหม่ต้องเคารพกฎนี้ (`DIFFS[].reward`, `diffMul()`)
 - **สาขา git:** `claude/vampire-survival-mobile-game-yo9e8w` (ชื่อเก่าติดมาจากธีมแวมไพร์)
 
+- **v4.47.0 (Production raster pickups):** เปลี่ยน Heal Mochi, Gear Gift, stage gimmick 6 ชิ้น และพื้น Training Ground จาก SVG เป็น PNG raster จริง · pickup 256×256 โปร่งใส · พื้น 512×512 ทึบ · release gate ตรวจขนาด/alpha/PNG stream/การผูก runtime และห้าม SVG กลับเข้ามาใน `ASSET_IMAGES`
+
 ## 3. โครงไฟล์
 - `index.html` — หน้าเกม (โหลด phaser.min.js + game.js)
 - `game.js` — โค้ดเกมทั้งหมด (คลาส Boot วาดกราฟิกด้วย **Canvas 2D** `createCanvas`, คลาส Game = ฉากเล่น)
@@ -140,7 +142,7 @@
 - **v4.20.1 (fix):** กล่อง loot ไม่เป็นสี่เหลี่ยมดำแล้ว · จัดแบนเนอร์กลางจอให้กระชับ
 - **v4.20.0 (Objectives/drops/HUD/character tuning):** เฉพาะเวฟ **Survive** ที่จับเวลานับถอยหลัง — เวฟ **Hunt/Purge/Capture ไม่มี timer** ต้องทำสำเร็จถึงผ่าน · การ์ดเลเวลอัพให้ **+1 ดาวเสมอ** (Epic/Legend ไม่กระโดดหลายขั้นแล้ว) · currency drop โชว์ไอคอน currency จริง (เลิกกล่องสี) · แก้ HUD บน (จุดเวฟทับบรรทัด HP/atk/def) · แก้ไอเทมค้างหลังออกด่านแล้วเริ่มใหม่ · Strawberry multi-shot หายากลง (ส่วนมาก 1–2 เมล็ด) · Mint ice shard น้อยลง/เร็วขึ้น/ไม่ homing · Sesame ตัดวงเวทตกค้าง (เหลือ beam + Focus)
 - **v4.19.0–v4.19.1 (Strawberry nerf + ถอดระบบครัว):** **Momo/Strawberry จูนลงหนัก** (เมล็ดต่อชุดน้อยลง, ดาเมจต่อเมล็ดต่ำลง, ยิงช้าลง, sig weapon เลิก +ดาเมจก้อนใหญ่ — เดิมละลายมินิบอสไวเกิน) · **ถอด Cooking Codex ออก** (เมนู Cookbook, recipe panel, แบนเนอร์ Dish Cooked, cook quest) — โบนัสคอมโบอาวุธ+passive ยังทำงานเงียบๆ · หน้าสรุปด่าน (currency+box) โชว์+รอแตะทุกด่าน · **v4.19.1:** สรุปด่านปิดได้เฉพาะปุ่มมันเอง
-- **v4.17.0–v4.18.1 (Training Ground tutorial):** ผู้เล่นใหม่เรียนใน **Training Ground** ด่านซ้อมว่างเปล่า (ไม่มี prop/เวฟ, Berry สอนทีละสเต็ป) แทน Stage 1 จริง → story intro Ch.1 ไม่ถูกใช้ทิ้งตอน tutorial · จบ tutorial กลับหน้าเลือกด่าน · **v4.18.0:** SVG grid floor, tip ย้ายล่างบรรทัดเดียวเน้นคำสำคัญ, spotlight เต้นชี้จุด (โซนเดิน/ศัตรูใกล้สุด/ปุ่ม Dash+Unique/การ์ด), รางวัลไอเทมจบ tutorial · **v4.18.1:** จบ tutorial โชว์หน้ารางวัล tap-to-continue
+- **v4.17.0–v4.18.1 (Training Ground tutorial):** ผู้เล่นใหม่เรียนใน **Training Ground** ด่านซ้อมว่างเปล่า (ไม่มี prop/เวฟ, Berry สอนทีละสเต็ป) แทน Stage 1 จริง → story intro Ch.1 ไม่ถูกใช้ทิ้งตอน tutorial · จบ tutorial กลับหน้าเลือกด่าน · **v4.18.0:** grid floor (เปลี่ยนเป็น raster ใน v4.47.0), tip ย้ายล่างบรรทัดเดียวเน้นคำสำคัญ, spotlight เต้นชี้จุด (โซนเดิน/ศัตรูใกล้สุด/ปุ่ม Dash+Unique/การ์ด), รางวัลไอเทมจบ tutorial · **v4.18.1:** จบ tutorial โชว์หน้ารางวัล tap-to-continue
 - **v4.16.0 (level-up card cleanup):** ลบการ์ด common ซ้ำซ้อน (Balanced Core, Returning Taste — ทับ Sweet Power/Mochi Vitality/Regeneration/Quick Hands)
 - **v4.14.0–v4.15.0 (Sesame rework + loot boxes):** รื้อ **Sesame เป็น Mirror Beam sniper** · loot boxes + มอนดรอป currency · quit-summary · จูน Sesame beam
 - **v4.13.0 (fix):** acid pool บอสบังจอ, field item ยักษ์, Mint spear rework
