@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.65.0';
+const GAME_VERSION = '4.66.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.66.0', date:'2026-09-24', title:'Easier taps', items:['Small menu buttons now have a bigger touch area','Buttons flash and ripple when tapped','Menu screens slide in smoothly']},
   { v:'4.65.0', date:'2026-09-24', title:'Fuller screens on phones', items:[
     'Character Stats shows your character’s art, with larger, easier-to-read stat rows',
     'The Daily Challenge card shows the stage art, its story and whether you’re strong enough',
@@ -3354,8 +3355,21 @@ class Game extends Phaser.Scene {
     if(h<96)en.setVisible(false);   // การ์ดเตี้ย (แนวนอน) ซับไตเติลซ้อนทับ lore — ซ่อน (เป็นชื่อซ้ำตัวพิมพ์ใหญ่อยู่แล้ว)
     cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
-  handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
-    if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){ Sfx.select(); z.fn(); return; } } }
+  // แตะเมนู: ตรงกรอบก่อน → ไม่โดนเลยค่อยขยายปุ่มเล็กให้ได้อย่างน้อย 44px (+slop) เลือกตัวที่ใกล้สุด
+  handleTap(px,py){ const zs=this.tapZones;let hit=null;
+    for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){hit=z;break;} }
+    if(!hit){ let best=1e9; const MIN=44,SLOP=6;
+      for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; const ew=Math.max(0,(MIN-z.w)/2)+SLOP,eh=Math.max(0,(MIN-z.h)/2)+SLOP;
+        if(px>=z.x-ew&&px<=z.x+z.w+ew&&py>=z.y-eh&&py<=z.y+z.h+eh){ const d=Math.hypot(px-(z.x+z.w/2),py-(z.y+z.h/2)); if(d<best){best=d;hit=z;} } } }
+    if(!hit)return; Sfx.select(); this._tapFeedback(hit,px,py); hit.fn(); }
+  // ไฟกระพริบบนปุ่ม + วงกระเพื่อมที่นิ้ว (อยู่นอก this.menu จึงไม่หายตอน rebuild)
+  _tapFeedback(z,px,py){ try{
+    const g=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(140));
+    const r=Math.min(14,z.h/2,z.w/2); g.fillStyle(0xffffff,0.22).fillRoundedRect(z.x,z.y,z.w,z.h,r);
+    this.tweens.add({targets:g,alpha:0,duration:220,ease:'Quad.easeOut',onComplete:()=>g.destroy()});
+    const c=this.camUI(this.add.circle(px,py,10,0xffffff,0.35).setScrollFactor(1).setDepth(141));
+    this.tweens.add({targets:c,scale:3.2,alpha:0,duration:320,ease:'Cubic.easeOut',onComplete:()=>c.destroy()});
+  }catch(e){} }
   _currencyIcon(key,x,y,size,alpha=1,cont){
     const d=currencyDef(key),target=cont||this.menu;let icon;
     if(d&&d.asset&&this.textures.exists(d.asset))icon=this.add.image(x,y,d.asset).setDisplaySize(size,size).setAlpha(alpha);
@@ -3395,7 +3409,8 @@ class Game extends Phaser.Scene {
   buildMenuScreen(){ const s=this.menuScreen||'hub';
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
-    this._curMenu=s;
+    const changed=this._curMenu!==s; this._curMenu=s;
+    if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
     if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){

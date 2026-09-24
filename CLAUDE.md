@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.66.0 — ปุ่มกดง่าย + feedback)
+- **v4.66.0 (UI/UX รอบ 2 ข้อ 1+2):** `handleTap` ตรงกรอบก่อน → ไม่โดนค่อยขยาย tap zone ให้ ≥44px +slop 6 เลือกตัวใกล้สุด (ทุก `_zone` ได้อัตโนมัติ) · `_tapFeedback` กรอบขาววาบ + ripple ที่นิ้ว (depth 140 นอก this.menu ไม่หายตอน rebuild) · `buildMenuScreen` เปลี่ยนหน้า = fade+slide 160ms · verified headless: ปุ่ม 20px กดโดนจากนอกกรอบ 8px, alpha 0→1, 0 error · **UI/UX ที่เสนอค้าง:** (3) ไกด์หลัง tutorial (4) การ์ดเลเวลอัพเน้นตัวเลข (5) ปรับปุ่มควบคุม/ถนัดซ้าย (6) หน้าตายบอกเหตุผล+ทางอัพ
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.65.0 — เติมพื้นที่ว่างแนวตั้ง)
 - **v4.65.0 (UI/UX ข้อ 3+4):** Stats แนวตั้งโชว์อาร์ตตัวละคร (`_characterCardArt`) + แถวสูงตามจอ (`rh` clamp 40-58) · Daily เพิ่มกล่องอาร์ตด่าน (`_coverImage` bg) + powerStatus badge + lore · Pause แนวตั้งมีรายการ 🔮 Relic + synergy ที่ทำงาน · Craft ช่องว่างมีปุ่มลิงก์ไป Gear/Bazaar · **ข้อ 4 (ไอคอน slot ทับ step label ใน Affix Forge) ตรวจภาพเต็มแล้วไม่ทับจริง = ภาพย่อหลอก** · verified screenshot แนวตั้ง/แนวนอน, npm run check ผ่าน
 
