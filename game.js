@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.67.0';
+const GAME_VERSION = '4.68.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.68.0', date:'2026-09-24', title:'Faster cards & custom controls', items:['Level-up cards show the key number big and green','Settings: Dash/Unique button size (Normal/Large/Extra Large)','Settings: left-handed button side']},
   { v:'4.67.0', date:'2026-09-24', title:'What to do next', items:['The hub highlights your best next step after the tutorial','The defeat screen explains what beat you','One tap from defeat to the upgrade that helps most']},
   { v:'4.66.0', date:'2026-09-24', title:'Easier taps', items:['Small menu buttons now have a bigger touch area','Buttons flash and ripple when tapped','Menu screens slide in smoothly']},
   { v:'4.65.0', date:'2026-09-24', title:'Fuller screens on phones', items:[
@@ -2742,9 +2743,9 @@ class Game extends Phaser.Scene {
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
 
-      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<44){ this.useCharacterSkill(); return; }
+      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
-      if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<44){ this.doDash(); return; }
+      if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.doDash(); return; }
 
       // แตะจุดอื่นทั้งหมดบนหน้าจอ = จอยสติ๊กลอย ควบคุมทิศทางเดินอิสระด้วยมือเดียว
       this.joy.active=true; this.joy.id=p.id; this.joy.bx=p.x; this.joy.by=p.y; this.joy.dx=0; this.joy.dy=0;
@@ -2992,7 +2993,7 @@ class Game extends Phaser.Scene {
     const ubX=w-58,ubY=this.H-78-80;   // ย้ายปุ่มเฉพาะตัวมาไว้ "North" ปุ่มพุ่ง (เดิมอยู่ซ้ายของพุ่ง)
     this.uniqueBtn=this.add.circle(ubX,ubY,36,0xff76a8,0.22).setScrollFactor(1).setDepth(50).setStrokeStyle(2.5,0xff76a8,0.85);
     this.uniqueTxt=this.add.text(ubX,ubY,'🍓',{fontSize:'26px',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);   // ปุ่มเฉพาะตัว = ไอคอนล้วน Noneตัวหนังสือ
-    this.uniqueRing=this.add.graphics().setScrollFactor(1).setDepth(52);this.refreshUniqueSkillUI();
+    this.uniqueRing=this.add.graphics().setScrollFactor(1).setDepth(52);this.refreshUniqueSkillUI();this.layoutControls();
 
     // top bars: HP + XP (โค้งมน วาดด้วย graphics)
     this.barG=this.add.graphics().setScrollFactor(1).setDepth(50);
@@ -3085,17 +3086,23 @@ class Game extends Phaser.Scene {
     if(this.pOverHp)this.pOverHp.setPosition(ox,oy+h/2+0.5).setText(Math.max(0,Math.ceil(this.player.hp))+' / '+Math.round(this.player.maxhp));
     if(this.pOverLv)this.pOverLv.setPosition(ox,oy-3).setText('Lv '+(this.level||1));
   }
+  // 🎮 ปุ่ม Dash/Unique ตาม Settings: ขนาด (ctrlSize 0-2) + ฝั่ง (ctrlLeft = ถนัดซ้าย)
+  ctrlScale(){ const st=Save.data.settings||{}; return [1,1.2,1.4][st.ctrlSize||0]||1; }
+  layoutControls(){ if(!this.dashBtn||!this.uniqueBtn)return; const st=Save.data.settings||{},k=this.ctrlScale(),r=36*k;
+    const x=st.ctrlLeft?22+r:this.W-22-r, dy=this.H-42-r, uy=dy-r*2-8*k;
+    this.dashBtn.setPosition(x,dy).setRadius(r); this.dashTxt.setPosition(x,dy).setScale(k);
+    this.uniqueBtn.setPosition(x,uy).setRadius(r); this.uniqueTxt.setPosition(x,uy).setScale(k); }
   drawDashRing(){
     const g=this.dashRing; if(!g)return; g.clear(); const b=this.dashBtn; if(!b||!b.visible)return;
     if(!this.dashReady && this.dashCd>0){
       const frac=Phaser.Math.Clamp(1-this.dashCd/(this.dashCdMax||1.1),0,1);
       g.lineStyle(3.5,0x66d3b3,0.9); g.beginPath();
-      g.arc(b.x,b.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
-    } else { g.lineStyle(2,0xbff3e8,0.35); g.strokeCircle(b.x,b.y,40); }
+      g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
+    } else { g.lineStyle(2,0xbff3e8,0.35); g.strokeCircle(b.x,b.y,b.radius+4); }
   }
   drawUniqueRing(){
     const g=this.uniqueRing,b=this.uniqueBtn;if(!g||!b)return;g.clear();if(!b.visible)return;const u=this.uniqueInfo();
-    if(this.uniqueCd>0){const frac=Phaser.Math.Clamp(1-this.uniqueCd/this.uniqueCooldown(u),0,1);g.lineStyle(3.5,u.color,0.95);g.beginPath();g.arc(b.x,b.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false);g.strokePath();this.uniqueTxt.setAlpha(0.48);}else{g.lineStyle(2,u.color,0.42);g.strokeCircle(b.x,b.y,40);this.uniqueTxt.setAlpha(1);}
+    if(this.uniqueCd>0){const frac=Phaser.Math.Clamp(1-this.uniqueCd/this.uniqueCooldown(u),0,1);g.lineStyle(3.5,u.color,0.95);g.beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false);g.strokePath();this.uniqueTxt.setAlpha(0.48);}else{g.lineStyle(2,u.color,0.42);g.strokeCircle(b.x,b.y,b.radius+4);this.uniqueTxt.setAlpha(1);}
   }
   /* แถบ "Owned" — โชว์Attack Skill + Passiveที่มีตอนนี้ (ใช้ในเลเวลอัพ/หยุดเกม) · คืน y ล่างสุด */
   drawHeldBar(cont, topY){
@@ -3241,6 +3248,7 @@ class Game extends Phaser.Scene {
     if(this.lowHpVig)this.lowHpVig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H);
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-58,this.H-78); this.dashTxt.setPosition(this.W-58,this.H-78);
       if(this.uniqueBtn){this.uniqueBtn.setPosition(this.W-58,this.H-78-80);this.uniqueTxt.setPosition(this.W-58,this.H-78-80);}
+      this.layoutControls();
       this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(pad,pad+56);
       if(this.statTxt)this.statTxt.setPosition(pad,pad+75);
       if(this.runSugarTxt)this.runSugarTxt.setPosition(this.W-pad,pad+56);
@@ -3803,11 +3811,13 @@ class Game extends Phaser.Scene {
       {k:'shake',e:'📳',n:'Screen Shake',sub:'Camera shake strength',value:()=>['Off','Light','Normal'][st.shake||0],toggle:()=>{st.shake=((st.shake||0)+1)%3;}},
       {k:'flash',e:'✨',n:'Screen Flash',sub:'Flashes on big moves & phase changes',value:()=>st.flash?'On':'Off',toggle:()=>{st.flash=!st.flash;}},
       {k:'damageNumbers',e:'💥',n:'Damage Numbers',sub:'Show damage and criticals',value:()=>st.damageNumbers?'On':'Off',toggle:()=>{st.damageNumbers=!st.damageNumbers;}},
+      {k:'ctrlSize',e:'🎮',n:'Button Size',sub:'Dash & Unique button size',value:()=>['Normal','Large','Extra Large'][st.ctrlSize||0],toggle:()=>{st.ctrlSize=((st.ctrlSize||0)+1)%3;}},
+      {k:'ctrlLeft',e:'✋',n:'Button Side',sub:'Left-handed? Move buttons left',value:()=>st.ctrlLeft?'Left':'Right',toggle:()=>{st.ctrlLeft=!st.ctrlLeft;}},
       {k:'vfx',e:'🎆',n:'VFX Quality',sub:'Particle count and boss effects',value:()=>['Low','Mid','High'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
     ];
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
     const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?68:54,(h-top-28-gap*(nRows-1))/nRows),rw=Math.min(w-30,520),rx=(w-rw)/2;
-    rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{r.toggle();Save.save();Sfx.select();this.buildSettings();},rx,rw);});
+    rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{r.toggle();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls();this.buildSettings();},rx,rw);});
     // ☁️ บัญชี Cloud Save + เข้าสู่ระบบด้วย Google
     const accY=top+rows.length*(rowH+gap);
     const isG=(typeof Cloud!=='undefined'&&Cloud.isGoogle&&Cloud.isGoogle());
@@ -5838,6 +5848,8 @@ class Game extends Phaser.Scene {
   }
 
   /* ---------- STARTING ATTACK ---------- */
+  // ตัวเลขหลักจากคำอธิบาย (+8% damage, +2 simultaneous strikes) → โชว์ใหญ่แทนบรรทัด role ให้อ่านปราดเดียว
+  _cardHeadline(desc){ if(!desc)return null; const m=String(desc).match(/[+\-−×]\s?\d+(?:\.\d+)?%?(?:\s+[A-Za-z][A-Za-z/&]*){0,2}/); return m?m[0].replace(/\s+(per|and|to|of|for|on|in)$/,''):null; }
   drawReadableChoiceCard(group,o,x,y,w,h,options={}){
     const type=o.type||'atk';let color=type==='basic'?(o.color||0xff8fb5):type==='heal'?0xff6f9d:type==='util'?0xffd166:type==='uni'?(o.color||0xff76a8):type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);
     const rar=o.rarity; if(rar)color=rar.color;   // สีเฟรม = ความหายาก (สัญญาณอ่านเร็ว)
@@ -5854,14 +5866,14 @@ class Game extends Phaser.Scene {
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
     const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
-    let icon,badgeT,nameT,roleT,descT,starsT,ctaT;
+    let icon,badgeT,nameT,roleT,descT,starsT,ctaT; const hl=options.starting?null:this._cardHeadline(o.desc);
     if(wide){
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
       const halo=this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
       nameT=this.add.text(textX,y+29,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
-      roleT=this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      roleT=hl?this.add.text(textX,y+51,hl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8ff0b0',stroke:'#0c2a1a',strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       descT=this.add.text(textX,y+75,o.desc||'',{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
       starsT=this.add.text(textX,y+h-20,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
@@ -5873,7 +5885,7 @@ class Game extends Phaser.Scene {
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
-      roleT=this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      roleT=hl?this.add.text(x+w/2,y+h*0.505,hl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#8ff0b0',stroke:'#0c2a1a',strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       descT=this.add.text(x+w/2,y+h*0.60,o.desc||'',{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
       starsT=this.add.text(x+w/2,y+h*0.87,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);

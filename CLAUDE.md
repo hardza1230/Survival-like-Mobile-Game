@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.68.0 — การ์ดอ่านเร็ว + ปรับปุ่มควบคุม)
+- **v4.68.0 (UI/UX รอบ 2 ข้อ 4+5 — ครบทั้ง 6 ข้อแล้ว):** `_cardHeadline(desc)` ดึงตัวเลขหลัก (+8% attack speed / -12% damage taken) จาก desc → แทนบรรทัด role ในการ์ดเลเวลอัพ ตัวเขียวใหญ่ 14-15px (ไม่มีตัวเลข = role เดิม) · Settings เพิ่ม `ctrlSize` (Normal/Large/XL = ×1/1.2/1.4) + `ctrlLeft` (ถนัดซ้าย) · `layoutControls()` วาง dash/unique ตามค่า (เรียกท้าย buildHUD, onResize, ตอนเปลี่ยน setting) · ring/hit-test ใช้ `btn.radius` แทน 40/44 คงที่ · verified screenshot, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.67.0 — ไกด์ทำอะไรต่อ + หน้าตายบอกสาเหตุ)
 - **v4.67.0 (UI/UX รอบ 2 ข้อ 3+6):** `hubNextStep()` (หลัง tutorial: Weave ซื้อได้→Gear&Power/upgrade · inbox มีของ→gearInbox · activity badge→Activities · ไม่งั้น Play) · `_drawNextGuide` กรอบเหลืองกระพริบ + ป้าย 👉 ในปุ่ม Hub และแถวในหน้า group · **หน้าตาย:** `_noteHit(src,dmg)` สะสม `_dmgBy` (touchEnemy: boss/mini/elite/swarm · hurtPlayer: boss/mini/shot; reset ใน startRun) → `deathReason()` แทนบรรทัด BUILD เดิม · แถบ powerStatus+powerAdvice กดได้ → `window.__pendingMenu` + scene.restart → showMenu เปิดหน้าที่แนะนำ (ไม่ใช่ Endless) · verified headless screenshot + ปุ่มพาไป upgrade, 0 error · **UI/UX ที่ยังค้าง:** (4) การ์ดเลเวลอัพเน้นตัวเลข (5) ปรับปุ่มควบคุม/ถนัดซ้าย
 
