@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.57.0 — 🔮 ระบบ Relic)
+- **v4.57.0 (Relic system — จากไอเดีย "แต่ละรันเล่นเหมือนกัน" ที่เจ้าของเลือก):** `RELICS` 11 ชิ้น (เปลี่ยนกลไก ไม่ใช่แค่ตัวเลข) + `RELIC_SYNERGIES` 4 คู่ + `RELIC_CAP=3` ต่อด่าน (รีเซ็ตพร้อม loadout ผ่าน `resetRelics()` ใน startRun/resetStageLoadout — resetStageLoadout เรียก applyMeta จึงล้างผลสแตตของ glass/magnet เอง) · state: `this.relics[]` + `this._rel{}` (lookup เร็วใน damage) · **แหล่ง:** เลเวล 6 การันตี (`_relicLvDone` ใน openLevelUp) · กล่องมินิบอส (`collectChest` kind mini → `offerRelic()`, slot เต็ม → openRollBox เดิม) · กล่องลับ 30% · **UI:** ใช้หน้าการ์ดเลเวลอัพเดิมผ่าน `this._forcedOpts`+`_relicPick` (ไม่มีแถบ reroll/banish, clear ใน closeLevelUp) · การ์ดโชว์ 🔗 synergy ถ้าถืออีกครึ่ง · น้ำหนักสุ่ม ×2.5 ให้ของที่เข้าคู่ · **hooks:** `damage()` (crown/momentum ก่อน crit, `relicOnCrit` splinter/leech หลัง crit, chill หลังหัก HP) · `killEnemy` → `relicOnKill` (shell นับ 15 kill, burst 18% หรือ Chain Reaction ใช้ `e._splinterHit` window 0.3s, budget 6 ระเบิด/0.1s กัน chain ระเบิดไม่จบ) · `hurtPlayer` เช็ค `_shield` ก่อน · `die()` Last Breath ก่อน Revive Candle · `doDash` → `relicJamTrail` · ดาเมจ relic = `relicDmg(mul)` สเกลเลเวล×dmgMul×(1+stage·0.35) · HUD: statTxt ต่อท้าย 🔮 emoji + 🫧×n · drawHeldBar แถว passive → แถว Relic สำหรับ character-first · **verified headless ในด่านจริง: ทุกแหล่ง/ทุก hook/synergy ทำงาน, 0 error** · **ถัดไป:** เจ้าของเล่นจริงดูว่า relic ไหนแรง/อ่อนเกิน (ค่าจูนอยู่ในเมธอด relicOn* + gainRelic)
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.56.0 — จูน def Cocoa/Sesame ตามบทบาท)
 - **v4.56.0:** `CHARACTERS` def (ตัวคูณดาเมจที่รับ): Cocoa 0.88→**0.84** (แทงก์อึดสุดจริง) · Sesame 0.86→**0.94** (เดิมอึดกว่า Cocoa ทั้งที่เป็น sniper) · ข้อ "ยังค้าง" ของ v4.55 ปิดแล้ว
 

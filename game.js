@@ -37,9 +37,16 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.56.0';
+const GAME_VERSION = '4.57.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.57.0', date:'2026-09-24', title:'🔮 Relics — change how you fight', items:[
+    'New Relic system: rare in-run treasures that change your mechanics, not just your numbers. Hold up to 3 per stage',
+    'Get them from a guaranteed pick at level 6, from every Miniboss Box, and sometimes from secret map boxes (choose 1 of 3)',
+    '11 Relics: Crit Splinter, Berry Leech, Sugar Burst, Candy Shell, Jam Trail, Crown Breaker, Glass Heart, Momentum, Last Breath, Chill Touch, Sugar Magnet',
+    '4 Synergy pairs unlock bonus effects: Chain Reaction, Second Wind, Sticky Rush and Royal Feast — cards show 🔗 when you already hold the partner',
+    'Your Relics and shields show on the HUD and on the level-up / pause screens',
+  ]},
   { v:'4.56.0', date:'2026-09-24', title:'Cocoa & Sesame role tuning', items:[
     'Cocoa (frontline bruiser) now takes 16% less damage (was 12%) — the toughest character, as intended',
     'Sesame (mirror sniper) now takes 6% less damage (was 14%) — still sturdy, but no longer tankier than Cocoa',
@@ -1315,6 +1322,29 @@ const PASSIVES = {
     apply(p){ p.lowHpDmg=(p.lowHpDmg||0)+0.08; } },
   // v4.16: ยุบการ์ดซ้ำ — flavorCore (ซ้ำ power+heart) และ returningTaste (ซ้ำ regen+haste) ถูกเอาออก
 };
+/* ---- 🔮 RELICS (v4.57): ของวิเศษในรัน — เปลี่ยน "กลไก" ไม่ใช่แค่ +ตัวเลข · ถือได้ RELIC_CAP ชิ้น/ด่าน (รีเซ็ตพร้อม loadout)
+   ได้จาก: เลเวล 6 (การันตี) · กล่องมินิบอส · กล่องลับในแมพ 30% · hook อยู่ที่ damage/killEnemy/hurtPlayer/die/doDash (ดู relicOn*) */
+const RELIC_CAP = 3;
+const RELICS = {
+  splinter:  { emoji:'💥', name:'Crit Splinter',  desc:'Crits splinter into 2 shards that hit nearby enemies for 40% damage' },
+  leech:     { emoji:'🩸', name:'Berry Leech',    desc:'Crits heal 1% max HP (0.25s cooldown)' },
+  burst:     { emoji:'🎆', name:'Sugar Burst',    desc:'Slain enemies have an 18% chance to explode, hurting everything nearby' },
+  shell:     { emoji:'🫧', name:'Candy Shell',    desc:'Every 15 kills, gain a shield that blocks the next hit' },
+  jam:       { emoji:'🍓', name:'Jam Trail',      desc:'Dashing drops 3 jam bombs that explode after 0.5s' },
+  crown:     { emoji:'👑', name:'Crown Breaker',  desc:'+30% damage to bosses, minibosses and elites' },
+  glass:     { emoji:'💔', name:'Glass Heart',    desc:'+40% damage, but -25% max HP' },
+  momentum:  { emoji:'🌀', name:'Momentum',       desc:'+25% damage while moving' },
+  lastbreath:{ emoji:'🕯️', name:'Last Breath',    desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
+  chill:     { emoji:'❄️', name:'Chill Touch',    desc:'Hits have a 10% chance to freeze normal enemies for 1s' },
+  magnet:    { emoji:'🧲', name:'Sugar Magnet',   desc:'+60% pickup range and +20% EXP' },
+};
+// คู่ synergy — ถือครบทั้งคู่ = ผลพิเศษเพิ่ม (โชว์ในการ์ดเมื่อถืออีกครึ่งอยู่แล้ว)
+const RELIC_SYNERGIES = [
+  { a:'splinter', b:'burst',     name:'Chain Reaction', desc:'Splinter kills always explode' },
+  { a:'shell',    b:'lastbreath',name:'Second Wind',    desc:'Last Breath restores 40% HP + a shield · hold 2 shields' },
+  { a:'jam',      b:'momentum',  name:'Sticky Rush',    desc:'Dash recharges 35% faster' },
+  { a:'leech',    b:'crown',     name:'Royal Feast',    desc:'Crits on bosses heal 3× more' },
+];
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 const CHARACTERS = {
   momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'Nimble gunner',desc:'Sweet but Strong — rapid fire, fast movement, steady crits',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
@@ -2689,6 +2719,7 @@ class Game extends Phaser.Scene {
     this.player.setTint(0xfff6bd);
     this.time.delayedCall(160,()=>this.player.clearTint());
     this._sqX=1.35; this._sqY=0.7;   // ยืดตอนพุ่ง (เจลลี่)
+    if(this._rel&&this._rel.jam)this.relicJamTrail(d);   // 🔮 Jam Trail
   }
 
   uniqueInfo(){ const c=CHARACTERS[this.character]||CHARACTERS.momo; return CHARACTER_UNIQUES[c.unique]||CHARACTER_UNIQUES.berryRebound; }
@@ -2974,7 +3005,7 @@ class Game extends Phaser.Scene {
     if(this.statTxt){ const p=this.player;
       const regen=Math.min(p.maxhp*0.03,(p.regen||0)+(p.regenFlat||0)+p.maxhp*(p.regenPct||0));
       const atkPct=Math.round((p.dmgMul||1)*100), defPct=Math.round((1-(p.dmgTakenMul||1))*100), critPct=Math.round((p.critChance||0)*100);
-      this.statTxt.setText(`❤ ${Math.max(0,Math.round(p.hp))}/${Math.round(p.maxhp)}   ♻ ${regen.toFixed(1)}/s   ⚔ ${atkPct}%   🛡 ${defPct}%`+(critPct>0?`   🎯 ${critPct}%`:''));
+      this.statTxt.setText(`❤ ${Math.max(0,Math.round(p.hp))}/${Math.round(p.maxhp)}   ♻ ${regen.toFixed(1)}/s   ⚔ ${atkPct}%   🛡 ${defPct}%`+(critPct>0?`   🎯 ${critPct}%`:'')+((this.relics&&this.relics.length)?'   🔮 '+this.relics.map(k=>RELICS[k].emoji).join(''):'')+((this._shield||0)>0?'  🫧×'+this._shield:''));
     }
   }
   // หลอดเลือด+เลเวลNorthหัวผู้เล่น (แบบ Archero) — screen-space คำนวณจากกล้อง ให้ติดตัวเสมอ
@@ -3022,15 +3053,17 @@ class Game extends Phaser.Scene {
         const lt=this.add.text(x+chip-3,y+chip-2,awk?'⚡':String(lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffe08a'}).setOrigin(1,1);
         cont.add([g,em,lt]); x+=chip+gap; });
     };
-    const atk=Object.keys(this.skills||{}), pas=Object.keys(this.passives||{});
+    const atk=Object.keys(this.skills||{}), pas=Object.keys(this.passives||{}), rel=(this.relics||[]).slice(), useRel=this.usesBasicAttackBuild();   // character-first ไม่มี passive → แถวนี้โชว์ Relic
     if(landscape){
       const half=this.W/2;
       rowFn(topY,'⚔️ Skills','#f0a54a',atk,k=>SKILLDEFS[k]?SKILLDEFS[k].emoji:'❓',k=>this.skills[k],0xf0a54a,k=>this.skills[k]>=SKILL_AWAKEN_LV,false,12,58);
-      rowFn(topY,'✨ Passives','#66d3b3',pas,k=>PASSIVES[k]?PASSIVES[k].emoji:'❓',k=>this.passives[k],0x66d3b3,null,true,half+4,half+48);
+      if(useRel)rowFn(topY,'🔮 Relics','#c9a0ff',rel,k=>RELICS[k].emoji,()=>'',0xc07bff,null,true,half+4,half+48);
+      else rowFn(topY,'✨ Passives','#66d3b3',pas,k=>PASSIVES[k]?PASSIVES[k].emoji:'❓',k=>this.passives[k],0x66d3b3,null,true,half+4,half+48);
       return topY+chip+6;
     }
     rowFn(topY,       '⚔️ Skills','#f0a54a', atk, k=>SKILLDEFS[k]?SKILLDEFS[k].emoji:'❓', k=>this.skills[k], 0xf0a54a, k=>this.skills[k]>=SKILL_AWAKEN_LV, false,20,58);
-    rowFn(topY+chip+8,'✨ Passives',  '#66d3b3', pas, k=>PASSIVES[k]?PASSIVES[k].emoji:'❓', k=>this.passives[k], 0x66d3b3, null, true,20,58);
+    if(useRel)rowFn(topY+chip+8,'🔮 Relics','#c9a0ff',rel,k=>RELICS[k].emoji,()=>'',0xc07bff,null,true,20,58);
+    else rowFn(topY+chip+8,'✨ Passives',  '#66d3b3', pas, k=>PASSIVES[k]?PASSIVES[k].emoji:'❓', k=>this.passives[k], 0x66d3b3, null, true,20,58);
     return topY+chip*2+8+6;
   }
   /* พาเนล "Cookable Recipes" — โชว์เป้าหมาย recipe/evolution แบบ Survivor.io: อาวุธ + passive ที่ต้องเก็บ = เมนู
@@ -4544,7 +4577,7 @@ class Game extends Phaser.Scene {
         if(this.killTxt)this.killTxt.setText('☠ 0');
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
-        this.skills={}; this.basicAttack=null; this.passives={}; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
+        this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
         this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
         this.clearStarGuardFx();
@@ -5426,7 +5459,7 @@ class Game extends Phaser.Scene {
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
-    this.skills={};this.basicAttack=null;this.passives={};this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
+    this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
@@ -5778,7 +5811,10 @@ class Game extends Phaser.Scene {
     const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap the same card again to confirm':'⭐ LEVEL UP — tap to choose, tap again to confirm',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
     this.lvlUp.add(t);
     this.banishMode=false;
-    const opts=this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._lvlOpts=opts;
+    // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
+    if(!this._forcedOpts&&!this._relicLvDone&&!this._inTutorial&&(this.level||1)>=6&&this.relicSlotsLeft()>0){ this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
+    if(this._relicPick)t.setText('🔮 RELIC — choose 1 (changes how you fight) · tap again to confirm');
+    const opts=this._forcedOpts||this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._forcedOpts=null; this._lvlOpts=opts;
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
     const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
     const finalCardW=portrait?(w-side*2):cardW;
@@ -5789,7 +5825,7 @@ class Game extends Phaser.Scene {
       this.drawReadableChoiceCard(this.lvlUp,o,x,y,finalCardW,ch,{index:i});
       this.lvlCards.push({left:x,right:x+finalCardW,top:y,bottom:y+ch,apply:o.apply,title:o.title,opt:o});
     });
-    this.drawLevelActionBar(h-40);
+    if(this._relicPick)this.lvlActionBtns=[]; else this.drawLevelActionBar(h-40);
     this.lvlUp.setVisible(true);
   }
   // แถบปุ่ม "🎲 Reroll" + "🚫 Banish" (ใช้ได้จำกัดต่อด่าน)
@@ -5848,6 +5884,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:g,alpha:{from:0.55,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
   closeLevelUp(){
+    this._relicPick=false;
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
     if(this.pendingLvl>0){ this.openLevelUp(); return; }
@@ -5858,6 +5895,56 @@ class Game extends Phaser.Scene {
   }
   // ♾️ การ์ดสแตตไม่รู้จบ — เติมช่องที่เหลือหลังอัพเกรดอาวุธตัน (แก้ปัญหา "เลเวลขึ้นแต่ไม่มีอะไรให้อัพ" ~lv15+)
   // stack เก็บใน b.endless[id] (รีเซ็ตทุกด่านผ่าน initBasicAttack) โชว์จำนวนชั้นในการ์ด
+  // ===== 🔮 Relic system =====
+  resetRelics(){ this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; }
+  relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
+  relicSlotsLeft(){ return RELIC_CAP-((this.relics&&this.relics.length)||0); }
+  relicDmg(mul){ return (10+(this.level||1)*1.5)*(this.player.dmgMul||1)*(1+(this.stageIndex||0)*0.35)*mul; }
+  rollRelicChoices(n){
+    if(this.relicSlotsLeft()<=0)return [];
+    const own=this._rel||{},pool=Object.keys(RELICS).filter(k=>!own[k]);
+    // ถืออีกครึ่งของคู่ synergy อยู่ → น้ำหนัก ×2.5 ให้เจอบ่อยขึ้น
+    const w=pool.map(k=>RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1),out=[];
+    while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
+      const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]));
+      out.push({type:'relic',key:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
+    return out;
+  }
+  offerRelic(){ if(this._inTutorial)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
+    this._forcedOpts=opts; this._relicPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return true; }
+  gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics();
+    this.relics.push(k); this._rel[k]=true; const p=this.player,d=RELICS[k];
+    if(k==='glass'){ p.dmgMul*=1.4; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
+    if(k==='magnet'){ p.pickup*=1.6; p.xpMul=(p.xpMul||1)*1.2; }
+    const syn=RELIC_SYNERGIES.find(s=>(s.a===k||s.b===k)&&this._rel[s.a]&&this._rel[s.b]);
+    if(syn&&syn.a==='jam')p.dashCdMul=(p.dashCdMul||1)*0.65;   // Sticky Rush
+    this.showBanner(syn?('🔗 '+syn.name+'!'):(d.emoji+' Relic: '+d.name),syn?syn.desc:d.desc,syn?2200:1700);
+    if(syn)this.screenFlash(0xc07bff,0.35,300);
+  }
+  relicOnCrit(e,amount,x,y){ const R=this._rel;
+    if(R.splinter&&!this._inSplinter){ const near=[];
+      this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==e){ const dd=this.dist(o.x,o.y,x,y); if(dd<180)near.push([dd,o]); } });
+      near.sort((a,b)=>a[0]-b[0]); this._inSplinter=true;
+      try{ for(const [,o] of near.slice(0,2)){ const ln=this.camWorld(this.add.line(0,0,x,y,o.x,o.y,0xffb3cd,0.95).setOrigin(0,0).setLineWidth(2).setDepth(9));
+        this.tweens.add({targets:ln,alpha:0,duration:180,onComplete:()=>ln.destroy()}); o._splinterHit=this.elapsed; this.damage(o,amount*0.4,o.x,o.y); } }
+      finally{ this._inSplinter=false; } }
+    if(R.leech&&this.elapsed>=(this._leechT||0)){ this._leechT=this.elapsed+0.25; const p=this.player,big=e.isBoss||e.isMini;
+      const heal=p.maxhp*0.01*((big&&this.relicSyn('leech','crown'))?3:1); p.hp=Math.min(p.maxhp,p.hp+heal); }
+  }
+  relicOnKill(e){ const R=this._rel;
+    if(R.shell){ this._relicKills=(this._relicKills||0)+1; if(this._relicKills>=15){ this._relicKills=0; const cap=this.relicSyn('shell','lastbreath')?2:1;
+      if((this._shield||0)<cap){ this._shield=(this._shield||0)+1; this.floatText(this.player.x,this.player.y-44,'🫧 Shield',0x9fe8ff); } } }
+    if(R.burst){ const chain=this.relicSyn('splinter','burst')&&e._splinterHit!=null&&this.elapsed-e._splinterHit<0.3;
+      if(chain||Math.random()<0.18){
+        if(this.elapsed-(this._burstT||0)>0.1){ this._burstT=this.elapsed; this._burstN=0; }
+        if((this._burstN=(this._burstN||0)+1)<=6){ const x=e.x,y=e.y,dmg=(e.isBoss||e.isMini)?this.relicDmg(2):Math.max(this.relicDmg(1),(e.maxhp||10)*0.5);
+          this.time.delayedCall(50,()=>{ if(this.state==='play'||this.state==='levelup')this.explodeAt(x,y,80,dmg); }); } } }
+  }
+  relicJamTrail(d){ const x0=this.player.x,y0=this.player.y,dmg=this.relicDmg(1.4);
+    for(let i=0;i<3;i++){ const x=x0+d.x*50*i,y=y0+d.y*50*i,blob=this.camWorld(this.add.circle(x,y,10,0xff5f88,0.9).setDepth(8).setStrokeStyle(2,0xffd1e0));
+      this.tweens.add({targets:blob,scale:1.35,duration:250,yoyo:true});
+      this.time.delayedCall(500+i*60,()=>{ if(blob.active)blob.destroy(); if(this.state==='play')this.explodeAt(x,y,70,dmg); }); }
+  }
   endlessStatDefs(){
     // v4.55: ใช้เพดานเดียวกับ meta (STAT_CAPS) · ดาเมจ +5% แบบบวก (ไม่คูณทบ) · capped()=true → ไม่เสนอการ์ดนั้น
     const C=STAT_CAPS,p=this.player||{};
@@ -6660,7 +6747,9 @@ class Game extends Phaser.Scene {
     if((this.stageIndex>=6&&this.stageIndex<=9)&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'&&e.nectarRole!=='waxGuard'&&e.seasonRole!=='equinoxGuard'&&e.rootRole!=='barkGuard'){let guarded=false;this.enemies.children.iterate(o=>{if(!guarded&&o&&o.active&&o!==e&&((o.mycoRole==='bulwark'&&this.stageIndex===6)||(o.nectarRole==='waxGuard'&&this.stageIndex===7)||(o.seasonRole==='equinoxGuard'&&this.stageIndex===8)||(o.rootRole==='barkGuard'&&this.stageIndex===9))&&this.dist(o.x,o.y,e.x,e.y)<175)guarded=true;});if(guarded)amount*=this.stageIndex===9?.78:this.stageIndex===8?.76:this.stageIndex===7?.74:.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
+    const RL=this._rel; if(RL){ if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; }
+    if(crit&&RL&&(RL.splinter||RL.leech))this.relicOnCrit(e,amount,x,y);
     let gate=null;
     if(e.isBoss){
       const p2=this.stageIndex===4?0.72:(this.stageIndex===6?0.68:(this.stageIndex===7?0.70:(this.stageIndex===8?0.72:(this.stageIndex===9?0.75:(this.stageIndex===0?0.68:(this.stageIndex===1?0.65:0.50))))));
@@ -6670,13 +6759,14 @@ class Game extends Phaser.Scene {
     if(gate!=null){const floor=e.maxhp*gate;if(e.hp>floor&&e.hp-amount<=floor){amount=e.hp-floor;e._phaseGateLocked=true;}}
     if(e._memoryToken)e._memoryStored=(e._memoryStored||0)+amount;
     e.hp-=amount;
+    if(RL&&RL.chill&&!e.isBoss&&!e.isMini&&e.hp>0&&Math.random()<0.10){ e.frozen=Math.max(e.frozen||0,1); e.setVelocity(0,0); e.setTint(COLORS.ice); }
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
     if(crit){ this.hitStop(35); this.screenShake(90, 0.005); }
     // อย่าฟอก sprite ด้วย setTintFill ตอนโดนตี: skillsหลาย hit ทำให้ art กระพริบขาวจนอ่าน silhouette ไม่ออก
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;
+  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -6891,7 +6981,8 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
-    if(kind==='mini'){this.openRollBox('🎁 Miniboss Box');return;}   // Miniboss = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='mini'){ if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box');return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='pick'&&Math.random()<0.30&&this.offerRelic())return;   // 🔮 กล่องลับ 30% = Relic
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
   // กล่องสุ่ม (Miniboss): หมุนสล็อตแล้วลงที่รางวัลเดียว — ตื่นเต้นกว่าเลือกเอง
@@ -7003,6 +7094,7 @@ class Game extends Phaser.Scene {
     if(this.player.hp<=0) this.die(); }
   // โดนกระสุน/สแลม/hazard ของศัตรู (iframe สั้นกว่า → หลบยาก)
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
+    if((this._shield||0)>0){ this._shield--; this.player.iframe=0.6; this.floatText(this.player.x,this.player.y-44,'🫧 Blocked!',0x9fe8ff); this.screenFlash(0x9fe8ff,0.18,160); return; }   // 🔮 Candy Shell
     if(this._inTutorial)return;   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
     dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
@@ -7760,6 +7852,11 @@ class Game extends Phaser.Scene {
 
   /* ---------- DEATH ---------- */
   die(){ if(this.state==='dead')return;
+    // 🔮 Relic Last Breath: ครั้งแรกที่ตายในด่าน = รอด (Second Wind = 40% HP + โล่)
+    if(this._rel&&this._rel.lastbreath&&!this._lastBreathUsed){ this._lastBreathUsed=true; const sw=this.relicSyn('shell','lastbreath');
+      this.player.hp=sw?Math.round(this.player.maxhp*0.40):1; if(sw)this._shield=Math.min(2,(this._shield||0)+1);
+      if(this.player.body)this.player.body.enable=true; this.player.iframe=2; this.screenFlash(0xffe08a,0.45,380);
+      this.showBanner('🕯️ Last Breath!',sw?'Second Wind — back up with 40% HP and a shield':'Clinging on at 1 HP · 2s invulnerable',1800); return; }
     // Rank Perk 🕯️ เทียนคืนชีพ: ล้มแล้วฟื้น 1 times/Stage ที่ HP 45%
     if((this._reviveLeft||0)>0){ this._reviveLeft--; this.player.hp=Math.round(this.player.maxhp*0.45);
       if(this.player.body)this.player.body.enable=true; this.clearFoes(); this.screenFlash(0xffe08a,0.5,420); if(Sfx.clear)Sfx.clear();
