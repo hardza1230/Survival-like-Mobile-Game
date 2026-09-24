@@ -3,7 +3,7 @@ import { inflateSync } from 'node:zlib';
 
 const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
-// Affix Forge release gate: keep the roulette reveal and all three mod roles wired into shipped builds.
+// v4.46 release gate: keep the roulette reveal and all three mod roles wired into shipped builds.
 for(const contract of [
   "const GAME_VERSION = '4.46.0'",
   "const AFFIX_CATEGORY = {",
@@ -327,3 +327,4 @@ for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)','buildEndgame(
 for(const contract of ["const bkey=this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper':type==='shooter'?'e_banquet_eye'","this.stage5Pose(b,pose","this.stage5DeathGhost(e)"]){
   if(!source.includes(contract))throw new Error(`Missing Stage 5 replacement contract: ${contract}`);
 }
+45416a6c3e26e2cb594536e0ad84d441d03d9ed7
