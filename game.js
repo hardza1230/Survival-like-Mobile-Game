@@ -37,9 +37,15 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.57.0';
+const GAME_VERSION = '4.58.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.58.0', date:'2026-09-24', title:'Objectives with stakes — Bonus Challenges', items:[
+    '⭐ Every objective now has a Bonus Challenge (finish fast, take at most 2 hits, or rack up kills). Succeed to earn a 🔮 Relic pick (or crafting currency once your Relic slots are full) — fail and Elite enemies ambush you',
+    '🔷 Capture: standing alone fills the ring slowly — kills inside the ring charge it much faster, so pull the swarm in',
+    '🎯 Hunt: the marked Elite blinks away when you get close and leaves a trap where it stood',
+    '🕯️ Escort the Wisp: red raiders spawn and charge the Wisp — intercept them before they snuff it out',
+  ]},
   { v:'4.57.0', date:'2026-09-24', title:'🔮 Relics — change how you fight', items:[
     'New Relic system: rare in-run treasures that change your mechanics, not just your numbers. Hold up to 3 per stage',
     'Get them from a guaranteed pick at level 6, from every Miniboss Box, and sometimes from secret map boxes (choose 1 of 3)',
@@ -2473,9 +2479,9 @@ const STAGE_GIMMICKS = [
 /* ภารกิจสุ่มประจำWave Chapter 1 — เปลี่ยนสิ่งที่ผู้เล่นต้องทำโดยไม่เพิ่มภาระระบบฟิสิกส์หนัก */
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
-  hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite'},
-  purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core and protect it while it purifies'},
-  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the power ring until the meter fills'},
+  hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite — it blinks away when you get close and leaves a trap'},
+  purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
+  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Hold the power ring — kills inside the ring charge it much faster'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect and restore the three nectar flowers while the hive attacks'},
   seasonCycle:{emoji:'🌦️',name:'Stabilize the Seasons',desc:'Stand in the sanctuary matching the active season'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Destroy every corrupted root anchor before the throne pulse closes in'},
@@ -2954,6 +2960,7 @@ class Game extends Phaser.Scene {
     this.waveObjTxt=this.add.text(w/2,pad+108,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff4b0',align:'center',stroke:'#24172c',strokeThickness:3}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);
     this.waveObjBg=this.add.rectangle(w/2,pad+131,Math.min(230,w-84),7,0x100b16,0.72).setOrigin(0.5,0).setScrollFactor(1).setDepth(52).setVisible(false);
     this.waveObjBar=this.add.rectangle(w/2-Math.min(230,w-84)/2,pad+132,Math.min(230,w-84),5,0xffd166,1).setOrigin(0,0).setScrollFactor(1).setDepth(53).setVisible(false);
+    this.waveBonusTxt=this.add.text(w/2,pad+140,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a',align:'center',stroke:'#24172c',strokeThickness:3}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);   // ⭐ Bonus Challenge (v4.58)
 
     // boss HP bar (hidden until boss)
     this.bossName=this.add.text(w/2,pad+136,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(52);
@@ -2984,7 +2991,7 @@ class Game extends Phaser.Scene {
     this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(80); this.camUI(this.pOverG);
     this.pOverLv=this.add.text(0,0,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:4}).setOrigin(0.5,1).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
     this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
-    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp];
+    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.bossHpTxt,this.objectiveArrow,this.objectiveDist];
@@ -4881,8 +4888,9 @@ class Game extends Phaser.Scene {
     }else if(type==='breakRoots'){
       o.target=4;o.desc='Destroy all '+o.target+' crown-root anchors before time expires';this.spawnRootAnchors(o.target);
     }else{
-      o.target=12+w*2;o.desc='Stand in the capture zone for '+o.target+' seconds';this.spawnCaptureZone();
+      o.target=12+w*2;o.desc='Hold the ring for '+o.target+'s · kills inside charge it faster';this.spawnCaptureZone();
     }
+    this.startBonusChallenge(o);
     this.renderWaveObjectiveHUD();
   }
   spawnCleanAirZone(){
@@ -4957,6 +4965,45 @@ class Game extends Phaser.Scene {
     o.progress=Phaser.Math.Clamp(o.progress+dt,0,o.target);if(this.objNodeG){this.objNodeG.clear();for(const f of flowers){if(!f.alive)continue;const w=72,frac=f.hp/f.maxhp;this.objNodeG.fillStyle(0x190b24,.78).fillRoundedRect(f.x-w/2,f.y-78,w,8,4);this.objNodeG.fillStyle(frac<.35?0xff5f7a:0xffc95c,.95).fillRoundedRect(f.x-w/2+2,f.y-76,(w-4)*frac,4,2);}}
     if(o.progress>=o.target)this.completeWaveObjective();
   }
+  // ===== ⭐ Bonus Challenge (v4.58): โจทย์เสริมทุกภารกิจ · สำเร็จ = Relic (slot เต็ม → currency) · พลาด = Elite ซุ่มโจมตี =====
+  startBonusChallenge(o){
+    this._bonus=null;if(!o||this._inTutorial)return;
+    const timed=['hunt','purge','capture','breakRoots'].includes(o.type),ids=timed?['speed','nohit','kills']:['nohit','kills'],id=Phaser.Utils.Array.GetRandom(ids),si=this.stageIndex||0;
+    let limit=0;if(id==='speed'){ if(o.type==='hunt')limit=14*o.target+10; else if(o.type==='purge'){const t=this._wispTuning();limit=Math.round((t.channel+9)*o.target+6);} else if(o.type==='capture')limit=Math.round(o.target*1.25+8); else limit=45; }
+    const b=this._bonus={id,limit,t:0,hits:0,maxHits:2,kills:0,target:id==='kills'?25+si*4:0,failed:false,reward:this.relicSlotsLeft()>0?'relic':'currency'};
+    b.label=id==='speed'?('Finish within '+limit+'s'):id==='nohit'?'Take at most 2 hits':('Defeat '+b.target+' enemies during the objective');
+    this.renderBonusHUD();
+  }
+  bonusRewardTxt(){ const b=this._bonus;return b&&b.reward==='relic'?'🔮 Relic':'🧪 Currency'; }
+  renderBonusHUD(){
+    const b=this._bonus,t=this.waveBonusTxt;if(!t)return;if(!b||!this.waveObjective){t.setVisible(false);return;}
+    if(b.failed){t.setText('✖ Bonus failed — ambush!').setColor('#ff8a8a').setVisible(true);return;}
+    const st=b.id==='speed'?('⏱ '+Math.max(0,Math.ceil(b.limit-b.t))+'s'):b.id==='nohit'?('💢 '+b.hits+'/'+b.maxHits+' hits'):('☠ '+b.kills+'/'+b.target);
+    t.setText('⭐ Bonus: '+b.label+' · '+st+' → '+this.bonusRewardTxt()).setColor('#ffe08a').setVisible(true);
+  }
+  tickBonusChallenge(dt){ const b=this._bonus;if(!b||b.failed)return;b.t+=dt;if(b.id==='speed'&&b.t>b.limit)this.failBonus('Too slow');this.renderBonusHUD(); }
+  failBonus(reason){
+    const b=this._bonus;if(!b||b.failed)return;b.failed=true;this.renderBonusHUD();
+    this.showBanner('⚠️ Bonus Failed — Ambush!',(reason?reason+' · ':'')+'Elite enemies close in',1500);this.screenFlash(0xff5a6e,0.22,260);if(Sfx.bossWarn)Sfx.bossWarn();
+    for(let i=0;i<2;i++)this.time.delayedCall(250+i*300,()=>{if(this.state==='play'&&(this.mode==='wave'||this.mode==='waveclear'))this.spawnElite();});
+  }
+  onBonusHurt(){ const b=this._bonus;if(!b||b.failed||b.id!=='nohit')return;b.hits++;if(b.hits>b.maxHits)this.failBonus('Took too many hits');else this.renderBonusHUD(); }
+  // เรียกจาก killEnemy: นับ kill ของโจทย์เสริม + Capture เติมเร็วเมื่อฆ่าในวง
+  objOnKill(e){
+    const o=this.waveObjective;if(!o||o.done)return;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
+    if(o.type==='capture'&&this._captureZone&&this.dist(e.x,e.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal){
+      o.progress=Math.min(o.target,o.progress+0.7);if(this.elapsed-(this._capPopT||0)>0.3){this._capPopT=this.elapsed;this.floatText(e.x,e.y-20,'+0.7s',o.color);}
+      if(o.progress>=o.target)this.completeWaveObjective(); }
+  }
+  // ประเมินโจทย์เสริมตอนภารกิจสำเร็จ (เรียกก่อน clearWaveObjective)
+  resolveBonusChallenge(){
+    const b=this._bonus;if(!b)return;this._bonus=null;
+    if(b.failed)return;
+    if(b.id==='kills'&&b.kills<b.target){this._bonus=b;this.failBonus('Only '+b.kills+'/'+b.target+' kills');this._bonus=null;return;}
+    this.screenFlash(0xffe08a,0.3,260);
+    if(b.reward==='relic'&&this.relicSlotsLeft()>0){ this.time.delayedCall(900,()=>{ if(this.state==='play'){ if(!this.offerRelic())this.grantCurrencyReward(2,this.currencyTierFor(),'⭐ Bonus Complete!'); } }); }
+    else this.grantCurrencyReward(2,this.currencyTierFor(),'⭐ Bonus Complete!');
+  }
   objectivePosition(i=0,n=1,minR=240,maxR=390){
     const lim=WORLD/2-130;let pos={x:this.player.x,y:this.player.y};
     for(let tryN=0;tryN<8;tryN++){const a=(i/n)*TAU+Phaser.Math.FloatBetween(-.38,.38)+tryN*.72,r=Phaser.Math.Between(minR,maxR);pos={x:Phaser.Math.Clamp(this.player.x+Math.cos(a)*r,-lim,lim),y:Phaser.Math.Clamp(this.player.y+Math.sin(a)*r,-lim,lim)};let blocked=false;
@@ -5021,6 +5068,8 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done)return;const t=this._wispTuning();
     if(!this._wisp){ this._wispRespawn-=dt; if(this._wispRespawn<=0&&o.progress<o.target)this.spawnPurifyWisp(); this.renderWispHUD(); return; }
     const w=this._wisp,near=this.dist(this.player.x,this.player.y,w.x,w.y)<=t.escortR;
+    // 🕯️ Raiders: ทุก ~7s ส่งมอนแดง 2 ตัวพุ่งเข้าหา Wisp (ต้องคอยสกัด)
+    this._raidT=(this._raidT??5)-dt;if(this._raidT<=0){this._raidT=7;if(this.enemies.countActive(true)<this.maxLive){for(let i=0;i<2;i++){const e=this.spawnEnemy('fast');if(e){e._wispRaider=true;e.tintColor=0xff6a6a;e.setTint(0xff6a6a);}}this.floatText(w.x,w.y-60,'⚠ Raiders!',0xff6a6a);}}
     // มอนกัดกินแสง
     let foes=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,w.x,w.y)<=t.drainR)foes++;});
     if(foes>0)w._light-=t.drain*foes*dt; else if(near)w._light=Math.min(1,w._light+t.regen*dt);
@@ -5070,7 +5119,12 @@ class Game extends Phaser.Scene {
   }
   tickWaveObjective(dt){
     const o=this.waveObjective;if(!o||o.done)return;
-    this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
+    this.tickBonusChallenge(dt);
+    this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){
+      // 🎯 Hunt: เป้าหมายวาร์ปหนีเมื่อเข้าใกล้ + ทิ้งกับดักไว้ที่เดิม
+      if(o.type==='hunt'){e._blinkCd=(e._blinkCd??2.5)-dt;if(e._blinkCd<=0&&this.dist(this.player.x,this.player.y,e.x,e.y)<210){e._blinkCd=4.5;const ox=e.x,oy=e.y,a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-.7,.7),lim=WORLD/2-120;
+        this.spawnHazard(ox,oy,55,Math.round(8+(this.stageIndex||0)*1.5),0xff5a8a);this.vfxSpawnPoof(ox,oy);e.setPosition(Phaser.Math.Clamp(ox+Math.cos(a)*270,-lim,lim),Phaser.Math.Clamp(oy+Math.sin(a)*270,-lim,lim));this.vfxSpawnPoof(e.x,e.y);this.floatText(e.x,e.y-50,'Blink!',0xff8ab0);}}
+      if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
     else if(o.type==='purge'){
       this.tickPurifyWisp(dt);
@@ -5085,30 +5139,32 @@ class Game extends Phaser.Scene {
       this.tickSeasonObjective(dt);if(!this.waveObjective)return;
     }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
-      o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}
+      o.progress=Phaser.Math.Clamp(o.progress+(inside?dt*0.55:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}   // v4.58: ยืนเฉย ๆ เติมช้า · ฆ่าในวง +0.7s (objOnKill)
     if(o.type!=='purge'&&this.objNodeG)this.objNodeG.clear();   // เคลียร์หลอดแกน (แยกจาก else-if chain กันไปบLocked capture)
     this.renderWaveObjectiveHUD();
   }
   renderWaveObjectiveHUD(){
-    const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);return;}
+    const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);return;}
+    this.renderBonusHUD();
     const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar'||o.type==='seasonCycle')?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target;
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
   }
   completeWaveObjective(){
-    const o=this.waveObjective;if(!o||o.done)return;o.done=true;const bonus=6+(this.stageIndex+1)*2+this.waveIndex*2;this.sugarStage+=bonus;this.sugarRun+=bonus;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
+    const o=this.waveObjective;if(!o||o.done)return;o.done=true;this.resolveBonusChallenge();const bonus=6+(this.stageIndex+1)*2+this.waveIndex*2;this.sugarStage+=bonus;this.sugarRun+=bonus;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     const title='✅ Objective Complete · Sugar +'+bonus;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner(title,'Clear the remaining enemies to advance',1500);Sfx.clear();
   }
   failWaveObjective(){
-    const o=this.waveObjective;if(!o||o.done)return;o.done=true;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner('⌛ Objective Timed Out','No bonus, but you can still advance — clear the rest',1700);
+    const o=this.waveObjective;if(!o||o.done)return;o.done=true;this._bonus=null;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner('⌛ Objective Timed Out','No bonus, but you can still advance — clear the rest',1700);
   }
   clearWaveObjective(){
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
-    if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;});
+    if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;e._wispRaider=false;});
+    this._bonus=null;if(this.waveBonusTxt)this.waveBonusTxt.setVisible(false);this._raidT=null;
     for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
     for(const k of ['_captureZone','_captureRing','_cleanAirZone','_cleanAirRing','_cleanAirWisp']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
-    this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);
+    this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);
   }
   // ล้างมอนธรรมดาที่ค้าง (เก็บบอส/มินิไว้) — ใช้ตอนจบเวฟ/Waitดครบเวลา
   clearEnemies(){ this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } }); }
@@ -6766,7 +6822,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);
+  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(this.waveObjective&&!big)this.objOnKill(e);
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -7098,7 +7154,7 @@ class Game extends Phaser.Scene {
     if(this._inTutorial)return;   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
     dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
-    this.player.iframe=ix||0.5; this.player.hp-=dmg; Sfx.hurt(); this.screenShake(150,0.009);
+    this.player.iframe=ix||0.5; this.player.hp-=dmg; this.onBonusHurt(); Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
     this.vfxHurtFlash();
     this.vfxHitRing(this.player.x,this.player.y,0xff5a6e,false);
@@ -7999,7 +8055,7 @@ class Game extends Phaser.Scene {
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
       if(e._decoyT>0)e._decoyT-=dt;
-      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;
+      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}
       if(this.stageIndex===7&&this.waveObjective&&this.waveObjective.type==='defendNectar'&&['drone','honeyBomb','dartwing'].includes(e.nectarRole)&&this._nectarFlowers){let target=null,bd=Infinity;for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(e.x,e.y,f.x,f.y);if(d<bd){bd=d;target=f;}}if(target){tx=target.x;ty=target.y;}}
       const dx=tx-e.x, dy=ty-e.y, ang=Math.atan2(dy,dx), dd=Math.hypot(dx,dy);
       // หันหน้าเข้าหาผู้เล่นเสมอ
