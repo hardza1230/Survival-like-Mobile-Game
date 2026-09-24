@@ -37,9 +37,15 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.63.0';
+const GAME_VERSION = '4.64.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.64.0', date:'2026-09-24', title:'Cleaner in-game HUD', items:[
+    'The top of the screen is much less crowded: the stats line now only shows your Relics and shields (HP stays above your character)',
+    'The stage name shows for the first few seconds of a stage, then fades away',
+    'Shorter Bonus Challenge line, and a thicker, easier-to-see EXP bar',
+    'Your full combat stats (HP, regen, damage, defense, crit) and stage info now appear on the Pause screen',
+  ]},
   { v:'4.63.0', date:'2026-09-24', title:'Cleaner menus on phones', items:[
     'Screen titles now shrink to fit between the Back button and your Sugar, so long titles no longer run underneath them',
     'Fixed text overlapping the title in portrait on the Bestiary, Mochi Bazaar, Updates, Rank Perks, Character Stats and Flavor Weave screens',
@@ -3044,14 +3050,15 @@ class Game extends Phaser.Scene {
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);
     // เอาหลอด HP ด้านบนออก (ย้ายไปNorthหัวผู้เล่นแทน) · เหลือแถบ XP บาง ๆ ไว้ดูความคืบหน้าเลเวล
     if(this.hpIcon)this.hpIcon.setVisible(false); if(this.xpIcon)this.xpIcon.setPosition(pad+4,pad+6);
-    g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx,pad+2,bw,8,4);
-    if(xpf>0){ g.fillStyle(0x8bd3a0,1); g.fillRoundedRect(bx+2,pad+4,Math.max(4,(bw-4)*xpf),4,2); }
+    g.fillStyle(0x000000,0.45); g.fillRoundedRect(bx,pad+1,bw,11,5);   // v4.64: แถบ XP หนาขึ้น (เดิม 8/4px แทบมองไม่เห็นบนมือถือ)
+    if(xpf>0){ g.fillStyle(0x8bd3a0,1); g.fillRoundedRect(bx+2,pad+3,Math.max(6,(bw-4)*xpf),7,3); }
     this.drawOverheadStatus(hpf);
-    if(this.statTxt){ const p=this.player;
-      const regen=Math.min(p.maxhp*0.03,(p.regen||0)+(p.regenFlat||0)+p.maxhp*(p.regenPct||0));
-      const atkPct=Math.round((p.dmgMul||1)*100), defPct=Math.round((1-(p.dmgTakenMul||1))*100), critPct=Math.round((p.critChance||0)*100);
-      this.statTxt.setText(`❤ ${Math.max(0,Math.round(p.hp))}/${Math.round(p.maxhp)}   ♻ ${regen.toFixed(1)}/s   ⚔ ${atkPct}%   🛡 ${defPct}%`+(critPct>0?`   🎯 ${critPct}%`:'')+((this.relics&&this.relics.length)?'   🔮 '+this.relics.map(k=>RELICS[k].emoji).join(''):'')+((this._shield||0)>0?'  🫧×'+this._shield:''));
-    }
+    // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
+    if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
+      this.statTxt.setText([rel,sh].filter(Boolean).join('   ')); }
+    // บรรทัดชื่อด่านโชว์ 6 วิแรกของด่านแล้วจางหาย (ดูซ้ำได้ในหน้า Pause)
+    if(this.stageTxt&&this.stageTxt.visible){ const a=Phaser.Math.Clamp(((this._stageTxtAt??-99)+6-(this.elapsed||0))/1.2,0,1); this.stageTxt.setAlpha(a); }
+
   }
   // หลอดเลือด+เลเวลNorthหัวผู้เล่น (แบบ Archero) — screen-space คำนวณจากกล้อง ให้ติดตัวเสมอ
   drawOverheadStatus(hpf){
@@ -4625,10 +4632,14 @@ class Game extends Phaser.Scene {
     this.pauseUI.removeAll(true); this._pauseBtns=[];
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.85).setOrigin(0,0);
     const t=this.add.text(w/2,38,'⏸ Paused',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ff8fb5'}).setOrigin(0.5);
-    const sub=this.add.text(w/2,65,'Stage '+((this.stageIndex||0)+1)+' · '+this.kills+' kills',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6'}).setOrigin(0.5);
-    this.pauseUI.add([bg,t,sub]);
+    const stTxt=(this.stageTxt&&this.stageTxt.text)||('Stage '+((this.stageIndex||0)+1));
+    const sub=this.add.text(w/2,62,stTxt+'  ·  ☠ '+this.kills,{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6',align:'center',wordWrap:{width:w-30}}).setOrigin(0.5);
+    // v4.64: สแตตรบย้ายจาก HUD มาไว้ที่นี่
+    const p=this.player,regen=Math.min(p.maxhp*0.03,(p.regen||0)+(p.regenFlat||0)+p.maxhp*(p.regenPct||0));
+    const cs=this.add.text(w/2,80,'❤ '+Math.max(0,Math.round(p.hp))+'/'+Math.round(p.maxhp)+'   ♻ '+regen.toFixed(1)+'/s   ⚔ '+Math.round((p.dmgMul||1)*100)+'%   🛡 '+Math.round((1-(p.dmgTakenMul||1))*100)+'%   🎯 '+Math.round((p.critChance||0)*100)+'%',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#bfe8d6'}).setOrigin(0.5);
+    this.pauseUI.add([bg,t,sub,cs]);
     // แผงสกิล/พรที่Owned
-    const panelY=82,panelH=72,px=20,pw=w-40;
+    const panelY=94,panelH=72,px=20,pw=w-40;
     const pnl=this.add.graphics();
     const ph=this.add.text(px+14,panelY+8,'Held',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
@@ -4793,7 +4804,7 @@ class Game extends Phaser.Scene {
       else this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
     this.buildStageProps(i);this.buildChapterDepth(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
-    const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
+    const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this._stageTxtAt=this.elapsed||0;this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
     this.showBanner(`${st.emoji} Stage ${stageNo}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
     this.updateWaveText();
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
@@ -5094,7 +5105,8 @@ class Game extends Phaser.Scene {
     const b=this._bonus,t=this.waveBonusTxt;if(!t)return;if(!b||!this.waveObjective){t.setVisible(false);return;}
     if(b.failed){t.setText('✖ Bonus failed — ambush!').setColor('#ff8a8a').setVisible(true);return;}
     const st=b.id==='speed'?('⏱ '+Math.max(0,Math.ceil(b.limit-b.t))+'s'):b.id==='nohit'?('💢 '+b.hits+'/'+b.maxHits+' hits'):('☠ '+b.kills+'/'+b.target);
-    t.setText('⭐ Bonus: '+b.label+' · '+st+' → '+this.bonusRewardTxt()).setColor('#ffe08a').setVisible(true);
+    const short=b.id==='speed'?'Finish fast':b.id==='nohit'?'≤2 hits':'Kill '+b.target;   // v4.64: บรรทัดสั้นลงสำหรับจอแนวตั้ง
+    t.setText('⭐ '+short+' · '+st+' → '+(b.reward==='relic'?'🔮':'🧪')).setColor('#ffe08a').setVisible(true);
   }
   tickBonusChallenge(dt){ const b=this._bonus;if(!b||b.failed)return;b.t+=dt;if(b.id==='speed'&&b.t>b.limit)this.failBonus('Too slow');this.renderBonusHUD(); }
   failBonus(reason){

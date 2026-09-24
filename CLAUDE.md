@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.64.0 — HUD แนวตั้งโล่งขึ้น)
+- **v4.64.0 (UI/UX ข้อ 5 HUD):** `drawBars` (เรียกทุกเฟรม): `statTxt` เหลือแค่ 🔮 Relic + 🫧×โล่ (เดิม 8 ค่า ❤♻⚔🛡🎯 — HP อยู่เหนือหัวผู้เล่นแล้ว) · `stageTxt` จางหายหลัง 6 วิของด่าน (`_stageTxtAt` ตั้งใน startStage, alpha คำนวณใน drawBars) · แถบ XP หนาขึ้น (11/7px) · `renderBonusHUD` ย่อเป็น "⭐ ≤2 hits · 0/2 → 🔮" · `buildPause` เพิ่มบรรทัดชื่อด่าน+☠ และบรรทัดสแตตรบเต็ม (panelY 82→94) · **verified screenshot 390×844: HUD บนเหลือ 3 บรรทัด, stageTxt alpha 1→0, 0 error** · **UI/UX ที่ยังค้าง:** (3) ที่ว่างครึ่งล่างหน้า Craft/Stats/Daily/Pause (4) Affix Forge ไอคอน slot ชิดป้ายขั้นตอน
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.63.0 — UI แนวตั้ง: หัวข้อ/ข้อความไม่ซ้อนทับ)
 - **v4.63.0 (UI/UX ข้อ 1+2 — สำรวจ screenshot 390×844 ทุกหน้า):** (1) `_screenBg` ย่อฟอนต์ชื่อหน้าอัตโนมัติให้อยู่ระหว่างปุ่ม Back (x≤94) กับตัวนับ Sugar (ต่ำสุด 12px) · helper `_hdrShift()` = portrait?30:0 (header แนวตั้งอยู่ y52 แต่หน้าเหล่านี้วางข้อความย่อยด้วยพิกัดแนวนอน y50-73) ใส่ใน Bestiary/Bazaar/News/RankPerks/Stats · Weave: ปุ่ม Rank Perks แนวตั้งย้ายไปกลางใต้ชื่อยศ (เดิมทับชื่อยศ) + เลื่อนแถบ/การ์ดลง 32px · (2) `drawHeldBar` rowFn: `chipX0=max(chipX0,labelX+label.width+8)` (เดิมไอคอนเริ่ม x คงที่ 58 ทับคำ "Skills"/"Relics") · pause: กรอบ Held สูงตาม `heldBot` จริง · **verified screenshot แนวตั้ง+แนวนอน ทุกหน้าที่แก้ 0 error** · **UI/UX ที่ยังค้าง:** (3) หน้าแนวตั้งมีที่ว่างครึ่งล่าง (Craft ตอนไม่มีของ/Stats/Daily/Pause) (4) Affix Forge ไอคอน slot ชิดป้ายขั้นตอน (5) HUD บนแน่น (เวฟ+ภารกิจ+bonus+stat+relic) · การ์ดเลเวลอัพแนวนอนยังชิดกัน (แอปล็อก portrait แล้ว ความสำคัญต่ำ)
 - **Build Android ผ่านแล้ว:** GitHub Actions run #404 (Capacitor 8 / API 36) success · APK ใหม่อยู่ที่ release `latest`
