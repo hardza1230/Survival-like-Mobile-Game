@@ -34,9 +34,13 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.52.0';
+const GAME_VERSION = '4.53.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.53.0', date:'2026-09-24', title:'Endless power-ups — level-ups never run dry', items:[
+    'After your Basic Attack upgrades, Mutation and Evolution are maxed out (around level 15+), level-up cards used to stop appearing. Now endless Power-Up cards keep coming: +damage, +max HP, +crit chance, +crit damage, -cooldown, +move speed and +regen — each can stack forever',
+    'These only fill the slots your weapon upgrades leave empty, so early-game weapon progression is unchanged; later stages (with more monsters and more levels) now always have something meaningful to pick',
+  ]},
   { v:'4.52.0', date:'2026-09-24', title:'Browse the full update history', items:[
     'The Updates page now pages through every past version instead of only showing the three latest — use the ‹ › arrows to look back through the whole changelog',
   ]},
@@ -5627,7 +5631,7 @@ class Game extends Phaser.Scene {
   signatureWeaponInfo(){const ch=CHARACTERS[this.character]||CHARACTERS.momo;return SIGNATURE_WEAPONS[ch.weapon]||SIGNATURE_WEAPONS.berryBlaster;}
   usesBasicAttackBuild(){return !!BASIC_ATTACKS[this.character];}
   basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
-  initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9};this.syncBasicAttack();}
+  initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
@@ -5838,6 +5842,19 @@ class Game extends Phaser.Scene {
     if(queued)this.time.delayedCall(80,()=>{if(this.state!=='play')return;if(queued==='mini'&&this.mode==='miniWarning')this.spawnMiniBoss();else if(queued==='final')this.spawnFinalBoss();});
     if(this._chestReward){ this._chestReward=false; this.time.delayedCall(180,()=>{ if(this.state==='play')this.onStageClear(); }); }
   }
+  // ♾️ การ์ดสแตตไม่รู้จบ — เติมช่องที่เหลือหลังอัพเกรดอาวุธตัน (แก้ปัญหา "เลเวลขึ้นแต่ไม่มีอะไรให้อัพ" ~lv15+)
+  // stack เก็บใน b.endless[id] (รีเซ็ตทุกด่านผ่าน initBasicAttack) โชว์จำนวนชั้นในการ์ด
+  endlessStatDefs(){
+    return [
+      {id:'edmg',  emoji:'🔥', title:'Sweet Surge',    desc:'+8% damage',        apply:p=>{p.dmgMul*=1.08;}},
+      {id:'ehp',   emoji:'🧁', title:'Mochi Vitality',  desc:'+12% max HP (+heal)',apply:p=>{const add=Math.max(1,Math.round(p.maxhp*0.12));p.maxhp+=add;p.hp=Math.min(p.maxhp,p.hp+add);}},
+      {id:'ecrit', emoji:'🎯', title:'Keen Sights',     desc:'+3% crit chance',   apply:p=>{p.critChance=Math.min(0.75,(p.critChance||0)+0.03);}},
+      {id:'ecdmg', emoji:'💥', title:'Critical Force',  desc:'+12% crit damage',  apply:p=>{p.critMul=(p.critMul||1.55)+0.12;}},
+      {id:'ecdr',  emoji:'⚡', title:'Quick Cast',      desc:'-4% cooldown',      apply:p=>{p.cdMul=Math.max(0.45,(p.cdMul||1)*0.96);}},
+      {id:'espd',  emoji:'👟', title:'Nimble Step',     desc:'+4% move speed',    apply:p=>{p.baseSpeed=Math.min(BALANCE.moveSpeed*1.5,p.baseSpeed*1.04);}},
+      {id:'eregen',emoji:'💗', title:'Sweet Renewal',   desc:'+0.6 HP/s regen',   apply:p=>{p.regen=(p.regen||0)+0.6;}},
+    ];
+  }
   rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
@@ -5874,7 +5891,15 @@ class Game extends Phaser.Scene {
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}   // การ์ดอาวุธของตัวละครล้วน
     if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
     else if(out.length<n&&healCard){out.push(healCard);healCard=null;}
-    if(!out.length)out.push({type:'util',key:'sugarCache',lvl:1,max:1,emoji:'🍬',title:'Sugar Cache',desc:'Gain 8 Sugar instantly',apply:()=>{this.sugarStage+=8;this.sugarRun+=8;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);}});
+    // ♾️ เติมช่องที่เหลือด้วยการ์ดสแตตไม่รู้จบ (อาวุธตันแล้วก็ยังมีอะไรให้เลือกเสมอ)
+    if(out.length<n){
+      b.endless=b.endless||{};
+      const defs=Phaser.Utils.Array.Shuffle(this.endlessStatDefs().slice());
+      for(const s of defs){ if(out.length>=n)break;
+        const stack=(b.endless[s.id]||0)+1,rr=rollRarity();
+        out.push({type:'basic',key:'endless_'+s.id,lvl:stack,max:99,kind:'Power Up',color:rr.color,rarity:rr,emoji:s.emoji,title:s.title,desc:s.desc+(stack>1?('  ·  Stack '+stack):''),iconKey:SKILL_ICON[d.skill],apply:()=>{b.endless[s.id]=(b.endless[s.id]||0)+1;s.apply(this.player);this.recomputeDerivedStats&&this.recomputeDerivedStats();if(s.id==='ehp'&&this.drawBars)this.drawBars();}});
+      }
+    }
     Phaser.Utils.Array.Shuffle(out);
     return out.slice(0,n);
   }
