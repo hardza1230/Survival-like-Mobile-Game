@@ -34,9 +34,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.53.0';
+const GAME_VERSION = '4.54.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.54.0', date:'2026-09-24', title:'Evolution fixed', items:[
+    'Basic Attack Evolution could never appear (it needed 20 mastery but the maximum reachable was 17). It now unlocks at 14 mastery — about 2 upgrades after your Mutation',
+  ]},
   { v:'4.53.0', date:'2026-09-24', title:'Endless power-ups — level-ups never run dry', items:[
     'After your Basic Attack upgrades, Mutation and Evolution are maxed out (around level 15+), level-up cards used to stop appearing. Now endless Power-Up cards keep coming: +damage, +max HP, +crit chance, +crit damage, -cooldown, +move speed and +regen — each can stack forever',
     'These only fill the slots your weapon upgrades leave empty, so early-game weapon progression is unchanged; later stages (with more monsters and more levels) now always have something meaningful to pick',
@@ -5866,7 +5869,8 @@ class Game extends Phaser.Scene {
         return muts.map(u=>makeCard(u,{mutation:true,special:true,apply:()=>{b.mutation=u.id;this.syncBasicAttack();this.showBanner(u.emoji+' '+u.name,'Mutation path chosen · the other is locked',1700);}})); }
     }
     // ✨ ช่วงพิเศษ #2 — Evolution timesเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
-    if(!noSpecial&&b.mastery>=20&&!b.evolved&&!this.banishedKeys?.['b:evolution']){   // Evolution ออกช้าลง (เดิม mastery 12 → 20)
+    const evoAt=Math.min(14,d.upgrades.reduce((s,u)=>s+(this.banishedKeys?.['b:'+u.id]?(b.lv[u.id]||0):u.max),0)+1);   // v4.54: เดิม 20 แต่ mastery สูงสุดได้แค่ 17 (16 อัพ+1 mutation) = evolution ไม่มีวันออก
+    if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC={sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};

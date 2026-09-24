@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.54.0 — แก้ Evolution ไม่ขึ้น)
+- **v4.54.0 (Evolution ไม่เคยขึ้น — จาก feedback เจ้าของ):** gate เดิม `b.mastery>=20` แต่ mastery สูงสุด = ผลรวม max ของ `d.upgrades` (ทุกตัว 5+5+3+3=16) + mutation 1 = **17** → evolution ไม่มีวันออก · แก้เป็น `evoAt=min(14, mastery สูงสุดที่ทำได้จริง (นับ banish))` · **verified headless ทั้ง 5 ตัว: mutation lv9, evolution lv15, 0 error** · ⚠️ ถ้าเพิ่ม/ลด upgrades ในอนาคต ระวัง gate mutation(8)/evo(14) ต้องไม่เกิน mastery สูงสุด
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.53.0 — การ์ดเลเวลอัพไม่รู้จบ แก้เลเวลตัน ~lv15)
 - **v4.53.0 (Endless power-ups — จาก feedback เจ้าของ "เลเวลตัน ~lv15 ไม่มีอะไรให้อัพ"):** character-first build เดิม `rollBasicAttackUpgrades` มีแค่ weapon upgrades (`d.upgrades`) + mutation(mastery8) + evolution(mastery20) + heal ฉุกเฉิน — พอ weapon upgrades ตันหมด (~lv15) เหลือ fallback `sugarCache` ใบเดียว = เลเวลอัพเหมือนได้เปล่า · **แก้:** เพิ่ม `endlessStatDefs()` 7 การ์ดสแตตไม่รู้จบ (🔥+8%dmg · 🧁+12%maxHP+heal · 🎯+3%crit · 💥+12%critDmg · ⚡-4%cd · 👟+4%spd · 💗+0.6regen) · stack เก็บใน `b.endless[id]` (รีเซ็ตทุกด่านผ่าน initBasicAttack) โชว์ "Stack N" · **เติมเฉพาะช่องที่เหลือ** หลัง weapon upgrades → ต้นเกม weapon progression ไม่เปลี่ยน, ปลายเกม (มอนเยอะ เลเวลเยอะ) มีของให้เลือกเสมอ · soft cap: crit≤0.75, cd≥0.45, spd≤moveSpeed×1.5 · **verified headless: weapon ตันหมด → ได้ 3 endless cards, apply+stack ถูก (endless.ecdmg=1), node --check + npm run check ผ่าน, 0 pageerror**
 
