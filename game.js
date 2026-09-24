@@ -37,9 +37,12 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.59.0';
+const GAME_VERSION = '4.60.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.60.0', date:'2026-09-24', title:'Chapter 2 performance fix', items:[
+    'Fixed enemies piling up without limit during long fights in C2-2 (miniboss Colony Call and splitting Mold Sacs could stack 200+ enemies and drop the frame rate). All summons now respect a hard on-screen limit',
+  ]},
   { v:'4.59.0', date:'2026-09-24', title:'No more mop-up slog', items:[
     '🏃 When a wave ends, the leftover swarm now retreats and fades away after 4 seconds — no more hunting down dozens of stragglers. Elites (including ambushes) still have to be defeated',
   ]},
@@ -6160,6 +6163,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- SPAWN ---------- */
   spawnEnemy(type,angOverride,radOverride){
+    if(this.enemies&&this.enemies.countActive(true)>=(this.maxLive||100)+24)return null;   // v4.60: เพดานรวมกันมอนล้น (Colony Call/Mold Sac ของ C2-2 เคยสะสมถึง 209 ตัว) · ผู้เรียกทุกจุด guard null แล้ว
     const ang=angOverride!=null?angOverride:Math.random()*Math.PI*2, rad=radOverride!=null?radOverride:Math.max(this.W,this.H)/this.viewZoom*0.62+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);

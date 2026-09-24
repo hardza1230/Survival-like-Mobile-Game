@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.60.0 — Chapter 2 QA ด้วยบอท + เพดานมอนรวม)
+- **v4.60.0 (ผลเทส Chapter 2 ด้วยบอท headless ทั้ง 5 ด่าน):** **บั๊กจริง 1 จุด:** C2-2 มอนล้นถึง 209 ตัว — `Colony Call` ของมินิบอส (spawnEnemy 3-4 ตัว/2.5-3.4s) + `moldSac` แตก 2 ตัว ไม่เช็ค maxLive → สู้นานสะสมไม่จำกัด · **แก้:** เพดานรวมใน `spawnEnemy` = `maxLive+24` (คืน null · ผู้เรียกทั้ง 31 จุด guard แล้ว) · verified: spawn 400 ครั้งหยุดที่ 118 (94+24) · **ที่ตรวจแล้วไม่ใช่บั๊ก:** waveclear ไม่ค้าง (มอนทุกตัวฆ่าได้), มินิบอส C2-2 เปลี่ยนเฟส invuln ~1s แล้วตายปกติ, ทั้ง 5 ด่าน 0 JS error, ไม่มีบอส gate-lock ค้าง · **ข้อจำกัดของบอท:** เครื่องเทส 4-20 FPS + เร่ง 3× → กระสุนทะลุ ฆ่าช้า เลยไม่ได้เล่นถึงบอสใหญ่ครบทุกด่านใน 9 นาที (บอส Ch2 ตรวจแยกแล้วตอน v4.51) · **Balance:** บัญชีใหม่เข้า C2-1 ต้องยิง ~9 เม็ด/ตัว (C2-5 ~20) = กำแพงความยากสำหรับคนไม่มีของ
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.59.0 — มอนที่เหลือหนีหายตอนเคลียร์เวฟ)
 - **v4.59.0 (จาก feedback เจ้าของหลังเทส Ch2 เจอมอนค้าง ~90 ตัวตอน waveclear):** tickStage waveclear นับ `_clearT` → ครบ 4 วิ เรียก `fleeRemainingEnemies()` (ครั้งเดียว `_clearFled`, reset ใน onWaveCleared/startRun) · มอนธรรมดาตั้ง `e._fleeing` → enemy loop เปลี่ยนเป้าเป็นทิศตรงข้ามผู้เล่น + tween alpha→0 แล้ว deactivate (ไม่ดรอป/ไม่นับ kill) · **Elite (รวม ambush จาก Bonus Challenge) / บอส / เป้าภารกิจ ยังต้องฆ่าเอง** · spawnEnemy ไม่ reset alpha → คืน alpha=1 ทุกทาง (tween จบ, killEnemy, clearEnemies) · **verified headless C2-5: 94 ตัว → เหลือ elite 2 ใน 6 วิ, ฆ่า elite → breather, ไม่มี alpha ค้าง, 0 error**
 
