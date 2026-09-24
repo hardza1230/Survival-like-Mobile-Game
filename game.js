@@ -37,9 +37,13 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.60.0';
+const GAME_VERSION = '4.61.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.61.0', date:'2026-09-24', title:'Know when you’re ready', items:[
+    'Stage cards now show a clear power badge: 💪 Strong · ✅ Ready · ⚠️ Tough · ⛔ Underpowered, compared with the stage’s suggested power',
+    'When you’re under-powered, the difficulty screen warns you and suggests what to do next — spend Sugar on Flavor Weave, or replay the previous stage on Hard for better gear. Tap the tip to go straight there',
+  ]},
   { v:'4.60.0', date:'2026-09-24', title:'Chapter 2 performance fix', items:[
     'Fixed enemies piling up without limit during long fights in C2-2 (miniboss Colony Call and splitting Mold Sacs could stack 200+ enemies and drop the frame rate). All summons now respect a hard on-screen limit',
   ]},
@@ -3274,8 +3278,17 @@ class Game extends Phaser.Scene {
     img.setScale(scale).setCrop((fw-cw)/2,(fh-ch)/2,cw,ch);return img;
   }
   // การ์ดบทแบบภาพประกอบ — ภาพฉากจริง + overlay อ่านง่าย + status ที่เป็นส่วนหนึ่งของกWaitบ
+  // v4.61: สถานะพลังเทียบค่าแนะนำของด่าน — ใช้ทั้งการ์ดด่านและหน้าเลือกความยาก
+  powerStatus(idx){ const st=STAGES[idx]||STAGES[0],cur=Save.power(Save.data.character),rec=st.recommendedPower||100,ratio=cur/rec;
+    const t=ratio>=1.15?{label:'💪 Strong',color:0x66e0a0}:ratio>=0.9?{label:'✅ Ready',color:0x8fe3d0}:ratio>=0.7?{label:'⚠️ Tough',color:0xffc857}:{label:'⛔ Underpowered',color:0xff6b7d};
+    return {cur,rec,ratio,...t,hex:'#'+t.color.toString(16).padStart(6,'0')}; }
+  // คำแนะนำ "ทำอะไรให้เก่งขึ้น" + หน้าที่จะพาไป
+  powerAdvice(idx){ const sugar=Save.data.sugar||0,afford=UPG_ORDER.filter(k=>Save.talLvl(k)<TAL_MAX&&Save.talCost(k)<=sugar).length;
+    if(afford>0)return {text:'💡 You can afford '+afford+' Flavor Weave upgrade'+(afford>1?'s':'')+' — tap to power up ›',screen:'upgrade'};
+    const prev=idx-1;if(prev>=0&&STAGES[prev]){const p=STAGES[prev],lab=p.chapterStage?('C'+(p.chapter+1)+'-'+p.chapterStage):('Stage '+(prev+1));return {text:'💡 Replay '+lab+' on Hard for better gear, then equip it ›',screen:'gear'};}
+    return {text:'💡 Equip and enhance better gear ›',screen:'gear'}; }
   uiStageCard(cont,x,y,w,h,st,index,open,fn){
-    const currentPower=Save.power(Save.data.character),recommended=st.recommendedPower||100;
+    const currentPower=Save.power(Save.data.character),recommended=st.recommendedPower||100,ps=this.powerStatus(index);
     const colors=[0xb9e85d,0x6ed7df,0xff9a62,0x9bdfff,0xff78a9],color=colors[index%colors.length],r=17;
     const shadow=this.add.graphics();shadow.fillStyle(0x000000,0.55);shadow.fillRoundedRect(x+3,y+6,w,h,r);shadow.fillStyle(color,0.18);shadow.fillRoundedRect(x-2,y-2,w+4,h+4,r+2);cont.add(shadow);
     const artKey='bg'+(index+1),art=this.textures.exists(artKey)?this._coverImage(x+2,y+2,w-4,h-4,artKey):null;if(art)cont.add(art);
@@ -3291,10 +3304,12 @@ class Game extends Phaser.Scene {
     const icon=this.add.text(x+19,y+h-25,open?st.emoji:(st.ready===false?'🛠️':'🔒'),{fontSize:'22px'}).setOrigin(0.5);
     const name=this.add.text(x+39,y+43,st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:h<92?'13px':'15px',color:open?'#fffaf2':'#c4bdca',stroke:'#120a16',strokeThickness:2}).setOrigin(0,0.5);
     const en=this.add.text(x+39,y+61,st.en.toUpperCase(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:open?Phaser.Display.Color.IntegerToColor(color).rgba:'#82798d'}).setOrigin(0,0.5);
-    const power=this.add.text(x+w-12,y+20,'⚡ '+currentPower+' / suggested '+recommended,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:currentPower>=recommended?'#a8f0c0':'#ffb1bd'}).setOrigin(1,0.5);
+    const power=this.add.text(x+w-16,y+20,open?('⚡ '+currentPower+' / '+recommended+'  '+ps.label):('⚡ '+currentPower+' / suggested '+recommended),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:open?'10px':'8px',color:open?ps.hex:'#8f8798'}).setOrigin(1,0.5);
+    if(open){const pw=power.width+14,pb=this.add.graphics();pb.fillStyle(0x0d0913,0.82);pb.fillRoundedRect(x+w-16-pw+7,y+11,pw,18,9);pb.lineStyle(1.4,ps.color,0.9);pb.strokeRoundedRect(x+w-16-pw+7,y+11,pw,18,9);cont.add(pb);}
     const desc=open?st.lore:(st.ready===false?'Boss fight and stage art are still in production':('Clear the previous stage to unlock this path'));
     const lore=this.add.text(x+39,y+h-25,desc,{fontFamily:'sans-serif',fontSize:h<92?'8px':'9px',color:open?'#ddd4df':'#8f8798',wordWrap:{width:w-39-actionW-28},maxLines:2}).setOrigin(0,0.5);
     const action=this.add.text(actionX+actionW/2,y+h-22.5,open?'Play  ▶':(st.ready===false?'Coming soon':'Locked'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#d8ffe5':'#9b91a5'}).setOrigin(0.5);
+    if(h<96)en.setVisible(false);   // การ์ดเตี้ย (แนวนอน) ซับไตเติลซ้อนทับ lore — ซ่อน (เป็นชื่อซ้ำตัวพิมพ์ใหญ่อยู่แล้ว)
     cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
@@ -3874,13 +3889,20 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose Difficulty');
     const st=STAGES[idx],portrait=this.W<=this.H,best=(Save.data.diffBest||[])[idx]||0;
     const t=this.add.text(this.W/2,portrait?78:52,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe07a'}).setOrigin(0.5);
-    const sub=this.add.text(this.W/2,portrait?98:70,'Harder enemies — but better rewards 🏆',{fontFamily:'sans-serif',fontSize:'10px',color:'#cdbfe0'}).setOrigin(0.5);
+    const pwr=this.powerStatus(idx),warn=pwr.ratio<0.9,subY=portrait?98:70;
+    const sub=this.add.text(this.W/2,subY,warn?(pwr.label+' — your ⚡'+pwr.cur+' vs '+pwr.rec+' suggested'):'Harder enemies — but better rewards 🏆',{fontFamily:'sans-serif',fontStyle:warn?'bold':'normal',fontSize:warn?'11px':'10px',color:warn?pwr.hex:'#cdbfe0'}).setOrigin(0.5);
     this.menu.add([t,sub]);
+    let warnShift=0;
+    if(warn){ const adv=this.powerAdvice(idx),tipW=Math.min(this.W-28,420),tipX=(this.W-tipW)/2,tipY=subY+10,tg=this.add.graphics();
+      tg.fillStyle(0x2c2138,0.95);tg.fillRoundedRect(tipX,tipY,tipW,22,8);tg.lineStyle(1.4,pwr.color,0.85);tg.strokeRoundedRect(tipX,tipY,tipW,22,8);
+      const tt=this.add.text(this.W/2,tipY+11,adv.text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe9b0'}).setOrigin(0.5);
+      this.menu.add([tg,tt]); this._zone(tipX,tipY,tipW,22,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=adv.screen; this.buildMenuScreen(); });
+      this.tweens.add({targets:tt,alpha:{from:1,to:0.6},duration:700,yoyo:true,repeat:-1}); warnShift=26; }
     const x=Math.max(16,(this.W-Math.min(this.W-28,420))/2),w=Math.min(this.W-28,420),gap=8;
     const maxUnlocked=Math.min(DIFFS.length,best+1);   // ปลดได้สูงสุด = ผ่านล่าสุด +1 (ต้องผ่านระดับก่อนหน้าก่อน)
     const rec=Math.min(this.recommendedDiff(idx),maxUnlocked),recD=DIFFS[rec-1];
     // ▶ ปุ่มเล่นเลย (แนะนำอัตโนมัติจาก Power) — กดเดียวจบ ไม่ต้องคิด
-    const pby=portrait?116:88,pbh=46,pg=this.add.graphics();
+    const pby=(portrait?116:88)+warnShift,pbh=46,pg=this.add.graphics();
     pg.fillStyle(0x2f4a38,1);pg.fillRoundedRect(x,pby,w,pbh,13);pg.lineStyle(2.5,0x66e0a0,1);pg.strokeRoundedRect(x,pby,w,pbh,13);
     const pl=this.add.text(x+16,pby+pbh*0.32,'▶ Play Now',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff'}).setOrigin(0,0.5);
     const pr=this.add.text(x+w-16,pby+pbh*0.32,'Suggested: '+recD.emoji+' '+recD.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#a8f0c0'}).setOrigin(1,0.5);

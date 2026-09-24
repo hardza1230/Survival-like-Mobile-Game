@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.61.0 — เตือนพลังไม่พอ + คำแนะนำ)
+- **v4.61.0 (กำแพงความยาก Ch2 — ข้อ 1 ที่เจ้าของเลือก):** helper `powerStatus(idx)` (ratio = Save.power/`STAGES[].recommendedPower`: ≥1.15 💪Strong · ≥0.9 ✅Ready · ≥0.7 ⚠️Tough · else ⛔Underpowered) + `powerAdvice(idx)` (มี Sugar พออัพ Weave → ชี้ 'upgrade' · ไม่งั้นแนะนำ replay ด่านก่อนหน้าบน Hard → 'gear') · `uiStageCard` เปลี่ยนตัวเลขพลัง 8px เป็น badge pill 10px มีสี+สถานะ · `openDifficultyChoice` ถ้า ratio<0.9 → บรรทัดเตือนสี + แถบทิปกดได้ (`_zone` → menuScreen=adv.screen) · ปุ่ม Play Now เลื่อนลง `warnShift` · ไม่บล็อกการเล่น · **แก้เพิ่ม:** การ์ดด่านแนวนอน (h<96) ซับไตเติล `st.en` ซ้อน lore → ซ่อน · **verified headless + screenshot แนวนอน/แนวตั้ง, ทิปพาไปหน้า upgrade, 0 error**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.60.0 — Chapter 2 QA ด้วยบอท + เพดานมอนรวม)
 - **v4.60.0 (ผลเทส Chapter 2 ด้วยบอท headless ทั้ง 5 ด่าน):** **บั๊กจริง 1 จุด:** C2-2 มอนล้นถึง 209 ตัว — `Colony Call` ของมินิบอส (spawnEnemy 3-4 ตัว/2.5-3.4s) + `moldSac` แตก 2 ตัว ไม่เช็ค maxLive → สู้นานสะสมไม่จำกัด · **แก้:** เพดานรวมใน `spawnEnemy` = `maxLive+24` (คืน null · ผู้เรียกทั้ง 31 จุด guard แล้ว) · verified: spawn 400 ครั้งหยุดที่ 118 (94+24) · **ที่ตรวจแล้วไม่ใช่บั๊ก:** waveclear ไม่ค้าง (มอนทุกตัวฆ่าได้), มินิบอส C2-2 เปลี่ยนเฟส invuln ~1s แล้วตายปกติ, ทั้ง 5 ด่าน 0 JS error, ไม่มีบอส gate-lock ค้าง · **ข้อจำกัดของบอท:** เครื่องเทส 4-20 FPS + เร่ง 3× → กระสุนทะลุ ฆ่าช้า เลยไม่ได้เล่นถึงบอสใหญ่ครบทุกด่านใน 9 นาที (บอส Ch2 ตรวจแยกแล้วตอน v4.51) · **Balance:** บัญชีใหม่เข้า C2-1 ต้องยิง ~9 เม็ด/ตัว (C2-5 ~20) = กำแพงความยากสำหรับคนไม่มีของ
 
