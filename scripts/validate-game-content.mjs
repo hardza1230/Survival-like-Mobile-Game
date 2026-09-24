@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '4.50.0'",
+  "const GAME_VERSION = '4.51.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -225,7 +225,7 @@ const c21Hp=3.72,c22Hp=3.72*1.18*1.145,c21Dmg=1.42,c22Dmg=1.42*1.09*1.19;
 const hpRatio=c22Hp/c21Hp,dmgRatio=c22Dmg/c21Dmg;
 if(hpRatio<1.34||hpRatio>1.37)throw new Error(`C2-2 HP ratio drifted outside QA target: ${hpRatio.toFixed(3)}`);
 if(dmgRatio<1.28||dmgRatio>1.32)throw new Error(`C2-2 damage ratio drifted outside QA target: ${dmgRatio.toFixed(3)}`);
-for(const contract of ["f<=.68","f<=.34","beginBossPhaseTransition(b,1.85","beginBossPhaseTransition(b,2.15","Triple Stampede","HEARTSTORM"]){
+for(const contract of ["b.hp<=b.maxhp*.68","b.hp<=b.maxhp*.34","beginBossPhaseTransition(b,1.85","beginBossPhaseTransition(b,2.15","Triple Stampede","HEARTSTORM"]){
   if(!source.includes(contract))throw new Error(`Missing C2-2 boss QA contract: ${contract}`);
 }
 if(!fs.existsSync(new URL('../assets/bg7.webp',import.meta.url)))throw new Error('Mycelium Marsh background is missing');
@@ -240,8 +240,8 @@ for(const contract of [
   "nectarRole==='choirMoth'",
   "royalStingerAttack(b)",
   "hornetQueenAttack(b)",
-  "f<=.70",
-  "f<=.35",
+  "b.hp<=b.maxhp*.70",
+  "b.hp<=b.maxhp*.35",
   "QUEEN'S DECREE",
 ]) {
   if(!source.includes(contract))throw new Error(`Missing C2-3 Nectar Hive contract: ${contract}`);
@@ -268,8 +268,8 @@ for(const contract of [
   "seasonRole==='seasonWisp'",
   "seasonKeeperAttack(b)",
   "chronobloomAttack(b)",
-  "f<=.72",
-  "f<=.38",
+  "b.hp<=b.maxhp*.72",
+  "b.hp<=b.maxhp*.38",
   "TIME BREAK",
 ]) {
   if(!source.includes(contract))throw new Error(`Missing C2-4 Four-Season contract: ${contract}`);
@@ -296,9 +296,9 @@ for(const contract of [
   "rootRole==='rootChoir'",
   "rootKnightAttack(b)",
   "trueRootmotherAttack(b)",
-  "f<=.75",
-  "f<=.42",
-  "f<=.18",
+  "b.hp<=b.maxhp*.75",
+  "b.hp<=b.maxhp*.42",
+  "b.hp<=b.maxhp*.18",
   "MEMORY ECLIPSE",
   "Memories Choose Their Own Shape",
 ]) {

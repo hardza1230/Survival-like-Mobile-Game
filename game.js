@@ -34,9 +34,12 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.50.0';
+const GAME_VERSION = '4.51.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.51.0', date:'2026-09-24', title:'Fix immortal Chapter 2 bosses', items:[
+    'Fixed Chapter 2 bosses (Mycelium Marsh through Root Throne) sometimes becoming permanently invincible at a phase-change health threshold and never dying',
+  ]},
   { v:'4.50.0', date:'2026-09-24', title:'Fix C2-4 giant enemy & tiled backgrounds', items:[
     'Fixed the Four-Season Conservatory (C2-4) elite spawning as a huge, hard-to-hit giant — it was using an old scale and hitbox that did not match its Chapter 2 artwork',
     'Fixed Chapter 2 stage backgrounds tiling and repeating across the screen; the scene art now fills the arena as a single image',
@@ -7389,22 +7392,23 @@ class Game extends Phaser.Scene {
       else if(!b.phase3&&f<=0.40){b.phase3=true;this.beginBossPhaseTransition(b,2.0,0xd95cff);this.greatHungerMetamorph(b,3,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 Phase 3 · True Form of Hunger','All six eyes open — the void’s pull is swallowing the field!',2050);}
       else if(!b.phase4&&f<=0.14){b.phase4=true;this.beginBossPhaseTransition(b,2.35,0xffd166);this.greatHungerMetamorph(b,4,0xffd166);b.spd*=1.12;b.atkCd=0.24;this.showBanner('🌘 Final Phase · World Devourer','The sky goes dark — slay it before every memory is eaten!',2400);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.greatHungerAttack(b);return;}
-    if(b.isBoss&&this.stageIndex===9){const f=b.hp/b.maxhp;
-      if(!b.phase2&&f<=.75){b.phase2=true;this.beginBossPhaseTransition(b,2.05,0x56e5bd);this.trueRootMetamorph(b,2);b.spd*=1.12;b.atkCd=.43;this.showBanner('💚 Phase 2 · Heart Unveiled','The living cathedral opens — sap eruptions and the Root Choir join the fight!',2150);}
-      else if(!b.phase3&&f<=.42){b.phase3=true;this.beginBossPhaseTransition(b,2.3,0xd95cff);this.trueRootMetamorph(b,3);b.spd*=1.10;b.atkCd=.26;this.showBanner('👑 Phase 3 · Crown of Memory','Every stolen memory takes root — cage, spiral and summons now overlap!',2350);}
-      else if(!b.phase4&&f<=.18){b.phase4=true;this.beginBossPhaseTransition(b,2.55,0xffd166);this.trueRootMetamorph(b,4);b.spd*=1.08;b.atkCd=.18;this.showBanner('🌍 Final Phase · World Root','The throne binds every season together — survive Memory Eclipse and finish Chapter 2!',2600);}
+    // v4.51: เช็กเฟสด้วย b.hp<=b.maxhp*X (ตรง ๆ) แทน f=b.hp/b.maxhp; f<=X — เพราะ phase-gate ใน damage() clamp hp=maxhp*gate พอดี แล้วการหาร (maxhp*.72)/maxhp อาจได้ .7200000001 > .72 → เฟสไม่ทริก → บอสค้าง gate-lock = อมตะ (Chapter 2 เจอเพราะใช้ f หาร ต่างจากด่าน 0-4 ที่เทียบ hp ตรง)
+    if(b.isBoss&&this.stageIndex===9){
+      if(!b.phase2&&b.hp<=b.maxhp*.75){b.phase2=true;this.beginBossPhaseTransition(b,2.05,0x56e5bd);this.trueRootMetamorph(b,2);b.spd*=1.12;b.atkCd=.43;this.showBanner('💚 Phase 2 · Heart Unveiled','The living cathedral opens — sap eruptions and the Root Choir join the fight!',2150);}
+      else if(!b.phase3&&b.hp<=b.maxhp*.42){b.phase3=true;this.beginBossPhaseTransition(b,2.3,0xd95cff);this.trueRootMetamorph(b,3);b.spd*=1.10;b.atkCd=.26;this.showBanner('👑 Phase 3 · Crown of Memory','Every stolen memory takes root — cage, spiral and summons now overlap!',2350);}
+      else if(!b.phase4&&b.hp<=b.maxhp*.18){b.phase4=true;this.beginBossPhaseTransition(b,2.55,0xffd166);this.trueRootMetamorph(b,4);b.spd*=1.08;b.atkCd=.18;this.showBanner('🌍 Final Phase · World Root','The throne binds every season together — survive Memory Eclipse and finish Chapter 2!',2600);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.trueRootmotherAttack(b);return;}
-    if(b.isBoss&&this.stageIndex===8){const f=b.hp/b.maxhp;
-      if(!b.phase2&&f<=.72){b.phase2=true;this.beginBossPhaseTransition(b,1.95,0x8fdcff);this.chronobloomMetamorph(b,2);b.spd*=1.13;b.atkCd=.46;this.showBanner('🌦️ Phase 2 · Equinox Fracture','All four seasons overlap — spirals and guardians join the cycle!',2050);}
-      else if(!b.phase3&&f<=.38){b.phase3=true;this.beginBossPhaseTransition(b,2.25,0xffd166);this.chronobloomMetamorph(b,3);b.spd*=1.11;b.atkCd=.26;this.showBanner('⏳ Phase 3 · Time Break','The conservatory clock shatters — survive the final rewind!',2300);}
+    if(b.isBoss&&this.stageIndex===8){
+      if(!b.phase2&&b.hp<=b.maxhp*.72){b.phase2=true;this.beginBossPhaseTransition(b,1.95,0x8fdcff);this.chronobloomMetamorph(b,2);b.spd*=1.13;b.atkCd=.46;this.showBanner('🌦️ Phase 2 · Equinox Fracture','All four seasons overlap — spirals and guardians join the cycle!',2050);}
+      else if(!b.phase3&&b.hp<=b.maxhp*.38){b.phase3=true;this.beginBossPhaseTransition(b,2.25,0xffd166);this.chronobloomMetamorph(b,3);b.spd*=1.11;b.atkCd=.26;this.showBanner('⏳ Phase 3 · Time Break','The conservatory clock shatters — survive the final rewind!',2300);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.chronobloomAttack(b);return;}
-    if(b.isBoss&&this.stageIndex===7){const f=b.hp/b.maxhp;
-      if(!b.phase2&&f<=.70){b.phase2=true;this.beginBossPhaseTransition(b,1.9,0xffc95c);this.hornetQueenMetamorph(b,2);b.spd*=1.13;b.atkCd=.48;this.showBanner('🍯 Phase 2 · Royal Ferment','The hive crowns its queen — prisons, spirals and guards awaken!',2000);}
-      else if(!b.phase3&&f<=.35){b.phase3=true;this.beginBossPhaseTransition(b,2.2,0xd95cff);this.hornetQueenMetamorph(b,3);b.spd*=1.11;b.atkCd=.28;this.showBanner("👑 Phase 3 · Queen's Decree",'Violet honey boils over — survive the final coronation!',2250);}
+    if(b.isBoss&&this.stageIndex===7){
+      if(!b.phase2&&b.hp<=b.maxhp*.70){b.phase2=true;this.beginBossPhaseTransition(b,1.9,0xffc95c);this.hornetQueenMetamorph(b,2);b.spd*=1.13;b.atkCd=.48;this.showBanner('🍯 Phase 2 · Royal Ferment','The hive crowns its queen — prisons, spirals and guards awaken!',2000);}
+      else if(!b.phase3&&b.hp<=b.maxhp*.35){b.phase3=true;this.beginBossPhaseTransition(b,2.2,0xd95cff);this.hornetQueenMetamorph(b,3);b.spd*=1.11;b.atkCd=.28;this.showBanner("👑 Phase 3 · Queen's Decree",'Violet honey boils over — survive the final coronation!',2250);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.hornetQueenAttack(b);return;}
-    if(b.isBoss&&this.stageIndex===6){const f=b.hp/b.maxhp;
-      if(!b.phase2&&f<=.68){b.phase2=true;this.beginBossPhaseTransition(b,1.85,0x56e5bd);this.behemothMetamorph(b,2);b.spd*=1.12;b.atkCd=.5;this.showBanner('🍄 Phase 2 · The Colony Awakens','The whole marsh joins the fight — formations and root lattices activate!',1950);}
-      else if(!b.phase3&&f<=.34){b.phase3=true;this.beginBossPhaseTransition(b,2.15,0xd95cff);this.behemothMetamorph(b,3);b.spd*=1.10;b.atkCd=.3;this.showBanner('🫀 Phase 3 · Heart of the Marsh','The crown opens completely — survive the Heartstorm and destroy its core!',2200);}
+    if(b.isBoss&&this.stageIndex===6){
+      if(!b.phase2&&b.hp<=b.maxhp*.68){b.phase2=true;this.beginBossPhaseTransition(b,1.85,0x56e5bd);this.behemothMetamorph(b,2);b.spd*=1.12;b.atkCd=.5;this.showBanner('🍄 Phase 2 · The Colony Awakens','The whole marsh joins the fight — formations and root lattices activate!',1950);}
+      else if(!b.phase3&&b.hp<=b.maxhp*.34){b.phase3=true;this.beginBossPhaseTransition(b,2.15,0xd95cff);this.behemothMetamorph(b,3);b.spd*=1.10;b.atkCd=.3;this.showBanner('🫀 Phase 3 · Heart of the Marsh','The crown opens completely — survive the Heartstorm and destroy its core!',2200);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.myceliumBehemothAttack(b);return;}
     // เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) — Effectโกรธ
     const phase2At=(b.isBoss&&this.stageIndex===0)?0.68:(b.isBoss&&this.stageIndex===1?0.65:0.5),phase3At=(b.isBoss&&this.stageIndex===0)?0.35:(b.isBoss&&this.stageIndex===1?0.32:0.25);
