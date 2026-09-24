@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.71.0';
+const GAME_VERSION = '4.72.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.72.0', date:'2026-09-24', title:'Endgame after the story', items:['Ascension, Endless and Zone Modifiers now unlock after finishing the whole story','Players who already Ascended keep their access']},
   { v:'4.71.0', date:'2026-09-24', title:'Item drop rebalance', items:['Story drops now scale smoothly: Chapter 1 ≈ iLv 1–26, Chapter 2 ≈ 21–46, Chapter 3 up to 60','Harder difficulty adds item levels (Hard +3, Hell +6)','iLv 61–100 gear drops only in the endgame (Boss Rush, Endless, Zone Modifiers) after finishing the story']},
   { v:'4.70.0', date:'2026-09-24', title:'Story roadmap: 3 chapters', items:['The story is now 3 chapters, followed by the endgame','Chapter 3 · Throne of the First Seed is the final chapter']},
   { v:'4.69.0', date:'2026-09-24', title:'Boss Rush', items:['New mode in Activities: fight every boss you’ve beaten back-to-back','Pick Normal/Hard/Hell — harder pays more Sugar and currency','Level-ups between bosses, HP refill, best time & count saved per difficulty']},
@@ -2179,10 +2180,10 @@ const Save = {
   buyPerk(id){ const def=RANK_PERKS.find(p=>p.id===id); if(!def)return false; if(this.perkLvl(id)>=def.max)return false; if(this.rankPointsFree()<=0)return false; if(!this.perkTierUnlocked(def.tier||1))return false;
     if(!this.data.rankPerks)this.data.rankPerks={}; this.data.rankPerks[id]=this.perkLvl(id)+1; this.save(); return true; },
   respecPerks(){ this.data.rankPerks={}; this.save(); },
-  canAscend(){ return [0,1,2,3,4].every(i=>!!(this.data.stageMastery||{})[i]); },
+  canAscend(){ return storyComplete(); },   // v4.72: Endgame ปลดหลังจบเนื้อเรื่องทั้งหมด (ด่าน ready สุดท้าย) ไม่ใช่แค่ Ch1
   endgameUnlocked(){ return (this.data.ascension||0)>0||this.canAscend(); },
   // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว
-  zoneModsUnlocked(){ return !!(this.data.stageMastery&&this.data.stageMastery[4]); },
+  zoneModsUnlocked(){ return (this.data.ascension||0)>0||storyComplete(); },
   zoneMods(){ return Array.isArray(this.data.zoneMods)?this.data.zoneMods:[]; },
   toggleZoneMod(id){ if(!Array.isArray(this.data.zoneMods))this.data.zoneMods=[]; const i=this.data.zoneMods.indexOf(id); if(i>=0)this.data.zoneMods.splice(i,1); else this.data.zoneMods.push(id); this.save(); },
   ascend(){ if(!this.canAscend())return 0;this.data.ascension=(this.data.ascension||0)+1;this.data.stageMastery={};this.data.diffBest=[];this.data.unlockedStage=0;
@@ -3790,7 +3791,7 @@ class Game extends Phaser.Scene {
     this.over.add(box); this.over.setVisible(true); }
   buildEndgame(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Beyond Hunger');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
-    const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 Complete Mastery on all 5 stages',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
+    const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 Finish the story to unlock the endgame',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
     const card=(y,color,title,desc,label,fn)=>{const cw=Math.min(w-32,520),x=(w-cw)/2,ch=Math.min(132,h*0.22),g=this.add.graphics();g.fillStyle(0x251a32,0.97);g.fillRoundedRect(x,y,cw,ch,17);g.lineStyle(2,color,0.9);g.strokeRoundedRect(x,y,cw,ch,17);const t=this.add.text(x+18,y+17,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff'}),d=this.add.text(x+18,y+47,desc,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',wordWrap:{width:cw-36},lineSpacing:4}),b=this.add.text(x+cw-18,y+ch-18,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0.5);this.menu.add([g,t,d,b]);if(fn)this._zone(x,y,cw,ch,fn);};
     const y1=100,y2=y1+Math.min(145,h*0.24);card(y1,0xd58cff,'🌙 Midnight Kitchen · Endless','5 waves then a boss, enemies grow stronger each cycle · every 3 cycles The Echo of Hunger appears\nBest '+best+' cycles',unlocked?'Tap to start':'Not unlocked',unlocked?()=>{this._endlessRequested=true;this.stageDiff=Math.max(2,Math.min(3,(Save.data.diffBest?.[4]||2)));this.startRun(4);}:null);
     const confirm=this._ascendConfirm;card(y2,0xffa952,'☀ Ascension '+asc,'Start a new stage journey — resets Mastery/unlocked stages but keeps characters, Gear and Rank, plus a big Sugar bonus per Ascension',canAscend?(confirm?'⚠ Tap again to confirm':'Ascend · gain Sugar '+(350+(asc+1)*150)):'Complete this Mastery run first',canAscend?()=>{if(this._ascendConfirm){const r=Save.ascend();this._ascendConfirm=false;Sfx.clear();this.showBanner('☀ ASCENSION '+Save.data.ascension,'Permanent power up · Sugar +'+r,2200);}else{this._ascendConfirm=true;Sfx.select();}this.buildEndgame();}:null);

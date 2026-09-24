@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.72.0 — Endgame ปลดหลังจบเนื้อเรื่อง)
+- **v4.72.0 (เจ้าของเลือก ก.):** `Save.canAscend()` = `storyComplete()` (เดิมเช็ก stageMastery 0-4 = จบ Ch1) · `zoneModsUnlocked()` = ascension>0 || storyComplete() · `endgameUnlocked()` เดิม (ascension>0 || canAscend) คนที่ Ascend แล้วไม่ถูกล็อก · ข้อความหน้า Endgame → "Finish the story to unlock the endgame" · Boss Rush ยังเปิดตั้งแต่ล้มบอส 2 ตัว (ของ iLv61+ gate ด้วย storyComplete อยู่แล้ว) · verified headless: จบแค่ Ch1 = ล็อก, จบ Ch2 = ปลด, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.71.0 — Item drop rebalance: เนื้อเรื่อง iLv 1-60 / Endgame 61-100)
 - **v4.71.0 (เจ้าของเลือก ก. — band 4-5 เป็นของ endgame + ปรับดรอปใหม่):** **บั๊กเดิม:** `itemChapterForStage` = stage+1 → ด่าน 5 (บอสจบ Ch1) ก็ดรอป iLv 81-100 แล้ว, Chapter 2 ทั้งบท clamp อยู่ band 5 · **ใหม่:** `storyItemLevelBase(s)=min(60,1+4s)` · `rollItemLevel(s,d)` = base + (d-1)×3 + rand 0-5 (cap `STORY_ILVL_MAX=60`) → Ch1 ≈1-28 · Ch2 ≈21-48 · Ch3 (ด่าน 10-14) ≈41-60 · `itemChapterForStage` คำนวณจาก iLv · **Endgame:** `rollEndgameItemLevel(d,depth)` = 61 + (d-1)×8 + depth(≤24) + rand 0-5 (cap 100) · `endgameDropActive()` = `storyComplete()` (mastery ด่าน ready สุดท้าย) **และ** อยู่ใน Boss Rush/Endless/Zone Mods · `endgameDepth()` = zoneMods×4 + endlessCycle×2 + rushPos×2 · ของ endgame สุ่ม pool chapter 4/5 (อาวุธ Frost/Void เดิม) · field loot tier +1 boost ใน endgame · แก้ in-play ใช้ `this.stageDiff` (เดิม `this.difficulty` ไม่มีจริง → diff ไม่มีผลกับ iLv) · verified headless ช่วง iLv ทุกด่าน/ความยาก + gate endgame ก่อน/หลังจบเรื่อง, 0 error
 
@@ -487,7 +491,7 @@
 - **ปุ่มเร่งเวลา x2/x3 เร่งแค่โจมตี (v1.9.x):** Arcade `physics.world.timeScale` **กลับด้าน** (ค่ามาก=step ห่าง=ช้าลง) การเคลื่อนที่ทุกอย่างใช้ velocity=physics → `setGameSpeed` ตั้ง `=s` ทำให้ช้าลง (ส่วน time/tween/dt เร็วขึ้น = เร่งแค่ timer/โจมตี) → แก้เป็น **`=1/s`** · hitStop ก็กลับด้าน (0.05=เร็ว 20x ไม่ freeze) → ใช้ค่ามาก (12) = freeze จริง
 
 ## 5. ถัดไป (อัปเดต v4.71 — เป้าหมายเจ้าของ: ทำเกมให้เสร็จ ~95% ถึง endgame ก่อน · Play Store/รายได้ พักไว้)
-1. **รอเจ้าของตัดสิน:** Endgame (Ascension/Endless/Zone Mods) ยังปลดหลังจบ **Chapter 1** (`canAscend`/`zoneModsUnlocked` เช็ก stageMastery 0-4) แต่ของ endgame iLv61+ ต้อง `storyComplete()` → จะให้ endgame ปลดหลังจบเนื้อเรื่องทั้งหมดไหม
+1. ~~Endgame gate~~ ✅ v4.72 ปลดหลังจบเนื้อเรื่อง
 2. **Chapter 3 · Throne of the First Seed** (บทสุดท้าย 5 ด่าน, `CHAPTERS[2]` ready:false) — ต้องทำด่าน/มอน/บอส/อาร์ต
 3. Endgame ที่เหลือ: Mochi Rift → Pinnacle Boss (ไอเดียอื่นดูสถานะ v4.69)
 4. เล่นจริงบนมือถือ: Boss Rush balance, Relic, Bonus Challenge, UI v4.63-4.68, Chapter 2 full run
