@@ -4786,7 +4786,7 @@ class Game extends Phaser.Scene {
     this.clearFoes(); this.clearBossObjects(); this.clearWaveObjective(); this.clearPickups(true); this.waveAlive=0; if(this.pipG)this.pipG.clear();
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องที่สะสมมา (แจกจริง)
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor((this.kills||0)*0.4));
-    if(this.bossRush){ this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead(); this.finishBossRush(false); return; }
+    if(this.bossRush){ _closeStory(); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead(); this.finishBossRush(false); return; }
     if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);
     this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
     this.showStageSummary(false);
@@ -8188,6 +8188,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- DEATH ---------- */
   die(){ if(this.state==='dead')return;
+    const _closeStory=()=>{ if(this.storyLayer){this.storyLayer.setVisible(false);this.storyLayer.removeAll(true);} this._finishStoryCutscene=null; };
     // 🔮 Relic Last Breath: ครั้งแรกที่ตายในด่าน = รอด (Second Wind = 40% HP + โล่)
     if(this._rel&&this._rel.lastbreath&&!this._lastBreathUsed){ this._lastBreathUsed=true; const sw=this.relicSyn('shell','lastbreath');
       this.player.hp=sw?Math.round(this.player.maxhp*0.40):1; if(sw)this._shield=Math.min(2,(this._shield||0)+1);
@@ -8198,7 +8199,7 @@ class Game extends Phaser.Scene {
       if(this.player.body)this.player.body.enable=true; this.clearFoes(); this.screenFlash(0xffe08a,0.5,420); if(Sfx.clear)Sfx.clear();
       this.player.iframe=2.2; this.player.wardGuardT=1.6; if(this.popHeal)this.popHeal(this.player.x,this.player.y,Math.round(this.player.hp));
       if(this.showBanner)this.showBanner('🕯️ Revive Candle!','Revived to fight on · remaining '+this._reviveLeft+' times',1800); return; }
-    if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();
+    _closeStory(); if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องที่สะสมมา (ไม่ให้หายตอนตาย)
     this._deathSugar=this.sugarStage||0;this._deathPowerBefore=Save.power(this.character);Save.addSugar(this._deathSugar);const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),exp=Math.round((this.kills+this.stageIndex*15)*pg.reward);this.gainCharExp(exp);this._deathExp=exp;this._deathPowerAfter=Save.power(this.character);this.sugarStage=0;this.physics.pause();this.player.setVelocity(0,0);
     if(this._hasFrames){const baseCharKey='char_'+this.character;if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);this.player.setFrame(CF.ko);this.player.setScale(this._pBase||1);this.player.setRotation(0);}

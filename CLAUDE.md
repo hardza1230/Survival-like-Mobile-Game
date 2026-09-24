@@ -486,10 +486,12 @@
 - **เกมเด้ง `Cannot read properties of null (reading 'body')` ตอนของล้นจอ/x3 (v1.9.2):** pool เต็ม (maxSize) → `getFirstDead(false)` คืน null และ `create()` เกิน cap ก็คืน null → บรรทัดถัดมาอ่าน `X.body` = crash · **ทุก getFirstDead-or-create ต้อง guard `if(!X)return` (drop items/spawnEnemy/foeShot ข้ามได้) หรือ recycle `getFirstAlive()` (bullet/mini/boss ที่ห้ามข้าม)** · x3 ทำ physics step ถี่ = ของตาย/เกิดถี่ = pool เต็มง่ายขึ้น
 - **ปุ่มเร่งเวลา x2/x3 เร่งแค่โจมตี (v1.9.x):** Arcade `physics.world.timeScale` **กลับด้าน** (ค่ามาก=step ห่าง=ช้าลง) การเคลื่อนที่ทุกอย่างใช้ velocity=physics → `setGameSpeed` ตั้ง `=s` ทำให้ช้าลง (ส่วน time/tween/dt เร็วขึ้น = เร่งแค่ timer/โจมตี) → แก้เป็น **`=1/s`** · hitStop ก็กลับด้าน (0.05=เร็ว 20x ไม่ freeze) → ใช้ค่ามาก (12) = freeze จริง
 
-## 5. ถัดไป (roadmap ตามลำดับ "ระบบก่อนกราฟิก")
-1. เทส Power Rating และ difficulty 1–5 ของด่าน 3–4 จากอัตราชนะจริงบนมือถือ (ตัวตรวจเชิงสูตรมีแล้ว)
-2. จูน Cutscene ตัวละคร×ด่านและ telegraph จากผล playtest จริง
-3. เตรียม signed AAB / store listing / release QA สำหรับ Play Store
+## 5. ถัดไป (อัปเดต v4.71 — เป้าหมายเจ้าของ: ทำเกมให้เสร็จ ~95% ถึง endgame ก่อน · Play Store/รายได้ พักไว้)
+1. **รอเจ้าของตัดสิน:** Endgame (Ascension/Endless/Zone Mods) ยังปลดหลังจบ **Chapter 1** (`canAscend`/`zoneModsUnlocked` เช็ก stageMastery 0-4) แต่ของ endgame iLv61+ ต้อง `storyComplete()` → จะให้ endgame ปลดหลังจบเนื้อเรื่องทั้งหมดไหม
+2. **Chapter 3 · Throne of the First Seed** (บทสุดท้าย 5 ด่าน, `CHAPTERS[2]` ready:false) — ต้องทำด่าน/มอน/บอส/อาร์ต
+3. Endgame ที่เหลือ: Mochi Rift → Pinnacle Boss (ไอเดียอื่นดูสถานะ v4.69)
+4. เล่นจริงบนมือถือ: Boss Rush balance, Relic, Bonus Challenge, UI v4.63-4.68, Chapter 2 full run
+5. (พักไว้) Play Store: ลบบัญชีในแอป, store listing, keystore, closed test
 
 ## 6. เอกสารออกแบบ (Artifacts — ความจำภาพ)
 เอกสารเหล่านี้เผยแพร่เป็น artifact แล้ว (ถ้าต้องแก้ให้ publish ทับ URL เดิม):
