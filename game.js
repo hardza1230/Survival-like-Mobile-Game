@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.66.0';
+const GAME_VERSION = '4.67.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.67.0', date:'2026-09-24', title:'What to do next', items:['The hub highlights your best next step after the tutorial','The defeat screen explains what beat you','One tap from defeat to the upgrade that helps most']},
   { v:'4.66.0', date:'2026-09-24', title:'Easier taps', items:['Small menu buttons now have a bigger touch area','Buttons flash and ripple when tapped','Menu screens slide in smoothly']},
   { v:'4.65.0', date:'2026-09-24', title:'Fuller screens on phones', items:[
     'Character Stats shows your character’s art, with larger, easier-to-read stat rows',
@@ -3418,7 +3419,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,portrait=w<=h,rows=grp.rows;
     const bw=Math.min(w-28,440),x=(w-bw)/2,y0=portrait?116:92,gap=10,rh=Math.min(portrait?80:64,(h-y0-56-gap*(rows.length-1))/rows.length);
     // v4.25: หมวด Gear&Power — เปิด stats/upgrade (3 แก่น) ได้ตั้งแต่เริ่ม · gear/craft/bazaar/inbox ล็อกจนผ่านด่าน 1
-    const GATED=new Set(['gear','craft','bazaar','gearInbox']),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone;   // v4.28: จบ tutorial = ปลดทุกอย่างในหมวดนี้
+    const nxtG=this.hubNextStep(), GATED=new Set(['gear','craft','bazaar','gearInbox']),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone;   // v4.28: จบ tutorial = ปลดทุกอย่างในหมวดนี้
     rows.forEach(([target,emoji,label,sub],i)=>{ const y=y0+i*(rh+gap);
       const locked=GATED.has(target)&&!afterS1;
       const g=this.add.graphics(); g.fillStyle(0x241a30,locked?0.7:0.96); g.fillRoundedRect(x,y,bw,rh,14); g.lineStyle(2,locked?0x4a4059:0x6a5b86,0.85); g.strokeRoundedRect(x,y,bw,rh,14); g.fillStyle(locked?0x4a4059:0x8f7de8,1); g.fillRoundedRect(x,y,7,rh,4);
@@ -3427,6 +3428,7 @@ class Game extends Phaser.Scene {
       const ds=this.add.text(x+72,y+rh*0.68,locked?'🔒 Clear Stage 1 to unlock':sub,{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#9a8fac':'#bfb5ca',wordWrap:{width:bw-160}}).setOrigin(0,0.5);
       const ar=this.add.text(x+bw-16,y+rh/2,locked?'🔒':'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5);
       this.menu.add([g,ic,em,nm,ds,ar]);
+      if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,y,bw,rh,nxtG.tag);
       this._zone(x,y,bw,rh,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
         if(target==='__tutorial'){ this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true); }
         else { if(target==='skills'){this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;} this.menuScreen=target; this.buildMenuScreen(); } });
@@ -3938,13 +3940,14 @@ class Game extends Phaser.Scene {
     const totalW=bw*cols+gapX*(cols-1), x0=portrait?(w-totalW)/2+bw/2:areaL+(areaR-areaL-totalW)/2+bw/2, y0=portrait?menuTop+bh/2:74+bh/2;
     // ค่อย ๆ ปลดLockedเมนู — คนใหม่ไม่เจอทุกอย่างพร้อมกัน (ปลดตามด่านที่ผ่าน)
     // v4.28: จบ tutorial = ปลดทุกเมนูใน Hub (เดิมล็อกตามด่าน → Weave ที่อยู่ใน Gear&Power เข้าไม่ได้)
-    const tutDone=!!Save.data.tutorialDone, us=Save.data.unlockedStage||0, need=[0,0,1,2,1,0];   // idx: เริ่ม/นักสู้/คลัง/กิจกรรม/คัมภีร์/อื่นๆ
+    const tutDone=!!Save.data.tutorialDone, us=Save.data.unlockedStage||0, need=[0,0,1,2,1,0], nxt=this.hubNextStep();   // idx: เริ่ม/นักสู้/คลัง/กิจกรรม/คัมภีร์/อื่นๆ
     items.forEach(([color,emoji,label,sub,fn],i)=>{
       const col=i%cols,row=Math.floor(i/cols),cx=x0+col*(bw+gapX),cy=y0+row*(bh+gapY);
       if(us<need[i]&&!tutDone){
         this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'Clear Stage '+need[i]+' to unlock',()=>{this.menuToast&&this.menuToast('🔒 Locked — clear Stage '+need[i]+' first','#ff9bb5');Sfx.select&&Sfx.select();},false); }
       else { this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0);
         if(i===3&&this.hasActivityBadge())this.drawBadgeDot(this.menu,cx+bw/2-8,cy-bh/2+8); }   // 🔴 Daily/Achievement Waitรับ
+      if(nxt&&nxt.hub===i)this._drawNextGuide(cx-bw/2,cy-bh/2,bw,bh,nxt.tag);
     });
     // แจ้งเตือนเมื่อมีเมนูใหม่เพิ่งปลดLocked (ครั้งเดียว)
     const seen=Save.data.hubUnlockSeen||0;
@@ -3952,6 +3955,16 @@ class Game extends Phaser.Scene {
     // ปุ่มรีเซ็ตเซฟย้ายไปหน้า "Settings" แล้ว (buildSettings) — กันกดพลาดตั้งแต่หน้าแรก
     this.menu.setVisible(true);
   }
+  // 👉 ไกด์ "ทำอะไรต่อ" (หลังจบ tutorial) — hub idx + group target
+  hubNextStep(){ if(!Save.data.tutorialDone)return null; const us=Save.data.unlockedStage||0;
+    const adv=this.powerAdvice(Math.min(us,STAGES.length-1));
+    if(adv.screen==='upgrade')return {hub:2,group:'gLoadout',target:'upgrade',tag:'Upgrade Weave'};
+    if(Save.gearInboxItems().length>0)return {hub:2,group:'gLoadout',target:'gearInbox',tag:'Claim gear'};
+    if(this.hasActivityBadge&&this.hasActivityBadge())return {hub:3,group:'gActivity',target:null,tag:'Rewards ready'};
+    return {hub:0,group:null,target:null,tag:'Next stage'}; }
+  _drawNextGuide(x,y,w,h,tag){ const g=this.add.graphics(); g.lineStyle(3,0xffe066,1); g.strokeRoundedRect(x-3,y-3,w+6,h+6,16);
+    const tg=this.add.text(x+w-8,y+5,'👉 '+tag,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#2a1600',backgroundColor:'#ffe066',padding:{x:6,y:2}}).setOrigin(1,0);
+    this.menu.add([g,tg]); this.tweens.add({targets:g,alpha:{from:1,to:0.3},duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   _characterCardArt(id,cx,cy,maxW,maxH,alpha=1){
     const key='card_'+id;if(!this.textures.exists(key))return null;
     const sp=this.add.image(cx,cy,key).setOrigin(0.5).setAlpha(alpha),scale=Math.min(maxW/sp.width,maxH/sp.height);
@@ -4643,7 +4656,7 @@ class Game extends Phaser.Scene {
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
     Save.save(); this._lastExpGain=Math.round(n); this._lastLvlUps=ups; return ups;
   }
-  showMenu(){ this.state='menu'; this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen='hub'; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
+  showMenu(){ this.state='menu'; this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
   setGameSpeed(s){ this.gameSpeed=s;
@@ -4729,7 +4742,7 @@ class Game extends Phaser.Scene {
     this.load.once('complete',finish);pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
   }
 
-  startRun(idx){
+  startRun(idx){ this._dmgBy={}; this._lastHitSrc=null;
     if(this.state!=='menu')return;
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
@@ -7321,17 +7334,26 @@ class Game extends Phaser.Scene {
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
+    this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
     this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
     if(this.player.hp<=0) this.die(); }
+  // 💀 สะสมดาเมจที่รับตามแหล่ง (หน้าตายบอกสาเหตุ) · รีเซ็ตใน startRun
+  _noteHit(src,dmg){ const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
+  deathReason(){ const d=this._dmgBy||{},top=Object.keys(d).sort((a,b)=>d[b]-d[a])[0]||this._lastHitSrc||'swarm';
+    const R={boss:['👑 Boss attacks','Watch the red telegraphs and Dash through big attacks.'],mini:['😈 Miniboss','Kite in circles and Dash when it charges.'],
+      elite:['💪 Elite enemies','Focus elites first — they hit hard up close.'],shot:['🎯 Projectiles & hazards','Keep moving; don’t stand in glowing zones.'],
+      swarm:['🐜 Swarmed by enemies','Keep moving and use Dash to escape crowds.']};
+    return R[top]||R.swarm; }
   // โดนกระสุน/สแลม/hazard ของศัตรู (iframe สั้นกว่า → หลบยาก)
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
     if((this._shield||0)>0){ this._shield--; this.player.iframe=0.6; this.floatText(this.player.x,this.player.y-44,'🫧 Blocked!',0x9fe8ff); this.screenFlash(0x9fe8ff,0.18,160); return; }   // 🔮 Candy Shell
     if(this._inTutorial)return;   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
     dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
+    this._noteHit(this.mode==='boss'?'boss':this.mode==='mini'?'mini':'shot',dmg);
     this.player.iframe=ix||0.5; this.player.hp-=dmg; this.onBonusHurt(); Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
     this.vfxHurtFlash();
@@ -8107,7 +8129,7 @@ class Game extends Phaser.Scene {
     const panel=this.add.graphics();panel.fillStyle(0x241c2d,0.96);panel.fillRoundedRect(20,h*0.28,w-40,h*0.40,17);panel.lineStyle(2,0x664c72,0.9);panel.strokeRoundedRect(20,h*0.28,w-40,h*0.40,17);
     const rows=[['🗺 Stage',st.emoji+' '+st.name],['🔥 Difficulty',diff.emoji+' '+diff.name],['⏱ Survived',mm+':'+ss.toString().padStart(2,'0')],['☠ Kills',String(this.kills)],['🌟 Run Level','Lv '+this.level],['🍬 Sugar','+'+(this._deathSugar||0)],['✨ Character EXP','+'+(this._deathExp||0)],['⚡ Power',(this._deathPowerBefore||0)+' → '+(this._deathPowerAfter||0)]];
     const box=[bg,em,t,panel];let y=h*0.315,step=(h*0.325)/rows.length;rows.forEach(r=>{const l=this.add.text(34,y,r[0],{fontFamily:'sans-serif',fontSize:'11px',color:'#bfaec8'}).setOrigin(0,0.5),v=this.add.text(w-34,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',wordWrap:{width:w*0.55},align:'right'}).setOrigin(1,0.5);box.push(l,v);y+=step;});
-    const build=this.add.text(w/2,h*0.655,'BUILD · '+(skills.slice(0,3).join(' / ')||'Starting weapon')+(passes.length?'\nPassives: '+passes.slice(0,3).join(' / '):''),{fontFamily:'sans-serif',fontSize:'9px',color:'#d8c4e3',align:'center',wordWrap:{width:w-60},maxLines:2}).setOrigin(0.5);box.push(build);
+    const why=this.deathReason(); const cause=this.add.text(w/2,h*0.648,'💀 '+why[0]+'\n'+why[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd0dc',align:'center',wordWrap:{width:w-60},lineSpacing:2}).setOrigin(0.5);box.push(cause);
     // 📺 ฟื้นคืนชีพด้วยโฆษณา (ครั้งเดียวต่อWaitบ) — ไม่โผล่ในโหมด Endless (ตายแล้วจบWaitบ)
     if(!this._adRevived&&!this.endlessMode){ const rvw=Math.min(300,w-52),rvh=44,rvy=h*0.725,rg=this.add.graphics();
       rg.fillStyle(0x2fae6a,1);rg.fillRoundedRect(w/2-rvw/2,rvy-rvh/2,rvw,rvh,16);rg.lineStyle(2,0xffffff,0.3);rg.strokeRoundedRect(w/2-rvw/2,rvy-rvh/2,rvw,rvh,16);
@@ -8117,7 +8139,11 @@ class Game extends Phaser.Scene {
     draw(left,COLORS.pink,'↻ Replay Stage');draw(right,COLORS.grape,'🏠 Back to Hub');
     this._overBtns.push({x:left-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>{this.over.setVisible(false);this.physics.resume();this.state='menu';if(this.endlessMode)this._endlessRequested=true;this.startRun(this.stageIndex);}});
     this._overBtns.push({x:right-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.scene.restart()});
-    const hint=this.add.text(w/2,h*0.90,(Save.data.sugar||0)>=GACHA_COST?'You have enough Sugar to open a gear box!':'Upgrade your gear and Flavor Weave, then try again',{fontFamily:'sans-serif',fontSize:'10px',color:'#9f91aa'}).setOrigin(0.5);box.push(hint);this.over.add(box);this.over.setVisible(true); }
+    // 💡 ทางไปเก่งขึ้น (กดแล้วกลับเมนูหน้าที่แนะนำ) + สถานะพลังเทียบด่าน
+    const ps=this.powerStatus(this.stageIndex),adv=this.powerAdvice(this.stageIndex),aw=w-40,ah=42,ax=20,ay=h*0.865;
+    const ag=this.add.graphics();ag.fillStyle(0x2a1c3a,1);ag.fillRoundedRect(ax,ay,aw,ah,12);ag.lineStyle(1.6,ps.color,0.9);ag.strokeRoundedRect(ax,ay,aw,ah,12);
+    const at=this.add.text(ax+12,ay+ah/2,ps.label+' ('+Math.round(ps.ratio*100)+'% of recommended)\n'+adv.text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe6a3',wordWrap:{width:aw-24},lineSpacing:2}).setOrigin(0,0.5);box.push(ag,at);
+    if(!this.endlessMode)this._overBtns.push({x:ax,y:ay,w:aw,h:ah,fn:()=>{window.__pendingMenu=adv.screen;this.scene.restart();}});this.over.add(box);this.over.setVisible(true); }
   // ---- Rewarded Ad: แสดงโฆษณาแล้วให้รางวัล (ตอนนี้เดโมจำลอง · ต่อ AdMob จริงได้ที่ hasRealAds/plugin) ----
   showRewardedAd(label,onReward){
     if(this._adBusy)return;

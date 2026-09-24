@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.67.0 — ไกด์ทำอะไรต่อ + หน้าตายบอกสาเหตุ)
+- **v4.67.0 (UI/UX รอบ 2 ข้อ 3+6):** `hubNextStep()` (หลัง tutorial: Weave ซื้อได้→Gear&Power/upgrade · inbox มีของ→gearInbox · activity badge→Activities · ไม่งั้น Play) · `_drawNextGuide` กรอบเหลืองกระพริบ + ป้าย 👉 ในปุ่ม Hub และแถวในหน้า group · **หน้าตาย:** `_noteHit(src,dmg)` สะสม `_dmgBy` (touchEnemy: boss/mini/elite/swarm · hurtPlayer: boss/mini/shot; reset ใน startRun) → `deathReason()` แทนบรรทัด BUILD เดิม · แถบ powerStatus+powerAdvice กดได้ → `window.__pendingMenu` + scene.restart → showMenu เปิดหน้าที่แนะนำ (ไม่ใช่ Endless) · verified headless screenshot + ปุ่มพาไป upgrade, 0 error · **UI/UX ที่ยังค้าง:** (4) การ์ดเลเวลอัพเน้นตัวเลข (5) ปรับปุ่มควบคุม/ถนัดซ้าย
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.66.0 — ปุ่มกดง่าย + feedback)
 - **v4.66.0 (UI/UX รอบ 2 ข้อ 1+2):** `handleTap` ตรงกรอบก่อน → ไม่โดนค่อยขยาย tap zone ให้ ≥44px +slop 6 เลือกตัวใกล้สุด (ทุก `_zone` ได้อัตโนมัติ) · `_tapFeedback` กรอบขาววาบ + ripple ที่นิ้ว (depth 140 นอก this.menu ไม่หายตอน rebuild) · `buildMenuScreen` เปลี่ยนหน้า = fade+slide 160ms · verified headless: ปุ่ม 20px กดโดนจากนอกกรอบ 8px, alpha 0→1, 0 error · **UI/UX ที่เสนอค้าง:** (3) ไกด์หลัง tutorial (4) การ์ดเลเวลอัพเน้นตัวเลข (5) ปรับปุ่มควบคุม/ถนัดซ้าย (6) หน้าตายบอกเหตุผล+ทางอัพ
 
