@@ -34,8 +34,8 @@ npx serve .      # หรือ  python3 -m http.server
 **อยากได้ลิงก์โหลดง่าย ๆ (Release):** push tag ที่ขึ้นต้นด้วย `v` เช่น `v1.0.0`
 → workflow จะสร้าง **Release** พร้อมไฟล์ APK ให้โหลดตรง ๆ บนมือถือ
 
-> หมายเหตุ: นี่คือ **debug APK** (สำหรับทดสอบ/ติดตั้งเอง). ตอนขึ้น Play Store จริงต้องทำ
-> **signed release AAB** (เพิ่ม keystore + `assembleRelease`/`bundleRelease`) — ทำเป็นสเต็ปถัดไป
+> หมายเหตุ: APK จาก workflow ปกติยังเป็น **debug APK** สำหรับทดสอบ ส่วน workflow
+> **Release Signed AAB** พร้อมแล้ว แต่ต้องตั้ง keystore และ GitHub Secrets ตาม `docs/RELEASE_SIGNING.md` ก่อนใช้งานครั้งแรก
 
 ## 🔄 อัปเดตเกมโดยไม่ต้องลง APK ใหม่ (Live update ผ่าน GitHub Pages)
 APK ถูกตั้งให้เป็น **"ตัวหุ้ม" ที่โหลดตัวเกมจาก GitHub Pages** ทุกครั้งที่เปิดแอป
@@ -59,21 +59,18 @@ APK ถูกตั้งให้เป็น **"ตัวหุ้ม" ที�
 - `.github/workflows/android.yml` — ขั้นตอน build APK บน GitHub
 - โฟลเดอร์ `android/` และ `www/` **สร้างตอน build** (ไม่ commit)
 
-## สถานะ: v2.38.0 — Berry Core
-ระบบหลักพร้อมเล่นครบ Chapter 1 และด่านแรกของ Chapter 2: ตัวละคร 6 คนและอาวุธประจำตัว, สกิล/พร/Awaken, ศัตรูและบอสเฉพาะด่าน,
-อุปกรณ์หลายระดับ, Daily, Achievement, Bestiary, Ascension และ Midnight Kitchen Endless พร้อมบอสลับ/อันดับในเครื่อง
+## สถานะ: v4.47.0 — Production Raster Pickups & Training Ground
 
-ด่าน 5 ใช้กองทัพ Crown Oven ชุดใหม่ทั้งหมด: มอนสเตอร์ 5 บทบาท, Banquet Executioner และ The Great Hunger ร่าง Cosmic Sovereign ที่มี animation 8 ท่าผูกกับการต่อสู้จริง
-
-Chapter 2 เชื่อมจากเมล็ดมงกุฎที่รอดจาก The Great Hunger และเปิดด่าน C2-1 **The Fermented Canopy** พร้อมฉาก parallax 2.5D สามชั้น, ศัตรูสวนหมัก, Sporewarden Mantis และ The Rootmother
-
-ตัวละครใหม่ **Berry Core** เป็นก้อนโมจิสตรอว์เบอร์รีแยกจาก Momo ใช้ปืนแกนแยมสายระเบิดหนักและ Unique **Jam Overdrive** ยิงล็อกเป้าเป็นชุด พร้อม action 8 ท่าและ run cycle 12 เฟรม
-
-Hit feedback ไม่ฟอก sprite เป็นสีขาวแล้ว จึงเห็น artwork และ animation ของมอนสเตอร์/บอสชัดเจนแม้โจมตีหลายครั้งต่อวินาที
-
-เวฟปกติใน Chapter 1 สุ่มภารกิจครบ 4 รูปแบบต่อรัน: เอาชีวิตรอด, ล่า Elite เป้าหมาย, ทำลายแกนคำสาป และยึดเขตพลังงาน พร้อม HUD/ลูกศรนำทางและโบนัส Sugar โดยไม่เปลี่ยนลำดับมินิบอสหรือบอส
+- Chapter 1 และ Chapter 2 เล่นได้ครบ 10 ด่าน ตั้งแต่ Pantry Raid ถึง **C2-5 Root Throne**
+- C2-5 มี objective ทำลาย Crown Roots, arena event, ศัตรู 7 บทบาท, Ancient Root Knight และ The True Rootmother 4 เฟส พร้อม epilogue
+- Chapter 2 ใช้ภาพศัตรู/บอสแบบโปร่งใสที่แยก silhouette และ pose ชัดบนมือถือ พร้อม validation ตรวจโครงสร้าง PNG จริงก่อน build
+- ตัวละคร 6 คนมีอาวุธประจำตัว, Character Mastery, gear/crafting, Daily, Achievement, Bestiary, Ascension และ Midnight Kitchen Endless
+- หน้า Affix Forge ใช้ flow 3 ขั้น Gear → Affix → Roll พร้อมเอฟเฟกต์รูเล็ตชะลอก่อนเปิดผลจริง และม็อด 15 แบบที่แยก Offense/Defense/Utility ชัดเจน
+- Pickup 8 ชิ้นและพื้น Training Ground ใช้ PNG raster จริงแทน SVG พร้อมตัวตรวจขนาด/alpha/ไฟล์เสียก่อน build
+- ระบบบอสป้องกันการข้าม phase ด้วย burst damage และคงความเป็นอมตะระหว่าง transition
+- การตรวจอัตโนมัติใช้ `npm run check`; balance, touch controls, FPS และ visual readability ต้องยืนยันบนมือถือจริง
 
 ## ถัดไป (roadmap)
-- เล่นทดสอบบนมือถือจริงเพื่อจูน win rate ด่าน 3–4 ทุกระดับความยาก
-- ปรับความยาว cutscene และความชัดของ telegraph จากผล playtest
-- เตรียม signed release AAB, store listing และวงจรทดสอบก่อนขึ้น Play Store
+- เล่น Chapter 2 แบบ full run บนมือถือจริงและจูน Normal/Hard/Hell
+- ตรวจ C2-5 ตาม `docs/C2_5_QA.md` รวมถึง FPS, touch controls และ safe routes ของทุกท่าบอส
+- ตั้ง release keystore, สร้าง Signed AAB และเตรียม screenshot/Feature Graphic สำหรับ Play Store

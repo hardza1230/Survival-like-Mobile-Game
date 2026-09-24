@@ -140,6 +140,6 @@
 **Sprint 4 (ลึก):** #5 Build discovery → #12 Risk/Reward → #7 Spectacle จูน
 
 ## 🤖 หมายเหตุการเทส
-- ทุกข้อ: รัน `npm run bot` ก่อน push (จับ crash/error) — แต่ **บอทไม่ตัดสินความสนุก** ต้องเล่นจริงจูน "ความรู้สึก"
-- ควรเพิ่ม metric ในบอท: FPS เฉลี่ย, จำนวน levelup ใน 30 วิแรก, texture ของกระสุน (กันบั๊กแบบ sprinkle awaken)
+- ทุกข้อ: รัน `npm run check` ก่อน push แล้วทดสอบ flow จริงบนมือถือ
+- เก็บ FPS เฉลี่ย, จำนวน level-up ใน 30 วินาทีแรก และความชัดของ projectile/telegraph ระหว่าง manual playtest
 - จูนตัวเลขบาลานซ์บนเครื่องจริงเสมอ — ค่าที่เขียนในนี้เป็นทิศทาง ไม่ใช่ค่าตายตัว

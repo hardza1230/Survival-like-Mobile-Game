@@ -1,20 +1,22 @@
-# Mobile Focused Crafting
+# Mobile Affix Forge
 
 ## Player flow
 
 1. Select a gear instance.
 2. Tap one affix line, including an empty unlocked line.
-3. Pick the exact desired stat from the compatible pool.
-4. Review the best possible tier, best-tier value range, required currency and inventory count.
-5. Craft once. The stat is guaranteed; tier and value roll within the item's allowed range.
+3. Review the compatible random-roll pool, best possible tier and value range.
+4. Spend the contextual currency to roll one compatible stat at random.
+5. Read the before-and-after result strip. The rolled stat, tier and value are all shown immediately.
+
+The player chooses the item and exact affix line, but not the resulting stat. This distinction is intentional: the screen is called **Affix Forge** rather than Focused Crafting so the UI does not imply a guaranteed chosen outcome.
 
 ## Rarity and line capacity
 
 | Craft state | Lines | Progression |
 |---|---:|---|
-| Common | 1 | Spark Sugar imprints the first targeted line |
-| Magic | 2 | Twist Cream replaces a selected line; Wish Candy fills an empty line |
-| Rare | 4 | Wild Jam replaces a selected line; Wish Candy fills an empty line |
+| Common | 1 | Spark Sugar rolls the first line |
+| Magic | 2 | Spark Sugar fills an empty line; Twist Cream rerolls a selected line |
+| Rare | 4 | Wish Candy fills an empty line; Wild Jam rerolls a selected line |
 
 Crown Icing promotes a full two-line Magic item to Rare and unlocks four lines. Crystal Glaze rerolls only the selected value. Fading Gumdrop removes only the selected line. Plain Dough resets the whole item to Common.
 
@@ -23,11 +25,11 @@ Crown Icing promotes a full two-line Magic item to Rare and unlocks four lines. 
 
 | Color | Player-facing name | Internal key | Primary purpose | Sugar shop price |
 |---|---|---|---|---:|
-| Blue | Spark Sugar | `transmute` | Imprint the first chosen stat on Common gear | 40 |
+| Blue | Spark Sugar | `transmute` | Roll a new random stat on Common or Magic gear | 40 |
 | Green | Twist Cream | `alt` | Replace one selected Magic affix | 60 |
 | Yellow | Crown Icing | `regal` | Promote full Magic gear to Rare | 120 |
 | Orange | Wild Jam | `chaos` | Replace one selected Rare affix | 160 |
-| Red | Wish Candy | `exalt` | Add a chosen stat to an empty line | 320 |
+| Red | Wish Candy | `exalt` | Roll a new random stat into an empty Rare line | 320 |
 | White | Crystal Glaze | `divine` | Reroll the selected value without changing tier | 320 |
 | Purple | Fading Gumdrop | `annul` | Remove one selected line | 90 |
 | Black | Plain Dough | `scour` | Reset the item to Common with no affixes | 30 |
@@ -51,9 +53,11 @@ Fading Gumdrop no longer appears in Common rewards. Wish Candy and Crystal Glaze
 
 The production icon set is stored in `assets/ui/currency/` as eight transparent 512×512 PNG files. Each icon has a different silhouette in addition to its color so it remains identifiable when displayed at mobile UI size.
 
-### Mobile Craft Bench layout
+### Mobile Affix Forge layout
 
-The Craft Bench uses the production currency art for the main craft action, the four utility actions, the Bazaar currency rows and the live Currency Pouch. Utility actions use a 2×2 grid rather than one compressed row. On screens with enough vertical room, the pouch lists all eight currencies in two columns; it hides automatically when a large compatible affix pool needs the space.
+The screen uses a visible **Gear → Affix → Roll** rail, production equipment art in the slot tabs, a compact random-result pool, contextual currency art and a dedicated confectionery workshop background. Base quality is shown separately from affix capacity (`2/4 affixes`) so the two rarity systems are not visually conflated.
+
+The successful result appears in a before-and-after strip. Utility actions remain in a 2×2 grid and explain their effect in plain language. Removing one line or resetting the whole item requires a second tap within three seconds. The full Currency Pouch was removed from this screen because it duplicated information and pushed the primary action below the mobile fold.
 
 The main menu uses taller cards, fixed icon geometry and short subtitles so labels remain inside each button at portrait width.
 

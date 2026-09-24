@@ -20,6 +20,8 @@
 - **🏆 กฎเหล็ก (กฎหลักของเกม):** เลือกระดับความยากได้ 1-5 ต่อด่าน · **ยิ่งยาก รางวัลยิ่งดี** — ทุกระบบรางวัลใหม่ต้องเคารพกฎนี้ (`DIFFS[].reward`, `diffMul()`)
 - **สาขา git:** `claude/vampire-survival-mobile-game-yo9e8w` (ชื่อเก่าติดมาจากธีมแวมไพร์)
 
+- **v4.47.0 (Production raster pickups):** เปลี่ยน Heal Mochi, Gear Gift, stage gimmick 6 ชิ้น และพื้น Training Ground จาก SVG เป็น PNG raster จริง · pickup 256×256 โปร่งใส · พื้น 512×512 ทึบ · release gate ตรวจขนาด/alpha/PNG stream/การผูก runtime และห้าม SVG กลับเข้ามาใน `ASSET_IMAGES`
+
 ## 3. โครงไฟล์
 - `index.html` — หน้าเกม (โหลด phaser.min.js + game.js)
 - `game.js` — โค้ดเกมทั้งหมด (คลาส Boot วาดกราฟิกด้วย **Canvas 2D** `createCanvas`, คลาส Game = ฉากเล่น)
@@ -57,8 +59,44 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.36.0 — เพิ่ม item mod ให้ไล่ล่ามากขึ้น)
-- **v4.36.0 (เพิ่ม mod ทั่วไป + mod พิเศษเฉพาะไอเทม iLv สูง — จาก feedback เจ้าของ "mod ยังน้อยเกินไป"):** `AFFIX_POOL` เดิมมีแค่ 8 ตัว (dmg/crit/critdmg/cd/hp/def/spd/pick/regen) → เพิ่ม 3 ตัวที่ hook เข้ากับ field ที่ใช้งานอยู่แล้ว (ไม่มีกลไกใหม่ กัน regression): `execute`(🗡️ prefix, ใช้ `p.lowHpDmg` เดิมที่ legend gear บางชิ้นใช้อยู่ — ดาเมจโบนัสเมื่อ HP ศัตรู<40%) · `lifesteal`(🩸 suffix, ใช้ `p.lifesteal` เดิมจาก talent — ฟื้น HP flat ต่อการฆ่า ไม่มี cooldown) · `healpow`(💊 suffix, ใช้ `p.healEffect` เดิม — บูมค่าฟื้นจากไอเทม heal ในด่าน) · **ปลุก `SPECIAL_AFFIX_POOL`** (เดิมว่างเปล่าตั้งแต่ v2.90 ที่วางโครงไว้) ใส่ 3 mod เทรดออฟสำหรับของ endgame เท่านั้น (`minItemLevel` gate ผ่าน `craftAffixPoolForItem` เดิม): `berserk`(💀 weapon/gloves iLv45+, +dmg มาก แต่ +dmgTaken ด้วย) · `focus`(🧘 amulet/ring iLv45+, cdMul ไวมาก แต่ critChance ลด) · `gambler`(🎲 ring iLv25+, critMul ก้อนใหญ่ไม่มีข้อเสีย) · **verified headless:** ของ iLv ต่ำไม่มี special mod ปน, ของ iLv สูง (ring iLv50/weapon iLv60) มี special มาถูกต้อง, rollAffixes 400 รอบไม่มี error + ครบทุก id ใหม่, 0 pageerror
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.45.0 — Affix Forge visual clarity)
+- **v4.45.0:** เปลี่ยนชื่อหน้าคราฟต์เป็น Affix Forge และจัด flow ใหม่เป็น Gear → Affix → Roll · เพิ่มฉากหลังห้องคราฟต์ 2.5D, ใช้อาร์ตอุปกรณ์จริงในแท็บ slot, แยก base quality ออกจากจำนวนช่อง affix, ย่อ random roll pool ให้เหมาะกับมือถือ, เพิ่มแถบผลก่อน→หลังและ double-tap ยืนยัน Remove/Reset · อัปเดตเอกสารให้ตรงกับระบบสุ่มจริง
+- **v4.44.0:** เปลี่ยนไฟล์ PNG เสีย 6 ไฟล์เป็น production art โปร่งใสใหม่ ได้แก่ seasonal/root enemy atlas และบอส C2-2 ถึง C2-5 · ทุกช่องจัดลงกริด 256×256 ด้วย ground line เดียวกันและ silhouette อ่านง่ายบนมือถือ · validator หลักเปลี่ยนเป็น `validate-game-content.mjs` และตรวจ PNG signature/chunk CRC/IEND/zlib stream จริง · ลบ headless auto-playtest bot และอัปเดต README/QA/roadmap · **Chapter 2 implementation และ final art เสร็จแล้ว เหลือ full-run balance/mobile QA บนเครื่องจริง**
+
+### สถานะก่อนหน้า
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.43.0 — C2-5 Root Throne และเนื้อหา Chapter 2 เสร็จแล้ว)
+- **v4.43.0 (C2-5 complete stage):** เพิ่มฉาก Root Throne, atlas ศัตรูราก 8 ช่อง และ objective Sever the Crown Roots 4 จุด · arena มี throne pulse/crown recall เปลี่ยนพื้นที่ปลอดภัยเป็นระยะ · AI เฉพาะ 7 บทบาท · Ancient Root Knight miniboss · The True Rootmother บอสใหญ่ 4 เฟสที่ 75%/42%/18% พร้อมอินโทร, เมตามอร์ฟ, Memory Eclipse และฉากจบ Chapter 2 · cap ฝูง 88 สำหรับมือถือ · validator ตรวจ readiness, objective, alpha/dimensions และ boss contracts
+
+### สถานะก่อนหน้า
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.42.0 — C2-4 Four-Season Conservatory เสร็จและปลดล็อกแล้ว)
+- **v4.42.0 (C2-4 complete stage):** เพิ่มพื้นเรือนกระจกสี่ฤดูและ atlas ศัตรู 8 ช่อง · arena หมุน Spring/Summer/Autumn/Winter พร้อม event ต่างกัน · objective Stabilize the Seasons ให้ไล่ sanctuary ที่ active · AI เฉพาะ 7 บทบาท · Season Keeper miniboss · Chronobloom Orchid บอส 3 เฟสที่ 72%/38% พร้อมอินโทร/เมตามอร์ฟ/Time Break · cap ฝูง 92 สำหรับมือถือ · validator ตรวจ asset alpha/dimensions, readiness, objective และ boss contracts · **เหลือ 3 คอมมิต: C2-5, chapter balance QA, art polish**
+
+### สถานะก่อนหน้า
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.41.0 — C2-3 Nectar Hive เสร็จและปลดล็อกแล้ว)
+- **v4.41.0 (C2-3 complete stage):** เพิ่มพื้น Nectar Hive และ atlas ศัตรู 8 ช่อง · objective Defend Nectar 3 ดอก · AI เฉพาะ 6 บทบาท (ยิงนำ/พุ่งนำ/ระเบิด/เกราะหมู่/กระสุนสามทาง) · Royal Stinger miniboss · Ferment Hornet Queen บอส 3 เฟสที่ 70%/35% พร้อมอินโทร/เมตามอร์ฟ/ท่า Queen’s Decree · validator ตรวจ asset alpha/dimensions, readiness และ boss contracts · **เหลือ 4 คอมมิต: C2-4, C2-5, chapter balance QA, art polish**
+
+### สถานะก่อนหน้า
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.40.0 — C2-2 ผ่าน QA gate และปลดล็อกแล้ว)
+- **v4.40.0 (C2-2 QA + unlock):** Mycelium Marsh เปลี่ยนเป็น `ready:true` · ล็อก balance เทียบ C2-1 ที่ HP ≈×1.35 / DMG ≈×1.30 / speed +8% · cap ศัตรูมีชีวิต 104 ตัวเพื่อมือถือ · validator ตรวจ future-stage locks, phase gates, telegraphs และ ratios · ปรับ roadmap เป็น 11 คอมมิต · **เหลือ 5 คอมมิต: C2-3, C2-4, C2-5, chapter balance QA, art polish**
+
+### สถานะก่อนหน้า
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.39.0 — Mycelium Behemoth บอสสามเฟส; C2-2 รอ full-run QA)
+- **v4.39.0 (C2-2 boss):** เพิ่มอาร์ตโปร่งใส 8 เฟรม `boss7_mycelium_behemoth_sheet.png` · ฉากเปิดตัว Marsh Heart · สามเฟสพร้อมอมตะระหว่างเปลี่ยนเฟสที่ 68%/34% HP · ท่า Root Reaper / Mire Quake / Spore Crown / Mycelial Lattice / Colony Rise / Heartstorm · ฉากตายเฉพาะ · validator ครบ · C2-2 ยัง `ready:false` จนผ่าน full-run/mobile QA · **Commit ถัดไป: C2-2 balance QA + unlock**
+
+### สถานะก่อนหน้า
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.38.0 — Fungal Juggernaut miniboss; C2-2 ยังล็อกจนบอสเสร็จ)
+- **v4.38.0 (C2-2 miniboss):** เพิ่มอาร์ตโปร่งใส 4 เฟรม `mb7_fungal_juggernaut_sheet.png` · ท่าเฉพาะ Mycelium Quake / Triple Stampede / Living Wall / Spore Mortar / Colony Call · เปลี่ยนเฟสอมตะชั่วคราวที่ 50% HP พร้อม Bulwark escort · แก้บั๊กค่า `b.dmg` ของมินิบอสถูก comment ทับ · เพิ่ม validator กัน regression · C2-2 ยัง `ready:false` · **Commit ถัดไป: Mycelium Behemoth three-phase boss**
+
+### สถานะก่อนหน้า
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.37.0 — C2-2 Mycelium Marsh + monster family; ด่านยังล็อกจนบอสเสร็จ)
+- **v4.37.0 (C2-2 vertical slice — monsters + field rule):** เพิ่มอาร์ต `ch2_mycelium_enemy_atlas.png` 4×2 (Drifter/Hopper/Sniper/Mold Sac/Bulwark/Oracle/Sporeling/Clean-Air Wisp) + พื้น `bg7.webp` · เพิ่ม wave profile 5 ช่วง · AI เฉพาะ: spore pool หลัง Drifter ตาย, Hopper เล็งนำ, Sniper/Oracle ยิงนำ, Mold Sac แตกเป็นลูก, Bulwark ลดดาเมจให้พวกใกล้ · objective Clean Air เคลื่อนที่และทำดาเมจนอกวง · C2-2 ยัง `ready:false` · **Commit ถัดไป: Fungal Juggernaut miniboss**
+
+### สถานะก่อนหน้า
+- **v4.36.0 — วางโครง Chapter 2 ครบ 5 ด่านและล็อกด่านที่ยังไม่ผ่าน QA**
+- **v4.36.0 (Chapter 2 foundation):** ขยายช่วง Chapter 2 เป็น C2-1…C2-5 · เพิ่ม metadata ด่าน Mycelium Marsh/Nectar Hive/Four-Season Conservatory/Root Throne แบบ `ready:false` · stage select/startRun/portal ใช้ readiness guard เดียวกัน · Zone Level และ HP/DMG curve รองรับด่านเกิน index 5 แบบต่อเนื่อง · C2-1 ใช้ objective pool แบบ data-driven และเปลี่ยนบอสเป็น Rootmother's Bud เพื่อเก็บ True Rootmother ไว้ C2-5 · **Commit ถัดไป: C2-2 Mycelium Marsh + monster family**
+
+### สถานะก่อนหน้า
+- **v4.35.0 — ตีบวก +4 ขึ้นไปเสี่ยงของแตกหาย เพดาน +10**
 - **v4.35.0 (ตีบวก +4↑ มีโอกาสของแตกหาย — จาก feedback เจ้าของ):** `enhanceOdds` เดิม +4-7 แค่ลดขั้น (destroy 0), +8-9 ถึงมี destroy · แก้ให้ **destroy เริ่มตั้งแต่ +4** (2%→26% ไต่ขึ้น: 4=.02/5=.05/6=.10/7=.15/8=.20/9=.26) + brk (ลดขั้น) ด้วย · +0-3 ปลอดภัย · เพดานยังเป็น `GEAR_ENH_MAX=10` (มีอยู่แล้ว) · ปุ่ม Enhance โชว์ ⚠ เมื่อ destroy>0 (auto จาก od.destroy) · **verified headless: +3 safe, +4 destroy .02 … +9 .26, MAX=10, 0 pageerror**
 - **v4.34.0 (ตีบวก gear ใช้ 🔩 shards แทน Sugar)**
 - **v4.34.0 (ตีบวกใช้วัสดุจาก dismantle แทน Sugar — จาก feedback เจ้าของ):** Enhance (⚒️) เดิมใช้ 🍬 Sugar (`gearEnhCost`) → เปลี่ยนเป็น 🔩 gear shards (`gearEnhShardCost(lv)=3+lv*2` → +1..+10 = 3/5/…/21) วัสดุตัวเดียวกับที่ได้จาก dismantle · แก้ 2 จุด: instance path (drawAction 2 → `Save.spendShards`) + legacy landscape row · ปุ่มโชว์ `🔩{cost}` · ไม่พอ = banner "dismantle gear to get more" · Sugar ว่างไปใช้ Weave/ตัวละคร/Bazaar · **verified headless: enhance +1 spend 3 shards (100→97), success, costs 3/5/11/21, 0 pageerror**
@@ -104,7 +142,7 @@
 - **v4.20.1 (fix):** กล่อง loot ไม่เป็นสี่เหลี่ยมดำแล้ว · จัดแบนเนอร์กลางจอให้กระชับ
 - **v4.20.0 (Objectives/drops/HUD/character tuning):** เฉพาะเวฟ **Survive** ที่จับเวลานับถอยหลัง — เวฟ **Hunt/Purge/Capture ไม่มี timer** ต้องทำสำเร็จถึงผ่าน · การ์ดเลเวลอัพให้ **+1 ดาวเสมอ** (Epic/Legend ไม่กระโดดหลายขั้นแล้ว) · currency drop โชว์ไอคอน currency จริง (เลิกกล่องสี) · แก้ HUD บน (จุดเวฟทับบรรทัด HP/atk/def) · แก้ไอเทมค้างหลังออกด่านแล้วเริ่มใหม่ · Strawberry multi-shot หายากลง (ส่วนมาก 1–2 เมล็ด) · Mint ice shard น้อยลง/เร็วขึ้น/ไม่ homing · Sesame ตัดวงเวทตกค้าง (เหลือ beam + Focus)
 - **v4.19.0–v4.19.1 (Strawberry nerf + ถอดระบบครัว):** **Momo/Strawberry จูนลงหนัก** (เมล็ดต่อชุดน้อยลง, ดาเมจต่อเมล็ดต่ำลง, ยิงช้าลง, sig weapon เลิก +ดาเมจก้อนใหญ่ — เดิมละลายมินิบอสไวเกิน) · **ถอด Cooking Codex ออก** (เมนู Cookbook, recipe panel, แบนเนอร์ Dish Cooked, cook quest) — โบนัสคอมโบอาวุธ+passive ยังทำงานเงียบๆ · หน้าสรุปด่าน (currency+box) โชว์+รอแตะทุกด่าน · **v4.19.1:** สรุปด่านปิดได้เฉพาะปุ่มมันเอง
-- **v4.17.0–v4.18.1 (Training Ground tutorial):** ผู้เล่นใหม่เรียนใน **Training Ground** ด่านซ้อมว่างเปล่า (ไม่มี prop/เวฟ, Berry สอนทีละสเต็ป) แทน Stage 1 จริง → story intro Ch.1 ไม่ถูกใช้ทิ้งตอน tutorial · จบ tutorial กลับหน้าเลือกด่าน · **v4.18.0:** SVG grid floor, tip ย้ายล่างบรรทัดเดียวเน้นคำสำคัญ, spotlight เต้นชี้จุด (โซนเดิน/ศัตรูใกล้สุด/ปุ่ม Dash+Unique/การ์ด), รางวัลไอเทมจบ tutorial · **v4.18.1:** จบ tutorial โชว์หน้ารางวัล tap-to-continue
+- **v4.17.0–v4.18.1 (Training Ground tutorial):** ผู้เล่นใหม่เรียนใน **Training Ground** ด่านซ้อมว่างเปล่า (ไม่มี prop/เวฟ, Berry สอนทีละสเต็ป) แทน Stage 1 จริง → story intro Ch.1 ไม่ถูกใช้ทิ้งตอน tutorial · จบ tutorial กลับหน้าเลือกด่าน · **v4.18.0:** grid floor (เปลี่ยนเป็น raster ใน v4.47.0), tip ย้ายล่างบรรทัดเดียวเน้นคำสำคัญ, spotlight เต้นชี้จุด (โซนเดิน/ศัตรูใกล้สุด/ปุ่ม Dash+Unique/การ์ด), รางวัลไอเทมจบ tutorial · **v4.18.1:** จบ tutorial โชว์หน้ารางวัล tap-to-continue
 - **v4.16.0 (level-up card cleanup):** ลบการ์ด common ซ้ำซ้อน (Balanced Core, Returning Taste — ทับ Sweet Power/Mochi Vitality/Regeneration/Quick Hands)
 - **v4.14.0–v4.15.0 (Sesame rework + loot boxes):** รื้อ **Sesame เป็น Mirror Beam sniper** · loot boxes + มอนดรอป currency · quit-summary · จูน Sesame beam
 - **v4.13.0 (fix):** acid pool บอสบังจอ, field item ยักษ์, Mint spear rework
@@ -212,7 +250,7 @@
   · Unique ตาโร่เปลี่ยนจาก Path Recall → **สายฟ้าชิ่ง (Arc)** ยิงจากตัวลามไปศัตรูตัวถัด ๆ ไป (`castPathRecall` เขียนใหม่ ใช้ `chainBolt`) · ยังคง key `pathRecall` เดิม + คืน Dash/haste
   · การ์ดเลเวลอัพ: แตะครั้งแรก = ไฮไลต์กรอบเรือง (`highlightCard`/`_cardHi`) ก่อนแตะซ้ำยืนยัน
   · ลดดรอปหัวใจ (elite 30%/ธรรมดา 1.5%/กล่อง 28%) · cutscene ตัด lore + ยืดเวลาอ่านตามความยาว
-  · **หมายเหตุ:** `scripts/validate-game.mjs` **stale อยู่ก่อนแล้ว** (เช็ก `pickup=105`/`uniqueAt` ที่ game.js ปัจจุบันไม่มี) → `npm run check` fail ส่วน validate แต่ `node --check` ผ่าน · ควรรื้อ validator ให้ตรงภายหลัง
+  · **หมายเหตุประวัติ:** validator เก่าเคยไม่ตรงกับระบบ character-first; v4.44.0 รวมเหลือ `scripts/validate-game-content.mjs` และทำให้ `npm run check` เป็น gate หลักแล้ว
   · **มินิบอสด่าน 2 (Valve Maw) เรนเดอร์เป็นเงาขาว** — ยังไม่ฟันธงว่าบั๊กหรือ telegraph ตั้งใจ (รอเจ้าของยืนยัน)
 - **v2.12.0:** แก้กล่องดำ 352×366 ระหว่างสู้บอสด่าน 2 ด้วย additive blending เป็นค่าเริ่มต้นของ VFX flipbook และออร่า · Passive card บอกคู่ Awaken/สาย build · จำกัด Awaken ไม่เกิน 2 ต่อด่าน · EXP เริ่ม 7 และโต ×1.20+3 · Unique Lv1–4 เพิ่มวง/ประกาย/แรงสั่น/ฉากจบตามเลเวล · ลดฐานผู้เล่นเป็น HP 90, ดาเมจ 90%, ความเร็ว 166, critical ×1.55 เพื่อเพิ่มน้ำหนัก meta progression
 - **v2.11.0:** คลอกมอว์ด่าน 2 ใช้ flipbook 4×2 จำนวน 8 เฟรม (idle/emerge/roar/prison/suction/overflow/enrage) และ pose ผูกกับท่าจริง · Power Rating รวมโบนัส Stage Mastery ครั้งแรก · ค่าพลังแนะนำใหม่ 100/280/560/940/1450 · Power Guide ช่วย HP/ดาเมจศัตรูเล็กน้อยเมื่อผู้เล่นต่ำกว่าคำแนะนำและเพิ่ม EXP/Sugar catch-up โดยผู้เล่นเหนือคำแนะนำไม่ถูกสเกลตาม · ยกเลิก boss rank scaling เต็มเพื่อให้การพัฒนารู้สึกมีผล
@@ -376,11 +414,8 @@
 - เทสเร็ว: publish `game.js` รวมกับ phaser เป็น artifact HTML แล้วเปิดในเบราว์เซอร์มือถือ
   (ประกอบด้วย: head + `<script>`phaser.min.js`</script>` + `<script>`game.js`</script>`)
 - เทสในเครื่อง: `npx serve .` แล้วเปิด index.html
-- ตรวจโค้ดก่อน publish เสมอ: `node --check game.js`
-- **🤖 บอทเทสอัตโนมัติ (headless):** `npm install --no-save playwright` ครั้งเดียว → `npm run bot`
-  เปิดเกมจริงใน headless Chromium เล่นเองครบ 5 ด่าน จับ runtime/console error + แคปหน้าจอทุกด่าน
-  (ปรับได้ด้วย env `STAGES/SECS/GSPEED/GOD`) · ผลอยู่ `scripts/bot-out/` (gitignore) · คู่มือ `docs/AUTO_PLAYTEST_BOT.md`
-  · ใช้กรองบั๊กเทคนิคก่อน push — **ไม่ตัดสินความสนุก/บาลานซ์แทน** (ยังต้องเล่นจริงเอง)
+- ตรวจโค้ด/asset contract ก่อน publish เสมอ: `npm run check`
+- ทดสอบ flow, balance, touch controls, telegraph และ FPS บนมือถือจริงก่อนปล่อยเวอร์ชัน เพราะ automated validator ไม่แทน manual playtest
 
 ## 8. คอนเวนชัน
 - **ทำงานสาขาเดียวเท่านั้น: `claude/vampire-survival-mobile-game-yo9e8w`** — commit บ่อย, push ด้วย `-u origin <branch>`

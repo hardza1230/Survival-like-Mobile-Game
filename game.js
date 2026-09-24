@@ -17,6 +17,11 @@ const COLORS = {
 /* ---- BALANCE 2.2: ค่ากลางเดียว ปรับง่ายและกัน power creep ---- */
 const BALANCE = {
   moveSpeed: 166,
+  // C2-2 benchmark เทียบ C2-1: HP ≈×1.35, damage ≈×1.30, speed +8%; cap ฝูงคุมมือถือ
+  c2Mycelium:{ hp:1.145, dmg:1.19, speed:1.08, maxLive:104 },
+  c2Nectar:{ hp:1.12, dmg:1.08, speed:1.06, maxLive:96 },
+  c2Seasons:{ hp:1.14, dmg:1.10, speed:1.07, maxLive:92 },
+  c2Root:{ hp:1.16, dmg:1.12, speed:1.08, maxLive:88 },
   // ปรับสมดุลใหม่ให้มี trade-off ชัด: ยิงไว = ดาเมจเบา · ออกช้า = ดาเมจหนัก
   skillPower: {
     sprinkle:0.82, star:0.95, thunder:0.80, whirl:0.88,   // sprinkle/whirl = สายสแปมเบา
@@ -29,12 +34,89 @@ const BALANCE = {
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.36.0';
+const GAME_VERSION = '4.47.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
-  { v:'4.36.0', date:'2026-09-24', title:'More item mods to chase', items:[
-    'Added 3 new common mods: Execute (bonus damage below 40% HP), Lifesteal, and Heal Power',
-    'Added 3 rare high-level mods only found on iLv 25+/45+ gear: Berserker (huge damage, but you take more too), Sage Focus (much faster cooldown, less crit), Gambler (massive crit damage on rings)',
+  { v:'4.47.0', date:'2026-09-24', title:'Production raster pickups and Training Ground', items:[
+    'Replaced Heal Mochi, Gear Gift and all six stage gimmick vectors with individually generated transparent 2.5D PNG art',
+    'Replaced the Training Ground SVG grid with a hand-painted raster tile that keeps characters and tutorial cues readable',
+    'Removed the retired runtime SVG files and added release checks for PNG dimensions, transparency, decoding and registration',
+    'Preserved the Affix Roulette, expanded 15-mod pool and all v4.46 gameplay behavior unchanged',
+  ]},
+  { v:'4.46.0', date:'2026-09-24', title:'Affix Roulette and expanded mod pool', items:[
+    'Crafting now plays a slowing three-card roulette reveal before the winning affix locks in, with input safely disabled during the spin',
+    'Expanded the affix pool from 9 to 15 meaningful mods across clearly color-coded Offense, Defense and Utility categories',
+    'Added boss damage, low-health damage, life on kill, emergency guard, experience gain and dash recovery affixes with live gameplay effects',
+    'The mobile pool preview now summarizes category counts and caps visible cards so large item pools do not push actions off-screen',
+  ]},
+  { v:'4.45.0', date:'2026-09-23', title:'Affix Forge visual clarity pass', items:[
+    'Rebuilt the mobile crafting screen around a clear Gear → Affix → Roll flow with a dedicated confectionery workshop background',
+    'Separated base quality from affix capacity, enlarged the selected line state and condensed the random result pool for small screens',
+    'Added before-and-after craft feedback, contextual action labels and safer double-tap confirmation for destructive removal and reset actions',
+    'Equipped-slot tabs now show the production gear art instead of emoji whenever an item is equipped',
+  ]},
+  { v:'4.44.0', date:'2026-09-23', title:'Chapter 2 final art and readability polish', items:[
+    'Rebuilt six damaged Chapter 2 PNG atlases so seasonal enemies and every C2-2 to C2-5 boss decode reliably on mobile',
+    'Seasonal and Root Throne enemies now use stronger role silhouettes, consistent ground lines and high-contrast stage palettes',
+    'Mycelium Behemoth, Ferment Hornet Queen, Chronobloom Orchid and The True Rootmother now have complete readable eight-pose sheets',
+    'Asset validation now rejects malformed PNG chunks before a broken sprite can reach Pages or an Android build',
+    'Removed the obsolete headless playtest bot and refreshed project status, QA and release documentation',
+  ]},
+  { v:'4.43.0', date:'2026-09-23', title:'Root Throne Chapter 2 finale', items:[
+    'C2-5 Root Throne is playable with a new living-cathedral arena, eight-cell root enemy atlas and five-wave finale',
+    'Sever the Crown Roots asks players to destroy four combat anchors while recurring throne pulses reshape safe space',
+    'Seven final-stage roles combine predictive sap shots, bramble dashes, memory bombs, Bark Bulwark protection and Root Choir fan fire',
+    'Ancient Root Knight and The True Rootmother use bespoke art, readable attacks, three invulnerable transitions and spectacular finale presentation',
+    'Chapter 2 now ends with a dedicated epilogue while the final mobile live-enemy count remains capped at 88',
+  ]},
+  { v:'4.42.0', date:'2026-09-23', title:'Four-Season Conservatory complete stage', items:[
+    'C2-4 Four-Season Conservatory is playable with a new greenhouse arena, eight-cell seasonal enemy atlas and five-wave encounter',
+    'The arena rotates through Spring, Summer, Autumn and Winter events while Stabilize the Seasons asks players to chase the active sanctuary',
+    'Seven seasonal roles combine predictive frost shots, leaf dashes, storm bombs, Equinox protection and multi-angle Wisp fire',
+    'Season Keeper miniboss and Chronobloom Orchid boss use bespoke art, readable attacks, invulnerable phase changes, cinematic reveals and defeat sequences',
+    'Mobile live-enemy count is capped at 92 while seasonal events create pressure without relying on visual clutter',
+  ]},
+  { v:'4.41.0', date:'2026-09-22', title:'Nectar Hive complete stage', items:[
+    'C2-3 Nectar Hive is playable with a new honey-garden battlefield, eight-cell enemy/objective atlas and five-wave encounter',
+    'Defend Nectar asks players to protect and restore three flowers while Drones and Honey Bombs divert from the player to drain them',
+    'Six new hive roles cooperate through predictive shots, aerial dashes, Wax Shieldbearer protection and Choir Moth spread fire',
+    'Royal Stinger miniboss and Ferment Hornet Queen boss use bespoke art, readable attacks, invulnerable phase changes, intros and defeat presentation',
+    'Fixed Chapter 2 boss damage gates so burst damage cannot skip Mycelium Behemoth or Hornet Queen transitions',
+  ]},
+  { v:'4.40.0', date:'2026-09-22', title:'Mycelium Marsh balance QA and unlock', items:[
+    'C2-2 Mycelium Marsh is now playable after its complete monster, miniboss, boss, objective and asset contracts passed the stage QA gate',
+    'Against C2-1, regular enemies target about 1.35 times HP, 1.30 times damage and 8 percent more movement speed',
+    'The live-enemy ceiling is capped at 104 for vertical-phone performance while faster batches and cooperative monster roles preserve pressure',
+    'Unlock flow remains save-safe: players who already cleared C2-1 can enter C2-2, while C2-3 and later stages remain locked',
+    'Added regression checks for readiness, future-stage locks, balance ratios, phase transitions, telegraphs and mobile encounter limits',
+  ]},
+  { v:'4.39.0', date:'2026-09-22', title:'Mycelium Behemoth three-phase boss fight', items:[
+    'C2-2 gains an original eight-pose Mycelium Behemoth with a cinematic marsh-heart awakening intro',
+    'The boss has three invulnerable phase transitions at 68 and 34 percent health with escalating attack pools and distinct transformation VFX',
+    'Readable attacks include Root Reaper, Mire Quake, Spore Crown, Mycelial Lattice, Colony Rise and the phase-three Heartstorm ultimate',
+    'The last phase combines a short pull, concentric shockwaves and a radial barrage with visible escape wedges instead of unavoidable screen clutter',
+    'C2-2 remains locked for a dedicated full-run balance and mobile performance QA commit',
+  ]},
+  { v:'4.38.0', date:'2026-09-22', title:'Fungal Juggernaut miniboss encounter', items:[
+    'C2-2 gains a bespoke four-pose Fungal Juggernaut miniboss with readable wind-up, slam and enraged artwork',
+    'The Juggernaut uses Mycelium Quake, a three-charge Stampede, Living Wall area denial, Spore Mortar gaps and Colony Call reinforcements',
+    'At half health it becomes briefly invulnerable, flares its mycelium core and summons a Bulwark escort before resuming faster attacks',
+    'Fixed a comment-boundary regression that prevented miniboss damage and combat state values from being initialized',
+    'Mycelium Marsh remains locked until the Mycelium Behemoth boss and full-stage QA are complete',
+  ]},
+  { v:'4.37.0', date:'2026-09-22', title:'Mycelium Marsh monster family and moving safe-air objective', items:[
+    'C2-2 now has a complete new fungal monster family with eight original transparent atlas cells: six combat roles, a spawned Sporeling and a Clean-Air Wisp',
+    'Mycelium enemies cooperate: Drifters leave spore pools, Cap Hoppers leap predictively, Puffcap Snipers lead their shots, Mold Sacs split on death, Bulwarks protect nearby allies, and Threadweaver Oracles fire from behind the line',
+    'The Mycelium Marsh has its own illustrated battlefield and five-wave encounter profile tuned substantially above C2-1',
+    'A new moving Clean-Air objective forces repositioning; leaving its ring deals periodic spore damage and pauses objective progress',
+    'C2-2 remains locked until its bespoke miniboss and three-phase boss pass the Chapter 2 QA gate',
+  ]},
+  { v:'4.36.0', date:'2026-09-22', title:'Chapter 2 foundation for five safe stages', items:[
+    'Chapter 2 now reserves five stage slots, C2-1 through C2-5, with unfinished stages visibly locked until their complete encounters pass QA',
+    'Stage selection, direct run entry and stage-to-stage portals now share one readiness guard, so old or unusual saves cannot enter unfinished content',
+    'Zone Level and enemy scaling curves now grow from stage data instead of freezing at the old six-stage limit',
+    'Chapter 2 wave objectives are restored through a stage-defined objective pool, adding Hunt, Purify and Capture variety to the Fermented Canopy',
+    'The current first encounter is now Rootmother’s Bud; the True Rootmother is reserved for the Chapter 2 finale',
   ]},
   { v:'4.35.0', date:'2026-09-22', title:'High enhancement can shatter your gear', items:[
     'Enhancing to +4 and beyond now carries a real risk: the gear can drop a level, or shatter and be lost entirely (a small chance at +4, climbing toward +9)',
@@ -447,8 +529,13 @@ const Sfx = {
 const ASSET_IMAGES = {
   opening_world_gate_v3:'assets/opening_world_gate_v3.webp',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
+  craft_bench_bg:'assets/ui/craft_bench_bg.webp',
   chapter1_cover:'assets/ui/chapter1_cover.webp',
   chapter2_cover:'assets/ui/chapter2_cover.webp',
+  bg7:'assets/bg7.webp',
+  bg8:'assets/bg8.webp',
+  bg9:'assets/bg9.webp',
+  bg10:'assets/bg10.webp',
   currency_spark_sugar:'assets/ui/currency/spark-sugar.png',
   currency_twist_cream:'assets/ui/currency/twist-cream.png',
   currency_crown_icing:'assets/ui/currency/crown-icing.png',
@@ -457,15 +544,15 @@ const ASSET_IMAGES = {
   currency_crystal_glaze:'assets/ui/currency/crystal-glaze.png',
   currency_fading_gumdrop:'assets/ui/currency/fading-gumdrop.png',
   currency_plain_dough:'assets/ui/currency/plain-dough.png',
-  heal:'assets/items/heal_mochi_heart.svg',
-  gift:'assets/items/gear_gift.svg',
-  train_floor:'assets/training_floor.svg',   // 🎓 พื้น grid SVG ของ Training Ground
-  item_scent_crystal:'assets/items/gimmick_scent_crystal.svg',
-  item_clean_bubble:'assets/items/gimmick_clean_bubble.svg',
-  item_chili_overcore:'assets/items/gimmick_chili_overcore.svg',
-  item_frost_bell:'assets/items/gimmick_frost_bell.svg',
-  item_memory_seed:'assets/items/gimmick_memory_seed.svg',
-  item_ferment_drop:'assets/items/gimmick_ferment_drop.svg',
+  heal:'assets/items/heal_mochi_heart.png',
+  gift:'assets/items/gear_gift.png',
+  train_floor:'assets/training_floor.png',   // 🎓 พื้น raster ของ Training Ground
+  item_scent_crystal:'assets/items/gimmick_scent_crystal.png',
+  item_clean_bubble:'assets/items/gimmick_clean_bubble.png',
+  item_chili_overcore:'assets/items/gimmick_chili_overcore.png',
+  item_frost_bell:'assets/items/gimmick_frost_bell.png',
+  item_memory_seed:'assets/items/gimmick_memory_seed.png',
+  item_ferment_drop:'assets/items/gimmick_ferment_drop.png',
   gear_w_spoon:'assets/gear/weapons/w_spoon.png',
   gear_w_chop:'assets/gear/weapons/w_chop.png',
   gear_w_whisk:'assets/gear/weapons/w_whisk.png',
@@ -638,8 +725,20 @@ const ASSET_SHEETS = {
   e_maw_truffle:{ url:'assets/e_maw_truffle_sheet.png', frame:256, anim:{frames:4,rate:8,yoyo:true} },
   e_royal_oven_sentinel:{ url:'assets/e_royal_oven_sentinel_sheet.png', frame:256, anim:{frames:4,rate:6,yoyo:true} },
   ch2_enemy_atlas:{ url:'assets/ch2_enemy_atlas.png', frame:256 },
+  ch2_mycelium_enemy_atlas:{ url:'assets/ch2_mycelium_enemy_atlas.png', frame:256 },
   ch2_prop_atlas:{ url:'assets/ch2_prop_atlas.png', frame:256 },
   mb6_sporewarden:{ url:'assets/mb6_sporewarden_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  mb7_fungal_juggernaut:{ url:'assets/mb7_fungal_juggernaut_sheet.png', frame:256, anim:{frames:2,rate:3,yoyo:true} },
+  boss7_mycelium_behemoth:{ url:'assets/boss7_mycelium_behemoth_sheet.png', frame:256, anim:{frames:2,rate:3,yoyo:true} },
+  ch2_nectar_enemy_atlas:{ url:'assets/ch2_nectar_enemy_atlas.png', frame:256 },
+  mb8_royal_stinger:{ url:'assets/mb8_royal_stinger_sheet.png', frame:256, anim:{frames:2,rate:5,yoyo:true} },
+  boss8_hornet_queen:{ url:'assets/boss8_hornet_queen_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  ch2_seasons_enemy_atlas:{ url:'assets/ch2_seasons_enemy_atlas.png', frame:256 },
+  mb9_season_keeper:{ url:'assets/mb9_season_keeper_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  boss9_chronobloom_orchid:{ url:'assets/boss9_chronobloom_orchid_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  ch2_root_enemy_atlas:{ url:'assets/ch2_root_enemy_atlas.png', frame:256 },
+  mb10_ancient_root_knight:{ url:'assets/mb10_ancient_root_knight_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  boss10_true_rootmother:{ url:'assets/boss10_true_rootmother_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   boss6_rootmother:{ url:'assets/boss6_rootmother_sheet.png', frame:256 },
   e_acid:     { url:'assets/generated/e_acid_ant_sheet.png', frame:96, anim:{frames:3, rate:9} },
   // ศัตรูอนิเมชัน (walk/attack cycle) — frame=ขนาดเดิม (setScale/setCircle เดิมใช้ได้ ไม่ต้องแก้)
@@ -1126,7 +1225,9 @@ const DIFFS = [
 ];
 // Zone Level — ตัวแปรความยากรวมของด่าน (ความคืบหน้าด่าน × ระดับความยาก) = สเกลเดียวที่ระบบอื่นอ้างอิงได้ (Bazaar stock, reward tier ฯลฯ)
 // stageIndex 0..5 · diff 1..3 → Zone 1..18 (ยิ่งสูง = ยิ่งยาก/รางวัลดีขึ้น)
-function stageZoneLevel(stageIndex,diff){ const si=Math.max(0,Math.min(5,Math.floor(Number(stageIndex)||0))); const d=Math.max(1,Math.min(3,Math.floor(Number(diff)||1))); return si*3+d; }
+function stageZoneLevel(stageIndex,diff){ const maxStage=Math.max(0,STAGES.length-1),si=Math.max(0,Math.min(maxStage,Math.floor(Number(stageIndex)||0))); const d=Math.max(1,Math.min(3,Math.floor(Number(diff)||1))); return si*3+d; }
+function stageCurveValue(stageIndex,curve,tail=1.18){ const i=Math.max(0,Math.floor(Number(stageIndex)||0)); if(i<curve.length)return curve[i]; return curve[curve.length-1]*Math.pow(tail,i-curve.length+1); }
+function isStageReady(stageIndex){ const st=STAGES[Math.floor(Number(stageIndex))]; return !!st&&st.ready!==false; }
 // Zone Modifiers — affix เสริมความยาก (สแตกได้) ปลดหลังผ่านบอสจบ Chapter 1 · ยิ่งเปิดเยอะยิ่งยาก+รางวัลดี (กฎเหล็ก)
 const ZONE_MODIFIERS = [
   { id:'toughened', emoji:'🛡️', name:'Toughened',  desc:'+50% enemy HP',            hp:1.5, dmg:1.0,  reward:1.35 },
@@ -1422,7 +1523,7 @@ const HUB_GROUPS = {
     ['stats','📊','Character Stats','See your real numbers'],
     ['upgrade','✦','Flavor Weave & Rank','Cores, Rank up & 🏅 Passive tree'],
     ['gear','◆','Equipment','Equip, compare and dismantle'],
-    ['craft','🧪','Focused Crafting','See possible stats, craft rolls one at random'],
+    ['craft','🧪','Affix Forge','Choose gear and a line, then roll one compatible stat'],
     ['bazaar','🏪','Mochi Bazaar','Buy · Gamble · Sell for 🍬'],
     ['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed'] ] },
   gCodex:{ title:'📖 Codex', rows:[
@@ -1558,35 +1659,34 @@ function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.dat
    tiers[]=[T1,T2,T3,T4,T5] แต่ละอันเป็น [lo,hi] · T1=แรงสุด (หายาก) · pre/suf=คำประกอบชื่อไอเทม */
 const AFFIX_POOL = [
   // ── Prefix (สายรุก) ──
-  { id:'dmg', slots:['weapon','gloves','amulet','ring'],   kind:'prefix', emoji:'💥', label:'Damage',   pre:'Keen',  fmt:v=>'+'+v+'%',  tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
-  { id:'crit', slots:['weapon','gloves','amulet','ring'],  kind:'prefix', emoji:'🎯', label:'Crit',     pre:'Sharp',   fmt:v=>'+'+v+'%',  tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
-  { id:'critdmg', slots:['weapon','gloves','ring'],kind:'prefix',emoji:'💢', label:'Crit DMG', pre:'Fierce',  fmt:v=>'+'+v+'%',  tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
-  { id:'cd', slots:['weapon','gloves','amulet','ring'],    kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift',  fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
-  { id:'execute', slots:['weapon','gloves','ring'],kind:'prefix', emoji:'🗡️', label:'Execute',  pre:'Vicious', fmt:v=>'+'+v+'%',  tiers:[[24,32],[17,23],[11,16],[7,10],[4,6]], apply:(p,v)=>{ p.lowHpDmg=(p.lowHpDmg||0)+v/100; } },
-  // ── Suffix (สายรับ/utility) ──
-  { id:'hp', slots:['armor','amulet'],    kind:'suffix', emoji:'❤️', label:'HP',       suf:'of the Lion', fmt:v=>'+'+v,      tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
-  { id:'def', slots:['armor','gloves','amulet'],   kind:'suffix', emoji:'🛡️', label:'Defense',  suf:'of Stone',    fmt:v=>'-'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
-  { id:'spd', slots:['boots'],   kind:'suffix', emoji:'👟', label:'Speed',    suf:'of the Wind',   fmt:v=>'+'+v+'%',  tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]],     apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
-  { id:'pick', slots:['boots','amulet','ring'],  kind:'suffix', emoji:'🧲', label:'Pickup',   suf:'of Magnetism',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
-  { id:'regen', slots:['armor','amulet','ring'], kind:'suffix', emoji:'💗', label:'Regen/s',  suf:'of the Spring',fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]],   apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
-  { id:'lifesteal', slots:['weapon','gloves','ring'],kind:'suffix', emoji:'🩸', label:'Lifesteal',suf:'of the Leech',  fmt:v=>'+'+(v/10)+' HP', tiers:[[16,22],[11,15],[7,10],[4,6],[2,3]], apply:(p,v)=>{ p.lifesteal=(p.lifesteal||0)+v/10; } },
-  { id:'healpow', slots:['armor','amulet'],  kind:'suffix', emoji:'💊', label:'Heal Power', suf:'of Nourishment',fmt:v=>'+'+v+'%',  tiers:[[35,50],[25,34],[17,24],[10,16],[5,9]], apply:(p,v)=>{ p.healEffect=(p.healEffect||1)+v/100; } },
+  { id:'dmg', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'💥', label:'Damage', pre:'Keen', fmt:v=>'+'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
+  { id:'crit', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'🎯', label:'Crit', pre:'Sharp', fmt:v=>'+'+v+'%', tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
+  { id:'critdmg', category:'offense', slots:['weapon','gloves','ring'], kind:'prefix', emoji:'💢', label:'Crit DMG', pre:'Fierce', fmt:v=>'+'+v+'%', tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.8)+v/100; } },
+  { id:'cd', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift', fmt:v=>'-'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.cdMul=Math.max(0.5,(p.cdMul||1)*(1-v/100)); } },
+  { id:'bossdmg', category:'offense', slots:['weapon','ring'], kind:'prefix', emoji:'👑', label:'Boss DMG', pre:'Predatory', fmt:v=>'+'+v+'%', tiers:[[17,21],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.bossDmg=(p.bossDmg||0)+v/100; } },
+  { id:'laststand', category:'offense', slots:['weapon','gloves','ring'], kind:'prefix', emoji:'🔥', label:'Low-HP DMG', pre:'Defiant', fmt:v=>'+'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.lowHpDmg=(p.lowHpDmg||0)+v/100; } },
+  // ── Suffix (สายรับ) ──
+  { id:'hp', category:'defense', slots:['armor','amulet'], kind:'suffix', emoji:'❤️', label:'HP', suf:'of the Lion', fmt:v=>'+'+v, tiers:[[85,120],[60,84],[40,59],[25,39],[15,24]], apply:(p,v)=>{ p.maxhp+=v; } },
+  { id:'def', category:'defense', slots:['armor','gloves','amulet'], kind:'suffix', emoji:'🛡️', label:'Defense', suf:'of Stone', fmt:v=>'-'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.dmgTakenMul*=(1-v/100); } },
+  { id:'regen', category:'defense', slots:['armor','amulet','ring'], kind:'suffix', emoji:'💗', label:'Regen/s', suf:'of the Spring', fmt:v=>'+'+(v/10), tiers:[[10,14],[7,9],[5,6],[3,4],[2,2]], apply:(p,v)=>{ p.regen=(p.regen||0)+v/10; } },
+  { id:'lifekill', category:'defense', slots:['armor','gloves','amulet'], kind:'suffix', emoji:'🍓', label:'HP on Kill', suf:'of Harvest', fmt:v=>'+'+v, tiers:[[5,6],[4,4],[3,3],[2,2],[1,1]], apply:(p,v)=>{ p.lifeOnKill=(p.lifeOnKill||0)+v; } },
+  { id:'crisisguard', category:'defense', slots:['armor','amulet'], kind:'suffix', emoji:'🫧', label:'Emergency Guard', suf:'of Last Shelter', fmt:v=>'-'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.lowHpGuard=(p.lowHpGuard||0)+v/100; } },
+  // ── Suffix (utility) ──
+  { id:'spd', category:'utility', slots:['boots'], kind:'suffix', emoji:'👟', label:'Speed', suf:'of the Wind', fmt:v=>'+'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.baseSpeed*=(1+v/100); } },
+  { id:'pick', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'🧲', label:'Pickup', suf:'of Magnetism', fmt:v=>'+'+v+'%', tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
+  { id:'xp', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'✨', label:'EXP Gain', suf:'of Insight', fmt:v=>'+'+v+'%', tiers:[[17,22],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.xpMul=(p.xpMul||1)*(1+v/100); } },
+  { id:'dash', category:'utility', slots:['boots','ring'], kind:'suffix', emoji:'💨', label:'Dash Recovery', suf:'of Momentum', fmt:v=>'-'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.dashCdMul=(p.dashCdMul||1)*(1-v/100); } },
 ];
+const AFFIX_CATEGORY = {
+  offense:{label:'Offense',color:0xff9a5a,hex:'#ffb07a'},
+  defense:{label:'Defense',color:0x7fb0ff,hex:'#a9c8ff'},
+  utility:{label:'Utility',color:0x5ad1c4,hex:'#91eadf'},
+};
+function affixCategory(mod){return AFFIX_CATEGORY[(mod&&mod.category)||'utility']||AFFIX_CATEGORY.utility;}
 const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
 // item level → tier ดีสุดที่สุ่มได้ (ฐานดี = โรลได้ดีกว่า): legend→T1, epic→T2, rare→T3, common→T4
 const BASE_BEST_TIER = { start:5, common:4, rare:3, epic:2, legend:1 };
-// v4.36: mod พิเศษเฉพาะช่อง iLv สูง (endgame chase) — เทรดออฟจริง ไม่ใช่แค่ +เลข ใช้ hook เดิม (dmgMul/dmgTakenMul/cdMul/critChance/critMul) ไม่มีกลไกใหม่
-const SPECIAL_AFFIX_POOL = [
-  { id:'berserk', kind:'prefix', label:'Berserker',  emoji:'💀', pre:'Berserk',  slots:['weapon','gloves'], minItemLevel:45, bestTier:2,
-    fmt:v=>'+'+v+'%', tiers:[[22,28],[16,21],[11,15],[7,10],[4,6]],
-    apply:(p,v)=>{ p.dmgMul*=(1+v/100); p.dmgTakenMul*=(1+v*0.6/100); } }, // เกลือ: ดาเมจแรงขึ้นเยอะ แต่รับดาเมจเพิ่มด้วย (glass cannon)
-  { id:'focus', kind:'prefix', label:'Sage Focus', emoji:'🧘', pre:'Focused', slots:['amulet','ring'], minItemLevel:45, bestTier:2,
-    fmt:v=>'-'+v+'%', tiers:[[11,14],[8,10],[6,7],[4,5],[2,3]],
-    apply:(p,v)=>{ p.cdMul=Math.max(0.4,(p.cdMul||1)*(1-v/100)); p.critChance=Math.max(0,(p.critChance||0)-v*0.35/100); } }, // คูลดาวน์ไวมาก แต่คริติคอลลดลง
-  { id:'gambler', kind:'suffix', label:'Gambler',  emoji:'🎲', suf:'of Fortune', slots:['ring'], minItemLevel:25, bestTier:3,
-    fmt:v=>'+'+v+'%', tiers:[[70,90],[50,69],[34,49],[22,33],[13,21]],
-    apply:(p,v)=>{ p.critMul=(p.critMul||1.55)+v/100; } }, // เดิมพันคริติคอลก้อนใหญ่ ไม่มีข้อเสีย แต่ tier แข่งกับ crit prefix ปกติที่ถูกจำกัดไว้แล้ว
-];
+const SPECIAL_AFFIX_POOL = []; // Future schema: {id,kind,label,tiers,apply,baseIds?,baseTags?,slots?,minItemLevel?,exclusive:true}
 function allAffixDefs(){return AFFIX_POOL.concat(SPECIAL_AFFIX_POOL);}
 function affixDef(id){return allAffixDefs().find(a=>a.id===id);}
 function craftAffixPoolForItem(item){if(!item)return[];const base=GEAR_ALL.find(g=>g.id===item.baseId),tags=new Set((base&&base.craftTags)||[]);
@@ -1618,11 +1718,11 @@ const CRAFT_AFFIX_CAP = {common:1,magic:2,rare:4};
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Imprint a chosen stat on a Common or Magic item'},
+  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Roll a new random stat on a Common or Magic item'},
   {key:'alt',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Replace the selected Magic affix'},
   {key:'regal',emoji:'🟡',asset:'currency_crown_icing',name:'Crown Icing',desc:'Promote full Magic gear to Rare and unlock 4 lines'},
   {key:'chaos',emoji:'🟠',asset:'currency_wild_jam',name:'Wild Jam',desc:'Replace the selected Rare affix'},
-  {key:'exalt',emoji:'🔴',asset:'currency_wish_candy',name:'Wish Candy',desc:'Add a chosen stat to an empty line'},
+  {key:'exalt',emoji:'🔴',asset:'currency_wish_candy',name:'Wish Candy',desc:'Roll a new random stat into an empty Rare line'},
   {key:'divine',emoji:'⚪',asset:'currency_crystal_glaze',name:'Crystal Glaze',desc:'Reroll the selected stat’s value on any item — burns 3 per use'},
   {key:'annul',emoji:'🟣',asset:'currency_fading_gumdrop',name:'Fading Gumdrop',desc:'Remove the selected affix line'},
   {key:'scour',emoji:'⚫',asset:'currency_plain_dough',name:'Plain Dough',desc:'Reset all affixes and return the item to Common'},
@@ -1717,17 +1817,19 @@ const GEAR_COMPARE_STATS = [
   {key:'dmg',label:'DMG',pct:true},{key:'hp',label:'HP'},{key:'crit',label:'Crit',pct:true},
   {key:'critDmg',label:'Crit DMG',pct:true},{key:'cdr',label:'Cooldown',pct:true},{key:'def',label:'Defense',pct:true},
   {key:'speed',label:'Move Speed',pct:true},{key:'pickup',label:'Pickup',pct:true},{key:'regen',label:'Regen/s'},
-  {key:'lifeKill',label:'HP / Kill'},{key:'execute',label:'Execute DMG',pct:true},{key:'revive',label:'Revive'}
+  {key:'lifeKill',label:'HP / Kill'},{key:'execute',label:'Low-HP DMG',pct:true},{key:'bossDmg',label:'Boss DMG',pct:true},
+  {key:'crisisGuard',label:'Emergency Guard',pct:true},{key:'xpGain',label:'EXP Gain',pct:true},{key:'dashRecovery',label:'Dash Recovery',pct:true},{key:'revive',label:'Revive'}
 ];
 function gearInstanceStats(item){
-  const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,_gearRevive:0};
-  if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,revive:0};
+  const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,bossDmg:0,lowHpGuard:0,xpMul:1,dashCdMul:1,_gearRevive:0};
+  if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,bossDmg:0,crisisGuard:0,xpGain:0,dashRecovery:0,revive:0};
   const base=GEAR_ALL.find(g=>g.id===item.baseId); if(base&&base.apply)base.apply(p,item.enhanceLv||0);
   applyItemLevelBonus(p,item);
   for(const a of (item.affixes||[])){const d=affixDef(a.id);if(d&&d.apply)d.apply(p,a.v);}
   return {dmg:(p.dmgMul-1)*100,hp:p.maxhp||0,crit:(p.critChance||0)*100,critDmg:((p.critMul||1.55)-1.55)*100,
     cdr:(1-(p.cdMul||1))*100,def:(1-(p.dmgTakenMul||1))*100,speed:((p.baseSpeed||1)-1)*100,
-    pickup:((p.pickup||1)-1)*100,regen:p.regen||0,lifeKill:p.lifeOnKill||0,execute:(p.lowHpDmg||0)*100,revive:p._gearRevive||0};
+    pickup:((p.pickup||1)-1)*100,regen:p.regen||0,lifeKill:p.lifeOnKill||0,execute:(p.lowHpDmg||0)*100,bossDmg:(p.bossDmg||0)*100,
+    crisisGuard:(p.lowHpGuard||0)*100,xpGain:((p.xpMul||1)-1)*100,dashRecovery:(1-(p.dashCdMul||1))*100,revive:p._gearRevive||0};
 }
 function gearCompareRows(equipped,selected){
   const a=gearInstanceStats(equipped),b=gearInstanceStats(selected);
@@ -2152,9 +2254,26 @@ const STAGES = [
   { name:'The Crown Oven of Hunger', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
     lore:'The royal oven opens — the Bitter Chef dissolves into a vessel, and The Great Hunger descends to devour all flavor itself',
     waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'The Great Hunger', bossHp:2800, bossDmg:40 },
-  { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1,
+  { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1, ready:true,
     lore:'The crown seed that survived The Great Hunger roots upward into the garden above the kitchen, forcing returned memories to bloom out of season',
-    waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:'The Rootmother', bossHp:3600, bossDmg:46 },
+    objectives:['survive','hunt','purge','capture'],
+    waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:"Rootmother's Bud", bossHp:3600, bossDmg:46 },
+  { name:'Mycelium Marsh', en:'Mycelium Marsh', emoji:'🍄', grid:0x20372d, tint:0x9ae66e, chapter:1, chapterStage:2, ready:true,
+    lore:'A living fungal marsh breathes through one moving pocket of clean air while the colony hunts everything outside it',
+    objectives:['survive','hunt','cleanAir'],
+    waves:5, recommendedPower:3000, miniAt:2, mini:'Fungal Juggernaut', boss:'Mycelium Behemoth', bossHp:5600, bossDmg:64 },
+  { name:'Nectar Hive', en:'Nectar Hive', emoji:'🐝', grid:0x4b3521, tint:0xffc95c, chapter:1, chapterStage:3, ready:true,
+    lore:'Fermented nectar draws a royal swarm that drains the last memory-bearing flowers from the garden',
+    objectives:['survive','hunt','defendNectar'],
+    waves:5, recommendedPower:4200, miniAt:2, mini:'Royal Stinger', boss:'Ferment Hornet Queen', bossHp:6800, bossDmg:72 },
+  { name:'Four-Season Conservatory', en:'Four-Season Conservatory', emoji:'🌦️', grid:0x29364a, tint:0x8fdcff, chapter:1, chapterStage:4, ready:true,
+    lore:'Time-ferment forces heat, frost, toxic rain and storm to bloom together inside a shattered glass garden',
+    objectives:['survive','hunt','seasonCycle'],
+    waves:5, recommendedPower:5700, miniAt:2, mini:'Season Keeper', boss:'Chronobloom Orchid', bossHp:8200, bossDmg:82 },
+  { name:'Root Throne', en:'Root Throne', emoji:'🌳', grid:0x24172b, tint:0xd56bff, chapter:1, chapterStage:5, ready:true,
+    lore:'All memory roots converge beneath the first crown seed, where their true planter waits on a living throne',
+    objectives:['survive','hunt','breakRoots'],
+    waves:5, recommendedPower:7600, miniAt:2, mini:'Ancient Root Knight', boss:'The True Rootmother', bossHp:11000, bossDmg:95 },
 ];
 
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
@@ -2200,6 +2319,20 @@ const STAGE_STORY_BEATS = [
     {title:'Sporewarden Seals the Canopy',sub:'The orchid mantis raises leaf scythes, letting no one near the crown seed'},
     {title:'All Four Seasons Bloom at Once',sub:'Ferment toxin speeds time — flowers are born, age and die in one breath'},
     {title:'A Mother Voice Below the First Root',sub:'The one who planted the crown seed waits, calling The Great Hunger a lost child'}
+  ],
+  [
+    {title:'The Marsh Draws Its First Breath',sub:'Mycelium Drifters rise wherever the clean air passes'},
+    {title:'Caps Leap Across the Water',sub:'Hoppers predict each retreat and cut the next escape route'},
+    {title:'The Juggernaut Guards the Colony',sub:'A fungal giant seals the safest ground behind living walls'},
+    {title:'Threads Bind the Whole Marsh',sub:'Bulwarks and Oracles protect the colony while Mold Sacs multiply'},
+    {title:'A Heart Beats Under the Mire',sub:'The Mycelium Behemoth pulls every root toward its awakening core'}
+  ],
+  [
+    {title:'The First Nectar Bell Rings',sub:'Round Drones abandon their harvest and descend through the honey light'},
+    {title:'Dartwings Cut the Flower Lanes',sub:'Fast fliers and Pollen Snipers attack from opposite paths'},
+    {title:'The Royal Stinger Descends',sub:'The hive champion seals the garden beneath a wall of golden wings'},
+    {title:'The Flowers Call for Help',sub:'Shieldbearers and Choir Moths cover the assault on the nectar beds'},
+    {title:'The Ferment Crown Opens',sub:'Purple crystal spreads through the royal honey as the Queen awakens'}
   ]
 ];
 // สรุปเรื่องราวตอนล้มบอสจบด่าน (โชว์ก่อนหน้าสรุปสถิติ) — what happened + why press on
@@ -2219,9 +2352,21 @@ const STAGE_EPILOGUE = [
   { title:'The Great Hunger Recedes',
     body:'The Great Hunger collapses and taste floods back into Mochitopia in a rush of color and sound. Yet from the cooling oven a single crown seed rolls free — and roots upward, toward the garden above.',
     why:'Chapter 1 is complete. Chase the seed into the Fermented Canopy.' },
-  { title:'The Canopy Stills',
-    body:'The Rootmother unwinds into drifting spores and the out-of-season blooms finally settle. The garden falls quiet — but the seed’s vine keeps climbing, past where Momo can yet follow.',
-    why:'The trail leads on. New grounds await in the chapters ahead.' },
+  { title:'The First Bloom Withers',
+    body:'Rootmother’s Bud unwinds into drifting spores, revealing that it was only an avatar grown from the crown seed. Beneath the canopy, a fungal pulse answers from the Mycelium Marsh.',
+    why:'Follow the moving pocket of clean air into the marsh and find the body feeding the colony.' },
+  { title:'The Marsh Remembers',
+    body:'The Mycelium Behemoth releases every memory trapped in its colony. Their scent leads upward to a royal hive feeding on the garden’s last nectar.',
+    why:'Carry the clean memories into the Nectar Hive before the royal ferment consumes them.' },
+  { title:'The Crown Loses Its Swarm',
+    body:'The Ferment Hornet Queen falls and the protected nectar flowers ring like bells. Their rhythm opens a glass path where four seasons are running at once.',
+    why:'Enter the Four-Season Conservatory and repair the broken calendar.' },
+  { title:'The Last Hour Opens',
+    body:'Chronobloom Orchid returns each season to its rightful path. Beneath its clock, an ancient stair descends toward the first root and the throne that planted every curse.',
+    why:'Descend to the Root Throne and face the True Rootmother.' },
+  { title:'Memories Choose Their Own Shape',
+    body:'The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. Momo sees the crown seed bloom once more, now harmless and free.',
+    why:'Chapter 2 is complete. The restored world waits for the next journey.' },
 ];
 const STORY_REACTIONS = {
   momo:["I'll follow the curse's scent myself","These voices don't want to fight... I must hurry","A warden is coming — stay focused, Momo","The source is close — no retreat","End this and take back everyone's flavor"],
@@ -2244,7 +2389,11 @@ const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite'},
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core and protect it while it purifies'},
-  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the power ring until the meter fills'}
+  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the power ring until the meter fills'},
+  defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect and restore the three nectar flowers while the hive attacks'},
+  seasonCycle:{emoji:'🌦️',name:'Stabilize the Seasons',desc:'Stand in the sanctuary matching the active season'},
+  breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Destroy every corrupted root anchor before the throne pulse closes in'},
+  cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'}
 };
 const CH1_OBJECTIVE_COLORS=[0x9dff45,0x72e8d1,0xff8a5a,0x9fe0ff,0xd59cff];
 
@@ -2254,13 +2403,15 @@ const STAGE_SWARM_BEATS = [
   {title:'The Furnace Alarm Blares',sub:'The machine releases furnace guards from every belt'},
   {title:'The Cell Seal Breaks',sub:'Wardens and forgotten spirits pour out together'},
   {title:'The Call of Hunger',sub:'Servants from every kitchen floor answer the bitter crown'},
-  {title:'The Canopy Blooms Off-Season',sub:'Roots, toxic plants and memory fragments wake across the ferment garden'}
+  {title:'The Canopy Blooms Off-Season',sub:'Roots, toxic plants and memory fragments wake across the ferment garden'},
+  {title:'The Marsh Breathes as One',sub:'Every fungal body shares the same threads and closes around the pocket of clean air'},
+  {title:'The Royal Hive Takes Flight',sub:'Every wing beat follows the Queen while the flowers fight to stay alive'}
 ];
 
 /* ---- CHAPTERS: แต่ละบทชี้ช่วง global stage index ของตน ---- */
 const CHAPTERS = [
   { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
-  { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,5] },
+  { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,9] },
   { name:'Chapter 3 · The Flavorless Factory', emoji:'🏭', desc:'A machine army is erasing flavor from the world', ready:false },
   { name:'Chapter 4 · The Shattered Sugar City', emoji:'🏰', desc:'A civil war of the candy kingdom', ready:false },
   { name:'Chapter 5 · Throne of the First Seed', emoji:'🌑', desc:'Face the crown planter and the origin of the hunger cycle', ready:false },
@@ -2472,7 +2623,7 @@ class Game extends Phaser.Scene {
 
   doDash(){
     if(!this.dashReady||this.state!=='play') return;
-    this.dashReady=false; this.dashCd=1.1; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
+    this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
     this.player.setVelocity(d.x*560,d.y*560);
@@ -2790,7 +2941,7 @@ class Game extends Phaser.Scene {
   drawDashRing(){
     const g=this.dashRing; if(!g)return; g.clear(); const b=this.dashBtn; if(!b||!b.visible)return;
     if(!this.dashReady && this.dashCd>0){
-      const frac=Phaser.Math.Clamp(1-this.dashCd/1.1,0,1);
+      const frac=Phaser.Math.Clamp(1-this.dashCd/(this.dashCdMax||1.1),0,1);
       g.lineStyle(3.5,0x66d3b3,0.9); g.beginPath();
       g.arc(b.x,b.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
     } else { g.lineStyle(2,0xbff3e8,0.35); g.strokeCircle(b.x,b.y,40); }
@@ -3035,13 +3186,13 @@ class Game extends Phaser.Scene {
     const actionW=open?68:64,actionX=x+w-actionW-10;shade.fillStyle(open?0x11261f:0x211c29,0.93);shade.fillRoundedRect(actionX,y+h-35,actionW,25,9);shade.lineStyle(1.3,open?color:0x625872,0.8);shade.strokeRoundedRect(actionX,y+h-35,actionW,25,9);cont.add(shade);
     const stageLabel=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):String(index+1).padStart(2,'0');
     const chapter=this.add.text(x+37,y+20,'Stage '+stageLabel,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#172014':'#ddd5e5'}).setOrigin(0.5);
-    const icon=this.add.text(x+19,y+h-25,open?st.emoji:'🔒',{fontSize:'22px'}).setOrigin(0.5);
+    const icon=this.add.text(x+19,y+h-25,open?st.emoji:(st.ready===false?'🛠️':'🔒'),{fontSize:'22px'}).setOrigin(0.5);
     const name=this.add.text(x+39,y+43,st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:h<92?'13px':'15px',color:open?'#fffaf2':'#c4bdca',stroke:'#120a16',strokeThickness:2}).setOrigin(0,0.5);
     const en=this.add.text(x+39,y+61,st.en.toUpperCase(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:open?Phaser.Display.Color.IntegerToColor(color).rgba:'#82798d'}).setOrigin(0,0.5);
     const power=this.add.text(x+w-12,y+20,'⚡ '+currentPower+' / suggested '+recommended,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:currentPower>=recommended?'#a8f0c0':'#ffb1bd'}).setOrigin(1,0.5);
-    const desc=open?st.lore:('Clear Chapter '+index+' to unlock this path');
+    const desc=open?st.lore:(st.ready===false?'Boss fight and stage art are still in production':('Clear the previous stage to unlock this path'));
     const lore=this.add.text(x+39,y+h-25,desc,{fontFamily:'sans-serif',fontSize:h<92?'8px':'9px',color:open?'#ddd4df':'#8f8798',wordWrap:{width:w-39-actionW-28},maxLines:2}).setOrigin(0,0.5);
-    const action=this.add.text(actionX+actionW/2,y+h-22.5,open?'Play  ▶':'Locked',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#d8ffe5':'#9b91a5'}).setOrigin(0.5);
+    const action=this.add.text(actionX+actionW/2,y+h-22.5,open?'Play  ▶':(st.ready===false?'Coming soon':'Locked'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#d8ffe5':'#9b91a5'}).setOrigin(0.5);
     cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
   handleTap(px,py){ for(let i=this.tapZones.length-1;i>=0;i--){ const z=this.tapZones[i];
@@ -3600,7 +3751,7 @@ class Game extends Phaser.Scene {
     this.menu.add(note);
     const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-28,410):Math.min(370,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
     const rows=Math.ceil(stageIds.length/cols),y0=portrait?100:69,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
-    stageIds.forEach((i,pos)=>{const st=STAGES[i],col=pos%cols,row=Math.floor(pos/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked;
+    stageIds.forEach((i,pos)=>{const st=STAGES[i],col=pos%cols,row=Math.floor(pos/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked&&isStageReady(i);
       this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.openDifficultyChoice(i));
     });
     this.menu.setVisible(true);
@@ -3968,7 +4119,7 @@ class Game extends Phaser.Scene {
   // เติม affix 1 อันตามช่องว่างของ rarity · คืน true ถ้าเติมได้
   _craftContext(){const slot=this.gearSlot||'weapon',item=Save.gearItem(this.craftSelectedUid||this.gearSelectedUid)||Save.equippedGearItem(slot),base=item&&GEAR_ALL.find(g=>g.id===item.baseId);return{slot,item,base};}
   // 🎲 คราฟต์แบบสุ่ม: ผู้เล่นเห็นแค่ว่าเป็นอะไรได้บ้าง → ใช้ currency แล้วสุ่ม stat มา 1 อัน แล้วไฮไลท์อันที่ติด
-  randomCraftSelected(){const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.select();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
+  randomCraftSelected(){if(this._craftRolling)return;const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.select();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
     let affs=Save.gearAffixes(item.uid).slice(),rar=Save.gearRarity(item.uid,base.tier),cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),line=Math.max(0,Math.min(cap-1,this.craftLineIndex||0)),old=affs[line]||null;
     const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===line?'':a.id)),available=pool.filter(m=>!used.has(m.id));
     if(!available.length){Sfx.select();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}
@@ -3976,115 +4127,73 @@ class Game extends Phaser.Scene {
     const mod=Phaser.Utils.Array.GetRandom(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
     if(line<affs.length)affs[line]=rolled;else affs.push(rolled);if(rar==='common')rar='magic';
     Save.spendCurrency(key,1);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
-    Sfx.clear();this.screenFlash(0x7fb0ff,.44,320);this.showBanner('🎲 '+cur.emoji+' Rolled!',mod.emoji+' '+mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t,1700);this.buildCraftBench();}
-  promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');Sfx.clear();this.showBanner('🟡 Promoted to Rare','Four focused affix lines unlocked',1400);this.buildCraftBench();}
-  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
-  annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);Sfx.clear();this.showBanner('🟣 Line removed','Select an empty line to add a new stat',1300);this.buildCraftBench();}
-  scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;Sfx.clear();this.showBanner('⚫ Item reset','Common · one focused line available',1300);this.buildCraftBench();}
+    this._craftResult={uid:item.uid,title:old?'AFFIX REPLACED':'NEW AFFIX',before:old?(affixDef(old.id).label+' '+affixDef(old.id).fmt(old.v)):'Empty line',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};
+    this._playAffixRoulette(available,mod,rolled,cur);}
+  _playAffixRoulette(pool,winner,rolled,cur){
+    this._craftRolling=true;this.tapZones=[];const token=(this._craftRollToken||0)+1;this._craftRollToken=token;
+    const w=this.W,h=this.H,cy=h*.49,shade=this.add.rectangle(0,0,w,h,0x0b0711,.84).setOrigin(0),panel=this.add.graphics();
+    panel.fillStyle(0x21172c,.99);panel.fillRoundedRect(18,cy-126,w-36,252,18);panel.lineStyle(2,0xffd166,1);panel.strokeRoundedRect(18,cy-126,w-36,252,18);
+    const title=this.add.text(w/2,cy-99,'🎰 AFFIX ROULETTE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(.5),hint=this.add.text(w/2,cy-76,'Rolling from '+pool.length+' compatible mods…',{fontFamily:'sans-serif',fontSize:'9px',color:'#b9aec8'}).setOrigin(.5);
+    const rows=[-43,0,43].map((dy,i)=>{const g=this.add.graphics(),rw=w-72,rh=36,x=36,y=cy+dy-rh/2,rowY=cy+dy;g.fillStyle(i===1?0x41304d:0x2b2135,i===1?1:.82);g.fillRoundedRect(x,y,rw,rh,9);g.lineStyle(i===1?2:1,i===1?0xffd166:0x594664,1);g.strokeRoundedRect(x,y,rw,rh,9);const t=this.add.text(w/2,rowY,'',{fontFamily:'sans-serif',fontStyle:i===1?'bold':'normal',fontSize:i===1?'13px':'10px',color:'#ffffff'}).setOrigin(.5);return{g,t,rowY};});
+    const footer=this.add.text(w/2,cy+101,cur.emoji+' '+cur.name+' consumed · revealing your result…',{fontFamily:'sans-serif',fontSize:'8px',color:'#8bd3a0'}).setOrigin(.5);
+    this.menu.add([shade,panel,title,hint]);rows.forEach(r=>this.menu.add([r.g,r.t]));this.menu.add(footer);
+    const show=(row,mod,final=false)=>{const c=affixCategory(mod);this.tweens.killTweensOf(row.t);row.t.setText(mod.emoji+'  '+mod.label+(final?'  '+mod.fmt(rolled.v)+' · T'+rolled.t:'')).setColor(final?'#fff3b0':c.hex).setY(row.rowY-6).setAlpha(.42);this.tweens.add({targets:row.t,y:row.rowY,alpha:1,duration:42,ease:'Quad.out'});};
+    const delays=[55,60,68,76,88,102,120,145,175,215,270,340];let step=0;
+    const tick=()=>{if(this._craftRollToken!==token)return;const final=step===delays.length-1,center=final?winner:Phaser.Utils.Array.GetRandom(pool);show(rows[1],center,final);show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));
+      if(step%2===0)Sfx.select();if(final){hint.setText(affixCategory(winner).label.toUpperCase()+' MOD LOCKED').setColor(affixCategory(winner).hex);this.tweens.add({targets:rows[1].t,scale:{from:1,to:1.14},duration:160,yoyo:true});this.screenFlash(affixCategory(winner).color,.52,360);Sfx.clear();this.time.delayedCall(480,()=>{if(this._craftRollToken!==token)return;this._craftRolling=false;this.buildCraftBench();this.showBanner('🎰 '+winner.emoji+' '+winner.label,winner.fmt(rolled.v)+' · Tier '+rolled.t,1700);});return;}this.time.delayedCall(delays[step++],tick);};
+    tick();
+  }
+  promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
+  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v),b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'VALUE REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
+  annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}const old=affs[line],mod=affixDef(old.id);affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);this._craftResult={uid:item.uid,title:'AFFIX REMOVED',before:mod.label+' '+mod.fmt(old.v),after:'Empty line'};Sfx.clear();this.showBanner('🟣 Line removed','An empty affix line is now available',1300);this.buildCraftBench();}
+  scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}const count=Save.gearAffixes(item.uid).length;Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;this._craftResult={uid:item.uid,title:'ITEM RESET',before:count+' affix'+(count===1?'':'es'),after:'0 affixes · 1 slot'};Sfx.clear();this.showBanner('⚫ Item reset','All affixes removed · one line available',1300);this.buildCraftBench();}
+  _confirmCraftAction(key,label,fn){if(this._craftConfirm===key){this._craftConfirm=null;fn();return;}this._craftConfirm=key;Sfx.select();this.showBanner('⚠ Confirm '+label,'Tap the same action again within 3 seconds',1800);this.buildCraftBench();this.time.delayedCall(3000,()=>{if(this._craftConfirm===key){this._craftConfirm=null;if(this.menuScreen==='craft')this.buildCraftBench();}});}
+  // v4.46: mobile-first Gear → Affix → Roll layout with category clarity and roulette reveal.
   buildCraftBench(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Craft Bench','','gLoadout');
-    const w=this.W,h=this.H,slot=this.gearSlot||'weapon';let y=w<=h?80:54;
-    const slots=GEAR_SLOTS,sw=Math.min(42,(w-28)/6);
-    slots.forEach((sd,i)=>{
-      const x=14+sw/2+i*((w-28)/6),on=sd.slot===slot,eq=Save.equippedGearItem(sd.slot),base=eq&&GEAR_ALL.find(g=>g.id===eq.baseId),g=this.add.graphics();
-      g.fillStyle(on?0x3a3550:0x2c2338,1);g.fillRoundedRect(x-sw/2,y,sw,sw,9);g.lineStyle(on?3:1.3,on?0xc9a3ff:0x4a4059,1);g.strokeRoundedRect(x-sw/2,y,sw,sw,9);
-      const em=this.add.text(x,y+sw/2,base&&base.id.indexOf('_none')<0?base.emoji:sd.emoji,{fontSize:Math.round(sw*.48)+'px'}).setOrigin(.5);
-      this.menu.add([g,em]);this._zone(x-sw/2,y,sw,sw,()=>{this.gearSlot=sd.slot;this.craftSelectedUid=null;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this.buildCraftBench();});
-    });
-    y+=sw+7;
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Affix Forge','craft_bench_bg','gLoadout');
+    const w=this.W,h=this.H,portrait=w<=h,slot=this.gearSlot||'weapon';let y=portrait?78:52;
+    const rail=this.add.graphics();rail.fillStyle(0x1b1423,.91);rail.fillRoundedRect(14,y,w-28,25,9);rail.lineStyle(1,0x59456f,.9);rail.strokeRoundedRect(14,y,w-28,25,9);
+    const stepW=(w-28)/3,steps=[['1','GEAR',0x66d3b3],['2','AFFIX',0x66d3b3],['3','ROLL',0xffd166]];this.menu.add(rail);
+    steps.forEach((s,i)=>{const cx=14+stepW*i+stepW/2,c=this.add.circle(cx-22,y+12.5,8,s[2],1),n=this.add.text(cx-22,y+12.5,s[0],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#1a1420'}).setOrigin(.5),t=this.add.text(cx-9,y+12.5,s[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:i===2?'#ffe08a':'#bff6e6'}).setOrigin(0,.5);this.menu.add([c,n,t]);});y+=30;
+    const slots=GEAR_SLOTS,sw=Math.min(36,(w-28)/6);
+    slots.forEach((sd,i)=>{const x=14+sw/2+i*((w-28)/6),on=sd.slot===slot,eq=Save.equippedGearItem(sd.slot),b=eq&&GEAR_ALL.find(g=>g.id===eq.baseId),artKey=b&&'gear_'+b.id,g=this.add.graphics();
+      g.fillStyle(on?0x493756:0x251c30,.98);g.fillRoundedRect(x-sw/2,y,sw,sw,8);g.lineStyle(on?2.5:1,on?0xffd166:0x574764,1);g.strokeRoundedRect(x-sw/2,y,sw,sw,8);
+      const icon=artKey&&this.textures.exists(artKey)?this.add.image(x,y+sw/2,artKey).setDisplaySize(sw-8,sw-8):this.add.text(x,y+sw/2,b?b.emoji:sd.emoji,{fontSize:Math.round(sw*.46)+'px'}).setOrigin(.5);
+      this.menu.add([g,icon]);this._zone(x-sw/2,y,sw,sw,()=>{this.gearSlot=sd.slot;this.craftSelectedUid=null;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this._craftResult=null;this._craftConfirm=null;this.buildCraftBench();});
+    });y+=sw+6;
     const items=Save.gearItemsForSlot(slot).filter(x=>{const b=GEAR_ALL.find(g=>g.id===x.baseId);return b&&b.tier!=='start';});
-    if(!items.length){this.menu.add(this.add.text(w/2,y+42,'No craftable item in this slot',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(.5));this.menu.setVisible(true);return;}
+    if(!items.length){const empty=this.add.graphics();empty.fillStyle(0x21182c,.94);empty.fillRoundedRect(14,y,w-28,78,12);empty.lineStyle(1,0x574764,1);empty.strokeRoundedRect(14,y,w-28,78,12);const tx=this.add.text(w/2,y+39,'No craftable gear in this slot\nFind gear in stages, rewards or the Bazaar',{fontFamily:'sans-serif',fontSize:'11px',color:'#b9aec8',align:'center',lineSpacing:5}).setOrigin(.5);this.menu.add([empty,tx]);this.menu.setVisible(true);return;}
     let selected=Save.gearItem(this.craftSelectedUid);
-    if(!selected||selected.slot!==slot||!items.some(x=>x.uid===selected.uid)){
-      selected=Save.gearItem(this.gearSelectedUid);if(!selected||selected.slot!==slot)selected=Save.equippedGearItem(slot);
-      if(!selected||!items.some(x=>x.uid===selected.uid))selected=items[0];
-      this.craftSelectedUid=selected.uid;this.craftLineIndex=0;this.craftTargetId=null;
-    }
-    if(!this.craftPageBySlot)this.craftPageBySlot={};
-    const pageSize=4,pages=Math.max(1,Math.ceil(items.length/pageSize));let page=Math.max(0,Math.min(pages-1,this.craftPageBySlot[slot]||0));this.craftPageBySlot[slot]=page;
-    const gap=6,cw=(w-28-gap*3)/4,ch=55;
-    items.slice(page*pageSize,page*pageSize+pageSize).forEach((item,i)=>{
-      const base=GEAR_ALL.find(g=>g.id===item.baseId),x=14+i*(cw+gap),on=item.uid===selected.uid,tl=TIER_LABEL[item.grade]||TIER_LABEL.common,color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();
-      g.fillStyle(on?0x3a3550:this._darken(color,0.58),1);g.fillRoundedRect(x,y,cw,ch,9);g.lineStyle(on?3:1.6,on?0xffd166:color,1);g.strokeRoundedRect(x,y,cw,ch,9);g.fillStyle(color,1);g.fillCircle(x+cw-8,y+8,3.4);   // จุดสีมุม = เกรด rarity (กวาดตาเห็นทันที)
-      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,y+19,artKey).setDisplaySize(31,31):this.add.text(x+cw/2,y+19,base.emoji,{fontSize:'20px'}).setOrigin(.5);
-      const lv=this.add.text(x+cw/2,y+45,'iLv '+(item.itemLevel||1)+(item.locked?' · 🔒':''),{fontFamily:'sans-serif',fontSize:'8px',color:'#d8cde2'}).setOrigin(.5);
-      this.menu.add([g,em,lv]);this._zone(x,y,cw,ch,()=>{this.craftSelectedUid=item.uid;this.gearSelectedUid=item.uid;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this.buildCraftBench();});
-    });
-    y+=ch+3;
-    if(pages>1){
-      const nav=this.add.text(w/2,y+9,'‹   '+(page+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontSize:'10px',color:'#b9aec8'}).setOrigin(.5);
-      this.menu.add(nav);this._zone(w/2-58,y,46,19,()=>{this.craftPageBySlot[slot]=(page-1+pages)%pages;this.buildCraftBench();});this._zone(w/2+12,y,46,19,()=>{this.craftPageBySlot[slot]=(page+1)%pages;this.buildCraftBench();});y+=21;
-    }
-    const base=GEAR_ALL.find(g=>g.id===selected.baseId),affs=Save.gearAffixes(selected.uid),rar=Save.gearRarity(selected.uid,base.tier),rl=RARITY_LABEL[rar]||RARITY_LABEL.magic;
-    const cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),lineGap=6,lineW=(w-38-lineGap)/2,lineH=36,rows=Math.ceil(cap/2),cardH=41+rows*(lineH+7);
-    this.craftLineIndex=Math.max(0,Math.min(cap-1,this.craftLineIndex||0));
-    const rlC=Phaser.Display.Color.HexStringToColor(rl.color).color;
-    const card=this.add.graphics();card.fillStyle(this._darken(rlC,0.82),.97);card.fillRoundedRect(14,y,w-28,cardH,13);card.fillStyle(rlC,0.14);card.fillRoundedRect(14,y,w-28,24,{tl:13,tr:13,bl:0,br:0});card.lineStyle(2,rlC,1);card.strokeRoundedRect(14,y,w-28,cardH,13);   // พื้นการ์ด tint ตาม rarity + แถบหัวเข้ม
-    const fullName=gearAffixName(base.name,affs),safeName=fullName.length>35?fullName.slice(0,34)+'…':fullName;
-    const nm=this.add.text(23,y+10,base.emoji+' '+safeName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:rl.color}).setOrigin(0,0);
-    const meta=this.add.text(w-23,y+10,rl.name+' · iLv '+(selected.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:rl.color}).setOrigin(1,0);
-    this.menu.add([card,nm,meta]);
-    for(let i=0;i<cap;i++){
-      const col=i%2,row=Math.floor(i/2),x=19+col*(lineW+lineGap),ly=y+34+row*(lineH+7),on=i===this.craftLineIndex,a=affs[i],mod=a&&affixDef(a.id),g=this.add.graphics();
-      g.fillStyle(on?0x403151:0x2b2137,1);g.fillRoundedRect(x,ly,lineW,lineH,8);g.lineStyle(on?2:1,on?0xffd166:0x574764,1);g.strokeRoundedRect(x,ly,lineW,lineH,8);
-      if(mod){const kc=mod.kind==='suffix'?0x5ad1c4:0xff9a5a;g.fillStyle(kc,1);g.fillRoundedRect(x,ly,4,lineH,{tl:8,bl:8,tr:0,br:0});}   // แถบซ้าย prefix=ส้ม/suffix=มิ้นต์
-      const nextEmpty=i===affs.length,label=mod?(mod.emoji+' '+mod.label+' '+mod.fmt(a.v)+' · T'+(a.t||5)):(nextEmpty?'＋ Add affix here':'🔒 Fill previous line');
-      const tx=this.add.text(x+(mod?11:7),ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'8px',color:mod?'#e8dcf0':nextEmpty?'#b9aec8':'#655b6c'}).setOrigin(0,.5);
-      this.menu.add([g,tx]);if(mod||nextEmpty)this._zone(x,ly,lineW,lineH,()=>{this.craftLineIndex=i;this.craftTargetId=mod?mod.id:null;this.buildCraftBench();});
-    }
-    y+=cardH+7;
-    const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id));
-    const rolledId=this._craftRolledId;   // ไฮไลท์ stat ที่เพิ่งสุ่มติด
-    const ph=this.add.text(15,y,'POSSIBLE STATS',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd9a8'}).setOrigin(0,0);
-    const tierHint=this.add.text(w-15,y,'🎲 random on craft · '+available.length+' possible',{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=13;
-    const lg=this.add.graphics();lg.fillStyle(0xff9a5a,1);lg.fillCircle(18,y+4,3);lg.fillStyle(0x5ad1c4,1);lg.fillCircle(78,y+4,3);this.menu.add(lg);   // legend หมวด stat
-    this.menu.add([this.add.text(24,y,'Offense',{fontFamily:'sans-serif',fontSize:'7px',color:'#d8b79a'}).setOrigin(0,0),this.add.text(84,y,'Utility',{fontFamily:'sans-serif',fontSize:'7px',color:'#9adfd4'}).setOrigin(0,0)]);y+=15;
-    const pw=(w-34-6)/2,phh=44;
-    available.forEach((mod,i)=>{
-      const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+5),on=mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:(mod.kind==='suffix'?0x5ad1c4:0xff9a5a),g=this.add.graphics();
-      g.fillStyle(on?0x4d3d1f:0x2b2137,1);g.fillRoundedRect(x,py,pw,phh,8);g.lineStyle(on?2.5:1.2,on?0xffd166:kc,on?1:0.85);g.strokeRoundedRect(x,py,pw,phh,8);
-      g.fillStyle(kc,on?1:0.9);g.fillRoundedRect(x,py,4,phh,{tl:8,bl:8,tr:0,br:0});   // แถบซ้าย = หมวด stat
-      const tx=this.add.text(x+11,py+8,(on?'✨ ':'')+mod.emoji+' '+mod.label+(mod.exclusive?' ·EX':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,0);
-      const rg=this.add.text(x+11,py+26,'Best T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'7.3px',color:on?'#ffe0b0':'#948aa6'}).setOrigin(0,0);
-      this.menu.add([g,tx,rg]);
-    });
-    y+=Math.ceil(available.length/2)*(phh+5)+5;
-    const old=affs[this.craftLineIndex]||null,key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),have=Save.currency(key),can=available.length>0&&!selected.locked&&have>0,mainH=50,main=this.add.graphics();
-    main.fillStyle(can?0x3f9160:0x3a3550,1);main.fillRoundedRect(14,y,w-28,mainH,11);main.lineStyle(1,can?0x8bd3a0:0x574764,1);main.strokeRoundedRect(14,y,w-28,mainH,11);this.menu.add(main);
-    if(available.length>0&&!selected.locked){
-      this._currencyIcon(key,39,y+mainH/2,32,can?1:.45);
-      const mt=this.add.text(61,y+15,'🎲 Craft — random stat',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:can?'#fff':'#8d8195'}).setOrigin(0,.5);
-      const cost=this.add.text(61,y+34,cur.name+'  '+have+' / 1',{fontFamily:'sans-serif',fontSize:'8.5px',color:can?'#d8ffe5':'#8d8195'}).setOrigin(0,.5);this.menu.add([mt,cost]);
-    }else{
-      const mt=this.add.text(w/2,y+mainH/2,selected.locked?'🔒 Unlock item to craft':'No stats left to roll',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#8d8195'}).setOrigin(.5);this.menu.add(mt);
-    }
-    if(available.length>0&&!selected.locked)this._zone(14,y,w-28,mainH,()=>this.randomCraftSelected());y+=mainH+7;
-    const util=[
-      ['regal','Promote to Rare',()=>this.promoteFocusedItem(),!selected.locked&&rar==='magic'&&affs.length>=2&&Save.currency('regal')>0],
-      ['divine','Reroll ×'+FLAME_REROLL_COST,()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>=FLAME_REROLL_COST],
-      ['annul','Remove Line',()=>this.annulFocusedLine(),!selected.locked&&!!old&&Save.currency('annul')>0],
-      ['scour','Reset Item',()=>this.scourFocusedItem(),!selected.locked&&(affs.length>0||rar!=='common')&&Save.currency('scour')>0]
-    ],ug=6,uw=(w-34-ug)/2,uh=38;
-    util.forEach(([currencyKey,label,fn,ok],i)=>{
-      const x=14+(i%2)*(uw+ug),uy=y+Math.floor(i/2)*(uh+6),g=this.add.graphics(),n=Save.currency(currencyKey);
-      g.fillStyle(ok?0x51405e:0x2b2632,1);g.fillRoundedRect(x,uy,uw,uh,9);g.lineStyle(1,ok?0x8c72a0:0x393342,1);g.strokeRoundedRect(x,uy,uw,uh,9);this.menu.add(g);
-      this._currencyIcon(currencyKey,x+19,uy+uh/2,25,ok?1:.32);
-      const tx=this.add.text(x+37,uy+uh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:ok?'#eee2f2':'#665d6d'}).setOrigin(0,.5);
-      const ct=this.add.text(x+uw-8,uy+uh/2,'×'+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:ok?'#ffe08a':'#665d6d'}).setOrigin(1,.5);
-      this.menu.add([tx,ct]);if(ok)this._zone(x,uy,uw,uh,fn);
-    });
-    y+=2*(uh+6)+3;
-    if(y+116<h-8){
-      const wallet=this.add.graphics();wallet.fillStyle(0x21182c,.96);wallet.fillRoundedRect(14,y,w-28,114,11);wallet.lineStyle(1,0x4a4059,1);wallet.strokeRoundedRect(14,y,w-28,114,11);
-      const wt=this.add.text(22,y+7,'CURRENCY POUCH',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#c9a3ff'}).setOrigin(0,0);
-      const hint=this.add.text(w-22,y+7,'Live inventory',{fontFamily:'sans-serif',fontSize:'7.5px',color:'#81758e'}).setOrigin(1,0);this.menu.add([wallet,wt,hint]);
-      CURRENCY.forEach((d,i)=>{
-        const col=i%2,row=Math.floor(i/2),cellW=(w-44)/2,cx=23+cellW*col+11,cy=y+31+row*21;
-        this._currencyIcon(d.key,cx,cy,21,Save.currency(d.key)>0?1:.3);
-        const nm=this.add.text(cx+14,cy-3,d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.2px',color:Save.currency(d.key)>0?'#e9deef':'#62586c'}).setOrigin(0,.5);
-        const ct=this.add.text(cx+14,cy+6,'×'+Save.currency(d.key),{fontFamily:'sans-serif',fontSize:'7px',color:Save.currency(d.key)>0?'#ffe08a':'#62586c'}).setOrigin(0,.5);this.menu.add([nm,ct]);
-      });
-    }
+    if(!selected||selected.slot!==slot||!items.some(x=>x.uid===selected.uid)){selected=Save.gearItem(this.gearSelectedUid);if(!selected||selected.slot!==slot)selected=Save.equippedGearItem(slot);if(!selected||!items.some(x=>x.uid===selected.uid))selected=items[0];this.craftSelectedUid=selected.uid;this.craftLineIndex=0;this.craftTargetId=null;}
+    if(!this.craftPageBySlot)this.craftPageBySlot={};const pageSize=4,pages=Math.max(1,Math.ceil(items.length/pageSize));let page=Math.max(0,Math.min(pages-1,this.craftPageBySlot[slot]||0));this.craftPageBySlot[slot]=page;
+    const gap=6,cw=(w-28-gap*3)/4,ch=50;
+    items.slice(page*pageSize,page*pageSize+pageSize).forEach((item,i)=>{const b=GEAR_ALL.find(g=>g.id===item.baseId),x=14+i*(cw+gap),on=item.uid===selected.uid,tl=TIER_LABEL[item.grade]||TIER_LABEL.common,color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();
+      g.fillStyle(on?0x42334d:this._darken(color,.62),.98);g.fillRoundedRect(x,y,cw,ch,9);g.lineStyle(on?2.5:1.2,on?0xffd166:color,1);g.strokeRoundedRect(x,y,cw,ch,9);g.fillStyle(color,1);g.fillCircle(x+cw-7,y+7,3);
+      const artKey='gear_'+b.id,icon=this.textures.exists(artKey)?this.add.image(x+cw/2,y+18,artKey).setDisplaySize(29,29):this.add.text(x+cw/2,y+18,b.emoji,{fontSize:'19px'}).setOrigin(.5),lv=this.add.text(x+cw/2,y+41,'iLv '+(item.itemLevel||1)+(item.locked?' · 🔒':''),{fontFamily:'sans-serif',fontSize:'7.6px',color:'#e0d6e8'}).setOrigin(.5);
+      this.menu.add([g,icon,lv]);this._zone(x,y,cw,ch,()=>{this.craftSelectedUid=item.uid;this.gearSelectedUid=item.uid;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this._craftResult=null;this._craftConfirm=null;this.buildCraftBench();});
+    });y+=ch+3;
+    if(pages>1){const nav=this.add.text(w/2,y+8,'‹   '+(page+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontSize:'9px',color:'#d4c6df'}).setOrigin(.5);this.menu.add(nav);this._zone(w/2-58,y,46,17,()=>{this.craftPageBySlot[slot]=(page-1+pages)%pages;this.buildCraftBench();});this._zone(w/2+12,y,46,17,()=>{this.craftPageBySlot[slot]=(page+1)%pages;this.buildCraftBench();});y+=19;}
+    const base=GEAR_ALL.find(g=>g.id===selected.baseId),affs=Save.gearAffixes(selected.uid),rar=Save.gearRarity(selected.uid,base.tier),rl=RARITY_LABEL[rar]||RARITY_LABEL.magic,baseTl=TIER_LABEL[selected.grade]||TIER_LABEL.common;
+    const cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),lineGap=6,lineW=(w-38-lineGap)/2,lineH=34,rows=Math.ceil(cap/2),cardH=39+rows*(lineH+6);this.craftLineIndex=Math.max(0,Math.min(cap-1,this.craftLineIndex||0));
+    const rlC=Phaser.Display.Color.HexStringToColor(rl.color).color,card=this.add.graphics();card.fillStyle(0x21182c,.96);card.fillRoundedRect(14,y,w-28,cardH,12);card.fillStyle(rlC,.16);card.fillRoundedRect(14,y,w-28,26,{tl:12,tr:12,bl:0,br:0});card.lineStyle(1.8,rlC,1);card.strokeRoundedRect(14,y,w-28,cardH,12);
+    const fullName=gearAffixName(base.name,affs),safeName=fullName.length>34?fullName.slice(0,33)+'…':fullName,nm=this.add.text(22,y+9,safeName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#fff4df'}).setOrigin(0,0),meta=this.add.text(w-22,y+9,baseTl.name+' base · '+affs.length+'/'+cap+' affixes',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:baseTl.color}).setOrigin(1,0);this.menu.add([card,nm,meta]);
+    for(let i=0;i<cap;i++){const col=i%2,row=Math.floor(i/2),x=19+col*(lineW+lineGap),ly=y+32+row*(lineH+6),on=i===this.craftLineIndex,a=affs[i],mod=a&&affixDef(a.id),g=this.add.graphics();g.fillStyle(on?0x4b3d2d:0x2a2035,1);g.fillRoundedRect(x,ly,lineW,lineH,8);g.lineStyle(on?2.4:1,on?0xffd166:0x574764,1);g.strokeRoundedRect(x,ly,lineW,lineH,8);
+      if(mod){const kc=affixCategory(mod).color;g.fillStyle(kc,1);g.fillRoundedRect(x,ly,5,lineH,{tl:8,bl:8,tr:0,br:0});}
+      const nextEmpty=i===affs.length,label=mod?(mod.emoji+' '+mod.label+' '+mod.fmt(a.v)+' · T'+(a.t||5)):(nextEmpty?'＋ Empty affix slot':'🔒 Complete prior slot'),tx=this.add.text(x+(mod?11:7),ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'8px',color:mod?'#f4ecf8':nextEmpty?'#e7d8f0':'#74697c'}).setOrigin(0,.5);this.menu.add([g,tx]);if(mod||nextEmpty)this._zone(x,ly,lineW,lineH,()=>{this.craftLineIndex=i;this.craftTargetId=mod?mod.id:null;this._craftRolledId=null;this._craftConfirm=null;this.buildCraftBench();});
+    }y+=cardH+5;
+    const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id)),rolledId=this._craftRolledId,visiblePool=available.slice(0,portrait?6:4),catCount={offense:0,defense:0,utility:0};available.forEach(m=>catCount[m.category]=(catCount[m.category]||0)+1);
+    const ph=this.add.text(15,y,'RANDOM ROLL POOL · '+available.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffe0a8'}).setOrigin(0,0),tierHint=this.add.text(w-15,y,'OFF '+catCount.offense+' · DEF '+catCount.defense+' · UTIL '+catCount.utility,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.2px',color:'#a99bb4'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=15;
+    const pw=(w-34-6)/2,phh=31;visiblePool.forEach((mod,i)=>{const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+4),on=mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:affixCategory(mod).color,g=this.add.graphics();g.fillStyle(on?0x4d3d1f:0x251c30,.98);g.fillRoundedRect(x,py,pw,phh,7);g.lineStyle(on?2.3:1,on?0xffd166:kc,1);g.strokeRoundedRect(x,py,pw,phh,7);g.fillStyle(kc,1);g.fillRoundedRect(x,py,4,phh,{tl:7,bl:7,tr:0,br:0});const tx=this.add.text(x+10,py+8,(on?'✨ ':'')+mod.emoji+' '+mod.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,.5),rg=this.add.text(x+10,py+22,affixCategory(mod).label+' · T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'6.4px',color:on?'#ffe0b0':affixCategory(mod).hex}).setOrigin(0,.5);this.menu.add([g,tx,rg]);});y+=Math.ceil(visiblePool.length/2)*(phh+4)+4;
+    if(available.length>visiblePool.length){const more=this.add.text(w/2,y-2,'+'+(available.length-visiblePool.length)+' more possible results in the roulette',{fontFamily:'sans-serif',fontSize:'7px',color:'#a99bb4'}).setOrigin(.5);this.menu.add(more);y+=8;}
+    const result=this._craftResult&&this._craftResult.uid===selected.uid?this._craftResult:null;if(result){const rg=this.add.graphics();rg.fillStyle(0x2d492f,.96);rg.fillRoundedRect(14,y,w-28,34,8);rg.lineStyle(1.5,0x8bd3a0,1);rg.strokeRoundedRect(14,y,w-28,34,8);const rt=this.add.text(22,y+8,'✓ '+result.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:'#bff6cf'}).setOrigin(0,.5),rv=this.add.text(22,y+24,result.before+'  →  '+result.after,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#fff4df'}).setOrigin(0,.5);this.menu.add([rg,rt,rv]);y+=39;}
+    const old=affs[this.craftLineIndex]||null,key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),have=Save.currency(key),can=available.length>0&&!selected.locked&&have>0,mainH=52,main=this.add.graphics();main.fillStyle(can?0x347d54:0x302a38,.98);main.fillRoundedRect(14,y,w-28,mainH,11);main.lineStyle(1.5,can?0x8bd3a0:0x574764,1);main.strokeRoundedRect(14,y,w-28,mainH,11);this.menu.add(main);
+    if(available.length>0&&!selected.locked){this._currencyIcon(key,40,y+mainH/2,33,can?1:.42);const action=old?'REROLL SELECTED AFFIX':'ROLL NEW AFFIX',mt=this.add.text(63,y+16,action,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:can?'#fff':'#8d8195'}).setOrigin(0,.5),cost=this.add.text(63,y+36,'Random from '+available.length+' · '+cur.name+'  '+have+'/1',{fontFamily:'sans-serif',fontSize:'8px',color:can?'#d8ffe5':'#8d8195'}).setOrigin(0,.5);this.menu.add([mt,cost]);}else{const mt=this.add.text(w/2,y+mainH/2,selected.locked?'🔒 Unlock this item before crafting':'No compatible results remain',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#8d8195'}).setOrigin(.5);this.menu.add(mt);}if(available.length>0&&!selected.locked)this._zone(14,y,w-28,mainH,()=>this.randomCraftSelected());y+=mainH+6;
+    const confirmRemove=this._craftConfirm==='annul:'+selected.uid+':'+this.craftLineIndex,confirmReset=this._craftConfirm==='scour:'+selected.uid,util=[
+      ['regal','UPGRADE CAPACITY','Unlock 4 affix slots',()=>this.promoteFocusedItem(),!selected.locked&&rar==='magic'&&affs.length>=2&&Save.currency('regal')>0],
+      ['divine','REROLL VALUE','Keep stat and tier',()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>=FLAME_REROLL_COST],
+      ['annul',confirmRemove?'TAP AGAIN TO REMOVE':'REMOVE AFFIX','Delete selected line',()=>this._confirmCraftAction('annul:'+selected.uid+':'+this.craftLineIndex,'removal',()=>this.annulFocusedLine()),!selected.locked&&!!old&&Save.currency('annul')>0],
+      ['scour',confirmReset?'TAP AGAIN TO RESET':'RESET ITEM','Clear every affix',()=>this._confirmCraftAction('scour:'+selected.uid,'reset',()=>this.scourFocusedItem()),!selected.locked&&(affs.length>0||rar!=='common')&&Save.currency('scour')>0]
+    ],ug=6,uw=(w-34-ug)/2,uh=43;util.forEach(([currencyKey,label,desc,fn,ok],i)=>{const x=14+(i%2)*(uw+ug),uy=y+Math.floor(i/2)*(uh+6),g=this.add.graphics(),n=Save.currency(currencyKey),confirming=label.indexOf('TAP AGAIN')===0;g.fillStyle(confirming?0x5b302f:ok?0x3b3047:0x24202b,.98);g.fillRoundedRect(x,uy,uw,uh,9);g.lineStyle(confirming?2:1,confirming?0xff8f6a:ok?0x8c72a0:0x393342,1);g.strokeRoundedRect(x,uy,uw,uh,9);this.menu.add(g);this._currencyIcon(currencyKey,x+19,uy+uh/2,25,ok?1:.3);const tx=this.add.text(x+37,uy+14,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:confirming?'#ffd0bd':ok?'#eee2f2':'#665d6d'}).setOrigin(0,.5),ds=this.add.text(x+37,uy+29,desc,{fontFamily:'sans-serif',fontSize:'6.8px',color:ok?'#b8a9c3':'#665d6d'}).setOrigin(0,.5),ct=this.add.text(x+uw-7,uy+uh/2,'×'+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:ok?'#ffe08a':'#665d6d'}).setOrigin(1,.5);this.menu.add([tx,ds,ct]);if(ok)this._zone(x,uy,uw,uh,fn);});
     this.menu.setVisible(true);
   }
   /* ---- 🏪 NPC Bazaar (Phase 4): ซื้อ · เสี่ยงดวง · ขาย (single-player) ---- */
@@ -4190,6 +4299,7 @@ class Game extends Phaser.Scene {
     const p=this.player;
     p.cdMul=1; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0;
+    p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1;
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
     p.weaponDmgMul=1;p.weaponCdMul=1;p.weaponShots=0;p.weaponAreaMul=1;p.weaponControlMul=1;p.weaponChains=0;p.weaponReflect=0;
     // เลือกตัวละคร
@@ -4323,7 +4433,8 @@ class Game extends Phaser.Scene {
 
   startRun(idx){
     if(this.state!=='menu')return;
-    idx=idx||0;
+    idx=Math.max(0,Math.floor(Number(idx)||0));
+    if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
     this._activeZoneMods=Save.zoneModsUnlocked()?Save.zoneMods().slice():[]; this._zoneMul=this.zoneModMul();   // ล็อก Zone Modifiers ของรันนี้
     this.killStreak=0; this._lastKillAt=-9;   // Juice: รีเซ็ตคอมโบฆ่าต่อเนื่องทุกWaitบ
     this.state='loading';
@@ -4385,7 +4496,7 @@ class Game extends Phaser.Scene {
     for(const o of this._chapterDepthObjs||[]){if(!o)continue;this.tweens.killTweensOf(o);if(o.active)o.destroy();}this._chapterDepthObjs=[];
   }
   buildChapterDepth(i){
-    this.clearChapterDepth();this._chapter25D=i===5;if(!this._chapter25D||!this.textures.exists('ch2_prop_atlas'))return;
+    this.clearChapterDepth();this._chapter25D=i===5||i===6||i===7;if(!this._chapter25D||!this.textures.exists('ch2_prop_atlas'))return;
     const add=(x,y,frame,scale,depth,scroll,alpha,drift)=>{const o=this.camWorld(this.add.image(x,y,'ch2_prop_atlas',frame).setScale(scale).setDepth(depth).setScrollFactor(scroll).setAlpha(alpha));this._chapterDepthObjs.push(o);if(drift)this.tweens.add({targets:o,y:y+drift,x:x+drift*.25,duration:4200+Math.abs(x)%1700,yoyo:true,repeat:-1,ease:'Sine.inOut'});return o;};
     // back terraces → mid canopy → foreground leaves: parallax ต่างกันแต่None physics จึงเบาสำหรับมือถือ
     add(-720,-520,6,.92,-100001,.46,.24,18);add(680,-610,6,.82,-100001,.52,.20,-15);
@@ -4412,7 +4523,7 @@ class Game extends Phaser.Scene {
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
   startStage(i){
-    const st=STAGES[i]; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.stageIndex=i; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
+    const st=STAGES[i]; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.stageIndex=i; this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
     this.bossUI.forEach(o=>o.setVisible(false));
@@ -4425,7 +4536,7 @@ class Game extends Phaser.Scene {
       this.showBanner('🎓 Training Ground','A safe empty space — Berry will teach you step by step',2600);
       return;   // ไม่ตั้งเวฟ (coach เป็นคนสปอนมอนให้ลอง)
     }
-    this._waveObjectiveBag=i<=4?Phaser.Utils.Array.Shuffle(['survive','hunt','purge','capture'].slice()):[];
+    const objectivePool=Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(objectivePool.slice());
     Sfx.playStageBgm(i+1);
     this.gridBg.fillColor=st.grid;
     if(this.bgTile){ this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; if(this.textures.exists('bg'+(i+1)))this.bgTile.setTexture('bg'+(i+1)); }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
@@ -4464,6 +4575,34 @@ class Game extends Phaser.Scene {
   }
   waveProfile(w){
     const si=this.stageIndex;
+    if(si===9){const root=[
+      {name:'Crown Roots Stir',desc:'Rootlings teach the throne pulse while Thorn Chargers close open lanes',dur:52,interval:1.14,batch:2,max:30,pressureCap:.32,types:['basic','basic','fast','basic']},
+      {name:'Bramble Oath',desc:'Bramble Assassins and Sap Oracles punish straight retreat',dur:55,interval:.88,batch:3,max:40,pressureCap:.47,types:['fast','dasher','shooter','basic','basic']},
+      {name:'Knight of the First Root',desc:'The Ancient Root Knight rises with shielded retainers',dur:0,interval:1.00,batch:3,max:34,pressureCap:.52,types:['tank','fast','shooter','basic']},
+      {name:'Memory Siege',desc:'Bark Bulwarks cover Seed Bombs and Root Choir Leeches',dur:58,interval:.84,batch:4,max:46,pressureCap:.68,types:['tank','siege','shooter','bomber','fast','basic']},
+      {name:'The Crown Remembers',desc:'Every root caste answers before the True Rootmother awakens',dur:64,interval:.66,batch:5,max:54,pressureCap:.82,types:['fast','dasher','shooter','bomber','tank','siege','basic','basic']}
+    ];return root[w]||root[root.length-1];}
+    if(si===8){const seasons=[
+      {name:'Spring Unsealed',desc:'Budlings regenerate the garden while Sunscarabs test the outer lanes',dur:52,interval:1.18,batch:2,max:32,pressureCap:.30,types:['basic','basic','fast','basic']},
+      {name:'Solstice Crossfire',desc:'Frostbells predict movement while Leafblades cut across the arena',dur:55,interval:.90,batch:3,max:42,pressureCap:.45,types:['fast','dasher','shooter','basic','basic']},
+      {name:'Keeper of the Dial',desc:'The Season Keeper locks all four crests into combat formation',dur:0,interval:1.02,batch:3,max:36,pressureCap:.50,types:['tank','fast','shooter','basic']},
+      {name:'Equinox Storm',desc:'Gardeners shield Stormcloud Fruit and Seasonal Wisps',dur:58,interval:.88,batch:4,max:48,pressureCap:.66,types:['tank','siege','shooter','bomber','fast','basic']},
+      {name:'Chronobloom Paradox',desc:'Every season overlaps before the Orchid rewinds the greenhouse',dur:62,interval:.68,batch:5,max:56,pressureCap:.80,types:['fast','dasher','shooter','bomber','tank','siege','basic','basic']}
+    ];return seasons[w]||seasons[seasons.length-1];}
+    if(si===7){const hive=[
+      {name:'Nectar Bell',desc:'Nectar Drones teach that the flowers are now part of the battlefield',dur:52,interval:1.22,batch:2,max:34,pressureCap:.30,types:['basic','basic','basic','fast']},
+      {name:'Crosswind Hunt',desc:'Dartwings and Pollen Snipers enter from fast aerial lanes',dur:55,interval:.92,batch:3,max:44,pressureCap:.44,types:['fast','dasher','shooter','basic','basic']},
+      {name:'Royal Intercept',desc:'Royal Stinger descends with a guard of Dartwings',dur:0,interval:1.10,batch:3,max:38,pressureCap:.50,types:['fast','dasher','basic','shooter']},
+      {name:'Flower Siege',desc:'Wax Shieldbearers and Choir Moths protect Honey Bomb assaults',dur:58,interval:.94,batch:4,max:50,pressureCap:.64,types:['tank','siege','shooter','bomber','basic','fast']},
+      {name:'Crown Fermentation',desc:'Every hive caste attacks before the Queen opens her crystal crown',dur:62,interval:.70,batch:5,max:58,pressureCap:.78,types:['fast','dasher','shooter','bomber','tank','siege','basic','basic']}
+    ];return hive[w]||hive[hive.length-1];}
+    if(si===6){const marsh=[
+      {name:'Marsh Awakening',desc:'Mycelium Drifters teach that every kill can leave dangerous ground behind',dur:52,interval:1.30,batch:2,max:34,pressureCap:0.28,types:['basic','basic','basic','fast']},
+      {name:'Predictive Hunt',desc:'Cap Hoppers and Puffcap Snipers punish straight-line retreat',dur:54,interval:0.98,batch:3,max:46,pressureCap:0.42,types:['fast','dasher','shooter','basic','basic']},
+      {name:'Colony Gate',desc:'The Fungal Juggernaut arrives with Drifters and Hoppers',dur:0,interval:1.20,batch:3,max:40,pressureCap:0.48,types:['basic','fast','dasher','shooter']},
+      {name:'Living Network',desc:'Bulwarks protect the line while Oracles and Mold Sacs close the safe routes',dur:57,interval:1.02,batch:4,max:54,pressureCap:0.62,types:['tank','tank','siege','shooter','bomber','basic']},
+      {name:'Heart Under the Mire',desc:'Every fungal role attacks together before the Behemoth wakes',dur:61,interval:0.76,batch:5,max:68,pressureCap:0.76,types:['fast','dasher','shooter','bomber','tank','siege','basic','basic']}
+    ];return marsh[w]||marsh[marsh.length-1];}
     if(si===5){const canopy=[
       {name:'Ferment Sprout',desc:'Ferment Sprouts grow from memories forced through the seasons',dur:50,interval:1.42,batch:2,max:30,pressureCap:0.22,types:['basic','basic','basic','basic','fast']},
       {name:'Hunting Vines',desc:'Vine Skippers leap across roots while sprouts cut off retreat',dur:52,interval:1.04,batch:3,max:42,pressureCap:0.36,types:['fast','fast','dasher','basic','basic']},
@@ -4536,7 +4675,7 @@ class Game extends Phaser.Scene {
     // Stage 3 ขึ้นไป (si>=2): เพิ่มจำนวนมอน (แน่นขึ้น) + ลดสัดส่วนตัวตีไกล (shooter) ให้เน้นประชิด
     if(si>=2){ let sh=0; this.waveTypes=this.waveTypes.map(t=>{ if(t==='shooter'){ sh++; return sh>1?'basic':t; } return t; }); }   // เหลือ shooter ได้มากสุด 1 ช่องในลิสต์ = ตัวตีไกลออกน้อยลง
     this.spawnInterval=Math.max(0.5,p.interval-si*0.03-(si>=2?0.14:0));this.spawnBatch=p.batch+Math.floor(si/2)+1+(si>=2?1:0);   // มอนไหลถี่+เป็นชุดใหญ่ขึ้น (ด่านหลังแน่นกว่า)
-    this.maxLive=Math.min(115,p.max+si*(si>=2?7:4)+6+(si>=2?12:0));this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
+    const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:si===9?BALANCE.c2Root.maxLive:115;this.maxLive=Math.min(liveCap,p.max+si*(si>=2?7:4)+6+(si>=2?12:0));this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
     this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
   spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
@@ -4564,12 +4703,12 @@ class Game extends Phaser.Scene {
   spawnElite(){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
-    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':this.stageIndex===4?'e_royal_oven_sentinel':this.stageIndex===5?'ch2_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:0;
+    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':this.stageIndex===4?'e_royal_oven_sentinel':this.stageIndex===5?'ch2_enemy_atlas':this.stageIndex===8?'ch2_seasons_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:this.stageIndex===8?5:0;
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // pool Full → รีไซเคิล (Minibossต้องเกิดเสมอ ไม่งั้นเวฟไม่ผ่าน)
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.32,1.72,2.18,2.72,3.35][this.stageIndex]||3.35,waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
-    e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*([1,1.05,1.12,1.20,1.30,1.42][this.stageIndex]||1.42)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
+    e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
     e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:this.stageIndex===5?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling'; e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
@@ -4596,19 +4735,98 @@ class Game extends Phaser.Scene {
   }
   setupWaveObjective(w,p){
     this.clearWaveObjective();
-    if(this.stageIndex>4)return;   // Waitบแรกเปิดใช้กับ Chapter 1 ตามลำดับงาน
-    if(!this._waveObjectiveBag||!this._waveObjectiveBag.length)this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(['survive','hunt','purge','capture'].slice());
-    const type=this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type],color=CH1_OBJECTIVE_COLORS[this.stageIndex]||0xffd166;
+    if(!this._waveObjectiveBag||!this._waveObjectiveBag.length){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
+    const type=this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
     const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,color,progress:0,target:0,done:false};
     if(type==='survive')o.target=Math.max(1,p.dur||48);
     else if(type==='hunt'){
       o.target=2+(w>=4?1:0)+(this.stageIndex>=3?1:0);o.desc='Kill the marked Elite targets: '+o.target+' before time runs out';this.spawnObjectiveElite();
     }else if(type==='purge'){
       o.target=3+(w>=4?1:0);o.desc='Escort the wisp to purify '+o.target+' cores';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);this.spawnPurifyWisp();
+    }else if(type==='cleanAir'){
+      o.target=Math.max(32,Math.round((p.dur||52)*0.72));o.desc='Stay in the moving clean-air ring for '+o.target+' seconds';this.spawnCleanAirZone();
+    }else if(type==='defendNectar'){
+      o.target=Math.max(34,Math.round((p.dur||52)*.74));o.desc='Keep at least one flower alive for '+o.target+' seconds';this.spawnNectarGarden();
+    }else if(type==='seasonCycle'){
+      o.target=Math.max(30,Math.round((p.dur||52)*.68));o.desc='Follow the active seasonal sanctuary for '+o.target+' seconds';this.spawnSeasonSanctuaries();
+    }else if(type==='breakRoots'){
+      o.target=4;o.desc='Destroy all '+o.target+' crown-root anchors before time expires';this.spawnRootAnchors(o.target);
     }else{
       o.target=12+w*2;o.desc='Stand in the capture zone for '+o.target+' seconds';this.spawnCaptureZone();
     }
     this.renderWaveObjectiveHUD();
+  }
+  spawnCleanAirZone(){
+    const o=this.waveObjective;if(!o||o.type!=='cleanAir')return;const pos=this.objectivePosition(0,1,110,220),r=96;
+    this._cleanAir={x:pos.x,y:pos.y,tx:pos.x,ty:pos.y,t:0,moveIn:4.5,r,damageIn:0};
+    this._cleanAirZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,0.12).setStrokeStyle(5,o.color,0.88).setDepth(1));this._cleanAirZone.radiusGoal=r;
+    this._cleanAirRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_ring').setTint(o.color).setDisplaySize(r*2.15,r*1.58).setAlpha(.72).setDepth(2));
+    this._cleanAirWisp=this.camWorld(this.add.image(pos.x,pos.y-22,'ch2_mycelium_enemy_atlas',7).setScale(.24).setDepth(pos.y+3));
+    this.tweens.add({targets:this._cleanAirRing,rotation:TAU,alpha:{from:.48,to:.82},duration:1700,repeat:-1,ease:'Linear'});
+  }
+  tickCleanAir(dt){
+    const o=this.waveObjective,c=this._cleanAir;if(!o||o.type!=='cleanAir'||!c)return;c.t+=dt;c.moveIn-=dt;
+    if(c.moveIn<=0){const p=this.objectivePosition(0,1,210,420);c.tx=p.x;c.ty=p.y;c.moveIn=5.2;}
+    const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy),step=Math.min(d,46*dt);if(d>1){c.x+=dx/d*step;c.y+=dy/d*step;}
+    for(const q of [this._cleanAirZone,this._cleanAirRing])if(q&&q.active)q.setPosition(c.x,c.y);if(this._cleanAirWisp&&this._cleanAirWisp.active)this._cleanAirWisp.setPosition(c.x,c.y-22+Math.sin(c.t*4)*5).setDepth(c.y+3);
+    const inside=this.dist(this.player.x,this.player.y,c.x,c.y)<=c.r;o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:0),0,o.target);this._cleanAirZone.setFillStyle(o.color,inside?.20:.07);
+    if(!inside){c.damageIn-=dt;if(c.damageIn<=0){c.damageIn=1.15;this.hurtPlayer(Math.round(5+this.stageIndex*1.2),.35);this.vfxHitRing(this.player.x,this.player.y,0xa461d8,false);}}
+    if(o.progress>=o.target)this.completeWaveObjective();
+  }
+  spawnRootAnchors(n=4){
+    const o=this.waveObjective;if(!o||o.type!=='breakRoots')return;for(let i=0;i<n;i++){const p=this.objectivePosition(i,n,285,440);let node=this.waveNodes.getFirstDead(false);if(!node)node=this.waveNodes.create(p.x,p.y,'ch2_root_enemy_atlas',7);else{node.setTexture('ch2_root_enemy_atlas',7).setActive(true).setVisible(true).setPosition(p.x,p.y);if(node.body)node.body.enable=true;}if(!node)continue;
+      node.hp=150*(1+(this.stageDiff||1)*.18);node.maxhp=node.hp;node._waveObjectiveNode=true;node._rootAnchor=true;node._coreLocked=false;node.setScale(.48).setDepth(node.y+1);this.camWorld(node);if(node.body){node.body.setAllowGravity(false);node.body.setImmovable(true);node.body.setCircle(48,80,78);}
+      node._objectiveCue=this.camWorld(this.add.image(node.x,node.y,'vfx_ring').setTint(0xd56bff).setDepth(node.y).setDisplaySize(145,110).setAlpha(.62));this.tweens.add({targets:node._objectiveCue,rotation:TAU,alpha:{from:.38,to:.78},duration:1350+i*120,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.vfxSpawnPoof(node.x,node.y);
+    }
+  }
+  tickRootThrone(dt){
+    if(this.stageIndex!==9||!['wave','mini','boss'].includes(this.mode))return;if(!this._rootThrone)this._rootThrone={t:4.5,pulse:0};const r=this._rootThrone;r.t-=dt;if(r.t>0)return;r.pulse++;r.t=this.mode==='boss'?7.8:10.5;
+    if(r.pulse%2){this.showBanner('🌳 Throne Pulse','The living floor erupts in three delayed root marks',650);for(let i=0;i<3;i++){const a=i*TAU/3+Math.random()*.6,d=Phaser.Math.Between(85,185);this.spawnHazard(this.player.x+Math.cos(a)*d,this.player.y+Math.sin(a)*d,60,Math.round(12+this.stageIndex*2.2),0xd56bff);}}
+    else{this.showBanner('👑 Crown Recall','The throne pulls every memory toward its first root',650);this.drainPull={x:0,y:0,t:2.0,strength:this.mode==='boss'?125:90};if(this.mode==='wave'&&this.enemies.countActive(true)<this.maxLive-2)this.spawnEnemy('siege');}
+  }
+
+  seasonInfo(i){
+    return [
+      {name:'Spring Renewal',emoji:'🌸',color:0xff9fcf,sub:'The garden restores its wounded creatures'},
+      {name:'Summer Flare',emoji:'☀️',color:0xffb12b,sub:'Solar warnings ignite around your path'},
+      {name:'Autumn Rush',emoji:'🍂',color:0xff7040,sub:'Leafblades sweep in from changing lanes'},
+      {name:'Winter Crown',emoji:'❄️',color:0x8fdcff,sub:'Frost volleys close from the arena rim'}
+    ][i&3];
+  }
+  tickSeasonArena(dt){
+    if(this.stageIndex!==8||!['wave','mini','boss'].includes(this.mode))return;
+    if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};const s=this._seasonState;s.t-=dt;if(s.t>0)return;
+    s.idx=(s.idx+1)%4;s.cycle++;s.t=this.mode==='boss'?8.2:10.0;const info=this.seasonInfo(s.idx);this.showBanner(info.emoji+' '+info.name,info.sub,720);this.screenFlash(info.color,.16,320);
+    if(s.idx===0){this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.055);});}
+    else if(s.idx===1){for(let i=0;i<3;i++){const a=i*TAU/3+Math.random()*.5;this.spawnHazard(this.player.x+Math.cos(a)*Phaser.Math.Between(80,175),this.player.y+Math.sin(a)*Phaser.Math.Between(80,175),58,Math.round(10+this.stageIndex*2.1),info.color);}}
+    else if(s.idx===2&&this.mode==='wave'&&this.enemies.countActive(true)<this.maxLive-3){for(let i=0;i<2;i++)this.spawnEnemy('dasher',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.58);}
+    else if(s.idx===3){const n=10,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;const a=i*TAU/n,x=this.player.x+Math.cos(a)*260,y=this.player.y+Math.sin(a)*260;this.foeShot(x,y,a+Math.PI,230,Math.round(9+this.stageIndex*1.7),info.color,.96);}}
+  }
+  spawnSeasonSanctuaries(){
+    const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;this._seasonShrines=[];if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};
+    const cx=this.player.x,cy=this.player.y,r=215;for(let i=0;i<4;i++){const a=-Math.PI/2+i*TAU/4,info=this.seasonInfo(i),x=Phaser.Math.Clamp(cx+Math.cos(a)*r,-WORLD/2+110,WORLD/2-110),y=Phaser.Math.Clamp(cy+Math.sin(a)*r,-WORLD/2+110,WORLD/2-110);
+      const zone=this.camWorld(this.add.circle(x,y,92,info.color,.10).setStrokeStyle(5,info.color,.72).setDepth(y-2)),ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(info.color).setDisplaySize(190,145).setAlpha(.48).setDepth(y-1)),label=this.camWorld(this.add.text(x,y,info.emoji,{fontSize:'30px'}).setOrigin(.5).setDepth(y+1));this.tweens.add({targets:ring,rotation:(i%2?1:-1)*TAU,duration:2600+i*180,repeat:-1,ease:'Linear'});this._seasonShrines.push({x,y,idx:i,zone,ring,label,r:92});}
+  }
+  tickSeasonObjective(dt){
+    const o=this.waveObjective;if(!o||o.type!=='seasonCycle'||!this._seasonShrines)return;const active=this._seasonState?this._seasonState.idx:0;let target=null;
+    for(const s of this._seasonShrines){const on=s.idx===active,inside=on&&this.dist(this.player.x,this.player.y,s.x,s.y)<=s.r;s.zone.setFillStyle(this.seasonInfo(s.idx).color,inside?.28:on?.17:.055).setStrokeStyle(on?7:3,this.seasonInfo(s.idx).color,on?.98:.38);s.ring.setAlpha(on?.78:.24).setScale(on?1.08:.92);s.label.setScale(on?1.18:.88);if(on)target=s;if(inside)o.progress=Phaser.Math.Clamp(o.progress+dt,0,o.target);}
+    if(target&&o.progress>=o.target)this.completeWaveObjective();
+  }
+
+  spawnNectarGarden(){
+    const o=this.waveObjective;if(!o||o.type!=='defendNectar')return;this._nectarFlowers=[];this._nectarPulse=0;
+    for(let i=0;i<3;i++){const p=this.objectivePosition(i,3,185,300),sprite=this.camWorld(this.add.image(p.x,p.y,'ch2_nectar_enemy_atlas',7).setScale(.34).setDepth(p.y+2)),ring=this.camWorld(this.add.image(p.x,p.y+18,'vfx_ring').setTint(0xffc95c).setDisplaySize(150,105).setAlpha(.44).setDepth(p.y-1));
+      this._nectarFlowers.push({x:p.x,y:p.y,hp:100,maxhp:100,sprite,ring,alive:true});this.tweens.add({targets:ring,rotation:TAU,alpha:{from:.28,to:.56},duration:1900+i*170,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
+  }
+  tickNectarGarden(dt){
+    const o=this.waveObjective,flowers=this._nectarFlowers;if(!o||o.type!=='defendNectar'||!flowers||!flowers.length)return;let alive=0;
+    for(const f of flowers){if(!f.alive)continue;alive++;let attackers=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,f.x,f.y)<145)attackers++;});
+      f.hp-=attackers*2.6*dt;if(this.dist(this.player.x,this.player.y,f.x,f.y)<135)f.hp=Math.min(f.maxhp,f.hp+11*dt);
+      if(f.hp<=0){f.hp=0;f.alive=false;alive--;if(f.sprite)f.sprite.setVisible(false);if(f.ring)f.ring.setVisible(false);this.burst(f.x,f.y,0xffc95c);Sfx.boom();}
+      else{const pulse=.31+Math.sin((this.elapsed||0)*5+f.x*.01)*.02;if(f.sprite)f.sprite.setScale(pulse).setTint(f.hp<35?0xff6b8a:0xffffff);if(f.ring)f.ring.setTint(attackers?0xff6b8a:0xffc95c);}}
+    if(alive<=0){this.hurtPlayer(24,.8);o.progress=Math.max(0,o.progress-7);this.showBanner('🥀 Nectar Bed Lost','The hive drains your life — the flowers regrow at half strength',1100);for(const f of flowers){f.hp=50;f.alive=true;if(f.sprite)f.sprite.setVisible(true).clearTint();if(f.ring)f.ring.setVisible(true);}alive=3;}
+    o.progress=Phaser.Math.Clamp(o.progress+dt,0,o.target);if(this.objNodeG){this.objNodeG.clear();for(const f of flowers){if(!f.alive)continue;const w=72,frac=f.hp/f.maxhp;this.objNodeG.fillStyle(0x190b24,.78).fillRoundedRect(f.x-w/2,f.y-78,w,8,4);this.objNodeG.fillStyle(frac<.35?0xff5f7a:0xffc95c,.95).fillRoundedRect(f.x-w/2+2,f.y-76,(w-4)*frac,4,2);}}
+    if(o.progress>=o.target)this.completeWaveObjective();
   }
   objectivePosition(i=0,n=1,minR=240,maxR=390){
     const lim=WORLD/2-130;let pos={x:this.player.x,y:this.player.y};
@@ -4638,7 +4856,7 @@ class Game extends Phaser.Scene {
   destroyWaveObjectiveNode(node){
     if(!node||!node.active)return;const x=node.x,y=node.y;if(node._objectiveCue){this.tweens.killTweensOf(node._objectiveCue);node._objectiveCue.destroy();node._objectiveCue=null;}
     node._waveObjectiveNode=false;node.setActive(false).setVisible(false);if(node.body)node.body.enable=false;this.burst(x,y,this.waveObjective?.color||0xffd166);
-    const o=this.waveObjective;if(o&&o.type==='purge'&&!o.done){o.progress++;this.renderWaveObjectiveHUD();if(o.progress>=o.target)this.completeWaveObjective();}
+    const o=this.waveObjective;if(o&&(o.type==='purge'||o.type==='breakRoots')&&!o.done){o.progress++;this.renderWaveObjectiveHUD();if(o.progress>=o.target)this.completeWaveObjective();}
   }
   spawnCaptureZone(){
     const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=140;
@@ -4728,6 +4946,15 @@ class Game extends Phaser.Scene {
     else if(o.type==='purge'){
       this.tickPurifyWisp(dt);
     }
+    else if(o.type==='cleanAir'){
+      this.tickCleanAir(dt);if(!this.waveObjective)return;
+    }
+    else if(o.type==='defendNectar'){
+      this.tickNectarGarden(dt);if(!this.waveObjective)return;
+    }
+    else if(o.type==='seasonCycle'){
+      this.tickSeasonObjective(dt);if(!this.waveObjective)return;
+    }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
       o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}
     if(o.type!=='purge'&&this.objNodeG)this.objNodeG.clear();   // เคลียร์หลอดแกน (แยกจาก else-if chain กันไปบLocked capture)
@@ -4735,7 +4962,7 @@ class Game extends Phaser.Scene {
   }
   renderWaveObjectiveHUD(){
     const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);return;}
-    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':o.type==='capture'?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target;
+    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar'||o.type==='seasonCycle')?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target;
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
   }
   completeWaveObjective(){
@@ -4748,7 +4975,8 @@ class Game extends Phaser.Scene {
   clearWaveObjective(){
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;});
-    for(const k of ['_captureZone','_captureRing']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}
+    for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
+    for(const k of ['_captureZone','_captureRing','_cleanAirZone','_cleanAirRing','_cleanAirWisp']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);
@@ -4761,7 +4989,7 @@ class Game extends Phaser.Scene {
     if(this.mode==='wave'){
       const _obj=this.waveObjective, _timed=(!_obj||_obj.type==='survive');   // นับถอยหลังเฉพาะเวฟ survive · เวฟภารกิจอื่นต้องเคลียร์ให้จบ (ไม่หมดเวลา)
       if(_timed)this.waveTimer-=dt;
-      this.tickWaveObjective(dt);
+      if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);this.tickWaveObjective(dt);
       if(this.mode!=='wave')return;
       this.spawnAcc-=dt;
       if(this.spawnAcc<=0){const idleP=this._idleP||0,pressure=Math.min(1,this.wavePressure()+idleP),dynamicInterval=this.spawnInterval*(1-pressure*0.32);this.spawnAcc=dynamicInterval;
@@ -4826,14 +5054,15 @@ class Game extends Phaser.Scene {
     const adds=2+this.stageIndex;
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
-    const mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===1?0.88:(mArt?1.15:1.7))); b.baseScale=mScale; b._sqX=1; b._sqY=1;
-    const mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===1?48:(mArt?52:26))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===1?48:(mArt?18:5)));
-    b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=96;   // Miniboss HP ×1.3→×1.0 · เร่งความเร็ว 72→96 ให้เกาะติดผู้เล่น (กันบอสลากออกนอกจอ) b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // Miniboss: ฐานแฟร์ + ระดับความยาก
+    let mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===7?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))));if(this.stageIndex===8)mScale=.82;if(this.stageIndex===9)mScale=.86; b.baseScale=mScale; b._sqX=1; b._sqY=1;
+    let mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===6?58:(this.stageIndex===7?55:(this.stageIndex===1?48:(mArt?52:26))))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===6?70:(this.stageIndex===7?73:(this.stageIndex===1?48:(mArt?18:5)))));
+    if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=59;mOff=69;}b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
+    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
+    b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
+    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;
     b.atkCd=0.85; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
     if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
@@ -4845,7 +5074,7 @@ class Game extends Phaser.Scene {
   // บอสเรียกลูกน้อง "Miniboss" ออกมาช่วยตอนปรากฏตัว (flag เป็น elite เพื่อไม่ให้ตายแล้วจบเวฟ)
   spawnBossEscorts(n){
     const st=STAGES[this.stageIndex]; if(!st)return;
-    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
+    const mkey=this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const cx=this.boss?this.boss.x:this.player.x, cy=this.boss?this.boss.y:this.player.y;
     for(let i=0;i<n;i++){
       const ang=(i/n)*Math.PI*2+Phaser.Math.FloatBetween(-0.4,0.4), rad=190+Phaser.Math.Between(0,90);
@@ -4869,17 +5098,21 @@ class Game extends Phaser.Scene {
     if(this.state==='levelup'){this._queuedBossIntro='final';return;}
     if(this.state!=='play')return;
     if(this.stageIndex===4&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('story_final_hunger','FINAL ENCOUNTER','THE GREAT HUNGER','The crown shadow swallows all light — six eyes stare down, and the bottomless hunger awakens',()=>this.spawnFinalBoss());return;}
-    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · ROOT THRONE','THE ROOTMOTHER','The first root splits the canopy into a throne — she calls The Great Hunger her child, and the crown seed in your chest beats again',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · FIRST BLOOM',"ROOTMOTHER'S BUD",'The crown seed tears open a first avatar of the Rootmother — only a fragment of the power waiting deeper in the garden',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===6&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg7','CHAPTER 2 · HEART OF THE MARSH','MYCELIUM BEHEMOTH','Every fungal thread pulls tight — the whole marsh rises around one ancient heart',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===7&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg8','CHAPTER 2 · ROYAL FERMENT','FERMENT HORNET QUEEN','The protected flowers ring one final warning as violet crystal reaches the royal honey',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===8&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg9','CHAPTER 2 · BROKEN EQUINOX','CHRONOBLOOM ORCHID','The greenhouse clock strikes every season at once — the Orchid opens where time should have ended',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===9&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg10','CHAPTER 2 · THE ROOT THRONE','THE TRUE ROOTMOTHER','Every stolen memory returns to the living cathedral — the crown opens its heart for one final judgment',()=>this.spawnFinalBoss());return;}
     const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
-    const bkey=this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':'boss'+(this.stageIndex+1);
+    const bkey=this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':this.stageIndex===6?'boss7_mycelium_behemoth':this.stageIndex===7?'boss8_hornet_queen':this.stageIndex===8?'boss9_chronobloom_orchid':this.stageIndex===9?'boss10_true_rootmother':'boss'+(this.stageIndex+1);
     let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool Full → รีไซเคิล/Cleared กันบอสเป็น null
     const isArt=this.textures.exists(bkey);
-    const fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:([1,2,3].includes(this.stageIndex)?1.18:(isArt?1.55:2.5))); b.baseScale=fScale; b._sqX=1; b._sqY=1;   // บอสStage 2-4 ตัวใหญ่ขึ้น (0.88→1.18)
-    const fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)));
-    b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
+    let fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:(this.stageIndex===6?1.12:(this.stageIndex===7?1.06:([1,2,3].includes(this.stageIndex)?1.18:(isArt?1.55:2.5)))));if(this.stageIndex===8)fScale=1.08;if(this.stageIndex===9)fScale=1.12; b.baseScale=fScale; b._sqX=1; b._sqY=1;   // บอสStage 2-4 ตัวใหญ่ขึ้น (0.88→1.18)
+    let fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:(this.stageIndex===6?62:(this.stageIndex===7?58:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:(this.stageIndex===6?66:(this.stageIndex===7?70:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)))));
+    if(this.stageIndex===8){fRadius=60;fOff=68;}if(this.stageIndex===9){fRadius=62;fOff=66;}b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
@@ -4887,7 +5120,7 @@ class Game extends Phaser.Scene {
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null;
+    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.myceliumBehemoth=this.stageIndex===6;b.hornetQueen=this.stageIndex===7;b.chronobloom=this.stageIndex===8;b.trueRootmother=this.stageIndex===9;
     b.atkCd=0.8; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
     if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
@@ -4914,6 +5147,34 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(3900,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss2_walk'))b.play('boss2_walk',true);this.state='play';this.mode='boss';b.atkCd=1.7;this.spawnBossEscorts(2);this.showBanner('🫧 Valve Burst','Trapping bubbles slow you — escape the pull and find gaps between waves!',2300);});
       return;
     }
+    if(this.stageIndex===9){
+      this.time.delayedCall(1120,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setPosition(b.x,targetY+125).setScale(base*.12);this.trueRootPose(b,6,2100);
+        const eclipse=this.camWorld(this.add.circle(b.x,targetY,205,0x07000b,.88).setDepth(targetY-4).setStrokeStyle(12,0xffd166,.72));this.tweens.add({targets:eclipse,scale:{from:.08,to:1.25},alpha:{from:0,to:.88},duration:1350,ease:'Cubic.out'});
+        for(let i=0;i<20;i++){const a=i*TAU/20,ray=this.camWorld(this.add.image(b.x,targetY,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%3===0?0xffd166:i%2?0xd95cff:0x56e5bd).setScale(.06,.52).setAlpha(.94).setDepth(targetY));this.tweens.add({targets:ray,scaleX:2.75,alpha:0,duration:1250+i*28,onComplete:()=>ray.destroy()});}
+        for(let i=0;i<5;i++){const ring=this.camWorld(this.add.image(b.x,targetY,'vfx_ring').setTint(i%2?0xd95cff:0xffd166).setScale(.14).setAlpha(.9).setDepth(targetY+1));this.tweens.add({targets:ring,scale:3+i*.48,rotation:(i%2?1:-1)*TAU,alpha:0,duration:1500+i*180,onComplete:()=>ring.destroy()});}
+        this.tweens.add({targets:b,y:targetY,scale:base,alpha:1,duration:1350,ease:'Back.out',onComplete:()=>{this.trueRootPose(b,7,1100);this.screenFlash(0xffd166,.78,820);this.screenShake(920,.029);this.tweens.add({targets:eclipse,alpha:0,duration:500,onComplete:()=>eclipse.destroy()});}});});
+      this.time.delayedCall(3500,()=>cam.pan(px,py,820,'Sine.easeInOut'));
+      this.time.delayedCall(4420,()=>{if(!b.active)return;cam.startFollow(this.player,false,.2,.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss10_true_rootmother_walk'))b.play('boss10_true_rootmother_walk',true);this.state='play';this.mode='boss';b.atkCd=1.35;this.spawnBossEscorts(3);this.showBanner('🌳 THE TRUE ROOTMOTHER','Four phases. Every attack preserves a route — trust the gold warnings, not the spectacle!',2550);});
+      return;
+    }
+    if(this.stageIndex===8){
+      this.time.delayedCall(1200,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setPosition(b.x,targetY+90).setScale(base*.18);this.chronobloomPose(b,6,1800);
+        for(let i=0;i<16;i++){const a=i*TAU/16,ray=this.camWorld(this.add.image(b.x,targetY,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(this.seasonInfo(i%4).color).setScale(.06,.46).setAlpha(.92).setDepth(targetY));this.tweens.add({targets:ray,scaleX:2.35,alpha:0,duration:1100+i*32,onComplete:()=>ray.destroy()});}
+        for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,targetY,'vfx_ring').setTint(this.seasonInfo(i).color).setScale(.18).setAlpha(.88).setDepth(targetY+1));this.tweens.add({targets:ring,scale:2.6+i*.42,rotation:(i%2?1:-1)*TAU,alpha:0,duration:1400+i*170,onComplete:()=>ring.destroy()});}
+        this.tweens.add({targets:b,y:targetY,scale:base,alpha:1,duration:1120,ease:'Back.out',onComplete:()=>{this.chronobloomPose(b,7,950);this.screenFlash(0xffd166,.66,700);this.screenShake(760,.023);}});});
+      this.time.delayedCall(3300,()=>cam.pan(px,py,800,'Sine.easeInOut'));
+      this.time.delayedCall(4180,()=>{if(!b.active)return;cam.startFollow(this.player,false,.2,.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss9_chronobloom_orchid_walk'))b.play('boss9_chronobloom_orchid_walk',true);this.state='play';this.mode='boss';b.atkCd=1.45;this.spawnBossEscorts(3);this.showBanner('⏳ CHRONOBLOOM PARADOX','Read the season colors — every spectacular attack preserves a safe route!',2350);});
+      return;
+    }
+    if(this.stageIndex===7){
+      this.time.delayedCall(1250,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setPosition(b.x,targetY-120).setScale(base*.35);this.hornetQueenPose(b,6,1700);
+        for(let i=0;i<16;i++){const a=i*TAU/16,ray=this.camWorld(this.add.image(b.x,targetY,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%2?0xffc95c:0xd95cff).setScale(.08,.48).setAlpha(.9).setDepth(targetY));this.tweens.add({targets:ray,scaleX:2.15,alpha:0,duration:1050+i*35,onComplete:()=>ray.destroy()});}
+        for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,targetY,'vfx_ring').setTint(i%2?0xd95cff:0xffc95c).setScale(.2).setAlpha(.85).setDepth(targetY+1));this.tweens.add({targets:ring,scale:2.3+i*.45,rotation:(i%2?1:-1)*TAU,alpha:0,duration:1300+i*180,onComplete:()=>ring.destroy()});}
+        this.tweens.add({targets:b,y:targetY,scale:base,alpha:1,duration:1050,ease:'Back.out',onComplete:()=>{this.hornetQueenPose(b,7,900);this.screenFlash(0xffc95c,.62,650);this.screenShake(720,.022);}});});
+      this.time.delayedCall(3250,()=>cam.pan(px,py,780,'Sine.easeInOut'));
+      this.time.delayedCall(4100,()=>{if(!b.active)return;cam.startFollow(this.player,false,.2,.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss8_hornet_queen_walk'))b.play('boss8_hornet_queen_walk',true);this.state='play';this.mode='boss';b.atkCd=1.5;this.spawnBossEscorts(3);this.showBanner('👑 ROYAL FERMENT','Protect the nectar gaps — every queen attack has a readable escape route!',2300);});
+      return;
+    }
     if(this.stageIndex===4){
       this.time.delayedCall(1180,()=>{if(!b.active)return;
         const eclipse=this.camWorld(this.add.circle(b.x,targetY,176,0x020006,0.94).setDepth(targetY-4).setStrokeStyle(13,0xd95cff,0.72));
@@ -4933,6 +5194,22 @@ class Game extends Phaser.Scene {
         b._hungerHalo=[this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-3).setScale(2.05).setAlpha(0.42).setTint(0xd95cff)),this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-4).setScale(2.62).setAlpha(0.26).setTint(0xffd166))];
         b._hungerOrbs=[];for(let i=0;i<8;i++)b._hungerOrbs.push(this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(i%3===0?0xffd166:i%2?0xff3f78:0xd95cff).setDepth(b.y+2).setScale(0.38).setAlpha(0.88)));
         this.spawnBossEscorts(3);
+      });return;
+    }
+    if(this.stageIndex===6){
+      this.time.delayedCall(1250,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setScale(base*.08);this.behemothPose(b,6,1700);
+        const heart=this.camWorld(this.add.image(b.x,targetY,'vfx_glow').setTint(0xd95cff).setScale(.18).setDepth(targetY+3).setAlpha(.95));
+        const shadow=this.camWorld(this.add.circle(b.x,targetY+48,34,0x080713,.78).setDepth(targetY-4).setStrokeStyle(8,0x56e5bd,.82));
+        this.tweens.add({targets:shadow,radius:210,alpha:.18,duration:1500,ease:'Cubic.out'});
+        this.tweens.add({targets:heart,scale:1.65,rotation:TAU,alpha:{from:.95,to:.38},duration:1500,onComplete:()=>heart.destroy()});
+        for(let i=0;i<14;i++){const a=i*TAU/14,root=this.camWorld(this.add.image(b.x,targetY+30,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%2?0x56e5bd:0xd95cff).setScale(.06,.34).setAlpha(.82).setDepth(targetY-2));this.tweens.add({targets:root,scaleX:1.7+(i%3)*.18,alpha:0,duration:1050+i*45,onComplete:()=>root.destroy()});}
+        this.tweens.add({targets:b,alpha:1,scale:base,duration:1650,ease:'Back.out',onComplete:()=>{if(!b.active)return;this.behemothPose(b,7,1200);this.screenFlash(0x7d3cff,.48,620);this.screenShake(760,.022);Sfx.bossWarn();shadow.destroy();}});
+      });
+      this.time.delayedCall(3300,()=>{if(b.active)this.showBanner('🍄 MYCELIUM BEHEMOTH','The marsh has one heart — and every creature is part of its body',2500);});
+      this.time.delayedCall(4500,()=>cam.pan(px,py,850,'Sine.easeInOut'));
+      this.time.delayedCall(5450,()=>{if(!b.active)return;cam.startFollow(this.player,false,.2,.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss7_mycelium_behemoth_walk'))b.play('boss7_mycelium_behemoth_walk',true);this.state='play';this.mode='boss';b.atkCd=1.65;
+        for(const t of ['basic','fast','shooter']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-190,190),b.y+Phaser.Math.Between(-120,120));}
+        this.showBanner('🫀 The Marsh Heart Beats','Read the violet core: every major attack begins with a distinct pose',2200);
       });return;
     }
     if(this.stageIndex!==0){
@@ -4966,7 +5243,7 @@ class Game extends Phaser.Scene {
   }
   // ฉากบอสตาย: สโลว์โมชัน + จอวาบ + ระเบิดเป็นชุด + คลื่นกระแทก
   bossDefeat(x,y){
-    const grand=this.stageIndex===4;if(grand)this.showBanner('✨ The Hunger Crumbles','All flavor is returning to the world!',2200);
+    const grand=this.stageIndex===4||this.stageIndex===6||this.stageIndex===7||this.stageIndex===8||this.stageIndex===9;if(grand)this.showBanner(this.stageIndex===9?'🌳 The Root Throne Falls':this.stageIndex===8?'⏳ The Broken Equinox Blooms':this.stageIndex===7?'👑 The Ferment Crown Shatters':this.stageIndex===6?'✨ The Marsh Heart Falls':'✨ The Hunger Crumbles',this.stageIndex===9?'Every stolen memory returns to its owner — Chapter 2 is complete!':this.stageIndex===8?'The greenhouse clock releases every season back into its rightful path!':this.stageIndex===7?'Royal honey rains as harmless golden light — the Nectar Hive is free!':this.stageIndex===6?'The fungal network releases every trapped memory into the clean air!':'All flavor is returning to the world!',2200);
     Sfx.clear(); this.hitStop(grand?140:90); this.screenFlash(0xffffff,grand?0.92:0.7,grand?680:420); this.screenShake(grand?900:600,grand?0.024:0.016);
     for(let i=0;i<(grand?11:5);i++) this.time.delayedCall(60+i*(grand?70:80),()=>{
       this.burst(x+Phaser.Math.Between(grand?-95:-50,grand?95:50),y+Phaser.Math.Between(grand?-95:-50,grand?95:50),[0xffd166,0xff5f97,0xd95cff,0xbfe8ff][i%4]); });
@@ -5002,11 +5279,11 @@ class Game extends Phaser.Scene {
     this.grantCurrencyReward(2+(this.stageIndex||0)+((this.stageDiff||1)-1)*2,this.currencyTierFor(),'🏆 Boss Down! Currency gained');
     if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
       this.showBanner('🌙 ENDLESS round '+cleared+' complete','Checkpoint saved · Sugar +'+bonus+(cleared%3===0?' · secret boss defeated!':''),2600);this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='breather')this.startWave(0,false);});return;}
-    const next=this.stageIndex+1,canUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next;
-    if(canUnlock){Save.data.unlockedStage=next;Save.save();}
+    const next=this.stageIndex+1,progressUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next,canUnlock=progressUnlock&&isStageReady(next);
+    if(progressUnlock){Save.data.unlockedStage=next;Save.save();}
     if(!Save.data.diffBest)Save.data.diffBest=[];if((this.stageDiff||1)>(Save.data.diffBest[this.stageIndex]||0)){Save.data.diffBest[this.stageIndex]=this.stageDiff||1;Save.save();}   // จำความยากสูงสุดที่ผ่าน
     this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();
-    this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked Stage '+(next+1)):null));
+    this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked '+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null)));
   }
   // v4.23: เลิกให้เลือกกล่อง (การเลือกแบบไม่รู้ผล = ไม่มีความหมาย) → สุ่มรางวัลให้เลยแล้วโชว์ผลชัด ๆ
   revealStageReward(note){
@@ -5040,11 +5317,11 @@ class Game extends Phaser.Scene {
   }
   enterPortal(player,p){
     if(!p.active||p.used||this.mode!=='portal')return;p.used=true;this.mode='transition';this.tweens.killTweensOf(p);p.setActive(false).setVisible(false);if(p.body)p.body.enable=false;this.portalTarget=null;
-    const last=this.stageIndex>=STAGES.length-1;Save.addSugar(this.sugarStage);this.gainCharExp(40+this.stageIndex*25);
-    if(!last&&(Save.data.unlockedStage||0)<this.stageIndex+1){Save.data.unlockedStage=this.stageIndex+1;Save.save();}
+    const next=this.stageIndex+1,last=!isStageReady(next);Save.addSugar(this.sugarStage);this.gainCharExp(40+this.stageIndex*25);
+    if(next<STAGES.length&&(Save.data.unlockedStage||0)<next){Save.data.unlockedStage=next;Save.save();}
     this.screenFlash(0xb98cff,0.75,520);Sfx.clear();
     if(last){this.time.delayedCall(500,()=>this.victory());return;}
-    const next=this.stageIndex+1;this.player.setVelocity(0,0);this.state='loading';
+    this.player.setVelocity(0,0);this.state='loading';
     if(window.GameLoader)window.GameLoader.show('Opening the door to the next stage...',0.18);
     this.time.delayedCall(520,()=>this.ensureStageAudio(next,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);
       if(window.GameLoader){window.GameLoader.set(1,'Entering a new stage!');this.time.delayedCall(160,()=>window.GameLoader.hide());}}));
@@ -5066,13 +5343,13 @@ class Game extends Phaser.Scene {
     this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.35); // heal reward
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องไอเทมที่สะสมทั้งด่าน (แจกจริง · duplicate → sugarStage ก่อนฝาก)
     Sfx.clear();
-    const last=this.stageIndex>=STAGES.length-1,guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
+    const next=this.stageIndex+1,last=!isStageReady(next),guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
     this._firstMastery=!Save.data.stageMastery[this.stageIndex];if(this._firstMastery){Save.data.stageMastery[this.stageIndex]=true;this.sugarStage+=40+this.stageIndex*25;Save.save();}
     this._dailyBonus=0;if(this._dailyRun){const o=this.ensureDaily();if(!o.data.challengeDone&&o.data.challengeDay===o.spec.key){o.data.challengeDone=true;this._dailyBonus=120+o.spec.diff*30;this.sugarStage+=this._dailyBonus;Save.save();}this._dailyRun=false;}
     Save.addSugar(this.sugarStage);                                   // ฝาก Sugar + โบนัส Mastery/Daily
     this.gainCharExp(Math.round((75 + this.stageIndex*35)*guide.reward)); // catch-up EXP มากขึ้นเมื่อผ่านด่านด้วยพลังต่ำกว่าคำแนะนำ
     this._powerAfter=Save.power(this.character);
-    if(!last && (Save.data.unlockedStage||0) < this.stageIndex+1){ Save.data.unlockedStage=this.stageIndex+1; Save.save(); }
+    if(next<STAGES.length&&(Save.data.unlockedStage||0)<next){ Save.data.unlockedStage=next; Save.save(); }
     // Mochi Bazaar restock: ผ่านด่านใดก็ได้ = สุ่มร้านใหม่ · stock อ้างอิง Zone Level ของด่านที่เพิ่งผ่าน
     Save.data.bazaarSeed=(Save.data.bazaarSeed||0)+1; Save.data.bazaarZone=this.zoneLevel(); Save.data.bazaarBought=[]; Save.save();
     this._summaryDoubled=false;   // รีเซ็ตสิทธิ์ดูโฆษณา x2 ต่อการเคลียร์ด่าน
@@ -5385,7 +5662,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
-    this.xp+=n;
+    this.xp+=n*(this.player.xpMul||1);
     while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+4); this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
@@ -5616,17 +5893,19 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===2) key=(type==='fast'||type==='dasher')?'e_fire_chili':type==='shooter'?'e_fire_grinder':type==='bomber'?'e_fire_bomber':(type==='tank'||type==='siege')?'e_fire_golem':'e_fire_ember';
     if(this.stageIndex===3) key=(type==='fast'||type==='dasher')?'e_ice_shard':type==='shooter'?'e_ice_caster':type==='bomber'?'e_ice_bomber':(type==='tank'||type==='siege')?'e_ice_guardian':'e_ice_wisp';
     if(this.stageIndex===4) key=(type==='fast'||type==='dasher')?'e_crown_ripper':type==='shooter'?'e_banquet_eye':type==='bomber'?'e_maw_truffle':(type==='tank'||type==='siege')?'e_royal_oven_sentinel':'e_void_crumb';
-    const ch2Frame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5}[type]??0;if(this.stageIndex===5)key='ch2_enemy_atlas';
-    if(!e) e=this.enemies.create(x,y,key,this.stageIndex===5?ch2Frame:0);
-    else { e.setTexture(key,this.stageIndex===5?ch2Frame:0); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
+    const ch2Frame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5}[type]??0,mycoFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,sporeling:6}[type]??0,nectarFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,grub:6}[type]??0,seasonFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0,rootFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0;let atlasFrame=0;
+    if(this.stageIndex===5){key='ch2_enemy_atlas';atlasFrame=ch2Frame;}else if(this.stageIndex===6){key='ch2_mycelium_enemy_atlas';atlasFrame=mycoFrame;}else if(this.stageIndex===7){key='ch2_nectar_enemy_atlas';atlasFrame=nectarFrame;}else if(this.stageIndex===8){key='ch2_seasons_enemy_atlas';atlasFrame=seasonFrame;}else if(this.stageIndex===9){key='ch2_root_enemy_atlas';atlasFrame=rootFrame;}
+    if(!e) e=this.enemies.create(x,y,key,atlasFrame);
+    else { e.setTexture(key,atlasFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool Full (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+Wave (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=[1,1.42,1.88,2.42,3.05,3.72][this.stageIndex]||3.72,waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,s=stageCurve*waveCurve*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
-    e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
+    e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;
     e.bloomStacks=0;e.bloomUntil=0;e.frostbite=this.stageIndex===3;
     let scale=1;
-    if(type==='acid'){ e.hp=26*s; e.spd=52; e.dmg=11; e.xp=2; e.acid=true; e.shootCd=Phaser.Math.FloatBetween(0.8,1.6); e.setCircle(22,26,26); }
+    if(type==='sporeling'){e.hp=7*s;e.spd=96;e.dmg=7;e.xp=0;e.setCircle(13,5,5);scale=.26;}
+    else if(type==='acid'){ e.hp=26*s; e.spd=52; e.dmg=11; e.xp=2; e.acid=true; e.shootCd=Phaser.Math.FloatBetween(0.8,1.6); e.setCircle(22,26,26); }
     else if(type==='fast'){ e.hp=10*s; e.spd=122; e.dmg=9; e.xp=1; e.setCircle(15,4,4); }
     else if(type==='tank'){ e.hp=80*s; e.spd=36; e.dmg=18; e.xp=4; e.setCircle(26,5,5); }
     else if(type==='shooter'){ e.hp=19*s; e.spd=62; e.dmg=9; e.xp=2; e.shooter=true; e.shootCd=Phaser.Math.FloatBetween(1.1,2.0); e.setCircle(17,5,5); }
@@ -5634,7 +5913,7 @@ class Game extends Phaser.Scene {
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
     else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
-    const dmgCurve=[1,1.05,1.12,1.20,1.30,1.42][this.stageIndex]||1.42;e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg));
+    const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1)));if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;
     if(this.stageIndex===0&&type!=='acid'){
       scale=(type==='tank'||type==='siege')?0.86:(type==='fast'||type==='dasher')?0.68:0.74;
       e.setCircle(type==='tank'||type==='siege'?25:20,type==='tank'||type==='siege'?23:28,type==='tank'||type==='siege'?23:28);
@@ -5649,13 +5928,21 @@ class Game extends Phaser.Scene {
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
     if(this.stageIndex===5){const role={basic:['Ferment Sprout',0.38,45,83,83],fast:['Vine Hunter',0.38,43,85,85],dasher:['Vine Hunter',0.38,43,85,85],shooter:['Spore Lantern',0.40,44,84,84],bomber:['Rotten Fruit Pod',0.42,47,81,81],tank:['Root-Back Beetle',0.48,53,75,75],siege:['Thorn Oracle',0.48,50,78,78]}[type]||['Ferment Sprout',0.38,45,83,83];
       e.roleName=role[0];e.tintColor=null;scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);}
+    if(this.stageIndex===6){const role={basic:['Mycelium Drifter','drifter',.39,45,83,83],fast:['Cap Hopper','hopper',.38,43,85,85],dasher:['Cap Hopper','hopper',.38,43,85,85],shooter:['Puffcap Sniper','sniper',.40,45,83,83],bomber:['Mold Sac','moldSac',.42,47,81,81],tank:['Mycelium Bulwark','bulwark',.48,54,74,74],siege:['Threadweaver Oracle','oracle',.44,48,80,80],sporeling:['Sporeling','sporeling',.26,34,94,94]}[type]||['Mycelium Drifter','drifter',.39,45,83,83];
+      e.roleName=role[0];e.mycoRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.mycoRole==='oracle'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.5,2.3);}if(e.mycoRole==='bulwark'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0x9ae66e).setDisplaySize(235,168).setAlpha(.34).setDepth(e.y-1));}}
+    if(this.stageIndex===7){const role={basic:['Nectar Drone','drone',.37,43,85,85],fast:['Dartwing','dartwing',.36,42,86,86],dasher:['Dartwing','dartwing',.36,42,86,86],shooter:['Pollen Sniper','pollenSniper',.39,44,84,84],bomber:['Honey Bomb','honeyBomb',.42,47,81,81],tank:['Wax Shieldbearer','waxGuard',.47,53,75,75],siege:['Choir Moth','choirMoth',.43,48,80,80],grub:['Tiny Grub','grub',.25,34,94,94]}[type]||['Nectar Drone','drone',.37,43,85,85];
+      e.roleName=role[0];e.nectarRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.nectarRole==='choirMoth'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.4,2.1);}if(e.nectarRole==='waxGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0xffc95c).setDisplaySize(225,160).setAlpha(.32).setDepth(e.y-1));}}
+    if(this.stageIndex===8){const role={basic:['Spring Budling','budling',.37,43,85,85],fast:['Summer Sunscarab','sunscarab',.35,41,87,87],dasher:['Autumn Leafblade','leafblade',.39,44,84,84],shooter:['Winter Frostbell','frostbell',.38,43,85,85],bomber:['Stormcloud Fruit','stormfruit',.43,47,81,81],tank:['Equinox Gardener','equinoxGuard',.48,54,74,74],siege:['Seasonal Wisp','seasonWisp',.42,47,81,81]}[type]||['Spring Budling','budling',.37,43,85,85];
+      e.roleName=role[0];e.seasonRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.seasonRole==='seasonWisp'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.35,2.0);}if(e.seasonRole==='equinoxGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0x8fdcff).setDisplaySize(230,165).setAlpha(.33).setDepth(e.y-1));}}
+    if(this.stageIndex===9){const role={basic:['Crown Rootling','rootling',.38,44,84,84],fast:['Thorn Charger','thornCharger',.39,44,84,84],dasher:['Bramble Assassin','brambleAssassin',.40,45,83,83],shooter:['Sap Oracle','sapOracle',.41,46,82,82],bomber:['Memory Seed Bomb','seedBomb',.44,48,80,80],tank:['Bark Bulwark','barkGuard',.49,55,73,73],siege:['Root Choir Leech','rootChoir',.44,49,79,79]}[type]||['Crown Rootling','rootling',.38,44,84,84];
+      e.roleName=role[0];e.rootRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.rootRole==='rootChoir'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.3,1.95);}if(e.rootRole==='barkGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0xd56bff).setDisplaySize(235,168).setAlpha(.34).setDepth(e.y-1));}}
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     // เล่นอนิเมชันเดิน/ยิงถ้าเป็นชนิดที่มีชีต (ไม่งั้นหยุด anim ที่ค้างจาก pool + คืนเฟรมนิ่ง)
     if(this.anims.exists(key+'_walk')){ e.setFlipX(false); e.play(key+'_walk',true); }
-    else if(e.anims){ e.anims.stop(); e.setFrame(this.stageIndex===5?ch2Frame:0); e.setFlipX(false); }
+    else if(e.anims){ e.anims.stop(); e.setFrame(atlasFrame); e.setFlipX(false); }
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
     this.camWorld(e);
-    this.vfxSpawnPoof(x,y);
+    this.vfxSpawnPoof(x,y);return e;
   }
 
   /* ---------- COMBAT ---------- */
@@ -6247,15 +6534,17 @@ class Game extends Phaser.Scene {
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;
     }
-    if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
+    if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;
+    if((e.isBoss||e.isMini)&&this.player.bossDmg)amount*=1+this.player.bossDmg;
+    if((this.stageIndex>=6&&this.stageIndex<=9)&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'&&e.nectarRole!=='waxGuard'&&e.seasonRole!=='equinoxGuard'&&e.rootRole!=='barkGuard'){let guarded=false;this.enemies.children.iterate(o=>{if(!guarded&&o&&o.active&&o!==e&&((o.mycoRole==='bulwark'&&this.stageIndex===6)||(o.nectarRole==='waxGuard'&&this.stageIndex===7)||(o.seasonRole==='equinoxGuard'&&this.stageIndex===8)||(o.rootRole==='barkGuard'&&this.stageIndex===9))&&this.dist(o.x,o.y,e.x,e.y)<175)guarded=true;});if(guarded)amount*=this.stageIndex===9?.78:this.stageIndex===8?.76:this.stageIndex===7?.74:.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.8); crit=true; }
     let gate=null;
     if(e.isBoss){
-      const p2=this.stageIndex===4?0.72:(this.stageIndex===0?0.68:(this.stageIndex===1?0.65:0.50));
-      const p3=this.stageIndex===4?0.40:(this.stageIndex===0?0.35:(this.stageIndex===1?0.32:0.25));
-      if(!e.phase2)gate=p2;else if(!e.phase3)gate=p3;else if(this.stageIndex===4&&!e.phase4)gate=0.14;
+      const p2=this.stageIndex===4?0.72:(this.stageIndex===6?0.68:(this.stageIndex===7?0.70:(this.stageIndex===8?0.72:(this.stageIndex===9?0.75:(this.stageIndex===0?0.68:(this.stageIndex===1?0.65:0.50))))));
+      const p3=this.stageIndex===4?0.40:(this.stageIndex===6?0.34:(this.stageIndex===7?0.35:(this.stageIndex===8?0.38:(this.stageIndex===9?0.42:(this.stageIndex===0?0.35:(this.stageIndex===1?0.32:0.25))))));
+      if(!e.phase2)gate=p2;else if(!e.phase3)gate=p3;else if((this.stageIndex===4||this.stageIndex===9)&&!e.phase4)gate=this.stageIndex===9?0.18:0.14;
     }else if(e.isMini&&!e.phase2)gate=0.50;
     if(gate!=null){const floor=e.maxhp*gate;if(e.hp>floor&&e.hp-amount<=floor){amount=e.hp-floor;e._phaseGateLocked=true;}}
     if(e._memoryToken)e._memoryStored=(e._memoryStored||0)+amount;
@@ -6305,6 +6594,8 @@ class Game extends Phaser.Scene {
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
     if(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008)) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
     if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
+    if(this.stageIndex===6&&e.mycoRole==='drifter')this.spawnBossObject('acid',e.x,e.y,4.2);
+    if(this.stageIndex===6&&e.mycoRole==='moldSac'){const sx=e.x,sy=e.y;for(let i=0;i<2;i++)this.time.delayedCall(80+i*90,()=>{if(!this._busy())return;const child=this.spawnEnemy('sporeling');if(child)child.setPosition(sx+Phaser.Math.Between(-34,34),sy+Phaser.Math.Between(-34,34));});}
     // bomber: ระเบิดตอนตาย (เตือนสั้น ๆ ด้วยวง แล้วโดนถ้าอยู่ใกล้)
     if(e.bomber){ const bx=e.x,by=e.y, r=70;
       const ring=this.camWorld(this.add.image(bx,by,'vfx_ring').setTint(0xff7a4d).setDepth(3).setScale(0.08).setAlpha(0.85));
@@ -6316,7 +6607,7 @@ class Game extends Phaser.Scene {
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // UpdatesเงินWaitบนี้แบบ realtime
     this.clearObjectiveTargetFx(e);if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
-    e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
+    e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
@@ -6326,7 +6617,7 @@ class Game extends Phaser.Scene {
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้
   showPickupCue(o,color,baseScale){
     if(!o)return;this.hidePickupCue(o);o._pickupColor=color;o._pickupBaseScale=baseScale||1;
-    // ปรับให้ไอเทมมี "ขนาดบนสนาม" คงที่ตาม native width (กันอาร์ต SVG/PNG ความละเอียดสูงเช่น gear_gift.svg 256px โผล่ใหญ่เกินจอ)
+    // ปรับให้ไอเทมมี "ขนาดบนสนาม" คงที่ตาม native width (กันอาร์ต PNG ความละเอียดสูงเช่น gear_gift.png 256px โผล่ใหญ่เกินจอ)
     const nativeW=(o.width||36),target=o._pickupBaseScale*36; o.setScale(nativeW>0?target/nativeW:o._pickupBaseScale).setDepth(80000);
     o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
     o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
@@ -6431,7 +6722,7 @@ class Game extends Phaser.Scene {
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
-    const box=this.textures.exists('chest')?'chest':'gift';   // ใช้ PNG จริง (gear_gift.svg เรนเดอร์ดำบนมือถือ)
+    const box=this.textures.exists('chest')?'chest':'gift';   // ใช้ PNG จริง (ไม่พึ่ง SVG ที่เคยเรนเดอร์ดำบนมือถือ)
     if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
     if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost);const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
     g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
@@ -6584,7 +6875,7 @@ class Game extends Phaser.Scene {
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
-    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
+    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
@@ -6593,7 +6884,7 @@ class Game extends Phaser.Scene {
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
     if(this._inTutorial)return;   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
-    dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1);   // เกราะ + เขตคำสัตย์
+    dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
     this.player.iframe=ix||0.5; this.player.hp-=dmg; Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
     this.vfxHurtFlash();
@@ -6789,7 +7080,7 @@ class Game extends Phaser.Scene {
   }
   stage5DeathGhost(e){
     const keys=['boss5_sovereign','mb5_banquet_executioner','e_void_crumb','e_crown_ripper','e_banquet_eye','e_maw_truffle','e_royal_oven_sentinel'];if(!e||!keys.includes(e.texture.key))return;
-    const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,7).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+8).setAlpha(1));
+    const deathFrame=e.texture.key==='mb7_fungal_juggernaut'?3:7,ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,deathFrame).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+8).setAlpha(1));
     const boss=e.isBoss,mini=e.isMini;this.tweens.add({targets:ghost,y:ghost.y+(boss?28:14),scaleX:ghost.scaleX*(boss?1.12:.82),scaleY:ghost.scaleY*(boss?.76:.82),alpha:0,duration:boss?1450:mini?900:520,ease:'Cubic.in',onComplete:()=>ghost.destroy()});
   }
 
@@ -6798,9 +7089,155 @@ class Game extends Phaser.Scene {
     b._ch2PoseToken=(b._ch2PoseToken||0)+1;const token=b._ch2PoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
     this.time.delayedCall(ms,()=>{if(!b.active||b._ch2PoseToken!==token)return;const idle=b.texture.key==='boss6_rootmother'?'boss6_rootmother_idle':'mb6_sporewarden_walk';if(this.anims.exists(idle))b.play(idle,true);else b.setFrame(0);});
   }
+  juggernautPose(b,frame,ms=820){
+    if(!b||!b.active||b.texture.key!=='mb7_fungal_juggernaut')return;frame=Phaser.Math.Clamp(frame|0,0,3);
+    b._jugPoseToken=(b._jugPoseToken||0)+1;const token=b._jugPoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
+    this.time.delayedCall(ms,()=>{if(!b.active||b._jugPoseToken!==token)return;if(this.anims.exists('mb7_fungal_juggernaut_walk'))b.play('mb7_fungal_juggernaut_walk',true);else b.setFrame(0);});
+  }
+  fungalJuggernautAttack(b){
+    const fast=b.phase2?.76:1,pool=b.phase2?['quake','stampede','livingWall','sporeMortar','colonyCall','stampede']:['quake','stampede','livingWall','sporeMortar'],pick=Phaser.Utils.Array.GetRandom(pool);
+    const px=this.player.x,py=this.player.y,bd=Math.max(18,Math.round((b.dmg||32)*.54));
+    if(pick==='quake'){
+      this.juggernautPose(b,2,1050);this.showBanner('🍄 Mycelium Quake','Three rings erupt in sequence — cross each wave after it passes!',900);
+      for(let i=0;i<3;i++)this.time.delayedCall(300+i*360,()=>{if(b.active)this.bossNovaWave(b.x,b.y,190+i*72,bd+i*2,0);});b.atkCd=3.15*fast;
+    }else if(pick==='stampede'){
+      this.juggernautPose(b,1,900);this.showBanner('💥 Triple Stampede','Sidestep the violet line — it re-aims between charges!',900);
+      for(let i=0;i<(b.phase2?3:2);i++)this.time.delayedCall(i*780,()=>{if(b.active)this.chargeTelegraph(b,620,720,34);});b.atkCd=(b.phase2?3.1:2.65)*fast;
+    }else if(pick==='livingWall'){
+      this.juggernautPose(b,3,1150);this.showBanner('🛡️ Living Wall','Bulwarks advance while spores seal most of the ring — find the two gaps!',950);
+      const gap=Phaser.Math.Between(0,7);for(let i=0;i<8;i++){if(i===gap||i===(gap+4)%8)continue;const a=i*TAU/8;this.spawnBossObject('acid',px+Math.cos(a)*155,py+Math.sin(a)*155,7.5);}
+      for(let i=0;i<(b.phase2?2:1);i++){const e=this.spawnEnemy('tank');if(e)e.setPosition(b.x+(i?1:-1)*105,b.y+Phaser.Math.Between(-45,45));}b.atkCd=3.25*fast;
+    }else if(pick==='sporeMortar'){
+      this.juggernautPose(b,2,980);this.showBanner('🟣 Spore Mortar','Move through the missing wedges, then leave the impact circle!',900);const n=b.phase2?18:14,gap=Phaser.Math.Between(0,n-1);
+      this.time.delayedCall(360,()=>{if(!b.active)return;for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,205+(i%2)*48,bd-4,i%2?0xb46cff:0x56e5bd,1.08);}this.spawnHazard(px,py,86,bd+5,0xb46cff);});b.atkCd=2.85*fast;
+    }else{
+      this.juggernautPose(b,3,1200);this.showBanner('🕸️ Colony Call','Break the Mold Sacs before the marsh multiplies!',900);const types=['bomber','shooter','fast','bomber'];for(let i=0;i<(b.phase2?4:3);i++)this.time.delayedCall(i*140,()=>{if(b.active)this.spawnEnemy(types[i]);});b.atkCd=3.35*fast;
+    }
+  }
+  behemothPose(b,frame,ms=1050){
+    if(!b||!b.active||b.texture.key!=='boss7_mycelium_behemoth')return;frame=Phaser.Math.Clamp(frame|0,0,7);
+    b._behemothPoseToken=(b._behemothPoseToken||0)+1;const token=b._behemothPoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
+    this.time.delayedCall(ms,()=>{if(!b.active||b._behemothPoseToken!==token)return;if(this.anims.exists('boss7_mycelium_behemoth_walk'))b.play('boss7_mycelium_behemoth_walk',true);else b.setFrame(0);});
+  }
+  behemothMetamorph(b,phase){
+    if(!b||!b.active)return;const color=phase===3?0xd95cff:0x56e5bd;this.behemothPose(b,phase===3?7:6,phase===3?1900:1550);
+    const rays=phase===3?16:11;for(let i=0;i<rays;i++){const a=i*TAU/rays,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%3?color:0xffffff).setScale(.08,.42).setAlpha(.9).setDepth(b.y+2));this.tweens.add({targets:ray,scaleX:phase===3?2.1:1.55,alpha:0,duration:800+i*35,onComplete:()=>ray.destroy()});}
+    for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setTint(i%2?color:0x86f5ff).setScale(.3+i*.14).setAlpha(.78).setDepth(b.y+3));this.tweens.add({targets:ring,scale:phase===3?3.2+i*.28:2.35+i*.22,rotation:(i%2?1:-1)*TAU,alpha:0,duration:900+i*130,onComplete:()=>ring.destroy()});}
+    this.screenFlash(color,phase===3?.52:.34,phase===3?720:520);this.screenShake(phase===3?760:520,phase===3?.022:.014);Sfx.bossWarn();
+  }
+  myceliumBehemothAttack(b){
+    const fast=b.phase3?.68:b.phase2?.82:1,pool=b.phase3?['heartstorm','rootReaper','lattice','sporeCrown','colonyRise','heartstorm']:b.phase2?['rootReaper','mireQuake','sporeCrown','lattice','colonyRise']:['rootReaper','mireQuake','sporeCrown'];
+    const pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(20,Math.round((b.dmg||46)*.46));
+    if(pick==='rootReaper'){
+      this.behemothPose(b,2,1050);const a=Math.atan2(py-b.y,px-b.x),line=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setScale(Math.max(480,this.dist(b.x,b.y,px,py)+130)/256,.82).setTint(0x56e5bd).setAlpha(.82).setDepth(4));
+      this.showBanner('🌿 Root Reaper','Step off the green line before the claw fans outward!',820);this.tweens.add({targets:line,alpha:{from:.25,to:1},duration:130,yoyo:true,repeat:4,onComplete:()=>line.destroy()});
+      this.time.delayedCall(650,()=>{if(!b.active)return;for(let i=-4;i<=4;i++)this.foeShot(b.x,b.y,a+i*.12,425,bd,i%2?0x56e5bd:0xb46cff,1.05);this.screenShake(260,.009);});b.atkCd=2.65*fast;
+    }else if(pick==='mireQuake'){
+      this.behemothPose(b,3,1300);this.showBanner('🌊 Mire Quake','Three shockwaves expand at different speeds — cross behind each rim!',900);
+      this.bossNovaWave(b.x,b.y,235,bd,300);this.bossNovaWave(b.x,b.y,325,bd+2,720);this.bossNovaWave(b.x,b.y,420,bd+4,1180);b.atkCd=3.35*fast;
+    }else if(pick==='sporeCrown'){
+      this.behemothPose(b,4,1250);this.showBanner('☂️ Spore Crown','The crown opens — move into the missing violet wedge!',850);const n=b.phase3?24:b.phase2?20:16,gap=Phaser.Math.Between(0,n-1);
+      this.time.delayedCall(480,()=>{if(!b.active)return;for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,220+(i%2)*52,bd-3,i%2?0xb46cff:0x6fffe0,1.12);}Sfx.zap();});b.atkCd=2.85*fast;
+    }else if(pick==='lattice'){
+      this.behemothPose(b,5,1400);this.showBanner('🕸️ Mycelial Lattice','Leave the glowing intersections — the center lane stays open!',920);
+      for(const off of [-210,-105,105,210]){this.spawnHazard(px+off,py,55,bd,0x56e5bd);this.spawnHazard(px,py+off,55,bd,0xb46cff);}b.atkCd=3.15*fast;
+    }else if(pick==='colonyRise'){
+      this.behemothPose(b,6,1450);this.showBanner('🍄 Colony Rise','Bulwarks protect the Oracles — break the formation before it closes!',950);const types=b.phase3?['tank','shooter','bomber','fast','tank']:['tank','shooter','bomber','fast'];
+      for(let i=0;i<types.length;i++)this.time.delayedCall(i*140,()=>{if(b.active)this.spawnEnemy(types[i]);});for(let i=0;i<4;i++){const a=i*TAU/4;this.spawnBossObject('acid',px+Math.cos(a)*185,py+Math.sin(a)*185,8);}b.atkCd=3.55*fast;
+    }else{
+      this.behemothPose(b,7,1900);this.showBanner('🫀 HEARTSTORM','Run against the pull, cross the shockwaves, then take the open wedge!',1150);this.screenFlash(0xd95cff,.42,520);this.drainPull={x:b.x,y:b.y,t:2.25,strength:175};
+      this.bossNovaWave(b.x,b.y,270,bd+3,380);this.bossNovaWave(b.x,b.y,370,bd+5,920);
+      this.time.delayedCall(720,()=>{if(!b.active)return;const n=26,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n||i===(gap+3)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,245+(i%2)*42,bd,i%2?0xd95cff:0x56e5bd,1.15);}this.screenShake(520,.017);Sfx.bossWarn();});b.atkCd=4.05*fast;
+    }
+  }
+  royalStingerPose(b,frame,ms=900){
+    if(!b||!b.active||b.texture.key!=='mb8_royal_stinger')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._stingerPoseToken=(b._stingerPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);
+    this.time.delayedCall(ms,()=>{if(!b.active||b._stingerPoseToken!==token)return;if(this.anims.exists('mb8_royal_stinger_walk'))b.play('mb8_royal_stinger_walk',true);else b.setFrame(0);});
+  }
+  royalStingerAttack(b){
+    const fast=b.phase2?.78:1,pick=Phaser.Utils.Array.GetRandom(b.phase2?['dive','waxCage','lance','guardCall','dive']:['dive','waxCage','lance']),bd=Math.max(13,Math.round(b.dmg*.55)),px=this.player.x,py=this.player.y;
+    if(pick==='dive'){this.royalStingerPose(b,1,1000);this.showBanner('🐝 Royal Dive','The red lance locks in — sidestep the chained dives!',780);this.chargeTelegraph(b,650,610,24);if(b.phase2)this.time.delayedCall(940,()=>{if(b.active)this.chargeTelegraph(b,500,650,20);});b.atkCd=2.45*fast;}
+    else if(pick==='waxCage'){this.royalStingerPose(b,2,1100);this.showBanner('🍯 Wax Cage','Two gates stay open — cross the amber ring!',820);const n=16,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+8)%n||i===(gap+9)%n)continue;const a=i*TAU/n;this.spawnBossObject('acid',px+Math.cos(a)*150,py+Math.sin(a)*150,5.5);}b.atkCd=2.8*fast;}
+    else if(pick==='lance'){this.royalStingerPose(b,1,900);this.showBanner('🌼 Pollen Lance','Watch the fan, then cut behind the Stinger!',760);const a=Math.atan2(py-b.y,px-b.x);for(let i=-3;i<=3;i++)this.foeShot(b.x,b.y,a+i*.13,320,bd,i?0xffc95c:0xff6b8a,1.05);b.atkCd=2.15*fast;}
+    else{this.royalStingerPose(b,3,1200);this.showBanner('👑 Guard Call','Shieldbearers cover the royal flank!',800);for(const t of ['tank','shooter','fast']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-120,120),b.y+Phaser.Math.Between(-80,80));}b.atkCd=3.1*fast;}
+  }
+  hornetQueenPose(b,frame,ms=1050){
+    if(!b||!b.active||b.texture.key!=='boss8_hornet_queen')return;frame=Phaser.Math.Clamp(frame|0,0,7);const token=b._queenPoseToken=(b._queenPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);
+    this.time.delayedCall(ms,()=>{if(!b.active||b._queenPoseToken!==token)return;if(this.anims.exists('boss8_hornet_queen_walk'))b.play('boss8_hornet_queen_walk',true);else b.setFrame(0);});
+  }
+  hornetQueenMetamorph(b,phase){
+    const color=phase===3?0xd95cff:0xffc95c;this.hornetQueenPose(b,phase===3?7:6,phase===3?2050:1650);
+    for(let i=0;i<(phase===3?18:12);i++){const a=i*TAU/(phase===3?18:12),ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%3?color:0xffffff).setScale(.08,.46).setAlpha(.9).setDepth(b.y+3));this.tweens.add({targets:ray,scaleX:phase===3?2.3:1.7,alpha:0,duration:850+i*30,onComplete:()=>ray.destroy()});}
+    this.screenFlash(color,phase===3?.66:.42,phase===3?850:600);this.screenShake(phase===3?900:580,phase===3?.026:.017);Sfx.bossWarn();
+  }
+  hornetQueenAttack(b){
+    const fast=b.phase3?.62:b.phase2?.78:1,pool=b.phase3?['decree','spiral','swarm','dive','prison','decree']:b.phase2?['dive','fan','prison','swarm','spiral']:['dive','fan','prison'],pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(18,Math.round(b.dmg*.48));
+    if(pick==='dive'){this.hornetQueenPose(b,2,1250);this.showBanner('🐝 Royal Dive','Three crimson lanes — keep moving across their angle!',850);for(let i=0;i<(b.phase3?3:2);i++)this.time.delayedCall(i*460,()=>{if(b.active)this.chargeTelegraph(b,620-i*70,650+i*45,30);});b.atkCd=3.1*fast;}
+    else if(pick==='fan'){this.hornetQueenPose(b,3,980);this.showBanner('🌼 Pollen Fan','The center shot tracks ahead; dodge late through a side gap!',800);let a=Math.atan2(py-b.y,px-b.x);if(this.player.body)a=Math.atan2(py+this.player.body.velocity.y*.38-b.y,px+this.player.body.velocity.x*.38-b.x);for(let i=-5;i<=5;i++)if(i!==0)this.foeShot(b.x,b.y,a+i*.105,300+(Math.abs(i)%2)*35,bd,0xffc95c,1.08);b.atkCd=2.35*fast;}
+    else if(pick==='prison'){this.hornetQueenPose(b,4,1150);this.showBanner('🍯 Honey Prison','Amber walls form around your last position — leave before they harden!',850);for(let i=0;i<8;i++){const a=i*TAU/8;this.spawnBossObject('acid',px+Math.cos(a)*118,py+Math.sin(a)*118,6.2);}this.spawnHazard(px,py,62,bd,0xffc95c);b.atkCd=2.75*fast;}
+    else if(pick==='swarm'){this.hornetQueenPose(b,5,1350);this.showBanner('👑 Swarm Coronation','Break formation before the royal guards close in!',900);for(const t of ['tank','shooter','dasher','bomber']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-155,155),b.y+Phaser.Math.Between(-110,110));}b.atkCd=3.25*fast;}
+    else if(pick==='spiral'){this.hornetQueenPose(b,4,1200);this.showBanner('🍷 Ferment Spiral','Rotate with the violet pollen, then reverse!',850);const n=22,off=Math.random()*TAU;for(let i=0;i<n;i++)this.foeShot(b.x,b.y,off+i*TAU/n,220+(i%2)*55,bd,i%2?0xd95cff:0xffc95c,1.1);b.atkCd=2.85*fast;}
+    else{this.hornetQueenPose(b,7,1750);this.showBanner("👑 QUEEN'S DECREE",'Two shockwaves, a closing crown, one safe wedge — survive!',1150);this.screenFlash(0xd95cff,.55,600);this.bossNovaWave(b.x,b.y,280,bd+3,300);this.bossNovaWave(b.x,b.y,395,bd+6,820);this.time.delayedCall(620,()=>{if(!b.active)return;const n=28,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++)if(![gap,(gap+1)%n,(gap+2)%n,(gap+3)%n].includes(i))this.foeShot(b.x,b.y,i*TAU/n,275,bd,i%2?0xd95cff:0xffc95c,1.16);});b.atkCd=4.0*fast;}
+  }
+
+  seasonKeeperPose(b,frame,ms=950){
+    if(!b||!b.active||b.texture.key!=='mb9_season_keeper')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._keeperPoseToken=(b._keeperPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);this.time.delayedCall(ms,()=>{if(!b.active||b._keeperPoseToken!==token)return;if(this.anims.exists('mb9_season_keeper_walk'))b.play('mb9_season_keeper_walk',true);else b.setFrame(0);});
+  }
+  seasonKeeperAttack(b){
+    const fast=b.phase2?.76:1,pick=Phaser.Utils.Array.GetRandom(b.phase2?['lance','shield','solstice','calendar','lance']:['lance','shield','solstice']),bd=Math.max(14,Math.round(b.dmg*.54)),a=Math.atan2(this.player.y-b.y,this.player.x-b.x);
+    if(pick==='lance'){this.seasonKeeperPose(b,1,980);this.showBanner('🌿 Calendar Sweep','Cross behind the lance before the four-season fan opens!',800);for(let i=-4;i<=4;i++)this.foeShot(b.x,b.y,a+i*.12,335,bd,i<0?0xff7040:0x8fdcff,1.02);b.atkCd=2.35*fast;}
+    else if(pick==='shield'){this.seasonKeeperPose(b,2,1150);this.showBanner('🛡️ Equinox Guard','Four warnings bloom — hold the open diagonal!',830);for(let i=0;i<4;i++){const q=i*TAU/4;this.spawnHazard(this.player.x+Math.cos(q)*120,this.player.y+Math.sin(q)*120,56,bd,this.seasonInfo(i).color);}b.atkCd=2.75*fast;}
+    else if(pick==='solstice'){this.seasonKeeperPose(b,1,1050);this.showBanner('☀️ Solstice Charge','The watering lance fixes its lane — dodge across it!',780);this.chargeTelegraph(b,700,620,27);if(b.phase2)this.time.delayedCall(980,()=>{if(b.active)this.chargeTelegraph(b,520,670,23);});b.atkCd=2.7*fast;}
+    else{this.seasonKeeperPose(b,3,1300);this.showBanner('🌦️ Calendar Call','Every crest summons its own guardian!',850);for(const t of ['tank','shooter','dasher','bomber']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-145,145),b.y+Phaser.Math.Between(-95,95));}b.atkCd=3.2*fast;}
+  }
+  chronobloomPose(b,frame,ms=1100){
+    if(!b||!b.active||b.texture.key!=='boss9_chronobloom_orchid')return;frame=Phaser.Math.Clamp(frame|0,0,7);const token=b._chronoPoseToken=(b._chronoPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);this.time.delayedCall(ms,()=>{if(!b.active||b._chronoPoseToken!==token)return;if(this.anims.exists('boss9_chronobloom_orchid_walk'))b.play('boss9_chronobloom_orchid_walk',true);else b.setFrame(0);});
+  }
+  chronobloomMetamorph(b,phase){
+    const color=phase===3?0xffd166:0x8fdcff;this.chronobloomPose(b,phase===3?7:6,phase===3?2150:1750);for(let i=0;i<(phase===3?20:14);i++){const a=i*TAU/(phase===3?20:14),ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(this.seasonInfo(i%4).color).setScale(.08,.46).setAlpha(.92).setDepth(b.y+3));this.tweens.add({targets:ray,scaleX:phase===3?2.45:1.8,alpha:0,duration:900+i*28,onComplete:()=>ray.destroy()});}this.screenFlash(color,phase===3?.70:.45,phase===3?900:640);this.screenShake(phase===3?920:600,phase===3?.027:.018);Sfx.bossWarn();
+  }
+  chronobloomAttack(b){
+    const fast=b.phase3?.60:b.phase2?.77:1,pool=b.phase3?['timebreak','spiral','crown','summon','cleave','timebreak']:b.phase2?['cleave','solar','crown','spiral','summon']:['cleave','solar','crown'],pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(19,Math.round(b.dmg*.47));
+    if(pick==='cleave'){this.chronobloomPose(b,1,1050);this.showBanner('🌿 Vine Cleave','A delayed fan follows the green line — cross the stem!',820);const a=Math.atan2(py-b.y,px-b.x);for(let i=-4;i<=4;i++)this.time.delayedCall(420,()=>{if(b.active)this.foeShot(b.x,b.y,a+i*.11,360,bd,0xff9fcf,1.08);});b.atkCd=2.45*fast;}
+    else if(pick==='solar'){this.chronobloomPose(b,2,1200);this.showBanner('☀️ Solar Bloom','Sun rings chase your last steps — keep changing direction!',840);for(let i=0;i<(b.phase2?7:5);i++)this.time.delayedCall(i*140,()=>{if(b.active)this.spawnHazard(this.player.x+Phaser.Math.Between(-85,85),this.player.y+Phaser.Math.Between(-85,85),58,bd,0xffb12b);});b.atkCd=2.8*fast;}
+    else if(pick==='crown'){this.chronobloomPose(b,3,1100);this.showBanner('❄️ Frost Crown','The rim closes inward; the wide wedge is safe!',850);const n=18,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if([gap,(gap+1)%n,(gap+2)%n].includes(i))continue;const a=i*TAU/n,x=px+Math.cos(a)*300,y=py+Math.sin(a)*300;this.foeShot(x,y,a+Math.PI,245,bd,0x8fdcff,1.06);}b.atkCd=2.7*fast;}
+    else if(pick==='spiral'){this.chronobloomPose(b,4,1250);this.showBanner('🍂 Autumn Spiral','Turn with the first leaf ring, then reverse through the second!',880);const n=24,off=Math.random()*TAU;for(let i=0;i<n;i++)this.foeShot(b.x,b.y,off+i*TAU/n,225+(i%2)*60,bd,i%2?0xff7040:0xffd166,1.1);b.atkCd=2.9*fast;}
+    else if(pick==='summon'){this.chronobloomPose(b,5,1450);this.showBanner('🌦️ Fourfold Garden','Each season sends one specialist into the arena!',900);for(const t of ['tank','shooter','dasher','bomber']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-170,170),b.y+Phaser.Math.Between(-115,115));}b.atkCd=3.3*fast;}
+    else{this.chronobloomPose(b,7,1850);this.showBanner('⏳ TIME BREAK','The clock rewinds two shockwaves, then seals all but one season!',1200);this.screenFlash(0xffd166,.58,650);this.bossNovaWave(b.x,b.y,290,bd+3,320);this.bossNovaWave(b.x,b.y,410,bd+6,880);this.time.delayedCall(700,()=>{if(!b.active)return;const n=30,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++)if(![gap,(gap+1)%n,(gap+2)%n,(gap+3)%n,(gap+4)%n].includes(i))this.foeShot(b.x,b.y,i*TAU/n,285,bd,this.seasonInfo(i%4).color,1.18);});b.atkCd=4.15*fast;}
+  }
+
+  rootKnightPose(b,frame,ms=1000){
+    if(!b||!b.active||b.texture.key!=='mb10_ancient_root_knight')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);this.time.delayedCall(ms,()=>{if(!b.active||b._rootKnightPoseToken!==token)return;if(this.anims.exists('mb10_ancient_root_knight_walk'))b.play('mb10_ancient_root_knight_walk',true);else b.setFrame(0);});
+  }
+  rootKnightAttack(b){
+    const fast=b.phase2?.72:1,pool=b.phase2?['cleave','bastion','charge','call','cleave']:['cleave','bastion','charge'],pick=Phaser.Utils.Array.GetRandom(pool),bd=Math.max(16,Math.round(b.dmg*.56)),a=Math.atan2(this.player.y-b.y,this.player.x-b.x);
+    if(pick==='cleave'){this.rootKnightPose(b,1,1050);this.showBanner('⚔️ Crown Cleave','The blade marks two crossing fans — step through the first gap!',820);for(const d of [-.48,.48])for(let i=-3;i<=3;i++)this.time.delayedCall(d<0?300:650,()=>{if(b.active)this.foeShot(b.x,b.y,a+d+i*.10,350,bd,0xffd166,1.08);});b.atkCd=2.45*fast;}
+    else if(pick==='bastion'){this.rootKnightPose(b,2,1250);this.showBanner('🛡️ Root Bastion','The shield roots four lanes; the diagonal remains open!',850);for(let i=0;i<4;i++){const q=i*TAU/4;this.spawnHazard(this.player.x+Math.cos(q)*125,this.player.y+Math.sin(q)*125,58,bd,0x56e5bd);}b.atkCd=2.8*fast;}
+    else if(pick==='charge'){this.rootKnightPose(b,1,1100);this.showBanner('🌿 Thorn Charge','The sword locks its lane — cross the warning line!',780);this.chargeTelegraph(b,760,650,29);if(b.phase2)this.time.delayedCall(1050,()=>{if(b.active)this.chargeTelegraph(b,560,700,24);});b.atkCd=2.75*fast;}
+    else{this.rootKnightPose(b,3,1450);this.showBanner('👑 Oathbound Call','The old guard answers — break formation before the next cleave!',900);for(const t of ['tank','shooter','dasher']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-150,150),b.y+Phaser.Math.Between(-105,105));}b.atkCd=3.3*fast;}
+  }
+  trueRootPose(b,frame,ms=1150){
+    if(!b||!b.active||b.texture.key!=='boss10_true_rootmother')return;frame=Phaser.Math.Clamp(frame|0,0,7);const token=b._trueRootPoseToken=(b._trueRootPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);this.time.delayedCall(ms,()=>{if(!b.active||b._trueRootPoseToken!==token)return;if(this.anims.exists('boss10_true_rootmother_walk'))b.play('boss10_true_rootmother_walk',true);else b.setFrame(0);});
+  }
+  trueRootMetamorph(b,phase){
+    const colors=[0,0,0x56e5bd,0xd95cff,0xffd166],color=colors[phase]||0xffd166;this.trueRootPose(b,phase===4?7:6,phase===4?2450:1900);const n=phase===4?24:phase===3?18:14;
+    for(let i=0;i<n;i++){const a=i*TAU/n,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(i%3===0?0xffd166:color).setScale(.07,.5).setAlpha(.94).setDepth(b.y+4));this.tweens.add({targets:ray,scaleX:phase===4?2.8:2.1,alpha:0,duration:980+i*30,onComplete:()=>ray.destroy()});}
+    for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'vfx_ring').setTint(i%2?color:0xffd166).setScale(.16).setAlpha(.9).setDepth(b.y+2));this.tweens.add({targets:ring,scale:phase===4?3.4+i*.5:2.5+i*.4,rotation:(i%2?1:-1)*TAU,alpha:0,duration:1350+i*180,onComplete:()=>ring.destroy()});}
+    this.screenFlash(phase===4?0x08000e:color,phase===4?.86:.58,phase===4?1100:760);this.screenShake(phase===4?1100:760,phase===4?.032:.023);Sfx.bossWarn();
+  }
+  trueRootmotherAttack(b){
+    const fast=b.phase4?.54:b.phase3?.62:b.phase2?.76:1,pool=b.phase4?['eclipse','spiral','cage','choir','cleave','eclipse']:b.phase3?['spiral','cage','choir','eruption','cleave']:b.phase2?['cleave','eruption','cage','choir']:['cleave','eruption','cage'],pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(21,Math.round(b.dmg*.48));
+    if(pick==='cleave'){this.trueRootPose(b,1,1100);this.showBanner('🌿 Thorn Cleave','Two delayed thorn fans cross — read the gold stem and change sides!',850);const a=Math.atan2(py-b.y,px-b.x);for(let pass=0;pass<2;pass++)for(let i=-4;i<=4;i++)this.time.delayedCall(360+pass*380,()=>{if(b.active)this.foeShot(b.x,b.y,a+(pass?-.34:.34)+i*.105,370,bd,pass?0xd95cff:0xffd166,1.1);});b.atkCd=2.55*fast;}
+    else if(pick==='eruption'){this.trueRootPose(b,2,1250);this.showBanner('💧 Sap Eruption','The roots remember your path — keep turning after each bloom!',860);for(let i=0;i<(b.phase3?9:6);i++)this.time.delayedCall(i*125,()=>{if(b.active)this.spawnHazard(this.player.x+Phaser.Math.Between(-75,75),this.player.y+Phaser.Math.Between(-75,75),60,bd,0x56e5bd);});b.atkCd=2.85*fast;}
+    else if(pick==='cage'){this.trueRootPose(b,3,1250);this.showBanner('👑 Crown Cage','The crown closes inward; follow the wide golden gap!',900);const n=b.phase4?28:22,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if([gap,(gap+1)%n,(gap+2)%n,(gap+3)%n].includes(i))continue;const a=i*TAU/n,x=px+Math.cos(a)*340,y=py+Math.sin(a)*340;this.foeShot(x,y,a+Math.PI,270,bd,i%2?0xd95cff:0xffd166,1.12);}b.atkCd=2.95*fast;}
+    else if(pick==='choir'){this.trueRootPose(b,5,1500);this.showBanner('🎵 Root Choir','Seven voices form a fan — silence the summons or use their gaps!',900);for(let i=0;i<4;i++){const e=this.spawnEnemy(i%2?'shooter':'tank');if(e)e.setPosition(b.x+Phaser.Math.Between(-185,185),b.y+Phaser.Math.Between(-125,125));}const a=Math.atan2(py-b.y,px-b.x);for(let i=-3;i<=3;i++)this.foeShot(b.x,b.y,a+i*.16,285,bd,0xb77cff,1.06);b.atkCd=3.25*fast;}
+    else if(pick==='spiral'){this.trueRootPose(b,4,1450);this.showBanner('🌍 World-Root Spiral','Rotate with the first ring, then reverse through the violet roots!',960);const n=30,off=Math.random()*TAU;for(let i=0;i<n;i++)this.foeShot(b.x,b.y,off+i*TAU/n,230+(i%3)*48,bd,i%2?0x56e5bd:0xd95cff,1.14);b.atkCd=3.15*fast;}
+    else{this.trueRootPose(b,7,2100);this.showBanner('🌑 MEMORY ECLIPSE','The world root remembers every season — survive three waves and the final crown!',1350);this.screenFlash(0x09000d,.76,780);this.bossNovaWave(b.x,b.y,300,bd+3,260);this.bossNovaWave(b.x,b.y,420,bd+6,800);this.time.delayedCall(680,()=>{if(!b.active)return;const n=34,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++)if(![gap,(gap+1)%n,(gap+2)%n,(gap+3)%n,(gap+4)%n].includes(i))this.foeShot(b.x,b.y,i*TAU/n,300,bd,i%3===0?0xffd166:i%2?0xd95cff:0x56e5bd,1.2);});b.atkCd=4.35*fast;}
+  }
+
   chapter2DeathGhost(e){
-    if(!e||!['boss6_rootmother','mb6_sporewarden'].includes(e.texture.key))return;const boss=e.isBoss;
-    const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,7).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+9).setAlpha(1));
+    if(!e||!['boss6_rootmother','mb6_sporewarden','mb7_fungal_juggernaut','boss7_mycelium_behemoth','mb8_royal_stinger','boss8_hornet_queen','mb9_season_keeper','boss9_chronobloom_orchid','mb10_ancient_root_knight','boss10_true_rootmother'].includes(e.texture.key))return;const boss=e.isBoss,deathFrame=(e.texture.key==='mb8_royal_stinger'||e.texture.key==='mb9_season_keeper'||e.texture.key==='mb10_ancient_root_knight')?3:7;
+    const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,deathFrame).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+9).setAlpha(1));
     for(let i=0;i<(boss?10:6);i++){const seed=this.camWorld(this.add.image(e.x,e.y,'vfx_glow').setTint(i%3?0x56e5bd:0xffd166).setScale(.08).setDepth(e.y+10).setAlpha(.8));this.tweens.add({targets:seed,x:e.x+Phaser.Math.Between(-150,150),y:e.y-Phaser.Math.Between(50,190),scale:.32,alpha:0,duration:700+i*70,onComplete:()=>seed.destroy()});}
     this.tweens.add({targets:ghost,y:ghost.y+24,scaleX:ghost.scaleX*1.08,scaleY:ghost.scaleY*.78,alpha:0,duration:boss?1500:880,ease:'Cubic.in',onComplete:()=>ghost.destroy()});
   }
@@ -6891,12 +7328,32 @@ class Game extends Phaser.Scene {
       else if(!b.phase3&&f<=0.40){b.phase3=true;this.beginBossPhaseTransition(b,2.0,0xd95cff);this.greatHungerMetamorph(b,3,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 Phase 3 · True Form of Hunger','All six eyes open — the void’s pull is swallowing the field!',2050);}
       else if(!b.phase4&&f<=0.14){b.phase4=true;this.beginBossPhaseTransition(b,2.35,0xffd166);this.greatHungerMetamorph(b,4,0xffd166);b.spd*=1.12;b.atkCd=0.24;this.showBanner('🌘 Final Phase · World Devourer','The sky goes dark — slay it before every memory is eaten!',2400);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.greatHungerAttack(b);return;}
+    if(b.isBoss&&this.stageIndex===9){const f=b.hp/b.maxhp;
+      if(!b.phase2&&f<=.75){b.phase2=true;this.beginBossPhaseTransition(b,2.05,0x56e5bd);this.trueRootMetamorph(b,2);b.spd*=1.12;b.atkCd=.43;this.showBanner('💚 Phase 2 · Heart Unveiled','The living cathedral opens — sap eruptions and the Root Choir join the fight!',2150);}
+      else if(!b.phase3&&f<=.42){b.phase3=true;this.beginBossPhaseTransition(b,2.3,0xd95cff);this.trueRootMetamorph(b,3);b.spd*=1.10;b.atkCd=.26;this.showBanner('👑 Phase 3 · Crown of Memory','Every stolen memory takes root — cage, spiral and summons now overlap!',2350);}
+      else if(!b.phase4&&f<=.18){b.phase4=true;this.beginBossPhaseTransition(b,2.55,0xffd166);this.trueRootMetamorph(b,4);b.spd*=1.08;b.atkCd=.18;this.showBanner('🌍 Final Phase · World Root','The throne binds every season together — survive Memory Eclipse and finish Chapter 2!',2600);}
+      if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.trueRootmotherAttack(b);return;}
+    if(b.isBoss&&this.stageIndex===8){const f=b.hp/b.maxhp;
+      if(!b.phase2&&f<=.72){b.phase2=true;this.beginBossPhaseTransition(b,1.95,0x8fdcff);this.chronobloomMetamorph(b,2);b.spd*=1.13;b.atkCd=.46;this.showBanner('🌦️ Phase 2 · Equinox Fracture','All four seasons overlap — spirals and guardians join the cycle!',2050);}
+      else if(!b.phase3&&f<=.38){b.phase3=true;this.beginBossPhaseTransition(b,2.25,0xffd166);this.chronobloomMetamorph(b,3);b.spd*=1.11;b.atkCd=.26;this.showBanner('⏳ Phase 3 · Time Break','The conservatory clock shatters — survive the final rewind!',2300);}
+      if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.chronobloomAttack(b);return;}
+    if(b.isBoss&&this.stageIndex===7){const f=b.hp/b.maxhp;
+      if(!b.phase2&&f<=.70){b.phase2=true;this.beginBossPhaseTransition(b,1.9,0xffc95c);this.hornetQueenMetamorph(b,2);b.spd*=1.13;b.atkCd=.48;this.showBanner('🍯 Phase 2 · Royal Ferment','The hive crowns its queen — prisons, spirals and guards awaken!',2000);}
+      else if(!b.phase3&&f<=.35){b.phase3=true;this.beginBossPhaseTransition(b,2.2,0xd95cff);this.hornetQueenMetamorph(b,3);b.spd*=1.11;b.atkCd=.28;this.showBanner("👑 Phase 3 · Queen's Decree",'Violet honey boils over — survive the final coronation!',2250);}
+      if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.hornetQueenAttack(b);return;}
+    if(b.isBoss&&this.stageIndex===6){const f=b.hp/b.maxhp;
+      if(!b.phase2&&f<=.68){b.phase2=true;this.beginBossPhaseTransition(b,1.85,0x56e5bd);this.behemothMetamorph(b,2);b.spd*=1.12;b.atkCd=.5;this.showBanner('🍄 Phase 2 · The Colony Awakens','The whole marsh joins the fight — formations and root lattices activate!',1950);}
+      else if(!b.phase3&&f<=.34){b.phase3=true;this.beginBossPhaseTransition(b,2.15,0xd95cff);this.behemothMetamorph(b,3);b.spd*=1.10;b.atkCd=.3;this.showBanner('🫀 Phase 3 · Heart of the Marsh','The crown opens completely — survive the Heartstorm and destroy its core!',2200);}
+      if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.myceliumBehemothAttack(b);return;}
     // เฟส 2 ตอนเลือดครึ่ง (เร็ว/ดุขึ้น) — Effectโกรธ
     const phase2At=(b.isBoss&&this.stageIndex===0)?0.68:(b.isBoss&&this.stageIndex===1?0.65:0.5),phase3At=(b.isBoss&&this.stageIndex===0)?0.35:(b.isBoss&&this.stageIndex===1?0.32:0.25);
     if(!b.phase2 && b.hp<=b.maxhp*phase2At){ b.phase2=true; this.beginBossPhaseTransition(b,b.isBoss?1.55:1.25,this.stageIndex===1?0x62e5cf:0xff6a4d); b.spd*=1.28; b.atkCd=0.6;
       if(this.stageIndex===1&&b.isBoss)this.drainBossPose(b,7,1100);
       if(b.isBoss&&(this.stageIndex===2||this.stageIndex===3))this.stageBossPose(b,6,1250);if(b.isMini&&this.stageIndex===4)this.stage5Pose(b,6,1250);
-      if(this.stageIndex===5)this.chapter2Pose(b,6,1450);
+      if(this.stageIndex===5)this.chapter2Pose(b,6,1450);if(b.isMini&&this.stageIndex===9){this.rootKnightPose(b,3,1650);for(const t of ['tank','shooter','dasher']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-145,145),b.y+Phaser.Math.Between(-100,100));}}
+      if(b.isMini&&this.stageIndex===8){this.seasonKeeperPose(b,3,1550);for(const t of ['tank','shooter']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-135,135),b.y+Phaser.Math.Between(-95,95));}}
+      if(b.isMini&&this.stageIndex===7){this.royalStingerPose(b,3,1500);for(const t of ['tank','shooter']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-130,130),b.y+Phaser.Math.Between(-90,90));}}
+      if(b.isMini&&this.stageIndex===6){this.juggernautPose(b,3,1450);for(const t of ['tank','shooter']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-130,130),b.y+Phaser.Math.Between(-90,90));}}
       this.showBanner(this.stageIndex===1?'🫧 Phase 2 · Pressure Surge':this.stageIndex===2?'🔥 Phase 2 · Overheat':this.stageIndex===3?'❄️ Phase 2 · Seal Broken':this.stageIndex===5?'🌱 Phase 2 · Root Breach':'🔥 Boss Enraged!',this.stageIndex===1?'The valve opens — suction and trapping bubbles activate!':this.stageIndex===2?'The conveyors speed up and the furnace unleashes fire waves!':this.stageIndex===3?'The ice cage starts closing in faster!':this.stageIndex===5?'The Rootmother opens toxic sap channels and forces the whole garden’s seasons!':'Phase 2 — attacks grow fiercer!',1500); if(b.isBoss&&this.stageIndex===0)this.bossPose(b,6,1000); this.screenShake(420,0.014); this.screenFlash(this.stageIndex===1?0x62e5cf:this.stageIndex===3?0x9fe0ff:this.stageIndex===5?0x56e5bd:0xff4d5a,0.3,420);
       if(!b.atks.includes('nova'))b.atks.push('nova');
       if(b.isBoss&&this.stageIndex===0){this.showBanner('💚 Phase 2 · Nest Breach','The Queen summons a swarm of acid ants!',1700);for(let i=0;i<3;i++)this.spawnEnemy(i%2?'acid':'fast');}   // เลิกเรียกเสาผลึก → เรียกลูกน้องแทน
@@ -6912,6 +7369,10 @@ class Game extends Phaser.Scene {
       if(this.stageIndex===0){this.bossPose(b,6,1300);this.spawnBossObject('mound',b.x-230,b.y,16);this.spawnBossObject('mound',b.x+230,b.y,16);} }
     if((b._phaseInvuln||0)>0)return;
     if(b.atkCd>0)return;
+    if(b.isMini&&this.stageIndex===9){this.rootKnightAttack(b);return;}
+    if(b.isMini&&this.stageIndex===8){this.seasonKeeperAttack(b);return;}
+    if(b.isMini&&this.stageIndex===7){this.royalStingerAttack(b);return;}
+    if(b.isMini&&this.stageIndex===6){this.fungalJuggernautAttack(b);return;}
     if(b.isMini&&b.royalGuard){this.royalGuardAttack(b);return;}
     if(b.isBoss&&this.stageIndex===0){this.antQueenAttack(b);return;}
     if(this.stageIndex===1&&(b.isBoss||b.isMini)){this.drainBossAttack(b);return;}
@@ -7239,6 +7700,9 @@ class Game extends Phaser.Scene {
   _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   _nearestWaveObjective(){
     const o=this.waveObjective;if(!o)return null;if(o.type==='capture'&&this._captureZone)return this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal?null:this._captureZone;let best=null,bd=Infinity;
+    if(o.type==='breakRoots'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._rootAnchor)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});
+    if(o.type==='seasonCycle'&&this._seasonShrines){const idx=this._seasonState?this._seasonState.idx:0;best=this._seasonShrines.find(s=>s.idx===idx)||null;if(best&&this.dist(best.x,best.y,this.player.x,this.player.y)<=best.r)best=null;}
+    if(o.type==='defendNectar'&&this._nectarFlowers){for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(f.x,f.y,this.player.x,this.player.y)+(f.hp/f.maxhp)*100;if(d<bd){bd=d;best=f;}}}
     if(o.type==='purge'){if(this._wisp&&this._wisp.active)return this.dist(this.player.x,this.player.y,this._wisp.x,this._wisp.y)<=170?null:this._wisp;if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode||n._purified)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});}
     if(o.type==='hunt'&&this.enemies)this.enemies.children.iterate(e=>{if(!e||!e.active||!e._waveObjectiveTarget)return;const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<bd){bd=d;best=e;}});return best;
   }
@@ -7312,11 +7776,12 @@ class Game extends Phaser.Scene {
     // enemies
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
       if(this.iso)e.setDepth(e.y);
-      if(e.bloomUntil>0){e.bloomUntil-=dt;if(e.bloomUntil<=0)e.bloomStacks=0;}
+      if(e.bloomUntil>0){e.bloomUntil-=dt;if(e.bloomUntil<=0)e.bloomStacks=0;}if(e._aura&&e._aura.active)e._aura.setPosition(e.x,e.y).setDepth(e.y-1);
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
       if(e._decoyT>0)e._decoyT-=dt;
-      const tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;
+      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;
+      if(this.stageIndex===7&&this.waveObjective&&this.waveObjective.type==='defendNectar'&&['drone','honeyBomb','dartwing'].includes(e.nectarRole)&&this._nectarFlowers){let target=null,bd=Infinity;for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(e.x,e.y,f.x,f.y);if(d<bd){bd=d;target=f;}}if(target){tx=target.x;ty=target.y;}}
       const dx=tx-e.x, dy=ty-e.y, ang=Math.atan2(dy,dx), dd=Math.hypot(dx,dy);
       // หันหน้าเข้าหาผู้เล่นเสมอ
       e.setFlipX(dx < 0);
@@ -7341,7 +7806,7 @@ class Game extends Phaser.Scene {
       }
       if(e.shooter){ e.shootCd-=dt;
         if(dd<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);
-          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2);if(this.stageIndex===4)this.stage5EnemyPose(e,4,430);this.foeShot(e.x,e.y,ang,225+this.stageIndex*15,e.dmg,0xffd27f); Sfx.zap(); }
+          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2);if(this.stageIndex===4)this.stage5EnemyPose(e,4,430);let fireAng=ang;if(((this.stageIndex===6&&(e.mycoRole==='sniper'||e.mycoRole==='oracle'))||(this.stageIndex===7&&(e.nectarRole==='pollenSniper'||e.nectarRole==='choirMoth'))||(this.stageIndex===8&&(e.seasonRole==='frostbell'||e.seasonRole==='seasonWisp'))||(this.stageIndex===9&&(e.rootRole==='sapOracle'||e.rootRole==='rootChoir')))&&this.player.body){const lead=(e.mycoRole==='sniper'||e.nectarRole==='pollenSniper'||e.seasonRole==='frostbell'||e.rootRole==='sapOracle')?.48:.28,px=this.player.x+this.player.body.velocity.x*lead,py=this.player.y+this.player.body.velocity.y*lead;fireAng=Math.atan2(py-e.y,px-e.x);}const shotColor=this.stageIndex===6?0xb46cff:this.stageIndex===7?0xffc95c:this.stageIndex===8?0x8fdcff:this.stageIndex===9?0xd56bff:0xffd27f;this.foeShot(e.x,e.y,fireAng,225+this.stageIndex*15,e.dmg,shotColor);if(e.nectarRole==='choirMoth'){this.foeShot(e.x,e.y,fireAng-.18,245,e.dmg,0xd95cff,.92);this.foeShot(e.x,e.y,fireAng+.18,245,e.dmg,0xd95cff,.92);}if(e.seasonRole==='seasonWisp'){for(const off of [-.27,-.09,.09,.27])this.foeShot(e.x,e.y,fireAng+off,255,e.dmg,off<0?0xff7040:0x8fdcff,.90);}if(e.rootRole==='rootChoir'){for(const off of [-.32,-.16,0,.16,.32])this.foeShot(e.x,e.y,fireAng+off,270,e.dmg,off===0?0xffd166:0xd56bff,.92);} Sfx.zap(); }
           return; } }
       if(e.dasher){   // สายพุ่งโฉบ: เข้าfind → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่
         e.dashT-=dt;
@@ -7353,7 +7818,7 @@ class Game extends Phaser.Scene {
           e.x += (Math.random() - 0.5) * 5;   // ตัวสั่นตอนชาร์จ
           // เส้นเตือนทิศพุ่ง (แบบ Archero) — เล็งไปที่ผู้เล่นตอนชาร์จ ให้หลบทัน
           if(e._dashTel){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x),len=Math.min(dd,320); e._dashTel.setPosition(e.x+Math.cos(a)*len/2,e.y+Math.sin(a)*len/2).setRotation(a).setDisplaySize(len,9); }
-          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=ang;if(this.stageIndex===4)this.stage5EnemyPose(e,5,340); if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
+          if(e.dashT<=0){ e.dashState='dash'; e.dashT=0.32; e._da=(((this.stageIndex===6&&e.mycoRole==='hopper')||(this.stageIndex===7&&e.nectarRole==='dartwing')||(this.stageIndex===8&&e.seasonRole==='leafblade')||(this.stageIndex===9&&e.rootRole==='brambleAssassin'))&&this.player.body)?Math.atan2(this.player.y+this.player.body.velocity.y*.30-e.y,this.player.x+this.player.body.velocity.x*.30-e.x):ang;if(this.stageIndex===4)this.stage5EnemyPose(e,5,340); if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
             if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
             if(e.body)this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }
         else if(e.dashState==='dash'){ if(e.body)this.physics.velocityFromRotation(e._da,e.spd*4.6,e.body.velocity);
