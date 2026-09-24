@@ -37,9 +37,14 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.61.0';
+const GAME_VERSION = '4.62.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.62.0', date:'2026-09-24', title:'Codex brought up to date', items:[
+    'Skill Codex now shows what’s actually in the game: ⚔️ Weapons (each character’s signature upgrades, Mutations and Evolution) and 🔮 Relics (all Relics and Synergy pairs). The retired auto-skill and passive lists are gone',
+    'Bestiary adds all 8 Chapter 2 minibosses and bosses from C2-2 to C2-5, and now has pages',
+    'Fixed Chapter 2 boss and miniboss kills from C2-2 onward being credited to the C2-1 entry',
+  ]},
   { v:'4.61.0', date:'2026-09-24', title:'Know when you’re ready', items:[
     'Stage cards now show a clear power badge: 💪 Strong · ✅ Ready · ⚠️ Tough · ⛔ Underpowered, compared with the stage’s suggested power',
     'When you’re under-powered, the difficulty screen warns you and suggests what to do next — spend Sugar on Flavor Weave, or replay the previous stage on Hard for better gear. Tap the tip to go straight there',
@@ -1379,6 +1384,8 @@ const SIGNATURE_WEAPONS = {
   oathMirror:{name:'Sesame Oath Mirror',emoji:'🪞',skill:'mirror',dmgMul:0.96,cdMul:0.88,areaMul:1.12,reflect:2,trait:'+2 reflected shots · +12% area'},
   jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
 };
+// v4.62: คำอธิบาย Evolution ต่อสกิล (ใช้ทั้งการ์ดเลเวลอัพและ Codex)
+const BASIC_EVO_DESC={sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
 /* ---- BASIC ATTACK PROTOTYPE: ตัวละครเป็นแกน build แทนการสะสม auto-skill หลายชนิด ---- */
 const BASIC_ATTACKS = {
   momo:{name:'Heart Seed Blaster',emoji:'🍓',skill:'sprinkle',color:0xff76a8,evolution:'Heartstorm Blaster',
@@ -2262,8 +2269,16 @@ const BESTIARY = [
     bonus:[{def:0.004},{def:0.008},{def:0.011},{def:0.014},{def:0.018}] },
   { id:'mini4', emoji:'🔪', name:'Banquet Executioner',    tex:'mb5_banquet_executioner', desc:'Stage 5 miniboss — the crown feast',
     bonus:[{crit:0.004},{crit:0.007},{crit:0.01},{crit:0.013},{crit:0.017}] },
-  { id:'mini5', emoji:'🦗', name:'Sporewarden Mantis',     tex:'mb6_sporewarden', desc:'Chapter 2 miniboss — canopy warden',
+  { id:'mini5', emoji:'🦗', name:'Sporewarden Mantis',     tex:'mb6_sporewarden', desc:'C2-1 miniboss — canopy warden',
     bonus:[{spd:0.004},{spd:0.008},{spd:0.012},{spd:0.016},{spd:0.022}] },
+  { id:'mini6', emoji:'🍄', name:'Fungal Juggernaut',      tex:'mb7_fungal_juggernaut', desc:'C2-2 miniboss — the marsh stampede',
+    bonus:[{hp:2},{hp:4},{hp:6},{hp:9},{hp:12,def:0.01}] },
+  { id:'mini7', emoji:'🐝', name:'Royal Stinger',          tex:'mb8_royal_stinger', desc:'C2-3 miniboss — blade of the hive',
+    bonus:[{crit:0.004},{crit:0.008},{crit:0.012},{crit:0.016},{crit:0.02}] },
+  { id:'mini8', emoji:'🍂', name:'Season Keeper',          tex:'mb9_season_keeper', desc:'C2-4 miniboss — warden of the four seasons',
+    bonus:[{cdr:0.005},{cdr:0.009},{cdr:0.013},{cdr:0.017},{cdr:0.023}] },
+  { id:'mini9', emoji:'🛡️', name:'Ancient Root Knight',    tex:'mb10_ancient_root_knight', desc:'C2-5 miniboss — guard of the living throne',
+    bonus:[{def:0.005},{def:0.009},{def:0.013},{def:0.017},{def:0.022}] },
   // --- Bosses (แยกรายด่าน · สแตตเล็กน้อยต่อตัว กันเฟ้อ) ---
   { id:'boss0', emoji:'👑', name:'Emerald Acid Ant Empress', tex:'boss1', desc:'Stage 1 boss — ruler of the sour nest',
     bonus:[{hp:1,dmg:0.004},{hp:2,dmg:0.008},{hp:3,dmg:0.012},{hp:4,dmg:0.016},{hp:6,dmg:0.02,def:0.008}] },
@@ -2275,8 +2290,16 @@ const BESTIARY = [
     bonus:[{hp:1,def:0.004},{hp:2,def:0.007},{hp:3,def:0.011},{hp:5,def:0.014},{hp:7,def:0.019}] },
   { id:'boss4', emoji:'🌑', name:'The Great Hunger',       tex:'boss5_sovereign', desc:'Stage 5 boss — the bottomless hunger',
     bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016,crit:0.008},{hp:7,dmg:0.022,crit:0.011},{hp:10,dmg:0.028,crit:0.015,def:0.012}] },
-  { id:'boss5', emoji:'🌿', name:'The Rootmother',         tex:'boss6_rootmother', desc:'Chapter 2 boss — the root throne',
+  { id:'boss5', emoji:'🌿', name:'Rootmother’s Bud',       tex:'boss6_rootmother', desc:'C2-1 boss — the first crown seed',
     bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016},{hp:7,dmg:0.022,def:0.01},{hp:10,dmg:0.028,def:0.015,crit:0.012}] },
+  { id:'boss6', emoji:'🍄', name:'Mycelium Behemoth',      tex:'boss7_mycelium_behemoth', desc:'C2-2 boss — heart of the marsh',
+    bonus:[{hp:3,def:0.005},{hp:4,def:0.009},{hp:6,def:0.013},{hp:8,def:0.017},{hp:11,def:0.022,dmg:0.012}] },
+  { id:'boss7', emoji:'👑', name:'Ferment Hornet Queen',   tex:'boss8_hornet_queen', desc:'C2-3 boss — ruler of the nectar hive',
+    bonus:[{dmg:0.006},{dmg:0.011},{dmg:0.016},{dmg:0.022,crit:0.01},{dmg:0.028,crit:0.015}] },
+  { id:'boss8', emoji:'🌸', name:'Chronobloom Orchid',     tex:'boss9_chronobloom_orchid', desc:'C2-4 boss — the flower that breaks time',
+    bonus:[{cdr:0.006},{cdr:0.011},{cdr:0.016},{cdr:0.021,spd:0.01},{cdr:0.027,spd:0.015}] },
+  { id:'boss9', emoji:'🌳', name:'The True Rootmother',    tex:'boss10_true_rootmother', desc:'C2-5 boss — the living throne itself',
+    bonus:[{hp:3,dmg:0.007},{hp:5,dmg:0.012},{hp:7,dmg:0.018,def:0.01},{hp:10,dmg:0.024,def:0.014},{hp:14,dmg:0.03,def:0.018,crit:0.014}] },
 ];
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
 // โบนัสสแตตของ tier ที่ระบุ (tier 0-4 = ค่าใน bonus[] · tier 5-7 = สเกลจาก tier 5)
@@ -3448,9 +3471,10 @@ class Game extends Phaser.Scene {
     const sumBonus=this.add.text(w/2,64,'Total: '+bText,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-28},align:'center'}).setOrigin(0.5,0);
     this.menu.add([sumTxt,sumBonus]);
     const portrait=w<=h, cols=portrait?2:3, gap=7,cardW=(w-28-gap*(cols-1))/cols,marginX=14;
-    const rows=Math.ceil(BESTIARY.length/cols), y0=portrait?92:72,cardH=Math.min(portrait?108:88,(h-y0-14-gap*(rows-1))/rows);
+    const rows=portrait?5:3,perPage=cols*rows,pages=Math.max(1,Math.ceil(BESTIARY.length/perPage));this._bestPage=Phaser.Math.Clamp(this._bestPage||0,0,pages-1);   // v4.62: แบ่งหน้า (28 ตัว)
+    const pageItems=BESTIARY.slice(this._bestPage*perPage,this._bestPage*perPage+perPage), y0=portrait?92:72,cardH=Math.min(portrait?108:88,(h-y0-46-gap*(rows-1))/rows);
     const starColors=['#4a4059','#8bd3a0','#7fc9ff','#b98cff','#ffd166','#ff8fb5','#ff9a5a','#ff5a6e','#ff3d8f'];
-    BESTIARY.forEach((m,idx)=>{
+    pageItems.forEach((m,idx)=>{
       const col=idx%cols, row=Math.floor(idx/cols);
       const cx=marginX+col*(cardW+gap), cy=y0+row*(cardH+gap);
       const lv=bestiaryLv(m.id), kills=Save.kills(m.id);
@@ -3484,6 +3508,7 @@ class Game extends Phaser.Scene {
       const desc=this.add.text(cx+8,cy+cardH-13,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
       this.menu.add([g,icon,nm,stars,kt,blT,desc]);
     });
+    this._codexNav(this._bestPage,pages,()=>{this._bestPage--;this.buildBestiary();},()=>{this._bestPage++;this.buildBestiary();});
     this.menu.setVisible(true);
   }
   // คำนวณสแตตจริงของ loadout (base + char + weapon + Flavor Weave + gear + bestiary + perks) โดยไม่แตะ player จริง
@@ -3525,13 +3550,15 @@ class Game extends Phaser.Scene {
   }
   buildSkillArchive(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Skill Codex');
-    const w=this.W,h=this.H,portrait=w<=h,tab=this._skillArchiveTab||'attack';
+    const w=this.W,h=this.H,portrait=w<=h;let tab=this._skillArchiveTab||'weapons';if(tab==='attack'||tab==='passive')tab='weapons';   // v4.62: สกิล/passive เดิมเลิกใช้แล้ว (character-first)
     const tabY=portrait?82:50,tabH=32,tabGap=7,tabW=Math.min(132,(w-36-tabGap*2)/3),tabX=w/2-(tabW*3+tabGap*2)/2;
     const drawTab=(x,label,on,fn,color)=>{const g=this.add.graphics();g.fillStyle(on?this._darken(color,.55):0x292032,0.96);g.fillRoundedRect(x,tabY,tabW,tabH,10);g.lineStyle(1.8,on?color:0x51445f,1);g.strokeRoundedRect(x,tabY,tabW,tabH,10);const t=this.add.text(x+tabW/2,tabY+tabH/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:tabW<110?'9px':'10px',color:on?'#ffffff':'#998da7'}).setOrigin(0.5);this.menu.add([g,t]);this._zone(x,tabY,tabW,tabH,fn);};
-    drawTab(tabX,'⚔️ Attack '+Object.keys(SKILLDEFS).length,tab==='attack',()=>{this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildSkillArchive();},0xf0a54a);
-    drawTab(tabX+tabW+tabGap,'✨ Passive '+Object.keys(PASSIVES).length,tab==='passive',()=>{this._skillArchiveTab='passive';this._skillArchivePage=0;this._skillArchiveSelected=null;this.buildSkillArchive();},0x66d3b3);
+    drawTab(tabX,'⚔️ Weapons',tab==='weapons',()=>{this._skillArchiveTab='weapons';this._skillArchiveSelected=null;this.buildSkillArchive();},0xf0a54a);
+    drawTab(tabX+tabW+tabGap,'🔮 Relics '+Object.keys(RELICS).length,tab==='relics',()=>{this._skillArchiveTab='relics';this._codexRelicPage=0;this._skillArchiveSelected=null;this.buildSkillArchive();},0xc07bff);
     drawTab(tabX+(tabW+tabGap)*2,'🎁 Items',tab==='items',()=>{this._skillArchiveTab='items';this._skillArchiveSelected=null;this.buildSkillArchive();},0xc9a3ff);
     if(tab==='items'){this.buildItemCodex(tabY+tabH+12);this.menu.setVisible(true);return;}
+    if(tab==='weapons'){this.buildWeaponCodex(tabY+tabH+10);this.menu.setVisible(true);return;}
+    if(tab==='relics'){this.buildRelicCodex(tabY+tabH+10);this.menu.setVisible(true);return;}
     if(this._skillArchiveSelected){this.buildSkillArchiveDetail(this._skillArchiveSelected,portrait,tabY+tabH+10);this.menu.setVisible(true);return;}
     const isPass=tab==='passive',defs=isPass?PASSIVES:SKILLDEFS,keys=Object.keys(defs),cols=portrait?2:4,rows=portrait?3:2,perPage=cols*rows;
     const pages=Math.max(1,Math.ceil(keys.length/perPage));this._skillArchivePage=Phaser.Math.Clamp(this._skillArchivePage||0,0,pages-1);const page=this._skillArchivePage;
@@ -3551,6 +3578,50 @@ class Game extends Phaser.Scene {
     const nav=(cx,label,enabled,fn)=>{const g=this.add.graphics();g.fillStyle(enabled?0x463653:0x28212e,1);g.fillRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);g.lineStyle(1,enabled?0xa98cf0:0x44394d,1);g.strokeRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);const t=this.add.text(cx,navY,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:enabled?'#f5eaff':'#665d70'}).setOrigin(0.5);this.menu.add([g,t]);if(enabled)this._zone(cx-navW/2,navY-navH/2,navW,navH,fn);};
     nav(w/2-120,'‹ Prev',page>0,()=>{this._skillArchivePage--;this.buildSkillArchive();});nav(w/2+120,'Next ›',page<pages-1,()=>{this._skillArchivePage++;this.buildSkillArchive();});
     this.menu.setVisible(true);
+  }
+  // ปุ่มเปลี่ยนหน้า (‹ / ›) ล่างจอ — ใช้ร่วม Bestiary / Weapons / Relics
+  _codexNav(page,pages,onPrev,onNext,label){
+    const w=this.W,h=this.H,portrait=w<=h,navY=h-(portrait?31:20),navW=92,navH=28;
+    const t=this.add.text(w/2,navY,label||('Page '+(page+1)+' / '+pages),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d8cce0'}).setOrigin(0.5);this.menu.add(t);
+    const nav=(cx,lab,en,fn)=>{const g=this.add.graphics();g.fillStyle(en?0x463653:0x28212e,1);g.fillRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);g.lineStyle(1,en?0xa98cf0:0x44394d,1);g.strokeRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);const tt=this.add.text(cx,navY,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:en?'#f5eaff':'#665d70'}).setOrigin(0.5);this.menu.add([g,tt]);if(en)this._zone(cx-navW/2,navY-navH/2,navW,navH,()=>{Sfx.select&&Sfx.select();fn();});};
+    nav(w/2-120,'‹ Prev',page>0,onPrev);nav(w/2+120,'Next ›',page<pages-1,onNext);
+  }
+  // แถวข้อมูลแบบลิสต์ (emoji · ชื่อ · คำอธิบาย) — rows: [{emoji,title,desc,color,head}]
+  _codexRows(top,rows,rh){
+    const w=this.W,x=14,cw=w-28,gap=4;let y=top;
+    for(const r of rows){
+      if(r.head){const t=this.add.text(x+4,y+rh*0.5,r.head,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:r.hex||'#ffe08a'}).setOrigin(0,0.5);this.menu.add(t);y+=rh*0.8+gap;continue;}
+      const g=this.add.graphics();g.fillStyle(0x211929,.97);g.fillRoundedRect(x,y,cw,rh,9);g.fillStyle(r.color,.12);g.fillRoundedRect(x+2,y+2,cw-4,rh-4,7);g.lineStyle(1.3,r.color,.75);g.strokeRoundedRect(x,y,cw,rh,9);
+      const em=this.add.text(x+18,y+rh/2,r.emoji,{fontSize:Math.round(Math.min(22,rh*0.6))+'px'}).setOrigin(.5);
+      const nm=this.add.text(x+36,y+rh/2,r.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,.5);
+      const ds=this.add.text(x+36+Math.max(120,nm.width+10),y+rh/2,r.desc,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#c9bdd2',wordWrap:{width:cw-(36+Math.max(120,nm.width+10))-10},maxLines:2}).setOrigin(0,.5);
+      this.menu.add([g,em,nm,ds]);y+=rh+gap;
+    }
+  }
+  // ⚔️ อาวุธประจำตัวรายตัวละคร: อัพเกรด 4 · Mutation 2 · Evolution
+  buildWeaponCodex(top){
+    const ids=CHAR_ORDER.filter(c=>BASIC_ATTACKS[c]),pages=ids.length;this._codexChar=Phaser.Math.Clamp(this._codexChar||0,0,pages-1);
+    const ch=ids[this._codexChar],c=CHARACTERS[ch],d=BASIC_ATTACKS[ch],col=c.color||0xf0a54a,hex='#'+col.toString(16).padStart(6,'0');
+    const rows=[{head:c.emoji+' '+c.name+' — '+d.emoji+' '+d.name,hex}];
+    for(const u of d.upgrades)rows.push({emoji:u.emoji,title:u.name+'  (max '+u.max+')',desc:u.desc,color:0xf0a54a});
+    rows.push({head:'⭐ Mutation — pick 1 of 2 around Lv 9 (the other locks)',hex:'#ffd08a'});
+    for(const m of d.mutations)rows.push({emoji:m.emoji,title:m.name,desc:m.desc,color:0xffc857});
+    rows.push({head:'✨ Evolution — around Lv 15, then endless Power-Ups',hex:'#ffe98a'});
+    rows.push({emoji:'✨',title:d.evolution,desc:BASIC_EVO_DESC[d.skill]||'Upgrades the whole Basic Attack',color:0xffd54a});
+    const n=rows.filter(r=>!r.head).length,nh=rows.length-n,avail=this.H-top-(this.W<=this.H?54:42),rh=Math.max(24,Math.min(this.W<=this.H?46:34,(avail-nh*4-rows.length*4)/(n+nh*0.8)));
+    this._codexRows(top,rows,rh);
+    this._codexNav(this._codexChar,pages,()=>{this._codexChar--;this.buildSkillArchive();},()=>{this._codexChar++;this.buildSkillArchive();},c.emoji+' '+c.name+'  ·  '+(this._codexChar+1)+' / '+pages);
+  }
+  // 🔮 Relic ทั้งหมด + คู่ Synergy
+  buildRelicCodex(top){
+    const all=Object.keys(RELICS).map(k=>({emoji:RELICS[k].emoji,title:RELICS[k].name,desc:RELICS[k].desc,color:0xc07bff}));
+    all.push({head:'🔗 Synergy pairs — hold both for a bonus',hex:'#d9b8ff'});
+    for(const sy of RELIC_SYNERGIES)all.push({emoji:RELICS[sy.a].emoji+RELICS[sy.b].emoji,title:sy.name,desc:sy.desc,color:0xff9ad5});
+    const portrait=this.W<=this.H,rh=portrait?44:30,avail=this.H-top-(portrait?54:42),per=Math.max(3,Math.floor(avail/(rh+4))),pages=Math.max(1,Math.ceil(all.length/per));
+    this._codexRelicPage=Phaser.Math.Clamp(this._codexRelicPage||0,0,pages-1);
+    const note=this.add.text(this.W/2,top+2,'Found in-run: Lv 6 pick · Miniboss Box · secret boxes · Bonus Challenges  (hold up to '+RELIC_CAP+')',{fontFamily:'sans-serif',fontSize:'9px',color:'#bfa9dc'}).setOrigin(0.5,0);this.menu.add(note);
+    this._codexRows(top+16,all.slice(this._codexRelicPage*per,this._codexRelicPage*per+per),rh);
+    this._codexNav(this._codexRelicPage,pages,()=>{this._codexRelicPage--;this.buildSkillArchive();},()=>{this._codexRelicPage++;this.buildSkillArchive();});
   }
   buildItemCodex(top){
     const w=this.W,h=this.H,portrait=w<=h,rows=[
@@ -6067,7 +6138,7 @@ class Game extends Phaser.Scene {
     const evoAt=Math.min(14,d.upgrades.reduce((s,u)=>s+(this.banishedKeys?.['b:'+u.id]?(b.lv[u.id]||0):u.max),0)+1);   // v4.54: เดิม 20 แต่ mastery สูงสุดได้แค่ 17 (16 อัพ+1 mutation) = evolution ไม่มีวันออก
     if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
-      const EVO_DESC={sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
+      const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
       return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
@@ -6878,7 +6949,7 @@ class Game extends Phaser.Scene {
     if(this.player.lifeOnKill&&(!this._lifeOnKillCd||this._lifeOnKillCd<=0)){this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifeOnKill*(this.player.healEffect||1));this._lifeOnKillCd=0.45;}
     if(!big) Sfx.pop();
     // Bestiary: นับจำนวนที่ฆ่าตามชนิด
-    const si=Math.min(5,Math.max(0,this.stageIndex||0));
+    const si=Math.min(STAGES.length-1,Math.max(0,this.stageIndex||0));   // v4.62: เดิม cap 5 → บอส/มินิ C2-2..C2-5 ถูกนับเป็นของ C2-1
     const btype=isBoss?('boss'+si):isMini?('mini'+si):e.acid?'acid':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture.key==='e_fast'?'fast':e.texture.key==='e_tank'||isElite?'tank':'basic');
     const bSugar=Save.addKill(btype);
     if(bSugar){ this.showBanner('📖 Codex Rank Unlocked','+🍬 '+bSugar,1100); Sfx.chest&&Sfx.chest(); }

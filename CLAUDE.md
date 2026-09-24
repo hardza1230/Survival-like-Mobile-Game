@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.62.0 — Codex อัปเดตตามระบบปัจจุบัน)
+- **v4.62.0 (Codex ไม่อัปเดต — จาก feedback เจ้าของ):** **Skill Codex** (`buildSkillArchive`) เดิมโชว์ SKILLDEFS 15 สกิล + PASSIVES ที่เลิกใช้ตั้งแต่ v4.23 (character-first) → แท็บใหม่ `weapons` (default · `buildWeaponCodex` รายตัวละคร: 4 upgrades + 2 mutations + evolution, เปลี่ยนตัวด้วย ‹ › `_codexChar`) · `relics` (`buildRelicCodex` 11 relic + 4 synergy แบ่งหน้า `_codexRelicPage`) · `items` เดิม · tab เก่า attack/passive map → weapons (โค้ดเดิม/`buildSkillArchiveDetail` ยังอยู่แต่ไม่ถูกเรียก) · helper ใหม่ `_codexRows(top,rows,rh)` + `_codexNav(page,pages,prev,next,label)` · `BASIC_EVO_DESC` ย้ายเป็น global (การ์ด evolution ใช้ร่วม) · **Bestiary:** เพิ่ม mini6-9 + boss6-9 (C2-2..C2-5) = 28 ตัว · boss5 ชื่อ → "Rootmother’s Bud" · แบ่งหน้า (`_bestPage`, landscape 9/หน้า, portrait 10/หน้า) · **บั๊ก:** killEnemy `si=Math.min(5,…)` → kill บอส/มินิ C2-2..C2-5 ถูกนับเป็น boss5/mini5 → แก้เป็น `STAGES.length-1` (เซฟเก่าที่นับผิดไปแล้วแยกคืนไม่ได้) · **verified screenshot แนวนอน/แนวตั้ง ไม่ล้นจอ, boss8 นับแยกถูก, 0 error**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.61.0 — เตือนพลังไม่พอ + คำแนะนำ)
 - **v4.61.0 (กำแพงความยาก Ch2 — ข้อ 1 ที่เจ้าของเลือก):** helper `powerStatus(idx)` (ratio = Save.power/`STAGES[].recommendedPower`: ≥1.15 💪Strong · ≥0.9 ✅Ready · ≥0.7 ⚠️Tough · else ⛔Underpowered) + `powerAdvice(idx)` (มี Sugar พออัพ Weave → ชี้ 'upgrade' · ไม่งั้นแนะนำ replay ด่านก่อนหน้าบน Hard → 'gear') · `uiStageCard` เปลี่ยนตัวเลขพลัง 8px เป็น badge pill 10px มีสี+สถานะ · `openDifficultyChoice` ถ้า ratio<0.9 → บรรทัดเตือนสี + แถบทิปกดได้ (`_zone` → menuScreen=adv.screen) · ปุ่ม Play Now เลื่อนลง `warnShift` · ไม่บล็อกการเล่น · **แก้เพิ่ม:** การ์ดด่านแนวนอน (h<96) ซับไตเติล `st.en` ซ้อน lore → ซ่อน · **verified headless + screenshot แนวนอน/แนวตั้ง, ทิปพาไปหน้า upgrade, 0 error**
 
