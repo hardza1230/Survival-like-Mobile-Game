@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.65.0 — เติมพื้นที่ว่างแนวตั้ง)
+- **v4.65.0 (UI/UX ข้อ 3+4):** Stats แนวตั้งโชว์อาร์ตตัวละคร (`_characterCardArt`) + แถวสูงตามจอ (`rh` clamp 40-58) · Daily เพิ่มกล่องอาร์ตด่าน (`_coverImage` bg) + powerStatus badge + lore · Pause แนวตั้งมีรายการ 🔮 Relic + synergy ที่ทำงาน · Craft ช่องว่างมีปุ่มลิงก์ไป Gear/Bazaar · **ข้อ 4 (ไอคอน slot ทับ step label ใน Affix Forge) ตรวจภาพเต็มแล้วไม่ทับจริง = ภาพย่อหลอก** · verified screenshot แนวตั้ง/แนวนอน, npm run check ผ่าน
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.64.0 — HUD แนวตั้งโล่งขึ้น)
 - **v4.64.0 (UI/UX ข้อ 5 HUD):** `drawBars` (เรียกทุกเฟรม): `statTxt` เหลือแค่ 🔮 Relic + 🫧×โล่ (เดิม 8 ค่า ❤♻⚔🛡🎯 — HP อยู่เหนือหัวผู้เล่นแล้ว) · `stageTxt` จางหายหลัง 6 วิของด่าน (`_stageTxtAt` ตั้งใน startStage, alpha คำนวณใน drawBars) · แถบ XP หนาขึ้น (11/7px) · `renderBonusHUD` ย่อเป็น "⭐ ≤2 hits · 0/2 → 🔮" · `buildPause` เพิ่มบรรทัดชื่อด่าน+☠ และบรรทัดสแตตรบเต็ม (panelY 82→94) · **verified screenshot 390×844: HUD บนเหลือ 3 บรรทัด, stageTxt alpha 1→0, 0 error** · **UI/UX ที่ยังค้าง:** (3) ที่ว่างครึ่งล่างหน้า Craft/Stats/Daily/Pause (4) Affix Forge ไอคอน slot ชิดป้ายขั้นตอน
 
@@ -70,10 +74,6 @@
 ### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: Store readiness ข้อ 1-3 — Capacitor 8 / versionCode / release bundle)
 - **Store readiness (ไม่ bump GAME_VERSION — แก้แค่ build ไม่แตะเกม):** ผลตรวจ: Google Play บังคับ **target API 36 ตั้งแต่ 31 ส.ค. 2026** แต่เดิมใช้ Capacitor 6 (API 34) → (1) อัป `@capacitor/*` เป็น **^8** (core/cli/android 8.5.2, app 8.1.1, browser 8.0.4 · variables.gradle = min 24 / compile+target 36) · workflow ทั้ง 2 ตัว Node **22**, JDK **21**, SDK `platforms;android-36 build-tools;36.0.0` · (2) `scripts/set-android-version.mjs` ตั้ง versionCode = MAJOR·10000+MINOR·100+PATCH จาก `GAME_VERSION` (4.62.0→46200 · minor/patch ต้อง <100) เรียกในทั้ง 2 workflow หลัง set-android-landscape · (3) `scripts/strip-live-server.mjs` ลบ `server.url` **เฉพาะ release-aab.yml** → AAB ขึ้นสโตร์ฝังเกมในแอป (เล่นออฟไลน์ได้) · **APK ตัวเทส (android.yml) ยังโหลดจาก GitHub Pages / live update เหมือนเดิม** · **แนวจอ = portrait (เจ้าของยืนยัน)** — `set-android-landscape.mjs` ชื่อเก่าแต่ล็อก portrait (Android 16 ไม่สนการล็อกบนแท็บเล็ต → UI ต้องรองรับทั้ง 2 แนวอยู่แล้ว) · **verified: จำลอง cap add/assets/scripts/sync ด้วย Capacitor 8 จริง (ไม่มี Gradle ในเครื่อง) → target 36, versionCode 46200, portrait, deep link คงอยู่, release ไม่มี server + game.js อยู่ใน assets/public, signing inject ได้** · **ยังค้างก่อนขึ้นสโตร์ (เจ้าของพักไว้ก่อน):** ปุ่มลบบัญชีในแอป, store listing อังกฤษ + feature graphic + screenshots, privacy "no ads" ต้องแก้ถ้าใส่ AdMob, closed test 12 คน×14 วัน, keystore secrets, Content rating/Data safety
-
-### สถานะก่อนหน้า
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.65.0 — เติมพื้นที่ว่างแนวตั้ง)
-- **v4.65.0 (UI/UX ข้อ 3+4):** Stats แนวตั้งโชว์อาร์ตตัวละคร (`_characterCardArt`) + แถวสูงตามจอ (`rh` clamp 40-58) · Daily เพิ่มกล่องอาร์ตด่าน (`_coverImage` bg) + powerStatus badge + lore · Pause แนวตั้งมีรายการ 🔮 Relic + synergy ที่ทำงาน · Craft ช่องว่างมีปุ่มลิงก์ไป Gear/Bazaar · **ข้อ 4 (ไอคอน slot ทับ step label ใน Affix Forge) ตรวจภาพเต็มแล้วไม่ทับจริง = ภาพย่อหลอก** · verified screenshot แนวตั้ง/แนวนอน, npm run check ผ่าน
 
 ### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.62.0 — Codex อัปเดตตามระบบปัจจุบัน)
