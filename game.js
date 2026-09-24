@@ -37,9 +37,15 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.64.0';
+const GAME_VERSION = '4.65.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.65.0', date:'2026-09-24', title:'Fuller screens on phones', items:[
+    'Character Stats shows your character’s art, with larger, easier-to-read stat rows',
+    'The Daily Challenge card shows the stage art, its story and whether you’re strong enough',
+    'The Pause screen explains each Relic you hold, plus any active Synergy',
+    'An empty Affix Forge slot now links straight to Equipment and the Bazaar to find gear',
+  ]},
   { v:'4.64.0', date:'2026-09-24', title:'Cleaner in-game HUD', items:[
     'The top of the screen is much less crowded: the stats line now only shows your Relics and shields (HP stays above your character)',
     'The stage name shows for the first few seconds of a stage, then fades away',
@@ -3558,7 +3564,10 @@ class Game extends Phaser.Scene {
       ['⏱️','Cooldown',Math.round((1-p.cdMul)*100)+'% faster','skill cooldown ×'+p.cdMul.toFixed(2),0xb388ff],
       ['💗','Regen',((p.regen||0)+(p.regenFlat||0)).toFixed(1)+' /s','',0x66d3b3],
     ];
-    const rh=40,gap=6,cardW=w-28;
+    // v4.65: แนวตั้งมีที่เหลือเยอะ → ใส่อาร์ตตัวละครด้านบน แล้วขยายแถวให้เต็มจอ
+    const portrait=w<=this.H,gap=6,cardW=w-28;
+    if(portrait){ const artH=Math.min(260,Math.max(0,this.H-y-rows.length*(40+gap)-40)); if(artH>120){ this._characterCardArt(Save.data.character,w/2,y+artH/2,w*0.7,artH); y+=artH+8; } }
+    const rh=portrait?Phaser.Math.Clamp((this.H-y-24-gap*(rows.length-1))/rows.length,40,58):40;
     rows.forEach((r,i)=>{ const ry=y+i*(rh+gap),g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(14,ry,cardW,rh,10); g.lineStyle(1.4,0x4a4059,1); g.strokeRoundedRect(14,ry,cardW,rh,10); g.fillStyle(r[4],0.16); g.fillRoundedRect(14,ry,5,rh,{tl:10,bl:10,tr:0,br:0});
       const em=this.add.text(32,ry+rh/2,r[0],{fontSize:'19px'}).setOrigin(0.5);
       const nm=this.add.text(54,ry+8,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e8dcf0'}).setOrigin(0,0);
@@ -3685,6 +3694,13 @@ class Game extends Phaser.Scene {
     const diff=DIFFS[spec.diff-1],t2=this.add.text(w/2,y2+24,'⚔️ DAILY CHALLENGE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#e7b7ff'}).setOrigin(0.5);
     const name=this.add.text(w/2,y2+54,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',wordWrap:{width:w-55},align:'center'}).setOrigin(0.5);
     const detail=this.add.text(w/2,y2+82,diff.emoji+' '+diff.name+' · bonus 🍬 '+(120+spec.diff*30),{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd6a0'}).setOrigin(0.5);
+    // v4.65: การ์ดภารกิจรายวันเคยว่างครึ่งใบ → ใส่ภาพด่าน + lore + ป้ายพลัง
+    { const ax=28,aw=w-56,ay=y2+100,ah=(y2+h2-66)-ay,artKey='bg'+(spec.stage+1);
+      if(ah>70){ if(this.textures.exists(artKey)){const art=this._coverImage(ax,ay,aw,ah,artKey);if(art)this.menu.add(art);}
+        const shade=this.add.graphics();shade.fillGradientStyle(0x090711,0x090711,0x090711,0x090711,0.05,0.05,0.85,0.85);shade.fillRect(ax,ay,aw,ah);shade.lineStyle(1.5,0xd95cff,0.6);shade.strokeRect(ax,ay,aw,ah);this.menu.add(shade);
+        const ps=this.powerStatus(spec.stage),bd=this.add.text(ax+aw-8,ay+8,'⚡ '+ps.cur+' / '+ps.rec+'  '+ps.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:ps.hex,backgroundColor:'#0d0913cc',padding:{x:6,y:3}}).setOrigin(1,0);
+        const lore=this.add.text(ax+10,ay+ah-10,st.lore||'',{fontFamily:'sans-serif',fontSize:'10px',color:'#eadff2',wordWrap:{width:aw-20},maxLines:3,stroke:'#120a16',strokeThickness:2}).setOrigin(0,1);
+        this.menu.add([bd,lore]); } }
     const state=d.challengeDone?'Completed ✓':unlocked?'Start Challenge':'🔒 Unlock Stage '+(spec.stage+1),cbg=this.add.graphics(),cby=y2+h2-40;cbg.fillStyle(d.challengeDone?0x315142:unlocked?0x8e4fc0:0x3a3341,1);cbg.fillRoundedRect(w/2-bw/2,cby-20,bw,40,13);const cbt=this.add.text(w/2,cby,state,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:d.challengeDone?'#a8f0c0':'#ffffff'}).setOrigin(0.5);this.menu.add([t2,name,detail,cbg,cbt]);
     if(!d.challengeDone&&unlocked)this._zone(w/2-bw/2,cby-20,bw,40,()=>{this._dailyRun=true;this.stageDiff=spec.diff;this.startRun(spec.stage);});
     this.menu.setVisible(true);
@@ -4411,7 +4427,10 @@ class Game extends Phaser.Scene {
       this.menu.add([g,icon]);this._zone(x-sw/2,y,sw,sw,()=>{this.gearSlot=sd.slot;this.craftSelectedUid=null;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this._craftResult=null;this._craftConfirm=null;this.buildCraftBench();});
     });y+=sw+6;
     const items=Save.gearItemsForSlot(slot).filter(x=>{const b=GEAR_ALL.find(g=>g.id===x.baseId);return b&&b.tier!=='start';});
-    if(!items.length){const empty=this.add.graphics();empty.fillStyle(0x21182c,.94);empty.fillRoundedRect(14,y,w-28,78,12);empty.lineStyle(1,0x574764,1);empty.strokeRoundedRect(14,y,w-28,78,12);const tx=this.add.text(w/2,y+39,'No craftable gear in this slot\nFind gear in stages, rewards or the Bazaar',{fontFamily:'sans-serif',fontSize:'11px',color:'#b9aec8',align:'center',lineSpacing:5}).setOrigin(.5);this.menu.add([empty,tx]);this.menu.setVisible(true);return;}
+    if(!items.length){const empty=this.add.graphics();empty.fillStyle(0x21182c,.94);empty.fillRoundedRect(14,y,w-28,78,12);empty.lineStyle(1,0x574764,1);empty.strokeRoundedRect(14,y,w-28,78,12);const tx=this.add.text(w/2,y+39,'No craftable gear in this slot\nFind gear in stages, rewards or the Bazaar',{fontFamily:'sans-serif',fontSize:'11px',color:'#b9aec8',align:'center',lineSpacing:5}).setOrigin(.5);this.menu.add([empty,tx]);
+      // v4.65: ทางไปหาของ (เดิมเป็นทางตัน)
+      const bw2=Math.min(w-28,300),bx2=(w-bw2)/2,by2=y+92,bh2=44;[['🎁 Roll gear at Equipment','gear',0x8bd3a0],['🏪 Browse the Bazaar','bazaar',0xffb36b]].forEach(([lb,scr,col],i)=>{const yy=by2+i*(bh2+10),g2=this.add.graphics();g2.fillStyle(0x2c2338,0.97);g2.fillRoundedRect(bx2,yy,bw2,bh2,12);g2.lineStyle(1.6,col,0.9);g2.strokeRoundedRect(bx2,yy,bw2,bh2,12);const t2=this.add.text(w/2,yy+bh2/2,lb+'  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#fff7ed'}).setOrigin(.5);this.menu.add([g2,t2]);this._zone(bx2,yy,bw2,bh2,()=>{Sfx.select&&Sfx.select();this.menuScreen=scr;this.buildMenuScreen();});});
+      this.menu.setVisible(true);return;}
     let selected=Save.gearItem(this.craftSelectedUid);
     if(!selected||selected.slot!==slot||!items.some(x=>x.uid===selected.uid)){selected=Save.gearItem(this.gearSelectedUid);if(!selected||selected.slot!==slot)selected=Save.equippedGearItem(slot);if(!selected||!items.some(x=>x.uid===selected.uid))selected=items[0];this.craftSelectedUid=selected.uid;this.craftLineIndex=0;this.craftTargetId=null;}
     if(!this.craftPageBySlot)this.craftPageBySlot={};const pageSize=4,pages=Math.max(1,Math.ceil(items.length/pageSize));let page=Math.max(0,Math.min(pages-1,this.craftPageBySlot[slot]||0));this.craftPageBySlot[slot]=page;
@@ -4645,7 +4664,13 @@ class Game extends Phaser.Scene {
     this.pauseUI.add([pnl,ph]);
     const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);
     const pH=Math.max(panelH,heldBot-panelY+6);   // v4.63: กรอบสูงตามเนื้อหาจริง (แถว Relic เคยล้นออกนอกกรอบ)
-    pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,pH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,pH,14);   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
+    pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,pH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,pH,14);
+    // v4.65: แนวตั้งตรงกลางว่าง → อธิบาย Relic ที่ถืออยู่ (ผู้เล่นมักลืมว่าแต่ละชิ้นทำอะไร)
+    if(w<=h&&this.relics&&this.relics.length){ let ry=panelY+pH+12; const lt=this.add.text(px+4,ry,'🔮 Your Relics',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9b8ff'}).setOrigin(0,0);this.pauseUI.add(lt);ry+=22;
+      for(const k of this.relics){ const r=RELICS[k],rg=this.add.graphics();rg.fillStyle(0x241a33,0.85);rg.fillRoundedRect(px,ry,pw,46,10);rg.lineStyle(1.2,0xc07bff,0.7);rg.strokeRoundedRect(px,ry,pw,46,10);
+        const re=this.add.text(px+22,ry+23,r.emoji,{fontSize:'20px'}).setOrigin(.5),rn=this.add.text(px+42,ry+7,r.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,0),rd=this.add.text(px+42,ry+22,r.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#c9bdd2',wordWrap:{width:pw-52},maxLines:2}).setOrigin(0,0);
+        this.pauseUI.add([rg,re,rn,rd]); ry+=52; }
+      const syn=RELIC_SYNERGIES.filter(q=>this._rel&&this._rel[q.a]&&this._rel[q.b]);for(const q of syn){const t3=this.add.text(px+4,ry,'🔗 '+q.name+' — '+q.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffb3e6',wordWrap:{width:pw-8}}).setOrigin(0,0);this.pauseUI.add(t3);ry+=t3.height+6;} }   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const portrait=w<=h,gap=portrait?12:16,bw=portrait?Math.min(w-48,330):Math.min(270,(w-56-gap)/2),bh=54;
     const by=portrait?h-138:Math.max(196,h-68),left=portrait?w/2:w/2-gap/2-bw/2,right=portrait?w/2:w/2+gap/2+bw/2;
     this.uiPillBtn(this.pauseUI,left,by,bw,bh,COLORS.mint,'▶','Resume',null);
