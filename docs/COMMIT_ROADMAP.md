@@ -18,7 +18,7 @@
 ## Phase R — Endgame: Mochi Recipe Maps (แบบ PoE maps ในรูป survival) ← ทำก่อน
 แนวคิด: Recipe = ไอเทมแผนที่ (ธีม 1 ใน 15 ด่าน + Tier 1-16 + mods) · รัน = เติม **Hunger Meter** ด้วยการฆ่า (เป้าเฉลี่ย ~2 นาที · เคลียร์เร็ว = จบเร็ว ไม่มีรอ timer) + event กลางรัน → บอสธีมนั้น → ดรอป Recipe ถัดไป/ของ endgame/เศษกุญแจ
 ค่าเริ่มต้นที่สมมติไว้ (เปลี่ยนได้): รันเฉลี่ย ~2 นาที (เจ้าของยืนยัน) · Tier 1 ฟรีไม่จำกัด · **ตาย = Recipe หาย** · เปิดครบ 15 ธีม
-- ⬜ **R1** Data model + save: `Save.data.recipes[]` {uid,theme,tier,mods,rarity} + หน้า 📜 Recipe (Activities) แสดงคลัง + ปุ่มรับ T1 ฟรี
+- ✅ **R1** (v4.75) Data model + save: `Save.data.recipes[]` {uid,theme,tier,mods,rarity} + หน้า 📜 Recipe (Activities) แสดงคลัง + ปุ่มรับ T1 ฟรี
 - ⬜ **R2** Recipe run mode: Hunger Meter เต็มจากการฆ่า (elite/rare ให้แต้มเยอะ, spawn ไหลแรงให้ build แรงเคลียร์ไว) → บอสโผล่ทันที · Speed bonus: จบเร็วกว่า par ได้รางวัลเพิ่ม + บันทึกเวลาดีที่สุดต่อธีม · mods/tier คูณเข้า `diffMul()` · ตาย = Recipe หาย
 - ⬜ **R3** Boss drops + loop: ดรอป Recipe tier เท่า/สูงกว่า, เศษกุญแจ Pinnacle, ของ endgame iLv ตาม tier (กฎเหล็ก: tier สูง รางวัลดีกว่า)
 - ⬜ **R4** Craft Recipe ด้วย currency เดิม (transmute/alt/regal/chaos/exalt/scour) + mod ที่เปลี่ยนกลไก (มอนเร็ว, ระเบิดตอนตาย, ห้ามฮีล ฯลฯ)
