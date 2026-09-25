@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.78.0';
+const GAME_VERSION = '4.79.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.79.0', date:'2026-09-25', title:'📜 Recipe Maps — events', items:['Each recipe run triggers one random event at 40% Hunger','💰 Treasure Room: loot jars and a vacuum spill out','⛩️ Sugar Shrine: stand in it for 2s for +30% damage and faster attacks','🧺 Wandering Merchant: pick a relic','✨ Rare Elite: a golden elite worth big Hunger and currency'] },
   { v:'4.78.0', date:'2026-09-25', title:'📜 Recipe Maps — crafting', items:['Craft recipes with your Forge currency: upgrade to Magic/Rare, reroll mods, or wipe them','New gameplay mods for recipes: 💨 Sugar Rush, 💥 Volatile, 🚫 Starving, 🐜 Horde','Gameplay mods pay bigger rewards than stat mods'] },
   { v:'4.77.0', date:'2026-09-25', title:'📜 Recipe Maps — boss drops', items:['Recipe bosses drop a new recipe — often one tier higher','Chance for a second recipe · higher tiers and mods drop Magic/Rare recipes more often','Earn 🧩 Pinnacle fragments — every 4 become a 🗝️ key','Fast clears raise the odds of a tier-up and give an extra fragment','Recipe runs drop endgame gear (iLv 61+) that scales with tier'] },
   { v:'4.76.0', date:'2026-09-25', title:'📜 Recipe Maps — runs', items:['Recipes can now be run: the recipe is used up when you enter','No waves — kill enemies to fill the Hunger Meter, then the boss appears','Fill it in under 100s for a Sugar speed bonus · best fill time saved per theme','If the meter is not full after 3 minutes the boss comes anyway','Recipe tier and mods scale enemy HP, damage and rewards'] },
@@ -5126,7 +5127,7 @@ class Game extends Phaser.Scene {
   }
   // 📜 Recipe run (R2): ไม่มีเวฟ/มินิ · ฆ่าเติม Hunger Meter เต็ม → บอสโผล่ทันที · เคลียร์เร็ว=จบเร็ว · กันค้าง: ครบ RECIPE_HUNGER_CAP วิ บอสมาเอง
   recipeHungerGoal(){ return 150+((this._recipe&&this._recipe.tier)||1)*10; }
-  startRecipeRun(st){ const r=this._recipe; this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeFillT=0;
+  startRecipeRun(st){ const r=this._recipe; this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this.clearRecipeShrine(); this._recipeFillT=0;
     this.stageTxt.setText('📜 Recipe T'+r.tier+' · '+st.name);
     this.pendingLvl=(this.pendingLvl||0)+3; this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
@@ -5134,14 +5135,30 @@ class Game extends Phaser.Scene {
       this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }); }
   tickRecipeHunger(dt){ this._hungerT+=dt; const goal=this.recipeHungerGoal(),t=Math.floor(this._hungerT);
     this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
+    this.tickRecipeShrine(dt);
     if(this._hungerDone)return;
+    if(!this._recipeEventDone&&this._hunger>=goal*0.4)this.triggerRecipeEvent();
     const full=this._hunger>=goal, late=this._hungerT>=RECIPE_HUNGER_CAP;
     if(full||late){ this._hungerDone=true; this._recipeFillT=this._hungerT; this._recipeFast=full&&this._hungerT<=RECIPE_PAR;
       this.showBanner(full?(this._recipeFast?'⚡ Fast clear!':'🍽 Hunger Meter full!'):'⏳ The boss grows impatient','The boss is coming',1800);
       this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); } }
+  // R5: เหตุการณ์สุ่มกลางรัน (1 ครั้ง/รัน ที่ Hunger 40%)
+  triggerRecipeEvent(){ this._recipeEventDone=true; const ev=Phaser.Utils.Array.GetRandom(['treasure','shrine','merchant','rare']);this._recipeEvent=ev; const p=this.player;
+    if(ev==='treasure'){ for(let i=0;i<6;i++)this.spawnCrate(); this.spawnVac(p.x+Phaser.Math.Between(-120,120),p.y+Phaser.Math.Between(-120,120)); this.showBanner('💰 Treasure Room','Jam jars spilled everywhere — smash them for loot',2200); }
+    else if(ev==='shrine'){ const a=Math.random()*Math.PI*2,x=p.x+Math.cos(a)*260,y=p.y+Math.sin(a)*260,g=this.camWorld(this.add.graphics().setDepth(3));
+      this._shrine={x,y,t:0,life:22,g}; this.showBanner('⛩️ Sugar Shrine','Stand in the glowing circle for 2s to gain power',2200); }
+    else if(ev==='merchant'){ this.showBanner('🧺 Wandering Merchant','A traveller offers you a relic',1800); this.time.delayedCall(900,()=>{ if(this.state==='play'&&!this.offerRelic())this.grantCurrencyReward(2,this.currencyTierFor(),'🧺 The merchant pays in currency'); }); }
+    else { const e=this.spawnElite(); if(e){ e.hp*=4; e.maxhp=e.hp; e._rareElite=true; e.tintColor=0xffd166; e.setTint(0xffd166); e.setScale((e.baseScale||1)*1.25); } this.showBanner('✨ Rare Elite','A golden elite appeared — worth big Hunger and currency',2200); } }
+  tickRecipeShrine(dt){ const sh=this._shrine; if(!sh)return; sh.life-=dt; const p=this.player,inside=Phaser.Math.Distance.Between(p.x,p.y,sh.x,sh.y)<90;
+    if(inside)sh.t+=dt; const g=sh.g; g.clear(); g.lineStyle(4,0xffd166,0.9); g.strokeCircle(sh.x,sh.y,90); g.fillStyle(0xffd166,0.12+0.1*Math.sin(this.elapsed*6)); g.fillCircle(sh.x,sh.y,90);
+    if(sh.t>0){ g.fillStyle(0xffffff,0.35); g.slice(sh.x,sh.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,sh.t/2),false); g.fillPath(); }
+    if(sh.t>=2){ this.clearRecipeShrine(); p.dmgMul*=1.3; p.cdMul*=0.85; this.burst(p.x,p.y,0xffd166); this.showBanner('⛩️ Shrine Blessing','+30% damage · faster attacks for 25s',1800);
+      this.time.delayedCall(25000,()=>{ if(this.recipeMode){p.dmgMul/=1.3;p.cdMul/=0.85;} }); }
+    else if(sh.life<=0)this.clearRecipeShrine(); }
+  clearRecipeShrine(){ if(this._shrine){ this._shrine.g.destroy(); this._shrine=null; } }
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
-  recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1); }
-  finishRecipeBoss(){ const r=this._recipe; if(!r)return; 
+  recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1); }
+  finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); 
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_HUNGER_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
     let bonus=0; if(this._recipeFast){ bonus=Math.round((60+r.tier*25)*this.diffMul().reward); this.sugarStage+=bonus; }
@@ -5323,7 +5340,7 @@ class Game extends Phaser.Scene {
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
-    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
+    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
   }
   // เวฟธรรมดา = "Survive the timer" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){

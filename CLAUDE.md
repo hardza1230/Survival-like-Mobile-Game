@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.79.0 — Recipe Maps R5: event กลางรัน)
+- **v4.79.0 (Phase R · R5):** `triggerRecipeEvent()` 1 ครั้ง/รัน เมื่อ Hunger ≥40% (`_recipeEventDone`, reset ใน startRecipeRun) สุ่ม 4 แบบ: 💰 treasure (spawnCrate×6 + spawnVac) · ⛩️ shrine (`_shrine` วงทอง r90 ห่าง 260, ยืน 2 วิ → dmgMul×1.3 cdMul×0.85 25 วิ, หมดอายุ 22 วิ, `tickRecipeShrine`/`clearRecipeShrine`) · 🧺 merchant (`offerRelic()` ไม่ได้ → currency 2) · ✨ rare elite (spawnElite HP×4 tint ทอง scale×1.25 `e._rareElite` → ฆ่า = Hunger +20 + currency 2; reset flag ใน spawnElite) · verified headless ทั้ง 4 แบบ (crate เพิ่ม, rare +28 hunger, shrine dmg 0.945→1.23), 0 error · **ถัดไป R6 Atlas board**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.78.0 — Recipe Maps R4: คราฟต์ + mod กลไก)
 - **v4.78.0 (Phase R · R4):** `RECIPE_MECH_MODS` 4 ตัว (`haste` มอน spd×1.3 ใน spawnEnemy · `volatile` ตาย 35% → spawnHazard r70 · `noheal` collectHeal=0 + regen×0 ใน update · `horde` spawn interval×0.5 batch+2 + hunger ×1.15) reward 1.25-1.45 (มากกว่า mod ตัวเลข) · `RECIPE_MODS`=RIFT_MODS+mech, `recipeModDef(id)` ใช้ใน makeRecipe/recipeMul/riftMul/UI · `recipeHas(id)` · **คราฟต์** `craftRecipe(r,cid)` ใช้ currency Forge 1 ชิ้น: transmute Normal→Magic(1 mod) · regal Magic→Rare(+1) · chaos สุ่ม mod ใหม่ · scour →Normal · แถบ 4 ปุ่มใต้กล่องรายละเอียด (`RECIPE_CRAFT`) · แก้ layout กล่องรายละเอียด (ข้อความบรรทัด best fill เคยโดนปุ่มทับ) · verified headless: คราฟต์ครบ 4 แบบ หัก currency ถูก, run haste+volatile spd เพิ่ม, screenshot ไม่ล้น, 0 error · **ถัดไป R5 event กลางรัน**
 
