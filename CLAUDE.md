@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.87.1 — กันปั๊มเลเวลในภารกิจ)
+- **v4.87.1 (เจ้าของ: Hunt ปั๊มเลเวลได้ไม่จำกัด):** `tickWaveObjective` นับ `o._objT` สำหรับ hunt/purge/capture · เกิน limit (hunt 25·target+20s, purge 30·target+20s, capture target·1.6+25s) → `o._overtime` + banner ⏰ · killEnemy: overtime = มอนธรรมดา (ไม่ใช่ elite/mini/boss) ไม่ drop orb · Hunt overtime เป้าเลิก blink
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.87.0 — บอสดุขึ้น (7+1+2))
 - **v4.87.0 (เจ้าของเลือก 7+1+2):** `bossThink` เป็น wrapper ของ `_bossThinkCore` · (7) `bossAggro(b)` คูณการลด atkCd บอส ×1.45 / มินิ ×1.3 · HP<30% ×1.2 + `_enraged` (spd×1.12, banner ENRAGED) · (1) ตรวจว่าเพิ่งใช้ท่า (atkCd ก่อน≤0.05 หลัง>0.4) → โอกาส 30%/เฟส2 45%/คลั่ง 60% ตามด้วย `bossFollowUp` 0.5-0.8s: ยิงชุดดักทาง / hazard ดักทาง / chargeTelegraph · (2) `leadAim(x,y,speed)` เล็งตาม velocity ผู้เล่น · reset `_enraged/_comboLock` ในจุด spawn บอส/มินิ · verified headless stage 4: 5 combo ใน ~25s, enrage ติด, 0 error · **ยังไม่จูนบนมือถือ — ถ้ายากไปลด bossAggro**
 

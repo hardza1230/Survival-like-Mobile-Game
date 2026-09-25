@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.87.0';
+const GAME_VERSION = '4.87.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.87.1', date:'2026-09-25', title:'⏰ Objective overtime', items:['Hunt, Escort and Capture objectives now have an overtime: stall too long and regular enemies stop dropping EXP','In Hunt overtime the marked targets stop blinking away'] },
   { v:'4.87.0', date:'2026-09-25', title:'💢 Fiercer bosses', items:['Bosses and minibosses attack more often','Bosses chain combos: after a big move they often follow up with a quick shot, trap or dash','Follow-up shots and traps aim where you are running, not where you stand','Below 30% HP bosses become ENRAGED — faster attacks and more combos'] },
   { v:'4.86.2', date:'2026-09-25', title:'💥 Juicy Burst', items:['Plump Seeds is replaced by Juicy Burst: Strawberry seeds pop on hit and splash nearby enemies (bigger, stronger splash per rank)'] },
   { v:'4.86.1', date:'2026-09-25', title:'🍓 Card fixes', items:['Endless stat cards show a stack count instead of a long row of stars','Plump Seeds now makes Strawberry seeds visibly bigger with a larger hitbox (+35% per rank)'] },
@@ -5759,9 +5760,11 @@ class Game extends Phaser.Scene {
   tickWaveObjective(dt){
     const o=this.waveObjective;if(!o||o.done)return;
     this.tickBonusChallenge(dt);
+    // v4.87.1: กันปั๊มเลเวล — ภารกิจไม่มี timer (hunt/purge/capture) ถ้าลากนานเกิน มอนธรรมดาหยุดให้ EXP + เป้า Hunt เลิกวาร์ปหนี
+    if(['hunt','purge','capture'].includes(o.type)&&!o._overtime){ o._objT=(o._objT||0)+dt; const lim=o.type==='hunt'?25*o.target+20:o.type==='purge'?30*o.target+20:Math.round(o.target*1.6+25); if(o._objT>=lim){ o._overtime=true; this.showBanner('⏰ Overtime!','Enemies no longer drop EXP — finish the objective!',1800); } }
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){
       // 🎯 Hunt: เป้าหมายวาร์ปหนีเมื่อเข้าใกล้ + ทิ้งกับดักไว้ที่เดิม
-      if(o.type==='hunt'){e._blinkCd=(e._blinkCd??2.5)-dt;if(e._blinkCd<=0&&this.dist(this.player.x,this.player.y,e.x,e.y)<210){e._blinkCd=4.5;const ox=e.x,oy=e.y,a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-.7,.7),lim=WORLD/2-120;
+      if(o.type==='hunt'&&!o._overtime){e._blinkCd=(e._blinkCd??2.5)-dt;if(e._blinkCd<=0&&this.dist(this.player.x,this.player.y,e.x,e.y)<210){e._blinkCd=4.5;const ox=e.x,oy=e.y,a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-.7,.7),lim=WORLD/2-120;
         this.spawnHazard(ox,oy,55,Math.round(8+(this.stageIndex||0)*1.5),0xff5a8a);this.vfxSpawnPoof(ox,oy);e.setPosition(Phaser.Math.Clamp(ox+Math.cos(a)*270,-lim,lim),Phaser.Math.Clamp(oy+Math.sin(a)*270,-lim,lim));this.vfxSpawnPoof(e.x,e.y);this.floatText(e.x,e.y-50,'Blink!',0xff8ab0);}}
       if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
@@ -7523,7 +7526,7 @@ class Game extends Phaser.Scene {
     this.stage5DeathGhost(e);
     this.chapter2DeathGhost(e);
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
-    this.dropOrb(e.x,e.y,e.xp||1);   // ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
+    { const wo=this.waveObjective; if(!(wo&&wo._overtime&&!wo.done&&!e.isBoss&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,e.xp||1); }   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isBoss||isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
