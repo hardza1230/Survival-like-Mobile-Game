@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.9.0';
+const GAME_VERSION = '5.10.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.10.0', date:'2026-09-25', title:'❄️ Mint Chill stacks', items:['Mint’s lances no longer freeze on every hit — each hit adds Chill (slow), and 4 stacks within 2.5s freeze the enemy']},
   { v:'5.9.0', date:'2026-09-25', title:'🌬️ Mint Gale + slower power spikes', items:['Mint’s unique is now Mint Gale: a burst of wind speed that shoves nearby enemies. Build Path, Infusion, Mutation and Evolution cards now arrive a little later']},
   { v:'5.8.0', date:'2026-09-25', title:'💢 Miniboss battle music', items:['Every miniboss fight now has its own faster, heavier theme based on its stage']},
   { v:'5.7.0', date:'2026-09-25', title:'💬 No more pauses between waves', items:['Character lines now pop up as a speech bubble over your head instead of stopping the game every wave']},
@@ -1537,7 +1538,7 @@ const RELIC_SYNERGIES = [
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 const CHARACTERS = {
   momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'Nimble gunner',desc:'Sweet but Strong — rapid fire, fast movement, steady crits',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
-  mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — wide freezes, fast, casts often',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
+  mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — lances stack Chill (slow); 4 stacks freeze the enemy solid',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'Warm and Tough — a sturdy melee brawler with high HP and strong regen (trade raw damage for durability)',stats:{hp:46,dmg:1.03,spd:0.94,def:0.84,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
   sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Mirror sniper',desc:'Fires a Mirror Beam that hits bosses at full damage. Hold still to charge Focus — the beam grows stronger and wider; moving lets it fade. Rewards in-and-out play',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
@@ -1591,7 +1592,7 @@ const BASIC_ATTACKS = {
       {id:'linger',name:'Scattering Shards',emoji:'💠',iconKey:'ic_mint_linger',max:3,desc:'More ice shards + wider spread per rank'}],
     mutations:[
       {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',desc:'Lance/shards re-shatter frozen targets for bonus damage'},
-      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',desc:'Deeper freeze and +40% lance damage'}]},
+      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',desc:'Freeze after 3 Chill stacks (not 4), longer freeze and +40% lance damage'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
       {id:'power',name:'Dense Charge',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'+12% Basic Attack damage per rank'},
@@ -7532,6 +7533,17 @@ class Game extends Phaser.Scene {
     this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
   }
   // แตกสะเก็ดน้ำแข็งที่ปลายหอก: โนวาวาบ + ยิงสะเก็ดกระจาย(เจาะ+แช่)
+  // v5.10 Mint: โจมตีปกติไม่แช่ทันทีแล้ว → สะสม ❄ Chill (ช้าลง 30%) · ครบ 4 ชั้น (Permafrost 3) ภายใน 2.5 วิ = แช่แข็ง + ชั้นหาย · บอส/มินิแค่ช้าลงไม่แช่
+  mintChill(e,freeze){
+    if(!e||!e.active)return;const now=this.time.now;
+    if(!(e._chillAt>0)||now-e._chillAt>2500)e._chill=0;
+    e._chillAt=now;e._chill=(e._chill||0)+1;
+    const need=freeze>=0.9?3:4;
+    if(e.isBoss||e.isMini){e._chill=Math.min(e._chill,need);return;}
+    if(e._chill>=need){e._chill=0;e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
+      this.burst(e.x,e.y,0xbdf0ff);if(this.floatText)this.floatText(e.x,e.y-26,'❄ FROZEN',0xbdf0ff);}
+    else e.setVelocity(e.body.velocity.x*0.7,e.body.velocity.y*0.7);
+  }
   frostShatterBurst(x,y,baseAng,count,sdmg,freeze,fb,blizzard,lvl){
     if(this.state!=='play'&&this.state!=='levelup')return;
     this.burst(x,y,0x8fd0ff);
@@ -7541,7 +7553,7 @@ class Game extends Phaser.Scene {
     // การันตีโดน: ระเบิดน้ำแข็ง AoE ในรัศมี (ดาเมจ + แช่) — แก้ปัญหา "ไม่ค่อยโดน"
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return; if(this.dist(e.x,e.y,x,y)>bloomR)return;
       this.damage(e,sdmg*1.6*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);
-      if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,freeze*1.2); e.setVelocity(e.body.velocity.x*0.25,e.body.velocity.y*0.25); e.setTint(COLORS.ice); }
+      if(e.active)this.mintChill(e,freeze*1.2);
     });
     const arc=Math.PI*1.6;   // v4.20: สะเก็ดกระจายหลายแฉก ยิงตรง (ไม่โฮมมิ่ง) + เร็วขึ้น
     for(let i=0;i<count;i++){ const a=baseAng+(i/(count-1||1)-0.5)*arc+Phaser.Math.FloatBetween(-0.06,0.06);
@@ -7807,7 +7819,7 @@ class Game extends Phaser.Scene {
     if(bullet.iceNeedle){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.10; const nd=bullet.iceNeedle;
       const frozenNow=enemy.frozen>0;
       this.damage(enemy,bullet.dmg*(frozenNow?nd.frozenBonus:1),bullet.x,bullet.y);
-      if(enemy.active&&!enemy.isBoss&&!enemy.isMini){ enemy.frozen=Math.max(enemy.frozen||0,nd.freeze); enemy.setVelocity(enemy.body.velocity.x*0.4,enemy.body.velocity.y*0.4); enemy.setTint(COLORS.ice); }
+      if(enemy.active)this.mintChill(enemy,nd.freeze);
       if(nd.shatter){ const r=52+nd.lvl*5; this.burst(bullet.x,bullet.y,0x8fd0ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&e!==enemy&&this.dist(e.x,e.y,bullet.x,bullet.y)<r)this.damage(e,nd.dmg*0.5,e.x,e.y); }); }
       // Frost Lance: กระทบเป้า = แตกเป็นสะเก็ดทันที (แล้วหอกหัก)
       if(bullet.shatterInfo&&bullet.shatterState&&!bullet.shatterState.done){ const si=bullet.shatterInfo; bullet.shatterState.done=true;
