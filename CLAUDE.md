@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.77.0 — Recipe Maps R3: ดรอปจากบอส)
+- **v4.77.0 (Phase R · R3):** `finishRecipeBoss` → `rollRecipeDrops(r)`: การันตี 1 ใบ (tier เดิม, โอกาส +1 = 35% + เร็ว 20% + mod×8%, +8% ขึ้นอีก) · ใบที่ 2 ลุ้น 25%+mod×10% · rarity ดีขึ้นตาม tier/mod · คลังเต็ม = หาย (นับ lost) · 🧩 `Save.data.pinnacleFrags` += 1+floor(tier/4)+(เร็ว 1) · ครบ `RECIPE_FRAGS_PER_KEY=4` → 🗝️ riftKeys +1 (ใช้เปิด Pinnacle เดิมไปก่อน R9) · `Save.data.recipeMaxTier` · banner 2 จังหวะ · **แก้บั๊ก:** `grantGear` ตอนหน้า summary (state≠play) ใช้ menu path iLv ต่ำ แม้ใน Rift/endgame → inPlay รวมกรณี state≠menu && endgameDropActive (ไม่ใช่ gacha) → ของจบรัน endgame iLv 61+ จริง (verified T5 ได้ iLv 76) · 0 error · **ถัดไป R4 craft recipe**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.76.0 — Recipe Maps R2: เล่นได้)
 - **v4.76.0 (Phase R · R2):** ปุ่ม Run ใน `buildRecipes` = ลบ recipe ออกจากคลัง (ตาย=หาย) → `_recipeRequested` → startRun ตั้ง `recipeMode/_recipe` + ใช้โครง Rift (`riftMode=true`, `_riftTier/_riftMods` → `riftMul`→`diffMul`, stageDiff=1) · `startStage` → `startRecipeRun(st)`: ไม่มีเวฟ/มินิ/objective, +3 level-ups, `startSurvivalWave(1)` spawn เร่ง (interval×0.7, batch+1, maxLive+10) · `tickStage` wave → `tickRecipeHunger(dt)` HUD "🍽 Hunger x/goal · m:ss" · `recipeOnKill` (killEnemy, non-big: ธรรมดา 1 / elite 8) · `recipeHungerGoal()=150+tier×10` · เต็ม หรือ `RECIPE_HUNGER_CAP=180`s → bossWarning→spawnFinalBoss · `RECIPE_PAR=100`s → `_recipeFast` = โบนัส 🍬(60+tier×25)×reward · `finishRecipeBoss()` ใน onBossDown (ก่อน rift block; recipe ไม่ได้ Rift Key) บันทึก `Save.data.recipeBest[theme]`=เวลาเติมเต็มดีที่สุด · verified headless: เติม→บอส→reward, best บันทึก, 0 error · **ค่าจูน (goal/par/cap/spawn) รอ R10 · ถัดไป R3 boss drops**
 

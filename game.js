@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.76.0';
+const GAME_VERSION = '4.77.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.77.0', date:'2026-09-25', title:'📜 Recipe Maps — boss drops', items:['Recipe bosses drop a new recipe — often one tier higher','Chance for a second recipe · higher tiers and mods drop Magic/Rare recipes more often','Earn 🧩 Pinnacle fragments — every 4 become a 🗝️ key','Fast clears raise the odds of a tier-up and give an extra fragment','Recipe runs drop endgame gear (iLv 61+) that scales with tier'] },
   { v:'4.76.0', date:'2026-09-25', title:'📜 Recipe Maps — runs', items:['Recipes can now be run: the recipe is used up when you enter','No waves — kill enemies to fill the Hunger Meter, then the boss appears','Fill it in under 100s for a Sugar speed bonus · best fill time saved per theme','If the meter is not full after 3 minutes the boss comes anyway','Recipe tier and mods scale enemy HP, damage and rewards'] },
   { v:'4.75.0', date:'2026-09-25', title:'📜 Recipe Maps — stash', items:['New endgame page: Activities → Recipe Maps','Recipes are map items with a stage theme, tier (1–16), rarity and mods','Take a free Tier 1 recipe any time · bag holds 30','Recipe runs arrive in the next update'] },
   { v:'4.74.0', date:'2026-09-25', title:'Endgame: Mochi Rift & Pinnacle Boss', items:['Mochi Rift: random stage + random mods, endless tiers — higher tiers pay more','Clearing a Rift earns 🗝️ Rift Keys and iLv 61–100 endgame gear','Spend 3 keys to fight the Pinnacle Boss, The Hunger Beneath, for a guaranteed Legendary iLv 95+']},
@@ -2618,7 +2619,7 @@ const RIFT_MODS=[
   {id:'glass',emoji:'🔪',name:'Razor Edge',desc:'Enemies hit 40% harder but have less HP',hp:0.85,dmg:1.4,reward:1.25},
   {id:'titan',emoji:'🗿',name:'Titanic',desc:'Enemies have 55% more HP',hp:1.55,dmg:1,reward:1.30}
 ];
-const PINNACLE_KEY_COST=3, RECIPE_PAR=100, RECIPE_HUNGER_CAP=180;
+const PINNACLE_KEY_COST=3, RECIPE_PAR=100, RECIPE_HUNGER_CAP=180, RECIPE_FRAGS_PER_KEY=4;
 // 📜 Recipe Maps (endgame Phase R · R1 = data model + stash) — แผนที่แบบ PoE: ธีม(ด่าน)+Tier+mods
 const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16;
 const RECIPE_RARITY={normal:{label:'Normal',color:'#e6dcf0',hex:0x8d8499,mods:0},magic:{label:'Magic',color:'#7fb6ff',hex:0x4a7dff,mods:1},rare:{label:'Rare',color:'#ffd166',hex:0xe0a526,mods:2}};
@@ -3841,7 +3842,7 @@ class Game extends Phaser.Scene {
     if(!Save.endgameUnlocked()){ T(w/2,top+40,'🔒 Finish the story to unlock Recipe Maps',15,'#ff9bb5','bold'); this.menu.setVisible(true); return; }
     const bag=this.recipeBag();
     T(w/2,top,'Each recipe is a map: a stage theme, a tier and mods.\nHigher tiers are harder and pay more.',11,'#e6dcf0');
-    let y=top+38; T(w/2,y,'Bag '+bag.length+'/'+RECIPE_BAG_MAX,12,'#ffe08a','bold'); y+=24;
+    let y=top+38; T(w/2,y,'Bag '+bag.length+'/'+RECIPE_BAG_MAX+'  ·  🧩 '+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+'  ·  🗝️ '+(Save.data.riftKeys||0)+'  ·  Max T'+(Save.data.recipeMaxTier||1),12,'#ffe08a','bold'); y+=24;
     this.uiPillBtn(this.menu,w/2,y+22,Math.min(cw,300),44,COLORS.mint,'🎁','Take free Tier 1 recipe',()=>{this.claimFreeRecipe();this.buildRecipes();}); y+=56;
     // รายการ (กริด 3 คอลัมน์ + แบ่งหน้า)
     const cols=3,gap=8,tw=(cw-gap*(cols-1))/cols,th=54,rows=Math.max(2,Math.min(5,Math.floor((h-y-200)/(th+gap)))),per=cols*rows,pages=Math.max(1,Math.ceil(bag.length/per));
@@ -5108,7 +5109,20 @@ class Game extends Phaser.Scene {
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_HUNGER_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
     let bonus=0; if(this._recipeFast){ bonus=Math.round((60+r.tier*25)*this.diffMul().reward); this.sugarStage+=bonus; }
-    Save.save(); this.showBanner('📜 Recipe T'+r.tier+' cleared!',(this._recipeFast?'⚡ Speed bonus 🍬'+bonus+' · ':'')+'Fill '+fill+'s'+(best?' · NEW BEST':''),2600); }
+    const drops=this.rollRecipeDrops(r),bag=this.recipeBag(),got=[]; let lost=0;
+    drops.forEach(d=>{ if(bag.length<RECIPE_BAG_MAX){bag.unshift(d);got.push(d);} else lost++; });
+    const frag=1+Math.floor(r.tier/4)+(this._recipeFast?1:0); Save.data.pinnacleFrags=(Save.data.pinnacleFrags||0)+frag; let keys=0;
+    while(Save.data.pinnacleFrags>=RECIPE_FRAGS_PER_KEY){Save.data.pinnacleFrags-=RECIPE_FRAGS_PER_KEY;Save.data.riftKeys=(Save.data.riftKeys||0)+1;keys++;}
+    Save.data.recipeMaxTier=Math.max(Save.data.recipeMaxTier||1,...got.map(d=>d.tier),r.tier);
+    Save.save(); this._recipeLoot={got,lost,frag,keys};
+    this.showBanner('📜 Recipe T'+r.tier+' cleared!',(this._recipeFast?'⚡ Speed bonus 🍬'+bonus+' · ':'')+'Fill '+fill+'s'+(best?' · NEW BEST':''),2400);
+    const line=got.map(d=>STAGES[d.theme].emoji+' T'+d.tier+(d.rarity!=='normal'?' '+RECIPE_RARITY[d.rarity].label:'')).join(', ');
+    this.time.delayedCall(2500,()=>this.showBanner('📜 New recipes: '+(line||'none')+(lost?' ('+lost+' lost — bag full)':''),'🧩 +'+frag+' Pinnacle fragment'+(frag>1?'s':'')+(keys?' · 🗝️ +'+keys+' Key':'')+' ('+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+')',2600)); }
+  // R3: ดรอป recipe ถัดไป — การันตี 1 ใบ (Tier เท่าเดิม; 35% +1, เร็ว +20%) · ใบที่ 2 ลุ้น 25% (+ตาม mod) · rarity ดีขึ้นตาม Tier (กฎเหล็ก)
+  rollRecipeDrops(r){ const out=[],modN=(r.mods||[]).length,up=0.35+(this._recipeFast?0.2:0)+modN*0.08;
+    const rar=()=>{const x=Math.random(),t=r.tier; return x<0.05+t*0.02+modN*0.05?'rare':(x<0.30+t*0.02+modN*0.08?'magic':'normal');};
+    const mk=bonusUp=>{let t=r.tier; if(Math.random()<up+bonusUp)t++; if(Math.random()<0.08)t++; return makeRecipe(Math.min(RECIPE_TIER_MAX,t),null,rar());};
+    out.push(mk(0)); if(Math.random()<0.25+modN*0.1)out.push(mk(-0.15)); return out; }
   updateWaveText(){
     const st=STAGES[this.stageIndex]; if(!st)return;
     if(this.mode==='boss') this.timeTxt.setText('👹 Boss');
@@ -7575,7 +7589,7 @@ class Game extends Phaser.Scene {
   // Endgame drop = โหมด endgame (Boss Rush/Endless/Zone Mods) และจบเนื้อเรื่องแล้วเท่านั้น
   endgameDropActive(){ return storyComplete()&&(!!this.riftMode||!!this.bossRush||!!this.endlessMode||((this._activeZoneMods||[]).length>0)); }
   endgameDepth(){ return (this._pinnacleRun?24:0)+(this.riftMode?(this._riftTier||1)*3:0)+(this._activeZoneMods||[]).length*4+(this.endlessMode?(this.endlessCycle||0)*2:0)+(this.bossRush?(this._rushPos||0)*2:0); }
-  grantGear(tier,opts={}){ const inPlay=this.state==='play',sourceStage=inPlay?this.stageIndex:rewardSourceStage();
+  grantGear(tier,opts={}){ const inPlay=this.state==='play'||(this.state!=='menu'&&!opts.gacha&&this.endgameDropActive()),sourceStage=inPlay?this.stageIndex:rewardSourceStage();
     // v4.32: gacha เลือก base item level ได้ (opts.itemLevel) → chapter ตาม iLv นั้น · in-play/menu ใช้ stage เดิม
     const gachaLv=opts.gacha?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||1))):0,eg=inPlay&&this.endgameDropActive(),
       chapter=opts.gacha?itemChapterFromLevel(gachaLv):eg?(Math.random()<0.5?4:5):itemChapterForStage(sourceStage);
