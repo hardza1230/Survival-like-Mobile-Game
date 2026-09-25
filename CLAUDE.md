@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.90.0 — Auto-Roll ทีละครั้ง + weight ของ mod)
+- **v4.90.0 (เจ้าของสั่ง):** `autoRollToTarget` เขียนใหม่: overlay หมุนทีละ roll (delay 260→170ms) โชว์ผล/จำนวนรอบ/currency ที่ใช้ + ปุ่ม ⏹ Stop · จบเมื่อได้เป้า/currency หมด/หยุด · **Weight:** `AFFIX_WEIGHT` (default 100 · crit/cd 50, bossdmg 45, def 60, dmg 70, special berserk/focus 18, gambler 24, vampiric 30, nourish 40, utility 110-130) + `pickWeightedMod` ใช้ใน rollAffixes/randomCraftSelected/autoRoll · roll pool โชว์ % ต่อ roll (`affixChancePct`) + ★★/★★★ (`affixRarityTag`, weight ≤60/≤30) · verified headless: dist 5000 ครั้ง def 13% vs hp 24%, auto-roll ได้เป้าใน 13 รอบ, screenshot ok, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.89.2 — Candy Shell ใช้ได้จริง+เห็นชัด)
 - **v4.89.2 (เจ้าของ: Candy Shell เหมือนไม่ทำงาน):** บั๊ก: `_shield` ถูกเช็คแค่ใน hurtPlayer (กระสุน) · touchEnemy (ชนมอน = ดาเมจหลัก) ไม่เช็ค → แก้ด้วย `consumeShell()` ใช้ทั้ง 2 จุด (ชน = กระเด้งออก) + วงแตก · `drawShellBubble()` ฟองรอบตัวทุกเฟรม (2 ชั้น = วงคู่) เรียกต่อจาก tickCharSignature · verified headless: ชนมอน HP ไม่ลด โล่ 2→1, screenshot เห็นฟอง, 0 error
 

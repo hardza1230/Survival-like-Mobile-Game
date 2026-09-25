@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.89.2';
+const GAME_VERSION = '4.90.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.90.0', date:'2026-09-25', title:'🔁 Auto-Roll + mod weights', items:['Auto-Roll now spins roll by roll on screen until it hits your target, runs out of currency, or you tap Stop','Mods have weights: strong mods (Crit, Cooldown, Boss DMG, Berserker…) are harder to roll','The roll pool shows each mod’s chance per roll, with ★★/★★★ on rare mods'] },
   { v:'4.89.2', date:'2026-09-25', title:'🫧 Candy Shell fix', items:['Candy Shell now also blocks contact hits from enemies (before it only blocked projectiles)','A glowing bubble shows around you while a shield is up, and pops when it blocks'] },
   { v:'4.89.1', date:'2026-09-25', title:'💢 Tougher hits', items:['Shorter invulnerability after taking damage (×0.6): enemies and projectiles can hit you more often'] },
   { v:'4.89.0', date:'2026-09-25', title:'⚡ Taro Storm Charge', items:['Taro lightning no longer locks onto bosses','Every lightning hit on a regular enemy stores ⚡1 charge','At 10 charges a Judgment Bolt strikes the boss or miniboss for heavy damage — clear the adds to power up'] },
@@ -1875,6 +1876,13 @@ const SPECIAL_AFFIX_POOL = [
     fmt:v=>'+'+v+'%', tiers:[[35,50],[25,34],[17,24],[10,16],[5,9]],
     apply:(p,v)=>{ p.healEffect=(p.healEffect||1)+v/100; } }, // บูมค่าฟื้นจากไอเทม heal ในด่าน
 ]; // Future schema: {id,kind,label,tiers,apply,baseIds?,baseTags?,slots?,minItemLevel?,exclusive:true}
+// v4.90: น้ำหนักสุ่ม mod — mod แรง/หายาก = weight ต่ำ (ออกยาก) · ค่าเริ่มต้น 100
+const AFFIX_WEIGHT = { dmg:70, crit:50, critdmg:55, cd:50, bossdmg:45, laststand:80, hp:110, def:60, regen:100, lifekill:90, crisisguard:85, spd:110, pick:130, xp:120, dash:100,
+  vampiric:30, berserk:18, focus:18, gambler:24, nourish:40 };
+function affixWeight(mod){ return (mod&&AFFIX_WEIGHT[mod.id])||100; }
+function pickWeightedMod(arr){ if(!arr||!arr.length)return null; let tot=0; for(const m of arr)tot+=affixWeight(m); let r=Math.random()*tot; for(const m of arr){ r-=affixWeight(m); if(r<=0)return m; } return arr[arr.length-1]; }
+function affixChancePct(mod,arr){ let tot=0; for(const m of arr)tot+=affixWeight(m); const v=tot?affixWeight(mod)/tot*100:0; return v>=10?Math.round(v):v.toFixed(1); }
+function affixRarityTag(mod){ const w=affixWeight(mod); return w<=30?'★★★':w<=60?'★★':''; }
 function allAffixDefs(){return AFFIX_POOL.concat(SPECIAL_AFFIX_POOL);}
 function affixDef(id){return allAffixDefs().find(a=>a.id===id);}
 function craftAffixPoolForItem(item){if(!item)return[];const base=GEAR_ALL.find(g=>g.id===item.baseId),tags=new Set((base&&base.craftTags)||[]);
@@ -1894,7 +1902,7 @@ function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl), band=mod.tier
 function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:l<45?3:99;}   // ของเลเวลต่ำ = mod น้อย (กันของด่านแรกโกง) ค่อย ๆ ปลดตาม iLv
 function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel));if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,best=Math.max(BASE_BEST_TIER[baseTier]||4,bestAffixTierForItemLevel(itemLevel));
   const pre=pool.filter(a=>a.kind==='prefix'),suf=pool.filter(a=>a.kind==='suffix');let nPre,nSuf;if(n===1){if(Math.random()<.5){nPre=1;nSuf=0;}else{nPre=0;nSuf=1;}}else if(n===2){nPre=1;nSuf=1;}else{if(Math.random()<.5){nPre=2;nSuf=1;}else{nPre=1;nSuf=2;}}
-  const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=p.splice(Math.floor(Math.random()*p.length),1)[0];out.push(rollOneAffix(m,Math.max(best,m.bestTier||1),itemLevel));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
+  const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=pickWeightedMod(p);p.splice(p.indexOf(m),1);out.push(rollOneAffix(m,Math.max(best,m.bestTier||1),itemLevel));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
   const best=(kind)=>{ let b=null; for(const a of affs){ const d=affixDef(a.id); if(d&&d.kind===kind&&(!b||a.t<b.t))b=a; } return b?affixDef(b.id):null; };
@@ -4798,7 +4806,7 @@ class Game extends Phaser.Scene {
     const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===line?'':a.id)),available=pool.filter(m=>!used.has(m.id));
     if(!available.length){Sfx.select();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}
     const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key);if(Save.currency(key)<1){Sfx.select();this.showBanner(cur.emoji+' Need '+cur.name,'Available: '+Save.currency(key),1300);return;}
-    const mod=Phaser.Utils.Array.GetRandom(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
+    const mod=pickWeightedMod(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
     if(line<affs.length)affs[line]=rolled;else affs.push(rolled);if(rar==='common')rar='magic';
     Save.spendCurrency(key,1);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
     this._craftResult={uid:item.uid,title:old?'AFFIX REPLACED':'NEW AFFIX',before:old?(affixDef(old.id).label+' '+affixDef(old.id).fmt(old.v)):'Empty line',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};
@@ -4827,6 +4835,7 @@ class Game extends Phaser.Scene {
     tick();
   }
   // v4.49: หมุนซ้ำ ๆ (สุ่ม) จนได้ mod เป้าหมายที่เลือก หรือ currency หมด — bulk action ไม่มีแอนิเมชันต่อครั้ง
+  // v4.90: Auto-Roll หมุนให้เห็นทีละครั้ง (ไม่ต้องกดเอง) จนได้เป้า / currency หมด / กด Stop
   autoRollToTarget(){
     if(this._craftRolling)return;
     const {item,base}=this._craftContext();
@@ -4835,24 +4844,40 @@ class Game extends Phaser.Scene {
     const targetId=this.craftTargetId;
     if(!targetId){Sfx.select();this.showBanner('🎯 Pick a target first','Tap a mod in the roll pool to target it',1600);return;}
     const line=Math.max(0,this.craftLineIndex||0),tmod=affixDef(targetId);
-    let rolls=0,spent={},lastMod=null,hit=false,reason='';
-    for(let guard=0;guard<300;guard++){
+    this._craftRolling=true;this.tapZones=[];const token=(this._craftRollToken||0)+1;this._craftRollToken=token;
+    const w=this.W,h=this.H,cy=h*.49,shade=this.add.rectangle(0,0,w,h,0x0b0711,.84).setOrigin(0),panel=this.add.graphics();
+    panel.fillStyle(0x21172c,.99);panel.fillRoundedRect(18,cy-126,w-36,252,18);panel.lineStyle(2,0xffd166,1);panel.strokeRoundedRect(18,cy-126,w-36,252,18);
+    const T=(y,t,sz,col,b)=>this.add.text(w/2,y,t,{fontFamily:'sans-serif',fontStyle:b?'bold':'normal',fontSize:sz,color:col,align:'center'}).setOrigin(.5);
+    const title=T(cy-99,'🔁 AUTO-ROLL',  '17px','#ffe08a',1),goal=T(cy-74,'Target: '+tmod.emoji+' '+tmod.label+' ('+affixChancePct(tmod,craftAffixPoolForItem(item))+'% per roll)','10px','#b9aec8');
+    const rowG=this.add.graphics();rowG.fillStyle(0x41304d,1);rowG.fillRoundedRect(36,cy-22,w-72,44,10);rowG.lineStyle(2,0xffd166,1);rowG.strokeRoundedRect(36,cy-22,w-72,44,10);
+    const cur=T(cy,'…','14px','#f4ecf8',1),count=T(cy+40,'Roll 0','11px','#e8ddff'),spentT=T(cy+60,'','9px','#8bd3a0');
+    const skW=120,skH=32,skX=w/2-skW/2,skY=cy+84,skG=this.add.graphics();skG.fillStyle(0x5a2e3a,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0xff8fa3,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);
+    const skT=T(skY+skH/2,'⏹ Stop','12px','#ffe0e6',1);
+    this.menu.add([shade,panel,title,goal,rowG,cur,count,spentT,skG,skT]);
+    let rolls=0;const spent={};const spentTxt=()=>Object.keys(spent).map(k=>currencyDef(k).emoji+'×'+spent[k]).join(' ')||'—';
+    const end=(kind,a)=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;
+      this.time.delayedCall(kind==='hit'?900:500,()=>{this._craftRolling=false;this.buildCraftBench();
+        if(kind==='hit'){this.showBanner('🎯 Got '+tmod.emoji+' '+tmod.label,'After '+rolls+' rolls · spent '+spentTxt(),2100);}
+        else if(kind==='unreachable')this.showBanner('🎯 Target unavailable','That mod cannot roll on this line',1600);
+        else if(kind==='stop')this.showBanner('⏹ Stopped','Rolled '+rolls+'× · spent '+spentTxt(),1800);
+        else this.showBanner('💸 Out of currency','Rolled '+rolls+'× · spent '+spentTxt()+' — no match yet',2100);});};
+    this._zone(skX,skY,skW,skH,()=>end('stop'));
+    const step=()=>{if(this._craftRollToken!==token)return;
       const affs=Save.gearAffixes(item.uid).slice(),rar=Save.gearRarity(item.uid,base.tier),cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),ln=Math.max(0,Math.min(cap-1,line)),old=affs[ln]||null;
       const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===ln?'':a.id)),available=pool.filter(m=>!used.has(m.id));
-      if(!available.some(m=>m.id===targetId)){reason=rolls?'':'unreachable';break;}
+      if(!available.some(m=>m.id===targetId)){cur.setText('Target cannot roll here').setColor('#ff9aa8');return end('unreachable');}
       const key=craftCurrencyForLine(rar,!!old);
-      if(Save.currency(key)<1){reason='broke';break;}
-      const mod=Phaser.Utils.Array.GetRandom(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
+      if(Save.currency(key)<1){cur.setText('Out of '+currencyDef(key).emoji+' '+currencyDef(key).name).setColor('#ff9aa8');return end('broke');}
+      const mod=pickWeightedMod(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
       const nAffs=affs.slice();if(ln<nAffs.length)nAffs[ln]=rolled;else nAffs.push(rolled);
       Save.spendCurrency(key,1);Save.setAffixes(item.uid,nAffs);if(rar==='common')Save.setGearRarity(item.uid,'magic');
-      spent[key]=(spent[key]||0)+1;rolls++;lastMod=mod;this._craftRolledId=mod.id;
-      if(mod.id===targetId){hit=true;const a=nAffs[ln];this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};break;}
-    }
-    const spentTxt=Object.keys(spent).map(k=>currencyDef(k).emoji+'×'+spent[k]).join(' ')||'nothing';
-    if(hit){Sfx.clear();this.screenFlash(0xffd166,.6,420);this.showBanner('🎯 Got '+tmod.emoji+' '+tmod.label,'After '+rolls+' rolls · spent '+spentTxt,2100);}
-    else if(reason==='unreachable'){Sfx.select();this.showBanner('🎯 Target unavailable','That mod cannot roll on this line',1600);}
-    else{Sfx.select();this.showBanner('💸 Out of currency','Rolled '+rolls+'× · spent '+spentTxt+' — no match yet',2100);}
-    this.buildCraftBench();
+      spent[key]=(spent[key]||0)+1;rolls++;this._craftRolledId=mod.id;
+      const hit=mod.id===targetId,c=affixCategory(mod);
+      this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
+      count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());Sfx.select();
+      if(hit){this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};Sfx.clear();this.screenFlash(0xffd166,.6,420);skT.setText('✓ Done');return end('hit');}
+      this.time.delayedCall(rolls<5?260:170,step);};
+    this.time.delayedCall(200,step);
   }
   promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
   divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v),b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'VALUE REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
@@ -4897,7 +4922,7 @@ class Game extends Phaser.Scene {
     }y+=cardH+5;
     const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id)),rolledId=this._craftRolledId,visiblePool=available.slice(0,portrait?6:4),catCount={offense:0,defense:0,utility:0};available.forEach(m=>catCount[m.category]=(catCount[m.category]||0)+1);
     const ph=this.add.text(15,y,'ROLL POOL · '+available.length+' · tap to target 🎯',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#ffe0a8'}).setOrigin(0,0),tierHint=this.add.text(w-15,y,'OFF '+catCount.offense+' · DEF '+catCount.defense+' · UTIL '+catCount.utility,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.2px',color:'#a99bb4'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=15;
-    const pw=(w-34-6)/2,phh=31;visiblePool.forEach((mod,i)=>{const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+4),targeted=mod.id===this.craftTargetId,on=targeted||mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:affixCategory(mod).color,g=this.add.graphics();g.fillStyle(on?0x4d3d1f:0x251c30,.98);g.fillRoundedRect(x,py,pw,phh,7);g.lineStyle(on?2.3:1,on?0xffd166:kc,1);g.strokeRoundedRect(x,py,pw,phh,7);g.fillStyle(kc,1);g.fillRoundedRect(x,py,4,phh,{tl:7,bl:7,tr:0,br:0});const tx=this.add.text(x+10,py+8,(targeted?'🎯 ':on?'✨ ':'')+mod.emoji+' '+mod.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,.5),rg=this.add.text(x+10,py+22,affixCategory(mod).label+' · T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'6.4px',color:on?'#ffe0b0':affixCategory(mod).hex}).setOrigin(0,.5);this.menu.add([g,tx,rg]);this._zone(x,py,pw,phh,()=>{this.craftTargetId=this.craftTargetId===mod.id?null:mod.id;this._craftConfirm=null;this.buildCraftBench();});});y+=Math.ceil(visiblePool.length/2)*(phh+4)+4;
+    const pw=(w-34-6)/2,phh=31;visiblePool.forEach((mod,i)=>{const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+4),targeted=mod.id===this.craftTargetId,on=targeted||mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:affixCategory(mod).color,g=this.add.graphics();g.fillStyle(on?0x4d3d1f:0x251c30,.98);g.fillRoundedRect(x,py,pw,phh,7);g.lineStyle(on?2.3:1,on?0xffd166:kc,1);g.strokeRoundedRect(x,py,pw,phh,7);g.fillStyle(kc,1);g.fillRoundedRect(x,py,4,phh,{tl:7,bl:7,tr:0,br:0});const tx=this.add.text(x+10,py+8,(targeted?'🎯 ':on?'✨ ':'')+mod.emoji+' '+mod.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,.5),rg=this.add.text(x+10,py+22,(affixRarityTag(mod)?affixRarityTag(mod)+' ':'')+affixChancePct(mod,available)+'% · T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'6.4px',color:on?'#ffe0b0':affixCategory(mod).hex}).setOrigin(0,.5);this.menu.add([g,tx,rg]);this._zone(x,py,pw,phh,()=>{this.craftTargetId=this.craftTargetId===mod.id?null:mod.id;this._craftConfirm=null;this.buildCraftBench();});});y+=Math.ceil(visiblePool.length/2)*(phh+4)+4;
     if(available.length>visiblePool.length){const more=this.add.text(w/2,y-2,'+'+(available.length-visiblePool.length)+' more possible results in the roulette',{fontFamily:'sans-serif',fontSize:'7px',color:'#a99bb4'}).setOrigin(.5);this.menu.add(more);y+=8;}
     const result=this._craftResult&&this._craftResult.uid===selected.uid?this._craftResult:null;if(result){const rg=this.add.graphics();rg.fillStyle(0x2d492f,.96);rg.fillRoundedRect(14,y,w-28,34,8);rg.lineStyle(1.5,0x8bd3a0,1);rg.strokeRoundedRect(14,y,w-28,34,8);const rt=this.add.text(22,y+8,'✓ '+result.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:'#bff6cf'}).setOrigin(0,.5),rv=this.add.text(22,y+24,result.before+'  →  '+result.after,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#fff4df'}).setOrigin(0,.5);this.menu.add([rg,rt,rv]);y+=39;}
     const old=affs[this.craftLineIndex]||null,key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),have=Save.currency(key),can=available.length>0&&!selected.locked&&have>0,mainH=52,main=this.add.graphics();main.fillStyle(can?0x347d54:0x302a38,.98);main.fillRoundedRect(14,y,w-28,mainH,11);main.lineStyle(1.5,can?0x8bd3a0:0x574764,1);main.strokeRoundedRect(14,y,w-28,mainH,11);this.menu.add(main);
