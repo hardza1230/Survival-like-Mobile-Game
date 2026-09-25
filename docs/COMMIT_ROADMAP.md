@@ -27,7 +27,7 @@
 - ✅ **R7** (v4.81) Atlas passive tree (เพิ่มดรอป, event บ่อยขึ้น, mod พิเศษ ฯลฯ)
 - ✅ **R8** (v4.82) Unique ที่เปลี่ยน build + ดรอปเจาะจงจากบอสแต่ละธีม
 - ✅ **R9** (v4.83) ย้าย Rift → Recipe (เซฟเก่า riftKeys แปลงเป็นเศษกุญแจ) · Pinnacle ใช้เศษกุญแจ · Boss Rush คงไว้
-- ⬜ **R10** Balance pass tier 1–16 + validator contract
+- ✅ **R10** (v4.84) Balance pass tier 1–16 + validator contract
 
 ## Phase B — Endgame เสริม (หลัง Phase R)
 - ⬜ **B1** Pinnacle: ท่าโจมตีเฉพาะ + 3 เฟส (แยกจาก First Planter)

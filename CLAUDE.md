@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.84.0 — Recipe Maps R10: balance + validator · Phase R ครบ)
+- **v4.84.0 (Phase R · R10):** **บั๊ก:** spawnFinalBoss `_bossScale` ที่ stageDiff=1 = 1.0 ไม่คูณ diffMul → บอส Recipe (และ Rift เดิม) ไม่สเกลตาม tier/mod เลย · แก้: คูณ `riftMul().hp*RECIPE_BOSS_HP(0.7)` เฉพาะ recipeMode (verified T1 4099 → T10 10739 = ×2.62) · `recipeHungerGoal` 150+tier×6 (T16=246) · validator เพิ่ม contract Recipe Maps + กฎเหล็ก (ทุก mod reward>1, riftTierMul reward เพิ่มตาม tier) + ATLAS_NODES 7 + UNIQUE_GEAR 5 · 0 error · **Phase R ปิดแล้ว — ต้องเล่นจริงบนมือถือเพื่อจูน goal/par/boss HP/ดรอป**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.83.0 — Recipe Maps R9: แทนที่ Rift)
 - **v4.83.0 (Phase R · R9):** ลบแถว 🌀 Mochi Rift ออกจาก Activities · route 'rift' → `buildRecipes` (buildRift/rollRiftPreview ยังอยู่เป็น dead code; riftMode ยังใช้ภายในเป็นโครงตัวคูณของ recipe) · `migrateRiftToRecipes()` (ครั้งเดียว `Save.data.riftMigrated`) แจก recipe 2 ใบ Tier = riftBest-1 · ปุ่ม ✦ Pinnacle Boss ย้ายมาหน้า Recipe (`startPinnacle()` ใช้ `riftKeys` เดิม 3 ดอก · 4 🧩 = 1 🗝️) · หน้าผล Pinnacle กลับ 'recipes' · Boss Rush ไม่แตะ · verified headless: riftBest 7 → 2 ใบ T6 ไม่ซ้ำ, Pinnacle เข้ารันและหักกุญแจ, screenshot ok, 0 error · **ถัดไป R10 balance pass**
 
@@ -538,7 +542,7 @@
 - **📋 แผนงานแบ่ง commit อยู่ที่ `docs/COMMIT_ROADMAP.md` — ทำทีละ commit ตามลำดับ และอัปเดตสถานะ ⬜/✅ ในไฟล์นั้นทุกครั้ง**
 1. ~~Endgame gate~~ ✅ v4.72 ปลดหลังจบเนื้อเรื่อง
 2. **Chapter 3** ✅ v4.73 เล่นได้ (placeholder) — เหลือ: อาร์ตจริงจาก AI อีกตัว, story/epilogue, Bestiary, กลไกบอสเฉพาะ
-3. Endgame ✅ v4.74 Rift+Pinnacle → **ถัดไป: Phase R Recipe Maps (R1–R10) ใน docs/COMMIT_ROADMAP.md**
+3. Endgame ✅ Phase R Recipe Maps ครบ R1–R10 (v4.75–v4.84) → ถัดไป: Phase A (Chapter 3 ให้สมบูรณ์) หรือ B ใน docs/COMMIT_ROADMAP.md · Recipe ยังต้องเล่นจริงเพื่อจูนตัวเลข
 4. เล่นจริงบนมือถือ: Boss Rush balance, Relic, Bonus Challenge, UI v4.63-4.68, Chapter 2 full run
 5. (พักไว้) Play Store: ลบบัญชีในแอป, store listing, keystore, closed test
 

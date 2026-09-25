@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '4.83.0'",
+  "const GAME_VERSION = '4.84.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -352,3 +352,19 @@ for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)','buildEndgame(
 for(const contract of ["this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper':type==='shooter'?'e_banquet_eye'","this.stage5Pose(b,pose","this.stage5DeathGhost(e)"]){
   if(!source.includes(contract))throw new Error(`Missing Stage 5 replacement contract: ${contract}`);
 }
+
+// R10: Recipe Maps endgame contracts + กฎเหล็ก (ยิ่งยาก รางวัลยิ่งดี)
+for(const c of ['const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16','function makeRecipe(','function recipeMul(','function atlasPoints(','const ATLAS_NODES=[','const UNIQUE_GEAR={','startRecipeRun(st)','tickRecipeHunger(dt)','finishRecipeBoss()','rollRecipeDrops(r)','craftRecipe(r,cid)','triggerRecipeEvent()','migrateRiftToRecipes()','startPinnacle()','this.recipeMode?this.riftMul().hp*RECIPE_BOSS_HP:1']){
+  if(!source.includes(c))throw new Error(`Missing Recipe Maps contract: ${c}`);
+}
+const recipeMods=block(/const RIFT_MODS=\[([\s\S]*?)\n\];/,'RIFT_MODS')+block(/const RECIPE_MECH_MODS=\[([\s\S]*?)\n\];/,'RECIPE_MECH_MODS');
+for(const m of recipeMods.matchAll(/id:'([^']+)'[^\n]*?hp:([\d.]+),dmg:([\d.]+),reward:([\d.]+)/g)){
+  const [,id,hp,dmg,rw]=m; if(+rw<=1)throw new Error(`Recipe mod ${id} breaks the iron rule (reward ${rw} vs hp ${hp}/dmg ${dmg})`);
+}
+const tierFn=source.match(/function riftTierMul\(t\)\{[^\n]*hp:1\+([\d.]+)\*\(t-1\),dmg:1\+([\d.]+)\*\(t-1\),reward:1\+([\d.]+)\*\(t-1\)/);
+if(!tierFn||!(+tierFn[3]>0))throw new Error('riftTierMul must raise reward with tier');
+const atlasIds=[...block(/const ATLAS_NODES=\[([\s\S]*?)\n\];/,'ATLAS_NODES').matchAll(/id:'([^']+)'/g)].map(m=>m[1]);
+if(atlasIds.length!==7||new Set(atlasIds).size!==7)throw new Error(`Expected 7 unique Atlas nodes, found ${atlasIds.length}`);
+const uqCount=(block(/const UNIQUE_GEAR=\{([\s\S]*?)\n\};/,'UNIQUE_GEAR').match(/unique:true/g)||[]).length;
+if(uqCount!==5)throw new Error(`Expected 5 Unique gear items, found ${uqCount}`);
+console.log('validated Recipe Maps: 16 tiers, iron-rule mods, 7 Atlas nodes, 5 Uniques');

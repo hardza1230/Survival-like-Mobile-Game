@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.83.0';
+const GAME_VERSION = '4.84.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.84.0', date:'2026-09-25', title:'📜 Recipe balance pass', items:['Fix: recipe bosses now scale with recipe tier and mods (they used to stay at base strength)','Recipe bosses have 30% less base HP so runs stay short','Hunger Meter needs less at high tiers (Tier 16: 246 instead of 310)'] },
   { v:'4.83.0', date:'2026-09-25', title:'📜 Recipes replace the Rift', items:['Mochi Rift is retired — Recipe Maps are the main endgame now','Rift progress converts into two recipes at your best Rift tier','The Pinnacle Boss button moved to the Recipe Maps page and still uses 🗝️ keys (4 🧩 fragments = 1 key)','Boss Rush stays as it is'] },
   { v:'4.82.0', date:'2026-09-25', title:'🟣 Unique Gear', items:['5 Unique items that change your build, each with a trade-off','Glass Rolling Pin, Ring of Endless Hunger, Sugar Rush Boots, Echo Locket, Candy Shell Plate','Uniques only drop from recipe bosses of their own themes — higher tiers, Rare recipes and fast clears raise the odds','The Atlas board shows which themes hold a Unique and which you have found'] },
   { v:'4.81.0', date:'2026-09-25', title:'🌳 Atlas Passives', items:['Spend Atlas points on 7 permanent recipe bonuses (Atlas → Passives tab)','Better recipe drops, more rare recipes, faster Hunger, bigger rewards, extra events and a longer speed-bonus window','Free respec any time'] },
@@ -2634,7 +2635,7 @@ const RIFT_MODS=[
   {id:'glass',emoji:'🔪',name:'Razor Edge',desc:'Enemies hit 40% harder but have less HP',hp:0.85,dmg:1.4,reward:1.25},
   {id:'titan',emoji:'🗿',name:'Titanic',desc:'Enemies have 55% more HP',hp:1.55,dmg:1,reward:1.30}
 ];
-const PINNACLE_KEY_COST=3, RECIPE_PAR=100, RECIPE_HUNGER_CAP=180, RECIPE_FRAGS_PER_KEY=4;
+const PINNACLE_KEY_COST=3, RECIPE_PAR=100, RECIPE_HUNGER_CAP=180, RECIPE_FRAGS_PER_KEY=4, RECIPE_BOSS_HP=0.7;   // R10: บอส recipe เบาลง 30% ให้รันจบใน ~2-3 นาที แต่ยังสเกลตาม tier
 // 📜 Recipe Maps (endgame Phase R · R1 = data model + stash) — แผนที่แบบ PoE: ธีม(ด่าน)+Tier+mods
 const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16;
 const RECIPE_RARITY={normal:{label:'Normal',color:'#e6dcf0',hex:0x8d8499,mods:0},magic:{label:'Magic',color:'#7fb6ff',hex:0x4a7dff,mods:1},rare:{label:'Rare',color:'#ffd166',hex:0xe0a526,mods:2}};
@@ -5198,7 +5199,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
   }
   // 📜 Recipe run (R2): ไม่มีเวฟ/มินิ · ฆ่าเติม Hunger Meter เต็ม → บอสโผล่ทันที · เคลียร์เร็ว=จบเร็ว · กันค้าง: ครบ RECIPE_HUNGER_CAP วิ บอสมาเอง
-  recipeHungerGoal(){ return 150+((this._recipe&&this._recipe.tier)||1)*10; }
+  recipeHungerGoal(){ return 150+((this._recipe&&this._recipe.tier)||1)*6; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
   startRecipeRun(st){ const r=this._recipe; this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     this.stageTxt.setText('📜 Recipe T'+r.tier+' · '+st.name);
     this.pendingLvl=(this.pendingLvl||0)+3; this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
@@ -5875,7 +5876,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1); b.maxhp=b.hp;   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?this.riftMul().hp*RECIPE_BOSS_HP:1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
