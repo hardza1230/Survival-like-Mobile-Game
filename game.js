@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.99.0';
+const GAME_VERSION = '5.0.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.0.0', date:'2026-09-25', title:'🎵 New music for Chapter 2 and 3', items:['Chapter 2 has its own mysterious garden theme and a new boss battle track','Chapter 3 has an epic throne theme and a new final-chapter boss track','Chapter 2 and 3 no longer reuse the Stage 5 music']},
   { v:'4.99.0', date:'2026-09-25', title:'🔊 12 new sound effects', items:['New sounds for crits, big kills, getting hurt, healing, magnet, card picks, legend drops, victory and defeat','Taro, Cocoa and Sesame attacks each have their own sound']},
   { v:'4.98.0', date:'2026-09-25', title:'🔊 Juicier sound', items:['Hits and pickups vary their pitch so repeats never sound robotic','Collecting EXP in a row climbs higher and higher in pitch','Crits and big kills get layered impact sounds','Sound caps stop audio from clipping when big swarms die','New Music Volume and Effects Volume settings']},
   { v:'4.97.0', date:'2026-09-25', title:'🏷️ Tag Sets', items:['Build Paths, Flavor Infusions and Relics now carry a tag: 🎯 Precision, 🌀 Swarm, 🛡️ Guard or ⚡ Tempo','Collect 2 or 3 of the same tag in a stage for a set bonus','Active sets show on the HUD next to your relics']},
@@ -630,8 +631,8 @@ const Sfx = {
       if(old){if(window.__g.tweens)window.__g.tweens.add({targets:old,volume:0,duration:480,onComplete:()=>{try{old.stop();old.destroy();}catch(e){}}});else{old.stop();old.destroy();}}return true;
     }catch(e){return false;}
   },
-  playStageBgm(stageNum=1){const key='bgm_stage'+Math.max(1,Math.min(5,stageNum));this._bgmIntense=false;if(!this._playTrack(key,0.30)){this.stopBgm();this.startBgm();}},
-  playBossBgm(stageNum=1){const key='bgm_boss'+Math.max(1,Math.min(5,stageNum));this._bgmIntense=true;if(!this._playTrack(key,0.34))this.bgmIntense(true);},
+  playStageBgm(stageNum=1){const key=bgmKeyFor('stage',stageNum);this._bgmIntense=false;if(!this._playTrack(key,0.30)){this.stopBgm();this.startBgm();}},
+  playBossBgm(stageNum=1){const key=bgmKeyFor('boss',stageNum);this._bgmIntense=true;if(!this._playTrack(key,0.34))this.bgmIntense(true);},
   playMainBgm(){this._bgmIntense=false;if(!this._playTrack('bgm_main',0.28)){this.stopBgm();this.startBgm();}},
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
   _bgmNote(freq,dur,type,vol,delay){ if(!this.ctx||!this._bgmGain)return;
@@ -952,7 +953,17 @@ const ASSET_AUDIO = {
   bgm_stage3:     'assets/audio/bgm/bgm_stage3_stove.wav',
   bgm_stage4:     'assets/audio/bgm/bgm_stage4_freezer.wav',
   bgm_stage5:     'assets/audio/bgm/bgm_stage5_oven.wav',
+  bgm_ch2:        'assets/audio/bgm/bgm_ch2.mp3',        // v5.0 สร้างด้วยโค้ด scripts/gen_bgm_synth.cjs (ไม่มีลิขสิทธิ์)
+  bgm_ch2_boss:   'assets/audio/bgm/bgm_ch2_boss.mp3',
+  bgm_ch3:        'assets/audio/bgm/bgm_ch3.mp3',
+  bgm_ch3_boss:   'assets/audio/bgm/bgm_ch3_boss.mp3',
 };
+// เลือกเพลงตามด่าน: Ch1 (ด่าน 1-5) ใช้เพลงรายด่าน · Ch2 (6-10) / Ch3 (11-15) ใช้เพลงประจำบท ถ้าไฟล์หาย fallback เพลงด่าน 5
+function bgmKeyFor(kind,stageNum){
+  const ch=stageNum>=11?3:stageNum>=6?2:1;
+  if(ch>1){const k='bgm_ch'+ch+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
+  return 'bgm_'+kind+Math.max(1,Math.min(5,stageNum));
+}
 
 let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
 function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
@@ -981,7 +992,7 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
-      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss'))continue;
+      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch'))continue;
       this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำWaitง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
@@ -5352,7 +5363,7 @@ class Game extends Phaser.Scene {
     this.showMenu();
   }
   ensureStageAudio(idx,done){
-    const stage=Math.max(1,Math.min(5,(idx||0)+1)),keys=['bgm_stage'+stage,'bgm_boss'+stage];   // โหลดเพลงStage + เพลงบอสของด่านนั้น
+    const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage),bgmKeyFor('boss',stage)];   // โหลดเพลงStage + เพลงบอสของด่านนั้น
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
     const loader=window.GameLoader;let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
     this.load.on('progress',value=>{if(loader)loader.set(0.08+value*0.24,'Loading stage and boss music...');});

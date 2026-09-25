@@ -56,8 +56,8 @@
 | `bgm_main` | เมนูหลัก | ✅ |
 | `bgm_stage1-5` | ด่าน Chapter 1 | ✅ (Chapter 2–3 ใช้ซ้ำ) |
 | `bgm_boss1-5` | บอส | ✅ |
-| `bgm_ch2` | ด่าน Chapter 2 (สวนหมัก/เห็ด/รัง) | ⬜ |
-| `bgm_ch3` | ด่าน Chapter 3 (ทุ่งเมล็ด/บัลลังก์) | ⬜ |
+| `bgm_ch2` / `bgm_ch2_boss` | ด่าน + บอส Chapter 2 | 🤖 v5.0 สร้างด้วยโค้ด (`scripts/gen_bgm_synth.cjs`) |
+| `bgm_ch3` / `bgm_ch3_boss` | ด่าน + บอส Chapter 3 | 🤖 v5.0 สร้างด้วยโค้ด |
 | `bgm_endgame` | Recipe Maps / Pinnacle | ⬜ |
 
 ### Prompt สั่ง AI ทำเพลง (Suno/Udio)

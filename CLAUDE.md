@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.0.0 — เพลง Chapter 2/3 สร้างด้วยโค้ด)
+- **v5.0.0 (เจ้าของ: ทำเพลงด้วยโค้ดก่อน · Pixabay ถูกบล็อกจาก sandbox):** `scripts/gen_bgm_synth.cjs` synth ล้วน (polyBLEP saw/sqr, bell, pluck, กลอง, Freeverb) เรนเดอร์ 2 รอบตัดรอบ 2 = ลูปเนียน → WAV → `scripts/encode_mp3.py` (pip lameenc, 112kbps) → `assets/audio/bgm/bgm_ch2.mp3`(96BPM D dorian 40s) `bgm_ch2_boss`(140BPM 27s) `bgm_ch3`(84BPM C minor 46s) `bgm_ch3_boss`(150BPM 38s) รวม ~2MB · global `bgmKeyFor(kind,stageNum)`: ด่าน 6-10 → ch2, 11-15 → ch3 (ไฟล์หาย fallback bgm_stage5/boss5) ใช้ใน playStageBgm/playBossBgm/ensureStageAudio · Boot ไม่ preload `bgm_ch*` · verified headless ทุกบทเล่นถูกเพลง, 0 error · **ยังไม่มีใครฟังจริง — ถ้าไม่ชอบ แก้เมโลดี/คอร์ดใน script แล้วรันใหม่ หรือแทนด้วยไฟล์ AI (Suno/ElevenLabs) key เดิม**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.99.0 — เสียงเอฟเฟกต์ใหม่ 12 ตัว (jsfxr))
 - **v4.99.0 (เจ้าของ: ให้ออกเน็ตไปโหลดเสียง):** **เน็ตของ sandbox เข้าได้แค่ GitHub + npm/PyPI** (kenney/freesound/opengameart ถูกบล็อก) → ใช้ npm `jsfxr` (Unlicense) สร้างเสียงเอง `scripts/gen_sfx_jsfxr.cjs` (seeded, เขียน WAV 16-bit 44.1k, ต้อง `npm i jsfxr` ใน scratchpad ก่อนรัน) → `assets/audio/sfx/gen/sfx_{crit,kill_big,hurt,heal,magnet,thunder,punch,beam,burn,card,legend,victory,defeat}.wav` (~390KB) · ผูกใน ASSET_AUDIO + Sfx: hurt/heal/victory/dead ลองไฟล์ก่อน · ใหม่ `Sfx.thunder()` (castSkill thunder) `beam()` (castMirrorBeam) `punch()` (castBearDonut) `magnet()` (collectVac) `card()` (closeLevelUp) `legend()` (grantGear tier legend) · sfx_burn โหลดแต่ยังไม่ผูก · verified headless 12 ไฟล์โหลด+เล่นได้, 0 error · **ยังไม่มีใครฟังจริง — เจ้าของต้องฟังบนมือถือ**
 
