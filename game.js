@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.92.0';
+const GAME_VERSION = '4.93.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.93.0', date:'2026-09-25', title:'🧭 More utility mods', items:['5 new utility mods: Sugar Find, Box Find, Currency Find, Unique Cooldown, Speed & Pickup','Utility mods can now roll on gloves (Unique Cooldown) and more amulet/ring/boot combinations'] },
   { v:'4.92.0', date:'2026-09-25', title:'📊 Full tier table', items:['Affix Forge shows every tier (T0–T10) of the targeted or selected mod, with its value range and your chance per tier','T10 can now roll at any item level — higher item level just unlocks better tiers on top','Tiers above your item’s best are shown locked'] },
   { v:'4.91.0', date:'2026-09-25', title:'🎲 Bigger mod pool + T0–T10 tiers', items:['8 new mods: Flat DMG, Crit & Haste, Max HP %, Regen % HP/s, HP & Guard, Healing Taken, Speed & Dash, EXP & Pickup','Mod tiers now range from T10 (weakest) to T0 (strongest)','Each roll spreads across 5 tiers: higher item level and better base push the range toward T0, but the best tier is always the rarest','Existing gear keeps its values and is re-labelled on the new tier scale'] },
   { v:'4.90.0', date:'2026-09-25', title:'🔁 Auto-Roll + mod weights', items:['Auto-Roll now spins roll by roll on screen until it hits your target, runs out of currency, or you tap Stop','Mods have weights: strong mods (Crit, Cooldown, Boss DMG, Berserker…) are harder to roll','The roll pool shows each mod’s chance per roll, with ★★/★★★ on rare mods'] },
@@ -1859,6 +1860,12 @@ const AFFIX_POOL = [
   { id:'mend', category:'defense', slots:['amulet','ring'], kind:'suffix', emoji:'🩹', label:'Healing Taken', suf:'of Mending', fmt:v=>'+'+v+'%', tiers:[[25,32],[18,24],[12,17],[8,11],[4,7]], apply:(p,v)=>{ p.healEffect=(p.healEffect||1)+v/100; } },
   { id:'sprint', category:'utility', slots:['boots'], kind:'suffix', emoji:'🏃', label:'Speed & Dash', suf:'of the Sprinter', fmt:v=>'+'+v+'% / -'+v+'%', tiers:[[5,6],[4,4],[3,3],[2,2],[1,1]], apply:(p,v)=>{ p.baseSpeed*=(1+v/100); p.dashCdMul=(p.dashCdMul||1)*(1-v/100); } },
   { id:'forager', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'🧺', label:'EXP & Pickup', suf:'of the Forager', fmt:v=>'+'+v+'%', tiers:[[12,15],[9,11],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.xpMul=(p.xpMul||1)*(1+v/100); p.pickup*=(1+v/100); } },
+  // ── v4.93: utility เพิ่ม ──
+  { id:'sugarfind', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'🍬', label:'Sugar Find', suf:'of Plenty', fmt:v=>'+'+v+'%', tiers:[[17,22],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.sugarFindMul=(p.sugarFindMul||1)*(1+v/100); } },
+  { id:'boxfind', category:'utility', slots:['amulet','ring'], kind:'suffix', emoji:'🎁', label:'Box Find', suf:'of Treasure', fmt:v=>'+'+v+'%', tiers:[[35,45],[26,34],[18,25],[12,17],[6,11]], apply:(p,v)=>{ p.boxFindMul=(p.boxFindMul||1)*(1+v/100); } },
+  { id:'orbfind', category:'utility', slots:['boots','ring'], kind:'suffix', emoji:'💎', label:'Currency Find', suf:'of Riches', fmt:v=>'+'+v+'%', tiers:[[22,28],[16,21],[11,15],[7,10],[4,6]], apply:(p,v)=>{ p.currencyFindMul=(p.currencyFindMul||1)*(1+v/100); } },
+  { id:'uniquecd', category:'utility', slots:['gloves','amulet'], kind:'prefix', emoji:'🌀', label:'Unique Cooldown', pre:'Signature', fmt:v=>'-'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.uniqueCdMul=(p.uniqueCdMul||1)*(1-v/100); } },
+  { id:'wayfarer', category:'utility', slots:['boots','amulet'], kind:'suffix', emoji:'🧭', label:'Speed & Pickup', suf:'of the Wayfarer', fmt:v=>'+'+v+'% / +'+(v*3)+'%', tiers:[[5,6],[4,4],[3,3],[2,2],[1,1]], apply:(p,v)=>{ p.baseSpeed*=(1+v/100); p.pickup*=(1+v*3/100); } },
 ];
 const AFFIX_CATEGORY = {
   offense:{label:'Offense',color:0xff9a5a,hex:'#ffb07a'},
@@ -1889,7 +1896,7 @@ const SPECIAL_AFFIX_POOL = [
 ]; // Future schema: {id,kind,label,tiers,apply,baseIds?,baseTags?,slots?,minItemLevel?,exclusive:true}
 // v4.90: น้ำหนักสุ่ม mod — mod แรง/หายาก = weight ต่ำ (ออกยาก) · ค่าเริ่มต้น 100
 const AFFIX_WEIGHT = { dmg:70, crit:50, critdmg:55, cd:50, bossdmg:45, laststand:80, hp:110, def:60, regen:100, lifekill:90, crisisguard:85, spd:110, pick:130, xp:120, dash:100,
-  edge:40, precision:35, hppct:65, regenpct:55, bulwark:60, mend:90, sprint:70, forager:95,
+  edge:40, precision:35, hppct:65, regenpct:55, bulwark:60, mend:90, sprint:70, forager:95, sugarfind:85, boxfind:60, orbfind:50, uniquecd:55, wayfarer:95,
   vampiric:30, berserk:18, focus:18, gambler:24, nourish:40 };
 function affixWeight(mod){ return (mod&&AFFIX_WEIGHT[mod.id])||100; }
 function pickWeightedMod(arr){ if(!arr||!arr.length)return null; let tot=0; for(const m of arr)tot+=affixWeight(m); let r=Math.random()*tot; for(const m of arr){ r-=affixWeight(m); if(r<=0)return m; } return arr[arr.length-1]; }
@@ -3029,7 +3036,7 @@ class Game extends Phaser.Scene {
   }
 
   uniqueInfo(){ const c=CHARACTERS[this.character]||CHARACTERS.momo; return CHARACTER_UNIQUES[c.unique]||CHARACTER_UNIQUES.berryRebound; }
-  uniqueCooldown(u){const lv=this.uniqueLevel||1;return u.cd*Math.max(0.80,1-(lv-1)*0.055)*(this.player.cdMul||1);}
+  uniqueCooldown(u){const lv=this.uniqueLevel||1;return u.cd*Math.max(0.80,1-(lv-1)*0.055)*(this.player.cdMul||1)*Math.max(0.6,this.player.uniqueCdMul||1);}
   uniquePower(){return 1+((this.uniqueLevel||1)-1)*0.24;}
   refreshUniqueSkillUI(){ const u=this.uniqueInfo(); if(!this.uniqueTxt)return; this.uniqueTxt.setText(u.emoji); this.uniqueBtn.setFillStyle(u.color,0.24).setStrokeStyle(2.5,u.color,0.9); }
   uniqueCrescendo(color,lv,radius){
@@ -5086,7 +5093,7 @@ class Game extends Phaser.Scene {
   applyMeta(){
     const p=this.player;
     p.cdMul=1; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
-    p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
+    p.sugarFindMul=1; p.boxFindMul=1; p.currencyFindMul=1; p.uniqueCdMul=1; p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
     p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1;
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
     p.weaponDmgMul=1;p.weaponCdMul=1;p.weaponShots=0;p.weaponAreaMul=1;p.weaponControlMul=1;p.weaponChains=0;p.weaponReflect=0;
@@ -6234,7 +6241,7 @@ class Game extends Phaser.Scene {
       const gear=this.grantGear(tier);
       if(gear){const slot=GEAR_SLOTS.find(s=>s.slot===gear.slot);return{type:'gear',emoji:slot?slot.emoji:'🎁',label:rage.emoji+' '+rage.name+' · '+(slot?slot.emoji+' ':'')+gear.name+gearDeliverySuffix(gear),rage};}
     }
-    const guide=this._powerGuide||this.getPowerGuide(this.stageIndex),jackpot=kind==='fortune'&&Math.random()<0.18?1.8:1,sugar=Math.round((30+stage*15+Phaser.Math.Between(0,15))*rage.reward*guide.reward*dr*(kind==='sugar'?1.35:1)*jackpot*(this.rankSugarMul||1));
+    const guide=this._powerGuide||this.getPowerGuide(this.stageIndex),jackpot=kind==='fortune'&&Math.random()<0.18?1.8:1,sugar=Math.round((30+stage*15+Phaser.Math.Between(0,15))*rage.reward*guide.reward*dr*(kind==='sugar'?1.35:1)*jackpot*(this.rankSugarMul||1)*(this.player.sugarFindMul||1));
     this.sugarStage+=sugar;this.sugarRun+=sugar;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     return{type:'sugar',emoji:jackpot>1?'💰':'🍬',label:rage.emoji+' '+rage.name+' · Sugar +'+sugar+(jackpot>1?' · JACKPOT!':''),amount:sugar,rage};
   }
@@ -7646,7 +7653,7 @@ class Game extends Phaser.Scene {
     { const wo=this.waveObjective; if(!(wo&&wo._overtime&&!wo.done&&!e.isBoss&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,e.xp||1); }   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isBoss||isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
-    if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
+    if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1)*(this.player.boxFindMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
     if(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008)) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
     if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
     if(this.stageIndex===6&&e.mycoRole==='drifter')this.spawnBossObject('acid',e.x,e.y,4.2);
@@ -7658,7 +7665,7 @@ class Game extends Phaser.Scene {
       this.burst(bx,by,0xff8b6b); Sfx.boom();
       if(this.dist(this.player.x,this.player.y,bx,by)<r) this.hurtPlayer(Math.round(12+this.stageIndex*4),0.5); }
     // เก็บ Sugar (สกุลเงินเมต้า ใช้Waitบหน้า)
-    const sug=Math.max(1,Math.round((isBoss?40:isMini?18:isElite?4:1)*this.diffMul().reward)); this.sugarStage+=sug; this.sugarRun+=sug;   // ยิ่งยาก Sugar ยิ่งเยอะ
+    const sugRaw=(isBoss?40:isMini?18:isElite?4:1)*this.diffMul().reward*(this.player.sugarFindMul||1),sug=Math.max(1,Math.floor(sugRaw)+(Math.random()<sugRaw%1?1:0)); this.sugarStage+=sug; this.sugarRun+=sug;   // v4.93 Sugar Find (ปัดแบบสุ่ม) · ยิ่งยาก Sugar ยิ่งเยอะ
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // UpdatesเงินWaitบนี้แบบ realtime
     this.clearObjectiveTargetFx(e);if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
@@ -7812,7 +7819,7 @@ class Game extends Phaser.Scene {
   currencyTierFor(){ const diff=this.stageDiff||1, st=this.stageIndex||0; if(diff>=3)return 'legend'; if(diff>=2)return st>=3?'legend':'epic'; return st>=3?'epic':'rare'; }
   // แจก currency แน่นอน N ชิ้น (ข้าม 28% miss ของ rollCurrencyDrop) + แบนเนอร์
   grantCurrencyReward(n,tier,head){
-    if(n>0)n=Math.max(1,Math.round(n*(this._currencyLuckMul||1)));   // Fortune perk
+    if(n>0)n=Math.max(1,Math.round(n*(this._currencyLuckMul||1)*(this.player.currencyFindMul||1)));   // Fortune perk
     const got={}; for(let i=0;i<n;i++){ const k=rollWeightedCurrency(tier); got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
     if(head&&this.showBanner){ const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner(head,txt,1800); } return got; }
   // ---- หีบสมบัติ (ดWaitปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----

@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.93.0 — utility mod เพิ่ม 5 = pool 28)
+- **v4.93.0 (เจ้าของสั่ง):** AFFIX_POOL +5 utility (validator ล็อก 28): sugarfind (`p.sugarFindMul` → kill sugar ปัดแบบสุ่ม + rollStageReward คูณกับ rankSugarMul) · boxfind (`p.boxFindMul` → chest drop rate ใน killEnemy) · orbfind (`p.currencyFindMul` → จำนวน currency ข้าง _currencyLuckMul) · uniquecd (prefix gloves/amulet, `p.uniqueCdMul` ใน uniqueCooldown floor 0.6) · wayfarer (spd+pickup×3) · reset 4 field ใน applyMeta · weight 50-95 · verified: 300 kill base 300 → find+50% 435, unique cd ×0.85, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.92.0 — ตาราง tier ครบ + T10 ออกได้ทุก iLv)
 - **v4.92.0 (เจ้าของสั่ง):** `tierWeights(best)`: สุ่มได้ best…T10 เสมอ · 5 ขั้นแรก (d+1)^1.3 · ต่ำกว่านั้น peak×0.7^(d−4) · `tierChances(best)` · rollTier ใช้ tierWeights · Affix Forge: ตาราง TIERS T0-T10 (3 คอลัมน์) ใต้ roll pool ของ mod เป้า/บรรทัดที่เลือก/ตัวแรก → ช่วงค่า + % ต่อ tier ของไอเทมนี้ · tier ดีกว่า best = 🔒 · tier ปัจจุบันไฮไลต์ทอง · verified: legend iLv100 T0 2.8%…T10 2.5%, rare iLv60 T4-T10, screenshot ไม่ทับ, 0 error
 
