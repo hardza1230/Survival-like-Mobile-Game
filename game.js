@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.16.0';
+const GAME_VERSION = '5.17.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.17.0', date:'2026-09-25', title:'🍬 Candy burst', items:['Sugar prizes now burst out as candy around you — run over them to collect (they fly to you after a few seconds)']},
   { v:'5.16.0', date:'2026-09-25', title:'🃏 Gold mystery cards', items:['Gold chests add a bonus round: three face-down cards, one hides a JACKPOT. Pick one, then see what the others were']},
   { v:'5.15.0', date:'2026-09-25', title:'⬆ Chest upgrade chance', items:['While the prize wheel spins, your chest may suddenly upgrade — Bronze to Silver (25%) or Silver to Gold (15%) — with better prizes']},
   { v:'5.14.0', date:'2026-09-25', title:'🎡 Prize wheel', items:['Opening a miniboss chest spins a prize wheel — lights race around 8 prizes, slow down and land on your reward, which grows into the centre. Jackpot possible!']},
@@ -5442,7 +5443,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -6506,7 +6507,7 @@ class Game extends Phaser.Scene {
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
-  onStageClear(){
+  onStageClear(){ this.clearSugarCoins();
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.waveAlive=0; this.pipG.clear();
@@ -8175,7 +8176,26 @@ class Game extends Phaser.Scene {
       {id:'jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
     ];
   }
-  addRunSugar(n){ this.sugarStage+=n;this.sugarRun+=n;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🍬 +'+n,'Prize',1100); }
+  addRunSugar(n){ this.showBanner('🍬 +'+n,'Grab the candy!',1100); this.spawnSugarCoins(n); }
+  // v5.17: รางวัล Sugar = ลูกกวาดพุ่งกระจายรอบตัวให้วิ่งเก็บ · ไม่เก็บใน 3 วิ จะบินเข้าตัวเอง (ไม่หาย)
+  spawnSugarCoins(n){
+    const cnt=Math.max(4,Math.min(18,Math.ceil(n/8))),per=Math.floor(n/cnt);let rest=n-per*cnt;
+    const px=this.player.x,py=this.player.y;if(!this._coins)this._coins=[];
+    for(let i=0;i<cnt;i++){ const v=per+(rest-->0?1:0),a=Math.random()*TAU,d=70+Math.random()*110;
+      const c=this.camWorld(this.add.image(px,py,'candy').setTint([0xffd166,0xff9dc4,0x9fe8ff][i%3]).setScale(1.4).setDepth(85000));
+      c._v=v;c._t=0;this._coins.push(c);
+      this.tweens.add({targets:c,x:px+Math.cos(a)*d,y:py+Math.sin(a)*d,duration:420,ease:'Cubic.out'});
+      this.tweens.add({targets:c,scale:{from:0.6,to:1.4},angle:360,duration:420}); }
+    if(!this._coinEv)this._coinEv=this.time.addEvent({delay:30,loop:true,callback:()=>this.tickSugarCoins(0.03)});
+  }
+  tickSugarCoins(dt){
+    const arr=this._coins||[];if(!arr.length||!this.player)return;const p=this.player,pick=Math.max(48,(p.pickup||105)*0.45);
+    for(let i=arr.length-1;i>=0;i--){const c=arr[i];if(!c.active){arr.splice(i,1);continue;}
+      if(this.state!=='play')continue;c._t+=dt;const d=this.dist(c.x,c.y,p.x,p.y);
+      if(c._t>3.5||(c._t>0.8&&d<pick)){const sp=c._t>3?9:14;c.x+=(p.x-c.x)*Math.min(1,dt*sp);c.y+=(p.y-c.y)*Math.min(1,dt*sp);}
+      if(c._t>0.5&&d<26){this.sugarStage+=c._v;this.sugarRun+=c._v;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);if(Sfx.xp)Sfx.xp();c.destroy();arr.splice(i,1);}}
+  }
+  clearSugarCoins(){ const arr=this._coins||[];for(const c of arr){if(c.active){this.sugarStage+=c._v;this.sugarRun+=c._v;c.destroy();}}this._coins=[];if(this._coinEv){this._coinEv.remove(false);this._coinEv=null;} }
   openPrizeWheel(tier,done){
     if(this.state==='rolling'){done&&done();return;}
     // v5.15: ลุ้นอัปเกรดระดับกลางวงล้อ (ตัดสินตั้งแต่ต้น โชว์ตอนหมุนไปได้ ~55%) bronze→silver 25% · silver→gold 15%
@@ -9218,7 +9238,7 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){ if(this.state==='dead')return;
+  die(){ if(this.state==='dead')return; this.clearSugarCoins();
     const _closeStory=()=>{ if(this.storyLayer){this.storyLayer.setVisible(false);this.storyLayer.removeAll(true);} this._finishStoryCutscene=null; };
     // 🔮 Relic Last Breath: ครั้งแรกที่ตายในด่าน = รอด (Second Wind = 40% HP + โล่)
     if(this._rel&&this._rel.lastbreath&&!this._lastBreathUsed){ this._lastBreathUsed=true; const sw=this.relicSyn('shell','lastbreath');
