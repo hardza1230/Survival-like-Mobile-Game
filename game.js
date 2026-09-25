@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.84.0';
+const GAME_VERSION = '4.85.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.85.0', date:'2026-09-25', title:'📖 Chapter 3 story', items:['Chapter 3 now has a story beat before every wave','A story panel introduces each Chapter 3 boss','Every Chapter 3 boss has an epilogue — and The First Planter ends the story of Mochitopia','Chapter 2’s ending now leads into Chapter 3'] },
   { v:'4.84.0', date:'2026-09-25', title:'📜 Recipe balance pass', items:['Fix: recipe bosses now scale with recipe tier and mods (they used to stay at base strength)','Recipe bosses have 30% less base HP so runs stay short','Hunger Meter needs less at high tiers (Tier 16: 246 instead of 310)'] },
   { v:'4.83.0', date:'2026-09-25', title:'📜 Recipes replace the Rift', items:['Mochi Rift is retired — Recipe Maps are the main endgame now','Rift progress converts into two recipes at your best Rift tier','The Pinnacle Boss button moved to the Recipe Maps page and still uses 🗝️ keys (4 🧩 fragments = 1 key)','Boss Rush stays as it is'] },
   { v:'4.82.0', date:'2026-09-25', title:'🟣 Unique Gear', items:['5 Unique items that change your build, each with a trade-off','Glass Rolling Pin, Ring of Endless Hunger, Sugar Rush Boots, Echo Locket, Candy Shell Plate','Uniques only drop from recipe bosses of their own themes — higher tiers, Rare recipes and fast clears raise the odds','The Atlas board shows which themes hold a Unique and which you have found'] },
@@ -2550,6 +2551,43 @@ const STAGE_STORY_BEATS = [
     {title:'The Royal Stinger Descends',sub:'The hive champion seals the garden beneath a wall of golden wings'},
     {title:'The Flowers Call for Help',sub:'Shieldbearers and Choir Moths cover the assault on the nectar beds'},
     {title:'The Ferment Crown Opens',sub:'Purple crystal spreads through the royal honey as the Queen awakens'}
+  ],
+  null,null,   // C2-4/C2-5 ใช้ cutscene เดิมของตัวเอง
+  // v4.85: Chapter 3 story beats (index 10-14)
+  [
+    {title:'Ash Where the Harvest Was',sub:'The seed Momo followed landed in fields that were burned to feed a single crown'},
+    {title:'Scarecrows Still Keep Watch',sub:'Straw guards swear an oath to a planter no one has seen in centuries'},
+    {title:'The Reaper in the Rows',sub:'Its scythe remembers every harvest it was ordered to take'},
+    {title:'Soil That Hungers Back',sub:'The ground itself pulls at Momo’s feet, begging for one more seed'},
+    {title:'The Colossus Wakes',sub:'The whole harvest rises as one body to guard the road inward'}
+  ],
+  [
+    {title:'An Orchard Without Fruit',sub:'Every tree is hollow — the flavor was carved out and carried away'},
+    {title:'Husks That Remember Sweetness',sub:'The empty fruit still whisper what they used to taste like'},
+    {title:'The Gardener of Husks',sub:'It prunes the orchard so nothing can ever ripen again'},
+    {title:'Sap Runs Toward the Glass',sub:'The last living sap flows uphill, toward a shining greenhouse'},
+    {title:'The Hollow Bloom Opens',sub:'A flower made of every stolen taste unfolds to stop Momo'}
+  ],
+  [
+    {title:'The Greenhouse Is Broken',sub:'Shattered glass reflects a thousand different futures'},
+    {title:'Prisms Split the Path',sub:'Light bends Momo’s way into false turns and mirrored foes'},
+    {title:'The Prism Sentinel',sub:'It guards the only panes that still show the truth'},
+    {title:'Seeds Under Glass',sub:'Rows of crown seeds sleep in jars, waiting to be planted'},
+    {title:'The Glass Gardener',sub:'The keeper of the greenhouse chooses which future grows'}
+  ],
+  [
+    {title:'The Seed Vault Doors',sub:'Behind these doors lies every crown seed the Planter ever made'},
+    {title:'Locks That Taste Fear',sub:'The vault opens only for those who crave — Momo must hold steady'},
+    {title:'The Vault Keeper',sub:'It counts every seed and knows exactly one is missing'},
+    {title:'Roots Beneath the Floor',sub:'The vault is not built on stone but on one ancient root'},
+    {title:'The Seedwarden Rises',sub:'The last guard of the vault would rather burn it than let Momo pass'}
+  ],
+  [
+    {title:'The Throne of the First Seed',sub:'The root leads to a quiet throne where the first crown was planted'},
+    {title:'Thorns Grown From Oaths',sub:'Every knight here swore to keep the hunger cycle turning'},
+    {title:'The Crown Thorn Knight',sub:'The Planter’s last champion blocks the final stair'},
+    {title:'The Planter Remembers Momo',sub:'A voice from the throne claims it once planted Momo too'},
+    {title:'The First Planter',sub:'End the cycle — or become the next seed'}
   ]
 ];
 // สรุปเรื่องราวตอนล้มบอสจบด่าน (โชว์ก่อนหน้าสรุปสถิติ) — what happened + why press on
@@ -2583,7 +2621,23 @@ const STAGE_EPILOGUE = [
     why:'Descend to the Root Throne and face the True Rootmother.' },
   { title:'Memories Choose Their Own Shape',
     body:'The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. Momo sees the crown seed bloom once more, now harmless and free.',
-    why:'Chapter 2 is complete. The restored world waits for the next journey.' },
+    why:'Chapter 2 is complete. But the freed memories keep pointing somewhere older — to the fields where the first crown was planted.' },
+  // v4.85: Chapter 3 epilogues (index 10-14)
+  { title:'The Harvest Lies Down',
+    body:'The Harvest Colossus crumbles back into ash and straw. Beneath it, rows of hollow trees stretch toward the horizon, their flavor carved out and carried away.',
+    why:'Walk into the Hollow Orchard and find where the stolen taste went.' },
+  { title:'The Orchard Breathes Again',
+    body:'The Hollow Bloom scatters its stolen flavors back into the trees, and the first fruit in centuries begins to swell. The last sap still flows uphill — toward a broken greenhouse of glass.',
+    why:'Follow the sap into the Glass Greenhouse Ruins.' },
+  { title:'Every Future Shatters But One',
+    body:'The Glass Gardener’s panes break and the false futures fade. Only one reflection stays true: a sealed vault holding every crown seed ever grown.',
+    why:'Open the Seed Vault before another crown can be planted.' },
+  { title:'The Vault Is Empty of Fear',
+    body:'The Seedwarden falls and the jars of crown seeds dim into ordinary seeds, harmless and small. Under the vault floor, a single ancient root pulses toward a quiet throne.',
+    why:'Climb the root to the Throne of the First Seed and meet the Planter.' },
+  { title:'The Cycle Ends With a Choice',
+    body:'The First Planter kneels as the last crown seed cracks in Momo’s hands. It was never a seed of hunger — only a seed of wanting, planted too deep. Momo plants it again, in the sun, and it grows into an ordinary sweet tree. Mochitopia is whole.',
+    why:'The story is complete. The endgame kitchens are open — Recipe Maps, the Atlas and the Pinnacle await.' },
 ];
 const STORY_REACTIONS = {
   momo:["I'll follow the curse's scent myself","These voices don't want to fight... I must hurry","A warden is coming — stay focused, Momo","The source is close — no retreat","End this and take back everyone's flavor"],
@@ -5863,6 +5917,11 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===7&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg8','CHAPTER 2 · ROYAL FERMENT','FERMENT HORNET QUEEN','The protected flowers ring one final warning as violet crystal reaches the royal honey',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===8&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg9','CHAPTER 2 · BROKEN EQUINOX','CHRONOBLOOM ORCHID','The greenhouse clock strikes every season at once — the Orchid opens where time should have ended',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===9&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg10','CHAPTER 2 · THE ROOT THRONE','THE TRUE ROOTMOTHER','Every stolen memory returns to the living cathedral — the crown opens its heart for one final judgment',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===10&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg11','CHAPTER 3 · ASHEN SEEDFIELDS','THE HARVEST COLOSSUS','Every burned row rises at once — the harvest has become a single giant body',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===11&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg12','CHAPTER 3 · HOLLOW ORCHARD','THE HOLLOW BLOOM','Every flavor carved from the orchard blooms together into one hungry flower',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===12&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg13','CHAPTER 3 · GLASS GREENHOUSE','THE GLASS GARDENER','A thousand reflections turn toward Momo — the gardener chooses which future grows',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===13&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg14','CHAPTER 3 · THE SEED VAULT','THE SEEDWARDEN','The vault shakes as its last guardian lights every jar of crown seeds',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===14&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg15','FINAL CHAPTER · THE FIRST SEED','THE FIRST PLANTER','The throne turns. The one who planted the first crown finally looks at Momo',()=>this.spawnFinalBoss());return;}
     const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;

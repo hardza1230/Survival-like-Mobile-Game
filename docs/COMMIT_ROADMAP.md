@@ -5,8 +5,8 @@
 สถานะ: ⬜ ยังไม่ทำ · 🔄 กำลังทำ · ✅ เสร็จ
 
 ## Phase A — Chapter 3 ให้สมบูรณ์ (ยกเว้นอาร์ต)
-- ⬜ **A1** Story beats + wave cutscene บท 3 (`STAGE_STORY_BEATS[10..14]`) + story panel ก่อนบอสแต่ละด่าน
-- ⬜ **A2** Epilogue ด่าน C3-1..C3-5 (`STAGE_EPILOGUE[10..14]`) + ฉากจบเกม (victory หลัง The First Planter)
+- ✅ **A1** (v4.85) Story beats + wave cutscene บท 3 (`STAGE_STORY_BEATS[10..14]`) + story panel ก่อนบอสแต่ละด่าน
+- ✅ **A2** (v4.85) Epilogue ด่าน C3-1..C3-5 (`STAGE_EPILOGUE[10..14]`) + ฉากจบเกม (victory หลัง The First Planter)
 - ⬜ **A3** Bestiary: เพิ่ม mini/boss C3 ทั้ง 10 ตัว + นับ kill ถูก
 - ⬜ **A4** กลไกบอส C3-1/C3-2 (ท่าเฉพาะ 2–3 ท่า/ตัว + phase gate แบบ `b.hp<=b.maxhp*X`)
 - ⬜ **A5** กลไกบอส C3-3/C3-4

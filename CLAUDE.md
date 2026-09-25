@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.85.0 — Chapter 3 story (A1+A2))
+- **v4.85.0 (Phase A · A1+A2):** `STAGE_STORY_BEATS` เติม `null,null` (index 8-9 ใช้ cutscene เดิม) + 5 ชุด × 5 beat สำหรับด่าน 10-14 · story panel ก่อนบอส C3-1..C3-5 (`playStoryPanel('bg11..15',...)` ต่อจาก stage 9 ใน spawn flow) · `STAGE_EPILOGUE` +5 ตอน (index 10-14) ตอนสุดท้าย = ฉากจบเกม (Momo ปลูก crown seed ใหม่ใต้แสงแดด) + ชี้ไป endgame · แก้ epilogue C2-5 ให้ชี้ต่อไป Chapter 3 · verified headless C3-5: beat ก่อนเวฟ → panel บอส → epilogue, 0 error · **ถัดไป A3 Bestiary Ch3**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.84.0 — Recipe Maps R10: balance + validator · Phase R ครบ)
 - **v4.84.0 (Phase R · R10):** **บั๊ก:** spawnFinalBoss `_bossScale` ที่ stageDiff=1 = 1.0 ไม่คูณ diffMul → บอส Recipe (และ Rift เดิม) ไม่สเกลตาม tier/mod เลย · แก้: คูณ `riftMul().hp*RECIPE_BOSS_HP(0.7)` เฉพาะ recipeMode (verified T1 4099 → T10 10739 = ×2.62) · `recipeHungerGoal` 150+tier×6 (T16=246) · validator เพิ่ม contract Recipe Maps + กฎเหล็ก (ทุก mod reward>1, riftTierMul reward เพิ่มตาม tier) + ATLAS_NODES 7 + UNIQUE_GEAR 5 · 0 error · **Phase R ปิดแล้ว — ต้องเล่นจริงบนมือถือเพื่อจูน goal/par/boss HP/ดรอป**
 
