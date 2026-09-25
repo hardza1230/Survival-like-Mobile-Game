@@ -26,3 +26,6 @@ wav(mix([preset('blipSelect',81)],[note(1400,0.06,'tri',0.3),1500]),'sfx_card');
 wav(seq([523,659,784,1047,1319,1568],0.09,'tri',0.45),'sfx_legend');
 wav(seq([523,659,784,1047,784,1047],0.13,'square',0.28),'sfx_victory');
 wav(seq([392,311,247,196],0.16,'tri',0.45),'sfx_defeat');
+// v5.0.2 — เสียงที่ได้ยินบ่อยสุด: ตีโดน (ป๊อปโมจินุ่ม ๆ สั้นมาก) + เก็บ EXP (ติ๊งใส · เกมไล่ pitch ให้เอง)
+wav(mix([preset('hitHurt',101,p=>{p.p_base_freq=0.42;p.p_env_decay=0.09;p.p_env_sustain=0.01;p.wave_type=2;})],[note(520,0.05,'sine',0.5)],[note(260,0.06,'sine',0.35),60]),'sfx_hit',0.8);
+wav(mix([note(1568,0.09,'sine',0.55)],[note(2093,0.12,'sine',0.4),2200],[note(3136,0.07,'tri',0.12),2200]),'sfx_xp',0.7);

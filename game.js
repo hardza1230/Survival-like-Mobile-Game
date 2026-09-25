@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.0.1';
+const GAME_VERSION = '5.0.2';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.0.2', date:'2026-09-25', title:'🔔 New hit & EXP sounds', items:['Softer mochi-pop hit sound and a bright chime when collecting EXP']},
   { v:'5.0.1', date:'2026-09-25', title:'⚡ Faster music loading', items:['Music files are about 3× smaller (≈34 MB → 12 MB), so stages start faster on mobile data']},
   { v:'5.0.0', date:'2026-09-25', title:'🎵 New music for Chapter 2 and 3', items:['Chapter 2 has its own mysterious garden theme and a new boss battle track','Chapter 3 has an epic throne theme and a new final-chapter boss track','Chapter 2 and 3 no longer reuse the Stage 5 music']},
   { v:'4.99.0', date:'2026-09-25', title:'🔊 12 new sound effects', items:['New sounds for crits, big kills, getting hurt, healing, magnet, card picks, legend drops, victory and defeat','Taro, Cocoa and Sesame attacks each have their own sound']},
@@ -919,8 +920,8 @@ const ASSET_FX = {
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
 const ASSET_AUDIO = {
   sfx_shoot:      'assets/audio/sfx/sfx_skill_sprinkle.wav',
-  sfx_hit:        'assets/audio/sfx/sfx_hit_monster.wav',
-  sfx_xp:         'assets/audio/sfx/sfx_pickup_sugar.wav',
+  sfx_hit:        'assets/audio/sfx/gen/sfx_hit.wav',
+  sfx_xp:         'assets/audio/sfx/gen/sfx_xp.wav',
   sfx_dash:       'assets/audio/sfx/sfx_jump_squish.wav',
   sfx_levelup:    'assets/audio/sfx/sfx_levelup_fanfare.wav',
   sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',

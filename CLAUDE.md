@@ -60,6 +60,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.0.2 — เสียงตีโดน/EXP สร้างด้วยโค้ด)
+- **v5.0.2 (เจ้าของสั่งข้อ 1):** `scripts/gen_sfx_jsfxr.cjs` เพิ่ม `sfx_hit` (ป๊อปนุ่ม 0.06s) + `sfx_xp` (ติ๊ง 2 โน้ต 0.17s) → `assets/audio/sfx/gen/` · ASSET_AUDIO sfx_hit/sfx_xp ชี้ไฟล์ใหม่ (ไฟล์เดิม sfx_hit_monster/sfx_pickup_sugar ยังอยู่แต่ไม่ถูกอ้าง) · Sfx.xp ไล่ pitch ตามเดิม · verified headless 14 ไฟล์โหลด+เล่นได้, 0 error · ยังไม่มีใครฟังจริง
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.0.1 — ย่อไฟล์เพลง)
 - **v5.0.1 (เจ้าของเลือกข้อ 2):** BGM 11 ไฟล์เดิม (~34MB, mp3 256k / wav) → `assets/audio/bgm/min/*.mp3` (~12MB · เพลงยาว 96k stereo · ลูปสั้น stage2-5 80k mono) ผ่าน `scripts/compress_bgm.sh` (ffmpeg จาก pip `imageio-ffmpeg`) · ASSET_AUDIO ชี้ไฟล์ใหม่ (ไฟล์ต้นฉบับยังอยู่ใน repo แต่ build-www ไม่คัดลอกเพราะไม่ถูกอ้าง) · **v5.0.0 (อีกเซสชัน, สาขา pixabay-music-sfx-lz791a) fast-forward เข้าสาขาหลักแล้ว** = เพลง Ch2/Ch3 สร้างด้วยโค้ด · verified headless 11 เพลงโหลดได้ 0 404, 0 error · ⚠️ ลูป mp3 อาจมีช่องว่างเสี้ยววิตอนวน
 
