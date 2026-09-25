@@ -60,6 +60,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.0.1 — ย่อไฟล์เพลง)
+- **v5.0.1 (เจ้าของเลือกข้อ 2):** BGM 11 ไฟล์เดิม (~34MB, mp3 256k / wav) → `assets/audio/bgm/min/*.mp3` (~12MB · เพลงยาว 96k stereo · ลูปสั้น stage2-5 80k mono) ผ่าน `scripts/compress_bgm.sh` (ffmpeg จาก pip `imageio-ffmpeg`) · ASSET_AUDIO ชี้ไฟล์ใหม่ (ไฟล์ต้นฉบับยังอยู่ใน repo แต่ build-www ไม่คัดลอกเพราะไม่ถูกอ้าง) · **v5.0.0 (อีกเซสชัน, สาขา pixabay-music-sfx-lz791a) fast-forward เข้าสาขาหลักแล้ว** = เพลง Ch2/Ch3 สร้างด้วยโค้ด · verified headless 11 เพลงโหลดได้ 0 404, 0 error · ⚠️ ลูป mp3 อาจมีช่องว่างเสี้ยววิตอนวน
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.0.0 — เพลง Chapter 2/3 สร้างด้วยโค้ด)
 - **v5.0.0 (เจ้าของ: ทำเพลงด้วยโค้ดก่อน · Pixabay ถูกบล็อกจาก sandbox):** `scripts/gen_bgm_synth.cjs` synth ล้วน (polyBLEP saw/sqr, bell, pluck, กลอง, Freeverb) เรนเดอร์ 2 รอบตัดรอบ 2 = ลูปเนียน → WAV → `scripts/encode_mp3.py` (pip lameenc, 112kbps) → `assets/audio/bgm/bgm_ch2.mp3`(96BPM D dorian 40s) `bgm_ch2_boss`(140BPM 27s) `bgm_ch3`(84BPM C minor 46s) `bgm_ch3_boss`(150BPM 38s) รวม ~2MB · global `bgmKeyFor(kind,stageNum)`: ด่าน 6-10 → ch2, 11-15 → ch3 (ไฟล์หาย fallback bgm_stage5/boss5) ใช้ใน playStageBgm/playBossBgm/ensureStageAudio · Boot ไม่ preload `bgm_ch*` · verified headless ทุกบทเล่นถูกเพลง, 0 error · **ยังไม่มีใครฟังจริง — ถ้าไม่ชอบ แก้เมโลดี/คอร์ดใน script แล้วรันใหม่ หรือแทนด้วยไฟล์ AI (Suno/ElevenLabs) key เดิม**
 

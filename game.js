@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.0.0';
+const GAME_VERSION = '5.0.1';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.0.1', date:'2026-09-25', title:'⚡ Faster music loading', items:['Music files are about 3× smaller (≈34 MB → 12 MB), so stages start faster on mobile data']},
   { v:'5.0.0', date:'2026-09-25', title:'🎵 New music for Chapter 2 and 3', items:['Chapter 2 has its own mysterious garden theme and a new boss battle track','Chapter 3 has an epic throne theme and a new final-chapter boss track','Chapter 2 and 3 no longer reuse the Stage 5 music']},
   { v:'4.99.0', date:'2026-09-25', title:'🔊 12 new sound effects', items:['New sounds for crits, big kills, getting hurt, healing, magnet, card picks, legend drops, victory and defeat','Taro, Cocoa and Sesame attacks each have their own sound']},
   { v:'4.98.0', date:'2026-09-25', title:'🔊 Juicier sound', items:['Hits and pickups vary their pitch so repeats never sound robotic','Collecting EXP in a row climbs higher and higher in pitch','Crits and big kills get layered impact sounds','Sound caps stop audio from clipping when big swarms die','New Music Volume and Effects Volume settings']},
@@ -942,17 +943,17 @@ const ASSET_AUDIO = {
   sfx_legend: 'assets/audio/sfx/gen/sfx_legend.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_victory: 'assets/audio/sfx/gen/sfx_victory.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  bgm_main:       'assets/audio/bgm/Main menu.mp3',
-  bgm_stage1:     'assets/audio/bgm/clockmakers_tea_break.mp3',
-  bgm_boss1:      'assets/audio/bgm/bgm_boss1.mp3',
-  bgm_boss2:      'assets/audio/bgm/bgm_boss2.mp3',
-  bgm_boss3:      'assets/audio/bgm/bgm_boss3.mp3',
-  bgm_boss4:      'assets/audio/bgm/bgm_boss4.mp3',
-  bgm_boss5:      'assets/audio/bgm/bgm_boss5.mp3',
-  bgm_stage2:     'assets/audio/bgm/bgm_stage2_sink.wav',
-  bgm_stage3:     'assets/audio/bgm/bgm_stage3_stove.wav',
-  bgm_stage4:     'assets/audio/bgm/bgm_stage4_freezer.wav',
-  bgm_stage5:     'assets/audio/bgm/bgm_stage5_oven.wav',
+  bgm_main:       'assets/audio/bgm/min/bgm_main.mp3',
+  bgm_stage1:     'assets/audio/bgm/min/bgm_stage1.mp3',
+  bgm_boss1:      'assets/audio/bgm/min/bgm_boss1.mp3',
+  bgm_boss2:      'assets/audio/bgm/min/bgm_boss2.mp3',
+  bgm_boss3:      'assets/audio/bgm/min/bgm_boss3.mp3',
+  bgm_boss4:      'assets/audio/bgm/min/bgm_boss4.mp3',
+  bgm_boss5:      'assets/audio/bgm/min/bgm_boss5.mp3',
+  bgm_stage2:     'assets/audio/bgm/min/bgm_stage2.mp3',
+  bgm_stage3:     'assets/audio/bgm/min/bgm_stage3.mp3',
+  bgm_stage4:     'assets/audio/bgm/min/bgm_stage4.mp3',
+  bgm_stage5:     'assets/audio/bgm/min/bgm_stage5.mp3',
   bgm_ch2:        'assets/audio/bgm/bgm_ch2.mp3',        // v5.0 สร้างด้วยโค้ด scripts/gen_bgm_synth.cjs (ไม่มีลิขสิทธิ์)
   bgm_ch2_boss:   'assets/audio/bgm/bgm_ch2_boss.mp3',
   bgm_ch3:        'assets/audio/bgm/bgm_ch3.mp3',
