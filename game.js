@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.89.1';
+const GAME_VERSION = '4.89.2';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.89.2', date:'2026-09-25', title:'🫧 Candy Shell fix', items:['Candy Shell now also blocks contact hits from enemies (before it only blocked projectiles)','A glowing bubble shows around you while a shield is up, and pops when it blocks'] },
   { v:'4.89.1', date:'2026-09-25', title:'💢 Tougher hits', items:['Shorter invulnerability after taking damage (×0.6): enemies and projectiles can hit you more often'] },
   { v:'4.89.0', date:'2026-09-25', title:'⚡ Taro Storm Charge', items:['Taro lightning no longer locks onto bosses','Every lightning hit on a regular enemy stores ⚡1 charge','At 10 charges a Judgment Bolt strikes the boss or miniboss for heavy damage — clear the adds to power up'] },
   { v:'4.88.2', date:'2026-09-25', title:'↺ Talent reset', items:['Character Talents page has a Reset button: pay Sugar to refund every Talent Point (tap twice to confirm)','Cost grows with points spent: 🍬80 + 40 per point'] },
@@ -6645,6 +6646,21 @@ class Game extends Phaser.Scene {
     for(let k=0;k<3;k++)this.time.delayedCall(k*70,()=>{ if(tgt.active)this.zap(tgt.x+Phaser.Math.Between(-18,18),tgt.y); });
     this.damage(tgt,dmg*6,tgt.x,tgt.y); this.screenShake(220,0.012); this.screenFlash?.(0xfff3a0,0.35,160); this.hitStop?.(60);
     this.showBanner('⚡ Judgment Bolt!','Storm Charge unleashed',1100); }
+  // v4.89.2: Candy Shell — ใช้โล่ 1 ชั้น (กระสุน+ชน) + ฟองแตกให้เห็น
+  consumeShell(){ if(!((this._shield||0)>0))return false; this._shield--; const p=this.player; p.iframe=0.6;
+    this.floatText(p.x,p.y-44,'🫧 Blocked!',0x9fe8ff); this.screenFlash(0x9fe8ff,0.18,160); Sfx.pick?.();
+    const r=this.camWorld(this.add.circle(p.x,p.y,34,0x9fe8ff,0.25).setStrokeStyle(4,0xdff8ff,0.95).setDepth(96000));
+    this.tweens.add({targets:r,scale:2.2,alpha:0,duration:320,ease:'Cubic.out',onComplete:()=>r.destroy()});
+    return true; }
+  // ฟองโล่รอบตัววาดทุกเฟรม (หนาขึ้นตามจำนวนชั้น)
+  drawShellBubble(){ const n=this._shield||0,p=this.player;
+    if(!this._shellG){ if(!n)return; this._shellG=this.camWorld(this.add.graphics().setDepth(95500)); }
+    const g=this._shellG; g.clear(); if(!n||!p||this.state==='menu')return;
+    const t=this.elapsed||0,r=36+Math.sin(t*5)*2.5;
+    g.fillStyle(0x9fe8ff,0.16).fillCircle(p.x,p.y,r);
+    g.lineStyle(3,0xdff8ff,0.85).strokeCircle(p.x,p.y,r);
+    if(n>1)g.lineStyle(2,0x9fe8ff,0.7).strokeCircle(p.x,p.y,r+6);
+    g.fillStyle(0xffffff,0.7).fillCircle(p.x-r*0.45,p.y-r*0.5,4); }
   resetRelics(){ this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ return RELIC_CAP-((this.relics&&this.relics.length)||0); }
@@ -7849,6 +7865,7 @@ class Game extends Phaser.Scene {
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
+    if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
     this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
@@ -7864,7 +7881,7 @@ class Game extends Phaser.Scene {
     return R[top]||R.swarm; }
   // โดนกระสุน/สแลม/hazard ของศัตรู (iframe สั้นกว่า → หลบยาก)
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
-    if((this._shield||0)>0){ this._shield--; this.player.iframe=0.6; this.floatText(this.player.x,this.player.y-44,'🫧 Blocked!',0x9fe8ff); this.screenFlash(0x9fe8ff,0.18,160); return; }   // 🔮 Candy Shell
+    if(this.consumeShell())return;   // 🔮 Candy Shell
     if(this._inTutorial)return;   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
     dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
@@ -8806,7 +8823,7 @@ class Game extends Phaser.Scene {
     this.updatePickupReadability();
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
-    this.tickCharSignature(dt);
+    this.tickCharSignature(dt); this.drawShellBubble();
     if(this._coach)this.tickTutorialCoach(dt);
     this.tickStage(dt);
     this.tickBossZoom();

@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.89.2 — Candy Shell ใช้ได้จริง+เห็นชัด)
+- **v4.89.2 (เจ้าของ: Candy Shell เหมือนไม่ทำงาน):** บั๊ก: `_shield` ถูกเช็คแค่ใน hurtPlayer (กระสุน) · touchEnemy (ชนมอน = ดาเมจหลัก) ไม่เช็ค → แก้ด้วย `consumeShell()` ใช้ทั้ง 2 จุด (ชน = กระเด้งออก) + วงแตก · `drawShellBubble()` ฟองรอบตัวทุกเฟรม (2 ชั้น = วงคู่) เรียกต่อจาก tickCharSignature · verified headless: ชนมอน HP ไม่ลด โล่ 2→1, screenshot เห็นฟอง, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.89.1 — โดนตีถี่ขึ้น)
 - **v4.89.1 (เจ้าของ: อยากให้ player โดนตีถี่ขึ้น):** global `HURT_IFRAME_MUL=0.6` คูณ iframe หลังโดนตีใน touchEnemy (0.6→0.36s) และ hurtPlayer (default 0.5→0.3s, ค่า ix ที่ส่งมาก็คูณ) · iframe จาก dash/revive/shield ไม่แตะ · verified headless 0 error
 
