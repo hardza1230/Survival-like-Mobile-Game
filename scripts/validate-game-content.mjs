@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '5.8.0'",
+  "const GAME_VERSION = '5.9.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -112,7 +112,7 @@ for(const skill of signatureComboSkills){
 if (!source.includes('rollUpgrades(this.usesBasicAttackBuild()?3:4)') || !source.includes("slice(0,3)")) {
   throw new Error('Readable-card choice counts changed unexpectedly');
 }
-for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaCombo(lvl,dm,basic)","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n,opts)","b.mastery>=8&&!b.mutation","b.mastery>=evoAt&&!b.evolved"]){
+for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaCombo(lvl,dm,basic)","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n,opts)","b.mastery>=10&&!b.mutation","b.mastery>=evoAt&&!b.evolved"]){
   if(!source.includes(contract))throw new Error(`Missing character-first Basic Attack contract: ${contract}`);
 }
 const levelUpIcons=['momo_power','momo_rate','momo_size','momo_volley','cocoa_power','cocoa_rate','cocoa_size','cocoa_combo','berry_power','berry_rate','berry_size','berry_cluster','sweet_recovery','mochi_vitality','flavor_regeneration','sugar_on_kill'];

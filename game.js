@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.8.0';
+const GAME_VERSION = '5.9.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.9.0', date:'2026-09-25', title:'🌬️ Mint Gale + slower power spikes', items:['Mint’s unique is now Mint Gale: a burst of wind speed that shoves nearby enemies. Build Path, Infusion, Mutation and Evolution cards now arrive a little later']},
   { v:'5.8.0', date:'2026-09-25', title:'💢 Miniboss battle music', items:['Every miniboss fight now has its own faster, heavier theme based on its stage']},
   { v:'5.7.0', date:'2026-09-25', title:'💬 No more pauses between waves', items:['Character lines now pop up as a speech bubble over your head instead of stopping the game every wave']},
   { v:'5.6.0', date:'2026-09-25', title:'🎵 New Chapter 3 stage music', items:['Each Chapter 3 stage now has its own theme, from the windswept Ashen Seedfields to the Throne of the First Seed']},
@@ -1695,7 +1696,7 @@ function pathMods(b){ const m={dmg:1,cd:1,count:0,range:0,big:0,frozen:0,far:0,l
 
 const CHARACTER_UNIQUES = {
   berryRebound:{name:'Strawberry Rebound',emoji:'🍓',cd:8,color:0xff76a8,desc:'Fires sweet seeds all around and heals HP — moderate power, low cooldown'},
-  mintSanctuary:{name:'Diamond Dust',emoji:'❄️',cd:11,color:0x8fd0ff,desc:'Summons a wide snowstorm around you, raining ice shards that hit repeatedly, freezing crowds + brief guard'},
+  mintSanctuary:{name:'Mint Gale',emoji:'🌬️',cd:10,color:0x8fd0ff,desc:'A cool gust wraps around you — run much faster for a few seconds, ignore slows and push nearby enemies away'},
   voidPull:{name:'Dark Chocolate Void',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'Opens a black hole that pulls enemies in for continuous damage, then implodes'},
   flickerStrike:{name:'Bear Flicker',emoji:'⚡',cd:4.5,color:0x9f6bff,desc:'Warp-strikes enemies rapidly with a short cooldown, invulnerable during the combo'},
   pathRecall:{name:'Taro Chain Bolt',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'Fires lightning that chains from enemy to enemy, then refunds Dash and boosts speed'},
@@ -1706,7 +1707,7 @@ const UNIQUE_MAX_LV=4;
 const uniqueAt={2:3,3:7,4:11};   // run level milestones shared by UI, progression, and validation
 const UNIQUE_TIERS={
   berryRebound:{2:'More seeds and more HP recovery',3:'Stronger seeds with a wider spread',4:'Berry Crown fires 20+ seeds with max healing'},
-  mintSanctuary:{2:'Wider storm that hits harder',3:'Lasts longer + deeper freeze',4:'Absolute Blizzard — a giant storm covers the screen with the longest guard'},
+  mintSanctuary:{2:'Faster and longer gale',3:'Stronger push when it starts',4:'Tailwind — the longest, fastest gale'},
   voidPull:{2:'Wider hole that pulls harder',3:'Lasts longer + stronger DoT',4:'Singularity — a giant hole pulls the whole screen and ends in a violent blast'},
   flickerStrike:{2:'More warp-strikes + higher damage',3:'Wider strike arc + longer reach',4:'Blur Rampage — warp-strike the whole screen, healing each hit'},
   pathRecall:{2:'More chains and jump range',3:'Bolt splits into two, spreading wider',4:'Storm Arc — chains across the field with max damage'},
@@ -3245,7 +3246,7 @@ class Game extends Phaser.Scene {
       for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.28+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=0;b.faceVel=true;this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
       this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
-      this.castDiamondDust(dm,ul);
+      this.castWindRush(ul);
     }else if(c.unique==='voidPull'){
       this.castVoidPull(dm,ul);
     }else if(c.unique==='flickerStrike'){
@@ -3260,6 +3261,30 @@ class Game extends Phaser.Scene {
   }
 
   // ❄️ Mint Unique — Diamond Dust: พายุหิมะถล่มพื้นที่ ตามตัวผู้เล่น ฟาดซ้ำ ๆ + แช่ฝูง + คุ้มกันช่วงสั้น
+  // 🌬️ Mint Unique (v5.9) — Mint Gale: วิ่งเร็วชั่วขณะ + ลมผลักมอนรอบตัวตอนกด · เอฟเฟกต์ลมตามตัวใน tickWindRush
+  castWindRush(ul){
+    ul=ul||1;const dur=2.6+ul*0.5,mul=1.45+ul*0.1,r=110+ul*18;
+    this.windRushT=dur;this.windRushMul=mul;this.moveSlowT=0;
+    this.player.iframe=Math.max(this.player.iframe||0,0.35);
+    const cx=this.player.x,cy=this.player.y;
+    this.enemies.children.iterate(e=>{if(!e||!e.active||e.isBoss||e.isMini)return;const d=this.dist(e.x,e.y,cx,cy);if(d<r){const a=Math.atan2(e.y-cy,e.x-cx),f=(260+ul*60)*(1-d/r*0.5);e.setVelocity(Math.cos(a)*f,Math.sin(a)*f);e._knockT=0.25;}});
+    for(let k=0;k<2;k++){const ring=this.camWorld(this.add.circle(cx,cy,24,0xc8f4ff,0).setStrokeStyle(4-k,0xbff4e8,0.85).setDepth(9));
+      this.tweens.add({targets:ring,radius:r*(1+k*0.35),alpha:0,duration:420+k*140,ease:'Cubic.out',onComplete:()=>ring.destroy()});}
+    for(let i=0;i<14;i++){const a=i/14*TAU,ln=this.camWorld(this.add.rectangle(cx+Math.cos(a)*20,cy+Math.sin(a)*20,26,3,0xe6fffa,0.9).setRotation(a).setDepth(9));
+      this.tweens.add({targets:ln,x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r,alpha:0,scaleX:0.3,duration:380,ease:'Cubic.out',onComplete:()=>ln.destroy()});}
+    this.jelly&&this.jelly(0.25,-0.2);Sfx.dash&&Sfx.dash();Sfx.magnet&&Sfx.magnet();
+    this.showBanner('🌬️ Mint Gale Lv'+ul,'Speed ×'+mul.toFixed(2)+' for '+dur.toFixed(1)+'s · ignore slows',950);
+  }
+  tickWindRush(dt){
+    if(!(this.windRushT>0))return;this.windRushT=Math.max(0,this.windRushT-dt);this.moveSlowT=0;
+    this._windFx=(this._windFx||0)-dt;if(this._windFx>0||!this.player)return;this._windFx=0.045;
+    const v=this.player.body?this.player.body.velocity:{x:0,y:0},sp=Math.hypot(v.x,v.y),a=sp>10?Math.atan2(v.y,v.x):Math.random()*TAU;
+    const px=this.player.x-Math.cos(a)*18+Phaser.Math.Between(-14,14),py=this.player.y-Math.sin(a)*18+Phaser.Math.Between(-14,14);
+    const ln=this.camWorld(this.add.rectangle(px,py,Phaser.Math.Between(22,40),2.5,Math.random()<0.5?0xe6fffa:0x9fe8d8,0.85).setRotation(a).setDepth(this.player.y-1));
+    this.tweens.add({targets:ln,x:px-Math.cos(a)*46,y:py-Math.sin(a)*46,alpha:0,scaleX:0.2,duration:300,onComplete:()=>ln.destroy()});
+    if(Math.random()<0.3){const lf=this.camWorld(this.add.text(px,py,'🍃',{fontSize:'14px'}).setOrigin(0.5).setDepth(this.player.y-1));
+      this.tweens.add({targets:lf,x:px-Math.cos(a)*60+Phaser.Math.Between(-20,20),y:py-Math.sin(a)*60+Phaser.Math.Between(-20,20),angle:Phaser.Math.Between(-180,180),alpha:0,duration:520,onComplete:()=>lf.destroy()});}
+  }
   castDiamondDust(dm,ul){
     ul=ul||1;const up=this.uniquePower();
     const r=150+(ul-1)*26+(this.player.deepFreeze?30:0),dur=2.2+ul*0.35;
@@ -5445,7 +5470,7 @@ class Game extends Phaser.Scene {
         if(this.killTxt)this.killTxt.setText('☠ 0');
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
-        this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
+        this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
         this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
         this.clearStarGuardFx();
@@ -6460,7 +6485,7 @@ class Game extends Phaser.Scene {
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
-    this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.stageKills=0;
+    this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.windRushT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
@@ -7001,23 +7026,23 @@ class Game extends Phaser.Scene {
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey:u.iconKey||fallbackIcon,...extra});
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
-    if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=5){
+    if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
       return PATHS.map(pt=>makeCard(pt,{desc:pt.desc+tagLabel(TAGS_OF.path[pt.id]),kind:'Build Path',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
     }
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
-    if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=10&&(!PATHS||b.path)){
+    if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
       this.showBanner('🍯 Flavor Infusion','Infuse your attack with a flavor',1600);
       return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc+tagLabel(TAGS_OF.infusion[f.id]),kind:'Flavor Infusion',special:true,color:f.color,apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
     }
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) timesเดียว: การ์ดทั้งจอเป็น mutation ล้วน
-    if(!noSpecial&&b.mastery>=8&&!b.mutation){   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
+    if(!noSpecial&&b.mastery>=10&&!b.mutation){   // v5.9: 8→10 ห่างขึ้น (เจ้าของ: เก่งเร็วไป)   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
       const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
       if(muts.length){ this.showBanner('⭐ Mutation Fork!','Choose one playstyle (the other locks)',1500);
         return muts.map(u=>makeCard(u,{mutation:true,special:true,apply:()=>{b.mutation=u.id;this.syncBasicAttack();this.showBanner(u.emoji+' '+u.name,'Mutation path chosen · the other is locked',1700);}})); }
     }
     // ✨ ช่วงพิเศษ #2 — Evolution timesเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
-    const evoAt=Math.min(14,d.upgrades.reduce((s,u)=>s+(this.banishedKeys?.['b:'+u.id]?(b.lv[u.id]||0):u.max),0)+1);   // v4.54: เดิม 20 แต่ mastery สูงสุดได้แค่ 17 (16 อัพ+1 mutation) = evolution ไม่มีวันออก
+    const evoAt=Math.min(16,d.upgrades.reduce((s,u)=>s+(this.banishedKeys?.['b:'+u.id]?(b.lv[u.id]||0):u.max),0)+1);   // v4.54: เดิม 20 แต่ mastery สูงสุดได้แค่ 17 (16 อัพ+1 mutation) = evolution ไม่มีวันออก
     if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Extra slams + every hit leaves a shockwave (not just the last)',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
@@ -9115,14 +9140,14 @@ class Game extends Phaser.Scene {
   }
   update(time,delta){
     let dt=delta/1000; if(this.state!=='play')return; dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
-    this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
+    this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
     if(this.joy.active&&(this.joy.dx||this.joy.dy)){ this.moveDir.set(this.joy.dx,this.joy.dy); if(this.moveDir.lengthSq()>0.04)this.moveDir.normalize(); }
 
     if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; this.poseFlash(CF.squash,150); } }
     else {
-      const spd=this.player.baseSpeed*(this.moveSlowT>0?0.52:1)*(this.pathHasteT>0?1.18:1);
+      const spd=this.player.baseSpeed*(this.moveSlowT>0?0.52:1)*(this.pathHasteT>0?1.18:1)*(this.windRushT>0?(this.windRushMul||1.5):1);
       if(this.joy.active&&(Math.abs(this.joy.dx)+Math.abs(this.joy.dy))>0.12) this.player.setVelocity(this.joy.dx*spd,this.joy.dy*spd);
       else { this.player.setVelocity(this.player.body.velocity.x*0.8,this.player.body.velocity.y*0.8); if(this.player.body.velocity.length()<8)this.player.setVelocity(0,0); }
     }
