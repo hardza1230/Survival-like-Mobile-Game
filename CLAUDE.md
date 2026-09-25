@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.81.0 — Recipe Maps R7: Atlas passive tree)
+- **v4.81.0 (Phase R · R7):** `ATLAS_NODES` 7 โหนด (1 แต้ม/เลเวล) เก็บ `Save.data.atlasTree` · `atlasLv/atlasSpent/atlasFree` · ผล: cartographer +10%/lv tier-up ใน `rollRecipeDrops` · bounty +8%/lv ใบที่ 2 · rarity +4%/lv rare (+8% magic) · appetite hunger ×(1+0.06lv) ใน recipeOnKill · fortune reward ×(1+0.08lv) ใน `riftMul` เฉพาะ recipeMode · eventful lv1 event ที่ 30% / lv2 event ที่ 2 ที่ 70% (`_recipeEventN`, shrine เคลียร์ของเก่าก่อน) · speedster par +10s/lv (`recipePar()`) · UI: แท็บ 🗺 Board / 🌳 Passives ใน `buildAtlas` (`_atlasTab`, `buildAtlasTree`) + Respec ฟรี · verified headless: ซื้อ 3 เลเวล free 5→2, fortune reward 1.6→1.984, par 120, screenshot ไม่ล้น, 0 error · **ถัดไป R8 Unique ที่เปลี่ยน build**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.80.0 — Recipe Maps R6: Atlas board)
 - **v4.80.0 (Phase R · R6):** `Save.data.atlas={theme:tier สูงสุดที่เคลียร์}` (`atlasData()`) อัปเดตใน `finishRecipeBoss` + banner 🗺 เมื่อได้แต้ม · `atlasThemePoints(t)`=เคลียร์ 1 + floor(t/4) (สูงสุด 5/ธีม) · `atlasPoints()`/`atlasMaxPoints()` (15 ธีม = 75) · หน้า `buildAtlas` (menuScreen 'atlas', ปุ่ม 🗺 Atlas ในหน้า Recipe แทนปุ่มรับฟรีครึ่งหนึ่ง) กริด 3 คอลัมน์ สี mint/ม่วง T8+/ทอง T16 + แถบ progress + ★ แต้ม · แตะ = toast best tier/fill · verified headless: แต้ม 11→13 หลังเคลียร์ T4, screenshot ครบ 15 ธีม, 0 error · **แต้มยังไม่มีที่ใช้ → R7 passive tree**
 
