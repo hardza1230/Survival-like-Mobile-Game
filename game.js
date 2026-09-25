@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.94.0';
+const GAME_VERSION = '4.95.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.95.0', date:'2026-09-25', title:'🛤 Build Paths for everyone', items:['Mint, Cocoa, Taro and Sesame now pick a Build Path at level 5 too','Mint: Glacier Warden / Lance Barrage / Glacial Pierce · Cocoa: Brawler / Titan Fist / Bear Guardian','Taro: Chain Storm / Smite / Tempest · Sesame: Prism Split / Focus Lens / Far Sentinel','Each path has 2 exclusive upgrades']},
   { v:'4.94.0', date:'2026-09-25', title:'🛤 Build Paths (Strawberry)', items:['At level 5 Strawberry picks a Build Path: Sniper, Shotgun or Ricochet','Each path reshapes your seeds and unlocks 2 exclusive upgrades · the other paths lock for the stage']},
   { v:'4.93.0', date:'2026-09-25', title:'🧭 More utility mods', items:['5 new utility mods: Sugar Find, Box Find, Currency Find, Unique Cooldown, Speed & Pickup','Utility mods can now roll on gloves (Unique Cooldown) and more amulet/ring/boot combinations'] },
   { v:'4.92.0', date:'2026-09-25', title:'📊 Full tier table', items:['Affix Forge shows every tier (T0–T10) of the targeted or selected mod, with its value range and your chance per tier','T10 can now roll at any item level — higher item level just unlocks better tiers on top','Tiers above your item’s best are shown locked'] },
@@ -1525,8 +1526,55 @@ const BASIC_PATHS={
                 {id:'buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'}]},
     {id:'ricochet',name:'Ricochet Seeds',emoji:'💞',desc:'+2 bounces per seed, ×0.8 damage each · swarm clearer',
       upgrades:[{id:'carom',name:'Carom',emoji:'🔁',max:3,desc:'+1 bounce per rank'},
-                {id:'gather',name:'Gathering Juice',emoji:'🧃',max:3,desc:'+8% damage per bounce per rank (stacks along the chain)'}]}]
+                {id:'gather',name:'Gathering Juice',emoji:'🧃',max:3,desc:'+8% damage per bounce per rank (stacks along the chain)'}]}],
+  // สายของตัวอื่นใช้ระบบกลาง: base = ผลตอนเลือก · upgrades[].fx = ผลต่อ rank (dmg/cd คูณ · อื่น ๆ บวก)
+  // คีย์: dmg cd count range big(vs elite/มินิ/บอส) frozen(vs ศัตรูแช่) far(>300px) low(HP เรา<50%) taken(ลดดาเมจที่รับ)
+  mint:[
+    {id:'glacier',name:'Glacier Warden',emoji:'🧊',base:{dmg:0.9,frozen:0.35},desc:'×0.9 damage, but +35% damage to frozen enemies · control build',
+      upgrades:[{id:'p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},desc:'+12% damage to frozen enemies per rank'},
+                {id:'p_coldsnap',name:'Cold Snap',emoji:'❄️',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'}]},
+    {id:'barrage',name:'Lance Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.65,count:1},desc:'+1 lance, 35% faster, ×0.62 damage each · swarm build',
+      upgrades:[{id:'p_quickdraw',name:'Quickdraw',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'},
+                {id:'p_splinter',name:'Splinter Volley',emoji:'💠',max:2,fx:{count:1},desc:'+1 lance per rank'}]},
+    {id:'pierce',name:'Glacial Pierce',emoji:'🏹',base:{dmg:1.6,cd:1.4,range:0.3},desc:'×1.6 damage and +30% range, but 40% slower · boss build',
+      upgrades:[{id:'p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+                {id:'p_coldblood',name:'Cold Blood',emoji:'💎',max:3,fx:{dmg:1.1},desc:'+10% lance damage per rank'}]}],
+  cocoa:[
+    {id:'brawler',name:'Brawler',emoji:'🥊',base:{dmg:0.72,cd:0.7,count:1},desc:'+1 punch, 30% faster, ×0.72 damage each · rush build',
+      upgrades:[{id:'p_jab',name:'Jab Chain',emoji:'👊',max:2,fx:{count:1},desc:'+1 punch per rank'},
+                {id:'p_footwork',name:'Footwork',emoji:'💨',max:3,fx:{cd:0.94},desc:'-6% combo cooldown per rank'}]},
+    {id:'titan',name:'Titan Fist',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 damage and +25% impact size, but 45% slower · boss build',
+      upgrades:[{id:'p_titanfist',name:'Giant Slayer',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+                {id:'p_quake',name:'Quake',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'}]},
+    {id:'guardian',name:'Bear Guardian',emoji:'🛡️',base:{dmg:0.85,taken:0.10,low:0.25},desc:'Take 10% less damage, ×0.85 damage, +25% damage below 50% HP · tank build',
+      upgrades:[{id:'p_ironhide',name:'Iron Hide',emoji:'🧱',max:3,fx:{taken:0.04},desc:'Take 4% less damage per rank'},
+                {id:'p_lastsstand',name:'Last Stand',emoji:'🔥',max:3,fx:{low:0.12},desc:'+12% damage below 50% HP per rank'}]}],
+  taro:[
+    {id:'storm',name:'Chain Storm',emoji:'🌩️',base:{dmg:0.75,count:1},desc:'+1 strike, ×0.75 damage · swarm build',
+      upgrades:[{id:'p_squall',name:'Squall',emoji:'⚡',max:2,fx:{count:1},desc:'+1 strike per rank'},
+                {id:'p_static',name:'Static Build',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% lightning damage per rank'}]},
+    {id:'smite',name:'Smite',emoji:'🔨',base:{dmg:1.8,cd:1.35},desc:'×1.8 damage per strike, but 35% slower · boss build',
+      upgrades:[{id:'p_judge',name:'Judgment',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+                {id:'p_overload',name:'Overload',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% lightning damage per rank'}]},
+    {id:'tempest',name:'Tempest',emoji:'🌪️',base:{dmg:0.65,cd:0.62},desc:'38% faster casts, ×0.65 damage · speed build',
+      upgrades:[{id:'p_gale',name:'Gale',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% cast cooldown per rank'},
+                {id:'p_farstrike',name:'Far Strike',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% damage to enemies far from you per rank'}]}],
+  sesame:[
+    {id:'prism',name:'Prism Split',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
+      upgrades:[{id:'p_facet',name:'Extra Facet',emoji:'💠',max:2,fx:{count:1},desc:'+1 beam per rank'},
+                {id:'p_refract',name:'Refraction',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% beam damage per rank'}]},
+    {id:'lens',name:'Focus Lens',emoji:'🔍',base:{dmg:1.6,cd:1.3,big:0.2},desc:'×1.6 damage and +20% vs elites/bosses, but 30% slower · boss build',
+      upgrades:[{id:'p_lensbig',name:'Burning Lens',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+                {id:'p_steady',name:'Steady Hand',emoji:'🧘',max:3,fx:{dmg:1.1},desc:'+10% beam damage per rank'}]},
+    {id:'sentinel',name:'Far Sentinel',emoji:'🔭',base:{range:0.4,far:0.25},desc:'+40% beam length, +25% damage to far enemies · kite build',
+      upgrades:[{id:'p_longsight',name:'Longsight',emoji:'👁️',max:3,fx:{far:0.10},desc:'+10% damage to far enemies per rank'},
+                {id:'p_swift',name:'Swift Mirror',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% beam cooldown per rank'}]}]
 };
+// รวมผลสาย (base + rank ของ upgrade สาย) → {dmg,cd,count,range,big,frozen,far,low,taken}
+function pathMods(b){ const m={dmg:1,cd:1,count:0,range:0,big:0,frozen:0,far:0,low:0,taken:0}; if(!b||!b.path)return m;
+  const pt=(BASIC_PATHS[b.character]||[]).find(x=>x.id===b.path); if(!pt||!pt.base)return m;
+  const add=(fx,n)=>{ for(const k in fx){ if(k==='dmg'||k==='cd')m[k]*=Math.pow(fx[k],n); else m[k]+=fx[k]*n; } };
+  add(pt.base,1); for(const u of pt.upgrades)add(u.fx||{},b.lv[u.id]||0); return m; }
 
 const CHARACTER_UNIQUES = {
   berryRebound:{name:'Strawberry Rebound',emoji:'🍓',cd:8,color:0xff76a8,desc:'Fires sweet seeds all around and heals HP — moderate power, low cooldown'},
@@ -6505,7 +6553,7 @@ class Game extends Phaser.Scene {
   basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
-  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
+  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b._pm=pathMods(b);{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
@@ -6843,7 +6891,7 @@ class Game extends Phaser.Scene {
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const atk=[];
-    const COUNT_IDS={volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,carom:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
+    const COUNT_IDS={volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,carom:1,p_splinter:1,p_jab:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
     const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades:[];
     for(const u of d.upgrades.concat(pathUps)){const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
       const rr=rollRarity(),potNote=(!COUNT_IDS[u.id]&&rr.potency>1)?('  ⚡+'+Math.round((rr.potency-1)*100)+'% roll'):''; atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,desc:u.desc+potNote,apply:()=>{
@@ -7039,7 +7087,7 @@ class Game extends Phaser.Scene {
     if(b&&this.character==='mint'&&key==='frost')base=Math.max(1.25,1.95-lvl*0.08);   // มินต์ = basic attack ยิงถี่ (แทนคูลดาวน์ frost ปกติที่ช้า)
     if(b&&this.character==='sesame'&&key==='mirror')base=Math.max(0.85,1.45-lvl*0.06);   // งาดำ = Mirror Beam ยิงเป็นจังหวะ (แทน pulse field เดิม)
     const basicRate=b?Math.pow(0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
-    return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate;
+    return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate*(b&&b._pm?b._pm.cd:1);
   }
   _cdBase(key,lvl){
     switch(key){
@@ -7073,7 +7121,7 @@ class Game extends Phaser.Scene {
   }
   castSkill(key,lvl){
     const sw=this.signatureWeaponInfo(),weaponMul=sw.skill===key?(this.player.weaponDmgMul||1):1;
-    const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*0.12+(basic.ranks.overdrive||0)*0.05):1;
+    const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*0.12+(basic.ranks.overdrive||0)*0.05)*(basic._pm?basic._pm.dmg:1):1;
     const dm=this.player.dmgMul*(BALANCE.skillPower[key]||1)*weaponMul*basicDmg, cf={}, aw=lvl>=SKILL_AWAKEN_LV; this.pulseSkill(key);   // cf ปิดแล้ว (เลิกระบบคอมโบ) — เหลือแต่ Awaken
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
@@ -7105,7 +7153,7 @@ class Game extends Phaser.Scene {
       const tEvo=basic&&basic.evolved;   // EVO: พายุสายฟ้าทั้งจอ — ฟาดหลายจุด + ชิ่งไกล/ยาวขึ้นมาก
       const bArc=(basic?.ranks.arc||0)+(basic?.mutation==='chainlord'?2:0)+(tEvo?3:0), bSurge=(basic?.ranks.surge||0)+(basic?.mutation==='stormcaller'?2:0)+(tEvo?2:0);
       const bChainRange=(basic?.mutation==='chainlord'?1.4:1)*(tEvo?1.5:1), bDmgMut=(basic?.mutation==='stormcaller'?1.2:1)*(tEvo?1.2:1);
-      const strikes=(aw?3:lvl>=4?2:1)+bSurge, chain=(aw?5:lvl>=5?3:lvl>=3?2:1)+(sw.skill===key?(this.player.weaponChains||0):0)+bArc, dmg=(14+lvl*4.2)*dm*(cf.storm?1.4:1)*(aw?1.15:1)*bDmgMut;
+      const strikes=(aw?3:lvl>=4?2:1)+bSurge+(basic?._pm?.count||0), chain=(aw?5:lvl>=5?3:lvl>=3?2:1)+(sw.skill===key?(this.player.weaponChains||0):0)+bArc, dmg=(14+lvl*4.2)*dm*(cf.storm?1.4:1)*(aw?1.15:1)*bDmgMut;
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
       cand.sort((a,b)=>this.dist(a.x,a.y,this.player.x,this.player.y)-this.dist(b.x,b.y,this.player.x,this.player.y));   // เล็งตัวใกล้สุดก่อน (เดิมเล็ง HP สูง = ผ่ามั่ว)
       this.hitCratesInRadius(this.player.x,this.player.y,aw?760:520,dmg);   // ฟ้าผ่าก็ทุบกล่องในระยะ
@@ -7241,7 +7289,7 @@ class Game extends Phaser.Scene {
   castBearDonut(lvl,aw,dm,evo,basic){
     // โกโก้ = ต่อยประชิด 2 หมัด (base) · คลื่นสะท้อน (shockwave) ต้อง Mutation 'breaker' หรือ Awaken/Evo ถึงจะมี
     const breaker=basic?.mutation==='breaker', wave=breaker||!!evo||aw;
-    const sig=this.player.donutImpact?1.28:1,wm=this.signatureWeaponInfo().skill==='meteor'?(this.player.weaponAreaMul||1):1,hits=2+(aw?2:0)+(evo?2:0), r=(68+lvl*8)*(aw?1.22:1)*sig*wm*(evo?1.2:1);
+    const sig=this.player.donutImpact?1.28:1,wm=this.signatureWeaponInfo().skill==='meteor'?(this.player.weaponAreaMul||1):1,hits=2+(aw?2:0)+(evo?2:0)+(basic?._pm?.count||0), r=(68+lvl*8)*(aw?1.22:1)*sig*wm*(evo?1.2:1)*(1+(basic?._pm?.range||0));
     const dmg=(12+lvl*3.5)*dm*(aw?1.1:1)*sig;
     for(let i=0;i<hits;i++)this.time.delayedCall(i*170,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const t=this.nearestEnemy(620),x=t?t.x+Phaser.Math.Between(-20,20):this.player.x+Phaser.Math.Between(-190,190),y=t?t.y+Phaser.Math.Between(-20,20):this.player.y+Phaser.Math.Between(-190,190);
@@ -7273,10 +7321,10 @@ class Game extends Phaser.Scene {
     this._sesBeamAng=ang;
     const focus=this._sesFocus||0, focusMul=1+focus*0.9, over=focus>0.85;   // ยืนนิ่งชาร์จ Focus → แรงขึ้น + overcharge เมื่อเกือบเต็ม
     const bRad=1+(basic?.ranks.radius||0)*0.12, bPane=basic?.ranks.pane||0, bPow=basic?.ranks.power||0;
-    const len=(360+lvl*26)*bRad*(aw?1.2:1)*(evo?1.15:1);
+    const len=(360+lvl*26)*bRad*(aw?1.2:1)*(evo?1.15:1)*(1+(basic?._pm?.range||0));
     const wide=(10+lvl*0.9+bPane*2+focus*5)*(basic?.mutation==='fortress'?1.25:1);   // ลำแสงเล็กลง (เดิม 18+lvl*1.6)
     const dmg=(20+lvl*6)*dm*(1+bPow*0.12)*focusMul*(evo?1.3:1)*(aw?1.25:1)*(basic?.mutation==='retaliate'?1.25:1);
-    const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0), spread=0.12;   // Lv1 ลำเดียว · pane/awaken/evo/unique = เพิ่มลำ
+    const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0)+(basic?._pm?.count||0), spread=0.12;   // Lv1 ลำเดียว · pane/awaken/evo/unique = เพิ่มลำ
     const PRISM=0xc86bff;   // สีบีมงาดำ = ม่วงพริซึม (แยกจากสกิลอื่น)
     // 🔮 ลูกเล่น Mirror Mark: บีมโดน = สะสมรอยกระจก ครบ 5 → แตกระเบิดดาเมจก้อน (โดยเฉพาะบอส)
     const markHit=(e)=>{ const need=5; e._sesMark=(e._sesMark||0)+(over?2:1); e._sesMarkT=2.2;
@@ -7296,8 +7344,8 @@ class Game extends Phaser.Scene {
     const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._lanceAng||0));
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
-    const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1);
-    const lances=evo?3:(lvl>=4?2:1), spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
+    const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
+    const lances=(evo?3:(lvl>=4?2:1))+(basic?._pm?.count||0), spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
     // จำนวน/สเปกสะเก็ด — chill=+จำนวน · linger=+จำนวน+กระจายกว้าง · evo แบ่งต่อแฉกให้ไม่ล้น
     const shardBase=3+Math.min(2,(basic?.ranks.chill||0))+Math.min(2,(basic?.ranks.linger||0))+(aw?2:0);   // v4.20: สะเก็ดน้อยลง (เดิม 6+..) ไม่ล้นจอ
     const shardPer=evo?Math.max(2,Math.round(shardBase*0.6)):shardBase;
@@ -7626,6 +7674,11 @@ class Game extends Phaser.Scene {
     if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;
     if((e.isBoss||e.isMini)&&this.player.bossDmg)amount*=1+this.player.bossDmg;
     if((this.stageIndex>=6&&this.stageIndex<=9)&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'&&e.nectarRole!=='waxGuard'&&e.seasonRole!=='equinoxGuard'&&e.rootRole!=='barkGuard'){let guarded=false;this.enemies.children.iterate(o=>{if(!guarded&&o&&o.active&&o!==e&&((o.mycoRole==='bulwark'&&this.stageIndex===6)||(o.nectarRole==='waxGuard'&&this.stageIndex===7)||(o.seasonRole==='equinoxGuard'&&this.stageIndex===8)||(o.rootRole==='barkGuard'&&this.stageIndex===9))&&this.dist(o.x,o.y,e.x,e.y)<175)guarded=true;});if(guarded)amount*=this.stageIndex===9?.78:this.stageIndex===8?.76:this.stageIndex===7?.74:.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
+    { const pm=this.basicAttack&&this.basicAttack._pm; if(pm&&(pm.big||pm.frozen||pm.far||pm.low)){   // 🛤 Build Path: โบนัสตามเงื่อนไข
+      if(pm.big&&(e.isBoss||e.isMini||e.isElite))amount*=1+pm.big;
+      if(pm.frozen&&e.frozen>0)amount*=1+pm.frozen;
+      if(pm.far&&this.dist(e.x,e.y,this.player.x,this.player.y)>300)amount*=1+pm.far;
+      if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     const RL=this._rel; if(RL){ if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }

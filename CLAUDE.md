@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.95.0 — Build Path ครบ 5 ตัว)
+- **v4.95.0 (เจ้าของสั่ง):** `BASIC_PATHS` เพิ่ม mint/cocoa/taro/sesame แบบ data-driven: path มี `base` + upgrades มี `fx` (คีย์ dmg/cd คูณ · count/range/big/frozen/far/low/taken บวก) · `pathMods(b)` รวม → `b._pm` (คำนวณใน syncBasicAttack) · ใช้ที่: basicDmg ใน castSkill (dmg) · `cdOf` (cd) · count = taro strikes/mint lances/cocoa hits/sesame beams · range = mint range/cocoa r/sesame len · `damage()` โบนัสตามเงื่อนไข big(elite/มินิ/บอส)/frozen/far(>300)/low(HP<50%) · taken ปรับ dmgTakenMul แบบ delta (`b._takenApplied`) · id upgrade สาย prefix `p_` (count ids อยู่ใน COUNT_IDS) · Momo ยังใช้ระบบเฉพาะของ v4.94 (ไม่มี base) · สาย: Mint Glacier/Barrage/Pierce · Cocoa Brawler/Titan/Guardian · Taro Storm/Smite/Tempest · Sesame Prism/Lens/Sentinel · verified headless 12 สาย apply+upgrade+cast, 0 error · **ยังไม่จูน — Sesame Focus Lens ดูแรงสุดในเทส**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.94.0 — Build Path (Momo))
 - **v4.94.0 (เจ้าของเลือกไอเดีย B · ไม่กลับไปใช้หลายอาวุธ · เห็นด้วย A/B/G ทำ B ก่อน):** `BASIC_PATHS[char]` (ตอนนี้มีแค่ momo) · `rollBasicAttackUpgrades` เลเวล ≥5 + `!b.path` → การ์ด 3 ใบ kind 'Build Path' (ก่อน mutation, ซ่อน reroll/banish) · เลือกแล้วตั้ง `b.path` (reset ทุกด่านผ่าน initBasicAttack) + ปลด 2 upgrade เฉพาะสาย (ต่อท้าย d.upgrades) · **Sniper** เมล็ด ceil(/2) ×1.9 เร็ว×1.35 pierce (headshot 7%/rank ×2.5, deadeye +15%/rank ใส่ elite/มินิ/บอส) · **Shotgun** +2 เม็ด fan 0.16 ยิงพร้อมกัน life 0.42 ×0.6 ใกล้ <170px +40% (pointblank +15%/rank, buckshot +1/rank) · **Ricochet** bounce +2 ×0.8 (carom +1/rank, gather +8% ดาเมจต่อการเด้ง/rank) · ดาเมจผ่าน `pathBulletDmg(b,e)` ใน hitEnemy · verified headless 3 สาย + screenshot, 0 error · **ถัดไป:** เจ้าของเล่นดูว่าสนุกไหม → ขยาย 4 ตัวที่เหลือ → A (Flavor Infusion) → G (tag set) · sniper pierce ไม่จำกัดอาจแรง ต้องจูน
 
