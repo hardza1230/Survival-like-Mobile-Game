@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.98.0';
+const GAME_VERSION = '4.99.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.99.0', date:'2026-09-25', title:'🔊 12 new sound effects', items:['New sounds for crits, big kills, getting hurt, healing, magnet, card picks, legend drops, victory and defeat','Taro, Cocoa and Sesame attacks each have their own sound']},
   { v:'4.98.0', date:'2026-09-25', title:'🔊 Juicier sound', items:['Hits and pickups vary their pitch so repeats never sound robotic','Collecting EXP in a row climbs higher and higher in pitch','Crits and big kills get layered impact sounds','Sound caps stop audio from clipping when big swarms die','New Music Volume and Effects Volume settings']},
   { v:'4.97.0', date:'2026-09-25', title:'🏷️ Tag Sets', items:['Build Paths, Flavor Infusions and Relics now carry a tag: 🎯 Precision, 🌀 Swarm, 🛡️ Guard or ⚡ Tempo','Collect 2 or 3 of the same tag in a stage for a set bonus','Active sets show on the HUD next to your relics']},
   { v:'4.96.0', date:'2026-09-25', title:'🍯 Flavor Infusion', items:['At level 10 pick a flavor for your attack (1 of 3): Spicy burn, Sour weaken, Sweet heal or Minty chill','Infusions trade a little hit damage for their effect','New upgrade card Deep Flavor boosts your infusion']},
@@ -598,9 +599,15 @@ const Sfx = {
   crit(){ if(!this._ok('crit',0.09))return; if(!this.playFile('sfx_crit',0.32))this.playFile('sfx_hit',0.30,1.25+Math.random()*0.1); this.tone(1480,0.06,'triangle',0.045,2100); },   // คริ = เสียงตีสูง + ping
   bigKill(){ if(!this._ok('bigKill',0.18))return; this.duckBgm(260,0.7); if(!this.playFile('sfx_kill_big',0.34)&&!this.playFile('sfx_ult_bomb',0.30,1.15))this.tone(150,0.18,'sine',0.08,65); this.tone(90,0.22,'sine',0.09,45); this.noise(0.12,0.05,0.02,true); },   // ฆ่าตัวใหญ่ = ซ้อน 3 ชั้น
   setVolumes(mv,sv){ this.mv=mv; this.sv=sv; if(this._bgmGain)this._bgmGain.gain.value=0.5*mv; this.bgmIntense(this._bgmIntense); },
-  hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
+  hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hurt',0.42)&&!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
   dash(){if(this._ok('dash',0.25)){if(!this.playFile('sfx_dash',0.34))this.noise(0.11,0.055,0,true);}},
   ult(type){if(!this._ok('ult',0.5))return;this.duckBgm(650,0.42);if(type==='vortex'&&this.playFile('sfx_ult_vortex',0.48))return;if(!this.playFile('sfx_ult_bomb',0.48))this.seq([660,880,1180],'triangle',0.10,0.07);},
+  thunder(){if(this._ok('thunder',0.2)&&!this.playFile('sfx_thunder',0.34))this.zap();},
+  beam(){if(this._ok('beam',0.15)&&!this.playFile('sfx_beam',0.3))this.zap();},
+  punch(){if(this._ok('punch',0.12)&&!this.playFile('sfx_punch',0.4))this.shoot();},
+  magnet(){if(this._ok('magnet',0.4))this.playFile('sfx_magnet',0.4);},
+  card(){if(this._ok('card',0.2))this.playFile('sfx_card',0.34,1);},
+  legend(){if(!this._ok('legend',1))return;this.duckBgm(900,0.4);if(!this.playFile('sfx_legend',0.5,1))this.seq([523,659,784,1047,1319],'triangle',0.1,0.09);},
   zap(){if(this._ok('zap',0.18)){if(!this.playFile('sfx_donut',0.28))this.tone(1250,0.07,'triangle',0.055,540);}},
   boom(){if(this._ok('boom',0.24)){if(!this.playFile('sfx_ult_bomb',0.32))this.tone(150,0.18,'sine',0.08,65);}},
   frost(){if(this._ok('frost',0.24)){if(!this.playFile('sfx_frost',0.34))this.seq([1050,1450],'sine',0.055,0.06);}},
@@ -609,9 +616,9 @@ const Sfx = {
   select(){if(this._ok('select',0.16)&&!this.playFile('sfx_btn',0.28))this.tone(880,0.055,'sine',0.055,1200);},
   bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
   clear(){if(!this._ok('clear',0.8))return;this.duckBgm(650,0.48);if(!this.playFile('sfx_levelup',0.42))this.seq([659,784,1047],'triangle',0.11,0.12);},
-  victory(){this.duckBgm(1000,0.3);this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
-  dead(){this.duckBgm(900,0.3);this.seq([392,311,247,196],'sine',0.10,0.14);},
-  heal(){if(this._ok('heal',0.28))this.seq([784,988,1319],'sine',0.07,0.06);},
+  victory(){this.duckBgm(1000,0.3);if(this.playFile('sfx_victory',0.55,1))return;this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
+  dead(){this.duckBgm(900,0.3);if(this.playFile('sfx_defeat',0.5,1))return;this.seq([392,311,247,196],'sine',0.10,0.14);},
+  heal(){if(this._ok('heal',0.28)&&!this.playFile('sfx_heal',0.4))this.seq([784,988,1319],'sine',0.07,0.06);},
   heartbeat(intensity){const v=0.05+0.05*(intensity||0);this.tone(58,0.10,'sine',v,40);this.tone(70,0.11,'sine',v*0.85,44,0.14);},   // เสียงหัวใจเต้น "thump-thump" ตอนใกล้ตาย
 
   // ===== เพลงพื้นหลัง (BGM จริง + สังเคราะห์ fallback) =====
@@ -921,6 +928,19 @@ const ASSET_AUDIO = {
   sfx_ult_vortex: 'assets/audio/sfx_vfx_ult_cocoavortex.wav',
   sfx_donut:      'assets/audio/sfx_vfx_proj_donut.wav',
   sfx_hazard:     'assets/audio/sfx_vfx_telegraph_hazard.wav',
+  sfx_crit: 'assets/audio/sfx/gen/sfx_crit.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_kill_big: 'assets/audio/sfx/gen/sfx_kill_big.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_hurt: 'assets/audio/sfx/gen/sfx_hurt.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_heal: 'assets/audio/sfx/gen/sfx_heal.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_magnet: 'assets/audio/sfx/gen/sfx_magnet.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_thunder: 'assets/audio/sfx/gen/sfx_thunder.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_punch: 'assets/audio/sfx/gen/sfx_punch.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_beam: 'assets/audio/sfx/gen/sfx_beam.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_burn: 'assets/audio/sfx/gen/sfx_burn.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_card: 'assets/audio/sfx/gen/sfx_card.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_legend: 'assets/audio/sfx/gen/sfx_legend.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_victory: 'assets/audio/sfx/gen/sfx_victory.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   bgm_main:       'assets/audio/bgm/Main menu.mp3',
   bgm_stage1:     'assets/audio/bgm/clockmakers_tea_break.mp3',
   bgm_boss1:      'assets/audio/bgm/bgm_boss1.mp3',
@@ -6797,6 +6817,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:g,alpha:{from:0.55,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
   closeLevelUp(){
+    Sfx.card();
     this._relicPick=false;
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
@@ -7211,7 +7232,7 @@ class Game extends Phaser.Scene {
           this.enemies.children.iterate(o=>{ if(o&&o.active&&!hit.has(o)){ const d=(o.x-from.x)**2+(o.y-from.y)**2; if(d<nd){nd=d;nb=o;} } });
           if(!nb)break; this.chainBolt(from.x,from.y,nb.x,nb.y); this.damage(nb,dmg*0.7,nb.x,nb.y); if(!isBig(nb))gain++; hit.add(nb); from=nb; } }
       if(this.character==='taro')this.taroChargeGain(gain,dmg);
-      Sfx.zap(); }
+      Sfx.thunder(); }
     else if(key==='whirl'){ const cnt=aw?16:lvl>=6?12:lvl>=4?10:lvl>=2?8:6, dmg=(4+lvl*1.8)*dm*(aw?1.15:1);
       const big=(lvl>=3?1.4:1.1)*(aw?1.2:1), speed=(lvl>=3?340:300)*(aw?1.2:1), pierce=lvl>=6||aw, tint=aw?0xffd166:0x8fd0ff; this.whirlAng+=0.5;
       for(let i=0;i<cnt;i++){ const ang=this.whirlAng+(i/cnt)*Math.PI*2;
@@ -7341,7 +7362,7 @@ class Game extends Phaser.Scene {
       const t=this.nearestEnemy(620),x=t?t.x+Phaser.Math.Between(-20,20):this.player.x+Phaser.Math.Between(-190,190),y=t?t.y+Phaser.Math.Between(-20,20):this.player.y+Phaser.Math.Between(-190,190);
       const donut=this.camWorld(this.add.image(x,y-190,'proj_bear_donut').setDepth(90001).setScale(0.34).setAlpha(0.95));
       this.tweens.add({targets:donut,y,scale:0.58,duration:210,ease:'Quad.in',onComplete:()=>{donut.destroy();this.bearDonutImpact(x,y,r,dmg,(i===hits-1||!!evo)&&wave,aw);}});
-    }); Sfx.shoot();
+    }); Sfx.punch();
   }
   bearDonutImpact(x,y,r,dmg,final,aw){
     this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.damage(e,dmg,e.x,e.y);});
@@ -7380,7 +7401,7 @@ class Game extends Phaser.Scene {
     for(let k=0;k<beams;k++){ const a=ang+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,k===0?dmg:dmg*0.7,{tint:PRISM,onHit:markHit}); }
     // คงบทบาทป้องกัน: ลบกระสุนศัตรูรอบตัวเล็กน้อย (ward)
     this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<70){ this.vfxHitRing(f.x,f.y,PRISM,false); this.killFoe(f); } });
-    this.vfxHitRing(this.player.x,this.player.y,over?0xffe08a:PRISM,true); Sfx.zap();
+    this.vfxHitRing(this.player.x,this.player.y,over?0xffe08a:PRISM,true); Sfx.beam();
   }
   // ❄️ Mint active cast: สะบัดเกล็ดน้ำแข็งกระเด็นออกWaitบทิศ (เจาะ+แช่) · คู่กับเกล็ดโคจรใน tickCharSignature
   // ❄️ Frost Lance (Shatter Lance) — ชาร์จสั้น ๆ พุ่งหอกเจาะทะลุ แล้ว "shatters into ice shards" กระจายที่ปลายทาง (แบบลูกซอง)
@@ -7932,7 +7953,7 @@ class Game extends Phaser.Scene {
     if(!v)return;
     v.body.setAllowGravity(false); this.camWorld(v); this.showPickupCue(v,0xff5a6e,1.40); if(this.iso)v.setDepth(Math.max(80000,v.y));
     this.tweens.add({targets:v,y:y-10,duration:540,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectVac(player,v){ if(!v.active)return; this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
+  collectVac(player,v){ if(!v.active)return; Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
     Sfx.heal(); this.burst(v.x,v.y,0xff5a6e); this.showBanner('🧲 Magnet!','Vacuum all EXP orbs on screen',1200);
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }
@@ -8076,7 +8097,7 @@ class Game extends Phaser.Scene {
   // Endgame drop = โหมด endgame (Boss Rush/Endless/Zone Mods) และจบเนื้อเรื่องแล้วเท่านั้น
   endgameDropActive(){ return storyComplete()&&(!!this.riftMode||!!this.bossRush||!!this.endlessMode||((this._activeZoneMods||[]).length>0)); }
   endgameDepth(){ return (this._pinnacleRun?24:0)+(this.riftMode?(this._riftTier||1)*3:0)+(this._activeZoneMods||[]).length*4+(this.endlessMode?(this.endlessCycle||0)*2:0)+(this.bossRush?(this._rushPos||0)*2:0); }
-  grantGear(tier,opts={}){ const inPlay=this.state==='play'||(this.state!=='menu'&&!opts.gacha&&this.endgameDropActive()),sourceStage=inPlay?this.stageIndex:rewardSourceStage();
+  grantGear(tier,opts={}){ if(tier==='legend')Sfx.legend(); const inPlay=this.state==='play'||(this.state!=='menu'&&!opts.gacha&&this.endgameDropActive()),sourceStage=inPlay?this.stageIndex:rewardSourceStage();
     // v4.32: gacha เลือก base item level ได้ (opts.itemLevel) → chapter ตาม iLv นั้น · in-play/menu ใช้ stage เดิม
     const gachaLv=opts.gacha?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||1))):0,eg=inPlay&&this.endgameDropActive(),
       chapter=opts.gacha?itemChapterFromLevel(gachaLv):eg?(Math.random()<0.5?4:5):itemChapterForStage(sourceStage);
