@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.11.0';
+const GAME_VERSION = '5.12.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.12.0', date:'2026-09-25', title:'📦 Miniboss chest drop', items:['The miniboss chest now crashes down from the sky and shines a pillar of light you can spot from afar']},
   { v:'5.11.0', date:'2026-09-25', title:'🎨 Colour-coded card highlights', items:['Every level-up card now has a big highlight line: green = stat boost, red = drawback, purple = mutation, gold = evolution, blue = build path, orange = infusion, pink = relic']},
   { v:'5.10.0', date:'2026-09-25', title:'❄️ Mint Chill stacks', items:['Mint’s lances no longer freeze on every hit — each hit adds Chill (slow), and 4 stacks within 2.5s freeze the enemy']},
   { v:'5.9.0', date:'2026-09-25', title:'🌬️ Mint Gale + slower power spikes', items:['Mint’s unique is now Mint Gale: a burst of wind speed that shoves nearby enemies. Build Path, Infusion, Mutation and Evolution cards now arrive a little later']},
@@ -1669,6 +1670,12 @@ const BASIC_PATHS={
                 {id:'p_swift',name:'Swift Mirror',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% beam cooldown per rank'}]}]
 };
 // 🍯 Flavor Infusion (v4.96) — เลเวล 10 เลือกธาตุรสชาติ 1 ใน 3 (สุ่มจาก 4) · แลกดาเมจตรงเล็กน้อยกับเอฟเฟกต์ติดเป้า
+// v5.12 ระดับกล่องมินิบอส (สีเสาแสง) · v5.13 ผูกกับผลงานตอนสู้
+const MINI_CHEST_TIERS={
+  bronze:{id:'bronze',name:'Bronze',emoji:'🟦',color:0x7fd0ff,rank:0},
+  silver:{id:'silver',name:'Silver',emoji:'🟪',color:0xc98bff,rank:1},
+  gold:{id:'gold',name:'Gold',emoji:'🟨',color:0xffd166,rank:2},
+};
 const FLAVOR_INFUSIONS=[
   {id:'spicy',name:'Spicy Infusion',emoji:'🌶️',color:0xff5a3d,direct:0.85,desc:'×0.85 hit damage · hits Burn for 30% of the hit over 2s'},
   {id:'sour',name:'Sour Infusion',emoji:'🍋',color:0xe8e04a,direct:0.9,desc:'×0.9 hit damage · hits make enemies take +12% damage for 3s'},
@@ -7982,7 +7989,7 @@ class Game extends Phaser.Scene {
     o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
     o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
   }
-  hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam','_curIcon']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
+  hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam','_curIcon','_pillar','_pillarCore']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
   // ลำแสงเล็ก ๆ ชี้จุดที่ไอเทม/currency ตก (มองเห็นง่ายขึ้น)
   spawnDropBeam(o,color){ if(!o)return; const beam=this.camWorld(this.add.image(o.x,o.y-2,'vfx_glow').setTint(color).setDepth((o.depth||80000)-1).setAlpha(0.5).setBlendMode(Phaser.BlendModes.ADD));
     beam.setDisplaySize(16,120); o._dropBeam=beam;
@@ -8124,8 +8131,30 @@ class Game extends Phaser.Scene {
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
     if(!c)return;
-    c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c); this.showPickupCue(c,kind==='mini'?0xd58cff:kind==='pick'?0x66e0ff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
+    c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c);
+    if(kind==='mini'){ this.miniChestDrop(c,x,y); return; }
+    this.showPickupCue(c,kind==='pick'?0x66e0ff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
     this.tweens.add({targets:c,y:y-12,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+  // v5.12: กล่องมินิบอสหล่นจากฟ้า → กระแทกพื้น (จอสั่น+ฝุ่น) → เสาแสงสีตามระดับกล่อง มองเห็นจากไกล
+  miniChestDrop(c,x,y){
+    const T=MINI_CHEST_TIERS[c._tier||'bronze']||MINI_CHEST_TIERS.bronze;
+    c.body.enable=false; c.setPosition(x,y-320).setAlpha(0.2).setDepth(90000); c.setScale(1.42*36/(c.width||36));
+    const shadow=this.camWorld(this.add.ellipse(x,y+10,20,8,0x000000,0.35).setDepth(79970));
+    this.tweens.add({targets:shadow,width:64,height:22,duration:460,ease:'Quad.in'});
+    this.tweens.add({targets:c,y,alpha:1,duration:460,ease:'Quad.in',onComplete:()=>{ if(!c.active){shadow.destroy();return;}
+      shadow.destroy(); this.screenShake(220,0.012); if(Sfx.boom)Sfx.boom(); this.burst(x,y,T.color);
+      for(let k=0;k<2;k++){const r=this.camWorld(this.add.ellipse(x,y+8,30,12,0xe8dcc8,0.7).setDepth(79975));this.tweens.add({targets:r,width:170+k*60,height:52+k*18,alpha:0,duration:420+k*120,ease:'Cubic.out',onComplete:()=>r.destroy()});}
+      this.tweens.add({targets:c,scaleY:c.scaleY*0.72,scaleX:c.scaleX*1.25,yoyo:true,duration:110,onComplete:()=>{ if(!c.active)return;
+        c.body.enable=true; this.showPickupCue(c,T.color,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
+        c._pillar=this.camWorld(this.add.rectangle(x,y+6,46,560,T.color,0.3).setOrigin(0.5,1).setBlendMode(Phaser.BlendModes.ADD).setDepth(79960));
+        c._pillarCore=this.camWorld(this.add.rectangle(x,y+6,10,560,0xffffff,0.22).setOrigin(0.5,1).setBlendMode(Phaser.BlendModes.ADD).setDepth(79961));
+        c._pillar.scaleY=0;c._pillarCore.scaleY=0;
+        this.tweens.add({targets:[c._pillar,c._pillarCore],scaleY:1,duration:260,ease:'Cubic.out'});
+        this.tweens.add({targets:c._pillar,alpha:{from:0.2,to:0.42},scaleX:{from:0.85,to:1.2},yoyo:true,repeat:-1,duration:520,delay:260});
+        this.tweens.add({targets:c,y:y-10,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+        this.showBanner(T.emoji+' '+T.name+' Chest','Walk into the light to open it',1400); }});
+    }});
+  }
   collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); this.hidePickupCue(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
