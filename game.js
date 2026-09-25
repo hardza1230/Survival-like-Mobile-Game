@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.13.0';
+const GAME_VERSION = '5.14.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.14.0', date:'2026-09-25', title:'🎡 Prize wheel', items:['Opening a miniboss chest spins a prize wheel — lights race around 8 prizes, slow down and land on your reward, which grows into the centre. Jackpot possible!']},
   { v:'5.13.0', date:'2026-09-25', title:'🏅 Chest tiers', items:['Miniboss chests are Bronze, Silver or Gold depending on how fast you won and how few hits you took (Hell difficulty adds a tier). Better chests give bonus Sugar and currency']},
   { v:'5.12.0', date:'2026-09-25', title:'📦 Miniboss chest drop', items:['The miniboss chest now crashes down from the sky and shines a pillar of light you can spot from afar']},
   { v:'5.11.0', date:'2026-09-25', title:'🎨 Colour-coded card highlights', items:['Every level-up card now has a big highlight line: green = stat boost, red = drawback, purple = mutation, gold = evolution, blue = build path, orange = infusion, pink = relic']},
@@ -8157,6 +8158,66 @@ class Game extends Phaser.Scene {
     else if(b.sugar>0)this.showBanner('🍬 +'+b.sugar,'Chest bonus',1200);
     return b;
   }
+  // v5.14 วงล้อจับรางวัล: ของรางวัล 8 ช่องเรียงเป็นวง · ไฟวิ่งกระพริบช่องนั้นทีช่องนี้ทีเร็ว ๆ แล้วช้าลงจนหยุดที่ของที่ได้ → ของที่ได้โตขึ้นกลางจอ
+  miniPrizePool(tier){
+    const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.round(n*(1+si*0.3)*dr);
+    return [
+      {id:'sugarS',emoji:'🍬',name:'Sugar +'+S(25),w:tier==='gold'?4:10,color:0xff9dc4,give:()=>this.addRunSugar(S(25))},
+      {id:'sugarM',emoji:'🍭',name:'Sugar +'+S(60),w:7,color:0xff7fb0,give:()=>this.addRunSugar(S(60))},
+      {id:'sugarL',emoji:'🎂',name:'Sugar +'+S(130),w:tier==='bronze'?2:4,color:0xffb347,give:()=>this.addRunSugar(S(130))},
+      {id:'cur1',emoji:'💠',name:'Currency ×1',w:8,color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Prize')},
+      {id:'cur3',emoji:'💎',name:'Currency ×3',w:tier==='bronze'?2:4,color:0x62b7ff,give:()=>this.grantCurrencyReward(3,this.currencyTierFor(),'Prize')},
+      {id:'heal',emoji:'❤️',name:'Heal 40%',w:6,color:0xff6f9d,give:()=>{const p=this.player,a=Math.round(p.maxhp*0.4);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);}},
+      {id:'card',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
+      {id:'jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
+    ];
+  }
+  addRunSugar(n){ this.sugarStage+=n;this.sugarRun+=n;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🍬 +'+n,'Prize',1100); }
+  openPrizeWheel(tier,done){
+    if(this.state==='rolling'){done&&done();return;}
+    const T=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,pool=this.miniPrizePool(tier);
+    let tw=0;pool.forEach(p=>tw+=p.w);let r=Math.random()*tw,winIdx=0;for(let i=0;i<pool.length;i++){r-=pool[i].w;if(r<=0){winIdx=i;break;}}
+    this._prevRollState=this.state;this.state='rolling';this.physics.pause();
+    const w=this.W,h=this.H,cx=w/2,cy=h*0.47,R=Math.min(w*0.36,150),n=pool.length;
+    const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
+    const bg=this.add.rectangle(0,0,w,h,0x0b0714,0.9).setOrigin(0);
+    const rays=this.add.image(cx,cy,'vfx_glow').setScale(2.4).setAlpha(0.3).setTint(T.color).setBlendMode(Phaser.BlendModes.ADD);
+    this.tweens.add({targets:rays,rotation:TAU,duration:4200,repeat:-1});
+    const ring=this.add.graphics();ring.lineStyle(3,T.color,0.5);ring.strokeCircle(cx,cy,R);
+    const ttl=this.add.text(cx,cy-R-70,T.emoji+' '+T.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
+    const hint=this.add.text(cx,cy+R+62,'Spinning…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#c7bdd6'}).setOrigin(0.5);
+    const center=this.add.text(cx,cy,'🎁',{fontSize:'56px'}).setOrigin(0.5);
+    this.tweens.add({targets:center,angle:{from:-8,to:8},yoyo:true,repeat:-1,duration:120});
+    cont.add([bg,rays,ring,ttl,hint,center]);
+    const slots=pool.map((p,i)=>{const a=-Math.PI/2+i/n*TAU,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;
+      const g=this.add.graphics();const lab=this.add.text(x,y,p.emoji,{fontSize:'30px'}).setOrigin(0.5);cont.add([g,lab]);
+      const draw=(on)=>{g.clear();g.fillStyle(on?p.color:0x2a1f38,on?0.95:0.92);g.fillCircle(x,y,on?31:27);g.lineStyle(on?4:2,on?0xffffff:p.color,on?1:0.7);g.strokeCircle(x,y,on?31:27);};
+      draw(false);return {x,y,g,lab,draw,p};});
+    // ไฟวิ่ง: เร็วมากก่อนแล้วค่อยช้าลง ต้องจบที่ winIdx พอดี
+    const laps=3,total=laps*n+winIdx+1-0,steps=[];for(let k=0;k<total;k++){const t=k/(total-1);steps.push(38+Math.pow(t,3.2)*360);}
+    let cur=-1,k=0;
+    const hop=()=>{ if(cur>=0){slots[cur].draw(false);slots[cur].lab.setScale(1);}
+      cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(1.3);if(Sfx.select)Sfx.select();
+      k++;if(k>=total){this.time.delayedCall(260,()=>land());return;}
+      this.time.delayedCall(steps[k],hop); };
+    const land=()=>{ const sl=slots[winIdx],p=sl.p;
+      this.tweens.killTweensOf(center);center.setVisible(false);
+      for(let t=0;t<6;t++)this.time.delayedCall(t*90,()=>{sl.draw(t%2===0);});
+      const big=this.add.text(sl.x,sl.y,p.emoji,{fontSize:'30px'}).setOrigin(0.5);cont.add(big);
+      this.tweens.add({targets:big,x:cx,y:cy,scale:3.2,duration:520,ease:'Back.out'});
+      const glow=this.add.image(cx,cy,'vfx_glow').setScale(0.2).setTint(p.color).setBlendMode(Phaser.BlendModes.ADD);cont.addAt(glow,2);
+      this.tweens.add({targets:glow,scale:2.2,alpha:{from:1,to:0.55},duration:520,ease:'Cubic.out'});
+      hint.setText(p.name).setFontSize(p.jackpot?'26px':'20px').setColor('#'+p.color.toString(16).padStart(6,'0'));
+      this.tweens.add({targets:hint,scale:{from:0.5,to:1},duration:320,ease:'Back.out'});
+      for(let i=0;i<(p.jackpot?28:14);i++){const a=i/(p.jackpot?28:14)*TAU,sp=this.add.circle(cx,cy,p.jackpot?6:4,p.color,1);cont.add(sp);
+        this.tweens.add({targets:sp,x:cx+Math.cos(a)*(120+Math.random()*80),y:cy+Math.sin(a)*(120+Math.random()*80),alpha:0,duration:700,ease:'Cubic.out'});}
+      this.screenFlash(p.color,p.jackpot?0.6:0.35,320);if(p.jackpot){this.screenShake(400,0.012);if(Sfx.legend)Sfx.legend();}else if(Sfx.clear)Sfx.clear();
+      this.time.delayedCall(p.jackpot?1700:1250,()=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);
+        this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
+        p.give(); done&&done(); if(this._prizeLevelUp){this._prizeLevelUp=false;if(this.state==='play')this.openLevelUp();} }}); });
+    };
+    this.time.delayedCall(250,hop);
+  }
   miniChestDrop(c,x,y){
     const T=MINI_CHEST_TIERS[c._tier||'bronze']||MINI_CHEST_TIERS.bronze;
     c.body.enable=false; c.setPosition(x,y-320).setAlpha(0.2).setDepth(90000); c.setScale(1.42*36/(c.width||36));
@@ -8180,7 +8241,7 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
-    if(kind==='mini'){ this.grantMiniChestBonus(c._tier||'bronze'); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box');return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,()=>{ this.grantMiniChestBonus(tier); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
     if(kind==='pick'&&Math.random()<0.30&&this.offerRelic())return;   // 🔮 กล่องลับ 30% = Relic
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
