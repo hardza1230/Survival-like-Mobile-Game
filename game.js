@@ -37,9 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.89.0';
+const GAME_VERSION = '4.89.1';
+// v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
+const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.89.1', date:'2026-09-25', title:'💢 Tougher hits', items:['Shorter invulnerability after taking damage (×0.6): enemies and projectiles can hit you more often'] },
   { v:'4.89.0', date:'2026-09-25', title:'⚡ Taro Storm Charge', items:['Taro lightning no longer locks onto bosses','Every lightning hit on a regular enemy stores ⚡1 charge','At 10 charges a Judgment Bolt strikes the boss or miniboss for heavy damage — clear the adds to power up'] },
   { v:'4.88.2', date:'2026-09-25', title:'↺ Talent reset', items:['Character Talents page has a Reset button: pay Sugar to refund every Talent Point (tap twice to confirm)','Cost grows with points spent: 🍬80 + 40 per point'] },
   { v:'4.88.1', date:'2026-09-25', title:'⚡ Taro vs bosses', items:['Taro’s lightning now locks onto bosses and minibosses first','Spare strikes hit the boss again instead of fizzling, and bolts deal +45% to bosses'] },
@@ -7847,7 +7850,7 @@ class Game extends Phaser.Scene {
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
-    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
+    this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
@@ -7866,7 +7869,7 @@ class Game extends Phaser.Scene {
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
     dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
     this._noteHit(this.mode==='boss'?'boss':this.mode==='mini'?'mini':'shot',dmg);
-    this.player.iframe=ix||0.5; this.player.hp-=dmg; this.onBonusHurt(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(150,0.009);
+    this.player.iframe=(ix||0.5)*HURT_IFRAME_MUL; this.player.hp-=dmg; this.onBonusHurt(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
     this.vfxHurtFlash();
     this.vfxHitRing(this.player.x,this.player.y,0xff5a6e,false);

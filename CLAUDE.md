@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.89.1 — โดนตีถี่ขึ้น)
+- **v4.89.1 (เจ้าของ: อยากให้ player โดนตีถี่ขึ้น):** global `HURT_IFRAME_MUL=0.6` คูณ iframe หลังโดนตีใน touchEnemy (0.6→0.36s) และ hurtPlayer (default 0.5→0.3s, ค่า ix ที่ส่งมาก็คูณ) · iframe จาก dash/revive/shield ไม่แตะ · verified headless 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.89.0 — Taro Storm Charge)
 - **v4.89.0 (เจ้าของ: Taro เก่งเกินหลัง v4.88.1 → เลือก ข. เก็บ stack):** ยกเลิกล็อกบอส/ฟาดซ้ำ/×1.45 ของ v4.88.1 · ฟ้าผ่าเล็งตัวใกล้สุดตามเดิม · ทุกฮิต (รวม chain) ใส่มอนที่ไม่ใช่บอส/มินิ = ⚡+1 (`this._taroCharge`, reset ใน resetRelics) · ครบ 10 + มีบอส/มินิ → `taroChargeGain` Judgment Bolt ดาเมจ ×6 ของ strike (ไม่มีบอส = เก็บเต็มค้างไว้) · verified headless 0 error · ถ้ายังแรง/อ่อน จูน MAX หรือ ×6
 
