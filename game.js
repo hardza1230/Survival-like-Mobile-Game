@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.10.0';
+const GAME_VERSION = '5.11.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.11.0', date:'2026-09-25', title:'🎨 Colour-coded card highlights', items:['Every level-up card now has a big highlight line: green = stat boost, red = drawback, purple = mutation, gold = evolution, blue = build path, orange = infusion, pink = relic']},
   { v:'5.10.0', date:'2026-09-25', title:'❄️ Mint Chill stacks', items:['Mint’s lances no longer freeze on every hit — each hit adds Chill (slow), and 4 stacks within 2.5s freeze the enemy']},
   { v:'5.9.0', date:'2026-09-25', title:'🌬️ Mint Gale + slower power spikes', items:['Mint’s unique is now Mint Gale: a burst of wind speed that shoves nearby enemies. Build Path, Infusion, Mutation and Evolution cards now arrive a little later']},
   { v:'5.8.0', date:'2026-09-25', title:'💢 Miniboss battle music', items:['Every miniboss fight now has its own faster, heavier theme based on its stage']},
@@ -6627,7 +6628,21 @@ class Game extends Phaser.Scene {
 
   /* ---------- STARTING ATTACK ---------- */
   // ตัวเลขหลักจากคำอธิบาย (+8% damage, +2 simultaneous strikes) → โชว์ใหญ่แทนบรรทัด role ให้อ่านปราดเดียว
-  _cardHeadline(desc){ if(!desc)return null; const m=String(desc).match(/[+\-−×]\s?\d+(?:\.\d+)?%?(?:\s+[A-Za-z][A-Za-z/&]*){0,2}/); return m?m[0].replace(/\s+(per|and|to|of|for|on|in)$/,''):null; }
+  // v5.11: ทุกการ์ดมีบรรทัดเน้นอ่านเร็ว · สีบอกชนิด: เขียว=ตัวเลขบัฟ · แดง=ข้อเสีย · ม่วง=Mutation · ทอง=Evolution · ฟ้า=Build Path · ส้ม=Infusion · ชมพู=Relic/ฟื้น · เหลือง=อื่น ๆ
+  _cardHeadline(o){
+    if(!o)return null;const desc=String(o.desc||'').replace(/\s*\[[^\]]*\]\s*$/,'').replace(/\s+·\s+\S+\s(Precision|Swarm|Guard|Tempo)\b.*$/,'').replace(/\s+🔗.*$/,''),kind=String(o.kind||'');
+    const clause=(last)=>{const parts=desc.split(/\s[·—]\s|\.(?=\s|$)|[;(]|\n/).map(x=>x.trim()).filter(Boolean);let c=(last?(parts[1]||parts[0]):parts[0])||'';if(c.length>34)c=c.slice(0,32).replace(/\s+\S*$/,'')+'…';return c;};
+    const num=desc.match(/[+\-−×]\s?\d+(?:\.\d+)?%?(?:\s+[A-Za-z][A-Za-z/&]*){0,2}/);
+    const G={t:'',c:'#8ff0b0',s:'#0c2a1a'};
+    if(o.evolution)return {t:'✨ '+clause(),c:'#ffd76a',s:'#3a2a00'};
+    if(o.mutation)return {t:'🧬 '+clause(),c:'#d9a8ff',s:'#2a1440'};
+    if(kind==='Build Path')return {t:'🛤 '+clause(),c:'#8fe3ff',s:'#0b2633'};
+    if(kind==='Flavor Infusion')return {t:clause(true),c:'#ffc27a',s:'#3a1f00'};
+    if(/relic/i.test(kind)||this._relicPick)return {t:'🔮 '+clause(),c:'#ffb3e0',s:'#3a0f2a'};
+    if(o.type==='heal')return {t:num?num[0]:clause(),c:'#ff9dbb',s:'#3a0f1a'};
+    if(num){const t=num[0].replace(/\s+(per|and|to|of|for|on|in)$/,''),bad=/damage taken/i.test(desc.slice(num.index,num.index+30))&&/^[+]/.test(t);return {t,c:bad?'#ff9a9a':G.c,s:bad?'#3a0c0c':G.s};}
+    const c=clause();return c?{t:c,c:'#ffe9a8',s:'#2e2410'}:null;
+  }
   drawReadableChoiceCard(group,o,x,y,w,h,options={}){
     const type=o.type||'atk';let color=type==='basic'?(o.color||0xff8fb5):type==='heal'?0xff6f9d:type==='util'?0xffd166:type==='uni'?(o.color||0xff76a8):type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);
     const rar=o.rarity; if(rar)color=rar.color;   // สีเฟรม = ความหายาก (สัญญาณอ่านเร็ว)
@@ -6644,14 +6659,14 @@ class Game extends Phaser.Scene {
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
     const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
-    let icon,badgeT,nameT,roleT,descT,starsT,ctaT; const hl=options.starting?null:this._cardHeadline(o.desc);
+    let icon,badgeT,nameT,roleT,descT,starsT,ctaT; const hl=options.starting?null:this._cardHeadline(o);
     if(wide){
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
       const halo=this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
       nameT=this.add.text(textX,y+29,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
-      roleT=hl?this.add.text(textX,y+51,hl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8ff0b0',stroke:'#0c2a1a',strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       descT=this.add.text(textX,y+75,o.desc||'',{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
       starsT=this.add.text(textX,y+h-20,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
@@ -6663,7 +6678,7 @@ class Game extends Phaser.Scene {
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
-      roleT=hl?this.add.text(x+w/2,y+h*0.505,hl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#8ff0b0',stroke:'#0c2a1a',strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       descT=this.add.text(x+w/2,y+h*0.60,o.desc||'',{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
       starsT=this.add.text(x+w/2,y+h*0.87,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
