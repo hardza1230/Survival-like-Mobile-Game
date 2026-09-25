@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.87.0 — บอสดุขึ้น (7+1+2))
+- **v4.87.0 (เจ้าของเลือก 7+1+2):** `bossThink` เป็น wrapper ของ `_bossThinkCore` · (7) `bossAggro(b)` คูณการลด atkCd บอส ×1.45 / มินิ ×1.3 · HP<30% ×1.2 + `_enraged` (spd×1.12, banner ENRAGED) · (1) ตรวจว่าเพิ่งใช้ท่า (atkCd ก่อน≤0.05 หลัง>0.4) → โอกาส 30%/เฟส2 45%/คลั่ง 60% ตามด้วย `bossFollowUp` 0.5-0.8s: ยิงชุดดักทาง / hazard ดักทาง / chargeTelegraph · (2) `leadAim(x,y,speed)` เล็งตาม velocity ผู้เล่น · reset `_enraged/_comboLock` ในจุด spawn บอส/มินิ · verified headless stage 4: 5 combo ใน ~25s, enrage ติด, 0 error · **ยังไม่จูนบนมือถือ — ถ้ายากไปลด bossAggro**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.86.2 — Juicy Burst แทน Plump Seeds)
 - **v4.86.2 (เจ้าของ: ขนาดใหญ่ไม่ช่วยความรู้สึก):** Momo upgrade id `size` (คง id/ไอคอน) → **Juicy Burst** `b.seedPop`=rank · hitEnemy ทางปกติ: เมล็ดแตกกระเซ็น r=46+14·rank ดาเมจ ×(0.25+0.12·rank) ใส่ศัตรูรอบข้าง · เลิกขยาย scale เมล็ด · **รอเจ้าของเลือกแนวทางบอสเก่งขึ้น**
 

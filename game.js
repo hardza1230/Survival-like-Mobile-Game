@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.86.2';
+const GAME_VERSION = '4.87.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.87.0', date:'2026-09-25', title:'💢 Fiercer bosses', items:['Bosses and minibosses attack more often','Bosses chain combos: after a big move they often follow up with a quick shot, trap or dash','Follow-up shots and traps aim where you are running, not where you stand','Below 30% HP bosses become ENRAGED — faster attacks and more combos'] },
   { v:'4.86.2', date:'2026-09-25', title:'💥 Juicy Burst', items:['Plump Seeds is replaced by Juicy Burst: Strawberry seeds pop on hit and splash nearby enemies (bigger, stronger splash per rank)'] },
   { v:'4.86.1', date:'2026-09-25', title:'🍓 Card fixes', items:['Endless stat cards show a stack count instead of a long row of stars','Plump Seeds now makes Strawberry seeds visibly bigger with a larger hitbox (+35% per rank)'] },
   { v:'4.86.0', date:'2026-09-25', title:'📜 Endgame on the map', items:['Chapter select now has an Endgame card after Chapter 3','Tap it to open Recipe Maps (unlocks after finishing the story)'] },
@@ -5890,7 +5891,7 @@ class Game extends Phaser.Scene {
     b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;
-    b.atkCd=0.85; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
+    b.atkCd=0.85; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
     if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
@@ -5953,7 +5954,7 @@ class Game extends Phaser.Scene {
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.myceliumBehemoth=this.stageIndex===6;b.hornetQueen=this.stageIndex===7;b.chronobloom=this.stageIndex===8;b.trueRootmother=this.stageIndex===9;
-    b.atkCd=0.8; b.phase2=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
+    b.atkCd=0.8; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
     if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
@@ -8250,7 +8251,19 @@ class Game extends Phaser.Scene {
     }
   }
 
-  bossThink(b,dt){
+  // v4.87: บอสดุขึ้น — ตัวเร่งรอบโจมตี (ทุกบอส/มินิ) + คลั่งเมื่อ HP<30%
+  bossAggro(b){ let m=b.isBoss?1.45:1.3; if(b.hp<b.maxhp*0.3){ m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED','It attacks faster — keep moving!',1200); } } return m; }
+  // เล็งดักทาง: ยิงไปตำแหน่งที่ผู้เล่นกำลังจะไป (ไม่ใช่ที่ยืนอยู่)
+  leadAim(x,y,speed){ const p=this.player,v=p.body?p.body.velocity:{x:0,y:0},t=Math.min(0.9,this.dist(x,y,p.x,p.y)/Math.max(1,speed)); return Math.atan2(p.y+v.y*t-y,p.x+v.x*t-x); }
+  // คอมโบต่อท้าย: หลังบอสใช้ท่า มีโอกาสตามด้วยท่าสั้น (ยิงดักทาง / วงไล่ / พุ่งสั้น)
+  bossFollowUp(b){ if(!b.active||this.state!=='play'||(b._phaseInvuln||0)>0||b._phaseGateLocked)return;
+    const d=Math.max(6,Math.round((b.dmg||14)*0.55)),hot=b.hp<b.maxhp*0.3,r=Math.random();
+    if(r<0.45){ const n=hot?5:3,sp=260; for(let i=0;i<n;i++)this.time.delayedCall(i*110,()=>{ if(!b.active||this.state!=='play')return; const a=this.leadAim(b.x,b.y,sp)+(i-(n-1)/2)*0.07; this.foeShot(b.x,b.y,a,sp,d,0xffd166,1.0); }); }
+    else if(r<0.75){ const p=this.player,v=p.body?p.body.velocity:{x:0,y:0}; for(let i=0;i<(hot?3:2);i++)this.spawnHazard(p.x+v.x*(0.45+i*0.3),p.y+v.y*(0.45+i*0.3),60,d,0xff7a5c); }
+    else if(b.isBoss||b.isMini){ this.chargeTelegraph(b,520,640,20); } }
+  bossThink(b,dt){ const before=b.atkCd; this._bossThinkCore(b,dt);
+    if(b.active&&before!==undefined&&before<=0.05&&b.atkCd>0.4&&!b._comboLock){ const ch=b.hp<b.maxhp*0.3?0.6:b.phase2?0.45:0.3; if(Math.random()<ch){ b._comboLock=true; this.time.delayedCall(Phaser.Math.Between(520,780),()=>{ b._comboLock=false; this.bossFollowUp(b); }); } } }
+  _bossThinkCore(b,dt){
     if(!b.visible)b.setVisible(true); if(b.alpha<1)b.setAlpha(1);   // safety: บอสต้องมองเห็นเสมอตอนสู้ (กันค้างล่องหนจาก tween คัตซีน)
     if(!Number.isFinite(b.spd))b.spd=94;   // safety: กัน spd หลุด (undefined→NaN velocity→Position NaN→บอสล่องหน)
     if(!Number.isFinite(b.x)||!Number.isFinite(b.y)){ b.setPosition(this.player.x+140,this.player.y); if(b.body)b.body.reset(b.x,b.y); }   // Positionเสีย → รีเซ็ตข้างผู้เล่น
@@ -8270,7 +8283,7 @@ class Game extends Phaser.Scene {
     if(b._hungerOrbs){b._hungerSpin=(b._hungerSpin||0)+dt*(b.phase4?2.35:b.phase3?1.82:1.18);b._hungerOrbs.forEach((o,i)=>{if(!o||!o.active)return;const a=b._hungerSpin+i*TAU/b._hungerOrbs.length,r=(b.phase4?174:b.phase3?151:b.phase2?132:119);o.setPosition(b.x+Math.cos(a)*r,b.y+Math.sin(a)*r*0.55).setDepth(b.y+(Math.sin(a)>0?5:-4)).setScale((b.phase4?0.50:0.36)+(Math.sin(a)+1)*0.09).setAlpha(0.62+Math.abs(Math.sin(a))*0.34);});}
     if(this.tickBossPhaseTransition(b,dt))return;
     if(b.frozen>0)return;
-    if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt/(b.rageCdMul||1);
+    if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt*this.bossAggro(b)/(b.rageCdMul||1);
     if(b.isBoss&&this.stageIndex===4){const f=b.hp/b.maxhp;
       if(!b.phase2&&f<=0.72){b.phase2=true;this.beginBossPhaseTransition(b,1.8,0xff3f58);this.greatHungerMetamorph(b,2,0xff3f58);b.spd*=1.16;b.atkCd=0.55;this.showBanner('👑 Phase 2 · Crown Shatters','The first seal breaks — the Sovereign’s claws and blood-furnace awaken!',1900);}
       else if(!b.phase3&&f<=0.40){b.phase3=true;this.beginBossPhaseTransition(b,2.0,0xd95cff);this.greatHungerMetamorph(b,3,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 Phase 3 · True Form of Hunger','All six eyes open — the void’s pull is swallowing the field!',2050);}
