@@ -499,6 +499,7 @@
 - **ปุ่มเร่งเวลา x2/x3 เร่งแค่โจมตี (v1.9.x):** Arcade `physics.world.timeScale` **กลับด้าน** (ค่ามาก=step ห่าง=ช้าลง) การเคลื่อนที่ทุกอย่างใช้ velocity=physics → `setGameSpeed` ตั้ง `=s` ทำให้ช้าลง (ส่วน time/tween/dt เร็วขึ้น = เร่งแค่ timer/โจมตี) → แก้เป็น **`=1/s`** · hitStop ก็กลับด้าน (0.05=เร็ว 20x ไม่ freeze) → ใช้ค่ามาก (12) = freeze จริง
 
 ## 5. ถัดไป (อัปเดต v4.71 — เป้าหมายเจ้าของ: ทำเกมให้เสร็จ ~95% ถึง endgame ก่อน · Play Store/รายได้ พักไว้)
+- **📋 แผนงานแบ่ง commit อยู่ที่ `docs/COMMIT_ROADMAP.md` — ทำทีละ commit ตามลำดับ และอัปเดตสถานะ ⬜/✅ ในไฟล์นั้นทุกครั้ง**
 1. ~~Endgame gate~~ ✅ v4.72 ปลดหลังจบเนื้อเรื่อง
 2. **Chapter 3** ✅ v4.73 เล่นได้ (placeholder) — เหลือ: อาร์ตจริงจาก AI อีกตัว, story/epilogue, Bestiary, กลไกบอสเฉพาะ
 3. Endgame ✅ v4.74 Mochi Rift + Pinnacle · ไอเดียเสริมที่ยังไม่ทำ: ห้องสุ่มกลางด่าน, Mochi Pet, Ascendancy สายอาชีพ, Weapon Fusion, Season
