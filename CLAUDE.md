@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.83.0 — Recipe Maps R9: แทนที่ Rift)
+- **v4.83.0 (Phase R · R9):** ลบแถว 🌀 Mochi Rift ออกจาก Activities · route 'rift' → `buildRecipes` (buildRift/rollRiftPreview ยังอยู่เป็น dead code; riftMode ยังใช้ภายในเป็นโครงตัวคูณของ recipe) · `migrateRiftToRecipes()` (ครั้งเดียว `Save.data.riftMigrated`) แจก recipe 2 ใบ Tier = riftBest-1 · ปุ่ม ✦ Pinnacle Boss ย้ายมาหน้า Recipe (`startPinnacle()` ใช้ `riftKeys` เดิม 3 ดอก · 4 🧩 = 1 🗝️) · หน้าผล Pinnacle กลับ 'recipes' · Boss Rush ไม่แตะ · verified headless: riftBest 7 → 2 ใบ T6 ไม่ซ้ำ, Pinnacle เข้ารันและหักกุญแจ, screenshot ok, 0 error · **ถัดไป R10 balance pass**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.82.0 — Recipe Maps R8: Unique gear)
 - **v4.82.0 (Phase R · R8):** `UNIQUE_GEAR` 5 ชิ้น (push เข้า `GEAR[slot]` ก่อนสร้าง GEAR_ALL · tier 'legend' + `unique:true` + `themes:[3 ธีม]`) · ถูกตัดออกจาก `gearPool` และ pool legend ของ Pinnacle → ได้เฉพาะดรอปบอส Recipe · 🥖 Glass Rolling Pin (weapon dmg×1.8, `_uqGlass`=0.55 คูณ maxhp ตอน `clampPlayerStats` = หลังของทุกชิ้น) · 💍 Ring of Endless Hunger (lifesteal +3, `_uqNoRegen` → regen 0) · 👟 Sugar Rush Boots (spd×1.3 dmg×1.15 dmgTaken×1.2) · 📿 Echo Locket (crit +8%, `_uqCritBurst` 0.45 → คริระเบิด r80 ใน `damage()` กัน recursion `_uqBursting`) · 🛡️ Candy Shell Plate (dmgTaken×0.65 dmg×0.8) · flag reset ใน applyMeta · ดรอปใน `finishRecipeBoss`: `uniqueForTheme(theme)` โอกาส 5%+tier×1%+rare 5%+เร็ว 3% · iLv 70+tier×2 · `Save.data.uniqueFound` · Atlas board โชว์ emoji unique/`?` + toast ชื่อ · verified headless: ดรอปได้, pool ปกติไม่มี unique, glass maxhp 136→75, คริระเบิดโดน 3 ตัว, 0 error · **ถัดไป R9 ย้าย Rift → Recipe + Pinnacle ใช้เศษกุญแจ**
 

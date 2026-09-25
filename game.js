@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.82.0';
+const GAME_VERSION = '4.83.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.83.0', date:'2026-09-25', title:'📜 Recipes replace the Rift', items:['Mochi Rift is retired — Recipe Maps are the main endgame now','Rift progress converts into two recipes at your best Rift tier','The Pinnacle Boss button moved to the Recipe Maps page and still uses 🗝️ keys (4 🧩 fragments = 1 key)','Boss Rush stays as it is'] },
   { v:'4.82.0', date:'2026-09-25', title:'🟣 Unique Gear', items:['5 Unique items that change your build, each with a trade-off','Glass Rolling Pin, Ring of Endless Hunger, Sugar Rush Boots, Echo Locket, Candy Shell Plate','Uniques only drop from recipe bosses of their own themes — higher tiers, Rare recipes and fast clears raise the odds','The Atlas board shows which themes hold a Unique and which you have found'] },
   { v:'4.81.0', date:'2026-09-25', title:'🌳 Atlas Passives', items:['Spend Atlas points on 7 permanent recipe bonuses (Atlas → Passives tab)','Better recipe drops, more rare recipes, faster Hunger, bigger rewards, extra events and a longer speed-bonus window','Free respec any time'] },
   { v:'4.80.0', date:'2026-09-25', title:'🗺 Recipe Atlas', items:['New Atlas board: every stage theme with the highest recipe tier you have cleared','Earn Atlas points: 1 for the first clear of a theme, +1 at Tier 4, 8, 12 and 16','Open it from the Recipe Maps page — Atlas points will power a passive tree next'] },
@@ -1676,8 +1677,7 @@ const HUB_GROUPS = {
     ['achievements','🏆','Achievements','Milestones and Sugar rewards'],
     ['endgame','🌙','Endgame','Ascension · Endless · secret boss'],
     ['bossrush','👑','Boss Rush','Fight every boss you’ve beaten back-to-back'],
-    ['recipes','📜','Recipe Maps','Endgame maps: fill the Hunger Meter, beat the boss, clear fast for bonus'],
-    ['rift','🌀','Mochi Rift','Endgame: random stage + mods · earn keys for the Pinnacle Boss'] ] },
+    ['recipes','📜','Recipe Maps','Endgame maps · Atlas · Uniques · Pinnacle Boss'] ] },
   gMore:{ title:'⚙ More', rows:[
     ['settings','⚙','Settings','Sound, shake, flash and VFX'],
     ['__tutorial','🎓','How to Play','Replay the controls & combat tutorial'] ] },
@@ -3548,7 +3548,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRift(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -3896,16 +3896,22 @@ class Game extends Phaser.Scene {
     else if(cid==='chaos'){r.mods=rollMods(RECIPE_RARITY[rar].mods);}
     else if(cid==='scour'){r.rarity='normal';r.mods=[];}
     Save.save(); Sfx.chest&&Sfx.chest(); this.menuToast('📜 '+RECIPE_RARITY[r.rarity].label+' · '+(r.mods.length?r.mods.map(id=>recipeModDef(id).emoji).join(' '):'no mods'),'#9dff9d'); }
+  // R9: เซฟเก่าที่เคยเล่น Rift → แจก recipe ตาม Tier ที่ไปถึง 1 ครั้ง (กุญแจเดิมใช้เปิด Pinnacle ต่อได้)
+  migrateRiftToRecipes(){ if(Save.data.riftMigrated)return; Save.data.riftMigrated=true; const t=Math.min(RECIPE_TIER_MAX,(Save.data.riftBest||1)-1);
+    if(t>=1){ const bag=this.recipeBag(); for(let i=0;i<2&&bag.length<RECIPE_BAG_MAX;i++)bag.unshift(makeRecipe(t,null,i?'magic':'normal')); Save.data.recipeMaxTier=Math.max(Save.data.recipeMaxTier||1,t); this.menuToast('🌀 Rift progress converted: 2 Tier '+t+' recipes','#9dff9d'); } Save.save(); }
+  startPinnacle(){ const keys=Save.data.riftKeys||0; if(keys<PINNACLE_KEY_COST){this.menuToast('Need '+PINNACLE_KEY_COST+' 🗝️ keys — every '+RECIPE_FRAGS_PER_KEY+' 🧩 fragments from recipe bosses make one','#ff9bb5');return;}
+    Save.data.riftKeys=keys-PINNACLE_KEY_COST; Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); }
   claimFreeRecipe(){ const bag=this.recipeBag(); if(bag.length>=RECIPE_BAG_MAX){this.menuToast('Recipe bag is full ('+RECIPE_BAG_MAX+')','#ff9bb5');return;} const r=makeRecipe(1); bag.unshift(r); Save.save(); this._recipeSel=r.uid; this.menuToast('📜 Free Tier 1 recipe: '+STAGES[r.theme].name,'#9dff9d'); }
   buildRecipes(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Recipe Maps');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,top=(w<=h?100:70);
     const T=(x,y,t,sz,c,st,o)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(o==null?0.5:o,0);this.menu.add(q);return q;};
     if(!Save.endgameUnlocked()){ T(w/2,top+40,'🔒 Finish the story to unlock Recipe Maps',15,'#ff9bb5','bold'); this.menu.setVisible(true); return; }
-    const bag=this.recipeBag();
+    const bag=this.recipeBag(); this.migrateRiftToRecipes();
     T(w/2,top,'Each recipe is a map: a stage theme, a tier and mods.\nHigher tiers are harder and pay more.',11,'#e6dcf0');
     let y=top+38; T(w/2,y,'Bag '+bag.length+'/'+RECIPE_BAG_MAX+'  ·  🧩 '+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+'  ·  🗝️ '+(Save.data.riftKeys||0)+'  ·  Max T'+(Save.data.recipeMaxTier||1),12,'#ffe08a','bold'); y+=24;
-    const hb=(cw-10)/2; this.uiPillBtn(this.menu,cx+hb/2,y+22,hb,44,COLORS.mint,'🎁','Free Tier 1',()=>{this.claimFreeRecipe();this.buildRecipes();}); this.uiPillBtn(this.menu,cx+hb+10+hb/2,y+22,hb,44,COLORS.grape,'🗺','Atlas ('+atlasPoints()+')',()=>{this.menuScreen='atlas';this.buildMenuScreen();}); y+=56;
+    const hb=(cw-10)/2; this.uiPillBtn(this.menu,cx+hb/2,y+22,hb,44,COLORS.mint,'🎁','Free Tier 1',()=>{this.claimFreeRecipe();this.buildRecipes();}); this.uiPillBtn(this.menu,cx+hb+10+hb/2,y+22,hb,44,COLORS.grape,'🗺','Atlas ('+atlasPoints()+')',()=>{this.menuScreen='atlas';this.buildMenuScreen();}); y+=52;
+    const pk=(Save.data.riftKeys||0)>=PINNACLE_KEY_COST; this.uiPillBtn(this.menu,w/2,y+20,Math.min(cw,320),40,pk?0x6b2bd9:0x4a4059,'✦','Pinnacle Boss ('+PINNACLE_KEY_COST+' 🗝️)',()=>this.startPinnacle()); y+=50;
     // รายการ (กริด 3 คอลัมน์ + แบ่งหน้า)
     const cols=3,gap=8,tw=(cw-gap*(cols-1))/cols,th=54,rows=Math.max(2,Math.min(5,Math.floor((h-y-200)/(th+gap)))),per=cols*rows,pages=Math.max(1,Math.ceil(bag.length/per));
     this._recipePage=Math.max(0,Math.min(pages-1,this._recipePage||0));
@@ -4013,7 +4019,7 @@ class Game extends Phaser.Scene {
       this.add.text(w/2,h*0.45,(won?'🌟 '+(label||'Legendary reward')+'\n':'')+'Sugar: +'+sug,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',lineSpacing:6,wordWrap:{width:w-50}}).setOrigin(0.5)];
     const bw=Math.min(240,w-60),by=h*0.66,g=this.add.graphics(); g.fillStyle(COLORS.grape,1); g.fillRoundedRect(w/2-bw/2,by-24,bw,48,15);
     box.push(g,this.add.text(w/2,by,'↩ Back to the Rift',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5));
-    this._overBtns.push({x:w/2-bw/2,y:by-24,w:bw,h:48,fn:()=>{window.__pendingMenu='rift';this.scene.restart();}});
+    this._overBtns.push({x:w/2-bw/2,y:by-24,w:bw,h:48,fn:()=>{window.__pendingMenu='recipes';this.scene.restart();}});
     this.over.add(box); this.over.setVisible(true); }
   _fmtTime(t){ t=Math.max(0,Math.round(t||0)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
   // เข้าบอสถัดไปของ rush (คง build/เลเวลไว้ ไม่ reset loadout)
