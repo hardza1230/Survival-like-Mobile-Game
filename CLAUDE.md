@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.86.1 — แก้การ์ดดาวล้น + Plump Seeds)
+- **v4.86.1 (feedback เจ้าของ+ภาพ):** การ์ด endless (max สูงมาก) วาดดาวล้นการ์ด → ถ้า max>5 โชว์ '★ New'/'★ Stack N' แทน (drawReadableChoiceCard 2 จุด) · Momo `size` (Plump Seeds) เดิม +14%/rank บนเมล็ด scale ~0.13 มองไม่ออก → +35%/rank (hitbox โตตาม setScale) · **ถัดไป A3 Bestiary Ch3**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.86.0 — การ์ด Endgame ในหน้าเลือก Chapter)
 - **v4.86.0 (เจ้าของสั่ง):** `buildChapterSelect` เพิ่มการ์ด 📜 Endgame · Recipe Maps ต่อท้าย Chapter 3 (rows นับ +1) · ปลดเมื่อ `Save.endgameUnlocked()` → แตะ = menuScreen 'recipes' · ล็อก = 'Finish Chapter 3' · verified screenshot 390×844, 0 error · **ถัดไป A3 Bestiary Ch3**
 

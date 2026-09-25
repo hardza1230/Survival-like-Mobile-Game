@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.86.0';
+const GAME_VERSION = '4.86.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.86.1', date:'2026-09-25', title:'🍓 Card fixes', items:['Endless stat cards show a stack count instead of a long row of stars','Plump Seeds now makes Strawberry seeds visibly bigger with a larger hitbox (+35% per rank)'] },
   { v:'4.86.0', date:'2026-09-25', title:'📜 Endgame on the map', items:['Chapter select now has an Endgame card after Chapter 3','Tap it to open Recipe Maps (unlocks after finishing the story)'] },
   { v:'4.85.0', date:'2026-09-25', title:'📖 Chapter 3 story', items:['Chapter 3 now has a story beat before every wave','A story panel introduces each Chapter 3 boss','Every Chapter 3 boss has an epilogue — and The First Planter ends the story of Mochitopia','Chapter 2’s ending now leads into Chapter 3'] },
   { v:'4.84.0', date:'2026-09-25', title:'📜 Recipe balance pass', items:['Fix: recipe bosses now scale with recipe tier and mods (they used to stay at base strength)','Recipe bosses have 30% less base HP so runs stay short','Hunger Meter needs less at high tiers (Tier 16: 246 instead of 310)'] },
@@ -1446,7 +1447,7 @@ const BASIC_ATTACKS = {
     upgrades:[
       {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,desc:'+12% Basic Attack damage per rank'},
       {id:'rate',name:'Mochi Trigger',emoji:'⏩',iconKey:'ic_momo_rate',max:5,desc:'+8% fire rate per rank'},
-      {id:'size',name:'Plump Seeds',emoji:'🔴',iconKey:'ic_momo_size',max:3,desc:'+14% projectile size per rank'},
+      {id:'size',name:'Plump Seeds',emoji:'🔴',iconKey:'ic_momo_size',max:3,desc:'+35% seed size & hitbox per rank'},
       {id:'volley',name:'Sweet Branching',emoji:'🌱',iconKey:'ic_momo_volley',max:3,desc:'+1 seed per volley per rank'}],
     mutations:[
       {id:'ricochet',name:'Heart Ricochet',emoji:'💞',desc:'Seeds bounce to 2 new targets'},
@@ -6332,7 +6333,7 @@ class Game extends Phaser.Scene {
       nameT=this.add.text(textX,y+29,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=hl?this.add.text(textX,y+51,hl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8ff0b0',stroke:'#0c2a1a',strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       descT=this.add.text(textX,y+75,o.desc||'',{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
-      let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
+      let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
       starsT=this.add.text(textX,y+h-20,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
       ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
@@ -6344,7 +6345,7 @@ class Game extends Phaser.Scene {
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       roleT=hl?this.add.text(x+w/2,y+h*0.505,hl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#8ff0b0',stroke:'#0c2a1a',strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       descT=this.add.text(x+w/2,y+h*0.60,o.desc||'',{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
-      let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util')for(let s=0;s<(o.max||5);s++)stars+=s<lvl?'★':'☆';
+      let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
       starsT=this.add.text(x+w/2,y+h*0.87,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
@@ -6940,7 +6941,7 @@ class Game extends Phaser.Scene {
       const speed=aw?1180:980, gap=aw?38:52;   // เร็ว + รัวถี่ (machine gun) ·s่งตรง ไม่โค้ง
       let idx=0;
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
-        const shotIndex=idx++,sizeMul=basic?1+(basic.ranks.size||0)*0.14:1,b=this.getBullet(this.player.x,this.player.y,0xffffff,(0.12+lvl*0.008+(aw?0.03:0))*sizeMul); if(!b)return;   // ตัวเล็กลงอีก
+        const shotIndex=idx++,sizeMul=basic?1+(basic.ranks.size||0)*0.35:1,b=this.getBullet(this.player.x,this.player.y,0xffffff,(0.12+lvl*0.008+(aw?0.03:0))*sizeMul); if(!b)return;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
         b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
