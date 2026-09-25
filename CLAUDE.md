@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.97.0 — Tag Sets (ไอเดีย G) · A/B/G ครบ)
+- **v4.97.0 (เจ้าของสั่ง G):** `TAG_SETS` 4 แท็ก (precision crit+5%/critMul+0.3 · swarm dmg×1.06/×1.10 · guard dmgTaken×0.93/regen+1 · tempo cd×0.95/spd×1.06) โบนัสที่ 2 และ 3 ชิ้น · `TAGS_OF` แมปแท็กของ path/infusion/relic · `tagCounts()` นับจาก b.path+b.infusion+relics · `refreshTagSets()` ใส่ผลแบบครั้งเดียวต่อ tier (`this._tagTier`, ล้างใน resetRelics) + banner + clampPlayerStats · เรียกจาก syncBasicAttack (มี path/infusion) และ gainRelic (delayedCall 0) · การ์ด path/infusion/relic ต่อท้าย desc ด้วย `tagLabel()` · HUD statTxt โชว์แท็กที่ ≥2 (🎯2) · verified headless: Sniper+Crown = crit 5→10%, +Sour = critMul 1.55→1.85, 0 error · **ถัดไป: เจ้าของเล่นจริงจูน B/A/G · ไอเดียที่เหลือ E/F**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.96.0 — Flavor Infusion (ไอเดีย A))
 - **v4.96.0 (เจ้าของสั่ง A):** `FLAVOR_INFUSIONS` 4 ธาตุ (direct = ตัวคูณดาเมจตรงของ basic ใน castSkill basicDmg) · เลเวล ≥10 และเลือกสายแล้ว → การ์ด 3 ใบสุ่ม kind 'Flavor Infusion' (ซ่อน reroll/banish) → `b.infusion` (reset ทุกด่าน) · `infusionOnHit` เรียกใน `damage()` ทุกดาเมจของผู้เล่น (กัน recursion ด้วย `_infTick`): 🌶️ spicy เผา 30% ของฮิตใน 2s (`e._burnDps/_burnT`, cap 60%) · 🍋 sour รับดาเมจ +12% 3s (`e._sourT`) · 🍯 sweet ฮีล 0.5% maxHP cd 0.3s · 🌿 minty 30% แช่ 0.35s (ไม่ใช่บอส/มินิ) · `tickInfusion(dt)` ใน update ทุก 0.25s · การ์ด `INFUSION_UP` Deep Flavor (id `inf_deep` max3, +35%/rank ผ่าน `infusionPow`) ต่อท้าย pool · reset flag มอนใน spawnEnemy+killEnemy · verified headless 4 ธาตุ, 0 error · **ถัดไป: G (tag set synergy)**
 
