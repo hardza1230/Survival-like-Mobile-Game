@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.88.1 — Taro สู้บอสได้)
+- **v4.88.1 (เจ้าของ: Taro สู้บอสยากมาก):** ต้นเหตุ castSkill thunder เล็งตัวใกล้สุดแยกกันทีละตัว + chain กระจายออก → บอสโดนแค่ ≤1 strike, ลูกกระจ๊อกดูดไปหมด · แก้: บอส/มินิในระยะถูกย้ายขึ้นเป้าแรก, strike ที่เกินจำนวนมอนฟาดบอสซ้ำ, ดาเมจ strike ใส่บอส/มินิ ×1.45
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.88.0 — Talent + Passive ประจำตัวละคร)
 - **v4.88.0 (เจ้าของ: ตัวละครต่างกันแค่สกิล อยากให้เก็บเลเวล+มี passive):** ระบบเลเวลตัวละคร (`Save.cp`, `gainCharExp`, TP) + `CHAR_TALENTS` มีอยู่แล้วแต่**ไม่มีหน้าใช้ TP** → เพิ่ม `buildTalents` (menuScreen 'talents', แถว 🌟 ใน gLoadout): Lv/EXP bar/TP + กล่อง passive + แถว talent กด +1 (1 TP/rank) · `CHAR_PASSIVES` + `charPassiveScale(lvl)`=1+min(0.9,(lvl-1)·0.03) · `this._cpas` ตั้งใน applyMeta · momo Lucky Seeds (คริฮีล 0.6%maxHP·s, cd .35s ใน damage) · mint Frost Skin (โดนตี → แช่ศัตรูรอบตัว r110+, cd 1.2s `charPassiveOnHurt` ใน hurtPlayer+touchEnemy) · cocoa Bear Grit (lowHpGuard+0.15s, lowHpDmg+0.20s) · taro Rift Step (`charPassiveOnDash` คลื่น r95) · sesame Oath Focus (ยืนนิ่ง dmg+18%s) · berry Jam Heart (kill 6% ฮีล 2%) · verified headless: ซื้อ talent หัก TP, passive ทุกตัวทริก, screenshot ok, 0 error
 

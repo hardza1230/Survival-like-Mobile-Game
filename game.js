@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.88.0';
+const GAME_VERSION = '4.88.1';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.88.1', date:'2026-09-25', title:'⚡ Taro vs bosses', items:['Taro’s lightning now locks onto bosses and minibosses first','Spare strikes hit the boss again instead of fizzling, and bolts deal +45% to bosses'] },
   { v:'4.88.0', date:'2026-09-25', title:'🌟 Character Talents & Passives', items:['New Character Talents page (Gear & Power): spend Talent Points earned from your character level','Every character now has an always-on passive that grows with character level: Momo Lucky Seeds · Mint Frost Skin · Cocoa Bear Grit · Taro Rift Step · Sesame Oath Focus'] },
   { v:'4.87.1', date:'2026-09-25', title:'⏰ Objective overtime', items:['Hunt, Escort and Capture objectives now have an overtime: stall too long and regular enemies stop dropping EXP','In Hunt overtime the marked targets stop blinking away'] },
   { v:'4.87.0', date:'2026-09-25', title:'💢 Fiercer bosses', items:['Bosses and minibosses attack more often','Bosses chain combos: after a big move they often follow up with a quick shot, trap or dash','Follow-up shots and traps aim where you are running, not where you stand','Below 30% HP bosses become ENRAGED — faster attacks and more combos'] },
@@ -6975,7 +6976,9 @@ class Game extends Phaser.Scene {
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
       cand.sort((a,b)=>this.dist(a.x,a.y,this.player.x,this.player.y)-this.dist(b.x,b.y,this.player.x,this.player.y));   // เล็งตัวใกล้สุดก่อน (เดิมเล็ง HP สูง = ผ่ามั่ว)
       this.hitCratesInRadius(this.player.x,this.player.y,aw?760:520,dmg);   // ฟ้าผ่าก็ทุบกล่องในระยะ
-      for(let i=0;i<Math.min(strikes,cand.length);i++){ let e=cand[i]; this.zap(e.x,e.y); this.damage(e,dmg,e.x,e.y);
+      // v4.88.1: Taro สู้บอสยาก — ฟ้าผ่าลูกแรกล็อกบอส/มินิก่อน · ถ้ามอนน้อยกว่าจำนวนฟาด ลูกที่เหลือฟาดบอสซ้ำ · ดาเมจใส่บอส ×1.45
+      const bigT=cand.find(e=>e.isBoss||e.isMini); if(bigT){ cand.splice(cand.indexOf(bigT),1); cand.unshift(bigT); }
+      for(let i=0;i<(bigT?strikes:Math.min(strikes,cand.length));i++){ let e=cand[i]||bigT; if(!e||!e.active)continue; this.zap(e.x,e.y); this.damage(e,dmg*((e.isBoss||e.isMini)?1.45:1),e.x,e.y);
         let from=e; const hit=new Set([e]);
         for(let c=0;c<chain;c++){ let nb=null,nd=((aw?210:150)*bChainRange)**2;
           this.enemies.children.iterate(o=>{ if(o&&o.active&&!hit.has(o)){ const d=(o.x-from.x)**2+(o.y-from.y)**2; if(d<nd){nd=d;nb=o;} } });
