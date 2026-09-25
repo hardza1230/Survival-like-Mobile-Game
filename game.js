@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.0.2';
+const GAME_VERSION = '5.1.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.1.0', date:'2026-09-25', title:'⚠️ Boss warning sound', items:['Bosses now announce themselves with war drums and a deep siren']},
   { v:'5.0.2', date:'2026-09-25', title:'🔔 New hit & EXP sounds', items:['Softer mochi-pop hit sound and a bright chime when collecting EXP']},
   { v:'5.0.1', date:'2026-09-25', title:'⚡ Faster music loading', items:['Music files are about 3× smaller (≈34 MB → 12 MB), so stages start faster on mobile data']},
   { v:'5.0.0', date:'2026-09-25', title:'🎵 New music for Chapter 2 and 3', items:['Chapter 2 has its own mysterious garden theme and a new boss battle track','Chapter 3 has an epic throne theme and a new final-chapter boss track','Chapter 2 and 3 no longer reuse the Stage 5 music']},
@@ -617,7 +618,7 @@ const Sfx = {
   levelup(){if(!this._ok('levelup',0.6))return;this.duckBgm(650,0.45);if(!this.playFile('sfx_levelup',0.46))this.seq([523,659,784,1047],'triangle',0.12,0.1);},
   chest(){if(!this._ok('chest',0.7))return;this.duckBgm(700,0.42);if(!this.playFile('sfx_chest',0.48))this.seq([587,740,880,1175],'triangle',0.12,0.09);},
   select(){if(this._ok('select',0.16)&&!this.playFile('sfx_btn',0.28))this.tone(880,0.055,'sine',0.055,1200);},
-  bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
+  bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_boss_warn',0.55,1)&&!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
   clear(){if(!this._ok('clear',0.8))return;this.duckBgm(650,0.48);if(!this.playFile('sfx_levelup',0.42))this.seq([659,784,1047],'triangle',0.11,0.12);},
   victory(){this.duckBgm(1000,0.3);if(this.playFile('sfx_victory',0.55,1))return;this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
   dead(){this.duckBgm(900,0.3);if(this.playFile('sfx_defeat',0.5,1))return;this.seq([392,311,247,196],'sine',0.10,0.14);},
@@ -944,6 +945,7 @@ const ASSET_AUDIO = {
   sfx_legend: 'assets/audio/sfx/gen/sfx_legend.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_victory: 'assets/audio/sfx/gen/sfx_victory.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
   bgm_main:       'assets/audio/bgm/min/bgm_main.mp3',
   bgm_stage1:     'assets/audio/bgm/min/bgm_stage1.mp3',
   bgm_boss1:      'assets/audio/bgm/min/bgm_boss1.mp3',

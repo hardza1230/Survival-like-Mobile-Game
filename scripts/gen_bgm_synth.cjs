@@ -366,6 +366,8 @@ const ch3b = {
   },
 };
 
+module.exports = { SR, TAU, mtof, Mix, note, wide, kick, snare, hat, shaker, tom, timpani, crash, wood, reverb, renderTrack, writeWav, playMel, setSeed: v => { seed = v; }, rnd: () => rnd() };
+if (require.main === module) {
 const out = process.argv[2] || '.';
 fs.mkdirSync(out, { recursive: true });
 for (const def of [ch2, ch2b, ch3, ch3b]) {
@@ -373,4 +375,5 @@ for (const def of [ch2, ch2b, ch3, ch3b]) {
   const { L, R, sec } = renderTrack(def);
   writeWav(path.join(out, def.name + '.wav'), L, R);
   console.log(def.name, sec.toFixed(1) + 's');
+}
 }
