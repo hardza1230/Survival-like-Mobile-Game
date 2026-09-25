@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.92.0 — ตาราง tier ครบ + T10 ออกได้ทุก iLv)
+- **v4.92.0 (เจ้าของสั่ง):** `tierWeights(best)`: สุ่มได้ best…T10 เสมอ · 5 ขั้นแรก (d+1)^1.3 · ต่ำกว่านั้น peak×0.7^(d−4) · `tierChances(best)` · rollTier ใช้ tierWeights · Affix Forge: ตาราง TIERS T0-T10 (3 คอลัมน์) ใต้ roll pool ของ mod เป้า/บรรทัดที่เลือก/ตัวแรก → ช่วงค่า + % ต่อ tier ของไอเทมนี้ · tier ดีกว่า best = 🔒 · tier ปัจจุบันไฮไลต์ทอง · verified: legend iLv100 T0 2.8%…T10 2.5%, rare iLv60 T4-T10, screenshot ไม่ทับ, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.91.0 — mod pool 23 + tier T0-T10)
 - **v4.91.0 (เจ้าของสั่ง):** AFFIX_POOL +8 (edge flatDmg · precision crit+cd · hppct · regenpct · bulwark hp+def · mend healEffect · sprint spd+dash · forager xp+pickup) = 23 (validator ล็อก 23) + weight ใน AFFIX_WEIGHT · **Tier T0(ดีสุด)-T10:** `expandAffixTiers` แปลง 5 band เดิม → 11 band (T5lo×0.5…T1hi×1.2 geometric, `mod.tiers5` เก็บของเดิม, index = tier ตรง) · `affixBestTierForItem` = round(10−iLv/9) + `BASE_TIER_OFFSET` (legend0/epic1/rare1/common2) · `rollTier` สุ่มในหน้าต่าง best…best+4 ถ่วง (d+1)^1.3 (tier ดีสุด ~5%) · affix ใหม่มี `t11:1` · `Save.migrateAffixTiers11()` ใน load แปลง t เดิมจากค่า v (`affixTierForValue`) · BASE_BEST_TIER/bestAffixTierForItemLevel เหลือเป็น dead code · verified: rare iLv60 T4-T8, legend iLv100 T0-T4, 0 error · หมายเหตุ: mod ค่าเล็ก (crit ฯลฯ) tier ต่ำ ๆ ค่าซ้ำกันได้
 
