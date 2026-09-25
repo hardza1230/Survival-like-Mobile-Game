@@ -33,13 +33,14 @@ const BALANCE = {
 
 // v4.55: เพดานสแตตผู้เล่นจุดเดียว — applyMeta / previewStats / cookDish / การ์ด endless ใช้ชุดเดียวกัน
 const STAT_CAPS = { dmgMul:3.25, critChance:0.40, cdMulMin:0.72, dmgTakenMin:0.35, speedMul:1.35 };
-function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.critChance=Math.min(STAT_CAPS.critChance,p.critChance||0); p.cdMul=Math.max(STAT_CAPS.cdMulMin,p.cdMul); p.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin,p.dmgTakenMul); p.baseSpeed=Math.min(BALANCE.moveSpeed*STAT_CAPS.speedMul,p.baseSpeed); }
+function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.maxhp*p._uqGlass));p._uqGlass=0;} p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.critChance=Math.min(STAT_CAPS.critChance,p.critChance||0); p.cdMul=Math.max(STAT_CAPS.cdMulMin,p.cdMul); p.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin,p.dmgTakenMul); p.baseSpeed=Math.min(BALANCE.moveSpeed*STAT_CAPS.speedMul,p.baseSpeed); }
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.81.0';
+const GAME_VERSION = '4.82.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.82.0', date:'2026-09-25', title:'🟣 Unique Gear', items:['5 Unique items that change your build, each with a trade-off','Glass Rolling Pin, Ring of Endless Hunger, Sugar Rush Boots, Echo Locket, Candy Shell Plate','Uniques only drop from recipe bosses of their own themes — higher tiers, Rare recipes and fast clears raise the odds','The Atlas board shows which themes hold a Unique and which you have found'] },
   { v:'4.81.0', date:'2026-09-25', title:'🌳 Atlas Passives', items:['Spend Atlas points on 7 permanent recipe bonuses (Atlas → Passives tab)','Better recipe drops, more rare recipes, faster Hunger, bigger rewards, extra events and a longer speed-bonus window','Free respec any time'] },
   { v:'4.80.0', date:'2026-09-25', title:'🗺 Recipe Atlas', items:['New Atlas board: every stage theme with the highest recipe tier you have cleared','Earn Atlas points: 1 for the first clear of a theme, +1 at Tier 4, 8, 12 and 16','Open it from the Recipe Maps page — Atlas points will power a passive tree next'] },
   { v:'4.79.0', date:'2026-09-25', title:'📜 Recipe Maps — events', items:['Each recipe run triggers one random event at 40% Hunger','💰 Treasure Room: loot jars and a vacuum spill out','⛩️ Sugar Shrine: stand in it for 2s for +30% damage and faster attacks','🧺 Wandering Merchant: pick a relic','✨ Rare Elite: a golden elite worth big Hunger and currency'] },
@@ -1913,6 +1914,16 @@ function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.im
 function bazaarDaySeed(){ const d=new Date(); return d.getUTCFullYear()*10000+(d.getUTCMonth()+1)*100+d.getUTCDate(); }
 
 /* ---- ระบบได้รับอุปกรณ์: ดWaitปในStage (common) + เปิดกล่องสุ่ม/gacha (find rare) · ยกเลิกการซื้อ ---- */
+// R8: Unique — ของเปลี่ยน build (แลกข้อเสีย) · ดรอปเฉพาะบอสรัน Recipe ของธีมที่กำหนด · tier legend + unique:true (ไม่อยู่ใน pool สุ่มปกติ)
+const UNIQUE_GEAR={
+  weapon:{ id:'uq_glass_pin', chapter:5, tier:'legend', unique:true, themes:[0,5,10], emoji:'🥖', name:'Glass Rolling Pin', cost:0, enh:true, desc:'UNIQUE · +80% damage · but -45% max HP', apply:(p,lv)=>{p.dmgMul*=1.80+0.04*lv;p._uqGlass=0.55;} },
+  ring:{ id:'uq_hunger_ring', chapter:5, tier:'legend', unique:true, themes:[1,6,11], emoji:'💍', name:'Ring of Endless Hunger', cost:0, enh:true, desc:'UNIQUE · heal 3 HP per kill · but no regeneration', apply:(p,lv)=>{p.lifesteal=(p.lifesteal||0)+3+lv*0.5;p._uqNoRegen=true;} },
+  boots:{ id:'uq_rush_boots', chapter:5, tier:'legend', unique:true, themes:[2,7,12], emoji:'👟', name:'Sugar Rush Boots', cost:0, enh:true, desc:'UNIQUE · +30% move speed · +15% damage · but take 20% more damage', apply:(p,lv)=>{p.baseSpeed*=1.30;p.dmgMul*=1.15+0.02*lv;p.dmgTakenMul*=1.20;} },
+  amulet:{ id:'uq_echo_locket', chapter:5, tier:'legend', unique:true, themes:[3,8,13], emoji:'📿', name:'Echo Locket', cost:0, enh:true, desc:'UNIQUE · critical hits explode for 45% damage nearby · +8% crit', apply:(p,lv)=>{p.critChance+=0.08;p._uqCritBurst=0.45+0.03*lv;} },
+  armor:{ id:'uq_candy_shell', chapter:5, tier:'legend', unique:true, themes:[4,9,14], emoji:'🛡️', name:'Candy Shell Plate', cost:0, enh:true, desc:'UNIQUE · take 35% less damage · but deal 20% less damage', apply:(p,lv)=>{p.dmgTakenMul*=0.65-0.01*lv;p.dmgMul*=0.80;} }
+};
+for(const _s in UNIQUE_GEAR)if(GEAR[_s])GEAR[_s].push(UNIQUE_GEAR[_s]);
+function uniqueForTheme(t){ return Object.values(UNIQUE_GEAR).filter(u=>u.themes.includes(t)); }
 const GEAR_ALL=[];for(const _s in GEAR)for(const _it of GEAR[_s])GEAR_ALL.push(Object.assign({slot:_s,craftTags:[_s,'chapter_'+(_it.chapter||1),_it.tier]},_it));
 const ITEM_LEVEL_BANDS=[
   {chapter:1,min:1,max:20,bestAffixTier:4,label:'Pantry'},
@@ -1946,7 +1957,7 @@ function applyItemLevelBonus(p,item){const q=Math.max(0,Math.min(1,((Number(item
   else if(slot==='boots')p.baseSpeed*=1+0.10*q;
   else if(slot==='amulet'){p.maxhp+=Math.round(50*q);p.regen=(p.regen||0)+0.6*q;}
 }
-function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>it.tier===tier&&it.slot==='weapon'&&(it.chapter||1)===ch),support=GEAR_ALL.filter(it=>it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>it.tier===tier&&(it.chapter||1)<=ch);}
+function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot==='weapon'&&(it.chapter||1)===ch),support=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&(it.chapter||1)<=ch);}
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 times
 // v4.33: gacha เลือก "ช่วง" base item level เป็นชั้นละ 10 (สุ่ม iLv ในช่วง) · ยิ่งช่วงสูง = ของแรงกว่า = แพงขึ้น · เพดาน 60 (iLv 61-100 หาได้จาก drop เท่านั้น) · mod ยังสุ่ม 0-1 เสมอ
 const GACHA_LEVELS = [ {lo:1,hi:10,cost:150}, {lo:11,hi:20,cost:320}, {lo:21,hi:30,cost:560}, {lo:31,hi:40,cost:900}, {lo:41,hi:50,cost:1400}, {lo:51,hi:60,cost:2100} ];
@@ -3945,8 +3956,8 @@ class Game extends Phaser.Scene {
       const col=t>=16?0xffd166:t>=8?0xb98cff:t>0?0x66d3b3:0x4a4059;
       const g=this.add.graphics();g.fillStyle(t>0?0x2a2040:0x1c1426,1);g.fillRoundedRect(x,y,tw,tH,10);g.lineStyle(2,col,1);g.strokeRoundedRect(x,y,tw,tH,10);
       g.fillStyle(0x0f0a16,1);g.fillRoundedRect(x+8,y+tH-12,tw-16,5,2);g.fillStyle(col,1);g.fillRoundedRect(x+8,y+tH-12,(tw-16)*Math.min(1,t/RECIPE_TIER_MAX),5,2);this.menu.add(g);
-      T(x+tw/2,y+5,st.emoji+(t?' T'+t:' —'),14,t?'#ffffff':'#8d8499','bold'); T(x+tw/2,y+25,st.name,8,t?'#e6dcf0':'#6d6479'); if(tH>=70)T(x+tw/2,y+tH-28,'★ '+pts+'/'+maxP,9,'#ffe08a');
-      this._zone(x,y,tw,tH,()=>this.menuToast(st.emoji+' '+st.name+' · best Tier '+(t||'—')+' · best fill '+(best[si]?best[si]+'s':'—'),'#e6dcf0')); });
+      const uq=uniqueForTheme(si)[0],uqHave=uq&&(Save.data.uniqueFound||{})[uq.id]; T(x+tw/2,y+5,st.emoji+(t?' T'+t:' —')+(uq?(uqHave?' '+uq.emoji:' ?'):''),14,t?'#ffffff':'#8d8499','bold'); T(x+tw/2,y+25,st.name,8,t?'#e6dcf0':'#6d6479'); if(tH>=70)T(x+tw/2,y+tH-28,'★ '+pts+'/'+maxP,9,'#ffe08a');
+      this._zone(x,y,tw,tH,()=>this.menuToast(st.emoji+' '+st.name+' · best Tier '+(t||'—')+' · best fill '+(best[si]?best[si]+'s':'—')+(uq?' · Unique: '+(uqHave?uq.name:'???'):''),'#e6dcf0')); });
     this.menu.setVisible(true);
   }
   buildAtlasTree(cx,cw,y,T){ const w=this.W,h=this.H,free=atlasFree();
@@ -3994,7 +4005,7 @@ class Game extends Phaser.Scene {
   }
   finishPinnacle(won){ this._pinnacleRun=false; let label='';
     if(won){ Save.data.pinnacleKills=(Save.data.pinnacleKills||0)+1; this.sugarStage+=900; this.grantCurrencyReward(8,'legend','✦ Pinnacle defeated!');
-      const pool=GEAR_ALL.filter(g=>g.tier==='legend'); const it=Phaser.Utils.Array.GetRandom(pool); if(it){ const ilv=95+Phaser.Math.Between(0,5),d=Save.receiveGearInstance(it.id,{isNew:true,itemLevel:ilv,chapter:5}); if(d)label=it.name+' (iLv '+ilv+')'; } Save.save(); }
+      const pool=GEAR_ALL.filter(g=>g.tier==='legend'&&!g.unique); const it=Phaser.Utils.Array.GetRandom(pool); if(it){ const ilv=95+Phaser.Math.Between(0,5),d=Save.receiveGearInstance(it.id,{isNew:true,itemLevel:ilv,chapter:5}); if(d)label=it.name+' (iLv '+ilv+')'; } Save.save(); }
     const sug=this.sugarStage||0; Save.addSugar(sug); this.sugarStage=0;
     this.state='rushDone'; this.physics.pause(); this.player.setVelocity(0,0); this.over.removeAll(true); this._overBtns=[];
     const w=this.W,h=this.H,box=[this.add.rectangle(0,0,w,h,0x0b0714,1).setOrigin(0,0),this.add.text(w/2,h*0.22,won?'✦':'💥',{fontSize:'64px',color:'#c9a3ff'}).setOrigin(0.5),
@@ -4911,7 +4922,7 @@ class Game extends Phaser.Scene {
   applyMeta(){
     const p=this.player;
     p.cdMul=1; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
-    p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0;
+    p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
     p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1;
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
     p.weaponDmgMul=1;p.weaponCdMul=1;p.weaponShots=0;p.weaponAreaMul=1;p.weaponControlMul=1;p.weaponChains=0;p.weaponReflect=0;
@@ -5222,6 +5233,9 @@ class Game extends Phaser.Scene {
     drops.forEach(d=>{ if(bag.length<RECIPE_BAG_MAX){bag.unshift(d);got.push(d);} else lost++; });
     const frag=1+Math.floor(r.tier/4)+(this._recipeFast?1:0); Save.data.pinnacleFrags=(Save.data.pinnacleFrags||0)+frag; let keys=0;
     while(Save.data.pinnacleFrags>=RECIPE_FRAGS_PER_KEY){Save.data.pinnacleFrags-=RECIPE_FRAGS_PER_KEY;Save.data.riftKeys=(Save.data.riftKeys||0)+1;keys++;}
+    const uqPool=uniqueForTheme(r.theme),uqChance=0.05+r.tier*0.01+(r.rarity==='rare'?0.05:0)+(this._recipeFast?0.03:0); let uqGot=null;
+    if(uqPool.length&&Math.random()<uqChance){ const u=Phaser.Utils.Array.GetRandom(uqPool),d=Save.receiveGearInstance(u.id,{isNew:true,itemLevel:Math.min(100,70+r.tier*2),chapter:5}); if(d)uqGot=u; }
+    if(uqGot){ Save.data.uniqueFound=Save.data.uniqueFound||{}; Save.data.uniqueFound[uqGot.id]=(Save.data.uniqueFound[uqGot.id]||0)+1; this.time.delayedCall(7800,()=>{ this.screenFlash(0xc9a3ff,0.6,500); this.showBanner('🟣 UNIQUE: '+uqGot.emoji+' '+uqGot.name,uqGot.desc.replace('UNIQUE · ',''),3000); }); }
     Save.data.recipeMaxTier=Math.max(Save.data.recipeMaxTier||1,...got.map(d=>d.tier),r.tier);
     Save.save(); this._recipeLoot={got,lost,frag,keys};
     this.showBanner('📜 Recipe T'+r.tier+' cleared!',(this._recipeFast?'⚡ Speed bonus 🍬'+bonus+' · ':'')+'Fill '+fill+'s'+(best?' · NEW BEST':''),2400);
@@ -7377,6 +7391,8 @@ class Game extends Phaser.Scene {
     const RL=this._rel; if(RL){ if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; }
     if(crit&&RL&&(RL.splinter||RL.leech))this.relicOnCrit(e,amount,x,y);
+    if(crit&&this.player._uqCritBurst&&!this._uqBursting){ this._uqBursting=true; const bx=e.x,by=e.y,bd=amount*this.player._uqCritBurst; this.burst(bx,by,0xc9a3ff);
+      for(const o of this.enemies.getChildren()){ if(o.active&&o!==e&&Phaser.Math.Distance.Between(bx,by,o.x,o.y)<80)this.damage(o,bd); } this._uqBursting=false; }
     let gate=null;
     if(e.isBoss){
       const p2=this.stageIndex===4?0.72:(this.stageIndex===6?0.68:(this.stageIndex===7?0.70:(this.stageIndex===8?0.72:(this.stageIndex===9?0.75:(this.stageIndex===0?0.68:(this.stageIndex===1?0.65:0.50))))));
@@ -8618,7 +8634,7 @@ class Game extends Phaser.Scene {
     if(this.player.iframe>0)this.player.iframe-=dt;
     if(!Number.isFinite(this.player.maxhp)||this.player.maxhp<=0)this.player.maxhp=90;
     if(!Number.isFinite(this.player.hp))this.player.hp=this.player.maxhp;   // safety net: กัน HP ค้าง NaN
-    const regenPerSec=(this.recipeHas('noheal')?0:1)*Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
+    const regenPerSec=(this.recipeHas('noheal')||this.player._uqNoRegen?0:1)*Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
     if(regenPerSec>0&&this.player.hp<this.player.maxhp)this.player.hp=Math.min(this.player.maxhp,this.player.hp+regenPerSec*dt);
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);

@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.82.0 — Recipe Maps R8: Unique gear)
+- **v4.82.0 (Phase R · R8):** `UNIQUE_GEAR` 5 ชิ้น (push เข้า `GEAR[slot]` ก่อนสร้าง GEAR_ALL · tier 'legend' + `unique:true` + `themes:[3 ธีม]`) · ถูกตัดออกจาก `gearPool` และ pool legend ของ Pinnacle → ได้เฉพาะดรอปบอส Recipe · 🥖 Glass Rolling Pin (weapon dmg×1.8, `_uqGlass`=0.55 คูณ maxhp ตอน `clampPlayerStats` = หลังของทุกชิ้น) · 💍 Ring of Endless Hunger (lifesteal +3, `_uqNoRegen` → regen 0) · 👟 Sugar Rush Boots (spd×1.3 dmg×1.15 dmgTaken×1.2) · 📿 Echo Locket (crit +8%, `_uqCritBurst` 0.45 → คริระเบิด r80 ใน `damage()` กัน recursion `_uqBursting`) · 🛡️ Candy Shell Plate (dmgTaken×0.65 dmg×0.8) · flag reset ใน applyMeta · ดรอปใน `finishRecipeBoss`: `uniqueForTheme(theme)` โอกาส 5%+tier×1%+rare 5%+เร็ว 3% · iLv 70+tier×2 · `Save.data.uniqueFound` · Atlas board โชว์ emoji unique/`?` + toast ชื่อ · verified headless: ดรอปได้, pool ปกติไม่มี unique, glass maxhp 136→75, คริระเบิดโดน 3 ตัว, 0 error · **ถัดไป R9 ย้าย Rift → Recipe + Pinnacle ใช้เศษกุญแจ**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.81.0 — Recipe Maps R7: Atlas passive tree)
 - **v4.81.0 (Phase R · R7):** `ATLAS_NODES` 7 โหนด (1 แต้ม/เลเวล) เก็บ `Save.data.atlasTree` · `atlasLv/atlasSpent/atlasFree` · ผล: cartographer +10%/lv tier-up ใน `rollRecipeDrops` · bounty +8%/lv ใบที่ 2 · rarity +4%/lv rare (+8% magic) · appetite hunger ×(1+0.06lv) ใน recipeOnKill · fortune reward ×(1+0.08lv) ใน `riftMul` เฉพาะ recipeMode · eventful lv1 event ที่ 30% / lv2 event ที่ 2 ที่ 70% (`_recipeEventN`, shrine เคลียร์ของเก่าก่อน) · speedster par +10s/lv (`recipePar()`) · UI: แท็บ 🗺 Board / 🌳 Passives ใน `buildAtlas` (`_atlasTab`, `buildAtlasTree`) + Respec ฟรี · verified headless: ซื้อ 3 เลเวล free 5→2, fortune reward 1.6→1.984, par 120, screenshot ไม่ล้น, 0 error · **ถัดไป R8 Unique ที่เปลี่ยน build**
 
