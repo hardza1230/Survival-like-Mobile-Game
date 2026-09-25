@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.73.0';
+const GAME_VERSION = '4.74.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.74.0', date:'2026-09-25', title:'Endgame: Mochi Rift & Pinnacle Boss', items:['Mochi Rift: random stage + random mods, endless tiers — higher tiers pay more','Clearing a Rift earns 🗝️ Rift Keys and iLv 61–100 endgame gear','Spend 3 keys to fight the Pinnacle Boss, The Hunger Beneath, for a guaranteed Legendary iLv 95+']},
   { v:'4.73.0', date:'2026-09-24', title:'Chapter 3 · Throne of the First Seed', items:['The final chapter is open: 5 new stages from the Ashen Seedfields to the Throne of the First Seed','5 new minibosses and bosses, ending with The First Planter','Art is temporary placeholder icons — final artwork coming soon']},
   { v:'4.72.0', date:'2026-09-24', title:'Endgame after the story', items:['Ascension, Endless and Zone Modifiers now unlock after finishing the whole story','Players who already Ascended keep their access']},
   { v:'4.71.0', date:'2026-09-24', title:'Item drop rebalance', items:['Story drops now scale smoothly: Chapter 1 ≈ iLv 1–26, Chapter 2 ≈ 21–46, Chapter 3 up to 60','Harder difficulty adds item levels (Hard +3, Hell +6)','iLv 61–100 gear drops only in the endgame (Boss Rush, Endless, Zone Modifiers) after finishing the story']},
@@ -1666,7 +1667,8 @@ const HUB_GROUPS = {
     ['daily','📅','Daily Missions','Daily reward and challenge stage'],
     ['achievements','🏆','Achievements','Milestones and Sugar rewards'],
     ['endgame','🌙','Endgame','Ascension · Endless · secret boss'],
-    ['bossrush','👑','Boss Rush','Fight every boss you’ve beaten back-to-back'] ] },
+    ['bossrush','👑','Boss Rush','Fight every boss you’ve beaten back-to-back'],
+    ['rift','🌀','Mochi Rift','Endgame: random stage + mods · earn keys for the Pinnacle Boss'] ] },
   gMore:{ title:'⚙ More', rows:[
     ['settings','⚙','Settings','Sound, shake, flash and VFX'],
     ['__tutorial','🎓','How to Play','Replay the controls & combat tutorial'] ] },
@@ -2604,6 +2606,17 @@ const STAGE_SWARM_BEATS = [
 ];
 
 /* ---- CHAPTERS: แต่ละบทชี้ช่วง global stage index ของตน ---- */
+// 🌀 Mochi Rift (endgame v4.74) — ด่านสุ่ม + mod สุ่ม ตาม Tier · ชนะ = Rift Key (ใช้เปิด Pinnacle Boss)
+const RIFT_MODS=[
+  {id:'frenzy',emoji:'😡',name:'Frenzied',desc:'Enemies hit 25% harder',hp:1,dmg:1.25,reward:1.20},
+  {id:'bulwark',emoji:'🛡️',name:'Bulwark',desc:'Enemies have 35% more HP',hp:1.35,dmg:1,reward:1.20},
+  {id:'nightfall',emoji:'🌑',name:'Nightfall',desc:'+20% enemy HP and damage',hp:1.2,dmg:1.2,reward:1.30},
+  {id:'treasure',emoji:'💰',name:'Treasure Trove',desc:'+15% enemy HP · big reward bonus',hp:1.15,dmg:1,reward:1.35},
+  {id:'glass',emoji:'🔪',name:'Razor Edge',desc:'Enemies hit 40% harder but have less HP',hp:0.85,dmg:1.4,reward:1.25},
+  {id:'titan',emoji:'🗿',name:'Titanic',desc:'Enemies have 55% more HP',hp:1.55,dmg:1,reward:1.30}
+];
+const PINNACLE_KEY_COST=3;
+function riftTierMul(t){ t=Math.max(1,t|0); return {hp:1+0.18*(t-1),dmg:1+0.12*(t-1),reward:1+0.15*(t-1)}; }
 const CHAPTERS = [
   { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
   { name:'Chapter 2 · The Ferment Garden', emoji:'🌿', desc:'The crown seed carries memory up to a canopy blooming out of season', ready:true, stages:[5,9] },
@@ -3469,7 +3482,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRift(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -3801,6 +3814,51 @@ class Game extends Phaser.Scene {
     this.uiPillBtn(this.menu,w/2,y+26,Math.min(cw,300),52,COLORS.pink,'👑','Start Boss Rush ('+list.length+')',()=>{ this.stageDiff=this._rushDiff||1; this._bossRushRequested=true; this.startRun(list[0]); });
     this.menu.setVisible(true);
   }
+  // 🌀 Mochi Rift menu — เลือก Tier · สุ่มด่าน+mod (Reroll ฟรี) · Pinnacle ใช้ 3 กุญแจ
+  rollRiftPreview(){ const pool=[];for(let i=0;i<STAGES.length;i++)if(isStageReady(i))pool.push(i); const t=this._riftTierSel||1,n=t>=5?3:2;
+    this._riftPreview={stage:Phaser.Utils.Array.GetRandom(pool),mods:Phaser.Utils.Array.Shuffle(RIFT_MODS.map(m=>m.id)).slice(0,n),tier:t}; }
+  buildRift(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🌀 Mochi Rift');
+    const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,top=(w<=h?100:70),best=Math.max(1,Save.data.riftBest||1),keys=Save.data.riftKeys||0;
+    const T=(y,t,sz,c,st)=>{const o=this.add.text(w/2,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(o);return o;};
+    if(!Save.endgameUnlocked()){ T(top+40,'🔒 Finish the story to open the Rift',15,'#ff9bb5','bold'); this.menu.setVisible(true); return; }
+    this._riftTierSel=Math.max(1,Math.min(best,this._riftTierSel||best)); if(!this._riftPreview||this._riftPreview.tier!==this._riftTierSel)this.rollRiftPreview();
+    const pv=this._riftPreview,st=STAGES[pv.stage],m=riftTierMul(pv.tier);
+    T(top,'Random stage + random mods. Higher tiers are harder and pay more.\nClear a Rift to earn 🗝️ Rift Keys.',11,'#e6dcf0');
+    let y=top+40; T(y,'🗝️ Keys: '+keys+'   ·   Best tier: '+best,13,'#ffe08a','bold'); y+=30;
+    // tier stepper
+    const bw=46,g=this.add.graphics();g.fillStyle(0x241a30,1);g.fillRoundedRect(cx,y,cw,48,12);this.menu.add(g);
+    T(y+8,'TIER '+pv.tier,20,'#ffffff','bold');
+    const btn=(x,label,fn)=>{const tt=this.add.text(x,y+24,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd166'}).setOrigin(0.5);this.menu.add(tt);this._zone(x-bw/2,y,bw,48,fn);};
+    btn(cx+bw/2+4,'‹',()=>{this._riftTierSel=Math.max(1,pv.tier-1);this._riftPreview=null;this.buildRift();});
+    btn(cx+cw-bw/2-4,'›',()=>{this._riftTierSel=Math.min(best,pv.tier+1);this._riftPreview=null;this.buildRift();});
+    y+=60;
+    const pg=this.add.graphics();pg.fillStyle(0x1c1426,1);pg.fillRoundedRect(cx,y,cw,150,14);pg.lineStyle(2,0x8a4dff,0.9);pg.strokeRoundedRect(cx,y,cw,150,14);this.menu.add(pg);
+    T(y+10,st.emoji+' '+st.name,15,'#ffffff','bold');
+    T(y+34,'Enemy HP ×'+m.hp.toFixed(2)+' · DMG ×'+m.dmg.toFixed(2)+' · Reward ×'+m.reward.toFixed(2),10,'#bfb5ca');
+    pv.mods.forEach((id,i)=>{const md=RIFT_MODS.find(q=>q.id===id);T(y+56+i*28,md.emoji+' '+md.name+' — '+md.desc,11,'#ffc3d6');});
+    y+=162;
+    const half=(cw-10)/2;
+    this.uiPillBtn(this.menu,cx+half/2,y+24,half,46,COLORS.grape,'🎲','Reroll',()=>{this.rollRiftPreview();this.buildRift();});
+    this.uiPillBtn(this.menu,cx+half+10+half/2,y+24,half,46,COLORS.pink,'🌀','Enter Rift',()=>{ this.stageDiff=1; this._riftRequested={tier:pv.tier,mods:pv.mods.slice()}; this._riftPreview=null; this.startRun(pv.stage); });
+    y+=66;
+    const can=keys>=PINNACLE_KEY_COST,pk=Save.data.pinnacleKills||0;
+    this.uiPillBtn(this.menu,w/2,y+26,Math.min(cw,320),52,can?0x6b2bd9:0x4a4059,'✦','Pinnacle Boss ('+PINNACLE_KEY_COST+' 🗝️)',()=>{ if(!can){this.menuToast('Need '+PINNACLE_KEY_COST+' Rift Keys — clear more Rifts','#ff9bb5');return;} Save.data.riftKeys=keys-PINNACLE_KEY_COST;Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); });
+    T(y+60,'The Hunger Beneath · Hell difficulty · guaranteed Legendary iLv 95+ · Defeated: '+pk,10,'#bfb5ca');
+    this.menu.setVisible(true);
+  }
+  finishPinnacle(won){ this._pinnacleRun=false; let label='';
+    if(won){ Save.data.pinnacleKills=(Save.data.pinnacleKills||0)+1; this.sugarStage+=900; this.grantCurrencyReward(8,'legend','✦ Pinnacle defeated!');
+      const pool=GEAR_ALL.filter(g=>g.tier==='legend'); const it=Phaser.Utils.Array.GetRandom(pool); if(it){ const ilv=95+Phaser.Math.Between(0,5),d=Save.receiveGearInstance(it.id,{isNew:true,itemLevel:ilv,chapter:5}); if(d)label=it.name+' (iLv '+ilv+')'; } Save.save(); }
+    const sug=this.sugarStage||0; Save.addSugar(sug); this.sugarStage=0;
+    this.state='rushDone'; this.physics.pause(); this.player.setVelocity(0,0); this.over.removeAll(true); this._overBtns=[];
+    const w=this.W,h=this.H,box=[this.add.rectangle(0,0,w,h,0x0b0714,1).setOrigin(0,0),this.add.text(w/2,h*0.22,won?'✦':'💥',{fontSize:'64px',color:'#c9a3ff'}).setOrigin(0.5),
+      this.add.text(w/2,h*0.33,won?'Pinnacle Defeated!':'The Hunger Endures',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:won?'#e0c3ff':'#ff8fb5'}).setOrigin(0.5),
+      this.add.text(w/2,h*0.45,(won?'🌟 '+(label||'Legendary reward')+'\n':'')+'Sugar: +'+sug,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',lineSpacing:6,wordWrap:{width:w-50}}).setOrigin(0.5)];
+    const bw=Math.min(240,w-60),by=h*0.66,g=this.add.graphics(); g.fillStyle(COLORS.grape,1); g.fillRoundedRect(w/2-bw/2,by-24,bw,48,15);
+    box.push(g,this.add.text(w/2,by,'↩ Back to the Rift',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5));
+    this._overBtns.push({x:w/2-bw/2,y:by-24,w:bw,h:48,fn:()=>{window.__pendingMenu='rift';this.scene.restart();}});
+    this.over.add(box); this.over.setVisible(true); }
   _fmtTime(t){ t=Math.max(0,Math.round(t||0)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
   // เข้าบอสถัดไปของ rush (คง build/เลเวลไว้ ไม่ reset loadout)
   bossRushNext(){ const i=this._rushList[this._rushPos]; this._finalStoryShown=true;
@@ -3815,7 +3873,9 @@ class Game extends Phaser.Scene {
     this.pendingLvl=(this.pendingLvl||0)+2; this.time.delayedCall(2300,()=>{ if(this.state==='play')this.bossRushNext(); else if(this.state==='levelup')this._rushNextPending=true; }); }
   recordBossRush(){ const d=this.stageDiff||1,n=this._rushDown||0,t=this.elapsed-(this._rushT0||0); if(!Save.data.bossRushBest)Save.data.bossRushBest={};
     const b=Save.data.bossRushBest[d]; let isBest=false; if(n>0&&(!b||n>b.n||(n===b.n&&t<b.t))){Save.data.bossRushBest[d]={n,t};isBest=true;} Save.save(); return {n,t,isBest}; }
-  finishBossRush(won){ this.bossRush=false; const r=this.recordBossRush(),dr=this.diffMul().reward;
+  finishBossRush(won){ this.bossRush=false;
+    if(this._pinnacleRun){ this.finishPinnacle(won); return; }
+    const r=this.recordBossRush(),dr=this.diffMul().reward;
     if(won){ const bonus=Math.round((120+this._rushList.length*40)*dr); this.sugarStage+=bonus; this.grantCurrencyReward(2+this._rushList.length,this.currencyTierFor(),'👑 Boss Rush complete!'); }
     const sug=this.sugarStage||0; Save.addSugar(sug); this.sugarStage=0;
     this.state='rushDone'; this.physics.pause(); this.player.setVelocity(0,0); this.over.removeAll(true); this._overBtns=[];
@@ -4869,7 +4929,7 @@ class Game extends Phaser.Scene {
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         if(this.killTxt)this.killTxt.setText('☠ 0');
-        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;if(this.bossRush){this._rushList=this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
+        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
@@ -4968,7 +5028,7 @@ class Game extends Phaser.Scene {
     const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this._stageTxtAt=this.elapsed||0;this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
     this.showBanner(`${st.emoji} Stage ${stageNo}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
     this.updateWaveText();
-    if(this.bossRush){ this._finalStoryShown=true; this.stageTxt.setText('👑 Boss Rush '+(this._rushPos+1)+'/'+this._rushList.length+' · '+st.name);
+    if(this.bossRush){ this._finalStoryShown=true; this.stageTxt.setText(this._pinnacleRun?'✦ Pinnacle · The Hunger Beneath':'👑 Boss Rush '+(this._rushPos+1)+'/'+this._rushList.length+' · '+st.name);
       if(this._rushPos===0){ this._rushT0=this.elapsed||0; this.pendingLvl=(this.pendingLvl||0)+6; }
       if(this.pendingLvl>0)this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
       this.time.delayedCall(1400,()=>{ if(!this._busy())return; this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); }); return; }
@@ -5505,7 +5565,8 @@ class Game extends Phaser.Scene {
   newbieEase(){ let m=1; if(this.stageIndex===0)m*=0.60; if((this.stageKills||0)<25)m*=0.85; if(!Save.data.tutorialDone)m*=0.8; return m; }
   tutorialActive(){ return !!this._inTutorial; }
   zoneModMul(){ let hp=1,dmg=1,reward=1; if(Save.zoneModsUnlocked()){ for(const id of (this._activeZoneMods||[])){ const m=ZONE_MODIFIERS.find(x=>x.id===id); if(m){ hp*=m.hp; dmg*=m.dmg; reward*=m.reward; } } } return {hp,dmg,reward}; }
-  diffMul(){ const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],z=this._zoneMul||{hp:1,dmg:1,reward:1}; return {...d,hp:d.hp*z.hp,dmg:d.dmg*z.dmg,reward:d.reward*z.reward}; }   // ตัวคูณความยาก × Zone Modifiers
+  diffMul(){ const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],z=this._zoneMul||{hp:1,dmg:1,reward:1},r=this.riftMul(); return {...d,hp:d.hp*z.hp*r.hp,dmg:d.dmg*z.dmg*r.dmg,reward:d.reward*z.reward*r.reward}; }
+  riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=RIFT_MODS.find(q=>q.id===id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} return m; }   // ตัวคูณความยาก × Zone Modifiers
   zoneLevel(){ return stageZoneLevel(this.stageIndex||0,this.stageDiff||1); }   // Zone Level ของด่านที่กำลังเล่น
   // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
   recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }
@@ -5605,7 +5666,8 @@ class Game extends Phaser.Scene {
     if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
     this.waveAlive=1; this.updateWaveText();
-    this.bossIntro(b, this.secretBoss?'The Echo of Hunger · Shadow of the Devourer':st.boss);
+    if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; b.tintColor=0x8a4dff; b.setTint(0x8a4dff); b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
+    this.bossIntro(b, this._pinnacleRun?'✦ PINNACLE · The Hunger Beneath':this.secretBoss?'The Echo of Hunger · Shadow of the Devourer':st.boss);
   }
   // ฉากปรากฏตัวบอส: WARNING → แพนfind → ปรากฏตัว/คำราม → แพนกลับ
   bossIntro(b,name){
@@ -5758,6 +5820,7 @@ class Game extends Phaser.Scene {
     // 🧪 ล้มบอส = การันตี currency ก้อนใหญ่ (ยิ่งด่าน/ยากสูง ยิ่งเยอะ+ดี — กฎเหล็ก)
     this.grantCurrencyReward(2+(this.stageIndex||0)+((this.stageDiff||1)-1)*2,this.currencyTierFor(),'🏆 Boss Down! Currency gained');
     if(this.bossRush){ this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest(); this.mode='breather'; this.bossRushBossDown(); return; }
+    if(this.riftMode){ const t=this._riftTier||1,keys=1+(t>=5?1:0)+(t>=10?1:0); Save.data.riftKeys=(Save.data.riftKeys||0)+keys; Save.data.riftBest=Math.max(Save.data.riftBest||1,t+1); Save.save(); this.showBanner('🌀 Rift Tier '+t+' cleared!','+'+keys+' 🗝️ Rift Key · Tier '+(t+1)+' unlocked',2600); }
     if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
       this.showBanner('🌙 ENDLESS round '+cleared+' complete','Checkpoint saved · Sugar +'+bonus+(cleared%3===0?' · secret boss defeated!':''),2600);this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='breather')this.startWave(0,false);});return;}
     const next=this.stageIndex+1,progressUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next,canUnlock=progressUnlock&&isStageReady(next);
@@ -5838,7 +5901,7 @@ class Game extends Phaser.Scene {
   }
   /* หน้าสรุปเรื่องราวตอนล้มบอส — เกิดอะไรขึ้น + ทำไมไปด่านต่อไป → แตะไปหน้าสรุปสถิติ */
   showStageEpilogue(last){
-    const ep=STAGE_EPILOGUE[this.stageIndex];
+    const ep=this.riftMode?null:STAGE_EPILOGUE[this.stageIndex];
     if(!ep){ this.showStageSummary(last); return; }   // ไม่มีเรื่องราว = ข้ามไปหน้าสรุปเลย
     this.state='epilogue'; this.physics.pause(); this.player.setVelocity(0,0);
     const w=this.W,h=this.H, st=STAGES[this.stageIndex], tint=st.tint||0xffd166; this.over.removeAll(true);
@@ -7433,8 +7496,8 @@ class Game extends Phaser.Scene {
   }
   // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังNone) — คืน item หรือ null ถ้ามีครบแล้ว
   // Endgame drop = โหมด endgame (Boss Rush/Endless/Zone Mods) และจบเนื้อเรื่องแล้วเท่านั้น
-  endgameDropActive(){ return storyComplete()&&(!!this.bossRush||!!this.endlessMode||((this._activeZoneMods||[]).length>0)); }
-  endgameDepth(){ return (this._activeZoneMods||[]).length*4+(this.endlessMode?(this.endlessCycle||0)*2:0)+(this.bossRush?(this._rushPos||0)*2:0); }
+  endgameDropActive(){ return storyComplete()&&(!!this.riftMode||!!this.bossRush||!!this.endlessMode||((this._activeZoneMods||[]).length>0)); }
+  endgameDepth(){ return (this._pinnacleRun?24:0)+(this.riftMode?(this._riftTier||1)*3:0)+(this._activeZoneMods||[]).length*4+(this.endlessMode?(this.endlessCycle||0)*2:0)+(this.bossRush?(this._rushPos||0)*2:0); }
   grantGear(tier,opts={}){ const inPlay=this.state==='play',sourceStage=inPlay?this.stageIndex:rewardSourceStage();
     // v4.32: gacha เลือก base item level ได้ (opts.itemLevel) → chapter ตาม iLv นั้น · in-play/menu ใช้ stage เดิม
     const gachaLv=opts.gacha?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||1))):0,eg=inPlay&&this.endgameDropActive(),
