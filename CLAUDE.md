@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.86.2 — Juicy Burst แทน Plump Seeds)
+- **v4.86.2 (เจ้าของ: ขนาดใหญ่ไม่ช่วยความรู้สึก):** Momo upgrade id `size` (คง id/ไอคอน) → **Juicy Burst** `b.seedPop`=rank · hitEnemy ทางปกติ: เมล็ดแตกกระเซ็น r=46+14·rank ดาเมจ ×(0.25+0.12·rank) ใส่ศัตรูรอบข้าง · เลิกขยาย scale เมล็ด · **รอเจ้าของเลือกแนวทางบอสเก่งขึ้น**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.86.1 — แก้การ์ดดาวล้น + Plump Seeds)
 - **v4.86.1 (feedback เจ้าของ+ภาพ):** การ์ด endless (max สูงมาก) วาดดาวล้นการ์ด → ถ้า max>5 โชว์ '★ New'/'★ Stack N' แทน (drawReadableChoiceCard 2 จุด) · Momo `size` (Plump Seeds) เดิม +14%/rank บนเมล็ด scale ~0.13 มองไม่ออก → +35%/rank (hitbox โตตาม setScale) · **ถัดไป A3 Bestiary Ch3**
 

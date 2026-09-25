@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.86.1';
+const GAME_VERSION = '4.86.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.86.2', date:'2026-09-25', title:'💥 Juicy Burst', items:['Plump Seeds is replaced by Juicy Burst: Strawberry seeds pop on hit and splash nearby enemies (bigger, stronger splash per rank)'] },
   { v:'4.86.1', date:'2026-09-25', title:'🍓 Card fixes', items:['Endless stat cards show a stack count instead of a long row of stars','Plump Seeds now makes Strawberry seeds visibly bigger with a larger hitbox (+35% per rank)'] },
   { v:'4.86.0', date:'2026-09-25', title:'📜 Endgame on the map', items:['Chapter select now has an Endgame card after Chapter 3','Tap it to open Recipe Maps (unlocks after finishing the story)'] },
   { v:'4.85.0', date:'2026-09-25', title:'📖 Chapter 3 story', items:['Chapter 3 now has a story beat before every wave','A story panel introduces each Chapter 3 boss','Every Chapter 3 boss has an epilogue — and The First Planter ends the story of Mochitopia','Chapter 2’s ending now leads into Chapter 3'] },
@@ -1447,7 +1448,7 @@ const BASIC_ATTACKS = {
     upgrades:[
       {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,desc:'+12% Basic Attack damage per rank'},
       {id:'rate',name:'Mochi Trigger',emoji:'⏩',iconKey:'ic_momo_rate',max:5,desc:'+8% fire rate per rank'},
-      {id:'size',name:'Plump Seeds',emoji:'🔴',iconKey:'ic_momo_size',max:3,desc:'+35% seed size & hitbox per rank'},
+      {id:'size',name:'Juicy Burst',emoji:'💥',iconKey:'ic_momo_size',max:3,desc:'Seeds pop on hit, splashing nearby enemies (bigger splash per rank)'},
       {id:'volley',name:'Sweet Branching',emoji:'🌱',iconKey:'ic_momo_volley',max:3,desc:'+1 seed per volley per rank'}],
     mutations:[
       {id:'ricochet',name:'Heart Ricochet',emoji:'💞',desc:'Seeds bounce to 2 new targets'},
@@ -6881,7 +6882,7 @@ class Game extends Phaser.Scene {
     if(b.texture&&b.texture.key!=='proj_sprinkle')b.setTexture('proj_sprinkle');   // คืนรูป projectile เริ่มต้น (กันรูปสกิลก่อนหน้าค้างจาก pool)
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
-    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null;
+    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null; b.seedPop=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null;
     return b;
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
@@ -6941,7 +6942,7 @@ class Game extends Phaser.Scene {
       const speed=aw?1180:980, gap=aw?38:52;   // เร็ว + รัวถี่ (machine gun) ·s่งตรง ไม่โค้ง
       let idx=0;
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
-        const shotIndex=idx++,sizeMul=basic?1+(basic.ranks.size||0)*0.35:1,b=this.getBullet(this.player.x,this.player.y,0xffffff,(0.12+lvl*0.008+(aw?0.03:0))*sizeMul); if(!b)return;   // ตัวเล็กลงอีก
+        const shotIndex=idx++,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return; const pop=basic?(basic.ranks.size||0):0; if(pop>0)b.seedPop=pop;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
         b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
@@ -7449,6 +7450,7 @@ class Game extends Phaser.Scene {
       bullet.pierceLeft=(bullet.pierceLeft||1)-1; if(bullet.pierceLeft<=0)this.killBullet(bullet); return; }
     if(bullet.pierce){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.16; this.damage(enemy,bullet.dmg,bullet.x,bullet.y); this.chainFrom(bullet,enemy); return; }
     this.damage(enemy,bullet.dmg,bullet.x,bullet.y);if(enemy.active&&bullet.knockback&&!enemy.isBoss&&!enemy.isMini){const a=Math.atan2(enemy.y-this.player.y,enemy.x-this.player.x);enemy.setVelocity(Math.cos(a)*bullet.knockback,Math.sin(a)*bullet.knockback);enemy.knock=0.22;} this.chainFrom(bullet,enemy);
+    if(bullet.seedPop>0){ const pr=bullet.seedPop,r=46+pr*14,pd=bullet.dmg*(0.25+pr*0.12); this.burst(bullet.x,bullet.y,0xff6b8a); this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==enemy&&this.dist(o.x,o.y,bullet.x,bullet.y)<r)this.damage(o,pd,o.x,o.y); }); }   // Juicy Burst: เมล็ดแตกกระเซ็นโดนรอบข้าง
     if(bullet.explode){ this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8);if(bullet.sticky)this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,bullet.x,bullet.y)<bullet.explode)e.frozen=Math.max(e.frozen||0,0.45);});this.killBullet(bullet); return; }   // จรวดระเบิด AoE
     if(bullet.bounce>0){ bullet.bounce--;
       let nb=null,nd=360*360;
