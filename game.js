@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.88.2';
+const GAME_VERSION = '4.89.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.89.0', date:'2026-09-25', title:'⚡ Taro Storm Charge', items:['Taro lightning no longer locks onto bosses','Every lightning hit on a regular enemy stores ⚡1 charge','At 10 charges a Judgment Bolt strikes the boss or miniboss for heavy damage — clear the adds to power up'] },
   { v:'4.88.2', date:'2026-09-25', title:'↺ Talent reset', items:['Character Talents page has a Reset button: pay Sugar to refund every Talent Point (tap twice to confirm)','Cost grows with points spent: 🍬80 + 40 per point'] },
   { v:'4.88.1', date:'2026-09-25', title:'⚡ Taro vs bosses', items:['Taro’s lightning now locks onto bosses and minibosses first','Spare strikes hit the boss again instead of fizzling, and bolts deal +45% to bosses'] },
   { v:'4.88.0', date:'2026-09-25', title:'🌟 Character Talents & Passives', items:['New Character Talents page (Gear & Power): spend Talent Points earned from your character level','Every character now has an always-on passive that grows with character level: Momo Lucky Seeds · Mint Frost Skin · Cocoa Bear Grit · Taro Rift Step · Sesame Oath Focus'] },
@@ -6633,7 +6634,15 @@ class Game extends Phaser.Scene {
         if(e._aura){e._aura.destroy();e._aura=null;} if(e._dashTel){e._dashTel.destroy();e._dashTel=null;} e.setActive(false).setVisible(false).setAlpha(1); if(e.body)e.body.enable=false; }}); });
     if(n>0)this.showBanner('🏃 The swarm retreats!',this.enemies.countActive(true)>n?'Defeat the remaining Elites to advance':'The way ahead is clear',1300);
   }
-  resetRelics(){ this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; }
+  // v4.89.0: Taro Storm Charge — เก็บ ⚡ จากมอนธรรมดา ครบ TARO_CHARGE_MAX แล้วฟาดบอส/มินิที่มีชีวิต (ไม่มีบอส = เก็บค้างเต็มไว้)
+  taroChargeGain(n,dmg){ const MAX=10; this._taroCharge=Math.min(MAX,(this._taroCharge||0)+n);
+    if(n>0&&this.player)this.floatText?.(this.player.x,this.player.y-58,'⚡'+this._taroCharge+'/'+MAX,this._taroCharge>=MAX?0xffe14d:0x9fd8ff);
+    if(this._taroCharge<MAX)return; let tgt=null; this.enemies.children.iterate(e=>{ if(e&&e.active&&(e.isBoss||e.isMini)&&(!tgt||e.isBoss))tgt=e; });
+    if(!tgt)return; this._taroCharge=0;
+    for(let k=0;k<3;k++)this.time.delayedCall(k*70,()=>{ if(tgt.active)this.zap(tgt.x+Phaser.Math.Between(-18,18),tgt.y); });
+    this.damage(tgt,dmg*6,tgt.x,tgt.y); this.screenShake(220,0.012); this.screenFlash?.(0xfff3a0,0.35,160); this.hitStop?.(60);
+    this.showBanner('⚡ Judgment Bolt!','Storm Charge unleashed',1100); }
+  resetRelics(){ this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ return RELIC_CAP-((this.relics&&this.relics.length)||0); }
   relicDmg(mul){ return (10+(this.level||1)*1.5)*(this.player.dmgMul||1)*(1+(this.stageIndex||0)*0.35)*mul; }
@@ -6977,13 +6986,14 @@ class Game extends Phaser.Scene {
       const cand=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<(aw?760:520)) cand.push(e); });
       cand.sort((a,b)=>this.dist(a.x,a.y,this.player.x,this.player.y)-this.dist(b.x,b.y,this.player.x,this.player.y));   // เล็งตัวใกล้สุดก่อน (เดิมเล็ง HP สูง = ผ่ามั่ว)
       this.hitCratesInRadius(this.player.x,this.player.y,aw?760:520,dmg);   // ฟ้าผ่าก็ทุบกล่องในระยะ
-      // v4.88.1: Taro สู้บอสยาก — ฟ้าผ่าลูกแรกล็อกบอส/มินิก่อน · ถ้ามอนน้อยกว่าจำนวนฟาด ลูกที่เหลือฟาดบอสซ้ำ · ดาเมจใส่บอส ×1.45
-      const bigT=cand.find(e=>e.isBoss||e.isMini); if(bigT){ cand.splice(cand.indexOf(bigT),1); cand.unshift(bigT); }
-      for(let i=0;i<(bigT?strikes:Math.min(strikes,cand.length));i++){ let e=cand[i]||bigT; if(!e||!e.active)continue; this.zap(e.x,e.y); this.damage(e,dmg*((e.isBoss||e.isMini)?1.45:1),e.x,e.y);
+      // v4.89.0: Taro Storm Charge — ฟ้าผ่าเล็งตัวใกล้สุดปกติ · ทุกฮิตโดนมอนธรรมดา = ⚡+1 · ครบ 10 → Judgment Bolt ฟาดบอส/มินิ ×6
+      let gain=0; const isBig=o=>o.isBoss||o.isMini;
+      for(let i=0;i<Math.min(strikes,cand.length);i++){ const e=cand[i]; if(!e||!e.active)continue; this.zap(e.x,e.y); this.damage(e,dmg,e.x,e.y); if(!isBig(e))gain++;
         let from=e; const hit=new Set([e]);
         for(let c=0;c<chain;c++){ let nb=null,nd=((aw?210:150)*bChainRange)**2;
           this.enemies.children.iterate(o=>{ if(o&&o.active&&!hit.has(o)){ const d=(o.x-from.x)**2+(o.y-from.y)**2; if(d<nd){nd=d;nb=o;} } });
-          if(!nb)break; this.chainBolt(from.x,from.y,nb.x,nb.y); this.damage(nb,dmg*0.7,nb.x,nb.y); hit.add(nb); from=nb; } }
+          if(!nb)break; this.chainBolt(from.x,from.y,nb.x,nb.y); this.damage(nb,dmg*0.7,nb.x,nb.y); if(!isBig(nb))gain++; hit.add(nb); from=nb; } }
+      if(this.character==='taro')this.taroChargeGain(gain,dmg);
       Sfx.zap(); }
     else if(key==='whirl'){ const cnt=aw?16:lvl>=6?12:lvl>=4?10:lvl>=2?8:6, dmg=(4+lvl*1.8)*dm*(aw?1.15:1);
       const big=(lvl>=3?1.4:1.1)*(aw?1.2:1), speed=(lvl>=3?340:300)*(aw?1.2:1), pierce=lvl>=6||aw, tint=aw?0xffd166:0x8fd0ff; this.whirlAng+=0.5;

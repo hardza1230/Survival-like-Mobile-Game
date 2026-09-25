@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.89.0 — Taro Storm Charge)
+- **v4.89.0 (เจ้าของ: Taro เก่งเกินหลัง v4.88.1 → เลือก ข. เก็บ stack):** ยกเลิกล็อกบอส/ฟาดซ้ำ/×1.45 ของ v4.88.1 · ฟ้าผ่าเล็งตัวใกล้สุดตามเดิม · ทุกฮิต (รวม chain) ใส่มอนที่ไม่ใช่บอส/มินิ = ⚡+1 (`this._taroCharge`, reset ใน resetRelics) · ครบ 10 + มีบอส/มินิ → `taroChargeGain` Judgment Bolt ดาเมจ ×6 ของ strike (ไม่มีบอส = เก็บเต็มค้างไว้) · verified headless 0 error · ถ้ายังแรง/อ่อน จูน MAX หรือ ×6
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.88.2 — ปุ่มรีเซ็ต Talent)
 - **v4.88.2 (เจ้าของสั่ง):** `buildTalents` ปุ่ม ↺ Reset Talents ใต้รายการ · ราคา 🍬80+40×แต้มที่ใช้ · แตะ 2 ครั้งยืนยัน (`_talResetArm` 2.5s) · คืน TP ทั้งหมด ล้าง `cp.tal` · verified headless: ใช้ 3 แต้ม → +3 TP −🍬200, screenshot ok
 
