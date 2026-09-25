@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.93.0';
+const GAME_VERSION = '4.94.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.94.0', date:'2026-09-25', title:'🛤 Build Paths (Strawberry)', items:['At level 5 Strawberry picks a Build Path: Sniper, Shotgun or Ricochet','Each path reshapes your seeds and unlocks 2 exclusive upgrades · the other paths lock for the stage']},
   { v:'4.93.0', date:'2026-09-25', title:'🧭 More utility mods', items:['5 new utility mods: Sugar Find, Box Find, Currency Find, Unique Cooldown, Speed & Pickup','Utility mods can now roll on gloves (Unique Cooldown) and more amulet/ring/boot combinations'] },
   { v:'4.92.0', date:'2026-09-25', title:'📊 Full tier table', items:['Affix Forge shows every tier (T0–T10) of the targeted or selected mod, with its value range and your chance per tier','T10 can now roll at any item level — higher item level just unlocks better tiers on top','Tiers above your item’s best are shown locked'] },
   { v:'4.91.0', date:'2026-09-25', title:'🎲 Bigger mod pool + T0–T10 tiers', items:['8 new mods: Flat DMG, Crit & Haste, Max HP %, Regen % HP/s, HP & Guard, Healing Taken, Speed & Dash, EXP & Pickup','Mod tiers now range from T10 (weakest) to T0 (strongest)','Each roll spreads across 5 tiers: higher item level and better base push the range toward T0, but the best tier is always the rarest','Existing gear keeps its values and is re-labelled on the new tier scale'] },
@@ -1513,6 +1514,20 @@ const BASIC_ATTACKS = {
       {id:'fortress',name:'Mirror Fortress',emoji:'🏰',desc:'+25% circle radius'},
       {id:'retaliate',name:'Retaliation',emoji:'💢',desc:'+30% pulse power and slows hit enemies'}]},
 };
+// 🛤 Build Path (v4.94) — เลเวล 5 เลือก 1 ใน 3 สาย · ปิดอีก 2 สาย · สายเปลี่ยน "รูปแบบ" ดาเมจ ไม่ได้บวกเพิ่มรวม
+const BASIC_PATHS={
+  momo:[
+    {id:'sniper',name:'Sniper Seeds',emoji:'🎯',desc:'Half the seeds, ×1.9 damage each, faster and they pierce · big-target killer',
+      upgrades:[{id:'headshot',name:'Headshot',emoji:'🎯',max:3,desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
+                {id:'deadeye',name:'Deadeye',emoji:'👁️',max:3,desc:'+15% damage to elites, minibosses and bosses per rank'}]},
+    {id:'shotgun',name:'Seed Shotgun',emoji:'💥',desc:'+2 seeds in a wide spread, short range, ×0.6 damage each · +40% up close',
+      upgrades:[{id:'pointblank',name:'Point Blank',emoji:'🔥',max:3,desc:'+15% close-range bonus per rank'},
+                {id:'buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'}]},
+    {id:'ricochet',name:'Ricochet Seeds',emoji:'💞',desc:'+2 bounces per seed, ×0.8 damage each · swarm clearer',
+      upgrades:[{id:'carom',name:'Carom',emoji:'🔁',max:3,desc:'+1 bounce per rank'},
+                {id:'gather',name:'Gathering Juice',emoji:'🧃',max:3,desc:'+8% damage per bounce per rank (stacks along the chain)'}]}]
+};
+
 const CHARACTER_UNIQUES = {
   berryRebound:{name:'Strawberry Rebound',emoji:'🍓',cd:8,color:0xff76a8,desc:'Fires sweet seeds all around and heals HP — moderate power, low cooldown'},
   mintSanctuary:{name:'Diamond Dust',emoji:'❄️',cd:11,color:0x8fd0ff,desc:'Summons a wide snowstorm around you, raining ice shards that hit repeatedly, freezing crowds + brief guard'},
@@ -6635,7 +6650,8 @@ class Game extends Phaser.Scene {
       this.drawReadableChoiceCard(this.lvlUp,o,x,y,finalCardW,ch,{index:i});
       this.lvlCards.push({left:x,right:x+finalCardW,top:y,bottom:y+ch,apply:o.apply,title:o.title,opt:o});
     });
-    if(this._relicPick)this.lvlActionBtns=[]; else this.drawLevelActionBar(h-40);
+    const pathPick=opts[0]&&opts[0].kind==='Build Path'; if(pathPick)t.setText('🛤 BUILD PATH — pick 1 · tap again to confirm');
+    if(this._relicPick||pathPick)this.lvlActionBtns=[]; else this.drawLevelActionBar(h-40);
     this.lvlUp.setVisible(true);
   }
   // แถบปุ่ม "🎲 Reroll" + "🚫 Banish" (ใช้ได้จำกัดต่อด่าน)
@@ -6804,6 +6820,12 @@ class Game extends Phaser.Scene {
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey:u.iconKey||fallbackIcon,...extra});
+    // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
+    const PATHS=BASIC_PATHS[b.character];
+    if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=5){
+      this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
+      return PATHS.map(pt=>makeCard(pt,{kind:'Build Path',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
+    }
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) timesเดียว: การ์ดทั้งจอเป็น mutation ล้วน
     if(!noSpecial&&b.mastery>=8&&!b.mutation){   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
       const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
@@ -6821,8 +6843,9 @@ class Game extends Phaser.Scene {
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const atk=[];
-    const COUNT_IDS={volley:1,arc:1,surge:1,cluster:1,pane:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
-    for(const u of d.upgrades){const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
+    const COUNT_IDS={volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,carom:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
+    const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades:[];
+    for(const u of d.upgrades.concat(pathUps)){const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
       const rr=rollRarity(),potNote=(!COUNT_IDS[u.id]&&rr.potency>1)?('  ⚡+'+Math.round((rr.potency-1)*100)+'% roll'):''; atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,desc:u.desc+potNote,apply:()=>{
         const isCount=COUNT_IDS[u.id],pot=isCount?1:(rr.potency||1);
         b.lv[u.id]=Math.min(u.max,(b.lv[u.id]||0)+1);
@@ -7005,7 +7028,7 @@ class Game extends Phaser.Scene {
     if(b.texture&&b.texture.key!=='proj_sprinkle')b.setTexture('proj_sprinkle');   // คืนรูป projectile เริ่มต้น (กันรูปสกิลก่อนหน้าค้างจาก pool)
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
-    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null; b.seedPop=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null;
+    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null; b.seedPop=0; b.headshot=0; b.bigMul=0; b.closeMul=0; b.bounceGain=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null;
     return b;
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
@@ -7061,15 +7084,20 @@ class Game extends Phaser.Scene {
       let shots=aw?6:lvl>=6?4:lvl>=5?3:lvl>=3?2:1;   // v4.20 nerf ต่อ: multishot หายากขึ้นมาก (ส่วนใหญ่ 1-2 นัด) — ลดความ "ยิงรัวโกง"
       if(basic)shots=Math.min(12,shots+(basic.ranks.volley||0)+(basic.mutation==='fan'?2:0)+(basic.evolved?2:0));
       if(this.player.twinSprinkle) shots+=3;if(sw.skill===key)shots+=this.player.weaponShots||0;if(basic)shots=Math.min(12,shots);
+      const path=basic?basic.path:null,R=basic?basic.ranks:{}; if(path==='sniper')shots=Math.max(1,Math.ceil(shots/2)); else if(path==='shotgun')shots=Math.min(14,shots+2+(R.buckshot||0));
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
-      const speed=aw?1180:980, gap=aw?38:52;   // เร็ว + รัวถี่ (machine gun) ·s่งตรง ไม่โค้ง
+      const speed=(aw?1180:980)*(path==='sniper'?1.35:1), gap=path==='shotgun'?0:(aw?38:52);   // เร็ว + รัวถี่ (machine gun) ·s่งตรง ไม่โค้ง
       let idx=0;
       const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
         const shotIndex=idx++,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return; const pop=basic?(basic.ranks.size||0):0; if(pop>0)b.seedPop=pop;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
-        b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
-        const fan=basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0,ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(-0.08,0.08);
+        b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;
+        b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;
+        if(path==='sniper'){b.dmg*=1.9;b.pierce=true;b.hitGapV=0.3;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);}
+        else if(path==='shotgun'){b.dmg*=0.6;b.life=0.42;b.closeMul=0.40+0.15*(R.pointblank||0);}
+        else if(path==='ricochet'){b.dmg*=0.8;b.bounce+=2+(R.carom||0);b.bounceGain=0.08*(R.gather||0);}   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
+        const fan=path==='shotgun'?(shotIndex-(shots-1)/2)*0.16:(basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0),ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(-0.08,0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne); }
     else if(key==='thunder'){
@@ -7574,16 +7602,22 @@ class Game extends Phaser.Scene {
       if(bullet.shatterInfo&&bullet.shatterState&&!bullet.shatterState.done){ const si=bullet.shatterInfo; bullet.shatterState.done=true;
         this.frostShatterBurst(bullet.x,bullet.y,si.ang,si.count,si.dmg,si.freeze,si.fb,si.blizzard,si.lvl); this.killBullet(bullet); return; }
       bullet.pierceLeft=(bullet.pierceLeft||1)-1; if(bullet.pierceLeft<=0)this.killBullet(bullet); return; }
-    if(bullet.pierce){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.16; this.damage(enemy,bullet.dmg,bullet.x,bullet.y); this.chainFrom(bullet,enemy); return; }
-    this.damage(enemy,bullet.dmg,bullet.x,bullet.y);if(enemy.active&&bullet.knockback&&!enemy.isBoss&&!enemy.isMini){const a=Math.atan2(enemy.y-this.player.y,enemy.x-this.player.x);enemy.setVelocity(Math.cos(a)*bullet.knockback,Math.sin(a)*bullet.knockback);enemy.knock=0.22;} this.chainFrom(bullet,enemy);
+    const _bd=this.pathBulletDmg(bullet,enemy);
+    if(bullet.pierce){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.16; this.damage(enemy,_bd,bullet.x,bullet.y); this.chainFrom(bullet,enemy); return; }
+    this.damage(enemy,_bd,bullet.x,bullet.y);if(enemy.active&&bullet.knockback&&!enemy.isBoss&&!enemy.isMini){const a=Math.atan2(enemy.y-this.player.y,enemy.x-this.player.x);enemy.setVelocity(Math.cos(a)*bullet.knockback,Math.sin(a)*bullet.knockback);enemy.knock=0.22;} this.chainFrom(bullet,enemy);
     if(bullet.seedPop>0){ const pr=bullet.seedPop,r=46+pr*14,pd=bullet.dmg*(0.25+pr*0.12); this.burst(bullet.x,bullet.y,0xff6b8a); this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==enemy&&this.dist(o.x,o.y,bullet.x,bullet.y)<r)this.damage(o,pd,o.x,o.y); }); }   // Juicy Burst: เมล็ดแตกกระเซ็นโดนรอบข้าง
     if(bullet.explode){ this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8);if(bullet.sticky)this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,bullet.x,bullet.y)<bullet.explode)e.frozen=Math.max(e.frozen||0,0.45);});this.killBullet(bullet); return; }   // จรวดระเบิด AoE
-    if(bullet.bounce>0){ bullet.bounce--;
+    if(bullet.bounce>0){ bullet.bounce--; if(bullet.bounceGain)bullet.dmg*=1+bullet.bounceGain;
       let nb=null,nd=360*360;
       this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==enemy){ const d=(o.x-bullet.x)**2+(o.y-bullet.y)**2; if(d<nd){nd=d;nb=o;} } });
       if(nb&&bullet.body){ const sp=bullet.body.velocity.length()||460, ang=Math.atan2(nb.y-bullet.y,nb.x-bullet.x);
         this.physics.velocityFromRotation(ang,sp,bullet.body.velocity); return; } }
     this.killBullet(bullet); }
+  pathBulletDmg(b,e){ let d=b.dmg;   // 🛤 Build Path: ตัวคูณตามสาย (sniper/shotgun)
+    if(b.bigMul&&(e.isBoss||e.isMini||e.isElite))d*=1+b.bigMul;
+    if(b.headshot&&Math.random()<b.headshot){d*=2.5;this.popDmg('HEADSHOT',e.x,e.y-18,true);}
+    if(b.closeMul&&this.player&&this.dist(e.x,e.y,this.player.x,this.player.y)<170)d*=1+b.closeMul;
+    return d; }
   damage(e,amount,x,y){ if(!e.active)return;
     // Phase Gate: Lockedดาเมจทันทีที่ชนเส้นเลือด และInvincibleจนแอนิเมชันเปลี่ยนเฟสจบ
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){

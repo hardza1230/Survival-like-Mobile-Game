@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.94.0 — Build Path (Momo))
+- **v4.94.0 (เจ้าของเลือกไอเดีย B · ไม่กลับไปใช้หลายอาวุธ · เห็นด้วย A/B/G ทำ B ก่อน):** `BASIC_PATHS[char]` (ตอนนี้มีแค่ momo) · `rollBasicAttackUpgrades` เลเวล ≥5 + `!b.path` → การ์ด 3 ใบ kind 'Build Path' (ก่อน mutation, ซ่อน reroll/banish) · เลือกแล้วตั้ง `b.path` (reset ทุกด่านผ่าน initBasicAttack) + ปลด 2 upgrade เฉพาะสาย (ต่อท้าย d.upgrades) · **Sniper** เมล็ด ceil(/2) ×1.9 เร็ว×1.35 pierce (headshot 7%/rank ×2.5, deadeye +15%/rank ใส่ elite/มินิ/บอส) · **Shotgun** +2 เม็ด fan 0.16 ยิงพร้อมกัน life 0.42 ×0.6 ใกล้ <170px +40% (pointblank +15%/rank, buckshot +1/rank) · **Ricochet** bounce +2 ×0.8 (carom +1/rank, gather +8% ดาเมจต่อการเด้ง/rank) · ดาเมจผ่าน `pathBulletDmg(b,e)` ใน hitEnemy · verified headless 3 สาย + screenshot, 0 error · **ถัดไป:** เจ้าของเล่นดูว่าสนุกไหม → ขยาย 4 ตัวที่เหลือ → A (Flavor Infusion) → G (tag set) · sniper pierce ไม่จำกัดอาจแรง ต้องจูน
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.93.0 — utility mod เพิ่ม 5 = pool 28)
 - **v4.93.0 (เจ้าของสั่ง):** AFFIX_POOL +5 utility (validator ล็อก 28): sugarfind (`p.sugarFindMul` → kill sugar ปัดแบบสุ่ม + rollStageReward คูณกับ rankSugarMul) · boxfind (`p.boxFindMul` → chest drop rate ใน killEnemy) · orbfind (`p.currencyFindMul` → จำนวน currency ข้าง _currencyLuckMul) · uniquecd (prefix gloves/amulet, `p.uniqueCdMul` ใน uniqueCooldown floor 0.6) · wayfarer (spd+pickup×3) · reset 4 field ใน applyMeta · weight 50-95 · verified: 300 kill base 300 → find+50% 435, unique cd ×0.85, 0 error
 
