@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.91.0 — mod pool 23 + tier T0-T10)
+- **v4.91.0 (เจ้าของสั่ง):** AFFIX_POOL +8 (edge flatDmg · precision crit+cd · hppct · regenpct · bulwark hp+def · mend healEffect · sprint spd+dash · forager xp+pickup) = 23 (validator ล็อก 23) + weight ใน AFFIX_WEIGHT · **Tier T0(ดีสุด)-T10:** `expandAffixTiers` แปลง 5 band เดิม → 11 band (T5lo×0.5…T1hi×1.2 geometric, `mod.tiers5` เก็บของเดิม, index = tier ตรง) · `affixBestTierForItem` = round(10−iLv/9) + `BASE_TIER_OFFSET` (legend0/epic1/rare1/common2) · `rollTier` สุ่มในหน้าต่าง best…best+4 ถ่วง (d+1)^1.3 (tier ดีสุด ~5%) · affix ใหม่มี `t11:1` · `Save.migrateAffixTiers11()` ใน load แปลง t เดิมจากค่า v (`affixTierForValue`) · BASE_BEST_TIER/bestAffixTierForItemLevel เหลือเป็น dead code · verified: rare iLv60 T4-T8, legend iLv100 T0-T4, 0 error · หมายเหตุ: mod ค่าเล็ก (crit ฯลฯ) tier ต่ำ ๆ ค่าซ้ำกันได้
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.90.0 — Auto-Roll ทีละครั้ง + weight ของ mod)
 - **v4.90.0 (เจ้าของสั่ง):** `autoRollToTarget` เขียนใหม่: overlay หมุนทีละ roll (delay 260→170ms) โชว์ผล/จำนวนรอบ/currency ที่ใช้ + ปุ่ม ⏹ Stop · จบเมื่อได้เป้า/currency หมด/หยุด · **Weight:** `AFFIX_WEIGHT` (default 100 · crit/cd 50, bossdmg 45, def 60, dmg 70, special berserk/focus 18, gambler 24, vampiric 30, nourish 40, utility 110-130) + `pickWeightedMod` ใช้ใน rollAffixes/randomCraftSelected/autoRoll · roll pool โชว์ % ต่อ roll (`affixChancePct`) + ★★/★★★ (`affixRarityTag`, weight ≤60/≤30) · verified headless: dist 5000 ครั้ง def 13% vs hp 24%, auto-roll ได้เป้าใน 13 รอบ, screenshot ok, 0 error
 

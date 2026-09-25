@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.90.0';
+const GAME_VERSION = '4.91.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.91.0', date:'2026-09-25', title:'🎲 Bigger mod pool + T0–T10 tiers', items:['8 new mods: Flat DMG, Crit & Haste, Max HP %, Regen % HP/s, HP & Guard, Healing Taken, Speed & Dash, EXP & Pickup','Mod tiers now range from T10 (weakest) to T0 (strongest)','Each roll spreads across 5 tiers: higher item level and better base push the range toward T0, but the best tier is always the rarest','Existing gear keeps its values and is re-labelled on the new tier scale'] },
   { v:'4.90.0', date:'2026-09-25', title:'🔁 Auto-Roll + mod weights', items:['Auto-Roll now spins roll by roll on screen until it hits your target, runs out of currency, or you tap Stop','Mods have weights: strong mods (Crit, Cooldown, Boss DMG, Berserker…) are harder to roll','The roll pool shows each mod’s chance per roll, with ★★/★★★ on rare mods'] },
   { v:'4.89.2', date:'2026-09-25', title:'🫧 Candy Shell fix', items:['Candy Shell now also blocks contact hits from enemies (before it only blocked projectiles)','A glowing bubble shows around you while a shield is up, and pops when it blocks'] },
   { v:'4.89.1', date:'2026-09-25', title:'💢 Tougher hits', items:['Shorter invulnerability after taking damage (×0.6): enemies and projectiles can hit you more often'] },
@@ -1848,6 +1849,15 @@ const AFFIX_POOL = [
   { id:'pick', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'🧲', label:'Pickup', suf:'of Magnetism', fmt:v=>'+'+v+'%', tiers:[[35,50],[25,34],[18,24],[12,17],[8,11]], apply:(p,v)=>{ p.pickup*=(1+v/100); } },
   { id:'xp', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'✨', label:'EXP Gain', suf:'of Insight', fmt:v=>'+'+v+'%', tiers:[[17,22],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.xpMul=(p.xpMul||1)*(1+v/100); } },
   { id:'dash', category:'utility', slots:['boots','ring'], kind:'suffix', emoji:'💨', label:'Dash Recovery', suf:'of Momentum', fmt:v=>'-'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.dashCdMul=(p.dashCdMul||1)*(1-v/100); } },
+  // ── v4.91: mod เพิ่ม (ใช้ field เดิมทั้งหมด) ──
+  { id:'edge', category:'offense', slots:['weapon','gloves'], kind:'prefix', emoji:'🗡️', label:'Flat DMG', pre:'Honed', fmt:v=>'+'+v+' per hit', tiers:[[4,5],[3,3],[2,2],[1,2],[1,1]], apply:(p,v)=>{ p.flatDmg=(p.flatDmg||0)+v; } },
+  { id:'precision', category:'offense', slots:['gloves','amulet'], kind:'prefix', emoji:'🏹', label:'Crit & Haste', pre:'Precise', fmt:v=>'+'+v+'% / -'+v+'%', tiers:[[4,4],[3,3],[2,2],[1,2],[1,1]], apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; p.cdMul=Math.max(STAT_CAPS.cdMulMin,(p.cdMul||1)*(1-v/100)); } },
+  { id:'hppct', category:'defense', slots:['armor','amulet','boots'], kind:'suffix', emoji:'💪', label:'Max HP %', suf:'of Vigor', fmt:v=>'+'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.maxhp=Math.round(p.maxhp*(1+v/100)); } },
+  { id:'regenpct', category:'defense', slots:['armor','ring'], kind:'suffix', emoji:'🌱', label:'Regen % HP/s', suf:'of Renewal', fmt:v=>'+'+(v/10)+'%', tiers:[[7,8],[5,6],[4,4],[2,3],[1,1]], apply:(p,v)=>{ p.regenPct=(p.regenPct||0)+v/1000; } },
+  { id:'bulwark', category:'defense', slots:['armor','gloves'], kind:'suffix', emoji:'🏰', label:'HP & Guard', suf:'of the Bulwark', fmt:v=>'+'+(v*3)+' HP / -'+Math.ceil(v/2)+'%', tiers:[[9,10],[7,8],[5,6],[3,4],[2,2]], apply:(p,v)=>{ p.maxhp+=v*3; p.dmgTakenMul*=(1-Math.ceil(v/2)/100); } },
+  { id:'mend', category:'defense', slots:['amulet','ring'], kind:'suffix', emoji:'🩹', label:'Healing Taken', suf:'of Mending', fmt:v=>'+'+v+'%', tiers:[[25,32],[18,24],[12,17],[8,11],[4,7]], apply:(p,v)=>{ p.healEffect=(p.healEffect||1)+v/100; } },
+  { id:'sprint', category:'utility', slots:['boots'], kind:'suffix', emoji:'🏃', label:'Speed & Dash', suf:'of the Sprinter', fmt:v=>'+'+v+'% / -'+v+'%', tiers:[[5,6],[4,4],[3,3],[2,2],[1,1]], apply:(p,v)=>{ p.baseSpeed*=(1+v/100); p.dashCdMul=(p.dashCdMul||1)*(1-v/100); } },
+  { id:'forager', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'🧺', label:'EXP & Pickup', suf:'of the Forager', fmt:v=>'+'+v+'%', tiers:[[12,15],[9,11],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.xpMul=(p.xpMul||1)*(1+v/100); p.pickup*=(1+v/100); } },
 ];
 const AFFIX_CATEGORY = {
   offense:{label:'Offense',color:0xff9a5a,hex:'#ffb07a'},
@@ -1878,11 +1888,21 @@ const SPECIAL_AFFIX_POOL = [
 ]; // Future schema: {id,kind,label,tiers,apply,baseIds?,baseTags?,slots?,minItemLevel?,exclusive:true}
 // v4.90: น้ำหนักสุ่ม mod — mod แรง/หายาก = weight ต่ำ (ออกยาก) · ค่าเริ่มต้น 100
 const AFFIX_WEIGHT = { dmg:70, crit:50, critdmg:55, cd:50, bossdmg:45, laststand:80, hp:110, def:60, regen:100, lifekill:90, crisisguard:85, spd:110, pick:130, xp:120, dash:100,
+  edge:40, precision:35, hppct:65, regenpct:55, bulwark:60, mend:90, sprint:70, forager:95,
   vampiric:30, berserk:18, focus:18, gambler:24, nourish:40 };
 function affixWeight(mod){ return (mod&&AFFIX_WEIGHT[mod.id])||100; }
 function pickWeightedMod(arr){ if(!arr||!arr.length)return null; let tot=0; for(const m of arr)tot+=affixWeight(m); let r=Math.random()*tot; for(const m of arr){ r-=affixWeight(m); if(r<=0)return m; } return arr[arr.length-1]; }
 function affixChancePct(mod,arr){ let tot=0; for(const m of arr)tot+=affixWeight(m); const v=tot?affixWeight(mod)/tot*100:0; return v>=10?Math.round(v):v.toFixed(1); }
 function affixRarityTag(mod){ const w=affixWeight(mod); return w<=30?'★★★':w<=60?'★★':''; }
+// v4.91: ขยาย tier เป็น T0 (ดีสุด) … T10 (แย่สุด) · สร้างจาก 5 band เดิม: ช่วงค่า = T5lo×0.5 … T1hi×1.2 แบ่ง 11 ขั้นแบบ geometric
+const AFFIX_TIER_MAX=10;
+function expandAffixTiers(mod){ if(!mod||!mod.tiers||mod.tiers.length>5)return; const old=mod.tiers; mod.tiers5=old;
+  const lo=Math.max(1,Math.floor(old[4][0]*0.5)), hi=Math.max(lo+1,Math.round(old[0][1]*1.2)), out=[];
+  for(let t=0;t<=AFFIX_TIER_MAX;t++){ const f0=(AFFIX_TIER_MAX-t)/(AFFIX_TIER_MAX+1), f1=(AFFIX_TIER_MAX-t+1)/(AFFIX_TIER_MAX+1);
+    const a=Math.max(lo,Math.round(lo*Math.pow(hi/lo,f0))), b=Math.max(a,Math.round(lo*Math.pow(hi/lo,f1))-(t===0?0:1)); out.push([a,Math.max(a,b)]); }
+  mod.tiers=out; if(mod.bestTier)mod.bestTier=Math.min(AFFIX_TIER_MAX,mod.bestTier*2-1); }
+AFFIX_POOL.forEach(expandAffixTiers); SPECIAL_AFFIX_POOL.forEach(expandAffixTiers);
+function affixTierForValue(mod,v){ if(!mod||!mod.tiers)return 5; for(let t=0;t<mod.tiers.length;t++){ if(v>=mod.tiers[t][0])return t; } return mod.tiers.length-1; }
 function allAffixDefs(){return AFFIX_POOL.concat(SPECIAL_AFFIX_POOL);}
 function affixDef(id){return allAffixDefs().find(a=>a.id===id);}
 function craftAffixPoolForItem(item){if(!item)return[];const base=GEAR_ALL.find(g=>g.id===item.baseId),tags=new Set((base&&base.craftTags)||[]);
@@ -1891,18 +1911,21 @@ function craftAffixPoolForItem(item){if(!item)return[];const base=GEAR_ALL.find(
     (!a.baseIds||a.baseIds.includes(item.baseId))&&(!a.baseTags||a.baseTags.some(t=>tags.has(t))));
   return normal.concat(special);
 }
-function affixBestTierForItem(item,mod){const base=GEAR_ALL.find(g=>g.id===item.baseId),baseBest=BASE_BEST_TIER[(base&&base.tier)||item.grade]||4,levelBest=bestAffixTierForItemLevel(item.itemLevel||1),modBest=mod&&mod.bestTier?mod.bestTier:1;return Math.max(baseBest,levelBest,modBest);}
-function affixBestRangeText(item,mod){if(!mod||!mod.tiers)return'—';const t=affixBestTierForItem(item,mod),b=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1],lo=mod.fmt?mod.fmt(b[0]):b[0],hi=mod.fmt?mod.fmt(b[1]):b[1];return lo===hi?lo:(lo+' – '+hi);}
+// v4.91: tier ดีสุดที่สุ่มได้ = iLv (1→T10, 100→T0) + ออฟเซ็ตตามเกรดฐาน · สุ่มในหน้าต่าง best…best+4 (ไม่ล็อกที่ tier เดียว)
+const BASE_TIER_OFFSET={ start:6, common:2, rare:1, epic:1, legend:0 };
+function affixBestTierForItem(item,mod){const base=item&&GEAR_ALL.find(g=>g.id===item.baseId),grade=(base&&base.tier)||(item&&item.grade)||'common',lvl=Math.max(1,Math.min(100,(item&&item.itemLevel)||1));
+  const levelBest=Math.max(0,Math.round(AFFIX_TIER_MAX-lvl/9));return Math.min(AFFIX_TIER_MAX,Math.max(levelBest+(BASE_TIER_OFFSET[grade]??3),(mod&&mod.bestTier)||0));}
+function affixBestRangeText(item,mod){if(!mod||!mod.tiers)return'—';const t=affixBestTierForItem(item,mod),b=mod.tiers[t]||mod.tiers[mod.tiers.length-1],lo=mod.fmt?mod.fmt(b[0]):b[0],hi=mod.fmt?mod.fmt(b[1]):b[1];return lo===hi?lo:(lo+' – '+hi);}
 // v4.29: เติมช่องว่าง — common/magic ใช้ Spark Sugar (transmute, ได้บ่อย) · rare ใช้ Wish Candy (exalt) · reroll ช่องเดิม: rare=Wild Jam, magic=Twist Cream
 function craftCurrencyForLine(rarity,hasLine){if(!hasLine)return rarity==='rare'?'exalt':'transmute';return rarity==='rare'?'chaos':'alt';}
 // สุ่ม tier ระหว่าง best..5 · ถ่วงให้ tier แย่เจอบ่อย (T1 หายาก = loot chase)
 // iLv มีผลกับ Tier ที่ออก: แบ่งช่วงละ 10 เลเวล (step 0..9) → ยิ่ง iLv สูง bias ยิ่งลด = tier แย่ (t สูง) ถูกถ่วงน้อยลง = tier ดีออกบ่อยขึ้น
-function rollTier(best,ilvl){ const step=Math.max(0,Math.min(9,Math.floor(((Number(ilvl)||1)-1)/10))); const bias=1-Math.min(0.62,step*0.075); const list=[]; let tot=0; for(let t=best;t<=5;t++){ const w=t*t*Math.pow(bias,t-best); list.push([t,w]); tot+=w; } let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return best; }
-function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl), band=mod.tiers[t-1]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v}; }
+function rollTier(best,ilvl){ const top=Math.min(AFFIX_TIER_MAX,best+4); const list=[]; let tot=0; for(let t=best;t<=top;t++){ const w=Math.pow(t-best+1,1.3); list.push([t,w]); tot+=w; } let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return top; }
+function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl), band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v,t11:1}; }
 function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:l<45?3:99;}   // ของเลเวลต่ำ = mod น้อย (กันของด่านแรกโกง) ค่อย ๆ ปลดตาม iLv
-function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel));if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,best=Math.max(BASE_BEST_TIER[baseTier]||4,bestAffixTierForItemLevel(itemLevel));
+function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel));if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,tItem=stub||{grade:baseTier,itemLevel};
   const pre=pool.filter(a=>a.kind==='prefix'),suf=pool.filter(a=>a.kind==='suffix');let nPre,nSuf;if(n===1){if(Math.random()<.5){nPre=1;nSuf=0;}else{nPre=0;nSuf=1;}}else if(n===2){nPre=1;nSuf=1;}else{if(Math.random()<.5){nPre=2;nSuf=1;}else{nPre=1;nSuf=2;}}
-  const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=pickWeightedMod(p);p.splice(p.indexOf(m),1);out.push(rollOneAffix(m,Math.max(best,m.bestTier||1),itemLevel));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
+  const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=pickWeightedMod(p);p.splice(p.indexOf(m),1);out.push(rollOneAffix(m,affixBestTierForItem(tItem,m),itemLevel));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
   const best=(kind)=>{ let b=null; for(const a of affs){ const d=affixDef(a.id); if(d&&d.kind===kind&&(!b||a.t<b.t))b=a; } return b?affixDef(b.id):null; };
@@ -2067,6 +2090,7 @@ const Save = {
     for(const slot in gearDefaults){ if(!this.data.gear[slot])this.data.gear[slot]=gearDefaults[slot];
       if(!this.data.ownedGear.includes(gearDefaults[slot]))this.data.ownedGear.push(gearDefaults[slot]); }
     gearMigrated=this.migrateGearInstances(gearDefaults);
+    this.migrateAffixTiers11();
     if(!this.data.chars||!this.data.chars.length)this.data.chars=['momo'];
     if(!this.data.character)this.data.character='momo';
     if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (Berry) → คืนเป็นโมโม่
@@ -2127,6 +2151,10 @@ const Save = {
       itemLevel:Math.max(1,Math.min(100,Math.floor(Number(opts.itemLevel)||currentRewardItemLevel()))), chapter:clampItemChapter(opts.chapter||base.chapter||currentItemChapter()),
       affixes:clone(opts.affixes!=null?opts.affixes:rollAffixes(base.tier,opts.itemLevel||currentRewardItemLevel(),base)), locked:!!opts.locked, favorite:!!opts.favorite,
       isNew:opts.isNew!==false, acquiredAt:Number(opts.acquiredAt)||Date.now() }; },
+  // v4.91: tier เดิม 1-5 → T0-T10 คำนวณจากค่าที่โรลไว้ (ค่า v ไม่เปลี่ยน)
+  migrateAffixTiers11(){ const fix=list=>{ for(const it of (list||[])){ for(const a of ((it&&it.affixes)||[])){ if(a&&!a.t11){ const d=affixDef(a.id); if(d){ a.t=affixTierForValue(d,a.v); a.t11=1; } } } } };
+    fix(this.data.gearItems); fix(this.data.gearInbox);
+    const ga=this.data.gearAffix||{}; for(const k in ga)fix([{affixes:ga[k]}]); },
   migrateGearInstances(gearDefaults){ let changed=false;
     if(!Array.isArray(this.data.gearItems)||Number(this.data.gearSchemaVersion||0)<1){
       this.data.gearItems=[]; this.data.equippedGear={}; this.data.gearUidSeq=0;
@@ -4880,7 +4908,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(200,step);
   }
   promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
-  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v),b=mod.tiers[(a.t||5)-1]||mod.tiers[4];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'VALUE REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
+  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v),b=mod.tiers[a.t??5]||mod.tiers[5];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'VALUE REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
   annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}const old=affs[line],mod=affixDef(old.id);affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);this._craftResult={uid:item.uid,title:'AFFIX REMOVED',before:mod.label+' '+mod.fmt(old.v),after:'Empty line'};Sfx.clear();this.showBanner('🟣 Line removed','An empty affix line is now available',1300);this.buildCraftBench();}
   scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}const count=Save.gearAffixes(item.uid).length;Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;this._craftResult={uid:item.uid,title:'ITEM RESET',before:count+' affix'+(count===1?'':'es'),after:'0 affixes · 1 slot'};Sfx.clear();this.showBanner('⚫ Item reset','All affixes removed · one line available',1300);this.buildCraftBench();}
   _confirmCraftAction(key,label,fn){if(this._craftConfirm===key){this._craftConfirm=null;fn();return;}this._craftConfirm=key;Sfx.select();this.showBanner('⚠ Confirm '+label,'Tap the same action again within 3 seconds',1800);this.buildCraftBench();this.time.delayedCall(3000,()=>{if(this._craftConfirm===key){this._craftConfirm=null;if(this.menuScreen==='craft')this.buildCraftBench();}});}

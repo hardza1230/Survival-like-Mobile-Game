@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '4.90.0'",
+  "const GAME_VERSION = '4.91.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -21,7 +21,7 @@ for(const contract of [
 const affixBlock=source.match(/const AFFIX_POOL = \[([\s\S]*?)\n\];\nconst AFFIX_CATEGORY/);
 if(!affixBlock)throw new Error('Cannot find expanded AFFIX_POOL block');
 const affixIds=[...affixBlock[1].matchAll(/id:'([^']+)'/g)].map(match=>match[1]);
-if(affixIds.length!==15||new Set(affixIds).size!==15)throw new Error(`Expected 15 unique affixes, found ${affixIds.length}`);
+if(affixIds.length!==23||new Set(affixIds).size!==23)throw new Error(`Expected 23 unique affixes, found ${affixIds.length}`);
 for(const category of ['offense','defense','utility']){
   const count=(affixBlock[1].match(new RegExp(`category:'${category}'`,'g'))||[]).length;
   if(count<4)throw new Error(`Expected at least four ${category} affixes, found ${count}`);
