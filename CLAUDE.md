@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.76.0 — Recipe Maps R2: เล่นได้)
+- **v4.76.0 (Phase R · R2):** ปุ่ม Run ใน `buildRecipes` = ลบ recipe ออกจากคลัง (ตาย=หาย) → `_recipeRequested` → startRun ตั้ง `recipeMode/_recipe` + ใช้โครง Rift (`riftMode=true`, `_riftTier/_riftMods` → `riftMul`→`diffMul`, stageDiff=1) · `startStage` → `startRecipeRun(st)`: ไม่มีเวฟ/มินิ/objective, +3 level-ups, `startSurvivalWave(1)` spawn เร่ง (interval×0.7, batch+1, maxLive+10) · `tickStage` wave → `tickRecipeHunger(dt)` HUD "🍽 Hunger x/goal · m:ss" · `recipeOnKill` (killEnemy, non-big: ธรรมดา 1 / elite 8) · `recipeHungerGoal()=150+tier×10` · เต็ม หรือ `RECIPE_HUNGER_CAP=180`s → bossWarning→spawnFinalBoss · `RECIPE_PAR=100`s → `_recipeFast` = โบนัส 🍬(60+tier×25)×reward · `finishRecipeBoss()` ใน onBossDown (ก่อน rift block; recipe ไม่ได้ Rift Key) บันทึก `Save.data.recipeBest[theme]`=เวลาเติมเต็มดีที่สุด · verified headless: เติม→บอส→reward, best บันทึก, 0 error · **ค่าจูน (goal/par/cap/spawn) รอ R10 · ถัดไป R3 boss drops**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.75.0 — Recipe Maps R1: คลัง)
 - **v4.75.0 (Phase R · R1):** global `RECIPE_BAG_MAX=30` `RECIPE_TIER_MAX=16` `RECIPE_RARITY`(normal0/magic1/rare2 mods) · `makeRecipe(tier,theme,rarity)` → `{uid,theme(stage idx ready),tier,rarity,mods(id จาก RIFT_MODS)}` · `recipeMul(r)` = riftTierMul×mods · `Save.data.recipes[]` (สร้างเองผ่าน `recipeBag()`) · หน้า `buildRecipes` (Activities → 📜 Recipe Maps, gate `endgameUnlocked`) กริด 3 คอลัมน์แบ่งหน้า `_recipePage`, เลือก `_recipeSel` โชว์ ตัวคูณ/mods, ปุ่ม Run (soon) + Discard แตะ 2 ครั้ง · ปุ่มรับ T1 ฟรีไม่จำกัด (`claimFreeRecipe`) · **เจ้าของตัดสินใจ: รันเฉลี่ย ~2 นาทีแบบ Hunger Meter ฆ่าเติม (เคลียร์เร็ว=จบเร็ว)** · verified headless 0 error · **ถัดไป R2**
 
