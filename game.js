@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.87.1';
+const GAME_VERSION = '4.88.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.88.0', date:'2026-09-25', title:'🌟 Character Talents & Passives', items:['New Character Talents page (Gear & Power): spend Talent Points earned from your character level','Every character now has an always-on passive that grows with character level: Momo Lucky Seeds · Mint Frost Skin · Cocoa Bear Grit · Taro Rift Step · Sesame Oath Focus'] },
   { v:'4.87.1', date:'2026-09-25', title:'⏰ Objective overtime', items:['Hunt, Escort and Capture objectives now have an overtime: stall too long and regular enemies stop dropping EXP','In Hunt overtime the marked targets stop blinking away'] },
   { v:'4.87.0', date:'2026-09-25', title:'💢 Fiercer bosses', items:['Bosses and minibosses attack more often','Bosses chain combos: after a big move they often follow up with a quick shot, trap or dash','Follow-up shots and traps aim where you are running, not where you stand','Below 30% HP bosses become ENRAGED — faster attacks and more combos'] },
   { v:'4.86.2', date:'2026-09-25', title:'💥 Juicy Burst', items:['Plump Seeds is replaced by Juicy Burst: Strawberry seeds pop on hit and splash nearby enemies (bigger, stronger splash per rank)'] },
@@ -1571,6 +1572,16 @@ const CHAR_TALENTS = {
   ],
 };
 function charTalents(c){ return CHAR_TALENTS[c]||CHAR_TALENTS.momo; }
+// v4.88: Passive ประจำตัว (ทำงานตลอด · แรงขึ้นตามเลเวลตัวละคร)
+const CHAR_PASSIVES={
+  momo:{emoji:'🍓',name:'Lucky Seeds',desc:'Critical hits heal you'},
+  mint:{emoji:'❄️',name:'Frost Skin',desc:'Getting hit freezes nearby enemies'},
+  cocoa:{emoji:'🐻',name:'Bear Grit',desc:'Below 40% HP: take less damage, deal more'},
+  taro:{emoji:'🧭',name:'Rift Step',desc:'Dashing leaves a shockwave that hits nearby enemies'},
+  sesame:{emoji:'🪞',name:'Oath Focus',desc:'Standing still boosts your damage'},
+  berry:{emoji:'💗',name:'Jam Heart',desc:'Kills have a chance to heal you'},
+};
+function charPassiveScale(lvl){ return 1+Math.min(0.9,Math.max(0,(lvl||1)-1)*0.03); }
 // EXP ที่ต้องใช้เพื่อขึ้นจากเลเวล l → l+1
 function charExpNeed(l){ return 40 + l*35; }
 
@@ -1671,6 +1682,7 @@ const PERK_TIER_REQ = { 2:3, 3:8 };   // แต้มที่ต้องลง
 const HUB_GROUPS = {
   gLoadout:{ title:'🎒 Gear & Power', rows:[
     ['stats','📊','Character Stats','See your real numbers'],
+    ['talents','🌟','Character Talents','Level up your fighter · own passive'],
     ['upgrade','✦','Flavor Weave & Rank','Cores, Rank up & 🏅 Passive tree'],
     ['gear','◆','Equipment','Equip, compare and dismantle'],
     ['craft','🧪','Affix Forge','Choose gear and a line, then roll one compatible stat'],
@@ -2956,7 +2968,7 @@ class Game extends Phaser.Scene {
 
   doDash(){
     if(!this.dashReady||this.state!=='play') return;
-    this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
+    this.charPassiveOnDash(); this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
     this.player.setVelocity(d.x*560,d.y*560);
@@ -3608,7 +3620,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='talents')this.buildTalents(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -5020,6 +5032,7 @@ class Game extends Phaser.Scene {
     const ctals=Save.cp(this.character).tal||{};
     const myTalDefs=charTalents(this.character);
     for(const def of myTalDefs){ const r=ctals[def.id]||0; if(r>0&&def.apply) def.apply(p,r); }
+    { const cpl=Save.cp(this.character).lvl||1,ps=charPassiveScale(cpl); this._cpas={id:this.character,s:ps,cd:0}; if(this.character==='cocoa'){ p.lowHpGuard=(p.lowHpGuard||0)+0.15*ps; p.lowHpDmg=(p.lowHpDmg||0)+0.20*ps; } }   // v4.88 passive ประจำตัว
     // passivesสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลWaitบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
     for(const slot in GEAR){const inst=Save.equippedGearItem(slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it&&it.apply){it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst);
@@ -7473,7 +7486,9 @@ class Game extends Phaser.Scene {
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     const RL=this._rel; if(RL){ if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
+    const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;   // 🪞 Oath Focus
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; }
+    if(crit&&CP&&CP.id==='momo'&&(this.elapsed||0)>=(CP.cd||0)){ CP.cd=(this.elapsed||0)+0.35; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(1,p.maxhp*0.006*CP.s)); }   // 🍓 Lucky Seeds
     if(crit&&RL&&(RL.splinter||RL.leech))this.relicOnCrit(e,amount,x,y);
     if(crit&&this.player._uqCritBurst&&!this._uqBursting){ this._uqBursting=true; const bx=e.x,by=e.y,bd=amount*this.player._uqCritBurst; this.burst(bx,by,0xc9a3ff);
       for(const o of this.enemies.getChildren()){ if(o.active&&o!==e&&Phaser.Math.Distance.Between(bx,by,o.x,o.y)<80)this.damage(o,bd); } this._uqBursting=false; }
@@ -7493,7 +7508,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;this.charPassiveOnKill(e);if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -7818,7 +7833,7 @@ class Game extends Phaser.Scene {
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
-    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
+    this.player.iframe=0.6; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
@@ -7837,7 +7852,7 @@ class Game extends Phaser.Scene {
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
     dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
     this._noteHit(this.mode==='boss'?'boss':this.mode==='mini'?'mini':'shot',dmg);
-    this.player.iframe=ix||0.5; this.player.hp-=dmg; this.onBonusHurt(); Sfx.hurt(); this.screenShake(150,0.009);
+    this.player.iframe=ix||0.5; this.player.hp-=dmg; this.onBonusHurt(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
     this.vfxHurtFlash();
     this.vfxHitRing(this.player.x,this.player.y,0xff5a6e,false);
@@ -8254,6 +8269,30 @@ class Game extends Phaser.Scene {
     }
   }
 
+  charPassiveOnHurt(){ const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
+    this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,px,py)<r){ e.frozen=Math.max(e.frozen||0,0.9*CP.s); if(e.setTint)e.setTint(COLORS.ice); } }); this.burst(px,py,0x8fe7ff); }
+  charPassiveOnDash(){ const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
+    this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
+  charPassiveOnKill(e){ const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
+  // v4.88: หน้า Talent ประจำตัวละคร — ใช้ TP จากเลเวลตัวละคร (Save.cp) + โชว์ passive ประจำตัว
+  buildTalents(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Character Talents');
+    const id=Save.data.character||'momo',ch=CHARACTERS[id]||{},cp=Save.cp(id),defs=charTalents(id),ps=CHAR_PASSIVES[id],sc=charPassiveScale(cp.lvl);
+    const W=this.W,top=(this.W<=this.H?80:56),bw=Math.min(W-32,400),bx=W/2-bw/2;
+    const need=charExpNeed(cp.lvl),g=this.add.graphics();
+    const hd=this.add.text(bx,top,(ch.emoji||'🍡')+' '+(ch.name||id)+'  ·  Lv '+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe9b0'}).setOrigin(0,0.5);
+    const tp=this.add.text(bx+bw,top,'🌟 '+(cp.tp||0)+' TP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:(cp.tp||0)>0?'#8ff0b0':'#9a90ab'}).setOrigin(1,0.5);
+    g.fillStyle(0x2c2338,1);g.fillRoundedRect(bx,top+14,bw,8,4);g.fillStyle(0xffc85a,1);g.fillRoundedRect(bx,top+14,Math.max(6,bw*Math.min(1,(cp.exp||0)/need)),8,4);
+    const ex=this.add.text(W/2,top+32,'EXP '+(cp.exp||0)+' / '+need+'  ·  earn EXP by playing this character',{fontFamily:'sans-serif',fontSize:'9px',color:'#b7abc9'}).setOrigin(0.5);
+    const py=top+46;g.fillStyle(0x3a2450,1);g.fillRoundedRect(bx,py,bw,44,12);g.lineStyle(2,0xc58bff,0.9);g.strokeRoundedRect(bx,py,bw,44,12);
+    const pt=this.add.text(bx+12,py+13,(ps?ps.emoji+' Passive · '+ps.name:'Passive'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#f3e4ff'}).setOrigin(0,0.5);
+    const pd=this.add.text(bx+12,py+31,(ps?ps.desc:'')+'  (power ×'+sc.toFixed(2)+' from Lv)',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#d4c2e6'}).setOrigin(0,0.5);
+    this.menu.add([g,hd,tp,ex,pt,pd]);
+    const listTop=py+54,rh=Math.max(46,Math.min(58,(this.H-listTop-16)/defs.length-6));
+    defs.forEach((d,i)=>{ const r=(cp.tal||{})[d.id]||0,maxed=r>=d.max,can=!maxed&&(cp.tp||0)>0;
+      this._rowBtn(listTop+i*(rh+6),rh,d.emoji,d.name+'  '+r+'/'+d.max,d.per,maxed?'MAX':can?'+1 🌟':'🔒 TP',maxed?'#ffe07a':can?'#8ff0b0':'#8a8198',can?()=>{ cp.tal=cp.tal||{}; cp.tal[d.id]=r+1; cp.tp--; Save.save(); Sfx.select&&Sfx.select(); this.menuToast('🌟 '+d.name+' → '+(r+1)); this.buildTalents(); }:null,bx,bw); });
+    this.menu.setVisible(true);
+  }
   // v4.87: บอสดุขึ้น — ตัวเร่งรอบโจมตี (ทุกบอส/มินิ) + คลั่งเมื่อ HP<30%
   bossAggro(b){ let m=b.isBoss?1.45:1.3; if(b.hp<b.maxhp*0.3){ m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED','It attacks faster — keep moving!',1200); } } return m; }
   // เล็งดักทาง: ยิงไปตำแหน่งที่ผู้เล่นกำลังจะไป (ไม่ใช่ที่ยืนอยู่)

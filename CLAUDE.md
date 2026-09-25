@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.88.0 — Talent + Passive ประจำตัวละคร)
+- **v4.88.0 (เจ้าของ: ตัวละครต่างกันแค่สกิล อยากให้เก็บเลเวล+มี passive):** ระบบเลเวลตัวละคร (`Save.cp`, `gainCharExp`, TP) + `CHAR_TALENTS` มีอยู่แล้วแต่**ไม่มีหน้าใช้ TP** → เพิ่ม `buildTalents` (menuScreen 'talents', แถว 🌟 ใน gLoadout): Lv/EXP bar/TP + กล่อง passive + แถว talent กด +1 (1 TP/rank) · `CHAR_PASSIVES` + `charPassiveScale(lvl)`=1+min(0.9,(lvl-1)·0.03) · `this._cpas` ตั้งใน applyMeta · momo Lucky Seeds (คริฮีล 0.6%maxHP·s, cd .35s ใน damage) · mint Frost Skin (โดนตี → แช่ศัตรูรอบตัว r110+, cd 1.2s `charPassiveOnHurt` ใน hurtPlayer+touchEnemy) · cocoa Bear Grit (lowHpGuard+0.15s, lowHpDmg+0.20s) · taro Rift Step (`charPassiveOnDash` คลื่น r95) · sesame Oath Focus (ยืนนิ่ง dmg+18%s) · berry Jam Heart (kill 6% ฮีล 2%) · verified headless: ซื้อ talent หัก TP, passive ทุกตัวทริก, screenshot ok, 0 error
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.87.1 — กันปั๊มเลเวลในภารกิจ)
 - **v4.87.1 (เจ้าของ: Hunt ปั๊มเลเวลได้ไม่จำกัด):** `tickWaveObjective` นับ `o._objT` สำหรับ hunt/purge/capture · เกิน limit (hunt 25·target+20s, purge 30·target+20s, capture target·1.6+25s) → `o._overtime` + banner ⏰ · killEnemy: overtime = มอนธรรมดา (ไม่ใช่ elite/mini/boss) ไม่ drop orb · Hunt overtime เป้าเลิก blink
 
