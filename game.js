@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.88.1';
+const GAME_VERSION = '4.88.2';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.88.2', date:'2026-09-25', title:'↺ Talent reset', items:['Character Talents page has a Reset button: pay Sugar to refund every Talent Point (tap twice to confirm)','Cost grows with points spent: 🍬80 + 40 per point'] },
   { v:'4.88.1', date:'2026-09-25', title:'⚡ Taro vs bosses', items:['Taro’s lightning now locks onto bosses and minibosses first','Spare strikes hit the boss again instead of fizzling, and bolts deal +45% to bosses'] },
   { v:'4.88.0', date:'2026-09-25', title:'🌟 Character Talents & Passives', items:['New Character Talents page (Gear & Power): spend Talent Points earned from your character level','Every character now has an always-on passive that grows with character level: Momo Lucky Seeds · Mint Frost Skin · Cocoa Bear Grit · Taro Rift Step · Sesame Oath Focus'] },
   { v:'4.87.1', date:'2026-09-25', title:'⏰ Objective overtime', items:['Hunt, Escort and Capture objectives now have an overtime: stall too long and regular enemies stop dropping EXP','In Hunt overtime the marked targets stop blinking away'] },
@@ -8291,9 +8292,17 @@ class Game extends Phaser.Scene {
     const pt=this.add.text(bx+12,py+13,(ps?ps.emoji+' Passive · '+ps.name:'Passive'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#f3e4ff'}).setOrigin(0,0.5);
     const pd=this.add.text(bx+12,py+31,(ps?ps.desc:'')+'  (power ×'+sc.toFixed(2)+' from Lv)',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#d4c2e6'}).setOrigin(0,0.5);
     this.menu.add([g,hd,tp,ex,pt,pd]);
-    const listTop=py+54,rh=Math.max(46,Math.min(58,(this.H-listTop-16)/defs.length-6));
+    const listTop=py+54,rh=Math.max(44,Math.min(58,(this.H-listTop-70)/defs.length-6));
     defs.forEach((d,i)=>{ const r=(cp.tal||{})[d.id]||0,maxed=r>=d.max,can=!maxed&&(cp.tp||0)>0;
       this._rowBtn(listTop+i*(rh+6),rh,d.emoji,d.name+'  '+r+'/'+d.max,d.per,maxed?'MAX':can?'+1 🌟':'🔒 TP',maxed?'#ffe07a':can?'#8ff0b0':'#8a8198',can?()=>{ cp.tal=cp.tal||{}; cp.tal[d.id]=r+1; cp.tp--; Save.save(); Sfx.select&&Sfx.select(); this.menuToast('🌟 '+d.name+' → '+(r+1)); this.buildTalents(); }:null,bx,bw); });
+    // v4.88.2: รีเซ็ต Talent คืน TP ทั้งหมด (จ่าย Sugar · แตะ 2 ครั้งยืนยัน)
+    const spent=Object.values(cp.tal||{}).reduce((a,v)=>a+(v||0),0),cost=80+40*spent,armed=this._talResetArm&&this._talResetArm.id===id&&Date.now()-this._talResetArm.t<2500;
+    const ry=listTop+defs.length*(rh+6)+22;
+    this.uiPillBtn(this.menu,W/2,ry,Math.min(bw,300),38,spent>0?0xb45a7a:0x4a4059,'↺',spent<=0?'Reset Talents (nothing spent)':armed?'Tap again to confirm · 🍬'+cost:'Reset Talents · 🍬'+cost,()=>{
+      if(spent<=0){this.menuToast('No talent points spent yet');return;}
+      if((Save.data.sugar||0)<cost){this.menuToast('Need 🍬'+cost+' Sugar');return;}
+      if(!armed){this._talResetArm={id,t:Date.now()};this.buildTalents();return;}
+      this._talResetArm=null; Save.data.sugar-=cost; cp.tp=(cp.tp||0)+spent; cp.tal={}; Save.save(); Sfx.select&&Sfx.select(); this.menuToast('↺ Talents reset · +'+spent+' TP'); this.buildTalents(); });
     this.menu.setVisible(true);
   }
   // v4.87: บอสดุขึ้น — ตัวเร่งรอบโจมตี (ทุกบอส/มินิ) + คลั่งเมื่อ HP<30%

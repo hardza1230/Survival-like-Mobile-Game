@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '4.88.1'",
+  "const GAME_VERSION = '4.88.2'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
