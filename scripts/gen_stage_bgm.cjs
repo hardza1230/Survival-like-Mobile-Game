@@ -175,10 +175,21 @@ function buildDef(st, idx) {
   };
 }
 
+// v5.8 เพลงสู้มินิบอส 1 ด่าน 1 เพลง (bgm_m01..15): คีย์/โหมด/บรรยากาศเดียวกับเพลงด่าน แต่เร็วขึ้น กลองหนัก เบสกระแทก ทำนองดุขึ้น
+const LEAD_UP = { sine: 'saw', tri: 'sqr', sqr: 'saw', saw: 'brass', brass: 'brass' };
+const MINIS = STAGES.map((st, i) => ({
+  ...st, name: 'bgm_m' + String(i + 1).padStart(2, '0'), title: st.title + ' (miniboss)',
+  bpm: Math.min(152, st.bpm + 22), drum: st.drum === 'march' ? 'march' : 'four', bass: 'pulse', arpRate: 4,
+  lead: LEAD_UP[st.lead] || 'saw', pad: st.pad === 'tri' ? 'saw' : st.pad, fx: [...st.fx.filter(f => f !== 'wind'), 'heart'],
+  prog: st.prog.length > 4 ? st.prog : [st.prog[0], st.prog[0], st.prog[1], st.prog[3]],
+  rhythms: [1, 3, 4], vib: 0.009,
+}));
+
 const out = process.argv[2] || '.';
 const want = process.argv.slice(3);
 fs.mkdirSync(out, { recursive: true });
-STAGES.forEach((st, i) => {
+[...STAGES, ...MINIS].forEach((st, j) => {
+  const i = j % STAGES.length + (j >= STAGES.length ? 100 : 0);
   if (want.length && !want.includes(st.name)) return;
   S.setSeed(4242 + i);
   const { L, R, sec } = renderTrack(buildDef(st, i));

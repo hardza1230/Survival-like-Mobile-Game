@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.7.0';
+const GAME_VERSION = '5.8.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.8.0', date:'2026-09-25', title:'💢 Miniboss battle music', items:['Every miniboss fight now has its own faster, heavier theme based on its stage']},
   { v:'5.7.0', date:'2026-09-25', title:'💬 No more pauses between waves', items:['Character lines now pop up as a speech bubble over your head instead of stopping the game every wave']},
   { v:'5.6.0', date:'2026-09-25', title:'🎵 New Chapter 3 stage music', items:['Each Chapter 3 stage now has its own theme, from the windswept Ashen Seedfields to the Throne of the First Seed']},
   { v:'5.5.0', date:'2026-09-25', title:'🎵 New Chapter 2 stage music', items:['Each Chapter 2 stage now has its own theme: mossy canopy, murky marsh, buzzing hive, four-season greenhouse and the Root Throne march']},
@@ -643,6 +644,7 @@ const Sfx = {
   },
   playStageBgm(stageNum=1){const key=bgmKeyFor('stage',stageNum);this._bgmIntense=false;if(!this._playTrack(key,0.30)){this.stopBgm();this.startBgm();}},
   playBossBgm(stageNum=1){const key=bgmKeyFor('boss',stageNum);this._bgmIntense=true;if(!this._playTrack(key,0.34))this.bgmIntense(true);},
+  playMiniBgm(stageNum=1){const key=bgmKeyFor('mini',stageNum);this._bgmIntense=true;if(!key||!this._playTrack(key,0.33))this.bgmIntense(true);},
   playMainBgm(){this._bgmIntense=false;if(!this._playTrack('bgm_main',0.28)){this.stopBgm();this.startBgm();}},
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
   _bgmNote(freq,dur,type,vol,delay){ if(!this.ctx||!this._bgmGain)return;
@@ -985,6 +987,22 @@ const ASSET_AUDIO = {
   bgm_s13: 'assets/audio/bgm/stage/bgm_s13.mp3',
   bgm_s14: 'assets/audio/bgm/stage/bgm_s14.mp3',
   bgm_s15: 'assets/audio/bgm/stage/bgm_s15.mp3',
+  // v5.8 เพลงสู้มินิบอสประจำด่าน (gen_stage_bgm.cjs MINIS)
+  bgm_m01: 'assets/audio/bgm/stage/bgm_m01.mp3',
+  bgm_m02: 'assets/audio/bgm/stage/bgm_m02.mp3',
+  bgm_m03: 'assets/audio/bgm/stage/bgm_m03.mp3',
+  bgm_m04: 'assets/audio/bgm/stage/bgm_m04.mp3',
+  bgm_m05: 'assets/audio/bgm/stage/bgm_m05.mp3',
+  bgm_m06: 'assets/audio/bgm/stage/bgm_m06.mp3',
+  bgm_m07: 'assets/audio/bgm/stage/bgm_m07.mp3',
+  bgm_m08: 'assets/audio/bgm/stage/bgm_m08.mp3',
+  bgm_m09: 'assets/audio/bgm/stage/bgm_m09.mp3',
+  bgm_m10: 'assets/audio/bgm/stage/bgm_m10.mp3',
+  bgm_m11: 'assets/audio/bgm/stage/bgm_m11.mp3',
+  bgm_m12: 'assets/audio/bgm/stage/bgm_m12.mp3',
+  bgm_m13: 'assets/audio/bgm/stage/bgm_m13.mp3',
+  bgm_m14: 'assets/audio/bgm/stage/bgm_m14.mp3',
+  bgm_m15: 'assets/audio/bgm/stage/bgm_m15.mp3',
   bgm_endgame:      'assets/audio/bgm/bgm_endgame.mp3',        // v5.3 Recipe Maps (แจ๊ซ+ชิปทูน กลางดึก)
   bgm_endgame_boss: 'assets/audio/bgm/bgm_endgame_boss.mp3',   // v5.3 บอส Recipe + Pinnacle
 };
@@ -992,6 +1010,7 @@ const ASSET_AUDIO = {
 let BGM_MODE=null;   // 'endgame' = Recipe Maps / Pinnacle ใช้เพลง endgame แทนเพลงประจำด่าน (ตั้งใน startRun)
 function bgmKeyFor(kind,stageNum){
   if(BGM_MODE==='endgame'){const k='bgm_endgame'+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
+  if(kind==='mini'){const k='bgm_m'+String(stageNum).padStart(2,'0');return ASSET_AUDIO[k]?k:null;}
   if(kind==='stage'){const k='bgm_s'+String(stageNum).padStart(2,'0');if(ASSET_AUDIO[k])return k;}   // เพลงประจำด่าน (ใหม่)
   const ch=stageNum>=11?3:stageNum>=6?2:1;
   if(ch>1){const k='bgm_ch'+ch+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
@@ -1025,7 +1044,7 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
-      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||k.startsWith('bgm_s'))continue;
+      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||k.startsWith('bgm_s')||k.startsWith('bgm_m'))continue;
       this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำWaitง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
@@ -5396,7 +5415,7 @@ class Game extends Phaser.Scene {
     this.showMenu();
   }
   ensureStageAudio(idx,done){
-    const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage),bgmKeyFor('boss',stage)];   // โหลดเพลงStage + เพลงบอสของด่านนั้น
+    const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage),bgmKeyFor('boss',stage),bgmKeyFor('mini',stage)].filter(Boolean);   // โหลดเพลงStage + เพลงบอสของด่านนั้น
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
     const loader=window.GameLoader;let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
     this.load.on('progress',value=>{if(loader)loader.set(0.08+value*0.24,'Loading stage and boss music...');});
@@ -6151,7 +6170,7 @@ class Game extends Phaser.Scene {
     if(this.state==='levelup'){this._queuedBossIntro='mini';return;}
     if(this.state!=='play')return;
     const st=STAGES[this.stageIndex];
-    this.showBanner('💢 Miniboss!', st.mini, 2000); Sfx.bossWarn(); Sfx.bgmIntense(true); this.screenShake(200,0.008);
+    this.showBanner('💢 Miniboss!', st.mini, 2000); Sfx.bossWarn(); Sfx.playMiniBgm(this.stageIndex+1); this.screenShake(200,0.008);
     const adds=2+this.stageIndex;
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
@@ -6372,7 +6391,7 @@ class Game extends Phaser.Scene {
   }
   onWaveCleared(keep){
     this._clearT=0;this._clearFled=false;
-    this.boss=null;Sfx.bgmIntense(false);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();
+    this.boss=null;Sfx.bgmIntense(false);if(String(Sfx._currentBgmKey||'').startsWith('bgm_m'))Sfx.playStageBgm(this.stageIndex+1);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();
     const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
     if(next>=st.waves){this.mode='bossWarning';this.updateWaveText();
       this.scheduleStageEvent(300,'bossWarning',()=>{const rage=this.bossRageInfo();this.showBanner('⚠️ '+rage.emoji+' Boss '+rage.name,st.boss+' · Minions '+rage.kills+' · reward x'+rage.reward.toFixed(2),2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);
