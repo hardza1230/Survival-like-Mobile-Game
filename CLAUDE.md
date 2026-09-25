@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.98.0 — เสียงฟีลดีขึ้น + รายการเสียง)
+- **v4.98.0 (เจ้าของสั่ง ข้อ 6 เสียง):** **หมายเหตุ: เกมมีไฟล์เสียงจริงอยู่แล้ว** (`ASSET_AUDIO` 11 sfx + bgm main/stage1-5/boss1-5 ใน assets/audio, ~43MB ไฟล์ใหญ่ควรย่อ) · `Sfx.playFile(key,vol,rate)` สุ่ม rate 0.92–1.08 + เล่นผ่าน sound.add (destroy ตอนจบ) + cap เสียงพร้อมกัน 10 รวม/3 ต่อคีย์ (`_live`) · `Sfx.xp()` ไล่ rate +4.5%/ครั้ง ถ้าเก็บห่าง <0.7s (สูงสุด 12 ขั้น) · `Sfx.crit()` (ใน damage เมื่อคริ, ลอง `sfx_crit` ก่อน) · `Sfx.bigKill()` (killEnemy elite/มินิ, ลอง `sfx_kill_big`, duck BGM) · `Sfx.mv/sv` + `setVolumes` · Settings แถว Music Volume/Effects Volume วน 100/75/50/25/0% (`VOL_STEPS`, `applyVolSettings`, เรียกตอน Save.load) · rowH settings เว้นล่าง 52 · **`docs/AUDIO_LIST.md`** รายการเสียง 23 รายการ + เพลง + prompt Suno · verified headless 0 error, screenshot settings ok
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.97.0 — Tag Sets (ไอเดีย G) · A/B/G ครบ)
 - **v4.97.0 (เจ้าของสั่ง G):** `TAG_SETS` 4 แท็ก (precision crit+5%/critMul+0.3 · swarm dmg×1.06/×1.10 · guard dmgTaken×0.93/regen+1 · tempo cd×0.95/spd×1.06) โบนัสที่ 2 และ 3 ชิ้น · `TAGS_OF` แมปแท็กของ path/infusion/relic · `tagCounts()` นับจาก b.path+b.infusion+relics · `refreshTagSets()` ใส่ผลแบบครั้งเดียวต่อ tier (`this._tagTier`, ล้างใน resetRelics) + banner + clampPlayerStats · เรียกจาก syncBasicAttack (มี path/infusion) และ gainRelic (delayedCall 0) · การ์ด path/infusion/relic ต่อท้าย desc ด้วย `tagLabel()` · HUD statTxt โชว์แท็กที่ ≥2 (🎯2) · verified headless: Sniper+Crown = crit 5→10%, +Sour = critMul 1.55→1.85, 0 error · **ถัดไป: เจ้าของเล่นจริงจูน B/A/G · ไอเดียที่เหลือ E/F**
 

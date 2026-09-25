@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.97.0';
+const GAME_VERSION = '4.98.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.98.0', date:'2026-09-25', title:'🔊 Juicier sound', items:['Hits and pickups vary their pitch so repeats never sound robotic','Collecting EXP in a row climbs higher and higher in pitch','Crits and big kills get layered impact sounds','Sound caps stop audio from clipping when big swarms die','New Music Volume and Effects Volume settings']},
   { v:'4.97.0', date:'2026-09-25', title:'🏷️ Tag Sets', items:['Build Paths, Flavor Infusions and Relics now carry a tag: 🎯 Precision, 🌀 Swarm, 🛡️ Guard or ⚡ Tempo','Collect 2 or 3 of the same tag in a stage for a set bonus','Active sets show on the HUD next to your relics']},
   { v:'4.96.0', date:'2026-09-25', title:'🍯 Flavor Infusion', items:['At level 10 pick a flavor for your attack (1 of 3): Spicy burn, Sour weaken, Sweet heal or Minty chill','Infusions trade a little hit damage for their effect','New upgrade card Deep Flavor boosts your infusion']},
   { v:'4.95.0', date:'2026-09-25', title:'🛤 Build Paths for everyone', items:['Mint, Cocoa, Taro and Sesame now pick a Build Path at level 5 too','Mint: Glacier Warden / Lance Barrage / Glacial Pierce · Cocoa: Brawler / Titan Fist / Bear Guardian','Taro: Chain Storm / Smite / Tempest · Sesame: Prism Split / Focus Lens / Far Sentinel','Each path has 2 exclusive upgrades']},
@@ -534,7 +535,7 @@ const CHANGELOG = [
    เล่นไฟล์เสียงจริงจาก assets/audio/ passives้อม fallback เสียงสังเคราะห์
    ============================================================ */
 const Sfx = {
-  ctx:null, master:null, muted:false, _noise:null, _last:{},
+  ctx:null, master:null, muted:false, _noise:null, _last:{}, mv:1, sv:1, _live:[], _xpStep:0, _xpAt:-9,
   _currentBgm:null, _currentBgmKey:'',
   ensure(){
     if(this.ctx) return this.ctx;
@@ -553,18 +554,23 @@ const Sfx = {
     return this.muted;
   },
   _ok(key,gap){ const t=(this.ctx?this.ctx.currentTime:0); if((this._last[key]||-9)+gap>t)return false; this._last[key]=t; return true; },
-  playFile(key, vol=0.5){
-    if(this.muted)return false;
-    try{if(window.__g&&window.__g.cache&&window.__g.cache.audio&&window.__g.cache.audio.exists(key)){window.__g.sound.play(key,{volume:Math.min(0.42,vol*0.68)});return true;}}catch(e){}
+  playFile(key, vol=0.5, rate){
+    if(this.muted||this.sv<=0)return false;
+    try{const g=window.__g; if(g&&g.cache&&g.cache.audio&&g.cache.audio.exists(key)){
+      const now=performance.now(); this._live=this._live.filter(x=>x.end>now);
+      if(this._live.length>=10||this._live.filter(x=>x.k===key).length>=3)return true;   // จำกัดเสียงซ้อน กันเสียงแตกตอนมอนตายเป็นฝูง (true = ไม่ fallback ไป synth)
+      const r=rate||(0.92+Math.random()*0.16);   // สุ่มระดับเสียง ±8% ไม่ให้ซ้ำแบบหุ่นยนต์
+      const snd=g.sound.add(key,{volume:Math.min(0.42,vol*0.68)*this.sv,rate:r}); snd.once('complete',()=>{try{snd.destroy();}catch(e){}}); snd.play();
+      this._live.push({k:key,end:now+Math.min(1500,((snd.duration||0.4)*1000)/r)}); return true;}}catch(e){}
     return false;
   },
   duckBgm(ms=520,amount=0.48){
     const bg=this._currentBgm;if(!bg||!bg.isPlaying||this.muted)return;
-    const normal=this._bgmIntense?0.34:(this._currentBgmKey==='bgm_main'?0.28:0.30);bg.setVolume(normal*amount);clearTimeout(this._duckTimer);
-    this._duckTimer=setTimeout(()=>{if(bg===this._currentBgm&&bg.isPlaying)bg.setVolume(this.muted?0:normal);},ms);
+    const normal=this._bgmIntense?0.34:(this._currentBgmKey==='bgm_main'?0.28:0.30);bg.setVolume(normal*amount*this.mv);clearTimeout(this._duckTimer);
+    this._duckTimer=setTimeout(()=>{if(bg===this._currentBgm&&bg.isPlaying)bg.setVolume(this.muted?0:normal*this.mv);},ms);
   },
   tone(freq,dur,type='sine',vol=0.3,slideTo=0,delay=0){
-    if(!this.ctx||this.muted)return;
+    if(!this.ctx||this.muted||this.sv<=0)return; vol*=this.sv;
     const t0=this.ctx.currentTime+delay, o=this.ctx.createOscillator(), g=this.ctx.createGain();
     o.type=type; o.frequency.setValueAtTime(freq,t0);
     if(slideTo>0)o.frequency.exponentialRampToValueAtTime(slideTo,t0+dur);
@@ -587,7 +593,11 @@ const Sfx = {
   shoot(){if(this._ok('shoot',0.12)){if(!this.playFile('sfx_shoot',0.25))this.tone(920,0.045,'triangle',0.035,1280);}},
   pop(){if(this._ok('pop',0.11)){if(!this.playFile('sfx_hit',0.22))this.tone(430,0.055,'sine',0.045,240);}},
   streak(step){const base=540+step*150;this.tone(base,0.10,'triangle',0.075,base+300);this.tone(base*1.5,0.11,'sine',0.05,base*1.5+240,0.05);},   // เสียงคอมโบ pitch สูงขึ้นตามสเต็ป
-  xp(){if(this._ok('xp',0.16)){if(!this.playFile('sfx_xp',0.16))this.tone(760,0.05,'sine',0.035,1020);}},
+  xp(){ const t=this.ctx?this.ctx.currentTime:0; this._xpStep=(t-this._xpAt<0.7)?Math.min(12,this._xpStep+1):0; this._xpAt=t;   // ไล่โน้ตสูงขึ้นตอนเก็บต่อเนื่อง
+    if(this._ok('xp',0.07)){const r=1+this._xpStep*0.045; if(!this.playFile('sfx_xp',0.16,r))this.tone(760*r,0.05,'sine',0.035,1020*r);}},
+  crit(){ if(!this._ok('crit',0.09))return; if(!this.playFile('sfx_crit',0.32))this.playFile('sfx_hit',0.30,1.25+Math.random()*0.1); this.tone(1480,0.06,'triangle',0.045,2100); },   // คริ = เสียงตีสูง + ping
+  bigKill(){ if(!this._ok('bigKill',0.18))return; this.duckBgm(260,0.7); if(!this.playFile('sfx_kill_big',0.34)&&!this.playFile('sfx_ult_bomb',0.30,1.15))this.tone(150,0.18,'sine',0.08,65); this.tone(90,0.22,'sine',0.09,45); this.noise(0.12,0.05,0.02,true); },   // ฆ่าตัวใหญ่ = ซ้อน 3 ชั้น
+  setVolumes(mv,sv){ this.mv=mv; this.sv=sv; if(this._bgmGain)this._bgmGain.gain.value=0.5*mv; this.bgmIntense(this._bgmIntense); },
   hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
   dash(){if(this._ok('dash',0.25)){if(!this.playFile('sfx_dash',0.34))this.noise(0.11,0.055,0,true);}},
   ult(type){if(!this._ok('ult',0.5))return;this.duckBgm(650,0.42);if(type==='vortex'&&this.playFile('sfx_ult_vortex',0.48))return;if(!this.playFile('sfx_ult_bomb',0.48))this.seq([660,880,1180],'triangle',0.10,0.07);},
@@ -606,10 +616,10 @@ const Sfx = {
 
   // ===== เพลงพื้นหลัง (BGM จริง + สังเคราะห์ fallback) =====
   _playTrack(key,volume){
-    if(this._currentBgmKey===key&&this._currentBgm&&this._currentBgm.isPlaying){this._currentBgm.setVolume(this.muted?0:volume);return true;}
+    if(this._currentBgmKey===key&&this._currentBgm&&this._currentBgm.isPlaying){this._currentBgm.setVolume(this.muted?0:volume*this.mv);return true;}
     if(!(window.__g&&window.__g.cache&&window.__g.cache.audio&&window.__g.cache.audio.exists(key)))return false;
     const old=this._currentBgm;try{const next=window.__g.sound.add(key,{loop:true,volume:0});next.play();this._currentBgm=next;this._currentBgmKey=key;
-      if(window.__g.tweens)window.__g.tweens.add({targets:next,volume:this.muted?0:volume,duration:650,ease:'Sine.inOut'});else next.setVolume(this.muted?0:volume);
+      if(window.__g.tweens)window.__g.tweens.add({targets:next,volume:this.muted?0:volume*this.mv,duration:650,ease:'Sine.inOut'});else next.setVolume(this.muted?0:volume*this.mv);
       if(old){if(window.__g.tweens)window.__g.tweens.add({targets:old,volume:0,duration:480,onComplete:()=>{try{old.stop();old.destroy();}catch(e){}}});else{old.stop();old.destroy();}}return true;
     }catch(e){return false;}
   },
@@ -623,13 +633,13 @@ const Sfx = {
     g.gain.exponentialRampToValueAtTime(vol,t0+0.04); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
     o.connect(g); g.connect(this._bgmGain); o.start(t0); o.stop(t0+dur+0.03); },
   startBgm(){ this.ensure(); if(!this.ctx||this._bgmTimer)return;
-    if(!this._bgmGain){ this._bgmGain=this.ctx.createGain(); this._bgmGain.gain.value=0.5; this._bgmGain.connect(this.master); }
+    if(!this._bgmGain){ this._bgmGain=this.ctx.createGain(); this._bgmGain.gain.value=0.5*this.mv; this._bgmGain.connect(this.master); }
     this._bgmStep=0; this._bgmLoop(); },
   stopBgm(){
     if(this._currentBgm){ try{ this._currentBgm.stop(); this._currentBgm.destroy(); }catch(e){} this._currentBgm=null; this._currentBgmKey=''; }
     if(this._bgmTimer){ clearTimeout(this._bgmTimer); this._bgmTimer=null; }
   },
-  bgmIntense(on){this._bgmIntense=!!on;if(this._currentBgm&&this._currentBgm.isPlaying)this._currentBgm.setVolume(this.muted?0:(on?0.34:(this._currentBgmKey==='bgm_main'?0.28:0.30)));},
+  bgmIntense(on){this._bgmIntense=!!on;if(this._currentBgm&&this._currentBgm.isPlaying)this._currentBgm.setVolume(this.muted?0:(on?0.34:(this._currentBgmKey==='bgm_main'?0.28:0.30))*this.mv);},
   _bgmLoop(){
     const roots=[130.81,110.00,174.61,196.00];
     const root=roots[this._bgmStep%roots.length];
@@ -2118,7 +2128,9 @@ const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 
 const GACHA_LEVELS = [ {lo:1,hi:10,cost:150}, {lo:11,hi:20,cost:320}, {lo:21,hi:30,cost:560}, {lo:31,hi:40,cost:900}, {lo:41,hi:50,cost:1400}, {lo:51,hi:60,cost:2100} ];
 const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังNone)
 const AFFIX_REROLL_COST = 15;   // 🔩 สุ่มคุณสมบัติเสริมของชิ้นที่สวมอยู่ใหม่
-const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1};
+const DEFAULT_SETTINGS={sound:true,shake:1,flash:true,damageNumbers:true,vfx:1,musicVol:1,sfxVol:1};
+const VOL_STEPS=[1,0.75,0.5,0.25,0];
+function applyVolSettings(st){ st=st||{}; Sfx.setVolumes(st.musicVol==null?1:st.musicVol, st.sfxVol==null?1:st.sfxVol); }
 // ---- Monetization: rewarded ads + IAP (จุดต่อ Capacitor AdMob/Billing · ตอนนี้ยังNone plugin = ใช้เดโมจำลอง) ----
 // ⚙️ ขึ้นสโตร์จริง: npm i @capacitor-community/admob → ใส่ ad unit id ที่ ADMOB_REWARD_ID แล้วต่อใน Game.showRewardedAd
 const ADMOB_REWARD_ID = '';   // ← ใส่ Rewarded Ad Unit ID ตอน integrate จริง
@@ -2213,7 +2225,7 @@ const Save = {
     if(!this.data.daily)this.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false};
     if(this.data.tutorialDone==null)this.data.tutorialDone=false;
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
-    Sfx.muted=!this.data.settings.sound;
+    Sfx.muted=!this.data.settings.sound; applyVolSettings(this.data.settings);
     if(gearMigrated){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} }
     return this.data; },
   save(){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
@@ -4341,6 +4353,8 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,st=Save.data.settings||Object.assign({},DEFAULT_SETTINGS),portrait=w<=h;
     const rows=[
       {k:'sound',e:'🔊',n:'Sound & Music',sub:'Turn all audio on or off',value:()=>st.sound?'On':'Off',toggle:()=>{st.sound=!st.sound;Sfx.muted=!st.sound;if(Sfx.master)Sfx.master.gain.value=Sfx.muted?0:0.24;if(this.sound)this.sound.mute=Sfx.muted;}},
+      {k:'musicVol',e:'🎵',n:'Music Volume',sub:'Background music level',value:()=>Math.round((st.musicVol==null?1:st.musicVol)*100)+'%',toggle:()=>{const c=st.musicVol==null?1:st.musicVol,i=VOL_STEPS.indexOf(c);st.musicVol=VOL_STEPS[(i+1)%VOL_STEPS.length];applyVolSettings(st);}},
+      {k:'sfxVol',e:'🔔',n:'Effects Volume',sub:'Hits, pickups and skill sounds',value:()=>Math.round((st.sfxVol==null?1:st.sfxVol)*100)+'%',toggle:()=>{const c=st.sfxVol==null?1:st.sfxVol,i=VOL_STEPS.indexOf(c);st.sfxVol=VOL_STEPS[(i+1)%VOL_STEPS.length];applyVolSettings(st);}},
       {k:'shake',e:'📳',n:'Screen Shake',sub:'Camera shake strength',value:()=>['Off','Light','Normal'][st.shake||0],toggle:()=>{st.shake=((st.shake||0)+1)%3;}},
       {k:'flash',e:'✨',n:'Screen Flash',sub:'Flashes on big moves & phase changes',value:()=>st.flash?'On':'Off',toggle:()=>{st.flash=!st.flash;}},
       {k:'damageNumbers',e:'💥',n:'Damage Numbers',sub:'Show damage and criticals',value:()=>st.damageNumbers?'On':'Off',toggle:()=>{st.damageNumbers=!st.damageNumbers;}},
@@ -4349,7 +4363,7 @@ class Game extends Phaser.Scene {
       {k:'vfx',e:'🎆',n:'VFX Quality',sub:'Particle count and boss effects',value:()=>['Low','Mid','High'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
     ];
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
-    const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?68:54,(h-top-28-gap*(nRows-1))/nRows),rw=Math.min(w-30,520),rx=(w-rw)/2;
+    const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?68:54,(h-top-52-gap*(nRows-1))/nRows),rw=Math.min(w-30,520),rx=(w-rw)/2;
     rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{r.toggle();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls();this.buildSettings();},rx,rw);});
     // ☁️ บัญชี Cloud Save + เข้าสู่ระบบด้วย Google
     const accY=top+rows.length*(rowH+gap);
@@ -7736,7 +7750,7 @@ class Game extends Phaser.Scene {
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     const RL=this._rel; if(RL){ if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;   // 🪞 Oath Focus
-    let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; }
+    let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();
     if(crit&&CP&&CP.id==='momo'&&(this.elapsed||0)>=(CP.cd||0)){ CP.cd=(this.elapsed||0)+0.35; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(1,p.maxhp*0.006*CP.s)); }   // 🍓 Lucky Seeds
     if(crit&&RL&&(RL.splinter||RL.leech))this.relicOnCrit(e,amount,x,y);
     if(crit&&this.player._uqCritBurst&&!this._uqBursting){ this._uqBursting=true; const bx=e.x,by=e.y,bd=amount*this.player._uqCritBurst; this.burst(bx,by,0xc9a3ff);
@@ -7764,7 +7778,7 @@ class Game extends Phaser.Scene {
       this.killStreak=(this.killStreak||0)+1; this._lastKillAt=this.elapsed;
       if(STREAK_MARKS[this.killStreak])this.showKillStreak(this.killStreak);
     }
-    if(isElite||isMini)this.hitStop(45);   // Juice: ฆ่าตัวใหญ่/elite = กระแทกหยุดเสี้ยววิ (บอสมีฉากตายของตัวเอง)
+    if(isElite||isMini){this.hitStop(45);Sfx.bigKill();}   // Juice: ฆ่าตัวใหญ่/elite = กระแทกหยุดเสี้ยววิ (บอสมีฉากตายของตัวเอง)
     // 🧪 currency ให้คนขยัน: elite = ลุ้นดWaitป · Miniboss = การันตี (เกรดตามความยาก)
     if(isMini) this.grantCurrencyReward(1+Math.floor(Math.random()*2),this.currencyTierFor(),'🧪 Miniboss Down!');
     else if(isElite && Math.random()<0.5) this.grantCurrencyReward(1,this.currencyTierFor(),null);
