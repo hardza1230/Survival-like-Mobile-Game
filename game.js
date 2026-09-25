@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.14.0';
+const GAME_VERSION = '5.15.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.15.0', date:'2026-09-25', title:'⬆ Chest upgrade chance', items:['While the prize wheel spins, your chest may suddenly upgrade — Bronze to Silver (25%) or Silver to Gold (15%) — with better prizes']},
   { v:'5.14.0', date:'2026-09-25', title:'🎡 Prize wheel', items:['Opening a miniboss chest spins a prize wheel — lights race around 8 prizes, slow down and land on your reward, which grows into the centre. Jackpot possible!']},
   { v:'5.13.0', date:'2026-09-25', title:'🏅 Chest tiers', items:['Miniboss chests are Bronze, Silver or Gold depending on how fast you won and how few hits you took (Hell difficulty adds a tier). Better chests give bonus Sugar and currency']},
   { v:'5.12.0', date:'2026-09-25', title:'📦 Miniboss chest drop', items:['The miniboss chest now crashes down from the sky and shines a pillar of light you can spot from afar']},
@@ -8175,16 +8176,18 @@ class Game extends Phaser.Scene {
   addRunSugar(n){ this.sugarStage+=n;this.sugarRun+=n;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);this.showBanner('🍬 +'+n,'Prize',1100); }
   openPrizeWheel(tier,done){
     if(this.state==='rolling'){done&&done();return;}
-    const T=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,pool=this.miniPrizePool(tier);
+    // v5.15: ลุ้นอัปเกรดระดับกลางวงล้อ (ตัดสินตั้งแต่ต้น โชว์ตอนหมุนไปได้ ~55%) bronze→silver 25% · silver→gold 15%
+    const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=[0.25,0.15,0][ri],upTier=Math.random()<upChance?order[ri+1]:null;
+    const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],pool=this.miniPrizePool(upTier||tier);
     let tw=0;pool.forEach(p=>tw+=p.w);let r=Math.random()*tw,winIdx=0;for(let i=0;i<pool.length;i++){r-=pool[i].w;if(r<=0){winIdx=i;break;}}
     this._prevRollState=this.state;this.state='rolling';this.physics.pause();
     const w=this.W,h=this.H,cx=w/2,cy=h*0.47,R=Math.min(w*0.36,150),n=pool.length;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
     const bg=this.add.rectangle(0,0,w,h,0x0b0714,0.9).setOrigin(0);
-    const rays=this.add.image(cx,cy,'vfx_glow').setScale(2.4).setAlpha(0.3).setTint(T.color).setBlendMode(Phaser.BlendModes.ADD);
+    const rays=this.add.image(cx,cy,'vfx_glow').setScale(2.4).setAlpha(0.3).setTint(T0.color).setBlendMode(Phaser.BlendModes.ADD);
     this.tweens.add({targets:rays,rotation:TAU,duration:4200,repeat:-1});
-    const ring=this.add.graphics();ring.lineStyle(3,T.color,0.5);ring.strokeCircle(cx,cy,R);
-    const ttl=this.add.text(cx,cy-R-70,T.emoji+' '+T.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
+    const ring=this.add.graphics();ring.lineStyle(3,T0.color,0.5);ring.strokeCircle(cx,cy,R);
+    const ttl=this.add.text(cx,cy-R-70,T0.emoji+' '+T0.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T0.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
     const hint=this.add.text(cx,cy+R+62,'Spinning…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#c7bdd6'}).setOrigin(0.5);
     const center=this.add.text(cx,cy,'🎁',{fontSize:'56px'}).setOrigin(0.5);
     this.tweens.add({targets:center,angle:{from:-8,to:8},yoyo:true,repeat:-1,duration:120});
@@ -8198,8 +8201,17 @@ class Game extends Phaser.Scene {
     let cur=-1,k=0;
     const hop=()=>{ if(cur>=0){slots[cur].draw(false);slots[cur].lab.setScale(1);}
       cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(1.3);if(Sfx.select)Sfx.select();
-      k++;if(k>=total){this.time.delayedCall(260,()=>land());return;}
+      k++;if(upTier&&k===Math.floor(total*0.55))upgrade();
+      if(k>=total){this.time.delayedCall(260,()=>land());return;}
       this.time.delayedCall(steps[k],hop); };
+    const upgrade=()=>{ const hex='#'+T.color.toString(16).padStart(6,'0');
+      rays.setTint(T.color);ring.clear();ring.lineStyle(4,T.color,0.8);ring.strokeCircle(cx,cy,R);
+      ttl.setText(T.emoji+' '+T.name+' Chest').setColor(hex);this.tweens.add({targets:ttl,scale:{from:1.6,to:1},duration:380,ease:'Back.out'});
+      const up=this.add.text(cx,cy-R-38,'⬆ UPGRADE!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:hex,stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);cont.add(up);
+      this.tweens.add({targets:up,y:up.y-18,alpha:{from:1,to:0},delay:700,duration:600});
+      const fl=this.add.image(cx,cy,'vfx_glow').setScale(0.3).setTint(T.color).setBlendMode(Phaser.BlendModes.ADD);cont.add(fl);
+      this.tweens.add({targets:fl,scale:3.4,alpha:0,duration:520,ease:'Cubic.out',onComplete:()=>fl.destroy()});
+      this.screenFlash(T.color,0.35,260);if(Sfx.legend)Sfx.legend(); };
     const land=()=>{ const sl=slots[winIdx],p=sl.p;
       this.tweens.killTweensOf(center);center.setVisible(false);
       for(let t=0;t<6;t++)this.time.delayedCall(t*90,()=>{sl.draw(t%2===0);});
@@ -8214,7 +8226,7 @@ class Game extends Phaser.Scene {
       this.screenFlash(p.color,p.jackpot?0.6:0.35,320);if(p.jackpot){this.screenShake(400,0.012);if(Sfx.legend)Sfx.legend();}else if(Sfx.clear)Sfx.clear();
       this.time.delayedCall(p.jackpot?1700:1250,()=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);
         this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
-        p.give(); done&&done(); if(this._prizeLevelUp){this._prizeLevelUp=false;if(this.state==='play')this.openLevelUp();} }}); });
+        p.give(); done&&done(upTier||tier); if(this._prizeLevelUp){this._prizeLevelUp=false;if(this.state==='play')this.openLevelUp();} }}); });
     };
     this.time.delayedCall(250,hop);
   }
@@ -8241,7 +8253,7 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
-    if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,()=>{ this.grantMiniChestBonus(tier); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,(ft)=>{ this.grantMiniChestBonus(ft||tier); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
     if(kind==='pick'&&Math.random()<0.30&&this.offerRelic())return;   // 🔮 กล่องลับ 30% = Relic
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
