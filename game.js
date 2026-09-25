@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.1.0';
+const GAME_VERSION = '5.2.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.2.0', date:'2026-09-25', title:'🏆 Boss victory jingle', items:['A short fanfare plays when you defeat a boss, and a longer one when you finish the game']},
   { v:'5.1.0', date:'2026-09-25', title:'⚠️ Boss warning sound', items:['Bosses now announce themselves with war drums and a deep siren']},
   { v:'5.0.2', date:'2026-09-25', title:'🔔 New hit & EXP sounds', items:['Softer mochi-pop hit sound and a bright chime when collecting EXP']},
   { v:'5.0.1', date:'2026-09-25', title:'⚡ Faster music loading', items:['Music files are about 3× smaller (≈34 MB → 12 MB), so stages start faster on mobile data']},
@@ -621,6 +622,7 @@ const Sfx = {
   bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_boss_warn',0.55,1)&&!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
   clear(){if(!this._ok('clear',0.8))return;this.duckBgm(650,0.48);if(!this.playFile('sfx_levelup',0.42))this.seq([659,784,1047],'triangle',0.11,0.12);},
   victory(){this.duckBgm(1000,0.3);if(this.playFile('sfx_victory',0.55,1))return;this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
+  bossClear(){this.duckBgm(3200,0.12);if(!this.playFile('sfx_boss_clear',0.6,1))this.seq([523,659,784,1047],'triangle',0.13,0.12);},
   dead(){this.duckBgm(900,0.3);if(this.playFile('sfx_defeat',0.5,1))return;this.seq([392,311,247,196],'sine',0.10,0.14);},
   heal(){if(this._ok('heal',0.28)&&!this.playFile('sfx_heal',0.4))this.seq([784,988,1319],'sine',0.07,0.06);},
   heartbeat(intensity){const v=0.05+0.05*(intensity||0);this.tone(58,0.10,'sine',v,40);this.tone(70,0.11,'sine',v*0.85,44,0.14);},   // เสียงหัวใจเต้น "thump-thump" ตอนใกล้ตาย
@@ -943,7 +945,8 @@ const ASSET_AUDIO = {
   sfx_burn: 'assets/audio/sfx/gen/sfx_burn.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_card: 'assets/audio/sfx/gen/sfx_card.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_legend: 'assets/audio/sfx/gen/sfx_legend.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_victory: 'assets/audio/sfx/gen/sfx_victory.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_victory: 'assets/audio/sfx/gen/sfx_victory.mp3',   // v5.2 แฟนแฟร์ยาว (gen_stingers_synth)
+  sfx_boss_clear: 'assets/audio/sfx/gen/sfx_boss_clear.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
   bgm_main:       'assets/audio/bgm/min/bgm_main.mp3',
@@ -6345,7 +6348,7 @@ class Game extends Phaser.Scene {
   }
   // บอสตาย → เปิดกล่องรางวัลจบStage (Sugar/อุปกรณ์) แล้วกลับหน้าเลือกด่าน
   onBossDown(x,y){
-    this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.playStageBgm(this.stageIndex+1);this.clearFoes();this.clearEnemies();this.clearBossObjects();
+    this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bossClear();this.time.delayedCall(3000,()=>{if(!this.boss&&this.state!=='menu')Sfx.playStageBgm(this.stageIndex+1);});this.clearFoes();this.clearEnemies();this.clearBossObjects();
     // 🧪 ล้มบอส = การันตี currency ก้อนใหญ่ (ยิ่งด่าน/ยากสูง ยิ่งเยอะ+ดี — กฎเหล็ก)
     this.grantCurrencyReward(2+(this.stageIndex||0)+((this.stageDiff||1)-1)*2,this.currencyTierFor(),'🏆 Boss Down! Currency gained');
     if(this.bossRush){ this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest(); this.mode='breather'; this.bossRushBossDown(); return; }
