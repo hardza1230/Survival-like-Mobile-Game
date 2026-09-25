@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.2.0';
+const GAME_VERSION = '5.3.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.3.0', date:'2026-09-25', title:'🌙 Endgame music', items:['Recipe Maps and the Pinnacle boss now have their own midnight-kitchen soundtrack']},
   { v:'5.2.0', date:'2026-09-25', title:'🏆 Boss victory jingle', items:['A short fanfare plays when you defeat a boss, and a longer one when you finish the game']},
   { v:'5.1.0', date:'2026-09-25', title:'⚠️ Boss warning sound', items:['Bosses now announce themselves with war drums and a deep siren']},
   { v:'5.0.2', date:'2026-09-25', title:'🔔 New hit & EXP sounds', items:['Softer mochi-pop hit sound and a bright chime when collecting EXP']},
@@ -964,9 +965,13 @@ const ASSET_AUDIO = {
   bgm_ch2_boss:   'assets/audio/bgm/bgm_ch2_boss.mp3',
   bgm_ch3:        'assets/audio/bgm/bgm_ch3.mp3',
   bgm_ch3_boss:   'assets/audio/bgm/bgm_ch3_boss.mp3',
+  bgm_endgame:      'assets/audio/bgm/bgm_endgame.mp3',        // v5.3 Recipe Maps (แจ๊ซ+ชิปทูน กลางดึก)
+  bgm_endgame_boss: 'assets/audio/bgm/bgm_endgame_boss.mp3',   // v5.3 บอส Recipe + Pinnacle
 };
 // เลือกเพลงตามด่าน: Ch1 (ด่าน 1-5) ใช้เพลงรายด่าน · Ch2 (6-10) / Ch3 (11-15) ใช้เพลงประจำบท ถ้าไฟล์หาย fallback เพลงด่าน 5
+let BGM_MODE=null;   // 'endgame' = Recipe Maps / Pinnacle ใช้เพลง endgame แทนเพลงประจำด่าน (ตั้งใน startRun)
 function bgmKeyFor(kind,stageNum){
+  if(BGM_MODE==='endgame'){const k='bgm_endgame'+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
   const ch=stageNum>=11?3:stageNum>=6?2:1;
   if(ch>1){const k='bgm_ch'+ch+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
   return 'bgm_'+kind+Math.max(1,Math.min(5,stageNum));
@@ -999,7 +1004,7 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
-      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch'))continue;
+      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame'))continue;
       this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำWaitง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
@@ -5385,6 +5390,7 @@ class Game extends Phaser.Scene {
     this._activeZoneMods=Save.zoneModsUnlocked()?Save.zoneMods().slice():[]; this._zoneMul=this.zoneModMul();   // ล็อก Zone Modifiers ของรันนี้
     this.killStreak=0; this._lastKillAt=-9;   // Juice: รีเซ็ตคอมโบฆ่าต่อเนื่องทุกWaitบ
     this.state='loading';
+    BGM_MODE=(this._recipeRequested||this._pinnacleRequested)?'endgame':null;
     this.menu.setVisible(false);
     if(window.GameLoader)window.GameLoader.show('Preparing the stage...',0.08);
 

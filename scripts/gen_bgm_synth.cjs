@@ -366,11 +366,78 @@ const ch3b = {
   },
 };
 
+// ---------- 5) Endgame · Midnight Kitchen (แจ๊ซ + ชิปทูน กลางดึก) ----------
+const EG = {
+  Ebmaj9: { root: 39, pad: [58, 62, 65, 67] }, Cm9: { root: 36, pad: [58, 62, 63, 67] },
+  Fm9: { root: 41, pad: [56, 60, 63, 67] }, Bb13: { root: 46, pad: [56, 62, 67, 68] },
+  Abmaj7: { root: 44, pad: [55, 60, 63, 67] }, G7alt: { root: 43, pad: [59, 63, 65, 68] },
+};
+const egMel = [
+  [[0, 70, .67], [.67, 72, .33], [1, 74, 1], [2.67, 75, .33], [3, 74, .67], [3.67, 70, .33]],
+  [[0, 72, 1.5], [1.67, 67, .33], [2, 70, .67], [2.67, 72, .33], [3, 74, 1]],
+  [[0, 75, .67], [.67, 74, .33], [1, 72, .67], [1.67, 68, .33], [2, 67, 1.5], [3.67, 65, .33]],
+  [[0, 68, 1], [1, 70, .67], [1.67, 74, .33], [2, 77, 2]],
+  [[0, 79, .67], [.67, 77, .33], [1, 75, 1], [2, 74, .67], [2.67, 72, .33], [3, 70, 1]],
+  [[0, 72, 2], [2, 75, .67], [2.67, 74, .33], [3, 72, 1]],
+  [[0, 72, .67], [.67, 75, .33], [1, 79, 1], [2, 80, .67], [2.67, 79, .33], [3, 75, 1]],
+  [[0, 74, 3], [3, 71, 1]],
+];
+const endgame = {
+  name: 'bgm_endgame', bpm: 124, room: 0.72, wet: 0.7,
+  bars: ['Ebmaj9', 'Cm9', 'Fm9', 'Bb13', 'Ebmaj9', 'Cm9', 'Fm9', 'Bb13', 'Abmaj7', 'Bb13', 'Ebmaj9', 'Cm9', 'Abmaj7', 'G7alt', 'Cm9', 'Bb13'].map(k => EG[k]),
+  play(mix, c) {
+    const { bar, bi, spb } = c, B = bi >= 8, sw = 0.67;   // สวิง: โน้ตหลังตกที่ 2/3 ของจังหวะ
+    kick(mix, c.beat(0), 0.6); kick(mix, c.beat(2 + sw), 0.4); if (B) kick(mix, c.beat(2), 0.5);
+    snare(mix, c.beat(1), 0.28, 0.3); snare(mix, c.beat(3), 0.28, 0.3);
+    for (let i = 0; i < 4; i++) { hat(mix, c.beat(i), 0.07); hat(mix, c.beat(i + sw), 0.05, i === 3 && bi % 2 === 1); }
+    // เบสเดิน (walking bass)
+    const walk = [0, 7, 10, 11];
+    walk.forEach((iv, i) => note(mix, c.beat(i), 0.8 * spb, bar.root + (i === 3 ? (bi % 2 ? -1 : 2) : iv) - (iv > 9 ? 12 : 0), { type: 'pluck', decay: 0.4, a: 0.004, r: 0.08, vol: 0.34, send: 0.08, lp: 900 }));
+    // อิเล็กเปียโน คอมป์แบบขาด ๆ
+    for (const b of [0, 1 + sw, 3]) for (const m of bar.pad) note(mix, c.beat(b), 0.5 * spb, m, { type: 'bell', decay: 0.5, a: 0.003, r: 0.2, vol: 0.05, pan: -0.2, send: 0.35 });
+    const lead = { type: 'sqr', lp: 2400, a: 0.01, d: 0.08, s: 0.6, r: 0.1, vol: 0.09, vib: 0.006, send: 0.35, pan: 0.15 };
+    if (B) { playMel(mix, c, egMel[bi - 8], lead); playMel(mix, c, egMel[bi - 8], { ...lead, type: 'tri', vol: 0.06, detune: 2, lp: 0 }); }
+    else if (bi >= 4) playMel(mix, c, egMel[bi - 4], { ...lead, vol: 0.07 });
+    if (bi % 8 === 0) crash(mix, c.beat(0), 0.08);
+  },
+};
+
+// ---------- 6) Endgame boss · Pinnacle "The Hunger Beneath" (มืด หนัก) ----------
+const EB = {
+  Fm: { root: 41, pad: [60, 65, 68] }, Db: { root: 37, pad: [61, 65, 68] }, Bbm: { root: 46, pad: [61, 65, 70] },
+  C: { root: 36, pad: [60, 64, 67] }, Gb: { root: 42, pad: [61, 66, 70] },
+};
+const ebLead = [
+  [[0, 77, 1], [1, 80, .5], [1.5, 79, .5], [2, 77, .5], [2.5, 76, .5], [3, 77, 1]],
+  [[0, 80, 1.5], [1.5, 77, .5], [2, 73, 2]],
+  [[0, 82, 1], [1, 80, .5], [1.5, 77, .5], [2, 73, 1], [3, 77, 1]],
+  [[0, 76, 2], [2, 79, 1], [3, 76, 1]],
+];
+const endgameBoss = {
+  name: 'bgm_endgame_boss', bpm: 146, room: 0.7, wet: 0.55,
+  bars: ['Fm', 'Fm', 'Db', 'C', 'Fm', 'Fm', 'Gb', 'C', 'Bbm', 'Db', 'Fm', 'C', 'Bbm', 'Gb', 'C', 'C'].map(k => EB[k]),
+  play(mix, c) {
+    const { bar, bi, spb } = c, B = bi >= 8;
+    [0, 0.5, 1.5, 2, 2.5, 3.5].forEach((b, i) => kick(mix, c.beat(b), i % 2 ? 0.6 : 0.85));
+    snare(mix, c.beat(1), 0.5); snare(mix, c.beat(3), 0.5);
+    for (let i = 0; i < 16; i++) hat(mix, c.beat(i * 0.25), i % 4 === 2 ? 0.08 : 0.04);
+    if (bi % 4 === 0) { crash(mix, c.beat(0), 0.14); timpani(mix, c.beat(0), bar.root, 0.5); }
+    if (bi % 4 === 3) [3, 3.25, 3.5, 3.75].forEach((b, i) => tom(mix, c.beat(b), 150 - i * 20, 0.4, i % 2 ? 0.3 : -0.3));
+    for (let i = 0; i < 16; i++) note(mix, c.beat(i * 0.25), 0.2 * spb, bar.root - 12 + (i % 8 === 6 ? 1 : 0), { type: 'saw', lp: 260, lpEnv: 1500, lpDecay: 0.05, a: 0.002, s: 0.6, r: 0.03, vol: 0.24, send: 0.03 });
+    for (const m of bar.pad) wide(mix, c.beat(0), 4 * spb, m - 12, { type: 'saw', lp: 800, a: 0.3, s: 0.9, r: 0.3, vol: 0.06, send: 0.5, voices: 3, spread: 0.012 });
+    const L = ebLead[bi % 4];
+    if (B) playMel(mix, c, L, { type: 'saw', lp: 2600, a: 0.02, d: 0.1, s: 0.8, r: 0.12, vol: 0.13, vib: 0.008, send: 0.4 });
+    else if (bi >= 4) for (let i = 0; i < 8; i++) note(mix, c.beat(i * 0.5), 0.3 * spb, bar.pad[i % 3] + 12, { type: 'sqr', lp: 2200, decay: 0.1, a: 0.002, r: 0.04, vol: 0.06, pan: i % 2 ? 0.4 : -0.4, send: 0.3 });
+  },
+};
+
 module.exports = { SR, TAU, mtof, Mix, note, wide, kick, snare, hat, shaker, tom, timpani, crash, wood, reverb, renderTrack, writeWav, playMel, setSeed: v => { seed = v; }, rnd: () => rnd() };
 if (require.main === module) {
 const out = process.argv[2] || '.';
 fs.mkdirSync(out, { recursive: true });
-for (const def of [ch2, ch2b, ch3, ch3b]) {
+const ALL = [ch2, ch2b, ch3, ch3b, endgame, endgameBoss];
+const want = process.argv.slice(3);
+for (const def of ALL.filter(d => !want.length || want.includes(d.name))) {
   seed = 12345;
   const { L, R, sec } = renderTrack(def);
   writeWav(path.join(out, def.name + '.wav'), L, R);
