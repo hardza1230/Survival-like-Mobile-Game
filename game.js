@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.12.0';
+const GAME_VERSION = '5.13.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.13.0', date:'2026-09-25', title:'🏅 Chest tiers', items:['Miniboss chests are Bronze, Silver or Gold depending on how fast you won and how few hits you took (Hell difficulty adds a tier). Better chests give bonus Sugar and currency']},
   { v:'5.12.0', date:'2026-09-25', title:'📦 Miniboss chest drop', items:['The miniboss chest now crashes down from the sky and shines a pillar of light you can spot from afar']},
   { v:'5.11.0', date:'2026-09-25', title:'🎨 Colour-coded card highlights', items:['Every level-up card now has a big highlight line: green = stat boost, red = drawback, purple = mutation, gold = evolution, blue = build path, orange = infusion, pink = relic']},
   { v:'5.10.0', date:'2026-09-25', title:'❄️ Mint Chill stacks', items:['Mint’s lances no longer freeze on every hit — each hit adds Chill (slow), and 4 stacks within 2.5s freeze the enemy']},
@@ -6203,6 +6204,7 @@ class Game extends Phaser.Scene {
   spawnMiniBoss(){
     if(this.state==='levelup'){this._queuedBossIntro='mini';return;}
     if(this.state!=='play')return;
+    this._miniFight={t0:this.elapsed||0,hits:0};   // v5.13 วัดผลงานสู้มินิบอส → ระดับกล่อง
     const st=STAGES[this.stageIndex];
     this.showBanner('💢 Miniboss!', st.mini, 2000); Sfx.bossWarn(); Sfx.playMiniBgm(this.stageIndex+1); this.screenShake(200,0.008);
     const adds=2+this.stageIndex;
@@ -7978,7 +7980,7 @@ class Game extends Phaser.Scene {
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
-    if(isMini){ this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
+    if(isMini){ this._nextChestTier=this.miniChestTier(); this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
   killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้
@@ -8132,10 +8134,29 @@ class Game extends Phaser.Scene {
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
     if(!c)return;
     c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c);
-    if(kind==='mini'){ this.miniChestDrop(c,x,y); return; }
+    if(kind==='mini'){ c._tier=this._nextChestTier||'bronze'; this._nextChestTier=null; this.miniChestDrop(c,x,y); return; }
     this.showPickupCue(c,kind==='pick'?0x66e0ff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
     this.tweens.add({targets:c,y:y-12,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // v5.12: กล่องมินิบอสหล่นจากฟ้า → กระแทกพื้น (จอสั่น+ฝุ่น) → เสาแสงสีตามระดับกล่อง มองเห็นจากไกล
+  // ระดับกล่อง: โดนตีน้อย + ฆ่าเร็ว = ดีขึ้น · ความยาก Hell +1 ขั้น (กฎเหล็ก)
+  miniChestTier(){
+    const f=this._miniFight||{t0:this.elapsed||0,hits:9},dur=(this.elapsed||0)-f.t0;this._miniFight=null;
+    let r=(f.hits<=1&&dur<=45)?2:(f.hits<=4||dur<=35)?1:0;
+    if((this.stageDiff||1)>=3)r++;
+    r=Math.min(2,r);this._miniChestInfo={dur,hits:f.hits};return ['bronze','silver','gold'][r];
+  }
+  // โบนัสตามระดับ (นอกจาก Relic): silver = Sugar+currency 1 · gold = Sugar ก้อนใหญ่+currency 3
+  miniChestBonus(tier){
+    const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1;
+    if(tier==='bronze')return {sugar:0,cur:0};
+    return tier==='gold'?{sugar:Math.round((80+si*25)*dr),cur:3}:{sugar:Math.round((40+si*15)*dr),cur:1};
+  }
+  grantMiniChestBonus(tier){
+    const b=this.miniChestBonus(tier);if(b.sugar>0){this.sugarStage+=b.sugar;this.sugarRun+=b.sugar;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);}
+    if(b.cur>0)this.grantCurrencyReward(b.cur,this.currencyTierFor(),(MINI_CHEST_TIERS[tier]||{}).name+' Chest bonus');
+    else if(b.sugar>0)this.showBanner('🍬 +'+b.sugar,'Chest bonus',1200);
+    return b;
+  }
   miniChestDrop(c,x,y){
     const T=MINI_CHEST_TIERS[c._tier||'bronze']||MINI_CHEST_TIERS.bronze;
     c.body.enable=false; c.setPosition(x,y-320).setAlpha(0.2).setDepth(90000); c.setScale(1.42*36/(c.width||36));
@@ -8152,14 +8173,14 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:[c._pillar,c._pillarCore],scaleY:1,duration:260,ease:'Cubic.out'});
         this.tweens.add({targets:c._pillar,alpha:{from:0.2,to:0.42},scaleX:{from:0.85,to:1.2},yoyo:true,repeat:-1,duration:520,delay:260});
         this.tweens.add({targets:c,y:y-10,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-        this.showBanner(T.emoji+' '+T.name+' Chest','Walk into the light to open it',1400); }});
+        const inf=this._miniChestInfo;this.showBanner(T.emoji+' '+T.name+' Chest',inf?('Beat it in '+Math.round(inf.dur)+'s · '+inf.hits+' hits taken'):'Walk into the light to open it',1600); }});
     }});
   }
   collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); this.hidePickupCue(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
-    if(kind==='mini'){ if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box');return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='mini'){ this.grantMiniChestBonus(c._tier||'bronze'); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box');return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
     if(kind==='pick'&&Math.random()<0.30&&this.offerRelic())return;   // 🔮 กล่องลับ 30% = Relic
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
@@ -8276,7 +8297,7 @@ class Game extends Phaser.Scene {
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
     if(this.player.hp<=0) this.die(); }
   // 💀 สะสมดาเมจที่รับตามแหล่ง (หน้าตายบอกสาเหตุ) · รีเซ็ตใน startRun
-  _noteHit(src,dmg){ const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
+  _noteHit(src,dmg){ if(this._miniFight&&this.mode==='mini')this._miniFight.hits++; const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
   deathReason(){ const d=this._dmgBy||{},top=Object.keys(d).sort((a,b)=>d[b]-d[a])[0]||this._lastHitSrc||'swarm';
     const R={boss:['👑 Boss attacks','Watch the red telegraphs and Dash through big attacks.'],mini:['😈 Miniboss','Kite in circles and Dash when it charges.'],
       elite:['💪 Elite enemies','Focus elites first — they hit hard up close.'],shot:['🎯 Projectiles & hazards','Keep moving; don’t stand in glowing zones.'],
