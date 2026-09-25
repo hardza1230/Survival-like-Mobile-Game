@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.86.0 — การ์ด Endgame ในหน้าเลือก Chapter)
+- **v4.86.0 (เจ้าของสั่ง):** `buildChapterSelect` เพิ่มการ์ด 📜 Endgame · Recipe Maps ต่อท้าย Chapter 3 (rows นับ +1) · ปลดเมื่อ `Save.endgameUnlocked()` → แตะ = menuScreen 'recipes' · ล็อก = 'Finish Chapter 3' · verified screenshot 390×844, 0 error · **ถัดไป A3 Bestiary Ch3**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.85.0 — Chapter 3 story (A1+A2))
 - **v4.85.0 (Phase A · A1+A2):** `STAGE_STORY_BEATS` เติม `null,null` (index 8-9 ใช้ cutscene เดิม) + 5 ชุด × 5 beat สำหรับด่าน 10-14 · story panel ก่อนบอส C3-1..C3-5 (`playStoryPanel('bg11..15',...)` ต่อจาก stage 9 ใน spawn flow) · `STAGE_EPILOGUE` +5 ตอน (index 10-14) ตอนสุดท้าย = ฉากจบเกม (Momo ปลูก crown seed ใหม่ใต้แสงแดด) + ชี้ไป endgame · แก้ epilogue C2-5 ให้ชี้ต่อไป Chapter 3 · verified headless C3-5: beat ก่อนเวฟ → panel บอส → epilogue, 0 error · **ถัดไป A3 Bestiary Ch3**
 

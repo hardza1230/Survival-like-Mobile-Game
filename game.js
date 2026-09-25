@@ -37,9 +37,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.85.0';
+const GAME_VERSION = '4.86.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.86.0', date:'2026-09-25', title:'📜 Endgame on the map', items:['Chapter select now has an Endgame card after Chapter 3','Tap it to open Recipe Maps (unlocks after finishing the story)'] },
   { v:'4.85.0', date:'2026-09-25', title:'📖 Chapter 3 story', items:['Chapter 3 now has a story beat before every wave','A story panel introduces each Chapter 3 boss','Every Chapter 3 boss has an epilogue — and The First Planter ends the story of Mochitopia','Chapter 2’s ending now leads into Chapter 3'] },
   { v:'4.84.0', date:'2026-09-25', title:'📜 Recipe balance pass', items:['Fix: recipe bosses now scale with recipe tier and mods (they used to stay at base strength)','Recipe bosses have 30% less base HP so runs stay short','Hunger Meter needs less at high tiers (Tier 16: 246 instead of 310)'] },
   { v:'4.83.0', date:'2026-09-25', title:'📜 Recipes replace the Rift', items:['Mochi Rift is retired — Recipe Maps are the main endgame now','Rift progress converts into two recipes at your best Rift tier','The Pinnacle Boss button moved to the Recipe Maps page and still uses 🗝️ keys (4 🧩 fragments = 1 key)','Boss Rush stays as it is'] },
@@ -4378,7 +4379,7 @@ class Game extends Phaser.Scene {
   buildChapterSelect(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Choose Chapter');
     const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=9,side=14,top=portrait?88:62;
-    const cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(CHAPTERS.length/cols),ch=Math.min(portrait?94:82,(h-top-16-gap*(rows-1))/rows);
+    const cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil((CHAPTERS.length+1)/cols),ch=Math.min(portrait?94:82,(h-top-16-gap*(rows-1))/rows);
     CHAPTERS.forEach((c,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),progressOpen=i===0||!!(Save.data.stageMastery||{})[((c.stages||[0])[0])-1],open=!!c.ready&&progressOpen;
       const coverKey=i===0?'chapter1_cover':i===1?'chapter2_cover':null,art=coverKey&&this.textures.exists(coverKey)?this._coverImage(x+2,y+2,cw-4,ch-4,coverKey):null;if(art)this.menu.add(art);
       const g=this.add.graphics();g.fillStyle(open?0x17101f:0x1d1924,art?0.48:0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xffc85a:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
@@ -4387,7 +4388,17 @@ class Game extends Phaser.Scene {
       const desc=this.add.text(x+57,y+40,c.desc,{fontFamily:'sans-serif',fontSize:'9px',color:open?'#cfc2d5':'#746d7a',wordWrap:{width:cw-126},maxLines:2}).setOrigin(0,0);
       const state=this.add.text(x+cw-13,y+ch/2,open?'Enter  ▶':c.ready?('Clear Chapter '+i):'Coming soon',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffe08a':'#756d7e'}).setOrigin(1,0.5);
       this.menu.add([g,icon,name,desc,state]);this._zone(x,y,cw,ch,open?()=>{this.selectedChapter=i;this.menuScreen='stage';this.buildMenuScreen();}:()=>this.showBanner('🔒 '+c.name,c.ready?'Defeat The Great Hunger and clear Chapter 1 first':'This Chapter is in development',1200));
-    });this.menu.setVisible(true);
+    });
+    // การ์ด Endgame ต่อท้าย Chapter 3 → เข้า Recipe Maps
+    { const i=CHAPTERS.length,col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),open=Save.endgameUnlocked();
+      const g=this.add.graphics();g.fillStyle(open?0x1a1030:0x1d1924,0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xc58bff:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
+      if(open){g.fillStyle(0xc58bff,0.12);g.fillRoundedRect(x+3,y+3,cw-6,ch-6,12);}
+      const icon=this.add.text(x+30,y+ch/2,open?'📜':'🔒',{fontSize:open?'30px':'25px'}).setOrigin(0.5),name=this.add.text(x+57,y+18,'Endgame · Recipe Maps',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:open?'#f3e4ff':'#98909f'}).setOrigin(0,0);
+      const desc=this.add.text(x+57,y+40,'Maps, Atlas, Uniques and the Pinnacle Boss',{fontFamily:'sans-serif',fontSize:'9px',color:open?'#d4c2e6':'#746d7a',wordWrap:{width:cw-126},maxLines:2}).setOrigin(0,0);
+      const state=this.add.text(x+cw-13,y+ch/2,open?'Enter  ▶':'Finish Chapter 3',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#e2b8ff':'#756d7e'}).setOrigin(1,0.5);
+      this.menu.add([g,icon,name,desc,state]);this._zone(x,y,cw,ch,open?()=>{this.menuScreen='recipes';this.buildMenuScreen();}:()=>this.showBanner('🔒 Endgame','Finish the story (Chapter 3) to unlock Recipe Maps',1200));
+    }
+    this.menu.setVisible(true);
   }
   buildStageSelect(){
     const chapterIndex=Phaser.Math.Clamp(this.selectedChapter||0,0,CHAPTERS.length-1),chapter=CHAPTERS[chapterIndex],range=chapter.stages||[0,STAGES.length-1],stageIds=[];for(let i=range[0];i<=range[1];i++)stageIds.push(i);
