@@ -502,7 +502,7 @@
 - **📋 แผนงานแบ่ง commit อยู่ที่ `docs/COMMIT_ROADMAP.md` — ทำทีละ commit ตามลำดับ และอัปเดตสถานะ ⬜/✅ ในไฟล์นั้นทุกครั้ง**
 1. ~~Endgame gate~~ ✅ v4.72 ปลดหลังจบเนื้อเรื่อง
 2. **Chapter 3** ✅ v4.73 เล่นได้ (placeholder) — เหลือ: อาร์ตจริงจาก AI อีกตัว, story/epilogue, Bestiary, กลไกบอสเฉพาะ
-3. Endgame ✅ v4.74 Mochi Rift + Pinnacle · ไอเดียเสริมที่ยังไม่ทำ: ห้องสุ่มกลางด่าน, Mochi Pet, Ascendancy สายอาชีพ, Weapon Fusion, Season
+3. Endgame ✅ v4.74 Rift+Pinnacle → **ถัดไป: Phase R Recipe Maps (R1–R10) ใน docs/COMMIT_ROADMAP.md**
 4. เล่นจริงบนมือถือ: Boss Rush balance, Relic, Bonus Challenge, UI v4.63-4.68, Chapter 2 full run
 5. (พักไว้) Play Store: ลบบัญชีในแอป, store listing, keystore, closed test
 

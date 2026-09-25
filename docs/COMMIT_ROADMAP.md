@@ -15,10 +15,23 @@
 - ⬜ **A8** Objective/กิมมิคเฉพาะบท 3 (1–2 แบบ) + wave profile ศัตรูตามด่าน
 - ⬜ **A9** Balance pass บท 3 (recommendedPower, HP/DMG curve, validator ขยายเป็น 15 ด่าน)
 
-## Phase B — Endgame ให้ลึกขึ้น
+## Phase R — Endgame: Mochi Recipe Maps (แบบ PoE maps ในรูป survival) ← ทำก่อน
+แนวคิด: Recipe = ไอเทมแผนที่ (ธีม 1 ใน 15 ด่าน + Tier 1-16 + mods) · รัน = survival สั้น 3–4 นาที + event กลางรัน → บอสธีมนั้น → ดรอป Recipe ถัดไป/ของ endgame/เศษกุญแจ
+ค่าเริ่มต้นที่สมมติไว้ (เปลี่ยนได้): รัน 3–4 นาที · Tier 1 ฟรีไม่จำกัด · **ตาย = Recipe หาย** · เปิดครบ 15 ธีม
+- ⬜ **R1** Data model + save: `Save.data.recipes[]` {uid,theme,tier,mods,rarity} + หน้า 📜 Recipe (Activities) แสดงคลัง + ปุ่มรับ T1 ฟรี
+- ⬜ **R2** Recipe run mode: survival 3–4 นาที → บอสธีม · mods/tier คูณเข้า `diffMul()` · ตาย = Recipe หาย
+- ⬜ **R3** Boss drops + loop: ดรอป Recipe tier เท่า/สูงกว่า, เศษกุญแจ Pinnacle, ของ endgame iLv ตาม tier (กฎเหล็ก: tier สูง รางวัลดีกว่า)
+- ⬜ **R4** Craft Recipe ด้วย currency เดิม (transmute/alt/regal/chaos/exalt/scour) + mod ที่เปลี่ยนกลไก (มอนเร็ว, ระเบิดตอนตาย, ห้ามฮีล ฯลฯ)
+- ⬜ **R5** Event กลางรัน: ห้องสมบัติ / ศาลบัฟ / พ่อค้า / Rare elite
+- ⬜ **R6** Atlas board 15 ธีม: บันทึกเคลียร์ต่อ tier + ได้ Atlas point
+- ⬜ **R7** Atlas passive tree (เพิ่มดรอป, event บ่อยขึ้น, mod พิเศษ ฯลฯ)
+- ⬜ **R8** Unique ที่เปลี่ยน build + ดรอปเจาะจงจากบอสแต่ละธีม
+- ⬜ **R9** ย้าย Rift → Recipe (เซฟเก่า riftKeys แปลงเป็นเศษกุญแจ) · Pinnacle ใช้เศษกุญแจ · Boss Rush คงไว้
+- ⬜ **R10** Balance pass tier 1–16 + validator contract
+
+## Phase B — Endgame เสริม (หลัง Phase R)
 - ⬜ **B1** Pinnacle: ท่าโจมตีเฉพาะ + 3 เฟส (แยกจาก First Planter)
-- ⬜ **B2** Rift: mod ที่เปลี่ยนกลไก (เช่น มอนเร็ว, ระเบิดตอนตาย, ห้ามฮีล) ไม่ใช่แค่ตัวคูณ
-- ⬜ **B3** Rift leaderboard/สถิติ (tier สูงสุดต่อตัวละคร) + Achievement endgame
+- ⬜ **B3** สถิติ/Achievement endgame
 - ⬜ **B4** (เลือก) Mochi Pet หรือ Ascendancy สายอาชีพ — แตกเป็น commit ย่อยตอนเริ่ม
 
 ## Phase C — ต่ออาร์ตจริง (เมื่อ AI อีกตัวส่งภาพมา)
