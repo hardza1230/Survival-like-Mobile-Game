@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.6.0';
+const GAME_VERSION = '5.7.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.7.0', date:'2026-09-25', title:'💬 No more pauses between waves', items:['Character lines now pop up as a speech bubble over your head instead of stopping the game every wave']},
   { v:'5.6.0', date:'2026-09-25', title:'🎵 New Chapter 3 stage music', items:['Each Chapter 3 stage now has its own theme, from the windswept Ashen Seedfields to the Throne of the First Seed']},
   { v:'5.5.0', date:'2026-09-25', title:'🎵 New Chapter 2 stage music', items:['Each Chapter 2 stage now has its own theme: mossy canopy, murky marsh, buzzing hive, four-season greenhouse and the Root Throne march']},
   { v:'5.4.0', date:'2026-09-25', title:'🎵 New Chapter 1 stage music', items:['Each Chapter 1 stage now has its own theme: cozy pantry, dripping drain, sizzling chili engine, icy prison and the ominous Crown Oven']},
@@ -5383,7 +5384,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){
+  exitStage(){ if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -5670,19 +5671,26 @@ class Game extends Phaser.Scene {
     ];
     return profiles[w]||profiles[profiles.length-1];
   }
+  // v5.7: บทพูดคั่นเวฟ = บับเบิลเหนือหัวตัวละคร ไม่หยุดเกม (เดิมหยุดเกม 3.6-7 วิทุกเวฟ) · ชื่อเวฟยังขึ้นเป็นแบนเนอร์ใน beginWave
   playWaveCutscene(w,beat,done){
-    if(this._inTutorial){done();return;}   // ระหว่างสอน = ไม่เล่นบทพูดกับตัวเอง (กันซ้อนกับบับเบิลครูBerry)
-    const layer=this.storyLayer;if(!layer){done();return;}layer.removeAll(true);layer.setVisible(true);this.physics.pause();this.state='cinematic';
-    const c=CHARACTERS[this.character]||CHARACTERS.momo,reactions=STORY_REACTIONS[this.character]||STORY_REACTIONS.momo,quote=reactions[w%reactions.length];
-    const h=this.H,wid=this.W,panelH=Math.min(172,Math.max(154,h*0.30)),y=h-panelH;
-    const dim=this.add.rectangle(0,0,wid,h,0x08060d,0.34).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x17111f,0.97);panel.fillRoundedRect(10,y,wid-20,panelH-10,16);panel.lineStyle(2,c.color,0.9);panel.strokeRoundedRect(10,y,wid-20,panelH-10,16);
-    const em=this.add.text(42,y+panelH/2-4,c.emoji,{fontSize:'42px'}).setOrigin(0.5),name=this.add.text(76,y+18,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd166'}).setOrigin(0,0.5);
-    const title=this.add.text(76,y+40,beat?beat.title:('Wave '+(w+1)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',wordWrap:{width:wid-96}}).setOrigin(0,0.5);
-    const line=this.add.text(76,y+68,'“'+quote+'”',{fontFamily:'sans-serif',fontSize:'14px',color:'#ffe4f0',lineSpacing:3,wordWrap:{width:wid-96},maxLines:3}).setOrigin(0,0);
-    const skip=this.add.text(wid-22,y+panelH-24,'Tap to continue  ▶',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#8bd3a0'}).setOrigin(1,0.5);layer.add([dim,panel,em,name,title,line,skip]);
-    // ให้เวลาอ่านตามความยาวประโยค (อ่านไม่ทันในเวอร์ชันก่อน) — แตะข้ามได้เสมอ · ตัด lore ที่รายละเอียดเยอะออก
-    const readMs=Phaser.Math.Clamp(2600+quote.length*70,3600,7000);
-    let finished=false;const finish=()=>{if(finished)return;finished=true;this._finishStoryCutscene=null;layer.setVisible(false);layer.removeAll(true);this.state='play';this.physics.resume();done();};this._finishStoryCutscene=finish;this.time.delayedCall(readMs,finish);
+    if(this._inTutorial){done();return;}
+    const reactions=STORY_REACTIONS[this.character]||STORY_REACTIONS.momo,quote=reactions[w%reactions.length];
+    this.showSpeechBubble(quote,Phaser.Math.Clamp(1800+quote.length*45,2600,4200));
+    done();
+  }
+  showSpeechBubble(text,ms=3000){
+    if(this._speech){this._speech.ev.remove();this._speech.box.destroy();}
+    const p=this.player;if(!p)return;
+    const t=this.add.text(0,0,text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#3a2140',align:'center',wordWrap:{width:200},backgroundColor:'#fffaf5',padding:{x:10,y:7}}).setOrigin(0.5);
+    const bh=t.height,g=this.add.graphics();g.fillStyle(0xfffaf5,1);g.fillTriangle(-7,bh/2-1,7,bh/2-1,0,bh/2+9);
+    const box=this.add.container(p.x,p.y-92-bh/2,[g,t]).setDepth(95000).setAlpha(0).setScale(0.6);this.camWorld(box);
+    this.tweens.add({targets:box,alpha:1,scale:1,duration:180,ease:'Back.out'});
+    const t0=this.time.now,ev=this.time.addEvent({delay:30,loop:true,callback:()=>{
+      if(!box.active||!this.player){ev.remove();return;}
+      box.setPosition(this.player.x,this.player.y-92-bh/2);
+      if(this.time.now-t0>ms&&!box._out){box._out=true;this.tweens.add({targets:box,alpha:0,duration:260,onComplete:()=>{ev.remove();box.destroy();if(this._speech&&this._speech.box===box)this._speech=null;}});}
+    }});
+    this._speech={box,ev};
   }
   playStoryPanel(key,kicker,title,body,done){
     const layer=this.storyLayer;if(!layer||!this.textures.exists(key)){done();return;}layer.removeAll(true);layer.setVisible(true);this.physics.pause();this.state='cinematic';
