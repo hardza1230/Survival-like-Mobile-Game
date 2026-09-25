@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.15.0';
+const GAME_VERSION = '5.16.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.16.0', date:'2026-09-25', title:'🃏 Gold mystery cards', items:['Gold chests add a bonus round: three face-down cards, one hides a JACKPOT. Pick one, then see what the others were']},
   { v:'5.15.0', date:'2026-09-25', title:'⬆ Chest upgrade chance', items:['While the prize wheel spins, your chest may suddenly upgrade — Bronze to Silver (25%) or Silver to Gold (15%) — with better prizes']},
   { v:'5.14.0', date:'2026-09-25', title:'🎡 Prize wheel', items:['Opening a miniboss chest spins a prize wheel — lights race around 8 prizes, slow down and land on your reward, which grows into the centre. Jackpot possible!']},
   { v:'5.13.0', date:'2026-09-25', title:'🏅 Chest tiers', items:['Miniboss chests are Bronze, Silver or Gold depending on how fast you won and how few hits you took (Hell difficulty adds a tier). Better chests give bonus Sugar and currency']},
@@ -3184,6 +3185,7 @@ class Game extends Phaser.Scene {
       if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
+      if(this.state==='rolling'){ for(const z of (this._rollBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ z.fn(); return; } } return; }
       if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
       if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
       if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
@@ -8230,6 +8232,42 @@ class Game extends Phaser.Scene {
     };
     this.time.delayedCall(250,hop);
   }
+  // v5.16 กล่องทอง: การ์ดคว่ำ 3 ใบ เลือก 1 · พลิกดูของที่ได้ แล้วใบที่เหลือพลิกให้ดูว่าพลาดอะไร (มี JACKPOT 1 ใบเสมอ)
+  openMysteryCards(done){
+    const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.round(n*(1+si*0.3)*dr);
+    const prizes=Phaser.Utils.Array.Shuffle([
+      {emoji:'🌟',name:'JACKPOT',sub:'Sugar +'+S(200)+' · Currency ×2 · Full heal',color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(200));this.grantCurrencyReward(2,this.currencyTierFor(),'JACKPOT');this.player.hp=this.player.maxhp;}},
+      {emoji:'🍭',name:'Sugar',sub:'+'+S(70),color:0xff7fb0,give:()=>this.addRunSugar(S(70))},
+      {emoji:'💠',name:'Currency',sub:'×1',color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Mystery card')},
+    ]);
+    this._prevRollState=this.state;this.state='rolling';this.physics.pause();
+    const w=this.W,h=this.H,cw=Math.min(104,(w-60)/3),ch=cw*1.45,gap=12,x0=w/2-(cw*3+gap*2)/2,cy=h*0.48;
+    const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
+    const bg=this.add.rectangle(0,0,w,h,0x0b0714,0.9).setOrigin(0);
+    const ttl=this.add.text(w/2,cy-ch/2-60,'🟨 Gold Bonus',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166',stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
+    const hint=this.add.text(w/2,cy-ch/2-30,'One card hides the JACKPOT — pick one!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#e8dcff'}).setOrigin(0.5);
+    cont.add([bg,ttl,hint]);
+    let picked=false;
+    const cards=prizes.map((p,i)=>{const x=x0+i*(cw+gap)+cw/2;const c=this.add.container(x,cy);const g=this.add.graphics();
+      const drawBack=()=>{g.clear();g.fillStyle(0x3a2352,1);g.fillRoundedRect(-cw/2,-ch/2,cw,ch,14);g.lineStyle(3,0xffd166,0.9);g.strokeRoundedRect(-cw/2,-ch/2,cw,ch,14);};
+      const q=this.add.text(0,0,'❓',{fontSize:'40px'}).setOrigin(0.5);drawBack();c.add([g,q]);cont.add(c);
+      this.tweens.add({targets:c,y:cy-6,yoyo:true,repeat:-1,duration:600+i*90,ease:'Sine.inOut'});
+      return {c,g,q,p,x};});
+    const flip=(cd,mine)=>{ this.tweens.killTweensOf(cd.c);
+      this.tweens.add({targets:cd.c,scaleX:0,duration:140,onComplete:()=>{ const p=cd.p;cd.g.clear();cd.g.fillStyle(mine?0x2c2038:0x1d1626,1);cd.g.fillRoundedRect(-cw/2,-ch/2,cw,ch,14);cd.g.lineStyle(mine?4:2,p.color,mine?1:0.6);cd.g.strokeRoundedRect(-cw/2,-ch/2,cw,ch,14);
+        cd.q.setText(p.emoji).setFontSize(p.jackpot?'44px':'36px').setY(-16);
+        const nm=this.add.text(0,ch*0.2,p.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#'+p.color.toString(16).padStart(6,'0')}).setOrigin(0.5);
+        const sb=this.add.text(0,ch*0.34,p.sub,{fontFamily:'sans-serif',fontSize:'9px',color:'#d8cce6',align:'center',wordWrap:{width:cw-10}}).setOrigin(0.5,0);
+        cd.c.add([nm,sb]);if(!mine)cd.c.setAlpha(0.55);
+        this.tweens.add({targets:cd.c,scaleX:mine?1.12:1,scaleY:mine?1.12:1,duration:160,ease:'Back.out'}); }});};
+    this._rollBtns=cards.map(cd=>({x:cd.x-cw/2,y:cy-ch/2,w:cw,h:ch,fn:()=>{ if(picked)return;picked=true;this._rollBtns=[];
+      if(Sfx.select)Sfx.select();flip(cd,true);const p=cd.p;
+      this.time.delayedCall(420,()=>{ this.screenFlash(p.color,p.jackpot?0.6:0.3,300);if(p.jackpot){this.screenShake(360,0.012);if(Sfx.legend)Sfx.legend();hint.setText('🌟 JACKPOT!').setColor('#ffd166').setFontSize('20px');}else{if(Sfx.clear)Sfx.clear();hint.setText('You got '+p.name+' '+p.sub);}
+        cards.forEach((o,j)=>{if(o!==cd)this.time.delayedCall(350+j*160,()=>flip(o,false));}); });
+      this.time.delayedCall(2300,()=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);this._rollBtns=null;
+        this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
+        p.give(); done&&done(); }}); }); }}));
+  }
   miniChestDrop(c,x,y){
     const T=MINI_CHEST_TIERS[c._tier||'bronze']||MINI_CHEST_TIERS.bronze;
     c.body.enable=false; c.setPosition(x,y-320).setAlpha(0.2).setDepth(90000); c.setScale(1.42*36/(c.width||36));
@@ -8253,7 +8291,7 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
-    if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,(ft)=>{ this.grantMiniChestBonus(ft||tier); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,(ft)=>{ const after=()=>{ this.grantMiniChestBonus(ft||tier); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }; if((ft||tier)==='gold')this.openMysteryCards(after); else after(); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
     if(kind==='pick'&&Math.random()<0.30&&this.offerRelic())return;   // 🔮 กล่องลับ 30% = Relic
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
