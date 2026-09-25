@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.77.0';
+const GAME_VERSION = '4.78.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.78.0', date:'2026-09-25', title:'📜 Recipe Maps — crafting', items:['Craft recipes with your Forge currency: upgrade to Magic/Rare, reroll mods, or wipe them','New gameplay mods for recipes: 💨 Sugar Rush, 💥 Volatile, 🚫 Starving, 🐜 Horde','Gameplay mods pay bigger rewards than stat mods'] },
   { v:'4.77.0', date:'2026-09-25', title:'📜 Recipe Maps — boss drops', items:['Recipe bosses drop a new recipe — often one tier higher','Chance for a second recipe · higher tiers and mods drop Magic/Rare recipes more often','Earn 🧩 Pinnacle fragments — every 4 become a 🗝️ key','Fast clears raise the odds of a tier-up and give an extra fragment','Recipe runs drop endgame gear (iLv 61+) that scales with tier'] },
   { v:'4.76.0', date:'2026-09-25', title:'📜 Recipe Maps — runs', items:['Recipes can now be run: the recipe is used up when you enter','No waves — kill enemies to fill the Hunger Meter, then the boss appears','Fill it in under 100s for a Sugar speed bonus · best fill time saved per theme','If the meter is not full after 3 minutes the boss comes anyway','Recipe tier and mods scale enemy HP, damage and rewards'] },
   { v:'4.75.0', date:'2026-09-25', title:'📜 Recipe Maps — stash', items:['New endgame page: Activities → Recipe Maps','Recipes are map items with a stage theme, tier (1–16), rarity and mods','Take a free Tier 1 recipe any time · bag holds 30','Recipe runs arrive in the next update'] },
@@ -2623,15 +2624,31 @@ const PINNACLE_KEY_COST=3, RECIPE_PAR=100, RECIPE_HUNGER_CAP=180, RECIPE_FRAGS_P
 // 📜 Recipe Maps (endgame Phase R · R1 = data model + stash) — แผนที่แบบ PoE: ธีม(ด่าน)+Tier+mods
 const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16;
 const RECIPE_RARITY={normal:{label:'Normal',color:'#e6dcf0',hex:0x8d8499,mods:0},magic:{label:'Magic',color:'#7fb6ff',hex:0x4a7dff,mods:1},rare:{label:'Rare',color:'#ffd166',hex:0xe0a526,mods:2}};
+// R4: mod ที่เปลี่ยนกลไก (เฉพาะ Recipe) — รางวัลสูงกว่า mod ตัวเลขล้วน (กฎเหล็ก)
+const RECIPE_MECH_MODS=[
+  {id:'haste',emoji:'💨',name:'Sugar Rush',desc:'Enemies move 30% faster',hp:1,dmg:1,reward:1.30,mech:true},
+  {id:'volatile',emoji:'💥',name:'Volatile',desc:'Enemies burst into a hazard when they die',hp:1,dmg:1,reward:1.35,mech:true},
+  {id:'noheal',emoji:'🚫',name:'Starving',desc:'No healing: heal drops and regen do nothing',hp:1,dmg:1,reward:1.45,mech:true},
+  {id:'horde',emoji:'🐜',name:'Horde',desc:'Far more enemies spawn · meter fills faster',hp:0.9,dmg:1,reward:1.25,mech:true}
+];
+const RECIPE_MODS=RIFT_MODS.concat(RECIPE_MECH_MODS);
+function recipeModDef(id){ return RECIPE_MODS.find(q=>q.id===id); }
+// ต้นทุนคราฟต์ recipe (currency เดิมของ Affix Forge)
+const RECIPE_CRAFT=[
+  {id:'transmute',label:'Upgrade → Magic',need:'normal'},
+  {id:'regal',label:'Upgrade → Rare',need:'magic'},
+  {id:'chaos',label:'Reroll mods',need:'any'},
+  {id:'scour',label:'Wipe → Normal',need:'any'}
+];
 function recipeThemes(){ return STAGES.map((s,i)=>i).filter(i=>STAGES[i].ready!==false); }
 function makeRecipe(tier,theme,rarity){
   tier=Math.max(1,Math.min(RECIPE_TIER_MAX,tier|0)); const th=recipeThemes();
   if(theme==null)theme=th[Math.floor(Math.random()*th.length)];
-  rarity=rarity||'normal'; const pool=RIFT_MODS.map(m=>m.id),mods=[];
+  rarity=rarity||'normal'; const pool=RECIPE_MODS.map(m=>m.id),mods=[];
   for(let k=0;k<RECIPE_RARITY[rarity].mods&&pool.length;k++)mods.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
   return {uid:'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),theme,tier,rarity,mods};
 }
-function recipeMul(r){ const m=riftTierMul(r.tier); let hp=m.hp,dmg=m.dmg,rw=m.reward; (r.mods||[]).forEach(id=>{const d=RIFT_MODS.find(q=>q.id===id); if(d){hp*=d.hp;dmg*=d.dmg;rw*=d.reward;}}); return {hp,dmg,reward:rw}; }
+function recipeMul(r){ const m=riftTierMul(r.tier); let hp=m.hp,dmg=m.dmg,rw=m.reward; (r.mods||[]).forEach(id=>{const d=recipeModDef(id); if(d){hp*=d.hp;dmg*=d.dmg;rw*=d.reward;}}); return {hp,dmg,reward:rw}; }
 function riftTierMul(t){ t=Math.max(1,t|0); return {hp:1+0.18*(t-1),dmg:1+0.12*(t-1),reward:1+0.15*(t-1)}; }
 const CHAPTERS = [
   { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
@@ -3834,6 +3851,18 @@ class Game extends Phaser.Scene {
   rollRiftPreview(){ const pool=[];for(let i=0;i<STAGES.length;i++)if(isStageReady(i))pool.push(i); const t=this._riftTierSel||1,n=t>=5?3:2;
     this._riftPreview={stage:Phaser.Utils.Array.GetRandom(pool),mods:Phaser.Utils.Array.Shuffle(RIFT_MODS.map(m=>m.id)).slice(0,n),tier:t}; }
   recipeBag(){ if(!Array.isArray(Save.data.recipes))Save.data.recipes=[]; return Save.data.recipes; }
+  craftRecipe(r,cid){ const rar=r.rarity||'normal';
+    if(cid==='transmute'&&rar!=='normal')return this.menuToast('Only Normal recipes can be upgraded to Magic','#ff9bb5');
+    if(cid==='regal'&&rar!=='magic')return this.menuToast('Only Magic recipes can be upgraded to Rare','#ff9bb5');
+    if(cid==='chaos'&&rar==='normal')return this.menuToast('Normal recipes have no mods to reroll','#ff9bb5');
+    if(cid==='scour'&&rar==='normal')return this.menuToast('Already Normal','#ff9bb5');
+    if(!Save.spendCurrency(cid,1)){const d=currencyDef(cid);return this.menuToast('Need 1 '+(d?d.name:cid),'#ff9bb5');}
+    const rollMods=n=>{const c=RECIPE_MODS.map(m=>m.id),o=[];for(let k=0;k<n;k++)o.push(c.splice(Math.floor(Math.random()*c.length),1)[0]);return o;};
+    if(cid==='transmute'){r.rarity='magic';r.mods=rollMods(1);}
+    else if(cid==='regal'){r.rarity='rare';const c=RECIPE_MODS.map(m=>m.id).filter(id=>!r.mods.includes(id));r.mods.push(c[Math.floor(Math.random()*c.length)]);}
+    else if(cid==='chaos'){r.mods=rollMods(RECIPE_RARITY[rar].mods);}
+    else if(cid==='scour'){r.rarity='normal';r.mods=[];}
+    Save.save(); Sfx.chest&&Sfx.chest(); this.menuToast('📜 '+RECIPE_RARITY[r.rarity].label+' · '+(r.mods.length?r.mods.map(id=>recipeModDef(id).emoji).join(' '):'no mods'),'#9dff9d'); }
   claimFreeRecipe(){ const bag=this.recipeBag(); if(bag.length>=RECIPE_BAG_MAX){this.menuToast('Recipe bag is full ('+RECIPE_BAG_MAX+')','#ff9bb5');return;} const r=makeRecipe(1); bag.unshift(r); Save.save(); this._recipeSel=r.uid; this.menuToast('📜 Free Tier 1 recipe: '+STAGES[r.theme].name,'#9dff9d'); }
   buildRecipes(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Recipe Maps');
@@ -3860,14 +3889,20 @@ class Game extends Phaser.Scene {
       this._zone(cx+cw/2,y,cw/2,28,()=>{this._recipePage=Math.min(pages-1,this._recipePage+1);this.buildRecipes();}); y+=32; }
     const r=bag.find(q=>q.uid===this._recipeSel);
     if(r){ const ra=RECIPE_RARITY[r.rarity]||RECIPE_RARITY.normal,m=recipeMul(r),st=STAGES[r.theme]||STAGES[0];
-      const g=this.add.graphics();g.fillStyle(0x1c1426,1);g.fillRoundedRect(cx,y,cw,110,12);g.lineStyle(2,ra.hex,1);g.strokeRoundedRect(cx,y,cw,110,12);this.menu.add(g);
+      const g=this.add.graphics();g.fillStyle(0x1c1426,1);g.fillRoundedRect(cx,y,cw,128,12);g.lineStyle(2,ra.hex,1);g.strokeRoundedRect(cx,y,cw,128,12);this.menu.add(g);
+      // R4: แถบคราฟต์ (4 ปุ่มเล็ก) ใต้กล่องรายละเอียด
+      const cy=y+134,bw4=(cw-18)/4;
+      RECIPE_CRAFT.forEach((c,k)=>{ const d=currencyDef(c.id),have=Save.currency(c.id),ok=(c.need==='any'?r.rarity!=='normal':r.rarity===c.need)&&have>0,bx=cx+k*(bw4+6);
+        const gg=this.add.graphics();gg.fillStyle(ok?0x3a2a52:0x241a30,1);gg.fillRoundedRect(bx,cy,bw4,46,9);gg.lineStyle(1.5,ok?0xb98cff:0x4a4059,1);gg.strokeRoundedRect(bx,cy,bw4,46,9);this.menu.add(gg);
+        T(bx+bw4/2,cy+4,(d?d.emoji:'•')+' ×'+have,12,ok?'#ffffff':'#8d8499','bold'); T(bx+bw4/2,cy+24,c.label,8,ok?'#e6dcf0':'#6d6479');
+        this._zone(bx,cy,bw4,46,()=>{this.craftRecipe(r,c.id);this.buildRecipes();}); });
       T(w/2,y+8,ra.label+' Recipe · '+st.emoji+' '+st.name+' · Tier '+r.tier,13,ra.color,'bold');
       T(w/2,y+30,'Enemy HP ×'+m.hp.toFixed(2)+' · DMG ×'+m.dmg.toFixed(2)+' · Reward ×'+m.reward.toFixed(2),10,'#bfb5ca');
       const rb=(Save.data.recipeBest||{})[r.theme]; T(w/2,y+64,'Recipe is used up when you enter · Best fill '+(rb?rb+'s':'—')+' · ⚡ under '+RECIPE_PAR+'s = speed bonus',9,'#9d93aa');
-      T(w/2,y+48,(r.mods&&r.mods.length)?r.mods.map(id=>{const d=RIFT_MODS.find(q=>q.id===id);return d?d.emoji+' '+d.name:'';}).join('  ·  '):'No mods',11,'#ffc3d6');
+      T(w/2,y+48,(r.mods&&r.mods.length)?r.mods.map(id=>{const d=recipeModDef(id);return d?d.emoji+' '+d.name:'';}).join('  ·  '):'No mods',11,'#ffc3d6');
       const half=(cw-30)/2;
-      this.uiPillBtn(this.menu,cx+10+half/2,y+86,half,36,COLORS.pink,'▶','Run',()=>{ Save.data.recipes=bag.filter(q=>q.uid!==r.uid); Save.save(); this._recipeSel=null; this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
-      this.uiPillBtn(this.menu,cx+20+half*1.5,y+86,half,36,0x8a3050,'🗑','Discard',()=>{ if(this._recipeDiscard!==r.uid){this._recipeDiscard=r.uid;this.menuToast('Tap Discard again to confirm','#ff9bb5');return;} Save.data.recipes=bag.filter(q=>q.uid!==r.uid);Save.save();this._recipeSel=null;this._recipeDiscard=null;this.buildRecipes(); });
+      this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ Save.data.recipes=bag.filter(q=>q.uid!==r.uid); Save.save(); this._recipeSel=null; this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
+      this.uiPillBtn(this.menu,cx+20+half*1.5,y+104,half,36,0x8a3050,'🗑','Discard',()=>{ if(this._recipeDiscard!==r.uid){this._recipeDiscard=r.uid;this.menuToast('Tap Discard again to confirm','#ff9bb5');return;} Save.data.recipes=bag.filter(q=>q.uid!==r.uid);Save.save();this._recipeSel=null;this._recipeDiscard=null;this.buildRecipes(); });
     }
     this.menu.setVisible(true);
   }
@@ -5095,7 +5130,7 @@ class Game extends Phaser.Scene {
     this.stageTxt.setText('📜 Recipe T'+r.tier+' · '+st.name);
     this.pendingLvl=(this.pendingLvl||0)+3; this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
-      this.spawnInterval*=0.7; this.spawnBatch+=1; this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
+      this.spawnInterval*=this.recipeHas('horde')?0.5:0.7; this.spawnBatch+=this.recipeHas('horde')?2:1; this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
       this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }); }
   tickRecipeHunger(dt){ this._hungerT+=dt; const goal=this.recipeHungerGoal(),t=Math.floor(this._hungerT);
     this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
@@ -5104,7 +5139,8 @@ class Game extends Phaser.Scene {
     if(full||late){ this._hungerDone=true; this._recipeFillT=this._hungerT; this._recipeFast=full&&this._hungerT<=RECIPE_PAR;
       this.showBanner(full?(this._recipeFast?'⚡ Fast clear!':'🍽 Hunger Meter full!'):'⏳ The boss grows impatient','The boss is coming',1800);
       this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); } }
-  recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; this._hunger+=e.isElite?8:1; }
+  recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
+  recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1); }
   finishRecipeBoss(){ const r=this._recipe; if(!r)return; 
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_HUNGER_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
@@ -5656,7 +5692,7 @@ class Game extends Phaser.Scene {
   tutorialActive(){ return !!this._inTutorial; }
   zoneModMul(){ let hp=1,dmg=1,reward=1; if(Save.zoneModsUnlocked()){ for(const id of (this._activeZoneMods||[])){ const m=ZONE_MODIFIERS.find(x=>x.id===id); if(m){ hp*=m.hp; dmg*=m.dmg; reward*=m.reward; } } } return {hp,dmg,reward}; }
   diffMul(){ const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],z=this._zoneMul||{hp:1,dmg:1,reward:1},r=this.riftMul(); return {...d,hp:d.hp*z.hp*r.hp,dmg:d.dmg*z.dmg*r.dmg,reward:d.reward*z.reward*r.reward}; }
-  riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=RIFT_MODS.find(q=>q.id===id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} return m; }   // ตัวคูณความยาก × Zone Modifiers
+  riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=recipeModDef(id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} return m; }   // ตัวคูณความยาก × Zone Modifiers
   zoneLevel(){ return stageZoneLevel(this.stageIndex||0,this.stageDiff||1); }   // Zone Level ของด่านที่กำลังเล่น
   // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
   recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }
@@ -6639,7 +6675,7 @@ class Game extends Phaser.Scene {
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
     else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
-    const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1)));if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;
+    const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1)));if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;if(this.recipeMode&&this.recipeHas('haste'))e.spd*=1.3;
     if(this.stageIndex===0&&type!=='acid'){
       scale=(type==='tank'||type==='siege')?0.86:(type==='fast'||type==='dasher')?0.68:0.74;
       e.setCircle(type==='tank'||type==='siege'?25:20,type==='tank'||type==='siege'?23:28,type==='tank'||type==='siege'?23:28);
@@ -7284,7 +7320,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big)this.recipeOnKill(e);
+  killEnemy(e){ if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -7389,7 +7425,7 @@ class Game extends Phaser.Scene {
     h.body.setAllowGravity(false); this.camWorld(h); this.showPickupCue(h,0xff5f97,1.35); if(this.iso)h.setDepth(Math.max(80000,h.y));
     this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); this.hidePickupCue(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
-    const amt=Math.round((this.player.maxhp*0.18+6)*(this.player.healEffect||1)); this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
+    const amt=this.recipeHas&&this.recipeHas('noheal')?0:Math.round((this.player.maxhp*0.18+6)*(this.player.healEffect||1)); this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
     Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5);
     if(this.textures.exists('fx_heal')&&this.anims.exists('fx_heal')) this.spawnFxAnim('fx_heal',this.player.x,this.player.y,{scale:150/ASSET_FX.fx_heal.fw,depth:8,anchor:'center'}); }
   popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+n+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
@@ -8509,7 +8545,7 @@ class Game extends Phaser.Scene {
     if(this.player.iframe>0)this.player.iframe-=dt;
     if(!Number.isFinite(this.player.maxhp)||this.player.maxhp<=0)this.player.maxhp=90;
     if(!Number.isFinite(this.player.hp))this.player.hp=this.player.maxhp;   // safety net: กัน HP ค้าง NaN
-    const regenPerSec=Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
+    const regenPerSec=(this.recipeHas('noheal')?0:1)*Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
     if(regenPerSec>0&&this.player.hp<this.player.maxhp)this.player.hp=Math.min(this.player.maxhp,this.player.hp+regenPerSec*dt);
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);

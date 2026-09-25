@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.78.0 — Recipe Maps R4: คราฟต์ + mod กลไก)
+- **v4.78.0 (Phase R · R4):** `RECIPE_MECH_MODS` 4 ตัว (`haste` มอน spd×1.3 ใน spawnEnemy · `volatile` ตาย 35% → spawnHazard r70 · `noheal` collectHeal=0 + regen×0 ใน update · `horde` spawn interval×0.5 batch+2 + hunger ×1.15) reward 1.25-1.45 (มากกว่า mod ตัวเลข) · `RECIPE_MODS`=RIFT_MODS+mech, `recipeModDef(id)` ใช้ใน makeRecipe/recipeMul/riftMul/UI · `recipeHas(id)` · **คราฟต์** `craftRecipe(r,cid)` ใช้ currency Forge 1 ชิ้น: transmute Normal→Magic(1 mod) · regal Magic→Rare(+1) · chaos สุ่ม mod ใหม่ · scour →Normal · แถบ 4 ปุ่มใต้กล่องรายละเอียด (`RECIPE_CRAFT`) · แก้ layout กล่องรายละเอียด (ข้อความบรรทัด best fill เคยโดนปุ่มทับ) · verified headless: คราฟต์ครบ 4 แบบ หัก currency ถูก, run haste+volatile spd เพิ่ม, screenshot ไม่ล้น, 0 error · **ถัดไป R5 event กลางรัน**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.77.0 — Recipe Maps R3: ดรอปจากบอส)
 - **v4.77.0 (Phase R · R3):** `finishRecipeBoss` → `rollRecipeDrops(r)`: การันตี 1 ใบ (tier เดิม, โอกาส +1 = 35% + เร็ว 20% + mod×8%, +8% ขึ้นอีก) · ใบที่ 2 ลุ้น 25%+mod×10% · rarity ดีขึ้นตาม tier/mod · คลังเต็ม = หาย (นับ lost) · 🧩 `Save.data.pinnacleFrags` += 1+floor(tier/4)+(เร็ว 1) · ครบ `RECIPE_FRAGS_PER_KEY=4` → 🗝️ riftKeys +1 (ใช้เปิด Pinnacle เดิมไปก่อน R9) · `Save.data.recipeMaxTier` · banner 2 จังหวะ · **แก้บั๊ก:** `grantGear` ตอนหน้า summary (state≠play) ใช้ menu path iLv ต่ำ แม้ใน Rift/endgame → inPlay รวมกรณี state≠menu && endgameDropActive (ไม่ใช่ gacha) → ของจบรัน endgame iLv 61+ จริง (verified T5 ได้ iLv 76) · 0 error · **ถัดไป R4 craft recipe**
 

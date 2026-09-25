@@ -21,7 +21,7 @@
 - ✅ **R1** (v4.75) Data model + save: `Save.data.recipes[]` {uid,theme,tier,mods,rarity} + หน้า 📜 Recipe (Activities) แสดงคลัง + ปุ่มรับ T1 ฟรี
 - ✅ **R2** (v4.76) Recipe run mode: Hunger Meter เต็มจากการฆ่า (elite/rare ให้แต้มเยอะ, spawn ไหลแรงให้ build แรงเคลียร์ไว) → บอสโผล่ทันที · Speed bonus: จบเร็วกว่า par ได้รางวัลเพิ่ม + บันทึกเวลาดีที่สุดต่อธีม · mods/tier คูณเข้า `diffMul()` · ตาย = Recipe หาย
 - ✅ **R3** (v4.77) Boss drops + loop: ดรอป Recipe tier เท่า/สูงกว่า, เศษกุญแจ Pinnacle, ของ endgame iLv ตาม tier (กฎเหล็ก: tier สูง รางวัลดีกว่า)
-- ⬜ **R4** Craft Recipe ด้วย currency เดิม (transmute/alt/regal/chaos/exalt/scour) + mod ที่เปลี่ยนกลไก (มอนเร็ว, ระเบิดตอนตาย, ห้ามฮีล ฯลฯ)
+- ✅ **R4** (v4.78) Craft Recipe ด้วย currency เดิม (transmute/alt/regal/chaos/exalt/scour) + mod ที่เปลี่ยนกลไก (มอนเร็ว, ระเบิดตอนตาย, ห้ามฮีล ฯลฯ)
 - ⬜ **R5** Event กลางรัน: ห้องสมบัติ / ศาลบัฟ / พ่อค้า / Rare elite
 - ⬜ **R6** Atlas board 15 ธีม: บันทึกเคลียร์ต่อ tier + ได้ Atlas point
 - ⬜ **R7** Atlas passive tree (เพิ่มดรอป, event บ่อยขึ้น, mod พิเศษ ฯลฯ)
