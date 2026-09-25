@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.80.0 — Recipe Maps R6: Atlas board)
+- **v4.80.0 (Phase R · R6):** `Save.data.atlas={theme:tier สูงสุดที่เคลียร์}` (`atlasData()`) อัปเดตใน `finishRecipeBoss` + banner 🗺 เมื่อได้แต้ม · `atlasThemePoints(t)`=เคลียร์ 1 + floor(t/4) (สูงสุด 5/ธีม) · `atlasPoints()`/`atlasMaxPoints()` (15 ธีม = 75) · หน้า `buildAtlas` (menuScreen 'atlas', ปุ่ม 🗺 Atlas ในหน้า Recipe แทนปุ่มรับฟรีครึ่งหนึ่ง) กริด 3 คอลัมน์ สี mint/ม่วง T8+/ทอง T16 + แถบ progress + ★ แต้ม · แตะ = toast best tier/fill · verified headless: แต้ม 11→13 หลังเคลียร์ T4, screenshot ครบ 15 ธีม, 0 error · **แต้มยังไม่มีที่ใช้ → R7 passive tree**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.79.0 — Recipe Maps R5: event กลางรัน)
 - **v4.79.0 (Phase R · R5):** `triggerRecipeEvent()` 1 ครั้ง/รัน เมื่อ Hunger ≥40% (`_recipeEventDone`, reset ใน startRecipeRun) สุ่ม 4 แบบ: 💰 treasure (spawnCrate×6 + spawnVac) · ⛩️ shrine (`_shrine` วงทอง r90 ห่าง 260, ยืน 2 วิ → dmgMul×1.3 cdMul×0.85 25 วิ, หมดอายุ 22 วิ, `tickRecipeShrine`/`clearRecipeShrine`) · 🧺 merchant (`offerRelic()` ไม่ได้ → currency 2) · ✨ rare elite (spawnElite HP×4 tint ทอง scale×1.25 `e._rareElite` → ฆ่า = Hunger +20 + currency 2; reset flag ใน spawnElite) · verified headless ทั้ง 4 แบบ (crate เพิ่ม, rare +28 hunger, shrine dmg 0.945→1.23), 0 error · **ถัดไป R6 Atlas board**
 

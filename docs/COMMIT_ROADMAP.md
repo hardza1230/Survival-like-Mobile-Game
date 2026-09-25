@@ -23,7 +23,7 @@
 - ✅ **R3** (v4.77) Boss drops + loop: ดรอป Recipe tier เท่า/สูงกว่า, เศษกุญแจ Pinnacle, ของ endgame iLv ตาม tier (กฎเหล็ก: tier สูง รางวัลดีกว่า)
 - ✅ **R4** (v4.78) Craft Recipe ด้วย currency เดิม (transmute/alt/regal/chaos/exalt/scour) + mod ที่เปลี่ยนกลไก (มอนเร็ว, ระเบิดตอนตาย, ห้ามฮีล ฯลฯ)
 - ✅ **R5** (v4.79) Event กลางรัน: ห้องสมบัติ / ศาลบัฟ / พ่อค้า / Rare elite
-- ⬜ **R6** Atlas board 15 ธีม: บันทึกเคลียร์ต่อ tier + ได้ Atlas point
+- ✅ **R6** (v4.80) Atlas board 15 ธีม: บันทึกเคลียร์ต่อ tier + ได้ Atlas point
 - ⬜ **R7** Atlas passive tree (เพิ่มดรอป, event บ่อยขึ้น, mod พิเศษ ฯลฯ)
 - ⬜ **R8** Unique ที่เปลี่ยน build + ดรอปเจาะจงจากบอสแต่ละธีม
 - ⬜ **R9** ย้าย Rift → Recipe (เซฟเก่า riftKeys แปลงเป็นเศษกุญแจ) · Pinnacle ใช้เศษกุญแจ · Boss Rush คงไว้

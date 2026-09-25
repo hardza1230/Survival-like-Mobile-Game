@@ -37,9 +37,10 @@ function clampPlayerStats(p){ p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.cr
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '4.79.0';
+const GAME_VERSION = '4.80.0';
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'4.80.0', date:'2026-09-25', title:'🗺 Recipe Atlas', items:['New Atlas board: every stage theme with the highest recipe tier you have cleared','Earn Atlas points: 1 for the first clear of a theme, +1 at Tier 4, 8, 12 and 16','Open it from the Recipe Maps page — Atlas points will power a passive tree next'] },
   { v:'4.79.0', date:'2026-09-25', title:'📜 Recipe Maps — events', items:['Each recipe run triggers one random event at 40% Hunger','💰 Treasure Room: loot jars and a vacuum spill out','⛩️ Sugar Shrine: stand in it for 2s for +30% damage and faster attacks','🧺 Wandering Merchant: pick a relic','✨ Rare Elite: a golden elite worth big Hunger and currency'] },
   { v:'4.78.0', date:'2026-09-25', title:'📜 Recipe Maps — crafting', items:['Craft recipes with your Forge currency: upgrade to Magic/Rare, reroll mods, or wipe them','New gameplay mods for recipes: 💨 Sugar Rush, 💥 Volatile, 🚫 Starving, 🐜 Horde','Gameplay mods pay bigger rewards than stat mods'] },
   { v:'4.77.0', date:'2026-09-25', title:'📜 Recipe Maps — boss drops', items:['Recipe bosses drop a new recipe — often one tier higher','Chance for a second recipe · higher tiers and mods drop Magic/Rare recipes more often','Earn 🧩 Pinnacle fragments — every 4 become a 🗝️ key','Fast clears raise the odds of a tier-up and give an extra fragment','Recipe runs drop endgame gear (iLv 61+) that scales with tier'] },
@@ -2641,6 +2642,11 @@ const RECIPE_CRAFT=[
   {id:'chaos',label:'Reroll mods',need:'any'},
   {id:'scour',label:'Wipe → Normal',need:'any'}
 ];
+// R6: Atlas — จำ Tier สูงสุดที่เคลียร์ต่อธีม · แต้ม = เคลียร์ครั้งแรก 1 + ทุก 4 Tier อีก 1 (T4/T8/T12/T16)
+function atlasData(){ if(!Save.data.atlas||typeof Save.data.atlas!=='object')Save.data.atlas={}; return Save.data.atlas; }
+function atlasThemePoints(t){ t=t|0; return t>0?1+Math.floor(t/4):0; }
+function atlasPoints(){ const a=atlasData(); return recipeThemes().reduce((n,i)=>n+atlasThemePoints(a[i]),0); }
+function atlasMaxPoints(){ return recipeThemes().length*atlasThemePoints(RECIPE_TIER_MAX); }
 function recipeThemes(){ return STAGES.map((s,i)=>i).filter(i=>STAGES[i].ready!==false); }
 function makeRecipe(tier,theme,rarity){
   tier=Math.max(1,Math.min(RECIPE_TIER_MAX,tier|0)); const th=recipeThemes();
@@ -3516,7 +3522,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRift(); else if(s==='recipes')this.buildRecipes(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRift(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -3873,7 +3879,7 @@ class Game extends Phaser.Scene {
     const bag=this.recipeBag();
     T(w/2,top,'Each recipe is a map: a stage theme, a tier and mods.\nHigher tiers are harder and pay more.',11,'#e6dcf0');
     let y=top+38; T(w/2,y,'Bag '+bag.length+'/'+RECIPE_BAG_MAX+'  ·  🧩 '+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+'  ·  🗝️ '+(Save.data.riftKeys||0)+'  ·  Max T'+(Save.data.recipeMaxTier||1),12,'#ffe08a','bold'); y+=24;
-    this.uiPillBtn(this.menu,w/2,y+22,Math.min(cw,300),44,COLORS.mint,'🎁','Take free Tier 1 recipe',()=>{this.claimFreeRecipe();this.buildRecipes();}); y+=56;
+    const hb=(cw-10)/2; this.uiPillBtn(this.menu,cx+hb/2,y+22,hb,44,COLORS.mint,'🎁','Free Tier 1',()=>{this.claimFreeRecipe();this.buildRecipes();}); this.uiPillBtn(this.menu,cx+hb+10+hb/2,y+22,hb,44,COLORS.grape,'🗺','Atlas ('+atlasPoints()+')',()=>{this.menuScreen='atlas';this.buildMenuScreen();}); y+=56;
     // รายการ (กริด 3 คอลัมน์ + แบ่งหน้า)
     const cols=3,gap=8,tw=(cw-gap*(cols-1))/cols,th=54,rows=Math.max(2,Math.min(5,Math.floor((h-y-200)/(th+gap)))),per=cols*rows,pages=Math.max(1,Math.ceil(bag.length/per));
     this._recipePage=Math.max(0,Math.min(pages-1,this._recipePage||0));
@@ -3905,6 +3911,22 @@ class Game extends Phaser.Scene {
       this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ Save.data.recipes=bag.filter(q=>q.uid!==r.uid); Save.save(); this._recipeSel=null; this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
       this.uiPillBtn(this.menu,cx+20+half*1.5,y+104,half,36,0x8a3050,'🗑','Discard',()=>{ if(this._recipeDiscard!==r.uid){this._recipeDiscard=r.uid;this.menuToast('Tap Discard again to confirm','#ff9bb5');return;} Save.data.recipes=bag.filter(q=>q.uid!==r.uid);Save.save();this._recipeSel=null;this._recipeDiscard=null;this.buildRecipes(); });
     }
+    this.menu.setVisible(true);
+  }
+  buildAtlas(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🗺 Recipe Atlas');
+    const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,top=(w<=h?100:70),at=atlasData(),th=recipeThemes(),best=Save.data.recipeBest||{};
+    const T=(x,y,t,sz,c,st)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(q);return q;};
+    const done=th.filter(i=>at[i]>0).length;
+    T(w/2,top,'Clear every theme and push its tier. First clear = 1 point, then +1 at Tier 4/8/12/16.',11,'#e6dcf0');
+    T(w/2,top+34,'🗺 Atlas points '+atlasPoints()+' / '+atlasMaxPoints()+'   ·   Themes '+done+' / '+th.length,13,'#ffe08a','bold');
+    const cols=3,gap=8,tw=(cw-gap*(cols-1))/cols,rowsN=Math.ceil(th.length/cols),y0=top+62,tH=Math.max(56,Math.min(84,Math.floor((h-y0-40)/rowsN)-gap));
+    th.forEach((si,k)=>{ const st=STAGES[si],t=at[si]||0,x=cx+(k%cols)*(tw+gap),y=y0+Math.floor(k/cols)*(tH+gap),pts=atlasThemePoints(t),maxP=atlasThemePoints(RECIPE_TIER_MAX);
+      const col=t>=16?0xffd166:t>=8?0xb98cff:t>0?0x66d3b3:0x4a4059;
+      const g=this.add.graphics();g.fillStyle(t>0?0x2a2040:0x1c1426,1);g.fillRoundedRect(x,y,tw,tH,10);g.lineStyle(2,col,1);g.strokeRoundedRect(x,y,tw,tH,10);
+      g.fillStyle(0x0f0a16,1);g.fillRoundedRect(x+8,y+tH-12,tw-16,5,2);g.fillStyle(col,1);g.fillRoundedRect(x+8,y+tH-12,(tw-16)*Math.min(1,t/RECIPE_TIER_MAX),5,2);this.menu.add(g);
+      T(x+tw/2,y+5,st.emoji+(t?' T'+t:' —'),14,t?'#ffffff':'#8d8499','bold'); T(x+tw/2,y+25,st.name,8,t?'#e6dcf0':'#6d6479'); if(tH>=70)T(x+tw/2,y+tH-28,'★ '+pts+'/'+maxP,9,'#ffe08a');
+      this._zone(x,y,tw,tH,()=>this.menuToast(st.emoji+' '+st.name+' · best Tier '+(t||'—')+' · best fill '+(best[si]?best[si]+'s':'—'),'#e6dcf0')); });
     this.menu.setVisible(true);
   }
   buildRift(){
@@ -5158,7 +5180,8 @@ class Game extends Phaser.Scene {
   clearRecipeShrine(){ if(this._shrine){ this._shrine.g.destroy(); this._shrine=null; } }
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
   recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1); }
-  finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); 
+  finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine();
+    const at=atlasData(),ptsBefore=atlasPoints(); at[r.theme]=Math.max(at[r.theme]||0,r.tier); const gainedAP=atlasPoints()-ptsBefore; if(gainedAP>0)this.time.delayedCall(5200,()=>this.showBanner('🗺 Atlas +'+gainedAP+' point'+(gainedAP>1?'s':''),STAGES[r.theme].name+' · best Tier '+at[r.theme],2200)); 
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_HUNGER_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
     let bonus=0; if(this._recipeFast){ bonus=Math.round((60+r.tier*25)*this.diffMul().reward); this.sugarStage+=bonus; }
