@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.17.0';
+const GAME_VERSION = '5.18.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.18.0', date:'2026-09-25', title:'🦷 Mimics', items:['Careful — some miniboss chests are Mimics that bite back! Defeat one to earn a chest one tier better']},
   { v:'5.17.0', date:'2026-09-25', title:'🍬 Candy burst', items:['Sugar prizes now burst out as candy around you — run over them to collect (they fly to you after a few seconds)']},
   { v:'5.16.0', date:'2026-09-25', title:'🃏 Gold mystery cards', items:['Gold chests add a bonus round: three face-down cards, one hides a JACKPOT. Pick one, then see what the others were']},
   { v:'5.15.0', date:'2026-09-25', title:'⬆ Chest upgrade chance', items:['While the prize wheel spins, your chest may suddenly upgrade — Bronze to Silver (25%) or Silver to Gold (15%) — with better prizes']},
@@ -5815,7 +5816,7 @@ class Game extends Phaser.Scene {
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
-    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
+    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;e._mimic=null;if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
   }
   // เวฟธรรมดา = "Survive the timer" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){
@@ -7985,6 +7986,7 @@ class Game extends Phaser.Scene {
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
+    if(e._mimic){ const o=['bronze','silver','gold'],t=o[Math.min(2,o.indexOf(e._mimic)+1)]; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
     if(isMini){ this._nextChestTier=this.miniChestTier(); this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
   killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
@@ -8139,7 +8141,7 @@ class Game extends Phaser.Scene {
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
     if(!c)return;
     c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c);
-    if(kind==='mini'){ c._tier=this._nextChestTier||'bronze'; this._nextChestTier=null; this.miniChestDrop(c,x,y); return; }
+    if(kind==='mini'){ c._tier=this._nextChestTier||'bronze'; this._nextChestTier=null; c._mimic=!this._noMimicNext&&!this._inTutorial&&Math.random()<0.12; this._noMimicNext=false; this.miniChestDrop(c,x,y); return; }
     this.showPickupCue(c,kind==='pick'?0x66e0ff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
     this.tweens.add({targets:c,y:y-12,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // v5.12: กล่องมินิบอสหล่นจากฟ้า → กระแทกพื้น (จอสั่น+ฝุ่น) → เสาแสงสีตามระดับกล่อง มองเห็นจากไกล
@@ -8288,6 +8290,16 @@ class Game extends Phaser.Scene {
         this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
         p.give(); done&&done(); }}); }); }}));
   }
+  // v5.18 กล่องมิมิค 12%: แตะแล้วกล่องกลายเป็นมอนกัด · ฆ่าได้ = กล่องระดับสูงขึ้น 1 ขั้น (ไม่เป็นมิมิคซ้ำ)
+  awakenMimic(x,y,tier){
+    const e=this.spawnElite();if(!e){this._noMimicNext=true;this._nextChestTier=tier;this.spawnChest(x,y,'mini');return;}
+    e.setPosition(x,y).setTexture('chest').setFrame(0);if(e.anims)e.anims.stop();
+    const sc=64/(e.width||48);e.setScale(sc);e.baseScale=sc;e._baseScale=sc;if(e.body)e.body.setCircle((e.width||48)*0.42,(e.width||48)*0.08,(e.width||48)*0.08);
+    e.hp=e.maxhp=e.maxhp*2.6;e.spd=(e.spd||48)*1.6;e.dmg=Math.round((e.dmg||18)*1.15);e._mimic=tier;e.setTint(0xffd6a0);e.tintColor=0xffd6a0;
+    this.screenShake(260,0.014);this.screenFlash(0xff5a6e,0.3,260);if(Sfx.bossWarn)Sfx.bossWarn();this.burst(x,y,0xff5a6e);
+    this.tweens.add({targets:e,scaleY:sc*1.35,yoyo:true,duration:140,repeat:2});
+    this.showBanner('🦷 MIMIC!','The chest bites back — defeat it for a better chest',1800);
+  }
   miniChestDrop(c,x,y){
     const T=MINI_CHEST_TIERS[c._tier||'bronze']||MINI_CHEST_TIERS.bronze;
     c.body.enable=false; c.setPosition(x,y-320).setAlpha(0.2).setDepth(90000); c.setScale(1.42*36/(c.width||36));
@@ -8311,6 +8323,7 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
+    if(kind==='mini'&&c._mimic){ c._mimic=false; this.awakenMimic(c.x,c.y,c._tier||'bronze'); return; }
     if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,(ft)=>{ const after=()=>{ this.grantMiniChestBonus(ft||tier); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }; if((ft||tier)==='gold')this.openMysteryCards(after); else after(); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
     if(kind==='pick'&&Math.random()<0.30&&this.offerRelic())return;   // 🔮 กล่องลับ 30% = Relic
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
