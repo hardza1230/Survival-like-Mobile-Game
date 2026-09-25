@@ -59,6 +59,10 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.96.0 — Flavor Infusion (ไอเดีย A))
+- **v4.96.0 (เจ้าของสั่ง A):** `FLAVOR_INFUSIONS` 4 ธาตุ (direct = ตัวคูณดาเมจตรงของ basic ใน castSkill basicDmg) · เลเวล ≥10 และเลือกสายแล้ว → การ์ด 3 ใบสุ่ม kind 'Flavor Infusion' (ซ่อน reroll/banish) → `b.infusion` (reset ทุกด่าน) · `infusionOnHit` เรียกใน `damage()` ทุกดาเมจของผู้เล่น (กัน recursion ด้วย `_infTick`): 🌶️ spicy เผา 30% ของฮิตใน 2s (`e._burnDps/_burnT`, cap 60%) · 🍋 sour รับดาเมจ +12% 3s (`e._sourT`) · 🍯 sweet ฮีล 0.5% maxHP cd 0.3s · 🌿 minty 30% แช่ 0.35s (ไม่ใช่บอส/มินิ) · `tickInfusion(dt)` ใน update ทุก 0.25s · การ์ด `INFUSION_UP` Deep Flavor (id `inf_deep` max3, +35%/rank ผ่าน `infusionPow`) ต่อท้าย pool · reset flag มอนใน spawnEnemy+killEnemy · verified headless 4 ธาตุ, 0 error · **ถัดไป: G (tag set synergy)**
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v4.95.0 — Build Path ครบ 5 ตัว)
 - **v4.95.0 (เจ้าของสั่ง):** `BASIC_PATHS` เพิ่ม mint/cocoa/taro/sesame แบบ data-driven: path มี `base` + upgrades มี `fx` (คีย์ dmg/cd คูณ · count/range/big/frozen/far/low/taken บวก) · `pathMods(b)` รวม → `b._pm` (คำนวณใน syncBasicAttack) · ใช้ที่: basicDmg ใน castSkill (dmg) · `cdOf` (cd) · count = taro strikes/mint lances/cocoa hits/sesame beams · range = mint range/cocoa r/sesame len · `damage()` โบนัสตามเงื่อนไข big(elite/มินิ/บอส)/frozen/far(>300)/low(HP<50%) · taken ปรับ dmgTakenMul แบบ delta (`b._takenApplied`) · id upgrade สาย prefix `p_` (count ids อยู่ใน COUNT_IDS) · Momo ยังใช้ระบบเฉพาะของ v4.94 (ไม่มี base) · สาย: Mint Glacier/Barrage/Pierce · Cocoa Brawler/Titan/Guardian · Taro Storm/Smite/Tempest · Sesame Prism/Lens/Sentinel · verified headless 12 สาย apply+upgrade+cast, 0 error · **ยังไม่จูน — Sesame Focus Lens ดูแรงสุดในเทส**
 
