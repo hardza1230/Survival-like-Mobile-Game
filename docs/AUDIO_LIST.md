@@ -43,8 +43,9 @@
 | 18 | `sfx_card` | เลือกการ์ด / Build Path | ฟึ่บ + ติ๊ง | 🤖 |
 | 19 | `sfx_chest` | เปิดกล่อง / ได้ Relic | ฝาเปิด + ประกาย | ✅ |
 | 20 | `sfx_legend` | ดรอป Legend / ของหายาก | คอร์ดเวทมนตร์ยาว 1.5 วิ | 🤖 |
-| 21 | `sfx_boss_warn` | บอสกำลังมา | ไซเรนทุ้ม / กลองใหญ่ | 🔁 |
-| 22 | `sfx_victory` | ชนะด่าน | แฟนแฟร์ 2 วิ | 🤖 |
+| 21 | `sfx_boss_warn` | บอสกำลังมา | ไซเรนทุ้ม / กลองใหญ่ | 🤖 v5.1 |
+| 21b | `sfx_boss_clear` | ล้มบอส | แฟนแฟร์สั้น 3 วิ | 🤖 v5.2 |
+| 22 | `sfx_victory` | ชนะเกม | แฟนแฟร์ 5 วิ | 🤖 v5.2 |
 | 23 | `sfx_defeat` | ตาย | โน้ตลงเศร้า ๆ น่ารัก | 🤖 |
 
 ## D. เพลง (BGM)
@@ -58,7 +59,8 @@
 | `bgm_boss1-5` | บอส | ✅ |
 | `bgm_ch2` / `bgm_ch2_boss` | ด่าน + บอส Chapter 2 | 🤖 v5.0 สร้างด้วยโค้ด (`scripts/gen_bgm_synth.cjs`) |
 | `bgm_ch3` / `bgm_ch3_boss` | ด่าน + บอส Chapter 3 | 🤖 v5.0 สร้างด้วยโค้ด |
-| `bgm_endgame` | Recipe Maps / Pinnacle | ⬜ |
+| `bgm_endgame` / `bgm_endgame_boss` | Recipe Maps / Pinnacle | 🤖 v5.3 |
+| `bgm_s01`…`bgm_s15` | เพลงประจำด่าน 1 ด่าน 1 เพลง (แทน stage1-5/ch2/ch3) | 🤖 v5.4–5.6 `scripts/gen_stage_bgm.cjs` |
 
 ### Prompt สั่ง AI ทำเพลง (Suno/Udio)
 

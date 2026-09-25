@@ -60,6 +60,11 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.6.0 — เสียงบอส/ชนะ/Endgame + เพลงประจำด่านครบ 15 ด่าน)
+- **v5.1–v5.6 (เจ้าของสั่ง: ข้อ 2-4 + ออกแบบเพลงแต่ละด่านใหม่ แยก commit):** `scripts/gen_bgm_synth.cjs` เป็น module แล้ว (export ฟังก์ชัน synth · รัน CLI ได้ + เลือกชื่อเพลง) · **v5.1** `scripts/gen_stingers_synth.cjs` → `sfx_boss_warn.mp3` (กลองศึก+ไซเรน) ใน Sfx.bossWarn (fallback sfx_hazard) · **v5.2** `sfx_boss_clear.mp3` → `Sfx.bossClear()` ใน onBossDown (duck BGM, เพลงด่านกลับมาหลัง 3 วิ ถ้า `!this.boss`) + `sfx_victory.mp3` แฟนแฟร์ 5 วิ (ลบ wav เดิม) · **v5.3** `bgm_endgame`/`bgm_endgame_boss` + global `BGM_MODE` ('endgame' ตั้งใน startRun เมื่อ recipe/pinnacle) → bgmKeyFor · **v5.4-5.6** `scripts/gen_stage_bgm.cjs` ตาราง STAGES 15 ด่าน (key/mode/bpm/prog/drum/bass/arp/lead/pad/fx บรรยากาศ drip/sizzle/wind/chime/buzz/tick/heart) ทำนองจากโมทีฟ seed ต่อด่าน โครง 16 ห้อง ปรับ RMS 0.19 → `assets/audio/bgm/stage/bgm_s01..15.mp3` (96k, รวม ~6.5MB) · bgmKeyFor('stage') ใช้ bgm_sNN ก่อน (เพลงเดิม bgm_stageN/bgm_ch2/ch3 เหลือเป็น fallback) · **ASSET_AUDIO ต้องเขียน path เต็ม** (build-www คัดลอกเฉพาะ path literal) · เพลงบอสยังเดิม · verified headless ทุกด่านเล่นถูกเพลง 0 404 0 error · **ยังไม่มีใครฟังจริง** — แก้เพลงด่านไหน แก้แถวใน STAGES แล้วรัน `node scripts/gen_stage_bgm.cjs OUT bgm_sNN` + encode_mp3 96
+- **รอเจ้าของตัดสินใจ:** ฉากบทพูดคั่นเวฟ (`playWaveCutscene`) — เสนอเปลี่ยนเป็นบับเบิลไม่หยุดเกม / โชว์เฉพาะเคลียร์ครั้งแรก
+
+### สถานะก่อนหน้า
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.0.2 — เสียงตีโดน/EXP สร้างด้วยโค้ด)
 - **v5.0.2 (เจ้าของสั่งข้อ 1):** `scripts/gen_sfx_jsfxr.cjs` เพิ่ม `sfx_hit` (ป๊อปนุ่ม 0.06s) + `sfx_xp` (ติ๊ง 2 โน้ต 0.17s) → `assets/audio/sfx/gen/` · ASSET_AUDIO sfx_hit/sfx_xp ชี้ไฟล์ใหม่ (ไฟล์เดิม sfx_hit_monster/sfx_pickup_sugar ยังอยู่แต่ไม่ถูกอ้าง) · Sfx.xp ไล่ pitch ตามเดิม · verified headless 14 ไฟล์โหลด+เล่นได้, 0 error · ยังไม่มีใครฟังจริง
 
