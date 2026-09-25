@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.4.0';
+const GAME_VERSION = '5.5.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.5.0', date:'2026-09-25', title:'🎵 New Chapter 2 stage music', items:['Each Chapter 2 stage now has its own theme: mossy canopy, murky marsh, buzzing hive, four-season greenhouse and the Root Throne march']},
   { v:'5.4.0', date:'2026-09-25', title:'🎵 New Chapter 1 stage music', items:['Each Chapter 1 stage now has its own theme: cozy pantry, dripping drain, sizzling chili engine, icy prison and the ominous Crown Oven']},
   { v:'5.3.0', date:'2026-09-25', title:'🌙 Endgame music', items:['Recipe Maps and the Pinnacle boss now have their own midnight-kitchen soundtrack']},
   { v:'5.2.0', date:'2026-09-25', title:'🏆 Boss victory jingle', items:['A short fanfare plays when you defeat a boss, and a longer one when you finish the game']},
@@ -972,6 +973,11 @@ const ASSET_AUDIO = {
   bgm_s03: 'assets/audio/bgm/stage/bgm_s03.mp3',
   bgm_s04: 'assets/audio/bgm/stage/bgm_s04.mp3',
   bgm_s05: 'assets/audio/bgm/stage/bgm_s05.mp3',
+  bgm_s06: 'assets/audio/bgm/stage/bgm_s06.mp3',
+  bgm_s07: 'assets/audio/bgm/stage/bgm_s07.mp3',
+  bgm_s08: 'assets/audio/bgm/stage/bgm_s08.mp3',
+  bgm_s09: 'assets/audio/bgm/stage/bgm_s09.mp3',
+  bgm_s10: 'assets/audio/bgm/stage/bgm_s10.mp3',
   bgm_endgame:      'assets/audio/bgm/bgm_endgame.mp3',        // v5.3 Recipe Maps (แจ๊ซ+ชิปทูน กลางดึก)
   bgm_endgame_boss: 'assets/audio/bgm/bgm_endgame_boss.mp3',   // v5.3 บอส Recipe + Pinnacle
 };
