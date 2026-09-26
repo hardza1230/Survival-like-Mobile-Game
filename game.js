@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.37.0';
+const GAME_VERSION = '5.38.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.38.0', date:'2026-09-26', title:'🍳 Recipe mastery', items:['Merge 3 identical parts to upgrade that part to ★2 / ★3 (effects +30% power, triggers fire more often)','Unlock up to 5 recipe slots with 🏅 Rank Points','Swapping or removing a placed part costs 🍬20','Chain your recipes: “When a Shield Breaks” and “When Healed” pair with 🔗 Linked']},
   { v:'5.37.0', date:'2026-09-26', title:'🍳 Recipe Kitchen', items:['New 🍳 Kitchen in the Flavor Weave Temple: build perks from WHEN ▸ DO ▸ TWIST parts','Each recipe has a 🍯 flavor limit, so frequent triggers leave less room for strong effects','Tap a filled part again to take it back']},
   { v:'5.36.0', date:'2026-09-26', title:'🍳 Recipe engine', items:['Equipped Flavor Recipes now fire in battle: 14 triggers, 12 effects, 8 modifiers','🔗 Linked recipes can set off other recipes (up to 2 in a row)']},
   { v:'5.35.0', date:'2026-09-26', title:'🧩 Recipe Parts', items:['Temple Depths now hides 🧩 Recipe Parts: triggers, effects and modifiers','Parts will build your own Flavor Recipe perks (Kitchen coming next)','Starter gift: 5 parts']},
@@ -1956,7 +1957,7 @@ const ANCIENT_PERKS=[
 const OVERCAP_MAX=6;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
 /* ---- v5.35 🍳 Flavor Recipes: ประกอบ perk เอง = Trigger + Effect (+ Modifier) · ชิ้นส่วนได้จากการขุด ---- */
 // cost = แต้มรสชาติ · สูตรหนึ่งรวมกันต้องไม่เกิน FR_FLAVOR_CAP (trigger ที่เกิดถี่ = แพง)
-const FR_FLAVOR_CAP=10, FR_SLOT_MAX=5;
+const FR_FLAVOR_CAP=10, FR_SLOT_MAX=5, FR_MERGE_N=3, FR_LV_MAX=3, FR_SWAP_SUGAR=20;   // v5.38 ถอด/สลับชิ้นที่ใส่แล้ว = 🍬20
 const FR_TRIGGERS=[
   {id:'dash',     emoji:'💨',name:'On Dash',            cost:3},
   {id:'crit',     emoji:'🎯',name:'On Critical Hit',    cost:4, icd:0.6},
@@ -2609,12 +2610,16 @@ const Save = {
   frParts(){ if(!this.data.fparts)this.data.fparts={}; if(!this.data.fpartsGift){ this.data.fpartsGift=true; for(const k of ['t:dash','t:kill10','e:shock','e:heal','m:big'])this.data.fparts[k]=(this.data.fparts[k]||0)+1; } return this.data.fparts; },   // v5.35 ของขวัญเริ่มต้น
   frAddPart(k,n){ const p=this.frParts(); p[k]=(p[k]||0)+(n||1); this.save(); },
   frPartCount(k){ return this.frParts()[k]||0; },
+  frSlotCost(){ return this.frSlots()+1; },   // v5.38 ปลดช่องที่ 2..5 = 2..5 RP
+  frUnlockSlot(){ if(this.frSlots()>=FR_SLOT_MAX||this.rankPointsFree()<this.frSlotCost())return false; this.data.frSlotRP=(this.data.frSlotRP||0)+this.frSlotCost(); this.data.frSlots=this.frSlots()+1; this.save(); return true; },
+  frLv(k){ return Math.max(1,(this.data.fpLv||{})[k]||1); },
+  frMerge(k){ if(this.frPartCount(k)<FR_MERGE_N||this.frLv(k)>=FR_LV_MAX)return false; this.data.fparts[k]-=FR_MERGE_N-1; if(!this.data.fpLv)this.data.fpLv={}; this.data.fpLv[k]=this.frLv(k)+1; this.save(); return true; },   // 3 ชิ้นซ้ำ → เหลือ 1 ชิ้น + เลเวลของชนิดนั้นถาวร
   frSlots(){ return Math.max(1,Math.min(FR_SLOT_MAX,this.data.frSlots||1)); },
   frRecipes(){ if(!Array.isArray(this.data.frRecipes))this.data.frRecipes=[]; while(this.data.frRecipes.length<FR_SLOT_MAX)this.data.frRecipes.push({t:null,e:null,m:null}); return this.data.frRecipes; },
   // ใส่ชิ้นส่วนลงช่อง: ใช้ของในถุง 1 ชิ้น (ชิ้นเดิมในช่องคืนเข้าถุง) · เกินเพดานรสชาติ = ไม่ได้
   frPlace(slot,key){ if(slot>=this.frSlots()||!frPart(key)||this.frPartCount(key)<1)return false; const r=this.frRecipes()[slot],k=key[0],nr=Object.assign({},r,{[k]:key});
-    if(frCost(nr)>FR_FLAVOR_CAP)return false; const p=this.frParts(); if(r[k])p[r[k]]=(p[r[k]]||0)+1; p[key]-=1; r[k]=key; this.save(); return true; },
-  frRemove(slot,k){ const r=this.frRecipes()[slot]; if(!r||!r[k])return false; this.frAddPart(r[k],1); r[k]=null; this.save(); return true; },
+    if(frCost(nr)>FR_FLAVOR_CAP)return false; if(r[k]){ if((this.data.sugar||0)<FR_SWAP_SUGAR)return 'sugar'; this.data.sugar-=FR_SWAP_SUGAR; } const p=this.frParts(); if(r[k])p[r[k]]=(p[r[k]]||0)+1; p[key]-=1; r[k]=key; this.save(); return true; },
+  frRemove(slot,k){ const r=this.frRecipes()[slot]; if(!r||!r[k])return false; if((this.data.sugar||0)<FR_SWAP_SUGAR)return 'sugar'; this.data.sugar-=FR_SWAP_SUGAR; this.frAddPart(r[k],1); r[k]=null; this.save(); return true; },
   ancientHas(id){ return !!(this.data.ancient||{})[id]; },
   scrolls(){ return this.data.scrolls||0; },
   unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
@@ -2636,7 +2641,7 @@ const Save = {
   // ---- Rank Perks (RP = rank ทั้งหมด · ใช้ไปตามที่ลง perk) ----
   perkLvl(id){ return (this.data.rankPerks||{})[id]||0; },
   rankPointsTotal(){ return this.data.rank||0; },
-  rankPointsSpent(){ let s=0; const rp=this.data.rankPerks||{}; for(const k in rp)s+=rp[k]||0; return s; },
+  rankPointsSpent(){ let s=(this.data.frSlotRP||0); const rp=this.data.rankPerks||{}; for(const k in rp)s+=rp[k]||0; return s; },   // v5.38 +RP ที่ใช้ปลดช่องสูTร
   rankPointsFree(){ return this.rankPointsTotal()-this.rankPointsSpent(); },
   perkTierSpent(tier){ let s=0; for(const pk of RANK_PERKS){ if((pk.tier||1)===tier)s+=this.perkLvl(pk.id); } return s; },
   perkTierUnlocked(tier){ if((tier||1)<=1)return true; if(tier===2)return this.perkTierSpent(1)>=PERK_TIER_REQ[2]; return (this.perkTierSpent(1)+this.perkTierSpent(2))>=PERK_TIER_REQ[3]; },
@@ -5039,12 +5044,14 @@ class Game extends Phaser.Scene {
     const lbl={t:'WHEN',e:'DO',m:'TWIST'},col={t:0xffb36b,e:0x7fd0ff,m:0xc7a6ff};
     for(let i=0;i<FR_SLOT_MAX;i++){ const y=top+i*(rowH+6),locked=i>=slots,r=R[i],on=!locked&&sel.slot===i;
       const g=this.add.graphics(); g.fillStyle(locked?0x221c2a:0x2c2338,1); g.fillRoundedRect(14,y,cw,rowH,12); g.lineStyle(on?2.5:1.5,on?0xffd166:0x4a4059,1); g.strokeRoundedRect(14,y,cw,rowH,12); this.menu.add(g);
-      if(locked){ this.menu.add(this.add.text(w/2,y+rowH/2,'🔒 Recipe slot '+(i+1)+' — unlock later',{fontFamily:'sans-serif',fontSize:'11px',color:'#6f6580'}).setOrigin(0.5)); continue; }
+      if(locked){ const nx=i===slots,rc=Save.frSlotCost(),can=nx&&Save.rankPointsFree()>=rc; this.menu.add(this.add.text(w/2,y+rowH/2,nx?'🔒 Unlock slot '+(i+1)+' · 🏅 '+rc+' RP (you have '+Save.rankPointsFree()+')':'🔒 Recipe slot '+(i+1),{fontFamily:'sans-serif',fontStyle:nx?'bold':'normal',fontSize:'11px',color:can?'#ffe08a':'#6f6580'}).setOrigin(0.5));
+        if(nx)this._zone(14,y,cw,rowH,()=>{ if(Save.frUnlockSlot()){ Sfx.digRare(); this.menuToast('🍳 Recipe slot '+(i+1)+' unlocked!','#9ff0c8'); } else { Sfx.select(); this.menuToast('Need 🏅 '+rc+' Rank Points — raise your Weave rank','#ff9bb5'); } this.buildMenuScreen(); });
+        continue; }
       const cost=frCost(r),full=r.t&&r.e; const pw=(cw-70)/3;
       ['t','e','m'].forEach((k,j)=>{ const px=22+j*(pw+4),py=y+5,ph=rowH-24,pt=frPart(r[k]),act=on&&sel.k===k,pg=this.add.graphics();
         pg.fillStyle(pt?col[k]:0x1b1624,pt?0.22:1); pg.fillRoundedRect(px,py,pw,ph,8); pg.lineStyle(act?2.5:1,act?0xffffff:col[k],act?1:0.6); pg.strokeRoundedRect(px,py,pw,ph,8);
-        const tx=this.add.text(px+pw/2,py+ph/2,pt?pt.emoji+' '+pt.name:lbl[k]+(k==='m'?' (opt)':' ?'),{fontFamily:'sans-serif',fontStyle:pt?'bold':'normal',fontSize:'9px',color:pt?'#ffffff':'#8d8195',align:'center',wordWrap:{width:pw-6}}).setOrigin(0.5);
-        this.menu.add([pg,tx]); this._zone(px,py,pw,ph,()=>{ if(sel.slot===i&&sel.k===k&&r[k]){ Save.frRemove(i,k); Sfx.select(); } else { sel.slot=i; sel.k=k; Sfx.select(); } this.buildMenuScreen(); }); });
+        const tx=this.add.text(px+pw/2,py+ph/2,pt?pt.emoji+' '+pt.name+(Save.frLv(r[k])>1?' ★'+Save.frLv(r[k]):''):lbl[k]+(k==='m'?' (opt)':' ?'),{fontFamily:'sans-serif',fontStyle:pt?'bold':'normal',fontSize:'9px',color:pt?'#ffffff':'#8d8195',align:'center',wordWrap:{width:pw-6}}).setOrigin(0.5);
+        this.menu.add([pg,tx]); this._zone(px,py,pw,ph,()=>{ if(sel.slot===i&&sel.k===k&&r[k]){ if(Save.frRemove(i,k)==='sugar')this.menuToast('Removing a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); Sfx.select(); } else { sel.slot=i; sel.k=k; Sfx.select(); } this.buildMenuScreen(); }); });
       const cc=this.add.text(14+cw-8,y+rowH/2-6,'🍯'+cost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:cost>FR_FLAVOR_CAP?'#ff7a7a':'#ffd166'}).setOrigin(1,0.5);
       const st=this.add.text(22,y+rowH-15,full?frSentence(r):'Needs a WHEN and a DO',{fontFamily:'sans-serif',fontSize:'9px',color:full?'#9ff0c8':'#8d8195'});
       this.menu.add([cc,st]); }
@@ -5055,9 +5062,12 @@ class Game extends Phaser.Scene {
     list.forEach(pt=>{ const key=kind+':'+pt.id,c=parts[key]||0; if(c<1)return; const x=14+(n%cols)*(gw+6),y=by+18+Math.floor(n/cols)*(gh+5); n++;
       const trial=Object.assign({},cur,{[kind]:key}),ok=frCost(trial)<=FR_FLAVOR_CAP,g=this.add.graphics();
       g.fillStyle(ok?0x2c2338:0x241c2a,1); g.fillRoundedRect(x,y,gw,gh,8); g.lineStyle(1.5,ok?col[kind]:0x4a4059,1); g.strokeRoundedRect(x,y,gw,gh,8);
-      const t1=this.add.text(x+6,y+5,pt.emoji+' '+pt.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:ok?'#ffffff':'#7a7088',wordWrap:{width:gw-10}});
+      const lv=Save.frLv(key),mg=c>=FR_MERGE_N&&lv<FR_LV_MAX,zw=mg?gw-34:gw;
+      const t1=this.add.text(x+6,y+5,pt.emoji+' '+pt.name+(lv>1?' ★'+lv:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:ok?'#ffffff':'#7a7088',wordWrap:{width:zw-10}});
       const t2=this.add.text(x+6,y+gh-13,'🍯'+pt.cost+'  ×'+c+(pt.desc?'  '+pt.desc:''),{fontFamily:'sans-serif',fontSize:'8px',color:'#b7abc9'});
-      this.menu.add([g,t1,t2]); this._zone(x,y,gw,gh,()=>{ if(Save.frPlace(sel.slot,key)){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });
+      if(mg){ const mb=this.add.graphics(); mb.fillStyle(0x4a3a1a,1); mb.fillRoundedRect(x+gw-32,y+4,28,gh-8,6); const mt=this.add.text(x+gw-18,y+gh/2,'⬆\n×3',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffe08a',align:'center'}).setOrigin(0.5); this.menu.add([mb,mt]);
+        this._zone(x+gw-32,y,32,gh,()=>{ if(Save.frMerge(key)){ Sfx.digRare(); this.menuToast('✨ '+pt.name+' is now ★'+Save.frLv(key)+'!','#ffe08a'); } this.buildMenuScreen(); }); }
+      this.menu.add([g,t1,t2]); this._zone(x,y,zw,gh,()=>{ const pr=Save.frPlace(sel.slot,key); if(pr==='sugar'){ Sfx.select(); this.menuToast('Swapping a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); } else if(pr){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });
     if(!n)this.menu.add(this.add.text(w/2,by+40,'No parts of this kind yet — dig 🧩 in ⛏️ Temple Depths',{fontFamily:'sans-serif',fontSize:'10px',color:'#8d8195'}).setOrigin(0.5));
   }
   buildDig(){
@@ -7358,14 +7368,14 @@ class Game extends Phaser.Scene {
     g.fillStyle(0xffffff,0.7).fillCircle(p.x-r*0.45,p.y-r*0.5,4); }
   // ===== v5.36 🍳 Flavor Recipes runtime: fireRecipes(trigger) → effect · chain ลึกสุด 2 · จำกัด 8 ครั้ง/วิ =====
   frInit(){ const rs=Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e);
-    this._fr=rs.map(r=>({t:r.t.slice(2),e:r.e.slice(2),m:r.m?r.m.slice(2):null,n:0,next:0})); this._frBusy=0; this._frBudget=0; this._frSec=0;
+    this._fr=rs.map(r=>({t:r.t.slice(2),e:r.e.slice(2),m:r.m?r.m.slice(2):null,n:0,next:0,tl:Save.frLv(r.t),el:Save.frLv(r.e)})); this._frBusy=0; this._frBudget=0; this._frSec=0;
     this._frRageT=0; this._frZones=[]; this._frTimer=0; this._frStill=0; this._frLowArm=true; if(this._frBuddy&&this._frBuddy.spr)this._frBuddy.spr.destroy(); this._frBuddy=null; }
   fireRecipes(trig){ const L=this._fr; if(!L||!L.length||this.state!=='play')return;
     const depth=this._frBusy||0; if(depth>0&&!(this._frCur&&this._frCur.m==='chain'))return; if(depth>=2)return;   // chain เฉพาะสูตรที่มี 🔗 Linked
     const now=this.elapsed||0; if(Math.floor(now)!==this._frSec){ this._frSec=Math.floor(now); this._frBudget=0; }
     for(const r of L){ if(r.t!==trig)continue; const td=FR_TRIGGERS.find(x=>x.id===trig)||{};
-      if(trig==='kill10'||trig==='xp20'){ r.n++; const need=(trig==='kill10'?10:20)*(r.m==='faster'?0.7:1); if(r.n<need)continue; r.n=0; }
-      const icd=(td.icd||0.25)*(r.m==='faster'&&td.icd?0.7:1); if(now<r.next||this._frBudget>=8)continue; r.next=now+icd; this._frBudget++;
+      if(trig==='kill10'||trig==='xp20'){ r.n++; const need=(trig==='kill10'?10:20)*(r.m==='faster'?0.7:1)*(1-0.15*((r.tl||1)-1)); if(r.n<need)continue; r.n=0; }
+      const icd=(td.icd||0.25)*(r.m==='faster'&&td.icd?0.7:1)*(td.icd?1-0.15*((r.tl||1)-1):1); if(now<r.next||this._frBudget>=8)continue; r.next=now+icd; this._frBudget++;
       this.frRun(r,depth); if(r.m==='repeat')this.time.delayedCall(500,()=>{ if(this.state==='play')this.frRun(r,depth); }); } }
   frRun(r,depth){ const prev=this._frCur; this._frCur=r; this._frBusy=depth+1;
     try{ this.frEffect(r); } finally{ this._frBusy=depth; this._frCur=prev; } }
@@ -7373,7 +7383,7 @@ class Game extends Phaser.Scene {
     if(r.m==='fire'){ e._burnDps=Math.max(e._burnDps||0,dmg*0.25); e._burnT=2; }
     if(r.m==='ice'&&!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,0.6); e.setTint(COLORS.ice); } }
   frRing(x,y,R,col){ const g=this.camWorld(this.add.circle(x,y,R,col,0.16).setStrokeStyle(5,col,0.9).setDepth(90000).setScale(0.3)); this.tweens.add({targets:g,scale:1,alpha:0,duration:360,ease:'Cubic.out',onComplete:()=>g.destroy()}); }
-  frEffect(r){ const p=this.player,px=p.x,py=p.y; let pw=r.m==='strong'?1.5:1; const A=r.m==='big'?1.5:1;
+  frEffect(r){ const p=this.player,px=p.x,py=p.y; let pw=(r.m==='strong'?1.5:1)*(1+0.3*((r.el||1)-1));   // v5.38 เลเวลชิ้น effect +30%/Lv const A=r.m==='big'?1.5:1;
     if(r.m==='gamble'){ if(Math.random()<0.5){ this.floatText(px,py-50,'🎲 …nothing',0x9a8fb0); return; } pw*=2.5; this.floatText(px,py-50,'🎲 JACKPOT ×2.5',0xffd166); }
     const near=(R)=>{ const out=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<=R)out.push(e); }); return out; };
     switch(r.e){
