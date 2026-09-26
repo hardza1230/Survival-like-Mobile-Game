@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.18.3';
+const GAME_VERSION = '5.19.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.19.0', date:'2026-09-26', title:'🎁 Chest Party', items:['Miniboss chests now play a jingle while spinning, tick on every light, and ring out when you win','The chest bounces, prizes drop in with a bounce, and candy sprays out like a fountain']},
   { v:'5.18.3', date:'2026-09-26', title:'🎵 Menu Music Fixed', items:['The main menu theme actually plays again (it was never being loaded)']},
   { v:'5.18.2', date:'2026-09-26', title:'🎵 Original Menu Theme', items:['The main menu plays the very first menu theme again']},
   { v:'5.18.1', date:'2026-09-26', title:'🎵 Classic Menu Music', items:['The main menu plays its original theme again']},
@@ -641,6 +642,10 @@ const Sfx = {
   bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_boss_warn',0.55,1)&&!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
   clear(){if(!this._ok('clear',0.8))return;this.duckBgm(650,0.48);if(!this.playFile('sfx_levelup',0.42))this.seq([659,784,1047],'triangle',0.11,0.12);},
   victory(){this.duckBgm(1000,0.3);if(this.playFile('sfx_victory',0.55,1))return;this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
+  chestSpin(){this.stopChestSpin();if(this.muted||this.sv<=0)return;try{const g=window.__g;if(g&&g.cache.audio.exists('sfx_chest_spin')){this.duckBgm(4200,0.25);const s=g.sound.add('sfx_chest_spin',{volume:0.42*this.sv});s.once('complete',()=>{try{s.destroy();}catch(e){}if(this._chestSnd===s)this._chestSnd=null;});s.play();this._chestSnd=s;}}catch(e){}},
+  stopChestSpin(){const s=this._chestSnd;this._chestSnd=null;if(s){try{s.stop();s.destroy();}catch(e){}}},
+  chestTick(i){if(!this.playFile('sfx_chest_tick',0.34,1+Math.min(0.6,i*0.02)))this.tone(1200+i*14,0.035,'sine',0.04,1500);},
+  chestWin(){if(!this.playFile('sfx_chest_win',0.6,1))this.seq([784,988,1175,1568],'triangle',0.09,0.1);},
   bossClear(){this.duckBgm(3200,0.12);if(!this.playFile('sfx_boss_clear',0.6,1))this.seq([523,659,784,1047],'triangle',0.13,0.12);},
   dead(){this.duckBgm(900,0.3);if(this.playFile('sfx_defeat',0.5,1))return;this.seq([392,311,247,196],'sine',0.10,0.14);},
   heal(){if(this._ok('heal',0.28)&&!this.playFile('sfx_heal',0.4))this.seq([784,988,1319],'sine',0.07,0.06);},
@@ -966,7 +971,10 @@ const ASSET_AUDIO = {
   sfx_card: 'assets/audio/sfx/gen/sfx_card.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_legend: 'assets/audio/sfx/gen/sfx_legend.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_victory: 'assets/audio/sfx/gen/sfx_victory.mp3',   // v5.2 แฟนแฟร์ยาว (gen_stingers_synth)
-  sfx_boss_clear: 'assets/audio/sfx/gen/sfx_boss_clear.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
+  sfx_boss_clear: 'assets/audio/sfx/gen/sfx_boss_clear.mp3',
+  sfx_chest_spin: 'assets/audio/sfx/gen/sfx_chest_spin.mp3',   // v5.19 เปิดกล่องแบบ VS
+  sfx_chest_tick: 'assets/audio/sfx/gen/sfx_chest_tick.mp3',
+  sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
   bgm_main:       'assets/audio/bgm/bgm_main_theme.wav',
@@ -8217,7 +8225,8 @@ class Game extends Phaser.Scene {
     const ttl=this.add.text(cx,cy-R-70,T0.emoji+' '+T0.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T0.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
     const hint=this.add.text(cx,cy+R+62,'Spinning…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#c7bdd6'}).setOrigin(0.5);
     const center=this.add.text(cx,cy,'🎁',{fontSize:'56px'}).setOrigin(0.5);
-    this.tweens.add({targets:center,angle:{from:-8,to:8},yoyo:true,repeat:-1,duration:120});
+    this.tweens.add({targets:center,angle:{from:-8,to:8},yoyo:true,repeat:-1,duration:120});Sfx.chestSpin();
+    this.tweens.add({targets:center,y:{from:cy,to:cy-22},yoyo:true,repeat:-1,duration:210,ease:'Quad.out'});
     cont.add([bg,rays,ring,ttl,hint,center]);
     const slots=pool.map((p,i)=>{const a=-Math.PI/2+i/n*TAU,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;
       const g=this.add.graphics();const lab=this.add.text(x,y,p.emoji,{fontSize:'30px'}).setOrigin(0.5);cont.add([g,lab]);
@@ -8226,8 +8235,9 @@ class Game extends Phaser.Scene {
     // ไฟวิ่ง: เร็วมากก่อนแล้วค่อยช้าลง ต้องจบที่ winIdx พอดี
     const laps=3,total=laps*n+winIdx+1-0,steps=[];for(let k=0;k<total;k++){const t=k/(total-1);steps.push(38+Math.pow(t,3.2)*360);}
     let cur=-1,k=0;
-    const hop=()=>{ if(cur>=0){slots[cur].draw(false);slots[cur].lab.setScale(1);}
-      cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(1.3);if(Sfx.select)Sfx.select();
+    const hop=()=>{ if(!cont.active)return; if(cur>=0){slots[cur].draw(false);slots[cur].lab.setScale(1);}
+      cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(1.3);Sfx.chestTick(k);this.tweens.add({targets:sl.lab,y:{from:sl.y-12,to:sl.y},duration:170,ease:'Bounce.out'});
+      this.tweens.add({targets:center,scaleX:{from:1.18,to:1},scaleY:{from:0.84,to:1},duration:150,ease:'Back.out'});
       k++;if(upTier&&k===Math.floor(total*0.55))upgrade();
       if(k>=total){this.time.delayedCall(260,()=>land());return;}
       this.time.delayedCall(steps[k],hop); };
@@ -8240,17 +8250,25 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:fl,scale:3.4,alpha:0,duration:520,ease:'Cubic.out',onComplete:()=>fl.destroy()});
       this.screenFlash(T.color,0.35,260);if(Sfx.legend)Sfx.legend(); };
     const land=()=>{ const sl=slots[winIdx],p=sl.p;
-      this.tweens.killTweensOf(center);center.setVisible(false);
+      this.tweens.killTweensOf(center);center.setVisible(false);Sfx.stopChestSpin();Sfx.chestWin();
       for(let t=0;t<6;t++)this.time.delayedCall(t*90,()=>{sl.draw(t%2===0);});
       const big=this.add.text(sl.x,sl.y,p.emoji,{fontSize:'30px'}).setOrigin(0.5);cont.add(big);
-      this.tweens.add({targets:big,x:cx,y:cy,scale:3.2,duration:520,ease:'Back.out'});
+      this.tweens.add({targets:big,x:cx,scale:3.2,duration:520,ease:'Back.out'});
+      this.tweens.add({targets:big,y:{from:sl.y,to:cy},duration:700,ease:'Bounce.out',onComplete:()=>{ if(!big.active)return;
+        this.tweens.add({targets:big,y:cy-10,duration:420,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }});
+      // v5.19 เหรียญ/ขนมเด้งพุ่งแบบน้ำพุ ตกลงเด้งพื้น (แบบ VS)
+      for(let i=0;i<(p.jackpot?22:12);i++){const e=['🍬','✨','🍭','⭐'][i%4],c=this.add.text(cx,cy,e,{fontSize:'20px'}).setOrigin(0.5);cont.add(c);
+        const dx=(Math.random()-0.5)*w*0.8,floor=cy+R*0.9+Math.random()*40,peak=cy-90-Math.random()*120;
+        this.tweens.add({targets:c,x:cx+dx,duration:900+Math.random()*300,ease:'Linear'});
+        this.tweens.add({targets:c,y:peak,duration:320,ease:'Quad.out',onComplete:()=>this.tweens.add({targets:c,y:floor,duration:620,ease:'Bounce.out'})});
+        this.tweens.add({targets:c,angle:(Math.random()-0.5)*540,duration:1000});}
       const glow=this.add.image(cx,cy,'vfx_glow').setScale(0.2).setTint(p.color).setBlendMode(Phaser.BlendModes.ADD);cont.addAt(glow,2);
       this.tweens.add({targets:glow,scale:2.2,alpha:{from:1,to:0.55},duration:520,ease:'Cubic.out'});
       hint.setText(p.name).setFontSize(p.jackpot?'26px':'20px').setColor('#'+p.color.toString(16).padStart(6,'0'));
       this.tweens.add({targets:hint,scale:{from:0.5,to:1},duration:320,ease:'Back.out'});
       for(let i=0;i<(p.jackpot?28:14);i++){const a=i/(p.jackpot?28:14)*TAU,sp=this.add.circle(cx,cy,p.jackpot?6:4,p.color,1);cont.add(sp);
         this.tweens.add({targets:sp,x:cx+Math.cos(a)*(120+Math.random()*80),y:cy+Math.sin(a)*(120+Math.random()*80),alpha:0,duration:700,ease:'Cubic.out'});}
-      this.screenFlash(p.color,p.jackpot?0.6:0.35,320);if(p.jackpot){this.screenShake(400,0.012);if(Sfx.legend)Sfx.legend();}else if(Sfx.clear)Sfx.clear();
+      this.screenFlash(p.color,p.jackpot?0.6:0.35,320);if(p.jackpot){this.screenShake(400,0.012);if(Sfx.legend)Sfx.legend();}
       this.time.delayedCall(p.jackpot?1700:1250,()=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);
         this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
         p.give(); done&&done(upTier||tier); if(this._prizeLevelUp){this._prizeLevelUp=false;if(this.state==='play')this.openLevelUp();} }}); });

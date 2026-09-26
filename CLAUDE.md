@@ -60,7 +60,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.18.3 — แก้เพลงเมนูไม่โหลด)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.19.0 — กล่องมินิบอสมีเสียง+เด้งแบบ VS)
+- **v5.19.0 (เจ้าของสั่ง):** `gen_stingers_synth.cjs` +3 เสียง → `sfx_chest_spin` (เพลงอาร์เพจโจรัว+กลองรัว 4.2s เล่นตอนวงล้อเริ่ม · `Sfx.chestSpin/stopChestSpin`, duck BGM) · `sfx_chest_tick` (`Sfx.chestTick(k)` ทุกช่อง pitch ไล่ขึ้น, ไม่ throttle) · `sfx_chest_win` (`Sfx.chestWin` ตอน land) · เด้ง: 🎁 กลางกระโดดวน + squash ทุก tick · ไอคอนช่องเด้ง Bounce · รางวัลตก Bounce แล้วลอยขึ้นลง · ขนม 12/22 ชิ้นพุ่งน้ำพุตกเด้งพื้น · verified headless ครบ flow 0 error
 - **v5.18.3 (บั๊กจริง):** Boot.preload ข้าม key ที่ขึ้นต้น `bgm_m` (ใส่ตอน v5.8 เพื่อข้ามเพลงมินิ) → `bgm_main` ไม่เคยโหลด → เมนูเล่น synth สำรอง · แก้เป็น regex `/^bgm_[sm]\d/` · verified headless: bgm_main cached+playing, synth off, 0 error
 - **v5.18.2 (เจ้าของ: v5.18.1 ยังได้ยินเพลงเดิม):** bgm_main → `assets/audio/bgm/bgm_main_theme.wav` (เพลงเมนูแรกสุด ใช้ตั้งแต่ 0df15e9 ก่อนถูกเปลี่ยนเป็น Main menu.mp3 ใน d001608)
 - **v5.18.1 (เจ้าของสั่ง):** ASSET_AUDIO.bgm_main กลับไปชี้ไฟล์ต้นฉบับ `assets/audio/bgm/Main menu.mp3` (เดิม v5.0.1 ใช้ตัวย่อ min/bgm_main.mp3 96k) · build-www คัดลอกได้ (เช็คแล้ว)

@@ -35,6 +35,23 @@ const defs = {
     for (const m of [55, 62, 67, 71, 74, 79]) brass(mix, 1.15, 1.6, m, 0.075);
     [79, 83, 86, 91, 95].forEach((m, i) => note(mix, 1.2 + i * 0.09, 0.4, m, { type: 'bell', decay: 0.8, a: 0.002, r: 0.4, vol: 0.09, pan: i % 2 ? 0.4 : -0.4, send: 0.5 }));
   }),
+  // 🎁 v5.19 เปิดกล่อง (แนว Vampire Survivors): เพลงสั้นวิ่งอาร์เพจโจรัว + กลองรัว ระหว่างวงล้อหมุน
+  sfx_chest_spin: () => renderOnce(4.2, mix => {
+    const ch = [[60, 64, 67], [65, 69, 72], [62, 65, 69], [67, 71, 74]];
+    for (let b = 0; b < 4; b++) for (let i = 0; i < 12; i++) { const t = b * 0.9 + i * 0.075, c = ch[b], m = c[i % 3] + 12 * (1 + Math.floor(i / 3) % 2);
+      note(mix, t, 0.12, m, { type: 'bell', decay: 0.25, a: 0.002, r: 0.1, vol: 0.07, pan: i % 2 ? 0.35 : -0.35, send: 0.3 }); }
+    for (let i = 0; i < 48; i++) snare(mix, i * 0.075, 0.05 + i * 0.002);
+    ch.forEach((c, b) => { kick(mix, b * 0.9, 0.5); c.forEach(m => wide(mix, b * 0.9, 0.85, m - 12, { type: 'tri', a: 0.02, s: 0.7, r: 0.2, vol: 0.05, send: 0.3, voices: 2 })); });
+    crash(mix, 3.6, 0.1);
+  }, 0.5, 0.4),
+  // ติ๊กทีละช่อง (เล่นซ้ำพร้อมไล่ pitch)
+  sfx_chest_tick: () => renderOnce(0.35, mix => { note(mix, 0, 0.08, 88, { type: 'bell', decay: 0.12, a: 0.001, r: 0.05, vol: 0.12, send: 0.1 }); }, 0.2, 0.1),
+  // ได้ของ: ติ๊ง! + เหรียญร่วงพรู
+  sfx_chest_win: () => renderOnce(2.4, mix => {
+    for (const m of [72, 76, 79, 84]) note(mix, 0, 1.2, m, { type: 'bell', decay: 1.0, a: 0.002, r: 0.5, vol: 0.08, send: 0.5 });
+    for (let i = 0; i < 18; i++) note(mix, 0.08 + i * 0.055 + Math.random() * 0.02, 0.1, 91 + (i * 5) % 12, { type: 'bell', decay: 0.15, a: 0.001, r: 0.08, vol: 0.05, pan: (Math.random() - 0.5) * 1.4, send: 0.4 });
+    kick(mix, 0, 0.5); crash(mix, 0, 0.08);
+  }),
   // 🎉 ชนะเกม / จบบท: แฟนแฟร์ยาวกว่า มีท่อนทำนอง
   sfx_victory: () => renderOnce(6.5, mix => {
     const mel = [[0, 72, .3], [.3, 72, .15], [.45, 72, .15], [.6, 76, .3], [.9, 79, .6], [1.5, 77, .3], [1.8, 76, .3], [2.1, 79, .3], [2.4, 84, 1.6]];
