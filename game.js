@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.31.0';
+const GAME_VERSION = '5.32.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.32.0', date:'2026-09-26', title:'⛏️ Shovels from battle', items:['Clearing a stage gives shovels: Normal 1 · Hard 2 · Hell 3','Minibosses have a 25% chance to drop a shovel']},
   { v:'5.31.0', date:'2026-09-26', title:'🕳️ Secrets of the Depths', items:['Tiles hiding rare treasure sometimes glitter ✦','Watch out for 🪤 traps — they cost an extra shovel','Rare 🕳️ Secret Passages drop you 2 depths into a Hidden Vault full of treasure']},
   { v:'5.30.0', date:'2026-09-26', title:'🗿 Ancient Perks', items:['Dig up 📜 Scroll Fragments in Temple Depths','Every 4 fragments unlock an Ancient Perk in 🏅 Rank Perks: Echo Dash, Treasure Sense, Second Weave, Ancient Guard, Sugar Vein, Deep Roots']},
   { v:'5.29.0', date:'2026-09-26', title:'⬆ Core Overcap', items:['Dig up Core Stones (🔴🟠🔵) in Temple Depths','Spend them in the Weave Temple to Overcap a core up to +6 — permanent and never reset on rank up']},
@@ -6763,6 +6764,8 @@ class Game extends Phaser.Scene {
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
   onStageClear(){ this.clearSugarCoins();
+    // v5.32 ⛏️ พลั่วจากการผ่านด่าน: ปกติ 1 / ยาก 2 / นรก 3 (กฎเหล็ก) · ไม่ให้ใน tutorial
+    if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1)); Save.addShovels(n); this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.waveAlive=0; this.pipG.clear();
@@ -8249,6 +8252,7 @@ class Game extends Phaser.Scene {
       const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const o=['bronze','silver','gold'],t=o[Math.min(2,o.indexOf(e._mimic)+1)]; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
+    if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+1 ⛏️',0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
     if(isMini){ this._nextChestTier=this.miniChestTier(); this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
   killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
