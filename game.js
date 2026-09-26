@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.41.0';
+const GAME_VERSION = '5.42.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.42.0', date:'2026-09-26', title:'🔒 Tier lock & full roll pool', items:['Affix Forge roll pool now has ‹ › pages so you can see every possible mod','Tap a tier in the TIERS table to lock it: that mod always rolls at that tier or better (+2 currency per roll)','Tap the locked tier again to unlock']},
   { v:'5.41.0', date:'2026-09-26', title:'🌟 Switch fighters in Talents', items:['Use ‹ › on the Character Talents page to switch between your fighters']},
   { v:'5.40.0', date:'2026-09-26', title:'🎵 New temple music', items:['Flavor Weave Temple has its own calm bell-and-choir theme','Temple Depths plays a mysterious cave tune with dripping water','The Recipe Kitchen gets a bouncy cooking groove']},
   { v:'5.39.0', date:'2026-09-26', title:'🍳 Recipe polish', items:['Recipes now pop a WHEN▸DO icon and a chime when they fire','Merging parts plays a sparkle fanfare']},
@@ -2272,6 +2273,11 @@ function craftCurrencyForLine(rarity,hasLine){if(!hasLine)return rarity==='rare'
 function tierWeights(best){ const out=[]; const peak=Math.pow(5,1.3); for(let t=best;t<=AFFIX_TIER_MAX;t++){ const d=t-best; out.push([t,d<=4?Math.pow(d+1,1.3):peak*Math.pow(0.7,d-4)]); } return out; }
 function tierChances(best){ const w=tierWeights(best),tot=w.reduce((s,x)=>s+x[1],0),o={}; w.forEach(([t,v])=>o[t]=v/tot); return o; }
 function rollTier(best,ilvl){ const list=tierWeights(best); let tot=0; for(const x of list)tot+=x[1]; let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return AFFIX_TIER_MAX; }
+// v5.42 🔒 Tier lock: ถ้าล็อคไว้กับ mod นี้ → tier ที่ออกต้องดีเท่ากับหรือดีกว่า lock (ตัวเลขน้อย = ดี)
+const TIER_LOCK_COST=2;   // currency เพิ่มต่อ roll ขณะล็อค
+function rollOneAffixLocked(mod,best,ilvl,lock){ if(!lock||lock.id!==mod.id)return rollOneAffix(mod,best,ilvl);
+  const list=tierWeights(best).filter(([t])=>t<=Math.max(best,lock.t)); let tot=0; for(const x of list)tot+=x[1]; let r=Math.random()*tot,t=list.length?list[list.length-1][0]:best; for(const [tt,w] of list){ r-=w; if(r<=0){t=tt;break;} }
+  const band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; return {id:mod.id,t,v:band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)),t11:1}; }
 function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl), band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v,t11:1}; }
 function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:l<45?3:99;}   // ของเลเวลต่ำ = mod น้อย (กันของด่านแรกโกง) ค่อย ๆ ปลดตาม iLv
 function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel));if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,tItem=stub||{grade:baseTier,itemLevel};
@@ -5415,14 +5421,15 @@ class Game extends Phaser.Scene {
   // เติม affix 1 อันตามช่องว่างของ rarity · คืน true ถ้าเติมได้
   _craftContext(){const slot=this.gearSlot||'weapon',item=Save.gearItem(this.craftSelectedUid||this.gearSelectedUid)||Save.equippedGearItem(slot),base=item&&GEAR_ALL.find(g=>g.id===item.baseId);return{slot,item,base};}
   // 🎲 คราฟต์แบบสุ่ม: ผู้เล่นเห็นแค่ว่าเป็นอะไรได้บ้าง → ใช้ currency แล้วสุ่ม stat มา 1 อัน แล้วไฮไลท์อันที่ติด
+  craftLockFor(item){ const L=this.craftTierLock; return L&&item&&L.uid===item.uid&&affixDef(L.id)?L:null; }
   randomCraftSelected(){if(this._craftRolling)return;const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.select();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
     let affs=Save.gearAffixes(item.uid).slice(),rar=Save.gearRarity(item.uid,base.tier),cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),line=Math.max(0,Math.min(cap-1,this.craftLineIndex||0)),old=affs[line]||null;
     const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===line?'':a.id)),available=pool.filter(m=>!used.has(m.id));
     if(!available.length){Sfx.select();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}
-    const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key);if(Save.currency(key)<1){Sfx.select();this.showBanner(cur.emoji+' Need '+cur.name,'Available: '+Save.currency(key),1300);return;}
-    const mod=pickWeightedMod(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
+    const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),lk=this.craftLockFor(item),need=1+(lk?TIER_LOCK_COST:0);if(Save.currency(key)<need){Sfx.select();this.showBanner(cur.emoji+' Need '+need+' '+cur.name,'Available: '+Save.currency(key)+(lk?' · tier lock costs +'+TIER_LOCK_COST:''),1500);return;}
+    const mod=pickWeightedMod(available),rolled=rollOneAffixLocked(mod,affixBestTierForItem(item,mod),item.itemLevel||1,lk);
     if(line<affs.length)affs[line]=rolled;else affs.push(rolled);if(rar==='common')rar='magic';
-    Save.spendCurrency(key,1);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
+    Save.spendCurrency(key,need);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
     this._craftResult={uid:item.uid,title:old?'AFFIX REPLACED':'NEW AFFIX',before:old?(affixDef(old.id).label+' '+affixDef(old.id).fmt(old.v)):'Empty line',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};
     this._playAffixRoulette(available,mod,rolled,cur);}
   _playAffixRoulette(pool,winner,rolled,cur){
@@ -5481,11 +5488,12 @@ class Game extends Phaser.Scene {
       const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===ln?'':a.id)),available=pool.filter(m=>!used.has(m.id));
       if(!available.some(m=>m.id===targetId)){cur.setText('Target cannot roll here').setColor('#ff9aa8');return end('unreachable');}
       const key=craftCurrencyForLine(rar,!!old);
-      if(Save.currency(key)<1){cur.setText('Out of '+currencyDef(key).emoji+' '+currencyDef(key).name).setColor('#ff9aa8');return end('broke');}
-      const mod=pickWeightedMod(available),rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);
+      const lk=this.craftLockFor(item),need=1+(lk?TIER_LOCK_COST:0);
+      if(Save.currency(key)<need){cur.setText('Out of '+currencyDef(key).emoji+' '+currencyDef(key).name).setColor('#ff9aa8');return end('broke');}
+      const mod=pickWeightedMod(available),rolled=rollOneAffixLocked(mod,affixBestTierForItem(item,mod),item.itemLevel||1,lk);
       const nAffs=affs.slice();if(ln<nAffs.length)nAffs[ln]=rolled;else nAffs.push(rolled);
-      Save.spendCurrency(key,1);Save.setAffixes(item.uid,nAffs);if(rar==='common')Save.setGearRarity(item.uid,'magic');
-      spent[key]=(spent[key]||0)+1;rolls++;this._craftRolledId=mod.id;
+      Save.spendCurrency(key,need);Save.setAffixes(item.uid,nAffs);if(rar==='common')Save.setGearRarity(item.uid,'magic');
+      spent[key]=(spent[key]||0)+need;rolls++;this._craftRolledId=mod.id;
       const hit=mod.id===targetId,c=affixCategory(mod);
       this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
       count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());Sfx.select();
@@ -5523,7 +5531,7 @@ class Game extends Phaser.Scene {
     items.slice(page*pageSize,page*pageSize+pageSize).forEach((item,i)=>{const b=GEAR_ALL.find(g=>g.id===item.baseId),x=14+i*(cw+gap),on=item.uid===selected.uid,tl=TIER_LABEL[item.grade]||TIER_LABEL.common,color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();
       g.fillStyle(on?0x42334d:this._darken(color,.62),.98);g.fillRoundedRect(x,y,cw,ch,9);g.lineStyle(on?2.5:1.2,on?0xffd166:color,1);g.strokeRoundedRect(x,y,cw,ch,9);g.fillStyle(color,1);g.fillCircle(x+cw-7,y+7,3);
       const artKey='gear_'+b.id,icon=this.textures.exists(artKey)?this.add.image(x+cw/2,y+18,artKey).setDisplaySize(29,29):this.add.text(x+cw/2,y+18,b.emoji,{fontSize:'19px'}).setOrigin(.5),lv=this.add.text(x+cw/2,y+41,'iLv '+(item.itemLevel||1)+(item.locked?' · 🔒':''),{fontFamily:'sans-serif',fontSize:'7.6px',color:'#e0d6e8'}).setOrigin(.5);
-      this.menu.add([g,icon,lv]);this._zone(x,y,cw,ch,()=>{this.craftSelectedUid=item.uid;this.gearSelectedUid=item.uid;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this._craftResult=null;this._craftConfirm=null;this.buildCraftBench();});
+      this.menu.add([g,icon,lv]);this._zone(x,y,cw,ch,()=>{this._poolPage=0;this.craftSelectedUid=item.uid;this.gearSelectedUid=item.uid;this.craftLineIndex=0;this.craftTargetId=null;this._craftRolledId=null;this._craftResult=null;this._craftConfirm=null;this.buildCraftBench();});
     });y+=ch+3;
     if(pages>1){const nav=this.add.text(w/2,y+8,'‹   '+(page+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontSize:'9px',color:'#d4c6df'}).setOrigin(.5);this.menu.add(nav);this._zone(w/2-58,y,46,17,()=>{this.craftPageBySlot[slot]=(page-1+pages)%pages;this.buildCraftBench();});this._zone(w/2+12,y,46,17,()=>{this.craftPageBySlot[slot]=(page+1)%pages;this.buildCraftBench();});y+=19;}
     const base=GEAR_ALL.find(g=>g.id===selected.baseId),affs=Save.gearAffixes(selected.uid),rar=Save.gearRarity(selected.uid,base.tier),rl=RARITY_LABEL[rar]||RARITY_LABEL.magic,baseTl=TIER_LABEL[selected.grade]||TIER_LABEL.common;
@@ -5534,19 +5542,22 @@ class Game extends Phaser.Scene {
       if(mod){const kc=affixCategory(mod).color;g.fillStyle(kc,1);g.fillRoundedRect(x,ly,5,lineH,{tl:8,bl:8,tr:0,br:0});}
       const nextEmpty=i===affs.length,label=mod?(mod.emoji+' '+mod.label+' '+mod.fmt(a.v)+' · T'+(a.t||5)):(nextEmpty?'＋ Empty affix slot':'🔒 Complete prior slot'),tx=this.add.text(x+(mod?11:7),ly+lineH/2,label,{fontFamily:'sans-serif',fontStyle:on?'bold':'normal',fontSize:'8px',color:mod?'#f4ecf8':nextEmpty?'#e7d8f0':'#74697c'}).setOrigin(0,.5);this.menu.add([g,tx]);if(mod||nextEmpty)this._zone(x,ly,lineW,lineH,()=>{this.craftLineIndex=i;this.craftTargetId=null;this._craftRolledId=null;this._craftConfirm=null;this.buildCraftBench();});
     }y+=cardH+5;
-    const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id)),rolledId=this._craftRolledId,visiblePool=available.slice(0,portrait?6:4),catCount={offense:0,defense:0,utility:0};available.forEach(m=>catCount[m.category]=(catCount[m.category]||0)+1);
+    const pool=craftAffixPoolForItem(selected),used=new Set(affs.map((a,i)=>i===this.craftLineIndex?'':a.id)),available=pool.filter(m=>!used.has(m.id)),rolledId=this._craftRolledId,pps=portrait?6:4,pPages=Math.max(1,Math.ceil(available.length/pps)),pPage=Math.min(pPages-1,Math.max(0,this._poolPage||0)),visiblePool=available.slice(pPage*pps,pPage*pps+pps),catCount={offense:0,defense:0,utility:0};available.forEach(m=>catCount[m.category]=(catCount[m.category]||0)+1);
     const ph=this.add.text(15,y,'ROLL POOL · '+available.length+' · tap to target 🎯',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#ffe0a8'}).setOrigin(0,0),tierHint=this.add.text(w-15,y,'OFF '+catCount.offense+' · DEF '+catCount.defense+' · UTIL '+catCount.utility,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.2px',color:'#a99bb4'}).setOrigin(1,0);this.menu.add([ph,tierHint]);y+=15;
     const pw=(w-34-6)/2,phh=31;visiblePool.forEach((mod,i)=>{const x=14+(i%2)*(pw+6),py=y+Math.floor(i/2)*(phh+4),targeted=mod.id===this.craftTargetId,on=targeted||mod.id===rolledId,best=affixBestTierForItem(selected,mod),kc=mod.exclusive?0xff8f3a:affixCategory(mod).color,g=this.add.graphics();g.fillStyle(on?0x4d3d1f:0x251c30,.98);g.fillRoundedRect(x,py,pw,phh,7);g.lineStyle(on?2.3:1,on?0xffd166:kc,1);g.strokeRoundedRect(x,py,pw,phh,7);g.fillStyle(kc,1);g.fillRoundedRect(x,py,4,phh,{tl:7,bl:7,tr:0,br:0});const tx=this.add.text(x+10,py+8,(targeted?'🎯 ':on?'✨ ':'')+mod.emoji+' '+mod.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.2px',color:on?'#ffe08a':'#f4ecf8'}).setOrigin(0,.5),rg=this.add.text(x+10,py+22,(affixRarityTag(mod)?affixRarityTag(mod)+' ':'')+affixChancePct(mod,available)+'% · T'+best+' · '+affixBestRangeText(selected,mod),{fontFamily:'sans-serif',fontSize:'6.4px',color:on?'#ffe0b0':affixCategory(mod).hex}).setOrigin(0,.5);this.menu.add([g,tx,rg]);this._zone(x,py,pw,phh,()=>{this.craftTargetId=this.craftTargetId===mod.id?null:mod.id;this._craftConfirm=null;this.buildCraftBench();});});y+=Math.ceil(visiblePool.length/2)*(phh+4)+4;
 
-    if(available.length>visiblePool.length){const more=this.add.text(w/2,y-2,'+'+(available.length-visiblePool.length)+' more possible results in the roulette',{fontFamily:'sans-serif',fontSize:'7px',color:'#a99bb4'}).setOrigin(.5);this.menu.add(more);y+=8;}
+    if(pPages>1){this._poolPage=pPage;const nav=this.add.text(w/2,y+4,'‹   Page '+(pPage+1)+' / '+pPages+'   ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe0a8'}).setOrigin(.5);this.menu.add(nav);
+      this._zone(w/2-80,y-6,60,22,()=>{this._poolPage=(pPage-1+pPages)%pPages;this.buildCraftBench();});this._zone(w/2+20,y-6,60,22,()=>{this._poolPage=(pPage+1)%pPages;this.buildCraftBench();});y+=16;}
     // v4.92: ตาราง tier ทั้งหมดของ mod (เป้า/บรรทัดที่เลือก/ตัวแรกใน pool) + โอกาสต่อ tier ของไอเทมนี้
     {const lineMod=affs[this.craftLineIndex]&&affixDef(affs[this.craftLineIndex].id),tm=(this.craftTargetId&&affixDef(this.craftTargetId))||lineMod||available[0];
      if(tm&&tm.tiers){const best=affixBestTierForItem(selected,tm),ch=tierChances(best),curT=lineMod&&lineMod.id===tm.id?affs[this.craftLineIndex].t:null;
-      y+=4;const hd=this.add.text(15,y,'TIERS · '+tm.emoji+' '+tm.label+' · best T'+best+' on this item',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffe0a8'}).setOrigin(0,0);this.menu.add(hd);y+=13;
+      const lock=this.craftLockFor(selected),lockOn=lock&&lock.id===tm.id;
+      y+=4;const hd=this.add.text(15,y,'TIERS · '+tm.emoji+' '+tm.label+(lockOn?' · 🔒 T'+lock.t+' or better (+'+TIER_LOCK_COST+'/roll)':' · tap a tier to lock'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffe0a8'}).setOrigin(0,0);this.menu.add(hd);y+=13;
       const cols=3,cw=(w-28-(cols-1)*4)/cols,rh=13,n=tm.tiers.length,rows=Math.ceil(n/cols);
       for(let t=0;t<n;t++){const c=Math.floor(t/rows),r=t%rows,x=14+c*(cw+4),yy=y+r*rh,b=tm.tiers[t],can=t>=best,cur=t===curT,col=cur?'#fff3b0':can?(t<=2?'#ffcf6b':t<=5?'#cfe6ff':'#b9aec8'):'#5d5366';
-        const g=this.add.graphics();g.fillStyle(cur?0x4d3d1f:0x251c30,can?.95:.55);g.fillRoundedRect(x,yy,cw,rh-2,4);this.menu.add(g);
-        const range=tm.fmt(b[0])===tm.fmt(b[1])?tm.fmt(b[0]):tm.fmt(b[0])+'~'+tm.fmt(b[1]).replace(/^[+-]/,''),pct=can?(ch[t]*100<1?(ch[t]*100).toFixed(1):Math.round(ch[t]*100))+'%':'🔒';
+        const lk=lockOn&&t<=lock.t&&can,g=this.add.graphics();g.fillStyle(cur?0x4d3d1f:lk?0x2d4a3a:0x251c30,can?.95:.55);g.fillRoundedRect(x,yy,cw,rh-2,4);if(lockOn&&t===lock.t){g.lineStyle(1.5,0x8bd3a0,1);g.strokeRoundedRect(x,yy,cw,rh-2,4);}this.menu.add(g);
+        if(can)this._zone(x,yy,cw,rh-2,()=>{if(lockOn&&lock.t===t)this.craftTierLock=null;else this.craftTierLock={uid:selected.uid,id:tm.id,t};Sfx.select();this.buildCraftBench();});
+        const range=tm.fmt(b[0])===tm.fmt(b[1])?tm.fmt(b[0]):tm.fmt(b[0])+'~'+tm.fmt(b[1]).replace(/^[+-]/,''),pct=can?(lockOn&&t===lock.t?'🔒 ':'')+(ch[t]*100<1?(ch[t]*100).toFixed(1):Math.round(ch[t]*100))+'%':'—';
         this.menu.add(this.add.text(x+4,yy+(rh-2)/2,'T'+t+' '+range,{fontFamily:'sans-serif',fontStyle:cur?'bold':'normal',fontSize:'7px',color:col}).setOrigin(0,.5));
         this.menu.add(this.add.text(x+cw-4,yy+(rh-2)/2,pct,{fontFamily:'sans-serif',fontSize:'7px',color:col}).setOrigin(1,.5));}
       y+=rows*rh+4;}}
