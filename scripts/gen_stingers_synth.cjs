@@ -73,6 +73,8 @@ const defs = {
   // ⛏️ v5.26 Temple Depths (มินิเกมขุด)
   sfx_dig_hit: () => renderOnce(0.45, mix => { kick(mix, 0, 0.55); tom(mix, 0, 95, 0.4); snare(mix, 0.01, 0.12, 0.05); }, 0.2, 0.08),
   sfx_dig_break: () => renderOnce(0.9, mix => { tom(mix, 0, 80, 0.45); for (let i = 0; i < 7; i++) snare(mix, 0.03 + i * 0.05, 0.14 - i * 0.015, 0.1); kick(mix, 0, 0.35); }, 0.3, 0.15),
+  sfx_recipe_fire: () => renderOnce(0.7, mix => { [76, 83, 88].forEach((m, i) => note(mix, i * 0.045, 0.25, m, { type: 'pluck', decay: 0.25, a: 0.002, r: 0.15, vol: 0.10, send: 0.35 })); }, 0.35, 0.3),
+  sfx_recipe_merge: () => renderOnce(1.2, mix => { [72, 76, 79, 84, 88].forEach((m, i) => note(mix, i * 0.07, 0.5, m, { type: 'bell', decay: 0.5, a: 0.002, r: 0.3, vol: 0.11, send: 0.4 })); }, 0.5, 0.4),
   sfx_dig_find: () => renderOnce(0.8, mix => { [79, 84].forEach((m, i) => note(mix, i * 0.08, 0.35, m, { type: 'bell', decay: 0.35, a: 0.002, r: 0.2, vol: 0.12, send: 0.3 })); }, 0.4, 0.3),
   sfx_dig_rare: () => renderOnce(1.8, mix => {
     [72, 76, 79, 84, 88, 91].forEach((m, i) => note(mix, i * 0.06, 0.6, m, { type: 'bell', decay: 0.6, a: 0.002, r: 0.3, vol: 0.09, pan: i % 2 ? 0.4 : -0.4, send: 0.5 }));
