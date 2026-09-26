@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.18.2';
+const GAME_VERSION = '5.18.3';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.18.3', date:'2026-09-26', title:'🎵 Menu Music Fixed', items:['The main menu theme actually plays again (it was never being loaded)']},
   { v:'5.18.2', date:'2026-09-26', title:'🎵 Original Menu Theme', items:['The main menu plays the very first menu theme again']},
   { v:'5.18.1', date:'2026-09-26', title:'🎵 Classic Menu Music', items:['The main menu plays its original theme again']},
   { v:'5.18.0', date:'2026-09-25', title:'🦷 Mimics', items:['Careful — some miniboss chests are Mimics that bite back! Defeat one to earn a chest one tier better']},
@@ -1056,7 +1057,7 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
-      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||k.startsWith('bgm_s')||k.startsWith('bgm_m'))continue;
+      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[sm]\d/.test(k))continue;
       this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำWaitง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
