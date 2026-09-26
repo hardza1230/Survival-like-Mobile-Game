@@ -60,7 +60,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.45.2 — เสียง auto-roll สะอาดขึ้น)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.46.0 — Affix Forge โฟกัสชัด)
+- **v5.46.0 (เจ้าของ+ภาพ):** buildCraftBench: ไอเทม/บรรทัด affix/mod เป้าที่เลือก = พื้นทอง+กรอบทอง 3px+glow รอบ+ตัวหนา · ไม่ได้เลือก = พื้นเข้ม กรอบเทา ข้อความเทา ไอคอนไอเทม alpha .4+tint · roll pool: มีเป้าแล้ว mod อื่นเทา (`dim`) · ไม่มีเป้า = สีหมวดจาง .45-.55 · verified screenshot 0 error
 - **v5.45.2 (เจ้าของ: ก้อง+แตก):** `renderOnce(...,clean)` ใน gen_stingers_synth = ไม่ผ่าน tanh (ต้นเหตุแตก) normalize 0.8 + wet 0 ข้าม reverb · sfx_slot_{spin,miss,near,jackpot} ทำใหม่แบบแห้ง (send 0, sine/tri) · hit เล่นแค่ slotJackpot (+chestWin หน่วง 450ms เฉพาะ hype≥2) ตัด clear/legend ซ้อน · slotSpin vol 0.35 · verified โหลดครบ 0 error · **ยังไม่มีใครฟังจริง**
 - **v5.45.1 (บั๊กที่เจ้าของเจอ):** muteBtn ไม่อยู่ใน hudList → ในเมนูถูกบังแต่ hit-test มุมขวาบน (r28) ยังทำงาน = แตะตรงนั้นหน้าไหนก็ปิด/เปิดเสียง · แก้: muteBtn/muteTxt เข้า hudList + hit-test ต้อง visible และ state≠menu (ในเมนูใช้ Settings) · verified headless แตะในเมนูไม่ mute, 0 error
 - **v5.45.0 (เจ้าของสั่ง):** autoRollToTarget โชว์ `Wallet: currency × N` ลดทุก roll (+ป้าย −N ลอย) · แต่ละ roll มี reel สลับชื่อ mod 6 ครั้ง + `Sfx.slotSpin` · near miss (หมวด affixCategory เดียวกับเป้า) = `Sfx.slotNear` + แฟลชส้ม + 'So close!' (หน่วง 900ms) · miss = `Sfx.slotMiss` wah-wah + 'Aww…' · hit = `Sfx.slotJackpot` + ประกาย 14 ดวง + JACKPOT (+hype เดิม) · เสียงใหม่ `sfx_slot_{spin,miss,near,jackpot}` ใน gen_stingers_synth (import `wood` เพิ่ม) · verified headless wallet 40→30, near/miss/jackpot แสดงถูก, 0 error
