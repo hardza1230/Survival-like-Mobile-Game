@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.66.0';
+const GAME_VERSION = '5.67.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.67.0', date:'2026-09-26', title:'New art: menus, icons, Temple Depths', items:['Hub buttons and menu tiles use new illustrated icons','Rank Perk, Ancient Perk and Relic icons','Temple Depths gets its full art set: background, tiles, shovel, treasures and chests'] },
   { v:'5.66.0', date:'2026-09-26', title:'Bear Beat Rush: warp punches', items:['Cocoa now warps to each target during the rush punches, with a dash trail','Fully charged Beat Rush is weaker: fewer punches per dot and lower damage','Grand finale blast damage lowered'] },
   { v:'5.65.0', date:'2026-09-26', title:'Cocoa: Dash is a buff again', items:['Dash is a normal dash again (no Dash Punch)','Every Dash gives Cocoa a short Bear Rush buff: combo damage up for 2.5s','Dash Rush card: +15% buff damage per rank','Dash Boxer, Counter Bear and Evolution now boost the Dash buff and cooldown'] },
   { v:'5.64.0', date:'2026-09-26', title:'Cocoa: escape dash + smoother combo', items:['Dash follows your joystick — punches only if an enemy is in that direction, otherwise it is a normal escape dash','After a Dash Punch on a boss or miniboss, Cocoa hops back out of reach','Combo flows faster with shorter wind-ups and always restarts with the lunge','Bigger swipe arrows in Bear Beat Rush'] },
@@ -893,7 +894,75 @@ const ASSET_IMAGES = {
   floor_c34:'assets/art/floors/floor_c34.webp',
   floor_c35:'assets/art/floors/floor_c35.webp',
   dec_c21_mushroom:'assets/art/decor_c21/dec_c21_mushroom.png', dec_c21_moss:'assets/art/decor_c21/dec_c21_moss.png', dec_c21_leaf:'assets/art/decor_c21/dec_c21_leaf.png', dec_c21_puddle:'assets/art/decor_c21/dec_c21_puddle.png', dec_c21_jar:'assets/art/decor_c21/dec_c21_jar.png', dec_c21_spore:'assets/art/decor_c21/dec_c21_spore.png', dec_c21_root:'assets/art/decor_c21/dec_c21_root.png', dec_c21_flower:'assets/art/decor_c21/dec_c21_flower.png',
-  bg1:'assets/generated/bg1_sour_ant_nest.png', bg2:'assets/generated/bg2_rotting_drain.jpg', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png', bg6:'assets/bg6.png',
+  dig_bg:'assets/art/dig/dig_bg.webp',
+  dig_chest:'assets/art/dig/dig_chest.webp',
+  dig_chest_open:'assets/art/dig/dig_chest_open.webp',
+  dig_crack:'assets/art/dig/dig_crack.webp',
+  dig_gem:'assets/art/dig/dig_gem.webp',
+  dig_gift:'assets/art/dig/dig_gift.webp',
+  dig_ore:'assets/art/dig/dig_ore.webp',
+  dig_part:'assets/art/dig/dig_part.webp',
+  dig_scroll:'assets/art/dig/dig_scroll.webp',
+  dig_shovel:'assets/art/dig/dig_shovel.webp',
+  dig_stair:'assets/art/dig/dig_stair.webp',
+  dig_stone_def:'assets/art/dig/dig_stone_def.webp',
+  dig_stone_dmg:'assets/art/dig/dig_stone_dmg.webp',
+  dig_stone_hp:'assets/art/dig/dig_stone_hp.webp',
+  dig_thread:'assets/art/dig/dig_thread.webp',
+  dig_tile_rock:'assets/art/dig/dig_tile_rock.webp',
+  dig_tile_soil:'assets/art/dig/dig_tile_soil.webp',
+  dig_trap:'assets/art/dig/dig_trap.webp',
+  perk_ancientGuard:'assets/art/icons/perk_ancientGuard.webp',
+  perk_banish:'assets/art/icons/perk_banish.webp',
+  perk_boxLuck:'assets/art/icons/perk_boxLuck.webp',
+  perk_deepRoots:'assets/art/icons/perk_deepRoots.webp',
+  perk_echoDash:'assets/art/icons/perk_echoDash.webp',
+  perk_fortune:'assets/art/icons/perk_fortune.webp',
+  perk_greed:'assets/art/icons/perk_greed.webp',
+  perk_ironWill:'assets/art/icons/perk_ironWill.webp',
+  perk_might:'assets/art/icons/perk_might.webp',
+  perk_reroll:'assets/art/icons/perk_reroll.webp',
+  perk_revive:'assets/art/icons/perk_revive.webp',
+  perk_secondWeave:'assets/art/icons/perk_secondWeave.webp',
+  perk_sugarVein:'assets/art/icons/perk_sugarVein.webp',
+  perk_treasureSense:'assets/art/icons/perk_treasureSense.webp',
+  perk_vigor:'assets/art/icons/perk_vigor.webp',
+  relic_burst:'assets/art/icons/relic_burst.webp',
+  relic_chill:'assets/art/icons/relic_chill.webp',
+  relic_crown:'assets/art/icons/relic_crown.webp',
+  relic_glass:'assets/art/icons/relic_glass.webp',
+  relic_jam:'assets/art/icons/relic_jam.webp',
+  relic_lastbreath:'assets/art/icons/relic_lastbreath.webp',
+  relic_leech:'assets/art/icons/relic_leech.webp',
+  relic_magnet:'assets/art/icons/relic_magnet.webp',
+  relic_momentum:'assets/art/icons/relic_momentum.webp',
+  relic_shell:'assets/art/icons/relic_shell.webp',
+  relic_splinter:'assets/art/icons/relic_splinter.webp',
+  hub_btn_activity:'assets/art/menu_buttons/hub_btn_activity.webp',
+  hub_btn_codex:'assets/art/menu_buttons/hub_btn_codex.webp',
+  hub_btn_gear:'assets/art/menu_buttons/hub_btn_gear.webp',
+  hub_btn_heroes:'assets/art/menu_buttons/hub_btn_heroes.webp',
+  hub_btn_more:'assets/art/menu_buttons/hub_btn_more.webp',
+  hub_btn_play:'assets/art/menu_buttons/hub_btn_play.webp',
+  tile___tutorial:'assets/art/menu_buttons/tile___tutorial.webp',
+  tile_achievements:'assets/art/menu_buttons/tile_achievements.webp',
+  tile_bazaar:'assets/art/menu_buttons/tile_bazaar.webp',
+  tile_bestiary:'assets/art/menu_buttons/tile_bestiary.webp',
+  tile_bossrush:'assets/art/menu_buttons/tile_bossrush.webp',
+  tile_craft:'assets/art/menu_buttons/tile_craft.webp',
+  tile_daily:'assets/art/menu_buttons/tile_daily.webp',
+  tile_dig:'assets/art/menu_buttons/tile_dig.webp',
+  tile_endgame:'assets/art/menu_buttons/tile_endgame.webp',
+  tile_gear:'assets/art/menu_buttons/tile_gear.webp',
+  tile_gearInbox:'assets/art/menu_buttons/tile_gearInbox.webp',
+  tile_kitchen:'assets/art/menu_buttons/tile_kitchen.webp',
+  tile_perks:'assets/art/menu_buttons/tile_perks.webp',
+  tile_recipes:'assets/art/menu_buttons/tile_recipes.webp',
+  tile_settings:'assets/art/menu_buttons/tile_settings.webp',
+  tile_skills:'assets/art/menu_buttons/tile_skills.webp',
+  tile_stats:'assets/art/menu_buttons/tile_stats.webp',
+  tile_talents:'assets/art/menu_buttons/tile_talents.webp',
+  tile_upgrade:'assets/art/menu_buttons/tile_upgrade.webp',  bg1:'assets/generated/bg1_sour_ant_nest.png', bg2:'assets/generated/bg2_rotting_drain.jpg', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png', bg6:'assets/bg6.png',
   fx_frost:'assets/fx_frost.png', fx_donut:'assets/fx_donut.png',   // VFX รูปจริงที่ผ่านการตรวจ alpha แล้ว
   fx_ult_bomb:'assets/fx_ult_bomb.png', fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
@@ -3901,7 +3970,7 @@ class Game extends Phaser.Scene {
       chipX0=Math.max(chipX0,labelX+lab.width+8);   // v4.63: เริ่มไอคอนหลังป้ายจริง (เดิม x คงที่ → ไอคอนทับคำว่า Skills/Relics)
       if(!keys.length){ const none=this.add.text(chipX0,y+chip/2,'— none yet',{fontFamily:'sans-serif',fontSize:'11px',color:'#6a6078'}).setOrigin(0,0.5); cont.add(none); return; }
       let x=chipX0;
-      keys.forEach(k=>{ const awk=awkOf&&awkOf(k), lvl=lvlOf(k), ik=awk?null:this.iconKey(k,isPass);
+      keys.forEach(k=>{ const awk=awkOf&&awkOf(k), lvl=lvlOf(k), ik=awk?null:(label.includes('Relic')&&this.textures.exists('relic_'+k)?'relic_'+k:this.iconKey(k,isPass));
         const g=this.add.graphics(); g.fillStyle(0x2c2338,0.95); g.fillRoundedRect(x,y,chip,chip,7);
         g.lineStyle(1.5,awk?0xffcf5a:chipColor,awk?1:0.9); g.strokeRoundedRect(x,y,chip,chip,7);
         const em = ik ? this.add.image(x+chip/2,y+chip/2-1,ik).setDisplaySize(chip*0.82,chip*0.82)
@@ -4086,7 +4155,7 @@ class Game extends Phaser.Scene {
     t.setShadow(0,2,'rgba(0,0,0,0.32)',3); cont.add(t);
     if(fn)this._zone(x,y,w,h,fn); }
   // ป้ายเมนูแฟนตาซี: กWaitบโลหะสองชั้น + ตราอัญมณี + แสงเฉพาะหมวด
-  uiMenuCard(cont,cx,cy,w,h,color,emoji,label,sub,fn,primary){
+  uiMenuCard(cont,cx,cy,w,h,color,emoji,label,sub,fn,primary,iconKey){
     const x=cx-w/2,y=cy-h/2,r=Math.min(17,h*0.28),g=this.add.graphics();
     const gold=primary?0xffd68a:this._lighten(color,0.44),face=primary?0x44142d:0x171020;
     g.fillStyle(0x000000,0.48);g.fillRoundedRect(x+2,y+6,w,h,r);
@@ -4102,7 +4171,7 @@ class Game extends Phaser.Scene {
     g.lineStyle(2,gold,0.95);g.strokeCircle(icx,cy,ir+3);
     g.fillGradientStyle(this._lighten(color,0.34),color,color,this._darken(color,0.35),1);g.fillCircle(icx,cy,ir);
     g.lineStyle(1,0xffffff,0.42);g.strokeCircle(icx,cy,ir-2);cont.add(g);
-    const em=this.add.text(icx,cy-1,emoji,{fontSize:Math.round(ir*1.15)+'px'}).setOrigin(0.5);
+    const em=iconKey&&this.textures.exists(iconKey)?this.add.image(icx,cy-2,iconKey).setDisplaySize(ir*2.7,ir*2.7):this.add.text(icx,cy-1,emoji,{fontSize:Math.round(ir*1.15)+'px'}).setOrigin(0.5);   // v5.67 อาร์ตปุ่ม Hub
     const gemX=x+w-13,gem=this.add.graphics();gem.fillStyle(gold,0.95);gem.fillPoints([{x:gemX,y:cy-5},{x:gemX+5,y:cy},{x:gemX,y:cy+5},{x:gemX-5,y:cy}],true);gem.lineStyle(1,0xffffff,0.5);gem.strokePoints([{x:gemX,y:cy-5},{x:gemX+5,y:cy},{x:gemX,y:cy+5},{x:gemX-5,y:cy}],true);cont.add(gem);
     const tx=x+55,textW=Math.max(62,gemX-tx-10),labelSize=label.length>11?12.5:(primary?15:14);
     const nm=this.add.text(tx,sub?cy-9:cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:labelSize+'px',color:'#fffaf3',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5);
@@ -4110,6 +4179,8 @@ class Game extends Phaser.Scene {
     if(sub){const st=this.add.text(tx,cy+12,sub,{fontFamily:'sans-serif',fontSize:'8.5px',color:primary?'#ffd9df':'#c4b8cb',wordWrap:{width:textW,useAdvancedWrap:true}}).setOrigin(0,0.5);cont.add(st);}
     if(fn)this._zone(x,y,w,h,fn);
   }
+  // v5.67 ปุ่มเล็ก: แทนอีโมจิหน้าข้อความด้วยอาร์ต tile_*
+  _smallBtnIcon(t,key){ if(!t||!this.textures.exists(key))return; t.setText(t.text.replace(/^\S+\s/,'')); const sz=24, x=t.x-t.width/2-sz/2+8; t.x+=sz/2-2; const im=this.add.image(x,t.y,key).setDisplaySize(sz,sz); this.menu.add(im); }
   _coverImage(x,y,w,h,key){
     const img=this.add.image(x+w/2,y+h/2,key).setOrigin(0.5),fw=img.frame.realWidth||img.frame.width,fh=img.frame.realHeight||img.frame.height;
     // cover-crop: สเกลเท่ากันทั้งสองแกนให้ภาพคลุมFullกล่อง แล้วคWaitบ texture ตรงกลางให้พอดี w×h
@@ -4220,7 +4291,7 @@ class Game extends Phaser.Scene {
     rows.forEach(([target,emoji,label,sub],i)=>{ const y=y0+i*(rh+gap);
       const locked=GATED.has(target)&&!afterS1;
       const g=this.add.graphics(); g.fillStyle(0x241a30,locked?0.7:0.96); g.fillRoundedRect(x,y,bw,rh,14); g.lineStyle(2,locked?0x4a4059:0x6a5b86,0.85); g.strokeRoundedRect(x,y,bw,rh,14); g.fillStyle(locked?0x4a4059:0x8f7de8,1); g.fillRoundedRect(x,y,7,rh,4);
-      const ic=this.add.circle(x+40,y+rh/2,21,0x3a2f50,1).setAlpha(locked?0.5:1); const em=this.add.text(x+40,y+rh/2,emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(locked?0.45:1);
+      const ic=this.add.circle(x+40,y+rh/2,21,0x3a2f50,1).setAlpha(locked?0.5:1); const tk='tile_'+target, em=(this.textures.exists(tk)?this.add.image(x+40,y+rh/2,tk).setDisplaySize(50,50):this.add.text(x+40,y+rh/2,emoji,{fontSize:'22px'}).setOrigin(0.5)).setAlpha(locked?0.45:1);
       const nm=this.add.text(x+72,y+rh*0.34,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:locked?'#8d8399':'#ffffff'}).setOrigin(0,0.5);
       const ds=this.add.text(x+72,y+rh*0.68,locked?'🔒 Clear Stage 1 to unlock':sub,{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#9a8fac':'#bfb5ca',wordWrap:{width:bw-160}}).setOrigin(0,0.5);
       const ar=this.add.text(x+bw-16,y+rh/2,locked?'🔒':'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5);
@@ -4248,7 +4319,7 @@ class Game extends Phaser.Scene {
         g.lineStyle(2,locked?0x4a4059:col,locked?0.8:0.55); g.strokeRoundedRect(x,ty,ww,th,16);
         const horiz=span>1; const icx=horiz?x+44:x+ww/2, icy=horiz?ty+th/2:ty+th*0.4;
         const ic=this.add.circle(icx,icy,Math.min(24,th*0.26),0x3a2f50,1).setAlpha(locked?0.5:1);
-        const em=this.add.text(icx,icy,emoji,{fontSize:'24px'}).setOrigin(0.5).setAlpha(locked?0.45:1);
+        const tk='tile_'+target, em=(this.textures.exists(tk)?this.add.image(icx,icy,tk).setDisplaySize(Math.min(58,th*0.62),Math.min(58,th*0.62)):this.add.text(icx,icy,emoji,{fontSize:'24px'}).setOrigin(0.5)).setAlpha(locked?0.45:1);
         const nm=this.add.text(horiz?x+80:x+ww/2,horiz?ty+th/2:ty+th*0.78,locked?'🔒 '+label:label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:locked?'#8d8399':'#ffffff'}).setOrigin(horiz?0:0.5,0.5);
         this.menu.add([g,ic,em,nm]);
         if(horiz){ const ar=this.add.text(x+ww-16,ty+th/2,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5); this.menu.add(ar); }
@@ -4462,7 +4533,7 @@ class Game extends Phaser.Scene {
     for(const r of rows){
       if(r.head){const t=this.add.text(x+4,y+rh*0.5,r.head,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:r.hex||'#ffe08a'}).setOrigin(0,0.5);this.menu.add(t);y+=rh*0.8+gap;continue;}
       const g=this.add.graphics();g.fillStyle(0x211929,.97);g.fillRoundedRect(x,y,cw,rh,9);g.fillStyle(r.color,.12);g.fillRoundedRect(x+2,y+2,cw-4,rh-4,7);g.lineStyle(1.3,r.color,.75);g.strokeRoundedRect(x,y,cw,rh,9);
-      const em=this.add.text(x+18,y+rh/2,r.emoji,{fontSize:Math.round(Math.min(22,rh*0.6))+'px'}).setOrigin(.5);
+      const em=r.icon&&this.textures.exists(r.icon)?this.add.image(x+18,y+rh/2,r.icon).setDisplaySize(Math.min(28,rh*0.8),Math.min(28,rh*0.8)):this.add.text(x+18,y+rh/2,r.emoji,{fontSize:Math.round(Math.min(22,rh*0.6))+'px'}).setOrigin(.5);
       const nm=this.add.text(x+36,y+rh/2,r.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,.5);
       const ds=this.add.text(x+36+Math.max(120,nm.width+10),y+rh/2,r.desc,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#c9bdd2',wordWrap:{width:cw-(36+Math.max(120,nm.width+10))-10},maxLines:2}).setOrigin(0,.5);
       this.menu.add([g,em,nm,ds]);y+=rh+gap;
@@ -4484,7 +4555,7 @@ class Game extends Phaser.Scene {
   }
   // 🔮 Relic ทั้งหมด + คู่ Synergy
   buildRelicCodex(top){
-    const all=Object.keys(RELICS).map(k=>({emoji:RELICS[k].emoji,title:RELICS[k].name,desc:RELICS[k].desc,color:0xc07bff}));
+    const all=Object.keys(RELICS).map(k=>({icon:'relic_'+k,emoji:RELICS[k].emoji,title:RELICS[k].name,desc:RELICS[k].desc,color:0xc07bff}));
     all.push({head:'🔗 Synergy pairs — hold both for a bonus',hex:'#d9b8ff'});
     for(const sy of RELIC_SYNERGIES)all.push({emoji:RELICS[sy.a].emoji+RELICS[sy.b].emoji,title:sy.name,desc:sy.desc,color:0xff9ad5});
     const portrait=this.W<=this.H,rh=portrait?44:30,avail=this.H-top-(portrait?54:42),per=Math.max(3,Math.floor(avail/(rh+4))),pages=Math.max(1,Math.ceil(all.length/per));
@@ -4966,7 +5037,7 @@ class Game extends Phaser.Scene {
       const col=i%cols,row=Math.floor(i/cols),cx=x0+col*(bw+gapX),cy=y0+row*(bh+gapY);
       if(us<need[i]&&!tutDone){
         this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'Clear Stage '+need[i]+' to unlock',()=>{this.menuToast&&this.menuToast('🔒 Locked — clear Stage '+need[i]+' first','#ff9bb5');Sfx.select&&Sfx.select();},false); }
-      else { this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0);
+      else { this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0,['hub_btn_play','hub_btn_heroes','hub_btn_gear','hub_btn_activity','hub_btn_codex','hub_btn_more'][i]);
         if(i===3&&this.hasActivityBadge())this.drawBadgeDot(this.menu,cx+bw/2-8,cy-bh/2+8); }   // 🔴 Daily/Achievement Waitรับ
       if(nxt&&nxt.hub===i)this._drawNextGuide(cx-bw/2,cy-bh/2,bw,bh,nxt.tag);
     });
@@ -5151,15 +5222,15 @@ class Game extends Phaser.Scene {
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
     { const dg=Save.dig(),dx=portrait?w/2-rkW/2:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
       const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⛏️ Depths · '+dg.shovels,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
-      this.menu.add([g2,t2]); this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
+      this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
       if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
     { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),g3=this.add.graphics(); g3.fillStyle(0x1f3a30,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x7fe0b0,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
       const t3=this.add.text(kx+rkW/2,rkY+rkH/2,'🍳 Kitchen',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#b8f5d8'}).setOrigin(0.5);
-      this.menu.add([g3,t3]); this._zone(kx,rkY,rkW,rkH,()=>{ this.menuScreen='kitchen'; this.buildMenuScreen(); }); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
+      this.menu.add([g3,t3]); this._smallBtnIcon(t3,'tile_kitchen'); this._zone(kx,rkY,rkW,rkH,()=>{ this.menuScreen='kitchen'; this.buildMenuScreen(); }); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
     const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
     const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
-    this.menu.add([rkg,rkt]); this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
+    this.menu.add([rkg,rkt]); this._smallBtnIcon(rkt,'tile_perks'); this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
     const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?158:86, barH=9, need=UPG_ORDER.length*TAL_MAX;
     const frac=Phaser.Math.Clamp(Save.talFilled()/need,0,1);
     const bg=this.add.graphics(); bg.fillStyle(0x2c2338,1); bg.fillRoundedRect(bx,by,barW,barH,6);
@@ -5382,7 +5453,7 @@ class Game extends Phaser.Scene {
       y+=15;
       perks.forEach((pk,i)=>{ const x=14+i*(cardW+gap),lvl=Save.perkLvl(pk.id),maxed=lvl>=pk.max,canBuy=unlocked&&!maxed&&free>0;
         const g=this.add.graphics(); g.fillStyle(unlocked?0x2c2338:0x201a28,1); g.fillRoundedRect(x,y,cardW,cardH,10); g.lineStyle(2,maxed?0x8bd3a0:(canBuy?0xffd166:(unlocked?0x4a4059:0x352b40)),0.9); g.strokeRoundedRect(x,y,cardW,cardH,10);
-        const em=this.add.text(x+cardW/2,y+15,pk.emoji,{fontSize:'20px'}).setOrigin(0.5).setAlpha(unlocked?1:0.4);
+        const em=(this.textures.exists('perk_'+pk.id)?this.add.image(x+cardW/2,y+15,'perk_'+pk.id).setDisplaySize(26,26):this.add.text(x+cardW/2,y+15,pk.emoji,{fontSize:'20px'}).setOrigin(0.5)).setAlpha(unlocked?1:0.4);
         const nm=this.add.text(x+cardW/2,y+31,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:unlocked?'#fff':'#7a7088'}).setOrigin(0.5);
         const ds=this.add.text(x+cardW/2,y+43,pk.desc,{fontFamily:'sans-serif',fontSize:'7px',color:unlocked?'#b0a4c2':'#5f556e',align:'center',wordWrap:{width:cardW-10}}).setOrigin(0.5,0);
         let dots=''; for(let s=0;s<pk.max;s++)dots+=(s<lvl?'●':'○'); const dt=this.add.text(x+cardW/2,y+cardH-24,dots,{fontFamily:'sans-serif',fontSize:'8px',color:maxed?'#8bd3a0':(unlocked?'#ffd166':'#5a4f68')}).setOrigin(0.5);
@@ -7748,7 +7819,7 @@ class Game extends Phaser.Scene {
     const w=pool.map(k=>RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1),out=[];
     while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]));
-      out.push({type:'relic',key:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+tagLabel(TAGS_OF.relic[k])+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
+      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+tagLabel(TAGS_OF.relic[k])+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
     return out;
   }
   offerRelic(){ if(this._inTutorial)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
