@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.39.0';
+const GAME_VERSION = '5.40.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.40.0', date:'2026-09-26', title:'🎵 New temple music', items:['Flavor Weave Temple has its own calm bell-and-choir theme','Temple Depths plays a mysterious cave tune with dripping water','The Recipe Kitchen gets a bouncy cooking groove']},
   { v:'5.39.0', date:'2026-09-26', title:'🍳 Recipe polish', items:['Recipes now pop a WHEN▸DO icon and a chime when they fire','Merging parts plays a sparkle fanfare']},
   { v:'5.38.0', date:'2026-09-26', title:'🍳 Recipe mastery', items:['Merge 3 identical parts to upgrade that part to ★2 / ★3 (effects +30% power, triggers fire more often)','Unlock up to 5 recipe slots with 🏅 Rank Points','Swapping or removing a placed part costs 🍬20','Chain your recipes: “When a Shield Breaks” and “When Healed” pair with 🔗 Linked']},
   { v:'5.37.0', date:'2026-09-26', title:'🍳 Recipe Kitchen', items:['New 🍳 Kitchen in the Flavor Weave Temple: build perks from WHEN ▸ DO ▸ TWIST parts','Each recipe has a 🍯 flavor limit, so frequent triggers leave less room for strong effects','Tap a filled part again to take it back']},
@@ -692,6 +693,7 @@ const Sfx = {
   playStageBgm(stageNum=1){const key=bgmKeyFor('stage',stageNum);this._bgmIntense=false;if(!this._playTrack(key,0.30)){this.stopBgm();this.startBgm();}},
   playBossBgm(stageNum=1){const key=bgmKeyFor('boss',stageNum);this._bgmIntense=true;if(!this._playTrack(key,0.34))this.bgmIntense(true);},
   playMiniBgm(stageNum=1){const key=bgmKeyFor('mini',stageNum);this._bgmIntense=true;if(!key||!this._playTrack(key,0.33))this.bgmIntense(true);},
+  playMenuBgm(key){ if(!key){ if((this._currentBgmKey||'').startsWith('bgm_menu_'))this.playMainBgm(); return; } this._bgmIntense=false; this._playTrack(key,0.28); },   // v5.40
   playMainBgm(){this._bgmIntense=false;if(!this._playTrack('bgm_main',0.28)){this.stopBgm();this.startBgm();}},
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
   _bgmNote(freq,dur,type,vol,delay){ if(!this.ctx||!this._bgmGain)return;
@@ -1015,6 +1017,9 @@ const ASSET_AUDIO = {
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
   bgm_main:       'assets/audio/bgm/bgm_main_theme.wav',
+  bgm_menu_temple:  'assets/audio/bgm/menu/bgm_menu_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
+  bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
+  bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร
   bgm_stage1:     'assets/audio/bgm/min/bgm_stage1.mp3',
   bgm_boss1:      'assets/audio/bgm/min/bgm_boss1.mp3',
   bgm_boss2:      'assets/audio/bgm/min/bgm_boss2.mp3',
@@ -1102,7 +1107,7 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
-      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[sm]\d/.test(k))continue;
+      if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[sm]\d/.test(k)||k.startsWith('bgm_menu_'))continue;
       this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำWaitง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
@@ -4063,7 +4068,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ const s=this.menuScreen||'hub';
+  buildMenuScreen(){ const s=this.menuScreen||'hub'; this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
@@ -5799,6 +5804,10 @@ class Game extends Phaser.Scene {
     this.clearFoes(); this.clearPickups(true); this.clearExitPortal();this.clearWaveObjective();this.clearStageProps(); if(this.pipG)this.pipG.clear();
     this.showMenu();
   }
+  // v5.40 เพลงประจำหน้าวิหาร/ขุด/ครัว (โหลดตอนเข้าหน้าครั้งแรก)
+  menuMusic(s){ if(this.state!=='menu')return; const key={upgrade:'bgm_menu_temple',perks:'bgm_menu_temple',dig:'bgm_menu_depths',kitchen:'bgm_menu_kitchen'}[s]||null;
+    if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
+    this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({upgrade:1,perks:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   ensureStageAudio(idx,done){
     const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage),bgmKeyFor('boss',stage),bgmKeyFor('mini',stage)].filter(Boolean);   // โหลดเพลงStage + เพลงบอสของด่านนั้น
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}

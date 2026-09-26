@@ -185,11 +185,17 @@ const MINIS = STAGES.map((st, i) => ({
   rhythms: [1, 3, 4], vib: 0.009,
 }));
 
+// v5.40 เพลงหน้าเมนูพิเศษ (วิหาร / ห้องขุดใต้ดิน / ครัวสูตร) — ใช้เครื่องเดียวกับเพลงด่าน
+const MENUS = [
+  { name: 'bgm_menu_temple',  title: 'Flavor Weave Temple', key: 76, mode: 'lydian', bpm: 76,  prog: [0, 4, 5, 3, 0, 1, 4, 4], drum: 'sparse', bass: 'long',  arp: 'bell',  arpRate: 2, lead: 'sine', pad: 'choir', fx: ['chime'], vib: 0.01 },
+  { name: 'bgm_menu_depths',  title: 'Temple Depths',       key: 69, mode: 'dorian', bpm: 92,  prog: [0, 3, 0, 6], drum: 'soft',   bass: 'pluck', arp: 'pluck', arpRate: 2, lead: 'tri',  pad: 'saw',   fx: ['drip', 'wind'] },
+  { name: 'bgm_menu_kitchen', title: 'Recipe Kitchen',      key: 72, mode: 'mixo',   bpm: 118, prog: [0, 3, 6, 4], drum: 'groove', bass: 'walk',  arp: 'pluck', arpRate: 2, lead: 'sqr',  pad: 'tri',   fx: ['tick'], rhythms: [0, 1, 3] },
+];
 const out = process.argv[2] || '.';
 const want = process.argv.slice(3);
 fs.mkdirSync(out, { recursive: true });
-[...STAGES, ...MINIS].forEach((st, j) => {
-  const i = j % STAGES.length + (j >= STAGES.length ? 100 : 0);
+[...STAGES, ...MINIS, ...MENUS].forEach((st, j) => {
+  const i = j >= 2 * STAGES.length ? 200 + j : j % STAGES.length + (j >= STAGES.length ? 100 : 0);
   if (want.length && !want.includes(st.name)) return;
   S.setSeed(4242 + i);
   const { L, R, sec } = renderTrack(buildDef(st, i));
