@@ -8,6 +8,8 @@
    ============================================================ */
 
 const WORLD = 4000;
+const PERF_LIVE_MUL = 0.8;   // v5.49: ลดมอนบนจอ 20% (มือถือกระตุก)
+const FX_PER_FRAME = 6;      // v5.49: เอฟเฟกต์ตกแต่งสร้างได้ไม่เกินนี้ต่อเฟรม
 const COLORS = {
   bg1: 0x3b3357, mochi: 0xfff2f7, mochiEdge: 0xff9ec4, candy: 0xffd166,
   pink: 0xff85b3, grape: 0xa98cf0, toast: 0xf0b35a, mint: 0x66d3b3, ice: 0xa9dcff,
@@ -37,11 +39,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.48.0';
+const GAME_VERSION = '5.49.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.49.0', date:'2026-09-26', title:'⚡ Smoother Performance', items:['About 20% fewer monsters on screen at once','Bouncing and chain effects are capped per frame, so busy fights stay smooth','Fewer floating damage numbers in big crowds','Chapter 2 backgrounds no longer stretch until blurry'] },
   { v:'5.48.0', date:'2026-09-26', title:'🎒 Cleaner Gear & Power', items:['Gear & Power is now grouped into Character · Power · Gear','Big 2-column tiles instead of a long list of rows'] },
   { v:'5.47.0', date:'2026-09-26', title:'🪜 Deeper Depths & 🍳 Bigger Kitchen', items:['Temple Depths now works like a mine: find the 🪜 ladder to go down a floor','🌬️ A breeze marks tiles next to the ladder','The cave widens as you go deeper: 5×5 up to 8×8','New finds: 🍬 Sugar Ore (floor 3+) and 🎁 Depth Gifts (floor 5+); every 5th floor holds 2 gifts','Kitchen: 6 new WHEN, 6 new DO and 5 new TWIST parts','⭐ Signature Dishes: 15 matching WHEN+DO pairs get a special name and +25% power','Parts bag now has pages']},
   { v:'5.46.0', date:'2026-09-26', title:'🔎 Clearer Affix Forge focus', items:['Selected item, affix line and target mod glow gold and stand out','Everything not selected is greyed down','When a target is picked, other roll-pool mods fade to grey']},
@@ -6069,7 +6072,7 @@ class Game extends Phaser.Scene {
     if(this.bgTile){ const bgKey='bg'+(i+1); if(this.textures.exists(bgKey))this.bgTile.setTexture(bgKey);
       // v4.50: Chapter 2 bg (bg6-10) เป็นภาพฉากเต็มใบ ไม่ใช่ texture ต่อได้ (seamless) → ปูซ้ำแล้วเห็นลายนางฟ้าเรียงเต็มจอ
       //         แก้: ด่าน 1-5 (bg1-5) คงปูซ้ำ 1.12 เหมือนเดิม · Chapter 2 = ยืดภาพเดียวคลุมทั้งโลก (cover, ไม่ซ้ำ)
-      if(i>=5&&i<10&&this.textures.exists(bgKey)){ const src=this.textures.get(bgKey).getSourceImage(),cover=Math.max(WORLD/(src.width||WORLD),WORLD/(src.height||WORLD)); this.bgTile.tileScaleX=this.bgTile.tileScaleY=cover; }
+      if(i>=5&&i<10&&this.textures.exists(bgKey)){ const src=this.textures.get(bgKey).getSourceImage(),cover=Math.min(2,Math.max(WORLD/(src.width||WORLD),WORLD/(src.height||WORLD))); this.bgTile.tileScaleX=this.bgTile.tileScaleY=cover; }
       else this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
     this.buildStageProps(i);this.buildChapterDepth(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
@@ -6273,7 +6276,7 @@ class Game extends Phaser.Scene {
     // Stage 3 ขึ้นไป (si>=2): เพิ่มจำนวนมอน (แน่นขึ้น) + ลดสัดส่วนตัวตีไกล (shooter) ให้เน้นประชิด
     if(si>=2){ let sh=0; this.waveTypes=this.waveTypes.map(t=>{ if(t==='shooter'){ sh++; return sh>1?'basic':t; } return t; }); }   // เหลือ shooter ได้มากสุด 1 ช่องในลิสต์ = ตัวตีไกลออกน้อยลง
     this.spawnInterval=Math.max(0.5,p.interval-si*0.03-(si>=2?0.14:0));this.spawnBatch=p.batch+Math.floor(si/2)+1+(si>=2?1:0);   // มอนไหลถี่+เป็นชุดใหญ่ขึ้น (ด่านหลังแน่นกว่า)
-    const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:si===9?BALANCE.c2Root.maxLive:115;this.maxLive=Math.min(liveCap,p.max+si*(si>=2?7:4)+6+(si>=2?12:0));this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
+    const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:si===9?BALANCE.c2Root.maxLive:115;this.maxLive=Math.round(Math.min(liveCap,p.max+si*(si>=2?7:4)+6+(si>=2?12:0))*PERF_LIVE_MUL);this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
     this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
   spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
@@ -8306,6 +8309,7 @@ class Game extends Phaser.Scene {
   // เล่น VFX flipbook (sprite animation) timesเดียวแล้วทำลาย · additive blend (พื้นดำหาย + เรืองแสง)
   spawnFxAnim(key,x,y,o={}){
     if(!this.textures.exists(key)||!this.anims.exists(key))return null;
+    if(!o.force&&!this.fxOk())return null;
     const fx=ASSET_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
     s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(o.normal?Phaser.BlendModes.NORMAL:Phaser.BlendModes.ADD);   // ชีต VFX ใช้พื้นดำ: ADD เป็นค่าเริ่มต้นเพื่อไม่ให้เกิดกล่องดำบน WebGL/Android
     const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5, ax==='bottom'?1:0.5);
@@ -8415,12 +8419,16 @@ class Game extends Phaser.Scene {
   // ประกายวาววับตอนสกิลตื่นรู้ (Awaken) ทำงาน
   awakenSpark(key){ const c=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_glow').setTint(0xfff2a8).setScale(0.08).setAlpha(0.8).setDepth(6));
     this.tweens.add({targets:c,scale:0.32,alpha:0,duration:280,onComplete:()=>c.destroy()}); }
+  // v5.49: งบเอฟเฟกต์ต่อเฟรม — เกินแล้วข้ามภาพ (ดาเมจยังทำงานปกติ)
+  fxOk(){ const f=this.game.loop.frame; if(this._fxFrame!==f){this._fxFrame=f;this._fxN=0;} return ++this._fxN<=FX_PER_FRAME; }
   chainBolt(x1,y1,x2,y2){
+    if(!this.fxOk())return;
     const len=this.dist(x1,y1,x2,y2), ang=Math.atan2(y2-y1,x2-x1);
     const bolt=this.camWorld(this.add.image(x1,y1,'vfx_chain_bolt').setOrigin(0,0.5).setDepth(7).setRotation(ang).setScale(len/256,0.42).setAlpha(0.95));
     this.tweens.add({targets:bolt,alpha:0,scaleY:0.18,duration:180,onComplete:()=>bolt.destroy()});
   }
   zap(x,y){
+    if(!this.fxOk())return;
     if(this.textures.exists('fx_thunder')&&this.anims.exists('fx_thunder')){
       this.spawnFxAnim('fx_thunder',x,y,{scaleY:280/ASSET_FX.fx_thunder.fh,scaleX:2.4,depth:7,anchor:'bottom'});
       const fl=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(0xbfe3ff).setDepth(7).setScale(0.10).setAlpha(0.7));
@@ -9700,7 +9708,7 @@ class Game extends Phaser.Scene {
   popDmg(n,x,y,crit){
     if(Save.data.settings&&Save.data.settings.damageNumbers===false)return;
     // v5.23: ลดตัวเลขลอยรก — เลขธรรมดาโชว์ได้ ~8 ครั้ง/วิ · คริโชว์เสมอ
-    if(!crit){const now=this.time.now;if(now-(this._dmgNumAt||0)<120)return;this._dmgNumAt=now;}
+    if(!crit){const now=this.time.now;if(now-(this._dmgNumAt||0)<(this.enemies.countActive()>60?220:120))return;this._dmgNumAt=now;}
     let t=this.dmgPool.pop();
     if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px'}).setDepth(99999).setOrigin(0.5); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
@@ -9745,6 +9753,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:im, ...t}); return im; }
   // --- VFX: hit impact ring (expanding ring + sparks) --- throttled for performance
   vfxHitRing(x,y,color,big){
+    if(!this.fxOk())return;
     if(!big){ this._hitVfxT=this._hitVfxT||0; const now=this.time.now; if(now-this._hitVfxT<60)return; this._hitVfxT=now; }
     const r=big?1.6:0.85;
     const ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(color).setDepth(7).setScale(0.045*r,0.038*r).setAlpha(big?0.6:0.3));  // เบาลง ไม่สาดขาวFullจอ
