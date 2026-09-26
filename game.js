@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.42.0';
+const GAME_VERSION = '5.43.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.43.0', date:'2026-09-26', title:'🎰 Hype roulette', items:['Affix Roulette builds suspense: high tiers and rare mods spin longer and slow down dramatically','Rare / Epic / Jackpot reveals add light rays, sparkle bursts, screen shake and special fanfares','Auto-Roll target hits celebrate too']},
   { v:'5.42.0', date:'2026-09-26', title:'🔒 Tier lock & full roll pool', items:['Affix Forge roll pool now has ‹ › pages so you can see every possible mod','Tap a tier in the TIERS table to lock it: that mod always rolls at that tier or better (+2 currency per roll)','Tap the locked tier again to unlock']},
   { v:'5.41.0', date:'2026-09-26', title:'🌟 Switch fighters in Talents', items:['Use ‹ › on the Character Talents page to switch between your fighters']},
   { v:'5.40.0', date:'2026-09-26', title:'🎵 New temple music', items:['Flavor Weave Temple has its own calm bell-and-choir theme','Temple Depths plays a mysterious cave tune with dripping water','The Recipe Kitchen gets a bouncy cooking groove']},
@@ -5432,27 +5433,47 @@ class Game extends Phaser.Scene {
     Save.spendCurrency(key,need);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
     this._craftResult={uid:item.uid,title:old?'AFFIX REPLACED':'NEW AFFIX',before:old?(affixDef(old.id).label+' '+affixDef(old.id).fmt(old.v)):'Empty line',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};
     this._playAffixRoulette(available,mod,rolled,cur);}
+  // v5.43 ระดับความตื่นเต้นของผล: tier ดี (ตัวเลขน้อย) หรือ mod หายาก = ยิ่งอลังการ (0 ธรรมดา · 1 rare · 2 epic · 3 jackpot)
+  affixHype(mod,rolled){ const t=rolled.t??10, wt=AFFIX_WEIGHT[mod.id]??100; let h=t<=1?3:t<=3?2:t<=5?1:0; if(wt<=30&&h<3)h++; return h; }
   _playAffixRoulette(pool,winner,rolled,cur){
     this._craftRolling=true;this.tapZones=[];const token=(this._craftRollToken||0)+1;this._craftRollToken=token;
+    const hype=this.affixHype(winner,rolled),HC=[0xffd166,0x7fd0ff,0xc58bff,0xffc83a][hype],HN=['','✦ RARE ROLL','✦✦ EPIC ROLL','👑 JACKPOT'][hype];
     const w=this.W,h=this.H,cy=h*.49,shade=this.add.rectangle(0,0,w,h,0x0b0711,.84).setOrigin(0),panel=this.add.graphics();
-    panel.fillStyle(0x21172c,.99);panel.fillRoundedRect(18,cy-126,w-36,252,18);panel.lineStyle(2,0xffd166,1);panel.strokeRoundedRect(18,cy-126,w-36,252,18);
+    const drawPanel=(col,lw)=>{panel.clear();panel.fillStyle(0x21172c,.99);panel.fillRoundedRect(18,cy-126,w-36,252,18);panel.lineStyle(lw,col,1);panel.strokeRoundedRect(18,cy-126,w-36,252,18);};drawPanel(0xffd166,2);
     const title=this.add.text(w/2,cy-99,'🎰 AFFIX ROULETTE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a'}).setOrigin(.5),hint=this.add.text(w/2,cy-76,'Rolling from '+pool.length+' compatible mods…',{fontFamily:'sans-serif',fontSize:'9px',color:'#b9aec8'}).setOrigin(.5);
+    // ลำแสงหมุนหลังแถวกลาง (โผล่ตอนจบถ้าผลดี)
+    const rays=this.add.graphics().setPosition(w/2,cy).setAlpha(0);for(let k=0;k<12;k++){const a=k*TAU/12;rays.fillStyle(HC,.28);rays.fillTriangle(0,0,Math.cos(a-.09)*w*.7,Math.sin(a-.09)*w*.7,Math.cos(a+.09)*w*.7,Math.sin(a+.09)*w*.7);}
     const rows=[-43,0,43].map((dy,i)=>{const g=this.add.graphics(),rw=w-72,rh=36,x=36,y=cy+dy-rh/2,rowY=cy+dy;g.fillStyle(i===1?0x41304d:0x2b2135,i===1?1:.82);g.fillRoundedRect(x,y,rw,rh,9);g.lineStyle(i===1?2:1,i===1?0xffd166:0x594664,1);g.strokeRoundedRect(x,y,rw,rh,9);const t=this.add.text(w/2,rowY,'',{fontFamily:'sans-serif',fontStyle:i===1?'bold':'normal',fontSize:i===1?'13px':'10px',color:'#ffffff'}).setOrigin(.5);return{g,t,rowY};});
     const footer=this.add.text(w/2,cy+101,cur.emoji+' '+cur.name+' consumed · revealing your result…',{fontFamily:'sans-serif',fontSize:'8px',color:'#8bd3a0'}).setOrigin(.5);
-    this.menu.add([shade,panel,title,hint]);rows.forEach(r=>this.menu.add([r.g,r.t]));this.menu.add(footer);
-    // v4.49: ปุ่ม Skip — กดข้ามแอนิเมชันไปดูผลเลย
+    this.menu.add([shade,rays,panel,title,hint]);rows.forEach(r=>this.menu.add([r.g,r.t]));this.menu.add(footer);
     const skW=110,skH=30,skX=w/2-skW/2,skY=cy+118,skG=this.add.graphics();skG.fillStyle(0x3a3550,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0x9a8cc0,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);
     const skT=this.add.text(w/2,skY+skH/2,'⏩ Skip',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#e8ddff'}).setOrigin(.5);this.menu.add([skG,skT]);
-    const finish=()=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;this.tweens.killTweensOf(rows[1].t);
-      hint.setText(affixCategory(winner).label.toUpperCase()+' MOD LOCKED').setColor(affixCategory(winner).hex);
-      rows[1].t.setText(winner.emoji+'  '+winner.label+'  '+winner.fmt(rolled.v)+' · T'+rolled.t).setColor('#fff3b0').setY(rows[1].rowY).setAlpha(1);
-      this.screenFlash(affixCategory(winner).color,.52,360);Sfx.clear();
-      this.time.delayedCall(360,()=>{this._craftRolling=false;this.buildCraftBench();this.showBanner('🎰 '+winner.emoji+' '+winner.label,winner.fmt(rolled.v)+' · Tier '+rolled.t,1700);});};
+    Sfx.chestSpin&&Sfx.chestSpin();
+    const burst=(n,col)=>{for(let k=0;k<n;k++){const a=Math.random()*TAU,d=60+Math.random()*(90+hype*30),sp=this.add.text(w/2,cy,['✦','✨','⭐','💫'][k%4],{fontSize:(10+hype*3)+'px',color:'#'+col.toString(16).padStart(6,'0')}).setOrigin(.5);this.menu.add(sp);
+      this.tweens.add({targets:sp,x:w/2+Math.cos(a)*d,y:cy+Math.sin(a)*d*.8,alpha:0,scale:{from:1.4,to:.3},duration:650+Math.random()*450,ease:'Cubic.out',onComplete:()=>sp.destroy()});}};
+    const reveal=()=>{
+      hint.setText(hype?HN:affixCategory(winner).label.toUpperCase()+' MOD LOCKED').setColor(hype?'#'+HC.toString(16).padStart(6,'0'):affixCategory(winner).hex).setFontSize(hype?'13px':'9px');
+      rows[1].t.setText(winner.emoji+'  '+winner.label+'  '+winner.fmt(rolled.v)+' · T'+rolled.t).setColor('#fff3b0').setY(rows[1].rowY).setAlpha(1).setScale(hype?1.6:1.2);
+      this.tweens.add({targets:rows[1].t,scale:1,duration:hype?420:220,ease:'Back.out'});
+      if(!hype){this.screenFlash(affixCategory(winner).color,.52,360);Sfx.clear();return 360;}
+      drawPanel(HC,2+hype*1.5);rays.setAlpha(0);this.tweens.add({targets:rays,alpha:1,duration:220});this.tweens.add({targets:rays,angle:360,duration:5200/(1+hype*.4),repeat:-1});
+      this.screenFlash(HC,.55+hype*.13,380+hype*120);this.screenShake(160+hype*90,.004+hype*.004);burst(10+hype*8,HC);
+      Sfx.chestWin&&Sfx.chestWin();if(hype>=2)Sfx.legend&&Sfx.legend();if(hype>=3)this.time.delayedCall(260,()=>{Sfx.ult&&Sfx.ult();burst(16,0xffffff);this.screenFlash(0xffffff,.6,260);});
+      this.tweens.add({targets:title,scale:{from:1.25,to:1},duration:360,ease:'Back.out'});title.setText(hype>=3?'👑 JACKPOT! 👑':'🎰 '+HN);
+      return 700+hype*380;};
+    const finish=()=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;this.tweens.killTweensOf(rows[1].t);Sfx.stopChestSpin&&Sfx.stopChestSpin();
+      const wait=reveal();
+      this.time.delayedCall(wait,()=>{this.tweens.killTweensOf(rays);this._craftRolling=false;this.buildCraftBench();this.showBanner((hype>=3?'👑 ':'🎰 ')+winner.emoji+' '+winner.label,winner.fmt(rolled.v)+' · Tier '+rolled.t,1700+hype*300);});};
     this._zone(skX,skY,skW,skH,finish);
     const show=(row,mod,final=false)=>{const c=affixCategory(mod);this.tweens.killTweensOf(row.t);row.t.setText(mod.emoji+'  '+mod.label+(final?'  '+mod.fmt(rolled.v)+' · T'+rolled.t:'')).setColor(final?'#fff3b0':c.hex).setY(row.rowY-6).setAlpha(.42);this.tweens.add({targets:row.t,y:row.rowY,alpha:1,duration:42,ease:'Quad.out'});};
-    const delays=[55,60,68,76,88,102,120,145,175,215,270,340];let step=0;
-    const tick=()=>{if(this._craftRollToken!==token)return;const final=step===delays.length-1,center=final?winner:Phaser.Utils.Array.GetRandom(pool);show(rows[1],center,final);show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));
-      if(step%2===0)Sfx.select();if(final){finish();return;}this.time.delayedCall(delays[step++],tick);};
+    // ผลดี = หมุนนานขึ้น + ช่วงท้ายช้าลงเรื่อย ๆ (ลุ้น)
+    const delays=[55,60,68,76,88,102,120,145,175,215,270,340].concat(hype>=1?[380,430]:[],hype>=2?[500,590]:[],hype>=3?[700,820]:[]);let step=0;
+    const tick=()=>{if(this._craftRollToken!==token)return;const final=step===delays.length-1,center=final?winner:Phaser.Utils.Array.GetRandom(pool);show(rows[1],center,false);show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));
+      Sfx.chestTick?Sfx.chestTick(step):Sfx.select();
+      // ช่วงลุ้น: แถวกลางเรืองสีของผล + จอสั่นเบา ๆ ก่อนหยุด
+      if(hype&&step>=delays.length-4){drawPanel(HC,1.5+ (step-(delays.length-4)));this.screenShake(70,.002*hype);}
+      if(final){if(hype>=2){hint.setText('. . .').setColor('#ffffff');this.time.delayedCall(420*(hype-1),finish);}else finish();return;}
+      this.time.delayedCall(delays[step++],tick);};
     tick();
   }
   // v4.49: หมุนซ้ำ ๆ (สุ่ม) จนได้ mod เป้าหมายที่เลือก หรือ currency หมด — bulk action ไม่มีแอนิเมชันต่อครั้ง
@@ -5497,7 +5518,7 @@ class Game extends Phaser.Scene {
       const hit=mod.id===targetId,c=affixCategory(mod);
       this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
       count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());Sfx.select();
-      if(hit){this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};Sfx.clear();this.screenFlash(0xffd166,.6,420);skT.setText('✓ Done');return end('hit');}
+      if(hit){this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};Sfx.clear();this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);Sfx.chestWin&&Sfx.chestWin();if(hy>=2)Sfx.legend&&Sfx.legend();}skT.setText('✓ Done');return end('hit');}
       this.time.delayedCall(rolls<5?260:170,step);};
     this.time.delayedCall(200,step);
   }
