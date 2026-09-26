@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.32.0';
+const GAME_VERSION = '5.33.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.33.0', date:'2026-09-26', title:'🧶 Weave Thread', items:['Flavor Weave cores and Overcap now cost 🧶 Weave Thread instead of Sugar','Dig Weave Thread in Temple Depths (+40 as a starter gift)','Stage clears now give more shovels: Normal 2 · Hard 3 · Hell 4']},
   { v:'5.32.0', date:'2026-09-26', title:'⛏️ Shovels from battle', items:['Clearing a stage gives shovels: Normal 1 · Hard 2 · Hell 3','Minibosses have a 25% chance to drop a shovel']},
   { v:'5.31.0', date:'2026-09-26', title:'🕳️ Secrets of the Depths', items:['Tiles hiding rare treasure sometimes glitter ✦','Watch out for 🪤 traps — they cost an extra shovel','Rare 🕳️ Secret Passages drop you 2 depths into a Hidden Vault full of treasure']},
   { v:'5.30.0', date:'2026-09-26', title:'🗿 Ancient Perks', items:['Dig up 📜 Scroll Fragments in Temple Depths','Every 4 fragments unlock an Ancient Perk in 🏅 Rank Perks: Echo Dash, Treasure Sense, Second Weave, Ancient Guard, Sugar Vein, Deep Roots']},
@@ -1926,7 +1927,8 @@ const PERK_TIER_REQ = { 2:3, 3:8 };   // แต้มที่ต้องลง
 const DIG_N=5, DIG_START_SHOVELS=5;
 const DIG_ITEMS={
   empty:{emoji:'',name:'Dust'},
-  sugar:{emoji:'🍬',name:'Sugar Shards'},
+  thread:{emoji:'🧶',name:'Weave Thread'},   // v5.33 วัสดุอัปแก่น (แทน Sugar)
+  sugar:{emoji:'🧶',name:'Weave Thread'},    // เซฟเก่า: ช่อง sugar = ด้าย
   chest:{emoji:'🏺',name:'Ancient Chest',rare:true},
   gem:{emoji:'💎',name:'Depth Gem',rare:true},
   stone_hp:{emoji:'🔴',name:'Life Core Stone',rare:true,stone:'hp'},     // v5.29 หินแก่น → Overcap
@@ -1947,9 +1949,9 @@ const ANCIENT_PERKS=[
   { id:'deepRoots',     emoji:'🌳', name:'Deep Roots',     desc:'+8% max HP · +0.6 HP regen per second' },
 ];
 const OVERCAP_MAX=6;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
-function overcapCost(lvl){ return {stones:lvl+1,sugar:150*(lvl+1)}; }
+function overcapCost(lvl){ return {stones:lvl+1,threads:90*(lvl+1)}; }
 // ตารางน้ำหนักของในกระดาน (commit ถัดไปเติมหินแก่น/คัมภีร์/กับดัก/ทางลับ)
-function digTable(depth){ return [['empty',40],['sugar',38],['chest',5+depth*0.6],['stone',8+depth*0.8],['scroll',4+depth*0.5],['trap',6+depth*0.4]]; }
+function digTable(depth){ return [['empty',30],['thread',45],['chest',5+depth*0.6],['stone',8+depth*0.8],['scroll',4+depth*0.5],['trap',6+depth*0.4]]; }
 function digRollContent(depth){ const t=digTable(depth); let sum=0; for(const x of t)sum+=x[1]; let r=Math.random()*sum; for(const x of t){ r-=x[1]; if(r<=0)return x[0]==='stone'?'stone_'+Phaser.Utils.Array.GetRandom(['hp','dmg','def']):x[0]; } return 'empty'; }
 function digMakeBoard(depth){ const cells=[]; const hardP=Math.min(0.45,0.14+depth*0.03);
   for(let i=0;i<DIG_N*DIG_N;i++) cells.push({c:digRollContent(depth),hp:Math.random()<hardP?2:1,hard:false,open:false});
@@ -1958,6 +1960,7 @@ function digMakeBoard(depth){ const cells=[]; const hardP=Math.min(0.45,0.14+dep
   cells.forEach(c=>{ const it=DIG_ITEMS[c.c]; c.hint=!!(it&&it.rare&&c.c!=='gem'&&Math.random()<0.6); });   // รอยใบ้ 60% ของของหายาก
   return cells; }
 function digSugarAmt(depth){ return Math.round(Phaser.Math.Between(15,40)*(1+depth*0.15)); }
+function digThreadAmt(depth){ return Math.round(Phaser.Math.Between(8,18)*(1+depth*0.12)); }
 /* ---- HUB_GROUPS: รวมปุ่มเมนูย่อยเป็นกลุ่ม ให้หน้า Hub สะอาดขึ้น (rows: [targetScreen,emoji,label,sub]) ---- */
 const HUB_GROUPS = {
   gLoadout:{ title:'🎒 Gear & Power', rows:[
@@ -2550,12 +2553,15 @@ const Save = {
   ancientHas(id){ return !!(this.data.ancient||{})[id]; },
   scrolls(){ return this.data.scrolls||0; },
   unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
-  buyOvercap(k){ const lvl=this.overcap(k); if(lvl>=OVERCAP_MAX)return false; const c=overcapCost(lvl); if(this.coreStones(k)<c.stones||(this.data.sugar||0)<c.sugar)return false;
-    this.data.coreStones[k]-=c.stones; this.data.sugar-=c.sugar; if(!this.data.overcap)this.data.overcap={}; this.data.overcap[k]=lvl+1; this.save(); return true; },   // ผลรวมที่ใช้จริง (ยศ+Waitบนี้)
-  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank*0.8)); },
+  buyOvercap(k){ const lvl=this.overcap(k); if(lvl>=OVERCAP_MAX)return false; const c=overcapCost(lvl); if(this.coreStones(k)<c.stones||this.threads()<c.threads)return false;
+    this.data.coreStones[k]-=c.stones; this.data.threads-=c.threads; if(!this.data.overcap)this.data.overcap={}; this.data.overcap[k]=lvl+1; this.save(); return true; },   // ผลรวมที่ใช้จริง (ยศ+Waitบนี้)
+  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base/5*(lvl+1)*(1+rank*0.8)); },   // v5.33 หน่วย = 🧶 ด้าย (เดิม Sugar)
+  threads(){ return this.data.threads||0; },
+  addThreads(n){ this.data.threads=this.threads()+n; this.save(); },
+  spendThreads(n){ if(this.threads()<n)return false; this.data.threads-=n; this.save(); return true; },
   talAllMax(){ return UPG_ORDER.every(k=>this.talLvl(k)>=TAL_MAX); },
   talFilled(){ let t=0; for(const k of UPG_ORDER) t+=this.talLvl(k); return t; },   // ความคืบหน้าWaitบนี้
-  buyTal(k){ if(this.talLvl(k)>=TAL_MAX)return false; const c=this.talCost(k); if(!this.spend(c))return false;
+  buyTal(k){ if(this.talLvl(k)>=TAL_MAX)return false; const c=this.talCost(k); if(!this.spendThreads(c))return false;
     this.data.upgrades[k]=this.talLvl(k)+1; this.save(); return true; },
   promote(){ if(!this.talAllMax())return 0; const rank=this.data.rank||0; const rew=promoteReward(rank);
     this.data.rank=rank+1; for(const k of UPG_ORDER) this.data.upgrades[k]=0;
@@ -2571,7 +2577,8 @@ const Save = {
     if(!this.data.rankPerks)this.data.rankPerks={}; this.data.rankPerks[id]=this.perkLvl(id)+1; this.save(); return true; },
   respecPerks(){ this.data.rankPerks={}; this.save(); },
   // ---- v5.27 Temple Depths ----
-  dig(){ if(!this.data.dig)this.data.dig={shovels:DIG_START_SHOVELS,depth:1,best:1,board:null,gemFound:false,freeDay:''}; const d=this.data.dig; if(!d.board)d.board=digMakeBoard(d.depth); return d; },
+  dig(){ if(!this.data.threadsGift){ this.data.threadsGift=true; this.data.threads=(this.data.threads||0)+40; }   // v5.33 ของขวัญด้ายเริ่มต้น
+    if(!this.data.dig)this.data.dig={shovels:DIG_START_SHOVELS,depth:1,best:1,board:null,gemFound:false,freeDay:''}; const d=this.data.dig; if(!d.board)d.board=digMakeBoard(d.depth); return d; },
   digFreeReady(){ return this.dig().freeDay!==new Date().toISOString().slice(0,10); },
   digClaimFree(){ const d=this.dig(); if(!this.digFreeReady())return false; d.freeDay=new Date().toISOString().slice(0,10); d.shovels++; this.save(); return true; },
   addShovels(n){ const d=this.dig(); d.shovels=(d.shovels||0)+n; this.save(); },
@@ -3899,7 +3906,7 @@ class Game extends Phaser.Scene {
     const t=ratio>=1.15?{label:'💪 Strong',color:0x66e0a0}:ratio>=0.9?{label:'✅ Ready',color:0x8fe3d0}:ratio>=0.7?{label:'⚠️ Tough',color:0xffc857}:{label:'⛔ Underpowered',color:0xff6b7d};
     return {cur,rec,ratio,...t,hex:'#'+t.color.toString(16).padStart(6,'0')}; }
   // คำแนะนำ "ทำอะไรให้เก่งขึ้น" + หน้าที่จะพาไป
-  powerAdvice(idx){ const sugar=Save.data.sugar||0,afford=UPG_ORDER.filter(k=>Save.talLvl(k)<TAL_MAX&&Save.talCost(k)<=sugar).length;
+  powerAdvice(idx){ const thr=Save.threads(),afford=UPG_ORDER.filter(k=>Save.talLvl(k)<TAL_MAX&&Save.talCost(k)<=thr).length;
     if(afford>0)return {text:'💡 You can afford '+afford+' Flavor Weave upgrade'+(afford>1?'s':'')+' — tap to power up ›',screen:'upgrade'};
     const prev=idx-1;if(prev>=0&&STAGES[prev]){const p=STAGES[prev],lab=p.chapterStage?('C'+(p.chapter+1)+'-'+p.chapterStage):('Stage '+(prev+1));return {text:'💡 Replay '+lab+' on Hard for better gear, then equip it ›',screen:'gear'};}
     return {text:'💡 Equip and enhance better gear ›',screen:'gear'}; }
@@ -4889,7 +4896,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple','ui_talent_hall');
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
     const portrait=w<=h,ry=portrait?82:55;
-    const rk=this.add.text(w/2,ry,'Current weave rank',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9c9e8'}).setOrigin(0.5);
+    const rk=this.add.text(w/2,ry,'Current weave rank   ·   🧶 '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9c9e8'}).setOrigin(0.5);
     const rn=this.add.text(w/2,ry+17,'⭐ '+rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
     this.menu.add([rk,rn]);
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
@@ -4910,10 +4917,10 @@ class Game extends Phaser.Scene {
     const prog=this.add.text(w/2,by+17,'Woven core power '+Save.talFilled()+' / '+need+(allMax?' · ready to weave':''),
       {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':'#8f849f'}).setOrigin(0.5);
     this.menu.add(prog);
-    if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Sugar!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
+    if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Weave Thread!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
     const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-270-gapY*2)/3):Math.min(132,h-170),top=portrait?198:112;
     UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.talLvl(k), tot=Save.talTotal(k), maxed=lvl>=TAL_MAX;
-      const cost=maxed?0:Save.talCost(k), afford=(Save.data.sugar||0)>=cost;
+      const cost=maxed?0:Save.talCost(k), afford=Save.threads()>=cost;
       const x=portrait?marginX:marginX+i*(cardW+gapX), y=portrait?top+i*(cardH+gapY):top;
       const g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
       g.lineStyle(2.5,maxed?0x8bd3a0:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
@@ -4926,16 +4933,16 @@ class Game extends Phaser.Scene {
       const gain=this.add.text(x+75,y+49,'Total: '+u.show(tot),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:'#8bd3a0'}).setOrigin(0,0);
       const pw=Math.min(100,cardW-82),ph=29,ppx=x+cardW-pw-10,ppy=y+cardH-ph-10;
       const pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(ppx,ppy,pw,ph,10);
-      const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🍬 '+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
+      const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🧶 '+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
       this.menu.add([g,em,st,tag,nm,gain,pg,pt]);
       // v5.29 ⬆ Overcap ด้วยหินแก่นจากห้องลับใต้วิหาร
-      { const oc=Save.overcap(k),ocMax=oc>=OVERCAP_MAX,cst=overcapCost(oc),stn=Save.coreStones(k),ok=!ocMax&&stn>=cst.stones&&(Save.data.sugar||0)>=cst.sugar,se={hp:'🔴',dmg:'🟠',def:'🔵'}[k];
+      { const oc=Save.overcap(k),ocMax=oc>=OVERCAP_MAX,cst=overcapCost(oc),stn=Save.coreStones(k),ok=!ocMax&&stn>=cst.stones&&Save.threads()>=cst.threads,se={hp:'🔴',dmg:'🟠',def:'🔵'}[k];
         const ow=Math.max(60,ppx-x-75-8),oh=ph,ox=x+75,oy=ppy;
         if(ow>=60){ const og=this.add.graphics(); og.fillStyle(ok?0x4a3a1a:0x2a2232,1); og.fillRoundedRect(ox,oy,ow,oh,10); og.lineStyle(1.5,ok?0xffd166:0x3a3048,1); og.strokeRoundedRect(ox,oy,ow,oh,10);
-          const ot=this.add.text(ox+ow/2,oy+oh/2,ocMax?('⬆ Overcap MAX +'+oc):('⬆ +'+oc+'/'+OVERCAP_MAX+' · '+se+stn+'/'+cst.stones+' 🍬'+cst.sugar),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ow<130?'8px':'9.5px',color:ocMax?'#8bd3a0':(ok?'#ffe08a':'#8d8195')}).setOrigin(0.5);
-          this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.digRare(); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):'Not enough Sugar','#ff9bb5'); } this.buildMenuScreen(); }); }
+          const ot=this.add.text(ox+ow/2,oy+oh/2,ocMax?('⬆ Overcap MAX +'+oc):('⬆ +'+oc+'/'+OVERCAP_MAX+' · '+se+stn+'/'+cst.stones+' 🧶'+cst.threads),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ow<130?'8px':'9.5px',color:ocMax?'#8bd3a0':(ok?'#ffe08a':'#8d8195')}).setOrigin(0.5);
+          this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.digRare(); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):'Need 🧶 '+cst.threads+' Weave Thread','#ff9bb5'); } this.buildMenuScreen(); }); }
         if(oc>0)st.setText(stars+' +'+oc); }
-      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); this._tutorialWeaveCoach=false; } else { Sfx.select(); } this.buildMenuScreen(); });
+      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🧶 '+cost+' Weave Thread — dig for it in ⛏️ Depths','#ff9bb5'); } this.buildMenuScreen(); });
     });
     const py=portrait?Math.min(h-58,top+UPG_ORDER.length*(cardH+gapY)+4):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
     const pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
@@ -4954,7 +4961,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⛏️ Temple Depths','dig_bg','upgrade');
     const w=this.W,h=this.H,d=Save.dig(),portrait=w<=h,hs=this._hdrShift();
     if(d.secret){ const v=this.add.text(w/2,44+hs,'✨ Hidden Vault ✨',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e0b0ff'}).setOrigin(0.5); this.menu.add(v); this.tweens.add({targets:v,alpha:{from:0.5,to:1},yoyo:true,repeat:-1,duration:700}); }
-    const info=this.add.text(w/2,62+hs,'⛏️ '+d.shovels+'   ·   Depth '+d.depth+'   ·   Best '+d.best,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5);
+    const info=this.add.text(w/2,62+hs,'⛏️ '+d.shovels+'   ·   🧶 '+Save.threads()+'   ·   Depth '+d.depth,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5);
     const sub=this.add.text(w/2,80+hs,'Tap a tile to dig (1 ⛏️) · find the 💎 to go deeper',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9'}).setOrigin(0.5);
     this.menu.add([info,sub]); this._digInfo=info;
     const size=Math.min(w-32,portrait?h*0.52:h-150,460),gap=5,cs=(size-gap*(DIG_N-1))/DIG_N,gx=w/2-size/2,gy=96+hs;
@@ -4972,7 +4979,7 @@ class Game extends Phaser.Scene {
     btn(w/2-bw-6,Save.digFreeReady()?'🎁 Free ⛏️ today':'✓ Free ⛏️ claimed',0x3a5a3a,Save.digFreeReady(),()=>{ if(Save.digClaimFree()){ Sfx.digFind(); this.menuToast('⛏️ +1 shovel — come back tomorrow for another!'); } this.buildDig(); });
     const canGo=d.gemFound||d.stairFound,dt=btn(w/2+6,d.stairFound?'🕳️ Secret descent':(d.gemFound?'⬇ Descend':'💎 Find the gem'),d.stairFound?0x6a3a8a:0x5a3a7a,!!canGo,()=>this.digDescend());
     if(canGo)this.tweens.add({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
-    const leg=this.add.text(w/2,by+bh+22,'🍬 Sugar   🏺 Chest   💎 Gem   🪤 Trap   🕳️ Secret   ✦ hint\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def')+'   ·   📜 '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
+    const leg=this.add.text(w/2,by+bh+22,'🧶 Thread   🏺 Chest   💎 Gem   🪤 Trap   🕳️ Secret   ✦ hint\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def')+'   ·   📜 '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
     this.menu.setVisible(true);
   }
   drawDigCell(cont,c,cs){ cont.removeAll(true); const g=this.add.graphics(); cont.add(g);
@@ -4991,7 +4998,7 @@ class Game extends Phaser.Scene {
     if((d.shovels||0)<1){ Sfx.select(); this.menuToast(Save.digFreeReady()?'No shovels — claim your free ⛏️ below!':'No shovels left — clear stages to earn more ⛏️','#ff9bb5'); return; }
     d.shovels--; c.hp--; Save.save(); this._digBusy=this.time.now;
     const cont=this._digCells[i],G=this._digGeo,cs=G.cs,cx=cont.x,cy=cont.y;
-    if(this._digInfo)this._digInfo.setText('⛏️ '+d.shovels+'   ·   Depth '+d.depth+'   ·   Best '+d.best);
+    if(this._digInfo)this._digInfo.setText('⛏️ '+d.shovels+'   ·   🧶 '+Save.threads()+'   ·   Depth '+d.depth);
     // v5.28 🎬 1) พลั่วเหวี่ยงลง
     const sh=this.textures.exists('dig_shovel')?this.add.image(cx+cs*0.3,cy-cs*0.3,'dig_shovel').setDisplaySize(cs*0.7,cs*0.7):this.add.text(cx+cs*0.3,cy-cs*0.3,'⛏️',{fontSize:Math.round(cs*0.5)+'px'}).setOrigin(0.5);
     sh.setRotation(-0.9); this.menu.add(sh);
@@ -5042,10 +5049,10 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(delay,()=>{ this._digBusy=false; this.buildDig(); if(msg)this.menuToast(msg.t,msg.c);
       if(c.c==='gem'){ const G=this._digGeo,sz=G.cs*DIG_N+G.gap*(DIG_N-1),gl=this.add.graphics(); gl.lineStyle(6,0xc7a6ff,1); gl.strokeRoundedRect(G.gx-10,G.gy-10,sz+20,sz+20,18); this.menu.add(gl); this.tweens.add({targets:gl,alpha:{from:1,to:0},duration:900,onComplete:()=>gl.destroy()}); } }); }
   digResolve(c){ const d=Save.dig(); c.taken=true;
-    if(c.c==='sugar'){ const n=digSugarAmt(d.depth); Save.data.sugar=(Save.data.sugar||0)+n; Sfx.digFind(); return {t:'🍬 +'+n+' Sugar',c:'#ffe08a'}; }
+    if(c.c==='thread'||c.c==='sugar'){ const n=digThreadAmt(d.depth); Save.data.threads=Save.threads()+n; Sfx.digFind(); return {t:'🧶 +'+n+' Weave Thread',c:'#ffe08a'}; }
     if(c.c==='chest'){ Sfx.digRare(); const roll=Math.random();
       if(roll>0.88){ Save.data.scrolls=(Save.data.scrolls||0)+1; return {t:'🏺 Ancient Chest! 📜 Scroll Fragment '+Math.min(Save.data.scrolls,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK,c:'#ffd166'}; }
-      if(roll<0.55){ const n=digSugarAmt(d.depth)*4; Save.data.sugar=(Save.data.sugar||0)+n; return {t:'🏺 Ancient Chest! 🍬 +'+n+' Sugar',c:'#ffd166'}; }
+      if(roll<0.55){ const n=digThreadAmt(d.depth)*4; Save.data.threads=Save.threads()+n; return {t:'🏺 Ancient Chest! 🧶 +'+n+' Weave Thread',c:'#ffd166'}; }
       const k=rollWeightedCurrency(d.depth>=6?'epic':'rare'),n=Phaser.Math.Between(2,4); if(k){ Save.addCurrency(k,n); const cd=currencyDef(k); return {t:'🏺 Ancient Chest! '+(cd?cd.emoji+' '+cd.name:'Currency')+' ×'+n,c:'#ffd166'}; }
       return {t:'🏺 Ancient Chest!',c:'#ffd166'}; }
     const st=(DIG_ITEMS[c.c]||{}).stone; if(st){ Save.data.coreStones=Save.data.coreStones||{}; Save.data.coreStones[st]=(Save.data.coreStones[st]||0)+1; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' '+DIG_ITEMS[c.c].name+'! Overcap '+UPGRADES[st].name+' in the Temple',c:'#ffd166'}; }
@@ -6765,7 +6772,7 @@ class Game extends Phaser.Scene {
   }
   onStageClear(){ this.clearSugarCoins();
     // v5.32 ⛏️ พลั่วจากการผ่านด่าน: ปกติ 1 / ยาก 2 / นรก 3 (กฎเหล็ก) · ไม่ให้ใน tutorial
-    if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1)); Save.addShovels(n); this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
+    if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1))+1; Save.addShovels(n); this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.waveAlive=0; this.pipG.clear();
@@ -6870,7 +6877,7 @@ class Game extends Phaser.Scene {
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this._tutorialWeaveCoach=true;
     this.exitStage(); this.menuScreen='upgrade'; this.buildMenuScreen();
-    this.menuToast&&this.menuToast('🍓 Tap a core to spend your Sugar and grow stronger!','#ffe08a');
+    this.menuToast&&this.menuToast('🍓 Tap a core to spend your Weave Thread and grow stronger!','#ffe08a');
   }
   showBanner(title,sub,ms){
     if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังNone HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash
@@ -7031,7 +7038,7 @@ class Game extends Phaser.Scene {
   _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.save();
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
     const TUTORIAL_SUGAR=140; let rewardName='Sugar +'+TUTORIAL_SUGAR,rewardEmoji='🍬';
-    if(!Save.data.tutorialRewardGiven){ Save.data.tutorialRewardGiven=true; Save.addSugar(TUTORIAL_SUGAR); Save.save(); }
+    if(!Save.data.tutorialRewardGiven){ Save.data.tutorialRewardGiven=true; Save.addSugar(TUTORIAL_SUGAR); Save.dig(); Save.save(); }   // v5.33 dig() แจกด้าย 40 ครั้งแรก
     this.sugarStage=0; Sfx.clear&&Sfx.clear();
     // หน้า "จบการสอน" ค้างจนกว่าจะแตะ (ไม่เด้งออกเองให้ดูไม่ทัน)
     this.showTutorialComplete(rewardEmoji,rewardName);
