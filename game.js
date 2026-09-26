@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.22.0';
+const GAME_VERSION = '5.23.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.23.0', date:'2026-09-26', title:'🧹 Cleaner Screen', items:['Removed the kill-combo popups','Far fewer floating damage numbers — critical hits still show']},
   { v:'5.22.0', date:'2026-09-26', title:'✨ Purified!', items:['Finishing Capture the Zone now blasts the ring across the whole screen with a bright flash and a big sound']},
   { v:'5.21.0', date:'2026-09-26', title:'🔷 Purify the Zone', items:['Capture the Zone now takes 25 seconds of standing in the ring','The ring grows bigger as you purify it','Enemies swarm the ring more often and in bigger packs to stop you','Kills inside the ring no longer speed it up']},
   { v:'5.20.0', date:'2026-09-26', title:'🎯 Hunt & Capture Rework', items:['Softer hurt sound and a single clean level-up chime','Relics show up less often','Hunt the Threat: targets run away and blink — stop chasing and a curse drains your HP','Capture the Zone: the ring warms to gold, grows as you fill it, ticks every 10%, and enemies rush in with a warning']},
@@ -7986,7 +7987,7 @@ class Game extends Phaser.Scene {
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
       this.killStreak=(this.killStreak||0)+1; this._lastKillAt=this.elapsed;
-      if(STREAK_MARKS[this.killStreak])this.showKillStreak(this.killStreak);
+      // v5.23: เจ้าของสั่งเอาป็อปคอมโบออก (นับ streak ไว้เฉย ๆ)
     }
     if(isElite||isMini){this.hitStop(45);Sfx.bigKill();}   // Juice: ฆ่าตัวใหญ่/elite = กระแทกหยุดเสี้ยววิ (บอสมีฉากตายของตัวเอง)
     // 🧪 currency ให้คนขยัน: elite = ลุ้นดWaitป · Miniboss = การันตี (เกรดตามความยาก)
@@ -9122,6 +9123,8 @@ class Game extends Phaser.Scene {
   }
   popDmg(n,x,y,crit){
     if(Save.data.settings&&Save.data.settings.damageNumbers===false)return;
+    // v5.23: ลดตัวเลขลอยรก — เลขธรรมดาโชว์ได้ ~8 ครั้ง/วิ · คริโชว์เสมอ
+    if(!crit){const now=this.time.now;if(now-(this._dmgNumAt||0)<120)return;this._dmgNumAt=now;}
     let t=this.dmgPool.pop();
     if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px'}).setDepth(99999).setOrigin(0.5); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
