@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.20.0';
+const GAME_VERSION = '5.21.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.21.0', date:'2026-09-26', title:'🔷 Purify the Zone', items:['Capture the Zone now takes 25 seconds of standing in the ring','The ring grows bigger as you purify it','Enemies swarm the ring more often and in bigger packs to stop you','Kills inside the ring no longer speed it up']},
   { v:'5.20.0', date:'2026-09-26', title:'🎯 Hunt & Capture Rework', items:['Softer hurt sound and a single clean level-up chime','Relics show up less often','Hunt the Threat: targets run away and blink — stop chasing and a curse drains your HP','Capture the Zone: the ring warms to gold, grows as you fill it, ticks every 10%, and enemies rush in with a warning']},
   { v:'5.19.0', date:'2026-09-26', title:'🎁 Chest Party', items:['Miniboss chests now play a jingle while spinning, tick on every light, and ring out when you win','The chest bounces, prizes drop in with a bounce, and candy sprays out like a fountain']},
   { v:'5.18.3', date:'2026-09-26', title:'🎵 Menu Music Fixed', items:['The main menu theme actually plays again (it was never being loaded)']},
@@ -2941,7 +2942,7 @@ const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite — it blinks away when you get close and leaves a trap'},
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
-  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Hold the power ring — kills inside the ring charge it much faster'},
+  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the ring to purify it — the ring grows while enemies swarm in to stop you'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect and restore the three nectar flowers while the hive attacks'},
   seasonCycle:{emoji:'🌦️',name:'Stabilize the Seasons',desc:'Stand in the sanctuary matching the active season'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Destroy every corrupted root anchor before the throne pulse closes in'},
@@ -5869,7 +5870,7 @@ class Game extends Phaser.Scene {
     }else if(type==='breakRoots'){
       o.target=4;o.desc='Destroy all '+o.target+' crown-root anchors before time expires';this.spawnRootAnchors(o.target);
     }else{
-      o.target=12+w*2;o.desc='Hold the ring for '+o.target+'s · kills inside charge it faster';this.spawnCaptureZone();
+      o.target=25;o.desc='Purify the ring for '+o.target+'s — it grows as you purify, enemies swarm to stop you';this.spawnCaptureZone();
     }
     this.startBonusChallenge(o);
     this.renderWaveObjectiveHUD();
@@ -5950,7 +5951,7 @@ class Game extends Phaser.Scene {
   startBonusChallenge(o){
     this._bonus=null;if(!o||this._inTutorial)return;
     const timed=['hunt','purge','capture','breakRoots'].includes(o.type),ids=timed?['speed','nohit','kills']:['nohit','kills'],id=Phaser.Utils.Array.GetRandom(ids),si=this.stageIndex||0;
-    let limit=0;if(id==='speed'){ if(o.type==='hunt')limit=14*o.target+10; else if(o.type==='purge'){const t=this._wispTuning();limit=Math.round((t.channel+9)*o.target+6);} else if(o.type==='capture')limit=Math.round(o.target*1.25+8); else limit=45; }
+    let limit=0;if(id==='speed'){ if(o.type==='hunt')limit=14*o.target+10; else if(o.type==='purge'){const t=this._wispTuning();limit=Math.round((t.channel+9)*o.target+6);} else if(o.type==='capture')limit=Math.round(o.target*1.25+6); else limit=45; }
     const b=this._bonus={id,limit,t:0,hits:0,maxHits:2,kills:0,target:id==='kills'?25+si*4:0,failed:false,reward:this.relicSlotsLeft()>0?'relic':'currency'};
     b.label=id==='speed'?('Finish within '+limit+'s'):id==='nohit'?'Take at most 2 hits':('Defeat '+b.target+' enemies during the objective');
     this.renderBonusHUD();
@@ -5973,9 +5974,6 @@ class Game extends Phaser.Scene {
   // เรียกจาก killEnemy: นับ kill ของโจทย์เสริม + Capture เติมเร็วเมื่อฆ่าในวง
   objOnKill(e){
     const o=this.waveObjective;if(!o||o.done)return;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
-    if(o.type==='capture'&&this._captureZone&&this.dist(e.x,e.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal){
-      o.progress=Math.min(o.target,o.progress+0.7);if(this.elapsed-(this._capPopT||0)>0.3){this._capPopT=this.elapsed;this.floatText(e.x,e.y-20,'+0.7s',o.color);}
-      if(o.progress>=o.target)this.completeWaveObjective(); }
   }
   // ประเมินโจทย์เสริมตอนภารกิจสำเร็จ (เรียกก่อน clearWaveObjective)
   resolveBonusChallenge(){
@@ -6017,28 +6015,29 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(o&&(o.type==='purge'||o.type==='breakRoots')&&!o.done){o.progress++;this.renderWaveObjectiveHUD();if(o.progress>=o.target)this.completeWaveObjective();}
   }
   spawnCaptureZone(){
-    const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=140;
-    this._captureZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,.12).setStrokeStyle(4,o.color,.82).setDepth(pos.y-2));this._captureZone.radiusGoal=r;   // ขยายเขต (112→140) ให้ยืนในวงแล้วนับแน่นอน
+    const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=110;
+    this._captureZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,.12).setStrokeStyle(4,o.color,.82).setDepth(pos.y-2));this._captureZone.radiusGoal=r;this._captureZone.r0=r;   // ขยายเขต (112→140) ให้ยืนในวงแล้วนับแน่นอน
     this._captureRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_magic_circle').setTint(o.color).setDisplaySize(r*2,r*1.72).setDepth(pos.y-1).setAlpha(.7));
     this.tweens.add({targets:this._captureRing,rotation:TAU,alpha:{from:.36,to:.68},duration:1800,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
   // v5.19.1 Capture ลูกเล่น: สีวงค่อย ๆ เปลี่ยนเป็นทอง · วงในโตตาม progress · เสียงติ๊งทุก 10% · มอนพุ่งเข้ามาเป็นระลอกพร้อมลูกศรเตือน
-  tickCaptureFX(dt,inside,o){ const z=this._captureZone;if(!z)return;const f=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),R=z.radiusGoal;
+  tickCaptureFX(dt,inside,o){ const z=this._captureZone;if(!z)return;const f=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1);
+    const r0=z.r0||110,want=r0+f*120;z.radiusGoal+=(want-z.radiusGoal)*Math.min(1,dt*3);const R=z.radiusGoal;z.setRadius(R);if(this._captureRing)this._captureRing.setDisplaySize(R*2,R*1.72);
     const c0=Phaser.Display.Color.ValueToColor(o.color),c1=Phaser.Display.Color.ValueToColor(0xffd166),mix=Phaser.Display.Color.Interpolate.ColorWithColor(c0,c1,100,Math.round(f*100)),col=Phaser.Display.Color.GetColor(mix.r,mix.g,mix.b);
     z.setStrokeStyle(4+f*4,col,0.85);if(this._captureRing)this._captureRing.setTint(col);
     if(!this._captureFill){this._captureFill=this.camWorld(this.add.circle(z.x,z.y,R,col,0.3).setDepth(z.depth).setScale(0.02));}
-    const fl=this._captureFill;fl.setFillStyle(col,inside?0.34:0.18);fl.scale+=((Math.max(0.02,f))-fl.scale)*Math.min(1,dt*6);
-    z.setScale(1+Math.sin(this.time.now/(inside?140:320))*(inside?0.025:0.01)+f*0.06);
+    const fl=this._captureFill;fl.setFillStyle(col,inside?0.34:0.18);fl.setRadius(R);fl.scale+=((Math.max(0.02,f))-fl.scale)*Math.min(1,dt*6);
+    z.setScale(1+Math.sin(this.time.now/(inside?140:320))*(inside?0.025:0.01));
     const step=Math.floor(f*10);if(step>(o._capStep||0)){o._capStep=step;if(Sfx.chestTick)Sfx.chestTick(step*3);
       const p=this.camWorld(this.add.circle(z.x,z.y,R*Math.max(.1,f),col,0).setStrokeStyle(5,col,0.9).setDepth(z.depth+1));this.tweens.add({targets:p,scale:1.35,alpha:0,duration:480,onComplete:()=>p.destroy()});
       this.floatText(z.x,z.y-R-10,(step*10)+'%',col);}
-    if(inside&&f>0.05){o._rushT=(o._rushT??5)-dt;if(o._rushT<=0){o._rushT=Phaser.Math.FloatBetween(5.5,8);this.captureRush(z);}} }
+    if(inside&&f>0.05){o._rushT=(o._rushT??5)-dt;if(o._rushT<=0){o._rushT=Phaser.Math.FloatBetween(3.6,5.2)-f*1.2;this.captureRush(z);}} }
   captureRush(z){ const a=Math.random()*TAU,far=Math.max(this.W,this.H)/this.viewZoom*0.55,sx=z.x+Math.cos(a)*far,sy=z.y+Math.sin(a)*far;
     const ang=Math.atan2(z.y-sy,z.x-sx),mx=z.x+Math.cos(a)*(z.radiusGoal+90),my=z.y+Math.sin(a)*(z.radiusGoal+90);
     const warn=this.camWorld(this.add.text(mx,my,'➤➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff5a6e',stroke:'#1a0f24',strokeThickness:6}).setOrigin(0.5).setRotation(ang).setDepth(90000));
     this.tweens.add({targets:warn,alpha:{from:1,to:0.25},scale:{from:1,to:1.25},yoyo:true,repeat:3,duration:180,onComplete:()=>warn.destroy()});
     this.showBanner('⚠ Incoming!','Enemies are rushing the zone',900);if(Sfx.select)Sfx.select();
-    this.time.delayedCall(1100,()=>{ if(!this._captureZone)return;const n=4+Math.min(4,this.stageIndex||0),pa=Math.atan2(sy-this.player.y,sx-this.player.x),pd=this.dist(sx,sy,this.player.x,this.player.y);
+    this.time.delayedCall(1100,()=>{ if(!this._captureZone)return;const n=6+Math.min(4,this.stageIndex||0)+Math.round(Phaser.Math.Clamp(this.waveObjective?this.waveObjective.progress/25:0,0,1)*4),pa=Math.atan2(sy-this.player.y,sx-this.player.x),pd=this.dist(sx,sy,this.player.x,this.player.y);
       for(let i=0;i<n;i++){const e=this.spawnEnemy(i%2?'fast':'dasher',pa+Phaser.Math.FloatBetween(-0.18,0.18),pd*Phaser.Math.FloatBetween(0.95,1.08));if(e&&e.spd)e.spd*=1.35;} }); }
   captureDoneFX(){ const z=this._captureZone;if(!z)return;if(Sfx.chestWin)Sfx.chestWin();this.screenFlash(0xffd166,0.35,260);
     for(let i=0;i<3;i++)this.time.delayedCall(i*110,()=>{const r=this.camWorld(this.add.circle(z.x,z.y,z.radiusGoal,0xffd166,0).setStrokeStyle(6,0xffe08a,1).setDepth(90000));this.tweens.add({targets:r,scale:1.8,alpha:0,duration:600,ease:'Cubic.out',onComplete:()=>r.destroy()});}); }
@@ -6146,7 +6145,7 @@ class Game extends Phaser.Scene {
       this.tickSeasonObjective(dt);if(!this.waveObjective)return;
     }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
-      o.progress=Phaser.Math.Clamp(o.progress+(inside?dt*0.55:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);this.tickCaptureFX(dt,inside,o);if(o.progress>=o.target){this.captureDoneFX();this.completeWaveObjective();return;}}   // v4.58: ยืนเฉย ๆ เติมช้า · ฆ่าในวง +0.7s (objOnKill)
+      o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.35),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);this.tickCaptureFX(dt,inside,o);if(o.progress>=o.target){this.captureDoneFX();this.completeWaveObjective();return;}}   // v5.21: ยืนในวง 25 วิจริง (ไม่มีโบนัสฆ่าแล้ว)
     if(o.type!=='purge'&&this.objNodeG)this.objNodeG.clear();   // เคลียร์หลอดแกน (แยกจาก else-if chain กันไปบLocked capture)
     this.renderWaveObjectiveHUD();
   }
