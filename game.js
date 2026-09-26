@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.67.0';
+const GAME_VERSION = '5.68.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.68.0', date:'2026-09-26', title:'Cocoa: no chasing, boss focus', items:['Normal combo no longer lunges toward enemies — Cocoa punches from where she stands','Bear Beat Rush now focuses every punch on the boss or miniboss when one is nearby','After a Beat Rush on a boss, Cocoa hops back out of reach'] },
   { v:'5.67.0', date:'2026-09-26', title:'New art: menus, icons, Temple Depths', items:['Hub buttons and menu tiles use new illustrated icons','Rank Perk, Ancient Perk and Relic icons','Temple Depths gets its full art set: background, tiles, shovel, treasures and chests'] },
   { v:'5.66.0', date:'2026-09-26', title:'Bear Beat Rush: warp punches', items:['Cocoa now warps to each target during the rush punches, with a dash trail','Fully charged Beat Rush is weaker: fewer punches per dot and lower damage','Grand finale blast damage lowered'] },
   { v:'5.65.0', date:'2026-09-26', title:'Cocoa: Dash is a buff again', items:['Dash is a normal dash again (no Dash Punch)','Every Dash gives Cocoa a short Bear Rush buff: combo damage up for 2.5s','Dash Rush card: +15% buff damage per rank','Dash Boxer, Counter Bear and Evolution now boost the Dash buff and cooldown'] },
@@ -8331,10 +8332,9 @@ class Game extends Phaser.Scene {
     const lean=(k,ms)=>{ this._sqX=1+0.25*k; this._sqY=1-0.2*k; this.tweens.add({targets:P,x:P.x+Math.cos(ang)*8*k,y:P.y+Math.sin(ang)*8*k,duration:ms,yoyo:true,ease:'Quad.out'}); };
     const RHYTHM=[0.72,0.6,0.78,0.7,0.85,1.0];   // v5.64 ต่อเนื่องขึ้น
     if(step===0){ // 💨 LUNGE พุ่งต่อย
-      const tt=t&&!moving?t:null, d=tt?this.dist(P.x,P.y,tt.x,tt.y):reach, mv=Math.max(0,Math.min(120,d-reach*0.45));
-      this._sqX=1.35; this._sqY=0.72; P.iframe=Math.max(P.iframe||0,0.15);
-      this.tweens.add({targets:P,x:P.x+Math.cos(ang)*mv,y:P.y+Math.sin(ang)*mv,duration:110,ease:'Quad.out',onComplete:()=>{ if(!live())return;
-        const f=pt(0.6); streak(f,0xffd9a8,10); this.vfxHitRing(f.x,f.y,0xffd9a8,false); hit(f.x,f.y,reach*0.6,1.0,{kb:140}); }});
+      // v5.68 ไม่พุ่งเข้าหาเป้าแล้ว (เดิมพุ่งไปแนบบอส) — ต่อยตรงจากที่ยืน
+      this._sqX=1.3; this._sqY=0.75; lean(1,60);
+      this.time.delayedCall(60,()=>{ if(!live())return; const f=pt(0.6); streak(f,0xffd9a8,10); this.vfxHitRing(f.x,f.y,0xffd9a8,false); hit(f.x,f.y,reach*0.6,1.0,{kb:140}); });
     }else if(step===1){ // 👊👊 ONE-TWO (จิ้ม-ตรง เร็ว)
       [[0,-9,0.55,6],[110,9,0.8,9]].forEach(([ms,side,m,w])=>this.time.delayedCall(ms,()=>{ if(!live())return; lean(0.6,50); const f=pt(0.62,side); streak(f,0xfff0d0,w); hit(f.x,f.y,reach*0.5,m); }));
     }else if(step===2){ // 🌀 HOOK (ง้าง แล้วเหวี่ยงกว้าง)
@@ -8535,8 +8535,9 @@ class Game extends Phaser.Scene {
     plan.forEach((it,i)=>this.time.delayedCall(i*gap,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       // v5.62 จุดบนจอไม่ผูกมอน → หมัดแต่ละชุดเลือกเป้าใกล้ตัว (วนหลายตัว) ไม่มีมอน = รอบตัว
       const c=it.c; let x=P.x+Phaser.Math.Between(-60,60), y=P.y+Phaser.Math.Between(-60,60);
-      if(c){ if(it.first||!c._te||!c._te.active){ const L=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<620)L.push(e); });
-          if(L.length){ L.sort((a,b)=>this.dist(a.x,a.y,P.x,P.y)-this.dist(b.x,b.y,P.x,P.y)); c._te=L[Math.min(L.length-1,Math.floor(Math.random()*Math.min(L.length,4)))]; } }
+      if(c){ if(it.first||!c._te||!c._te.active){ const L=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<((e.isBoss||e.isMini)?900:620))L.push(e); });
+          if(L.length){ const bs=L.find(e=>e.isBoss)||L.find(e=>e.isMini);   // v5.68 มีบอส/มินิ = ทุกจุดโฟกัสบอส
+            if(bs){ c._te=bs; B._bossT=bs; } else { L.sort((a,b)=>this.dist(a.x,a.y,P.x,P.y)-this.dist(b.x,b.y,P.x,P.y)); c._te=L[Math.min(L.length-1,Math.floor(Math.random()*Math.min(L.length,4)))]; } } }
         const te=c._te; if(te&&te.active){ x=te.x; y=te.y;
           if(it.first){ // v5.66 วาร์ปพุ่งไปหาเป้าทีละจุด + เงาตามหลัง
             const a=Math.atan2(y-P.y,x-P.x), nx=x-Math.cos(a)*42, ny=y-Math.sin(a)*42, g=this.camWorld(this.add.graphics().setDepth(8));
@@ -8551,6 +8552,7 @@ class Game extends Phaser.Scene {
       if(this.anims.exists('fx_flickerstrike'))this.spawnFxAnim('fx_flickerstrike',x,y,{scale:d.r/256,rotation:Math.random()*TAU,depth:9,alpha:0.95,tint:col}); else this.vfxHitRing(x,y,col,false);
       const cc=this._cc||(this._cc={n:0,t:0,step:0}); cc.n++; cc.t=0; Sfx.comboPunch(cc.n,c&&c.type==='heavy'?'heavy':'jab'); }));
     this.time.delayedCall(plan.length*gap+120,()=>{ if(this.state!=='play')return;
+      const bt=B._bossT; if(bt&&bt.active){ const a=Math.atan2(P.y-bt.y,P.x-bt.x); this.tweens.add({targets:P,x:P.x+Math.cos(a)*150,y:P.y+Math.sin(a)*150,duration:220,ease:'Quad.out'}); P.iframe=Math.max(P.iframe||0,1.2); }   // v5.68 จบแล้วกระโดดออกจากบอส
       this.cocoaGrandFinale(unit,(this._beatDmg||0)+unit*1.8*6,S,fever); }); this.time.delayedCall(plan.length*gap+900,()=>{ if(this.state!=='play')return;
       if(S.has('cyclone')){ this.showComboMove('🌀 COCOA CYCLONE',true); Sfx.beatFx('cyclone'); for(let k=0;k<12;k++)this.time.delayedCall(k*250,()=>{ if(this.state!=='play')return; this.vfxHitRing(P.x,P.y,0x4fb8ff,true);
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<160){ this.damage(e,unit*0.5,e.x,e.y); if(!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-P.y,e.x-P.x);e.setVelocity(Math.cos(a)*240,Math.sin(a)*240);e.knock=0.15;} } }); }); }
