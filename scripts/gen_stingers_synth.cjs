@@ -7,13 +7,15 @@ const S = require('./gen_bgm_synth.cjs');
 const { SR, Mix, note, wide, kick, snare, tom, timpani, crash, wood, reverb, writeWav } = S;
 
 // เรนเดอร์ครั้งเดียว + รีเวิร์บ + normalize + ตัดหางเงียบ
-function renderOnce(sec, fn, room = 0.8, wet = 0.8) {
+function renderOnce(sec, fn, room = 0.8, wet = 0.8, clean = false) {
   const mix = new Mix(sec);
   fn(mix);
-  reverb(mix, room, 0.3, wet);
+  if (wet > 0) reverb(mix, room, 0.3, wet);
   let peak = 0; for (let i = 0; i < mix.n; i++) peak = Math.max(peak, Math.abs(mix.L[i]), Math.abs(mix.R[i]));
   let end = mix.n - 1; while (end > 0 && Math.abs(mix.L[end]) < peak * 0.003 && Math.abs(mix.R[end]) < peak * 0.003) end--;
-  const n = end + 1, L = mix.L.slice(0, n), R = mix.R.slice(0, n), fade = Math.floor(0.25 * SR);
+  const n = end + 1, L = mix.L.slice(0, n), R = mix.R.slice(0, n), fade = Math.floor((clean ? 0.04 : 0.25) * SR);
+  // clean = ไม่ผ่าน tanh (ไม่แตก) normalize ตรงที่ 0.8
+  if (clean) { for (let i = 0; i < n; i++) { const f = i > n - fade ? (n - i) / fade : 1; L[i] = L[i] / peak * 0.8 * f; R[i] = R[i] / peak * 0.8 * f; } return { L, R }; }
   for (let i = 0; i < n; i++) { const f = i > n - fade ? (n - i) / fade : 1; L[i] = Math.tanh(L[i] / peak * 1.4) / Math.tanh(1.4) * 0.9 * f; R[i] = Math.tanh(R[i] / peak * 1.4) / Math.tanh(1.4) * 0.9 * f; }
   return { L, R };
 }
@@ -75,10 +77,10 @@ const defs = {
   sfx_dig_break: () => renderOnce(0.9, mix => { tom(mix, 0, 80, 0.45); for (let i = 0; i < 7; i++) snare(mix, 0.03 + i * 0.05, 0.14 - i * 0.015, 0.1); kick(mix, 0, 0.35); }, 0.3, 0.15),
   sfx_recipe_fire: () => renderOnce(0.7, mix => { [76, 83, 88].forEach((m, i) => note(mix, i * 0.045, 0.25, m, { type: 'pluck', decay: 0.25, a: 0.002, r: 0.15, vol: 0.10, send: 0.35 })); }, 0.35, 0.3),
   sfx_recipe_merge: () => renderOnce(1.2, mix => { [72, 76, 79, 84, 88].forEach((m, i) => note(mix, i * 0.07, 0.5, m, { type: 'bell', decay: 0.5, a: 0.002, r: 0.3, vol: 0.11, send: 0.4 })); }, 0.5, 0.4),
-  sfx_slot_spin: () => renderOnce(0.5, mix => { for (let i = 0; i < 9; i++) { wood(mix, i * 0.042, 0.22 - i * 0.012); note(mix, i * 0.042, 0.05, 72 + (i % 3) * 5 + i, { type: 'pluck', decay: 0.06, a: 0.001, r: 0.03, vol: 0.06, send: 0.1 }); } }, 0.2, 0.1),
-  sfx_slot_miss: () => renderOnce(1.3, mix => { [[0, 67], [0.22, 66], [0.44, 65]].forEach(([t, m]) => note(mix, t, 0.2, m, { type: 'tri', a: 0.01, r: 0.08, vol: 0.14, send: 0.2 })); note(mix, 0.66, 0.55, 64, { type: 'tri', a: 0.01, r: 0.2, vol: 0.15, glide: -3, send: 0.25 }); }, 0.4, 0.2),
-  sfx_slot_near: () => renderOnce(1.2, mix => { note(mix, 0, 0.5, 72, { type: 'bell', decay: 0.5, a: 0.005, r: 0.2, vol: 0.12, glide: 2, send: 0.35 }); note(mix, 0.06, 0.55, 76, { type: 'sine', a: 0.02, r: 0.25, vol: 0.09, glide: 3, send: 0.4 }); note(mix, 0.5, 0.4, 71, { type: 'tri', a: 0.01, r: 0.2, vol: 0.1, glide: -2, send: 0.3 }); }, 0.45, 0.3),
-  sfx_slot_jackpot: () => renderOnce(1.8, mix => { crash(mix, 0, 0.5); [72, 76, 79, 84, 88, 91].forEach((m, i) => note(mix, i * 0.06, 0.6, m, { type: 'bell', decay: 0.6, a: 0.002, r: 0.3, vol: 0.12, send: 0.4 })); for (let i = 0; i < 10; i++) note(mix, 0.4 + i * 0.05, 0.08, 96 + (i % 2) * 3, { type: 'bell', decay: 0.1, a: 0.001, r: 0.05, vol: 0.05, send: 0.5 }); }, 0.6, 0.4),
+  sfx_slot_spin: () => renderOnce(0.45, mix => { for (let i = 0; i < 9; i++) note(mix, i * 0.042, 0.035, 76 + (i % 3) * 5, { type: 'tri', a: 0.001, r: 0.02, vol: 0.12 - i * 0.006, send: 0 }); }, 0, 0, true),
+  sfx_slot_miss: () => renderOnce(1.2, mix => { [[0, 67], [0.2, 66], [0.4, 65]].forEach(([t, m]) => note(mix, t, 0.16, m, { type: 'sine', a: 0.01, r: 0.05, vol: 0.2, send: 0 })); note(mix, 0.6, 0.5, 64, { type: 'sine', a: 0.01, r: 0.15, vol: 0.2, glide: -3, send: 0 }); }, 0, 0, true),
+  sfx_slot_near: () => renderOnce(1.0, mix => { note(mix, 0, 0.4, 72, { type: 'sine', a: 0.01, r: 0.1, vol: 0.18, glide: 2, send: 0 }); note(mix, 0.45, 0.35, 71, { type: 'sine', a: 0.01, r: 0.12, vol: 0.16, glide: -2, send: 0 }); }, 0, 0, true),
+  sfx_slot_jackpot: () => renderOnce(1.4, mix => { [72, 76, 79, 84, 88].forEach((m, i) => note(mix, i * 0.07, 0.35, m, { type: 'bell', decay: 0.35, a: 0.002, r: 0.15, vol: 0.12, send: 0.08 })); note(mix, 0.4, 0.6, 84, { type: 'tri', a: 0.01, r: 0.25, vol: 0.1, send: 0.08 }); }, 0.3, 0.15, true),
   sfx_dig_find: () => renderOnce(0.8, mix => { [79, 84].forEach((m, i) => note(mix, i * 0.08, 0.35, m, { type: 'bell', decay: 0.35, a: 0.002, r: 0.2, vol: 0.12, send: 0.3 })); }, 0.4, 0.3),
   sfx_dig_rare: () => renderOnce(1.8, mix => {
     [72, 76, 79, 84, 88, 91].forEach((m, i) => note(mix, i * 0.06, 0.6, m, { type: 'bell', decay: 0.6, a: 0.002, r: 0.3, vol: 0.09, pan: i % 2 ? 0.4 : -0.4, send: 0.5 }));

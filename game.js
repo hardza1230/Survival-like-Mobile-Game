@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.45.1';
+const GAME_VERSION = '5.45.2';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.45.2', date:'2026-09-26', title:'🔈 Cleaner auto-roll sounds', items:['Auto-roll spin, miss, near-miss and jackpot sounds are drier and no longer crackle','Jackpot no longer stacks several fanfares at once']},
   { v:'5.45.1', date:'2026-09-26', title:'🔇 Mute button fix', items:['The in-game mute button no longer triggers from invisible taps on menu screens (use Settings for volume there)']},
   { v:'5.45.0', date:'2026-09-26', title:'🎰 Slot-machine auto-roll', items:['Auto-roll shows your wallet and it ticks down with every roll','Each roll spins like a slot reel with its own sound','Near miss (same mod family) plays a tense “so close!” sting','Miss plays a little sad “aww”; hitting the target is a jackpot with sparkles']},
   { v:'5.44.0', date:'2026-09-26', title:'🛑 Stop the wheel!', items:['Mini-boss prize wheel and Affix Roulette now spin until you tap STOP (auto-stops after 6s)','After STOP the wheel coasts and slows down before landing','Auto-Roll spins slower so you can watch each result and stop in time']},
@@ -681,7 +682,7 @@ const Sfx = {
   recipeMerge(){if(!this.playFile('sfx_recipe_merge',0.5,1))this.seq([523,659,784,1047,1319],'triangle',0.06,0.07);},
   digTrap(){if(!this.playFile('sfx_dig_trap',0.55))this.tone(90,0.2,'sawtooth',0.1,50);},
   digDescend(){if(!this.playFile('sfx_dig_descend',0.55,1))this.seq([880,660,440],'sine',0.12,0.08);},
-  slotSpin(){if(!this.playFile('sfx_slot_spin',0.45,1))this.seq([660,740,830],'square',0.03,0.04);},
+  slotSpin(){if(!this.playFile('sfx_slot_spin',0.35,1))this.seq([660,740,830],'square',0.03,0.04);},
   slotMiss(){if(!this.playFile('sfx_slot_miss',0.5,1))this.seq([392,370,349,330],'triangle',0.16,0.08);},
   slotNear(){if(!this.playFile('sfx_slot_near',0.55,1))this.seq([523,659,494],'sine',0.14,0.09);},
   slotJackpot(){if(!this.playFile('sfx_slot_jackpot',0.65,1))this.seq([523,659,784,1047,1319],'triangle',0.08,0.1);},
@@ -5543,7 +5544,7 @@ class Game extends Phaser.Scene {
       this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
       if(!hit){if(near){Sfx.slotNear();fb.setText('😮 So close! Same '+tcat+' family').setColor('#ffb86b');this.screenFlash(0xffa94d,.22,220);this.tweens.add({targets:rowG,alpha:.55,duration:90,yoyo:true,repeat:2});}
         else{Sfx.slotMiss();fb.setText(['Aww…','Not this time…','Nope 😢','So sad…'][rolls%4]).setColor('#9aa4c8');this.tweens.add({targets:cur,y:cy+4,duration:160,yoyo:true});}}
-      if(hit){fb.setText('🎉 JACKPOT! 🎉').setColor('#ffe08a');Sfx.slotJackpot();for(let i=0;i<14;i++){const a=i/14*Math.PI*2,sp=T(w/2,'✦','14px',i%2?'#ffd166':'#ff9ad5',1).setY(cy);this.menu.add(sp);this.tweens.add({targets:sp,x:w/2+Math.cos(a)*(90+Math.random()*50),y:cy+Math.sin(a)*(70+Math.random()*40),alpha:0,duration:700+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>sp.destroy()});}this.tweens.add({targets:[title,cur],scale:1.25,duration:140,yoyo:true,repeat:2});this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};Sfx.clear();this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);Sfx.chestWin&&Sfx.chestWin();if(hy>=2)Sfx.legend&&Sfx.legend();}skT.setText('✓ Done');return end('hit');}
+      if(hit){fb.setText('🎉 JACKPOT! 🎉').setColor('#ffe08a');Sfx.slotJackpot();for(let i=0;i<14;i++){const a=i/14*Math.PI*2,sp=T(w/2,'✦','14px',i%2?'#ffd166':'#ff9ad5',1).setY(cy);this.menu.add(sp);this.tweens.add({targets:sp,x:w/2+Math.cos(a)*(90+Math.random()*50),y:cy+Math.sin(a)*(70+Math.random()*40),alpha:0,duration:700+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>sp.destroy()});}this.tweens.add({targets:[title,cur],scale:1.25,duration:140,yoyo:true,repeat:2});this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);if(hy>=2)this.time.delayedCall(450,()=>Sfx.chestWin&&Sfx.chestWin());}skT.setText('✓ Done');return end('hit');}
       this.time.delayedCall(near?900:(rolls<3?650:520),step);};reel();};
     this.time.delayedCall(200,step);
   }
