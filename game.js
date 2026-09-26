@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.70.1';
+const GAME_VERSION = '5.70.2';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.70.2', date:'2026-09-26', title:'Smoother boss music', items:['Boss and miniboss music no longer dips every time you get hit or the boss attacks','Short sound effects duck the music more gently'] },
   { v:'5.70.1', date:'2026-09-26', title:'Tutorial dash fix', items:['Fixed the tutorial Dash step never completing'] },
   { v:'5.70.0', date:'2026-09-26', title:'Cocoa: stacked dashes + Shock Knuckles', items:['Cocoa stores 2 Dash charges (more with Dash Stack / Dash Boxer) — dash several times in a row','Charges refill one at a time, shown as gold dots around the Dash button','Brawler: every combo finisher now blasts a shockwave around Cocoa','Jab Chain card replaced by Shock Knuckles: +1 extra shockwave per rank'] },
   { v:'5.69.0', date:'2026-09-26', title:'Cocoa: 5-beat boxing combo', items:['Normal attacks now flow in a 1-2-3-4-5 rhythm, one punch per beat, with the 5th beat as a finisher','The punch set rotates every cycle (jab, cross, hooks, body blow, overhand, uppercut, slam) so the combo never repeats','Far fewer jabs','Pressing Dash now cancels the combo cleanly and dashes without stutter'] },
@@ -651,6 +652,8 @@ const Sfx = {
   },
   duckBgm(ms=520,amount=0.48){
     const bg=this._currentBgm;if(!bg||!bg.isPlaying||this.muted)return;
+    if(ms<1000&&this._bgmIntense)return;   // v5.70.2 ระหว่างสู้บอส/มินิ ไม่ duck เสียงสั้น ๆ (โดนตี/ท่าบอส) กันเพลงติด ๆ หาย ๆ
+    if(ms<1000)amount=Math.max(amount,0.75);   // duck เบาลง
     const normal=this._bgmIntense?0.34:(this._currentBgmKey==='bgm_main'?0.28:0.30);bg.setVolume(normal*amount*this.mv);clearTimeout(this._duckTimer);
     this._duckTimer=setTimeout(()=>{if(bg===this._currentBgm&&bg.isPlaying)bg.setVolume(this.muted?0:normal*this.mv);},ms);
   },
