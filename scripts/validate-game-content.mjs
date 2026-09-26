@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '5.43.0'",
+  "const GAME_VERSION = '5.44.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -14,7 +14,7 @@ for(const contract of [
   "id:'xp', category:'utility'",
   "id:'dash', category:'utility'",
   "_playAffixRoulette(pool,winner,rolled,cur)",
-  "const delays=[55,60,68,76,88,102,120,145,175,215,270,340]",
+  "const delays=[76,88,102,120,145,175,215,270,340]",
 ]){
   if(!source.includes(contract))throw new Error(`Missing Affix Roulette contract: ${contract}`);
 }

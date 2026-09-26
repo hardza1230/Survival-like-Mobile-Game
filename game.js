@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.43.0';
+const GAME_VERSION = '5.44.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.44.0', date:'2026-09-26', title:'🛑 Stop the wheel!', items:['Mini-boss prize wheel and Affix Roulette now spin until you tap STOP (auto-stops after 6s)','After STOP the wheel coasts and slows down before landing','Auto-Roll spins slower so you can watch each result and stop in time']},
   { v:'5.43.0', date:'2026-09-26', title:'🎰 Hype roulette', items:['Affix Roulette builds suspense: high tiers and rare mods spin longer and slow down dramatically','Rare / Epic / Jackpot reveals add light rays, sparkle bursts, screen shake and special fanfares','Auto-Roll target hits celebrate too']},
   { v:'5.42.0', date:'2026-09-26', title:'🔒 Tier lock & full roll pool', items:['Affix Forge roll pool now has ‹ › pages so you can see every possible mod','Tap a tier in the TIERS table to lock it: that mod always rolls at that tier or better (+2 currency per roll)','Tap the locked tier again to unlock']},
   { v:'5.41.0', date:'2026-09-26', title:'🌟 Switch fighters in Talents', items:['Use ‹ › on the Character Talents page to switch between your fighters']},
@@ -5447,7 +5448,8 @@ class Game extends Phaser.Scene {
     const footer=this.add.text(w/2,cy+101,cur.emoji+' '+cur.name+' consumed · revealing your result…',{fontFamily:'sans-serif',fontSize:'8px',color:'#8bd3a0'}).setOrigin(.5);
     this.menu.add([shade,rays,panel,title,hint]);rows.forEach(r=>this.menu.add([r.g,r.t]));this.menu.add(footer);
     const skW=110,skH=30,skX=w/2-skW/2,skY=cy+118,skG=this.add.graphics();skG.fillStyle(0x3a3550,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0x9a8cc0,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);
-    const skT=this.add.text(w/2,skY+skH/2,'⏩ Skip',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#e8ddff'}).setOrigin(.5);this.menu.add([skG,skT]);
+    const skT=this.add.text(w/2,skY+skH/2,'🛑 STOP!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(.5);this.menu.add([skG,skT]);
+    skG.clear();skG.fillStyle(0xd23a5a,1);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(2,0xffffff,.9);skG.strokeRoundedRect(skX,skY,skW,skH,9);this.tweens.add({targets:skT,scale:{from:1,to:1.1},yoyo:true,repeat:-1,duration:250});
     Sfx.chestSpin&&Sfx.chestSpin();
     const burst=(n,col)=>{for(let k=0;k<n;k++){const a=Math.random()*TAU,d=60+Math.random()*(90+hype*30),sp=this.add.text(w/2,cy,['✦','✨','⭐','💫'][k%4],{fontSize:(10+hype*3)+'px',color:'#'+col.toString(16).padStart(6,'0')}).setOrigin(.5);this.menu.add(sp);
       this.tweens.add({targets:sp,x:w/2+Math.cos(a)*d,y:cy+Math.sin(a)*d*.8,alpha:0,scale:{from:1.4,to:.3},duration:650+Math.random()*450,ease:'Cubic.out',onComplete:()=>sp.destroy()});}};
@@ -5464,11 +5466,15 @@ class Game extends Phaser.Scene {
     const finish=()=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;this.tweens.killTweensOf(rows[1].t);Sfx.stopChestSpin&&Sfx.stopChestSpin();
       const wait=reveal();
       this.time.delayedCall(wait,()=>{this.tweens.killTweensOf(rays);this._craftRolling=false;this.buildCraftBench();this.showBanner((hype>=3?'👑 ':'🎰 ')+winner.emoji+' '+winner.label,winner.fmt(rolled.v)+' · Tier '+rolled.t,1700+hype*300);});};
-    this._zone(skX,skY,skW,skH,finish);
+    // v5.44 🛑 กดหยุดเอง: หมุนเร็วจนกด STOP (หรือ 6 วิ) → ไหลช่วงช้าลงไปหยุดที่ผล · กดอีกครั้ง = ข้าม
+    let stopped=false;const doStop=()=>{ if(stopped){finish();return;} stopped=true;Sfx.card?Sfx.card():Sfx.select();this.tweens.killTweensOf(skT);skT.setScale(1).setText('⏩ Skip');skG.clear();skG.fillStyle(0x3a3550,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0x9a8cc0,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);hint.setText('Slowing down…'); };
+    this._zone(skX,skY,skW,skH,doStop);this.time.delayedCall(6000,()=>{ if(this._craftRollToken===token&&!stopped)doStop(); });
     const show=(row,mod,final=false)=>{const c=affixCategory(mod);this.tweens.killTweensOf(row.t);row.t.setText(mod.emoji+'  '+mod.label+(final?'  '+mod.fmt(rolled.v)+' · T'+rolled.t:'')).setColor(final?'#fff3b0':c.hex).setY(row.rowY-6).setAlpha(.42);this.tweens.add({targets:row.t,y:row.rowY,alpha:1,duration:42,ease:'Quad.out'});};
     // ผลดี = หมุนนานขึ้น + ช่วงท้ายช้าลงเรื่อย ๆ (ลุ้น)
-    const delays=[55,60,68,76,88,102,120,145,175,215,270,340].concat(hype>=1?[380,430]:[],hype>=2?[500,590]:[],hype>=3?[700,820]:[]);let step=0;
-    const tick=()=>{if(this._craftRollToken!==token)return;const final=step===delays.length-1,center=final?winner:Phaser.Utils.Array.GetRandom(pool);show(rows[1],center,false);show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));
+    const delays=[76,88,102,120,145,175,215,270,340].concat(hype>=1?[380,430]:[],hype>=2?[500,590]:[],hype>=3?[700,820]:[]);let step=0;
+    const tick=()=>{if(this._craftRollToken!==token)return;
+      if(!stopped){show(rows[1],Phaser.Utils.Array.GetRandom(pool));show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));Sfx.chestTick?Sfx.chestTick(2):Sfx.select();this.time.delayedCall(60,tick);return;}
+      const final=step===delays.length-1,center=final?winner:Phaser.Utils.Array.GetRandom(pool);show(rows[1],center,false);show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));
       Sfx.chestTick?Sfx.chestTick(step):Sfx.select();
       // ช่วงลุ้น: แถวกลางเรืองสีของผล + จอสั่นเบา ๆ ก่อนหยุด
       if(hype&&step>=delays.length-4){drawPanel(HC,1.5+ (step-(delays.length-4)));this.screenShake(70,.002*hype);}
@@ -5519,7 +5525,7 @@ class Game extends Phaser.Scene {
       this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
       count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());Sfx.select();
       if(hit){this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};Sfx.clear();this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);Sfx.chestWin&&Sfx.chestWin();if(hy>=2)Sfx.legend&&Sfx.legend();}skT.setText('✓ Done');return end('hit');}
-      this.time.delayedCall(rolls<5?260:170,step);};
+      this.time.delayedCall(rolls<3?650:480,step);};
     this.time.delayedCall(200,step);
   }
   promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
@@ -8707,14 +8713,21 @@ class Game extends Phaser.Scene {
       const draw=(on)=>{g.clear();g.fillStyle(on?p.color:0x2a1f38,on?0.95:0.92);g.fillCircle(x,y,on?31:27);g.lineStyle(on?4:2,on?0xffffff:p.color,on?1:0.7);g.strokeCircle(x,y,on?31:27);};
       draw(false);return {x,y,g,lab,draw,p};});
     // ไฟวิ่ง: เร็วมากก่อนแล้วค่อยช้าลง ต้องจบที่ winIdx พอดี
-    const laps=3,total=laps*n+winIdx+1-0,steps=[];for(let k=0;k<total;k++){const t=k/(total-1);steps.push(38+Math.pow(t,3.2)*360);}
-    let cur=-1,k=0;
+    // v5.44 🛑 กดหยุดเอง: หมุนเร็วค้างไว้จนกด STOP (หรือครบ 6 วิ) แล้วไหลต่อ ~1.5 รอบค่อย ๆ ช้าลงไปจบที่ winIdx (ผลสุ่มไว้แล้ว)
+    let total=1e9,steps=[],stopped=false,cur=-1,k=0;
+    const bw=150,bh=46,bx=cx-bw/2,by=cy+R+84,sg=this.add.graphics();sg.fillStyle(0xd23a5a,1);sg.fillRoundedRect(bx,by,bw,bh,14);sg.lineStyle(3,0xffffff,0.9);sg.strokeRoundedRect(bx,by,bw,bh,14);
+    const st=this.add.text(cx,by+bh/2,'🛑 STOP!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffffff'}).setOrigin(0.5);cont.add([sg,st]);
+    this.tweens.add({targets:[st],scale:{from:1,to:1.08},yoyo:true,repeat:-1,duration:260});
+    const doStop=()=>{ if(stopped)return;stopped=true;this._rollBtns=[];Sfx.card?Sfx.card():Sfx.select();this.tweens.killTweensOf(st);st.setText('…').setScale(1);sg.setAlpha(0.45);hint.setText('Slowing down…');
+      const pos=Math.max(0,cur),dist=((winIdx-pos)%n+n)%n,rem=n+Math.floor(n/2)+dist+(dist<2?n:0);total=k+rem;steps=[];for(let q=0;q<rem;q++){const t=q/Math.max(1,rem-1);steps.push(50+Math.pow(t,3)*380);} this._stopBase=k; };
+    this._rollBtns=[{x:bx,y:by,w:bw,h:bh,fn:doStop}];hint.setText('Tap STOP!');
+    this.time.delayedCall(6000,()=>{ if(cont.active)doStop(); });
     const hop=()=>{ if(!cont.active)return; if(cur>=0){slots[cur].draw(false);slots[cur].lab.setScale(1);}
       cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(1.3);Sfx.chestTick(k);this.tweens.add({targets:sl.lab,y:{from:sl.y-12,to:sl.y},duration:170,ease:'Bounce.out'});
       this.tweens.add({targets:center,scaleX:{from:1.18,to:1},scaleY:{from:0.84,to:1},duration:150,ease:'Back.out'});
-      k++;if(upTier&&k===Math.floor(total*0.55))upgrade();
-      if(k>=total){this.time.delayedCall(260,()=>land());return;}
-      this.time.delayedCall(steps[k],hop); };
+      k++;if(upTier&&stopped&&k===this._stopBase+Math.floor((total-this._stopBase)*0.5))upgrade();
+      if(k>=total){sg.setVisible(false);st.setVisible(false);this.time.delayedCall(260,()=>land());return;}
+      this.time.delayedCall(stopped?steps[k-this._stopBase]||60:45,hop); };
     const upgrade=()=>{ const hex='#'+T.color.toString(16).padStart(6,'0');
       rays.setTint(T.color);ring.clear();ring.lineStyle(4,T.color,0.8);ring.strokeCircle(cx,cy,R);
       ttl.setText(T.emoji+' '+T.name+' Chest').setColor(hex);this.tweens.add({targets:ttl,scale:{from:1.6,to:1},duration:380,ease:'Back.out'});

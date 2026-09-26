@@ -60,7 +60,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.43.0 — Affix Roulette ลุ้นขึ้น)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.44.0 — กดหยุดวงล้อเอง)
+- **v5.44.0 (เจ้าของเลือกข้อ 1 จากไอเดีย Dokapon):** openPrizeWheel + _playAffixRoulette หมุนเร็วค้างจนกด 🛑 STOP (auto 6 วิ) → ไหลต่อช้าลงไปจบที่ผลที่สุ่มไว้แล้ว (สมดุลเดิม) · wheel: ปุ่มใน `_rollBtns`, ไหล n+n/2+ระยะถึง winIdx, upgrade โชว์กลางช่วงไหล · roulette: กด STOP ครั้งแรก = เริ่มช้าลง, ครั้งสอง = Skip · auto-roll ช้าลง 650→480ms/ครั้ง (เดิม 260→170) · validator contract delays อัปเดต · verified headless ทั้งสองวงล้อจบถูก, 0 error · **ไอเดีย Dokapon ที่เหลือ: การ์ดโชค, ดวลเป่ายิ้งฉุบมิมิค, ผลร้ายตลก, Luck Meter, วงล้อเดิมพัน**
 - **v5.43.0 (เจ้าของ: ออก mod ให้ตื่นเต้นแบบกล่องบอส):** `affixHype(mod,rolled)` 0-3 (T≤1 jackpot · T≤3 epic · T≤5 rare · weight≤30 +1) · `_playAffixRoulette` หมุนนานขึ้น+ช้าลงตาม hype, 4 tick สุดท้ายกรอบเรือง+จอสั่น, epic+ มีช่วง '. . .' ก่อนเปิด · reveal: ลำแสง 12 แฉกหมุน, ประกายพุ่ง, flash+shake, sfx chestSpin/chestTick/chestWin (+legend epic, +ult jackpot) · auto-roll hit ก็มี shake+fanfare · verified headless T8 ~3s, T1 ~8.7s, 0 error
 - **v5.42.0 (เจ้าของสั่ง):** buildCraftBench roll pool แบ่งหน้า ‹ Page N/M › (`_poolPage`, 6/หน้าแนวตั้ง, รีเซ็ตเมื่อเปลี่ยนไอเทม) · **Tier lock:** แตะช่องในตาราง TIERS = `craftTierLock={uid,id,t}` (แตะซ้ำ = ปลด) · `rollOneAffixLocked` ถ้าสุ่มได้ mod ที่ล็อค → tier สุ่มเฉพาะ best…t · ขณะล็อคทุก roll (รวม auto-roll) เสีย currency +`TIER_LOCK_COST`=2 · verified headless: ล็อค T5 (best T4) ออก 4-5 เท่านั้นใน 2000 ครั้ง, 0 error
 - **v5.41.0 (เจ้าของสั่ง):** buildTalents มีปุ่ม ‹ › ข้างชื่อ วนเฉพาะตัวที่มีแล้ว (CHAR_ORDER ∩ Save.data.chars) · กด = ตั้ง Save.data.character (เปลี่ยนตัวที่ใช้เล่นด้วย) · verified headless momo→mint→cocoa, 0 error
