@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.51.0';
+const GAME_VERSION = '5.52.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.52.0', date:'2026-09-26', title:'⏸ Pause Fixes', items:['Pause button no longer gets swallowed by the mute button next to it','Top-right buttons spaced wider apart','Settings button in the pause menu now matches Resume and Quit'] },
   { v:'5.51.0', date:'2026-09-26', title:'🍄 Living Ground: C2-1', items:['The Fermented Canopy floor is now scattered with mushrooms, moss, puddles, roots and glowing spores','Decorations only draw near you, so it stays light on phones'] },
   { v:'5.50.0', date:'2026-09-26', title:'⚙ Pause Settings & Auto Performance', items:['New ⚙ Settings button in the pause menu — change sound, performance and effects mid-run','Performance: Auto / Low / High (Auto lowers effects and crowd size when FPS drops)','Lighter render resolution on phones for smoother play','Monsters left far behind reappear near you instead of wandering off-screen'] },
   { v:'5.49.0', date:'2026-09-26', title:'⚡ Smoother Performance', items:['About 20% fewer monsters on screen at once','Bouncing and chain effects are capped per frame, so busy fights stay smooth','Fewer floating damage numbers in big crowds','Chapter 2 backgrounds no longer stretch until blurry'] },
@@ -3432,13 +3433,12 @@ class Game extends Phaser.Scene {
       if(this._adBusy)return;   // กำลังเล่นโฆษณา = บLockedอินพุตอื่น
       p={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id};
       // mute toggle (มุมขวาบน)
-      if(this.muteBtn && this.muteBtn.visible && this.state!=='menu' && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<28){
-        const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
-      // pause button (เฉพาะตอนเล่น/พัก)
-      if(this.pauseBtn && this.pauseBtn.visible && (this.state==='play'||this.state==='paused') && this.dist(p.x,p.y,this.pauseBtn.x,this.pauseBtn.y)<28){
-        this.togglePause(); return; }
-      if(this.speedBtn && this.speedBtn.visible && this.state==='play' && this.dist(p.x,p.y,this.speedBtn.x,this.speedBtn.y)<28){
-        this.setGameSpeed((this.gameSpeed||1)>=3?1:(this.gameSpeed||1)+1); Sfx.select(); return; }
+      // v5.52: ปุ่มมุมขวาบน 3 ปุ่มอยู่ใกล้กัน → เลือก "ปุ่มที่ใกล้นิ้วที่สุด" แทนเช็คทีละปุ่ม (เดิมวงแตะ 28px ทับกัน กด pause โดน mute แทน)
+      if(this.state!=='menu'){ let hit=null,bd=26;
+        for(const [b,k] of [[this.muteBtn,'mute'],[this.pauseBtn,'pause'],[this.speedBtn,'speed']]){ if(!b||!b.visible)continue; const d=this.dist(p.x,p.y,b.x,b.y); if(d<bd){bd=d;hit=k;} }
+        if(hit==='mute'){ const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
+        if(hit==='pause'&&(this.state==='play'||this.state==='paused')){ this.togglePause(); return; }
+        if(hit==='speed'&&this.state==='play'){ this.setGameSpeed((this.gameSpeed||1)>=3?1:(this.gameSpeed||1)+1); Sfx.select(); return; } }
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } }
         return; }
@@ -3765,10 +3765,10 @@ class Game extends Phaser.Scene {
     const cbY=pad+14;
     this.muteBtn=this.add.circle(w-26,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
     this.muteTxt=this.add.text(w-26,cbY,Sfx.muted?'🔇':'🔊',{fontSize:'15px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
-    this.pauseBtn=this.add.circle(w-62,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
-    this.pauseTxt=this.add.text(w-62,cbY,'⏸',{fontSize:'14px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
-    this.speedBtn=this.add.circle(w-98,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
-    this.speedTxt=this.add.text(w-98,cbY,'x'+(this.gameSpeed||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bff5d8'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    this.pauseBtn=this.add.circle(w-70,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.pauseTxt=this.add.text(w-70,cbY,'⏸',{fontSize:'14px'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
+    this.speedBtn=this.add.circle(w-114,cbY,16,0x000000,0.48).setScrollFactor(1).setDepth(58).setStrokeStyle(1.5,0xffffff,0.4);
+    this.speedTxt=this.add.text(w-114,cbY,'x'+(this.gameSpeed||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bff5d8'}).setOrigin(0.5).setScrollFactor(1).setDepth(59);
     // ตัววัด FPS + ความละเอียด (ไว้ดีบั๊ก — เอาออกทีหลังได้)
     this.fpsTxt=this.add.text(w-30,pad+88,'',{fontFamily:'monospace',fontSize:'10px',color:'#8fd0ff'}).setOrigin(1,0).setScrollFactor(1).setDepth(59);
     this.fpsTxt.setVisible(/[?&]debug=1\b/.test(location.search));
@@ -3790,7 +3790,7 @@ class Game extends Phaser.Scene {
   hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); if(v)this.renderWaveObjectiveHUD(); if(this.skillBar)this.skillBar.setVisible(v); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
   drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
-    const bx=pad+16, bw=(this.W-112)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
+    const bx=pad+16, bw=(this.W-138)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);
     // เอาหลอด HP ด้านบนออก (ย้ายไปNorthหัวผู้เล่นแทน) · เหลือแถบ XP บาง ๆ ไว้ดูความคืบหน้าเลเวล
@@ -3994,8 +3994,8 @@ class Game extends Phaser.Scene {
       if(this.skills&&(this.state==='play'||this.state==='levelup')){ this.buildSkillBar(); this.drawWavePips(); }
       const cbY=pad+14;
       if(this.muteBtn){ this.muteBtn.setPosition(this.W-26,cbY); this.muteTxt.setPosition(this.W-26,cbY); }
-      if(this.pauseBtn){ this.pauseBtn.setPosition(this.W-62,cbY); this.pauseTxt.setPosition(this.W-62,cbY); }
-      if(this.speedBtn){ this.speedBtn.setPosition(this.W-98,cbY); this.speedTxt.setPosition(this.W-98,cbY); }
+      if(this.pauseBtn){ this.pauseBtn.setPosition(this.W-70,cbY); this.pauseTxt.setPosition(this.W-70,cbY); }
+      if(this.speedBtn){ this.speedBtn.setPosition(this.W-114,cbY); this.speedTxt.setPosition(this.W-114,cbY); }
       if(this.state==='paused') this.buildPause();
       this.bossName.setPosition(this.W/2,pad+136); this.bossBgW.setPosition(this.W/2,pad+154); this.bossBgW.width=this._barW*0.8;
       this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+156);
@@ -5940,7 +5940,7 @@ class Game extends Phaser.Scene {
     this.uiPillBtn(this.pauseUI,right,exitY,bw,bh,COLORS.grape,'🏠','Quit stage',null);
     this._pauseBtns.push({x:right-bw/2,y:exitY-bh/2,w:bw,h:bh,fn:()=>this.quitStage()});
     // v5.50: ปุ่ม ⚙ Settings ในหน้าหยุด
-    const sbw=150,sbh=40,sbx=w/2,sby=portrait?by-bh/2-gap-sbh/2:by-bh/2-gap-sbh/2;
+    const sbw=bw,sbh=bh,sbx=portrait?w/2:left,sby=by-bh-gap;   // v5.52: ขนาดเท่าปุ่ม Resume/Quit
     this.uiPillBtn(this.pauseUI,sbx,sby,sbw,sbh,COLORS.toast||0xf2b366,'⚙','Settings',null);
     this._pauseBtns.push({x:sbx-sbw/2,y:sby-sbh/2,w:sbw,h:sbh,fn:()=>{Sfx.select();this.buildPauseSettings();}});
     this.pauseUI.setVisible(true);
