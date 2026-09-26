@@ -20,6 +20,9 @@
 | 06 | `06_ICONS_PERKS_RELICS.md` | ไอคอน Rank Perk / Ancient Perk / Relic | 26 | 🟡 | ⬜ |
 | 07 | `07_KITCHEN_PARTS.md` | ไอคอนชิ้นส่วนสูตร Kitchen (WHEN/DO/TWIST) | 52 | 🟢 | ⬜ |
 | 08 | `08_PINNACLE_BOSS.md` | บอส Endgame "The Hunger Beneath" | 1 ชีต | 🟢 | ⬜ |
+| 09A | `09_MENU_UI.md` §9A | การ์ดเลือกด่าน 15 + ปก Chapter 2 | 17 | 🟠 | ⬜ |
+| 09B | `09_MENU_UI.md` §9B | พื้นหลังหน้าเมนูทุกหน้า | 25 | 🟡 | ⬜ |
+| 09C/D | `09_MENU_UI.md` §9C-D | ปุ่ม Hub 6 + ไทล์เมนูย่อย 19 | 25 | 🟠 | ⬜ |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
 
@@ -31,7 +34,23 @@ assets/incoming/<batch>/            ← AI ทำอาร์ต วางไฟ
     └─ MANIFEST.md                  ← รายการไฟล์ + ขนาด + หมายเหตุ (template ด้านล่าง)
 assets/art/<batch>/                 ← AI เขียนโค้ด ย้าย/ย่อ/ตรวจแล้วใส่ที่นี่ (ไฟล์ที่เกมโหลดจริง)
 ```
-- `<batch>` ใช้ชื่อสั้นตามไฟล์ใบสั่ง: `floors`, `decor_c21`, `ch3_enemies`, `ch3_bosses`, `dig`, `icons`, `kitchen`, `pinnacle`
+- `<batch>` = ชื่อโฟลเดอร์ที่**สร้างรอไว้แล้ว**: `floors`, `decor_c21` … `decor_c35`, `ch3_enemies`, `ch3_bosses`, `dig`, `icons`, `kitchen`, `pinnacle`, `menu_stage_cards`, `menu_screens`, `menu_buttons`
+- แต่ละโฟลเดอร์มี `.gitkeep` ไว้ให้โฟลเดอร์ว่างอยู่ใน git — ไม่ต้องลบ
+
+### แผนที่ batch → ใบสั่ง → โฟลเดอร์
+| batch | ใบสั่ง | วางไฟล์ส่งงาน | ไฟล์จริงในเกม |
+|---|---|---|---|
+| floors | 01 | assets/incoming/floors/ | assets/art/floors/ |
+| decor_c21…decor_c35 | 02 | assets/incoming/decor_cXX/ | assets/art/decor_cXX/ |
+| ch3_enemies | 03 | assets/incoming/ch3_enemies/ | assets/art/ch3_enemies/ |
+| ch3_bosses | 04 | assets/incoming/ch3_bosses/ | assets/art/ch3_bosses/ |
+| dig | 05 | assets/incoming/dig/ | assets/art/dig/ |
+| icons | 06 | assets/incoming/icons/ | assets/art/icons/ |
+| kitchen | 07 | assets/incoming/kitchen/ | assets/art/kitchen/ |
+| pinnacle | 08 | assets/incoming/pinnacle/ | assets/art/pinnacle/ |
+| menu_stage_cards | 09A | assets/incoming/menu_stage_cards/ | assets/art/menu_stage_cards/ |
+| menu_screens | 09B | assets/incoming/menu_screens/ | assets/art/menu_screens/ |
+| menu_buttons | 09C/9D | assets/incoming/menu_buttons/ | assets/art/menu_buttons/ |
 - **ห้ามแก้ไฟล์ใน `assets/` อื่น ๆ หรือ `game.js`** — ฝั่งอาร์ตวางแค่ใน `assets/incoming/`
 - ถ้าอัปผ่าน GitHub มือถือ: อัปเข้า `assets/incoming/<batch>/` ได้เลย ชื่อไฟล์ต้องตรง key
 
