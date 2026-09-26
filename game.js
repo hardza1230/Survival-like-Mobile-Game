@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.27.0';
+const GAME_VERSION = '5.28.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.28.0', date:'2026-09-26', title:'⛏️ Temple Depths: juice', items:['Digging now swings the shovel, shakes the tile and shatters it into pieces','Rare finds burst with light rays, chests rattle open and spray treasure','Descending drops a fresh board in with a bounce']},
   { v:'5.27.0', date:'2026-09-26', title:'⛏️ Temple Depths opens', items:['New minigame under the Flavor Weave Temple: dig a 5×5 board with shovels','Find Sugar, Ancient Chests and the Depth Gem to go deeper','Free shovel every day · you start with 5']},
   { v:'5.26.0', date:'2026-09-26', title:'⛏️ Temple Depths: sounds', items:['New dig, break, treasure, trap and descend sounds for the upcoming Temple Depths minigame']},
   { v:'5.25.0', date:'2026-09-26', title:'⭐ Steadier Leveling', items:['Levels come a little slower — each level needs a bit more EXP']},
@@ -4920,7 +4921,9 @@ class Game extends Phaser.Scene {
     const frame=this.add.graphics(); frame.fillStyle(0x140e18,0.9); frame.fillRoundedRect(gx-8,gy-8,size+16,size+16,16); frame.lineStyle(2,0x6a4a38,1); frame.strokeRoundedRect(gx-8,gy-8,size+16,size+16,16); this.menu.add(frame);
     this._digCells=[];
     d.board.forEach((c,i)=>{ const cx=gx+(i%DIG_N)*(cs+gap),cy=gy+Math.floor(i/DIG_N)*(cs+gap); const cont=this.add.container(cx+cs/2,cy+cs/2); this.menu.add(cont); this._digCells[i]=cont;
-      this.drawDigCell(cont,c,cs); if(!c.open)this._zone(cx,cy,cs,cs,()=>this.digCell(i)); });
+      this.drawDigCell(cont,c,cs); if(!c.open)this._zone(cx,cy,cs,cs,()=>this.digCell(i));
+      if(this._digDrop){ cont.y-=70; cont.setAlpha(0); this.tweens.add({targets:cont,y:cont.y+70,alpha:1,duration:420,delay:(i%DIG_N)*30+Math.floor(i/DIG_N)*55,ease:'Bounce.out'}); } });
+    if(this._digDrop){ this._digDrop=false; this.tweens.add({targets:info,scale:{from:1.35,to:1},duration:500,ease:'Back.out'}); }
     // ปุ่มล่าง: ฟรีรายวัน · ลงชั้น
     const by=gy+size+22,bw=Math.min(160,(w-48)/2),bh=40;
     const btn=(x,lab,col,on,fn)=>{ const g=this.add.graphics(); g.fillStyle(on?col:0x2c2338,1); g.fillRoundedRect(x,by,bw,bh,12); g.lineStyle(2,on?0xffe08a:0x4a4059,1); g.strokeRoundedRect(x,by,bw,bh,12);
@@ -4942,12 +4945,57 @@ class Game extends Phaser.Scene {
     if(c.c!=='empty'&&c.c!=='sugar'&&this.textures.exists(key))cont.add(this.add.image(0,0,key).setDisplaySize(cs*0.7,cs*0.7).setAlpha(c.taken?0.35:1));
     else if(it.emoji)cont.add(this.add.text(0,0,it.emoji,{fontSize:Math.round(cs*0.42)+'px'}).setOrigin(0.5).setAlpha(c.taken?0.35:1));
   }
-  digCell(i){ const d=Save.dig(),c=d.board[i]; if(!c||c.open)return;
+  digCell(i){ const d=Save.dig(),c=d.board[i]; if(!c||c.open||this.digBusy())return;
     if((d.shovels||0)<1){ Sfx.select(); this.menuToast(Save.digFreeReady()?'No shovels — claim your free ⛏️ below!':'No shovels left — clear stages to earn more ⛏️','#ff9bb5'); return; }
-    d.shovels--; c.hp--; Sfx.digHit();
-    if(c.hp>0){ Save.save(); this.buildDig(); return; }
-    c.open=true; Sfx.digBreak(); const msg=this.digResolve(c); Save.save(); this.buildDig(); if(msg)this.menuToast(msg.t,msg.c);
+    d.shovels--; c.hp--; Save.save(); this._digBusy=this.time.now;
+    const cont=this._digCells[i],G=this._digGeo,cs=G.cs,cx=cont.x,cy=cont.y;
+    if(this._digInfo)this._digInfo.setText('⛏️ '+d.shovels+'   ·   Depth '+d.depth+'   ·   Best '+d.best);
+    // v5.28 🎬 1) พลั่วเหวี่ยงลง
+    const sh=this.textures.exists('dig_shovel')?this.add.image(cx+cs*0.3,cy-cs*0.3,'dig_shovel').setDisplaySize(cs*0.7,cs*0.7):this.add.text(cx+cs*0.3,cy-cs*0.3,'⛏️',{fontSize:Math.round(cs*0.5)+'px'}).setOrigin(0.5);
+    sh.setRotation(-0.9); this.menu.add(sh);
+    this.tweens.add({targets:sh,rotation:0.45,x:cx+cs*0.12,y:cy-cs*0.08,duration:140,ease:'Quad.in',onComplete:()=>{ this.tweens.add({targets:sh,alpha:0,duration:180,onComplete:()=>sh.destroy()});
+      // 2) กระแทก: สั่น + ฝุ่น
+      Sfx.digHit(); this.tweens.add({targets:cont,x:{from:cx-4,to:cx+4},duration:40,yoyo:true,repeat:2,onComplete:()=>cont.setX(cx)}); this.digDust(cx,cy,cs,4,0.5);
+      if(c.hp>0){ this.drawDigCell(cont,c,cs); this.time.delayedCall(170,()=>{ this._digBusy=false; }); return; }
+      // 3) แตก → เผยของ
+      this.time.delayedCall(170,()=>{ c.open=true; Sfx.digBreak(); this.digShatter(cx,cy,cs,c.hard?0x8a7866:0x96623f); this.drawDigCell(cont,c,cs);
+        const it=cont.list[cont.list.length-1]; const rare=(DIG_ITEMS[c.c]||{}).rare;
+        if(c.c==='chest'){ this.digChestOpen(cont,cx,cy,cs,c); return; }
+        if(it&&c.c!=='empty'){ it.setScale(0); this.tweens.add({targets:it,scale:1.25,duration:180,ease:'Back.out',yoyo:true,hold:60,onComplete:()=>it.setScale(1)}); }
+        if(rare)this.digRareBurst(cx,cy,cs,c.c==='gem'?0xc7a6ff:0xffd166);
+        this.time.delayedCall(rare?760:380,()=>this.digFinish(c,cx,cy));
+      }); }});
   }
+  digBusy(){ return !!this._digBusy&&this.time.now-this._digBusy<3000; }   // กันค้าง: ถ้าอนิเมชันถูกตัด (กด Back) ปลดล็อกเองหลัง 3 วิ
+  // 🎬 ฝุ่นเล็ก ๆ กระเด็น
+  digDust(x,y,cs,n,a){ for(let k=0;k<n;k++){ const p=this.add.circle(x+Phaser.Math.Between(-cs*0.3,cs*0.3),y+cs*0.2,Phaser.Math.Between(3,6),0xc9a27a,a); this.menu.add(p);
+      this.tweens.add({targets:p,x:p.x+Phaser.Math.Between(-24,24),y:p.y-Phaser.Math.Between(10,30),alpha:0,scale:1.8,duration:360,ease:'Cubic.out',onComplete:()=>p.destroy()}); } }
+  // 🎬 ช่องแตกเป็นเศษ 6 ชิ้นตกตามแรงโน้มถ่วง + ควัน
+  digShatter(x,y,cs,col){ for(let k=0;k<6;k++){ const f=this.add.rectangle(x+Phaser.Math.Between(-cs*0.3,cs*0.3),y+Phaser.Math.Between(-cs*0.3,cs*0.3),cs*0.22,cs*0.18,col,1).setStrokeStyle(1.5,0x2a1a12,0.8).setRotation(Math.random()*3); this.menu.add(f);
+      const vx=Phaser.Math.Between(-70,70),up=Phaser.Math.Between(30,60);
+      this.tweens.add({targets:f,x:f.x+vx,duration:420,ease:'Linear'}); this.tweens.add({targets:f,y:f.y-up,duration:160,ease:'Quad.out',onComplete:()=>this.tweens.add({targets:f,y:f.y+up+60,alpha:0,rotation:f.rotation+2,duration:260,ease:'Quad.in',onComplete:()=>f.destroy()})}); }
+    const puff=this.add.circle(x,y,cs*0.3,0xd8c0a0,0.5); this.menu.add(puff); this.tweens.add({targets:puff,scale:2,alpha:0,duration:420,ease:'Cubic.out',onComplete:()=>puff.destroy()}); }
+  // 🎬 ของหายาก: ลำแสงหมุน 8 แฉก + แฟลช + ประกาย
+  digRareBurst(x,y,cs,col){ const rays=this.add.graphics(); rays.fillStyle(col,0.35); for(let k=0;k<8;k++){ const a=k*TAU/8; rays.fillTriangle(0,0,Math.cos(a-0.12)*cs*1.3,Math.sin(a-0.12)*cs*1.3,Math.cos(a+0.12)*cs*1.3,Math.sin(a+0.12)*cs*1.3); }
+    rays.setPosition(x,y).setScale(0.2); this.menu.add(rays);
+    this.tweens.add({targets:rays,scale:1,rotation:1.2,duration:700,ease:'Cubic.out'}); this.tweens.add({targets:rays,alpha:0,delay:450,duration:300,onComplete:()=>rays.destroy()});
+    const fl=this.add.rectangle(0,0,this.W,this.H,col,0.28).setOrigin(0,0); this.menu.add(fl); this.tweens.add({targets:fl,alpha:0,duration:320,onComplete:()=>fl.destroy()});
+    for(let k=0;k<10;k++){ const a=Math.random()*TAU,sp=this.add.text(x,y,'✦',{fontSize:'14px',color:'#fff4c2'}).setOrigin(0.5); this.menu.add(sp);
+      this.tweens.add({targets:sp,x:x+Math.cos(a)*cs*1.1,y:y+Math.sin(a)*cs*1.1,alpha:0,scale:0.4,duration:600,ease:'Cubic.out',onComplete:()=>sp.destroy()}); } }
+  // 🎬 หีบ: สั่น 3 ครั้ง → ฝาเด้ง → ของพุ่งเป็นน้ำพุ
+  digChestOpen(cont,x,y,cs,c){ const it=cont.list[cont.list.length-1]; if(it){it.setScale(0);this.tweens.add({targets:it,scale:1,duration:160,ease:'Back.out'});}
+    this.tweens.add({targets:cont,angle:{from:-8,to:8},duration:70,yoyo:true,repeat:3,delay:180,onComplete:()=>{ cont.setAngle(0);
+      if(it&&it.setText)it.setText('✨'); else if(it&&this.textures.exists('dig_chest_open'))it.setTexture('dig_chest_open');
+      this.digRareBurst(x,y,cs,0xffd166); if(Sfx.chestWin)Sfx.chestWin();
+      for(let k=0;k<8;k++){ const e=this.add.text(x,y,['🍬','✨','🍬','💫'][k%4],{fontSize:'16px'}).setOrigin(0.5); this.menu.add(e); const vx=Phaser.Math.Between(-60,60);
+        this.tweens.add({targets:e,x:x+vx,duration:700}); this.tweens.add({targets:e,y:y-Phaser.Math.Between(50,90),duration:300,ease:'Quad.out',onComplete:()=>this.tweens.add({targets:e,y:y+30,alpha:0,duration:400,ease:'Quad.in',onComplete:()=>e.destroy()})}); }
+      this.time.delayedCall(650,()=>this.digFinish(c,x,y)); }}); }
+  // 🎬 เก็บของ: บินเข้าตัวนับด้านบน แล้วสรุปผล
+  digFinish(c,x,y){ const msg=this.digResolve(c); Save.save(); const info=this._digInfo,it=DIG_ITEMS[c.c]||{};
+    if(info&&it.emoji&&c.c!=='gem'){ const f=this.add.text(x,y,it.emoji,{fontSize:'22px'}).setOrigin(0.5); this.menu.add(f); this.tweens.add({targets:f,x:info.x,y:info.y,scale:0.5,duration:420,ease:'Cubic.in',onComplete:()=>{ f.destroy(); this.tweens.add({targets:info,scale:{from:1.25,to:1},duration:220}); }}); }
+    const delay=c.c==='gem'?300:460;
+    this.time.delayedCall(delay,()=>{ this._digBusy=false; this.buildDig(); if(msg)this.menuToast(msg.t,msg.c);
+      if(c.c==='gem'){ const G=this._digGeo,sz=G.cs*DIG_N+G.gap*(DIG_N-1),gl=this.add.graphics(); gl.lineStyle(6,0xc7a6ff,1); gl.strokeRoundedRect(G.gx-10,G.gy-10,sz+20,sz+20,18); this.menu.add(gl); this.tweens.add({targets:gl,alpha:{from:1,to:0},duration:900,onComplete:()=>gl.destroy()}); } }); }
   digResolve(c){ const d=Save.dig(); c.taken=true;
     if(c.c==='sugar'){ const n=digSugarAmt(d.depth); Save.data.sugar=(Save.data.sugar||0)+n; Sfx.digFind(); return {t:'🍬 +'+n+' Sugar',c:'#ffe08a'}; }
     if(c.c==='chest'){ Sfx.digRare(); const roll=Math.random();
@@ -4956,7 +5004,10 @@ class Game extends Phaser.Scene {
       return {t:'🏺 Ancient Chest!',c:'#ffd166'}; }
     if(c.c==='gem'){ d.gemFound=true; Sfx.digRare(); return {t:'💎 Depth Gem found! The way down is open',c:'#c7a6ff'}; }
     return null; }
-  digDescend(){ const d=Save.dig(); if(!d.gemFound)return; d.depth++; d.best=Math.max(d.best||1,d.depth); d.gemFound=false; d.board=digMakeBoard(d.depth); Save.save(); Sfx.digDescend(); this.buildDig(); this.menuToast('⬇ Depth '+d.depth+' — richer treasure below','#c7a6ff'); }
+  digDescend(){ const d=Save.dig(); if(!d.gemFound||this.digBusy())return; d.depth++; d.best=Math.max(d.best||1,d.depth); d.gemFound=false; d.board=digMakeBoard(d.depth); Save.save(); Sfx.digDescend();
+    // 🎬 กระดานเดิมเลื่อนขึ้นหาย → กระดานใหม่ตกลงมาเด้ง
+    this._digBusy=this.time.now; (this._digCells||[]).forEach((cn,k)=>this.tweens.add({targets:cn,y:cn.y-80,alpha:0,duration:260,delay:k*8,ease:'Cubic.in'}));
+    this.time.delayedCall(420,()=>{ this._digBusy=false; this._digDrop=true; this.buildDig(); this.menuToast('⬇ Depth '+d.depth+' — richer treasure below','#c7a6ff'); }); }
   buildRankPerks(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives');
     const w=this.W,h=this.H;

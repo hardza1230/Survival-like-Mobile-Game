@@ -60,8 +60,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.27.0 — Temple Depths หน้าขุด)
-- **Temple Depths (มินิเกมขุดใต้วิหาร · เจ้าของเลือก):** ดีไซน์เต็มที่ `docs/TEMPLE_DIG_DESIGN.md` (กลไก/อนิเมชัน/เสียง/ใบสั่งอาร์ต key `dig_*`) · แผน commit: 1 doc ✅ · 2 เสียง ✅ · 3 หน้าขุดพื้นฐาน ✅ · 4 อนิเมชัน · 5 หินแก่น→Overcap · 6 คัมภีร์→Perk ลับ · 7 ชั้นลึก/ทางลับ/กับดัก/รอยใบ้ · 8 พลั่วจากด่าน
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.28.0 — Temple Depths อนิเมชัน)
+- **Temple Depths (มินิเกมขุดใต้วิหาร · เจ้าของเลือก):** ดีไซน์เต็มที่ `docs/TEMPLE_DIG_DESIGN.md` (กลไก/อนิเมชัน/เสียง/ใบสั่งอาร์ต key `dig_*`) · แผน commit: 1 doc ✅ · 2 เสียง ✅ · 3 หน้าขุดพื้นฐาน ✅ · 4 อนิเมชัน ✅ · 5 หินแก่น→Overcap · 6 คัมภีร์→Perk ลับ · 7 ชั้นลึก/ทางลับ/กับดัก/รอยใบ้ · 8 พลั่วจากด่าน
+- **v5.28.0:** digCell เล่นอนิเมชันแทน rebuild ทันที: พลั่วเหวี่ยง (`dig_shovel` หรือ ⛏️) → สั่น+`digDust` → `digShatter` เศษ 6 ชิ้น+ควัน → ไอคอนเด้ง · ของหายาก `digRareBurst` (ลำแสง 8 แฉก+แฟลช+ประกาย) · หีบ `digChestOpen` (สั่น→ฝาเปิด→น้ำพุขนม+chestWin) · `digFinish` ของบินเข้าตัวนับแล้ว rebuild · เจอ 💎 กรอบกระดานเรืองม่วง · Descend: กระดานเลื่อนหาย→ใหม่ตกเด้ง (`_digDrop`) · `digBusy()` กันแตะซ้อน + ปลดเองหลัง 3 วิ (กันค้างถ้ากด Back กลางอนิเมชัน) · verified headless 0 error
 - **v5.27.0:** global `DIG_ITEMS/digTable/digRollContent/digMakeBoard/digSugarAmt` · `Save.dig()` (`data.dig={shovels,depth,best,board,gemFound,freeDay}` เริ่ม 5 พลั่ว) · `digFreeReady/digClaimFree/addShovels` · menuScreen 'dig' → `buildDig` (กริด 5×5, ปุ่มฟรีรายวัน, Descend) · `drawDigCell` (ใช้ texture `dig_tile_soil/rock/crack/dig_<item>` ถ้ามี ไม่งั้นวาดโค้ด+อีโมจิ) · `digCell/digResolve/digDescend` · หินแข็ง hp2 · ปุ่ม ⛏️ Depths ข้าง Rank Perks ใน buildUpgrade (+จุดแดงเมื่อฟรีพร้อม) · verified headless 0 error
 - **v5.26.0:** gen_stingers_synth +6 เสียง `sfx_dig_hit/break/find/rare/trap/descend` (assets/audio/sfx/gen) · `Sfx.digHit/digBreak/digFind/digRare/digTrap/digDescend` (ยังไม่ถูกเรียก) · verified headless โหลด+เล่นได้
 - **v5.25.0 (เจ้าของ: เลเวลขึ้นเร็วไป):** xpNext เริ่ม 10→12 · โต ×1.26+4 → ×1.26+6 (EXP สะสมถึง Lv10 +32%, Lv20 +35%) · verified headless 0 error
