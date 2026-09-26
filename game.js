@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.70.0';
+const GAME_VERSION = '5.70.1';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.70.1', date:'2026-09-26', title:'Tutorial dash fix', items:['Fixed the tutorial Dash step never completing'] },
   { v:'5.70.0', date:'2026-09-26', title:'Cocoa: stacked dashes + Shock Knuckles', items:['Cocoa stores 2 Dash charges (more with Dash Stack / Dash Boxer) — dash several times in a row','Charges refill one at a time, shown as gold dots around the Dash button','Brawler: every combo finisher now blasts a shockwave around Cocoa','Jab Chain card replaced by Shock Knuckles: +1 extra shockwave per rank'] },
   { v:'5.69.0', date:'2026-09-26', title:'Cocoa: 5-beat boxing combo', items:['Normal attacks now flow in a 1-2-3-4-5 rhythm, one punch per beat, with the 5th beat as a finisher','The punch set rotates every cycle (jab, cross, hooks, body blow, overhand, uppercut, slam) so the combo never repeats','Far fewer jabs','Pressing Dash now cancels the combo cleanly and dashes without stutter'] },
   { v:'5.68.0', date:'2026-09-26', title:'Cocoa: no chasing, boss focus', items:['Normal combo no longer lunges toward enemies — Cocoa punches from where she stands','Bear Beat Rush now focuses every punch on the boss or miniboss when one is nearby','After a Beat Rush on a boss, Cocoa hops back out of reach'] },
@@ -3605,7 +3606,7 @@ class Game extends Phaser.Scene {
     const coc=this.character==='cocoa';   // v5.70 โกโก้สะสม Dash ได้หลายชาร์จ
     if(coc){ if(this.state!=='play'||(this.dashTime||0)>0.06)return; if(this._dpCh==null)this._dpCh=this.cocoaDashMax(); if(this._dpCh<=0)return; this._dpCh--; }
     else if(!this.dashReady||this.state!=='play') return;
-    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(this.character==='cocoa'&&this._cc){ this._cc.gen=(this._cc.gen||0)+1; this._cc.step=0; this.tweens.killTweensOf(this.player); this.skillCd.meteor=Math.max(this.skillCd.meteor||0,0.3); }   // v5.69 dash ตัดคอมโบ this._coachDash=(this._coachDash||0)+1;
+    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(this.character==='cocoa'&&this._cc){ this._cc.gen=(this._cc.gen||0)+1; this._cc.step=0; this.tweens.killTweensOf(this.player); this.skillCd.meteor=Math.max(this.skillCd.meteor||0,0.3); } this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
     this.player.setVelocity(d.x*560,d.y*560);
