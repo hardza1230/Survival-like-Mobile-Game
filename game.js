@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.33.0';
+const GAME_VERSION = '5.34.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.34.0', date:'2026-09-26', title:'🍬+🧶 Weave costs', items:['Each core’s first level costs Sugar only','From level 2 on, cores cost Sugar plus 🧶 Weave Thread','Overcap costs Core Stones, Weave Thread and Sugar']},
   { v:'5.33.0', date:'2026-09-26', title:'🧶 Weave Thread', items:['Flavor Weave cores and Overcap now cost 🧶 Weave Thread instead of Sugar','Dig Weave Thread in Temple Depths (+40 as a starter gift)','Stage clears now give more shovels: Normal 2 · Hard 3 · Hell 4']},
   { v:'5.32.0', date:'2026-09-26', title:'⛏️ Shovels from battle', items:['Clearing a stage gives shovels: Normal 1 · Hard 2 · Hell 3','Minibosses have a 25% chance to drop a shovel']},
   { v:'5.31.0', date:'2026-09-26', title:'🕳️ Secrets of the Depths', items:['Tiles hiding rare treasure sometimes glitter ✦','Watch out for 🪤 traps — they cost an extra shovel','Rare 🕳️ Secret Passages drop you 2 depths into a Hidden Vault full of treasure']},
@@ -1949,7 +1950,7 @@ const ANCIENT_PERKS=[
   { id:'deepRoots',     emoji:'🌳', name:'Deep Roots',     desc:'+8% max HP · +0.6 HP regen per second' },
 ];
 const OVERCAP_MAX=6;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
-function overcapCost(lvl){ return {stones:lvl+1,threads:90*(lvl+1)}; }
+function overcapCost(lvl){ return {stones:lvl+1,threads:90*(lvl+1),sugar:150*(lvl+1)}; }
 // ตารางน้ำหนักของในกระดาน (commit ถัดไปเติมหินแก่น/คัมภีร์/กับดัก/ทางลับ)
 function digTable(depth){ return [['empty',30],['thread',45],['chest',5+depth*0.6],['stone',8+depth*0.8],['scroll',4+depth*0.5],['trap',6+depth*0.4]]; }
 function digRollContent(depth){ const t=digTable(depth); let sum=0; for(const x of t)sum+=x[1]; let r=Math.random()*sum; for(const x of t){ r-=x[1]; if(r<=0)return x[0]==='stone'?'stone_'+Phaser.Utils.Array.GetRandom(['hp','dmg','def']):x[0]; } return 'empty'; }
@@ -2553,15 +2554,17 @@ const Save = {
   ancientHas(id){ return !!(this.data.ancient||{})[id]; },
   scrolls(){ return this.data.scrolls||0; },
   unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
-  buyOvercap(k){ const lvl=this.overcap(k); if(lvl>=OVERCAP_MAX)return false; const c=overcapCost(lvl); if(this.coreStones(k)<c.stones||this.threads()<c.threads)return false;
-    this.data.coreStones[k]-=c.stones; this.data.threads-=c.threads; if(!this.data.overcap)this.data.overcap={}; this.data.overcap[k]=lvl+1; this.save(); return true; },   // ผลรวมที่ใช้จริง (ยศ+Waitบนี้)
-  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base/5*(lvl+1)*(1+rank*0.8)); },   // v5.33 หน่วย = 🧶 ด้าย (เดิม Sugar)
+  buyOvercap(k){ const lvl=this.overcap(k); if(lvl>=OVERCAP_MAX)return false; const c=overcapCost(lvl); if(this.coreStones(k)<c.stones||this.threads()<c.threads||(this.data.sugar||0)<c.sugar)return false;
+    this.data.coreStones[k]-=c.stones; this.data.threads-=c.threads; this.data.sugar-=c.sugar; if(!this.data.overcap)this.data.overcap={}; this.data.overcap[k]=lvl+1; this.save(); return true; },   // ผลรวมที่ใช้จริง (ยศ+Waitบนี้)
+  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank*0.8)); },   // 🍬 Sugar
+  talThreadCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return lvl<1?0:Math.round(UPGRADES[k].base/5*(lvl+1)*(1+rank*0.8)); },   // v5.34 🧶 ด้าย ตั้งแต่ขั้น 2 (ขั้นแรก Sugar อย่างเดียว — ผูก tutorial)
+  talCanBuy(k){ return this.talLvl(k)<TAL_MAX&&(this.data.sugar||0)>=this.talCost(k)&&this.threads()>=this.talThreadCost(k); },
   threads(){ return this.data.threads||0; },
   addThreads(n){ this.data.threads=this.threads()+n; this.save(); },
   spendThreads(n){ if(this.threads()<n)return false; this.data.threads-=n; this.save(); return true; },
   talAllMax(){ return UPG_ORDER.every(k=>this.talLvl(k)>=TAL_MAX); },
   talFilled(){ let t=0; for(const k of UPG_ORDER) t+=this.talLvl(k); return t; },   // ความคืบหน้าWaitบนี้
-  buyTal(k){ if(this.talLvl(k)>=TAL_MAX)return false; const c=this.talCost(k); if(!this.spendThreads(c))return false;
+  buyTal(k){ if(this.talLvl(k)>=TAL_MAX)return false; if(!this.talCanBuy(k))return false; this.data.sugar-=this.talCost(k); this.data.threads=this.threads()-this.talThreadCost(k);
     this.data.upgrades[k]=this.talLvl(k)+1; this.save(); return true; },
   promote(){ if(!this.talAllMax())return 0; const rank=this.data.rank||0; const rew=promoteReward(rank);
     this.data.rank=rank+1; for(const k of UPG_ORDER) this.data.upgrades[k]=0;
@@ -3906,7 +3909,7 @@ class Game extends Phaser.Scene {
     const t=ratio>=1.15?{label:'💪 Strong',color:0x66e0a0}:ratio>=0.9?{label:'✅ Ready',color:0x8fe3d0}:ratio>=0.7?{label:'⚠️ Tough',color:0xffc857}:{label:'⛔ Underpowered',color:0xff6b7d};
     return {cur,rec,ratio,...t,hex:'#'+t.color.toString(16).padStart(6,'0')}; }
   // คำแนะนำ "ทำอะไรให้เก่งขึ้น" + หน้าที่จะพาไป
-  powerAdvice(idx){ const thr=Save.threads(),afford=UPG_ORDER.filter(k=>Save.talLvl(k)<TAL_MAX&&Save.talCost(k)<=thr).length;
+  powerAdvice(idx){ const thr=Save.threads(),afford=UPG_ORDER.filter(k=>Save.talCanBuy(k)).length; void thr;
     if(afford>0)return {text:'💡 You can afford '+afford+' Flavor Weave upgrade'+(afford>1?'s':'')+' — tap to power up ›',screen:'upgrade'};
     const prev=idx-1;if(prev>=0&&STAGES[prev]){const p=STAGES[prev],lab=p.chapterStage?('C'+(p.chapter+1)+'-'+p.chapterStage):('Stage '+(prev+1));return {text:'💡 Replay '+lab+' on Hard for better gear, then equip it ›',screen:'gear'};}
     return {text:'💡 Equip and enhance better gear ›',screen:'gear'}; }
@@ -4917,10 +4920,10 @@ class Game extends Phaser.Scene {
     const prog=this.add.text(w/2,by+17,'Woven core power '+Save.talFilled()+' / '+need+(allMax?' · ready to weave':''),
       {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':'#8f849f'}).setOrigin(0.5);
     this.menu.add(prog);
-    if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Weave Thread!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
+    if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Sugar!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
     const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-270-gapY*2)/3):Math.min(132,h-170),top=portrait?198:112;
     UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.talLvl(k), tot=Save.talTotal(k), maxed=lvl>=TAL_MAX;
-      const cost=maxed?0:Save.talCost(k), afford=Save.threads()>=cost;
+      const cost=maxed?0:Save.talCost(k), tcost=maxed?0:Save.talThreadCost(k), afford=Save.talCanBuy(k);
       const x=portrait?marginX:marginX+i*(cardW+gapX), y=portrait?top+i*(cardH+gapY):top;
       const g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
       g.lineStyle(2.5,maxed?0x8bd3a0:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
@@ -4933,16 +4936,16 @@ class Game extends Phaser.Scene {
       const gain=this.add.text(x+75,y+49,'Total: '+u.show(tot),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:'#8bd3a0'}).setOrigin(0,0);
       const pw=Math.min(100,cardW-82),ph=29,ppx=x+cardW-pw-10,ppy=y+cardH-ph-10;
       const pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(ppx,ppy,pw,ph,10);
-      const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🧶 '+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
+      const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🍬'+cost+(tcost?' 🧶'+tcost:'')),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
       this.menu.add([g,em,st,tag,nm,gain,pg,pt]);
       // v5.29 ⬆ Overcap ด้วยหินแก่นจากห้องลับใต้วิหาร
-      { const oc=Save.overcap(k),ocMax=oc>=OVERCAP_MAX,cst=overcapCost(oc),stn=Save.coreStones(k),ok=!ocMax&&stn>=cst.stones&&Save.threads()>=cst.threads,se={hp:'🔴',dmg:'🟠',def:'🔵'}[k];
+      { const oc=Save.overcap(k),ocMax=oc>=OVERCAP_MAX,cst=overcapCost(oc),stn=Save.coreStones(k),ok=!ocMax&&stn>=cst.stones&&Save.threads()>=cst.threads&&(Save.data.sugar||0)>=cst.sugar,se={hp:'🔴',dmg:'🟠',def:'🔵'}[k];
         const ow=Math.max(60,ppx-x-75-8),oh=ph,ox=x+75,oy=ppy;
         if(ow>=60){ const og=this.add.graphics(); og.fillStyle(ok?0x4a3a1a:0x2a2232,1); og.fillRoundedRect(ox,oy,ow,oh,10); og.lineStyle(1.5,ok?0xffd166:0x3a3048,1); og.strokeRoundedRect(ox,oy,ow,oh,10);
-          const ot=this.add.text(ox+ow/2,oy+oh/2,ocMax?('⬆ Overcap MAX +'+oc):('⬆ +'+oc+'/'+OVERCAP_MAX+' · '+se+stn+'/'+cst.stones+' 🧶'+cst.threads),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ow<130?'8px':'9.5px',color:ocMax?'#8bd3a0':(ok?'#ffe08a':'#8d8195')}).setOrigin(0.5);
-          this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.digRare(); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):'Need 🧶 '+cst.threads+' Weave Thread','#ff9bb5'); } this.buildMenuScreen(); }); }
+          const ot=this.add.text(ox+ow/2,oy+oh/2,ocMax?('⬆ Overcap MAX +'+oc):('⬆ +'+oc+'/'+OVERCAP_MAX+' · '+se+stn+'/'+cst.stones+' 🧶'+cst.threads+' 🍬'+cst.sugar),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ow<130?'8px':'9.5px',color:ocMax?'#8bd3a0':(ok?'#ffe08a':'#8d8195')}).setOrigin(0.5);
+          this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.digRare(); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):(Save.threads()<cst.threads?'Need 🧶 '+cst.threads+' Weave Thread':'Need 🍬 '+cst.sugar+' Sugar'),'#ff9bb5'); } this.buildMenuScreen(); }); }
         if(oc>0)st.setText(stars+' +'+oc); }
-      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🧶 '+cost+' Weave Thread — dig for it in ⛏️ Depths','#ff9bb5'); } this.buildMenuScreen(); });
+      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast((Save.data.sugar||0)<cost?'Need 🍬 '+cost+' Sugar':'Need 🧶 '+tcost+' Weave Thread — dig for it in ⛏️ Depths','#ff9bb5'); } this.buildMenuScreen(); });
     });
     const py=portrait?Math.min(h-58,top+UPG_ORDER.length*(cardH+gapY)+4):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
     const pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
@@ -6877,7 +6880,7 @@ class Game extends Phaser.Scene {
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this._tutorialWeaveCoach=true;
     this.exitStage(); this.menuScreen='upgrade'; this.buildMenuScreen();
-    this.menuToast&&this.menuToast('🍓 Tap a core to spend your Weave Thread and grow stronger!','#ffe08a');
+    this.menuToast&&this.menuToast('🍓 Tap a core to spend your Sugar and grow stronger!','#ffe08a');
   }
   showBanner(title,sub,ms){
     if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังNone HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash

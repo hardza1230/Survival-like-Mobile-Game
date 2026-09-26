@@ -60,8 +60,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.33.0 — Weave Thread)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.34.0 — Weave ใช้ Sugar+ด้าย)
 - **Temple Depths (มินิเกมขุดใต้วิหาร · เจ้าของเลือก):** ดีไซน์เต็มที่ `docs/TEMPLE_DIG_DESIGN.md` (กลไก/อนิเมชัน/เสียง/ใบสั่งอาร์ต key `dig_*`) · แผน commit: 1 doc ✅ · 2 เสียง ✅ · 3 หน้าขุดพื้นฐาน ✅ · 4 อนิเมชัน ✅ · 5 หินแก่น→Overcap ✅ · 6 คัมภีร์→Perk ลับ ✅ · 7 ชั้นลึก/ทางลับ/กับดัก/รอยใบ้ ✅ · 8 พลั่วจากด่าน ✅ · **เหลือ: อาร์ตจริงตาม §6 ของ doc (AI อีกตัว) + จูนตัวเลขจากการเล่นจริง**
+- **v5.34.0 (เจ้าของแก้: ผสม Sugar+ด้าย):** `talCost`=Sugar ราคาเดิม (base×(lvl+1)×(1+rank·0.8)) · `talThreadCost`=0 ที่ขั้นแรก (Lv0→1 ผูก tutorial) ไม่งั้น base/5×(lvl+1)×… · `talCanBuy` เช็คทั้งคู่ · Overcap = หิน + ด้าย 90N + Sugar 150N · ข้อความ tutorial กลับเป็น Sugar · verified: Lv1 หัก Sugar อย่างเดียว, Lv2 ไม่มีด้ายซื้อไม่ได้, มีด้ายหักทั้งคู่
 - **v5.33.0 (เจ้าของ: เลิกใช้ Sugar อัปวิหาร):** วัสดุใหม่ 🧶 Weave Thread (`Save.threads/addThreads/spendThreads`, `data.threads`) ได้จากขุดเท่านั้น · ช่อง `thread` (น้ำหนัก 45, empty 30) `digThreadAmt` 8–18×(1+depth·0.12) · หีบ threads×4 · ช่อง `sugar` ในเซฟเก่า = ด้าย · `talCost` = base/5 ×(lvl+1)×(1+rank·0.8) หน่วยด้าย · buyTal ใช้ด้าย · Overcap = หินแก่น + ด้าย 90×N · ของขวัญด้าย 40 ครั้งแรก (`threadsGift` ใน Save.dig; tutorial เรียก) · powerAdvice/ไกด์ Hub นับด้าย · พลั่วจบด่าน = diff+1 (2/3/4) · Sugar ยังใช้กับตัวละคร/Bazaar/gacha ตามเดิม · verified 0 error
 - **v5.32.0:** onStageClear +พลั่วตาม stageDiff (1/2/3, ไม่ให้ใน tutorial) + banner · มินิบอส 25% +1 พลั่ว · verified Hell clear 5→8
 - **v5.31.0:** DIG_ITEMS `trap` 🪤 (6+depth×0.4 → −1 พลั่ว + แฟลชแดง/เมนูสั่น) · `stair` 🕳️ (8%/กระดาน → `d.stairFound` → Descend ลง 2 ชั้น + `d.secret` Hidden Vault กระดานสุ่มด้วย depth+4) · `c.hint` 60% ของของหายาก → ✦ กะพริบบนช่อง · verified headless 0 error
