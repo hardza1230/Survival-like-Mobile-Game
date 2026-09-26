@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.57.0';
+const GAME_VERSION = '5.58.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.58.0', date:'2026-09-26', title:'🔗 Beat Rush: Chain & Swipe', items:['Cocoa’s Unique is reworked: hold to drag one line through enemies — each gets a random punch color','3 of the same color in a row unlocks its special, all 4 colors = Rainbow Combo','Then swipe the arrows anywhere on screen — fast swipes are PERFECT, all PERFECT = BEAR FEVER','Tap for a quick 2-swipe burst around you','The punch buttons and BEAT! bar are gone'] },
   { v:'5.57.0', date:'2026-09-26', title:'🥁 Easier Beat Rush', items:['The next punch button glows — just tap what lights up, no timer while you enter punches','The beat bar only starts after your punches are in, then one BEAT! on ✦','Wrong taps no longer lose punches (they only block PERFECT)','Wider timing windows, shorter rows (3 quick / 4-5-6 full) and the game fully pauses during the mini-game','Half of the rows are built to trigger a special move'] },
   { v:'5.56.0', date:'2026-09-26', title:'🔊 Beat Rush Sounds', items:['Bear Beat Rush now plays a drum groove, and the ✦ mark lands exactly on the beat','A chime cues you one beat before BEAT!','New sounds for holding the button, the punch rush, Machine Gun Paws, Cocoa Cyclone, Titan Crush, Sky Juggle, Rainbow Combo and BEAR FEVER'] },
   { v:'5.55.0', date:'2026-09-26', title:'🥁 Cocoa: Bear Beat Rush', items:['New Cocoa Unique: a rhythm mini-game — tap for a quick round, hold for the full 3 rounds','Hit the random punch sequence, then press BEAT! on the mark — PERFECT timing and punch mixes unlock Machine Gun Paws, Cocoa Cyclone, Titan Crush, Sky Juggle, Rainbow Combo and BEAR FEVER','Gauge refills in 30s, faster when you punch and take hits (15s minimum)','Cocoa no longer lunges on her own, long combos reduce damage taken, and punching bosses heals a little'] },
@@ -1822,7 +1823,7 @@ const CHARACTER_UNIQUES = {
   berryRebound:{name:'Strawberry Rebound',emoji:'🍓',cd:8,color:0xff76a8,desc:'Fires sweet seeds all around and heals HP — moderate power, low cooldown'},
   mintSanctuary:{name:'Mint Gale',emoji:'🌬️',cd:10,color:0x8fd0ff,desc:'A cool gust wraps around you — run much faster for a few seconds, ignore slows and push nearby enemies away'},
   voidPull:{name:'Dark Chocolate Void',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'Opens a black hole that pulls enemies in for continuous damage, then implodes'},
-  flickerStrike:{name:'Bear Beat Rush',emoji:'🥁',cd:30,color:0x9f6bff,desc:'Tap for a quick 1-round rhythm combo, hold for the full 3 rounds — hit the punches on the beat to unleash a massive punch storm. Gauge refills faster when you fight up close'},
+  flickerStrike:{name:'Bear Beat Rush',emoji:'🥁',cd:30,color:0x9f6bff,desc:'Hold: drag one line through enemies (random punch colors), then swipe the arrows to unleash a punch storm. Tap: quick 2-swipe burst. Gauge refills faster up close'},
   pathRecall:{name:'Taro Chain Bolt',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'Fires lightning that chains from enemy to enemy, then refunds Dash and boosts speed'},
   oathMirror:{name:'Prism Barrage',emoji:'🔮',cd:12,color:0xc86bff,desc:'Channels the mirror, then unleashes sweeping prism beams with a heavy central beam that shreds bosses'},
   jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'Overdrives the heart-seed gun, firing lock-on barrages and adding barrels as it levels'},
@@ -1833,7 +1834,7 @@ const UNIQUE_TIERS={
   berryRebound:{2:'More seeds and more HP recovery',3:'Stronger seeds with a wider spread',4:'Berry Crown fires 20+ seeds with max healing'},
   mintSanctuary:{2:'Faster and longer gale',3:'Stronger push when it starts',4:'Tailwind — the longest, fastest gale'},
   voidPull:{2:'Wider hole that pulls harder',3:'Lasts longer + stronger DoT',4:'Singularity — a giant hole pulls the whole screen and ends in a violent blast'},
-  flickerStrike:{2:'Full mode plays 3 rounds',3:'Slower beat bar — easier timing',4:'Special combos need 1 fewer punch'},
+  flickerStrike:{2:'Stronger punch storm',3:'Stronger punch storm',4:'Same-color specials need only 2 in a row'},
   pathRecall:{2:'More chains and jump range',3:'Bolt splits into two, spreading wider',4:'Storm Arc — chains across the field with max damage'},
   oathMirror:{2:'More beams and volleys',3:'Longer, harder-hitting beams',4:'Perfect Oath — heals HP after the barrage'},
   jamOverdrive:{2:'More barrels and salvos',3:'Fires faster and pierces one enemy',4:'Berry Barrage — three barrels pierce the crowd at full power'},
@@ -3489,7 +3490,7 @@ class Game extends Phaser.Scene {
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
 
-      if(this._beat){ this.beatTap(p.x,p.y); return; }   // v5.55 มินิเกม Bear Beat Rush กินทุกการแตะ
+      if(this._beat){ this.beatDown(p); return; }   // v5.55 มินิเกม Bear Beat Rush กินทุกการแตะ
       if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0){this._ubHold={id:p.id,t:performance.now()}; Sfx.beatFx('hold');} return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
       if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.doDash(); return; }
@@ -3500,6 +3501,7 @@ class Game extends Phaser.Scene {
       this.joyKnob.setPosition(p.x,p.y).setVisible(true);
     });
     this.input.on('pointermove',(p)=>{
+      if(this._beat){ this.beatMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(!this.joy.active||p.id!==this.joy.id) return;
       p={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id};
       let dx=p.x-this.joy.bx, dy=p.y-this.joy.by; const len=Math.hypot(dx,dy), max=60;
@@ -3507,7 +3509,8 @@ class Game extends Phaser.Scene {
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
     });
     this.input.on('pointerup',(p)=>{
-      if(this._ubHold&&this._ubHold.id===p.id){ this._ubHold=null; this.startBeatRush(false); }   // แตะสั้น = 1 รอบ
+      if(this._ubHold&&this._ubHold.id===p.id){ this._ubHold=null; this.startBeatRush(false); return; }   // แตะสั้น = quick (ปัด 2 ครั้ง)
+      if(this._beat){ this.beatUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
         this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
     });
@@ -8292,103 +8295,101 @@ class Game extends Phaser.Scene {
   cocoaBeatCharge(sec){ if(this.character!=='cocoa'||!(this.uniqueCd>0))return; const floor=Math.max(0,15-((this.elapsed||0)-(this._beatUsedAt??-99)));
     this.uniqueCd=Math.max(floor,this.uniqueCd-sec); }
   // ===== 🥁 Bear Beat Rush (มินิเกมจังหวะแบบ Audition) =====
+  // ===== 🥁 Bear Beat Rush v2 (v5.58) — ลากเส้นเชื่อมมอน (Chain) + ปัดปิดท้าย (Swipe) =====
   startBeatRush(full){ if(this.state!=='play'||this._beat||this.uniqueCd>0)return; const u=this.uniqueInfo(),ul=this.uniqueLevel||1;
     this.uniqueCd=this.uniqueCooldown(u); this._beatUsedAt=this.elapsed||0; this.flashBtn(this.uniqueBtn); this.poseFlash(CF.cast,520);
     this._coachUnique=(this._coachUnique||0)+1; this.fireRecipes('unique');
     if(this.joy){this.joy.active=false;this.joy.dx=0;this.joy.dy=0;this.joyBase&&this.joyBase.setVisible(false);this.joyKnob&&this.joyKnob.setVisible(false);}
-    const sizes=full?(ul>=2?[4,5,6]:[4,5]):[3];
-    this._beat={full,sizes,ri:-1,ul,pts:{jab:0,hook:0,heavy:0,upper:0},total:0,specials:new Set(),perfects:0,rounds:sizes.length,wait:0.35};
-    this.physics.pause(); this.time.paused=true; this.tweens.timeScale=1;   // v5.57 หยุดเกมทั้งหมดระหว่างมินิเกม
-    this.buildBeatUI(); Sfx.beatStart&&Sfx.beatStart(); }
-  beatNextRound(){ const B=this._beat; B.ri++; if(B.ri>=B.sizes.length){ this.finishBeat(); return; }
-    const n=B.sizes[B.ri], T=BEAT_PUNCHES.map(p=>p.id);
-    let seq=Array.from({length:n},()=>T[Math.floor(Math.random()*T.length)]);
-    if(Math.random()<0.5){ const need=3-(B.ul>=4?1:0), pick=Phaser.Utils.Array.GetRandom(['gun','cyclone','titan','juggle','rainbow']);
-      const base=pick==='rainbow'?T.slice():Array(need).fill({gun:'jab',cyclone:'hook',titan:'heavy',juggle:'upper'}[pick]);
-      seq=Phaser.Utils.Array.Shuffle(base.concat(Array.from({length:Math.max(0,n-base.length)},()=>T[Math.floor(Math.random()*T.length)]))).slice(0,Math.max(n,base.length)); }
-    B.seq=seq; B.st=B.seq.map(()=>0); B.idx=0; B.t=0; B.graded=null; B.wrong=0; B.phase='input';
-    // v5.56 ล็อกเป้า ✦ ให้ตรงบีตของเพลง (120BPM · Lv3 = 100BPM)
-    B.spb=B.ul>=3?0.6:0.5; const m=Math.ceil((1.6+n*0.35)*0.85/B.spb); B.m=4; B.D=4*B.spb/0.85; B.tick=0; B.bi=0; Sfx.stopBeatLoop(); this._beatMarker&&this._beatBar&&this._beatMarker.setX(this._beatBar.x0); this.drawBeatRow(); }
-  beatSpecials(seq){ const thr=this._beat.ul>=4?1:0, c={}; seq.forEach(k=>c[k]=(c[k]||0)+1); const out=[];
-    if((c.jab||0)>=3-thr)out.push('gun'); if((c.hook||0)>=3-thr)out.push('cyclone'); if((c.heavy||0)>=3-thr)out.push('titan'); if((c.upper||0)>=3-thr)out.push('juggle');
-    if(Object.keys(c).length>=4)out.push('rainbow'); return out; }
+    this.physics.pause(); this.time.paused=true; this.tweens.timeScale=1;
+    const B=this._beat={full,ul,chain:[],col:new Map(),drag:null,finger:null,t:0,phase:'chain',ignoreId:full?this._holdPid:null,arrows:[],ai:0,grades:[],sw:null};
+    const cam=this.cameras.main,wv=cam.worldView,T=BEAT_PUNCHES.map(p=>p.id);
+    if(full)this.enemies.children.iterate(e=>{ if(e&&e.active&&e.x>wv.x-20&&e.x<wv.right+20&&e.y>wv.y-20&&e.y<wv.bottom+20)B.col.set(e,T[Math.floor(Math.random()*T.length)]); });
+    this.buildBeatUI(); Sfx.beatStart&&Sfx.beatStart();
+    if(!full||B.col.size===0)this.beatToSwipe(); }
+  beatWorld(x,y){ const cam=this.cameras.main,wv=cam.worldView; return {x:wv.x+x/cam.zoom,y:wv.y+y/cam.zoom}; }
+  beatScreen(wx,wy){ const cam=this.cameras.main,wv=cam.worldView; return {x:(wx-wv.x)*cam.zoom,y:(wy-wv.y)*cam.zoom}; }
   buildBeatUI(){ this.destroyBeatUI(); const W=this.W,H=this.H,C=this.camUI(this.add.container(0,0).setDepth(200000)); this._beatUI=C;
-    C.add(this.add.rectangle(W/2,H/2,W,H,0x14061f,0.62));
-    C.add(this.add.text(W/2,H*0.17,'🥁 BEAR BEAT RUSH',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffd9a8',stroke:'#3a1a08',strokeThickness:5}).setOrigin(.5));
-    this._beatRoundTxt=this.add.text(W/2,H*0.17+24,'',{fontFamily:'sans-serif',fontSize:'12px',color:'#e8d9ff'}).setOrigin(.5); C.add(this._beatRoundTxt);
-    this._beatRowC=this.add.container(0,0); C.add(this._beatRowC);
-    const bx0=W*0.1,bx1=W*0.9,by=H*0.36; this._beatBar={x0:bx0,x1:bx1,y:by};
-    const g=this.add.graphics(); g.fillStyle(0x000000,0.5).fillRoundedRect(bx0,by-8,bx1-bx0,16,8); const tx=bx0+(bx1-bx0)*0.85;
-    g.fillStyle(0x4fd08a,0.55).fillRect(tx-10,by-8,20,16); g.fillStyle(0xffd23f,0.9).fillRect(tx-3,by-11,6,22); C.add(g);
-    C.add(this.add.text(tx,by-22,'✦',{fontSize:'16px',color:'#ffd23f'}).setOrigin(.5));
-    this._beatMarker=this.add.rectangle(bx0,by,6,26,0xffffff).setStrokeStyle(2,0x3a1a08); C.add(this._beatMarker);
-    this._beatHint=this.add.text(W/2,by+30,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#bfe8d6',align:'center'}).setOrigin(.5); C.add(this._beatHint);
-    this._beatGrade=this.add.text(W/2,by+62,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffffff',stroke:'#000',strokeThickness:5}).setOrigin(.5); C.add(this._beatGrade);
-    const cx=W/2, cy=H-Math.min(210,H*0.26), sp=Math.min(84,W*0.2), r=Math.min(36,W*0.09); this._beatBtns=[];
-    const mk=(id,dx,dy,col,emo,label,rr)=>{ const x=cx+dx,y=cy+dy; const c=this.add.circle(x,y,rr,col,0.85).setStrokeStyle(3,0xffffff,0.9); const t=this.add.text(x,y-5,emo,{fontSize:(rr*0.7|0)+'px'}).setOrigin(.5);
-      const l=this.add.text(x,y+rr*0.52,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff',stroke:'#000',strokeThickness:3}).setOrigin(.5); C.add([c,t,l]); this._beatBtns.push({id,x,y,r:rr,c}); };
-    BEAT_PUNCHES.forEach(p=>mk(p.id,p.dx*sp,p.dy*sp,p.col,p.emoji,p.name,r)); mk('beat',0,0,0xffc233,'✦','BEAT!',r*1.1);
-    this._beatGlowG=this.add.graphics(); C.add(this._beatGlowG);
-    this._beat.wait=0.35; }
-  drawBeatRow(){ const B=this._beat,C=this._beatRowC; if(!C)return; C.removeAll(true); const W=this.W,y=this.H*0.27,n=B.seq.length,sp=Math.min(50,(W-40)/n),x0=W/2-(n-1)*sp/2;
-    B.icons=B.seq.map((k,i)=>{ const d=BEAT_PUNCHES.find(p=>p.id===k), st=B.st[i]; const col=st===1?0xffd23f:st===-1?0x552233:d.col;
-      const c=this.add.circle(x0+i*sp,y,sp*0.42,col,st===0?0.9:1).setStrokeStyle(i===B.idx&&!B.graded?3:1.5,0xffffff,i===B.idx&&!B.graded?1:0.5); const t=this.add.text(x0+i*sp,y,st===-1?'✖':d.emoji,{fontSize:(sp*0.42|0)+'px'}).setOrigin(.5);
-      C.add([c,t]); return c; });
-    this._beatRoundTxt.setText('Round '+(B.ri+1)+' / '+B.sizes.length+(B.full?'':'  ·  quick'));
-    const sp2=this.beatSpecials(B.seq).map(k=>BEAT_SPECIALS[k].name); this._beatHint.setText((B.phase==='beat'?'Now BEAT! on ✦ — listen for the chime':'Tap the glowing punch — no rush')+(sp2.length?('\n★ '+sp2.join(' + ')):'')); }
-  beatTap(x,y){ const B=this._beat; if(!B||B.ri<0||B.graded||B.wait>0)return; let hit=null,bd=1e9;
-    for(const b of this._beatBtns||[]){ const d=this.dist(x,y,b.x,b.y); if(d<b.r+14&&d<bd){bd=d;hit=b;} } if(!hit)return;
-    this.tweens.add({targets:hit.c,scale:{from:1.2,to:1},duration:120});
-    if(hit.id==='beat'){ if(B.phase==='beat')this.gradeBeat(); return; }
-    if(B.phase!=='input')return;
-    if(hit.id===B.seq[B.idx]){ B.st[B.idx]=1; Sfx.comboPunch(B.idx+B.ri*4,'jab'); B.idx++;
-      if(B.idx>=B.seq.length){ B.phase='beat'; B.t=0; B.tick=0; B.bi=0; Sfx.beatLoop(0.5/B.spb); }
-      this.drawBeatRow(); }
-    else { B.wrong++; Sfx.beatGrade&&Sfx.beatGrade('miss'); this.tweens.add({targets:hit.c,x:{from:hit.x-6,to:hit.x},duration:160,ease:'Bounce.out'}); } }
-  gradeBeat(){ const B=this._beat; const dt=Math.abs(B.t-B.D*0.85)*1000; let g=dt<=100?'PERFECT':dt<=180?'GREAT':dt<=300?'COOL':'MISS'; if(g==='PERFECT'&&B.wrong>0)g='GREAT'; this.applyBeatGrade(g); }
-  applyBeatGrade(g){ const B=this._beat; B.graded=g; const gm=BEAT_GRADES[g];
-    B.seq.forEach((k,i)=>{ if(B.st[i]===1){ B.pts[k]+=gm; B.total+=gm; } });
-    const clean=B.idx>=B.seq.length&&g!=='MISS'; if(clean)this.beatSpecials(B.seq).forEach(k=>B.specials.add(k));
-    if(g==='PERFECT'&&clean)B.perfects++;
-    const col={PERFECT:'#ffd23f',GREAT:'#7dffb0',COOL:'#8fd0ff',MISS:'#ff6b6b'}[g]; this._beatGrade.setText(g+(clean&&this.beatSpecials(B.seq).length?' ★':'')).setColor(col).setScale(1.5);
-    this.tweens.add({targets:this._beatGrade,scale:1,duration:160*0.25}); Sfx.beatGrade&&Sfx.beatGrade(g==='PERFECT'?'perfect':g==='MISS'?'miss':'good');
-    B.wait=0.55; B.next=true; }
-  tickBeat(rdt){ // เวลาจริง (ไม่โดน slow-mo)
-    if(this._ubHold&&performance.now()-this._ubHold.t>350){ this._ubHold=null; this.startBeatRush(true); }
-    const B=this._beat; if(!B)return;
-    if(B.wait>0){ B.wait-=rdt; if(B.wait<=0){ B.wait=0; if(B.next||B.ri<0){ B.next=false; this._beatGrade&&this._beatGrade.setText(''); this.beatNextRound(); } } return; }
-    this.drawBeatGlow(); if(B.graded||B.phase!=='beat')return; B.t+=rdt; B.tick+=rdt; if(B.tick>=B.spb){ B.tick-=B.spb; B.bi++; if(B.bi===B.m-1)Sfx.beatFx('cue'); else if(B.bi<B.m)Sfx.beatTick(); }
-    const bb=this._beatBar; this._beatMarker&&this._beatMarker.setX(bb.x0+(bb.x1-bb.x0)*Math.min(1,B.t/B.D));
-    if(B.t>=B.D+0.3){ this.applyBeatGrade('MISS'); } }
-  drawBeatGlow(){ const B=this._beat,g=this._beatGlowG; if(!g)return; g.clear(); if(!B||B.ri<0||B.graded)return;
-    const id=B.phase==='input'?B.seq[B.idx]:'beat', b=(this._beatBtns||[]).find(x=>x.id===id); if(!b)return; const k=0.5+0.5*Math.sin(performance.now()/110);
-    g.lineStyle(5,0xffffff,0.55+0.45*k).strokeCircle(b.x,b.y,b.r+6+k*5); g.lineStyle(10,0xffe38a,0.25*k).strokeCircle(b.x,b.y,b.r+12+k*6); }
-  destroyBeatUI(){ if(this._beatUI){ this._beatUI.destroy(true); this._beatUI=null; } this._beatBtns=[]; }
+    C.add(this.add.rectangle(W/2,H/2,W,H,0x14061f,0.35));
+    this._beatG=this.add.graphics(); C.add(this._beatG);   // วงสีมอน + เส้น (วาดในพิกัดจอ)
+    C.add(this.add.text(W/2,H*0.12,'🥁 BEAR BEAT RUSH',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffd9a8',stroke:'#3a1a08',strokeThickness:5}).setOrigin(.5));
+    this._beatHint=this.add.text(W/2,H*0.12+26,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',stroke:'#000',strokeThickness:4,align:'center'}).setOrigin(.5,0); C.add(this._beatHint);
+    this._beatTimer=this.add.graphics(); C.add(this._beatTimer);
+    this._beatArrow=this.add.text(W/2,H*0.55,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'96px',color:'#ffd23f',stroke:'#3a1a08',strokeThickness:8}).setOrigin(.5); C.add(this._beatArrow);
+    this._beatGrade=this.add.text(W/2,H*0.55+80,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffffff',stroke:'#000',strokeThickness:5}).setOrigin(.5); C.add(this._beatGrade);
+    this._beatSeq=this.add.text(W/2,H*0.55-90,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffffff',stroke:'#000',strokeThickness:4}).setOrigin(.5); C.add(this._beatSeq); }
+  beatSpecials(types){ const need=this._beat.ul>=4?2:3, out=new Set(); let run=1;
+    for(let i=1;i<=types.length;i++){ if(i<types.length&&types[i]===types[i-1])run++; else { if(run>=need)out.add({jab:'gun',hook:'cyclone',heavy:'titan',upper:'juggle'}[types[i-1]]); run=1; } }
+    if(new Set(types).size>=4)out.add('rainbow'); return out; }
+  beatPick(wx,wy){ const B=this._beat,z=this.cameras.main.zoom; let best=null,bd=1e18;
+    for(const [e] of B.col){ if(!e.active||B.chain.some(c=>c.e===e))continue; const hr=Math.max(46/z,(e.displayWidth||40)*0.5), d=(e.x-wx)**2+(e.y-wy)**2; if(d<hr*hr&&d<bd){ bd=d; best=e; } }
+    if(best&&B.chain.length<6){ B.chain.push({e:best,x:best.x,y:best.y,type:B.col.get(best)}); Sfx.comboPunch(B.chain.length*3,'jab'); } }
+  beatDown(p){ const B=this._beat; if(!B)return;
+    if(B.phase==='chain'){ if(B.drag!=null)return; B.drag=p.id; const w=this.beatWorld(p.x,p.y); B.finger={x:p.x,y:p.y}; this.beatPick(w.x,w.y); return; }
+    if(B.phase==='swipe'){ B.sw={id:p.id,x:p.x,y:p.y}; } }
+  beatMove(p){ const B=this._beat; if(!B||p.id===B.ignoreId)return;
+    if(B.phase==='chain'&&B.drag===p.id){ B.finger={x:p.x,y:p.y}; const w=this.beatWorld(p.x,p.y); this.beatPick(w.x,w.y); }
+    else if(B.phase==='swipe'&&B.sw&&B.sw.id===p.id){ const dx=p.x-B.sw.x,dy=p.y-B.sw.y; if(Math.hypot(dx,dy)>45){ this.beatSwipe(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')); B.sw=null; } } }
+  beatUp(p){ const B=this._beat; if(!B)return; if(p.id===B.ignoreId){ B.ignoreId=null; return; }
+    if(B.phase==='chain'&&B.drag===p.id){ B.drag=null; if(B.chain.length)this.beatToSwipe(); }
+    else if(B.phase==='swipe')B.sw=null; }
+  beatToSwipe(){ const B=this._beat; B.phase='swipe'; B.drag=null; const D=['up','down','left','right']; const n=B.full?3:2;
+    B.arrows=Array.from({length:n},()=>D[Math.floor(Math.random()*4)]); B.ai=0; B.at=0; B.wait=0.35; B.specials=this.beatSpecials(B.chain.map(c=>c.type));
+    Sfx.beatLoop(1); this.drawBeatSwipe(); }
+  drawBeatSwipe(){ const B=this._beat, AR={up:'⬆',down:'⬇',left:'⬅',right:'➡'};
+    this._beatSeq.setText(B.arrows.map((a,i)=>i<B.ai?(B.grades[i]==='MISS'?'✖':'✔'):AR[a]).join('  '));
+    this._beatArrow.setText(B.ai<B.arrows.length&&B.wait<=0?AR[B.arrows[B.ai]]:'');
+    const sp=[...(B.specials||[])].map(k=>BEAT_SPECIALS[k].emoji+' '+BEAT_SPECIALS[k].name);
+    this._beatHint.setText('Swipe the arrow — fast = PERFECT'+(B.chain.length?'\n'+B.chain.length+' targets locked':'')+(sp.length?'\n★ '+sp.join(' + '):'')); }
+  beatSwipe(dir){ const B=this._beat; if(B.ai>=B.arrows.length||B.wait>0)return; const ok=dir===B.arrows[B.ai], g=!ok?'MISS':B.at<=0.5?'PERFECT':'GOOD';
+    this.beatGradeShow(g); if(ok){ const P=this.player,v={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir]; this.vfxHitRing(P.x+v[0]*70,P.y+v[1]*70,0xffc477,true); Sfx.comboPunch(20+B.ai*10,'heavy'); P.setFlipX(v[0]<0); } }
+  beatGradeShow(g){ const B=this._beat; B.grades.push(g); B.ai++; B.at=0; B.wait=0.28;
+    const col={PERFECT:'#ffd23f',GOOD:'#7dffb0',MISS:'#ff6b6b'}[g]; this._beatGrade.setText(g).setColor(col).setScale(1.5); this.tweens.add({targets:this._beatGrade,scale:1,duration:160});
+    Sfx.beatGrade&&Sfx.beatGrade(g==='PERFECT'?'perfect':g==='MISS'?'miss':'good'); this.drawBeatSwipe(); }
+  tickBeat(rdt){ // เวลาจริง
+    if(this._ubHold&&performance.now()-this._ubHold.t>350){ this._holdPid=this._ubHold.id; this._ubHold=null; this.startBeatRush(true); }
+    const B=this._beat; if(!B)return; const W=this.W,H=this.H,g=this._beatG;
+    if(B.phase==='chain'){ B.t+=rdt; const left=Math.max(0,1-B.t/4); g.clear();
+      for(const [e,k] of B.col){ if(!e.active)continue; const s=this.beatScreen(e.x,e.y),d=BEAT_PUNCHES.find(p=>p.id===k),r=Math.max(16,(e.displayWidth||40)*this.cameras.main.zoom*0.55),on=B.chain.some(c=>c.e===e);
+        if(e.isBoss||e.isMini){ g.lineStyle(4,0xffd23f,0.9).strokeCircle(s.x,s.y,r+7); }
+        g.lineStyle(on?5:3,d.col,on?1:0.85).strokeCircle(s.x,s.y,r); if(on){ g.fillStyle(d.col,0.35).fillCircle(s.x,s.y,r); } }
+      if(B.chain.length){ g.lineStyle(6,0xffffff,0.85).beginPath(); B.chain.forEach((c,i)=>{ const s=this.beatScreen(c.e.active?c.e.x:c.x,c.e.active?c.e.y:c.y); i?g.lineTo(s.x,s.y):g.moveTo(s.x,s.y); });
+        if(B.drag!=null&&B.finger)g.lineTo(B.finger.x,B.finger.y); g.strokePath(); }
+      this._beatTimer.clear().fillStyle(0x000000,0.5).fillRoundedRect(W*0.15,H*0.12+100,W*0.7,8,4).fillStyle(0xffc233,1).fillRoundedRect(W*0.15,H*0.12+100,W*0.7*left,8,4);
+      const sp=[...this.beatSpecials(B.chain.map(c=>c.type))].map(k=>BEAT_SPECIALS[k].emoji+' '+BEAT_SPECIALS[k].name);
+      this._beatHint.setText('Drag through enemies in one line (max 6)\nSame color ×3 in a row = special · all 4 colors = 🌈'+(sp.length?'\n★ '+sp.join(' + '):''));
+      if(left<=0||(B.drag==null&&B.chain.length>=6))this.beatToSwipe(); return; }
+    if(B.phase==='swipe'){ g.clear(); this._beatTimer.clear();
+      if(B.wait>0){ B.wait-=rdt; if(B.wait<=0){ B.wait=0; if(B.ai>=B.arrows.length){ this.finishBeat(); return; } this.drawBeatSwipe(); } return; }
+      B.at+=rdt; const k=Math.max(0,1-B.at/1.2); this._beatTimer.fillStyle(0xffc233,1).fillRoundedRect(W*0.3,H*0.55+50,W*0.4*k,6,3);
+      if(B.at>=1.2)this.beatGradeShow('MISS'); } }
+  destroyBeatUI(){ if(this._beatUI){ this._beatUI.destroy(true); this._beatUI=null; } }
   restoreBeatSpeed(){ this.physics.resume(); this.time.paused=false; this.setGameSpeed(this.gameSpeed||1); }
   cancelBeat(){ Sfx.stopBeatLoop(); this._ubHold=null; if(!this._beat)return; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); }
   finishBeat(){ Sfx.stopBeatLoop(); const B=this._beat; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); this.cocoaBeatBurst(B); }
-  cocoaBeatBurst(B){ const P=this.player,ul=B.ul,dm=P.dmgMul||1,up=this.uniquePower(), S=B.specials, rb=S.has('rainbow')?1.5:1, fever=B.perfects>=B.rounds;
-    const unit=(14+ul*5)*dm*up*1.6*rb, heavyMul=1+Math.min(1.5,B.pts.heavy*0.08), radius=80*Math.min(2,1+B.pts.hook*0.1), stun=Math.min(1.2,0.25+B.pts.upper*0.05);
-    let hits=Math.min(60,Math.round(6+B.total*1.6+B.pts.jab*0.6)); if(S.has('gun'))hits=Math.min(90,hits*2);
+  cocoaBeatBurst(B){ const P=this.player,ul=B.ul,dm=P.dmgMul||1,up=this.uniquePower(), S=B.specials||new Set(), rb=S.has('rainbow')?1.5:1;
+    const gv={PERFECT:2,GOOD:1.3,MISS:1}, gm=B.grades.length?B.grades.reduce((a,g)=>a+gv[g],0)/B.grades.length:1, fever=B.full&&B.grades.length>0&&B.grades.every(g=>g==='PERFECT');
+    const bossIn=B.chain.some(c=>c.e.isBoss||c.e.isMini), unit=(14+ul*5)*dm*up*1.5*rb*gm;
+    const PER={jab:{n:6,m:0.7,r:70},hook:{n:4,m:0.9,r:120},heavy:{n:3,m:1.8,r:80},upper:{n:4,m:1.0,r:90}};
+    const plan=[]; if(B.chain.length){ B.chain.forEach(c=>{ const d=PER[c.type]; let n=d.n; if(c.type==='jab'&&S.has('gun'))n*=2; for(let i=0;i<n;i++)plan.push({c,d}); }); }
+    else { const n=B.full?10:8; for(let i=0;i<n;i++)plan.push({c:null,d:{m:1.1,r:140}}); }
     const names=[...S].map(k=>BEAT_SPECIALS[k].emoji+' '+BEAT_SPECIALS[k].name); if(fever)names.push('🐻 BEAR FEVER!');
     Sfx.beatFx(S.has('gun')?'gun':'rush'); if(S.has('rainbow'))this.time.delayedCall(250,()=>Sfx.beatFx('rainbow'));
-    this.showBanner('🥁 '+hits+' HIT RUSH!',names.join(' · ')||'Keep the beat for bigger combos',1100);
-    const gap=45, dur=hits*gap+400; P.iframe=Math.max(P.iframe||0,dur/1000+0.3); this.screenFlash(0xffc477,0.35,200);
-    const hitSet=new Set();
-    for(let i=0;i<hits;i++)this.time.delayedCall(i*gap,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
-      let t=null,bd=1e18; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-P.x)**2+(e.y-P.y)**2; if(d>620*620)return; const pen=hitSet.has(e)?300*300:0; if(d+pen<bd){bd=d+pen;t=e;} });
-      if(!t)return; hitSet.add(t); if(hitSet.size>8)hitSet.clear();
-      this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,t.x,t.y)>radius)return; this.damage(e,unit*heavyMul*((e.isBoss||e.isMini)?1:0.8),e.x,e.y);
-        if(e.active&&!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,stun*0.4); if(B.pts.hook>0){const a=Math.atan2(e.y-t.y,e.x-t.x);e.setVelocity(Math.cos(a)*200,Math.sin(a)*200);e.knock=0.12;} } });
-      this.hitCratesInRadius(t.x,t.y,radius,unit);
-      if(this.anims.exists('fx_flickerstrike'))this.spawnFxAnim('fx_flickerstrike',t.x,t.y,{scale:(radius*2)/256,rotation:Math.random()*TAU,depth:9,alpha:0.95}); else this.vfxHitRing(t.x,t.y,0x9f6bff,false);
-      const cc=this._cc||(this._cc={n:0,t:0,step:0}); cc.n++; cc.t=0; Sfx.comboPunch(cc.n,i%6===5?'heavy':'jab'); });
-    this.time.delayedCall(hits*gap+120,()=>{ if(this.state!=='play')return;
+    this.showBanner('🥁 '+plan.length+' HIT RUSH!',names.join(' · ')||('Swipe x'+gm.toFixed(1)),1100);
+    const gap=55; P.iframe=Math.max(P.iframe||0,(plan.length*gap+500)/1000+0.3); this.screenFlash(0xffc477,0.3,200);
+    plan.forEach((it,i)=>this.time.delayedCall(i*gap,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+      const c=it.c, x=c?(c.e.active?c.e.x:c.x):P.x+Phaser.Math.Between(-60,60), y=c?(c.e.active?c.e.y:c.y):P.y+Phaser.Math.Between(-60,60); if(c&&c.e.active){c.x=c.e.x;c.y=c.e.y;}
+      const d=it.d, col=c?BEAT_PUNCHES.find(p=>p.id===c.type).col:0xffc477;
+      this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,x,y)>d.r)return; this.damage(e,unit*d.m*((e.isBoss||e.isMini)&&bossIn?1.3:1),e.x,e.y);
+        if(e.active&&!e.isBoss&&!e.isMini){ if(c&&c.type==='upper')e.frozen=Math.max(e.frozen||0,0.5); if(c&&c.type==='hook'){const a=Math.atan2(e.y-y,e.x-x);e.setVelocity(Math.cos(a)*200,Math.sin(a)*200);e.knock=0.12;} } });
+      this.hitCratesInRadius(x,y,d.r,unit);
+      if(this.anims.exists('fx_flickerstrike'))this.spawnFxAnim('fx_flickerstrike',x,y,{scale:(d.r*2)/256,rotation:Math.random()*TAU,depth:9,alpha:0.95,tint:col}); else this.vfxHitRing(x,y,col,false);
+      const cc=this._cc||(this._cc={n:0,t:0,step:0}); cc.n++; cc.t=0; Sfx.comboPunch(cc.n,c&&c.type==='heavy'?'heavy':'jab'); }));
+    this.time.delayedCall(plan.length*gap+120,()=>{ if(this.state!=='play')return;
       if(S.has('cyclone')){ this.showComboMove('🌀 COCOA CYCLONE',true); Sfx.beatFx('cyclone'); for(let k=0;k<12;k++)this.time.delayedCall(k*250,()=>{ if(this.state!=='play')return; this.vfxHitRing(P.x,P.y,0x4fb8ff,true);
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<160){ this.damage(e,unit*0.5,e.x,e.y); if(!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-P.y,e.x-P.x);e.setVelocity(Math.cos(a)*240,Math.sin(a)*240);e.knock=0.15;} } }); }); }
       if(S.has('juggle')){ this.showComboMove('⬆ SKY JUGGLE',true); Sfx.beatFx('juggle'); this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,P.x,P.y)<700)e.frozen=Math.max(e.frozen||0,2); }); }
       if(S.has('titan')){ let t=null,hp=-1; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<650){ const v=(e.isBoss||e.isMini?1e9:0)+e.hp; if(v>hp){hp=v;t=e;} } });
-        if(t){ this.showComboMove('💥 TITAN CRUSH',true); Sfx.beatFx('titan'); this.damage(t,unit*4*heavyMul,t.x,t.y); this.vfxHitRing(t.x,t.y,0xff4d5a,true); this.screenShake(220,0.012); if(this.hitStop)this.hitStop(70); Sfx.comboPunch(99,'heavy'); } }
+        if(t){ this.showComboMove('💥 TITAN CRUSH',true); Sfx.beatFx('titan'); this.damage(t,unit*5,t.x,t.y); this.vfxHitRing(t.x,t.y,0xff4d5a,true); this.screenShake(220,0.012); if(this.hitStop)this.hitStop(70); } }
       if(fever){ this.time.delayedCall(300,()=>{ if(this.state!=='play')return; this.showComboMove('🐻 BEAR FEVER!',true); this.screenFlash(0xffd23f,0.6,380); this.screenShake(320,0.014);
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<800)this.damage(e,unit*3,e.x,e.y); }); Sfx.beatFx('fever'); }); }
     }); }
