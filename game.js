@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.45.0';
+const GAME_VERSION = '5.45.1';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.45.1', date:'2026-09-26', title:'🔇 Mute button fix', items:['The in-game mute button no longer triggers from invisible taps on menu screens (use Settings for volume there)']},
   { v:'5.45.0', date:'2026-09-26', title:'🎰 Slot-machine auto-roll', items:['Auto-roll shows your wallet and it ticks down with every roll','Each roll spins like a slot reel with its own sound','Near miss (same mod family) plays a tense “so close!” sting','Miss plays a little sad “aww”; hitting the target is a jackpot with sparkles']},
   { v:'5.44.0', date:'2026-09-26', title:'🛑 Stop the wheel!', items:['Mini-boss prize wheel and Affix Roulette now spin until you tap STOP (auto-stops after 6s)','After STOP the wheel coasts and slows down before landing','Auto-Roll spins slower so you can watch each result and stop in time']},
   { v:'5.43.0', date:'2026-09-26', title:'🎰 Hype roulette', items:['Affix Roulette builds suspense: high tiers and rare mods spin longer and slow down dramatically','Rare / Epic / Jackpot reveals add light rays, sparkle bursts, screen shake and special fanfares','Auto-Roll target hits celebrate too']},
@@ -3366,7 +3367,7 @@ class Game extends Phaser.Scene {
       if(this._adBusy)return;   // กำลังเล่นโฆษณา = บLockedอินพุตอื่น
       p={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id};
       // mute toggle (มุมขวาบน)
-      if(this.muteBtn && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<28){
+      if(this.muteBtn && this.muteBtn.visible && this.state!=='menu' && this.dist(p.x,p.y,this.muteBtn.x,this.muteBtn.y)<28){
         const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
       // pause button (เฉพาะตอนเล่น/พัก)
       if(this.pauseBtn && this.pauseBtn.visible && (this.state==='play'||this.state==='paused') && this.dist(p.x,p.y,this.pauseBtn.x,this.pauseBtn.y)<28){
@@ -3714,7 +3715,7 @@ class Game extends Phaser.Scene {
     this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(80); this.camUI(this.pOverG);
     this.pOverLv=this.add.text(0,0,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:4}).setOrigin(0.5,1).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
     this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
-    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp];
+    this.hudList=[this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp,this.muteBtn,this.muteTxt];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.bossHpTxt,this.objectiveArrow,this.objectiveDist];
