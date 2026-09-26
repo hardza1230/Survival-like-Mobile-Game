@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.21.0';
+const GAME_VERSION = '5.22.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.22.0', date:'2026-09-26', title:'✨ Purified!', items:['Finishing Capture the Zone now blasts the ring across the whole screen with a bright flash and a big sound']},
   { v:'5.21.0', date:'2026-09-26', title:'🔷 Purify the Zone', items:['Capture the Zone now takes 25 seconds of standing in the ring','The ring grows bigger as you purify it','Enemies swarm the ring more often and in bigger packs to stop you','Kills inside the ring no longer speed it up']},
   { v:'5.20.0', date:'2026-09-26', title:'🎯 Hunt & Capture Rework', items:['Softer hurt sound and a single clean level-up chime','Relics show up less often','Hunt the Threat: targets run away and blink — stop chasing and a curse drains your HP','Capture the Zone: the ring warms to gold, grows as you fill it, ticks every 10%, and enemies rush in with a warning']},
   { v:'5.19.0', date:'2026-09-26', title:'🎁 Chest Party', items:['Miniboss chests now play a jingle while spinning, tick on every light, and ring out when you win','The chest bounces, prizes drop in with a bounce, and candy sprays out like a fountain']},
@@ -6039,8 +6040,15 @@ class Game extends Phaser.Scene {
     this.showBanner('⚠ Incoming!','Enemies are rushing the zone',900);if(Sfx.select)Sfx.select();
     this.time.delayedCall(1100,()=>{ if(!this._captureZone)return;const n=6+Math.min(4,this.stageIndex||0)+Math.round(Phaser.Math.Clamp(this.waveObjective?this.waveObjective.progress/25:0,0,1)*4),pa=Math.atan2(sy-this.player.y,sx-this.player.x),pd=this.dist(sx,sy,this.player.x,this.player.y);
       for(let i=0;i<n;i++){const e=this.spawnEnemy(i%2?'fast':'dasher',pa+Phaser.Math.FloatBetween(-0.18,0.18),pd*Phaser.Math.FloatBetween(0.95,1.08));if(e&&e.spd)e.spd*=1.35;} }); }
-  captureDoneFX(){ const z=this._captureZone;if(!z)return;if(Sfx.chestWin)Sfx.chestWin();this.screenFlash(0xffd166,0.35,260);
-    for(let i=0;i<3;i++)this.time.delayedCall(i*110,()=>{const r=this.camWorld(this.add.circle(z.x,z.y,z.radiusGoal,0xffd166,0).setStrokeStyle(6,0xffe08a,1).setDepth(90000));this.tweens.add({targets:r,scale:1.8,alpha:0,duration:600,ease:'Cubic.out',onComplete:()=>r.destroy()});}); }
+  // v5.22: จบ capture = วงชำระขยายใหญ่ทั่วจอ + จอแฟลชขาวทอง + เสียง
+  captureDoneFX(){ const z=this._captureZone;if(!z)return;const R=z.radiusGoal,x=z.x,y=z.y;
+    if(Sfx.chestWin)Sfx.chestWin();if(Sfx.ult)Sfx.ult();if(Sfx.clear)this.time.delayedCall(180,()=>Sfx.clear());
+    this.screenFlash(0xfff4c2,0.85,520);this.screenShake(420,0.012);if(this.hitStop)this.hitStop(60);
+    const big=Math.max(this.W,this.H)/this.viewZoom/R*1.1;
+    const disc=this.camWorld(this.add.circle(x,y,R,0xffe08a,0.55).setDepth(89990));this.tweens.add({targets:disc,scale:big,alpha:0,duration:900,ease:'Cubic.out',onComplete:()=>disc.destroy()});
+    const ring=this.camWorld(this.add.image(x,y,'vfx_magic_circle').setTint(0xffd166).setDisplaySize(R*2,R*1.72).setDepth(89995));this.tweens.add({targets:ring,scaleX:ring.scaleX*big*0.8,scaleY:ring.scaleY*big*0.8,rotation:TAU*0.5,alpha:0,duration:1000,ease:'Cubic.out',onComplete:()=>ring.destroy()});
+    for(let i=0;i<4;i++)this.time.delayedCall(i*120,()=>{const r=this.camWorld(this.add.circle(x,y,R,0xffd166,0).setStrokeStyle(10-i*2,0xfff1b0,1).setDepth(90000));this.tweens.add({targets:r,scale:big*(0.6+i*0.15),alpha:0,duration:800,ease:'Cubic.out',onComplete:()=>r.destroy()});});
+    this.floatText(x,y-R-20,'✨ PURIFIED!',0xffd166); }
   // ===== Escort the Wisp (purge objective) =====
   _wispTuning(){ return {escortR:180,channel:3.2+this.stageIndex*0.35,speed:88,drainR:56,drain:0.34+this.stageIndex*0.05,regen:0.42,respawn:3.2}; }
   spawnPurifyWisp(){
