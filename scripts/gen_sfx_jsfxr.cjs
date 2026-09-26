@@ -37,3 +37,20 @@ wav(seq([392,523,659,784,1047],0.06,'square',0.35),'sfx_beat_start');
 wav(mix([seq([1047,1319,1568,2093],0.045,'tri',0.5)],[preset('pickupCoin',91,p=>{p.p_env_decay=0.15;}),0,0.5]),'sfx_beat_perfect');
 wav(seq([784,1047],0.05,'tri',0.5),'sfx_beat_good');
 wav(mix([note(180,0.18,'square',0.4)],[note(120,0.2,'sine',0.5),2000]),'sfx_beat_miss');
+function wavLoop(d,name,gain=0.8){let pk=0;for(const v of d)pk=Math.max(pk,Math.abs(v));const k=pk?gain/pk:1,n=d.length,buf=Buffer.alloc(44+n*2);buf.write('RIFF',0);buf.writeUInt32LE(36+n*2,4);buf.write('WAVEfmt ',8);buf.writeUInt32LE(16,16);buf.writeUInt16LE(1,20);buf.writeUInt16LE(1,22);buf.writeUInt32LE(SR,24);buf.writeUInt32LE(SR*2,28);buf.writeUInt16LE(2,32);buf.writeUInt16LE(16,34);buf.write('data',36);buf.writeUInt32LE(n*2,40);for(let i=0;i<n;i++)buf.writeInt16LE(Math.max(-32767,Math.min(32767,Math.round(d[i]*k*32767))),44+i*2);fs.writeFileSync('out/'+name+'.wav',buf);console.log(name,(n/SR).toFixed(2)+'s');}
+// v5.56 Bear Beat Rush: กรูฟ 120BPM 4 ห้อง (8 วิ) + เสียงท่าพิเศษ
+{const SPB=0.5,R=a=>Math.floor(a*SR),parts=[];const kick=mix([note(55,0.18,'sine',1.0)],[note(110,0.04,'sine',0.6)]);
+ const snare=preset('hitHurt',201,p=>{p.wave_type=3;p.p_base_freq=0.5;p.p_env_decay=0.12;});const hat=preset('hitHurt',203,p=>{p.wave_type=3;p.p_base_freq=0.9;p.p_env_decay=0.03;p.p_env_sustain=0;});
+ const bassN=[98,98,131,117];
+ for(let b=0;b<16;b++){const t=b*SPB;parts.push([kick,R(t),0.9]);if(b%2)parts.push([snare,R(t),0.55]);parts.push([hat,R(t+SPB/2),0.25]);parts.push([hat,R(t),0.18]);
+   parts.push([note(bassN[Math.floor(b/4)%4],0.22,'square',0.18),R(t+SPB/2)]);}
+ const f=mix(...parts),L=R(16*SPB),o=new Float32Array(L);o.set(f.slice(0,L));wavLoop(o,'sfx_beat_loop');}
+wav(mix(...Array.from({length:10},(_,i)=>[note(300+i*90,0.05,'square',0.2),Math.floor(i*0.035*SR)])),'sfx_beat_hold');
+wav(preset('powerUp',211,p=>{p.p_base_freq=0.25;p.p_freq_ramp=0.35;p.p_env_decay=0.3;}),'sfx_beat_rush');
+wav(mix(...Array.from({length:8},(_,i)=>[preset('hitHurt',221+i,p=>{p.wave_type=3;p.p_base_freq=0.35;p.p_env_decay=0.05;}),Math.floor(i*0.045*SR),0.7])),'sfx_beat_gun');
+wav(mix([preset('explosion',231,p=>{p.p_base_freq=0.6;p.p_freq_ramp=-0.1;p.p_vib_strength=0.5;p.p_vib_speed=0.6;p.p_env_sustain=0.3;p.p_env_decay=0.4;})]),'sfx_beat_cyclone');
+wav(mix([preset('explosion',241,p=>{p.p_base_freq=0.1;p.p_env_sustain=0.15;p.p_env_decay=0.5;})],[note(40,0.5,'sine',1.0)],[note(80,0.2,'square',0.3)]),'sfx_beat_titan');
+wav(mix([preset('powerUp',251,p=>{p.p_base_freq=0.3;p.p_freq_ramp=0.5;p.p_env_decay=0.25;})],[seq([784,988,1175],0.05,'tri',0.3),2500]),'sfx_beat_juggle');
+wav(seq([523,659,784,988,1175,1319,1568],0.045,'tri',0.4),'sfx_beat_rainbow');
+wav(mix([seq([523,659,784,1047,784,1047,1319,1568],0.08,'square',0.3)],[preset('explosion',261,p=>{p.p_base_freq=0.15;p.p_env_decay=0.5;}),Math.floor(0.3*SR),0.8],[note(52,0.6,'sine',0.9),Math.floor(0.3*SR)]),'sfx_beat_fever');
+wav(mix([note(1568,0.06,'tri',0.5)],[note(2093,0.08,'tri',0.4),Math.floor(0.06*SR)]),'sfx_beat_cue');

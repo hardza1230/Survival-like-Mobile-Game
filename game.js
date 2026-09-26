@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.55.0';
+const GAME_VERSION = '5.56.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.56.0', date:'2026-09-26', title:'🔊 Beat Rush Sounds', items:['Bear Beat Rush now plays a drum groove, and the ✦ mark lands exactly on the beat','A chime cues you one beat before BEAT!','New sounds for holding the button, the punch rush, Machine Gun Paws, Cocoa Cyclone, Titan Crush, Sky Juggle, Rainbow Combo and BEAR FEVER'] },
   { v:'5.55.0', date:'2026-09-26', title:'🥁 Cocoa: Bear Beat Rush', items:['New Cocoa Unique: a rhythm mini-game — tap for a quick round, hold for the full 3 rounds','Hit the random punch sequence, then press BEAT! on the mark — PERFECT timing and punch mixes unlock Machine Gun Paws, Cocoa Cyclone, Titan Crush, Sky Juggle, Rainbow Combo and BEAR FEVER','Gauge refills in 30s, faster when you punch and take hits (15s minimum)','Cocoa no longer lunges on her own, long combos reduce damage taken, and punching bosses heals a little'] },
   { v:'5.54.0', date:'2026-09-26', title:'🌿 New Ground Art', items:['Chapter 2 and Chapter 3 stages have brand-new seamless floor artwork — no more stretched, blurry backgrounds','The Fermented Canopy decorations now use real painted art'] },
   { v:'5.53.0', date:'2026-09-26', title:'🥊 Cocoa Combo Rush', items:['Cocoa reworked into a rapid-fire combo brawler: Jab Rush → Hook → Uppercut → Bear Slam','HITS counter: keep landing punches for up to +40% damage · every 25 hits unleashes BEAR FRENZY','Cocoa lunges toward nearby enemies and has new punchy impact sounds'] },
@@ -674,6 +675,9 @@ const Sfx = {
   beam(){if(this._ok('beam',0.15)&&!this.playFile('sfx_beam',0.3))this.zap();},
   punch(){if(this._ok('punch',0.12)&&!this.playFile('sfx_punch',0.4))this.shoot();},
   beatTick(){ this.playFile('sfx_beat_tick',0.45,1)||this.tone(880,0.04,'square',0.04); },
+  beatLoop(rate){ this.stopBeatLoop(); if(this.muted||this.sv<=0)return; try{const g=window.__g; if(g&&g.cache.audio.exists('sfx_beat_loop')){ this.duckBgm(9000,0.2); const s=g.sound.add('sfx_beat_loop',{volume:0.5*this.sv,loop:true,rate:rate||1}); s.play(); this._beatSnd=s; }}catch(e){} },
+  stopBeatLoop(){ const s=this._beatSnd; this._beatSnd=null; if(s){ try{s.stop();s.destroy();}catch(e){} } },
+  beatFx(k){ this.playFile('sfx_beat_'+k,0.7,1)||this.boom(); },
   beatStart(){ this.playFile('sfx_beat_start',0.6,1)||this.tone(523,0.12,'triangle',0.06); },
   beatGrade(k){ this.playFile('sfx_beat_'+k,0.6,1)||this.tone(k==='miss'?160:k==='perfect'?1320:880,0.1,'triangle',0.06); },
   // v5.53 หมัดคอมโบ: pitch ไล่ขึ้นตามคอมโบ · heavy/frenzy = ท่าปิด
@@ -1042,7 +1046,7 @@ const ASSET_AUDIO = {
   sfx_magnet: 'assets/audio/sfx/gen/sfx_magnet.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_thunder: 'assets/audio/sfx/gen/sfx_thunder.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_punch: 'assets/audio/sfx/gen/sfx_punch.wav',
-  sfx_beat_tick:'assets/audio/sfx/gen/sfx_beat_tick.wav', sfx_beat_start:'assets/audio/sfx/gen/sfx_beat_start.wav', sfx_beat_perfect:'assets/audio/sfx/gen/sfx_beat_perfect.wav', sfx_beat_good:'assets/audio/sfx/gen/sfx_beat_good.wav', sfx_beat_miss:'assets/audio/sfx/gen/sfx_beat_miss.wav',
+  sfx_beat_tick:'assets/audio/sfx/gen/sfx_beat_tick.wav', sfx_beat_loop:'assets/audio/sfx/gen/sfx_beat_loop.wav', sfx_beat_hold:'assets/audio/sfx/gen/sfx_beat_hold.wav', sfx_beat_rush:'assets/audio/sfx/gen/sfx_beat_rush.wav', sfx_beat_gun:'assets/audio/sfx/gen/sfx_beat_gun.wav', sfx_beat_cyclone:'assets/audio/sfx/gen/sfx_beat_cyclone.wav', sfx_beat_titan:'assets/audio/sfx/gen/sfx_beat_titan.wav', sfx_beat_juggle:'assets/audio/sfx/gen/sfx_beat_juggle.wav', sfx_beat_rainbow:'assets/audio/sfx/gen/sfx_beat_rainbow.wav', sfx_beat_fever:'assets/audio/sfx/gen/sfx_beat_fever.wav', sfx_beat_cue:'assets/audio/sfx/gen/sfx_beat_cue.wav', sfx_beat_start:'assets/audio/sfx/gen/sfx_beat_start.wav', sfx_beat_perfect:'assets/audio/sfx/gen/sfx_beat_perfect.wav', sfx_beat_good:'assets/audio/sfx/gen/sfx_beat_good.wav', sfx_beat_miss:'assets/audio/sfx/gen/sfx_beat_miss.wav',
   sfx_punch_jab:'assets/audio/sfx/gen/sfx_punch_jab.wav', sfx_punch_heavy:'assets/audio/sfx/gen/sfx_punch_heavy.wav', sfx_punch_frenzy:'assets/audio/sfx/gen/sfx_punch_frenzy.wav',   // v5.53 คอมโบโกโก้   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_beam: 'assets/audio/sfx/gen/sfx_beam.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_burn: 'assets/audio/sfx/gen/sfx_burn.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
@@ -3485,7 +3489,7 @@ class Game extends Phaser.Scene {
       if(this.state!=='play') return;
 
       if(this._beat){ this.beatTap(p.x,p.y); return; }   // v5.55 มินิเกม Bear Beat Rush กินทุกการแตะ
-      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0)this._ubHold={id:p.id,t:performance.now()}; return; } this.useCharacterSkill(); return; }
+      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0){this._ubHold={id:p.id,t:performance.now()}; Sfx.beatFx('hold');} return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
       if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.doDash(); return; }
 
@@ -8298,7 +8302,8 @@ class Game extends Phaser.Scene {
   beatNextRound(){ const B=this._beat; B.ri++; if(B.ri>=B.sizes.length){ this.finishBeat(); return; }
     const n=B.sizes[B.ri], T=BEAT_PUNCHES.map(p=>p.id);
     B.seq=Array.from({length:n},()=>T[Math.floor(Math.random()*T.length)]); B.st=B.seq.map(()=>0); B.idx=0; B.t=0; B.graded=null; B.wrong=0;
-    B.D=(1.6+n*0.35)*(B.ul>=3?1.25:1); B.tick=0; this.drawBeatRow(); }
+    // v5.56 ล็อกเป้า ✦ ให้ตรงบีตของเพลง (120BPM · Lv3 = 100BPM)
+    B.spb=B.ul>=3?0.6:0.5; const m=Math.ceil((1.6+n*0.35)*0.85/B.spb); B.m=m; B.D=m*B.spb/0.85; B.tick=0; B.bi=0; Sfx.beatLoop(0.5/B.spb); this.drawBeatRow(); }
   beatSpecials(seq){ const thr=this._beat.ul>=4?1:0, c={}; seq.forEach(k=>c[k]=(c[k]||0)+1); const out=[];
     if((c.jab||0)>=4-thr)out.push('gun'); if((c.hook||0)>=3-thr)out.push('cyclone'); if((c.heavy||0)>=3-thr)out.push('titan'); if((c.upper||0)>=3-thr)out.push('juggle');
     if(Object.keys(c).length>=4)out.push('rainbow'); return out; }
@@ -8344,17 +8349,18 @@ class Game extends Phaser.Scene {
     if(this._ubHold&&performance.now()-this._ubHold.t>350){ this._ubHold=null; this.startBeatRush(true); }
     const B=this._beat; if(!B)return;
     if(B.wait>0){ B.wait-=rdt; if(B.wait<=0){ B.wait=0; if(B.next||B.ri<0){ B.next=false; this._beatGrade&&this._beatGrade.setText(''); this.beatNextRound(); } } return; }
-    if(B.graded)return; B.t+=rdt; B.tick+=rdt; if(B.tick>=B.D/4){ B.tick-=B.D/4; Sfx.beatTick&&Sfx.beatTick(); }
+    if(B.graded)return; B.t+=rdt; B.tick+=rdt; if(B.tick>=B.spb){ B.tick-=B.spb; B.bi++; if(B.bi===B.m-1)Sfx.beatFx('cue'); else if(B.bi<B.m)Sfx.beatTick(); }
     const bb=this._beatBar; this._beatMarker&&this._beatMarker.setX(bb.x0+(bb.x1-bb.x0)*Math.min(1,B.t/B.D));
     if(B.t>=B.D){ B.st=B.st.map(v=>v===0?-1:v); this.drawBeatRow(); this.applyBeatGrade('MISS'); } }
   destroyBeatUI(){ if(this._beatUI){ this._beatUI.destroy(true); this._beatUI=null; } this._beatBtns=[]; }
   restoreBeatSpeed(){ this.setGameSpeed(this.gameSpeed||1); }
-  cancelBeat(){ this._ubHold=null; if(!this._beat)return; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); }
-  finishBeat(){ const B=this._beat; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); this.cocoaBeatBurst(B); }
+  cancelBeat(){ Sfx.stopBeatLoop(); this._ubHold=null; if(!this._beat)return; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); }
+  finishBeat(){ Sfx.stopBeatLoop(); const B=this._beat; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); this.cocoaBeatBurst(B); }
   cocoaBeatBurst(B){ const P=this.player,ul=B.ul,dm=P.dmgMul||1,up=this.uniquePower(), S=B.specials, rb=S.has('rainbow')?1.5:1, fever=B.perfects>=B.rounds;
     const unit=(14+ul*5)*dm*up*1.6*rb, heavyMul=1+Math.min(1.5,B.pts.heavy*0.08), radius=80*Math.min(2,1+B.pts.hook*0.1), stun=Math.min(1.2,0.25+B.pts.upper*0.05);
     let hits=Math.min(60,Math.round(6+B.total*1.2+B.pts.jab*0.6)); if(S.has('gun'))hits=Math.min(90,hits*2);
     const names=[...S].map(k=>BEAT_SPECIALS[k].emoji+' '+BEAT_SPECIALS[k].name); if(fever)names.push('🐻 BEAR FEVER!');
+    Sfx.beatFx(S.has('gun')?'gun':'rush'); if(S.has('rainbow'))this.time.delayedCall(250,()=>Sfx.beatFx('rainbow'));
     this.showBanner('🥁 '+hits+' HIT RUSH!',names.join(' · ')||'Keep the beat for bigger combos',1100);
     const gap=45, dur=hits*gap+400; P.iframe=Math.max(P.iframe||0,dur/1000+0.3); this.screenFlash(0xffc477,0.35,200);
     const hitSet=new Set();
@@ -8367,13 +8373,13 @@ class Game extends Phaser.Scene {
       if(this.anims.exists('fx_flickerstrike'))this.spawnFxAnim('fx_flickerstrike',t.x,t.y,{scale:(radius*2)/256,rotation:Math.random()*TAU,depth:9,alpha:0.95}); else this.vfxHitRing(t.x,t.y,0x9f6bff,false);
       const cc=this._cc||(this._cc={n:0,t:0,step:0}); cc.n++; cc.t=0; Sfx.comboPunch(cc.n,i%6===5?'heavy':'jab'); });
     this.time.delayedCall(hits*gap+120,()=>{ if(this.state!=='play')return;
-      if(S.has('cyclone')){ this.showComboMove('🌀 COCOA CYCLONE',true); for(let k=0;k<12;k++)this.time.delayedCall(k*250,()=>{ if(this.state!=='play')return; this.vfxHitRing(P.x,P.y,0x4fb8ff,true);
+      if(S.has('cyclone')){ this.showComboMove('🌀 COCOA CYCLONE',true); Sfx.beatFx('cyclone'); for(let k=0;k<12;k++)this.time.delayedCall(k*250,()=>{ if(this.state!=='play')return; this.vfxHitRing(P.x,P.y,0x4fb8ff,true);
         this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<160){ this.damage(e,unit*0.5,e.x,e.y); if(!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-P.y,e.x-P.x);e.setVelocity(Math.cos(a)*240,Math.sin(a)*240);e.knock=0.15;} } }); }); }
-      if(S.has('juggle')){ this.showComboMove('⬆ SKY JUGGLE',true); this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,P.x,P.y)<700)e.frozen=Math.max(e.frozen||0,2); }); }
+      if(S.has('juggle')){ this.showComboMove('⬆ SKY JUGGLE',true); Sfx.beatFx('juggle'); this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,P.x,P.y)<700)e.frozen=Math.max(e.frozen||0,2); }); }
       if(S.has('titan')){ let t=null,hp=-1; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<650){ const v=(e.isBoss||e.isMini?1e9:0)+e.hp; if(v>hp){hp=v;t=e;} } });
-        if(t){ this.showComboMove('💥 TITAN CRUSH',true); this.damage(t,unit*4*heavyMul,t.x,t.y); this.vfxHitRing(t.x,t.y,0xff4d5a,true); this.screenShake(220,0.012); if(this.hitStop)this.hitStop(70); Sfx.comboPunch(99,'heavy'); } }
+        if(t){ this.showComboMove('💥 TITAN CRUSH',true); Sfx.beatFx('titan'); this.damage(t,unit*4*heavyMul,t.x,t.y); this.vfxHitRing(t.x,t.y,0xff4d5a,true); this.screenShake(220,0.012); if(this.hitStop)this.hitStop(70); Sfx.comboPunch(99,'heavy'); } }
       if(fever){ this.time.delayedCall(300,()=>{ if(this.state!=='play')return; this.showComboMove('🐻 BEAR FEVER!',true); this.screenFlash(0xffd23f,0.6,380); this.screenShake(320,0.014);
-        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<800)this.damage(e,unit*3,e.x,e.y); }); Sfx.comboPunch(99,'frenzy'); }); }
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<800)this.damage(e,unit*3,e.x,e.y); }); Sfx.beatFx('fever'); }); }
     }); }
   castBearDonut(lvl,aw,dm,evo,basic){
     // โกโก้ = ต่อยประชิด 2 หมัด (base) · คลื่นสะท้อน (shockwave) ต้อง Mutation 'breaker' หรือ Awaken/Evo ถึงจะมี
