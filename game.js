@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.23.0';
+const GAME_VERSION = '5.24.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.24.0', date:'2026-09-26', title:'❄️ Calmer Barrage', items:['Confirming a level-up card plays one clean sound instead of two','Mint Lance Barrage fires fewer lances (max 4) a bit slower, each hitting harder']},
   { v:'5.23.0', date:'2026-09-26', title:'🧹 Cleaner Screen', items:['Removed the kill-combo popups','Far fewer floating damage numbers — critical hits still show']},
   { v:'5.22.0', date:'2026-09-26', title:'✨ Purified!', items:['Finishing Capture the Zone now blasts the ring across the whole screen with a bright flash and a big sound']},
   { v:'5.21.0', date:'2026-09-26', title:'🔷 Purify the Zone', items:['Capture the Zone now takes 25 seconds of standing in the ring','The ring grows bigger as you purify it','Enemies swarm the ring more often and in bigger packs to stop you','Kills inside the ring no longer speed it up']},
@@ -1653,9 +1654,9 @@ const BASIC_PATHS={
     {id:'glacier',name:'Glacier Warden',emoji:'🧊',base:{dmg:0.9,frozen:0.35},desc:'×0.9 damage, but +35% damage to frozen enemies · control build',
       upgrades:[{id:'p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},desc:'+12% damage to frozen enemies per rank'},
                 {id:'p_coldsnap',name:'Cold Snap',emoji:'❄️',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'}]},
-    {id:'barrage',name:'Lance Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.65,count:1},desc:'+1 lance, 35% faster, ×0.62 damage each · swarm build',
+    {id:'barrage',name:'Lance Barrage',emoji:'🌨️',base:{dmg:0.7,cd:0.75,count:1},desc:'+1 lance, 25% faster, ×0.7 damage each · swarm build',
       upgrades:[{id:'p_quickdraw',name:'Quickdraw',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'},
-                {id:'p_splinter',name:'Splinter Volley',emoji:'💠',max:2,fx:{count:1},desc:'+1 lance per rank'}]},
+                {id:'p_splinter',name:'Splinter Volley',emoji:'💠',max:1,fx:{count:1},desc:'+1 lance'}]},
     {id:'pierce',name:'Glacial Pierce',emoji:'🏹',base:{dmg:1.6,cd:1.4,range:0.3},desc:'×1.6 damage and +30% range, but 40% slower · boss build',
       upgrades:[{id:'p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_coldblood',name:'Cold Blood',emoji:'💎',max:3,fx:{dmg:1.1},desc:'+10% lance damage per rank'}]}],
@@ -6973,7 +6974,7 @@ class Game extends Phaser.Scene {
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this.banishMode){ this.banishCard(c); return; }
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
-    Sfx.clear(); c.apply(); this._pendingCardConfirm=null; this.closeLevelUp();
+    c.apply(); this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
   }
   banishCard(c){
     if((this.banishLeft||0)<=0)return; const o=c.opt; if(!o)return;
@@ -7591,7 +7592,8 @@ class Game extends Phaser.Scene {
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
-    const lances=(evo?3:(lvl>=4?2:1))+(basic?._pm?.count||0), spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
+    const lances=Math.min(4,(evo?3:(lvl>=4?2:1))+(basic?._pm?.count||0)),   // v5.24 เพดาน 4 หอก
+      spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
     // จำนวน/สเปกสะเก็ด — chill=+จำนวน · linger=+จำนวน+กระจายกว้าง · evo แบ่งต่อแฉกให้ไม่ล้น
     const shardBase=3+Math.min(2,(basic?.ranks.chill||0))+Math.min(2,(basic?.ranks.linger||0))+(aw?2:0);   // v4.20: สะเก็ดน้อยลง (เดิม 6+..) ไม่ล้นจอ
     const shardPer=evo?Math.max(2,Math.round(shardBase*0.6)):shardBase;
