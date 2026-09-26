@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.36.0';
+const GAME_VERSION = '5.37.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.37.0', date:'2026-09-26', title:'🍳 Recipe Kitchen', items:['New 🍳 Kitchen in the Flavor Weave Temple: build perks from WHEN ▸ DO ▸ TWIST parts','Each recipe has a 🍯 flavor limit, so frequent triggers leave less room for strong effects','Tap a filled part again to take it back']},
   { v:'5.36.0', date:'2026-09-26', title:'🍳 Recipe engine', items:['Equipped Flavor Recipes now fire in battle: 14 triggers, 12 effects, 8 modifiers','🔗 Linked recipes can set off other recipes (up to 2 in a row)']},
   { v:'5.35.0', date:'2026-09-26', title:'🧩 Recipe Parts', items:['Temple Depths now hides 🧩 Recipe Parts: triggers, effects and modifiers','Parts will build your own Flavor Recipe perks (Kitchen coming next)','Starter gift: 5 parts']},
   { v:'5.34.0', date:'2026-09-26', title:'🍬+🧶 Weave costs', items:['Each core’s first level costs Sugar only','From level 2 on, cores cost Sugar plus 🧶 Weave Thread','Overcap costs Core Stones, Weave Thread and Sugar']},
@@ -4057,7 +4058,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='talents')this.buildTalents(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='talents')this.buildTalents(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
@@ -4966,12 +4967,16 @@ class Game extends Phaser.Scene {
     const rn=this.add.text(w/2,ry+17,'⭐ '+rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
     this.menu.add([rk,rn]);
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
-    const rpFree=Save.rankPointsFree(), rkW=124,rkH=30,rkX=portrait?w/2-rkW-4:w-14-rkW,rkY=portrait?ry+32:44;
+    const rpFree=Save.rankPointsFree(), rkW=portrait?Math.min(124,(w-44)/3):124,rkH=30,rkX=portrait?w/2-rkW*1.5-6:w-14-rkW,rkY=portrait?ry+32:44;
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
-    { const dg=Save.dig(),dx=portrait?w/2+4:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
+    { const dg=Save.dig(),dx=portrait?w/2-rkW/2:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
       const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⛏️ Depths · '+dg.shovels,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([g2,t2]); this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
-      if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
+      if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
+    // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
+    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),g3=this.add.graphics(); g3.fillStyle(0x1f3a30,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x7fe0b0,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
+      const t3=this.add.text(kx+rkW/2,rkY+rkH/2,'🍳 Kitchen',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#b8f5d8'}).setOrigin(0.5);
+      this.menu.add([g3,t3]); this._zone(kx,rkY,rkW,rkH,()=>{ this.menuScreen='kitchen'; this.buildMenuScreen(); }); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
     const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
     const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
     this.menu.add([rkg,rkt]); this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
@@ -5023,6 +5028,38 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // ⛏️ v5.27 Temple Depths — หน้าขุด
+  // ===== v5.37 🍳 Recipe Kitchen: ประกอบ perk เอง · แตะช่องสูตร → แตะชิ้นส่วนในถุง =====
+  buildKitchen(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 Recipe Kitchen','ui_talent_hall','upgrade');
+    const w=this.W,h=this.H,hs=this._hdrShift(),slots=Save.frSlots(),R=Save.frRecipes();
+    if(this._kSel==null)this._kSel={slot:0,k:'t'};
+    const sel=this._kSel; if(sel.slot>=slots)sel.slot=0;
+    const sub=this.add.text(w/2,62+hs,'Build your own perks: WHEN ▸ DO ▸ (TWIST) · max 🍯'+FR_FLAVOR_CAP+' flavor each',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9'}).setOrigin(0.5); this.menu.add(sub);
+    const cw=w-28,rowH=portraitRow(h),top=78+hs; function portraitRow(H){ return Math.max(44,Math.min(58,(H-420)/5)); }
+    const lbl={t:'WHEN',e:'DO',m:'TWIST'},col={t:0xffb36b,e:0x7fd0ff,m:0xc7a6ff};
+    for(let i=0;i<FR_SLOT_MAX;i++){ const y=top+i*(rowH+6),locked=i>=slots,r=R[i],on=!locked&&sel.slot===i;
+      const g=this.add.graphics(); g.fillStyle(locked?0x221c2a:0x2c2338,1); g.fillRoundedRect(14,y,cw,rowH,12); g.lineStyle(on?2.5:1.5,on?0xffd166:0x4a4059,1); g.strokeRoundedRect(14,y,cw,rowH,12); this.menu.add(g);
+      if(locked){ this.menu.add(this.add.text(w/2,y+rowH/2,'🔒 Recipe slot '+(i+1)+' — unlock later',{fontFamily:'sans-serif',fontSize:'11px',color:'#6f6580'}).setOrigin(0.5)); continue; }
+      const cost=frCost(r),full=r.t&&r.e; const pw=(cw-70)/3;
+      ['t','e','m'].forEach((k,j)=>{ const px=22+j*(pw+4),py=y+5,ph=rowH-24,pt=frPart(r[k]),act=on&&sel.k===k,pg=this.add.graphics();
+        pg.fillStyle(pt?col[k]:0x1b1624,pt?0.22:1); pg.fillRoundedRect(px,py,pw,ph,8); pg.lineStyle(act?2.5:1,act?0xffffff:col[k],act?1:0.6); pg.strokeRoundedRect(px,py,pw,ph,8);
+        const tx=this.add.text(px+pw/2,py+ph/2,pt?pt.emoji+' '+pt.name:lbl[k]+(k==='m'?' (opt)':' ?'),{fontFamily:'sans-serif',fontStyle:pt?'bold':'normal',fontSize:'9px',color:pt?'#ffffff':'#8d8195',align:'center',wordWrap:{width:pw-6}}).setOrigin(0.5);
+        this.menu.add([pg,tx]); this._zone(px,py,pw,ph,()=>{ if(sel.slot===i&&sel.k===k&&r[k]){ Save.frRemove(i,k); Sfx.select(); } else { sel.slot=i; sel.k=k; Sfx.select(); } this.buildMenuScreen(); }); });
+      const cc=this.add.text(14+cw-8,y+rowH/2-6,'🍯'+cost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:cost>FR_FLAVOR_CAP?'#ff7a7a':'#ffd166'}).setOrigin(1,0.5);
+      const st=this.add.text(22,y+rowH-15,full?frSentence(r):'Needs a WHEN and a DO',{fontFamily:'sans-serif',fontSize:'9px',color:full?'#9ff0c8':'#8d8195'});
+      this.menu.add([cc,st]); }
+    // ถุงชิ้นส่วนของหมวดที่เลือก
+    const by=top+FR_SLOT_MAX*(rowH+6)+6,parts=Save.frParts(),kind=sel.k,list=FR_KIND[kind],cur=R[sel.slot];
+    const bh=this.add.text(14,by,'🎒 '+({t:'WHEN (trigger)',e:'DO (effect)',m:'TWIST (modifier)'})[kind]+' parts · tap to place in slot '+(sel.slot+1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a8'}); this.menu.add(bh);
+    const cols=3,gw=(w-28-(cols-1)*6)/cols,gh=40; let n=0;
+    list.forEach(pt=>{ const key=kind+':'+pt.id,c=parts[key]||0; if(c<1)return; const x=14+(n%cols)*(gw+6),y=by+18+Math.floor(n/cols)*(gh+5); n++;
+      const trial=Object.assign({},cur,{[kind]:key}),ok=frCost(trial)<=FR_FLAVOR_CAP,g=this.add.graphics();
+      g.fillStyle(ok?0x2c2338:0x241c2a,1); g.fillRoundedRect(x,y,gw,gh,8); g.lineStyle(1.5,ok?col[kind]:0x4a4059,1); g.strokeRoundedRect(x,y,gw,gh,8);
+      const t1=this.add.text(x+6,y+5,pt.emoji+' '+pt.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:ok?'#ffffff':'#7a7088',wordWrap:{width:gw-10}});
+      const t2=this.add.text(x+6,y+gh-13,'🍯'+pt.cost+'  ×'+c+(pt.desc?'  '+pt.desc:''),{fontFamily:'sans-serif',fontSize:'8px',color:'#b7abc9'});
+      this.menu.add([g,t1,t2]); this._zone(x,y,gw,gh,()=>{ if(Save.frPlace(sel.slot,key)){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });
+    if(!n)this.menu.add(this.add.text(w/2,by+40,'No parts of this kind yet — dig 🧩 in ⛏️ Temple Depths',{fontFamily:'sans-serif',fontSize:'10px',color:'#8d8195'}).setOrigin(0.5));
+  }
   buildDig(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⛏️ Temple Depths','dig_bg','upgrade');
     const w=this.W,h=this.H,d=Save.dig(),portrait=w<=h,hs=this._hdrShift();
