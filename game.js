@@ -10,6 +10,9 @@
 const WORLD = 4000;
 const PERF_LIVE_MUL = 0.8;   // v5.49: ลดมอนบนจอ 20% (มือถือกระตุก)
 const FX_PER_FRAME = 6;      // v5.49: เอฟเฟกต์ตกแต่งสร้างได้ไม่เกินนี้ต่อเฟรม
+// v5.50: ระดับประหยัด 0-2 (Auto ปรับตาม FPS · Low=2 · High=0) → ลดงบ FX และจำนวนมอน
+const PERF={lvl:0,low:0,high:0,acc:0};
+function perfQuality(){ const st=Save.data&&Save.data.settings; const q=st&&st.quality; return q===1||q===2?q:0; }
 const COLORS = {
   bg1: 0x3b3357, mochi: 0xfff2f7, mochiEdge: 0xff9ec4, candy: 0xffd166,
   pink: 0xff85b3, grape: 0xa98cf0, toast: 0xf0b35a, mint: 0x66d3b3, ice: 0xa9dcff,
@@ -39,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.49.0';
+const GAME_VERSION = '5.50.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.50.0', date:'2026-09-26', title:'⚙ Pause Settings & Auto Performance', items:['New ⚙ Settings button in the pause menu — change sound, performance and effects mid-run','Performance: Auto / Low / High (Auto lowers effects and crowd size when FPS drops)','Lighter render resolution on phones for smoother play','Monsters left far behind reappear near you instead of wandering off-screen'] },
   { v:'5.49.0', date:'2026-09-26', title:'⚡ Smoother Performance', items:['About 20% fewer monsters on screen at once','Bouncing and chain effects are capped per frame, so busy fights stay smooth','Fewer floating damage numbers in big crowds','Chapter 2 backgrounds no longer stretch until blurry'] },
   { v:'5.48.0', date:'2026-09-26', title:'🎒 Cleaner Gear & Power', items:['Gear & Power is now grouped into Character · Power · Gear','Big 2-column tiles instead of a long list of rows'] },
   { v:'5.47.0', date:'2026-09-26', title:'🪜 Deeper Depths & 🍳 Bigger Kitchen', items:['Temple Depths now works like a mine: find the 🪜 ladder to go down a floor','🌬️ A breeze marks tiles next to the ladder','The cave widens as you go deeper: 5×5 up to 8×8','New finds: 🍬 Sugar Ore (floor 3+) and 🎁 Depth Gifts (floor 5+); every 5th floor holds 2 gifts','Kitchen: 6 new WHEN, 6 new DO and 5 new TWIST parts','⭐ Signature Dishes: 15 matching WHEN+DO pairs get a special name and +25% power','Parts bag now has pages']},
@@ -4754,6 +4758,7 @@ class Game extends Phaser.Scene {
       {k:'ctrlSize',e:'🎮',n:'Button Size',sub:'Dash & Unique button size',value:()=>['Normal','Large','Extra Large'][st.ctrlSize||0],toggle:()=>{st.ctrlSize=((st.ctrlSize||0)+1)%3;}},
       {k:'ctrlLeft',e:'✋',n:'Button Side',sub:'Left-handed? Move buttons left',value:()=>st.ctrlLeft?'Left':'Right',toggle:()=>{st.ctrlLeft=!st.ctrlLeft;}},
       {k:'vfx',e:'🎆',n:'VFX Quality',sub:'Particle count and boss effects',value:()=>['Low','Mid','High'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
+      {k:'quality',e:'⚡',n:'Performance',sub:'Auto adapts to your phone · resolution applies on restart',value:()=>['Auto','Low','High'][st.quality||0],toggle:()=>{st.quality=((st.quality||0)+1)%3;this.menuToast&&this.menuToast('Resolution changes apply next launch');}},
     ];
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
     const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?68:54,(h-top-52-gap*(nRows-1))/nRows),rw=Math.min(w-30,520),rx=(w-rw)/2;
@@ -5919,6 +5924,41 @@ class Game extends Phaser.Scene {
     const exitY=portrait?by+bh+gap:by;
     this.uiPillBtn(this.pauseUI,right,exitY,bw,bh,COLORS.grape,'🏠','Quit stage',null);
     this._pauseBtns.push({x:right-bw/2,y:exitY-bh/2,w:bw,h:bh,fn:()=>this.quitStage()});
+    // v5.50: ปุ่ม ⚙ Settings ในหน้าหยุด
+    const sbw=150,sbh=40,sbx=w/2,sby=portrait?by-bh/2-gap-sbh/2:by-bh/2-gap-sbh/2;
+    this.uiPillBtn(this.pauseUI,sbx,sby,sbw,sbh,COLORS.toast||0xf2b366,'⚙','Settings',null);
+    this._pauseBtns.push({x:sbx-sbw/2,y:sby-sbh/2,w:sbw,h:sbh,fn:()=>{Sfx.select();this.buildPauseSettings();}});
+    this.pauseUI.setVisible(true);
+  }
+  // v5.50: ตั้งค่าระหว่างเล่น (ใช้แถวเดียวกับหน้า Settings แบบย่อ)
+  buildPauseSettings(){
+    const w=this.W,h=this.H; this.pauseUI.removeAll(true); this._pauseBtns=[];
+    const st=Save.data.settings||(Save.data.settings=Object.assign({},DEFAULT_SETTINGS));
+    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.9).setOrigin(0,0);
+    const t=this.add.text(w/2,38,'⚙ Settings',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5);
+    this.pauseUI.add([bg,t]);
+    const cyc=(k,n)=>{const c=st[k]==null?1:st[k],i=VOL_STEPS.indexOf(c);st[k]=VOL_STEPS[(i+1)%VOL_STEPS.length];applyVolSettings(st);};
+    const rows=[
+      ['🔊','Sound',()=>st.sound?'On':'Off',()=>{st.sound=!st.sound;Sfx.muted=!st.sound;if(Sfx.master)Sfx.master.gain.value=Sfx.muted?0:0.24;if(this.sound)this.sound.mute=Sfx.muted;}],
+      ['🎵','Music Volume',()=>Math.round((st.musicVol==null?1:st.musicVol)*100)+'%',()=>cyc('musicVol')],
+      ['🔔','Effects Volume',()=>Math.round((st.sfxVol==null?1:st.sfxVol)*100)+'%',()=>cyc('sfxVol')],
+      ['⚡','Performance',()=>['Auto','Low','High'][st.quality||0],()=>{st.quality=((st.quality||0)+1)%3;}],
+      ['🎆','VFX Quality',()=>['Low','Mid','High'][st.vfx||0],()=>{st.vfx=((st.vfx||0)+1)%3;}],
+      ['💥','Damage Numbers',()=>st.damageNumbers?'On':'Off',()=>{st.damageNumbers=!st.damageNumbers;}],
+      ['📳','Screen Shake',()=>['Off','Light','Normal'][st.shake||0],()=>{st.shake=((st.shake||0)+1)%3;}],
+      ['✨','Screen Flash',()=>st.flash?'On':'Off',()=>{st.flash=!st.flash;}],
+      ['🎮','Button Size',()=>['Normal','Large','Extra Large'][st.ctrlSize||0],()=>{st.ctrlSize=((st.ctrlSize||0)+1)%3;}],
+      ['✋','Button Side',()=>st.ctrlLeft?'Left':'Right',()=>{st.ctrlLeft=!st.ctrlLeft;}],
+    ];
+    const rw=Math.min(w-32,440),rx=(w-rw)/2,top=66,gap=6,rh=Math.max(34,Math.min(50,(h-top-90-gap*rows.length)/rows.length));
+    rows.forEach(([e,n,val,fn],i)=>{const y=top+i*(rh+gap),g=this.add.graphics();g.fillStyle(0x241a33,0.95);g.fillRoundedRect(rx,y,rw,rh,10);g.lineStyle(1.5,0x5a4b72,0.9);g.strokeRoundedRect(rx,y,rw,rh,10);
+      const a=this.add.text(rx+14,y+rh/2,e+'  '+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#fff7ed'}).setOrigin(0,0.5);
+      const v=this.add.text(rx+rw-14,y+rh/2,val(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffe08a'}).setOrigin(1,0.5);
+      this.pauseUI.add([g,a,v]);
+      this._pauseBtns.push({x:rx,y,w:rw,h:rh,fn:()=>{fn();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls&&this.layoutControls();this.buildPauseSettings();}});});
+    const bw=Math.min(w-48,300),bh=48,by=h-50;
+    this.uiPillBtn(this.pauseUI,w/2,by,bw,bh,COLORS.mint,'‹','Back',null);
+    this._pauseBtns.push({x:w/2-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>{Sfx.select();this.buildPause();}});
     this.pauseUI.setVisible(true);
   }
   // กด Quit = สรุปด่านทันที (เปิดกล่อง + โชว์ currency) แล้วรีเซ็ตด่านให้สะอาด (แก้บั๊กด่านไม่ reset ตอนออกกลางคัน)
@@ -6276,7 +6316,7 @@ class Game extends Phaser.Scene {
     // Stage 3 ขึ้นไป (si>=2): เพิ่มจำนวนมอน (แน่นขึ้น) + ลดสัดส่วนตัวตีไกล (shooter) ให้เน้นประชิด
     if(si>=2){ let sh=0; this.waveTypes=this.waveTypes.map(t=>{ if(t==='shooter'){ sh++; return sh>1?'basic':t; } return t; }); }   // เหลือ shooter ได้มากสุด 1 ช่องในลิสต์ = ตัวตีไกลออกน้อยลง
     this.spawnInterval=Math.max(0.5,p.interval-si*0.03-(si>=2?0.14:0));this.spawnBatch=p.batch+Math.floor(si/2)+1+(si>=2?1:0);   // มอนไหลถี่+เป็นชุดใหญ่ขึ้น (ด่านหลังแน่นกว่า)
-    const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:si===9?BALANCE.c2Root.maxLive:115;this.maxLive=Math.round(Math.min(liveCap,p.max+si*(si>=2?7:4)+6+(si>=2?12:0))*PERF_LIVE_MUL);this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
+    const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:si===9?BALANCE.c2Root.maxLive:115;this.maxLive=Math.round(Math.min(liveCap,p.max+si*(si>=2?7:4)+6+(si>=2?12:0))*PERF_LIVE_MUL);this._baseMaxLive=this.maxLive;this.applyPerfLive();this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
     this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
   spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
@@ -8420,7 +8460,16 @@ class Game extends Phaser.Scene {
   awakenSpark(key){ const c=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_glow').setTint(0xfff2a8).setScale(0.08).setAlpha(0.8).setDepth(6));
     this.tweens.add({targets:c,scale:0.32,alpha:0,duration:280,onComplete:()=>c.destroy()}); }
   // v5.49: งบเอฟเฟกต์ต่อเฟรม — เกินแล้วข้ามภาพ (ดาเมจยังทำงานปกติ)
-  fxOk(){ const f=this.game.loop.frame; if(this._fxFrame!==f){this._fxFrame=f;this._fxN=0;} return ++this._fxN<=FX_PER_FRAME; }
+  fxOk(){ const f=this.game.loop.frame; if(this._fxFrame!==f){this._fxFrame=f;this._fxN=0;} return ++this._fxN<=FX_PER_FRAME-PERF.lvl*2; }
+  // v5.50: เพดานมอนจริง = ฐาน × ระดับประหยัด
+  applyPerfLive(){ if(this._baseMaxLive)this.maxLive=Math.max(20,Math.round(this._baseMaxLive*(1-0.15*PERF.lvl))); }
+  tickPerf(dt){
+    const q=perfQuality(); if(q===1){if(PERF.lvl!==2){PERF.lvl=2;this.applyPerfLive();}return;} if(q===2){if(PERF.lvl!==0){PERF.lvl=0;this.applyPerfLive();}return;}
+    PERF.acc+=dt; if(PERF.acc<1)return; PERF.acc=0; const fps=this.game.loop.actualFps||60;
+    if(fps<42){PERF.low++;PERF.high=0;}else if(fps>55){PERF.high++;PERF.low=0;}else{PERF.low=0;PERF.high=0;}
+    if(PERF.low>=3&&PERF.lvl<2){PERF.lvl++;PERF.low=0;this.applyPerfLive();}
+    else if(PERF.high>=10&&PERF.lvl>0){PERF.lvl--;PERF.high=0;this.applyPerfLive();}
+  }
   chainBolt(x1,y1,x2,y2){
     if(!this.fxOk())return;
     const len=this.dist(x1,y1,x2,y2), ang=Math.atan2(y2-y1,x2-x1);
@@ -10012,7 +10061,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; if(this.state!=='play')return; dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
@@ -10055,6 +10104,12 @@ class Game extends Phaser.Scene {
       if(e.bloomUntil>0){e.bloomUntil-=dt;if(e.bloomUntil<=0)e.bloomStacks=0;}if(e._aura&&e._aura.active)e._aura.setPosition(e.x,e.y).setDepth(e.y-1);
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
+      { // v5.50: มอนที่หลุดไกล → ย้ายมาเกิดใกล้ผู้เล่นใหม่ · มอนไกลคิดทิศทุก 4 เฟรม
+        const fx=e.x-this.player.x,fy=e.y-this.player.y,fd2=fx*fx+fy*fy,view=Math.max(this.W,this.H)/(this.viewZoom||1);
+        if(fd2>view*view*1.9&&!e.isBoss&&!e.isMini&&!e.isElite&&!e._objectiveMark&&!e._fleeing&&!e._huntFlee&&!e._wispRaider){
+          const a=Math.random()*TAU,r=view*0.62;e.setPosition(this.player.x+Math.cos(a)*r,this.player.y+Math.sin(a)*r);e.setVelocity(0,0);return; }
+        if(fd2>view*view*0.5&&!e.isBoss&&!e.isMini){ e._aiSlot=e._aiSlot??((Math.random()*4)|0); if((this.game.loop.frame+e._aiSlot)&3)return; }
+      }
       if(e._decoyT>0)e._decoyT-=dt;
       let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._fleeing||e._huntFlee){tx=e.x*2-this.player.x;ty=e.y*2-this.player.y;}if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}
       if(this.stageIndex===7&&this.waveObjective&&this.waveObjective.type==='defendNectar'&&['drone','honeyBomb','dartwing'].includes(e.nectarRole)&&this._nectarFlowers){let target=null,bd=Infinity;for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(e.x,e.y,f.x,f.y);if(d<bd){bd=d;target=f;}}if(target){tx=target.x;ty=target.y;}}
@@ -10159,7 +10214,9 @@ class Game extends Phaser.Scene {
 // Phaser 3 None GameConfig.resolution สำหรับ canvas หลัก: สร้าง backing store เป็น physical pixels เอง
 const DEVICE_DPR = window.devicePixelRatio||1;
 const LOW_MEMORY_DEVICE = Number(navigator.deviceMemory||8)<=4;
-const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, LOW_MEMORY_DEVICE?2.25:3));
+// v5.50: คุณภาพกราฟิก (0 Auto · 1 Low · 2 High) — ความละเอียด render มีผลตอนเปิดเกมใหม่
+const QUALITY_SETTING=(()=>{try{const d=JSON.parse(localStorage.getItem('mochi_save')||'{}');const q=d&&d.settings&&d.settings.quality;return q===1||q===2?q:0;}catch(e){return 0;}})();
+const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):(LOW_MEMORY_DEVICE?1.5:2)));
 const RENDER_W = Math.max(1,Math.round(window.innerWidth*RENDER_DPR));
 const RENDER_H = Math.max(1,Math.round(window.innerHeight*RENDER_DPR));
 // Phaser Text มี CanvasTexture แยกและค่าเริ่มต้น resolution 1 จึงต้องเพิ่มตาม DPR เช่นกัน
