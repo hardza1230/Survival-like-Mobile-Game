@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.47.0';
+const GAME_VERSION = '5.48.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.48.0', date:'2026-09-26', title:'🎒 Cleaner Gear & Power', items:['Gear & Power is now grouped into Character · Power · Gear','Big 2-column tiles instead of a long list of rows'] },
   { v:'5.47.0', date:'2026-09-26', title:'🪜 Deeper Depths & 🍳 Bigger Kitchen', items:['Temple Depths now works like a mine: find the 🪜 ladder to go down a floor','🌬️ A breeze marks tiles next to the ladder','The cave widens as you go deeper: 5×5 up to 8×8','New finds: 🍬 Sugar Ore (floor 3+) and 🎁 Depth Gifts (floor 5+); every 5th floor holds 2 gifts','Kitchen: 6 new WHEN, 6 new DO and 5 new TWIST parts','⭐ Signature Dishes: 15 matching WHEN+DO pairs get a special name and +25% power','Parts bag now has pages']},
   { v:'5.46.0', date:'2026-09-26', title:'🔎 Clearer Affix Forge focus', items:['Selected item, affix line and target mod glow gold and stand out','Everything not selected is greyed down','When a target is picked, other roll-pool mods fade to grey']},
   { v:'5.45.2', date:'2026-09-26', title:'🔈 Cleaner auto-roll sounds', items:['Auto-roll spin, miss, near-miss and jackpot sounds are drier and no longer crackle','Jackpot no longer stacks several fanfares at once']},
@@ -2089,7 +2090,11 @@ const HUB_GROUPS = {
     ['gear','◆','Equipment','Equip, compare and dismantle'],
     ['craft','🧪','Affix Forge','Choose gear and a line, then roll one compatible stat'],
     ['bazaar','🏪','Mochi Bazaar','Buy · Gamble · Sell for 🍬'],
-    ['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed'] ] },
+    ['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed'] ],
+    // v5.48: หน้าเป็นหมวด + ไทล์ 2 คอลัมน์ (tiles: [target,emoji,ชื่อสั้น])
+    sections:[ ['CHARACTER',0xff9ecf,[['stats','📊','Stats'],['talents','🌟','Talents']]],
+      ['POWER',0xffd36e,[['upgrade','✦','Weave & Rank']]],
+      ['GEAR',0x8fe3c4,[['gear','◆','Equipment'],['craft','🧪','Affix Forge'],['bazaar','🏪','Bazaar'],['gearInbox','📦','Inbox']]] ] },
   gCodex:{ title:'📖 Codex', rows:[
     ['skills','✧','Skill Codex','Skills, passives and Awaken pairs'],
     ['bestiary','☷','Bestiary','Discoveries and bonuses'] ] },
@@ -4138,6 +4143,7 @@ class Game extends Phaser.Scene {
     const bw=Math.min(w-28,440),x=(w-bw)/2,y0=portrait?116:92,gap=10,rh=Math.min(portrait?80:64,(h-y0-56-gap*(rows.length-1))/rows.length);
     // v4.25: หมวด Gear&Power — เปิด stats/upgrade (3 แก่น) ได้ตั้งแต่เริ่ม · gear/craft/bazaar/inbox ล็อกจนผ่านด่าน 1
     const nxtG=this.hubNextStep(), GATED=new Set(['gear','craft','bazaar','gearInbox']),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone;   // v4.28: จบ tutorial = ปลดทุกอย่างในหมวดนี้
+    if(grp.sections){ this._buildHubTiles(key,grp,nxtG,GATED,afterS1); return; }
     rows.forEach(([target,emoji,label,sub],i)=>{ const y=y0+i*(rh+gap);
       const locked=GATED.has(target)&&!afterS1;
       const g=this.add.graphics(); g.fillStyle(0x241a30,locked?0.7:0.96); g.fillRoundedRect(x,y,bw,rh,14); g.lineStyle(2,locked?0x4a4059:0x6a5b86,0.85); g.strokeRoundedRect(x,y,bw,rh,14); g.fillStyle(locked?0x4a4059:0x8f7de8,1); g.fillRoundedRect(x,y,7,rh,4);
@@ -4150,6 +4156,34 @@ class Game extends Phaser.Scene {
       this._zone(x,y,bw,rh,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
         if(target==='__tutorial'){ this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true); }
         else { if(target==='skills'){this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;} this.menuScreen=target; this.buildMenuScreen(); } });
+    });
+    this.menu.setVisible(true);
+  }
+  // v5.48: เลย์เอาต์ไทล์แบ่งหมวด (Gear & Power)
+  _buildHubTiles(key,grp,nxtG,GATED,afterS1){
+    const w=this.W,h=this.H,portrait=w<=h,bw=Math.min(w-28,440),x0=(w-bw)/2,gap=10,cols=portrait?2:4;
+    const tw=(bw-gap*(cols-1))/cols; let nRows=0; grp.sections.forEach(s=>nRows+=Math.ceil(s[2].length/cols));
+    const y0=portrait?112:88,hdrH=26,avail=h-y0-30-grp.sections.length*hdrH-gap*nRows;
+    const th=Math.max(62,Math.min(portrait?104:80,avail/nRows)); let y=y0;
+    grp.sections.forEach(([title,col,tiles])=>{
+      const hx=this.add.text(x0+4,y+hdrH/2,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#'+col.toString(16).padStart(6,'0')}).setOrigin(0,0.5);
+      const ln=this.add.rectangle(x0+hx.width+14,y+hdrH/2,bw-hx.width-14,1,col,0.35).setOrigin(0,0.5); this.menu.add([hx,ln]); y+=hdrH;
+      tiles.forEach(([target,emoji,label],i)=>{
+        const c=i%cols,r=Math.floor(i/cols),span=(tiles.length===1)?cols:1,ww=span>1?bw:tw;
+        const x=x0+c*(tw+gap),ty=y+r*(th+gap),locked=GATED.has(target)&&!afterS1;
+        const g=this.add.graphics(); g.fillStyle(0x241a30,locked?0.7:0.96); g.fillRoundedRect(x,ty,ww,th,16);
+        g.lineStyle(2,locked?0x4a4059:col,locked?0.8:0.55); g.strokeRoundedRect(x,ty,ww,th,16);
+        const horiz=span>1; const icx=horiz?x+44:x+ww/2, icy=horiz?ty+th/2:ty+th*0.4;
+        const ic=this.add.circle(icx,icy,Math.min(24,th*0.26),0x3a2f50,1).setAlpha(locked?0.5:1);
+        const em=this.add.text(icx,icy,emoji,{fontSize:'24px'}).setOrigin(0.5).setAlpha(locked?0.45:1);
+        const nm=this.add.text(horiz?x+80:x+ww/2,horiz?ty+th/2:ty+th*0.78,locked?'🔒 '+label:label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:locked?'#8d8399':'#ffffff'}).setOrigin(horiz?0:0.5,0.5);
+        this.menu.add([g,ic,em,nm]);
+        if(horiz){ const ar=this.add.text(x+ww-16,ty+th/2,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5); this.menu.add(ar); }
+        if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,ty,ww,th,nxtG.tag);
+        this._zone(x,ty,ww,th,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
+          this.menuScreen=target; this.buildMenuScreen(); });
+      });
+      y+=Math.ceil(tiles.length/cols)*(th+gap);
     });
     this.menu.setVisible(true);
   }
