@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.40.0';
+const GAME_VERSION = '5.41.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.41.0', date:'2026-09-26', title:'🌟 Switch fighters in Talents', items:['Use ‹ › on the Character Talents page to switch between your fighters']},
   { v:'5.40.0', date:'2026-09-26', title:'🎵 New temple music', items:['Flavor Weave Temple has its own calm bell-and-choir theme','Temple Depths plays a mysterious cave tune with dripping water','The Recipe Kitchen gets a bouncy cooking groove']},
   { v:'5.39.0', date:'2026-09-26', title:'🍳 Recipe polish', items:['Recipes now pop a WHEN▸DO icon and a chime when they fire','Merging parts plays a sparkle fanfare']},
   { v:'5.38.0', date:'2026-09-26', title:'🍳 Recipe mastery', items:['Merge 3 identical parts to upgrade that part to ★2 / ★3 (effects +30% power, triggers fire more often)','Unlock up to 5 recipe slots with 🏅 Rank Points','Swapping or removing a placed part costs 🍬20','Chain your recipes: “When a Shield Breaks” and “When Healed” pair with 🔗 Linked']},
@@ -9344,7 +9345,12 @@ class Game extends Phaser.Scene {
     const id=Save.data.character||'momo',ch=CHARACTERS[id]||{},cp=Save.cp(id),defs=charTalents(id),ps=CHAR_PASSIVES[id],sc=charPassiveScale(cp.lvl);
     const W=this.W,top=(this.W<=this.H?80:56),bw=Math.min(W-32,400),bx=W/2-bw/2;
     const need=charExpNeed(cp.lvl),g=this.add.graphics();
-    const hd=this.add.text(bx,top,(ch.emoji||'🍡')+' '+(ch.name||id)+'  ·  Lv '+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe9b0'}).setOrigin(0,0.5);
+    // v5.41 ‹ › เปลี่ยนตัวละคร (เฉพาะที่มีแล้ว) — เปลี่ยนตัวที่ใช้เล่นด้วย
+    const own=CHAR_ORDER.filter(c=>(Save.data.chars||[]).includes(c)),oi=Math.max(0,own.indexOf(id));
+    if(own.length>1){ const sw=d=>{ const n=own[(oi+d+own.length)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); };
+      const la=this.add.text(bx+12,top,'‹',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(la); this._zone(bx-6,top-18,40,36,()=>sw(-1)); }
+    const hx=own.length>1?bx+28:bx;
+    const hd=this.add.text(hx,top,(ch.emoji||'🍡')+' '+(ch.name||id)+'  ·  Lv '+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe9b0'}).setOrigin(0,0.5);
     const tp=this.add.text(bx+bw,top,'🌟 '+(cp.tp||0)+' TP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:(cp.tp||0)>0?'#8ff0b0':'#9a90ab'}).setOrigin(1,0.5);
     g.fillStyle(0x2c2338,1);g.fillRoundedRect(bx,top+14,bw,8,4);g.fillStyle(0xffc85a,1);g.fillRoundedRect(bx,top+14,Math.max(6,bw*Math.min(1,(cp.exp||0)/need)),8,4);
     const ex=this.add.text(W/2,top+32,'EXP '+(cp.exp||0)+' / '+need+'  ·  earn EXP by playing this character',{fontFamily:'sans-serif',fontSize:'9px',color:'#b7abc9'}).setOrigin(0.5);
@@ -9352,6 +9358,7 @@ class Game extends Phaser.Scene {
     const pt=this.add.text(bx+12,py+13,(ps?ps.emoji+' Passive · '+ps.name:'Passive'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#f3e4ff'}).setOrigin(0,0.5);
     const pd=this.add.text(bx+12,py+31,(ps?ps.desc:'')+'  (power ×'+sc.toFixed(2)+' from Lv)',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#d4c2e6'}).setOrigin(0,0.5);
     this.menu.add([g,hd,tp,ex,pt,pd]);
+    if(own.length>1){ const ra=this.add.text(hd.x+hd.width+14,top,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(ra); this._zone(ra.x-20,top-18,40,36,()=>{ const n=own[(oi+1)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); }); }
     const listTop=py+54,rh=Math.max(44,Math.min(58,(this.H-listTop-70)/defs.length-6));
     defs.forEach((d,i)=>{ const r=(cp.tal||{})[d.id]||0,maxed=r>=d.max,can=!maxed&&(cp.tp||0)>0;
       this._rowBtn(listTop+i*(rh+6),rh,d.emoji,d.name+'  '+r+'/'+d.max,d.per,maxed?'MAX':can?'+1 🌟':'🔒 TP',maxed?'#ffe07a':can?'#8ff0b0':'#8a8198',can?()=>{ cp.tal=cp.tal||{}; cp.tal[d.id]=r+1; cp.tp--; Save.save(); Sfx.select&&Sfx.select(); this.menuToast('🌟 '+d.name+' → '+(r+1)); this.buildTalents(); }:null,bx,bw); });
