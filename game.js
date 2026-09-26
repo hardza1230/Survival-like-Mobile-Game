@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.70.2';
+const GAME_VERSION = '5.71.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.71.0', date:'2026-09-26', title:'Friendlier start & clearer missions', items:['Free shovels: claim 8 times a day, 5 shovels each','Stage 1 (Normal): take 40% less damage and meet fewer dashers/shooters','Mission text is bigger, shows longer at wave start and pulses every 12s'] },
   { v:'5.70.2', date:'2026-09-26', title:'Smoother boss music', items:['Boss and miniboss music no longer dips every time you get hit or the boss attacks','Short sound effects duck the music more gently'] },
   { v:'5.70.1', date:'2026-09-26', title:'Tutorial dash fix', items:['Fixed the tutorial Dash step never completing'] },
   { v:'5.70.0', date:'2026-09-26', title:'Cocoa: stacked dashes + Shock Knuckles', items:['Cocoa stores 2 Dash charges (more with Dash Stack / Dash Boxer) — dash several times in a row','Charges refill one at a time, shown as gold dots around the Dash button','Brawler: every combo finisher now blasts a shockwave around Cocoa','Jab Chain card replaced by Shock Knuckles: +1 extra shockwave per rank'] },
@@ -2639,6 +2640,7 @@ function gearSetCompareText(slot,selected){ if(!selected)return ''; const curren
   for(const id of ids){const def=GEAR_SETS[id];if(def&&(current[id]||0)!==(next[id]||0))parts.push(def.emoji+' '+def.name+' '+(current[id]||0)+'/3 → '+(next[id]||0)+'/3');} return parts.join('   '); }
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
+const DIG_FREE_PER_DAY=8, DIG_FREE_SHOVELS=5;   // v5.71 รับพลั่วฟรี 8 ครั้ง/วัน ครั้งละ 5
 const Save = {
   data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:24, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
   load(){ let gearMigrated=false; try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
@@ -2869,8 +2871,9 @@ const Save = {
   // ---- v5.27 Temple Depths ----
   dig(){ if(!this.data.threadsGift){ this.data.threadsGift=true; this.data.threads=(this.data.threads||0)+40; }   // v5.33 ของขวัญด้ายเริ่มต้น
     if(!this.data.dig)this.data.dig={shovels:DIG_START_SHOVELS,depth:1,best:1,board:null,gemFound:false,freeDay:''}; const d=this.data.dig; if(!d.board)d.board=digMakeBoard(d.depth); return d; },
-  digFreeReady(){ return this.dig().freeDay!==new Date().toISOString().slice(0,10); },
-  digClaimFree(){ const d=this.dig(); if(!this.digFreeReady())return false; d.freeDay=new Date().toISOString().slice(0,10); d.shovels++; this.save(); return true; },
+  digFreeLeft(){ const d=this.dig(),t=new Date().toISOString().slice(0,10); if(d.freeDay!==t){d.freeDay=t;d.freeN=0;} return Math.max(0,DIG_FREE_PER_DAY-(d.freeN||0)); },
+  digFreeReady(){ return this.digFreeLeft()>0; },
+  digClaimFree(){ const d=this.dig(); if(!this.digFreeReady())return false; d.freeN=(d.freeN||0)+1; d.shovels+=DIG_FREE_SHOVELS; this.save(); return true; },
   addShovels(n){ const d=this.dig(); d.shovels=(d.shovels||0)+n; this.save(); },
   canAscend(){ return storyComplete(); },   // v4.72: Endgame ปลดหลังจบเนื้อเรื่องทั้งหมด (ด่าน ready สุดท้าย) ไม่ใช่แค่ Ch1
   endgameUnlocked(){ return (this.data.ascension||0)>0||this.canAscend(); },
@@ -3875,7 +3878,7 @@ class Game extends Phaser.Scene {
     this.stageTxt=this.add.text(w/2,pad+56,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     // wave progress pips (บอกว่าใกล้จบเวฟ/ถึงบอสหรือยัง)
     this.pipG=this.add.graphics().setScrollFactor(1).setDepth(51);
-    this.waveObjTxt=this.add.text(w/2,pad+108,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff4b0',align:'center',stroke:'#24172c',strokeThickness:3}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);
+    this.waveObjTxt=this.add.text(w/2,pad+106,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff4b0',align:'center',stroke:'#24172c',strokeThickness:4}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);
     this.waveObjBg=this.add.rectangle(w/2,pad+131,Math.min(230,w-84),7,0x100b16,0.72).setOrigin(0.5,0).setScrollFactor(1).setDepth(52).setVisible(false);
     this.waveObjBar=this.add.rectangle(w/2-Math.min(230,w-84)/2,pad+132,Math.min(230,w-84),5,0xffd166,1).setOrigin(0,0).setScrollFactor(1).setDepth(53).setVisible(false);
     this.waveBonusTxt=this.add.text(w/2,pad+140,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a',align:'center',stroke:'#24172c',strokeThickness:3}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);   // ⭐ Bonus Challenge (v4.58)
@@ -5350,7 +5353,7 @@ class Game extends Phaser.Scene {
     const by=gy+size+22,bw=Math.min(160,(w-48)/2),bh=40;
     const btn=(x,lab,col,on,fn)=>{ const g=this.add.graphics(); g.fillStyle(on?col:0x2c2338,1); g.fillRoundedRect(x,by,bw,bh,12); g.lineStyle(2,on?0xffe08a:0x4a4059,1); g.strokeRoundedRect(x,by,bw,bh,12);
       const t=this.add.text(x+bw/2,by+bh/2,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:on?'#fff':'#7a7088'}).setOrigin(0.5); this.menu.add([g,t]); if(on)this._zone(x,by,bw,bh,fn); return t; };
-    btn(w/2-bw-6,Save.digFreeReady()?'🎁 Free ⛏️ today':'✓ Free ⛏️ claimed',0x3a5a3a,Save.digFreeReady(),()=>{ if(Save.digClaimFree()){ Sfx.digFind(); this.menuToast('⛏️ +1 shovel — come back tomorrow for another!'); } this.buildDig(); });
+    btn(w/2-bw-6,Save.digFreeReady()?('🎁 Free ⛏️×'+DIG_FREE_SHOVELS+' ('+Save.digFreeLeft()+'/'+DIG_FREE_PER_DAY+')'):'✓ Free ⛏️ done today',0x3a5a3a,Save.digFreeReady(),()=>{ if(Save.digClaimFree()){ Sfx.digFind(); this.menuToast('⛏️ +'+DIG_FREE_SHOVELS+' shovels — '+Save.digFreeLeft()+' free claims left today'); } this.buildDig(); });
     const canGo=d.gemFound||d.stairFound,dt=btn(w/2+6,d.stairFound?'🕳️ Secret descent':(d.gemFound?'🪜 Go down':'🪜 Find the ladder'),d.stairFound?0x6a3a8a:0x5a3a7a,!!canGo,()=>this.digDescend());
     if(canGo)this.tweens.add({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
     const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret  ✦ hint\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def')+'   ·   📜 '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
@@ -6488,7 +6491,7 @@ class Game extends Phaser.Scene {
       this.showBanner('⚠️ '+(beat?beat.title:st.mini),beat?beat.sub:(st.mini+' — get ready to find space to dodge'),2600);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);
       this.scheduleStageEvent(2800,'miniWarning',()=>this.spawnMiniBoss());
     }else{this.mode='wave';this.startSurvivalWave(w,false);this.setupWaveObjective(w,p);const o=this.waveObjective;
-      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((beat?beat.title+' · ':'')+o.desc):(beat?beat.sub:p.desc),2400);}
+      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?('MISSION: '+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});}
     this.updateWaveText();
   }
   setupSpawnRates(w){
@@ -6499,7 +6502,7 @@ class Game extends Phaser.Scene {
     const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:si===9?BALANCE.c2Root.maxLive:115;this.maxLive=Math.round(Math.min(liveCap,p.max+si*(si>=2?7:4)+6+(si>=2?12:0))*PERF_LIVE_MUL);this._baseMaxLive=this.maxLive;this.applyPerfLive();this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
     this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
   }
-  spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));}
+  spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];let t=Phaser.Utils.Array.GetRandom(types);if(this.stageIndex===0&&t!=='basic'&&Math.random()<0.55)t='basic';this.spawnEnemy(t);}   // v5.71 ด่านแรกตัวพุ่ง/ยิงน้อยลง
   // Soft director: ผู้เล่นฆ่าเร็วได้เจอฝูงเพิ่มเล็กน้อย แต่มี cap รายเวฟและไม่เปลี่ยน type pool/ดาเมจ
   wavePressure(){
     const p=this.waveProfile(this.waveIndex),elapsed=Math.max(8,(this.waveDur||0)-Math.max(0,this.waveTimer||0)),kills=Math.max(0,(this.stageKills||0)-(this.waveKillStart||0));
@@ -6863,7 +6866,8 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);return;}
     this.renderBonusHUD();
     const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar'||o.type==='seasonCycle')?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target;
-    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
+    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
+    const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;o.done=true;this.resolveBonusChallenge();const bonus=6+(this.stageIndex+1)*2+this.waveIndex*2;this.sugarStage+=bonus;this.sugarRun+=bonus;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
@@ -8394,7 +8398,8 @@ class Game extends Phaser.Scene {
     if(T._n!==cc.n){ T._n=cc.n; T.setText(cc.n+' HITS'+(cc.n>=10?' +'+Math.min(40,cc.n)+'%':'')); T.setScale(1.35); }
     T.setScale(Math.max(1,T.scale-dt*3)); T.setPosition(this.player.x,this.player.y-118); T.setAlpha(cc.t>1.1?0.5:1); }
   // ===== v5.55 Cocoa: คอมโบกันดาเมจ · ดูดเลือดบอส · Beat Gauge =====
-  cocoaGuard(){ if(this.character!=='cocoa')return 1; const n=this._cc?this._cc.n:0, b=this.basicAttack; return (this._beat?0.3:1)*(n>=25?0.65:n>=10?0.8:1)*(this._dashBuffT>0&&b&&b.mutation==='counter'?0.7:1); }
+  newbieGuard(){ return (this.stageIndex===0&&(this.stageDiff||1)<=1&&!this.bossRush&&!this.riftMode)?0.6:1; }   // v5.71 ด่านแรกโดนตีเบาลง 40%
+  cocoaGuard(){ const nb=this.newbieGuard(); if(this.character!=='cocoa')return nb; const n=this._cc?this._cc.n:0, b=this.basicAttack; return nb*(this._beat?0.3:1)*(n>=25?0.65:n>=10?0.8:1)*(this._dashBuffT>0&&b&&b.mutation==='counter'?0.7:1); }
   cocoaBossLeech(){ const P=this.player,now=this.elapsed||0; if(!this._ccLeech||now-this._ccLeech.t>1)this._ccLeech={t:now,v:0};
     const cap=P.maxhp*0.04, amt=Math.min(P.maxhp*0.005,cap-this._ccLeech.v); if(amt<=0)return; this._ccLeech.v+=amt; P.hp=Math.min(P.maxhp,P.hp+amt); }
   // หลอดเติมเอง 30 วิ · ต่อยโดน/โดนตีลดเวลา · ใช้เร็วสุดทุก 15 วิ
