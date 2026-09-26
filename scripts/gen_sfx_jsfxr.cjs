@@ -29,3 +29,6 @@ wav(seq([392,311,247,196],0.16,'tri',0.45),'sfx_defeat');
 // v5.0.2 — เสียงที่ได้ยินบ่อยสุด: ตีโดน (ป๊อปโมจินุ่ม ๆ สั้นมาก) + เก็บ EXP (ติ๊งใส · เกมไล่ pitch ให้เอง)
 wav(mix([preset('hitHurt',101,p=>{p.p_base_freq=0.42;p.p_env_decay=0.09;p.p_env_sustain=0.01;p.wave_type=2;})],[note(520,0.05,'sine',0.5)],[note(260,0.06,'sine',0.35),60]),'sfx_hit',0.8);
 wav(mix([note(1568,0.09,'sine',0.55)],[note(2093,0.12,'sine',0.4),2200],[note(3136,0.07,'tri',0.12),2200]),'sfx_xp',0.7);
+wav(mix([preset('hitHurt',61,p=>{p.p_base_freq=0.32;p.wave_type=3;p.p_env_decay=0.07;p.p_env_sustain=0.01;})],[note(140,0.06,'sine',0.7)]),'sfx_punch_jab');
+wav(mix([preset('explosion',67,p=>{p.p_base_freq=0.2;p.p_env_sustain=0.04;p.p_env_decay=0.2;p.p_freq_ramp=-0.25;})],[note(60,0.22,'sine',1.0)],[preset('hitHurt',71,p=>{p.p_base_freq=0.45;p.p_env_decay=0.08;}),0,0.6]),'sfx_punch_heavy');
+wav(mix([preset('explosion',83,p=>{p.p_base_freq=0.12;p.p_env_sustain=0.1;p.p_env_decay=0.4;})],[note(48,0.4,'sine',1.0)],[seq([523,659,784,1047],0.05,'square',0.25),2000]),'sfx_punch_frenzy');
