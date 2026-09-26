@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.63.0';
+const GAME_VERSION = '5.64.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.64.0', date:'2026-09-26', title:'Cocoa: escape dash + smoother combo', items:['Dash follows your joystick — punches only if an enemy is in that direction, otherwise it is a normal escape dash','After a Dash Punch on a boss or miniboss, Cocoa hops back out of reach','Combo flows faster with shorter wind-ups and always restarts with the lunge','Bigger swipe arrows in Bear Beat Rush'] },
   { v:'5.63.0', date:'2026-09-26', title:'Cocoa: Dash charges + new cards', items:['Dash Punch now uses stored charges — tap Dash again and again to keep punching','Dash Charge card: +1 stored charge per rank (charges refill one at a time)','New Cocoa cards: Knockout Force, Drum Heart (Beat Rush gauge fills faster)','New mutation Counter Bear and new build path Dash Boxer (replaces Bear Guardian)','Evolution: Dash charges refill twice as fast','Punch effects are smaller'] },
   { v:'5.62.0', date:'2026-09-26', title:'Bear Beat Rush: hold to charge', items:['Hold the Unique button to charge — the longer you hold, the more colored dots appear (up to 12)','Dots now appear on screen instead of on monsters, so one long line is easy to draw','Longer chains give more punches and more swipe arrows (up to 8)','Short tap still does the quick 2-swipe version'] },
   { v:'5.61.0', date:'2026-09-26', title:'🔗 Easier Chain Drag', items:['Bear Beat Rush now pulls up to 9 nearby enemies into a ring around Cocoa so they all fit on screen','Smaller target rings with a steady touch area — much easier to drag from one to the next','Cocoa just walks when no enemy is close instead of punching the air'] },
@@ -8243,6 +8244,7 @@ class Game extends Phaser.Scene {
     const moving=this.joy&&this.joy.active&&this.moveDir&&this.moveDir.lengthSq()>0.04;
     const t=this.nearestEnemy(reach+220);
     if(!t){ this._ccCdMul=0.5; return; }   // v5.61 ไม่มีศัตรูใกล้ = ไม่ต่อยลม (เดินเฉย ๆ = อนิเมชันเดิน) · รอบถัดไปเช็คเร็ว
+    if((this.elapsed||0)-(cc.last??-9)>1.6)cc.step=0; cc.last=this.elapsed||0;   // v5.64 เริ่มคอมโบใหม่ด้วยท่าพุ่งเสมอ
     const step=cc.step%6; cc.step++;
     let ang=moving?this.moveDir.angle():Math.atan2(t.y-P.y,t.x-P.x); cc.ang=ang; P.setFlipX(Math.cos(ang)<0);
     const hit=(cx,cy,r,mul,o={})=>{ const bonus=1+Math.min(0.4,cc.n*0.01); let any=false;
@@ -8260,17 +8262,17 @@ class Game extends Phaser.Scene {
     const streak=(to,col,w)=>{ const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(w,col,0.9).lineBetween(P.x,P.y-6,to.x,to.y); g.fillStyle(0xffffff,0.95).fillCircle(to.x,to.y,w*0.9);
       this.tweens.add({targets:g,alpha:0,duration:130,onComplete:()=>g.destroy()}); };
     const lean=(k,ms)=>{ this._sqX=1+0.25*k; this._sqY=1-0.2*k; this.tweens.add({targets:P,x:P.x+Math.cos(ang)*8*k,y:P.y+Math.sin(ang)*8*k,duration:ms,yoyo:true,ease:'Quad.out'}); };
-    const RHYTHM=[0.9,0.7,1.05,0.8,1.2,1.6];
+    const RHYTHM=[0.72,0.6,0.78,0.7,0.85,1.0];   // v5.64 ต่อเนื่องขึ้น
     if(step===0){ // 💨 LUNGE พุ่งต่อย
       const tt=t&&!moving?t:null, d=tt?this.dist(P.x,P.y,tt.x,tt.y):reach, mv=Math.max(0,Math.min(120,d-reach*0.45));
       this._sqX=1.35; this._sqY=0.72; P.iframe=Math.max(P.iframe||0,0.15);
       this.tweens.add({targets:P,x:P.x+Math.cos(ang)*mv,y:P.y+Math.sin(ang)*mv,duration:110,ease:'Quad.out',onComplete:()=>{ if(!live())return;
         const f=pt(0.6); streak(f,0xffd9a8,10); this.vfxHitRing(f.x,f.y,0xffd9a8,false); hit(f.x,f.y,reach*0.6,1.0,{kb:140}); }});
     }else if(step===1){ // 👊👊 ONE-TWO (จิ้ม-ตรง เร็ว)
-      [[0,-9,0.55,6],[150,9,0.8,9]].forEach(([ms,side,m,w])=>this.time.delayedCall(ms,()=>{ if(!live())return; lean(0.6,50); const f=pt(0.62,side); streak(f,0xfff0d0,w); hit(f.x,f.y,reach*0.5,m); }));
+      [[0,-9,0.55,6],[110,9,0.8,9]].forEach(([ms,side,m,w])=>this.time.delayedCall(ms,()=>{ if(!live())return; lean(0.6,50); const f=pt(0.62,side); streak(f,0xfff0d0,w); hit(f.x,f.y,reach*0.5,m); }));
     }else if(step===2){ // 🌀 HOOK (ง้าง แล้วเหวี่ยงกว้าง)
       this._sqX=0.85; this._sqY=1.12;
-      this.time.delayedCall(130,()=>{ if(!live())return; const sd=cc.step%12<6?1:-1;
+      this.time.delayedCall(80,()=>{ if(!live())return; const sd=cc.step%12<6?1:-1;
         const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(11,0xffc477,0.92); g.beginPath(); g.arc(P.x,P.y,reach*0.72,ang-sd*1.0,ang+sd*0.9,sd<0); g.strokePath();
         this.tweens.add({targets:g,alpha:0,duration:170,onComplete:()=>g.destroy()}); lean(1,70); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); });
     }else if(step===3){ // 🥊 BODY RUSH (รัวหมัดท้อง)
@@ -8278,13 +8280,13 @@ class Game extends Phaser.Scene {
       for(let i=0;i<n;i++)this.time.delayedCall(i*48,()=>{ if(!live())return; const f=pt(0.5+Math.random()*0.15,(Math.random()-0.5)*26); streak(f,0xffe2b8,5); hit(f.x,f.y,reach*0.45,0.32); if(i%2)this._sqX=1.12; });
     }else if(step===4){ // ⬆️ UPPERCUT (ย่อตัว แล้วงัดขึ้น)
       this._sqX=1.2; this._sqY=0.78;
-      this.time.delayedCall(160,()=>{ if(!live())return; const f=pt(0.55); this._sqX=0.8; this._sqY=1.3;
+      this.time.delayedCall(100,()=>{ if(!live())return; const f=pt(0.55); this._sqX=0.8; this._sqY=1.3;
         const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(12,0xfff0b0,0.95).lineBetween(f.x,f.y+30,f.x,f.y-70); this.tweens.add({targets:g,alpha:0,y:-20,duration:200,onComplete:()=>g.destroy()});
         this.vfxHitRing(f.x,f.y,0xfff0b0,true);
         if(hit(f.x,f.y,reach*0.7,1.6*fin,{stun:0.45,heavy:true})){ this.screenShake(90,0.004); if(this.hitStop)this.hitStop(35); } });
     }else{ // 💥 BEAR SLAM (กระโดดแล้วทุบพื้น)
-      const s0=P.scaleX||1; this.tweens.add({targets:P,y:P.y-26,duration:150,yoyo:true,ease:'Quad.out'}); this._sqX=0.8; this._sqY=1.3;
-      this.time.delayedCall(300,()=>{ if(!live())return; const r=reach*1.5*(basic.mutation==='breaker'?1.2:1); this._sqX=1.4; this._sqY=0.65;
+      const s0=P.scaleX||1; this.tweens.add({targets:P,y:P.y-22,duration:110,yoyo:true,ease:'Quad.out'}); this._sqX=0.8; this._sqY=1.3;
+      this.time.delayedCall(220,()=>{ if(!live())return; const r=reach*1.5*(basic.mutation==='breaker'?1.2:1); this._sqX=1.4; this._sqY=0.65;
         if(this.textures.exists('vfx_bear_shockwave')){const w=this.camWorld(this.add.image(P.x,P.y,'vfx_bear_shockwave').setDepth(6).setScale(0.16).setAlpha(0.9));this.tweens.add({targets:w,scale:(r*2.2)/256,alpha:0,duration:320,onComplete:()=>w.destroy()});}
         else this.vfxHitRing(P.x,P.y,0xffa54d,true);
         hit(P.x,P.y,r,1.4*fin*(basic.mutation==='breaker'?1.25:1),{kb:260,heavy:true}); this.screenShake(130,0.007); if(this.hitStop)this.hitStop(45);
@@ -8351,9 +8353,9 @@ class Game extends Phaser.Scene {
     C.add(this.add.text(W/2,H*0.12,'🥁 BEAR BEAT RUSH',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffd9a8',stroke:'#3a1a08',strokeThickness:5}).setOrigin(.5));
     this._beatHint=this.add.text(W/2,H*0.12+26,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',stroke:'#000',strokeThickness:4,align:'center'}).setOrigin(.5,0); C.add(this._beatHint);
     this._beatTimer=this.add.graphics(); C.add(this._beatTimer);
-    this._beatArrow=this.add.text(W/2,H*0.55,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'96px',color:'#ffd23f',stroke:'#3a1a08',strokeThickness:8}).setOrigin(.5); C.add(this._beatArrow);
-    this._beatGrade=this.add.text(W/2,H*0.55+80,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffffff',stroke:'#000',strokeThickness:5}).setOrigin(.5); C.add(this._beatGrade);
-    this._beatSeq=this.add.text(W/2,H*0.55-90,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffffff',stroke:'#000',strokeThickness:4}).setOrigin(.5); C.add(this._beatSeq); }
+    this._beatArrow=this.add.text(W/2,H*0.55,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(150,W*0.36))+'px',color:'#ffd23f',stroke:'#3a1a08',strokeThickness:8}).setOrigin(.5); C.add(this._beatArrow);
+    this._beatGrade=this.add.text(W/2,H*0.55+100,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffffff',stroke:'#000',strokeThickness:5}).setOrigin(.5); C.add(this._beatGrade);
+    this._beatSeq=this.add.text(W/2,H*0.55-110,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'30px',color:'#ffffff',stroke:'#000',strokeThickness:4}).setOrigin(.5); C.add(this._beatSeq); }
   beatSpecials(types){ const need=this._beat.ul>=4?2:3, out=new Set(); let run=1;
     for(let i=1;i<=types.length;i++){ if(i<types.length&&types[i]===types[i-1])run++; else { if(run>=need)out.add({jab:'gun',hook:'cyclone',heavy:'titan',upper:'juggle'}[types[i-1]]); run=1; } }
     if(new Set(types).size>=4)out.add('rainbow'); return out; }
@@ -8408,7 +8410,13 @@ class Game extends Phaser.Scene {
   cocoaDashRecharge(){ const b=this.basicAttack; return 1.3*(this.player.dashCdMul||1)*(b&&b.mutation==='counter'?0.6:1)*(b&&b.evolved?0.5:1); }
   tickCocoaDash(dt){ if(this.character!=='cocoa')return; const mx=this.cocoaDashMax(); if(this._dpCh==null)this._dpCh=mx; if(this._dpCh>mx)this._dpCh=mx;
     if(this._dpCh<mx){ this._dpT=(this._dpT||0)+dt; if(this._dpT>=this.cocoaDashRecharge()){ this._dpT=0; this._dpCh++; } } else this._dpT=0; }
-  cocoaDashPunch(){ const P=this.player; if(this._dpBusy)return true; const t=this.nearestEnemy(380); if(!t)return false;
+  cocoaDashPunch(){ const P=this.player; if(this._dpBusy)return true;
+    // v5.64 เดินอยู่ = พุ่งตามทิศจอย: มีมอนในกรวย ±45° ถึงจะต่อย ไม่งั้น dash หนีปกติ (หนีบอสได้) · ยืนนิ่ง = ตัวใกล้สุด
+    const mv=this.joy&&this.joy.active&&this.moveDir&&this.moveDir.lengthSq()>0.04; let t=null;
+    if(mv){ const ma=this.moveDir.angle(); let bd=1e18; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-P.x)**2+(e.y-P.y)**2; if(d>380*380||d>=bd)return;
+        if(Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(e.y-P.y,e.x-P.x)-ma))<0.8){bd=d;t=e;} }); }
+    else t=this.nearestEnemy(380);
+    if(!t)return false;
     if(this._dpCh==null)this._dpCh=this.cocoaDashMax(); if(this._dpCh<=0){ this.flashBtn(this.dashBtn); return true; }
     this._dpCh--; this._dpBusy=true; this.charPassiveOnDash(); this.ancientEchoDash(); this._coachDash=(this._coachDash||0)+1; this.flashBtn(this.dashBtn);
     const b=this.basicAttack, lvl=this.skills.meteor||1, ctr=b&&b.mutation==='counter', unit=(12+lvl*3.5)*(P.dmgMul||1)*1.9*(1+((b&&b._pm&&b._pm.dashm)||0)), R=ctr?120:80;
@@ -8420,6 +8428,7 @@ class Game extends Phaser.Scene {
       const x=t.active?t.x:P.x+Math.cos(a)*40,y=t.active?t.y:P.y+Math.sin(a)*40;
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,x,y)>R)return; this.damage(e,unit*(e===t?1:0.6),e.x,e.y);
         if(e.active&&!e.isBoss&&!e.isMini){const ka=Math.atan2(e.y-y,e.x-x);e.setVelocity(Math.cos(ka)*240,Math.sin(ka)*240);e.knock=0.15;} });
+      if(t.isBoss||t.isMini){ this.tweens.add({targets:P,x:P.x-Math.cos(a)*110,y:P.y-Math.sin(a)*110,duration:160,ease:'Quad.out'}); P.iframe=Math.max(P.iframe||0,0.45); }   // v5.64 ตีบอสแล้วกระโดดถอย
       this.hitCratesInRadius(x,y,R,unit); if(this.anims.exists('fx_flickerstrike'))this.spawnFxAnim('fx_flickerstrike',x,y,{scale:R/150,rotation:a,depth:9,alpha:0.9}); else this.vfxHitRing(x,y,0xffa54d,false); this._sqX=0.75; this._sqY=1.25; this.screenShake(50,0.0025); if(this.hitStop)this.hitStop(25);
       const cc=this._cc||(this._cc={n:0,t:0,step:0}); cc.n++; cc.t=0; this.cocoaBeatCharge(0.25); Sfx.comboPunch(cc.n,'heavy'); }});
     this.time.delayedCall(400,()=>{ this._dpBusy=false; });
