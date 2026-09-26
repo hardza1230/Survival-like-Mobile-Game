@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.50.0';
+const GAME_VERSION = '5.51.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.51.0', date:'2026-09-26', title:'🍄 Living Ground: C2-1', items:['The Fermented Canopy floor is now scattered with mushrooms, moss, puddles, roots and glowing spores','Decorations only draw near you, so it stays light on phones'] },
   { v:'5.50.0', date:'2026-09-26', title:'⚙ Pause Settings & Auto Performance', items:['New ⚙ Settings button in the pause menu — change sound, performance and effects mid-run','Performance: Auto / Low / High (Auto lowers effects and crowd size when FPS drops)','Lighter render resolution on phones for smoother play','Monsters left far behind reappear near you instead of wandering off-screen'] },
   { v:'5.49.0', date:'2026-09-26', title:'⚡ Smoother Performance', items:['About 20% fewer monsters on screen at once','Bouncing and chain effects are capped per frame, so busy fights stay smooth','Fewer floating damage numbers in big crowds','Chapter 2 backgrounds no longer stretch until blurry'] },
   { v:'5.48.0', date:'2026-09-26', title:'🎒 Cleaner Gear & Power', items:['Gear & Power is now grouped into Character · Power · Gear','Big 2-column tiles instead of a long list of rows'] },
@@ -2386,6 +2387,20 @@ function rollWeightedCurrency(tier){
 // ราคาซื้อของฐานตาม tier
 const GEAR_BUY = { start:0, common:160, rare:420, epic:820, legend:0 };
 // เมล็ดสุ่มรายวัน (ร้านหมุนเวียน) — mulberry32
+// v5.51: ของตกแต่งพื้นแบบ chunk (ภาพล้วน ไม่มีการชน · วาดเฉพาะรอบจอ · seed เดิม = ของเดิมที่เดิม)
+// อาร์ตจริง: ใส่ไฟล์ใน ASSET_IMAGES ด้วย key เดียวกัน (โปร่งใส ~128px) → placeholder ถูกข้ามเอง · ดู docs/ART_ORDER_C2_1_MAP.md
+const DECOR_CHUNK=560;
+const STAGE_DECOR={
+  5:{seed:501,per:[4,7],clearR:170,items:[
+    {key:'dec_c21_mushroom',emoji:'🍄',size:70,w:6,base:0x2a6b4f},
+    {key:'dec_c21_moss',emoji:'🌿',size:62,w:7,base:0x1f5a44},
+    {key:'dec_c21_leaf',emoji:'🍂',size:46,w:7,rot:true},
+    {key:'dec_c21_puddle',draw:'puddle',size:120,w:4,col:0x5ee8c0},
+    {key:'dec_c21_jar',emoji:'🫙',size:54,w:2,base:0x3a2f24},
+    {key:'dec_c21_spore',emoji:'✨',size:36,w:3,glow:true},
+    {key:'dec_c21_root',draw:'root',size:130,w:3,col:0x5a3d2b},
+    {key:'dec_c21_flower',emoji:'🌼',size:40,w:4} ]},
+};
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
 function bazaarDaySeed(){ const d=new Date(); return d.getUTCFullYear()*10000+(d.getUTCMonth()+1)*100+d.getUTCDate(); }
 
@@ -6074,7 +6089,35 @@ class Game extends Phaser.Scene {
     add(-980,760,4,.92,1900,1.08,.48,-24);add(1030,720,4,.86,1880,1.06,.44,20);
     for(let k=0;k<5;k++){const fog=this.camWorld(this.add.image(-880+k*430,-620+k%2*760,'vfx_cloud_field').setTint(0x56e5bd).setScale(1.7+k*.12,.72).setAlpha(.055).setDepth(-200).setScrollFactor(.72+k*.045));this._chapterDepthObjs.push(fog);this.tweens.add({targets:fog,x:fog.x+180,y:fog.y-35,duration:7200+k*820,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
   }
-  clearStageProps(){ this.clearChapterDepth();if(this.decoProps)this.decoProps.clear(true,true); if(this.solidProps)this.solidProps.clear(true,true); }
+  // v5.51: placeholder ของตกแต่ง (วาดด้วย canvas ถ้ายังไม่มีอาร์ตจริง)
+  makeDecorTexture(it){
+    if(this.textures.exists(it.key))return; const S=128,ct=this.textures.createCanvas(it.key,S,S),c=ct.getContext();
+    if(it.draw==='puddle'){ const g=c.createRadialGradient(64,70,6,64,70,60),col='#'+it.col.toString(16).padStart(6,'0'); g.addColorStop(0,col+'aa');g.addColorStop(0.7,col+'44');g.addColorStop(1,col+'00'); c.fillStyle=g; c.save();c.translate(64,70);c.scale(1,0.55);c.beginPath();c.arc(0,0,60,0,Math.PI*2);c.fill();c.restore(); c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.ellipse(50,62,14,4,0,0,Math.PI*2);c.fill(); }
+    else if(it.draw==='root'){ c.strokeStyle='#'+it.col.toString(16).padStart(6,'0');c.lineCap='round'; for(let k=0;k<3;k++){c.lineWidth=10-k*3;c.beginPath();c.moveTo(10+k*8,90-k*10);c.bezierCurveTo(40,60+k*12,80,110-k*14,120-k*6,70+k*12);c.stroke();} }
+    else { if(it.base!=null){c.fillStyle='rgba(0,0,0,.28)';c.beginPath();c.ellipse(64,104,40,12,0,0,Math.PI*2);c.fill();}
+      if(it.glow){const g=c.createRadialGradient(64,64,4,64,64,56);g.addColorStop(0,'rgba(140,255,215,.55)');g.addColorStop(1,'rgba(140,255,215,0)');c.fillStyle=g;c.fillRect(0,0,S,S);}
+      c.font='84px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(it.emoji,64,62); }
+    ct.refresh();
+  }
+  buildDecor(i){
+    this.clearDecor(); const cfg=STAGE_DECOR[i]; if(!cfg)return;
+    cfg.items.forEach(it=>this.makeDecorTexture(it)); const tw=cfg.items.reduce((a,b)=>a+b.w,0);
+    this._decor={cfg,tw,chunks:new Map(),pool:[],acc:1};
+  }
+  clearDecor(){ const d=this._decor; if(!d)return; for(const arr of d.chunks.values())arr.forEach(o=>o.destroy()); d.pool.forEach(o=>o.destroy()); this._decor=null; }
+  tickDecor(dt){
+    const d=this._decor; if(!d)return; d.acc+=dt; if(d.acc<0.2)return; d.acc=0;
+    const C=DECOR_CHUNK,px=this.player.x,py=this.player.y,view=Math.max(this.W,this.H)/(this.viewZoom||1),R=Math.ceil(view/C/2)+1,pcx=Math.floor(px/C),pcy=Math.floor(py/C),want=new Set(),half=WORLD/2;
+    for(let cx=pcx-R;cx<=pcx+R;cx++)for(let cy=pcy-R;cy<=pcy+R;cy++){ if(cx*C>=half||(cx+1)*C<=-half||cy*C>=half||(cy+1)*C<=-half)continue; const k=cx+','+cy; want.add(k); if(d.chunks.has(k))continue;
+      const rng=mulberry32((d.cfg.seed*73856093)^(cx*19349663)^(cy*83492791)),n=d.cfg.per[0]+Math.floor(rng()*(d.cfg.per[1]-d.cfg.per[0]+1)),arr=[];
+      for(let j=0;j<n;j++){ let r=rng()*d.tw,it=d.cfg.items[0]; for(const q of d.cfg.items){r-=q.w;if(r<=0){it=q;break;}}
+        const x=cx*C+rng()*C,y=cy*C+rng()*C,sc=(it.size/128)*(0.8+rng()*0.5),flip=rng()<0.5,rot=it.rot?rng()*6.28:(rng()-0.5)*0.2,al=0.78+rng()*0.2;
+        if(Math.abs(x)>half-30||Math.abs(y)>half-30||Math.hypot(x,y)<(d.cfg.clearR||0))continue;
+        let o=d.pool.pop(); if(!o)o=this.camWorld(this.add.image(0,0,it.key)); o.setTexture(it.key).setPosition(x,y).setScale(sc).setFlipX(flip).setRotation(rot).setAlpha(al).setDepth(-99500).setVisible(true); arr.push(o); }
+      d.chunks.set(k,arr); }
+    for(const [k,arr] of d.chunks){ if(want.has(k))continue; arr.forEach(o=>{o.setVisible(false);d.pool.push(o);}); d.chunks.delete(k); }
+  }
+  clearStageProps(){ this.clearDecor(); this.clearChapterDepth();if(this.decoProps)this.decoProps.clear(true,true); if(this.solidProps)this.solidProps.clear(true,true); }
   // จัดวาง props เป็น "Room" Waitบจุดเกิด (0,0) — เดินเรื่องด้วยเลย์เอาต์ที่ตั้งใจ ไม่ใช่พื้นลอย ๆ
   buildStageProps(i){
     this.clearStageProps();
@@ -6114,7 +6157,7 @@ class Game extends Phaser.Scene {
       //         แก้: ด่าน 1-5 (bg1-5) คงปูซ้ำ 1.12 เหมือนเดิม · Chapter 2 = ยืดภาพเดียวคลุมทั้งโลก (cover, ไม่ซ้ำ)
       if(i>=5&&i<10&&this.textures.exists(bgKey)){ const src=this.textures.get(bgKey).getSourceImage(),cover=Math.min(2,Math.max(WORLD/(src.width||WORLD),WORLD/(src.height||WORLD))); this.bgTile.tileScaleX=this.bgTile.tileScaleY=cover; }
       else this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
-    this.buildStageProps(i);this.buildChapterDepth(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
+    this.buildStageProps(i);this.buildChapterDepth(i);this.buildDecor(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
     const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this._stageTxtAt=this.elapsed||0;this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
     this.showBanner(`${st.emoji} Stage ${stageNo}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
@@ -10061,7 +10104,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
