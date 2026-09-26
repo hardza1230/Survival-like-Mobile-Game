@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.44.0';
+const GAME_VERSION = '5.45.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.45.0', date:'2026-09-26', title:'🎰 Slot-machine auto-roll', items:['Auto-roll shows your wallet and it ticks down with every roll','Each roll spins like a slot reel with its own sound','Near miss (same mod family) plays a tense “so close!” sting','Miss plays a little sad “aww”; hitting the target is a jackpot with sparkles']},
   { v:'5.44.0', date:'2026-09-26', title:'🛑 Stop the wheel!', items:['Mini-boss prize wheel and Affix Roulette now spin until you tap STOP (auto-stops after 6s)','After STOP the wheel coasts and slows down before landing','Auto-Roll spins slower so you can watch each result and stop in time']},
   { v:'5.43.0', date:'2026-09-26', title:'🎰 Hype roulette', items:['Affix Roulette builds suspense: high tiers and rare mods spin longer and slow down dramatically','Rare / Epic / Jackpot reveals add light rays, sparkle bursts, screen shake and special fanfares','Auto-Roll target hits celebrate too']},
   { v:'5.42.0', date:'2026-09-26', title:'🔒 Tier lock & full roll pool', items:['Affix Forge roll pool now has ‹ › pages so you can see every possible mod','Tap a tier in the TIERS table to lock it: that mod always rolls at that tier or better (+2 currency per roll)','Tap the locked tier again to unlock']},
@@ -679,6 +680,10 @@ const Sfx = {
   recipeMerge(){if(!this.playFile('sfx_recipe_merge',0.5,1))this.seq([523,659,784,1047,1319],'triangle',0.06,0.07);},
   digTrap(){if(!this.playFile('sfx_dig_trap',0.55))this.tone(90,0.2,'sawtooth',0.1,50);},
   digDescend(){if(!this.playFile('sfx_dig_descend',0.55,1))this.seq([880,660,440],'sine',0.12,0.08);},
+  slotSpin(){if(!this.playFile('sfx_slot_spin',0.45,1))this.seq([660,740,830],'square',0.03,0.04);},
+  slotMiss(){if(!this.playFile('sfx_slot_miss',0.5,1))this.seq([392,370,349,330],'triangle',0.16,0.08);},
+  slotNear(){if(!this.playFile('sfx_slot_near',0.55,1))this.seq([523,659,494],'sine',0.14,0.09);},
+  slotJackpot(){if(!this.playFile('sfx_slot_jackpot',0.65,1))this.seq([523,659,784,1047,1319],'triangle',0.08,0.1);},
   chestWin(){if(!this.playFile('sfx_chest_win',0.6,1))this.seq([784,988,1175,1568],'triangle',0.09,0.1);},
   bossClear(){this.duckBgm(3200,0.12);if(!this.playFile('sfx_boss_clear',0.6,1))this.seq([523,659,784,1047],'triangle',0.13,0.12);},
   dead(){this.duckBgm(900,0.3);if(this.playFile('sfx_defeat',0.5,1))return;this.seq([392,311,247,196],'sine',0.10,0.14);},
@@ -1017,6 +1022,10 @@ const ASSET_AUDIO = {
   sfx_dig_rare: 'assets/audio/sfx/gen/sfx_dig_rare.mp3',
   sfx_dig_trap: 'assets/audio/sfx/gen/sfx_dig_trap.mp3',
   sfx_dig_descend: 'assets/audio/sfx/gen/sfx_dig_descend.mp3',
+  sfx_slot_spin: 'assets/audio/sfx/gen/sfx_slot_spin.mp3',   // v5.45 auto-roll
+  sfx_slot_miss: 'assets/audio/sfx/gen/sfx_slot_miss.mp3',
+  sfx_slot_near: 'assets/audio/sfx/gen/sfx_slot_near.mp3',
+  sfx_slot_jackpot: 'assets/audio/sfx/gen/sfx_slot_jackpot.mp3',
   sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
@@ -5498,10 +5507,11 @@ class Game extends Phaser.Scene {
     const T=(y,t,sz,col,b)=>this.add.text(w/2,y,t,{fontFamily:'sans-serif',fontStyle:b?'bold':'normal',fontSize:sz,color:col,align:'center'}).setOrigin(.5);
     const title=T(cy-99,'🔁 AUTO-ROLL',  '17px','#ffe08a',1),goal=T(cy-74,'Target: '+tmod.emoji+' '+tmod.label+' ('+affixChancePct(tmod,craftAffixPoolForItem(item))+'% per roll)','10px','#b9aec8');
     const rowG=this.add.graphics();rowG.fillStyle(0x41304d,1);rowG.fillRoundedRect(36,cy-22,w-72,44,10);rowG.lineStyle(2,0xffd166,1);rowG.strokeRoundedRect(36,cy-22,w-72,44,10);
-    const cur=T(cy,'…','14px','#f4ecf8',1),count=T(cy+40,'Roll 0','11px','#e8ddff'),spentT=T(cy+60,'','9px','#8bd3a0');
+    const cur=T(cy,'…','14px','#f4ecf8',1),count=T(cy+34,'Roll 0','11px','#e8ddff'),spentT=T(cy+50,'','9px','#8bd3a0'),walT=T(cy+66,'','10px','#ffe08a',1),fb=T(cy-40,'','10px','#ffb86b',1);
+    const wallet=k=>{const d=currencyDef(k);walT.setText('Wallet: '+d.emoji+' '+d.name+' × '+Save.currency(k));};wallet(craftCurrencyForLine(Save.gearRarity(item.uid,base.tier),!!Save.gearAffixes(item.uid)[Math.max(0,this.craftLineIndex||0)]));
     const skW=120,skH=32,skX=w/2-skW/2,skY=cy+84,skG=this.add.graphics();skG.fillStyle(0x5a2e3a,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0xff8fa3,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);
     const skT=T(skY+skH/2,'⏹ Stop','12px','#ffe0e6',1);
-    this.menu.add([shade,panel,title,goal,rowG,cur,count,spentT,skG,skT]);
+    this.menu.add([shade,panel,title,goal,rowG,cur,count,spentT,walT,fb,skG,skT]);
     let rolls=0;const spent={};const spentTxt=()=>Object.keys(spent).map(k=>currencyDef(k).emoji+'×'+spent[k]).join(' ')||'—';
     const end=(kind,a)=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;
       this.time.delayedCall(kind==='hit'?900:500,()=>{this._craftRolling=false;this.buildCraftBench();
@@ -5517,15 +5527,23 @@ class Game extends Phaser.Scene {
       const key=craftCurrencyForLine(rar,!!old);
       const lk=this.craftLockFor(item),need=1+(lk?TIER_LOCK_COST:0);
       if(Save.currency(key)<need){cur.setText('Out of '+currencyDef(key).emoji+' '+currencyDef(key).name).setColor('#ff9aa8');return end('broke');}
+      const tcat=affixCategory(tmod).label;
       const mod=pickWeightedMod(available),rolled=rollOneAffixLocked(mod,affixBestTierForItem(item,mod),item.itemLevel||1,lk);
       const nAffs=affs.slice();if(ln<nAffs.length)nAffs[ln]=rolled;else nAffs.push(rolled);
       Save.spendCurrency(key,need);Save.setAffixes(item.uid,nAffs);if(rar==='common')Save.setGearRarity(item.uid,'magic');
       spent[key]=(spent[key]||0)+need;rolls++;this._craftRolledId=mod.id;
-      const hit=mod.id===targetId,c=affixCategory(mod);
+      wallet(key);this.tweens.killTweensOf(walT);walT.setScale(1.18).setColor('#ff9aa8');this.tweens.add({targets:walT,scale:1,duration:260,onComplete:()=>walT.setColor('#ffe08a')});
+      const mT=T(w/2+80,'−'+need,'11px','#ff9aa8',1).setY(cy+66);this.menu.add(mT);this.tweens.add({targets:mT,y:cy+48,alpha:0,duration:700,onComplete:()=>mT.destroy()});
+      count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());fb.setText('');
+      // reel: สลับชื่อ mod มั่ว ๆ ก่อนเผยผล (เหมือนสล็อต)
+      Sfx.slotSpin();let ri=0;const reel=()=>{if(this._craftRollToken!==token)return;if(ri++<6){const r=available[Math.floor(Math.random()*available.length)];cur.setText(r.emoji+'  '+r.label).setColor('#8f83a3');this.time.delayedCall(55,reel);}else reveal();};
+      const reveal=()=>{
+      const hit=mod.id===targetId,c=affixCategory(mod),near=!hit&&c.label===tcat;
       this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
-      count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());Sfx.select();
-      if(hit){this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};Sfx.clear();this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);Sfx.chestWin&&Sfx.chestWin();if(hy>=2)Sfx.legend&&Sfx.legend();}skT.setText('✓ Done');return end('hit');}
-      this.time.delayedCall(rolls<3?650:480,step);};
+      if(!hit){if(near){Sfx.slotNear();fb.setText('😮 So close! Same '+tcat+' family').setColor('#ffb86b');this.screenFlash(0xffa94d,.22,220);this.tweens.add({targets:rowG,alpha:.55,duration:90,yoyo:true,repeat:2});}
+        else{Sfx.slotMiss();fb.setText(['Aww…','Not this time…','Nope 😢','So sad…'][rolls%4]).setColor('#9aa4c8');this.tweens.add({targets:cur,y:cy+4,duration:160,yoyo:true});}}
+      if(hit){fb.setText('🎉 JACKPOT! 🎉').setColor('#ffe08a');Sfx.slotJackpot();for(let i=0;i<14;i++){const a=i/14*Math.PI*2,sp=T(w/2,'✦','14px',i%2?'#ffd166':'#ff9ad5',1).setY(cy);this.menu.add(sp);this.tweens.add({targets:sp,x:w/2+Math.cos(a)*(90+Math.random()*50),y:cy+Math.sin(a)*(70+Math.random()*40),alpha:0,duration:700+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>sp.destroy()});}this.tweens.add({targets:[title,cur],scale:1.25,duration:140,yoyo:true,repeat:2});this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};Sfx.clear();this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);Sfx.chestWin&&Sfx.chestWin();if(hy>=2)Sfx.legend&&Sfx.legend();}skT.setText('✓ Done');return end('hit');}
+      this.time.delayedCall(near?900:(rolls<3?650:520),step);};reel();};
     this.time.delayedCall(200,step);
   }
   promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
