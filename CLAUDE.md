@@ -60,7 +60,9 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.25.0 — เลเวลช้าลง)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.26.0 — Temple Depths เริ่มทำ)
+- **Temple Depths (มินิเกมขุดใต้วิหาร · เจ้าของเลือก):** ดีไซน์เต็มที่ `docs/TEMPLE_DIG_DESIGN.md` (กลไก/อนิเมชัน/เสียง/ใบสั่งอาร์ต key `dig_*`) · แผน commit: 1 doc ✅ · 2 เสียง ✅ · 3 หน้าขุดพื้นฐาน · 4 อนิเมชัน · 5 หินแก่น→Overcap · 6 คัมภีร์→Perk ลับ · 7 ชั้นลึก/ทางลับ/กับดัก/รอยใบ้ · 8 พลั่วจากด่าน
+- **v5.26.0:** gen_stingers_synth +6 เสียง `sfx_dig_hit/break/find/rare/trap/descend` (assets/audio/sfx/gen) · `Sfx.digHit/digBreak/digFind/digRare/digTrap/digDescend` (ยังไม่ถูกเรียก) · verified headless โหลด+เล่นได้
 - **v5.25.0 (เจ้าของ: เลเวลขึ้นเร็วไป):** xpNext เริ่ม 10→12 · โต ×1.26+4 → ×1.26+6 (EXP สะสมถึง Lv10 +32%, Lv20 +35%) · verified headless 0 error
 - **v5.24.0 (เจ้าของ):** ยืนยันการ์ดเลเวลอัพเล่น Sfx.clear + Sfx.card ซ้อนกัน → ตัด Sfx.clear ใน pickCardAt เหลือ Sfx.card · Mint Lance Barrage base dmg 0.62→0.7 cd 0.65→0.75 · Splinter Volley max 2→1 · castIceNeedle เพดาน 4 หอก · verified headless 0 error
 - **v5.23.0 (เจ้าของ: ข้อความลอยต่อเนื่องรก ไม่เอา combo):** ปิด showKillStreak ใน killEnemy (ยังนับ killStreak) · popDmg เลขธรรมดา throttle 120ms (`_dmgNumAt`) คริโชว์เสมอ · verified headless 0 error

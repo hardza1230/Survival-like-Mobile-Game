@@ -70,6 +70,21 @@ const defs = {
     [0, 0.6, 0.9, 1.5, 1.8, 2.1].forEach(t => { kick(mix, t, 0.5); snare(mix, t + 0.15, 0.2); });
     crash(mix, 2.4, 0.15); timpani(mix, 2.4, 36, 0.6);
   }),
+  // ⛏️ v5.26 Temple Depths (มินิเกมขุด)
+  sfx_dig_hit: () => renderOnce(0.45, mix => { kick(mix, 0, 0.55); tom(mix, 0, 95, 0.4); snare(mix, 0.01, 0.12, 0.05); }, 0.2, 0.08),
+  sfx_dig_break: () => renderOnce(0.9, mix => { tom(mix, 0, 80, 0.45); for (let i = 0; i < 7; i++) snare(mix, 0.03 + i * 0.05, 0.14 - i * 0.015, 0.1); kick(mix, 0, 0.35); }, 0.3, 0.15),
+  sfx_dig_find: () => renderOnce(0.8, mix => { [79, 84].forEach((m, i) => note(mix, i * 0.08, 0.35, m, { type: 'bell', decay: 0.35, a: 0.002, r: 0.2, vol: 0.12, send: 0.3 })); }, 0.4, 0.3),
+  sfx_dig_rare: () => renderOnce(1.8, mix => {
+    [72, 76, 79, 84, 88, 91].forEach((m, i) => note(mix, i * 0.06, 0.6, m, { type: 'bell', decay: 0.6, a: 0.002, r: 0.3, vol: 0.09, pan: i % 2 ? 0.4 : -0.4, send: 0.5 }));
+    for (const m of [60, 64, 67, 72]) wide(mix, 0.36, 1.0, m, { type: 'tri', a: 0.03, s: 0.7, r: 0.5, vol: 0.05, send: 0.5, voices: 2 });
+    crash(mix, 0.36, 0.06);
+  }),
+  sfx_dig_trap: () => renderOnce(0.9, mix => { kick(mix, 0, 0.8); note(mix, 0, 0.35, 43, { type: 'sine', a: 0.002, d: 0.3, s: 0.2, r: 0.1, vol: 0.4, glide: -10, send: 0.1 }); for (let i = 0; i < 6; i++) snare(mix, 0.05 + i * 0.04, 0.07, 0.2); }, 0.4, 0.2),
+  sfx_dig_descend: () => renderOnce(2.0, mix => {
+    note(mix, 0, 0.9, 72, { type: 'sine', a: 0.02, d: 0.8, s: 0.3, r: 0.3, vol: 0.2, glide: -24, send: 0.4 });
+    [55, 50, 43].forEach((m, i) => note(mix, 0.5 + i * 0.22, 0.9, m, { type: 'bell', decay: 0.9, a: 0.002, r: 0.5, vol: 0.1, send: 0.6 }));
+    timpani(mix, 0.5, 36, 0.4);
+  }),
 };
 
 const out = process.argv[2] || '.';

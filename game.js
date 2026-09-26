@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.25.0';
+const GAME_VERSION = '5.26.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.26.0', date:'2026-09-26', title:'⛏️ Temple Depths: sounds', items:['New dig, break, treasure, trap and descend sounds for the upcoming Temple Depths minigame']},
   { v:'5.25.0', date:'2026-09-26', title:'⭐ Steadier Leveling', items:['Levels come a little slower — each level needs a bit more EXP']},
   { v:'5.24.0', date:'2026-09-26', title:'❄️ Calmer Barrage', items:['Confirming a level-up card plays one clean sound instead of two','Mint Lance Barrage fires fewer lances (max 4) a bit slower, each hitting harder']},
   { v:'5.23.0', date:'2026-09-26', title:'🧹 Cleaner Screen', items:['Removed the kill-combo popups','Far fewer floating damage numbers — critical hits still show']},
@@ -651,6 +652,13 @@ const Sfx = {
   chestSpin(){this.stopChestSpin();if(this.muted||this.sv<=0)return;try{const g=window.__g;if(g&&g.cache.audio.exists('sfx_chest_spin')){this.duckBgm(4200,0.25);const s=g.sound.add('sfx_chest_spin',{volume:0.42*this.sv});s.once('complete',()=>{try{s.destroy();}catch(e){}if(this._chestSnd===s)this._chestSnd=null;});s.play();this._chestSnd=s;}}catch(e){}},
   stopChestSpin(){const s=this._chestSnd;this._chestSnd=null;if(s){try{s.stop();s.destroy();}catch(e){}}},
   chestTick(i){if(!this.playFile('sfx_chest_tick',0.34,1+Math.min(0.6,i*0.02)))this.tone(1200+i*14,0.035,'sine',0.04,1500);},
+  // v5.26 Temple Depths
+  digHit(){if(!this.playFile('sfx_dig_hit',0.5))this.tone(140,0.06,'triangle',0.12,90);},
+  digBreak(){if(!this.playFile('sfx_dig_break',0.45))this.tone(110,0.1,'triangle',0.1,70);},
+  digFind(){if(!this.playFile('sfx_dig_find',0.45,1))this.seq([1175,1568],'sine',0.07,0.08);},
+  digRare(){if(!this.playFile('sfx_dig_rare',0.55,1))this.seq([784,988,1175,1568,1976],'triangle',0.06,0.09);},
+  digTrap(){if(!this.playFile('sfx_dig_trap',0.55))this.tone(90,0.2,'sawtooth',0.1,50);},
+  digDescend(){if(!this.playFile('sfx_dig_descend',0.55,1))this.seq([880,660,440],'sine',0.12,0.08);},
   chestWin(){if(!this.playFile('sfx_chest_win',0.6,1))this.seq([784,988,1175,1568],'triangle',0.09,0.1);},
   bossClear(){this.duckBgm(3200,0.12);if(!this.playFile('sfx_boss_clear',0.6,1))this.seq([523,659,784,1047],'triangle',0.13,0.12);},
   dead(){this.duckBgm(900,0.3);if(this.playFile('sfx_defeat',0.5,1))return;this.seq([392,311,247,196],'sine',0.10,0.14);},
@@ -980,6 +988,12 @@ const ASSET_AUDIO = {
   sfx_boss_clear: 'assets/audio/sfx/gen/sfx_boss_clear.mp3',
   sfx_chest_spin: 'assets/audio/sfx/gen/sfx_chest_spin.mp3',   // v5.19 เปิดกล่องแบบ VS
   sfx_chest_tick: 'assets/audio/sfx/gen/sfx_chest_tick.mp3',
+  sfx_dig_hit: 'assets/audio/sfx/gen/sfx_dig_hit.mp3',   // v5.26 Temple Depths
+  sfx_dig_break: 'assets/audio/sfx/gen/sfx_dig_break.mp3',
+  sfx_dig_find: 'assets/audio/sfx/gen/sfx_dig_find.mp3',
+  sfx_dig_rare: 'assets/audio/sfx/gen/sfx_dig_rare.mp3',
+  sfx_dig_trap: 'assets/audio/sfx/gen/sfx_dig_trap.mp3',
+  sfx_dig_descend: 'assets/audio/sfx/gen/sfx_dig_descend.mp3',
   sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
