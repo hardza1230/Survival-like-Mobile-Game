@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.24.0';
+const GAME_VERSION = '5.25.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.25.0', date:'2026-09-26', title:'⭐ Steadier Leveling', items:['Levels come a little slower — each level needs a bit more EXP']},
   { v:'5.24.0', date:'2026-09-26', title:'❄️ Calmer Barrage', items:['Confirming a level-up card plays one clean sound instead of two','Mint Lance Barrage fires fewer lances (max 4) a bit slower, each hitting harder']},
   { v:'5.23.0', date:'2026-09-26', title:'🧹 Cleaner Screen', items:['Removed the kill-combo popups','Far fewer floating damage numbers — critical hits still show']},
   { v:'5.22.0', date:'2026-09-26', title:'✨ Purified!', items:['Finishing Capture the Zone now blasts the ring across the whole screen with a bright flash and a big sound']},
@@ -3050,7 +3051,7 @@ class Game extends Phaser.Scene {
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.computeViewZoom();                                // zoom ปรับตามความกว้างจอ → มือถือ/แท็บเล็ตเห็นสนามพอ ๆ กัน
     this.state='menu'; this.elapsed=0; this.kills=0; this.stageKills=0;
-    this.level=1; this.xp=0; this.xpNext=10;
+    this.level=1; this.xp=0; this.xpNext=12;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
     if(!Save._cloudReady&&Save.syncCloud){ Save.syncCloud().then(()=>{ if(Save._cloudAdopted&&this.state==='menu'){ this.buildMenuScreen&&this.buildMenuScreen(); if(this.showBanner)this.showBanner('☁️ Cloud sync','Loaded your latest progress from the cloud',1600); } }); }   // ซิงค์เซฟกับ Supabase (กันเซฟหาย)
     // ในแอป: หลังLockedอิน Google เด้งกลับผ่าน deep link → ซิงค์ + Updatesหน้าSettings + แจ้งผล
@@ -5503,7 +5504,7 @@ class Game extends Phaser.Scene {
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
-        this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;
+        this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
         this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
@@ -6557,7 +6558,7 @@ class Game extends Phaser.Scene {
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.windRushT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
-    this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=10;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
+    this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
@@ -6904,7 +6905,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n*(this.player.xpMul||1);
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+4); this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+6); /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }

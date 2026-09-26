@@ -60,7 +60,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.24.0 — เสียงการ์ด + Mint Barrage)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.25.0 — เลเวลช้าลง)
+- **v5.25.0 (เจ้าของ: เลเวลขึ้นเร็วไป):** xpNext เริ่ม 10→12 · โต ×1.26+4 → ×1.26+6 (EXP สะสมถึง Lv10 +32%, Lv20 +35%) · verified headless 0 error
 - **v5.24.0 (เจ้าของ):** ยืนยันการ์ดเลเวลอัพเล่น Sfx.clear + Sfx.card ซ้อนกัน → ตัด Sfx.clear ใน pickCardAt เหลือ Sfx.card · Mint Lance Barrage base dmg 0.62→0.7 cd 0.65→0.75 · Splinter Volley max 2→1 · castIceNeedle เพดาน 4 หอก · verified headless 0 error
 - **v5.23.0 (เจ้าของ: ข้อความลอยต่อเนื่องรก ไม่เอา combo):** ปิด showKillStreak ใน killEnemy (ยังนับ killStreak) · popDmg เลขธรรมดา throttle 120ms (`_dmgNumAt`) คริโชว์เสมอ · verified headless 0 error
 - **v5.22.0 (เจ้าของสั่ง):** `captureDoneFX` เขียนใหม่: แผ่นทอง+วงเวท+วงแหวน 4 ชั้นขยายทั่วจอ (scale ตาม W/H/viewZoom) · screenFlash 0.85 + shake + hitStop · เสียง chestWin+ult+clear · ข้อความ ✨ PURIFIED! · verified headless 0 error
