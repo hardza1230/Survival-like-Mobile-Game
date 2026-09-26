@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.68.0';
+const GAME_VERSION = '5.69.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.69.0', date:'2026-09-26', title:'Cocoa: 5-beat boxing combo', items:['Normal attacks now flow in a 1-2-3-4-5 rhythm, one punch per beat, with the 5th beat as a finisher','The punch set rotates every cycle (jab, cross, hooks, body blow, overhand, uppercut, slam) so the combo never repeats','Far fewer jabs','Pressing Dash now cancels the combo cleanly and dashes without stutter'] },
   { v:'5.68.0', date:'2026-09-26', title:'Cocoa: no chasing, boss focus', items:['Normal combo no longer lunges toward enemies — Cocoa punches from where she stands','Bear Beat Rush now focuses every punch on the boss or miniboss when one is nearby','After a Beat Rush on a boss, Cocoa hops back out of reach'] },
   { v:'5.67.0', date:'2026-09-26', title:'New art: menus, icons, Temple Depths', items:['Hub buttons and menu tiles use new illustrated icons','Rank Perk, Ancient Perk and Relic icons','Temple Depths gets its full art set: background, tiles, shovel, treasures and chests'] },
   { v:'5.66.0', date:'2026-09-26', title:'Bear Beat Rush: warp punches', items:['Cocoa now warps to each target during the rush punches, with a dash trail','Fully charged Beat Rush is weaker: fewer punches per dot and lower damage','Grand finale blast damage lowered'] },
@@ -3601,7 +3602,7 @@ class Game extends Phaser.Scene {
 
   doDash(){
     if(!this.dashReady||this.state!=='play') return;
-    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1)*this.cocoaDashCdMul();this.dashCd=this.dashCdMax; this.dashTime=0.16; this.cocoaDashBuff(); this._coachDash=(this._coachDash||0)+1;
+    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1)*this.cocoaDashCdMul();this.dashCd=this.dashCdMax; this.dashTime=0.16; this.cocoaDashBuff(); if(this.character==='cocoa'&&this._cc){ this._cc.gen=(this._cc.gen||0)+1; this._cc.step=0; this.tweens.killTweensOf(this.player); this.skillCd.meteor=Math.max(this.skillCd.meteor||0,0.3); }   // v5.69 dash ตัดคอมโบ this._coachDash=(this._coachDash||0)+1;
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
     this.player.setVelocity(d.x*560,d.y*560);
@@ -8313,7 +8314,7 @@ class Game extends Phaser.Scene {
     const t=this.nearestEnemy(reach+220);
     if(!t){ this._ccCdMul=0.5; return; }   // v5.61 ไม่มีศัตรูใกล้ = ไม่ต่อยลม (เดินเฉย ๆ = อนิเมชันเดิน) · รอบถัดไปเช็คเร็ว
     if((this.elapsed||0)-(cc.last??-9)>1.6)cc.step=0; cc.last=this.elapsed||0;   // v5.64 เริ่มคอมโบใหม่ด้วยท่าพุ่งเสมอ
-    const step=cc.step%6; cc.step++;
+    const step=cc.step; cc.step++; const gen=cc.gen||0;
     let ang=moving?this.moveDir.angle():Math.atan2(t.y-P.y,t.x-P.x); cc.ang=ang; P.setFlipX(Math.cos(ang)<0);
     const hit=(cx,cy,r,mul,o={})=>{ const bonus=1+Math.min(0.4,cc.n*0.01); let any=false;
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; any=true;
@@ -8324,43 +8325,36 @@ class Game extends Phaser.Scene {
       this.hitCratesInRadius(cx,cy,r,unit*mul);
       if(any){ cc.n++; cc.t=0; this.cocoaBeatCharge(0.25); if(cc.n%25===0)this.time.delayedCall(120,()=>this.cocoaFrenzy(unit,reach)); }
       Sfx.comboPunch(cc.n,o.heavy?'heavy':'jab'); return any; };
-    const live=()=>this.state==='play';
+    const live=()=>this.state==='play'&&(cc.gen||0)===gen;   // v5.69 กด Dash = gen เปลี่ยน → ท่าที่ค้างอยู่ยกเลิก
     const pt=(k,side=0,a=ang)=>({x:P.x+Math.cos(a)*reach*k-Math.sin(a)*side,y:P.y+Math.sin(a)*reach*k+Math.cos(a)*side});
-    // เส้นหมัดพุ่งออกจากตัว (straight/jab/cross)
     const streak=(to,col,w)=>{ const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(w,col,0.9).lineBetween(P.x,P.y-6,to.x,to.y); g.fillStyle(0xffffff,0.95).fillCircle(to.x,to.y,w*0.9);
       this.tweens.add({targets:g,alpha:0,duration:130,onComplete:()=>g.destroy()}); };
-    const lean=(k,ms)=>{ this._sqX=1+0.25*k; this._sqY=1-0.2*k; this.tweens.add({targets:P,x:P.x+Math.cos(ang)*8*k,y:P.y+Math.sin(ang)*8*k,duration:ms,yoyo:true,ease:'Quad.out'}); };
-    const RHYTHM=[0.72,0.6,0.78,0.7,0.85,1.0];   // v5.64 ต่อเนื่องขึ้น
-    if(step===0){ // 💨 LUNGE พุ่งต่อย
-      // v5.68 ไม่พุ่งเข้าหาเป้าแล้ว (เดิมพุ่งไปแนบบอส) — ต่อยตรงจากที่ยืน
-      this._sqX=1.3; this._sqY=0.75; lean(1,60);
-      this.time.delayedCall(60,()=>{ if(!live())return; const f=pt(0.6); streak(f,0xffd9a8,10); this.vfxHitRing(f.x,f.y,0xffd9a8,false); hit(f.x,f.y,reach*0.6,1.0,{kb:140}); });
-    }else if(step===1){ // 👊👊 ONE-TWO (จิ้ม-ตรง เร็ว)
-      [[0,-9,0.55,6],[110,9,0.8,9]].forEach(([ms,side,m,w])=>this.time.delayedCall(ms,()=>{ if(!live())return; lean(0.6,50); const f=pt(0.62,side); streak(f,0xfff0d0,w); hit(f.x,f.y,reach*0.5,m); }));
-    }else if(step===2){ // 🌀 HOOK (ง้าง แล้วเหวี่ยงกว้าง)
-      this._sqX=0.85; this._sqY=1.12;
-      this.time.delayedCall(80,()=>{ if(!live())return; const sd=cc.step%12<6?1:-1;
-        const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(11,0xffc477,0.92); g.beginPath(); g.arc(P.x,P.y,reach*0.72,ang-sd*1.0,ang+sd*0.9,sd<0); g.strokePath();
-        this.tweens.add({targets:g,alpha:0,duration:170,onComplete:()=>g.destroy()}); lean(1,70); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); });
-    }else if(step===3){ // 🥊 BODY RUSH (รัวหมัดท้อง)
-      const n=5+(aw?2:0)+(evo?1:0)+(basic.mutation==='rush'?2:0)+(basic._pm?.count||0);
-      for(let i=0;i<n;i++)this.time.delayedCall(i*48,()=>{ if(!live())return; const f=pt(0.5+Math.random()*0.15,(Math.random()-0.5)*26); streak(f,0xffe2b8,5); hit(f.x,f.y,reach*0.45,0.32); if(i%2)this._sqX=1.12; });
-    }else if(step===4){ // ⬆️ UPPERCUT (ย่อตัว แล้วงัดขึ้น)
-      this._sqX=1.2; this._sqY=0.78;
-      this.time.delayedCall(100,()=>{ if(!live())return; const f=pt(0.55); this._sqX=0.8; this._sqY=1.3;
+    const lean=(k)=>{ this._sqX=1+0.25*k; this._sqY=1-0.2*k; };   // เอนด้วยเจลลี่อย่างเดียว ไม่ tween ตำแหน่ง (กันกระตุกตอน dash)
+    const arc=(sd,col,w)=>{ const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(w,col,0.92); g.beginPath(); g.arc(P.x,P.y,reach*0.72,ang-sd*1.0,ang+sd*0.9,sd<0); g.strokePath(); this.tweens.add({targets:g,alpha:0,duration:170,onComplete:()=>g.destroy()}); };
+    // v5.69 คอมโบจังหวะ 1-2-3-4-5 · ท่าละ 1 หมัด · หมุนชุดท่าทุกรอบไม่ให้ซ้ำ · จังหวะที่ 5 = ท่าปิด
+    const SETS=[['jab','cross','hookL','hookR','upper'],['jab','body','cross','overhand','slam'],['cross','hookR','body','hookL','upper'],['jab','hookL','overhand','body','slam']];
+    const beat=step%5, move=SETS[Math.floor(step/5)%SETS.length][beat], run=(ms,f)=>ms?this.time.delayedCall(ms,()=>{ if(live())f(); }):f();
+    const M={
+      jab:()=>{ lean(0.6); const f=pt(0.6,-8); streak(f,0xfff0d0,7); hit(f.x,f.y,reach*0.5,0.65,{kb:90}); },
+      cross:()=>{ lean(1); const f=pt(0.66,8); streak(f,0xffd9a8,10); this.vfxHitRing(f.x,f.y,0xffd9a8,false); hit(f.x,f.y,reach*0.55,0.9,{kb:150}); },
+      hookL:()=>{ this._sqX=0.85; this._sqY=1.12; run(70,()=>{ arc(1,0xffc477,11); lean(1); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); }); },
+      hookR:()=>{ this._sqX=0.85; this._sqY=1.12; run(70,()=>{ arc(-1,0xffc477,11); lean(1); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); }); },
+      body:()=>{ lean(0.8); const f=pt(0.5,0); streak(f,0xffe2b8,9); hit(f.x,f.y,reach*0.55,0.85,{stun:0.2}); },
+      overhand:()=>{ this._sqX=0.82; this._sqY=1.2; run(90,()=>{ lean(1.2); const f=pt(0.65); streak(f,0xffb070,12); this.vfxHitRing(f.x,f.y,0xffb070,false); hit(f.x,f.y,reach*0.6,1.15,{kb:200,heavy:true}); }); },
+      upper:()=>{ this._sqX=1.2; this._sqY=0.78; run(100,()=>{ const f=pt(0.55); this._sqX=0.8; this._sqY=1.3;
         const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(12,0xfff0b0,0.95).lineBetween(f.x,f.y+30,f.x,f.y-70); this.tweens.add({targets:g,alpha:0,y:-20,duration:200,onComplete:()=>g.destroy()});
-        this.vfxHitRing(f.x,f.y,0xfff0b0,true);
-        if(hit(f.x,f.y,reach*0.7,1.6*fin,{stun:0.45,heavy:true})){ this.screenShake(90,0.004); if(this.hitStop)this.hitStop(35); } });
-    }else{ // 💥 BEAR SLAM (กระโดดแล้วทุบพื้น)
-      const s0=P.scaleX||1; this.tweens.add({targets:P,y:P.y-22,duration:110,yoyo:true,ease:'Quad.out'}); this._sqX=0.8; this._sqY=1.3;
-      this.time.delayedCall(220,()=>{ if(!live())return; const r=reach*1.5*(basic.mutation==='breaker'?1.2:1); this._sqX=1.4; this._sqY=0.65;
+        this.vfxHitRing(f.x,f.y,0xfff0b0,true); if(hit(f.x,f.y,reach*0.7,1.6*fin,{stun:0.45,heavy:true})){ this.screenShake(90,0.004); if(this.hitStop)this.hitStop(35); } }); },
+      slam:()=>{ this._sqX=0.8; this._sqY=1.3; run(200,()=>{ const r=reach*1.5*(basic.mutation==='breaker'?1.2:1); this._sqX=1.4; this._sqY=0.65;
         if(this.textures.exists('vfx_bear_shockwave')){const w=this.camWorld(this.add.image(P.x,P.y,'vfx_bear_shockwave').setDepth(6).setScale(0.16).setAlpha(0.9));this.tweens.add({targets:w,scale:(r*2.2)/256,alpha:0,duration:320,onComplete:()=>w.destroy()});}
         else this.vfxHitRing(P.x,P.y,0xffa54d,true);
         hit(P.x,P.y,r,1.4*fin*(basic.mutation==='breaker'?1.25:1),{kb:260,heavy:true}); this.screenShake(130,0.007); if(this.hitStop)this.hitStop(45);
         if(evo){P.hp=Math.min(P.maxhp,P.hp+P.maxhp*0.02);}
-        if(basic.mutation==='breaker'||evo)this.time.delayedCall(200,()=>{ if(live())hit(P.x,P.y,r*1.15,0.6,{kb:200,heavy:true}); }); });
-    }
-    this._ccCdMul=RHYTHM[step]; this.poseFlash&&this.poseFlash(CF.cast,120);
+        if(basic.mutation==='breaker'||evo)run(200,()=>hit(P.x,P.y,r*1.15,0.6,{kb:200,heavy:true})); }); } };
+    M[move]();
+    if(beat===4){ const extra=(basic._pm?.count||0)+(basic.mutation==='rush'?1:0)+(aw?1:0);   // ท่าปิดแล้วต่อหมัดสั้นตามจำนวน (Brawler/Rushdown/Awaken)
+      for(let i=0;i<extra;i++)run(260+i*90,()=>{ const f=pt(0.55,(i%2?9:-9)); streak(f,0xfff0d0,6); hit(f.x,f.y,reach*0.5,0.5); }); }
+    const RHYTHM=[0.72,0.72,0.78,0.78,1.15];
+    this._ccCdMul=RHYTHM[beat]; this.poseFlash&&this.poseFlash(CF.cast,120);
   }
   cocoaFrenzy(unit,reach){ if(this.state!=='play')return; const P=this.player, cc=this._cc;
     Sfx.comboPunch(cc.n,'frenzy'); this.showComboMove('BEAR FRENZY!',true); this.screenFlash&&this.screenFlash(0xffc477,0.35,220);
