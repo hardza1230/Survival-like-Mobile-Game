@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.53.0';
+const GAME_VERSION = '5.54.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.54.0', date:'2026-09-26', title:'🌿 New Ground Art', items:['Chapter 2 and Chapter 3 stages have brand-new seamless floor artwork — no more stretched, blurry backgrounds','The Fermented Canopy decorations now use real painted art'] },
   { v:'5.53.0', date:'2026-09-26', title:'🥊 Cocoa Combo Rush', items:['Cocoa reworked into a rapid-fire combo brawler: Jab Rush → Hook → Uppercut → Bear Slam','HITS counter: keep landing punches for up to +40% damage · every 25 hits unleashes BEAR FRENZY','Cocoa lunges toward nearby enemies and has new punchy impact sounds'] },
   { v:'5.52.0', date:'2026-09-26', title:'⏸ Pause Fixes', items:['Pause button no longer gets swallowed by the mute button next to it','Top-right buttons spaced wider apart','Settings button in the pause menu now matches Resume and Quit'] },
   { v:'5.51.0', date:'2026-09-26', title:'🍄 Living Ground: C2-1', items:['The Fermented Canopy floor is now scattered with mushrooms, moss, puddles, roots and glowing spores','Decorations only draw near you, so it stays light on phones'] },
@@ -862,6 +863,18 @@ const ASSET_IMAGES = {
   // boss3/boss4 ใช้ action sheet ใน ASSET_SHEETS เพื่อผูก pose กับ telegraph จริง
   mb1:'assets/generated/mb1_ant_guard.png', mb2:'assets/generated/mb2_valve_maw.png', mb3:'assets/mb3.png', mb4:'assets/mb4.png', mb5:'assets/mb5.png',   // Miniboss 5 ด่าน
   chest:'assets/chest.png', crate:'assets/crate.png', vac:'assets/vac.png',   // ไอเทม (รูปจริง แทนกราฟิกโค้ด)
+  // v5.54 อาร์ตจริง (AI อีกตัว): พื้น seamless 1024 ด่าน C2-1..C3-5 + decor C2-1
+  floor_c21:'assets/art/floors/floor_c21.webp',
+  floor_c22:'assets/art/floors/floor_c22.webp',
+  floor_c23:'assets/art/floors/floor_c23.webp',
+  floor_c24:'assets/art/floors/floor_c24.webp',
+  floor_c25:'assets/art/floors/floor_c25.webp',
+  floor_c31:'assets/art/floors/floor_c31.webp',
+  floor_c32:'assets/art/floors/floor_c32.webp',
+  floor_c33:'assets/art/floors/floor_c33.webp',
+  floor_c34:'assets/art/floors/floor_c34.webp',
+  floor_c35:'assets/art/floors/floor_c35.webp',
+  dec_c21_mushroom:'assets/art/decor_c21/dec_c21_mushroom.png', dec_c21_moss:'assets/art/decor_c21/dec_c21_moss.png', dec_c21_leaf:'assets/art/decor_c21/dec_c21_leaf.png', dec_c21_puddle:'assets/art/decor_c21/dec_c21_puddle.png', dec_c21_jar:'assets/art/decor_c21/dec_c21_jar.png', dec_c21_spore:'assets/art/decor_c21/dec_c21_spore.png', dec_c21_root:'assets/art/decor_c21/dec_c21_root.png', dec_c21_flower:'assets/art/decor_c21/dec_c21_flower.png',
   bg1:'assets/generated/bg1_sour_ant_nest.png', bg2:'assets/generated/bg2_rotting_drain.jpg', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png', bg6:'assets/bg6.png',
   fx_frost:'assets/fx_frost.png', fx_donut:'assets/fx_donut.png',   // VFX รูปจริงที่ผ่านการตรวจ alpha แล้ว
   fx_ult_bomb:'assets/fx_ult_bomb.png', fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
@@ -2397,6 +2410,7 @@ const GEAR_BUY = { start:0, common:160, rare:420, epic:820, legend:0 };
 // v5.51: ของตกแต่งพื้นแบบ chunk (ภาพล้วน ไม่มีการชน · วาดเฉพาะรอบจอ · seed เดิม = ของเดิมที่เดิม)
 // อาร์ตจริง: ใส่ไฟล์ใน ASSET_IMAGES ด้วย key เดียวกัน (โปร่งใส ~128px) → placeholder ถูกข้ามเอง · ดู docs/ART_ORDER_C2_1_MAP.md
 const DECOR_CHUNK=560;
+const FLOOR_KEYS={5:'floor_c21',6:'floor_c22',7:'floor_c23',8:'floor_c24',9:'floor_c25',10:'floor_c31',11:'floor_c32',12:'floor_c33',13:'floor_c34',14:'floor_c35'};
 const STAGE_DECOR={
   5:{seed:501,per:[4,7],clearR:170,items:[
     {key:'dec_c21_mushroom',emoji:'🍄',size:70,w:6,base:0x2a6b4f},
@@ -6162,7 +6176,8 @@ class Game extends Phaser.Scene {
       // v4.50: Chapter 2 bg (bg6-10) เป็นภาพฉากเต็มใบ ไม่ใช่ texture ต่อได้ (seamless) → ปูซ้ำแล้วเห็นลายนางฟ้าเรียงเต็มจอ
       //         แก้: ด่าน 1-5 (bg1-5) คงปูซ้ำ 1.12 เหมือนเดิม · Chapter 2 = ยืดภาพเดียวคลุมทั้งโลก (cover, ไม่ซ้ำ)
       if(i>=5&&i<10&&this.textures.exists(bgKey)){ const src=this.textures.get(bgKey).getSourceImage(),cover=Math.min(2,Math.max(WORLD/(src.width||WORLD),WORLD/(src.height||WORLD))); this.bgTile.tileScaleX=this.bgTile.tileScaleY=cover; }
-      else this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12; }   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
+      else this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12;
+      const fk=FLOOR_KEYS[i]; if(fk&&this.textures.exists(fk)){ this.bgTile.setTexture(fk); this.bgTile.tileScaleX=this.bgTile.tileScaleY=0.8; } }   // v5.54 พื้น seamless จริงแทน bg (bg ยังใช้เป็นภาพ story panel)   // พื้นหลังโซนตามด่าน + คืน tileScale (เผื่อมาจาก Training Ground)
     this.buildStageProps(i);this.buildChapterDepth(i);this.buildDecor(i);   // props หลัก + parallax 2.5D เฉพาะ Chapter 2
     this._powerGuide=this.getPowerGuide(i);const pg=this._powerGuide;
     const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this._stageTxtAt=this.elapsed||0;this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
