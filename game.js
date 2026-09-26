@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.61.0';
+const GAME_VERSION = '5.62.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.62.0', date:'2026-09-26', title:'Bear Beat Rush: hold to charge', items:['Hold the Unique button to charge — the longer you hold, the more colored dots appear (up to 12)','Dots now appear on screen instead of on monsters, so one long line is easy to draw','Longer chains give more punches and more swipe arrows (up to 8)','Short tap still does the quick 2-swipe version'] },
   { v:'5.61.0', date:'2026-09-26', title:'🔗 Easier Chain Drag', items:['Bear Beat Rush now pulls up to 9 nearby enemies into a ring around Cocoa so they all fit on screen','Smaller target rings with a steady touch area — much easier to drag from one to the next','Cocoa just walks when no enemy is close instead of punching the air'] },
   { v:'5.60.0', date:'2026-09-26', title:'🥊 Cocoa Boxing Rhythm', items:['Cocoa now boxes in 6 distinct moves with their own timing: Lunge → One-Two → Hook → Body Rush → Uppercut → Bear Slam','Standing still, Cocoa turns and punches the nearest enemy; while walking she punches where you move','Dash Punch now visibly dashes in with an afterimage trail before the hit','Removed the HITS counter and dash-count text'] },
   { v:'5.59.0', date:'2026-09-26', title:'🐾 Cocoa Dash Punch', items:['Cocoa’s punches always follow your movement direction','Dash now lunges into the nearest enemy with a heavy punch — new card Bear Dash Chain adds +1 chained hit per rank (up to 4)','Bear Beat Rush ends with a grand finale: giant bear spirit, 5-color shockwaves, a huge blast and your total damage'] },
@@ -2427,6 +2428,7 @@ const GEAR_BUY = { start:0, common:160, rare:420, epic:820, legend:0 };
 // v5.55 Bear Beat Rush (Cocoa Unique) — หมัด 4 แบบ · สี=จับคู่เร็ว · dx/dy = ตำแหน่งปุ่มแบบกากบาท
 const BEAT_PUNCHES=[{id:'heavy',name:'Heavy',emoji:'💥',col:0xff4d5a,dx:0,dy:-1},{id:'jab',name:'Jab',emoji:'👊',col:0xff9a3c,dx:-1,dy:0},{id:'hook',name:'Hook',emoji:'🌀',col:0x4fb8ff,dx:1,dy:0},{id:'upper',name:'Upper',emoji:'⬆️',col:0xb56bff,dx:0,dy:1}];
 const BEAT_GRADES={PERFECT:2,GREAT:1.5,COOL:1,MISS:0.3};
+const BEAT_NODE_MAX=12;   // v5.62 จุดสูงสุดตอนชาร์จ
 const BEAT_SPECIALS={gun:{name:'Machine Gun Paws',emoji:'👊'},cyclone:{name:'Cocoa Cyclone',emoji:'🌀'},titan:{name:'Titan Crush',emoji:'💥'},juggle:{name:'Sky Juggle',emoji:'⬆️'},rainbow:{name:'Rainbow Combo',emoji:'🌈'}};
 const DECOR_CHUNK=560;
 const FLOOR_KEYS={5:'floor_c21',6:'floor_c22',7:'floor_c23',8:'floor_c24',9:'floor_c25',10:'floor_c31',11:'floor_c32',12:'floor_c33',13:'floor_c34',14:'floor_c35'};
@@ -3513,7 +3515,7 @@ class Game extends Phaser.Scene {
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
     });
     this.input.on('pointerup',(p)=>{
-      if(this._ubHold&&this._ubHold.id===p.id){ this._ubHold=null; this.startBeatRush(false); return; }   // แตะสั้น = quick (ปัด 2 ครั้ง)
+      if(this._ubHold&&this._ubHold.id===p.id){ const n=this.beatHoldNodes(); this._ubHold=null; this.clearBeatCharge(); this.startBeatRush(n>0,n); return; }   // v5.62 แตะสั้น = quick · กดค้าง = จุดตามเวลาที่ชาร์จ
       if(this._beat){ this.beatUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
         this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
@@ -8312,20 +8314,27 @@ class Game extends Phaser.Scene {
     this.uniqueCd=Math.max(floor,this.uniqueCd-sec); }
   // ===== 🥁 Bear Beat Rush (มินิเกมจังหวะแบบ Audition) =====
   // ===== 🥁 Bear Beat Rush v2 (v5.58) — ลากเส้นเชื่อมมอน (Chain) + ปัดปิดท้าย (Swipe) =====
-  startBeatRush(full){ if(this.state!=='play'||this._beat||this.uniqueCd>0)return; const u=this.uniqueInfo(),ul=this.uniqueLevel||1;
+  // v5.62 ชาร์จ: กดค้างนานขึ้น = จุดสีบนจอมากขึ้น (0 = แตะสั้น/quick)
+  beatHoldNodes(){ if(!this._ubHold)return 0; const h=(performance.now()-this._ubHold.t)/1000; return h<0.35?0:Math.min(BEAT_NODE_MAX,3+Math.floor((h-0.35)/0.3)); }
+  clearBeatCharge(){ if(this._beatChg){ this._beatChg.g.destroy(); this._beatChg.t.destroy(); this._beatChg=null; } }
+  tickBeatCharge(){ const n=this.beatHoldNodes(), btn=this.uniqueBtn; if(!this._ubHold||!btn){ this.clearBeatCharge(); return; }
+    if(!this._beatChg){ const g=this.camUI(this.add.graphics().setDepth(1500)), t=this.camUI(this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd23f',stroke:'#3a1a08',strokeThickness:5}).setOrigin(.5).setDepth(1501)); this._beatChg={g,t,last:0}; }
+    const C=this._beatChg, r=(btn.radius||40)+10, k=n/BEAT_NODE_MAX; C.g.clear().lineStyle(6,0x000000,0.4).strokeCircle(btn.x,btn.y,r);
+    if(n>0){ C.g.lineStyle(6,n>=BEAT_NODE_MAX?0xff4d5a:0xffc233,1).beginPath().arc(btn.x,btn.y,r,-Math.PI/2,-Math.PI/2+TAU*k).strokePath(); }
+    C.t.setPosition(btn.x,btn.y-r-18).setText(n>0?'🥁 ×'+n+(n>=BEAT_NODE_MAX?' MAX':''):'hold…');
+    if(n>C.last){ C.last=n; Sfx.comboPunch(n*2,'jab'); C.t.setScale(1.4); this.tweens.add({targets:C.t,scale:1,duration:120}); } }
+  startBeatRush(full,nodes){ if(this.state!=='play'||this._beat||this.uniqueCd>0)return; const u=this.uniqueInfo(),ul=this.uniqueLevel||1;
     this.uniqueCd=this.uniqueCooldown(u); this._beatUsedAt=this.elapsed||0; this.flashBtn(this.uniqueBtn); this.poseFlash(CF.cast,520);
     this._coachUnique=(this._coachUnique||0)+1; this.fireRecipes('unique');
     if(this.joy){this.joy.active=false;this.joy.dx=0;this.joy.dy=0;this.joyBase&&this.joyBase.setVisible(false);this.joyKnob&&this.joyKnob.setVisible(false);}
     this.physics.pause(); this.time.paused=true; this.tweens.timeScale=1;
-    const B=this._beat={full,ul,chain:[],col:new Map(),drag:null,finger:null,t:0,phase:'chain',ignoreId:full?this._holdPid:null,arrows:[],ai:0,grades:[],sw:null};
-    const cam=this.cameras.main,wv=cam.worldView,T=BEAT_PUNCHES.map(p=>p.id);
-    if(full){ const P=this.player,list=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&e.x>wv.x-20&&e.x<wv.right+20&&e.y>wv.y-20&&e.y<wv.bottom+20)list.push(e); });
-      list.sort((a,b)=>this.dist(a.x,a.y,P.x,P.y)-this.dist(b.x,b.y,P.x,P.y)); const pick=list.slice(0,9), R=Math.min(wv.width,wv.height)*0.3;
-      // v5.61 ดึงมอนธรรมดาเข้ามาเรียงรอบตัว ให้เห็นในจอเดียวและลากถึงกันง่าย (บอส/มินิอยู่ที่เดิม)
-      pick.forEach((e,i)=>{ B.col.set(e,T[Math.floor(Math.random()*T.length)]); if(e.isBoss||e.isMini)return; const a=i/pick.length*TAU+0.3, r=R*(0.55+(i%2)*0.35);
-        this.tweens.add({targets:e,x:P.x+Math.cos(a)*r,y:P.y+Math.sin(a)*r*0.85,duration:260,ease:'Back.out'}); }); }
+    const B=this._beat={full,ul,chain:[],nodes:[],drag:null,finger:null,t:0,dur:3+(nodes||0)*0.3,phase:'chain',arrows:[],ai:0,grades:[],sw:null};
+    // v5.62 จุดสีสุ่มบนจอ (ไม่ผูกกับมอน) จำนวนตามเวลาที่กดค้าง · วางไม่ทับกัน กลางจอ
+    if(full){ const W=this.W,H=this.H,T=BEAT_PUNCHES.map(p=>p.id),x0=W*0.12,x1=W*0.88,y0=H*0.27,y1=H*0.74; let sep=Math.min(74,Math.sqrt((x1-x0)*(y1-y0)/nodes)*0.8);
+      for(let i=0,tries=0;i<nodes&&tries<600;tries++){ const x=x0+Math.random()*(x1-x0),y=y0+Math.random()*(y1-y0);
+        if(tries>300)sep*=0.99; if(B.nodes.some(n=>(n.x-x)**2+(n.y-y)**2<sep*sep))continue; B.nodes.push({x,y,type:T[Math.floor(Math.random()*T.length)],born:i*0.04}); i++; } }
     this.buildBeatUI(); Sfx.beatStart&&Sfx.beatStart();
-    if(!full||B.col.size===0)this.beatToSwipe(); }
+    if(!full||!B.nodes.length)this.beatToSwipe(); }
   beatWorld(x,y){ const cam=this.cameras.main,wv=cam.worldView; return {x:wv.x+x/cam.zoom,y:wv.y+y/cam.zoom}; }
   beatScreen(wx,wy){ const cam=this.cameras.main,wv=cam.worldView; return {x:(wx-wv.x)*cam.zoom,y:(wy-wv.y)*cam.zoom}; }
   buildBeatUI(){ this.destroyBeatUI(); const W=this.W,H=this.H,C=this.camUI(this.add.container(0,0).setDepth(200000)); this._beatUI=C;
@@ -8340,51 +8349,50 @@ class Game extends Phaser.Scene {
   beatSpecials(types){ const need=this._beat.ul>=4?2:3, out=new Set(); let run=1;
     for(let i=1;i<=types.length;i++){ if(i<types.length&&types[i]===types[i-1])run++; else { if(run>=need)out.add({jab:'gun',hook:'cyclone',heavy:'titan',upper:'juggle'}[types[i-1]]); run=1; } }
     if(new Set(types).size>=4)out.add('rainbow'); return out; }
-  beatPick(wx,wy){ const B=this._beat,z=this.cameras.main.zoom; let best=null,bd=1e18;   // v5.61 วงรับนิ้วคงที่ 40px บนจอ
-    for(const [e] of B.col){ if(!e.active||B.chain.some(c=>c.e===e))continue; const hr=40/z, d=(e.x-wx)**2+(e.y-wy)**2; if(d<hr*hr&&d<bd){ bd=d; best=e; } }
-    if(best&&B.chain.length<6){ B.chain.push({e:best,x:best.x,y:best.y,type:B.col.get(best)}); Sfx.comboPunch(B.chain.length*3,'jab'); } }
+  beatPick(sx,sy){ const B=this._beat; let best=null,bd=1e18;   // v5.62 จุดบนจอ วงรับนิ้ว 36px
+    B.nodes.forEach(n=>{ if(n.on)return; const d=(n.x-sx)**2+(n.y-sy)**2; if(d<36*36&&d<bd){ bd=d; best=n; } });
+    if(best){ best.on=true; B.chain.push(best); Sfx.comboPunch(B.chain.length*3,'jab'); } }
   beatDown(p){ const B=this._beat; if(!B)return;
-    if(B.phase==='chain'){ if(B.drag!=null)return; B.drag=p.id; const w=this.beatWorld(p.x,p.y); B.finger={x:p.x,y:p.y}; this.beatPick(w.x,w.y); return; }
+    if(B.phase==='chain'){ if(B.drag!=null)return; B.drag=p.id; B.finger={x:p.x,y:p.y}; this.beatPick(p.x,p.y); return; }
     if(B.phase==='swipe'){ B.sw={id:p.id,x:p.x,y:p.y}; } }
-  beatMove(p){ const B=this._beat; if(!B||p.id===B.ignoreId)return;
-    if(B.phase==='chain'&&B.drag===p.id){ B.finger={x:p.x,y:p.y}; const w=this.beatWorld(p.x,p.y); this.beatPick(w.x,w.y); }
+  beatMove(p){ const B=this._beat; if(!B)return;
+    if(B.phase==='chain'&&B.drag===p.id){ B.finger={x:p.x,y:p.y}; this.beatPick(p.x,p.y); }
     else if(B.phase==='swipe'&&B.sw&&B.sw.id===p.id){ const dx=p.x-B.sw.x,dy=p.y-B.sw.y; if(Math.hypot(dx,dy)>45){ this.beatSwipe(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')); B.sw=null; } } }
-  beatUp(p){ const B=this._beat; if(!B)return; if(p.id===B.ignoreId){ B.ignoreId=null; return; }
+  beatUp(p){ const B=this._beat; if(!B)return;
     if(B.phase==='chain'&&B.drag===p.id){ B.drag=null; if(B.chain.length)this.beatToSwipe(); }
     else if(B.phase==='swipe')B.sw=null; }
-  beatToSwipe(){ const B=this._beat; B.phase='swipe'; B.drag=null; const D=['up','down','left','right']; const n=B.full?3:2;
+  beatToSwipe(){ const B=this._beat; B.phase='swipe'; B.drag=null; const D=['up','down','left','right']; const n=B.full?Math.max(2,Math.min(8,Math.ceil(B.chain.length*0.6)+1)):2;   // v5.62 ลูกศรเพิ่มตามจำนวนจุดที่ลาก
     B.arrows=Array.from({length:n},()=>D[Math.floor(Math.random()*4)]); B.ai=0; B.at=0; B.wait=0.35; B.specials=this.beatSpecials(B.chain.map(c=>c.type));
     Sfx.beatLoop(1); this.drawBeatSwipe(); }
   drawBeatSwipe(){ const B=this._beat, AR={up:'⬆',down:'⬇',left:'⬅',right:'➡'};
     this._beatSeq.setText(B.arrows.map((a,i)=>i<B.ai?(B.grades[i]==='MISS'?'✖':'✔'):AR[a]).join('  '));
     this._beatArrow.setText(B.ai<B.arrows.length&&B.wait<=0?AR[B.arrows[B.ai]]:'');
     const sp=[...(B.specials||[])].map(k=>BEAT_SPECIALS[k].emoji+' '+BEAT_SPECIALS[k].name);
-    this._beatHint.setText('Swipe the arrow — fast = PERFECT'+(B.chain.length?'\n'+B.chain.length+' targets locked':'')+(sp.length?'\n★ '+sp.join(' + '):'')); }
+    this._beatHint.setText('Swipe the arrow — fast = PERFECT'+(B.chain.length?'\n'+B.chain.length+'-hit chain':'')+(sp.length?'\n★ '+sp.join(' + '):'')); }
   beatSwipe(dir){ const B=this._beat; if(B.ai>=B.arrows.length||B.wait>0)return; const ok=dir===B.arrows[B.ai], g=!ok?'MISS':B.at<=0.5?'PERFECT':'GOOD';
     this.beatGradeShow(g); if(ok){ const P=this.player,v={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir]; this.vfxHitRing(P.x+v[0]*70,P.y+v[1]*70,0xffc477,true); Sfx.comboPunch(20+B.ai*10,'heavy'); P.setFlipX(v[0]<0); } }
   beatGradeShow(g){ const B=this._beat; B.grades.push(g); B.ai++; B.at=0; B.wait=0.28;
     const col={PERFECT:'#ffd23f',GOOD:'#7dffb0',MISS:'#ff6b6b'}[g]; this._beatGrade.setText(g).setColor(col).setScale(1.5); this.tweens.add({targets:this._beatGrade,scale:1,duration:160});
     Sfx.beatGrade&&Sfx.beatGrade(g==='PERFECT'?'perfect':g==='MISS'?'miss':'good'); this.drawBeatSwipe(); }
   tickBeat(rdt){ // เวลาจริง
-    if(this._ubHold&&performance.now()-this._ubHold.t>350){ this._holdPid=this._ubHold.id; this._ubHold=null; this.startBeatRush(true); }
+    this.tickBeatCharge();
     const B=this._beat; if(!B)return; const W=this.W,H=this.H,g=this._beatG;
-    if(B.phase==='chain'){ B.t+=rdt; const left=Math.max(0,1-B.t/4); g.clear();
-      for(const [e,k] of B.col){ if(!e.active)continue; const s=this.beatScreen(e.x,e.y),d=BEAT_PUNCHES.find(p=>p.id===k),r=16,on=B.chain.some(c=>c.e===e);
-        if(e.isBoss||e.isMini){ g.lineStyle(3,0xffd23f,0.9).strokeCircle(s.x,s.y,r+6); }
-        g.lineStyle(on?5:3,d.col,on?1:0.85).strokeCircle(s.x,s.y,r); if(on){ g.fillStyle(d.col,0.35).fillCircle(s.x,s.y,r); } }
-      if(B.chain.length){ g.lineStyle(6,0xffffff,0.85).beginPath(); B.chain.forEach((c,i)=>{ const s=this.beatScreen(c.e.active?c.e.x:c.x,c.e.active?c.e.y:c.y); i?g.lineTo(s.x,s.y):g.moveTo(s.x,s.y); });
+    if(B.phase==='chain'){ B.t+=rdt; const left=Math.max(0,1-B.t/B.dur); g.clear();
+      if(B.chain.length){ g.lineStyle(6,0xffffff,0.85).beginPath(); B.chain.forEach((c,i)=>i?g.lineTo(c.x,c.y):g.moveTo(c.x,c.y));
         if(B.drag!=null&&B.finger)g.lineTo(B.finger.x,B.finger.y); g.strokePath(); }
+      B.nodes.forEach(n=>{ const k=Math.min(1,Math.max(0,(B.t-n.born)/0.15)); if(k<=0)return; const d=BEAT_PUNCHES.find(p=>p.id===n.type),r=18*k;
+        g.fillStyle(d.col,n.on?0.9:0.35).fillCircle(n.x,n.y,r); g.lineStyle(n.on?5:3,n.on?0xffffff:d.col,1).strokeCircle(n.x,n.y,r); });
       this._beatTimer.clear().fillStyle(0x000000,0.5).fillRoundedRect(W*0.15,H*0.12+100,W*0.7,8,4).fillStyle(0xffc233,1).fillRoundedRect(W*0.15,H*0.12+100,W*0.7*left,8,4);
       const sp=[...this.beatSpecials(B.chain.map(c=>c.type))].map(k=>BEAT_SPECIALS[k].emoji+' '+BEAT_SPECIALS[k].name);
-      this._beatHint.setText('Drag through enemies in one line (max 6)\nSame color ×3 in a row = special · all 4 colors = 🌈'+(sp.length?'\n★ '+sp.join(' + '):''));
-      if(left<=0||(B.drag==null&&B.chain.length>=6))this.beatToSwipe(); return; }
+      this._beatHint.setText('Drag one line through the dots ('+B.chain.length+'/'+B.nodes.length+')\nSame color ×3 in a row = special · all 4 colors = 🌈'+(sp.length?'\n★ '+sp.join(' + '):''));
+      if(left<=0||(B.drag==null&&B.chain.length>=B.nodes.length))this.beatToSwipe(); return; }
     if(B.phase==='swipe'){ g.clear(); this._beatTimer.clear();
       if(B.wait>0){ B.wait-=rdt; if(B.wait<=0){ B.wait=0; if(B.ai>=B.arrows.length){ this.finishBeat(); return; } this.drawBeatSwipe(); } return; }
       B.at+=rdt; const k=Math.max(0,1-B.at/1.2); this._beatTimer.fillStyle(0xffc233,1).fillRoundedRect(W*0.3,H*0.55+50,W*0.4*k,6,3);
       if(B.at>=1.2)this.beatGradeShow('MISS'); } }
   destroyBeatUI(){ if(this._beatUI){ this._beatUI.destroy(true); this._beatUI=null; } }
   restoreBeatSpeed(){ this.physics.resume(); this.time.paused=false; this.setGameSpeed(this.gameSpeed||1); }
-  cancelBeat(){ Sfx.stopBeatLoop(); this._ubHold=null; if(!this._beat)return; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); }
+  cancelBeat(){ Sfx.stopBeatLoop(); this._ubHold=null; this.clearBeatCharge(); if(!this._beat)return; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); }
   finishBeat(){ Sfx.stopBeatLoop(); const B=this._beat; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); this.cocoaBeatBurst(B); }
   // 🐾 v5.59 Cocoa Dash Punch — พุ่งต่อยมอนใกล้สุด · การ์ด Bear Dash Chain +1 ต่อ rank (สูงสุด 4 ครั้ง)
   cocoaDashPunch(){ const P=this.player; let t=this.nearestEnemy(380); if(!t)return false;
@@ -8424,7 +8432,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:sub,alpha:1,delay:200,duration:200}); this.tweens.add({targets:sub,alpha:0,delay:1400,duration:400,onComplete:()=>sub.destroy()}); }
   cocoaBeatBurst(B){ const P=this.player,ul=B.ul,dm=P.dmgMul||1,up=this.uniquePower(), S=B.specials||new Set(), rb=S.has('rainbow')?1.5:1;
     const gv={PERFECT:2,GOOD:1.3,MISS:1}, gm=B.grades.length?B.grades.reduce((a,g)=>a+gv[g],0)/B.grades.length:1, fever=B.full&&B.grades.length>0&&B.grades.every(g=>g==='PERFECT');
-    const bossIn=B.chain.some(c=>c.e.isBoss||c.e.isMini), unit=(14+ul*5)*dm*up*1.5*rb*gm;
+    const bossIn=true, unit=(14+ul*5)*dm*up*1.5*rb*gm;
     const PER={jab:{n:6,m:0.7,r:70},hook:{n:4,m:0.9,r:120},heavy:{n:3,m:1.8,r:80},upper:{n:4,m:1.0,r:90}};
     const plan=[]; if(B.chain.length){ B.chain.forEach(c=>{ const d=PER[c.type]; let n=d.n; if(c.type==='jab'&&S.has('gun'))n*=2; for(let i=0;i<n;i++)plan.push({c,d}); }); }
     else { const n=B.full?10:8; for(let i=0;i<n;i++)plan.push({c:null,d:{m:1.1,r:140}}); }
@@ -8433,7 +8441,9 @@ class Game extends Phaser.Scene {
     this.showBanner('🥁 '+plan.length+' HIT RUSH!',names.join(' · ')||('Swipe x'+gm.toFixed(1)),1100);
     const gap=55; P.iframe=Math.max(P.iframe||0,(plan.length*gap+1500)/1000+0.3); this._beatDmg=0; this.screenFlash(0xffc477,0.3,200);
     plan.forEach((it,i)=>this.time.delayedCall(i*gap,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
-      const c=it.c, x=c?(c.e.active?c.e.x:c.x):P.x+Phaser.Math.Between(-60,60), y=c?(c.e.active?c.e.y:c.y):P.y+Phaser.Math.Between(-60,60); if(c&&c.e.active){c.x=c.e.x;c.y=c.e.y;}
+      // v5.62 จุดบนจอไม่ผูกมอน → หมัดแต่ละชุดเลือกเป้าใกล้ตัว (วนหลายตัว) ไม่มีมอน = รอบตัว
+      const c=it.c; let x=P.x+Phaser.Math.Between(-60,60), y=P.y+Phaser.Math.Between(-60,60);
+      if(c){ const L=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<620)L.push(e); }); if(L.length){ L.sort((a,b)=>this.dist(a.x,a.y,P.x,P.y)-this.dist(b.x,b.y,P.x,P.y)); const e=L[B.chain.indexOf(c)%Math.min(L.length,6)]; x=e.x; y=e.y; } }
       const d=it.d, col=c?BEAT_PUNCHES.find(p=>p.id===c.type).col:0xffc477;
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,x,y)>d.r)return; {const v=unit*d.m*((e.isBoss||e.isMini)&&bossIn?1.3:1); this._beatDmg+=v; this.damage(e,v,e.x,e.y);}
         if(e.active&&!e.isBoss&&!e.isMini){ if(c&&c.type==='upper')e.frozen=Math.max(e.frozen||0,0.5); if(c&&c.type==='hook'){const a=Math.atan2(e.y-y,e.x-x);e.setVelocity(Math.cos(a)*200,Math.sin(a)*200);e.knock=0.12;} } });
