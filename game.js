@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.34.0';
+const GAME_VERSION = '5.35.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.35.0', date:'2026-09-26', title:'🧩 Recipe Parts', items:['Temple Depths now hides 🧩 Recipe Parts: triggers, effects and modifiers','Parts will build your own Flavor Recipe perks (Kitchen coming next)','Starter gift: 5 parts']},
   { v:'5.34.0', date:'2026-09-26', title:'🍬+🧶 Weave costs', items:['Each core’s first level costs Sugar only','From level 2 on, cores cost Sugar plus 🧶 Weave Thread','Overcap costs Core Stones, Weave Thread and Sugar']},
   { v:'5.33.0', date:'2026-09-26', title:'🧶 Weave Thread', items:['Flavor Weave cores and Overcap now cost 🧶 Weave Thread instead of Sugar','Dig Weave Thread in Temple Depths (+40 as a starter gift)','Stage clears now give more shovels: Normal 2 · Hard 3 · Hell 4']},
   { v:'5.32.0', date:'2026-09-26', title:'⛏️ Shovels from battle', items:['Clearing a stage gives shovels: Normal 1 · Hard 2 · Hell 3','Minibosses have a 25% chance to drop a shovel']},
@@ -1936,6 +1937,7 @@ const DIG_ITEMS={
   stone_dmg:{emoji:'🟠',name:'Flavor Core Stone',rare:true,stone:'dmg'},
   stone_def:{emoji:'🔵',name:'Oath Core Stone',rare:true,stone:'def'},
   scroll:{emoji:'📜',name:'Scroll Fragment',rare:true},   // v5.30 ครบ 4 = Perk ลับ
+  part:{emoji:'🧩',name:'Recipe Part',rare:true},        // v5.35 ชิ้นส่วนสูตร Flavor Recipe
   trap:{emoji:'🪤',name:'Trap'},                          // v5.31 เสียพลั่วเพิ่ม 1
   stair:{emoji:'🕳️',name:'Secret Passage',rare:true},    // v5.31 ข้ามลง 2 ชั้น + ห้องลับ
 };
@@ -1950,9 +1952,60 @@ const ANCIENT_PERKS=[
   { id:'deepRoots',     emoji:'🌳', name:'Deep Roots',     desc:'+8% max HP · +0.6 HP regen per second' },
 ];
 const OVERCAP_MAX=6;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
+/* ---- v5.35 🍳 Flavor Recipes: ประกอบ perk เอง = Trigger + Effect (+ Modifier) · ชิ้นส่วนได้จากการขุด ---- */
+// cost = แต้มรสชาติ · สูตรหนึ่งรวมกันต้องไม่เกิน FR_FLAVOR_CAP (trigger ที่เกิดถี่ = แพง)
+const FR_FLAVOR_CAP=10, FR_SLOT_MAX=5;
+const FR_TRIGGERS=[
+  {id:'dash',     emoji:'💨',name:'On Dash',            cost:3},
+  {id:'crit',     emoji:'🎯',name:'On Critical Hit',    cost:4, icd:0.6},
+  {id:'kill10',   emoji:'☠️',name:'Every 10 Kills',      cost:3},
+  {id:'hurt',     emoji:'💢',name:'When Hit',            cost:2},
+  {id:'lowHp',    emoji:'🩸',name:'Below 30% HP',        cost:1, icd:8},
+  {id:'unique',   emoji:'🌟',name:'On Unique Skill',     cost:2},
+  {id:'xp20',     emoji:'⭐',name:'Every 20 EXP Orbs',   cost:2},
+  {id:'timer5',   emoji:'⏱️',name:'Every 5 Seconds',     cost:4},
+  {id:'still',    emoji:'🧘',name:'Stand Still 1.5s',    cost:2},
+  {id:'eliteKill',emoji:'👑',name:'On Elite Kill',       cost:1},
+  {id:'levelup',  emoji:'🆙',name:'On Level Up',         cost:1},
+  {id:'newWave',  emoji:'🌊',name:'Wave Start',          cost:1},
+  {id:'shield',   emoji:'🫧',name:'When a Shield Breaks',cost:2, chain:true},
+  {id:'heal',     emoji:'💚',name:'When Healed',         cost:3, chain:true, icd:1},
+];
+const FR_EFFECTS=[
+  {id:'shock',  emoji:'💥',name:'Shockwave',          cost:3},
+  {id:'shots',  emoji:'✳️',name:'8-Way Shots',        cost:3},
+  {id:'heal',   emoji:'💚',name:'Heal 5% HP',         cost:3},
+  {id:'shield', emoji:'🫧',name:'Gain a Shield',      cost:4},
+  {id:'freeze', emoji:'❄️',name:'Freeze Nearby',      cost:3},
+  {id:'rage',   emoji:'🔥',name:'Rage +30% DMG 4s',   cost:4},
+  {id:'bolt',   emoji:'⚡',name:'Lightning ×3',        cost:3},
+  {id:'cdr',    emoji:'⏳',name:'Unique Cooldown −2s', cost:3},
+  {id:'vacuum', emoji:'🧲',name:'Pull All EXP',       cost:2},
+  {id:'burn',   emoji:'🌶️',name:'Burning Ground',     cost:3},
+  {id:'buddy',  emoji:'🍡',name:'Mochi Buddy 5s',     cost:4},
+  {id:'immune', emoji:'🛡️',name:'Immune 1s',          cost:4},
+];
+const FR_MODS=[
+  {id:'big',    emoji:'⬆️',name:'Bigger',   desc:'+50% area',              cost:2},
+  {id:'strong', emoji:'💪',name:'Stronger', desc:'+50% power',             cost:2},
+  {id:'repeat', emoji:'🔁',name:'Echo',     desc:'Fires again after 0.5s', cost:3},
+  {id:'faster', emoji:'⚡',name:'Quicker',  desc:'Trigger needs less',     cost:2},
+  {id:'fire',   emoji:'🔥',name:'Spicy',    desc:'Also burns enemies hit', cost:1},
+  {id:'ice',    emoji:'🧊',name:'Minty',    desc:'Also chills enemies hit',cost:1},
+  {id:'chain',  emoji:'🔗',name:'Linked',   desc:'Can trigger other recipes',cost:1},
+  {id:'gamble', emoji:'🎲',name:'Gamble',   desc:'50%: ×2.5 power or nothing',cost:0},
+];
+const FR_KIND={t:FR_TRIGGERS,e:FR_EFFECTS,m:FR_MODS};
+function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); return (FR_KIND[k]||[]).find(x=>x.id===id)||null; }   // key = 't:dash' / 'e:shock' / 'm:big'
+function frCost(r){ return r?['t','e','m'].reduce((a,k)=>a+((frPart(r[k])||{}).cost||0),0):0; }
+function frSentence(r){ const t=frPart(r&&r.t),e=frPart(r&&r.e),m=frPart(r&&r.m); if(!t||!e)return 'Empty recipe';
+  return t.name+' → '+e.name+(m?' ('+m.name+')':''); }
+// ชิ้นส่วนที่ขุดได้: trigger 40 / effect 40 / modifier 20 · ชิ้นที่ต้อง chain หายากกว่า
+function frRollPart(){ const r=Math.random(), k=r<0.4?'t':r<0.8?'e':'m'; let pool=FR_KIND[k];
+  if(k==='t'&&Math.random()<0.75)pool=pool.filter(x=>!x.chain); return k+':'+Phaser.Utils.Array.GetRandom(pool).id; }
 function overcapCost(lvl){ return {stones:lvl+1,threads:90*(lvl+1),sugar:150*(lvl+1)}; }
 // ตารางน้ำหนักของในกระดาน (commit ถัดไปเติมหินแก่น/คัมภีร์/กับดัก/ทางลับ)
-function digTable(depth){ return [['empty',30],['thread',45],['chest',5+depth*0.6],['stone',8+depth*0.8],['scroll',4+depth*0.5],['trap',6+depth*0.4]]; }
+function digTable(depth){ return [['empty',30],['thread',45],['chest',5+depth*0.6],['stone',8+depth*0.8],['scroll',1.5+depth*0.2],['part',7+depth*0.5],['trap',6+depth*0.4]]; }
 function digRollContent(depth){ const t=digTable(depth); let sum=0; for(const x of t)sum+=x[1]; let r=Math.random()*sum; for(const x of t){ r-=x[1]; if(r<=0)return x[0]==='stone'?'stone_'+Phaser.Utils.Array.GetRandom(['hp','dmg','def']):x[0]; } return 'empty'; }
 function digMakeBoard(depth){ const cells=[]; const hardP=Math.min(0.45,0.14+depth*0.03);
   for(let i=0;i<DIG_N*DIG_N;i++) cells.push({c:digRollContent(depth),hp:Math.random()<hardP?2:1,hard:false,open:false});
@@ -2551,6 +2604,15 @@ const Save = {
   overcap(k){ return (this.data.overcap||{})[k]||0; },
   coreStones(k){ return (this.data.coreStones||{})[k]||0; },
   addCoreStone(k,n){ if(!this.data.coreStones)this.data.coreStones={}; this.data.coreStones[k]=this.coreStones(k)+n; this.save(); },
+  frParts(){ if(!this.data.fparts)this.data.fparts={}; if(!this.data.fpartsGift){ this.data.fpartsGift=true; for(const k of ['t:dash','t:kill10','e:shock','e:heal','m:big'])this.data.fparts[k]=(this.data.fparts[k]||0)+1; } return this.data.fparts; },   // v5.35 ของขวัญเริ่มต้น
+  frAddPart(k,n){ const p=this.frParts(); p[k]=(p[k]||0)+(n||1); this.save(); },
+  frPartCount(k){ return this.frParts()[k]||0; },
+  frSlots(){ return Math.max(1,Math.min(FR_SLOT_MAX,this.data.frSlots||1)); },
+  frRecipes(){ if(!Array.isArray(this.data.frRecipes))this.data.frRecipes=[]; while(this.data.frRecipes.length<FR_SLOT_MAX)this.data.frRecipes.push({t:null,e:null,m:null}); return this.data.frRecipes; },
+  // ใส่ชิ้นส่วนลงช่อง: ใช้ของในถุง 1 ชิ้น (ชิ้นเดิมในช่องคืนเข้าถุง) · เกินเพดานรสชาติ = ไม่ได้
+  frPlace(slot,key){ if(slot>=this.frSlots()||!frPart(key)||this.frPartCount(key)<1)return false; const r=this.frRecipes()[slot],k=key[0],nr=Object.assign({},r,{[k]:key});
+    if(frCost(nr)>FR_FLAVOR_CAP)return false; const p=this.frParts(); if(r[k])p[r[k]]=(p[r[k]]||0)+1; p[key]-=1; r[k]=key; this.save(); return true; },
+  frRemove(slot,k){ const r=this.frRecipes()[slot]; if(!r||!r[k])return false; this.frAddPart(r[k],1); r[k]=null; this.save(); return true; },
   ancientHas(id){ return !!(this.data.ancient||{})[id]; },
   scrolls(){ return this.data.scrolls||0; },
   unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
@@ -5013,7 +5075,7 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(170,()=>{ c.open=true; Sfx.digBreak(); this.digShatter(cx,cy,cs,c.hard?0x8a7866:0x96623f); this.drawDigCell(cont,c,cs);
         const it=cont.list[cont.list.length-1]; const rare=(DIG_ITEMS[c.c]||{}).rare;
         if(c.c==='chest'){ this.digChestOpen(cont,cx,cy,cs,c); return; }
-        if(c.c==='trap'){ const fl=this.add.rectangle(cx,cy,cs,cs,0xff3b5c,0.6); this.menu.add(fl); this.tweens.add({targets:fl,alpha:0,scale:1.4,duration:420,onComplete:()=>fl.destroy()});
+    if(c.c==='trap'){ const fl=this.add.rectangle(cx,cy,cs,cs,0xff3b5c,0.6); this.menu.add(fl); this.tweens.add({targets:fl,alpha:0,scale:1.4,duration:420,onComplete:()=>fl.destroy()});
           this.tweens.add({targets:this.menu,x:{from:-6,to:6},duration:45,yoyo:true,repeat:3,onComplete:()=>this.menu.setX(0)});
           const m=this.add.text(cx,cy-cs*0.3,'−1 ⛏️',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ff6b81',stroke:'#1a0f14',strokeThickness:4}).setOrigin(0.5); this.menu.add(m); this.tweens.add({targets:m,y:m.y-34,alpha:0,duration:700,onComplete:()=>m.destroy()}); }
         if(it&&c.c!=='empty'){ it.setScale(0); this.tweens.add({targets:it,scale:1.25,duration:180,ease:'Back.out',yoyo:true,hold:60,onComplete:()=>it.setScale(1)}); }
@@ -5060,6 +5122,7 @@ class Game extends Phaser.Scene {
       return {t:'🏺 Ancient Chest!',c:'#ffd166'}; }
     const st=(DIG_ITEMS[c.c]||{}).stone; if(st){ Save.data.coreStones=Save.data.coreStones||{}; Save.data.coreStones[st]=(Save.data.coreStones[st]||0)+1; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' '+DIG_ITEMS[c.c].name+'! Overcap '+UPGRADES[st].name+' in the Temple',c:'#ffd166'}; }
     if(c.c==='scroll'){ Save.data.scrolls=(Save.data.scrolls||0)+1; Sfx.digRare(); const n=Save.data.scrolls; return {t:'📜 Scroll Fragment '+Math.min(n,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK+(n>=SCROLL_PER_PERK?' — unlock an Ancient Perk in 🏅 Rank Perks!':''),c:'#ffd9a8'}; }
+    if(c.c==='part'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); Sfx.digRare(); return {t:'🧩 Recipe Part: '+pt.emoji+' '+pt.name,c:'#9ff0c8'}; }
     if(c.c==='trap'){ const lost=d.shovels>0?1:0; d.shovels-=lost; Sfx.digTrap(); return {t:'🪤 Trap! '+(lost?'−1 ⛏️':'Nothing to lose… lucky!'),c:'#ff9bb5'}; }
     if(c.c==='stair'){ d.stairFound=true; Sfx.digRare(); return {t:'🕳️ Secret Passage! Drop 2 depths into a hidden vault',c:'#c7a6ff'}; }
     if(c.c==='gem'){ d.gemFound=true; Sfx.digRare(); return {t:'💎 Depth Gem found! The way down is open',c:'#c7a6ff'}; }
