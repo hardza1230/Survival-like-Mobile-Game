@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.18.0';
+const GAME_VERSION = '5.18.1';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.18.1', date:'2026-09-26', title:'🎵 Classic Menu Music', items:['The main menu plays its original theme again']},
   { v:'5.18.0', date:'2026-09-25', title:'🦷 Mimics', items:['Careful — some miniboss chests are Mimics that bite back! Defeat one to earn a chest one tier better']},
   { v:'5.17.0', date:'2026-09-25', title:'🍬 Candy burst', items:['Sugar prizes now burst out as candy around you — run over them to collect (they fly to you after a few seconds)']},
   { v:'5.16.0', date:'2026-09-25', title:'🃏 Gold mystery cards', items:['Gold chests add a bonus round: three face-down cards, one hides a JACKPOT. Pick one, then see what the others were']},
@@ -966,7 +967,7 @@ const ASSET_AUDIO = {
   sfx_boss_clear: 'assets/audio/sfx/gen/sfx_boss_clear.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
-  bgm_main:       'assets/audio/bgm/min/bgm_main.mp3',
+  bgm_main:       'assets/audio/bgm/Main menu.mp3',
   bgm_stage1:     'assets/audio/bgm/min/bgm_stage1.mp3',
   bgm_boss1:      'assets/audio/bgm/min/bgm_boss1.mp3',
   bgm_boss2:      'assets/audio/bgm/min/bgm_boss2.mp3',
