@@ -52,6 +52,16 @@ const defs = {
     for (let i = 0; i < 18; i++) note(mix, 0.08 + i * 0.055 + Math.random() * 0.02, 0.1, 91 + (i * 5) % 12, { type: 'bell', decay: 0.15, a: 0.001, r: 0.08, vol: 0.05, pan: (Math.random() - 0.5) * 1.4, send: 0.4 });
     kick(mix, 0, 0.5); crash(mix, 0, 0.08);
   }),
+  // 💥 v5.19.1 โดนตี: "ป๊อก" นุ่ม ทุ้ม ไม่มี noise (เดิม jsfxr hitHurt ฟังเหมือนไมค์แตก)
+  sfx_hurt_soft: () => renderOnce(0.5, mix => {
+    note(mix, 0, 0.16, 50, { type: 'sine', a: 0.002, d: 0.12, s: 0.2, r: 0.08, vol: 0.5, glide: -12, send: 0.05 });
+    note(mix, 0, 0.09, 62, { type: 'tri', a: 0.002, d: 0.07, s: 0.1, r: 0.05, vol: 0.18, glide: -7, send: 0.05 });
+  }, 0.2, 0.08),
+  // ⭐ v5.19.1 เลเวลอัพ: ประกายขึ้น 4 โน้ตใส ๆ เสียงเดียว (เดิมไฟล์ fanfare ฟังซ้อน)
+  sfx_levelup_soft: () => renderOnce(1.2, mix => {
+    [72, 76, 79, 84].forEach((m, i) => note(mix, i * 0.07, 0.5, m, { type: 'bell', decay: 0.45, a: 0.002, r: 0.25, vol: 0.1, send: 0.35 }));
+    note(mix, 0.28, 0.6, 96, { type: 'bell', decay: 0.5, a: 0.002, r: 0.3, vol: 0.05, send: 0.5 });
+  }, 0.5, 0.35),
   // 🎉 ชนะเกม / จบบท: แฟนแฟร์ยาวกว่า มีท่อนทำนอง
   sfx_victory: () => renderOnce(6.5, mix => {
     const mel = [[0, 72, .3], [.3, 72, .15], [.45, 72, .15], [.6, 76, .3], [.9, 79, .6], [1.5, 77, .3], [1.8, 76, .3], [2.1, 79, .3], [2.4, 84, 1.6]];

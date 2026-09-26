@@ -53,6 +53,7 @@ function note(mix, t0, dur, midi, o = {}) {
     let f = f0;
     if (vibD && t > vibDel) f *= 1 + vibD * Math.sin(TAU * vibR * t) * Math.min(1, (t - vibDel) / 0.3);
     if (o.slide) f *= Math.pow(2, o.slide * Math.max(0, 1 - t / 0.06) / 12);
+    if (o.glide) f *= Math.pow(2, o.glide * Math.min(1, t / dur) / 12);
     const dt = f / SR;
     ph += dt; if (ph >= 1) ph -= 1;
     let v;

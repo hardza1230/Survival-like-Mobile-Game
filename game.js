@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.19.0';
+const GAME_VERSION = '5.20.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.20.0', date:'2026-09-26', title:'🎯 Hunt & Capture Rework', items:['Softer hurt sound and a single clean level-up chime','Relics show up less often','Hunt the Threat: targets run away and blink — stop chasing and a curse drains your HP','Capture the Zone: the ring warms to gold, grows as you fill it, ticks every 10%, and enemies rush in with a warning']},
   { v:'5.19.0', date:'2026-09-26', title:'🎁 Chest Party', items:['Miniboss chests now play a jingle while spinning, tick on every light, and ring out when you win','The chest bounces, prizes drop in with a bounce, and candy sprays out like a fountain']},
   { v:'5.18.3', date:'2026-09-26', title:'🎵 Menu Music Fixed', items:['The main menu theme actually plays again (it was never being loaded)']},
   { v:'5.18.2', date:'2026-09-26', title:'🎵 Original Menu Theme', items:['The main menu plays the very first menu theme again']},
@@ -624,7 +625,7 @@ const Sfx = {
   crit(){ if(!this._ok('crit',0.09))return; if(!this.playFile('sfx_crit',0.32))this.playFile('sfx_hit',0.30,1.25+Math.random()*0.1); this.tone(1480,0.06,'triangle',0.045,2100); },   // คริ = เสียงตีสูง + ping
   bigKill(){ if(!this._ok('bigKill',0.18))return; this.duckBgm(260,0.7); if(!this.playFile('sfx_kill_big',0.34)&&!this.playFile('sfx_ult_bomb',0.30,1.15))this.tone(150,0.18,'sine',0.08,65); this.tone(90,0.22,'sine',0.09,45); this.noise(0.12,0.05,0.02,true); },   // ฆ่าตัวใหญ่ = ซ้อน 3 ชั้น
   setVolumes(mv,sv){ this.mv=mv; this.sv=sv; if(this._bgmGain)this._bgmGain.gain.value=0.5*mv; this.bgmIntense(this._bgmIntense); },
-  hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hurt',0.42)&&!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
+  hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hurt',0.36,0.96+Math.random()*0.08)&&!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
   dash(){if(this._ok('dash',0.25)){if(!this.playFile('sfx_dash',0.34))this.noise(0.11,0.055,0,true);}},
   ult(type){if(!this._ok('ult',0.5))return;this.duckBgm(650,0.42);if(type==='vortex'&&this.playFile('sfx_ult_vortex',0.48))return;if(!this.playFile('sfx_ult_bomb',0.48))this.seq([660,880,1180],'triangle',0.10,0.07);},
   thunder(){if(this._ok('thunder',0.2)&&!this.playFile('sfx_thunder',0.34))this.zap();},
@@ -636,7 +637,7 @@ const Sfx = {
   zap(){if(this._ok('zap',0.18)){if(!this.playFile('sfx_donut',0.28))this.tone(1250,0.07,'triangle',0.055,540);}},
   boom(){if(this._ok('boom',0.24)){if(!this.playFile('sfx_ult_bomb',0.32))this.tone(150,0.18,'sine',0.08,65);}},
   frost(){if(this._ok('frost',0.24)){if(!this.playFile('sfx_frost',0.34))this.seq([1050,1450],'sine',0.055,0.06);}},
-  levelup(){if(!this._ok('levelup',0.6))return;this.duckBgm(650,0.45);if(!this.playFile('sfx_levelup',0.46))this.seq([523,659,784,1047],'triangle',0.12,0.1);},
+  levelup(){if(!this._ok('levelup',1.2))return;this.duckBgm(650,0.45);if(!this.playFile('sfx_levelup',0.46,1))this.seq([523,659,784,1047],'triangle',0.12,0.1);},
   chest(){if(!this._ok('chest',0.7))return;this.duckBgm(700,0.42);if(!this.playFile('sfx_chest',0.48))this.seq([587,740,880,1175],'triangle',0.12,0.09);},
   select(){if(this._ok('select',0.16)&&!this.playFile('sfx_btn',0.28))this.tone(880,0.055,'sine',0.055,1200);},
   bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_boss_warn',0.55,1)&&!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
@@ -951,7 +952,7 @@ const ASSET_AUDIO = {
   sfx_hit:        'assets/audio/sfx/gen/sfx_hit.wav',
   sfx_xp:         'assets/audio/sfx/gen/sfx_xp.wav',
   sfx_dash:       'assets/audio/sfx/sfx_jump_squish.wav',
-  sfx_levelup:    'assets/audio/sfx/sfx_levelup_fanfare.wav',
+  sfx_levelup:    'assets/audio/sfx/gen/sfx_levelup_soft.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
   sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
   sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
   sfx_frost:      'assets/audio/sfx/sfx_skill_frost.wav',
@@ -961,7 +962,7 @@ const ASSET_AUDIO = {
   sfx_hazard:     'assets/audio/sfx_vfx_telegraph_hazard.wav',
   sfx_crit: 'assets/audio/sfx/gen/sfx_crit.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_kill_big: 'assets/audio/sfx/gen/sfx_kill_big.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_hurt: 'assets/audio/sfx/gen/sfx_hurt.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_hurt: 'assets/audio/sfx/gen/sfx_hurt_soft.mp3',   // v5.19.1 เสียงนุ่ม (เดิม sfx_hurt.wav แตก)   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_heal: 'assets/audio/sfx/gen/sfx_heal.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_magnet: 'assets/audio/sfx/gen/sfx_magnet.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_thunder: 'assets/audio/sfx/gen/sfx_thunder.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
@@ -5982,7 +5983,7 @@ class Game extends Phaser.Scene {
     if(b.failed)return;
     if(b.id==='kills'&&b.kills<b.target){this._bonus=b;this.failBonus('Only '+b.kills+'/'+b.target+' kills');this._bonus=null;return;}
     this.screenFlash(0xffe08a,0.3,260);
-    if(b.reward==='relic'&&this.relicSlotsLeft()>0){ this.time.delayedCall(900,()=>{ if(this.state==='play'){ if(!this.offerRelic())this.grantCurrencyReward(2,this.currencyTierFor(),'⭐ Bonus Complete!'); } }); }
+    if(b.reward==='relic'&&this.relicSlotsLeft()>0){ this.time.delayedCall(900,()=>{ if(this.state==='play'){ if(Math.random()>=0.4||!this.offerRelic())this.grantCurrencyReward(2,this.currencyTierFor(),'⭐ Bonus Complete!'); } }); }
     else this.grantCurrencyReward(2,this.currencyTierFor(),'⭐ Bonus Complete!');
   }
   objectivePosition(i=0,n=1,minR=240,maxR=390){
@@ -6021,6 +6022,26 @@ class Game extends Phaser.Scene {
     this._captureRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_magic_circle').setTint(o.color).setDisplaySize(r*2,r*1.72).setDepth(pos.y-1).setAlpha(.7));
     this.tweens.add({targets:this._captureRing,rotation:TAU,alpha:{from:.36,to:.68},duration:1800,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
+  // v5.19.1 Capture ลูกเล่น: สีวงค่อย ๆ เปลี่ยนเป็นทอง · วงในโตตาม progress · เสียงติ๊งทุก 10% · มอนพุ่งเข้ามาเป็นระลอกพร้อมลูกศรเตือน
+  tickCaptureFX(dt,inside,o){ const z=this._captureZone;if(!z)return;const f=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),R=z.radiusGoal;
+    const c0=Phaser.Display.Color.ValueToColor(o.color),c1=Phaser.Display.Color.ValueToColor(0xffd166),mix=Phaser.Display.Color.Interpolate.ColorWithColor(c0,c1,100,Math.round(f*100)),col=Phaser.Display.Color.GetColor(mix.r,mix.g,mix.b);
+    z.setStrokeStyle(4+f*4,col,0.85);if(this._captureRing)this._captureRing.setTint(col);
+    if(!this._captureFill){this._captureFill=this.camWorld(this.add.circle(z.x,z.y,R,col,0.3).setDepth(z.depth).setScale(0.02));}
+    const fl=this._captureFill;fl.setFillStyle(col,inside?0.34:0.18);fl.scale+=((Math.max(0.02,f))-fl.scale)*Math.min(1,dt*6);
+    z.setScale(1+Math.sin(this.time.now/(inside?140:320))*(inside?0.025:0.01)+f*0.06);
+    const step=Math.floor(f*10);if(step>(o._capStep||0)){o._capStep=step;if(Sfx.chestTick)Sfx.chestTick(step*3);
+      const p=this.camWorld(this.add.circle(z.x,z.y,R*Math.max(.1,f),col,0).setStrokeStyle(5,col,0.9).setDepth(z.depth+1));this.tweens.add({targets:p,scale:1.35,alpha:0,duration:480,onComplete:()=>p.destroy()});
+      this.floatText(z.x,z.y-R-10,(step*10)+'%',col);}
+    if(inside&&f>0.05){o._rushT=(o._rushT??5)-dt;if(o._rushT<=0){o._rushT=Phaser.Math.FloatBetween(5.5,8);this.captureRush(z);}} }
+  captureRush(z){ const a=Math.random()*TAU,far=Math.max(this.W,this.H)/this.viewZoom*0.55,sx=z.x+Math.cos(a)*far,sy=z.y+Math.sin(a)*far;
+    const ang=Math.atan2(z.y-sy,z.x-sx),mx=z.x+Math.cos(a)*(z.radiusGoal+90),my=z.y+Math.sin(a)*(z.radiusGoal+90);
+    const warn=this.camWorld(this.add.text(mx,my,'➤➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff5a6e',stroke:'#1a0f24',strokeThickness:6}).setOrigin(0.5).setRotation(ang).setDepth(90000));
+    this.tweens.add({targets:warn,alpha:{from:1,to:0.25},scale:{from:1,to:1.25},yoyo:true,repeat:3,duration:180,onComplete:()=>warn.destroy()});
+    this.showBanner('⚠ Incoming!','Enemies are rushing the zone',900);if(Sfx.select)Sfx.select();
+    this.time.delayedCall(1100,()=>{ if(!this._captureZone)return;const n=4+Math.min(4,this.stageIndex||0),pa=Math.atan2(sy-this.player.y,sx-this.player.x),pd=this.dist(sx,sy,this.player.x,this.player.y);
+      for(let i=0;i<n;i++){const e=this.spawnEnemy(i%2?'fast':'dasher',pa+Phaser.Math.FloatBetween(-0.18,0.18),pd*Phaser.Math.FloatBetween(0.95,1.08));if(e&&e.spd)e.spd*=1.35;} }); }
+  captureDoneFX(){ const z=this._captureZone;if(!z)return;if(Sfx.chestWin)Sfx.chestWin();this.screenFlash(0xffd166,0.35,260);
+    for(let i=0;i<3;i++)this.time.delayedCall(i*110,()=>{const r=this.camWorld(this.add.circle(z.x,z.y,z.radiusGoal,0xffd166,0).setStrokeStyle(6,0xffe08a,1).setDepth(90000));this.tweens.add({targets:r,scale:1.8,alpha:0,duration:600,ease:'Cubic.out',onComplete:()=>r.destroy()});}); }
   // ===== Escort the Wisp (purge objective) =====
   _wispTuning(){ return {escortR:180,channel:3.2+this.stageIndex*0.35,speed:88,drainR:56,drain:0.34+this.stageIndex*0.05,regen:0.42,respawn:3.2}; }
   spawnPurifyWisp(){
@@ -6103,11 +6124,14 @@ class Game extends Phaser.Scene {
     this.tickBonusChallenge(dt);
     // v4.87.1: กันปั๊มเลเวล — ภารกิจไม่มี timer (hunt/purge/capture) ถ้าลากนานเกิน มอนธรรมดาหยุดให้ EXP + เป้า Hunt เลิกวาร์ปหนี
     if(['hunt','purge','capture'].includes(o.type)&&!o._overtime){ o._objT=(o._objT||0)+dt; const lim=o.type==='hunt'?25*o.target+20:o.type==='purge'?30*o.target+20:Math.round(o.target*1.6+25); if(o._objT>=lim){ o._overtime=true; this.showBanner('⏰ Overtime!','Enemies no longer drop EXP — finish the objective!',1800); } }
+    let huntD=Infinity;
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){
       // 🎯 Hunt: เป้าหมายวาร์ปหนีเมื่อเข้าใกล้ + ทิ้งกับดักไว้ที่เดิม
+      if(o.type==='hunt'){const dd=this.dist(this.player.x,this.player.y,e.x,e.y);if(dd<huntD)huntD=dd;e._huntFlee=!o._overtime&&dd<380;}   // v5.19.1 เป้าวิ่งหนีเมื่อเข้าใกล้
       if(o.type==='hunt'&&!o._overtime){e._blinkCd=(e._blinkCd??2.5)-dt;if(e._blinkCd<=0&&this.dist(this.player.x,this.player.y,e.x,e.y)<210){e._blinkCd=4.5;const ox=e.x,oy=e.y,a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-.7,.7),lim=WORLD/2-120;
         this.spawnHazard(ox,oy,55,Math.round(8+(this.stageIndex||0)*1.5),0xff5a8a);this.vfxSpawnPoof(ox,oy);e.setPosition(Phaser.Math.Clamp(ox+Math.cos(a)*270,-lim,lim),Phaser.Math.Clamp(oy+Math.sin(a)*270,-lim,lim));this.vfxSpawnPoof(e.x,e.y);this.floatText(e.x,e.y-50,'Blink!',0xff8ab0);}}
       if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
+    if(o.type==='hunt')this.tickHuntCurse(dt,huntD);
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
     else if(o.type==='purge'){
       this.tickPurifyWisp(dt);
@@ -6122,7 +6146,7 @@ class Game extends Phaser.Scene {
       this.tickSeasonObjective(dt);if(!this.waveObjective)return;
     }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
-      o.progress=Phaser.Math.Clamp(o.progress+(inside?dt*0.55:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);if(o.progress>=o.target){this.completeWaveObjective();return;}}   // v4.58: ยืนเฉย ๆ เติมช้า · ฆ่าในวง +0.7s (objOnKill)
+      o.progress=Phaser.Math.Clamp(o.progress+(inside?dt*0.55:-dt*.28),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);this.tickCaptureFX(dt,inside,o);if(o.progress>=o.target){this.captureDoneFX();this.completeWaveObjective();return;}}   // v4.58: ยืนเฉย ๆ เติมช้า · ฆ่าในวง +0.7s (objOnKill)
     if(o.type!=='purge'&&this.objNodeG)this.objNodeG.clear();   // เคลียร์หลอดแกน (แยกจาก else-if chain กันไปบLocked capture)
     this.renderWaveObjectiveHUD();
   }
@@ -6139,17 +6163,26 @@ class Game extends Phaser.Scene {
   failWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;o.done=true;this._bonus=null;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner('⌛ Objective Timed Out','No bonus, but you can still advance — clear the rest',1700);
   }
-  clearWaveObjective(){
+  clearWaveObjective(){ if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;e._wispRaider=false;});
     this._bonus=null;if(this.waveBonusTxt)this.waveBonusTxt.setVisible(false);this._raidT=null;
     for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
-    for(const k of ['_captureZone','_captureRing','_cleanAirZone','_cleanAirRing','_cleanAirWisp']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
+    for(const k of ['_captureZone','_captureRing','_captureFill','_cleanAirZone','_cleanAirRing','_cleanAirWisp']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);
   }
   // ล้างมอนธรรมดาที่ค้าง (เก็บบอส/มินิไว้) — ใช้ตอนจบเวฟ/Waitดครบเวลา
+  // v5.19.1 Hunt: ถ้าไม่ไล่ตามเป้า (ห่าง >460 นาน 2.5 วิ) โดนคำสาปเลือดลดเรื่อย ๆ จนกว่าจะเข้าใกล้
+  tickHuntCurse(dt,d){ const p=this.player;if(!p||!isFinite(d)||this._inTutorial){this.endHuntCurse();return;}
+    const far=d>460;this._huntFar=far?(this._huntFar||0)+dt:0;
+    if(this._huntFar<2.5){this.endHuntCurse();return;}
+    if(!this._huntCursed){this._huntCursed=true;this.showBanner('💀 Hunter’s Curse','Chase the target or your HP keeps draining!',1600);if(Sfx.hurt)Sfx.hurt();}
+    this._curseTick=(this._curseTick||0)+dt;if(this._curseTick>=0.5){this._curseTick=0;const dmg=Math.max(1,Math.round(p.maxhp*0.012));if(p.hp>1){p.hp=Math.max(1,p.hp-dmg);this.floatText(p.x,p.y-46,'-'+dmg+' 💀',0xb46cff);}
+      const r=this.camWorld(this.add.circle(p.x,p.y,34,0x8a3cff,0.28).setDepth(p.depth-1));this.tweens.add({targets:r,scale:1.8,alpha:0,duration:420,onComplete:()=>r.destroy()});}
+    p.setTint(0xc79cff); }
+  endHuntCurse(){ if(!this._huntCursed)return;this._huntCursed=false;this._curseTick=0;if(this.player)this.player.clearTint(); }
   clearEnemies(){ this.enemies.children.iterate(e=>{ if(e&&e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);} if(e&&e.active&&!e.isBoss&&!e.isMini){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } }); }
   // เรียกทุกเฟรม: คุมนับเวลา + เกิดมอนต่อเนื่อง
   tickStage(dt){
@@ -6871,8 +6904,8 @@ class Game extends Phaser.Scene {
     const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();
   }
   openLevelUp(){
-    this.state='levelup'; this.physics.pause();
-    Sfx.levelup();
+    const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
+    if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
@@ -6882,7 +6915,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.add(t);
     this.banishMode=false;
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
-    if(!this._forcedOpts&&!this._relicLvDone&&!this._inTutorial&&(this.level||1)>=6&&this.relicSlotsLeft()>0){ this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
+    if(!this._forcedOpts&&!this._relicLvDone&&!this._inTutorial&&(this.level||1)>=8&&this.relicSlotsLeft()>0){ this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
     if(this._relicPick)t.setText('🔮 RELIC — choose 1 (changes how you fight) · tap again to confirm');
     const opts=this._forcedOpts||this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._forcedOpts=null; this._lvlOpts=opts;
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
@@ -7941,7 +7974,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;this.charPassiveOnKill(e);if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;this.charPassiveOnKill(e);if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -8345,8 +8378,8 @@ class Game extends Phaser.Scene {
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
     if(kind==='mini'&&c._mimic){ c._mimic=false; this.awakenMimic(c.x,c.y,c._tier||'bronze'); return; }
-    if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,(ft)=>{ const after=()=>{ this.grantMiniChestBonus(ft||tier); if(this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }; if((ft||tier)==='gold')this.openMysteryCards(after); else after(); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
-    if(kind==='pick'&&Math.random()<0.30&&this.offerRelic())return;   // 🔮 กล่องลับ 30% = Relic
+    if(kind==='mini'){ const tier=c._tier||'bronze'; this.openPrizeWheel(tier,(ft)=>{ const after=()=>{ this.grantMiniChestBonus(ft||tier); if(((ft||tier)==='gold'||Math.random()<0.35)&&this.offerRelic())return; this.openRollBox('🎁 Miniboss Box'); }; if((ft||tier)==='gold')this.openMysteryCards(after); else after(); }); return;}   // 🔮 มินิบอส = เลือก Relic (slot เต็ม → กล่องสุ่มเดิม)   // Miniboss = สุ่มให้ + อนิเมชันหมุน
+    if(kind==='pick'&&Math.random()<0.10&&this.offerRelic())return;   // 🔮 กล่องลับ 10% = Relic (v5.19.1 ลดจาก 30%)
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
   // กล่องสุ่ม (Miniboss): หมุนสล็อตแล้วลงที่รางวัลเดียว — ตื่นเต้นกว่าเลือกเอง
@@ -9425,7 +9458,7 @@ class Game extends Phaser.Scene {
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e.knock>0){ e.knock-=dt; return; }
       if(e._decoyT>0)e._decoyT-=dt;
-      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._fleeing){tx=e.x*2-this.player.x;ty=e.y*2-this.player.y;}if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}
+      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._fleeing||e._huntFlee){tx=e.x*2-this.player.x;ty=e.y*2-this.player.y;}if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}
       if(this.stageIndex===7&&this.waveObjective&&this.waveObjective.type==='defendNectar'&&['drone','honeyBomb','dartwing'].includes(e.nectarRole)&&this._nectarFlowers){let target=null,bd=Infinity;for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(e.x,e.y,f.x,f.y);if(d<bd){bd=d;target=f;}}if(target){tx=target.x;ty=target.y;}}
       const dx=tx-e.x, dy=ty-e.y, ang=Math.atan2(dy,dx), dd=Math.hypot(dx,dy);
       // หันหน้าเข้าหาผู้เล่นเสมอ
