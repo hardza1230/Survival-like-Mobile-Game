@@ -32,3 +32,8 @@ wav(mix([note(1568,0.09,'sine',0.55)],[note(2093,0.12,'sine',0.4),2200],[note(31
 wav(mix([preset('hitHurt',61,p=>{p.p_base_freq=0.32;p.wave_type=3;p.p_env_decay=0.07;p.p_env_sustain=0.01;})],[note(140,0.06,'sine',0.7)]),'sfx_punch_jab');
 wav(mix([preset('explosion',67,p=>{p.p_base_freq=0.2;p.p_env_sustain=0.04;p.p_env_decay=0.2;p.p_freq_ramp=-0.25;})],[note(60,0.22,'sine',1.0)],[preset('hitHurt',71,p=>{p.p_base_freq=0.45;p.p_env_decay=0.08;}),0,0.6]),'sfx_punch_heavy');
 wav(mix([preset('explosion',83,p=>{p.p_base_freq=0.12;p.p_env_sustain=0.1;p.p_env_decay=0.4;})],[note(48,0.4,'sine',1.0)],[seq([523,659,784,1047],0.05,'square',0.25),2000]),'sfx_punch_frenzy');
+wav(mix([note(1760,0.03,'square',0.5)],[note(880,0.05,'tri',0.4)]),'sfx_beat_tick');
+wav(seq([392,523,659,784,1047],0.06,'square',0.35),'sfx_beat_start');
+wav(mix([seq([1047,1319,1568,2093],0.045,'tri',0.5)],[preset('pickupCoin',91,p=>{p.p_env_decay=0.15;}),0,0.5]),'sfx_beat_perfect');
+wav(seq([784,1047],0.05,'tri',0.5),'sfx_beat_good');
+wav(mix([note(180,0.18,'square',0.4)],[note(120,0.2,'sine',0.5),2000]),'sfx_beat_miss');

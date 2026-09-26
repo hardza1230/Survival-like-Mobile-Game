@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.54.0';
+const GAME_VERSION = '5.55.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.55.0', date:'2026-09-26', title:'🥁 Cocoa: Bear Beat Rush', items:['New Cocoa Unique: a rhythm mini-game — tap for a quick round, hold for the full 3 rounds','Hit the random punch sequence, then press BEAT! on the mark — PERFECT timing and punch mixes unlock Machine Gun Paws, Cocoa Cyclone, Titan Crush, Sky Juggle, Rainbow Combo and BEAR FEVER','Gauge refills in 30s, faster when you punch and take hits (15s minimum)','Cocoa no longer lunges on her own, long combos reduce damage taken, and punching bosses heals a little'] },
   { v:'5.54.0', date:'2026-09-26', title:'🌿 New Ground Art', items:['Chapter 2 and Chapter 3 stages have brand-new seamless floor artwork — no more stretched, blurry backgrounds','The Fermented Canopy decorations now use real painted art'] },
   { v:'5.53.0', date:'2026-09-26', title:'🥊 Cocoa Combo Rush', items:['Cocoa reworked into a rapid-fire combo brawler: Jab Rush → Hook → Uppercut → Bear Slam','HITS counter: keep landing punches for up to +40% damage · every 25 hits unleashes BEAR FRENZY','Cocoa lunges toward nearby enemies and has new punchy impact sounds'] },
   { v:'5.52.0', date:'2026-09-26', title:'⏸ Pause Fixes', items:['Pause button no longer gets swallowed by the mute button next to it','Top-right buttons spaced wider apart','Settings button in the pause menu now matches Resume and Quit'] },
@@ -672,6 +673,9 @@ const Sfx = {
   thunder(){if(this._ok('thunder',0.2)&&!this.playFile('sfx_thunder',0.34))this.zap();},
   beam(){if(this._ok('beam',0.15)&&!this.playFile('sfx_beam',0.3))this.zap();},
   punch(){if(this._ok('punch',0.12)&&!this.playFile('sfx_punch',0.4))this.shoot();},
+  beatTick(){ this.playFile('sfx_beat_tick',0.45,1)||this.tone(880,0.04,'square',0.04); },
+  beatStart(){ this.playFile('sfx_beat_start',0.6,1)||this.tone(523,0.12,'triangle',0.06); },
+  beatGrade(k){ this.playFile('sfx_beat_'+k,0.6,1)||this.tone(k==='miss'?160:k==='perfect'?1320:880,0.1,'triangle',0.06); },
   // v5.53 หมัดคอมโบ: pitch ไล่ขึ้นตามคอมโบ · heavy/frenzy = ท่าปิด
   comboPunch(n,kind){ const r=0.9+Math.min(0.55,n*0.011); if(kind==='frenzy'){this.playFile('sfx_punch_frenzy',0.75,1)||this.boom();return;}
     if(kind==='heavy'){ if(this._ok('pheavy',0.08))this.playFile('sfx_punch_heavy',0.7,r*0.9)||this.boom(); return; }
@@ -1038,6 +1042,7 @@ const ASSET_AUDIO = {
   sfx_magnet: 'assets/audio/sfx/gen/sfx_magnet.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_thunder: 'assets/audio/sfx/gen/sfx_thunder.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_punch: 'assets/audio/sfx/gen/sfx_punch.wav',
+  sfx_beat_tick:'assets/audio/sfx/gen/sfx_beat_tick.wav', sfx_beat_start:'assets/audio/sfx/gen/sfx_beat_start.wav', sfx_beat_perfect:'assets/audio/sfx/gen/sfx_beat_perfect.wav', sfx_beat_good:'assets/audio/sfx/gen/sfx_beat_good.wav', sfx_beat_miss:'assets/audio/sfx/gen/sfx_beat_miss.wav',
   sfx_punch_jab:'assets/audio/sfx/gen/sfx_punch_jab.wav', sfx_punch_heavy:'assets/audio/sfx/gen/sfx_punch_heavy.wav', sfx_punch_frenzy:'assets/audio/sfx/gen/sfx_punch_frenzy.wav',   // v5.53 คอมโบโกโก้   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_beam: 'assets/audio/sfx/gen/sfx_beam.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_burn: 'assets/audio/sfx/gen/sfx_burn.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
@@ -1812,7 +1817,7 @@ const CHARACTER_UNIQUES = {
   berryRebound:{name:'Strawberry Rebound',emoji:'🍓',cd:8,color:0xff76a8,desc:'Fires sweet seeds all around and heals HP — moderate power, low cooldown'},
   mintSanctuary:{name:'Mint Gale',emoji:'🌬️',cd:10,color:0x8fd0ff,desc:'A cool gust wraps around you — run much faster for a few seconds, ignore slows and push nearby enemies away'},
   voidPull:{name:'Dark Chocolate Void',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'Opens a black hole that pulls enemies in for continuous damage, then implodes'},
-  flickerStrike:{name:'Bear Flicker',emoji:'⚡',cd:4.5,color:0x9f6bff,desc:'Warp-strikes enemies rapidly with a short cooldown, invulnerable during the combo'},
+  flickerStrike:{name:'Bear Beat Rush',emoji:'🥁',cd:30,color:0x9f6bff,desc:'Tap for a quick 1-round rhythm combo, hold for the full 3 rounds — hit the punches on the beat to unleash a massive punch storm. Gauge refills faster when you fight up close'},
   pathRecall:{name:'Taro Chain Bolt',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'Fires lightning that chains from enemy to enemy, then refunds Dash and boosts speed'},
   oathMirror:{name:'Prism Barrage',emoji:'🔮',cd:12,color:0xc86bff,desc:'Channels the mirror, then unleashes sweeping prism beams with a heavy central beam that shreds bosses'},
   jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'Overdrives the heart-seed gun, firing lock-on barrages and adding barrels as it levels'},
@@ -1823,7 +1828,7 @@ const UNIQUE_TIERS={
   berryRebound:{2:'More seeds and more HP recovery',3:'Stronger seeds with a wider spread',4:'Berry Crown fires 20+ seeds with max healing'},
   mintSanctuary:{2:'Faster and longer gale',3:'Stronger push when it starts',4:'Tailwind — the longest, fastest gale'},
   voidPull:{2:'Wider hole that pulls harder',3:'Lasts longer + stronger DoT',4:'Singularity — a giant hole pulls the whole screen and ends in a violent blast'},
-  flickerStrike:{2:'More warp-strikes + higher damage',3:'Wider strike arc + longer reach',4:'Blur Rampage — warp-strike the whole screen, healing each hit'},
+  flickerStrike:{2:'Full mode plays 3 rounds',3:'Slower beat bar — easier timing',4:'Special combos need 1 fewer punch'},
   pathRecall:{2:'More chains and jump range',3:'Bolt splits into two, spreading wider',4:'Storm Arc — chains across the field with max damage'},
   oathMirror:{2:'More beams and volleys',3:'Longer, harder-hitting beams',4:'Perfect Oath — heals HP after the barrage'},
   jamOverdrive:{2:'More barrels and salvos',3:'Fires faster and pierces one enemy',4:'Berry Barrage — three barrels pierce the crowd at full power'},
@@ -2409,6 +2414,10 @@ const GEAR_BUY = { start:0, common:160, rare:420, epic:820, legend:0 };
 // เมล็ดสุ่มรายวัน (ร้านหมุนเวียน) — mulberry32
 // v5.51: ของตกแต่งพื้นแบบ chunk (ภาพล้วน ไม่มีการชน · วาดเฉพาะรอบจอ · seed เดิม = ของเดิมที่เดิม)
 // อาร์ตจริง: ใส่ไฟล์ใน ASSET_IMAGES ด้วย key เดียวกัน (โปร่งใส ~128px) → placeholder ถูกข้ามเอง · ดู docs/ART_ORDER_C2_1_MAP.md
+// v5.55 Bear Beat Rush (Cocoa Unique) — หมัด 4 แบบ · สี=จับคู่เร็ว · dx/dy = ตำแหน่งปุ่มแบบกากบาท
+const BEAT_PUNCHES=[{id:'heavy',name:'Heavy',emoji:'💥',col:0xff4d5a,dx:0,dy:-1},{id:'jab',name:'Jab',emoji:'👊',col:0xff9a3c,dx:-1,dy:0},{id:'hook',name:'Hook',emoji:'🌀',col:0x4fb8ff,dx:1,dy:0},{id:'upper',name:'Upper',emoji:'⬆️',col:0xb56bff,dx:0,dy:1}];
+const BEAT_GRADES={PERFECT:2,GREAT:1.5,COOL:1,MISS:0.3};
+const BEAT_SPECIALS={gun:{name:'Machine Gun Paws',emoji:'👊'},cyclone:{name:'Cocoa Cyclone',emoji:'🌀'},titan:{name:'Titan Crush',emoji:'💥'},juggle:{name:'Sky Juggle',emoji:'⬆️'},rainbow:{name:'Rainbow Combo',emoji:'🌈'}};
 const DECOR_CHUNK=560;
 const FLOOR_KEYS={5:'floor_c21',6:'floor_c22',7:'floor_c23',8:'floor_c24',9:'floor_c25',10:'floor_c31',11:'floor_c32',12:'floor_c33',13:'floor_c34',14:'floor_c35'};
 const STAGE_DECOR={
@@ -3475,7 +3484,8 @@ class Game extends Phaser.Scene {
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
 
-      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ this.useCharacterSkill(); return; }
+      if(this._beat){ this.beatTap(p.x,p.y); return; }   // v5.55 มินิเกม Bear Beat Rush กินทุกการแตะ
+      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0)this._ubHold={id:p.id,t:performance.now()}; return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
       if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.doDash(); return; }
 
@@ -3492,6 +3502,7 @@ class Game extends Phaser.Scene {
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
     });
     this.input.on('pointerup',(p)=>{
+      if(this._ubHold&&this._ubHold.id===p.id){ this._ubHold=null; this.startBeatRush(false); }   // แตะสั้น = 1 รอบ
       if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
         this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
     });
@@ -6011,7 +6022,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ this.cancelBeat(); this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -8209,15 +8220,16 @@ class Game extends Phaser.Scene {
     let ang=t?Math.atan2(t.y-P.y,t.x-P.x):(this.moveDir&&(this.moveDir.x||this.moveDir.y)?this.moveDir.angle():(cc.ang||0)); cc.ang=ang;
     P.setFlipX(Math.cos(ang)<0);
     // พุ่งเข้าหาเป้า (gap closer) ถ้าอยู่นอกระยะ
-    if(t){ const d=this.dist(P.x,P.y,t.x,t.y); if(d>reach*0.75){ const mv=Math.min(150,d-reach*0.55);
-      this.tweens.add({targets:P,x:P.x+Math.cos(ang)*mv,y:P.y+Math.sin(ang)*mv,duration:90,ease:'Quad.out'}); P.iframe=Math.max(P.iframe||0,0.12);} }
+    // v5.55 เลิกพุ่งเข้าหาเป้าเอง (เจ้าของ: คุมทิศไม่ได้) · เดินอยู่ = ต่อยตามทิศที่เดิน
+    if(this.moveDir&&this.moveDir.lengthSq()>0.04&&this.joy&&this.joy.active){ ang=this.moveDir.angle(); cc.ang=ang; P.setFlipX(Math.cos(ang)<0); }
     const hit=(cx,cy,r,mul,o={})=>{ const bonus=1+Math.min(0.4,cc.n*0.01); let any=false;
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; any=true;
         this.damage(e,unit*mul*bonus,e.x,e.y);
+        if(e.isBoss||e.isMini)this.cocoaBossLeech();
         if(e.active&&!e.isBoss&&!e.isMini){ if(o.kb){const a=Math.atan2(e.y-P.y,e.x-P.x);e.setVelocity(Math.cos(a)*o.kb,Math.sin(a)*o.kb);e.knock=Math.max(e.knock||0,0.12);}
           if(o.stun)e.frozen=Math.max(e.frozen||0,o.stun); } });
       this.hitCratesInRadius(cx,cy,r,unit*mul);
-      if(any){ cc.n++; cc.t=0; if(cc.n%25===0)this.time.delayedCall(120,()=>this.cocoaFrenzy(unit,reach)); }
+      if(any){ cc.n++; cc.t=0; this.cocoaBeatCharge(0.25); if(cc.n%25===0)this.time.delayedCall(120,()=>this.cocoaFrenzy(unit,reach)); }
       Sfx.comboPunch(cc.n,o.heavy?'heavy':'jab'); return any; };
     const fx=(cx,cy,col,big)=>{ this.vfxHitRing(cx,cy,col,!!big); if(big&&this.fxOk())this.burst(cx,cy,col); };
     const front=(k)=>({x:P.x+Math.cos(ang)*reach*k,y:P.y+Math.sin(ang)*reach*k});
@@ -8267,6 +8279,102 @@ class Game extends Phaser.Scene {
     const col=cc.n>=50?'#ff4d6d':cc.n>=25?'#ffd23f':'#ffb347'; T.setColor(col);
     if(T._n!==cc.n){ T._n=cc.n; T.setText(cc.n+' HITS'+(cc.n>=10?' +'+Math.min(40,cc.n)+'%':'')); T.setScale(1.35); }
     T.setScale(Math.max(1,T.scale-dt*3)); T.setPosition(this.player.x,this.player.y-118); T.setAlpha(cc.t>1.1?0.5:1); }
+  // ===== v5.55 Cocoa: คอมโบกันดาเมจ · ดูดเลือดบอส · Beat Gauge =====
+  cocoaGuard(){ if(this.character!=='cocoa')return 1; const n=this._cc?this._cc.n:0; return (this._beat?0.3:1)*(n>=25?0.65:n>=10?0.8:1); }
+  cocoaBossLeech(){ const P=this.player,now=this.elapsed||0; if(!this._ccLeech||now-this._ccLeech.t>1)this._ccLeech={t:now,v:0};
+    const cap=P.maxhp*0.04, amt=Math.min(P.maxhp*0.005,cap-this._ccLeech.v); if(amt<=0)return; this._ccLeech.v+=amt; P.hp=Math.min(P.maxhp,P.hp+amt); }
+  // หลอดเติมเอง 30 วิ · ต่อยโดน/โดนตีลดเวลา · ใช้เร็วสุดทุก 15 วิ
+  cocoaBeatCharge(sec){ if(this.character!=='cocoa'||!(this.uniqueCd>0))return; const floor=Math.max(0,15-((this.elapsed||0)-(this._beatUsedAt??-99)));
+    this.uniqueCd=Math.max(floor,this.uniqueCd-sec); }
+  // ===== 🥁 Bear Beat Rush (มินิเกมจังหวะแบบ Audition) =====
+  startBeatRush(full){ if(this.state!=='play'||this._beat||this.uniqueCd>0)return; const u=this.uniqueInfo(),ul=this.uniqueLevel||1;
+    this.uniqueCd=this.uniqueCooldown(u); this._beatUsedAt=this.elapsed||0; this.flashBtn(this.uniqueBtn); this.poseFlash(CF.cast,520);
+    this._coachUnique=(this._coachUnique||0)+1; this.fireRecipes('unique');
+    if(this.joy){this.joy.active=false;this.joy.dx=0;this.joy.dy=0;this.joyBase&&this.joyBase.setVisible(false);this.joyKnob&&this.joyKnob.setVisible(false);}
+    const sizes=full?(ul>=2?[4,6,8]:[4,6]):[4];
+    this._beat={full,sizes,ri:-1,ul,pts:{jab:0,hook:0,heavy:0,upper:0},total:0,specials:new Set(),perfects:0,rounds:sizes.length,wait:0.35};
+    if(this.physics&&this.physics.world&&!this._isHitStop)this.physics.world.timeScale=4/(this.gameSpeed||1); this.tweens.timeScale=0.25*(this.gameSpeed||1); this.time.timeScale=0.25*(this.gameSpeed||1);
+    this.buildBeatUI(); Sfx.beatStart&&Sfx.beatStart(); }
+  beatNextRound(){ const B=this._beat; B.ri++; if(B.ri>=B.sizes.length){ this.finishBeat(); return; }
+    const n=B.sizes[B.ri], T=BEAT_PUNCHES.map(p=>p.id);
+    B.seq=Array.from({length:n},()=>T[Math.floor(Math.random()*T.length)]); B.st=B.seq.map(()=>0); B.idx=0; B.t=0; B.graded=null; B.wrong=0;
+    B.D=(1.6+n*0.35)*(B.ul>=3?1.25:1); B.tick=0; this.drawBeatRow(); }
+  beatSpecials(seq){ const thr=this._beat.ul>=4?1:0, c={}; seq.forEach(k=>c[k]=(c[k]||0)+1); const out=[];
+    if((c.jab||0)>=4-thr)out.push('gun'); if((c.hook||0)>=3-thr)out.push('cyclone'); if((c.heavy||0)>=3-thr)out.push('titan'); if((c.upper||0)>=3-thr)out.push('juggle');
+    if(Object.keys(c).length>=4)out.push('rainbow'); return out; }
+  buildBeatUI(){ this.destroyBeatUI(); const W=this.W,H=this.H,C=this.camUI(this.add.container(0,0).setDepth(5000)); this._beatUI=C;
+    C.add(this.add.rectangle(W/2,H/2,W,H,0x14061f,0.62));
+    C.add(this.add.text(W/2,H*0.17,'🥁 BEAR BEAT RUSH',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffd9a8',stroke:'#3a1a08',strokeThickness:5}).setOrigin(.5));
+    this._beatRoundTxt=this.add.text(W/2,H*0.17+24,'',{fontFamily:'sans-serif',fontSize:'12px',color:'#e8d9ff'}).setOrigin(.5); C.add(this._beatRoundTxt);
+    this._beatRowC=this.add.container(0,0); C.add(this._beatRowC);
+    const bx0=W*0.1,bx1=W*0.9,by=H*0.36; this._beatBar={x0:bx0,x1:bx1,y:by};
+    const g=this.add.graphics(); g.fillStyle(0x000000,0.5).fillRoundedRect(bx0,by-8,bx1-bx0,16,8); const tx=bx0+(bx1-bx0)*0.85;
+    g.fillStyle(0x4fd08a,0.55).fillRect(tx-10,by-8,20,16); g.fillStyle(0xffd23f,0.9).fillRect(tx-3,by-11,6,22); C.add(g);
+    C.add(this.add.text(tx,by-22,'✦',{fontSize:'16px',color:'#ffd23f'}).setOrigin(.5));
+    this._beatMarker=this.add.rectangle(bx0,by,6,26,0xffffff).setStrokeStyle(2,0x3a1a08); C.add(this._beatMarker);
+    this._beatHint=this.add.text(W/2,by+30,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#bfe8d6',align:'center'}).setOrigin(.5); C.add(this._beatHint);
+    this._beatGrade=this.add.text(W/2,by+62,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffffff',stroke:'#000',strokeThickness:5}).setOrigin(.5); C.add(this._beatGrade);
+    const cx=W/2, cy=H-Math.min(210,H*0.26), sp=Math.min(84,W*0.2), r=Math.min(36,W*0.09); this._beatBtns=[];
+    const mk=(id,dx,dy,col,emo,label,rr)=>{ const x=cx+dx,y=cy+dy; const c=this.add.circle(x,y,rr,col,0.85).setStrokeStyle(3,0xffffff,0.9); const t=this.add.text(x,y-5,emo,{fontSize:(rr*0.7|0)+'px'}).setOrigin(.5);
+      const l=this.add.text(x,y+rr*0.52,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff',stroke:'#000',strokeThickness:3}).setOrigin(.5); C.add([c,t,l]); this._beatBtns.push({id,x,y,r:rr,c}); };
+    BEAT_PUNCHES.forEach(p=>mk(p.id,p.dx*sp,p.dy*sp,p.col,p.emoji,p.name,r)); mk('beat',0,0,0xffc233,'✦','BEAT!',r*1.1);
+    this._beat.wait=0.35; }
+  drawBeatRow(){ const B=this._beat,C=this._beatRowC; if(!C)return; C.removeAll(true); const W=this.W,y=this.H*0.27,n=B.seq.length,sp=Math.min(50,(W-40)/n),x0=W/2-(n-1)*sp/2;
+    B.icons=B.seq.map((k,i)=>{ const d=BEAT_PUNCHES.find(p=>p.id===k), st=B.st[i]; const col=st===1?0xffd23f:st===-1?0x552233:d.col;
+      const c=this.add.circle(x0+i*sp,y,sp*0.42,col,st===0?0.9:1).setStrokeStyle(i===B.idx&&!B.graded?3:1.5,0xffffff,i===B.idx&&!B.graded?1:0.5); const t=this.add.text(x0+i*sp,y,st===-1?'✖':d.emoji,{fontSize:(sp*0.42|0)+'px'}).setOrigin(.5);
+      C.add([c,t]); return c; });
+    this._beatRoundTxt.setText('Round '+(B.ri+1)+' / '+B.sizes.length+(B.full?'':'  ·  quick'));
+    const sp2=this.beatSpecials(B.seq).map(k=>BEAT_SPECIALS[k].name); this._beatHint.setText(sp2.length?('Nail this row for → '+sp2.join(' + ')):'Hit the punches, then BEAT! on ✦'); }
+  beatTap(x,y){ const B=this._beat; if(!B||B.ri<0||B.graded||B.wait>0)return; let hit=null,bd=1e9;
+    for(const b of this._beatBtns||[]){ const d=this.dist(x,y,b.x,b.y); if(d<b.r+14&&d<bd){bd=d;hit=b;} } if(!hit)return;
+    this.tweens.add({targets:hit.c,scale:{from:1.2,to:1},duration:120});
+    if(hit.id==='beat'){ this.gradeBeat(); return; }
+    if(B.idx>=B.seq.length)return;
+    if(hit.id===B.seq[B.idx]){ B.st[B.idx]=1; Sfx.comboPunch(B.idx+B.ri*4,'jab'); } else { B.st[B.idx]=-1; B.wrong++; Sfx.beatGrade&&Sfx.beatGrade('miss'); this.cameras.main&&this.screenShake(60,0.002); }
+    B.idx++; this.drawBeatRow(); }
+  gradeBeat(){ const B=this._beat; const dt=Math.abs(B.t-B.D*0.85)*1000; const g=dt<=60?'PERFECT':dt<=120?'GREAT':dt<=200?'COOL':'MISS'; this.applyBeatGrade(g); }
+  applyBeatGrade(g){ const B=this._beat; B.graded=g; const gm=BEAT_GRADES[g];
+    B.seq.forEach((k,i)=>{ if(B.st[i]===1){ B.pts[k]+=gm; B.total+=gm; } });
+    const clean=B.wrong===0&&B.idx>=B.seq.length&&g!=='MISS'; if(clean)this.beatSpecials(B.seq).forEach(k=>B.specials.add(k));
+    if(g==='PERFECT'&&clean)B.perfects++;
+    const col={PERFECT:'#ffd23f',GREAT:'#7dffb0',COOL:'#8fd0ff',MISS:'#ff6b6b'}[g]; this._beatGrade.setText(g+(clean&&this.beatSpecials(B.seq).length?' ★':'')).setColor(col).setScale(1.5);
+    this.tweens.add({targets:this._beatGrade,scale:1,duration:160*0.25}); Sfx.beatGrade&&Sfx.beatGrade(g==='PERFECT'?'perfect':g==='MISS'?'miss':'good');
+    B.wait=0.55; B.next=true; }
+  tickBeat(rdt){ // เวลาจริง (ไม่โดน slow-mo)
+    if(this._ubHold&&performance.now()-this._ubHold.t>350){ this._ubHold=null; this.startBeatRush(true); }
+    const B=this._beat; if(!B)return;
+    if(B.wait>0){ B.wait-=rdt; if(B.wait<=0){ B.wait=0; if(B.next||B.ri<0){ B.next=false; this._beatGrade&&this._beatGrade.setText(''); this.beatNextRound(); } } return; }
+    if(B.graded)return; B.t+=rdt; B.tick+=rdt; if(B.tick>=B.D/4){ B.tick-=B.D/4; Sfx.beatTick&&Sfx.beatTick(); }
+    const bb=this._beatBar; this._beatMarker&&this._beatMarker.setX(bb.x0+(bb.x1-bb.x0)*Math.min(1,B.t/B.D));
+    if(B.t>=B.D){ B.st=B.st.map(v=>v===0?-1:v); this.drawBeatRow(); this.applyBeatGrade('MISS'); } }
+  destroyBeatUI(){ if(this._beatUI){ this._beatUI.destroy(true); this._beatUI=null; } this._beatBtns=[]; }
+  restoreBeatSpeed(){ this.setGameSpeed(this.gameSpeed||1); }
+  cancelBeat(){ this._ubHold=null; if(!this._beat)return; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); }
+  finishBeat(){ const B=this._beat; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); this.cocoaBeatBurst(B); }
+  cocoaBeatBurst(B){ const P=this.player,ul=B.ul,dm=P.dmgMul||1,up=this.uniquePower(), S=B.specials, rb=S.has('rainbow')?1.5:1, fever=B.perfects>=B.rounds;
+    const unit=(14+ul*5)*dm*up*1.6*rb, heavyMul=1+Math.min(1.5,B.pts.heavy*0.08), radius=80*Math.min(2,1+B.pts.hook*0.1), stun=Math.min(1.2,0.25+B.pts.upper*0.05);
+    let hits=Math.min(60,Math.round(6+B.total*1.2+B.pts.jab*0.6)); if(S.has('gun'))hits=Math.min(90,hits*2);
+    const names=[...S].map(k=>BEAT_SPECIALS[k].emoji+' '+BEAT_SPECIALS[k].name); if(fever)names.push('🐻 BEAR FEVER!');
+    this.showBanner('🥁 '+hits+' HIT RUSH!',names.join(' · ')||'Keep the beat for bigger combos',1100);
+    const gap=45, dur=hits*gap+400; P.iframe=Math.max(P.iframe||0,dur/1000+0.3); this.screenFlash(0xffc477,0.35,200);
+    const hitSet=new Set();
+    for(let i=0;i<hits;i++)this.time.delayedCall(i*gap,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
+      let t=null,bd=1e18; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-P.x)**2+(e.y-P.y)**2; if(d>620*620)return; const pen=hitSet.has(e)?300*300:0; if(d+pen<bd){bd=d+pen;t=e;} });
+      if(!t)return; hitSet.add(t); if(hitSet.size>8)hitSet.clear();
+      this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,t.x,t.y)>radius)return; this.damage(e,unit*heavyMul*((e.isBoss||e.isMini)?1:0.8),e.x,e.y);
+        if(e.active&&!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,stun*0.4); if(B.pts.hook>0){const a=Math.atan2(e.y-t.y,e.x-t.x);e.setVelocity(Math.cos(a)*200,Math.sin(a)*200);e.knock=0.12;} } });
+      this.hitCratesInRadius(t.x,t.y,radius,unit);
+      if(this.anims.exists('fx_flickerstrike'))this.spawnFxAnim('fx_flickerstrike',t.x,t.y,{scale:(radius*2)/256,rotation:Math.random()*TAU,depth:9,alpha:0.95}); else this.vfxHitRing(t.x,t.y,0x9f6bff,false);
+      const cc=this._cc||(this._cc={n:0,t:0,step:0}); cc.n++; cc.t=0; Sfx.comboPunch(cc.n,i%6===5?'heavy':'jab'); });
+    this.time.delayedCall(hits*gap+120,()=>{ if(this.state!=='play')return;
+      if(S.has('cyclone')){ this.showComboMove('🌀 COCOA CYCLONE',true); for(let k=0;k<12;k++)this.time.delayedCall(k*250,()=>{ if(this.state!=='play')return; this.vfxHitRing(P.x,P.y,0x4fb8ff,true);
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<160){ this.damage(e,unit*0.5,e.x,e.y); if(!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-P.y,e.x-P.x);e.setVelocity(Math.cos(a)*240,Math.sin(a)*240);e.knock=0.15;} } }); }); }
+      if(S.has('juggle')){ this.showComboMove('⬆ SKY JUGGLE',true); this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,P.x,P.y)<700)e.frozen=Math.max(e.frozen||0,2); }); }
+      if(S.has('titan')){ let t=null,hp=-1; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<650){ const v=(e.isBoss||e.isMini?1e9:0)+e.hp; if(v>hp){hp=v;t=e;} } });
+        if(t){ this.showComboMove('💥 TITAN CRUSH',true); this.damage(t,unit*4*heavyMul,t.x,t.y); this.vfxHitRing(t.x,t.y,0xff4d5a,true); this.screenShake(220,0.012); if(this.hitStop)this.hitStop(70); Sfx.comboPunch(99,'heavy'); } }
+      if(fever){ this.time.delayedCall(300,()=>{ if(this.state!=='play')return; this.showComboMove('🐻 BEAR FEVER!',true); this.screenFlash(0xffd23f,0.6,380); this.screenShake(320,0.014);
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<800)this.damage(e,unit*3,e.x,e.y); }); Sfx.comboPunch(99,'frenzy'); }); }
+    }); }
   castBearDonut(lvl,aw,dm,evo,basic){
     // โกโก้ = ต่อยประชิด 2 หมัด (base) · คลื่นสะท้อน (shockwave) ต้อง Mutation 'breaker' หรือ Awaken/Evo ถึงจะมี
     const breaker=basic?.mutation==='breaker', wave=breaker||!!evo||aw;
@@ -9257,7 +9365,7 @@ class Game extends Phaser.Scene {
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
-    this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
+    this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul*this.cocoaGuard(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
@@ -9274,7 +9382,7 @@ class Game extends Phaser.Scene {
     if(this.consumeShell())return;   // 🔮 Candy Shell
     if(this._inTutorial)return;   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;   // guard NaN
-    dmg*=(this.player.dmgTakenMul||1)*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
+    dmg*=(this.player.dmgTakenMul||1)*this.cocoaGuard()*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
     this._noteHit(this.mode==='boss'?'boss':this.mode==='mini'?'mini':'shot',dmg);
     this.player.iframe=(ix||0.5)*HURT_IFRAME_MUL; this.player.hp-=dmg; this.onBonusHurt(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(150,0.009);
     this._sqX=0.72; this._sqY=1.28; this.poseFlash(CF.hurt,260);
@@ -9693,7 +9801,7 @@ class Game extends Phaser.Scene {
     }
   }
 
-  charPassiveOnHurt(){ this.fireRecipes('hurt'); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
+  charPassiveOnHurt(){ this.fireRecipes('hurt'); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
     this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,px,py)<r){ e.frozen=Math.max(e.frozen||0,0.9*CP.s); if(e.setTint)e.setTint(COLORS.ice); } }); this.burst(px,py,0x8fe7ff); }
   charPassiveOnDash(){ const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
     this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
@@ -10082,7 +10190,7 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){ if(this.state==='dead')return;
+  die(){ if(this.state==='dead')return; this.cancelBeat();
     // v5.30 🗿 Ancient Guard: ตายครั้งแรกของด่าน = รอด 1 HP + อมตะ 3 วิ
     if(Save.ancientHas('ancientGuard')&&!this._agUsed&&!this._inTutorial){ this._agUsed=true; this.player.hp=1; if(this.player.body)this.player.body.enable=true; this.player.iframe=3; this.screenFlash(0xc7a6ff,0.45,380); this.showBanner('🗿 Ancient Guard!','The temple shields you · 3s invulnerable',1600); return; }
     this.clearSugarCoins();
@@ -10194,7 +10302,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); this.tickBeat(delta/1000); dt*=(this.gameSpeed||1)*(this._beat?0.25:1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
