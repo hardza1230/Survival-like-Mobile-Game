@@ -37,11 +37,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.29.0';
+const GAME_VERSION = '5.30.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.30.0', date:'2026-09-26', title:'🗿 Ancient Perks', items:['Dig up 📜 Scroll Fragments in Temple Depths','Every 4 fragments unlock an Ancient Perk in 🏅 Rank Perks: Echo Dash, Treasure Sense, Second Weave, Ancient Guard, Sugar Vein, Deep Roots']},
   { v:'5.29.0', date:'2026-09-26', title:'⬆ Core Overcap', items:['Dig up Core Stones (🔴🟠🔵) in Temple Depths','Spend them in the Weave Temple to Overcap a core up to +6 — permanent and never reset on rank up']},
   { v:'5.28.0', date:'2026-09-26', title:'⛏️ Temple Depths: juice', items:['Digging now swings the shovel, shakes the tile and shatters it into pieces','Rare finds burst with light rays, chests rattle open and spray treasure','Descending drops a fresh board in with a bounce']},
   { v:'5.27.0', date:'2026-09-26', title:'⛏️ Temple Depths opens', items:['New minigame under the Flavor Weave Temple: dig a 5×5 board with shovels','Find Sugar, Ancient Chests and the Depth Gem to go deeper','Free shovel every day · you start with 5']},
@@ -1929,11 +1930,22 @@ const DIG_ITEMS={
   stone_hp:{emoji:'🔴',name:'Life Core Stone',rare:true,stone:'hp'},     // v5.29 หินแก่น → Overcap
   stone_dmg:{emoji:'🟠',name:'Flavor Core Stone',rare:true,stone:'dmg'},
   stone_def:{emoji:'🔵',name:'Oath Core Stone',rare:true,stone:'def'},
+  scroll:{emoji:'📜',name:'Scroll Fragment',rare:true},   // v5.30 ครบ 4 = Perk ลับ
 };
+const SCROLL_PER_PERK=4;
+/* ---- v5.30 Ancient Perks: Perk ลับจากใต้วิหาร (ปลดด้วยคัมภีร์ · RP ใช้ไม่ได้) ---- */
+const ANCIENT_PERKS=[
+  { id:'echoDash',      emoji:'🌀', name:'Echo Dash',      desc:'3 dashes within 2.5s release a shockwave' },
+  { id:'treasureSense', emoji:'⛏️', name:'Treasure Sense', desc:'Kills can drop shovels (max 3 per stage)' },
+  { id:'secondWeave',   emoji:'🃏', name:'Second Weave',   desc:'Your first level-up each stage gives an extra card pick' },
+  { id:'ancientGuard',  emoji:'🗿', name:'Ancient Guard',  desc:'Survive your first lethal hit each stage at 1 HP (3s immune)' },
+  { id:'sugarVein',     emoji:'🍬', name:'Sugar Vein',     desc:'+20% Sugar from kills' },
+  { id:'deepRoots',     emoji:'🌳', name:'Deep Roots',     desc:'+8% max HP · +0.6 HP regen per second' },
+];
 const OVERCAP_MAX=6;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
 function overcapCost(lvl){ return {stones:lvl+1,sugar:150*(lvl+1)}; }
 // ตารางน้ำหนักของในกระดาน (commit ถัดไปเติมหินแก่น/คัมภีร์/กับดัก/ทางลับ)
-function digTable(depth){ return [['empty',40],['sugar',38],['chest',5+depth*0.6],['stone',8+depth*0.8]]; }
+function digTable(depth){ return [['empty',40],['sugar',38],['chest',5+depth*0.6],['stone',8+depth*0.8],['scroll',4+depth*0.5]]; }
 function digRollContent(depth){ const t=digTable(depth); let sum=0; for(const x of t)sum+=x[1]; let r=Math.random()*sum; for(const x of t){ r-=x[1]; if(r<=0)return x[0]==='stone'?'stone_'+Phaser.Utils.Array.GetRandom(['hp','dmg','def']):x[0]; } return 'empty'; }
 function digMakeBoard(depth){ const cells=[]; const hardP=Math.min(0.45,0.14+depth*0.03);
   for(let i=0;i<DIG_N*DIG_N;i++) cells.push({c:digRollContent(depth),hp:Math.random()<hardP?2:1,hard:false,open:false});
@@ -2528,6 +2540,9 @@ const Save = {
   overcap(k){ return (this.data.overcap||{})[k]||0; },
   coreStones(k){ return (this.data.coreStones||{})[k]||0; },
   addCoreStone(k,n){ if(!this.data.coreStones)this.data.coreStones={}; this.data.coreStones[k]=this.coreStones(k)+n; this.save(); },
+  ancientHas(id){ return !!(this.data.ancient||{})[id]; },
+  scrolls(){ return this.data.scrolls||0; },
+  unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
   buyOvercap(k){ const lvl=this.overcap(k); if(lvl>=OVERCAP_MAX)return false; const c=overcapCost(lvl); if(this.coreStones(k)<c.stones||(this.data.sugar||0)<c.sugar)return false;
     this.data.coreStones[k]-=c.stones; this.data.sugar-=c.sugar; if(!this.data.overcap)this.data.overcap={}; this.data.overcap[k]=lvl+1; this.save(); return true; },   // ผลรวมที่ใช้จริง (ยศ+Waitบนี้)
   talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank*0.8)); },
@@ -3285,7 +3300,7 @@ class Game extends Phaser.Scene {
 
   doDash(){
     if(!this.dashReady||this.state!=='play') return;
-    this.charPassiveOnDash(); this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
+    this.charPassiveOnDash(); this.ancientEchoDash(); this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; this.dashTime=0.16; this._coachDash=(this._coachDash||0)+1;
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
     this.player.setVelocity(d.x*560,d.y*560);
@@ -4949,7 +4964,7 @@ class Game extends Phaser.Scene {
     btn(w/2-bw-6,Save.digFreeReady()?'🎁 Free ⛏️ today':'✓ Free ⛏️ claimed',0x3a5a3a,Save.digFreeReady(),()=>{ if(Save.digClaimFree()){ Sfx.digFind(); this.menuToast('⛏️ +1 shovel — come back tomorrow for another!'); } this.buildDig(); });
     const dt=btn(w/2+6,d.gemFound?'⬇ Descend':'💎 Find the gem',0x5a3a7a,!!d.gemFound,()=>this.digDescend());
     if(d.gemFound)this.tweens.add({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
-    const leg=this.add.text(w/2,by+bh+22,'🍬 Sugar   🏺 Chest   💎 Depth Gem\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def'),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
+    const leg=this.add.text(w/2,by+bh+22,'🍬 Sugar   🏺 Chest   💎 Depth Gem\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def')+'   ·   📜 '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
     this.menu.setVisible(true);
   }
   drawDigCell(cont,c,cs){ cont.removeAll(true); const g=this.add.graphics(); cont.add(g);
@@ -5017,10 +5032,12 @@ class Game extends Phaser.Scene {
   digResolve(c){ const d=Save.dig(); c.taken=true;
     if(c.c==='sugar'){ const n=digSugarAmt(d.depth); Save.data.sugar=(Save.data.sugar||0)+n; Sfx.digFind(); return {t:'🍬 +'+n+' Sugar',c:'#ffe08a'}; }
     if(c.c==='chest'){ Sfx.digRare(); const roll=Math.random();
+      if(roll>0.88){ Save.data.scrolls=(Save.data.scrolls||0)+1; return {t:'🏺 Ancient Chest! 📜 Scroll Fragment '+Math.min(Save.data.scrolls,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK,c:'#ffd166'}; }
       if(roll<0.55){ const n=digSugarAmt(d.depth)*4; Save.data.sugar=(Save.data.sugar||0)+n; return {t:'🏺 Ancient Chest! 🍬 +'+n+' Sugar',c:'#ffd166'}; }
       const k=rollWeightedCurrency(d.depth>=6?'epic':'rare'),n=Phaser.Math.Between(2,4); if(k){ Save.addCurrency(k,n); const cd=currencyDef(k); return {t:'🏺 Ancient Chest! '+(cd?cd.emoji+' '+cd.name:'Currency')+' ×'+n,c:'#ffd166'}; }
       return {t:'🏺 Ancient Chest!',c:'#ffd166'}; }
     const st=(DIG_ITEMS[c.c]||{}).stone; if(st){ Save.data.coreStones=Save.data.coreStones||{}; Save.data.coreStones[st]=(Save.data.coreStones[st]||0)+1; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' '+DIG_ITEMS[c.c].name+'! Overcap '+UPGRADES[st].name+' in the Temple',c:'#ffd166'}; }
+    if(c.c==='scroll'){ Save.data.scrolls=(Save.data.scrolls||0)+1; Sfx.digRare(); const n=Save.data.scrolls; return {t:'📜 Scroll Fragment '+Math.min(n,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK+(n>=SCROLL_PER_PERK?' — unlock an Ancient Perk in 🏅 Rank Perks!':''),c:'#ffd9a8'}; }
     if(c.c==='gem'){ d.gemFound=true; Sfx.digRare(); return {t:'💎 Depth Gem found! The way down is open',c:'#c7a6ff'}; }
     return null; }
   digDescend(){ const d=Save.dig(); if(!d.gemFound||this.digBusy())return; d.depth++; d.best=Math.max(d.best||1,d.depth); d.gemFound=false; d.board=digMakeBoard(d.depth); Save.save(); Sfx.digDescend();
@@ -5057,6 +5074,16 @@ class Game extends Phaser.Scene {
       });
       y+=cardH+11;
     });
+    // v5.30 🗿 ANCIENT: Perk ลับจากใต้วิหาร (ใช้คัมภีร์ 4 ชิ้น/ตัว)
+    { const sc=Save.scrolls(),ah=this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e0b0ff'}).setOrigin(0,0);
+      const as=this.add.text(w-14,y,'📜 '+sc+' (4 per perk)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#8d8195'}).setOrigin(1,0); this.menu.add([ah,as]); y+=15;
+      const aH=58; ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%3)*(cardW+gap),yy=y+Math.floor(i/3)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=SCROLL_PER_PERK;
+        const g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,cardW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,cardW,aH,10);
+        const icon=this.textures.exists('perk_'+pk.id)?this.add.image(x+16,yy+17,'perk_'+pk.id).setDisplaySize(22,22):this.add.text(x+16,yy+17,pk.emoji,{fontSize:'16px'}).setOrigin(0.5); icon.setAlpha(own||can?1:0.45);
+        const nm=this.add.text(x+30,yy+10,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:own?'#e9dcff':'#cbbfda',wordWrap:{width:cardW-34}}).setOrigin(0,0);
+        const ds=this.add.text(x+6,yy+31,own?'✓ '+pk.desc:(can?'Tap to unlock · '+pk.desc:'🔒 '+pk.desc),{fontFamily:'sans-serif',fontSize:'6.8px',color:own?'#b8a4e0':'#7f748d',wordWrap:{width:cardW-10}}).setOrigin(0,0);
+        this.menu.add([g,icon,nm,ds]); if(can)this._zone(x,yy,cardW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.digRare(); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
+      y+=2*(aH+6)+6; }
     // ปุ่มรีเซ็ต perk (คืนแต้มทั้งหมด)
     const ry2=Math.min(h-42,y),rw=Math.min(w-40,300);
     const rg=this.add.graphics(); rg.fillStyle(0x3a2f38,1); rg.fillRoundedRect(w/2-rw/2,ry2,rw,34,10); rg.lineStyle(1.5,0x6a4055,0.8); rg.strokeRoundedRect(w/2-rw/2,ry2,rw,34,10);
@@ -5528,6 +5555,7 @@ class Game extends Phaser.Scene {
     // Rank Perks (ถาวร เลือกเอง) — vigor/might บวกสแตต · greed/boxLuck ตั้งตัวคูณรันนี้
     const rp=Save.data.rankPerks||{};
     if(rp.vigor)p.maxhp*=1+0.06*rp.vigor;
+    if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; }   // v5.30 Ancient
     if(rp.might)p.dmgMul*=1+0.05*rp.might;
     if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
     this.rankSugarMul=1+0.08*(rp.greed||0);
@@ -7064,7 +7092,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n*(this.player.xpMul||1);
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+6); /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+6); /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
@@ -7201,9 +7229,16 @@ class Game extends Phaser.Scene {
     g.lineStyle(3,0xdff8ff,0.85).strokeCircle(p.x,p.y,r);
     if(n>1)g.lineStyle(2,0x9fe8ff,0.7).strokeCircle(p.x,p.y,r+6);
     g.fillStyle(0xffffff,0.7).fillCircle(p.x-r*0.45,p.y-r*0.5,4); }
-  resetRelics(){ this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; }
+  resetRelics(){ this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ return RELIC_CAP-((this.relics&&this.relics.length)||0); }
+  // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
+  ancientEchoDash(){ if(!Save.ancientHas('echoDash'))return; const t=this.elapsed||0; this._dashChain=(this._dashChain||[]).filter(x=>t-x<2.5); this._dashChain.push(t);
+    if(this._dashChain.length<3)return; this._dashChain=[]; const p=this.player,R=130,dmg=this.relicDmg(2.2);
+    const ring=this.camWorld(this.add.circle(p.x,p.y,R,0xc7a6ff,0.18).setStrokeStyle(5,0xe0c8ff,0.9).setDepth(90000).setScale(0.3)); this.tweens.add({targets:ring,scale:1,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
+    this.enemies.getChildren().forEach(e=>{ if(e.active&&this.dist(e.x,e.y,p.x,p.y)<=R)this.damage(e,dmg); }); }
+  // v5.30 ⛏️ Treasure Sense: ฆ่ามอนมีโอกาสได้พลั่ว (สูงสุด 3/ด่าน)
+  ancientTreasure(e){ if(!Save.ancientHas('treasureSense')||(this._shovelFind||0)>=3||Math.random()>0.005)return; this._shovelFind=(this._shovelFind||0)+1; Save.addShovels(1); this.floatText(e.x,e.y-24,'+1 ⛏️',0xffd9a8); }
   relicDmg(mul){ return (10+(this.level||1)*1.5)*(this.player.dmgMul||1)*(1+(this.stageIndex||0)*0.35)*mul; }
   rollRelicChoices(n){
     if(this.relicSlotsLeft()<=0)return [];
@@ -8192,7 +8227,7 @@ class Game extends Phaser.Scene {
       this.burst(bx,by,0xff8b6b); Sfx.boom();
       if(this.dist(this.player.x,this.player.y,bx,by)<r) this.hurtPlayer(Math.round(12+this.stageIndex*4),0.5); }
     // เก็บ Sugar (สกุลเงินเมต้า ใช้Waitบหน้า)
-    const sugRaw=(isBoss?40:isMini?18:isElite?4:1)*this.diffMul().reward*(this.player.sugarFindMul||1),sug=Math.max(1,Math.floor(sugRaw)+(Math.random()<sugRaw%1?1:0)); this.sugarStage+=sug; this.sugarRun+=sug;   // v4.93 Sugar Find (ปัดแบบสุ่ม) · ยิ่งยาก Sugar ยิ่งเยอะ
+    const sugRaw=(isBoss?40:isMini?18:isElite?4:1)*this.diffMul().reward*(this.player.sugarFindMul||1)*(Save.ancientHas('sugarVein')?1.2:1),sug=Math.max(1,Math.floor(sugRaw)+(Math.random()<sugRaw%1?1:0)); this.sugarStage+=sug; this.sugarRun+=sug; this.ancientTreasure(e);   // v4.93 Sugar Find (ปัดแบบสุ่ม) · ยิ่งยาก Sugar ยิ่งเยอะ
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // UpdatesเงินWaitบนี้แบบ realtime
     this.clearObjectiveTargetFx(e);if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
@@ -9477,7 +9512,10 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){ if(this.state==='dead')return; this.clearSugarCoins();
+  die(){ if(this.state==='dead')return;
+    // v5.30 🗿 Ancient Guard: ตายครั้งแรกของด่าน = รอด 1 HP + อมตะ 3 วิ
+    if(Save.ancientHas('ancientGuard')&&!this._agUsed&&!this._inTutorial){ this._agUsed=true; this.player.hp=1; if(this.player.body)this.player.body.enable=true; this.player.iframe=3; this.screenFlash(0xc7a6ff,0.45,380); this.showBanner('🗿 Ancient Guard!','The temple shields you · 3s invulnerable',1600); return; }
+    this.clearSugarCoins();
     const _closeStory=()=>{ if(this.storyLayer){this.storyLayer.setVisible(false);this.storyLayer.removeAll(true);} this._finishStoryCutscene=null; };
     // 🔮 Relic Last Breath: ครั้งแรกที่ตายในด่าน = รอด (Second Wind = 40% HP + โล่)
     if(this._rel&&this._rel.lastbreath&&!this._lastBreathUsed){ this._lastBreathUsed=true; const sw=this.relicSyn('shell','lastbreath');
