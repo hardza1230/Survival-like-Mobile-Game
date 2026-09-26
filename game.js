@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.59.0';
+const GAME_VERSION = '5.60.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.60.0', date:'2026-09-26', title:'🥊 Cocoa Boxing Rhythm', items:['Cocoa now boxes in 6 distinct moves with their own timing: Lunge → One-Two → Hook → Body Rush → Uppercut → Bear Slam','Standing still, Cocoa turns and punches the nearest enemy; while walking she punches where you move','Dash Punch now visibly dashes in with an afterimage trail before the hit','Removed the HITS counter and dash-count text'] },
   { v:'5.59.0', date:'2026-09-26', title:'🐾 Cocoa Dash Punch', items:['Cocoa’s punches always follow your movement direction','Dash now lunges into the nearest enemy with a heavy punch — new card Bear Dash Chain adds +1 chained hit per rank (up to 4)','Bear Beat Rush ends with a grand finale: giant bear spirit, 5-color shockwaves, a huge blast and your total damage'] },
   { v:'5.58.0', date:'2026-09-26', title:'🔗 Beat Rush: Chain & Swipe', items:['Cocoa’s Unique is reworked: hold to drag one line through enemies — each gets a random punch color','3 of the same color in a row unlocks its special, all 4 colors = Rainbow Combo','Then swipe the arrows anywhere on screen — fast swipes are PERFECT, all PERFECT = BEAR FEVER','Tap for a quick 2-swipe burst around you','The punch buttons and BEAT! bar are gone'] },
   { v:'5.57.0', date:'2026-09-26', title:'🥁 Easier Beat Rush', items:['The next punch button glows — just tap what lights up, no timer while you enter punches','The beat bar only starts after your punches are in, then one BEAT! on ✦','Wrong taps no longer lose punches (they only block PERFECT)','Wider timing windows, shorter rows (3 quick / 4-5-6 full) and the game fully pauses during the mini-game','Half of the rows are built to trigger a special move'] },
@@ -8222,17 +8223,17 @@ class Game extends Phaser.Scene {
   }
   // 🥊 v5.53 Cocoa Rush — คอมโบหมัดรัว 4 ท่าวนกัน (Jab Rush → Hook → Uppercut → Bear Slam)
   // ตัวนับ HITS: ต่อยโดนต่อเนื่อง = ดาเมจ +1%/hit (สูงสุด +40%) · ครบทุก 25 hits = BEAR FRENZY · ไม่โดน 1.6 วิ = รีเซ็ต
+  // 🥊 v5.60 Cocoa Boxing — 6 ท่าวน จังหวะไม่เท่ากัน (ตั้ง _ccCdMul ให้รอบถัดไป)
+  // LUNGE พุ่งต่อย → ONE-TWO → HOOK → BODY RUSH → UPPERCUT → BEAR SLAM · เดิน = ต่อยตามทิศเดิน · ยืน = หันหาศัตรูใกล้สุด
   castCocoaRush(lvl,aw,dm,evo,basic){
     const P=this.player, cc=this._cc||(this._cc={n:0,t:0,step:0});
-    const step=cc.step%4; cc.step++;
     const reach=(82+lvl*6)*(1+(basic.ranks.size||0)*0.12)*(aw?1.2:1)*(evo?1.15:1)*(1+(basic._pm?.range||0));
     const fin=1+(basic.ranks.combo||0)*0.18, unit=(12+lvl*3.5)*dm*1.4*(evo?1.16:1)*(aw?1.1:1);
-    const t=this.nearestEnemy(reach+170);
-    let ang=t?Math.atan2(t.y-P.y,t.x-P.x):(this.moveDir&&(this.moveDir.x||this.moveDir.y)?this.moveDir.angle():(cc.ang||0)); cc.ang=ang;
-    P.setFlipX(Math.cos(ang)<0);
-    // พุ่งเข้าหาเป้า (gap closer) ถ้าอยู่นอกระยะ
-    // v5.55 เลิกพุ่งเข้าหาเป้าเอง (เจ้าของ: คุมทิศไม่ได้) · เดินอยู่ = ต่อยตามทิศที่เดิน
-    if(this.moveDir&&this.moveDir.lengthSq()>0.04){ ang=this.moveDir.angle(); cc.ang=ang; P.setFlipX(Math.cos(ang)<0); }   // v5.59 ต่อยตามทิศเดินเสมอ (moveDir คงทิศล่าสุดตอนยืน)
+    const moving=this.joy&&this.joy.active&&this.moveDir&&this.moveDir.lengthSq()>0.04;
+    const t=this.nearestEnemy(reach+220);
+    if(!moving&&!t){ this._ccCdMul=0.5; return; }   // ยืนเฉย ๆ ไม่มีศัตรูใกล้ = ไม่ต่อยลม (รอบถัดไปเช็คเร็ว)
+    const step=cc.step%6; cc.step++;
+    let ang=moving?this.moveDir.angle():Math.atan2(t.y-P.y,t.x-P.x); cc.ang=ang; P.setFlipX(Math.cos(ang)<0);
     const hit=(cx,cy,r,mul,o={})=>{ const bonus=1+Math.min(0.4,cc.n*0.01); let any=false;
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; any=true;
         this.damage(e,unit*mul*bonus,e.x,e.y);
@@ -8242,33 +8243,44 @@ class Game extends Phaser.Scene {
       this.hitCratesInRadius(cx,cy,r,unit*mul);
       if(any){ cc.n++; cc.t=0; this.cocoaBeatCharge(0.25); if(cc.n%25===0)this.time.delayedCall(120,()=>this.cocoaFrenzy(unit,reach)); }
       Sfx.comboPunch(cc.n,o.heavy?'heavy':'jab'); return any; };
-    const fx=(cx,cy,col,big)=>{ this.vfxHitRing(cx,cy,col,!!big); if(big&&this.fxOk())this.burst(cx,cy,col); };
-    const front=(k)=>({x:P.x+Math.cos(ang)*reach*k,y:P.y+Math.sin(ang)*reach*k});
     const live=()=>this.state==='play';
-    if(step===0){ // 👊 Jab Rush
-      const n=4+(aw?2:0)+(evo?1:0)+(basic.mutation==='rush'?2:0)+(basic._pm?.count||0);
-      for(let i=0;i<n;i++)this.time.delayedCall(i*55,()=>{ if(!live())return; const f=front(0.62), j=(i%2?1:-1)*10;
-        const px=f.x-Math.sin(ang)*j, py=f.y+Math.cos(ang)*j; fx(px,py,0xffd9a8,false); hit(px,py,reach*0.55,0.42); });
-      this.showComboMove('JAB RUSH');
-    }else if(step===1){ // 🌀 Hook combo ซ้าย-ขวา
-      [-1,1].forEach((sd,i)=>this.time.delayedCall(i*110,()=>{ if(!live())return; const a=ang+sd*0.7, cx=P.x+Math.cos(a)*reach*0.6, cy=P.y+Math.sin(a)*reach*0.6;
-        const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(9,0xffc477,0.9); g.beginPath(); g.arc(P.x,P.y,reach*0.72,a-0.8,a+0.8,false); g.strokePath();
-        this.tweens.add({targets:g,alpha:0,duration:160,onComplete:()=>g.destroy()}); hit(cx,cy,reach*0.72,0.78,{kb:170}); }));
-      this.showComboMove('HOOK!');
-    }else if(step===2){ // ⬆️ Uppercut ลอยตัว
-      this.time.delayedCall(60,()=>{ if(!live())return; const f=front(0.6); fx(f.x,f.y,0xfff0b0,true);
-        if(hit(f.x,f.y,reach*0.7,1.7*fin,{stun:0.45,heavy:true})){ this.screenShake(90,0.004); if(this.hitStop)this.hitStop(35); } });
-      this.showComboMove('UPPERCUT!');
-    }else{ // 💥 Bear Slam รอบตัว
-      this.time.delayedCall(80,()=>{ if(!live())return; const r=reach*1.5*(basic.mutation==='breaker'?1.2:1);
+    const pt=(k,side=0,a=ang)=>({x:P.x+Math.cos(a)*reach*k-Math.sin(a)*side,y:P.y+Math.sin(a)*reach*k+Math.cos(a)*side});
+    // เส้นหมัดพุ่งออกจากตัว (straight/jab/cross)
+    const streak=(to,col,w)=>{ const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(w,col,0.9).lineBetween(P.x,P.y-6,to.x,to.y); g.fillStyle(0xffffff,0.95).fillCircle(to.x,to.y,w*0.9);
+      this.tweens.add({targets:g,alpha:0,duration:130,onComplete:()=>g.destroy()}); };
+    const lean=(k,ms)=>{ this._sqX=1+0.25*k; this._sqY=1-0.2*k; this.tweens.add({targets:P,x:P.x+Math.cos(ang)*8*k,y:P.y+Math.sin(ang)*8*k,duration:ms,yoyo:true,ease:'Quad.out'}); };
+    const RHYTHM=[0.9,0.7,1.05,0.8,1.2,1.6];
+    if(step===0){ // 💨 LUNGE พุ่งต่อย
+      const tt=t&&!moving?t:null, d=tt?this.dist(P.x,P.y,tt.x,tt.y):reach, mv=Math.max(0,Math.min(120,d-reach*0.45));
+      this._sqX=1.35; this._sqY=0.72; P.iframe=Math.max(P.iframe||0,0.15);
+      this.tweens.add({targets:P,x:P.x+Math.cos(ang)*mv,y:P.y+Math.sin(ang)*mv,duration:110,ease:'Quad.out',onComplete:()=>{ if(!live())return;
+        const f=pt(0.6); streak(f,0xffd9a8,10); this.vfxHitRing(f.x,f.y,0xffd9a8,false); hit(f.x,f.y,reach*0.6,1.0,{kb:140}); }});
+    }else if(step===1){ // 👊👊 ONE-TWO (จิ้ม-ตรง เร็ว)
+      [[0,-9,0.55,6],[150,9,0.8,9]].forEach(([ms,side,m,w])=>this.time.delayedCall(ms,()=>{ if(!live())return; lean(0.6,50); const f=pt(0.62,side); streak(f,0xfff0d0,w); hit(f.x,f.y,reach*0.5,m); }));
+    }else if(step===2){ // 🌀 HOOK (ง้าง แล้วเหวี่ยงกว้าง)
+      this._sqX=0.85; this._sqY=1.12;
+      this.time.delayedCall(130,()=>{ if(!live())return; const sd=cc.step%12<6?1:-1;
+        const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(11,0xffc477,0.92); g.beginPath(); g.arc(P.x,P.y,reach*0.72,ang-sd*1.0,ang+sd*0.9,sd<0); g.strokePath();
+        this.tweens.add({targets:g,alpha:0,duration:170,onComplete:()=>g.destroy()}); lean(1,70); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); });
+    }else if(step===3){ // 🥊 BODY RUSH (รัวหมัดท้อง)
+      const n=5+(aw?2:0)+(evo?1:0)+(basic.mutation==='rush'?2:0)+(basic._pm?.count||0);
+      for(let i=0;i<n;i++)this.time.delayedCall(i*48,()=>{ if(!live())return; const f=pt(0.5+Math.random()*0.15,(Math.random()-0.5)*26); streak(f,0xffe2b8,5); hit(f.x,f.y,reach*0.45,0.32); if(i%2)this._sqX=1.12; });
+    }else if(step===4){ // ⬆️ UPPERCUT (ย่อตัว แล้วงัดขึ้น)
+      this._sqX=1.2; this._sqY=0.78;
+      this.time.delayedCall(160,()=>{ if(!live())return; const f=pt(0.55); this._sqX=0.8; this._sqY=1.3;
+        const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(12,0xfff0b0,0.95).lineBetween(f.x,f.y+30,f.x,f.y-70); this.tweens.add({targets:g,alpha:0,y:-20,duration:200,onComplete:()=>g.destroy()});
+        this.vfxHitRing(f.x,f.y,0xfff0b0,true);
+        if(hit(f.x,f.y,reach*0.7,1.6*fin,{stun:0.45,heavy:true})){ this.screenShake(90,0.004); if(this.hitStop)this.hitStop(35); } });
+    }else{ // 💥 BEAR SLAM (กระโดดแล้วทุบพื้น)
+      const s0=P.scaleX||1; this.tweens.add({targets:P,y:P.y-26,duration:150,yoyo:true,ease:'Quad.out'}); this._sqX=0.8; this._sqY=1.3;
+      this.time.delayedCall(300,()=>{ if(!live())return; const r=reach*1.5*(basic.mutation==='breaker'?1.2:1); this._sqX=1.4; this._sqY=0.65;
         if(this.textures.exists('vfx_bear_shockwave')){const w=this.camWorld(this.add.image(P.x,P.y,'vfx_bear_shockwave').setDepth(6).setScale(0.16).setAlpha(0.9));this.tweens.add({targets:w,scale:(r*2.2)/256,alpha:0,duration:320,onComplete:()=>w.destroy()});}
-        else fx(P.x,P.y,0xffa54d,true);
-        hit(P.x,P.y,r,1.35*fin*(basic.mutation==='breaker'?1.25:1),{kb:260,heavy:true}); this.screenShake(120,0.006); if(this.hitStop)this.hitStop(45);
+        else this.vfxHitRing(P.x,P.y,0xffa54d,true);
+        hit(P.x,P.y,r,1.4*fin*(basic.mutation==='breaker'?1.25:1),{kb:260,heavy:true}); this.screenShake(130,0.007); if(this.hitStop)this.hitStop(45);
         if(evo){P.hp=Math.min(P.maxhp,P.hp+P.maxhp*0.02);}
         if(basic.mutation==='breaker'||evo)this.time.delayedCall(200,()=>{ if(live())hit(P.x,P.y,r*1.15,0.6,{kb:200,heavy:true}); }); });
-      this.showComboMove('BEAR SLAM!');
     }
-    P.anims&&this.poseFlash&&this.poseFlash(CF.cast,120);
+    this._ccCdMul=RHYTHM[step]; this.poseFlash&&this.poseFlash(CF.cast,120);
   }
   cocoaFrenzy(unit,reach){ if(this.state!=='play')return; const P=this.player, cc=this._cc;
     Sfx.comboPunch(cc.n,'frenzy'); this.showComboMove('BEAR FRENZY!',true); this.screenFlash&&this.screenFlash(0xffc477,0.35,220);
@@ -8286,7 +8298,7 @@ class Game extends Phaser.Scene {
   tickCocoaCombo(dt){ const cc=this._cc; if(!cc||this.character!=='cocoa'){ if(this._ccTxt)this._ccTxt.setVisible(false); return; }
     cc.t+=dt; if(cc.t>1.6&&cc.n>0){ cc.n=0; }
     if(!this._ccTxt||!this._ccTxt.active)this._ccTxt=this.camWorld(this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffb347',stroke:'#3a1a08',strokeThickness:5}).setOrigin(.5).setDepth(95002));
-    const T=this._ccTxt, on=cc.n>=3&&this.state==='play'; T.setVisible(on); if(!on)return;
+    const T=this._ccTxt; T.setVisible(false); return;   // v5.60 เจ้าของ: เอาตัวนับ HITS ออก (ยังนับโบนัสอยู่เบื้องหลัง)
     const col=cc.n>=50?'#ff4d6d':cc.n>=25?'#ffd23f':'#ffb347'; T.setColor(col);
     if(T._n!==cc.n){ T._n=cc.n; T.setText(cc.n+' HITS'+(cc.n>=10?' +'+Math.min(40,cc.n)+'%':'')); T.setScale(1.35); }
     T.setScale(Math.max(1,T.scale-dt*3)); T.setPosition(this.player.x,this.player.y-118); T.setAlpha(cc.t>1.1?0.5:1); }
@@ -8370,20 +8382,20 @@ class Game extends Phaser.Scene {
   cancelBeat(){ Sfx.stopBeatLoop(); this._ubHold=null; if(!this._beat)return; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); }
   finishBeat(){ Sfx.stopBeatLoop(); const B=this._beat; this._beat=null; this.destroyBeatUI(); this.restoreBeatSpeed(); this.cocoaBeatBurst(B); }
   // 🐾 v5.59 Cocoa Dash Punch — พุ่งต่อยมอนใกล้สุด · การ์ด Bear Dash Chain +1 ต่อ rank (สูงสุด 4 ครั้ง)
-  cocoaDashPunch(){ const P=this.player; let t=this.nearestEnemy(280); if(!t)return false;
+  cocoaDashPunch(){ const P=this.player; let t=this.nearestEnemy(380); if(!t)return false;
     this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); this.dashReady=false; this.dashCdMax=1.1*(P.dashCdMul||1); this.dashCd=this.dashCdMax; this._coachDash=(this._coachDash||0)+1; this.flashBtn(this.dashBtn);
     const b=this.basicAttack, lvl=this.skills.meteor||1, n=1+((b&&b.lv&&b.lv.dashp)||0), unit=(12+lvl*3.5)*(P.dmgMul||1)*1.9, hit=new Set();
     P.iframe=Math.max(P.iframe||0,0.3+n*0.16);
-    const hop=(k)=>{ if(this.state!=='play'||k>=n)return; if(k>0){ t=null; let bd=1e18; this.enemies.children.iterate(e=>{ if(!e||!e.active||hit.has(e))return; const d=(e.x-P.x)**2+(e.y-P.y)**2; if(d<260*260&&d<bd){bd=d;t=e;} }); }
+    const hop=(k)=>{ if(this.state!=='play'||k>=n)return; if(k>0){ t=null; let bd=1e18; this.enemies.children.iterate(e=>{ if(!e||!e.active||hit.has(e))return; const d=(e.x-P.x)**2+(e.y-P.y)**2; if(d<340*340&&d<bd){bd=d;t=e;} }); }
       if(!t||!t.active)return; hit.add(t); const a=Math.atan2(t.y-P.y,t.x-P.x),dd=this.dist(P.x,P.y,t.x,t.y), stop=Math.max(0,dd-34);
       P.setFlipX(Math.cos(a)<0); if(this.moveDir)this.moveDir.set(Math.cos(a),Math.sin(a)); this._sqX=1.35; this._sqY=0.7; Sfx.dash();
-      this.tweens.add({targets:P,x:P.x+Math.cos(a)*stop,y:P.y+Math.sin(a)*stop,duration:110,ease:'Quad.out',onComplete:()=>{ if(this.state!=='play')return;
+      const trail=this.time.addEvent({delay:30,repeat:4,callback:()=>{ const gh=this.camWorld(this.add.image(P.x,P.y,P.texture.key,P.frame&&P.frame.name).setDepth(P.depth-1).setScale(P.scaleX,P.scaleY).setFlipX(P.flipX).setAlpha(0.45).setTint(0xffa54d)); this.tweens.add({targets:gh,alpha:0,duration:220,onComplete:()=>gh.destroy()}); }});
+      this.tweens.add({targets:P,x:P.x+Math.cos(a)*stop,y:P.y+Math.sin(a)*stop,duration:Math.min(200,90+stop*0.3),ease:'Quad.in',onComplete:()=>{ trail.remove(); if(this.state!=='play')return;
         const x=t.active?t.x:P.x+Math.cos(a)*40,y=t.active?t.y:P.y+Math.sin(a)*40;
         this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,x,y)>85)return; this.damage(e,unit*(e===t?1:0.6),e.x,e.y);
           if(e.active&&!e.isBoss&&!e.isMini){const ka=Math.atan2(e.y-y,e.x-x);e.setVelocity(Math.cos(ka)*260,Math.sin(ka)*260);e.knock=0.15;} });
-        this.hitCratesInRadius(x,y,85,unit); this.vfxHitRing(x,y,0xffa54d,true); this.screenShake(70,0.004); if(this.hitStop)this.hitStop(30);
+        this.hitCratesInRadius(x,y,85,unit); if(this.anims.exists('fx_flickerstrike'))this.spawnFxAnim('fx_flickerstrike',x,y,{scale:1.1,rotation:a,depth:9,alpha:0.95}); else this.vfxHitRing(x,y,0xffa54d,false); this._sqX=0.75; this._sqY=1.25; this.screenShake(60,0.003); if(this.hitStop)this.hitStop(30);
         const cc=this._cc||(this._cc={n:0,t:0,step:0}); cc.n++; cc.t=0; this.cocoaBeatCharge(0.25); Sfx.comboPunch(cc.n,'heavy');
-        if(n>1)this.showComboMove('🐾 DASH x'+(k+1),k===n-1);
         this.time.delayedCall(70,()=>hop(k+1)); } }); };
     hop(0); return true; }
   // 🎆 v5.59 ฉากปิดท้าย Beat Rush ให้อลังการ
@@ -10484,7 +10496,7 @@ class Game extends Phaser.Scene {
 
     // auto-cast skills tick
     for(const key in this.skills){ if(SKILLDEFS[key].orbit) continue;
-      this.skillCd[key]-=dt; if(this.skillCd[key]<=0){ this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key])*(this.player.cdMul||1); } }
+      this.skillCd[key]-=dt; if(this.skillCd[key]<=0){ this._ccCdMul=0; this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key])*(this.player.cdMul||1)*(key==='meteor'&&this._ccCdMul?this._ccCdMul:1); } }
     if(this.ringBalls.length){ this.ringRot=(this.ringRot||0)+dt*(this.ringSpin||2.6);
       this.ringBalls.forEach(b=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+(b.ang0||0),pulse=1+Math.sin(this.elapsed*7+(b._motionPhase||0))*0.11;
         b.setPosition(this.player.x+Math.cos(a)*(b.rr||54),this.player.y+Math.sin(a)*(b.rr||54)).setScale((b._baseScale||0.24)*pulse).setRotation(a+this.elapsed*1.8); });
