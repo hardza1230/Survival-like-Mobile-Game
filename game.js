@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.95.0';
+const GAME_VERSION = '5.96.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.96.0', date:'2026-09-27', title:'Mint attack size and frost cards', items:['Mint keeps her visual size while using Frost Lance or Mint Gale','Mint cards now describe ice spear count, lance damage, frost reach and shard damage clearly','Frost Lance Edge, Shard Bloom and Barrage upgrades provide stronger, visible damage choices'] },
   { v:'5.95.0', date:'2026-09-27', title:'Cocoa impact and aggressive Citrus Crew', items:['Cocoa stays the same apparent size while punching and has a new bear-claw impact effect','Yuzlings hunt and stick to enemies independently instead of orbiting Yuzu during combat','The crew spreads across available targets and returns only when it strays too far'] },
   { v:'5.94.0', date:'2026-09-27', title:'Mint Frost Lance and Gale animation', items:['Mint now plays an eight-frame lance attack when firing her signature weapon','Mint Gale has its own eight-frame wind cast animation','Existing idle, run, dash, hurt, cheer and knockout poses stay connected'] },
   { v:'5.93.0', date:'2026-09-27', title:'Companion and Cocoa combat animation', items:['Yuzlings and Cheese animate their attacks and healing casts','Cocoa plays a new eight-frame punch combo during her basic attack','Idle, run, hurt, dash, cheer and knockout poses remain available'] },
@@ -1895,13 +1896,13 @@ const BASIC_ATTACKS = {
       {id:'sticky',name:'Sticky Jam',emoji:'🫙',desc:'+35% blast radius and briefly pins enemies'}]},
   mint:{name:'Frost Lance',emoji:'🧊',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
     upgrades:[
-      {id:'power',name:'Sharp Lance Tip',emoji:'💥',iconKey:'ic_mint_power',max:5,desc:'+12% ice lance damage per rank'},
-      {id:'rate',name:'Fast Charge',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'+8% charge/release speed per rank'},
-      {id:'chill',name:'Long Shaft',emoji:'🏹',iconKey:'ic_mint_chill',max:3,desc:'Lance pierces farther + more shards per rank'},
-      {id:'linger',name:'Scattering Shards',emoji:'💠',iconKey:'ic_mint_linger',max:3,desc:'More ice shards + wider spread per rank'}],
+      {id:'power',name:'Frost Lance Edge',emoji:'🗡️',iconKey:'ic_mint_power',max:5,desc:'+15% ice spear and shard damage per rank'},
+      {id:'rate',name:'Swift Ice Draw',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'Fire ice spears 8% more often per rank'},
+      {id:'chill',name:'Frost Reach',emoji:'❄️',iconKey:'ic_mint_chill',max:3,desc:'+10% spear range per rank; up to 2 extra shards'},
+      {id:'linger',name:'Shard Bloom',emoji:'💠',iconKey:'ic_mint_linger',max:3,desc:'+12% shard damage per rank; up to 2 extra shards'}],
     mutations:[
-      {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',desc:'Lance/shards re-shatter frozen targets for bonus damage'},
-      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',desc:'Freeze after 3 Chill stacks (not 4), longer freeze and +40% lance damage'}]},
+      {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',desc:'+25% spear damage to frozen enemies; each hit bursts nearby foes'},
+      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',desc:'Freeze after 3 Chill stacks instead of 4; longer freeze and +15% spear damage'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
       {id:'power',name:'Dense Charge',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'+12% Basic Attack damage per rank'},
@@ -1943,9 +1944,9 @@ const BASIC_PATHS={
     {id:'glacier',name:'Glacier Warden',emoji:'🧊',base:{dmg:0.9,frozen:0.35},desc:'×0.9 damage, but +35% damage to frozen enemies · control build',
       upgrades:[{id:'p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},desc:'+12% damage to frozen enemies per rank'},
                 {id:'p_coldsnap',name:'Cold Snap',emoji:'❄️',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'}]},
-    {id:'barrage',name:'Lance Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},desc:'+1 lance (max 3), 22% faster, ×0.62 damage each · swarm build',
+    {id:'barrage',name:'Ice Spear Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},desc:'Throw 1 extra ice spear (up to 3 total); fire 22% faster · each spear deals 62% damage',
       upgrades:[{id:'p_quickdraw',name:'Quickdraw',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'},
-                {id:'p_splinter',name:'Splinter Volley',emoji:'💠',max:1,fx:{count:1},desc:'+1 lance up to 3; after Evolution, +20% shard damage'}]},
+                {id:'p_splinter',name:'Crystal Payload',emoji:'💠',max:1,fx:{dmg:1.12},desc:'+12% ice spear and shard damage; after Evolution, +20% shard damage'}]},
     {id:'pierce',name:'Glacial Pierce',emoji:'🏹',base:{dmg:1.6,cd:1.4,range:0.3},desc:'×1.6 damage and +30% range, but 40% slower · boss build',
       upgrades:[{id:'p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_coldblood',name:'Cold Blood',emoji:'💎',max:3,fx:{dmg:1.1},desc:'+10% lance damage per rank'}]}],
@@ -2056,6 +2057,7 @@ const CHAR_TALENTS = {
     { id:'twinSprinkle',emoji:'🍓', name:'Radiant Heart Seeds', max:1, per:'✦ Unique: Strawberry Rebound bursts seeds in 16 directions!', apply:(p,r)=>{ p.twinSprinkle=true; } },
   ],
   mint: [   // สายแทงค์ — อึดโหด ดูดเลือด ฟื้นตัว
+    { id:'dmg',      emoji:'🧊', name:'Frost Lance Mastery', max:5, per:'+8% damage', apply:(p,r)=>{p.dmgMul*=(1+0.08*r);} },
     { id:'hp',       emoji:'❤️', name:'Tough Body',    max:6, per:'+12% max HP',  apply:(p,r)=>{ p.maxhp*=(1+0.12*r); } },
     { id:'armor',    emoji:'🛡️', name:'Ice Armor', max:5, per:'-6% damage taken', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
     { id:'regen',    emoji:'💗', name:'Cool Recovery',  max:4, per:'+0.7 HP/s',  apply:(p,r)=>{ p.regen+=0.7*r; } },
@@ -8270,7 +8272,7 @@ class Game extends Phaser.Scene {
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const atk=[];
-    const COUNT_IDS={family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,carom:1,p_splinter:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
+    const COUNT_IDS={family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
     const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades.slice():[];
     if(b.infusion)pathUps.push(INFUSION_UP);
     for(const u of d.upgrades.concat(pathUps)){const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
@@ -8504,7 +8506,7 @@ class Game extends Phaser.Scene {
   }
   castSkill(key,lvl){
     const sw=this.signatureWeaponInfo(),weaponMul=sw.skill===key?(this.player.weaponDmgMul||1):1;
-    const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*0.12+(basic.ranks.overdrive||0)*0.05)*(basic._pm?basic._pm.dmg:1)*(basic.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===basic.infusion)||{direct:1}).direct:1):1;
+    const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*(basic.character==='mint'?0.15:0.12)+(basic.ranks.overdrive||0)*0.05)*(basic._pm?basic._pm.dmg:1)*(basic.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===basic.infusion)||{direct:1}).direct:1):1;
     const dm=this.player.dmgMul*(BALANCE.skillPower[key]||1)*weaponMul*basicDmg, cf={}, aw=lvl>=SKILL_AWAKEN_LV; this.pulseSkill(key);   // cf ปิดแล้ว (เลิกระบบคอมโบ) — เหลือแต่ Awaken
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
@@ -9008,7 +9010,7 @@ class Game extends Phaser.Scene {
     // จำนวน/สเปกสะเก็ด — chill=+จำนวน · linger=+จำนวน+กระจายกว้าง · evo แบ่งต่อแฉกให้ไม่ล้น
     const shardBase=3+Math.min(2,(basic?.ranks.chill||0))+Math.min(2,(basic?.ranks.linger||0))+(aw?2:0);   // v4.20: สะเก็ดน้อยลง (เดิม 6+..) ไม่ล้นจอ
     const shardPer=evo?Math.max(2,Math.round(shardBase*0.6)):shardBase;
-    const shardDmg=dmg*0.55*(evo&&basic?.path==='barrage'&&basic.lv.p_splinter?1.2:1), shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
+    const shardDmg=dmg*0.55*(1+0.12*(basic?.ranks.linger||0))*(evo&&basic?.path==='barrage'&&basic.lv.p_splinter?1.2:1), shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
     const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
@@ -9327,7 +9329,7 @@ class Game extends Phaser.Scene {
     }
     if(bullet.iceNeedle){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.10; const nd=bullet.iceNeedle;
       const frozenNow=enemy.frozen>0;
-      this.damage(enemy,bullet.dmg*(frozenNow?nd.frozenBonus:1),bullet.x,bullet.y);
+      this.damage(enemy,bullet.dmg*(frozenNow?nd.frozenBonus*(nd.shatter?1.25:1):1),bullet.x,bullet.y);
       if(enemy.active)this.mintChill(enemy,nd.freeze);
       if(nd.shatter){ const r=52+nd.lvl*5; this.burst(bullet.x,bullet.y,0x8fd0ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&e!==enemy&&this.dist(e.x,e.y,bullet.x,bullet.y)<r)this.damage(e,nd.dmg*0.5,e.x,e.y); }); }
       // Frost Lance: กระทบเป้า = แตกเป็นสะเก็ดทันที (แล้วหอกหัก)
@@ -10772,7 +10774,10 @@ class Game extends Phaser.Scene {
     p.rotation = waddle + this._lean;
     // ชดเชยชีตตัวละครที่ "idle art smaller than run art" (เช่น Mint Frostleaf) → กันตัวหด/บีบตอนหยุดเดิน
     const runKey='char_'+this.character+'_run';
-    const actMul=this.character==='cocoa'&&this.player.texture.key==='char_cocoa_attack'?1.14:((this.player.texture.key!==runKey && CHAR_ACTION_SCALE[this.character])||1);
+    const texture=this.player.texture.key;
+    const actMul=this.character==='cocoa'&&texture==='char_cocoa_attack'?1.14:
+      this.character==='mint'&&(texture==='char_mint_attack'||texture==='char_mint_gale')?1.14:
+      ((texture!==runKey&&CHAR_ACTION_SCALE[this.character])||1);
     const base=(this._pBase||1)*actMul;
     p.setScale(base*this._sqX*(1-breathe), base*this._sqY*(1+breathe));
     // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
