@@ -62,7 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.81.0 — ชื่อสาย Build Path ชัดเจน)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.82.0 — จูน Strawberry จากผลเล่นจริง)
+- **v5.82.0:** เพิ่ม `docs/STRAWBERRY_BUILD_FEEDBACK_2026_09_27.md` ติดตามงานและเกณฑ์ทดสอบ · Shotgun บีบ spread เมื่อชิดศัตรูตัวใหญ่ · Ricochet ยิงถี่ขึ้น 25% · Sniper ชาร์จ 0.34 วินาทีแล้วกระสุน ×3.2 ทะลุเป้า คูลดาวน์เพิ่ม 18% · Unique ของ Sniper ยิงระเบิดซ้ำที่เป้าหมายเลือดสูงสุด · ตรวจ static validators ผ่าน · **ถัดไป:** ทดสอบเล่นบนมือถือครบสามสายโดยเฉพาะจำนวน hit บอสและ FPS
 - **v5.81.0:** การ์ด Build Path แสดงชื่อสายและบทบาทเด่น ไม่แสดง Lv1 หรือดาวแบบการ์ดอัปเกรด · ใช้ emoji แต่ละสายแทนไอคอนอาวุธร่วมกัน · หัวข้อบอกว่าเลือกได้สายเดียวต่อรันและแตะซ้ำยืนยัน
 - **v5.80.0:** เวฟ 3–4 มีโอกาสเจอ Sugar Courier ให้ล่าก่อนหนี หรือ Supply Cache ให้ทุบโหลทอง 3 ใบภายในเวลา · ได้ Sugar ตามระดับความยากและ Currency · ไม่บังคับผ่านเวฟ และไม่ปรากฏในการเล่น Stage 1 ครั้งแรก
 - **v5.79.0 (เจ้าของเลือกแนวทาง A: ทางแยกกลางด่าน):** global `CROSSROADS` 5 แบบ (treasure: crate×7+vac+swarm · blood: −30% HP, dmg×1.25 cd×0.9 90 วิ · duel: elite HP×3 `e._duelElite` ฆ่าแล้ว → `duelEliteDown` offerRelic/currency · rest: ฮีล 40% · gamble: 50% currency 3 / 50% elite 2 ตัว) · `onWaveCleared(keep,fromMini)` ตอนมินิตาย → `openCrossroads(next)` สุ่ม 3 ประตูรอบผู้เล่น R≤170 · เดินเข้า (<52) = `chooseCrossroad` · 14 วิไม่เลือก = ข้าม · `resumeAfterCrossroads(ms)` เข้าช่วงพัก → เวฟถัดไป (`_xrNext`) · `tickCrossroads` ใน update · `clearCrossroads` ใน startStage/exitStage · ไม่เกิดใน tutorial/recipe/bossRush · verified headless ครบ 5 ประตู+timeout+screenshot, 0 error · **ยังไม่มีใครเล่นจริง**
