@@ -62,6 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.88.0 — Human Yuzu Art)
+- **v5.88.0:** เปลี่ยน Yuzu จากโมจิทรงกลมเป็นตัวละครร่างคน chibi ตาม Mint/Taro, แทน sprite sheet 8 เฟรมและการ์ดตัวละคร, ลูกสมุนกับ Cheese คงเดิม · ตรวจ PNG / build / validators ผ่าน
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.87.0 — Yuzu Citrus Crew)
 - **v5.87.0:** Yuzu เป็นนักอัญเชิญตัวละครหลักลำดับ 5 หลังผ่าน C2-5; Sesame เก็บเป็นตัวลับสำหรับเซฟที่มีอยู่ (`docs/YUZU_CITRUS_CREW.md`) · เพิ่มการ์ด 5, Build Path 3, Mutation 3, Evolution/Unique, ลูกส้มและ Cheese ผู้ช่วย Workshop พร้อม sprite sheet โปร่งใส 8 เฟรม · `npm run check`, build:www และ runtime harness ผ่าน · **ถัดไป:** เล่นทดสอบบนมือถือจริงและจูนจำนวน/ดาเมจลูกสมุน, ทำ art card เต็มตัวหากภาพตัวละครบนหน้าเลือกยังไม่ชัด
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.84.0 — Sugar Orders)

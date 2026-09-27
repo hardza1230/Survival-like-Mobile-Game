@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.87.0';
+const GAME_VERSION = '5.88.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.88.0', date:'2026-09-27', title:'Human Yuzu character art', items:['Yuzu now uses a human chibi fighter sprite matching the other heroes','Updated all eight animation poses and the character selection portrait','Yuzling and Cheese companion art remains as before'] },
   { v:'5.87.0', date:'2026-09-27', title:'Yuzu and the Citrus Crew', items:['Yuzu replaces Sesame as the fifth story fighter; previously owned Sesame stays available as a secret fighter','Yuzlings fight alongside Yuzu, recover after tiring, and gain three distinct Build Paths','Added animated Yuzu, Yuzling and Cheese sheets; Cheese helps in the Workshop path'] },
   { v:'5.86.0', date:'2026-09-27', title:'Taro and Sesame join the roster', items:['Clear C2-1 to unlock Taro and C2-5 to unlock Sesame','Existing saves that already cleared those stages unlock them automatically','Fighter cards now show their real play styles and unlock goals'] },
   { v:'5.85.0', date:'2026-09-27', title:'Challenge Tickets and Temple recipes', items:['Select curses instead of a plain difficulty row; challenge tickets cost Sugar and improve rewards','Temple cores use Sugar; Weave Thread promotes ranks and resets Perks or Kitchen','Kitchen gains two triggers, two effects and two signature dishes; Bazaar stock can refresh three times daily'] },
