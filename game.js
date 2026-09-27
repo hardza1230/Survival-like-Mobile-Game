@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.96.0';
+const GAME_VERSION = '5.97.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.97.0', date:'2026-09-28', title:'Distinct Mint paths and four new Relics', items:['Mint upgrades now separate lance cadence, Chill damage, range and shard count','Glacier chains Chill, Barrage spreads lances and empowers shards, Pierce passes through normal enemies','Four Relics reward opening hits, dashes, elite kills and sustained fighting; card highlights explain their effects'] },
   { v:'5.96.0', date:'2026-09-27', title:'Mint attack size and frost cards', items:['Mint keeps her visual size while using Frost Lance or Mint Gale','Mint cards now describe ice spear count, lance damage, frost reach and shard damage clearly','Frost Lance Edge, Shard Bloom and Barrage upgrades provide stronger, visible damage choices'] },
   { v:'5.95.0', date:'2026-09-27', title:'Cocoa impact and aggressive Citrus Crew', items:['Cocoa stays the same apparent size while punching and has a new bear-claw impact effect','Yuzlings hunt and stick to enemies independently instead of orbiting Yuzu during combat','The crew spreads across available targets and returns only when it strays too far'] },
   { v:'5.94.0', date:'2026-09-27', title:'Mint Frost Lance and Gale animation', items:['Mint now plays an eight-frame lance attack when firing her signature weapon','Mint Gale has its own eight-frame wind cast animation','Existing idle, run, dash, hurt, cheer and knockout poses stay connected'] },
@@ -1820,6 +1821,10 @@ const RELICS = {
   lastbreath:{ emoji:'🕯️', name:'Last Breath',    desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
   chill:     { emoji:'❄️', name:'Chill Touch',    desc:'Hits have a 10% chance to freeze normal enemies for 1s' },
   magnet:    { emoji:'🧲', name:'Sugar Magnet',   desc:'+60% pickup range and +20% EXP' },
+  firstbite: { emoji:'🎯', name:'First Bite',     headline:'+35% opening hit', desc:'Your first hit against each enemy deals 35% more damage.' },
+  dashcharge:{ emoji:'⚡', name:'Spark Step',     headline:'Dash empowers 3 hits', desc:'After dashing, your next 3 hits within 3s deal 25% more damage.' },
+  trophy:    { emoji:'🏆', name:'Hunter Trophy',  headline:'Elite kills grant a shield', desc:'Defeating an elite, miniboss or boss grants 1 shield (max 1).'},
+  harvest:   { emoji:'🍵', name:'Mochi Harvest',  headline:'Heal every 20 kills', desc:'Every 20 enemy kills restore 5% max HP.' },
 };
 // คู่ synergy — ถือครบทั้งคู่ = ผลพิเศษเพิ่ม (โชว์ในการ์ดเมื่อถืออีกครึ่งอยู่แล้ว)
 const RELIC_SYNERGIES = [
@@ -1852,7 +1857,7 @@ const SIGNATURE_WEAPONS = {
   jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
 };
 // v4.62: คำอธิบาย Evolution ต่อสกิล (ใช้ทั้งการ์ดเลเวลอัพและ Codex)
-const BASIC_EVO_DESC={yuzling:'Your selected crew evolves: Swarm hunts faster, Guardian slams wider, Workshop cooks stronger',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
+const BASIC_EVO_DESC={yuzling:'Your selected crew evolves: Swarm hunts faster, Guardian slams wider, Workshop cooks stronger',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires at least 3 lances in a spread; each shatters into ice shards on impact or at maximum range',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
 /* ---- BASIC ATTACK PROTOTYPE: ตัวละครเป็นแกน build แทนการสะสม auto-skill หลายชนิด ---- */
 const BASIC_ATTACKS = {
   yuzu:{name:'Citrus Crew',emoji:'🍋',skill:'yuzling',color:0xffd85e,evolution:'The Citrus Court',upgrades:[
@@ -1896,13 +1901,14 @@ const BASIC_ATTACKS = {
       {id:'sticky',name:'Sticky Jam',emoji:'🫙',desc:'+35% blast radius and briefly pins enemies'}]},
   mint:{name:'Frost Lance',emoji:'🧊',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
     upgrades:[
-      {id:'power',name:'Frost Lance Edge',emoji:'🗡️',iconKey:'ic_mint_power',max:5,desc:'+15% ice spear and shard damage per rank'},
-      {id:'rate',name:'Swift Ice Draw',emoji:'⏩',iconKey:'ic_mint_rate',max:5,desc:'Fire ice spears 8% more often per rank'},
-      {id:'chill',name:'Frost Reach',emoji:'❄️',iconKey:'ic_mint_chill',max:3,desc:'+10% spear range per rank; up to 2 extra shards'},
-      {id:'linger',name:'Shard Bloom',emoji:'💠',iconKey:'ic_mint_linger',max:3,desc:'+12% shard damage per rank; up to 2 extra shards'}],
+      {id:'power',name:'Frost Lance Edge',emoji:'🗡️',iconKey:'ic_mint_power',max:5,headline:'+12% Lance & Shard DMG',desc:'Frost Lance and its shatter deal 12% more damage per rank.'},
+      {id:'rate',name:'Swift Ice Draw',emoji:'⏩',iconKey:'ic_mint_rate',max:5,headline:'-7% Lance interval',desc:'Fire Frost Lance 7% sooner per rank.'},
+      {id:'rime',name:'Rime Mark',emoji:'🎯',iconKey:'ic_mint_chill',max:3,headline:'+10% DMG to Chilled',desc:'Your hits deal 10% more damage to Chilled enemies per rank, including bosses.'},
+      {id:'chill',name:'Frost Reach',emoji:'❄️',iconKey:'ic_mint_chill',max:3,headline:'+10% Lance range',desc:'Frost Lance reaches 10% farther per rank; shatter at impact or maximum range.'},
+      {id:'linger',name:'Shard Bloom',emoji:'💠',iconKey:'ic_mint_linger',max:3,headline:'+1 Shard',desc:'Each shatter releases 1 extra shard per rank.'}],
     mutations:[
-      {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',desc:'+25% spear damage to frozen enemies; each hit bursts nearby foes'},
-      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',desc:'Freeze after 3 Chill stacks instead of 4; longer freeze and +15% spear damage'}]},
+      {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',headline:'Impact bursts nearby foes',desc:'Lance hits burst around the target and deal 25% more to Frozen enemies.'},
+      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',headline:'Freeze at 3 Chill stacks',desc:'Normal enemies freeze at 3 stacks instead of 4; freezes last longer and lances deal 15% more. Bosses only slow.'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
       {id:'power',name:'Dense Charge',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'+12% Basic Attack damage per rank'},
@@ -1941,15 +1947,15 @@ const BASIC_PATHS={
   // สายของตัวอื่นใช้ระบบกลาง: base = ผลตอนเลือก · upgrades[].fx = ผลต่อ rank (dmg/cd คูณ · อื่น ๆ บวก)
   // คีย์: dmg cd count range big(vs elite/มินิ/บอส) frozen(vs ศัตรูแช่) far(>300px) low(HP เรา<50%) taken(ลดดาเมจที่รับ)
   mint:[
-    {id:'glacier',name:'Glacier Warden',emoji:'🧊',base:{dmg:0.9,frozen:0.35},desc:'×0.9 damage, but +35% damage to frozen enemies · control build',
-      upgrades:[{id:'p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},desc:'+12% damage to frozen enemies per rank'},
-                {id:'p_coldsnap',name:'Cold Snap',emoji:'❄️',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'}]},
-    {id:'barrage',name:'Ice Spear Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},desc:'Throw 1 extra ice spear (up to 3 total); fire 22% faster · each spear deals 62% damage',
-      upgrades:[{id:'p_quickdraw',name:'Quickdraw',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% lance cooldown per rank'},
-                {id:'p_splinter',name:'Crystal Payload',emoji:'💠',max:1,fx:{dmg:1.12},desc:'+12% ice spear and shard damage; after Evolution, +20% shard damage'}]},
-    {id:'pierce',name:'Glacial Pierce',emoji:'🏹',base:{dmg:1.6,cd:1.4,range:0.3},desc:'×1.6 damage and +30% range, but 40% slower · boss build',
-      upgrades:[{id:'p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
-                {id:'p_coldblood',name:'Cold Blood',emoji:'💎',max:3,fx:{dmg:1.1},desc:'+10% lance damage per rank'}]}],
+    {id:'glacier',name:'Glacier Warden',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze crowds · shatter safely',desc:'Lances deal 10% less damage; Frozen enemies take 35% more. Bosses can be Chilled, but cannot freeze.',
+      upgrades:[{id:'p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen',desc:'Frozen enemies take 12% more damage per rank.'},
+                {id:'p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing a normal enemy applies 1 Chill stack to nearby enemies; radius grows 20% per rank.'}]},
+    {id:'barrage',name:'Ice Spear Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (up to 3 total), 22% sooner. Each lance deals 62% damage.',
+      upgrades:[{id:'p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
+                {id:'p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'}]},
+    {id:'pierce',name:'Glacial Pierce',emoji:'🏹',base:{dmg:1.6,cd:1.4,range:0.3},headline:'Heavy lance · pierces 2 foes',desc:'Deal 60% more damage and reach 30% farther, but fire 40% slower. Pierce 2 normal enemies; shatter on bosses.',
+      upgrades:[{id:'p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% DMG to elites/bosses',desc:'Deal 15% more damage to elites, minibosses and bosses per rank.'},
+                {id:'p_coldblood',name:'Fracture Line',emoji:'💎',max:3,headline:'+1 pierced target',desc:'Pierce 1 extra normal enemy per rank before shattering; shatter immediately on bosses.'}]}],
   cocoa:[
     {id:'brawler',name:'Brawler',emoji:'🥊',base:{dmg:0.72,cd:0.7,wave:1},desc:'Combo 30% faster, ×0.72 damage · every finisher blasts a shockwave · rush build',
       upgrades:[{id:'p_shock',name:'Shock Knuckles',emoji:'💥',max:2,fx:{wave:1},desc:'+1 extra shockwave after each finisher per rank'},
@@ -1993,7 +1999,7 @@ const FLAVOR_INFUSIONS=[
   {id:'sour',name:'Sour Infusion',emoji:'🍋',color:0xe8e04a,direct:0.9,desc:'×0.9 hit damage · hits make enemies take +12% damage for 3s'},
   {id:'sweet',name:'Sweet Infusion',emoji:'🍯',color:0xffb347,direct:0.9,desc:'×0.9 hit damage · hits heal 0.5% max HP (every 0.3s)'},
   {id:'minty',name:'Minty Infusion',emoji:'🌿',color:0x7fe0c0,direct:0.9,desc:'×0.9 hit damage · 30% chance to chill non-boss enemies briefly'}];
-const INFUSION_UP={id:'inf_deep',name:'Deep Flavor',emoji:'✨',max:3,desc:'+35% infusion effect per rank'};
+const INFUSION_UP={id:'inf_deep',name:'Deep Flavor',emoji:'✨',max:3,headline:'+35% Infusion effect',desc:'Strengthen your chosen flavor effect by 35% per rank; direct-hit damage penalty stays the same.'};
 // 🏷️ Tag Sets (v4.97) — สาย/รสชาติ/Relic มีแท็ก · สะสมแท็กเดียวกัน 2/3 ชิ้น = โบนัสเซ็ต (เล็ก ๆ ไม่ใช่พลังหลัก)
 const TAG_SETS={
   precision:{emoji:'🎯',name:'Precision',b2:'+5% crit chance',b3:'+30% crit damage',
@@ -2007,12 +2013,12 @@ const TAG_SETS={
 const TAGS_OF={
   path:{zestSwarm:'swarm',citrusGuardian:'guard',juiceWorkshop:'tempo',sniper:'precision',shotgun:'swarm',ricochet:'swarm',glacier:'guard',barrage:'tempo',pierce:'precision',brawler:'tempo',titan:'precision',dashboxer:'tempo',storm:'swarm',smite:'precision',tempest:'tempo',prism:'swarm',lens:'precision',sentinel:'tempo'},
   infusion:{spicy:'swarm',sour:'precision',sweet:'guard',minty:'guard'},
-  relic:{splinter:'precision',leech:'guard',burst:'swarm',shell:'guard',jam:'swarm',crown:'precision',glass:'precision',momentum:'tempo',lastbreath:'guard',chill:'swarm',magnet:'tempo'}};
+  relic:{splinter:'precision',leech:'guard',burst:'swarm',shell:'guard',jam:'swarm',crown:'precision',glass:'precision',momentum:'tempo',lastbreath:'guard',chill:'swarm',magnet:'tempo',firstbite:'precision',dashcharge:'tempo',trophy:'guard',harvest:'guard'}};
 function tagLabel(t){ const d=TAG_SETS[t]; return d?'  ·  '+d.emoji+' '+d.name:''; }
 // รวมผลสาย (base + rank ของ upgrade สาย) → {dmg,cd,count,range,big,frozen,far,low,taken}
 const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:'One giant guardian · safety',juiceWorkshop:'Cheese helper · sour zones',
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
-  glacier:'Freeze control · safe play',barrage:'Rapid lances · clearing crowds',pierce:'Heavy lance · bosses',
+  glacier:'Freeze control · safe play',barrage:'Wide volleys · clearing crowds',pierce:'Piercing lance · elites and bosses',
   brawler:'Fast combos · shockwaves',titan:'Heavy punches · bosses',dashboxer:'Dash combos · hit and run',
   storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Rapid lightning · mobility',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
@@ -3797,7 +3803,8 @@ class Game extends Phaser.Scene {
     this.player.setTint(0xfff6bd);
     this.time.delayedCall(160,()=>this.player.clearTint());
     this._sqX=1.35; this._sqY=0.7;   // ยืดตอนพุ่ง (เจลลี่)
-    if(this._rel&&this._rel.jam)this.relicJamTrail(d);   // 🔮 Jam Trail
+    if(this._rel&&this._rel.jam)this.relicJamTrail(d);
+    if(this._rel&&this._rel.dashcharge){this._sparkHits=3;this._sparkUntil=(this.elapsed||0)+3;}   // 🔮 Spark Step
   }
 
   uniqueInfo(){ const c=CHARACTERS[this.character]||CHARACTERS.momo; return CHARACTER_UNIQUES[c.unique]||CHARACTER_UNIQUES.berryRebound; }
@@ -7711,6 +7718,7 @@ class Game extends Phaser.Scene {
     const clause=(last)=>{const parts=desc.split(/\s[·—]\s|\.(?=\s|$)|[;(]|\n/).map(x=>x.trim()).filter(Boolean);let c=(last?(parts[1]||parts[0]):parts[0])||'';if(c.length>34)c=c.slice(0,32).replace(/\s+\S*$/,'')+'…';return c;};
     const num=desc.match(/[+\-−×]\s?\d+(?:\.\d+)?%?(?:\s+[A-Za-z][A-Za-z/&]*){0,2}/);
     const G={t:'',c:'#8ff0b0',s:'#0c2a1a'};
+    if(o.headline)return {t:o.headline,c:o.evolution?'#ffd76a':o.mutation?'#d9a8ff':kind==='Build Path'?'#8fe3ff':kind==='Flavor Infusion'?'#ffc27a':kind==='Relic'?'#ffb3e0':'#8ff0b0',s:'#172333'};
     if(o.evolution)return {t:'✨ '+clause(),c:'#ffd76a',s:'#3a2a00'};
     if(o.mutation)return {t:'🧬 '+clause(),c:'#d9a8ff',s:'#2a1440'};
     if(kind==='Build Path')return {t:o.pathStyle||('🛤 '+clause()),c:'#8fe3ff',s:'#0b2633'};
@@ -8170,7 +8178,7 @@ class Game extends Phaser.Scene {
     const B=this._frBuddy; if(B){ B.t-=dt; B.ang+=dt*2.4; B.spr.setPosition(p.x+Math.cos(B.ang)*56,p.y+Math.sin(B.ang)*56-10); B.acc+=dt;
       if(B.acc>=0.45){ B.acc=0; const e=this.nearestEnemy(420); if(e){ const b=this.getBullet(B.spr.x,B.spr.y,0xffffff,0.18); if(b){ b.setTexture('proj_sprinkle').setTint(0xffb3cd); b.dmg=this.relicDmg(0.7)*B.pw; b.life=1.2; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(Math.atan2(e.y-B.spr.y,e.x-B.spr.x),560,b.body.velocity); } } }
       if(B.t<=0){ B.spr.destroy(); this._frBuddy=null; } } }
-  resetRelics(){ this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
+  resetRelics(){ this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ return RELIC_CAP-((this.relics&&this.relics.length)||0); }
   // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
@@ -8188,7 +8196,7 @@ class Game extends Phaser.Scene {
     const w=pool.map(k=>RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1),out=[];
     while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]));
-      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+tagLabel(TAGS_OF.relic[k])+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
+      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+tagLabel(TAGS_OF.relic[k]),headline:d.headline+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
     return out;
   }
   offerRelic(){ if(this._inTutorial)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
@@ -8213,6 +8221,8 @@ class Game extends Phaser.Scene {
       const heal=p.maxhp*0.01*((big&&this.relicSyn('leech','crown'))?3:1); p.hp=Math.min(p.maxhp,p.hp+heal); }
   }
   relicOnKill(e){ const R=this._rel;
+    if(R.trophy&&(e.isElite||e.isMini||e.isBoss)&&this._shield<1){this._shield=1;this.floatText(this.player.x,this.player.y-44,'🫧 Trophy Shield',0x9fe8ff);}
+    if(R.harvest&&++this._harvestKills>=20){this._harvestKills=0;const heal=this.player.maxhp*0.05;this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,Math.round(heal));}
     if(R.shell){ this._relicKills=(this._relicKills||0)+1; if(this._relicKills>=15){ this._relicKills=0; const cap=this.relicSyn('shell','lastbreath')?2:1;
       if((this._shield||0)<cap){ this._shield=(this._shield||0)+1; this.floatText(this.player.x,this.player.y-44,'🫧 Shield',0x9fe8ff); } } }
     if(R.burst){ const chain=this.relicSyn('splinter','burst')&&e._splinterHit!=null&&this.elapsed-e._splinterHit<0.3;
@@ -8243,12 +8253,12 @@ class Game extends Phaser.Scene {
   rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
-    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,iconKey:u.iconKey||fallbackIcon,...extra});
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra});
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
-      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc+tagLabel(TAGS_OF.path[pt.id]),kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
+      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc+tagLabel(TAGS_OF.path[pt.id]),headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
     }
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
     if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
@@ -8469,7 +8479,7 @@ class Game extends Phaser.Scene {
     if(b&&this.character==='cocoa'&&key==='meteor')base=0.64;
     if(b&&this.character==='mint'&&key==='frost')base=Math.max(1.25,1.95-lvl*0.08);   // มินต์ = basic attack ยิงถี่ (แทนคูลดาวน์ frost ปกติที่ช้า)
     if(b&&this.character==='sesame'&&key==='mirror')base=Math.max(0.85,1.45-lvl*0.06);   // งาดำ = Mirror Beam ยิงเป็นจังหวะ (แทน pulse field เดิม)
-    const basicRate=b?Math.pow(0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
+    const basicRate=b?Math.pow(b.character==='mint'?0.93:0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
     if(b&&key==='sprinkle'&&b.path==='ricochet')base*=0.8;
     if(b&&key==='sprinkle'&&b.path==='sniper')base*=1.18;
     return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate*(b&&b._pm?b._pm.cd:1);
@@ -8506,7 +8516,7 @@ class Game extends Phaser.Scene {
   }
   castSkill(key,lvl){
     const sw=this.signatureWeaponInfo(),weaponMul=sw.skill===key?(this.player.weaponDmgMul||1):1;
-    const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*(basic.character==='mint'?0.15:0.12)+(basic.ranks.overdrive||0)*0.05)*(basic._pm?basic._pm.dmg:1)*(basic.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===basic.infusion)||{direct:1}).direct:1):1;
+    const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*0.12+(basic.ranks.overdrive||0)*0.05)*(basic._pm?basic._pm.dmg:1)*(basic.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===basic.infusion)||{direct:1}).direct:1):1;
     const dm=this.player.dmgMul*(BALANCE.skillPower[key]||1)*weaponMul*basicDmg, cf={}, aw=lvl>=SKILL_AWAKEN_LV; this.pulseSkill(key);   // cf ปิดแล้ว (เลิกระบบคอมโบ) — เหลือแต่ Awaken
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
@@ -9006,22 +9016,22 @@ class Game extends Phaser.Scene {
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
     const lances=Math.min(basic?.path==='barrage'?3:4,(evo?3:(lvl>=4?2:1))+(basic?._pm?.count||0)),   // v5.24 เพดาน 4 หอก
-      spread=0.16, centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
-    // จำนวน/สเปกสะเก็ด — chill=+จำนวน · linger=+จำนวน+กระจายกว้าง · evo แบ่งต่อแฉกให้ไม่ล้น
-    const shardBase=3+Math.min(2,(basic?.ranks.chill||0))+Math.min(2,(basic?.ranks.linger||0))+(aw?2:0);   // v4.20: สะเก็ดน้อยลง (เดิม 6+..) ไม่ล้นจอ
+      spread=0.16*(1+(basic?.path==='barrage'?0.2*(basic?.lv.p_quickdraw||0):0)), centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
+    // จำนวนสะเก็ดจาก Shard Bloom; Evolution แบ่งต่อแฉกเพื่อไม่ให้ล้นจอ
+    const shardBase=3+Math.min(3,(basic?.lv.linger||0))+(aw?2:0);   // v4.20: สะเก็ดน้อยลง (เดิม 6+..) ไม่ล้นจอ
     const shardPer=evo?Math.max(2,Math.round(shardBase*0.6)):shardBase;
-    const shardDmg=dmg*0.55*(1+0.12*(basic?.ranks.linger||0))*(evo&&basic?.path==='barrage'&&basic.lv.p_splinter?1.2:1), shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
+    const shardDmg=dmg*0.55*(1+0.12*(basic?.ranks.p_splinter||0)), shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
     const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
     const lanceKey=this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer';
     for(let L=0;L<lances;L++){ const a=ang+(L-centerL)*spread;
-      const st={done:false};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
-      // หอกวิ่ง — แตกทันทีที่กระทบเป้าตัวแรก (burst monster)
+      const st={done:false,hits:0,targets:new Set()};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
+      // หอกวิ่ง — สายเจาะทะลุศัตรูปกติได้ก่อนแตก; บอสแตกทันที
       const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
         b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.4+lvl*0.028); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.2; b.hitGapV=0.1; b.homing=0;   // ยิงตรง ไม่ตามเป้า + หอกเล็กลง
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
-        b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a};
+        b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a,pierces:basic?.path==='pierce'?2+(basic.lv.p_coldblood||0):1};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
       // ถ้าพลาดทุกตัว → แตกที่สุดระยะ (fallback)
       const ex=this.player.x+Math.cos(a)*range, ey=this.player.y+Math.sin(a)*range;
@@ -9031,13 +9041,13 @@ class Game extends Phaser.Scene {
   }
   // แตกสะเก็ดน้ำแข็งที่ปลายหอก: โนวาวาบ + ยิงสะเก็ดกระจาย(เจาะ+แช่)
   // v5.10 Mint: โจมตีปกติไม่แช่ทันทีแล้ว → สะสม ❄ Chill (ช้าลง 30%) · ครบ 4 ชั้น (Permafrost 3) ภายใน 2.5 วิ = แช่แข็ง + ชั้นหาย · บอส/มินิแค่ช้าลงไม่แช่
-  mintChill(e,freeze){
+  mintChill(e,freeze,echo=false){
     if(!e||!e.active)return;const now=this.time.now;
     if(!(e._chillAt>0)||now-e._chillAt>2500)e._chill=0;
     e._chillAt=now;e._chill=(e._chill||0)+1;
     const need=freeze>=0.9?3:4;
     if(e.isBoss||e.isMini){e._chill=Math.min(e._chill,need);return;}
-    if(e._chill>=need){e._chill=0;e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
+    if(e._chill>=need){e._chill=0; if(!echo&&this.basicAttack?.character==='mint'&&this.basicAttack.path==='glacier'&&this.basicAttack.lv.p_coldsnap){const r=90*(1+0.2*this.basicAttack.lv.p_coldsnap);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&!o.isBoss&&!o.isMini&&this.dist(o.x,o.y,e.x,e.y)<=r)this.mintChill(o,0.6,true);});this.vfxHitRing(e.x,e.y,0x9fe8ff,false);} e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
       this.burst(e.x,e.y,0xbdf0ff);if(this.floatText)this.floatText(e.x,e.y-26,'❄ FROZEN',0xbdf0ff);}
     else e.setVelocity(e.body.velocity.x*0.7,e.body.velocity.y*0.7);
   }
@@ -9327,14 +9337,14 @@ class Game extends Phaser.Scene {
         }); }
       return;
     }
-    if(bullet.iceNeedle){ if(bullet.hitCd>0)return; bullet.hitCd=bullet.hitGapV||0.10; const nd=bullet.iceNeedle;
+    if(bullet.iceNeedle){ if(bullet.shatterState?.targets.has(enemy))return; if(!bullet.shatterInfo&&bullet.hitCd>0)return; bullet.hitCd=bullet.shatterInfo?0:(bullet.hitGapV||0.10); const nd=bullet.iceNeedle;
       const frozenNow=enemy.frozen>0;
       this.damage(enemy,bullet.dmg*(frozenNow?nd.frozenBonus*(nd.shatter?1.25:1):1),bullet.x,bullet.y);
       if(enemy.active)this.mintChill(enemy,nd.freeze);
       if(nd.shatter){ const r=52+nd.lvl*5; this.burst(bullet.x,bullet.y,0x8fd0ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&e!==enemy&&this.dist(e.x,e.y,bullet.x,bullet.y)<r)this.damage(e,nd.dmg*0.5,e.x,e.y); }); }
-      // Frost Lance: กระทบเป้า = แตกเป็นสะเก็ดทันที (แล้วหอกหัก)
-      if(bullet.shatterInfo&&bullet.shatterState&&!bullet.shatterState.done){ const si=bullet.shatterInfo; bullet.shatterState.done=true;
-        this.frostShatterBurst(bullet.x,bullet.y,si.ang,si.count,si.dmg,si.freeze,si.fb,si.blizzard,si.lvl); this.killBullet(bullet); return; }
+      // Frost Lance: แตกเมื่อครบจำนวนเป้าที่เจาะได้ หรือทันทีเมื่อโดนบอส
+      if(bullet.shatterInfo&&bullet.shatterState&&!bullet.shatterState.done){ const si=bullet.shatterInfo,st=bullet.shatterState; st.targets.add(enemy); st.hits++;
+        if(st.hits>=si.pierces||enemy.isBoss||enemy.isMini){st.done=true;this.frostShatterBurst(bullet.x,bullet.y,si.ang,si.count,si.dmg,si.freeze,si.fb,si.blizzard,si.lvl);this.killBullet(bullet);} return; }
       bullet.pierceLeft=(bullet.pierceLeft||1)-1; if(bullet.pierceLeft<=0)this.killBullet(bullet); return; }
     const _bd=this.pathBulletDmg(bullet,enemy);
     if(bullet.pierce){
@@ -9391,11 +9401,12 @@ class Game extends Phaser.Scene {
       if(pm.frozen&&e.frozen>0)amount*=1+pm.frozen;
       if(pm.far&&this.dist(e.x,e.y,this.player.x,this.player.y)>300)amount*=1+pm.far;
       if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
+    if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);
     { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); }
     amount+=(this.player.flatDmg||0);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
-    const RL=this._rel; if(RL){ if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
+    const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;   // 🪞 Oath Focus
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();
     if(crit&&CP&&CP.id==='momo'&&(this.elapsed||0)>=(CP.cd||0)){ CP.cd=(this.elapsed||0)+0.35; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(1,p.maxhp*0.006*CP.s)); }   // 🍓 Lucky Seeds
@@ -9418,7 +9429,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
