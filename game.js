@@ -946,6 +946,44 @@ const ASSET_IMAGES = {
   relic_momentum:'assets/art/icons/relic_momentum.webp',
   relic_shell:'assets/art/icons/relic_shell.webp',
   relic_splinter:'assets/art/icons/relic_splinter.webp',
+  // Stage cards and portrait menu art (source PNGs remain in incoming).
+  chapter3_cover:'assets/incoming/menu_stage_cards/chapter3_cover.png',
+  chapter_endgame_cover:'assets/incoming/menu_stage_cards/chapter_endgame_cover.png',
+  stage_card_s01:'assets/incoming/menu_stage_cards/stage_card_s01.png',
+  stage_card_s02:'assets/incoming/menu_stage_cards/stage_card_s02.png',
+  stage_card_s03:'assets/incoming/menu_stage_cards/stage_card_s03.png',
+  stage_card_s04:'assets/incoming/menu_stage_cards/stage_card_s04.png',
+  stage_card_s05:'assets/incoming/menu_stage_cards/stage_card_s05.png',
+  stage_card_s06:'assets/incoming/menu_stage_cards/stage_card_s06.png',
+  stage_card_s07:'assets/incoming/menu_stage_cards/stage_card_s07.png',
+  stage_card_s08:'assets/incoming/menu_stage_cards/stage_card_s08.png',
+  stage_card_s09:'assets/incoming/menu_stage_cards/stage_card_s09.png',
+  stage_card_s10:'assets/incoming/menu_stage_cards/stage_card_s10.png',
+  stage_card_s11:'assets/incoming/menu_stage_cards/stage_card_s11.png',
+  stage_card_s12:'assets/incoming/menu_stage_cards/stage_card_s12.png',
+  stage_card_s13:'assets/incoming/menu_stage_cards/stage_card_s13.png',
+  stage_card_s14:'assets/incoming/menu_stage_cards/stage_card_s14.png',
+  stage_card_s15:'assets/incoming/menu_stage_cards/stage_card_s15.png',
+  screen_achievements:'assets/incoming/menu_screens/screen_achievements.png',
+  screen_atlas:'assets/incoming/menu_screens/screen_atlas.png',
+  screen_bazaar:'assets/incoming/menu_screens/screen_bazaar.png',
+  screen_bestiary:'assets/incoming/menu_screens/screen_bestiary.png',
+  screen_bossrush:'assets/incoming/menu_screens/screen_bossrush.png',
+  screen_chapter:'assets/incoming/menu_screens/screen_chapter.png',
+  screen_codex:'assets/incoming/menu_screens/screen_codex.png',
+  screen_daily:'assets/incoming/menu_screens/screen_daily.png',
+  screen_group_activity:'assets/incoming/menu_screens/screen_group_activity.png',
+  screen_group_codex:'assets/incoming/menu_screens/screen_group_codex.png',
+  screen_group_gear:'assets/incoming/menu_screens/screen_group_gear.png',
+  screen_group_more:'assets/incoming/menu_screens/screen_group_more.png',
+  screen_news:'assets/incoming/menu_screens/screen_news.png',
+  screen_recipes:'assets/incoming/menu_screens/screen_recipes.png',
+  screen_settings:'assets/incoming/menu_screens/screen_settings.png',
+  screen_stage:'assets/incoming/menu_screens/screen_stage.png',
+  screen_stats:'assets/incoming/menu_screens/screen_stats.png',
+  screen_talents:'assets/incoming/menu_screens/screen_talents.png',
+  screen_weave_perks:'assets/incoming/menu_screens/screen_weave_perks.png',
+  screen_zonemods:'assets/incoming/menu_screens/screen_zonemods.png',
   hub_btn_activity:'assets/art/menu_buttons/hub_btn_activity.webp',
   hub_btn_codex:'assets/art/menu_buttons/hub_btn_codex.webp',
   hub_btn_gear:'assets/art/menu_buttons/hub_btn_gear.webp',
@@ -4219,7 +4257,7 @@ class Game extends Phaser.Scene {
     const currentPower=Save.power(Save.data.character),recommended=st.recommendedPower||100,ps=this.powerStatus(index);
     const colors=[0xb9e85d,0x6ed7df,0xff9a62,0x9bdfff,0xff78a9],color=colors[index%colors.length],r=17;
     const shadow=this.add.graphics();shadow.fillStyle(0x000000,0.55);shadow.fillRoundedRect(x+3,y+6,w,h,r);shadow.fillStyle(color,0.18);shadow.fillRoundedRect(x-2,y-2,w+4,h+4,r+2);cont.add(shadow);
-    const artKey='bg'+(index+1),art=this.textures.exists(artKey)?this._coverImage(x+2,y+2,w-4,h-4,artKey):null;if(art)cont.add(art);
+    const cardKey='stage_card_s'+String(index+1).padStart(2,'0'),artKey=this.textures.exists(cardKey)?cardKey:'bg'+(index+1),art=this.textures.exists(artKey)?this._coverImage(x+2,y+2,w-4,h-4,artKey):null;if(art)cont.add(art);
     const shade=this.add.graphics();
     shade.fillGradientStyle(0x090711,0x090711,0x090711,0x090711,0.18,0.72,0.92,0.92);shade.fillRoundedRect(x+2,y+2,w-4,h-4,r-2);
     if(!open){shade.fillStyle(0x100d18,0.64);shade.fillRoundedRect(x+2,y+2,w-4,h-4,r-2);}
@@ -4277,7 +4315,7 @@ class Game extends Phaser.Scene {
   _screenBg(title,artKey,backScreen){ const w=this.W,h=this.H;
     const compact=w>h;
     const bg=artKey&&this.textures.exists(artKey)?this._coverImage(0,0,w,h,artKey):this.add.rectangle(0,0,w,h,0x1a1420,0.97).setOrigin(0,0);
-    const veil=artKey?this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0):null;
+    const veil=artKey&&this.textures.exists(artKey)?this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0):null;
     const headY=compact?27:52;
     const t=this.add.text(w/2,headY,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'20px':'22px',color:'#ff8fb5'}).setOrigin(0.5);
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'14px':'16px',color:'#ffe08a'}).setOrigin(1,0.5);
@@ -4299,7 +4337,7 @@ class Game extends Phaser.Scene {
     if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats')this.buildStats(); else if(s==='talents')this.buildTalents(); else if(s==='char')this.buildChars(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
-    this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; this._screenBg(grp.title);
+    this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
     const w=this.W,h=this.H,portrait=w<=h,rows=grp.rows;
     const bw=Math.min(w-28,440),x=(w-bw)/2,y0=portrait?116:92,gap=10,rh=Math.min(portrait?80:64,(h-y0-56-gap*(rows.length-1))/rows.length);
     // v4.25: หมวด Gear&Power — เปิด stats/upgrade (3 แก่น) ได้ตั้งแต่เริ่ม · gear/craft/bazaar/inbox ล็อกจนผ่านด่าน 1
@@ -4351,7 +4389,7 @@ class Game extends Phaser.Scene {
   // หน้าUpdates/ดาวน์โหลด — โชว์เวอร์ชันปัจจุบัน + บันทึกUpdates + ลิงก์ดาวน์โหลดแอป
   buildNews(){
     if(Save.data.seenVersion!==GAME_VERSION){ Save.data.seenVersion=GAME_VERSION; Save.save(); }   // เปิดดูข่าว = Cleared badge Updates
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Updates');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Updates','screen_news');
     const w=this.W,h=this.H;
     const hs=this._hdrShift();
     const cur=this.add.text(w/2,53+hs,'Current version v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
@@ -4416,7 +4454,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildBestiary(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 Bestiary');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 Bestiary','screen_bestiary');
     const w=this.W,h=this.H;
     // สรุปโบนัสรวม (สแตตถาวร + Sugar)
     const totLv=BESTIARY.reduce((a,m)=>a+bestiaryLv(m.id),0);
@@ -4480,7 +4518,7 @@ class Game extends Phaser.Scene {
     return p;
   }
   buildStats(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📊 Character Stats');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📊 Character Stats','screen_stats');
     const w=this.W,p=this.previewStats(),ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,pow=Save.power(Save.data.character);
     let y=58+this._hdrShift();
     const hd=this.add.text(w/2,y,ch.emoji+' '+ch.name+'  ·  ⚡ Power '+pow,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5); y+=16;
@@ -4507,7 +4545,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildSkillArchive(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Skill Codex');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Skill Codex','screen_codex');
     const w=this.W,h=this.H,portrait=w<=h;let tab=this._skillArchiveTab||'weapons';if(tab==='attack'||tab==='passive')tab='weapons';   // v4.62: สกิล/passive เดิมเลิกใช้แล้ว (character-first)
     const tabY=portrait?82:50,tabH=32,tabGap=7,tabW=Math.min(132,(w-36-tabGap*2)/3),tabX=w/2-(tabW*3+tabGap*2)/2;
     const drawTab=(x,label,on,fn,color)=>{const g=this.add.graphics();g.fillStyle(on?this._darken(color,.55):0x292032,0.96);g.fillRoundedRect(x,tabY,tabW,tabH,10);g.lineStyle(1.8,on?color:0x51445f,1);g.strokeRoundedRect(x,tabY,tabW,tabH,10);const t=this.add.text(x+tabW/2,tabY+tabH/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:tabW<110?'9px':'10px',color:on?'#ffffff':'#998da7'}).setOrigin(0.5);this.menu.add([g,t]);this._zone(x,tabY,tabW,tabH,fn);};
@@ -4610,7 +4648,7 @@ class Game extends Phaser.Scene {
     if(d.challengeDay!==spec.key){d.challengeDay=spec.key;d.challengeDone=false;Save.save();}return{data:d,spec};
   }
   buildDaily(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📅 Daily Missions');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📅 Daily Missions','screen_daily');
     const w=this.W,h=this.H,o=this.ensureDaily(),d=o.data,spec=o.spec,claimed=d.claimDay===spec.key,st=STAGES[spec.stage],unlocked=spec.stage<=(Save.data.unlockedStage||0);
     const panel=(y,height,color)=>{const g=this.add.graphics();g.fillStyle(0x241d2d,0.98);g.fillRoundedRect(16,y,w-32,height,16);g.lineStyle(2,color,0.9);g.strokeRoundedRect(16,y,w-32,height,16);this.menu.add(g);return g;};
     const y1=88,h1=Math.min(180,h*0.30);panel(y1,h1,0xffd166);
@@ -4638,7 +4676,7 @@ class Game extends Phaser.Scene {
   // 👑 BOSS RUSH — สู้บอสทุกตัวที่เคยล้มติดกัน · เลือกความยาก (กฎเหล็ก: ยิ่งยากรางวัลยิ่งดี) · จับเวลา + สถิติดีสุด
   bossRushList(){ const m=Save.data.stageMastery||[],out=[]; for(let i=0;i<STAGES.length;i++)if(m[i]&&isStageReady(i))out.push(i); return out; }
   buildBossRush(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('👑 Boss Rush');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('👑 Boss Rush','screen_bossrush');
     const w=this.W,h=this.H,portrait=w<=h,list=this.bossRushList(),best=Save.data.bossRushBest||{},top=portrait?100:70,cw=Math.min(w-28,460),cx=(w-cw)/2;
     const diff=this._rushDiff||1; this._rushDiff=diff;
     const T=(y,t,sz,c,st)=>{const o=this.add.text(w/2,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-20}}).setOrigin(0.5,0);this.menu.add(o);return o;};
@@ -4680,7 +4718,7 @@ class Game extends Phaser.Scene {
     Save.data.riftKeys=keys-PINNACLE_KEY_COST; Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); }
   claimFreeRecipe(){ const bag=this.recipeBag(); if(bag.length>=RECIPE_BAG_MAX){this.menuToast('Recipe bag is full ('+RECIPE_BAG_MAX+')','#ff9bb5');return;} const r=makeRecipe(1); bag.unshift(r); Save.save(); this._recipeSel=r.uid; this.menuToast('📜 Free Tier 1 recipe: '+STAGES[r.theme].name,'#9dff9d'); }
   buildRecipes(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Recipe Maps');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Recipe Maps','screen_recipes');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,top=(w<=h?100:70);
     const T=(x,y,t,sz,c,st,o)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(o==null?0.5:o,0);this.menu.add(q);return q;};
     if(!Save.endgameUnlocked()){ T(w/2,top+40,'🔒 Finish the story to unlock Recipe Maps',15,'#ff9bb5','bold'); this.menu.setVisible(true); return; }
@@ -4723,7 +4761,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildAtlas(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🗺 Recipe Atlas');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🗺 Recipe Atlas','screen_atlas');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,at=atlasData();let top=(w<=h?100:70);const th=recipeThemes(),best=Save.data.recipeBest||{};
     const T=(x,y,t,sz,c,st)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(q);return q;};
     const tab=this._atlasTab||'board',tw2=(cw-10)/2;
@@ -4827,7 +4865,7 @@ class Game extends Phaser.Scene {
     this._overBtns.push({x:w/2-bw/2,y:by-24,w:bw,h:48,fn:()=>{window.__pendingMenu='bossrush';this.scene.restart();}});
     this.over.add(box); this.over.setVisible(true); }
   buildEndgame(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Beyond Hunger');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Beyond Hunger','screen_recipes');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
     const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 Finish the story to unlock the endgame',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
     const card=(y,color,title,desc,label,fn)=>{const cw=Math.min(w-32,520),x=(w-cw)/2,ch=Math.min(132,h*0.22),g=this.add.graphics();g.fillStyle(0x251a32,0.97);g.fillRoundedRect(x,y,cw,ch,17);g.lineStyle(2,color,0.9);g.strokeRoundedRect(x,y,cw,ch,17);const t=this.add.text(x+18,y+17,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff'}),d=this.add.text(x+18,y+47,desc,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',wordWrap:{width:cw-36},lineSpacing:4}),b=this.add.text(x+cw-18,y+ch-18,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0.5);this.menu.add([g,t,d,b]);if(fn)this._zone(x,y,cw,ch,fn);};
     const y1=100,y2=y1+Math.min(145,h*0.24);card(y1,0xd58cff,'🌙 Midnight Kitchen · Endless','5 waves then a boss, enemies grow stronger each cycle · every 3 cycles The Echo of Hunger appears\nBest '+best+' cycles',unlocked?'Tap to start':'Not unlocked',unlocked?()=>{this._endlessRequested=true;this.stageDiff=Math.max(2,Math.min(3,(Save.data.diffBest?.[4]||2)));this.startRun(4);}:null);
@@ -4888,7 +4926,7 @@ class Game extends Phaser.Scene {
     Save.data.tutorialDone=true;Save.save();this.over.setVisible(false);this._tutPages=null;this._tutSkip=null;const done=this._tutorialDone;this._tutorialDone=null;if(done)done();
   }
   buildAchievements(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement','screen_achievements');
     const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=8,side=14,top=portrait?86:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows);
     let done=0;ACHIEVEMENTS.forEach(a=>{if(a.test(Save.data))done++;});
     const sum=this.add.text(w/2,portrait?69:45,'Completed '+done+' / '+ACHIEVEMENTS.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a'}).setOrigin(0.5);this.menu.add(sum);
@@ -4900,7 +4938,7 @@ class Game extends Phaser.Scene {
     });this.menu.setVisible(true);
   }
   buildSettings(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('⚙️ Settings');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('⚙️ Settings','screen_settings');
     const w=this.W,h=this.H,st=Save.data.settings||Object.assign({},DEFAULT_SETTINGS),portrait=w<=h;
     const rows=[
       {k:'sound',e:'🔊',n:'Sound & Music',sub:'Turn all audio on or off',value:()=>st.sound?'On':'Off',toggle:()=>{st.sound=!st.sound;Sfx.muted=!st.sound;if(Sfx.master)Sfx.master.gain.value=Sfx.muted?0:0.24;if(this.sound)this.sound.mute=Sfx.muted;}},
@@ -5080,7 +5118,7 @@ class Game extends Phaser.Scene {
     sp.setScale(scale);this.menu.add(sp);return sp;
   }
   buildChars(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Fighters of the Mochi Core');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Fighters of the Mochi Core','screen_chapter');
     const charsUnlocked=(Save.data.unlockedStage||0)>=1;   // v4.23: ปลดล็อกซื้อตัวละครอื่นหลังผ่านด่าน 1 ของ Chapter 1
     const w=this.W,h=this.H,landscape=w>h,cols=landscape?6:2,gap=landscape?7:10,y0=landscape?76:Math.max(92,h*0.105);
     const rows=Math.ceil(CHAR_ORDER.length/cols),side=landscape?10:14,cardW=(w-side*2-gap*(cols-1))/cols;
@@ -5101,11 +5139,11 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildChapterSelect(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Choose Chapter');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Choose Chapter','screen_chapter');
     const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=9,side=14,top=portrait?88:62;
     const cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil((CHAPTERS.length+1)/cols),ch=Math.min(portrait?94:82,(h-top-16-gap*(rows-1))/rows);
     CHAPTERS.forEach((c,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),progressOpen=i===0||!!(Save.data.stageMastery||{})[((c.stages||[0])[0])-1],open=!!c.ready&&progressOpen;
-      const coverKey=i===0?'chapter1_cover':i===1?'chapter2_cover':null,art=coverKey&&this.textures.exists(coverKey)?this._coverImage(x+2,y+2,cw-4,ch-4,coverKey):null;if(art)this.menu.add(art);
+      const coverKey=['chapter1_cover','chapter2_cover','chapter3_cover'][i],art=coverKey&&this.textures.exists(coverKey)?this._coverImage(x+2,y+2,cw-4,ch-4,coverKey):null;if(art)this.menu.add(art);
       const g=this.add.graphics();g.fillStyle(open?0x17101f:0x1d1924,art?0.48:0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xffc85a:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
       if(open){g.fillStyle(0xffc85a,0.12);g.fillRoundedRect(x+3,y+3,cw-6,ch-6,12);}
       const icon=this.add.text(x+30,y+ch/2,open?c.emoji:'🔒',{fontSize:open?'30px':'25px'}).setOrigin(0.5),name=this.add.text(x+57,y+18,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:open?'#fff4df':'#98909f'}).setOrigin(0,0);
@@ -5115,7 +5153,8 @@ class Game extends Phaser.Scene {
     });
     // การ์ด Endgame ต่อท้าย Chapter 3 → เข้า Recipe Maps
     { const i=CHAPTERS.length,col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),open=Save.endgameUnlocked();
-      const g=this.add.graphics();g.fillStyle(open?0x1a1030:0x1d1924,0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xc58bff:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
+      const art=this.textures.exists('chapter_endgame_cover')?this._coverImage(x+2,y+2,cw-4,ch-4,'chapter_endgame_cover'):null;if(art)this.menu.add(art);
+      const g=this.add.graphics();g.fillStyle(open?0x1a1030:0x1d1924,art?0.48:0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xc58bff:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
       if(open){g.fillStyle(0xc58bff,0.12);g.fillRoundedRect(x+3,y+3,cw-6,ch-6,12);}
       const icon=this.add.text(x+30,y+ch/2,open?'📜':'🔒',{fontSize:open?'30px':'25px'}).setOrigin(0.5),name=this.add.text(x+57,y+18,'Endgame · Recipe Maps',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:open?'#f3e4ff':'#98909f'}).setOrigin(0,0);
       const desc=this.add.text(x+57,y+40,'Maps, Atlas, Uniques and the Pinnacle Boss',{fontFamily:'sans-serif',fontSize:'9px',color:open?'#d4c2e6':'#746d7a',wordWrap:{width:cw-126},maxLines:2}).setOrigin(0,0);
@@ -5126,7 +5165,7 @@ class Game extends Phaser.Scene {
   }
   buildStageSelect(){
     const chapterIndex=Phaser.Math.Clamp(this.selectedChapter||0,0,CHAPTERS.length-1),chapter=CHAPTERS[chapterIndex],range=chapter.stages||[0,STAGES.length-1],stageIds=[];for(let i=range[0];i<=range[1];i++)stageIds.push(i);
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose stage · Chapter '+(chapterIndex+1),null,'chapter');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose stage · Chapter '+(chapterIndex+1),'screen_stage','chapter');
     const unlocked=Math.max(0,Save.data.unlockedStage||0);
     const note=this.add.text(this.W/2,this.W<=this.H?83:55,'CHAPTER SELECT  ·  Power ⚡ '+Save.power(Save.data.character),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d3bce1'}).setOrigin(0.5);
     this.menu.add(note);
@@ -5139,7 +5178,7 @@ class Game extends Phaser.Scene {
   }
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   openDifficultyChoice(idx){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose Difficulty');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose Difficulty','screen_stage');
     const st=STAGES[idx],portrait=this.W<=this.H,best=(Save.data.diffBest||[])[idx]||0;
     const t=this.add.text(this.W/2,portrait?78:52,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe07a'}).setOrigin(0.5);
     const pwr=this.powerStatus(idx),warn=pwr.ratio<0.9,subY=portrait?98:70;
@@ -5195,7 +5234,7 @@ class Game extends Phaser.Scene {
   }
   // แผงเลือก Zone Modifiers (สแตกได้ · เปิดเยอะ = ยาก+รางวัลดี) — เปิดจากหน้าเลือกความยาก
   buildZoneModifiers(idx){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚡ Zone Modifiers');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚡ Zone Modifiers','screen_zonemods');
     const w=this.W,h=this.H,portrait=w<=h,x=Math.max(16,(w-Math.min(w-28,420))/2),cw=Math.min(w-28,420);
     const active=Save.zoneMods();let rMul=1; for(const id of active){const m=ZONE_MODIFIERS.find(z=>z.id===id);if(m)rMul*=m.reward;}
     const sub=this.add.text(w/2,portrait?80:74,'Stack challenges for bigger rewards · combined ×'+rMul.toFixed(2),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffbfa0'}).setOrigin(0.5);
@@ -5452,7 +5491,7 @@ class Game extends Phaser.Scene {
     this._digBusy=this.time.now; (this._digCells||[]).forEach((cn,k)=>this.tweens.add({targets:cn,y:cn.y-80,alpha:0,duration:260,delay:k*8,ease:'Cubic.in'}));
     this.time.delayedCall(420,()=>{ this._digBusy=false; this._digDrop=true; this.buildDig(); this.menuToast(secret?'🕳️ Hidden Vault · Floor '+d.depth+' — treasure glitters everywhere':'🪜 Floor '+d.depth+(d.depth%5===0?' — 🎁 gift floor!':digBoardN(d.depth)>digBoardN(d.depth-1)?' — the cave widens!':' — richer treasure below'),'#c7a6ff'); }); }
   buildRankPerks(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives','screen_weave_perks');
     const w=this.W,h=this.H;
     const free=Save.rankPointsFree(),total=Save.rankPointsTotal();
     const hs=this._hdrShift();
@@ -5500,7 +5539,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildGearLandscape(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment','screen_group_gear');
     const w=this.W,h=this.H,id=this.character||Save.data.character||'momo',sel=this.gearSlot||'weapon';
     const leftW=Math.min(345,w*0.45),panelX=12,panelY=56,panelW=leftW-20,panelH=h-70,pcx=panelX+panelW/2,pcy=panelY+panelH*0.40;
     const pbg=this.add.graphics();pbg.fillStyle(0x241a33,0.72);pbg.fillRoundedRect(panelX,panelY,panelW,panelH,16);pbg.lineStyle(1.5,0x4a4059,0.8);pbg.strokeRoundedRect(panelX,panelY,panelW,panelH,16);this.menu.add(pbg);
@@ -5535,7 +5574,7 @@ class Game extends Phaser.Scene {
   }
   buildGear(){
     if(this.W>this.H){this.buildGearLandscape();return;}
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment','screen_group_gear');
     const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
     const sel=this.gearSlot||'weapon';
     const cy0=78, topH=Math.min(h*0.34,250);
@@ -5645,7 +5684,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildGearInbox(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📦 Reward Inbox','','gLoadout');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📦 Reward Inbox','screen_group_activity','gLoadout');
     const w=this.W,cap=Save.data.gearInventoryCap||24,items=Save.gearInboxItems(),mode=Save.data.gearAutoDismantle||'off',labels={off:'OFF',common:'COMMON',rare:'COMMON + RARE'};
     let y=64;const info=this.add.text(14,y,'Bag '+Save.gearInventoryCount()+' / '+cap+'   ·   Inbox '+items.length+' / '+GEAR_INBOX_CAP,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#d8cde2'}).setOrigin(0,0);
     const auto=this.add.graphics();auto.fillStyle(mode==='off'?0x3a3550:0x704a20,1);auto.fillRoundedRect(w-170,y-6,156,28,9);const at=this.add.text(w-92,y+8,'Auto: '+labels[mode],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:mode==='off'?'#a99fbb':'#ffd166'}).setOrigin(.5);this.menu.add([info,auto,at]);
@@ -5875,7 +5914,7 @@ class Game extends Phaser.Scene {
     const ckeys=CURRENCY.map(c=>c.key); const cur=[]; const cu=new Set(); for(let i=0;i<3;i++){ let k,guard=0; do{ k=ckeys[Math.floor(rng()*ckeys.length)]; }while(cu.has(k)&&guard++<20); cu.add(k); cur.push({key:k,qty:1+Math.floor(rng()*3)}); }
     return {gear,cur,zone,chapter}; }
   buildBazaar(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏪 Mochi Bazaar','','gLoadout');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏪 Mochi Bazaar','screen_bazaar','gLoadout');
     const w=this.W,h=this.H, tab=this._bazTab||'buy';
     // ทรัพยากรบนหัว
     const hs=this._hdrShift();
@@ -10014,7 +10053,7 @@ class Game extends Phaser.Scene {
   charPassiveOnKill(e){ const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
   // v4.88: หน้า Talent ประจำตัวละคร — ใช้ TP จากเลเวลตัวละคร (Save.cp) + โชว์ passive ประจำตัว
   buildTalents(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Character Talents');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Character Talents','screen_talents');
     const id=Save.data.character||'momo',ch=CHARACTERS[id]||{},cp=Save.cp(id),defs=charTalents(id),ps=CHAR_PASSIVES[id],sc=charPassiveScale(cp.lvl);
     const W=this.W,top=(this.W<=this.H?80:56),bw=Math.min(W-32,400),bx=W/2-bw/2;
     const need=charExpNeed(cp.lvl),g=this.add.graphics();
