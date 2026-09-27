@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.93.0';
+const GAME_VERSION = '5.94.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.94.0', date:'2026-09-27', title:'Mint Frost Lance and Gale animation', items:['Mint now plays an eight-frame lance attack when firing her signature weapon','Mint Gale has its own eight-frame wind cast animation','Existing idle, run, dash, hurt, cheer and knockout poses stay connected'] },
   { v:'5.93.0', date:'2026-09-27', title:'Companion and Cocoa combat animation', items:['Yuzlings and Cheese animate their attacks and healing casts','Cocoa plays a new eight-frame punch combo during her basic attack','Idle, run, hurt, dash, cheer and knockout poses remain available'] },
   { v:'5.92.0', date:'2026-09-27', title:'Citrus Crew target spread', items:['Yuzlings split across nearby enemies when several targets are available','They converge again when only one enemy remains'] },
   { v:'5.91.0', date:'2026-09-27', title:'Immortal Citrus Crew', items:['Yuzu’s Yuzlings and Cheese can no longer be knocked out by nearby enemies','Yuzlings prioritize the enemy closest to Yuzu, including during Citrus Parade','Loyal Guard keeps its nearby healing; Second Serving empowers every fourth Yuzling strike'] },
@@ -1123,6 +1124,8 @@ const ASSET_SHEETS = {
   // Frostleaf Sentinel — คง key char_mint เพื่อWaitงรับเซฟเดิม
   char_mint:  { url:'assets/char_mint_frostleaf_sheet.png',  frame:128 },
   char_mint_run:{ url:'assets/char_mint_frostleaf_run_sheet.png', frame:128 },
+  char_mint_attack:{ url:'assets/char_mint_attack_sheet.png', frame:128 },
+  char_mint_gale:{ url:'assets/char_mint_gale_sheet.png', frame:128 },
   char_cocoa: { url:'assets/char_cocoa_awakened_sheet.png', frame:128 },
   char_cocoa_run:{ url:'assets/char_cocoa_run_sheet.png', frame:128 },
   char_cocoa_attack:{ url:'assets/char_cocoa_attack_sheet.png', frame:128 },
@@ -3852,6 +3855,7 @@ class Game extends Phaser.Scene {
   // 🌬️ Mint Unique (v5.9) — Mint Gale: วิ่งเร็วชั่วขณะ + ลมผลักมอนรอบตัวตอนกด · เอฟเฟกต์ลมตามตัวใน tickWindRush
   castWindRush(ul){
     ul=ul||1;const dur=2.6+ul*0.5,mul=1.45+ul*0.1,r=110+ul*18;
+    this.poseAttack(520,'char_mint_gale');
     this.windRushT=dur;this.windRushMul=mul;this.moveSlowT=0;
     this.player.iframe=Math.max(this.player.iframe||0,0.35);
     const cx=this.player.x,cy=this.player.y;
@@ -8987,6 +8991,7 @@ class Game extends Phaser.Scene {
     const evo=basic&&basic.evolved, permafrost=basic?.mutation==='permafrost', blizzard=basic?.mutation==='blizzard';
     const t=this.nearestEnemy(1000);
     const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._lanceAng||0));
+    this.poseAttack(360);
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
@@ -10681,12 +10686,12 @@ class Game extends Phaser.Scene {
       || 60;
     // ปรับสเกลตาม "real footprints" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
     // Momo/Mint/Chocolate ใช้สัดส่วนอาร์ตมาตรฐานเดียวกันและแสดงผลขนาดเดียวกัน
-    const baseKey=key.replace(/_(run|attack)$/,'');
+    const baseKey=key.replace(/_(run|attack|gale)$/,'');
     const FP={ char_momo:110, char_mint:110, char_cocoa:110, char_taro:107, char_sesame:117, char_berry:116, char_yuzu:112 }[baseKey];
     const TARGET=['char_momo','char_mint','char_cocoa','char_berry'].includes(baseKey)?56:66;
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
-    this._attackPoseTime=0;
+    this._attackPoseTime=0;this._attackTextureKey=null;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
@@ -10697,7 +10702,7 @@ class Game extends Phaser.Scene {
     if(!this._hasFrames)return;
     if(this._attackPoseTime>0){
       this._attackPoseTime=Math.max(0,this._attackPoseTime-dt);
-      const attackKey='char_'+this.character+'_attack';
+      const attackKey=this._attackTextureKey||'char_'+this.character+'_attack';
       if(this.textures.exists(attackKey)){
         if(this.player.texture.key!==attackKey)this.player.setTexture(attackKey);
         this.player.setFrame(Math.min(7,Math.floor((1-this._attackPoseTime/this._attackPoseDuration)*8)));
@@ -10732,11 +10737,11 @@ class Game extends Phaser.Scene {
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(!this._hasFrames)return; this._attackPoseTime=0; const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
-  poseAttack(ms){
-    const key='char_'+this.character+'_attack';
+  poseFlash(frame,ms){ if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null; const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
+  poseAttack(ms,textureKey){
+    const key=textureKey||'char_'+this.character+'_attack';
     if(!this._hasFrames||!this.textures.exists(key)){this.poseFlash(CF.cast,ms);return;}
-    this._poseHold=0;this._attackPoseDuration=(ms||400)/1000;this._attackPoseTime=this._attackPoseDuration;
+    this._poseHold=0;this._attackTextureKey=key;this._attackPoseDuration=(ms||400)/1000;this._attackPoseTime=this._attackPoseDuration;
     this.player.setTexture(key).setFrame(0);
   }
   // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
