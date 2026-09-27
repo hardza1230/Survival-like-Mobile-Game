@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.74.0';
+const GAME_VERSION = '5.75.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.75.0', date:'2026-09-27', title:'Clearer menu reminders', items:['Red dots now follow pending Daily, Achievement, Inbox, Rank, Temple and new Gear actions into their menu groups','Yellow guides highlight rewards ready to claim, and disappear when the reward is collected'] },
   { v:'5.74.0', date:'2026-09-27', title:'Mimic chest warning', items:['A suspicious miniboss chest now pulses with a red warning and a Mimic hint before you touch it','The Mimic reveal briefly freezes the enemy so you can react'] },
   { v:'5.73.0', date:'2026-09-27', title:'Daily missions that fit your progress', items:['Daily Challenge rotates between clearing a stage, defeating enemies and digging in Temple Depths','Stage missions only pick stages you have unlocked, with a gentler difficulty for new players','Enemy and digging missions track progress across sessions and pay out when completed'] },
   { v:'5.72.0', date:'2026-09-27', title:'Temple shovel rewards', items:['Finish the combat tutorial to earn 10 shovels once','Claim 10 free shovels once a day in Temple Depths; earn more from playing'] },
@@ -4362,7 +4363,9 @@ class Game extends Phaser.Scene {
       const ds=this.add.text(x+72,y+rh*0.68,locked?'🔒 Clear Stage 1 to unlock':sub,{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#9a8fac':'#bfb5ca',wordWrap:{width:bw-160}}).setOrigin(0,0.5);
       const ar=this.add.text(x+bw-16,y+rh/2,locked?'🔒':'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5);
       this.menu.add([g,ic,em,nm,ds,ar]);
-      if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,y,bw,rh,nxtG.tag);
+      if(!locked&&this.hasTargetBadge(target))this.drawBadgeDot(this.menu,x+13,y+13);
+      if(!locked&&this.hasClaimableTarget(target))this._drawNextGuide(x,y,bw,rh,'Reward ready');
+      else if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,y,bw,rh,nxtG.tag);
       this._zone(x,y,bw,rh,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
         if(target==='__tutorial'){ this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true); }
         else { if(target==='skills'){this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;} this.menuScreen=target; this.buildMenuScreen(); } });
@@ -4389,7 +4392,9 @@ class Game extends Phaser.Scene {
         const nm=this.add.text(horiz?x+80:x+ww/2,horiz?ty+th/2:ty+th*0.78,locked?'🔒 '+label:label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:locked?'#8d8399':'#ffffff'}).setOrigin(horiz?0:0.5,0.5);
         this.menu.add([g,ic,em,nm]);
         if(horiz){ const ar=this.add.text(x+ww-16,ty+th/2,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5); this.menu.add(ar); }
-        if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,ty,ww,th,nxtG.tag);
+        if(!locked&&this.hasTargetBadge(target))this.drawBadgeDot(this.menu,x+12,ty+12);
+        if(!locked&&this.hasClaimableTarget(target))this._drawNextGuide(x,ty,ww,th,'Reward ready');
+        else if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,ty,ww,th,nxtG.tag);
         this._zone(x,ty,ww,th,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
           this.menuScreen=target; this.buildMenuScreen(); });
       });
@@ -4675,6 +4680,7 @@ class Game extends Phaser.Scene {
     const days=this.add.text(w/2,y1+58,Array.from({length:7},(_,i)=>i<streak?'●':'○').join('  '),{fontFamily:'sans-serif',fontSize:'18px',color:'#ffcf5a'}).setOrigin(0.5);
     const info=this.add.text(w/2,y1+88,claimed?'Claimed today · Streak '+streak+' days':'Today reward 🍬 '+reward+' · keep your Streak',{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc2d5'}).setOrigin(0.5);
     const bw=Math.min(w-70,260),by=y1+h1-38,bg=this.add.graphics();bg.fillStyle(claimed?0x3b3541:0xffb020,1);bg.fillRoundedRect(w/2-bw/2,by-20,bw,40,13);const bt=this.add.text(w/2,by,claimed?'Claimed ✓':'Claim',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:claimed?'#8f849f':'#21131a'}).setOrigin(0.5);this.menu.add([t1,days,info,bg,bt]);
+    if(!claimed){this.drawBadgeDot(this.menu,w/2-bw/2+8,by-17);this._drawNextGuide(w/2-bw/2,by-20,bw,40,'Claim today');}
     if(!claimed)this._zone(w/2-bw/2,by-20,bw,40,()=>{const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;Save.addSugar(50+d.streak*15);Sfx.clear();this.showBanner('🎁 Daily Reward','Streak '+d.streak+' days · get 🍬 '+(50+d.streak*15),1700);this.buildDaily();});
     const y2=y1+h1+14,h2=Math.max(150,h-y2-18);panel(y2,h2,0xd95cff);
     const diff=DIFFS[spec.diff-1],t2=this.add.text(w/2,y2+24,'⚔️ DAILY CHALLENGE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#e7b7ff'}).setOrigin(0.5);
@@ -4689,6 +4695,7 @@ class Game extends Phaser.Scene {
         const lore=this.add.text(ax+10,ay+ah-10,spec.kind==='dig'?'Open tiles in Temple Depths. Hard tiles count when broken.':st.lore||'',{fontFamily:'sans-serif',fontSize:'10px',color:'#eadff2',wordWrap:{width:aw-20},maxLines:3,stroke:'#120a16',strokeThickness:2}).setOrigin(0,1);
         this.menu.add([bd,lore]); } }
     const state=d.challengeDone?'Completed ✓':spec.kind==='dig'?'Go to Temple Depths':unlocked?'Start Challenge':'🔒 Unlock Stage '+(spec.stage+1),cbg=this.add.graphics(),cby=y2+h2-40;cbg.fillStyle(d.challengeDone?0x315142:unlocked?0x8e4fc0:0x3a3341,1);cbg.fillRoundedRect(w/2-bw/2,cby-20,bw,40,13);const cbt=this.add.text(w/2,cby,state,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:d.challengeDone?'#a8f0c0':'#ffffff'}).setOrigin(0.5);this.menu.add([t2,name,detail,cbg,cbt]);
+    if(!d.challengeDone)this.drawBadgeDot(this.menu,w/2+bw/2-8,cby-17);
     if(!d.challengeDone&&unlocked)this._zone(w/2-bw/2,cby-20,bw,40,()=>{if(spec.kind==='dig'){this.menuScreen='dig';this.buildMenuScreen();return;}this._dailyRun=spec.kind==='clear';this.stageDiff=spec.kind==='clear'?spec.diff:1;this.startRun(spec.stage);});
     this.menu.setVisible(true);
   }
@@ -4953,7 +4960,7 @@ class Game extends Phaser.Scene {
       g.fillStyle(claimed?0x20252b:ok?0x342d25:0x241e2c,0.98);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(1.8,claimed?0x537663:ok?0xffd166:0x493e52,1);g.strokeRoundedRect(x,y,cw,rh,12);
       const em=this.add.text(x+24,y+rh/2,a.emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(ok?1:0.38),nm=this.add.text(x+47,y+12,a.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:ok?'#ffffff':'#82798d'}).setOrigin(0,0);
       const ds=this.add.text(x+47,y+30,a.desc,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#a99db2'}).setOrigin(0,0),state=this.add.text(x+cw-10,y+rh/2,claimed?'Claimed ✓':ok?'Get 🍬'+a.reward:'Not yet',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:claimed?'#8bd3a0':ok?'#ffe08a':'#6e6576'}).setOrigin(1,0.5);
-      this.menu.add([g,em,nm,ds,state]);if(ok&&!claimed)this._zone(x,y,cw,rh,()=>{Save.data.achievements[a.id]=true;Save.addSugar(a.reward);Sfx.clear();this.showBanner(a.emoji+' Achievement unlocked!',a.name+' · get 🍬 '+a.reward,1600);this.buildAchievements();});
+      this.menu.add([g,em,nm,ds,state]);if(ok&&!claimed){this.drawBadgeDot(this.menu,x+cw-10,y+10);this._zone(x,y,cw,rh,()=>{Save.data.achievements[a.id]=true;Save.addSugar(a.reward);Sfx.clear();this.showBanner(a.emoji+' Achievement unlocked!',a.name+' · get 🍬 '+a.reward,1600);this.buildAchievements();});}
     });this.menu.setVisible(true);
   }
   buildSettings(){
@@ -5019,8 +5026,24 @@ class Game extends Phaser.Scene {
     if(claimed){ Save.save(); if(this.menuToast)this.menuToast('🎯 Quest complete! +🍬'+total+' · '+claimed.t,'#ffe08a'); Sfx.clear&&Sfx.clear(); }   // menuToast is safe in the hub (bannerT not built there)
   }
   nextQuest(){ const d=Save.data; for(const q of QUESTS){ if(!q.done(d))return q; } return null; }
-  hasActivityBadge(){ try{ const d=Save.data; const daily=(d.daily&&d.daily.claimDay)!==localDayKey();
-    const ach=ACHIEVEMENTS.some(a=>a.test(d)&&!(d.achievements||{})[a.id]); return daily||ach; }catch(e){ return false; } }
+  hasTargetBadge(target){try{const d=Save.data,day=localDayKey();
+    if(target==='daily')return !d.daily||d.daily.claimDay!==day||d.daily.challengeDay!==day||!d.daily.challengeDone;
+    if(target==='achievements')return ACHIEVEMENTS.some(a=>a.test(d)&&!(d.achievements||{})[a.id]);
+    if(target==='gearInbox')return Save.gearInboxItems().length>0;
+    if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew);
+    if(target==='perks')return Save.rankPointsFree()>0;
+    if(target==='dig')return Save.digFreeReady();
+    if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig');
+    if(target==='news')return this.hasNewsBadge();
+    return false;}catch(e){return false;}}
+  hasClaimableTarget(target){const d=Save.data;
+    if(target==='daily')return !d.daily||d.daily.claimDay!==localDayKey();
+    if(target==='achievements')return this.hasTargetBadge('achievements');
+    if(target==='gearInbox')return this.hasTargetBadge('gearInbox');
+    if(target==='dig')return this.hasTargetBadge('dig');
+    return false;}
+  hasGroupBadge(key){const grp=HUB_GROUPS[key];return !!grp&&grp.rows.some(row=>this.hasTargetBadge(row[0]));}
+  hasActivityBadge(){return this.hasGroupBadge('gActivity');}
   hasNewsBadge(){ return Save.data.seenVersion!==GAME_VERSION; }
   drawBadgeDot(cont,x,y){ const g=this.add.graphics(); g.fillStyle(0x000000,0.4); g.fillCircle(x+1,y+1,7); g.fillStyle(0xff3b5c,1); g.fillCircle(x,y,6.5); g.lineStyle(1.5,0xffffff,0.95); g.strokeCircle(x,y,6.5); cont.add(g);
     this.tweens.add({targets:g,alpha:{from:1,to:0.45},duration:640,yoyo:true,repeat:-1}); return g; }
@@ -5112,7 +5135,7 @@ class Game extends Phaser.Scene {
       if(us<need[i]&&!tutDone){
         this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'Clear Stage '+need[i]+' to unlock',()=>{this.menuToast&&this.menuToast('🔒 Locked — clear Stage '+need[i]+' first','#ff9bb5');Sfx.select&&Sfx.select();},false); }
       else { this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0,['hub_btn_play','hub_btn_heroes','hub_btn_gear','hub_btn_activity','hub_btn_codex','hub_btn_more'][i]);
-        if(i===3&&this.hasActivityBadge())this.drawBadgeDot(this.menu,cx+bw/2-8,cy-bh/2+8); }   // 🔴 Daily/Achievement Waitรับ
+        if((i===2&&this.hasGroupBadge('gLoadout'))||(i===3&&this.hasGroupBadge('gActivity')))this.drawBadgeDot(this.menu,cx-bw/2+8,cy-bh/2+8); }
       if(nxt&&nxt.hub===i)this._drawNextGuide(cx-bw/2,cy-bh/2,bw,bh,nxt.tag);
     });
     // แจ้งเตือนเมื่อมีเมนูใหม่เพิ่งปลดLocked (ครั้งเดียว)
@@ -5123,10 +5146,12 @@ class Game extends Phaser.Scene {
   }
   // 👉 ไกด์ "ทำอะไรต่อ" (หลังจบ tutorial) — hub idx + group target
   hubNextStep(){ if(!Save.data.tutorialDone)return null; const us=Save.data.unlockedStage||0;
+    if(Save.gearInboxItems().length>0)return {hub:2,group:'gLoadout',target:'gearInbox',tag:'Claim gear'};
+    if(this.hasClaimableTarget('daily')||this.hasClaimableTarget('achievements'))return {hub:3,group:'gActivity',target:null,tag:'Rewards ready'};
+    if(Save.rankPointsFree()>0)return {hub:2,group:'gLoadout',target:'upgrade',tag:'Spend Rank Points'};
+    if(this.hasClaimableTarget('dig'))return {hub:2,group:'gLoadout',target:'upgrade',tag:'Free shovels'};
     const adv=this.powerAdvice(Math.min(us,STAGES.length-1));
     if(adv.screen==='upgrade')return {hub:2,group:'gLoadout',target:'upgrade',tag:'Upgrade Weave'};
-    if(Save.gearInboxItems().length>0)return {hub:2,group:'gLoadout',target:'gearInbox',tag:'Claim gear'};
-    if(this.hasActivityBadge&&this.hasActivityBadge())return {hub:3,group:'gActivity',target:null,tag:'Rewards ready'};
     return {hub:0,group:null,target:null,tag:'Next stage'}; }
   _drawNextGuide(x,y,w,h,tag){ const g=this.add.graphics(); g.lineStyle(3,0xffe066,1); g.strokeRoundedRect(x-3,y-3,w+6,h+6,16);
     const tg=this.add.text(x+w-8,y+5,'👉 '+tag,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#2a1600',backgroundColor:'#ffe066',padding:{x:6,y:2}}).setOrigin(1,0);
@@ -5306,6 +5331,7 @@ class Game extends Phaser.Scene {
     const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
     const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
     this.menu.add([rkg,rkt]); this._smallBtnIcon(rkt,'tile_perks'); this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
+    if(rpFree>0)this.drawBadgeDot(this.menu,rkX+rkW-6,rkY+6);
     const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?158:86, barH=9, need=UPG_ORDER.length*TAL_MAX;
     const frac=Phaser.Math.Clamp(Save.talFilled()/need,0,1);
     const bg=this.add.graphics(); bg.fillStyle(0x2c2338,1); bg.fillRoundedRect(bx,by,barW,barH,6);
