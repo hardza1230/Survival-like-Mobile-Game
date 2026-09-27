@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.85.0';
+const GAME_VERSION = '5.86.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.86.0', date:'2026-09-27', title:'Taro and Sesame join the roster', items:['Clear C2-1 to unlock Taro and C2-5 to unlock Sesame','Existing saves that already cleared those stages unlock them automatically','Fighter cards now show their real play styles and unlock goals'] },
   { v:'5.85.0', date:'2026-09-27', title:'Challenge Tickets and Temple recipes', items:['Select curses instead of a plain difficulty row; challenge tickets cost Sugar and improve rewards','Temple cores use Sugar; Weave Thread promotes ranks and resets Perks or Kitchen','Kitchen gains two triggers, two effects and two signature dishes; Bazaar stock can refresh three times daily'] },
   { v:'5.84.0', date:'2026-09-27', title:'Sugar Orders', items:['Choose one targeted reward order at Mochi Bazaar before a normal stage','Clear a stage to earn shovels, Weave Thread or a chosen crafting currency','Hard and Hell multiply the reward; an unfinished order stays active after a failed run'] },
   { v:'5.83.0', date:'2026-09-27', title:'Playtest follow-up: Mint, missions and comfort', items:['Mint Lance Barrage caps at three lances with lower per-lance damage','Juicy Burst now triggers on piercing Strawberry seeds; duplicate infusion cards are fixed','Clean Air is wider and shorter; escort moves and channels faster','Bear Beat Rush offers an Auto button and shorter interaction windows','Temple Depths offers limited Sugar-to-shovel purchases after the daily gift'] },
@@ -1812,8 +1813,8 @@ const CHARACTERS = {
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
-const CORE_UNLOCK_STAGE={mint:0,cocoa:4}; // Taro/Sesame รอพัฒนาจบก่อนเปิด milestone Ch2/Ch3
-const CHARACTER_CARD_HINT={momo:'Fast shots · easy to learn',mint:'Frost lances · slow & freeze',cocoa:'Melee combos · sturdy fighter',taro:'Storm mobility · in development',sesame:'Charged mirror beam · in development'};
+const CORE_UNLOCK_STAGE={mint:0,cocoa:4,taro:5,sesame:9};
+const CHARACTER_CARD_HINT={momo:'Fast shots · easy to learn',mint:'Frost lances · slow & freeze',cocoa:'Melee combos · sturdy fighter',taro:'Chain lightning · dash to reposition',sesame:'Charged mirror beam · precise boss damage'};
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
   mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.72,areaMul:1.18,controlMul:1.18,trait:'Rapid frost lances · -28% cooldown'},
