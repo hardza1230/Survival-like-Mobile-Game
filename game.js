@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.79.0';
+const GAME_VERSION = '5.80.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.80.0', date:'2026-09-27', title:'Mid-wave treasure events', items:['Hunt a marked Sugar Courier before it escapes for a difficulty-scaled reward','Break a timed cache of three marked crates for Sugar and a currency bonus','Events are optional and never block wave progression; the first Stage 1 run stays focused on learning'] },
   { v:'5.79.0', date:'2026-09-27', title:'Crossroads after minibosses', items:['After a miniboss, three doors appear — walk into one to choose your path','Doors: Treasure Room, Blood Pact, Elite Duel, Tea Rest or Gamble','Doors fade after 14 seconds if you do not choose'] },
   { v:'5.78.0', date:'2026-09-27', title:'Punchier kills, clearer enemy shots', items:['Defeated enemies fly back and spin away','Wiping out a crowd at once gives a small screen shake','Enemy bullets now use one bright color with a dark outline on every stage'] },
   { v:'5.77.0', date:'2026-09-27', title:'Chapter 1 learning path', items:['Stages 1–3 now teach wave missions in a fixed order: survive, capture, hunt, then escort','Early mission banners say exactly what to do and where to look','Stage 1 marked-enemy hunt asks for two targets instead of three'] },
@@ -6613,6 +6614,8 @@ class Game extends Phaser.Scene {
       this.showBanner('⚠️ '+(beat?beat.title:st.mini),beat?beat.sub:(st.mini+' — get ready to find space to dodge'),2600);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);
       this.scheduleStageEvent(2800,'miniWarning',()=>this.spawnMiniBoss());
     }else{this.mode='wave';this.startSurvivalWave(w,false);this.setupWaveObjective(w,p);const o=this.waveObjective;
+      if(!this.recipeMode&&!this.riftMode&&!this.bossRush&&(this.stageIndex>0||(Save.data.stageMastery||{})[0])&&(w===3||w===4&&Math.random()<0.5))
+        this.time.delayedCall(9500,()=>{if(this.state==='play'&&this.mode==='wave'&&this.waveObjective===o&&!o.done)this.startWaveEvent();});
       if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((o.lesson?'MISSION '+o.lesson+': ':'MISSION: ')+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});}
     this.updateWaveText();
   }
@@ -6777,6 +6780,59 @@ class Game extends Phaser.Scene {
     if(alive<=0){this.hurtPlayer(24,.8);o.progress=Math.max(0,o.progress-7);this.showBanner('🥀 Nectar Bed Lost','The hive drains your life — the flowers regrow at half strength',1100);for(const f of flowers){f.hp=50;f.alive=true;if(f.sprite)f.sprite.setVisible(true).clearTint();if(f.ring)f.ring.setVisible(true);}alive=3;}
     o.progress=Phaser.Math.Clamp(o.progress+dt,0,o.target);if(this.objNodeG){this.objNodeG.clear();for(const f of flowers){if(!f.alive)continue;const w=72,frac=f.hp/f.maxhp;this.objNodeG.fillStyle(0x190b24,.78).fillRoundedRect(f.x-w/2,f.y-78,w,8,4);this.objNodeG.fillStyle(frac<.35?0xff5f7a:0xffc95c,.95).fillRoundedRect(f.x-w/2+2,f.y-76,(w-4)*frac,4,2);}}
     if(o.progress>=o.target)this.completeWaveObjective();
+  }
+  // Optional mid-wave detours. They never delay the main objective.
+  startWaveEvent(){
+    this.clearWaveEvent();
+    const cache=Math.random()<0.5;
+    if(cache){
+      const crates=[];
+      for(let i=0;i<3;i++){const c=this.spawnCrate();if(c){c._eventCache=true;c.setTint(0xffd166);crates.push(c);}}
+      if(!crates.length)return;
+      const labels=crates.map(c=>this.camWorld(this.add.text(c.x,c.y-48,'🧰 24s',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffe08a',stroke:'#331926',strokeThickness:4}).setOrigin(.5).setDepth(95010)));
+      this._waveEvent={type:'cache',time:24,crates,labels,remaining:crates.length};
+      this.showBanner('🧰 Supply Cache','Smash '+crates.length+' golden jars within 24s for bonus candy',1900);
+    }else{
+      // spawnElite may recycle a live enemy when the pool is full; never replace an objective target.
+      if(this.enemies.countActive(true)>=this.enemies.maxSize-1)return;
+      const e=this.spawnElite();if(!e)return;
+      e._eventCourier=true;e.setTint(0xffd166);
+      this._waveEvent={type:'courier',time:22,courier:e};
+      this.showBanner('🍬 Sugar Courier','Catch the golden courier within 22s for bonus candy',1900);
+    }
+  }
+  tickWaveEvent(dt){
+    const ev=this._waveEvent;if(!ev)return;
+    ev.time-=dt;
+    if(ev.type==='courier'&&ev.courier&&ev.courier.active){
+      const e=ev.courier;if(!ev.label||!ev.label.active)ev.label=this.camWorld(this.add.text(e.x,e.y-75,'🍬 '+Math.ceil(ev.time)+'s',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffe08a',stroke:'#331926',strokeThickness:4}).setOrigin(.5).setDepth(95010));
+      ev.label.setPosition(e.x,e.y-75).setText('🍬 '+Math.ceil(ev.time)+'s');
+    }
+    if(ev.type==='cache')ev.crates.forEach((c,i)=>{if(ev.labels[i]&&ev.labels[i].active)ev.labels[i].setVisible(c.active).setText('🧰 '+Math.ceil(ev.time)+'s');});
+    if(ev.time<=0){
+      if(ev.type==='courier'&&ev.courier&&ev.courier.active){ev.courier._eventCourier=false;ev.courier.setActive(false).setVisible(false);if(ev.courier.body)ev.courier.body.enable=false;}
+      this.clearWaveEvent();this.showBanner('⌛ Bonus expired','Continue the main mission',1100);
+    }
+  }
+  clearWaveEvent(){
+    const ev=this._waveEvent;if(!ev)return;
+    if(ev.label){this.tweens.killTweensOf(ev.label);if(ev.label.active)ev.label.destroy();}
+    for(const label of ev.labels||[])if(label&&label.active)label.destroy();
+    if(ev.courier){ev.courier._eventCourier=false;if(ev.courier.active)ev.courier.clearTint();}
+    for(const c of ev.crates||[]){c._eventCache=false;if(c.active)c.clearTint();}
+    this._waveEvent=null;
+  }
+  onWaveEventCourier(e){
+    const ev=this._waveEvent;if(!ev||ev.type!=='courier'||ev.courier!==e)return;
+    this.clearWaveEvent();this.spawnSugarCoins(Math.round(35*this.diffMul().reward));
+    this.grantCurrencyReward(1,this.currencyTierFor(),'🍬 Courier caught!');
+  }
+  onWaveEventCache(c){
+    const ev=this._waveEvent;if(!ev||ev.type!=='cache'||!c._eventCache)return;
+    c._eventCache=false;ev.remaining--;
+    if(ev.remaining>0){this.floatText(c.x,c.y-35,ev.remaining+' jars left',0xffd166);return;}
+    this.clearWaveEvent();this.spawnSugarCoins(Math.round(30*this.diffMul().reward));
+    this.grantCurrencyReward(1,this.currencyTierFor(),'🧰 Cache opened!');
   }
   // ===== ⭐ Bonus Challenge (v4.58): โจทย์เสริมทุกภารกิจ · สำเร็จ = Relic (slot เต็ม → currency) · พลาด = Elite ซุ่มโจมตี =====
   startBonusChallenge(o){
@@ -6958,6 +7014,7 @@ class Game extends Phaser.Scene {
   }
   tickWaveObjective(dt){
     const o=this.waveObjective;if(!o||o.done)return;
+    this.tickWaveEvent(dt);
     this.tickBonusChallenge(dt);
     // v4.87.1: กันปั๊มเลเวล — ภารกิจไม่มี timer (hunt/purge/capture) ถ้าลากนานเกิน มอนธรรมดาหยุดให้ EXP + เป้า Hunt เลิกวาร์ปหนี
     if(['hunt','purge','capture'].includes(o.type)&&!o._overtime){ o._objT=(o._objT||0)+dt; const lim=o.type==='hunt'?25*o.target+20:o.type==='purge'?30*o.target+20:Math.round(o.target*1.6+25); if(o._objT>=lim){ o._overtime=true; this.showBanner('⏰ Overtime!','Enemies no longer drop EXP — finish the objective!',1800); } }
@@ -7002,6 +7059,7 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done)return;o.done=true;this._bonus=null;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner('⌛ Objective Timed Out','No bonus, but you can still advance — clear the rest',1700);
   }
   clearWaveObjective(){ if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
+    this.clearWaveEvent();
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;e._wispRaider=false;});
     this._bonus=null;if(this.waveBonusTxt)this.waveBonusTxt.setVisible(false);this._raidT=null;
@@ -9198,7 +9256,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -9318,8 +9376,8 @@ class Game extends Phaser.Scene {
     let c=this.crates.getFirstDead(false);
     if(!c) c=this.crates.create(x,y,'crate'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
     if(!c)return;
-    c.body.setAllowGravity(false); c.body.setImmovable(true); c.setCircle(18,4,4); c.hp=14+this.stageIndex*6; c.maxhp=c.hp; c.setScale(1.12).clearTint(); this.camWorld(c); if(this.iso)c.setDepth(c.y);
-    this.tweens.add({targets:c,scale:{from:0.2,to:1},duration:220,ease:'Back.out'}); }
+    c.body.setAllowGravity(false); c.body.setImmovable(true); c.setCircle(18,4,4); c._eventCache=false; c.hp=14+this.stageIndex*6; c.maxhp=c.hp; c.setScale(1.12).clearTint(); this.camWorld(c); if(this.iso)c.setDepth(c.y);
+    this.tweens.add({targets:c,scale:{from:0.2,to:1},duration:220,ease:'Back.out'}); return c; }
   // ดาเมจใส่กล่อง (รวม flat damage) + Effect + แตก — ใช้ร่วมทั้งกระสุนและ AoE
   crateHit(c,amount){ if(!c||!c.active)return; c.hp-=amount+(this.player.flatDmg||0);
     c.setTintFill(0xffffff); this.time.delayedCall(50,()=>{ if(c.active)c.clearTint(); });
@@ -9332,6 +9390,7 @@ class Game extends Phaser.Scene {
     // แกนคำสาป (purge) โดนสกิล AoE ด้วย — ไม่งั้นตัวที่ไม่ยิงกระสุน (ทาโร่ฟ้าผ่า/มินต์แช่/โกโก้/งาดำ) ทำลายไม่ได้
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{ if(n&&n.active&&n._waveObjectiveNode&&!n._coreLocked&&this.dist(n.x,n.y,x,y)<r+18){ n.hp-=amount; this.popDmg(Math.round(amount),n.x,n.y,false); this.vfxHitRing(n.x,n.y,this.waveObjective?.color||0xffd166,false); if(n.hp<=0)this.destroyWaveObjectiveNode(n); } }); }
   breakCrate(c){ const x=c.x,y=c.y; this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
+    if(c._eventCache)this.onWaveEventCache(c);
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.screenShake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดWaitปออร์บ
     if(Math.random()<0.28) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // โอกาสดWaitปฟื้นฟู (ลดจากครึ่งนึง ให้หัวใจหายากขึ้น)
