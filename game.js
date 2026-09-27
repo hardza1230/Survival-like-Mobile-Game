@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.72.0';
+const GAME_VERSION = '5.73.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.73.0', date:'2026-09-27', title:'Daily missions that fit your progress', items:['Daily Challenge rotates between clearing a stage, defeating enemies and digging in Temple Depths','Stage missions only pick stages you have unlocked, with a gentler difficulty for new players','Enemy and digging missions track progress across sessions and pay out when completed'] },
   { v:'5.72.0', date:'2026-09-27', title:'Temple shovel rewards', items:['Finish the combat tutorial to earn 10 shovels once','Claim 10 free shovels once a day in Temple Depths; earn more from playing'] },
   { v:'5.71.0', date:'2026-09-26', title:'Friendlier start & clearer missions', items:['Free shovels: claim 8 times a day, 5 shovels each','Stage 1 (Normal): take 40% less damage and meet fewer dashers/shooters','Mission text is bigger, shows longer at wave start and pulses every 12s'] },
   { v:'5.70.2', date:'2026-09-26', title:'Smoother boss music', items:['Boss and miniboss music no longer dips every time you get hit or the boss attacks','Short sound effects duck the music more gently'] },
@@ -2640,7 +2641,10 @@ const Store = {
   canBuy(){ try{ const C=window.Capacitor; return !!(C&&C.Plugins&&(C.Plugins.Purchases||C.Plugins.InAppPurchase||C.Plugins.CapacitorPurchases)); }catch(e){ return false; } },
 };
 function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,''));return{key,stage:seed%STAGES.length,diff:2+(seed%2)};}   // diff 2-3 (นรกสูงสุด)
+function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,'')),max=Math.max(0,Math.min(STAGES.length-1,Save.data.unlockedStage||0));
+  const ready=STAGES.map((_,i)=>i).filter(i=>i<=max&&isStageReady(i)),stage=ready[seed%ready.length]||0;
+  const kind=['clear','kills','dig'][seed%3],diff=max<3?1:2+(seed%2),target=kind==='kills'?60:kind==='dig'?5:1;
+  return{key,kind,stage,diff,target}; }
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
 const TIER_LABEL = { start:{name:'Starter',color:'#9a90ab'}, common:{name:'Common',color:'#8bd3a0'}, rare:{name:'Rare',color:'#ffcf5a'}, epic:{name:'Epic',color:'#c9a3ff'}, legend:{name:'Legend',color:'#ff8f3a'} };
 const FIELD_DROP_TABLE={
@@ -4650,8 +4654,15 @@ class Game extends Phaser.Scene {
   }
   buildStartMenu(){ this.buildMenuScreen(); }   // เผื่อโค้ดเก่าเรียก
   ensureDaily(){
-    const d=Save.data.daily||(Save.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false}),spec=dailySpec();
-    if(d.challengeDay!==spec.key){d.challengeDay=spec.key;d.challengeDone=false;Save.save();}return{data:d,spec};
+    const d=Save.data.daily||(Save.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false}),today=localDayKey();
+    if(d.challengeDay!==today){d.challengeDay=today;d.challengeDone=false;d.challengeProgress=0;d.challengeSpec=dailySpec();Save.save();}
+    else if(!d.challengeSpec){d.challengeSpec=dailySpec();d.challengeProgress=d.challengeDone?d.challengeSpec.target:0;Save.save();}
+    return{data:d,spec:d.challengeSpec};
+  }
+  advanceDaily(kind,n=1){const {data:d,spec}=this.ensureDaily();if(d.challengeDone||spec.kind!==kind||this._inTutorial)return;
+    d.challengeProgress=Math.min(spec.target,(d.challengeProgress||0)+n);
+    if(d.challengeProgress>=spec.target){d.challengeDone=true;const reward=120+spec.diff*30;Save.addSugar(reward);this.showBanner('📅 Daily Mission Complete','🍬 +'+reward+' Sugar',1800);}
+    else if(kind!=='kills'||d.challengeProgress%10===0)Save.save();
   }
   buildDaily(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📅 Daily Missions','screen_daily');
@@ -4666,17 +4677,18 @@ class Game extends Phaser.Scene {
     if(!claimed)this._zone(w/2-bw/2,by-20,bw,40,()=>{const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;Save.addSugar(50+d.streak*15);Sfx.clear();this.showBanner('🎁 Daily Reward','Streak '+d.streak+' days · get 🍬 '+(50+d.streak*15),1700);this.buildDaily();});
     const y2=y1+h1+14,h2=Math.max(150,h-y2-18);panel(y2,h2,0xd95cff);
     const diff=DIFFS[spec.diff-1],t2=this.add.text(w/2,y2+24,'⚔️ DAILY CHALLENGE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#e7b7ff'}).setOrigin(0.5);
-    const name=this.add.text(w/2,y2+54,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',wordWrap:{width:w-55},align:'center'}).setOrigin(0.5);
-    const detail=this.add.text(w/2,y2+82,diff.emoji+' '+diff.name+' · bonus 🍬 '+(120+spec.diff*30),{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd6a0'}).setOrigin(0.5);
+    const mission=spec.kind==='kills'?'Defeat '+spec.target+' enemies':spec.kind==='dig'?'Dig '+spec.target+' Temple tiles':'Clear Stage '+(spec.stage+1)+' · '+st.name;
+    const name=this.add.text(w/2,y2+54,mission,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',wordWrap:{width:w-55},align:'center'}).setOrigin(0.5);
+    const detail=this.add.text(w/2,y2+82,(spec.kind==='clear'?diff.emoji+' '+diff.name+' · ':'Progress '+(d.challengeProgress||0)+'/'+spec.target+' · ')+'bonus 🍬 '+(120+spec.diff*30),{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd6a0'}).setOrigin(0.5);
     // v4.65: การ์ดภารกิจรายวันเคยว่างครึ่งใบ → ใส่ภาพด่าน + lore + ป้ายพลัง
-    { const ax=28,aw=w-56,ay=y2+100,ah=(y2+h2-66)-ay,artKey='bg'+(spec.stage+1);
+    { const ax=28,aw=w-56,ay=y2+100,ah=(y2+h2-66)-ay,artKey=spec.kind==='dig'?'dig_bg':'bg'+(spec.stage+1);
       if(ah>70){ if(this.textures.exists(artKey)){const art=this._coverImage(ax,ay,aw,ah,artKey);if(art)this.menu.add(art);}
         const shade=this.add.graphics();shade.fillGradientStyle(0x090711,0x090711,0x090711,0x090711,0.05,0.05,0.85,0.85);shade.fillRect(ax,ay,aw,ah);shade.lineStyle(1.5,0xd95cff,0.6);shade.strokeRect(ax,ay,aw,ah);this.menu.add(shade);
-        const ps=this.powerStatus(spec.stage),bd=this.add.text(ax+aw-8,ay+8,'⚡ '+ps.cur+' / '+ps.rec+'  '+ps.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:ps.hex,backgroundColor:'#0d0913cc',padding:{x:6,y:3}}).setOrigin(1,0);
-        const lore=this.add.text(ax+10,ay+ah-10,st.lore||'',{fontFamily:'sans-serif',fontSize:'10px',color:'#eadff2',wordWrap:{width:aw-20},maxLines:3,stroke:'#120a16',strokeThickness:2}).setOrigin(0,1);
+        const ps=this.powerStatus(spec.stage),bd=this.add.text(ax+aw-8,ay+8,spec.kind==='dig'?'⛏️ '+Save.dig().shovels+' shovels':'⚡ '+ps.cur+' / '+ps.rec+'  '+ps.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:spec.kind==='dig'?'#ffd9a8':ps.hex,backgroundColor:'#0d0913cc',padding:{x:6,y:3}}).setOrigin(1,0);
+        const lore=this.add.text(ax+10,ay+ah-10,spec.kind==='dig'?'Open tiles in Temple Depths. Hard tiles count when broken.':st.lore||'',{fontFamily:'sans-serif',fontSize:'10px',color:'#eadff2',wordWrap:{width:aw-20},maxLines:3,stroke:'#120a16',strokeThickness:2}).setOrigin(0,1);
         this.menu.add([bd,lore]); } }
-    const state=d.challengeDone?'Completed ✓':unlocked?'Start Challenge':'🔒 Unlock Stage '+(spec.stage+1),cbg=this.add.graphics(),cby=y2+h2-40;cbg.fillStyle(d.challengeDone?0x315142:unlocked?0x8e4fc0:0x3a3341,1);cbg.fillRoundedRect(w/2-bw/2,cby-20,bw,40,13);const cbt=this.add.text(w/2,cby,state,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:d.challengeDone?'#a8f0c0':'#ffffff'}).setOrigin(0.5);this.menu.add([t2,name,detail,cbg,cbt]);
-    if(!d.challengeDone&&unlocked)this._zone(w/2-bw/2,cby-20,bw,40,()=>{this._dailyRun=true;this.stageDiff=spec.diff;this.startRun(spec.stage);});
+    const state=d.challengeDone?'Completed ✓':spec.kind==='dig'?'Go to Temple Depths':unlocked?'Start Challenge':'🔒 Unlock Stage '+(spec.stage+1),cbg=this.add.graphics(),cby=y2+h2-40;cbg.fillStyle(d.challengeDone?0x315142:unlocked?0x8e4fc0:0x3a3341,1);cbg.fillRoundedRect(w/2-bw/2,cby-20,bw,40,13);const cbt=this.add.text(w/2,cby,state,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:d.challengeDone?'#a8f0c0':'#ffffff'}).setOrigin(0.5);this.menu.add([t2,name,detail,cbg,cbt]);
+    if(!d.challengeDone&&unlocked)this._zone(w/2-bw/2,cby-20,bw,40,()=>{if(spec.kind==='dig'){this.menuScreen='dig';this.buildMenuScreen();return;}this._dailyRun=spec.kind==='clear';this.stageDiff=spec.kind==='clear'?spec.diff:1;this.startRun(spec.stage);});
     this.menu.setVisible(true);
   }
   // 👑 BOSS RUSH — สู้บอสทุกตัวที่เคยล้มติดกัน · เลือกความยาก (กฎเหล็ก: ยิ่งยากรางวัลยิ่งดี) · จับเวลา + สถิติดีสุด
@@ -5430,7 +5442,7 @@ class Game extends Phaser.Scene {
       Sfx.digHit(); this.tweens.add({targets:cont,x:{from:cx-4,to:cx+4},duration:40,yoyo:true,repeat:2,onComplete:()=>cont.setX(cx)}); this.digDust(cx,cy,cs,4,0.5);
       if(c.hp>0){ this.drawDigCell(cont,c,cs); this.time.delayedCall(170,()=>{ this._digBusy=false; }); return; }
       // 3) แตก → เผยของ
-      this.time.delayedCall(170,()=>{ c.open=true; Sfx.digBreak(); this.digShatter(cx,cy,cs,c.hard?0x8a7866:0x96623f); this.drawDigCell(cont,c,cs);
+      this.time.delayedCall(170,()=>{ c.open=true; this.advanceDaily('dig'); Sfx.digBreak(); this.digShatter(cx,cy,cs,c.hard?0x8a7866:0x96623f); this.drawDigCell(cont,c,cs);
         const it=cont.list[cont.list.length-1]; const rare=(DIG_ITEMS[c.c]||{}).rare;
         if(c.c==='chest'){ this.digChestOpen(cont,cx,cy,cs,c); return; }
     if(c.c==='trap'){ const fl=this.add.rectangle(cx,cy,cs,cs,0xff3b5c,0.6); this.menu.add(fl); this.tweens.add({targets:fl,alpha:0,scale:1.4,duration:420,onComplete:()=>fl.destroy()});
@@ -7321,7 +7333,7 @@ class Game extends Phaser.Scene {
     Sfx.clear();
     const next=this.stageIndex+1,last=!isStageReady(next),guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
     this._firstMastery=!Save.data.stageMastery[this.stageIndex];if(this._firstMastery){Save.data.stageMastery[this.stageIndex]=true;this.sugarStage+=40+this.stageIndex*25;Save.save();}
-    this._dailyBonus=0;if(this._dailyRun){const o=this.ensureDaily();if(!o.data.challengeDone&&o.data.challengeDay===o.spec.key){o.data.challengeDone=true;this._dailyBonus=120+o.spec.diff*30;this.sugarStage+=this._dailyBonus;Save.save();}this._dailyRun=false;}
+    this._dailyBonus=0;if(this._dailyRun){const o=this.ensureDaily();if(o.spec.kind==='clear'&&!o.data.challengeDone&&o.data.challengeDay===o.spec.key&&this.stageIndex===o.spec.stage&&this.stageDiff===o.spec.diff){o.data.challengeDone=true;o.data.challengeProgress=1;this._dailyBonus=120+o.spec.diff*30;this.sugarStage+=this._dailyBonus;Save.save();}this._dailyRun=false;}
     Save.addSugar(this.sugarStage);                                   // ฝาก Sugar + โบนัส Mastery/Daily
     this.gainCharExp(Math.round((75 + this.stageIndex*35)*guide.reward)); // catch-up EXP มากขึ้นเมื่อผ่านด่านด้วยพลังต่ำกว่าคำแนะนำ
     this._powerAfter=Save.power(this.character);
@@ -9093,7 +9105,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
