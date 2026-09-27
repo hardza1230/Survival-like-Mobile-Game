@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.94.0';
+const GAME_VERSION = '5.95.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.95.0', date:'2026-09-27', title:'Cocoa impact and aggressive Citrus Crew', items:['Cocoa stays the same apparent size while punching and has a new bear-claw impact effect','Yuzlings hunt and stick to enemies independently instead of orbiting Yuzu during combat','The crew spreads across available targets and returns only when it strays too far'] },
   { v:'5.94.0', date:'2026-09-27', title:'Mint Frost Lance and Gale animation', items:['Mint now plays an eight-frame lance attack when firing her signature weapon','Mint Gale has its own eight-frame wind cast animation','Existing idle, run, dash, hurt, cheer and knockout poses stay connected'] },
   { v:'5.93.0', date:'2026-09-27', title:'Companion and Cocoa combat animation', items:['Yuzlings and Cheese animate their attacks and healing casts','Cocoa plays a new eight-frame punch combo during her basic attack','Idle, run, hurt, dash, cheer and knockout poses remain available'] },
   { v:'5.92.0', date:'2026-09-27', title:'Citrus Crew target spread', items:['Yuzlings split across nearby enemies when several targets are available','They converge again when only one enemy remains'] },
@@ -1177,6 +1178,7 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
+  fx_cocoa_punch:{ url:'assets/fx_cocoa_punch_sheet.png', fw:128, fh:128, frames:8, rate:30, anchor:'center' },
   fx_flickerstrike:{ url:'assets/generated/fx_flickerstrike_sheet.png', fw:256, fh:256, frames:8, rate:34, anchor:'center' },   // Effectฟันของโกโก้ (Flicker Strike)
   fx_beam:     { url:'assets/fx_beam_sheet.png',     fw:352, fh:366, frames:8, rate:26, anchor:'left'   },
   fx_boom:     { url:'assets/fx_boom_sheet.png',     fw:352, fh:366, frames:8, rate:24, anchor:'center' },
@@ -8109,19 +8111,26 @@ class Game extends Phaser.Scene {
     if(!this._yuzuCrew)this._yuzuCrew=[];const crew=this._yuzuCrew;
     while(crew.length>count){const m=crew.pop();m.spr.destroy();}
     while(crew.length<count){const i=crew.length,cheese=workshop&&i===count-1,key=cheese?'minion_cheese':'minion_yuzling',spr=this.camWorld(this.add.sprite(this.player.x,this.player.y,key,0).setDepth(7).setScale(guardian?0.66:0.34));
-      crew.push({spr,cheese,cd:i*0.18,bites:0});}
+      crew.push({spr,cheese,cd:i*0.18,bites:0,target:null});}
     const now=this.elapsed||0;this._yuzuParadeT=Math.max(0,(this._yuzuParadeT||0)-dt);const parade=this._yuzuParadeT>0,assigned=new Set();
     for(let i=0;i<crew.length;i++){const m=crew[i],sp=m.spr,ang=i*TAU/Math.max(1,count),homeX=this.player.x+Math.cos(ang)*46,homeY=this.player.y+Math.sin(ang)*39;
       m.cd=Math.max(0,m.cd-dt);
-      let target=null,near=Infinity,closest=420,fallback=null,fallbackDist=420;
-      if(!m.cheese)this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(this.player.x,this.player.y,e.x,e.y);if(d>=420)return;
-        if(d<fallbackDist){fallbackDist=d;fallback=e;}
-        if(!assigned.has(e)&&d<closest){closest=d;target=e;}});
-      if(!target)target=fallback;
+      // Hunt from the minion's position and hold a live target while Yuzu moves.
+      const inLeash=e=>e&&e.active&&this.dist(this.player.x,this.player.y,e.x,e.y)<780;
+      let target=!m.cheese&&inLeash(m.target)&&this.dist(sp.x,sp.y,m.target.x,m.target.y)<680&&!assigned.has(m.target)?m.target:null;
+      if(!m.cheese&&!target){let closest=640,fallback=null,fallbackDist=640;
+        this.enemies.children.iterate(e=>{if(!inLeash(e))return;const d=this.dist(sp.x,sp.y,e.x,e.y);if(d>=640)return;
+          if(d<fallbackDist){fallbackDist=d;fallback=e;}
+          if(!assigned.has(e)&&d<closest){closest=d;target=e;}});
+        if(!target)target=fallback;
+      }
+      m.target=target;
       if(target)assigned.add(target);
+      let near=Infinity;
       if(target)near=this.dist(sp.x,sp.y,target.x,target.y);
-      const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=guardian?190:245;
-      if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>650)sp.setPosition(homeX,homeY);
+      const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=guardian?260:330;
+      if(Math.abs(tx-sp.x)>4)sp.setFlipX(tx<sp.x);
+      if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>950)sp.setPosition(homeX,homeY);
       else if(dist>25){const step=Math.min(dist,speed*dt);sp.setPosition(sp.x+(tx-sp.x)/dist*step,sp.y+(ty-sp.y)/dist*step);}
       if(m.attackTime>0){m.attackTime=Math.max(0,m.attackTime-dt);
         if(m.attackTime>0){sp.setFrame(Math.min(7,Math.floor((1-m.attackTime/m.attackDuration)*8)));}
@@ -8683,34 +8692,33 @@ class Game extends Phaser.Scene {
     if((this.elapsed||0)-(cc.last??-9)>1.6)cc.step=0; cc.last=this.elapsed||0;   // v5.64 เริ่มคอมโบใหม่ด้วยท่าพุ่งเสมอ
     const step=cc.step; cc.step++; const gen=cc.gen||0;
     let ang=moving?this.moveDir.angle():Math.atan2(t.y-P.y,t.x-P.x); cc.ang=ang; P.setFlipX(Math.cos(ang)<0);
-    const hit=(cx,cy,r,mul,o={})=>{ const bonus=1+Math.min(0.4,cc.n*0.01); let any=false;
+    const hit=(cx,cy,r,mul,o={})=>{ const bonus=1+Math.min(0.4,cc.n*0.01); let any=false,impactX=cx,impactY=cy;
       this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; any=true;
+        if(impactX===cx&&impactY===cy){impactX=e.x;impactY=e.y;}
         this.damage(e,unit*mul*bonus,e.x,e.y);
         if(e.isBoss||e.isMini)this.cocoaBossLeech();
         if(e.active&&!e.isBoss&&!e.isMini){ if(o.kb){const a=Math.atan2(e.y-P.y,e.x-P.x);e.setVelocity(Math.cos(a)*o.kb,Math.sin(a)*o.kb);e.knock=Math.max(e.knock||0,0.12);}
           if(o.stun)e.frozen=Math.max(e.frozen||0,o.stun); } });
       this.hitCratesInRadius(cx,cy,r,unit*mul);
-      if(any){ cc.n++; cc.t=0; this.cocoaBeatCharge(0.25); if(cc.n%25===0)this.time.delayedCall(120,()=>this.cocoaFrenzy(unit,reach)); }
+      if(any){ cc.n++; cc.t=0; this.cocoaBeatCharge(0.25);
+        this.spawnFxAnim('fx_cocoa_punch',impactX,impactY,{scale:o.heavy?0.72:0.48,depth:8,normal:true});
+        if(cc.n%25===0)this.time.delayedCall(120,()=>this.cocoaFrenzy(unit,reach)); }
       Sfx.comboPunch(cc.n,o.heavy?'heavy':'jab'); return any; };
     const live=()=>this.state==='play'&&(cc.gen||0)===gen;   // v5.69 กด Dash = gen เปลี่ยน → ท่าที่ค้างอยู่ยกเลิก
     const pt=(k,side=0,a=ang)=>({x:P.x+Math.cos(a)*reach*k-Math.sin(a)*side,y:P.y+Math.sin(a)*reach*k+Math.cos(a)*side});
-    const streak=(to,col,w)=>{ const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(w,col,0.9).lineBetween(P.x,P.y-6,to.x,to.y); g.fillStyle(0xffffff,0.95).fillCircle(to.x,to.y,w*0.9);
-      this.tweens.add({targets:g,alpha:0,duration:130,onComplete:()=>g.destroy()}); };
     const lean=(k)=>{ this._sqX=1+0.25*k; this._sqY=1-0.2*k; };   // เอนด้วยเจลลี่อย่างเดียว ไม่ tween ตำแหน่ง (กันกระตุกตอน dash)
-    const arc=(sd,col,w)=>{ const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(w,col,0.92); g.beginPath(); g.arc(P.x,P.y,reach*0.72,ang-sd*1.0,ang+sd*0.9,sd<0); g.strokePath(); this.tweens.add({targets:g,alpha:0,duration:170,onComplete:()=>g.destroy()}); };
     // v5.69 คอมโบจังหวะ 1-2-3-4-5 · ท่าละ 1 หมัด · หมุนชุดท่าทุกรอบไม่ให้ซ้ำ · จังหวะที่ 5 = ท่าปิด
     const SETS=[['jab','cross','hookL','hookR','upper'],['jab','body','cross','overhand','slam'],['cross','hookR','body','hookL','upper'],['jab','hookL','overhand','body','slam']];
     const beat=step%5, move=SETS[Math.floor(step/5)%SETS.length][beat], run=(ms,f)=>ms?this.time.delayedCall(ms,()=>{ if(live())f(); }):f();
     const M={
-      jab:()=>{ lean(0.6); const f=pt(0.6,-8); streak(f,0xfff0d0,7); hit(f.x,f.y,reach*0.5,0.65,{kb:90}); },
-      cross:()=>{ lean(1); const f=pt(0.66,8); streak(f,0xffd9a8,10); this.vfxHitRing(f.x,f.y,0xffd9a8,false); hit(f.x,f.y,reach*0.55,0.9,{kb:150}); },
-      hookL:()=>{ this._sqX=0.85; this._sqY=1.12; run(70,()=>{ arc(1,0xffc477,11); lean(1); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); }); },
-      hookR:()=>{ this._sqX=0.85; this._sqY=1.12; run(70,()=>{ arc(-1,0xffc477,11); lean(1); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); }); },
-      body:()=>{ lean(0.8); const f=pt(0.5,0); streak(f,0xffe2b8,9); hit(f.x,f.y,reach*0.55,0.85,{stun:0.2}); },
-      overhand:()=>{ this._sqX=0.82; this._sqY=1.2; run(90,()=>{ lean(1.2); const f=pt(0.65); streak(f,0xffb070,12); this.vfxHitRing(f.x,f.y,0xffb070,false); hit(f.x,f.y,reach*0.6,1.15,{kb:200,heavy:true}); }); },
+      jab:()=>{ lean(0.6); const f=pt(0.6,-8); hit(f.x,f.y,reach*0.5,0.65,{kb:90}); },
+      cross:()=>{ lean(1); const f=pt(0.66,8); hit(f.x,f.y,reach*0.55,0.9,{kb:150}); },
+      hookL:()=>{ this._sqX=0.85; this._sqY=1.12; run(70,()=>{ lean(1); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); }); },
+      hookR:()=>{ this._sqX=0.85; this._sqY=1.12; run(70,()=>{ lean(1); const f=pt(0.6); hit(f.x,f.y,reach*0.8,0.95,{kb:190}); }); },
+      body:()=>{ lean(0.8); const f=pt(0.5,0); hit(f.x,f.y,reach*0.55,0.85,{stun:0.2}); },
+      overhand:()=>{ this._sqX=0.82; this._sqY=1.2; run(90,()=>{ lean(1.2); const f=pt(0.65); hit(f.x,f.y,reach*0.6,1.15,{kb:200,heavy:true}); }); },
       upper:()=>{ this._sqX=1.2; this._sqY=0.78; run(100,()=>{ const f=pt(0.55); this._sqX=0.8; this._sqY=1.3;
-        const g=this.camWorld(this.add.graphics().setDepth(8)); g.lineStyle(12,0xfff0b0,0.95).lineBetween(f.x,f.y+30,f.x,f.y-70); this.tweens.add({targets:g,alpha:0,y:-20,duration:200,onComplete:()=>g.destroy()});
-        this.vfxHitRing(f.x,f.y,0xfff0b0,true); if(hit(f.x,f.y,reach*0.7,1.6*fin,{stun:0.45,heavy:true})){ this.screenShake(90,0.004); if(this.hitStop)this.hitStop(35); } }); },
+        if(hit(f.x,f.y,reach*0.7,1.6*fin,{stun:0.45,heavy:true})){ this.screenShake(90,0.004); if(this.hitStop)this.hitStop(35); } }); },
       slam:()=>{ this._sqX=0.8; this._sqY=1.3; run(200,()=>{ const r=reach*1.5*(basic.mutation==='breaker'?1.2:1); this._sqX=1.4; this._sqY=0.65;
         if(this.textures.exists('vfx_bear_shockwave')){const w=this.camWorld(this.add.image(P.x,P.y,'vfx_bear_shockwave').setDepth(6).setScale(0.16).setAlpha(0.9));this.tweens.add({targets:w,scale:(r*2.2)/256,alpha:0,duration:320,onComplete:()=>w.destroy()});}
         else this.vfxHitRing(P.x,P.y,0xffa54d,true);
@@ -8724,7 +8732,7 @@ class Game extends Phaser.Scene {
         else this.vfxHitRing(P.x,P.y,0xffc477,true);
         hit(P.x,P.y,r,0.8,{kb:230,heavy:true}); this.screenShake(80,0.004); });
       const extra=(basic.mutation==='rush'?1:0)+(aw?1:0);   // ท่าปิดแล้วต่อหมัดสั้นตามจำนวน (Brawler/Rushdown/Awaken)
-      for(let i=0;i<extra;i++)run(260+i*90,()=>{ const f=pt(0.55,(i%2?9:-9)); streak(f,0xfff0d0,6); hit(f.x,f.y,reach*0.5,0.5); }); }
+      for(let i=0;i<extra;i++)run(260+i*90,()=>{ const f=pt(0.55,(i%2?9:-9)); hit(f.x,f.y,reach*0.5,0.5); }); }
     const RHYTHM=[0.72,0.72,0.78,0.78,1.15];
     this._ccCdMul=RHYTHM[beat]; this.poseAttack(280);
   }
@@ -10764,7 +10772,7 @@ class Game extends Phaser.Scene {
     p.rotation = waddle + this._lean;
     // ชดเชยชีตตัวละครที่ "idle art smaller than run art" (เช่น Mint Frostleaf) → กันตัวหด/บีบตอนหยุดเดิน
     const runKey='char_'+this.character+'_run';
-    const actMul=(this.player.texture.key!==runKey && CHAR_ACTION_SCALE[this.character])||1;
+    const actMul=this.character==='cocoa'&&this.player.texture.key==='char_cocoa_attack'?1.14:((this.player.texture.key!==runKey && CHAR_ACTION_SCALE[this.character])||1);
     const base=(this._pBase||1)*actMul;
     p.setScale(base*this._sqX*(1-breathe), base*this._sqY*(1+breathe));
     // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
