@@ -62,7 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.78.0 — มอนตายสะใจ + กระสุนศัตรูเห็นชัด)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.79.0 — ประตูทางแยกหลังมินิบอส)
+- **v5.79.0 (เจ้าของเลือกแนวทาง A: ทางแยกกลางด่าน):** global `CROSSROADS` 5 แบบ (treasure: crate×7+vac+swarm · blood: −30% HP, dmg×1.25 cd×0.9 90 วิ · duel: elite HP×3 `e._duelElite` ฆ่าแล้ว → `duelEliteDown` offerRelic/currency · rest: ฮีล 40% · gamble: 50% currency 3 / 50% elite 2 ตัว) · `onWaveCleared(keep,fromMini)` ตอนมินิตาย → `openCrossroads(next)` สุ่ม 3 ประตูรอบผู้เล่น R≤170 · เดินเข้า (<52) = `chooseCrossroad` · 14 วิไม่เลือก = ข้าม · `resumeAfterCrossroads(ms)` เข้าช่วงพัก → เวฟถัดไป (`_xrNext`) · `tickCrossroads` ใน update · `clearCrossroads` ใน startStage/exitStage · ไม่เกิดใน tutorial/recipe/bossRush · verified headless ครบ 5 ประตู+timeout+screenshot, 0 error · **ยังไม่มีใครเล่นจริง**
 - **v5.78.0 (เจ้าของเลือกข้อ 1+3):** `deathFling(e)` ภาพมอนธรรมดากระเด็นหมุนออกจากผู้เล่น 280ms (ใช้งบ `fxOk`) · ฆ่า ≥6 ตัวใน 260ms = screenShake 90ms 0.0035 (cd 450ms, `_mkT/_mkShakeAt`) · กระสุนศัตรูใช้ `proj_foe` (= proj_enemy + ขอบเข้มจาก PIL) ไม่ย้อมสีตามด่านแล้ว · verified headless C2-2 screenshot, 0 error
 - **v5.77.0:** `CH1_EARLY_WAVE_PLAN` กำหนดภารกิจเวฟ 1/3/4 ของด่าน 1–3 ไม่สุ่ม, เวฟ 2 คงมินิบอส · แบนเนอร์มี Mission 1/3–3/3 + คำสั่งตรง · ด่าน 1 Hunt เหลือ 2 เป้า · Recipe/Rift ไม่ใช้แผนนี้ · รายละเอียด `docs/CHAPTER1_EARLY_MISSIONS.md`
 - **v5.76.0:** Mint ปลดถาวรเมื่อผ่าน Stage 1 และ Cocoa เมื่อผ่าน Stage 5 โดยไม่ใช้ Sugar · เซฟเก่าที่เคยผ่านได้สิทธิ์ย้อนหลังและตัวที่เคยซื้อยังอยู่ · การ์ด Heroes แสดงสไตล์/คำอธิบาย/วิธีปลดและปุ่มข้อมูล · Taro/Sesame หยุดการซื้อใหม่จนพัฒนาเสร็จ; milestone Ch2/Ch3 และนโยบายตัวละครใหม่แบบ league อยู่ใน `docs/CHARACTER_UNLOCK_PLAN.md` (ยังไม่สร้างระบบจ่ายเงินจริง)

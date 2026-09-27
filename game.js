@@ -42,11 +42,19 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.78.0';
+const GAME_VERSION = '5.79.0';
+// v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
+const CROSSROADS=[
+  {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
+  {id:'blood',emoji:'🩸',name:'Blood Pact',desc:'−30% HP · +25% dmg',color:0xff4d6d},
+  {id:'duel',emoji:'👹',name:'Elite Duel',desc:'Beat a champion → relic',color:0xc77dff},
+  {id:'rest',emoji:'🍵',name:'Tea Rest',desc:'Heal 40% HP',color:0x7be0a0},
+  {id:'gamble',emoji:'🎲',name:'Gamble',desc:'Currency or 2 elites',color:0x6ed7df}];
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.79.0', date:'2026-09-27', title:'Crossroads after minibosses', items:['After a miniboss, three doors appear — walk into one to choose your path','Doors: Treasure Room, Blood Pact, Elite Duel, Tea Rest or Gamble','Doors fade after 14 seconds if you do not choose'] },
   { v:'5.78.0', date:'2026-09-27', title:'Punchier kills, clearer enemy shots', items:['Defeated enemies fly back and spin away','Wiping out a crowd at once gives a small screen shake','Enemy bullets now use one bright color with a dark outline on every stage'] },
   { v:'5.77.0', date:'2026-09-27', title:'Chapter 1 learning path', items:['Stages 1–3 now teach wave missions in a fixed order: survive, capture, hunt, then escort','Early mission banners say exactly what to do and where to look','Stage 1 marked-enemy hunt asks for two targets instead of three'] },
   { v:'5.76.0', date:'2026-09-27', title:'Story fighter unlocks and clearer cards', items:['Mint unlocks after Stage 1 and Cocoa after Chapter 1, with no Sugar purchase','Character cards show their play style and offer a detail view','Taro and Sesame are reserved for later development; previously owned fighters remain available'] },
@@ -6244,7 +6252,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ this.cancelBeat(); this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ this.cancelBeat(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -6389,7 +6397,7 @@ class Game extends Phaser.Scene {
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
   startStage(i){
-    const st=STAGES[i]; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.stageIndex=i; this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
+    const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.stageIndex=i; this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
     this.bossUI.forEach(o=>o.setVisible(false));
@@ -6649,7 +6657,7 @@ class Game extends Phaser.Scene {
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
-    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;e._mimic=null;if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
+    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;e._duelElite=false;e._mimic=null;if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
   }
   // เวฟธรรมดา = "Survive the timer" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){
@@ -7305,16 +7313,41 @@ class Game extends Phaser.Scene {
       fn();
     });
   }
-  onWaveCleared(keep){
+  onWaveCleared(keep,fromMini){
     this._clearT=0;this._clearFled=false;
     this.boss=null;Sfx.bgmIntense(false);if(String(Sfx._currentBgmKey||'').startsWith('bgm_m'))Sfx.playStageBgm(this.stageIndex+1);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();
     const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
     if(next>=st.waves){this.mode='bossWarning';this.updateWaveText();
       this.scheduleStageEvent(300,'bossWarning',()=>{const rage=this.bossRageInfo();this.showBanner('⚠️ '+rage.emoji+' Boss '+rage.name,st.boss+' · Minions '+rage.kills+' · reward x'+rage.reward.toFixed(2),2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);
         this.scheduleStageEvent(3000,'bossWarning',()=>this.spawnFinalBoss());});return;}
+    if(fromMini&&!this._inTutorial&&!this.recipeMode&&!this.bossRush){ this.scheduleStageEvent(900,'breather',()=>this.openCrossroads(next)); return; }
     this.scheduleStageEvent(300,'breather',()=>{this.showBanner('Breather: 3 seconds','Wave '+(next+1)+' incoming',2400);
       this.scheduleStageEvent(3200,'breather',()=>this.startWave(next,false));});
   }
+  // v5.79: 🚪 Crossroads — หลังมินิบอส เดินเข้าประตู 1 ใน 3 (เสี่ยง/แลก/รางวัล) แทนพักเฉย ๆ
+  openCrossroads(next){ this.clearCrossroads(); const p=this.player,pool=Phaser.Utils.Array.Shuffle(CROSSROADS.slice()).slice(0,3),a0=Math.random()*Math.PI*2;
+    const gates=pool.map((d,i)=>{ const a=a0+i*Math.PI*2/3,R=Math.min(170,(this.cameras.main.worldView.width||400)*0.34),x=p.x+Math.cos(a)*R,y=p.y+Math.sin(a)*R*1.15,g=this.camWorld(this.add.graphics().setDepth(4)),
+      em=this.camWorld(this.add.text(x,y-8,d.emoji,{fontSize:'30px'}).setOrigin(0.5).setDepth(y+2)),
+      tx=this.camWorld(this.add.text(x,y+30,d.name+'\n'+d.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',stroke:'#1a1026',strokeThickness:5,wordWrap:{width:170}}).setOrigin(0.5,0).setDepth(y+2));
+      return {d,x,y,g,em,tx}; });
+    this._xr={gates,next,t:14};
+    this.showBanner('🚪 Crossroads','Walk into a door to choose your path',2600);Sfx.chest(); }
+  tickCrossroads(dt){ const xr=this._xr; if(!xr||!xr.gates)return; xr.t-=dt; const p=this.player,pulse=0.5+0.5*Math.sin((this.elapsed||0)*5);
+    for(const G of xr.gates){ const g=G.g; g.clear(); g.fillStyle(G.d.color,0.16+0.1*pulse); g.fillCircle(G.x,G.y,46); g.lineStyle(4,G.d.color,0.9); g.strokeCircle(G.x,G.y,46+pulse*4);
+      if(xr.t<5){ g.lineStyle(3,0xffffff,0.6); g.beginPath(); g.arc(G.x,G.y,54,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(0,xr.t/5),false); g.strokePath(); }
+      if(Phaser.Math.Distance.Between(p.x,p.y,G.x,G.y)<52){ this.chooseCrossroad(G.d); return; } }
+    if(xr.t<=0){ this.showBanner('🚪 The doors fade…','No path chosen',1600); this.resumeAfterCrossroads(); } }
+  chooseCrossroad(d){ const next=this._xr.next,p=this.player; this.burst(p.x,p.y,d.color);this.screenFlash(d.color,0.25,300);Sfx.chestWin&&Sfx.chestWin(); this.clearCrossroads(); this._xrNext=next;
+    if(d.id==='treasure'){ for(let i=0;i<7;i++)this.spawnCrate(); this.spawnVac(p.x+Phaser.Math.Between(-120,120),p.y+Phaser.Math.Between(-120,120)); this.time.delayedCall(700,()=>{ if(this._busy())this.spawnSwarm(); }); this.showBanner('💰 Treasure Room','Loot everywhere… and a swarm is coming!',2400); this.resumeAfterCrossroads(6000); }
+    else if(d.id==='blood'){ p.hp=Math.max(1,p.hp-p.hp*0.3); const si=this.stageIndex; p.dmgMul*=1.25; p.cdMul*=0.9; this.showBanner('🩸 Blood Pact','−30% HP · +25% damage · faster attacks for 90s',2400); this.time.delayedCall(90000,()=>{ if(this.stageIndex===si&&this.state!=='menu'){p.dmgMul/=1.25;p.cdMul/=0.9;} }); this.resumeAfterCrossroads(); }
+    else if(d.id==='duel'){ const e=this.spawnElite(); if(e){ e.hp*=3; e.maxhp=e.hp; e._duelElite=true; e.tintColor=0xff5d73; e.setTint(0xff5d73); e.setScale((e.baseScale||1)*1.3); this._xrDuel=true; this.showBanner('👹 Elite Duel','Defeat the champion to earn a relic',2400); this.scheduleStageEvent(30000,'breather',()=>{ if(this._xrDuel){this._xrDuel=false;this.resumeAfterCrossroads();} }); } else this.resumeAfterCrossroads(); }
+    else if(d.id==='rest'){ p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.4); Sfx.heal(); this.showBanner('🍵 Tea Rest','Recovered 40% HP',2000); this.resumeAfterCrossroads(); }
+    else if(d.id==='gamble'){ if(Math.random()<0.5){ this.grantCurrencyReward(3,this.currencyTierFor(),'🎲 Lucky! Currency jackpot'); this.resumeAfterCrossroads(); } else { this.showBanner('🎲 Unlucky!','Two elites crash the party',2200); this.spawnElite(); this.spawnElite(); this.resumeAfterCrossroads(9000); } } }
+  duelEliteDown(){ if(!this._xrDuel)return; this._xrDuel=false; this.time.delayedCall(600,()=>{ if(this.state==='play'&&!this.offerRelic())this.grantCurrencyReward(3,this.currencyTierFor(),'👹 Champion defeated!'); }); this.resumeAfterCrossroads(1500); }
+  resumeAfterCrossroads(ms=0){ this.clearCrossroads(); const next=this._xrNext!=null?this._xrNext:this.waveIndex+1; this._xrNext=null;
+    this.scheduleStageEvent(300+ms,'breather',()=>{this.showBanner('Breather: 3 seconds','Wave '+(next+1)+' incoming',2400);
+      this.scheduleStageEvent(3200,'breather',()=>this.startWave(next,false));}); }
+  clearCrossroads(){ const xr=this._xr; if(xr&&xr.gates){ for(const G of xr.gates){G.g.destroy();G.em.destroy();G.tx.destroy();} if(this._xrNext==null)this._xrNext=xr.next; } this._xr=null; }
   // บอสตาย → เปิดกล่องรางวัลจบStage (Sugar/อุปกรณ์) แล้วกลับหน้าเลือกด่าน
   onBossDown(x,y){
     this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bossClear();this.time.delayedCall(3000,()=>{if(!this.boss&&this.state!=='menu')Sfx.playStageBgm(this.stageIndex+1);});this.clearFoes();this.clearEnemies();this.clearBossObjects();
@@ -9165,7 +9198,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -9225,7 +9258,7 @@ class Game extends Phaser.Scene {
       this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const o=['bronze','silver','gold'],t=o[Math.min(2,o.indexOf(e._mimic)+1)]; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
     if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+1 ⛏️',0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
-    if(isMini){ this._nextChestTier=this.miniChestTier(); this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
+    if(isMini){ this._nextChestTier=this.miniChestTier(); this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(false,true); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
   killBullet(b){ b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้
@@ -10670,7 +10703,7 @@ class Game extends Phaser.Scene {
     this.updatePickupReadability();
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
-    this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt);
+    this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt);
     if(this._coach)this.tickTutorialCoach(dt);
     this.tickStage(dt);
     this.tickBossZoom();
