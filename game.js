@@ -947,6 +947,11 @@ const ASSET_IMAGES = {
   relic_shell:'assets/art/icons/relic_shell.webp',
   relic_splinter:'assets/art/icons/relic_splinter.webp',
   // Stage cards and portrait menu art (source PNGs remain in incoming).
+  screen_equipment:'assets/incoming/menu_screens/screen_equipment.png',
+  screen_inbox:'assets/incoming/menu_screens/screen_inbox.png',
+  screen_endgame:'assets/incoming/menu_screens/screen_endgame.png',
+  screen_heroes:'assets/incoming/menu_screens/screen_heroes.png',
+  screen_difficulty:'assets/incoming/menu_screens/screen_difficulty.png',
   chapter3_cover:'assets/incoming/menu_stage_cards/chapter3_cover.png',
   chapter_endgame_cover:'assets/incoming/menu_stage_cards/chapter_endgame_cover.png',
   stage_card_s01:'assets/incoming/menu_stage_cards/stage_card_s01.png',
@@ -4865,7 +4870,7 @@ class Game extends Phaser.Scene {
     this._overBtns.push({x:w/2-bw/2,y:by-24,w:bw,h:48,fn:()=>{window.__pendingMenu='bossrush';this.scene.restart();}});
     this.over.add(box); this.over.setVisible(true); }
   buildEndgame(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Beyond Hunger','screen_recipes');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Beyond Hunger','screen_endgame');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
     const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 Finish the story to unlock the endgame',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
     const card=(y,color,title,desc,label,fn)=>{const cw=Math.min(w-32,520),x=(w-cw)/2,ch=Math.min(132,h*0.22),g=this.add.graphics();g.fillStyle(0x251a32,0.97);g.fillRoundedRect(x,y,cw,ch,17);g.lineStyle(2,color,0.9);g.strokeRoundedRect(x,y,cw,ch,17);const t=this.add.text(x+18,y+17,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff'}),d=this.add.text(x+18,y+47,desc,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',wordWrap:{width:cw-36},lineSpacing:4}),b=this.add.text(x+cw-18,y+ch-18,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0.5);this.menu.add([g,t,d,b]);if(fn)this._zone(x,y,cw,ch,fn);};
     const y1=100,y2=y1+Math.min(145,h*0.24);card(y1,0xd58cff,'🌙 Midnight Kitchen · Endless','5 waves then a boss, enemies grow stronger each cycle · every 3 cycles The Echo of Hunger appears\nBest '+best+' cycles',unlocked?'Tap to start':'Not unlocked',unlocked?()=>{this._endlessRequested=true;this.stageDiff=Math.max(2,Math.min(3,(Save.data.diffBest?.[4]||2)));this.startRun(4);}:null);
@@ -5118,7 +5123,7 @@ class Game extends Phaser.Scene {
     sp.setScale(scale);this.menu.add(sp);return sp;
   }
   buildChars(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Fighters of the Mochi Core','screen_chapter');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Fighters of the Mochi Core','screen_heroes');
     const charsUnlocked=(Save.data.unlockedStage||0)>=1;   // v4.23: ปลดล็อกซื้อตัวละครอื่นหลังผ่านด่าน 1 ของ Chapter 1
     const w=this.W,h=this.H,landscape=w>h,cols=landscape?6:2,gap=landscape?7:10,y0=landscape?76:Math.max(92,h*0.105);
     const rows=Math.ceil(CHAR_ORDER.length/cols),side=landscape?10:14,cardW=(w-side*2-gap*(cols-1))/cols;
@@ -5178,7 +5183,7 @@ class Game extends Phaser.Scene {
   }
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   openDifficultyChoice(idx){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose Difficulty','screen_stage');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose Difficulty','screen_difficulty');
     const st=STAGES[idx],portrait=this.W<=this.H,best=(Save.data.diffBest||[])[idx]||0;
     const t=this.add.text(this.W/2,portrait?78:52,st.emoji+' '+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe07a'}).setOrigin(0.5);
     const pwr=this.powerStatus(idx),warn=pwr.ratio<0.9,subY=portrait?98:70;
@@ -5539,7 +5544,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildGearLandscape(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment','screen_group_gear');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment','screen_equipment');
     const w=this.W,h=this.H,id=this.character||Save.data.character||'momo',sel=this.gearSlot||'weapon';
     const leftW=Math.min(345,w*0.45),panelX=12,panelY=56,panelW=leftW-20,panelH=h-70,pcx=panelX+panelW/2,pcy=panelY+panelH*0.40;
     const pbg=this.add.graphics();pbg.fillStyle(0x241a33,0.72);pbg.fillRoundedRect(panelX,panelY,panelW,panelH,16);pbg.lineStyle(1.5,0x4a4059,0.8);pbg.strokeRoundedRect(panelX,panelY,panelW,panelH,16);this.menu.add(pbg);
@@ -5574,7 +5579,7 @@ class Game extends Phaser.Scene {
   }
   buildGear(){
     if(this.W>this.H){this.buildGearLandscape();return;}
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment','screen_group_gear');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment','screen_equipment');
     const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
     const sel=this.gearSlot||'weapon';
     const cy0=78, topH=Math.min(h*0.34,250);
@@ -5684,7 +5689,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildGearInbox(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📦 Reward Inbox','screen_group_activity','gLoadout');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📦 Reward Inbox','screen_inbox','gLoadout');
     const w=this.W,cap=Save.data.gearInventoryCap||24,items=Save.gearInboxItems(),mode=Save.data.gearAutoDismantle||'off',labels={off:'OFF',common:'COMMON',rare:'COMMON + RARE'};
     let y=64;const info=this.add.text(14,y,'Bag '+Save.gearInventoryCount()+' / '+cap+'   ·   Inbox '+items.length+' / '+GEAR_INBOX_CAP,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#d8cde2'}).setOrigin(0,0);
     const auto=this.add.graphics();auto.fillStyle(mode==='off'?0x3a3550:0x704a20,1);auto.fillRoundedRect(w-170,y-6,156,28,9);const at=this.add.text(w-92,y+8,'Auto: '+labels[mode],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:mode==='off'?'#a99fbb':'#ffd166'}).setOrigin(.5);this.menu.add([info,auto,at]);
