@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.92.0';
+const GAME_VERSION = '5.93.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.93.0', date:'2026-09-27', title:'Companion and Cocoa combat animation', items:['Yuzlings and Cheese animate their attacks and healing casts','Cocoa plays a new eight-frame punch combo during her basic attack','Idle, run, hurt, dash, cheer and knockout poses remain available'] },
   { v:'5.92.0', date:'2026-09-27', title:'Citrus Crew target spread', items:['Yuzlings split across nearby enemies when several targets are available','They converge again when only one enemy remains'] },
   { v:'5.91.0', date:'2026-09-27', title:'Immortal Citrus Crew', items:['Yuzu’s Yuzlings and Cheese can no longer be knocked out by nearby enemies','Yuzlings prioritize the enemy closest to Yuzu, including during Citrus Parade','Loyal Guard keeps its nearby healing; Second Serving empowers every fourth Yuzling strike'] },
   { v:'5.89.0', date:'2026-09-27', title:'Open fighter playtest', items:['All six active fighters are selectable immediately during pre-release testing, including Sesame and Yuzu','Fighter progression and prior unlock records remain saved for future unlock rules','The character menu and Talents navigation show every test fighter'] },
@@ -1114,6 +1115,8 @@ const ASSET_SHEETS = {
   char_yuzu_attack:{url:'assets/characters/yuzu_attack_sheet.png',frame:128},
   minion_yuzling:{url:'assets/characters/yuzling_sheet.png',frame:128,anim:{frames:4,rate:7}},
   minion_cheese:{url:'assets/characters/cheese_sheet.png',frame:128,anim:{frames:4,rate:6}},
+  minion_yuzling_attack:{url:'assets/characters/yuzling_attack_sheet.png',frame:128},
+  minion_cheese_attack:{url:'assets/characters/cheese_attack_sheet.png',frame:128},
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
   char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
   char_momo_run:{ url:'assets/char_momo_run_sheet.png', frame:128 },
@@ -1122,6 +1125,7 @@ const ASSET_SHEETS = {
   char_mint_run:{ url:'assets/char_mint_frostleaf_run_sheet.png', frame:128 },
   char_cocoa: { url:'assets/char_cocoa_awakened_sheet.png', frame:128 },
   char_cocoa_run:{ url:'assets/char_cocoa_run_sheet.png', frame:128 },
+  char_cocoa_attack:{ url:'assets/char_cocoa_attack_sheet.png', frame:128 },
   char_berry: { url:'assets/char_berry_core_sheet.png', frame:128 },
   char_berry_run:{ url:'assets/char_berry_core_run_sheet.png', frame:128 },
   char_taro:  { url:'assets/char_taro_awakened_sheet.png', frame:128 },
@@ -8094,6 +8098,8 @@ class Game extends Phaser.Scene {
     } }
   // Citrus Crew: lightweight sprites, fixed cap, no physics bodies or per-frame allocations beyond nearby target scan.
   clearYuzuCrew(){for(const m of this._yuzuCrew||[])if(m.spr&&m.spr.active)m.spr.destroy();this._yuzuCrew=[];this._yuzuHealT=0;this._yuzuCheeseT=0;this._yuzuParadeT=0;}
+  playYuzuMinionAttack(m,seconds){const key=m.cheese?'minion_cheese_attack':'minion_yuzling_attack';if(!this.textures.exists(key))return;
+    m.attackDuration=seconds;m.attackTime=seconds;m.spr.stop().setTexture(key).setFrame(0);}
   tickYuzuCrew(dt){if(this.character!=='yuzu'||!this.basicAttack||!this.player)return;
     const b=this.basicAttack,pm=b._pm||{},path=b.path||'',guardian=path==='citrusGuardian',workshop=path==='juiceWorkshop',count=guardian?1:Math.min(9,2+(b.lv.family||0)+Math.round(pm.count||0)+(workshop?1:0));
     if(!this._yuzuCrew)this._yuzuCrew=[];const crew=this._yuzuCrew;
@@ -8113,13 +8119,17 @@ class Game extends Phaser.Scene {
       const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=guardian?190:245;
       if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>650)sp.setPosition(homeX,homeY);
       else if(dist>25){const step=Math.min(dist,speed*dt);sp.setPosition(sp.x+(tx-sp.x)/dist*step,sp.y+(ty-sp.y)/dist*step);}
-      if(sp.anims&&this.anims.exists((m.cheese?'minion_cheese':'minion_yuzling')+'_walk')&&dist>28)sp.play((m.cheese?'minion_cheese':'minion_yuzling')+'_walk',true);else if(sp.anims&&sp.anims.isPlaying)sp.stop();
+      if(m.attackTime>0){m.attackTime=Math.max(0,m.attackTime-dt);
+        if(m.attackTime>0){sp.setFrame(Math.min(7,Math.floor((1-m.attackTime/m.attackDuration)*8)));}
+        else sp.setTexture(m.cheese?'minion_cheese':'minion_yuzling').setFrame(0);
+      }else if(sp.anims&&this.anims.exists((m.cheese?'minion_cheese':'minion_yuzling')+'_walk')&&dist>28)sp.play((m.cheese?'minion_cheese':'minion_yuzling')+'_walk',true);
+      else if(sp.anims&&sp.anims.isPlaying)sp.stop();
       if(this.iso)sp.setDepth(sp.y+1);
-      if(m.cheese){this._yuzuCheeseT=(this._yuzuCheeseT||0)+dt;if(this._yuzuCheeseT>=Math.max(5,9*Math.pow(0.94,b.lv.p_sweetHelper||0))){this._yuzuCheeseT=0;const heal=Math.max(1,Math.round(this.player.maxhp*(b.evolved?0.05:0.035)));this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,heal);const enemy=this.nearestEnemy(260);if(enemy)this.damage(enemy,this.relicDmg(b.evolved?1.0:0.6)*(1+0.08*(b.lv.p_sourMixer||0)),enemy.x,enemy.y);}continue;}
+      if(m.cheese){this._yuzuCheeseT=(this._yuzuCheeseT||0)+dt;if(this._yuzuCheeseT>=Math.max(5,9*Math.pow(0.94,b.lv.p_sweetHelper||0))){this._yuzuCheeseT=0;this.playYuzuMinionAttack(m,0.48);const heal=Math.max(1,Math.round(this.player.maxhp*(b.evolved?0.05:0.035)));this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,heal);const enemy=this.nearestEnemy(260);if(enemy)this.damage(enemy,this.relicDmg(b.evolved?1.0:0.6)*(1+0.08*(b.lv.p_sourMixer||0)),enemy.x,enemy.y);}continue;}
       if(target&&near<=(guardian?95:58)&&m.cd<=0){let dmg=(guardian?18:8)*(1+0.12*(b.ranks.power||0))*(guardian?1+0.15*(b.lv.family||0):1)*(pm.dmg||1)*(this.player.dmgMul||1)*(parade?1.55:1);
         if(b.mutation==='pack'){let allies=guardian?2:0;for(const a of crew)if(a!==m&&!a.cheese&&this.dist(a.spr.x,a.spr.y,target.x,target.y)<90)allies++;dmg*=1+Math.min(0.6,allies*0.12);}
         m.bites++;if(b.mutation==='second'&&m.bites%4===0)dmg*=1.5;
-        this.damage(target,dmg,target.x,target.y);sp.setFrame(4);if((this._yuzuAttackCd||0)<=now){this.poseAttack(400);this._yuzuAttackCd=now+0.65;}
+        this.damage(target,dmg,target.x,target.y);this.playYuzuMinionAttack(m,0.36);if((this._yuzuAttackCd||0)<=now){this.poseAttack(400);this._yuzuAttackCd=now+0.65;}
         const splash=(b.lv.splash||0)>0||guardian||b.evolved||b.mutation==='parting'&&m.bites%4===0;
         if(splash){const R=(guardian?90:45)+12*(b.lv.splash||0)+(b.evolved?20:0),blast=b.mutation==='parting'&&m.bites%4===0;this.enemies.children.iterate(e=>{if(e&&e.active&&e!==target&&this.dist(e.x,e.y,target.x,target.y)<R)this.damage(e,dmg*(blast?0.8:0.3),e.x,e.y);});}
         m.cd=Math.max(0.32,(guardian?1.3:0.9)*Math.pow(0.92,b.ranks.rate||0)*(pm.cd||1)*(parade?0.58:1)*(b.evolved?0.85:1));}
@@ -8712,7 +8722,7 @@ class Game extends Phaser.Scene {
       const extra=(basic.mutation==='rush'?1:0)+(aw?1:0);   // ท่าปิดแล้วต่อหมัดสั้นตามจำนวน (Brawler/Rushdown/Awaken)
       for(let i=0;i<extra;i++)run(260+i*90,()=>{ const f=pt(0.55,(i%2?9:-9)); streak(f,0xfff0d0,6); hit(f.x,f.y,reach*0.5,0.5); }); }
     const RHYTHM=[0.72,0.72,0.78,0.78,1.15];
-    this._ccCdMul=RHYTHM[beat]; this.poseFlash&&this.poseFlash(CF.cast,120);
+    this._ccCdMul=RHYTHM[beat]; this.poseAttack(280);
   }
   cocoaFrenzy(unit,reach){ if(this.state!=='play')return; const P=this.player, cc=this._cc;
     Sfx.comboPunch(cc.n,'frenzy'); this.showComboMove('BEAR FRENZY!',true); this.screenFlash&&this.screenFlash(0xffc477,0.35,220);
