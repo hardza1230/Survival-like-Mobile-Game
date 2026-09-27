@@ -62,7 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.80.0 — กิจกรรมเสริมระหว่างเวฟ)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.81.0 — ชื่อสาย Build Path ชัดเจน)
+- **v5.81.0:** การ์ด Build Path แสดงชื่อสายและบทบาทเด่น ไม่แสดง Lv1 หรือดาวแบบการ์ดอัปเกรด · ใช้ emoji แต่ละสายแทนไอคอนอาวุธร่วมกัน · หัวข้อบอกว่าเลือกได้สายเดียวต่อรันและแตะซ้ำยืนยัน
 - **v5.80.0:** เวฟ 3–4 มีโอกาสเจอ Sugar Courier ให้ล่าก่อนหนี หรือ Supply Cache ให้ทุบโหลทอง 3 ใบภายในเวลา · ได้ Sugar ตามระดับความยากและ Currency · ไม่บังคับผ่านเวฟ และไม่ปรากฏในการเล่น Stage 1 ครั้งแรก
 - **v5.79.0 (เจ้าของเลือกแนวทาง A: ทางแยกกลางด่าน):** global `CROSSROADS` 5 แบบ (treasure: crate×7+vac+swarm · blood: −30% HP, dmg×1.25 cd×0.9 90 วิ · duel: elite HP×3 `e._duelElite` ฆ่าแล้ว → `duelEliteDown` offerRelic/currency · rest: ฮีล 40% · gamble: 50% currency 3 / 50% elite 2 ตัว) · `onWaveCleared(keep,fromMini)` ตอนมินิตาย → `openCrossroads(next)` สุ่ม 3 ประตูรอบผู้เล่น R≤170 · เดินเข้า (<52) = `chooseCrossroad` · 14 วิไม่เลือก = ข้าม · `resumeAfterCrossroads(ms)` เข้าช่วงพัก → เวฟถัดไป (`_xrNext`) · `tickCrossroads` ใน update · `clearCrossroads` ใน startStage/exitStage · ไม่เกิดใน tutorial/recipe/bossRush · verified headless ครบ 5 ประตู+timeout+screenshot, 0 error · **ยังไม่มีใครเล่นจริง**
 - **v5.78.0 (เจ้าของเลือกข้อ 1+3):** `deathFling(e)` ภาพมอนธรรมดากระเด็นหมุนออกจากผู้เล่น 280ms (ใช้งบ `fxOk`) · ฆ่า ≥6 ตัวใน 260ms = screenShake 90ms 0.0035 (cd 450ms, `_mkT/_mkShakeAt`) · กระสุนศัตรูใช้ `proj_foe` (= proj_enemy + ขอบเข้มจาก PIL) ไม่ย้อมสีตามด่านแล้ว · verified headless C2-2 screenshot, 0 error

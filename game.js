@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.80.0';
+const GAME_VERSION = '5.81.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.81.0', date:'2026-09-27', title:'Clearer Build Path selection', items:['Build Path choices show the path name prominently and describe its play style','Path cards no longer look like ordinary Lv1 upgrades','The choice header explains that only one path can be selected for the run'] },
   { v:'5.80.0', date:'2026-09-27', title:'Mid-wave treasure events', items:['Hunt a marked Sugar Courier before it escapes for a difficulty-scaled reward','Break a timed cache of three marked crates for Sugar and a currency bonus','Events are optional and never block wave progression; the first Stage 1 run stays focused on learning'] },
   { v:'5.79.0', date:'2026-09-27', title:'Crossroads after minibosses', items:['After a miniboss, three doors appear — walk into one to choose your path','Doors: Treasure Room, Blood Pact, Elite Duel, Tea Rest or Gamble','Doors fade after 14 seconds if you do not choose'] },
   { v:'5.78.0', date:'2026-09-27', title:'Punchier kills, clearer enemy shots', items:['Defeated enemies fly back and spin away','Wiping out a crowd at once gives a small screen shake','Enemy bullets now use one bright color with a dark outline on every stage'] },
@@ -1963,6 +1964,13 @@ const TAGS_OF={
   relic:{splinter:'precision',leech:'guard',burst:'swarm',shell:'guard',jam:'swarm',crown:'precision',glass:'precision',momentum:'tempo',lastbreath:'guard',chill:'swarm',magnet:'tempo'}};
 function tagLabel(t){ const d=TAG_SETS[t]; return d?'  ·  '+d.emoji+' '+d.name:''; }
 // รวมผลสาย (base + rank ของ upgrade สาย) → {dmg,cd,count,range,big,frozen,far,low,taken}
+const BUILD_PATH_STYLES={
+  sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
+  glacier:'Freeze control · safe play',barrage:'Rapid lances · clearing crowds',pierce:'Heavy lance · bosses',
+  brawler:'Fast combos · shockwaves',titan:'Heavy punches · bosses',dashboxer:'Dash combos · hit and run',
+  storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Rapid lightning · mobility',
+  prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
+};
 function pathMods(b){ const m={dmg:1,cd:1,count:0,range:0,big:0,frozen:0,far:0,low:0,taken:0,dashc:0,dashm:0,wave:0}; if(!b||!b.path)return m;
   const pt=(BASIC_PATHS[b.character]||[]).find(x=>x.id===b.path); if(!pt||!pt.base)return m;
   const add=(fx,n)=>{ for(const k in fx){ if(k==='dmg'||k==='cd')m[k]*=Math.pow(fx[k],n); else m[k]+=fx[k]*n; } };
@@ -7618,7 +7626,7 @@ class Game extends Phaser.Scene {
     const G={t:'',c:'#8ff0b0',s:'#0c2a1a'};
     if(o.evolution)return {t:'✨ '+clause(),c:'#ffd76a',s:'#3a2a00'};
     if(o.mutation)return {t:'🧬 '+clause(),c:'#d9a8ff',s:'#2a1440'};
-    if(kind==='Build Path')return {t:'🛤 '+clause(),c:'#8fe3ff',s:'#0b2633'};
+    if(kind==='Build Path')return {t:o.pathStyle||('🛤 '+clause()),c:'#8fe3ff',s:'#0b2633'};
     if(kind==='Flavor Infusion')return {t:clause(true),c:'#ffc27a',s:'#3a1f00'};
     if(/relic/i.test(kind)||this._relicPick)return {t:'🔮 '+clause(),c:'#ffb3e0',s:'#3a0f2a'};
     if(o.type==='heal')return {t:num?num[0]:clause(),c:'#ff9dbb',s:'#3a0f1a'};
@@ -7628,9 +7636,9 @@ class Game extends Phaser.Scene {
   drawReadableChoiceCard(group,o,x,y,w,h,options={}){
     const type=o.type||'atk';let color=type==='basic'?(o.color||0xff8fb5):type==='heal'?0xff6f9d:type==='util'?0xffd166:type==='uni'?(o.color||0xff76a8):type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);
     const rar=o.rarity; if(rar)color=rar.color;   // สีเฟรม = ความหายาก (สัญญาณอ่านเร็ว)
-    const wide=w>=h*1.35, title=o.title||o.name||'', lvl=o.lvl||1, jump=rar&&rar.ranks>1?('→Lv'+(lvl+rar.ranks-1)):'';
+    const wide=w>=h*1.35, isPath=o.kind==='Build Path', title=o.title||o.name||'', lvl=o.lvl||1, jump=rar&&rar.ranks>1?('→Lv'+(lvl+rar.ranks-1)):'';
     const role=o.role||(type==='basic'?'Basic Attack · Character growth':type==='heal'?'Instant heal · No passive slot':type==='util'?'Utility · Instant use':type==='atk'&&SKILLDEFS[o.key]?SKILLDEFS[o.key].role:type==='uni'?'Unique skill · Grows during the run':type==='pas'?'Passive · Boosts stats':'Ultimate · Awaken');
-    const badge0=options.starting?'Starting skill · LV1':type==='basic'?(o.evolution?'BASIC · EVOLUTION':o.mutation?'BASIC · MUTATION':'BASIC · UPGRADE'):type==='heal'?'RECOVERY':type==='util'?'UTILITY':type==='uni'?'UNIQUE · EVOLVE':type==='awk'?'AWAKEN':type==='pas'?'PASSIVE':o.isNew?'ATTACK · NEW':'ATTACK · UPGRADE';
+    const badge0=isPath?'BUILD PATH · PICK ONE':options.starting?'Starting skill · LV1':type==='basic'?(o.evolution?'BASIC · EVOLUTION':o.mutation?'BASIC · MUTATION':'BASIC · UPGRADE'):type==='heal'?'RECOVERY':type==='util'?'UTILITY':type==='uni'?'UNIQUE · EVOLVE':type==='awk'?'AWAKEN':type==='pas'?'PASSIVE':o.isNew?'ATTACK · NEW':'ATTACK · UPGRADE';
     const badge=rar?('◆ '+rar.name.toUpperCase()+(rar.ranks>1?' +'+rar.ranks:'')):badge0;   // rarity เด่นสุด อ่านปราดเดียว
     // v4.25: rarity ให้เห็นชัด — epic/legend กรอบหนา + เรืองแสงรอบการ์ด + พื้นอมสี + ป้ายเรืองแสง
     const rarIdx=rar?['common','rare','epic','legend'].indexOf(rar.id):-1;
@@ -7640,17 +7648,17 @@ class Game extends Phaser.Scene {
     panel.fillStyle(bgMix,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2+Math.max(0,rarIdx)*0.9,color,0.96);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
-    const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
+    const iconKey=isPath?null:o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
     let icon,badgeT,nameT,roleT,descT,starsT,ctaT; const hl=options.starting?null:this._cardHeadline(o);
     if(wide){
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
       const halo=this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
-      nameT=this.add.text(textX,y+29,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       descT=this.add.text(textX,y+75,o.desc||'',{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
-      let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
+      let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
       starsT=this.add.text(textX,y+h-20,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
       ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
@@ -7659,10 +7667,10 @@ class Game extends Phaser.Scene {
       const halo=this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
-      nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       descT=this.add.text(x+w/2,y+h*0.60,o.desc||'',{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
-      let stars='';if(!options.starting&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
+      let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
       starsT=this.add.text(x+w/2,y+h*0.87,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
@@ -7851,7 +7859,7 @@ class Game extends Phaser.Scene {
       this.drawReadableChoiceCard(this.lvlUp,o,x,y,finalCardW,ch,{index:i});
       this.lvlCards.push({left:x,right:x+finalCardW,top:y,bottom:y+ch,apply:o.apply,title:o.title,opt:o});
     });
-    const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 BUILD PATH — pick 1 · tap again to confirm':'🍯 INFUSION — pick 1 · tap again to confirm');
+    const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · one path for this run · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
     if(this._relicPick||pathPick)this.lvlActionBtns=[]; else this.drawLevelActionBar(h-40);
     this.lvlUp.setVisible(true);
   }
@@ -8105,7 +8113,7 @@ class Game extends Phaser.Scene {
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
-      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc+tagLabel(TAGS_OF.path[pt.id]),kind:'Build Path',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
+      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc+tagLabel(TAGS_OF.path[pt.id]),kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
     }
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
     if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
