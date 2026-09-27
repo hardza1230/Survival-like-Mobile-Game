@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.91.0';
+const GAME_VERSION = '5.92.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.92.0', date:'2026-09-27', title:'Citrus Crew target spread', items:['Yuzlings split across nearby enemies when several targets are available','They converge again when only one enemy remains'] },
   { v:'5.91.0', date:'2026-09-27', title:'Immortal Citrus Crew', items:['Yuzu’s Yuzlings and Cheese can no longer be knocked out by nearby enemies','Yuzlings prioritize the enemy closest to Yuzu, including during Citrus Parade','Loyal Guard keeps its nearby healing; Second Serving empowers every fourth Yuzling strike'] },
   { v:'5.89.0', date:'2026-09-27', title:'Open fighter playtest', items:['All six active fighters are selectable immediately during pre-release testing, including Sesame and Yuzu','Fighter progression and prior unlock records remain saved for future unlock rules','The character menu and Talents navigation show every test fighter'] },
   { v:'5.88.0', date:'2026-09-27', title:'Human Yuzu character art', items:['Yuzu now uses a human chibi fighter sprite matching the other heroes','Updated all eight animation poses and the character selection portrait','Yuzling and Cheese companion art remains as before'] },
@@ -8099,10 +8100,15 @@ class Game extends Phaser.Scene {
     while(crew.length>count){const m=crew.pop();m.spr.destroy();}
     while(crew.length<count){const i=crew.length,cheese=workshop&&i===count-1,key=cheese?'minion_cheese':'minion_yuzling',spr=this.camWorld(this.add.sprite(this.player.x,this.player.y,key,0).setDepth(7).setScale(guardian?0.66:0.34));
       crew.push({spr,cheese,cd:i*0.18,bites:0});}
-    const now=this.elapsed||0;this._yuzuParadeT=Math.max(0,(this._yuzuParadeT||0)-dt);const parade=this._yuzuParadeT>0;
+    const now=this.elapsed||0;this._yuzuParadeT=Math.max(0,(this._yuzuParadeT||0)-dt);const parade=this._yuzuParadeT>0,assigned=new Set();
     for(let i=0;i<crew.length;i++){const m=crew[i],sp=m.spr,ang=i*TAU/Math.max(1,count),homeX=this.player.x+Math.cos(ang)*46,homeY=this.player.y+Math.sin(ang)*39;
       m.cd=Math.max(0,m.cd-dt);
-      let target=null,near=Infinity,closest=420;this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(this.player.x,this.player.y,e.x,e.y);if(d<closest){closest=d;target=e;}});
+      let target=null,near=Infinity,closest=420,fallback=null,fallbackDist=420;
+      if(!m.cheese)this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(this.player.x,this.player.y,e.x,e.y);if(d>=420)return;
+        if(d<fallbackDist){fallbackDist=d;fallback=e;}
+        if(!assigned.has(e)&&d<closest){closest=d;target=e;}});
+      if(!target)target=fallback;
+      if(target)assigned.add(target);
       if(target)near=this.dist(sp.x,sp.y,target.x,target.y);
       const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=guardian?190:245;
       if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>650)sp.setPosition(homeX,homeY);
