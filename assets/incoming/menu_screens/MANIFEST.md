@@ -29,3 +29,5 @@ date: 2026-09-27
 | screen_group_activity | screen_group_activity.png | 768x1366 | no | portrait menu background |
 | screen_group_codex | screen_group_codex.png | 768x1366 | no | portrait menu background |
 | screen_group_more | screen_group_more.png | 768x1366 | no | portrait menu background |
+
+Replacement note (2026-09-27): screen_equipment, screen_inbox, screen_endgame, screen_heroes, and screen_difficulty were regenerated from the existing menu art style reference because the initial PNG streams were incomplete. Each replacement is an opaque 768x1366 PNG with a verified readable image stream.
