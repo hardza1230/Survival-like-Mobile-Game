@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.75.0';
+const GAME_VERSION = '5.76.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.76.0', date:'2026-09-27', title:'Story fighter unlocks and clearer cards', items:['Mint unlocks after Stage 1 and Cocoa after Chapter 1, with no Sugar purchase','Character cards show their play style and offer a detail view','Taro and Sesame are reserved for later development; previously owned fighters remain available'] },
   { v:'5.75.0', date:'2026-09-27', title:'Clearer menu reminders', items:['Red dots now follow pending Daily, Achievement, Inbox, Rank, Temple and new Gear actions into their menu groups','Yellow guides highlight rewards ready to claim, and disappear when the reward is collected'] },
   { v:'5.74.0', date:'2026-09-27', title:'Mimic chest warning', items:['A suspicious miniboss chest now pulses with a red warning and a Mimic hint before you touch it','The Mimic reveal briefly freezes the enemy so you can react'] },
   { v:'5.73.0', date:'2026-09-27', title:'Daily missions that fit your progress', items:['Daily Challenge rotates between clearing a stage, defeating enemies and digging in Temple Depths','Stage missions only pick stages you have unlocked, with a gentler difficulty for new players','Enemy and digging missions track progress across sessions and pay out when completed'] },
@@ -1795,6 +1796,8 @@ const CHARACTERS = {
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
+const CORE_UNLOCK_STAGE={mint:0,cocoa:4}; // Taro/Sesame รอพัฒนาจบก่อนเปิด milestone Ch2/Ch3
+const CHARACTER_CARD_HINT={momo:'Fast shots · easy to learn',mint:'Frost lances · slow & freeze',cocoa:'Melee combos · sturdy fighter',taro:'Storm mobility · in development',sesame:'Charged mirror beam · in development'};
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
   mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.72,areaMul:1.18,controlMul:1.18,trait:'Rapid frost lances · -28% cooldown'},
@@ -2713,6 +2716,8 @@ const Save = {
     if(this.data.bestiary.mini!=null){ this.data.bestiary.mini0=(this.data.bestiary.mini0||0)+this.data.bestiary.mini; delete this.data.bestiary.mini; }
     if(!this.data.rankPerks)this.data.rankPerks={};
     if(!this.data.stageMastery)this.data.stageMastery={};
+    if(!this.data.charUnlockNew)this.data.charUnlockNew={};
+    if(this.unlockCoreCharacters(false))gearMigrated=true; // เซฟเก่าที่ผ่านด่านแล้วรับตัวละครโดยไม่ต้องซื้อซ้ำ
     // เซฟเดิมที่จบ Chapter 1 แล้วต้องเห็น Chapter 2 ทันทีหลังUpdates
     if(this.data.stageMastery[4])this.data.unlockedStage=Math.max(5,this.data.unlockedStage||0);
     if(!this.data.achievements)this.data.achievements={};
@@ -2731,6 +2736,9 @@ const Save = {
     if(gearMigrated){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} }
     return this.data; },
   save(){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
+  unlockCoreCharacters(notify=true){let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
+    for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(this.data.stageMastery&&this.data.stageMastery[stage]&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
+    return changed;},
   // ---- Cloud sync (Supabase) ----
   async syncCloud(){ if(typeof Cloud==='undefined')return; const ok=await Cloud.init(); if(!ok)return;
     const remote=await Cloud.pull();
@@ -5030,6 +5038,7 @@ class Game extends Phaser.Scene {
     if(target==='daily')return !d.daily||d.daily.claimDay!==day||d.daily.challengeDay!==day||!d.daily.challengeDone;
     if(target==='achievements')return ACHIEVEMENTS.some(a=>a.test(d)&&!(d.achievements||{})[a.id]);
     if(target==='gearInbox')return Save.gearInboxItems().length>0;
+    if(target==='char')return Object.values(d.charUnlockNew||{}).some(Boolean);
     if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew);
     if(target==='perks')return Save.rankPointsFree()>0;
     if(target==='dig')return Save.digFreeReady();
@@ -5135,7 +5144,7 @@ class Game extends Phaser.Scene {
       if(us<need[i]&&!tutDone){
         this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'Clear Stage '+need[i]+' to unlock',()=>{this.menuToast&&this.menuToast('🔒 Locked — clear Stage '+need[i]+' first','#ff9bb5');Sfx.select&&Sfx.select();},false); }
       else { this.uiMenuCard(this.menu,cx,cy,bw,bh,color,emoji,label,sub,fn,i===0,['hub_btn_play','hub_btn_heroes','hub_btn_gear','hub_btn_activity','hub_btn_codex','hub_btn_more'][i]);
-        if((i===2&&this.hasGroupBadge('gLoadout'))||(i===3&&this.hasGroupBadge('gActivity')))this.drawBadgeDot(this.menu,cx-bw/2+8,cy-bh/2+8); }
+        if((i===1&&this.hasTargetBadge('char'))||(i===2&&this.hasGroupBadge('gLoadout'))||(i===3&&this.hasGroupBadge('gActivity')))this.drawBadgeDot(this.menu,cx-bw/2+8,cy-bh/2+8); }
       if(nxt&&nxt.hub===i)this._drawNextGuide(cx-bw/2,cy-bh/2,bw,bh,nxt.tag);
     });
     // แจ้งเตือนเมื่อมีเมนูใหม่เพิ่งปลดLocked (ครั้งเดียว)
@@ -5163,24 +5172,36 @@ class Game extends Phaser.Scene {
   }
   buildChars(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Fighters of the Mochi Core','screen_heroes');
-    const charsUnlocked=(Save.data.unlockedStage||0)>=1;   // v4.23: ปลดล็อกซื้อตัวละครอื่นหลังผ่านด่าน 1 ของ Chapter 1
+    if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
     const w=this.W,h=this.H,landscape=w>h,cols=landscape?6:2,gap=landscape?7:10,y0=landscape?76:Math.max(92,h*0.105);
     const rows=Math.ceil(CHAR_ORDER.length/cols),side=landscape?10:14,cardW=(w-side*2-gap*(cols-1))/cols;
     const cardH=Math.min(landscape?Math.max(185,h-y0-14):260,(h-y0-14-gap*(rows-1))/rows);
     const formNote=this.add.text(w/2,landscape?59:76,'Choose Character Card · Core Form ⇄ Awakened Form',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'11px',color:'#bfe8ff'}).setOrigin(0.5);this.menu.add(formNote);
     CHAR_ORDER.forEach((id,i)=>{const c=CHARACTERS[id],row=Math.floor(i/cols),col=i%cols,rowCount=Math.min(cols,CHAR_ORDER.length-row*cols),rowW=rowCount*cardW+(rowCount-1)*gap,x0=(w-rowW)/2,x=x0+col*(cardW+gap),y=y0+row*(cardH+gap);
-      const owned=Save.data.chars.includes(id),selected=Save.data.character===id,locked=!owned&&!charsUnlocked,afford=(Save.data.sugar||0)>=c.cost&&!locked,border=selected?0xffd166:(owned?0x8bd3a0:(locked?0x554a63:(afford?0xbfe8ff:0x665b73)));
+      const owned=Save.data.chars.includes(id),selected=Save.data.character===id,locked=!owned,border=selected?0xffd166:(owned?0x8bd3a0:0x554a63);
       const panel=this.add.graphics();panel.fillStyle(selected?0x35273d:0x241a33,0.94);panel.fillRoundedRect(x,y,cardW,cardH,landscape?12:16);panel.lineStyle(selected?3:1.7,border,selected?1:0.82);panel.strokeRoundedRect(x,y,cardW,cardH,landscape?12:16);this.menu.add(panel);
-      const artH=cardH*(landscape?0.50:0.52),art=this._characterCardArt(id,x+cardW/2,y+8+artH/2,cardW*0.92,artH,owned||afford?1:0.42);
+      const artH=cardH*(landscape?0.43:0.44),art=this._characterCardArt(id,x+cardW/2,y+8+artH/2,cardW*0.92,artH,owned?1:0.42);
       if(!art){const em=this.add.text(x+cardW/2,y+artH/2,c.emoji,{fontSize:landscape?'40px':'54px'}).setOrigin(0.5);this.menu.add(em);}
       const name=this.add.text(x+cardW/2,y+artH+4,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'10px':'13px',color:'#ffffff',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
       const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(x+cardW/2,y+artH+(landscape?19:24),sw.emoji+' '+sw.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'8px':'10px',color:'#f4d694',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
       const r=c.rating,stats=this.add.text(x+cardW/2,y+artH+(landscape?34:42),'❤️'+r.hp+'  💥'+r.atk+'  👟'+r.spd+'  🛡️'+r.def,{fontFamily:'sans-serif',fontSize:landscape?'8px':'9px',color:'#d9c9e8',align:'center'}).setOrigin(0.5,0);
       const role=this.add.text(x+cardW/2,y+artH+(landscape?48:58),c.role,{fontFamily:'sans-serif',fontSize:landscape?'7px':'9px',color:'#aee8dc',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
-      const label=selected?'Selected ✓':(owned?'Tap to select':(locked?'🔒 Clear Stage 1':'🍬 '+c.cost)),status=this.add.text(x+cardW/2,y+cardH-12,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'11px',color:selected?'#ffd166':(owned?'#8bd3a0':(locked?'#9a8fac':(afford?'#bfe8ff':'#e0788a')))}).setOrigin(0.5);this.menu.add([name,weapon,stats,role,status]);
-      if(!selected)this._zone(x,y,cardW,cardH,()=>{if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock more fighters');return;}if(owned){Save.data.character=id;Save.save();this.character=id;Sfx.select();}else if(Save.spend(c.cost)){Save.data.chars.push(id);Save.data.character=id;Save.save();this.character=id;Sfx.clear();}this.buildMenuScreen();});
+      const hint=this.add.text(x+cardW/2,y+artH+(landscape?60:73),CHARACTER_CARD_HINT[id],{fontFamily:'sans-serif',fontSize:landscape?'7px':'8px',color:'#d8cce5',align:'center',wordWrap:{width:cardW-12},maxLines:cardH<200?1:2}).setOrigin(0.5,0);
+      const gate=CORE_UNLOCK_STAGE[id],label=selected?'Selected ✓':owned?'Tap to select':gate!=null?'🔒 Clear Stage '+(gate+1):'🔒 In development',status=this.add.text(x+cardW/2,y+cardH-12,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'10px',color:selected?'#ffd166':owned?'#8bd3a0':'#9a8fac'}).setOrigin(0.5);this.menu.add([name,weapon,stats,role,hint,status]);
+      if(!selected)this._zone(x,y,cardW,cardH,()=>{if(locked){this.showCharacterInfo(id);return;}Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});
+      const info=this.add.text(x+cardW-20,y+19,'ⓘ',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff3d6',backgroundColor:'#3a294acc',padding:{x:3,y:1}}).setOrigin(0.5);this.menu.add(info);this._zone(x+cardW-43,y,43,44,()=>this.showCharacterInfo(id));
     });
     this.menu.setVisible(true);
+  }
+  showCharacterInfo(id){const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-90,310),x=(w-bw)/2,y=(h-bh)/2;
+    const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);
+    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
+    const title=this.add.text(w/2,y+32,c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
+    const role=this.add.text(w/2,y+71,c.role+' · '+SIGNATURE_WEAPONS[c.weapon].name,{fontFamily:'sans-serif',fontSize:'12px',color:'#ffe6ad',align:'center',wordWrap:{width:bw-34}}).setOrigin(0.5);
+    const desc=this.add.text(x+22,y+111,c.desc,{fontFamily:'sans-serif',fontSize:'14px',color:'#e7daed',wordWrap:{width:bw-44},lineSpacing:6}).setOrigin(0,0);
+    const condition=this.add.text(w/2,y+bh-62,unlock,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#a8f0c0',align:'center'}).setOrigin(0.5);
+    const close=this.add.text(w/2,y+bh-26,'Tap to close',{fontFamily:'sans-serif',fontSize:'12px',color:'#b9aac9'}).setOrigin(0.5);this.menu.add([shade,panel,title,role,desc,condition,close]);
+    this.tapZones=[];this._zone(0,0,w,h,()=>this.buildChars());
   }
   buildChapterSelect(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Choose Chapter','screen_chapter');
@@ -7359,7 +7380,7 @@ class Game extends Phaser.Scene {
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องไอเทมที่สะสมทั้งด่าน (แจกจริง · duplicate → sugarStage ก่อนฝาก)
     Sfx.clear();
     const next=this.stageIndex+1,last=!isStageReady(next),guide=this._powerGuide||this.getPowerGuide(this.stageIndex);this._powerBefore=Save.power(this.character);
-    this._firstMastery=!Save.data.stageMastery[this.stageIndex];if(this._firstMastery){Save.data.stageMastery[this.stageIndex]=true;this.sugarStage+=40+this.stageIndex*25;Save.save();}
+    this._firstMastery=!Save.data.stageMastery[this.stageIndex];if(this._firstMastery){Save.data.stageMastery[this.stageIndex]=true;this.sugarStage+=40+this.stageIndex*25;Save.unlockCoreCharacters();Save.save();}
     this._dailyBonus=0;if(this._dailyRun){const o=this.ensureDaily();if(o.spec.kind==='clear'&&!o.data.challengeDone&&o.data.challengeDay===o.spec.key&&this.stageIndex===o.spec.stage&&this.stageDiff===o.spec.diff){o.data.challengeDone=true;o.data.challengeProgress=1;this._dailyBonus=120+o.spec.diff*30;this.sugarStage+=this._dailyBonus;Save.save();}this._dailyRun=false;}
     Save.addSugar(this.sugarStage);                                   // ฝาก Sugar + โบนัส Mastery/Daily
     this.gainCharExp(Math.round((75 + this.stageIndex*35)*guide.reward)); // catch-up EXP มากขึ้นเมื่อผ่านด่านด้วยพลังต่ำกว่าคำแนะนำ
