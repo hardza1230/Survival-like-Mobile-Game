@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.89.0';
+const GAME_VERSION = '5.90.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -1108,6 +1108,8 @@ const PASS_ICON  = { heart:'ic_mochi_vitality', magnet:'ic_magnet', power:'ic_po
   bitterResolve:'ic_bitter_resolve' };
 const ASSET_SHEETS = {
   char_yuzu:{url:'assets/characters/yuzu_sheet.png',frame:128},
+  char_yuzu_run:{url:'assets/characters/yuzu_run_sheet.png',frame:128},
+  char_yuzu_attack:{url:'assets/characters/yuzu_attack_sheet.png',frame:128},
   minion_yuzling:{url:'assets/characters/yuzling_sheet.png',frame:128,anim:{frames:4,rate:7}},
   minion_cheese:{url:'assets/characters/cheese_sheet.png',frame:128,anim:{frames:4,rate:6}},
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
@@ -1121,7 +1123,11 @@ const ASSET_SHEETS = {
   char_berry: { url:'assets/char_berry_core_sheet.png', frame:128 },
   char_berry_run:{ url:'assets/char_berry_core_run_sheet.png', frame:128 },
   char_taro:  { url:'assets/char_taro_awakened_sheet.png', frame:128 },
+  char_taro_run:{ url:'assets/characters/taro_run_sheet.png', frame:128 },
+  char_taro_attack:{ url:'assets/characters/taro_attack_sheet.png', frame:128 },
   char_sesame:{ url:'assets/char_sesame_awakened_sheet.png', frame:128 },
+  char_sesame_run:{ url:'assets/characters/sesame_run_sheet.png', frame:128 },
+  char_sesame_attack:{ url:'assets/characters/sesame_attack_sheet.png', frame:128 },
   fx_star_guard:{ url:'assets/fx_star_guard_sheet.png', frame:128, anim:{frames:8,rate:14} },
   // บอสหลัก: action sheet 8 เฟรม ผูก pose กับท่าจริง
   boss1:      { url:'assets/generated/boss1_green_ant_queen_sheet.png', frame:160 },
@@ -3799,7 +3805,7 @@ class Game extends Phaser.Scene {
   useCharacterSkill(){
     if(this.state!=='play'||this.uniqueCd>0)return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
-    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseFlash(CF.cast,520);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
+    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(520);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='flickerStrike'?100+(ul-1)*10:c.unique==='oathMirror'?180+(ul-1)*18:c.unique==='jamOverdrive'?170+(ul-1)*20:155+(ul-1)*18;
     this.uniqueCrescendo(u.color,ul,spectacleRadius);
     if(c.unique==='citrusParade'){this._yuzuParadeT=5+ul+(this.player.yuzuParade?2:0);this._yuzuTarget=this.strongestEnemy(900)||this.nearestEnemy(900);this.showBanner('🍋 Citrus Parade','The Citrus Crew rallies!',1200);return;}
@@ -8106,7 +8112,7 @@ class Game extends Phaser.Scene {
       if(m.cheese){this._yuzuCheeseT=(this._yuzuCheeseT||0)+dt;if(this._yuzuCheeseT>=Math.max(5,9*Math.pow(0.94,b.lv.p_sweetHelper||0))){this._yuzuCheeseT=0;const heal=Math.max(1,Math.round(this.player.maxhp*(b.evolved?0.05:0.035)));this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,heal);const enemy=this.nearestEnemy(260);if(enemy)this.damage(enemy,this.relicDmg(b.evolved?1.0:0.6)*(1+0.08*(b.lv.p_sourMixer||0)),enemy.x,enemy.y);}continue;}
       if(target&&near<=(guardian?95:58)&&m.cd<=0){let dmg=(guardian?18:8)*(1+0.12*(b.ranks.power||0))*(guardian?1+0.15*(b.lv.family||0):1)*(pm.dmg||1)*(this.player.dmgMul||1)*(parade?1.55:1);
         if(b.mutation==='pack'){let allies=guardian?2:0;for(const a of crew)if(a!==m&&!a.cheese&&a.tired<=0&&this.dist(a.spr.x,a.spr.y,target.x,target.y)<90)allies++;dmg*=1+Math.min(0.6,allies*0.12);}
-        this.damage(target,dmg,target.x,target.y);m.bites++;sp.setFrame(4);this.poseFlash&&this.poseFlash(CF.cast,80);
+        this.damage(target,dmg,target.x,target.y);m.bites++;sp.setFrame(4);if((this._yuzuAttackCd||0)<=now){this.poseAttack(400);this._yuzuAttackCd=now+0.65;}
         const splash=(b.lv.splash||0)>0||guardian||b.evolved||b.mutation==='parting'&&m.bites%4===0;
         if(splash){const R=(guardian?90:45)+12*(b.lv.splash||0)+(b.evolved?20:0),blast=b.mutation==='parting'&&m.bites%4===0;this.enemies.children.iterate(e=>{if(e&&e.active&&e!==target&&this.dist(e.x,e.y,target.x,target.y)<R)this.damage(e,dmg*(blast?0.8:0.3),e.x,e.y);});}
         m.cd=Math.max(0.32,(guardian?1.3:0.9)*Math.pow(0.92,b.ranks.rate||0)*(pm.cd||1)*(parade?0.58:1)*(b.evolved?0.85:1));}
@@ -8474,6 +8480,7 @@ class Game extends Phaser.Scene {
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
     this.vfxCastGlow(_castColors[key]||0xffffff);
+    if((this.character==='taro'&&key==='thunder')||(this.character==='sesame'&&key==='mirror'))this.poseAttack(440);
     if(key==='meteor'&&basic&&this.character==='cocoa'){this.castCocoaRush(lvl,aw,dm,basic.evolved,basic);return;}
     if(key==='sprinkle'){ if(!this.nearestEnemy(aw?900:640))return;
       // ปืนกล: รัวเมล็ดรุ้งเป็นชุด ยิงเร็ว/เบา · โดน 1 ตัวแล้วหายไปเลย (ไม่ทะลุ ไม่เด้ง) · เก็บทีละตัวรัว ๆ
@@ -10658,11 +10665,12 @@ class Game extends Phaser.Scene {
       || 60;
     // ปรับสเกลตาม "real footprints" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
     // Momo/Mint/Chocolate ใช้สัดส่วนอาร์ตมาตรฐานเดียวกันและแสดงผลขนาดเดียวกัน
-    const baseKey=key.replace('_run','');
+    const baseKey=key.replace(/_(run|attack)$/,'');
     const FP={ char_momo:110, char_mint:110, char_cocoa:110, char_taro:107, char_sesame:117, char_berry:116, char_yuzu:112 }[baseKey];
     const TARGET=['char_momo','char_mint','char_cocoa','char_berry'].includes(baseKey)?56:66;
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
+    this._attackPoseTime=0;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
@@ -10671,6 +10679,15 @@ class Game extends Phaser.Scene {
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา
   updatePose(dt){
     if(!this._hasFrames)return;
+    if(this._attackPoseTime>0){
+      this._attackPoseTime=Math.max(0,this._attackPoseTime-dt);
+      const attackKey='char_'+this.character+'_attack';
+      if(this.textures.exists(attackKey)){
+        if(this.player.texture.key!==attackKey)this.player.setTexture(attackKey);
+        this.player.setFrame(Math.min(7,Math.floor((1-this._attackPoseTime/this._attackPoseDuration)*8)));
+        if(this._attackPoseTime>0)return;
+      }
+    }
     if(this._poseHold>0){ this._poseHold-=dt; return; }
     const baseCharKey='char_'+this.character;
     const runCharKey=baseCharKey+'_run';
@@ -10692,14 +10709,20 @@ class Game extends Phaser.Scene {
       }
       return;
     }
-    if(hasRun&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
+    if(this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
     this._charRunT=0;
     this._blinkT-=dt;
     if(this._blinkT<=0){ this.player.setFrame(CF.blink);
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(!this._hasFrames)return; const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
+  poseFlash(frame,ms){ if(!this._hasFrames)return; this._attackPoseTime=0; const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
+  poseAttack(ms){
+    const key='char_'+this.character+'_attack';
+    if(!this._hasFrames||!this.textures.exists(key)){this.poseFlash(CF.cast,ms);return;}
+    this._poseHold=0;this._attackPoseDuration=(ms||400)/1000;this._attackPoseTime=this._attackPoseDuration;
+    this.player.setTexture(key).setFrame(0);
+  }
   // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
