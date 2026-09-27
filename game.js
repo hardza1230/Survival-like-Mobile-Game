@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.83.0';
+const GAME_VERSION = '5.84.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.84.0', date:'2026-09-27', title:'Sugar Orders', items:['Choose one targeted reward order at Mochi Bazaar before a normal stage','Clear a stage to earn shovels, Weave Thread or a chosen crafting currency','Hard and Hell multiply the reward; an unfinished order stays active after a failed run'] },
   { v:'5.83.0', date:'2026-09-27', title:'Playtest follow-up: Mint, missions and comfort', items:['Mint Lance Barrage caps at three lances with lower per-lance damage','Juicy Burst now triggers on piercing Strawberry seeds; duplicate infusion cards are fixed','Clean Air is wider and shorter; escort moves and channels faster','Bear Beat Rush offers an Auto button and shorter interaction windows','Temple Depths offers limited Sugar-to-shovel purchases after the daily gift'] },
   { v:'5.82.0', date:'2026-09-27', title:'Strawberry build path tuning', items:['Shotgun pellets converge on large targets at close range','Ricochet fires more often; Sniper charges a stronger piercing seed','Sniper unique becomes a brief sequence of explosive charged shots'] },
   { v:'5.81.0', date:'2026-09-27', title:'Clearer Build Path selection', items:['Build Path choices show the path name prominently and describe its play style','Path cards no longer look like ordinary Lv1 upgrades','The choice header explains that only one path can be selected for the run'] },
@@ -2562,6 +2563,13 @@ function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
 const FLAME_REROLL_COST = 3;
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
 const CURRENCY_BUY = { transmute:40, alt:60, regal:120, chaos:160, exalt:320, divine:320, scour:30, annul:90 };
+// One active Sugar Order: the reward is earned by clearing a regular stage, scaled by DIFFS[].reward.
+const SUGAR_ORDERS = [
+  {id:'shovels',emoji:'⛏️',name:'Shovel Hunt',cost:140,base:5,unit:'shovels',desc:'Clear a stage to bring back shovels for Temple Depths'},
+  {id:'threads',emoji:'🧶',name:'Thread Hunt',cost:120,base:12,unit:'thread',desc:'Clear a stage to bring back Weave Thread'},
+  {id:'alt',emoji:'🟢',name:'Twist Cream Hunt',cost:150,base:2,unit:'Twist Cream',desc:'Clear a stage to earn targeted Magic crafting currency'},
+  {id:'chaos',emoji:'🟠',name:'Wild Jam Hunt',cost:200,base:1,unit:'Wild Jam',desc:'Clear a stage to earn targeted Rare crafting currency'},
+];
 // Weighted reward pools. Values are percentages within a successful currency drop.
 const CURRENCY_DROP_POOLS = {
   common:{ transmute:45, scour:30, alt:25 },
@@ -2777,6 +2785,16 @@ const Save = {
   discoverDish(key,sig){ if(!this.data.cookbook)this.data.cookbook={}; if(this.data.cookbook[key])return 0;
     this.data.cookbook[key]=1; const rew=sig?30:12; this.data.sugar=(this.data.sugar||0)+rew; this.save(); return rew; },
   spend(n){ if((this.data.sugar||0)>=n){ this.data.sugar-=n; this.save(); return true; } return false; },
+  sugarOrder(){ const o=this.data.sugarOrder;return o&&SUGAR_ORDERS.some(d=>d.id===o.id)?o:null; },
+  buySugarOrder(id){const d=SUGAR_ORDERS.find(o=>o.id===id);if(!d||this.sugarOrder()||(this.data.sugar||0)<d.cost)return false;
+    this.data.sugar-=d.cost;this.data.sugarOrder={id:d.id,cost:d.cost};this.save();return true;},
+  cancelSugarOrder(){const o=this.sugarOrder();if(!o)return false;this.data.sugar=(this.data.sugar||0)+o.cost;this.data.sugarOrder=null;this.save();return true;},
+  completeSugarOrder(diff){const o=this.sugarOrder();if(!o)return null;const d=SUGAR_ORDERS.find(x=>x.id===o.id),tier=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(diff||1)-1))];
+    const qty=Math.max(1,Math.round(d.base*tier.reward));this.data.sugarOrder=null;
+    if(d.id==='shovels'){const dig=this.dig();dig.shovels+=qty;}
+    else if(d.id==='threads')this.data.threads=(this.data.threads||0)+qty;
+    else {this.data.currency=this.data.currency||{};this.data.currency[d.id]=(this.data.currency[d.id]||0)+qty;}
+    this.save();return {emoji:d.emoji,name:d.name,qty,unit:d.unit};},
   // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
   cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
   // ---- Equipment v2: unique instances. Legacy maps stay mirrored until every screen uses uid directly. ----
@@ -6031,7 +6049,7 @@ class Game extends Phaser.Scene {
     const hs=this._hdrShift();
     const res=this.add.text(w/2,52+hs,'🍬 '+(Save.data.sugar||0)+'   🔩 '+(Save.data.shards||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(0.5); this.menu.add(res);
     // แท็บ
-    const tabs=[['buy','🛒 Buy'],['gamble','🎲 Gamble'],['sell','💰 Sell']], tw=(w-28)/3, ty=66+hs;
+    const tabs=[['buy','🛒 Buy'],['orders','📋 Orders'],['gamble','🎲 Gamble'],['sell','💰 Sell']], tw=(w-28)/4, ty=66+hs;
     tabs.forEach(([k,lbl],i)=>{ const x=14+i*tw, on=k===tab; const g=this.add.graphics(); g.fillStyle(on?0xff8f3a:0x2c2338,1); g.fillRoundedRect(x+2,ty,tw-4,28,8); g.lineStyle(1.4,on?0xffd0a0:0x4a4059,1); g.strokeRoundedRect(x+2,ty,tw-4,28,8);
       const t=this.add.text(x+tw/2,ty+14,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#fff':'#9a90ab'}).setOrigin(0.5); this.menu.add([g,t]); this._zone(x+2,ty,tw-4,28,()=>{ this._bazTab=k; this.buildBazaar(); }); });
     let y=ty+40;
@@ -6042,6 +6060,12 @@ class Game extends Phaser.Scene {
         this._rowBtn(y,40,it.emoji,it.name+' · '+tl.name+' · Ch.'+(it.chapter||1),it.desc,sold?'SOLD':('Buy 🍬'+cost),sold?'#6a6076':(af?'#8bd3a0':'#e0788a'),sold?null:()=>this.bazaarBuyGear(it.id,key,cost));y+=46; });
       st.cur.forEach((c,idx)=>{ const key='c'+idx,d=currencyDef(c.key),cost=(CURRENCY_BUY[c.key]||60)*c.qty,sold=bought.includes(key),af=(Save.data.sugar||0)>=cost;
         this._rowBtn(y,40,d.asset,d.name+' ×'+c.qty,d.desc,sold?'SOLD':('Buy 🍬'+cost),sold?'#6a6076':(af?'#8bd3a0':'#e0788a'),sold?null:()=>this.bazaarBuyCurrency(c.key,c.qty,cost,key)); y+=46; });
+    } else if(tab==='orders'){
+      const active=Save.sugarOrder(),chosen=active&&SUGAR_ORDERS.find(o=>o.id===active.id);
+      const hd=this.add.text(14,y,chosen?('Active: '+chosen.emoji+' '+chosen.name+' · clear any regular stage'):'Choose one target · reward on your next regular stage clear',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a8',wordWrap:{width:w-28}}).setOrigin(0,0);this.menu.add(hd);y+=34;
+      SUGAR_ORDERS.forEach(o=>{const reward=DIFFS.map(d=>Math.max(1,Math.round(o.base*d.reward))).join(' / '),isActive=active&&active.id===o.id;
+        this._rowBtn(y,48,o.emoji,o.name,'Normal / Hard / Hell: '+reward+' '+o.unit,isActive?'ACTIVE':('Order 🍬'+o.cost),isActive?'#ffd166':active?'#7a7088':(Save.data.sugar||0)>=o.cost?'#8bd3a0':'#e0788a',active?null:()=>{if(Save.buySugarOrder(o.id)){Sfx.clear();this.menuToast('📋 '+o.name+' ready — clear a stage','#8bd3a0');}else Sfx.select();this.buildBazaar();});y+=54;});
+      if(active){this._rowBtn(y,42,'↩','Cancel active order','Full Sugar refund before a stage clear','Refund 🍬'+active.cost,'#ffbca2',()=>{Save.cancelSugarOrder();Sfx.select();this.buildBazaar();});}
     } else if(tab==='gamble'){
       const hd=this.add.text(14,y,'Mystery box — spins like a slot machine, then reveals your prize',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#a99fbb'}).setOrigin(0,0); this.menu.add(hd); y+=18;
       // v4.33: รวมกาชาไว้ที่หน้า Gear จุดเดียว — Bazaar เหลือแต่ currency box
@@ -6304,7 +6328,7 @@ class Game extends Phaser.Scene {
     this.load.once('complete',finish);pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
   }
 
-  startRun(idx){ this._dmgBy={}; this._lastHitSrc=null;
+  startRun(idx){ this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null;
     if(this.state!=='menu')return;
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
@@ -6493,7 +6517,7 @@ class Game extends Phaser.Scene {
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
   recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1)*(1+atlasLv('appetite')*0.06); }
   finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine();
-    const at=atlasData(),ptsBefore=atlasPoints(); at[r.theme]=Math.max(at[r.theme]||0,r.tier); const gainedAP=atlasPoints()-ptsBefore; if(gainedAP>0)this.time.delayedCall(5200,()=>this.showBanner('🗺 Atlas +'+gainedAP+' point'+(gainedAP>1?'s':''),STAGES[r.theme].name+' · best Tier '+at[r.theme],2200)); 
+    const at=atlasData(),ptsBefore=atlasPoints(); at[r.theme]=Math.max(at[r.theme]||0,r.tier); const gainedAP=atlasPoints()-ptsBefore; if(gainedAP>0)this.time.delayedCall(5200,()=>this.showBanner('🗺 Atlas +'+gainedAP+' point'+(gainedAP>1?'s':''),STAGES[r.theme].name+' · best Tier '+at[r.theme],2200));
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_HUNGER_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
     let bonus=0; if(this._recipeFast){ bonus=Math.round((60+r.tier*25)*this.diffMul().reward); this.sugarStage+=bonus; }
@@ -7501,6 +7525,7 @@ class Game extends Phaser.Scene {
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
   onStageClear(){ this.clearSugarCoins();
+    this._orderReward=(!this._inTutorial&&!this.bossRush&&!this.riftMode&&!this.recipeMode&&!this.endlessMode)?Save.completeSugarOrder(this.stageDiff):null;
     // v5.32 ⛏️ พลั่วจากการผ่านด่าน: ปกติ 1 / ยาก 2 / นรก 3 (กฎเหล็ก) · ไม่ให้ใน tutorial
     if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1))+1; Save.addShovels(n); this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
@@ -7563,6 +7588,7 @@ class Game extends Phaser.Scene {
       ['⏱ Total Time', mm+':'+ss.toString().padStart(2,'0')],
       ['☠ Minions Killed', String(this.stageKills||0)],
       ['🍬 Sugar Earned', '+'+this.sugarStage+(this._dailyBonus?' (Daily +'+this._dailyBonus+')':'')],
+      ...(this._orderReward?[['📋 Sugar Order',this._orderReward.emoji+' +'+this._orderReward.qty+' '+this._orderReward.unit]]:[]),
       ['📦 Boxes Opened', String((this._openedBoxes||[]).length)],
       ['⚡ Power', (this._powerBefore||Save.power(this.character))+' → '+(this._powerAfter||Save.power(this.character))+(this._firstMastery?' · Mastery!':'')],
       ['🌟 Character Level', 'Lv '+cp.lvl+(this._lastLvlUps>0?'  (Level up! +'+this._lastLvlUps+' pts)':'')],

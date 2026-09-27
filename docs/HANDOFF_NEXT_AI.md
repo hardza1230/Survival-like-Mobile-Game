@@ -1,4 +1,4 @@
-# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v5.83.0 · 27 ก.ย. 2026)
+# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v5.84.0 · 27 ก.ย. 2026)
 
 > อ่าน `CLAUDE.md` ให้จบก่อนทุกครั้ง (กติกา สาขา และวิธี release อยู่ในนั้น)
 > **สาขาเดียว:** `claude/vampire-survival-mobile-game-yo9e8w` · คุยกับเจ้าของเป็นภาษาไทย · ข้อความในเกมเป็นภาษาอังกฤษ
@@ -20,6 +20,7 @@
    ```
 
 ## B. งานที่ยังค้าง (เรียงตามความสำคัญ)
+**Sugar Orders v5.84:** ดู `docs/SUGAR_ORDERS.md` · Bazaar มีแท็บ Orders และรางวัลตอนเคลียร์ด่านปกติ · รอทดสอบมือถือ/ราคา · `game.js` กู้ไฟล์เต็มแล้ว ตรวจขนาดและ `node --check` ทุกครั้งก่อน push
 **Feedback เล่นจริง 14 ข้อ:** `docs/PLAYTEST_FEEDBACK_2026_09_27.md` เป็น checklist หลัก · v5.82–5.83 ลงโค้ดข้อ 1–5, 7, 10–14 แล้ว แต่ยังรอเล่นมือถือ · ข้อ 6/8/9 ยังต้องตรวจสาย/การ์ด Mint และความต่าง Cocoa
 **Strawberry Build Path:** ดู `docs/STRAWBERRY_BUILD_FEEDBACK_2026_09_27.md` · v5.82.0 ทำโค้ด Shotgun/Ricochet/Sniper/Unique แล้ว รอเล่นจริงบนมือถือก่อนจูนเพิ่ม · ชื่อสายแสดงบนการ์ดตั้งแต่ v5.81.0
 **Feedback 27 ก.ย. — ทำแยก commit:** 1 พลั่ว ✅ v5.72.0 · 2 Daily Challenge ✅ v5.73.0 · 3 สัญญาณ Mimic ✅ v5.74.0 · 4 badge งาน/รางวัล/อัปเดต ✅ v5.75.0 · 5 ตัวละครหลักปลดตามด่าน: Mint/Cocoa ✅ v5.76.0; Taro/Sesame รอพัฒนา (แผนใน CHARACTER_UNLOCK_PLAN.md) · 6 Chapter 1 ด่าน 1–3 แบบกำหนด ✅ v5.77.0 · 7 กิจกรรมเสริม Sugar Courier/Supply Cache ✅ v5.80.0
