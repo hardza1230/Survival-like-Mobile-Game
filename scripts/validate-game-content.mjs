@@ -2,10 +2,10 @@ import fs from 'node:fs';
 import { inflateSync } from 'node:zlib';
 
 const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
+if(!/const GAME_VERSION = '\d+\.\d+\.\d+';/.test(source))throw new Error('Missing semantic game version');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '5.90.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",

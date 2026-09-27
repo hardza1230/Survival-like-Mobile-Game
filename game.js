@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.90.0';
+const GAME_VERSION = '5.91.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.91.0', date:'2026-09-27', title:'Immortal Citrus Crew', items:['Yuzu’s Yuzlings and Cheese can no longer be knocked out by nearby enemies','Yuzlings prioritize the enemy closest to Yuzu, including during Citrus Parade','Loyal Guard keeps its nearby healing; Second Serving empowers every fourth Yuzling strike'] },
   { v:'5.89.0', date:'2026-09-27', title:'Open fighter playtest', items:['All six active fighters are selectable immediately during pre-release testing, including Sesame and Yuzu','Fighter progression and prior unlock records remain saved for future unlock rules','The character menu and Talents navigation show every test fighter'] },
   { v:'5.88.0', date:'2026-09-27', title:'Human Yuzu character art', items:['Yuzu now uses a human chibi fighter sprite matching the other heroes','Updated all eight animation poses and the character selection portrait','Yuzling and Cheese companion art remains as before'] },
   { v:'5.87.0', date:'2026-09-27', title:'Yuzu and the Citrus Crew', items:['Yuzu replaces Sesame as the fifth story fighter; previously owned Sesame stays available as a secret fighter','Yuzlings fight alongside Yuzu, recover after tiring, and gain three distinct Build Paths','Added animated Yuzu, Yuzling and Cheese sheets; Cheese helps in the Workshop path'] },
@@ -1698,7 +1699,7 @@ class Opening extends Phaser.Scene {
 
 /* ---- SKILLS: auto-cast, flashy, stackable ---- */
 const SKILLDEFS = {
-  yuzling:{name:'Citrus Crew',emoji:'🍋',role:'Permanent minions',max:5,desc:'Yuzlings fight beside Yuzu and recover after tiring',orbit:true,awaken:{name:'The Citrus Court',emoji:'👑',desc:'The crew evolves with its Build Path'}},
+  yuzling:{name:'Citrus Crew',emoji:'🍋',role:'Immortal minions',max:5,desc:'Invulnerable Yuzlings fight beside Yuzu',orbit:true,awaken:{name:'The Citrus Court',emoji:'👑',desc:'The crew evolves with its Build Path'}},
   sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', role:'Machine gun · fast, light', max:5, desc:'Sprays rainbow seeds at the nearest enemies — fast but light · single hit',
     awaken:{ name:'Rainbow Storm', emoji:'🌈', desc:'16 homing rainbow seeds, blazing fast!' } },
   star:    { name:'Star Guard',     emoji:'🌟', role:'Defense · close range', max:5, desc:'Orbiting stars deal damage and block incoming bullets', orbit:true,
@@ -1836,7 +1837,7 @@ const SIGNATURE_WEAPONS = {
   bearGauntlet:{name:'Cocoa Bear Gauntlet',emoji:'🐻',skill:'meteor',dmgMul:1.06,cdMul:1.05,areaMul:1.15,trait:'2 heavy slams · shockwave only after Mutation'},
   riftCompass:{name:'Rift Lightning Compass',emoji:'🧭',skill:'thunder',dmgMul:1.02,cdMul:0.86,chains:2,trait:'+2 chain targets · -14% cooldown'},
   oathMirror:{name:'Sesame Oath Mirror',emoji:'🪞',skill:'mirror',dmgMul:0.96,cdMul:0.88,areaMul:1.12,reflect:2,trait:'+2 reflected shots · +12% area'},
-  yuzuCrew:{name:'Citrus Crew',emoji:'🍋',skill:'yuzling',dmgMul:1,cdMul:1,trait:'Two permanent Yuzlings · recover after tiring'},
+  yuzuCrew:{name:'Citrus Crew',emoji:'🍋',skill:'yuzling',dmgMul:1,cdMul:1,trait:'Two immortal Yuzlings'},
   jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
 };
 // v4.62: คำอธิบาย Evolution ต่อสกิล (ใช้ทั้งการ์ดเลเวลอัพและ Codex)
@@ -1848,10 +1849,10 @@ const BASIC_ATTACKS = {
     {id:'rate',name:'Quick Feet',emoji:'👟',max:5,desc:'+8% minion attack speed per rank'},
     {id:'family',name:'Growing Family',emoji:'🐣',max:3,desc:'+1 Yuzling per rank; Guardian gains +15% power and +2 stamina instead'},
     {id:'splash',name:'Zest Splash',emoji:'💦',max:3,desc:'Bites splash nearby enemies · larger radius per rank'},
-    {id:'loyal',name:'Loyal Guard',emoji:'🛡️',max:3,desc:'Minions recover faster and help Yuzu regenerate while nearby'}],
+    {id:'loyal',name:'Loyal Guard',emoji:'🛡️',max:3,desc:'Nearby minions help Yuzu regenerate HP'}],
     mutations:[{id:'parting',name:'Parting Gift',emoji:'💥',desc:'Every fourth bite releases a sour burst'},
       {id:'pack',name:'Pack Instinct',emoji:'🎯',desc:'Minions focusing the same target deal extra damage'},
-      {id:'second',name:'Second Serving',emoji:'♻️',desc:'Tired minions return faster with an opening strike'}]},
+      {id:'second',name:'Second Serving',emoji:'♻️',desc:'Every fourth Yuzling bite deals 50% more damage'}]},
   momo:{name:'Heart Seed Blaster',emoji:'🍓',skill:'sprinkle',color:0xff76a8,evolution:'Heartstorm Blaster',
     upgrades:[
       {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,desc:'+12% Basic Attack damage per rank'},
@@ -2011,7 +2012,7 @@ function pathMods(b){ const m={dmg:1,cd:1,count:0,range:0,big:0,frozen:0,far:0,l
   add(pt.base,1); for(const u of pt.upgrades)add(u.fx||{},b.lv[u.id]||0); return m; }
 
 const CHARACTER_UNIQUES = {
-  citrusParade:{name:'Citrus Parade',emoji:'🍋',cd:13,color:0xffd85e,desc:'The whole crew rushes the strongest enemy, with a brief burst of extra strength'},
+  citrusParade:{name:'Citrus Parade',emoji:'🍋',cd:13,color:0xffd85e,desc:'The crew attacks nearby threats faster and harder for a short time'},
   berryRebound:{name:'Strawberry Rebound',emoji:'🍓',cd:8,color:0xff76a8,desc:'Fires sweet seeds all around and heals HP; Sniper turns it into charged explosions'},
   mintSanctuary:{name:'Mint Gale',emoji:'🌬️',cd:10,color:0x8fd0ff,desc:'A cool gust wraps around you — run much faster for a few seconds, ignore slows and push nearby enemies away'},
   voidPull:{name:'Dark Chocolate Void',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'Opens a black hole that pulls enemies in for continuous damage, then implodes'},
@@ -2023,7 +2024,7 @@ const CHARACTER_UNIQUES = {
 const UNIQUE_MAX_LV=4;
 const uniqueAt={2:3,3:7,4:11};   // run level milestones shared by UI, progression, and validation
 const UNIQUE_TIERS={
-  citrusParade:{2:'Longer parade and stronger bites',3:'More attack speed during the parade',4:'Royal Parade: longer focus and larger sour bursts'},
+  citrusParade:{2:'Longer parade and stronger bites',3:'More attack speed during the parade',4:'Royal Parade: longer burst and larger sour bursts'},
   berryRebound:{2:'More seeds and more HP recovery',3:'Stronger seeds with a wider spread',4:'Berry Crown fires 20+ seeds with max healing'},
   mintSanctuary:{2:'Faster and longer gale',3:'Stronger push when it starts',4:'Tailwind — the longest, fastest gale'},
   voidPull:{2:'Wider hole that pulls harder',3:'Lasts longer + stronger DoT',4:'Singularity — a giant hole pulls the whole screen and ends in a violent blast'},
@@ -3808,7 +3809,7 @@ class Game extends Phaser.Scene {
     this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(520);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='flickerStrike'?100+(ul-1)*10:c.unique==='oathMirror'?180+(ul-1)*18:c.unique==='jamOverdrive'?170+(ul-1)*20:155+(ul-1)*18;
     this.uniqueCrescendo(u.color,ul,spectacleRadius);
-    if(c.unique==='citrusParade'){this._yuzuParadeT=5+ul+(this.player.yuzuParade?2:0);this._yuzuTarget=this.strongestEnemy(900)||this.nearestEnemy(900);this.showBanner('🍋 Citrus Parade','The Citrus Crew rallies!',1200);return;}
+    if(c.unique==='citrusParade'){this._yuzuParadeT=5+ul+(this.player.yuzuParade?2:0);this.showBanner('🍋 Citrus Parade','The Citrus Crew rallies!',1200);return;}
     if(c.unique==='berryRebound'){
       if(this.basicAttack&&this.basicAttack.path==='sniper'){
         const pulses=3+(ul>=3?1:0),burstDmg=(23+ul*7)*dm*up;
@@ -8097,13 +8098,12 @@ class Game extends Phaser.Scene {
     if(!this._yuzuCrew)this._yuzuCrew=[];const crew=this._yuzuCrew;
     while(crew.length>count){const m=crew.pop();m.spr.destroy();}
     while(crew.length<count){const i=crew.length,cheese=workshop&&i===count-1,key=cheese?'minion_cheese':'minion_yuzling',spr=this.camWorld(this.add.sprite(this.player.x,this.player.y,key,0).setDepth(7).setScale(guardian?0.66:0.34));
-      crew.push({spr,cheese,cd:i*0.18,hp:guardian?7+2*(b.lv.family||0):3,tired:0,hitCd:0,bites:0});}
+      crew.push({spr,cheese,cd:i*0.18,bites:0});}
     const now=this.elapsed||0;this._yuzuParadeT=Math.max(0,(this._yuzuParadeT||0)-dt);const parade=this._yuzuParadeT>0;
-    for(let i=0;i<crew.length;i++){const m=crew[i],sp=m.spr,maxHp=guardian?7+2*(b.lv.family||0):3,ang=i*TAU/Math.max(1,count),homeX=this.player.x+Math.cos(ang)*46,homeY=this.player.y+Math.sin(ang)*39;
-      if(m.tired>0){m.tired-=dt;sp.setFrame(6).setAlpha(0.5).setPosition(homeX,homeY);if(m.tired<=0){m.hp=maxHp;m.cd=0;m.hitCd=1;sp.setFrame(7).setAlpha(1);}continue;}
-      m.cd=Math.max(0,m.cd-dt);m.hitCd=Math.max(0,m.hitCd-dt);
-      let target=null,near=Infinity;this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(sp.x,sp.y,e.x,e.y);if(d<near&&d<420){near=d;target=e;}});
-      if(parade&&this._yuzuTarget&&this._yuzuTarget.active){target=this._yuzuTarget;near=this.dist(sp.x,sp.y,target.x,target.y);}
+    for(let i=0;i<crew.length;i++){const m=crew[i],sp=m.spr,ang=i*TAU/Math.max(1,count),homeX=this.player.x+Math.cos(ang)*46,homeY=this.player.y+Math.sin(ang)*39;
+      m.cd=Math.max(0,m.cd-dt);
+      let target=null,near=Infinity,closest=420;this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(this.player.x,this.player.y,e.x,e.y);if(d<closest){closest=d;target=e;}});
+      if(target)near=this.dist(sp.x,sp.y,target.x,target.y);
       const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=guardian?190:245;
       if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>650)sp.setPosition(homeX,homeY);
       else if(dist>25){const step=Math.min(dist,speed*dt);sp.setPosition(sp.x+(tx-sp.x)/dist*step,sp.y+(ty-sp.y)/dist*step);}
@@ -8111,14 +8111,14 @@ class Game extends Phaser.Scene {
       if(this.iso)sp.setDepth(sp.y+1);
       if(m.cheese){this._yuzuCheeseT=(this._yuzuCheeseT||0)+dt;if(this._yuzuCheeseT>=Math.max(5,9*Math.pow(0.94,b.lv.p_sweetHelper||0))){this._yuzuCheeseT=0;const heal=Math.max(1,Math.round(this.player.maxhp*(b.evolved?0.05:0.035)));this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,heal);const enemy=this.nearestEnemy(260);if(enemy)this.damage(enemy,this.relicDmg(b.evolved?1.0:0.6)*(1+0.08*(b.lv.p_sourMixer||0)),enemy.x,enemy.y);}continue;}
       if(target&&near<=(guardian?95:58)&&m.cd<=0){let dmg=(guardian?18:8)*(1+0.12*(b.ranks.power||0))*(guardian?1+0.15*(b.lv.family||0):1)*(pm.dmg||1)*(this.player.dmgMul||1)*(parade?1.55:1);
-        if(b.mutation==='pack'){let allies=guardian?2:0;for(const a of crew)if(a!==m&&!a.cheese&&a.tired<=0&&this.dist(a.spr.x,a.spr.y,target.x,target.y)<90)allies++;dmg*=1+Math.min(0.6,allies*0.12);}
-        this.damage(target,dmg,target.x,target.y);m.bites++;sp.setFrame(4);if((this._yuzuAttackCd||0)<=now){this.poseAttack(400);this._yuzuAttackCd=now+0.65;}
+        if(b.mutation==='pack'){let allies=guardian?2:0;for(const a of crew)if(a!==m&&!a.cheese&&this.dist(a.spr.x,a.spr.y,target.x,target.y)<90)allies++;dmg*=1+Math.min(0.6,allies*0.12);}
+        m.bites++;if(b.mutation==='second'&&m.bites%4===0)dmg*=1.5;
+        this.damage(target,dmg,target.x,target.y);sp.setFrame(4);if((this._yuzuAttackCd||0)<=now){this.poseAttack(400);this._yuzuAttackCd=now+0.65;}
         const splash=(b.lv.splash||0)>0||guardian||b.evolved||b.mutation==='parting'&&m.bites%4===0;
         if(splash){const R=(guardian?90:45)+12*(b.lv.splash||0)+(b.evolved?20:0),blast=b.mutation==='parting'&&m.bites%4===0;this.enemies.children.iterate(e=>{if(e&&e.active&&e!==target&&this.dist(e.x,e.y,target.x,target.y)<R)this.damage(e,dmg*(blast?0.8:0.3),e.x,e.y);});}
         m.cd=Math.max(0.32,(guardian?1.3:0.9)*Math.pow(0.92,b.ranks.rate||0)*(pm.cd||1)*(parade?0.58:1)*(b.evolved?0.85:1));}
-      if(target&&near<45&&m.hitCd<=0){m.hitCd=guardian?2.6:2.1;m.hp--;if(m.hp<=0){m.tired=Math.max(2.5,(guardian?7:5)-0.55*(b.lv.loyal||0))*(b.mutation==='second'?0.55:1);sp.setFrame(6).setAlpha(0.5);}}
     }
-    if((b.lv.loyal||0)>0&&crew.some(m=>!m.tired&&this.dist(m.spr.x,m.spr.y,this.player.x,this.player.y)<85)){this._yuzuHealT=(this._yuzuHealT||0)+dt;if(this._yuzuHealT>=10){this._yuzuHealT=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+Math.max(1,Math.round(this.player.maxhp*0.01*(b.lv.loyal||0))));}}}
+    if((b.lv.loyal||0)>0&&crew.some(m=>this.dist(m.spr.x,m.spr.y,this.player.x,this.player.y)<85)){this._yuzuHealT=(this._yuzuHealT||0)+dt;if(this._yuzuHealT>=10){this._yuzuHealT=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+Math.max(1,Math.round(this.player.maxhp*0.01*(b.lv.loyal||0))));}}}
   tickFR(dt){ if(!this._fr||this.state!=='play')return; const p=this.player;
     if(this._frRageT>0)this._frRageT-=dt; if(this._frHasteT>0)this._frHasteT-=dt;
     if(this._fr.length){ const mv=p.body?Math.hypot(p.body.velocity.x,p.body.velocity.y):0;

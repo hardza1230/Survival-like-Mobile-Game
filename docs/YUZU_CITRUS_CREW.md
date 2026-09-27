@@ -4,11 +4,11 @@ Yuzu is the fifth story fighter, unlocked on clearing C2-5. Sesame is now a secr
 
 ## In a run
 
-- Signature Basic Attack: two permanent Yuzlings automatically move toward and bite nearby enemies. A tired minion rests briefly, then returns at full stamina. They teleport back if stranded far from Yuzu. There are no extra physics bodies.
-- Basic cards: Juicy Bite (5), Quick Feet (5), Growing Family (3), Zest Splash (3), Loyal Guard (3). Growing Family powers up Guardian instead of adding bodies in that path.
+- Signature Basic Attack: two invulnerable Yuzlings prioritize the enemy closest to Yuzu within 420 pixels, then move toward and bite it. They never lose HP or pause from contact with enemies. They teleport back if stranded far from Yuzu. There are no extra physics bodies.
+- Basic cards: Juicy Bite (5), Quick Feet (5), Growing Family (3), Zest Splash (3), Loyal Guard (3). Loyal Guard heals Yuzu while a minion is nearby. Growing Family powers up Guardian instead of adding bodies in that path.
 - Build Path selection follows the existing level milestone. Zest Swarm adds two smaller attackers (up to nine with upgrades); Citrus Guardian merges the crew into one large heavy attacker; Juice Workshop adds animated Cheese support that heals Yuzu and attacks a nearby enemy. Each path has two exclusive cards.
-- Mutation: Parting Gift, Pack Instinct or Second Serving; one choice at the existing mastery gate. Evolution is The Citrus Court and strengthens the selected path. Unique Citrus Parade focuses the crew on a strong target for a short burst.
-- Cheese is deliberately a Workshop helper rather than a replacement for the citrus minion. It has its own eight-frame sprite sheet: idle, blink, two moving frames, attack, hurt, rest and return.
+- Mutation: Parting Gift, Pack Instinct or Second Serving; one choice at the existing mastery gate. Second Serving boosts every fourth bite by 50%. Evolution is The Citrus Court and strengthens the selected path. Unique Citrus Parade temporarily boosts the crew's damage and attack speed while keeping closest-target priority.
+- Cheese is an invulnerable Workshop helper rather than a replacement for the citrus minion. Its existing eight-frame sprite sheet is retained.
 
 ## Art and runtime
 
