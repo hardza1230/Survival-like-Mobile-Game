@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.71.0';
+const GAME_VERSION = '5.72.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.72.0', date:'2026-09-27', title:'Temple shovel rewards', items:['Finish the combat tutorial to earn 10 shovels once','Claim 10 free shovels once a day in Temple Depths; earn more from playing'] },
   { v:'5.71.0', date:'2026-09-26', title:'Friendlier start & clearer missions', items:['Free shovels: claim 8 times a day, 5 shovels each','Stage 1 (Normal): take 40% less damage and meet fewer dashers/shooters','Mission text is bigger, shows longer at wave start and pulses every 12s'] },
   { v:'5.70.2', date:'2026-09-26', title:'Smoother boss music', items:['Boss and miniboss music no longer dips every time you get hit or the boss attacks','Short sound effects duck the music more gently'] },
   { v:'5.70.1', date:'2026-09-26', title:'Tutorial dash fix', items:['Fixed the tutorial Dash step never completing'] },
@@ -2127,7 +2128,7 @@ const RANK_PERKS = [
 ];
 const PERK_TIER_REQ = { 2:3, 3:8 };   // แต้มที่ต้องลงในชั้นก่อนหน้าเพื่อปลดชั้นนี้
 /* ---- v5.27 ⛏️ Temple Depths: มินิเกมขุดใต้วิหาร (ดู docs/TEMPLE_DIG_DESIGN.md) ---- */
-const DIG_N=5, DIG_START_SHOVELS=5;
+const DIG_N=5, DIG_START_SHOVELS=0;
 const DIG_ITEMS={
   empty:{emoji:'',name:'Dust'},
   thread:{emoji:'🧶',name:'Weave Thread'},   // v5.33 วัสดุอัปแก่น (แทน Sugar)
@@ -2683,7 +2684,7 @@ function gearSetCompareText(slot,selected){ if(!selected)return ''; const curren
   for(const id of ids){const def=GEAR_SETS[id];if(def&&(current[id]||0)!==(next[id]||0))parts.push(def.emoji+' '+def.name+' '+(current[id]||0)+'/3 → '+(next[id]||0)+'/3');} return parts.join('   '); }
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
-const DIG_FREE_PER_DAY=8, DIG_FREE_SHOVELS=5;   // v5.71 รับพลั่วฟรี 8 ครั้ง/วัน ครั้งละ 5
+const DIG_FREE_PER_DAY=1, DIG_FREE_SHOVELS=10;
 const Save = {
   data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:24, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
   load(){ let gearMigrated=false; try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
@@ -5397,7 +5398,7 @@ class Game extends Phaser.Scene {
     const by=gy+size+22,bw=Math.min(160,(w-48)/2),bh=40;
     const btn=(x,lab,col,on,fn)=>{ const g=this.add.graphics(); g.fillStyle(on?col:0x2c2338,1); g.fillRoundedRect(x,by,bw,bh,12); g.lineStyle(2,on?0xffe08a:0x4a4059,1); g.strokeRoundedRect(x,by,bw,bh,12);
       const t=this.add.text(x+bw/2,by+bh/2,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:on?'#fff':'#7a7088'}).setOrigin(0.5); this.menu.add([g,t]); if(on)this._zone(x,by,bw,bh,fn); return t; };
-    btn(w/2-bw-6,Save.digFreeReady()?('🎁 Free ⛏️×'+DIG_FREE_SHOVELS+' ('+Save.digFreeLeft()+'/'+DIG_FREE_PER_DAY+')'):'✓ Free ⛏️ done today',0x3a5a3a,Save.digFreeReady(),()=>{ if(Save.digClaimFree()){ Sfx.digFind(); this.menuToast('⛏️ +'+DIG_FREE_SHOVELS+' shovels — '+Save.digFreeLeft()+' free claims left today'); } this.buildDig(); });
+    btn(w/2-bw-6,Save.digFreeReady()?'🎁 Daily ⛏️×10':'✓ Free ⛏️ done today',0x3a5a3a,Save.digFreeReady(),()=>{ if(Save.digClaimFree()){ Sfx.digFind(); this.menuToast('⛏️ +10 shovels — come back tomorrow!'); } this.buildDig(); });
     const canGo=d.gemFound||d.stairFound,dt=btn(w/2+6,d.stairFound?'🕳️ Secret descent':(d.gemFound?'🪜 Go down':'🪜 Find the ladder'),d.stairFound?0x6a3a8a:0x5a3a7a,!!canGo,()=>this.digDescend());
     if(canGo)this.tweens.add({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
     const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret  ✦ hint\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def')+'   ·   📜 '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
@@ -7577,7 +7578,7 @@ class Game extends Phaser.Scene {
   _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.save();
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
     const TUTORIAL_SUGAR=140; let rewardName='Sugar +'+TUTORIAL_SUGAR,rewardEmoji='🍬';
-    if(!Save.data.tutorialRewardGiven){ Save.data.tutorialRewardGiven=true; Save.addSugar(TUTORIAL_SUGAR); Save.dig(); Save.save(); }   // v5.33 dig() แจกด้าย 40 ครั้งแรก
+    if(!Save.data.tutorialRewardGiven){ Save.data.tutorialRewardGiven=true; Save.addSugar(TUTORIAL_SUGAR); Save.addShovels(10); Save.save(); rewardName+=' · Shovels +10'; }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
     this.sugarStage=0; Sfx.clear&&Sfx.clear();
     // หน้า "จบการสอน" ค้างจนกว่าจะแตะ (ไม่เด้งออกเองให้ดูไม่ทัน)
     this.showTutorialComplete(rewardEmoji,rewardName);

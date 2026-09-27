@@ -62,7 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.71.0 — ด่านแรกง่ายลง · ภารกิจเห็นชัด · พลั่วฟรี 8 ครั้ง)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.72.0 — พลั่วบทสอนและรายวัน)
+- **v5.72.0:** จบบทสอนครั้งแรกได้พลั่ว 10 อัน (แทนพลั่วเริ่มต้น 5) พร้อม Sugar เดิม · รับฟรีวันละครั้ง 10 อัน (`DIG_FREE_PER_DAY=1`, `DIG_FREE_SHOVELS=10`) · เซฟที่รับฟรีไปแล้วในวันอัปเดตถือว่าใช้สิทธิ์วันนี้ และเซฟที่รับรางวัลบทสอนแล้วไม่แจกย้อนหลัง/ซ้ำ
 - **v5.71.0 (เจ้าของ 3 ข้อ):** (1) ขุดฟรี `DIG_FREE_PER_DAY=8` ครั้ง/วัน ครั้งละ `DIG_FREE_SHOVELS=5` (`Save.digFreeLeft`, `dig.freeN`) · (2) `newbieGuard()` ด่าน 1 Normal (ไม่ใช่ rush/rift) รับดาเมจ ×0.6 ผ่าน cocoaGuard (ใช้ทั้ง touchEnemy/hurtPlayer) · spawnWaveEnemy ด่าน 1 ตัวไม่ใช่ basic 55% เปลี่ยนเป็น basic · (3) waveObjTxt 15px + 🎯 นำหน้า · banner เริ่มเวฟ 'MISSION: desc' 3.8 วิ แล้วตัวหนังสือภารกิจเด้ง · เด้งเตือนทุก 12 วิ · verified headless ขุด 8×5=40, guard 0.6, HUD โชว์ภารกิจ, 0 error
 - **v5.70.2 (เจ้าของ: เพลงสู้บอส/มินิติด ๆ หาย ๆ เวลาบอสออกท่า):** ต้นเหตุ `Sfx.duckBgm` ลดเสียงเพลงทุกครั้งที่เล่น hurt/bigKill/bossWarn/ult · แก้: ระหว่าง `_bgmIntense` (เพลงบอส/มินิ) duck ที่สั้นกว่า 1 วิ = ข้าม · duck สั้นที่อื่นลดแค่ ≥×0.75 · duck ยาว (beatLoop/chestSpin/bossClear/victory/dead) คงเดิม · verified headless เพลงบอสระดับคงที่ 0.34 ตอนโดนตีรัว, 0 error
 - **v5.70.1 (บั๊กเจ้าของ: account ใหม่ tutorial ขั้น Dash ไม่ผ่าน):** ต้นเหตุ v5.69 แทรกโค้ดตัดคอมโบใน doDash แล้ว `this._coachDash++` ไปอยู่หลัง `//` comment → ไม่เคยนับ · ย้ายออกมานอก comment · verified headless momo/cocoa dash นับ +1, 0 error
