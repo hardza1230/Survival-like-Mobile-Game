@@ -5,7 +5,7 @@ const source = fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8');
 
 // v4.47 release gate: keep raster pickups plus the v4.46 roulette/mod contracts wired into shipped builds.
 for(const contract of [
-  "const GAME_VERSION = '5.86.0'",
+  "const GAME_VERSION = '5.87.0'",
   "const AFFIX_CATEGORY = {",
   "id:'bossdmg', category:'offense'",
   "id:'laststand', category:'offense'",
@@ -92,8 +92,8 @@ function block(pattern, label) {
 
 const skillBlock = block(/const SKILLDEFS = \{([\s\S]*?)\n\};\nconst SKILL_AWAKEN_LV/, 'SKILLDEFS');
 const skills = [...skillBlock.matchAll(/^  ([A-Za-z][A-Za-z0-9]*):/gm)].map(match => match[1]);
-if (skills.length !== 15) {
-  throw new Error(`Expected exactly 15 attack skills, found ${skills.length}: ${skills.join(', ')}`);
+if (skills.length !== 16) {
+  throw new Error(`Expected exactly 16 attack skills, found ${skills.length}: ${skills.join(', ')}`);
 }
 
 const comboBlock = block(/const COMBOS = \[([\s\S]*?)\n\];/, 'COMBOS');
@@ -316,7 +316,7 @@ for(const [name,wantW,wantH] of rootPngs){
 }
 if(!fs.existsSync(new URL('../assets/bg10.webp',import.meta.url)))throw new Error('Root Throne background is missing');
 
-for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry']) {
+for (const fighter of ['momo', 'mint', 'cocoa', 'taro', 'sesame', 'berry', 'yuzu']) {
   const cardName = fighter === 'mint' ? 'card_mint_frostleaf.png' : `card_${fighter}.png`;
   const card = fs.readFileSync(new URL(`../assets/character_cards/${cardName}`, import.meta.url));
   const width = card.readUInt32BE(16);

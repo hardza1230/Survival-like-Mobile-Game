@@ -62,6 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.87.0 — Yuzu Citrus Crew)
+- **v5.87.0:** Yuzu เป็นนักอัญเชิญตัวละครหลักลำดับ 5 หลังผ่าน C2-5; Sesame เก็บเป็นตัวลับสำหรับเซฟที่มีอยู่ (`docs/YUZU_CITRUS_CREW.md`) · เพิ่มการ์ด 5, Build Path 3, Mutation 3, Evolution/Unique, ลูกส้มและ Cheese ผู้ช่วย Workshop พร้อม sprite sheet โปร่งใส 8 เฟรม · `npm run check`, build:www และ runtime harness ผ่าน · **ถัดไป:** เล่นทดสอบบนมือถือจริงและจูนจำนวน/ดาเมจลูกสมุน, ทำ art card เต็มตัวหากภาพตัวละครบนหน้าเลือกยังไม่ชัด
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.84.0 — Sugar Orders)
 - **v5.84.0:** `docs/SUGAR_ORDERS.md` · Bazaar เพิ่มแท็บ Orders ให้เลือกพลั่ว/ด้าย/Twist Cream/Wild Jam ด้วย Sugar แล้วรับหลังผ่านด่านปกติ · รางวัลคูณตาม `DIFFS[].reward`, หนึ่งคำสั่งต่อครั้ง, แพ้/ออกยังคงอยู่, ยกเลิกได้เงินคืน, บันทึกในผลสรุป · `game.js` เต็มถูกกู้คืนจาก v5.81 และใส่การแก้ v5.82–83 กลับครบหลังไฟล์บน branch ถูกตัดในขั้นส่งไฟล์ก่อนหน้า · static checks ผ่าน · **ถัดไป:** ทดสอบ UI บนมือถือและสมดุลราคาจากการเล่นจริง
 - **v5.83.0:** รายการ 14 ข้อและสถานะใน `docs/PLAYTEST_FEEDBACK_2026_09_27.md` · Mint Barrage สูงสุด 3 หอก/ลดดาเมจต่อหอก · Juicy Burst splash บน seed ที่ทะลุเป้าและแก้ path upgrade array ถูก push Deep Flavor ซ้ำ · Clean Air กว้าง/เร็ว/สั้นขึ้น · Escort วิ่งและชำระแกนเร็วขึ้น · Beat Rush เพิ่ม AUTO (แรงน้อยกว่า manual) และลดเวลาต้องลาก/ปัด · Depths ซื้อพลั่วด้วย Sugar ได้จำกัดรายวัน · static validators ผ่าน · **ถัดไป:** เล่นจริงบนมือถือ, จูน Mint Glacier/Pierce และ Cocoa 3 สายให้ต่างเด่น, ตรวจการ์ด Mint รายใบ
