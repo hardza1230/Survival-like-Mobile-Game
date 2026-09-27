@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.76.0';
+const GAME_VERSION = '5.77.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.77.0', date:'2026-09-27', title:'Chapter 1 learning path', items:['Stages 1–3 now teach wave missions in a fixed order: survive, capture, hunt, then escort','Early mission banners say exactly what to do and where to look','Stage 1 marked-enemy hunt asks for two targets instead of three'] },
   { v:'5.76.0', date:'2026-09-27', title:'Story fighter unlocks and clearer cards', items:['Mint unlocks after Stage 1 and Cocoa after Chapter 1, with no Sugar purchase','Character cards show their play style and offer a detail view','Taro and Sesame are reserved for later development; previously owned fighters remain available'] },
   { v:'5.75.0', date:'2026-09-27', title:'Clearer menu reminders', items:['Red dots now follow pending Daily, Achievement, Inbox, Rank, Temple and new Gear actions into their menu groups','Yellow guides highlight rewards ready to claim, and disappear when the reward is collected'] },
   { v:'5.74.0', date:'2026-09-27', title:'Mimic chest warning', items:['A suspicious miniboss chest now pulses with a red warning and a Mimic hint before you touch it','The Mimic reveal briefly freezes the enemy so you can react'] },
@@ -3379,6 +3380,13 @@ const WAVE_OBJECTIVES = {
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Destroy every corrupted root anchor before the throne pulse closes in'},
   cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'}
 };
+// Wave 2 is the miniboss. Fixed early missions give new players a reliable learning path on repeat runs.
+const CH1_EARLY_WAVE_PLAN={
+  0:{1:{type:'survive',tip:'Keep moving until the timer ends.'},3:{type:'capture',tip:'Stand inside the glowing ring until its meter fills.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked enemies.'}},
+  1:{1:{type:'survive',tip:'Keep moving and watch for pressure attacks.'},3:{type:'hunt',tip:'Follow 🎯 to the marked enemies and defeat them.'},4:{type:'purge',tip:'Stay near the Wisp and keep raiders away from it.'}},
+  2:{1:{type:'capture',tip:'Stand inside the glowing ring to charge the furnace seal.'},3:{type:'purge',tip:'Protect the Wisp as it reaches each cursed core.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked guards.'}}
+};
+function earlyWaveMission(stage,wave){return CH1_EARLY_WAVE_PLAN[stage]?.[wave]||null;}
 const CH1_OBJECTIVE_COLORS=[0x9dff45,0x72e8d1,0xff8a5a,0x9fe0ff,0xd59cff];
 
 const STAGE_SWARM_BEATS = [
@@ -6596,7 +6604,7 @@ class Game extends Phaser.Scene {
       this.showBanner('⚠️ '+(beat?beat.title:st.mini),beat?beat.sub:(st.mini+' — get ready to find space to dodge'),2600);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);
       this.scheduleStageEvent(2800,'miniWarning',()=>this.spawnMiniBoss());
     }else{this.mode='wave';this.startSurvivalWave(w,false);this.setupWaveObjective(w,p);const o=this.waveObjective;
-      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?('MISSION: '+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});}
+      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((o.lesson?'MISSION '+o.lesson+': ':'MISSION: ')+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});}
     this.updateWaveText();
   }
   setupSpawnRates(w){
@@ -6664,12 +6672,14 @@ class Game extends Phaser.Scene {
   }
   setupWaveObjective(w,p){
     this.clearWaveObjective();
-    if(!this._waveObjectiveBag||!this._waveObjectiveBag.length){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
-    const type=this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
-    const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,color,progress:0,target:0,done:false};
+    const planned=!this.recipeMode&&!this.riftMode?earlyWaveMission(this.stageIndex,w):null;
+    if(!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
+    const type=planned?planned.type:this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
+    const lesson=planned?({1:'1/3',3:'2/3',4:'3/3'}[w]):null;
+    const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,lesson,color,progress:0,target:0,done:false};
     if(type==='survive')o.target=Math.max(1,p.dur||48);
     else if(type==='hunt'){
-      o.target=2+(w>=4?1:0)+(this.stageIndex>=3?1:0);o.desc='Kill the marked Elite targets: '+o.target+' before time runs out';this.spawnObjectiveElite();
+      o.target=2+(w>=4&&this.stageIndex>0?1:0)+(this.stageIndex>=3?1:0);o.desc='Kill the marked Elite targets: '+o.target+' before time runs out';this.spawnObjectiveElite();
     }else if(type==='purge'){
       o.target=3+(w>=4?1:0);o.desc='Escort the wisp to purify '+o.target+' cores';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);this.spawnPurifyWisp();
     }else if(type==='cleanAir'){
@@ -6683,6 +6693,7 @@ class Game extends Phaser.Scene {
     }else{
       o.target=25;o.desc='Purify the ring for '+o.target+'s — it grows as you purify, enemies swarm to stop you';this.spawnCaptureZone();
     }
+    if(planned)o.desc=planned.tip;
     this.startBonusChallenge(o);
     this.renderWaveObjectiveHUD();
   }
