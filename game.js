@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.73.0';
+const GAME_VERSION = '5.74.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.74.0', date:'2026-09-27', title:'Mimic chest warning', items:['A suspicious miniboss chest now pulses with a red warning and a Mimic hint before you touch it','The Mimic reveal briefly freezes the enemy so you can react'] },
   { v:'5.73.0', date:'2026-09-27', title:'Daily missions that fit your progress', items:['Daily Challenge rotates between clearing a stage, defeating enemies and digging in Temple Depths','Stage missions only pick stages you have unlocked, with a gentler difficulty for new players','Enemy and digging missions track progress across sessions and pay out when completed'] },
   { v:'5.72.0', date:'2026-09-27', title:'Temple shovel rewards', items:['Finish the combat tutorial to earn 10 shovels once','Claim 10 free shovels once a day in Temple Depths; earn more from playing'] },
   { v:'5.71.0', date:'2026-09-26', title:'Friendlier start & clearer missions', items:['Free shovels: claim 8 times a day, 5 shovels each','Stage 1 (Normal): take 40% less damage and meet fewer dashers/shooters','Mission text is bigger, shows longer at wave start and pulses every 12s'] },
@@ -7234,7 +7235,7 @@ class Game extends Phaser.Scene {
   }
   clearFoes(){ this.foeBullets.children.iterate(b=>{ if(b&&b.active)this.killFoe(b); }); }
   clearPickups(alsoHeals){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active){ this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false; } });
-    if(alsoHeals){ for(const grp of [this.heals,this.vacs,this.loots,this.chests,this.gimmicks]){ if(grp)grp.children.iterate(o=>{ if(o&&o.active){ this.tweens.killTweensOf(o); if(o._glow){this.tweens.killTweensOf(o._glow);o._glow.destroy();o._glow=null;} this.hidePickupCue(o); o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; } }); } } }
+    if(alsoHeals){ for(const grp of [this.heals,this.vacs,this.loots,this.chests,this.gimmicks]){ if(grp)grp.children.iterate(o=>{ if(o&&o.active){ this.tweens.killTweensOf(o); if(o._glow){this.tweens.killTweensOf(o._glow);o._glow.destroy();o._glow=null;} this.hidePickupCue(o); this.clearMimicCue(o); o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; } }); } } }
   // ตั้งเวลาเหตุการณ์ประจำStage (เริ่มเวฟ/บอส/รางวัล) แบบทนต่อ modal: ถ้าตอนถึงเวลายังติดหน้าเลเวลอัพ/กล่องสุ่ม/pause
   // จะ "Wait" แล้วยิงเมื่อกลับมาเล่นจริง (state==='play') — กันบั๊กเวฟไม่มา/เกมค้างหลังMiniboss
   scheduleStageEvent(delayMs,mode,fn){
@@ -9315,7 +9316,7 @@ class Game extends Phaser.Scene {
   // ---- หีบสมบัติ (ดWaitปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
     if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
-    if(!c)return;
+    if(!c)return; this.clearMimicCue(c);
     c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c);
     if(kind==='mini'){ c._tier=this._nextChestTier||'bronze'; this._nextChestTier=null; c._mimic=!this._noMimicNext&&!this._inTutorial&&Math.random()<0.12; this._noMimicNext=false; this.miniChestDrop(c,x,y); return; }
     this.showPickupCue(c,kind==='pick'?0x66e0ff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
@@ -9488,11 +9489,18 @@ class Game extends Phaser.Scene {
     const e=this.spawnElite();if(!e){this._noMimicNext=true;this._nextChestTier=tier;this.spawnChest(x,y,'mini');return;}
     e.setPosition(x,y).setTexture('chest').setFrame(0);if(e.anims)e.anims.stop();
     const sc=64/(e.width||48);e.setScale(sc);e.baseScale=sc;e._baseScale=sc;if(e.body)e.body.setCircle((e.width||48)*0.42,(e.width||48)*0.08,(e.width||48)*0.08);
-    e.hp=e.maxhp=e.maxhp*2.6;e.spd=(e.spd||48)*1.6;e.dmg=Math.round((e.dmg||18)*1.15);e._mimic=tier;e.setTint(0xffd6a0);e.tintColor=0xffd6a0;
+    e.hp=e.maxhp=e.maxhp*2.6;e.spd=(e.spd||48)*1.6;e.dmg=Math.round((e.dmg||18)*1.15);e._mimic=tier;e.frozen=Math.max(e.frozen||0,0.9);e.setTint(0xffd6a0);e.tintColor=0xffd6a0;
     this.screenShake(260,0.014);this.screenFlash(0xff5a6e,0.3,260);if(Sfx.bossWarn)Sfx.bossWarn();this.burst(x,y,0xff5a6e);
     this.tweens.add({targets:e,scaleY:sc*1.35,yoyo:true,duration:140,repeat:2});
     this.showBanner('🦷 MIMIC!','The chest bites back — defeat it for a better chest',1800);
   }
+  showMimicCue(c){if(!c._mimic||!c.active)return;
+    const ring=this.camWorld(this.add.circle(c.x,c.y,37,0xff304d,0.12).setStrokeStyle(3,0xff526b,0.95).setDepth(90002));
+    const warning=this.camWorld(this.add.text(c.x,c.y-58,'⚠️ MIMIC?',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#fff3d6',backgroundColor:'#681d35dd',padding:{x:8,y:4},stroke:'#320d1b',strokeThickness:2}).setOrigin(0.5).setDepth(90003));
+    c._mimicCue=[ring,warning];this.tweens.add({targets:ring,scale:{from:0.86,to:1.15},alpha:{from:1,to:0.4},duration:650,yoyo:true,repeat:-1});
+    this.tweens.add({targets:warning,y:warning.y-7,duration:550,yoyo:true,repeat:-1});
+  }
+  clearMimicCue(c){if(!c._mimicCue)return;for(const o of c._mimicCue){this.tweens.killTweensOf(o);o.destroy();}c._mimicCue=null;}
   miniChestDrop(c,x,y){
     const T=MINI_CHEST_TIERS[c._tier||'bronze']||MINI_CHEST_TIERS.bronze;
     c.body.enable=false; c.setPosition(x,y-320).setAlpha(0.2).setDepth(90000); c.setScale(1.42*36/(c.width||36));
@@ -9509,10 +9517,11 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:[c._pillar,c._pillarCore],scaleY:1,duration:260,ease:'Cubic.out'});
         this.tweens.add({targets:c._pillar,alpha:{from:0.2,to:0.42},scaleX:{from:0.85,to:1.2},yoyo:true,repeat:-1,duration:520,delay:260});
         this.tweens.add({targets:c,y:y-10,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-        const inf=this._miniChestInfo;this.showBanner(T.emoji+' '+T.name+' Chest',inf?('Beat it in '+Math.round(inf.dur)+'s · '+inf.hits+' hits taken'):'Walk into the light to open it',1600); }});
+        const inf=this._miniChestInfo;if(c._mimic)this.showMimicCue(c);
+        this.showBanner(c._mimic?'⚠️ Suspicious Chest':T.emoji+' '+T.name+' Chest',c._mimic?'Mimic ahead — get ready to dodge!':inf?('Beat it in '+Math.round(inf.dur)+'s · '+inf.hits+' hits taken'):'Walk into the light to open it',1600); }});
     }});
   }
-  collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); this.hidePickupCue(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
+  collectChest(player,c){ if(!c.active)return; this.tweens.killTweensOf(c); this.hidePickupCue(c); this.clearMimicCue(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false;
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
