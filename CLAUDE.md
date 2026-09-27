@@ -62,7 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.77.0 — ภารกิจ Stage 1–3 มีลำดับ)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.78.0 — มอนตายสะใจ + กระสุนศัตรูเห็นชัด)
+- **v5.78.0 (เจ้าของเลือกข้อ 1+3):** `deathFling(e)` ภาพมอนธรรมดากระเด็นหมุนออกจากผู้เล่น 280ms (ใช้งบ `fxOk`) · ฆ่า ≥6 ตัวใน 260ms = screenShake 90ms 0.0035 (cd 450ms, `_mkT/_mkShakeAt`) · กระสุนศัตรูใช้ `proj_foe` (= proj_enemy + ขอบเข้มจาก PIL) ไม่ย้อมสีตามด่านแล้ว · verified headless C2-2 screenshot, 0 error
 - **v5.77.0:** `CH1_EARLY_WAVE_PLAN` กำหนดภารกิจเวฟ 1/3/4 ของด่าน 1–3 ไม่สุ่ม, เวฟ 2 คงมินิบอส · แบนเนอร์มี Mission 1/3–3/3 + คำสั่งตรง · ด่าน 1 Hunt เหลือ 2 เป้า · Recipe/Rift ไม่ใช้แผนนี้ · รายละเอียด `docs/CHAPTER1_EARLY_MISSIONS.md`
 - **v5.76.0:** Mint ปลดถาวรเมื่อผ่าน Stage 1 และ Cocoa เมื่อผ่าน Stage 5 โดยไม่ใช้ Sugar · เซฟเก่าที่เคยผ่านได้สิทธิ์ย้อนหลังและตัวที่เคยซื้อยังอยู่ · การ์ด Heroes แสดงสไตล์/คำอธิบาย/วิธีปลดและปุ่มข้อมูล · Taro/Sesame หยุดการซื้อใหม่จนพัฒนาเสร็จ; milestone Ch2/Ch3 และนโยบายตัวละครใหม่แบบ league อยู่ใน `docs/CHARACTER_UNLOCK_PLAN.md` (ยังไม่สร้างระบบจ่ายเงินจริง)
 - **v5.75.0:** helper `hasTargetBadge`/`hasClaimableTarget`/`hasGroupBadge` ใช้เงื่อนไขเดียวกันจาก Hub ไปหน้ากลุ่มและไทล์ · Daily (รับประจำวัน/ภารกิจ), Achievement, Reward Inbox, Gear ใหม่, Rank Points, พลั่วฟรี, Updates · หน้าปลายทาง Daily/Achievement/Rank มีจุดแดง และกรอบเหลืองที่กลุ่มชี้รางวัลที่รับได้ · `hubNextStep` ให้รางวัลค้างมาก่อนคำแนะนำอัปเกรด

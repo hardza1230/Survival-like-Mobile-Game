@@ -42,11 +42,12 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.77.0';
+const GAME_VERSION = '5.78.0';
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.78.0', date:'2026-09-27', title:'Punchier kills, clearer enemy shots', items:['Defeated enemies fly back and spin away','Wiping out a crowd at once gives a small screen shake','Enemy bullets now use one bright color with a dark outline on every stage'] },
   { v:'5.77.0', date:'2026-09-27', title:'Chapter 1 learning path', items:['Stages 1–3 now teach wave missions in a fixed order: survive, capture, hunt, then escort','Early mission banners say exactly what to do and where to look','Stage 1 marked-enemy hunt asks for two targets instead of three'] },
   { v:'5.76.0', date:'2026-09-27', title:'Story fighter unlocks and clearer cards', items:['Mint unlocks after Stage 1 and Cocoa after Chapter 1, with no Sugar purchase','Character cards show their play style and offer a detail view','Taro and Sesame are reserved for later development; previously owned fighters remain available'] },
   { v:'5.75.0', date:'2026-09-27', title:'Clearer menu reminders', items:['Red dots now follow pending Daily, Achievement, Inbox, Rank, Temple and new Gear actions into their menu groups','Yellow guides highlight rewards ready to claim, and disappear when the reward is collected'] },
@@ -1027,7 +1028,7 @@ const ASSET_IMAGES = {
   proj_sprinkle:'assets/generated/proj_sprinkle.png', proj_whirl:'assets/generated/proj_whirl.png',
   proj_frostlance:'assets/generated/proj_frostlance.png',   // หอกน้ำแข็งของมิ้นต์ (Frost Lance)
   proj_popcorn:'assets/generated/proj_popcorn.png', bubble:'assets/generated/proj_bubble.png',
-  proj_enemy:'assets/generated/proj_enemy.png', proj_mine:'assets/generated/proj_mine.png',
+  proj_enemy:'assets/generated/proj_enemy.png', proj_foe:'assets/generated/proj_foe.png', proj_mine:'assets/generated/proj_mine.png',
   // static VFX sprite จริง — ขยาย/หมุน/เฟดด้วย tween แทนการวาด vector ทุกครั้ง
   vfx_ring:'assets/generated/vfx_hit_ring.png', vfx_poof:'assets/generated/vfx_spawn_poof.png',
   vfx_glow:'assets/generated/vfx_cast_glow.png', vfx_line:'assets/generated/vfx_speed_line.png',
@@ -9188,6 +9189,8 @@ class Game extends Phaser.Scene {
     const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
     this.burst(e.x,e.y,deathColor);
     this.vfxDeathPoof(e.x,e.y,deathColor,big||isElite);
+    if(!big)this.deathFling(e);   // v5.78 ตัวกระเด็นหมุนออกจากผู้เล่น
+    { const now=this.time.now; this._mkT=(this._mkT||[]).filter(t=>now-t<260); this._mkT.push(now); if(this._mkT.length>=6&&now-(this._mkShakeAt||0)>450){ this._mkShakeAt=now; this._mkT=[]; this.screenShake(90,0.0035); } }   // ฆ่ารวดเป็นกลุ่ม = จอสั่นเบา
     if(big){ this.screenShake(isBoss?400:220,isBoss?0.012:0.008); this.burst(e.x,e.y,0xff9ec4); if(isMini)Sfx.clear(); }
     if(e._aura){ e._aura.destroy(); e._aura=null; }   // เก็บออร่าEnraged
     if(e._phaseShieldFx){this.tweens.killTweensOf(e._phaseShieldFx);if(e._phaseShieldFx.active)e._phaseShieldFx.destroy();e._phaseShieldFx=null;}
@@ -9727,8 +9730,8 @@ class Game extends Phaser.Scene {
     let b=this.foeBullets.getFirstDead(false);
     if(!b) b=this.foeBullets.create(x,y,'proj_enemy'); else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
     if(!b)return null;   // pool Full → ข้ามการยิง กัน null crash
-    b.setTexture('proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
-    if(this.stageIndex===0)b.clearTint(); else b.setTint(tint||0xff6b8a);
+    b.setTexture(this.textures.exists('proj_foe')?'proj_foe':'proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
+    b.clearTint();   // v5.78 กระสุนศัตรูสีเดียวทั้งเกม (เขียวเรือง+ขอบเข้ม) ไม่ย้อมตามด่าน → อ่านง่ายบนทุกพื้น
     if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.frost=this.stageIndex===3; b.life=3.0; this.camWorld(b);
     if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
   // hazard บอส: วงเตือน vector โปร่งใสจริง → ระเบิดหลัง 760ms
@@ -10359,6 +10362,9 @@ class Game extends Phaser.Scene {
     const d=this.camWorld(this.add.circle(x+Phaser.Math.Between(-6,6),y,Phaser.Math.Between(4,7),0xffffff,0.35).setDepth(2));
     this.tweens.add({targets:d,y:y-8,alpha:0,scale:1.6,duration:260,onComplete:()=>d.destroy()});
   }
+  deathFling(e){ if(!this.fxOk()||!e.texture)return; const g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame&&e.frame.name).setScale(e.scaleX,e.scaleY).setFlipX(!!e.flipX).setDepth(e.depth||e.y)); if(e.tintColor)g.setTint(e.tintColor);
+    const a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-0.35,0.35), d=Phaser.Math.Between(50,85);
+    this.tweens.add({targets:g,x:e.x+Math.cos(a)*d,y:e.y+Math.sin(a)*d-18,angle:(Math.cos(a)>0?1:-1)*Phaser.Math.Between(160,300),scaleX:e.scaleX*0.55,scaleY:e.scaleY*0.55,alpha:0,duration:280,ease:'Cubic.out',onComplete:()=>g.destroy()}); }
   burst(x,y,color){ for(let i=0;i<7;i++){ const p=this.camWorld(this.add.image(x,y,'dot').setTint(color).setDepth(6).setScale(Phaser.Math.FloatBetween(0.5,1.1)));
     const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
     this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
