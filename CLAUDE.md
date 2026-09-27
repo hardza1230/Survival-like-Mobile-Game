@@ -62,6 +62,8 @@
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.89.0 — Fighter Playtest)
+- **v5.89.0:** ช่วงทดสอบก่อนขึ้น Store เปิดนักสู้ทั้ง 6 ตัวในหน้า Heroes/Talents ทันทีด้วย `FIGHTER_PLAYTEST_ALL`, ยังไม่เขียน chars เพิ่มและไม่ให้ milestone ปลดล็อกระหว่างทดสอบ; เซฟ progress เดิมคงอยู่เพื่อกติกาหลังปล่อยจริง · **ถัดไป:** ทดสอบเลือกเล่นทุกตัวบนมือถือและกลับมากำหนด milestone ก่อนปล่อย Store
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.88.0 — Human Yuzu Art)
 - **v5.88.0:** เปลี่ยน Yuzu จากโมจิทรงกลมเป็นตัวละครร่างคน chibi ตาม Mint/Taro, แทน sprite sheet 8 เฟรมและการ์ดตัวละคร, ลูกสมุนกับ Cheese คงเดิม · ตรวจ PNG / build / validators ผ่าน
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.87.0 — Yuzu Citrus Crew)

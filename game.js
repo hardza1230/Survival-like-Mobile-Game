@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.88.0';
+const GAME_VERSION = '5.89.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.89.0', date:'2026-09-27', title:'Open fighter playtest', items:['All six active fighters are selectable immediately during pre-release testing, including Sesame and Yuzu','Fighter progression and prior unlock records remain saved for future unlock rules','The character menu and Talents navigation show every test fighter'] },
   { v:'5.88.0', date:'2026-09-27', title:'Human Yuzu character art', items:['Yuzu now uses a human chibi fighter sprite matching the other heroes','Updated all eight animation poses and the character selection portrait','Yuzling and Cheese companion art remains as before'] },
   { v:'5.87.0', date:'2026-09-27', title:'Yuzu and the Citrus Crew', items:['Yuzu replaces Sesame as the fifth story fighter; previously owned Sesame stays available as a secret fighter','Yuzlings fight alongside Yuzu, recover after tiring, and gain three distinct Build Paths','Added animated Yuzu, Yuzling and Cheese sheets; Cheese helps in the Workshop path'] },
   { v:'5.86.0', date:'2026-09-27', title:'Taro and Sesame join the roster', items:['Clear C2-1 to unlock Taro and C2-5 to unlock Sesame','Existing saves that already cleared those stages unlock them automatically','Fighter cards now show their real play styles and unlock goals'] },
@@ -1820,8 +1821,9 @@ const CHARACTERS = {
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','yuzu','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
+const FIGHTER_PLAYTEST_ALL=true; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
 const CORE_UNLOCK_STAGE={mint:0,cocoa:4,taro:5,yuzu:9};
-const CHARACTER_CARD_HINT={momo:'Fast shots · easy to learn',mint:'Frost lances · slow & freeze',cocoa:'Melee combos · sturdy fighter',taro:'Chain lightning · dash to reposition',sesame:'Secret fighter · mirror beam',yuzu:'Summon a citrus crew · command minions'};
+const CHARACTER_CARD_HINT={momo:'Fast shots · easy to learn',mint:'Frost lances · slow & freeze',cocoa:'Melee combos · sturdy fighter',taro:'Chain lightning · dash to reposition',sesame:'Charged mirror beam · precise boss damage',yuzu:'Summon a citrus crew · command minions'};
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
   mintNova:{name:'Mint Frost Core',emoji:'❄️',skill:'frost',dmgMul:1.02,cdMul:0.72,areaMul:1.18,controlMul:1.18,trait:'Rapid frost lances · -28% cooldown'},
@@ -2803,7 +2805,7 @@ const Save = {
     if(gearMigrated){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} }
     return this.data; },
   save(){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
-  unlockCoreCharacters(notify=true){let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
+  unlockCoreCharacters(notify=true){if(FIGHTER_PLAYTEST_ALL)return false;let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
     for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(this.data.stageMastery&&this.data.stageMastery[stage]&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
   // ---- Cloud sync (Supabase) ----
@@ -5283,12 +5285,12 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Fighters of the Mochi Core','screen_heroes');
     if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
     const w=this.W,h=this.H,landscape=w>h,cols=landscape?6:2,gap=landscape?7:10,y0=landscape?76:Math.max(92,h*0.105);
-    const roster=CHAR_ORDER.filter(id=>id!=='sesame'||Save.data.chars.includes('sesame'));
+    const roster=CHAR_ORDER.filter(id=>id!=='sesame'||FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('sesame'));
     const rows=Math.ceil(roster.length/cols),side=landscape?10:14,cardW=(w-side*2-gap*(cols-1))/cols;
     const cardH=Math.min(landscape?Math.max(185,h-y0-14):260,(h-y0-14-gap*(rows-1))/rows);
     const formNote=this.add.text(w/2,landscape?59:76,'Choose Character Card · Core Form ⇄ Awakened Form',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'11px',color:'#bfe8ff'}).setOrigin(0.5);this.menu.add(formNote);
     roster.forEach((id,i)=>{const c=CHARACTERS[id],row=Math.floor(i/cols),col=i%cols,rowCount=Math.min(cols,roster.length-row*cols),rowW=rowCount*cardW+(rowCount-1)*gap,x0=(w-rowW)/2,x=x0+col*(cardW+gap),y=y0+row*(cardH+gap);
-      const owned=Save.data.chars.includes(id),selected=Save.data.character===id,locked=!owned,border=selected?0xffd166:(owned?0x8bd3a0:0x554a63);
+      const owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),selected=Save.data.character===id,locked=!owned,border=selected?0xffd166:(owned?0x8bd3a0:0x554a63);
       const panel=this.add.graphics();panel.fillStyle(selected?0x35273d:0x241a33,0.94);panel.fillRoundedRect(x,y,cardW,cardH,landscape?12:16);panel.lineStyle(selected?3:1.7,border,selected?1:0.82);panel.strokeRoundedRect(x,y,cardW,cardH,landscape?12:16);this.menu.add(panel);
       const artH=cardH*(landscape?0.43:0.44),art=this._characterCardArt(id,x+cardW/2,y+8+artH/2,cardW*0.92,artH,owned?1:0.42);
       if(!art){const em=this.add.text(x+cardW/2,y+artH/2,c.emoji,{fontSize:landscape?'40px':'54px'}).setOrigin(0.5);this.menu.add(em);}
@@ -5305,7 +5307,7 @@ class Game extends Phaser.Scene {
   }
   showCharacterInfo(id){const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-90,310),x=(w-bw)/2,y=(h-bh)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);
-    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
+    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
     const title=this.add.text(w/2,y+32,c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
     const role=this.add.text(w/2,y+71,c.role+' · '+SIGNATURE_WEAPONS[c.weapon].name,{fontFamily:'sans-serif',fontSize:'12px',color:'#ffe6ad',align:'center',wordWrap:{width:bw-34}}).setOrigin(0.5);
     const desc=this.add.text(x+22,y+111,c.desc,{fontFamily:'sans-serif',fontSize:'14px',color:'#e7daed',wordWrap:{width:bw-44},lineSpacing:6}).setOrigin(0,0);
@@ -10360,7 +10362,7 @@ class Game extends Phaser.Scene {
     const W=this.W,top=(this.W<=this.H?80:56),bw=Math.min(W-32,400),bx=W/2-bw/2;
     const need=charExpNeed(cp.lvl),g=this.add.graphics();
     // v5.41 ‹ › เปลี่ยนตัวละคร (เฉพาะที่มีแล้ว) — เปลี่ยนตัวที่ใช้เล่นด้วย
-    const own=CHAR_ORDER.filter(c=>(Save.data.chars||[]).includes(c)),oi=Math.max(0,own.indexOf(id));
+    const own=CHAR_ORDER.filter(c=>FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(c)),oi=Math.max(0,own.indexOf(id));
     if(own.length>1){ const sw=d=>{ const n=own[(oi+d+own.length)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); };
       const la=this.add.text(bx+12,top,'‹',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(la); this._zone(bx-6,top-18,40,36,()=>sw(-1)); }
     const hx=own.length>1?bx+28:bx;
