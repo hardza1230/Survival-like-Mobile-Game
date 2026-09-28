@@ -52,7 +52,8 @@ if (existsSync(join(root, 'manifest.webmanifest'))) {
 // คัดลอกเฉพาะ runtime assets ที่ game.js อ้างจริง ไม่ขน raw/source/ไฟล์ซ้ำทั้ง 86MB เข้า APK และ Pages
 const builtAssets = join(www, 'assets');
 if (existsSync(builtAssets)) rmSync(builtAssets, { recursive:true, force:true });
-const assetRefs = [...gjs.matchAll(/["'](assets\/[A-Za-z0-9_./ -]+)["']/g)].map(m=>m[1]);
+const sourceHtml = readFileSync(join(root, 'index.html'), 'utf8');
+const assetRefs = [...(gjs + '\n' + sourceHtml).matchAll(/[\"'](assets\/[A-Za-z0-9_./ -]+)[\"']/g)].map(m=>m[1]);
 const uniqueAssets = [...new Set(assetRefs)].sort();
 
 // กัน regression แบบ e_ant_scout เดิม: แถบดำทึบยาวติดมากับ PNG แม้เกมยังไม่ได้โจมตี
@@ -83,7 +84,8 @@ for (const rel of uniqueAssets) {
 console.log('copied ' + uniqueAssets.length + ' runtime assets (' + (copiedBytes/1024/1024).toFixed(1) + ' MB)');
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)
-let html = readFileSync(join(root, 'index.html'), 'utf8');
+let html = sourceHtml;
+html = html.replace(/(assets\/art\/entry\/[A-Za-z0-9_-]+\.webp)/g, '$1?v=' + ver);
 html = html.replace(/game\.js(\?v=\d+)?/g, 'game.js?v=' + ver);
 writeFileSync(join(www, 'index.html'), html);
 console.log('index.html built with cache-bust v=' + ver);

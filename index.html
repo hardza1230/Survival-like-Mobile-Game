@@ -42,13 +42,45 @@
   #load-retry{display:none;margin:16px auto 0;padding:10px 20px;border:0;border-radius:12px;
     background:#ff85b3;color:#fff;font-size:14px;font-weight:800;box-shadow:0 5px 14px #120b1488;cursor:pointer;}
   @keyframes berryBounce{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
+
+  /* Three independent artwork layers: city, split gate, and nearby blossoms. */
+  #game-loader .entry{position:absolute;inset:0;overflow:hidden;pointer-events:none;display:none;background:#38243d}
+  #game-loader.intro-mode .entry{display:block}
+  #game-loader .entry-city,#game-loader .entry-foreground,#game-loader .entry-door,#game-loader .entry-glow{position:absolute;inset:-2%;background-position:center;background-repeat:no-repeat;background-size:cover;will-change:transform,opacity}
+  #game-loader .entry-city{background-image:url('assets/art/entry/city.webp');filter:brightness(.55);transform:scale(1.02)}
+  #game-loader .entry-foreground{background-image:url('assets/art/entry/foreground.webp');z-index:3}
+  #game-loader .entry-door{background-image:url('assets/art/entry/gate.webp');z-index:2;filter:brightness(.78)}
+  #game-loader .entry-door.left{clip-path:inset(0 50% 0 0)}
+  #game-loader .entry-door.right{clip-path:inset(0 0 0 50%)}
+  #game-loader .entry-glow{z-index:1;background:radial-gradient(ellipse at 50% 56%,#fff3d2 0%,#ffd39496 14%,transparent 58%);opacity:0}
+  #game-loader .entry-motes{position:absolute;inset:0;z-index:4;opacity:0;background-image:radial-gradient(circle,#fff4cb 1.4px,transparent 2px),radial-gradient(circle,#fff6d6 1px,transparent 2px);background-size:67px 91px,89px 107px;background-position:16px 24px,42px 57px}
+  #game-loader.intro-mode .floaties{display:none}
+  #game-loader.intro-mode .card{z-index:5;align-self:flex-end;margin-bottom:max(7vh,env(safe-area-inset-bottom));padding:12px 16px;border-radius:18px;background:#25192aba;backdrop-filter:blur(6px)}
+  #game-loader.intro-mode .berry,#game-loader.intro-mode .title,#game-loader.intro-mode .tip{display:none}
+  #game-loader.opening .card{animation:entry-card-out .35s ease both}
+  #game-loader.opening .entry-city{animation:entry-city-in 2.35s ease-in-out both}
+  #game-loader.opening .entry-door.left{animation:entry-door-left 2.35s cubic-bezier(.25,.65,.25,1) both}
+  #game-loader.opening .entry-door.right{animation:entry-door-right 2.35s cubic-bezier(.25,.65,.25,1) both}
+  #game-loader.opening .entry-foreground{animation:entry-near-in 2.35s ease-in both}
+  #game-loader.opening .entry-glow{animation:entry-light 2.35s ease-in-out both}
+  #game-loader.opening .entry-motes{animation:entry-motes-in 2.35s ease-in-out both}
+  @keyframes entry-card-out{to{opacity:0;transform:translateY(15px)}}
+  @keyframes entry-city-in{0%{transform:scale(1.02);filter:brightness(.55)}45%{filter:brightness(.96)}100%{transform:scale(1.38);filter:brightness(1)}}
+  @keyframes entry-door-left{0%,12%{transform:translateX(0)}53%{transform:translateX(-49%)}100%{transform:translateX(-130%);opacity:0}}
+  @keyframes entry-door-right{0%,12%{transform:translateX(0)}53%{transform:translateX(49%)}100%{transform:translateX(130%);opacity:0}}
+  @keyframes entry-near-in{0%,40%{transform:scale(1);opacity:1}100%{transform:scale(1.8);opacity:0}}
+  @keyframes entry-light{0%,12%{opacity:0}42%{opacity:.88}76%,100%{opacity:0}}
+  @keyframes entry-motes-in{0%,14%{opacity:0;transform:scale(.8)}50%{opacity:.85}100%{opacity:0;transform:scale(1.7)}}
+  @media(prefers-reduced-motion:reduce){#game-loader.opening .entry-city,#game-loader.opening .entry-door,#game-loader.opening .entry-foreground,#game-loader.opening .entry-glow,#game-loader.opening .entry-motes{animation:none}#game-loader.opening .entry{opacity:0;transition:opacity .15s}}
 </style>
 <script>
   window.GameLoader = {
+    _introDone:false,
     show:function(label,progress){
       var root=document.getElementById('game-loader');
       if(!root)return;
       root.style.display='flex'; root.style.pointerEvents='auto';
+      root.classList.toggle('intro-mode',!this._introDone); root.classList.remove('opening');
       requestAnimationFrame(function(){root.style.opacity='1';});
       var retry=document.getElementById('load-retry'); if(retry)retry.style.display='none';
       clearTimeout(this._slowTimer);
@@ -71,6 +103,14 @@
       var root=document.getElementById('game-loader');
       if(!root)return;
       clearTimeout(this._slowTimer);
+      if(!this._introDone && root.classList.contains('intro-mode')){
+        this._introDone=true; root.classList.add('opening');
+        var duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?180:2350;
+        setTimeout(function(){root.style.opacity='0';root.style.pointerEvents='none';
+          setTimeout(function(){if(root.style.opacity==='0')root.style.display='none';root.classList.remove('opening','intro-mode');},240);
+        },duration);
+        return;
+      }
       root.style.opacity='0'; root.style.pointerEvents='none';
       setTimeout(function(){ if(root.style.opacity==='0')root.style.display='none'; },240);
     }
@@ -103,7 +143,8 @@
 </script>
 </head>
 <body>
-<div id="game-loader" role="status" aria-live="polite">
+<div id="game-loader" class="intro-mode" role="status" aria-live="polite">
+  <div class="entry" aria-hidden="true"><div class="entry-city"></div><div class="entry-glow"></div><div class="entry-door left"></div><div class="entry-door right"></div><div class="entry-foreground"></div><div class="entry-motes"></div></div>
   <div class="floaties" aria-hidden="true">
     <span style="left:8%;animation-duration:9s;animation-delay:0s">🍬</span>
     <span style="left:22%;animation-duration:12s;animation-delay:2s">🍭</span>

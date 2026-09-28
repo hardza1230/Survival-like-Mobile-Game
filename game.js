@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.0';
+const GAME_VERSION = '6.0.1';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.1', date:'2026-09-28', title:'Mochitopia gate entrance', items:['New layered candy-city loading entrance opens its gate and moves into the world before showing the menu','Mobile-friendly art layers, loading progress, and reduced-motion support'] },
   { v:'6.0.0', date:'2026-09-28', title:'Chapter 3 boss animations', items:['All ten Chapter 3 minibosses and bosses now have eight illustrated action frames','Idle, attack, summon, charge, hurt, phase change and defeat poses respond to combat'] },
   { v:'5.99.0', date:'2026-09-28', title:'Chapter 3 miniboss and boss art', items:['All five Chapter 3 minibosses and five story bosses use unique transparent raster art','Adjusted display size and collision circles for the larger 256px boss images'] },
   { v:'5.98.0', date:'2026-09-28', title:'Chapter 3 Seedbound enemy art', items:['Five Chapter 3 enemy roles now use transparent raster artwork instead of generated emoji placeholders','Adjusted enemy sizes and collision circles for readable silhouettes on mobile'] },
