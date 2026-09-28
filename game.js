@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.2';
+const GAME_VERSION = '6.0.3';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.3', date:'2026-09-28', title:'Living gate loading scene', items:['Removed the old emoji loading scene so the new Mochitopia artwork is the only loading presentation','The closed gate now has moving clouds, blossoms, sugar motes, a pulsing seal and light before opening'] },
   { v:'6.0.2', date:'2026-09-28', title:'Richer entrance sequence', items:['The Mochitopia gate reveal now has a slower four-beat camera move with drifting clouds, light, petals and depth','Added a skip control and an abbreviated transition when reduced motion is enabled'] },
   { v:'6.0.1', date:'2026-09-28', title:'Mochitopia gate entrance', items:['New layered candy-city loading entrance opens its gate and moves into the world before showing the menu','Mobile-friendly art layers, loading progress, and reduced-motion support'] },
   { v:'6.0.0', date:'2026-09-28', title:'Chapter 3 boss animations', items:['All ten Chapter 3 minibosses and bosses now have eight illustrated action frames','Idle, attack, summon, charge, hurt, phase change and defeat poses respond to combat'] },
