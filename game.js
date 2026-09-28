@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.97.0';
+const GAME_VERSION = '5.97.1';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.97.1', date:'2026-09-28', title:'Mint attack visual size', items:['Mint stays closer to her idle size during Frost Lance and Mint Gale casts','Attack scale changes ease smoothly between animation sheets'] },
   { v:'5.97.0', date:'2026-09-28', title:'Distinct Mint paths and four new Relics', items:['Mint upgrades now separate lance cadence, Chill damage, range and shard count','Glacier chains Chill, Barrage spreads lances and empowers shards, Pierce passes through normal enemies','Four Relics reward opening hits, dashes, elite kills and sustained fighting; card highlights explain their effects'] },
   { v:'5.96.0', date:'2026-09-27', title:'Mint attack size and frost cards', items:['Mint keeps her visual size while using Frost Lance or Mint Gale','Mint cards now describe ice spear count, lance damage, frost reach and shard damage clearly','Frost Lance Edge, Shard Bloom and Barrage upgrades provide stronger, visible damage choices'] },
   { v:'5.95.0', date:'2026-09-27', title:'Cocoa impact and aggressive Citrus Crew', items:['Cocoa stays the same apparent size while punching and has a new bear-claw impact effect','Yuzlings hunt and stick to enemies independently instead of orbiting Yuzu during combat','The crew spreads across available targets and returns only when it strays too far'] },
