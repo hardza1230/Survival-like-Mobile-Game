@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.97.1';
+const GAME_VERSION = '5.98.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.98.0', date:'2026-09-28', title:'Chapter 3 Seedbound enemy art', items:['Five Chapter 3 enemy roles now use transparent raster artwork instead of generated emoji placeholders','Adjusted enemy sizes and collision circles for readable silhouettes on mobile'] },
   { v:'5.97.1', date:'2026-09-28', title:'Mint attack visual size', items:['Mint stays closer to her idle size during Frost Lance and Mint Gale casts','Attack scale changes ease smoothly between animation sheets'] },
   { v:'5.97.0', date:'2026-09-28', title:'Distinct Mint paths and four new Relics', items:['Mint upgrades now separate lance cadence, Chill damage, range and shard count','Glacier chains Chill, Barrage spreads lances and empowers shards, Pierce passes through normal enemies','Four Relics reward opening hits, dashes, elite kills and sustained fighting; card highlights explain their effects'] },
   { v:'5.96.0', date:'2026-09-27', title:'Mint attack size and frost cards', items:['Mint keeps her visual size while using Frost Lance or Mint Gale','Mint cards now describe ice spear count, lance damage, frost reach and shard damage clearly','Frost Lance Edge, Shard Bloom and Barrage upgrades provide stronger, visible damage choices'] },
@@ -902,6 +903,11 @@ const ASSET_IMAGES = {
   e_ant_worker:'assets/generated/e_ant_worker.png', e_ant_scout:'assets/generated/e_ant_scout_fixed.png',
   e_ant_spitter:'assets/generated/e_ant_spitter.png', e_ant_soldier:'assets/generated/e_ant_soldier.png',
   e_ant_drone:'assets/generated/e_ant_drone.png',
+  c3_e_basic:'assets/art/ch3_enemies/c3_e_basic.png',
+  c3_e_fast:'assets/art/ch3_enemies/c3_e_fast.png',
+  c3_e_shooter:'assets/art/ch3_enemies/c3_e_shooter.png',
+  c3_e_bomber:'assets/art/ch3_enemies/c3_e_bomber.png',
+  c3_e_tank:'assets/art/ch3_enemies/c3_e_tank.png',
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   e_drain_slime:'assets/generated/e_drain_slime.png', e_drain_dasher:'assets/generated/e_drain_dasher.png',
   e_drain_caster:'assets/generated/e_drain_caster.png', e_drain_bomber:'assets/generated/e_drain_bomber.png',
@@ -8452,6 +8458,10 @@ class Game extends Phaser.Scene {
       e.roleName=role[0];e.seasonRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.seasonRole==='seasonWisp'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.35,2.0);}if(e.seasonRole==='equinoxGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0x8fdcff).setDisplaySize(230,165).setAlpha(.33).setDepth(e.y-1));}}
     if(this.stageIndex===9){const role={basic:['Crown Rootling','rootling',.38,44,84,84],fast:['Thorn Charger','thornCharger',.39,44,84,84],dasher:['Bramble Assassin','brambleAssassin',.40,45,83,83],shooter:['Sap Oracle','sapOracle',.41,46,82,82],bomber:['Memory Seed Bomb','seedBomb',.44,48,80,80],tank:['Bark Bulwark','barkGuard',.49,55,73,73],siege:['Root Choir Leech','rootChoir',.44,49,79,79]}[type]||['Crown Rootling','rootling',.38,44,84,84];
       e.roleName=role[0];e.rootRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.rootRole==='rootChoir'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.3,1.95);}if(e.rootRole==='barkGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0xd56bff).setDisplaySize(235,168).setAlpha(.34).setDepth(e.y-1));}}
+    if(this.stageIndex>=10&&key.startsWith('c3_e_')){
+      const role={basic:['Ash Mochi',.82,26,38,48],fast:['Sunseed Sprinter',.86,22,42,56],dasher:['Sunseed Sprinter',.86,22,42,56],shooter:['Hollow Apple Sniper',.82,25,39,49],bomber:['Crownseed Pod',.84,27,37,48],tank:['Acorn Shield Knight',.66,38,26,42],siege:['Acorn Shield Knight',.72,38,26,42]}[type]||['Ash Mochi',.82,26,38,48];
+      e.roleName=role[0];scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);
+    }
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     // เล่นอนิเมชันเดิน/ยิงถ้าเป็นชนิดที่มีชีต (ไม่งั้นหยุด anim ที่ค้างจาก pool + คืนเฟรมนิ่ง)
     if(this.anims.exists(key+'_walk')){ e.setFlipX(false); e.play(key+'_walk',true); }
