@@ -43,39 +43,64 @@
     background:#ff85b3;color:#fff;font-size:14px;font-weight:800;box-shadow:0 5px 14px #120b1488;cursor:pointer;}
   @keyframes berryBounce{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
 
-  /* Three independent artwork layers: city, split gate, and nearby blossoms. */
-  #game-loader .entry{position:absolute;inset:0;overflow:hidden;pointer-events:none;display:none;background:#38243d}
+  /* Opening beats: anticipation, gate reveal, camera travel, arrival. */
+  #game-loader .entry{position:absolute;inset:0;overflow:hidden;pointer-events:none;display:none;background:#38243d;isolation:isolate}
   #game-loader.intro-mode .entry{display:block}
-  #game-loader .entry-city,#game-loader .entry-foreground,#game-loader .entry-door,#game-loader .entry-glow{position:absolute;inset:-2%;background-position:center;background-repeat:no-repeat;background-size:cover;will-change:transform,opacity}
-  #game-loader .entry-city{background-image:url('assets/art/entry/city.webp');filter:brightness(.55);transform:scale(1.02)}
-  #game-loader .entry-foreground{background-image:url('assets/art/entry/foreground.webp');z-index:3}
-  #game-loader .entry-door{background-image:url('assets/art/entry/gate.webp');z-index:2;filter:brightness(.78)}
+  #game-loader .entry-city,#game-loader .entry-foreground,#game-loader .entry-door,#game-loader .entry-glow,#game-loader .entry-clouds{position:absolute;inset:-2%;background-position:center;background-repeat:no-repeat;background-size:cover;will-change:transform,opacity}
+  #game-loader .entry-city{background-image:url('assets/art/entry/city.webp');filter:brightness(.58);transform:scale(1.02)}
+  #game-loader .entry-clouds{z-index:1;opacity:.38;background:radial-gradient(ellipse 90px 28px at 15% 28%,#fff5ead9 0 60%,transparent 100%),radial-gradient(ellipse 115px 32px at 75% 18%,#ffe5d7c4 0 60%,transparent 100%),radial-gradient(ellipse 80px 24px at 56% 39%,#fff7e9b8 0 58%,transparent 100%);filter:blur(9px);animation:entry-cloud-wait 14s ease-in-out infinite alternate}
+  #game-loader .entry-foreground{background-image:url('assets/art/entry/foreground.webp');z-index:5}
+  #game-loader .entry-door{background-image:url('assets/art/entry/gate.webp');z-index:3;filter:brightness(.8)}
   #game-loader .entry-door.left{clip-path:inset(0 50% 0 0)}
   #game-loader .entry-door.right{clip-path:inset(0 0 0 50%)}
-  #game-loader .entry-glow{z-index:1;background:radial-gradient(ellipse at 50% 56%,#fff3d2 0%,#ffd39496 14%,transparent 58%);opacity:0}
-  #game-loader .entry-motes{position:absolute;inset:0;z-index:4;opacity:0;background-image:radial-gradient(circle,#fff4cb 1.4px,transparent 2px),radial-gradient(circle,#fff6d6 1px,transparent 2px);background-size:67px 91px,89px 107px;background-position:16px 24px,42px 57px}
+  #game-loader .entry-glow{z-index:2;background:radial-gradient(ellipse at 50% 55%,#fff7db 0%,#ffd394a8 14%,transparent 60%);opacity:0}
+  #game-loader .entry-keylight{position:absolute;z-index:4;left:49.5%;top:47%;width:1%;height:29%;background:linear-gradient(transparent,#ffe9aa 22%,#fff7d8 58%,transparent);box-shadow:0 0 17px 4px #ffcf8d;opacity:.32;animation:entry-key-wait 2.4s ease-in-out infinite}
+  #game-loader .entry-motes{position:absolute;inset:0;z-index:6;opacity:0;background-image:radial-gradient(circle,#fff4cb 1.4px,transparent 2px),radial-gradient(circle,#fff6d6 1px,transparent 2px);background-size:67px 91px,89px 107px;background-position:16px 24px,42px 57px}
+  #game-loader .entry-petals{position:absolute;inset:0;z-index:7}
+  #game-loader .entry-petals i{position:absolute;left:var(--x);top:var(--y);width:12px;height:18px;border-radius:80% 0 75% 25%;background:linear-gradient(135deg,#fff4e8,#f5a6be 70%,#ce729b);box-shadow:0 1px 6px #e7779a88;opacity:0;transform:translate(0,0) rotate(20deg)}
+  #game-loader .entry-shade{position:absolute;inset:0;z-index:8;background:radial-gradient(ellipse at 50% 55%,transparent 35%,#28132778 100%);opacity:.72;pointer-events:none}
   #game-loader.intro-mode .floaties{display:none}
-  #game-loader.intro-mode .card{z-index:5;align-self:flex-end;margin-bottom:max(7vh,env(safe-area-inset-bottom));padding:12px 16px;border-radius:18px;background:#25192aba;backdrop-filter:blur(6px)}
+  #game-loader.intro-mode .card{z-index:9;align-self:flex-end;margin-bottom:max(7vh,env(safe-area-inset-bottom));padding:12px 16px;border-radius:18px;background:#25192aba;backdrop-filter:blur(6px)}
   #game-loader.intro-mode .berry,#game-loader.intro-mode .title,#game-loader.intro-mode .tip{display:none}
-  #game-loader.opening .card{animation:entry-card-out .35s ease both}
-  #game-loader.opening .entry-city{animation:entry-city-in 2.35s ease-in-out both}
-  #game-loader.opening .entry-door.left{animation:entry-door-left 2.35s cubic-bezier(.25,.65,.25,1) both}
-  #game-loader.opening .entry-door.right{animation:entry-door-right 2.35s cubic-bezier(.25,.65,.25,1) both}
-  #game-loader.opening .entry-foreground{animation:entry-near-in 2.35s ease-in both}
-  #game-loader.opening .entry-glow{animation:entry-light 2.35s ease-in-out both}
-  #game-loader.opening .entry-motes{animation:entry-motes-in 2.35s ease-in-out both}
+  #entry-skip{display:none;position:absolute;z-index:10;right:18px;top:max(20px,env(safe-area-inset-top));border:1px solid #ffe9c488;border-radius:20px;padding:9px 14px;background:#2e1b36ba;color:#fff4e6;font:600 13px system-ui;cursor:pointer}
+  #game-loader.opening #entry-skip{display:block}
+  #game-loader.opening .card{animation:entry-card-out .45s ease both}
+  #game-loader.opening .entry-city{animation:entry-city-in 4.6s ease-in-out both}
+  #game-loader.opening .entry-clouds{animation:entry-cloud-drift 4.6s ease-in-out both}
+  #game-loader.opening .entry-door.left{animation:entry-door-left 4.6s cubic-bezier(.2,.65,.25,1) both}
+  #game-loader.opening .entry-door.right{animation:entry-door-right 4.6s cubic-bezier(.2,.65,.25,1) both}
+  #game-loader.opening .entry-foreground{animation:entry-near-in 4.6s ease-in-out both}
+  #game-loader.opening .entry-glow{animation:entry-light 4.6s ease-in-out both}
+  #game-loader.opening .entry-keylight{animation:entry-keylight 4.6s ease-in-out both}
+  #game-loader.opening .entry-motes{animation:entry-motes-in 4.6s ease-in-out both}
+  #game-loader.opening .entry-shade{animation:entry-shade-out 4.6s ease-in-out both}
+  #game-loader.opening .entry-petals i{animation:entry-petal-fly 2.6s ease-out var(--delay) both}
+  @keyframes entry-key-wait{0%,100%{opacity:.2;box-shadow:0 0 12px 2px #ffcf8d}50%{opacity:.58;box-shadow:0 0 24px 7px #ffe5ad}}
+  @keyframes entry-cloud-wait{from{transform:translateX(-3%)}to{transform:translateX(4%)}}
   @keyframes entry-card-out{to{opacity:0;transform:translateY(15px)}}
-  @keyframes entry-city-in{0%{transform:scale(1.02);filter:brightness(.55)}45%{filter:brightness(.96)}100%{transform:scale(1.38);filter:brightness(1)}}
-  @keyframes entry-door-left{0%,12%{transform:translateX(0)}53%{transform:translateX(-49%)}100%{transform:translateX(-130%);opacity:0}}
-  @keyframes entry-door-right{0%,12%{transform:translateX(0)}53%{transform:translateX(49%)}100%{transform:translateX(130%);opacity:0}}
-  @keyframes entry-near-in{0%,40%{transform:scale(1);opacity:1}100%{transform:scale(1.8);opacity:0}}
-  @keyframes entry-light{0%,12%{opacity:0}42%{opacity:.88}76%,100%{opacity:0}}
-  @keyframes entry-motes-in{0%,14%{opacity:0;transform:scale(.8)}50%{opacity:.85}100%{opacity:0;transform:scale(1.7)}}
-  @media(prefers-reduced-motion:reduce){#game-loader.opening .entry-city,#game-loader.opening .entry-door,#game-loader.opening .entry-foreground,#game-loader.opening .entry-glow,#game-loader.opening .entry-motes{animation:none}#game-loader.opening .entry{opacity:0;transition:opacity .15s}}
+  @keyframes entry-city-in{0%,15%{transform:scale(1.02);filter:brightness(.58)}48%{transform:scale(1.08);filter:brightness(.9)}85%,100%{transform:scale(1.42);filter:brightness(1)}}
+  @keyframes entry-cloud-drift{0%{transform:translateX(-7%);opacity:.25}60%{opacity:.42}100%{transform:translateX(15%) scale(1.35);opacity:0}}
+  @keyframes entry-door-left{0%,19%{transform:translateX(0)}57%{transform:translateX(-53%)}88%,100%{transform:translateX(-140%);opacity:0}}
+  @keyframes entry-door-right{0%,19%{transform:translateX(0)}57%{transform:translateX(53%)}88%,100%{transform:translateX(140%);opacity:0}}
+  @keyframes entry-near-in{0%,42%{transform:scale(1);opacity:1}86%,100%{transform:scale(1.8);opacity:0}}
+  @keyframes entry-light{0%,16%{opacity:0}45%{opacity:.92}75%,100%{opacity:0}}
+  @keyframes entry-keylight{0%,12%{opacity:.25}20%{opacity:.85}50%{opacity:1;transform:scaleX(11)}82%,100%{opacity:0;transform:scaleX(28)}}
+  @keyframes entry-motes-in{0%,19%{opacity:0;transform:scale(.8)}53%{opacity:.9}90%,100%{opacity:0;transform:scale(1.8)}}
+  @keyframes entry-petal-fly{0%{opacity:0;transform:translate(0,0) rotate(20deg) scale(.5)}18%{opacity:.86}78%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(1.35)}}
+  @keyframes entry-shade-out{0%,22%{opacity:.72}75%,100%{opacity:0}}
+  @media(prefers-reduced-motion:reduce){#game-loader.opening .entry-city,#game-loader.opening .entry-clouds,#game-loader.opening .entry-door,#game-loader.opening .entry-foreground,#game-loader.opening .entry-glow,#game-loader.opening .entry-keylight,#game-loader.opening .entry-motes,#game-loader.opening .entry-shade,#game-loader.opening .entry-petals i,#game-loader .entry-keylight,#game-loader .entry-clouds{animation:none}#game-loader.opening .entry{opacity:0;transition:opacity .15s}}
 </style>
 <script>
   window.GameLoader = {
     _introDone:false,
+    _introTimer:null,
+    finishIntro:function(){
+      var root=document.getElementById('game-loader');if(!root)return;
+      clearTimeout(this._introTimer);this._introTimer=null;
+      root.style.opacity='0';root.style.pointerEvents='none';
+      setTimeout(function(){if(root.style.opacity==='0')root.style.display='none';root.classList.remove('opening','intro-mode');},240);
+    },
+    skipIntro:function(){if(this._introDone&&this._introTimer)this.finishIntro();},
     show:function(label,progress){
       var root=document.getElementById('game-loader');
       if(!root)return;
@@ -105,10 +130,8 @@
       clearTimeout(this._slowTimer);
       if(!this._introDone && root.classList.contains('intro-mode')){
         this._introDone=true; root.classList.add('opening');
-        var duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?180:2350;
-        setTimeout(function(){root.style.opacity='0';root.style.pointerEvents='none';
-          setTimeout(function(){if(root.style.opacity==='0')root.style.display='none';root.classList.remove('opening','intro-mode');},240);
-        },duration);
+        var duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?180:4600;
+        this._introTimer=setTimeout(()=>this.finishIntro(),duration);
         return;
       }
       root.style.opacity='0'; root.style.pointerEvents='none';
@@ -144,7 +167,13 @@
 </head>
 <body>
 <div id="game-loader" class="intro-mode" role="status" aria-live="polite">
-  <div class="entry" aria-hidden="true"><div class="entry-city"></div><div class="entry-glow"></div><div class="entry-door left"></div><div class="entry-door right"></div><div class="entry-foreground"></div><div class="entry-motes"></div></div>
+  <div class="entry" aria-hidden="true"><div class="entry-city"></div><div class="entry-clouds"></div><div class="entry-glow"></div><div class="entry-door left"></div><div class="entry-door right"></div><div class="entry-keylight"></div><div class="entry-foreground"></div><div class="entry-motes"></div><div class="entry-petals">
+    <i style="--x:22%;--y:70%;--dx:115px;--dy:-230px;--spin:400deg;--delay:1.25s"></i><i style="--x:81%;--y:79%;--dx:-130px;--dy:-250px;--spin:-310deg;--delay:1.4s"></i>
+    <i style="--x:13%;--y:49%;--dx:185px;--dy:-165px;--spin:270deg;--delay:1.7s"></i><i style="--x:70%;--y:58%;--dx:-140px;--dy:-195px;--spin:-400deg;--delay:1.55s"></i>
+    <i style="--x:38%;--y:84%;--dx:76px;--dy:-290px;--spin:340deg;--delay:1.9s"></i><i style="--x:88%;--y:38%;--dx:-150px;--dy:150px;--spin:250deg;--delay:1.85s"></i>
+    <i style="--x:7%;--y:83%;--dx:160px;--dy:-210px;--spin:-280deg;--delay:2.1s"></i><i style="--x:66%;--y:88%;--dx:-90px;--dy:-310px;--spin:330deg;--delay:2.25s"></i>
+  </div><div class="entry-shade"></div></div>
+  <button id="entry-skip" type="button" onclick="window.GameLoader.skipIntro()">ข้ามฉากเปิด ›</button>
   <div class="floaties" aria-hidden="true">
     <span style="left:8%;animation-duration:9s;animation-delay:0s">🍬</span>
     <span style="left:22%;animation-duration:12s;animation-delay:2s">🍭</span>
