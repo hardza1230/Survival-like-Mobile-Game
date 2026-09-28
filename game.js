@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.99.0';
+const GAME_VERSION = '6.0.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.0', date:'2026-09-28', title:'Chapter 3 boss animations', items:['All ten Chapter 3 minibosses and bosses now have eight illustrated action frames','Idle, attack, summon, charge, hurt, phase change and defeat poses respond to combat'] },
   { v:'5.99.0', date:'2026-09-28', title:'Chapter 3 miniboss and boss art', items:['All five Chapter 3 minibosses and five story bosses use unique transparent raster art','Adjusted display size and collision circles for the larger 256px boss images'] },
   { v:'5.98.0', date:'2026-09-28', title:'Chapter 3 Seedbound enemy art', items:['Five Chapter 3 enemy roles now use transparent raster artwork instead of generated emoji placeholders','Adjusted enemy sizes and collision circles for readable silhouettes on mobile'] },
   { v:'5.97.1', date:'2026-09-28', title:'Mint attack visual size', items:['Mint stays closer to her idle size during Frost Lance and Mint Gale casts','Attack scale changes ease smoothly between animation sheets'] },
@@ -909,11 +910,6 @@ const ASSET_IMAGES = {
   c3_e_shooter:'assets/art/ch3_enemies/c3_e_shooter.png',
   c3_e_bomber:'assets/art/ch3_enemies/c3_e_bomber.png',
   c3_e_tank:'assets/art/ch3_enemies/c3_e_tank.png',
-  c3_mini1:'assets/art/ch3_bosses/c3_mini1.png', c3_boss1:'assets/art/ch3_bosses/c3_boss1.png',
-  c3_mini2:'assets/art/ch3_bosses/c3_mini2.png', c3_boss2:'assets/art/ch3_bosses/c3_boss2.png',
-  c3_mini3:'assets/art/ch3_bosses/c3_mini3.png', c3_boss3:'assets/art/ch3_bosses/c3_boss3.png',
-  c3_mini4:'assets/art/ch3_bosses/c3_mini4.png', c3_boss4:'assets/art/ch3_bosses/c3_boss4.png',
-  c3_mini5:'assets/art/ch3_bosses/c3_mini5.png', c3_boss5:'assets/art/ch3_bosses/c3_boss5.png',
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   e_drain_slime:'assets/generated/e_drain_slime.png', e_drain_dasher:'assets/generated/e_drain_dasher.png',
   e_drain_caster:'assets/generated/e_drain_caster.png', e_drain_bomber:'assets/generated/e_drain_bomber.png',
@@ -1127,6 +1123,17 @@ const SKILL_CARD_COLOR = {
 const PASS_ICON  = { heart:'ic_mochi_vitality', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_flavor_regen', sugarOnKill:'ic_sugar_on_kill',
   bitterResolve:'ic_bitter_resolve' };
 const ASSET_SHEETS = {
+  c3_mini1:{url:'assets/art/ch3_bosses/c3_mini1_sheet.png',frame:256},
+  c3_boss1:{url:'assets/art/ch3_bosses/c3_boss1_sheet.png',frame:256},
+  c3_mini2:{url:'assets/art/ch3_bosses/c3_mini2_sheet.png',frame:256},
+  c3_boss2:{url:'assets/art/ch3_bosses/c3_boss2_sheet.png',frame:256},
+  c3_mini3:{url:'assets/art/ch3_bosses/c3_mini3_sheet.png',frame:256},
+  c3_boss3:{url:'assets/art/ch3_bosses/c3_boss3_sheet.png',frame:256},
+  c3_mini4:{url:'assets/art/ch3_bosses/c3_mini4_sheet.png',frame:256},
+  c3_boss4:{url:'assets/art/ch3_bosses/c3_boss4_sheet.png',frame:256},
+  c3_mini5:{url:'assets/art/ch3_bosses/c3_mini5_sheet.png',frame:256},
+  c3_boss5:{url:'assets/art/ch3_bosses/c3_boss5_sheet.png',frame:256},
+
   char_yuzu:{url:'assets/characters/yuzu_sheet.png',frame:128},
   char_yuzu_run:{url:'assets/characters/yuzu_run_sheet.png',frame:128},
   char_yuzu_attack:{url:'assets/characters/yuzu_attack_sheet.png',frame:128},
@@ -1585,6 +1592,10 @@ class Boot extends Phaser.Scene {
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!sh.anim)continue;
       if(!this.textures.exists(k)||this.anims.exists(k+'_walk'))continue;
       this.anims.create({ key:k+'_walk', frames:this.anims.generateFrameNumbers(k,{start:0,end:sh.anim.frames-1}), frameRate:sh.anim.rate, repeat:-1, yoyo:!!sh.anim.yoyo }); }
+
+    for(const k of Object.keys(ASSET_SHEETS).filter(k=>k.startsWith('c3_mini')||k.startsWith('c3_boss'))){
+      if(this.textures.exists(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
+    }
 
     // ---- Props ประดับฉาก (placeholder กล่อง ๆ — สลับอาร์ต AI ทีหลัง) ----
     const mkRect=(key,w,h,draw)=>{ if(isArtKey(key)&&this.textures.exists(key))return;   // มีรูป AI แล้ว ไม่วาดทับ (procedural = fallback)
@@ -7274,15 +7285,15 @@ class Game extends Phaser.Scene {
     let mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===7?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))));if(this.stageIndex===8)mScale=.82;if(this.stageIndex===9)mScale=.86; b.baseScale=mScale; b._sqX=1; b._sqY=1;
     let mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===6?58:(this.stageIndex===7?55:(this.stageIndex===1?48:(mArt?52:26))))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===6?70:(this.stageIndex===7?73:(this.stageIndex===1?48:(mArt?18:5)))));
     if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=59;mOff=69;}
-    if(this.stageIndex>=10&&ASSET_IMAGES[mkey]){mScale=.62;mRadius=70;mOff=58;}
-    b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_IMAGES[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
+    if(this.stageIndex>=10&&ASSET_SHEETS[mkey]){mScale=.62;mRadius=70;mOff=58;}
+    b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_SHEETS[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
     b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;
     b.atkCd=0.85; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
-    if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
+    if(this.anims.exists(mkey+'_idle'))b.play(mkey+'_idle',true);else if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
     this.waveAlive=adds+1;
     this.mode='mini';this.updateWaveText();
@@ -7300,14 +7311,14 @@ class Game extends Phaser.Scene {
       if(!e) e=this.enemies.create(ex,ey,mArt?mkey:'e_brute');
       else { e.setTexture(mArt?mkey:'e_brute'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(ex,ey); }
       if(!e)continue;
-      const c3Raster=this.stageIndex>=10&&!!ASSET_IMAGES[mkey];
+      const c3Raster=this.stageIndex>=10&&!!ASSET_SHEETS[mkey];
       const sc=c3Raster?0.48:this.stageIndex===4?0.5:(this.stageIndex===5?0.46:(this.stageIndex===1?0.62:(mArt?0.8:1.25))); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
       const rr=c3Raster?58:this.stageIndex===4?46:(this.stageIndex===5?42:(mArt?40:22)), off=c3Raster?70:this.stageIndex===4?74:(this.stageIndex===5?78:(mArt?16:5)); e.setCircle(rr,off,c3Raster?90:off);
       e.isBoss=false; e.isMini=false; e.isElite=true;   // elite = ตายแล้วไม่ทริกเกอร์จบเวฟ
       e.hp=st.bossHp*0.6*this.bossHpMul(); e.maxhp=e.hp; e.spd=68; e.dmg=Math.round(st.bossDmg); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;
       e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.bloomStacks=0; e.bloomUntil=0;
       if(mArt){ e.tintColor=null; e.clearTint(); } else { e.tintColor=st.tint; e.setTint(st.tint); }
-      if(this.anims.exists((mArt?mkey:'e_brute')+'_walk')) e.play((mArt?mkey:'e_brute')+'_walk',true); else if(e.anims){ e.anims.stop(); e.setFrame(0); }
+      if(this.anims.exists(mkey+'_idle'))e.play(mkey+'_idle',true);else if(this.anims.exists((mArt?mkey:'e_brute')+'_walk')) e.play((mArt?mkey:'e_brute')+'_walk',true); else if(e.anims){ e.anims.stop(); e.setFrame(0); }
       this.camWorld(e); this.vfxSpawnPoof(ex,ey);
     }
     this.screenShake(180,0.006);
@@ -7336,8 +7347,8 @@ class Game extends Phaser.Scene {
     let fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:(this.stageIndex===6?1.12:(this.stageIndex===7?1.06:([1,2,3].includes(this.stageIndex)?1.18:(isArt?1.55:2.5)))));if(this.stageIndex===8)fScale=1.08;if(this.stageIndex===9)fScale=1.12; b.baseScale=fScale; b._sqX=1; b._sqY=1;   // บอสStage 2-4 ตัวใหญ่ขึ้น (0.88→1.18)
     let fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:(this.stageIndex===6?62:(this.stageIndex===7?58:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:(this.stageIndex===6?66:(this.stageIndex===7?70:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)))));
     if(this.stageIndex===8){fRadius=60;fOff=68;}if(this.stageIndex===9){fRadius=62;fOff=66;}
-    if(this.stageIndex>=10&&ASSET_IMAGES[bkey]){fScale=.88;fRadius=82;fOff=46;}
-    b.setScale(fScale).setCircle(fRadius,fOff,this.stageIndex>=10&&ASSET_IMAGES[bkey]?74:fOff); b.isBoss=true; b.isMini=false;
+    if(this.stageIndex>=10&&ASSET_SHEETS[bkey]){fScale=.88;fRadius=82;fOff=46;}
+    b.setScale(fScale).setCircle(fRadius,fOff,this.stageIndex>=10&&ASSET_SHEETS[bkey]?74:fOff); b.isBoss=true; b.isMini=false;
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
@@ -7348,7 +7359,7 @@ class Game extends Phaser.Scene {
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.myceliumBehemoth=this.stageIndex===6;b.hornetQueen=this.stageIndex===7;b.chronobloom=this.stageIndex===8;b.trueRootmother=this.stageIndex===9;
     b.atkCd=0.8; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
-    if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
+    if(this.anims.exists(bkey+'_idle'))b.play(bkey+'_idle',true);else if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
     this.waveAlive=1; this.updateWaveText();
     if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; b.tintColor=0x8a4dff; b.setTint(0x8a4dff); b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
@@ -9444,6 +9455,7 @@ class Game extends Phaser.Scene {
     if(gate!=null){const floor=e.maxhp*gate;if(e.hp>floor&&e.hp-amount<=floor){amount=e.hp-floor;e._phaseGateLocked=true;}}
     if(e._memoryToken)e._memoryStored=(e._memoryStored||0)+amount;
     e.hp-=amount;
+    if(e.hp>0&&Math.random()<0.24)this.c3BossPose(e,5,240);
     if(RL&&RL.chill&&!e.isBoss&&!e.isMini&&e.hp>0&&Math.random()<0.10){ e.frozen=Math.max(e.frozen||0,1); e.setVelocity(0,0); e.setTint(COLORS.ice); }
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
     if(crit){ this.hitStop(35); this.screenShake(90, 0.005); this.fireRecipes('crit'); }
@@ -9451,7 +9463,10 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
-  killEnemy(e){ e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+  killEnemy(e){ if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
+      const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
+      this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
+    } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -9881,6 +9896,7 @@ class Game extends Phaser.Scene {
   // กล่องสุ่ม (Miniboss): หมุนสล็อตแล้วลงที่รางวัลเดียว — ตื่นเต้นกว่าเลือกเอง
   // v4.25: ชาร์จแล้วพุ่ง — ลำแสงเล็งหนา สว่าง+หนาขึ้นเรื่อย ๆ ตอนชาร์จ แล้วพุ่งตามทิศที่ตรึงไว้ (หลบด้านข้างได้)
   chargeTelegraph(b,windMs,dashSpeed,thick){
+    this.c3BossPose(b,2,windMs);
     const tx=this.player.x,ty=this.player.y,ang=Math.atan2(ty-b.y,tx-b.x);
     const reach=Math.max(this.dist(b.x,b.y,tx,ty)+200,540);
     const beam=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(b.y+1).setRotation(ang).setTint(0xff3a4a).setAlpha(0.22));
@@ -9895,7 +9911,7 @@ class Game extends Phaser.Scene {
       if(beam.active)this.tweens.add({targets:beam,alpha:0,duration:160,onComplete:()=>{if(beam.active)beam.destroy();}});
       if(!b.active)return; if(b.tintColor)b.setTint(b.tintColor); else b.clearTint();
       this.screenFlash(0xff5a6e,0.16,150);Sfx.dash&&Sfx.dash();
-      b.setVelocity(Math.cos(ang)*dashSpeed,Math.sin(ang)*dashSpeed); b.knock=0.5; });
+      this.c3BossPose(b,3,460);b.setVelocity(Math.cos(ang)*dashSpeed,Math.sin(ang)*dashSpeed); b.knock=0.5; });
   }
   openRollBox(titleText){
     const winner=(this.rollUpgrades(1,{noSpecial:true})||[])[0];
@@ -10168,6 +10184,7 @@ class Game extends Phaser.Scene {
   }
   beginBossPhaseTransition(b,duration,color){
     if(!b||!b.active)return;b._phaseGateLocked=false;b._phaseInvuln=Math.max(0.2,duration||1.4);b._phaseInvulnColor=color||0xffd166;b.setVelocity(0,0);
+    this.c3BossPose(b,6,Math.round((duration||1.4)*1000));
     if(b._phaseShieldFx){this.tweens.killTweensOf(b._phaseShieldFx);if(b._phaseShieldFx.active)b._phaseShieldFx.destroy();}
     const isFinal=b.isBoss&&b.phase4,sc=b.isBoss?2.15:1.55,phaseLabel=isFinal?'FINAL PHASE':b.phase3?'PHASE 3':b.phase2?'PHASE 2':'PHASE SHIFT';
     b._phaseShieldFx=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setTint(b._phaseInvulnColor).setDepth(b.y+4).setScale(sc).setAlpha(0.72));
@@ -10187,6 +10204,13 @@ class Game extends Phaser.Scene {
     return b._phaseInvuln>0;
   }
 
+  c3BossPose(b,frame,ms=700){
+    if(!b||!b.active||!/^c3_(mini|boss)[1-5]$/.test(b.texture.key))return;
+    b._c3PoseToken=(b._c3PoseToken||0)+1;const token=b._c3PoseToken;
+    if(b.anims)b.anims.stop();b.setFrame(Phaser.Math.Clamp(frame|0,0,7));
+    if(ms>0)this.time.delayedCall(ms,()=>{if(!b.active||b._c3PoseToken!==token)return;
+      const idle=b.texture.key+'_idle';if(this.anims.exists(idle))b.play(idle,true);else b.setFrame(0);});
+  }
   stage5Pose(b,frame,ms=850){
     if(!b||!b.active||!['boss5_sovereign','mb5_banquet_executioner'].includes(b.texture.key))return;frame=Phaser.Math.Clamp(frame|0,0,7);
     b._stage5PoseToken=(b._stage5PoseToken||0)+1;const token=b._stage5PoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
@@ -10549,7 +10573,7 @@ class Game extends Phaser.Scene {
     if(b.isBoss&&this.stageIndex===2){this.chiliBossAttack(b);return;}
     if(b.isBoss&&this.stageIndex===3){this.frostBossAttack(b);return;}
     if(b.isBoss&&this.stageIndex===5){this.rootmotherAttack(b);return;}
-    const atks=b.atks||['slam']; const pick=atks[Math.floor(Math.random()*atks.length)];if(b.isMini&&this.stageIndex===4)this.stage5Pose(b,{slam:5,aimed:5,radial:5,nova:6,charge:3,spiral:5,summon:5}[pick]??1,900);if(this.stageIndex===5)this.chapter2Pose(b,{slam:3,aimed:4,radial:4,nova:6,charge:3,spiral:4,summon:5,trap:3}[pick]??2,pick==='summon'?1150:900);
+    const atks=b.atks||['slam']; const pick=atks[Math.floor(Math.random()*atks.length)];if(this.stageIndex>=10)this.c3BossPose(b,pick==='summon'?4:pick==='charge'?2:3,pick==='charge'?900:pick==='summon'?900:550);if(b.isMini&&this.stageIndex===4)this.stage5Pose(b,{slam:5,aimed:5,radial:5,nova:6,charge:3,spiral:5,summon:5}[pick]??1,900);if(this.stageIndex===5)this.chapter2Pose(b,{slam:3,aimed:4,radial:4,nova:6,charge:3,spiral:4,summon:5,trap:3}[pick]??2,pick==='summon'?1150:900);
     const dm=1+this.stageIndex*0.12, pw=b.isBoss?1:0.9, fast=b.phase3?0.72:b.phase2?0.85:1;   // เว้นจังหวะให้ telegraph จบก่อนเริ่มท่าถัดไป
     if(pick==='slam'){ // สแลม AoE ตรงPositionผู้เล่น (เตือนก่อน หลบได้) · เฟส 3 = 3 points
       const hits=b.phase3?3:1;
