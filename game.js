@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.5';
+const GAME_VERSION = '6.0.6';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.6', date:'2026-09-29', title:'Animated loading gate', items:['The closed gate visibly breathes open and shut while assets load, with stronger parallax, floating petals and sugar light','Fixed missing animation delays that left some loading petals static, and added motion to the loading meter'] },
   { v:'6.0.5', date:'2026-09-28', title:'Readable gate opening', items:['The gate opens visibly before a brief city reveal and slower camera move','Removed door fade during opening and softened the central light so the artwork remains visible'] },
   { v:'6.0.4', date:'2026-09-28', title:'Boss focus targeting', items:['All character auto-target attacks prefer an in-range boss or miniboss over ordinary enemies','Yuzu minions converge on bosses, and homing shots retarget them when they enter range'] },
   { v:'6.0.3', date:'2026-09-28', title:'Living gate loading scene', items:['Removed the old emoji loading scene so the new Mochitopia artwork is the only loading presentation','The closed gate now has moving clouds, blossoms, sugar motes, a pulsing seal and light before opening'] },
