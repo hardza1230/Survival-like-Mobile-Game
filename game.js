@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.3';
+const GAME_VERSION = '6.0.4';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.4', date:'2026-09-28', title:'Boss focus targeting', items:['All character auto-target attacks prefer an in-range boss or miniboss over ordinary enemies','Yuzu minions converge on bosses, and homing shots retarget them when they enter range'] },
   { v:'6.0.3', date:'2026-09-28', title:'Living gate loading scene', items:['Removed the old emoji loading scene so the new Mochitopia artwork is the only loading presentation','The closed gate now has moving clouds, blossoms, sugar motes, a pulsing seal and light before opening'] },
   { v:'6.0.2', date:'2026-09-28', title:'Richer entrance sequence', items:['The Mochitopia gate reveal now has a slower four-beat camera move with drifting clouds, light, petals and depth','Added a skip control and an abbreviated transition when reduced motion is enabled'] },
   { v:'6.0.1', date:'2026-09-28', title:'Mochitopia gate entrance', items:['New layered candy-city loading entrance opens its gate and moves into the world before showing the menu','Mobile-friendly art layers, loading progress, and reduced-motion support'] },
@@ -3943,7 +3944,7 @@ class Game extends Phaser.Scene {
     this.player.iframe=Math.max(this.player.iframe||0,0.25+hits*gap/1000+0.2);   // Invincibleตลอดคอมโบ (แบบ Flicker Strike)
     const hitSet=new Set();
     const strike=(k)=>{ if(this.state!=='play'&&this.state!=='levelup')return;
-      let t=null,bd=1e18; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2, pen=hitSet.has(e)?360*360:0; if(d+pen<bd){bd=d+pen;t=e;} });
+      let t=this.priorityBossTarget(900),bd=1e18;if(!t)this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2, pen=hitSet.has(e)?360*360:0; if(d+pen<bd){bd=d+pen;t=e;} });
       if(!t){ const a=(this.moveDir&&this.moveDir.lengthSq()>0.04)?this.moveDir.angle():Math.random()*TAU; this.blinkTo(this.player.x+Math.cos(a)*130,this.player.y+Math.sin(a)*130); Sfx.dash&&Sfx.dash(); return; }
       const a=Math.atan2(this.player.y-t.y,this.player.x-t.x); this.blinkTo(t.x+Math.cos(a)*34,t.y+Math.sin(a)*34);
       this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,t.x,t.y)<radius){ this.damage(e,dmg,e.x,e.y); if(!e.isBoss&&!e.isMini){ const ka=Math.atan2(e.y-t.y,e.x-t.x); e.setVelocity(Math.cos(ka)*(150+ul*20),Math.sin(ka)*(150+ul*20)); e.knock=0.1; } } });
@@ -3964,8 +3965,8 @@ class Game extends Phaser.Scene {
     const petals=[];for(let i=0;i<Math.min(5,barrels+1);i++){const a=i*TAU/Math.min(5,barrels+1),p=this.camWorld(this.add.circle(this.player.x+Math.cos(a)*48,this.player.y+Math.sin(a)*34,7,i%2?0xffd166:0xff5f88,0.92).setStrokeStyle(2,0xffffff,0.75).setDepth(8));p._a=a;petals.push(p);}
     let fired=0;const fire=()=>{
       if(this.state!=='play'&&this.state!=='levelup')return;fired++;
-      const targets=[];this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<820)targets.push(e);});targets.sort((a,b)=>this.dist(a.x,a.y,this.player.x,this.player.y)-this.dist(b.x,b.y,this.player.x,this.player.y));
-      for(let s=0;s<barrels;s++){const t=targets[s%Math.max(1,targets.length)];if(!t)continue;const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+(s-(barrels-1)/2)*0.10,b=this.getBullet(this.player.x,this.player.y-4,0xffffff,0.19+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(s%2?0xffd166:0xff5f88);b.faceVel=true;b.dmg=(9+ul*3.2)*dm*up;b.life=1.7;b.homing=380+ul*45;b.pierce=ul>=3;b.hitGapV=0.13;this.physics.velocityFromRotation(ang,650+ul*30,b.body.velocity);}
+      const priority=this.priorityBossTarget(820),targets=[];this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,this.player.x,this.player.y)<820)targets.push(e);});targets.sort((a,b)=>this.dist(a.x,a.y,this.player.x,this.player.y)-this.dist(b.x,b.y,this.player.x,this.player.y));
+      for(let s=0;s<barrels;s++){const t=priority||targets[s%Math.max(1,targets.length)];if(!t)continue;const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+(s-(barrels-1)/2)*0.10,b=this.getBullet(this.player.x,this.player.y-4,0xffffff,0.19+ul*0.012);if(!b)continue;b.setTexture('proj_sprinkle').setTint(s%2?0xffd166:0xff5f88);b.faceVel=true;b.dmg=(9+ul*3.2)*dm*up;b.life=1.7;b.homing=380+ul*45;b.pierce=ul>=3;b.hitGapV=0.13;this.physics.velocityFromRotation(ang,650+ul*30,b.body.velocity);}
       petals.forEach((p,i)=>{if(!p.active)return;const a=p._a+fired*0.55;p.setPosition(this.player.x+Math.cos(a)*48,this.player.y+Math.sin(a)*34);});this.vfxHitRing(this.player.x,this.player.y,0xff5f88,false);Sfx.shoot();
     };
     fire();this.time.addEvent({delay:gap,repeat:salvos-2,callback:fire});
@@ -8159,7 +8160,9 @@ class Game extends Phaser.Scene {
       m.cd=Math.max(0,m.cd-dt);
       // Hunt from the minion's position and hold a live target while Yuzu moves.
       const inLeash=e=>e&&e.active&&this.dist(this.player.x,this.player.y,e.x,e.y)<780;
-      let target=!m.cheese&&inLeash(m.target)&&this.dist(sp.x,sp.y,m.target.x,m.target.y)<680&&!assigned.has(m.target)?m.target:null;
+      const bossTarget=!m.cheese?this.priorityBossTarget(780,this.player.x,this.player.y):null;
+      let target=bossTarget&&this.dist(sp.x,sp.y,bossTarget.x,bossTarget.y)<850?bossTarget:
+        !m.cheese&&inLeash(m.target)&&this.dist(sp.x,sp.y,m.target.x,m.target.y)<680&&!assigned.has(m.target)?m.target:null;
       if(!m.cheese&&!target){let closest=640,fallback=null,fallbackDist=640;
         this.enemies.children.iterate(e=>{if(!inLeash(e))return;const d=this.dist(sp.x,sp.y,e.x,e.y);if(d>=640)return;
           if(d<fallbackDist){fallbackDist=d;fallback=e;}
@@ -9346,11 +9349,20 @@ class Game extends Phaser.Scene {
     const fl=this.camWorld(this.add.circle(x,y,22,0xfff2a8,0.6).setDepth(7));
     this.tweens.add({targets:[g,fl],alpha:0,duration:200,onComplete:()=>{ g.destroy(); fl.destroy(); }});
   }
-  nearestEnemy(maxD){ let best=null,bd=maxD*maxD;
+  priorityBossTarget(maxD,x=this.player.x,y=this.player.y){
+    const b=this.boss;
+    if(b&&b.active&&(b.isBoss||b.isMini)&&(b.x-x)**2+(b.y-y)**2<=maxD*maxD)return b;
+    if(this.mode!=='boss'&&this.mode!=='mini')return null;
+    let best=null,bd=maxD*maxD;
+    this.enemies.children.iterate(e=>{if(!e||!e.active||!(e.isBoss||e.isMini))return;
+      const d=(e.x-x)**2+(e.y-y)**2;if(d<bd){bd=d;best=e;}});
+    return best;
+  }
+  nearestEnemy(maxD){ const priority=this.priorityBossTarget(maxD);if(priority)return priority;let best=null,bd=maxD*maxD;
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2; if(d<bd){bd=d;best=e;} });
     return best; }
-  strongestEnemy(maxD){let best=null,hp=-1,bd=maxD*maxD;this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2;if(d<=bd&&(e.hp||0)>hp){hp=e.hp||0;best=e;}});return best;}
-  densestEnemy(maxD){let best=null,score=-1,bd=maxD*maxD,cand=[];this.enemies.children.iterate(e=>{if(e&&e.active&&(e.x-this.player.x)**2+(e.y-this.player.y)**2<=bd)cand.push(e);});for(const e of cand){let n=0;for(const o of cand)if((o.x-e.x)**2+(o.y-e.y)**2<145*145)n++;if(n>score){score=n;best=e;}}return best;}
+  strongestEnemy(maxD){const priority=this.priorityBossTarget(maxD);if(priority)return priority;let best=null,hp=-1,bd=maxD*maxD;this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2;if(d<=bd&&(e.hp||0)>hp){hp=e.hp||0;best=e;}});return best;}
+  densestEnemy(maxD){const priority=this.priorityBossTarget(maxD);if(priority)return priority;let best=null,score=-1,bd=maxD*maxD,cand=[];this.enemies.children.iterate(e=>{if(e&&e.active&&(e.x-this.player.x)**2+(e.y-this.player.y)**2<=bd)cand.push(e);});for(const e of cand){let n=0;for(const o of cand)if((o.x-e.x)**2+(o.y-e.y)**2<145*145)n++;if(n>score){score=n;best=e;}}return best;}
   // chain: กระสุนเด้งไฟฟ้าไปศัตรูใกล้ ๆ ต่อกันเป็นทอด (สายฟ้าลูกโซ่)
   chainFrom(bullet,enemy){ if(!(bullet.chain>0))return; const hit=new Set([enemy]); let src=enemy;
     for(let j=0;j<bullet.chain;j++){ let nb=null,nd=300*300;
@@ -11088,7 +11100,7 @@ class Game extends Phaser.Scene {
       b.life-=dt; if(b.hitCd>0)b.hitCd-=dt;
       if(b.spin)b.rotation+=dt*14;
       else if(b.faceVel&&b.body&&(b.body.velocity.x||b.body.velocity.y))b.rotation=Math.atan2(b.body.velocity.y,b.body.velocity.x);   // จรวด/ส้อมหันตามทิศพุ่ง
-      if(b.homing&&b.body){ const t=b.lockedTarget&&b.lockedTarget.active?b.lockedTarget:this.nearestEnemy(520); if(t){ const desired=Math.atan2(t.y-b.y,t.x-b.x);
+      if(b.homing&&b.body){ const t=this.priorityBossTarget(520,b.x,b.y)||(b.lockedTarget&&b.lockedTarget.active?b.lockedTarget:this.nearestEnemy(520)); if(t){ const desired=Math.atan2(t.y-b.y,t.x-b.x);
         const cur=Math.atan2(b.body.velocity.y,b.body.velocity.x), turn=b.homing*0.02*dt;
         const d=Phaser.Math.Angle.Wrap(desired-cur), step=Phaser.Math.Clamp(d,-turn,turn);
         this.physics.velocityFromRotation(cur+step,240,b.body.velocity); } }
