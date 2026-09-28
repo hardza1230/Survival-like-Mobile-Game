@@ -1,5 +1,7 @@
 # 04 — มินิบอส + บอส Chapter 3 · batch `ch3_bosses`
 
+> สถานะ v5.99.0: ภาพนิ่งโปร่งใส 256×256 ทั้ง 10 ตัวใส่เกมแล้วที่ `assets/art/ch3_bosses/` พร้อมจูนขนาดและ hitbox; ยังต้องทำ action sheet 8 เฟรมของแต่ละตัวตามสเปกด้านล่าง
+
 ## สเปก
 - **Action sheet 4×2 = 8 เฟรม · เฟรมละ 256×256 · แผ่น 1024×512 · PNG โปร่งใส** (มาตรฐานเดียวกับบอส Chapter 2)
 - ลำดับเฟรม: `0 idle · 1 idle-breath · 2 wind-up · 3 attack · 4 cast/summon · 5 hurt · 6 phase-2 (คลั่ง) · 7 defeat`

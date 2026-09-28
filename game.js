@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '5.98.0';
+const GAME_VERSION = '5.99.0';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'5.99.0', date:'2026-09-28', title:'Chapter 3 miniboss and boss art', items:['All five Chapter 3 minibosses and five story bosses use unique transparent raster art','Adjusted display size and collision circles for the larger 256px boss images'] },
   { v:'5.98.0', date:'2026-09-28', title:'Chapter 3 Seedbound enemy art', items:['Five Chapter 3 enemy roles now use transparent raster artwork instead of generated emoji placeholders','Adjusted enemy sizes and collision circles for readable silhouettes on mobile'] },
   { v:'5.97.1', date:'2026-09-28', title:'Mint attack visual size', items:['Mint stays closer to her idle size during Frost Lance and Mint Gale casts','Attack scale changes ease smoothly between animation sheets'] },
   { v:'5.97.0', date:'2026-09-28', title:'Distinct Mint paths and four new Relics', items:['Mint upgrades now separate lance cadence, Chill damage, range and shard count','Glacier chains Chill, Barrage spreads lances and empowers shards, Pierce passes through normal enemies','Four Relics reward opening hits, dashes, elite kills and sustained fighting; card highlights explain their effects'] },
@@ -908,6 +909,11 @@ const ASSET_IMAGES = {
   c3_e_shooter:'assets/art/ch3_enemies/c3_e_shooter.png',
   c3_e_bomber:'assets/art/ch3_enemies/c3_e_bomber.png',
   c3_e_tank:'assets/art/ch3_enemies/c3_e_tank.png',
+  c3_mini1:'assets/art/ch3_bosses/c3_mini1.png', c3_boss1:'assets/art/ch3_bosses/c3_boss1.png',
+  c3_mini2:'assets/art/ch3_bosses/c3_mini2.png', c3_boss2:'assets/art/ch3_bosses/c3_boss2.png',
+  c3_mini3:'assets/art/ch3_bosses/c3_mini3.png', c3_boss3:'assets/art/ch3_bosses/c3_boss3.png',
+  c3_mini4:'assets/art/ch3_bosses/c3_mini4.png', c3_boss4:'assets/art/ch3_bosses/c3_boss4.png',
+  c3_mini5:'assets/art/ch3_bosses/c3_mini5.png', c3_boss5:'assets/art/ch3_bosses/c3_boss5.png',
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   e_drain_slime:'assets/generated/e_drain_slime.png', e_drain_dasher:'assets/generated/e_drain_dasher.png',
   e_drain_caster:'assets/generated/e_drain_caster.png', e_drain_bomber:'assets/generated/e_drain_bomber.png',
@@ -7267,7 +7273,9 @@ class Game extends Phaser.Scene {
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
     let mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===7?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))));if(this.stageIndex===8)mScale=.82;if(this.stageIndex===9)mScale=.86; b.baseScale=mScale; b._sqX=1; b._sqY=1;
     let mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===6?58:(this.stageIndex===7?55:(this.stageIndex===1?48:(mArt?52:26))))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===6?70:(this.stageIndex===7?73:(this.stageIndex===1?48:(mArt?18:5)))));
-    if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=59;mOff=69;}b.setScale(mScale).setCircle(mRadius,mOff,mOff); b.isMini=true; b.isBoss=false;
+    if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=59;mOff=69;}
+    if(this.stageIndex>=10&&ASSET_IMAGES[mkey]){mScale=.62;mRadius=70;mOff=58;}
+    b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_IMAGES[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
     b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -7292,8 +7300,9 @@ class Game extends Phaser.Scene {
       if(!e) e=this.enemies.create(ex,ey,mArt?mkey:'e_brute');
       else { e.setTexture(mArt?mkey:'e_brute'); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(ex,ey); }
       if(!e)continue;
-      const sc=this.stageIndex===4?0.5:(this.stageIndex===5?0.46:(this.stageIndex===1?0.62:(mArt?0.8:1.25))); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
-      const rr=this.stageIndex===4?46:(this.stageIndex===5?42:(mArt?40:22)), off=this.stageIndex===4?74:(this.stageIndex===5?78:(mArt?16:5)); e.setCircle(rr,off,off);
+      const c3Raster=this.stageIndex>=10&&!!ASSET_IMAGES[mkey];
+      const sc=c3Raster?0.48:this.stageIndex===4?0.5:(this.stageIndex===5?0.46:(this.stageIndex===1?0.62:(mArt?0.8:1.25))); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
+      const rr=c3Raster?58:this.stageIndex===4?46:(this.stageIndex===5?42:(mArt?40:22)), off=c3Raster?70:this.stageIndex===4?74:(this.stageIndex===5?78:(mArt?16:5)); e.setCircle(rr,off,c3Raster?90:off);
       e.isBoss=false; e.isMini=false; e.isElite=true;   // elite = ตายแล้วไม่ทริกเกอร์จบเวฟ
       e.hp=st.bossHp*0.6*this.bossHpMul(); e.maxhp=e.hp; e.spd=68; e.dmg=Math.round(st.bossDmg); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;
       e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.bloomStacks=0; e.bloomUntil=0;
@@ -7326,7 +7335,9 @@ class Game extends Phaser.Scene {
     const isArt=this.textures.exists(bkey);
     let fScale=this.stageIndex===4?1.08:(this.stageIndex===5?0.96:(this.stageIndex===6?1.12:(this.stageIndex===7?1.06:([1,2,3].includes(this.stageIndex)?1.18:(isArt?1.55:2.5)))));if(this.stageIndex===8)fScale=1.08;if(this.stageIndex===9)fScale=1.12; b.baseScale=fScale; b._sqX=1; b._sqY=1;   // บอสStage 2-4 ตัวใหญ่ขึ้น (0.88→1.18)
     let fRadius=this.stageIndex===4?61:(this.stageIndex===5?60:(this.stageIndex===6?62:(this.stageIndex===7?58:([1,2,3].includes(this.stageIndex)?58:(isArt?54:26))))),fOff=this.stageIndex===4?67:(this.stageIndex===5?68:(this.stageIndex===6?66:(this.stageIndex===7?70:([1,2,3].includes(this.stageIndex)?70:(isArt?16:5)))));
-    if(this.stageIndex===8){fRadius=60;fOff=68;}if(this.stageIndex===9){fRadius=62;fOff=66;}b.setScale(fScale).setCircle(fRadius,fOff,fOff); b.isBoss=true; b.isMini=false;
+    if(this.stageIndex===8){fRadius=60;fOff=68;}if(this.stageIndex===9){fRadius=62;fOff=66;}
+    if(this.stageIndex>=10&&ASSET_IMAGES[bkey]){fScale=.88;fRadius=82;fOff=46;}
+    b.setScale(fScale).setCircle(fRadius,fOff,this.stageIndex>=10&&ASSET_IMAGES[bkey]?74:fOff); b.isBoss=true; b.isMini=false;
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);

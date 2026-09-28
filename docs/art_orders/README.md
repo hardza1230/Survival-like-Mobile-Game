@@ -15,7 +15,7 @@
 | 01 | `01_FLOORS_SEAMLESS.md` | พื้นด่านแบบต่อขอบ C2-1…C3-5 | 10 | 🔴 สูงสุด (แก้ภาพแตก) | 🟩 ใส่เข้าเกมแล้ว v5.54 (webp ใน assets/art/floors) |
 | 02 | `02_MAP_DECOR.md` | ของตกแต่งพื้นรายด่าน (เริ่ม C2-1) | 8/ด่าน | 🔴 | 🟩 C2-1 ใส่เข้าเกมแล้ว v5.54 · ⬜ C2-2…C3-5 |
 | 03 | `03_CH3_ENEMIES.md` | ศัตรู Chapter 3 (5 บทบาท) | 5 | 🟠 | 🟨 ภาพนิ่ง 5 ตัวใส่เกม v5.98.0 · รอชีตเดิน 4 เฟรม |
-| 04 | `04_CH3_BOSSES.md` | มินิบอส 5 + บอส 5 ของ Chapter 3 | 10 | 🟠 | ⬜ |
+| 04 | `04_CH3_BOSSES.md` | มินิบอส 5 + บอส 5 ของ Chapter 3 | 10 | 🟠 | 🟨 ภาพนิ่ง 10 ตัวใส่เกม v5.99.0 · รอ action sheet 8 เฟรม |
 | 05 | `05_TEMPLE_DIG.md` | มินิเกมขุดใต้วิหาร | 16 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (webp ใน assets/art/dig) |
 | 06 | `06_ICONS_PERKS_RELICS.md` | ไอคอน Rank Perk / Ancient Perk / Relic | 26 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (การ์ด/แถว Relic, Rank Perks, Codex) |
 | 07 | `07_KITCHEN_PARTS.md` | ไอคอนชิ้นส่วนสูตร Kitchen (WHEN/DO/TWIST) | 52 | 🟢 | ⬜ |
