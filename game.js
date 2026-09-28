@@ -10786,10 +10786,17 @@ class Game extends Phaser.Scene {
     // ชดเชยชีตตัวละครที่ "idle art smaller than run art" (เช่น Mint Frostleaf) → กันตัวหด/บีบตอนหยุดเดิน
     const runKey='char_'+this.character+'_run';
     const texture=this.player.texture.key;
+    // Mint's cast sheets contain more transparent padding than the idle sheet.
+    // Match the painted body (about 78-80px versus 98px idle), then ease the
+    // change so frequent lance casts do not make her visibly pulse in size.
     const actMul=this.character==='cocoa'&&texture==='char_cocoa_attack'?1.14:
-      this.character==='mint'&&(texture==='char_mint_attack'||texture==='char_mint_gale')?1.14:
+      this.character==='mint'&&texture==='char_mint_attack'?1.23:
+      this.character==='mint'&&texture==='char_mint_gale'?1.26:
       ((texture!==runKey&&CHAR_ACTION_SCALE[this.character])||1);
-    const base=(this._pBase||1)*actMul;
+    if(this.character==='mint'){
+      this._mintVisualScale=(this._mintVisualScale??actMul)+(actMul-(this._mintVisualScale??actMul))*Math.min(1,dt*18);
+    }
+    const base=(this._pBase||1)*(this.character==='mint'?this._mintVisualScale:actMul);
     p.setScale(base*this._sqX*(1-breathe), base*this._sqY*(1+breathe));
     // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
     if(moving){
