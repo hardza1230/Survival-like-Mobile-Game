@@ -58,19 +58,19 @@
   #game-loader .entry-glyph:after{content:'✦';display:block;text-align:center;line-height:36px;color:#fff1b9;font-size:21px;text-shadow:0 0 10px #fff5d3}
   #game-loader .entry-sparks{position:absolute;inset:0;z-index:6;pointer-events:none}
   #game-loader .entry-sparks i{position:absolute;left:var(--x);top:var(--y);color:#fff4cf;font:normal 17px system-ui;text-shadow:0 0 9px #ffe7aa;animation:entry-spark-wait 2.2s ease-in-out var(--delay) infinite}
-  #game-loader.opening .entry-glyph{animation:entry-glyph-out 1.6s ease-in both}
-  #game-loader.opening .entry-sparks i{animation:entry-spark-open 2.3s ease-out var(--delay) both}
+  #game-loader.opening .entry-glyph{animation:entry-glyph-out 2.6s ease-in .9s both}
+  #game-loader.opening .entry-sparks i{animation:entry-spark-open 4.1s ease-out var(--delay) both}
   #game-loader.opening .card{animation:entry-card-out .45s ease both}
-  #game-loader.opening .entry-city{animation:entry-city-in 4.6s ease-in-out both}
-  #game-loader.opening .entry-clouds{animation:entry-cloud-drift 4.6s ease-in-out both}
-  #game-loader.opening .entry-door.left{animation:entry-door-left 4.6s cubic-bezier(.2,.65,.25,1) both}
-  #game-loader.opening .entry-door.right{animation:entry-door-right 4.6s cubic-bezier(.2,.65,.25,1) both}
-  #game-loader.opening .entry-foreground{animation:entry-near-in 4.6s ease-in-out both}
-  #game-loader.opening .entry-glow{animation:entry-light 4.6s ease-in-out both}
-  #game-loader.opening .entry-keylight{animation:entry-keylight 4.6s ease-in-out both}
-  #game-loader.opening .entry-motes{animation:entry-motes-in 4.6s ease-in-out both}
-  #game-loader.opening .entry-shade{animation:entry-shade-out 4.6s ease-in-out both}
-  #game-loader.opening .entry-petals i{animation:entry-petal-fly 2.6s ease-out var(--delay) both}
+  #game-loader.opening .entry-city{animation:entry-city-in 8.2s ease-in-out both}
+  #game-loader.opening .entry-clouds{animation:entry-cloud-drift 8.2s ease-in-out both}
+  #game-loader.opening .entry-door.left{animation:entry-door-left 8.2s cubic-bezier(.2,.65,.25,1) both}
+  #game-loader.opening .entry-door.right{animation:entry-door-right 8.2s cubic-bezier(.2,.65,.25,1) both}
+  #game-loader.opening .entry-foreground{animation:entry-near-in 8.2s ease-in-out both}
+  #game-loader.opening .entry-glow{animation:entry-light 8.2s ease-in-out both}
+  #game-loader.opening .entry-keylight{animation:entry-keylight 8.2s ease-in-out both}
+  #game-loader.opening .entry-motes{animation:entry-motes-in 8.2s ease-in-out both}
+  #game-loader.opening .entry-shade{animation:entry-shade-out 8.2s ease-in-out both}
+  #game-loader.opening .entry-petals i{animation:entry-petal-fly 4.8s ease-out var(--delay) both}
   @keyframes entry-city-wait{from{transform:scale(1.02) translateY(0)}to{transform:scale(1.07) translateY(-1.2%)}}
   @keyframes entry-near-wait{from{transform:translateX(-.8%) scale(1)}to{transform:translateX(.8%) scale(1.035)}}
   @keyframes entry-door-wait{from{filter:brightness(.73)}to{filter:brightness(.9)}}
@@ -83,16 +83,17 @@
   @keyframes entry-key-wait{0%,100%{opacity:.2;box-shadow:0 0 12px 2px #ffcf8d}50%{opacity:.58;box-shadow:0 0 24px 7px #ffe5ad}}
   @keyframes entry-cloud-wait{from{transform:translateX(-3%)}to{transform:translateX(4%)}}
   @keyframes entry-card-out{to{opacity:0;transform:translateY(15px)}}
-  @keyframes entry-city-in{0%,15%{transform:scale(1.02);filter:brightness(.58)}48%{transform:scale(1.08);filter:brightness(.9)}85%,100%{transform:scale(1.42);filter:brightness(1)}}
-  @keyframes entry-cloud-drift{0%{transform:translateX(-7%);opacity:.25}60%{opacity:.42}100%{transform:translateX(15%) scale(1.35);opacity:0}}
-  @keyframes entry-door-left{0%,19%{transform:translateX(0)}57%{transform:translateX(-53%)}88%,100%{transform:translateX(-140%);opacity:0}}
-  @keyframes entry-door-right{0%,19%{transform:translateX(0)}57%{transform:translateX(53%)}88%,100%{transform:translateX(140%);opacity:0}}
-  @keyframes entry-near-in{0%,42%{transform:scale(1);opacity:1}86%,100%{transform:scale(1.8);opacity:0}}
-  @keyframes entry-light{0%,16%{opacity:0}45%{opacity:.92}75%,100%{opacity:0}}
-  @keyframes entry-keylight{0%,12%{opacity:.25}20%{opacity:.85}50%{opacity:1;transform:scaleX(11)}82%,100%{opacity:0;transform:scaleX(28)}}
-  @keyframes entry-motes-in{0%,19%{opacity:0;transform:scale(.8)}53%{opacity:.9}90%,100%{opacity:0;transform:scale(1.8)}}
+  /* 0–1.1s anticipation, 1.1–3.8s gate opens, 3.8–4.5s city reveal, 4.5–7.5s slow camera travel. */
+  @keyframes entry-city-in{0%,14%{transform:scale(1.02);filter:brightness(.58)}46%,55%{transform:scale(1.06);filter:brightness(.96)}92%,100%{transform:scale(1.33);filter:brightness(1)}}
+  @keyframes entry-cloud-drift{0%{transform:translateX(-5%);opacity:.28}55%{transform:translateX(2%);opacity:.4}100%{transform:translateX(13%) scale(1.2);opacity:.12}}
+  @keyframes entry-door-left{0%,14%{transform:translateX(0)}46%,55%{transform:translateX(-38%)}92%,100%{transform:translateX(-130%)}}
+  @keyframes entry-door-right{0%,14%{transform:translateX(0)}46%,55%{transform:translateX(38%)}92%,100%{transform:translateX(130%)}}
+  @keyframes entry-near-in{0%,55%{transform:scale(1);opacity:1}92%,100%{transform:scale(1.45);opacity:.4}}
+  @keyframes entry-light{0%,14%{opacity:0}30%{opacity:.48}52%,100%{opacity:0}}
+  @keyframes entry-keylight{0%,14%{opacity:.25}31%{opacity:.62;transform:scaleX(3)}50%,100%{opacity:0;transform:scaleX(8)}}
+  @keyframes entry-motes-in{0%,14%{opacity:.2;transform:scale(.9)}52%{opacity:.62}92%,100%{opacity:.1;transform:scale(1.45)}}
   @keyframes entry-petal-fly{0%{opacity:0;transform:translate(0,0) rotate(20deg) scale(.5)}18%{opacity:.86}78%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(1.35)}}
-  @keyframes entry-shade-out{0%,22%{opacity:.72}75%,100%{opacity:0}}
+  @keyframes entry-shade-out{0%,15%{opacity:.72}50%{opacity:.12}100%{opacity:0}}
   @media(prefers-reduced-motion:reduce){#game-loader.opening .entry-city,#game-loader.opening .entry-clouds,#game-loader.opening .entry-door,#game-loader.opening .entry-foreground,#game-loader.opening .entry-glow,#game-loader.opening .entry-keylight,#game-loader.opening .entry-motes,#game-loader.opening .entry-shade,#game-loader.opening .entry-petals i,#game-loader .entry-keylight,#game-loader .entry-clouds,#game-loader .entry-glyph,#game-loader .entry-sparks i,#game-loader .entry-petals i,#game-loader .entry-motes,#game-loader .entry-city,#game-loader .entry-foreground,#game-loader .entry-door{animation:none}#game-loader.opening .entry{opacity:0;transition:opacity .15s}}
 </style>
 <script>
@@ -135,7 +136,7 @@
       clearTimeout(this._slowTimer);
       if(!this._introDone && root.classList.contains('intro-mode')){
         this._introDone=true; root.classList.add('opening');
-        var duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?180:4600;
+        var duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?180:8200;
         this._introTimer=setTimeout(()=>this.finishIntro(),duration);
         return;
       }
