@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.28';
+const GAME_VERSION = '6.0.29';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.29', date:'2026-09-30', title:'Mr. Griddle redesign', items:['Stage 3 boss now uses a cursed cast-iron griddle and chili furnace action sheet','Idle, overheat, chili spray, conveyor charge, grinder and phase-transition poses retain the existing attack timing and rules'] },
   { v:'6.0.28', date:'2026-09-29', title:'Reward artwork and Chapter 3 Bestiary', items:['Chest tiers show illustrated bronze, silver and gold badges; prize chest edges are cleaned and random currency has its own icon','Stage rewards and summary currency use item artwork; Chapter 3 enemies, minibosses and bosses are recorded in the Bestiary with painted portraits'] },
   { v:'6.0.27', date:'2026-09-29', title:'Brighter menu music', items:['Mochi Morning now has a bouncy major-key melody, quicker rhythm and playful candy-like percussion','The menu loop stays lightweight for mobile loading'] },
   { v:'6.0.26', date:'2026-09-29', title:'Clean prize icons and a new menu theme', items:['Sugar prizes use the candy art instead of the EXP cube; the strawberry jam jar has clean transparent edges','Pause Relics and Codex item entries show available artwork; the menu plays the new Mochi Morning theme'] },
