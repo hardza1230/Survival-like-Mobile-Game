@@ -33,7 +33,7 @@
 @keyframes k-curtain-sway{from{transform:skewX(-2deg) translateX(-1%)}to{transform:skewX(3deg) translateX(2%)}}
 @keyframes k-jar-shine{0%,65%,100%{opacity:0;transform:translateX(-60%)}74%{opacity:.6}86%{opacity:0;transform:translateX(90%)}}
 @keyframes k-motes-float{0%{opacity:0;transform:translateY(15px)}15%{opacity:.65}85%{opacity:.65}100%{opacity:0;transform:translateY(-36px)}}
-/* The kitchen zoom is hidden by a brief flash before the full city appears. */
+/* Sunrise fills the kitchen window, then the light reveals the full city. */
 #game-loader .k-world{position:absolute;z-index:1;inset:0;overflow:hidden;opacity:0;pointer-events:none}
 #game-loader .k-city,#game-loader .k-flowers{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;will-change:transform,opacity}
 #game-loader .k-city{background-image:url('city.webp');transform:scale(1.08)}
@@ -49,24 +49,24 @@
 #game-loader .k-petals i:nth-child(7){--x:85%;--speed:4.8s;--delay:-3.9s}
 #game-loader .k-petals i:nth-child(8){--x:96%;--speed:5.4s;--delay:-.9s}
 #game-loader .k-transition-light,#game-loader .k-menu-light{position:absolute;inset:0;pointer-events:none;opacity:0;will-change:opacity}
-#game-loader .k-transition-light{z-index:3;background:radial-gradient(ellipse 65% 50% at 50% 34%,#fff 0%,#fff9eb 42%,#fff6e7 100%)}
+#game-loader .k-transition-light{z-index:3;background:radial-gradient(circle at 50% 35%,#fff 0%,#fff9e1 17%,#ffe1aa 48%,#fff6e8 100%)}
 #game-loader .k-menu-light{z-index:4;background:#fffaf0}
 #game-loader.opening .card{animation:k-card-out .4s ease .4s both}
-#game-loader.opening .k-bloom{animation:k-window-light 9.4s ease-in-out both}
-#game-loader.opening .k-stage{animation:k-camera-in 9.4s cubic-bezier(.28,.04,.28,1) both}
+#game-loader.opening .k-bloom{background:radial-gradient(ellipse 30% 23% at 50% 35%,#fff 0%,#fff1a9aa 29%,#ffca7755 56%,transparent 78%);animation:k-window-light 9.4s ease-in-out both}
+#game-loader.opening .k-stage{animation:k-kitchen-out 9.4s ease-in-out both}
 #game-loader.opening .k-world{animation:k-world-in 9.4s linear both}
 #game-loader.opening .k-city{animation:k-city-move 9.4s ease-out both}
 #game-loader.opening .k-flowers{animation:k-flowers-in 9.4s ease-out both}
 #game-loader.opening .k-petals{animation:k-petals-in 9.4s ease both}
 #game-loader.opening .k-transition-light{animation:k-window-flash 9.4s ease-in-out both}
 #game-loader.opening .k-menu-light{animation:k-menu-flash 9.4s ease-in both}
-/* Freeze decorative paint effects while the camera layer is scaling. */
+/* Keep the room still while the sunrise moves through the window. */
 #game-loader.opening .k-lamp,#game-loader.opening .k-warm{animation:none;opacity:.85;filter:none}
 #game-loader.opening .k-clouds,#game-loader.opening .k-oven,#game-loader.opening .k-steam,#game-loader.opening .k-curtain,#game-loader.opening .k-jar-glint,#game-loader.opening .k-motes{animation:none;opacity:0}
 @keyframes k-card-out{to{opacity:0;transform:translateY(18px)}}
-@keyframes k-window-light{0%,15%{opacity:0}43%{opacity:.23}60%,100%{opacity:0}}
-@keyframes k-camera-in{0%,19%{transform:translate3d(-50%,-50%,0) scale(1);opacity:1}51%{transform:translate3d(-50%,-50%,0) scale(2.2);opacity:1}56%{transform:translate3d(-50%,-50%,0) scale(2.55);opacity:1}61%,100%{transform:translate3d(-50%,-50%,0) scale(2.65);opacity:0}}
-@keyframes k-window-flash{0%,48%{opacity:0}56%{opacity:1}62%{opacity:1}72%,100%{opacity:0}}
+@keyframes k-window-light{0%,24%{opacity:0}40%{opacity:.3}51%,57%{opacity:.9}64%,100%{opacity:0}}
+@keyframes k-kitchen-out{0%,56%{opacity:1}63%,100%{opacity:0}}
+@keyframes k-window-flash{0%,48%{opacity:0}54%{opacity:.82}59%,63%{opacity:1}73%,100%{opacity:0}}
 @keyframes k-world-in{0%,56%{opacity:0}62%,100%{opacity:1}}
 @keyframes k-city-move{0%,58%{transform:scale(1.08)}100%{transform:scale(1)}}
 @keyframes k-flowers-in{0%,62%{opacity:0;transform:scale(1.13)}74%{opacity:1}100%{opacity:1;transform:scale(1.02)}}
