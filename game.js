@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.11';
+const GAME_VERSION = '6.0.12';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.12', date:'2026-09-29', title:'Painted procedural art replacements', items:['Elite brute fallback and sakura petal effects now use transparent painted artwork','Painted pantry boxes decorate Stage 1; additional Crown Oven concepts are archived for later review'] },
   { v:'6.0.11', date:'2026-09-29', title:'Animated kitchen opening', items:['Kitchen lamps light one by one while the game loads, with kettle steam, oven glow, drifting motes and subtle room motion','After loading, daylight appears in the window and the camera slowly moves toward the city'] },
   { v:'6.0.10', date:'2026-09-29', title:'Momo animation refresh', items:['Strawberry Fighter now uses the new idle, 12-frame run, attack, dash and hurt sheets in play','Older special poses remain available for cheer and other actions'] },
   { v:'6.0.9', date:'2026-09-29', title:'Illustrated Recipe Kitchen parts', items:['Added 55 individual icons for every WHEN, DO and TWIST recipe part','Kitchen recipe slots and part inventory now display their category-colored artwork beside each name'] },
@@ -930,6 +931,10 @@ const ASSET_IMAGES = {
   e_ice_wisp:'assets/generated/e_ice_wisp.png', e_ice_shard:'assets/generated/e_ice_shard.png',
   e_ice_caster:'assets/generated/e_ice_caster.png', e_ice_bomber:'assets/generated/e_ice_bomber.png',
   e_ice_guardian:'assets/generated/e_ice_guardian.png',
+  // Active canvas replacements. The Crown Oven already uses animated sprite sheets.
+  e_brute:'assets/art/procedural_replacements/e_brute.png',
+  p_box:'assets/art/procedural_replacements/p_box.png',
+  sakura_petal:'assets/art/procedural_replacements/sakura_petal.png',
   // Props อาร์ตจริงสำหรับฉากStage 2–5
   drain_grate:'assets/generated/drain_grate.png', drain_pipe:'assets/generated/drain_pipe.png',
   drain_sludge:'assets/generated/drain_sludge.png', drain_bubbles:'assets/generated/drain_bubbles.png',
@@ -3415,7 +3420,8 @@ const STAGE_PROPS = {
     ['nest_mound',-650,880,true,0.68],['nest_mound',680,-900,true,0.68],
     ['nest_eggs',-1020,-360,true,0.55],['nest_eggs',1000,360,true,0.55],
     ['nest_acid',-430,-760,false,0.70],['nest_acid',460,780,false,0.70],
-    ['nest_acid',-900,760,false,0.58],['nest_acid',920,-720,false,0.58]
+    ['nest_acid',-900,760,false,0.58],['nest_acid',920,-720,false,0.58],
+    ['p_box',-550,-930,false,0.78],['p_box',570,920,false,0.72]
   ],
   1: [
     ['drain_grate',-920,-720,true,0.92],['drain_grate',910,700,true,0.84],
