@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#241d2e">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="assets/art/entry/kitchen_loader.css">
+<link rel="stylesheet" href="assets/art/entry/kitchen_loader.css?v=6.0.22">
 <link rel="preload" as="image" href="assets/art/entry/kitchen_night.webp">
 <title>Mochi Mayhem</title>
 <style>
@@ -72,7 +72,7 @@
       if(!this._introDone && root.classList.contains('intro-mode')){
         this._introDone=true;
         var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var begin=()=>{root.classList.add('opening');this._introTimer=setTimeout(()=>this.finishIntro(),reduced?180:6200);};
+        var begin=()=>{root.classList.add('opening');this._introTimer=setTimeout(()=>this.finishIntro(),reduced?180:9400);};
         // Let the three lamps light in order even when the assets load quickly.
         var remaining=reduced?0:Math.max(0,3300-(performance.now()-(this._shownAt||performance.now())));
         clearTimeout(this._revealTimer);
@@ -118,7 +118,12 @@
     <div class="k-oven"></div><div class="k-steam"><i style="--sx:11%;--delay:-.2s"></i><i style="--sx:39%;--delay:-1.2s"></i><i style="--sx:67%;--delay:-2.2s"></i></div>
     <div class="k-curtain left"></div><div class="k-curtain right"></div><div class="k-jar-glint"></div>
     <div class="k-motes"></div><div class="k-bloom"></div><div class="k-shade"></div>
-  </div></div>
+  </div>
+    <div class="k-world"><div class="k-city"></div><div class="k-flowers"></div>
+      <div class="k-petals"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="k-transition-light"></div><div class="k-menu-light"></div>
+  </div>
   <button id="entry-skip" type="button" onclick="window.GameLoader.skipIntro()">ข้ามฉากเปิด ›</button>
   <div class="card">
     <div class="status" id="load-status">กำลังเปิดครัวขนม...</div>

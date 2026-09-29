@@ -2,7 +2,7 @@
 // คัดลอก index.html + game.js + phaser.min.js เข้า www/ (ไม่ commit www/ — สร้างตอน build)
 import { mkdirSync, copyFileSync, existsSync, readFileSync, writeFileSync, rmSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, normalize } from 'node:path';
 import { inflateSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 
@@ -52,7 +52,12 @@ const builtAssets = join(www, 'assets');
 if (existsSync(builtAssets)) rmSync(builtAssets, { recursive:true, force:true });
 const sourceHtml = readFileSync(join(root, 'index.html'), 'utf8');
 const assetRefs = [...(gjs + '\n' + sourceHtml).matchAll(/[\"'](assets\/[A-Za-z0-9_./ -]+)[\"']/g)].map(m=>m[1]);
-const uniqueAssets = [...new Set(assetRefs)].sort();
+// Include images referenced by the loading-scene CSS in APK and Pages builds.
+const loaderCssPath = 'assets/art/entry/kitchen_loader.css';
+const loaderCss = readFileSync(join(root, loaderCssPath), 'utf8');
+const cssRefs = [...loaderCss.matchAll(/url\(['"]?([^)'"?#]+)['"]?\)/g)]
+  .map(m=>normalize(join(dirname(loaderCssPath),m[1])));
+const uniqueAssets = [...new Set([...assetRefs,...cssRefs])].sort();
 const assetHashes=Object.fromEntries(uniqueAssets.map(rel=>[rel,createHash('sha256').update(readFileSync(join(root,rel))).digest('hex').slice(0,12)]));
 gjs=gjs.replace('let ASSET_FILE_VERSIONS = null;', 'let ASSET_FILE_VERSIONS = '+JSON.stringify(assetHashes)+';');
 writeFileSync(join(www,'game.js'),gjs);
@@ -87,6 +92,7 @@ console.log('copied ' + uniqueAssets.length + ' runtime assets (' + (copiedBytes
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)
 let html = sourceHtml;
+html = html.replace(/assets\/art\/entry\/kitchen_loader\.css(?:\?v=[\w.-]+)?/g, 'assets/art/entry/kitchen_loader.css?v='+ver);
 html = html.replace(/(assets\/art\/entry\/[A-Za-z0-9_-]+\.webp)/g, asset => asset+'?v='+(assetHashes[asset]||ver));
 html = html.replace(/game\.js(\?v=\d+)?/g, 'game.js?v=' + ver);
 writeFileSync(join(www, 'index.html'), html);

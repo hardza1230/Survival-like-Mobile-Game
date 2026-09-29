@@ -1,6 +1,6 @@
 /* Animated loading kitchen. All percentages are relative to the 941:1672 portrait art plate. */
 #game-loader .kitchen{position:absolute;inset:0;overflow:hidden;pointer-events:none;background:#1a1726;isolation:isolate}
-#game-loader .k-stage{position:absolute;left:50%;top:50%;width:max(100vw,56.28vh);aspect-ratio:941/1672;transform:translate3d(-50%,-50%,0) scale(1);transform-origin:50% 35%;will-change:transform,opacity;backface-visibility:hidden;contain:paint}
+#game-loader .k-stage{position:absolute;z-index:2;left:50%;top:50%;width:max(100vw,56.28vh);aspect-ratio:941/1672;transform:translate3d(-50%,-50%,0) scale(1);transform-origin:50% 35%;will-change:transform,opacity;backface-visibility:hidden;contain:paint}
 #game-loader .k-plate,#game-loader .k-clouds,#game-loader .k-warm,#game-loader .k-motes,#game-loader .k-bloom{position:absolute;inset:0}
 #game-loader .k-plate{background:url('kitchen_night.webp') center/100% 100% no-repeat}
 #game-loader .k-clouds{z-index:2;opacity:.22;clip-path:polygon(49% 16%,65% 20%,71% 29%,70% 45%,35% 45%,33% 28%,40% 19%);background:radial-gradient(ellipse 12% 3% at 45% 29%,#fce9e866,transparent),radial-gradient(ellipse 12% 3% at 66% 35%,#e8eeff77,transparent);animation:k-cloud-drift 13s ease-in-out infinite alternate}
@@ -33,21 +33,52 @@
 @keyframes k-curtain-sway{from{transform:skewX(-2deg) translateX(-1%)}to{transform:skewX(3deg) translateX(2%)}}
 @keyframes k-jar-shine{0%,65%,100%{opacity:0;transform:translateX(-60%)}74%{opacity:.6}86%{opacity:0;transform:translateX(90%)}}
 @keyframes k-motes-float{0%{opacity:0;transform:translateY(15px)}15%{opacity:.65}85%{opacity:.65}100%{opacity:0;transform:translateY(-36px)}}
-/* Loading completion: keep the same moonlit city in view during the camera move. */
+/* The kitchen zoom is hidden by a brief flash before the full city appears. */
+#game-loader .k-world{position:absolute;z-index:1;inset:0;overflow:hidden;opacity:0;pointer-events:none}
+#game-loader .k-city,#game-loader .k-flowers{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;will-change:transform,opacity}
+#game-loader .k-city{background-image:url('city.webp');transform:scale(1.08)}
+#game-loader .k-flowers{background-image:url('foreground.webp');opacity:0;transform:scale(1.13)}
+#game-loader .k-petals{position:absolute;inset:0;opacity:0;overflow:hidden}
+#game-loader .k-petals i{position:absolute;left:var(--x);top:-8%;width:clamp(16px,5vw,36px);height:clamp(16px,5vw,36px);background:url('../procedural_replacements/sakura_petal.png') center/contain no-repeat;animation:k-petal-fall var(--speed) linear var(--delay) infinite;will-change:transform}
+#game-loader .k-petals i:nth-child(1){--x:5%;--speed:4.1s;--delay:-2s}
+#game-loader .k-petals i:nth-child(2){--x:18%;--speed:5.2s;--delay:-.4s}
+#game-loader .k-petals i:nth-child(3){--x:31%;--speed:4.7s;--delay:-3s}
+#game-loader .k-petals i:nth-child(4){--x:46%;--speed:5.6s;--delay:-1s}
+#game-loader .k-petals i:nth-child(5){--x:59%;--speed:4.4s;--delay:-2.8s}
+#game-loader .k-petals i:nth-child(6){--x:72%;--speed:5.1s;--delay:-1.7s}
+#game-loader .k-petals i:nth-child(7){--x:85%;--speed:4.8s;--delay:-3.9s}
+#game-loader .k-petals i:nth-child(8){--x:96%;--speed:5.4s;--delay:-.9s}
+#game-loader .k-transition-light,#game-loader .k-menu-light{position:absolute;inset:0;pointer-events:none;opacity:0;will-change:opacity}
+#game-loader .k-transition-light{z-index:3;background:radial-gradient(ellipse 65% 50% at 50% 34%,#fff 0%,#fff9eb 42%,#fff6e7 100%)}
+#game-loader .k-menu-light{z-index:4;background:#fffaf0}
 #game-loader.opening .card{animation:k-card-out .4s ease .4s both}
-#game-loader.opening .k-bloom{animation:k-window-light 6.2s ease-in-out both}
-#game-loader.opening .k-stage{animation:k-camera-in 6.2s cubic-bezier(.28,.04,.28,1) both}
+#game-loader.opening .k-bloom{animation:k-window-light 9.4s ease-in-out both}
+#game-loader.opening .k-stage{animation:k-camera-in 9.4s cubic-bezier(.28,.04,.28,1) both}
+#game-loader.opening .k-world{animation:k-world-in 9.4s linear both}
+#game-loader.opening .k-city{animation:k-city-move 9.4s ease-out both}
+#game-loader.opening .k-flowers{animation:k-flowers-in 9.4s ease-out both}
+#game-loader.opening .k-petals{animation:k-petals-in 9.4s ease both}
+#game-loader.opening .k-transition-light{animation:k-window-flash 9.4s ease-in-out both}
+#game-loader.opening .k-menu-light{animation:k-menu-flash 9.4s ease-in both}
 /* Freeze decorative paint effects while the camera layer is scaling. */
 #game-loader.opening .k-lamp,#game-loader.opening .k-warm{animation:none;opacity:.85;filter:none}
 #game-loader.opening .k-clouds,#game-loader.opening .k-oven,#game-loader.opening .k-steam,#game-loader.opening .k-curtain,#game-loader.opening .k-jar-glint,#game-loader.opening .k-motes{animation:none;opacity:0}
 @keyframes k-card-out{to{opacity:0;transform:translateY(18px)}}
-@keyframes k-window-light{0%,15%{opacity:0}39%{opacity:.23}75%{opacity:.14}100%{opacity:0}}
-@keyframes k-camera-in{0%,38%{transform:translate3d(-50%,-50%,0) scale(1)}90%{transform:translate3d(-50%,-50%,0) scale(2.15);opacity:1}100%{transform:translate3d(-50%,-50%,0) scale(2.3);opacity:0}}
+@keyframes k-window-light{0%,15%{opacity:0}43%{opacity:.23}60%,100%{opacity:0}}
+@keyframes k-camera-in{0%,19%{transform:translate3d(-50%,-50%,0) scale(1);opacity:1}51%{transform:translate3d(-50%,-50%,0) scale(2.2);opacity:1}56%{transform:translate3d(-50%,-50%,0) scale(2.55);opacity:1}61%,100%{transform:translate3d(-50%,-50%,0) scale(2.65);opacity:0}}
+@keyframes k-window-flash{0%,48%{opacity:0}56%{opacity:1}62%{opacity:1}72%,100%{opacity:0}}
+@keyframes k-world-in{0%,56%{opacity:0}62%,100%{opacity:1}}
+@keyframes k-city-move{0%,58%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes k-flowers-in{0%,62%{opacity:0;transform:scale(1.13)}74%{opacity:1}100%{opacity:1;transform:scale(1.02)}}
+@keyframes k-petals-in{0%,64%{opacity:0}74%,100%{opacity:1}}
+@keyframes k-petal-fall{from{transform:translate3d(-18px,-10vh,0) rotate(-35deg)}to{transform:translate3d(45px,115vh,0) rotate(380deg)}}
+@keyframes k-menu-flash{0%,88%{opacity:0}100%{opacity:1}}
 #game-loader.loading-mode .k-lamp,#game-loader.loading-mode .k-warm{animation:none;opacity:.85}
 @media(prefers-reduced-motion:reduce){
   #game-loader .k-lamp,#game-loader .k-warm{animation:none;opacity:.75}
   #game-loader .k-steam,#game-loader .k-motes,#game-loader .k-clouds,#game-loader .k-oven,#game-loader .k-curtain,#game-loader .k-jar-glint,#game-loader .track:after{animation:none;opacity:0}
   #game-loader.opening .k-stage{animation:k-reduced-out .18s ease both}
+  #game-loader.opening .k-world,#game-loader.opening .k-city,#game-loader.opening .k-flowers,#game-loader.opening .k-petals,#game-loader.opening .k-transition-light,#game-loader.opening .k-menu-light{animation:none;opacity:0}
   #game-loader.opening .k-bloom{animation:none;opacity:0}
   #game-loader.opening .card{animation:none;opacity:0}
 }
