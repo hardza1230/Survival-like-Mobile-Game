@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.14';
+const GAME_VERSION = '6.0.15';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.15', date:'2026-09-29', title:'Illustrated drops and prize reels', items:['Field gear and crafting currency drops now show their actual illustrated icons without colour washing','Miniboss prize wheel and Bazaar slot reels show item art while spinning and revealing rewards'] },
   { v:'6.0.14', date:'2026-09-29', title:'New Hunt target artwork', items:['Hunt the Threat now uses a dedicated Sugar Stalker monster instead of an early stage elite sprite'] },
   { v:'6.0.13', date:'2026-09-29', title:'Wave mission clarity and artwork', items:['Escort, Nectar and season objectives now use dedicated painted assets with clearer danger cues','Clean Air and bonus events have direction markers, Hunt targets recover from spawn pressure and mission copy matches the actual rules'] },
   { v:'6.0.12', date:'2026-09-29', title:'Painted procedural art replacements', items:['Elite brute fallback and sakura petal effects now use transparent painted artwork','Painted pantry boxes decorate Stage 1; additional Crown Oven concepts are archived for later review'] },
@@ -855,6 +856,9 @@ const ASSET_IMAGES = {
   currency_plain_dough:'assets/ui/currency/plain-dough.png',
   heal:'assets/items/heal_mochi_heart.png',
   gift:'assets/items/gear_gift.png',
+  prize_sugar:'assets/items/item_sugar_cube.png',
+  prize_currency:'assets/items/item_jam_jar.png',
+  prize_chest:'assets/items/item_chest.png',
   train_floor:'assets/training_floor.png',   // 🎓 พื้น raster ของ Training Ground
   item_scent_crystal:'assets/items/gimmick_scent_crystal.png',
   item_clean_bubble:'assets/items/gimmick_clean_bubble.png',
@@ -6351,12 +6355,11 @@ class Game extends Phaser.Scene {
     Save.addCurrency(key,qty); if(slotKey){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(slotKey);Save.save();} Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
   // ตู้สล็อต: หมุนไอคอนช้าลงเรื่อย ๆ แล้วหยุดที่รางวัล (ลุ้นสนุก)
   bazaarSlotReveal(pool,land){ if(this._bazBusy)return; this._bazBusy=true; const w=this.W,h=this.H;
-    const veil=this.add.rectangle(0,0,w,h,0x0a0611,0.92).setOrigin(0),title=this.add.text(w/2,h*0.30,'🎰 Rolling…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5),glow=this.add.image(w/2,h*0.47,'vfx_glow').setTint(0xffd166).setScale(0.5).setAlpha(0.25),icon=this.add.text(w/2,h*0.47,'🎁',{fontSize:'72px'}).setOrigin(0.5);
+    const veil=this.add.rectangle(0,0,w,h,0x0a0611,0.92).setOrigin(0),title=this.add.text(w/2,h*0.30,'🎰 Rolling…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5),glow=this.add.image(w/2,h*0.47,'vfx_glow').setTint(0xffd166).setScale(0.5).setAlpha(0.25),icon=this.add.image(w/2,h*0.47,'prize_chest').setDisplaySize(96,96);
     this.menu.add([veil,title,glow,icon]); this.menu.setVisible(true);
-    let ticks=0,delay=55; const spin=()=>{ icon.setText(Phaser.Utils.Array.GetRandom(pool)); Sfx.select&&Sfx.select(); ticks++;
+    let ticks=0,delay=55; const spin=()=>{ const key=Phaser.Utils.Array.GetRandom(pool);icon.setTexture(this.textures.exists(key)?key:'prize_chest').setDisplaySize(96,96); Sfx.select&&Sfx.select(); ticks++;
       if(ticks<26){ delay+=ticks>17?(ticks-17)*10:2; this.time.delayedCall(delay,spin); }
-      else { if(land.artKey&&this.textures.exists(land.artKey)){ icon.setText(''); const gi=this.add.image(w/2,h*0.47,land.artKey).setDisplaySize(96,96); const ts=gi.scaleX; gi.setScale(ts*0.3); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:300,ease:'Back.out'}); }
-        else icon.setText(land.emoji||'🎁');
+      else { const resultKey=land.artKey&&this.textures.exists(land.artKey)?land.artKey:'prize_currency';icon.setTexture(resultKey).setDisplaySize(96,96);this.tweens.add({targets:icon,scaleX:icon.scaleX*1.18,scaleY:icon.scaleY*1.18,duration:300,ease:'Back.out'});
         title.setText(land.title||'✨ Prize!'); glow.setScale(2.6).setAlpha(0.85); this.screenFlash(0xffd166,0.5,420); Sfx.clear();
         const sub=this.add.text(w/2,h*0.63,land.sub||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:w-50}}).setOrigin(0.5);
         const bt=this.add.text(w/2,h*0.74,'Tap to continue',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6'}).setOrigin(0.5); this.menu.add([sub,bt]);
@@ -6366,11 +6369,11 @@ class Game extends Phaser.Scene {
     const r=Math.random(), tier=r<0.50?'common':r<0.80?'rare':r<0.95?'epic':'legend'; const got=this.grantGear(tier);
     if(!got){Save.addSugar(180);Sfx.select();this.showBanner('🎁 No eligible base','Sugar refunded',1500);return;}
     const artKey=got.instance?('gear_'+got.id):null;
-    this.bazaarSlotReveal(['🥄','🔪','🧤','🛡️','👢','💍','🌙','⭐','💠'],{artKey,emoji:got.emoji,title:'✨ '+got.name+'!',sub:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got)}); }
+    this.bazaarSlotReveal(GEAR_ALL.map(it=>'gear_'+it.id).filter(key=>this.textures.exists(key)),{artKey,emoji:got.emoji,title:'✨ '+got.name+'!',sub:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got)}); }
   bazaarGambleCurrency(){ if(this._bazBusy)return; if(!Save.spend(120)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 120 Sugar',1300); return; }
     const n=2+Math.floor(Math.random()*3), got={}; for(let i=0;i<n;i++){ const k=this.rollCurrencyDrop('epic')||'alt'; got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
     const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join('  ');
-    this.bazaarSlotReveal(CURRENCY.map(c=>c.emoji||'🔮'),{emoji:'🧪',title:'🧪 Currency!',sub:txt}); }
+    this.bazaarSlotReveal(CURRENCY.map(c=>c.asset),{artKey:'prize_currency',title:'🧪 Currency!',sub:txt}); }
   bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 Sold shards','+🍬'+(sh*2),1300); this.buildBazaar(); }
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
   openGachaReveal(){
@@ -9856,18 +9859,17 @@ class Game extends Phaser.Scene {
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
-    const box=this.textures.exists('chest')?'chest':'gift';   // ใช้ PNG จริง (ไม่พึ่ง SVG ที่เคยเรนเดอร์ดำบนมือถือ)
+    const box='gift';   // ไอเทมปิดกล่องจนจบด่าน ใช้ภาพกล่องของขวัญจริง
     if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
     if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost+(this.endgameDropActive()?1:0));const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
-    g.body.setAllowGravity(false);g.setTint(rarity.color);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
+    g.body.setAllowGravity(false);g.clearTint();g.setAlpha(1);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // 🧪 Currency ดรอปเป็นชิ้นในสนาม (เก็บ = สะสมเข้า _runCurrency + Save · โชว์ในสรุปด่าน)
   spawnCurrencyDrop(x,y,key){ let g=this.loots.getFirstDead(false);
     if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
     if(!g)return;g.dropType='currency';g.curKey=key;g.lootTier=null;const col=0x9fe8ff,d=currencyDef(key);
+    g.setTexture(d.asset&&this.textures.exists(d.asset)?d.asset:'prize_currency').clearTint().setAlpha(1);
     g.body.setAllowGravity(false);this.camWorld(g);this.showPickupCue(g,col,1.0);this.spawnDropBeam(g,col); if(this.iso)g.setDepth(Math.max(80000,g.y));
-    g.setAlpha(0.001);   // ซ่อนกล่อง → โชว์ไอคอนสกุลเงินจริง (อีโมจิ) แทน
-    g._curIcon=this.camWorld(this.add.text(x,y-4,d.emoji,{fontSize:'22px'}).setOrigin(0.5).setDepth(80002));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false; g.clearTint();
     if(g.dropType==='currency'&&g.curKey){ const k=g.curKey; Save.addCurrency(k,1); if(!this._runCurrency)this._runCurrency={}; this._runCurrency[k]=(this._runCurrency[k]||0)+1;
@@ -9926,14 +9928,14 @@ class Game extends Phaser.Scene {
   miniPrizePool(tier){
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.round(n*(1+si*0.3)*dr);
     return [
-      {id:'sugarS',emoji:'🍬',name:'Sugar +'+S(25),w:tier==='gold'?4:10,color:0xff9dc4,give:()=>this.addRunSugar(S(25))},
-      {id:'sugarM',emoji:'🍭',name:'Sugar +'+S(60),w:7,color:0xff7fb0,give:()=>this.addRunSugar(S(60))},
-      {id:'sugarL',emoji:'🎂',name:'Sugar +'+S(130),w:tier==='bronze'?2:4,color:0xffb347,give:()=>this.addRunSugar(S(130))},
-      {id:'cur1',emoji:'💠',name:'Currency ×1',w:8,color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Prize')},
-      {id:'cur3',emoji:'💎',name:'Currency ×3',w:tier==='bronze'?2:4,color:0x62b7ff,give:()=>this.grantCurrencyReward(3,this.currencyTierFor(),'Prize')},
-      {id:'heal',emoji:'❤️',name:'Heal 40%',w:6,color:0xff6f9d,give:()=>{const p=this.player,a=Math.round(p.maxhp*0.4);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);}},
-      {id:'card',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
-      {id:'jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
+      {id:'sugarS',artKey:'prize_sugar',emoji:'🍬',name:'Sugar +'+S(25),w:tier==='gold'?4:10,color:0xff9dc4,give:()=>this.addRunSugar(S(25))},
+      {id:'sugarM',artKey:'prize_sugar',emoji:'🍭',name:'Sugar +'+S(60),w:7,color:0xff7fb0,give:()=>this.addRunSugar(S(60))},
+      {id:'sugarL',artKey:'prize_sugar',emoji:'🎂',name:'Sugar +'+S(130),w:tier==='bronze'?2:4,color:0xffb347,give:()=>this.addRunSugar(S(130))},
+      {id:'cur1',artKey:'prize_currency',emoji:'💠',name:'Currency ×1',w:8,color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Prize')},
+      {id:'cur3',artKey:'prize_currency',emoji:'💎',name:'Currency ×3',w:tier==='bronze'?2:4,color:0x62b7ff,give:()=>this.grantCurrencyReward(3,this.currencyTierFor(),'Prize')},
+      {id:'heal',artKey:'heal',emoji:'❤️',name:'Heal 40%',w:6,color:0xff6f9d,give:()=>{const p=this.player,a=Math.round(p.maxhp*0.4);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);}},
+      {id:'card',artKey:'ui_card_power',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
+      {id:'jackpot',artKey:'prize_chest',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
     ];
   }
   addRunSugar(n){ this.showBanner('🍬 +'+n,'Grab the candy!',1100); this.spawnSugarCoins(n); }
@@ -9971,12 +9973,12 @@ class Game extends Phaser.Scene {
     const ring=this.add.graphics();ring.lineStyle(3,T0.color,0.5);ring.strokeCircle(cx,cy,R);
     const ttl=this.add.text(cx,cy-R-70,T0.emoji+' '+T0.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T0.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
     const hint=this.add.text(cx,cy+R+62,'Spinning…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#c7bdd6'}).setOrigin(0.5);
-    const center=this.add.text(cx,cy,'🎁',{fontSize:'56px'}).setOrigin(0.5);
+    const center=this.add.image(cx,cy,'prize_chest').setDisplaySize(65,65);
     this.tweens.add({targets:center,angle:{from:-8,to:8},yoyo:true,repeat:-1,duration:120});Sfx.chestSpin();
     this.tweens.add({targets:center,y:{from:cy,to:cy-22},yoyo:true,repeat:-1,duration:210,ease:'Quad.out'});
     cont.add([bg,rays,ring,ttl,hint,center]);
     const slots=pool.map((p,i)=>{const a=-Math.PI/2+i/n*TAU,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;
-      const g=this.add.graphics();const lab=this.add.text(x,y,p.emoji,{fontSize:'30px'}).setOrigin(0.5);cont.add([g,lab]);
+      const g=this.add.graphics();const lab=this.add.image(x,y,p.artKey).setDisplaySize(42,42);cont.add([g,lab]);
       const draw=(on)=>{g.clear();g.fillStyle(on?p.color:0x2a1f38,on?0.95:0.92);g.fillCircle(x,y,on?31:27);g.lineStyle(on?4:2,on?0xffffff:p.color,on?1:0.7);g.strokeCircle(x,y,on?31:27);};
       draw(false);return {x,y,g,lab,draw,p};});
     // ไฟวิ่ง: เร็วมากก่อนแล้วค่อยช้าลง ต้องจบที่ winIdx พอดี
@@ -10006,8 +10008,8 @@ class Game extends Phaser.Scene {
     const land=()=>{ const sl=slots[winIdx],p=sl.p;
       this.tweens.killTweensOf(center);center.setVisible(false);Sfx.stopChestSpin();Sfx.chestWin();
       for(let t=0;t<6;t++)this.time.delayedCall(t*90,()=>{sl.draw(t%2===0);});
-      const big=this.add.text(sl.x,sl.y,p.emoji,{fontSize:'30px'}).setOrigin(0.5);cont.add(big);
-      this.tweens.add({targets:big,x:cx,scale:3.2,duration:520,ease:'Back.out'});
+      const big=this.add.image(sl.x,sl.y,p.artKey).setDisplaySize(42,42);cont.add(big);
+      this.tweens.add({targets:big,x:cx,scaleX:big.scaleX*3.2,scaleY:big.scaleY*3.2,duration:520,ease:'Back.out'});
       this.tweens.add({targets:big,y:{from:sl.y,to:cy},duration:700,ease:'Bounce.out',onComplete:()=>{ if(!big.active)return;
         this.tweens.add({targets:big,y:cy-10,duration:420,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }});
       // v5.19 เหรียญ/ขนมเด้งพุ่งแบบน้ำพุ ตกลงเด้งพื้น (แบบ VS)
@@ -10033,9 +10035,9 @@ class Game extends Phaser.Scene {
   openMysteryCards(done){
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.round(n*(1+si*0.3)*dr);
     const prizes=Phaser.Utils.Array.Shuffle([
-      {emoji:'🌟',name:'JACKPOT',sub:'Sugar +'+S(200)+' · Currency ×2 · Full heal',color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(200));this.grantCurrencyReward(2,this.currencyTierFor(),'JACKPOT');this.player.hp=this.player.maxhp;}},
-      {emoji:'🍭',name:'Sugar',sub:'+'+S(70),color:0xff7fb0,give:()=>this.addRunSugar(S(70))},
-      {emoji:'💠',name:'Currency',sub:'×1',color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Mystery card')},
+      {artKey:'prize_chest',emoji:'🌟',name:'JACKPOT',sub:'Sugar +'+S(200)+' · Currency ×2 · Full heal',color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(200));this.grantCurrencyReward(2,this.currencyTierFor(),'JACKPOT');this.player.hp=this.player.maxhp;}},
+      {artKey:'prize_sugar',emoji:'🍭',name:'Sugar',sub:'+'+S(70),color:0xff7fb0,give:()=>this.addRunSugar(S(70))},
+      {artKey:'prize_currency',emoji:'💠',name:'Currency',sub:'×1',color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Mystery card')},
     ]);
     this._prevRollState=this.state;this.state='rolling';this.physics.pause();
     const w=this.W,h=this.H,cw=Math.min(104,(w-60)/3),ch=cw*1.45,gap=12,x0=w/2-(cw*3+gap*2)/2,cy=h*0.48;
@@ -10052,7 +10054,7 @@ class Game extends Phaser.Scene {
       return {c,g,q,p,x};});
     const flip=(cd,mine)=>{ this.tweens.killTweensOf(cd.c);
       this.tweens.add({targets:cd.c,scaleX:0,duration:140,onComplete:()=>{ const p=cd.p;cd.g.clear();cd.g.fillStyle(mine?0x2c2038:0x1d1626,1);cd.g.fillRoundedRect(-cw/2,-ch/2,cw,ch,14);cd.g.lineStyle(mine?4:2,p.color,mine?1:0.6);cd.g.strokeRoundedRect(-cw/2,-ch/2,cw,ch,14);
-        cd.q.setText(p.emoji).setFontSize(p.jackpot?'44px':'36px').setY(-16);
+        cd.q.setVisible(false);const art=this.add.image(0,-16,p.artKey).setDisplaySize(p.jackpot?54:46,p.jackpot?54:46);cd.c.add(art);
         const nm=this.add.text(0,ch*0.2,p.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#'+p.color.toString(16).padStart(6,'0')}).setOrigin(0.5);
         const sb=this.add.text(0,ch*0.34,p.sub,{fontFamily:'sans-serif',fontSize:'9px',color:'#d8cce6',align:'center',wordWrap:{width:cw-10}}).setOrigin(0.5,0);
         cd.c.add([nm,sb]);if(!mine)cd.c.setAlpha(0.55);
