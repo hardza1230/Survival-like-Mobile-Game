@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.23';
+const GAME_VERSION = '6.0.24';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.24', date:'2026-09-29', title:'Tutorial chapter card', items:['Choose Chapter now starts with a dedicated Tutorial card before Chapter 1','Clearing the interactive tutorial marks the card PASS; it can be replayed without granting its starter reward twice'] },
   { v:'6.0.23', date:'2026-09-29', title:'Illustrated tutorial reward screen', items:['The tutorial completion screen uses painted art and separate Sugar and Shovel reward cards','The next action and reward state are clearer, with softer lighting and more readable buttons'] },
   { v:'6.0.22', date:'2026-09-29', title:'Flower-framed city entrance', items:['After loading, the kitchen camera moves to the window, flashes into the city, then reveals the flower frame and drifting petals','A final soft white transition leads into the main menu'] },
   { v:'6.0.21', date:'2026-09-29', title:'Continuous moonlit kitchen entrance', items:['The opening keeps one consistent city view while the camera moves through the kitchen window','Removed the mismatched daytime city overlay and its image preload'] },
@@ -5641,18 +5642,27 @@ class Game extends Phaser.Scene {
   buildChapterSelect(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Choose Chapter','screen_chapter');
     const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=9,side=14,top=portrait?88:62;
-    const cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil((CHAPTERS.length+1)/cols),ch=Math.min(portrait?94:82,(h-top-16-gap*(rows-1))/rows);
-    CHAPTERS.forEach((c,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),progressOpen=i===0||!!(Save.data.stageMastery||{})[((c.stages||[0])[0])-1],open=!!c.ready&&progressOpen;
+    const cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil((CHAPTERS.length+2)/cols),ch=Math.min(portrait?94:82,(h-top-16-gap*(rows-1))/rows);
+    const tutorialPassed=!!(Save.data.tutorialCoachPassed||Save.data.tutorialRewardGiven);
+    { const x=side,y=top;
+      const g=this.add.graphics();g.fillStyle(0x261a38,0.98);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(2.4,tutorialPassed?0x8de2ac:0xffcf88,0.98);g.strokeRoundedRect(x,y,cw,ch,15);
+      const art=this.textures.exists('tile___tutorial')?this.add.image(x+ch/2,y+ch/2,'tile___tutorial').setDisplaySize(ch-14,ch-14):null;
+      const tx=x+Math.min(ch+3,99),name=this.add.text(tx,y+17,'Tutorial',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#fff2dc'}).setOrigin(0,0);
+      const desc=this.add.text(tx,y+40,'Training Ground · Learn the basics',{fontFamily:'sans-serif',fontSize:'10px',color:'#d6c4e3',wordWrap:{width:cw-(tx-x)-80},maxLines:2}).setOrigin(0,0);
+      const state=this.add.text(x+cw-13,y+ch/2,tutorialPassed?'PASS ✓':'Start ▶',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:tutorialPassed?'#aaf0bd':'#ffe08a'}).setOrigin(1,0.5);
+      this.menu.add([g,...(art?[art]:[]),name,desc,state]);this._zone(x,y,cw,ch,()=>this.startChapterTutorial());
+    }
+    CHAPTERS.forEach((c,i)=>{const slot=i+1,col=slot%cols,row=Math.floor(slot/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),progressOpen=i===0||!!(Save.data.stageMastery||{})[((c.stages||[0])[0])-1],open=!!c.ready&&progressOpen&&(i!==0||tutorialPassed);
       const coverKey=['chapter1_cover','chapter2_cover','chapter3_cover'][i],art=coverKey&&this.textures.exists(coverKey)?this._coverImage(x+2,y+2,cw-4,ch-4,coverKey):null;if(art)this.menu.add(art);
       const g=this.add.graphics();g.fillStyle(open?0x17101f:0x1d1924,art?0.48:0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xffc85a:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
       if(open){g.fillStyle(0xffc85a,0.12);g.fillRoundedRect(x+3,y+3,cw-6,ch-6,12);}
       const icon=this.add.text(x+30,y+ch/2,open?c.emoji:'🔒',{fontSize:open?'30px':'25px'}).setOrigin(0.5),name=this.add.text(x+57,y+18,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:open?'#fff4df':'#98909f'}).setOrigin(0,0);
       const desc=this.add.text(x+57,y+40,c.desc,{fontFamily:'sans-serif',fontSize:'9px',color:open?'#cfc2d5':'#746d7a',wordWrap:{width:cw-126},maxLines:2}).setOrigin(0,0);
-      const state=this.add.text(x+cw-13,y+ch/2,open?'Enter  ▶':c.ready?('Clear Chapter '+i):'Coming soon',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffe08a':'#756d7e'}).setOrigin(1,0.5);
-      this.menu.add([g,icon,name,desc,state]);this._zone(x,y,cw,ch,open?()=>{this.selectedChapter=i;this.menuScreen='stage';this.buildMenuScreen();}:()=>this.showBanner('🔒 '+c.name,c.ready?'Defeat The Great Hunger and clear Chapter 1 first':'This Chapter is in development',1200));
+      const state=this.add.text(x+cw-13,y+ch/2,open?'Enter  ▶':i===0&&!tutorialPassed?'Clear Tutorial':c.ready?('Clear Chapter '+i):'Coming soon',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffe08a':'#756d7e'}).setOrigin(1,0.5);
+      this.menu.add([g,icon,name,desc,state]);this._zone(x,y,cw,ch,open?()=>{this.selectedChapter=i;this.menuScreen='stage';this.buildMenuScreen();}:()=>this.showBanner('🔒 '+c.name,i===0&&!tutorialPassed?'Clear the Tutorial card above to unlock Chapter 1':c.ready?'Defeat The Great Hunger and clear Chapter 1 first':'This Chapter is in development',1200));
     });
     // การ์ด Endgame ต่อท้าย Chapter 3 → เข้า Recipe Maps
-    { const i=CHAPTERS.length,col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),open=Save.endgameUnlocked();
+    { const slot=CHAPTERS.length+1,col=slot%cols,row=Math.floor(slot/cols),x=side+col*(cw+gap),y=top+row*(ch+gap),open=Save.endgameUnlocked();
       const art=this.textures.exists('chapter_endgame_cover')?this._coverImage(x+2,y+2,cw-4,ch-4,'chapter_endgame_cover'):null;if(art)this.menu.add(art);
       const g=this.add.graphics();g.fillStyle(open?0x1a1030:0x1d1924,art?0.48:0.97);g.fillRoundedRect(x,y,cw,ch,15);g.lineStyle(open?2.4:1.5,open?0xc58bff:0x4b4354,open?0.95:0.65);g.strokeRoundedRect(x,y,cw,ch,15);
       if(open){g.fillStyle(0xc58bff,0.12);g.fillRoundedRect(x+3,y+3,cw-6,ch-6,12);}
@@ -5662,6 +5672,9 @@ class Game extends Phaser.Scene {
       this.menu.add([g,icon,name,desc,state]);this._zone(x,y,cw,ch,open?()=>{this.menuScreen='recipes';this.buildMenuScreen();}:()=>this.showBanner('🔒 Endgame','Finish the story (Chapter 3) to unlock Recipe Maps',1200));
     }
     this.menu.setVisible(true);
+  }
+  startChapterTutorial(){
+    this._forceCoachTutorial=true;this.stageDiff=1;this.startRun(0);
   }
   buildStageSelect(){
     const chapterIndex=Phaser.Math.Clamp(this.selectedChapter||0,0,CHAPTERS.length-1),chapter=CHAPTERS[chapterIndex],range=chapter.stages||[0,STAGES.length-1],stageIds=[];for(let i=range[0];i<=range[1];i++)stageIds.push(i);
@@ -8144,7 +8157,7 @@ class Game extends Phaser.Scene {
     const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Seed Hunger Left Behind','When The Great Hunger shattered, the crown seed rooted skyward — the memories just returned now bloom out of season in the ferment garden',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูBerryสอนแบบ "Talk + try it + pass to continue"
     // ผู้เล่นใหม่ → เข้า Training Ground (พื้นที่เปล่า) ให้ครูBerryสอนก่อน · ไม่แตะ story intro (เก็บไว้เล่นตอนลงด่าน 1 จริง)
-    if(!Save.data.tutorialDone){ this._inTutorial=true; begin(); this.startCoach(); return; }
+    if(this._forceCoachTutorial||!Save.data.tutorialDone){ this._forceCoachTutorial=false; this._inTutorial=true; begin(); this.startCoach(); return; }
     launch();
   }
   /* ---- 🍓 ครูBerryสอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
@@ -8169,7 +8182,7 @@ class Game extends Phaser.Scene {
     if(step.spawn){ for(let i=0;i<step.spawn;i++){ const a=Math.PI*2*i/step.spawn; this.spawnEnemy('basic', a, 175); } }
     if(step.level){ this.pendingLvl=(this.pendingLvl||0)+1; this.time.delayedCall(220,()=>{ if(this._inTutorial&&this.state==='play')this.openLevelUp(); }); }
   }
-  _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.save();
+  _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save();
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
     const rewardGranted=!Save.data.tutorialRewardGiven;
     if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.addShovels(10); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
