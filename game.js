@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.6';
+const GAME_VERSION = '6.0.7';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.7', date:'2026-09-29', title:'Mycelium Marsh ground details', items:['Eight illustrated marsh decorations now appear across C2-2: fungi, mycelium, bog water, spores, reeds, lily pads, bone twigs and glow caps','The decorations are deterministic, draw below fighters and have no collision'] },
   { v:'6.0.6', date:'2026-09-29', title:'Animated loading gate', items:['The closed gate visibly breathes open and shut while assets load, with stronger parallax, floating petals and sugar light','Fixed missing animation delays that left some loading petals static, and added motion to the loading meter'] },
   { v:'6.0.5', date:'2026-09-28', title:'Readable gate opening', items:['The gate opens visibly before a brief city reveal and slower camera move','Removed door fade during opening and softened the central light so the artwork remains visible'] },
   { v:'6.0.4', date:'2026-09-28', title:'Boss focus targeting', items:['All character auto-target attacks prefer an in-range boss or miniboss over ordinary enemies','Yuzu minions converge on bosses, and homing shots retarget them when they enter range'] },
@@ -949,6 +950,8 @@ const ASSET_IMAGES = {
   floor_c34:'assets/art/floors/floor_c34.webp',
   floor_c35:'assets/art/floors/floor_c35.webp',
   dec_c21_mushroom:'assets/art/decor_c21/dec_c21_mushroom.png', dec_c21_moss:'assets/art/decor_c21/dec_c21_moss.png', dec_c21_leaf:'assets/art/decor_c21/dec_c21_leaf.png', dec_c21_puddle:'assets/art/decor_c21/dec_c21_puddle.png', dec_c21_jar:'assets/art/decor_c21/dec_c21_jar.png', dec_c21_spore:'assets/art/decor_c21/dec_c21_spore.png', dec_c21_root:'assets/art/decor_c21/dec_c21_root.png', dec_c21_flower:'assets/art/decor_c21/dec_c21_flower.png',
+  dec_c22_mushroom_cluster:'assets/art/decor_c22/dec_c22_mushroom_cluster.png', dec_c22_mycel_web:'assets/art/decor_c22/dec_c22_mycel_web.png', dec_c22_bog_puddle:'assets/art/decor_c22/dec_c22_bog_puddle.png', dec_c22_spore_puff:'assets/art/decor_c22/dec_c22_spore_puff.png',
+  dec_c22_reed:'assets/art/decor_c22/dec_c22_reed.png', dec_c22_lilypad:'assets/art/decor_c22/dec_c22_lilypad.png', dec_c22_bone_twig:'assets/art/decor_c22/dec_c22_bone_twig.png', dec_c22_glow_cap:'assets/art/decor_c22/dec_c22_glow_cap.png',
   dig_bg:'assets/art/dig/dig_bg.webp',
   dig_chest:'assets/art/dig/dig_chest.webp',
   dig_chest_open:'assets/art/dig/dig_chest_open.webp',
@@ -2699,6 +2702,15 @@ const STAGE_DECOR={
     {key:'dec_c21_spore',emoji:'✨',size:36,w:3,glow:true},
     {key:'dec_c21_root',draw:'root',size:130,w:3,col:0x5a3d2b},
     {key:'dec_c21_flower',emoji:'🌼',size:40,w:4} ]},
+  6:{seed:602,per:[4,7],clearR:170,items:[
+    {key:'dec_c22_mushroom_cluster',emoji:'🍄',size:80,w:5},
+    {key:'dec_c22_mycel_web',emoji:'🕸️',size:112,w:5,rot:true},
+    {key:'dec_c22_bog_puddle',draw:'puddle',size:120,w:4,col:0x278c83},
+    {key:'dec_c22_spore_puff',emoji:'✨',size:50,w:3},
+    {key:'dec_c22_reed',emoji:'🌾',size:72,w:6},
+    {key:'dec_c22_lilypad',emoji:'🪷',size:88,w:5,rot:true},
+    {key:'dec_c22_bone_twig',emoji:'🦴',size:90,w:3,rot:true},
+    {key:'dec_c22_glow_cap',emoji:'🍄',size:54,w:4} ]},
 };
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
 function bazaarDaySeed(){ const d=new Date(); return d.getUTCFullYear()*10000+(d.getUTCMonth()+1)*100+d.getUTCDate(); }
