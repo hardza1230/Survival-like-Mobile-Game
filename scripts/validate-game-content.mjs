@@ -145,7 +145,8 @@ for (const fighter of ['momo', 'mint', 'cocoa', 'berry']) {
   if (actionWidth !== 1024 || actionHeight !== 128 || !actionHasAlpha) {
     throw new Error(`Expected transparent ${fighter} 8x1 action sheet at 1024x128, found ${actionWidth}x${actionHeight} PNG color type ${actionColorType}`);
   }
-  const runName = fighter === 'mint' ? 'char_mint_frostleaf_run_sheet.png'
+  const runName = fighter === 'momo' ? 'characters/momo_v2/momo_run_12f.png'
+    : fighter === 'mint' ? 'char_mint_frostleaf_run_sheet.png'
     : fighter === 'berry' ? 'char_berry_core_run_sheet.png'
     : `char_${fighter}_run_sheet.png`;
   const run = fs.readFileSync(new URL(`../assets/${runName}`, import.meta.url));
@@ -160,6 +161,14 @@ for (const fighter of ['momo', 'mint', 'cocoa', 'berry']) {
   const escapedRunName = runName.replaceAll('.', '\\.')
   if (!new RegExp(`char_${fighter}:\\s+\\{ url:'assets/${escapedActionName}',\\s+frame:128 \\}`).test(source)) throw new Error(`${fighter} action sheet is not registered`);
   if (!new RegExp(`char_${fighter}_run:\\s*\\{ url:'assets/${escapedRunName}',\\s+frame:128 \\}`).test(source)) throw new Error(`${fighter} run atlas is not registered`);
+}
+
+for (const pose of ['idle','attack','dash','hurt']) {
+  const rel=`characters/momo_v2/momo_${pose}_8f.png`;
+  const png=fs.readFileSync(new URL(`../assets/${rel}`,import.meta.url));
+  const width=png.readUInt32BE(16),height=png.readUInt32BE(20),type=png.readUInt8(25);
+  if(width!==512||height!==256||![4,6].includes(type))throw new Error(`Momo ${pose} sheet needs 8 transparent 128px frames`);
+  if(!source.includes(`char_momo_${pose}:{ url:'assets/${rel}', frame:128 }`))throw new Error(`Momo ${pose} sheet is not registered`);
 }
 
 for (const boss of ['boss3', 'boss4']) {

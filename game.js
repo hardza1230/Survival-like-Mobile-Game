@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.9';
+const GAME_VERSION = '6.0.10';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.10', date:'2026-09-29', title:'Momo animation refresh', items:['Strawberry Fighter now uses the new idle, 12-frame run, attack, dash and hurt sheets in play','Older special poses remain available for cheer and other actions'] },
   { v:'6.0.9', date:'2026-09-29', title:'Illustrated Recipe Kitchen parts', items:['Added 55 individual icons for every WHEN, DO and TWIST recipe part','Kitchen recipe slots and part inventory now display their category-colored artwork beside each name'] },
   { v:'6.0.8', date:'2026-09-29', title:'Decorated Chapter 2 and 3 stages', items:['Added 64 illustrated ground props across C2-3 through C3-5, with eight distinct details for each stage','Each stage now scatters its own deterministic, non-colliding decorations beneath combatants'] },
   { v:'6.0.7', date:'2026-09-29', title:'Mycelium Marsh ground details', items:['Eight illustrated marsh decorations now appear across C2-2: fungi, mycelium, bog water, spores, reeds, lily pads, bone twigs and glow caps','The decorations are deterministic, draw below fighters and have no collision'] },
@@ -1273,7 +1274,11 @@ const ASSET_SHEETS = {
   minion_cheese_attack:{url:'assets/characters/cheese_attack_sheet.png',frame:128},
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
   char_momo:  { url:'assets/char_momo_fighter_sheet.png', frame:128 },
-  char_momo_run:{ url:'assets/char_momo_run_sheet.png', frame:128 },
+  char_momo_idle:{ url:'assets/characters/momo_v2/momo_idle_8f.png', frame:128 },
+  char_momo_run:{ url:'assets/characters/momo_v2/momo_run_12f.png', frame:128 },
+  char_momo_attack:{ url:'assets/characters/momo_v2/momo_attack_8f.png', frame:128 },
+  char_momo_dash:{ url:'assets/characters/momo_v2/momo_dash_8f.png', frame:128 },
+  char_momo_hurt:{ url:'assets/characters/momo_v2/momo_hurt_8f.png', frame:128 },
   // Frostleaf Sentinel — คง key char_mint เพื่อWaitงรับเซฟเดิม
   char_mint:  { url:'assets/char_mint_frostleaf_sheet.png',  frame:128 },
   char_mint_run:{ url:'assets/char_mint_frostleaf_run_sheet.png', frame:128 },
@@ -4032,6 +4037,7 @@ class Game extends Phaser.Scene {
     this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(this.character==='cocoa'&&this._cc){ this._cc.gen=(this._cc.gen||0)+1; this._cc.step=0; this.tweens.killTweensOf(this.player); this.skillCd.meteor=Math.max(this.skillCd.meteor||0,0.3); } this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2;
+    if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
     this.player.setVelocity(d.x*560,d.y*560);
     this.player.iframe=Math.max(this.player.iframe,0.28);
     Sfx.dash();
@@ -8772,6 +8778,7 @@ class Game extends Phaser.Scene {
     if((this.character==='taro'&&key==='thunder')||(this.character==='sesame'&&key==='mirror'))this.poseAttack(440);
     if(key==='meteor'&&basic&&this.character==='cocoa'){this.castCocoaRush(lvl,aw,dm,basic.evolved,basic);return;}
     if(key==='sprinkle'){ if(!this.nearestEnemy(aw?900:640))return;
+      if(this.character==='momo')this.poseAttack(340);
       // ปืนกล: รัวเมล็ดรุ้งเป็นชุด ยิงเร็ว/เบา · โดน 1 ตัวแล้วหายไปเลย (ไม่ทะลุ ไม่เด้ง) · เก็บทีละตัวรัว ๆ
       let shots=aw?6:lvl>=6?4:lvl>=5?3:lvl>=3?2:1;   // v4.20 nerf ต่อ: multishot หายากขึ้นมาก (ส่วนใหญ่ 1-2 นัด) — ลดความ "ยิงรัวโกง"
       if(basic)shots=Math.min(12,shots+(basic.ranks.volley||0)+(basic.mutation==='fan'?2:0)+(basic.evolved?2:0));
@@ -10977,12 +10984,12 @@ class Game extends Phaser.Scene {
       || 60;
     // ปรับสเกลตาม "real footprints" ของอาร์ต (bbox เฉลี่ย กว้าง+สูง /2 วัดจากชีต) ให้ทุกตัวดูขนาดพอ ๆ กัน
     // Momo/Mint/Chocolate ใช้สัดส่วนอาร์ตมาตรฐานเดียวกันและแสดงผลขนาดเดียวกัน
-    const baseKey=key.replace(/_(run|attack|gale)$/,'');
+    const baseKey=key.replace(/_(idle|run|attack|dash|hurt|gale)$/,'');
     const FP={ char_momo:110, char_mint:110, char_cocoa:110, char_taro:107, char_sesame:117, char_berry:116, char_yuzu:112 }[baseKey];
     const TARGET=['char_momo','char_mint','char_cocoa','char_berry'].includes(baseKey)?56:66;
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
-    this._attackPoseTime=0;this._attackTextureKey=null;
+    this._attackPoseTime=0;this._attackTextureKey=null;this._momoIdleT=0;this._momoDashT=0;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
@@ -11000,11 +11007,20 @@ class Game extends Phaser.Scene {
         if(this._attackPoseTime>0)return;
       }
     }
-    if(this._poseHold>0){ this._poseHold-=dt; return; }
+    if(this._poseHold>0){
+      this._poseHold=Math.max(0,this._poseHold-dt);
+      if(this.character==='momo'&&this.player.texture.key==='char_momo_hurt')
+        this.player.setFrame(Math.min(7,Math.floor((1-this._poseHold/this._poseDuration)*8)));
+      if(this._poseHold>0)return;
+    }
     const baseCharKey='char_'+this.character;
     const runCharKey=baseCharKey+'_run';
     const hasRun=this.textures.exists(runCharKey);
     if(this.dashTime>0){
+      if(this.character==='momo'&&this.textures.exists('char_momo_dash')){
+        if(this.player.texture.key!=='char_momo_dash'){this.player.setTexture('char_momo_dash');this._momoDashT=0;}
+        this._momoDashT+=dt;this.player.setFrame(Math.min(7,Math.floor(this._momoDashT*40)));return;
+      }
       if(hasRun&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
       this.player.setFrame(CF.stretch); return;
     }
@@ -11021,6 +11037,11 @@ class Game extends Phaser.Scene {
       }
       return;
     }
+    if(this.character==='momo'&&this.textures.exists('char_momo_idle')){
+      if(this.player.texture.key!=='char_momo_idle'){this.player.setTexture('char_momo_idle');this._momoIdleT=0;}
+      this._momoIdleT=(this._momoIdleT||0)+dt;
+      this.player.setFrame(Math.floor(this._momoIdleT*5)%8);this._charRunT=0;return;
+    }
     if(this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
     this._charRunT=0;
     this._blinkT-=dt;
@@ -11028,7 +11049,11 @@ class Game extends Phaser.Scene {
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null; const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
+  poseFlash(frame,ms){ if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null;
+    if(this.character==='momo'&&frame===CF.hurt&&this.textures.exists('char_momo_hurt')){
+      this._poseDuration=(ms||160)/1000;this._poseHold=this._poseDuration;this.player.setTexture('char_momo_hurt').setFrame(0);return;
+    }
+    const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   poseAttack(ms,textureKey){
     const key=textureKey||'char_'+this.character+'_attack';
     if(!this._hasFrames||!this.textures.exists(key)){this.poseFlash(CF.cast,ms);return;}
