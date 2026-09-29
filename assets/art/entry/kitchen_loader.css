@@ -1,10 +1,8 @@
 /* Animated loading kitchen. All percentages are relative to the 941:1672 portrait art plate. */
 #game-loader .kitchen{position:absolute;inset:0;overflow:hidden;pointer-events:none;background:#1a1726;isolation:isolate}
 #game-loader .k-stage{position:absolute;left:50%;top:50%;width:max(100vw,56.28vh);aspect-ratio:941/1672;transform:translate3d(-50%,-50%,0) scale(1);transform-origin:50% 35%;will-change:transform,opacity;backface-visibility:hidden;contain:paint}
-#game-loader .k-plate,#game-loader .k-day,#game-loader .k-clouds,#game-loader .k-warm,#game-loader .k-motes,#game-loader .k-bloom{position:absolute;inset:0}
+#game-loader .k-plate,#game-loader .k-clouds,#game-loader .k-warm,#game-loader .k-motes,#game-loader .k-bloom{position:absolute;inset:0}
 #game-loader .k-plate{background:url('kitchen_night.webp') center/100% 100% no-repeat}
-/* City is a separate painted layer visible only through the existing arch. */
-#game-loader .k-day{z-index:1;background:url('kitchen_city_day.webp') 57% 48%/100% 100% no-repeat;opacity:0;clip-path:polygon(49% 15%,58% 16%,66% 20%,70% 26%,70% 47%,65% 49%,35% 49%,33% 45%,33% 27%,37% 20%,43% 16%)}
 #game-loader .k-clouds{z-index:2;opacity:.22;clip-path:polygon(49% 16%,65% 20%,71% 29%,70% 45%,35% 45%,33% 28%,40% 19%);background:radial-gradient(ellipse 12% 3% at 45% 29%,#fce9e866,transparent),radial-gradient(ellipse 12% 3% at 66% 35%,#e8eeff77,transparent);animation:k-cloud-drift 13s ease-in-out infinite alternate}
 #game-loader .k-lamp{position:absolute;z-index:3;width:15%;height:9%;border-radius:50%;transform:translate(-50%,-50%);opacity:0;mix-blend-mode:screen;background:radial-gradient(ellipse,#fff5c2 0%,#ffbd7eaa 32%,#ff829344 65%,transparent 76%);filter:blur(5px);box-shadow:0 0 34px 13px #ffb47488}
 #game-loader .k-lamp:after{content:'';position:absolute;left:-85%;top:35%;width:270%;height:400%;background:radial-gradient(ellipse at 50% 0%,#ffd39a66,transparent 67%);filter:blur(14px)}
@@ -19,7 +17,7 @@
 #game-loader .k-curtain.left{left:27%}#game-loader .k-curtain.right{right:26%;animation-delay:-2.8s}
 #game-loader .k-jar-glint{position:absolute;z-index:6;left:85%;top:45%;width:10%;height:17%;background:linear-gradient(115deg,transparent 28%,#fff8e077 49%,transparent 62%);opacity:0;transform:translateX(-60%);animation:k-jar-shine 7s 3.2s ease-in-out infinite}
 #game-loader .k-motes{z-index:6;pointer-events:none;opacity:0;background:radial-gradient(circle at 18% 63%,#fff4c9 0 1px,transparent 3px),radial-gradient(circle at 38% 54%,#fff2d8 0 1.4px,transparent 3px),radial-gradient(circle at 72% 66%,#ffe6bd 0 1.3px,transparent 3px),radial-gradient(circle at 81% 42%,#fff2d3 0 1px,transparent 3px);background-size:79px 91px,109px 133px,131px 87px,97px 121px;animation:k-motes-float 8s 2.8s linear infinite}
-#game-loader .k-bloom{z-index:7;opacity:0;background:radial-gradient(ellipse 42% 35% at 51% 35%,#fff1c377,transparent 72%);mix-blend-mode:screen;pointer-events:none}
+#game-loader .k-bloom{z-index:7;opacity:0;background:radial-gradient(ellipse 31% 24% at 51% 35%,#d5c7ff55,transparent 72%);mix-blend-mode:screen;pointer-events:none}
 #game-loader .k-shade{position:absolute;z-index:8;inset:0;background:linear-gradient(transparent 60%,#20132665);pointer-events:none}
 #game-loader .card{z-index:9;align-self:flex-end;margin-bottom:max(7vh,env(safe-area-inset-bottom));padding:12px 16px;border-radius:18px;background:#25192aba;backdrop-filter:blur(7px)}
 #entry-skip{display:none;position:absolute;z-index:10;right:18px;top:max(20px,env(safe-area-inset-top));border:1px solid #ffe9c488;border-radius:20px;padding:9px 14px;background:#2e1b36ba;color:#fff4e6;font:600 13px system-ui;cursor:pointer}
@@ -35,25 +33,21 @@
 @keyframes k-curtain-sway{from{transform:skewX(-2deg) translateX(-1%)}to{transform:skewX(3deg) translateX(2%)}}
 @keyframes k-jar-shine{0%,65%,100%{opacity:0;transform:translateX(-60%)}74%{opacity:.6}86%{opacity:0;transform:translateX(90%)}}
 @keyframes k-motes-float{0%{opacity:0;transform:translateY(15px)}15%{opacity:.65}85%{opacity:.65}100%{opacity:0;transform:translateY(-36px)}}
-/* Loading completion: hold the fully-lit room, reveal city, then make one slow camera move. */
+/* Loading completion: keep the same moonlit city in view during the camera move. */
 #game-loader.opening .card{animation:k-card-out .4s ease .4s both}
-#game-loader.opening .k-day{animation:k-day-reveal 6.2s ease-in-out both}
 #game-loader.opening .k-bloom{animation:k-window-light 6.2s ease-in-out both}
 #game-loader.opening .k-stage{animation:k-camera-in 6.2s cubic-bezier(.28,.04,.28,1) both}
 /* Freeze decorative paint effects while the camera layer is scaling. */
 #game-loader.opening .k-lamp,#game-loader.opening .k-warm{animation:none;opacity:.85;filter:none}
 #game-loader.opening .k-clouds,#game-loader.opening .k-oven,#game-loader.opening .k-steam,#game-loader.opening .k-curtain,#game-loader.opening .k-jar-glint,#game-loader.opening .k-motes{animation:none;opacity:0}
 @keyframes k-card-out{to{opacity:0;transform:translateY(18px)}}
-@keyframes k-day-reveal{0%,12%{opacity:0}34%,100%{opacity:1}}
-@keyframes k-window-light{0%,15%{opacity:0}31%{opacity:.52}50%,100%{opacity:.15}}
+@keyframes k-window-light{0%,15%{opacity:0}39%{opacity:.23}75%{opacity:.14}100%{opacity:0}}
 @keyframes k-camera-in{0%,38%{transform:translate3d(-50%,-50%,0) scale(1)}90%{transform:translate3d(-50%,-50%,0) scale(2.15);opacity:1}100%{transform:translate3d(-50%,-50%,0) scale(2.3);opacity:0}}
 #game-loader.loading-mode .k-lamp,#game-loader.loading-mode .k-warm{animation:none;opacity:.85}
-#game-loader.loading-mode .k-day{opacity:.4}
 @media(prefers-reduced-motion:reduce){
   #game-loader .k-lamp,#game-loader .k-warm{animation:none;opacity:.75}
   #game-loader .k-steam,#game-loader .k-motes,#game-loader .k-clouds,#game-loader .k-oven,#game-loader .k-curtain,#game-loader .k-jar-glint,#game-loader .track:after{animation:none;opacity:0}
   #game-loader.opening .k-stage{animation:k-reduced-out .18s ease both}
-  #game-loader.opening .k-day{animation:none;opacity:1}
   #game-loader.opening .k-bloom{animation:none;opacity:0}
   #game-loader.opening .card{animation:none;opacity:0}
 }
