@@ -60,7 +60,7 @@ const loaderCssPath = 'assets/art/entry/kitchen_loader.css';
 const loaderCss = readFileSync(join(root, loaderCssPath), 'utf8');
 const cssRefs = [...loaderCss.matchAll(/url\(['"]?([^)'"?#]+)['"]?\)/g)]
   .map(m=>normalize(join(dirname(loaderCssPath),m[1])));
-const uniqueAssets = [...new Set([...assetRefs,...cssRefs])].sort();
+const uniqueAssets = [...new Set([...assetRefs,...cssRefs,loaderCssPath])].sort();
 const assetHashes=Object.fromEntries(uniqueAssets.map(rel=>[rel,createHash('sha256').update(readFileSync(join(root,rel))).digest('hex').slice(0,12)]));
 gjs=gjs.replace('let ASSET_FILE_VERSIONS = null;', 'let ASSET_FILE_VERSIONS = '+JSON.stringify(assetHashes)+';');
 writeFileSync(join(www,'game.js'),gjs);
@@ -92,6 +92,7 @@ for (const rel of uniqueAssets) {
   copyFileSync(src, dst);
   copiedBytes += statSync(src).size;
 }
+if (!existsSync(join(www, loaderCssPath))) throw new Error('Loading scene CSS was not packaged: ' + loaderCssPath);
 console.log('copied ' + uniqueAssets.length + ' runtime assets (' + (copiedBytes/1024/1024).toFixed(1) + ' MB)');
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)
