@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.15';
+const GAME_VERSION = '6.0.16';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.16', date:'2026-09-29', title:'Faster loading', items:['Menu backgrounds load when opened instead of blocking the initial game screen','Only stage music blocks entry; miniboss and boss music load during play','Unchanged assets keep their cached URLs across builds'] },
   { v:'6.0.15', date:'2026-09-29', title:'Illustrated drops and prize reels', items:['Field gear and crafting currency drops now show their actual illustrated icons without colour washing','Miniboss prize wheel and Bazaar slot reels show item art while spinning and revealing rewards'] },
   { v:'6.0.14', date:'2026-09-29', title:'New Hunt target artwork', items:['Hunt the Threat now uses a dedicated Sugar Stalker monster instead of an early stage elite sprite'] },
   { v:'6.0.13', date:'2026-09-29', title:'Wave mission clarity and artwork', items:['Escort, Nectar and season objectives now use dedicated painted assets with clearer danger cues','Clean Air and bonus events have direction markers, Hunt targets recover from spawn pressure and mission copy matches the actual rules'] },
@@ -1491,7 +1492,8 @@ function bgmKeyFor(kind,stageNum){
 }
 
 let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
-function verUrl(u){ return ASSET_VER ? (u+'?v='+ASSET_VER) : u; }
+let ASSET_FILE_VERSIONS = null; // build-www ใส่ hash ของแต่ละไฟล์ → เปลี่ยน URL เฉพาะไฟล์ที่แก้จริง
+function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v?(u+'?v='+v):(ASSET_VER?(u+'?v='+ASSET_VER):u); }
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
 // [0 idle,1 blink,2 squash,3 stretch(พุ่ง),4 cheer(ดีใจ),5 hurt(เจ็บ),6 ko(สลบ),7 cast(ร่ายอัลติ)]
 const CF = { idle:0, blink:1, squash:2, stretch:3, cheer:4, hurt:5, ko:6, cast:7 };
@@ -1512,7 +1514,7 @@ class Boot extends Phaser.Scene {
       const current=this.load.progress||0;
       loader.set(current,'Preparing '+name+'...');
     });
-    for(const k in ASSET_IMAGES) this.load.image(k, verUrl(ASSET_IMAGES[k]));
+    for(const k in ASSET_IMAGES){ if(k.startsWith('screen_'))continue;this.load.image(k, verUrl(ASSET_IMAGES[k])); }
     for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
@@ -4693,6 +4695,16 @@ class Game extends Phaser.Scene {
     const compact=w>h;
     const bg=artKey&&this.textures.exists(artKey)?this._coverImage(0,0,w,h,artKey):this.add.rectangle(0,0,w,h,0x1a1420,0.97).setOrigin(0,0);
     const veil=artKey&&this.textures.exists(artKey)?this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0):null;
+    if(artKey&&artKey.startsWith('screen_')&&!this.textures.exists(artKey)&&ASSET_IMAGES[artKey]){
+      const url=ASSET_IMAGES[artKey];
+      this.load.once('filecomplete-image-'+artKey,()=>{
+        if(!bg.active||this.state!=='menu'||!this.menu.list.includes(bg))return;
+        const art=this._coverImage(0,0,w,h,artKey).setAlpha(0);this.menu.addAt(art,0);
+        this.menu.remove(bg,true);this.menu.addAt(this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0),1);
+        this.tweens.add({targets:art,alpha:1,duration:180});
+      });
+      this.load.image(artKey,verUrl(url));if(!this.load.isLoading())this.load.start();
+    }
     const headY=compact?27:52;
     const t=this.add.text(w/2,headY,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'20px':'22px',color:'#ff8fb5'}).setOrigin(0.5);
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'14px':'16px',color:'#ffe08a'}).setOrigin(1,0.5);
@@ -6583,12 +6595,18 @@ class Game extends Phaser.Scene {
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
     this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({upgrade:1,perks:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   ensureStageAudio(idx,done){
-    const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage),bgmKeyFor('boss',stage),bgmKeyFor('mini',stage)].filter(Boolean);   // โหลดเพลงStage + เพลงบอสของด่านนั้น
+    const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage)].filter(Boolean);   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
     const loader=window.GameLoader;let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
-    this.load.on('progress',value=>{if(loader)loader.set(0.08+value*0.24,'Loading stage and boss music...');});
+    this.load.on('progress',value=>{if(loader&&this.state==='loading')loader.set(0.08+value*0.24,'Loading stage music...');});
     this.load.on('loaderror',file=>{if(file&&pending.includes(file.key)){delete ASSET_AUDIO[file.key];if(loader)loader.set(0.30,'Some music failed to load — using fallback');}});
     this.load.once('complete',finish);pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
+  }
+  warmBossAudio(idx){
+    const stage=(idx||0)+1,keys=[bgmKeyFor('mini',stage),bgmKeyFor('boss',stage)].filter(Boolean);
+    const pending=[...new Set(keys)].filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length)return;
+    this.load.on('loaderror',file=>{if(file&&pending.includes(file.key))delete ASSET_AUDIO[file.key];});
+    pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
   }
 
   startRun(idx){ this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null;
@@ -6639,6 +6657,7 @@ class Game extends Phaser.Scene {
               this.time.delayedCall(140,()=>window.GameLoader.hide());
             }
             this.openStartingSkillChoice();
+            this.time.delayedCall(1200,()=>{if(this.state==='play'||this.state==='levelup')this.warmBossAudio(idx);});
           });
         });
         }catch(err){

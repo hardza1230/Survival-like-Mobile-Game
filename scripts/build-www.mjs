@@ -4,6 +4,7 @@ import { mkdirSync, copyFileSync, existsSync, readFileSync, writeFileSync, rmSyn
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { inflateSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const www = join(root, 'www');
@@ -15,11 +16,8 @@ const ver = Date.now();
 copyFileSync(join(root, 'phaser.min.js'), join(www, 'phaser.min.js'));
 console.log('copied phaser.min.js');
 
-// game.js: ฝังเลข build ลง ASSET_VER → รูปใน assets/ ถูก cache-bust ด้วย (แก้รูปแล้วโหลดใหม่เสมอ)
+// game.js: ใส่ hash แยกรายไฟล์ เพื่อให้ภาพที่ไม่ได้แก้ยังใช้ browser cache ข้าม build ได้
 let gjs = readFileSync(join(root, 'game.js'), 'utf8');
-gjs = gjs.replace(/ASSET_VER\s*=\s*''/, "ASSET_VER='" + ver + "'");
-writeFileSync(join(www, 'game.js'), gjs);
-console.log('game.js built with ASSET_VER=' + ver);
 
 // version.json: ดึง GAME_VERSION + CHANGELOG จาก game.js (แหล่งเดียว กันข้อมูลไม่ตรงกับหน้า download)
 try {
@@ -55,6 +53,10 @@ if (existsSync(builtAssets)) rmSync(builtAssets, { recursive:true, force:true })
 const sourceHtml = readFileSync(join(root, 'index.html'), 'utf8');
 const assetRefs = [...(gjs + '\n' + sourceHtml).matchAll(/[\"'](assets\/[A-Za-z0-9_./ -]+)[\"']/g)].map(m=>m[1]);
 const uniqueAssets = [...new Set(assetRefs)].sort();
+const assetHashes=Object.fromEntries(uniqueAssets.map(rel=>[rel,createHash('sha256').update(readFileSync(join(root,rel))).digest('hex').slice(0,12)]));
+gjs=gjs.replace('let ASSET_FILE_VERSIONS = null;', 'let ASSET_FILE_VERSIONS = '+JSON.stringify(assetHashes)+';');
+writeFileSync(join(www,'game.js'),gjs);
+console.log('game.js built with stable per-asset hashes ('+uniqueAssets.length+' assets)');
 
 // กัน regression แบบ e_ant_scout เดิม: แถบดำทึบยาวติดมากับ PNG แม้เกมยังไม่ได้โจมตี
 function assertNoOpaqueBlackBar(rel) {
@@ -85,7 +87,7 @@ console.log('copied ' + uniqueAssets.length + ' runtime assets (' + (copiedBytes
 
 // index.html: ใส่ ?v=<build time> ให้ game.js เพื่อ bust cache (แก้แล้วโหลดใหม่เสมอ)
 let html = sourceHtml;
-html = html.replace(/(assets\/art\/entry\/[A-Za-z0-9_-]+\.webp)/g, '$1?v=' + ver);
+html = html.replace(/(assets\/art\/entry\/[A-Za-z0-9_-]+\.webp)/g, asset => asset+'?v='+(assetHashes[asset]||ver));
 html = html.replace(/game\.js(\?v=\d+)?/g, 'game.js?v=' + ver);
 writeFileSync(join(www, 'index.html'), html);
 console.log('index.html built with cache-bust v=' + ver);
