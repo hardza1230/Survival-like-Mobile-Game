@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, normalize } from 'node:path';
 import { inflateSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const www = join(root, 'www');
@@ -18,6 +19,8 @@ console.log('copied phaser.min.js');
 
 // game.js: ใส่ hash แยกรายไฟล์ เพื่อให้ภาพที่ไม่ได้แก้ยังใช้ browser cache ข้าม build ได้
 let gjs = readFileSync(join(root, 'game.js'), 'utf8');
+// The web build can otherwise deploy successfully even when game.js fails to parse.
+execFileSync(process.execPath, ['--check', join(root, 'game.js')]);
 
 // version.json: ดึง GAME_VERSION + CHANGELOG จาก game.js (แหล่งเดียว กันข้อมูลไม่ตรงกับหน้า download)
 try {
@@ -61,6 +64,7 @@ const uniqueAssets = [...new Set([...assetRefs,...cssRefs])].sort();
 const assetHashes=Object.fromEntries(uniqueAssets.map(rel=>[rel,createHash('sha256').update(readFileSync(join(root,rel))).digest('hex').slice(0,12)]));
 gjs=gjs.replace('let ASSET_FILE_VERSIONS = null;', 'let ASSET_FILE_VERSIONS = '+JSON.stringify(assetHashes)+';');
 writeFileSync(join(www,'game.js'),gjs);
+execFileSync(process.execPath, ['--check', join(www, 'game.js')]);
 console.log('game.js built with stable per-asset hashes ('+uniqueAssets.length+' assets)');
 
 // กัน regression แบบ e_ant_scout เดิม: แถบดำทึบยาวติดมากับ PNG แม้เกมยังไม่ได้โจมตี
