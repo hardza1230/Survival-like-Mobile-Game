@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.13';
+const GAME_VERSION = '6.0.14';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.14', date:'2026-09-29', title:'New Hunt target artwork', items:['Hunt the Threat now uses a dedicated Sugar Stalker monster instead of an early stage elite sprite'] },
   { v:'6.0.13', date:'2026-09-29', title:'Wave mission clarity and artwork', items:['Escort, Nectar and season objectives now use dedicated painted assets with clearer danger cues','Clean Air and bonus events have direction markers, Hunt targets recover from spawn pressure and mission copy matches the actual rules'] },
   { v:'6.0.12', date:'2026-09-29', title:'Painted procedural art replacements', items:['Elite brute fallback and sakura petal effects now use transparent painted artwork','Painted pantry boxes decorate Stage 1; additional Crown Oven concepts are archived for later review'] },
   { v:'6.0.11', date:'2026-09-29', title:'Animated kitchen opening', items:['Kitchen lamps light one by one while the game loads, with kettle steam, oven glow, drifting motes and subtle room motion','After loading, daylight appears in the window and the camera slowly moves toward the city'] },
@@ -946,6 +947,7 @@ const ASSET_IMAGES = {
   objective_cache:'assets/art/objectives/objective_cache.png',
   objective_courier:'assets/art/objectives/objective_courier.png',
   objective_hunt_mark:'assets/art/objectives/objective_hunt_mark.png',
+  objective_sugar_stalker:'assets/art/objectives/objective_sugar_stalker.png',
   objective_root_anchor:'assets/art/objectives/objective_root_anchor.png',
   // Props อาร์ตจริงสำหรับฉากStage 2–5
   drain_grate:'assets/generated/drain_grate.png', drain_pipe:'assets/generated/drain_pipe.png',
@@ -7325,7 +7327,9 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(1000,()=>{if(this.state==='play'&&this.mode==='wave'&&this.waveObjective===o&&!o.done)this.spawnObjectiveElite();});return;
     }
     e.hp*=1.6;e.maxhp=e.hp;e._waveObjectiveTarget=true;   // เป้าหมายล่า = ถึกกว่าNormal (เดิม ×0.68 อ่อนไป)
-    e.setScale((e.scaleX||1)*1.12);
+    // Dedicated Hunt creature across every stage; stop any stage elite walk cycle before replacing its texture.
+    e.anims.stop();e.setTexture('objective_sugar_stalker');e.setCircle(48,80,80);
+    e.baseScale=0.47;e.setScale(e.baseScale);e.roleName='Sugar Stalker';e.tintColor=null;e.clearTint();
     // ออร่าเรืองWaitบตัว (วงแหวนหมุน + เต้น) ให้เห็นชัดว่าตัวไหนเป็นเป้าหมาย
     e._objectiveAura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0xff5a8a).setDepth(e.y-1).setScale(0.42).setAlpha(0.85).setBlendMode(Phaser.BlendModes.ADD));
     this.tweens.add({targets:e._objectiveAura,scale:{from:0.42,to:0.58},alpha:{from:0.9,to:0.45},rotation:TAU,duration:620,yoyo:true,repeat:-1,ease:'Sine.inOut'});
