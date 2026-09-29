@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.10';
+const GAME_VERSION = '6.0.11';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.11', date:'2026-09-29', title:'Animated kitchen opening', items:['Kitchen lamps light one by one while the game loads, with kettle steam, oven glow, drifting motes and subtle room motion','After loading, daylight appears in the window and the camera slowly moves toward the city'] },
   { v:'6.0.10', date:'2026-09-29', title:'Momo animation refresh', items:['Strawberry Fighter now uses the new idle, 12-frame run, attack, dash and hurt sheets in play','Older special poses remain available for cheer and other actions'] },
   { v:'6.0.9', date:'2026-09-29', title:'Illustrated Recipe Kitchen parts', items:['Added 55 individual icons for every WHEN, DO and TWIST recipe part','Kitchen recipe slots and part inventory now display their category-colored artwork beside each name'] },
   { v:'6.0.8', date:'2026-09-29', title:'Decorated Chapter 2 and 3 stages', items:['Added 64 illustrated ground props across C2-3 through C3-5, with eight distinct details for each stage','Each stage now scatters its own deterministic, non-colliding decorations beneath combatants'] },
@@ -833,7 +834,6 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
-  opening_world_gate_v3:'assets/opening_world_gate_v3.webp',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   craft_bench_bg:'assets/ui/craft_bench_bg.webp',
   chapter1_cover:'assets/ui/chapter1_cover.webp',
@@ -1812,59 +1812,12 @@ class Boot extends Phaser.Scene {
   }
 }
 
-/* ---- OPENING: short hand-off after assets are ready, before the menu is built ---- */
+/* ---- OPENING: hand off to the game beneath the kitchen loading animation ---- */
 class Opening extends Phaser.Scene {
   constructor(){ super('Opening'); }
   create(){
-    const W=this.scale.width,H=this.scale.height,cx=W/2,cy=H/2;
-    const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const gx=cx,gy=cy-H*0.07;
-    this.cameras.main.setBackgroundColor('#2b142f');
-
-    const bg=this.add.image(cx,cy,'opening_world_gate_v3').setDisplaySize(W*1.04,H*1.04).setAlpha(0);
-    const shade=this.add.rectangle(cx,cy,W,H,0x210f2a,0.48);
-    const gateGlow=this.add.ellipse(gx,gy,W*0.22,H*0.38,0xffe6a3,0)
-      .setBlendMode(Phaser.BlendModes.ADD).setScale(0.55);
-
-    const rays=this.add.graphics().setBlendMode(Phaser.BlendModes.ADD).setAlpha(0);
-    for(let i=0;i<16;i++){
-      const a=i*TAU/16,inner=Math.min(W,H)*0.035,outer=Math.max(W,H)*0.72;
-      rays.fillStyle(i%2?0xffa6ca:0xffe7a0,0.042);
-      rays.beginPath();rays.moveTo(gx+Math.cos(a-0.035)*inner,gy+Math.sin(a-0.035)*inner);
-      rays.lineTo(gx+Math.cos(a+0.035)*inner,gy+Math.sin(a+0.035)*inner);
-      rays.lineTo(gx+Math.cos(a)*outer,gy+Math.sin(a)*outer);rays.closePath();rays.fillPath();
-    }
-
-    // ฉากเปิด = ภาพล้วน (เจ้าของขอNoneตัวหนังสือลอยขึ้น) — เอา title/sub/skip text ออก แต่ยังแตะเพื่อข้ามได้
-    const flash=this.add.rectangle(cx,cy,W,H,0xfff7df,0).setBlendMode(Phaser.BlendModes.ADD);
-
-    for(let i=0;i<26;i++){
-      const a=Math.random()*TAU,start=4+Math.random()*Math.min(W,H)*0.07,end=Math.max(W,H)*(0.42+Math.random()*0.28);
-      const s=this.add.circle(gx+Math.cos(a)*start,gy+Math.sin(a)*start,1+Math.random()*2.4,i%3===0?0xffd36b:0xffb0d4,0)
-        .setBlendMode(Phaser.BlendModes.ADD);
-      this.tweens.add({targets:s,x:gx+Math.cos(a)*end,y:gy+Math.sin(a)*end,alpha:{from:0,to:0.9},scale:{from:0.25,to:2.6},duration:700+Math.random()*650,delay:400+Math.random()*1500,repeat:-1,ease:'Quad.in'});
-    }
-
-    let leaving=false;
-    const finish=()=>{
-      if(leaving)return; leaving=true; this.input.enabled=false;
-      this.cameras.main.fadeOut(reduced?80:260,255,247,223);
-      this.cameras.main.once('camerafadeoutcomplete',()=>this.scene.start('Game'));
-    };
-    this.time.delayedCall(reduced?900:4200,finish);
-    this.time.delayedCall(reduced?100:650,()=>{
-      if(leaving)return;
-      this.input.once('pointerdown',finish);
-      this.input.keyboard&&this.input.keyboard.once('keydown',finish);
-    });
-
-    this.tweens.add({targets:bg,alpha:1,displayWidth:W*1.50,displayHeight:H*1.50,duration:reduced?80:4050,ease:'Sine.in'});
-    this.tweens.add({targets:shade,alpha:0.04,duration:reduced?80:3300,ease:'Quad.in'});
-    this.tweens.add({targets:rays,alpha:0.9,scale:1.7,duration:reduced?80:3600,ease:'Quad.in'});
-    this.tweens.add({targets:gateGlow,alpha:0.68,scale:2.4,duration:reduced?80:3500,ease:'Quad.in'});
-    this.tweens.add({targets:flash,alpha:0.92,duration:reduced?80:620,delay:reduced?500:3350,ease:'Quad.in'});
-    this.cameras.main.fadeIn(reduced?80:350,23,16,31);
-    this.time.delayedCall(50,()=>{ if(window.GameLoader)window.GameLoader.hide(); });
+    this.scene.start('Game');
+    if(window.GameLoader)window.GameLoader.hide();
   }
 }
 
