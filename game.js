@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.24';
+const GAME_VERSION = '6.0.25';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.25', date:'2026-09-29', title:'Cleaner combat HUD and pause loot', items:['Pause now shows Sugar, unopened reward boxes and crafting currency collected in the current run','Routine pickup banners no longer cover combat; the XP bar gains a subtle moving shine and completion pulse'] },
   { v:'6.0.24', date:'2026-09-29', title:'Tutorial chapter card', items:['Choose Chapter now starts with a dedicated Tutorial card before Chapter 1','Clearing the interactive tutorial marks the card PASS; it can be replayed without granting its starter reward twice'] },
   { v:'6.0.23', date:'2026-09-29', title:'Illustrated tutorial reward screen', items:['The tutorial completion screen uses painted art and separate Sugar and Shovel reward cards','The next action and reward state are clearer, with softer lighting and more readable buttons'] },
   { v:'6.0.22', date:'2026-09-29', title:'Flower-framed city entrance', items:['After loading, the kitchen camera moves to the window, flashes into the city, then reveals the flower frame and drifting petals','A final soft white transition leads into the main menu'] },
@@ -4409,8 +4410,15 @@ class Game extends Phaser.Scene {
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);
     // เอาหลอด HP ด้านบนออก (ย้ายไปNorthหัวผู้เล่นแทน) · เหลือแถบ XP บาง ๆ ไว้ดูความคืบหน้าเลเวล
     if(this.hpIcon)this.hpIcon.setVisible(false); if(this.xpIcon)this.xpIcon.setPosition(pad+4,pad+6);
-    g.fillStyle(0x000000,0.45); g.fillRoundedRect(bx,pad+1,bw,11,5);   // v4.64: แถบ XP หนาขึ้น (เดิม 8/4px แทบมองไม่เห็นบนมือถือ)
-    if(xpf>0){ g.fillStyle(0x8bd3a0,1); g.fillRoundedRect(bx+2,pad+3,Math.max(6,(bw-4)*xpf),7,3); }
+    g.fillStyle(0x101c25,0.82); g.fillRoundedRect(bx,pad+1,bw,11,5);
+    if(xpf>0){ const fw=Math.min(bw-4,Math.max(5,(bw-4)*xpf));
+      g.fillStyle(0x58b98e,1);g.fillRoundedRect(bx+2,pad+3,fw,7,3);
+      g.fillStyle(0xc0ffe3,0.65);g.fillRoundedRect(bx+3,pad+3,Math.max(2,fw-2),2,1);
+      if(fw>18){const glint=bx+5+(fw-10)*(((this.elapsed||0)*0.45)%1);g.fillStyle(0xffffff,0.55);g.fillRoundedRect(glint,pad+3,3,7,2);}
+      if(xpf>=0.9){g.fillStyle(0xfff1ad,0.25+0.18*Math.sin((this.elapsed||0)*9));g.fillCircle(bx+2+fw,pad+6,6);}
+    }
+    g.lineStyle(1,0xd9fff0,0.35);g.strokeRoundedRect(bx,pad+1,bw,11,5);
+    for(let mark=1;mark<4;mark++){const tx=bx+bw*mark/4;g.lineStyle(1,0xd9fff0,0.30);g.lineBetween(tx,pad+4,tx,pad+9);}
     this.drawOverheadStatus(hpf);
     // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
     if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
@@ -6585,21 +6593,32 @@ class Game extends Phaser.Scene {
     const p=this.player,regen=Math.min(p.maxhp*0.03,(p.regen||0)+(p.regenFlat||0)+p.maxhp*(p.regenPct||0));
     const cs=this.add.text(w/2,80,'❤ '+Math.max(0,Math.round(p.hp))+'/'+Math.round(p.maxhp)+'   ♻ '+regen.toFixed(1)+'/s   ⚔ '+Math.round((p.dmgMul||1)*100)+'%   🛡 '+Math.round((1-(p.dmgTakenMul||1))*100)+'%   🎯 '+Math.round((p.critChance||0)*100)+'%',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#bfe8d6'}).setOrigin(0.5);
     this.pauseUI.add([bg,t,sub,cs]);
+    const portrait=w<=h,loot=this._runCurrency||{},lootKeys=Object.keys(loot).filter(k=>loot[k]>0),currencyCount=lootKeys.reduce((sum,k)=>sum+loot[k],0),boxCount=(this._runBoxes||[]).length;
+    const lootTotals='🍬 '+(this.sugarRun||0)+' Sugar    🎁 '+boxCount+' Boxes    🧪 '+currencyCount+' Currency';
+    if(portrait){const lx=20,ly=95,lw=w-40,lg=this.add.graphics();lg.fillStyle(0x31243d,0.94);lg.fillRoundedRect(lx,ly,lw,62,12);lg.lineStyle(1,0xffd18c,0.58);lg.strokeRoundedRect(lx,ly,lw,62,12);
+      const label=this.add.text(lx+12,ly+7,'COLLECTED THIS RUN',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe0a3'}).setOrigin(0,0);
+      const totals=this.add.text(lx+12,ly+24,lootTotals,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#fff7e8',wordWrap:{width:lw-24},maxLines:1}).setOrigin(0,0);
+      const details=lootKeys.length?lootKeys.slice(0,3).map(k=>currencyDef(k).name+' ×'+loot[k]).join('  ·  ')+(lootKeys.length>3?'  +'+(lootKeys.length-3)+' types':''):(boxCount?'Boxes open at stage end':'No crafting currency yet');
+      const line=this.add.text(lx+12,ly+43,details,{fontFamily:'sans-serif',fontSize:'9px',color:'#cfc3df',wordWrap:{width:lw-24},maxLines:1}).setOrigin(0,0);
+      this.pauseUI.add([lg,label,totals,line]);
+    }
     // แผงสกิล/พรที่Owned
-    const panelY=94,panelH=72,px=20,pw=w-40;
+    const panelY=portrait?165:94,panelH=72,px=20,pw=w-40;
     const pnl=this.add.graphics();
-    const ph=this.add.text(px+14,panelY+8,'Held',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
+    const ph=this.add.text(px+14,panelY+8,portrait?'Held':'Held  ·  '+lootTotals,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
     this.pauseUI.add([pnl,ph]);
     const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);
     const pH=Math.max(panelH,heldBot-panelY+6);   // v4.63: กรอบสูงตามเนื้อหาจริง (แถว Relic เคยล้นออกนอกกรอบ)
     pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,pH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,pH,14);
     // v4.65: แนวตั้งตรงกลางว่าง → อธิบาย Relic ที่ถืออยู่ (ผู้เล่นมักลืมว่าแต่ละชิ้นทำอะไร)
-    if(w<=h&&this.relics&&this.relics.length){ let ry=panelY+pH+12; const lt=this.add.text(px+4,ry,'🔮 Your Relics',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9b8ff'}).setOrigin(0,0);this.pauseUI.add(lt);ry+=22;
-      for(const k of this.relics){ const r=RELICS[k],rg=this.add.graphics();rg.fillStyle(0x241a33,0.85);rg.fillRoundedRect(px,ry,pw,46,10);rg.lineStyle(1.2,0xc07bff,0.7);rg.strokeRoundedRect(px,ry,pw,46,10);
+    if(portrait&&this.relics&&this.relics.length){ let ry=panelY+pH+12; const lt=this.add.text(px+4,ry,'🔮 Your Relics',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9b8ff'}).setOrigin(0,0);this.pauseUI.add(lt);ry+=22;
+      const room=Math.max(0,h-138-54-12-27-ry),maxShown=Math.max(0,Math.floor((room-18)/52));
+      for(const k of this.relics.slice(0,maxShown)){ const r=RELICS[k],rg=this.add.graphics();rg.fillStyle(0x241a33,0.85);rg.fillRoundedRect(px,ry,pw,46,10);rg.lineStyle(1.2,0xc07bff,0.7);rg.strokeRoundedRect(px,ry,pw,46,10);
         const re=this.add.text(px+22,ry+23,r.emoji,{fontSize:'20px'}).setOrigin(.5),rn=this.add.text(px+42,ry+7,r.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,0),rd=this.add.text(px+42,ry+22,r.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#c9bdd2',wordWrap:{width:pw-52},maxLines:2}).setOrigin(0,0);
         this.pauseUI.add([rg,re,rn,rd]); ry+=52; }
-      const syn=RELIC_SYNERGIES.filter(q=>this._rel&&this._rel[q.a]&&this._rel[q.b]);for(const q of syn){const t3=this.add.text(px+4,ry,'🔗 '+q.name+' — '+q.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffb3e6',wordWrap:{width:pw-8}}).setOrigin(0,0);this.pauseUI.add(t3);ry+=t3.height+6;} }   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
-    const portrait=w<=h,gap=portrait?12:16,bw=portrait?Math.min(w-48,330):Math.min(270,(w-56-gap)/2),bh=54;
+      const remaining=this.relics.length-maxShown;if(remaining>0){const more=this.add.text(px+4,ry,'+'+remaining+' more Relic'+(remaining>1?'s':''),{fontFamily:'sans-serif',fontSize:'10px',color:'#cbbfda'});this.pauseUI.add(more);ry+=16;}
+      const syn=RELIC_SYNERGIES.filter(q=>this._rel&&this._rel[q.a]&&this._rel[q.b]);for(const q of syn){if(ry>h-138-54-12-55)break;const t3=this.add.text(px+4,ry,'🔗 '+q.name+' — '+q.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffb3e6',wordWrap:{width:pw-8}}).setOrigin(0,0);this.pauseUI.add(t3);ry+=t3.height+6;} }
+    const gap=portrait?12:16,bw=portrait?Math.min(w-48,330):Math.min(270,(w-56-gap)/2),bh=54;
     const by=portrait?h-138:Math.max(196,h-68),left=portrait?w/2:w/2-gap/2-bw/2,right=portrait?w/2:w/2+gap/2+bw/2;
     this.uiPillBtn(this.pauseUI,left,by,bw,bh,COLORS.mint,'▶','Resume',null);
     this._pauseBtns.push({x:left-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.togglePause()});
@@ -9969,7 +9988,7 @@ class Game extends Phaser.Scene {
     v.body.setAllowGravity(false); this.camWorld(v); this.showPickupCue(v,0xff5a6e,1.40); if(this.iso)v.setDepth(Math.max(80000,v.y));
     this.tweens.add({targets:v,y:y-10,duration:540,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectVac(player,v){ if(!v.active)return; Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
-    Sfx.heal(); this.burst(v.x,v.y,0xff5a6e); this.showBanner('🧲 Magnet!','Vacuum all EXP orbs on screen',1200);
+    Sfx.heal(); this.burst(v.x,v.y,0xff5a6e); this.floatText(v.x,v.y-24,'Magnet!',0xff9dcc);
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
@@ -9988,11 +10007,10 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false; g.clearTint();
     if(g.dropType==='currency'&&g.curKey){ const k=g.curKey; Save.addCurrency(k,1); if(!this._runCurrency)this._runCurrency={}; this._runCurrency[k]=(this._runCurrency[k]||0)+1;
-      Sfx.select();this.burst(g.x,g.y,0x9fe8ff); const d=currencyDef(k); this.showBanner('🧪 '+d.emoji+' '+d.name,'Currency collected — see stage summary',1100); return; }
+      Sfx.select();this.burst(g.x,g.y,0x9fe8ff); return; }
     // ไอเทม = เก็บเป็น "กล่อง" ไว้ก่อน เปิดลุ้นตอนจบด่าน (suspense)
     const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;Sfx.select();this.burst(g.x,g.y,rarity.color);
     if(!this._runBoxes)this._runBoxes=[]; this._runBoxes.push(tier);
-    this.showBanner('📦 '+rarity.emoji+' '+rarity.name+' Box','Collected — opens at stage end · '+this._runBoxes.length+' box'+(this._runBoxes.length>1?'es':''),1300);
   }
   // เปิดกล่องไอเทมที่สะสมมาทั้งด่าน → แจกจริง คืน list สำหรับหน้าสรุป
   openRunBoxes(){ const boxes=this._runBoxes||[]; const opened=[]; for(const tier of boxes){ const got=this.grantGear(tier);
