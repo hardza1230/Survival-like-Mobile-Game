@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.25';
+const GAME_VERSION = '6.0.26';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.26', date:'2026-09-29', title:'Clean prize icons and a new menu theme', items:['Sugar prizes use the candy art instead of the EXP cube; the strawberry jam jar has clean transparent edges','Pause Relics and Codex item entries show available artwork; the menu plays the new Mochi Morning theme'] },
   { v:'6.0.25', date:'2026-09-29', title:'Cleaner combat HUD and pause loot', items:['Pause now shows Sugar, unopened reward boxes and crafting currency collected in the current run','Routine pickup banners no longer cover combat; the XP bar gains a subtle moving shine and completion pulse'] },
   { v:'6.0.24', date:'2026-09-29', title:'Tutorial chapter card', items:['Choose Chapter now starts with a dedicated Tutorial card before Chapter 1','Clearing the interactive tutorial marks the card PASS; it can be replayed without granting its starter reward twice'] },
   { v:'6.0.23', date:'2026-09-29', title:'Illustrated tutorial reward screen', items:['The tutorial completion screen uses painted art and separate Sugar and Shovel reward cards','The next action and reward state are clearer, with softer lighting and more readable buttons'] },
@@ -866,7 +867,7 @@ const ASSET_IMAGES = {
   currency_plain_dough:'assets/ui/currency/plain-dough.png',
   heal:'assets/items/heal_mochi_heart.png',
   gift:'assets/items/gear_gift.png',
-  prize_sugar:'assets/items/item_sugar_cube.png',
+  prize_sugar:'assets/icons/icon_sugar.png',
   prize_currency:'assets/items/item_jam_jar.png',
   prize_chest:'assets/items/item_chest.png',
   pickup_upgrade_card:'assets/items/pickup_upgrade_card.png',
@@ -1438,7 +1439,7 @@ const ASSET_AUDIO = {
   sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
-  bgm_main:       'assets/audio/bgm/bgm_main_theme.wav',
+  bgm_main:       'assets/audio/bgm/menu/bgm_menu_mochi_morning.mp3',
   bgm_menu_temple:  'assets/audio/bgm/menu/bgm_menu_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
   bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร
@@ -5087,13 +5088,13 @@ class Game extends Phaser.Scene {
   }
   buildItemCodex(top){
     const w=this.W,h=this.H,portrait=w<=h,rows=[
-      ['❤️','Heart','Heals 18% HP + 6 · always drops from bosses/minibosses, rarely from normal enemies',0xff6f9f],
-      ['🧲','Magnet','Vacuums all EXP orbs on the field · save it for after a big clear',0x7fd0ff],
-      ['🎁','Gear box','Halo color = rarity: green Common · gold Rare · purple Epic',0xc9a3ff],
+      ['ic_heart','Heart','Heals 18% HP + 6 · always drops from bosses/minibosses, rarely from normal enemies',0xff6f9f],
+      ['ic_magnet','Magnet','Vacuums all EXP orbs on the field · save it for after a big clear',0x7fd0ff],
+      ['prize_chest','Gear box','Halo color = rarity: green Common · gold Rare · purple Epic',0xc9a3ff],
       ['✦','Stage gimmick','After a wave: vacuum EXP / clear slows / reset cooldowns / freeze field / heal and gain Sugar',0xffcf5a],
-      ['📦','Crate break','Gives EXP with a chance of hearts, magnets, Gear or Sugar · higher stage/difficulty raises rarity',0xe59a4d]
+      ['p_crate','Crate break','Gives EXP with a chance of hearts, magnets, Gear or Sugar · higher stage/difficulty raises rarity',0xe59a4d]
     ],gap=portrait?9:8,x=14,cw=w-28,rh=Math.min(portrait?78:58,(h-top-18-gap*(rows.length-1))/rows.length);
-    rows.forEach((r,i)=>{const y=top+i*(rh+gap),g=this.add.graphics();g.fillStyle(0x211929,.97);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(1.6,r[3],.82);g.strokeRoundedRect(x,y,cw,rh,12);g.fillStyle(r[3],.11);g.fillRoundedRect(x+3,y+3,cw-6,rh-6,9);const em=this.add.text(x+28,y+rh/2,r[0],{fontSize:(portrait?28:23)+'px'}).setOrigin(.5),nm=this.add.text(x+54,y+rh*.32,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(portrait?13:11)+'px',color:'#fff7ed'}).setOrigin(0,.5),ds=this.add.text(x+54,y+rh*.68,r[2],{fontFamily:'sans-serif',fontSize:(portrait?9.5:8.5)+'px',color:'#c9bdd2',wordWrap:{width:cw-68},maxLines:2}).setOrigin(0,.5);this.menu.add([g,em,nm,ds]);});
+    rows.forEach((r,i)=>{const y=top+i*(rh+gap),g=this.add.graphics();g.fillStyle(0x211929,.97);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(1.6,r[3],.82);g.strokeRoundedRect(x,y,cw,rh,12);g.fillStyle(r[3],.11);g.fillRoundedRect(x+3,y+3,cw-6,rh-6,9);const em=this.textures.exists(r[0])?this.add.image(x+28,y+rh/2,r[0]).setDisplaySize(portrait?36:30,portrait?36:30):this.add.text(x+28,y+rh/2,r[0],{fontSize:(portrait?28:23)+'px'}).setOrigin(.5),nm=this.add.text(x+54,y+rh*.32,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(portrait?13:11)+'px',color:'#fff7ed'}).setOrigin(0,.5),ds=this.add.text(x+54,y+rh*.68,r[2],{fontFamily:'sans-serif',fontSize:(portrait?9.5:8.5)+'px',color:'#c9bdd2',wordWrap:{width:cw-68},maxLines:2}).setOrigin(0,.5);this.menu.add([g,em,nm,ds]);});
   }
   buildSkillArchiveDetail(sel,portrait,top){
     const w=this.W,h=this.H,d=sel.isPass?PASSIVES[sel.key]:SKILLDEFS[sel.key];if(!d){this._skillArchiveSelected=null;this.buildSkillArchive();return;}
@@ -6614,7 +6615,7 @@ class Game extends Phaser.Scene {
     if(portrait&&this.relics&&this.relics.length){ let ry=panelY+pH+12; const lt=this.add.text(px+4,ry,'🔮 Your Relics',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9b8ff'}).setOrigin(0,0);this.pauseUI.add(lt);ry+=22;
       const room=Math.max(0,h-138-54-12-27-ry),maxShown=Math.max(0,Math.floor((room-18)/52));
       for(const k of this.relics.slice(0,maxShown)){ const r=RELICS[k],rg=this.add.graphics();rg.fillStyle(0x241a33,0.85);rg.fillRoundedRect(px,ry,pw,46,10);rg.lineStyle(1.2,0xc07bff,0.7);rg.strokeRoundedRect(px,ry,pw,46,10);
-        const re=this.add.text(px+22,ry+23,r.emoji,{fontSize:'20px'}).setOrigin(.5),rn=this.add.text(px+42,ry+7,r.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,0),rd=this.add.text(px+42,ry+22,r.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#c9bdd2',wordWrap:{width:pw-52},maxLines:2}).setOrigin(0,0);
+        const relicKey='relic_'+k,re=this.textures.exists(relicKey)?this.add.image(px+22,ry+23,relicKey).setDisplaySize(28,28):this.add.text(px+22,ry+23,r.emoji,{fontSize:'20px'}).setOrigin(.5),rn=this.add.text(px+42,ry+7,r.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,0),rd=this.add.text(px+42,ry+22,r.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#c9bdd2',wordWrap:{width:pw-52},maxLines:2}).setOrigin(0,0);
         this.pauseUI.add([rg,re,rn,rd]); ry+=52; }
       const remaining=this.relics.length-maxShown;if(remaining>0){const more=this.add.text(px+4,ry,'+'+remaining+' more Relic'+(remaining>1?'s':''),{fontFamily:'sans-serif',fontSize:'10px',color:'#cbbfda'});this.pauseUI.add(more);ry+=16;}
       const syn=RELIC_SYNERGIES.filter(q=>this._rel&&this._rel[q.a]&&this._rel[q.b]);for(const q of syn){if(ry>h-138-54-12-55)break;const t3=this.add.text(px+4,ry,'🔗 '+q.name+' — '+q.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffb3e6',wordWrap:{width:pw-8}}).setOrigin(0,0);this.pauseUI.add(t3);ry+=t3.height+6;} }
