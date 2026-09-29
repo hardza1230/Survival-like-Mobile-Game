@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.18';
+const GAME_VERSION = '6.0.19';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.19', date:'2026-09-29', title:'Two-stage asset loading', items:['The main menu opens before stage cards, floors, decorations and boss sheets finish loading','The latest unlocked stage preloads quietly in the menu; entering another stage fetches its own artwork first'] },
   { v:'6.0.18', date:'2026-09-29', title:'Smaller stage artwork', items:['Chapter 3 boss action sheets and selected stage backdrops now use optimized WebP assets','Artwork dimensions and frame layout remain the same while reducing initial download and decode work'] },
   { v:'6.0.17', date:'2026-09-29', title:'Prize wheel icon sizing', items:['Wheel icons keep their fitted size while the selection light moves and the center chest bounces'] },
   { v:'6.0.16', date:'2026-09-29', title:'Faster loading', items:['Menu backgrounds load when opened instead of blocking the initial game screen','Only stage music blocks entry; miniboss and boss music load during play','Unchanged assets keep their cached URLs across builds'] },
@@ -1500,6 +1501,17 @@ function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v
 // [0 idle,1 blink,2 squash,3 stretch(พุ่ง),4 cheer(ดีใจ),5 hurt(เจ็บ),6 ko(สลบ),7 cast(ร่ายอัลติ)]
 const CF = { idle:0, blink:1, squash:2, stretch:3, cheer:4, hurt:5, ko:6, cast:7 };
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
+const STAGE_SHEETS=[
+  ['boss1'],['boss2'],['boss3'],['boss4'],['boss5_sovereign','boss5','mb5_banquet_executioner'],
+  ['boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas'],
+  ['boss7_mycelium_behemoth','mb7_fungal_juggernaut','ch2_mycelium_enemy_atlas','ch2_prop_atlas'],
+  ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas'],
+  ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas'],
+  ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas'],
+  ...[1,2,3,4,5].map(n=>['c3_mini'+n,'c3_boss'+n])
+];
+function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
+const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
@@ -1516,8 +1528,8 @@ class Boot extends Phaser.Scene {
       const current=this.load.progress||0;
       loader.set(current,'Preparing '+name+'...');
     });
-    for(const k in ASSET_IMAGES){ if(k.startsWith('screen_'))continue;this.load.image(k, verUrl(ASSET_IMAGES[k])); }
-    for(const k in ASSET_SHEETS) this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });
+    for(const k in ASSET_IMAGES){ if(k.startsWith('screen_')||deferredImage(k))continue;this.load.image(k, verUrl(ASSET_IMAGES[k])); }
+    for(const k in ASSET_SHEETS){if(STAGE_SHEET_KEYS.has(k))continue;this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });}
     for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
@@ -1544,8 +1556,8 @@ class Boot extends Phaser.Scene {
       c.font=Math.round(r*1.05)+'px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(emoji,w/2,h/2+r*0.05);t.refresh(); };
     const roles={basic:['e_basic','🫘'],fast:['e_fast','💨'],shooter:['e_shooter','🎯'],bomber:['e_bomber','💣'],tank:['e_tank','🛡️']};
     for(const r in roles){ const src=this.textures.exists(roles[r][0])?this.textures.get(roles[r][0]).getSourceImage():null; blob('c3_e_'+r,(src&&src.width)||48,(src&&src.height)||48,0xb98cff,roles[r][1]); }
-    pal.forEach(([col,em],i)=>{ blob('c3_mini'+(i+1),140,140,col,em,'#ffffff'); blob('c3_boss'+(i+1),140,140,col,'👑','#ffd166');
-      const k='bg'+(11+i); if(!this.textures.exists(k)){ const t=this.textures.createCanvas(k,256,256);if(t){const c=t.getContext();c.fillStyle=hex(Phaser.Display.Color.ValueToColor(col).darken(72).color);c.fillRect(0,0,256,256);
+    pal.forEach(([col,em],i)=>{ const mini='c3_mini'+(i+1),boss='c3_boss'+(i+1);if(!ASSET_SHEETS[mini])blob(mini,140,140,col,em,'#ffffff');if(!ASSET_SHEETS[boss])blob(boss,140,140,col,'👑','#ffd166');
+      const k='bg'+(11+i); if(!this.textures.exists(k)&&!ASSET_IMAGES[k]){ const t=this.textures.createCanvas(k,256,256);if(t){const c=t.getContext();c.fillStyle=hex(Phaser.Display.Color.ValueToColor(col).darken(72).color);c.fillRect(0,0,256,256);
         c.globalAlpha=0.16;c.fillStyle=hex(col);for(let y=0;y<4;y++)for(let x=0;x<4;x++){c.beginPath();c.arc(32+x*64+(y%2)*32,32+y*64,10,0,Math.PI*2);c.fill();}c.globalAlpha=1;t.refresh();} } });
   }
   create(){
@@ -3909,6 +3921,49 @@ class Game extends Phaser.Scene {
     this.setupParticles();
     this.setupInput();
     this.scale.on('resize',this.onResize,this);
+    // เปิดเมนูทันที แล้วอุ่นภาพด่านล่าสุดอย่างเงียบ ๆ ระหว่างที่ผู้เล่นเลือกเมนู
+    this.time.delayedCall(900,()=>{if(this.state==='menu')this.ensureStageArt(Math.min(14,Save.data.unlockedStage||0));});
+  }
+
+  stageArtKeys(idx){
+    const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[])];
+    if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
+    const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
+    return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]);
+  }
+  registerStageAnimations(keys){
+    for(const k of keys){const sh=ASSET_SHEETS[k];if(!sh||!this.textures.exists(k))continue;
+      if(sh.anim&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:0,end:sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo});
+      if(/^c3_(?:mini|boss)/.test(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
+    }
+    const poses=[['boss1','idle',0,1,3],['boss2','reveal',2,3,4],['boss3','idle',0,1,3],['boss4','idle',0,1,3],['boss5_sovereign','idle',0,1,2.5],['boss6_rootmother','idle',0,1,2.2]];
+    for(const [k,name,a,b,rate] of poses)if(keys.includes(k)&&this.textures.exists(k)&&!this.anims.exists(k+'_'+name))this.anims.create({key:k+'_'+name,frames:[{key:k,frame:a},{key:k,frame:b}],frameRate:rate,repeat:name==='reveal'?0:-1,yoyo:name!=='reveal'});
+  }
+  ensureStageArt(idx,done){
+    if(!this._stageArtReady)this._stageArtReady=new Set();
+    if(this._stageArtReady.has(idx)){done&&done();return;}
+    if(!this._stageArtWait)this._stageArtWait=new Map();
+    if(this._stageArtWait.has(idx)){if(done)this._stageArtWait.get(idx).push(done);return;}
+    const keys=this.stageArtKeys(idx),missing=keys.filter(k=>!this.textures.exists(k));
+    if(!missing.length){this.registerStageAnimations(keys);this._stageArtReady.add(idx);done&&done();return;}
+    this._stageArtWait.set(idx,done?[done]:[]);
+    if(!this._stageArtQueued)this._stageArtQueued=new Set();
+    for(const k of missing){if(this._stageArtQueued.has(k))continue;this._stageArtQueued.add(k);
+      if(ASSET_SHEETS[k]){const sh=ASSET_SHEETS[k];this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame});}
+      else this.load.image(k,verUrl(ASSET_IMAGES[k]));
+    }
+    this.load.once('complete',()=>{this.registerStageAnimations(keys);this._stageArtReady.add(idx);const wait=this._stageArtWait.get(idx)||[];this._stageArtWait.delete(idx);for(const cb of wait)cb();});
+    if(!this.load.isLoading())this.load.start();
+  }
+  ensureStageCards(chapter){
+    if(!this._stageCardsQueued)this._stageCardsQueued=new Set();
+    const range=CHAPTERS[chapter]&&CHAPTERS[chapter].stages;if(!range)return;
+    const keys=[];for(let i=range[0];i<=range[1];i++)keys.push('stage_card_s'+String(i+1).padStart(2,'0'));
+    const missing=keys.filter(k=>ASSET_IMAGES[k]&&!this.textures.exists(k)&&!this._stageCardsQueued.has(k));
+    if(!missing.length)return;
+    for(const k of missing){this._stageCardsQueued.add(k);this.load.image(k,verUrl(ASSET_IMAGES[k]));}
+    this.load.once('complete',()=>{if(this.state==='menu'&&this.menuScreen==='stage'&&this.selectedChapter===chapter)this.buildStageSelect();});
+    if(!this.load.isLoading())this.load.start();
   }
 
   /* ---------- PARTICLE EMITTERS (native, reused) ----------
@@ -5245,7 +5300,8 @@ class Game extends Phaser.Scene {
   // เข้าบอสถัดไปของ rush (คง build/เลเวลไว้ ไม่ reset loadout)
   bossRushNext(){ const i=this._rushList[this._rushPos]; this._finalStoryShown=true;
     this.state='loading'; this.player.setVelocity(0,0);
-    this.ensureStageAudio(i,()=>{ this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects(); this.state='play'; this.startStage(i); }); }
+    if(window.GameLoader)window.GameLoader.show('Preparing next boss...',0.1);
+    this.ensureStageArt(i,()=>this.ensureStageAudio(i,()=>{ this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects(); this.state='play'; this.startStage(i);if(window.GameLoader)window.GameLoader.hide(); })); }
   bossRushBossDown(){ const d=this.stageDiff||1,dr=this.diffMul().reward,si=this.stageIndex;
     const sug=Math.round((50+si*25)*dr); this.sugarStage+=sug; this.sugarRun=(this.sugarRun||0)+sug; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     this._rushPos++; this._rushDown=this._rushPos;
@@ -5602,6 +5658,7 @@ class Game extends Phaser.Scene {
   }
   buildStageSelect(){
     const chapterIndex=Phaser.Math.Clamp(this.selectedChapter||0,0,CHAPTERS.length-1),chapter=CHAPTERS[chapterIndex],range=chapter.stages||[0,STAGES.length-1],stageIds=[];for(let i=range[0];i<=range[1];i++)stageIds.push(i);
+    this.ensureStageCards(chapterIndex);
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Choose stage · Chapter '+(chapterIndex+1),'screen_stage','chapter');
     const unlocked=Math.max(0,Save.data.unlockedStage||0);
     const note=this.add.text(this.W/2,this.W<=this.H?83:55,'CHAPTER SELECT  ·  Power ⚡ '+Save.power(Save.data.character),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d3bce1'}).setOrigin(0.5);
@@ -6615,6 +6672,11 @@ class Game extends Phaser.Scene {
     if(this.state!=='menu')return;this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
+    if(!this._stageArtReady||!this._stageArtReady.has(idx)){
+      if(this._enteringStageArt)return;this._enteringStageArt=true;
+      if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
+      this.ensureStageArt(idx,()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);});return;
+    }
     const challenge=this._challengeRequested;this._challengeRequested=null;
     const ticket=challenge?challenge.length*150:0;
     if(ticket&&(Save.data.sugar||0)<ticket){this.menuToast('Need 🍬'+ticket+' Sugar for the challenge ticket','#ff9bb5');return;}
