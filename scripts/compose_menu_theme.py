@@ -4,7 +4,7 @@ import numpy as np
 from scipy.io import wavfile
 
 SR = 32000
-BPM = 96
+BPM = 112
 BEAT = 60 / BPM
 BARS = 24
 LENGTH = BARS * 4 * BEAT
@@ -43,42 +43,38 @@ def add(start, duration, midi, amp, kind, pan=0):
         np.add.at(mix[:, channel], indices, mono*gain)
 
 
-# D major, with a gentle B minor turn in the middle of each phrase.
-chords = [(50, [62, 66, 69]), (47, [59, 62, 66]),
-          (43, [59, 62, 67]), (45, [61, 64, 69])]
+# G major: home → sunshine → anticipation → home. Avoid the minor turn.
+chords = [(55, [67, 71, 74]), (48, [67, 72, 76]),
+          (50, [66, 69, 74]), (55, [67, 71, 74])]
 melody = [
-    [(0,74,1), (1,78,.5), (1.5,76,.5), (2,73,1), (3,74,.75)],
-    [(0,71,.75), (.75,73,.5), (1.5,74,1), (2.75,78,.75)],
-    [(0,79,.75), (1,78,.5), (1.75,74,.75), (2.75,71,1)],
-    [(0,73,.75), (1,76,.5), (1.75,74,.75), (2.75,69,1)],
+    [(0,79,.5), (.5,83,.5), (1,86,.75), (2,83,.5), (2.5,79,.5), (3,81,.75)],
+    [(0,84,.5), (.5,83,.5), (1,79,.5), (1.5,81,.5), (2,84,.75), (3,88,.5)],
+    [(0,86,.5), (.5,81,.5), (1,78,.5), (1.5,81,.5), (2,86,.5), (2.5,88,.5), (3,86,.75)],
+    [(0,83,.5), (.5,81,.5), (1,79,.75), (2,74,.5), (2.5,79,.5), (3,79,.75)],
 ]
 for bar in range(BARS):
     base = bar*4*BEAT
     root, chord = chords[bar % 4]
     for note in chord:
-        add(base, 4*BEAT+.25, note-12, .016, 'pad', -.35 if note % 2 else .35)
-    for beat in (0, 2):
-        add(base+beat*BEAT, 1.6*BEAT, root-12, .07, 'pluck', -.13)
+        add(base, 4*BEAT+.25, note-12, .010, 'pad', -.35 if note % 2 else .35)
+    for beat in (0, 1.5, 2, 3.5):
+        add(base+beat*BEAT, .75*BEAT, root-12, .075 if beat in (0,2) else .038, 'pluck', -.13)
     for eighth in range(8):
-        note = chord[[0,1,2,1,0,2,1,2][eighth]]
-        add(base+eighth*BEAT/2, .55, note, .026, 'marimba', -.28 if eighth%2 else .28)
+        note = chord[[0,1,2,1,0,1,2,1][eighth]]
+        add(base+eighth*BEAT/2, .38, note+12, .031, 'marimba', -.28 if eighth%2 else .28)
     phrase = melody[bar % 4]
     for offset, note, beats in phrase:
-        if bar < 4 and offset > 2:  # opening breath
-            continue
-        if bar in (11, 23) and offset > 2:
-            continue
-        add(base+offset*BEAT, max(.36, beats*BEAT+.25), note+(12 if bar in (15,19) else 0),
-            .055 if bar < 4 else .067, 'bell', .23)
-    if bar >= 4:
-        # Quiet brushed shaker, with tiny deterministic variation.
+        add(base+offset*BEAT, max(.25, beats*BEAT+.12), note,
+            .064 if bar < 4 else .071, 'bell', .23)
+    if bar >= 2:
+        # Candy-like tick on the offbeats, kept below the melody.
         for step in range(8):
             at = round((base+(step+.02)*BEAT/2)*SR)
             dur = round(.07*SR)
             noise = rng.normal(0, 1, dur)
             noise = np.r_[0, np.diff(noise)] * np.exp(-np.arange(dur)/(SR*.018))
             indices = (at+np.arange(dur)) % N
-            mix[indices, step%2] += .0023*noise
+            mix[indices, step%2] += (.0028 if step%2 else .0018)*noise
 
 # Short diffuse echo returns inside the loop, including across the seam.
 dry = mix.copy()
