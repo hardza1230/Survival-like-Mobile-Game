@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.22';
+const GAME_VERSION = '6.0.23';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.23', date:'2026-09-29', title:'Illustrated tutorial reward screen', items:['The tutorial completion screen uses painted art and separate Sugar and Shovel reward cards','The next action and reward state are clearer, with softer lighting and more readable buttons'] },
   { v:'6.0.22', date:'2026-09-29', title:'Flower-framed city entrance', items:['After loading, the kitchen camera moves to the window, flashes into the city, then reveals the flower frame and drifting petals','A final soft white transition leads into the main menu'] },
   { v:'6.0.21', date:'2026-09-29', title:'Continuous moonlit kitchen entrance', items:['The opening keeps one consistent city view while the camera moves through the kitchen window','Removed the mismatched daytime city overlay and its image preload'] },
   { v:'6.0.20', date:'2026-09-29', title:'Clearer card pickup and smoother opening', items:['Field upgrade rewards now appear as floating cards instead of treasure chests; Jackpot uses a centered star medal','Background stage prefetch waits until the opening camera move finishes, reducing work during the zoom'] },
@@ -8170,30 +8171,42 @@ class Game extends Phaser.Scene {
   }
   _coachFinish(){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.save();
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
-    const TUTORIAL_SUGAR=140; let rewardName='Sugar +'+TUTORIAL_SUGAR,rewardEmoji='🍬';
-    if(!Save.data.tutorialRewardGiven){ Save.data.tutorialRewardGiven=true; Save.addSugar(TUTORIAL_SUGAR); Save.addShovels(10); Save.save(); rewardName+=' · Shovels +10'; }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
+    const rewardGranted=!Save.data.tutorialRewardGiven;
+    if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.addShovels(10); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
     this.sugarStage=0; Sfx.clear&&Sfx.clear();
     // หน้า "จบการสอน" ค้างจนกว่าจะแตะ (ไม่เด้งออกเองให้ดูไม่ทัน)
-    this.showTutorialComplete(rewardEmoji,rewardName);
+    this.showTutorialComplete(rewardGranted);
   }
-  showTutorialComplete(rewardEmoji,rewardName){
+  showTutorialComplete(rewardGranted){
     this.state='summary'; if(this.physics)this.physics.pause(); if(this.player)this.player.setVelocity(0,0);
     const w=this.W,h=this.H; this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
-    const glow=this.add.image(w/2,h*0.36,'vfx_glow').setTint(0xffd166).setScale(1.5).setAlpha(0.4);
-    const cap=this.add.text(w/2,h*0.30,'🎓',{fontSize:'70px'}).setOrigin(0.5);
-    const t=this.add.text(w/2,h*0.44,'Tutorial Complete!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd166'}).setOrigin(0.5);
-    const rlabel=this.add.text(w/2,h*0.53,'🎁 Starter Reward',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(0.5);
-    const rname=this.add.text(w/2,h*0.585,rewardEmoji+' '+rewardName,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffffff',align:'center',wordWrap:{width:w*0.8}}).setOrigin(0.5);
-    const hint=this.add.text(w/2,h*0.68,'Now spend your Sugar to grow stronger before your first real stage',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
+    const bg=this.add.rectangle(0,0,w,h,0x160f21,0.92).setOrigin(0,0);
+    const panel=this.add.graphics(),pw=Math.min(w-24,340),px=(w-pw)/2,py=h*0.235,ph=h*0.48;
+    panel.fillStyle(0x291a35,0.96); panel.fillRoundedRect(px,py,pw,ph,20);
+    panel.lineStyle(1.5,0xffd18c,0.5); panel.strokeRoundedRect(px,py,pw,ph,20);
+    const glow=this.add.image(w/2,h*0.33,'vfx_glow').setTint(0xffd166).setScale(0.85).setAlpha(0.15);
+    const cap=this.add.image(w/2,h*0.31,'tile___tutorial').setDisplaySize(78,78);
+    const t=this.add.text(w/2,h*0.415,'Tutorial Complete!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe1a2'}).setOrigin(0.5);
+    const rlabel=this.add.text(w/2,h*0.485,rewardGranted?'STARTER REWARDS':'REWARDS ALREADY CLAIMED',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9ce5e1'}).setOrigin(0.5);
+    const cards=this.add.graphics(),items=[],gap=8,cw=(pw-32-gap)/2,cy=h*0.575;
+    const rewards=[{key:'ic_sugar',name:'Sugar',amount:'+140',color:0xffd782},{key:'dig_shovel',name:'Shovels',amount:'+10',color:0xaee8df}];
+    rewards.forEach((reward,i)=>{
+      const x=w/2+(i?gap/2:-gap/2-cw),y=cy-35;
+      cards.fillStyle(0x42304e,1);cards.fillRoundedRect(x,y,cw,70,13);
+      cards.lineStyle(1,reward.color,0.55);cards.strokeRoundedRect(x,y,cw,70,13);
+      const icon=this.add.image(x+30,cy,reward.key).setDisplaySize(43,43);
+      const name=this.add.text(x+55,cy-13,reward.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#f6e9f8'}).setOrigin(0,0.5);
+      const amount=this.add.text(x+55,cy+11,rewardGranted?reward.amount:'Claimed',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rewardGranted?'18px':'12px',color:rewardGranted?'#ffe0a0':'#b8a9c5'}).setOrigin(0,0.5);
+      items.push(icon,name,amount);
+    });
+    const hint=this.add.text(w/2,h*0.67,'Spend Sugar on a core upgrade before your first stage',{fontFamily:'sans-serif',fontSize:'12px',color:'#e3d2e8',align:'center',wordWrap:{width:pw-32}}).setOrigin(0.5);
     // ปุ่มหลัก: ไปหน้า Flavor Weave (สอนอัพแก่น) · ปุ่มรอง: ข้ามไปเลือกด่าน
-    const bw2=250,bh2=56,byc=h*0.78;
+    const bw2=Math.min(w-40,270),bh2=56,byc=h*0.80;
     const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,20); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,20);
-    const bt=this.add.text(w/2,byc,'✦ Boost your Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
+    const bt=this.add.text(w/2,byc,'Upgrade Flavor Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#382237'}).setOrigin(0.5);
     const sy=h*0.90, sg=this.add.graphics(); sg.fillStyle(0x2c2338,0.9); sg.fillRoundedRect(w/2-110,sy-18,220,36,12); sg.lineStyle(1.5,0x6a5b86,0.7); sg.strokeRoundedRect(w/2-110,sy-18,220,36,12);
-    const stt=this.add.text(w/2,sy,'🗺 Skip to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
-    this.over.add([bg,glow,cap,t,rlabel,rname,hint,btn,bt,sg,stt]); this.over.setVisible(true);
-    this.tweens.add({targets:bt,alpha:{from:0.6,to:1},yoyo:true,repeat:-1,duration:700});
+    const stt=this.add.text(w/2,sy,'Skip to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#e5d8ee'}).setOrigin(0.5);
+    this.over.add([bg,panel,glow,cap,t,rlabel,cards,...items,hint,btn,bt,sg,stt]); this.over.setVisible(true);
     this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.openTutorialWeave()},{x:w/2-110,y:sy-18,w:220,h:36,fn:()=>this.continueFromSummary()}];   // ปิดได้เฉพาะกดปุ่ม
   }
   drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W,h=this.H; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
