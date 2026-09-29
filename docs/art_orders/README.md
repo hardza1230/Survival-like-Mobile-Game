@@ -18,7 +18,7 @@
 | 04 | `04_CH3_BOSSES.md` | มินิบอส 5 + บอส 5 ของ Chapter 3 | 10 | 🟠 | 🟩 action sheet 8 เฟรมครบ 10 ตัว ใส่เกม v6.0.0 |
 | 05 | `05_TEMPLE_DIG.md` | มินิเกมขุดใต้วิหาร | 16 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (webp ใน assets/art/dig) |
 | 06 | `06_ICONS_PERKS_RELICS.md` | ไอคอน Rank Perk / Ancient Perk / Relic | 26 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (การ์ด/แถว Relic, Rank Perks, Codex) |
-| 07 | `07_KITCHEN_PARTS.md` | ไอคอนชิ้นส่วนสูตร Kitchen (WHEN/DO/TWIST) | 52 | 🟢 | ⬜ |
+| 07 | `07_KITCHEN_PARTS.md` | ไอคอนชิ้นส่วนสูตร Kitchen (WHEN/DO/TWIST) | 55 | 🟢 | 🟩 ใส่เข้าเกมแล้ว v6.0.9 |
 | 08 | `08_PINNACLE_BOSS.md` | บอส Endgame "The Hunger Beneath" | 1 ชีต | 🟢 | ⬜ |
 | 09A | `09_MENU_UI.md` §9A | การ์ดเลือกด่าน 15 + ปก Chapter 2 | 17 | 🟠 | ⬜ |
 | 09B | `09_MENU_UI.md` §9B | พื้นหลังหน้าเมนูทุกหน้า | 25 | 🟡 | ⬜ |

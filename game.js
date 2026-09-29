@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.8';
+const GAME_VERSION = '6.0.9';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.9', date:'2026-09-29', title:'Illustrated Recipe Kitchen parts', items:['Added 55 individual icons for every WHEN, DO and TWIST recipe part','Kitchen recipe slots and part inventory now display their category-colored artwork beside each name'] },
   { v:'6.0.8', date:'2026-09-29', title:'Decorated Chapter 2 and 3 stages', items:['Added 64 illustrated ground props across C2-3 through C3-5, with eight distinct details for each stage','Each stage now scatters its own deterministic, non-colliding decorations beneath combatants'] },
   { v:'6.0.7', date:'2026-09-29', title:'Mycelium Marsh ground details', items:['Eight illustrated marsh decorations now appear across C2-2: fungi, mycelium, bog water, spores, reeds, lily pads, bone twigs and glow caps','The decorations are deterministic, draw below fighters and have no collision'] },
   { v:'6.0.6', date:'2026-09-29', title:'Animated loading gate', items:['The closed gate visibly breathes open and shut while assets load, with stronger parallax, floating petals and sugar light','Fixed missing animation delays that left some loading petals static, and added motion to the loading meter'] },
@@ -1017,6 +1018,61 @@ const ASSET_IMAGES = {
   dec_c35_banner_scrap:'assets/art/decor_c35/dec_c35_banner_scrap.png',
   dec_c35_candle:'assets/art/decor_c35/dec_c35_candle.png',
   dec_c35_halo_ring:'assets/art/decor_c35/dec_c35_halo_ring.png',
+  fr_t_dash:'assets/art/kitchen/fr_t_dash.png',
+  fr_t_crit:'assets/art/kitchen/fr_t_crit.png',
+  fr_t_kill10:'assets/art/kitchen/fr_t_kill10.png',
+  fr_t_hurt:'assets/art/kitchen/fr_t_hurt.png',
+  fr_t_lowHp:'assets/art/kitchen/fr_t_lowHp.png',
+  fr_t_unique:'assets/art/kitchen/fr_t_unique.png',
+  fr_t_xp20:'assets/art/kitchen/fr_t_xp20.png',
+  fr_t_timer5:'assets/art/kitchen/fr_t_timer5.png',
+  fr_t_still:'assets/art/kitchen/fr_t_still.png',
+  fr_t_eliteKill:'assets/art/kitchen/fr_t_eliteKill.png',
+  fr_t_levelup:'assets/art/kitchen/fr_t_levelup.png',
+  fr_t_newWave:'assets/art/kitchen/fr_t_newWave.png',
+  fr_t_shield:'assets/art/kitchen/fr_t_shield.png',
+  fr_t_heal:'assets/art/kitchen/fr_t_heal.png',
+  fr_t_bossHit:'assets/art/kitchen/fr_t_bossHit.png',
+  fr_t_multikill:'assets/art/kitchen/fr_t_multikill.png',
+  fr_t_surround:'assets/art/kitchen/fr_t_surround.png',
+  fr_t_moving:'assets/art/kitchen/fr_t_moving.png',
+  fr_t_fullHp:'assets/art/kitchen/fr_t_fullHp.png',
+  fr_t_bossAppear:'assets/art/kitchen/fr_t_bossAppear.png',
+  fr_t_kill25:'assets/art/kitchen/fr_t_kill25.png',
+  fr_t_timer10:'assets/art/kitchen/fr_t_timer10.png',
+  fr_e_shock:'assets/art/kitchen/fr_e_shock.png',
+  fr_e_shots:'assets/art/kitchen/fr_e_shots.png',
+  fr_e_heal:'assets/art/kitchen/fr_e_heal.png',
+  fr_e_shield:'assets/art/kitchen/fr_e_shield.png',
+  fr_e_freeze:'assets/art/kitchen/fr_e_freeze.png',
+  fr_e_rage:'assets/art/kitchen/fr_e_rage.png',
+  fr_e_bolt:'assets/art/kitchen/fr_e_bolt.png',
+  fr_e_cdr:'assets/art/kitchen/fr_e_cdr.png',
+  fr_e_vacuum:'assets/art/kitchen/fr_e_vacuum.png',
+  fr_e_burn:'assets/art/kitchen/fr_e_burn.png',
+  fr_e_buddy:'assets/art/kitchen/fr_e_buddy.png',
+  fr_e_immune:'assets/art/kitchen/fr_e_immune.png',
+  fr_e_meteor:'assets/art/kitchen/fr_e_meteor.png',
+  fr_e_orbit:'assets/art/kitchen/fr_e_orbit.png',
+  fr_e_haste:'assets/art/kitchen/fr_e_haste.png',
+  fr_e_sour:'assets/art/kitchen/fr_e_sour.png',
+  fr_e_cleanse:'assets/art/kitchen/fr_e_cleanse.png',
+  fr_e_hole:'assets/art/kitchen/fr_e_hole.png',
+  fr_e_recover:'assets/art/kitchen/fr_e_recover.png',
+  fr_e_burst:'assets/art/kitchen/fr_e_burst.png',
+  fr_m_big:'assets/art/kitchen/fr_m_big.png',
+  fr_m_strong:'assets/art/kitchen/fr_m_strong.png',
+  fr_m_repeat:'assets/art/kitchen/fr_m_repeat.png',
+  fr_m_faster:'assets/art/kitchen/fr_m_faster.png',
+  fr_m_fire:'assets/art/kitchen/fr_m_fire.png',
+  fr_m_ice:'assets/art/kitchen/fr_m_ice.png',
+  fr_m_chain:'assets/art/kitchen/fr_m_chain.png',
+  fr_m_gamble:'assets/art/kitchen/fr_m_gamble.png',
+  fr_m_focus:'assets/art/kitchen/fr_m_focus.png',
+  fr_m_slow:'assets/art/kitchen/fr_m_slow.png',
+  fr_m_sweet:'assets/art/kitchen/fr_m_sweet.png',
+  fr_m_sour:'assets/art/kitchen/fr_m_sour.png',
+  fr_m_twin:'assets/art/kitchen/fr_m_twin.png',
   dig_bg:'assets/art/dig/dig_bg.webp',
   dig_chest:'assets/art/dig/dig_chest.webp',
   dig_chest_open:'assets/art/dig/dig_chest_open.webp',
@@ -2420,6 +2476,7 @@ const FR_SIGNATURES=[
 ];
 function frSignature(r){ const t=r&&(r.t||'').replace(/^t:/,''),e=r&&(r.e||'').replace(/^e:/,''); return FR_SIGNATURES.find(x=>x.t===t&&x.e===e)||null; }
 const FR_KIND={t:FR_TRIGGERS,e:FR_EFFECTS,m:FR_MODS};
+function frIconKey(key){ const icon=key&&'fr_'+key[0]+'_'+key.slice(2); return icon&&ASSET_IMAGES[icon]?icon:null; }
 function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); return (FR_KIND[k]||[]).find(x=>x.id===id)||null; }   // key = 't:dash' / 'e:shock' / 'm:big'
 function frCost(r){ return r?['t','e','m'].reduce((a,k)=>a+((frPart(r[k])||{}).cost||0),0):0; }
 function frSentence(r){ const t=frPart(r&&r.t),e=frPart(r&&r.e),m=frPart(r&&r.m); if(!t||!e)return 'Empty recipe'; const sg=frSignature(r);
@@ -5699,8 +5756,8 @@ class Game extends Phaser.Scene {
       const cost=frCost(r),full=r.t&&r.e; const pw=(cw-70)/3;
       ['t','e','m'].forEach((k,j)=>{ const px=22+j*(pw+4),py=y+5,ph=rowH-24,pt=frPart(r[k]),act=on&&sel.k===k,pg=this.add.graphics();
         pg.fillStyle(pt?col[k]:0x1b1624,pt?0.22:1); pg.fillRoundedRect(px,py,pw,ph,8); pg.lineStyle(act?2.5:1,act?0xffffff:col[k],act?1:0.6); pg.strokeRoundedRect(px,py,pw,ph,8);
-        const tx=this.add.text(px+pw/2,py+ph/2,pt?pt.emoji+' '+pt.name+(Save.frLv(r[k])>1?' ★'+Save.frLv(r[k]):''):lbl[k]+(k==='m'?' (opt)':' ?'),{fontFamily:'sans-serif',fontStyle:pt?'bold':'normal',fontSize:'9px',color:pt?'#ffffff':'#8d8195',align:'center',wordWrap:{width:pw-6}}).setOrigin(0.5);
-        this.menu.add([pg,tx]); this._zone(px,py,pw,ph,()=>{ if(sel.slot===i&&sel.k===k&&r[k]){ if(Save.frRemove(i,k)==='sugar')this.menuToast('Removing a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); Sfx.select(); } else { if(sel.k!==k)this._kPage=0; sel.slot=i; sel.k=k; Sfx.select(); } this.buildMenuScreen(); }); });
+        const ik=pt&&frIconKey(r[k]),isz=Math.min(22,ph-2),tx=this.add.text(px+(ik?isz+3:0)+(pw-(ik?isz+3:0))/2,py+ph/2,pt?pt.name+(Save.frLv(r[k])>1?' ★'+Save.frLv(r[k]):''):lbl[k]+(k==='m'?' (opt)':' ?'),{fontFamily:'sans-serif',fontStyle:pt?'bold':'normal',fontSize:'9px',color:pt?'#ffffff':'#8d8195',align:'center',wordWrap:{width:pw-(ik?isz+6:6)}}).setOrigin(0.5);
+        this.menu.add([pg,tx]); if(ik)this.menu.add(this.add.image(px+isz/2+2,py+ph/2,ik).setDisplaySize(isz,isz)); this._zone(px,py,pw,ph,()=>{ if(sel.slot===i&&sel.k===k&&r[k]){ if(Save.frRemove(i,k)==='sugar')this.menuToast('Removing a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); Sfx.select(); } else { if(sel.k!==k)this._kPage=0; sel.slot=i; sel.k=k; Sfx.select(); } this.buildMenuScreen(); }); });
       const cc=this.add.text(14+cw-8,y+rowH/2-6,'🍯'+cost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:cost>FR_FLAVOR_CAP?'#ff7a7a':'#ffd166'}).setOrigin(1,0.5);
       const st=this.add.text(22,y+rowH-15,full?frSentence(r):'Needs a WHEN and a DO',{fontFamily:'sans-serif',fontSize:'9px',color:full?'#9ff0c8':'#8d8195'});
       this.menu.add([cc,st]); }
@@ -5713,11 +5770,12 @@ class Game extends Phaser.Scene {
       const trial=Object.assign({},cur,{[kind]:key}),ok=frCost(trial)<=FR_FLAVOR_CAP,g=this.add.graphics();
       g.fillStyle(ok?0x2c2338:0x241c2a,1); g.fillRoundedRect(x,y,gw,gh,8); g.lineStyle(1.5,ok?col[kind]:0x4a4059,1); g.strokeRoundedRect(x,y,gw,gh,8);
       const lv=Save.frLv(key),mg=c>=FR_MERGE_N&&lv<FR_LV_MAX,zw=mg?gw-34:gw;
-      const t1=this.add.text(x+6,y+5,pt.emoji+' '+pt.name+(lv>1?' ★'+lv:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:ok?'#ffffff':'#7a7088',wordWrap:{width:zw-10}});
-      const t2=this.add.text(x+6,y+gh-13,'🍯'+pt.cost+'  ×'+c+(pt.desc?'  '+pt.desc:''),{fontFamily:'sans-serif',fontSize:'8px',color:'#b7abc9'});
+      const ik=frIconKey(key),isz=28;
+      const t1=this.add.text(x+(ik?isz+8:6),y+5,pt.name+(lv>1?' ★'+lv:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:ok?'#ffffff':'#7a7088',wordWrap:{width:zw-(ik?isz+12:10)}});
+      const t2=this.add.text(x+(ik?isz+8:6),y+gh-13,'🍯'+pt.cost+'  ×'+c,{fontFamily:'sans-serif',fontSize:'8px',color:'#b7abc9'});
       if(mg){ const mb=this.add.graphics(); mb.fillStyle(0x4a3a1a,1); mb.fillRoundedRect(x+gw-32,y+4,28,gh-8,6); const mt=this.add.text(x+gw-18,y+gh/2,'⬆\n×3',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffe08a',align:'center'}).setOrigin(0.5); this.menu.add([mb,mt]);
         this._zone(x+gw-32,y,32,gh,()=>{ if(Save.frMerge(key)){ Sfx.recipeMerge(); this.digRareBurst&&this.digRareBurst(x+gw/2,y+gh/2,gh,0xffd166); this.menuToast('✨ '+pt.name+' is now ★'+Save.frLv(key)+'!','#ffe08a'); } this.buildMenuScreen(); }); }
-      this.menu.add([g,t1,t2]); this._zone(x,y,zw,gh,()=>{ const pr=Save.frPlace(sel.slot,key); if(pr==='sugar'){ Sfx.select(); this.menuToast('Swapping a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); } else if(pr){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });
+      this.menu.add([g,t1,t2]); if(ik)this.menu.add(this.add.image(x+isz/2+4,y+gh/2,ik).setDisplaySize(isz,isz).setAlpha(ok?1:0.45)); this._zone(x,y,zw,gh,()=>{ const pr=Save.frPlace(sel.slot,key); if(pr==='sugar'){ Sfx.select(); this.menuToast('Swapping a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); } else if(pr){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });
     if(!n)this.menu.add(this.add.text(w/2,by+40,'No parts of this kind yet — dig 🧩 in ⛏️ Temple Depths',{fontFamily:'sans-serif',fontSize:'10px',color:'#8d8195'}).setOrigin(0.5));
     const reset=this.add.text(w/2,h-20,this._kResetConfirm?'⚠ Confirm Kitchen reset · 🧶'+Save.kitchenResetCost():'♻ Reset Kitchen · 🧶'+Save.kitchenResetCost(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#f0a0b0'}).setOrigin(0.5);this.menu.add(reset);
     this._zone(w/2-135,h-34,270,29,()=>{if(this._kResetConfirm){if(Save.frResetRecipes()){Sfx.clear();this._kSel={slot:0,k:'t'};}else this.menuToast('Need recipes and 🧶'+Save.kitchenResetCost()+' Weave Thread','#ff9bb5');this._kResetConfirm=false;}else{this._kResetConfirm=true;Sfx.select();}this.buildKitchen();});
