@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.16';
+const GAME_VERSION = '6.0.17';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.17', date:'2026-09-29', title:'Prize wheel icon sizing', items:['Wheel icons keep their fitted size while the selection light moves and the center chest bounces'] },
   { v:'6.0.16', date:'2026-09-29', title:'Faster loading', items:['Menu backgrounds load when opened instead of blocking the initial game screen','Only stage music blocks entry; miniboss and boss music load during play','Unchanged assets keep their cached URLs across builds'] },
   { v:'6.0.15', date:'2026-09-29', title:'Illustrated drops and prize reels', items:['Field gear and crafting currency drops now show their actual illustrated icons without colour washing','Miniboss prize wheel and Bazaar slot reels show item art while spinning and revealing rewards'] },
   { v:'6.0.14', date:'2026-09-29', title:'New Hunt target artwork', items:['Hunt the Threat now uses a dedicated Sugar Stalker monster instead of an early stage elite sprite'] },
@@ -9999,7 +10000,7 @@ class Game extends Phaser.Scene {
     const slots=pool.map((p,i)=>{const a=-Math.PI/2+i/n*TAU,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;
       const g=this.add.graphics();const lab=this.add.image(x,y,p.artKey).setDisplaySize(42,42);cont.add([g,lab]);
       const draw=(on)=>{g.clear();g.fillStyle(on?p.color:0x2a1f38,on?0.95:0.92);g.fillCircle(x,y,on?31:27);g.lineStyle(on?4:2,on?0xffffff:p.color,on?1:0.7);g.strokeCircle(x,y,on?31:27);};
-      draw(false);return {x,y,g,lab,draw,p};});
+      draw(false);return {x,y,g,lab,baseScaleX:lab.scaleX,baseScaleY:lab.scaleY,draw,p};});
     // ไฟวิ่ง: เร็วมากก่อนแล้วค่อยช้าลง ต้องจบที่ winIdx พอดี
     // v5.44 🛑 กดหยุดเอง: หมุนเร็วค้างไว้จนกด STOP (หรือครบ 6 วิ) แล้วไหลต่อ ~1.5 รอบค่อย ๆ ช้าลงไปจบที่ winIdx (ผลสุ่มไว้แล้ว)
     let total=1e9,steps=[],stopped=false,cur=-1,k=0;
@@ -10010,9 +10011,10 @@ class Game extends Phaser.Scene {
       const pos=Math.max(0,cur),dist=((winIdx-pos)%n+n)%n,rem=n+Math.floor(n/2)+dist+(dist<2?n:0);total=k+rem;steps=[];for(let q=0;q<rem;q++){const t=q/Math.max(1,rem-1);steps.push(50+Math.pow(t,3)*380);} this._stopBase=k; };
     this._rollBtns=[{x:bx,y:by,w:bw,h:bh,fn:doStop}];hint.setText('Tap STOP!');
     this.time.delayedCall(6000,()=>{ if(cont.active)doStop(); });
-    const hop=()=>{ if(!cont.active)return; if(cur>=0){slots[cur].draw(false);slots[cur].lab.setScale(1);}
-      cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(1.3);Sfx.chestTick(k);this.tweens.add({targets:sl.lab,y:{from:sl.y-12,to:sl.y},duration:170,ease:'Bounce.out'});
-      this.tweens.add({targets:center,scaleX:{from:1.18,to:1},scaleY:{from:0.84,to:1},duration:150,ease:'Back.out'});
+    const chestScaleX=center.scaleX,chestScaleY=center.scaleY;
+    const hop=()=>{ if(!cont.active)return; if(cur>=0){const prev=slots[cur];prev.draw(false);prev.lab.setScale(prev.baseScaleX,prev.baseScaleY);}
+      cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(sl.baseScaleX*1.2,sl.baseScaleY*1.2);Sfx.chestTick(k);this.tweens.add({targets:sl.lab,y:{from:sl.y-12,to:sl.y},duration:170,ease:'Bounce.out'});
+      this.tweens.add({targets:center,scaleX:{from:chestScaleX*1.18,to:chestScaleX},scaleY:{from:chestScaleY*0.84,to:chestScaleY},duration:150,ease:'Back.out'});
       k++;if(upTier&&stopped&&k===this._stopBase+Math.floor((total-this._stopBase)*0.5))upgrade();
       if(k>=total){sg.setVisible(false);st.setVisible(false);this.time.delayedCall(260,()=>land());return;}
       this.time.delayedCall(stopped?steps[k-this._stopBase]||60:45,hop); };
