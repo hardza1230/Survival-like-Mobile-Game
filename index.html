@@ -34,12 +34,11 @@
   #game-loader .fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#ff628f,#ffb04c);
     box-shadow:0 0 13px #ff718d99;transition:width .18s ease;}
   #game-loader .percent{margin-top:8px;font-size:13px;font-weight:800;color:#ffd69b;}
-  #load-retry{display:none;margin:16px auto 0;padding:10px 20px;border:0;border-radius:12px;
-    background:#ff85b3;color:#fff;font-size:14px;font-weight:800;box-shadow:0 5px 14px #120b1488;cursor:pointer;}
 </style>
 <script>
   window.GameLoader = {
     _introDone:false,
+    _introFinished:false,
     _introTimer:null,
     _revealTimer:null,
     _shownAt:performance.now(),
@@ -48,6 +47,7 @@
       clearTimeout(this._introTimer);this._introTimer=null;
       root.style.opacity='0';root.style.pointerEvents='none';
       setTimeout(function(){if(root.style.opacity==='0')root.style.display='none';root.classList.remove('opening','intro-mode');},240);
+      this._introFinished=true;window.dispatchEvent(new Event('mochi-intro-finished'));
     },
     skipIntro:function(){var root=document.getElementById('game-loader');if(this._introDone&&root&&root.classList.contains('opening'))this.finishIntro();},
     show:function(label,progress){
@@ -57,13 +57,6 @@
       if(!this._shownAt)this._shownAt=performance.now();
       root.classList.toggle('intro-mode',!this._introDone); root.classList.toggle('loading-mode',this._introDone); root.classList.remove('opening');
       requestAnimationFrame(function(){root.style.opacity='1';});
-      var retry=document.getElementById('load-retry'); if(retry)retry.style.display='none';
-      clearTimeout(this._slowTimer);
-      this._slowTimer=setTimeout(function(){
-        var status=document.getElementById('load-status'), btn=document.getElementById('load-retry');
-        if(status)status.textContent='ใช้เวลานานกว่าปกติ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่';
-        if(btn)btn.style.display='block';
-      },20000);
       this.set(progress == null ? 0 : progress,label);
     },
     set:function(progress,label){
@@ -77,7 +70,6 @@
     hide:function(){
       var root=document.getElementById('game-loader');
       if(!root)return;
-      clearTimeout(this._slowTimer);
       if(!this._introDone && root.classList.contains('intro-mode')){
         this._introDone=true;
         var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -133,7 +125,6 @@
     <div class="status" id="load-status">กำลังเปิดครัวขนม...</div>
     <div class="track"><div class="fill" id="load-fill"></div></div>
     <div class="percent" id="load-percent">0%</div>
-    <button id="load-retry" onclick="clearCacheAndReload()">↻ ลองโหลดใหม่</button>
   </div>
 </div>
 <div id="err-box">

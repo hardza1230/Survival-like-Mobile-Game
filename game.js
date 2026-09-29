@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.19';
+const GAME_VERSION = '6.0.20';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.20', date:'2026-09-29', title:'Clearer card pickup and smoother opening', items:['Field upgrade rewards now appear as floating cards instead of treasure chests; Jackpot uses a centered star medal','Background stage prefetch waits until the opening camera move finishes, reducing work during the zoom'] },
   { v:'6.0.19', date:'2026-09-29', title:'Two-stage asset loading', items:['The main menu opens before stage cards, floors, decorations and boss sheets finish loading','The latest unlocked stage preloads quietly in the menu; entering another stage fetches its own artwork first'] },
   { v:'6.0.18', date:'2026-09-29', title:'Smaller stage artwork', items:['Chapter 3 boss action sheets and selected stage backdrops now use optimized WebP assets','Artwork dimensions and frame layout remain the same while reducing initial download and decode work'] },
   { v:'6.0.17', date:'2026-09-29', title:'Prize wheel icon sizing', items:['Wheel icons keep their fitted size while the selection light moves and the center chest bounces'] },
@@ -863,6 +864,8 @@ const ASSET_IMAGES = {
   prize_sugar:'assets/items/item_sugar_cube.png',
   prize_currency:'assets/items/item_jam_jar.png',
   prize_chest:'assets/items/item_chest.png',
+  pickup_upgrade_card:'assets/items/pickup_upgrade_card.png',
+  prize_jackpot:'assets/items/prize_jackpot.png',
   train_floor:'assets/training_floor.png',   // 🎓 พื้น raster ของ Training Ground
   item_scent_crystal:'assets/items/gimmick_scent_crystal.png',
   item_clean_bubble:'assets/items/gimmick_clean_bubble.png',
@@ -3921,8 +3924,9 @@ class Game extends Phaser.Scene {
     this.setupParticles();
     this.setupInput();
     this.scale.on('resize',this.onResize,this);
-    // เปิดเมนูทันที แล้วอุ่นภาพด่านล่าสุดอย่างเงียบ ๆ ระหว่างที่ผู้เล่นเลือกเมนู
-    this.time.delayedCall(900,()=>{if(this.state==='menu')this.ensureStageArt(Math.min(14,Save.data.unlockedStage||0));});
+    // รอซูมฉากเปิดจบก่อนถอดรหัสภาพด่านเบื้องหลัง (แย่งเฟรมบนมือถือ)
+    const warm=()=>this.time.delayedCall(350,()=>{if(this.state==='menu')this.ensureStageArt(Math.min(14,Save.data.unlockedStage||0));});
+    if(window.GameLoader&&window.GameLoader._introFinished)warm();else window.addEventListener('mochi-intro-finished',warm,{once:true});
   }
 
   stageArtKeys(idx){
@@ -9981,11 +9985,14 @@ class Game extends Phaser.Scene {
     if(head&&this.showBanner){ const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner(head,txt,1800); } return got; }
   // ---- หีบสมบัติ (ดWaitปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
   spawnChest(x,y,kind){ let c=this.chests.getFirstDead(false);
-    if(!c) c=this.chests.create(x,y,'chest'); else { c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
+    const art=kind==='pick'?'pickup_upgrade_card':'chest';
+    if(!c) c=this.chests.create(x,y,art); else { c.setTexture(art);c.setActive(true).setVisible(true); c.body.enable=true; c.setPosition(x,y); }
     if(!c)return; this.clearMimicCue(c);
+    c.setTexture(art).clearTint().setAlpha(1);
+    if(kind==='pick')c.body.setSize(120,154).setOffset(36,51);else c.body.setSize(c.width*0.82,c.height*0.72).setOffset(c.width*0.09,c.height*0.14);
     c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c);
     if(kind==='mini'){ c._tier=this._nextChestTier||'bronze'; this._nextChestTier=null; c._mimic=!this._noMimicNext&&!this._inTutorial&&Math.random()<0.12; this._noMimicNext=false; this.miniChestDrop(c,x,y); return; }
-    this.showPickupCue(c,kind==='pick'?0x66e0ff:0xffd166,1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
+    this.showPickupCue(c,kind==='pick'?0xff9dc4:0xffd166,kind==='pick'?1.18:1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
     this.tweens.add({targets:c,y:y-12,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // v5.12: กล่องมินิบอสหล่นจากฟ้า → กระแทกพื้น (จอสั่น+ฝุ่น) → เสาแสงสีตามระดับกล่อง มองเห็นจากไกล
   // ระดับกล่อง: โดนตีน้อย + ฆ่าเร็ว = ดีขึ้น · ความยาก Hell +1 ขั้น (กฎเหล็ก)
@@ -10018,7 +10025,7 @@ class Game extends Phaser.Scene {
       {id:'cur3',artKey:'prize_currency',emoji:'💎',name:'Currency ×3',w:tier==='bronze'?2:4,color:0x62b7ff,give:()=>this.grantCurrencyReward(3,this.currencyTierFor(),'Prize')},
       {id:'heal',artKey:'heal',emoji:'❤️',name:'Heal 40%',w:6,color:0xff6f9d,give:()=>{const p=this.player,a=Math.round(p.maxhp*0.4);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);}},
       {id:'card',artKey:'ui_card_power',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
-      {id:'jackpot',artKey:'prize_chest',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
+      {id:'jackpot',artKey:'prize_jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
     ];
   }
   addRunSugar(n){ this.showBanner('🍬 +'+n,'Grab the candy!',1100); this.spawnSugarCoins(n); }
@@ -10119,7 +10126,7 @@ class Game extends Phaser.Scene {
   openMysteryCards(done){
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.round(n*(1+si*0.3)*dr);
     const prizes=Phaser.Utils.Array.Shuffle([
-      {artKey:'prize_chest',emoji:'🌟',name:'JACKPOT',sub:'Sugar +'+S(200)+' · Currency ×2 · Full heal',color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(200));this.grantCurrencyReward(2,this.currencyTierFor(),'JACKPOT');this.player.hp=this.player.maxhp;}},
+      {artKey:'prize_jackpot',emoji:'🌟',name:'JACKPOT',sub:'Sugar +'+S(200)+' · Currency ×2 · Full heal',color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(200));this.grantCurrencyReward(2,this.currencyTierFor(),'JACKPOT');this.player.hp=this.player.maxhp;}},
       {artKey:'prize_sugar',emoji:'🍭',name:'Sugar',sub:'+'+S(70),color:0xff7fb0,give:()=>this.addRunSugar(S(70))},
       {artKey:'prize_currency',emoji:'💠',name:'Currency',sub:'×1',color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Mystery card')},
     ]);
