@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.17';
+const GAME_VERSION = '6.0.18';
 // v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
 const CROSSROADS=[
   {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
@@ -54,6 +54,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.18', date:'2026-09-29', title:'Smaller stage artwork', items:['Chapter 3 boss action sheets and selected stage backdrops now use optimized WebP assets','Artwork dimensions and frame layout remain the same while reducing initial download and decode work'] },
   { v:'6.0.17', date:'2026-09-29', title:'Prize wheel icon sizing', items:['Wheel icons keep their fitted size while the selection light moves and the center chest bounces'] },
   { v:'6.0.16', date:'2026-09-29', title:'Faster loading', items:['Menu backgrounds load when opened instead of blocking the initial game screen','Only stage music blocks entry; miniboss and boss music load during play','Unchanged assets keep their cached URLs across builds'] },
   { v:'6.0.15', date:'2026-09-29', title:'Illustrated drops and prize reels', items:['Field gear and crafting currency drops now show their actual illustrated icons without colour washing','Miniboss prize wheel and Bazaar slot reels show item art while spinning and revealing rewards'] },
@@ -1210,7 +1211,7 @@ const ASSET_IMAGES = {
   tile_skills:'assets/art/menu_buttons/tile_skills.webp',
   tile_stats:'assets/art/menu_buttons/tile_stats.webp',
   tile_talents:'assets/art/menu_buttons/tile_talents.webp',
-  tile_upgrade:'assets/art/menu_buttons/tile_upgrade.webp',  bg1:'assets/generated/bg1_sour_ant_nest.png', bg2:'assets/generated/bg2_rotting_drain.jpg', bg3:'assets/bg3.png', bg4:'assets/bg4.png', bg5:'assets/bg5.png', bg6:'assets/bg6.png',
+  tile_upgrade:'assets/art/menu_buttons/tile_upgrade.webp',  bg1:'assets/generated/bg1_sour_ant_nest.webp', bg2:'assets/generated/bg2_rotting_drain.jpg', bg3:'assets/bg3.webp', bg4:'assets/bg4.webp', bg5:'assets/bg5.webp', bg6:'assets/bg6.png',
   fx_frost:'assets/fx_frost.png', fx_donut:'assets/fx_donut.png',   // VFX รูปจริงที่ผ่านการตรวจ alpha แล้ว
   fx_ult_bomb:'assets/fx_ult_bomb.png', fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
@@ -1279,16 +1280,16 @@ const SKILL_CARD_COLOR = {
 const PASS_ICON  = { heart:'ic_mochi_vitality', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_flavor_regen', sugarOnKill:'ic_sugar_on_kill',
   bitterResolve:'ic_bitter_resolve' };
 const ASSET_SHEETS = {
-  c3_mini1:{url:'assets/art/ch3_bosses/c3_mini1_sheet.png',frame:256},
-  c3_boss1:{url:'assets/art/ch3_bosses/c3_boss1_sheet.png',frame:256},
-  c3_mini2:{url:'assets/art/ch3_bosses/c3_mini2_sheet.png',frame:256},
-  c3_boss2:{url:'assets/art/ch3_bosses/c3_boss2_sheet.png',frame:256},
-  c3_mini3:{url:'assets/art/ch3_bosses/c3_mini3_sheet.png',frame:256},
-  c3_boss3:{url:'assets/art/ch3_bosses/c3_boss3_sheet.png',frame:256},
-  c3_mini4:{url:'assets/art/ch3_bosses/c3_mini4_sheet.png',frame:256},
-  c3_boss4:{url:'assets/art/ch3_bosses/c3_boss4_sheet.png',frame:256},
-  c3_mini5:{url:'assets/art/ch3_bosses/c3_mini5_sheet.png',frame:256},
-  c3_boss5:{url:'assets/art/ch3_bosses/c3_boss5_sheet.png',frame:256},
+  c3_mini1:{url:'assets/art/ch3_bosses/c3_mini1_sheet.webp',frame:256},
+  c3_boss1:{url:'assets/art/ch3_bosses/c3_boss1_sheet.webp',frame:256},
+  c3_mini2:{url:'assets/art/ch3_bosses/c3_mini2_sheet.webp',frame:256},
+  c3_boss2:{url:'assets/art/ch3_bosses/c3_boss2_sheet.webp',frame:256},
+  c3_mini3:{url:'assets/art/ch3_bosses/c3_mini3_sheet.webp',frame:256},
+  c3_boss3:{url:'assets/art/ch3_bosses/c3_boss3_sheet.webp',frame:256},
+  c3_mini4:{url:'assets/art/ch3_bosses/c3_mini4_sheet.webp',frame:256},
+  c3_boss4:{url:'assets/art/ch3_bosses/c3_boss4_sheet.webp',frame:256},
+  c3_mini5:{url:'assets/art/ch3_bosses/c3_mini5_sheet.webp',frame:256},
+  c3_boss5:{url:'assets/art/ch3_bosses/c3_boss5_sheet.webp',frame:256},
 
   char_yuzu:{url:'assets/characters/yuzu_sheet.png',frame:128},
   char_yuzu_run:{url:'assets/characters/yuzu_run_sheet.png',frame:128},
