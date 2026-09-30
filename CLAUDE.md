@@ -4,6 +4,13 @@
 > อ่านไฟล์นี้ให้จบก่อน จะได้ทำงานต่อได้ทันทีโดยไม่ต้องให้เจ้าของเล่าซ้ำ
 > **เมื่อจบงานแต่ละก้อน ให้ปรับ "สถานะปัจจุบัน" และ "ถัดไป" ในไฟล์นี้ให้ตรงเสมอ**
 
+## Stage summary art — v6.0.47
+- Generated `assets/ui/results/stage_summary_panel.webp`, painted medal/frame/reward tray/pink button
+- Viewport-fit portrait panel; independent wrapped label/value columns; level-up points and mastery kept concise; currency tray supports 12 items
+- Rewarded Sugar x2 and continue callbacks preserved; daily bonus and Sugar Order shown as separate rows
+- Checks/build and summary layout test pass: three viewports, eight statistic rows, 12 currencies, ad/continue callbacks. Browser screenshot unavailable in this environment.
+- Next: mobile visual review, especially compact/landscape reading sizes
+
 ## Special Temple Cores art — v6.0.46
 - Generated raster card: `assets/ui/temple/special_core_card.webp`; gold/ivory frame, mint crystal socket and jade button
 - Responsive rows show more cores on tall screens; dynamic text/icons/level gems overlaid; footer uses existing painted navigation art

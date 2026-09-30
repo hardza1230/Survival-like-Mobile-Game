@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.46';
+const GAME_VERSION = '6.0.47';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.47', date:'2026-10-01', title:'Illustrated stage results', items:['Painted candy medal, gold frame, reward tray and crystal button','Statistics use separate label and value columns','Character level and mastery no longer overlap their labels'] },
   { v:'6.0.46', date:'2026-10-01', title:'Painted Special Core temple', items:['Illustrated gold and mint crystal cards replace flat panels','Core icons, level gems and upgrade buttons share one temple frame','Responsive card count fills tall screens with more cores'] },
   { v:'6.0.45', date:'2026-10-01', title:'Smooth movement for every hero', items:['All heroes keep their walking rhythm while attacking','Gentler breathing, lean and attack recoil across the roster','Stationary attack, hurt and dash poses remain available'] },
   { v:'6.0.44', date:'2026-09-30', title:'Mint movement polish', items:['Mint keeps walking while firing Frost Lance and Mint Gale','Gentler breathing, lean and cast recoil keep her silhouette steady','Stationary casts match their sprite scale immediately'] },
@@ -1352,6 +1353,7 @@ const ASSET_IMAGES = {
   p_flour:'assets/p_flour.png', p_candybarrel:'assets/p_candybarrel.png', p_sack:'assets/p_sack.png', p_flourspill:'assets/p_flourspill.png', p_cans:'assets/p_cans.png', p_jars:'assets/p_jars.png',
   p_rollingpin:'assets/p_rollingpin.png', p_jamspice:'assets/p_jamspice.png', p_honey:'assets/p_honey.png', p_board:'assets/p_board.png', p_measure:'assets/p_measure.png', p_mouse:'assets/p_mouse.png',
   ui_talent_hall:'assets/ui_talent_hall.webp',
+  stage_summary_panel:'assets/ui/results/stage_summary_panel.webp',
   temple_core_card:'assets/ui/temple/special_core_card.webp',
   proj_bear_donut:'assets/proj_bear_donut.png', vfx_choco_glaze:'assets/vfx_choco_glaze.png', vfx_bear_shockwave:'assets/vfx_bear_shockwave.png',
   ui_card_attack:'assets/ui/ui_card_attack.png', ui_card_power:'assets/ui/ui_card_power.png',
@@ -8304,45 +8306,44 @@ class Game extends Phaser.Scene {
     this.state='summary'; this.physics.pause(); this.player.setVelocity(0,0);
     this._summaryLast=last;
     const w=this.W,h=this.H, st=STAGES[this.stageIndex]; this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.9).setOrigin(0,0);
-    const reward=this._stageReward||{artKey:'prize_sugar',emoji:'🍬',label:'Stage Rewards'};
-    const em=reward.artKey&&this.textures.exists(reward.artKey)?this.add.image(w/2,h*0.2,reward.artKey).setDisplaySize(72,72):this.add.text(w/2,h*0.2,reward.emoji,{fontSize:'54px'}).setOrigin(0.5);
-    const t=this.add.text(w/2,h*0.31,(this._quitSummary?'Left ':'Cleared ')+st.emoji+' '+st.name+(this._quitSummary?'':'!'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166',align:'center',wordWrap:{width:w*0.85}}).setOrigin(0.5);
-    const mm=Math.floor(this.elapsed/60), ss=Math.floor(this.elapsed%60);
-    const cp=Save.cp(this.character), ch=CHARACTERS[this.character];
-    // v4.25: เหลือเฉพาะที่ใช้ต่อจริง (Sugar/Power/Level) + สถิติรัน (เวลา/kill/กล่อง) — ตัด Boss Rage/EXP/Build ทิ้ง
+    const bg=this.add.rectangle(0,0,w,h,0x100b19,0.9).setOrigin(0,0);
+    const pw=Math.min(w-20,(h-20)*2/3),ph=pw*1.5,px=(w-pw)/2,py=(h-ph)/2;
+    const panel=this.add.image(w/2,h/2,'stage_summary_panel').setDisplaySize(pw,ph);
+    const font=Math.max(8,Math.min(13,pw*.035));
+    const t=this.add.text(w/2,py+ph*.194,(this._quitSummary?'Left ':'Cleared ')+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(19,pw*.049)+'px',color:'#fff8da',align:'center',wordWrap:{width:pw*.60}}).setOrigin(.5);
+    const mm=Math.floor(this.elapsed/60),ss=Math.floor(this.elapsed%60),cp=Save.cp(this.character);
     const rows=[
-      ['⏱ Total Time', mm+':'+ss.toString().padStart(2,'0')],
-      ['☠ Minions Killed', String(this.stageKills||0)],
-      ['🍬 Sugar Earned', '+'+this.sugarStage+(this._dailyBonus?' (Daily +'+this._dailyBonus+')':'')],
-      ...(this._orderReward?[['📋 Sugar Order',this._orderReward.emoji+' +'+this._orderReward.qty+' '+this._orderReward.unit]]:[]),
-      ['📦 Boxes Opened', String((this._openedBoxes||[]).length)],
-      ['⚡ Power', (this._powerBefore||Save.power(this.character))+' → '+(this._powerAfter||Save.power(this.character))+(this._firstMastery?' · Mastery!':'')],
-      ['🌟 Character Level', 'Lv '+cp.lvl+(this._lastLvlUps>0?'  (Level up! +'+this._lastLvlUps+' pts)':'')],
+      ['Total Time',mm+':'+ss.toString().padStart(2,'0')],
+      ['Minions Killed',String(this.stageKills||0)],
+      ['Sugar Earned','+'+this.sugarStage],
+      ...(this._dailyBonus?[['Daily Bonus','+'+this._dailyBonus]]:[]),
+      ...(this._orderReward?[['Sugar Order','+'+this._orderReward.qty+' '+this._orderReward.unit]]:[]),
+      ['Boxes Opened',String((this._openedBoxes||[]).length)],
+      ['Power',(this._powerBefore||Save.power(this.character))+' → '+(this._powerAfter||Save.power(this.character))],
+      ['Character Level','Lv '+cp.lvl+(this._lastLvlUps>0?' · +'+this._lastLvlUps+' pts':'')],
     ];
-    const box=[bg,em,t]; let y=h*0.39,step=Math.min(28,(h*0.70-y)/rows.length),rowFont=Math.max(9,Math.min(15,step-2));
-    rows.forEach(r=>{ const l=this.add.text(w/2-120,y,r[0],{fontFamily:'sans-serif',fontSize:rowFont+'px',color:'#c7bdd6'}).setOrigin(0,0.5);
-      const v=this.add.text(w/2+120,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:'#ffffff'}).setOrigin(1,0.5);
-      box.push(l,v); y+=step; });
-    // 🧪 Currency ที่ได้ในด่านนี้ (แถบไอคอนแบบหน้า Craft) + รายการกล่องที่เปิด
-    const cur=this._runCurrency||{}, curKeys=Object.keys(cur).filter(k=>cur[k]>0);
-    if(curKeys.length){ const cl=this.add.text(w/2,y,'🧪 Currency Gained',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:'#9fe8ff'}).setOrigin(0.5); box.push(cl); y+=step*0.9;
-      const per=Math.min(6,curKeys.length), cw=Math.min(52,(w*0.86)/per); let cx0=w/2-(Math.min(per,curKeys.length)*cw)/2+cw/2;
-      curKeys.slice(0,12).forEach((k,i)=>{ const col=i%per, row2=Math.floor(i/per), ex=w/2-(per*cw)/2+cw/2+col*cw, ey=y+row2*(step*1.1);
-        const d=currencyDef(k),ic=d&&this.textures.exists(d.asset)?this.add.image(ex,ey,d.asset).setDisplaySize(23,23):this.add.text(ex,ey,d?d.emoji:'💠',{fontSize:Math.min(20,rowFont+8)+'px'}).setOrigin(0.5),n=this.add.text(ex,ey+16,'x'+cur[k],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5); box.push(ic,n); });
-      y+=step*1.1*Math.ceil(Math.min(curKeys.length,12)/per)+4; }
-    this._summaryBtns=[]; this._summaryBonus=this.sugarStage;   // เก็บ Sugar ด่านนี้ไว้ทำ x2 ด้วยโฆษณา
-    // 📺 รับ Sugar x2 (ดูโฆษณา · timesเดียว)
-    if(this._summaryBonus>0&&!this._summaryDoubled){ const dw=Math.min(300,w-52),dh=44,dy=h*0.72,dg=this.add.graphics();
-      dg.fillStyle(0xd8a33a,1);dg.fillRoundedRect(w/2-dw/2,dy-dh/2,dw,dh,16);dg.lineStyle(2,0xffffff,0.3);dg.strokeRoundedRect(w/2-dw/2,dy-dh/2,dw,dh,16);
-      const dt2=this.add.text(w/2,dy,'📺 Get Sugar x2 (+'+this._summaryBonus+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff'}).setOrigin(0.5);
-      box.push(dg,dt2); this._summaryBtns.push({x:w/2-dw/2,y:dy-dh/2,w:dw,h:dh,fn:()=>this.showRewardedAd('Get double Sugar (+'+this._summaryBonus+')',()=>this.adDoubleSugar())}); }
-    const bw2=240,bh2=60,byc=h*0.82;
-    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,22);
-    const bt=this.add.text(w/2,byc,last?'🏆 View Summary':'🗺 Back to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff'}).setOrigin(0.5);
-    box.push(btn,bt); this.over.add(box); this.over.setVisible(true);
-    this._summaryBtns.push({x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.continueFromSummary()});   // ปิดหน้าสรุปได้เฉพาะกดปุ่มนี้
-    this.tweens.add({targets:bt,alpha:{from:0.65,to:1},yoyo:true,repeat:-1,duration:700});
+    const box=[bg,panel,t],step=ph*.34/rows.length,rowFont=Math.min(font,step*.45);
+    rows.forEach((r,i)=>{const y=py+ph*.275+i*step;
+      const l=this.add.text(px+pw*.13,y,r[0],{fontFamily:'sans-serif',fontSize:rowFont+'px',color:'#d9c8e3',wordWrap:{width:pw*.33}}).setOrigin(0,.5);
+      const v=this.add.text(px+pw*.87,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:i===2?'#ffe18b':'#fff5dd',align:'right',wordWrap:{width:pw*.38}}).setOrigin(1,.5);box.push(l,v);
+    });
+    if(this._firstMastery){box.push(this.add.text(w/2,py+ph*.613,'Stage Mastery earned!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#b9ffe1'}).setOrigin(.5));}
+    const cur=this._runCurrency||{},curKeys=Object.keys(cur).filter(k=>cur[k]>0).slice(0,12);
+    box.push(this.add.text(w/2,py+ph*.709,curKeys.length?'Currency Gained':'No currency this run',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#ffe9bc'}).setOrigin(.5));
+    if(curKeys.length){const per=Math.min(6,curKeys.length),cell=pw*.73/per,two=curKeys.length>per;
+      curKeys.forEach((k,i)=>{const ex=w/2-(per*cell)/2+cell/2+(i%per)*cell,ey=py+ph*(two?.746:.762)+Math.floor(i/per)*ph*.047,d=currencyDef(k),size=Math.min(25,pw*.063);
+        const icon=d&&this.textures.exists(d.asset)?this.add.image(ex,ey,d.asset).setDisplaySize(size,size):this.add.text(ex,ey,d?d.emoji:'💠',{fontSize:size+'px'}).setOrigin(.5);
+        const qty=this.add.text(ex,ey+size*.62,'x'+cur[k],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(7,font-3)+'px',color:'#fff'}).setOrigin(.5);box.push(icon,qty);
+      });}
+    this._summaryBtns=[];this._summaryBonus=this.sugarStage;
+    if(this._summaryBonus>0&&!this._summaryDoubled){const dw=pw*.72,dh=Math.min(32,ph*.055),dy=py+ph*.657;
+      const ad=this.add.image(w/2,dy,'painted_nav_button').setDisplaySize(dw,dh),adText=this.add.text(w/2,dy,'Get Sugar x2 (+'+this._summaryBonus+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#fff3ce'}).setOrigin(.5);box.push(ad,adText);
+      this._summaryBtns.push({x:w/2-dw/2,y:dy-dh/2,w:dw,h:dh,fn:()=>this.showRewardedAd('Get double Sugar (+'+this._summaryBonus+')',()=>this.adDoubleSugar())});}
+    const bw=pw*.60,bh=ph*.078,by=py+ph*.88;
+    const bt=this.add.text(w/2,by,last?'View Summary':'Back to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(16,pw*.041)+'px',color:'#fff8ee',align:'center',wordWrap:{width:bw*.95}}).setOrigin(.5);
+    box.push(bt);this.over.add(box);this.over.setVisible(true);
+    this._summaryBtns.push({x:w/2-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.continueFromSummary()});
+
     // (คง this.sugarStage ไว้เพื่อ re-render ตอนกด x2 · จะรีเซ็ตใน continueFromSummary)
   }
   adDoubleSugar(){ if(this._summaryDoubled)return; this._summaryDoubled=true; const bonus=this._summaryBonus||0; if(bonus>0)Save.addSugar(bonus);
