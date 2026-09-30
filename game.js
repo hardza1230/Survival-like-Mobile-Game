@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.39';
+const GAME_VERSION = '6.0.40';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.40', date:'2026-09-30', title:'Temple emblems and reward wheel art', items:['Five special core icons share one painted transparent atlas','Six illustrated weave rank emblems replace the temple star','Reward wheel uses a clean rose-gold chamber with no baked reward icons'] },
   { v:'6.0.39', date:'2026-09-30', title:'Rank-unlocked special temple cores', items:['Five permanent utility cores unlock at weave ranks 1–5 and upgrade with Weave Thread','Special cores have three levels, persist through promotion and apply to combat and loadout stats'] },
   { v:'6.0.38', date:'2026-09-30', title:'Illustrated Flavor Weave cores', items:['Life Core uses a pink heart crystal, Flavor Spark an amber sugar flame, and Oath Shell a sapphire shell shield','The three temple core cards display matching painted icons with transparent backgrounds'] },
   { v:'6.0.37', date:'2026-09-30', title:'Painted navigation and streamlined stage entry', items:['Bazaar and Heroes navigation use painted mochi and gold button art','Refresh has its own row below Bazaar tabs','Story stages start directly without difficulty or curse selection','Equipment compares a compact ATK range instead of separate min/max lines','Reroll and Banish controls are removed from card selection'] },
@@ -860,6 +861,8 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  temple_special_cores:'assets/art/temple/special_cores_sheet.png',
+  temple_rank_emblems:'assets/art/temple/rank_emblems_sheet.png',
   temple_life_core:'assets/art/temple/life_core.png',
   temple_flavor_spark:'assets/art/temple/flavor_spark.png',
   temple_oath_shell:'assets/art/temple/oath_shell.png',
@@ -886,7 +889,7 @@ const ASSET_IMAGES = {
   prize_sugar:'assets/icons/icon_sugar.png',
   prize_currency:'assets/art/rewards/prize_currency_mystery.webp',
   prize_chest:'assets/art/rewards/prize_chest_clean.webp',
-  prize_wheel_bg:'assets/art/rewards/prize_wheel_bg.webp',
+  prize_wheel_bg:'assets/art/rewards/prize_wheel_bg_v2.png',
   mystery_card_back:'assets/art/rewards/mystery_card_back.png',
   chest_badge_bronze:'assets/art/rewards/chest_badge_bronze.webp',
   chest_badge_silver:'assets/art/rewards/chest_badge_silver.webp',
@@ -2385,11 +2388,11 @@ const UPGRADES = {
 const UPG_ORDER=['hp','dmg','def'];
 // Special cores are permanent utility upgrades; they never gate or reset on promotion.
 const SPECIAL_CORES = [
-  {id:'magnet',name:'Magnet Core',rank:1,mod:'pick',per:10,base:6,icon:'currency_twist_cream',desc:'+10% pickup range / level',effect:n=>'+'+(n*10)+'% pickup range'},
-  {id:'dash',name:'Blink Core',rank:2,mod:'dash',per:4,base:8,icon:'currency_fading_gumdrop',desc:'-4% dash cooldown / level',effect:n=>'-'+(n*4)+'% dash cooldown'},
-  {id:'insight',name:'Insight Core',rank:3,mod:'xp',per:5,base:10,icon:'currency_spark_sugar',desc:'+5% EXP gain / level',effect:n=>'+'+(n*5)+'% EXP gain'},
-  {id:'treasure',name:'Treasure Core',rank:4,mod:'orbfind',per:5,base:12,icon:'currency_crown_icing',desc:'+5% currency find / level',effect:n=>'+'+(n*5)+'% currency find'},
-  {id:'signature',name:'Signature Core',rank:5,mod:'uniquecd',per:3,base:14,icon:'currency_wish_candy',desc:'-3% Unique cooldown / level',effect:n=>'-'+(n*3)+'% Unique cooldown'},
+  {id:'magnet',name:'Magnet Core',rank:1,mod:'pick',per:10,base:6,icon:'temple_special_cores',frame:0,desc:'+10% pickup range / level',effect:n=>'+'+(n*10)+'% pickup range'},
+  {id:'dash',name:'Blink Core',rank:2,mod:'dash',per:4,base:8,icon:'temple_special_cores',frame:1,desc:'-4% dash cooldown / level',effect:n=>'-'+(n*4)+'% dash cooldown'},
+  {id:'insight',name:'Insight Core',rank:3,mod:'xp',per:5,base:10,icon:'temple_special_cores',frame:2,desc:'+5% EXP gain / level',effect:n=>'+'+(n*5)+'% EXP gain'},
+  {id:'treasure',name:'Treasure Core',rank:4,mod:'orbfind',per:5,base:12,icon:'temple_special_cores',frame:3,desc:'+5% currency find / level',effect:n=>'+'+(n*5)+'% currency find'},
+  {id:'signature',name:'Signature Core',rank:5,mod:'uniquecd',per:3,base:14,icon:'temple_special_cores',frame:4,desc:'-3% Unique cooldown / level',effect:n=>'-'+(n*3)+'% Unique cooldown'},
 ];
 function applySpecialCores(p){
   for(const core of SPECIAL_CORES){ const n=Save.specialCoreLvl(core.id); if(n>0&&(Save.data.rank||0)>=core.rank){ const mod=affixDef(core.mod); if(mod)mod.apply(p,n*core.per); } }
@@ -5850,14 +5853,24 @@ class Game extends Phaser.Scene {
   rerollZoneMods(idx){ if(Save.currency('chaos')<1){ Sfx.select&&Sfx.select(); this.menuToast&&this.menuToast('Need '+currencyDef('chaos').emoji+' '+currencyDef('chaos').name+' to reroll','#ff9bb5'); return; }
     Save.spendCurrency('chaos',1); const n=1+Math.floor(Math.random()*3),pool=ZONE_MODIFIERS.map(m=>m.id),picked=[]; while(picked.length<n&&pool.length)picked.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
     Save.data.zoneMods=picked; Save.save(); Sfx.clear&&Sfx.clear(); this.buildZoneModifiers(idx); }
+  templeArtFrames(){
+    for(const [key,cols,rows] of [['temple_special_cores',5,1],['temple_rank_emblems',3,2]]){
+      if(!this.textures.exists(key))continue;const tex=this.textures.get(key),src=tex.getSourceImage();
+      for(let i=0;i<cols*rows;i++){const frame='cell'+i;if(tex.has(frame))continue;
+        const x=Math.round((i%cols)*src.width/cols),y=Math.round(Math.floor(i/cols)*src.height/rows),right=Math.round((i%cols+1)*src.width/cols),bottom=Math.round((Math.floor(i/cols)+1)*src.height/rows);
+        tex.add(frame,0,x,y,right-x,bottom-y);}
+    }
+  }
   buildUpgrade(){
     if(this._templeSpecial)return this.buildSpecialCores();
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple','ui_talent_hall');
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
+    this.templeArtFrames();
     const portrait=w<=h,ry=portrait?82:55;
     const rk=this.add.text(w/2,ry,'Current weave rank   ·   🧶 '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9c9e8'}).setOrigin(0.5);
-    const rn=this.add.text(w/2,ry+17,'⭐ '+rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
+    const rn=this.add.text(w/2,ry+17,rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
     this.menu.add([rk,rn]);
+    if(this.textures.exists('temple_rank_emblems')){const badge=this.add.image(32,ry+13,'temple_rank_emblems','cell'+Math.min(5,rank)).setDisplaySize(42,42);this.menu.add(badge);rn.setFontSize(w<360?'14px':'17px');}
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
     const rpFree=Save.rankPointsFree(), rkW=portrait?Math.min(124,(w-44)/3):124,rkH=30,rkX=portrait?w/2-rkW*1.5-6:w-14-rkW,rkY=portrait?ry+32:44;
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
@@ -5923,6 +5936,7 @@ class Game extends Phaser.Scene {
   }
   buildSpecialCores(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Special Temple Cores','ui_talent_hall');
+    this.templeArtFrames();
     const w=this.W,h=this.H,top=w<=h?86:58,rank=Save.data.rank||0;
     const note=this.add.text(w/2,top,'Rank '+rank+' · '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffe08a'}).setOrigin(.5);
     const hint=this.add.text(w/2,top+21,'Permanent bonuses · remain after promotion',{fontFamily:'sans-serif',fontSize:'10px',color:'#cbbfda'}).setOrigin(.5);this.menu.add([note,hint]);
@@ -5930,7 +5944,7 @@ class Game extends Phaser.Scene {
     SPECIAL_CORES.slice(page*count,page*count+count).forEach((core,i)=>{
       const y=start+i*(rowH+8),lvl=Save.specialCoreLvl(core.id),locked=rank<core.rank,maxed=lvl>=3,cost=Save.specialCoreCost(core.id),g=this.add.graphics();
       g.fillStyle(locked?0x25202f:0x293c3b,1);g.fillRoundedRect(14,y,w-28,rowH,12);g.lineStyle(1,locked?0x4a4059:0x5ad1c4,1);g.strokeRoundedRect(14,y,w-28,rowH,12);this.menu.add(g);
-      if(this.textures.exists(core.icon)){const im=this.add.image(42,y+rowH/2,core.icon).setDisplaySize(38,38).setAlpha(locked?.35:1);this.menu.add(im);}
+      if(this.textures.exists(core.icon)){const im=this.add.image(42,y+rowH/2,core.icon,'cell'+core.frame).setDisplaySize(46,60).setAlpha(locked?.35:1);this.menu.add(im);}
       const text=this.add.text(70,y+10,core.name+' · Lv '+lvl+'/3\n'+core.effect(lvl)+'\n'+(locked?'Unlock: '+rankName(core.rank):core.desc),{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#93889f':'#e8fff6',lineSpacing:5,wordWrap:{width:w-94}});this.menu.add(text);
       const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread';
       this.uiPillBtn(this.menu,w-65,y+rowH-15,90,24,locked||maxed?0x3a3550:0x36775f,'',label,()=>{if(locked||maxed)return;if(Save.buySpecialCore(core.id)){Sfx.clear();this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
@@ -10276,7 +10290,8 @@ class Game extends Phaser.Scene {
     this._prevRollState=this.state;this.state='rolling';this.physics.pause();
     const w=this.W,h=this.H,cx=w/2,cy=h*0.47,R=Math.min(w*0.36,150),n=pool.length;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
-    const bg=this.add.image(cx,h/2,'prize_wheel_bg');bg.setScale(Math.max(w/bg.width,h/bg.height));
+    const backdrop=this.add.rectangle(cx,h/2,w,h,0x201323);
+    const bg=this.add.image(cx,h/2,'prize_wheel_bg');const bgScale=2*R/(bg.width*0.84);bg.setScale(bgScale).setY(cy+bg.height*(0.5-0.432)*bgScale);
     const rays=this.add.circle(cx,cy,R+42,T0.color,0.05).setStrokeStyle(1,T0.color,0.18);
     this.tweens.add({targets:rays,alpha:{from:0.45,to:1},duration:1100,yoyo:true,repeat:-1});
     const ring=this.add.graphics();ring.lineStyle(3,T0.color,0.5);ring.strokeCircle(cx,cy,R);
@@ -10286,7 +10301,7 @@ class Game extends Phaser.Scene {
     const center=this.add.image(cx,cy,'prize_chest').setDisplaySize(65,65);
     this.tweens.add({targets:center,angle:{from:-8,to:8},yoyo:true,repeat:-1,duration:120});Sfx.chestSpin();
     this.tweens.add({targets:center,y:{from:cy,to:cy-22},yoyo:true,repeat:-1,duration:210,ease:'Quad.out'});
-    cont.add([bg,rays,ring,tierBadge,ttl,hint,center]);
+    cont.add([backdrop,bg,rays,ring,tierBadge,ttl,hint,center]);
     const slots=pool.map((p,i)=>{const a=-Math.PI/2+i/n*TAU,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;
       const g=this.add.graphics();const lab=this.add.image(x,y,p.artKey).setDisplaySize(42,42);cont.add([g,lab]);
       const draw=(on)=>{g.clear();g.fillStyle(on?p.color:0x2a1f38,on?0.95:0.92);g.fillCircle(x,y,on?31:27);g.lineStyle(on?4:2,on?0xffffff:p.color,on?1:0.7);g.strokeCircle(x,y,on?31:27);};
