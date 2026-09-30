@@ -19,10 +19,10 @@
 #game-loader .k-motes{z-index:6;pointer-events:none;opacity:0;background:radial-gradient(circle at 18% 63%,#fff4c9 0 1px,transparent 3px),radial-gradient(circle at 38% 54%,#fff2d8 0 1.4px,transparent 3px),radial-gradient(circle at 72% 66%,#ffe6bd 0 1.3px,transparent 3px),radial-gradient(circle at 81% 42%,#fff2d3 0 1px,transparent 3px);background-size:79px 91px,109px 133px,131px 87px,97px 121px;animation:k-motes-float 8s 2.8s linear infinite}
 #game-loader .k-bloom{z-index:7;opacity:0;background:radial-gradient(ellipse 31% 24% at 51% 35%,#d5c7ff55,transparent 72%);mix-blend-mode:screen;pointer-events:none}
 #game-loader .k-shade{position:absolute;z-index:8;inset:0;background:linear-gradient(transparent 60%,#20132665);pointer-events:none}
-#game-loader .card{z-index:9;align-self:flex-end;margin-bottom:max(7vh,env(safe-area-inset-bottom));padding:12px 16px;border-radius:18px;background:#25192aba;backdrop-filter:blur(7px)}
+#game-loader .card{z-index:9;align-self:flex-end;margin-bottom:max(7vh,env(safe-area-inset-bottom));padding:18px 22px;border-radius:14px;background:#211927a8;backdrop-filter:blur(12px);border:1px solid #ffffff12}
 #entry-skip{display:none;position:absolute;z-index:10;right:18px;top:max(20px,env(safe-area-inset-top));border:1px solid #ffe9c488;border-radius:20px;padding:9px 14px;background:#2e1b36ba;color:#fff4e6;font:600 13px system-ui;cursor:pointer}
 #game-loader.opening #entry-skip{display:block}
-#game-loader .track:after{content:'';position:absolute;inset:0 auto 0 0;width:32%;background:linear-gradient(90deg,transparent,#fff8dc8c,transparent);animation:entry-track-sweep 2.2s ease-in-out infinite;pointer-events:none}
+#game-loader .track:after{display:none}
 @keyframes entry-track-sweep{from{transform:translateX(-110%)}to{transform:translateX(330%)}}
 @keyframes k-lamp-on{0%{opacity:0;filter:blur(7px)}18%{opacity:.76}30%{opacity:.2}48%{opacity:.92}65%{opacity:.56}100%{opacity:.85;filter:blur(4px)}}
 @keyframes k-warm-on{from{opacity:0}to{opacity:.9}}
