@@ -4,6 +4,13 @@
 > อ่านไฟล์นี้ให้จบก่อน จะได้ทำงานต่อได้ทันทีโดยไม่ต้องให้เจ้าของเล่าซ้ำ
 > **เมื่อจบงานแต่ละก้อน ให้ปรับ "สถานะปัจจุบัน" และ "ถัดไป" ในไฟล์นี้ให้ตรงเสมอ**
 
+## สถานะ All-hero movement — v6.0.45
+- ใช้แนว Mint กับ Strawberry/Momo, Cocoa, Taro, Yuzu, Sesame และ Berry ที่รองรับเซฟเดิม
+- เดิน/พุ่งไม่ถูก attack sheet ขัดจังหวะ; gait clock ต่อเนื่อง; ลด breathing/waddle/squash และมี cast recoil ทุกตัว
+- ยืนโจมตียังมีท่าเต็มตัว, hurt และ Momo dash เฉพาะตัวคงเดิม; ใช้ภาพเดิม ยังไม่แยกแขน/ขา
+- `npm run check` (รวม motion regression ทั้ง 7 ตัว) และ `npm run build:www` ผ่าน
+- ถัดไป: เล่นเทสทุกตัวบนมือถือ โดยเฉพาะ Cocoa melee ขณะเดิน และ Momo dash/hurt
+
 ## สถานะ Mint movement trial — v6.0.44
 - เดินต่อขณะยิง Frost Lance / Mint Gale, gait clock ไม่เริ่มใหม่เมื่อโจมตีหรือหยุดสั้น ๆ
 - ลด breathing / waddle / squash; เพิ่ม recoil เบา ๆ; ชดเชย padding พร้อม texture ในเฟรมเดียว

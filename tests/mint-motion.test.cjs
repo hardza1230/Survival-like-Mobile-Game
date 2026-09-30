@@ -15,5 +15,18 @@ s.poseAttack(520,'char_mint_gale');s.updatePose(.05);assert.equal(s.player.textu
 s.dashTime=.1;s.updatePose(.01);assert.equal(s.player.texture.key,'char_mint');assert.equal(s.player.frame,3);s.dashTime=0;
 s.poseFlash(5,160);s.updatePose(.01);assert.equal(s.player.frame,5);assert.equal(s._attackPoseTime,0);
 s._sqX=.6;s._sqY=1.5;s.animatePlayer(0);assert.equal(s.player.scaleX,.47);assert.equal(s.player.scaleY,.53);
-const c=scene('cocoa');c.poseAttack(280);c.updatePose(.05);assert.equal(c.player.texture.key,'char_cocoa_attack');
-console.log('Mint motion: moving casts, gait continuity, stationary cast, immediate scale, Gale, dash, hurt and Cocoa regression passed');
+for(const ch of ['momo','mint','cocoa','taro','yuzu','sesame','berry']){
+ const c=scene(ch);c.updatePose(.1);const t=c._charRunT;
+ for(let i=0;i<8;i++){c.poseAttack(280);c.updatePose(.05);assert.equal(c.player.texture.key,'char_'+ch+'_run',ch);}
+ assert(Math.abs(c._charRunT-t-.4)<1e-9,ch+' gait continuity');
+ c.player.body.velocity.x=0;c.updatePose(.05);assert.equal(c.player.texture.key,'char_'+ch+'_attack',ch+' stationary cast');
+ c.animatePlayer(.016);assert(Number.isFinite(c.player.scaleX)&&Number.isFinite(c.player.rotation),ch);
+ c.poseFlash(5,160);c.updatePose(.01);assert.equal(c.player.frame,ch==='momo'?0:5,ch+' hurt priority');
+ c.player.body.velocity.x=100;c._poseHold=0;c.dashTime=.1;c.poseAttack(280);c.updatePose(.01);
+ assert.equal(c.player.texture.key,ch==='momo'?'char_momo_dash':'char_'+ch,ch+' dash priority');
+ c.dashTime=0;c._attackPoseTime=0;c.textures.exists=k=>!k.endsWith('_attack');c.poseAttack(280);c.updatePose(.05);
+ assert.equal(c.player.texture.key,'char_'+ch+'_run',ch+' missing attack fallback');
+ c.player.body.velocity.x=0;c.updatePose(.05);const stopped=c._charRunT;c.player.body.velocity.x=100;c.updatePose(.05);
+ assert.equal(c._charRunT,stopped+.05,ch+' resume phase');
+}
+console.log('Hero motion: all seven heroes, moving/repeated/stationary casts, scale, Gale, dash, hurt, fallback and gait continuity passed');
