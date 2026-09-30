@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.45';
+const GAME_VERSION = '6.0.46';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.46', date:'2026-10-01', title:'Painted Special Core temple', items:['Illustrated gold and mint crystal cards replace flat panels','Core icons, level gems and upgrade buttons share one temple frame','Responsive card count fills tall screens with more cores'] },
   { v:'6.0.45', date:'2026-10-01', title:'Smooth movement for every hero', items:['All heroes keep their walking rhythm while attacking','Gentler breathing, lean and attack recoil across the roster','Stationary attack, hurt and dash poses remain available'] },
   { v:'6.0.44', date:'2026-09-30', title:'Mint movement polish', items:['Mint keeps walking while firing Frost Lance and Mint Gale','Gentler breathing, lean and cast recoil keep her silhouette steady','Stationary casts match their sprite scale immediately'] },
   { v:'6.0.43', date:'2026-09-30', title:'More wheel prizes and clearer boss HUD', items:['New painted Bonus Level-up and reward icons; wheel backdrop covers the screen','Wheel can award Weave Thread, shovels, ancient scrolls and Unique recharge','Stage progress and boss HP use separate rows and adapt after resizing'] },
@@ -1351,6 +1352,7 @@ const ASSET_IMAGES = {
   p_flour:'assets/p_flour.png', p_candybarrel:'assets/p_candybarrel.png', p_sack:'assets/p_sack.png', p_flourspill:'assets/p_flourspill.png', p_cans:'assets/p_cans.png', p_jars:'assets/p_jars.png',
   p_rollingpin:'assets/p_rollingpin.png', p_jamspice:'assets/p_jamspice.png', p_honey:'assets/p_honey.png', p_board:'assets/p_board.png', p_measure:'assets/p_measure.png', p_mouse:'assets/p_mouse.png',
   ui_talent_hall:'assets/ui_talent_hall.webp',
+  temple_core_card:'assets/ui/temple/special_core_card.webp',
   proj_bear_donut:'assets/proj_bear_donut.png', vfx_choco_glaze:'assets/vfx_choco_glaze.png', vfx_bear_shockwave:'assets/vfx_bear_shockwave.png',
   ui_card_attack:'assets/ui/ui_card_attack.png', ui_card_power:'assets/ui/ui_card_power.png',
   ui_card_passive:'assets/ui/ui_card_passive.png', ui_card_awakened:'assets/ui/ui_card_awakened.png',
@@ -6018,20 +6020,33 @@ class Game extends Phaser.Scene {
     this.templeArtFrames();
     const w=this.W,h=this.H,top=w<=h?86:58,rank=Save.data.rank||0;
     const note=this.add.text(w/2,top,'Rank '+rank+' · '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffe08a'}).setOrigin(.5);
-    const hint=this.add.text(w/2,top+21,'Permanent bonuses · remain after promotion',{fontFamily:'sans-serif',fontSize:'10px',color:'#cbbfda'}).setOrigin(.5);this.menu.add([note,hint]);
-    const count=w<=h?3:2,pages=Math.ceil(SPECIAL_CORES.length/count),page=Math.max(0,Math.min(pages-1,this._specialCorePage||0)),rowH=Math.min(104,(h-top-130)/count),start=top+42;
+    const hint=this.add.text(w/2,top+21,'Permanent bonuses · remain after promotion',{fontFamily:'sans-serif',fontSize:'10px',color:'#ddd1e7'}).setOrigin(.5);this.menu.add([note,hint]);
+    const cw=Math.min(w-24,450),rowH=cw/3,gap=10,start=top+39;
+    const count=Math.max(1,Math.min(SPECIAL_CORES.length,Math.floor((h-start-62+gap)/(rowH+gap))));
+    const pages=Math.ceil(SPECIAL_CORES.length/count),page=Math.max(0,Math.min(pages-1,this._specialCorePage||0)),left=(w-cw)/2;
     SPECIAL_CORES.slice(page*count,page*count+count).forEach((core,i)=>{
-      const y=start+i*(rowH+8),lvl=Save.specialCoreLvl(core.id),locked=rank<core.rank,maxed=lvl>=3,cost=Save.specialCoreCost(core.id),g=this.add.graphics();
-      g.fillStyle(locked?0x25202f:0x293c3b,1);g.fillRoundedRect(14,y,w-28,rowH,12);g.lineStyle(1,locked?0x4a4059:0x5ad1c4,1);g.strokeRoundedRect(14,y,w-28,rowH,12);this.menu.add(g);
-      if(this.textures.exists(core.icon)){const im=this.add.image(42,y+rowH/2,core.icon,'cell'+core.frame).setDisplaySize(46,60).setAlpha(locked?.35:1);this.menu.add(im);}
-      const text=this.add.text(70,y+10,core.name+' · Lv '+lvl+'/3\n'+core.effect(lvl)+'\n'+(locked?'Unlock: '+rankName(core.rank):core.desc),{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#93889f':'#e8fff6',lineSpacing:5,wordWrap:{width:w-94}});this.menu.add(text);
-      const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread';
-      this.uiPillBtn(this.menu,w-65,y+rowH-15,90,24,locked||maxed?0x3a3550:0x36775f,'',label,()=>{if(locked||maxed)return;if(Save.buySpecialCore(core.id)){Sfx.clear();this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
+      const y=start+i*(rowH+gap),lvl=Save.specialCoreLvl(core.id),locked=rank<core.rank,maxed=lvl>=3,cost=Save.specialCoreCost(core.id),affordable=Save.threads()>=cost;
+      const panel=this.add.image(w/2,y+rowH/2,'temple_core_card').setDisplaySize(cw,rowH).setAlpha(locked?.6:1);this.menu.add(panel);
+      if(this.textures.exists(core.icon)){const im=this.add.image(left+cw*.135,y+rowH*.49,core.icon,'cell'+core.frame).setDisplaySize(cw*.14,rowH*.58).setAlpha(locked?.4:1);this.menu.add(im);}
+      const tx=left+cw*.285,tw=cw*.65,fs=Math.max(9,Math.min(12,cw*.033));
+      const name=this.add.text(tx,y+rowH*.20,core.name+' · '+lvl+'/3',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:locked?'#b4a5bd':'#fff1cc',wordWrap:{width:tw}});
+      const effect=this.add.text(tx,y+rowH*.40,core.effect(lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(fs-1)+'px',color:locked?'#a69aae':'#a9ffe2'});
+      const desc=this.add.text(tx,y+rowH*.57,locked?'Unlock at '+rankName(core.rank):core.desc,{fontFamily:'sans-serif',fontSize:(fs-2)+'px',color:'#d6c7df',wordWrap:{width:tw}});this.menu.add([name,effect,desc]);
+      for(let j=0;j<3;j++){const gem=this.add.text(left+cw*(.433+j*.075),y+rowH*.80,j<lvl?'◆':'◇',{fontSize:Math.round(rowH*.17)+'px',color:j<lvl?'#a5ffe3':'#80718e'}).setOrigin(.5);this.menu.add(gem);}
+      const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread',bx=left+cw*.827,by=y+rowH*.785;
+      const buttonText=this.add.text(bx,by,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(9,fs-1)+'px',color:locked||maxed?'#d4cfdd':affordable?'#153b31':'#ffe4b4'}).setOrigin(.5);this.menu.add(buttonText);
+      if(!locked&&!maxed)this._zone(left+cw*.69,y+rowH*.64,cw*.275,rowH*.27,()=>{if(Save.buySpecialCore(core.id)){Sfx.clear();this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
     });
-    this.uiPillBtn(this.menu,w/2,h-62,150,28,0x3a3550,'','More cores · '+(page+1)+'/'+pages,()=>{this._specialCorePage=(page+1)%pages;this.buildMenuScreen();});
-    this.uiPillBtn(this.menu,w/2,h-28,180,28,0x36775f,'','Back to main cores',()=>{this._templeSpecial=false;this.buildMenuScreen();});
+    const footer=Math.min(h-61,start+count*(rowH+gap)+9);
+    const paintedButton=(cy,width,label,fn)=>{
+      const image=this.add.image(w/2,cy,'painted_nav_button').setDisplaySize(width,32),text=this.add.text(w/2,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff0d3'}).setOrigin(.5);
+      this.menu.add([image,text]);this._zone(w/2-width/2,cy-16,width,32,fn);
+    };
+    if(pages>1)paintedButton(footer,180,'More cores · '+(page+1)+'/'+pages,()=>{this._specialCorePage=(page+1)%pages;this.buildMenuScreen();});
+    paintedButton(pages>1?footer+38:footer,210,'Back to main cores',()=>{this._templeSpecial=false;this.buildMenuScreen();});
     this.menu.setVisible(true);
   }
+
   // ⛏️ v5.27 Temple Depths — หน้าขุด
   // ===== v5.37 🍳 Recipe Kitchen: ประกอบ perk เอง · แตะช่องสูตร → แตะชิ้นส่วนในถุง =====
   buildKitchen(){

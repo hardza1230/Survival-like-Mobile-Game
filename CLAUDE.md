@@ -4,6 +4,12 @@
 > อ่านไฟล์นี้ให้จบก่อน จะได้ทำงานต่อได้ทันทีโดยไม่ต้องให้เจ้าของเล่าซ้ำ
 > **เมื่อจบงานแต่ละก้อน ให้ปรับ "สถานะปัจจุบัน" และ "ถัดไป" ในไฟล์นี้ให้ตรงเสมอ**
 
+## Special Temple Cores art — v6.0.46
+- Generated raster card: `assets/ui/temple/special_core_card.webp`; gold/ivory frame, mint crystal socket and jade button
+- Responsive rows show more cores on tall screens; dynamic text/icons/level gems overlaid; footer uses existing painted navigation art
+- Checks/build and layout harness (390×844, 320×568, 844×390; bounds, locks, purchase, pagination) pass. Browser visual capture unavailable: Chromium download failed.
+- Next: verify readable text, purchase hitboxes, MAX/locked states and portrait/landscape on mobile
+
 ## สถานะ All-hero movement — v6.0.45
 - ใช้แนว Mint กับ Strawberry/Momo, Cocoa, Taro, Yuzu, Sesame และ Berry ที่รองรับเซฟเดิม
 - เดิน/พุ่งไม่ถูก attack sheet ขัดจังหวะ; gait clock ต่อเนื่อง; ลด breathing/waddle/squash และมี cast recoil ทุกตัว
