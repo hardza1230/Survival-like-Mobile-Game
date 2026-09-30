@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.40';
+const GAME_VERSION = '6.0.41';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.41', date:'2026-09-30', title:'Fix repeated miniboss chest rewards and premature clears', items:['Collected chests disable overlap before opening any reward modal','Unknown chest kinds no longer grant cards or finish a stage','Closing level-up cards never completes a stage'] },
   { v:'6.0.40', date:'2026-09-30', title:'Temple emblems and reward wheel art', items:['Five special core icons share one painted transparent atlas','Six illustrated weave rank emblems replace the temple star','Reward wheel uses a clean rose-gold chamber with no baked reward icons'] },
   { v:'6.0.39', date:'2026-09-30', title:'Rank-unlocked special temple cores', items:['Five permanent utility cores unlock at weave ranks 1–5 and upgrade with Weave Thread','Special cores have three levels, persist through promotion and apply to combat and loadout stats'] },
   { v:'6.0.38', date:'2026-09-30', title:'Illustrated Flavor Weave cores', items:['Life Core uses a pink heart crystal, Flavor Spark an amber sugar flame, and Oath Shell a sapphire shell shield','The three temple core cards display matching painted icons with transparent backgrounds'] },
@@ -8582,7 +8583,7 @@ class Game extends Phaser.Scene {
     this.state='play'; this.physics.resume();
     const queued=this._queuedBossIntro;this._queuedBossIntro=null;
     if(queued)this.time.delayedCall(80,()=>{if(this.state!=='play')return;if(queued==='mini'&&this.mode==='miniWarning')this.spawnMiniBoss();else if(queued==='final')this.spawnFinalBoss();});
-    if(this._chestReward){ this._chestReward=false; this.time.delayedCall(180,()=>{ if(this.state==='play')this.onStageClear(); }); }
+    this._chestReward=false;
   }
   // ♾️ การ์ดสแตตไม่รู้จบ — เติมช่องที่เหลือหลังอัพเกรดอาวุธตัน (แก้ปัญหา "เลเวลขึ้นแต่ไม่มีอะไรให้อัพ" ~lv15+)
   // stack เก็บใน b.endless[id] (รีเซ็ตทุกด่านผ่าน initBasicAttack) โชว์จำนวนชั้นในการ์ด
@@ -10427,14 +10428,21 @@ class Game extends Phaser.Scene {
     }});
   }
   collectChest(player,c){ if(!c.active)return;
+    const kind=c.rewardKind;if(kind!=='mini'&&kind!=='pick')return;
+    // Claim the pooled pickup before callbacks can open a modal or overlap again.
+    const tier=c._tier||'bronze',mimic=!!c._mimic;
+    c.rewardKind=null;c._mimic=false;
+    c.setActive(false).setVisible(false);if(c.body){c.body.enable=false;if(c.body.stop)c.body.stop();}
+    this.tweens.killTweensOf(c);this.hidePickupCue(c);this.clearMimicCue(c);
+    for(const key of ['_pillar','_pillarCore']){if(c[key]){this.tweens.killTweensOf(c[key]);c[key].destroy();c[key]=null;}}
+
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
-    const kind=c.rewardKind;c.rewardKind=null;
-    if(kind==='mini'&&c._mimic){ c._mimic=false; this.awakenMimic(c.x,c.y,c._tier||'bronze'); return; }
-    if(kind==='mini'){ const tier=c._tier||'bronze';this.openPrizeWheel(tier,ft=>{const finalTier=ft||tier,after=()=>{this.grantMiniChestBonus(finalTier);if(!this.offerRelic())this.showBanner('Relic slots full','Wheel and chest bonuses received',1600);};after();});return;} // Keep the full reward sequence; no random upgrade box fallback.
+    if(kind==='mini'&&mimic){ this.awakenMimic(c.x,c.y,tier); return; }
+    if(kind==='mini'){ this.openPrizeWheel(tier,ft=>{const finalTier=ft||tier,after=()=>{this.grantMiniChestBonus(finalTier);if(!this.offerRelic())this.showBanner('Relic slots full','Wheel and chest bonuses received',1600);};after();});return;} // Keep the full reward sequence; no random upgrade box fallback.
     if(kind==='pick'&&Math.random()<0.10&&this.offerRelic())return;   // 🔮 กล่องลับ 10% = Relic (v5.19.1 ลดจาก 30%)
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
-    this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
+  }
   // กล่องสุ่ม (Miniboss): หมุนสล็อตแล้วลงที่รางวัลเดียว — ตื่นเต้นกว่าเลือกเอง
   // v4.25: ชาร์จแล้วพุ่ง — ลำแสงเล็งหนา สว่าง+หนาขึ้นเรื่อย ๆ ตอนชาร์จ แล้วพุ่งตามทิศที่ตรึงไว้ (หลบด้านข้างได้)
   chargeTelegraph(b,windMs,dashSpeed,thick){
