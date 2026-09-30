@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.36';
+const GAME_VERSION = '6.0.37';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.37', date:'2026-09-30', title:'Painted navigation and streamlined stage entry', items:['Bazaar and Heroes navigation use painted mochi and gold button art','Refresh has its own row below Bazaar tabs','Story stages start directly without difficulty or curse selection','Equipment compares a compact ATK range instead of separate min/max lines','Reroll and Banish controls are removed from card selection'] },
   { v:'6.0.36', date:'2026-09-30', title:'Shop, Heroes and equipment clarity', items:['Minimal loading meter and illustrated progress meter on cleared-stage replays','Bazaar separates illustrated equipment, supplies and mystery boxes; Heroes now includes Talents and Stats','Story entry uses difficulty choices without curse tickets','Craft tiers match distinct values; Vampiric has three tiers and existing rolls keep their values','Equipment has inherent attack ranges or armor ratings used in combat and comparisons'] },
   { v:'6.0.35', date:'2026-09-30', title:'Separate Jackpot events from chest rewards', items:['Miniboss reward sequence is wheel, chest bonus, then Relic','Jackpot cards are a separate 15% random event after 60 seconds of wave combat, once per run','Gold chests no longer trigger Jackpot cards'] },
   { v:'6.0.34', date:'2026-09-30', title:'Restore miniboss chest reward sequence', items:['Keep the wheel, Gold Jackpot cards and chest bonuses before the Relic reward','Remove only the random upgrade box fallback; full Relic slots do not block the wheel or bonuses','Keep random Bronze 70%, Silver 25%, Gold 5% tiers and 12% Mimic chance'] },
@@ -857,6 +858,7 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  painted_nav_button:'assets/art/ui/painted_nav_button.png',
   replay_progress_art:'assets/art/ui/replay_progress_sheet.png',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   craft_bench_bg:'assets/ui/craft_bench_bg.webp',
@@ -2984,7 +2986,7 @@ function gearBaseStats(item){
   const armor=['armor','boots','amulet'].includes(item.slot)?Math.max(1,Math.round((2+level*.15)*quality*variation*enhance*(item.slot==='armor'?1:.4))):0;
   return{attackMin:attack,attackMax:attack?Math.max(attack+1,Math.round(attack*1.4)):0,armor};
 }
-function gearBaseStatText(item){const b=gearBaseStats(item);return b.attackMax?'ATK '+b.attackMin+'–'+b.attackMax:b.armor?'Armor '+b.armor:'Starter';}
+function gearBaseStatText(item){const b=gearBaseStats(item);return b.attackMax?'ATK '+b.attackMin+'-'+b.attackMax:b.armor?'Armor '+b.armor:'Starter';}
 function applyGearBaseStats(p,item){const b=gearBaseStats(item);p.gearAttackMin=(p.gearAttackMin||0)+b.attackMin;p.gearAttackMax=(p.gearAttackMax||0)+b.attackMax;p.armor=(p.armor||0)+b.armor;}
 function gearAttackRoll(p,rng=Math.random){const lo=p.gearAttackMin||0,hi=p.gearAttackMax||0;return lo+Math.floor(rng()*Math.max(1,hi-lo+1));}
 function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
@@ -3036,7 +3038,7 @@ function rollFieldGearTier(stageIndex,difficulty,boost=0){
 
 /* ---- Equipment compare: normalize every item effect so all deltas use "higher is better" ---- */
 const GEAR_COMPARE_STATS = [
-  {key:'attackMin',label:'Base ATK min'},{key:'attackMax',label:'Base ATK max'},{key:'armor',label:'Armor'},{key:'dmg',label:'DMG',pct:true},{key:'hp',label:'HP'},{key:'crit',label:'Crit',pct:true},
+  {key:'attack',label:'ATK',range:true},{key:'armor',label:'Armor'},{key:'dmg',label:'DMG',pct:true},{key:'hp',label:'HP'},{key:'crit',label:'Crit',pct:true},
   {key:'critDmg',label:'Crit DMG',pct:true},{key:'cdr',label:'Cooldown',pct:true},{key:'def',label:'Defense',pct:true},
   {key:'speed',label:'Move Speed',pct:true},{key:'pickup',label:'Pickup',pct:true},{key:'regen',label:'Regen/s'},
   {key:'lifeKill',label:'HP / Kill'},{key:'execute',label:'Low-HP DMG',pct:true},{key:'bossDmg',label:'Boss DMG',pct:true},
@@ -3055,10 +3057,10 @@ function gearInstanceStats(item){
 }
 function gearCompareRows(equipped,selected){
   const a=gearInstanceStats(equipped),b=gearInstanceStats(selected);
-  return GEAR_COMPARE_STATS.map(d=>Object.assign({},d,{from:a[d.key]||0,to:b[d.key]||0,delta:(b[d.key]||0)-(a[d.key]||0)}))
-    .filter(r=>Math.abs(r.from)>0.001||Math.abs(r.to)>0.001).sort((x,y)=>{const primary=k=>['attackMin','attackMax','armor'].includes(k)?1:0;return primary(y.key)-primary(x.key)||Math.abs(y.delta)-Math.abs(x.delta);});
+  return GEAR_COMPARE_STATS.map(d=>d.range?Object.assign({},d,{from:[a.attackMin||0,a.attackMax||0],to:[b.attackMin||0,b.attackMax||0],delta:((b.attackMin||0)+(b.attackMax||0)-(a.attackMin||0)-(a.attackMax||0))/2}):Object.assign({},d,{from:a[d.key]||0,to:b[d.key]||0,delta:(b[d.key]||0)-(a[d.key]||0)}))
+    .filter(r=>r.range?(r.from[1]>0||r.to[1]>0):(Math.abs(r.from)>0.001||Math.abs(r.to)>0.001)).sort((x,y)=>{const primary=k=>['attack','armor'].includes(k)?1:0;return primary(y.key)-primary(x.key)||Math.abs(y.delta)-Math.abs(x.delta);});
 }
-function gearStatText(row,value){const n=Math.abs(value-Math.round(value))<0.05?Math.round(value):Math.round(value*10)/10;return (n>0?'+':'')+n+(row.pct?'%':'');}
+function gearStatText(row,value){if(row.range)return value.join('-');const n=Math.abs(value-Math.round(value))<0.05?Math.round(value):Math.round(value*10)/10;return (n>0?'+':'')+n+(row.pct?'%':'');}
 function gearSetCompareText(slot,selected){ if(!selected)return ''; const current=gearSetCounts(),next=Object.assign({},current),old=Save.equippedGearItem(slot),oldBase=old&&GEAR_ALL.find(g=>g.id===old.baseId),newBase=GEAR_ALL.find(g=>g.id===selected.baseId);
   if(oldBase&&oldBase.set)next[oldBase.set]=Math.max(0,(next[oldBase.set]||0)-1); if(newBase&&newBase.set)next[newBase.set]=(next[newBase.set]||0)+1;
   const ids=Array.from(new Set([oldBase&&oldBase.set,newBase&&newBase.set].filter(Boolean))),parts=[];
@@ -4768,7 +4770,7 @@ class Game extends Phaser.Scene {
   // คำแนะนำ "ทำอะไรให้เก่งขึ้น" + หน้าที่จะพาไป
   powerAdvice(idx){ const thr=Save.threads(),afford=UPG_ORDER.filter(k=>Save.talCanBuy(k)).length; void thr;
     if(afford>0)return {text:'💡 You can afford '+afford+' Flavor Weave upgrade'+(afford>1?'s':'')+' — tap to power up ›',screen:'upgrade'};
-    const prev=idx-1;if(prev>=0&&STAGES[prev]){const p=STAGES[prev],lab=p.chapterStage?('C'+(p.chapter+1)+'-'+p.chapterStage):('Stage '+(prev+1));return {text:'💡 Replay '+lab+' on Hard for better gear, then equip it ›',screen:'gear'};}
+    const prev=idx-1;if(prev>=0&&STAGES[prev]){const p=STAGES[prev],lab=p.chapterStage?('C'+(p.chapter+1)+'-'+p.chapterStage):('Stage '+(prev+1));return {text:'💡 Replay '+lab+' for better gear, then equip it ›',screen:'gear'};}
     return {text:'💡 Equip and enhance better gear ›',screen:'gear'}; }
   uiStageCard(cont,x,y,w,h,st,index,open,fn){
     const currentPower=Save.power(Save.data.character),recommended=st.recommendedPower||100,ps=this.powerStatus(index);
@@ -5064,7 +5066,7 @@ class Game extends Phaser.Scene {
     const hd=this.add.text(w/2,y,ch.emoji+' '+ch.name+'  ·  ⚡ Power '+pow,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5); y+=16;
     const note=this.add.text(w/2,y,'Real loadout numbers (weapon + weave + gear + bestiary + perks)',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5); this.menu.add([hd,note]); y+=22;
     const rows=[
-      ['💥','Attack Power',Math.round(p.dmgMul*100)+'','Gear ATK '+(p.gearAttackMin||0)+'–'+(p.gearAttackMax||0)+' · flat '+(p.flatDmg||0),0xff8f5a],
+      ['💥','Attack Power',Math.round(p.dmgMul*100)+'','ATK '+(p.gearAttackMin||0)+'-'+(p.gearAttackMax||0)+' · flat '+(p.flatDmg||0),0xff8f5a],
       ['❤️','Max HP',Math.round(p.maxhp)+'','',0xff5f7a],
       ['🎯','Crit Chance',Math.round(p.critChance*100)+'%','×'+p.critMul.toFixed(2)+' crit damage',0xffd166],
       ['🛡️','Defense',Math.round((1-p.dmgTakenMul)*100)+'% less','Armor '+(p.armor||0)+' · armor reduction '+Math.round((1-armorDamageMultiplier(p))*100)+'%',0x6ec6ff],
@@ -5687,9 +5689,17 @@ class Game extends Phaser.Scene {
     const sp=this.add.image(cx,cy,key).setOrigin(0.5).setAlpha(alpha),scale=Math.min(maxW/sp.width,maxH/sp.height);
     sp.setScale(scale);this.menu.add(sp);return sp;
   }
+  paintedNavButton(cont,cx,cy,w,h,label,active,fn){
+    const texture=this.textures.get('painted_nav_button');
+    if(!texture.has('button'))texture.add('button',0,93,135,1985,425);
+    const halo=this.add.graphics();if(active){halo.fillStyle(0xffce81,.14);halo.fillRoundedRect(cx-w/2-2,cy-h/2-2,w+4,h+4,12);halo.lineStyle(1.5,0xffe3a2,.95);halo.strokeRoundedRect(cx-w/2,cy-h/2,w,h,10);}cont.add(halo);
+    const art=this.add.image(cx,cy,'painted_nav_button','button').setDisplaySize(w,h).setAlpha(active?1:.72);
+    const text=this.add.text(cx,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<100?'10px':'12px',color:active?'#fff0c7':'#eee0f3',stroke:'#271229',strokeThickness:2}).setOrigin(.5);
+    cont.add([art,text]);if(fn)this._zone(cx-w/2,cy-h/2,w,h,()=>{Sfx.select&&Sfx.select();fn();});
+  }
   drawHeroesTabs(){
     const w=this.W,y=w<=this.H?76:49,tw=Math.min(130,(w-32)/3);
-    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{this.uiPillBtn(this.menu,w/2+(i-1)*(tw+3),y+16,tw,30,(this._heroesTab||'roster')===id?COLORS.pink:COLORS.grape,'',label,()=>{this._heroesTab=id;this.menuScreen='char';this.buildHeroes();});});
+    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{this.paintedNavButton(this.menu,w/2+(i-1)*(tw+3),y+16,tw,38,label,(this._heroesTab||'roster')===id,()=>{this._heroesTab=id;this.menuScreen='char';this.buildHeroes();});});
   }
   buildHeroes(){
     const tab=this._heroesTab||'roster';if(tab==='talents')this.buildTalents();else if(tab==='stats')this.buildStats();else this.buildChars();
@@ -5775,20 +5785,15 @@ class Game extends Phaser.Scene {
     const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-28,410):Math.min(370,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
     const rows=Math.ceil(stageIds.length/cols),y0=portrait?100:69,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
     stageIds.forEach((i,pos)=>{const st=STAGES[i],col=pos%cols,row=Math.floor(pos/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked&&isStageReady(i);
-      this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.openDifficultyChoice(i));
+      this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.startStoryStage(i));
     });
     this.menu.setVisible(true);
   }
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
-  openDifficultyChoice(idx){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Stage difficulty','screen_difficulty','stage');
-    this._challengeChoice=null;this._challengeRequested=null;
-    const w=this.W,h=this.H,bw=Math.min(w-32,420),top=w<=h?118:76;
-    this.menu.add(this.add.text(w/2,top-28,STAGES[idx].name,{fontFamily:'sans-serif',fontSize:'18px',color:'#ffe08a'}).setOrigin(.5));
-    const rh=Math.min(66,(h-top-60)/DIFFS.length);
-    DIFFS.forEach((d,i)=>{this.uiPillBtn(this.menu,w/2,top+i*(rh+5)+rh/2,bw,rh, i===0?COLORS.mint:COLORS.grape,'',d.name+' · Rewards ×'+d.reward.toFixed(2),()=>{this._dailyRun=false;this._challengeRequested=null;this.stageDiff=i+1;this.startRun(idx);});});
-    this.menu.setVisible(true);
+  startStoryStage(idx){
+    this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
   }
+  openDifficultyChoice(idx){this.startStoryStage(idx);} // Compatibility route, no choice screen.
   // แผงเลือก Zone Modifiers (สแตกได้ · เปิดเยอะ = ยาก+รางวัลดี) — เปิดจากหน้าเลือกความยาก
   buildZoneModifiers(idx){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚡ Zone Modifiers','screen_zonemods');
@@ -6487,16 +6492,16 @@ class Game extends Phaser.Scene {
   }
   buildBazaar(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
-    const w=this.W,h=this.H,tab=this._bazTab||'buy',hs=this._hdrShift(),top=108+hs;
+    const w=this.W,h=this.H,tab=this._bazTab||'buy',hs=this._hdrShift(),top=(tab==='buy'?153:121)+hs;
     this.menu.add(this.add.image(22,54+hs,'prize_sugar').setDisplaySize(20,20));
     this.menu.add(this.add.text(37,54+hs,String(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(0,.5));
-    [['buy','Shop'],['gamble','Boxes'],['orders','Orders'],['sell','Sell']].forEach(([id,label],i)=>{const tw=(w-28)/4;this.uiPillBtn(this.menu,14+tw*(i+.5),83+hs,tw-5,29,id===tab?COLORS.pink:COLORS.grape,'',label,()=>{this._bazTab=id;this.buildBazaar();});});
+    [['buy','Shop'],['gamble','Boxes'],['orders','Orders'],['sell','Sell']].forEach(([id,label],i)=>{const tw=(w-28)/4;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-5,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();});});
     let y=top;
     const heading=(title)=>{this.menu.add(this.add.text(14,y,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe3ac'}));y+=23;};
     const grid=(products,cardH)=>{const cols=w>h?3:2,gap=8,cw=(w-28-gap*(cols-1))/cols;products.forEach((p,i)=>this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(cardH+gap),cw,cardH,p));y+=Math.ceil(products.length/cols)*(cardH+gap);};
     if(tab==='buy'){
       const st=this.bazaarStock(),bought=Save.data.bazaarBought||[],cols=w>h?3:2,rows=Math.ceil(3/cols)*2,cardH=Math.min(138,Math.max(70,(h-top-92)/rows-8));
-      const rc=Save.bazaarRefreshCost();this.uiPillBtn(this.menu,w-76,54+hs,124,26,COLORS.grape,'',rc?'Refresh · '+rc:'Restock tomorrow',()=>{if(rc&&Save.refreshBazaar()){Sfx.clear();this.buildBazaar();}else this.menuToast('Restocks after a stage clear','#c5b5d1');});
+      const rc=Save.bazaarRefreshCost();this.paintedNavButton(this.menu,w-90,130+hs,152,28,rc?'Refresh · '+rc:'Restock tomorrow',false,()=>{if(rc&&Save.refreshBazaar()){Sfx.clear();this.buildBazaar();}else this.menuToast('Restocks after a stage clear','#c5b5d1');});
       heading('Equipment · Chapter '+st.chapter);
       grid(st.gear.map((it,i)=>{const cost=GEAR_BUY[it.tier]||200;return{art:'gear_'+it.id,name:it.name,desc:TIER_LABEL[it.tier].name+' · equipment',price:'Sugar '+cost,sold:bought.includes('g'+i),afford:(Save.data.sugar||0)>=cost,fn:()=>this.bazaarBuyGear(it.id,'g'+i,cost)};}),cardH);
       heading('Crafting supplies');
@@ -6510,7 +6515,7 @@ class Game extends Phaser.Scene {
     }else if(tab==='orders'){
       const active=Save.sugarOrder();heading(active?'Order active · clear a regular stage':'Choose a farming order');
       SUGAR_ORDERS.forEach(o=>{const reward=DIFFS.map(d=>Math.max(1,Math.round(o.base*d.reward))).join(' / '),isActive=active&&active.id===o.id,art=o.id==='threads'?'dig_thread':o.unit==='shovels'?'dig_shovel':(currencyDef(o.id).asset||'prize_currency');
-        this._rowBtn(y,52,art,o.name,'Rewards by difficulty: '+reward+' '+o.unit,isActive?'ACTIVE':'Sugar '+o.cost,isActive?'#ffd166':active?'#7a7088':'#a8edc6',active?null:()=>{if(Save.buySugarOrder(o.id))Sfx.clear();else this.menuToast('Not enough Sugar','#f295a8');this.buildBazaar();});y+=59;});
+        this._rowBtn(y,52,art,o.name,'Stage reward: '+o.base+' '+o.unit,isActive?'ACTIVE':'Sugar '+o.cost,isActive?'#ffd166':active?'#7a7088':'#a8edc6',active?null:()=>{if(Save.buySugarOrder(o.id))Sfx.clear();else this.menuToast('Not enough Sugar','#f295a8');this.buildBazaar();});y+=59;});
       if(active)this.uiPillBtn(this.menu,w/2,y+22,w-28,40,COLORS.grape,'','Cancel order · full refund',()=>{Save.cancelSugarOrder();this.buildBazaar();});
     }else{
       heading('Sell surplus materials');const sh=Save.data.shards||0;
@@ -8481,7 +8486,7 @@ class Game extends Phaser.Scene {
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
     const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
     const finalCardW=portrait?(w-side*2):cardW;
-    const ch=Math.min(portrait?150:220,(h-startY-70-gap*(rows-1))/rows);   // เว้นล่าง 40px ให้ปุ่มสุ่มใหม่/ลบสกิล
+    const ch=Math.min(portrait?150:220,(h-startY-22-gap*(rows-1))/rows);   // เว้นล่าง 40px ให้ปุ่มสุ่มใหม่/ลบสกิล
     const total=finalCardW*cols+gap*(cols-1), lx=(w-total)/2;
     opts.forEach((o,i)=>{
       const col=i%cols,row=Math.floor(i/cols),x=lx+col*(finalCardW+gap), y=startY+row*(ch+gap);
@@ -8489,52 +8494,14 @@ class Game extends Phaser.Scene {
       this.lvlCards.push({left:x,right:x+finalCardW,top:y,bottom:y+ch,apply:o.apply,title:o.title,opt:o});
     });
     const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · one path for this run · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
-    if(this._relicPick||pathPick)this.lvlActionBtns=[]; else this.drawLevelActionBar(h-59);
+    this.lvlActionBtns=[];
     this.lvlUp.setVisible(true);
   }
-  // แถบปุ่ม "🎲 Reroll" + "🚫 Banish" (ใช้ได้จำกัดต่อด่าน)
-  drawLevelActionBar(y){
-    for(const o of this._levelActionNodes||[])if(o&&o.scene)o.destroy();this._levelActionNodes=[];
-    this.lvlActionBtns=[];
-    const w=this.W,bw=Math.min(168,(w-42)/2),bh=49,gap=10,total=bw*2+gap,x0=(w-total)/2;
-    const mk=(x,label,enabled,active,fn)=>{
-      const g=this.add.graphics();
-      g.fillStyle(active?0xff6a8f:(enabled?0x2e2540:0x201a2c),active?0.95:0.92);g.fillRoundedRect(x,y,bw,bh,10);
-      g.lineStyle(2,active?0xffe08a:(enabled?0xffb3cd:0x4a4258),enabled?0.95:0.5);g.strokeRoundedRect(x,y,bw,bh,10);
-      const t=this.add.text(x+bw/2,y+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:enabled?'#ffffff':'#7a7088',align:'center'}).setOrigin(0.5);
-      this.lvlUp.add([g,t]);this._levelActionNodes.push(g,t);
-      if(enabled)this.lvlActionBtns.push({left:x,right:x+bw,top:y,bottom:y+bh,fn});
-    };
-    const rr=this.rerollLeft||0,bb=this.banishLeft||0;
-    mk(x0,'Reroll · '+rr+' left\nNew card choices',rr>0,false,()=>this.doReroll());
-    mk(x0+bw+gap,(this.banishMode?'Tap a card to banish\nRemoved for this run':'Banish · '+bb+' left\nRemove an unwanted card'),bb>0,this.banishMode,()=>this.toggleBanishMode());
-  }
-  doReroll(){
-    if((this.rerollLeft||0)<=0)return; this.rerollLeft--; Sfx.select(); this.banishMode=false;
-    this._pendingCardConfirm=null; this.openLevelUp(); // เปิดใหม่ = สุ่มการ์ดชุดใหม่ (ไม่ลด pendingLvl)
-  }
-  toggleBanishMode(){
-    if((this.banishLeft||0)<=0)return; this.banishMode=!this.banishMode; this._pendingCardConfirm=null; Sfx.select();
-    if(this.levelChoiceHint)this.levelChoiceHint.setText(this.banishMode?'🚫 Banish mode — tap a card to remove it for this stage':'⭐ LEVEL UP — tap to choose, tap again to confirm');
-    this.drawLevelActionBar(this.H-59);
-  }
   pickCardAt(px,py){
-    // ปุ่มสุ่มใหม่/ลบสกิล ก่อน (อยู่ล่างสุด)
-    const ab=(this.lvlActionBtns||[]).find(b=>px>=b.left&&px<=b.right&&py>=b.top&&py<=b.bottom);
-    if(ab){ ab.fn(); return; }
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
-    if(this.banishMode){ this.banishCard(c); return; }
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
     c.apply(); this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
-  }
-  banishCard(c){
-    if((this.banishLeft||0)<=0)return; const o=c.opt; if(!o)return;
-    if(o.type==='heal'){if(this.showBanner)this.showBanner('💖 Recovery Card','Sweet Recovery is an emergency option and can’t be banished',1200);return;}
-    const bk=(o.type==='pas'?'p:':o.type==='basic'?'b:':'a:')+o.key; if(!this.banishedKeys)this.banishedKeys={}; this.banishedKeys[bk]=true;
-    this.banishLeft--; this.banishMode=false; this._pendingCardConfirm=null; Sfx.clear();
-    if(this.showBanner)this.showBanner('🚫 Banish',o.title+' won’t appear again this stage',1400);
-    this.openLevelUp();   // สุ่มการ์ดชุดใหม่โดยNoneสกิลที่ลบ (ไม่ลด pendingLvl)
   }
   // แตะครั้งแรก = โชว์กWaitบเรืองWaitบการ์ด ให้ผู้เล่นรู้ว่ากำลังเลือกใบนี้ (ก่อนแตะซ้ำยืนยัน)
   highlightCard(c){
