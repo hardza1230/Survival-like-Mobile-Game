@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.37';
+const GAME_VERSION = '6.0.38';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.38', date:'2026-09-30', title:'Illustrated Flavor Weave cores', items:['Life Core uses a pink heart crystal, Flavor Spark an amber sugar flame, and Oath Shell a sapphire shell shield','The three temple core cards display matching painted icons with transparent backgrounds'] },
   { v:'6.0.37', date:'2026-09-30', title:'Painted navigation and streamlined stage entry', items:['Bazaar and Heroes navigation use painted mochi and gold button art','Refresh has its own row below Bazaar tabs','Story stages start directly without difficulty or curse selection','Equipment compares a compact ATK range instead of separate min/max lines','Reroll and Banish controls are removed from card selection'] },
   { v:'6.0.36', date:'2026-09-30', title:'Shop, Heroes and equipment clarity', items:['Minimal loading meter and illustrated progress meter on cleared-stage replays','Bazaar separates illustrated equipment, supplies and mystery boxes; Heroes now includes Talents and Stats','Story entry uses difficulty choices without curse tickets','Craft tiers match distinct values; Vampiric has three tiers and existing rolls keep their values','Equipment has inherent attack ranges or armor ratings used in combat and comparisons'] },
   { v:'6.0.35', date:'2026-09-30', title:'Separate Jackpot events from chest rewards', items:['Miniboss reward sequence is wheel, chest bonus, then Relic','Jackpot cards are a separate 15% random event after 60 seconds of wave combat, once per run','Gold chests no longer trigger Jackpot cards'] },
@@ -858,6 +859,9 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  temple_life_core:'assets/art/temple/life_core.png',
+  temple_flavor_spark:'assets/art/temple/flavor_spark.png',
+  temple_oath_shell:'assets/art/temple/oath_shell.png',
   painted_nav_button:'assets/art/ui/painted_nav_button.png',
   replay_progress_art:'assets/art/ui/replay_progress_sheet.png',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
@@ -2370,11 +2374,11 @@ function passivePairHint(key){
    ผลรวมที่ใช้จริง = rank·TAL_MAX + เลเวลWaitบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ · ดาเมจเป็น flat กันเวอร์) */
 const TAL_MAX = 3;   // แต่ละแก่นอัพได้ Lv1..TAL_MAX ต่อยศ (v4.7 ลดจาก 5→3 ให้เลื่อนยศ/ได้ RP ไวขึ้น)
 const UPGRADES = {
-  hp:  { emoji:'❤️', tag:'CORE', name:'Life Core', unit:'+16 max HP/level', color:0xff5f7a, base:30, per:16,
+  hp:  { iconKey:'temple_life_core',emoji:'❤️', tag:'CORE', name:'Life Core', unit:'+16 max HP/level', color:0xff5f7a, base:30, per:16,
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
-  dmg: { emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+3% damage/level',  color:0xf0a54a, base:45, per:3,
+  dmg: { iconKey:'temple_flavor_spark',emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+3% damage/level',  color:0xf0a54a, base:45, per:3,
          apply:(p,tot)=>{ p.dmgMul*=1+0.03*tot; },           show:tot=>'+'+(3*tot)+'% DMG' },   // v4.55: เดิม +2 flat ต่อทุกฮิต (โกงกับตัวยิงถี่/tick) → เปลี่ยนเป็น %
-  def: { emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'~1.5% less damage taken/level', color:0x6ec6ff, base:40, per:1,
+  def: { iconKey:'temple_oath_shell',emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'~1.5% less damage taken/level', color:0x6ec6ff, base:40, per:1,
          apply:(p,tot)=>{ p.dmgTakenMul*=Math.pow(0.985,tot); },       show:tot=>'-'+Math.round((1-Math.pow(0.985,tot))*100)+'% DMG taken' },
 };
 const UPG_ORDER=['hp','dmg','def'];
@@ -5866,7 +5870,7 @@ class Game extends Phaser.Scene {
       const g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
       g.lineStyle(2.5,maxed?0x8bd3a0:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
       g.fillStyle(u.color,0.14); g.fillRoundedRect(x,y,64,cardH,16);
-      const em=this.add.text(x+32,y+32,u.emoji,{fontSize:'29px'}).setOrigin(0.5);
+      const em=this.textures.exists(u.iconKey)?this.add.image(x+32,y+32,u.iconKey).setDisplaySize(48,48):this.add.text(x+32,y+32,u.emoji,{fontSize:'29px'}).setOrigin(0.5);
       let stars=''; for(let s=0;s<TAL_MAX;s++) stars+=(s<lvl?'★':'☆');
       const st=this.add.text(x+32,y+61,stars,{fontFamily:'sans-serif',fontSize:'9px',color:maxed?'#8bd3a0':'#ffd166'}).setOrigin(0.5);
       const tag=this.add.text(x+75,y+13,u.tag+' · Lv '+lvl+'/'+TAL_MAX,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
