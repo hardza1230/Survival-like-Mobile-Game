@@ -42,18 +42,17 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.29';
-// v5.79: ประตูทางแยกหลังมินิบอส (เลือก 3 จาก 5)
+const GAME_VERSION = '6.0.30';
+// Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
-  {id:'treasure',emoji:'💰',name:'Treasure Room',desc:'Loot + a swarm',color:0xffd166},
-  {id:'blood',emoji:'🩸',name:'Blood Pact',desc:'−30% HP · +25% dmg',color:0xff4d6d},
-  {id:'duel',emoji:'👹',name:'Elite Duel',desc:'Beat a champion → relic',color:0xc77dff},
-  {id:'rest',emoji:'🍵',name:'Tea Rest',desc:'Heal 40% HP',color:0x7be0a0},
-  {id:'gamble',emoji:'🎲',name:'Gamble',desc:'Currency or 2 elites',color:0x6ed7df}];
+  {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
+  {id:'rest',name:'Recover HP',desc:'Restore 40% of maximum HP',detail:'No cost',artKey:'heal',color:0x8ff0b0}
+];
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.30', date:'2026-09-30', title:'Cleaner miniboss rewards', items:['Prize wheels use a dedicated backdrop without emoji confetti','Gold bonus cards use illustrated card backs','After minibosses, choose Blood Pact or Recover HP on screen; combat waits for your choice'] },
   { v:'6.0.29', date:'2026-09-30', title:'Mr. Griddle redesign', items:['Stage 3 boss now uses a cursed cast-iron griddle and chili furnace action sheet','Idle, overheat, chili spray, conveyor charge, grinder and phase-transition poses retain the existing attack timing and rules'] },
   { v:'6.0.28', date:'2026-09-29', title:'Reward artwork and Chapter 3 Bestiary', items:['Chest tiers show illustrated bronze, silver and gold badges; prize chest edges are cleaned and random currency has its own icon','Stage rewards and summary currency use item artwork; Chapter 3 enemies, minibosses and bosses are recorded in the Bestiary with painted portraits'] },
   { v:'6.0.27', date:'2026-09-29', title:'Brighter menu music', items:['Mochi Morning now has a bouncy major-key melody, quicker rhythm and playful candy-like percussion','The menu loop stays lightweight for mobile loading'] },
@@ -873,6 +872,8 @@ const ASSET_IMAGES = {
   prize_sugar:'assets/icons/icon_sugar.png',
   prize_currency:'assets/art/rewards/prize_currency_mystery.webp',
   prize_chest:'assets/art/rewards/prize_chest_clean.webp',
+  prize_wheel_bg:'assets/art/rewards/prize_wheel_bg.webp',
+  mystery_card_back:'assets/art/rewards/mystery_card_back.png',
   chest_badge_bronze:'assets/art/rewards/chest_badge_bronze.webp',
   chest_badge_silver:'assets/art/rewards/chest_badge_silver.webp',
   chest_badge_gold:'assets/art/rewards/chest_badge_gold.webp',
@@ -7890,30 +7891,47 @@ class Game extends Phaser.Scene {
     this.scheduleStageEvent(300,'breather',()=>{this.showBanner('Breather: 3 seconds','Wave '+(next+1)+' incoming',2400);
       this.scheduleStageEvent(3200,'breather',()=>this.startWave(next,false));});
   }
-  // v5.79: 🚪 Crossroads — หลังมินิบอส เดินเข้าประตู 1 ใน 3 (เสี่ยง/แลก/รางวัล) แทนพักเฉย ๆ
-  openCrossroads(next){ this.clearCrossroads(); const p=this.player,pool=Phaser.Utils.Array.Shuffle(CROSSROADS.slice()).slice(0,3),a0=Math.random()*Math.PI*2;
-    const gates=pool.map((d,i)=>{ const a=a0+i*Math.PI*2/3,R=Math.min(170,(this.cameras.main.worldView.width||400)*0.34),x=p.x+Math.cos(a)*R,y=p.y+Math.sin(a)*R*1.15,g=this.camWorld(this.add.graphics().setDepth(4)),
-      em=this.camWorld(this.add.text(x,y-8,d.emoji,{fontSize:'30px'}).setOrigin(0.5).setDepth(y+2)),
-      tx=this.camWorld(this.add.text(x,y+30,d.name+'\n'+d.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',stroke:'#1a1026',strokeThickness:5,wordWrap:{width:170}}).setOrigin(0.5,0).setDepth(y+2));
-      return {d,x,y,g,em,tx}; });
-    this._xr={gates,next,t:14};
-    this.showBanner('🚪 Crossroads','Walk into a door to choose your path',2600);Sfx.chest(); }
-  tickCrossroads(dt){ const xr=this._xr; if(!xr||!xr.gates)return; xr.t-=dt; const p=this.player,pulse=0.5+0.5*Math.sin((this.elapsed||0)*5);
-    for(const G of xr.gates){ const g=G.g; g.clear(); g.fillStyle(G.d.color,0.16+0.1*pulse); g.fillCircle(G.x,G.y,46); g.lineStyle(4,G.d.color,0.9); g.strokeCircle(G.x,G.y,46+pulse*4);
-      if(xr.t<5){ g.lineStyle(3,0xffffff,0.6); g.beginPath(); g.arc(G.x,G.y,54,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(0,xr.t/5),false); g.strokePath(); }
-      if(Phaser.Math.Distance.Between(p.x,p.y,G.x,G.y)<52){ this.chooseCrossroad(G.d); return; } }
-    if(xr.t<=0){ this.showBanner('🚪 The doors fade…','No path chosen',1600); this.resumeAfterCrossroads(); } }
-  chooseCrossroad(d){ const next=this._xr.next,p=this.player; this.burst(p.x,p.y,d.color);this.screenFlash(d.color,0.25,300);Sfx.chestWin&&Sfx.chestWin(); this.clearCrossroads(); this._xrNext=next;
-    if(d.id==='treasure'){ for(let i=0;i<7;i++)this.spawnCrate(); this.spawnVac(p.x+Phaser.Math.Between(-120,120),p.y+Phaser.Math.Between(-120,120)); this.time.delayedCall(700,()=>{ if(this._busy())this.spawnSwarm(); }); this.showBanner('💰 Treasure Room','Loot everywhere… and a swarm is coming!',2400); this.resumeAfterCrossroads(6000); }
-    else if(d.id==='blood'){ p.hp=Math.max(1,p.hp-p.hp*0.3); const si=this.stageIndex; p.dmgMul*=1.25; p.cdMul*=0.9; this.showBanner('🩸 Blood Pact','−30% HP · +25% damage · faster attacks for 90s',2400); this.time.delayedCall(90000,()=>{ if(this.stageIndex===si&&this.state!=='menu'){p.dmgMul/=1.25;p.cdMul/=0.9;} }); this.resumeAfterCrossroads(); }
-    else if(d.id==='duel'){ const e=this.spawnElite(); if(e){ e.hp*=3; e.maxhp=e.hp; e._duelElite=true; e.tintColor=0xff5d73; e.setTint(0xff5d73); e.setScale((e.baseScale||1)*1.3); this._xrDuel=true; this.showBanner('👹 Elite Duel','Defeat the champion to earn a relic',2400); this.scheduleStageEvent(30000,'breather',()=>{ if(this._xrDuel){this._xrDuel=false;this.resumeAfterCrossroads();} }); } else this.resumeAfterCrossroads(); }
-    else if(d.id==='rest'){ p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.4); Sfx.heal(); this.showBanner('🍵 Tea Rest','Recovered 40% HP',2000); this.resumeAfterCrossroads(); }
-    else if(d.id==='gamble'){ if(Math.random()<0.5){ this.grantCurrencyReward(3,this.currencyTierFor(),'🎲 Lucky! Currency jackpot'); this.resumeAfterCrossroads(); } else { this.showBanner('🎲 Unlucky!','Two elites crash the party',2200); this.spawnElite(); this.spawnElite(); this.resumeAfterCrossroads(9000); } } }
+  // Two explicit screen choices; combat waits until the player chooses.
+  openCrossroads(next){
+    if(this.state!=='play'){this.scheduleStageEvent(350,'breather',()=>this.openCrossroads(next));return;}
+    this.clearCrossroads();this._xrNext=null;this.player.setVelocity(0,0);this.state='rolling';this.physics.pause();
+    const w=this.W,h=this.H,cw=Math.min(w-40,350),ch=116,gap=18,top=Math.max(130,h*0.35);
+    const cont=this.camUI(this.add.container(0,0).setDepth(96));
+    cont.add(this.add.rectangle(0,0,w,h,0x0b0714,0.94).setOrigin(0));
+    cont.add(this.add.text(w/2,top-66,'Miniboss cleared',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffe08a'}).setOrigin(0.5));
+    cont.add(this.add.text(w/2,top-34,'Choose one reward',{fontFamily:'sans-serif',fontSize:'15px',color:'#e8dcff'}).setOrigin(0.5));
+    this._xr={next,cont,picked:false};
+    this._rollBtns=CROSSROADS.map((d,i)=>{
+      const x=(w-cw)/2,y=top+i*(ch+gap),g=this.add.graphics();
+      g.fillStyle(0x21172f,1);g.fillRoundedRect(x,y,cw,ch,16);g.lineStyle(2,d.color,1);g.strokeRoundedRect(x,y,cw,ch,16);
+      const art=this.add.image(x+44,y+ch/2,d.artKey).setDisplaySize(52,52);
+      const tx=x+82,tw=cw-94;
+      cont.add([g,art,this.add.text(tx,y+18,d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#'+d.color.toString(16).padStart(6,'0')}),
+        this.add.text(tx,y+48,d.desc,{fontFamily:'sans-serif',fontSize:'14px',color:'#ffffff',wordWrap:{width:tw}}),
+        this.add.text(tx,y+82,d.detail,{fontFamily:'sans-serif',fontSize:'12px',color:'#cfc2df',wordWrap:{width:tw}})]);
+      return {x,y,w:cw,h:ch,fn:()=>this.chooseCrossroad(d)};
+    });Sfx.chest();
+  }
+  tickCrossroads(dt){} // No world doors or automatic expiry.
+  chooseCrossroad(d){
+    const xr=this._xr;if(!xr||xr.picked||!CROSSROADS.some(o=>o.id===d.id))return;xr.picked=true;
+    const p=this.player,next=xr.next;this.clearCrossroads();this._xrNext=next;
+    if(d.id==='blood'){
+      p.hp=Math.max(1,p.hp*0.7);p.dmgMul*=1.25;const si=this.stageIndex,runPlayer=p;
+      this.time.delayedCall(90000,()=>{if(this.player===runPlayer&&this.stageIndex===si&&this.state!=='menu')p.dmgMul/=1.25;});
+      this.showBanner('Blood Pact','−30% current HP · +25% damage for 90s',2400);
+    }else{p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.4);Sfx.heal();this.showBanner('Recovered HP','Restored 40% of maximum HP',2000);}
+    Sfx.chestWin&&Sfx.chestWin();this.resumeAfterCrossroads();
+  }
   duelEliteDown(){ if(!this._xrDuel)return; this._xrDuel=false; this.time.delayedCall(600,()=>{ if(this.state==='play'&&!this.offerRelic())this.grantCurrencyReward(3,this.currencyTierFor(),'👹 Champion defeated!'); }); this.resumeAfterCrossroads(1500); }
   resumeAfterCrossroads(ms=0){ this.clearCrossroads(); const next=this._xrNext!=null?this._xrNext:this.waveIndex+1; this._xrNext=null;
     this.scheduleStageEvent(300+ms,'breather',()=>{this.showBanner('Breather: 3 seconds','Wave '+(next+1)+' incoming',2400);
       this.scheduleStageEvent(3200,'breather',()=>this.startWave(next,false));}); }
-  clearCrossroads(){ const xr=this._xr; if(xr&&xr.gates){ for(const G of xr.gates){G.g.destroy();G.em.destroy();G.tx.destroy();} if(this._xrNext==null)this._xrNext=xr.next; } this._xr=null; }
+  clearCrossroads(){
+    const xr=this._xr;if(!xr)return;if(this._xrNext==null)this._xrNext=xr.next;
+    if(xr.cont){xr.cont.destroy(true);this._rollBtns=[];if(this.state==='rolling'){this.state='play';this.physics.resume();}}
+    this._xr=null;
+  }
   // บอสตาย → เปิดกล่องรางวัลจบStage (Sugar/อุปกรณ์) แล้วกลับหน้าเลือกด่าน
   onBossDown(x,y){
     this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bossClear();this.time.delayedCall(3000,()=>{if(!this.boss&&this.state!=='menu')Sfx.playStageBgm(this.stageIndex+1);});this.clearFoes();this.clearEnemies();this.clearBossObjects();
@@ -10152,9 +10170,9 @@ class Game extends Phaser.Scene {
     this._prevRollState=this.state;this.state='rolling';this.physics.pause();
     const w=this.W,h=this.H,cx=w/2,cy=h*0.47,R=Math.min(w*0.36,150),n=pool.length;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
-    const bg=this.add.rectangle(0,0,w,h,0x0b0714,0.9).setOrigin(0);
-    const rays=this.add.image(cx,cy,'vfx_glow').setScale(2.4).setAlpha(0.3).setTint(T0.color).setBlendMode(Phaser.BlendModes.ADD);
-    this.tweens.add({targets:rays,rotation:TAU,duration:4200,repeat:-1});
+    const bg=this.add.image(cx,h/2,'prize_wheel_bg');bg.setScale(Math.max(w/bg.width,h/bg.height));
+    const rays=this.add.circle(cx,cy,R+42,T0.color,0.05).setStrokeStyle(1,T0.color,0.18);
+    this.tweens.add({targets:rays,alpha:{from:0.45,to:1},duration:1100,yoyo:true,repeat:-1});
     const ring=this.add.graphics();ring.lineStyle(3,T0.color,0.5);ring.strokeCircle(cx,cy,R);
     const ttl=this.add.text(cx+17,cy-R-70,T0.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T0.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
     const tierBadge=this.add.image(cx-92,cy-R-70,T0.artKey).setDisplaySize(38,38);
@@ -10174,7 +10192,7 @@ class Game extends Phaser.Scene {
     const st=this.add.text(cx,by+bh/2,'🛑 STOP!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffffff'}).setOrigin(0.5);cont.add([sg,st]);
     this.tweens.add({targets:[st],scale:{from:1,to:1.08},yoyo:true,repeat:-1,duration:260});
     const doStop=()=>{ if(stopped)return;stopped=true;this._rollBtns=[];Sfx.card?Sfx.card():Sfx.select();this.tweens.killTweensOf(st);st.setText('…').setScale(1);sg.setAlpha(0.45);hint.setText('Slowing down…');
-      const pos=Math.max(0,cur),dist=((winIdx-pos)%n+n)%n,rem=n+Math.floor(n/2)+dist+(dist<2?n:0);total=k+rem;steps=[];for(let q=0;q<rem;q++){const t=q/Math.max(1,rem-1);steps.push(50+Math.pow(t,3)*380);} this._stopBase=k; };
+      const pos=cur,dist=((winIdx-pos)%n+n)%n,rem=n*2+dist+(dist<2?n:0);total=k+rem;steps=[];for(let q=0;q<rem;q++){const t=q/Math.max(1,rem-1);steps.push(50+Math.pow(t,3)*380);} this._stopBase=k; };
     this._rollBtns=[{x:bx,y:by,w:bw,h:bh,fn:doStop}];hint.setText('Tap STOP!');
     this.time.delayedCall(6000,()=>{ if(cont.active)doStop(); });
     const chestScaleX=center.scaleX,chestScaleY=center.scaleY;
@@ -10185,12 +10203,12 @@ class Game extends Phaser.Scene {
       if(k>=total){sg.setVisible(false);st.setVisible(false);this.time.delayedCall(260,()=>land());return;}
       this.time.delayedCall(stopped?steps[k-this._stopBase]||60:45,hop); };
     const upgrade=()=>{ const hex='#'+T.color.toString(16).padStart(6,'0');
-      rays.setTint(T.color);ring.clear();ring.lineStyle(4,T.color,0.8);ring.strokeCircle(cx,cy,R);
+      rays.setFillStyle(T.color,0.05).setStrokeStyle(1,T.color,0.18);ring.clear();ring.lineStyle(4,T.color,0.8);ring.strokeCircle(cx,cy,R);
       tierBadge.setTexture(T.artKey).setDisplaySize(38,38);ttl.setText(T.name+' Chest').setColor(hex);this.tweens.add({targets:ttl,scale:{from:1.35,to:1},duration:380,ease:'Back.out'});
       this.tweens.add({targets:tierBadge,alpha:{from:0.25,to:1},duration:380,ease:'Sine.out'});
       const up=this.add.text(cx,cy-R-38,'⬆ UPGRADE!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:hex,stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);cont.add(up);
       this.tweens.add({targets:up,y:up.y-18,alpha:{from:1,to:0},delay:700,duration:600});
-      const fl=this.add.image(cx,cy,'vfx_glow').setScale(0.3).setTint(T.color).setBlendMode(Phaser.BlendModes.ADD);cont.add(fl);
+      const fl=this.add.circle(cx,cy,55,T.color,0.15).setScale(0.3);cont.add(fl);
       this.tweens.add({targets:fl,scale:3.4,alpha:0,duration:520,ease:'Cubic.out',onComplete:()=>fl.destroy()});
       this.screenFlash(T.color,0.35,260);if(Sfx.legend)Sfx.legend(); };
     const land=()=>{ const sl=slots[winIdx],p=sl.p;
@@ -10200,14 +10218,8 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:big,x:cx,scaleX:big.scaleX*3.2,scaleY:big.scaleY*3.2,duration:520,ease:'Back.out'});
       this.tweens.add({targets:big,y:{from:sl.y,to:cy},duration:700,ease:'Bounce.out',onComplete:()=>{ if(!big.active)return;
         this.tweens.add({targets:big,y:cy-10,duration:420,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }});
-      // v5.19 เหรียญ/ขนมเด้งพุ่งแบบน้ำพุ ตกลงเด้งพื้น (แบบ VS)
-      for(let i=0;i<(p.jackpot?22:12);i++){const e=['🍬','✨','🍭','⭐'][i%4],c=this.add.text(cx,cy,e,{fontSize:'20px'}).setOrigin(0.5);cont.add(c);
-        const dx=(Math.random()-0.5)*w*0.8,floor=cy+R*0.9+Math.random()*40,peak=cy-90-Math.random()*120;
-        this.tweens.add({targets:c,x:cx+dx,duration:900+Math.random()*300,ease:'Linear'});
-        this.tweens.add({targets:c,y:peak,duration:320,ease:'Quad.out',onComplete:()=>this.tweens.add({targets:c,y:floor,duration:620,ease:'Bounce.out'})});
-        this.tweens.add({targets:c,angle:(Math.random()-0.5)*540,duration:1000});}
-      const glow=this.add.image(cx,cy,'vfx_glow').setScale(0.2).setTint(p.color).setBlendMode(Phaser.BlendModes.ADD);cont.addAt(glow,2);
-      this.tweens.add({targets:glow,scale:2.2,alpha:{from:1,to:0.55},duration:520,ease:'Cubic.out'});
+      const glow=this.add.circle(cx,cy,72,p.color,0.08).setStrokeStyle(2,p.color,0.5).setScale(0.2);cont.addAt(glow,2);
+      this.tweens.add({targets:glow,scale:1.25,alpha:{from:1,to:0.55},duration:520,ease:'Cubic.out'});
       hint.setText(p.name).setFontSize(p.jackpot?'26px':'20px').setColor('#'+p.color.toString(16).padStart(6,'0'));
       this.tweens.add({targets:hint,scale:{from:0.5,to:1},duration:320,ease:'Back.out'});
       for(let i=0;i<(p.jackpot?28:14);i++){const a=i/(p.jackpot?28:14)*TAU,sp=this.add.circle(cx,cy,p.jackpot?6:4,p.color,1);cont.add(sp);
@@ -10238,19 +10250,19 @@ class Game extends Phaser.Scene {
     let picked=false;
     const cards=prizes.map((p,i)=>{const x=x0+i*(cw+gap)+cw/2;const c=this.add.container(x,cy);const g=this.add.graphics();
       const drawBack=()=>{g.clear();g.fillStyle(0x3a2352,1);g.fillRoundedRect(-cw/2,-ch/2,cw,ch,14);g.lineStyle(3,0xffd166,0.9);g.strokeRoundedRect(-cw/2,-ch/2,cw,ch,14);};
-      const q=this.add.text(0,0,'❓',{fontSize:'40px'}).setOrigin(0.5);drawBack();c.add([g,q]);cont.add(c);
+      const q=this.add.image(0,0,'mystery_card_back').setDisplaySize(cw,ch);drawBack();c.add([g,q]);cont.add(c);
       this.tweens.add({targets:c,y:cy-6,yoyo:true,repeat:-1,duration:600+i*90,ease:'Sine.inOut'});
       return {c,g,q,p,x};});
     const flip=(cd,mine)=>{ this.tweens.killTweensOf(cd.c);
       this.tweens.add({targets:cd.c,scaleX:0,duration:140,onComplete:()=>{ const p=cd.p;cd.g.clear();cd.g.fillStyle(mine?0x2c2038:0x1d1626,1);cd.g.fillRoundedRect(-cw/2,-ch/2,cw,ch,14);cd.g.lineStyle(mine?4:2,p.color,mine?1:0.6);cd.g.strokeRoundedRect(-cw/2,-ch/2,cw,ch,14);
-        cd.q.setVisible(false);const art=this.add.image(0,-16,p.artKey).setDisplaySize(p.jackpot?54:46,p.jackpot?54:46);cd.c.add(art);
+        cd.q.setAlpha(0.24);const art=this.add.image(0,-16,p.artKey).setDisplaySize(p.jackpot?54:46,p.jackpot?54:46);cd.c.add(art);
         const nm=this.add.text(0,ch*0.2,p.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#'+p.color.toString(16).padStart(6,'0')}).setOrigin(0.5);
         const sb=this.add.text(0,ch*0.34,p.sub,{fontFamily:'sans-serif',fontSize:'9px',color:'#d8cce6',align:'center',wordWrap:{width:cw-10}}).setOrigin(0.5,0);
         cd.c.add([nm,sb]);if(!mine)cd.c.setAlpha(0.55);
         this.tweens.add({targets:cd.c,scaleX:mine?1.12:1,scaleY:mine?1.12:1,duration:160,ease:'Back.out'}); }});};
     this._rollBtns=cards.map(cd=>({x:cd.x-cw/2,y:cy-ch/2,w:cw,h:ch,fn:()=>{ if(picked)return;picked=true;this._rollBtns=[];
       if(Sfx.select)Sfx.select();flip(cd,true);const p=cd.p;
-      this.time.delayedCall(420,()=>{ this.screenFlash(p.color,p.jackpot?0.6:0.3,300);if(p.jackpot){this.screenShake(360,0.012);if(Sfx.legend)Sfx.legend();hint.setText('🌟 JACKPOT!').setColor('#ffd166').setFontSize('20px');}else{if(Sfx.clear)Sfx.clear();hint.setText('You got '+p.name+' '+p.sub);}
+      this.time.delayedCall(420,()=>{ this.screenFlash(p.color,p.jackpot?0.6:0.3,300);if(p.jackpot){this.screenShake(360,0.012);if(Sfx.legend)Sfx.legend();hint.setText('JACKPOT!').setColor('#ffd166').setFontSize('20px');}else{if(Sfx.clear)Sfx.clear();hint.setText('You got '+p.name+' '+p.sub);}
         cards.forEach((o,j)=>{if(o!==cd)this.time.delayedCall(350+j*160,()=>flip(o,false));}); });
       this.time.delayedCall(2300,()=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);this._rollBtns=null;
         this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
