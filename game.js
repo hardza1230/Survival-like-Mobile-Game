@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.31';
+const GAME_VERSION = '6.0.32';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.32', date:'2026-09-30', title:'Endgame curses and targeted farming', items:['Story and cleared-stage replay no longer pause for Blood Pact choices or inherit saved curses','Choose weapons, armor or crafting materials before entering Endgame','Optional curse choices at 25% and 75% increase enemy strength and rewards'] },
   { v:'6.0.31', date:'2026-09-30', title:'Cleared stages become survival farming runs', items:['Previously cleared story stages replace wave missions with one kill progress meter','Monsters attack continuously; a miniboss appears halfway and the final boss appears when the meter fills','First clears and special modes retain their existing rules'] },
   { v:'6.0.30', date:'2026-09-30', title:'Cleaner miniboss rewards', items:['Prize wheels use a dedicated backdrop without emoji confetti','Gold bonus cards use illustrated card backs','After minibosses, choose Blood Pact or Recover HP on screen; combat waits for your choice'] },
   { v:'6.0.29', date:'2026-09-30', title:'Mr. Griddle redesign', items:['Stage 3 boss now uses a cursed cast-iron griddle and chili furnace action sheet','Idle, overheat, chili spray, conveyor charge, grinder and phase-transition poses retain the existing attack timing and rules'] },
@@ -5281,7 +5282,7 @@ class Game extends Phaser.Scene {
       const rb=(Save.data.recipeBest||{})[r.theme]; T(w/2,y+64,'Recipe is used up when you enter · Best fill '+(rb?rb+'s':'—')+' · ⚡ under '+recipePar()+'s = speed bonus',9,'#9d93aa');
       T(w/2,y+48,(r.mods&&r.mods.length)?r.mods.map(id=>{const d=recipeModDef(id);return d?d.emoji+' '+d.name:'';}).join('  ·  '):'No mods',11,'#ffc3d6');
       const half=(cw-30)/2;
-      this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ Save.data.recipes=bag.filter(q=>q.uid!==r.uid); Save.save(); this._recipeSel=null; this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
+      this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
       this.uiPillBtn(this.menu,cx+20+half*1.5,y+104,half,36,0x8a3050,'🗑','Discard',()=>{ if(this._recipeDiscard!==r.uid){this._recipeDiscard=r.uid;this.menuToast('Tap Discard again to confirm','#ff9bb5');return;} Save.data.recipes=bag.filter(q=>q.uid!==r.uid);Save.save();this._recipeSel=null;this._recipeDiscard=null;this.buildRecipes(); });
     }
     this.menu.setVisible(true);
@@ -5364,7 +5365,7 @@ class Game extends Phaser.Scene {
     this.over.add(box); this.over.setVisible(true); }
   _fmtTime(t){ t=Math.max(0,Math.round(t||0)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
   // เข้าบอสถัดไปของ rush (คง build/เลเวลไว้ ไม่ reset loadout)
-  bossRushNext(){ const i=this._rushList[this._rushPos]; this._finalStoryShown=true;
+  bossRushNext(){ if(this.checkEndgameCurse((this._rushPos||0)/Math.max(1,this._rushList.length),()=>this.bossRushNext()))return; const i=this._rushList[this._rushPos]; this._finalStoryShown=true;
     this.state='loading'; this.player.setVelocity(0,0);
     if(window.GameLoader)window.GameLoader.show('Preparing next boss...',0.1);
     this.ensureStageArt(i,()=>this.ensureStageAudio(i,()=>{ this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects(); this.state='play'; this.startStage(i);if(window.GameLoader)window.GameLoader.hide(); })); }
@@ -5773,7 +5774,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,portrait=w<=h,x=Math.max(16,(w-Math.min(w-28,420))/2),cw=Math.min(w-28,420);
     const active=Save.zoneMods();let rMul=1; for(const id of active){const m=ZONE_MODIFIERS.find(z=>z.id===id);if(m)rMul*=m.reward;}
     const sub=this.add.text(w/2,portrait?80:74,'Stack challenges for bigger rewards · combined ×'+rMul.toFixed(2),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffbfa0'}).setOrigin(0.5);
-    const sub2=this.add.text(w/2,portrait?96:90,'Applies on top of the difficulty you pick',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5);
+    const sub2=this.add.text(w/2,portrait?96:90,'Endgame only · choose curses during the run',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5);
     this.menu.add([sub,sub2]);
     let y=portrait?112:106; const rh=62,gap=8;
     ZONE_MODIFIERS.forEach(m=>{ const on=active.includes(m.id),g=this.add.graphics();   // อ่านอย่างเดียว (เปลี่ยนได้ด้วย Reroll เท่านั้น)
@@ -6757,8 +6758,37 @@ class Game extends Phaser.Scene {
     pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
   }
 
+  isEndgameRun(){return !!(this.recipeMode||this.riftMode||this.endlessMode||this.bossRush);}
+  focusGearPool(pool){
+    if(this._farmFocus!=='weapon'&&this._farmFocus!=='armor')return pool;
+    return pool.filter(it=>this._farmFocus==='weapon'?it.slot==='weapon':['armor','gloves','boots'].includes(it.slot));
+  }
+  openEndgamePreparation(idx){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Endgame · Farming target');
+    const w=this.W,h=this.H,bw=Math.min(w-40,360),x=w/2,top=Math.max(110,h*0.22);
+    const choices=[['all','All loot','Standard drop pool'],['weapon','Weapons','Equipment drops are weapons'],['armor','Armor','Armor, gloves and boots'],['materials','Crafting materials','Equipment rewards become crafting currency']];
+    choices.forEach(([id,name,desc],i)=>{this.menu.add(this.add.text(x,top+i*66+27,desc,{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc2df'}).setOrigin(0.5));this.uiPillBtn(this.menu,x,top+i*66,bw,52,COLORS.grape,'',name,()=>{this._farmFocusRequested=id;this.startRun(idx);});});
+    this.uiPillBtn(this.menu,x,top+choices.length*66,bw,42,COLORS.pink,'','Back',()=>{this._recipeRequested=null;this._riftRequested=null;this._endlessRequested=false;this._bossRushRequested=false;this._pinnacleRequested=false;this._farmFocusRequested=null;this.menuScreen='endgame';this.buildMenuScreen();});
+  }
+  checkEndgameCurse(progress,onResume){
+    if(!this.isEndgameRun()||this.state!=='play'||this._inTutorial||!['wave','breather'].includes(this.mode))return false;
+    const n=this._curseCheckpoint||0;if(n>=2||progress<[0.25,0.75][n])return false;
+    this._curseCheckpoint=n+1;this.openEndgameCurse(onResume);return true;
+  }
+  openEndgameCurse(onResume){
+    const options=ZONE_MODIFIERS.filter(d=>!(this._activeZoneMods||[]).includes(d.id)).slice(0,2);
+    this.player.setVelocity(0,0);this.state='rolling';this.physics.pause();
+    const w=this.W,h=this.H,cw=Math.min(w-32,360),top=Math.max(100,h*0.3),cont=this.camUI(this.add.container(0,0).setDepth(96));
+    cont.add(this.add.rectangle(0,0,w,h,0x0b0714,0.94).setOrigin(0));
+    cont.add(this.add.text(w/2,top-54,'Choose a curse',{fontFamily:'sans-serif',fontSize:'24px',color:'#ffe08a'}).setOrigin(0.5));
+    const close=d=>{if(this.state!=='rolling')return;if(d){this._activeZoneMods.push(d.id);this._zoneMul=this.zoneModMul();this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});}cont.destroy(true);this._rollBtns=[];this.state='play';this.physics.resume();if(onResume)onResume();};
+    this._rollBtns=options.concat([null]).map((d,i)=>{const x=(w-cw)/2,y=top+i*92,g=this.add.graphics();g.fillStyle(0x21172f,1);g.fillRoundedRect(x,y,cw,78,14);g.lineStyle(2,0xffd166,1);g.strokeRoundedRect(x,y,cw,78,14);cont.add(g);cont.add(this.add.text(w/2,y+18,d?d.name:'Continue without a curse',{fontFamily:'sans-serif',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5,0));cont.add(this.add.text(w/2,y+47,d?d.desc+' · rewards ×'+d.reward.toFixed(2):'Keep current difficulty and rewards',{fontFamily:'sans-serif',fontSize:'12px',color:'#e8dcff'}).setOrigin(0.5,0));return{x,y,w:cw,h:78,fn:()=>close(d)};});
+  }
   startRun(idx){ this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null;
-    if(this.state!=='menu')return;this.clearYuzuCrew();
+    if(this.state!=='menu')return;
+    const endgameRequested=!!(this._recipeRequested||this._riftRequested||this._endlessRequested||this._bossRushRequested||this._pinnacleRequested);
+    if(endgameRequested&&!this._farmFocusRequested){this.openEndgamePreparation(idx);return;}
+    this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
     if(!this._stageArtReady||!this._stageArtReady.has(idx)){
@@ -6771,7 +6801,8 @@ class Game extends Phaser.Scene {
     if(ticket&&(Save.data.sugar||0)<ticket){this.menuToast('Need 🍬'+ticket+' Sugar for the challenge ticket','#ff9bb5');return;}
     if(ticket){Save.data.sugar-=ticket;Save.save();}
     this._challengeRun=challenge?challenge.slice():[];
-    this._activeZoneMods=challenge?[]:(Save.zoneModsUnlocked()?Save.zoneMods().slice():[]); this._zoneMul=this.zoneModMul();
+    this._activeZoneMods=[];this._curseCheckpoint=0;this._farmFocus=endgameRequested?(this._farmFocusRequested||'all'):'all';this._farmFocusRequested=null;this._zoneMul=this.zoneModMul();
+    if(this._recipeRequested){Save.data.recipes=this.recipeBag().filter(r=>r.uid!==this._recipeRequested.uid);Save.save();this._recipeSel=null;}
     this.killStreak=0; this._lastKillAt=-9;   // Juice: รีเซ็ตคอมโบฆ่าต่อเนื่องทุกWaitบ
     this.state='loading';
     BGM_MODE=(this._recipeRequested||this._pinnacleRequested)?'endgame':null;
@@ -6963,6 +6994,7 @@ class Game extends Phaser.Scene {
     this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
     this.tickRecipeShrine(dt);
     if(this._hungerDone)return;
+    if(this.checkEndgameCurse(this._hunger/goal))return;
     const evAt=atlasLv('eventful')>=1?[0.3]:[0.4]; if(atlasLv('eventful')>=2)evAt.push(0.7); const en=this._recipeEventN|0; if(en<evAt.length&&this._hunger>=goal*evAt[en]){ this._recipeEventN=en+1; this.triggerRecipeEvent(); }
     const full=this._hunger>=goal, late=this._hungerT>=RECIPE_HUNGER_CAP;
     if(full||late){ this._hungerDone=true; this._recipeFillT=this._hungerT; this._recipeFast=full&&this._hungerT<=recipePar();
@@ -7622,7 +7654,7 @@ class Game extends Phaser.Scene {
       if(_timed)this.waveTimer-=dt;
       if(!this._replayMeter){if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);}this.tickWaveObjective(dt);
       if(this.mode!=='wave')return;
-      if(this.recipeMode)this.tickRecipeHunger(dt);if(this._replayMeter)this.tickReplayProgress(dt); if(this.mode!=='wave')return;
+      if(this.recipeMode)this.tickRecipeHunger(dt);else if(this.checkEndgameCurse(this.bossRush?(this._rushPos||0)/Math.max(1,this._rushList.length):this.waveIndex/Math.max(1,STAGES[this.stageIndex].waves)))return;if(this.state!=='play')return;if(this._replayMeter)this.tickReplayProgress(dt); if(this.mode!=='wave')return;
       this.spawnAcc-=dt;
       if(this.spawnAcc<=0){const idleP=this._idleP||0,pressure=Math.min(1,this.wavePressure()+idleP),dynamicInterval=this.spawnInterval*(1-pressure*0.32);this.spawnAcc=dynamicInterval;
         const live=this.enemies.countActive(true);
@@ -7913,12 +7945,11 @@ class Game extends Phaser.Scene {
   onWaveCleared(keep,fromMini){
     this._clearT=0;this._clearFled=false;
     this.boss=null;Sfx.bgmIntense(false);if(String(Sfx._currentBgmKey||'').startsWith('bgm_m'))Sfx.playStageBgm(this.stageIndex+1);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();
-    if(fromMini&&this._replayMeter){this._replayMeter.miniDone=true;this.mode='breather';this.clearPickups(false);this.scheduleStageEvent(900,'breather',()=>this.openCrossroads(this.waveIndex+1));return;}
+    if(fromMini&&this._replayMeter){this._replayMeter.miniDone=true;this.mode='breather';this.clearPickups(false);this.scheduleStageEvent(900,'breather',()=>this.startWave(this.waveIndex+1,false));return;}
     const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
     if(next>=st.waves){this.mode='bossWarning';this.updateWaveText();
       this.scheduleStageEvent(300,'bossWarning',()=>{const rage=this.bossRageInfo();this.showBanner('⚠️ '+rage.emoji+' Boss '+rage.name,st.boss+' · Minions '+rage.kills+' · reward x'+rage.reward.toFixed(2),2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);
         this.scheduleStageEvent(3000,'bossWarning',()=>this.spawnFinalBoss());});return;}
-    if(fromMini&&!this._inTutorial&&!this.recipeMode&&!this.bossRush){ this.scheduleStageEvent(900,'breather',()=>this.openCrossroads(next)); return; }
     this.scheduleStageEvent(300,'breather',()=>{this.showBanner('Breather: 3 seconds','Wave '+(next+1)+' incoming',2400);
       this.scheduleStageEvent(3200,'breather',()=>this.startWave(next,false));});
   }
@@ -7971,7 +8002,7 @@ class Game extends Phaser.Scene {
     if(this.bossRush){ this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest(); this.mode='breather'; this.bossRushBossDown(); return; }
     if(this.recipeMode)this.finishRecipeBoss();
     if(this.riftMode&&!this.recipeMode){ const t=this._riftTier||1,keys=1+(t>=5?1:0)+(t>=10?1:0); Save.data.riftKeys=(Save.data.riftKeys||0)+keys; Save.data.riftBest=Math.max(Save.data.riftBest||1,t+1); Save.save(); this.showBanner('🌀 Rift Tier '+t+' cleared!','+'+keys+' 🗝️ Rift Key · Tier '+(t+1)+' unlocked',2600); }
-    if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
+    if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this._curseCheckpoint=0;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
       this.showBanner('🌙 ENDLESS round '+cleared+' complete','Checkpoint saved · Sugar +'+bonus+(cleared%3===0?' · secret boss defeated!':''),2600);this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='breather')this.startWave(0,false);});return;}
     const next=this.stageIndex+1,progressUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next,canUnlock=progressUnlock&&isStageReady(next);
     if(progressUnlock){Save.data.unlockedStage=next;Save.save();}
@@ -10124,7 +10155,7 @@ class Game extends Phaser.Scene {
   currencyTierFor(){ const diff=this.stageDiff||1, st=this.stageIndex||0; if(diff>=3)return 'legend'; if(diff>=2)return st>=3?'legend':'epic'; return st>=3?'epic':'rare'; }
   // แจก currency แน่นอน N ชิ้น (ข้าม 28% miss ของ rollCurrencyDrop) + แบนเนอร์
   grantCurrencyReward(n,tier,head){
-    if(n>0)n=Math.max(1,Math.round(n*(this._currencyLuckMul||1)*(this.player.currencyFindMul||1)));   // Fortune perk
+    if(n>0)n=Math.max(1,Math.round(n*(this._currencyLuckMul||1)*(this.player.currencyFindMul||1)*(this.isEndgameRun()?this.zoneModMul().reward:1)));   // Fortune perk
     const got={}; for(let i=0;i<n;i++){ const k=rollWeightedCurrency(tier); got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
     if(head&&this.showBanner){ const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner(head,txt,1800); } return got; }
   // ---- หีบสมบัติ (ดWaitปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
@@ -10436,7 +10467,9 @@ class Game extends Phaser.Scene {
     // v4.32: gacha เลือก base item level ได้ (opts.itemLevel) → chapter ตาม iLv นั้น · in-play/menu ใช้ stage เดิม
     const gachaLv=opts.gacha?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||1))):0,eg=inPlay&&this.endgameDropActive(),
       chapter=opts.gacha?itemChapterFromLevel(gachaLv):eg?(Math.random()<0.5?4:5):itemChapterForStage(sourceStage);
-    let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter); if(!pool.length)return null;
+    let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter);
+    if(eg&&!opts.gacha){if(this._farmFocus==='materials'){this.grantCurrencyReward(2,tier,'Crafting materials');return null;}pool=this.focusGearPool(pool);}
+    if(!pool.length)return null;
     // v4.29: ของนอกด่าน (forge/menu) ตั้ง floor iLv 12 → ได้ 2 mod · in-play ใช้ค่าจริง
     const it=Phaser.Utils.Array.GetRandom(pool),
       itemLevel=inPlay?(this.endgameDropActive()?rollEndgameItemLevel(this.stageDiff||1,this.endgameDepth()):rollItemLevel(sourceStage,this.stageDiff||1)):(opts.gacha?gachaLv:Math.max(12,rollItemLevel(sourceStage,1))),
