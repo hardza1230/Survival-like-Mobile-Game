@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.34';
+const GAME_VERSION = '6.0.35';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.35', date:'2026-09-30', title:'Separate Jackpot events from chest rewards', items:['Miniboss reward sequence is wheel, chest bonus, then Relic','Jackpot cards are a separate 15% random event after 60 seconds of wave combat, once per run','Gold chests no longer trigger Jackpot cards'] },
   { v:'6.0.34', date:'2026-09-30', title:'Restore miniboss chest reward sequence', items:['Keep the wheel, Gold Jackpot cards and chest bonuses before the Relic reward','Remove only the random upgrade box fallback; full Relic slots do not block the wheel or bonuses','Keep random Bronze 70%, Silver 25%, Gold 5% tiers and 12% Mimic chance'] },
   { v:'6.0.33', date:'2026-09-30', title:'Random miniboss chests and standalone Jackpot events', items:['Miniboss chest tiers roll Bronze 70%, Silver 25%, Gold 5%, independent of combat performance and difficulty','Miniboss chests offer Relics only; full Relic slots leave the chest available','Jackpot cards have a standalone 15% event chance after 60 seconds of wave combat, once per run'] },
   { v:'6.0.32', date:'2026-09-30', title:'Endgame curses and targeted farming', items:['Story and cleared-stage replay no longer pause for Blood Pact choices or inherit saved curses','Choose weapons, armor or crafting materials before entering Endgame','Optional curse choices at 25% and 75% increase enemy strength and rewards'] },
@@ -6803,7 +6804,7 @@ class Game extends Phaser.Scene {
     if(ticket&&(Save.data.sugar||0)<ticket){this.menuToast('Need 🍬'+ticket+' Sugar for the challenge ticket','#ff9bb5');return;}
     if(ticket){Save.data.sugar-=ticket;Save.save();}
     this._challengeRun=challenge?challenge.slice():[];
-    this._activeZoneMods=[];this._curseCheckpoint=0;this._farmFocus=endgameRequested?(this._farmFocusRequested||'all'):'all';this._farmFocusRequested=null;this._zoneMul=this.zoneModMul();
+    this._activeZoneMods=[];this._curseCheckpoint=0;this._jackpotEventTime=0;this._jackpotEventRolled=false;this._farmFocus=endgameRequested?(this._farmFocusRequested||'all'):'all';this._farmFocusRequested=null;this._zoneMul=this.zoneModMul();
     if(this._recipeRequested){Save.data.recipes=this.recipeBag().filter(r=>r.uid!==this._recipeRequested.uid);Save.save();this._recipeSel=null;}
     this.killStreak=0; this._lastKillAt=-9;   // Juice: รีเซ็ตคอมโบฆ่าต่อเนื่องทุกWaitบ
     this.state='loading';
@@ -7649,9 +7650,16 @@ class Game extends Phaser.Scene {
   endHuntCurse(){ if(!this._huntCursed)return;this._huntCursed=false;this._curseTick=0;if(this.player)this.player.clearTint(); }
   clearEnemies(){ this.enemies.children.iterate(e=>{ if(e&&e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);} if(e&&e.active&&!e.isBoss&&!e.isMini){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } }); }
   // เรียกทุกเฟรม: คุมนับเวลา + เกิดมอนต่อเนื่อง
+  tickJackpotEvent(dt){
+    if(this.state!=='play'||this.mode!=='wave'||this._inTutorial||this.bossRush||this.boss||(this.pendingLvl||0)>0||this._jackpotEventRolled)return false;
+    this._jackpotEventTime=(this._jackpotEventTime||0)+dt;if(this._jackpotEventTime<60)return false;
+    this._jackpotEventRolled=true;if(Math.random()>=0.15)return false;
+    this.openMysteryCards(()=>{});return true;
+  }
   tickStage(dt){
     if(this._inTutorial)return;   // freeze เวลาระหว่างสอน — ไม่สปอน ไม่นับเวลา ไม่ขึ้นWave (สนามควบคุมโดย coach)
     if(this.mode==='wave'){
+      if(this.tickJackpotEvent(dt))return;
       const _obj=this.waveObjective, _timed=!this._replayMeter&&(!_obj||_obj.type==='survive');   // นับถอยหลังเฉพาะเวฟ survive · เวฟภารกิจอื่นต้องเคลียร์ให้จบ (ไม่หมดเวลา)
       if(_timed)this.waveTimer-=dt;
       if(!this._replayMeter){if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);}this.tickWaveObjective(dt);
@@ -10294,7 +10302,7 @@ class Game extends Phaser.Scene {
     };
     this.time.delayedCall(250,hop);
   }
-  // Gold chest bonus: three cards, one jackpot.
+  // Independent random event: three cards, one jackpot.
   openMysteryCards(done){
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.round(n*(1+si*0.3)*dr);
     const prizes=Phaser.Utils.Array.Shuffle([
@@ -10306,8 +10314,8 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,cw=Math.min(104,(w-60)/3),ch=cw*1.45,gap=12,x0=w/2-(cw*3+gap*2)/2,cy=h*0.48;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
     const bg=this.add.rectangle(0,0,w,h,0x0b0714,0.9).setOrigin(0);
-    const ttl=this.add.text(w/2+16,cy-ch/2-60,'Gold Bonus',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166',stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
-    const tierBadge=this.add.image(w/2-82,cy-ch/2-60,'chest_badge_gold').setDisplaySize(38,38);
+    const ttl=this.add.text(w/2+16,cy-ch/2-60,'Jackpot Event',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166',stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
+    const tierBadge=this.add.image(w/2-82,cy-ch/2-60,'prize_jackpot').setDisplaySize(38,38);
     const hint=this.add.text(w/2,cy-ch/2-30,'One card hides the JACKPOT — pick one!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#e8dcff'}).setOrigin(0.5);
     cont.add([bg,tierBadge,ttl,hint]);
     let picked=false;
@@ -10373,7 +10381,7 @@ class Game extends Phaser.Scene {
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const kind=c.rewardKind;c.rewardKind=null;
     if(kind==='mini'&&c._mimic){ c._mimic=false; this.awakenMimic(c.x,c.y,c._tier||'bronze'); return; }
-    if(kind==='mini'){ const tier=c._tier||'bronze';this.openPrizeWheel(tier,ft=>{const finalTier=ft||tier,after=()=>{this.grantMiniChestBonus(finalTier);if(!this.offerRelic())this.showBanner('Relic slots full','Wheel and chest bonuses received',1600);};if(finalTier==='gold')this.openMysteryCards(after);else after();});return;} // Keep the full reward sequence; no random upgrade box fallback.
+    if(kind==='mini'){ const tier=c._tier||'bronze';this.openPrizeWheel(tier,ft=>{const finalTier=ft||tier,after=()=>{this.grantMiniChestBonus(finalTier);if(!this.offerRelic())this.showBanner('Relic slots full','Wheel and chest bonuses received',1600);};after();});return;} // Keep the full reward sequence; no random upgrade box fallback.
     if(kind==='pick'&&Math.random()<0.10&&this.offerRelic())return;   // 🔮 กล่องลับ 10% = Relic (v5.19.1 ลดจาก 30%)
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
     this._chestReward=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
