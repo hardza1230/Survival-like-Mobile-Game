@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.38';
+const GAME_VERSION = '6.0.39';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.39', date:'2026-09-30', title:'Rank-unlocked special temple cores', items:['Five permanent utility cores unlock at weave ranks 1–5 and upgrade with Weave Thread','Special cores have three levels, persist through promotion and apply to combat and loadout stats'] },
   { v:'6.0.38', date:'2026-09-30', title:'Illustrated Flavor Weave cores', items:['Life Core uses a pink heart crystal, Flavor Spark an amber sugar flame, and Oath Shell a sapphire shell shield','The three temple core cards display matching painted icons with transparent backgrounds'] },
   { v:'6.0.37', date:'2026-09-30', title:'Painted navigation and streamlined stage entry', items:['Bazaar and Heroes navigation use painted mochi and gold button art','Refresh has its own row below Bazaar tabs','Story stages start directly without difficulty or curse selection','Equipment compares a compact ATK range instead of separate min/max lines','Reroll and Banish controls are removed from card selection'] },
   { v:'6.0.36', date:'2026-09-30', title:'Shop, Heroes and equipment clarity', items:['Minimal loading meter and illustrated progress meter on cleared-stage replays','Bazaar separates illustrated equipment, supplies and mystery boxes; Heroes now includes Talents and Stats','Story entry uses difficulty choices without curse tickets','Craft tiers match distinct values; Vampiric has three tiers and existing rolls keep their values','Equipment has inherent attack ranges or armor ratings used in combat and comparisons'] },
@@ -2382,6 +2383,17 @@ const UPGRADES = {
          apply:(p,tot)=>{ p.dmgTakenMul*=Math.pow(0.985,tot); },       show:tot=>'-'+Math.round((1-Math.pow(0.985,tot))*100)+'% DMG taken' },
 };
 const UPG_ORDER=['hp','dmg','def'];
+// Special cores are permanent utility upgrades; they never gate or reset on promotion.
+const SPECIAL_CORES = [
+  {id:'magnet',name:'Magnet Core',rank:1,mod:'pick',per:10,base:6,icon:'currency_twist_cream',desc:'+10% pickup range / level',effect:n=>'+'+(n*10)+'% pickup range'},
+  {id:'dash',name:'Blink Core',rank:2,mod:'dash',per:4,base:8,icon:'currency_fading_gumdrop',desc:'-4% dash cooldown / level',effect:n=>'-'+(n*4)+'% dash cooldown'},
+  {id:'insight',name:'Insight Core',rank:3,mod:'xp',per:5,base:10,icon:'currency_spark_sugar',desc:'+5% EXP gain / level',effect:n=>'+'+(n*5)+'% EXP gain'},
+  {id:'treasure',name:'Treasure Core',rank:4,mod:'orbfind',per:5,base:12,icon:'currency_crown_icing',desc:'+5% currency find / level',effect:n=>'+'+(n*5)+'% currency find'},
+  {id:'signature',name:'Signature Core',rank:5,mod:'uniquecd',per:3,base:14,icon:'currency_wish_candy',desc:'-3% Unique cooldown / level',effect:n=>'-'+(n*3)+'% Unique cooldown'},
+];
+function applySpecialCores(p){
+  for(const core of SPECIAL_CORES){ const n=Save.specialCoreLvl(core.id); if(n>0&&(Save.data.rank||0)>=core.rank){ const mod=affixDef(core.mod); if(mod)mod.apply(p,n*core.per); } }
+}
 /* ---- ยศ (rank): ไต่ไปเรื่อย ๆ · ชื่อวนถึงตัวสุดท้ายแล้วต่อท้าย +N ---- */
 const RANK_TIERS = [
   { name:'First Awakened Taste' }, { name:'Memory Listener' }, { name:'Core Binder' },
@@ -3297,6 +3309,11 @@ const Save = {
   unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
   buyOvercap(k){ const lvl=this.overcap(k); if(lvl>=OVERCAP_MAX)return false; const c=overcapCost(lvl); if(this.coreStones(k)<c.stones||(this.data.sugar||0)<c.sugar)return false;
     this.data.coreStones[k]-=c.stones; this.data.sugar-=c.sugar; if(!this.data.overcap)this.data.overcap={}; this.data.overcap[k]=lvl+1; this.save(); return true; },
+  specialCoreLvl(id){ const n=Number((this.data.specialCores||{})[id])||0;return Math.max(0,Math.min(3,Math.floor(n))); },
+  specialCoreCost(id){const core=SPECIAL_CORES.find(c=>c.id===id);return core?core.base*(this.specialCoreLvl(id)+1):0;},
+  buySpecialCore(id){const core=SPECIAL_CORES.find(c=>c.id===id);if(!core||(this.data.rank||0)<core.rank||this.specialCoreLvl(id)>=3)return false;
+    const cost=this.specialCoreCost(id);if(this.threads()<cost)return false;
+    this.data.threads=this.threads()-cost;this.data.specialCores=this.data.specialCores||{};this.data.specialCores[id]=this.specialCoreLvl(id)+1;this.save();return true;},
   talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank*0.8)); },   // 🍬 Sugar
   talCanBuy(k){ return this.talLvl(k)<TAL_MAX&&(this.data.sugar||0)>=this.talCost(k); },
   promoteThreadCost(){ const rank=this.data.rank||0;return 8+4*rank+2*rank*rank; },
@@ -5057,6 +5074,7 @@ class Game extends Phaser.Scene {
     const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul*=(sw.dmgMul||1); p.cdMul*=(sw.cdMul||1); }
     const talents=Save.cp(Save.data.character).tal||{};for(const def of charTalents(Save.data.character)){const r=talents[def.id]||0;if(r>0&&def.apply)def.apply(p,r);}
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); }
+    applySpecialCores(p);
     for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
     const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul*=(1+bst.dmg); if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
     const rp=Save.data.rankPerks||{}; if(rp.vigor)p.maxhp*=1+0.06*rp.vigor; if(rp.might)p.dmgMul*=1+0.05*rp.might; if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
@@ -5833,6 +5851,7 @@ class Game extends Phaser.Scene {
     Save.spendCurrency('chaos',1); const n=1+Math.floor(Math.random()*3),pool=ZONE_MODIFIERS.map(m=>m.id),picked=[]; while(picked.length<n&&pool.length)picked.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
     Save.data.zoneMods=picked; Save.save(); Sfx.clear&&Sfx.clear(); this.buildZoneModifiers(idx); }
   buildUpgrade(){
+    if(this._templeSpecial)return this.buildSpecialCores();
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple','ui_talent_hall');
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
     const portrait=w<=h,ry=portrait?82:55;
@@ -5863,7 +5882,8 @@ class Game extends Phaser.Scene {
       {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':'#8f849f'}).setOrigin(0.5);
     this.menu.add(prog);
     if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Sugar!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
-    const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-270-gapY*2)/3):Math.min(132,h-170),top=portrait?198:112;
+    this._rowBtn(portrait?188:104,28,'currency_wish_candy','Special cores','Unlock at Rank 1–5','View',0x5ad1c4,()=>{this._templeSpecial=true;this._specialCorePage=0;this.buildMenuScreen();});
+    const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-302-gapY*2)/3):Math.min(132,h-202),top=portrait?230:144;
     UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.talLvl(k), tot=Save.talTotal(k), maxed=lvl>=TAL_MAX;
       const cost=maxed?0:Save.talCost(k), afford=Save.talCanBuy(k);
       const x=portrait?marginX:marginX+i*(cardW+gapX), y=portrait?top+i*(cardH+gapY):top;
@@ -5899,6 +5919,24 @@ class Game extends Phaser.Scene {
     this.menu.add([pg,pl,psub]);
     if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.clear();
       if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen(); });
+    this.menu.setVisible(true);
+  }
+  buildSpecialCores(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Special Temple Cores','ui_talent_hall');
+    const w=this.W,h=this.H,top=w<=h?86:58,rank=Save.data.rank||0;
+    const note=this.add.text(w/2,top,'Rank '+rank+' · '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffe08a'}).setOrigin(.5);
+    const hint=this.add.text(w/2,top+21,'Permanent bonuses · remain after promotion',{fontFamily:'sans-serif',fontSize:'10px',color:'#cbbfda'}).setOrigin(.5);this.menu.add([note,hint]);
+    const count=w<=h?3:2,pages=Math.ceil(SPECIAL_CORES.length/count),page=Math.max(0,Math.min(pages-1,this._specialCorePage||0)),rowH=Math.min(104,(h-top-130)/count),start=top+42;
+    SPECIAL_CORES.slice(page*count,page*count+count).forEach((core,i)=>{
+      const y=start+i*(rowH+8),lvl=Save.specialCoreLvl(core.id),locked=rank<core.rank,maxed=lvl>=3,cost=Save.specialCoreCost(core.id),g=this.add.graphics();
+      g.fillStyle(locked?0x25202f:0x293c3b,1);g.fillRoundedRect(14,y,w-28,rowH,12);g.lineStyle(1,locked?0x4a4059:0x5ad1c4,1);g.strokeRoundedRect(14,y,w-28,rowH,12);this.menu.add(g);
+      if(this.textures.exists(core.icon)){const im=this.add.image(42,y+rowH/2,core.icon).setDisplaySize(38,38).setAlpha(locked?.35:1);this.menu.add(im);}
+      const text=this.add.text(70,y+10,core.name+' · Lv '+lvl+'/3\n'+core.effect(lvl)+'\n'+(locked?'Unlock: '+rankName(core.rank):core.desc),{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#93889f':'#e8fff6',lineSpacing:5,wordWrap:{width:w-94}});this.menu.add(text);
+      const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread';
+      this.uiPillBtn(this.menu,w-65,y+rowH-15,90,24,locked||maxed?0x3a3550:0x36775f,'',label,()=>{if(locked||maxed)return;if(Save.buySpecialCore(core.id)){Sfx.clear();this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
+    });
+    this.uiPillBtn(this.menu,w/2,h-62,150,28,0x3a3550,'','More cores · '+(page+1)+'/'+pages,()=>{this._specialCorePage=(page+1)%pages;this.buildMenuScreen();});
+    this.uiPillBtn(this.menu,w/2,h-28,180,28,0x36775f,'','Back to main cores',()=>{this._templeSpecial=false;this.buildMenuScreen();});
     this.menu.setVisible(true);
   }
   // ⛏️ v5.27 Temple Depths — หน้าขุด
@@ -6617,6 +6655,7 @@ class Game extends Phaser.Scene {
     { const cpl=Save.cp(this.character).lvl||1,ps=charPassiveScale(cpl); this._cpas={id:this.character,s:ps,cd:0}; if(this.character==='cocoa'){ p.lowHpGuard=(p.lowHpGuard||0)+0.15*ps; p.lowHpDmg=(p.lowHpDmg||0)+0.20*ps; } }   // v4.88 passive ประจำตัว
     // passivesสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลWaitบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
+    applySpecialCores(p);
     for(const slot in GEAR){const inst=Save.equippedGearItem(slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it&&it.apply){it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst);
       if(it.tier!=='start'){const affs=Save.ensureAffix(inst.uid,it.tier);for(const a of affs){const ad=affixDef(a.id);if(ad)ad.apply(p,a.v);}}}}
     // ชุดอุปกรณ์ (Set Bonus): สวมของชุดเดียวกันครบ 2/3 ชิ้น = โบนัสสะสม
