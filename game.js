@@ -7,6 +7,14 @@
    - No Toast meter (kept basic). One-thumb, mobile-first.
    ============================================================ */
 
+const HUD_ROWS={objective:91,progress:126,bossName:152,bossBg:170,bossBar:172,bossHp:177};
+function prizeWheelLayout(w,h,imageW,imageH){
+  const cx=w/2,cy=h*0.47,R=Math.min(w*0.36,150);
+  // Cover the viewport while keeping the painted ring's center under the wheel.
+  const bgScale=Math.max(w/imageW,cy/(imageH*0.432),(h-cy)/(imageH*0.568));
+  return {cx,cy,R,bgScale,bgY:cy+imageH*(0.5-0.432)*bgScale};
+}
+
 const WORLD = 4000;
 const PERF_LIVE_MUL = 0.8;   // v5.49: ลดมอนบนจอ 20% (มือถือกระตุก)
 const FX_PER_FRAME = 6;      // v5.49: เอฟเฟกต์ตกแต่งสร้างได้ไม่เกินนี้ต่อเฟรม
@@ -42,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.42';
+const GAME_VERSION = '6.0.43';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.43', date:'2026-09-30', title:'More wheel prizes and clearer boss HUD', items:['New painted Bonus Level-up and reward icons; wheel backdrop covers the screen','Wheel can award Weave Thread, shovels, ancient scrolls and Unique recharge','Stage progress and boss HP use separate rows and adapt after resizing'] },
   { v:'6.0.42', date:'2026-09-30', title:'Painted Build Path and upgrade icons', items:['18 Build Paths now show distinct painted artwork instead of emoji','36 path-exclusive upgrades have individual icons across all six fighters'] },
   { v:'6.0.41', date:'2026-09-30', title:'Fix repeated miniboss chest rewards and premature clears', items:['Collected chests disable overlap before opening any reward modal','Unknown chest kinds no longer grant cards or finish a stage','Closing level-up cards never completes a stage'] },
   { v:'6.0.40', date:'2026-09-30', title:'Temple emblems and reward wheel art', items:['Five special core icons share one painted transparent atlas','Six illustrated weave rank emblems replace the temple star','Reward wheel uses a clean rose-gold chamber with no baked reward icons'] },
@@ -863,6 +872,12 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  prize_levelup:'assets/art/rewards/prize_levelup.webp',
+  prize_thread:'assets/art/rewards/prize_thread.webp',
+  prize_shovel:'assets/art/rewards/prize_shovel.webp',
+  prize_scroll:'assets/art/rewards/prize_scroll.webp',
+  prize_recharge:'assets/art/rewards/prize_recharge.webp',
+  prize_sugar_bag:'assets/art/rewards/prize_sugar_bag.webp',
   ic_path_sniper:'assets/art/build_paths/sniper.webp',
   ic_path_shotgun:'assets/art/build_paths/shotgun.webp',
   ic_path_ricochet:'assets/art/build_paths/ricochet.webp',
@@ -4503,21 +4518,21 @@ class Game extends Phaser.Scene {
     this.stageTxt=this.add.text(w/2,pad+56,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
     // wave progress pips (บอกว่าใกล้จบเวฟ/ถึงบอสหรือยัง)
     this.pipG=this.add.graphics().setScrollFactor(1).setDepth(51);
-    this.waveObjTxt=this.add.text(w/2,pad+106,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff4b0',align:'center',stroke:'#24172c',strokeThickness:4}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);
+    this.waveObjTxt=this.add.text(w/2,pad+HUD_ROWS.objective,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#fff4b0',align:'center',stroke:'#24172c',strokeThickness:4}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);
     this.waveObjBg=this.add.rectangle(w/2,pad+131,Math.min(230,w-84),7,0x100b16,0.72).setOrigin(0.5,0).setScrollFactor(1).setDepth(52).setVisible(false);
     this.waveObjBar=this.add.rectangle(w/2-Math.min(230,w-84)/2,pad+132,Math.min(230,w-84),5,0xffd166,1).setOrigin(0,0).setScrollFactor(1).setDepth(53).setVisible(false);
     const progressTexture=this.textures.get('replay_progress_art');
     if(!progressTexture.has('empty')){progressTexture.add('empty',0,100,95,1750,164);progressTexture.add('fill',0,207,604,1520,74);}
-    const meterW=Math.min(350,w-34),meterY=pad+149;
+    const meterW=Math.min(350,w-34),meterY=pad+HUD_ROWS.progress;
     this.replayProgressFrame=this.add.image(w/2,meterY,'replay_progress_art','empty').setDisplaySize(meterW,33).setDepth(54).setVisible(false);
     this.replayProgressFill=this.add.image(w/2-meterW*.435,meterY,'replay_progress_art','fill').setOrigin(0,.5).setDisplaySize(meterW*.87,15).setDepth(55).setVisible(false);
     this.waveBonusTxt=this.add.text(w/2,pad+140,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a',align:'center',stroke:'#24172c',strokeThickness:3}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53).setVisible(false);   // ⭐ Bonus Challenge (v4.58)
 
     // boss HP bar (hidden until boss)
-    this.bossName=this.add.text(w/2,pad+136,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(52);
-    this.bossBgW=this.add.rectangle(w/2,pad+154,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
-    this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+156,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(1).setDepth(52);
-    this.bossHpTxt=this.add.text(w/2,pad+161,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#5a0d28',strokeThickness:2}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53);
+    this.bossName=this.add.text(w/2,pad+HUD_ROWS.bossName,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ff9ec4'}).setOrigin(0.5,0).setScrollFactor(1).setDepth(52);
+    this.bossBgW=this.add.rectangle(w/2,pad+HUD_ROWS.bossBg,this._barW*0.8,12,0x000000,0.4).setOrigin(0.5,0).setScrollFactor(1).setDepth(51);
+    this.bossBar=this.add.rectangle(w/2-(this._barW*0.8)/2+2,pad+HUD_ROWS.bossBar,this._barW*0.8-4,8,0xff5f97,1).setOrigin(0,0).setScrollFactor(1).setDepth(52);
+    this.bossHpTxt=this.add.text(w/2,pad+HUD_ROWS.bossHp,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#5a0d28',strokeThickness:2}).setOrigin(0.5,0).setScrollFactor(1).setDepth(53);
 
     // center banner
     this.bannerT=this.add.text(w/2,this.H*0.30,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffffff',align:'center',stroke:'#1a1224',strokeThickness:4,wordWrap:{width:w*0.86}}).setOrigin(0.5).setScrollFactor(1).setDepth(60).setVisible(false);
@@ -4771,9 +4786,15 @@ class Game extends Phaser.Scene {
       if(this.pauseBtn){ this.pauseBtn.setPosition(this.W-70,cbY); this.pauseTxt.setPosition(this.W-70,cbY); }
       if(this.speedBtn){ this.speedBtn.setPosition(this.W-114,cbY); this.speedTxt.setPosition(this.W-114,cbY); }
       if(this.state==='paused') this.buildPause();
-      this.bossName.setPosition(this.W/2,pad+136); this.bossBgW.setPosition(this.W/2,pad+154); this.bossBgW.width=this._barW*0.8;
-      this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+156);
-      if(this.bossHpTxt)this.bossHpTxt.setPosition(this.W/2,pad+161);
+      const meterW=Math.min(350,this.W-34),meterY=pad+HUD_ROWS.progress;
+      if(this.waveObjTxt)this.waveObjTxt.setPosition(this.W/2,pad+HUD_ROWS.objective);
+      if(this.replayProgressFrame)this.replayProgressFrame.setPosition(this.W/2,meterY).setDisplaySize(meterW,33);
+      if(this.replayProgressFill)this.replayProgressFill.setPosition(this.W/2-meterW*.435,meterY).setDisplaySize(meterW*.87,15);
+      if(this.waveObjBg)this.waveObjBg.setPosition(this.W/2,pad+131).setDisplaySize(Math.min(230,this.W-84),7);
+      if(this.waveObjBar)this.waveObjBar.setPosition(this.W/2-Math.min(230,this.W-84)/2,pad+132);
+      this.bossName.setPosition(this.W/2,pad+HUD_ROWS.bossName); this.bossBgW.setPosition(this.W/2,pad+HUD_ROWS.bossBg); this.bossBgW.width=this._barW*0.8;
+      this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+HUD_ROWS.bossBar);
+      if(this.bossHpTxt)this.bossHpTxt.setPosition(this.W/2,pad+HUD_ROWS.bossHp);
       this.bannerT.setPosition(this.W/2,this.H*0.32); this.bannerS.setPosition(this.W/2,this.H*0.4); }
     if(this.state==='menu') this.buildStartMenu();
     if(this.state==='startskill')this.openStartingSkillChoice();
@@ -10309,11 +10330,15 @@ class Game extends Phaser.Scene {
     return [
       {id:'sugarS',artKey:'prize_sugar',emoji:'🍬',name:'Sugar +'+S(25),w:tier==='gold'?4:10,color:0xff9dc4,give:()=>this.addRunSugar(S(25))},
       {id:'sugarM',artKey:'prize_sugar',emoji:'🍭',name:'Sugar +'+S(60),w:7,color:0xff7fb0,give:()=>this.addRunSugar(S(60))},
-      {id:'sugarL',artKey:'prize_sugar',emoji:'🎂',name:'Sugar +'+S(130),w:tier==='bronze'?2:4,color:0xffb347,give:()=>this.addRunSugar(S(130))},
+      {id:'sugarL',artKey:'prize_sugar_bag',emoji:'🎂',name:'Sugar +'+S(130),w:tier==='bronze'?2:4,color:0xffb347,give:()=>this.addRunSugar(S(130))},
       {id:'cur1',artKey:'prize_currency',emoji:'💠',name:'Currency ×1',w:8,color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Prize')},
       {id:'cur3',artKey:'prize_currency',emoji:'💎',name:'Currency ×3',w:tier==='bronze'?2:4,color:0x62b7ff,give:()=>this.grantCurrencyReward(3,this.currencyTierFor(),'Prize')},
       {id:'heal',artKey:'heal',emoji:'❤️',name:'Heal 40%',w:6,color:0xff6f9d,give:()=>{const p=this.player,a=Math.round(p.maxhp*0.4);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);}},
-      {id:'card',artKey:'ui_card_power',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
+      {id:'card',artKey:'prize_levelup',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
+      {id:'thread',artKey:'prize_thread',name:'Weave Thread +'+(tier==='gold'?5:3),w:5,color:0xcaa4ff,give:()=>{Save.data.threads=Save.threads()+(tier==='gold'?5:3);Save.save();this.showBanner('Weave Thread gained','Use it in Flavor Weave Temple',1400);}},
+      {id:'shovel',artKey:'prize_shovel',name:'Shovels +'+(tier==='gold'?2:1),w:4,color:0xffd782,give:()=>{Save.addShovels(tier==='gold'?2:1);this.showBanner('Shovels gained','Explore Temple Depths',1400);}},
+      {id:'scroll',artKey:'prize_scroll',name:'Ancient Scroll +1',w:tier==='gold'?2:1,color:0xd9b2ff,give:()=>{Save.data.scrolls=Save.scrolls()+1;Save.save();this.showBanner('Ancient Scroll +1','Unlock an Ancient Perk',1400);}},
+      {id:'recharge',artKey:'prize_recharge',name:'Unique ready + Heal 15%',w:4,color:0x8fe3df,give:()=>{this.uniqueCd=0;const p=this.player,a=Math.round(p.maxhp*0.15);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);this.showBanner('Unique ready','Your Unique skill can be used again',1400);}},
       {id:'jackpot',artKey:'prize_jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
     ];
   }
@@ -10341,13 +10366,16 @@ class Game extends Phaser.Scene {
     if(this.state==='rolling'){done&&done();return;}
     // v5.15: ลุ้นอัปเกรดระดับกลางวงล้อ (ตัดสินตั้งแต่ต้น โชว์ตอนหมุนไปได้ ~55%) bronze→silver 25% · silver→gold 15%
     const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=[0.25,0.15,0][ri],upTier=Math.random()<upChance?order[ri+1]:null;
-    const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],pool=this.miniPrizePool(upTier||tier);
-    let tw=0;pool.forEach(p=>tw+=p.w);let r=Math.random()*tw,winIdx=0;for(let i=0;i<pool.length;i++){r-=pool[i].w;if(r<=0){winIdx=i;break;}}
+    const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],rewards=this.miniPrizePool(upTier||tier);
+    let tw=0;rewards.forEach(p=>tw+=p.w);let r=Math.random()*tw,winner=rewards[rewards.length-1];for(const prize of rewards){r-=prize.w;if(r<=0){winner=prize;break;}}
+    // Roll from every reward first, then show eight slots including the winner.
+    // This keeps all reward odds intact and leaves readable spacing on phones.
+    const pool=rewards.length<=8?rewards:Phaser.Utils.Array.Shuffle([winner,...Phaser.Utils.Array.Shuffle(rewards.filter(p=>p!==winner)).slice(0,7)]),winIdx=pool.indexOf(winner);
     this._prevRollState=this.state;this.state='rolling';this.physics.pause();
-    const w=this.W,h=this.H,cx=w/2,cy=h*0.47,R=Math.min(w*0.36,150),n=pool.length;
+    const w=this.W,h=this.H,texture=this.textures.get('prize_wheel_bg').getSourceImage(),layout=prizeWheelLayout(w,h,texture.width,texture.height),{cx,cy,R}=layout,n=pool.length;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
     const backdrop=this.add.rectangle(cx,h/2,w,h,0x201323);
-    const bg=this.add.image(cx,h/2,'prize_wheel_bg');const bgScale=2*R/(bg.width*0.84);bg.setScale(bgScale).setY(cy+bg.height*(0.5-0.432)*bgScale);
+    const bg=this.add.image(cx,layout.bgY,'prize_wheel_bg').setScale(layout.bgScale);
     const rays=this.add.circle(cx,cy,R+42,T0.color,0.05).setStrokeStyle(1,T0.color,0.18);
     this.tweens.add({targets:rays,alpha:{from:0.45,to:1},duration:1100,yoyo:true,repeat:-1});
     const ring=this.add.graphics();ring.lineStyle(3,T0.color,0.5);ring.strokeCircle(cx,cy,R);
