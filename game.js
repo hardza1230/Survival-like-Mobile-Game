@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.43';
+const GAME_VERSION = '6.0.44';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.44', date:'2026-09-30', title:'Mint movement polish', items:['Mint keeps walking while firing Frost Lance and Mint Gale','Gentler breathing, lean and cast recoil keep her silhouette steady','Stationary casts match their sprite scale immediately'] },
   { v:'6.0.43', date:'2026-09-30', title:'More wheel prizes and clearer boss HUD', items:['New painted Bonus Level-up and reward icons; wheel backdrop covers the screen','Wheel can award Weave Thread, shovels, ancient scrolls and Unique recharge','Stage progress and boss HP use separate rows and adapt after resizing'] },
   { v:'6.0.42', date:'2026-09-30', title:'Painted Build Path and upgrade icons', items:['18 Build Paths now show distinct painted artwork instead of emoji','36 path-exclusive upgrades have individual icons across all six fighters'] },
   { v:'6.0.41', date:'2026-09-30', title:'Fix repeated miniboss chest rewards and premature clears', items:['Collected chests disable overlap before opening any reward modal','Unknown chest kinds no longer grant cards or finish a stage','Closing level-up cards never completes a stage'] },
@@ -11394,6 +11395,7 @@ class Game extends Phaser.Scene {
     this._pBase = FP ? (TARGET/FP) : (90/src);
     this._charKey=key;
     this._attackPoseTime=0;this._attackTextureKey=null;this._momoIdleT=0;this._momoDashT=0;
+    this._mintRecoilT=0;this._charRunT=0;
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
@@ -11402,10 +11404,13 @@ class Game extends Phaser.Scene {
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา
   updatePose(dt){
     if(!this._hasFrames)return;
+    const mintMoving=this.character==='mint'&&this.player.body&&this.player.body.velocity.length()>24;
+    // Keep the gait clock running through casts, hits and dash transitions.
+    if(this.character==='mint')this._charRunT=(this._charRunT||0)+(mintMoving?dt:0);
     if(this._attackPoseTime>0){
       this._attackPoseTime=Math.max(0,this._attackPoseTime-dt);
       const attackKey=this._attackTextureKey||'char_'+this.character+'_attack';
-      if(this.textures.exists(attackKey)){
+      if(this.textures.exists(attackKey)&&!(this.character==='mint'&&(mintMoving||this.dashTime>0))){
         if(this.player.texture.key!==attackKey)this.player.setTexture(attackKey);
         this.player.setFrame(Math.min(7,Math.floor((1-this._attackPoseTime/this._attackPoseDuration)*8)));
         if(this._attackPoseTime>0)return;
@@ -11432,7 +11437,7 @@ class Game extends Phaser.Scene {
     if(moving){
       if(hasRun){
         if(this.player.texture.key!==runCharKey)this.player.setTexture(runCharKey);
-        this._charRunT=(this._charRunT||0)+dt;
+        if(this.character!=='mint')this._charRunT=(this._charRunT||0)+dt;
         this.player.setFrame(Math.floor(this._charRunT*16)%12);
       }else{
         const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
@@ -11447,7 +11452,7 @@ class Game extends Phaser.Scene {
       this.player.setFrame(Math.floor(this._momoIdleT*5)%8);this._charRunT=0;return;
     }
     if(this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
-    this._charRunT=0;
+    if(this.character!=='mint')this._charRunT=0;
     this._blinkT-=dt;
     if(this._blinkT<=0){ this.player.setFrame(CF.blink);
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
@@ -11462,6 +11467,11 @@ class Game extends Phaser.Scene {
     const key=textureKey||'char_'+this.character+'_attack';
     if(!this._hasFrames||!this.textures.exists(key)){this.poseFlash(CF.cast,ms);return;}
     this._poseHold=0;this._attackTextureKey=key;this._attackPoseDuration=(ms||400)/1000;this._attackPoseTime=this._attackPoseDuration;
+    if(this.character==='mint'){
+      this._mintRecoilT=0.18;
+      // A moving cast uses the run sheet; the projectile and recoil sell the shot.
+      if(this.player.body&&this.player.body.velocity.length()>24)return;
+    }
     this.player.setTexture(key).setFrame(0);
   }
   // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
@@ -11477,26 +11487,26 @@ class Game extends Phaser.Scene {
     // หันหน้าซ้าย-ขวาตามทิศทางการวิ่ง
     if(Math.abs(p.body.velocity.x)>15) p.setFlipX(p.body.velocity.x < 0);
     this._wob += dt*(moving?14:3.4);
-    const breathe=Math.sin(this._wob)*(moving?0.11:0.05);
-    const waddle=moving?Math.sin(this._wob*0.5)*0.10:0;
+    const mint=this.character==='mint';
+    const breathe=Math.sin(this._wob)*(mint?(moving?0.025:0.012):(moving?0.11:0.05));
+    const waddle=moving?Math.sin(this._wob*0.5)*(mint?0.025:0.10):0;
     const leanT=moving?Phaser.Math.Clamp(p.body.velocity.x/1100,-0.16,0.16):0;
     this._lean += (leanT-this._lean)*Math.min(1,dt*7);
-    p.rotation = waddle + this._lean;
+    this._mintRecoilT=Math.max(0,(this._mintRecoilT||0)-dt);
+    const recoil=mint?Math.sin(Math.PI*this._mintRecoilT/0.18)*0.035:0;
+    p.rotation = waddle + this._lean*(mint?0.45:1) - recoil*(p.flipX?-1:1);
     // ชดเชยชีตตัวละครที่ "idle art smaller than run art" (เช่น Mint Frostleaf) → กันตัวหด/บีบตอนหยุดเดิน
     const runKey='char_'+this.character+'_run';
     const texture=this.player.texture.key;
-    // Mint's cast sheets contain more transparent padding than the idle sheet.
-    // Match the painted body (about 78-80px versus 98px idle), then ease the
-    // change so frequent lance casts do not make her visibly pulse in size.
+    // Padding compensation must switch with the texture, never ease between sheets.
     const actMul=this.character==='cocoa'&&texture==='char_cocoa_attack'?1.14:
-      this.character==='mint'&&texture==='char_mint_attack'?1.23:
-      this.character==='mint'&&texture==='char_mint_gale'?1.26:
+      mint&&texture==='char_mint_attack'?1.23:
+      mint&&texture==='char_mint_gale'?1.26:
       ((texture!==runKey&&CHAR_ACTION_SCALE[this.character])||1);
-    if(this.character==='mint'){
-      this._mintVisualScale=(this._mintVisualScale??actMul)+(actMul-(this._mintVisualScale??actMul))*Math.min(1,dt*18);
-    }
-    const base=(this._pBase||1)*(this.character==='mint'?this._mintVisualScale:actMul);
-    p.setScale(base*this._sqX*(1-breathe), base*this._sqY*(1+breathe));
+    const base=(this._pBase||1)*actMul;
+    const sqX=mint?Phaser.Math.Clamp(this._sqX,0.94,1.06):this._sqX;
+    const sqY=mint?Phaser.Math.Clamp(this._sqY,0.94,1.06):this._sqY;
+    p.setScale(base*sqX*(1-breathe), base*sqY*(1+breathe));
     // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
     if(moving){
       this._dustT = (this._dustT || 0) - dt;
@@ -11655,7 +11665,8 @@ class Game extends Phaser.Scene {
     if(regenPerSec>0&&this.player.hp<this.player.maxhp)this.player.hp=Math.min(this.player.maxhp,this.player.hp+regenPerSec*dt);
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
-    this.animatePlayer(dt); this.updatePose(dt);
+    if(this.character==='mint'){this.updatePose(dt);this.animatePlayer(dt);}
+    else {this.animatePlayer(dt);this.updatePose(dt);}
     if(this.iso){ this.player.setDepth(this.player.y); this.drawShadows(); }
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.tickCocoaDash(dt);
