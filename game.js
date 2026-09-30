@@ -42,7 +42,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.41';
+const GAME_VERSION = '6.0.42';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -52,6 +52,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.42', date:'2026-09-30', title:'Painted Build Path and upgrade icons', items:['18 Build Paths now show distinct painted artwork instead of emoji','36 path-exclusive upgrades have individual icons across all six fighters'] },
   { v:'6.0.41', date:'2026-09-30', title:'Fix repeated miniboss chest rewards and premature clears', items:['Collected chests disable overlap before opening any reward modal','Unknown chest kinds no longer grant cards or finish a stage','Closing level-up cards never completes a stage'] },
   { v:'6.0.40', date:'2026-09-30', title:'Temple emblems and reward wheel art', items:['Five special core icons share one painted transparent atlas','Six illustrated weave rank emblems replace the temple star','Reward wheel uses a clean rose-gold chamber with no baked reward icons'] },
   { v:'6.0.39', date:'2026-09-30', title:'Rank-unlocked special temple cores', items:['Five permanent utility cores unlock at weave ranks 1–5 and upgrade with Weave Thread','Special cores have three levels, persist through promotion and apply to combat and loadout stats'] },
@@ -862,6 +863,60 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  ic_path_sniper:'assets/art/build_paths/sniper.webp',
+  ic_path_shotgun:'assets/art/build_paths/shotgun.webp',
+  ic_path_ricochet:'assets/art/build_paths/ricochet.webp',
+  ic_path_headshot:'assets/art/build_paths/headshot.webp',
+  ic_path_pointblank:'assets/art/build_paths/pointblank.webp',
+  ic_path_carom:'assets/art/build_paths/carom.webp',
+  ic_path_deadeye:'assets/art/build_paths/deadeye.webp',
+  ic_path_buckshot:'assets/art/build_paths/buckshot.webp',
+  ic_path_gather:'assets/art/build_paths/gather.webp',
+  ic_path_glacier:'assets/art/build_paths/glacier.webp',
+  ic_path_barrage:'assets/art/build_paths/barrage.webp',
+  ic_path_pierce:'assets/art/build_paths/pierce.webp',
+  ic_path_p_deepchill:'assets/art/build_paths/p_deepchill.webp',
+  ic_path_p_quickdraw:'assets/art/build_paths/p_quickdraw.webp',
+  ic_path_p_shatterpt:'assets/art/build_paths/p_shatterpt.webp',
+  ic_path_p_coldsnap:'assets/art/build_paths/p_coldsnap.webp',
+  ic_path_p_splinter:'assets/art/build_paths/p_splinter.webp',
+  ic_path_p_coldblood:'assets/art/build_paths/p_coldblood.webp',
+  ic_path_brawler:'assets/art/build_paths/brawler.webp',
+  ic_path_titan:'assets/art/build_paths/titan.webp',
+  ic_path_dashboxer:'assets/art/build_paths/dashboxer.webp',
+  ic_path_p_shock:'assets/art/build_paths/p_shock.webp',
+  ic_path_p_titanfist:'assets/art/build_paths/p_titanfist.webp',
+  ic_path_p_blitz:'assets/art/build_paths/p_blitz.webp',
+  ic_path_p_footwork:'assets/art/build_paths/p_footwork.webp',
+  ic_path_p_quake:'assets/art/build_paths/p_quake.webp',
+  ic_path_p_phantom:'assets/art/build_paths/p_phantom.webp',
+  ic_path_storm:'assets/art/build_paths/storm.webp',
+  ic_path_smite:'assets/art/build_paths/smite.webp',
+  ic_path_tempest:'assets/art/build_paths/tempest.webp',
+  ic_path_p_squall:'assets/art/build_paths/p_squall.webp',
+  ic_path_p_judge:'assets/art/build_paths/p_judge.webp',
+  ic_path_p_gale:'assets/art/build_paths/p_gale.webp',
+  ic_path_p_static:'assets/art/build_paths/p_static.webp',
+  ic_path_p_overload:'assets/art/build_paths/p_overload.webp',
+  ic_path_p_farstrike:'assets/art/build_paths/p_farstrike.webp',
+  ic_path_prism:'assets/art/build_paths/prism.webp',
+  ic_path_lens:'assets/art/build_paths/lens.webp',
+  ic_path_sentinel:'assets/art/build_paths/sentinel.webp',
+  ic_path_p_facet:'assets/art/build_paths/p_facet.webp',
+  ic_path_p_lensbig:'assets/art/build_paths/p_lensbig.webp',
+  ic_path_p_longsight:'assets/art/build_paths/p_longsight.webp',
+  ic_path_p_refract:'assets/art/build_paths/p_refract.webp',
+  ic_path_p_steady:'assets/art/build_paths/p_steady.webp',
+  ic_path_p_swift:'assets/art/build_paths/p_swift.webp',
+  ic_path_zestSwarm:'assets/art/build_paths/zestSwarm.webp',
+  ic_path_citrusGuardian:'assets/art/build_paths/citrusGuardian.webp',
+  ic_path_juiceWorkshop:'assets/art/build_paths/juiceWorkshop.webp',
+  ic_path_p_pulp:'assets/art/build_paths/p_pulp.webp',
+  ic_path_p_heavyPeel:'assets/art/build_paths/p_heavyPeel.webp',
+  ic_path_p_sourMixer:'assets/art/build_paths/p_sourMixer.webp',
+  ic_path_p_feast:'assets/art/build_paths/p_feast.webp',
+  ic_path_p_bodyguard:'assets/art/build_paths/p_bodyguard.webp',
+  ic_path_p_sweetHelper:'assets/art/build_paths/p_sweetHelper.webp',
   temple_special_cores:'assets/art/temple/special_cores_sheet.png',
   temple_rank_emblems:'assets/art/temple/rank_emblems_sheet.png',
   temple_life_core:'assets/art/temple/life_core.png',
@@ -2126,61 +2181,61 @@ const BASIC_ATTACKS = {
 // 🛤 Build Path (v4.94) — เลเวล 5 เลือก 1 ใน 3 สาย · ปิดอีก 2 สาย · สายเปลี่ยน "รูปแบบ" ดาเมจ ไม่ได้บวกเพิ่มรวม
 const BASIC_PATHS={
   yuzu:[
-    {id:'zestSwarm',name:'Zest Swarm',emoji:'🐝',base:{dmg:0.75,count:2},desc:'+2 small Yuzlings; faster hunting, lighter bites · crowd build',upgrades:[{id:'p_pulp',name:'Extra Pulp',emoji:'🍋',max:2,fx:{count:1},desc:'+1 Yuzling per rank (max 9)'},{id:'p_feast',name:'Chain Feast',emoji:'⚡',max:3,fx:{cd:0.93},desc:'-7% attack cooldown per rank'}]},
-    {id:'citrusGuardian',name:'Citrus Guardian',emoji:'🛡️',base:{dmg:2.5,range:0.25},desc:'Merge the crew into one large guardian; heavy area attacks · defense build',upgrades:[{id:'p_heavyPeel',name:'Heavy Peel',emoji:'💥',max:3,fx:{dmg:1.14},desc:'+14% guardian damage per rank'},{id:'p_bodyguard',name:'Bodyguard',emoji:'💚',max:3,fx:{taken:0.04},desc:'Take 4% less damage per rank'}]},
-    {id:'juiceWorkshop',name:'Juice Workshop',emoji:'🧀',base:{dmg:0.85},desc:'Cheese helper cooks alongside Yuzlings: sour zones and support · utility build',upgrades:[{id:'p_sourMixer',name:'Sour Mixer',emoji:'🍋',max:3,fx:{dmg:1.08},desc:'+8% sour zone damage per rank'},{id:'p_sweetHelper',name:'Sweet Helper',emoji:'🧀',max:3,fx:{cd:0.94},desc:'Cheese support acts 6% faster per rank'}]}],
+    {id:'zestSwarm',iconKey:'ic_path_zestSwarm',name:'Zest Swarm',emoji:'🐝',base:{dmg:0.75,count:2},desc:'+2 small Yuzlings; faster hunting, lighter bites · crowd build',upgrades:[{id:'p_pulp',iconKey:'ic_path_p_pulp',name:'Extra Pulp',emoji:'🍋',max:2,fx:{count:1},desc:'+1 Yuzling per rank (max 9)'},{id:'p_feast',iconKey:'ic_path_p_feast',name:'Chain Feast',emoji:'⚡',max:3,fx:{cd:0.93},desc:'-7% attack cooldown per rank'}]},
+    {id:'citrusGuardian',iconKey:'ic_path_citrusGuardian',name:'Citrus Guardian',emoji:'🛡️',base:{dmg:2.5,range:0.25},desc:'Merge the crew into one large guardian; heavy area attacks · defense build',upgrades:[{id:'p_heavyPeel',iconKey:'ic_path_p_heavyPeel',name:'Heavy Peel',emoji:'💥',max:3,fx:{dmg:1.14},desc:'+14% guardian damage per rank'},{id:'p_bodyguard',iconKey:'ic_path_p_bodyguard',name:'Bodyguard',emoji:'💚',max:3,fx:{taken:0.04},desc:'Take 4% less damage per rank'}]},
+    {id:'juiceWorkshop',iconKey:'ic_path_juiceWorkshop',name:'Juice Workshop',emoji:'🧀',base:{dmg:0.85},desc:'Cheese helper cooks alongside Yuzlings: sour zones and support · utility build',upgrades:[{id:'p_sourMixer',iconKey:'ic_path_p_sourMixer',name:'Sour Mixer',emoji:'🍋',max:3,fx:{dmg:1.08},desc:'+8% sour zone damage per rank'},{id:'p_sweetHelper',iconKey:'ic_path_p_sweetHelper',name:'Sweet Helper',emoji:'🧀',max:3,fx:{cd:0.94},desc:'Cheese support acts 6% faster per rank'}]}],
   momo:[
-    {id:'sniper',name:'Charged Sniper',emoji:'🎯',desc:'Charge a piercing seed · ×3.2 damage, half as many shots · boss killer',
-      upgrades:[{id:'headshot',name:'Headshot',emoji:'🎯',max:3,desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
-                {id:'deadeye',name:'Deadeye',emoji:'👁️',max:3,desc:'+15% damage to elites, minibosses and bosses per rank'}]},
-    {id:'shotgun',name:'Point-Blank Barrage',emoji:'💥',desc:'+2 seeds in a spread that tightens near large targets · +40% damage up close',
-      upgrades:[{id:'pointblank',name:'Point Blank',emoji:'🔥',max:3,desc:'+15% close-range bonus per rank'},
-                {id:'buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'}]},
-    {id:'ricochet',name:'Rapid Ricochet',emoji:'💞',desc:'Fire 25% faster · +2 bounces per seed, ×0.8 damage each',
-      upgrades:[{id:'carom',name:'Carom',emoji:'🔁',max:3,desc:'+1 bounce per rank'},
-                {id:'gather',name:'Gathering Juice',emoji:'🧃',max:3,desc:'+8% damage per bounce per rank (stacks along the chain)'}]}],
+    {id:'sniper',iconKey:'ic_path_sniper',name:'Charged Sniper',emoji:'🎯',desc:'Charge a piercing seed · ×3.2 damage, half as many shots · boss killer',
+      upgrades:[{id:'headshot',iconKey:'ic_path_headshot',name:'Headshot',emoji:'🎯',max:3,desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
+                {id:'deadeye',iconKey:'ic_path_deadeye',name:'Deadeye',emoji:'👁️',max:3,desc:'+15% damage to elites, minibosses and bosses per rank'}]},
+    {id:'shotgun',iconKey:'ic_path_shotgun',name:'Point-Blank Barrage',emoji:'💥',desc:'+2 seeds in a spread that tightens near large targets · +40% damage up close',
+      upgrades:[{id:'pointblank',iconKey:'ic_path_pointblank',name:'Point Blank',emoji:'🔥',max:3,desc:'+15% close-range bonus per rank'},
+                {id:'buckshot',iconKey:'ic_path_buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'}]},
+    {id:'ricochet',iconKey:'ic_path_ricochet',name:'Rapid Ricochet',emoji:'💞',desc:'Fire 25% faster · +2 bounces per seed, ×0.8 damage each',
+      upgrades:[{id:'carom',iconKey:'ic_path_carom',name:'Carom',emoji:'🔁',max:3,desc:'+1 bounce per rank'},
+                {id:'gather',iconKey:'ic_path_gather',name:'Gathering Juice',emoji:'🧃',max:3,desc:'+8% damage per bounce per rank (stacks along the chain)'}]}],
   // สายของตัวอื่นใช้ระบบกลาง: base = ผลตอนเลือก · upgrades[].fx = ผลต่อ rank (dmg/cd คูณ · อื่น ๆ บวก)
   // คีย์: dmg cd count range big(vs elite/มินิ/บอส) frozen(vs ศัตรูแช่) far(>300px) low(HP เรา<50%) taken(ลดดาเมจที่รับ)
   mint:[
-    {id:'glacier',name:'Glacier Warden',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze crowds · shatter safely',desc:'Lances deal 10% less damage; Frozen enemies take 35% more. Bosses can be Chilled, but cannot freeze.',
-      upgrades:[{id:'p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen',desc:'Frozen enemies take 12% more damage per rank.'},
-                {id:'p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing a normal enemy applies 1 Chill stack to nearby enemies; radius grows 20% per rank.'}]},
-    {id:'barrage',name:'Ice Spear Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (up to 3 total), 22% sooner. Each lance deals 62% damage.',
-      upgrades:[{id:'p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
-                {id:'p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'}]},
-    {id:'pierce',name:'Glacial Pierce',emoji:'🏹',base:{dmg:1.6,cd:1.4,range:0.3},headline:'Heavy lance · pierces 2 foes',desc:'Deal 60% more damage and reach 30% farther, but fire 40% slower. Pierce 2 normal enemies; shatter on bosses.',
-      upgrades:[{id:'p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% DMG to elites/bosses',desc:'Deal 15% more damage to elites, minibosses and bosses per rank.'},
-                {id:'p_coldblood',name:'Fracture Line',emoji:'💎',max:3,headline:'+1 pierced target',desc:'Pierce 1 extra normal enemy per rank before shattering; shatter immediately on bosses.'}]}],
+    {id:'glacier',iconKey:'ic_path_glacier',name:'Glacier Warden',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze crowds · shatter safely',desc:'Lances deal 10% less damage; Frozen enemies take 35% more. Bosses can be Chilled, but cannot freeze.',
+      upgrades:[{id:'p_deepchill',iconKey:'ic_path_p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen',desc:'Frozen enemies take 12% more damage per rank.'},
+                {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing a normal enemy applies 1 Chill stack to nearby enemies; radius grows 20% per rank.'}]},
+    {id:'barrage',iconKey:'ic_path_barrage',name:'Ice Spear Barrage',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (up to 3 total), 22% sooner. Each lance deals 62% damage.',
+      upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
+                {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'}]},
+    {id:'pierce',iconKey:'ic_path_pierce',name:'Glacial Pierce',emoji:'🏹',base:{dmg:1.6,cd:1.4,range:0.3},headline:'Heavy lance · pierces 2 foes',desc:'Deal 60% more damage and reach 30% farther, but fire 40% slower. Pierce 2 normal enemies; shatter on bosses.',
+      upgrades:[{id:'p_shatterpt',iconKey:'ic_path_p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% DMG to elites/bosses',desc:'Deal 15% more damage to elites, minibosses and bosses per rank.'},
+                {id:'p_coldblood',iconKey:'ic_path_p_coldblood',name:'Fracture Line',emoji:'💎',max:3,headline:'+1 pierced target',desc:'Pierce 1 extra normal enemy per rank before shattering; shatter immediately on bosses.'}]}],
   cocoa:[
-    {id:'brawler',name:'Brawler',emoji:'🥊',base:{dmg:0.72,cd:0.7,wave:1},desc:'Combo 30% faster, ×0.72 damage · every finisher blasts a shockwave · rush build',
-      upgrades:[{id:'p_shock',name:'Shock Knuckles',emoji:'💥',max:2,fx:{wave:1},desc:'+1 extra shockwave after each finisher per rank'},
-                {id:'p_footwork',name:'Footwork',emoji:'💨',max:3,fx:{cd:0.94},desc:'-6% combo cooldown per rank'}]},
-    {id:'titan',name:'Titan Fist',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 damage and +25% impact size, but 45% slower · boss build',
-      upgrades:[{id:'p_titanfist',name:'Giant Slayer',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
-                {id:'p_quake',name:'Quake',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'}]},
-    {id:'dashboxer',name:'Dash Boxer',emoji:'🐾',base:{dmg:0.9,dashc:1,dashm:0.5},desc:'+1 Dash charge, charges refill 25% faster, Dash buff +50% stronger · ×0.9 combo damage · hit-and-run build',
-      upgrades:[{id:'p_blitz',name:'Blitz',emoji:'⚡',max:2,fx:{dashc:1},desc:'+1 Dash charge and +1s Dash buff per rank'},
-                {id:'p_phantom',name:'Phantom Jab',emoji:'👻',max:3,fx:{dashm:0.2},desc:'Dash buff +20% combo damage per rank'}]}],
+    {id:'brawler',iconKey:'ic_path_brawler',name:'Brawler',emoji:'🥊',base:{dmg:0.72,cd:0.7,wave:1},desc:'Combo 30% faster, ×0.72 damage · every finisher blasts a shockwave · rush build',
+      upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Shock Knuckles',emoji:'💥',max:2,fx:{wave:1},desc:'+1 extra shockwave after each finisher per rank'},
+                {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Footwork',emoji:'💨',max:3,fx:{cd:0.94},desc:'-6% combo cooldown per rank'}]},
+    {id:'titan',iconKey:'ic_path_titan',name:'Titan Fist',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 damage and +25% impact size, but 45% slower · boss build',
+      upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Giant Slayer',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+                {id:'p_quake',iconKey:'ic_path_p_quake',name:'Quake',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'}]},
+    {id:'dashboxer',iconKey:'ic_path_dashboxer',name:'Dash Boxer',emoji:'🐾',base:{dmg:0.9,dashc:1,dashm:0.5},desc:'+1 Dash charge, charges refill 25% faster, Dash buff +50% stronger · ×0.9 combo damage · hit-and-run build',
+      upgrades:[{id:'p_blitz',iconKey:'ic_path_p_blitz',name:'Blitz',emoji:'⚡',max:2,fx:{dashc:1},desc:'+1 Dash charge and +1s Dash buff per rank'},
+                {id:'p_phantom',iconKey:'ic_path_p_phantom',name:'Phantom Jab',emoji:'👻',max:3,fx:{dashm:0.2},desc:'Dash buff +20% combo damage per rank'}]}],
   taro:[
-    {id:'storm',name:'Chain Storm',emoji:'🌩️',base:{dmg:0.75,count:1},desc:'+1 strike, ×0.75 damage · swarm build',
-      upgrades:[{id:'p_squall',name:'Squall',emoji:'⚡',max:2,fx:{count:1},desc:'+1 strike per rank'},
-                {id:'p_static',name:'Static Build',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% lightning damage per rank'}]},
-    {id:'smite',name:'Smite',emoji:'🔨',base:{dmg:1.8,cd:1.35},desc:'×1.8 damage per strike, but 35% slower · boss build',
-      upgrades:[{id:'p_judge',name:'Judgment',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
-                {id:'p_overload',name:'Overload',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% lightning damage per rank'}]},
-    {id:'tempest',name:'Tempest',emoji:'🌪️',base:{dmg:0.65,cd:0.62},desc:'38% faster casts, ×0.65 damage · speed build',
-      upgrades:[{id:'p_gale',name:'Gale',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% cast cooldown per rank'},
-                {id:'p_farstrike',name:'Far Strike',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% damage to enemies far from you per rank'}]}],
+    {id:'storm',iconKey:'ic_path_storm',name:'Chain Storm',emoji:'🌩️',base:{dmg:0.75,count:1},desc:'+1 strike, ×0.75 damage · swarm build',
+      upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Squall',emoji:'⚡',max:2,fx:{count:1},desc:'+1 strike per rank'},
+                {id:'p_static',iconKey:'ic_path_p_static',name:'Static Build',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% lightning damage per rank'}]},
+    {id:'smite',iconKey:'ic_path_smite',name:'Smite',emoji:'🔨',base:{dmg:1.8,cd:1.35},desc:'×1.8 damage per strike, but 35% slower · boss build',
+      upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Judgment',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+                {id:'p_overload',iconKey:'ic_path_p_overload',name:'Overload',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% lightning damage per rank'}]},
+    {id:'tempest',iconKey:'ic_path_tempest',name:'Tempest',emoji:'🌪️',base:{dmg:0.65,cd:0.62},desc:'38% faster casts, ×0.65 damage · speed build',
+      upgrades:[{id:'p_gale',iconKey:'ic_path_p_gale',name:'Gale',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% cast cooldown per rank'},
+                {id:'p_farstrike',iconKey:'ic_path_p_farstrike',name:'Far Strike',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% damage to enemies far from you per rank'}]}],
   sesame:[
-    {id:'prism',name:'Prism Split',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
-      upgrades:[{id:'p_facet',name:'Extra Facet',emoji:'💠',max:2,fx:{count:1},desc:'+1 beam per rank'},
-                {id:'p_refract',name:'Refraction',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% beam damage per rank'}]},
-    {id:'lens',name:'Focus Lens',emoji:'🔍',base:{dmg:1.6,cd:1.3,big:0.2},desc:'×1.6 damage and +20% vs elites/bosses, but 30% slower · boss build',
-      upgrades:[{id:'p_lensbig',name:'Burning Lens',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
-                {id:'p_steady',name:'Steady Hand',emoji:'🧘',max:3,fx:{dmg:1.1},desc:'+10% beam damage per rank'}]},
-    {id:'sentinel',name:'Far Sentinel',emoji:'🔭',base:{range:0.4,far:0.25},desc:'+40% beam length, +25% damage to far enemies · kite build',
-      upgrades:[{id:'p_longsight',name:'Longsight',emoji:'👁️',max:3,fx:{far:0.10},desc:'+10% damage to far enemies per rank'},
-                {id:'p_swift',name:'Swift Mirror',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% beam cooldown per rank'}]}]
+    {id:'prism',iconKey:'ic_path_prism',name:'Prism Split',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
+      upgrades:[{id:'p_facet',iconKey:'ic_path_p_facet',name:'Extra Facet',emoji:'💠',max:2,fx:{count:1},desc:'+1 beam per rank'},
+                {id:'p_refract',iconKey:'ic_path_p_refract',name:'Refraction',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% beam damage per rank'}]},
+    {id:'lens',iconKey:'ic_path_lens',name:'Focus Lens',emoji:'🔍',base:{dmg:1.6,cd:1.3,big:0.2},desc:'×1.6 damage and +20% vs elites/bosses, but 30% slower · boss build',
+      upgrades:[{id:'p_lensbig',iconKey:'ic_path_p_lensbig',name:'Burning Lens',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+                {id:'p_steady',iconKey:'ic_path_p_steady',name:'Steady Hand',emoji:'🧘',max:3,fx:{dmg:1.1},desc:'+10% beam damage per rank'}]},
+    {id:'sentinel',iconKey:'ic_path_sentinel',name:'Far Sentinel',emoji:'🔭',base:{range:0.4,far:0.25},desc:'+40% beam length, +25% damage to far enemies · kite build',
+      upgrades:[{id:'p_longsight',iconKey:'ic_path_p_longsight',name:'Longsight',emoji:'👁️',max:3,fx:{far:0.10},desc:'+10% damage to far enemies per rank'},
+                {id:'p_swift',iconKey:'ic_path_p_swift',name:'Swift Mirror',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% beam cooldown per rank'}]}]
 };
 // 🍯 Flavor Infusion (v4.96) — เลเวล 10 เลือกธาตุรสชาติ 1 ใน 3 (สุ่มจาก 4) · แลกดาเมจตรงเล็กน้อยกับเอฟเฟกต์ติดเป้า
 // v5.12 ระดับกล่องมินิบอส (สีเสาแสง) · v5.13 ผูกกับผลงานตอนสู้
@@ -8328,7 +8383,7 @@ class Game extends Phaser.Scene {
     panel.fillStyle(bgMix,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2+Math.max(0,rarIdx)*0.9,color,0.96);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
-    const iconKey=isPath?null:o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
+    const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
     let icon,badgeT,nameT,roleT,descT,starsT,ctaT; const hl=options.starting?null:this._cardHeadline(o);
     if(wide){
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
