@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.74';
+const GAME_VERSION = '6.0.75';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.75', date:'2026-10-01', title:'Gear compare fix', items:['Equipment compare boxes now show every crafted mod (Lifesteal, Flat DMG, Healing, Find and Unique Cooldown mods)'] },
   { v:'6.0.74', date:'2026-10-01', title:'Bazaar tidy', items:['Supply box AUTO is now a button inside the Crafting supply box card'] },
   { v:'6.0.73', date:'2026-10-01', title:'Season Storm', items:['C2-4 mission is now Season Storm: each season brings its own hazard','Spring: defeat 10 healing enemies · Summer: keep moving or burn · Autumn: wind and leaf gusts · Winter: slippery ice and frost patches','Pass each season’s trial once to finish; a failed trial simply returns next cycle'] },
   { v:'6.0.72', date:'2026-10-01', title:'New season mission', items:['Stabilize the Seasons (C2-4) no longer asks you to stand in circles','Enemies now carry a season ring — defeat enemies of the active season','Kills of other seasons simply don’t count; progress never goes down'] },
@@ -3277,10 +3278,12 @@ const GEAR_COMPARE_STATS = [
   {key:'critDmg',label:'Crit DMG',pct:true},{key:'cdr',label:'Cooldown',pct:true},{key:'def',label:'Defense',pct:true},
   {key:'speed',label:'Move Speed',pct:true},{key:'pickup',label:'Pickup',pct:true},{key:'regen',label:'Regen/s'},
   {key:'lifeKill',label:'HP / Kill'},{key:'execute',label:'Low-HP DMG',pct:true},{key:'bossDmg',label:'Boss DMG',pct:true},
-  {key:'crisisGuard',label:'Emergency Guard',pct:true},{key:'xpGain',label:'EXP Gain',pct:true},{key:'dashRecovery',label:'Dash Recovery',pct:true},{key:'revive',label:'Revive'}
+  {key:'crisisGuard',label:'Emergency Guard',pct:true},{key:'xpGain',label:'EXP Gain',pct:true},{key:'dashRecovery',label:'Dash Recovery',pct:true},{key:'revive',label:'Revive'},
+  {key:'flatDmg',label:'Flat DMG/hit'},{key:'lifesteal',label:'Lifesteal HP'},{key:'regenPct',label:'Regen % HP/s',pct:true},{key:'heal',label:'Healing Taken',pct:true},
+  {key:'sugarFind',label:'Sugar Find',pct:true},{key:'boxFind',label:'Box Find',pct:true},{key:'orbFind',label:'Currency Find',pct:true},{key:'uniqueCd',label:'Unique Cooldown',pct:true}
 ];
 function gearInstanceStats(item){
-  const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,bossDmg:0,lowHpGuard:0,xpMul:1,dashCdMul:1,_gearRevive:0};
+  const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,bossDmg:0,lowHpGuard:0,xpMul:1,dashCdMul:1,_gearRevive:0,flatDmg:0,lifesteal:0,regenPct:0,healEffect:1,sugarFindMul:1,boxFindMul:1,currencyFindMul:1,uniqueCdMul:1};
   if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,bossDmg:0,crisisGuard:0,xpGain:0,dashRecovery:0,revive:0};
   const base=GEAR_ALL.find(g=>g.id===item.baseId); if(base&&base.apply)base.apply(p,item.enhanceLv||0);
   applyItemLevelBonus(p,item);
@@ -3288,7 +3291,8 @@ function gearInstanceStats(item){
   return {attackMin:p.gearAttackMin||0,attackMax:p.gearAttackMax||0,armor:p.armor||0,dmg:(p.dmgMul-1)*100,hp:p.maxhp||0,crit:(p.critChance||0)*100,critDmg:((p.critMul||1.55)-1.55)*100,
     cdr:(1-(p.cdMul||1))*100,def:(1-(p.dmgTakenMul||1))*100,speed:((p.baseSpeed||1)-1)*100,
     pickup:((p.pickup||1)-1)*100,regen:p.regen||0,lifeKill:p.lifeOnKill||0,execute:(p.lowHpDmg||0)*100,bossDmg:(p.bossDmg||0)*100,
-    crisisGuard:(p.lowHpGuard||0)*100,xpGain:((p.xpMul||1)-1)*100,dashRecovery:(1-(p.dashCdMul||1))*100,revive:p._gearRevive||0};
+    crisisGuard:(p.lowHpGuard||0)*100,xpGain:((p.xpMul||1)-1)*100,dashRecovery:(1-(p.dashCdMul||1))*100,revive:p._gearRevive||0,
+    flatDmg:p.flatDmg||0,lifesteal:p.lifesteal||0,regenPct:(p.regenPct||0)*100,heal:((p.healEffect||1)-1)*100,sugarFind:((p.sugarFindMul||1)-1)*100,boxFind:((p.boxFindMul||1)-1)*100,orbFind:((p.currencyFindMul||1)-1)*100,uniqueCd:(1-(p.uniqueCdMul||1))*100};
 }
 function gearCompareRows(equipped,selected){
   const a=gearInstanceStats(equipped),b=gearInstanceStats(selected);
