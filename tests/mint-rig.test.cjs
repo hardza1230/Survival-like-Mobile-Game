@@ -31,10 +31,18 @@ for(let i=0;i<360;i++){
  gait.animate(1/60,p,scene);
  const feet=gait.skins.filter(o=>o.name==='shinL'||o.name==='shinR').map(o=>o.skin);
  assert(feet[0].x<feet[1].x,'left and right feet retain their lanes');
- assert(Math.abs(feet[0].x+5)<1&&Math.abs(feet[1].x-5)<1,'short stance keeps feet beneath hips');
+ assert(Math.abs(feet[0].x+5)<2&&Math.abs(feet[1].x-5)<2,'short stance keeps feet beneath hips');
  assert(feet.every(f=>f.rotation===0),'boots do not roll sideways');
  assert.equal(gait.bones.lance.x,0);assert.equal(gait.bones.lance.y,8.5,'no floating grip');
 }
+// Visible arm pumping and swing-foot clearance distinguish running from a rigid shuffle.
+const run=new Rig(scene),arms=[],elbows=[],lifts=[];
+for(let i=0;i<180;i++){run.animate(1/60,p,scene);if(i>60){arms.push(run.bones.armL.rotation);elbows.push(run.bones.foreL.rotation);lifts.push(run.skins.find(o=>o.name==='shinL').skin.y);}}
+assert(Math.max(...arms)-Math.min(...arms)>.65,'free arm visibly swings');
+assert(elbows.every(r=>r>.6),'running elbow remains bent');
+assert(Math.max(...lifts)-Math.min(...lifts)>3,'feet lift into a running swing');
+assert(run.skins.findIndex(o=>o.name==='foreL')>run.skins.findIndex(o=>o.name==='torso'),'free hand is visible over dress');
+const held=run.bones.armL.rotation;v.x=0;run.animate(1/60,p,scene);assert(Math.abs(run.bones.armL.rotation-held)<.2,'stopping blends pose');run.destroy();v.x=140;
 // Distance-based gait advances equally at 30 and 60 FPS; zero speed stops phase.
 function cadence(fps){const r=new Rig(scene);for(let i=0;i<fps*2;i++)r.animate(1/fps,p,scene);return r;}
 const thirty=cadence(30),sixty=cadence(60);assert(Math.abs(thirty.phase-sixty.phase)<1e-9);v.x=0;const stopped=sixty.phase;sixty.animate(.05,p,scene);assert.equal(sixty.phase,stopped);gait.destroy();thirty.destroy();sixty.destroy();

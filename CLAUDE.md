@@ -1,3 +1,7 @@
+## Mint flowing run — v6.0.59
+
+User accepted limb shapes but gait felt robotic with arms tucked against body. Added visible bent-elbow free-arm pumping, coordinated weapon-arm movement during locomotion, smooth squared-sine swing lift, wider stride, sinusoidal double-step hip bounce, forward torso lean/head counter-motion and delayed hair/skirt sway. Free arm now draws over dress. Idle/run transitions use existing exponential blends; gait phase remains distance based and continuous through casts. Tests verify arm swing/elbow bend/foot clearance/layering and stop blend in addition to no crossed feet and stable grip. Preview: docs/previews/mint_run_v6_0_59.gif. Real-device feel review pending.
+
 ## Mint neutral limb art rebuild — v6.0.58
 
 Device/preview feedback still showed bent arms and inward boots. Previous gait fixes did not correct baked diagonal source skins. Repainted eight neutral vertical limb parts with imagegen, retaining head/torso/hair/lance. Centered shoulder/elbow/hand skin origins, matched short link lengths, moved shoulders onto painted torso sockets, shortened arm chain and calibrated fist/lance attachment. Packer replaces limb slots and refreshes inline frame bounds reproducibly. Production-pose contact sheet and GIF reviewed; Full tests/build pass; real-device visual confirmation pending. See docs/MINT_RIG_TRIAL.md.
