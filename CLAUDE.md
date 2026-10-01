@@ -1,3 +1,7 @@
+## Mint gait / grip correction — v6.0.57
+
+Replaced opposed frontal leg swinging with two-bone IK foot targets in separate lanes. Smaller stride and lift, upright boots, shorter chibi legs, root aligned to existing ground shadow. Distance-based phase independent of frame rate, smoother torso/hair motion. Relaxed right elbow and attached lance: no local hand-to-weapon translation during casts. Regression checks cover 360 moving/casting samples without crossed feet, planted boot angles and equal phase at 30/60 FPS. Preview updated; real-device motion review still pending.
+
 ## Mint 2D cutout rig trial — v6.0.56
 
 Mint gameplay now uses a painted 16-part atlas with 15 hierarchical bones and 14 rigid skins. Forward kinematics, blended joint transitions, continuous gait, upper-body lance attacks, blink, hair sway, dash/hurt and bounded rig ghost snapshots. Original physics sprite remains invisible and handles combat/collision; old sprite art is fallback when rig texture is unavailable. Other heroes and menu portraits unchanged. Production-pose preview: docs/previews/mint_rig_motion.gif; specification and reproduction: docs/MINT_RIG_TRIAL.md. Automated rig integration checks, full checks and build; real-device visual/performance review pending before migrating other heroes.

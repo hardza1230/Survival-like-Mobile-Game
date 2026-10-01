@@ -30,3 +30,7 @@ Built-in imagegen; transparent background; reference `assets/char_mint_frostleaf
 ## Verification
 
 Automated tests exercise production forward kinematics, moving casts, constant scale, dash/hurt/blink, mirror/tint/depth/visibility, texture fallback, character switching and cleanup. The preview renders production poses, rather than the game scene. Full in-game mobile review is still required: Mint at normal size, high attack speed, moving cast, repeated dash, left/right turns, hit flash, pause/level-up, death/revive, stage transition and returning to menu. Measure device frame time before migrating other heroes. No device performance claim is made by the fixture tests.
+
+## v6.0.57 gait and grip correction
+
+User device review found the first gait unnatural. Opposed thigh swings could cross the feet in frontal projection. The cast also translated the lance away from its hand joint. Replaced the gait with two-bone IK (8/12px links), separate left/right foot lanes, 2.3px swing lift, 0.65px depth stride and fixed upright boots. Chibi legs are shorter; presentation root is shifted 8px to meet the existing ground shadow. Walk phase follows distance, and stop does not drift the gait clock. Reduced torso and hair movement. The weapon joint is fixed to the hand; arm extension performs the attack. Updated production-pose previews and regression tests. Mobile review remains required; the attachment is a still image and cannot establish the exact timing of the reported animation.
