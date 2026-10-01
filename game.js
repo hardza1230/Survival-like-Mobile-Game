@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.66';
+const GAME_VERSION = '6.0.67';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.67', date:'2026-10-01', title:'Sniper Unique upgrades', items:['Charged Sniper path adds 4 cards that upgrade the charged Unique shot','Heavy Round: much more damage, but a longer charge','Quick Scope: faster charge, less damage','Wide Bore: wider beam, longer cooldown','Split Shot: extra side beams, weaker main shot'] },
   { v:'6.0.66', date:'2026-10-01', title:'Momo Sniper charged shot', items:['With the Charged Sniper path, hold Unique to charge — a bar appears above Momo','Drag your finger to aim; the camera zooms out while charging','Release to fire a piercing straight shot that leaves a wind-cut trail · full charge hits harder'] },
   { v:'6.0.65', date:'2026-10-01', title:'Cleanup', items:['Removed the unused experimental Mint rig from the game files'] },
   { v:'6.0.64', date:'2026-10-01', title:'Mint uses sprite sheets for every action', items:['All Mint actions now use authored sprite sheets, including stationary attacks','Removed rig presentation and rig-only Frost Lance delay','Sprite run remains uninterrupted during moving casts'] },
@@ -2327,7 +2328,11 @@ const BASIC_PATHS={
   momo:[
     {id:'sniper',iconKey:'ic_path_sniper',name:'Charged Sniper',emoji:'🎯',desc:'Charge a piercing seed · ×3.2 damage, half as many shots · boss killer',
       upgrades:[{id:'headshot',iconKey:'ic_path_headshot',name:'Headshot',emoji:'🎯',max:3,desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
-                {id:'deadeye',iconKey:'ic_path_deadeye',name:'Deadeye',emoji:'👁️',max:3,desc:'+15% damage to elites, minibosses and bosses per rank'}]},
+                {id:'deadeye',iconKey:'ic_path_deadeye',name:'Deadeye',emoji:'👁️',max:3,desc:'+15% damage to elites, minibosses and bosses per rank'},
+                 {id:'s_heavy',iconKey:'ic_path_sniper',name:'Heavy Round',emoji:'💣',max:3,desc:'Charged Unique: +45% damage per rank · charge takes +0.35s longer per rank'},
+                 {id:'s_quick',iconKey:'ic_path_sniper',name:'Quick Scope',emoji:'⏱️',max:3,desc:'Charged Unique: charge 22% faster per rank · −12% shot damage per rank'},
+                 {id:'s_bore',iconKey:'ic_path_sniper',name:'Wide Bore',emoji:'🌪️',max:3,desc:'Charged Unique: beam 40% wider per rank · +15% Unique cooldown per rank'},
+                 {id:'s_split',iconKey:'ic_path_sniper',name:'Split Shot',emoji:'🔱',max:2,desc:'Charged Unique: +1 side beam per rank (55% damage) · main shot −10% per rank'}]},
     {id:'shotgun',iconKey:'ic_path_shotgun',name:'Point-Blank Barrage',emoji:'💥',desc:'+2 seeds in a spread that tightens near large targets · +40% damage up close',
       upgrades:[{id:'pointblank',iconKey:'ic_path_pointblank',name:'Point Blank',emoji:'🔥',max:3,desc:'+15% close-range bonus per rank'},
                 {id:'buckshot',iconKey:'ic_path_buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'}]},
@@ -4405,7 +4410,9 @@ class Game extends Phaser.Scene {
   }
   // v6.0.66 🎯 Momo สาย Sniper: Unique = กดค้างชาร์จ (หลอดเหนือหัว) · ลากนิ้วกำหนดทิศ · กล้องซูมออก · ปล่อย = กระสุนเส้นตรงทะลุทุกตัว ทิ้งรอยลมแหวก
   isSniperUnique(){ return this.character==='momo'&&this.basicAttack&&this.basicAttack.path==='sniper'; }
-  snipeCharge(){ const s=this._snipe; return s?Math.min(1,(performance.now()-s.t0)/1100):0; }
+  snipeMods(){ const r=(this.basicAttack&&this.basicAttack.ranks)||{},lv=(this.basicAttack&&this.basicAttack.lv)||{},h=r.s_heavy||0,q=r.s_quick||0,b=r.s_bore||0,sp=lv.s_split||0;
+    return {chargeMs:Math.max(450,(1100+h*350)*Math.pow(0.78,q)),dmg:(1+0.45*h)*Math.max(0.5,1-0.12*q)*Math.max(0.6,1-0.1*sp),width:1+0.4*b,cd:1+0.15*b,split:sp}; }
+  snipeCharge(){ const s=this._snipe; return s?Math.min(1,(performance.now()-s.t0)/this.snipeMods().chargeMs):0; }
   startSnipeCharge(p){ const a=this.strongestEnemy(900),pl=this.player;
     this._snipe={id:p.id,t0:performance.now(),sx:p.x,sy:p.y,ang:a?Math.atan2(a.y-pl.y,a.x-pl.x):Math.atan2(this.moveDir?this.moveDir.y:-1,this.moveDir?this.moveDir.x:0),dragged:false,full:false,
       g:this.camWorld(this.add.graphics().setDepth(90500))};
@@ -4423,12 +4430,14 @@ class Game extends Phaser.Scene {
     g.fillStyle(s.full?0xffd166:0xff76a8,1); g.fillRoundedRect(bx,by,Math.max(4,bw*c),10,5); }
   releaseSnipe(){ const s=this._snipe;if(!s)return; const c=this.snipeCharge(),ang=s.ang; this.cancelSnipe(); if(this.state!=='play'||this.uniqueCd>0)return;
     const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player;
-    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
-    const mul=0.45+1.55*c, dmg=(60+ul*22)*dm*up*mul*(c>=1?1.25:1), w=26+c*26, len=1500, ca=Math.cos(ang), sa=Math.sin(ang);
-    const x0=pl.x+ca*24,y0=pl.y+sa*24,x1=pl.x+ca*len,y1=pl.y+sa*len; let hits=0;
-    this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,along=rx*ca+ry*sa; if(along<0||along>len)return; const perp=Math.abs(-rx*sa+ry*ca);
-      if(perp<w+(e.body?e.body.halfWidth:18)){ hits++; this.damage(e,e.isBoss||e.isMini?dmg*1.2:dmg,e.x,e.y); } });
-    this.drawWindTrail(x0,y0,ang,len,w,c);
+    const sm=this.snipeMods(); this.uniqueCd=this.uniqueCooldown(u)*sm.cd;this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
+    const mul=0.45+1.55*c, dmg=(60+ul*22)*dm*up*mul*(c>=1?1.25:1)*sm.dmg, w=(26+c*26)*sm.width, len=1500; let hits=0;
+    const beam=(a,d,bw)=>{ const ca=Math.cos(a),sa=Math.sin(a),x0=pl.x+ca*24,y0=pl.y+sa*24;
+      this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,along=rx*ca+ry*sa; if(along<0||along>len)return; const perp=Math.abs(-rx*sa+ry*ca);
+        if(perp<bw+(e.body?e.body.halfWidth:18)){ hits++; this.damage(e,e.isBoss||e.isMini?d*1.2:d,e.x,e.y); } });
+      this.drawWindTrail(x0,y0,a,len,bw,c); };
+    beam(ang,dmg,w);
+    for(let i=1;i<=sm.split;i++){ beam(ang+0.14*i,dmg*0.55,w*0.6); beam(ang-0.14*i,dmg*0.55,w*0.6); }
     this.screenShake(160+c*160,0.006+c*0.008); if(c>=1&&this.hitStop)this.hitStop(60);
     if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam();
     if(c>=1)this.showBanner('🎯 Perfect Shot','Full charge · '+hits+' hit'+(hits===1?'':'s'),900); }
