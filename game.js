@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.65';
+const GAME_VERSION = '6.0.66';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.66', date:'2026-10-01', title:'Momo Sniper charged shot', items:['With the Charged Sniper path, hold Unique to charge — a bar appears above Momo','Drag your finger to aim; the camera zooms out while charging','Release to fire a piercing straight shot that leaves a wind-cut trail · full charge hits harder'] },
   { v:'6.0.65', date:'2026-10-01', title:'Cleanup', items:['Removed the unused experimental Mint rig from the game files'] },
   { v:'6.0.64', date:'2026-10-01', title:'Mint uses sprite sheets for every action', items:['All Mint actions now use authored sprite sheets, including stationary attacks','Removed rig presentation and rig-only Frost Lance delay','Sprite run remains uninterrupted during moving casts'] },
   { v:'6.0.63', date:'2026-10-01', title:'Mint sprite-sheet running restored', items:['Mint uses the original sprite-sheet run and dash again','Cutout rig is shown only for a stationary spear throw','Moving casts keep the sprite run cycle uninterrupted'] },
@@ -4340,7 +4341,7 @@ class Game extends Phaser.Scene {
       if(this.state!=='play') return;
 
       if(this._beat){ this.beatDown(p); return; }   // v5.55 มินิเกม Bear Beat Rush กินทุกการแตะ
-      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0){this._ubHold={id:p.id,t:performance.now()}; Sfx.beatFx('hold');} return; } this.useCharacterSkill(); return; }
+      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0){this._ubHold={id:p.id,t:performance.now()}; Sfx.beatFx('hold');} return; } if(this.isSniperUnique()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
       if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.doDash(); return; }
 
@@ -4350,6 +4351,7 @@ class Game extends Phaser.Scene {
       this.joyKnob.setPosition(p.x,p.y).setVisible(true);
     });
     this.input.on('pointermove',(p)=>{
+      if(this._snipe&&p.id===this._snipe.id){ this.moveSnipeAim({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR}); return; }
       if(this._beat){ this.beatMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(!this.joy.active||p.id!==this.joy.id) return;
       p={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id};
@@ -4358,6 +4360,7 @@ class Game extends Phaser.Scene {
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
     });
     this.input.on('pointerup',(p)=>{
+      if(this._snipe&&p.id===this._snipe.id){ this.releaseSnipe(); return; }
       if(this._ubHold&&this._ubHold.id===p.id){ const n=this.beatHoldNodes(); this._ubHold=null; this.clearBeatCharge(); this.startBeatRush(n>0,n); return; }   // v5.62 แตะสั้น = quick · กดค้าง = จุดตามเวลาที่ชาร์จ
       if(this._beat){ this.beatUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
@@ -4400,6 +4403,49 @@ class Game extends Phaser.Scene {
     if(lv>=4&&this.anims.exists('fx_bossnova'))this.spawnFxAnim('fx_bossnova',x,y,{scale:(radius*2)/ASSET_FX.fx_bossnova.fw,depth:8,alpha:0.86});
     this.screenFlash(color,0.07+lv*0.035,170+lv*55);this.screenShake(80+lv*45,0.002+lv*0.0015);
   }
+  // v6.0.66 🎯 Momo สาย Sniper: Unique = กดค้างชาร์จ (หลอดเหนือหัว) · ลากนิ้วกำหนดทิศ · กล้องซูมออก · ปล่อย = กระสุนเส้นตรงทะลุทุกตัว ทิ้งรอยลมแหวก
+  isSniperUnique(){ return this.character==='momo'&&this.basicAttack&&this.basicAttack.path==='sniper'; }
+  snipeCharge(){ const s=this._snipe; return s?Math.min(1,(performance.now()-s.t0)/1100):0; }
+  startSnipeCharge(p){ const a=this.strongestEnemy(900),pl=this.player;
+    this._snipe={id:p.id,t0:performance.now(),sx:p.x,sy:p.y,ang:a?Math.atan2(a.y-pl.y,a.x-pl.x):Math.atan2(this.moveDir?this.moveDir.y:-1,this.moveDir?this.moveDir.x:0),dragged:false,full:false,
+      g:this.camWorld(this.add.graphics().setDepth(90500))};
+    if(Sfx.beatFx)Sfx.beatFx('hold'); }
+  moveSnipeAim(p){ const s=this._snipe;if(!s)return; const dx=p.x-s.sx,dy=p.y-s.sy; if(Math.hypot(dx,dy)>18){ s.ang=Math.atan2(dy,dx); s.dragged=true; } }
+  cancelSnipe(){ const s=this._snipe;if(!s)return; if(s.g)s.g.destroy(); this._snipe=null; }
+  tickSnipe(){ const s=this._snipe;if(!s)return; if(this.state!=='play'){ this.cancelSnipe(); return; }
+    const c=this.snipeCharge(),pl=this.player,g=s.g,len=1500,ca=Math.cos(s.ang),sa=Math.sin(s.ang),t=(this.elapsed||0);
+    if(!s.dragged){ const a=this.strongestEnemy(900); if(a)s.ang=Math.atan2(a.y-pl.y,a.x-pl.x); }
+    if(c>=1&&!s.full){ s.full=true; Sfx.beatFx&&Sfx.beatFx('cue'); this.burst(pl.x,pl.y-58,0xffd166); }
+    g.clear();
+    g.lineStyle(2+c*3,s.full?0xffd166:0xff9ec4,0.35+0.35*c+(s.full?0.2*Math.sin(t*18):0)); g.lineBetween(pl.x+ca*30,pl.y+sa*30,pl.x+ca*len,pl.y+sa*len);
+    for(let d=90;d<len;d+=110){ g.fillStyle(0xffffff,0.25+0.4*c); g.fillCircle(pl.x+ca*d,pl.y+sa*d,2+c*2); }
+    const bw=86,bx=pl.x-bw/2,by=pl.y-122; g.fillStyle(0x1a1026,0.9); g.fillRoundedRect(bx-3,by-3,bw+6,16,7); g.lineStyle(2,0xffffff,0.8); g.strokeRoundedRect(bx-3,by-3,bw+6,16,7);
+    g.fillStyle(s.full?0xffd166:0xff76a8,1); g.fillRoundedRect(bx,by,Math.max(4,bw*c),10,5); }
+  releaseSnipe(){ const s=this._snipe;if(!s)return; const c=this.snipeCharge(),ang=s.ang; this.cancelSnipe(); if(this.state!=='play'||this.uniqueCd>0)return;
+    const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player;
+    this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
+    const mul=0.45+1.55*c, dmg=(60+ul*22)*dm*up*mul*(c>=1?1.25:1), w=26+c*26, len=1500, ca=Math.cos(ang), sa=Math.sin(ang);
+    const x0=pl.x+ca*24,y0=pl.y+sa*24,x1=pl.x+ca*len,y1=pl.y+sa*len; let hits=0;
+    this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,along=rx*ca+ry*sa; if(along<0||along>len)return; const perp=Math.abs(-rx*sa+ry*ca);
+      if(perp<w+(e.body?e.body.halfWidth:18)){ hits++; this.damage(e,e.isBoss||e.isMini?dmg*1.2:dmg,e.x,e.y); } });
+    this.drawWindTrail(x0,y0,ang,len,w,c);
+    this.screenShake(160+c*160,0.006+c*0.008); if(c>=1&&this.hitStop)this.hitStop(60);
+    if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam();
+    if(c>=1)this.showBanner('🎯 Perfect Shot','Full charge · '+hits+' hit'+(hits===1?'':'s'),900); }
+  drawWindTrail(x0,y0,ang,len,w,c){ const ca=Math.cos(ang),sa=Math.sin(ang),nx=-sa,ny=ca,x1=x0+ca*len,y1=y0+sa*len;
+    const core=this.camWorld(this.add.graphics().setDepth(90400));
+    core.lineStyle(w*1.6,0xffe6f0,0.22); core.lineBetween(x0,y0,x1,y1);
+    core.lineStyle(w*0.6,0xffffff,0.85); core.lineBetween(x0,y0,x1,y1);
+    core.lineStyle(3,c>=1?0xffd166:0xff76a8,1); core.lineBetween(x0,y0,x1,y1);
+    this.tweens.add({targets:core,alpha:0,duration:520+c*380,ease:'Cubic.in',onComplete:()=>core.destroy()});
+    // ลมแหวก: เส้นโค้งสองข้างพัดออกจากแนวกระสุน
+    const n=Math.round(8+c*8);
+    for(let i=0;i<n;i++){ const d=60+Math.random()*(len-120),side=i%2?1:-1,off=w*0.8+Math.random()*w,px=x0+ca*d+nx*off*side,py=y0+sa*d+ny*off*side;
+      const gw=this.camWorld(this.add.graphics().setDepth(90390)),L=40+Math.random()*70;
+      gw.lineStyle(2,0xffffff,0.75); gw.beginPath(); gw.moveTo(px,py);
+      for(let k=1;k<=6;k++){ const tt=k/6; gw.lineTo(px+ca*L*tt+nx*side*Math.sin(tt*Math.PI)*12,py+sa*L*tt+ny*side*Math.sin(tt*Math.PI)*12); } gw.strokePath();
+      this.tweens.add({targets:gw,x:nx*side*(26+c*30),y:ny*side*(26+c*30),alpha:0,duration:480+Math.random()*320,ease:'Cubic.out',onComplete:()=>gw.destroy()}); }
+    this.burst&&this.burst(x0,y0,0xffffff); }
   useCharacterSkill(){
     if(this.state!=='play'||this.uniqueCd>0)return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
@@ -4890,7 +4936,7 @@ class Game extends Phaser.Scene {
   // ซูมออกระหว่างบอสด้วย lerp ต่อเฟรม เพื่อให้เห็นสนามกว้างและทำงานสม่ำเสมอทุกอุปกรณ์
   applyMainZoom(){ if(this.cameras&&this.cameras.main)this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tickBossZoom(){
-    const want=this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1);
+    const want=(this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1))*(this._snipe?0.72:1);   // v6.0.66 ชาร์จสไนเปอร์ = ซูมออก
     if(this._bossZoom==null)this._bossZoom=1;
     if(Math.abs(this._bossZoom-want)>0.003){this._bossZoom+=(want-this._bossZoom)*0.10;this.applyMainZoom();}
     else if(this._bossZoom!==want){this._bossZoom=want;this.applyMainZoom();}
@@ -7060,7 +7106,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ this.cancelBeat(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ this.cancelBeat(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -11896,7 +11942,7 @@ class Game extends Phaser.Scene {
     this.updatePickupReadability();
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
-    this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt);
+    this.tickSnipe(); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt);
     if(this._coach)this.tickTutorialCoach(dt);
     this.tickStage(dt);
     this.tickBossZoom();
