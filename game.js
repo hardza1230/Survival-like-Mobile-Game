@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.68';
+const GAME_VERSION = '6.0.69';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.69', date:'2026-10-01', title:'Better currency prices', items:['Bazaar now buys crafting currency for 90% of its shop price (was 60%)'] },
   { v:'6.0.68', date:'2026-10-01', title:'Bigger bag', items:['Gear bag expanded from 24 to 100 slots (existing saves upgraded automatically)'] },
   { v:'6.0.67', date:'2026-10-01', title:'Sniper Unique upgrades', items:['Charged Sniper path adds 4 cards that upgrade the charged Unique shot','Heavy Round: much more damage, but a longer charge','Quick Scope: faster charge, less damage','Wide Bore: wider beam, longer cooldown','Split Shot: extra side beams, weaker main shot'] },
   { v:'6.0.66', date:'2026-10-01', title:'Momo Sniper charged shot', items:['With the Charged Sniper path, hold Unique to charge — a bar appears above Momo','Drag your finger to aim; the camera zooms out while charging','Release to fire a piercing straight shot that leaves a wind-cut trail · full charge hits harder'] },
@@ -6876,7 +6877,7 @@ class Game extends Phaser.Scene {
       heading('Sell surplus materials');const sh=Save.data.shards||0;
       this._rowBtn(y,44,'prize_currency','Gear shards ×'+sh,'Sell all shards','Sugar '+sh*2,'#a8edc6',sh?()=>this.bazaarSellShards():null);y+=51;
       const owned=CURRENCY.filter(c=>Save.currency(c.key)>0),perPage=Math.max(1,Math.floor((h-y-48)/51)),pages=Math.max(1,Math.ceil(owned.length/perPage));this._bazSellPage=Math.max(0,Math.min(pages-1,this._bazSellPage||0));
-      owned.slice(this._bazSellPage*perPage,(this._bazSellPage+1)*perPage).forEach(c=>{const val=Math.round((CURRENCY_BUY[c.key]||60)*.6);this._rowBtn(y,44,c.asset,c.name+' ×'+Save.currency(c.key),'Sell one material','Sugar '+val,'#a8edc6',()=>this.bazaarSellCurrency(c.key,val));y+=51;});
+      owned.slice(this._bazSellPage*perPage,(this._bazSellPage+1)*perPage).forEach(c=>{const val=Math.round((CURRENCY_BUY[c.key]||60)*.9);this._rowBtn(y,44,c.asset,c.name+' ×'+Save.currency(c.key),'Sell one material','Sugar '+val,'#a8edc6',()=>this.bazaarSellCurrency(c.key,val));y+=51;});
       if(pages>1)this.uiPillBtn(this.menu,w/2,h-25,w-28,32,COLORS.grape,'','Page '+(this._bazSellPage+1)+' / '+pages+' · Next',()=>{this._bazSellPage=(this._bazSellPage+1)%pages;this.buildBazaar();});
     }
     this.menu.setVisible(true);
