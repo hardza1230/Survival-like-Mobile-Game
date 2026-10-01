@@ -12,5 +12,7 @@ S.sv=.5;S.craft('rare');assert.equal(voices.at(-1).opts.volume,.15);S.stopCraft(
 context.window.__g.cache.audio.exists=()=>false;const fallback=[];S.seq=(notes,type,vol)=>fallback.push({notes,vol});S.craft('exhaust');assert.equal(fallback[0].notes.length,2);
 const block=source.slice(source.indexOf('  _playAffixRoulette('),source.indexOf('  promoteFocusedItem()'));
 assert(!/Sfx\.(chest|slot|legend|ult|clear|card)/.test(block));assert(block.includes('if(this._craftRollToken!==token)return; if(stopped)'));
-for(const name of ['start','tick','slow','common','rare','jackpot','near','cancel','exhaust']){const f=fs.readFileSync(`assets/audio/sfx/craft/craft_${name}.wav`);assert.equal(f.toString('ascii',0,4),'RIFF');let peak=0;for(let i=44;i<f.length;i+=2)peak=Math.max(peak,Math.abs(f.readInt16LE(i)));assert(peak>0&&peak<32767);assert((f.length-44)/88200<=.4);assert(source.includes(`sfx_craft_${name}:`));}
+for(const name of ['start','tick','slow','common','rare','jackpot','near','cancel','exhaust','capacity','reroll','remove','reset']){const f=fs.readFileSync(`assets/audio/sfx/craft/craft_${name}.wav`);assert.equal(f.toString('ascii',0,4),'RIFF');let peak=0;for(let i=44;i<f.length;i+=2)peak=Math.max(peak,Math.abs(f.readInt16LE(i)));assert(peak>0&&peak<32767);assert((f.length-44)/88200<=.4);assert(source.includes(`sfx_craft_${name}:`));}
 console.log('Craft audio: tick throttle, voice cleanup, result replacement, mute/volume, fallback, wiring and WAV limits passed');
+
+for(const kind of ['capacity','reroll','remove','reset']){S.craft(kind);assert(fallback.at(-1).notes.length>=2);}

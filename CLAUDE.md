@@ -1,3 +1,7 @@
+## Sound commit 3 — v6.0.50
+
+Four dedicated generated WAVs (160–250 ms): affix capacity, numeric reroll, removal and reset. Actual mutation methods emit outcomes after currency/state updates. Locked items, missing lines and insufficient resources cannot emit success sounds. Existing confirmation flow preserved. Automated action/mix/WAV checks and www build pass; mobile listening pending. Next: sound commit 4, equipment actions.
+
 ## Sound commit 2 — v6.0.49
 
 Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence, single result cue, cancellation and exhausted resources. Craft voices use a separate two-voice limit with tick throttling; outcomes stop reel audio. Removed chest/slot/combat sound layering only in crafting roulette. Repeated Stop during reveal is guarded by the roll token. Tests: craft-sound and full npm check/build. Mobile listening review pending. Next: commit 3, affix changes.
