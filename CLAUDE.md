@@ -4,6 +4,12 @@
 > อ่านไฟล์นี้ให้จบก่อน จะได้ทำงานต่อได้ทันทีโดยไม่ต้องให้เจ้าของเล่าซ้ำ
 > **เมื่อจบงานแต่ละก้อน ให้ปรับ "สถานะปัจจุบัน" และ "ถัดไป" ในไฟล์นี้ให้ตรงเสมอ**
 
+## Sound commit 1 — v6.0.48
+- Six-step roadmap: `docs/SOUND_DESIGN_ROADMAP.md`; only step 1 implemented
+- Four deterministic short WAVs from `scripts/gen_ui_sfx.py`; semantic UI dispatch consolidates callback clicks; max two UI voices, independent of combat cap, SFX volume/mute respected
+- Shared Back, craft confirmation and explicit rejection banners have distinct cues. Craft roulette and outcome sounds remain for steps 2–6.
+- Next: listen on mobile, then sound commit 2 (craft roulette)
+
 ## Stage summary art — v6.0.47
 - Generated `assets/ui/results/stage_summary_panel.webp`, painted medal/frame/reward tray/pink button
 - Viewport-fit portrait panel; independent wrapped label/value columns; level-up points and mastery kept concise; currency tray supports 12 items

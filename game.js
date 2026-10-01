@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.47';
+const GAME_VERSION = '6.0.48';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.48', date:'2026-10-01', title:'Candy UI sound foundation', items:['Distinct short click, back, confirm and error sounds','Menu actions emit one UI cue even when callbacks request it twice','UI voice limit stays separate from busy combat sounds'] },
   { v:'6.0.47', date:'2026-10-01', title:'Illustrated stage results', items:['Painted candy medal, gold frame, reward tray and crystal button','Statistics use separate label and value columns','Character level and mastery no longer overlap their labels'] },
   { v:'6.0.46', date:'2026-10-01', title:'Painted Special Core temple', items:['Illustrated gold and mint crystal cards replace flat panels','Core icons, level gems and upgrade buttons share one temple frame','Responsive card count fills tall screens with more cores'] },
   { v:'6.0.45', date:'2026-10-01', title:'Smooth movement for every hero', items:['All heroes keep their walking rhythm while attacking','Gentler breathing, lean and attack recoil across the roster','Stationary attack, hurt and dash poses remain available'] },
@@ -800,7 +801,32 @@ const Sfx = {
   frost(){if(this._ok('frost',0.24)){if(!this.playFile('sfx_frost',0.34))this.seq([1050,1450],'sine',0.055,0.06);}},
   levelup(){if(!this._ok('levelup',1.2))return;this.duckBgm(650,0.45);if(!this.playFile('sfx_levelup',0.46,1))this.seq([523,659,784,1047],'triangle',0.12,0.1);},
   chest(){if(!this._ok('chest',0.7))return;this.duckBgm(700,0.42);if(!this.playFile('sfx_chest',0.48))this.seq([587,740,880,1175],'triangle',0.12,0.09);},
-  select(){if(this._ok('select',0.16)&&!this.playFile('sfx_btn',0.28))this.tone(880,0.055,'sine',0.055,1200);},
+  // A tap chooses one semantic cue; callback clicks cannot duplicate it.
+  uiAction(kind,fn){
+    if(this._uiPending!==undefined){fn();return;}
+    this._uiPending=kind||'click';
+    try{fn();}finally{const cue=this._uiPending;delete this._uiPending;this.ui(cue);}
+  },
+  ui(kind='click'){
+    if(this._uiPending!==undefined){const priority={click:0,back:1,confirm:2,error:3};if(priority[kind]>priority[this._uiPending])this._uiPending=kind;return;}
+    if(this.muted||this.sv<=0||!this._ok('ui',.045))return;
+    try{const g=window.__g,key='sfx_ui_'+kind;
+      if(g&&g.cache.audio.exists(key)){
+        this._uiVoices=(this._uiVoices||[]).filter(s=>s.isPlaying);
+        while(this._uiVoices.length>=2){const old=this._uiVoices.shift();old.stop();old.destroy();}
+        const sound=g.sound.add(key,{volume:.27*this.sv,rate:1});this._uiVoices.push(sound);
+        sound.once('complete',()=>{this._uiVoices=this._uiVoices.filter(s=>s!==sound);sound.destroy();});sound.play();return;
+      }
+    }catch(e){}
+    if(kind==='back')this.tone(880,.10,'sine',.05,620);
+    else if(kind==='confirm')this.seq([880,1320],'sine',.045,.04);
+    else if(kind==='error')this.seq([260,195],'sine',.045,.06);
+    else this.tone(1050,.055,'sine',.05,1200);
+  },
+  select(){this.ui('click');},
+  back(){this.ui('back');},
+  confirm(){this.ui('confirm');},
+  error(){this.ui('error');},
   bossWarn(){if(!this._ok('bossWarn',1.1))return;this.duckBgm(900,0.34);if(!this.playFile('sfx_boss_warn',0.55,1)&&!this.playFile('sfx_hazard',0.50))this.tone(105,0.48,'sawtooth',0.10,62);},
   clear(){if(!this._ok('clear',0.8))return;this.duckBgm(650,0.48);if(!this.playFile('sfx_levelup',0.42))this.seq([659,784,1047],'triangle',0.11,0.12);},
   victory(){this.duckBgm(1000,0.3);if(this.playFile('sfx_victory',0.55,1))return;this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
@@ -1513,6 +1539,10 @@ const ASSET_AUDIO = {
   sfx_levelup:    'assets/audio/sfx/gen/sfx_levelup_soft.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
   sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
   sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
+  sfx_ui_click:'assets/audio/sfx/ui/ui_click.wav',
+  sfx_ui_back:'assets/audio/sfx/ui/ui_back.wav',
+  sfx_ui_confirm:'assets/audio/sfx/ui/ui_confirm.wav',
+  sfx_ui_error:'assets/audio/sfx/ui/ui_error.wav',
   sfx_frost:      'assets/audio/sfx/sfx_skill_frost.wav',
   sfx_ult_bomb:   'assets/audio/sfx/sfx_ult_sugarbomb.wav',
   sfx_ult_vortex: 'assets/audio/sfx_vfx_ult_cocoavortex.wav',
@@ -4196,16 +4226,16 @@ class Game extends Phaser.Scene {
         if(hit==='pause'&&(this.state==='play'||this.state==='paused')){ this.togglePause(); return; }
         if(hit==='speed'&&this.state==='play'){ this.setGameSpeed((this.gameSpeed||1)>=3?1:(this.gameSpeed||1)+1); Sfx.select(); return; } }
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
-        for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } }
+        for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } }
         return; }
       if(this.state==='menu'){ this.handleTap(p.x,p.y); return; }
       if(this.state==='tutorial'){this.advanceTutorial();return;}
-      if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
+      if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='rolling'){ for(const z of (this._rollBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ z.fn(); return; } } return; }
-      if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
-      if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.select(); z.fn(); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
-      if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.select();z.fn();return;}}return;}
+      if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
+      if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
+      if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}
       if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
       if(this.state==='startskill'){ this.pickStartingSkillAt(p.x,p.y); return; }
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
@@ -4816,7 +4846,7 @@ class Game extends Phaser.Scene {
     this.buildStartMenu();
   }
   /* ===== HUB MENU + SUB-SCREENS (tap-zone hit-test) ===== */
-  _zone(x,y,w,h,fn){ this.tapZones.push({x,y,w,h,fn}); }
+  _zone(x,y,w,h,fn,sound='click'){ this.tapZones.push({x,y,w,h,fn,sound}); }
   // ปุ่มลูกกวาด (รูปจริง) — สตWaitว์เบอร์รีอยู่ซ้าย ข้อความเลื่อนไปขวา · มี fallback graphics ถ้ารูปโหลดไม่ได้
   _lighten(c,amt){ const r=(c>>16)&255,g=(c>>8)&255,b=c&255;
     return ((Math.round(r+(255-r)*amt))<<16)|((Math.round(g+(255-g)*amt))<<8)|Math.round(b+(255-b)*amt); }
@@ -4910,7 +4940,7 @@ class Game extends Phaser.Scene {
     if(!hit){ let best=1e9; const MIN=44,SLOP=6;
       for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; const ew=Math.max(0,(MIN-z.w)/2)+SLOP,eh=Math.max(0,(MIN-z.h)/2)+SLOP;
         if(px>=z.x-ew&&px<=z.x+z.w+ew&&py>=z.y-eh&&py<=z.y+z.h+eh){ const d=Math.hypot(px-(z.x+z.w/2),py-(z.y+z.h/2)); if(d<best){best=d;hit=z;} } } }
-    if(!hit)return; Sfx.select(); this._tapFeedback(hit,px,py); hit.fn(); }
+    if(!hit)return; this._tapFeedback(hit,px,py); Sfx.uiAction(hit.sound||'click',()=>hit.fn()); }
   // ไฟกระพริบบนปุ่ม + วงกระเพื่อมที่นิ้ว (อยู่นอก this.menu จึงไม่หายตอน rebuild)
   _tapFeedback(z,px,py){ try{
     const g=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(140));
@@ -4961,7 +4991,7 @@ class Game extends Phaser.Scene {
     const by=compact?10:38, bh=compact?32:34;
     const bg2=this.add.graphics(); bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(12,by,82,bh,11); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(12,by,82,bh,11);
     const bt=this.add.text(53,by+bh/2,'‹ Back',{fontFamily:'sans-serif',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
-    this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); });
+    this.menu.add([bg2,bt]); this._zone(12,by,82,bh,()=>{ Sfx.back(); const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); });
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
@@ -6285,7 +6315,7 @@ class Game extends Phaser.Scene {
     const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · equip / enhance',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
     const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
     items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhShardCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
-      if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Save.enhance(it.id);Sfx.clear();}else{Sfx.select();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}
+      if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Save.enhance(it.id);Sfx.clear();}else{Sfx.error();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}
       else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{Save.equipGearBase(sel,it.id);Sfx.select();this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
       this._rowBtn(80+i*(rowH+rowGap),rowH,owned?it.emoji:'❔',nm,owned?it.desc:'Not discovered yet',label,color,fn,rx,rw);
     });
@@ -6386,7 +6416,7 @@ class Game extends Phaser.Scene {
       drawAction(1,selected.locked?'🔒 Locked':'🔓 Lock',selected.locked?0x85506f:0x4a4059,()=>{Save.toggleGearLock(selected.uid);this.buildMenuScreen();});
       if(!eq)drawAction(2,'Quick Equip',0x3f9160,()=>{Save.equipGearInstance(sel,selected.uid);Sfx.select();this.buildMenuScreen();});
       else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhShardCost(lv),afford=(Save.data.shards||0)>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
-        drawAction(2,can?('Enhance +'+(lv+1)+'\n🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.select();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.clear();
+        drawAction(2,can?('Enhance +'+(lv+1)+'\n🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.clear();
             if(res.result==='success'){this.screenFlash(0xffd166,.4,260);this.showBanner('⚒️ Enhanced!','Now +'+res.lv,1100);}
             else if(res.result==='break'){this.screenFlash(0xff8a5a,.42,320);this.showBanner('💥 Enhancement broke','Dropped to +'+res.lv,1500);}
             else {this.gearSelectedUid=null;this.screenFlash(0xff4a5a,.6,440);this.showBanner('💀 Item destroyed','It shattered at high enhancement',1800);} }
@@ -6425,8 +6455,8 @@ class Game extends Phaser.Scene {
   // 🎲 สุ่มคุณสมบัติเสริม (affix) ของชิ้นที่สวมในช่องนี้ใหม่ (loot chase)
   rerollGearAffix(slot){
     const it=GEAR[slot].find(g=>g.id===Save.data.gear[slot]);
-    if(!it||it.tier==='start'){ Sfx.select(); this.showBanner('✨ Cannot reroll','No affix-rollable item in this slot',1300); return; }
-    if((Save.data.shards||0)<AFFIX_REROLL_COST){ Sfx.select(); this.showBanner('🔩 Not enough shards','Requires '+AFFIX_REROLL_COST+' shards',1300); return; }
+    if(!it||it.tier==='start'){ Sfx.error(); this.showBanner('✨ Cannot reroll','No affix-rollable item in this slot',1300); return; }
+    if((Save.data.shards||0)<AFFIX_REROLL_COST){ Sfx.error(); this.showBanner('🔩 Not enough shards','Requires '+AFFIX_REROLL_COST+' shards',1300); return; }
     if(!Save.spendShards(AFFIX_REROLL_COST))return;
     Save.rerollAffix(it.id,it.tier); Sfx.clear(); this.buildMenuScreen();
   }
@@ -6435,11 +6465,11 @@ class Game extends Phaser.Scene {
   _craftContext(){const slot=this.gearSlot||'weapon',item=Save.gearItem(this.craftSelectedUid||this.gearSelectedUid)||Save.equippedGearItem(slot),base=item&&GEAR_ALL.find(g=>g.id===item.baseId);return{slot,item,base};}
   // 🎲 คราฟต์แบบสุ่ม: ผู้เล่นเห็นแค่ว่าเป็นอะไรได้บ้าง → ใช้ currency แล้วสุ่ม stat มา 1 อัน แล้วไฮไลท์อันที่ติด
   craftLockFor(item){ const L=this.craftTierLock; return L&&item&&L.uid===item.uid&&affixDef(L.id)?L:null; }
-  randomCraftSelected(){if(this._craftRolling)return;const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.select();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
+  randomCraftSelected(){if(this._craftRolling)return;const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.error();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
     let affs=Save.gearAffixes(item.uid).slice(),rar=Save.gearRarity(item.uid,base.tier),cap=Math.max(CRAFT_AFFIX_CAP[rar]||2,affs.length),line=Math.max(0,Math.min(cap-1,this.craftLineIndex||0)),old=affs[line]||null;
     const pool=craftAffixPoolForItem(item),used=new Set(affs.map((a,i)=>i===line?'':a.id)),available=pool.filter(m=>!used.has(m.id));
-    if(!available.length){Sfx.select();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}
-    const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),lk=this.craftLockFor(item),need=1+(lk?TIER_LOCK_COST:0);if(Save.currency(key)<need){Sfx.select();this.showBanner(cur.emoji+' Need '+need+' '+cur.name,'Available: '+Save.currency(key)+(lk?' · tier lock costs +'+TIER_LOCK_COST:''),1500);return;}
+    if(!available.length){Sfx.error();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}
+    const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),lk=this.craftLockFor(item),need=1+(lk?TIER_LOCK_COST:0);if(Save.currency(key)<need){Sfx.error();this.showBanner(cur.emoji+' Need '+need+' '+cur.name,'Available: '+Save.currency(key)+(lk?' · tier lock costs +'+TIER_LOCK_COST:''),1500);return;}
     const mod=pickWeightedMod(available),rolled=rollOneAffixLocked(mod,affixBestTierForItem(item,mod),item.itemLevel||1,lk);
     if(line<affs.length)affs[line]=rolled;else affs.push(rolled);if(rar==='common')rar='magic';
     Save.spendCurrency(key,need);Save.setAffixes(item.uid,affs);Save.setGearRarity(item.uid,rar);this._craftRolledId=mod.id;
@@ -6499,9 +6529,9 @@ class Game extends Phaser.Scene {
     if(this._craftRolling)return;
     const {item,base}=this._craftContext();
     if(!item||!base||base.tier==='start')return;
-    if(item.locked){Sfx.select();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
+    if(item.locked){Sfx.error();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}
     const targetId=this.craftTargetId;
-    if(!targetId){Sfx.select();this.showBanner('🎯 Pick a target first','Tap a mod in the roll pool to target it',1600);return;}
+    if(!targetId){Sfx.error();this.showBanner('🎯 Pick a target first','Tap a mod in the roll pool to target it',1600);return;}
     const line=Math.max(0,this.craftLineIndex||0),tmod=affixDef(targetId);
     this._craftRolling=true;this.tapZones=[];const token=(this._craftRollToken||0)+1;this._craftRollToken=token;
     const w=this.W,h=this.H,cy=h*.49,shade=this.add.rectangle(0,0,w,h,0x0b0711,.84).setOrigin(0),panel=this.add.graphics();
@@ -6548,11 +6578,11 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(near?900:(rolls<3?650:520),step);};reel();};
     this.time.delayedCall(200,step);
   }
-  promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.select();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
-  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.select();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v),b=mod.tiers[a.t??5]||mod.tiers[5];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'VALUE REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
-  annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.select();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}const old=affs[line],mod=affixDef(old.id);affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);this._craftResult={uid:item.uid,title:'AFFIX REMOVED',before:mod.label+' '+mod.fmt(old.v),after:'Empty line'};Sfx.clear();this.showBanner('🟣 Line removed','An empty affix line is now available',1300);this.buildCraftBench();}
-  scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.select();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}const count=Save.gearAffixes(item.uid).length;Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;this._craftResult={uid:item.uid,title:'ITEM RESET',before:count+' affix'+(count===1?'':'es'),after:'0 affixes · 1 slot'};Sfx.clear();this.showBanner('⚫ Item reset','All affixes removed · one line available',1300);this.buildCraftBench();}
-  _confirmCraftAction(key,label,fn){if(this._craftConfirm===key){this._craftConfirm=null;fn();return;}this._craftConfirm=key;Sfx.select();this.showBanner('⚠ Confirm '+label,'Tap the same action again within 3 seconds',1800);this.buildCraftBench();this.time.delayedCall(3000,()=>{if(this._craftConfirm===key){this._craftConfirm=null;if(this.menuScreen==='craft')this.buildCraftBench();}});}
+  promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.error();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.clear();this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
+  divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.error();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v),b=mod.tiers[a.t??5]||mod.tiers[5];a.v=b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'VALUE REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.clear();this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Value rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}
+  annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.error();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}const old=affs[line],mod=affixDef(old.id);affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);this._craftResult={uid:item.uid,title:'AFFIX REMOVED',before:mod.label+' '+mod.fmt(old.v),after:'Empty line'};Sfx.clear();this.showBanner('🟣 Line removed','An empty affix line is now available',1300);this.buildCraftBench();}
+  scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.error();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}const count=Save.gearAffixes(item.uid).length;Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;this._craftResult={uid:item.uid,title:'ITEM RESET',before:count+' affix'+(count===1?'':'es'),after:'0 affixes · 1 slot'};Sfx.clear();this.showBanner('⚫ Item reset','All affixes removed · one line available',1300);this.buildCraftBench();}
+  _confirmCraftAction(key,label,fn){if(this._craftConfirm===key){this._craftConfirm=null;Sfx.confirm();fn();return;}this._craftConfirm=key;Sfx.confirm();this.showBanner('⚠ Confirm '+label,'Tap the same action again within 3 seconds',1800);this.buildCraftBench();this.time.delayedCall(3000,()=>{if(this._craftConfirm===key){this._craftConfirm=null;if(this.menuScreen==='craft')this.buildCraftBench();}});}
   // v4.46: mobile-first Gear → Affix → Roll layout with category clarity and roulette reveal.
   buildCraftBench(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Affix Forge','craft_bench_bg','gLoadout');
@@ -6680,12 +6710,12 @@ class Game extends Phaser.Scene {
   }
   bazaarBuyGear(id,key,cost){ const it=GEAR_ALL.find(g=>g.id===id);if(!it)return; cost=cost||GEAR_BUY[it.tier]||200;
     if(key&&(Save.data.bazaarBought||[]).includes(key))return;
-    if(!Save.spend(cost)){Sfx.select();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300);return;}
+    if(!Save.spend(cost)){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300);return;}
     const zone=Math.max(1,Math.min(18,Save.data.bazaarZone||1)),si=Math.floor((zone-1)/3),diff=((zone-1)%3)+1,ilvl=rollItemLevel(si,diff);   // iLv อ้างอิง Zone ของด่านล่าสุด
     const delivery=Save.receiveGearInstance(id,{isNew:true,itemLevel:ilvl,chapter:itemChapterFromLevel(ilvl)});
     if(key){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(key);Save.save();}
     Sfx.clear();this.showBanner('🛒 Purchased',it.emoji+' '+it.name+' · iLv '+ilvl+gearDeliverySuffix(delivery),1600);this.buildBazaar(); }
-  bazaarBuyCurrency(key,qty,cost,slotKey){ if(slotKey&&(Save.data.bazaarBought||[]).includes(slotKey))return; if(!Save.spend(cost)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
+  bazaarBuyCurrency(key,qty,cost,slotKey){ if(slotKey&&(Save.data.bazaarBought||[]).includes(slotKey))return; if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
     Save.addCurrency(key,qty); if(slotKey){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(slotKey);Save.save();} Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
   // ตู้สล็อต: หมุนไอคอนช้าลงเรื่อย ๆ แล้วหยุดที่รางวัล (ลุ้นสนุก)
   bazaarSlotReveal(pool,land){ if(this._bazBusy)return; this._bazBusy=true; const w=this.W,h=this.H;
@@ -6699,12 +6729,12 @@ class Game extends Phaser.Scene {
         const bt=this.add.text(w/2,h*0.74,'Tap to continue',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6'}).setOrigin(0.5); this.menu.add([sub,bt]);
         this._bazBusy=false; this._zone(0,0,w,h,()=>this.buildBazaar()); }
     }; spin(); }
-  bazaarGambleGear(){ if(this._bazBusy)return; if(!Save.spend(180)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 180 Sugar',1300); return; }
+  bazaarGambleGear(){ if(this._bazBusy)return; if(!Save.spend(180)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires 180 Sugar',1300); return; }
     const got=this.gachaRoll(currentRewardItemLevel());
-    if(!got){Save.addSugar(180);Sfx.select();this.showBanner('🎁 No eligible base','Sugar refunded',1500);return;}
+    if(!got){Save.addSugar(180);Sfx.error();this.showBanner('🎁 No eligible base','Sugar refunded',1500);return;}
     const artKey=got.instance?('gear_'+got.id):null;
     this.bazaarSlotReveal(GEAR_ALL.map(it=>'gear_'+it.id).filter(key=>this.textures.exists(key)),{artKey,emoji:got.emoji,title:'✨ '+got.name+'!',sub:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got)}); }
-  bazaarGambleCurrency(){ if(this._bazBusy)return; if(!Save.spend(120)){ Sfx.select(); this.showBanner('🍬 Not enough Sugar','Requires 120 Sugar',1300); return; }
+  bazaarGambleCurrency(){ if(this._bazBusy)return; if(!Save.spend(120)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires 120 Sugar',1300); return; }
     const n=2+Math.floor(Math.random()*3), got={}; for(let i=0;i<n;i++){ const k=this.rollCurrencyDrop('epic')||'alt'; got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
     const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join('  ');
     this.bazaarSlotReveal(CURRENCY.map(c=>c.asset),{artKey:'prize_currency',title:'🧪 Currency!',sub:txt}); }
@@ -6712,7 +6742,7 @@ class Game extends Phaser.Scene {
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
   openGachaReveal(){
     const lvObj=GACHA_LEVELS[Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.lo+Math.floor(Math.random()*(lvObj.hi-lvObj.lo+1));
-    if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.select();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (iLv '+lvObj.lo+'-'+lvObj.hi+')',1300);return;}
+    if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (iLv '+lvObj.lo+'-'+lvObj.hi+')',1300);return;}
     if(!Save.spend(cost))return;this._gachaBusy=true;this.menu.removeAll(true);this.tapZones=[];
     const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090510,0.97).setOrigin(0,0),title=this.add.text(w/2,h*0.14,'🎁 Flavor box',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe08a'}).setOrigin(0.5);
     const glow=this.add.image(w/2,h*0.47,'vfx_glow').setScale(0.4).setAlpha(0.3).setTint(0xffd166),chest=this.add.text(w/2,h*0.47,'🎁',{fontSize:'92px'}).setOrigin(0.5).setScale(0.72);
