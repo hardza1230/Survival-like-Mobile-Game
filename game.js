@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.59';
+const GAME_VERSION = '6.0.60';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.60', date:'2026-10-01', title:'Mint directional run correction', items:['Both knees flex backward in a side-plane run rather than a frontal shuffle','Free elbow bends forward and the arms counter the stride','Matching right-facing boot artwork replaces front-facing feet'] },
   { v:'6.0.59', date:'2026-10-01', title:'Mint flowing run cycle', items:['Bent elbows and visible arm swing replace the tucked walking pose','Smooth toe lift, longer stride and coordinated body bounce form a run cycle','Head counter-motion and delayed hair/skirt sway follow locomotion during attacks'] },
   { v:'6.0.58', date:'2026-10-01', title:'Mint neutral limb rebuild', items:['Repainted straight bind-pose limbs replace baked bent arms and legs','Shoulder, elbow and hand anchors calibrated to the painted joints','Matched boot stance and relaxed lance grip preserve a coherent silhouette'] },
   { v:'6.0.57', date:'2026-10-01', title:'Mint rig gait and grip correction', items:['Planted feet and two-bone knee solving prevent crossed legs','Shorter chibi stride and distance-based gait smooth walking','Lance remains attached to the hand through casts; relaxed arm pose'] },
@@ -4121,29 +4122,29 @@ const ACHIEVEMENTS=[
 ];
 
 // Mint cutout rig: hierarchical bones, rigid painted skins; no mesh/runtime dependency.
-const MINT_RIG_FRAMES = [{"x":18,"y":6,"w":92,"h":116},{"x":148,"y":6,"w":88,"h":116},{"x":262,"y":9,"w":116,"h":110},{"x":394,"y":6,"w":108,"h":116},{"x":6,"y":135,"w":116,"h":113},{"x":155,"y":134,"w":73,"h":116},{"x":295,"y":134,"w":50,"h":116},{"x":421,"y":134,"w":53,"h":116},{"x":38,"y":262,"w":52,"h":116},{"x":168,"y":262,"w":47,"h":116},{"x":298,"y":262,"w":43,"h":116},{"x":427,"y":262,"w":42,"h":116},{"x":42,"y":390,"w":43,"h":116},{"x":134,"y":431,"w":116,"h":33},{"x":262,"y":396,"w":116,"h":103},{"x":390,"y":390,"w":116,"h":115}];
+const MINT_RIG_FRAMES = [{"x":18,"y":6,"w":92,"h":116},{"x":148,"y":6,"w":88,"h":116},{"x":262,"y":9,"w":116,"h":110},{"x":394,"y":6,"w":108,"h":116},{"x":6,"y":135,"w":116,"h":113},{"x":155,"y":134,"w":73,"h":116},{"x":295,"y":134,"w":50,"h":116},{"x":421,"y":134,"w":53,"h":116},{"x":38,"y":262,"w":52,"h":116},{"x":168,"y":262,"w":47,"h":116},{"x":294,"y":262,"w":52,"h":116},{"x":427,"y":262,"w":42,"h":116},{"x":38,"y":390,"w":52,"h":116},{"x":134,"y":431,"w":116,"h":33},{"x":262,"y":396,"w":116,"h":103},{"x":390,"y":390,"w":116,"h":115}];
 const MINT_RIG_BONES = [
   ['hip',null,0,0],['torso','hip',0,-1],['head','torso',0,-14],
   ['hairL','head',-11,-14],['hairR','head',11,-14],
   ['armL','torso',-7.5,-4],['foreL','armL',0,8],
   ['armR','torso',8,-4],['foreR','armR',0,8],['lance','foreR',0,8.5],
-  ['thighL','hip',-5,9],['shinL','thighL',0,8],
-  ['thighR','hip',5,9],['shinR','thighR',0,8],['skirt','torso',0,8]
+  ['thighL','hip',-2.5,9],['shinL','thighL',0,8],
+  ['thighR','hip',2.5,9],['shinR','thighR',0,8],['skirt','torso',0,8]
 ];
 // bone, atlas part, painted width/height, joint origin, draw order
 const MINT_RIG_SKINS = [
  ['hairL',0,16,29,.55,.12,0],['hairR',1,16,29,.45,.12,1],
- ['thighL',9,7,9,.45,.08,2],['shinL',10,9,13,.45,.06,3],
- ['thighR',11,7,9,.5,.08,4],['shinR',12,9,13,.5,.06,5],
+ ['thighL',9,7,9,.45,.08,2],['shinL',10,11.5,13,.35,.06,3],
+ ['thighR',11,7,9,.5,.08,4],['shinR',12,11.5,13,.35,.06,5],
  ['armL',5,8,10,.5,.08,8],['foreL',6,7,10,.5,.06,9],
  ['torso',4,30,32,.5,.30,6],['skirt',14,17,18,.5,.08,7],
  ['armR',7,8,10,.5,.08,10],['foreR',8,7,10,.5,.06,11],
  ['lance',13,44,12,.17,.5,12],['head',2,35,33,.5,.76,13]
 ];
-// Downward-axis two-bone IK. Each foot stays in its own screen-space lane.
+// Side-plane IK: both knees flex backward; far/near legs keep their skin identity.
 function mintRigLeg(phase,move,side){
  const swing=Math.max(0,Math.sin(phase)),lift=swing*swing*4.1*move,
-   dx=Math.cos(phase)*1.65*move,dy=19.6-lift+Math.sin(phase)*.35*move,
+   dx=-Math.cos(phase)*5.2*move,dy=19.6*(1-move)+17.8*move-lift,
    upper=8,lower=12,d=Math.min(upper+lower-.01,Math.hypot(dx,dy)),
    clamp=v=>Math.max(-1,Math.min(1,v)),aim=Math.atan2(-dx,dy),
    knee=Math.acos(clamp((d*d-upper*upper-lower*lower)/(2*upper*lower))),
@@ -4153,22 +4154,24 @@ function mintRigLeg(phase,move,side){
 function mintRigPose(time,phase,move,cast,dash,hurt){
  const step=Math.sin(phase),breath=Math.sin(time*3),
    thrust=Math.sin(Math.PI*Math.max(0,Math.min(1,cast))),
-   left=mintRigLeg(phase,move,1),right=mintRigLeg(phase+Math.PI,move,-1),
+   left=mintRigLeg(phase,move,1),right=mintRigLeg(phase+Math.PI,move,1),
    // Free elbow stays bent and pumps opposite the leading leg. Weapon arm also runs.
-   arm=-.65-.6*thrust-.12*dash+(.22*step-.05)*move,
-   fore=.35+.6*thrust+.12*dash+(.10-.10*step)*move;
+   arm=-.65-.6*thrust-.12*dash+(-.22*step-.05)*move,
+   fore=.35+.6*thrust+.12*dash+(.10+.10*step)*move;
  return {hip:{y:-(.5-.5*Math.cos(phase*2))*1.25*move+breath*.18},
   torso:{rotation:(-.10+.035*step)*move-.065*thrust-.10*dash+.08*hurt},
   head:{rotation:.015*breath+(.06-.025*step)*move+.025*thrust-.05*hurt},
   hairL:{rotation:.115*Math.sin(phase-.85)*move+.025*Math.sin(time*2.3)-.2*dash},
   hairR:{rotation:.10*Math.sin(phase-1.0)*move+.025*Math.sin(time*2.3+.6)-.18*dash},
-  armL:{x:-1.3*move,rotation:.035+(.15-.45*step)*move-.12*dash+.08*hurt},
-  foreL:{rotation:.035+(.82+.12*Math.cos(phase))*move},
+  armL:{x:-1.3*move,rotation:.035+(.15+.45*step)*move-.12*dash+.08*hurt},
+  foreL:{rotation:.035+(-.92-.08*Math.cos(phase))*move},
   armR:{x:.7*move,rotation:arm},foreR:{rotation:fore},
   lance:{rotation:-arm-fore-.07+.045*Math.sin(phase-.35)*move},
   thighL:{rotation:left.thigh},shinL:{rotation:left.knee},
   thighR:{rotation:right.thigh},shinR:{rotation:right.knee},
-  skirt:{rotation:.045*Math.sin(phase-.7)*move-.04*dash}};
+  skirt:{rotation:.045*Math.sin(phase-.7)*move-.04*dash},
+  footL:{rotation:-Math.max(0,Math.sin(phase))*.12*move},
+  footR:{rotation:-Math.max(0,Math.sin(phase+Math.PI))*.12*move}};
 }
 class MintCutoutRig {
  constructor(scene){
@@ -4193,7 +4196,7 @@ class MintCutoutRig {
    if(name==='shinL'||name==='shinR'){
     // Keep the ankle planted while the knee flexes. Boot skin pivots around its sole.
     const angle=b.worldRotation,footX=b.worldX-Math.sin(angle)*12,footY=b.worldY+Math.cos(angle)*12;
-    skin.setOrigin(.5,.93).setPosition(footX,footY+.1).setRotation(0);
+    skin.setOrigin(.35,.93).setPosition(footX,footY+.1).setRotation((pose[name==='shinL'?'footL':'footR']||{}).rotation||0);
    }else skin.setPosition(b.worldX,b.worldY).setRotation(b.worldRotation);
   }
  }

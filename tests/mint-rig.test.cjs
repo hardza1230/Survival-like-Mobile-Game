@@ -23,23 +23,24 @@ let shutdown;Object.assign(s,scene,{character:'mint',player:{...p,setVisible(v){
 const body=s.player.body;s.setupMintRig();assert(s._mintRig);assert.equal(s.player.visible,false);assert.equal(s.player.body,body);const previous=s._mintRig;
 s.character='cocoa';s.setupMintRig();assert.equal(previous.root.scene,null);assert.equal(s._mintRig,null);assert.equal(s.player.visible,true);
 s.character='mint';s.textures={exists:()=>false};s.setupMintRig();assert.equal(s._mintRig,null,'missing art keeps original sprite');shutdown();assert.equal(s._mintRigShutdown,false,'scene restart can register fresh cleanup');
-// Every phase: no foot crossing, no rolled boots, weapon attachment remains fixed.
+// Side run: feet pass each other in projection; knee direction and limb identity remain stable.
 scene.state='play';scene.dashTime=0;p.flipX=false;v.x=140;
 const gait=new Rig(scene);
 for(let i=0;i<360;i++){
  if(i%23===0)gait.attack(400);
  gait.animate(1/60,p,scene);
  const feet=gait.skins.filter(o=>o.name==='shinL'||o.name==='shinR').map(o=>o.skin);
- assert(feet[0].x<feet[1].x,'left and right feet retain their lanes');
- assert(Math.abs(feet[0].x+5)<2&&Math.abs(feet[1].x-5)<2,'short stance keeps feet beneath hips');
- assert(feet.every(f=>f.rotation===0),'boots do not roll sideways');
+ assert(gait.bones.shinL.rotation<=0&&gait.bones.shinR.rotation<=0,'both knees flex backward');
+ assert(feet.every(f=>Math.abs(f.rotation)<=.121),'bounded sagittal toe lift');
+ assert.equal(gait.skins.find(o=>o.name==='shinL').part,10);assert.equal(gait.skins.find(o=>o.name==='shinR').part,12,'passing feet never swap skins');
  assert.equal(gait.bones.lance.x,0);assert.equal(gait.bones.lance.y,8.5,'no floating grip');
 }
 // Visible arm pumping and swing-foot clearance distinguish running from a rigid shuffle.
-const run=new Rig(scene),arms=[],elbows=[],lifts=[];
-for(let i=0;i<180;i++){run.animate(1/60,p,scene);if(i>60){arms.push(run.bones.armL.rotation);elbows.push(run.bones.foreL.rotation);lifts.push(run.skins.find(o=>o.name==='shinL').skin.y);}}
+const run=new Rig(scene),arms=[],elbows=[],lifts=[],strides=[];
+for(let i=0;i<180;i++){run.animate(1/60,p,scene);if(i>60){arms.push(run.bones.armL.rotation);elbows.push(run.bones.foreL.rotation);lifts.push(run.skins.find(o=>o.name==='shinL').skin.y);strides.push(run.skins.find(o=>o.name==='shinL').skin.x);}}
 assert(Math.max(...arms)-Math.min(...arms)>.65,'free arm visibly swings');
-assert(elbows.every(r=>r>.6),'running elbow remains bent');
+assert(elbows.every(r=>r<-.6),'free elbow bends forward');
+assert(Math.max(...strides)-Math.min(...strides)>8,'feet travel forward and backward');
 assert(Math.max(...lifts)-Math.min(...lifts)>3,'feet lift into a running swing');
 assert(run.skins.findIndex(o=>o.name==='foreL')>run.skins.findIndex(o=>o.name==='torso'),'free hand is visible over dress');
 const held=run.bones.armL.rotation;v.x=0;run.animate(1/60,p,scene);assert(Math.abs(run.bones.armL.rotation-held)<.2,'stopping blends pose');run.destroy();v.x=140;

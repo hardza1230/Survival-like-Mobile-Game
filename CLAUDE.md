@@ -1,3 +1,7 @@
+## Mint directional run correction — v6.0.60
+
+Feedback identified backward-bent free elbow and front-facing feet shuffling outward. Free forearm flexion reversed to forward. Replaced frontal separate foot lanes with sagittal forward/back stride; both knees bend backward with stable far/near skin identity. Hip origins narrowed, swing foot advances from rear to front while stance returns rearward; toe lift bounded. Generated matching right-facing profile boots and added reproducible boot overlay packer. Contact cycle and run GIF inspected; full checks/build pass, mobile feel review pending. Preview docs/previews/mint_run_v6_0_60.gif.
+
 ## Mint flowing run — v6.0.59
 
 User accepted limb shapes but gait felt robotic with arms tucked against body. Added visible bent-elbow free-arm pumping, coordinated weapon-arm movement during locomotion, smooth squared-sine swing lift, wider stride, sinusoidal double-step hip bounce, forward torso lean/head counter-motion and delayed hair/skirt sway. Free arm now draws over dress. Idle/run transitions use existing exponential blends; gait phase remains distance based and continuous through casts. Tests verify arm swing/elbow bend/foot clearance/layering and stop blend in addition to no crossed feet and stable grip. Preview: docs/previews/mint_run_v6_0_59.gif. Real-device feel review pending.
