@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.1.0';
+const GAME_VERSION = '6.1.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.1.1', date:'2026-10-01', title:'Recipe progress bar', items:['Recipe runs show a Hunger progress bar with event and boss markers, like the stage wave track'] },
   { v:'6.1.0', date:'2026-10-01', title:'Hunger Pact', items:['New Pact tab in the Recipe Atlas: turn on 8 difficulty terms for Recipe runs','Each rank adds Heat; every Heat point gives +7% rewards','Your best Heat cleared is saved'] },
   { v:'6.0.79', date:'2026-10-01', title:'Chiptune menu', items:['Main menu now loops Chiptune Pop, a bouncy retro 8-bit theme'] },
   { v:'6.0.78', date:'2026-10-01', title:'Loading theme', items:['Loading screen plays the Fairy Kingdom theme, fading out when the menu music starts'] },
@@ -7462,6 +7463,7 @@ class Game extends Phaser.Scene {
       this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
       this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }); }
   tickRecipeHunger(dt){ this._hungerT+=dt; const goal=this.recipeHungerGoal(),t=Math.floor(this._hungerT);
+    this.drawWavePips();
     this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
     this.tickRecipeShrine(dt);
     if(this._hungerDone)return;
@@ -7522,6 +7524,7 @@ class Game extends Phaser.Scene {
   }
   drawWavePips(){
     const g=this.pipG; if(!g)return; g.clear();
+    if(this.recipeMode){ this.drawRecipeBar(g); return; }
     const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
     const n=st.waves, seg=Math.min(20,(this.W*0.62)/n), w=seg-3, h=6;
     const x0=this.W/2-(n*seg)/2, y=this._pad+91;   // ย้ายลงใต้แถบ stat (กันจุดเวฟทับเลข atk/def/crit)
@@ -7534,6 +7537,15 @@ class Game extends Phaser.Scene {
     }
     // ปลายแถว = บอสใหญ่
     g.fillStyle(0xff5f97,1); g.fillCircle(x0+n*seg+4,y+h/2,4);
+  }
+  // Endgame: หลอดความคืบหน้า Recipe แบบเดียวกับจุดเวฟของด่าน (event / boss เป็นหมุดบนหลอด)
+  drawRecipeBar(g){ if(this.mode==='boss'||this._hungerDone)return;
+    const goal=this.recipeHungerGoal(),f=Math.max(0,Math.min(1,(this._hunger||0)/goal)),bw=Math.min(this.W*0.62,280),h=8,x0=this.W/2-bw/2,y=this._pad+90;
+    g.fillStyle(0x241a30,0.85); g.fillRoundedRect(x0-2,y-2,bw+4,h+4,5);
+    if(f>0){ g.fillStyle(f>=0.85?0xff7a45:0xffd166,1); g.fillRoundedRect(x0,y,Math.max(h,bw*f),h,4); }
+    const marks=atlasLv('eventful')>=1?[0.3]:[0.4]; if(atlasLv('eventful')>=2)marks.push(0.7);
+    marks.forEach((m,i)=>{ const done=(this._recipeEventN||0)>i,mx=x0+bw*m; g.fillStyle(done?0x8bd3a0:0xb98cff,1); g.fillCircle(mx,y-5,3); g.fillRect(mx-0.5,y,1,h); });
+    g.fillStyle(0xff5f97,1); g.fillCircle(x0+bw+7,y+h/2,5); g.fillStyle(0xffffff,1); g.fillCircle(x0+bw+7,y+h/2,1.6);
   }
   waveProfile(w){
     const si=this.stageIndex;
