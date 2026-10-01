@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.0.76 (เจ้าของ):** กรอบเปรียบเทียบ Equipment โชว์สแตตครบ (เลิก slice 5) + ส่วน MODS ของแต่ละชิ้นในกรอบ แทนบรรทัด affix ใต้กรอบ
 - **v6.0.75 (เจ้าของแจ้ง):** กรอบเปรียบเทียบ Equipment โชว์ mod คราฟต์ที่เคยหาย (lifesteal/flatDmg/regenPct/healEffect/sugar-box-currency find/uniqueCd) ใน `GEAR_COMPARE_STATS` + `gearInstanceStats`
 - **v6.0.74 (เจ้าของสั่ง):** ปุ่ม AUTO ของกล่อง currency ย้ายเข้าไปในการ์ด Crafting supply box (`bazaarProductCard` รองรับ `product.alt={label,fn}` ปุ่มกลางการ์ด) · ตัดการ์ด AUTO แยกออก
 - **v6.0.73 (เจ้าของสั่ง: ยังเหมือน Hunt → เลือกข้อ 2 พายุฤดู):** seasonCycle = **Season Storm** (แทน Elemental Swap ของ v6.0.72) · `o.storm={passed[4],cur}` · ทุกฤดู (10 วิ) มีบททดสอบ `stormRule`: 🌸 ฆ่า 10 (มอนฟื้น 4%/วิ) · ☀️ ยืนนิ่ง 1.4 วิ = ไหม้ (โดน ≤1) · 🍂 ลมดันตำแหน่ง 75px/วิ + เส้นลมเตือน 1 วิ เล็งจุดที่จะลอยไป (โดน ≤1) · ❄️ พื้นลื่น (velocity lerp) + แผ่นน้ำแข็งเตือน 1.1 วิ (โดน ≤1) · ผ่านครบ 4 = จบ · ไม่ผ่านไม่เสีย รอรอบหน้า · ฤดูที่ผ่านแล้ว = พักไม่มีภัย · ฤดูแรกที่เริ่มกลางทาง (partial) ไม่นับ · ระหว่างภารกิจปิดภัยเดิมของ tickSeasonArena (ยกเว้นฮีลฤดูใบไม้ผลิ) · `stormHit` ดาเมจ 7-8% maxHP · HUD `stormHudText` · verified headless ยืนนิ่งโดนครบ 3 ฤดู, flow จบภารกิจ, 0 error

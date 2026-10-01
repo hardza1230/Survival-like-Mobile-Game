@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.75';
+const GAME_VERSION = '6.0.76';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.76', date:'2026-10-01', title:'Gear compare boxes', items:['Equipment compare boxes list every stat and every mod inside the frame'] },
   { v:'6.0.75', date:'2026-10-01', title:'Gear compare fix', items:['Equipment compare boxes now show every crafted mod (Lifesteal, Flat DMG, Healing, Find and Unique Cooldown mods)'] },
   { v:'6.0.74', date:'2026-10-01', title:'Bazaar tidy', items:['Supply box AUTO is now a button inside the Crafting supply box card'] },
   { v:'6.0.73', date:'2026-10-01', title:'Season Storm', items:['C2-4 mission is now Season Storm: each season brings its own hazard','Spring: defeat 10 healing enemies · Summer: keep moving or burn · Autumn: wind and leaf gusts · Winter: slippery ice and frost patches','Pass each season’s trial once to finish; a failed trial simply returns next cycle'] },
@@ -6579,7 +6580,7 @@ class Game extends Phaser.Scene {
       for(const [dir,label,px] of [[-1,'‹',w/2-76],[1,'›',w/2+76]]){const enabled=(dir<0?page>0:page<pages-1),pg=this.add.graphics();pg.fillStyle(enabled?0x3a3550:0x241a2e,1);pg.fillRoundedRect(px-pw/2,py,pw,ph,8);const tx=this.add.text(px,py+ph/2,label,{fontSize:'18px',color:enabled?'#ffffff':'#5e5062'}).setOrigin(0.5);this.menu.add([pg,tx]);if(enabled)this._zone(px-pw/2,py,pw,ph,()=>{this.gearPageBySlot[sel]=page+dir;this.buildMenuScreen();});} y+=ph+5; }
     selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
     if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
-      const rows=gearCompareRows(equipped,selected).slice(0,5),panelH=58+Math.max(2,rows.length)*14,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
+      const rows=gearCompareRows(equipped,selected),affLines=it=>(it&&it.affixes||[]).map(a=>{const d=affixDef(a.id);return d?d.emoji+d.label+' '+d.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean),eqAff=affLines(equipped),selAff=affLines(selected),affN=Math.max(eqAff.length,selAff.length),affTop=44+Math.max(1,rows.length)*14+6,panelH=affTop+(affN?14+affN*13:0)+8,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
       const drawCompareCard=(x,item,itBase,title,on)=>{const itTl=item?(TIER_LABEL[item.grade]||TIER_LABEL.common):TIER_LABEL.start,g=this.add.graphics();g.fillStyle(on?0x332819:0x241a33,0.97);g.fillRoundedRect(x,y,cw,panelH,12);g.lineStyle(on?2:1.5,on?0xffd166:Phaser.Display.Color.HexStringToColor(itTl.color).color,1);g.strokeRoundedRect(x,y,cw,panelH,12);this.menu.add(g);
         const hd=this.add.text(x+8,y+7,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:on?'#ffd166':'#9a90ab'}).setOrigin(0,0);
         const artKey=item&&itBase?'gear_'+itBase.id:null,hasArt=artKey&&this.textures.exists(artKey);
@@ -6591,9 +6592,9 @@ class Game extends Phaser.Scene {
         const lt=this.add.text(leftX+8,ry,r.label+' '+from,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#d8c7da'}).setOrigin(0,0);
         const rt=this.add.text(rightX+8,ry,r.label+' '+to+arrow,{fontFamily:'sans-serif',fontStyle:Math.abs(r.delta)>0.001?'bold':'normal',fontSize:'8.5px',color:dc}).setOrigin(0,0);this.menu.add([lt,rt]);});
       if(!rows.length){const same=this.add.text(w/2,y+47,eq?'Currently equipped':'No numeric stat difference',{fontFamily:'sans-serif',fontSize:'9px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(same);}
+      if(affN){for(const [x,list] of [[leftX,eqAff],[rightX,selAff]]){const lg=this.add.graphics();lg.lineStyle(1,0x5a4f6e,0.8);lg.lineBetween(x+8,y+affTop-3,x+cw-8,y+affTop-3);const hd=this.add.text(x+8,y+affTop,'MODS',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#9a90ab'});this.menu.add([lg,hd]);
+        (list.length?list:['No affixes']).forEach((t,i)=>{const at=this.add.text(x+8,y+affTop+14+i*13,t,{fontFamily:'sans-serif',fontSize:'8px',color:'#c9a3ff',wordWrap:{width:cw-16},maxLines:1});this.menu.add(at);});}}
       const state=this.add.text(rightX+cw-8,y+7,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'8px',color:rl.color}).setOrigin(1,0);this.menu.add(state); y+=panelH+6;
-      const affs=selected.affixes||[],astr=affs.length?affs.map(a=>{const d=affixDef(a.id);return d?d.emoji+d.label+' '+d.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean).join('   '):'No affixes';
-      const aff=this.add.text(16,y,astr,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#c9a3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(aff);y+=Math.max(16,aff.height+4);
       const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
       const bgap=5,bw=(w-28-bgap*3)/4,bh=32,drawAction=(i,label,color,fn)=>{const bx=14+i*(bw+bgap),g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,y,bw,bh,9);const t=this.add.text(bx+bw/2,y+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff',align:'center'}).setOrigin(0.5);this.menu.add([g,t]);if(fn)this._zone(bx,y,bw,bh,fn);};
       drawAction(0,selected.favorite?'★ Fav':'☆ Fav',selected.favorite?0xb88925:0x4a4059,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
