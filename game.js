@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.2.2';
+const GAME_VERSION = '6.2.3';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.2.3', date:'2026-10-01', title:'Recipe progress meter', items:['Recipe boss appears only when the Hunger meter is full (no time limit)','Recipe runs use the painted progress meter, shown smaller'] },
   { v:'6.2.2', date:'2026-10-01', title:'Recipe slot level-ups', items:['In Recipe runs, level-ups spin a small slot in the corner and grant a stat instantly — the game no longer pauses'] },
   { v:'6.2.1', date:'2026-10-01', title:'Longer Recipe runs', items:['Recipe Hunger goal raised to 260 + 10 per tier (was 150 + 6)','Boss auto-arrives after 5 minutes (was 3); fast-clear bonus under 2:50'] },
   { v:'6.2.0', date:'2026-10-01', title:'Endgame Build', items:['Set your full build before Recipe runs: path, infusion, mutation, evolution and upgrades','Build points = 8 + Atlas points','Recipe runs no longer give +3 level-ups; level-ups give stat cards only'] },
@@ -7509,7 +7510,7 @@ class Game extends Phaser.Scene {
     if(this._hungerDone)return;
     if(this.checkEndgameCurse(this._hunger/goal))return;
     const evAt=atlasLv('eventful')>=1?[0.3]:[0.4]; if(atlasLv('eventful')>=2)evAt.push(0.7); const en=this._recipeEventN|0; if(en<evAt.length&&this._hunger>=goal*evAt[en]){ this._recipeEventN=en+1; this.triggerRecipeEvent(); }
-    const full=this._hunger>=goal, late=this._hungerT>=RECIPE_TIME_CAP;
+    const full=this._hunger>=goal, late=false;   // v6.2.3: บอสมาเมื่อหลอดเต็มเท่านั้น
     if(full||late){ this._hungerDone=true; this._recipeFillT=this._hungerT; this._recipeFast=full&&this._hungerT<=recipePar();
       this.showBanner(full?(this._recipeFast?'⚡ Fast clear!':'🍽 Hunger Meter full!'):'⏳ The boss grows impatient','The boss is coming',1800);
       this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); } }
@@ -7564,7 +7565,7 @@ class Game extends Phaser.Scene {
   }
   drawWavePips(){
     const g=this.pipG; if(!g)return; g.clear();
-    if(this.recipeMode){ this.drawRecipeBar(g); return; }
+    if(this.recipeMode){ this.renderRecipeProgress(g); return; }
     const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
     const n=st.waves, seg=Math.min(20,(this.W*0.62)/n), w=seg-3, h=6;
     const x0=this.W/2-(n*seg)/2, y=this._pad+91;   // ย้ายลงใต้แถบ stat (กันจุดเวฟทับเลข atk/def/crit)
@@ -7579,6 +7580,14 @@ class Game extends Phaser.Scene {
     g.fillStyle(0xff5f97,1); g.fillCircle(x0+n*seg+4,y+h/2,4);
   }
   // Endgame: หลอดความคืบหน้า Recipe แบบเดียวกับจุดเวฟของด่าน (event / boss เป็นหมุดบนหลอด)
+  // v6.2.3: ใช้อาร์ตหลอด replay (ย่อ ~70%) · หมุด event วาดใน pipG ทับหลอด
+  renderRecipeProgress(g){ const F=this.replayProgressFrame,L=this.replayProgressFill; if(!F||!L)return;
+    if(this.mode==='boss'||this._hungerDone||this.state!=='play'&&this.state!=='levelup'){ F.setVisible(false); L.setVisible(false); return; }
+    const goal=this.recipeHungerGoal(),f=Math.max(0,Math.min(1,(this._hunger||0)/goal)),mw=Math.min(250,(this.W-34)*0.72),y=(this._pad||0)+HUD_ROWS.progress;
+    F.setPosition(this.W/2,y).setDisplaySize(mw,24).setVisible(true);
+    L.setPosition(this.W/2-mw*.435,y).setDisplaySize(mw*.87,11).setCrop(0,0,Math.max(1,1520*f),74).setVisible(f>0);
+    const marks=atlasLv('eventful')>=1?[0.3]:[0.4]; if(atlasLv('eventful')>=2)marks.push(0.7);
+    marks.forEach((m,i)=>{ const mx=this.W/2-mw*.435+mw*.87*m; g.fillStyle((this._recipeEventN||0)>i?0x8bd3a0:0xb98cff,1); g.fillCircle(mx,y-9,3); }); }
   drawRecipeBar(g){ if(this.mode==='boss'||this._hungerDone)return;
     const goal=this.recipeHungerGoal(),f=Math.max(0,Math.min(1,(this._hunger||0)/goal)),bw=Math.min(this.W*0.62,280),h=8,x0=this.W/2-bw/2,y=this._pad+90;
     g.fillStyle(0x241a30,0.85); g.fillRoundedRect(x0-2,y-2,bw+4,h+4,5);
