@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.71';
+const GAME_VERSION = '6.0.72';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.72', date:'2026-10-01', title:'New season mission', items:['Stabilize the Seasons (C2-4) no longer asks you to stand in circles','Enemies now carry a season ring — defeat enemies of the active season','Kills of other seasons simply don’t count; progress never goes down'] },
   { v:'6.0.71', date:'2026-10-01', title:'Gear Trade-in', items:['Bazaar Equipment box replaced by Gear Trade-in','Give 3 unwanted gear, get 1 new piece at their average item level +2 to +5','Locked, favorite and equipped gear are protected'] },
   { v:'6.0.70', date:'2026-10-01', title:'Glaze tiers & supply box', items:['Crystal Glaze now rerolls the tier of a mod within what the item allows','Bazaar supply box gives exactly 1 material, priced at the average sell value','New AUTO supply box keeps opening until you tap or run out of Sugar'] },
   { v:'6.0.69', date:'2026-10-01', title:'Better currency prices', items:['Bazaar now buys crafting currency for 90% of its shop price (was 60%)'] },
@@ -4035,7 +4036,7 @@ const WAVE_OBJECTIVES = {
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
   capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the ring to purify it — the ring grows while enemies swarm in to stop you'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect and restore the three nectar flowers while the hive attacks'},
-  seasonCycle:{emoji:'🌦️',name:'Stabilize the Seasons',desc:'Stand in the sanctuary matching the active season'},
+  seasonCycle:{emoji:'🌦️',name:'Stabilize the Seasons',desc:'Defeat enemies of the active season'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Destroy every corrupted root anchor before the throne pulse closes in'},
   cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'}
 };
@@ -7678,7 +7679,7 @@ class Game extends Phaser.Scene {
     }else if(type==='defendNectar'){
       o.target=Math.max(34,Math.round((p.dur||52)*.74));o.desc='Keep at least one flower alive for '+o.target+' seconds';this.spawnNectarGarden();
     }else if(type==='seasonCycle'){
-      o.target=Math.max(30,Math.round((p.dur||52)*.68));o.desc='Follow the active seasonal sanctuary for '+o.target+' seconds';this.spawnSeasonSanctuaries();
+      o.target=24;o.desc='Defeat '+o.target+' enemies of the active season (other kills don’t count)';this.spawnSeasonSanctuaries();
     }else if(type==='breakRoots'){
       o.target=4;o.desc='Destroy all '+o.target+' crown-root anchors';this.spawnRootAnchors(o.target);
     }else{
@@ -7734,17 +7735,16 @@ class Game extends Phaser.Scene {
     else if(s.idx===2&&this.mode==='wave'&&this.enemies.countActive(true)<this.maxLive-3){for(let i=0;i<2;i++)this.spawnEnemy('dasher',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.58);}
     else if(s.idx===3){const n=10,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;const a=i*TAU/n,x=this.player.x+Math.cos(a)*260,y=this.player.y+Math.sin(a)*260;this.foeShot(x,y,a+Math.PI,230,Math.round(9+this.stageIndex*1.7),info.color,.96);}}
   }
+  // v6.0.72: Elemental Swap — มอนติดฤดู (วงสีใต้ตัว) ฆ่าตัวฤดูที่ active = +1 · ผิดฤดูไม่นับ (หลอดไม่ลด)
   spawnSeasonSanctuaries(){
     const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;this._seasonShrines=[];if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};
-    const cx=this.player.x,cy=this.player.y,r=215;for(let i=0;i<4;i++){const a=-Math.PI/2+i*TAU/4,info=this.seasonInfo(i),x=Phaser.Math.Clamp(cx+Math.cos(a)*r,-WORLD/2+110,WORLD/2-110),y=Phaser.Math.Clamp(cy+Math.sin(a)*r,-WORLD/2+110,WORLD/2-110);
-      const zone=this.camWorld(this.add.circle(x,y,92,info.color,.10).setStrokeStyle(5,info.color,.72).setDepth(y-2)),ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(info.color).setDisplaySize(190,145).setAlpha(.48).setDepth(y-1)),artKey=['objective_spring','objective_summer','objective_autumn','objective_winter'][i],painted=this.textures.exists(artKey),label=this.camWorld((painted?this.add.image(x,y,artKey).setScale(.5):this.add.text(x,y,info.emoji,{fontSize:'30px'}).setOrigin(.5)).setDepth(y+1));this.tweens.add({targets:ring,rotation:(i%2?1:-1)*TAU,duration:2600+i*180,repeat:-1,ease:'Linear'});this._seasonShrines.push({x,y,idx:i,zone,ring,label,painted,r:92});}
-  }
+    if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);} }
+  seasonTag(e,o){ if(!e||!e.active||e.isBoss||e.isMini)return -1; if(e._seasonObj!==o){e._seasonObj=o;const act=this._seasonState?this._seasonState.idx:0;e._season=Math.random()<0.4?act:Math.floor(Math.random()*4);} return e._season; }
   tickSeasonObjective(dt){
-    const o=this.waveObjective;if(!o||o.type!=='seasonCycle'||!this._seasonShrines)return;const active=this._seasonState?this._seasonState.idx:0;let target=null;
-    for(const s of this._seasonShrines){const on=s.idx===active,inside=on&&this.dist(this.player.x,this.player.y,s.x,s.y)<=s.r;s.zone.setFillStyle(this.seasonInfo(s.idx).color,inside?.28:on?.17:.055).setStrokeStyle(on?7:3,this.seasonInfo(s.idx).color,on?.98:.38);s.ring.setAlpha(on?.78:.24).setScale(on?1.08:.92);s.label.setScale(s.painted?(on?.59:.44):(on?1.18:.88));if(on)target=s;if(inside)o.progress=Phaser.Math.Clamp(o.progress+dt,0,o.target);}
-    if(target&&o.progress>=o.target)this.completeWaveObjective();
-  }
-
+    const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;const active=this._seasonState?this._seasonState.idx:0,g=this.objNodeG;if(!g)return;g.clear();
+    const t=this.elapsed||0;this.enemies.children.iterate(e=>{const k=this.seasonTag(e,o);if(k<0)return;const c=this.seasonInfo(k).color,on=k===active,r=(e.displayWidth||40)*.42+6;
+      if(on){g.fillStyle(c,.22+.08*Math.sin(t*8));g.fillCircle(e.x,e.y+r*.35,r);g.lineStyle(4,c,.95);g.strokeCircle(e.x,e.y+r*.35,r);}else{g.lineStyle(2,c,.35);g.strokeCircle(e.x,e.y+r*.35,r*.8);}});
+    if(o.progress>=o.target)this.completeWaveObjective(); }
   spawnNectarGarden(){
     const o=this.waveObjective;if(!o||o.type!=='defendNectar')return;this._nectarFlowers=[];this._nectarPulse=0;
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
@@ -7843,7 +7843,8 @@ class Game extends Phaser.Scene {
   onBonusHurt(){ const b=this._bonus;if(!b||b.failed||b.id!=='nohit')return;b.hits++;if(b.hits>b.maxHits)this.failBonus('Took too many hits');else this.renderBonusHUD(); }
   // เรียกจาก killEnemy: นับ kill ของโจทย์เสริม + Capture เติมเร็วเมื่อฆ่าในวง
   objOnKill(e){
-    const o=this.waveObjective;if(!o||o.done)return;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
+    const o=this.waveObjective;if(!o||o.done)return;
+    if(o.type==='seasonCycle'&&e&&e._seasonObj===o){const act=this._seasonState?this._seasonState.idx:0;if(e._season===act){o.progress=Math.min(o.target,o.progress+1);const info=this.seasonInfo(act);this.floatText(e.x,e.y-30,info.emoji+' +1',info.color);}e._seasonObj=null;}const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
   }
   // ประเมินโจทย์เสริมตอนภารกิจสำเร็จ (เรียกก่อน clearWaveObjective)
   resolveBonusChallenge(){
@@ -8034,13 +8035,13 @@ class Game extends Phaser.Scene {
     }
     else if(o.type==='capture'&&this._captureZone){const inside=this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal;
       o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:-dt*.35),0,o.target);this._captureZone.setFillStyle(o.color,inside?0.24:0.10);this.tickCaptureFX(dt,inside,o);if(o.progress>=o.target){this.captureDoneFX();this.completeWaveObjective();return;}}   // v5.21: ยืนในวง 25 วิจริง (ไม่มีโบนัสฆ่าแล้ว)
-    if(o.type!=='purge'&&o.type!=='defendNectar'&&this.objNodeG)this.objNodeG.clear();   // Nectar draws its flower HP bars into the same graphics layer.
+    if(o.type!=='purge'&&o.type!=='defendNectar'&&o.type!=='seasonCycle'&&this.objNodeG)this.objNodeG.clear();   // Nectar draws its flower HP bars into the same graphics layer.
     this.renderWaveObjectiveHUD();
   }
   renderWaveObjectiveHUD(){
     const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);return;}
     this.renderBonusHUD();
-    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar'||o.type==='seasonCycle')?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target;
+    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target+(o.type==='seasonCycle'?' · now '+this.seasonInfo(this._seasonState?this._seasonState.idx:0).emoji:'');
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
     const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
@@ -11921,7 +11922,7 @@ class Game extends Phaser.Scene {
     if(o.type==='cleanAir'&&this._cleanAir)return this.dist(this.player.x,this.player.y,this._cleanAir.x,this._cleanAir.y)<=this._cleanAir.r?null:this._cleanAir;
     let best=null,bd=Infinity;
     if(o.type==='breakRoots'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._rootAnchor)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});
-    if(o.type==='seasonCycle'&&this._seasonShrines){const idx=this._seasonState?this._seasonState.idx:0;best=this._seasonShrines.find(s=>s.idx===idx)||null;if(best&&this.dist(best.x,best.y,this.player.x,this.player.y)<=best.r)best=null;}
+    if(o.type==='seasonCycle'){const idx=this._seasonState?this._seasonState.idx:0;let any=false;this.enemies.children.iterate(e=>{if(!e||!e.active||e._seasonObj!==o||e._season!==idx)return;const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<bd){bd=d;best=e;}});if(best&&bd<320)best=null;}
     if(o.type==='defendNectar'&&this._nectarFlowers){for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(f.x,f.y,this.player.x,this.player.y)+(f.hp/f.maxhp)*100;if(d<bd){bd=d;best=f;}}}
     if(o.type==='purge'){if(this._wisp&&this._wisp.active)return this.dist(this.player.x,this.player.y,this._wisp.x,this._wisp.y)<=this._wispTuning().escortR?null:this._wisp;if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode||n._purified)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});}
     if(o.type==='hunt'&&this.enemies)this.enemies.children.iterate(e=>{if(!e||!e.active||!e._waveObjectiveTarget)return;const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<bd){bd=d;best=e;}});return best;
