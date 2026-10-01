@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.57';
+const GAME_VERSION = '6.0.58';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.58', date:'2026-10-01', title:'Mint neutral limb rebuild', items:['Repainted straight bind-pose limbs replace baked bent arms and legs','Shoulder, elbow and hand anchors calibrated to the painted joints','Matched boot stance and relaxed lance grip preserve a coherent silhouette'] },
   { v:'6.0.57', date:'2026-10-01', title:'Mint rig gait and grip correction', items:['Planted feet and two-bone knee solving prevent crossed legs','Shorter chibi stride and distance-based gait smooth walking','Lance remains attached to the hand through casts; relaxed arm pose'] },
   { v:'6.0.56', date:'2026-10-01', title:'Mint 2D cutout rig trial', items:['Painted head, twin tails, arms, legs and lance animate on a joint hierarchy','Walking continues during upper-body lance attacks; hair follows dash movement','Mint keeps its existing physics, skills and saves; original sprites remain as fallback'] },
   { v:'6.0.55', date:'2026-10-01', title:'Temple layout, character EXP and digging fixes', items:['Core gem markers and button labels align with their painted sockets','Sugar balance is capped at 9,999,999 across all save paths','Stage results animate permanent character EXP and move Sugar x2 below rewards','Digging cancels stale animation callbacks and preserves earned treasure when leaving'] },
@@ -4119,12 +4120,12 @@ const ACHIEVEMENTS=[
 ];
 
 // Mint cutout rig: hierarchical bones, rigid painted skins; no mesh/runtime dependency.
-const MINT_RIG_FRAMES = [{"x":18,"y":6,"w":92,"h":116},{"x":148,"y":6,"w":88,"h":116},{"x":262,"y":9,"w":116,"h":110},{"x":394,"y":6,"w":108,"h":116},{"x":6,"y":135,"w":116,"h":113},{"x":146,"y":134,"w":91,"h":116},{"x":275,"y":134,"w":89,"h":116},{"x":402,"y":134,"w":92,"h":116},{"x":14,"y":262,"w":100,"h":116},{"x":167,"y":262,"w":50,"h":116},{"x":294,"y":262,"w":52,"h":116},{"x":422,"y":262,"w":51,"h":116},{"x":33,"y":390,"w":61,"h":116},{"x":134,"y":431,"w":116,"h":33},{"x":262,"y":396,"w":116,"h":103},{"x":390,"y":390,"w":116,"h":115}];
+const MINT_RIG_FRAMES = [{"x":18,"y":6,"w":92,"h":116},{"x":148,"y":6,"w":88,"h":116},{"x":262,"y":9,"w":116,"h":110},{"x":394,"y":6,"w":108,"h":116},{"x":6,"y":135,"w":116,"h":113},{"x":155,"y":134,"w":73,"h":116},{"x":295,"y":134,"w":50,"h":116},{"x":421,"y":134,"w":53,"h":116},{"x":38,"y":262,"w":52,"h":116},{"x":168,"y":262,"w":47,"h":116},{"x":298,"y":262,"w":43,"h":116},{"x":427,"y":262,"w":42,"h":116},{"x":42,"y":390,"w":43,"h":116},{"x":134,"y":431,"w":116,"h":33},{"x":262,"y":396,"w":116,"h":103},{"x":390,"y":390,"w":116,"h":115}];
 const MINT_RIG_BONES = [
   ['hip',null,0,0],['torso','hip',0,-1],['head','torso',0,-14],
   ['hairL','head',-11,-14],['hairR','head',11,-14],
-  ['armL','torso',-10,-5],['foreL','armL',-5,11],
-  ['armR','torso',10,-5],['foreR','armR',5,11],['lance','foreR',-5,11],
+  ['armL','torso',-7.5,-4],['foreL','armL',0,8],
+  ['armR','torso',8,-4],['foreR','armR',0,8],['lance','foreR',0,8.5],
   ['thighL','hip',-5,9],['shinL','thighL',0,8],
   ['thighR','hip',5,9],['shinR','thighR',0,8],['skirt','torso',0,8]
 ];
@@ -4133,9 +4134,9 @@ const MINT_RIG_SKINS = [
  ['hairL',0,16,29,.55,.12,0],['hairR',1,16,29,.45,.12,1],
  ['thighL',9,7,9,.45,.08,2],['shinL',10,9,13,.45,.06,3],
  ['thighR',11,7,9,.5,.08,4],['shinR',12,9,13,.5,.06,5],
- ['armL',5,12,17,.80,.10,6],['foreL',6,11,17,.23,.1,7],
+ ['armL',5,8,10,.5,.08,6],['foreL',6,7,10,.5,.06,7],
  ['torso',4,30,32,.5,.30,8],['skirt',14,17,18,.5,.08,9],
- ['armR',7,12,17,.22,.10,10],['foreR',8,11,17,.79,.10,11],
+ ['armR',7,8,10,.5,.08,10],['foreR',8,7,10,.5,.06,11],
  ['lance',13,44,12,.17,.5,12],['head',2,35,33,.5,.76,13]
 ];
 // Downward-axis two-bone IK. Each foot stays in its own screen-space lane.
@@ -4152,13 +4153,13 @@ function mintRigPose(time,phase,move,cast,dash,hurt){
  const step=Math.sin(phase),breath=Math.sin(time*3),
    thrust=Math.sin(Math.PI*Math.max(0,Math.min(1,cast))),
    left=mintRigLeg(phase,move,1),right=mintRigLeg(phase+Math.PI,move,-1),
-   arm=-.28-.65*thrust-.18*dash,fore=.95-.15*thrust;
+   arm=-.65-.6*thrust-.12*dash,fore=.35+.6*thrust+.12*dash;
  return {hip:{y:-Math.abs(step)*.55*move+breath*.18},
   torso:{rotation:-.025*move-.065*thrust-.10*dash+.08*hurt},
   head:{rotation:.015*breath+.015*step*move+.025*thrust-.05*hurt},
   hairL:{rotation:.06*Math.sin(phase-.75)*move+.025*Math.sin(time*2.3)-.2*dash},
   hairR:{rotation:.055*Math.sin(phase-.95)*move+.025*Math.sin(time*2.3+.6)-.18*dash},
-  armL:{rotation:.04-.065*step*move-.14*dash+.08*hurt},foreL:{rotation:-.12},
+  armL:{rotation:.035-.065*step*move-.12*dash+.08*hurt},foreL:{rotation:.035},
   armR:{rotation:arm},foreR:{rotation:fore},
   lance:{rotation:-arm-fore-.07},
   thighL:{rotation:left.thigh},shinL:{rotation:left.knee},

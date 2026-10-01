@@ -20,4 +20,5 @@ const {createCanvas,loadImage}=canvas,fs=require('node:fs');
  fs.writeFileSync('assets/characters/mint_rig_parts.png',out.toBuffer('image/png'));
  fs.writeFileSync('assets/incoming/mint_rig/frames.json',JSON.stringify(meta,null,2)+'\n');
  console.log('Mint: packed 16 transparent parts in 512px atlas');
+ if(fs.existsSync('assets/incoming/mint_rig/mint_neutral_limbs_source.png'))await require('./pack-mint-rig-limbs.cjs')();
 })();

@@ -1,3 +1,7 @@
+## Mint neutral limb art rebuild — v6.0.58
+
+Device/preview feedback still showed bent arms and inward boots. Previous gait fixes did not correct baked diagonal source skins. Repainted eight neutral vertical limb parts with imagegen, retaining head/torso/hair/lance. Centered shoulder/elbow/hand skin origins, matched short link lengths, moved shoulders onto painted torso sockets, shortened arm chain and calibrated fist/lance attachment. Packer replaces limb slots and refreshes inline frame bounds reproducibly. Production-pose contact sheet and GIF reviewed; Full tests/build pass; real-device visual confirmation pending. See docs/MINT_RIG_TRIAL.md.
+
 ## Mint gait / grip correction — v6.0.57
 
 Replaced opposed frontal leg swinging with two-bone IK foot targets in separate lanes. Smaller stride and lift, upright boots, shorter chibi legs, root aligned to existing ground shadow. Distance-based phase independent of frame rate, smoother torso/hair motion. Relaxed right elbow and attached lance: no local hand-to-weapon translation during casts. Regression checks cover 360 moving/casting samples without crossed feet, planted boot angles and equal phase at 30/60 FPS. Preview updated; real-device motion review still pending.

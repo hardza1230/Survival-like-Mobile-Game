@@ -4,9 +4,10 @@ const registered=new Set(),jobs=[],texture={has:n=>registered.has(n),add(n){regi
 const scene={textures:{get:()=>texture,exists:()=>true},camWorld:o=>o,add:{container:object,image:object},state:'play',iso:true,dashTime:0,time:{now:0},tweens:{add(c){const j={c,stop(){this.stopped=true;}};jobs.push(j);return j;}}};
 const v={x:140,y:0,length(){return Math.hypot(this.x,this.y);}},p={x:80,y:100,depth:100,alpha:.75,active:true,flipX:false,body:{velocity:v}};
 const rig=new Rig(scene);assert.equal(registered.size,16);assert.equal(rig.skins.length,14);
-for(let i=0;i<40;i++)rig.animate(1/60,p,scene);const phase=rig.phase,leg=rig.bones.thighL.rotation,grip=rig.bones.lance.worldX;
+for(let i=0;i<40;i++)rig.animate(1/60,p,scene);for(const name of ['armL','armR','foreL','foreR'])assert.equal(rig.skins.find(o=>o.name===name).skin.originX,.5,'neutral skin joint is centered');
+const phase=rig.phase,leg=rig.bones.thighL.rotation,grip=rig.bones.lance.worldX;
 rig.attack(400);for(let i=0;i<8;i++)rig.animate(1/60,p,scene);
-assert(rig.phase>phase);assert.notEqual(rig.bones.thighL.rotation,leg,'cast preserves moving legs');assert(rig.bones.lance.worldX>grip,'arm extends weapon forward');assert.equal(rig.bones.lance.x,-5,'weapon stays in hand');
+assert(rig.phase>phase);assert.notEqual(rig.bones.thighL.rotation,leg,'cast preserves moving legs');assert(rig.bones.lance.worldX>grip,'arm extends weapon forward');assert.equal(rig.bones.lance.x,0,'weapon stays in hand');
 const parent=rig.bones.foreR,child=rig.bones.lance;assert(Math.abs(child.worldX-(parent.worldX+child.x*Math.cos(parent.worldRotation)-child.y*Math.sin(parent.worldRotation)))<1e-9,'forward kinematics');
 const scale=rig.root.scaleY;rig.attack(550,true);scene.dashTime=.1;for(let i=0;i<8;i++)rig.animate(1/60,p,scene);assert.equal(rig.root.scaleY,scale,'no attack or dash resize');assert(rig.bones.hairL.rotation<0);
 p.flipX=true;p.x=200;p.isTinted=true;p.tintFill=true;p.tintTopLeft=0xff8080;rig.sync(p,scene);assert.equal(rig.root.x,200);assert.equal(rig.root.scaleX,-scale);assert.equal(rig.root.depth,p.y);assert.equal(rig.root.alpha,.75);
@@ -32,7 +33,7 @@ for(let i=0;i<360;i++){
  assert(feet[0].x<feet[1].x,'left and right feet retain their lanes');
  assert(Math.abs(feet[0].x+5)<1&&Math.abs(feet[1].x-5)<1,'short stance keeps feet beneath hips');
  assert(feet.every(f=>f.rotation===0),'boots do not roll sideways');
- assert.equal(gait.bones.lance.x,-5);assert.equal(gait.bones.lance.y,11,'no floating grip');
+ assert.equal(gait.bones.lance.x,0);assert.equal(gait.bones.lance.y,8.5,'no floating grip');
 }
 // Distance-based gait advances equally at 30 and 60 FPS; zero speed stops phase.
 function cadence(fps){const r=new Rig(scene);for(let i=0;i<fps*2;i++)r.animate(1/fps,p,scene);return r;}
