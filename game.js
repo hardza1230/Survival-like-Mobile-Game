@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.70';
+const GAME_VERSION = '6.0.71';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.71', date:'2026-10-01', title:'Gear Trade-in', items:['Bazaar Equipment box replaced by Gear Trade-in','Give 3 unwanted gear, get 1 new piece at their average item level +2 to +5','Locked, favorite and equipped gear are protected'] },
   { v:'6.0.70', date:'2026-10-01', title:'Glaze tiers & supply box', items:['Crystal Glaze now rerolls the tier of a mod within what the item allows','Bazaar supply box gives exactly 1 material, priced at the average sell value','New AUTO supply box keeps opening until you tap or run out of Sugar'] },
   { v:'6.0.69', date:'2026-10-01', title:'Better currency prices', items:['Bazaar now buys crafting currency for 90% of its shop price (was 60%)'] },
   { v:'6.0.68', date:'2026-10-01', title:'Bigger bag', items:['Gear bag expanded from 24 to 100 slots (existing saves upgraded automatically)'] },
@@ -5158,7 +5159,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
@@ -6868,7 +6869,7 @@ class Game extends Phaser.Scene {
     }else if(tab==='gamble'){
       heading('Mystery boxes');
       const cardH=Math.min(230,Math.max(150,(h-y-65)/2-8));
-      grid([{art:'prize_chest',name:'Equipment box',desc:'Common 68% · Rare 29% · Epic 3%',price:'Open · Sugar 180',afford:(Save.data.sugar||0)>=180,color:0xffd166,fn:()=>this.bazaarGambleGear()},
+      grid([{art:'prize_chest',name:'Gear Trade-in',desc:'Give 3 gear · get 1 new piece at their item level',price:'Trade 3 → 1',afford:true,color:0xffd166,fn:()=>{this._tradeSel=[];this._tradePage=0;this.menuScreen='tradein';this.buildTradeIn();}},
         {art:'prize_currency',name:'Crafting supply box',desc:'1 random crafting material',price:'Open · Sugar '+bazaarCurrencyBoxCost(),afford:(Save.data.sugar||0)>=bazaarCurrencyBoxCost(),color:0x8edbd0,fn:()=>this.bazaarGambleCurrency(false)},
         {art:'prize_currency',name:'Supply box · AUTO',desc:'Keeps opening until you tap or Sugar runs out',price:'Auto · Sugar '+bazaarCurrencyBoxCost(),afford:(Save.data.sugar||0)>=bazaarCurrencyBoxCost(),color:0xffd166,fn:()=>this.bazaarGambleCurrency(true)}],cardH);
       this.menu.add(this.add.text(w/2,y+12,'Tap a box to open it · rewards go to your inventory',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',wordWrap:{width:w-32},align:'center'}).setOrigin(.5,0));
@@ -6896,17 +6897,17 @@ class Game extends Phaser.Scene {
   bazaarBuyCurrency(key,qty,cost,slotKey){ if(slotKey&&(Save.data.bazaarBought||[]).includes(slotKey))return; if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
     Save.addCurrency(key,qty); if(slotKey){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(slotKey);Save.save();} Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
   // ตู้สล็อต: หมุนไอคอนช้าลงเรื่อย ๆ แล้วหยุดที่รางวัล (ลุ้นสนุก)
-  bazaarSlotReveal(pool,land){ if(this._bazBusy)return; this._bazBusy=true; const w=this.W,h=this.H;
+  bazaarSlotReveal(pool,land){ if(this._bazBusy)return; this._bazBusy=true; this.tapZones=[]; const w=this.W,h=this.H;
     const veil=this.add.rectangle(0,0,w,h,0x0a0611,0.92).setOrigin(0),title=this.add.text(w/2,h*0.30,'🎰 Rolling…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5),glow=this.add.image(w/2,h*0.47,'vfx_glow').setTint(0xffd166).setScale(0.5).setAlpha(0.25),icon=this.add.image(w/2,h*0.47,'prize_chest').setDisplaySize(96,96);
     this.menu.add([veil,title,glow,icon]); this.menu.setVisible(true);
-    let ticks=0,delay=55; const spin=()=>{ const key=Phaser.Utils.Array.GetRandom(pool);icon.setTexture(this.textures.exists(key)?key:'prize_chest').setDisplaySize(96,96); Sfx.select&&Sfx.select(); ticks++;
+    let ticks=0,delay=55; const spin=()=>{ if(!icon.scene){this._bazBusy=false;return;} const key=Phaser.Utils.Array.GetRandom(pool);icon.setTexture(this.textures.exists(key)?key:'prize_chest').setDisplaySize(96,96); Sfx.select&&Sfx.select(); ticks++;
       if(ticks<26){ delay+=ticks>17?(ticks-17)*10:2; this.time.delayedCall(delay,spin); }
       else { const resultKey=land.artKey&&this.textures.exists(land.artKey)?land.artKey:'prize_currency';icon.setTexture(resultKey).setDisplaySize(96,96);this.tweens.add({targets:icon,scaleX:icon.scaleX*1.18,scaleY:icon.scaleY*1.18,duration:300,ease:'Back.out'});
         title.setText(land.title||'✨ Prize!'); glow.setScale(2.6).setAlpha(0.85); this.screenFlash(0xffd166,0.5,420); Sfx.clear();
         const sub=this.add.text(w/2,h*0.63,land.sub||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:w-50}}).setOrigin(0.5);
         const bt=this.add.text(w/2,h*0.74,land.auto?'Tap to stop AUTO':'Tap to continue',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6'}).setOrigin(0.5); this.menu.add([sub,bt]);
         this._bazBusy=false; const tok=(this._bazAutoTok=(this._bazAutoTok||0)+1);
-        this._zone(0,0,w,h,()=>{this._bazAutoTok++;this._bazAutoN=0;this.buildBazaar();});
+        this._zone(0,0,w,h,()=>{this._bazAutoTok++;this._bazAutoN=0;if(land.back==='tradein')this.buildTradeIn();else this.buildBazaar();});
         if(land.auto)this.time.delayedCall(650,()=>{ if(tok!==this._bazAutoTok||this.menuScreen!=='bazaar')return; this.menu.removeAll(true); land.auto(); }); }
     }; if(land.auto)ticks=14; spin(); }
   bazaarGambleGear(){ if(this._bazBusy)return; if(!Save.spend(180)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires 180 Sugar',1300); return; }
@@ -6914,6 +6915,36 @@ class Game extends Phaser.Scene {
     if(!got){Save.addSugar(180);Sfx.error();this.showBanner('🎁 No eligible base','Sugar refunded',1500);return;}
     const artKey=got.instance?('gear_'+got.id):null;
     this.bazaarSlotReveal(GEAR_ALL.map(it=>'gear_'+it.id).filter(key=>this.textures.exists(key)),{artKey,emoji:got.emoji,title:'✨ '+got.name+'!',sub:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got)}); }
+  // v6.0.71 Trade-in: 3 ชิ้น → 1 ชิ้น · iLv = ค่าเฉลี่ย +2..+5 · เกรดสุ่มจากเกรดของที่ใส่
+  tradeInCandidates(){ return (Save.data.gearItems||[]).filter(x=>x&&!x.locked&&!x.favorite&&x.grade!=='start'&&!Save.isGearEquipped(x.uid)).sort((a,b)=>(b.itemLevel||1)-(a.itemLevel||1)); }
+  tradeInPreview(sel){ if(sel.length<3)return null; const avg=sel.reduce((t,x)=>t+(x.itemLevel||1),0)/sel.length; return {lo:Math.min(100,Math.round(avg)+2),hi:Math.min(100,Math.round(avg)+5)}; }
+  buildTradeIn(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Gear Trade-in','screen_bazaar','bazaar');
+    const w=this.W,h=this.H,hs=this._hdrShift(),items=this.tradeInCandidates();this._tradeSel=(this._tradeSel||[]).filter(u=>items.some(x=>x.uid===u));
+    const sel=items.filter(x=>this._tradeSel.includes(x.uid)),pv=this.tradeInPreview(sel);
+    const T=(x,y,t,sz,c,o)=>{const tx=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:w-30}}).setOrigin(o??.5,.5);this.menu.add(tx);return tx;};
+    T(w/2,92+hs,'Pick 3 gear you don’t need ('+sel.length+'/3)',13,'#ffe08a');
+    T(w/2,112+hs,pv?('New item: iLv '+pv.lo+'–'+pv.hi+' · grade from your picks'):'Result item level is based on the average iLv',11,pv?'#a8edc6':'#c5b5d1');
+    const cols=4,gap=8,cw=(w-28-gap*(cols-1))/cols,ch=cw+18,top=130+hs,rows=Math.max(1,Math.floor((h-top-80)/(ch+gap))),per=cols*rows,pages=Math.max(1,Math.ceil(items.length/per));
+    this._tradePage=Math.min(this._tradePage||0,pages-1);
+    if(!items.length)T(w/2,top+60,'No tradeable gear (locked, favorite and equipped items are protected)',12,'#c5b5d1');
+    items.slice(this._tradePage*per,(this._tradePage+1)*per).forEach((it,i)=>{const cx=14+(i%cols)*(cw+gap),cy=top+Math.floor(i/cols)*(ch+gap),on=this._tradeSel.includes(it.uid),col=Phaser.Display.Color.HexStringToColor((TIER_LABEL[it.grade]||TIER_LABEL.common).color).color;
+      const g=this.add.graphics();g.fillStyle(on?0x4a3a14:0x231a2e,.95);g.fillRoundedRect(cx,cy,cw,ch,9);g.lineStyle(on?3:1.5,on?0xffd166:col,1);g.strokeRoundedRect(cx,cy,cw,ch,9);this.menu.add(g);
+      const key='gear_'+it.baseId;if(this.textures.exists(key))this.menu.add(this.add.image(cx+cw/2,cy+cw/2,key).setDisplaySize(cw*.66,cw*.66).setAlpha(on?1:.85));
+      const t=this.add.text(cx+cw/2,cy+ch-11,'iLv '+(it.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:on?'#ffe08a':'#ffffff'}).setOrigin(.5);this.menu.add(t);
+      if(on)this.menu.add(this.add.text(cx+cw-8,cy+10,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd166'}).setOrigin(.5));
+      this._zone(cx,cy,cw,ch,()=>{const a=this._tradeSel,k=a.indexOf(it.uid);if(k>=0)a.splice(k,1);else if(a.length<3)a.push(it.uid);else{Sfx.error();return;}Sfx.select&&Sfx.select();this.buildTradeIn();});});
+    const by=h-34;
+    if(pages>1)this.uiPillBtn(this.menu,w*.25,by,w*.42,38,COLORS.grape,'','Page '+(this._tradePage+1)+'/'+pages,()=>{this._tradePage=(this._tradePage+1)%pages;this.buildTradeIn();});
+    this.uiPillBtn(this.menu,pages>1?w*.72:w/2,by,pages>1?w*.46:w-40,38,pv?COLORS.pink:0x3a3550,'',pv?'Trade 3 → 1':'Select 3',pv?()=>this.doTradeIn():null);
+    this.menu.setVisible(true); }
+  doTradeIn(){ const items=this.tradeInCandidates(),sel=items.filter(x=>(this._tradeSel||[]).includes(x.uid)),pv=this.tradeInPreview(sel); if(!pv||sel.length!==3)return;
+    const ilv=pv.lo+Math.floor(Math.random()*(pv.hi-pv.lo+1)),grade=Phaser.Utils.Array.GetRandom(sel).grade||'common';
+    if(!sel.every(x=>Save.removeGearInstance(x.uid))){Sfx.error();this.buildTradeIn();return;}
+    let got=null; for(const t of [grade,'rare','common','epic']){got=this.grantGear(t==='legend'?'epic':t,{tradeLv:ilv});if(got)break;}
+    this._tradeSel=[]; if(!got){Save.addShards(15);this.menuToast('No eligible base · +15 shards','#f295a8');this.buildTradeIn();return;}
+    Sfx.equipment&&Sfx.equipment('equip');
+    this.bazaarSlotReveal(GEAR_ALL.map(x=>'gear_'+x.id).filter(k=>this.textures.exists(k)),{artKey:'gear_'+got.id,title:'✨ '+got.name+'!',sub:(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got),back:'tradein'}); }
   bazaarGambleCurrency(auto){ if(this._bazBusy)return; const cost=bazaarCurrencyBoxCost(); if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); if(auto)this.buildBazaar(); return; }
     const k=rollWeightedCurrency('epic')||'alt', d=currencyDef(k); Save.addCurrency(k,1);
     this._bazAutoN=auto?(this._bazAutoN||0)+1:0;
@@ -10885,16 +10916,16 @@ class Game extends Phaser.Scene {
   // Endgame drop = โหมด endgame (Boss Rush/Endless/Zone Mods) และจบเนื้อเรื่องแล้วเท่านั้น
   endgameDropActive(){ return storyComplete()&&(!!this.riftMode||!!this.bossRush||!!this.endlessMode||((this._activeZoneMods||[]).length>0)); }
   endgameDepth(){ return (this._pinnacleRun?24:0)+(this.riftMode?(this._riftTier||1)*3:0)+(this._activeZoneMods||[]).length*4+(this.endlessMode?(this.endlessCycle||0)*2:0)+(this.bossRush?(this._rushPos||0)*2:0); }
-  grantGear(tier,opts={}){ if(tier==='legend')Sfx.legend(); const inPlay=this.state==='play'||(this.state!=='menu'&&!opts.gacha&&this.endgameDropActive()),sourceStage=inPlay?this.stageIndex:rewardSourceStage();
+  grantGear(tier,opts={}){ if(tier==='legend')Sfx.legend(); const inPlay=!opts.tradeLv&&(this.state==='play'||(this.state!=='menu'&&!opts.gacha&&this.endgameDropActive())),sourceStage=inPlay?this.stageIndex:rewardSourceStage();
     // v4.32: gacha เลือก base item level ได้ (opts.itemLevel) → chapter ตาม iLv นั้น · in-play/menu ใช้ stage เดิม
-    const gachaLv=opts.gacha?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||1))):0,eg=inPlay&&this.endgameDropActive(),
-      chapter=opts.gacha?itemChapterFromLevel(gachaLv):eg?(Math.random()<0.5?4:5):itemChapterForStage(sourceStage);
+    const gachaLv=(opts.gacha||opts.tradeLv)?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||opts.tradeLv||1))):0,eg=inPlay&&this.endgameDropActive(),
+      chapter=(opts.gacha||opts.tradeLv)?itemChapterFromLevel(gachaLv):eg?(Math.random()<0.5?4:5):itemChapterForStage(sourceStage);
     let pool=gearPool(tier,chapter); if(!pool.length&&tier==='common')pool=gearPool('rare',chapter);
     if(eg&&!opts.gacha){if(this._farmFocus==='materials'){this.grantCurrencyReward(2,tier,'Crafting materials');return null;}pool=this.focusGearPool(pool);}
     if(!pool.length)return null;
     // v4.29: ของนอกด่าน (forge/menu) ตั้ง floor iLv 12 → ได้ 2 mod · in-play ใช้ค่าจริง
     const it=Phaser.Utils.Array.GetRandom(pool),
-      itemLevel=inPlay?(this.endgameDropActive()?rollEndgameItemLevel(this.stageDiff||1,this.endgameDepth()):rollItemLevel(sourceStage,this.stageDiff||1)):(opts.gacha?gachaLv:Math.max(12,rollItemLevel(sourceStage,1))),
+      itemLevel=inPlay?(this.endgameDropActive()?rollEndgameItemLevel(this.stageDiff||1,this.endgameDepth()):rollItemLevel(sourceStage,this.stageDiff||1)):((opts.gacha||opts.tradeLv)?gachaLv:Math.max(12,rollItemLevel(sourceStage,1))),
       extra={isNew:true,itemLevel,chapter};
     // v4.32: gacha สุ่ม 0-1 mod เสมอ (50/50) · 0 mod = common (พื้นขาว) · 1 mod = magic
     if(opts.gacha){ const cnt=Math.random()<0.5?0:1, affs=cnt?rollAffixes(it.tier,itemLevel,it).slice(0,1):[]; extra.affixes=affs; extra.craftState=affs.length?'magic':'common'; }
