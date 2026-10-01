@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.72';
+const GAME_VERSION = '6.0.73';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.73', date:'2026-10-01', title:'Season Storm', items:['C2-4 mission is now Season Storm: each season brings its own hazard','Spring: defeat 10 healing enemies · Summer: keep moving or burn · Autumn: wind and leaf gusts · Winter: slippery ice and frost patches','Pass each season’s trial once to finish; a failed trial simply returns next cycle'] },
   { v:'6.0.72', date:'2026-10-01', title:'New season mission', items:['Stabilize the Seasons (C2-4) no longer asks you to stand in circles','Enemies now carry a season ring — defeat enemies of the active season','Kills of other seasons simply don’t count; progress never goes down'] },
   { v:'6.0.71', date:'2026-10-01', title:'Gear Trade-in', items:['Bazaar Equipment box replaced by Gear Trade-in','Give 3 unwanted gear, get 1 new piece at their average item level +2 to +5','Locked, favorite and equipped gear are protected'] },
   { v:'6.0.70', date:'2026-10-01', title:'Glaze tiers & supply box', items:['Crystal Glaze now rerolls the tier of a mod within what the item allows','Bazaar supply box gives exactly 1 material, priced at the average sell value','New AUTO supply box keeps opening until you tap or run out of Sugar'] },
@@ -4036,7 +4037,7 @@ const WAVE_OBJECTIVES = {
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
   capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the ring to purify it — the ring grows while enemies swarm in to stop you'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect and restore the three nectar flowers while the hive attacks'},
-  seasonCycle:{emoji:'🌦️',name:'Stabilize the Seasons',desc:'Defeat enemies of the active season'},
+  seasonCycle:{emoji:'🌦️',name:'Season Storm',desc:'Pass the trial of every season'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Destroy every corrupted root anchor before the throne pulse closes in'},
   cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'}
 };
@@ -7679,7 +7680,7 @@ class Game extends Phaser.Scene {
     }else if(type==='defendNectar'){
       o.target=Math.max(34,Math.round((p.dur||52)*.74));o.desc='Keep at least one flower alive for '+o.target+' seconds';this.spawnNectarGarden();
     }else if(type==='seasonCycle'){
-      o.target=24;o.desc='Defeat '+o.target+' enemies of the active season (other kills don’t count)';this.spawnSeasonSanctuaries();
+      o.target=4;o.desc='Pass all 4 season trials · a failed trial just returns next cycle';this.spawnSeasonSanctuaries();
     }else if(type==='breakRoots'){
       o.target=4;o.desc='Destroy all '+o.target+' crown-root anchors';this.spawnRootAnchors(o.target);
     }else{
@@ -7731,20 +7732,48 @@ class Game extends Phaser.Scene {
     if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};const s=this._seasonState;s.t-=dt;if(s.t>0)return;
     s.idx=(s.idx+1)%4;s.cycle++;s.t=this.mode==='boss'?8.2:10.0;const info=this.seasonInfo(s.idx);this.showBanner(info.emoji+' '+info.name,info.sub,720);this.screenFlash(info.color,.16,320);
     if(s.idx===0){this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.055);});}
+    const storm=this.waveObjective&&this.waveObjective.type==='seasonCycle';
+    if(storm)return;
     else if(s.idx===1){for(let i=0;i<3;i++){const a=i*TAU/3+Math.random()*.5;this.spawnHazard(this.player.x+Math.cos(a)*Phaser.Math.Between(80,175),this.player.y+Math.sin(a)*Phaser.Math.Between(80,175),58,Math.round(10+this.stageIndex*2.1),info.color);}}
     else if(s.idx===2&&this.mode==='wave'&&this.enemies.countActive(true)<this.maxLive-3){for(let i=0;i<2;i++)this.spawnEnemy('dasher',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.58);}
     else if(s.idx===3){const n=10,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;const a=i*TAU/n,x=this.player.x+Math.cos(a)*260,y=this.player.y+Math.sin(a)*260;this.foeShot(x,y,a+Math.PI,230,Math.round(9+this.stageIndex*1.7),info.color,.96);}}
   }
-  // v6.0.72: Elemental Swap — มอนติดฤดู (วงสีใต้ตัว) ฆ่าตัวฤดูที่ active = +1 · ผิดฤดูไม่นับ (หลอดไม่ลด)
+  // v6.0.73: Season Storm — แต่ละฤดูมีภัยต่างกัน ผ่านเงื่อนไขของฤดูนั้น = ✓ (ครบ 4 = จบ) · ไม่ผ่านไม่เสียอะไร รอรอบถัดไป
   spawnSeasonSanctuaries(){
-    const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;this._seasonShrines=[];if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};
-    if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);} }
-  seasonTag(e,o){ if(!e||!e.active||e.isBoss||e.isMini)return -1; if(e._seasonObj!==o){e._seasonObj=o;const act=this._seasonState?this._seasonState.idx:0;e._season=Math.random()<0.4?act:Math.floor(Math.random()*4);} return e._season; }
+    const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;this._seasonShrines=null;if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};
+    if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
+    o.storm={passed:[false,false,false,false],cur:null}; this.stormBeginSeason(o,this._seasonState.idx,true); }
+  stormRule(i){ return [{goal:'Defeat 10 — they heal!',need:10},{goal:'Keep moving — standing still burns',max:1},{goal:'Dodge the leaf gusts',max:1},{goal:'Dodge the frost patches on the ice',max:1}][i&3]; }
+  stormBeginSeason(o,idx,partial){ o.storm.cur={idx,kills:0,hits:0,still:0,ev:1.2,lines:[],patches:[],partial:!!partial,windA:Math.random()*TAU,regen:0};
+    if(!partial&&!o.storm.passed[idx]){const info=this.seasonInfo(idx);this.showBanner(info.emoji+' Trial: '+info.name,this.stormRule(idx).goal,1500);} }
+  stormEndSeason(o){ const c=o.storm.cur;if(!c||c.partial||o.storm.passed[c.idx])return;const r=this.stormRule(c.idx),ok=r.need?c.kills>=r.need:c.hits<=r.max,info=this.seasonInfo(c.idx);
+    if(ok){o.storm.passed[c.idx]=true;o.progress=o.storm.passed.filter(Boolean).length;this.floatText(this.player.x,this.player.y-60,info.emoji+' TRIAL PASSED!',info.color);this.screenFlash(info.color,.22,260);Sfx.clear&&Sfx.clear();}
+    else this.floatText(this.player.x,this.player.y-60,info.emoji+' Trial failed — next cycle',0xbbbbbb); }
+  stormHit(o,dmgMul){ const c=o.storm.cur;c.hits++;this.player.iframe=0;this.hurtPlayer(Math.max(4,Math.round((this.player.maxhp||100)*dmgMul)),.5);this.cameras.main.shake(120,.004); }
   tickSeasonObjective(dt){
-    const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;const active=this._seasonState?this._seasonState.idx:0,g=this.objNodeG;if(!g)return;g.clear();
-    const t=this.elapsed||0;this.enemies.children.iterate(e=>{const k=this.seasonTag(e,o);if(k<0)return;const c=this.seasonInfo(k).color,on=k===active,r=(e.displayWidth||40)*.42+6;
-      if(on){g.fillStyle(c,.22+.08*Math.sin(t*8));g.fillCircle(e.x,e.y+r*.35,r);g.lineStyle(4,c,.95);g.strokeCircle(e.x,e.y+r*.35,r);}else{g.lineStyle(2,c,.35);g.strokeCircle(e.x,e.y+r*.35,r*.8);}});
-    if(o.progress>=o.target)this.completeWaveObjective(); }
+    const o=this.waveObjective;if(!o||o.type!=='seasonCycle'||!o.storm)return;const g=this.objNodeG;if(!g)return;g.clear();
+    const idx=this._seasonState?this._seasonState.idx:0;let c=o.storm.cur;if(!c||c.idx!==idx){this.stormEndSeason(o);if(o.progress>=o.target){this.completeWaveObjective();return;}this.stormBeginSeason(o,idx,false);c=o.storm.cur;}
+    if(o.storm.passed[idx]){return;}   // ฤดูที่ผ่านแล้ว = พัก ไม่มีภัย
+    const pl=this.player,info=this.seasonInfo(idx),t=this.elapsed||0;
+    if(idx===0){ c.regen-=dt;if(c.regen<=0){c.regen=1;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.04);});} }
+    else if(idx===1){ const v=pl.body?pl.body.velocity.length():0;c.still=v<40?c.still+dt:Math.max(0,c.still-dt*2);const f=Phaser.Math.Clamp(c.still/1.4,0,1);
+      if(f>0.05){g.lineStyle(4,0xff5a1f,.4+.5*f);g.strokeCircle(pl.x,pl.y,70-30*f);g.fillStyle(0xffb12b,.18*f);g.fillCircle(pl.x,pl.y,70-30*f);}
+      if(c.still>=1.4){c.still=0;this.spawnFxAnim&&this.spawnFxAnim('fx_chilinova',pl.x,pl.y,{scale:.5});this.stormHit(o,.07);} }
+    else if(idx===2){ c.windA+=dt*.35;if(pl.body&&!(this.dashTime>0)){pl.body.x+=Math.cos(c.windA)*75*dt;pl.body.y+=Math.sin(c.windA)*75*dt;}
+      for(let k=0;k<3;k++){const a=c.windA,ox=pl.x+Math.cos(a+1.6)*(k-1)*60,oy=pl.y+Math.sin(a+1.6)*(k-1)*60;g.lineStyle(2,0xffd0a0,.35);g.lineBetween(ox-Math.cos(a)*30,oy-Math.sin(a)*30,ox+Math.cos(a)*30,oy+Math.sin(a)*30);}
+      c.ev-=dt;if(c.ev<=0){c.ev=2.2;const a=Math.random()*Math.PI,v=pl.body?pl.body.velocity:{x:0,y:0};c.lines.push({x:pl.x+v.x*.85+Math.cos(c.windA)*75,y:pl.y+v.y*.85+Math.sin(c.windA)*75,a,t:1.0});}
+      for(const L of c.lines){L.t-=dt;const dx=Math.cos(L.a)*900,dy=Math.sin(L.a)*900;if(L.t>0){g.lineStyle(L.t<.35?10:4,0xff7040,L.t<.35?.85:.4);g.lineBetween(L.x-dx,L.y-dy,L.x+dx,L.y+dy);}
+        else if(!L.done){L.done=true;const px=pl.x-L.x,py=pl.y-L.y,perp=Math.abs(-px*Math.sin(L.a)+py*Math.cos(L.a));g.lineStyle(14,0xffe0b0,.9);g.lineBetween(L.x-dx,L.y-dy,L.x+dx,L.y+dy);if(perp<38)this.stormHit(o,.08);}}
+      c.lines=c.lines.filter(L=>L.t>-.2); }
+    else { // winter: ลื่น + แผ่นน้ำแข็ง
+      if(pl.body&&!(this.dashTime>0)){const v=pl.body.velocity;if(c.vx===undefined){c.vx=v.x;c.vy=v.y;}c.vx+=(v.x-c.vx)*Math.min(1,dt*3.2);c.vy+=(v.y-c.vy)*Math.min(1,dt*3.2);pl.setVelocity(c.vx,c.vy);}
+      c.ev-=dt;if(c.ev<=0){c.ev=1.6;const v=pl.body?pl.body.velocity:{x:0,y:0};c.patches.push({x:pl.x+v.x*.6,y:pl.y+v.y*.6,t:1.1,r:64});}
+      for(const P of c.patches){P.t-=dt;if(P.t>0){g.fillStyle(0x8fdcff,.12+.25*(1-P.t/1.1));g.fillCircle(P.x,P.y,P.r);g.lineStyle(3,0xd8f4ff,.8);g.strokeCircle(P.x,P.y,P.r*(P.t/1.1)+4);}
+        else if(!P.done){P.done=true;g.fillStyle(0xffffff,.7);g.fillCircle(P.x,P.y,P.r);if(this.dist(pl.x,pl.y,P.x,P.y)<P.r)this.stormHit(o,.08);}}
+      c.patches=c.patches.filter(P=>P.t>-.2); }
+  }
+  stormHudText(o){ if(!o.storm)return'';const c=o.storm.cur,marks=[0,1,2,3].map(i=>this.seasonInfo(i).emoji+(o.storm.passed[i]?'✓':'')).join(' ');if(!c||o.storm.passed[c.idx])return marks+' · rest';const r=this.stormRule(c.idx);
+    return marks+' · '+(c.partial?'next trial soon':(r.need?('kills '+c.kills+'/'+r.need):('hits '+c.hits+'/'+r.max+' max'))); }
   spawnNectarGarden(){
     const o=this.waveObjective;if(!o||o.type!=='defendNectar')return;this._nectarFlowers=[];this._nectarPulse=0;
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
@@ -7844,7 +7873,7 @@ class Game extends Phaser.Scene {
   // เรียกจาก killEnemy: นับ kill ของโจทย์เสริม + Capture เติมเร็วเมื่อฆ่าในวง
   objOnKill(e){
     const o=this.waveObjective;if(!o||o.done)return;
-    if(o.type==='seasonCycle'&&e&&e._seasonObj===o){const act=this._seasonState?this._seasonState.idx:0;if(e._season===act){o.progress=Math.min(o.target,o.progress+1);const info=this.seasonInfo(act);this.floatText(e.x,e.y-30,info.emoji+' +1',info.color);}e._seasonObj=null;}const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
+    if(o.type==='seasonCycle'&&o.storm&&o.storm.cur&&o.storm.cur.idx===0&&e&&!e.isBoss&&!e.isMini)o.storm.cur.kills++;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
   }
   // ประเมินโจทย์เสริมตอนภารกิจสำเร็จ (เรียกก่อน clearWaveObjective)
   resolveBonusChallenge(){
@@ -8041,7 +8070,7 @@ class Game extends Phaser.Scene {
   renderWaveObjectiveHUD(){
     const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);return;}
     this.renderBonusHUD();
-    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':Math.floor(o.progress)+' / '+o.target+(o.type==='seasonCycle'?' · now '+this.seasonInfo(this._seasonState?this._seasonState.idx:0).emoji:'');
+    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o):Math.floor(o.progress)+' / '+o.target);
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
     const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
@@ -11922,7 +11951,7 @@ class Game extends Phaser.Scene {
     if(o.type==='cleanAir'&&this._cleanAir)return this.dist(this.player.x,this.player.y,this._cleanAir.x,this._cleanAir.y)<=this._cleanAir.r?null:this._cleanAir;
     let best=null,bd=Infinity;
     if(o.type==='breakRoots'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._rootAnchor)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});
-    if(o.type==='seasonCycle'){const idx=this._seasonState?this._seasonState.idx:0;let any=false;this.enemies.children.iterate(e=>{if(!e||!e.active||e._seasonObj!==o||e._season!==idx)return;const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<bd){bd=d;best=e;}});if(best&&bd<320)best=null;}
+    
     if(o.type==='defendNectar'&&this._nectarFlowers){for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(f.x,f.y,this.player.x,this.player.y)+(f.hp/f.maxhp)*100;if(d<bd){bd=d;best=f;}}}
     if(o.type==='purge'){if(this._wisp&&this._wisp.active)return this.dist(this.player.x,this.player.y,this._wisp.x,this._wisp.y)<=this._wispTuning().escortR?null:this._wisp;if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._waveObjectiveNode||n._purified)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});}
     if(o.type==='hunt'&&this.enemies)this.enemies.children.iterate(e=>{if(!e||!e.active||!e._waveObjectiveTarget)return;const d=this.dist(e.x,e.y,this.player.x,this.player.y);if(d<bd){bd=d;best=e;}});return best;
