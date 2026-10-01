@@ -1,3 +1,7 @@
+## Mint sprite running restored — v6.0.63
+
+User preferred the authored sprite-sheet run over the procedural rig gait. Mint now shows the existing sprite sheets for idle, run, moving casts, dash, hurt, Wind Rush and KO. Rig remains available only for a stationary spear throw. Sprite updatePose/animatePlayer continue to drive the original run; root visibility is mutually exclusive with the player sprite. Dash trails use the visible presentation. Frost Lance keeps the v6.0.62 release timing (192ms). Mobile transition review remains pending.
+
 ## Mint spear throw — v6.0.62
 
 Mint rig adds wind-up, release, follow-through and recovery while retaining the accepted smooth run. Frost Lance waits 192ms for the hand release when the rig is active; the sprite fallback still fires immediately. Held spear disappears at release and fades back during recovery. Wind Rush retains its original thrust pose. Verify the throw timing and readability on a phone.

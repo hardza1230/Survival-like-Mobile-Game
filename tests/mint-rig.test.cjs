@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const {Rig,frames,object}=require('../scripts/preview-mint-rig.cjs');
 const registered=new Set(),jobs=[],texture={has:n=>registered.has(n),add(n){registered.add(n);}};
 const scene={textures:{get:()=>texture,exists:()=>true},camWorld:o=>o,add:{container:object,image:object},state:'play',iso:true,dashTime:0,time:{now:0},tweens:{add(c){const j={c,stop(){this.stopped=true;}};jobs.push(j);return j;}}};
-const v={x:140,y:0,length(){return Math.hypot(this.x,this.y);}},p={x:80,y:100,depth:100,alpha:.75,active:true,flipX:false,body:{velocity:v}};
+const v={x:140,y:0,length(){return Math.hypot(this.x,this.y);}},p={x:80,y:100,depth:100,alpha:.75,active:true,flipX:false,body:{velocity:v},setVisible(v){this.visible=v;return this;}};
 const rig=new Rig(scene);assert.equal(registered.size,16);assert.equal(rig.skins.length,14);
 for(let i=0;i<40;i++)rig.animate(1/60,p,scene);for(const name of ['armL','armR','foreL','foreR'])assert.equal(rig.skins.find(o=>o.name===name).skin.originX,.5,'neutral skin joint is centered');
 const phase=rig.phase,leg=rig.bones.thighL.rotation,grip=rig.bones.lance.worldX;
@@ -20,7 +20,7 @@ rig.destroy();assert.equal(rig.root.scene,null);assert(jobs.every(j=>j.stopped))
 const source=fs.readFileSync('game.js','utf8'),start=source.indexOf('  setupMintRig(){'),end=source.indexOf('  // เลือกเฟรมท่าทาง:',start);
 const context=vm.createContext({MintCutoutRig:Rig}),C=vm.runInContext('class Scene{'+source.slice(start,end)+'}\nScene',context),s=new C();
 let shutdown;Object.assign(s,scene,{character:'mint',player:{...p,setVisible(v){this.visible=v;return this;}},events:{once(_,fn){shutdown=fn;}}});
-const body=s.player.body;s.setupMintRig();assert(s._mintRig);assert.equal(s.player.visible,false);assert.equal(s.player.body,body);const previous=s._mintRig;
+const body=s.player.body;s.setupMintRig();assert(s._mintRig);assert.equal(s.player.visible,true,'sprite is visible outside stationary throw');assert.equal(s.player.body,body);const previous=s._mintRig;
 s.character='cocoa';s.setupMintRig();assert.equal(previous.root.scene,null);assert.equal(s._mintRig,null);assert.equal(s.player.visible,true);
 s.character='mint';s.textures={exists:()=>false};s.setupMintRig();assert.equal(s._mintRig,null,'missing art keeps original sprite');shutdown();assert.equal(s._mintRigShutdown,false,'scene restart can register fresh cleanup');
 // Side run: feet pass each other in projection; knee direction and limb identity remain stable.
@@ -74,3 +74,14 @@ function combat(rigActive=true){
 let shot= combat();shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,0);assert.equal(shot.timers[0].ms,192);assert.equal(shot.c.poseMs,480);shot.timers[0].fn();assert.equal(shot.shots.length,1);assert.equal(shot.shots[0].body.velocity.x,900);assert.equal(cues,1);
 shot=combat();shot.c.castFrostLance(1,false,1,null);shot.c.state='dead';shot.timers[0].fn();assert.equal(shot.shots.length,0,'no delayed projectile after death');
 shot=combat(false);shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,1);assert.equal(shot.c.poseMs,360,'sprite fallback remains immediate');
+
+// Runtime presentation: authored sheets own locomotion; only a standing throw uses the rig.
+const presentation=new Rig(scene);v.x=0;scene.dashTime=0;scene._poseHold=0;
+presentation.sync(p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'idle uses sprite');
+presentation.attack(480,false);presentation.sync(p,scene);assert.equal(p.visible,false);assert.equal(presentation.root.visible,true,'standing throw uses rig');
+v.x=140;presentation.animate(1/60,p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'moving throw uses sprite run');
+v.x=0;scene.dashTime=.1;presentation.sync(p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'dash uses sprite');
+scene.dashTime=0;scene._poseHold=.15;presentation.sync(p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'hurt pose uses sprite');
+scene._poseHold=0;presentation.attack(520,true);presentation.sync(p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'Wind Rush uses sprite');
+presentation.attack(480,false);scene.state='dead';presentation.sync(p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'death uses KO sprite');
+scene.state='play';for(let i=0;i<40;i++)presentation.animate(1/60,p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'completed throw returns to sprite');presentation.destroy();

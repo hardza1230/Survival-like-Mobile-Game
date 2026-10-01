@@ -65,3 +65,7 @@ Tests compare joint trajectories at 20/30/60/120 FPS, target-change continuity a
 - Held spear disappears at release and fades back during recovery; dash ghosts preserve weapon alpha.
 - Wind Rush retains its previous thrust animation. Attack cadence, projectile damage/count/speed remain unchanged; rig Frost Lance now has a 192ms anticipation delay.
 - Mobile visual/timing QA remains pending.
+
+## v6.0.63 — Restore authored sprite locomotion
+
+User judged the sprite-sheet run better than the rig gait. Runtime rendering now uses the existing full-body sheets for idle/run, moving casts, dash, hurt, Wind Rush and KO. The rig is only visible during a stationary spear throw; simultaneous sprite/rig drawing is prevented. Starting movement immediately restores the run sheet; gait clock continues through casting. Dash ghost routing follows the visible presentation. Frost Lance retains the 192ms anticipation delay from v6.0.62. Rig gait code/art remain available for development but no longer render running in the game. Automated checks cover visibility across movement, attacks, dash/hurt and death; mobile review of the stationary throw transition remains pending.

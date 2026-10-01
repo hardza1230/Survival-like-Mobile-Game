@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.62';
+const GAME_VERSION = '6.0.63';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.63', date:'2026-10-01', title:'Mint sprite-sheet running restored', items:['Mint uses the original sprite-sheet run and dash again','Cutout rig is shown only for a stationary spear throw','Moving casts keep the sprite run cycle uninterrupted'] },
   { v:'6.0.62', date:'2026-10-01', title:'Mint spear throw', items:['Wind-up, spear release and follow-through blend into Mint running','Frost lances launch on the hand release cue','Held spear fades back in during recovery'] },
   { v:'6.0.61', date:'2026-10-01', title:'Mint smooth motion blending', items:['Velocity-continuous joint springs soften run starts, stops and repeated casts','120Hz motion substeps keep the run consistent across frame rates','Smooth toe lift and filtered boot roll soften the stride without changing accepted limb poses'] },
   { v:'6.0.60', date:'2026-10-01', title:'Mint directional run correction', items:['Both knees flex backward in a side-plane run rather than a frontal shuffle','Free elbow bends forward and the arms counter the stride','Matching right-facing boot artwork replaces front-facing feet'] },
@@ -4242,7 +4243,11 @@ class MintCutoutRig {
  }
  sync(p,scene){
   if(!this.root.scene)return;
-  const dead=scene.state==='dead',visible=scene.state!=='menu'&&p.active!==false;
+  const dead=scene.state==='dead',speed=p.body?p.body.velocity.length():0;
+  // Prefer the authored full-body sheets. Only a stationary spear throw uses the rig.
+  const visible=(scene.state==='play'||scene.state==='levelup')&&p.active!==false&&
+   this.castLeft>0&&!this.gale&&speed<=24&&!(scene.dashTime>0)&&!(scene._poseHold>0);
+  p.setVisible(!visible);
   this.root.setVisible(visible).setPosition(p.x,p.y+8+(dead?12:0)).setDepth(scene.iso?p.y:p.depth);
   const scale=.82;this.root.setScale((p.flipX?-1:1)*scale,scale).setRotation(dead?.82:0).setAlpha(p.alpha);
   for(const {skin} of this.skins){if(p.isTinted){if(p.tintFill)skin.setTintFill(p.tintTopLeft);else skin.setTint(p.tintTopLeft);}else skin.clearTint();}
@@ -11647,7 +11652,7 @@ class Game extends Phaser.Scene {
   }
   spawnGhostTrail(){
     const p=this.player; if(!p)return;
-    if(this._mintRig){this._mintRig.ghost(p,this);return;}
+    if(this._mintRig&&this._mintRig.root.visible){this._mintRig.ghost(p,this);return;}
     const g=this.camWorld(this.add.image(p.x,p.y,p.texture.key,p.frame?p.frame.name:0)
       .setDepth(p.depth-1)
       .setScale(p.scaleX,p.scaleY)
@@ -11758,7 +11763,7 @@ class Game extends Phaser.Scene {
     if(this._mintRig){this._mintRig.destroy();this._mintRig=null;}
     this.player.setVisible(true);
     if(this.character!=='mint'||!this.textures.exists('mint_rig_parts'))return;
-    this._mintRig=new MintCutoutRig(this);this.player.setVisible(false);this._mintRig.sync(this.player,this);
+    this._mintRig=new MintCutoutRig(this);this._mintRig.sync(this.player,this);
     if(!this._mintRigShutdown){this._mintRigShutdown=true;this.events.once('shutdown',()=>{this._mintRigShutdown=false;if(this._mintRig){this._mintRig.destroy();this._mintRig=null;}});}
   }
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา
