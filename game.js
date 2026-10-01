@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.2.4';
+const GAME_VERSION = '6.2.5';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.2.5', date:'2026-10-01', title:'Curse roll can be empty', items:['Mid-run curse roll can now land on “No curse”'] },
   { v:'6.2.4', date:'2026-10-01', title:'Clearer build, instant curses', items:['Endgame Build rows now explain what each choice does','Mid-run endgame curses are rolled automatically — no pause'] },
   { v:'6.2.3', date:'2026-10-01', title:'Recipe progress meter', items:['Recipe boss appears only when the Hunger meter is full (no time limit)','Recipe runs use the painted progress meter, shown smaller'] },
   { v:'6.2.2', date:'2026-10-01', title:'Recipe slot level-ups', items:['In Recipe runs, level-ups spin a small slot in the corner and grant a stat instantly — the game no longer pauses'] },
@@ -7283,7 +7284,8 @@ class Game extends Phaser.Scene {
   }
   openEndgameCurse(onResume){ return this.autoEndgameCurse(onResume); }
   // v6.2.4: คำสาปกลางรันสุ่มให้เลย ไม่หยุดเกม (โค้ดหน้าเลือกเดิมอยู่ใน openEndgameCurseChoice)
-  autoEndgameCurse(onResume){ const pool=ZONE_MODIFIERS.filter(d=>!(this._activeZoneMods||[]).includes(d.id)); const d=pool.length?Phaser.Utils.Array.GetRandom(pool):null;
+  autoEndgameCurse(onResume){ const pool=ZONE_MODIFIERS.filter(d=>!(this._activeZoneMods||[]).includes(d.id)); const d=pool.length&&Math.random()>=1/(pool.length+1)?Phaser.Utils.Array.GetRandom(pool):null;   // v6.2.5: 'ไม่มีคำสาป' เป็นอีก 1 ช่องในการสุ่ม
+    if(!d)this.showBanner('✨ No curse this time','Difficulty and rewards unchanged',1800);
     if(d){ this._activeZoneMods.push(d.id); this._zoneMul=this.zoneModMul(); this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});
       this.showBanner('☠ Curse: '+d.name,d.desc+' · rewards ×'+d.reward.toFixed(2),2200); Sfx.bossWarn&&Sfx.bossWarn(); this.screenFlash&&this.screenFlash(0x6b2bd9,0.25); }
     if(onResume)onResume(); }
