@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.2.0 (เจ้าของเลือก 1ข+2ข):** Endgame Build: `Save.data.egBuild[char]`={path,inf,mut,evo,lv} ตั้งในหน้า `buildEgBuild` (ปุ่ม 🛠 Build หน้า Recipe) · แต้ม `egBuildPoints()`=8+atlasPoints · ราคา path2 inf2 mut3 evo4 upgrade 1/rank · `applyEgBuild` ใน startRecipeRun (ลบ +3 เลเวล) · Recipe เลเวลอัพ = `endlessCards` เท่านั้น · Run ถูกบล็อกถ้าเกินแต้ม · verified headless build ติด + การ์ด endless, 0 error · ยังไม่เห็นหน้าจอจริง
 - **v6.1.1 (เจ้าของ):** Recipe run โชว์หลอด Hunger (`drawRecipeBar` แทนจุดเวฟใน drawWavePips) หมุด event 30/40%+70% และบอสปลายหลอด
 - **v6.1.0 (เจ้าของเลือก Hades Pact):** `PACT_TERMS` 8 เงื่อนไข (hp/dmg/speed/horde/boss/frail/heal/hunger) แท็บ 🔥 Pact ใน Atlas (`buildPact`) · `Save.data.pact` ใช้กับทุก Recipe · snapshot `this._pact/_pactHeat` ใน startRun · reward ×(1+0.07·heat) ใน riftMul · `Save.data.pactBest` · verified headless heat 8 ตัวคูณถูก 0 error · **ยังไม่เล่นจริง**
 - **v6.0.79 (เจ้าของ):** bgm_main → `bgm_menu_chiptune_pop.mp3` (C major 128BPM groove+pulse bass+sqr arp 16th+sqr lead, ลูป 30 วิ) · Crystal Clash ยังเก็บไว้

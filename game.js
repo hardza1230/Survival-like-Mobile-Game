@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.1.1';
+const GAME_VERSION = '6.2.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.2.0', date:'2026-10-01', title:'Endgame Build', items:['Set your full build before Recipe runs: path, infusion, mutation, evolution and upgrades','Build points = 8 + Atlas points','Recipe runs no longer give +3 level-ups; level-ups give stat cards only'] },
   { v:'6.1.1', date:'2026-10-01', title:'Recipe progress bar', items:['Recipe runs show a Hunger progress bar with event and boss markers, like the stage wave track'] },
   { v:'6.1.0', date:'2026-10-01', title:'Hunger Pact', items:['New Pact tab in the Recipe Atlas: turn on 8 difficulty terms for Recipe runs','Each rank adds Heat; every Heat point gives +7% rewards','Your best Heat cleared is saved'] },
   { v:'6.0.79', date:'2026-10-01', title:'Chiptune menu', items:['Main menu now loops Chiptune Pop, a bouncy retro 8-bit theme'] },
@@ -4121,6 +4122,13 @@ const PACT_TERMS=[
 const PACT_REWARD_PER_HEAT=0.07;
 function pactLv(id){ const t=(Save.data&&Save.data.pact)||{}; const d=PACT_TERMS.find(x=>x.id===id); return d?Math.max(0,Math.min(d.max,t[id]||0)):0; }
 function pactHeat(){ return PACT_TERMS.reduce((a,d)=>a+pactLv(d.id)*d.heat,0); }
+// Endgame Build (v6.2.0): ตั้ง build ก่อนเข้า Recipe · แต้ม = 8 + Atlas points · ระหว่างรันได้แค่การ์ดสแตต endless
+const EG_BUILD_BASE=8, EG_COST={path:2,inf:2,mut:3,evo:4};
+function egCharKey(){ return (Save.data&&Save.data.character)||'momo'; }
+function egBuild(ch){ ch=ch||egCharKey(); if(!Save.data.egBuild)Save.data.egBuild={}; const b=Save.data.egBuild[ch]||(Save.data.egBuild[ch]={path:null,inf:null,mut:null,evo:false,lv:{}}); b.lv=b.lv||{}; return b; }
+function egBuildPoints(){ return EG_BUILD_BASE+atlasPoints(); }
+function egUpgradeDefs(ch,b){ const d=BASIC_ATTACKS[ch]; if(!d)return []; let ups=d.upgrades.slice(); const P=BASIC_PATHS[ch]; if(P&&b.path){ const pt=P.find(x=>x.id===b.path); if(pt)ups=ups.concat(pt.upgrades); } if(b.inf)ups.push(INFUSION_UP); return ups; }
+function egBuildCost(ch,b){ ch=ch||egCharKey(); b=b||egBuild(ch); const ok=new Set(egUpgradeDefs(ch,b).map(u=>u.id)); let c=(b.path?EG_COST.path:0)+(b.inf?EG_COST.inf:0)+(b.mut?EG_COST.mut:0)+(b.evo?EG_COST.evo:0); for(const k in b.lv){ if(ok.has(k))c+=b.lv[k]||0; } return c; }
 const ATLAS_NODES=[
   {id:'cartographer',emoji:'🧭',name:'Cartographer',max:3,desc:'+10% chance per level for dropped recipes to be one tier higher'},
   {id:'bounty',emoji:'📜',name:'Bountiful Pantry',max:3,desc:'+8% chance per level to drop a second recipe'},
@@ -5186,7 +5194,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
@@ -5601,7 +5609,7 @@ class Game extends Phaser.Scene {
     const bag=this.recipeBag(); this.migrateRiftToRecipes();
     T(w/2,top,'Each recipe is a map: a stage theme, a tier and mods.\nHigher tiers are harder and pay more.',11,'#e6dcf0');
     let y=top+38; T(w/2,y,'Bag '+bag.length+'/'+RECIPE_BAG_MAX+'  ·  🧩 '+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+'  ·  🗝️ '+(Save.data.riftKeys||0)+'  ·  Max T'+(Save.data.recipeMaxTier||1),12,'#ffe08a','bold'); y+=24;
-    const hb=(cw-10)/2; this.uiPillBtn(this.menu,cx+hb/2,y+22,hb,44,COLORS.mint,'🎁','Free Tier 1',()=>{this.claimFreeRecipe();this.buildRecipes();}); this.uiPillBtn(this.menu,cx+hb+10+hb/2,y+22,hb,44,COLORS.grape,'🗺','Atlas ('+atlasPoints()+')',()=>{this.menuScreen='atlas';this.buildMenuScreen();}); y+=52;
+    const hb=(cw-16)/3; this.uiPillBtn(this.menu,cx+hb/2,y+22,hb,44,COLORS.mint,'🎁','Free T1',()=>{this.claimFreeRecipe();this.buildRecipes();}); this.uiPillBtn(this.menu,cx+hb+8+hb/2,y+22,hb,44,COLORS.grape,'🗺','Atlas',()=>{this.menuScreen='atlas';this.buildMenuScreen();}); this.uiPillBtn(this.menu,cx+2*(hb+8)+hb/2,y+22,hb,44,0xd9822b,'🛠','Build',()=>{this.menuScreen='egbuild';this.buildMenuScreen();}); y+=52;
     const pk=(Save.data.riftKeys||0)>=PINNACLE_KEY_COST; this.uiPillBtn(this.menu,w/2,y+20,Math.min(cw,320),40,pk?0x6b2bd9:0x4a4059,'✦','Pinnacle Boss ('+PINNACLE_KEY_COST+' 🗝️)',()=>this.startPinnacle()); y+=50;
     // รายการ (กริด 3 คอลัมน์ + แบ่งหน้า)
     const cols=3,gap=8,tw=(cw-gap*(cols-1))/cols,th=54,rows=Math.max(2,Math.min(5,Math.floor((h-y-200)/(th+gap)))),per=cols*rows,pages=Math.max(1,Math.ceil(bag.length/per));
@@ -5631,7 +5639,7 @@ class Game extends Phaser.Scene {
       const rb=(Save.data.recipeBest||{})[r.theme]; T(w/2,y+64,'Recipe is used up when you enter · Best fill '+(rb?rb+'s':'—')+' · ⚡ under '+recipePar()+'s = speed bonus',9,'#9d93aa');
       T(w/2,y+48,(r.mods&&r.mods.length)?r.mods.map(id=>{const d=recipeModDef(id);return d?d.emoji+' '+d.name:'';}).join('  ·  '):'No mods',11,'#ffc3d6');
       const half=(cw-30)/2;
-      this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
+      this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;} this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
       this.uiPillBtn(this.menu,cx+20+half*1.5,y+104,half,36,0x8a3050,'🗑','Discard',()=>{ if(this._recipeDiscard!==r.uid){this._recipeDiscard=r.uid;this.menuToast('Tap Discard again to confirm','#ff9bb5');return;} Save.data.recipes=bag.filter(q=>q.uid!==r.uid);Save.save();this._recipeSel=null;this._recipeDiscard=null;this.buildRecipes(); });
     }
     this.menu.setVisible(true);
@@ -5656,6 +5664,30 @@ class Game extends Phaser.Scene {
       g.fillStyle(0x0f0a16,1);g.fillRoundedRect(x+8,y+tH-12,tw-16,5,2);g.fillStyle(col,1);g.fillRoundedRect(x+8,y+tH-12,(tw-16)*Math.min(1,t/RECIPE_TIER_MAX),5,2);this.menu.add(g);
       const uq=uniqueForTheme(si)[0],uqHave=uq&&(Save.data.uniqueFound||{})[uq.id]; T(x+tw/2,y+5,st.emoji+(t?' T'+t:' —')+(uq?(uqHave?' '+uq.emoji:' ?'):''),14,t?'#ffffff':'#8d8499','bold'); T(x+tw/2,y+25,st.name,8,t?'#e6dcf0':'#6d6479'); if(tH>=70)T(x+tw/2,y+tH-28,'★ '+pts+'/'+maxP,9,'#ffe08a');
       this._zone(x,y,tw,tH,()=>this.menuToast(st.emoji+' '+st.name+' · best Tier '+(t||'—')+' · best fill '+(best[si]?best[si]+'s':'—')+(uq?' · Unique: '+(uqHave?uq.name:'???'):''),'#e6dcf0')); });
+    this.menu.setVisible(true);
+  }
+  buildEgBuild(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🛠 Endgame Build','screen_atlas');
+    const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,ch=egCharKey(),d=BASIC_ATTACKS[ch],e=egBuild(ch),P=BASIC_PATHS[ch]||[];let y=(w<=h?100:70);
+    const T=(x,yy,t,sz,c,st,o)=>{const q=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,wordWrap:{width:cw-90}}).setOrigin(o===undefined?0.5:o,0);this.menu.add(q);return q;};
+    if(!d){ T(w/2,y,'This hero has no build yet',13,'#ffb070'); this.menu.setVisible(true); return; }
+    const used=egBuildCost(ch,e),tot=egBuildPoints(),left=tot-used;
+    T(w/2,y,(CHARACTERS[ch]?CHARACTERS[ch].name:ch)+' · set your build before Recipe runs. In runs you only get stat cards.',11,'#e6dcf0'); y+=34;
+    T(w/2,y,'Build points '+used+' / '+tot+'   (+1 per Atlas point)',13,left<0?'#ff6b6b':'#ffe08a','bold'); y+=26;
+    const save=()=>{Save.save();Sfx.select&&Sfx.select();this.buildEgBuild();};
+    const cyc=(list,cur)=>{ const i=list.indexOf(cur); return i+1>=list.length?null:list[i+1]; };
+    const rows=[];
+    if(P.length)rows.push({label:'🛤 Path',val:(P.find(x=>x.id===e.path)||{}).name||'—',cost:EG_COST.path,tap:()=>{e.path=cyc(P.map(x=>x.id),e.path);save();}});
+    rows.push({label:'🍯 Infusion',val:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name||'—',cost:EG_COST.inf,tap:()=>{e.inf=cyc(FLAVOR_INFUSIONS.map(f=>f.id),e.inf);save();}});
+    rows.push({label:'⭐ Mutation',val:(d.mutations.find(m=>m.id===e.mut)||{}).name||'—',cost:EG_COST.mut,tap:()=>{e.mut=cyc(d.mutations.map(m=>m.id),e.mut);if(!e.mut)e.evo=false;save();}});
+    rows.push({label:'✨ Evolution',val:e.evo?d.evolution:(e.mut?'off':'needs Mutation'),cost:EG_COST.evo,tap:()=>{if(!e.mut){this.menuToast('Pick a Mutation first','#ff9bb5');return;}e.evo=!e.evo;save();}});
+    for(const u of egUpgradeDefs(ch,e)){ const lv=e.lv[u.id]||0; rows.push({label:u.emoji+' '+u.name,val:'●'.repeat(lv)+'○'.repeat(u.max-lv),cost:1,desc:u.desc,tap:()=>{e.lv[u.id]=lv>=u.max?0:lv+1;save();}}); }
+    const rh=Math.max(30,Math.min(44,Math.floor((h-y-70)/rows.length)-4));
+    rows.forEach(r=>{ const g=this.add.graphics(); g.fillStyle(0x1c1426,1); g.fillRoundedRect(cx,y,cw,rh,8); g.lineStyle(1.5,0x4a4059,1); g.strokeRoundedRect(cx,y,cw,rh,8); this.menu.add(g);
+      T(cx+10,y+rh/2-8,r.label,12,'#ffffff','bold',0); const v=this.add.text(cx+cw-10,y+rh/2,r.val+'  ·  '+r.cost+'pt',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffe08a'}).setOrigin(1,0.5); this.menu.add(v);
+      this._zone(cx,y,cw,rh,r.tap); y+=rh+4; });
+    this.uiPillBtn(this.menu,w/2,y+24,Math.min(cw,240),38,0x8a3050,'↺','Reset build',()=>{ Save.data.egBuild[ch]={path:null,inf:null,mut:null,evo:false,lv:{}}; Save.save(); this.buildEgBuild(); });
+    if(left<0)this.menuToast('Over budget — this build will not apply','#ff6b6b');
     this.menu.setVisible(true);
   }
   buildPact(cx,cw,y,T){ const w=this.W,h=this.H,heat=pactHeat();
@@ -7454,11 +7486,17 @@ class Game extends Phaser.Scene {
     }
   }
   recipeHungerGoal(){ return Math.round((150+((this._recipe&&this._recipe.tier)||1)*6)*(1+0.2*((this._pact&&this._pact.hunger)||0))); }
+  applyEgBuild(){ const b=this.basicAttack,d=this.basicAttackInfo(); if(!b||!d)return; const ch=this.character,e=egBuild(ch);
+    this._egBuilt=true; if(egBuildCost(ch,e)>egBuildPoints())return;   // เกินแต้ม = ใช้ build เปล่า (ปุ่ม Run กันไว้แล้ว)
+    const P=BASIC_PATHS[ch]; if(e.path&&P&&P.find(x=>x.id===e.path))b.path=e.path; if(e.inf&&FLAVOR_INFUSIONS.find(f=>f.id===e.inf))b.infusion=e.inf;
+    if(e.mut&&d.mutations.find(m=>m.id===e.mut))b.mutation=e.mut; if(e.evo&&b.mutation)b.evolved=true;
+    for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
+    this.syncBasicAttack(); this._egBuilt=true; }
   pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
   startRecipeRun(st){ const r=this._recipe; this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
     this.stageTxt.setText('📜 Recipe T'+r.tier+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+st.name);
-    this.pendingLvl=(this.pendingLvl||0)+3; this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
+    this.applyEgBuild();
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
       this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
       this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }); }
@@ -9258,6 +9296,10 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:blob,scale:1.35,duration:250,yoyo:true});
       this.time.delayedCall(500+i*60,()=>{ if(blob.active)blob.destroy(); if(this.state==='play')this.explodeAt(x,y,70,dmg); }); }
   }
+  endlessCards(n){ const b=this.basicAttack,d=this.basicAttackInfo(); b.endless=b.endless||{}; const out=[];
+    for(const s of Phaser.Utils.Array.Shuffle(this.endlessStatDefs().slice())){ if(out.length>=n)break; const stack=(b.endless[s.id]||0)+1,rr=rollRarity();
+      out.push({type:'basic',key:'endless_'+s.id,lvl:stack,max:99,kind:'Power Up',color:rr.color,rarity:rr,emoji:s.emoji,title:s.title,desc:s.desc+(stack>1?('  ·  Stack '+stack):''),iconKey:SKILL_ICON[d.skill],apply:()=>{b.endless[s.id]=(b.endless[s.id]||0)+1;s.apply(this.player);if(s.id==='ehp'&&this.drawBars)this.drawBars();}}); }
+    return out; }
   endlessStatDefs(){
     // v4.55: ใช้เพดานเดียวกับ meta (STAT_CAPS) · ดาเมจ +5% แบบบวก (ไม่คูณทบ) · capped()=true → ไม่เสนอการ์ดนั้น
     const C=STAT_CAPS,p=this.player||{};
@@ -9274,7 +9316,8 @@ class Game extends Phaser.Scene {
   }
   rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
-    const noSpecial=opts&&opts.noSpecial;   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
+    const noSpecial=opts&&opts.noSpecial;
+    if(this.recipeMode&&this._egBuilt)return this.endlessCards(n);   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra});
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
