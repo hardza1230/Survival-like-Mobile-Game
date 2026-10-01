@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.55';
+const GAME_VERSION = '6.0.56';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.56', date:'2026-10-01', title:'Mint 2D cutout rig trial', items:['Painted head, twin tails, arms, legs and lance animate on a joint hierarchy','Walking continues during upper-body lance attacks; hair follows dash movement','Mint keeps its existing physics, skills and saves; original sprites remain as fallback'] },
   { v:'6.0.55', date:'2026-10-01', title:'Temple layout, character EXP and digging fixes', items:['Core gem markers and button labels align with their painted sockets','Sugar balance is capped at 9,999,999 across all save paths','Stage results animate permanent character EXP and move Sugar x2 below rewards','Digging cancels stale animation callbacks and preserves earned treasure when leaving'] },
   { v:'6.0.54', date:'2026-10-01', title:'Ancient Root Knight animation cleanup', items:['Clean transparent C2-5 miniboss atlas with sixteen isolated frames','Separate idle, walk, cleave, shield, charge and summon animation states','Defeat uses the collapsed frame and stale pose timers cannot resume pooled sprites'] },
   { v:'6.0.53', date:'2026-10-01', title:'Results sound and final menu mix', items:['Sugar counts up with soft ticks and currencies reveal in order','Mastery and level gains have a distinct reward cue','Summary sounds stop on exit; double Sugar does not replay rewards'] },
@@ -937,6 +938,7 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  mint_rig_parts:'assets/characters/mint_rig_parts.png',
   prize_levelup:'assets/art/rewards/prize_levelup.webp',
   prize_thread:'assets/art/rewards/prize_thread.webp',
   prize_shovel:'assets/art/rewards/prize_shovel.webp',
@@ -4114,6 +4116,90 @@ const ACHIEVEMENTS=[
   {id:'family',emoji:'🍡',name:'The Mochi Core Family',desc:'Unlock the five story fighters',reward:220,test:d=>['momo','mint','cocoa','taro','yuzu'].every(id=>(d.chars||[]).includes(id))},
   {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
+
+// Mint cutout rig: hierarchical bones, rigid painted skins; no mesh/runtime dependency.
+const MINT_RIG_FRAMES = [{"x":18,"y":6,"w":92,"h":116},{"x":148,"y":6,"w":88,"h":116},{"x":262,"y":9,"w":116,"h":110},{"x":394,"y":6,"w":108,"h":116},{"x":6,"y":135,"w":116,"h":113},{"x":146,"y":134,"w":91,"h":116},{"x":275,"y":134,"w":89,"h":116},{"x":402,"y":134,"w":92,"h":116},{"x":14,"y":262,"w":100,"h":116},{"x":167,"y":262,"w":50,"h":116},{"x":294,"y":262,"w":52,"h":116},{"x":422,"y":262,"w":51,"h":116},{"x":33,"y":390,"w":61,"h":116},{"x":134,"y":431,"w":116,"h":33},{"x":262,"y":396,"w":116,"h":103},{"x":390,"y":390,"w":116,"h":115}];
+const MINT_RIG_BONES = [
+  ['hip',null,0,0],['torso','hip',0,-1],['head','torso',0,-14],
+  ['hairL','head',-11,-14],['hairR','head',11,-14],
+  ['armL','torso',-10,-5],['foreL','armL',-5,11],
+  ['armR','torso',10,-5],['foreR','armR',5,11],['lance','foreR',-5,11],
+  ['thighL','hip',-5,9],['shinL','thighL',-1,9],
+  ['thighR','hip',5,9],['shinR','thighR',1,9],['skirt','torso',0,8]
+];
+// bone, atlas part, painted width/height, joint origin, draw order
+const MINT_RIG_SKINS = [
+ ['hairL',0,16,29,.55,.12,0],['hairR',1,16,29,.45,.12,1],
+ ['thighL',9,8,12,.45,.08,2],['shinL',10,9,16,.45,.06,3],
+ ['thighR',11,8,12,.5,.08,4],['shinR',12,9,16,.5,.06,5],
+ ['armL',5,12,17,.80,.10,6],['foreL',6,11,17,.23,.1,7],
+ ['torso',4,30,32,.5,.30,8],['skirt',14,17,18,.5,.08,9],
+ ['armR',7,12,17,.22,.10,10],['foreR',8,11,17,.79,.10,11],
+ ['lance',13,44,12,.17,.5,12],['head',2,35,33,.5,.76,13]
+];
+function mintRigPose(time,phase,move,cast,dash,hurt){
+ const step=Math.sin(phase),opposite=Math.sin(phase+Math.PI),breath=Math.sin(time*3),
+   thrust=Math.sin(Math.PI*Math.max(0,Math.min(1,cast))),swing=.36*move;
+ return {hip:{y:Math.abs(step)*1.6*move+breath*.35},
+  torso:{rotation:-.06*move-.19*thrust-.20*dash+.14*hurt},
+  head:{rotation:.025*breath+.035*step*move+.10*thrust-.1*hurt},
+  hairL:{rotation:.13*Math.sin(phase-.75)*move+.045*Math.sin(time*2.3)-.42*dash},
+  hairR:{rotation:.12*Math.sin(phase-.95)*move+.04*Math.sin(time*2.3+.6)-.38*dash},
+  armL:{rotation:.12+opposite*swing-.35*dash+.16*hurt},foreL:{rotation:-.08+.12*move},
+  armR:{rotation:-.08+step*swing*.45-.58*thrust-.42*dash},
+  foreR:{rotation:.05+.18*move+.75*thrust},lance:{x:thrust*6,rotation:-.15*thrust-.24*dash},
+  thighL:{rotation:step*swing},shinL:{rotation:Math.max(0,-step)*.35*move},
+  thighR:{rotation:opposite*swing},shinR:{rotation:Math.max(0,-opposite)*.35*move},
+  skirt:{rotation:.06*Math.sin(phase-.6)*move-.12*dash}};
+}
+class MintCutoutRig {
+ constructor(scene){
+  this.scene=scene;this.clock=0;this.phase=0;this.move=0;this.castLeft=0;this.hurtLeft=0;this.blink=3;this.ghosts=[];
+  const texture=scene.textures.get('mint_rig_parts');
+  MINT_RIG_FRAMES.forEach((f,i)=>{if(!texture.has('rig'+i))texture.add('rig'+i,0,f.x,f.y,f.w,f.h);});
+  this.root=scene.camWorld(scene.add.container(0,0));this.bones={};this.skins=[];
+  // Bones are separate from skins: draw order remains fixed when joints rotate.
+  for(const [name,parent,x,y] of MINT_RIG_BONES)this.bones[name]={parent,x,y,rotation:0,worldX:0,worldY:0,worldRotation:0};
+  for(const [name,part,w,h,ox,oy] of MINT_RIG_SKINS){const skin=scene.add.image(0,0,'mint_rig_parts','rig'+part).setDisplaySize(w,h).setOrigin(ox,oy);this.root.add(skin);this.skins.push({name,part,skin});}
+  this.apply(mintRigPose(0,0,0,0,0,0));
+ }
+ attack(ms,gale){this.castDuration=Math.max(.15,(ms||360)/1000);this.castLeft=this.castDuration;this.gale=!!gale;}
+ flash(frame,ms){if(frame===CF.hurt)this.hurtLeft=(ms||160)/1000;}
+ apply(pose,dt=0){
+  const blend=dt>0?1-Math.exp(-dt*25):1;
+  for(const [name,parent,x,y] of MINT_RIG_BONES){const b=this.bones[name],v=pose[name]||{};b.x+=(x+(v.x||0)-b.x)*blend;b.y+=(y+(v.y||0)-b.y)*blend;b.rotation+=((v.rotation||0)-b.rotation)*blend;
+   const p=parent&&this.bones[parent],r=p?p.worldRotation:0,c=Math.cos(r),s=Math.sin(r);
+   b.worldX=(p?p.worldX:0)+b.x*c-b.y*s;b.worldY=(p?p.worldY:0)+b.x*s+b.y*c;b.worldRotation=r+b.rotation;
+  }
+  for(const {name,skin} of this.skins){const b=this.bones[name];skin.setPosition(b.worldX,b.worldY).setRotation(b.worldRotation);}
+ }
+ animate(dt,p,scene){
+  dt=Math.max(0,Math.min(.05,dt));this.clock+=dt;
+  const speed=p.body?p.body.velocity.length():0,target=speed>24?Math.min(1,speed/120):0;
+  this.move+=(target-this.move)*(1-Math.exp(-dt*12));this.phase+=dt*(8+Math.min(speed,300)*.035)*this.move;
+  this.castLeft=Math.max(0,this.castLeft-dt);this.hurtLeft=Math.max(0,this.hurtLeft-dt);
+  const cast=this.castLeft>0?1-this.castLeft/this.castDuration:0,dash=scene.dashTime>0?1:0;
+  this.apply(mintRigPose(this.clock,this.phase,this.move,cast,dash,this.hurtLeft>0?1:0),dt);
+  this.blink-=dt;if(this.blink<-.12)this.blink=2.8+Math.random()*1.2;
+  const head=this.skins.at(-1).skin;head.setFrame('rig'+(this.blink<0?15:2)).setDisplaySize(35,33);
+  this.sync(p,scene);
+ }
+ sync(p,scene){
+  if(!this.root.scene)return;
+  const dead=scene.state==='dead',visible=scene.state!=='menu'&&p.active!==false;
+  this.root.setVisible(visible).setPosition(p.x,p.y+(dead?12:0)).setDepth(scene.iso?p.y:p.depth);
+  const scale=.82;this.root.setScale((p.flipX?-1:1)*scale,scale).setRotation(dead?.82:0).setAlpha(p.alpha);
+  for(const {skin} of this.skins){if(p.isTinted){if(p.tintFill)skin.setTintFill(p.tintTopLeft);else skin.setTint(p.tintTopLeft);}else skin.clearTint();}
+ }
+ ghost(p,scene){
+  // Three short snapshots maximum; never allocate a complete animated rig per trail.
+  const now=scene.time.now;if(now<(this.ghostAt||0))return;this.ghostAt=now+90;
+  const g=scene.camWorld(scene.add.container(this.root.x,this.root.y).setDepth(p.depth-1).setScale(this.root.scaleX,this.root.scaleY).setRotation(this.root.rotation).setAlpha(.38));
+  for(const {skin} of this.skins)g.add(scene.add.image(skin.x,skin.y,'mint_rig_parts',skin.frame.name).setOrigin(skin.originX,skin.originY).setScale(skin.scaleX,skin.scaleY).setRotation(skin.rotation).setTintFill(0x9fe8ff));
+  this.ghosts.push(g);const tween=scene.tweens.add({targets:g,alpha:0,duration:220,onComplete:()=>{this.ghosts=this.ghosts.filter(o=>o!==g);if(g.scene)g.destroy();}});g._rigTween=tween;
+ }
+ destroy(){for(const g of this.ghosts){if(g._rigTween)g._rigTween.stop();if(g.scene)g.destroy();}this.ghosts=[];if(this.root.scene)this.root.destroy();}
+}
 
 class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
@@ -11500,6 +11586,7 @@ class Game extends Phaser.Scene {
   }
   spawnGhostTrail(){
     const p=this.player; if(!p)return;
+    if(this._mintRig){this._mintRig.ghost(p,this);return;}
     const g=this.camWorld(this.add.image(p.x,p.y,p.texture.key,p.frame?p.frame.name:0)
       .setDepth(p.depth-1)
       .setScale(p.scaleX,p.scaleY)
@@ -11604,6 +11691,14 @@ class Game extends Phaser.Scene {
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
     if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);
+    this.setupMintRig();
+  }
+  setupMintRig(){
+    if(this._mintRig){this._mintRig.destroy();this._mintRig=null;}
+    this.player.setVisible(true);
+    if(this.character!=='mint'||!this.textures.exists('mint_rig_parts'))return;
+    this._mintRig=new MintCutoutRig(this);this.player.setVisible(false);this._mintRig.sync(this.player,this);
+    if(!this._mintRigShutdown){this._mintRigShutdown=true;this.events.once('shutdown',()=>{this._mintRigShutdown=false;if(this._mintRig){this._mintRig.destroy();this._mintRig=null;}});}
   }
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา
   updatePose(dt){
@@ -11660,12 +11755,13 @@ class Game extends Phaser.Scene {
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null;
+  poseFlash(frame,ms){ if(this._mintRig)this._mintRig.flash(frame,ms); if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null;
     if(this.character==='momo'&&frame===CF.hurt&&this.textures.exists('char_momo_hurt')){
       this._poseDuration=(ms||160)/1000;this._poseHold=this._poseDuration;this.player.setTexture('char_momo_hurt').setFrame(0);return;
     }
     const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   poseAttack(ms,textureKey){
+    if(this._mintRig)this._mintRig.attack(ms,textureKey==='char_mint_gale');
     const key=textureKey||'char_'+this.character+'_attack';
     if(!this._hasFrames)return;
     this._castRecoilT=0.18;
@@ -11846,6 +11942,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
+    if(this._mintRig)this._mintRig.sync(this.player,this);
     let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); this.tickBeat(delta/1000); if(this._beat)return; dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
@@ -11870,6 +11967,7 @@ class Game extends Phaser.Scene {
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
     this.updatePose(dt);this.animatePlayer(dt);
+    if(this._mintRig)this._mintRig.animate(dt,this.player,this);
     if(this.iso){ this.player.setDepth(this.player.y); this.drawShadows(); }
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.tickCocoaDash(dt);

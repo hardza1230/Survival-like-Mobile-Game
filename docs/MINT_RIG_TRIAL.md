@@ -1,0 +1,32 @@
+# Mint 2D cutout rig trial — v6.0.56
+
+Mint gameplay uses a lightweight rigid cutout skeleton implemented in Phaser. This is a working joint hierarchy with painted body parts, not frame-by-frame sprite animation. It does not use weighted mesh deformation, Spine or external animation runtimes.
+
+## Art and runtime
+
+- Source: `assets/incoming/mint_rig/mint_rig_parts_source.png` (built-in imagegen, referenced original Frostleaf sheet).
+- Packed runtime: `assets/characters/mint_rig_parts.png`, 512×512 RGBA, sixteen separate transparent parts.
+- Fifteen bones; fourteen visible skins. Back hair cap is retained for future use; closed head replaces the open head during blink.
+- Parent transforms drive shoulders → forearms → lance, hips → thighs → boots, torso → head → ponytails. Skin ordering stays fixed.
+- Idle breathing/blink, continuous locomotion, upper-body attack while running, joint interpolation, hair sway, dash, hurt and collapsed death presentation.
+- Short dash snapshots throttled to 90ms, expire after 220ms, cancel on character replacement/shutdown.
+- Mint rig silhouette height approximately 56px. Attack/dash do not change character scale. Existing invisible physics sprite retains collider, velocity, HP, projectile handling, camera targeting and all saved progression.
+- Original sprite remains available for missing-texture fallback. Other heroes, cards, selection portraits and skills retain their previous implementation.
+
+## Reproduce
+
+1. With development dependencies installed: `node scripts/pack-mint-rig.cjs`.
+2. If source art changes, copy `frames.json` into `MINT_RIG_FRAMES` in `game.js`, then tune bone offsets/origins against assembled poses.
+3. `node scripts/preview-mint-rig.cjs` renders 240 frames from the actual production rig into `/tmp/mint-rig-preview/` and a contact sheet.
+4. Encode frames at 30fps into a GIF or video for motion review.
+5. `npm run check` and `npm run build:www`.
+
+The packer isolates the main connected silhouette of each source part, excludes layout separators, preserves RGBA, and normalizes with transparent gutters. The source lance requires a dedicated horizontal crop because its generated tip extends beyond the nominal source cell.
+
+## Generation brief
+
+Built-in imagegen; transparent background; reference `assets/char_mint_frostleaf_sheet.png`. Preserve Mint twin ponytails, teal eyes, white/mint armor dress and blue crystal lance, cute chibi painted 2.5D style. Request sixteen detached parts in a four-by-four atlas: two ponytails, open head, rear hair cap, torso, upper left arm, forearm left, upper right arm, forearm right, thigh left, boot left, thigh right, boot right, horizontal lance, front skirt flap, closed head. Require full hidden joint overlaps, clean transparent edges and no text. Generated source is archived; do not regenerate it when rebuilding.
+
+## Verification
+
+Automated tests exercise production forward kinematics, moving casts, constant scale, dash/hurt/blink, mirror/tint/depth/visibility, texture fallback, character switching and cleanup. The preview renders production poses, rather than the game scene. Full in-game mobile review is still required: Mint at normal size, high attack speed, moving cast, repeated dash, left/right turns, hit flash, pause/level-up, death/revive, stage transition and returning to menu. Measure device frame time before migrating other heroes. No device performance claim is made by the fixture tests.

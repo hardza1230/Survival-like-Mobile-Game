@@ -1,3 +1,7 @@
+## Mint 2D cutout rig trial — v6.0.56
+
+Mint gameplay now uses a painted 16-part atlas with 15 hierarchical bones and 14 rigid skins. Forward kinematics, blended joint transitions, continuous gait, upper-body lance attacks, blink, hair sway, dash/hurt and bounded rig ghost snapshots. Original physics sprite remains invisible and handles combat/collision; old sprite art is fallback when rig texture is unavailable. Other heroes and menu portraits unchanged. Production-pose preview: docs/previews/mint_rig_motion.gif; specification and reproduction: docs/MINT_RIG_TRIAL.md. Automated rig integration checks, full checks and build; real-device visual/performance review pending before migrating other heroes.
+
 ## Temple UI / character EXP / digging lifecycle — v6.0.55
 
 Aligned Special Core button labels and polygon diamonds to painted sockets. Sugar is clamped to 9,999,999 on load, save and add, including direct rewards/sales. Summary displays permanent character EXP with multi-level animation; Sugar x2 moved below rewards panel, animation never awards EXP twice. Dig callbacks/tweens cancel on redraw, navigation and shutdown; completed pending digs settle exactly once; destroyed objects and original icon scales guarded. Automated feedback and destroyed-object digging fixtures added. Real-device visual/animation review pending. Next: assess Mint 2D rig as a separate task before migrating characters.
