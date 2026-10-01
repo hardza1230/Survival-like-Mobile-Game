@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.0.70 (เจ้าของสั่ง):** Crystal Glaze (`divineFocusedLine`) = สุ่ม tier ใหม่ในช่วงที่ไอเทมทำได้ แทนสุ่มค่า · กล่อง currency Bazaar ได้ 1 ชิ้น ราคา `bazaarCurrencyBoxCost()` = ค่าเฉลี่ยราคาขาย 90% (~130) · ปุ่ม AUTO เปิดวนจน Sugar หมดหรือแตะหยุด
 - **v6.0.69 (เจ้าของสั่ง):** ขาย currency ใน Bazaar ได้ 90% ของราคาซื้อ (เดิม 60%)
 - **v6.0.68 (เจ้าของสั่ง):** ช่องเก็บของ gear 24→100 (`gearInventoryCap`, เซฟเก่าต่ำกว่า 100 ถูกยกเป็น 100 ตอนโหลด)
 - **v6.0.67 (เจ้าของสั่ง):** การ์ดสาย Sniper อัป Unique ชาร์จ (`snipeMods()`): s_heavy ดาเมจ +45%/ชาร์จ +0.35s · s_quick ชาร์จเร็ว 22%/ดาเมจ −12% · s_bore ลำกว้าง +40%/cd +15% · s_split ลำข้าง +1 (55%)/ลำหลัก −10% (max2) · ยังไม่เล่นจริง
