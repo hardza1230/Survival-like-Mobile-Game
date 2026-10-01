@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.61';
+const GAME_VERSION = '6.0.62';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.62', date:'2026-10-01', title:'Mint spear throw', items:['Wind-up, spear release and follow-through blend into Mint running','Frost lances launch on the hand release cue','Held spear fades back in during recovery'] },
   { v:'6.0.61', date:'2026-10-01', title:'Mint smooth motion blending', items:['Velocity-continuous joint springs soften run starts, stops and repeated casts','120Hz motion substeps keep the run consistent across frame rates','Smooth toe lift and filtered boot roll soften the stride without changing accepted limb poses'] },
   { v:'6.0.60', date:'2026-10-01', title:'Mint directional run correction', items:['Both knees flex backward in a side-plane run rather than a frontal shuffle','Free elbow bends forward and the arms counter the stride','Matching right-facing boot artwork replaces front-facing feet'] },
   { v:'6.0.59', date:'2026-10-01', title:'Mint flowing run cycle', items:['Bent elbows and visible arm swing replace the tucked walking pose','Smooth toe lift, longer stride and coordinated body bounce form a run cycle','Head counter-motion and delayed hair/skirt sway follow locomotion during attacks'] },
@@ -4162,22 +4163,30 @@ function mintRigLeg(phase,move,side){
    thigh=aim+side*Math.acos(clamp((upper*upper+d*d-lower*lower)/(2*upper*d)));
  return {thigh,knee:-side*knee};
 }
-function mintRigPose(time,phase,move,cast,dash,hurt){
+function mintRigPose(time,phase,move,cast,dash,hurt,throwProgress=-1){
  const step=Math.sin(phase),breath=Math.sin(time*3),
    thrust=Math.sin(Math.PI*Math.max(0,Math.min(1,cast))),
    left=mintRigLeg(phase,move,1),right=mintRigLeg(phase+Math.PI,move,1),
    // Free elbow stays bent and pumps opposite the leading leg. Weapon arm also runs.
    arm=-.65-.6*thrust-.12*dash+(-.22*step-.05)*move,
    fore=.35+.6*thrust+.12*dash+(.10+.10*step)*move;
+ const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);},
+   throwing=throwProgress>=0,
+   load=throwing?smooth(throwProgress/.22):0,
+   release=throwing?smooth((throwProgress-.22)/.20):0,
+   recover=throwing?smooth((throwProgress-.60)/.40):0,
+   weight=load*(1-recover),
+   throwArm=-2.65+1.10*release,throwFore=-1.35+1.28*release,
+   weaponArm=arm+(throwArm-arm)*weight,weaponFore=fore+(throwFore-fore)*weight;
  return {hip:{y:-(.5-.5*Math.cos(phase*2))*1.25*move+breath*.18},
-  torso:{rotation:(-.10+.035*step)*move-.065*thrust-.10*dash+.08*hurt},
+  torso:{rotation:(-.10+.035*step)*move-.065*thrust+(.07-.18*release)*weight-.10*dash+.08*hurt},
   head:{rotation:.015*breath+(.06-.025*step)*move+.025*thrust-.05*hurt},
   hairL:{rotation:.115*Math.sin(phase-.85)*move+.025*Math.sin(time*2.3)-.2*dash},
   hairR:{rotation:.10*Math.sin(phase-1.0)*move+.025*Math.sin(time*2.3+.6)-.18*dash},
   armL:{x:-1.3*move,rotation:.035+(.15+.45*step)*move-.12*dash+.08*hurt},
   foreL:{rotation:.035+(-.92-.08*Math.cos(phase))*move},
-  armR:{x:.7*move,rotation:arm},foreR:{rotation:fore},
-  lance:{rotation:-arm-fore-.07+.045*Math.sin(phase-.35)*move},
+  armR:{x:.7*move,rotation:weaponArm},foreR:{rotation:weaponFore},
+  lance:{rotation:-weaponArm-weaponFore-.07-.18*(1-release)*weight+.045*Math.sin(phase-.35)*move},
   thighL:{rotation:left.thigh},shinL:{rotation:left.knee},
   thighR:{rotation:right.thigh},shinR:{rotation:right.knee},
   skirt:{rotation:.045*Math.sin(phase-.7)*move-.04*dash},
@@ -4198,7 +4207,7 @@ class MintCutoutRig {
  attack(ms,gale){this.castDuration=Math.max(.15,(ms||360)/1000);this.castLeft=this.castDuration;this.gale=!!gale;}
  flash(frame,ms){if(frame===CF.hurt)this.hurtLeft=(ms||160)/1000;}
  apply(pose,dt=0){
-  for(const [name,parent,x,y] of MINT_RIG_BONES){const b=this.bones[name],v=pose[name]||{},omega=name.startsWith('hair')?20:(name==='head'||name==='torso'?32:46);
+  for(const [name,parent,x,y] of MINT_RIG_BONES){const b=this.bones[name],v=pose[name]||{},omega=name.startsWith('hair')?20:(name==='head'||name==='torso'?32:((name==='armR'||name==='foreR'||name==='lance')&&this.castLeft>0&&!this.gale?70:46));
    mintRigSpring(b,'x',x+(v.x||0),omega,dt);mintRigSpring(b,'y',y+(v.y||0),omega,dt);mintRigSpring(b,'rotation',v.rotation||0,omega,dt);
    const p=parent&&this.bones[parent],r=p?p.worldRotation:0,c=Math.cos(r),s=Math.sin(r);
    b.worldX=(p?p.worldX:0)+b.x*c-b.y*s;b.worldY=(p?p.worldY:0)+b.x*s+b.y*c;b.worldRotation=r+b.rotation;
@@ -4221,7 +4230,11 @@ class MintCutoutRig {
    this.clock+=stepDt;mintRigSpring(this,'move',target,22,stepDt);this.phase+=stepDt*Math.min(speed,300)*.075;
    this.castLeft=Math.max(0,this.castLeft-stepDt);this.hurtLeft=Math.max(0,this.hurtLeft-stepDt);
    const cast=this.castLeft>0?1-this.castLeft/this.castDuration:0,dash=scene.dashTime>0?1:0;
-   this.apply(mintRigPose(this.clock,this.phase,this.move,cast,dash,this.hurtLeft>0?1:0),stepDt);
+   const throwing=this.castLeft>0&&!this.gale;
+   this.apply(mintRigPose(this.clock,this.phase,this.move,cast,dash,this.hurtLeft>0?1:0,throwing?cast:-1),stepDt);
+   // Hide the held spear at the exact projectile release cue; regrow during recovery.
+   const spear=this.skins.find(o=>o.name==='lance').skin;
+   spear.setAlpha(throwing&&cast>=.4?Math.max(0,Math.min(1,(cast-.72)/.20)):1);
   }
   this.blink-=dt;if(this.blink<-.12)this.blink=2.8+Math.random()*1.2;
   const head=this.skins.at(-1).skin;head.setFrame('rig'+(this.blink<0?15:2)).setDisplaySize(35,33);
@@ -4238,7 +4251,7 @@ class MintCutoutRig {
   // Three short snapshots maximum; never allocate a complete animated rig per trail.
   const now=scene.time.now;if(now<(this.ghostAt||0))return;this.ghostAt=now+90;
   const g=scene.camWorld(scene.add.container(this.root.x,this.root.y).setDepth(p.depth-1).setScale(this.root.scaleX,this.root.scaleY).setRotation(this.root.rotation).setAlpha(.38));
-  for(const {skin} of this.skins)g.add(scene.add.image(skin.x,skin.y,'mint_rig_parts',skin.frame.name).setOrigin(skin.originX,skin.originY).setScale(skin.scaleX,skin.scaleY).setRotation(skin.rotation).setTintFill(0x9fe8ff));
+  for(const {skin} of this.skins)g.add(scene.add.image(skin.x,skin.y,'mint_rig_parts',skin.frame.name).setOrigin(skin.originX,skin.originY).setScale(skin.scaleX,skin.scaleY).setRotation(skin.rotation).setAlpha(skin.alpha).setTintFill(0x9fe8ff));
   this.ghosts.push(g);const tween=scene.tweens.add({targets:g,alpha:0,duration:220,onComplete:()=>{this.ghosts=this.ghosts.filter(o=>o!==g);if(g.scene)g.destroy();}});g._rigTween=tween;
  }
  destroy(){for(const g of this.ghosts){if(g._rigTween)g._rigTween.stop();if(g.scene)g.destroy();}this.ghosts=[];if(this.root.scene)this.root.destroy();}
@@ -9979,7 +9992,7 @@ class Game extends Phaser.Scene {
     const evo=basic&&basic.evolved, permafrost=basic?.mutation==='permafrost', blizzard=basic?.mutation==='blizzard';
     const t=this.nearestEnemy(1000);
     const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._lanceAng||0));
-    this.poseAttack(360);
+    this.poseAttack(this._mintRig?480:360);
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
@@ -9992,6 +10005,8 @@ class Game extends Phaser.Scene {
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
     const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
+    const launch=()=>{
+    if(!this.player?.active||(this.state!=='play'&&this.state!=='levelup'))return;
     const lanceKey=this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer';
     for(let L=0;L<lances;L++){ const a=ang+(L-centerL)*spread;
       const st={done:false,hits:0,targets:new Set()};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
@@ -10006,6 +10021,9 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(flightT*1000,()=>{ if(!st.done){ st.done=true; this.frostShatterBurst(ex,ey,a,shardPer,shardDmg,shardFreeze,shardFB,blizzard,lvl); } });
     }
     this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
+    };
+    // Existing sprite fallback keeps immediate fire; rig release is 40% of its 480ms throw.
+    if(this._mintRig)this.time.delayedCall(192,launch);else launch();
   }
   // แตกสะเก็ดน้ำแข็งที่ปลายหอก: โนวาวาบ + ยิงสะเก็ดกระจาย(เจาะ+แช่)
   // v5.10 Mint: โจมตีปกติไม่แช่ทันทีแล้ว → สะสม ❄ Chill (ช้าลง 30%) · ครบ 4 ชั้น (Permafrost 3) ภายใน 2.5 วิ = แช่แข็ง + ชั้นหาย · บอส/มินิแค่ช้าลงไม่แช่

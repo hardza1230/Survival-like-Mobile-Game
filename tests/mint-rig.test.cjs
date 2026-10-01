@@ -6,7 +6,7 @@ const v={x:140,y:0,length(){return Math.hypot(this.x,this.y);}},p={x:80,y:100,de
 const rig=new Rig(scene);assert.equal(registered.size,16);assert.equal(rig.skins.length,14);
 for(let i=0;i<40;i++)rig.animate(1/60,p,scene);for(const name of ['armL','armR','foreL','foreR'])assert.equal(rig.skins.find(o=>o.name===name).skin.originX,.5,'neutral skin joint is centered');
 const phase=rig.phase,leg=rig.bones.thighL.rotation,grip=rig.bones.lance.worldX;
-rig.attack(400);for(let i=0;i<8;i++)rig.animate(1/60,p,scene);
+rig.attack(400);for(let i=0;i<12;i++)rig.animate(1/60,p,scene);
 assert(rig.phase>phase);assert.notEqual(rig.bones.thighL.rotation,leg,'cast preserves moving legs');assert(rig.bones.lance.worldX>grip,'arm extends weapon forward');assert.equal(rig.bones.lance.x,0,'weapon stays in hand');
 const parent=rig.bones.foreR,child=rig.bones.lance;assert(Math.abs(child.worldX-(parent.worldX+child.x*Math.cos(parent.worldRotation)-child.y*Math.sin(parent.worldRotation)))<1e-9,'forward kinematics');
 const scale=rig.root.scaleY;rig.attack(550,true);scene.dashTime=.1;for(let i=0;i<8;i++)rig.animate(1/60,p,scene);assert.equal(rig.root.scaleY,scale,'no attack or dash resize');assert(rig.bones.hairL.rotation<0);
@@ -53,3 +53,24 @@ const helper=vm.runInNewContext(source.slice(source.indexOf('function mintRigSpr
 const spring={x:1,_v_x:3};helper(spring,'x',-10,46,1e-7);assert(Math.abs(spring.x-1)<1e-5&&Math.abs(spring._v_x-3)<.01,'target change has no position/velocity jump');
 for(const f of frames)assert(f.x>=0&&f.y>=0&&f.x+f.w<=512&&f.y+f.h<=512);
 console.log('Mint rig: skeletal parenting, run/cast continuity, size, dash/hurt/blink, mirror/tint/camera depth, fallback and cleanup passed');
+
+// Throw has a raised wind-up, release concealment, and full weapon recovery.
+const throwingRig=new Rig(scene);throwingRig.attack(480,false);
+for(let i=0;i<6;i++)throwingRig.animate(1/60,p,scene);
+assert(throwingRig.bones.armR.rotation<-1.5,'throw visibly raises weapon arm');
+const heldSpear=throwingRig.skins.find(o=>o.name==='lance').skin;
+for(let i=0;i<7;i++)throwingRig.animate(1/60,p,scene);
+assert.equal(heldSpear.alpha,0,'held spear disappears when projectile launches');
+for(let i=0;i<25;i++)throwingRig.animate(1/60,p,scene);
+assert.equal(heldSpear.alpha,1,'spear restored after recovery');
+assert.equal(throwingRig.castLeft,0);throwingRig.destroy();
+const frostMethod=source.slice(source.indexOf('  castFrostLance('),source.indexOf('  // แตกสะเก็ดน้ำแข็ง',source.indexOf('  castFrostLance(')));
+assert(frostMethod.includes('this.time.delayedCall(192,launch);else launch()'),'rig launch aligns with release; sprite fallback remains immediate');
+// Execute the production Frost Lance method: delayed rig fire, fallback and death guard.
+let cues=0;const Combat=vm.runInNewContext('class Combat{'+frostMethod+'}\nCombat',{Math,Set,Sfx:{frost(){cues++;}}});
+function combat(rigActive=true){
+ const timers=[],shots=[];const c=new Combat();Object.assign(c,{_mintRig:rigActive?{}:null,state:'play',player:{x:0,y:0,active:true},nearestEnemy:()=>({x:100,y:0}),poseAttack(ms){this.poseMs=ms;},camWorld:o=>o,add:{image:object},tweens:{add(){}},textures:{exists:()=>true},time:{delayedCall(ms,fn){timers.push({ms,fn});}},getBullet(){const b={setTexture(){return this;},setTint(){return this;},setScale(){return this;},body:{velocity:{}}};shots.push(b);return b;},physics:{velocityFromRotation(a,s,v){v.x=Math.cos(a)*s;v.y=Math.sin(a)*s;}},hitCratesInRadius(){},frostShatterBurst(){}});return {c,timers,shots};
+}
+let shot= combat();shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,0);assert.equal(shot.timers[0].ms,192);assert.equal(shot.c.poseMs,480);shot.timers[0].fn();assert.equal(shot.shots.length,1);assert.equal(shot.shots[0].body.velocity.x,900);assert.equal(cues,1);
+shot=combat();shot.c.castFrostLance(1,false,1,null);shot.c.state='dead';shot.timers[0].fn();assert.equal(shot.shots.length,0,'no delayed projectile after death');
+shot=combat(false);shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,1);assert.equal(shot.c.poseMs,360,'sprite fallback remains immediate');

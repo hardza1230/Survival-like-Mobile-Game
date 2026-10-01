@@ -58,3 +58,10 @@ Built-in imagegen generated two matched right-facing three-quarter profile boots
 Accepted art, bend directions and run silhouette retained. Joint positions/angles, movement weight and boot roll now use analytic critically damped springs, preserving velocity when the target changes. Moving targets are sampled in 120Hz substeps. Hair uses a softer spring than limb joints. Cubed positive-sine toe lift/roll gives continuous acceleration at lift/landing. Casting still overlays locomotion and repeated casts do not reset joint velocities.
 
 Tests compare joint trajectories at 20/30/60/120 FPS, target-change continuity and repeated cast velocity alongside directional knee/skin/grip checks. Production preview generator renders 480 native frames at 60 FPS. `docs/previews/mint_run_v6_0_61_60fps.mp4` contains 240 frames over four seconds; `docs/previews/mint_run_v6_0_61.gif` is sampled at 30 FPS. Previous 16 FPS GIFs were insufficient for assessing smoothness. Automated tests and preview rendering do not establish the device rendering frame rate; gameplay feel/performance still requires mobile review.
+
+### v6.0.62 — Spear throw
+- Added raised weapon-arm wind-up, forward release and smooth return; locomotion keeps running independently.
+- Frost Lance launches at 192ms (40% of a 480ms throw), with a state/player guard on the delayed launch. Original sprite fallback remains immediate.
+- Held spear disappears at release and fades back during recovery; dash ghosts preserve weapon alpha.
+- Wind Rush retains its previous thrust animation. Attack cadence, projectile damage/count/speed remain unchanged; rig Frost Lance now has a 192ms anticipation delay.
+- Mobile visual/timing QA remains pending.

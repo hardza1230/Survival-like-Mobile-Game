@@ -1,3 +1,7 @@
+## Mint spear throw — v6.0.62
+
+Mint rig adds wind-up, release, follow-through and recovery while retaining the accepted smooth run. Frost Lance waits 192ms for the hand release when the rig is active; the sprite fallback still fires immediately. Held spear disappears at release and fades back during recovery. Wind Rush retains its original thrust pose. Verify the throw timing and readability on a phone.
+
 ## Mint smooth joint motion — v6.0.61
 
 Accepted directional pose retained. Replaced one-pole joint easing with velocity-continuous critically damped springs, including boot roll and locomotion blend. Motion samples at up to 120Hz substeps so 20/30/60/120 FPS yield matching joint trajectories. Cubed-sine foot lift/roll softens toe-off and landing. Repeated casts retain joint velocity. Preview generator now renders native 60 FPS; four-second video has 240 native frames, GIF 30 FPS. Full checks/build pass; device frame-rate/feel confirmation pending. Preview docs/previews/mint_run_v6_0_61_60fps.mp4.
