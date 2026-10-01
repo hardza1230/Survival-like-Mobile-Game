@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.63';
+const GAME_VERSION = '6.0.64';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.64', date:'2026-10-01', title:'Mint uses sprite sheets for every action', items:['All Mint actions now use authored sprite sheets, including stationary attacks','Removed rig presentation and rig-only Frost Lance delay','Sprite run remains uninterrupted during moving casts'] },
   { v:'6.0.63', date:'2026-10-01', title:'Mint sprite-sheet running restored', items:['Mint uses the original sprite-sheet run and dash again','Cutout rig is shown only for a stationary spear throw','Moving casts keep the sprite run cycle uninterrupted'] },
   { v:'6.0.62', date:'2026-10-01', title:'Mint spear throw', items:['Wind-up, spear release and follow-through blend into Mint running','Frost lances launch on the hand release cue','Held spear fades back in during recovery'] },
   { v:'6.0.61', date:'2026-10-01', title:'Mint smooth motion blending', items:['Velocity-continuous joint springs soften run starts, stops and repeated casts','120Hz motion substeps keep the run consistent across frame rates','Smooth toe lift and filtered boot roll soften the stride without changing accepted limb poses'] },
@@ -945,7 +946,6 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
-  mint_rig_parts:'assets/characters/mint_rig_parts.png',
   prize_levelup:'assets/art/rewards/prize_levelup.webp',
   prize_thread:'assets/art/rewards/prize_thread.webp',
   prize_shovel:'assets/art/rewards/prize_shovel.webp',
@@ -9997,7 +9997,7 @@ class Game extends Phaser.Scene {
     const evo=basic&&basic.evolved, permafrost=basic?.mutation==='permafrost', blizzard=basic?.mutation==='blizzard';
     const t=this.nearestEnemy(1000);
     const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._lanceAng||0));
-    this.poseAttack(this._mintRig?480:360);
+    this.poseAttack(360);
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
@@ -10027,8 +10027,7 @@ class Game extends Phaser.Scene {
     }
     this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
     };
-    // Existing sprite fallback keeps immediate fire; rig release is 40% of its 480ms throw.
-    if(this._mintRig)this.time.delayedCall(192,launch);else launch();
+    launch();
   }
   // แตกสะเก็ดน้ำแข็งที่ปลายหอก: โนวาวาบ + ยิงสะเก็ดกระจาย(เจาะ+แช่)
   // v5.10 Mint: โจมตีปกติไม่แช่ทันทีแล้ว → สะสม ❄ Chill (ช้าลง 30%) · ครบ 4 ชั้น (Permafrost 3) ภายใน 2.5 วิ = แช่แข็ง + ชั้นหาย · บอส/มินิแค่ช้าลงไม่แช่
@@ -11652,7 +11651,6 @@ class Game extends Phaser.Scene {
   }
   spawnGhostTrail(){
     const p=this.player; if(!p)return;
-    if(this._mintRig&&this._mintRig.root.visible){this._mintRig.ghost(p,this);return;}
     const g=this.camWorld(this.add.image(p.x,p.y,p.texture.key,p.frame?p.frame.name:0)
       .setDepth(p.depth-1)
       .setScale(p.scaleX,p.scaleY)
@@ -11757,14 +11755,12 @@ class Game extends Phaser.Scene {
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
     if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);
-    this.setupMintRig();
+    this.resetCharacterRenderer();
   }
-  setupMintRig(){
+  resetCharacterRenderer(){
+    // All gameplay actions use authored sprite sheets; clear any previous rig renderer.
     if(this._mintRig){this._mintRig.destroy();this._mintRig=null;}
     this.player.setVisible(true);
-    if(this.character!=='mint'||!this.textures.exists('mint_rig_parts'))return;
-    this._mintRig=new MintCutoutRig(this);this._mintRig.sync(this.player,this);
-    if(!this._mintRigShutdown){this._mintRigShutdown=true;this.events.once('shutdown',()=>{this._mintRigShutdown=false;if(this._mintRig){this._mintRig.destroy();this._mintRig=null;}});}
   }
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา
   updatePose(dt){
@@ -11821,13 +11817,12 @@ class Game extends Phaser.Scene {
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(this._mintRig)this._mintRig.flash(frame,ms); if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null;
+  poseFlash(frame,ms){ if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null;
     if(this.character==='momo'&&frame===CF.hurt&&this.textures.exists('char_momo_hurt')){
       this._poseDuration=(ms||160)/1000;this._poseHold=this._poseDuration;this.player.setTexture('char_momo_hurt').setFrame(0);return;
     }
     const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   poseAttack(ms,textureKey){
-    if(this._mintRig)this._mintRig.attack(ms,textureKey==='char_mint_gale');
     const key=textureKey||'char_'+this.character+'_attack';
     if(!this._hasFrames)return;
     this._castRecoilT=0.18;
@@ -12008,7 +12003,6 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    if(this._mintRig)this._mintRig.sync(this.player,this);
     let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); this.tickBeat(delta/1000); if(this._beat)return; dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
@@ -12033,7 +12027,6 @@ class Game extends Phaser.Scene {
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
     this.updatePose(dt);this.animatePlayer(dt);
-    if(this._mintRig)this._mintRig.animate(dt,this.player,this);
     if(this.iso){ this.player.setDepth(this.player.y); this.drawShadows(); }
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.tickCocoaDash(dt);

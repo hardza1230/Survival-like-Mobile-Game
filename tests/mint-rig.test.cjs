@@ -16,13 +16,15 @@ scene.state='play';v.x=0;scene.dashTime=0;rig.blink=.01;rig.animate(.02,p,scene)
 rig.flash(5,160);rig.animate(.02,p,scene);assert(rig.hurtLeft>0);
 for(let i=0;i<30;i++){scene.time.now=i*10;rig.ghost(p,scene);}assert.equal(rig.ghosts.length,4,'throttled snapshots');
 rig.destroy();assert.equal(rig.root.scene,null);assert(jobs.every(j=>j.stopped));assert.equal(rig.ghosts.length,0);
-// Exercise actual scene selection/fallback/cleanup without changing the physics object.
-const source=fs.readFileSync('game.js','utf8'),start=source.indexOf('  setupMintRig(){'),end=source.indexOf('  // เลือกเฟรมท่าทาง:',start);
-const context=vm.createContext({MintCutoutRig:Rig}),C=vm.runInContext('class Scene{'+source.slice(start,end)+'}\nScene',context),s=new C();
-let shutdown;Object.assign(s,scene,{character:'mint',player:{...p,setVisible(v){this.visible=v;return this;}},events:{once(_,fn){shutdown=fn;}}});
-const body=s.player.body;s.setupMintRig();assert(s._mintRig);assert.equal(s.player.visible,true,'sprite is visible outside stationary throw');assert.equal(s.player.body,body);const previous=s._mintRig;
-s.character='cocoa';s.setupMintRig();assert.equal(previous.root.scene,null);assert.equal(s._mintRig,null);assert.equal(s.player.visible,true);
-s.character='mint';s.textures={exists:()=>false};s.setupMintRig();assert.equal(s._mintRig,null,'missing art keeps original sprite');shutdown();assert.equal(s._mintRigShutdown,false,'scene restart can register fresh cleanup');
+// All gameplay actions use sprites. Existing experimental rigs are cleaned up on reset.
+const source=fs.readFileSync('game.js','utf8'),start=source.indexOf('  resetCharacterRenderer(){'),end=source.indexOf('  // เลือกเฟรมท่าทาง:',start);
+const context=vm.createContext({}),C=vm.runInContext('class Scene{'+source.slice(start,end)+'}\nScene',context),s=new C();
+let destroyed=0;Object.assign(s,{_mintRig:{destroy(){destroyed++;}},player:{...p,setVisible(v){this.visible=v;return this;}}});
+const body=s.player.body;s.resetCharacterRenderer();assert.equal(destroyed,1);assert.equal(s._mintRig,null);assert.equal(s.player.visible,true);assert.equal(s.player.body,body);
+s.resetCharacterRenderer();assert.equal(destroyed,1,'renderer reset is idempotent');
+const gameplay=source.slice(source.indexOf('class Game extends'));
+assert(!gameplay.includes('new MintCutoutRig'),'no gameplay path instantiates a rig');
+assert(!gameplay.includes('this._mintRig.attack(')&&!gameplay.includes('this._mintRig.animate(')&&!gameplay.includes('this._mintRig.sync(')&&!gameplay.includes('this._mintRig.ghost('),'no rig action/update/trail hooks');
 // Side run: feet pass each other in projection; knee direction and limb identity remain stable.
 scene.state='play';scene.dashTime=0;p.flipX=false;v.x=140;
 const gait=new Rig(scene);
@@ -65,16 +67,15 @@ for(let i=0;i<25;i++)throwingRig.animate(1/60,p,scene);
 assert.equal(heldSpear.alpha,1,'spear restored after recovery');
 assert.equal(throwingRig.castLeft,0);throwingRig.destroy();
 const frostMethod=source.slice(source.indexOf('  castFrostLance('),source.indexOf('  // แตกสะเก็ดน้ำแข็ง',source.indexOf('  castFrostLance(')));
-assert(frostMethod.includes('this.time.delayedCall(192,launch);else launch()'),'rig launch aligns with release; sprite fallback remains immediate');
-// Execute the production Frost Lance method: delayed rig fire, fallback and death guard.
+assert(!frostMethod.includes('this._mintRig')&&!frostMethod.includes('delayedCall(192'),'no rig-specific projectile timing');
+// Execute production Frost Lance: immediate sprite fire and death guard.
 let cues=0;const Combat=vm.runInNewContext('class Combat{'+frostMethod+'}\nCombat',{Math,Set,Sfx:{frost(){cues++;}}});
 function combat(rigActive=true){
  const timers=[],shots=[];const c=new Combat();Object.assign(c,{_mintRig:rigActive?{}:null,state:'play',player:{x:0,y:0,active:true},nearestEnemy:()=>({x:100,y:0}),poseAttack(ms){this.poseMs=ms;},camWorld:o=>o,add:{image:object},tweens:{add(){}},textures:{exists:()=>true},time:{delayedCall(ms,fn){timers.push({ms,fn});}},getBullet(){const b={setTexture(){return this;},setTint(){return this;},setScale(){return this;},body:{velocity:{}}};shots.push(b);return b;},physics:{velocityFromRotation(a,s,v){v.x=Math.cos(a)*s;v.y=Math.sin(a)*s;}},hitCratesInRadius(){},frostShatterBurst(){}});return {c,timers,shots};
 }
-let shot= combat();shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,0);assert.equal(shot.timers[0].ms,192);assert.equal(shot.c.poseMs,480);shot.timers[0].fn();assert.equal(shot.shots.length,1);assert.equal(shot.shots[0].body.velocity.x,900);assert.equal(cues,1);
-shot=combat();shot.c.castFrostLance(1,false,1,null);shot.c.state='dead';shot.timers[0].fn();assert.equal(shot.shots.length,0,'no delayed projectile after death');
-shot=combat(false);shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,1);assert.equal(shot.c.poseMs,360,'sprite fallback remains immediate');
-
+let shot=combat();shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,1);assert.equal(shot.c.poseMs,360);assert.equal(shot.shots[0].body.velocity.x,900);assert.equal(cues,1);
+shot=combat();shot.c.state='dead';shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,0,'no projectile after death');
+shot=combat(false);shot.c.castFrostLance(1,false,1,null);assert.equal(shot.shots.length,1);assert.equal(shot.c.poseMs,360,'all sprite attacks fire immediately');
 // Runtime presentation: authored sheets own locomotion; only a standing throw uses the rig.
 const presentation=new Rig(scene);v.x=0;scene.dashTime=0;scene._poseHold=0;
 presentation.sync(p,scene);assert.equal(p.visible,true);assert.equal(presentation.root.visible,false,'idle uses sprite');

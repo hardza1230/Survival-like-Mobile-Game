@@ -1,3 +1,7 @@
+## Mint fully sprite based — v6.0.64
+
+User explicitly requested sprite sheets for every action. Gameplay no longer creates or updates the cutout rig, loads its atlas, or routes ghosts/attacks/hits through it. Existing sprite sheets handle all Mint actions. Frost Lance restores its original 360ms attack pose and immediate projectile launch. Experimental rig code/assets/tools remain available for reference, but are inactive in gameplay. Automated checks/build pass; mobile visual review remains pending.
+
 ## Mint sprite running restored — v6.0.63
 
 User preferred the authored sprite-sheet run over the procedural rig gait. Mint now shows the existing sprite sheets for idle, run, moving casts, dash, hurt, Wind Rush and KO. Rig remains available only for a stationary spear throw. Sprite updatePose/animatePlayer continue to drive the original run; root visibility is mutually exclusive with the player sprite. Dash trails use the visible presentation. Frost Lance keeps the v6.0.62 release timing (192ms). Mobile transition review remains pending.
