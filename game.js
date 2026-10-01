@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.50';
+const GAME_VERSION = '6.0.51';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.51', date:'2026-10-01', title:'Equipment sound design', items:['Short equip, lock, unlock, dismantle and sell sounds','Enhancement success, break and destruction have distinct feedback','Equipment sounds follow actual saved outcomes'] },
   { v:'6.0.50', date:'2026-10-01', title:'Affix action sound design', items:['Distinct short sounds for capacity upgrades, value rerolls, removal and reset','Action sounds follow successful changes; rejected actions keep error feedback'] },
   { v:'6.0.49', date:'2026-10-01', title:'Dedicated crafting sounds', items:['Short forge start, reel ticks and slowdown cues','Single common, rare or jackpot reveal instead of layered chest sounds','Auto-roll cancellation and currency exhaustion feedback'] },
   { v:'6.0.48', date:'2026-10-01', title:'Candy UI sound foundation', items:['Distinct short click, back, confirm and error sounds','Menu actions emit one UI cue even when callbacks request it twice','UI voice limit stays separate from busy combat sounds'] },
@@ -845,9 +846,11 @@ const Sfx = {
         sound.once('complete',()=>{this._craftVoices=this._craftVoices.filter(s=>s!==sound);sound.destroy();});sound.play();return;
       }
     }catch(e){}
-    const notes={start:[620,930],tick:[1250*rate],slow:[780,620],common:[784,988],rare:[784,988,1175],jackpot:[784,988,1175,1568],near:[880,1047,880],cancel:[660,440],exhaust:[330,220],capacity:[523,784,1047],reroll:[988,740,1175],remove:[880,440],reset:[740,494,247]}[kind];
+    const notes={start:[620,930],tick:[1250*rate],slow:[780,620],common:[784,988],rare:[784,988,1175],jackpot:[784,988,1175,1568],near:[880,1047,880],cancel:[660,440],exhaust:[330,220],capacity:[523,784,1047],reroll:[988,740,1175],remove:[880,440],reset:[740,494,247],gear_equip:[660,990],gear_lock:[440,330],gear_unlock:[330,660],gear_enhance_success:[659,988,1319],gear_enhance_break:[392,294],gear_enhance_destroy:[220,147,98],gear_dismantle:[880,587,392],gear_sell:[1047,1319]}[kind];
     if(notes)this.seq(notes,'sine',kind==='tick'?.025:.045,kind==='tick'?.018:.055);
   },
+  equipment(kind){this.craft('gear_'+kind);},
+  equipmentEnhance(res){if(res&&['success','break','destroy'].includes(res.result))this.equipment('enhance_'+res.result);},
   select(){this.ui('click');},
   back(){this.ui('back');},
   confirm(){this.ui('confirm');},
@@ -1564,6 +1567,14 @@ const ASSET_AUDIO = {
   sfx_levelup:    'assets/audio/sfx/gen/sfx_levelup_soft.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
   sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
   sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
+  sfx_craft_gear_equip:'assets/audio/sfx/gear/gear_equip.wav',
+  sfx_craft_gear_lock:'assets/audio/sfx/gear/gear_lock.wav',
+  sfx_craft_gear_unlock:'assets/audio/sfx/gear/gear_unlock.wav',
+  sfx_craft_gear_enhance_success:'assets/audio/sfx/gear/gear_enhance_success.wav',
+  sfx_craft_gear_enhance_break:'assets/audio/sfx/gear/gear_enhance_break.wav',
+  sfx_craft_gear_enhance_destroy:'assets/audio/sfx/gear/gear_enhance_destroy.wav',
+  sfx_craft_gear_dismantle:'assets/audio/sfx/gear/gear_dismantle.wav',
+  sfx_craft_gear_sell:'assets/audio/sfx/gear/gear_sell.wav',
   sfx_craft_capacity:'assets/audio/sfx/craft/craft_capacity.wav',
   sfx_craft_reroll:'assets/audio/sfx/craft/craft_reroll.wav',
   sfx_craft_remove:'assets/audio/sfx/craft/craft_remove.wav',
@@ -6353,8 +6364,8 @@ class Game extends Phaser.Scene {
     const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · equip / enhance',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
     const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
     items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhShardCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
-      if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Save.enhance(it.id);Sfx.clear();}else{Sfx.error();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}
-      else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{Save.equipGearBase(sel,it.id);Sfx.select();this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
+      if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Sfx.equipmentEnhance(Save.enhance(it.id));}else{Sfx.error();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}
+      else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{if(Save.equipGearBase(sel,it.id))Sfx.equipment('equip');this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
       this._rowBtn(80+i*(rowH+rowGap),rowH,owned?it.emoji:'❔',nm,owned?it.desc:'Not discovered yet',label,color,fn,rx,rw);
     });
     this.menu.setVisible(true);
@@ -6451,21 +6462,21 @@ class Game extends Phaser.Scene {
       const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
       const bgap=5,bw=(w-28-bgap*3)/4,bh=32,drawAction=(i,label,color,fn)=>{const bx=14+i*(bw+bgap),g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,y,bw,bh,9);const t=this.add.text(bx+bw/2,y+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff',align:'center'}).setOrigin(0.5);this.menu.add([g,t]);if(fn)this._zone(bx,y,bw,bh,fn);};
       drawAction(0,selected.favorite?'★ Fav':'☆ Fav',selected.favorite?0xb88925:0x4a4059,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
-      drawAction(1,selected.locked?'🔒 Locked':'🔓 Lock',selected.locked?0x85506f:0x4a4059,()=>{Save.toggleGearLock(selected.uid);this.buildMenuScreen();});
-      if(!eq)drawAction(2,'Quick Equip',0x3f9160,()=>{Save.equipGearInstance(sel,selected.uid);Sfx.select();this.buildMenuScreen();});
+      drawAction(1,selected.locked?'🔒 Locked':'🔓 Lock',selected.locked?0x85506f:0x4a4059,()=>{if(Save.gearItem(selected.uid)){const locked=Save.toggleGearLock(selected.uid);Sfx.equipment(locked?'lock':'unlock');}this.buildMenuScreen();});
+      if(!eq)drawAction(2,'Quick Equip',0x3f9160,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
       else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhShardCost(lv),afford=(Save.data.shards||0)>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
-        drawAction(2,can?('Enhance +'+(lv+1)+'\n🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.clear();
+        drawAction(2,can?('Enhance +'+(lv+1)+'\n🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);
             if(res.result==='success'){this.screenFlash(0xffd166,.4,260);this.showBanner('⚒️ Enhanced!','Now +'+res.lv,1100);}
             else if(res.result==='break'){this.screenFlash(0xff8a5a,.42,320);this.showBanner('💥 Enhancement broke','Dropped to +'+res.lv,1500);}
             else {this.gearSelectedUid=null;this.screenFlash(0xff4a5a,.6,440);this.showBanner('💀 Item destroyed','It shattered at high enhancement',1800);} }
           this.buildMenuScreen(); }:null);}
       const canDis=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',gain=gearDismantleValue(selected);
-      drawAction(3,canDis?('Dismantle\n🔩+'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.clear();this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);
+      drawAction(3,canDis?('Dismantle\n🔩+'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);
       // แถวสอง: ไปคราฟทันที + ขายเป็น Sugar (ไม่ต้องเข้าๆออกๆ)
       y+=bh+bgap; const bw2=(w-28-bgap)/2, canCraft=selected.grade!=='start'&&!selected.locked;
       {const g=this.add.graphics();g.fillStyle(canCraft?0x5a3f8c:0x3a3550,1);g.fillRoundedRect(14,y,bw2,bh,9);const t=this.add.text(14+bw2/2,y+bh/2,'🧪 Craft this',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:canCraft?'#e9dcff':'#8d8195'}).setOrigin(.5);this.menu.add([g,t]);if(canCraft)this._zone(14,y,bw2,bh,()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();});}
       const canSell=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',sv=gearSellSugar(selected);
-      {const bx=14+bw2+bgap,g=this.add.graphics();g.fillStyle(canSell?0x8d6a3e:0x3a3550,1);g.fillRoundedRect(bx,y,bw2,bh,9);const t=this.add.text(bx+bw2/2,y+bh/2,canSell?('💰 Sell 🍬+'+sv):'Protected',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:canSell?'#ffe6b0':'#8d8195'}).setOrigin(.5);this.menu.add([g,t]);if(canSell)this._zone(bx,y,bw2,bh,()=>{const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.clear();this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}});}
+      {const bx=14+bw2+bgap,g=this.add.graphics();g.fillStyle(canSell?0x8d6a3e:0x3a3550,1);g.fillRoundedRect(bx,y,bw2,bh,9);const t=this.add.text(bx+bw2/2,y+bh/2,canSell?('💰 Sell 🍬+'+sv):'Protected',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:canSell?'#ffe6b0':'#8d8195'}).setOrigin(.5);this.menu.add([g,t]);if(canSell)this._zone(bx,y,bw2,bh,()=>{const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('sell');this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}});}
       y+=bh;
     }
     this.menu.setVisible(true);
@@ -6484,7 +6495,7 @@ class Game extends Phaser.Scene {
       const nm=this.add.text(70,ry+9,(base?base.name:'Unknown')+' · iLv '+(item.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:tl.color}).setOrigin(0,0);
       const sub=this.add.text(70,ry+27,tl.name+' · '+(item.affixes||[]).length+' affix'+((item.affixes||[]).length===1?'':'es'),{fontFamily:'sans-serif',fontSize:'8.5px',color:'#bbaabd'}).setOrigin(0,0);this.menu.add([art,nm,sub]);
       const by=ry+8,bh=44,bw=56,cx=w-132,claim=this.add.graphics();claim.fillStyle(Save.gearInventoryFull()?0x3a3550:0x3f9160,1);claim.fillRoundedRect(cx,by,bw,bh,9);const ct=this.add.text(cx+bw/2,by+bh/2,Save.gearInventoryFull()?'Bag Full':'Claim',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#fff'}).setOrigin(.5);this.menu.add([claim,ct]);if(!Save.gearInventoryFull())this._zone(cx,by,bw,bh,()=>{if(Save.claimGearInbox(item.uid)){Sfx.clear();this.buildGearInbox();}});
-      const safe=item.grade!=='epic'&&item.grade!=='legend'&&!item.locked&&!item.favorite,dg=this.add.graphics();dg.fillStyle(safe?0x8d4b3e:0x3a3550,1);dg.fillRoundedRect(w-70,by,bw,bh,9);const dt=this.add.text(w-42,by+bh/2,safe?('Dismantle\n🔩+'+gearDismantleValue(item)):'Protected',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:'#fff',align:'center'}).setOrigin(.5);this.menu.add([dg,dt]);if(safe)this._zone(w-70,by,bw,bh,()=>{const n=Save.dismantleGearInbox(item.uid);if(n){Sfx.clear();this.buildGearInbox();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}});
+      const safe=item.grade!=='epic'&&item.grade!=='legend'&&!item.locked&&!item.favorite,dg=this.add.graphics();dg.fillStyle(safe?0x8d4b3e:0x3a3550,1);dg.fillRoundedRect(w-70,by,bw,bh,9);const dt=this.add.text(w-42,by+bh/2,safe?('Dismantle\n🔩+'+gearDismantleValue(item)):'Protected',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:'#fff',align:'center'}).setOrigin(.5);this.menu.add([dg,dt]);if(safe)this._zone(w-70,by,bw,bh,()=>{const n=Save.dismantleGearInbox(item.uid);if(n){Sfx.equipment('dismantle');this.buildGearInbox();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}});
     });
     if(pages>1){const py=y+visible.length*68+2,txt=this.add.text(w/2,py+13,'‹   '+(this.inboxPage+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6'}).setOrigin(.5);this.menu.add(txt);this._zone(w/2-70,py,55,26,()=>{this.inboxPage=(this.inboxPage-1+pages)%pages;this.buildGearInbox();});this._zone(w/2+15,py,55,26,()=>{this.inboxPage=(this.inboxPage+1)%pages;this.buildGearInbox();});}
     this.menu.setVisible(true);

@@ -1,3 +1,7 @@
+## Sound commit 4 — v6.0.51
+
+Eight equipment WAVs cover equip, lock/unlock, enhancement success/break/destruction, dismantle and sell. Inventory and legacy equip/enhance callbacks plus inbox dismantle emit after actual results. Uses bounded menu sound player with mute/volume/fallback. Checks/build and callback result tests pass; mobile listening pending. Next: sound commit 5, permanent progression and reward claims.
+
 ## Sound commit 3 — v6.0.50
 
 Four dedicated generated WAVs (160–250 ms): affix capacity, numeric reroll, removal and reset. Actual mutation methods emit outcomes after currency/state updates. Locked items, missing lines and insufficient resources cannot emit success sounds. Existing confirmation flow preserved. Automated action/mix/WAV checks and www build pass; mobile listening pending. Next: sound commit 4, equipment actions.
