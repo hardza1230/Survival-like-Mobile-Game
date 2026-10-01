@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.60';
+const GAME_VERSION = '6.0.61';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.61', date:'2026-10-01', title:'Mint smooth motion blending', items:['Velocity-continuous joint springs soften run starts, stops and repeated casts','120Hz motion substeps keep the run consistent across frame rates','Smooth toe lift and filtered boot roll soften the stride without changing accepted limb poses'] },
   { v:'6.0.60', date:'2026-10-01', title:'Mint directional run correction', items:['Both knees flex backward in a side-plane run rather than a frontal shuffle','Free elbow bends forward and the arms counter the stride','Matching right-facing boot artwork replaces front-facing feet'] },
   { v:'6.0.59', date:'2026-10-01', title:'Mint flowing run cycle', items:['Bent elbows and visible arm swing replace the tucked walking pose','Smooth toe lift, longer stride and coordinated body bounce form a run cycle','Head counter-motion and delayed hair/skirt sway follow locomotion during attacks'] },
   { v:'6.0.58', date:'2026-10-01', title:'Mint neutral limb rebuild', items:['Repainted straight bind-pose limbs replace baked bent arms and legs','Shoulder, elbow and hand anchors calibrated to the painted joints','Matched boot stance and relaxed lance grip preserve a coherent silhouette'] },
@@ -4142,8 +4143,18 @@ const MINT_RIG_SKINS = [
  ['lance',13,44,12,.17,.5,12],['head',2,35,33,.5,.76,13]
 ];
 // Side-plane IK: both knees flex backward; far/near legs keep their skin identity.
+// Critically damped scalar spring: retain velocity through changing targets.
+function mintRigSpring(state,key,target,omega,dt){
+ const velocityKey='_v_'+key;
+ if(!(dt>0)){state[key]=target;state[velocityKey]=0;return;}
+ if(!Number.isFinite(state[key]))state[key]=target;
+ const offset=state[key]-target,velocity=state[velocityKey]||0,
+   impulse=velocity+omega*offset,decay=Math.exp(-omega*dt);
+ state[key]=target+(offset+impulse*dt)*decay;
+ state[velocityKey]=(velocity-omega*impulse*dt)*decay;
+}
 function mintRigLeg(phase,move,side){
- const swing=Math.max(0,Math.sin(phase)),lift=swing*swing*4.1*move,
+ const swing=Math.max(0,Math.sin(phase)),lift=swing*swing*swing*4.1*move,
    dx=-Math.cos(phase)*5.2*move,dy=19.6*(1-move)+17.8*move-lift,
    upper=8,lower=12,d=Math.min(upper+lower-.01,Math.hypot(dx,dy)),
    clamp=v=>Math.max(-1,Math.min(1,v)),aim=Math.atan2(-dx,dy),
@@ -4170,8 +4181,8 @@ function mintRigPose(time,phase,move,cast,dash,hurt){
   thighL:{rotation:left.thigh},shinL:{rotation:left.knee},
   thighR:{rotation:right.thigh},shinR:{rotation:right.knee},
   skirt:{rotation:.045*Math.sin(phase-.7)*move-.04*dash},
-  footL:{rotation:-Math.max(0,Math.sin(phase))*.12*move},
-  footR:{rotation:-Math.max(0,Math.sin(phase+Math.PI))*.12*move}};
+  footL:{rotation:-Math.pow(Math.max(0,Math.sin(phase)),3)*.12*move},
+  footR:{rotation:-Math.pow(Math.max(0,Math.sin(phase+Math.PI)),3)*.12*move}};
 }
 class MintCutoutRig {
  constructor(scene){
@@ -4187,8 +4198,8 @@ class MintCutoutRig {
  attack(ms,gale){this.castDuration=Math.max(.15,(ms||360)/1000);this.castLeft=this.castDuration;this.gale=!!gale;}
  flash(frame,ms){if(frame===CF.hurt)this.hurtLeft=(ms||160)/1000;}
  apply(pose,dt=0){
-  const blend=dt>0?1-Math.exp(-dt*25):1;
-  for(const [name,parent,x,y] of MINT_RIG_BONES){const b=this.bones[name],v=pose[name]||{},jointBlend=dt>0&&name.startsWith('hair')?1-Math.exp(-dt*13):blend;b.x+=(x+(v.x||0)-b.x)*blend;b.y+=(y+(v.y||0)-b.y)*blend;b.rotation+=((v.rotation||0)-b.rotation)*jointBlend;
+  for(const [name,parent,x,y] of MINT_RIG_BONES){const b=this.bones[name],v=pose[name]||{},omega=name.startsWith('hair')?20:(name==='head'||name==='torso'?32:46);
+   mintRigSpring(b,'x',x+(v.x||0),omega,dt);mintRigSpring(b,'y',y+(v.y||0),omega,dt);mintRigSpring(b,'rotation',v.rotation||0,omega,dt);
    const p=parent&&this.bones[parent],r=p?p.worldRotation:0,c=Math.cos(r),s=Math.sin(r);
    b.worldX=(p?p.worldX:0)+b.x*c-b.y*s;b.worldY=(p?p.worldY:0)+b.x*s+b.y*c;b.worldRotation=r+b.rotation;
   }
@@ -4196,17 +4207,22 @@ class MintCutoutRig {
    if(name==='shinL'||name==='shinR'){
     // Keep the ankle planted while the knee flexes. Boot skin pivots around its sole.
     const angle=b.worldRotation,footX=b.worldX-Math.sin(angle)*12,footY=b.worldY+Math.cos(angle)*12;
-    skin.setOrigin(.35,.93).setPosition(footX,footY+.1).setRotation((pose[name==='shinL'?'footL':'footR']||{}).rotation||0);
+    mintRigSpring(b,'toeRotation',(pose[name==='shinL'?'footL':'footR']||{}).rotation||0,40,dt);
+    skin.setOrigin(.35,.93).setPosition(footX,footY+.1).setRotation(b.toeRotation);
    }else skin.setPosition(b.worldX,b.worldY).setRotation(b.worldRotation);
   }
  }
  animate(dt,p,scene){
-  dt=Math.max(0,Math.min(.15,dt));this.clock+=dt;
-  const speed=p.body?p.body.velocity.length():0,target=speed>24?Math.min(1,speed/120):0;
-  this.move+=(target-this.move)*(1-Math.exp(-dt*12));this.phase+=dt*Math.min(speed,300)*.075;
-  this.castLeft=Math.max(0,this.castLeft-dt);this.hurtLeft=Math.max(0,this.hurtLeft-dt);
-  const cast=this.castLeft>0?1-this.castLeft/this.castDuration:0,dash=scene.dashTime>0?1:0;
-  this.apply(mintRigPose(this.clock,this.phase,this.move,cast,dash,this.hurtLeft>0?1:0),dt);
+  dt=Math.max(0,Math.min(.15,dt));if(!dt){this.sync(p,scene);return;}
+  const speed=p.body?p.body.velocity.length():0,target=speed>24?Math.min(1,speed/120):0,
+   steps=Math.max(1,Math.ceil(dt*120)),stepDt=dt/steps;
+  // Sample moving targets at 120Hz; 30/60/120 FPS share the same motion trajectory.
+  for(let i=0;i<steps;i++){
+   this.clock+=stepDt;mintRigSpring(this,'move',target,22,stepDt);this.phase+=stepDt*Math.min(speed,300)*.075;
+   this.castLeft=Math.max(0,this.castLeft-stepDt);this.hurtLeft=Math.max(0,this.hurtLeft-stepDt);
+   const cast=this.castLeft>0?1-this.castLeft/this.castDuration:0,dash=scene.dashTime>0?1:0;
+   this.apply(mintRigPose(this.clock,this.phase,this.move,cast,dash,this.hurtLeft>0?1:0),stepDt);
+  }
   this.blink-=dt;if(this.blink<-.12)this.blink=2.8+Math.random()*1.2;
   const head=this.skins.at(-1).skin;head.setFrame('rig'+(this.blink<0?15:2)).setDisplaySize(35,33);
   this.sync(p,scene);

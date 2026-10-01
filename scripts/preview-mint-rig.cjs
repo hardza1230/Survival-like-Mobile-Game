@@ -9,9 +9,9 @@ if(require.main===module)(async()=>{
  const rig=new Rig(scene),v={x:0,y:0,length(){return Math.hypot(this.x,this.y);}},p={x:180,y:190,alpha:1,depth:5,active:true,flipX:false,body:{velocity:v}};
  const c=createCanvas(360,320),g=c.getContext('2d');fs.mkdirSync('/tmp/mint-rig-preview',{recursive:true});
  function draw(label){g.fillStyle='#233b37';g.fillRect(0,0,360,320);g.strokeStyle='#ffffff0c';for(let x=0;x<360;x+=30){g.beginPath();g.moveTo(x,0);g.lineTo(x,320);g.stroke();}g.fillStyle='#091a1680';g.beginPath();g.ellipse(180,258,60,14,0,0,Math.PI*2);g.fill();g.save();g.translate(180,182.4);g.scale((p.flipX?-1:1)*2.8,2.8);for(const {skin} of rig.skins){const f=frames[Number(skin.frame.name.slice(3))];g.save();g.translate(skin.x,skin.y);g.rotate(skin.rotation);g.scale(skin.scaleX,skin.scaleY);g.drawImage(atlas,f.x,f.y,f.w,f.h,-skin.originX*f.w,-skin.originY*f.h,f.w,f.h);g.restore();}g.restore();g.fillStyle='#d8fff1';g.font='bold 18px sans-serif';g.fillText('MINT · 2D CUTOUT RIG',20,30);g.font='14px sans-serif';g.fillText(label,20,55);g.fillText('Actual rig pose · enlarged preview',20,300);}
- const snapshots=[];
- for(let i=0;i<240;i++){const state=Math.floor(i/60),label=['Idle / blink / breathing','Run / hair follow-through','Run + lance attack','Dash / recovery / hurt'][state];v.x=state===0?0:140;scene.dashTime=state===3&&i%60<30?.1:0;
-  if(state===2&&i%24===0)rig.attack(550,false);if(state===3&&i%60===40)rig.flash(5,220);p.flipX=state===1&&i%60>40;rig.animate(1/30,p,scene);draw(label);fs.writeFileSync('/tmp/mint-rig-preview/'+String(i).padStart(3,'0')+'.png',c.toBuffer('image/png'));if([30,90,132,195].includes(i))snapshots.push(c.toBuffer('image/png'));}
+ const snapshots=[],fps=60;
+ for(let i=0;i<fps*8;i++){const state=Math.floor(i/(fps*2)),label=['Idle / blink / breathing','Run / hair follow-through','Run + lance attack','Dash / recovery / hurt'][state];v.x=state===0?0:140;scene.dashTime=state===3&&i%(fps*2)<fps?.1:0;
+  if(state===2&&i%Math.round(fps*.8)===0)rig.attack(550,false);if(state===3&&i%(fps*2)===Math.round(fps*4/3))rig.flash(5,220);p.flipX=false;rig.animate(1/fps,p,scene);draw(label);fs.writeFileSync('/tmp/mint-rig-preview/'+String(i).padStart(3,'0')+'.png',c.toBuffer('image/png'));if([60,180,264,390].includes(i))snapshots.push(c.toBuffer('image/png'));}
  const sheet=createCanvas(1440,320),sg=sheet.getContext('2d');for(let i=0;i<snapshots.length;i++)sg.drawImage(await loadImage(snapshots[i]),i*360,0);fs.writeFileSync('docs/previews/mint_rig_poses.png',sheet.toBuffer('image/png'));
- console.log('Rendered 240 frames using production MintCutoutRig');
+ console.log('Rendered 480 frames at 60 FPS using production MintCutoutRig');
 })();

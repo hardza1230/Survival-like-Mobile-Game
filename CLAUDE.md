@@ -1,3 +1,7 @@
+## Mint smooth joint motion — v6.0.61
+
+Accepted directional pose retained. Replaced one-pole joint easing with velocity-continuous critically damped springs, including boot roll and locomotion blend. Motion samples at up to 120Hz substeps so 20/30/60/120 FPS yield matching joint trajectories. Cubed-sine foot lift/roll softens toe-off and landing. Repeated casts retain joint velocity. Preview generator now renders native 60 FPS; four-second video has 240 native frames, GIF 30 FPS. Full checks/build pass; device frame-rate/feel confirmation pending. Preview docs/previews/mint_run_v6_0_61_60fps.mp4.
+
 ## Mint directional run correction — v6.0.60
 
 Feedback identified backward-bent free elbow and front-facing feet shuffling outward. Free forearm flexion reversed to forward. Replaced frontal separate foot lanes with sagittal forward/back stride; both knees bend backward with stable far/near skin identity. Hip origins narrowed, swing foot advances from rear to front while stance returns rearward; toe lift bounded. Generated matching right-facing profile boots and added reproducible boot overlay packer. Contact cycle and run GIF inspected; full checks/build pass, mobile feel review pending. Preview docs/previews/mint_run_v6_0_60.gif.

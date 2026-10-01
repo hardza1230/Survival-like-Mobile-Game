@@ -17,8 +17,8 @@ Mint gameplay uses a lightweight rigid cutout skeleton implemented in Phaser. Th
 
 1. With development dependencies installed: `node scripts/pack-mint-rig.cjs`.
 2. If source art changes, copy `frames.json` into `MINT_RIG_FRAMES` in `game.js`, then tune bone offsets/origins against assembled poses.
-3. `node scripts/preview-mint-rig.cjs` renders 240 frames from the actual production rig into `/tmp/mint-rig-preview/` and a contact sheet.
-4. Encode frames at 30fps into a GIF or video for motion review.
+3. `node scripts/preview-mint-rig.cjs` renders 480 frames at 60 FPS from the actual production rig into `/tmp/mint-rig-preview/` and a contact sheet.
+4. Encode frames at 60fps into a GIF or video for motion review.
 5. `npm run check` and `npm run build:www`.
 
 The packer isolates the main connected silhouette of each source part, excludes layout separators, preserves RGBA, and normalizes with transparent gutters. The source lance requires a dedicated horizontal crop because its generated tip extends beyond the nominal source cell.
@@ -52,3 +52,9 @@ Accepted neutral limbs retained. Added visibly bent elbows and free-arm pumping;
 The v6.0.59 free forearm flexed toward the rear and the frontal lane solver looked like a sideways shuffle. Free elbow flexion now points forward, and counter-swing follows the forward/back stride. Both knees bend toward the rear, with hip origins narrowed to ±2.5px. Swing travels rear → front with toe lift; stance travels front → rear. Feet may pass in projection, which is normal for this view; skin identity and far/near layering stay fixed. Regression checks replace frontal no-crossing constraints with knee bend direction, bounded toe angle, fixed leg skins and an 8px minimum sagittal stride.
 
 Built-in imagegen generated two matched right-facing three-quarter profile boots with vertical calves, complete overlap joints, the existing mint/white crystal palette, no front-facing toes, no opposite-facing shoes, no text or ground shadow. Reference: packed Mint parts atlas. Source: `assets/incoming/mint_rig/mint_profile_boots_source.png`. `scripts/pack-mint-rig-boots.cjs` overlays slots 10/12 after the neutral-limb packer and updates frame bounds. Full pipeline: `node scripts/pack-mint-rig.cjs`. Preview: `docs/previews/mint_run_v6_0_60.gif`; six-phase contact sheet: `docs/previews/mint_run_cycle_v6_0_60.png`. Automated tests/build and preview inspection pass; real-device feel review remains pending.
+
+## v6.0.61 smooth joint motion
+
+Accepted art, bend directions and run silhouette retained. Joint positions/angles, movement weight and boot roll now use analytic critically damped springs, preserving velocity when the target changes. Moving targets are sampled in 120Hz substeps. Hair uses a softer spring than limb joints. Cubed positive-sine toe lift/roll gives continuous acceleration at lift/landing. Casting still overlays locomotion and repeated casts do not reset joint velocities.
+
+Tests compare joint trajectories at 20/30/60/120 FPS, target-change continuity and repeated cast velocity alongside directional knee/skin/grip checks. Production preview generator renders 480 native frames at 60 FPS. `docs/previews/mint_run_v6_0_61_60fps.mp4` contains 240 frames over four seconds; `docs/previews/mint_run_v6_0_61.gif` is sampled at 30 FPS. Previous 16 FPS GIFs were insufficient for assessing smoothness. Automated tests and preview rendering do not establish the device rendering frame rate; gameplay feel/performance still requires mobile review.

@@ -46,6 +46,10 @@ assert(run.skins.findIndex(o=>o.name==='foreL')>run.skins.findIndex(o=>o.name===
 const held=run.bones.armL.rotation;v.x=0;run.animate(1/60,p,scene);assert(Math.abs(run.bones.armL.rotation-held)<.2,'stopping blends pose');run.destroy();v.x=140;
 // Distance-based gait advances equally at 30 and 60 FPS; zero speed stops phase.
 function cadence(fps){const r=new Rig(scene);for(let i=0;i<fps*2;i++)r.animate(1/fps,p,scene);return r;}
-const thirty=cadence(30),sixty=cadence(60);assert(Math.abs(thirty.phase-sixty.phase)<1e-9);v.x=0;const stopped=sixty.phase;sixty.animate(.05,p,scene);assert.equal(sixty.phase,stopped);gait.destroy();thirty.destroy();sixty.destroy();
+const thirty=cadence(30),sixty=cadence(60),oneTwenty=cadence(120),twenty=cadence(20);
+for(const other of [thirty,oneTwenty,twenty]){assert(Math.abs(other.phase-sixty.phase)<1e-9);for(const name of Object.keys(sixty.bones))assert(Math.abs(other.bones[name].rotation-sixty.bones[name].rotation)<1e-7,'pose stable at 20/30/60/120 FPS: '+name);}
+const velocity=sixty.bones.armR._v_rotation;sixty.attack(400);assert.equal(sixty.bones.armR._v_rotation,velocity,'cast retains joint velocity');sixty.attack(400);assert.equal(sixty.bones.armR._v_rotation,velocity,'repeated cast cannot snap velocity');v.x=0;const stopped=sixty.phase;sixty.animate(.05,p,scene);assert.equal(sixty.phase,stopped);gait.destroy();thirty.destroy();sixty.destroy();oneTwenty.destroy();twenty.destroy();
+const helper=vm.runInNewContext(source.slice(source.indexOf('function mintRigSpring('),source.indexOf('function mintRigLeg('))+'\nmintRigSpring');
+const spring={x:1,_v_x:3};helper(spring,'x',-10,46,1e-7);assert(Math.abs(spring.x-1)<1e-5&&Math.abs(spring._v_x-3)<.01,'target change has no position/velocity jump');
 for(const f of frames)assert(f.x>=0&&f.y>=0&&f.x+f.w<=512&&f.y+f.h<=512);
 console.log('Mint rig: skeletal parenting, run/cast continuity, size, dash/hurt/blink, mirror/tint/camera depth, fallback and cleanup passed');
