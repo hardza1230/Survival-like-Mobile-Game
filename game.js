@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.48';
+const GAME_VERSION = '6.0.49';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.49', date:'2026-10-01', title:'Dedicated crafting sounds', items:['Short forge start, reel ticks and slowdown cues','Single common, rare or jackpot reveal instead of layered chest sounds','Auto-roll cancellation and currency exhaustion feedback'] },
   { v:'6.0.48', date:'2026-10-01', title:'Candy UI sound foundation', items:['Distinct short click, back, confirm and error sounds','Menu actions emit one UI cue even when callbacks request it twice','UI voice limit stays separate from busy combat sounds'] },
   { v:'6.0.47', date:'2026-10-01', title:'Illustrated stage results', items:['Painted candy medal, gold frame, reward tray and crystal button','Statistics use separate label and value columns','Character level and mastery no longer overlap their labels'] },
   { v:'6.0.46', date:'2026-10-01', title:'Painted Special Core temple', items:['Illustrated gold and mint crystal cards replace flat panels','Core icons, level gems and upgrade buttons share one temple frame','Responsive card count fills tall screens with more cores'] },
@@ -823,6 +824,29 @@ const Sfx = {
     else if(kind==='error')this.seq([260,195],'sine',.045,.06);
     else this.tone(1050,.055,'sine',.05,1200);
   },
+  // Craft voices have their own small budget; outcomes replace the reel sounds.
+  stopCraft(){
+    const voices=this._craftVoices||[];this._craftVoices=[];
+    voices.forEach(s=>{try{s.stop();s.destroy();}catch(e){}});
+  },
+  craft(kind,rate=1){
+    if(kind!=='tick')this.stopCraft();
+    if(this.muted||this.sv<=0)return;
+    const now=performance.now();
+    if(kind==='tick'&&now-(this._craftTickAt??-Infinity)<45)return;
+    if(kind==='tick')this._craftTickAt=now;else this._craftTickAt=-Infinity;
+    rate=Math.max(.8,Math.min(1.2,rate));
+    try{const g=window.__g,key='sfx_craft_'+kind;
+      if(g&&g.cache.audio.exists(key)){
+        this._craftVoices=(this._craftVoices||[]).filter(s=>s.isPlaying);
+        while(this._craftVoices.length>=2){const old=this._craftVoices.shift();old.stop();old.destroy();}
+        const sound=g.sound.add(key,{volume:(kind==='tick'?.14:.30)*this.sv,rate});this._craftVoices.push(sound);
+        sound.once('complete',()=>{this._craftVoices=this._craftVoices.filter(s=>s!==sound);sound.destroy();});sound.play();return;
+      }
+    }catch(e){}
+    const notes={start:[620,930],tick:[1250*rate],slow:[780,620],common:[784,988],rare:[784,988,1175],jackpot:[784,988,1175,1568],near:[880,1047,880],cancel:[660,440],exhaust:[330,220]}[kind];
+    if(notes)this.seq(notes,'sine',kind==='tick'?.025:.045,kind==='tick'?.018:.055);
+  },
   select(){this.ui('click');},
   back(){this.ui('back');},
   confirm(){this.ui('confirm');},
@@ -1539,6 +1563,15 @@ const ASSET_AUDIO = {
   sfx_levelup:    'assets/audio/sfx/gen/sfx_levelup_soft.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
   sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
   sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
+  sfx_craft_start:'assets/audio/sfx/craft/craft_start.wav',
+  sfx_craft_tick:'assets/audio/sfx/craft/craft_tick.wav',
+  sfx_craft_slow:'assets/audio/sfx/craft/craft_slow.wav',
+  sfx_craft_common:'assets/audio/sfx/craft/craft_common.wav',
+  sfx_craft_rare:'assets/audio/sfx/craft/craft_rare.wav',
+  sfx_craft_jackpot:'assets/audio/sfx/craft/craft_jackpot.wav',
+  sfx_craft_near:'assets/audio/sfx/craft/craft_near.wav',
+  sfx_craft_cancel:'assets/audio/sfx/craft/craft_cancel.wav',
+  sfx_craft_exhaust:'assets/audio/sfx/craft/craft_exhaust.wav',
   sfx_ui_click:'assets/audio/sfx/ui/ui_click.wav',
   sfx_ui_back:'assets/audio/sfx/ui/ui_back.wav',
   sfx_ui_confirm:'assets/audio/sfx/ui/ui_confirm.wav',
@@ -6491,32 +6524,32 @@ class Game extends Phaser.Scene {
     const skW=110,skH=30,skX=w/2-skW/2,skY=cy+118,skG=this.add.graphics();skG.fillStyle(0x3a3550,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0x9a8cc0,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);
     const skT=this.add.text(w/2,skY+skH/2,'🛑 STOP!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(.5);this.menu.add([skG,skT]);
     skG.clear();skG.fillStyle(0xd23a5a,1);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(2,0xffffff,.9);skG.strokeRoundedRect(skX,skY,skW,skH,9);this.tweens.add({targets:skT,scale:{from:1,to:1.1},yoyo:true,repeat:-1,duration:250});
-    Sfx.chestSpin&&Sfx.chestSpin();
+    Sfx.craft('start');
     const burst=(n,col)=>{for(let k=0;k<n;k++){const a=Math.random()*TAU,d=60+Math.random()*(90+hype*30),sp=this.add.text(w/2,cy,['✦','✨','⭐','💫'][k%4],{fontSize:(10+hype*3)+'px',color:'#'+col.toString(16).padStart(6,'0')}).setOrigin(.5);this.menu.add(sp);
       this.tweens.add({targets:sp,x:w/2+Math.cos(a)*d,y:cy+Math.sin(a)*d*.8,alpha:0,scale:{from:1.4,to:.3},duration:650+Math.random()*450,ease:'Cubic.out',onComplete:()=>sp.destroy()});}};
     const reveal=()=>{
       hint.setText(hype?HN:affixCategory(winner).label.toUpperCase()+' MOD LOCKED').setColor(hype?'#'+HC.toString(16).padStart(6,'0'):affixCategory(winner).hex).setFontSize(hype?'13px':'9px');
       rows[1].t.setText(winner.emoji+'  '+winner.label+'  '+winner.fmt(rolled.v)+' · T'+rolled.t).setColor('#fff3b0').setY(rows[1].rowY).setAlpha(1).setScale(hype?1.6:1.2);
       this.tweens.add({targets:rows[1].t,scale:1,duration:hype?420:220,ease:'Back.out'});
-      if(!hype){this.screenFlash(affixCategory(winner).color,.52,360);Sfx.clear();return 360;}
+      if(!hype){this.screenFlash(affixCategory(winner).color,.52,360);Sfx.craft('common');return 360;}
       drawPanel(HC,2+hype*1.5);rays.setAlpha(0);this.tweens.add({targets:rays,alpha:1,duration:220});this.tweens.add({targets:rays,angle:360,duration:5200/(1+hype*.4),repeat:-1});
       this.screenFlash(HC,.55+hype*.13,380+hype*120);this.screenShake(160+hype*90,.004+hype*.004);burst(10+hype*8,HC);
-      Sfx.chestWin&&Sfx.chestWin();if(hype>=2)Sfx.legend&&Sfx.legend();if(hype>=3)this.time.delayedCall(260,()=>{Sfx.ult&&Sfx.ult();burst(16,0xffffff);this.screenFlash(0xffffff,.6,260);});
+      Sfx.craft(hype>=3?'jackpot':'rare');if(hype>=3)this.time.delayedCall(260,()=>{burst(16,0xffffff);this.screenFlash(0xffffff,.6,260);});
       this.tweens.add({targets:title,scale:{from:1.25,to:1},duration:360,ease:'Back.out'});title.setText(hype>=3?'👑 JACKPOT! 👑':'🎰 '+HN);
       return 700+hype*380;};
-    const finish=()=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;this.tweens.killTweensOf(rows[1].t);Sfx.stopChestSpin&&Sfx.stopChestSpin();
+    const finish=()=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;this.tweens.killTweensOf(rows[1].t);Sfx.stopCraft();
       const wait=reveal();
       this.time.delayedCall(wait,()=>{this.tweens.killTweensOf(rays);this._craftRolling=false;this.buildCraftBench();this.showBanner((hype>=3?'👑 ':'🎰 ')+winner.emoji+' '+winner.label,winner.fmt(rolled.v)+' · Tier '+rolled.t,1700+hype*300);});};
     // v5.44 🛑 กดหยุดเอง: หมุนเร็วจนกด STOP (หรือ 6 วิ) → ไหลช่วงช้าลงไปหยุดที่ผล · กดอีกครั้ง = ข้าม
-    let stopped=false;const doStop=()=>{ if(stopped){finish();return;} stopped=true;Sfx.card?Sfx.card():Sfx.select();this.tweens.killTweensOf(skT);skT.setScale(1).setText('⏩ Skip');skG.clear();skG.fillStyle(0x3a3550,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0x9a8cc0,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);hint.setText('Slowing down…'); };
+    let stopped=false;const doStop=()=>{ if(this._craftRollToken!==token)return; if(stopped){finish();return;} stopped=true;Sfx.craft('slow');this.tweens.killTweensOf(skT);skT.setScale(1).setText('⏩ Skip');skG.clear();skG.fillStyle(0x3a3550,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0x9a8cc0,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);hint.setText('Slowing down…'); };
     this._zone(skX,skY,skW,skH,doStop);this.time.delayedCall(6000,()=>{ if(this._craftRollToken===token&&!stopped)doStop(); });
     const show=(row,mod,final=false)=>{const c=affixCategory(mod);this.tweens.killTweensOf(row.t);row.t.setText(mod.emoji+'  '+mod.label+(final?'  '+mod.fmt(rolled.v)+' · T'+rolled.t:'')).setColor(final?'#fff3b0':c.hex).setY(row.rowY-6).setAlpha(.42);this.tweens.add({targets:row.t,y:row.rowY,alpha:1,duration:42,ease:'Quad.out'});};
     // ผลดี = หมุนนานขึ้น + ช่วงท้ายช้าลงเรื่อย ๆ (ลุ้น)
     const delays=[76,88,102,120,145,175,215,270,340].concat(hype>=1?[380,430]:[],hype>=2?[500,590]:[],hype>=3?[700,820]:[]);let step=0;
     const tick=()=>{if(this._craftRollToken!==token)return;
-      if(!stopped){show(rows[1],Phaser.Utils.Array.GetRandom(pool));show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));Sfx.chestTick?Sfx.chestTick(2):Sfx.select();this.time.delayedCall(60,tick);return;}
+      if(!stopped){show(rows[1],Phaser.Utils.Array.GetRandom(pool));show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));Sfx.craft('tick');this.time.delayedCall(60,tick);return;}
       const final=step===delays.length-1,center=final?winner:Phaser.Utils.Array.GetRandom(pool);show(rows[1],center,false);show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));
-      Sfx.chestTick?Sfx.chestTick(step):Sfx.select();
+      Sfx.craft('tick',1.1-step*.015);
       // ช่วงลุ้น: แถวกลางเรืองสีของผล + จอสั่นเบา ๆ ก่อนหยุด
       if(hype&&step>=delays.length-4){drawPanel(HC,1.5+ (step-(delays.length-4)));this.screenShake(70,.002*hype);}
       if(final){if(hype>=2){hint.setText('. . .').setColor('#ffffff');this.time.delayedCall(420*(hype-1),finish);}else finish();return;}
@@ -6546,6 +6579,7 @@ class Game extends Phaser.Scene {
     this.menu.add([shade,panel,title,goal,rowG,cur,count,spentT,walT,fb,skG,skT]);
     let rolls=0;const spent={};const spentTxt=()=>Object.keys(spent).map(k=>currencyDef(k).emoji+'×'+spent[k]).join(' ')||'—';
     const end=(kind,a)=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;
+      if(kind!=='hit')Sfx.craft(kind==='stop'?'cancel':'exhaust');
       this.time.delayedCall(kind==='hit'?900:500,()=>{this._craftRolling=false;this.buildCraftBench();
         if(kind==='hit'){this.showBanner('🎯 Got '+tmod.emoji+' '+tmod.label,'After '+rolls+' rolls · spent '+spentTxt(),2100);}
         else if(kind==='unreachable')this.showBanner('🎯 Target unavailable','That mod cannot roll on this line',1600);
@@ -6568,13 +6602,13 @@ class Game extends Phaser.Scene {
       const mT=T(w/2+80,'−'+need,'11px','#ff9aa8',1).setY(cy+66);this.menu.add(mT);this.tweens.add({targets:mT,y:cy+48,alpha:0,duration:700,onComplete:()=>mT.destroy()});
       count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());fb.setText('');
       // reel: สลับชื่อ mod มั่ว ๆ ก่อนเผยผล (เหมือนสล็อต)
-      Sfx.slotSpin();let ri=0;const reel=()=>{if(this._craftRollToken!==token)return;if(ri++<6){const r=available[Math.floor(Math.random()*available.length)];cur.setText(r.emoji+'  '+r.label).setColor('#8f83a3');this.time.delayedCall(55,reel);}else reveal();};
+      Sfx.craft('start');let ri=0;const reel=()=>{if(this._craftRollToken!==token)return;if(ri++<6){Sfx.craft('tick');const r=available[Math.floor(Math.random()*available.length)];cur.setText(r.emoji+'  '+r.label).setColor('#8f83a3');this.time.delayedCall(55,reel);}else reveal();};
       const reveal=()=>{
       const hit=mod.id===targetId,c=affixCategory(mod),near=!hit&&c.label===tcat;
       this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
-      if(!hit){if(near){Sfx.slotNear();fb.setText('😮 So close! Same '+tcat+' family').setColor('#ffb86b');this.screenFlash(0xffa94d,.22,220);this.tweens.add({targets:rowG,alpha:.55,duration:90,yoyo:true,repeat:2});}
-        else{Sfx.slotMiss();fb.setText(['Aww…','Not this time…','Nope 😢','So sad…'][rolls%4]).setColor('#9aa4c8');this.tweens.add({targets:cur,y:cy+4,duration:160,yoyo:true});}}
-      if(hit){fb.setText('🎉 JACKPOT! 🎉').setColor('#ffe08a');Sfx.slotJackpot();for(let i=0;i<14;i++){const a=i/14*Math.PI*2,sp=T(w/2,'✦','14px',i%2?'#ffd166':'#ff9ad5',1).setY(cy);this.menu.add(sp);this.tweens.add({targets:sp,x:w/2+Math.cos(a)*(90+Math.random()*50),y:cy+Math.sin(a)*(70+Math.random()*40),alpha:0,duration:700+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>sp.destroy()});}this.tweens.add({targets:[title,cur],scale:1.25,duration:140,yoyo:true,repeat:2});this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);if(hy>=2)this.time.delayedCall(450,()=>Sfx.chestWin&&Sfx.chestWin());}skT.setText('✓ Done');return end('hit');}
+      if(!hit){if(near){Sfx.craft('near');fb.setText('😮 So close! Same '+tcat+' family').setColor('#ffb86b');this.screenFlash(0xffa94d,.22,220);this.tweens.add({targets:rowG,alpha:.55,duration:90,yoyo:true,repeat:2});}
+        else{Sfx.craft('common');fb.setText(['Aww…','Not this time…','Nope 😢','So sad…'][rolls%4]).setColor('#9aa4c8');this.tweens.add({targets:cur,y:cy+4,duration:160,yoyo:true});}}
+      if(hit){fb.setText('🎉 JACKPOT! 🎉').setColor('#ffe08a');Sfx.craft('jackpot');for(let i=0;i<14;i++){const a=i/14*Math.PI*2,sp=T(w/2,'✦','14px',i%2?'#ffd166':'#ff9ad5',1).setY(cy);this.menu.add(sp);this.tweens.add({targets:sp,x:w/2+Math.cos(a)*(90+Math.random()*50),y:cy+Math.sin(a)*(70+Math.random()*40),alpha:0,duration:700+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>sp.destroy()});}this.tweens.add({targets:[title,cur],scale:1.25,duration:140,yoyo:true,repeat:2});this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);}skT.setText('✓ Done');return end('hit');}
       this.time.delayedCall(near?900:(rolls<3?650:520),step);};reel();};
     this.time.delayedCall(200,step);
   }

@@ -1,3 +1,7 @@
+## Sound commit 2 — v6.0.49
+
+Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence, single result cue, cancellation and exhausted resources. Craft voices use a separate two-voice limit with tick throttling; outcomes stop reel audio. Removed chest/slot/combat sound layering only in crafting roulette. Repeated Stop during reveal is guarded by the roll token. Tests: craft-sound and full npm check/build. Mobile listening review pending. Next: commit 3, affix changes.
+
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
 > ไฟล์นี้คือ "ความจำถาวร" ของโปรเจกต์ ถ้าเปิดเซสชันใหม่/เพิ่ง `/clear` มา
