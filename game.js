@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.79';
+const GAME_VERSION = '6.1.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.1.0', date:'2026-10-01', title:'Hunger Pact', items:['New Pact tab in the Recipe Atlas: turn on 8 difficulty terms for Recipe runs','Each rank adds Heat; every Heat point gives +7% rewards','Your best Heat cleared is saved'] },
   { v:'6.0.79', date:'2026-10-01', title:'Chiptune menu', items:['Main menu now loops Chiptune Pop, a bouncy retro 8-bit theme'] },
   { v:'6.0.78', date:'2026-10-01', title:'Loading theme', items:['Loading screen plays the Fairy Kingdom theme, fading out when the menu music starts'] },
   { v:'6.0.77', date:'2026-10-01', title:'New menu theme', items:['Main menu plays Crystal Clash, a fast heroic battle theme'] },
@@ -4105,6 +4106,20 @@ function atlasData(){ if(!Save.data.atlas||typeof Save.data.atlas!=='object')Sav
 function atlasThemePoints(t){ t=t|0; return t>0?1+Math.floor(t/4):0; }
 function atlasPoints(){ const a=atlasData(); return recipeThemes().reduce((n,i)=>n+atlasThemePoints(a[i]),0); }
 // R7: ผัง passive ของ Atlas — 1 แต้ม/เลเวล · respec ฟรี
+// Hunger Pact (แบบ Hades Heat): ติ๊กเงื่อนไขความยากใน Recipe Maps · แต่ละ rank = heat · รางวัล +7%/heat (กฎเหล็ก)
+const PACT_TERMS=[
+  {id:'hp',emoji:'🛡️',name:'Thick Dough',desc:'Enemies +15% HP per rank',max:3,heat:1},
+  {id:'dmg',emoji:'🗡️',name:'Sharp Teeth',desc:'Enemies +15% damage per rank',max:3,heat:1},
+  {id:'speed',emoji:'💨',name:'Sugar Rush',desc:'Enemies +10% move speed per rank',max:2,heat:2},
+  {id:'horde',emoji:'🐜',name:'Endless Swarm',desc:'Enemies spawn 15% faster per rank',max:2,heat:1},
+  {id:'boss',emoji:'👑',name:'Gluttonous Boss',desc:'Recipe boss +25% HP per rank',max:2,heat:2},
+  {id:'frail',emoji:'💔',name:'Brittle Shell',desc:'You start with −10% max HP per rank',max:2,heat:2},
+  {id:'heal',emoji:'🚫',name:'Empty Pantry',desc:'Healing −50% per rank (rank 2: none)',max:2,heat:2},
+  {id:'hunger',emoji:'⏳',name:'Ravenous Clock',desc:'Hunger Meter needs +20% kills per rank',max:2,heat:1}
+];
+const PACT_REWARD_PER_HEAT=0.07;
+function pactLv(id){ const t=(Save.data&&Save.data.pact)||{}; const d=PACT_TERMS.find(x=>x.id===id); return d?Math.max(0,Math.min(d.max,t[id]||0)):0; }
+function pactHeat(){ return PACT_TERMS.reduce((a,d)=>a+pactLv(d.id)*d.heat,0); }
 const ATLAS_NODES=[
   {id:'cartographer',emoji:'🧭',name:'Cartographer',max:3,desc:'+10% chance per level for dropped recipes to be one tier higher'},
   {id:'bounty',emoji:'📜',name:'Bountiful Pantry',max:3,desc:'+8% chance per level to drop a second recipe'},
@@ -5624,10 +5639,11 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🗺 Recipe Atlas','screen_atlas');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,at=atlasData();let top=(w<=h?100:70);const th=recipeThemes(),best=Save.data.recipeBest||{};
     const T=(x,y,t,sz,c,st)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(q);return q;};
-    const tab=this._atlasTab||'board',tw2=(cw-10)/2;
-    [['board','🗺 Board'],['tree','🌳 Passives ('+atlasFree()+')']].forEach(([k,l],i)=>{ const x=cx+i*(tw2+10),g=this.add.graphics();g.fillStyle(tab===k?0x6b2bd9:0x241a30,1);g.fillRoundedRect(x,top-4,tw2,30,10);this.menu.add(g);
+    const tab=this._atlasTab||'board',tw2=(cw-20)/3;
+    [['board','🗺 Board'],['tree','🌳 Passives ('+atlasFree()+')'],['pact','🔥 Pact ('+pactHeat()+')']].forEach(([k,l],i)=>{ const x=cx+i*(tw2+10),g=this.add.graphics();g.fillStyle(tab===k?0x6b2bd9:0x241a30,1);g.fillRoundedRect(x,top-4,tw2,30,10);this.menu.add(g);
       const q=this.add.text(x+tw2/2,top+11,l,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff'}).setOrigin(0.5);this.menu.add(q); this._zone(x,top-4,tw2,30,()=>{this._atlasTab=k;this.buildAtlas();}); });
     if(tab==='tree'){ this.buildAtlasTree(cx,cw,top+36,T); this.menu.setVisible(true); return; }
+    if(tab==='pact'){ this.buildPact(cx,cw,top+36,T); this.menu.setVisible(true); return; }
     top+=36;
     const done=th.filter(i=>at[i]>0).length;
     T(w/2,top,'Clear every theme and push its tier. First clear = 1 point, then +1 at Tier 4/8/12/16.',11,'#e6dcf0');
@@ -5640,6 +5656,19 @@ class Game extends Phaser.Scene {
       const uq=uniqueForTheme(si)[0],uqHave=uq&&(Save.data.uniqueFound||{})[uq.id]; T(x+tw/2,y+5,st.emoji+(t?' T'+t:' —')+(uq?(uqHave?' '+uq.emoji:' ?'):''),14,t?'#ffffff':'#8d8499','bold'); T(x+tw/2,y+25,st.name,8,t?'#e6dcf0':'#6d6479'); if(tH>=70)T(x+tw/2,y+tH-28,'★ '+pts+'/'+maxP,9,'#ffe08a');
       this._zone(x,y,tw,tH,()=>this.menuToast(st.emoji+' '+st.name+' · best Tier '+(t||'—')+' · best fill '+(best[si]?best[si]+'s':'—')+(uq?' · Unique: '+(uqHave?uq.name:'???'):''),'#e6dcf0')); });
     this.menu.setVisible(true);
+  }
+  buildPact(cx,cw,y,T){ const w=this.W,h=this.H,heat=pactHeat();
+    T(w/2,y,'Hunger Pact: harder Recipe runs, bigger rewards. Applies to every Recipe until you change it.',11,'#e6dcf0');
+    T(w/2,y+30,'🔥 Heat '+heat+'   ·   Rewards ×'+(1+PACT_REWARD_PER_HEAT*heat).toFixed(2)+'   ·   Best '+(Save.data.pactBest||0),13,'#ffb070','bold'); y+=56;
+    const rh=Math.max(40,Math.min(52,Math.floor((h-y-64)/PACT_TERMS.length)-5));
+    PACT_TERMS.forEach(d=>{ const lv=pactLv(d.id),g=this.add.graphics();
+      g.fillStyle(lv>0?0x3a1c1c:0x1c1426,1);g.fillRoundedRect(cx,y,cw,rh,10);g.lineStyle(2,lv>=d.max?0xff7a45:lv>0?0xffb070:0x4a4059,1);g.strokeRoundedRect(cx,y,cw,rh,10);this.menu.add(g);
+      const a=this.add.text(cx+12,y+5,d.emoji+' '+d.name+'  '+'●'.repeat(lv)+'○'.repeat(d.max-lv),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'});this.menu.add(a);
+      const ds=this.add.text(cx+12,y+23,d.desc,{fontFamily:'sans-serif',fontSize:'10px',color:'#bfb5ca',wordWrap:{width:cw-90}});this.menu.add(ds);
+      const b=this.add.text(cx+cw-12,y+rh/2,'🔥'+d.heat+'/rank',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:lv>0?'#ffb070':'#8d8499'}).setOrigin(1,0.5);this.menu.add(b);
+      this._zone(cx,y,cw,rh,()=>{ if(!Save.data.pact)Save.data.pact={}; Save.data.pact[d.id]=lv>=d.max?0:lv+1; Save.save(); Sfx.select&&Sfx.select(); this.buildAtlas(); });
+      y+=rh+5; });
+    this.uiPillBtn(this.menu,w/2,y+22,Math.min(cw,240),38,0x8a3050,'↺','Clear Pact',()=>{ Save.data.pact={}; Save.save(); this.menuToast('Pact cleared','#9dff9d'); this.buildAtlas(); });
   }
   buildAtlasTree(cx,cw,y,T){ const w=this.W,h=this.H,free=atlasFree();
     T(w/2,y,'Spend Atlas points on permanent recipe bonuses. Respec is free.',11,'#e6dcf0');
@@ -7258,7 +7287,7 @@ class Game extends Phaser.Scene {
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         if(this.killTxt)this.killTxt.setText('☠ 0');
-        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
+        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){PACT_TERMS.forEach(d=>{this._pact[d.id]=pactLv(d.id);});this._pactHeat=pactHeat();}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
@@ -7423,12 +7452,14 @@ class Game extends Phaser.Scene {
       this.showBanner('Progress complete','The boss is coming',1800);this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss());
     }
   }
-  recipeHungerGoal(){ return 150+((this._recipe&&this._recipe.tier)||1)*6; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
+  recipeHungerGoal(){ return Math.round((150+((this._recipe&&this._recipe.tier)||1)*6)*(1+0.2*((this._pact&&this._pact.hunger)||0))); }
+  pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
   startRecipeRun(st){ const r=this._recipe; this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
-    this.stageTxt.setText('📜 Recipe T'+r.tier+' · '+st.name);
+    const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
+    this.stageTxt.setText('📜 Recipe T'+r.tier+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+st.name);
     this.pendingLvl=(this.pendingLvl||0)+3; this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
-      this.spawnInterval*=this.recipeHas('horde')?0.5:0.7; this.spawnBatch+=this.recipeHas('horde')?2:1; this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
+      this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
       this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }); }
   tickRecipeHunger(dt){ this._hungerT+=dt; const goal=this.recipeHungerGoal(),t=Math.floor(this._hungerT);
     this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
@@ -7456,7 +7487,7 @@ class Game extends Phaser.Scene {
   clearRecipeShrine(){ if(this._shrine){ this._shrine.g.destroy(); this._shrine=null; } }
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
   recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1)*(1+atlasLv('appetite')*0.06); }
-  finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine();
+  finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); if((this._pactHeat||0)>(Save.data.pactBest||0)){ Save.data.pactBest=this._pactHeat; Save.save(); this.time.delayedCall(2600,()=>this.showBanner('🔥 New Pact record: Heat '+this._pactHeat,'',2000)); }
     const at=atlasData(),ptsBefore=atlasPoints(); at[r.theme]=Math.max(at[r.theme]||0,r.tier); const gainedAP=atlasPoints()-ptsBefore; if(gainedAP>0)this.time.delayedCall(5200,()=>this.showBanner('🗺 Atlas +'+gainedAP+' point'+(gainedAP>1?'s':''),STAGES[r.theme].name+' · best Tier '+at[r.theme],2200));
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_HUNGER_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
@@ -8169,7 +8200,7 @@ class Game extends Phaser.Scene {
   tutorialActive(){ return !!this._inTutorial; }
   zoneModMul(){ let hp=1,dmg=1,reward=1; if(Save.zoneModsUnlocked()){ for(const id of (this._activeZoneMods||[])){ const m=ZONE_MODIFIERS.find(x=>x.id===id); if(m){ hp*=m.hp; dmg*=m.dmg; reward*=m.reward; } } } return {hp,dmg,reward}; }
   diffMul(){ const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],z=this._zoneMul||{hp:1,dmg:1,reward:1},r=this.riftMul(),c=this._challengeRun||[]; return {...d,hp:d.hp*z.hp*r.hp*(c.includes('iron')?1.35:1)*(c.includes('crowd')?1.15:1),dmg:d.dmg*z.dmg*r.dmg*(c.includes('fang')?1.25:1),reward:d.reward*z.reward*r.reward}; }
-  riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=recipeModDef(id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} if(this.recipeMode)m.reward*=1+atlasLv('fortune')*0.08; return m; }   // ตัวคูณความยาก × Zone Modifiers
+  riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=recipeModDef(id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} if(this.recipeMode){ m.reward*=1+atlasLv('fortune')*0.08; const pl=this._pact||{}; m.hp*=1+0.15*(pl.hp||0); m.dmg*=1+0.15*(pl.dmg||0); m.reward*=1+PACT_REWARD_PER_HEAT*(this._pactHeat||0); } return m; }   // ตัวคูณความยาก × Zone Modifiers
   zoneLevel(){ return stageZoneLevel(this.stageIndex||0,this.stageDiff||1); }   // Zone Level ของด่านที่กำลังเล่น
   // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
   recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }
@@ -8270,7 +8301,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?this.riftMul().hp*RECIPE_BOSS_HP:1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -9408,7 +9439,7 @@ class Game extends Phaser.Scene {
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
     else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
-    const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1)));if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;if(this.recipeMode&&this.recipeHas('haste'))e.spd*=1.3;
+    const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*dmgCurve*pg.enemyDmg*this.diffMul().dmg*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1)));if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;if(this.recipeMode&&this.recipeHas('haste'))e.spd*=1.3;if(this.recipeMode&&this._pact&&this._pact.speed)e.spd*=1+0.1*this._pact.speed;
     if(this.stageIndex===0&&type!=='acid'){
       scale=(type==='tank'||type==='siege')?0.86:(type==='fast'||type==='dasher')?0.68:0.74;
       e.setCircle(type==='tank'||type==='siege'?25:20,type==='tank'||type==='siege'?23:28,type==='tank'||type==='siege'?23:28);
@@ -10540,7 +10571,7 @@ class Game extends Phaser.Scene {
     h.body.setAllowGravity(false); this.camWorld(h); this.showPickupCue(h,0xff5f97,1.35); if(this.iso)h.setDepth(Math.max(80000,h.y));
     this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); this.hidePickupCue(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
-    const amt=this.recipeHas&&this.recipeHas('noheal')?0:Math.round((this.player.maxhp*0.18+6)*(this.player.healEffect||1)); this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
+    const amt=this.recipeHas&&this.recipeHas('noheal')?0:Math.round((this.player.maxhp*0.18+6)*(this.player.healEffect||1)*this.pactHealMul()); this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
     Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.fireRecipes('heal'); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5);
     if(this.textures.exists('fx_heal')&&this.anims.exists('fx_heal')) this.spawnFxAnim('fx_heal',this.player.x,this.player.y,{scale:150/ASSET_FX.fx_heal.fw,depth:8,anchor:'center'}); }
   popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+n+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
@@ -12019,7 +12050,7 @@ class Game extends Phaser.Scene {
     if(this.player.iframe>0)this.player.iframe-=dt;
     if(!Number.isFinite(this.player.maxhp)||this.player.maxhp<=0)this.player.maxhp=90;
     if(!Number.isFinite(this.player.hp))this.player.hp=this.player.maxhp;   // safety net: กัน HP ค้าง NaN
-    const regenPerSec=(this.recipeHas('noheal')||this.player._uqNoRegen?0:1)*Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
+    const regenPerSec=(this.recipeHas('noheal')||this.player._uqNoRegen?0:1)*this.pactHealMul()*Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
     if(regenPerSec>0&&this.player.hp<this.player.maxhp)this.player.hp=Math.min(this.player.maxhp,this.player.hp+regenPerSec*dt);
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
