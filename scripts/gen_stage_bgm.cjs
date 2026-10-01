@@ -192,6 +192,7 @@ const MENUS = [
   { name: 'bgm_menu_kitchen', title: 'Recipe Kitchen',      key: 72, mode: 'mixo',   bpm: 118, prog: [0, 3, 6, 4], drum: 'groove', bass: 'walk',  arp: 'pluck', arpRate: 2, lead: 'sqr',  pad: 'tri',   fx: ['tick'], rhythms: [0, 1, 3] },
   { name: 'bgm_menu_crystal_clash', title: 'Crystal Clash (main menu)', key: 64, mode: 'harm', bpm: 150, prog: [0, 5, 3, 4, 0, 5, 1, 4], drum: 'march', bass: 'pulse', arp: 'sqr', arpRate: 4, lead: 'brass', pad: 'choir', fx: ['heart'] },
   { name: 'bgm_loading_fairy_kingdom', title: 'Fairy Kingdom (loading)', key: 65, mode: 'lydian', bpm: 88, prog: [0, 4, 5, 3, 0, 1, 4, 4], drum: 'sparse', bass: 'long', arp: 'pluck', arpRate: 2, lead: 'sine', pad: 'choir', fx: ['chime'], vib: 0.012 },
+  { name: 'bgm_menu_chiptune_pop', title: 'Chiptune Pop (main menu)', key: 72, mode: 'major', bpm: 128, prog: [0, 4, 5, 3, 0, 4, 3, 4], drum: 'groove', bass: 'pulse', arp: 'sqr', arpRate: 4, lead: 'sqr', pad: 'tri', fx: [], rhythms: [0, 1, 3] },
 ];
 const out = process.argv[2] || '.';
 const want = process.argv.slice(3);

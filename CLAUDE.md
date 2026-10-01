@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.0.79 (เจ้าของ):** bgm_main → `bgm_menu_chiptune_pop.mp3` (C major 128BPM groove+pulse bass+sqr arp 16th+sqr lead, ลูป 30 วิ) · Crystal Clash ยังเก็บไว้
 - **v6.0.78 (เจ้าของ):** หน้าโหลดเล่น `bgm_loading_fairy_kingdom.mp3` (F lydian 88BPM pluck+choir+sine lead) ผ่าน `window.LoaderMusic` ใน index.html (HTML Audio, เคารพ settings.sound/musicVol, autoplay โดนบล็อก = เล่นตอนแตะแรก) · fade ตอน finishIntro หรือ playMainBgm
 - **v6.0.77 (เจ้าของ: แนว FF9 สู้บอส):** bgm_main → `bgm_menu_crystal_clash.mp3` (MENUS ใน gen_stage_bgm: E harmonic minor 150BPM march+pulse bass+sqr arp 16th+brass lead+choir) · เพลงเดิม mochi_morning ยังอยู่ สลับกลับได้
 - **v6.0.76 (เจ้าของ):** กรอบเปรียบเทียบ Equipment โชว์สแตตครบ (เลิก slice 5) + ส่วน MODS ของแต่ละชิ้นในกรอบ แทนบรรทัด affix ใต้กรอบ

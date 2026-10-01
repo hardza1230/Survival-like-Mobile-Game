@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.78';
+const GAME_VERSION = '6.0.79';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.79', date:'2026-10-01', title:'Chiptune menu', items:['Main menu now loops Chiptune Pop, a bouncy retro 8-bit theme'] },
   { v:'6.0.78', date:'2026-10-01', title:'Loading theme', items:['Loading screen plays the Fairy Kingdom theme, fading out when the menu music starts'] },
   { v:'6.0.77', date:'2026-10-01', title:'New menu theme', items:['Main menu plays Crystal Clash, a fast heroic battle theme'] },
   { v:'6.0.76', date:'2026-10-01', title:'Gear compare boxes', items:['Equipment compare boxes list every stat and every mod inside the frame'] },
@@ -1674,7 +1675,7 @@ const ASSET_AUDIO = {
   sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
-  bgm_main:       'assets/audio/bgm/menu/bgm_menu_crystal_clash.mp3',
+  bgm_main:       'assets/audio/bgm/menu/bgm_menu_chiptune_pop.mp3',
   bgm_menu_temple:  'assets/audio/bgm/menu/bgm_menu_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
   bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร
