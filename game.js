@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.2.0';
+const GAME_VERSION = '6.2.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.2.1', date:'2026-10-01', title:'Longer Recipe runs', items:['Recipe Hunger goal raised to 260 + 10 per tier (was 150 + 6)','Boss auto-arrives after 5 minutes (was 3); fast-clear bonus under 2:50'] },
   { v:'6.2.0', date:'2026-10-01', title:'Endgame Build', items:['Set your full build before Recipe runs: path, infusion, mutation, evolution and upgrades','Build points = 8 + Atlas points','Recipe runs no longer give +3 level-ups; level-ups give stat cards only'] },
   { v:'6.1.1', date:'2026-10-01', title:'Recipe progress bar', items:['Recipe runs show a Hunger progress bar with event and boss markers, like the stage wave track'] },
   { v:'6.1.0', date:'2026-10-01', title:'Hunger Pact', items:['New Pact tab in the Recipe Atlas: turn on 8 difficulty terms for Recipe runs','Each rank adds Heat; every Heat point gives +7% rewards','Your best Heat cleared is saved'] },
@@ -4083,7 +4084,7 @@ const RIFT_MODS=[
   {id:'glass',emoji:'🔪',name:'Razor Edge',desc:'Enemies hit 40% harder but have less HP',hp:0.85,dmg:1.4,reward:1.25},
   {id:'titan',emoji:'🗿',name:'Titanic',desc:'Enemies have 55% more HP',hp:1.55,dmg:1,reward:1.30}
 ];
-const PINNACLE_KEY_COST=3, RECIPE_PAR=100, RECIPE_HUNGER_CAP=180, RECIPE_FRAGS_PER_KEY=4, RECIPE_BOSS_HP=0.7;   // R10: บอส recipe เบาลง 30% ให้รันจบใน ~2-3 นาที แต่ยังสเกลตาม tier
+const PINNACLE_KEY_COST=3, RECIPE_PAR=170, RECIPE_HUNGER_CAP=180, RECIPE_TIME_CAP=300, RECIPE_FRAGS_PER_KEY=4, RECIPE_BOSS_HP=0.7;   // R10: บอส recipe เบาลง 30% ให้รันจบใน ~2-3 นาที แต่ยังสเกลตาม tier
 // 📜 Recipe Maps (endgame Phase R · R1 = data model + stash) — แผนที่แบบ PoE: ธีม(ด่าน)+Tier+mods
 const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16;
 const RECIPE_RARITY={normal:{label:'Normal',color:'#e6dcf0',hex:0x8d8499,mods:0},magic:{label:'Magic',color:'#7fb6ff',hex:0x4a7dff,mods:1},rare:{label:'Rare',color:'#ffd166',hex:0xe0a526,mods:2}};
@@ -7485,7 +7486,7 @@ class Game extends Phaser.Scene {
       this.showBanner('Progress complete','The boss is coming',1800);this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss());
     }
   }
-  recipeHungerGoal(){ return Math.round((150+((this._recipe&&this._recipe.tier)||1)*6)*(1+0.2*((this._pact&&this._pact.hunger)||0))); }
+  recipeHungerGoal(){ return Math.round((260+((this._recipe&&this._recipe.tier)||1)*10)*(1+0.2*((this._pact&&this._pact.hunger)||0))); }
   applyEgBuild(){ const b=this.basicAttack,d=this.basicAttackInfo(); if(!b||!d)return; const ch=this.character,e=egBuild(ch);
     this._egBuilt=true; if(egBuildCost(ch,e)>egBuildPoints())return;   // เกินแต้ม = ใช้ build เปล่า (ปุ่ม Run กันไว้แล้ว)
     const P=BASIC_PATHS[ch]; if(e.path&&P&&P.find(x=>x.id===e.path))b.path=e.path; if(e.inf&&FLAVOR_INFUSIONS.find(f=>f.id===e.inf))b.infusion=e.inf;
@@ -7507,7 +7508,7 @@ class Game extends Phaser.Scene {
     if(this._hungerDone)return;
     if(this.checkEndgameCurse(this._hunger/goal))return;
     const evAt=atlasLv('eventful')>=1?[0.3]:[0.4]; if(atlasLv('eventful')>=2)evAt.push(0.7); const en=this._recipeEventN|0; if(en<evAt.length&&this._hunger>=goal*evAt[en]){ this._recipeEventN=en+1; this.triggerRecipeEvent(); }
-    const full=this._hunger>=goal, late=this._hungerT>=RECIPE_HUNGER_CAP;
+    const full=this._hunger>=goal, late=this._hungerT>=RECIPE_TIME_CAP;
     if(full||late){ this._hungerDone=true; this._recipeFillT=this._hungerT; this._recipeFast=full&&this._hungerT<=recipePar();
       this.showBanner(full?(this._recipeFast?'⚡ Fast clear!':'🍽 Hunger Meter full!'):'⏳ The boss grows impatient','The boss is coming',1800);
       this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); } }
@@ -7530,7 +7531,7 @@ class Game extends Phaser.Scene {
   finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); if((this._pactHeat||0)>(Save.data.pactBest||0)){ Save.data.pactBest=this._pactHeat; Save.save(); this.time.delayedCall(2600,()=>this.showBanner('🔥 New Pact record: Heat '+this._pactHeat,'',2000)); }
     const at=atlasData(),ptsBefore=atlasPoints(); at[r.theme]=Math.max(at[r.theme]||0,r.tier); const gainedAP=atlasPoints()-ptsBefore; if(gainedAP>0)this.time.delayedCall(5200,()=>this.showBanner('🗺 Atlas +'+gainedAP+' point'+(gainedAP>1?'s':''),STAGES[r.theme].name+' · best Tier '+at[r.theme],2200));
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
-    let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_HUNGER_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
+    let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_TIME_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
     let bonus=0; if(this._recipeFast){ bonus=Math.round((60+r.tier*25)*this.diffMul().reward); this.sugarStage+=bonus; }
     const drops=this.rollRecipeDrops(r),bag=this.recipeBag(),got=[]; let lost=0;
     drops.forEach(d=>{ if(bag.length<RECIPE_BAG_MAX){bag.unshift(d);got.push(d);} else lost++; });
