@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.2.1';
+const GAME_VERSION = '6.2.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.2.2', date:'2026-10-01', title:'Recipe slot level-ups', items:['In Recipe runs, level-ups spin a small slot in the corner and grant a stat instantly — the game no longer pauses'] },
   { v:'6.2.1', date:'2026-10-01', title:'Longer Recipe runs', items:['Recipe Hunger goal raised to 260 + 10 per tier (was 150 + 6)','Boss auto-arrives after 5 minutes (was 3); fast-clear bonus under 2:50'] },
   { v:'6.2.0', date:'2026-10-01', title:'Endgame Build', items:['Set your full build before Recipe runs: path, infusion, mutation, evolution and upgrades','Build points = 8 + Atlas points','Recipe runs no longer give +3 level-ups; level-ups give stat cards only'] },
   { v:'6.1.1', date:'2026-10-01', title:'Recipe progress bar', items:['Recipe runs show a Hunger progress bar with event and boss markers, like the stage wave track'] },
@@ -9026,6 +9027,7 @@ class Game extends Phaser.Scene {
     const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();
   }
   openLevelUp(){
+    if(this.recipeMode&&this._egBuilt&&!this._forcedOpts){ this.slotLevelUp(); return; }   // v6.2.2: Recipe = สล็อตมุมจอ ไม่หยุดเกม
     const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
@@ -9072,6 +9074,22 @@ class Game extends Phaser.Scene {
     g.setScale(1);this.tweens.killTweensOf(g);
     this.tweens.add({targets:g,alpha:{from:0.55,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
+  // 🎰 Recipe level-up: วงล้อเล็กมุมขวา หมุน ~1 วิ แล้วให้สแตต endless ทันที (เกมไม่หยุด) · เลเวลซ้อนกันหมุนต่อคิว
+  slotLevelUp(){ if(this._slotBusy||!(this.pendingLvl>0))return; const b=this.basicAttack; if(!b){this.pendingLvl=0;return;}
+    const defs=this.endlessStatDefs(); if(!defs.length){this.pendingLvl=0;return;}
+    this._slotBusy=true; this.pendingLvl--; const win=Phaser.Utils.Array.GetRandom(defs);
+    const x=this.W-58,y=(this._pad||0)+150,c=this.camUI(this.add.container(x,y).setDepth(160));
+    const g=this.add.graphics(); g.fillStyle(0x241a30,0.92); g.fillRoundedRect(-36,-36,72,72,14); g.lineStyle(3,0xffd166,1); g.strokeRoundedRect(-36,-36,72,72,14);
+    const t=this.add.text(0,-2,defs[0].emoji,{fontSize:'34px'}).setOrigin(0.5); const lv=this.add.text(0,30,'LV UP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5);
+    c.add([g,t,lv]); c.setScale(0.4); this.tweens.add({targets:c,scale:1,duration:180,ease:'Back.out'});
+    let i=0; const N=12; const tick=()=>{ if(!c.active)return; i++; t.setText(i>=N?win.emoji:defs[i%defs.length].emoji); Sfx.chestTick&&Sfx.chestTick(i);
+      if(i<N){ this.time.delayedCall(45+i*i*0.9,tick); return; }
+      b.endless=b.endless||{}; b.endless[win.id]=(b.endless[win.id]||0)+1; win.apply(this.player); if(win.id==='ehp'&&this.drawBars)this.drawBars();
+      g.lineStyle(4,0x9dff9d,1); g.strokeRoundedRect(-36,-36,72,72,14); lv.setText(win.title).setColor('#9dff9d');
+      const pop=this.camUI(this.add.text(x,y+52,win.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9dff9d',stroke:'#000',strokeThickness:3}).setOrigin(1,0).setX(this.W-14).setDepth(160));
+      this.tweens.add({targets:c,scale:1.15,duration:120,yoyo:true});
+      this.time.delayedCall(900,()=>{ this.tweens.add({targets:[c,pop],alpha:0,duration:250,onComplete:()=>{c.destroy();pop.destroy();this._slotBusy=false; if(this.pendingLvl>0)this.slotLevelUp();}}); }); };
+    this.time.delayedCall(60,tick); }
   closeLevelUp(){
     Sfx.card();
     this._relicPick=false;
