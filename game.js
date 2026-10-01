@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.2.5';
+const GAME_VERSION = '6.3.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.3.0', date:'2026-10-01', title:'Run preparation screen', items:['New single Prepare Run screen for Recipe maps: map, build, pact, farming target and total multipliers in one place'] },
   { v:'6.2.5', date:'2026-10-01', title:'Curse roll can be empty', items:['Mid-run curse roll can now land on “No curse”'] },
   { v:'6.2.4', date:'2026-10-01', title:'Clearer build, instant curses', items:['Endgame Build rows now explain what each choice does','Mid-run endgame curses are rolled automatically — no pause'] },
   { v:'6.2.3', date:'2026-10-01', title:'Recipe progress meter', items:['Recipe boss appears only when the Hunger meter is full (no time limit)','Recipe runs use the painted progress meter, shown smaller'] },
@@ -5199,7 +5200,7 @@ class Game extends Phaser.Scene {
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(0).setY(10); this.tweens.add({targets:this.menu,alpha:1,y:0,duration:160,ease:'Quad.easeOut'}); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift')this.buildRecipes(); else if(s==='recipes')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(s==='recipeprep')this.buildRecipePrep(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
@@ -5644,7 +5645,7 @@ class Game extends Phaser.Scene {
       const rb=(Save.data.recipeBest||{})[r.theme]; T(w/2,y+64,'Recipe is used up when you enter · Best fill '+(rb?rb+'s':'—')+' · ⚡ under '+recipePar()+'s = speed bonus',9,'#9d93aa');
       T(w/2,y+48,(r.mods&&r.mods.length)?r.mods.map(id=>{const d=recipeModDef(id);return d?d.emoji+' '+d.name:'';}).join('  ·  '):'No mods',11,'#ffc3d6');
       const half=(cw-30)/2;
-      this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;} this.stageDiff=1; this._recipeRequested=r; this.startRun(r.theme); });
+      this.uiPillBtn(this.menu,cx+10+half/2,y+104,half,36,COLORS.pink,'▶','Run',()=>{ this._prepRecipe=r; this.menuScreen='recipeprep'; this.buildMenuScreen(); });
       this.uiPillBtn(this.menu,cx+20+half*1.5,y+104,half,36,0x8a3050,'🗑','Discard',()=>{ if(this._recipeDiscard!==r.uid){this._recipeDiscard=r.uid;this.menuToast('Tap Discard again to confirm','#ff9bb5');return;} Save.data.recipes=bag.filter(q=>q.uid!==r.uid);Save.save();this._recipeSel=null;this._recipeDiscard=null;this.buildRecipes(); });
     }
     this.menu.setVisible(true);
@@ -5669,6 +5670,41 @@ class Game extends Phaser.Scene {
       g.fillStyle(0x0f0a16,1);g.fillRoundedRect(x+8,y+tH-12,tw-16,5,2);g.fillStyle(col,1);g.fillRoundedRect(x+8,y+tH-12,(tw-16)*Math.min(1,t/RECIPE_TIER_MAX),5,2);this.menu.add(g);
       const uq=uniqueForTheme(si)[0],uqHave=uq&&(Save.data.uniqueFound||{})[uq.id]; T(x+tw/2,y+5,st.emoji+(t?' T'+t:' —')+(uq?(uqHave?' '+uq.emoji:' ?'):''),14,t?'#ffffff':'#8d8499','bold'); T(x+tw/2,y+25,st.name,8,t?'#e6dcf0':'#6d6479'); if(tH>=70)T(x+tw/2,y+tH-28,'★ '+pts+'/'+maxP,9,'#ffe08a');
       this._zone(x,y,tw,tH,()=>this.menuToast(st.emoji+' '+st.name+' · best Tier '+(t||'—')+' · best fill '+(best[si]?best[si]+'s':'—')+(uq?' · Unique: '+(uqHave?uq.name:'???'):''),'#e6dcf0')); });
+    this.menu.setVisible(true);
+  }
+  // v6.3.0: หน้าเตรียมรัน Recipe หน้าเดียว — แผนที่ · Build · Pact · เป้าดรอป · ตัวคูณรวม · Run
+  buildRecipePrep(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Prepare Run','screen_atlas');
+    const r=this._prepRecipe; if(!r||!this.recipeBag().includes(r)){ this.menuScreen='recipes'; this.buildMenuScreen(); return; }
+    const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2; let y=(w<=h?96:66);
+    const T=(x,yy,t,sz,c,st,o)=>{const q=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,wordWrap:{width:cw-24}}).setOrigin(o===undefined?0:o,0);this.menu.add(q);return q;};
+    const box=(hh,col)=>{const g=this.add.graphics();g.fillStyle(0x1c1426,0.95);g.fillRoundedRect(cx,y,cw,hh,12);g.lineStyle(2,col||0x4a4059,1);g.strokeRoundedRect(cx,y,cw,hh,12);this.menu.add(g);};
+    const editBtn=(label,fn)=>{const b=this.add.text(cx+cw-12,y+10,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#7fd4ff'}).setOrigin(1,0);this.menu.add(b);this._zone(cx+cw-90,y,90,30,fn);};
+    // แผนที่
+    const st=STAGES[r.theme]||{}; const mods=(r.mods||[]).map(id=>{const d=recipeModDef(id);return d?d.name:id;});
+    box(58,0xffd166); T(cx+12,y+8,'🗺 T'+r.tier+' · '+(st.name||'Recipe'),14,'#ffe08a','bold'); T(cx+12,y+30,mods.length?'Mods: '+mods.join(', '):'No map mods',11,'#e6dcf0'); y+=66;
+    // Build
+    const ch=egCharKey(),e=egBuild(ch),d=BASIC_ATTACKS[ch]||{mutations:[]},P=BASIC_PATHS[ch]||[],used=egBuildCost(ch,e),tot=egBuildPoints(),over=used>tot;
+    const parts=[(P.find(x=>x.id===e.path)||{}).name,(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name,(d.mutations.find(m=>m.id===e.mut)||{}).name,e.evo?'Evolved':null].filter(Boolean);
+    const ups=Object.values(e.lv||{}).reduce((a,v)=>a+(v||0),0);
+    box(74,over?0xff6b6b:0x4a4059); T(cx+12,y+8,'🛠 Build · '+used+'/'+tot+' pts'+(over?'  OVER BUDGET':''),13,over?'#ff6b6b':'#ffffff','bold'); editBtn('Edit ›',()=>{this.menuScreen='egbuild';this.buildMenuScreen();});
+    T(cx+12,y+30,(CHARACTERS[ch]?CHARACTERS[ch].name:ch)+' · '+(parts.length?parts.join(' · '):'no path/mutation')+' · '+ups+' upgrade ranks',11,'#cfc2df'); y+=82;
+    // Pact
+    const heat=pactHeat(),terms=PACT_TERMS.filter(t=>pactLv(t.id)>0).map(t=>t.emoji+t.name+(pactLv(t.id)>1?' ×'+pactLv(t.id):''));
+    box(74,heat?0xff7a45:0x4a4059); T(cx+12,y+8,'🔥 Pact · Heat '+heat,13,heat?'#ffb070':'#ffffff','bold'); editBtn('Edit ›',()=>{this._atlasTab='pact';this.menuScreen='atlas';this.buildMenuScreen();});
+    T(cx+12,y+30,terms.length?terms.join(' · '):'No pact terms — tap Edit to raise difficulty for more rewards',11,'#cfc2df'); y+=82;
+    // เป้าดรอป
+    const F=[['all','All'],['weapon','Weapons'],['armor','Armor'],['materials','Materials']],fsel=this._farmFocusRequested||'all',fw=(cw-18)/4;
+    T(cx,y,'🎯 Farming target',12,'#ffe08a','bold'); y+=20;
+    F.forEach(([id,l],i)=>{const x=cx+i*(fw+6),on=fsel===id,g=this.add.graphics();g.fillStyle(on?0x6b2bd9:0x241a30,1);g.fillRoundedRect(x,y,fw,32,9);this.menu.add(g);
+      const q=this.add.text(x+fw/2,y+16,l,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff'}).setOrigin(0.5);this.menu.add(q);this._zone(x,y,fw,32,()=>{this._farmFocusRequested=id;this.buildRecipePrep();});}); y+=44;
+    // ตัวคูณรวม
+    const m=recipeMul(r),pl=k=>pactLv(k),hp=m.hp*(1+0.15*pl('hp')),dmg=m.dmg*(1+0.15*pl('dmg')),rw=m.reward*(1+atlasLv('fortune')*0.08)*(1+PACT_REWARD_PER_HEAT*heat),goal=Math.round((260+r.tier*10)*(1+0.2*pl('hunger')));
+    box(78,0x8bd3a0); T(cx+12,y+8,'📊 Totals for this run',13,'#9dff9d','bold');
+    T(cx+12,y+30,'Enemy HP ×'+hp.toFixed(2)+'   ·   Enemy dmg ×'+dmg.toFixed(2)+(pl('boss')?'   ·   Boss HP +'+(25*pl('boss'))+'%':''),11,'#ffffff');
+    T(cx+12,y+48,'Rewards ×'+rw.toFixed(2)+'   ·   Hunger goal '+goal+' kills',11,'#ffe08a'); y+=90;
+    this.uiPillBtn(this.menu,w/2,Math.min(y+26,h-40),Math.min(cw,300),48,over?0x4a4059:COLORS.pink,'▶','Start Run',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;}
+      this.stageDiff=1; this._recipeRequested=r; this._farmFocusRequested=this._farmFocusRequested||'all'; this._prepRecipe=null; this.startRun(r.theme); });
     this.menu.setVisible(true);
   }
   buildEgBuild(){
