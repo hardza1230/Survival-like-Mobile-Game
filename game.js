@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.4.0';
+const GAME_VERSION = '6.5.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.5.0', date:'2026-10-01', title:'Map Table', items:['Recipe map items are gone: pick any cleared theme and tier on the Map Table','Clearing a tier unlocks the next one; dying costs nothing','Map mods are paid with crafting currency when the run starts','Old maps were refunded as currency'] },
   { v:'6.4.0', date:'2026-10-01', title:'Endgame home', items:['The Prepare Run screen is now the Endgame home: next map, build, pact, target, totals and Start in one place','Maps, Atlas and Pinnacle are one tap away; the highest-tier map is picked automatically'] },
   { v:'6.3.0', date:'2026-10-01', title:'Run preparation screen', items:['New single Prepare Run screen for Recipe maps: map, build, pact, farming target and total multipliers in one place'] },
   { v:'6.2.5', date:'2026-10-01', title:'Curse roll can be empty', items:['Mid-run curse roll can now land on “No curse”'] },
@@ -4151,6 +4152,16 @@ function atlasFree(){ return Math.max(0,atlasPoints()-atlasSpent()); }
 function recipePar(){ return RECIPE_PAR+atlasLv('speedster')*10; }
 function atlasMaxPoints(){ return recipeThemes().length*atlasThemePoints(RECIPE_TIER_MAX); }
 function recipeThemes(){ return STAGES.map((s,i)=>i).filter(i=>STAGES[i].ready!==false); }
+// v6.5.0 Map Table: ไม่มีไอเทมแผนที่แล้ว · เลือกธีม + Tier (≤ เคลียร์สูงสุด+1) + mod เอง · mod จ่าย currency ตอนกด Start (ช่อง 1/2/3 = transmute/regal/exalt)
+const MAP_MOD_COST=['transmute','regal','exalt'];
+function mapTierCap(){ return Math.max(1,Math.min(RECIPE_TIER_MAX,Math.max((Save.data.recipeMaxClear||0)+1,Save.data.mapTierLegacy||1))); }
+function mapTable(){ const th=recipeThemes(); let m=Save.data.mapTable; if(!m)m=Save.data.mapTable={theme:th[0],tier:1,mods:[]};
+  if(!th.includes(m.theme))m.theme=th[0]; m.tier=Math.max(1,Math.min(mapTierCap(),m.tier|0)); m.mods=(m.mods||[]).filter(id=>recipeModDef(id)).slice(0,3); return m; }
+function mapTableRecipe(){ const m=mapTable(); return {uid:'table',theme:m.theme,tier:m.tier,rarity:m.mods.length>=2?'rare':m.mods.length?'magic':'normal',mods:m.mods.slice()}; }
+function mapModCostOk(){ const need={}; mapTable().mods.forEach((id,i)=>{const c=MAP_MOD_COST[i];need[c]=(need[c]||0)+1;}); return Object.keys(need).every(c=>Save.currency(c)>=need[c])?need:null; }
+function migrateMapTable(){ if(Save.data.mapTableMigrated)return 0; Save.data.mapTableMigrated=true; const bag=Save.data.recipes||[]; let n=0;
+  Save.data.mapTierLegacy=Math.max(Save.data.recipeMaxTier||1,...bag.map(r=>r.tier||1));
+  bag.forEach(r=>{ Save.addCurrency(r.rarity==='rare'?'chaos':r.rarity==='magic'?'regal':'transmute',1); n++; }); Save.data.recipes=[]; Save.save(); return n; }
 function makeRecipe(tier,theme,rarity){
   tier=Math.max(1,Math.min(RECIPE_TIER_MAX,tier|0)); const th=recipeThemes();
   if(theme==null)theme=th[Math.floor(Math.random()*th.length)];
@@ -5676,16 +5687,25 @@ class Game extends Phaser.Scene {
   // v6.3.0: หน้าเตรียมรัน Recipe หน้าเดียว — แผนที่ · Build · Pact · เป้าดรอป · ตัวคูณรวม · Run
   buildRecipePrep(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Endgame','screen_atlas'); this.migrateRiftToRecipes&&this.migrateRiftToRecipes();
-    const bag=this.recipeBag(); let r=this._prepRecipe; if(!r||!bag.includes(r)){ r=bag.slice().sort((a,b)=>b.tier-a.tier||(b.mods||[]).length-(a.mods||[]).length)[0]||null; this._prepRecipe=r; }
+    { const n=migrateMapTable(); if(n)this.menuToast('📜 Maps are now built on the Map Table · '+n+' old maps refunded as currency','#9dff9d'); }
+    const mt=mapTable(),r=mapTableRecipe(),cap=mapTierCap(),th=recipeThemes(); this._prepRecipe=r;
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2; let y=(w<=h?96:66);
-    if(!r){ const t=this.add.text(w/2,y+20,'No recipe maps yet.\nClaim a free Tier 1 map to start.',{fontFamily:'sans-serif',fontSize:'14px',color:'#e6dcf0',align:'center'}).setOrigin(0.5,0);this.menu.add(t);
+    if(false){ const t=this.add.text(w/2,y+20,'No recipe maps yet.\nClaim a free Tier 1 map to start.',{fontFamily:'sans-serif',fontSize:'14px',color:'#e6dcf0',align:'center'}).setOrigin(0.5,0);this.menu.add(t);
       this.uiPillBtn(this.menu,w/2,y+100,Math.min(cw,280),46,COLORS.mint,'🎁','Get free Tier 1',()=>{this.claimFreeRecipe();this._prepRecipe=null;this.buildRecipePrep();}); this.menu.setVisible(true); return; }
     const T=(x,yy,t,sz,c,st,o)=>{const q=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,wordWrap:{width:cw-24}}).setOrigin(o===undefined?0:o,0);this.menu.add(q);return q;};
     const box=(hh,col)=>{const g=this.add.graphics();g.fillStyle(0x1c1426,0.95);g.fillRoundedRect(cx,y,cw,hh,12);g.lineStyle(2,col||0x4a4059,1);g.strokeRoundedRect(cx,y,cw,hh,12);this.menu.add(g);};
     const editBtn=(label,fn)=>{const b=this.add.text(cx+cw-12,y+10,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#7fd4ff'}).setOrigin(1,0);this.menu.add(b);this._zone(cx+cw-90,y,90,30,fn);};
     // แผนที่
     const st=STAGES[r.theme]||{}; const mods=(r.mods||[]).map(id=>{const d=recipeModDef(id);return d?d.name:id;});
-    box(58,0xffd166); T(cx+12,y+8,'🗺 T'+r.tier+' · '+(st.name||'Recipe'),14,'#ffe08a','bold'); T(cx+12,y+30,mods.length?'Mods: '+mods.join(', '):'No map mods',11,'#e6dcf0'); editBtn('Change ›',()=>{this.menuScreen='recipebag';this.buildMenuScreen();}); y+=66;
+    { const save=()=>{Save.save();Sfx.select&&Sfx.select();this.buildRecipePrep();}, arrow=(x,yy,lbl,fn)=>{const q=this.add.text(x,yy,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5,0);this.menu.add(q);this._zone(x-20,yy-4,40,30,fn);};
+      box(150,0xffd166); T(cx+12,y+8,'🗺 Map Table',13,'#ffe08a','bold');
+      const ti=th.indexOf(mt.theme); arrow(cx+24,y+30,'‹',()=>{mt.theme=th[(ti-1+th.length)%th.length];save();}); arrow(cx+cw-24,y+30,'›',()=>{mt.theme=th[(ti+1)%th.length];save();}); T(cx+cw/2,y+32,(st.emoji||'')+' '+(st.name||''),13,'#ffffff','bold',0.5);
+      arrow(cx+24,y+58,'−',()=>{mt.tier=Math.max(1,mt.tier-1);save();}); arrow(cx+cw-24,y+58,'+',()=>{if(mt.tier>=cap){this.menuToast('Clear Tier '+cap+' to unlock the next tier','#ff9bb5');return;}mt.tier++;save();}); T(cx+cw/2,y+60,'Tier '+mt.tier+'  (unlocked up to T'+cap+')',13,'#ffffff','bold',0.5);
+      const cols=5,mw=(cw-24-(cols-1)*5)/cols; RECIPE_MODS.forEach((md,i)=>{ const on=mt.mods.includes(md.id),x=cx+12+(i%cols)*(mw+5),yy=y+88+Math.floor(i/cols)*28,g=this.add.graphics(); g.fillStyle(on?0x6b2bd9:0x241a30,1); g.fillRoundedRect(x,yy,mw,24,7); this.menu.add(g);
+        const q=this.add.text(x+mw/2,yy+12,md.emoji+(on?(' '+MAP_MOD_COST[mt.mods.indexOf(md.id)].slice(0,3)):''),{fontFamily:'sans-serif',fontSize:'11px',color:'#ffffff'}).setOrigin(0.5);this.menu.add(q);
+        this._zone(x,yy,mw,24,()=>{ if(on)mt.mods=mt.mods.filter(z=>z!==md.id); else { if(mt.mods.length>=3){this.menuToast('Max 3 mods','#ff9bb5');return;} mt.mods.push(md.id);} this.menuToast(md.emoji+' '+md.name+': '+md.desc+' · rewards ×'+md.reward.toFixed(2),'#e6dcf0'); save(); }); });
+      y+=158; const ok=mapModCostOk(); this._mapCostOk=!!ok;
+      T(cx,y,mt.mods.length?('Mods: '+mods.join(', ')+' · cost '+mt.mods.map((id,i)=>{const c=MAP_MOD_COST[i];return (currencyDef(c)||{}).emoji||c;}).join(' ')+(ok?'':'  (not enough currency)')):'Tap mods to add them (paid with currency when the run starts)',10,ok?'#cfc2df':'#ff6b6b'); y+=22; }
     // Build
     const ch=egCharKey(),e=egBuild(ch),d=BASIC_ATTACKS[ch]||{mutations:[]},P=BASIC_PATHS[ch]||[],used=egBuildCost(ch,e),tot=egBuildPoints(),over=used>tot;
     const parts=[(P.find(x=>x.id===e.path)||{}).name,(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name,(d.mutations.find(m=>m.id===e.mut)||{}).name,e.evo?'Evolved':null].filter(Boolean);
@@ -5707,10 +5727,10 @@ class Game extends Phaser.Scene {
     T(cx+12,y+30,'Enemy HP ×'+hp.toFixed(2)+'   ·   Enemy dmg ×'+dmg.toFixed(2)+(pl('boss')?'   ·   Boss HP +'+(25*pl('boss'))+'%':''),11,'#ffffff');
     T(cx+12,y+48,'Rewards ×'+rw.toFixed(2)+'   ·   Hunger goal '+goal+' kills',11,'#ffe08a'); y+=90;
     { const hb=(cw-16)/3,by=y+4; const keys=Save.data.riftKeys||0;
-      this.uiPillBtn(this.menu,cx+hb/2,by+20,hb,40,COLORS.grape,'📦','Maps ('+bag.length+')',()=>{this.menuScreen='recipebag';this.buildMenuScreen();});
-      this.uiPillBtn(this.menu,cx+hb+8+hb/2,by+20,hb,40,0x3d6bb3,'🗺','Atlas',()=>{this._atlasTab='board';this.menuScreen='atlas';this.buildMenuScreen();});
-      this.uiPillBtn(this.menu,cx+2*(hb+8)+hb/2,by+20,hb,40,keys>=PINNACLE_KEY_COST?0x6b2bd9:0x4a4059,'✦','🗝'+keys+'/'+PINNACLE_KEY_COST,()=>this.startPinnacle()); y+=52; }
-    this.uiPillBtn(this.menu,w/2,Math.min(y+28,h-40),Math.min(cw,300),50,over?0x4a4059:COLORS.pink,'▶','Start Run',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;}
+      const hb2=(cw-8)/2;
+      this.uiPillBtn(this.menu,cx+hb2/2,by+20,hb2,40,0x3d6bb3,'🗺','Atlas',()=>{this._atlasTab='board';this.menuScreen='atlas';this.buildMenuScreen();});
+      this.uiPillBtn(this.menu,cx+hb2+8+hb2/2,by+20,hb2,40,keys>=PINNACLE_KEY_COST?0x6b2bd9:0x4a4059,'✦','🗝'+keys+'/'+PINNACLE_KEY_COST,()=>this.startPinnacle()); y+=52; }
+    this.uiPillBtn(this.menu,w/2,Math.min(y+28,h-40),Math.min(cw,300),50,over?0x4a4059:COLORS.pink,'▶','Start Run',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;} const need=mapModCostOk(); if(!need){this.menuToast('Not enough currency for these mods — remove some or get more','#ff6b6b');return;} Object.keys(need).forEach(c=>Save.spendCurrency(c,need[c])); Save.save();
       this.stageDiff=1; this._recipeRequested=r; this._farmFocusRequested=this._farmFocusRequested||'all'; this._prepRecipe=null; this.startRun(r.theme); });
     this.menu.setVisible(true);
   }
@@ -7587,8 +7607,7 @@ class Game extends Phaser.Scene {
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_TIME_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
     let bonus=0; if(this._recipeFast){ bonus=Math.round((60+r.tier*25)*this.diffMul().reward); this.sugarStage+=bonus; }
-    const drops=this.rollRecipeDrops(r),bag=this.recipeBag(),got=[]; let lost=0;
-    drops.forEach(d=>{ if(bag.length<RECIPE_BAG_MAX){bag.unshift(d);got.push(d);} else lost++; });
+    const got=[],lost=0; const capBefore=mapTierCap(); Save.data.recipeMaxClear=Math.max(Save.data.recipeMaxClear||0,r.tier); const newCap=mapTierCap();
     const frag=1+Math.floor(r.tier/4)+(this._recipeFast?1:0); Save.data.pinnacleFrags=(Save.data.pinnacleFrags||0)+frag; let keys=0;
     while(Save.data.pinnacleFrags>=RECIPE_FRAGS_PER_KEY){Save.data.pinnacleFrags-=RECIPE_FRAGS_PER_KEY;Save.data.riftKeys=(Save.data.riftKeys||0)+1;keys++;}
     const uqPool=uniqueForTheme(r.theme),uqChance=0.05+r.tier*0.01+(r.rarity==='rare'?0.05:0)+(this._recipeFast?0.03:0); let uqGot=null;
@@ -7598,7 +7617,7 @@ class Game extends Phaser.Scene {
     Save.save(); this._recipeLoot={got,lost,frag,keys};
     this.showBanner('📜 Recipe T'+r.tier+' cleared!',(this._recipeFast?'⚡ Speed bonus 🍬'+bonus+' · ':'')+'Fill '+fill+'s'+(best?' · NEW BEST':''),2400);
     const line=got.map(d=>STAGES[d.theme].emoji+' T'+d.tier+(d.rarity!=='normal'?' '+RECIPE_RARITY[d.rarity].label:'')).join(', ');
-    this.time.delayedCall(2500,()=>this.showBanner('📜 New recipes: '+(line||'none')+(lost?' ('+lost+' lost — bag full)':''),'🧩 +'+frag+' Pinnacle fragment'+(frag>1?'s':'')+(keys?' · 🗝️ +'+keys+' Key':'')+' ('+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+')',2600)); }
+    this.time.delayedCall(2500,()=>this.showBanner(newCap>capBefore?'🗺 Tier '+newCap+' unlocked!':'🗺 Map cleared','🧩 +'+frag+' Pinnacle fragment'+(frag>1?'s':'')+(keys?' · 🗝️ +'+keys+' Key':'')+' ('+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+')',2600)); }
   // R3: ดรอป recipe ถัดไป — การันตี 1 ใบ (Tier เท่าเดิม; 35% +1, เร็ว +20%) · ใบที่ 2 ลุ้น 25% (+ตาม mod) · rarity ดีขึ้นตาม Tier (กฎเหล็ก)
   rollRecipeDrops(r){ const out=[],modN=(r.mods||[]).length,up=0.35+(this._recipeFast?0.2:0)+modN*0.08+atlasLv('cartographer')*0.10,rb=atlasLv('rarity')*0.04;
     const rar=()=>{const x=Math.random(),t=r.tier; return x<0.05+t*0.02+modN*0.05+rb?'rare':(x<0.30+t*0.02+modN*0.08+rb*2?'magic':'normal');};
