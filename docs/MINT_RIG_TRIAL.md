@@ -73,3 +73,6 @@ User judged the sprite-sheet run better than the rig gait. Runtime rendering now
 ## v6.0.64 — All actions use sprite sheets
 
 User requested sprite sheets for all actions. Removed gameplay rig construction, update, pose and ghost hooks, and atlas preload registration. Renderer reset clears any previous rig and keeps the player sprite visible. Mint idle, run, stationary/moving attacks, Wind Rush, dash, hurt and KO now follow the existing sprite pipeline. Frost Lance returns to the original 360ms pose and immediate launch (no 192ms rig delay). Experimental rig implementation/art/tools are retained only as inactive reference material. Tests exercise actual renderer cleanup and immediate Frost Lance, forbid gameplay rig construction/hooks, and retain sprite gait/attack/size/hurt/dash regression coverage. Mobile visual QA remains pending.
+
+## v6.0.65 — Removed
+Owner decision: the rig was removed entirely (code, atlas, source art, scripts, tests, previews). Reason: painted cutout limbs did not match the full-body sprite art, needed per-joint tuning across 9 versions, and gave little visible benefit at ~60px on phones. Use sprite-sheet frames + jelly/VFX for motion instead.

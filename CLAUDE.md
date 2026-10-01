@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.0.65 (เจ้าของสั่ง):** ลบ Mint rig ทั้งหมด (โค้ด MINT_RIG_*/class, atlas `mint_rig_parts`, assets/incoming/mint_rig, scripts pack/preview, test, previews) · Mint ใช้ sprite sheet ทุกท่า · บันทึกเหตุผลใน `docs/MINT_RIG_TRIAL.md` · **อย่าทำ rig กลับมา — ใช้เฟรม sprite + เจลลี่/VFX แทน**
 - **v5.90.0:** Yuzu, Taro และ Sesame มี run sheet 12 เฟรมและ attack sheet 8 เฟรม; ท่าโจมตีเล่นเมื่อใช้สกิลประจำตัว/Unique และกลับสู่ท่าวิ่งหรือ idle เมื่อจบ; ท่าเจ็บ/ล้มจาก action sheet เดิมยังใช้ต่อ
 ## 4. สถานะก่อนหน้า (v5.89.0 — Fighter Playtest)
 - **v5.89.0:** ช่วงทดสอบก่อนขึ้น Store เปิดนักสู้ทั้ง 6 ตัวในหน้า Heroes/Talents ทันทีด้วย `FIGHTER_PLAYTEST_ALL`, ยังไม่เขียน chars เพิ่มและไม่ให้ milestone ปลดล็อกระหว่างทดสอบ; เซฟ progress เดิมคงอยู่เพื่อกติกาหลังปล่อยจริง · **ถัดไป:** ทดสอบเลือกเล่นทุกตัวบนมือถือและกลับมากำหนด milestone ก่อนปล่อย Store

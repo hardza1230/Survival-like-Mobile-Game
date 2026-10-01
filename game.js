@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.64';
+const GAME_VERSION = '6.0.65';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.65', date:'2026-10-01', title:'Cleanup', items:['Removed the unused experimental Mint rig from the game files'] },
   { v:'6.0.64', date:'2026-10-01', title:'Mint uses sprite sheets for every action', items:['All Mint actions now use authored sprite sheets, including stationary attacks','Removed rig presentation and rig-only Frost Lance delay','Sprite run remains uninterrupted during moving casts'] },
   { v:'6.0.63', date:'2026-10-01', title:'Mint sprite-sheet running restored', items:['Mint uses the original sprite-sheet run and dash again','Cutout rig is shown only for a stationary spear throw','Moving casts keep the sprite run cycle uninterrupted'] },
   { v:'6.0.62', date:'2026-10-01', title:'Mint spear throw', items:['Wind-up, spear release and follow-through blend into Mint running','Frost lances launch on the hand release cue','Held spear fades back in during recovery'] },
@@ -4123,144 +4124,6 @@ const ACHIEVEMENTS=[
   {id:'family',emoji:'🍡',name:'The Mochi Core Family',desc:'Unlock the five story fighters',reward:220,test:d=>['momo','mint','cocoa','taro','yuzu'].every(id=>(d.chars||[]).includes(id))},
   {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
-
-// Mint cutout rig: hierarchical bones, rigid painted skins; no mesh/runtime dependency.
-const MINT_RIG_FRAMES = [{"x":18,"y":6,"w":92,"h":116},{"x":148,"y":6,"w":88,"h":116},{"x":262,"y":9,"w":116,"h":110},{"x":394,"y":6,"w":108,"h":116},{"x":6,"y":135,"w":116,"h":113},{"x":155,"y":134,"w":73,"h":116},{"x":295,"y":134,"w":50,"h":116},{"x":421,"y":134,"w":53,"h":116},{"x":38,"y":262,"w":52,"h":116},{"x":168,"y":262,"w":47,"h":116},{"x":294,"y":262,"w":52,"h":116},{"x":427,"y":262,"w":42,"h":116},{"x":38,"y":390,"w":52,"h":116},{"x":134,"y":431,"w":116,"h":33},{"x":262,"y":396,"w":116,"h":103},{"x":390,"y":390,"w":116,"h":115}];
-const MINT_RIG_BONES = [
-  ['hip',null,0,0],['torso','hip',0,-1],['head','torso',0,-14],
-  ['hairL','head',-11,-14],['hairR','head',11,-14],
-  ['armL','torso',-7.5,-4],['foreL','armL',0,8],
-  ['armR','torso',8,-4],['foreR','armR',0,8],['lance','foreR',0,8.5],
-  ['thighL','hip',-2.5,9],['shinL','thighL',0,8],
-  ['thighR','hip',2.5,9],['shinR','thighR',0,8],['skirt','torso',0,8]
-];
-// bone, atlas part, painted width/height, joint origin, draw order
-const MINT_RIG_SKINS = [
- ['hairL',0,16,29,.55,.12,0],['hairR',1,16,29,.45,.12,1],
- ['thighL',9,7,9,.45,.08,2],['shinL',10,11.5,13,.35,.06,3],
- ['thighR',11,7,9,.5,.08,4],['shinR',12,11.5,13,.35,.06,5],
- ['armL',5,8,10,.5,.08,8],['foreL',6,7,10,.5,.06,9],
- ['torso',4,30,32,.5,.30,6],['skirt',14,17,18,.5,.08,7],
- ['armR',7,8,10,.5,.08,10],['foreR',8,7,10,.5,.06,11],
- ['lance',13,44,12,.17,.5,12],['head',2,35,33,.5,.76,13]
-];
-// Side-plane IK: both knees flex backward; far/near legs keep their skin identity.
-// Critically damped scalar spring: retain velocity through changing targets.
-function mintRigSpring(state,key,target,omega,dt){
- const velocityKey='_v_'+key;
- if(!(dt>0)){state[key]=target;state[velocityKey]=0;return;}
- if(!Number.isFinite(state[key]))state[key]=target;
- const offset=state[key]-target,velocity=state[velocityKey]||0,
-   impulse=velocity+omega*offset,decay=Math.exp(-omega*dt);
- state[key]=target+(offset+impulse*dt)*decay;
- state[velocityKey]=(velocity-omega*impulse*dt)*decay;
-}
-function mintRigLeg(phase,move,side){
- const swing=Math.max(0,Math.sin(phase)),lift=swing*swing*swing*4.1*move,
-   dx=-Math.cos(phase)*5.2*move,dy=19.6*(1-move)+17.8*move-lift,
-   upper=8,lower=12,d=Math.min(upper+lower-.01,Math.hypot(dx,dy)),
-   clamp=v=>Math.max(-1,Math.min(1,v)),aim=Math.atan2(-dx,dy),
-   knee=Math.acos(clamp((d*d-upper*upper-lower*lower)/(2*upper*lower))),
-   thigh=aim+side*Math.acos(clamp((upper*upper+d*d-lower*lower)/(2*upper*d)));
- return {thigh,knee:-side*knee};
-}
-function mintRigPose(time,phase,move,cast,dash,hurt,throwProgress=-1){
- const step=Math.sin(phase),breath=Math.sin(time*3),
-   thrust=Math.sin(Math.PI*Math.max(0,Math.min(1,cast))),
-   left=mintRigLeg(phase,move,1),right=mintRigLeg(phase+Math.PI,move,1),
-   // Free elbow stays bent and pumps opposite the leading leg. Weapon arm also runs.
-   arm=-.65-.6*thrust-.12*dash+(-.22*step-.05)*move,
-   fore=.35+.6*thrust+.12*dash+(.10+.10*step)*move;
- const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);},
-   throwing=throwProgress>=0,
-   load=throwing?smooth(throwProgress/.22):0,
-   release=throwing?smooth((throwProgress-.22)/.20):0,
-   recover=throwing?smooth((throwProgress-.60)/.40):0,
-   weight=load*(1-recover),
-   throwArm=-2.65+1.10*release,throwFore=-1.35+1.28*release,
-   weaponArm=arm+(throwArm-arm)*weight,weaponFore=fore+(throwFore-fore)*weight;
- return {hip:{y:-(.5-.5*Math.cos(phase*2))*1.25*move+breath*.18},
-  torso:{rotation:(-.10+.035*step)*move-.065*thrust+(.07-.18*release)*weight-.10*dash+.08*hurt},
-  head:{rotation:.015*breath+(.06-.025*step)*move+.025*thrust-.05*hurt},
-  hairL:{rotation:.115*Math.sin(phase-.85)*move+.025*Math.sin(time*2.3)-.2*dash},
-  hairR:{rotation:.10*Math.sin(phase-1.0)*move+.025*Math.sin(time*2.3+.6)-.18*dash},
-  armL:{x:-1.3*move,rotation:.035+(.15+.45*step)*move-.12*dash+.08*hurt},
-  foreL:{rotation:.035+(-.92-.08*Math.cos(phase))*move},
-  armR:{x:.7*move,rotation:weaponArm},foreR:{rotation:weaponFore},
-  lance:{rotation:-weaponArm-weaponFore-.07-.18*(1-release)*weight+.045*Math.sin(phase-.35)*move},
-  thighL:{rotation:left.thigh},shinL:{rotation:left.knee},
-  thighR:{rotation:right.thigh},shinR:{rotation:right.knee},
-  skirt:{rotation:.045*Math.sin(phase-.7)*move-.04*dash},
-  footL:{rotation:-Math.pow(Math.max(0,Math.sin(phase)),3)*.12*move},
-  footR:{rotation:-Math.pow(Math.max(0,Math.sin(phase+Math.PI)),3)*.12*move}};
-}
-class MintCutoutRig {
- constructor(scene){
-  this.scene=scene;this.clock=0;this.phase=0;this.move=0;this.castLeft=0;this.hurtLeft=0;this.blink=3;this.ghosts=[];
-  const texture=scene.textures.get('mint_rig_parts');
-  MINT_RIG_FRAMES.forEach((f,i)=>{if(!texture.has('rig'+i))texture.add('rig'+i,0,f.x,f.y,f.w,f.h);});
-  this.root=scene.camWorld(scene.add.container(0,0));this.bones={};this.skins=[];
-  // Bones are separate from skins: draw order remains fixed when joints rotate.
-  for(const [name,parent,x,y] of MINT_RIG_BONES)this.bones[name]={parent,x,y,rotation:0,worldX:0,worldY:0,worldRotation:0};
-  for(const [name,part,w,h,ox,oy] of [...MINT_RIG_SKINS].sort((a,b)=>a[6]-b[6])){const skin=scene.add.image(0,0,'mint_rig_parts','rig'+part).setDisplaySize(w,h).setOrigin(ox,oy);this.root.add(skin);this.skins.push({name,part,skin});}
-  this.apply(mintRigPose(0,0,0,0,0,0));
- }
- attack(ms,gale){this.castDuration=Math.max(.15,(ms||360)/1000);this.castLeft=this.castDuration;this.gale=!!gale;}
- flash(frame,ms){if(frame===CF.hurt)this.hurtLeft=(ms||160)/1000;}
- apply(pose,dt=0){
-  for(const [name,parent,x,y] of MINT_RIG_BONES){const b=this.bones[name],v=pose[name]||{},omega=name.startsWith('hair')?20:(name==='head'||name==='torso'?32:((name==='armR'||name==='foreR'||name==='lance')&&this.castLeft>0&&!this.gale?70:46));
-   mintRigSpring(b,'x',x+(v.x||0),omega,dt);mintRigSpring(b,'y',y+(v.y||0),omega,dt);mintRigSpring(b,'rotation',v.rotation||0,omega,dt);
-   const p=parent&&this.bones[parent],r=p?p.worldRotation:0,c=Math.cos(r),s=Math.sin(r);
-   b.worldX=(p?p.worldX:0)+b.x*c-b.y*s;b.worldY=(p?p.worldY:0)+b.x*s+b.y*c;b.worldRotation=r+b.rotation;
-  }
-  for(const {name,skin} of this.skins){const b=this.bones[name];
-   if(name==='shinL'||name==='shinR'){
-    // Keep the ankle planted while the knee flexes. Boot skin pivots around its sole.
-    const angle=b.worldRotation,footX=b.worldX-Math.sin(angle)*12,footY=b.worldY+Math.cos(angle)*12;
-    mintRigSpring(b,'toeRotation',(pose[name==='shinL'?'footL':'footR']||{}).rotation||0,40,dt);
-    skin.setOrigin(.35,.93).setPosition(footX,footY+.1).setRotation(b.toeRotation);
-   }else skin.setPosition(b.worldX,b.worldY).setRotation(b.worldRotation);
-  }
- }
- animate(dt,p,scene){
-  dt=Math.max(0,Math.min(.15,dt));if(!dt){this.sync(p,scene);return;}
-  const speed=p.body?p.body.velocity.length():0,target=speed>24?Math.min(1,speed/120):0,
-   steps=Math.max(1,Math.ceil(dt*120)),stepDt=dt/steps;
-  // Sample moving targets at 120Hz; 30/60/120 FPS share the same motion trajectory.
-  for(let i=0;i<steps;i++){
-   this.clock+=stepDt;mintRigSpring(this,'move',target,22,stepDt);this.phase+=stepDt*Math.min(speed,300)*.075;
-   this.castLeft=Math.max(0,this.castLeft-stepDt);this.hurtLeft=Math.max(0,this.hurtLeft-stepDt);
-   const cast=this.castLeft>0?1-this.castLeft/this.castDuration:0,dash=scene.dashTime>0?1:0;
-   const throwing=this.castLeft>0&&!this.gale;
-   this.apply(mintRigPose(this.clock,this.phase,this.move,cast,dash,this.hurtLeft>0?1:0,throwing?cast:-1),stepDt);
-   // Hide the held spear at the exact projectile release cue; regrow during recovery.
-   const spear=this.skins.find(o=>o.name==='lance').skin;
-   spear.setAlpha(throwing&&cast>=.4?Math.max(0,Math.min(1,(cast-.72)/.20)):1);
-  }
-  this.blink-=dt;if(this.blink<-.12)this.blink=2.8+Math.random()*1.2;
-  const head=this.skins.at(-1).skin;head.setFrame('rig'+(this.blink<0?15:2)).setDisplaySize(35,33);
-  this.sync(p,scene);
- }
- sync(p,scene){
-  if(!this.root.scene)return;
-  const dead=scene.state==='dead',speed=p.body?p.body.velocity.length():0;
-  // Prefer the authored full-body sheets. Only a stationary spear throw uses the rig.
-  const visible=(scene.state==='play'||scene.state==='levelup')&&p.active!==false&&
-   this.castLeft>0&&!this.gale&&speed<=24&&!(scene.dashTime>0)&&!(scene._poseHold>0);
-  p.setVisible(!visible);
-  this.root.setVisible(visible).setPosition(p.x,p.y+8+(dead?12:0)).setDepth(scene.iso?p.y:p.depth);
-  const scale=.82;this.root.setScale((p.flipX?-1:1)*scale,scale).setRotation(dead?.82:0).setAlpha(p.alpha);
-  for(const {skin} of this.skins){if(p.isTinted){if(p.tintFill)skin.setTintFill(p.tintTopLeft);else skin.setTint(p.tintTopLeft);}else skin.clearTint();}
- }
- ghost(p,scene){
-  // Three short snapshots maximum; never allocate a complete animated rig per trail.
-  const now=scene.time.now;if(now<(this.ghostAt||0))return;this.ghostAt=now+90;
-  const g=scene.camWorld(scene.add.container(this.root.x,this.root.y).setDepth(p.depth-1).setScale(this.root.scaleX,this.root.scaleY).setRotation(this.root.rotation).setAlpha(.38));
-  for(const {skin} of this.skins)g.add(scene.add.image(skin.x,skin.y,'mint_rig_parts',skin.frame.name).setOrigin(skin.originX,skin.originY).setScale(skin.scaleX,skin.scaleY).setRotation(skin.rotation).setAlpha(skin.alpha).setTintFill(0x9fe8ff));
-  this.ghosts.push(g);const tween=scene.tweens.add({targets:g,alpha:0,duration:220,onComplete:()=>{this.ghosts=this.ghosts.filter(o=>o!==g);if(g.scene)g.destroy();}});g._rigTween=tween;
- }
- destroy(){for(const g of this.ghosts){if(g._rigTween)g._rigTween.stop();if(g.scene)g.destroy();}this.ghosts=[];if(this.root.scene)this.root.destroy();}
-}
 
 class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
@@ -11758,8 +11621,6 @@ class Game extends Phaser.Scene {
     this.resetCharacterRenderer();
   }
   resetCharacterRenderer(){
-    // All gameplay actions use authored sprite sheets; clear any previous rig renderer.
-    if(this._mintRig){this._mintRig.destroy();this._mintRig=null;}
     this.player.setVisible(true);
   }
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา

@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build:www": "node scripts/build-www.mjs",
-    "check": "node --check game.js && node scripts/validate-game-content.mjs && node scripts/validate-balance.mjs && node tests/reward-ui.test.cjs && node tests/replay-survival.test.cjs && node tests/endgame-farming.test.cjs && node tests/miniboss-rewards.test.cjs && node tests/progression-polish.test.cjs && node tests/special-cores.test.cjs && node tests/mint-motion.test.cjs && node tests/special-core-layout.test.cjs && node tests/stage-summary-layout.test.cjs && node tests/ui-sound.test.cjs && node tests/craft-sound.test.cjs && node tests/affix-sound.test.cjs && node tests/gear-sound.test.cjs && node tests/progress-sound.test.cjs && node tests/result-sound.test.cjs && node tests/root-knight-animation.test.cjs && node tests/temple-feedback.test.cjs && node tests/dig-lifecycle.test.cjs && node tests/mint-rig.test.cjs"
+    "check": "node --check game.js && node scripts/validate-game-content.mjs && node scripts/validate-balance.mjs && node tests/reward-ui.test.cjs && node tests/replay-survival.test.cjs && node tests/endgame-farming.test.cjs && node tests/miniboss-rewards.test.cjs && node tests/progression-polish.test.cjs && node tests/special-cores.test.cjs && node tests/mint-motion.test.cjs && node tests/special-core-layout.test.cjs && node tests/stage-summary-layout.test.cjs && node tests/ui-sound.test.cjs && node tests/craft-sound.test.cjs && node tests/affix-sound.test.cjs && node tests/gear-sound.test.cjs && node tests/progress-sound.test.cjs && node tests/result-sound.test.cjs && node tests/root-knight-animation.test.cjs && node tests/temple-feedback.test.cjs && node tests/dig-lifecycle.test.cjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.2",
