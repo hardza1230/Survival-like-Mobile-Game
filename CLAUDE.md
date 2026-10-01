@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.2.4 (เจ้าของ):** หน้า Endgame Build แต่ละแถวมีคำอธิบาย (desc ของ path/inf/mut/evo/upgrade) · คำสาปกลางรัน endgame สุ่มให้เลย ไม่หยุดเกม (`autoEndgameCurse`, หน้าเลือกเดิมเหลือใน openEndgameCurseChoice) · verified headless screenshot + curse ติด state play
 - **v6.2.3 (เจ้าของ):** Recipe บอสมาเมื่อหลอด Hunger เต็มเท่านั้น (late=false, ไม่มี time cap) · หลอดใช้อาร์ต `replay_progress_art` ย่อ (กว้าง min(250,72%), สูง 24/11) ผ่าน `renderRecipeProgress` + หมุด event ใน pipG · drawRecipeBar เหลือ dead code
 - **v6.2.2 (เจ้าของเลือกข้อ 5):** Recipe เลเวลอัพ = `slotLevelUp` สล็อตเล็กมุมขวาบน (y=pad+150) หมุน 12 tick แล้วให้สแตต endless ทันที เกมไม่หยุด · คิวต่อเมื่อเลเวลซ้อน (`_slotBusy`) · relic offer (_forcedOpts) ยังหยุดเกมตามเดิม · verified headless 2 เลเวล state play ตลอด 0 error
 - **v6.2.1 (เจ้าของ):** Recipe Hunger goal 260+10·tier (เดิม 150+6) · `RECIPE_TIME_CAP`=300 วิ (บอสมาเอง; replay ยังใช้ RECIPE_HUNGER_CAP 180) · RECIPE_PAR 100→170

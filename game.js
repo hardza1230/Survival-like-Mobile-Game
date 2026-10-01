@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.2.3';
+const GAME_VERSION = '6.2.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.2.4', date:'2026-10-01', title:'Clearer build, instant curses', items:['Endgame Build rows now explain what each choice does','Mid-run endgame curses are rolled automatically — no pause'] },
   { v:'6.2.3', date:'2026-10-01', title:'Recipe progress meter', items:['Recipe boss appears only when the Hunger meter is full (no time limit)','Recipe runs use the painted progress meter, shown smaller'] },
   { v:'6.2.2', date:'2026-10-01', title:'Recipe slot level-ups', items:['In Recipe runs, level-ups spin a small slot in the corner and grant a stat instantly — the game no longer pauses'] },
   { v:'6.2.1', date:'2026-10-01', title:'Longer Recipe runs', items:['Recipe Hunger goal raised to 260 + 10 per tier (was 150 + 6)','Boss auto-arrives after 5 minutes (was 3); fast-clear bonus under 2:50'] },
@@ -5680,14 +5681,14 @@ class Game extends Phaser.Scene {
     const save=()=>{Save.save();Sfx.select&&Sfx.select();this.buildEgBuild();};
     const cyc=(list,cur)=>{ const i=list.indexOf(cur); return i+1>=list.length?null:list[i+1]; };
     const rows=[];
-    if(P.length)rows.push({label:'🛤 Path',val:(P.find(x=>x.id===e.path)||{}).name||'—',cost:EG_COST.path,tap:()=>{e.path=cyc(P.map(x=>x.id),e.path);save();}});
-    rows.push({label:'🍯 Infusion',val:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name||'—',cost:EG_COST.inf,tap:()=>{e.inf=cyc(FLAVOR_INFUSIONS.map(f=>f.id),e.inf);save();}});
-    rows.push({label:'⭐ Mutation',val:(d.mutations.find(m=>m.id===e.mut)||{}).name||'—',cost:EG_COST.mut,tap:()=>{e.mut=cyc(d.mutations.map(m=>m.id),e.mut);if(!e.mut)e.evo=false;save();}});
-    rows.push({label:'✨ Evolution',val:e.evo?d.evolution:(e.mut?'off':'needs Mutation'),cost:EG_COST.evo,tap:()=>{if(!e.mut){this.menuToast('Pick a Mutation first','#ff9bb5');return;}e.evo=!e.evo;save();}});
+    if(P.length)rows.push({label:'🛤 Path',desc:(P.find(x=>x.id===e.path)||{}).desc||'Tap to pick a combat style',val:(P.find(x=>x.id===e.path)||{}).name||'—',cost:EG_COST.path,tap:()=>{e.path=cyc(P.map(x=>x.id),e.path);save();}});
+    rows.push({label:'🍯 Infusion',desc:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).desc||'Tap to add an element to every hit',val:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name||'—',cost:EG_COST.inf,tap:()=>{e.inf=cyc(FLAVOR_INFUSIONS.map(f=>f.id),e.inf);save();}});
+    rows.push({label:'⭐ Mutation',desc:(d.mutations.find(m=>m.id===e.mut)||{}).desc||'Tap to pick a mutation',val:(d.mutations.find(m=>m.id===e.mut)||{}).name||'—',cost:EG_COST.mut,tap:()=>{e.mut=cyc(d.mutations.map(m=>m.id),e.mut);if(!e.mut)e.evo=false;save();}});
+    rows.push({label:'✨ Evolution',desc:(typeof BASIC_EVO_DESC!=='undefined'&&BASIC_EVO_DESC[d.skill])||'Ultimate upgrade for your Basic Attack',val:e.evo?d.evolution:(e.mut?'off':'needs Mutation'),cost:EG_COST.evo,tap:()=>{if(!e.mut){this.menuToast('Pick a Mutation first','#ff9bb5');return;}e.evo=!e.evo;save();}});
     for(const u of egUpgradeDefs(ch,e)){ const lv=e.lv[u.id]||0; rows.push({label:u.emoji+' '+u.name,val:'●'.repeat(lv)+'○'.repeat(u.max-lv),cost:1,desc:u.desc,tap:()=>{e.lv[u.id]=lv>=u.max?0:lv+1;save();}}); }
-    const rh=Math.max(30,Math.min(44,Math.floor((h-y-70)/rows.length)-4));
+    const rh=Math.max(36,Math.min(50,Math.floor((h-y-70)/rows.length)-4));
     rows.forEach(r=>{ const g=this.add.graphics(); g.fillStyle(0x1c1426,1); g.fillRoundedRect(cx,y,cw,rh,8); g.lineStyle(1.5,0x4a4059,1); g.strokeRoundedRect(cx,y,cw,rh,8); this.menu.add(g);
-      T(cx+10,y+rh/2-8,r.label,12,'#ffffff','bold',0); const v=this.add.text(cx+cw-10,y+rh/2,r.val+'  ·  '+r.cost+'pt',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffe08a'}).setOrigin(1,0.5); this.menu.add(v);
+      T(cx+10,y+4,r.label,12,'#ffffff','bold',0); if(r.desc){const dq=this.add.text(cx+10,y+20,r.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#bfb5ca',wordWrap:{width:cw-20}});if(dq.height>rh-22)dq.setText(r.desc.slice(0,Math.floor(r.desc.length*(rh-22)/dq.height)-1)+'…');this.menu.add(dq);} const v=this.add.text(cx+cw-10,y+rh/2,r.val+'  ·  '+r.cost+'pt',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffe08a'}).setOrigin(1,0).setY(y+5); this.menu.add(v);
       this._zone(cx,y,cw,rh,r.tap); y+=rh+4; });
     this.uiPillBtn(this.menu,w/2,y+24,Math.min(cw,240),38,0x8a3050,'↺','Reset build',()=>{ Save.data.egBuild[ch]={path:null,inf:null,mut:null,evo:false,lv:{}}; Save.save(); this.buildEgBuild(); });
     if(left<0)this.menuToast('Over budget — this build will not apply','#ff6b6b');
@@ -7280,7 +7281,13 @@ class Game extends Phaser.Scene {
     const n=this._curseCheckpoint||0;if(n>=2||progress<[0.25,0.75][n])return false;
     this._curseCheckpoint=n+1;this.openEndgameCurse(onResume);return true;
   }
-  openEndgameCurse(onResume){
+  openEndgameCurse(onResume){ return this.autoEndgameCurse(onResume); }
+  // v6.2.4: คำสาปกลางรันสุ่มให้เลย ไม่หยุดเกม (โค้ดหน้าเลือกเดิมอยู่ใน openEndgameCurseChoice)
+  autoEndgameCurse(onResume){ const pool=ZONE_MODIFIERS.filter(d=>!(this._activeZoneMods||[]).includes(d.id)); const d=pool.length?Phaser.Utils.Array.GetRandom(pool):null;
+    if(d){ this._activeZoneMods.push(d.id); this._zoneMul=this.zoneModMul(); this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});
+      this.showBanner('☠ Curse: '+d.name,d.desc+' · rewards ×'+d.reward.toFixed(2),2200); Sfx.bossWarn&&Sfx.bossWarn(); this.screenFlash&&this.screenFlash(0x6b2bd9,0.25); }
+    if(onResume)onResume(); }
+  openEndgameCurseChoice(onResume){
     const options=ZONE_MODIFIERS.filter(d=>!(this._activeZoneMods||[]).includes(d.id)).slice(0,2);
     this.player.setVelocity(0,0);this.state='rolling';this.physics.pause();
     const w=this.W,h=this.H,cw=Math.min(w-32,360),top=Math.max(100,h*0.3),cont=this.camUI(this.add.container(0,0).setDepth(96));
