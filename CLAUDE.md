@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.4.0 (เจ้าของ):** หน้าเตรียมรันเป็นหน้าแรกของ endgame: route 'recipes'/'rift'/'recipeprep' → `buildRecipePrep` (หัว '📜 Endgame') · คลังเดิมย้ายเป็น menuScreen 'recipebag' (`buildRecipes`, ปุ่ม Run → Select แล้วกลับหน้าแรกโดยตัด navStack) · เลือกแผนที่ tier สูงสุดอัตโนมัติ · คลังว่าง = ปุ่ม Get free Tier 1 · กล่องแผนที่มี Change › · แถวปุ่ม Maps/Atlas/Pinnacle(🗝keys) เหนือ Start Run · verified screenshot + nav, 0 error
 - **v6.3.0 (เจ้าของสั่งข้อ 2 จากรีวิว):** หน้าเตรียมรันหน้าเดียว `buildRecipePrep` (menuScreen 'recipeprep', ปุ่ม Run ในหน้า Recipe มาที่นี่ `_prepRecipe`) · กล่องแผนที่ (tier/ธีม/mods) · Build สรุป+Edit › · Pact สรุป+Edit › · เป้าดรอป 4 ปุ่ม (แทน openEndgamePreparation สำหรับ Recipe) · ตัวคูณรวม HP/dmg/boss/reward/goal · Start Run (บล็อกถ้า build เกินแต้ม) · Back ผ่าน _navStack · verified screenshot 390×844, 0 error
 - **v6.2.5 (เจ้าของ):** autoEndgameCurse สุ่มได้ 'ไม่มีคำสาป' เป็น 1 ช่องเท่ากับคำสาปแต่ละตัว (โอกาส 1/(N+1)) + แบนเนอร์ No curse
 - **v6.2.4 (เจ้าของ):** หน้า Endgame Build แต่ละแถวมีคำอธิบาย (desc ของ path/inf/mut/evo/upgrade) · คำสาปกลางรัน endgame สุ่มให้เลย ไม่หยุดเกม (`autoEndgameCurse`, หน้าเลือกเดิมเหลือใน openEndgameCurseChoice) · verified headless screenshot + curse ติด state play
