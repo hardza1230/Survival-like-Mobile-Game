@@ -315,7 +315,7 @@ for(const contract of [
 }
 const rootPngs=[
   ['ch2_root_enemy_atlas.png',1024,512],
-  ['mb10_ancient_root_knight_sheet.png',1024,256],
+  ['mb10_ancient_root_knight_sheet.png',1024,1024],
   ['boss10_true_rootmother_sheet.png',1024,512],
 ];
 for(const [name,wantW,wantH] of rootPngs){

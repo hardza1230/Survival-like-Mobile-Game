@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.53';
+const GAME_VERSION = '6.0.54';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.54', date:'2026-10-01', title:'Ancient Root Knight animation cleanup', items:['Clean transparent C2-5 miniboss atlas with sixteen isolated frames','Separate idle, walk, cleave, shield, charge and summon animation states','Defeat uses the collapsed frame and stale pose timers cannot resume pooled sprites'] },
   { v:'6.0.53', date:'2026-10-01', title:'Results sound and final menu mix', items:['Sugar counts up with soft ticks and currencies reveal in order','Mastery and level gains have a distinct reward cue','Summary sounds stop on exit; double Sugar does not replay rewards'] },
   { v:'6.0.52', date:'2026-10-01', title:'Permanent progression sounds', items:['Dedicated Core, Talent, Overcap, Rank and Ancient upgrade cues','Distinct daily, achievement, quest and item claim sounds','Repeated reward taps cannot replay successful claims'] },
   { v:'6.0.51', date:'2026-10-01', title:'Equipment sound design', items:['Short equip, lock, unlock, dismantle and sell sounds','Enhancement success, break and destruction have distinct feedback','Equipment sounds follow actual saved outcomes'] },
@@ -1527,7 +1528,7 @@ const ASSET_SHEETS = {
   mb9_season_keeper:{ url:'assets/mb9_season_keeper_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   boss9_chronobloom_orchid:{ url:'assets/boss9_chronobloom_orchid_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   ch2_root_enemy_atlas:{ url:'assets/ch2_root_enemy_atlas.png', frame:256 },
-  mb10_ancient_root_knight:{ url:'assets/mb10_ancient_root_knight_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  mb10_ancient_root_knight:{ url:'assets/mb10_ancient_root_knight_sheet.png', frame:256, anim:{start:4,frames:4,rate:7} },
   boss10_true_rootmother:{ url:'assets/boss10_true_rootmother_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   boss6_rootmother:{ url:'assets/boss6_rootmother_sheet.png', frame:256 },
   e_acid:     { url:'assets/generated/e_acid_ant_sheet.png', frame:96, anim:{frames:3, rate:9} },
@@ -1719,6 +1720,12 @@ function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
 // [0 idle,1 blink,2 squash,3 stretch(พุ่ง),4 cheer(ดีใจ),5 hurt(เจ็บ),6 ko(สลบ),7 cast(ร่ายอัลติ)]
 const CF = { idle:0, blink:1, squash:2, stretch:3, cheer:4, hurt:5, ko:6, cast:7 };
+function registerRootKnightAnimations(scene){
+  const key='mb10_ancient_root_knight';if(!scene.textures.exists(key))return;
+  const defs={idle:{frames:[0,1,2,3],rate:4,repeat:-1},cleave:{frames:[8,9,10,11],rate:4,repeat:0},bastion:{frames:[12,13],rate:4,repeat:-1,yoyo:true},oath:{frames:[12,14],rate:3,repeat:0},charge:{frames:[4,5,6,7],rate:12,repeat:-1}};
+  for(const [name,def] of Object.entries(defs))if(!scene.anims.exists(key+'_'+name))scene.anims.create({key:key+'_'+name,frames:def.frames.map(frame=>({key,frame})),frameRate:def.rate,repeat:def.repeat,yoyo:!!def.yoyo});
+}
+
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 const STAGE_SHEETS=[
   ['boss1'],['boss2'],['boss3'],['boss4'],['boss5_sovereign','boss5','mb5_banquet_executioner'],
@@ -1984,8 +1991,9 @@ class Boot extends Phaser.Scene {
     // ---- อนิเมชันศัตรู (walk/attack loop จาก ASSET_SHEETS ที่มี .anim) ----
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!sh.anim)continue;
       if(!this.textures.exists(k)||this.anims.exists(k+'_walk'))continue;
-      this.anims.create({ key:k+'_walk', frames:this.anims.generateFrameNumbers(k,{start:0,end:sh.anim.frames-1}), frameRate:sh.anim.rate, repeat:-1, yoyo:!!sh.anim.yoyo }); }
+      this.anims.create({ key:k+'_walk', frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}), frameRate:sh.anim.rate, repeat:-1, yoyo:!!sh.anim.yoyo }); }
 
+    registerRootKnightAnimations(this);
     for(const k of Object.keys(ASSET_SHEETS).filter(k=>k.startsWith('c3_mini')||k.startsWith('c3_boss'))){
       if(this.textures.exists(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
     }
@@ -4204,9 +4212,10 @@ class Game extends Phaser.Scene {
   }
   registerStageAnimations(keys){
     for(const k of keys){const sh=ASSET_SHEETS[k];if(!sh||!this.textures.exists(k))continue;
-      if(sh.anim&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:0,end:sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo});
+      if(sh.anim&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo});
       if(/^c3_(?:mini|boss)/.test(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
     }
+    if(keys.includes('mb10_ancient_root_knight'))registerRootKnightAnimations(this);
     const poses=[['boss1','idle',0,1,3],['boss2','reveal',2,3,4],['boss3','idle',0,1,3],['boss4','idle',0,1,3],['boss5_sovereign','idle',0,1,2.5],['boss6_rootmother','idle',0,1,2.2]];
     for(const [k,name,a,b,rate] of poses)if(keys.includes(k)&&this.textures.exists(k)&&!this.anims.exists(k+'_'+name))this.anims.create({key:k+'_'+name,frames:[{key:k,frame:a},{key:k,frame:b}],frameRate:rate,repeat:name==='reveal'?0:-1,yoyo:name!=='reveal'});
   }
@@ -7495,7 +7504,8 @@ class Game extends Phaser.Scene {
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
-    if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
+    if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e._rootKnightPoseToken=(e._rootKnightPoseToken||0)+1;e._rootKnightPoseUntil=0;
+      e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
     e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;e._duelElite=false;e._mimic=null;if(this.anims.exists(eliteKey+'_walk'))e.play(eliteKey+'_walk',true);this.camWorld(e);return e;
   }
@@ -8016,15 +8026,15 @@ class Game extends Phaser.Scene {
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const mkey=this.stageIndex>=10?'c3_mini'+(this.stageIndex-9):this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
     const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
-    let mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===7?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))));if(this.stageIndex===8)mScale=.82;if(this.stageIndex===9)mScale=.86; b.baseScale=mScale; b._sqX=1; b._sqY=1;
+    let mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===7?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))));if(this.stageIndex===8)mScale=.82;if(this.stageIndex===9)mScale=1.19; b.baseScale=mScale; b._sqX=1; b._sqY=1;
     let mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===6?58:(this.stageIndex===7?55:(this.stageIndex===1?48:(mArt?52:26))))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===6?70:(this.stageIndex===7?73:(this.stageIndex===1?48:(mArt?18:5)))));
-    if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=59;mOff=69;}
+    if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=42.64;mOff=85.36;}
     if(this.stageIndex>=10&&ASSET_SHEETS[mkey]){mScale=.62;mRadius=70;mOff=58;}
     b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_SHEETS[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
     b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
-    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;
+    b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;b._rootKnightPoseUntil=0;b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;
     b.atkCd=0.85; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
     if(this.anims.exists(mkey+'_idle'))b.play(mkey+'_idle',true);else if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
@@ -8052,7 +8062,7 @@ class Game extends Phaser.Scene {
       e.hp=st.bossHp*0.6*this.bossHpMul(); e.maxhp=e.hp; e.spd=68; e.dmg=Math.round(st.bossDmg); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;
       e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.bloomStacks=0; e.bloomUntil=0;
       if(mArt){ e.tintColor=null; e.clearTint(); } else { e.tintColor=st.tint; e.setTint(st.tint); }
-      if(this.anims.exists(mkey+'_idle'))e.play(mkey+'_idle',true);else if(this.anims.exists((mArt?mkey:'e_brute')+'_walk')) e.play((mArt?mkey:'e_brute')+'_walk',true); else if(e.anims){ e.anims.stop(); e.setFrame(0); }
+      if(mkey==='mb10_ancient_root_knight'&&this.anims.exists(mkey+'_walk'))e.play(mkey+'_walk',true);else if(this.anims.exists(mkey+'_idle'))e.play(mkey+'_idle',true);else if(this.anims.exists((mArt?mkey:'e_brute')+'_walk')) e.play((mArt?mkey:'e_brute')+'_walk',true); else if(e.anims){ e.anims.stop(); e.setFrame(0); }
       this.camWorld(e); this.vfxSpawnPoof(ex,ey);
     }
     this.screenShake(180,0.006);
@@ -11124,14 +11134,24 @@ class Game extends Phaser.Scene {
     else{this.chronobloomPose(b,7,1850);this.showBanner('⏳ TIME BREAK','The clock rewinds two shockwaves, then seals all but one season!',1200);this.screenFlash(0xffd166,.58,650);this.bossNovaWave(b.x,b.y,290,bd+3,320);this.bossNovaWave(b.x,b.y,410,bd+6,880);this.time.delayedCall(700,()=>{if(!b.active)return;const n=30,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++)if(![gap,(gap+1)%n,(gap+2)%n,(gap+3)%n,(gap+4)%n].includes(i))this.foeShot(b.x,b.y,i*TAU/n,285,bd,this.seasonInfo(i%4).color,1.18);});b.atkCd=4.15*fast;}
   }
 
+  rootKnightMotion(b){
+    if(!b||!b.active||b.hp<=0||b.texture.key!=='mb10_ancient_root_knight'||(b._rootKnightPoseUntil||0)>this.time.now)return;
+    const velocity=b.body&&b.body.velocity,moving=velocity&&Math.hypot(velocity.x,velocity.y)>8;
+    const key='mb10_ancient_root_knight_'+(moving&&!b.frozen?'walk':'idle');
+    if(this.anims.exists(key))b.play(key,true);
+  }
   rootKnightPose(b,frame,ms=1000){
-    if(!b||!b.active||b.texture.key!=='mb10_ancient_root_knight')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);this.time.delayedCall(ms,()=>{if(!b.active||b._rootKnightPoseToken!==token)return;if(this.anims.exists('mb10_ancient_root_knight_walk'))b.play('mb10_ancient_root_knight_walk',true);else b.setFrame(0);});
+    if(!b||!b.active||b.hp<=0||b.texture.key!=='mb10_ancient_root_knight')return;
+    const name=typeof frame==='string'?frame:['idle','cleave','bastion','oath'][Phaser.Math.Clamp(frame|0,0,3)],key='mb10_ancient_root_knight_'+name;
+    const token=b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;b._rootKnightPoseUntil=this.time.now+ms;
+    if(this.anims.exists(key))b.play(key);else{if(b.anims)b.anims.stop();b.setFrame({idle:0,cleave:8,bastion:12,oath:14,charge:4}[name]||0);}
+    this.time.delayedCall(ms,()=>{if(!b.active||b.hp<=0||b.texture.key!=='mb10_ancient_root_knight'||b._rootKnightPoseToken!==token)return;b._rootKnightPoseUntil=0;this.rootKnightMotion(b);});
   }
   rootKnightAttack(b){
     const fast=b.phase2?.72:1,pool=b.phase2?['cleave','bastion','charge','call','cleave']:['cleave','bastion','charge'],pick=Phaser.Utils.Array.GetRandom(pool),bd=Math.max(16,Math.round(b.dmg*.56)),a=Math.atan2(this.player.y-b.y,this.player.x-b.x);
     if(pick==='cleave'){this.rootKnightPose(b,1,1050);this.showBanner('⚔️ Crown Cleave','The blade marks two crossing fans — step through the first gap!',820);for(const d of [-.48,.48])for(let i=-3;i<=3;i++)this.time.delayedCall(d<0?300:650,()=>{if(b.active)this.foeShot(b.x,b.y,a+d+i*.10,350,bd,0xffd166,1.08);});b.atkCd=2.45*fast;}
     else if(pick==='bastion'){this.rootKnightPose(b,2,1250);this.showBanner('🛡️ Root Bastion','The shield roots four lanes; the diagonal remains open!',850);for(let i=0;i<4;i++){const q=i*TAU/4;this.spawnHazard(this.player.x+Math.cos(q)*125,this.player.y+Math.sin(q)*125,58,bd,0x56e5bd);}b.atkCd=2.8*fast;}
-    else if(pick==='charge'){this.rootKnightPose(b,1,1100);this.showBanner('🌿 Thorn Charge','The sword locks its lane — cross the warning line!',780);this.chargeTelegraph(b,760,650,29);if(b.phase2)this.time.delayedCall(1050,()=>{if(b.active)this.chargeTelegraph(b,560,700,24);});b.atkCd=2.75*fast;}
+    else if(pick==='charge'){this.rootKnightPose(b,'charge',1100);this.showBanner('🌿 Thorn Charge','The sword locks its lane — cross the warning line!',780);this.chargeTelegraph(b,760,650,29);if(b.phase2)this.time.delayedCall(1050,()=>{if(b.active)this.chargeTelegraph(b,560,700,24);});b.atkCd=2.75*fast;}
     else{this.rootKnightPose(b,3,1450);this.showBanner('👑 Oathbound Call','The old guard answers — break formation before the next cleave!',900);for(const t of ['tank','shooter','dasher']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-150,150),b.y+Phaser.Math.Between(-105,105));}b.atkCd=3.3*fast;}
   }
   trueRootPose(b,frame,ms=1150){
@@ -11154,7 +11174,7 @@ class Game extends Phaser.Scene {
   }
 
   chapter2DeathGhost(e){
-    if(!e||!['boss6_rootmother','mb6_sporewarden','mb7_fungal_juggernaut','boss7_mycelium_behemoth','mb8_royal_stinger','boss8_hornet_queen','mb9_season_keeper','boss9_chronobloom_orchid','mb10_ancient_root_knight','boss10_true_rootmother'].includes(e.texture.key))return;const boss=e.isBoss,deathFrame=(e.texture.key==='mb8_royal_stinger'||e.texture.key==='mb9_season_keeper'||e.texture.key==='mb10_ancient_root_knight')?3:7;
+    if(!e||!['boss6_rootmother','mb6_sporewarden','mb7_fungal_juggernaut','boss7_mycelium_behemoth','mb8_royal_stinger','boss8_hornet_queen','mb9_season_keeper','boss9_chronobloom_orchid','mb10_ancient_root_knight','boss10_true_rootmother'].includes(e.texture.key))return;const boss=e.isBoss,deathFrame=e.texture.key==='mb10_ancient_root_knight'?15:(e.texture.key==='mb8_royal_stinger'||e.texture.key==='mb9_season_keeper')?3:7;
     const ghost=this.camWorld(this.add.image(e.x,e.y,e.texture.key,deathFrame).setScale(e.baseScale||e.scaleX||1).setFlipX(e.flipX).setDepth(e.y+9).setAlpha(1));
     for(let i=0;i<(boss?10:6);i++){const seed=this.camWorld(this.add.image(e.x,e.y,'vfx_glow').setTint(i%3?0x56e5bd:0xffd166).setScale(.08).setDepth(e.y+10).setAlpha(.8));this.tweens.add({targets:seed,x:e.x+Phaser.Math.Between(-150,150),y:e.y-Phaser.Math.Between(50,190),scale:.32,alpha:0,duration:700+i*70,onComplete:()=>seed.destroy()});}
     this.tweens.add({targets:ghost,y:ghost.y+24,scaleX:ghost.scaleX*1.08,scaleY:ghost.scaleY*.78,alpha:0,duration:boss?1500:880,ease:'Cubic.in',onComplete:()=>ghost.destroy()});
@@ -11268,7 +11288,7 @@ class Game extends Phaser.Scene {
     if(r<0.45){ const n=hot?5:3,sp=260; for(let i=0;i<n;i++)this.time.delayedCall(i*110,()=>{ if(!b.active||this.state!=='play')return; const a=this.leadAim(b.x,b.y,sp)+(i-(n-1)/2)*0.07; this.foeShot(b.x,b.y,a,sp,d,0xffd166,1.0); }); }
     else if(r<0.75){ const p=this.player,v=p.body?p.body.velocity:{x:0,y:0}; for(let i=0;i<(hot?3:2);i++)this.spawnHazard(p.x+v.x*(0.45+i*0.3),p.y+v.y*(0.45+i*0.3),60,d,0xff7a5c); }
     else if(b.isBoss||b.isMini){ this.chargeTelegraph(b,520,640,20); } }
-  bossThink(b,dt){ const before=b.atkCd; this._bossThinkCore(b,dt);
+  bossThink(b,dt){ const before=b.atkCd; this._bossThinkCore(b,dt);this.rootKnightMotion(b);
     if(b.active&&before!==undefined&&before<=0.05&&b.atkCd>0.4&&!b._comboLock){ const ch=b.hp<b.maxhp*0.3?0.6:b.phase2?0.45:0.3; if(Math.random()<ch){ b._comboLock=true; this.time.delayedCall(Phaser.Math.Between(520,780),()=>{ b._comboLock=false; this.bossFollowUp(b); }); } } }
   _bossThinkCore(b,dt){
     if(!b.visible)b.setVisible(true); if(b.alpha<1)b.setAlpha(1);   // safety: บอสต้องมองเห็นเสมอตอนสู้ (กันค้างล่องหนจาก tween คัตซีน)

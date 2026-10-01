@@ -50,3 +50,11 @@ Status: implementation complete, playable and unlocked; manual mobile pass pendi
 - Standardized every cell to 256×256 with a consistent bottom ground line and mobile-readable silhouette.
 - Preserved role colors: gold for critical warning shapes, magenta for memory/root danger, and dark bark for mass.
 - Added PNG chunk CRC and image-stream validation so corrupt art fails `npm run check` before deployment.
+
+## v6.0.54 Root Knight art review
+
+- Runtime sheet: 1024×1024, 16 distinct RGBA cells; every cell has 18px transparent gutters.
+- Register idle/walk/cleave/shield/charge/oath animations through lazy stage loading.
+- Defeat ghost uses frame 15, not summon frame 3.
+- Automated action/timer and atlas checks pass.
+- Pending phone review: enter C2-5, compare idle/walk, all four attacks, phase transition, defeat and Rootmother escorts; inspect edges on bright and dark arena tiles.

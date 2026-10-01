@@ -1,3 +1,7 @@
+## C2-5 miniboss art/animation — v6.0.54
+
+Replaced Ancient Root Knight four-pose atlas with imagegen 16-frame 4x4 RGBA sheet. Pack script keeps alpha, normalizes 256px cells with 18px gutters. Idle 0–3, walk 4–7, cleave 8–11, shield 12–13, summon 14, defeat 15. Charge uses faster walk cycle. Boot and lazy stage loader both register actions; walk supports metadata start index. Attack timers guard texture, death and pool tokens; spawn invalidates old tokens. Existing combat timing/damage retained; render scale compensates for padding and preserves the miniboss world collider radius. Full checks/build pass, green-backdrop cutout QA and walk preview inspected; mobile movement/attack review pending. Details: docs/art_orders/C2_5_ROOT_KNIGHT_ANIMATION.md.
+
 ## Sound design complete — commit 6, v6.0.53
 
 All six sound-design commits implemented, 40 short generated WAVs total. Final stage summary: at most eight Sugar ticks, sequential currency reveals, Mastery/level cue and one ad x2 cue. Immediate exit/redraw/shutdown cancel pending presentation; x2 does not replay rewards. Final automated audit checks all new PCM assets for peaks/lengths and menu gain/voice budgets. Full npm check and www build pass; real-device listening remains pending. Next: mobile listening review; no sound implementation commits remain in docs/SOUND_DESIGN_ROADMAP.md.
