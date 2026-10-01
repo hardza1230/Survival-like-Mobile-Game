@@ -1,3 +1,7 @@
+## Temple UI / character EXP / digging lifecycle — v6.0.55
+
+Aligned Special Core button labels and polygon diamonds to painted sockets. Sugar is clamped to 9,999,999 on load, save and add, including direct rewards/sales. Summary displays permanent character EXP with multi-level animation; Sugar x2 moved below rewards panel, animation never awards EXP twice. Dig callbacks/tweens cancel on redraw, navigation and shutdown; completed pending digs settle exactly once; destroyed objects and original icon scales guarded. Automated feedback and destroyed-object digging fixtures added. Real-device visual/animation review pending. Next: assess Mint 2D rig as a separate task before migrating characters.
+
 ## C2-5 miniboss art/animation — v6.0.54
 
 Replaced Ancient Root Knight four-pose atlas with imagegen 16-frame 4x4 RGBA sheet. Pack script keeps alpha, normalizes 256px cells with 18px gutters. Idle 0–3, walk 4–7, cleave 8–11, shield 12–13, summon 14, defeat 15. Charge uses faster walk cycle. Boot and lazy stage loader both register actions; walk supports metadata start index. Attack timers guard texture, death and pool tokens; spawn invalidates old tokens. Existing combat timing/damage retained; render scale compensates for padding and preserves the miniboss world collider radius. Full checks/build pass, green-backdrop cutout QA and walk preview inspected; mobile movement/attack review pending. Details: docs/art_orders/C2_5_ROOT_KNIGHT_ANIMATION.md.

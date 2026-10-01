@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.54';
+const GAME_VERSION = '6.0.55';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.55', date:'2026-10-01', title:'Temple layout, character EXP and digging fixes', items:['Core gem markers and button labels align with their painted sockets','Sugar balance is capped at 9,999,999 across all save paths','Stage results animate permanent character EXP and move Sugar x2 below rewards','Digging cancels stale animation callbacks and preserves earned treasure when leaving'] },
   { v:'6.0.54', date:'2026-10-01', title:'Ancient Root Knight animation cleanup', items:['Clean transparent C2-5 miniboss atlas with sixteen isolated frames','Separate idle, walk, cleave, shield, charge and summon animation states','Defeat uses the collapsed frame and stale pose timers cannot resume pooled sprites'] },
   { v:'6.0.53', date:'2026-10-01', title:'Results sound and final menu mix', items:['Sugar counts up with soft ticks and currencies reveal in order','Mastery and level gains have a distinct reward cue','Summary sounds stop on exit; double Sugar does not replay rewards'] },
   { v:'6.0.52', date:'2026-10-01', title:'Permanent progression sounds', items:['Dedicated Core, Talent, Overcap, Rank and Ancient upgrade cues','Distinct daily, achievement, quest and item claim sounds','Repeated reward taps cannot replay successful claims'] },
@@ -2497,6 +2498,12 @@ const CHAR_PASSIVES={
 };
 function charPassiveScale(lvl){ return 1+Math.min(0.9,Math.max(0,(lvl||1)-1)*0.03); }
 // EXP ที่ต้องใช้เพื่อขึ้นจากเลเวล l → l+1
+function characterExpProgress(before,gain,progress){
+  const lv=Math.max(1,Math.floor(before.lvl||1)),base=17.5*lv*lv+22.5*lv-40;
+  const total=Math.max(0,base+(before.exp||0)+Math.max(0,gain||0)*Math.max(0,Math.min(1,progress)));
+  const lvl=Math.max(1,Math.floor((-22.5+Math.sqrt(506.25+70*(total+40)))/35));
+  return {lvl,exp:Math.max(0,total-(17.5*lvl*lvl+22.5*lvl-40)),need:charExpNeed(lvl)};
+}
 function charExpNeed(l){ return 40 + l*35; }
 
 /* ---- SKILL_TIERS: อธิบายว่า "per level" ปลดEffectอะไร (โชว์บนการ์ด) ---- */
@@ -3271,9 +3278,12 @@ function gearSetCompareText(slot,selected){ if(!selected)return ''; const curren
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const DIG_FREE_PER_DAY=1, DIG_FREE_SHOVELS=10;
+const SUGAR_CAP=9999999;
+function clampSugar(value){const n=Number(value);return Math.min(SUGAR_CAP,Math.max(0,Math.floor(Number.isNaN(n)?0:n)));}
 const Save = {
   data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:24, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
   load(){ let gearMigrated=false; try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
+    this.data.sugar=clampSugar(this.data.sugar);
     if(!this.data.upgrades)this.data.upgrades={};
     if(!this.data.gear)this.data.gear={};
     if(!this.data.gearLv)this.data.gearLv={};
@@ -3312,7 +3322,7 @@ const Save = {
     Sfx.muted=!this.data.settings.sound; applyVolSettings(this.data.settings);
     if(gearMigrated){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} }
     return this.data; },
-  save(){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
+  save(){ this.data.sugar=clampSugar(this.data.sugar);this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
   unlockCoreCharacters(notify=true){if(FIGHTER_PLAYTEST_ALL)return false;let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
     for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(this.data.stageMastery&&this.data.stageMastery[stage]&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
@@ -3325,7 +3335,7 @@ const Save = {
     } else { Cloud.push(this.data); }   // ยังNoneบนเมฆ = อัปเซฟปัจจุบันขึ้นไป
     this._cloudReady=true;
   },
-  addSugar(n){ this.data.sugar=(this.data.sugar||0)+n; this.save(); },
+  addSugar(n){ this.data.sugar=clampSugar(clampSugar(this.data.sugar)+Number(n||0)); this.save(); },
   // สมุดสูตร: บันทึกสูตรที่ปรุงสำเร็จถาวร · คืนรางวัล Sugar เฉพาะครั้งแรกที่ค้นพบ (0 = เคยมีแล้ว)
   cookbookHas(key){ return !!(this.data.cookbook&&this.data.cookbook[key]); },
   cookbookCount(){ return this.data.cookbook?Object.keys(this.data.cookbook).length:0; },
@@ -5073,7 +5083,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ const s=this.menuScreen||'hub'; this.menuMusic(s);
+  buildMenuScreen(){ const s=this.menuScreen||'hub';if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
@@ -6142,10 +6152,10 @@ class Game extends Phaser.Scene {
       const name=this.add.text(tx,y+rowH*.20,core.name+' · '+lvl+'/3',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:locked?'#b4a5bd':'#fff1cc',wordWrap:{width:tw}});
       const effect=this.add.text(tx,y+rowH*.40,core.effect(lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(fs-1)+'px',color:locked?'#a69aae':'#a9ffe2'});
       const desc=this.add.text(tx,y+rowH*.57,locked?'Unlock at '+rankName(core.rank):core.desc,{fontFamily:'sans-serif',fontSize:(fs-2)+'px',color:'#d6c7df',wordWrap:{width:tw}});this.menu.add([name,effect,desc]);
-      for(let j=0;j<3;j++){const gem=this.add.text(left+cw*(.433+j*.075),y+rowH*.80,j<lvl?'◆':'◇',{fontSize:Math.round(rowH*.17)+'px',color:j<lvl?'#a5ffe3':'#80718e'}).setOrigin(.5);this.menu.add(gem);}
-      const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread',bx=left+cw*.827,by=y+rowH*.785;
+      for(let j=0;j<3;j++){const radius=cw*.017,gem=this.add.polygon(left+cw*(930/2172+j*156.25/2172),y+rowH*(572.5/724),[0,-radius,radius,0,0,radius,-radius,0],j<lvl?0xa5ffe3:0x33263e,j<lvl?1:.7).setStrokeStyle(Math.max(.7,cw*.002),j<lvl?0xd8fff1:0x80718e,1);this.menu.add(gem);}
+      const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread',bx=left+cw*.827,by=y+rowH*.735;
       const buttonText=this.add.text(bx,by,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(9,fs-1)+'px',color:locked||maxed?'#d4cfdd':affordable?'#153b31':'#ffe4b4'}).setOrigin(.5);this.menu.add(buttonText);
-      if(!locked&&!maxed)this._zone(left+cw*.69,y+rowH*.64,cw*.275,rowH*.27,()=>{if(Save.buySpecialCore(core.id)){Sfx.progress('core');this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
+      if(!locked&&!maxed)this._zone(left+cw*.69,y+rowH*.635,cw*.275,rowH*.205,()=>{if(Save.buySpecialCore(core.id)){Sfx.progress('core');this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
     });
     const footer=Math.min(h-61,start+count*(rowH+gap)+9);
     const paintedButton=(cy,width,label,fn)=>{
@@ -6199,10 +6209,27 @@ class Game extends Phaser.Scene {
     const reset=this.add.text(w/2,h-20,this._kResetConfirm?'⚠ Confirm Kitchen reset · 🧶'+Save.kitchenResetCost():'♻ Reset Kitchen · 🧶'+Save.kitchenResetCost(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#f0a0b0'}).setOrigin(0.5);this.menu.add(reset);
     this._zone(w/2-135,h-34,270,29,()=>{if(this._kResetConfirm){if(Save.frResetRecipes()){Sfx.clear();this._kSel={slot:0,k:'t'};}else this.menuToast('Need recipes and 🧶'+Save.kitchenResetCost()+' Weave Thread','#ff9bb5');this._kResetConfirm=false;}else{this._kResetConfirm=true;Sfx.select();}this.buildKitchen();});
   }
+  stopDigPresentation(){
+    this._digToken=(this._digToken||0)+1;
+    (this._digTimers||[]).forEach(t=>t.remove(false));this._digTimers=[];
+    (this._digTweens||[]).forEach(t=>t.stop());this._digTweens=[];this._digBusy=false;
+    const pending=this._digPending;this._digPending=null;
+    if(pending&&!pending.c.taken&&pending.c.hp<=0){pending.c.open=true;if(!pending.dailyAdvanced)this.advanceDaily('dig');this.digResolve(pending.c);Save.save();}
+  }
+  digLater(ms,fn){const token=this._digToken;const timer=this.time.delayedCall(ms,()=>{if(this._digToken===token&&this.menuScreen==='dig')fn();});(this._digTimers||(this._digTimers=[])).push(timer);return timer;}
+  digTween(config){
+    const targets=Array.isArray(config.targets)?config.targets:[config.targets],alive=()=>targets.every(t=>t&&t.scene);
+    if(!alive())return null;const token=this._digToken,complete=config.onComplete;
+    const tween=this.tweens.add({...config,onComplete:()=>{if(this._digToken===token&&this.menuScreen==='dig'&&alive()&&complete)complete();}});
+    (this._digTweens||(this._digTweens=[])).push(tween);return tween;
+  }
+  digDestroy(obj){if(obj&&obj.scene){this.tweens.killTweensOf(obj);obj.destroy();}}
   buildDig(){
+    this.stopDigPresentation();
+    if(this.events&&!this._digShutdownHook){this._digShutdownHook=true;this.events.once('shutdown',()=>{this.stopDigPresentation();this._digShutdownHook=false;});}
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⛏️ Temple Depths','dig_bg','upgrade');
     const w=this.W,h=this.H,d=Save.dig(),portrait=w<=h,hs=this._hdrShift(),N=Math.round(Math.sqrt(d.board.length));
-    if(d.secret){ const v=this.add.text(w/2,44+hs,'✨ Hidden Vault ✨',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e0b0ff'}).setOrigin(0.5); this.menu.add(v); this.tweens.add({targets:v,alpha:{from:0.5,to:1},yoyo:true,repeat:-1,duration:700}); }
+    if(d.secret){ const v=this.add.text(w/2,44+hs,'✨ Hidden Vault ✨',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e0b0ff'}).setOrigin(0.5); this.menu.add(v); this.digTween({targets:v,alpha:{from:0.5,to:1},yoyo:true,repeat:-1,duration:700}); }
     const info=this.add.text(w/2,62+hs,'⛏️ '+d.shovels+'   ·   🧶 '+Save.threads()+'   ·   Floor '+d.depth+'  ('+N+'×'+N+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5);
     const sub=this.add.text(w/2,80+hs,'Tap to dig (1 ⛏️) · find the 🪜 ladder · 🌬️ = ladder nearby'+(d.depth%5===4?' · 🎁 gift floor next!':''),{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9'}).setOrigin(0.5);
     this.menu.add([info,sub]); this._digInfo=info;
@@ -6212,8 +6239,8 @@ class Game extends Phaser.Scene {
     this._digCells=[];
     d.board.forEach((c,i)=>{ const cx=gx+(i%N)*(cs+gap),cy=gy+Math.floor(i/N)*(cs+gap); const cont=this.add.container(cx+cs/2,cy+cs/2); this.menu.add(cont); this._digCells[i]=cont;
       this.drawDigCell(cont,c,cs); if(!c.open)this._zone(cx,cy,cs,cs,()=>this.digCell(i));
-      if(this._digDrop){ cont.y-=70; cont.setAlpha(0); this.tweens.add({targets:cont,y:cont.y+70,alpha:1,duration:420,delay:(i%N)*24+Math.floor(i/N)*40,ease:'Bounce.out'}); } });
-    if(this._digDrop){ this._digDrop=false; this.tweens.add({targets:info,scale:{from:1.35,to:1},duration:500,ease:'Back.out'}); }
+      if(this._digDrop){ cont.y-=70; cont.setAlpha(0); this.digTween({targets:cont,y:cont.y+70,alpha:1,duration:420,delay:(i%N)*24+Math.floor(i/N)*40,ease:'Bounce.out'}); } });
+    if(this._digDrop){ this._digDrop=false; this.digTween({targets:info,scale:{from:1.35,to:1},duration:500,ease:'Back.out'}); }
     // ปุ่มล่าง: ฟรีรายวัน · ลงชั้น
     const by=gy+size+22,bw=Math.min(160,(w-48)/2),bh=40;
     const btn=(x,lab,col,on,fn)=>{ const g=this.add.graphics(); g.fillStyle(on?col:0x2c2338,1); g.fillRoundedRect(x,by,bw,bh,12); g.lineStyle(2,on?0xffe08a:0x4a4059,1); g.strokeRoundedRect(x,by,bw,bh,12);
@@ -6221,78 +6248,79 @@ class Game extends Phaser.Scene {
     const free=Save.digFreeReady(),shopDay=new Date().toISOString().slice(0,10),bought=d.shopDay===shopDay?(d.shopN||0):0,canBuy=bought<DIG_SHOP_DAILY_LIMIT&&(Save.data.sugar||0)>=DIG_SHOP_COST;
     btn(w/2-bw-6,free?'🎁 Daily ⛏️×10':(bought>=DIG_SHOP_DAILY_LIMIT?'✓ Shop sold out':'🍬120 → ⛏️×5'),free?0x3a5a3a:0x755035,free||canBuy,()=>{ if(free){if(Save.digClaimFree()){Sfx.digFind();this.menuToast('⛏️ +10 shovels — come back tomorrow!');}}else if(Save.digBuyShovels()){Sfx.digFind();this.menuToast('⛏️ +5 shovels');}this.buildDig(); });
     const canGo=d.gemFound||d.stairFound,dt=btn(w/2+6,d.stairFound?'🕳️ Secret descent':(d.gemFound?'🪜 Go down':'🪜 Find the ladder'),d.stairFound?0x6a3a8a:0x5a3a7a,!!canGo,()=>this.digDescend());
-    if(canGo)this.tweens.add({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
+    if(canGo)this.digTween({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
     const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret  ✦ hint\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def')+'   ·   📜 '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
     this.menu.setVisible(true);
   }
-  drawDigCell(cont,c,cs){ cont.removeAll(true); const g=this.add.graphics(); cont.add(g);
+  drawDigCell(cont,c,cs){ if(!cont||!cont.scene)return;this.tweens.killTweensOf(cont.list.slice());cont.removeAll(true); const g=this.add.graphics(); cont.add(g);
     if(!c.open){ const key=c.hard?'dig_tile_rock':'dig_tile_soil';
       if(this.textures.exists(key)){ cont.add(this.add.image(0,0,key).setDisplaySize(cs,cs)); }
       else { g.fillStyle(c.hard?0x6b5a4c:0x7a4e32,1); g.fillRoundedRect(-cs/2,-cs/2,cs,cs,10); g.fillStyle(c.hard?0x8a7866:0x96623f,1); g.fillRoundedRect(-cs/2+3,-cs/2+3,cs-6,cs*0.45,8); g.lineStyle(2,0x2a1a12,0.8); g.strokeRoundedRect(-cs/2,-cs/2,cs,cs,10); }
-      if(c.hint){ const sp=this.add.text(cs*0.22,-cs*0.22,'✦',{fontSize:Math.round(cs*0.22)+'px',color:'#fff4c2'}).setOrigin(0.5).setAlpha(0.2); cont.add(sp); this.tweens.add({targets:sp,alpha:{from:0.15,to:0.75},scale:{from:0.8,to:1.15},yoyo:true,repeat:-1,duration:900+Math.random()*500,ease:'Sine.inOut'}); }
+      if(c.hint){ const sp=this.add.text(cs*0.22,-cs*0.22,'✦',{fontSize:Math.round(cs*0.22)+'px',color:'#fff4c2'}).setOrigin(0.5).setAlpha(0.2); cont.add(sp); this.digTween({targets:sp,alpha:{from:0.15,to:0.75},scale:{from:0.8,to:1.15},yoyo:true,repeat:-1,duration:900+Math.random()*500,ease:'Sine.inOut'}); }
       if(c.hard&&c.hp<=1){ if(this.textures.exists('dig_crack'))cont.add(this.add.image(0,0,'dig_crack').setDisplaySize(cs,cs)); else { const k=this.add.graphics(); k.lineStyle(2.5,0x1a0f0a,0.9); k.beginPath(); k.moveTo(-cs*0.3,-cs*0.35); k.lineTo(-cs*0.05,-cs*0.05); k.lineTo(-cs*0.2,cs*0.15); k.lineTo(cs*0.05,cs*0.38); k.moveTo(-cs*0.05,-cs*0.05); k.lineTo(cs*0.3,-cs*0.2); k.strokePath(); cont.add(k); } }
       return; }
     g.fillStyle(0x0c070c,1); g.fillRoundedRect(-cs/2,-cs/2,cs,cs,10); g.lineStyle(1.5,0x3a2a24,1); g.strokeRoundedRect(-cs/2,-cs/2,cs,cs,10);
     const it=DIG_ITEMS[c.c]||DIG_ITEMS.empty, key='dig_'+c.c;
     if(c.c!=='empty'&&c.c!=='sugar'&&this.textures.exists(key))cont.add(this.add.image(0,0,key).setDisplaySize(cs*0.7,cs*0.7).setAlpha(c.taken?0.35:1));
     else if(it.emoji)cont.add(this.add.text(0,0,it.emoji,{fontSize:Math.round(cs*0.42)+'px'}).setOrigin(0.5).setAlpha(c.taken?0.35:1));
-    if(c.draft&&(c.c==='empty'||c.taken)){ const dr=this.add.text(cs*0.26,-cs*0.26,'🌬️',{fontSize:Math.round(cs*0.26)+'px'}).setOrigin(0.5).setAlpha(0.85); cont.add(dr); this.tweens.add({targets:dr,x:{from:cs*0.18,to:cs*0.32},alpha:{from:0.4,to:0.95},yoyo:true,repeat:-1,duration:800}); }
+    if(c.draft&&(c.c==='empty'||c.taken)){ const dr=this.add.text(cs*0.26,-cs*0.26,'🌬️',{fontSize:Math.round(cs*0.26)+'px'}).setOrigin(0.5).setAlpha(0.85); cont.add(dr); this.digTween({targets:dr,x:{from:cs*0.18,to:cs*0.32},alpha:{from:0.4,to:0.95},yoyo:true,repeat:-1,duration:800}); }
   }
   digCell(i){ const d=Save.dig(),c=d.board[i]; if(!c||c.open||this.digBusy())return;
     if((d.shovels||0)<1){ Sfx.select(); this.menuToast(Save.digFreeReady()?'No shovels — claim your free ⛏️ below!':'No shovels left — clear stages to earn more ⛏️','#ff9bb5'); return; }
-    d.shovels--; c.hp--; Save.save(); this._digBusy=this.time.now;
+    const target=this._digCells&&this._digCells[i];if(!target||!target.scene||!this._digGeo)return;
+    d.shovels--; c.hp--;if(c.hp<=0)this._digPending={c,dailyAdvanced:false}; Save.save(); this._digBusy=this.time.now;
     const cont=this._digCells[i],G=this._digGeo,cs=G.cs,cx=cont.x,cy=cont.y;
     if(this._digInfo)this._digInfo.setText('⛏️ '+d.shovels+'   ·   🧶 '+Save.threads()+'   ·   Floor '+d.depth);
     // v5.28 🎬 1) พลั่วเหวี่ยงลง
     const sh=this.textures.exists('dig_shovel')?this.add.image(cx+cs*0.3,cy-cs*0.3,'dig_shovel').setDisplaySize(cs*0.7,cs*0.7):this.add.text(cx+cs*0.3,cy-cs*0.3,'⛏️',{fontSize:Math.round(cs*0.5)+'px'}).setOrigin(0.5);
     sh.setRotation(-0.9); this.menu.add(sh);
-    this.tweens.add({targets:sh,rotation:0.45,x:cx+cs*0.12,y:cy-cs*0.08,duration:140,ease:'Quad.in',onComplete:()=>{ this.tweens.add({targets:sh,alpha:0,duration:180,onComplete:()=>sh.destroy()});
+    this.digTween({targets:sh,rotation:0.45,x:cx+cs*0.12,y:cy-cs*0.08,duration:140,ease:'Quad.in',onComplete:()=>{ this.digTween({targets:sh,alpha:0,duration:180,onComplete:()=>this.digDestroy(sh)});
       // 2) กระแทก: สั่น + ฝุ่น
-      Sfx.digHit(); this.tweens.add({targets:cont,x:{from:cx-4,to:cx+4},duration:40,yoyo:true,repeat:2,onComplete:()=>cont.setX(cx)}); this.digDust(cx,cy,cs,4,0.5);
-      if(c.hp>0){ this.drawDigCell(cont,c,cs); this.time.delayedCall(170,()=>{ this._digBusy=false; }); return; }
+      Sfx.digHit(); this.digTween({targets:cont,x:{from:cx-4,to:cx+4},duration:40,yoyo:true,repeat:2,onComplete:()=>cont.setX(cx)}); this.digDust(cx,cy,cs,4,0.5);
+      if(c.hp>0){ this.drawDigCell(cont,c,cs); this.digLater(170,()=>{ this._digBusy=false; }); return; }
       // 3) แตก → เผยของ
-      this.time.delayedCall(170,()=>{ c.open=true; this.advanceDaily('dig'); Sfx.digBreak(); this.digShatter(cx,cy,cs,c.hard?0x8a7866:0x96623f); this.drawDigCell(cont,c,cs);
+      this.digLater(170,()=>{ c.open=true; this.advanceDaily('dig');if(this._digPending)this._digPending.dailyAdvanced=true; Sfx.digBreak(); this.digShatter(cx,cy,cs,c.hard?0x8a7866:0x96623f); this.drawDigCell(cont,c,cs);
         const it=cont.list[cont.list.length-1]; const rare=(DIG_ITEMS[c.c]||{}).rare;
         if(c.c==='chest'){ this.digChestOpen(cont,cx,cy,cs,c); return; }
-    if(c.c==='trap'){ const fl=this.add.rectangle(cx,cy,cs,cs,0xff3b5c,0.6); this.menu.add(fl); this.tweens.add({targets:fl,alpha:0,scale:1.4,duration:420,onComplete:()=>fl.destroy()});
-          this.tweens.add({targets:this.menu,x:{from:-6,to:6},duration:45,yoyo:true,repeat:3,onComplete:()=>this.menu.setX(0)});
-          const m=this.add.text(cx,cy-cs*0.3,'−1 ⛏️',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ff6b81',stroke:'#1a0f14',strokeThickness:4}).setOrigin(0.5); this.menu.add(m); this.tweens.add({targets:m,y:m.y-34,alpha:0,duration:700,onComplete:()=>m.destroy()}); }
-        if(it&&c.c!=='empty'){ it.setScale(0); this.tweens.add({targets:it,scale:1.25,duration:180,ease:'Back.out',yoyo:true,hold:60,onComplete:()=>it.setScale(1)}); }
+    if(c.c==='trap'){ const fl=this.add.rectangle(cx,cy,cs,cs,0xff3b5c,0.6); this.menu.add(fl); this.digTween({targets:fl,alpha:0,scale:1.4,duration:420,onComplete:()=>this.digDestroy(fl)});
+          this.digTween({targets:this.menu,x:{from:-6,to:6},duration:45,yoyo:true,repeat:3,onComplete:()=>this.menu.setX(0)});
+          const m=this.add.text(cx,cy-cs*0.3,'−1 ⛏️',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ff6b81',stroke:'#1a0f14',strokeThickness:4}).setOrigin(0.5); this.menu.add(m); this.digTween({targets:m,y:m.y-34,alpha:0,duration:700,onComplete:()=>this.digDestroy(m)}); }
+        if(it&&c.c!=='empty'){ const sx=it.scaleX,sy=it.scaleY;it.setScale(0);this.digTween({targets:it,scaleX:sx*1.25,scaleY:sy*1.25,duration:180,ease:'Back.out',yoyo:true,hold:60,onComplete:()=>it.setScale(sx,sy)}); }
         if(rare)this.digRareBurst(cx,cy,cs,c.c==='gem'?0xc7a6ff:0xffd166);
-        this.time.delayedCall(rare?760:380,()=>this.digFinish(c,cx,cy));
+        this.digLater(rare?760:380,()=>this.digFinish(c,cx,cy));
       }); }});
   }
   digBusy(){ return !!this._digBusy&&this.time.now-this._digBusy<3000; }   // กันค้าง: ถ้าอนิเมชันถูกตัด (กด Back) ปลดล็อกเองหลัง 3 วิ
   // 🎬 ฝุ่นเล็ก ๆ กระเด็น
   digDust(x,y,cs,n,a){ for(let k=0;k<n;k++){ const p=this.add.circle(x+Phaser.Math.Between(-cs*0.3,cs*0.3),y+cs*0.2,Phaser.Math.Between(3,6),0xc9a27a,a); this.menu.add(p);
-      this.tweens.add({targets:p,x:p.x+Phaser.Math.Between(-24,24),y:p.y-Phaser.Math.Between(10,30),alpha:0,scale:1.8,duration:360,ease:'Cubic.out',onComplete:()=>p.destroy()}); } }
+      this.digTween({targets:p,x:p.x+Phaser.Math.Between(-24,24),y:p.y-Phaser.Math.Between(10,30),alpha:0,scale:1.8,duration:360,ease:'Cubic.out',onComplete:()=>this.digDestroy(p)}); } }
   // 🎬 ช่องแตกเป็นเศษ 6 ชิ้นตกตามแรงโน้มถ่วง + ควัน
   digShatter(x,y,cs,col){ for(let k=0;k<6;k++){ const f=this.add.rectangle(x+Phaser.Math.Between(-cs*0.3,cs*0.3),y+Phaser.Math.Between(-cs*0.3,cs*0.3),cs*0.22,cs*0.18,col,1).setStrokeStyle(1.5,0x2a1a12,0.8).setRotation(Math.random()*3); this.menu.add(f);
       const vx=Phaser.Math.Between(-70,70),up=Phaser.Math.Between(30,60);
-      this.tweens.add({targets:f,x:f.x+vx,duration:420,ease:'Linear'}); this.tweens.add({targets:f,y:f.y-up,duration:160,ease:'Quad.out',onComplete:()=>this.tweens.add({targets:f,y:f.y+up+60,alpha:0,rotation:f.rotation+2,duration:260,ease:'Quad.in',onComplete:()=>f.destroy()})}); }
-    const puff=this.add.circle(x,y,cs*0.3,0xd8c0a0,0.5); this.menu.add(puff); this.tweens.add({targets:puff,scale:2,alpha:0,duration:420,ease:'Cubic.out',onComplete:()=>puff.destroy()}); }
+      this.digTween({targets:f,x:f.x+vx,duration:420,ease:'Linear'}); this.digTween({targets:f,y:f.y-up,duration:160,ease:'Quad.out',onComplete:()=>this.digTween({targets:f,y:f.y+up+60,alpha:0,rotation:f.rotation+2,duration:260,ease:'Quad.in',onComplete:()=>this.digDestroy(f)})}); }
+    const puff=this.add.circle(x,y,cs*0.3,0xd8c0a0,0.5); this.menu.add(puff); this.digTween({targets:puff,scale:2,alpha:0,duration:420,ease:'Cubic.out',onComplete:()=>this.digDestroy(puff)}); }
   // 🎬 ของหายาก: ลำแสงหมุน 8 แฉก + แฟลช + ประกาย
   digRareBurst(x,y,cs,col){ const rays=this.add.graphics(); rays.fillStyle(col,0.35); for(let k=0;k<8;k++){ const a=k*TAU/8; rays.fillTriangle(0,0,Math.cos(a-0.12)*cs*1.3,Math.sin(a-0.12)*cs*1.3,Math.cos(a+0.12)*cs*1.3,Math.sin(a+0.12)*cs*1.3); }
     rays.setPosition(x,y).setScale(0.2); this.menu.add(rays);
-    this.tweens.add({targets:rays,scale:1,rotation:1.2,duration:700,ease:'Cubic.out'}); this.tweens.add({targets:rays,alpha:0,delay:450,duration:300,onComplete:()=>rays.destroy()});
-    const fl=this.add.rectangle(0,0,this.W,this.H,col,0.28).setOrigin(0,0); this.menu.add(fl); this.tweens.add({targets:fl,alpha:0,duration:320,onComplete:()=>fl.destroy()});
+    this.digTween({targets:rays,scale:1,rotation:1.2,duration:700,ease:'Cubic.out'}); this.digTween({targets:rays,alpha:0,delay:450,duration:300,onComplete:()=>this.digDestroy(rays)});
+    const fl=this.add.rectangle(0,0,this.W,this.H,col,0.28).setOrigin(0,0); this.menu.add(fl); this.digTween({targets:fl,alpha:0,duration:320,onComplete:()=>this.digDestroy(fl)});
     for(let k=0;k<10;k++){ const a=Math.random()*TAU,sp=this.add.text(x,y,'✦',{fontSize:'14px',color:'#fff4c2'}).setOrigin(0.5); this.menu.add(sp);
-      this.tweens.add({targets:sp,x:x+Math.cos(a)*cs*1.1,y:y+Math.sin(a)*cs*1.1,alpha:0,scale:0.4,duration:600,ease:'Cubic.out',onComplete:()=>sp.destroy()}); } }
+      this.digTween({targets:sp,x:x+Math.cos(a)*cs*1.1,y:y+Math.sin(a)*cs*1.1,alpha:0,scale:0.4,duration:600,ease:'Cubic.out',onComplete:()=>this.digDestroy(sp)}); } }
   // 🎬 หีบ: สั่น 3 ครั้ง → ฝาเด้ง → ของพุ่งเป็นน้ำพุ
-  digChestOpen(cont,x,y,cs,c){ const it=cont.list[cont.list.length-1]; if(it){it.setScale(0);this.tweens.add({targets:it,scale:1,duration:160,ease:'Back.out'});}
-    this.tweens.add({targets:cont,angle:{from:-8,to:8},duration:70,yoyo:true,repeat:3,delay:180,onComplete:()=>{ cont.setAngle(0);
+  digChestOpen(cont,x,y,cs,c){ const it=cont.list[cont.list.length-1]; if(it){const sx=it.scaleX,sy=it.scaleY;it.setScale(0);this.digTween({targets:it,scaleX:sx,scaleY:sy,duration:160,ease:'Back.out'});}
+    this.digTween({targets:cont,angle:{from:-8,to:8},duration:70,yoyo:true,repeat:3,delay:180,onComplete:()=>{ cont.setAngle(0);
       if(it&&it.setText)it.setText('✨'); else if(it&&this.textures.exists('dig_chest_open'))it.setTexture('dig_chest_open');
       this.digRareBurst(x,y,cs,0xffd166); if(Sfx.chestWin)Sfx.chestWin();
       for(let k=0;k<8;k++){ const e=this.add.text(x,y,['🍬','✨','🍬','💫'][k%4],{fontSize:'16px'}).setOrigin(0.5); this.menu.add(e); const vx=Phaser.Math.Between(-60,60);
-        this.tweens.add({targets:e,x:x+vx,duration:700}); this.tweens.add({targets:e,y:y-Phaser.Math.Between(50,90),duration:300,ease:'Quad.out',onComplete:()=>this.tweens.add({targets:e,y:y+30,alpha:0,duration:400,ease:'Quad.in',onComplete:()=>e.destroy()})}); }
-      this.time.delayedCall(650,()=>this.digFinish(c,x,y)); }}); }
+        this.digTween({targets:e,x:x+vx,duration:700}); this.digTween({targets:e,y:y-Phaser.Math.Between(50,90),duration:300,ease:'Quad.out',onComplete:()=>this.digTween({targets:e,y:y+30,alpha:0,duration:400,ease:'Quad.in',onComplete:()=>this.digDestroy(e)})}); }
+      this.digLater(650,()=>this.digFinish(c,x,y)); }}); }
   // 🎬 เก็บของ: บินเข้าตัวนับด้านบน แล้วสรุปผล
-  digFinish(c,x,y){ const msg=this.digResolve(c); Save.save(); const info=this._digInfo,it=DIG_ITEMS[c.c]||{};
-    if(info&&it.emoji&&c.c!=='gem'){ const f=this.add.text(x,y,it.emoji,{fontSize:'22px'}).setOrigin(0.5); this.menu.add(f); this.tweens.add({targets:f,x:info.x,y:info.y,scale:0.5,duration:420,ease:'Cubic.in',onComplete:()=>{ f.destroy(); this.tweens.add({targets:info,scale:{from:1.25,to:1},duration:220}); }}); }
+  digFinish(c,x,y){ const msg=this.digResolve(c);this._digPending=null; Save.save(); const info=this._digInfo,it=DIG_ITEMS[c.c]||{};
+    if(info&&info.scene&&it.emoji&&c.c!=='gem'){ const f=this.add.text(x,y,it.emoji,{fontSize:'22px'}).setOrigin(0.5); this.menu.add(f); this.digTween({targets:f,x:info.x,y:info.y,scale:0.5,duration:420,ease:'Cubic.in',onComplete:()=>{ this.digDestroy(f); if(!info.scene)return;this.digTween({targets:info,scale:{from:1.25,to:1},duration:220}); }}); }
     const delay=c.c==='gem'?300:460;
-    this.time.delayedCall(delay,()=>{ this._digBusy=false; this.buildDig(); if(msg)this.menuToast(msg.t,msg.c);
-      if(c.c==='gem'){ const G=this._digGeo,sz=G.cs*G.N+G.gap*(G.N-1),gl=this.add.graphics(); gl.lineStyle(6,0xc7a6ff,1); gl.strokeRoundedRect(G.gx-10,G.gy-10,sz+20,sz+20,18); this.menu.add(gl); this.tweens.add({targets:gl,alpha:{from:1,to:0},duration:900,onComplete:()=>gl.destroy()}); } }); }
-  digResolve(c){ const d=Save.dig(); c.taken=true;
+    this.digLater(delay,()=>{ this._digBusy=false; this.buildDig(); if(msg)this.menuToast(msg.t,msg.c);
+      if(c.c==='gem'){ const G=this._digGeo,sz=G.cs*G.N+G.gap*(G.N-1),gl=this.add.graphics(); gl.lineStyle(6,0xc7a6ff,1); gl.strokeRoundedRect(G.gx-10,G.gy-10,sz+20,sz+20,18); this.menu.add(gl); this.digTween({targets:gl,alpha:{from:1,to:0},duration:900,onComplete:()=>this.digDestroy(gl)}); } }); }
+  digResolve(c){ if(!c||c.taken)return null;const d=Save.dig(); c.taken=true;
     if(c.c==='thread'||c.c==='sugar'){ const n=digThreadAmt(d.depth); Save.data.threads=Save.threads()+n; Sfx.digFind(); return {t:'🧶 +'+n+' Weave Thread',c:'#ffe08a'}; }
     if(c.c==='chest'){ Sfx.digRare(); const roll=Math.random();
       if(roll>0.88){ Save.data.scrolls=(Save.data.scrolls||0)+1; return {t:'🏺 Ancient Chest! 📜 Scroll Fragment '+Math.min(Save.data.scrolls,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK,c:'#ffd166'}; }
@@ -6315,8 +6343,8 @@ class Game extends Phaser.Scene {
     return null; }
   digDescend(){ const d=Save.dig(); if(!(d.gemFound||d.stairFound)||this.digBusy())return; const secret=!!d.stairFound; d.depth+=secret?2:1; d.best=Math.max(d.best||1,d.depth); d.gemFound=false; d.stairFound=false; d.secret=secret; d.board=digMakeBoard(d.depth+(secret?4:0),d.depth); Save.save(); Sfx.digDescend();
     // 🎬 กระดานเดิมเลื่อนขึ้นหาย → กระดานใหม่ตกลงมาเด้ง
-    this._digBusy=this.time.now; (this._digCells||[]).forEach((cn,k)=>this.tweens.add({targets:cn,y:cn.y-80,alpha:0,duration:260,delay:k*8,ease:'Cubic.in'}));
-    this.time.delayedCall(420,()=>{ this._digBusy=false; this._digDrop=true; this.buildDig(); this.menuToast(secret?'🕳️ Hidden Vault · Floor '+d.depth+' — treasure glitters everywhere':'🪜 Floor '+d.depth+(d.depth%5===0?' — 🎁 gift floor!':digBoardN(d.depth)>digBoardN(d.depth-1)?' — the cave widens!':' — richer treasure below'),'#c7a6ff'); }); }
+    this._digBusy=this.time.now; (this._digCells||[]).forEach((cn,k)=>this.digTween({targets:cn,y:cn.y-80,alpha:0,duration:260,delay:k*8,ease:'Cubic.in'}));
+    this.digLater(420,()=>{ this._digBusy=false; this._digDrop=true; this.buildDig(); this.menuToast(secret?'🕳️ Hidden Vault · Floor '+d.depth+' — treasure glitters everywhere':'🪜 Floor '+d.depth+(d.depth%5===0?' — 🎁 gift floor!':digBoardN(d.depth)>digBoardN(d.depth-1)?' — the cave widens!':' — richer treasure below'),'#c7a6ff'); }); }
   buildRankPerks(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives','screen_weave_perks');
     const w=this.W,h=this.H;
@@ -6905,9 +6933,9 @@ class Game extends Phaser.Scene {
   }
   // ให้ Character EXPปัจจุบัน + คำนวณเลเวล/แต้ม (คืน obj สรุปเพื่อโชว์)
   gainCharExp(n){
-    if(!n||n<=0)return; const cp=Save.cp(this.character); cp.exp=(cp.exp||0)+Math.round(n);
+    if(!Number.isFinite(n)||n<=0)return; const cp=Save.cp(this.character),before={lvl:cp.lvl,exp:cp.exp||0}; cp.exp=(cp.exp||0)+Math.round(n);
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
-    Save.save(); this._lastExpGain=Math.round(n); this._lastLvlUps=ups; return ups;
+    Save.save(); this._lastExpGain=Math.round(n);this._charExpGain={character:this.character,before,after:{lvl:cp.lvl,exp:cp.exp},gain:this._lastExpGain}; this._lastLvlUps=ups; return ups;
   }
   showMenu(){ this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
@@ -8415,6 +8443,7 @@ class Game extends Phaser.Scene {
   stopSummaryPresentation(){
     this._summarySoundToken=(this._summarySoundToken||0)+1;
     (this._summarySoundTimers||[]).forEach(t=>t.remove(false));this._summarySoundTimers=[];
+    if(this._summaryExpTween){this._summaryExpTween.stop();this._summaryExpTween=null;}
     Sfx.stopCraft();
   }
   animateSummaryRewards(sugarText,rewards){
@@ -8428,14 +8457,29 @@ class Game extends Phaser.Scene {
     if(this._firstMastery||this._lastLvlUps>0)later(at+160+rewards.length*160,()=>Sfx.result('important'));
     if(this.events&&!this._summaryShutdownHook){this._summaryShutdownHook=true;this.events.once('shutdown',()=>{this.stopSummaryPresentation();this._summaryShutdownHook=false;});}
   }
+  buildSummaryExpBar(box,px,py,pw,ph,font,animate){
+    const cp=Save.cp(this.character),snapshot=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;
+    const before=snapshot?snapshot.before:{lvl:cp.lvl,exp:cp.exp||0},gain=snapshot?snapshot.gain:0;
+    const x=px+pw*.17,y=py+ph*.656,width=pw*.66,height=Math.max(7,Math.min(12,ph*.022));
+    const frame=this.add.graphics(),fill=this.add.graphics(),label=this.add.text(px+pw/2,py+ph*.635,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(7,font-2)+'px',color:'#c0ffe3'}).setOrigin(.5);
+    frame.fillStyle(0x101c25,.95);frame.fillRoundedRect(x,y,width,height,height/2);frame.lineStyle(1,0xd9fff0,.55);frame.strokeRoundedRect(x,y,width,height,height/2);box.push(frame,fill,label);
+    const token=this._summarySoundToken,draw=p=>{if(this.state!=='summary'||this._summarySoundToken!==token)return;
+      const value=characterExpProgress(before,gain,p),ratio=Math.min(1,value.exp/value.need);fill.clear();
+      if(ratio>0){fill.fillStyle(0x58b98e,1);fill.fillRoundedRect(x+2,y+2,Math.max(2,(width-4)*ratio),height-4,2);}
+      label.setText('Character EXP · Lv '+value.lvl+' · '+Math.floor(value.exp)+' / '+value.need+(gain?'  (+'+gain+')':''));
+    };
+    draw(animate&&gain?0:1);
+    if(animate&&gain)this._summaryExpTween=this.tweens.addCounter({from:0,to:1,duration:1200,ease:'Linear',onUpdate:t=>draw(t.getValue()),onComplete:()=>draw(1)});
+  }
   showStageSummary(last){
     this.stopSummaryPresentation();
     this.state='summary'; this.physics.pause(); this.player.setVelocity(0,0);
     this._summaryLast=last;
     const w=this.W,h=this.H, st=STAGES[this.stageIndex]; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x100b19,0.9).setOrigin(0,0);
-    const pw=Math.min(w-20,(h-20)*2/3),ph=pw*1.5,px=(w-pw)/2,py=(h-ph)/2;
-    const panel=this.add.image(w/2,h/2,'stage_summary_panel').setDisplaySize(pw,ph);
+    const extra=this.sugarStage>0&&!this._summaryDoubled?40:0;
+    const pw=Math.min(w-20,(h-20-extra)*2/3),ph=pw*1.5,px=(w-pw)/2,py=(h-ph-extra)/2;
+    const panel=this.add.image(w/2,py+ph/2,'stage_summary_panel').setDisplaySize(pw,ph);
     const font=Math.max(8,Math.min(13,pw*.035));
     const t=this.add.text(w/2,py+ph*.194,(this._quitSummary?'Left ':'Cleared ')+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(19,pw*.049)+'px',color:'#fff8da',align:'center',wordWrap:{width:pw*.60}}).setOrigin(.5);
     const mm=Math.floor(this.elapsed/60),ss=Math.floor(this.elapsed%60),cp=Save.cp(this.character);
@@ -8456,6 +8500,7 @@ class Game extends Phaser.Scene {
       const v=this.add.text(px+pw*.87,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:i===2?'#ffe18b':'#fff5dd',align:'right',wordWrap:{width:pw*.38}}).setOrigin(1,.5);box.push(l,v);if(i===2)sugarText=v;
     });
     if(this._firstMastery){box.push(this.add.text(w/2,py+ph*.613,'Stage Mastery earned!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#b9ffe1'}).setOrigin(.5));}
+    this.buildSummaryExpBar(box,px,py,pw,ph,font,!this._summaryPresentationShown);
     const cur=this._runCurrency||{},curKeys=Object.keys(cur).filter(k=>cur[k]>0).slice(0,12);
     box.push(this.add.text(w/2,py+ph*.709,curKeys.length?'Currency Gained':'No currency this run',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#ffe9bc'}).setOrigin(.5));
     if(curKeys.length){const per=Math.min(6,curKeys.length),cell=pw*.73/per,two=curKeys.length>per;
@@ -8464,7 +8509,7 @@ class Game extends Phaser.Scene {
         const qty=this.add.text(ex,ey+size*.62,'x'+cur[k],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(7,font-3)+'px',color:'#fff'}).setOrigin(.5);box.push(icon,qty);rewardGroups.push([icon,qty]);
       });}
     this._summaryBtns=[];this._summaryBonus=this.sugarStage;
-    if(this._summaryBonus>0&&!this._summaryDoubled){const dw=pw*.72,dh=Math.min(32,ph*.055),dy=py+ph*.657;
+    if(this._summaryBonus>0&&!this._summaryDoubled){const dw=pw*.72,dh=32,dy=py+ph+extra/2;
       const ad=this.add.image(w/2,dy,'painted_nav_button').setDisplaySize(dw,dh),adText=this.add.text(w/2,dy,'Get Sugar x2 (+'+this._summaryBonus+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#fff3ce'}).setOrigin(.5);box.push(ad,adText);
       this._summaryBtns.push({x:w/2-dw/2,y:dy-dh/2,w:dw,h:dh,fn:()=>this.showRewardedAd('Get double Sugar (+'+this._summaryBonus+')',()=>this.adDoubleSugar())});}
     const bw=pw*.60,bh=ph*.078,by=py+ph*.88;
