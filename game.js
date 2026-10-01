@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.73';
+const GAME_VERSION = '6.0.74';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.74', date:'2026-10-01', title:'Bazaar tidy', items:['Supply box AUTO is now a button inside the Crafting supply box card'] },
   { v:'6.0.73', date:'2026-10-01', title:'Season Storm', items:['C2-4 mission is now Season Storm: each season brings its own hazard','Spring: defeat 10 healing enemies · Summer: keep moving or burn · Autumn: wind and leaf gusts · Winter: slippery ice and frost patches','Pass each season’s trial once to finish; a failed trial simply returns next cycle'] },
   { v:'6.0.72', date:'2026-10-01', title:'New season mission', items:['Stabilize the Seasons (C2-4) no longer asks you to stand in circles','Enemies now carry a season ring — defeat enemies of the active season','Kills of other seasons simply don’t count; progress never goes down'] },
   { v:'6.0.71', date:'2026-10-01', title:'Gear Trade-in', items:['Bazaar Equipment box replaced by Gear Trade-in','Give 3 unwanted gear, get 1 new piece at their average item level +2 to +5','Locked, favorite and equipped gear are protected'] },
@@ -6850,7 +6851,11 @@ class Game extends Phaser.Scene {
     const name=this.add.text(x+w/2,y+size+13,product.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff0dc',align:'center',wordWrap:{width:w-12},maxLines:1}).setOrigin(.5,0);
     const desc=this.add.text(x+w/2,y+h-42,h<110?'':product.desc||'',{fontFamily:'sans-serif',fontSize:'8px',color:'#c5b5d1',align:'center',wordWrap:{width:w-12},maxLines:1}).setOrigin(.5);
     const price=this.add.text(x+w/2,y+h-20,product.sold?'SOLD':product.price,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:product.sold?'#75697e':product.afford===false?'#f295a8':'#a8edc6'}).setOrigin(.5);
-    this.menu.add([icon,name,desc,price]);if(!product.sold&&product.fn)this._zone(x,y,w,h,product.fn);
+    this.menu.add([icon,name,desc,price]);
+    if(product.alt&&!product.sold){ const bw=Math.min(w-24,150),bh=34,bx=x+(w-bw)/2,by=y+h*.52-bh/2,ag=this.add.graphics();ag.fillStyle(0x3a2a14,1);ag.fillRoundedRect(bx,by,bw,bh,10);ag.lineStyle(2,0xffd166,.95);ag.strokeRoundedRect(bx,by,bw,bh,10);
+      const at=this.add.text(bx+bw/2,by+bh/2,product.alt.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd166'}).setOrigin(.5);this.menu.add([ag,at]);this._zone(bx,by,bw,bh,product.alt.fn);
+      if(product.fn){this._zone(x,y,w,by-y-4,product.fn);this._zone(x,by+bh+4,w,y+h-(by+bh+4),product.fn);} }
+    else if(!product.sold&&product.fn)this._zone(x,y,w,h,product.fn);
   }
   buildBazaar(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
@@ -6872,8 +6877,7 @@ class Game extends Phaser.Scene {
       heading('Mystery boxes');
       const cardH=Math.min(230,Math.max(150,(h-y-65)/2-8));
       grid([{art:'prize_chest',name:'Gear Trade-in',desc:'Give 3 gear · get 1 new piece at their item level',price:'Trade 3 → 1',afford:true,color:0xffd166,fn:()=>{this._tradeSel=[];this._tradePage=0;this.menuScreen='tradein';this.buildTradeIn();}},
-        {art:'prize_currency',name:'Crafting supply box',desc:'1 random crafting material',price:'Open · Sugar '+bazaarCurrencyBoxCost(),afford:(Save.data.sugar||0)>=bazaarCurrencyBoxCost(),color:0x8edbd0,fn:()=>this.bazaarGambleCurrency(false)},
-        {art:'prize_currency',name:'Supply box · AUTO',desc:'Keeps opening until you tap or Sugar runs out',price:'Auto · Sugar '+bazaarCurrencyBoxCost(),afford:(Save.data.sugar||0)>=bazaarCurrencyBoxCost(),color:0xffd166,fn:()=>this.bazaarGambleCurrency(true)}],cardH);
+        {art:'prize_currency',name:'Crafting supply box',desc:'1 random crafting material',price:'Open · Sugar '+bazaarCurrencyBoxCost(),afford:(Save.data.sugar||0)>=bazaarCurrencyBoxCost(),color:0x8edbd0,fn:()=>this.bazaarGambleCurrency(false),alt:{label:'▶▶ AUTO',fn:()=>this.bazaarGambleCurrency(true)}}],cardH);
       this.menu.add(this.add.text(w/2,y+12,'Tap a box to open it · rewards go to your inventory',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',wordWrap:{width:w-32},align:'center'}).setOrigin(.5,0));
     }else if(tab==='orders'){
       const active=Save.sugarOrder();heading(active?'Order active · clear a regular stage':'Choose a farming order');
