@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.51';
+const GAME_VERSION = '6.0.52';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.52', date:'2026-10-01', title:'Permanent progression sounds', items:['Dedicated Core, Talent, Overcap, Rank and Ancient upgrade cues','Distinct daily, achievement, quest and item claim sounds','Repeated reward taps cannot replay successful claims'] },
   { v:'6.0.51', date:'2026-10-01', title:'Equipment sound design', items:['Short equip, lock, unlock, dismantle and sell sounds','Enhancement success, break and destruction have distinct feedback','Equipment sounds follow actual saved outcomes'] },
   { v:'6.0.50', date:'2026-10-01', title:'Affix action sound design', items:['Distinct short sounds for capacity upgrades, value rerolls, removal and reset','Action sounds follow successful changes; rejected actions keep error feedback'] },
   { v:'6.0.49', date:'2026-10-01', title:'Dedicated crafting sounds', items:['Short forge start, reel ticks and slowdown cues','Single common, rare or jackpot reveal instead of layered chest sounds','Auto-roll cancellation and currency exhaustion feedback'] },
@@ -846,9 +847,10 @@ const Sfx = {
         sound.once('complete',()=>{this._craftVoices=this._craftVoices.filter(s=>s!==sound);sound.destroy();});sound.play();return;
       }
     }catch(e){}
-    const notes={start:[620,930],tick:[1250*rate],slow:[780,620],common:[784,988],rare:[784,988,1175],jackpot:[784,988,1175,1568],near:[880,1047,880],cancel:[660,440],exhaust:[330,220],capacity:[523,784,1047],reroll:[988,740,1175],remove:[880,440],reset:[740,494,247],gear_equip:[660,990],gear_lock:[440,330],gear_unlock:[330,660],gear_enhance_success:[659,988,1319],gear_enhance_break:[392,294],gear_enhance_destroy:[220,147,98],gear_dismantle:[880,587,392],gear_sell:[1047,1319]}[kind];
+    const notes={start:[620,930],tick:[1250*rate],slow:[780,620],common:[784,988],rare:[784,988,1175],jackpot:[784,988,1175,1568],near:[880,1047,880],cancel:[660,440],exhaust:[330,220],capacity:[523,784,1047],reroll:[988,740,1175],remove:[880,440],reset:[740,494,247],gear_equip:[660,990],gear_lock:[440,330],gear_unlock:[330,660],gear_enhance_success:[659,988,1319],gear_enhance_break:[392,294],gear_enhance_destroy:[220,147,98],gear_dismantle:[880,587,392],gear_sell:[1047,1319],progress_core:[740,1110],progress_talent:[880,1175],progress_overcap:[659,988,1480],progress_promotion:[523,659,784,1047],progress_perk:[587,880],progress_ancient:[494,740,988,1480],progress_daily:[784,1047,1319],progress_achievement:[659,831,988,1319],progress_quest:[740,988,1175],progress_claim:[988,1319]}[kind];
     if(notes)this.seq(notes,'sine',kind==='tick'?.025:.045,kind==='tick'?.018:.055);
   },
+  progress(kind){this.craft('progress_'+kind);},
   equipment(kind){this.craft('gear_'+kind);},
   equipmentEnhance(res){if(res&&['success','break','destroy'].includes(res.result))this.equipment('enhance_'+res.result);},
   select(){this.ui('click');},
@@ -1567,6 +1569,16 @@ const ASSET_AUDIO = {
   sfx_levelup:    'assets/audio/sfx/gen/sfx_levelup_soft.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
   sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
   sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
+  sfx_craft_progress_core:'assets/audio/sfx/progress/progress_core.wav',
+  sfx_craft_progress_talent:'assets/audio/sfx/progress/progress_talent.wav',
+  sfx_craft_progress_overcap:'assets/audio/sfx/progress/progress_overcap.wav',
+  sfx_craft_progress_promotion:'assets/audio/sfx/progress/progress_promotion.wav',
+  sfx_craft_progress_perk:'assets/audio/sfx/progress/progress_perk.wav',
+  sfx_craft_progress_ancient:'assets/audio/sfx/progress/progress_ancient.wav',
+  sfx_craft_progress_daily:'assets/audio/sfx/progress/progress_daily.wav',
+  sfx_craft_progress_achievement:'assets/audio/sfx/progress/progress_achievement.wav',
+  sfx_craft_progress_quest:'assets/audio/sfx/progress/progress_quest.wav',
+  sfx_craft_progress_claim:'assets/audio/sfx/progress/progress_claim.wav',
   sfx_craft_gear_equip:'assets/audio/sfx/gear/gear_equip.wav',
   sfx_craft_gear_lock:'assets/audio/sfx/gear/gear_lock.wav',
   sfx_craft_gear_unlock:'assets/audio/sfx/gear/gear_unlock.wav',
@@ -5394,7 +5406,7 @@ class Game extends Phaser.Scene {
     const info=this.add.text(w/2,y1+88,claimed?'Claimed today · Streak '+streak+' days':'Today reward 🍬 '+reward+' · keep your Streak',{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc2d5'}).setOrigin(0.5);
     const bw=Math.min(w-70,260),by=y1+h1-38,bg=this.add.graphics();bg.fillStyle(claimed?0x3b3541:0xffb020,1);bg.fillRoundedRect(w/2-bw/2,by-20,bw,40,13);const bt=this.add.text(w/2,by,claimed?'Claimed ✓':'Claim',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:claimed?'#8f849f':'#21131a'}).setOrigin(0.5);this.menu.add([t1,days,info,bg,bt]);
     if(!claimed){this.drawBadgeDot(this.menu,w/2-bw/2+8,by-17);this._drawNextGuide(w/2-bw/2,by-20,bw,40,'Claim today');}
-    if(!claimed)this._zone(w/2-bw/2,by-20,bw,40,()=>{const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;Save.addSugar(50+d.streak*15);Sfx.clear();this.showBanner('🎁 Daily Reward','Streak '+d.streak+' days · get 🍬 '+(50+d.streak*15),1700);this.buildDaily();});
+    if(!claimed)this._zone(w/2-bw/2,by-20,bw,40,()=>{if(d.claimDay===spec.key)return;const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;Save.addSugar(50+d.streak*15);Sfx.progress('daily');this.showBanner('🎁 Daily Reward','Streak '+d.streak+' days · get 🍬 '+(50+d.streak*15),1700);this.buildDaily();});
     const y2=y1+h1+14,h2=Math.max(150,h-y2-18);panel(y2,h2,0xd95cff);
     const diff=DIFFS[spec.diff-1],t2=this.add.text(w/2,y2+24,'⚔️ DAILY CHALLENGE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#e7b7ff'}).setOrigin(0.5);
     const mission=spec.kind==='kills'?'Defeat '+spec.target+' enemies':spec.kind==='dig'?'Dig '+spec.target+' Temple tiles':'Clear Stage '+(spec.stage+1)+' · '+st.name;
@@ -5674,7 +5686,7 @@ class Game extends Phaser.Scene {
       g.fillStyle(claimed?0x20252b:ok?0x342d25:0x241e2c,0.98);g.fillRoundedRect(x,y,cw,rh,12);g.lineStyle(1.8,claimed?0x537663:ok?0xffd166:0x493e52,1);g.strokeRoundedRect(x,y,cw,rh,12);
       const em=this.add.text(x+24,y+rh/2,a.emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(ok?1:0.38),nm=this.add.text(x+47,y+12,a.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:ok?'#ffffff':'#82798d'}).setOrigin(0,0);
       const ds=this.add.text(x+47,y+30,a.desc,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#a99db2'}).setOrigin(0,0),state=this.add.text(x+cw-10,y+rh/2,claimed?'Claimed ✓':ok?'Get 🍬'+a.reward:'Not yet',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:claimed?'#8bd3a0':ok?'#ffe08a':'#6e6576'}).setOrigin(1,0.5);
-      this.menu.add([g,em,nm,ds,state]);if(ok&&!claimed){this.drawBadgeDot(this.menu,x+cw-10,y+10);this._zone(x,y,cw,rh,()=>{Save.data.achievements[a.id]=true;Save.addSugar(a.reward);Sfx.clear();this.showBanner(a.emoji+' Achievement unlocked!',a.name+' · get 🍬 '+a.reward,1600);this.buildAchievements();});}
+      this.menu.add([g,em,nm,ds,state]);if(ok&&!claimed){this.drawBadgeDot(this.menu,x+cw-10,y+10);this._zone(x,y,cw,rh,()=>{if(Save.data.achievements[a.id]||!a.test(Save.data))return;Save.data.achievements[a.id]=true;Save.addSugar(a.reward);Sfx.progress('achievement');this.showBanner(a.emoji+' Achievement unlocked!',a.name+' · get 🍬 '+a.reward,1600);this.buildAchievements();});}
     });this.menu.setVisible(true);
   }
   buildSettings(){
@@ -5737,7 +5749,7 @@ class Game extends Phaser.Scene {
   // ---- Quest chain + badge helpers ----
   claimReadyQuests(){ const d=Save.data; if(!d.questClaimed)d.questClaimed={}; let claimed=null,total=0;
     for(const q of QUESTS){ if(q.done(d)&&!d.questClaimed[q.id]){ d.questClaimed[q.id]=1; d.sugar=(d.sugar||0)+q.r; total+=q.r; claimed=q; } }
-    if(claimed){ Save.save(); if(this.menuToast)this.menuToast('🎯 Quest complete! +🍬'+total+' · '+claimed.t,'#ffe08a'); Sfx.clear&&Sfx.clear(); }   // menuToast is safe in the hub (bannerT not built there)
+    if(claimed){ Save.save(); if(this.menuToast)this.menuToast('🎯 Quest complete! +🍬'+total+' · '+claimed.t,'#ffe08a'); Sfx.progress('quest'); }   // menuToast is safe in the hub (bannerT not built there)
   }
   nextQuest(){ const d=Save.data; for(const q of QUESTS){ if(!q.done(d))return q; } return null; }
   hasTargetBadge(target){try{const d=Save.data,day=localDayKey();
@@ -6080,9 +6092,9 @@ class Game extends Phaser.Scene {
         const ow=Math.max(60,ppx-x-75-8),oh=ph,ox=x+75,oy=ppy;
         if(ow>=60){ const og=this.add.graphics(); og.fillStyle(ok?0x4a3a1a:0x2a2232,1); og.fillRoundedRect(ox,oy,ow,oh,10); og.lineStyle(1.5,ok?0xffd166:0x3a3048,1); og.strokeRoundedRect(ox,oy,ow,oh,10);
           const ot=this.add.text(ox+ow/2,oy+oh/2,ocMax?('⬆ Overcap MAX +'+oc):('⬆ +'+oc+'/'+OVERCAP_MAX+' · '+se+stn+'/'+cst.stones+' 🍬'+cst.sugar),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ow<130?'8px':'9.5px',color:ocMax?'#8bd3a0':(ok?'#ffe08a':'#8d8195')}).setOrigin(0.5);
-          this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.digRare(); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):('Need 🍬 '+cst.sugar+' Sugar'),'#ff9bb5'); } this.buildMenuScreen(); }); }
+          this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.progress('overcap'); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):('Need 🍬 '+cst.sugar+' Sugar'),'#ff9bb5'); } this.buildMenuScreen(); }); }
         if(oc>0)st.setText(stars+' +'+oc); }
-      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.clear(); this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
+      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
     });
     const py=portrait?Math.min(h-58,top+UPG_ORDER.length*(cardH+gapY)+4):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
     const pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
@@ -6092,7 +6104,7 @@ class Game extends Phaser.Scene {
     const psub=this.add.text(pbx,py+29,allMax?('Spend 🧶'+Save.promoteThreadCost()+' · get 🍬'+promoteReward(rank)):'Max all 3: CORE / FLAVOR / BOND',
       {fontFamily:'sans-serif',fontSize:'9px',color:allMax?'#ffe9c2':'#8f849f'}).setOrigin(0.5);
     this.menu.add([pg,pl,psub]);
-    if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.clear();
+    if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion');
       if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen(); });
     this.menu.setVisible(true);
   }
@@ -6116,7 +6128,7 @@ class Game extends Phaser.Scene {
       for(let j=0;j<3;j++){const gem=this.add.text(left+cw*(.433+j*.075),y+rowH*.80,j<lvl?'◆':'◇',{fontSize:Math.round(rowH*.17)+'px',color:j<lvl?'#a5ffe3':'#80718e'}).setOrigin(.5);this.menu.add(gem);}
       const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread',bx=left+cw*.827,by=y+rowH*.785;
       const buttonText=this.add.text(bx,by,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(9,fs-1)+'px',color:locked||maxed?'#d4cfdd':affordable?'#153b31':'#ffe4b4'}).setOrigin(.5);this.menu.add(buttonText);
-      if(!locked&&!maxed)this._zone(left+cw*.69,y+rowH*.64,cw*.275,rowH*.27,()=>{if(Save.buySpecialCore(core.id)){Sfx.clear();this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
+      if(!locked&&!maxed)this._zone(left+cw*.69,y+rowH*.64,cw*.275,rowH*.27,()=>{if(Save.buySpecialCore(core.id)){Sfx.progress('core');this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
     });
     const footer=Math.min(h-61,start+count*(rowH+gap)+9);
     const paintedButton=(cy,width,label,fn)=>{
@@ -6314,7 +6326,7 @@ class Game extends Phaser.Scene {
         const bh=17,by=y+cardH-bh-3,bx=x+6,bw=cardW-12,bg=this.add.graphics(); bg.fillStyle(maxed?0x2f4a38:(canBuy?0x4a3a1a:0x322a3a),1); bg.fillRoundedRect(bx,by,bw,bh,6);
         const bt=this.add.text(x+cardW/2,by+bh/2,maxed?'MAX':(!unlocked?'🔒 Locked':(canBuy?('Spend →+'+(lvl+1)):(free<=0?'No RP':'Lv'+lvl+'/'+pk.max))),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:maxed?'#8bd3a0':(canBuy?'#ffe08a':'#8d8195')}).setOrigin(0.5);
         this.menu.add([g,em,nm,ds,dt,bg,bt]);
-        if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.clear();}else Sfx.select(); this.buildRankPerks(); });
+        if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.progress('perk');}else Sfx.error(); this.buildRankPerks(); });
       });
       y+=cardH+11;
     });
@@ -6326,7 +6338,7 @@ class Game extends Phaser.Scene {
         const icon=this.textures.exists('perk_'+pk.id)?this.add.image(x+16,yy+17,'perk_'+pk.id).setDisplaySize(22,22):this.add.text(x+16,yy+17,pk.emoji,{fontSize:'16px'}).setOrigin(0.5); icon.setAlpha(own||can?1:0.45);
         const nm=this.add.text(x+30,yy+10,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:own?'#e9dcff':'#cbbfda',wordWrap:{width:cardW-34}}).setOrigin(0,0);
         const ds=this.add.text(x+6,yy+31,own?'✓ '+pk.desc:(can?'Tap to unlock · '+pk.desc:'🔒 '+pk.desc),{fontFamily:'sans-serif',fontSize:'6.8px',color:own?'#b8a4e0':'#7f748d',wordWrap:{width:cardW-10}}).setOrigin(0,0);
-        this.menu.add([g,icon,nm,ds]); if(can)this._zone(x,yy,cardW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.digRare(); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
+        this.menu.add([g,icon,nm,ds]); if(can)this._zone(x,yy,cardW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.progress('ancient'); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
       y+=2*(aH+6)+6; }
     // ปุ่มรีเซ็ต perk (คืนแต้มทั้งหมด)
     const ry2=Math.min(h-42,y),rw=Math.min(w-40,300);
@@ -6494,7 +6506,7 @@ class Game extends Phaser.Scene {
       const key=base&&'gear_'+base.id,art=key&&this.textures.exists(key)?this.add.image(43,ry+30,key).setDisplaySize(42,42):this.add.text(43,ry+30,base?base.emoji:'🎁',{fontSize:'25px'}).setOrigin(.5);
       const nm=this.add.text(70,ry+9,(base?base.name:'Unknown')+' · iLv '+(item.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:tl.color}).setOrigin(0,0);
       const sub=this.add.text(70,ry+27,tl.name+' · '+(item.affixes||[]).length+' affix'+((item.affixes||[]).length===1?'':'es'),{fontFamily:'sans-serif',fontSize:'8.5px',color:'#bbaabd'}).setOrigin(0,0);this.menu.add([art,nm,sub]);
-      const by=ry+8,bh=44,bw=56,cx=w-132,claim=this.add.graphics();claim.fillStyle(Save.gearInventoryFull()?0x3a3550:0x3f9160,1);claim.fillRoundedRect(cx,by,bw,bh,9);const ct=this.add.text(cx+bw/2,by+bh/2,Save.gearInventoryFull()?'Bag Full':'Claim',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#fff'}).setOrigin(.5);this.menu.add([claim,ct]);if(!Save.gearInventoryFull())this._zone(cx,by,bw,bh,()=>{if(Save.claimGearInbox(item.uid)){Sfx.clear();this.buildGearInbox();}});
+      const by=ry+8,bh=44,bw=56,cx=w-132,claim=this.add.graphics();claim.fillStyle(Save.gearInventoryFull()?0x3a3550:0x3f9160,1);claim.fillRoundedRect(cx,by,bw,bh,9);const ct=this.add.text(cx+bw/2,by+bh/2,Save.gearInventoryFull()?'Bag Full':'Claim',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#fff'}).setOrigin(.5);this.menu.add([claim,ct]);if(!Save.gearInventoryFull())this._zone(cx,by,bw,bh,()=>{if(Save.claimGearInbox(item.uid)){Sfx.progress('claim');this.buildGearInbox();}});
       const safe=item.grade!=='epic'&&item.grade!=='legend'&&!item.locked&&!item.favorite,dg=this.add.graphics();dg.fillStyle(safe?0x8d4b3e:0x3a3550,1);dg.fillRoundedRect(w-70,by,bw,bh,9);const dt=this.add.text(w-42,by+bh/2,safe?('Dismantle\n🔩+'+gearDismantleValue(item)):'Protected',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:'#fff',align:'center'}).setOrigin(.5);this.menu.add([dg,dt]);if(safe)this._zone(w-70,by,bw,bh,()=>{const n=Save.dismantleGearInbox(item.uid);if(n){Sfx.equipment('dismantle');this.buildGearInbox();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}});
     });
     if(pages>1){const py=y+visible.length*68+2,txt=this.add.text(w/2,py+13,'‹   '+(this.inboxPage+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6'}).setOrigin(.5);this.menu.add(txt);this._zone(w/2-70,py,55,26,()=>{this.inboxPage=(this.inboxPage-1+pages)%pages;this.buildGearInbox();});this._zone(w/2+15,py,55,26,()=>{this.inboxPage=(this.inboxPage+1)%pages;this.buildGearInbox();});}
@@ -11205,7 +11217,7 @@ class Game extends Phaser.Scene {
     if(own.length>1){ const ra=this.add.text(hd.x+hd.width+14,top,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(ra); this._zone(ra.x-20,top-18,40,36,()=>{ const n=own[(oi+1)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); }); }
     const listTop=py+54,rh=Math.max(44,Math.min(58,(this.H-listTop-70)/defs.length-6));
     defs.forEach((d,i)=>{ const r=(cp.tal||{})[d.id]||0,maxed=r>=d.max,can=!maxed&&(cp.tp||0)>0;
-      this._rowBtn(listTop+i*(rh+6),rh,d.emoji,d.name+'  '+r+'/'+d.max,d.per,maxed?'MAX':can?'+1 🌟':'🔒 TP',maxed?'#ffe07a':can?'#8ff0b0':'#8a8198',can?()=>{ cp.tal=cp.tal||{}; cp.tal[d.id]=r+1; cp.tp--; Save.save(); Sfx.select&&Sfx.select(); this.menuToast('🌟 '+d.name+' → '+(r+1)); this.buildTalents(); }:null,bx,bw); });
+      this._rowBtn(listTop+i*(rh+6),rh,d.emoji,d.name+'  '+r+'/'+d.max,d.per,maxed?'MAX':can?'+1 🌟':'🔒 TP',maxed?'#ffe07a':can?'#8ff0b0':'#8a8198',can?()=>{ if((cp.tp||0)<=0||(cp.tal||{})[d.id]>=d.max)return; cp.tal=cp.tal||{}; cp.tal[d.id]=(cp.tal[d.id]||0)+1; cp.tp--; Save.save(); Sfx.progress('talent'); this.menuToast('🌟 '+d.name+' → '+(r+1)); this.buildTalents(); }:null,bx,bw); });
     // v4.88.2: รีเซ็ต Talent คืน TP ทั้งหมด (จ่าย Sugar · แตะ 2 ครั้งยืนยัน)
     const spent=Object.values(cp.tal||{}).reduce((a,v)=>a+(v||0),0),cost=80+40*spent,armed=this._talResetArm&&this._talResetArm.id===id&&Date.now()-this._talResetArm.t<2500;
     const ry=listTop+defs.length*(rh+6)+22;

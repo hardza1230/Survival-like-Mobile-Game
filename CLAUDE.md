@@ -1,3 +1,7 @@
+## Sound commit 5 — v6.0.52
+
+Ten permanent-progress/reward WAVs: core, talent, overcap, promotion, perk, ancient, daily, achievement, quest and claim. Regular/special Cores, hero talents, Rank Perks/Ancients and inventory inbox claims wired after saved changes. Daily and achievement callbacks guard duplicate reward taps; talents recheck current TP/cap. Checks/build and reward callback/mix tests pass; mobile listening pending. Next: sound commit 6, stage results and final mix.
+
 ## Sound commit 4 — v6.0.51
 
 Eight equipment WAVs cover equip, lock/unlock, enhancement success/break/destruction, dismantle and sell. Inventory and legacy equip/enhance callbacks plus inbox dismantle emit after actual results. Uses bounded menu sound player with mute/volume/fallback. Checks/build and callback result tests pass; mobile listening pending. Next: sound commit 5, permanent progression and reward claims.
