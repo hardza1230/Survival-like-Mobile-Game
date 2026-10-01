@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.67';
+const GAME_VERSION = '6.0.68';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.68', date:'2026-10-01', title:'Bigger bag', items:['Gear bag expanded from 24 to 100 slots (existing saves upgraded automatically)'] },
   { v:'6.0.67', date:'2026-10-01', title:'Sniper Unique upgrades', items:['Charged Sniper path adds 4 cards that upgrade the charged Unique shot','Heavy Round: much more damage, but a longer charge','Quick Scope: faster charge, less damage','Wide Bore: wider beam, longer cooldown','Split Shot: extra side beams, weaker main shot'] },
   { v:'6.0.66', date:'2026-10-01', title:'Momo Sniper charged shot', items:['With the Charged Sniper path, hold Unique to charge — a bar appears above Momo','Drag your finger to aim; the camera zooms out while charging','Release to fire a piercing straight shot that leaves a wind-cut trail · full charge hits harder'] },
   { v:'6.0.65', date:'2026-10-01', title:'Cleanup', items:['Removed the unused experimental Mint rig from the game files'] },
@@ -3297,7 +3298,7 @@ const DIG_FREE_PER_DAY=1, DIG_FREE_SHOVELS=10;
 const SUGAR_CAP=9999999;
 function clampSugar(value){const n=Number(value);return Math.min(SUGAR_CAP,Math.max(0,Math.floor(Number.isNaN(n)?0:n)));}
 const Save = {
-  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:24, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
+  data:{ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:100, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], noAds:false, settings:Object.assign({},DEFAULT_SETTINGS) },
   load(){ let gearMigrated=false; try{ const s=localStorage.getItem('mochi_save'); if(s)this.data=Object.assign(this.data,JSON.parse(s)); }catch(e){}
     this.data.sugar=clampSugar(this.data.sugar);
     if(!this.data.upgrades)this.data.upgrades={};
@@ -3407,7 +3408,7 @@ const Save = {
       this.data.gearSchemaVersion=1; changed=true;
     }
     if(!this.data.equippedGear||typeof this.data.equippedGear!=='object'){this.data.equippedGear={};changed=true;}
-    if(!Number.isFinite(this.data.gearInventoryCap)||this.data.gearInventoryCap<1){this.data.gearInventoryCap=24;changed=true;}
+    if(!Number.isFinite(this.data.gearInventoryCap)||this.data.gearInventoryCap<100){this.data.gearInventoryCap=100;changed=true;}
     if(!Array.isArray(this.data.gearInbox)){this.data.gearInbox=[];changed=true;}
     if(!['off','common','rare'].includes(this.data.gearAutoDismantle)){this.data.gearAutoDismantle='off';changed=true;}
     const repairItem=item=>{if(!item)return;if(typeof item.favorite!=='boolean'){item.favorite=false;changed=true;}if(typeof item.locked!=='boolean'){item.locked=false;changed=true;}if(typeof item.isNew!=='boolean'){item.isNew=false;changed=true;}if(!Number.isFinite(item.acquiredAt)){item.acquiredAt=1;changed=true;}if(!Number.isFinite(item.itemLevel)){item.itemLevel=Math.min(100,Math.max(1,((this.data.unlockedStage||0)+1)*20-10));changed=true;}if(!Number.isFinite(item.chapter)){item.chapter=itemChapterFromLevel(item.itemLevel);changed=true;}};
@@ -3432,7 +3433,7 @@ const Save = {
       return (Number(b.isNew)-Number(a.isNew))||(Number(b.favorite)-Number(a.favorite))||(be-ae)||((rank[b.grade]||0)-(rank[a.grade]||0))||((b.acquiredAt||0)-(a.acquiredAt||0)); }); },
   gearInventoryItems(slot){ const equipped=new Set(Object.values(this.data.equippedGear||{})); return this.gearItemsForSlot(slot).filter(x=>!equipped.has(x.uid)); },
   gearInventoryCount(){ return this.gearInventoryItems().length; },
-  gearInventoryFull(){ return this.gearInventoryCount()>=(this.data.gearInventoryCap||24); },
+  gearInventoryFull(){ return this.gearInventoryCount()>=(this.data.gearInventoryCap||100); },
   gearInboxItems(){return Array.isArray(this.data.gearInbox)?this.data.gearInbox:[];},
   gearInboxCount(){return this.gearInboxItems().length;},
   gearInboxItem(uid){return this.gearInboxItems().find(x=>x&&x.uid===uid)||null;},
@@ -3580,7 +3581,7 @@ const Save = {
     for(const slot of GEAR_SLOTS){const inst=this.equippedGearItem(slot.slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it)p+=(tierPower[it.tier]||0)+this.gearLv(inst.uid)*18+(inst.itemLevel||1)*2;}
     const tal=cp.tal||{};for(const k in tal)p+=(tal[k]||0)*26;p+=(this.data.ascension||0)*250;return Math.max(100,Math.round(p/10)*10); },
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
-    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:24, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, tutorialDone:false, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
+    this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:100, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, tutorialDone:false, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
   // ---- Bestiary (Monster Card) ----
   kills(type){ return (this.data.bestiary&&this.data.bestiary[type])||0; },
   addKill(type){ if(!this.data.bestiary)this.data.bestiary={};
@@ -6543,7 +6544,7 @@ class Game extends Phaser.Scene {
     if(!this.gearPageBySlot)this.gearPageBySlot={}; const pageSize=8,pages=Math.max(1,Math.ceil(items.length/pageSize));
     let page=Math.max(0,Math.min(pages-1,this.gearPageBySlot[sel]||0)); this.gearPageBySlot[sel]=page;
     let y=cy0+topH+8;
-    const newCount=items.filter(x=>x.isNew).length,cap=Save.data.gearInventoryCap||24;
+    const newCount=items.filter(x=>x.isNew).length,cap=Save.data.gearInventoryCap||100;
     const hdr=this.add.text(14,y,selDef.emoji+' '+selDef.label+(newCount?' · '+newCount+' NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0,0);
     const count=this.add.text(w-66,y,Save.gearInventoryCount()+' / '+cap,{fontFamily:'sans-serif',fontSize:'9px',color:Save.gearInventoryFull()?'#ff8da2':'#a99fbb'}).setOrigin(1,0);
     const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y,'📦 '+inboxN,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:inboxN?'#ffd166':'#7a7088'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-60,y-5,48,22,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});y+=20;
@@ -6605,7 +6606,7 @@ class Game extends Phaser.Scene {
   }
   buildGearInbox(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📦 Reward Inbox','screen_inbox','gLoadout');
-    const w=this.W,cap=Save.data.gearInventoryCap||24,items=Save.gearInboxItems(),mode=Save.data.gearAutoDismantle||'off',labels={off:'OFF',common:'COMMON',rare:'COMMON + RARE'};
+    const w=this.W,cap=Save.data.gearInventoryCap||100,items=Save.gearInboxItems(),mode=Save.data.gearAutoDismantle||'off',labels={off:'OFF',common:'COMMON',rare:'COMMON + RARE'};
     let y=64;const info=this.add.text(14,y,'Bag '+Save.gearInventoryCount()+' / '+cap+'   ·   Inbox '+items.length+' / '+GEAR_INBOX_CAP,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#d8cde2'}).setOrigin(0,0);
     const auto=this.add.graphics();auto.fillStyle(mode==='off'?0x3a3550:0x704a20,1);auto.fillRoundedRect(w-170,y-6,156,28,9);const at=this.add.text(w-92,y+8,'Auto: '+labels[mode],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:mode==='off'?'#a99fbb':'#ffd166'}).setOrigin(.5);this.menu.add([info,auto,at]);
     this._zone(w-170,y-6,156,28,()=>{Save.setGearAutoDismantle(mode==='off'?'common':mode==='common'?'rare':'off');this.buildGearInbox();});y+=34;

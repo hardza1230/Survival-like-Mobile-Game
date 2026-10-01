@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.0.68 (เจ้าของสั่ง):** ช่องเก็บของ gear 24→100 (`gearInventoryCap`, เซฟเก่าต่ำกว่า 100 ถูกยกเป็น 100 ตอนโหลด)
 - **v6.0.67 (เจ้าของสั่ง):** การ์ดสาย Sniper อัป Unique ชาร์จ (`snipeMods()`): s_heavy ดาเมจ +45%/ชาร์จ +0.35s · s_quick ชาร์จเร็ว 22%/ดาเมจ −12% · s_bore ลำกว้าง +40%/cd +15% · s_split ลำข้าง +1 (55%)/ลำหลัก −10% (max2) · ยังไม่เล่นจริง
 - **v6.0.66 (เจ้าของสั่ง):** Momo สาย Sniper: ปุ่ม Unique = `startSnipeCharge` กดค้างชาร์จ 1.1 วิ (หลอดเหนือหัว, เต็ม=ทอง) · ลากนิ้ว >18px กำหนดทิศ (`moveSnipeAim`, ไม่ลาก = เล็ง strongestEnemy) · `tickSnipe` วาดเส้นเล็ง+หลอด · tickBossZoom ×0.72 ขณะชาร์จ · ปล่อย `releaseSnipe` = เส้นตรง 1500px ทะลุทุกตัว ดาเมจ (60+22ul)×dm×up×(0.45+1.55c) เต็ม ×1.25 บอส/มินิ ×1.2 · `drawWindTrail` แกนขาว+ลมแหวกสองข้าง · ยกเลิกเมื่อ state≠play/exitStage · verified headless 6/6 hit, zoom 0.74→1.0, 0 error · **ยังไม่เล่นจริง**
 - **v6.0.65 (เจ้าของสั่ง):** ลบ Mint rig ทั้งหมด (โค้ด MINT_RIG_*/class, atlas `mint_rig_parts`, assets/incoming/mint_rig, scripts pack/preview, test, previews) · Mint ใช้ sprite sheet ทุกท่า · บันทึกเหตุผลใน `docs/MINT_RIG_TRIAL.md` · **อย่าทำ rig กลับมา — ใช้เฟรม sprite + เจลลี่/VFX แทน**
