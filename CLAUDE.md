@@ -1,3 +1,7 @@
+## Sound design complete — commit 6, v6.0.53
+
+All six sound-design commits implemented, 40 short generated WAVs total. Final stage summary: at most eight Sugar ticks, sequential currency reveals, Mastery/level cue and one ad x2 cue. Immediate exit/redraw/shutdown cancel pending presentation; x2 does not replay rewards. Final automated audit checks all new PCM assets for peaks/lengths and menu gain/voice budgets. Full npm check and www build pass; real-device listening remains pending. Next: mobile listening review; no sound implementation commits remain in docs/SOUND_DESIGN_ROADMAP.md.
+
 ## Sound commit 5 — v6.0.52
 
 Ten permanent-progress/reward WAVs: core, talent, overcap, promotion, perk, ancient, daily, achievement, quest and claim. Regular/special Cores, hero talents, Rank Perks/Ancients and inventory inbox claims wired after saved changes. Daily and achievement callbacks guard duplicate reward taps; talents recheck current TP/cap. Checks/build and reward callback/mix tests pass; mobile listening pending. Next: sound commit 6, stage results and final mix.

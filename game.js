@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.0.52';
+const GAME_VERSION = '6.0.53';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.0.53', date:'2026-10-01', title:'Results sound and final menu mix', items:['Sugar counts up with soft ticks and currencies reveal in order','Mastery and level gains have a distinct reward cue','Summary sounds stop on exit; double Sugar does not replay rewards'] },
   { v:'6.0.52', date:'2026-10-01', title:'Permanent progression sounds', items:['Dedicated Core, Talent, Overcap, Rank and Ancient upgrade cues','Distinct daily, achievement, quest and item claim sounds','Repeated reward taps cannot replay successful claims'] },
   { v:'6.0.51', date:'2026-10-01', title:'Equipment sound design', items:['Short equip, lock, unlock, dismantle and sell sounds','Enhancement success, break and destruction have distinct feedback','Equipment sounds follow actual saved outcomes'] },
   { v:'6.0.50', date:'2026-10-01', title:'Affix action sound design', items:['Distinct short sounds for capacity upgrades, value rerolls, removal and reset','Action sounds follow successful changes; rejected actions keep error feedback'] },
@@ -833,23 +834,25 @@ const Sfx = {
     voices.forEach(s=>{try{s.stop();s.destroy();}catch(e){}});
   },
   craft(kind,rate=1){
-    if(kind!=='tick')this.stopCraft();
+    const tick=kind==='tick'||kind==='result_count';
+    if(!tick)this.stopCraft();
     if(this.muted||this.sv<=0)return;
     const now=performance.now();
-    if(kind==='tick'&&now-(this._craftTickAt??-Infinity)<45)return;
-    if(kind==='tick')this._craftTickAt=now;else this._craftTickAt=-Infinity;
+    if(tick&&now-(this._craftTickAt??-Infinity)<45)return;
+    if(tick)this._craftTickAt=now;else this._craftTickAt=-Infinity;
     rate=Math.max(.8,Math.min(1.2,rate));
     try{const g=window.__g,key='sfx_craft_'+kind;
       if(g&&g.cache.audio.exists(key)){
         this._craftVoices=(this._craftVoices||[]).filter(s=>s.isPlaying);
         while(this._craftVoices.length>=2){const old=this._craftVoices.shift();old.stop();old.destroy();}
-        const sound=g.sound.add(key,{volume:(kind==='tick'?.14:.30)*this.sv,rate});this._craftVoices.push(sound);
+        const sound=g.sound.add(key,{volume:(kind==='result_count'?.10:tick?.14:.30)*this.sv,rate});this._craftVoices.push(sound);
         sound.once('complete',()=>{this._craftVoices=this._craftVoices.filter(s=>s!==sound);sound.destroy();});sound.play();return;
       }
     }catch(e){}
-    const notes={start:[620,930],tick:[1250*rate],slow:[780,620],common:[784,988],rare:[784,988,1175],jackpot:[784,988,1175,1568],near:[880,1047,880],cancel:[660,440],exhaust:[330,220],capacity:[523,784,1047],reroll:[988,740,1175],remove:[880,440],reset:[740,494,247],gear_equip:[660,990],gear_lock:[440,330],gear_unlock:[330,660],gear_enhance_success:[659,988,1319],gear_enhance_break:[392,294],gear_enhance_destroy:[220,147,98],gear_dismantle:[880,587,392],gear_sell:[1047,1319],progress_core:[740,1110],progress_talent:[880,1175],progress_overcap:[659,988,1480],progress_promotion:[523,659,784,1047],progress_perk:[587,880],progress_ancient:[494,740,988,1480],progress_daily:[784,1047,1319],progress_achievement:[659,831,988,1319],progress_quest:[740,988,1175],progress_claim:[988,1319]}[kind];
-    if(notes)this.seq(notes,'sine',kind==='tick'?.025:.045,kind==='tick'?.018:.055);
+    const notes={start:[620,930],tick:[1250*rate],slow:[780,620],common:[784,988],rare:[784,988,1175],jackpot:[784,988,1175,1568],near:[880,1047,880],cancel:[660,440],exhaust:[330,220],capacity:[523,784,1047],reroll:[988,740,1175],remove:[880,440],reset:[740,494,247],gear_equip:[660,990],gear_lock:[440,330],gear_unlock:[330,660],gear_enhance_success:[659,988,1319],gear_enhance_break:[392,294],gear_enhance_destroy:[220,147,98],gear_dismantle:[880,587,392],gear_sell:[1047,1319],progress_core:[740,1110],progress_talent:[880,1175],progress_overcap:[659,988,1480],progress_promotion:[523,659,784,1047],progress_perk:[587,880],progress_ancient:[494,740,988,1480],progress_daily:[784,1047,1319],progress_achievement:[659,831,988,1319],progress_quest:[740,988,1175],progress_claim:[988,1319],result_open:[659,988],result_count:[1175*rate],result_reveal:[1047,1319],result_important:[784,988,1175,1568],result_double:[988,1319,1568]}[kind];
+    if(notes)this.seq(notes,'sine',tick?.025:.045,tick?.018:.055);
   },
+  result(kind,rate=1){this.craft('result_'+kind,rate);},
   progress(kind){this.craft('progress_'+kind);},
   equipment(kind){this.craft('gear_'+kind);},
   equipmentEnhance(res){if(res&&['success','break','destroy'].includes(res.result))this.equipment('enhance_'+res.result);},
@@ -1569,6 +1572,11 @@ const ASSET_AUDIO = {
   sfx_levelup:    'assets/audio/sfx/gen/sfx_levelup_soft.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
   sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
   sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
+  sfx_craft_result_open:'assets/audio/sfx/results/result_open.wav',
+  sfx_craft_result_count:'assets/audio/sfx/results/result_count.wav',
+  sfx_craft_result_reveal:'assets/audio/sfx/results/result_reveal.wav',
+  sfx_craft_result_important:'assets/audio/sfx/results/result_important.wav',
+  sfx_craft_result_double:'assets/audio/sfx/results/result_double.wav',
   sfx_craft_progress_core:'assets/audio/sfx/progress/progress_core.wav',
   sfx_craft_progress_talent:'assets/audio/sfx/progress/progress_talent.wav',
   sfx_craft_progress_overcap:'assets/audio/sfx/progress/progress_overcap.wav',
@@ -7002,7 +7010,7 @@ class Game extends Phaser.Scene {
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor((this.kills||0)*0.4));
     if(this.bossRush){ _closeStory(); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead(); this.finishBossRush(false); return; }
     if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);
-    this._quitSummary=true; this._summaryDoubled=false; this._stageReward=null;
+    this._quitSummary=true; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
   exitStage(){ this.cancelBeat(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
@@ -8364,7 +8372,7 @@ class Game extends Phaser.Scene {
     if(next<STAGES.length&&(Save.data.unlockedStage||0)<next){ Save.data.unlockedStage=next; Save.save(); }
     // Mochi Bazaar restock: ผ่านด่านใดก็ได้ = สุ่มร้านใหม่ · stock อ้างอิง Zone Level ของด่านที่เพิ่งผ่าน
     Save.data.bazaarSeed=(Save.data.bazaarSeed||0)+1; Save.data.bazaarZone=this.zoneLevel(); Save.data.bazaarBought=[]; Save.save();
-    this._summaryDoubled=false;   // รีเซ็ตสิทธิ์ดูโฆษณา x2 ต่อการเคลียร์ด่าน
+    this._summaryDoubled=false;this._summaryPresentationShown=false;   // รีเซ็ตสิทธิ์ดูโฆษณา x2 ต่อการเคลียร์ด่าน
     this.showStageEpilogue(last);
   }
   /* หน้าสรุปเรื่องราวตอนล้มบอส — เกิดอะไรขึ้น + ทำไมไปด่านต่อไป → แตะไปหน้าสรุปสถิติ */
@@ -8394,7 +8402,24 @@ class Game extends Phaser.Scene {
     this.screenFlash(tint,0.25,400);
   }
   /* หน้าสรุปStage — แตะเพื่อไปต่อ */
+  stopSummaryPresentation(){
+    this._summarySoundToken=(this._summarySoundToken||0)+1;
+    (this._summarySoundTimers||[]).forEach(t=>t.remove(false));this._summarySoundTimers=[];
+    Sfx.stopCraft();
+  }
+  animateSummaryRewards(sugarText,rewards){
+    const token=this._summarySoundToken,total=Math.max(0,Math.floor(this.sugarStage||0));
+    const later=(ms,fn)=>{this._summarySoundTimers.push(this.time.delayedCall(ms,()=>{if(this.state==='summary'&&this._summarySoundToken===token)fn();}));};
+    Sfx.result('open');
+    const ticks=total>0?Math.min(8,total):0;
+    if(ticks){sugarText.setText('+0');for(let i=1;i<=ticks;i++)later(280+i*80,()=>{sugarText.setText('+'+Math.floor(total*i/ticks));Sfx.result('count',.9+i*.025);});}
+    const at=280+ticks*80;
+    rewards.forEach((group,i)=>{group.forEach(o=>o.setAlpha(0));later(at+160+i*160,()=>{group.forEach(o=>o.setAlpha(1));Sfx.result('reveal');});});
+    if(this._firstMastery||this._lastLvlUps>0)later(at+160+rewards.length*160,()=>Sfx.result('important'));
+    if(this.events&&!this._summaryShutdownHook){this._summaryShutdownHook=true;this.events.once('shutdown',()=>{this.stopSummaryPresentation();this._summaryShutdownHook=false;});}
+  }
   showStageSummary(last){
+    this.stopSummaryPresentation();
     this.state='summary'; this.physics.pause(); this.player.setVelocity(0,0);
     this._summaryLast=last;
     const w=this.W,h=this.H, st=STAGES[this.stageIndex]; this.over.removeAll(true);
@@ -8414,10 +8439,11 @@ class Game extends Phaser.Scene {
       ['Power',(this._powerBefore||Save.power(this.character))+' → '+(this._powerAfter||Save.power(this.character))],
       ['Character Level','Lv '+cp.lvl+(this._lastLvlUps>0?' · +'+this._lastLvlUps+' pts':'')],
     ];
+    let sugarText;const rewardGroups=[];
     const box=[bg,panel,t],step=ph*.34/rows.length,rowFont=Math.min(font,step*.45);
     rows.forEach((r,i)=>{const y=py+ph*.275+i*step;
       const l=this.add.text(px+pw*.13,y,r[0],{fontFamily:'sans-serif',fontSize:rowFont+'px',color:'#d9c8e3',wordWrap:{width:pw*.33}}).setOrigin(0,.5);
-      const v=this.add.text(px+pw*.87,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:i===2?'#ffe18b':'#fff5dd',align:'right',wordWrap:{width:pw*.38}}).setOrigin(1,.5);box.push(l,v);
+      const v=this.add.text(px+pw*.87,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:i===2?'#ffe18b':'#fff5dd',align:'right',wordWrap:{width:pw*.38}}).setOrigin(1,.5);box.push(l,v);if(i===2)sugarText=v;
     });
     if(this._firstMastery){box.push(this.add.text(w/2,py+ph*.613,'Stage Mastery earned!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#b9ffe1'}).setOrigin(.5));}
     const cur=this._runCurrency||{},curKeys=Object.keys(cur).filter(k=>cur[k]>0).slice(0,12);
@@ -8425,7 +8451,7 @@ class Game extends Phaser.Scene {
     if(curKeys.length){const per=Math.min(6,curKeys.length),cell=pw*.73/per,two=curKeys.length>per;
       curKeys.forEach((k,i)=>{const ex=w/2-(per*cell)/2+cell/2+(i%per)*cell,ey=py+ph*(two?.746:.762)+Math.floor(i/per)*ph*.047,d=currencyDef(k),size=Math.min(25,pw*.063);
         const icon=d&&this.textures.exists(d.asset)?this.add.image(ex,ey,d.asset).setDisplaySize(size,size):this.add.text(ex,ey,d?d.emoji:'💠',{fontSize:size+'px'}).setOrigin(.5);
-        const qty=this.add.text(ex,ey+size*.62,'x'+cur[k],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(7,font-3)+'px',color:'#fff'}).setOrigin(.5);box.push(icon,qty);
+        const qty=this.add.text(ex,ey+size*.62,'x'+cur[k],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(7,font-3)+'px',color:'#fff'}).setOrigin(.5);box.push(icon,qty);rewardGroups.push([icon,qty]);
       });}
     this._summaryBtns=[];this._summaryBonus=this.sugarStage;
     if(this._summaryBonus>0&&!this._summaryDoubled){const dw=pw*.72,dh=Math.min(32,ph*.055),dy=py+ph*.657;
@@ -8436,13 +8462,16 @@ class Game extends Phaser.Scene {
     box.push(bt);this.over.add(box);this.over.setVisible(true);
     this._summaryBtns.push({x:w/2-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>this.continueFromSummary()});
 
+    if(!this._summaryPresentationShown){this._summaryPresentationShown=true;this.animateSummaryRewards(sugarText,rewardGroups);}
     // (คง this.sugarStage ไว้เพื่อ re-render ตอนกด x2 · จะรีเซ็ตใน continueFromSummary)
   }
   adDoubleSugar(){ if(this._summaryDoubled)return; this._summaryDoubled=true; const bonus=this._summaryBonus||0; if(bonus>0)Save.addSugar(bonus);
-    if(this.showBanner)this.showBanner('🍬 Sugar x2!','Get an extra +'+bonus+' from an ad',1700); Sfx.clear&&Sfx.clear();
-    if(this.state==='summary')this.showStageSummary(this._summaryLast); }
+    this.stopSummaryPresentation();
+    if(this.showBanner)this.showBanner('🍬 Sugar x2!','Get an extra +'+bonus+' from an ad',1700);
+    if(this.state==='summary')this.showStageSummary(this._summaryLast);if(bonus>0)Sfx.result('double'); }
   continueFromSummary(){
     if(this.state!=='summary')return;
+    this.stopSummaryPresentation();
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     if(this._summaryLast&&!this._quitSummary){ this._quitSummary=false; this.victory(); return; }
     this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='hub';this.buildMenuScreen();   // v4.29: จบด่านกลับหน้าเมนูหลักเสมอ
@@ -8450,6 +8479,7 @@ class Game extends Phaser.Scene {
   // v4.27: จบ tutorial → พาเข้าหน้า Flavor Weave ตรง ๆ + สอนให้ใช้ Sugar อัพแก่น (Weave เปิดตั้งแต่เริ่ม แม้ Gear&Power ตัวอื่นยังล็อก)
   openTutorialWeave(){
     if(this.state!=='summary')return;
+    this.stopSummaryPresentation();
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this._tutorialWeaveCoach=true;
     this.exitStage(); this.menuScreen='upgrade'; this.buildMenuScreen();
