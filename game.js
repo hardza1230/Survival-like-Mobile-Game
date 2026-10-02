@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.28.0';
+const GAME_VERSION = '6.29.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.29.0', date:'2026-10-02', title:'🗺 Simpler endgame prep', items:['Every Atlas map now shows its reward (⚔️ 🛡️ 💠 🍬) — pick a map to pick your loot','Pact Heat milestones (2/4/6/8/12) unlock one-time rewards per hero','Build is a single line on the prep screen; your last build is used automatically']},
   { v:'6.28.0', date:'2026-10-02', title:'🧹 Clean stage starts & Atlas return', items:['Leftover EXP and items from the previous stage no longer carry over','Finishing an Atlas map returns you to the Atlas instead of the main menu']},
   { v:'6.27.0', date:'2026-10-02', title:'🎵 New loading music', items:['Loading screen now plays Forgotten Wind on Old Stone']},
   { v:'6.26.0', date:'2026-10-02', title:'🎵 New main menu music', items:['Main menu now plays Masque of the Moonlit Rose']},
@@ -4327,6 +4328,12 @@ const AMAP_FLAVORS=[
   {id:'sour',emoji:'🍋',name:'Sour',color:0xc8f26b,eff:'Elites appear more often',rew:'+gear drops'},
   {id:'fermented',emoji:'🍄',name:'Fermented',color:0xc9a3ff,eff:'Enemies hit harder',rew:'+unique chance'}];
 const AMAP_INF_CAP=3;
+// v6.29: แต่ละ node บอกรางวัลหลักไว้ล่วงหน้า (แบบ Last Epoch) → แทน Farming target
+const AMAP_REWARDS=[{id:'weapon',emoji:'⚔️',name:'Weapons',desc:'Gear drops are weapons'},{id:'armor',emoji:'🛡️',name:'Armor',desc:'Gear drops are armor, gloves or boots'},{id:'materials',emoji:'💠',name:'Materials',desc:'Gear drops become crafting currency'},{id:'sugar',emoji:'🍬',name:'Sugar',desc:'Boss Sugar ×1.5'}];
+function amapRewardOf(id){ return AMAP_REWARDS[Math.floor(mulberry32(81300+id*4271)()*AMAP_REWARDS.length)]; }
+// v6.29: Pact milestone ปลดครั้งเดียวต่อตัวละคร ตาม Heat สูงสุดที่ผ่าน
+const PACT_MILESTONES=[{heat:2,emoji:'🍬',name:'500 Sugar'},{heat:4,emoji:'💠',name:'5 epic currency'},{heat:6,emoji:'🗝️',name:'Pinnacle key'},{heat:8,emoji:'🌟',name:'Legendary gear'},{heat:12,emoji:'✨',name:'Unique gear'}];
+function pactBestChar(ch){ const m=Save.data.pactBestChar||{}; return m[ch]||0; }
 function amapFlavorOf(id){ return AMAP_FLAVORS[Math.floor(mulberry32(70100+id*7919)()*AMAP_FLAVORS.length)]; }
 function amapClears(id){ amapData(); const c=((Save.data.atlasClears||{})[id])|0; return c||(amapCleared(id)?1:0); }
 function amapInfluence(id){ const out={}; (atlasGraph().adj[id]||[]).forEach(j=>{ const c=amapClears(j); if(!c)return; const f=amapFlavorOf(j).id; out[f]=Math.min(AMAP_INF_CAP,(out[f]||0)+c); }); return out; }
@@ -5980,7 +5987,7 @@ class Game extends Phaser.Scene {
       else { const g=V(this.add.graphics()); if(open&&!t){ g.fillStyle(col,0.25); g.fillCircle(q.x,q.y,rad+6); } g.fillStyle(t>0?0x3a2f12:open?0x1f1830:0x14101a,1); g.fillCircle(q.x,q.y,rad); g.lineStyle(sel?4:3,sel?0xffffff:t>0?0xffd166:open?col:0x3a3048,1); g.strokeCircle(q.x,q.y,rad); }
       if(open){ const fl=amapFlavorOf(n.id),fg=V(this.add.graphics()); fg.lineStyle(2,fl.color,0.95); fg.strokeCircle(q.x,q.y,rad+3);
         const inf=amapInfluence(n.id); let k=0; AMAP_FLAVORS.forEach(f=>{ for(let i=0;i<(inf[f.id]||0);i++){ fg.fillStyle(f.color,1); fg.fillCircle(q.x+rad+6,q.y-rad+4+k*6,2.6); k++; } }); }
-      VT(q.x,q.y-1,open?n.emoji:'🌫️',big?18:14,'#ffffff'); if(open)VT(q.x,q.y+rad+8,'T'+n.tier,9,t>0?'#ffe08a':'#9dff9d','bold');
+      VT(q.x,q.y-1,open?n.emoji:'🌫️',big?18:14,'#ffffff'); if(open){VT(q.x,q.y+rad+8,'T'+n.tier,9,t>0?'#ffe08a':'#9dff9d','bold'); VT(q.x-rad+2,q.y-rad+2,amapRewardOf(n.id).emoji,10,'#ffffff');}
       if(open&&n.type!=='normal'&&n.type!=='guardian')VT(q.x+rad-2,q.y-rad+2,AMAP_TYPES[n.type].emoji,10,'#ffffff');
       if(open&&n.imp&&!t)VT(q.x-rad+2,q.y-rad+2,'◆',9,'#ff9bb5','bold');
       if(n.id===next){ const a=VT(q.x,q.y-rad-12,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); } });
@@ -6019,17 +6026,14 @@ class Game extends Phaser.Scene {
     const ch=egCharKey(),e=egBuild(ch),d=BASIC_ATTACKS[ch]||{mutations:[]},P=BASIC_PATHS[ch]||[],used=egBuildCost(ch,e),tot=egBuildPoints(),over=used>tot;
     const parts=[(P.find(x=>x.id===e.path)||{}).name,(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name,(d.mutations.find(m=>m.id===e.mut)||{}).name,e.evo?'Evolved':null].filter(Boolean);
     const ups=Object.values(e.lv||{}).reduce((a,v)=>a+(v||0),0);
-    box(74,over?0xff6b6b:0x4a4059); T(cx+12,y+8,'🛠 Build · '+used+'/'+tot+' pts'+(over?'  OVER BUDGET':''),13,over?'#ff6b6b':'#ffffff','bold'); editBtn('Edit ›',()=>{this.menuScreen='egbuild';this.buildMenuScreen();});
-    T(cx+12,y+30,(CHARACTERS[ch]?CHARACTERS[ch].name:ch)+' · '+(parts.length?parts.join(' · '):'no path/mutation')+' · '+ups+' upgrade ranks',11,'#cfc2df'); y+=82;
+    box(36,over?0xff6b6b:0x4a4059); { const s1=(over?'⚠ Build over budget '+used+'/'+tot:'🛠 '+(parts.length?parts.join(' · '):'Default build')+(ups?' · '+ups+' ranks':'')); const q=T(cx+12,y+10,s1,11,over?'#ff6b6b':'#cfc2df','bold'); q.setWordWrapWidth(cw-110); } editBtn('Edit ›',()=>{this.menuScreen='egbuild';this.buildMenuScreen();}); y+=44;
     // Pact
     const heat=pactHeat(),terms=PACT_TERMS.filter(t=>pactLv(t.id)>0).map(t=>t.emoji+t.name+(pactLv(t.id)>1?' ×'+pactLv(t.id):''));
     box(74,heat?0xff7a45:0x4a4059); T(cx+12,y+8,'🔥 Pact · Heat '+heat,13,heat?'#ffb070':'#ffffff','bold'); editBtn('Edit ›',()=>{this._atlasTab='pact';this.menuScreen='atlas';this.buildMenuScreen();});
-    T(cx+12,y+30,terms.length?terms.join(' · '):'No pact terms — tap Edit to raise difficulty for more rewards',11,'#cfc2df'); y+=82;
+    { const pb=pactBestChar(ch),nx=PACT_MILESTONES.find(m=>m.heat>pb); T(cx+12,y+28,terms.length?terms.join(' · '):'No pact terms — tap Edit to raise difficulty',11,'#cfc2df');
+      T(cx+12,y+50,'Best Heat '+pb+(nx?' · Next unlock at Heat '+nx.heat+': '+nx.emoji+' '+nx.name:' · all unlocks claimed'),10,nx&&heat>=nx.heat?'#9dff9d':'#ffb070','bold'); } y+=82;
     // เป้าดรอป
-    const F=[['all','All'],['weapon','Weapons'],['armor','Armor'],['materials','Materials']],fsel=this._farmFocusRequested||'all',fw=(cw-18)/4;
-    T(cx,y,'🎯 Farming target',12,'#ffe08a','bold'); y+=20;
-    F.forEach(([id,l],i)=>{const x=cx+i*(fw+6),on=fsel===id,g=this.add.graphics();g.fillStyle(on?0x6b2bd9:0x241a30,1);g.fillRoundedRect(x,y,fw,32,9);this.menu.add(g);
-      const q=this.add.text(x+fw/2,y+16,l,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff'}).setOrigin(0.5);this.menu.add(q);this._zone(x,y,fw,32,()=>{this._farmFocusRequested=id;this.buildRecipePrep();});}); y+=44;
+    { const rw=amapRewardOf(r.node!=null?r.node:0); T(cx,y,'🎁 Map reward: '+rw.emoji+' '+rw.name,13,'#ffe08a','bold'); T(cx,y+18,rw.desc,10,'#cfc2df'); y+=38; }
     // ตัวคูณรวม
     const fi=r.node!=null?amapInfluence(r.node):{},fL=amapInfLayers(fi),m=recipeMul(r),pl=k=>pactLv(k),hp=m.hp*(1+0.15*pl('hp'))*(1+0.1*fL+0.06*(fi.frosty||0)),dmg=m.dmg*(1+0.15*pl('dmg'))*(1+0.1*fL+0.08*(fi.fermented||0)),rw=m.reward*(1+atlasLv('fortune')*0.08)*(1+PACT_REWARD_PER_HEAT*heat)*(1+0.15*fL),goal=Math.round((260+r.tier*10)*(1+0.2*pl('hunger')));
     box(78,0x8bd3a0); T(cx+12,y+8,'📊 Totals for this run',13,'#9dff9d','bold');
@@ -6040,7 +6044,7 @@ class Game extends Phaser.Scene {
       this.uiPillBtn(this.menu,cx+hb2/2,by+20,hb2,40,0x3d6bb3,'🗺','Atlas',()=>{this._atlasTab='board';this.menuScreen='atlas';this.buildMenuScreen();});
       this.uiPillBtn(this.menu,cx+hb2+8+hb2/2,by+20,hb2,40,keys>=PINNACLE_KEY_COST?0x6b2bd9:0x4a4059,'✦','🗝'+keys+'/'+PINNACLE_KEY_COST,()=>this.startPinnacle()); y+=52; }
     this.uiPillBtn(this.menu,w/2,Math.min(y+28,h-40),Math.min(cw,300),50,over?0x4a4059:COLORS.pink,'▶','Start Run',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;} const need=mapModCostOk(); if(!need){this.menuToast('Not enough currency for these mods — remove some or get more','#ff6b6b');return;} Object.keys(need).forEach(c=>Save.spendCurrency(c,need[c])); Save.save();
-      this.stageDiff=1; this._recipeRequested=r; this._farmFocusRequested=this._farmFocusRequested||'all'; this._prepRecipe=null; this.startRun(r.theme); });
+      this.stageDiff=1; this._recipeRequested=r; {const rw=amapRewardOf(r.node!=null?r.node:0); this._farmFocusRequested=rw.id==='sugar'?'all':rw.id; this._sugarRewardMap=rw.id==='sugar';} this._prepRecipe=null; this.startRun(r.theme); });
     this.menu.setVisible(true);
   }
   buildEgBuild(){
@@ -7939,7 +7943,13 @@ class Game extends Phaser.Scene {
   clearRecipeShrine(){ if(this._shrine){ this._shrine.g.destroy(); this._shrine=null; } }
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
   recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1)*(1+atlasLv('appetite')*0.06); }
-  finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); if((this._pactHeat||0)>(Save.data.pactBest||0)){ Save.data.pactBest=this._pactHeat; Save.save(); this.time.delayedCall(2600,()=>this.showBanner('🔥 New Pact record: Heat '+this._pactHeat,'',2000)); }
+  claimPactMilestones(){ const ch=egCharKey(),heat=this._pactHeat||0,pb=pactBestChar(ch); if(heat<=pb)return; Save.data.pactBestChar=Save.data.pactBestChar||{}; Save.data.pactBestChar[ch]=heat;
+    const got=[]; PACT_MILESTONES.forEach(m=>{ if(m.heat>pb&&m.heat<=heat){ got.push(m.emoji+' '+m.name);
+      if(m.heat===2)this.sugarStage+=500; else if(m.heat===4)this.grantCurrencyReward(5,'epic','🔥 Pact unlock'); else if(m.heat===6)Save.data.riftKeys=(Save.data.riftKeys||0)+1; else if(m.heat===8)this.grantGear('legend');
+      else { const u=GEAR_ALL.filter(g=>g.unique); const it=Phaser.Utils.Array.GetRandom(u); if(it)Save.receiveGearInstance(it.id,{isNew:true,itemLevel:85,chapter:5}); } } });
+    Save.save(); if(got.length)this.time.delayedCall(5000,()=>this.showBanner('🔥 Pact unlocks · Heat '+heat,got.join(' · '),2600)); }
+  finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); this.claimPactMilestones();
+    if(this._sugarRewardMap){ this._sugarRewardMap=false; this.sugarStage=Math.round((this.sugarStage||0)*1.5); } if((this._pactHeat||0)>(Save.data.pactBest||0)){ Save.data.pactBest=this._pactHeat; Save.save(); this.time.delayedCall(2600,()=>this.showBanner('🔥 New Pact record: Heat '+this._pactHeat,'',2000)); }
     const at=atlasData(); at[r.theme]=Math.max(at[r.theme]||0,r.tier);
     if(r.node!=null){ Save.data.atlasClears=Save.data.atlasClears||{}; Save.data.atlasClears[r.node]=amapClears(r.node)+1;
       { const fi=this._amapInf||{},dr=this.diffMul().reward,got=[];

@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.29.0 (เจ้าของเลือก 1+2+3 จากรีวิวหน้าเตรียมรัน):** `AMAP_REWARDS`/`amapRewardOf(id)` (seed 81300) ⚔️weapon 🛡️armor 💠materials 🍬sugar(×1.5 ใน finishRecipeBoss ผ่าน `_sugarRewardMap`) แทนปุ่ม Farming target · ไอคอนรางวัลมุมซ้ายบนของ node · `PACT_MILESTONES` heat 2/4/6/8/12 → 500 Sugar/5 epic currency/Pinnacle key/legend/unique ครั้งเดียวต่อตัว (`Save.data.pactBestChar`, `claimPactMilestones`) · กล่อง Build ย่อเหลือ 1 บรรทัด
 - **v6.28.0 (เจ้าของแจ้ง 2 ข้อ):** `clearOrbs()` ใน startStage (EXP ด่านเก่าค้าง · clearPickups ไม่เคยล้าง orbs) · continueFromSummary ถ้า recipeMode → menuScreen 'atlas' แท็บ board แทน hub
 - **v6.27.0 (เจ้าของส่งเพลงมา):** หน้าโหลด (index.html LoaderMusic) → `assets/audio/bgm/menu/bgm_loading_forgotten_wind.mp3` (แปลงจาก WebM 112k) · crystal_memory ยังอยู่
 - **v6.26.0 (เจ้าของส่งเพลงมา):** bgm_main → `assets/audio/bgm/menu/bgm_menu_moonlit_rose.mp3` (แปลงจาก WebM 112k) · over_the_hill ยังอยู่ สลับกลับได้
