@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.31.0';
+const GAME_VERSION = '6.32.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.32.0', date:'2026-10-02', title:'⛏ Delve missions & tunnels', items:['Every cave now has a mission (Hunt, Escort, Capture, Clean Air, Defend Nectar, Sever Roots) — finish it and fill the Hunger Meter to call the boss','Tunnels on the Delve map now turn at right angles','Bosses in the Delve appear beside you without a camera cutscene','The Pact screen is gone — its hardships are now cave mods (Gluttonous Boss, Brittle Shell, Ravenous Clock, Empty Pantry)','Pact unlocks became depth milestones (depth 10/20/30/40/60)'] },
   { v:'6.31.0', date:'2026-10-02', title:'⛏ Start runs from the Delve map', items:['Tap a cave to see its info and press Start — no separate Map Table screen','Every cave now comes with its own mods; deeper caves carry more of them','Mechanic mods (Haste, Volatile, Starving, Horde) appear from depth 10','No more paying currency for map mods'] },
   { v:'6.30.0', date:'2026-10-02', title:'⛏ Mochi Delve', items:['The Atlas is now an endless dig below Mochitopia — go as deep as you dare','Left and right are flavor zones; deeper caves are harder and pay more','Boss Floor every 10 depths, rare Candy Cities, treasure pockets on dead ends','Fog hides far caves; landmarks glow through it','Old Atlas progress refunded as Sugar and chaos'] },
   { v:'6.29.0', date:'2026-10-02', title:'🗺 Simpler endgame prep', items:['Every Atlas map now shows its reward (⚔️ 🛡️ 💠 🍬) — pick a map to pick your loot','Pact Heat milestones (2/4/6/8/12) unlock one-time rewards per hero','Build is a single line on the prep screen; your last build is used automatically']},
@@ -4247,7 +4248,14 @@ const RECIPE_MECH_MODS=[
   {id:'noheal',emoji:'🚫',name:'Starving',desc:'No healing: heal drops and regen do nothing',hp:1,dmg:1,reward:1.45,mech:true},
   {id:'horde',emoji:'🐜',name:'Horde',desc:'Far more enemies spawn · meter fills faster',hp:0.9,dmg:1,reward:1.25,mech:true}
 ];
-const RECIPE_MODS=RIFT_MODS.concat(RECIPE_MECH_MODS);
+// v6.32: เงื่อนไข Pact เดิมย้ายมาเป็น mod ของถ้ำ (ไม่มีหน้า Pact แล้ว)
+const RECIPE_PACT_MODS=[
+  {id:'tyrant',emoji:'👑',name:'Gluttonous Boss',desc:'Boss +50% HP',hp:1,dmg:1,reward:1.30,mech:true,pact:{boss:2}},
+  {id:'frail',emoji:'💔',name:'Brittle Shell',desc:'You start with −20% max HP',hp:1,dmg:1,reward:1.30,mech:true,pact:{frail:2}},
+  {id:'ravenous',emoji:'⏳',name:'Ravenous Clock',desc:'Hunger Meter needs +40% kills',hp:1,dmg:1,reward:1.25,mech:true,pact:{hunger:2}},
+  {id:'pantry',emoji:'🥣',name:'Empty Pantry',desc:'Healing −50%',hp:1,dmg:1,reward:1.20,mech:true,pact:{heal:1}}
+];
+const RECIPE_MODS=RIFT_MODS.concat(RECIPE_MECH_MODS,RECIPE_PACT_MODS);
 function recipeModDef(id){ return RECIPE_MODS.find(q=>q.id===id); }
 // ต้นทุนคราฟต์ recipe (currency เดิมของ Affix Forge)
 const RECIPE_CRAFT=[
@@ -4304,8 +4312,10 @@ function amapNode(id){ if(typeof id!=='string')return null; const p=id.split(','
   Object.assign(n,{_f:1,flavor:fl,type,tier:Math.max(1,Math.min(RECIPE_TIER_MAX,1+Math.floor(d/3))),eng:(d<10?0:d<20?5:10)+AMAP_FLAVORS.indexOf(fl),hue:DELVE_HUE[fl.id],
     imp:null,
     name:type==='home'?'Mochitopia':type==='boss'?'The '+fl.name+' Maw':type==='city'?'Candy City of '+pl[Math.floor(n.r2*5)]:AMAP_ADJ[Math.floor(n.r*AMAP_ADJ.length)%AMAP_ADJ.length]+' '+pl[Math.floor(n.r2*5)%5],
-    emoji:ty.emoji||fl.emoji}); n.mods=delveMods(n); return n; }
+    emoji:ty.emoji||fl.emoji}); n.mods=delveMods(n); n.mission=delveMission(n); return n; }
 // v6.31: mod ติดมากับถ้ำ (seed) · ยิ่งลึกยิ่งหลายตัว · mod กลไกตั้งแต่ชั้น 10
+const DELVE_MISSIONS=['hunt','purge','capture','cleanAir','defendNectar','breakRoots'];
+function delveMission(n){ if(n.type==='home'||n.type==='boss'||n.type==='vault'||n.type==='shrine')return null; return DELVE_MISSIONS[Math.floor(_dh(n.x*7+3,n.d+421)*DELVE_MISSIONS.length)%DELVE_MISSIONS.length]; }
 function delveModCount(n){ if(n.d<=0)return 0; let k=Math.floor(n.d/6)+(n.r2<0.35?1:0); if(n.type==='elite')k++; if(n.type==='boss')k=Math.max(2,k); if(n.type==='vault'||n.type==='shrine'||n.type==='city')k--; return Math.max(0,Math.min(4,k)); }
 function delveMods(n){ const k=delveModCount(n),R=mulberry32(Math.floor(_dh(n.x,n.d+911)*1e9)),pool=RECIPE_MODS.filter(m=>!m.mech||n.d>=10).map(m=>m.id),out=[];
   while(out.length<k&&pool.length)out.push(pool.splice(Math.floor(R()*pool.length),1)[0]); return out; }
@@ -5906,8 +5916,8 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._amRect=null;this._amView=null;this._amDrag=null;this._screenBg('⛏ Mochi Delve','screen_atlas');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,at=atlasData();let top=(w<=h?100:70);const th=recipeThemes(),best=Save.data.recipeBest||{};
     const T=(x,y,t,sz,c,st)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(q);return q;};
-    const tab=this._atlasTab||'board',tw2=(cw-20)/3;
-    [['board','🗺 Board'],['tree','🌳 Passives ('+atlasFree()+')'],['pact','🔥 Pact ('+pactHeat()+')']].forEach(([k,l],i)=>{ const x=cx+i*(tw2+10),g=this.add.graphics();g.fillStyle(tab===k?0x6b2bd9:0x241a30,1);g.fillRoundedRect(x,top-4,tw2,30,10);this.menu.add(g);
+    const tab=this._atlasTab==='tree'?'tree':'board',tw2=(cw-10)/2;
+    [['board','⛏ Delve'],['tree','🌳 Passives ('+atlasFree()+')']].forEach(([k,l],i)=>{ const x=cx+i*(tw2+10),g=this.add.graphics();g.fillStyle(tab===k?0x6b2bd9:0x241a30,1);g.fillRoundedRect(x,top-4,tw2,30,10);this.menu.add(g);
       const q=this.add.text(x+tw2/2,top+11,l,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff'}).setOrigin(0.5);this.menu.add(q); this._zone(x,top-4,tw2,30,()=>{this._atlasTab=k;this.buildAtlas();}); });
     if(tab==='tree'){ this.buildAtlasTree(cx,cw,top+36,T); this.menu.setVisible(true); return; }
     if(tab==='pact'){ this.buildPact(cx,cw,top+36,T); this.menu.setVisible(true); return; }
@@ -5985,7 +5995,12 @@ class Game extends Phaser.Scene {
     // เส้นทาง
     const lg=V(this.add.graphics()),vis=n=>n.d<=L.fogD;
     for(let d=d0;d<=d1;d++){ if(d+1>L.fogD&&d>L.fogD)break; const Lk=delveLinks(d); [...Lk.E,...Lk.H].forEach(([a,b])=>{ const A=amapNode(a),B=amapNode(b); if(!vis(A)||!vis(B))return; const pa=L.pos(A),pb=L.pos(B),ca=amapCleared(a),cb=amapCleared(b);
-      if(ca&&cb){ lg.lineStyle(5,0xffd166,0.95); } else if(ca||cb){ lg.lineStyle(3,0xffffff,0.75); } else { lg.lineStyle(2,0x5a4d6a,0.45); } lg.lineBetween(pa.x,pa.y,pb.x,pb.y); }); }
+      const w=ca&&cb?7:ca||cb?5:3,col=ca&&cb?0xffd166:ca||cb?0xe6dcf0:0x5a4d6a,al=ca&&cb?0.95:ca||cb?0.75:0.45;
+      // v6.32 ทางแบบอุโมงค์ Delve: ลง → เลี้ยว → ลง (มุมฉาก) · จุดเลี้ยวขยับตาม seed
+      const path=A.d===B.d?[pa,pb]:(()=>{ const my=pa.y+(pb.y-pa.y)*(0.3+0.4*_dh(A.x*31+B.x,A.d+977)); return [pa,{x:pa.x,y:my},{x:pb.x,y:my},pb]; })();
+      lg.lineStyle(w+4,0x0a0710,al*0.8); for(let i=0;i+1<path.length;i++)lg.lineBetween(path[i].x,path[i].y,path[i+1].x,path[i+1].y);
+      lg.lineStyle(w,col,al); for(let i=0;i+1<path.length;i++)lg.lineBetween(path[i].x,path[i].y,path[i+1].x,path[i+1].y);
+      lg.fillStyle(col,al); for(let i=1;i+1<path.length;i++)lg.fillCircle(path[i].x,path[i].y,w/2); }); }
     // node
     const ng=V(this.add.graphics());
     for(let d=d0;d<=d1;d++)delveRow(d).forEach(r=>{ const n=amapNode(r.id),q=L.pos(n),open=amapOpen(n.id),t=amapClears(n.id),sel=this._amapSel===n.id,land=n.type==='city'||n.type==='boss'||n.type==='home';
@@ -5998,6 +6013,7 @@ class Game extends Phaser.Scene {
       VT(q.x,q.y-1,n.emoji,land?20:13,'#ffffff'); VT(q.x-big+1,q.y-big+1,amapRewardOf(n.id).emoji,10,'#ffffff');
       if(n.mods&&n.mods.length&&!t)VT(q.x+big-1,q.y-big+1,'◆'+n.mods.length,9,'#ff9bb5','bold');
       const inf=amapInfluence(n.id); let k=0; AMAP_FLAVORS.forEach(f=>{ for(let i=0;i<(inf[f.id]||0);i++){ ng.fillStyle(f.color,1); ng.fillCircle(q.x+big+5,q.y-big+5+k*6,2.6); k++; } });
+      if(n.mission&&!t)VT(q.x+big-1,q.y+big-1,WAVE_OBJECTIVES[n.mission].emoji,9,'#ffffff');
       if(t)VT(q.x,q.y+big+8,'✓',10,'#ffe08a','bold');
       if(n.id===next){ const a=VT(q.x,q.y-big-13,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); } });
     // v6.31 แผงถ้ำที่เลือก: ข้อมูล + mod ประจำถ้ำ + Build/Heat + Start (แทนหน้า Map Table)
@@ -6006,17 +6022,17 @@ class Game extends Phaser.Scene {
       const TL=(x,y,txt,sz,c,st)=>{const q=this.add.text(x,y,txt,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c}).setOrigin(0,0.5);this.menu.add(q);return q;};
       TL(cx+12,y0+16,sn.emoji+' '+sn.name+(t?'  ✓×'+t:''),14,'#ffffff','bold');
       TL(cx+12,y0+36,'⛏ Depth '+sn.d+' · '+sn.flavor.emoji+' '+sn.flavor.name+(sn.type!=='normal'?' · '+ty.emoji+' '+ty.name:'')+' · 🎁 '+rw.emoji+' '+rw.name+(IL?' · '+amapInfText(inf):''),10,'#cfc2df');
+      if(sn.mission){ const md=WAVE_OBJECTIVES[sn.mission]; TL(cx+cw-12,y0+16,'🎯 '+md.name,10,'#9dff9d','bold').setOrigin(1,0.5); }
       let x=cx+12; const cy=y0+60;
       if(!sn.mods.length)TL(x,cy,'No mods',11,'#8d8499');
       sn.mods.forEach(id=>{ const d=recipeModDef(id); if(!d)return; const lbl=d.emoji+' '+d.name,tw=Math.min(120,lbl.length*6.2+14); const g=this.add.graphics(); g.fillStyle(d.mech?0x5a2340:0x3a2a50,1); g.fillRoundedRect(x,cy-11,tw,22,8); this.menu.add(g);
         TL(x+7,cy,lbl,10,'#ffffff'); this._zone(x,cy-11,tw,22,()=>this.menuToast(d.emoji+' '+d.name+': '+d.desc+' · rewards ×'+d.reward.toFixed(2),'#e6dcf0')); x+=tw+5; });
-      const over=egBuildCost()>egBuildPoints(),heat=pactHeat();
+      const over=egBuildCost()>egBuildPoints(),heat=0;
       TL(cx+12,y0+84,'HP ×'+(m.hp*(1+0.1*IL)).toFixed(1)+' · Rewards ×'+(m.reward*(1+0.15*IL)*(1+PACT_REWARD_PER_HEAT*heat)).toFixed(2),11,'#ffe08a','bold');
-      const by=y0+PH-12-28,bw=(cw-24)/4;
+      const by=y0+PH-12-28,bw=(cw-24)/3;
       const chip=(bx,label,col,fn)=>{const g=this.add.graphics(); g.fillStyle(0x241a30,1); g.fillRoundedRect(bx,by-16,bw,32,9); g.lineStyle(2,col,0.9); g.strokeRoundedRect(bx,by-16,bw,32,9); this.menu.add(g); T(bx+bw/2,by,label,11,'#ffffff','bold'); this._zone(bx,by-16,bw,32,fn);};
       chip(cx+8,over?'⚠ Build':'🛠 Build',over?0xff6b6b:0x7fd4ff,()=>{this.menuScreen='egbuild';this.buildMenuScreen();});
-      chip(cx+8+bw+4,'🔥 Heat '+heat,heat?0xff7a45:0x8d8499,()=>{this._atlasTab='pact';this.buildAtlas();});
-      this.uiPillBtn(this.menu,cx+8+2*(bw+4)+(bw*2-4)/2,by,bw*2-4,34,over?0x4a4059:COLORS.pink,'▶','Start',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;}
+      this.uiPillBtn(this.menu,cx+8+bw+8+(bw*2-4)/2,by,bw*2-4,34,over?0x4a4059:COLORS.pink,'▶','Start',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;}
         const rr=mapTableRecipe(); this.stageDiff=1; this._recipeRequested=rr; this._farmFocusRequested=rw.id==='sugar'?'all':rw.id; this._sugarRewardMap=rw.id==='sugar'; this.startRun(rr.theme); }); }
     else T(w/2,h-34,'Drag to dig through the map · pinch or ➕➖ to zoom · tap a cave',10,'#9d93aa');
   }
@@ -7706,7 +7722,7 @@ class Game extends Phaser.Scene {
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         if(this.killTxt)this.killTxt.setText('☠ 0');
-        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){PACT_TERMS.forEach(d=>{this._pact[d.id]=pactLv(d.id);});this._pactHeat=pactHeat();}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
+        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
@@ -7879,24 +7895,25 @@ class Game extends Phaser.Scene {
     for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
     this.syncBasicAttack(); this._egBuilt=true; }
   pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
-  startRecipeRun(st){ const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
+  startRecipeRun(st){ this._recipeMission=null; this._waitMsgAt=0; const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
     this.stageTxt.setText((nd?'⛏ Depth '+nd.d:'📜 Recipe T'+r.tier)+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+(nd?nd.emoji+' '+nd.name:st.name));
     this.applyEgBuild();
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
       this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; { const fi=this._amapInf||{}; if(fi.sweet){this.spawnInterval*=1-0.08*fi.sweet; this.spawnBatch+=fi.sweet>=2?1:0;} if(fi.sour&&this.eliteEvery)this.eliteEvery*=1-0.15*fi.sour; } this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
-      this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400);
+      { const ms=nd&&nd.mission; this._recipeMission=ms?{type:ms,done:false}:null; if(ms){ this.setupWaveObjective(1,{dur:52,forceType:ms}); const d=WAVE_OBJECTIVES[ms]; this.showBanner('🎯 '+d.name+' + 🍽 Hunger','Finish the mission and fill the meter to call the boss',2600); } else this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }
       // v6.14 (B9): Starting Relic — เลือก relic 1 ชิ้นตอนเริ่มรัน Endgame
       this.time.delayedCall(900,()=>{ if(this._busy()&&this.state==='play'&&!(this.relics&&this.relics.length)){ if(this.offerRelic())this.showBanner('🔮 Starting Relic','Choose one to shape this run',1800); } }); }); }
   tickSugarRush(){ if(this._rushOn&&(this.elapsed||0)>=this._rushEnd){ this._rushOn=false; this.player.cdMul/=0.6; this.player.dmgMul-=0.25; } }
   tickRecipeHunger(dt){ this._hungerT+=dt; const goal=this.recipeHungerGoal(),t=Math.floor(this._hungerT);
     this.drawWavePips();
-    this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
+    this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+(this._recipeMission?(this._recipeMission.done?' · 🎯✓':' · 🎯'):'')+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
     this.tickRecipeShrine(dt);
     if(this._hungerDone)return;
     if(this.checkEndgameCurse(this._hunger/goal))return;
     const evAt=atlasLv('eventful')>=1?[0.3]:[0.4]; if(atlasLv('eventful')>=2)evAt.push(0.7); const en=this._recipeEventN|0; if(en<evAt.length&&this._hunger>=goal*evAt[en]){ this._recipeEventN=en+1; this.triggerRecipeEvent(); }
-    const full=this._hunger>=goal, late=false;   // v6.2.3: บอสมาเมื่อหลอดเต็มเท่านั้น
+    const missionOk=!this._recipeMission||this._recipeMission.done; if(this._hunger>=goal&&!missionOk){ this._hunger=goal; if(!this._waitMsgAt||this._hungerT-this._waitMsgAt>10){ this._waitMsgAt=this._hungerT; this.showBanner('🍽 Meter full','Finish the 🎯 mission to call the boss',1600); } }
+    const full=this._hunger>=goal&&missionOk, late=false;   // v6.2.3: บอสมาเมื่อหลอดเต็มเท่านั้น
     if(full||late){ this._hungerDone=true; this._recipeFillT=this._hungerT; this._recipeFast=full&&this._hungerT<=recipePar();
       this.showBanner(full?(this._recipeFast?'⚡ Fast clear!':'🍽 Hunger Meter full!'):'⏳ The boss grows impatient','The boss is coming',1800);
       this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); } }
@@ -7916,11 +7933,11 @@ class Game extends Phaser.Scene {
   clearRecipeShrine(){ if(this._shrine){ this._shrine.g.destroy(); this._shrine=null; } }
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
   recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1)*(1+atlasLv('appetite')*0.06); }
-  claimPactMilestones(){ const ch=egCharKey(),heat=this._pactHeat||0,pb=pactBestChar(ch); if(heat<=pb)return; Save.data.pactBestChar=Save.data.pactBestChar||{}; Save.data.pactBestChar[ch]=heat;
+  claimPactMilestones(){ const ch=egCharKey(),heat=this._amapNode?Math.floor(this._amapNode.d/5):0,pb=pactBestChar(ch); if(heat<=pb)return; Save.data.pactBestChar=Save.data.pactBestChar||{}; Save.data.pactBestChar[ch]=heat;
     const got=[]; PACT_MILESTONES.forEach(m=>{ if(m.heat>pb&&m.heat<=heat){ got.push(m.emoji+' '+m.name);
       if(m.heat===2)this.sugarStage+=500; else if(m.heat===4)this.grantCurrencyReward(5,'epic','🔥 Pact unlock'); else if(m.heat===6)Save.data.riftKeys=(Save.data.riftKeys||0)+1; else if(m.heat===8)this.grantGear('legend');
       else { const u=GEAR_ALL.filter(g=>g.unique); const it=Phaser.Utils.Array.GetRandom(u); if(it)Save.receiveGearInstance(it.id,{isNew:true,itemLevel:85,chapter:5}); } } });
-    Save.save(); if(got.length)this.time.delayedCall(5000,()=>this.showBanner('🔥 Pact unlocks · Heat '+heat,got.join(' · '),2600)); }
+    Save.save(); if(got.length)this.time.delayedCall(5000,()=>this.showBanner('⛏ Depth milestone · '+(heat*5),got.join(' · '),2600)); }
   finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); this.claimPactMilestones();
     if(this._sugarRewardMap){ this._sugarRewardMap=false; this.sugarStage=Math.round((this.sugarStage||0)*1.5); } if((this._pactHeat||0)>(Save.data.pactBest||0)){ Save.data.pactBest=this._pactHeat; Save.save(); this.time.delayedCall(2600,()=>this.showBanner('🔥 New Pact record: Heat '+this._pactHeat,'',2000)); }
     const at=atlasData(); at[r.theme]=Math.max(at[r.theme]||0,r.tier);
@@ -8174,8 +8191,8 @@ class Game extends Phaser.Scene {
   setupWaveObjective(w,p){
     this.clearWaveObjective();
     const planned=!this.recipeMode&&!this.riftMode?earlyWaveMission(this.stageIndex,w):null;
-    if(!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
-    const type=planned?planned.type:this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
+    if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
+    const type=p&&p.forceType?p.forceType:planned?planned.type:this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
     const lesson=planned?({1:'1/3',3:'2/3',4:'3/3'}[w]):null;
     const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,lesson,color,progress:0,target:0,done:false};
     if(type==='survive')o.target=Math.max(1,p.dur||48);
@@ -8583,11 +8600,13 @@ class Game extends Phaser.Scene {
     const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
   completeWaveObjective(){
-    const o=this.waveObjective;if(!o||o.done)return;o.done=true;this.resolveBonusChallenge();const bonus=6+(this.stageIndex+1)*2+this.waveIndex*2;this.sugarStage+=bonus;this.sugarRun+=bonus;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
+    const o=this.waveObjective;if(!o||o.done)return;
+    if(this.recipeMode&&this._recipeMission){ o.done=true; this.resolveBonusChallenge(); const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this.showBanner('✅ Mission complete · Sugar +'+bn,this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); Sfx.clear(); return; }o.done=true;this.resolveBonusChallenge();const bonus=6+(this.stageIndex+1)*2+this.waveIndex*2;this.sugarStage+=bonus;this.sugarRun+=bonus;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     const title='✅ Objective Complete · Sugar +'+bonus;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner(title,'Clear the remaining enemies to advance',1500);Sfx.clear();
   }
   failWaveObjective(){
-    const o=this.waveObjective;if(!o||o.done)return;o.done=true;this._bonus=null;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner('⌛ Objective Timed Out','No bonus, but you can still advance — clear the rest',1700);
+    const o=this.waveObjective;if(!o||o.done)return;
+    if(this.recipeMode&&this._recipeMission){ o.done=true; this._bonus=null; this.clearWaveObjective(); const tp=this._recipeMission.type; this.showBanner('⌛ Mission failed','It restarts in a moment — try again',1800); this.time.delayedCall(2500,()=>{ if(this._busy()&&this.recipeMode&&this._recipeMission&&!this._recipeMission.done&&this.mode==='wave')this.setupWaveObjective(1,{dur:52,forceType:tp}); }); return; }o.done=true;this._bonus=null;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;this.showBanner('⌛ Objective Timed Out','No bonus, but you can still advance — clear the rest',1700);
   }
   clearWaveObjective(){if(this.replayProgressFrame)this.replayProgressFrame.setVisible(false);if(this.replayProgressFill)this.replayProgressFill.setVisible(false); if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
     this.clearWaveEvent();
@@ -8781,6 +8800,7 @@ class Game extends Phaser.Scene {
   }
   // ฉากปรากฏตัวบอส: WARNING → แพนfind → ปรากฏตัว/คำราม → แพนกลับ
   bossIntro(b,name){
+    if(this.recipeMode){ this.bossIntroQuick(b,name); return; }
     const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y;
     this.state='cinematic';this.mode='bossIntro';this.player.setVelocity(0,0);b.setVelocity(0,0);b.setVisible(false).setScale(base*0.82).setDepth(targetY+1);if(b.body)b.body.enable=false;
     Sfx.playBossBgm(this.stageIndex+1);Sfx.bossWarn();
@@ -8881,6 +8901,12 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(5600,()=>cam.pan(px,py,950,'Sine.easeInOut'));
     this.time.delayedCall(6650,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);this.state='play';this.mode='boss';b.atkCd=1.55;this.spawnBossEscorts(2);this.showBanner('👑 The Queen Awakens','Destroy the nests and crystals to cut her power! (2 guardians)',2400);});
   }
+  // v6.32: Delve รันไม่หยุดเกม/ไม่แพนกล้อง — บอสโผล่ข้างตัว ผู้เล่นยืนที่เดิม
+  bossIntroQuick(b,name){ const base=b.baseScale||1.55; Sfx.playBossBgm(this.stageIndex+1); Sfx.bossWarn();
+    this.showBanner('⚠ '+name,'The boss has arrived!',1800);
+    if(b.body)b.body.enable=true; b.setVisible(true).setAlpha(0).setScale(base*0.6);
+    this.tweens.add({targets:b,alpha:1,scale:base,duration:520,ease:'Back.out',onComplete:()=>{ if(!b.active)return; this.screenShake(320,0.01); }});
+    this.mode='boss'; b.atkCd=2.0; this.spawnBossEscorts&&this.spawnBossEscorts(2); }
   // จอวาบFullหน้าจอ (บนกล้อง UI) — ใช้ตอนบอสปรากฏ/เข้าเฟส/ตาย
   screenFlash(color,alpha,dur){
     if(Save.data.settings&&Save.data.settings.flash===false)return;
