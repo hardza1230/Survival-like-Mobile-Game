@@ -375,5 +375,5 @@ if(!tierFn||!(+tierFn[3]>0))throw new Error('riftTierMul must raise reward with 
 const atlasIds=[...block(/const ATLAS_NODES=\[([\s\S]*?)\n\];/,'ATLAS_NODES').matchAll(/id:'([^']+)'/g)].map(m=>m[1]);
 if(atlasIds.length!==7||new Set(atlasIds).size!==7)throw new Error(`Expected 7 unique Atlas nodes, found ${atlasIds.length}`);
 const uqCount=(block(/const UNIQUE_GEAR=\{([\s\S]*?)\n\};/,'UNIQUE_GEAR').match(/unique:true/g)||[]).length;
-if(uqCount!==5)throw new Error(`Expected 5 Unique gear items, found ${uqCount}`);
-console.log('validated Recipe Maps: 16 tiers, iron-rule mods, 7 Atlas nodes, 5 Uniques');
+if(uqCount!==12)throw new Error(`Expected 12 Unique gear items, found ${uqCount}`);
+console.log('validated Recipe Maps: 16 tiers, iron-rule mods, 7 Atlas nodes, 12 Uniques');

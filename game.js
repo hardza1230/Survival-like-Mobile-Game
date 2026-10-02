@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.12.0';
+const GAME_VERSION = '6.13.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.13.0', date:'2026-10-02', title:'Seven New Uniques', items:['Recipe Map bosses can now drop 12 build-changing Uniques: Twin Whisk, Ember Spice Mitts, Frostbite Treads, Four-Leaf Gummy, Whirlwind Heart, Rage Apron and Giant-Slayer Gloves join the original five'] },
   { v:'6.12.0', date:'2026-10-02', title:'Dual Infusion', items:['From level 22, an infused attack can blend a second flavor that triggers on half of all hits','The second flavor counts toward build tags'] },
   { v:'6.11.0', date:'2026-10-02', title:'Conditional Power Cards', items:['Endless upgrade cards now include 7 conditional bonuses: low-HP fury, post-Dash damage, standing-still aim, full-HP power, giant slayer, kill-streak frenzy and a last-stand guard','Old flat stat cards remain available'] },
   { v:'6.10.0', date:'2026-10-02', title:'Fusions', items:['Evolve your weapon while holding the right Relic to unlock a Fusion form','2 Fusions per hero, e.g. Mint + Chill Relic = Living Glacier','Pause shows your Fusion goals; matching Relics appear more often'] },
@@ -3304,9 +3305,17 @@ const UNIQUE_GEAR={
   ring:{ id:'uq_hunger_ring', chapter:5, tier:'legend', unique:true, themes:[1,6,11], emoji:'💍', name:'Ring of Endless Hunger', cost:0, enh:true, desc:'UNIQUE · heal 3 HP per kill · but no regeneration', apply:(p,lv)=>{p.lifesteal=(p.lifesteal||0)+3+lv*0.5;p._uqNoRegen=true;} },
   boots:{ id:'uq_rush_boots', chapter:5, tier:'legend', unique:true, themes:[2,7,12], emoji:'👟', name:'Sugar Rush Boots', cost:0, enh:true, desc:'UNIQUE · +30% move speed · +15% damage · but take 20% more damage', apply:(p,lv)=>{p.baseSpeed*=1.30;p.dmgMul*=1.15+0.02*lv;p.dmgTakenMul*=1.20;} },
   amulet:{ id:'uq_echo_locket', chapter:5, tier:'legend', unique:true, themes:[3,8,13], emoji:'📿', name:'Echo Locket', cost:0, enh:true, desc:'UNIQUE · critical hits explode for 45% damage nearby · +8% crit', apply:(p,lv)=>{p.critChance+=0.08;p._uqCritBurst=0.45+0.03*lv;} },
-  armor:{ id:'uq_candy_shell', chapter:5, tier:'legend', unique:true, themes:[4,9,14], emoji:'🛡️', name:'Candy Shell Plate', cost:0, enh:true, desc:'UNIQUE · take 35% less damage · but deal 20% less damage', apply:(p,lv)=>{p.dmgTakenMul*=0.65-0.01*lv;p.dmgMul*=0.80;} }
+  armor:{ id:'uq_candy_shell', chapter:5, tier:'legend', unique:true, themes:[4,9,14], emoji:'🛡️', name:'Candy Shell Plate', cost:0, enh:true, desc:'UNIQUE · take 35% less damage · but deal 20% less damage', apply:(p,lv)=>{p.dmgTakenMul*=0.65-0.01*lv;p.dmgMul*=0.80;} },
+  // v6.13 (B8): Unique ที่เปลี่ยน build เพิ่ม 7 ชิ้น
+  weapon2:{ slot:'weapon', id:'uq_twin_whisk', chapter:5, tier:'legend', unique:true, themes:[1,7,13], emoji:'🥄', name:'Twin Whisk', cost:0, enh:true, desc:'UNIQUE · attack 25% faster · but deal 15% less damage', apply:(p,lv)=>{p.cdMul*=0.75-0.01*lv;p.dmgMul*=0.85;} },
+  gloves:{ slot:'gloves', id:'uq_spice_mitts', chapter:5, tier:'legend', unique:true, themes:[2,5,14], emoji:'🧤', name:'Ember Spice Mitts', cost:0, enh:true, desc:'UNIQUE · 25% of hits ignite · counts as 🔥 fire', apply:(p,lv)=>{p._tagIgnite=Math.max(p._tagIgnite||0,0.25+0.01*lv);} },
+  boots2:{ slot:'boots', id:'uq_frost_treads', chapter:5, tier:'legend', unique:true, themes:[3,9,11], emoji:'🥾', name:'Frostbite Treads', cost:0, enh:true, desc:'UNIQUE · 20% of hits freeze · but -10% move speed', apply:(p,lv)=>{p._tagChill=Math.max(p._tagChill||0,0.20+0.01*lv);p.baseSpeed*=0.90;} },
+  ring2:{ slot:'ring', id:'uq_lucky_charm', chapter:5, tier:'legend', unique:true, themes:[0,6,12], emoji:'🍀', name:'Four-Leaf Gummy', cost:0, enh:true, desc:'UNIQUE · +12% crit chance · but -25% crit damage', apply:(p,lv)=>{p.critChance+=0.12+0.005*lv;p.critMul=(p.critMul||1.55)-0.25;} },
+  amulet2:{ slot:'amulet', id:'uq_dash_heart', chapter:5, tier:'legend', unique:true, themes:[4,8,10], emoji:'💨', name:'Whirlwind Heart', cost:0, enh:true, desc:'UNIQUE · +50% damage for 2s after a Dash', apply:(p,lv)=>{p._cond=p._cond||{};p._cond.c_dash=(p._cond.c_dash||0)+2;} },
+  armor2:{ slot:'armor', id:'uq_rage_apron', chapter:5, tier:'legend', unique:true, themes:[0,7,14], emoji:'😤', name:'Rage Apron', cost:0, enh:true, desc:'UNIQUE · up to ×2 damage as HP drops · but -15% max HP', apply:(p,lv)=>{p._tdBerserk=true;p._uqGlass=0.85;} },
+  gloves2:{ slot:'gloves', id:'uq_giant_gloves', chapter:5, tier:'legend', unique:true, themes:[3,6,12], emoji:'🥊', name:'Giant-Slayer Gloves', cost:0, enh:true, desc:'UNIQUE · +45% damage vs elites & bosses · but -10% move speed', apply:(p,lv)=>{p._cond=p._cond||{};p._cond.c_boss=(p._cond.c_boss||0)+3;p.baseSpeed*=0.90;} }
 };
-for(const _s in UNIQUE_GEAR)if(GEAR[_s])GEAR[_s].push(UNIQUE_GEAR[_s]);
+for(const _s in UNIQUE_GEAR){const _u=UNIQUE_GEAR[_s],_k=_u.slot||_s;if(GEAR[_k])GEAR[_k].push(_u);}
 function uniqueForTheme(t){ return Object.values(UNIQUE_GEAR).filter(u=>u.themes.includes(t)); }
 const GEAR_ALL=[];for(const _s in GEAR)for(const _it of GEAR[_s])GEAR_ALL.push(Object.assign({slot:_s,craftTags:[_s,'chapter_'+(_it.chapter||1),_it.tier]},_it));
 const ITEM_LEVEL_BANDS=[
