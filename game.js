@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.6.2';
+const GAME_VERSION = '6.7.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.7.0', date:'2026-10-02', title:'Build tags', items:['8 build tags: Fire, Frost, Spark, Crit, Guard, Swarm, Ranged, Melee','Every upgrade, path, flavor, relic and gear mod now carries tags','Collect 2 / 4 / 6 of a tag for growing set bonuses','Fire 4 ignites hits, Frost 4 chills hits'] },
   { v:'6.6.2', date:'2026-10-02', title:'Upgrade panel pauses again', items:['The endgame upgrade panel pauses the game again while you spend points'] },
   { v:'6.6.0', date:'2026-10-02', title:'Upgrade points', items:['Endgame level-ups now bank upgrade points instead of a slot machine','Tap the ⬆ button to pick stats and spend many points at once','Auto spend all picks for you'] },
   { v:'6.5.0', date:'2026-10-01', title:'Map Table', items:['Recipe map items are gone: pick any cleared theme and tier on the Map Table','Clearing a tier unlocks the next one; dying costs nothing','Map mods are paid with crafting currency when the run starts','Old maps were refunded as currency'] },
@@ -2420,21 +2421,44 @@ const FLAVOR_INFUSIONS=[
   {id:'sweet',name:'Sweet Infusion',emoji:'🍯',color:0xffb347,direct:0.9,desc:'×0.9 hit damage · hits heal 0.5% max HP (every 0.3s)'},
   {id:'minty',name:'Minty Infusion',emoji:'🌿',color:0x7fe0c0,direct:0.9,desc:'×0.9 hit damage · 30% chance to chill non-boss enemies briefly'}];
 const INFUSION_UP={id:'inf_deep',name:'Deep Flavor',emoji:'✨',max:3,headline:'+35% Infusion effect',desc:'Strengthen your chosen flavor effect by 35% per rank; direct-hit damage penalty stays the same.'};
-// 🏷️ Tag Sets (v4.97) — สาย/รสชาติ/Relic มีแท็ก · สะสมแท็กเดียวกัน 2/3 ชิ้น = โบนัสเซ็ต (เล็ก ๆ ไม่ใช่พลังหลัก)
+// 🏷️ Tag Sets (v6.7.0 · B1) — 8 แท็ก · ทุกการ์ด/สาย/รสชาติ/Relic/mod ไอเทม มีแท็ก · สะสม 2/4/6 = โบนัสเซ็ต
+// แหล่งนับ: อาวุธประจำตัว (ฐาน) · การ์ดอัปเกรดที่มี (1 ต่อใบ) · Path · Infusion · Mutation · Evolution · Relic · ไอเทมที่สวม (แท็กละ 1 ต่อชิ้น)
+const TAG_TIERS=[2,4,6];
 const TAG_SETS={
-  precision:{emoji:'🎯',name:'Precision',b2:'+5% crit chance',b3:'+30% crit damage',
-    t2:p=>{p.critChance=(p.critChance||0)+0.05;},t3:p=>{p.critMul=(p.critMul||1.55)+0.30;}},
-  swarm:{emoji:'🌀',name:'Swarm',b2:'+6% damage',b3:'+10% damage',
-    t2:p=>{p.dmgMul*=1.06;},t3:p=>{p.dmgMul*=1.10;}},
-  guard:{emoji:'🛡️',name:'Guard',b2:'-7% damage taken',b3:'+1 HP regen/s',
-    t2:p=>{p.dmgTakenMul*=0.93;},t3:p=>{p.regen=(p.regen||0)+1.0;}},
-  tempo:{emoji:'⚡',name:'Tempo',b2:'-5% cooldowns',b3:'+6% move speed',
-    t2:p=>{p.cdMul*=0.95;},t3:p=>{p.baseSpeed*=1.06;}}};
+  fire:  {emoji:'🔥',name:'Fire',  b:['+6% damage','15% of hits ignite','+15% damage'],
+    t:[p=>{p.dmgMul*=1.06;},p=>{p._tagIgnite=0.15;},p=>{p.dmgMul*=1.15;}]},
+  frost: {emoji:'❄️',name:'Frost', b:['-6% damage taken','12% of hits chill','+10% damage'],
+    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p._tagChill=0.12;},p=>{p.dmgMul*=1.10;}]},
+  spark: {emoji:'⚡',name:'Spark', b:['-5% cooldowns','+6% move speed','-8% cooldowns'],
+    t:[p=>{p.cdMul*=0.95;},p=>{p.baseSpeed*=1.06;},p=>{p.cdMul*=0.92;}]},
+  crit:  {emoji:'💥',name:'Crit',  b:['+5% crit chance','+30% crit damage','+5% crit chance'],
+    t:[p=>{p.critChance=(p.critChance||0)+0.05;},p=>{p.critMul=(p.critMul||1.55)+0.30;},p=>{p.critChance=(p.critChance||0)+0.05;}]},
+  guard: {emoji:'🛡️',name:'Guard', b:['-7% damage taken','+1 HP regen/s','+10% max HP'],
+    t:[p=>{p.dmgTakenMul*=0.93;},p=>{p.regen=(p.regen||0)+1.0;},p=>{const a=Math.round(p.maxhp*0.10);p.maxhp+=a;p.hp=Math.min(p.maxhp,p.hp+a);}]},
+  swarm: {emoji:'🌀',name:'Swarm', b:['+6% damage','+10% EXP','+10% damage'],
+    t:[p=>{p.dmgMul*=1.06;},p=>{p.xpMul=(p.xpMul||1)*1.10;},p=>{p.dmgMul*=1.10;}]},
+  ranged:{emoji:'🎯',name:'Ranged',b:['+5% damage','+15% pickup range','-6% cooldowns'],
+    t:[p=>{p.dmgMul*=1.05;},p=>{p.pickup=(p.pickup||105)*1.15;},p=>{p.cdMul*=0.94;}]},
+  melee: {emoji:'👊',name:'Melee', b:['-6% damage taken','+8% damage','+6% move speed'],
+    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p.dmgMul*=1.08;},p=>{p.baseSpeed*=1.06;}]}};
+const WEAPON_TAGS={momo:['ranged'],mint:['frost','ranged'],cocoa:['melee'],taro:['spark'],sesame:['ranged'],yuzu:['swarm'],berry:['ranged','fire']};
+// การ์ดอัปเกรด/สาย/mutation ที่ไม่อยู่ในตาราง = แท็กแรกของอาวุธประจำตัว
+const UP_TAGS=(()=>{const m={},put=(t,ids)=>ids.split(' ').forEach(i=>{m[i]=(m[i]||[]).concat(t);});
+  put('crit','headshot deadeye s_heavy p_judge p_farstrike p_longsight p_lensbig lens sniper pierce smite p_shatterpt titan p_titanfist pack');
+  put('swarm','volley fan buckshot cluster shotgun ricochet carom gather prism p_refract p_facet family zestSwarm p_pulp splash barrage p_splinter s_split second parting p_feast juiceWorkshop p_sourMixer');
+  put('spark','arc chainlord surge stormcaller p_static p_overload tempest p_squall p_gale storm p_quickdraw s_quick p_swift');
+  put('guard','fortress retaliate sentinel glacier p_bodyguard loyal citrusGuardian counter p_coldblood p_steady p_sweetHelper');
+  put('frost','chill linger blizzard permafrost rime p_coldsnap p_deepchill sticky');
+  put('melee','brawler combo rush breaker drum dashp dashboxer p_blitz p_phantom p_shock p_quake p_footwork pointblank p_heavyPeel');
+  put('ranged','seeker s_bore pane radius');
+  put('fire','size inf_deep');
+  return m;})();
 const TAGS_OF={
-  path:{zestSwarm:'swarm',citrusGuardian:'guard',juiceWorkshop:'tempo',sniper:'precision',shotgun:'swarm',ricochet:'swarm',glacier:'guard',barrage:'tempo',pierce:'precision',brawler:'tempo',titan:'precision',dashboxer:'tempo',storm:'swarm',smite:'precision',tempest:'tempo',prism:'swarm',lens:'precision',sentinel:'tempo'},
-  infusion:{spicy:'swarm',sour:'precision',sweet:'guard',minty:'guard'},
-  relic:{splinter:'precision',leech:'guard',burst:'swarm',shell:'guard',jam:'swarm',crown:'precision',glass:'precision',momentum:'tempo',lastbreath:'guard',chill:'swarm',magnet:'tempo',firstbite:'precision',dashcharge:'tempo',trophy:'guard',harvest:'guard'}};
-function tagLabel(t){ const d=TAG_SETS[t]; return d?'  ·  '+d.emoji+' '+d.name:''; }
+  infusion:{spicy:['fire'],sour:['crit'],sweet:['guard'],minty:['frost']},
+  relic:{splinter:['crit'],leech:['guard'],burst:['fire','swarm'],shell:['guard'],jam:['swarm'],crown:['crit'],glass:['crit'],momentum:['melee'],lastbreath:['guard'],chill:['frost'],magnet:['ranged'],firstbite:['crit'],dashcharge:['spark','melee'],trophy:['guard'],harvest:['swarm']},
+  affix:{crit:['crit'],critdmg:['crit'],precision:['crit'],gambler:['crit'],focus:['crit','spark'],hp:['guard'],def:['guard'],regen:['guard'],hppct:['guard'],regenpct:['guard'],bulwark:['guard'],crisisguard:['guard'],laststand:['guard'],mend:['guard'],nourish:['guard'],lifekill:['guard'],vampiric:['guard','melee'],cd:['spark'],uniquecd:['spark'],spd:['spark'],dash:['spark'],sprint:['spark'],wayfarer:['spark'],dmg:['fire'],bossdmg:['fire'],edge:['melee'],berserk:['melee','fire']}};
+function tagList(t){ return !t?[]:Array.isArray(t)?t:[t]; }
+function tagLabel(t){ const ts=tagList(t).filter(x=>TAG_SETS[x]); return ts.length?'  ·  '+ts.map(x=>TAG_SETS[x].emoji+' '+TAG_SETS[x].name).join(' '):''; }
 // รวมผลสาย (base + rank ของ upgrade สาย) → {dmg,cd,count,range,big,frozen,far,low,taken}
 const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:'One giant guardian · safety',juiceWorkshop:'Cheese helper · sour zones',
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
@@ -4835,7 +4859,7 @@ class Game extends Phaser.Scene {
     this.drawOverheadStatus(hpf);
     // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
     if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
-      const tc=this.tagCounts?this.tagCounts():{},tg=Object.keys(tc).filter(t=>tc[t]>=2).map(t=>TAG_SETS[t].emoji+tc[t]).join(' ');
+      const tc=this.tagCounts?this.tagCounts():{},tg=Object.keys(tc).filter(t=>tc[t]>=2&&TAG_SETS[t]).map(t=>TAG_SETS[t].emoji+tc[t]).join(' ');
       this.statTxt.setText([rel,sh,tg].filter(Boolean).join('   ')); }
     // บรรทัดชื่อด่านโชว์ 6 วิแรกของด่านแล้วจางหาย (ดูซ้ำได้ในหน้า Pause)
     if(this.stageTxt&&this.stageTxt.visible){ const a=Phaser.Math.Clamp(((this._stageTxtAt??-99)+6-(this.elapsed||0))/1.2,0,1); this.stageTxt.setAlpha(a); }
@@ -7125,7 +7149,7 @@ class Game extends Phaser.Scene {
       this._gachaBusy=false;this._zone(w/2-bw/2,by-24,bw,48,()=>{this.menuScreen='gear';this.buildMenuScreen();});
     });
   }
-  applyMeta(){
+  applyMeta(){ if(this.player){this.player._tagIgnite=0;this.player._tagChill=0;}
     const p=this.player;
     p.cdMul=1;p.armor=0;p.gearAttackMin=0;p.gearAttackMax=0; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.sugarFindMul=1; p.boxFindMul=1; p.currencyFindMul=1; p.uniqueCdMul=1; p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
@@ -8977,7 +9001,7 @@ class Game extends Phaser.Scene {
   basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
-  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b._pm=pathMods(b);if(b.path||b.infusion)this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
+  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b._pm=pathMods(b);this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
@@ -9430,17 +9454,17 @@ class Game extends Phaser.Scene {
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;
     if(this.recipeMode&&this._egBuilt)return this.endlessCards(n);   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
-    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>({type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra});
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};c.desc=(c.desc||'')+tagLabel(extra.tags||this.upTags(u.id));return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
-      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc+tagLabel(TAGS_OF.path[pt.id]),headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
+      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
     }
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
     if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
       this.showBanner('🍯 Flavor Infusion','Infuse your attack with a flavor',1600);
-      return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc+tagLabel(TAGS_OF.infusion[f.id]),kind:'Flavor Infusion',special:true,color:f.color,apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
+      return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,tags:TAGS_OF.infusion[f.id],kind:'Flavor Infusion',special:true,color:f.color,apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
     }
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) timesเดียว: การ์ดทั้งจอเป็น mutation ล้วน
     if(!noSpecial&&b.mastery>=10&&!b.mutation){   // v5.9: 8→10 ห่างขึ้น (เจ้าของ: เก่งเร็วไป)   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
@@ -9454,7 +9478,7 @@ class Game extends Phaser.Scene {
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
-      return [makeCard(evo,{evolution:true,special:true,color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
+      return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
@@ -10558,14 +10582,17 @@ class Game extends Phaser.Scene {
       if(nb&&bullet.body){ const sp=bullet.body.velocity.length()||460, ang=Math.atan2(nb.y-bullet.y,nb.x-bullet.x);
         this.physics.velocityFromRotation(ang,sp,bullet.body.velocity); return; } }
     this.killBullet(bullet); }
-  tagCounts(){ const c={},add=t=>{if(t)c[t]=(c[t]||0)+1;}, b=this.basicAttack;
-    if(b){ add(b.path&&TAGS_OF.path[b.path]); add(b.infusion&&TAGS_OF.infusion[b.infusion]); }
-    (this.relics||[]).forEach(k=>add(TAGS_OF.relic[k])); return c; }
+  upTags(id){ const b=this.basicAttack,wt=(b&&WEAPON_TAGS[b.character])||[]; return UP_TAGS[id]||(id==='evolution'?wt:wt.slice(0,1)); }
+  tagCounts(){ const c={},add=t=>tagList(t).forEach(x=>{if(TAG_SETS[x])c[x]=(c[x]||0)+1;}), b=this.basicAttack;
+    if(b){ add(WEAPON_TAGS[b.character]); for(const id in (b.lv||{}))if(b.lv[id]>0)add(this.upTags(id));
+      if(b.path)add(this.upTags(b.path)); if(b.infusion)add(TAGS_OF.infusion[b.infusion]); if(b.mutation)add(this.upTags(b.mutation)); if(b.evolved)add(WEAPON_TAGS[b.character]); }
+    (this.relics||[]).forEach(k=>add(TAGS_OF.relic[k]));
+    const eq=(Save.data&&Save.data.equippedGear)||{}; for(const s in eq){ const seen={}; (Save.gearAffixes(eq[s])||[]).forEach(a=>tagList(TAGS_OF.affix[a.id]).forEach(t=>seen[t]=1)); add(Object.keys(seen)); }
+    return c; }
   refreshTagSets(){ const p=this.player; if(!p)return; this._tagTier=this._tagTier||{}; const c=this.tagCounts();
-    for(const t in TAG_SETS){ const d=TAG_SETS[t],tier=Math.min(3,c[t]||0),had=this._tagTier[t]||0;
-      if(tier>=2&&had<2){ d.t2(p); this.showBanner(d.emoji+' '+d.name+' ×2','Set bonus: '+d.b2,1700); }
-      if(tier>=3&&had<3){ d.t3(p); this.showBanner(d.emoji+' '+d.name+' ×3','Set bonus: '+d.b3,1700); }
-      this._tagTier[t]=Math.max(had,tier); }
+    for(const t in TAG_SETS){ const d=TAG_SETS[t],n=c[t]||0,had=this._tagTier[t]||0; let got=had;
+      for(let i=had;i<TAG_TIERS.length;i++){ if(n<TAG_TIERS[i])break; d.t[i](p); got=i+1; this.showBanner(d.emoji+' '+d.name+' ×'+TAG_TIERS[i],'Set bonus: '+d.b[i],1700); }
+      this._tagTier[t]=got; }
     clampPlayerStats(p); }
   infusionPow(){ const b=this.basicAttack; return 1+0.35*((b&&b.lv&&b.lv.inf_deep)||0); }
   infusionOnHit(e,amount,inf){ const pw=this.infusionPow();
@@ -10599,7 +10626,7 @@ class Game extends Phaser.Scene {
       if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);
-    { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); }
+    { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); }
     amount+=(this.player.flatDmg||0)+gearAttackRoll(this.player);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
