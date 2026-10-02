@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.6.2 (เจ้าของ):** revert v6.6.1 → แผงอัปเกรดกลับมาหยุดเกมแบบ v6.6.0
 - **v6.6.0 (เจ้าของ: สล็อตน่ารำคาญ):** Recipe เลเวลอัพ = สะสมแต้ม (`pendingLvl`) ปุ่ม ⬆ N pt มุมขวา (`refreshUpBtn`, y=pad+150) · แตะ = `openUpgradePanel` หยุดเกม (state rolling) แถว endlessStatDefs แตะ = ใช้ 1 แต้ม · 🎲 Auto spend all · ▶ Resume · ใช้ทุก recipeMode (ไม่ต้อง _egBuilt) · verified headless 0 error
 - **v6.5.0 (เจ้าของ):** เลิกไอเทมแมพ → Map Table ในหน้า Endgame (`mapTable`/`mapTableRecipe`) เลือกธีม + tier ≤ `mapTierCap()` (=recipeMaxClear+1) + mod ≤3 จ่าย currency ตาม `MAP_MOD_COST` transmute/regal/exalt · `migrateMapTable` คืนแมพเก่าเป็น currency ครั้งเดียว · บอสไม่ดรอปแมพแล้ว (เคลียร์ = ปลด tier ถัดไป) · verified headless 0 error
 - **v6.4.0 (เจ้าของ):** หน้าเตรียมรันเป็นหน้าแรกของ endgame: route 'recipes'/'rift'/'recipeprep' → `buildRecipePrep` (หัว '📜 Endgame') · คลังเดิมย้ายเป็น menuScreen 'recipebag' (`buildRecipes`, ปุ่ม Run → Select แล้วกลับหน้าแรกโดยตัด navStack) · เลือกแผนที่ tier สูงสุดอัตโนมัติ · คลังว่าง = ปุ่ม Get free Tier 1 · กล่องแผนที่มี Change › · แถวปุ่ม Maps/Atlas/Pinnacle(🗝keys) เหนือ Start Run · verified screenshot + nav, 0 error

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.6.0';
+const GAME_VERSION = '6.6.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.6.2', date:'2026-10-02', title:'Upgrade panel pauses again', items:['The endgame upgrade panel pauses the game again while you spend points'] },
   { v:'6.6.0', date:'2026-10-02', title:'Upgrade points', items:['Endgame level-ups now bank upgrade points instead of a slot machine','Tap the ⬆ button to pick stats and spend many points at once','Auto spend all picks for you'] },
   { v:'6.5.0', date:'2026-10-01', title:'Map Table', items:['Recipe map items are gone: pick any cleared theme and tier on the Map Table','Clearing a tier unlocks the next one; dying costs nothing','Map mods are paid with crafting currency when the run starts','Old maps were refunded as currency'] },
   { v:'6.4.0', date:'2026-10-01', title:'Endgame home', items:['The Prepare Run screen is now the Endgame home: next map, build, pact, target, totals and Start in one place','Maps, Atlas and Pinnacle are one tap away; the highest-tier map is picked automatically'] },
