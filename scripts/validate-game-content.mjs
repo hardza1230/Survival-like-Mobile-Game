@@ -382,7 +382,7 @@ console.log('validated Recipe Maps: 16 tiers, iron-rule mods, 7 Atlas nodes, 12 
   const pick=(re,n)=>{const m=source.match(re); if(!m)throw new Error('Delve contract missing '+n); return m[0];};
   const code=[pick(/function mulberry32[^\n]*(\n[^\n]*?\})?/,'mulberry32'),pick(/const AMAP_ADJ=[^\n]*/,'AMAP_ADJ'),pick(/const AMAP_FLAVORS=\[[\s\S]*?\];/,'AMAP_FLAVORS'),
     pick(/\/\/ v6\.30 Mochi Delve[\s\S]*?function delveMul[^\n]*/,'delve block')].join('\n');
-  const api=new Function('Save','RECIPE_TIER_MAX','RECIPE_MODS',code+'\nreturn {delveRow,delveLinks,amapNode,amapAdj,delveMul,DELVE_SEG};')({data:{atlasMapVer:3,delve:{clears:{},best:0}}},16,[{id:'a'},{id:'b'}]);
+  const api=new Function('Save','RECIPE_TIER_MAX','RECIPE_MODS',code+'\nreturn {delveRow,delveLinks,amapNode,amapAdj,delveMul,DELVE_SEG};')({data:{atlasMapVer:3,delve:{clears:{},best:0}}},16,[{id:'a'},{id:'b'},{id:'c'},{id:'d'},{id:'e'},{id:'m',mech:true}]);
   const sig=()=>{ const out=[]; for(let d=0;d<=60;d++){ out.push(api.delveRow(d).map(n=>n.id).join('|')); out.push(api.delveLinks(d).E.join(';')); } return out.join('#'); };
   if(sig()!==sig())throw new Error('Delve generator must be deterministic');
   const seen=new Set(['0,0']),q=['0,0'];
@@ -390,5 +390,7 @@ console.log('validated Recipe Maps: 16 tiers, iron-rule mods, 7 Atlas nodes, 12 
   for(let d=1;d<=200;d++){ const row=api.delveRow(d); if(!row.every(n=>seen.has(n.id)))throw new Error('Delve depth '+d+' has unreachable caves');
     if(d%api.DELVE_SEG===0&&(row.length!==1||api.amapNode(row[0].id).type!=='boss'))throw new Error('Delve boss floor '+d+' must have one boss node'); }
   for(let d=1;d<=100;d++){ const a=api.delveMul(d-1),b=api.delveMul(d); if(!(b.reward>a.reward&&b.hp>a.hp))throw new Error('delveMul must grow with depth'); }
+  const avg=(d0,d1)=>{ let n=0,c=0; for(let d=d0;d<=d1;d++)for(const r of api.delveRow(d)){ const x=api.amapNode(r.id); if(new Set(x.mods).size!==x.mods.length)throw new Error('Delve cave '+r.id+' has duplicate mods'); if(d<10&&x.mods.includes('m'))throw new Error('Mechanic mod above depth 10'); n+=x.mods.length; c++; } return n/c; };
+  const a1=avg(1,9),a2=avg(11,29),a3=avg(31,60); if(!(a1<=a2&&a2<=a3))throw new Error(`Delve mods must grow with depth (${a1},${a2},${a3})`);
   console.log('validated Mochi Delve: deterministic, reachable to depth 200, boss floors');
 }
