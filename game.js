@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.20.0';
+const GAME_VERSION = '6.21.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.21.0', date:'2026-10-02', title:'🔭 Zoomable Atlas', items:['The whole Atlas — all 100 maps, Mochitopia and the Pinnacle — is now one big map','Drag to pan, pinch or use ➕➖ to zoom in and out','Region buttons jump straight to each region','Regions are shown as coloured bands until the final map art arrives']},
   { v:'6.20.0', date:'2026-10-02', title:'🗺 Atlas of 100 maps', items:['The Atlas now has 100 maps across 5 regions, each with its own fixed tier','Maps connect into branching paths — clear one to reveal its neighbours','Treasure Vaults (extra Sugar), Shrines (+3 Atlas points) and a Guardian boss per region','Beat a region’s Guardian to open the next region; the last Guardian opens the Pinnacle','Many maps carry a built-in map mod (◆) for extra risk and reward','Map names and floors are placeholders until the new map art arrives']},
   { v:'6.19.0', date:'2026-10-02', title:'Atlas Journey Map', items:['The Atlas is now a journey map: start at Mochitopia, climb through the Kitchen, Garden and Throne rings to the Pinnacle','Clearing a node reveals its neighbours; each ring has its own tier cap (5 / 10 / 16)','Tap any open node to plan a run there','Clearing the whole Throne Ring opens the Pinnacle once for free'] },
   { v:'6.18.0', date:'2026-10-02', title:'PoE-style Damage Math', items:['All “+% damage” sources now add together (increased) instead of multiplying each other','Item Power, Boss DMG, conditional cards, Modifiers and Relics still multiply separately (more)','Flat damage now uses Damage Effectiveness: rapid attacks get less flat damage, heavy hits get more (Sniper 250%, Mint 40%)'] },
@@ -4583,7 +4584,7 @@ class Game extends Phaser.Scene {
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } }
         return; }
-      if(this.state==='menu'){ this.handleTap(p.x,p.y); return; }
+      if(this.state==='menu'){ if(this.menuScreen==='atlas'&&this._amRect&&this.atlasPointerDown(p))return; this.handleTap(p.x,p.y); return; }
       if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
@@ -4607,7 +4608,9 @@ class Game extends Phaser.Scene {
       this.joyBase.setPosition(p.x,p.y).setVisible(true);
       this.joyKnob.setPosition(p.x,p.y).setVisible(true);
     });
+    this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); });
     this.input.on('pointermove',(p)=>{
+      if(this.state==='menu'&&this._amDrag){ this.atlasPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.moveSnipeAim({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR}); return; }
       if(this._beat){ this.beatMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(!this.joy.active||p.id!==this.joy.id) return;
@@ -4617,6 +4620,7 @@ class Game extends Phaser.Scene {
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
     });
     this.input.on('pointerup',(p)=>{
+      if(this.state==='menu'&&this._amDrag){ this.atlasPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.releaseSnipe(); return; }
       if(this._ubHold&&this._ubHold.id===p.id){ const n=this.beatHoldNodes(); this._ubHold=null; this.clearBeatCharge(); this.startBeatRush(n>0,n); return; }   // v5.62 แตะสั้น = quick · กดค้าง = จุดตามเวลาที่ชาร์จ
       if(this._beat){ this.beatUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
@@ -5857,7 +5861,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildAtlas(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🗺 Recipe Atlas','screen_atlas');
+    this.menu.removeAll(true);this.tapZones=[];this._amRect=null;this._amView=null;this._amDrag=null;this._screenBg('🗺 Recipe Atlas','screen_atlas');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,at=atlasData();let top=(w<=h?100:70);const th=recipeThemes(),best=Save.data.recipeBest||{};
     const T=(x,y,t,sz,c,st)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(q);return q;};
     const tab=this._atlasTab||'board',tw2=(cw-20)/3;
@@ -5881,53 +5885,82 @@ class Game extends Phaser.Scene {
   }
   // v6.3.0: หน้าเตรียมรัน Recipe หน้าเดียว — แผนที่ · Build · Pact · เป้าดรอป · ตัวคูณรวม · Run
   // v6.19: แผนที่ Atlas แบบเดินทาง — วาดด้วยโค้ด (ถ้ามีอาร์ต atlas_map_bg / atlas_node_* / atlas_hub / atlas_pinnacle จะใช้แทน)
+  // v6.21: Atlas ทั้ง 100 แมพบนผืนเดียว · ลากเพื่อ pan · หยิก/ปุ่ม +− เพื่อซูม · แตะแมพ = ดูข้อมูล แตะซ้ำ = วางแผนรัน
+  atlasLayout(){ if(this._amLayout)return this._amLayout; const G=atlasGraph(),MW=360,RH=440,GAP=70,TOP=140,NR=AMAP_REGIONS.length,H=TOP+NR*RH+(NR-1)*GAP+150,pos={},bands=[];
+    AMAP_REGIONS.forEach((R,reg)=>{ const y0=H-150-(reg+1)*RH-reg*GAP; bands.push({y0,y1:y0+RH}); });
+    G.nodes.forEach(n=>{ const B=bands[n.reg],rh=RH/AMAP_ROWS_PER; pos[n.id]={x:MW*(n.c+0.5+n.jx)/AMAP_COLS,y:B.y1-(n.rr+0.5+n.jy)*rh}; });
+    pos.hub={x:MW/2,y:H-70}; pos.pin={x:MW/2,y:70}; return (this._amLayout={MW,H,pos,bands}); }
+  atlasViewClamp(){ const v=this._amv,R=this._amRect,L=this.atlasLayout(); if(!v||!R)return; v.s=Math.max(v.min,Math.min(2.4,v.s));
+    const w=L.MW*v.s,h=L.H*v.s; v.x=w<=R.w?(R.w-w)/2:Math.min(0,Math.max(R.w-w,v.x)); v.y=h<=R.h?(R.h-h)/2:Math.min(0,Math.max(R.h-h,v.y));
+    if(this._amView)this._amView.setPosition(R.x+v.x,R.y+v.y).setScale(v.s); }
+  atlasViewFocus(mx,my,s){ const v=this._amv,R=this._amRect; if(s)v.s=s; v.x=R.w/2-mx*v.s; v.y=R.h/2-my*v.s; this.atlasViewClamp(); }
+  atlasZoomAt(sx,sy,ns){ const v=this._amv,R=this._amRect,mx=(sx-R.x-v.x)/v.s,my=(sy-R.y-v.y)/v.s; v.s=Math.max(v.min,Math.min(2.4,ns)); v.x=sx-R.x-mx*v.s; v.y=sy-R.y-my*v.s; this.atlasViewClamp(); }
+  atlasPointerDown(p){ const R=this._amRect; if(!R||p.x<R.x||p.x>R.x+R.w||p.y<R.y||p.y>R.y+R.h)return false;
+    const d=this._amDrag||(this._amDrag={pts:{}}); d.pts[p.id]={x:p.x,y:p.y,sx:p.x,sy:p.y}; const ids=Object.keys(d.pts);
+    if(ids.length===1){ d.moved=false; d.ox=this._amv.x; d.oy=this._amv.y; d.id=p.id; }
+    else if(ids.length===2){ const [a,b]=ids.map(k=>d.pts[k]); d.pinch={d0:Math.hypot(a.x-b.x,a.y-b.y)||1,s0:this._amv.s}; d.moved=true; }
+    return true; }
+  atlasPointerMove(p){ const d=this._amDrag; if(!d||!d.pts[p.id])return false; const q=d.pts[p.id]; q.x=p.x; q.y=p.y; const ids=Object.keys(d.pts);
+    if(ids.length>=2&&d.pinch){ const [a,b]=ids.slice(0,2).map(k=>d.pts[k]); this.atlasZoomAt((a.x+b.x)/2,(a.y+b.y)/2,d.pinch.s0*Math.hypot(a.x-b.x,a.y-b.y)/d.pinch.d0); return true; }
+    if(p.id===d.id){ if(Math.hypot(p.x-q.sx,p.y-q.sy)>8)d.moved=true; if(d.moved){ this._amv.x=d.ox+(p.x-q.sx); this._amv.y=d.oy+(p.y-q.sy); this.atlasViewClamp(); } }
+    return true; }
+  atlasPointerUp(p){ const d=this._amDrag; if(!d||!d.pts[p.id])return false; const tap=!d.moved&&Object.keys(d.pts).length===1; delete d.pts[p.id];
+    if(!Object.keys(d.pts).length){ this._amDrag=null; } else { d.pinch=null; const k=Object.keys(d.pts)[0],q=d.pts[k]; q.sx=q.x; q.sy=q.y; d.id=+k; d.ox=this._amv.x; d.oy=this._amv.y; d.moved=true; }
+    if(tap)this.atlasTapAt(p.x,p.y); return true; }
+  atlasTapAt(sx,sy){ const v=this._amv,R=this._amRect,L=this.atlasLayout(),mx=(sx-R.x-v.x)/v.s,my=(sy-R.y-v.y)/v.s; let hit=null,bd=24+14/v.s;
+    const dp=Math.hypot(mx-L.pos.pin.x,my-L.pos.pin.y); if(dp<40+14/v.s){ Sfx.select&&Sfx.select(); if(atlasPinnacleOpen()||(Save.data.riftKeys||0)>=PINNACLE_KEY_COST)this.startPinnacle(); else this.menuToast('🔒 Defeat the '+AMAP_REGIONS[AMAP_REGIONS.length-1].guard+' to open the Pinnacle','#ff9bb5'); return; }
+    atlasGraph().nodes.forEach(n=>{ const q=L.pos[n.id],dd=Math.hypot(mx-q.x,my-q.y); if(dd<bd){bd=dd;hit=n;} }); if(!hit)return;
+    if(!amapOpen(hit.id)){ Sfx.select&&Sfx.select(); this.menuToast('🌫️ Clear a connected map to reveal this place','#ff9bb5'); return; }
+    Sfx.select&&Sfx.select(); if(this._amapSel===hit.id){ const mt=mapTable(); mt.node=hit.id; Save.save(); this.menuScreen='recipeprep'; this.buildMenuScreen(); return; }
+    this._amapSel=hit.id; this.buildAtlas(); }
   buildAtlasMap(cx,cw,top){
-    // v6.20: 100 แมพ แบ่ง 5 ภูมิภาค (แท็บ) · แตะ 1 ครั้ง = ดูข้อมูล · แตะซ้ำ = วางแผนรัน · อาร์ต: atlas_region_bg_N / atlas_node_* / atlas_hub / atlas_pinnacle
-    const w=this.W,h=this.H,G=atlasGraph(),next=amapNext(),NR=AMAP_REGIONS.length;
+    const w=this.W,h=this.H,G=atlasGraph(),L=this.atlasLayout(),next=amapNext(),NR=AMAP_REGIONS.length,P=L.pos;
     const T=(x,y,t,sz,c,st,o)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center'}).setOrigin(0.5,o===undefined?0.5:o);this.menu.add(q);return q;};
-    if(this._amapReg==null)this._amapReg=next!==undefined?amapNode(next).reg:0; const reg=this._amapReg;
     T(w/2,top+6,'🗺 Atlas '+amapClearedCount()+'/'+G.nodes.length+' maps · points '+atlasPoints()+'/'+atlasMaxPoints(),12,'#ffe08a','bold');
-    // แท็บภูมิภาค + Pinnacle
-    const tb=(cw-6*5)/6; [...AMAP_REGIONS.map((R,i)=>({e:R.emoji,i,open:amapRegionOpen(i),lbl:amapRegionDone(i)+'/20'})),{e:'✦',i:NR,open:atlasPinnacleOpen(),lbl:'boss'}].forEach((t,k)=>{ const x=cx+k*(tb+6),y=top+20,on=reg===t.i,g=this.add.graphics();
-      g.fillStyle(on?0x6b2bd9:t.open?0x2a2040:0x16101e,1); g.fillRoundedRect(x,y,tb,40,9); if(t.i<NR){g.lineStyle(2,AMAP_REGIONS[t.i].color,t.open?0.9:0.25); g.strokeRoundedRect(x,y,tb,40,9);} this.menu.add(g);
-      T(x+tb/2,y+13,t.open?t.e:'🔒',15,'#ffffff'); T(x+tb/2,y+31,t.lbl,9,t.open?'#e6dcf0':'#6d6479','bold');
-      this._zone(x,y,tb,40,()=>{ this._amapReg=t.i; this._amapSel=null; this.buildAtlas(); }); });
-    const y0=top+68,y1=h-62,mh=y1-y0;
-    if(reg>=NR){ // Pinnacle
-      const open=atlasPinnacleOpen(),p={x:w/2,y:y0+mh*0.42}; const g=this.add.graphics(); g.fillStyle(0x140e1c,0.92); g.fillRoundedRect(cx,y0,cw,mh,16); this.menu.add(g);
-      if(this.textures.exists('atlas_pinnacle')){const im=this.add.image(p.x,p.y,'atlas_pinnacle');im.setDisplaySize(130,130);this.menu.add(im);} else { const c=this.add.graphics(); c.fillStyle(open?0x5a1f6e:0x221a2c,1); c.fillCircle(p.x,p.y,56); c.lineStyle(4,open?0xff7ab8:0x4a4059,1); c.strokeCircle(p.x,p.y,56); this.menu.add(c); T(p.x,p.y,open?'👑':'🔒',44,'#ffffff'); }
-      T(w/2,p.y+78,'The Hunger Beneath',16,open?'#ff9bd0':'#8d8499','bold'); T(w/2,p.y+102,open?'Tap to challenge the Pinnacle':'Defeat the '+AMAP_REGIONS[NR-1].guard+' to open (or bring '+PINNACLE_KEY_COST+' 🗝️)',11,'#cfc2df');
-      this._zone(p.x-70,p.y-70,140,140,()=>{ if(open||(Save.data.riftKeys||0)>=PINNACLE_KEY_COST)this.startPinnacle(); else this.menuToast('🔒 Clear the last Guardian first','#ff9bb5'); }); return; }
-    const R=AMAP_REGIONS[reg],ropen=amapRegionOpen(reg),mx=cx+14,mw=cw-28,rowH=(mh-56)/AMAP_ROWS_PER;
-    if(this.textures.exists('atlas_region_bg_'+reg)){ const bg=this.add.image(w/2,y0+mh/2,'atlas_region_bg_'+reg); bg.setDisplaySize(cw,mh); this.menu.add(bg); }
-    else { const g=this.add.graphics(); g.fillStyle(0x140e1c,0.92); g.fillRoundedRect(cx,y0,cw,mh,16); g.fillStyle(R.color,0.07); g.fillRoundedRect(cx+6,y0+28,cw-12,mh-56,12); this.menu.add(g); }
-    const nodes=G.nodes.filter(n=>n.reg===reg),pos={}; nodes.forEach(n=>{ pos[n.id]={x:mx+mw*(n.c+0.5+n.jx)/AMAP_COLS,y:y1-28-(n.rr+0.5+n.jy)*rowH}; });
-    // ขอบบน/ล่าง: ทางเข้า-ออกภูมิภาค
-    const prevG=reg>0?amapGuardian(reg-1):null,gN=amapGuardian(reg);
-    T(w/2,y1-14,reg===0?'▼ 🏠 Mochitopia':'▼ from '+AMAP_REGIONS[reg-1].emoji+' '+prevG.name,10,'#9d93aa','bold');
-    T(w/2,y0+14,reg<NR-1?'▲ '+AMAP_REGIONS[reg+1].emoji+' '+AMAP_REGIONS[reg+1].name+(amapCleared(gN.id)?' · open':' · beat the Guardian'):'▲ ✦ Pinnacle',10,amapCleared(gN.id)?'#9dff9d':'#9d93aa','bold');
-    const lg=this.add.graphics(); this.menu.add(lg);
-    G.edges.forEach(([a,b])=>{ const A=amapNode(a),B=amapNode(b),lit=amapCleared(a)||amapCleared(b),col=R.color;
-      if(A.reg===reg&&B.reg===reg){ lg.lineStyle(lit?4:2,lit?col:0x3a3048,lit?0.95:0.6); lg.lineBetween(pos[a].x,pos[a].y,pos[b].x,pos[b].y); }
-      else if(A.reg===reg||B.reg===reg){ const me=A.reg===reg?a:b,o=A.reg===reg?B:A,up=o.reg>reg,p=pos[me],tx=mx+mw*(o.c+0.5)/AMAP_COLS,ty=up?y0+26:y1-26; lg.lineStyle(lit?3:2,lit?0xffffff:0x3a3048,lit?0.8:0.5); lg.lineBetween(p.x,p.y,tx,ty); } });
-    if(reg===0)amapHub().forEach(id=>{ lg.lineStyle(3,0xffffff,0.8); lg.lineBetween(pos[id].x,pos[id].y,pos[id].x,y1-26); });
-    nodes.forEach(n=>{ const p=pos[n.id],open=amapOpen(n.id),t=amapData()[n.id]|0,sel=this._amapSel===n.id,big=n.type==='guardian',rad=big?22:16;
+    const R=this._amRect={x:cx,y:top+62,w:cw,h:h-62-(top+62)};
+    // แท็บกระโดดไปภูมิภาค + ปุ่มซูม
+    const tb=(cw-5*8)/8; [...AMAP_REGIONS.map((Rg,i)=>({e:amapRegionOpen(i)?Rg.emoji:'🔒',lbl:amapRegionDone(i)+'/20',col:Rg.color,fn:()=>{const B=L.bands[i];this.atlasViewFocus(L.MW/2,(B.y0+B.y1)/2,Math.max(this._amv.s,R.w/L.MW));}})),
+      {e:'✦',lbl:'boss',col:0xff7ab8,fn:()=>this.atlasViewFocus(P.pin.x,P.pin.y+120,Math.max(this._amv.s,R.w/L.MW))},
+      {e:'➕',lbl:'zoom',col:0x8d8499,fn:()=>this.atlasZoomAt(R.x+R.w/2,R.y+R.h/2,this._amv.s*1.35)},
+      {e:'➖',lbl:'all',col:0x8d8499,fn:()=>this.atlasZoomAt(R.x+R.w/2,R.y+R.h/2,this._amv.s/1.35)}].forEach((t,k)=>{ const x=cx+k*(tb+5),y=top+20,g=this.add.graphics();
+      g.fillStyle(0x241a30,1); g.fillRoundedRect(x,y,tb,36,8); g.lineStyle(2,t.col,0.8); g.strokeRoundedRect(x,y,tb,36,8); this.menu.add(g); T(x+tb/2,y+12,t.e,13,'#ffffff'); T(x+tb/2,y+28,t.lbl,8,'#cfc2df','bold'); this._zone(x,y,tb,36,t.fn); });
+    // ผืนแผนที่ (container + mask)
+    const bgG=this.add.graphics(); bgG.fillStyle(0x0d0913,1); bgG.fillRoundedRect(R.x,R.y,R.w,R.h,14); this.menu.add(bgG);
+    const view=this._amView=this.add.container(0,0); this.menu.add(view);
+    const mk=this.make.graphics({x:0,y:0},false); mk.fillStyle(0xffffff); mk.fillRoundedRect(R.x,R.y,R.w,R.h,14); view.setMask(mk.createGeometryMask());
+    const V=(o)=>{view.add(o);return o;}, VT=(x,y,t,sz,c,st)=>V(this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center'}).setOrigin(0.5));
+    // แถบสีภูมิภาค (placeholder ของอาร์ต atlas_region_bg_N)
+    const bg=V(this.add.graphics()); AMAP_REGIONS.forEach((Rg,i)=>{ const B=L.bands[i];
+      if(this.textures.exists('atlas_region_bg_'+i)){ const im=this.add.image(L.MW/2,(B.y0+B.y1)/2,'atlas_region_bg_'+i); im.setDisplaySize(L.MW,B.y1-B.y0); view.addAt(im,0); }
+      else { bg.fillStyle(Rg.color,amapRegionOpen(i)?0.16:0.06); bg.fillRoundedRect(4,B.y0-20,L.MW-8,B.y1-B.y0+40,22); bg.lineStyle(2,Rg.color,amapRegionOpen(i)?0.5:0.15); bg.strokeRoundedRect(4,B.y0-20,L.MW-8,B.y1-B.y0+40,22);
+        for(let k=0;k<26;k++){ const rx=((k*97+i*31)%100)/100*L.MW,ry=B.y0+((k*53+i*17)%100)/100*(B.y1-B.y0); bg.fillStyle(Rg.color,0.08); bg.fillCircle(rx,ry,6+(k%5)*5); } }
+      VT(L.MW/2,B.y0-6,Rg.emoji+' '+Rg.name.toUpperCase()+' · T'+Rg.lo+'–'+Rg.hi,11,amapRegionOpen(i)?'#ffffff':'#6d6479','bold').setAlpha(0.85); });
+    // เส้นทาง
+    const lg=V(this.add.graphics());
+    G.edges.forEach(([a,b])=>{ const lit=amapCleared(a)||amapCleared(b),col=AMAP_REGIONS[Math.max(amapNode(a).reg,amapNode(b).reg)].color; lg.lineStyle(lit?4:2,lit?col:0x3a3048,lit?0.95:0.55); lg.lineBetween(P[a].x,P[a].y,P[b].x,P[b].y); });
+    amapHub().forEach(id=>{ lg.lineStyle(4,0xffffff,0.85); lg.lineBetween(P.hub.x,P.hub.y,P[id].x,P[id].y); });
+    const gl=amapGuardian(NR-1); lg.lineStyle(4,atlasPinnacleOpen()?0xff7ab8:0x3a3048,0.9); lg.lineBetween(P[gl.id].x,P[gl.id].y,P.pin.x,P.pin.y);
+    // hub + pinnacle
+    const circ=(x,y,r,fill,stroke,key)=>{ if(key&&this.textures.exists(key)){ const im=V(this.add.image(x,y,key)); im.setDisplaySize(r*2.4,r*2.4); return; } const g=V(this.add.graphics()); g.fillStyle(fill,1); g.fillCircle(x,y,r); g.lineStyle(3,stroke,1); g.strokeCircle(x,y,r); };
+    circ(P.hub.x,P.hub.y,26,0x3a2a50,0xffffff,'atlas_hub'); VT(P.hub.x,P.hub.y,'🏠',20,'#ffffff'); VT(P.hub.x,P.hub.y+38,'Mochitopia',11,'#ffffff','bold');
+    const pinOpen=atlasPinnacleOpen(); circ(P.pin.x,P.pin.y,38,pinOpen?0x5a1f6e:0x221a2c,pinOpen?0xff7ab8:0x4a4059,'atlas_pinnacle'); VT(P.pin.x,P.pin.y,pinOpen?'👑':'🔒',30,'#ffffff'); VT(P.pin.x,P.pin.y+52,'✦ THE HUNGER BENEATH',12,pinOpen?'#ff9bd0':'#6d6479','bold');
+    // แมพ 100 จุด
+    G.nodes.forEach(n=>{ const q=P[n.id],open=amapOpen(n.id),t=amapData()[n.id]|0,sel=this._amapSel===n.id,big=n.type==='guardian',rad=big?22:16,col=AMAP_REGIONS[n.reg].color;
       const k='atlas_node_'+(n.type!=='normal'&&open?n.type:t>0?'clear':open?'open':'locked');
-      if(this.textures.exists(k)){ const im=this.add.image(p.x,p.y,k); im.setDisplaySize(rad*2.4,rad*2.4); this.menu.add(im); }
-      else { const g=this.add.graphics(); g.fillStyle(t>0?0x3a2f12:open?0x1f1830:0x14101a,1); g.fillCircle(p.x,p.y,rad); g.lineStyle(sel?4:3,sel?0xffffff:t>0?0xffd166:open?R.color:0x3a3048,1); g.strokeCircle(p.x,p.y,rad); this.menu.add(g); }
-      T(p.x,p.y-1,open?n.emoji:'🌫️',big?18:14,'#ffffff'); T(p.x,p.y+rad+8,open?'T'+n.tier:'',9,t>0?'#ffe08a':'#9dff9d','bold');
-      if(open&&n.type!=='normal'&&n.type!=='guardian')T(p.x+rad-2,p.y-rad+2,AMAP_TYPES[n.type].emoji,10,'#ffffff');
-      if(open&&n.imp&&!t)T(p.x-rad+2,p.y-rad+2,'◆',9,'#ff9bb5','bold');
-      if(n.id===next){ const a=T(p.x,p.y-rad-12,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); }
-      this._zone(p.x-24,p.y-24,48,48,()=>{ if(!open){this.menuToast('🌫️ Clear a connected map to reveal this place','#ff9bb5');return;}
-        if(this._amapSel===n.id){ const mt=mapTable(); mt.node=n.id; Save.save(); Sfx.select&&Sfx.select(); this.menuScreen='recipeprep'; this.buildMenuScreen(); return; }
-        this._amapSel=n.id; this.buildAtlas(); }); });
-    // การ์ดข้อมูลแมพที่เลือก
+      if(this.textures.exists(k)){ const im=V(this.add.image(q.x,q.y,k)); im.setDisplaySize(rad*2.4,rad*2.4); }
+      else { const g=V(this.add.graphics()); if(open&&!t){ g.fillStyle(col,0.25); g.fillCircle(q.x,q.y,rad+6); } g.fillStyle(t>0?0x3a2f12:open?0x1f1830:0x14101a,1); g.fillCircle(q.x,q.y,rad); g.lineStyle(sel?4:3,sel?0xffffff:t>0?0xffd166:open?col:0x3a3048,1); g.strokeCircle(q.x,q.y,rad); }
+      VT(q.x,q.y-1,open?n.emoji:'🌫️',big?18:14,'#ffffff'); if(open)VT(q.x,q.y+rad+8,'T'+n.tier,9,t>0?'#ffe08a':'#9dff9d','bold');
+      if(open&&n.type!=='normal'&&n.type!=='guardian')VT(q.x+rad-2,q.y-rad+2,AMAP_TYPES[n.type].emoji,10,'#ffffff');
+      if(open&&n.imp&&!t)VT(q.x-rad+2,q.y-rad+2,'◆',9,'#ff9bb5','bold');
+      if(n.id===next){ const a=VT(q.x,q.y-rad-12,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); } });
+    // มุมมองเริ่มต้น: เต็มความกว้าง ที่แมพแนะนำ (จำตำแหน่งเดิมถ้ามี)
+    const fit=Math.min(R.w/L.MW,R.h/L.H); if(!this._amv){ this._amv={x:0,y:0,s:R.w/L.MW,min:fit}; const f=next!==undefined?P[next]:P.hub; this.atlasViewFocus(f.x,f.y,R.w/L.MW); } else { this._amv.min=fit; this.atlasViewClamp(); }
+    // ข้อมูลแมพที่เลือก
     const sn=this._amapSel!=null?amapNode(this._amapSel):null;
-    if(sn&&sn.reg===reg){ const ty=AMAP_TYPES[sn.type],im=sn.imp&&recipeModDef(sn.imp),t=amapData()[sn.id]|0;
+    if(sn){ const ty=AMAP_TYPES[sn.type],im=sn.imp&&recipeModDef(sn.imp),t=amapData()[sn.id]|0;
       T(w/2,h-44,sn.emoji+' '+sn.name+' · Tier '+sn.tier+(t?' · ✓ cleared':''),12,'#ffffff','bold');
       T(w/2,h-26,[sn.type!=='normal'?ty.emoji+' '+ty.desc:null,im?'◆ '+im.name+': '+im.desc:'No map mod'].filter(Boolean).join(' · ')+' · tap again to plan',9,'#cfc2df'); }
-    else if(!ropen) T(w/2,h-34,'🔒 Defeat the '+AMAP_REGIONS[reg-1].guard+' to enter this region',11,'#ff9bb5');
+    else T(w/2,h-34,'Drag to explore · pinch or ➕➖ to zoom · tap a map',10,'#9d93aa');
   }
   buildRecipePrep(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Endgame','screen_atlas'); this.migrateRiftToRecipes&&this.migrateRiftToRecipes();
