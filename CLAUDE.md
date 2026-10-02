@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.28.0 (เจ้าของแจ้ง 2 ข้อ):** `clearOrbs()` ใน startStage (EXP ด่านเก่าค้าง · clearPickups ไม่เคยล้าง orbs) · continueFromSummary ถ้า recipeMode → menuScreen 'atlas' แท็บ board แทน hub
 - **v6.27.0 (เจ้าของส่งเพลงมา):** หน้าโหลด (index.html LoaderMusic) → `assets/audio/bgm/menu/bgm_loading_forgotten_wind.mp3` (แปลงจาก WebM 112k) · crystal_memory ยังอยู่
 - **v6.26.0 (เจ้าของส่งเพลงมา):** bgm_main → `assets/audio/bgm/menu/bgm_menu_moonlit_rose.mp3` (แปลงจาก WebM 112k) · over_the_hill ยังอยู่ สลับกลับได้
 - **v6.25.0 (เจ้าของ: เพลงโหลด+เมนูแนว FF9):** MENUS ใน gen_stage_bgm +`bgm_loading_crystal_memory` (A minor 72BPM i-VI-III-VII ฮาร์ป pluck + sine lead vibrato + choir + chime/wind, 53s) · `bgm_menu_over_the_hill` (G dorian 104BPM walk bass + bell arp + tri lead + choir, 37s) · 96k → assets/audio/bgm/menu · bgm_main ชี้ over_the_hill · index.html LoaderMusic ชี้ crystal_memory · เพลงเดิม (chiptune_pop/fairy_kingdom/crystal_clash) ยังอยู่ สลับกลับได้ · ยังไม่มีใครฟังจริง

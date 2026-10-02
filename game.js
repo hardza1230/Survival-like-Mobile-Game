@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.27.0';
+const GAME_VERSION = '6.28.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.28.0', date:'2026-10-02', title:'🧹 Clean stage starts & Atlas return', items:['Leftover EXP and items from the previous stage no longer carry over','Finishing an Atlas map returns you to the Atlas instead of the main menu']},
   { v:'6.27.0', date:'2026-10-02', title:'🎵 New loading music', items:['Loading screen now plays Forgotten Wind on Old Stone']},
   { v:'6.26.0', date:'2026-10-02', title:'🎵 New main menu music', items:['Main menu now plays Masque of the Moonlit Rose']},
   { v:'6.25.0', date:'2026-10-02', title:'🎵 New loading & menu music', items:['Loading screen: Crystal Memory — a gentle, nostalgic harp-and-flute theme','Main menu: Over the Candy Hill — a warm fantasy adventure tune']},
@@ -7830,7 +7831,7 @@ class Game extends Phaser.Scene {
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
   startStage(i){
-    const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.stageIndex=i; this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
+    const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
     this.bossUI.forEach(o=>o.setVisible(false));
@@ -8915,6 +8916,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:ring,radius:220+i*70,alpha:{from:0.9,to:0},duration:700+i*150,delay:i*110,ease:'Quad.out',onComplete:()=>ring.destroy()}); }
   }
   clearFoes(){ this.foeBullets.children.iterate(b=>{ if(b&&b.active)this.killFoe(b); }); }
+  clearOrbs(){ if(this.orbs)this.orbs.children.iterate(o=>{ if(o&&o.active){ this.tweens.killTweensOf(o); o._vac=false; o.setActive(false).setVisible(false); if(o.body){o.body.enable=false;o.setVelocity&&o.setVelocity(0,0);} } }); }
   clearPickups(alsoHeals){ if(this.crates)this.crates.children.iterate(c=>{ if(c&&c.active){ this.tweens.killTweensOf(c); c.setActive(false).setVisible(false); if(c.body)c.body.enable=false; } });
     if(alsoHeals){ for(const grp of [this.heals,this.vacs,this.loots,this.chests,this.gimmicks]){ if(grp)grp.children.iterate(o=>{ if(o&&o.active){ this.tweens.killTweensOf(o); if(o._glow){this.tweens.killTweensOf(o._glow);o._glow.destroy();o._glow=null;} this.hidePickupCue(o); this.clearMimicCue(o); o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; } }); } } }
   // ตั้งเวลาเหตุการณ์ประจำStage (เริ่มเวฟ/บอส/รางวัล) แบบทนต่อ modal: ถ้าตอนถึงเวลายังติดหน้าเลเวลอัพ/กล่องสุ่ม/pause
@@ -9184,7 +9186,7 @@ class Game extends Phaser.Scene {
     this.stopSummaryPresentation();
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     if(this._summaryLast&&!this._quitSummary){ this._quitSummary=false; this.victory(); return; }
-    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this.exitStage();this.menuScreen='hub';this.buildMenuScreen();   // v4.29: จบด่านกลับหน้าเมนูหลักเสมอ
+    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;const wasAtlas=!!this.recipeMode;this.exitStage();if(wasAtlas){this._atlasTab='board';this.menuScreen='atlas';}else this.menuScreen='hub';this.buildMenuScreen();   // v4.29 (v6.28: Atlas run กลับหน้า Atlas): จบด่านกลับหน้าเมนูหลักเสมอ
   }
   // v4.27: จบ tutorial → พาเข้าหน้า Flavor Weave ตรง ๆ + สอนให้ใช้ Sugar อัพแก่น (Weave เปิดตั้งแต่เริ่ม แม้ Gear&Power ตัวอื่นยังล็อก)
   openTutorialWeave(){
