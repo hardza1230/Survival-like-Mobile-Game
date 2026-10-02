@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.7.0';
+const GAME_VERSION = '6.7.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.7.1', date:'2026-10-02', title:'Tag overview', items:['Pause shows all 8 build tags: count, tiers reached and how many more for the next bonus','Level-up cards show ⬆ when picking them unlocks a tag bonus'] },
   { v:'6.7.0', date:'2026-10-02', title:'Build tags', items:['8 build tags: Fire, Frost, Spark, Crit, Guard, Swarm, Ranged, Melee','Every upgrade, path, flavor, relic and gear mod now carries tags','Collect 2 / 4 / 6 of a tag for growing set bonuses','Fire 4 ignites hits, Frost 4 chills hits'] },
   { v:'6.6.2', date:'2026-10-02', title:'Upgrade panel pauses again', items:['The endgame upgrade panel pauses the game again while you spend points'] },
   { v:'6.6.0', date:'2026-10-02', title:'Upgrade points', items:['Endgame level-ups now bank upgrade points instead of a slot machine','Tap the ⬆ button to pick stats and spend many points at once','Auto spend all picks for you'] },
@@ -7258,8 +7259,19 @@ class Game extends Phaser.Scene {
     const heldBot=this.drawHeldBar(this.pauseUI,panelY+27);
     const pH=Math.max(panelH,heldBot-panelY+6);   // v4.63: กรอบสูงตามเนื้อหาจริง (แถว Relic เคยล้นออกนอกกรอบ)
     pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,pH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,pH,14);
+    // v6.7.1 (B2): ตารางแท็กบิ้ว — จำนวน · ขั้นที่ได้ · อีกกี่ชิ้นถึงโบนัสถัดไป
+    let tagBot=panelY+pH;
+    if(portrait){ const tc=this.tagCounts?this.tagCounts():{},keys=Object.keys(TAG_SETS).sort((a,b)=>(tc[b]||0)-(tc[a]||0)),ty=panelY+pH+10,cw=(pw-8)/2,rh=34;
+      const hd=this.add.text(px+4,ty,'🏷️ Build Tags',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9dff9d'}).setOrigin(0,0); this.pauseUI.add(hd);
+      keys.forEach((t,i)=>{ const d=TAG_SETS[t],n=tc[t]||0,tier=TAG_TIERS.filter(x=>n>=x).length,next=TAG_TIERS[tier],x=px+(i%2)*(cw+8),y=ty+20+Math.floor(i/2)*(rh+4),on=n>0;
+        const g=this.add.graphics(); g.fillStyle(tier?0x23382a:0x241a33,on?0.92:0.55); g.fillRoundedRect(x,y,cw,rh,8); g.lineStyle(1.2,tier?0x9dff9d:0x4a4059,on?0.9:0.5); g.strokeRoundedRect(x,y,cw,rh,8);
+        const dots='●'.repeat(tier)+'○'.repeat(TAG_TIERS.length-tier);
+        const a=this.add.text(x+8,y+4,d.emoji+' '+d.name+' '+n+'  '+dots,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#ffffff':'#8a7f9a'}).setOrigin(0,0);
+        const b=this.add.text(x+8,y+19,next?((next-n)+' more → '+d.b[tier]):'MAX',{fontFamily:'sans-serif',fontSize:'9px',color:tier?'#bff5c8':'#b9adc9',wordWrap:{width:cw-14},maxLines:1}).setOrigin(0,0);
+        this.pauseUI.add([g,a,b]); });
+      tagBot=ty+20+Math.ceil(keys.length/2)*(rh+4); }
     // v4.65: แนวตั้งตรงกลางว่าง → อธิบาย Relic ที่ถืออยู่ (ผู้เล่นมักลืมว่าแต่ละชิ้นทำอะไร)
-    if(portrait&&this.relics&&this.relics.length){ let ry=panelY+pH+12; const lt=this.add.text(px+4,ry,'🔮 Your Relics',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9b8ff'}).setOrigin(0,0);this.pauseUI.add(lt);ry+=22;
+    if(portrait&&this.relics&&this.relics.length){ let ry=tagBot+8; const lt=this.add.text(px+4,ry,'🔮 Your Relics',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9b8ff'}).setOrigin(0,0);this.pauseUI.add(lt);ry+=22;
       const room=Math.max(0,h-138-54-12-27-ry),maxShown=Math.max(0,Math.floor((room-18)/52));
       for(const k of this.relics.slice(0,maxShown)){ const r=RELICS[k],rg=this.add.graphics();rg.fillStyle(0x241a33,0.85);rg.fillRoundedRect(px,ry,pw,46,10);rg.lineStyle(1.2,0xc07bff,0.7);rg.strokeRoundedRect(px,ry,pw,46,10);
         const relicKey='relic_'+k,re=this.textures.exists(relicKey)?this.add.image(px+22,ry+23,relicKey).setDisplaySize(28,28):this.add.text(px+22,ry+23,r.emoji,{fontSize:'20px'}).setOrigin(.5),rn=this.add.text(px+42,ry+7,r.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,0),rd=this.add.text(px+42,ry+22,r.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#c9bdd2',wordWrap:{width:pw-52},maxLines:2}).setOrigin(0,0);
@@ -9454,7 +9466,7 @@ class Game extends Phaser.Scene {
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;
     if(this.recipeMode&&this._egBuilt)return this.endlessCards(n);   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
-    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};c.desc=(c.desc||'')+tagLabel(extra.tags||this.upTags(u.id));return c;};
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};const tg=tagList(extra.tags||this.upTags(u.id)),tc=this.tagCounts(),up=tg.find(t=>TAG_TIERS.includes((tc[t]||0)+1)&&!((b.lv||{})[u.id]>0));c.desc=(c.desc||'')+tagLabel(tg)+(up?'  ⬆ '+TAG_SETS[up].emoji+'×'+((tc[up]||0)+1)+' bonus':'');return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
