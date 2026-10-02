@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.7.1';
+const GAME_VERSION = '6.8.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.8.0', date:'2026-10-02', title:'Modifiers', items:['New Modifier cards from level 4: 6 per hero that change how attacks behave','Blasts on hit, chain arcs, every-Nth-hit crits, kill mines, dash novas, pulses and more','Up to 3 Modifiers per stage; each carries build tags'] },
   { v:'6.7.1', date:'2026-10-02', title:'Tag overview', items:['Pause shows all 8 build tags: count, tiers reached and how many more for the next bonus','Level-up cards show ⬆ when picking them unlocks a tag bonus'] },
   { v:'6.7.0', date:'2026-10-02', title:'Build tags', items:['8 build tags: Fire, Frost, Spark, Crit, Guard, Swarm, Ranged, Melee','Every upgrade, path, flavor, relic and gear mod now carries tags','Collect 2 / 4 / 6 of a tag for growing set bonuses','Fire 4 ignites hits, Frost 4 chills hits'] },
   { v:'6.6.2', date:'2026-10-02', title:'Upgrade panel pauses again', items:['The endgame upgrade panel pauses the game again while you spend points'] },
@@ -2460,6 +2461,53 @@ const TAGS_OF={
   affix:{crit:['crit'],critdmg:['crit'],precision:['crit'],gambler:['crit'],focus:['crit','spark'],hp:['guard'],def:['guard'],regen:['guard'],hppct:['guard'],regenpct:['guard'],bulwark:['guard'],crisisguard:['guard'],laststand:['guard'],mend:['guard'],nourish:['guard'],lifekill:['guard'],vampiric:['guard','melee'],cd:['spark'],uniquecd:['spark'],spd:['spark'],dash:['spark'],sprint:['spark'],wayfarer:['spark'],dmg:['fire'],bossdmg:['fire'],edge:['melee'],berserk:['melee','fire']}};
 function tagList(t){ return !t?[]:Array.isArray(t)?t:[t]; }
 function tagLabel(t){ const ts=tagList(t).filter(x=>TAG_SETS[x]); return ts.length?'  ·  '+ts.map(x=>TAG_SETS[x].emoji+' '+TAG_SETS[x].name).join(' '):''; }
+// 🧩 Modifiers (v6.8.0 · B3) — การ์ดเปลี่ยนกลไก ตัวละครละ 6 ใบ · ได้สูงสุด MOD_MAX ใบ/ด่าน · ออกตั้งแต่เลเวล 4
+// kind: hitBoom/hitChain/nthHit/killBurst/killTrap/dashNova/dashTrail/pulse/stillPower/movePower/closeBonus/farBonus/execute/bossBonus/frozenMul
+const MOD_MAX=3;
+const MODIFIERS={
+  momo:[
+    {id:'m_bloom',emoji:'🌸',name:'Seed Bloom',kind:'hitBoom',p:0.12,r:60,mul:0.8,tags:['fire'],desc:'12% of hits burst into a small blast'},
+    {id:'m_love',emoji:'💘',name:'Love Chain',kind:'hitChain',p:0.15,n:2,mul:0.6,tags:['spark'],desc:'15% of hits arc to 2 nearby enemies'},
+    {id:'m_heart',emoji:'💗',name:'Big Heart',kind:'nthHit',n:7,mul:3,tags:['crit'],desc:'Every 7th hit deals ×3 damage'},
+    {id:'m_aim',emoji:'🎯',name:'Steady Aim',kind:'stillPower',mul:1.25,tags:['ranged'],desc:'+25% damage while standing still'},
+    {id:'m_jam',emoji:'🍓',name:'Jam Mine',kind:'killTrap',mul:1.2,tags:['fire','swarm'],desc:'Slain enemies leave a jam mine that pops'},
+    {id:'m_spray',emoji:'💨',name:'Dash Spray',kind:'dashTrail',mul:1.0,tags:['ranged'],desc:'Dashing drops 3 exploding seeds'}],
+  mint:[
+    {id:'m_icemine',emoji:'❄️',name:'Ice Mine',kind:'killTrap',mul:1.1,freeze:true,tags:['frost'],desc:'Slain enemies leave an ice mine that freezes'},
+    {id:'m_shatter',emoji:'💎',name:'Shatter',kind:'frozenMul',mul:1.5,tags:['frost','crit'],desc:'+50% damage to frozen enemies'},
+    {id:'m_flurry',emoji:'🌨️',name:'Flurry Pulse',kind:'pulse',every:4,r:140,mul:1.2,freeze:true,tags:['frost'],desc:'Every 4s a frost pulse hits and freezes around you'},
+    {id:'m_throw',emoji:'🏹',name:'Long Throw',kind:'farBonus',r:260,mul:1.3,tags:['ranged'],desc:'+30% damage to enemies far away'},
+    {id:'m_glide',emoji:'🌬️',name:'Glide Nova',kind:'dashNova',r:120,mul:1.6,tags:['spark'],desc:'Dashing releases a cold blast'},
+    {id:'m_coldarc',emoji:'🧊',name:'Cold Arc',kind:'hitChain',p:0.12,n:2,mul:0.5,freeze:true,tags:['frost','spark'],desc:'12% of hits arc and chill 2 enemies'}],
+  cocoa:[
+    {id:'m_quake',emoji:'🌋',name:'Quake Fist',kind:'nthHit',n:6,mul:2.5,boom:90,tags:['melee'],desc:'Every 6th hit ×2.5 and shakes the ground'},
+    {id:'m_stomp',emoji:'🐾',name:'Bear Stomp',kind:'dashNova',r:140,mul:2,tags:['melee'],desc:'Dashing ends in a heavy stomp'},
+    {id:'m_rage',emoji:'🔥',name:'Rolling Rage',kind:'movePower',mul:1.2,tags:['melee','fire'],desc:'+20% damage while moving'},
+    {id:'m_crush',emoji:'👊',name:'Close Crush',kind:'closeBonus',r:110,mul:1.3,tags:['melee'],desc:'+30% damage to enemies right next to you'},
+    {id:'m_ko',emoji:'💀',name:'Knockout',kind:'execute',hp:0.25,mul:1.6,tags:['crit'],desc:'+60% damage to enemies under 25% HP'},
+    {id:'m_after',emoji:'💥',name:'Aftershock',kind:'killBurst',p:0.25,r:80,mul:1,tags:['fire','swarm'],desc:'25% of kills explode'}],
+  taro:[
+    {id:'m_over',emoji:'⚡',name:'Overcharge',kind:'hitChain',p:0.2,n:3,mul:0.5,tags:['spark'],desc:'20% of hits arc to 3 enemies'},
+    {id:'m_field',emoji:'🌀',name:'Static Field',kind:'pulse',every:3,r:120,mul:1,tags:['spark','swarm'],desc:'Every 3s a static pulse hits around you'},
+    {id:'m_step',emoji:'👣',name:'Thunder Step',kind:'dashNova',r:120,mul:1.6,tags:['spark'],desc:'Dashing leaves a thunderclap'},
+    {id:'m_judge',emoji:'⚖️',name:'Judgment',kind:'bossBonus',mul:1.25,tags:['crit'],desc:'+25% damage to elites, minibosses and bosses'},
+    {id:'m_ion',emoji:'💥',name:'Ion Burst',kind:'killBurst',p:0.2,r:80,mul:1,tags:['spark','swarm'],desc:'20% of kills burst with lightning'},
+    {id:'m_focus',emoji:'🎯',name:'Focus Bolt',kind:'nthHit',n:8,mul:3,tags:['crit'],desc:'Every 8th hit deals ×3 damage'}],
+  sesame:[
+    {id:'m_prism',emoji:'🔮',name:'Prism Burst',kind:'hitBoom',p:0.1,r:70,mul:0.9,tags:['swarm'],desc:'10% of hits burst into light'},
+    {id:'m_lens',emoji:'🧘',name:'Steady Lens',kind:'stillPower',mul:1.3,tags:['ranged'],desc:'+30% damage while standing still'},
+    {id:'m_scope',emoji:'🔭',name:'Far Sight',kind:'farBonus',r:260,mul:1.3,tags:['ranged'],desc:'+30% damage to enemies far away'},
+    {id:'m_refract',emoji:'✨',name:'Refract',kind:'hitChain',p:0.15,n:2,mul:0.5,tags:['spark'],desc:'15% of hits split to 2 enemies'},
+    {id:'m_mirror',emoji:'🪞',name:'Mirror Mine',kind:'killTrap',mul:1.2,tags:['swarm'],desc:'Slain enemies leave a mirror shard that explodes'},
+    {id:'m_exec',emoji:'💀',name:'Execution Beam',kind:'execute',hp:0.3,mul:1.5,tags:['crit'],desc:'+50% damage to enemies under 30% HP'}],
+  yuzu:[
+    {id:'m_zest',emoji:'🍋',name:'Zest Bomb',kind:'killBurst',p:0.25,r:80,mul:1,tags:['fire','swarm'],desc:'25% of kills burst in citrus'},
+    {id:'m_crew',emoji:'⚡',name:'Crew Chain',kind:'hitChain',p:0.1,n:2,mul:0.5,tags:['spark','swarm'],desc:'10% of bites arc to 2 enemies'},
+    {id:'m_rally',emoji:'📣',name:'Rally Pulse',kind:'pulse',every:4,r:130,mul:1,tags:['swarm'],desc:'Every 4s a rally pulse hits around you'},
+    {id:'m_sour',emoji:'💀',name:'Sour Finish',kind:'execute',hp:0.25,mul:1.5,tags:['crit'],desc:'+50% damage to enemies under 25% HP'},
+    {id:'m_splash',emoji:'💦',name:'Dash Splash',kind:'dashTrail',mul:1,tags:['swarm'],desc:'Dashing drops 3 juice bombs'},
+    {id:'m_bite',emoji:'🦷',name:'Big Bite',kind:'nthHit',n:10,mul:3,tags:['crit'],desc:'Every 10th bite deals ×3 damage'}]};
+function modDef(id){ for(const c in MODIFIERS){ const m=MODIFIERS[c].find(x=>x.id===id); if(m)return m; } return null; }
 // รวมผลสาย (base + rank ของ upgrade สาย) → {dmg,cd,count,range,big,frozen,far,low,taken}
 const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:'One giant guardian · safety',juiceWorkshop:'Cheese helper · sour zones',
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
@@ -4477,6 +4525,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(160,()=>this.player.clearTint());
     this._sqX=1.35; this._sqY=0.7;   // ยืดตอนพุ่ง (เจลลี่)
     if(this._rel&&this._rel.jam)this.relicJamTrail(d);
+    if(this.basicAttack&&this.basicAttack.mods)this.modOnDash(d);
     if(this._rel&&this._rel.dashcharge){this._sparkHits=3;this._sparkUntil=(this.elapsed||0)+3;}   // 🔮 Spark Step
   }
 
@@ -9510,7 +9559,8 @@ class Game extends Phaser.Scene {
     if(hpFrac<0.999){const rr=rollRarity(),amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)*(1+(rr.ranks-1)*0.5)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,rarity:rr,color:rr.color,kind:'Instant Heal',emoji:'💖',title:'Sweet Recovery',desc:'Restore HP instantly '+amount+' HP · No passive slot',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}
     const pick=(arr)=>{if(!arr.length)return null;let tot=arr.reduce((s,x)=>s+x.w,0),r=Math.random()*tot;for(let i=0;i<arr.length;i++){r-=arr[i].w;if(r<=0)return arr.splice(i,1)[0].card;}return arr.splice(0,1)[0].card;};
     const out=[];
-    while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}   // การ์ดอาวุธของตัวละครล้วน
+    while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
+    if(!noSpecial&&!this._inTutorial&&(this.level||1)>=4&&Math.random()<(out.length<n?1:0.35)){ const mc=this.modCard(); if(mc){ if(out.length>=n)out[n-1]=mc; else out.push(mc); } }   // v6.8.0 B3   // การ์ดอาวุธของตัวละครล้วน
     if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
     else if(out.length<n&&healCard){out.push(healCard);healCard=null;}
     // ♾️ เติมช่องที่เหลือด้วยการ์ดสแตตไม่รู้จบ (อาวุธตันแล้วก็ยังมีอะไรให้เลือกเสมอ)
@@ -10594,10 +10644,35 @@ class Game extends Phaser.Scene {
       if(nb&&bullet.body){ const sp=bullet.body.velocity.length()||460, ang=Math.atan2(nb.y-bullet.y,nb.x-bullet.x);
         this.physics.velocityFromRotation(ang,sp,bullet.body.velocity); return; } }
     this.killBullet(bullet); }
-  upTags(id){ const b=this.basicAttack,wt=(b&&WEAPON_TAGS[b.character])||[]; return UP_TAGS[id]||(id==='evolution'?wt:wt.slice(0,1)); }
+  modList(){ const b=this.basicAttack; return (b&&b.mods&&b.mods.length)?b.mods.map(modDef).filter(Boolean):null; }
+  modDmgMul(e){ const L=this.modList(); if(!L)return 1; let m=1; const P=this.player,v=P.body?P.body.velocity.length():0,dd=this.dist(P.x,P.y,e.x,e.y);
+    for(const d of L){ const k=d.kind;
+      if(k==='stillPower'&&v<20)m*=d.mul; else if(k==='movePower'&&v>40)m*=d.mul; else if(k==='closeBonus'&&dd<d.r)m*=d.mul; else if(k==='farBonus'&&dd>d.r)m*=d.mul;
+      else if(k==='execute'&&e.hp<e.maxhp*d.hp)m*=d.mul; else if(k==='bossBonus'&&(e.isBoss||e.isMini||e.isElite))m*=d.mul; else if(k==='frozenMul'&&e.frozen>0)m*=d.mul;
+      else if(k==='nthHit'){ this._modHits=(this._modHits||0)+1; if(this._modHits%d.n===0){ m*=d.mul; this.floatText&&this.floatText(e.x,e.y-30,d.emoji,0xffd166); if(d.boom)this.modBoom(e.x,e.y,d.boom,d.mul*0.5); } } }
+    return m; }
+  modBoom(x,y,r,mul,freeze){ if(this._modTick)return; const t=this.elapsed||0; if(t-(this._modBT||0)>0.25){this._modBT=t;this._modBN=0;} if(++this._modBN>8)return; this._modTick=true; this.explodeAt(x,y,r,this.relicDmg(mul)); if(freeze)this.modFreeze(x,y,r); this._modTick=false; }
+  modFreeze(x,y,r){ this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,0.6); }); }
+  modOnHit(e){ const L=this.modList(); if(!L||this._modTick)return;
+    for(const d of L){ if(d.kind==='hitBoom'&&Math.random()<d.p)this.modBoom(e.x,e.y,d.r,d.mul);
+      else if(d.kind==='hitChain'&&Math.random()<d.p){ this._modTick=true; let n=0; this.enemies.children.iterate(o=>{ if(n>=d.n||!o||!o.active||o===e||this.dist(o.x,o.y,e.x,e.y)>200)return; n++; this.chainBolt(e.x,e.y,o.x,o.y); this.damage(o,this.relicDmg(d.mul),o.x,o.y); if(d.freeze&&!o.isBoss&&!o.isMini)o.frozen=Math.max(o.frozen||0,0.5); }); this._modTick=false; } } }
+  modOnKill(e){ const L=this.modList(); if(!L)return; const x=e.x,y=e.y;
+    for(const d of L){ if(d.kind==='killBurst'&&Math.random()<d.p)this.time.delayedCall(40,()=>{ if(this.state==='play')this.modBoom(x,y,d.r,d.mul); });
+      else if(d.kind==='killTrap'&&Math.random()<0.35){ const blob=this.camWorld(this.add.circle(x,y,9,d.freeze?0x9fe8ff:0xff7aa8,0.9).setDepth(8).setStrokeStyle(2,0xffffff));
+        this.tweens.add({targets:blob,scale:1.4,duration:260,yoyo:true,repeat:1}); this.time.delayedCall(650,()=>{ if(blob.active)blob.destroy(); if(this.state==='play')this.modBoom(x,y,70,d.mul,d.freeze); }); } } }
+  modOnDash(dir){ const L=this.modList(); if(!L)return; const P=this.player;
+    for(const d of L){ if(d.kind==='dashNova')this.time.delayedCall(200,()=>{ if(this.state==='play')this.modBoom(P.x,P.y,d.r,d.mul); });
+      else if(d.kind==='dashTrail'){ const x0=P.x,y0=P.y; for(let i=0;i<3;i++){ const x=x0+dir.x*45*i,y=y0+dir.y*45*i; this.time.delayedCall(450+i*70,()=>{ if(this.state==='play')this.modBoom(x,y,65,d.mul); }); } } } }
+  modTick(dt){ const L=this.modList(); if(!L||this.state!=='play')return; this._modT=this._modT||{};
+    for(const d of L){ if(d.kind!=='pulse')continue; this._modT[d.id]=(this._modT[d.id]||0)+dt; if(this._modT[d.id]>=d.every){ this._modT[d.id]=0; this.modBoom(this.player.x,this.player.y,d.r,d.mul,d.freeze); } } }
+  modCard(){ const b=this.basicAttack; if(!b)return null; const set=MODIFIERS[b.character]||MODIFIERS.momo,have=b.mods||[]; if(have.length>=MOD_MAX)return null;
+    const pool=set.filter(m=>!have.includes(m.id)&&!this.banishedKeys?.['b:'+m.id]); if(!pool.length)return null; const m=Phaser.Utils.Array.GetRandom(pool);
+    return {type:'basic',key:m.id,lvl:1,max:1,kind:'Modifier',special:true,color:0xff9f43,emoji:m.emoji,title:m.name,desc:m.desc+'  ·  '+(have.length+1)+'/'+MOD_MAX+tagLabel(m.tags),headline:'🧩 '+m.desc,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
+      apply:()=>{ b.mods=(b.mods||[]).concat(m.id); this.syncBasicAttack(); this.showBanner('🧩 '+m.emoji+' '+m.name,m.desc,1700); Sfx.clear(); }}; }
+  upTags(id){ const b=this.basicAttack,wt=(b&&WEAPON_TAGS[b.character])||[]; { const m=modDef(id); if(m)return m.tags; } return UP_TAGS[id]||(id==='evolution'?wt:wt.slice(0,1)); }
   tagCounts(){ const c={},add=t=>tagList(t).forEach(x=>{if(TAG_SETS[x])c[x]=(c[x]||0)+1;}), b=this.basicAttack;
     if(b){ add(WEAPON_TAGS[b.character]); for(const id in (b.lv||{}))if(b.lv[id]>0)add(this.upTags(id));
-      if(b.path)add(this.upTags(b.path)); if(b.infusion)add(TAGS_OF.infusion[b.infusion]); if(b.mutation)add(this.upTags(b.mutation)); if(b.evolved)add(WEAPON_TAGS[b.character]); }
+      if(b.path)add(this.upTags(b.path)); if(b.infusion)add(TAGS_OF.infusion[b.infusion]); if(b.mutation)add(this.upTags(b.mutation)); if(b.evolved)add(WEAPON_TAGS[b.character]); (b.mods||[]).forEach(id=>add(this.upTags(id))); }
     (this.relics||[]).forEach(k=>add(TAGS_OF.relic[k]));
     const eq=(Save.data&&Save.data.equippedGear)||{}; for(const s in eq){ const seen={}; (Save.gearAffixes(eq[s])||[]).forEach(a=>tagList(TAGS_OF.affix[a.id]).forEach(t=>seen[t]=1)); add(Object.keys(seen)); }
     return c; }
@@ -10638,10 +10713,10 @@ class Game extends Phaser.Scene {
       if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);
-    { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); }
+    { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     amount+=(this.player.flatDmg||0)+gearAttackRoll(this.player);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
-    const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
+    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;   // 🪞 Oath Focus
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();
     if(crit&&CP&&CP.id==='momo'&&(this.elapsed||0)>=(CP.cd||0)){ CP.cd=(this.elapsed||0)+0.35; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(1,p.maxhp*0.006*CP.s)); }   // 🍓 Lucky Seeds
@@ -10668,7 +10743,7 @@ class Game extends Phaser.Scene {
   killEnemy(e){ if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
-    } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}this.replayOnKill(e);if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
+    } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);if(this.basicAttack&&this.basicAttack.mods)this.modOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}this.replayOnKill(e);if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -12269,7 +12344,7 @@ class Game extends Phaser.Scene {
     this.updatePickupReadability();
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
-    this.tickSnipe(); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt);
+    this.tickSnipe(); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt); this.modTick(dt);
     if(this._coach)this.tickTutorialCoach(dt);
     this.tickStage(dt);
     this.tickBossZoom();
