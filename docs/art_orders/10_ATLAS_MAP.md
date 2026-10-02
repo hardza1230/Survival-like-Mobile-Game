@@ -27,3 +27,18 @@ The system is done (v6.19.0) and runs on code-drawn placeholders. Drop PNG/WebP 
 
 ## Optional later
 - Per-stage node icons `atlas_node_s00`..`s14` (128×128 transparent) · these need an extra code hook
+
+---
+## v6.20 update — 100 maps (5 regions × 20)
+The map is now split into 5 regions (one tab each). Extra keys:
+
+| key | size | transparent | description |
+|---|---|---|---|
+| `atlas_region_bg_0`..`4` | 768×1280 | no | Background for each region: 0 Sugar Kitchens · 1 Fermented Wilds · 2 Hive Frontier · 3 Ashen Reaches · 4 Crown Depths (all names are placeholders, the owner will redesign them) · no nodes/lines/text |
+| `atlas_node_vault` | 128×128 | yes | Gold treasure chest/vault plate |
+| `atlas_node_shrine` | 128×128 | yes | Small shrine plate |
+| `atlas_node_guardian` | 128×128 | yes | Big skull/guardian plate (shown 1.4× larger) |
+
+`atlas_map_bg` is no longer used (replaced by the per-region backgrounds).
+
+**Floors for each map (100 of them):** currently a tinted `train_floor`. When the owner creates new map concepts, add a `floor` field per node plus a matching floor art key (seamless 1024×1024, opaque).

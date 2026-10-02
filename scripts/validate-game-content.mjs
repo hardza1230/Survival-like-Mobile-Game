@@ -363,7 +363,7 @@ for(const contract of ["this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper
 }
 
 // R10: Recipe Maps endgame contracts + กฎเหล็ก (ยิ่งยาก รางวัลยิ่งดี)
-for(const c of ['const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16','function makeRecipe(','function recipeMul(','function atlasPoints(','const ATLAS_NODES=[','const UNIQUE_GEAR={','startRecipeRun(st)','tickRecipeHunger(dt)','finishRecipeBoss()','rollRecipeDrops(r)','craftRecipe(r,cid)','triggerRecipeEvent()','migrateRiftToRecipes()','startPinnacle()','this.recipeMode?this.riftMul().hp*RECIPE_BOSS_HP*']){
+for(const c of ['const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16','function makeRecipe(','function recipeMul(','function atlasPoints(','const ATLAS_NODES=[','const UNIQUE_GEAR={','startRecipeRun(st)','tickRecipeHunger(dt)','finishRecipeBoss()','rollRecipeDrops(r)','craftRecipe(r,cid)','triggerRecipeEvent()','migrateRiftToRecipes()','startPinnacle()','this.riftMul().hp*RECIPE_BOSS_HP*']){
   if(!source.includes(c))throw new Error(`Missing Recipe Maps contract: ${c}`);
 }
 const recipeMods=block(/const RIFT_MODS=\[([\s\S]*?)\n\];/,'RIFT_MODS')+block(/const RECIPE_MECH_MODS=\[([\s\S]*?)\n\];/,'RECIPE_MECH_MODS');
