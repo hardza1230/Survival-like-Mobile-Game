@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.8.0';
+const GAME_VERSION = '6.9.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.9.0', date:'2026-10-02', title:'Trade-offs', items:['New Trade-off cards from Chapter 2 and in the Endgame: big gains with a real cost','Glass Heart, Slow Burn, Heavy Armor, Sugar Rush, Berserker, Frozen Core, Hungry Pact, Sniper’s Oath','Up to 2 Trade-offs per stage; each carries build tags'] },
   { v:'6.8.0', date:'2026-10-02', title:'Modifiers', items:['New Modifier cards from level 4: 6 per hero that change how attacks behave','Blasts on hit, chain arcs, every-Nth-hit crits, kill mines, dash novas, pulses and more','Up to 3 Modifiers per stage; each carries build tags'] },
   { v:'6.7.1', date:'2026-10-02', title:'Tag overview', items:['Pause shows all 8 build tags: count, tiers reached and how many more for the next bonus','Level-up cards show ⬆ when picking them unlocks a tag bonus'] },
   { v:'6.7.0', date:'2026-10-02', title:'Build tags', items:['8 build tags: Fire, Frost, Spark, Crit, Guard, Swarm, Ranged, Melee','Every upgrade, path, flavor, relic and gear mod now carries tags','Collect 2 / 4 / 6 of a tag for growing set bonuses','Fire 4 ignites hits, Frost 4 chills hits'] },
@@ -2428,9 +2429,9 @@ const INFUSION_UP={id:'inf_deep',name:'Deep Flavor',emoji:'✨',max:3,headline:'
 const TAG_TIERS=[2,4,6];
 const TAG_SETS={
   fire:  {emoji:'🔥',name:'Fire',  b:['+6% damage','15% of hits ignite','+15% damage'],
-    t:[p=>{p.dmgMul*=1.06;},p=>{p._tagIgnite=0.15;},p=>{p.dmgMul*=1.15;}]},
+    t:[p=>{p.dmgMul*=1.06;},p=>{p._tagIgnite=Math.max(p._tagIgnite||0,0.15);},p=>{p.dmgMul*=1.15;}]},
   frost: {emoji:'❄️',name:'Frost', b:['-6% damage taken','12% of hits chill','+10% damage'],
-    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p._tagChill=0.12;},p=>{p.dmgMul*=1.10;}]},
+    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p._tagChill=Math.max(p._tagChill||0,0.12);},p=>{p.dmgMul*=1.10;}]},
   spark: {emoji:'⚡',name:'Spark', b:['-5% cooldowns','+6% move speed','-8% cooldowns'],
     t:[p=>{p.cdMul*=0.95;},p=>{p.baseSpeed*=1.06;},p=>{p.cdMul*=0.92;}]},
   crit:  {emoji:'💥',name:'Crit',  b:['+5% crit chance','+30% crit damage','+5% crit chance'],
@@ -2507,6 +2508,18 @@ const MODIFIERS={
     {id:'m_sour',emoji:'💀',name:'Sour Finish',kind:'execute',hp:0.25,mul:1.5,tags:['crit'],desc:'+50% damage to enemies under 25% HP'},
     {id:'m_splash',emoji:'💦',name:'Dash Splash',kind:'dashTrail',mul:1,tags:['swarm'],desc:'Dashing drops 3 juice bombs'},
     {id:'m_bite',emoji:'🦷',name:'Big Bite',kind:'nthHit',n:10,mul:3,tags:['crit'],desc:'Every 10th bite deals ×3 damage'}]};
+// ⚖️ Trade-offs (v6.9.0 · B4) — ได้อย่าง เสียอย่าง · ออกตั้งแต่บท 2 (stageIndex≥5) และ Endgame · สูงสุด TRADE_MAX/ด่าน
+const TRADE_MAX=2;
+const TRADEOFFS=[
+  {id:'t_glass',emoji:'💔',name:'Glass Heart',tags:['crit'],gain:'×1.5 damage',cost:'Max HP halved',apply:p=>{p.dmgMul*=1.5;p.maxhp=Math.max(1,Math.round(p.maxhp*0.5));p.hp=Math.min(p.hp,p.maxhp);}},
+  {id:'t_burn',emoji:'🕯️',name:'Slow Burn',tags:['fire'],gain:'Every hit ignites',cost:'Attacks 30% slower',apply:p=>{p._tagIgnite=1;p.cdMul*=1.3;}},
+  {id:'t_armor',emoji:'🛡️',name:'Heavy Armor',tags:['guard'],gain:'Take 35% less damage',cost:'Move 15% slower',apply:p=>{p.dmgTakenMul*=0.65;p.baseSpeed*=0.85;}},
+  {id:'t_rush',emoji:'🍬',name:'Sugar Rush',tags:['spark'],gain:'+25% speed, -15% cooldowns',cost:'Take 25% more damage',apply:p=>{p.baseSpeed*=1.25;p.cdMul*=0.85;p.dmgTakenMul*=1.25;}},
+  {id:'t_berserk',emoji:'😤',name:'Berserker',tags:['melee'],gain:'Up to ×2 damage as HP drops',cost:'No HP regeneration',apply:p=>{p._tdBerserk=true;p.regen=0;p.regenFlat=0;p.regenPct=0;p._uqNoRegen=true;}},
+  {id:'t_core',emoji:'🧊',name:'Frozen Core',tags:['frost'],gain:'30% of hits chill',cost:'-15% damage',apply:p=>{p._tagChill=Math.max(p._tagChill||0,0.3);p.dmgMul*=0.85;}},
+  {id:'t_feast',emoji:'🌀',name:'Hungry Pact',tags:['swarm'],gain:'+20% damage, +30% EXP',cost:'Healing items do nothing',apply:p=>{p.dmgMul*=1.2;p.xpMul=(p.xpMul||1)*1.3;p.healEffect=0;}},
+  {id:'t_oath',emoji:'🎯',name:'Sniper’s Oath',tags:['ranged','crit'],gain:'+20% crit chance',cost:'Attacks 20% slower',apply:p=>{p.critChance=(p.critChance||0)+0.20;p.cdMul*=1.2;}}];
+function tradeDef(id){ return TRADEOFFS.find(x=>x.id===id)||null; }
 function modDef(id){ for(const c in MODIFIERS){ const m=MODIFIERS[c].find(x=>x.id===id); if(m)return m; } return null; }
 // รวมผลสาย (base + rank ของ upgrade สาย) → {dmg,cd,count,range,big,frozen,far,low,taken}
 const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:'One giant guardian · safety',juiceWorkshop:'Cheese helper · sour zones',
@@ -7199,7 +7212,7 @@ class Game extends Phaser.Scene {
       this._gachaBusy=false;this._zone(w/2-bw/2,by-24,bw,48,()=>{this.menuScreen='gear';this.buildMenuScreen();});
     });
   }
-  applyMeta(){ if(this.player){this.player._tagIgnite=0;this.player._tagChill=0;}
+  applyMeta(){ if(this.player){this.player._tagIgnite=0;this.player._tagChill=0;this.player._tdBerserk=false;}
     const p=this.player;
     p.cdMul=1;p.armor=0;p.gearAttackMin=0;p.gearAttackMax=0; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.sugarFindMul=1; p.boxFindMul=1; p.currencyFindMul=1; p.uniqueCdMul=1; p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
@@ -9560,7 +9573,8 @@ class Game extends Phaser.Scene {
     const pick=(arr)=>{if(!arr.length)return null;let tot=arr.reduce((s,x)=>s+x.w,0),r=Math.random()*tot;for(let i=0;i<arr.length;i++){r-=arr[i].w;if(r<=0)return arr.splice(i,1)[0].card;}return arr.splice(0,1)[0].card;};
     const out=[];
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
-    if(!noSpecial&&!this._inTutorial&&(this.level||1)>=4&&Math.random()<(out.length<n?1:0.35)){ const mc=this.modCard(); if(mc){ if(out.length>=n)out[n-1]=mc; else out.push(mc); } }   // v6.8.0 B3   // การ์ดอาวุธของตัวละครล้วน
+    if(!noSpecial&&!this._inTutorial&&(this.level||1)>=4&&Math.random()<(out.length<n?1:0.35)){ const mc=this.modCard(); if(mc){ if(out.length>=n)out[n-1]=mc; else out.push(mc); } }   // v6.8.0 B3
+    if(!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5&&Math.random()<0.25){ const tc=this.tradeCard(); if(tc){ const at=Math.min(out.length,n)-1; if(at>=0&&out.length>=n){ const j=out[at]&&out[at].kind==='Modifier'&&at>0?at-1:at; out[j]=tc; } else out.push(tc); } }   // v6.9.0 B4   // การ์ดอาวุธของตัวละครล้วน
     if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
     else if(out.length<n&&healCard){out.push(healCard);healCard=null;}
     // ♾️ เติมช่องที่เหลือด้วยการ์ดสแตตไม่รู้จบ (อาวุธตันแล้วก็ยังมีอะไรให้เลือกเสมอ)
@@ -10669,10 +10683,14 @@ class Game extends Phaser.Scene {
     const pool=set.filter(m=>!have.includes(m.id)&&!this.banishedKeys?.['b:'+m.id]); if(!pool.length)return null; const m=Phaser.Utils.Array.GetRandom(pool);
     return {type:'basic',key:m.id,lvl:1,max:1,kind:'Modifier',special:true,color:0xff9f43,emoji:m.emoji,title:m.name,desc:m.desc+'  ·  '+(have.length+1)+'/'+MOD_MAX+tagLabel(m.tags),headline:'🧩 '+m.desc,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
       apply:()=>{ b.mods=(b.mods||[]).concat(m.id); this.syncBasicAttack(); this.showBanner('🧩 '+m.emoji+' '+m.name,m.desc,1700); Sfx.clear(); }}; }
-  upTags(id){ const b=this.basicAttack,wt=(b&&WEAPON_TAGS[b.character])||[]; { const m=modDef(id); if(m)return m.tags; } return UP_TAGS[id]||(id==='evolution'?wt:wt.slice(0,1)); }
+  tradeCard(){ const b=this.basicAttack; if(!b)return null; const have=b.trades||[]; if(have.length>=TRADE_MAX)return null;
+    const pool=TRADEOFFS.filter(t=>!have.includes(t.id)&&!this.banishedKeys?.['b:'+t.id]); if(!pool.length)return null; const t=Phaser.Utils.Array.GetRandom(pool);
+    return {type:'basic',key:t.id,lvl:1,max:1,kind:'Trade-off',special:true,color:0xe0566e,emoji:t.emoji,title:t.name,desc:'✅ '+t.gain+'   ❌ '+t.cost+tagLabel(t.tags),headline:'⚖️ '+t.gain+' · '+t.cost,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
+      apply:()=>{ b.trades=(b.trades||[]).concat(t.id); t.apply(this.player); clampPlayerStats(this.player); if(this.drawBars)this.drawBars(); this.syncBasicAttack(); this.showBanner('⚖️ '+t.emoji+' '+t.name,'✅ '+t.gain+'  ·  ❌ '+t.cost,1900); Sfx.clear(); }}; }
+  upTags(id){ const b=this.basicAttack,wt=(b&&WEAPON_TAGS[b.character])||[]; { const m=modDef(id)||tradeDef(id); if(m)return m.tags; } return UP_TAGS[id]||(id==='evolution'?wt:wt.slice(0,1)); }
   tagCounts(){ const c={},add=t=>tagList(t).forEach(x=>{if(TAG_SETS[x])c[x]=(c[x]||0)+1;}), b=this.basicAttack;
     if(b){ add(WEAPON_TAGS[b.character]); for(const id in (b.lv||{}))if(b.lv[id]>0)add(this.upTags(id));
-      if(b.path)add(this.upTags(b.path)); if(b.infusion)add(TAGS_OF.infusion[b.infusion]); if(b.mutation)add(this.upTags(b.mutation)); if(b.evolved)add(WEAPON_TAGS[b.character]); (b.mods||[]).forEach(id=>add(this.upTags(id))); }
+      if(b.path)add(this.upTags(b.path)); if(b.infusion)add(TAGS_OF.infusion[b.infusion]); if(b.mutation)add(this.upTags(b.mutation)); if(b.evolved)add(WEAPON_TAGS[b.character]); (b.mods||[]).forEach(id=>add(this.upTags(id))); (b.trades||[]).forEach(id=>add(this.upTags(id))); }
     (this.relics||[]).forEach(k=>add(TAGS_OF.relic[k]));
     const eq=(Save.data&&Save.data.equippedGear)||{}; for(const s in eq){ const seen={}; (Save.gearAffixes(eq[s])||[]).forEach(a=>tagList(TAGS_OF.affix[a.id]).forEach(t=>seen[t]=1)); add(Object.keys(seen)); }
     return c; }
@@ -10716,7 +10734,7 @@ class Game extends Phaser.Scene {
     { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     amount+=(this.player.flatDmg||0)+gearAttackRoll(this.player);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
-    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
+    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;   // 🪞 Oath Focus
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();
     if(crit&&CP&&CP.id==='momo'&&(this.elapsed||0)>=(CP.cd||0)){ CP.cd=(this.elapsed||0)+0.35; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(1,p.maxhp*0.006*CP.s)); }   // 🍓 Lucky Seeds
