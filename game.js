@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.23.0';
+const GAME_VERSION = '6.23.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.23.1', date:'2026-10-02', title:'🐞 Relic freeze fix', items:['Fixed the game freezing after picking a Relic in an Endgame map run while you had unspent ⬆ upgrade points']},
   { v:'6.23.0', date:'2026-10-02', title:'🧭 Atlas from Mochitopia outward', items:['Mochitopia now sits at the centre of the Atlas','The 5 regions spread out in 5 directions — every direction starts at Tier 1','Tiers rise ring by ring as you travel outward; some paths cross into neighbouring regions','Each region ends in a Guardian; break all 5 seals to open The Hunger Beneath under Mochitopia','Atlas progress was reset for the new layout']},
   { v:'6.22.0', date:'2026-10-02', title:'🍽 Atlas Flavor Influence', items:['Every Atlas map now has a flavor: 🌶️ Spicy, ❄️ Frosty, 🍯 Sweet, 🍋 Sour or 🍄 Fermented','Clearing a map spreads its flavor to connected maps (up to 3 layers per flavor)','Each layer adds +10% danger and +15% rewards, plus the flavor’s own twist and bonus','Spicy: fire puddles, extra currency · Frosty: slow tough enemies, gear shards · Sweet: bigger swarms, Sugar · Sour: more elites, gear · Fermented: harder hits, unique chance','Map rings and dots on the Atlas show each map’s flavor and influence']},
   { v:'6.21.0', date:'2026-10-02', title:'🔭 Zoomable Atlas', items:['The whole Atlas — all 100 maps, Mochitopia and the Pinnacle — is now one big map','Drag to pan, pinch or use ➕➖ to zoom in and out','Region buttons jump straight to each region','Regions are shown as coloured bands until the final map art arrives']},
@@ -9524,7 +9525,8 @@ class Game extends Phaser.Scene {
     this._relicPick=false;
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
-    if(this.pendingLvl>0){ this.openLevelUp(); return; }
+    if(this.pendingLvl>0&&!this.recipeMode){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
+    if(this.recipeMode&&this.refreshUpBtn)this.refreshUpBtn();
     if(this._rushNextPending){ this._rushNextPending=false; this.time.delayedCall(60,()=>{ if(this.bossRush)this.bossRushNext(); }); }
     this.state='play'; this.physics.resume();
     const queued=this._queuedBossIntro;this._queuedBossIntro=null;
