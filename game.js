@@ -46,11 +46,11 @@ const BALANCE = {
 
 // v4.55: เพดานสแตตผู้เล่นจุดเดียว — applyMeta / previewStats / cookDish / การ์ด endless ใช้ชุดเดียวกัน
 const STAT_CAPS = { dmgMul:Infinity, critChance:1, cdMulMin:0, dmgTakenMin:0, speedMul:Infinity };   // v6.17: เจ้าของสั่งไม่มีเพดาน (crit 100% = ธรรมชาติ)
-function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.maxhp*p._uqGlass));p._uqGlass=0;} p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.critChance=Math.min(STAT_CAPS.critChance,p.critChance||0); p.cdMul=Math.max(STAT_CAPS.cdMulMin,p.cdMul); p.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin,p.dmgTakenMul); p.baseSpeed=Math.min(BALANCE.moveSpeed*STAT_CAPS.speedMul,p.baseSpeed); }
+function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.maxhp*p._uqGlass));p._uqGlass=0;} p.dmgMul=Math.max(0.1,Math.min(STAT_CAPS.dmgMul,p.dmgMul)); p.critChance=Math.min(STAT_CAPS.critChance,p.critChance||0); p.cdMul=Math.max(STAT_CAPS.cdMulMin,p.cdMul); p.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin,p.dmgTakenMul); p.baseSpeed=Math.min(BALANCE.moveSpeed*STAT_CAPS.speedMul,p.baseSpeed); }
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.17.0';
+const GAME_VERSION = '6.18.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.18.0', date:'2026-10-02', title:'PoE-style Damage Math', items:['All “+% damage” sources now add together (increased) instead of multiplying each other','Item Power, Boss DMG, conditional cards, Modifiers and Relics still multiply separately (more)','Flat damage now uses Damage Effectiveness: rapid attacks get less flat damage, heavy hits get more (Sniper 250%, Mint 40%)'] },
   { v:'6.17.0', date:'2026-10-02', title:'Flat Damage & No Stat Caps', items:['Flat damage from mods and weapon ATK is now added to the base hit, so every damage multiplier, Item Power and critical hit scales it','Honed (Flat DMG) mod rolls are higher','Damage, crit, cooldown, defense and speed no longer have caps'] },
   { v:'6.16.0', date:'2026-10-02', title:'Weapon Item Power', items:['Your weapon’s item level now multiplies all your damage (×1.7 at iLv19, ×3 at iLv39, ×5.5 at iLv59)','Boss HP returns to its original values — upgrade your weapon to keep up'] },
   { v:'6.15.0', date:'2026-10-02', title:'Mochi Miners', items:['Hire Mochi Miners in the Temple Depths to dig Weave Thread while you are away','Upgrade them up to Lv5 for faster digging and bigger storage (up to 16 hours)'] },
@@ -2215,7 +2216,7 @@ const PASSIVES = {
   heart: { name:'Mochi Vitality', emoji:'❤️', color:0xff5f7a, max:5, desc:'+10% max HP and heals by the amount gained',
     apply(p){ const before=p.maxhp;p.maxhp*=1.10;p.hp=Math.min(p.maxhp,p.hp+(p.maxhp-before)); } },
   power: { name:'Sweet Power',   emoji:'💥', color:COLORS.grape, max:5, desc:'+7% to all damage',
-    apply(p){ p.dmgMul*=1.07; } },
+    apply(p){ p.dmgMul+=(1.07)-1; } },
   swift: { name:'Slick Feet',   emoji:'👟', color:COLORS.mint, max:5, desc:'+5% move speed (capped)',
     apply(p){ p.baseSpeed=Math.min(BALANCE.moveSpeed*1.28,p.baseSpeed*1.05); } },
   magnet:{ name:'Keen Nose',     emoji:'🧲', color:COLORS.toast, max:5, desc:'+30% pickup range',
@@ -2437,9 +2438,9 @@ const INFUSION_UP={id:'inf_deep',name:'Deep Flavor',emoji:'✨',max:3,headline:'
 const TAG_TIERS=[2,4,6];
 const TAG_SETS={
   fire:  {emoji:'🔥',name:'Fire',  b:['+6% damage','15% of hits ignite','+15% damage'],
-    t:[p=>{p.dmgMul*=1.06;},p=>{p._tagIgnite=Math.max(p._tagIgnite||0,0.15);},p=>{p.dmgMul*=1.15;}]},
+    t:[p=>{p.dmgMul+=(1.06)-1;},p=>{p._tagIgnite=Math.max(p._tagIgnite||0,0.15);},p=>{p.dmgMul+=(1.15)-1;}]},
   frost: {emoji:'❄️',name:'Frost', b:['-6% damage taken','12% of hits chill','+10% damage'],
-    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p._tagChill=Math.max(p._tagChill||0,0.12);},p=>{p.dmgMul*=1.10;}]},
+    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p._tagChill=Math.max(p._tagChill||0,0.12);},p=>{p.dmgMul+=(1.10)-1;}]},
   spark: {emoji:'⚡',name:'Spark', b:['-5% cooldowns','+6% move speed','-8% cooldowns'],
     t:[p=>{p.cdMul*=0.95;},p=>{p.baseSpeed*=1.06;},p=>{p.cdMul*=0.92;}]},
   crit:  {emoji:'💥',name:'Crit',  b:['+5% crit chance','+30% crit damage','+5% crit chance'],
@@ -2447,11 +2448,11 @@ const TAG_SETS={
   guard: {emoji:'🛡️',name:'Guard', b:['-7% damage taken','+1 HP regen/s','+10% max HP'],
     t:[p=>{p.dmgTakenMul*=0.93;},p=>{p.regen=(p.regen||0)+1.0;},p=>{const a=Math.round(p.maxhp*0.10);p.maxhp+=a;p.hp=Math.min(p.maxhp,p.hp+a);}]},
   swarm: {emoji:'🌀',name:'Swarm', b:['+6% damage','+10% EXP','+10% damage'],
-    t:[p=>{p.dmgMul*=1.06;},p=>{p.xpMul=(p.xpMul||1)*1.10;},p=>{p.dmgMul*=1.10;}]},
+    t:[p=>{p.dmgMul+=(1.06)-1;},p=>{p.xpMul=(p.xpMul||1)*1.10;},p=>{p.dmgMul+=(1.10)-1;}]},
   ranged:{emoji:'🎯',name:'Ranged',b:['+5% damage','+15% pickup range','-6% cooldowns'],
-    t:[p=>{p.dmgMul*=1.05;},p=>{p.pickup=(p.pickup||105)*1.15;},p=>{p.cdMul*=0.94;}]},
+    t:[p=>{p.dmgMul+=(1.05)-1;},p=>{p.pickup=(p.pickup||105)*1.15;},p=>{p.cdMul*=0.94;}]},
   melee: {emoji:'👊',name:'Melee', b:['-6% damage taken','+8% damage','+6% move speed'],
-    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p.dmgMul*=1.08;},p=>{p.baseSpeed*=1.06;}]}};
+    t:[p=>{p.dmgTakenMul*=0.94;},p=>{p.dmgMul+=(1.08)-1;},p=>{p.baseSpeed*=1.06;}]}};
 const WEAPON_TAGS={momo:['ranged'],mint:['frost','ranged'],cocoa:['melee'],taro:['spark'],sesame:['ranged'],yuzu:['swarm'],berry:['ranged','fire']};
 // การ์ดอัปเกรด/สาย/mutation ที่ไม่อยู่ในตาราง = แท็กแรกของอาวุธประจำตัว
 const UP_TAGS=(()=>{const m={},put=(t,ids)=>ids.split(' ').forEach(i=>{m[i]=(m[i]||[]).concat(t);});
@@ -2519,13 +2520,13 @@ const MODIFIERS={
 // ⚖️ Trade-offs (v6.9.0 · B4) — ได้อย่าง เสียอย่าง · ออกตั้งแต่บท 2 (stageIndex≥5) และ Endgame · สูงสุด TRADE_MAX/ด่าน
 const TRADE_MAX=2;
 const TRADEOFFS=[
-  {id:'t_glass',emoji:'💔',name:'Glass Heart',tags:['crit'],gain:'×1.5 damage',cost:'Max HP halved',apply:p=>{p.dmgMul*=1.5;p.maxhp=Math.max(1,Math.round(p.maxhp*0.5));p.hp=Math.min(p.hp,p.maxhp);}},
+  {id:'t_glass',emoji:'💔',name:'Glass Heart',tags:['crit'],gain:'×1.5 damage',cost:'Max HP halved',apply:p=>{p.dmgMul+=(1.5)-1;p.maxhp=Math.max(1,Math.round(p.maxhp*0.5));p.hp=Math.min(p.hp,p.maxhp);}},
   {id:'t_burn',emoji:'🕯️',name:'Slow Burn',tags:['fire'],gain:'Every hit ignites',cost:'Attacks 30% slower',apply:p=>{p._tagIgnite=1;p.cdMul*=1.3;}},
   {id:'t_armor',emoji:'🛡️',name:'Heavy Armor',tags:['guard'],gain:'Take 35% less damage',cost:'Move 15% slower',apply:p=>{p.dmgTakenMul*=0.65;p.baseSpeed*=0.85;}},
   {id:'t_rush',emoji:'🍬',name:'Sugar Rush',tags:['spark'],gain:'+25% speed, -15% cooldowns',cost:'Take 25% more damage',apply:p=>{p.baseSpeed*=1.25;p.cdMul*=0.85;p.dmgTakenMul*=1.25;}},
   {id:'t_berserk',emoji:'😤',name:'Berserker',tags:['melee'],gain:'Up to ×2 damage as HP drops',cost:'No HP regeneration',apply:p=>{p._tdBerserk=true;p.regen=0;p.regenFlat=0;p.regenPct=0;p._uqNoRegen=true;}},
-  {id:'t_core',emoji:'🧊',name:'Frozen Core',tags:['frost'],gain:'30% of hits chill',cost:'-15% damage',apply:p=>{p._tagChill=Math.max(p._tagChill||0,0.3);p.dmgMul*=0.85;}},
-  {id:'t_feast',emoji:'🌀',name:'Hungry Pact',tags:['swarm'],gain:'+20% damage, +30% EXP',cost:'Healing items do nothing',apply:p=>{p.dmgMul*=1.2;p.xpMul=(p.xpMul||1)*1.3;p.healEffect=0;}},
+  {id:'t_core',emoji:'🧊',name:'Frozen Core',tags:['frost'],gain:'30% of hits chill',cost:'-15% damage',apply:p=>{p._tagChill=Math.max(p._tagChill||0,0.3);p.dmgMul+=(0.85)-1;}},
+  {id:'t_feast',emoji:'🌀',name:'Hungry Pact',tags:['swarm'],gain:'+20% damage, +30% EXP',cost:'Healing items do nothing',apply:p=>{p.dmgMul+=(1.2)-1;p.xpMul=(p.xpMul||1)*1.3;p.healEffect=0;}},
   {id:'t_oath',emoji:'🎯',name:'Sniper’s Oath',tags:['ranged','crit'],gain:'+20% crit chance',cost:'Attacks 20% slower',apply:p=>{p.critChance=(p.critChance||0)+0.20;p.cdMul*=1.2;}}];
 function tradeDef(id){ return TRADEOFFS.find(x=>x.id===id)||null; }
 // 🧬 Fusions (v6.10.0 · B6) — Evolution + Relic เฉพาะ = ร่างพิเศษ · ตัวละ 2 สูตร · เก็บใน b.mods (id ขึ้นต้น f_ ไม่นับ MOD_MAX)
@@ -2584,14 +2585,14 @@ const UNIQUE_TIERS={
 const CHAR_TALENTS = {
   momo: [   // สายสมดุล — เก่งWaitบด้าน + คริติคอล
     { id:'hp',      emoji:'❤️', name:'Vitality',  max:5, per:'+8% max HP',   apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
-    { id:'dmg',     emoji:'💥', name:'Attack Power',  max:5, per:'+6% damage',       apply:(p,r)=>{ p.dmgMul*=(1+0.06*r); } },
+    { id:'dmg',     emoji:'💥', name:'Attack Power',  max:5, per:'+6% damage',       apply:(p,r)=>{ p.dmgMul+=((1+0.06*r))-1; } },
     { id:'crit',    emoji:'🎯', name:'Critical',     max:4, per:'+5% crit chance (×1.8)', apply:(p,r)=>{ p.critChance+=0.05*r; } },
     { id:'cdr',     emoji:'⏱️', name:'Fast Cast',     max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
     { id:'regen',   emoji:'💗', name:'Regen',    max:3, per:'+0.5 HP/s',  apply:(p,r)=>{ p.regen+=0.5*r; } },
     { id:'twinSprinkle',emoji:'🍓', name:'Radiant Heart Seeds', max:1, per:'✦ Unique: Strawberry Rebound bursts seeds in 16 directions!', apply:(p,r)=>{ p.twinSprinkle=true; } },
   ],
   mint: [   // สายแทงค์ — อึดโหด ดูดเลือด ฟื้นตัว
-    { id:'dmg',      emoji:'🧊', name:'Frost Lance Mastery', max:5, per:'+8% damage', apply:(p,r)=>{p.dmgMul*=(1+0.08*r);} },
+    { id:'dmg',      emoji:'🧊', name:'Frost Lance Mastery', max:5, per:'+8% damage', apply:(p,r)=>{p.dmgMul+=((1+0.08*r))-1;} },
     { id:'hp',       emoji:'❤️', name:'Tough Body',    max:6, per:'+12% max HP',  apply:(p,r)=>{ p.maxhp*=(1+0.12*r); } },
     { id:'armor',    emoji:'🛡️', name:'Ice Armor', max:5, per:'-6% damage taken', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
     { id:'regen',    emoji:'💗', name:'Cool Recovery',  max:4, per:'+0.7 HP/s',  apply:(p,r)=>{ p.regen+=0.7*r; } },
@@ -2600,7 +2601,7 @@ const CHAR_TALENTS = {
     { id:'deepFreeze',emoji:'🌿', name:'Breath Over the Rift', max:1, per:'✦ Unique: Mint\'s breath zone expands its radius!', apply:(p,r)=>{ p.deepFreeze=true; } },
   ],
   cocoa: [   // สายจอมพลัง — ดาเมจ/คริติคอลจัดFull
-    { id:'dmg',     emoji:'💥', name:'Destruction',  max:6, per:'+10% damage',      apply:(p,r)=>{ p.dmgMul*=(1+0.10*r); } },
+    { id:'dmg',     emoji:'💥', name:'Destruction',  max:6, per:'+10% damage',      apply:(p,r)=>{ p.dmgMul+=((1+0.10*r))-1; } },
     { id:'crit',    emoji:'🎯', name:'Slayer',     max:5, per:'+6% crit chance (×1.8)', apply:(p,r)=>{ p.critChance+=0.06*r; } },
     { id:'spd',     emoji:'👟', name:'Footwork',     max:3, per:'+5% move speed',    apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
     { id:'lifesteal',emoji:'🩸', name:'Bloodthirst',    max:3, per:'+0.6 HP on kill', apply:(p,r)=>{ p.lifesteal+=0.6*r; } },
@@ -2615,7 +2616,7 @@ const CHAR_TALENTS = {
   ],
   yuzu:[
     {id:'hp',emoji:'❤️',name:'Citrus Skin',max:5,per:'+8% max HP',apply:(p,r)=>{p.maxhp*=1+0.08*r;}},
-    {id:'dmg',emoji:'🍋',name:'Crew Spirit',max:5,per:'+6% minion damage',apply:(p,r)=>{p.dmgMul*=1+0.06*r;}},
+    {id:'dmg',emoji:'🍋',name:'Crew Spirit',max:5,per:'+6% minion damage',apply:(p,r)=>{p.dmgMul+=(1+0.06*r)-1;}},
     {id:'spd',emoji:'👟',name:'Leader Pace',max:4,per:'+5% move speed',apply:(p,r)=>{p.baseSpeed*=1+0.05*r;}},
     {id:'regen',emoji:'💚',name:'Fresh Juice',max:4,per:'+0.5 HP/s',apply:(p,r)=>{p.regen+=0.5*r;}},
     {id:'parade',emoji:'👑',name:'Royal Parade',max:1,per:'✦ Unique: Citrus Parade lasts 2s longer',apply:(p,r)=>{p.yuzuParade=true;}}],
@@ -2623,11 +2624,11 @@ const CHAR_TALENTS = {
     { id:'hp', emoji:'❤️', name:'Steady Sesame Core', max:6, per:'+11% max HP', apply:(p,r)=>{ p.maxhp*=(1+0.11*r); } },
     { id:'armor', emoji:'🛡️', name:'Oath Architecture', max:5, per:'-6% damage taken', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
     { id:'regen', emoji:'💗', name:'Flavor Lantern', max:4, per:'+0.6 HP/s', apply:(p,r)=>{ p.regen+=0.6*r; } },
-    { id:'dmg', emoji:'💥', name:'Counter Seal', max:4, per:'+6% damage', apply:(p,r)=>{ p.dmgMul*=(1+0.06*r); } },
+    { id:'dmg', emoji:'💥', name:'Counter Seal', max:4, per:'+6% damage', apply:(p,r)=>{ p.dmgMul+=((1+0.06*r))-1; } },
     { id:'mirrorWard', emoji:'🪞', name:'Perfect Mirror Architecture', max:1, per:'✦ Unique: more mirrors, duration, and reflected shots!', apply:(p,r)=>{ p.mirrorWard=true; } },
   ],
   berry: [
-    { id:'dmg', emoji:'💥', name:'Jam Core Pressure', max:5, per:'+7% damage', apply:(p,r)=>{ p.dmgMul*=(1+0.07*r); } },
+    { id:'dmg', emoji:'💥', name:'Jam Core Pressure', max:5, per:'+7% damage', apply:(p,r)=>{ p.dmgMul+=((1+0.07*r))-1; } },
     { id:'cdr', emoji:'⏱️', name:'Fast Heart Trigger', max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
     { id:'hp', emoji:'❤️', name:'Packed Mochi', max:4, per:'+9% max HP', apply:(p,r)=>{ p.maxhp*=(1+0.09*r); } },
     { id:'crit', emoji:'🎯', name:'Seed Sights', max:4, per:'+5% crit chance', apply:(p,r)=>{ p.critChance+=0.05*r; } },
@@ -2682,11 +2683,11 @@ const SKILL_TIERS = {
    สูตรธรรมดา = สายเสริม build ให้เลือกทางเล่น · character-first: a = skillsพื้นฐานของตัวนั้น (เก็บ passive b ให้ครบ = ปรุง) */
 const COMBOS = [
   // 🍓 โมโม่ (sprinkle) — สายยิงรัวคริติคอล
-  { key:'candycore', a:'sprinkle', b:'power',  sig:true, emoji:'🍬💥', name:'Bursting Heart Praline', desc:'⭐ +13% damage · +3% crit', effect:p=>{p.dmgMul*=1.13;p.critChance+=0.03;} },
+  { key:'candycore', a:'sprinkle', b:'power',  sig:true, emoji:'🍬💥', name:'Bursting Heart Praline', desc:'⭐ +13% damage · +3% crit', effect:p=>{p.dmgMul+=(1.13)-1;p.critChance+=0.03;} },
   { key:'sugarshot', a:'sprinkle', b:'crit',   emoji:'🍬🎯', name:'Sharp Splinter Seed', desc:'+5% crit', effect:p=>{p.critChance+=0.05;} },
   { key:'ricochet',  a:'sprinkle', b:'haste',  emoji:'🍬⏩', name:'Wandering Candy', desc:'-7% cooldown', effect:p=>{p.cdMul*=0.93;} },
   // 🍫 โกโก้ (meteor) — สายทุบหนักแนวหน้า
-  { key:'titanjab',  a:'meteor',   b:'power',  sig:true, emoji:'🍩💥', name:'Titan Punch Sundae', desc:'⭐ +14% damage · -5% damage taken', effect:p=>{p.dmgMul*=1.14;p.dmgTakenMul*=0.95;} },
+  { key:'titanjab',  a:'meteor',   b:'power',  sig:true, emoji:'🍩💥', name:'Titan Punch Sundae', desc:'⭐ +14% damage · -5% damage taken', effect:p=>{p.dmgMul+=(1.14)-1;p.dmgTakenMul*=0.95;} },
   { key:'bearhide',  a:'meteor',   b:'guard',  emoji:'🍩🛡️', name:'Bursting Bear Armor', desc:'-7% damage taken', effect:p=>{p.dmgTakenMul*=0.93;} },
   { key:'rain',      a:'meteor',   b:'magnet', emoji:'🍩🧲', name:'Homing Donut Rain', desc:'+25% pickup range', effect:p=>{p.pickup*=1.25;} },
   // 🌿 มินต์ (frost) — สายควบคุมฝูง
@@ -2698,9 +2699,9 @@ const COMBOS = [
   { key:'thunderrun',a:'thunder',  b:'swift',  emoji:'⚡👟', name:'Wandering Bolt', desc:'+7% move speed', effect:p=>{p.baseSpeed*=1.07;} },
   { key:'rollingarc',a:'thunder',  b:'haste',  emoji:'⚡⏩', name:'Rolling Bolts', desc:'-7% cooldown', effect:p=>{p.cdMul*=0.93;} },
   // ⚫ งาดำ (mirror) — สายแนวรับ
-  { key:'reflection',a:'mirror',   b:'guard',  sig:true, emoji:'🪞🛡️', name:'Oath Sundae', desc:'⭐ -12% damage taken · +5% damage', effect:p=>{p.dmgTakenMul*=0.88;p.dmgMul*=1.05;} },
+  { key:'reflection',a:'mirror',   b:'guard',  sig:true, emoji:'🪞🛡️', name:'Oath Sundae', desc:'⭐ -12% damage taken · +5% damage', effect:p=>{p.dmgTakenMul*=0.88;p.dmgMul+=(1.05)-1;} },
   { key:'mirrormend',a:'mirror',   b:'regen',  emoji:'🪞💗', name:'Healing Mirror', desc:'+0.8 HP/s', effect:p=>{p.regen+=0.8;} },
-  { key:'oathkeep',  a:'mirror',   b:'crit', emoji:'🪞🎯', name:'Echoing Oath', desc:'+7% damage', effect:p=>{p.dmgMul*=1.07;} },
+  { key:'oathkeep',  a:'mirror',   b:'crit', emoji:'🪞🎯', name:'Echoing Oath', desc:'+7% damage', effect:p=>{p.dmgMul+=(1.07)-1;} },
 ];
 
 function passivePairHint(key){
@@ -2721,7 +2722,7 @@ const UPGRADES = {
   hp:  { iconKey:'temple_life_core',emoji:'❤️', tag:'CORE', name:'Life Core', unit:'+16 max HP/level', color:0xff5f7a, base:30, per:16,
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
   dmg: { iconKey:'temple_flavor_spark',emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+3% damage/level',  color:0xf0a54a, base:45, per:3,
-         apply:(p,tot)=>{ p.dmgMul*=1+0.03*tot; },           show:tot=>'+'+(3*tot)+'% DMG' },   // v4.55: เดิม +2 flat ต่อทุกฮิต (โกงกับตัวยิงถี่/tick) → เปลี่ยนเป็น %
+         apply:(p,tot)=>{ p.dmgMul+=(1+0.03*tot)-1; },           show:tot=>'+'+(3*tot)+'% DMG' },   // v4.55: เดิม +2 flat ต่อทุกฮิต (โกงกับตัวยิงถี่/tick) → เปลี่ยนเป็น %
   def: { iconKey:'temple_oath_shell',emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'~1.5% less damage taken/level', color:0x6ec6ff, base:40, per:1,
          apply:(p,tot)=>{ p.dmgTakenMul*=Math.pow(0.985,tot); },       show:tot=>'-'+Math.round((1-Math.pow(0.985,tot))*100)+'% DMG taken' },
 };
@@ -2959,38 +2960,38 @@ const GEAR_SLOTS = [
 const GEAR = {
   weapon: [
     // Chapter 1 · Pantry — readable starter silhouettes
-    { id:'w_spoon', chapter:1, tier:"start", emoji:'🥄', name:'Wooden Spoon', cost:0, enh:true, desc:'+5% damage (+2%/enh)', apply:(p,lv)=>{p.dmgMul*=1.05+0.02*lv;} },
-    { id:'w_chop', chapter:1, tier:"common", emoji:'🥢', name:'Iron Chopsticks', cost:120, enh:true, desc:'+12% damage (+3%/enh)', apply:(p,lv)=>{p.dmgMul*=1.12+0.03*lv;} },
+    { id:'w_spoon', chapter:1, tier:"start", emoji:'🥄', name:'Wooden Spoon', cost:0, enh:true, desc:'+5% damage (+2%/enh)', apply:(p,lv)=>{p.dmgMul+=(1.05+0.02*lv)-1;} },
+    { id:'w_chop', chapter:1, tier:"common", emoji:'🥢', name:'Iron Chopsticks', cost:120, enh:true, desc:'+12% damage (+3%/enh)', apply:(p,lv)=>{p.dmgMul+=(1.12+0.03*lv)-1;} },
     { id:'w_whisk', chapter:1, tier:"common", emoji:'🌀', name:'Egg Whisk', cost:150, enh:true, desc:'-5% cooldown (+1%/enh)', apply:(p,lv)=>{p.cdMul*=1-0.05-0.01*lv;} },
-    { id:'w_knife', chapter:1, tier:"rare", emoji:'🔪', name:'Chef Knife', cost:300, enh:true, desc:'+22% damage (+4%/enh)', apply:(p,lv)=>{p.dmgMul*=1.22+0.04*lv;} },
-    { id:'w_cleaver', chapter:1, tier:"epic", set:'chef', emoji:'🪓', name:'Golden Cleaver', cost:640, enh:true, desc:'+30% damage · +5% crit', apply:(p,lv)=>{p.dmgMul*=1.30+0.05*lv;p.critChance+=0.05+0.01*lv;} },
-    { id:'lg_starcleaver', chapter:1, tier:"legend", emoji:'🌟', name:'Starfall Blade', cost:0, enh:true, fx:'execute', desc:'+38% damage · execute damage', apply:(p,lv)=>{p.dmgMul*=1.38+0.05*lv;p.lowHpDmg+=0.15+0.03*lv;} },
+    { id:'w_knife', chapter:1, tier:"rare", emoji:'🔪', name:'Chef Knife', cost:300, enh:true, desc:'+22% damage (+4%/enh)', apply:(p,lv)=>{p.dmgMul+=(1.22+0.04*lv)-1;} },
+    { id:'w_cleaver', chapter:1, tier:"epic", set:'chef', emoji:'🪓', name:'Golden Cleaver', cost:640, enh:true, desc:'+30% damage · +5% crit', apply:(p,lv)=>{p.dmgMul+=(1.30+0.05*lv)-1;p.critChance+=0.05+0.01*lv;} },
+    { id:'lg_starcleaver', chapter:1, tier:"legend", emoji:'🌟', name:'Starfall Blade', cost:0, enh:true, fx:'execute', desc:'+38% damage · execute damage', apply:(p,lv)=>{p.dmgMul+=(1.38+0.05*lv)-1;p.lowHpDmg+=0.15+0.03*lv;} },
     // Chapter 2 · Rotten Drain — tempo and utility
-    { id:'w_valve_saber', chapter:2, tier:"common", emoji:'🗡️', name:'Valve Saber', cost:180, enh:true, desc:'+10% damage · -3% cooldown', apply:(p,lv)=>{p.dmgMul*=1.10+0.025*lv;p.cdMul*=1-0.03-0.008*lv;} },
+    { id:'w_valve_saber', chapter:2, tier:"common", emoji:'🗡️', name:'Valve Saber', cost:180, enh:true, desc:'+10% damage · -3% cooldown', apply:(p,lv)=>{p.dmgMul+=(1.10+0.025*lv)-1;p.cdMul*=1-0.03-0.008*lv;} },
     { id:'w_pressure_whisk', chapter:2, tier:"rare", emoji:'🫧', name:'Pressure Whisk', cost:420, enh:true, desc:'-9% cooldown · +5% crit', apply:(p,lv)=>{p.cdMul*=1-0.09-0.01*lv;p.critChance+=0.05+0.008*lv;} },
-    { id:'w_pipe_hammer', chapter:2, tier:"epic", emoji:'🔨', name:'Pipe Hammer', cost:840, enh:true, desc:'+18% damage · +8% crit · +40 HP', apply:(p,lv)=>{p.dmgMul*=1.18+0.035*lv;p.critChance+=0.08+0.008*lv;p.maxhp+=40+10*lv;} },
-    { id:'lg_tidefork', chapter:2, tier:"legend", emoji:'🔱', name:'Tidefork', cost:0, enh:true, desc:'+26% damage · -8% cooldown · +12% crit', apply:(p,lv)=>{p.dmgMul*=1.26+0.04*lv;p.cdMul*=1-0.08-0.008*lv;p.critChance+=0.12+0.008*lv;} },
+    { id:'w_pipe_hammer', chapter:2, tier:"epic", emoji:'🔨', name:'Pipe Hammer', cost:840, enh:true, desc:'+18% damage · +8% crit · +40 HP', apply:(p,lv)=>{p.dmgMul+=(1.18+0.035*lv)-1;p.critChance+=0.08+0.008*lv;p.maxhp+=40+10*lv;} },
+    { id:'lg_tidefork', chapter:2, tier:"legend", emoji:'🔱', name:'Tidefork', cost:0, enh:true, desc:'+26% damage · -8% cooldown · +12% crit', apply:(p,lv)=>{p.dmgMul+=(1.26+0.04*lv)-1;p.cdMul*=1-0.08-0.008*lv;p.critChance+=0.12+0.008*lv;} },
     // Chapter 3 · Chili Engine — heavy offense
-    { id:'w_chili_sickle', chapter:3, tier:"common", emoji:'🌶️', name:'Chili Sickle', cost:200, enh:true, desc:'+14% damage · +3% crit', apply:(p,lv)=>{p.dmgMul*=1.14+0.025*lv;p.critChance+=0.03+0.006*lv;} },
-    { id:'w_griddle_maul', chapter:3, tier:"rare", emoji:'🍳', name:'Griddle Maul', cost:460, enh:true, desc:'+24% damage · +60 HP', apply:(p,lv)=>{p.dmgMul*=1.24+0.04*lv;p.maxhp+=60+12*lv;} },
-    { id:'w_ember_skewer', chapter:3, tier:"epic", emoji:'🔥', name:'Ember Skewer', cost:880, enh:true, desc:'+28% damage · +10% crit', apply:(p,lv)=>{p.dmgMul*=1.28+0.045*lv;p.critChance+=0.10+0.009*lv;} },
-    { id:'lg_sun_spatula', chapter:3, tier:"legend", emoji:'☀️', name:'Sunforge Spatula', cost:0, enh:true, fx:'execute', desc:'+34% damage · -6% cooldown · execute damage', apply:(p,lv)=>{p.dmgMul*=1.34+0.045*lv;p.cdMul*=1-0.06-0.008*lv;p.lowHpDmg+=0.10+0.02*lv;} },
+    { id:'w_chili_sickle', chapter:3, tier:"common", emoji:'🌶️', name:'Chili Sickle', cost:200, enh:true, desc:'+14% damage · +3% crit', apply:(p,lv)=>{p.dmgMul+=(1.14+0.025*lv)-1;p.critChance+=0.03+0.006*lv;} },
+    { id:'w_griddle_maul', chapter:3, tier:"rare", emoji:'🍳', name:'Griddle Maul', cost:460, enh:true, desc:'+24% damage · +60 HP', apply:(p,lv)=>{p.dmgMul+=(1.24+0.04*lv)-1;p.maxhp+=60+12*lv;} },
+    { id:'w_ember_skewer', chapter:3, tier:"epic", emoji:'🔥', name:'Ember Skewer', cost:880, enh:true, desc:'+28% damage · +10% crit', apply:(p,lv)=>{p.dmgMul+=(1.28+0.045*lv)-1;p.critChance+=0.10+0.009*lv;} },
+    { id:'lg_sun_spatula', chapter:3, tier:"legend", emoji:'☀️', name:'Sunforge Spatula', cost:0, enh:true, fx:'execute', desc:'+34% damage · -6% cooldown · execute damage', apply:(p,lv)=>{p.dmgMul+=(1.34+0.045*lv)-1;p.cdMul*=1-0.06-0.008*lv;p.lowHpDmg+=0.10+0.02*lv;} },
     // Chapter 4 · Sugar Freezer — control and crit
     { id:'w_frost_spoon', chapter:4, tier:"common", emoji:'❄️', name:'Frost Spoon', cost:220, enh:true, desc:'-8% cooldown · +40 HP', apply:(p,lv)=>{p.cdMul*=1-0.08-0.008*lv;p.maxhp+=40+10*lv;} },
-    { id:'w_crystal_knife', chapter:4, tier:"rare", emoji:'💎', name:'Crystal Knife', cost:500, enh:true, desc:'+20% damage · +8% crit', apply:(p,lv)=>{p.dmgMul*=1.20+0.035*lv;p.critChance+=0.08+0.009*lv;} },
+    { id:'w_crystal_knife', chapter:4, tier:"rare", emoji:'💎', name:'Crystal Knife', cost:500, enh:true, desc:'+20% damage · +8% crit', apply:(p,lv)=>{p.dmgMul+=(1.20+0.035*lv)-1;p.critChance+=0.08+0.009*lv;} },
     { id:'w_glacier_whisk', chapter:4, tier:"epic", emoji:'🧊', name:'Glacier Whisk', cost:920, enh:true, desc:'-12% cooldown · +14% crit', apply:(p,lv)=>{p.cdMul*=1-0.12-0.008*lv;p.critChance+=0.14+0.008*lv;} },
-    { id:'lg_aurora_lance', chapter:4, tier:"legend", emoji:'🌌', name:'Aurora Sugar Lance', cost:0, enh:true, desc:'+30% damage · -10% cooldown · +12% crit', apply:(p,lv)=>{p.dmgMul*=1.30+0.04*lv;p.cdMul*=1-0.10-0.008*lv;p.critChance+=0.12+0.008*lv;} },
+    { id:'lg_aurora_lance', chapter:4, tier:"legend", emoji:'🌌', name:'Aurora Sugar Lance', cost:0, enh:true, desc:'+30% damage · -10% cooldown · +12% crit', apply:(p,lv)=>{p.dmgMul+=(1.30+0.04*lv)-1;p.cdMul*=1-0.10-0.008*lv;p.critChance+=0.12+0.008*lv;} },
     // Chapter 5 · Crown Oven — endgame hybrids, still bounded by Item Level
-    { id:'w_void_ladle', chapter:5, tier:"common", emoji:'🌑', name:'Void Ladle', cost:240, enh:true, desc:'+18% damage · +0.8 regen/s', apply:(p,lv)=>{p.dmgMul*=1.18+0.03*lv;p.regen+=0.8+0.12*lv;} },
-    { id:'w_crown_cleaver', chapter:5, tier:"rare", emoji:'👑', name:'Crown Cleaver', cost:540, enh:true, desc:'+26% damage · +10% crit', apply:(p,lv)=>{p.dmgMul*=1.26+0.04*lv;p.critChance+=0.10+0.009*lv;} },
-    { id:'w_hunger_blade', chapter:5, tier:"epic", emoji:'🕳️', name:'Hunger Blade', cost:960, enh:true, fx:'execute', desc:'+32% damage · execute damage', apply:(p,lv)=>{p.dmgMul*=1.32+0.045*lv;p.lowHpDmg+=0.12+0.02*lv;} },
-    { id:'lg_flavorbound', chapter:5, tier:"legend", emoji:'✨', name:'Flavorbound', cost:0, enh:true, desc:'+36% damage · +10% crit · -8% cooldown', apply:(p,lv)=>{p.dmgMul*=1.36+0.045*lv;p.critChance+=0.10+0.008*lv;p.cdMul*=1-0.08-0.008*lv;} },
+    { id:'w_void_ladle', chapter:5, tier:"common", emoji:'🌑', name:'Void Ladle', cost:240, enh:true, desc:'+18% damage · +0.8 regen/s', apply:(p,lv)=>{p.dmgMul+=(1.18+0.03*lv)-1;p.regen+=0.8+0.12*lv;} },
+    { id:'w_crown_cleaver', chapter:5, tier:"rare", emoji:'👑', name:'Crown Cleaver', cost:540, enh:true, desc:'+26% damage · +10% crit', apply:(p,lv)=>{p.dmgMul+=(1.26+0.04*lv)-1;p.critChance+=0.10+0.009*lv;} },
+    { id:'w_hunger_blade', chapter:5, tier:"epic", emoji:'🕳️', name:'Hunger Blade', cost:960, enh:true, fx:'execute', desc:'+32% damage · execute damage', apply:(p,lv)=>{p.dmgMul+=(1.32+0.045*lv)-1;p.lowHpDmg+=0.12+0.02*lv;} },
+    { id:'lg_flavorbound', chapter:5, tier:"legend", emoji:'✨', name:'Flavorbound', cost:0, enh:true, desc:'+36% damage · +10% crit · -8% cooldown', apply:(p,lv)=>{p.dmgMul+=(1.36+0.045*lv)-1;p.critChance+=0.10+0.008*lv;p.cdMul*=1-0.08-0.008*lv;} },
   ],
   gloves: [
     { id:'gl_none', tier:"start", emoji:'🧤', name:'None',       cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'gl_mitt', tier:"common", emoji:'🧤', name:'Oven Mitt',  cost:140, enh:true, desc:'+5% crit (+1%/enh)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.05+0.01*lv; } },
-    { id:'gl_silk', tier:"common", emoji:'🧵', name:'Silk Gloves', cost:150, enh:true, desc:'+8% damage (+2%/enh)',      apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); } },
-    { id:'gl_iron', tier:"rare", emoji:'🥊', name:'Iron Fists',      cost:320, enh:true, desc:'+9% crit · +4% damage (+1%·+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul*=(1+0.04+0.01*lv); } },
+    { id:'gl_silk', tier:"common", emoji:'🧵', name:'Silk Gloves', cost:150, enh:true, desc:'+8% damage (+2%/enh)',      apply:(p,lv)=>{ p.dmgMul+=((1+0.08+0.02*lv))-1; } },
+    { id:'gl_iron', tier:"rare", emoji:'🥊', name:'Iron Fists',      cost:320, enh:true, desc:'+9% crit · +4% damage (+1%·+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.09+0.01*lv; p.dmgMul+=((1+0.04+0.01*lv))-1; } },
     { id:'gl_dragon', tier:"epic", set:'chef', emoji:'🐲', name:'Fire Dragon Gloves', cost:660, enh:true, desc:'+13% crit · stronger crit DMG (+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.13+0.01*lv; p.critMul=(p.critMul||1.55)+0.25+0.05*lv; } },
   ],
   armor: [
@@ -3012,26 +3013,26 @@ const GEAR = {
     { id:'am_none', tier:"start",   emoji:'📿', name:'None',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
     { id:'am_ribbon', tier:"common", emoji:'🎀', name:'Lucky Ribbon',  cost:100, enh:true, desc:'+30 HP (+10/enh)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
     { id:'am_clover', tier:"common", emoji:'🍀', name:'Clover Leaf',  cost:120, enh:true, desc:'+4% crit · +0.5 regen/s (+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.04+0.01*lv; p.regen=(p.regen||0)+0.5+0.15*lv; } },
-    { id:'am_star', tier:"rare",   emoji:'⭐', name:'Sparkle Star',  cost:260, enh:true, desc:'+8% damage · +15 HP (+2%·+8/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.08+0.02*lv); p.maxhp+=15+8*lv; } },
-    { id:'am_moon', tier:"epic", set:'wind',  emoji:'🌙', name:'Sweet Moon',  cost:640, enh:true, desc:'+12% damage · +40 HP · +1 regen/s (+2%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.02*lv); p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
+    { id:'am_star', tier:"rare",   emoji:'⭐', name:'Sparkle Star',  cost:260, enh:true, desc:'+8% damage · +15 HP (+2%·+8/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.08+0.02*lv))-1; p.maxhp+=15+8*lv; } },
+    { id:'am_moon', tier:"epic", set:'wind',  emoji:'🌙', name:'Sweet Moon',  cost:640, enh:true, desc:'+12% damage · +40 HP · +1 regen/s (+2%/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.12+0.02*lv))-1; p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
     { id:'lg_phoenix', tier:"legend", emoji:'🔥', name:'Phoenix Amulet', cost:0, enh:true, fx:'revive', desc:'+120 HP · +1.5 regen/s · revive once per stage (+20HP/enh) 🔥', apply:(p,lv)=>{ p.maxhp+=120+20*lv; p.regen=(p.regen||0)+1.5+0.3*lv; p._gearRevive=(p._gearRevive||0)+1; } },
   ],
   ring: [
     { id:'ri_none', tier:"start",   emoji:'💍', name:'None',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'ri_copper', tier:"common", emoji:'💍', name:'Copper Ring', cost:120, enh:true, desc:'+5% damage (+2%/enh)',       apply:(p,lv)=>{ p.dmgMul*=(1+0.05+0.02*lv); } },
+    { id:'ri_copper', tier:"common", emoji:'💍', name:'Copper Ring', cost:120, enh:true, desc:'+5% damage (+2%/enh)',       apply:(p,lv)=>{ p.dmgMul+=((1+0.05+0.02*lv))-1; } },
     { id:'ri_silver', tier:"common", emoji:'💎', name:'Silver Crit Ring', cost:140, enh:true, desc:'+6% crit (+1%/enh)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.06+0.01*lv; } },
-    { id:'ri_gold', tier:"rare",   emoji:'💛', name:'Gold Ring',  cost:320, enh:true, desc:'+12% damage · +0.8 regen/s (+3%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.12+0.03*lv); p.regen=(p.regen||0)+0.8+0.2*lv; } },
-    { id:'ri_diamond', tier:"epic", set:'wind', emoji:'💠', name:'Diamond Ring',    cost:700, enh:true, desc:'+18% damage · +8% crit (+3%·+1%/enh)', apply:(p,lv)=>{ p.dmgMul*=(1+0.18+0.03*lv); p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
+    { id:'ri_gold', tier:"rare",   emoji:'💛', name:'Gold Ring',  cost:320, enh:true, desc:'+12% damage · +0.8 regen/s (+3%/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.12+0.03*lv))-1; p.regen=(p.regen||0)+0.8+0.2*lv; } },
+    { id:'ri_diamond', tier:"epic", set:'wind', emoji:'💠', name:'Diamond Ring',    cost:700, enh:true, desc:'+18% damage · +8% crit (+3%·+1%/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.18+0.03*lv))-1; p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
   ],
 };
 /* ---- GEAR SETS: สวมของชุดเดียวกันครบจำนวน = โบนัสพิเศษ (นับ id ที่สวมใน applyMeta) ---- */
 const GEAR_SETS = {
   chef:{ name:'Royal Chef Set', emoji:'👑', bonuses:{
-    2:{ desc:'2 pcs: +10% damage', apply:p=>{ p.dmgMul*=1.10; } },
+    2:{ desc:'2 pcs: +10% damage', apply:p=>{ p.dmgMul+=(1.10)-1; } },
     3:{ desc:'3 pcs: +10% crit · stronger crit DMG', apply:p=>{ p.critChance=(p.critChance||0)+0.10; p.critMul=(p.critMul||1.55)+0.3; } } } },
   wind:{ name:'Gale Master Set', emoji:'🌪️', bonuses:{
     2:{ desc:'2 pcs: -8% cooldown', apply:p=>{ p.cdMul=Math.max(STAT_CAPS.cdMulMin,(p.cdMul||1)*0.92); } },
-    3:{ desc:'3 pcs: +10% move speed · +8% damage', apply:p=>{ p.baseSpeed*=1.10; p.dmgMul*=1.08; } } } },
+    3:{ desc:'3 pcs: +10% move speed · +8% damage', apply:p=>{ p.baseSpeed*=1.10; p.dmgMul+=(1.08)-1; } } } },
 };
 function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
@@ -3039,7 +3040,7 @@ function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.dat
    tiers[]=[T1,T2,T3,T4,T5] แต่ละอันเป็น [lo,hi] · T1=แรงสุด (หายาก) · pre/suf=คำประกอบชื่อไอเทม */
 const AFFIX_POOL = [
   // ── Prefix (สายรุก) ──
-  { id:'dmg', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'💥', label:'Damage', pre:'Keen', fmt:v=>'+'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul*=(1+v/100); } },
+  { id:'dmg', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'💥', label:'Damage', pre:'Keen', fmt:v=>'+'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul+=((1+v/100))-1; } },
   { id:'crit', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'🎯', label:'Crit', pre:'Sharp', fmt:v=>'+'+v+'%', tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
   { id:'critdmg', category:'offense', slots:['weapon','gloves','ring'], kind:'prefix', emoji:'💢', label:'Crit DMG', pre:'Fierce', fmt:v=>'+'+v+'%', tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.55)+v/100; } },
   { id:'cd', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift', fmt:v=>'-'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.cdMul=Math.max(STAT_CAPS.cdMulMin,(p.cdMul||1)*(1-v/100)); } },
@@ -3088,7 +3089,7 @@ const SPECIAL_AFFIX_POOL = [
     apply:(p,v)=>{ p.lifesteal=(p.lifesteal||0)+v/10; } }, // ฟื้น HP flat ต่อการฆ่า ไม่มี cooldown (ต่างจาก lifekill ที่มี cd 0.45s) — เก่งตอนฆ่าถี่
   { id:'berserk', kind:'prefix', category:'offense', label:'Berserker', emoji:'💀', pre:'Berserk', slots:['weapon','gloves'], minItemLevel:45, bestTier:2,
     fmt:v=>'+'+v+'%', tiers:[[22,28],[16,21],[11,15],[7,10],[4,6]],
-    apply:(p,v)=>{ p.dmgMul*=(1+v/100); p.dmgTakenMul*=(1+v*0.6/100); } }, // glass cannon: ดาเมจแรงขึ้นเยอะ แต่รับดาเมจเพิ่มด้วย
+    apply:(p,v)=>{ p.dmgMul+=((1+v/100))-1; p.dmgTakenMul*=(1+v*0.6/100); } }, // glass cannon: ดาเมจแรงขึ้นเยอะ แต่รับดาเมจเพิ่มด้วย
   { id:'focus', kind:'prefix', category:'offense', label:'Sage Focus', emoji:'🧘', pre:'Focused', slots:['amulet','ring'], minItemLevel:45, bestTier:2,
     fmt:v=>'-'+v+'%', tiers:[[11,14],[8,10],[6,7],[4,5],[2,3]],
     apply:(p,v)=>{ p.cdMul=Math.max(STAT_CAPS.cdMulMin,(p.cdMul||1)*(1-v/100)); p.critChance=Math.max(0,(p.critChance||0)-v*0.35/100); } }, // คูลดาวน์ไวมาก แลกคริติคอลลดลง
@@ -3307,13 +3308,13 @@ function bazaarDaySeed(){ const d=new Date(); return d.getUTCFullYear()*10000+(d
 /* ---- ระบบได้รับอุปกรณ์: ดWaitปในStage (common) + เปิดกล่องสุ่ม/gacha (find rare) · ยกเลิกการซื้อ ---- */
 // R8: Unique — ของเปลี่ยน build (แลกข้อเสีย) · ดรอปเฉพาะบอสรัน Recipe ของธีมที่กำหนด · tier legend + unique:true (ไม่อยู่ใน pool สุ่มปกติ)
 const UNIQUE_GEAR={
-  weapon:{ id:'uq_glass_pin', chapter:5, tier:'legend', unique:true, themes:[0,5,10], emoji:'🥖', name:'Glass Rolling Pin', cost:0, enh:true, desc:'UNIQUE · +80% damage · but -45% max HP', apply:(p,lv)=>{p.dmgMul*=1.80+0.04*lv;p._uqGlass=0.55;} },
+  weapon:{ id:'uq_glass_pin', chapter:5, tier:'legend', unique:true, themes:[0,5,10], emoji:'🥖', name:'Glass Rolling Pin', cost:0, enh:true, desc:'UNIQUE · +80% damage · but -45% max HP', apply:(p,lv)=>{p.dmgMul+=(1.80+0.04*lv)-1;p._uqGlass=0.55;} },
   ring:{ id:'uq_hunger_ring', chapter:5, tier:'legend', unique:true, themes:[1,6,11], emoji:'💍', name:'Ring of Endless Hunger', cost:0, enh:true, desc:'UNIQUE · heal 3 HP per kill · but no regeneration', apply:(p,lv)=>{p.lifesteal=(p.lifesteal||0)+3+lv*0.5;p._uqNoRegen=true;} },
-  boots:{ id:'uq_rush_boots', chapter:5, tier:'legend', unique:true, themes:[2,7,12], emoji:'👟', name:'Sugar Rush Boots', cost:0, enh:true, desc:'UNIQUE · +30% move speed · +15% damage · but take 20% more damage', apply:(p,lv)=>{p.baseSpeed*=1.30;p.dmgMul*=1.15+0.02*lv;p.dmgTakenMul*=1.20;} },
+  boots:{ id:'uq_rush_boots', chapter:5, tier:'legend', unique:true, themes:[2,7,12], emoji:'👟', name:'Sugar Rush Boots', cost:0, enh:true, desc:'UNIQUE · +30% move speed · +15% damage · but take 20% more damage', apply:(p,lv)=>{p.baseSpeed*=1.30;p.dmgMul+=(1.15+0.02*lv)-1;p.dmgTakenMul*=1.20;} },
   amulet:{ id:'uq_echo_locket', chapter:5, tier:'legend', unique:true, themes:[3,8,13], emoji:'📿', name:'Echo Locket', cost:0, enh:true, desc:'UNIQUE · critical hits explode for 45% damage nearby · +8% crit', apply:(p,lv)=>{p.critChance+=0.08;p._uqCritBurst=0.45+0.03*lv;} },
-  armor:{ id:'uq_candy_shell', chapter:5, tier:'legend', unique:true, themes:[4,9,14], emoji:'🛡️', name:'Candy Shell Plate', cost:0, enh:true, desc:'UNIQUE · take 35% less damage · but deal 20% less damage', apply:(p,lv)=>{p.dmgTakenMul*=0.65-0.01*lv;p.dmgMul*=0.80;} },
+  armor:{ id:'uq_candy_shell', chapter:5, tier:'legend', unique:true, themes:[4,9,14], emoji:'🛡️', name:'Candy Shell Plate', cost:0, enh:true, desc:'UNIQUE · take 35% less damage · but deal 20% less damage', apply:(p,lv)=>{p.dmgTakenMul*=0.65-0.01*lv;p.dmgMul+=(0.80)-1;} },
   // v6.13 (B8): Unique ที่เปลี่ยน build เพิ่ม 7 ชิ้น
-  weapon2:{ slot:'weapon', id:'uq_twin_whisk', chapter:5, tier:'legend', unique:true, themes:[1,7,13], emoji:'🥄', name:'Twin Whisk', cost:0, enh:true, desc:'UNIQUE · attack 25% faster · but deal 15% less damage', apply:(p,lv)=>{p.cdMul*=0.75-0.01*lv;p.dmgMul*=0.85;} },
+  weapon2:{ slot:'weapon', id:'uq_twin_whisk', chapter:5, tier:'legend', unique:true, themes:[1,7,13], emoji:'🥄', name:'Twin Whisk', cost:0, enh:true, desc:'UNIQUE · attack 25% faster · but deal 15% less damage', apply:(p,lv)=>{p.cdMul*=0.75-0.01*lv;p.dmgMul+=(0.85)-1;} },
   gloves:{ slot:'gloves', id:'uq_spice_mitts', chapter:5, tier:'legend', unique:true, themes:[2,5,14], emoji:'🧤', name:'Ember Spice Mitts', cost:0, enh:true, desc:'UNIQUE · 25% of hits ignite · counts as 🔥 fire', apply:(p,lv)=>{p._tagIgnite=Math.max(p._tagIgnite||0,0.25+0.01*lv);} },
   boots2:{ slot:'boots', id:'uq_frost_treads', chapter:5, tier:'legend', unique:true, themes:[3,9,11], emoji:'🥾', name:'Frostbite Treads', cost:0, enh:true, desc:'UNIQUE · 20% of hits freeze · but -10% move speed', apply:(p,lv)=>{p._tagChill=Math.max(p._tagChill||0,0.20+0.01*lv);p.baseSpeed*=0.90;} },
   ring2:{ slot:'ring', id:'uq_lucky_charm', chapter:5, tier:'legend', unique:true, themes:[0,6,12], emoji:'🍀', name:'Four-Leaf Gummy', cost:0, enh:true, desc:'UNIQUE · +12% crit chance · but -25% crit damage', apply:(p,lv)=>{p.critChance+=0.12+0.005*lv;p.critMul=(p.critMul||1.55)-0.25;} },
@@ -3362,9 +3363,11 @@ function applyGearBaseStats(p,item){const b=gearBaseStats(item);p.gearAttackMin=
 function gearAttackRoll(p,rng=Math.random){const lo=p.gearAttackMin||0,hi=p.gearAttackMax||0;return lo+Math.floor(rng()*Math.max(1,hi-lo+1));}
 function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 // v6.16: Item Power — อาวุธ iLv สูง = ดาเมจผู้เล่นโตตาม progress (อยู่นอกเพดาน STAT_CAPS.dmgMul)
+// v6.18: Damage Effectiveness ของ flat แบบ PoE — อาวุธยิงถี่ได้ flat น้อย, ยิงหนักได้มาก
+const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
 function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.03,l-1):Math.pow(1.03,59)*Math.pow(1.015,l-60); }
 function applyItemLevelBonus(p,item){applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
-  if(slot==='weapon'||slot==='ring')p.dmgMul*=1+0.24*q;
+  if(slot==='weapon'||slot==='ring')p.dmgMul+=(1+0.24*q)-1;
   else if(slot==='gloves')p.critChance=(p.critChance||0)+0.06*q;
   else if(slot==='armor'){p.maxhp+=Math.round(80*q);p.dmgTakenMul*=1-0.06*q;}
   else if(slot==='boots')p.baseSpeed*=1+0.10*q;
@@ -5106,7 +5109,7 @@ class Game extends Phaser.Scene {
         this.comboFlags[c.key]=true;
         // เอาระบบ codex ปรุง (cookbook/banner/discover) ออก — คงเฉพาะโบนัส combo แบบเงียบ ๆ กันบิลด์เสียบาลานซ์
         if(!this.combosOwned[c.key]){ this.combosOwned[c.key]=true;
-          if(this.player){ if(c.effect)c.effect(this.player); else this.player.dmgMul=Math.min(3.25,(this.player.dmgMul||1)*1.05);
+          if(this.player){ if(c.effect)c.effect(this.player); else this.player.dmgMul=(this.player.dmgMul||1)+0.05;
             clampPlayerStats(this.player);this.player.baseSpeed=Math.min(BALANCE.moveSpeed*1.35,this.player.baseSpeed); } }
       }
     }
@@ -5114,7 +5117,7 @@ class Game extends Phaser.Scene {
   // Cook Dishใหม่: บัฟดาเมจเล็ก (prototype) + แบนเนอร์ "Dish Cooked!" + เสียง
   cookDish(c){
     if(this.player){
-      if(c.effect)c.effect(this.player); else this.player.dmgMul=Math.min(3.25,(this.player.dmgMul||1)*1.05);
+      if(c.effect)c.effect(this.player); else this.player.dmgMul=(this.player.dmgMul||1)+0.05;
       clampPlayerStats(this.player);this.player.baseSpeed=Math.min(BALANCE.moveSpeed*1.35,this.player.baseSpeed);
     }
     const ai=SKILLDEFS[c.a], bi=PASSIVES[c.b];
@@ -5528,13 +5531,13 @@ class Game extends Phaser.Scene {
     const p={maxhp:90,dmgMul:0.90,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
     const ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,st=ch.stats||{};
     if(st.hp)p.maxhp+=st.hp; if(st.dmg)p.dmgMul*=st.dmg; if(st.spd)p.baseSpeed*=st.spd; if(st.def)p.dmgTakenMul*=st.def; if(st.crit)p.critChance+=st.crit; if(st.cdr)p.cdMul*=st.cdr; if(st.regenFlat)p.regenFlat+=st.regenFlat;
-    const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul*=(sw.dmgMul||1); p.cdMul*=(sw.cdMul||1); }
+    const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul+=((sw.dmgMul||1))-1; p.cdMul*=(sw.cdMul||1); }
     const talents=Save.cp(Save.data.character).tal||{};for(const def of charTalents(Save.data.character)){const r=talents[def.id]||0;if(r>0&&def.apply)def.apply(p,r);}
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); }
     applySpecialCores(p);
     for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
-    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul*=(1+bst.dmg); if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
-    const rp=Save.data.rankPerks||{}; if(rp.vigor)p.maxhp*=1+0.06*rp.vigor; if(rp.might)p.dmgMul*=1+0.05*rp.might; if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
+    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
+    const rp=Save.data.rankPerks||{}; if(rp.vigor)p.maxhp*=1+0.06*rp.vigor; if(rp.might)p.dmgMul+=(1+0.05*rp.might)-1; if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
     clampPlayerStats(p);   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
     return p;
   }
@@ -7298,7 +7301,7 @@ class Game extends Phaser.Scene {
     const rp=Save.data.rankPerks||{};
     if(rp.vigor)p.maxhp*=1+0.06*rp.vigor;
     if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; }   // v5.30 Ancient
-    if(rp.might)p.dmgMul*=1+0.05*rp.might;
+    if(rp.might)p.dmgMul+=(1+0.05*rp.might)-1;
     if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
     this.rankSugarMul=1+0.08*(rp.greed||0);
     this._boxLuckMul=1+0.30*(rp.boxLuck||0);
@@ -7306,7 +7309,7 @@ class Game extends Phaser.Scene {
     // Bestiary = สแตตถาวรจากการฆ่ามอนสะสม (คืนมาแล้ว v4.8) — hp flat · dmg/def/spd/cdr เป็น % · crit เป็น chance
     const bst=bestiaryTotals();
     if(bst.hp)p.maxhp+=bst.hp;
-    if(bst.dmg)p.dmgMul*=(1+bst.dmg);
+    if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1;
     if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def));
     if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd));
     if(bst.crit)p.critChance+=bst.crit;
@@ -7752,8 +7755,8 @@ class Game extends Phaser.Scene {
   tickRecipeShrine(dt){ const sh=this._shrine; if(!sh)return; sh.life-=dt; const p=this.player,inside=Phaser.Math.Distance.Between(p.x,p.y,sh.x,sh.y)<90;
     if(inside)sh.t+=dt; const g=sh.g; g.clear(); g.lineStyle(4,0xffd166,0.9); g.strokeCircle(sh.x,sh.y,90); g.fillStyle(0xffd166,0.12+0.1*Math.sin(this.elapsed*6)); g.fillCircle(sh.x,sh.y,90);
     if(sh.t>0){ g.fillStyle(0xffffff,0.35); g.slice(sh.x,sh.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,sh.t/2),false); g.fillPath(); }
-    if(sh.t>=2){ this.clearRecipeShrine(); p.dmgMul*=1.3; p.cdMul*=0.85; this.burst(p.x,p.y,0xffd166); this.showBanner('⛩️ Shrine Blessing','+30% damage · faster attacks for 25s',1800);
-      this.time.delayedCall(25000,()=>{ if(this.recipeMode){p.dmgMul/=1.3;p.cdMul/=0.85;} }); }
+    if(sh.t>=2){ this.clearRecipeShrine(); p.dmgMul+=(1.3)-1; p.cdMul*=0.85; this.burst(p.x,p.y,0xffd166); this.showBanner('⛩️ Shrine Blessing','+30% damage · faster attacks for 25s',1800);
+      this.time.delayedCall(25000,()=>{ if(this.recipeMode){p.dmgMul-=0.3;p.cdMul/=0.85;} }); }
     else if(sh.life<=0)this.clearRecipeShrine(); }
   clearRecipeShrine(){ if(this._shrine){ this._shrine.g.destroy(); this._shrine=null; } }
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
@@ -8774,8 +8777,8 @@ class Game extends Phaser.Scene {
     const xr=this._xr;if(!xr||xr.picked||!CROSSROADS.some(o=>o.id===d.id))return;xr.picked=true;
     const p=this.player,next=xr.next;this.clearCrossroads();this._xrNext=next;
     if(d.id==='blood'){
-      p.hp=Math.max(1,p.hp*0.7);p.dmgMul*=1.25;const si=this.stageIndex,runPlayer=p;
-      this.time.delayedCall(90000,()=>{if(this.player===runPlayer&&this.stageIndex===si&&this.state!=='menu')p.dmgMul/=1.25;});
+      p.hp=Math.max(1,p.hp*0.7);p.dmgMul+=(1.25)-1;const si=this.stageIndex,runPlayer=p;
+      this.time.delayedCall(90000,()=>{if(this.player===runPlayer&&this.stageIndex===si&&this.state!=='menu')p.dmgMul-=0.25;});
       this.showBanner('Blood Pact','−30% current HP · +25% damage for 90s',2400);
     }else{p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.4);Sfx.heal();this.showBanner('Recovered HP','Restored 40% of maximum HP',2000);}
     Sfx.chestWin&&Sfx.chestWin();this.resumeAfterCrossroads();
@@ -9528,7 +9531,7 @@ class Game extends Phaser.Scene {
     this._forcedOpts=opts; this._relicPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return true; }
   gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics();
     this.relics.push(k); this._rel[k]=true; this.time.delayedCall(0,()=>this.refreshTagSets()); const p=this.player,d=RELICS[k];
-    if(k==='glass'){ p.dmgMul*=1.4; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
+    if(k==='glass'){ p.dmgMul+=(1.4)-1; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
     if(k==='magnet'){ p.pickup*=1.6; p.xpMul=(p.xpMul||1)*1.2; }
     const syn=RELIC_SYNERGIES.find(s=>(s.a===k||s.b===k)&&this._rel[s.a]&&this._rel[s.b]);
     if(syn&&syn.a==='jam')p.dashCdMul=(p.dashCdMul||1)*0.65;   // Sticky Rush
@@ -10794,7 +10797,7 @@ class Game extends Phaser.Scene {
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;
     }
     // v6.17: Flat DMG แบบ PoE — บวกเข้าฐานก่อนตัวคูณทั้งหมด (dmgMul/Power/คริ/บอส/เงื่อนไข) · ไม่ใส่ใน dot
-    if(!this._infTick&&!e.isDummy)amount+=((this.player.flatDmg||0)+gearAttackRoll(this.player))*(this.player.dmgMul||1);
+    if(!this._infTick&&!e.isDummy){ const b=this.basicAttack,ef=(b&&FLAT_EFF_PATH[b.path])||FLAT_EFF[this.character]||1; amount+=((this.player.flatDmg||0)+gearAttackRoll(this.player))*ef*(this.player.dmgMul||1); }
     if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;
     if((e.isBoss||e.isMini)&&this.player.bossDmg)amount*=1+this.player.bossDmg;
     if(this._frRageT>0)amount*=this._frRageMul||1;   // v5.36 🍳 Rage

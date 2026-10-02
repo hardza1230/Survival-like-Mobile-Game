@@ -19,7 +19,7 @@ function scene(){
  s.advance=(ms)=>{const target=now+ms;let count=0;while(true){queue.sort((a,b)=>a.at-b.at);if(!queue.length||queue[0].at>target)break;const q=queue.shift();now=q.at;q.fn();assert(++count<2000,'No infinite reward timers');}now=target;};s.objects=objects;s.highlights=highlights;return s;
 }
 for(const index of [0,1]){const s=scene();s.openCrossroads(3);assert.equal(s._rollBtns.length,2);assert.equal(s.state,'rolling');assert(s.physics.paused);assert.equal(s._xr.gates,undefined);s.advance(20000);assert(s._xr,'Choice does not expire');const click=s._rollBtns[index].fn;click();click();assert.equal(s.state,'play');assert(!s.physics.paused);assert.equal(s._rollBtns.length,0);assert.equal(s.player.cdMul,0.8);
- if(index===0){assert.equal(s.player.hp,70);assert.equal(s.player.dmgMul,2.5);s.advance(90000);assert.equal(s.player.dmgMul,2);}else{assert.equal(s.player.hp,180);assert.equal(s.player.dmgMul,2);}s.advance(4000);assert.equal(s.started,3);}
+ if(index===0){assert.equal(s.player.hp,70);assert.equal(s.player.dmgMul,2.25);s.advance(90000);assert.equal(s.player.dmgMul,2);}else{assert.equal(s.player.hp,180);assert.equal(s.player.dmgMul,2);}s.advance(4000);assert.equal(s.started,3);}
 {const s=scene();s.player.hp=0.5;s.openCrossroads(3);s._rollBtns[0].fn();assert.equal(s.player.hp,1);}
 {const s=scene();s.player.hp=190;s.openCrossroads(3);s._rollBtns[1].fn();assert.equal(s.player.hp,200);}
 {const s=scene();s.state='levelup';s.openCrossroads(3);assert.equal(s._xr,undefined);s.advance(1000);assert.equal(s._xr,undefined);s.state='play';s.advance(400);assert.equal(s._rollBtns.length,2);s.clearCrossroads();assert.equal(s._xr,null);assert.equal(s.state,'play');}
