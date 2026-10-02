@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.13.0';
+const GAME_VERSION = '6.14.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.14.0', date:'2026-10-02', title:'Starting Relic', items:['Every Endgame Recipe run now begins with a choice of one Relic out of three'] },
   { v:'6.13.0', date:'2026-10-02', title:'Seven New Uniques', items:['Recipe Map bosses can now drop 12 build-changing Uniques: Twin Whisk, Ember Spice Mitts, Frostbite Treads, Four-Leaf Gummy, Whirlwind Heart, Rage Apron and Giant-Slayer Gloves join the original five'] },
   { v:'6.12.0', date:'2026-10-02', title:'Dual Infusion', items:['From level 22, an infused attack can blend a second flavor that triggers on half of all hits','The second flavor counts toward build tags'] },
   { v:'6.11.0', date:'2026-10-02', title:'Conditional Power Cards', items:['Endless upgrade cards now include 7 conditional bonuses: low-HP fury, post-Dash damage, standing-still aim, full-HP power, giant slayer, kill-streak frenzy and a last-stand guard','Old flat stat cards remain available'] },
@@ -7706,7 +7707,9 @@ class Game extends Phaser.Scene {
     this.applyEgBuild();
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
       this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
-      this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }); }
+      this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400);
+      // v6.14 (B9): Starting Relic — เลือก relic 1 ชิ้นตอนเริ่มรัน Endgame
+      this.time.delayedCall(900,()=>{ if(this._busy()&&this.state==='play'&&!(this.relics&&this.relics.length)){ if(this.offerRelic())this.showBanner('🔮 Starting Relic','Choose one to shape this run',1800); } }); }); }
   tickRecipeHunger(dt){ this._hungerT+=dt; const goal=this.recipeHungerGoal(),t=Math.floor(this._hungerT);
     this.drawWavePips();
     this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
