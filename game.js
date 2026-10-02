@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.26.0';
+const GAME_VERSION = '6.27.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.27.0', date:'2026-10-02', title:'🎵 New loading music', items:['Loading screen now plays Forgotten Wind on Old Stone']},
   { v:'6.26.0', date:'2026-10-02', title:'🎵 New main menu music', items:['Main menu now plays Masque of the Moonlit Rose']},
   { v:'6.25.0', date:'2026-10-02', title:'🎵 New loading & menu music', items:['Loading screen: Crystal Memory — a gentle, nostalgic harp-and-flute theme','Main menu: Over the Candy Hill — a warm fantasy adventure tune']},
   { v:'6.24.0', date:'2026-10-02', title:'🍬 Sugar Rush level-ups', items:['Endgame map runs no longer stop to spend upgrade points','Each level-up instantly grants a random stat and a 5s Sugar Rush: faster, stronger attacks plus a shockwave','Every 5th level opens a Draft: pick 1 of 3 game-changing Modifiers, Trade-offs or Relics']},
