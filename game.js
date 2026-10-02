@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.23.1';
+const GAME_VERSION = '6.24.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.24.0', date:'2026-10-02', title:'🍬 Sugar Rush level-ups', items:['Endgame map runs no longer stop to spend upgrade points','Each level-up instantly grants a random stat and a 5s Sugar Rush: faster, stronger attacks plus a shockwave','Every 5th level opens a Draft: pick 1 of 3 game-changing Modifiers, Trade-offs or Relics']},
   { v:'6.23.1', date:'2026-10-02', title:'🐞 Relic freeze fix', items:['Fixed the game freezing after picking a Relic in an Endgame map run while you had unspent ⬆ upgrade points']},
   { v:'6.23.0', date:'2026-10-02', title:'🧭 Atlas from Mochitopia outward', items:['Mochitopia now sits at the centre of the Atlas','The 5 regions spread out in 5 directions — every direction starts at Tier 1','Tiers rise ring by ring as you travel outward; some paths cross into neighbouring regions','Each region ends in a Guardian; break all 5 seals to open The Hunger Beneath under Mochitopia','Atlas progress was reset for the new layout']},
   { v:'6.22.0', date:'2026-10-02', title:'🍽 Atlas Flavor Influence', items:['Every Atlas map now has a flavor: 🌶️ Spicy, ❄️ Frosty, 🍯 Sweet, 🍋 Sour or 🍄 Fermented','Clearing a map spreads its flavor to connected maps (up to 3 layers per flavor)','Each layer adds +10% danger and +15% rewards, plus the flavor’s own twist and bonus','Spicy: fire puddles, extra currency · Frosty: slow tough enemies, gear shards · Sweet: bigger swarms, Sugar · Sour: more elites, gear · Fermented: harder hits, unique chance','Map rings and dots on the Atlas show each map’s flavor and influence']},
@@ -4227,6 +4228,7 @@ const RIFT_MODS=[
   {id:'glass',emoji:'🔪',name:'Razor Edge',desc:'Enemies hit 40% harder but have less HP',hp:0.85,dmg:1.4,reward:1.25},
   {id:'titan',emoji:'🗿',name:'Titanic',desc:'Enemies have 55% more HP',hp:1.55,dmg:1,reward:1.30}
 ];
+const RECIPE_DRAFT_EVERY=5, SUGAR_RUSH_SEC=5;
 const PINNACLE_KEY_COST=3, RECIPE_PAR=170, RECIPE_HUNGER_CAP=180, RECIPE_TIME_CAP=300, RECIPE_FRAGS_PER_KEY=4, RECIPE_BOSS_HP=0.7;   // R10: บอส recipe เบาลง 30% ให้รันจบใน ~2-3 นาที แต่ยังสเกลตาม tier
 // 📜 Recipe Maps (endgame Phase R · R1 = data model + stash) — แผนที่แบบ PoE: ธีม(ด่าน)+Tier+mods
 const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16;
@@ -7896,7 +7898,7 @@ class Game extends Phaser.Scene {
     for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
     this.syncBasicAttack(); this._egBuilt=true; }
   pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
-  startRecipeRun(st){ const r=this._recipe; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · T'+nd.tier); } this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
+  startRecipeRun(st){ const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · T'+nd.tier); } this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
     this.stageTxt.setText('📜 Recipe T'+r.tier+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+(nd?nd.emoji+' '+nd.name:st.name));
     this.applyEgBuild();
@@ -7905,6 +7907,7 @@ class Game extends Phaser.Scene {
       this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400);
       // v6.14 (B9): Starting Relic — เลือก relic 1 ชิ้นตอนเริ่มรัน Endgame
       this.time.delayedCall(900,()=>{ if(this._busy()&&this.state==='play'&&!(this.relics&&this.relics.length)){ if(this.offerRelic())this.showBanner('🔮 Starting Relic','Choose one to shape this run',1800); } }); }); }
+  tickSugarRush(){ if(this._rushOn&&(this.elapsed||0)>=this._rushEnd){ this._rushOn=false; this.player.cdMul/=0.6; this.player.dmgMul-=0.25; } }
   tickRecipeHunger(dt){ this._hungerT+=dt; const goal=this.recipeHungerGoal(),t=Math.floor(this._hungerT);
     this.drawWavePips();
     this.timeTxt.setText('🍽 Hunger '+Math.min(goal,Math.floor(this._hunger))+'/'+goal+' · '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'));
@@ -9447,7 +9450,7 @@ class Game extends Phaser.Scene {
     const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();
   }
   openLevelUp(){
-    if(this.recipeMode&&!this._forcedOpts){ this.slotLevelUp(); return; }   // v6.2.2: Recipe = สล็อตมุมจอ ไม่หยุดเกม
+    if(this.recipeMode&&!this._forcedOpts){ this.recipeLevelUp(); return; }   // v6.24: Recipe = สแตตอัตโนมัติ + Sugar Rush · ทุก 5 เลเวล = Draft การ์ดเปลี่ยนวิธีเล่น
     const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
@@ -9460,6 +9463,7 @@ class Game extends Phaser.Scene {
     this.banishMode=false;
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
     if(!this._forcedOpts&&!this._relicLvDone&&!this._inTutorial&&(this.level||1)>=8&&this.relicSlotsLeft()>0){ this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
+    if(this._draftPick){ this._draftPick=false; t.setText('🌟 LEVEL '+this.level+' DRAFT — pick 1 game-changer · tap again to confirm'); }
     if(this._relicPick)t.setText('🔮 RELIC — choose 1 (changes how you fight) · tap again to confirm');
     const opts=this._forcedOpts||this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._forcedOpts=null; this._lvlOpts=opts;
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
@@ -9495,6 +9499,25 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:g,alpha:{from:0.55,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
   // v6.6.0: Recipe level-up = สะสมแต้ม ⬆ ปุ่มมุมขวา · แตะเปิดหน้าอัปเกรด ใช้ได้หลายแต้มทีเดียว
+  // v6.24 (เจ้าของเลือก 1+2): เลเวลทั่วไป = สแตต endless อัตโนมัติ + Sugar Rush 5 วิ · เลเวล 5/10/15… = Draft เลือก 1 ใน 3 (Modifier/Trade-off/Relic)
+  recipeLevelUp(){ const b=this.basicAttack,n=this.pendingLvl||0; this.pendingLvl=0; if(!b||n<=0)return; b.endless=b.endless||{};
+    const got=[]; for(let i=0;i<n;i++){ const lv=this.level-n+1+i;
+      if(lv%RECIPE_DRAFT_EVERY===0){ this._draftQ=(this._draftQ||0)+1; continue; }
+      const defs=this.endlessStatDefs(); if(!defs.length)continue; const d=Phaser.Utils.Array.GetRandom(defs); b.endless[d.id]=(b.endless[d.id]||0)+1; d.apply(this.player); got.push(d.emoji+' '+d.title); }
+    clampPlayerStats(this.player); if(this.drawBars)this.drawBars(); if(this._upBtn)this._upBtn.setVisible(false);
+    if(got.length)this.sugarRush(got);
+    if((this._draftQ||0)>0&&this.state==='play')this.time.delayedCall(got.length?450:0,()=>{ if(this.state==='play')this.openRecipeDraft(); }); }
+  sugarRush(got){ const p=this.player; 
+    if(!this._rushOn){ this._rushOn=true; p.cdMul*=0.6; p.dmgMul+=0.25; }
+    this._rushEnd=(this.elapsed||0)+SUGAR_RUSH_SEC;
+    const r=170; this.vfxHitRing&&this.vfxHitRing(p.x,p.y,0xff76c8,true); this.burst(p.x,p.y,0xffd166); this.screenFlash&&this.screenFlash(0xff9bd0,0.25,220);
+    this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<r){ this.damage(e,this.relicDmg(1.2),e.x,e.y); if(!e.isBoss&&!e.isMini){ const a=Math.atan2(e.y-p.y,e.x-p.x); e.setVelocity(Math.cos(a)*380,Math.sin(a)*380); e.knock=0.22; } } });
+    this.showBanner('🍬 SUGAR RUSH! Lv '+this.level,got.slice(-2).join(' · ')+' · attacks ×1.7 speed for '+SUGAR_RUSH_SEC+'s',1300); Sfx.clear&&Sfx.clear(); }
+  openRecipeDraft(){ if(!(this._draftQ>0))return; const opts=[],seen=new Set(),add=o=>{ if(o&&!seen.has(o.key)){seen.add(o.key);opts.push(o);} };
+    for(let t=0;t<6&&opts.length<3;t++){ add(this.modCard()); if(opts.length<3&&t%2===0)add(this.tradeCard()); }
+    if(opts.length<3){ this.rollRelicChoices(3-opts.length).forEach(add); }
+    if(!opts.length){ this._draftQ--; return; }
+    this._draftQ--; this._forcedOpts=opts; this._draftPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
   slotLevelUp(){ const n=this.pendingLvl||0; if(this._upPanel)return; this.refreshUpBtn(); if(n>0&&this._upBtnN!==n){ this._upBtnN=n; if(this._upBtn)this.tweens.add({targets:this._upBtn,scale:{from:1.25,to:1},duration:220,ease:'Back.out'}); } }
   refreshUpBtn(){ const n=this.pendingLvl||0;
     if(!this._upBtn||!this._upBtn.active){ const c=this.camUI(this.add.container(0,0).setDepth(160)); const g=this.add.graphics(); g.fillStyle(0x241a30,0.92); g.fillRoundedRect(-34,-30,68,60,14); g.lineStyle(3,0x9dff9d,1); g.strokeRoundedRect(-34,-30,68,60,14);
@@ -9527,6 +9550,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
     if(this.pendingLvl>0&&!this.recipeMode){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
     if(this.recipeMode&&this.refreshUpBtn)this.refreshUpBtn();
+    if(this.recipeMode&&((this._draftQ||0)>0||(this.pendingLvl||0)>0)){ this.state='play'; this.physics.resume(); this.time.delayedCall(250,()=>{ if(this.state!=='play')return; if((this.pendingLvl||0)>0)this.recipeLevelUp(); else this.openRecipeDraft(); }); return; }
     if(this._rushNextPending){ this._rushNextPending=false; this.time.delayedCall(60,()=>{ if(this.bossRush)this.bossRushNext(); }); }
     this.state='play'; this.physics.resume();
     const queued=this._queuedBossIntro;this._queuedBossIntro=null;
@@ -12590,7 +12614,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); this.tickBeat(delta/1000); if(this._beat)return; dt*=(this.gameSpeed||1); this.elapsed+=dt;   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); this.tickBeat(delta/1000); if(this._beat)return; dt*=(this.gameSpeed||1); this.elapsed+=dt; if(this._rushOn)this.tickSugarRush();   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
