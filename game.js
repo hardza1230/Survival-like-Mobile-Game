@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.24.0';
+const GAME_VERSION = '6.25.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.25.0', date:'2026-10-02', title:'🎵 New loading & menu music', items:['Loading screen: Crystal Memory — a gentle, nostalgic harp-and-flute theme','Main menu: Over the Candy Hill — a warm fantasy adventure tune']},
   { v:'6.24.0', date:'2026-10-02', title:'🍬 Sugar Rush level-ups', items:['Endgame map runs no longer stop to spend upgrade points','Each level-up instantly grants a random stat and a 5s Sugar Rush: faster, stronger attacks plus a shockwave','Every 5th level opens a Draft: pick 1 of 3 game-changing Modifiers, Trade-offs or Relics']},
   { v:'6.23.1', date:'2026-10-02', title:'🐞 Relic freeze fix', items:['Fixed the game freezing after picking a Relic in an Endgame map run while you had unspent ⬆ upgrade points']},
   { v:'6.23.0', date:'2026-10-02', title:'🧭 Atlas from Mochitopia outward', items:['Mochitopia now sits at the centre of the Atlas','The 5 regions spread out in 5 directions — every direction starts at Tier 1','Tiers rise ring by ring as you travel outward; some paths cross into neighbouring regions','Each region ends in a Guardian; break all 5 seals to open The Hunger Beneath under Mochitopia','Atlas progress was reset for the new layout']},
@@ -1708,7 +1709,7 @@ const ASSET_AUDIO = {
   sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
-  bgm_main:       'assets/audio/bgm/menu/bgm_menu_chiptune_pop.mp3',
+  bgm_main:       'assets/audio/bgm/menu/bgm_menu_over_the_hill.mp3',
   bgm_menu_temple:  'assets/audio/bgm/menu/bgm_menu_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
   bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร

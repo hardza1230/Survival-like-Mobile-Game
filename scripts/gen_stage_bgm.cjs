@@ -192,6 +192,9 @@ const MENUS = [
   { name: 'bgm_menu_kitchen', title: 'Recipe Kitchen',      key: 72, mode: 'mixo',   bpm: 118, prog: [0, 3, 6, 4], drum: 'groove', bass: 'walk',  arp: 'pluck', arpRate: 2, lead: 'sqr',  pad: 'tri',   fx: ['tick'], rhythms: [0, 1, 3] },
   { name: 'bgm_menu_crystal_clash', title: 'Crystal Clash (main menu)', key: 64, mode: 'harm', bpm: 150, prog: [0, 5, 3, 4, 0, 5, 1, 4], drum: 'march', bass: 'pulse', arp: 'sqr', arpRate: 4, lead: 'brass', pad: 'choir', fx: ['heart'] },
   { name: 'bgm_loading_fairy_kingdom', title: 'Fairy Kingdom (loading)', key: 65, mode: 'lydian', bpm: 88, prog: [0, 4, 5, 3, 0, 1, 4, 4], drum: 'sparse', bass: 'long', arp: 'pluck', arpRate: 2, lead: 'sine', pad: 'choir', fx: ['chime'], vib: 0.012 },
+  // v6.25 แนว FF9: โหลด = เพลงคิดถึงบ้านแบบ Melodies-of-Life (aeolian i-VI-III-VII ช้า ฮาร์ป+ฟลุต+คอรัส) · เมนู = ออกผจญภัยแบบหมู่บ้านยุคกลาง (dorian ฮาร์ป+โอคารินา+walk bass)
+  { name: 'bgm_loading_crystal_memory', title: 'Crystal Memory (loading, FF9-style)', key: 69, mode: 'minor', bpm: 72, prog: [0, 5, 2, 6, 0, 5, 3, 4], drum: 'sparse', bass: 'long', arp: 'pluck', arpRate: 2, lead: 'sine', pad: 'choir', fx: ['chime', 'wind'], vib: 0.016 },
+  { name: 'bgm_menu_over_the_hill', title: 'Over the Candy Hill (main menu, FF9-style)', key: 67, mode: 'dorian', bpm: 104, prog: [0, 6, 3, 0, 5, 6, 4, 4], drum: 'soft', bass: 'walk', arp: 'bell', arpRate: 2, lead: 'tri', pad: 'choir', fx: ['chime'], vib: 0.012, rhythms: [0, 1, 3] },
   { name: 'bgm_menu_chiptune_pop', title: 'Chiptune Pop (main menu)', key: 72, mode: 'major', bpm: 128, prog: [0, 4, 5, 3, 0, 4, 3, 4], drum: 'groove', bass: 'pulse', arp: 'sqr', arpRate: 4, lead: 'sqr', pad: 'tri', fx: [], rhythms: [0, 1, 3] },
 ];
 const out = process.argv[2] || '.';

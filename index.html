@@ -86,7 +86,7 @@
   // เพลงหน้าโหลด (Fairy Kingdom) — เคารพปิดเสียง/ระดับเพลงในเซฟ · เบราว์เซอร์บล็อก autoplay ได้ → ลองเล่นใหม่ตอนแตะครั้งแรก
   window.LoaderMusic=(function(){var a=null,stopped=false,vol=0.32;
     try{var sv=JSON.parse(localStorage.getItem('mochi_save')||'{}'),st=sv.settings||{};if(st.sound===false)stopped=true;if(st.musicVol!=null)vol*=st.musicVol;}catch(e){}
-    function play(){if(stopped)return;try{if(!a){a=new Audio('assets/audio/bgm/menu/bgm_loading_fairy_kingdom.mp3');a.loop=true;a.volume=vol;}var p=a.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
+    function play(){if(stopped)return;try{if(!a){a=new Audio('assets/audio/bgm/menu/bgm_loading_crystal_memory.mp3');a.loop=true;a.volume=vol;}var p=a.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
     function stop(){if(stopped)return;stopped=true;if(!a)return;var v=a.volume,t=setInterval(function(){v-=0.04;if(v<=0){clearInterval(t);a.pause();}else a.volume=v;},60);}
     play();window.addEventListener('pointerdown',play,{once:true,capture:true});window.addEventListener('touchstart',play,{once:true,capture:true,passive:true});
     return {play:play,stop:stop};})();
