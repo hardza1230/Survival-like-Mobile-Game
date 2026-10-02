@@ -45,12 +45,12 @@ const BALANCE = {
 };
 
 // v4.55: เพดานสแตตผู้เล่นจุดเดียว — applyMeta / previewStats / cookDish / การ์ด endless ใช้ชุดเดียวกัน
-const STAT_CAPS = { dmgMul:3.25, critChance:0.40, cdMulMin:0.72, dmgTakenMin:0.35, speedMul:1.35 };
+const STAT_CAPS = { dmgMul:Infinity, critChance:1, cdMulMin:0, dmgTakenMin:0, speedMul:Infinity };   // v6.17: เจ้าของสั่งไม่มีเพดาน (crit 100% = ธรรมชาติ)
 function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.maxhp*p._uqGlass));p._uqGlass=0;} p.dmgMul=Math.min(STAT_CAPS.dmgMul,p.dmgMul); p.critChance=Math.min(STAT_CAPS.critChance,p.critChance||0); p.cdMul=Math.max(STAT_CAPS.cdMulMin,p.cdMul); p.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin,p.dmgTakenMul); p.baseSpeed=Math.min(BALANCE.moveSpeed*STAT_CAPS.speedMul,p.baseSpeed); }
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.16.0';
+const GAME_VERSION = '6.17.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.17.0', date:'2026-10-02', title:'Flat Damage & No Stat Caps', items:['Flat damage from mods and weapon ATK is now added to the base hit, so every damage multiplier, Item Power and critical hit scales it','Honed (Flat DMG) mod rolls are higher','Damage, crit, cooldown, defense and speed no longer have caps'] },
   { v:'6.16.0', date:'2026-10-02', title:'Weapon Item Power', items:['Your weapon’s item level now multiplies all your damage (×1.7 at iLv19, ×3 at iLv39, ×5.5 at iLv59)','Boss HP returns to its original values — upgrade your weapon to keep up'] },
   { v:'6.15.0', date:'2026-10-02', title:'Mochi Miners', items:['Hire Mochi Miners in the Temple Depths to dig Weave Thread while you are away','Upgrade them up to Lv5 for faster digging and bigger storage (up to 16 hours)'] },
   { v:'6.14.0', date:'2026-10-02', title:'Starting Relic', items:['Every Endgame Recipe run now begins with a choice of one Relic out of three'] },
@@ -3056,7 +3057,7 @@ const AFFIX_POOL = [
   { id:'xp', category:'utility', slots:['boots','amulet','ring'], kind:'suffix', emoji:'✨', label:'EXP Gain', suf:'of Insight', fmt:v=>'+'+v+'%', tiers:[[17,22],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.xpMul=(p.xpMul||1)*(1+v/100); } },
   { id:'dash', category:'utility', slots:['boots','ring'], kind:'suffix', emoji:'💨', label:'Dash Recovery', suf:'of Momentum', fmt:v=>'-'+v+'%', tiers:[[11,14],[9,10],[7,8],[5,6],[3,4]], apply:(p,v)=>{ p.dashCdMul=(p.dashCdMul||1)*(1-v/100); } },
   // ── v4.91: mod เพิ่ม (ใช้ field เดิมทั้งหมด) ──
-  { id:'edge', category:'offense', slots:['weapon','gloves'], kind:'prefix', emoji:'🗡️', label:'Flat DMG', pre:'Honed', fmt:v=>'+'+v+' per hit', tiers:[[4,5],[3,3],[2,2],[1,2],[1,1]], apply:(p,v)=>{ p.flatDmg=(p.flatDmg||0)+v; } },
+  { id:'edge', category:'offense', slots:['weapon','gloves'], kind:'prefix', emoji:'🗡️', label:'Flat DMG', pre:'Honed', fmt:v=>'+'+v+' per hit', tiers:[[6,8],[5,5],[3,4],[2,3],[1,2]], apply:(p,v)=>{ p.flatDmg=(p.flatDmg||0)+v; } },
   { id:'precision', category:'offense', slots:['gloves','amulet'], kind:'prefix', emoji:'🏹', label:'Crit & Haste', pre:'Precise', fmt:v=>'+'+v+'% / -'+v+'%', tiers:[[4,4],[3,3],[2,2],[1,2],[1,1]], apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; p.cdMul=Math.max(STAT_CAPS.cdMulMin,(p.cdMul||1)*(1-v/100)); } },
   { id:'hppct', category:'defense', slots:['armor','amulet','boots'], kind:'suffix', emoji:'💪', label:'Max HP %', suf:'of Vigor', fmt:v=>'+'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.maxhp=Math.round(p.maxhp*(1+v/100)); } },
   { id:'regenpct', category:'defense', slots:['armor','ring'], kind:'suffix', emoji:'🌱', label:'Regen % HP/s', suf:'of Renewal', fmt:v=>'+'+(v/10)+'%', tiers:[[7,8],[5,6],[4,4],[2,3],[1,1]], apply:(p,v)=>{ p.regenPct=(p.regenPct||0)+v/1000; } },
@@ -10792,6 +10793,8 @@ class Game extends Phaser.Scene {
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;
     }
+    // v6.17: Flat DMG แบบ PoE — บวกเข้าฐานก่อนตัวคูณทั้งหมด (dmgMul/Power/คริ/บอส/เงื่อนไข) · ไม่ใส่ใน dot
+    if(!this._infTick&&!e.isDummy)amount+=((this.player.flatDmg||0)+gearAttackRoll(this.player))*(this.player.dmgMul||1);
     if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;
     if((e.isBoss||e.isMini)&&this.player.bossDmg)amount*=1+this.player.bossDmg;
     if(this._frRageT>0)amount*=this._frRageMul||1;   // v5.36 🍳 Rage
@@ -10805,7 +10808,6 @@ class Game extends Phaser.Scene {
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);
     { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
-    amount+=(this.player.flatDmg||0)+gearAttackRoll(this.player);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this.player.powerMul||1); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;   // 🪞 Oath Focus
