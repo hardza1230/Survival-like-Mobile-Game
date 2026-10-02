@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.15.0';
+const GAME_VERSION = '6.15.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.15.1', date:'2026-10-02', title:'Boss HP Rebalance', items:['Chapter 2–3 bosses no longer gain extra HP on top of their stage HP','Level-based boss HP scaling on Hard/Hell lowered (max ×1.8 instead of ×3)'] },
   { v:'6.15.0', date:'2026-10-02', title:'Mochi Miners', items:['Hire Mochi Miners in the Temple Depths to dig Weave Thread while you are away','Upgrade them up to Lv5 for faster digging and bigger storage (up to 16 hours)'] },
   { v:'6.14.0', date:'2026-10-02', title:'Starting Relic', items:['Every Endgame Recipe run now begins with a choice of one Relic out of three'] },
   { v:'6.13.0', date:'2026-10-02', title:'Seven New Uniques', items:['Recipe Map bosses can now drop 12 build-changing Uniques: Twin Whisk, Ember Spice Mitts, Frostbite Treads, Four-Leaf Gummy, Whirlwind Heart, Rage Apron and Giant-Slayer Gloves join the original five'] },
@@ -8476,7 +8477,7 @@ class Game extends Phaser.Scene {
     }
   }
   // HP บอสไต่ตามเลเวลในรันและ Power Guide แบบอ่อน ๆ เท่านั้น ไม่สเกลตาม rank Fullจน progression ไร้ความหมาย
-  bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(3.0,(1+Math.max(0,(this.level||1)-1)*0.055)*pg.enemyHp); }
+  bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(1.8,(1+Math.max(0,(this.level||1)-1)*0.03)*pg.enemyHp); }   // v6.15.1: เดิม 3.0/0.055 → บอส Hard/Hell หลักแสน
   // ยิ่งฆ่ามอนในด่านเยอะ ศัตรู/บอสยิ่งถึกขึ้น (ทวีคูณ) — ทำให้เกมยากขึ้นเรื่อย ๆ ระหว่างด่าน
   killPowerMul(){ return (1 + Math.min(1.8, (this.stageKills||0)*0.005))*(this.endlessMode?1+(this.endlessCycle||0)*0.18:1); }
   // ผ่อนความยากให้ผู้เล่นใหม่: Stage 1 + ช่วงต้นStage (ฆ่ายังน้อย) + ยังไม่จบ tutorial → มอนเลือดน้อยลง (แก้ feedback "~4 hits per enemy")
@@ -8585,7 +8586,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+Math.min(4,this.stageIndex)*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
