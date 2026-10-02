@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.15.0 (Idle I-Dig, เจ้าของ: ข้อ 3 เป็นแหล่งด้าย):** `MINER_LEVELS` Lv1-5 (ด้าย 3/5/7/9/12 ต่อชม., เก็บ 8-16 ชม., จ้าง/อัป 🍬300/600/1000/1500/2200) · `Save.miners()` `{lv,at,store}` · `minersTick` สะสมตามเวลาจริง (นาฬิกาถอย = รีเซ็ต at ไม่ให้ของ) · `minersCollect/minersUpgrade/minersReady` (≥50% ความจุ → จุดแดง Depths) · แถว 👷 ล่างหน้า buildDig · แผน idle อื่น (Bakery/Expedition/สวน/Bounty) เจ้าของยังไม่สั่ง
 - **v6.14.0 (B9):** Starting Relic: startRecipeRun หลังเริ่มเวฟ 0.9 วิ เรียก `offerRelic()` (เลือก 1 ใน 3, หยุดเกม) เฉพาะ Recipe/Endgame ถ้ายังไม่มี relic · ใช้ช่อง relic ปกติ (RELIC_CAP)
 - **v6.13.0 (B8):** `UNIQUE_GEAR` 5→12 (key ซ้ำช่องใช้ `slot` เช่น weapon2/gloves2) · Twin Whisk cd×0.75 dmg×0.85 · Ember Spice Mitts `_tagIgnite` 25% · Frostbite Treads `_tagChill` 20% spd×0.9 · Four-Leaf Gummy crit+12% critMul−0.25 · Whirlwind Heart `_cond.c_dash`+2 · Rage Apron `_tdBerserk` + `_uqGlass` 0.85 · Giant-Slayer Gloves `_cond.c_boss`+3 spd×0.9 · ทุกธีมมี unique 2-3 ชิ้น · validator ล็อก 12
 - **v6.12.0 (B7):** Dual Infusion: มี `b.infusion` แล้ว + เลเวล≥22 → การ์ด 3 ใบธาตุอื่น ตั้ง `b.infusion2` (reset ทุกด่านพร้อม basicAttack) · ติด 50% ของฮิตใน damage ต่อจาก infusion หลัก · ไม่มีตัวคูณ direct · นับแท็กใน tagCounts · tickInfusion ทำงานถ้ามีธาตุใดธาตุหนึ่ง

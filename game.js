@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.14.0';
+const GAME_VERSION = '6.15.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.15.0', date:'2026-10-02', title:'Mochi Miners', items:['Hire Mochi Miners in the Temple Depths to dig Weave Thread while you are away','Upgrade them up to Lv5 for faster digging and bigger storage (up to 16 hours)'] },
   { v:'6.14.0', date:'2026-10-02', title:'Starting Relic', items:['Every Endgame Recipe run now begins with a choice of one Relic out of three'] },
   { v:'6.13.0', date:'2026-10-02', title:'Seven New Uniques', items:['Recipe Map bosses can now drop 12 build-changing Uniques: Twin Whisk, Ember Spice Mitts, Frostbite Treads, Four-Leaf Gummy, Whirlwind Heart, Rage Apron and Giant-Slayer Gloves join the original five'] },
   { v:'6.12.0', date:'2026-10-02', title:'Dual Infusion', items:['From level 22, an infused attack can blend a second flavor that triggers on half of all hits','The second flavor counts toward build tags'] },
@@ -2759,6 +2760,8 @@ const PERK_TIER_REQ = { 2:3, 3:8 };   // แต้มที่ต้องลง
 /* ---- v5.27 ⛏️ Temple Depths: มินิเกมขุดใต้วิหาร (ดู docs/TEMPLE_DIG_DESIGN.md) ---- */
 const DIG_N=5, DIG_START_SHOVELS=0;
 const DIG_SHOP_COST=120, DIG_SHOP_SHOVELS=5, DIG_SHOP_DAILY_LIMIT=3;
+// v6.15 (Idle): Mochi Miners ขุดด้ายให้ตอนออฟไลน์ · [rate/ชม., เก็บได้กี่ชม., ราคาอัปไปเลเวลนี้]
+const MINER_LEVELS=[null,{rate:3,cap:8,cost:300},{rate:5,cap:10,cost:600},{rate:7,cap:12,cost:1000},{rate:9,cap:14,cost:1500},{rate:12,cap:16,cost:2200}];
 const DIG_ITEMS={
   empty:{emoji:'',name:'Dust'},
   thread:{emoji:'🧶',name:'Weave Thread'},   // v5.33 วัสดุอัปแก่น (แทน Sugar)
@@ -3677,6 +3680,11 @@ const Save = {
   kitchenResetCost(){ return 5+2*(this.data.rank||0); },
   threads(){ return this.data.threads||0; },
   addThreads(n){ this.data.threads=this.threads()+n; this.save(); },
+  miners(){ if(!this.data.miners)this.data.miners={lv:0,at:Date.now(),store:0}; return this.data.miners; },
+  minersTick(){ const m=this.miners(),now=Date.now(); if(!m.lv){m.at=now;return m;} if(now<m.at){m.at=now;return m;} const L=MINER_LEVELS[m.lv],h=(now-m.at)/3600000; m.store=Math.min(L.rate*L.cap,(m.store||0)+L.rate*h); m.at=now; return m; },
+  minersReady(){ const m=this.minersTick(); return m.lv>0&&m.store>=MINER_LEVELS[m.lv].rate*MINER_LEVELS[m.lv].cap*0.5; },
+  minersCollect(){ const m=this.minersTick(),n=Math.floor(m.store||0); if(n<1)return 0; m.store-=n; this.addThreads(n); return n; },
+  minersUpgrade(){ const m=this.minersTick(),nx=MINER_LEVELS[m.lv+1]; if(!nx||(this.data.sugar||0)<nx.cost)return false; this.data.sugar-=nx.cost; m.lv++; this.save(); return true; },
   spendThreads(n){ if(this.threads()<n)return false; this.data.threads-=n; this.save(); return true; },
   talAllMax(){ return UPG_ORDER.every(k=>this.talLvl(k)>=TAL_MAX); },
   talFilled(){ let t=0; for(const k of UPG_ORDER) t+=this.talLvl(k); return t; },   // ความคืบหน้าWaitบนี้
@@ -6115,7 +6123,7 @@ class Game extends Phaser.Scene {
     if(target==='char')return Object.values(d.charUnlockNew||{}).some(Boolean);
     if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew);
     if(target==='perks')return Save.rankPointsFree()>0;
-    if(target==='dig')return Save.digFreeReady();
+    if(target==='dig')return Save.digFreeReady()||!!(Save.minersReady&&Save.minersReady());
     if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig');
     if(target==='news')return this.hasNewsBadge();
     return false;}catch(e){return false;}}
@@ -6579,6 +6587,15 @@ class Game extends Phaser.Scene {
     const canGo=d.gemFound||d.stairFound,dt=btn(w/2+6,d.stairFound?'🕳️ Secret descent':(d.gemFound?'🪜 Go down':'🪜 Find the ladder'),d.stairFound?0x6a3a8a:0x5a3a7a,!!canGo,()=>this.digDescend());
     if(canGo)this.digTween({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
     const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret  ✦ hint\nCore Stones  🔴 '+Save.coreStones('hp')+'   🟠 '+Save.coreStones('dmg')+'   🔵 '+Save.coreStones('def')+'   ·   📜 '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
+    if(Save.minersTick){ // 👷 Mochi Miners (idle) — แถวล่างสุด
+      const m=Save.minersTick(),L=MINER_LEVELS[m.lv],nx=MINER_LEVELS[m.lv+1],my=Math.min(h-48,by+bh+64),rw=Math.min(w-32,420),rx=w/2-rw/2;
+      const g=this.add.graphics(); g.fillStyle(0x241a2e,0.95); g.fillRoundedRect(rx,my,rw,40,12); g.lineStyle(1.5,0x8a6a4a,1); g.strokeRoundedRect(rx,my,rw,40,12); this.menu.add(g);
+      const lab=m.lv?('👷 Miners Lv'+m.lv+' · 🧶 '+Math.floor(m.store)+'/'+(L.rate*L.cap)+' ('+L.rate+'/h)'):'👷 Hire Mochi Miners — dig 🧶 while you’re away';
+      this.menu.add(this.add.text(rx+10,my+20,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8'}).setOrigin(0,0.5));
+      const sb=(x,bw2,t,on,fn)=>{ const b2=this.add.graphics(); b2.fillStyle(on?0x6a8a3a:0x3a3045,1); b2.fillRoundedRect(x,my+6,bw2,28,9); this.menu.add(b2); this.menu.add(this.add.text(x+bw2/2,my+20,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:on?'#fff':'#8a8098'}).setOrigin(0.5)); this._zone(x,my+6,bw2,28,fn); };
+      if(nx)sb(rx+rw-(m.lv?132:76),70,(m.lv?'⬆ ':'Hire ')+'🍬'+nx.cost,(Save.data.sugar||0)>=nx.cost,()=>{ if(Save.minersUpgrade()){Sfx.digFind();this.menuToast('👷 Miners Lv'+Save.miners().lv+'!','#a8ffb0');this.buildDig();} else this.menuToast('Need 🍬'+nx.cost,'#ff9bb5'); });
+      if(m.lv)sb(rx+rw-58,52,'Collect',m.store>=1,()=>{ const n=Save.minersCollect(); if(n>0){Sfx.digFind();this.menuToast('🧶 +'+n+' threads from the miners','#a8ffb0');this.buildDig();} else this.menuToast('Miners are still digging…','#b7abc9'); });
+    }
     this.menu.setVisible(true);
   }
   drawDigCell(cont,c,cs){ if(!cont||!cont.scene)return;this.tweens.killTweensOf(cont.list.slice());cont.removeAll(true); const g=this.add.graphics(); cont.add(g);
