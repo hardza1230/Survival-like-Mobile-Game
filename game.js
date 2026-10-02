@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.11.0';
+const GAME_VERSION = '6.12.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.12.0', date:'2026-10-02', title:'Dual Infusion', items:['From level 22, an infused attack can blend a second flavor that triggers on half of all hits','The second flavor counts toward build tags'] },
   { v:'6.11.0', date:'2026-10-02', title:'Conditional Power Cards', items:['Endless upgrade cards now include 7 conditional bonuses: low-HP fury, post-Dash damage, standing-still aim, full-HP power, giant slayer, kill-streak frenzy and a last-stand guard','Old flat stat cards remain available'] },
   { v:'6.10.0', date:'2026-10-02', title:'Fusions', items:['Evolve your weapon while holding the right Relic to unlock a Fusion form','2 Fusions per hero, e.g. Mint + Chill Relic = Living Glacier','Pause shows your Fusion goals; matching Relics appear more often'] },
   { v:'6.9.0', date:'2026-10-02', title:'Trade-offs', items:['New Trade-off cards from Chapter 2 and in the Endgame: big gains with a real cost','Glass Heart, Slow Burn, Heavy Armor, Sugar Rush, Berserker, Frozen Core, Hungry Pact, Sniper’s Oath','Up to 2 Trade-offs per stage; each carries build tags'] },
@@ -9571,6 +9572,11 @@ class Game extends Phaser.Scene {
       this.showBanner('🍯 Flavor Infusion','Infuse your attack with a flavor',1600);
       return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,tags:TAGS_OF.infusion[f.id],kind:'Flavor Infusion',special:true,color:f.color,apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
     }
+    // v6.12 (B7): Dual Infusion — ธาตุที่สอง (ติด 50% ของฮิต) ตั้งแต่เลเวล 22
+    if(!noSpecial&&b.infusion&&!b.infusion2&&!this._inTutorial&&(this.level||1)>=22){
+      this.showBanner('🍯 Dual Infusion','Blend a second flavor (50% of hits)',1600);
+      return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.filter(f=>f.id!==b.infusion)).slice(0,3).map(f=>makeCard(f,{desc:f.desc+' · procs on 50% of hits',tags:TAGS_OF.infusion[f.id],kind:'Dual Infusion',special:true,color:f.color,apply:()=>{b.infusion2=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' Dual Flavor','Second flavor blended in',1800);Sfx.clear();}}));
+    }
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) timesเดียว: การ์ดทั้งจอเป็น mutation ล้วน
     if(!noSpecial&&b.mastery>=10&&!b.mutation){   // v5.9: 8→10 ห่างขึ้น (เจ้าของ: เก่งเร็วไป)   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
       const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
@@ -10725,7 +10731,7 @@ class Game extends Phaser.Scene {
   upTags(id){ const b=this.basicAttack,wt=(b&&WEAPON_TAGS[b.character])||[]; { const m=modDef(id)||tradeDef(id); if(m)return m.tags; } return UP_TAGS[id]||(id==='evolution'?wt:wt.slice(0,1)); }
   tagCounts(){ const c={},add=t=>tagList(t).forEach(x=>{if(TAG_SETS[x])c[x]=(c[x]||0)+1;}), b=this.basicAttack;
     if(b){ add(WEAPON_TAGS[b.character]); for(const id in (b.lv||{}))if(b.lv[id]>0)add(this.upTags(id));
-      if(b.path)add(this.upTags(b.path)); if(b.infusion)add(TAGS_OF.infusion[b.infusion]); if(b.mutation)add(this.upTags(b.mutation)); if(b.evolved)add(WEAPON_TAGS[b.character]); (b.mods||[]).forEach(id=>add(this.upTags(id))); (b.trades||[]).forEach(id=>add(this.upTags(id))); }
+      if(b.path)add(this.upTags(b.path)); if(b.infusion)add(TAGS_OF.infusion[b.infusion]); if(b.infusion2)add(TAGS_OF.infusion[b.infusion2]); if(b.mutation)add(this.upTags(b.mutation)); if(b.evolved)add(WEAPON_TAGS[b.character]); (b.mods||[]).forEach(id=>add(this.upTags(id))); (b.trades||[]).forEach(id=>add(this.upTags(id))); }
     (this.relics||[]).forEach(k=>add(TAGS_OF.relic[k]));
     const eq=(Save.data&&Save.data.equippedGear)||{}; for(const s in eq){ const seen={}; (Save.gearAffixes(eq[s])||[]).forEach(a=>tagList(TAGS_OF.affix[a.id]).forEach(t=>seen[t]=1)); add(Object.keys(seen)); }
     return c; }
@@ -10740,7 +10746,7 @@ class Game extends Phaser.Scene {
     else if(inf==='sour'){ e._sourT=3; e._sourPow=pw; }
     else if(inf==='sweet'){ const now=this.elapsed||0; if(now>=(this._sweetCd||0)){ this._sweetCd=now+0.3; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(0.5,p.maxhp*0.005*pw)); } }
     else if(inf==='minty'){ if(!e.isBoss&&!e.isMini&&Math.random()<0.30)e.frozen=Math.max(e.frozen||0,0.35*pw); } }
-  tickInfusion(dt){ const b=this.basicAttack; if(!b||!b.infusion)return; this._infAcc=(this._infAcc||0)+dt; if(this._infAcc<0.25)return; const step=this._infAcc; this._infAcc=0;
+  tickInfusion(dt){ const b=this.basicAttack; if(!b||!(b.infusion||b.infusion2))return; this._infAcc=(this._infAcc||0)+dt; if(this._infAcc<0.25)return; const step=this._infAcc; this._infAcc=0;
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
       if(e._sourT>0)e._sourT-=step;
       if(e._burnT>0){ e._burnT-=step; this._infTick=true; this.damage(e,(e._burnDps||0)*step,e.x,e.y); this._infTick=false; if(Math.random()<0.3)this.burst&&this.burst(e.x,e.y,0xff5a3d); if(e._burnT<=0)e._burnDps=0; } }); }
@@ -10766,7 +10772,7 @@ class Game extends Phaser.Scene {
       if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);
-    { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
+    { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     amount+=(this.player.flatDmg||0)+gearAttackRoll(this.player);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
