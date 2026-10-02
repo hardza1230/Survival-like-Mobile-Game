@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.15.0';
+const GAME_VERSION = '6.16.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.16.0', date:'2026-10-02', title:'Weapon Item Power', items:['Your weapon’s item level now multiplies all your damage (×1.7 at iLv19, ×3 at iLv39, ×5.5 at iLv59)','Boss HP returns to its original values — upgrade your weapon to keep up'] },
   { v:'6.15.0', date:'2026-10-02', title:'Mochi Miners', items:['Hire Mochi Miners in the Temple Depths to dig Weave Thread while you are away','Upgrade them up to Lv5 for faster digging and bigger storage (up to 16 hours)'] },
   { v:'6.14.0', date:'2026-10-02', title:'Starting Relic', items:['Every Endgame Recipe run now begins with a choice of one Relic out of three'] },
   { v:'6.13.0', date:'2026-10-02', title:'Seven New Uniques', items:['Recipe Map bosses can now drop 12 build-changing Uniques: Twin Whisk, Ember Spice Mitts, Frostbite Treads, Four-Leaf Gummy, Whirlwind Heart, Rage Apron and Giant-Slayer Gloves join the original five'] },
@@ -3359,6 +3360,8 @@ function gearBaseStatText(item){const b=gearBaseStats(item);return b.attackMax?'
 function applyGearBaseStats(p,item){const b=gearBaseStats(item);p.gearAttackMin=(p.gearAttackMin||0)+b.attackMin;p.gearAttackMax=(p.gearAttackMax||0)+b.attackMax;p.armor=(p.armor||0)+b.armor;}
 function gearAttackRoll(p,rng=Math.random){const lo=p.gearAttackMin||0,hi=p.gearAttackMax||0;return lo+Math.floor(rng()*Math.max(1,hi-lo+1));}
 function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
+// v6.16: Item Power — อาวุธ iLv สูง = ดาเมจผู้เล่นโตตาม progress (อยู่นอกเพดาน STAT_CAPS.dmgMul)
+function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.03,l-1):Math.pow(1.03,59)*Math.pow(1.015,l-60); }
 function applyItemLevelBonus(p,item){applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
   if(slot==='weapon'||slot==='ring')p.dmgMul*=1+0.24*q;
   else if(slot==='gloves')p.critChance=(p.critChance||0)+0.06*q;
@@ -5528,7 +5531,7 @@ class Game extends Phaser.Scene {
     const talents=Save.cp(Save.data.character).tal||{};for(const def of charTalents(Save.data.character)){const r=talents[def.id]||0;if(r>0&&def.apply)def.apply(p,r);}
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); }
     applySpecialCores(p);
-    for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
+    for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
     const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul*=(1+bst.dmg); if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
     const rp=Save.data.rankPerks||{}; if(rp.vigor)p.maxhp*=1+0.06*rp.vigor; if(rp.might)p.dmgMul*=1+0.05*rp.might; if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
     clampPlayerStats(p);   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
@@ -5541,7 +5544,7 @@ class Game extends Phaser.Scene {
     const hd=this.add.text(w/2,y,ch.emoji+' '+ch.name+'  ·  ⚡ Power '+pow,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5); y+=16;
     const note=this.add.text(w/2,y,'Real loadout numbers (weapon + weave + gear + bestiary + perks)',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5); this.menu.add([hd,note]); y+=22;
     const rows=[
-      ['💥','Attack Power',Math.round(p.dmgMul*100)+'','ATK '+(p.gearAttackMin||0)+'-'+(p.gearAttackMax||0)+' · flat '+(p.flatDmg||0),0xff8f5a],
+      ['💥','Attack Power',Math.round(p.dmgMul*100)+'','Power ×'+(p.powerMul||1).toFixed(2)+' · ATK '+(p.gearAttackMin||0)+'-'+(p.gearAttackMax||0),0xff8f5a],
       ['❤️','Max HP',Math.round(p.maxhp)+'','',0xff5f7a],
       ['🎯','Crit Chance',Math.round(p.critChance*100)+'%','×'+p.critMul.toFixed(2)+' crit damage',0xffd166],
       ['🛡️','Defense',Math.round((1-p.dmgTakenMul)*100)+'% less','Armor '+(p.armor||0)+' · armor reduction '+Math.round((1-armorDamageMultiplier(p))*100)+'%',0x6ec6ff],
@@ -7258,7 +7261,7 @@ class Game extends Phaser.Scene {
   }
   applyMeta(){ if(this.player){this.player._tagIgnite=0;this.player._tagChill=0;this.player._tdBerserk=false;this.player._cond={};}
     const p=this.player;
-    p.cdMul=1;p.armor=0;p.gearAttackMin=0;p.gearAttackMax=0; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
+    p.cdMul=1;p.powerMul=1;p.armor=0;p.gearAttackMin=0;p.gearAttackMax=0; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.sugarFindMul=1; p.boxFindMul=1; p.currencyFindMul=1; p.uniqueCdMul=1; p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
     p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1;
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
@@ -7285,7 +7288,7 @@ class Game extends Phaser.Scene {
     // passivesสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลWaitบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
     applySpecialCores(p);
-    for(const slot in GEAR){const inst=Save.equippedGearItem(slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it&&it.apply){it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst);
+    for(const slot in GEAR){const inst=Save.equippedGearItem(slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it&&it.apply){it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(slot==='weapon'&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
       if(it.tier!=='start'){const affs=Save.ensureAffix(inst.uid,it.tier);for(const a of affs){const ad=affixDef(a.id);if(ad)ad.apply(p,a.v);}}}}
     // ชุดอุปกรณ์ (Set Bonus): สวมของชุดเดียวกันครบ 2/3 ชิ้น = โบนัสสะสม
     const setCounts=gearSetCounts();
@@ -10804,7 +10807,7 @@ class Game extends Phaser.Scene {
     { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     amount+=(this.player.flatDmg||0)+gearAttackRoll(this.player);   // ดาเมจตรง (พรสวรรค์ ATK) บวกทุกครั้งที่โดน
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
-    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
+    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this.player.powerMul||1); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;   // 🪞 Oath Focus
     let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();
     if(crit&&CP&&CP.id==='momo'&&(this.elapsed||0)>=(CP.cd||0)){ CP.cd=(this.elapsed||0)+0.35; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(1,p.maxhp*0.006*CP.s)); }   // 🍓 Lucky Seeds
