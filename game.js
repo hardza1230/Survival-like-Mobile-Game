@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.5.0';
+const GAME_VERSION = '6.6.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.6.0', date:'2026-10-02', title:'Upgrade points', items:['Endgame level-ups now bank upgrade points instead of a slot machine','Tap the ⬆ button to pick stats and spend many points at once','Auto spend all picks for you'] },
   { v:'6.5.0', date:'2026-10-01', title:'Map Table', items:['Recipe map items are gone: pick any cleared theme and tier on the Map Table','Clearing a tier unlocks the next one; dying costs nothing','Map mods are paid with crafting currency when the run starts','Old maps were refunded as currency'] },
   { v:'6.4.0', date:'2026-10-01', title:'Endgame home', items:['The Prepare Run screen is now the Endgame home: next map, build, pact, target, totals and Start in one place','Maps, Atlas and Pinnacle are one tap away; the highest-tier map is picked automatically'] },
   { v:'6.3.0', date:'2026-10-01', title:'Run preparation screen', items:['New single Prepare Run screen for Recipe maps: map, build, pact, farming target and total multipliers in one place'] },
@@ -4404,6 +4405,7 @@ class Game extends Phaser.Scene {
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
 
+      if(this._upBtn&&this._upBtn.visible&&Math.abs(p.x-this._upBtn.x)<38&&Math.abs(p.y-this._upBtn.y)<34){ this.openUpgradePanel(); return; }
       if(this._beat){ this.beatDown(p); return; }   // v5.55 มินิเกม Bear Beat Rush กินทุกการแตะ
       if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0){this._ubHold={id:p.id,t:performance.now()}; Sfx.beatFx('hold');} return; } if(this.isSniperUnique()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
@@ -4813,7 +4815,7 @@ class Game extends Phaser.Scene {
     this.bossUI.forEach(o=>o.setVisible(false));
   }
   hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); if(v){this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
-  drawBars(){
+  drawBars(){ if(this._upBtn&&this._upBtn.active)this._upBtn.setVisible(this.state==='play'&&(this.pendingLvl||0)>0);
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
     const bx=pad+16, bw=(this.W-138)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
@@ -7298,7 +7300,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ this.cancelBeat(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this.cancelBeat(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -7361,7 +7363,7 @@ class Game extends Phaser.Scene {
     const close=d=>{if(this.state!=='rolling')return;if(d){this._activeZoneMods.push(d.id);this._zoneMul=this.zoneModMul();this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});}cont.destroy(true);this._rollBtns=[];this.state='play';this.physics.resume();if(onResume)onResume();};
     this._rollBtns=options.concat([null]).map((d,i)=>{const x=(w-cw)/2,y=top+i*92,g=this.add.graphics();g.fillStyle(0x21172f,1);g.fillRoundedRect(x,y,cw,78,14);g.lineStyle(2,0xffd166,1);g.strokeRoundedRect(x,y,cw,78,14);cont.add(g);cont.add(this.add.text(w/2,y+18,d?d.name:'Continue without a curse',{fontFamily:'sans-serif',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5,0));cont.add(this.add.text(w/2,y+47,d?d.desc+' · rewards ×'+d.reward.toFixed(2):'Keep current difficulty and rewards',{fontFamily:'sans-serif',fontSize:'12px',color:'#e8dcff'}).setOrigin(0.5,0));return{x,y,w:cw,h:78,fn:()=>close(d)};});
   }
-  startRun(idx){ this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null;
+  startRun(idx){ if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null;
     if(this.state!=='menu')return;
     const endgameRequested=!!(this._recipeRequested||this._riftRequested||this._endlessRequested||this._bossRushRequested||this._pinnacleRequested);
     if(endgameRequested&&!this._farmFocusRequested){this.openEndgamePreparation(idx);return;}
@@ -9107,7 +9109,7 @@ class Game extends Phaser.Scene {
     const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();
   }
   openLevelUp(){
-    if(this.recipeMode&&this._egBuilt&&!this._forcedOpts){ this.slotLevelUp(); return; }   // v6.2.2: Recipe = สล็อตมุมจอ ไม่หยุดเกม
+    if(this.recipeMode&&!this._forcedOpts){ this.slotLevelUp(); return; }   // v6.2.2: Recipe = สล็อตมุมจอ ไม่หยุดเกม
     const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
@@ -9154,22 +9156,32 @@ class Game extends Phaser.Scene {
     g.setScale(1);this.tweens.killTweensOf(g);
     this.tweens.add({targets:g,alpha:{from:0.55,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
-  // 🎰 Recipe level-up: วงล้อเล็กมุมขวา หมุน ~1 วิ แล้วให้สแตต endless ทันที (เกมไม่หยุด) · เลเวลซ้อนกันหมุนต่อคิว
-  slotLevelUp(){ if(this._slotBusy||!(this.pendingLvl>0))return; const b=this.basicAttack; if(!b){this.pendingLvl=0;return;}
-    const defs=this.endlessStatDefs(); if(!defs.length){this.pendingLvl=0;return;}
-    this._slotBusy=true; this.pendingLvl--; const win=Phaser.Utils.Array.GetRandom(defs);
-    const x=this.W-58,y=(this._pad||0)+150,c=this.camUI(this.add.container(x,y).setDepth(160));
-    const g=this.add.graphics(); g.fillStyle(0x241a30,0.92); g.fillRoundedRect(-36,-36,72,72,14); g.lineStyle(3,0xffd166,1); g.strokeRoundedRect(-36,-36,72,72,14);
-    const t=this.add.text(0,-2,defs[0].emoji,{fontSize:'34px'}).setOrigin(0.5); const lv=this.add.text(0,30,'LV UP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5);
-    c.add([g,t,lv]); c.setScale(0.4); this.tweens.add({targets:c,scale:1,duration:180,ease:'Back.out'});
-    let i=0; const N=12; const tick=()=>{ if(!c.active)return; i++; t.setText(i>=N?win.emoji:defs[i%defs.length].emoji); Sfx.chestTick&&Sfx.chestTick(i);
-      if(i<N){ this.time.delayedCall(45+i*i*0.9,tick); return; }
-      b.endless=b.endless||{}; b.endless[win.id]=(b.endless[win.id]||0)+1; win.apply(this.player); if(win.id==='ehp'&&this.drawBars)this.drawBars();
-      g.lineStyle(4,0x9dff9d,1); g.strokeRoundedRect(-36,-36,72,72,14); lv.setText(win.title).setColor('#9dff9d');
-      const pop=this.camUI(this.add.text(x,y+52,win.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9dff9d',stroke:'#000',strokeThickness:3}).setOrigin(1,0).setX(this.W-14).setDepth(160));
-      this.tweens.add({targets:c,scale:1.15,duration:120,yoyo:true});
-      this.time.delayedCall(900,()=>{ this.tweens.add({targets:[c,pop],alpha:0,duration:250,onComplete:()=>{c.destroy();pop.destroy();this._slotBusy=false; if(this.pendingLvl>0)this.slotLevelUp();}}); }); };
-    this.time.delayedCall(60,tick); }
+  // v6.6.0: Recipe level-up = สะสมแต้ม ⬆ ปุ่มมุมขวา · แตะเปิดหน้าอัปเกรด ใช้ได้หลายแต้มทีเดียว
+  slotLevelUp(){ const n=this.pendingLvl||0; if(this._upPanel)return; this.refreshUpBtn(); if(n>0&&this._upBtnN!==n){ this._upBtnN=n; if(this._upBtn)this.tweens.add({targets:this._upBtn,scale:{from:1.25,to:1},duration:220,ease:'Back.out'}); } }
+  refreshUpBtn(){ const n=this.pendingLvl||0;
+    if(!this._upBtn||!this._upBtn.active){ const c=this.camUI(this.add.container(0,0).setDepth(160)); const g=this.add.graphics(); g.fillStyle(0x241a30,0.92); g.fillRoundedRect(-34,-30,68,60,14); g.lineStyle(3,0x9dff9d,1); g.strokeRoundedRect(-34,-30,68,60,14);
+      const t=this.add.text(0,-8,'⬆',{fontSize:'24px'}).setOrigin(0.5); const lv=this.add.text(0,18,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9dff9d'}).setOrigin(0.5); c.add([g,t,lv]); c._lv=lv; this._upBtn=c; }
+    this._upBtn.setPosition(this.W-46,(this._pad||0)+150).setVisible(n>0); this._upBtn._lv.setText(n+' pt'); }
+  openUpgradePanel(){ if(!(this.pendingLvl>0)||this.state!=='play')return; const b=this.basicAttack; if(!b)return; b.endless=b.endless||{};
+    this.state='rolling'; this.physics.pause(); this.time.paused=true; if(this._upBtn)this._upBtn.setVisible(false); Sfx.select&&Sfx.select();
+    const W=this.W,H=this.H,cont=this.camUI(this.add.container(0,0).setDepth(170)); this._upPanel=cont;
+    const close=()=>{ cont.destroy(true); this._upPanel=null; this._rollBtns=[]; this.state='play'; this.physics.resume(); this.time.paused=false; this.refreshUpBtn(); };
+    const draw=()=>{ cont.removeAll(true); this._rollBtns=[]; const defs=this.endlessStatDefs(); if(!(this.pendingLvl>0)||!defs.length){ close(); return; }
+      cont.add(this.add.rectangle(W/2,H/2,W,H,0x0c0814,0.82));
+      const cw=Math.min(360,W-32),x0=(W-cw)/2,rh=50,top=Math.max(70,H/2-(defs.length*(rh+6)+130)/2);
+      cont.add(this.add.text(W/2,top,'⬆ UPGRADE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5,0));
+      cont.add(this.add.text(W/2,top+30,'Points: '+this.pendingLvl+'  ·  tap a stat to spend 1',{fontFamily:'sans-serif',fontSize:'13px',color:'#9dff9d'}).setOrigin(0.5,0));
+      defs.forEach((d,i)=>{ const y=top+58+i*(rh+6),g=this.add.graphics(); g.fillStyle(0x21172f,1); g.fillRoundedRect(x0,y,cw,rh,12); g.lineStyle(2,0x7a5cff,1); g.strokeRoundedRect(x0,y,cw,rh,12); cont.add(g);
+        cont.add(this.add.text(x0+28,y+rh/2,d.emoji,{fontSize:'24px'}).setOrigin(0.5));
+        cont.add(this.add.text(x0+52,y+8,d.title+((b.endless[d.id]||0)?'  ×'+b.endless[d.id]:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#fff'}));
+        cont.add(this.add.text(x0+52,y+28,d.desc,{fontFamily:'sans-serif',fontSize:'12px',color:'#9dff9d'}));
+        cont.add(this.add.text(x0+cw-24,y+rh/2,'+',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a'}).setOrigin(0.5));
+        this._rollBtns.push({x:x0,y,w:cw,h:rh,fn:()=>{ this.pendingLvl--; b.endless[d.id]=(b.endless[d.id]||0)+1; d.apply(this.player); if(d.id==='ehp'&&this.drawBars)this.drawBars(); Sfx.card&&Sfx.card(); draw(); }}); });
+      const by=top+58+defs.length*(rh+6)+8,bw=(cw-10)/2;
+      const btn=(x,label,col,fn)=>{ const g=this.add.graphics(); g.fillStyle(col,1); g.fillRoundedRect(x,by,bw,46,12); cont.add(g); cont.add(this.add.text(x+bw/2,by+23,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff'}).setOrigin(0.5)); this._rollBtns.push({x,y:by,w:bw,h:46,fn}); };
+      btn(x0,'🎲 Auto spend all',0x6a4fc4,()=>{ let guard=200; while(this.pendingLvl>0&&guard--){ const ds=this.endlessStatDefs(); if(!ds.length)break; const d=Phaser.Utils.Array.GetRandom(ds); this.pendingLvl--; b.endless[d.id]=(b.endless[d.id]||0)+1; d.apply(this.player);} if(this.drawBars)this.drawBars(); Sfx.card&&Sfx.card(); draw(); });
+      btn(x0+bw+10,'▶ Resume',0x2f9e6a,close); };
+    draw(); }
   closeLevelUp(){
     Sfx.card();
     this._relicPick=false;
