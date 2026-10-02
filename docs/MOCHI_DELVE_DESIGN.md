@@ -1,6 +1,6 @@
 # Mochi Delve — Design Spec (replaces the 100-node Atlas)
 
-> Status: planned (owner approved 2026-10-02). Implementation in commits v6.30 → v6.32.
+> Status: implemented in v6.30.0. Differences from the plan: width is bounded to 25 columns (x −12…12); each 10-floor segment widens then narrows into the boss floor (diamond shape); compensation = 40 Sugar per old cleared map + chaos ×ceil(N/4); delve_bg_* art hook not wired yet (colored flavor cells are the placeholder).
 
 ## Context
 เจ้าของต้องการให้ endgame เป็นแบบ Delve ของ PoE: Mochitopia เป็นจุดเริ่มต้นจุดเดียว เส้นทางลงลึกได้ไม่สิ้นสุด และเลือกทางเดินเองได้ ยิ่งลึกยิ่งยาก

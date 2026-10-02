@@ -377,3 +377,18 @@ if(atlasIds.length!==7||new Set(atlasIds).size!==7)throw new Error(`Expected 7 u
 const uqCount=(block(/const UNIQUE_GEAR=\{([\s\S]*?)\n\};/,'UNIQUE_GEAR').match(/unique:true/g)||[]).length;
 if(uqCount!==12)throw new Error(`Expected 12 Unique gear items, found ${uqCount}`);
 console.log('validated Recipe Maps: 16 tiers, iron-rule mods, 7 Atlas nodes, 12 Uniques');
+// v6.30 Mochi Delve: แผนที่ deterministic · ทุกชั้นต่อถึงกันได้ · ชั้นบอสมี node เดียว · ยิ่งลึกรางวัลยิ่งดี
+{
+  const pick=(re,n)=>{const m=source.match(re); if(!m)throw new Error('Delve contract missing '+n); return m[0];};
+  const code=[pick(/function mulberry32[^\n]*(\n[^\n]*?\})?/,'mulberry32'),pick(/const AMAP_ADJ=[^\n]*/,'AMAP_ADJ'),pick(/const AMAP_FLAVORS=\[[\s\S]*?\];/,'AMAP_FLAVORS'),
+    pick(/\/\/ v6\.30 Mochi Delve[\s\S]*?function delveMul[^\n]*/,'delve block')].join('\n');
+  const api=new Function('Save','RECIPE_TIER_MAX','RECIPE_MODS',code+'\nreturn {delveRow,delveLinks,amapNode,amapAdj,delveMul,DELVE_SEG};')({data:{atlasMapVer:3,delve:{clears:{},best:0}}},16,[{id:'a'},{id:'b'}]);
+  const sig=()=>{ const out=[]; for(let d=0;d<=60;d++){ out.push(api.delveRow(d).map(n=>n.id).join('|')); out.push(api.delveLinks(d).E.join(';')); } return out.join('#'); };
+  if(sig()!==sig())throw new Error('Delve generator must be deterministic');
+  const seen=new Set(['0,0']),q=['0,0'];
+  while(q.length){ const id=q.shift(); for(const j of api.amapAdj(id)){ const n=api.amapNode(j); if(n&&n.d<=200&&!seen.has(j)){seen.add(j);q.push(j);} } }
+  for(let d=1;d<=200;d++){ const row=api.delveRow(d); if(!row.every(n=>seen.has(n.id)))throw new Error('Delve depth '+d+' has unreachable caves');
+    if(d%api.DELVE_SEG===0&&(row.length!==1||api.amapNode(row[0].id).type!=='boss'))throw new Error('Delve boss floor '+d+' must have one boss node'); }
+  for(let d=1;d<=100;d++){ const a=api.delveMul(d-1),b=api.delveMul(d); if(!(b.reward>a.reward&&b.hp>a.hp))throw new Error('delveMul must grow with depth'); }
+  console.log('validated Mochi Delve: deterministic, reachable to depth 200, boss floors');
+}

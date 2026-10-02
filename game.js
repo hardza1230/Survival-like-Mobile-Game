@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.29.0';
+const GAME_VERSION = '6.30.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.30.0', date:'2026-10-02', title:'⛏ Mochi Delve', items:['The Atlas is now an endless dig below Mochitopia — go as deep as you dare','Left and right are flavor zones; deeper caves are harder and pay more','Boss Floor every 10 depths, rare Candy Cities, treasure pockets on dead ends','Fog hides far caves; landmarks glow through it','Old Atlas progress refunded as Sugar and chaos'] },
   { v:'6.29.0', date:'2026-10-02', title:'🗺 Simpler endgame prep', items:['Every Atlas map now shows its reward (⚔️ 🛡️ 💠 🍬) — pick a map to pick your loot','Pact Heat milestones (2/4/6/8/12) unlock one-time rewards per hero','Build is a single line on the prep screen; your last build is used automatically']},
   { v:'6.28.0', date:'2026-10-02', title:'🧹 Clean stage starts & Atlas return', items:['Leftover EXP and items from the previous stage no longer carry over','Finishing an Atlas map returns you to the Atlas instead of the main menu']},
   { v:'6.27.0', date:'2026-10-02', title:'🎵 New loading music', items:['Loading screen now plays Forgotten Wind on Old Stone']},
@@ -313,7 +314,7 @@ const CHANGELOG = [
   { v:'4.83.0', date:'2026-09-25', title:'📜 Recipes replace the Rift', items:['Mochi Rift is retired — Recipe Maps are the main endgame now','Rift progress converts into two recipes at your best Rift tier','The Pinnacle Boss button moved to the Recipe Maps page and still uses 🗝️ keys (4 🧩 fragments = 1 key)','Boss Rush stays as it is'] },
   { v:'4.82.0', date:'2026-09-25', title:'🟣 Unique Gear', items:['5 Unique items that change your build, each with a trade-off','Glass Rolling Pin, Ring of Endless Hunger, Sugar Rush Boots, Echo Locket, Candy Shell Plate','Uniques only drop from recipe bosses of their own themes — higher tiers, Rare recipes and fast clears raise the odds','The Atlas board shows which themes hold a Unique and which you have found'] },
   { v:'4.81.0', date:'2026-09-25', title:'🌳 Atlas Passives', items:['Spend Atlas points on 7 permanent recipe bonuses (Atlas → Passives tab)','Better recipe drops, more rare recipes, faster Hunger, bigger rewards, extra events and a longer speed-bonus window','Free respec any time'] },
-  { v:'4.80.0', date:'2026-09-25', title:'🗺 Recipe Atlas', items:['New Atlas board: every stage theme with the highest recipe tier you have cleared','Earn Atlas points: 1 for the first clear of a theme, +1 at Tier 4, 8, 12 and 16','Open it from the Recipe Maps page — Atlas points will power a passive tree next'] },
+  { v:'4.80.0', date:'2026-09-25', title:'⛏ Mochi Delve', items:['New Atlas board: every stage theme with the highest recipe tier you have cleared','Earn Atlas points: 1 for the first clear of a theme, +1 at Tier 4, 8, 12 and 16','Open it from the Recipe Maps page — Atlas points will power a passive tree next'] },
   { v:'4.79.0', date:'2026-09-25', title:'📜 Recipe Maps — events', items:['Each recipe run triggers one random event at 40% Hunger','💰 Treasure Room: loot jars and a vacuum spill out','⛩️ Sugar Shrine: stand in it for 2s for +30% damage and faster attacks','🧺 Wandering Merchant: pick a relic','✨ Rare Elite: a golden elite worth big Hunger and currency'] },
   { v:'4.78.0', date:'2026-09-25', title:'📜 Recipe Maps — crafting', items:['Craft recipes with your Forge currency: upgrade to Magic/Rare, reroll mods, or wipe them','New gameplay mods for recipes: 💨 Sugar Rush, 💥 Volatile, 🚫 Starving, 🐜 Horde','Gameplay mods pay bigger rewards than stat mods'] },
   { v:'4.77.0', date:'2026-09-25', title:'📜 Recipe Maps — boss drops', items:['Recipe bosses drop a new recipe — often one tier higher','Chance for a second recipe · higher tiers and mods drop Magic/Rare recipes more often','Earn 🧩 Pinnacle fragments — every 4 become a 🗝️ key','Fast clears raise the odds of a tier-up and give an extra fragment','Recipe runs drop endgame gear (iLv 61+) that scales with tier'] },
@@ -4267,59 +4268,61 @@ function atlasNodeCleared(si){ return (atlasData()[si]|0)>0; }
 function atlasNodeOpen(si){ if(!STAGES[si]||STAGES[si].ready===false)return false; if(atlasNodeCleared(si)||atlasHubLinks().includes(si))return true; return atlasNeighbors(si).some(atlasNodeCleared); }
 function atlasTierCapFor(si){ const L=atlasLayerOf(si); return Math.max(1,Math.min(mapTierCap(),L<0?RECIPE_TIER_MAX:ATLAS_LAYERS[L].tierMax)); }
 function atlasLayerDone(L){ return ATLAS_LAYERS[L].stages.filter(i=>atlasNodeCleared(i)).length; }
-function atlasPinnacleOpen(){ return AMAP_REGIONS.every((G,i)=>amapCleared(amapGuardian(i).id)); }
-function amapGuardiansDown(){ return AMAP_REGIONS.filter((G,i)=>amapCleared(amapGuardian(i).id)).length; }
 function atlasOpenThemes(){ return recipeThemes().filter(atlasNodeOpen); }
 function atlasNextNode(){ return atlasOpenThemes().find(i=>!atlasNodeCleared(i)); }
-// v6.20 Atlas 100 แมพ (แบบ PoE) · 5 ภูมิภาค × 20 แมพ · ผังตายตัวจาก seed · แต่ละแมพ tier ตายตัว
-// ⚠️ placeholder: ชื่อ/คอนเซ็ปต์ชั่วคราว (เจ้าของจะออกแบบใหม่) · พื้น = train_floor ย้อมสี · ศัตรูยืม roster ด่านเดิม (eng) ไปก่อน
-const AMAP_COLS=4, AMAP_ROWS_PER=5;
-const AMAP_REGIONS=[
-  {name:'Sugar Kitchens',emoji:'🍳',lo:1,hi:3,color:0x66d3b3,hue:160,eng:[0,1,2,3,4],guard:'Guardian of Crumbs'},
-  {name:'Fermented Wilds',emoji:'🌿',lo:4,hi:6,color:0x8bd36b,hue:100,eng:[5,6,7,8,9],guard:'Guardian of Rot'},
-  {name:'Hive Frontier',emoji:'🐝',lo:7,hi:9,color:0xffb347,hue:38,eng:[5,6,7,8,9],guard:'Guardian of the Swarm'},
-  {name:'Ashen Reaches',emoji:'🌋',lo:10,hi:13,color:0xff7a5c,hue:12,eng:[10,11,12,13,14],guard:'Guardian of Ash'},
-  {name:'Crown Depths',emoji:'👑',lo:14,hi:16,color:0xc9a3ff,hue:275,eng:[10,11,12,13,14],guard:'Guardian of the Seed'}];
 const AMAP_ADJ=['Sticky','Crumbling','Frosted','Silent','Bubbling','Hollow','Gilded','Sour','Burnt','Misty','Sunken','Whispering','Candied','Bitter','Glowing','Tangled','Forgotten','Drowsy','Shattered','Velvet'];
-const AMAP_PLACES=[
-  [['🧁','Pantry'],['🥄','Scullery'],['🍪','Bakehouse'],['🫖','Tea Room'],['🧂','Spice Cellar'],['🍯','Larder'],['🥣','Mixing Hall'],['🍰','Cake Gallery'],['🧈','Butter Mill'],['🍬','Candy Works']],
-  [['🍄','Mire'],['🌿','Thicket'],['🫧','Ferment Pools'],['🌱','Sprout Field'],['🪵','Rotwood'],['🌾','Meadow'],['🦠','Mold Caves'],['🍃','Canopy'],['🪴','Greenhouse'],['🐌','Slime Trail']],
-  [['🐝','Hive'],['🍯','Comb Halls'],['🌻','Bloom Field'],['🌺','Nectar Garden'],['🪺','Nest'],['🌼','Pollen Road'],['🏵️','Royal Cells'],['🌸','Petal Maze'],['🍂','Hedge'],['🦋','Wing Grove']],
-  [['🌋','Caldera'],['🔥','Ember Fields'],['🪨','Cinder Steps'],['💨','Smoke Vents'],['⚱️','Urn Crypt'],['🏜️','Ash Dunes'],['🌑','Black Kiln'],['♨️','Hot Springs'],['🗿','Ruins'],['⛓️','Forge Pit']],
-  [['👑','Throne Hall'],['🗝️','Vault'],['🔮','Crystal Spire'],['🕯️','Chapel'],['🏰','Keep'],['🌌','Starfall'],['🪞','Mirror Court'],['⚜️','Regalia'],['🌀','Abyss'],['💎','Gem Mines']]];
-const AMAP_TYPES={normal:{emoji:'',name:'Map'},vault:{emoji:'💰',name:'Treasure Vault',desc:'Extra Sugar on clear'},shrine:{emoji:'⛩️',name:'Shrine',desc:'First clear gives +3 Atlas points'},guardian:{emoji:'💀',name:'Guardian',desc:'Boss +50% HP · one of 5 seals on the Hunger Beneath'}};
-let _AMAP=null;
-// v6.23: Mochitopia อยู่กลาง · 5 ภูมิภาค = 5 ทิศ (แฉก) · วงที่ 1→5 ห่างออกไป tier สูงขึ้น · Guardian อยู่ปลายแฉก · ครบ 5 Guardian = เปิด The Hunger Beneath ใต้เมือง
-const AMAP_RINGS=[[1,3],[4,6],[7,9],[10,13],[14,16]];
-function atlasGraph(){ if(_AMAP)return _AMAP; const R=mulberry32(62300),nodes=[],E=new Set(),key=(a,b)=>Math.min(a,b)+'-'+Math.max(a,b),pick=a=>a[Math.floor(R()*a.length)],C=AMAP_COLS,RP=AMAP_ROWS_PER;
-  const id=(reg,rr,c)=>reg*RP*C+rr*C+c;
-  AMAP_REGIONS.forEach((G,reg)=>{ const used=new Set(),gc=1+(reg%2);
-    for(let rr=0;rr<RP;rr++)for(let c=0;c<C;c++){ let nm,pl,g=0; do{ pl=pick(AMAP_PLACES[reg]); nm=pick(AMAP_ADJ)+' '+pl[1]; }while(used.has(nm)&&++g<50); used.add(nm);
-      const ring=AMAP_RINGS[rr],chap=rr===0?0:rr<=2?5:10,md=R()<0.55?pick(RECIPE_MODS).id:null;
-      nodes.push({id:id(reg,rr,c),r:rr,c,reg,rr,tier:ring[0]+Math.floor(R()*(ring[1]-ring[0]+1)),type:'normal',name:nm,emoji:pl[0],eng:chap+reg,imp:md,hue:(G.hue+Math.floor(R()*50)-25+360)%360,jx:(R()-0.5)*0.4,jy:(R()-0.5)*0.35}); }
-    const gn=nodes[id(reg,RP-1,gc)]; Object.assign(gn,{type:'guardian',tier:AMAP_RINGS[RP-1][1],name:G.guard,emoji:'💀',imp:null,jx:0,jy:0});
-    const pool=nodes.filter(n=>n.reg===reg&&n.rr>=1&&n.rr<=3&&n.type==='normal'); for(const t of ['vault','vault','shrine','shrine']){ const n=pool.splice(Math.floor(R()*pool.length),1)[0]; if(n){n.type=t;n.imp=null;} }
-    const cand=[]; nodes.filter(n=>n.reg===reg).forEach(n=>{ if(n.c<C-1)cand.push([n.id,n.id+1,0.55]); if(n.rr<RP-1){ cand.push([n.id,n.id+C,0.7]); if(n.c<C-1)cand.push([n.id,n.id+C+1,0.15]); if(n.c>0)cand.push([n.id,n.id+C-1,0.12]); } });
-    const par={},find=x=>par[x]===undefined||par[x]===x?(par[x]=x):(par[x]=find(par[x]));
-    cand.forEach(([a,b,pr])=>{ if(R()<pr){E.add(key(a,b));par[find(a)]=find(b);} });
-    for(let i=cand.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[cand[i],cand[j]]=[cand[j],cand[i]];}
-    cand.forEach(([a,b])=>{ if(find(a)!==find(b)){E.add(key(a,b));par[find(a)]=find(b);} }); });
-  // ทางข้ามระหว่างแฉกที่ติดกัน (ขอบขวาของทิศ i ↔ ขอบซ้ายของทิศ i+1) วงละ ~50%
-  AMAP_REGIONS.forEach((G,reg)=>{ const nx=(reg+1)%AMAP_REGIONS.length; for(let rr=0;rr<RP-1;rr++)if(R()<0.5)E.add(key(id(reg,rr,C-1),id(nx,rr,0))); });
-  const adj=nodes.map(()=>[]); E.forEach(k=>{const [a,b]=k.split('-').map(Number); adj[a].push(b); adj[b].push(a);});
-  return (_AMAP={nodes,adj,edges:[...E].map(k=>k.split('-').map(Number))}); }
-function amapData(){ if(Save.data.atlasMapVer!==2){ Save.data.atlasMap={}; Save.data.atlasClears={}; Save.data.atlasMapVer=2; } if(!Save.data.atlasMap||typeof Save.data.atlasMap!=='object')Save.data.atlasMap={}; return Save.data.atlasMap; }
-function amapNode(id){ return atlasGraph().nodes[id]; }
-function amapCleared(id){ return (amapData()[id]|0)>0; }
-function amapHub(){ return AMAP_REGIONS.flatMap((G,reg)=>[reg*AMAP_ROWS_PER*AMAP_COLS+1,reg*AMAP_ROWS_PER*AMAP_COLS+2]); }
-function amapOpen(id){ return amapCleared(id)||amapHub().includes(id)||(atlasGraph().adj[id]||[]).some(amapCleared); }
-function amapOpenList(){ return atlasGraph().nodes.filter(n=>amapOpen(n.id)).map(n=>n.id); }
-function amapNext(){ const l=amapOpenList().filter(i=>!amapCleared(i)); l.sort((a,b)=>amapNode(a).tier-amapNode(b).tier||a-b); return l[0]; }
-function amapRegionDone(reg){ return atlasGraph().nodes.filter(n=>n.reg===reg&&amapCleared(n.id)).length; }
-function amapGuardian(reg){ return atlasGraph().nodes.find(n=>n.reg===reg&&n.type==='guardian'); }
-function amapRegionOpen(reg){ return true; }
+// v6.30 Mochi Delve (แบบ Delve ของ PoE) · Mochitopia บนสุด ลงล่างไม่รู้จบ · ลึก = ยาก (ไม่มีเพดาน) · ซ้าย/ขวา = เขตรส 5 แบบ (noise)
+// แถวสร้างจาก seed ต่อความลึก (กลับมาดูก็เหมือนเดิม) · ทุก 10 ชั้น = ชั้นบอส node เดียว (คอขวด) · ปลายทางตัน = 💎/⛩️ · 🏰 Candy City หายาก
+const DELVE_W=12, DELVE_SEG=10, _DROWS=new Map(), _DLINKS=new Map();
+const AMAP_TYPES={home:{emoji:'🏠',name:'Mochitopia'},normal:{emoji:'',name:'Cave'},vault:{emoji:'💎',name:'Treasure Pocket',desc:'Dead end · Sugar + extra gear'},shrine:{emoji:'⛩️',name:'Shrine',desc:'First clear: +1 Delve point'},elite:{emoji:'💀',name:'Elite Den',desc:'Boss +50% HP · guaranteed epic gear'},city:{emoji:'🏰',name:'Candy City',desc:'Rare landmark · big Sugar + Pinnacle key'},boss:{emoji:'👑',name:'Boss Floor',desc:'Boss HP ×2 · checkpoint · +3 Delve points'}};
+const DELVE_PLACES={spicy:['Ember Tunnels','Chili Vents','Pepper Mine','Cinder Hollow','Salsa Falls'],frosty:['Ice Caves','Frost Vault','Sherbet Hollow','Snowdrop Mine','Glacier Pass'],sweet:['Candy Grotto','Frosting Halls','Syrup Pools','Sprinkle Mine','Marzipan Cave'],sour:['Citrus Seep','Lemon Galleries','Tart Springs','Lime Hollows','Zest Mine'],fermented:['Spore Caverns','Mold Depths','Brew Cellar','Mushroom Hollow','Yeast Pits']};
+const DELVE_HUE={spicy:10,frosty:200,sweet:330,sour:75,fermented:280};
+function _dh(a,b){ let h=(Math.imul(a|0,374761393)+Math.imul(b|0,668265263)+62300)|0; h=Math.imul(h^(h>>>13),1274126177); return ((h^(h>>>16))>>>0)/4294967296; }
+function delveHW(d){ if(d<=0)return 0; const k=d%DELVE_SEG; return k===0?0:Math.min(DELVE_W,2*Math.min(k,DELVE_SEG-k)); }
+function delveFlavorAt(x,d){ const t=x*0.17+d*0.035+7.3,i=Math.floor(t),f=t-i,s=f*f*(3-2*f),v=_dh(i,9)*(1-s)+_dh(i+1,9)*s; return AMAP_FLAVORS[Math.max(0,Math.min(4,Math.floor(v*5)))]; }
+function delveRow(d){ if(_DROWS.has(d))return _DROWS.get(d); let nodes;
+  if(d<=0)nodes=[{x:0,d:0,id:'0,0',jx:0,jy:0,r:1,r2:1}];
+  else { const hw=delveHW(d),R=mulberry32(Math.floor(_dh(d,77)*1e9)),xs=[];
+    if(hw===0)xs.push(0); else { for(let x=-hw;x<=hw;x++)if(R()<0.5)xs.push(x); while(xs.length<2){ const x=-hw+Math.floor(R()*(2*hw+1)); if(!xs.includes(x))xs.push(x); } }
+    xs.sort((a,b)=>a-b); nodes=xs.map(x=>({x,d,id:x+','+d,jx:hw?(R()-0.5)*0.6:0,jy:hw?(R()-0.5)*0.5:0,r:R(),r2:R()})); }
+  _DROWS.set(d,nodes); return nodes; }
+// เส้นจากแถว d → d+1 (E) + เส้นแนวนอนในแถว d (H) + ทางตัน (dead)
+function delveLinks(d){ if(_DLINKS.has(d))return _DLINKS.get(d); const A=delveRow(d),B=delveRow(d+1),R=mulberry32(Math.floor(_dh(d,131)*1e9)),E=[],H=[],dead=new Set();
+  if(A.length===1||B.length===1)A.forEach(a=>B.forEach(b=>E.push([a.id,b.id])));
+  else { const near=(n,L)=>L.slice().sort((p,q)=>Math.abs(p.x-n.x)-Math.abs(q.x-n.x));
+    A.forEach(a=>{ if(A.length>2&&dead.size<A.length-2&&R()<0.14){dead.add(a.id);return;} const s=near(a,B); E.push([a.id,s[0].id]); if(s[1]&&Math.abs(s[1].x-a.x)<=2&&R()<0.35)E.push([a.id,s[1].id]); });
+    const live=A.filter(a=>!dead.has(a.id)); B.forEach(b=>{ if(!E.some(e=>e[1]===b.id))E.push([near(b,live)[0].id,b.id]); }); }
+  for(let i=0;i+1<A.length;i++)if(A[i].x+2>=A[i+1].x&&R()<0.15)H.push([A[i].id,A[i+1].id]);
+  const o={E,H,dead}; _DLINKS.set(d,o); return o; }
+function delveCityRow(s){ return _dh(s,313)<0.5?s*DELVE_SEG+5:-1; }
+function amapNode(id){ if(typeof id!=='string')return null; const p=id.split(','),x=+p[0],d=+p[1]; if(!(d>=0))return null; const n=delveRow(d).find(q=>q.x===x); if(!n)return null; if(n._f)return n;
+  const fl=delveFlavorAt(n.x,d),hw=delveHW(d); let type='normal';
+  if(d===0)type='home'; else if(hw===0)type='boss'; else if(delveLinks(d).dead.has(id))type=n.r<0.6?'vault':'shrine';
+  else { const cr=delveCityRow(Math.floor(d/DELVE_SEG)); if(cr===d){ const live=delveRow(d).filter(q=>!delveLinks(d).dead.has(q.id)); if(live[Math.floor(_dh(d,571)*live.length)]===n)type='city'; } if(type==='normal')type=n.r<0.08?'elite':n.r<0.12?'shrine':'normal'; }
+  const pl=DELVE_PLACES[fl.id],ty=AMAP_TYPES[type];
+  Object.assign(n,{_f:1,flavor:fl,type,tier:Math.max(1,Math.min(RECIPE_TIER_MAX,1+Math.floor(d/3))),eng:(d<10?0:d<20?5:10)+AMAP_FLAVORS.indexOf(fl),hue:DELVE_HUE[fl.id],
+    imp:(type==='normal'||type==='elite')&&n.r2<0.4?RECIPE_MODS[Math.floor(n.r2/0.4*RECIPE_MODS.length)].id:null,
+    name:type==='home'?'Mochitopia':type==='boss'?'The '+fl.name+' Maw':type==='city'?'Candy City of '+pl[Math.floor(n.r2*5)]:AMAP_ADJ[Math.floor(n.r*AMAP_ADJ.length)%AMAP_ADJ.length]+' '+pl[Math.floor(n.r2*5)%5],
+    emoji:ty.emoji||fl.emoji}); return n; }
+function amapAdj(id){ const n=amapNode(id); if(!n)return []; const d=n.d,out=[];
+  if(d>0)delveLinks(d-1).E.forEach(e=>{ if(e[1]===id)out.push(e[0]); });
+  const L=delveLinks(d); L.E.forEach(e=>{ if(e[0]===id)out.push(e[1]); }); L.H.forEach(e=>{ if(e[0]===id)out.push(e[1]); else if(e[1]===id)out.push(e[0]); });
+  return out; }
+function delveSave(){ const s=Save.data; if(s.atlasMapVer!==3){ const old=Object.keys(s.atlasMap||{}).filter(k=>(s.atlasMap[k]|0)>0).length; s.delve={clears:{},best:0}; if(old)s.delveComp=old; delete s.atlasMap; delete s.atlasClears; s.atlasMapVer=3; }
+  if(!s.delve||typeof s.delve!=='object')s.delve={clears:{},best:0}; if(!s.delve.clears)s.delve.clears={}; return s.delve; }
+function amapData(){ return delveSave().clears; }
+function amapCleared(id){ return id==='0,0'||(amapData()[id]|0)>0; }
+function amapOpen(id){ return !!amapNode(id)&&(amapCleared(id)||amapAdj(id).some(amapCleared)); }
+function delveDeepest(){ let m=0; Object.keys(amapData()).forEach(k=>{ const d=+k.split(',')[1]; if(d>m)m=d; }); return m; }
+function amapOpenList(){ const out=[],D=delveDeepest()+1; for(let d=1;d<=D;d++)delveRow(d).forEach(n=>{ if(amapOpen(n.id))out.push(n.id); }); return out; }
+function amapNext(){ const l=amapOpenList().filter(i=>!amapCleared(i)); l.sort((a,b)=>amapNode(b).d-amapNode(a).d||Math.abs(amapNode(a).x)-Math.abs(amapNode(b).x)); return l[0]; }
 function amapClearedCount(){ return Object.keys(amapData()).filter(k=>amapData()[k]>0).length; }
-function amapNodePts(n){ return n.type==='shrine'?3:1; }
+function amapNodePts(n){ return n.type==='boss'?3:n.type==='shrine'?1:0; }
+function delveBossesDown(){ return Math.floor((delveSave().best||0)/DELVE_SEG); }
+function atlasPinnacleOpen(){ return (delveSave().best||0)>=30; }
+function amapGuardiansDown(){ return delveBossesDown(); }
+// ตัวคูณความลึก (ไม่มีเพดาน · ยิ่งยากรางวัลยิ่งดี)
+function delveMul(d){ return {hp:Math.pow(1.08,d),dmg:Math.pow(1.06,d),reward:1+0.05*d}; }
 // v6.22 Atlas Influence (3A): ทุกแมพมีรสประจำตัว · เคลียร์แล้วรสซึมไปแมพที่เชื่อม (+1 ชั้น/การเคลียร์ เพดาน 3/รส) · ชั้นละ ยาก+10% รางวัล+15% (กฎเหล็ก)
 const AMAP_FLAVORS=[
   {id:'spicy',emoji:'🌶️',name:'Spicy',color:0xff6b4a,eff:'Enemies may leave fire puddles',rew:'+currency'},
@@ -4330,17 +4333,18 @@ const AMAP_FLAVORS=[
 const AMAP_INF_CAP=3;
 // v6.29: แต่ละ node บอกรางวัลหลักไว้ล่วงหน้า (แบบ Last Epoch) → แทน Farming target
 const AMAP_REWARDS=[{id:'weapon',emoji:'⚔️',name:'Weapons',desc:'Gear drops are weapons'},{id:'armor',emoji:'🛡️',name:'Armor',desc:'Gear drops are armor, gloves or boots'},{id:'materials',emoji:'💠',name:'Materials',desc:'Gear drops become crafting currency'},{id:'sugar',emoji:'🍬',name:'Sugar',desc:'Boss Sugar ×1.5'}];
-function amapRewardOf(id){ return AMAP_REWARDS[Math.floor(mulberry32(81300+id*4271)()*AMAP_REWARDS.length)]; }
+const DELVE_REWARD_BIAS={spicy:'weapon',frosty:'armor',sour:'materials',sweet:'sugar'};
+function amapRewardOf(id){ const n=amapNode(id); if(!n)return AMAP_REWARDS[0]; const R=mulberry32(81300+Math.floor(_dh(n.x,n.d)*1e9)),b=DELVE_REWARD_BIAS[n.flavor.id]; if(b&&R()<0.6)return AMAP_REWARDS.find(r=>r.id===b); return AMAP_REWARDS[Math.floor(R()*AMAP_REWARDS.length)]; }
 // v6.29: Pact milestone ปลดครั้งเดียวต่อตัวละคร ตาม Heat สูงสุดที่ผ่าน
 const PACT_MILESTONES=[{heat:2,emoji:'🍬',name:'500 Sugar'},{heat:4,emoji:'💠',name:'5 epic currency'},{heat:6,emoji:'🗝️',name:'Pinnacle key'},{heat:8,emoji:'🌟',name:'Legendary gear'},{heat:12,emoji:'✨',name:'Unique gear'}];
 function pactBestChar(ch){ const m=Save.data.pactBestChar||{}; return m[ch]||0; }
-function amapFlavorOf(id){ return AMAP_FLAVORS[Math.floor(mulberry32(70100+id*7919)()*AMAP_FLAVORS.length)]; }
-function amapClears(id){ amapData(); const c=((Save.data.atlasClears||{})[id])|0; return c||(amapCleared(id)?1:0); }
-function amapInfluence(id){ const out={}; (atlasGraph().adj[id]||[]).forEach(j=>{ const c=amapClears(j); if(!c)return; const f=amapFlavorOf(j).id; out[f]=Math.min(AMAP_INF_CAP,(out[f]||0)+c); }); return out; }
+function amapFlavorOf(id){ const n=amapNode(id); return n?n.flavor:AMAP_FLAVORS[2]; }
+function amapClears(id){ return id==='0,0'?0:(amapData()[id]|0); }
+function amapInfluence(id){ const out={}; amapAdj(id).forEach(j=>{ const c=amapClears(j); if(!c)return; const f=amapFlavorOf(j).id; out[f]=Math.min(AMAP_INF_CAP,(out[f]||0)+c); }); return out; }
 function amapInfLayers(inf){ return Object.values(inf||{}).reduce((a,b)=>a+b,0); }
 function amapInfText(inf){ return AMAP_FLAVORS.filter(f=>inf[f.id]).map(f=>f.emoji+inf[f.id]).join(' '); }
 function atlasThemePoints(t){ t=t|0; return t>0?1+Math.floor(t/4):0; }
-function atlasPoints(){ return atlasGraph().nodes.reduce((n,x)=>n+(amapCleared(x.id)?amapNodePts(x):0),0); }
+function atlasPoints(){ return Object.keys(amapData()).reduce((n,k)=>{ const x=amapNode(k); return n+(x&&amapData()[k]>0?amapNodePts(x):0); },0); }
 // R7: ผัง passive ของ Atlas — 1 แต้ม/เลเวล · respec ฟรี
 // Hunger Pact (แบบ Hades Heat): ติ๊กเงื่อนไขความยากใน Recipe Maps · แต่ละ rank = heat · รางวัล +7%/heat (กฎเหล็ก)
 const PACT_TERMS=[
@@ -4376,13 +4380,13 @@ function atlasLv(id){ return ((Save.data.atlasTree||{})[id])|0; }
 function atlasSpent(){ const t=Save.data.atlasTree||{}; return Object.keys(t).reduce((n,k)=>n+(t[k]|0),0); }
 function atlasFree(){ return Math.max(0,atlasPoints()-atlasSpent()); }
 function recipePar(){ return RECIPE_PAR+atlasLv('speedster')*10; }
-function atlasMaxPoints(){ return atlasGraph().nodes.reduce((n,x)=>n+amapNodePts(x),0); }
+function atlasMaxPoints(){ return atlasPoints(); }
 function recipeThemes(){ return STAGES.map((s,i)=>i).filter(i=>STAGES[i].ready!==false); }
 // v6.5.0 Map Table: ไม่มีไอเทมแผนที่แล้ว · เลือกธีม + Tier (≤ เคลียร์สูงสุด+1) + mod เอง · mod จ่าย currency ตอนกด Start (ช่อง 1/2/3 = transmute/regal/exalt)
 const MAP_MOD_COST=['transmute','regal','exalt'];
 function mapTierCap(){ return Math.max(1,Math.min(RECIPE_TIER_MAX,Math.max((Save.data.recipeMaxClear||0)+1,Save.data.mapTierLegacy||1))); }
 function mapTable(){ let m=Save.data.mapTable; if(!m)m=Save.data.mapTable={node:1,mods:[]};
-  if(m.node==null||!amapNode(m.node)||!amapOpen(m.node)){ const n=amapNext(); m.node=n!==undefined?n:1; } const nd=amapNode(m.node); m.theme=nd.eng; m.tier=nd.tier; m.mods=(m.mods||[]).filter(id=>recipeModDef(id)&&id!==nd.imp).slice(0,3); return m; }
+  if(m.node==null||!amapNode(m.node)||!amapOpen(m.node)){ const n=amapNext(); m.node=n!==undefined?n:delveRow(1)[0].id; } const nd=amapNode(m.node); m.theme=nd.eng; m.tier=nd.tier; m.mods=(m.mods||[]).filter(id=>recipeModDef(id)&&id!==nd.imp).slice(0,3); return m; }
 function mapTableRecipe(){ const m=mapTable(),nd=amapNode(m.node),mods=m.mods.slice(); if(nd.imp)mods.push(nd.imp); return {uid:'table',node:nd.id,theme:nd.eng,tier:nd.tier,rarity:m.mods.length>=2?'rare':m.mods.length?'magic':'normal',mods}; }
 function mapModCostOk(){ const need={}; mapTable().mods.forEach((id,i)=>{const c=MAP_MOD_COST[i];need[c]=(need[c]||0)+1;}); return Object.keys(need).every(c=>Save.currency(c)>=need[c])?need:null; }
 function migrateMapTable(){ if(Save.data.mapTableMigrated)return 0; Save.data.mapTableMigrated=true; const bag=Save.data.recipes||[]; let n=0;
@@ -4395,7 +4399,7 @@ function makeRecipe(tier,theme,rarity){
   for(let k=0;k<RECIPE_RARITY[rarity].mods&&pool.length;k++)mods.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
   return {uid:'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),theme,tier,rarity,mods};
 }
-function recipeMul(r){ const m=riftTierMul(r.tier); let hp=m.hp,dmg=m.dmg,rw=m.reward; (r.mods||[]).forEach(id=>{const d=recipeModDef(id); if(d){hp*=d.hp;dmg*=d.dmg;rw*=d.reward;}}); return {hp,dmg,reward:rw}; }
+function recipeMul(r){ const nd=r&&r.node!=null?amapNode(r.node):null,m=nd?delveMul(nd.d):riftTierMul(r.tier); let hp=m.hp,dmg=m.dmg,rw=m.reward; (r.mods||[]).forEach(id=>{const d=recipeModDef(id); if(d){hp*=d.hp;dmg*=d.dmg;rw*=d.reward;}}); return {hp,dmg,reward:rw}; }
 function riftTierMul(t){ t=Math.max(1,t|0); return {hp:1+0.18*(t-1),dmg:1+0.12*(t-1),reward:1+0.15*(t-1)}; }
 const CHAPTERS = [
   { name:'Chapter 1 · Rise from Below', emoji:'🐜', desc:'Sour Ant Nest → Bitter Crown Oven', ready:true, stages:[0,4] },
@@ -5894,7 +5898,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildAtlas(){
-    this.menu.removeAll(true);this.tapZones=[];this._amRect=null;this._amView=null;this._amDrag=null;this._screenBg('🗺 Recipe Atlas','screen_atlas');
+    this.menu.removeAll(true);this.tapZones=[];this._amRect=null;this._amView=null;this._amDrag=null;this._screenBg('⛏ Mochi Delve','screen_atlas');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,at=atlasData();let top=(w<=h?100:70);const th=recipeThemes(),best=Save.data.recipeBest||{};
     const T=(x,y,t,sz,c,st)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(q);return q;};
     const tab=this._atlasTab||'board',tw2=(cw-20)/3;
@@ -5919,87 +5923,85 @@ class Game extends Phaser.Scene {
   // v6.3.0: หน้าเตรียมรัน Recipe หน้าเดียว — แผนที่ · Build · Pact · เป้าดรอป · ตัวคูณรวม · Run
   // v6.19: แผนที่ Atlas แบบเดินทาง — วาดด้วยโค้ด (ถ้ามีอาร์ต atlas_map_bg / atlas_node_* / atlas_hub / atlas_pinnacle จะใช้แทน)
   // v6.21: Atlas ทั้ง 100 แมพบนผืนเดียว · ลากเพื่อ pan · หยิก/ปุ่ม +− เพื่อซูม · แตะแมพ = ดูข้อมูล แตะซ้ำ = วางแผนรัน
-  atlasLayout(){ if(this._amLayout)return this._amLayout; const G=atlasGraph(),S=1900,C0=S/2,R0=170,RS=128,NR=AMAP_REGIONS.length,pos={},dirs=[];
-    AMAP_REGIONS.forEach((Rg,i)=>dirs.push(-Math.PI/2+i*2*Math.PI/NR));
-    G.nodes.forEach(n=>{ const span=2*Math.PI/NR*0.78,th=dirs[n.reg]+((n.c+0.5)/AMAP_COLS-0.5)*span+n.jx*0.12,r=R0+(n.rr+0.5+n.jy*0.6)*RS; pos[n.id]={x:C0+r*Math.cos(th),y:C0+r*Math.sin(th)}; });
-    pos.hub={x:C0,y:C0}; pos.pin={x:C0,y:C0}; return (this._amLayout={MW:S,H:S,C0,R0,RS,dirs,pos}); }
+  // v6.30 Mochi Delve: ผืนแผนที่สูงไม่จำกัด · วาดเฉพาะแถวรอบมุมมอง (band) แล้ว rebuild เมื่อเลื่อนออกนอก band
+  atlasLayout(){ if(this._amLayout)return this._amLayout; const CW=64,RH=96,C0=(DELVE_W+1.5)*CW,top=90,maxD=delveDeepest()+1;
+    const pos=n=>({x:C0+(n.x+n.jx)*CW,y:top+(n.d+n.jy)*RH});
+    return (this._amLayout={CW,RH,C0,top,MW:C0*2,H:top+(maxD+10)*RH,maxD,fogD:maxD+3,landD:maxD+8,pos,rowAt:y=>Math.floor((y-top)/RH)}); }
   atlasViewClamp(){ const v=this._amv,R=this._amRect,L=this.atlasLayout(); if(!v||!R)return; v.s=Math.max(v.min,Math.min(2.4,v.s));
     const w=L.MW*v.s,h=L.H*v.s; v.x=w<=R.w?(R.w-w)/2:Math.min(0,Math.max(R.w-w,v.x)); v.y=h<=R.h?(R.h-h)/2:Math.min(0,Math.max(R.h-h,v.y));
     if(this._amView)this._amView.setPosition(R.x+v.x,R.y+v.y).setScale(v.s); }
-  atlasViewFocus(mx,my,s){ const v=this._amv,R=this._amRect; if(s)v.s=s; v.x=R.w/2-mx*v.s; v.y=R.h/2-my*v.s; this.atlasViewClamp(); }
-  atlasZoomAt(sx,sy,ns){ const v=this._amv,R=this._amRect,mx=(sx-R.x-v.x)/v.s,my=(sy-R.y-v.y)/v.s; v.s=Math.max(v.min,Math.min(2.4,ns)); v.x=sx-R.x-mx*v.s; v.y=sy-R.y-my*v.s; this.atlasViewClamp(); }
+  atlasViewFocus(mx,my,s){ const v=this._amv,R=this._amRect; if(s)v.s=s; v.x=R.w/2-mx*v.s; v.y=R.h/2-my*v.s; this.atlasViewClamp(); this.atlasBandCheck(); }
+  atlasZoomAt(sx,sy,ns){ const v=this._amv,R=this._amRect,mx=(sx-R.x-v.x)/v.s,my=(sy-R.y-v.y)/v.s; v.s=Math.max(v.min,Math.min(2.4,ns)); v.x=sx-R.x-mx*v.s; v.y=sy-R.y-my*v.s; this.atlasViewClamp(); this.atlasBandCheck(); }
+  atlasVisRows(){ const v=this._amv,R=this._amRect,L=this.atlasLayout(); return [L.rowAt(-v.y/v.s)-1,L.rowAt((R.h-v.y)/v.s)+1]; }
+  atlasBandCheck(){ const b=this._amBand; if(!b||!this._amView)return; const [a,z]=this.atlasVisRows(); if(a<b[0]||z>b[1])this.buildAtlas(); }
   atlasPointerDown(p){ const R=this._amRect; if(!R||p.x<R.x||p.x>R.x+R.w||p.y<R.y||p.y>R.y+R.h)return false;
     const d=this._amDrag||(this._amDrag={pts:{}}); d.pts[p.id]={x:p.x,y:p.y,sx:p.x,sy:p.y}; const ids=Object.keys(d.pts);
     if(ids.length===1){ d.moved=false; d.ox=this._amv.x; d.oy=this._amv.y; d.id=p.id; }
     else if(ids.length===2){ const [a,b]=ids.map(k=>d.pts[k]); d.pinch={d0:Math.hypot(a.x-b.x,a.y-b.y)||1,s0:this._amv.s}; d.moved=true; }
     return true; }
   atlasPointerMove(p){ const d=this._amDrag; if(!d||!d.pts[p.id])return false; const q=d.pts[p.id]; q.x=p.x; q.y=p.y; const ids=Object.keys(d.pts);
-    if(ids.length>=2&&d.pinch){ const [a,b]=ids.slice(0,2).map(k=>d.pts[k]); this.atlasZoomAt((a.x+b.x)/2,(a.y+b.y)/2,d.pinch.s0*Math.hypot(a.x-b.x,a.y-b.y)/d.pinch.d0); return true; }
+    if(ids.length>=2&&d.pinch){ const [a,b]=ids.slice(0,2).map(k=>d.pts[k]); const v=this._amv,R=this._amRect,ns=Math.max(v.min,Math.min(2.4,d.pinch.s0*Math.hypot(a.x-b.x,a.y-b.y)/d.pinch.d0)),cx=(a.x+b.x)/2,cy=(a.y+b.y)/2,mx=(cx-R.x-v.x)/v.s,my=(cy-R.y-v.y)/v.s; v.s=ns; v.x=cx-R.x-mx*v.s; v.y=cy-R.y-my*v.s; this.atlasViewClamp(); return true; }
     if(p.id===d.id){ if(Math.hypot(p.x-q.sx,p.y-q.sy)>8)d.moved=true; if(d.moved){ this._amv.x=d.ox+(p.x-q.sx); this._amv.y=d.oy+(p.y-q.sy); this.atlasViewClamp(); } }
     return true; }
   atlasPointerUp(p){ const d=this._amDrag; if(!d||!d.pts[p.id])return false; const tap=!d.moved&&Object.keys(d.pts).length===1; delete d.pts[p.id];
-    if(!Object.keys(d.pts).length){ this._amDrag=null; } else { d.pinch=null; const k=Object.keys(d.pts)[0],q=d.pts[k]; q.sx=q.x; q.sy=q.y; d.id=+k; d.ox=this._amv.x; d.oy=this._amv.y; d.moved=true; }
+    if(!Object.keys(d.pts).length){ this._amDrag=null; if(!tap){ this.atlasBandCheck(); } } else { d.pinch=null; const k=Object.keys(d.pts)[0],q=d.pts[k]; q.sx=q.x; q.sy=q.y; d.id=+k; d.ox=this._amv.x; d.oy=this._amv.y; d.moved=true; }
     if(tap)this.atlasTapAt(p.x,p.y); return true; }
-  atlasTapAt(sx,sy){ const v=this._amv,R=this._amRect,L=this.atlasLayout(),mx=(sx-R.x-v.x)/v.s,my=(sy-R.y-v.y)/v.s; let hit=null,bd=24+14/v.s;
-    const dp=Math.hypot(mx-L.pos.pin.x,my-L.pos.pin.y); if(dp<44+14/v.s){ Sfx.select&&Sfx.select(); if(atlasPinnacleOpen()||(Save.data.riftKeys||0)>=PINNACLE_KEY_COST)this.startPinnacle(); else this.menuToast('🏠 Mochitopia · break all 5 Guardian seals ('+amapGuardiansDown()+'/5) to open The Hunger Beneath','#ff9bb5'); return; }
-    atlasGraph().nodes.forEach(n=>{ const q=L.pos[n.id],dd=Math.hypot(mx-q.x,my-q.y); if(dd<bd){bd=dd;hit=n;} }); if(!hit)return;
-    if(!amapOpen(hit.id)){ Sfx.select&&Sfx.select(); this.menuToast('🌫️ Clear a connected map to reveal this place','#ff9bb5'); return; }
-    Sfx.select&&Sfx.select(); if(this._amapSel===hit.id){ const mt=mapTable(); mt.node=hit.id; Save.save(); this.menuScreen='recipeprep'; this.buildMenuScreen(); return; }
+  atlasTapAt(sx,sy){ const v=this._amv,R=this._amRect,L=this.atlasLayout(),mx=(sx-R.x-v.x)/v.s,my=(sy-R.y-v.y)/v.s; let hit=null,bd=26+14/v.s;
+    const d0=Math.max(0,L.rowAt(my)-1); for(let d=d0;d<=Math.min(d0+2,L.landD);d++)delveRow(d).forEach(n=>{ const q=L.pos(n),dd=Math.hypot(mx-q.x,my-q.y); if(dd<bd){bd=dd;hit=n;} }); if(!hit)return;
+    Sfx.select&&Sfx.select();
+    if(hit.d===0){ if(atlasPinnacleOpen()||(Save.data.riftKeys||0)>=PINNACLE_KEY_COST)this.startPinnacle(); else this.menuToast('🏠 Mochitopia · conquer Boss Floor 30 (or find 🗝 in Candy Cities) to face The Hunger Beneath','#ff9bb5'); return; }
+    if(!amapOpen(hit.id)){ const nd=amapNode(hit.id); this.menuToast(nd&&(nd.type==='city'||nd.type==='boss')&&hit.d<=L.landD?'🌫️ '+AMAP_TYPES[nd.type].emoji+' '+AMAP_TYPES[nd.type].name+' at Depth '+hit.d+' · dig a path to reach it':'🌫️ Clear a connected cave to reveal this place','#ff9bb5'); return; }
+    if(this._amapSel===hit.id){ const mt=mapTable(); mt.node=hit.id; Save.save(); this.menuScreen='recipeprep'; this.buildMenuScreen(); return; }
     this._amapSel=hit.id; this.buildAtlas(); }
   buildAtlasMap(cx,cw,top){
-    const w=this.W,h=this.H,G=atlasGraph(),L=this.atlasLayout(),next=amapNext(),NR=AMAP_REGIONS.length,P=L.pos;
+    const w=this.W,h=this.H; this._amLayout=null; const L=this.atlasLayout(),next=amapNext(),dv=delveSave();
+    if(Save.data.delveComp){ const N=Save.data.delveComp; delete Save.data.delveComp; Save.addSugar(40*N); Save.addCurrency('chaos',Math.ceil(N/4)); Save.save(); this.menuToast('⛏ The Atlas became Mochi Delve · '+N+' old maps refunded: 🍬'+(40*N)+' + chaos ×'+Math.ceil(N/4),'#9dff9d'); }
     const T=(x,y,t,sz,c,st,o)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center'}).setOrigin(0.5,o===undefined?0.5:o);this.menu.add(q);return q;};
-    T(w/2,top+6,'🗺 Atlas '+amapClearedCount()+'/'+G.nodes.length+' maps · points '+atlasPoints()+'/'+atlasMaxPoints(),12,'#ffe08a','bold');
+    T(w/2,top+6,'⛏ Mochi Delve · Record Depth '+(dv.best||0)+' · Bosses '+delveBossesDown()+' · Points '+atlasPoints(),12,'#ffe08a','bold');
     const R=this._amRect={x:cx,y:top+62,w:cw,h:h-62-(top+62)};
-    // แท็บกระโดดไปภูมิภาค + ปุ่มซูม
-    const tb=(cw-5*8)/8; [...AMAP_REGIONS.map((Rg,i)=>({e:amapRegionOpen(i)?Rg.emoji:'🔒',lbl:amapRegionDone(i)+'/20',col:Rg.color,fn:()=>{const rr=L.R0+2.5*L.RS;this.atlasViewFocus(L.C0+rr*Math.cos(L.dirs[i]),L.C0+rr*Math.sin(L.dirs[i]),Math.max(this._amv.s,0.6));}})),
-      {e:'🏠',lbl:'home',col:0xff7ab8,fn:()=>this.atlasViewFocus(P.hub.x,P.hub.y,Math.max(this._amv.s,0.8))},
-      {e:'➕',lbl:'zoom',col:0x8d8499,fn:()=>this.atlasZoomAt(R.x+R.w/2,R.y+R.h/2,this._amv.s*1.35)},
-      {e:'➖',lbl:'all',col:0x8d8499,fn:()=>this.atlasZoomAt(R.x+R.w/2,R.y+R.h/2,this._amv.s/1.35)}].forEach((t,k)=>{ const x=cx+k*(tb+5),y=top+20,g=this.add.graphics();
-      g.fillStyle(0x241a30,1); g.fillRoundedRect(x,y,tb,36,8); g.lineStyle(2,t.col,0.8); g.strokeRoundedRect(x,y,tb,36,8); this.menu.add(g); T(x+tb/2,y+12,t.e,13,'#ffffff'); T(x+tb/2,y+28,t.lbl,8,'#cfc2df','bold'); this._zone(x,y,tb,36,t.fn); });
-    // ผืนแผนที่ (container + mask)
+    const fit=R.w/L.MW; if(!this._amv){ this._amv={x:0,y:0,s:0.8,min:fit}; const nn=next&&amapNode(next),q=nn?L.pos(nn):{x:L.C0,y:L.top}; this._amv.x=R.w/2-q.x*0.8; this._amv.y=R.h/2-q.y*0.8; } this._amv.min=fit;
+    const tb=(cw-3*8)/4; [{e:'🏠',lbl:'Mochitopia',fn:()=>this.atlasViewFocus(L.C0,L.top,Math.max(this._amv.s,0.8))},
+      {e:'⬇',lbl:'frontier',fn:()=>{ const nn=next&&amapNode(next); if(nn){const q=L.pos(nn); this._amapSel=next; this.atlasViewFocus(q.x,q.y,Math.max(this._amv.s,0.8)); this.buildAtlas();} }},
+      {e:'➕',lbl:'zoom in',fn:()=>this.atlasZoomAt(R.x+R.w/2,R.y+R.h/2,this._amv.s*1.35)},
+      {e:'➖',lbl:'zoom out',fn:()=>this.atlasZoomAt(R.x+R.w/2,R.y+R.h/2,this._amv.s/1.35)}].forEach((t,k)=>{ const x=cx+k*(tb+8),y=top+20,g=this.add.graphics();
+      g.fillStyle(0x241a30,1); g.fillRoundedRect(x,y,tb,36,8); g.lineStyle(2,0x8d8499,0.8); g.strokeRoundedRect(x,y,tb,36,8); this.menu.add(g); T(x+tb/2,y+12,t.e,13,'#ffffff'); T(x+tb/2,y+28,t.lbl,8,'#cfc2df','bold'); this._zone(x,y,tb,36,t.fn); });
     const bgG=this.add.graphics(); bgG.fillStyle(0x0d0913,1); bgG.fillRoundedRect(R.x,R.y,R.w,R.h,14); this.menu.add(bgG);
     const view=this._amView=this.add.container(0,0); this.menu.add(view);
     const mk=this.make.graphics({x:0,y:0},false); mk.fillStyle(0xffffff); mk.fillRoundedRect(R.x,R.y,R.w,R.h,14); view.setMask(mk.createGeometryMask());
     const V=(o)=>{view.add(o);return o;}, VT=(x,y,t,sz,c,st)=>V(this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center'}).setOrigin(0.5));
-    // แถบสีภูมิภาค (placeholder ของอาร์ต atlas_region_bg_N)
-    const bg=V(this.add.graphics()),NRr=AMAP_REGIONS.length,half=Math.PI/NRr,Rmax=L.R0+AMAP_ROWS_PER*L.RS+40;
-    AMAP_REGIONS.forEach((Rg,i)=>{ const d=L.dirs[i];
-      if(this.textures.exists('atlas_region_bg_'+i)){ const im=this.add.image(L.C0+Rmax*0.55*Math.cos(d),L.C0+Rmax*0.55*Math.sin(d),'atlas_region_bg_'+i); im.setDisplaySize(Rmax*0.9,Rmax*0.9); view.addAt(im,0); }
-      else { bg.fillStyle(Rg.color,0.14); bg.slice(L.C0,L.C0,Rmax,d-half+0.02,d+half-0.02,false); bg.fillPath(); bg.lineStyle(2,Rg.color,0.35); bg.slice(L.C0,L.C0,Rmax,d-half+0.02,d+half-0.02,false); bg.strokePath();
-        for(let k=0;k<22;k++){ const rr=L.R0+((k*53+i*17)%100)/100*(Rmax-L.R0),aa=d+(((k*97+i*31)%100)/100-0.5)*half*1.6; bg.fillStyle(Rg.color,0.08); bg.fillCircle(L.C0+rr*Math.cos(aa),L.C0+rr*Math.sin(aa),6+(k%5)*5); } }
-      const lr=Rmax+26; VT(L.C0+lr*Math.cos(d),L.C0+lr*Math.sin(d),Rg.emoji+' '+Rg.name.toUpperCase(),16,'#ffffff','bold').setAlpha(0.9); });
-    // วงแหวน tier
-    AMAP_RINGS.forEach((rg,k)=>{ const r=L.R0+k*L.RS; bg.lineStyle(1,0xffffff,0.12); bg.strokeCircle(L.C0,L.C0,r); VT(L.C0+r+4,L.C0-8,'T'+rg[0]+'–'+rg[1],10,'#cfc2df','bold').setAlpha(0.6).setOrigin(0,0.5); });
+    this.atlasViewClamp(); const [va,vz]=this.atlasVisRows(),d0=Math.max(0,va-12),d1=Math.min(L.landD,vz+12); this._amBand=[d0,d1];
+    // เขตรส (พื้น) · แถบสีต่อช่อง (placeholder ของ delve_bg_<flavor>)
+    const bg=V(this.add.graphics());
+    for(let d=Math.max(1,d0);d<=d1;d++){ const fogA=d>L.fogD?0.35:1; for(let x=-DELVE_W-1;x<=DELVE_W+1;x++){ const fl=delveFlavorAt(x,d); bg.fillStyle(fl.color,0.10*fogA); bg.fillRect(L.C0+(x-0.5)*L.CW,L.top+(d-0.5)*L.RH,L.CW+1,L.RH+1); }
+      if(d%DELVE_SEG===0){ bg.lineStyle(2,0xffd166,0.35); bg.lineBetween(0,L.top+d*L.RH,L.MW,L.top+d*L.RH); }
+      if(d%5===0||d===1)VT(18,L.top+d*L.RH,'D'+d,11,'#cfc2df','bold').setAlpha(0.7); }
+    // ป้ายเขตรส (ทุก 10 ชั้น)
+    for(let d=Math.max(5,d0-(d0%10)+5);d<=d1;d+=10){ let prev=null; for(let x=-DELVE_W;x<=DELVE_W;x++){ const fl=delveFlavorAt(x,d); if(fl!==prev){ VT(L.C0+x*L.CW+40,L.top+(d-0.42)*L.RH,fl.emoji+' '+fl.name.toUpperCase(),11,'#ffffff','bold').setAlpha(d<=L.fogD?0.55:0.25); prev=fl; } } }
     // เส้นทาง
-    const lg=V(this.add.graphics());
-    G.edges.forEach(([a,b])=>{ const lit=amapCleared(a)||amapCleared(b),col=AMAP_REGIONS[Math.max(amapNode(a).reg,amapNode(b).reg)].color; lg.lineStyle(lit?4:2,lit?col:0x3a3048,lit?0.95:0.55); lg.lineBetween(P[a].x,P[a].y,P[b].x,P[b].y); });
-    amapHub().forEach(id=>{ lg.lineStyle(4,0xffffff,0.85); lg.lineBetween(P.hub.x,P.hub.y,P[id].x,P[id].y); });
-    // hub + pinnacle
-    const circ=(x,y,r,fill,stroke,key)=>{ if(key&&this.textures.exists(key)){ const im=V(this.add.image(x,y,key)); im.setDisplaySize(r*2.4,r*2.4); return; } const g=V(this.add.graphics()); g.fillStyle(fill,1); g.fillCircle(x,y,r); g.lineStyle(3,stroke,1); g.strokeCircle(x,y,r); };
-    const pinOpen=atlasPinnacleOpen(); if(pinOpen){ const pg=V(this.add.graphics()); pg.fillStyle(0xff7ab8,0.18); pg.fillCircle(P.hub.x,P.hub.y,70); pg.lineStyle(3,0xff7ab8,0.9); pg.strokeCircle(P.hub.x,P.hub.y,70); }
-    circ(P.hub.x,P.hub.y,40,0x3a2a50,0xffffff,'atlas_hub'); VT(P.hub.x,P.hub.y,'🏠',30,'#ffffff'); VT(P.hub.x,P.hub.y+54,'MOCHITOPIA',14,'#ffffff','bold');
-    VT(P.hub.x,P.hub.y-56,(pinOpen?'✦ The Hunger Beneath is open':'✦ Seals '+amapGuardiansDown()+'/5'),11,pinOpen?'#ff9bd0':'#9d93aa','bold');
-    // แมพ 100 จุด
-    G.nodes.forEach(n=>{ const q=P[n.id],open=amapOpen(n.id),t=amapData()[n.id]|0,sel=this._amapSel===n.id,big=n.type==='guardian',rad=big?22:16,col=AMAP_REGIONS[n.reg].color;
-      const k='atlas_node_'+(n.type!=='normal'&&open?n.type:t>0?'clear':open?'open':'locked');
-      if(this.textures.exists(k)){ const im=V(this.add.image(q.x,q.y,k)); im.setDisplaySize(rad*2.4,rad*2.4); }
-      else { const g=V(this.add.graphics()); if(open&&!t){ g.fillStyle(col,0.25); g.fillCircle(q.x,q.y,rad+6); } g.fillStyle(t>0?0x3a2f12:open?0x1f1830:0x14101a,1); g.fillCircle(q.x,q.y,rad); g.lineStyle(sel?4:3,sel?0xffffff:t>0?0xffd166:open?col:0x3a3048,1); g.strokeCircle(q.x,q.y,rad); }
-      if(open){ const fl=amapFlavorOf(n.id),fg=V(this.add.graphics()); fg.lineStyle(2,fl.color,0.95); fg.strokeCircle(q.x,q.y,rad+3);
-        const inf=amapInfluence(n.id); let k=0; AMAP_FLAVORS.forEach(f=>{ for(let i=0;i<(inf[f.id]||0);i++){ fg.fillStyle(f.color,1); fg.fillCircle(q.x+rad+6,q.y-rad+4+k*6,2.6); k++; } }); }
-      VT(q.x,q.y-1,open?n.emoji:'🌫️',big?18:14,'#ffffff'); if(open){VT(q.x,q.y+rad+8,'T'+n.tier,9,t>0?'#ffe08a':'#9dff9d','bold'); VT(q.x-rad+2,q.y-rad+2,amapRewardOf(n.id).emoji,10,'#ffffff');}
-      if(open&&n.type!=='normal'&&n.type!=='guardian')VT(q.x+rad-2,q.y-rad+2,AMAP_TYPES[n.type].emoji,10,'#ffffff');
-      if(open&&n.imp&&!t)VT(q.x-rad+2,q.y-rad+2,'◆',9,'#ff9bb5','bold');
-      if(n.id===next){ const a=VT(q.x,q.y-rad-12,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); } });
-    // มุมมองเริ่มต้น: เต็มความกว้าง ที่แมพแนะนำ (จำตำแหน่งเดิมถ้ามี)
-    const fit=Math.min(R.w/L.MW,R.h/L.H); if(!this._amv){ this._amv={x:0,y:0,s:0.75,min:fit}; this.atlasViewFocus(P.hub.x,P.hub.y,0.75); } else { this._amv.min=fit; this.atlasViewClamp(); }
-    // ข้อมูลแมพที่เลือก
+    const lg=V(this.add.graphics()),vis=n=>n.d<=L.fogD;
+    for(let d=d0;d<=d1;d++){ if(d+1>L.fogD&&d>L.fogD)break; const Lk=delveLinks(d); [...Lk.E,...Lk.H].forEach(([a,b])=>{ const A=amapNode(a),B=amapNode(b); if(!vis(A)||!vis(B))return; const pa=L.pos(A),pb=L.pos(B),ca=amapCleared(a),cb=amapCleared(b);
+      if(ca&&cb){ lg.lineStyle(5,0xffd166,0.95); } else if(ca||cb){ lg.lineStyle(3,0xffffff,0.75); } else { lg.lineStyle(2,0x5a4d6a,0.45); } lg.lineBetween(pa.x,pa.y,pb.x,pb.y); }); }
+    // node
+    const ng=V(this.add.graphics());
+    for(let d=d0;d<=d1;d++)delveRow(d).forEach(r=>{ const n=amapNode(r.id),q=L.pos(n),open=amapOpen(n.id),t=amapClears(n.id),sel=this._amapSel===n.id,land=n.type==='city'||n.type==='boss'||n.type==='home';
+      if(!open&&d>L.fogD&&!land)return; const big=land?24:n.type==='normal'?15:18,col=n.flavor.color,tk='delve_node_'+(n.type==='home'?'home':n.type);
+      if(n.type==='home'){ if(this.textures.exists('delve_home')){ V(this.add.image(q.x,q.y,'delve_home')).setDisplaySize(96,96); } else { ng.fillStyle(0x3a2a50,1); ng.fillCircle(q.x,q.y,34); ng.lineStyle(3,atlasPinnacleOpen()?0xff7ab8:0xffffff,1); ng.strokeCircle(q.x,q.y,34); VT(q.x,q.y,'🏠',28,'#ffffff'); }
+        VT(q.x,q.y-50,'MOCHITOPIA',13,'#ffffff','bold'); VT(q.x,q.y+48,atlasPinnacleOpen()?'✦ The Hunger Beneath is open':'✦ Floor 30 opens the Pinnacle',10,atlasPinnacleOpen()?'#ff9bd0':'#9d93aa','bold'); return; }
+      if(!open){ ng.fillStyle(0x14101a,land?0.9:0.7); ng.fillCircle(q.x,q.y,land?big:9); ng.lineStyle(2,land?0x8d7aa8:0x3a3048,land?0.8:0.5); ng.strokeCircle(q.x,q.y,land?big:9); if(land)VT(q.x,q.y,AMAP_TYPES[n.type].emoji,16,'#ffffff').setAlpha(0.55); return; }
+      if(this.textures.exists(tk)){ V(this.add.image(q.x,q.y,tk)).setDisplaySize(big*2.4,big*2.4); if(sel||!t){ ng.lineStyle(sel?4:3,sel?0xffffff:col,1); ng.strokeCircle(q.x,q.y,big+3); } }
+      else { if(!t){ ng.fillStyle(col,0.25); ng.fillCircle(q.x,q.y,big+7); } ng.fillStyle(t?0x3a2f12:0x1f1830,1); ng.fillCircle(q.x,q.y,big); ng.lineStyle(sel?4:3,sel?0xffffff:t?0xffd166:col,1); ng.strokeCircle(q.x,q.y,big); }
+      VT(q.x,q.y-1,n.emoji,land?20:13,'#ffffff'); VT(q.x-big+1,q.y-big+1,amapRewardOf(n.id).emoji,10,'#ffffff');
+      if(n.imp&&!t)VT(q.x+big-1,q.y-big+1,'◆',9,'#ff9bb5','bold');
+      const inf=amapInfluence(n.id); let k=0; AMAP_FLAVORS.forEach(f=>{ for(let i=0;i<(inf[f.id]||0);i++){ ng.fillStyle(f.color,1); ng.fillCircle(q.x+big+5,q.y-big+5+k*6,2.6); k++; } });
+      if(t)VT(q.x,q.y+big+8,'✓',10,'#ffe08a','bold');
+      if(n.id===next){ const a=VT(q.x,q.y-big-13,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); } });
+    // ข้อมูล node ที่เลือก
     const sn=this._amapSel!=null?amapNode(this._amapSel):null;
-    if(sn){ const ty=AMAP_TYPES[sn.type],im=sn.imp&&recipeModDef(sn.imp),t=amapData()[sn.id]|0;
-      T(w/2,h-44,sn.emoji+' '+sn.name+' · Tier '+sn.tier+(t?' · ✓ cleared':''),12,'#ffffff','bold');
-      const fl=amapFlavorOf(sn.id),inf=amapInfluence(sn.id),L=amapInfLayers(inf);
-      T(w/2,h-26,fl.emoji+' '+fl.name+' map · '+(L?'Influence '+amapInfText(inf)+' → +'+(10*L)+'% danger +'+(15*L)+'% rewards':'No influence yet')+(sn.type!=='normal'?' · '+ty.emoji+' '+ty.name:'')+(im?' · ◆ '+im.name:'')+' · tap again',9,'#cfc2df'); }
-    else T(w/2,h-34,'Drag to explore · pinch or ➕➖ to zoom · tap a map',10,'#9d93aa');
+    if(sn&&sn.d>0){ const ty=AMAP_TYPES[sn.type],im=sn.imp&&recipeModDef(sn.imp),t=amapClears(sn.id),dm=delveMul(sn.d);
+      T(w/2,h-44,sn.emoji+' '+sn.name+' · Depth '+sn.d+(t?' · ✓ ×'+t:''),12,'#ffffff','bold');
+      const inf=amapInfluence(sn.id),IL=amapInfLayers(inf);
+      T(w/2,h-26,sn.flavor.emoji+' '+sn.flavor.name+' · HP ×'+dm.hp.toFixed(1)+' · rewards ×'+dm.reward.toFixed(2)+(sn.type!=='normal'?' · '+ty.emoji+' '+ty.name:'')+(IL?' · '+amapInfText(inf):'')+(im?' · ◆ '+im.name:'')+' · tap again',9,'#cfc2df'); }
+    else T(w/2,h-34,'Drag to dig through the map · pinch or ➕➖ to zoom · tap a cave',10,'#9d93aa');
   }
   buildRecipePrep(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📜 Endgame','screen_atlas'); this.migrateRiftToRecipes&&this.migrateRiftToRecipes();
@@ -6016,7 +6018,7 @@ class Game extends Phaser.Scene {
     { const save=()=>{Save.save();Sfx.select&&Sfx.select();this.buildRecipePrep();}, arrow=(x,yy,lbl,fn)=>{const q=this.add.text(x,yy,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5,0);this.menu.add(q);this._zone(x-20,yy-4,40,30,fn);};
       box(150,0xffd166); T(cx+12,y+8,'🗺 Map Table',13,'#ffe08a','bold');
       const ti=th.indexOf(mt.node); arrow(cx+24,y+30,'‹',()=>{mt.node=th[(ti-1+th.length)%th.length];save();}); arrow(cx+cw-24,y+30,'›',()=>{mt.node=th[(ti+1)%th.length];save();}); T(cx+cw/2,y+32,nd.emoji+' '+nd.name,13,'#ffffff','bold',0.5);
-      const ty=AMAP_TYPES[nd.type],im=nd.imp&&recipeModDef(nd.imp); T(cx+cw/2,y+58,'Tier '+nd.tier+' · '+AMAP_REGIONS[nd.reg].emoji+' '+AMAP_REGIONS[nd.reg].name+(nd.type!=='normal'?' · '+ty.emoji+' '+ty.name:'')+(im?' · '+im.emoji+' '+im.name+' (map)':''),10,'#ffe08a','bold',0.5); { const fl=amapFlavorOf(nd.id),inf=amapInfluence(nd.id),L=amapInfLayers(inf); T(cx+cw/2,y+74,fl.emoji+' '+fl.name+(L?' · Influence '+amapInfText(inf)+' (+'+(10*L)+'% danger · +'+(15*L)+'% rewards)':' · no influence'),9,'#cfc2df','normal',0.5); }
+      const ty=AMAP_TYPES[nd.type],im=nd.imp&&recipeModDef(nd.imp); T(cx+cw/2,y+58,'Depth '+nd.d+' · '+nd.flavor.emoji+' '+nd.flavor.name+' zone'+(nd.type!=='normal'?' · '+ty.emoji+' '+ty.name:'')+(im?' · '+im.emoji+' '+im.name+' (map)':''),10,'#ffe08a','bold',0.5); { const fl=amapFlavorOf(nd.id),inf=amapInfluence(nd.id),L=amapInfLayers(inf); T(cx+cw/2,y+74,fl.emoji+' '+fl.name+(L?' · Influence '+amapInfText(inf)+' (+'+(10*L)+'% danger · +'+(15*L)+'% rewards)':' · no influence'),9,'#cfc2df','normal',0.5); }
       const cols=5,mw=(cw-24-(cols-1)*5)/cols; RECIPE_MODS.forEach((md,i)=>{ const on=mt.mods.includes(md.id),x=cx+12+(i%cols)*(mw+5),yy=y+88+Math.floor(i/cols)*28,g=this.add.graphics(); g.fillStyle(on?0x6b2bd9:0x241a30,1); g.fillRoundedRect(x,yy,mw,24,7); this.menu.add(g);
         const q=this.add.text(x+mw/2,yy+12,md.emoji+(on?(' '+MAP_MOD_COST[mt.mods.indexOf(md.id)].slice(0,3)):''),{fontFamily:'sans-serif',fontSize:'11px',color:'#ffffff'}).setOrigin(0.5);this.menu.add(q);
         this._zone(x,yy,mw,24,()=>{ if(on)mt.mods=mt.mods.filter(z=>z!==md.id); else { if(mt.mods.length>=3){this.menuToast('Max 3 mods','#ff9bb5');return;} mt.mods.push(md.id);} this.menuToast(md.emoji+' '+md.name+': '+md.desc+' · rewards ×'+md.reward.toFixed(2),'#e6dcf0'); save(); }); });
@@ -6041,7 +6043,7 @@ class Game extends Phaser.Scene {
     T(cx+12,y+48,'Rewards ×'+rw.toFixed(2)+'   ·   Hunger goal '+goal+' kills',11,'#ffe08a'); y+=90;
     { const hb=(cw-16)/3,by=y+4; const keys=Save.data.riftKeys||0;
       const hb2=(cw-8)/2;
-      this.uiPillBtn(this.menu,cx+hb2/2,by+20,hb2,40,0x3d6bb3,'🗺','Atlas',()=>{this._atlasTab='board';this.menuScreen='atlas';this.buildMenuScreen();});
+      this.uiPillBtn(this.menu,cx+hb2/2,by+20,hb2,40,0x3d6bb3,'⛏','Delve',()=>{this._atlasTab='board';this.menuScreen='atlas';this.buildMenuScreen();});
       this.uiPillBtn(this.menu,cx+hb2+8+hb2/2,by+20,hb2,40,keys>=PINNACLE_KEY_COST?0x6b2bd9:0x4a4059,'✦','🗝'+keys+'/'+PINNACLE_KEY_COST,()=>this.startPinnacle()); y+=52; }
     this.uiPillBtn(this.menu,w/2,Math.min(y+28,h-40),Math.min(cw,300),50,over?0x4a4059:COLORS.pink,'▶','Start Run',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;} const need=mapModCostOk(); if(!need){this.menuToast('Not enough currency for these mods — remove some or get more','#ff6b6b');return;} Object.keys(need).forEach(c=>Save.spendCurrency(c,need[c])); Save.save();
       this.stageDiff=1; this._recipeRequested=r; {const rw=amapRewardOf(r.node!=null?r.node:0); this._farmFocusRequested=rw.id==='sugar'?'all':rw.id; this._sugarRewardMap=rw.id==='sugar';} this._prepRecipe=null; this.startRun(r.theme); });
@@ -7906,9 +7908,9 @@ class Game extends Phaser.Scene {
     for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
     this.syncBasicAttack(); this._egBuilt=true; }
   pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
-  startRecipeRun(st){ const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · T'+nd.tier); } this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
+  startRecipeRun(st){ const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
-    this.stageTxt.setText('📜 Recipe T'+r.tier+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+(nd?nd.emoji+' '+nd.name:st.name));
+    this.stageTxt.setText((nd?'⛏ Depth '+nd.d:'📜 Recipe T'+r.tier)+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+(nd?nd.emoji+' '+nd.name:st.name));
     this.applyEgBuild();
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
       this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; { const fi=this._amapInf||{}; if(fi.sweet){this.spawnInterval*=1-0.08*fi.sweet; this.spawnBatch+=fi.sweet>=2?1:0;} if(fi.sour&&this.eliteEvery)this.eliteEvery*=1-0.15*fi.sour; } this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
@@ -7951,16 +7953,19 @@ class Game extends Phaser.Scene {
   finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); this.claimPactMilestones();
     if(this._sugarRewardMap){ this._sugarRewardMap=false; this.sugarStage=Math.round((this.sugarStage||0)*1.5); } if((this._pactHeat||0)>(Save.data.pactBest||0)){ Save.data.pactBest=this._pactHeat; Save.save(); this.time.delayedCall(2600,()=>this.showBanner('🔥 New Pact record: Heat '+this._pactHeat,'',2000)); }
     const at=atlasData(); at[r.theme]=Math.max(at[r.theme]||0,r.tier);
-    if(r.node!=null){ Save.data.atlasClears=Save.data.atlasClears||{}; Save.data.atlasClears[r.node]=amapClears(r.node)+1;
+    if(r.node!=null&&amapNode(r.node)){ const dv=delveSave(),am=dv.clears,nd=amapNode(r.node),first=!am[r.node]; am[r.node]=(am[r.node]|0)+1; const newBest=nd.d>(dv.best||0); if(newBest)dv.best=nd.d;
       { const fi=this._amapInf||{},dr=this.diffMul().reward,got=[];
         if(fi.spicy){ this.grantCurrencyReward(fi.spicy,this.currencyTierFor(),'🌶️ Spicy influence'); }
         if(fi.frosty){ const n=Math.round(6*fi.frosty*dr); Save.addShards(n); got.push('❄️ +'+n+' shards'); }
         if(fi.sweet){ const n=Math.round((40+r.tier*15)*fi.sweet*dr); this.sugarStage+=n; got.push('🍯 +'+n+' Sugar'); }
         if(fi.sour){ let n=0; for(let i=0;i<fi.sour;i++)if(Math.random()<0.5&&this.grantGear(Math.random()<0.25?'epic':'rare'))n++; if(n)got.push('🍋 +'+n+' gear'); }
         if(got.length)this.time.delayedCall(3800,()=>this.showBanner('🍽 Flavor rewards',got.join(' · '),2200)); }
-      const am=amapData(),nd=amapNode(r.node),first=!am[r.node]; am[r.node]=Math.max(am[r.node]|0,r.tier);
-      if(nd&&first){ const opened=atlasGraph().adj[r.node].filter(j=>!amapCleared(j)&&!amapOpen(j)===false).length; this.time.delayedCall(5200,()=>this.showBanner('🗺 '+nd.name+' cleared!','🗺 +'+amapNodePts(nd)+' Atlas point'+(amapNodePts(nd)>1?'s':'')+' · paths revealed'+(nd.type==='guardian'?' · Seal '+amapGuardiansDown()+'/5 broken':''),2600)); }
-      if(nd&&nd.type==='vault'){ const vb=Math.round((80+r.tier*30)*this.diffMul().reward); this.sugarStage+=vb; this.time.delayedCall(1200,()=>this.showBanner('💰 Treasure Vault','🍬 +'+vb+' Sugar',1800)); } }
+      if(first)this.time.delayedCall(5200,()=>this.showBanner('⛏ '+nd.name+' · Depth '+nd.d,(amapNodePts(nd)?'+'+amapNodePts(nd)+' Delve point'+(amapNodePts(nd)>1?'s':'')+' · ':'')+'new paths revealed'+(newBest?' · new record!':''),2600));
+      const dr=this.diffMul().reward;
+      if(nd.type==='vault'){ const vb=Math.round((80+nd.d*12)*dr); this.sugarStage+=vb; this.grantGear('rare'); this.time.delayedCall(1200,()=>this.showBanner('💎 Treasure Pocket','🍬 +'+vb+' Sugar · bonus gear',1800)); }
+      if(nd.type==='elite'){ this.grantGear('epic'); this.time.delayedCall(1200,()=>this.showBanner('💀 Elite Den','Epic gear secured',1800)); }
+      if(nd.type==='city'&&first){ const cb=Math.round((300+nd.d*25)*dr); this.sugarStage+=cb; Save.data.riftKeys=(Save.data.riftKeys||0)+1; this.grantCurrencyReward(3,this.currencyTierFor(),'🏰 Candy City'); this.time.delayedCall(1200,()=>this.showBanner('🏰 Candy City','🍬 +'+cb+' Sugar · 🗝 +1 Pinnacle key',2200)); }
+      if(nd.type==='boss'&&first){ this.grantCurrencyReward(4,this.currencyTierFor(),'👑 Floor '+nd.d); this.time.delayedCall(1200,()=>this.showBanner('👑 Floor '+nd.d+' conquered','Checkpoint saved'+(nd.d===30?' · ✦ The Hunger Beneath is open':''),2400)); } }
     if(!Save.data.recipeBest)Save.data.recipeBest={}; const k=r.theme,prev=Save.data.recipeBest[k],fill=Math.round(this._recipeFillT);
     let best=false; if(this._hungerDone&&this._recipeFillT<RECIPE_TIME_CAP&&(!prev||fill<prev)){Save.data.recipeBest[k]=fill;best=true;}
     let bonus=0; if(this._recipeFast){ bonus=Math.round((60+r.tier*25)*this.diffMul().reward); this.sugarStage+=bonus; }
@@ -7972,7 +7977,7 @@ class Game extends Phaser.Scene {
     if(uqGot){ Save.data.uniqueFound=Save.data.uniqueFound||{}; Save.data.uniqueFound[uqGot.id]=(Save.data.uniqueFound[uqGot.id]||0)+1; this.time.delayedCall(7800,()=>{ this.screenFlash(0xc9a3ff,0.6,500); this.showBanner('🟣 UNIQUE: '+uqGot.emoji+' '+uqGot.name,uqGot.desc.replace('UNIQUE · ',''),3000); }); }
     Save.data.recipeMaxTier=Math.max(Save.data.recipeMaxTier||1,...got.map(d=>d.tier),r.tier);
     Save.save(); this._recipeLoot={got,lost,frag,keys};
-    this.showBanner('📜 Recipe T'+r.tier+' cleared!',(this._recipeFast?'⚡ Speed bonus 🍬'+bonus+' · ':'')+'Fill '+fill+'s'+(best?' · NEW BEST':''),2400);
+    this.showBanner((this._amapNode?'⛏ Depth '+this._amapNode.d:'📜 Recipe T'+r.tier)+' cleared!',(this._recipeFast?'⚡ Speed bonus 🍬'+bonus+' · ':'')+'Fill '+fill+'s'+(best?' · NEW BEST':''),2400);
     const line=got.map(d=>STAGES[d.theme].emoji+' T'+d.tier+(d.rarity!=='normal'?' '+RECIPE_RARITY[d.rarity].label:'')).join(', ');
     this.time.delayedCall(2500,()=>this.showBanner(newCap>capBefore?'🗺 Tier '+newCap+' unlocked!':'🗺 Map cleared','🧩 +'+frag+' Pinnacle fragment'+(frag>1?'s':'')+(keys?' · 🗝️ +'+keys+' Key':'')+' ('+(Save.data.pinnacleFrags||0)+'/'+RECIPE_FRAGS_PER_KEY+')',2600)); }
   // R3: ดรอป recipe ถัดไป — การันตี 1 ใบ (Tier เท่าเดิม; 35% +1, เร็ว +20%) · ใบที่ 2 ลุ้น 25% (+ตาม mod) · rarity ดีขึ้นตาม Tier (กฎเหล็ก)
@@ -8689,7 +8694,7 @@ class Game extends Phaser.Scene {
   tutorialActive(){ return !!this._inTutorial; }
   zoneModMul(){ let hp=1,dmg=1,reward=1; if(Save.zoneModsUnlocked()){ for(const id of (this._activeZoneMods||[])){ const m=ZONE_MODIFIERS.find(x=>x.id===id); if(m){ hp*=m.hp; dmg*=m.dmg; reward*=m.reward; } } } return {hp,dmg,reward}; }
   diffMul(){ const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],z=this._zoneMul||{hp:1,dmg:1,reward:1},r=this.riftMul(),c=this._challengeRun||[]; return {...d,hp:d.hp*z.hp*r.hp*(c.includes('iron')?1.35:1)*(c.includes('crowd')?1.15:1),dmg:d.dmg*z.dmg*r.dmg*(c.includes('fang')?1.25:1),reward:d.reward*z.reward*r.reward}; }
-  riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=recipeModDef(id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} if(this.recipeMode){ m.reward*=1+atlasLv('fortune')*0.08; const pl=this._pact||{}; m.hp*=1+0.15*(pl.hp||0); m.dmg*=1+0.15*(pl.dmg||0); m.reward*=1+PACT_REWARD_PER_HEAT*(this._pactHeat||0); const fi=this._amapInf||{},L=amapInfLayers(fi); if(L){ m.hp*=1+0.1*L+0.06*(fi.frosty||0); m.dmg*=1+0.1*L+0.08*(fi.fermented||0); m.reward*=1+0.15*L; } } return m; }   // ตัวคูณความยาก × Zone Modifiers
+  riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=(this.recipeMode&&this._amapNode)?delveMul(this._amapNode.d):riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=recipeModDef(id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} if(this.recipeMode){ m.reward*=1+atlasLv('fortune')*0.08; const pl=this._pact||{}; m.hp*=1+0.15*(pl.hp||0); m.dmg*=1+0.15*(pl.dmg||0); m.reward*=1+PACT_REWARD_PER_HEAT*(this._pactHeat||0); const fi=this._amapInf||{},L=amapInfLayers(fi); if(L){ m.hp*=1+0.1*L+0.06*(fi.frosty||0); m.dmg*=1+0.1*L+0.08*(fi.fermented||0); m.reward*=1+0.15*L; } } return m; }   // ตัวคูณความยาก × Zone Modifiers
   zoneLevel(){ return stageZoneLevel(this.stageIndex||0,this.stageDiff||1); }   // Zone Level ของด่านที่กำลังเล่น
   // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
   recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }
@@ -8790,7 +8795,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode&&this._amapNode.type==='guardian'?1.5:1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
