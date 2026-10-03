@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.49.3';
+const GAME_VERSION = '6.49.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.49.4', date:'2026-10-03', title:'Clearer damage numbers', items:['Damage numbers are bigger, outlined and stay on screen a little longer'] },
   { v:'6.49.3', date:'2026-10-03', title:'No more green flash in menus', items:['Opening a menu no longer flashes the green grid behind it'] },
   { v:'6.49.2', date:'2026-10-03', title:'Menu music starts with the light', items:['The menu song now begins as the light opens in the intro'] },
   { v:'6.49.1', date:'2026-10-03', title:'Loading no longer gets stuck', items:['If the loading screen stops at 100%, the game now continues on its own after a few seconds'] },
@@ -12598,22 +12599,18 @@ class Game extends Phaser.Scene {
   }
   popDmg(n,x,y,crit){
     if(Save.data.settings&&Save.data.settings.damageNumbers===false)return;
-    // v5.23: ลดตัวเลขลอยรก — เลขธรรมดาโชว์ได้ ~8 ครั้ง/วิ · คริโชว์เสมอ
-    if(!crit){const now=this.time.now;if(now-(this._dmgNumAt||0)<(this.enemies.countActive()>60?220:120))return;this._dmgNumAt=now;}
+    // v5.23: ลดตัวเลขลอยรก · v6.49.4: 90ms (มอนเยอะ 200ms) · คริโชว์เสมอ
+    if(!crit){const now=this.time.now;if(now-(this._dmgNumAt||0)<(this.enemies.countActive()>60?200:90))return;this._dmgNumAt=now;}
     let t=this.dmgPool.pop();
-    if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px'}).setDepth(99999).setOrigin(0.5); this.camWorld(t); }
+    if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px'}).setDepth(99999).setOrigin(0.5).setStroke('#2a1830',5).setShadow(0,2,'#000000',2,true,true); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
+    // v6.49.4: ใหญ่ขึ้น+ขอบเข้ม ชดเชยการซูมกล้องโลก ให้อ่านออกบนพื้นสว่าง
+    const z=Math.max(0.5,this.viewZoom||1), fs=Math.round((crit?28:20)/z);
     const str = crit ? ('💥 '+n) : n;
-    t.setText(str).setColor(crit?'#ffd23f':'#ffffff').setFontSize(crit?'22px':'15px').setPosition(x+Phaser.Math.Between(-8,8),y-12).setAlpha(1).setScale(crit?1.5:1.0);
-    this.tweens.add({
-      targets:t,
-      y:y-(crit?60:42),
-      scale:crit?1.0:0.9,
-      alpha:0,
-      duration:crit?640:500,
-      ease:crit?'Back.out':'Linear',
-      onComplete:()=>{ t.setVisible(false); this.dmgPool.push(t); }
-    });
+    t.setText(str).setColor(crit?'#ffd23f':'#fff6e0').setFontSize(fs+'px').setStroke('#2a1830',Math.round(5/z)).setPosition(x+Phaser.Math.Between(-8,8),y-14).setAlpha(1).setScale(crit?1.45:1.25);
+    this.tweens.add({targets:t,scale:1,duration:crit?140:110,ease:'Back.out'});
+    this.tweens.add({targets:t,y:y-(crit?70:50),alpha:0,delay:crit?420:330,duration:crit?520:420,ease:'Quad.easeIn',
+      onComplete:()=>{ t.setVisible(false); this.dmgPool.push(t); }});
   }
   spawnGhostTrail(){
     const p=this.player; if(!p)return;
