@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.48.1';
+const GAME_VERSION = '6.48.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.48.2', date:'2026-10-03', title:'Clearer loading bar', items:['One continuous loading bar instead of two','Shows MB loaded, MB left, download speed and time left'] },
   { v:'6.48.1', date:'2026-10-03', title:'One loading song', items:['The loading song now plays through the whole loading screen and opening','Menu music starts only after the opening'] },
   { v:'6.48.0', date:'2026-10-03', title:'One loading screen', items:['All game data now loads on the first loading screen with a single progress bar','The opening scene and menu follow once everything is ready'] },
   { v:'6.47.1', date:'2026-10-03', title:'Chapter art fix', items:['Chapter covers and the Tutorial icon show right away on Choose Chapter','Menu screens refresh once all game data finishes loading'] },
@@ -1840,6 +1841,15 @@ function bgmKeyFor(kind,stageNum){
 
 let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
 let ASSET_FILE_VERSIONS = null; // build-www ใส่ hash ของแต่ละไฟล์ → เปลี่ยน URL เฉพาะไฟล์ที่แก้จริง
+let ASSET_FILE_SIZES = null; // v6.48.2 build-www ใส่ขนาดไฟล์ (byte) → หลอดโหลดเดียวบอก MB ที่เหลือ/ความเร็ว
+const LoadMeter={ total:0, done:0, seen:new Set(), t0:0, hist:[],
+  sizeOf(u){ const k=String(u||'').split('?')[0]; return (ASSET_FILE_SIZES&&ASSET_FILE_SIZES[k])||0; },
+  plan(){ if(this.total)return; const urls=new Set(); const add=u=>u&&urls.add(String(u)); for(const k in ASSET_IMAGES)add(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(ASSET_FX[k].url); for(const k in ASSET_AUDIO)add(ASSET_AUDIO[k]); let t=0; urls.forEach(u=>t+=this.sizeOf(u)); this.total=t; this.count=urls.size; this.t0=performance.now(); },
+  mark(u){ const k=String(u||'').split('?')[0]; if(!k||this.seen.has(k))return; this.seen.add(k); this.done+=this.sizeOf(k); const n=performance.now(); this.hist.push([n,this.done]); while(this.hist.length>2&&n-this.hist[0][0]>3000)this.hist.shift(); },
+  show(){ const L=window.GameLoader; if(!L)return; this.plan(); const mb=b=>(b/1048576).toFixed(1);
+    if(!this.total){ const p=this.count?this.seen.size/this.count:0; L.set(p,'Loading game data… '+this.seen.size+' / '+this.count+' files'); return; }
+    const p=Math.min(1,this.done/this.total), left=Math.max(0,this.total-this.done), h=this.hist, dt=h.length>1?(h[h.length-1][0]-h[0][0])/1000:0, sp=dt>0.3?(h[h.length-1][1]-h[0][1])/dt:0;
+    let t='Loading game data… '+mb(this.done)+' / '+mb(this.total)+' MB · '+mb(left)+' MB left'; if(sp>0)t+=' · '+(sp/1048576).toFixed(1)+' MB/s'+(left>0?' · ~'+Math.ceil(left/sp)+'s':''); L.set(p,t); } };
 function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v?(u+'?v='+v):(ASSET_VER?(u+'?v='+ASSET_VER):u); }
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
 // [0 idle,1 blink,2 squash,3 stretch(พุ่ง),4 cheer(ดีใจ),5 hurt(เจ็บ),6 ko(สลบ),7 cast(ร่ายอัลติ)]
@@ -1894,15 +1904,8 @@ class Boot extends Phaser.Scene {
     this._loadFailures=0;
     const loader=window.GameLoader;
     if(loader)loader.show('Loading images, audio and characters...',0);
-    this.load.on('progress',(value)=>{
-      if(loader)loader.set(value,this._loadFailures?'Continuing (skipping problem files '+this._loadFailures+' files)...':'Loading game assets...');
-    });
-    this.load.on('fileprogress',(file)=>{
-      if(!loader)return;
-      const name=(file&&file.key?String(file.key):'asset').replace(/[_-]+/g,' ');
-      const current=this.load.progress||0;
-      loader.set(current,'Preparing '+name+'...');
-    });
+    LoadMeter.plan(); LoadMeter.show(); // v6.48.2 หลอดเดียวต่อเนื่องกับ preloadAll (ไม่วิ่งถึง 100% แล้วเริ่มใหม่)
+    const mk=f=>{ LoadMeter.mark(f&&f.url); LoadMeter.show(); }; this.load.on('load',mk); this.load.on('loaderror',mk);
     for(const k in ASSET_IMAGES){ if(!bootKeep(k))continue;this.load.image(k, verUrl(ASSET_IMAGES[k])); }
     for(const k in ASSET_SHEETS){if(!bootKeep(k))continue;this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });}
     if(false)for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
@@ -1917,7 +1920,7 @@ class Boot extends Phaser.Scene {
       delete ASSET_IMAGES[f.key]; delete ASSET_SHEETS[f.key]; delete ASSET_FX[f.key]; delete ASSET_AUDIO[f.key];
     });
     this.load.once('complete',()=>{
-      if(loader)loader.set(1,this._loadFailures?'Ready (using fallback assets '+this._loadFailures+' files)':'Ready!');
+      // v6.48.2: ไม่ตั้ง 100% ตรงนี้ — หลอดเดียวเดินต่อใน preloadAll
     });
   }
   // 🧩 Chapter 3 placeholder art (วาดด้วยโค้ด) — ถ้ามีไฟล์จริงใน ASSET_IMAGES ที่ key เดียวกัน จะข้ามการวาดเอง
@@ -4632,17 +4635,17 @@ class Game extends Phaser.Scene {
     for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
     for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
     // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
-    for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch)fetch(verUrl(ASSET_AUDIO[k])).catch(()=>{}); continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
-    const fin=()=>{ this.load.off('progress',prog); this.buildDeferredAnims();
+    for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch){ const u=ASSET_AUDIO[k]; fetch(verUrl(u)).then(r=>r.arrayBuffer()).catch(()=>{}).then(()=>{ LoadMeter.mark(u); if(!this._allLoaded)LoadMeter.show(); }); } continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
+    const fin=()=>{ this.load.off('load',mk);this.load.off('loaderror',mk); this.buildDeferredAnims();
       this._allLoaded=true;this._allLoading=false;this._deferDone=true;
       const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}); [1,2].forEach(t=>{D[t].done=true;D[t].started=true;const q=D[t].q;D[t].q=[];q.forEach(cb=>setTimeout(cb,0));});
       this._stageArtReady=new Set(STAGES.map((_,i)=>i)); this._grpOk=new Proxy({}, {get:()=>true});
       if(L){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);} if(this.state==='menu')this.buildMenuScreen();
       const w=this._allWait;this._allWait=[];w.forEach(cb=>setTimeout(cb,0)); };
-    const prog=v=>{ if(L)L.set(v,'Loading game data… '+Math.round(v*100)+'%'); };
+    const mk=f=>{ LoadMeter.mark(f&&f.url); LoadMeter.show(); };
     if(!n){fin();return;}
-    if(L)L.show('Loading game data…',0);
-    this.load.on('progress',prog); this.load.once('complete',()=>setTimeout(fin,0)); if(!this.load.isLoading())this.load.start();
+    if(L){ if(L._introDone)L.show('Loading game data…',0); LoadMeter.show(); }
+    this.load.on('load',mk);this.load.on('loaderror',mk); this.load.once('complete',()=>setTimeout(fin,0)); if(!this.load.isLoading())this.load.start();
   }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[])];

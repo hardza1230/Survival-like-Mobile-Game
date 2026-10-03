@@ -63,6 +63,8 @@ const cssRefs = [...loaderCss.matchAll(/url\(['"]?([^)'"?#]+)['"]?\)/g)]
   .map(m=>normalize(join(dirname(loaderCssPath),m[1])));
 const uniqueAssets = [...new Set([...assetRefs,...cssRefs,loaderCssPath])].sort();
 const assetHashes=Object.fromEntries(uniqueAssets.map(rel=>[rel,createHash('sha256').update(readFileSync(join(root,rel))).digest('hex').slice(0,12)]));
+const assetSizes=Object.fromEntries(uniqueAssets.map(rel=>[rel,statSync(join(root,rel)).size]));
+gjs=gjs.replace('let ASSET_FILE_SIZES = null;', 'let ASSET_FILE_SIZES = '+JSON.stringify(assetSizes)+';');
 gjs=gjs.replace('let ASSET_FILE_VERSIONS = null;', 'let ASSET_FILE_VERSIONS = '+JSON.stringify(assetHashes)+';');
 writeFileSync(join(www,'game.js'),gjs);
 execFileSync(process.execPath, ['--check', join(www, 'game.js')]);
