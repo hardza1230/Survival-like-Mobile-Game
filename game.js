@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.46.0';
+const GAME_VERSION = '6.47.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.47.0', date:'2026-10-03', title:'Download once, play smoothly', items:['The whole game downloads once on the first screen with a progress bar','After that, menus and stages open without loading pauses','Later launches read from your device'] },
   { v:'6.46.0', date:'2026-10-03', title:'Assets saved on your device', items:['Art and sounds you have already loaded are kept on your device','Opening the game again downloads far less'] },
   { v:'6.45.0', date:'2026-10-03', title:'Faster stage loading', items:['Entering a stage now waits only for that stage’s art and your hero, not every asset in the game','Stage music no longer waits for background downloads','Effects and menu art keep loading quietly while you play'] },
   { v:'6.44.0', date:'2026-10-03', title:'Safer, clearer result screens', items:['Result and defeat screens ignore taps for a moment so spamming Dash or Unique no longer skips them','Defeat screen uses the same painted panel as the stage and Delve results','Reward x2, Revive, Replay and Continue buttons are larger, glossy and easier to spot'] },
@@ -4612,10 +4613,33 @@ class Game extends Phaser.Scene {
     this.setupInput();
     this.scale.on('resize',this.onResize,this);
     // รอซูมฉากเปิดจบก่อนถอดรหัสภาพด่านเบื้องหลัง (แย่งเฟรมบนมือถือ)
-    const warm=()=>this.time.delayedCall(350,()=>{if(this.state==='menu')this.ensureStageArt(Math.min(14,Save.data.unlockedStage||0));});
+    const warm=()=>this.time.delayedCall(60,()=>this.preloadAll());   // v6.47 เจ้าของเลือก: โหลดทั้งเกมตั้งแต่หน้าแรก (ครั้งต่อไปมาจาก cache ในเครื่อง)
     if(window.GameLoader&&window.GameLoader._introFinished)warm();else window.addEventListener('mochi-intro-finished',warm,{once:true});
   }
 
+  // v6.47: โหลดทุก asset ครั้งเดียวหลังหน้าแรก (Service Worker เก็บไว้ในเครื่อง → เปิดครั้งต่อไปเร็ว) แล้วไม่มีการรอโหลดระหว่างเล่นอีก
+  preloadAll(done){
+    if(this._allLoaded){done&&done();return;} if(this._allLoading){if(done)this._allWait.push(done);return;}
+    this._allLoading=true;this._allWait=done?[done]:[];
+    const L=window.GameLoader,real=k=>{ if(!this.textures.exists(k))return false; return !(this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement); };
+    const drop=k=>{ if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } };
+    let n=0;
+    for(const k in ASSET_IMAGES){ if(real(k))continue; drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
+    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
+    for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
+    // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
+    for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch)fetch(verUrl(ASSET_AUDIO[k])).catch(()=>{}); continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
+    const fin=()=>{ this.load.off('progress',prog); this.buildDeferredAnims();
+      this._allLoaded=true;this._allLoading=false;this._deferDone=true;
+      const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}); [1,2].forEach(t=>{D[t].done=true;D[t].started=true;const q=D[t].q;D[t].q=[];q.forEach(cb=>setTimeout(cb,0));});
+      this._stageArtReady=new Set(STAGES.map((_,i)=>i)); this._grpOk=new Proxy({}, {get:()=>true});
+      if(L){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);} if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen();
+      const w=this._allWait;this._allWait=[];w.forEach(cb=>setTimeout(cb,0)); };
+    const prog=v=>{ if(L)L.set(v,'Loading game data… '+Math.round(v*100)+'%'); };
+    if(!n){fin();return;}
+    if(L)L.show('Loading game data…',0);
+    this.load.on('progress',prog); this.load.once('complete',()=>setTimeout(fin,0)); if(!this.load.isLoading())this.load.start();
+  }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[])];
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
@@ -7826,6 +7850,7 @@ class Game extends Phaser.Scene {
     this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
+    if(!this._allLoaded){ if(this._enteringStageArt)return;this._enteringStageArt=true; this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
     if(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx)){
       if(this._enteringStageArt)return;this._enteringStageArt=true;
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
