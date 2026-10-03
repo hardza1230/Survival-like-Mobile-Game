@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.49.3 (บั๊กเจ้าของ: กดปุ่มเมนูแล้วตารางเขียววาบ):** buildMenuScreen เลิก fade alpha 0→1 (เห็นกริดโลกด้านหลัง)
 - **v6.49.2 (เจ้าของ: เพลงเมนูให้เข้าตอนแสงโผล่):** index.html `GameLoader.lightOn()` ที่ 4.5 วิของฉากเปิด (k-window-flash 48%) → หยุดเพลงโหลด + event `mochi-intro-light` · playMainBgm รอ event นี้แทน intro-finished
 - **v6.49.1 (บั๊กเจ้าของ: ค้างที่ 100% บนมือถือ):** loader ไม่ยิง 'complete' (น่าจะถอดรหัสเสียงค้างใน WebView) · preloadAll มี watchdog: ไม่มีไฟล์ใหม่ 6 วิ → fin() (กันเรียกซ้ำด้วย finDone) · ของที่ขาดโหลดตอนใช้ผ่าน ensureGroup/ensureStageArt
 - **v6.49.0 (เจ้าของ: เปิดแอปแล้วโหลด 126 MB ทุกครั้ง):** sw.js ใส่ header `x-mochi-cache: hit` · LoadMeter แยก from device/downloaded (`fileFromDevice` อ่าน xhrLoader header) · localStorage `mochi_full_cached` → เปิดครั้งต่อไปซ่อนหน้าโหลดทันที (ฉากเปิด→เมนู) แล้ว `preloadAll(null,true)` เบื้องหลัง · startRun ระหว่างนั้นเรียก preloadAll(done) → โชว์หลอด · ไม่ต้องติดตั้ง APK ใหม่ (live update)
