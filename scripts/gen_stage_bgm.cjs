@@ -99,7 +99,7 @@ function drums(mix, c, style, bi) {
 // key = MIDI ของโทนิก (อ็อกเทฟทำนอง) · prog = คอร์ดเป็น scale degree (0 = I)
 // pad/arp/lead = ชนิดเสียง · bass = pluck|pulse|long|walk · arpRate 2 = ตัวละ 8 ส่วน, 4 = 16 ส่วน
 const STAGES = [
-  { name: 'bgm_s01', title: 'Pantry Hideout',      key: 72, mode: 'major',  bpm: 112, prog: [0, 5, 3, 4], drum: 'soft',   bass: 'pluck', arp: 'bell',  arpRate: 2, lead: 'sqr',  pad: 'tri', fx: [] },
+  { name: 'bgm_s01', title: 'Pantry Hideout (8-bit)', key: 72, mode: 'major',  bpm: 132, prog: [0, 4, 5, 3], drum: 'groove', bass: 'pulse', arp: 'sqr',  arpRate: 4, lead: 'sqr',  pad: 'tri', fx: [], room: 0.25, wet: 0.08, rhythms: [0, 1, 3] },   // เจ้าของ: เดิมก้องเหมือนในถ้ำ → 8-bit แห้ง
   { name: 'bgm_s02', title: 'Drain of Clogmaw',    key: 65, mode: 'mixo',   bpm: 104, prog: [0, 6, 3, 0, 4, 3, 0, 6], drum: 'groove', bass: 'pluck', arp: 'pluck', arpRate: 2, lead: 'sine', pad: 'saw', fx: ['drip'] },
   { name: 'bgm_s03', title: 'Chili Engine Room',   key: 69, mode: 'harm',   bpm: 132, prog: [0, 5, 3, 4], drum: 'four',   bass: 'pulse', arp: 'sqr',   arpRate: 4, lead: 'saw',  pad: 'saw', fx: ['sizzle'] },
   { name: 'bgm_s04', title: 'Frost Prison',        key: 71, mode: 'minor',  bpm: 88,  prog: [0, 5, 2, 6], drum: 'sparse', bass: 'long',  arp: 'bell',  arpRate: 2, lead: 'sine', pad: 'tri', fx: ['wind', 'chime'] },
@@ -140,7 +140,7 @@ function buildDef(st, idx) {
   const lead = { ...LEAD[st.lead], vib: st.vib ?? 0.006, send: 0.4, pan: 0.1 };
   const fxRnd = [];
   return {
-    name: st.name, bpm: st.bpm, room: 0.8, wet: 0.8, bars: bars.map((d, bi) => ({ d, bi })),
+    name: st.name, bpm: st.bpm, room: st.room ?? 0.8, wet: st.wet ?? 0.8, bars: bars.map((d, bi) => ({ d, bi })),
     play(mix, c) {
       const { d, bi } = c.bar, spb = c.spb, full = bi >= 12;
       const tones = [d, d + 2, d + 4, d + 6].map(x => deg2midi(st, x));

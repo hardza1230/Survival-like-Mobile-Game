@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.49.7';
+const GAME_VERSION = '6.49.8';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.49.8', date:'2026-10-03', title:'Stage 1 8-bit music', items:['Stage 1 music is now a bright 8-bit tune without the cave-like echo'] },
   { v:'6.49.7', date:'2026-10-03', title:'Tutorial music', items:['Music now plays in the Training Ground tutorial'] },
   { v:'6.49.6', date:'2026-10-03', title:'Loading fixes', items:['The first-launch loading screen now closes when loading finishes instead of staying at 100%','Starting a stage while data loads in the background only waits for that stage','Files missed on the first launch are saved to the device so later launches download nothing','A stalled download no longer blocks loading forever'] },
   { v:'6.49.5', date:'2026-10-03', title:'No second loading on menus', items:['Menus open right away after the game data is loaded','A menu can no longer get stuck on a loading screen'] },
