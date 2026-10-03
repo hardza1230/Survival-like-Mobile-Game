@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.5';
+const GAME_VERSION = '6.50.6';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.6', date:'2026-10-03', title:'Tutorial spotlight', items:['After the tutorial, a spotlight guides you to upgrade your first core'] },
   { v:'6.50.5', date:'2026-10-03', title:'Loading tips', items:['Loading screen shows rotating gameplay tips'] },
   { v:'6.50.4', date:'2026-10-03', title:'Stage 1 opening', items:['Stage 1 wave 1 is now a simple kill meter: defeat enemies to fill it'] },
   { v:'6.50.3', date:'2026-10-03', title:'Simpler first stage', items:['Stage 1 no longer has the Capture Zone mission — it now teaches Survive and Hunt only'] },
@@ -6845,8 +6846,10 @@ class Game extends Phaser.Scene {
           const ot=this.add.text(ox+ow/2,oy+oh/2,ocMax?('⬆ Overcap MAX +'+oc):('⬆ +'+oc+'/'+OVERCAP_MAX+' · '+se+stn+'/'+cst.stones+' 🍬'+cst.sugar),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ow<130?'8px':'9.5px',color:ocMax?'#8bd3a0':(ok?'#ffe08a':'#8d8195')}).setOrigin(0.5);
           this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.progress('overcap'); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):('Need 🍬 '+cst.sugar+' Sugar'),'#ff9bb5'); } this.buildMenuScreen(); }); }
         if(oc>0)st.setText(stars+' +'+oc); }
+      if(this._tutorialWeaveCoach&&!maxed&&afford&&!this._coachSpot)this._coachSpot={x:ppx,y:ppy,w:pw,h:ph};
       if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
     });
+    if(this._coachSpot){ const sp=this._coachSpot; this._coachSpot=null; this._spotZone=sp; }
     const py=portrait?Math.min(h-58,top+UPG_ORDER.length*(cardH+gapY)+4):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
     const pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
     pg.lineStyle(2,allMax?0xffe08a:0x4a4059,allMax?1:0.6); pg.strokeRoundedRect(pbx-bw/2,py,bw,ph,14);
@@ -6857,6 +6860,7 @@ class Game extends Phaser.Scene {
     this.menu.add([pg,pl,psub]);
     if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion');
       if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen(); });
+    if(this._spotZone){ const sp=this._spotZone; this._spotZone=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,'Tap to upgrade this core!'); }
     this.menu.setVisible(true);
   }
   buildSpecialCores(){
@@ -9702,8 +9706,16 @@ class Game extends Phaser.Scene {
     const sy=h*0.90, sg=this.add.graphics(); sg.fillStyle(0x2c2338,0.9); sg.fillRoundedRect(w/2-110,sy-18,220,36,12); sg.lineStyle(1.5,0x6a5b86,0.7); sg.strokeRoundedRect(w/2-110,sy-18,220,36,12);
     const stt=this.add.text(w/2,sy,'Skip to Stage Select',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#e5d8ee'}).setOrigin(0.5);
     this.over.add([bg,panel,glow,cap,t,rlabel,cards,...items,hint,btn,bt,sg,stt]); this.over.setVisible(true);
-    this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.openTutorialWeave()},{x:w/2-110,y:sy-18,w:220,h:36,fn:()=>this.continueFromSummary()}];   // ปิดได้เฉพาะกดปุ่ม
+    sg.setAlpha(0);stt.setAlpha(0); this.drawSpotlight(this.over,w/2-bw2/2,byc-bh2/2,bw2,bh2,'Tap to power up!');
+    this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.openTutorialWeave()}];   // ปิดได้เฉพาะกดปุ่ม
   }
+  // v6.50.6 สปอตไลต์ tutorial: มืดรอบนอก เจาะรูที่ปุ่ม + กรอบทองเต้น + นิ้วชี้
+  drawSpotlight(cont,x,y,bw,bh,label){ const W=this.W,H=this.H,p=8,X=x-p,Y=y-p,R=bw+p*2,B=bh+p*2,g=this.add.graphics(); g.fillStyle(0x000000,0.74);
+    g.fillRect(0,0,W,Y); g.fillRect(0,Y+B,W,H-Y-B); g.fillRect(0,Y,X,B); g.fillRect(X+R,Y,W-X-R,B);
+    const fr=this.add.graphics(); fr.lineStyle(4,0xffd166,1); fr.strokeRoundedRect(X,Y,R,B,14); this.tweens.add({targets:fr,alpha:{from:1,to:0.35},yoyo:true,repeat:-1,duration:520});
+    const below=Y+B+60<H, hy=below?Y+B+26:Y-26, hand=this.add.text(x+bw/2,hy,below?'👆':'👇',{fontSize:'34px'}).setOrigin(0.5); this.tweens.add({targets:hand,y:hy+(below?-10:10),yoyo:true,repeat:-1,duration:420,ease:'Sine.inOut'});
+    const lt=this.add.text(W/2,below?hy+34:hy-38,label||'Tap here!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5,align:'center',wordWrap:{width:W-40}}).setOrigin(0.5);
+    cont.add([g,fr,hand,lt]); return {x,y,w:bw,h:bh}; }
   drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W,h=this.H; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
     // บับเบิลอยู่ "ด้านล่าง" (เหนือปุ่ม dash/unique เล็กน้อย) · ข้อความสั้น + ไฮไลต์สีคำสำคัญ
     const bw=w-20,bh=52,bx=10,by=h-bh-14, g=this.add.graphics(); g.fillStyle(0x2a1030,0.95); g.fillRoundedRect(bx,by,bw,bh,14); g.lineStyle(2,0xff5f88,1); g.strokeRoundedRect(bx,by,bw,bh,14); cont.add(g);
