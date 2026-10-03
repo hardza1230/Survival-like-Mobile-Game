@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.39.0';
+const GAME_VERSION = '6.40.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.40.0', date:'2026-10-03', title:'⚖️ Balance from your save + boss fixes', items:['Fixed: Delve bosses (Jelly Warden / Candlewick) could become unkillable at 65% or 50% HP','Fixed: The Great Hunger (C1-5) could get stuck invulnerable at 40% HP','Delve: monster HP/damage grow more slowly after Floor 20 — Floor 40+ is no longer a hard wall','Delve boss floors are a bit tougher (HP ×2.5, was ×2)'] },
   { v:'6.39.0', date:'2026-10-03', title:'👑 New Delve bosses', items:['Floor 10, 30, 50… : The Jelly Warden — leaps onto you and leaves sticky puddles that slow you · splits into 3 jelly guards at half HP','Floor 20, 40, 60… : Madame Candlewick — lights candles that pulse rings of fire (walk into a candle to snuff it) and splashes hot wax','At 40% HP Candlewick blows out the lights — only you and the lit candles glow'] },
   { v:'6.38.0', date:'2026-10-03', title:'⚡ Even faster startup', items:['The main menu now opens after downloading only about 7 MB','Battle art, effects and sounds load in the background while you are on the menu','Menu-only art (Temple, Kitchen, Depths, Delve, hero cards) loads last']},
   { v:'6.37.0', date:'2026-10-03', title:'⚡ Faster startup', items:['The game downloads about half as much before the main menu','Menu-only art and battle effects now load in the background after the menu appears','Smaller loading and menu music files']},
@@ -4388,7 +4389,8 @@ function delveBossesDown(){ return Math.floor((delveSave().best||0)/DELVE_SEG); 
 function atlasPinnacleOpen(){ return (delveSave().best||0)>=30; }
 function amapGuardiansDown(){ return delveBossesDown(); }
 // ตัวคูณความลึก (ไม่มีเพดาน · ยิ่งยากรางวัลยิ่งดี)
-function delveMul(d){ return {hp:Math.pow(1.08,d),dmg:Math.pow(1.06,d),reward:1+0.05*d}; }
+// v6.40 จูนจากเซฟจริงเจ้าของ: หลังชั้น 20 ของตัน (iLv>60 โตแค่ 1.5%/lv) → ชะลอการโตเลือด/ดาเมจ ไม่ให้ชั้น 40+ เป็นกำแพง
+function delveMul(d){ const a=Math.min(d,20),b=Math.max(0,d-20); return {hp:Math.pow(1.08,a)*Math.pow(1.05,b),dmg:Math.pow(1.06,a)*Math.pow(1.04,b),reward:1+0.05*d}; }
 // v6.22 Atlas Influence (3A): ทุกแมพมีรสประจำตัว · เคลียร์แล้วรสซึมไปแมพที่เชื่อม (+1 ชั้น/การเคลียร์ เพดาน 3/รส) · ชั้นละ ยาก+10% รางวัล+15% (กฎเหล็ก)
 const AMAP_FLAVORS=[
   {id:'spicy',emoji:'🌶️',name:'Spicy',color:0xff6b4a,eff:'Enemies may leave fire puddles',rew:'+currency'},
@@ -8930,7 +8932,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2.5:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -11190,7 +11192,7 @@ class Game extends Phaser.Scene {
     if(crit&&this.player._uqCritBurst&&!this._uqBursting){ this._uqBursting=true; const bx=e.x,by=e.y,bd=amount*this.player._uqCritBurst; this.burst(bx,by,0xc9a3ff);
       for(const o of this.enemies.getChildren()){ if(o.active&&o!==e&&Phaser.Math.Distance.Between(bx,by,o.x,o.y)<80)this.damage(o,bd); } this._uqBursting=false; }
     let gate=null;
-    if(e.isBoss){
+    if(e.isBoss&&!e.delveBoss){
       const p2=this.stageIndex===4?0.72:(this.stageIndex===6?0.68:(this.stageIndex===7?0.70:(this.stageIndex===8?0.72:(this.stageIndex===9?0.75:(this.stageIndex===0?0.68:(this.stageIndex===1?0.65:0.50))))));
       const p3=this.stageIndex===4?0.40:(this.stageIndex===6?0.34:(this.stageIndex===7?0.35:(this.stageIndex===8?0.38:(this.stageIndex===9?0.42:(this.stageIndex===0?0.35:(this.stageIndex===1?0.32:0.25))))));
       if(!e.phase2)gate=p2;else if(!e.phase3)gate=p3;else if((this.stageIndex===4||this.stageIndex===9)&&!e.phase4)gate=this.stageIndex===9?0.18:0.14;
@@ -12363,9 +12365,9 @@ class Game extends Phaser.Scene {
     if(b.frozen>0)return;
     if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt*this.bossAggro(b)/(b.rageCdMul||1);
     if(b.isBoss&&this.stageIndex===4){const f=b.hp/b.maxhp;
-      if(!b.phase2&&f<=0.72){b.phase2=true;this.beginBossPhaseTransition(b,1.8,0xff3f58);this.greatHungerMetamorph(b,2,0xff3f58);b.spd*=1.16;b.atkCd=0.55;this.showBanner('👑 Phase 2 · Crown Shatters','The first seal breaks — the Sovereign’s claws and blood-furnace awaken!',1900);}
-      else if(!b.phase3&&f<=0.40){b.phase3=true;this.beginBossPhaseTransition(b,2.0,0xd95cff);this.greatHungerMetamorph(b,3,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 Phase 3 · True Form of Hunger','All six eyes open — the void’s pull is swallowing the field!',2050);}
-      else if(!b.phase4&&f<=0.14){b.phase4=true;this.beginBossPhaseTransition(b,2.35,0xffd166);this.greatHungerMetamorph(b,4,0xffd166);b.spd*=1.12;b.atkCd=0.24;this.showBanner('🌘 Final Phase · World Devourer','The sky goes dark — slay it before every memory is eaten!',2400);}
+      if(!b.phase2&&b.hp<=b.maxhp*0.72){b.phase2=true;this.beginBossPhaseTransition(b,1.8,0xff3f58);this.greatHungerMetamorph(b,2,0xff3f58);b.spd*=1.16;b.atkCd=0.55;this.showBanner('👑 Phase 2 · Crown Shatters','The first seal breaks — the Sovereign’s claws and blood-furnace awaken!',1900);}
+      else if(!b.phase3&&b.hp<=b.maxhp*0.40){b.phase3=true;this.beginBossPhaseTransition(b,2.0,0xd95cff);this.greatHungerMetamorph(b,3,0xd95cff);b.spd*=1.14;b.atkCd=0.42;this.showBanner('🌑 Phase 3 · True Form of Hunger','All six eyes open — the void’s pull is swallowing the field!',2050);}
+      else if(!b.phase4&&b.hp<=b.maxhp*0.14){b.phase4=true;this.beginBossPhaseTransition(b,2.35,0xffd166);this.greatHungerMetamorph(b,4,0xffd166);b.spd*=1.12;b.atkCd=0.24;this.showBanner('🌘 Final Phase · World Devourer','The sky goes dark — slay it before every memory is eaten!',2400);}
       if((b._phaseInvuln||0)>0)return;if(b.atkCd<=0)this.greatHungerAttack(b);return;}
     // v4.51: เช็กเฟสด้วย b.hp<=b.maxhp*X (ตรง ๆ) แทน f=b.hp/b.maxhp; f<=X — เพราะ phase-gate ใน damage() clamp hp=maxhp*gate พอดี แล้วการหาร (maxhp*.72)/maxhp อาจได้ .7200000001 > .72 → เฟสไม่ทริก → บอสค้าง gate-lock = อมตะ (Chapter 2 เจอเพราะใช้ f หาร ต่างจากด่าน 0-4 ที่เทียบ hp ตรง)
     if(b.isBoss&&this.stageIndex===9){
