@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.9';
+const GAME_VERSION = '6.51.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.51.0', date:'2026-10-03', title:'Special cards shine', items:['Special upgrades (Mutation, Evolution, Relic, Build Path, Infusion, Fusion, Modifier) now glow with a pulsing frame, ribbon, shine and sparkles'] },
   { v:'6.50.9', date:'2026-10-03', title:'Loading tips fix', items:['Loading tips now always show, even with an old cached page'] },
   { v:'6.50.8', date:'2026-10-03', title:'Easier Back button', items:['Back button has a bigger tap area and always takes priority'] },
   { v:'6.50.7', date:'2026-10-03', title:'Core upgrade preview', items:['Flavor Weave buttons show what the next upgrade gives'] },
@@ -9608,6 +9609,22 @@ class Game extends Phaser.Scene {
       starsT=this.add.text(x+w/2,y+h*0.87,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
+    }
+    // v6.51.0: การ์ดพิเศษ (Mutation/Evolution/Relic/Path/Infusion/Fusion/Modifier) เด่นขึ้น — กรอบทองเต้น+ริบบิ้น+แสงวิ่ง+ประกาย
+    const SPK={'Build Path':['BUILD PATH',0x7fd8ff],'Flavor Infusion':['INFUSION',0xff9a4d],'Dual Infusion':['DUAL INFUSION',0xff9a4d],'Fusion':['FUSION',0xc58bff],'Relic':['RELIC',0xff7ad9],'Modifier':['MODIFIER',0x6fe3c4]};
+    const sp=o.evolution?['✨ EVOLUTION',0xffd447]:o.mutation?['🧬 MUTATION',0xc58bff]:SPK[o.kind]?['✦ '+SPK[o.kind][0],SPK[o.kind][1]]:null;
+    if(sp&&!options.starting){
+      const sc=sp[1],fx=this.add.graphics();
+      fx.lineStyle(4,sc,1);fx.strokeRoundedRect(x-2,y-2,w+4,h+4,18);fx.lineStyle(10,sc,0.35);fx.strokeRoundedRect(x-6,y-6,w+12,h+12,22);
+      this.tweens.add({targets:fx,alpha:{from:0.45,to:1},yoyo:true,repeat:-1,duration:450,ease:'Sine.inOut'});
+      const rw=Math.min(w-30,sp[0].length*8+26),rib=this.add.graphics();rib.fillStyle(sc,1);rib.fillRoundedRect(x+w/2-rw/2,y-11,rw,20,10);rib.lineStyle(2,0xffffff,0.9);rib.strokeRoundedRect(x+w/2-rw/2,y-11,rw,20,10);
+      const ribT=this.add.text(x+w/2,y-1,sp[0],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#2a1530'}).setOrigin(0.5);
+      const shine=this.add.rectangle(x,y+h/2,18,h-6,0xffffff,0.22).setAngle(14);
+      const mk=this.make.graphics({add:false});mk.fillRoundedRect(x,y,w,h,16);shine.setMask(mk.createGeometryMask());
+      this.tweens.add({targets:shine,x:{from:x-20,to:x+w+20},duration:900,repeat:-1,repeatDelay:700,delay:(options.index||0)*65+200});
+      const spk=[];for(let i=0;i<5;i++){const s=this.add.text(x+Math.random()*w,y+Math.random()*h,'✦',{fontSize:(9+Math.random()*7|0)+'px',color:'#ffffff'}).setOrigin(0.5).setAlpha(0);spk.push(s);this.tweens.add({targets:s,alpha:{from:0,to:0.9},scale:{from:0.5,to:1.2},yoyo:true,repeat:-1,duration:600+Math.random()*500,delay:Math.random()*900});}
+      group.add([fx,shine,rib,ribT,...spk]);
+      if(!this._spSndAt||this.time.now-this._spSndAt>800){this._spSndAt=this.time.now;Sfx.legend&&Sfx.legend();}
     }
     this.drawComboHints(group,o,x,y,w,h,wide,options.index||0);
     const baseX=icon.scaleX||1,baseY=icon.scaleY||1;panel.setAlpha(0);icon.setScale(baseX*0.25,baseY*0.25);
