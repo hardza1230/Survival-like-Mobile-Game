@@ -37,6 +37,7 @@
 </style>
 <script>
   window.GameLoader = {
+    TIPS:['Dash makes you briefly invincible — dash through enemy attacks.','Red circles on the ground explode — step out fast.','Pick cards that boost your main attack early.','Elites drop more EXP and loot — hunt them down.','Grab hearts when HP is low; magnets pull in every EXP orb.','Your Unique skill charges over time — save it for bosses.','Higher difficulty gives better rewards.','Spend Sugar in the Temple to grow stronger between runs.','Keep moving — standing still lets the swarm surround you.','Watch the mission text above your hero to know what to do.'],
     _introDone:false,
     _introFinished:false,
     _introTimer:null,
@@ -67,9 +68,9 @@
       var p=Math.max(0,Math.min(1,Number(progress)||0));
       if(fill)fill.style.width=Math.round(p*100)+'%';
       if(pct)pct.textContent=Math.round(p*100)+'%';
-      if(status&&label)status.textContent=label;
+      if(status&&!this._tipT){var T=this.TIPS,me=this,i=Math.floor(Math.random()*T.length);status.textContent='💡 '+T[i];this._tipT=setInterval(function(){i=(i+1)%T.length;var el=document.getElementById('load-status');if(el)el.textContent='💡 '+T[i];},4000);}
     },
-    hide:function(){
+    hide:function(){clearInterval(this._tipT);this._tipT=null;
       var root=document.getElementById('game-loader');
       if(!root)return;
       if(!this._introDone && root.classList.contains('intro-mode')){
@@ -136,7 +137,7 @@
   </div>
   <button id="entry-skip" type="button" onclick="window.GameLoader.skipIntro()">ข้ามฉากเปิด ›</button>
   <div class="card">
-    <div class="status" id="load-status">กำลังเปิดครัวขนม...</div>
+    <div class="status" id="load-status">💡 Keep moving — standing still lets the swarm surround you.</div>
     <div class="track"><div class="fill" id="load-fill"></div></div>
     <div class="percent" id="load-percent">0%</div>
   </div>

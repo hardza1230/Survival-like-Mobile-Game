@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.4';
+const GAME_VERSION = '6.50.5';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.5', date:'2026-10-03', title:'Loading tips', items:['Loading screen shows rotating gameplay tips'] },
   { v:'6.50.4', date:'2026-10-03', title:'Stage 1 opening', items:['Stage 1 wave 1 is now a simple kill meter: defeat enemies to fill it'] },
   { v:'6.50.3', date:'2026-10-03', title:'Simpler first stage', items:['Stage 1 no longer has the Capture Zone mission — it now teaches Survive and Hunt only'] },
   { v:'6.50.2', date:'2026-10-03', title:'Clearer missions', items:['New missions now pop up in a speech bubble above your character','Mission reminders also appear above your character with progress'] },
