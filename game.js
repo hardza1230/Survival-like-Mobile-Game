@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.49.4';
+const GAME_VERSION = '6.49.5';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.49.5', date:'2026-10-03', title:'No second loading on menus', items:['Menus open right away after the game data is loaded','A menu can no longer get stuck on a loading screen'] },
   { v:'6.49.4', date:'2026-10-03', title:'Clearer damage numbers', items:['Damage numbers are bigger, outlined and stay on screen a little longer'] },
   { v:'6.49.3', date:'2026-10-03', title:'No more green flash in menus', items:['Opening a menu no longer flashes the green grid behind it'] },
   { v:'6.49.2', date:'2026-10-03', title:'Menu music starts with the light', items:['The menu song now begins as the light opens in the intro'] },
@@ -5621,7 +5622,11 @@ class Game extends Phaser.Scene {
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3); this.ensureGroup(menuGroupRe(s),()=>{ this._grpOk[s]=true; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu'&&this.menuScreen===s)this.buildMenuScreen(); }); return; }if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
+    let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
+    // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
+    if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allLoaded){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
+      let fired=false; const go=()=>{ if(fired)return; fired=true; this._grpOk[s]=true; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu'&&this.menuScreen===s)this.buildMenuScreen(); };
+      setTimeout(go,8000); try{ this.ensureGroup(menuGroupRe(s),go); }catch(e){ go(); } return; }if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
