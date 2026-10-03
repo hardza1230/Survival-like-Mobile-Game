@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.49.9';
+const GAME_VERSION = '6.50.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.0', date:'2026-10-03', title:'Shotgun aims the boss', items:['Point-Blank Barrage pellets aim at a nearby boss, miniboss or elite instead of a closer minion, with a tight spread','Pellets that hit together show one combined damage number with the hit count'] },
   { v:'6.49.9', date:'2026-10-03', title:'Softer level-up sound', items:['The level-up sound is lower and softer with no echo'] },
   { v:'6.49.8', date:'2026-10-03', title:'Stage 1 8-bit music', items:['Stage 1 music is now a bright 8-bit tune without the cave-like echo'] },
   { v:'6.49.7', date:'2026-10-03', title:'Tutorial music', items:['Music now plays in the Training Ground tutorial'] },
@@ -10404,17 +10405,18 @@ class Game extends Phaser.Scene {
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
       const speed=(aw?1180:980)*(path==='sniper'?1.35:1), gap=path==='shotgun'?0:(aw?38:52);   // เร็ว + รัวถี่ (machine gun) ·s่งตรง ไม่โค้ง
       let idx=0;
-      const fireOne=()=>{ if(this.state!=='play')return; const t=this.nearestEnemy(aw?900:640); if(!t)return;
+      let _sgBig=null; if(path==='shotgun'){ let bd=430; this.enemies.children.iterate(e=>{ if(e&&e.active&&(e.isBoss||e.isMini||e.isElite)){ const dd=this.dist(e.x,e.y,this.player.x,this.player.y); if(dd<bd){bd=dd;_sgBig=e;} } }); }   // v6.50: เดิมเล็งลูกน้องที่ยืนใกล้กว่าบอส
+      const fireOne=()=>{ if(this.state!=='play')return; const t=(_sgBig&&_sgBig.active)?_sgBig:this.nearestEnemy(aw?900:640); if(!t)return;
         const shotIndex=idx++,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return; const pop=basic?(basic.ranks.size||0):0; if(pop>0)b.seedPop=pop;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
         b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=basic?(basic.mutation==='ricochet'?2:0):0; b.homing=0;
         b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;b.seedPierce=!!b.pierce;
         if(path==='sniper'){b.dmg*=3.2;b.pierce=true;b.seedPierce=true;b.hitGapV=0.22;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);}
-        else if(path==='shotgun'){b.dmg*=0.6;b.life=0.42;b.closeMul=0.40+0.15*(R.pointblank||0);}
+        else if(path==='shotgun'){b.dmg*=0.6;b.life=0.42;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0);}
         else if(path==='ricochet'){b.dmg*=0.8;b.bounce+=2+(R.carom||0);b.bounceGain=0.08*(R.gather||0);}   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
         const distance=this.dist(t.x,t.y,this.player.x,this.player.y);
-        const closeLarge=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&distance<190;
+        const closeLarge=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&distance<430;
         const spread=closeLarge?0.045:0.16;
         const fan=path==='shotgun'?(shotIndex-(shots-1)/2)*spread:(basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0);
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(closeLarge?-0.012:-0.08,closeLarge?0.012:0.08);
@@ -11206,7 +11208,8 @@ class Game extends Phaser.Scene {
     for(let j=0;j<bullet.chain;j++){ let nb=null,nd=300*300;
       this.enemies.children.iterate(o=>{ if(o&&o.active&&!hit.has(o)){ const d=(o.x-src.x)**2+(o.y-src.y)**2; if(d<nd){nd=d;nb=o;} } });
       if(!nb)break; hit.add(nb); this.chainBolt(src.x,src.y,nb.x,nb.y); this.damage(nb,bullet.dmg*0.55,nb.x,nb.y); src=nb; } }
-  hitEnemy(bullet,enemy){ if(!bullet.active||!enemy.active)return;
+  hitEnemy(bullet,enemy){ this._sgHit=!!bullet.sgPellet; try{ this._hitEnemyCore(bullet,enemy); } finally { this._sgHit=false; } }
+  _hitEnemyCore(bullet,enemy){ if(!bullet.active||!enemy.active)return;
     if(bullet.bubblePrison){
       const x=enemy.x,y=enemy.y,lvl=bullet.bubbleLevel||1,r=bullet.bubbleRadius||70,aw=!!bullet.bubbleAwaken,dmg=bullet.dmg||8,prisonHp=enemy.maxhp||0;
       this.killBullet(bullet);
@@ -11349,7 +11352,9 @@ class Game extends Phaser.Scene {
     // อย่าฟอก sprite ด้วย setTintFill ตอนโดนตี: skillsหลาย hit ทำให้ art กระพริบขาวจนอ่าน silhouette ไม่ออก
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
-    this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
+    if(this._sgHit){ const a=e._sgNum||(e._sgNum={sum:0,n:0,crit:false}); a.sum+=amount;a.n++;a.crit=a.crit||crit;   // v6.50: เม็ด shotgun โดนพร้อมกัน → เลขรวม (เดิม throttle เหลือเลขเดียว ดูเหมือนโดนแค่ 1-2 ฮิต)
+      if(!a.pending){ a.pending=true; this.time.delayedCall(45,()=>{ a.pending=false; if(a.n>0)this.popDmg(Math.round(a.sum)+(a.n>1?' ×'+a.n:''),e.x,e.y,a.crit,true); a.sum=0;a.n=0;a.crit=false; }); } }
+    else this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
@@ -12629,10 +12634,10 @@ class Game extends Phaser.Scene {
     }});
     this.screenShake(130,0.004); Sfx.streak(mark[0]);
   }
-  popDmg(n,x,y,crit){
+  popDmg(n,x,y,crit,force){
     if(Save.data.settings&&Save.data.settings.damageNumbers===false)return;
     // v5.23: ลดตัวเลขลอยรก · v6.49.4: 90ms (มอนเยอะ 200ms) · คริโชว์เสมอ
-    if(!crit){const now=this.time.now;if(now-(this._dmgNumAt||0)<(this.enemies.countActive()>60?200:90))return;this._dmgNumAt=now;}
+    if(!crit&&!force){const now=this.time.now;if(now-(this._dmgNumAt||0)<(this.enemies.countActive()>60?200:90))return;this._dmgNumAt=now;}
     let t=this.dmgPool.pop();
     if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px'}).setDepth(99999).setOrigin(0.5).setStroke('#2a1830',5).setShadow(0,2,'#000000',2,true,true); this.camWorld(t); }
     else t.setActive(true).setVisible(true);

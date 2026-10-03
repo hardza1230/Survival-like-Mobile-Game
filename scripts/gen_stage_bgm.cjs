@@ -196,6 +196,17 @@ const MENUS = [
   { name: 'bgm_loading_crystal_memory', title: 'Crystal Memory (loading, FF9-style)', key: 69, mode: 'minor', bpm: 72, prog: [0, 5, 2, 6, 0, 5, 3, 4], drum: 'sparse', bass: 'long', arp: 'pluck', arpRate: 2, lead: 'sine', pad: 'choir', fx: ['chime', 'wind'], vib: 0.016 },
   { name: 'bgm_menu_over_the_hill', title: 'Over the Candy Hill (main menu, FF9-style)', key: 67, mode: 'dorian', bpm: 104, prog: [0, 6, 3, 0, 5, 6, 4, 4], drum: 'soft', bass: 'walk', arp: 'bell', arpRate: 2, lead: 'tri', pad: 'choir', fx: ['chime'], vib: 0.012, rhythms: [0, 1, 3] },
   { name: 'bgm_menu_chiptune_pop', title: 'Chiptune Pop (main menu)', key: 72, mode: 'major', bpm: 128, prog: [0, 4, 5, 3, 0, 4, 3, 4], drum: 'groove', bass: 'pulse', arp: 'sqr', arpRate: 4, lead: 'sqr', pad: 'tri', fx: [], rhythms: [0, 1, 3] },
+  // v6.50 ตัวเลือกเพลงด่าน 1 ให้เจ้าของเลือก 10 แบบ (name bgm_pick_NN)
+  { name: 'bgm_pick_01', title: '8-bit Adventure',  key: 72, mode: 'major',  bpm: 140, prog: [0, 3, 4, 0, 5, 3, 1, 4], drum: 'four',   bass: 'pulse', arp: 'sqr',   arpRate: 4, lead: 'sqr',   pad: 'tri',   fx: [], room: 0.2, wet: 0.06, rhythms: [1, 3] },
+  { name: 'bgm_pick_02', title: '8-bit Cozy Town',  key: 67, mode: 'major',  bpm: 108, prog: [0, 5, 1, 4],             drum: 'soft',   bass: 'walk',  arp: 'sqr',   arpRate: 2, lead: 'tri',   pad: 'tri',   fx: [], room: 0.25, wet: 0.08, rhythms: [0, 2] },
+  { name: 'bgm_pick_03', title: '8-bit Speedrun',   key: 74, mode: 'mixo',   bpm: 156, prog: [0, 6, 3, 4],             drum: 'groove', bass: 'pulse', arp: 'sqr',   arpRate: 4, lead: 'sqr',   pad: 'tri',   fx: [], room: 0.2, wet: 0.05, rhythms: [1, 3, 4] },
+  { name: 'bgm_pick_04', title: 'Candy Pop Funk',   key: 70, mode: 'dorian', bpm: 118, prog: [0, 3, 0, 3, 5, 4, 3, 4], drum: 'groove', bass: 'walk',  arp: 'pluck', arpRate: 2, lead: 'saw',   pad: 'tri',   fx: ['tick'], room: 0.35, wet: 0.15, rhythms: [0, 1, 3] },
+  { name: 'bgm_pick_05', title: 'Sunny Bells',      key: 76, mode: 'major',  bpm: 120, prog: [0, 4, 5, 3],             drum: 'soft',   bass: 'pluck', arp: 'bell',  arpRate: 2, lead: 'sine',  pad: 'tri',   fx: ['chime'], room: 0.35, wet: 0.15 },
+  { name: 'bgm_pick_06', title: 'Heroic March',     key: 69, mode: 'major',  bpm: 124, prog: [0, 3, 4, 0, 5, 1, 4, 4], drum: 'march',  bass: 'pulse', arp: 'pluck', arpRate: 2, lead: 'brass', pad: 'choir', fx: [], room: 0.45, wet: 0.2 },
+  { name: 'bgm_pick_07', title: 'Lydian Dream',     key: 72, mode: 'lydian', bpm: 112, prog: [0, 1, 4, 0],             drum: 'groove', bass: 'pluck', arp: 'bell',  arpRate: 4, lead: 'tri',   pad: 'choir', fx: [], room: 0.35, wet: 0.15, vib: 0.01 },
+  { name: 'bgm_pick_08', title: 'Mischief Minor',   key: 69, mode: 'minor',  bpm: 132, prog: [0, 5, 6, 4],             drum: 'four',   bass: 'pulse', arp: 'sqr',   arpRate: 4, lead: 'sqr',   pad: 'saw',   fx: [], room: 0.25, wet: 0.08, rhythms: [1, 3] },
+  { name: 'bgm_pick_09', title: 'Kitchen Jazz',     key: 65, mode: 'mixo',   bpm: 100, prog: [1, 4, 0, 5, 1, 4, 0, 0], drum: 'soft',   bass: 'walk',  arp: 'pluck', arpRate: 2, lead: 'sine',  pad: 'tri',   fx: ['tick'], room: 0.4, wet: 0.15, rhythms: [0, 3, 4] },
+  { name: 'bgm_pick_10', title: 'Bouncy Chiptune',  key: 77, mode: 'major',  bpm: 146, prog: [0, 4, 3, 4, 0, 4, 5, 4], drum: 'groove', bass: 'pulse', arp: 'sqr',   arpRate: 4, lead: 'sqr',   pad: 'tri',   fx: [], room: 0.15, wet: 0.04, rhythms: [0, 1] },
 ];
 const out = process.argv[2] || '.';
 const want = process.argv.slice(3);
