@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.42.1';
+const GAME_VERSION = '6.43.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.43.0', date:'2026-10-03', title:'⚡ Faster menus · slower Endgame levels', items:['Each menu screen now loads only its own art — no more waiting for everything','The screen you open jumps to the front of the download queue','Temple, gear and reward art is ~4× smaller','Endgame (Delve) runs give 30% less EXP, so levels come a bit slower'] },
   { v:'6.42.1', date:'2026-10-03', title:'🐛 Fix: Sweet cave crash', items:['Fixed a crash when standing in a falling-star circle in Sweet-flavored Delve caves'] },
   { v:'6.42.0', date:'2026-10-03', title:'🍖 Feast Targets', items:['Delve: regular monsters now fill the Hunger Meter only a little','Every ~16s a 🍖 Feast Target appears — the arrow points to it and it runs away','Kill it within 22s for +15% Hunger, or it escapes','Completing the cave mission now also gives +20% Hunger'] },
   { v:'6.41.0', date:'2026-10-03', title:'⚔️ Weapons no longer melt everything', items:['Weapon item level power is lower: iLv60 ×4.3 (was ×5.7) · iLv89 ×5.0 (was ×8.8) · iLv100 ×5.2','Bosses now take a real fight instead of melting in seconds','Build choices, Weave and Perks matter more next to weapon power'] },
@@ -1082,11 +1083,11 @@ const ASSET_IMAGES = {
   ic_path_p_feast:'assets/art/build_paths/p_feast.webp',
   ic_path_p_bodyguard:'assets/art/build_paths/p_bodyguard.webp',
   ic_path_p_sweetHelper:'assets/art/build_paths/p_sweetHelper.webp',
-  temple_special_cores:'assets/art/temple/special_cores_sheet.png',
-  temple_rank_emblems:'assets/art/temple/rank_emblems_sheet.png',
-  temple_life_core:'assets/art/temple/life_core.png',
-  temple_flavor_spark:'assets/art/temple/flavor_spark.png',
-  temple_oath_shell:'assets/art/temple/oath_shell.png',
+  temple_special_cores:'assets/art/temple/special_cores_sheet.webp',
+  temple_rank_emblems:'assets/art/temple/rank_emblems_sheet.webp',
+  temple_life_core:'assets/art/temple/life_core.webp',
+  temple_flavor_spark:'assets/art/temple/flavor_spark.webp',
+  temple_oath_shell:'assets/art/temple/oath_shell.webp',
   painted_nav_button:'assets/art/ui/painted_nav_button.png',
   replay_progress_art:'assets/art/ui/replay_progress_sheet.png',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
@@ -1097,20 +1098,20 @@ const ASSET_IMAGES = {
   bg8:'assets/bg8.webp',
   bg9:'assets/bg9.webp',
   bg10:'assets/bg10.webp',
-  currency_spark_sugar:'assets/ui/currency/spark-sugar.png',
+  currency_spark_sugar:'assets/ui/currency/spark-sugar.webp',
   currency_twist_cream:'assets/ui/currency/twist-cream.png',
-  currency_crown_icing:'assets/ui/currency/crown-icing.png',
-  currency_wild_jam:'assets/ui/currency/wild-jam.png',
+  currency_crown_icing:'assets/ui/currency/crown-icing.webp',
+  currency_wild_jam:'assets/ui/currency/wild-jam.webp',
   currency_wish_candy:'assets/ui/currency/wish-candy.png',
   currency_crystal_glaze:'assets/ui/currency/crystal-glaze.png',
-  currency_fading_gumdrop:'assets/ui/currency/fading-gumdrop.png',
-  currency_plain_dough:'assets/ui/currency/plain-dough.png',
+  currency_fading_gumdrop:'assets/ui/currency/fading-gumdrop.webp',
+  currency_plain_dough:'assets/ui/currency/plain-dough.webp',
   heal:'assets/items/heal_mochi_heart.png',
   gift:'assets/items/gear_gift.png',
   prize_sugar:'assets/icons/icon_sugar.png',
   prize_currency:'assets/art/rewards/prize_currency_mystery.webp',
   prize_chest:'assets/art/rewards/prize_chest_clean.webp',
-  prize_wheel_bg:'assets/art/rewards/prize_wheel_bg_v2.png',
+  prize_wheel_bg:'assets/art/rewards/prize_wheel_bg_v2.webp',
   mystery_card_back:'assets/art/rewards/mystery_card_back.png',
   chest_badge_bronze:'assets/art/rewards/chest_badge_bronze.webp',
   chest_badge_silver:'assets/art/rewards/chest_badge_silver.webp',
@@ -1857,6 +1858,17 @@ const DEFER_RE=/assets\/(?:art\/(?:temple|rewards|build_paths|kitchen|delve|biom
 function bootDeferred(url){return DEFER_RE.test(url||'');}
 // v6.38 บูตโหลดเฉพาะของที่เมนูหลักใช้ · ที่เหลือทั้งหมดโหลดเบื้องหลัง (ensureDeferred) ก่อนเข้าด่าน/หน้าย่อย
 function bootKeep(k){return /^hub_btn_|^menu_hub|^vfx_poof$|^replay_progress_art$/.test(k);}
+// v6.43 (เจ้าของ: แยกโหลดเฉพาะหน้าที่เข้า) แต่ละหน้าเมนูรอแค่โฟลเดอร์ของตัวเอง · ที่เหลือโหลดเบื้องหลังตามเดิม
+const MENU_GROUPS=[
+  [/^(upgrade|perks)$/,/assets\/(?:art\/temple\/|ui\/temple\/|art\/icons\/|ui\/currency\/)/],
+  [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
+  [/^dig$/,/assets\/art\/dig\//],
+  [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_paths\/|art\/biomes\/)/],
+  [/^(gear|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/)/],
+  [/^(chars|talents)$/,/assets\/(?:character_cards\/|art\/build_paths\/)/],
+  [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_paths\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
+];
+function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig)\/|incoming\/|character_cards\/|ui\/temple\/)/;
 function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 
@@ -4394,6 +4406,7 @@ function atlasPinnacleOpen(){ return (delveSave().best||0)>=30; }
 function amapGuardiansDown(){ return delveBossesDown(); }
 // ตัวคูณความลึก (ไม่มีเพดาน · ยิ่งยากรางวัลยิ่งดี)
 // v6.40 จูนจากเซฟจริงเจ้าของ: หลังชั้น 20 ของตัน (iLv>60 โตแค่ 1.5%/lv) → ชะลอการโตเลือด/ดาเมจ ไม่ให้ชั้น 40+ เป็นกำแพง
+const ENDGAME_XP_MUL=0.7;   // v6.43 เจ้าของ: เลเวลใน Endgame ขึ้นเร็วไป
 const HUNGER_PER_KILL=0.25, FEAST_SHARE=0.15, FEAST_EVERY=16, FEAST_FIRST=6, FEAST_LIFE=22, MISSION_HUNGER=0.2;   // v6.42 Feast Targets
 function delveMul(d){ const a=Math.min(d,20),b=Math.max(0,d-20); return {hp:Math.pow(1.08,a)*Math.pow(1.05,b),dmg:Math.pow(1.06,a)*Math.pow(1.04,b),reward:1+0.05*d}; }
 // v6.22 Atlas Influence (3A): ทุกแมพมีรสประจำตัว · เคลียร์แล้วรสซึมไปแมพที่เชื่อม (+1 ชั้น/การเคลียร์ เพดาน 3/รส) · ชั้นละ ยาก+10% รางวัล+15% (กฎเหล็ก)
@@ -4609,6 +4622,17 @@ class Game extends Phaser.Scene {
     for(const [k,name,a,b,rate] of poses)if(keys.includes(k)&&this.textures.exists(k)&&!this.anims.exists(k+'_'+name))this.anims.create({key:k+'_'+name,frames:[{key:k,frame:a},{key:k,frame:b}],frameRate:rate,repeat:name==='reveal'?0:-1,yoyo:name!=='reveal'});
   }
   // v6.38 โหลดเบื้องหลัง 2 ชั้น: tier 1 = ของที่ใช้ในด่าน (เข้าด่านรอแค่ชั้นนี้) · tier 2 = ของเฉพาะเมนู (วิหาร/ครัว/ขุด/Delve/การ์ดตัวละคร)
+  // ย้ายไฟล์ของหน้าที่เปิดขึ้นหัวคิว loader (ไม่ต้องรอภาพเข้าด่านที่โหลดเบื้องหลังอยู่)
+  prioritizeLoad(keys){ try{ const L=this.load.list; if(!L||!L.entries||!L.entries.length)return; const ks=new Set(keys),arr=L.entries; const front=arr.filter(f=>ks.has(f.key)); if(!front.length)return; const rest=arr.filter(f=>!ks.has(f.key)); arr.length=0; front.concat(rest).forEach(f=>arr.push(f)); }catch(e){} }
+  ensureGroup(re,done){ const need=[];
+    const real=k=>{ if(!this.textures.exists(k))return false; const src=this.textures.get(k).getSourceImage(); return !(src instanceof HTMLCanvasElement); };
+    const add=(k,fn)=>{ if(real(k))return; if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } need.push(k); fn(); };
+    for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if(!k.startsWith('screen_')&&!deferredImage(k)&&re.test(u||''))add(k,()=>this.load.image(k,verUrl(u))); }
+    for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!STAGE_SHEET_KEYS.has(k)&&re.test(sh.url||''))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
+    if(!need.length){ done(); return; }
+    this.prioritizeLoad(need);
+    if(!this.load.isLoading())this.load.start();
+    let lastKick=Date.now(); const t0=Date.now(),chk=()=>{ const miss=need.filter(k=>!real(k)),left=miss.length; const ents=S=>S?(S.entries||(S.values?[...S.values()]:[])):[],queued=k=>{ const L=this.load; return [L.list,L.inflight,L.queue].some(S=>ents(S).some(f=>f.key===k)); }; if(left&&Date.now()-lastKick>600&&miss.some(k=>!queued(k))){ lastKick=Date.now(); miss.forEach(k=>{ if(this.textures.exists(k)||queued(k))return; if(ASSET_IMAGES[k])this.load.image(k,verUrl(ASSET_IMAGES[k])); else if(ASSET_SHEETS[k]){ const sh=ASSET_SHEETS[k]; this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); } }); this.prioritizeLoad(miss); if(!this.load.isLoading())this.load.start(); } if(window.GameLoader)window.GameLoader.set(1-left/need.length,'Loading…'); if(!left||Date.now()-t0>20000){ this.registerStageAnimations&&this.registerStageAnimations(Object.keys(ASSET_SHEETS)); done(); return; } setTimeout(chk,80); }; setTimeout(chk,60); }
   ensureDeferred(done,tier=2){
     const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}),T=D[tier];
     if(T.done){done&&done();return;} if(done)T.q.push(done);
@@ -5540,7 +5564,7 @@ class Game extends Phaser.Scene {
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
   buildMenuScreen(){ const s=this.menuScreen||'hub';
-    if(s!=='hub'&&!(this._dT&&this._dT[2].done)){ if(window.GameLoader)window.GameLoader.show('Loading…',0.5); this.ensureDeferred(()=>{ if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu')this.buildMenuScreen(); }); return; }if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
+    if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3); this.ensureGroup(menuGroupRe(s),()=>{ this._grpOk[s]=true; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu'&&this.menuScreen===s)this.buildMenuScreen(); }); return; }if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
@@ -9616,7 +9640,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
-    this.xp+=n*(this.player.xpMul||1);
+    this.xp+=n*(this.player.xpMul||1)*(this.recipeMode?ENDGAME_XP_MUL:1);
     while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+6); /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
