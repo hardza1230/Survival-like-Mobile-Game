@@ -9,7 +9,7 @@ self.addEventListener('fetch',e=>{
   const isAsset=(/\/assets\//.test(url.pathname)&&url.searchParams.has('v'));
   if(!isAsset)return; // ปล่อยให้เบราว์เซอร์จัดการเอง (network)
   e.respondWith(caches.open(CACHE).then(async c=>{
-    const hit=await c.match(req); if(hit)return hit;
+    const hit=await c.match(req); if(hit){ const h=new Headers(hit.headers); h.set('x-mochi-cache','hit'); return new Response(hit.body,{status:hit.status,statusText:hit.statusText,headers:h}); }
     const res=await fetch(req);
     if(res&&res.ok&&res.status===200){ c.put(req,res.clone()).catch(()=>{});
       // ลบเวอร์ชันเก่าของไฟล์เดียวกัน (hash ต่างกัน)

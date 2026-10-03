@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.49.0 (เจ้าของ: เปิดแอปแล้วโหลด 126 MB ทุกครั้ง):** sw.js ใส่ header `x-mochi-cache: hit` · LoadMeter แยก from device/downloaded (`fileFromDevice` อ่าน xhrLoader header) · localStorage `mochi_full_cached` → เปิดครั้งต่อไปซ่อนหน้าโหลดทันที (ฉากเปิด→เมนู) แล้ว `preloadAll(null,true)` เบื้องหลัง · startRun ระหว่างนั้นเรียก preloadAll(done) → โชว์หลอด · ไม่ต้องติดตั้ง APK ใหม่ (live update)
 - **v6.48.2 (เจ้าของ: เห็นหลอดวิ่ง 100% แล้วเริ่มใหม่ + อยากเห็น MB/ความเร็ว):** global `LoadMeter` (plan รวมขนาดทุก asset จาก `ASSET_FILE_SIZES` ที่ build-www ใส่ · mark ต่อไฟล์ผ่าน loader event 'load'/'loaderror' + fetch BGM) ใช้ทั้ง Boot และ preloadAll → หลอดเดียวต่อเนื่อง ข้อความ 'x / y MB · เหลือ · MB/s · ~วิ' · รันจากซอร์ส (ไม่ build) ไม่มีขนาด → นับเป็นจำนวนไฟล์
 - **v6.48.1 (เจ้าของ: ได้ยินเพลงเปลี่ยนกลางหน้าโหลด เหมือนโหลด 2 รอบ):** ต้นเหตุ showMenu ใน Game.create เรียก playMainBgm → หยุดเพลงหน้าโหลดกลางการโหลด · playMainBgm รอ `mochi-intro-finished` ถ้าฉากเปิดยังไม่จบ (`_waitIntro`) → เพลงหน้าโหลดเพลงเดียวจนเข้าเมนู
 - **v6.48.0 (เจ้าของ: รวมโหลดไว้หน้าแรกก่อนเมนู):** Opening ไม่ซ่อนหน้าโหลด · Game.create เรียก preloadAll ทันที (เดิมรอฉากเปิดจบ) → หลอดเดียวบนหน้าโหลดแรก · fin เรียก GameLoader.hide → เริ่มฉากเปิด → เมนู
