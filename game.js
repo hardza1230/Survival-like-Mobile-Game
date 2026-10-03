@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.1';
+const GAME_VERSION = '6.50.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.2', date:'2026-10-03', title:'Clearer missions', items:['New missions now pop up in a speech bubble above your character','Mission reminders also appear above your character with progress'] },
   { v:'6.50.1', date:'2026-10-03', title:'Damage numbers', items:['Every shotgun pellet shows its own damage number','Damage numbers are a little smaller'] },
   { v:'6.50.0', date:'2026-10-03', title:'Shotgun aims the boss', items:['Point-Blank Barrage pellets aim at a nearby boss, miniboss or elite instead of a closer minion, with a tight spread','Pellets that hit together show one combined damage number with the hit count'] },
   { v:'6.49.9', date:'2026-10-03', title:'Softer level-up sound', items:['The level-up sound is lower and softer with no echo'] },
@@ -8398,7 +8399,7 @@ class Game extends Phaser.Scene {
     }else{this.mode='wave';this.startSurvivalWave(w,false);this.setupWaveObjective(w,p);const o=this.waveObjective;
       if(!this.recipeMode&&!this.riftMode&&!this.bossRush&&(this.stageIndex>0||(Save.data.stageMastery||{})[0])&&(w===3||w===4&&Math.random()<0.5))
         this.time.delayedCall(9500,()=>{if(this.state==='play'&&this.mode==='wave'&&this.waveObjective===o&&!o.done)this.startWaveEvent();});
-      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((o.lesson?'MISSION '+o.lesson+': ':'MISSION: ')+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});}
+      if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((o.lesson?'MISSION '+o.lesson+': ':'MISSION: ')+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});if(o&&!this._inTutorial){this.showSpeechBubble(o.emoji+' '+o.desc,4200);Sfx.card&&Sfx.card();}}
     this.updateWaveText();
   }
   setupSpawnRates(w){
@@ -8874,7 +8875,7 @@ class Game extends Phaser.Scene {
     this.renderBonusHUD();
     const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o):Math.floor(o.progress)+' / '+o.target);
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
-    const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); }   // v5.71 เตือนภารกิจทุก 12 วิ
+    const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;
