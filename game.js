@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.36.0';
+const GAME_VERSION = '6.37.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.37.0', date:'2026-10-03', title:'⚡ Faster startup', items:['The game downloads about half as much before the main menu','Menu-only art and battle effects now load in the background after the menu appears','Smaller loading and menu music files']},
   { v:'6.36.0', date:'2026-10-03', title:'🌍 Every Delve flavor plays differently', items:['❄️ Frosty: ice patches freeze monsters that cross them but slow you','🍯 Sweet: sugar comets fall — stand in one for a Sugar Rush','🍋 Sour: acid rain to dodge; soaked monsters take extra damage','🍄 Fermented: bloated monsters burst on death and chain','Simpler endgame: Flavor Influence removed; the cave panel now shows your next depth milestone']},
   { v:'6.35.0', date:'2026-10-03', title:'🗺 Cleaner Delve map', items:['Cave nodes show only their art — no more small overlay icons','Tapping a cave opens a redesigned info panel: header, Flavor / Reward / Mission / Influence grid, mod chips and multipliers']},
   { v:'6.34.1', date:'2026-10-03', title:'🛠 Fix: Delve map crash', items:['Opening Endgame (Delve map) no longer freezes or closes the app on phones']},
@@ -1747,7 +1748,7 @@ const ASSET_AUDIO = {
   sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
   sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
-  bgm_main:       'assets/audio/bgm/menu/bgm_menu_moonlit_rose.mp3',
+  bgm_main:       'assets/audio/bgm/menu/bgm_menu_moonlit_rose_lite.mp3',
   bgm_menu_temple:  'assets/audio/bgm/menu/bgm_menu_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
   bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร
@@ -1835,6 +1836,9 @@ const STAGE_SHEETS=[
 ];
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
+// v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
+const DEFER_RE=/assets\/(?:art\/(?:temple|rewards|build_paths|kitchen|delve|biomes|pinnacle|dig|icons|ch3_bosses|ch3_enemies|floors)\/|ui\/currency\/|gear\/|icons\/levelup\/|incoming\/)/;
+function bootDeferred(url){return DEFER_RE.test(url||'');}
 
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
@@ -1851,9 +1855,9 @@ class Boot extends Phaser.Scene {
       const current=this.load.progress||0;
       loader.set(current,'Preparing '+name+'...');
     });
-    for(const k in ASSET_IMAGES){ if(k.startsWith('screen_')||deferredImage(k))continue;this.load.image(k, verUrl(ASSET_IMAGES[k])); }
-    for(const k in ASSET_SHEETS){if(STAGE_SHEET_KEYS.has(k))continue;this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });}
-    for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
+    for(const k in ASSET_IMAGES){ if(k.startsWith('screen_')||deferredImage(k)||bootDeferred(ASSET_IMAGES[k]))continue;this.load.image(k, verUrl(ASSET_IMAGES[k])); }
+    for(const k in ASSET_SHEETS){if(STAGE_SHEET_KEYS.has(k)||bootDeferred(ASSET_SHEETS[k].url))continue;this.load.spritesheet(k, verUrl(ASSET_SHEETS[k].url), { frameWidth:ASSET_SHEETS[k].frame, frameHeight:ASSET_SHEETS[k].frame });}
+    if(false)for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
       if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[sm]\d/.test(k)||k.startsWith('bgm_menu_'))continue;
@@ -4581,7 +4585,22 @@ class Game extends Phaser.Scene {
     const poses=[['boss1','idle',0,1,3],['boss2','reveal',2,3,4],['boss3','idle',0,1,3],['boss4','idle',0,1,3],['boss5_sovereign','idle',0,1,2.5],['boss6_rootmother','idle',0,1,2.2]];
     for(const [k,name,a,b,rate] of poses)if(keys.includes(k)&&this.textures.exists(k)&&!this.anims.exists(k+'_'+name))this.anims.create({key:k+'_'+name,frames:[{key:k,frame:a},{key:k,frame:b}],frameRate:rate,repeat:name==='reveal'?0:-1,yoyo:name!=='reveal'});
   }
+  ensureDeferred(done){
+    if(this._deferDone){done&&done();return;}
+    const q=this._deferQ||(this._deferQ=[]); if(done)q.push(done); if(this._deferStarted)return; this._deferStarted=true;
+    let n=0; const add=(k,fn)=>{ if(this.textures.exists(k)){ const src=this.textures.get(k).getSourceImage(); if(!(src instanceof HTMLCanvasElement))return; this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } fn(); n++; }; // ลบ placeholder ที่ Boot วาดแทนไว้
+    for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if(!k.startsWith('screen_')&&!deferredImage(k)&&bootDeferred(u))add(k,()=>this.load.image(k,verUrl(u))); }
+    for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!STAGE_SHEET_KEYS.has(k)&&bootDeferred(sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
+    for(const k in ASSET_FX){ const fx=ASSET_FX[k]; add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
+    const fin=()=>{ for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(this.textures.exists(k)&&!this.anims.exists(k))this.anims.create({key:k,frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}),frameRate:fx.rate,repeat:fx.loop?-1:0}); }
+      for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(sh.anim&&this.textures.exists(k)&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo}); }
+      if(this.textures.exists('fx_bossportal')&&!this.anims.exists('portal_idle'))this.anims.create({key:'portal_idle',frames:this.anims.generateFrameNumbers('fx_bossportal',{start:0,end:(ASSET_FX.fx_bossportal.frames||8)-1}),frameRate:12,repeat:-1});
+      for(const k of Object.keys(ASSET_SHEETS).filter(k=>k.startsWith('c3_mini')||k.startsWith('c3_boss')))if(this.textures.exists(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
+      this._deferDone=true; const cbs=this._deferQ||[]; this._deferQ=[]; cbs.forEach(cb=>cb()); };
+    if(!n){fin();return;}
+    this.load.once('complete',fin); if(!this.load.isLoading())this.load.start(); }
   ensureStageArt(idx,done){
+    if(!this._deferDone){ this.ensureDeferred(()=>this.ensureStageArt(idx,done)); return; }
     if(!this._stageArtReady)this._stageArtReady=new Set();
     if(this._stageArtReady.has(idx)){done&&done();return;}
     if(!this._stageArtWait)this._stageArtWait=new Map();
@@ -5489,7 +5508,8 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ const s=this.menuScreen||'hub';if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
+  buildMenuScreen(){ const s=this.menuScreen||'hub';
+    if(s!=='hub'&&!this._deferDone){ if(window.GameLoader)window.GameLoader.show('Loading…',0.5); this.ensureDeferred(()=>{ if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu')this.buildMenuScreen(); }); return; }if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
