@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.2';
+const GAME_VERSION = '6.50.3';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.3', date:'2026-10-03', title:'Simpler first stage', items:['Stage 1 no longer has the Capture Zone mission — it now teaches Survive and Hunt only'] },
   { v:'6.50.2', date:'2026-10-03', title:'Clearer missions', items:['New missions now pop up in a speech bubble above your character','Mission reminders also appear above your character with progress'] },
   { v:'6.50.1', date:'2026-10-03', title:'Damage numbers', items:['Every shotgun pellet shows its own damage number','Damage numbers are a little smaller'] },
   { v:'6.50.0', date:'2026-10-03', title:'Shotgun aims the boss', items:['Point-Blank Barrage pellets aim at a nearby boss, miniboss or elite instead of a closer minion, with a tight spread','Pellets that hit together show one combined damage number with the hit count'] },
@@ -4308,7 +4309,7 @@ const WAVE_OBJECTIVES = {
 };
 // Wave 2 is the miniboss. Fixed early missions give new players a reliable learning path on repeat runs.
 const CH1_EARLY_WAVE_PLAN={
-  0:{1:{type:'survive',tip:'Keep moving until the timer ends.'},3:{type:'capture',tip:'Stand inside the glowing ring until its meter fills.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked enemies.'}},
+  0:{1:{type:'survive',tip:'Keep moving until the timer ends.'},3:{type:'survive',tip:'Stay alive — keep moving and let your attacks clear the swarm.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked enemies.'}},
   1:{1:{type:'survive',tip:'Keep moving and watch for pressure attacks.'},3:{type:'hunt',tip:'Follow 🎯 to the marked enemies and defeat them.'},4:{type:'purge',tip:'Stay near the Wisp and keep raiders away from it.'}},
   2:{1:{type:'capture',tip:'Stand inside the glowing ring to charge the furnace seal.'},3:{type:'purge',tip:'Protect the Wisp as it reaches each cursed core.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked guards.'}}
 };

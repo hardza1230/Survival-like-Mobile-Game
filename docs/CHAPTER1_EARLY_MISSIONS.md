@@ -4,7 +4,7 @@ Wave 2 is the miniboss in all three stages. Waves 1, 3 and 4 use a fixed order i
 
 | Stage | Wave 1 | Wave 2 | Wave 3 | Wave 4 | Lesson |
 | --- | --- | --- | --- | --- | --- |
-| 1 Sour Ant Nest | Survive | Miniboss | Capture the ring | Hunt 2 marked elites | Move → stand in a zone → follow marked targets |
+| 1 Sour Ant Nest | Survive | Miniboss | Survive | Hunt 2 marked elites | Move → survive → follow marked targets |
 | 2 Rotting Drain | Survive | Miniboss | Hunt marked elites | Escort the Wisp | Read enemy signals → protect a moving ally |
 | 3 Chili Engine Room | Capture the ring | Miniboss | Escort the Wisp | Hunt marked guards | Repeat known verbs under greater pressure |
 
