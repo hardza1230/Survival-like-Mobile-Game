@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.45.0';
+const GAME_VERSION = '6.46.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.46.0', date:'2026-10-03', title:'Assets saved on your device', items:['Art and sounds you have already loaded are kept on your device','Opening the game again downloads far less'] },
   { v:'6.45.0', date:'2026-10-03', title:'Faster stage loading', items:['Entering a stage now waits only for that stage’s art and your hero, not every asset in the game','Stage music no longer waits for background downloads','Effects and menu art keep loading quietly while you play'] },
   { v:'6.44.0', date:'2026-10-03', title:'Safer, clearer result screens', items:['Result and defeat screens ignore taps for a moment so spamming Dash or Unique no longer skips them','Defeat screen uses the same painted panel as the stage and Delve results','Reward x2, Revive, Replay and Continue buttons are larger, glossy and easier to spot'] },
   { v:'6.43.0', date:'2026-10-03', title:'⚡ Faster menus · slower Endgame levels', items:['Each menu screen now loads only its own art — no more waiting for everything','The screen you open jumps to the front of the download queue','Temple, gear and reward art is ~4× smaller','Endgame (Delve) runs give 30% less EXP, so levels come a bit slower'] },

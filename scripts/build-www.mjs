@@ -15,6 +15,7 @@ const ver = Date.now();
 
 // phaser: คัดลอกตรง ๆ
 copyFileSync(join(root, 'phaser.min.js'), join(www, 'phaser.min.js'));
+copyFileSync(join(root, 'sw.js'), join(www, 'sw.js'));   // v6.46 service worker แคชไฟล์ในเครื่อง
 console.log('copied phaser.min.js');
 
 // game.js: ใส่ hash แยกรายไฟล์ เพื่อให้ภาพที่ไม่ได้แก้ยังใช้ browser cache ข้าม build ได้
