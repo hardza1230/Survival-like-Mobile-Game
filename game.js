@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.34.1';
+const GAME_VERSION = '6.35.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.35.0', date:'2026-10-03', title:'🗺 Cleaner Delve map', items:['Cave nodes show only their art — no more small overlay icons','Tapping a cave opens a redesigned info panel: header, Flavor / Reward / Mission / Influence grid, mod chips and multipliers']},
   { v:'6.34.1', date:'2026-10-03', title:'🛠 Fix: Delve map crash', items:['Opening Endgame (Delve map) no longer freezes or closes the app on phones']},
   { v:'6.34.0', date:'2026-10-03', title:'🎨 New art: Delve, biomes & Pinnacle', items:['Delve map now shows painted flavor floors, node plates, fog and boss-floor cards','Every cave flavor has its own painted floor; Spicy vents and embers use real art','Chapter 3 monsters now walk with 4-frame animations','The Pinnacle boss, The Hunger Beneath, has its own 8-pose art']},
   { v:'6.33.0', date:'2026-10-03', title:'🌶️ Spicy Depths biome', items:['Spicy caves now have their own lava floor','Lava vents erupt in rhythm — lure monsters onto them to roast whole packs','Ember monsters leave short-lived fire trails behind them']},
@@ -6001,7 +6002,7 @@ class Game extends Phaser.Scene {
     if(Save.data.delveComp){ const N=Save.data.delveComp; delete Save.data.delveComp; Save.addSugar(40*N); Save.addCurrency('chaos',Math.ceil(N/4)); Save.save(); this.menuToast('⛏ The Atlas became Mochi Delve · '+N+' old maps refunded: 🍬'+(40*N)+' + chaos ×'+Math.ceil(N/4),'#9dff9d'); }
     const T=(x,y,t,sz,c,st,o)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center'}).setOrigin(0.5,o===undefined?0.5:o);this.menu.add(q);return q;};
     T(w/2,top+6,'⛏ Mochi Delve · Record Depth '+(dv.best||0)+' · Bosses '+delveBossesDown()+' · Points '+atlasPoints(),w<360?10:12,'#ffe08a','bold');
-    const selN=this._amapSel!=null?amapNode(this._amapSel):null,panel=!!(selN&&selN.d>0&&amapOpen(selN.id)),PH=panel?150:0;
+    const selN=this._amapSel!=null?amapNode(this._amapSel):null,panel=!!(selN&&selN.d>0&&amapOpen(selN.id)),PH=panel?232:0;
     const R=this._amRect={x:cx,y:top+62,w:cw,h:h-62-(top+62)-PH};
     const fit=R.w/L.MW; if(!this._amv){ this._amv={x:0,y:0,s:0.8,min:fit}; const nn=next&&amapNode(next),q=nn?L.pos(nn):{x:L.C0,y:L.top}; this._amv.x=R.w/2-q.x*0.8; this._amv.y=R.h/2-q.y*0.8; } this._amv.min=fit;
     const tb=(cw-3*8)/4; [{e:'🏠',lbl:'Mochitopia',fn:()=>this.atlasViewFocus(L.C0,L.top,Math.max(this._amv.s,0.8))},
@@ -6041,10 +6042,7 @@ class Game extends Phaser.Scene {
       if(!open){ ng.fillStyle(0x14101a,land?0.9:0.7); ng.fillCircle(q.x,q.y,land?big:9); ng.lineStyle(2,land?0x8d7aa8:0x3a3048,land?0.8:0.5); ng.strokeCircle(q.x,q.y,land?big:9); if(land)VT(q.x,q.y,AMAP_TYPES[n.type].emoji,16,'#ffffff').setAlpha(0.55); return; }
       if(this.textures.exists(tk)){ V(this.add.image(q.x,q.y,tk)).setDisplaySize(big*2.4,big*2.4); if(sel||!t){ ng.lineStyle(sel?4:3,sel?0xffffff:col,1); ng.strokeCircle(q.x,q.y,big+3); } }
       else { if(!t){ ng.fillStyle(col,0.25); ng.fillCircle(q.x,q.y,big+7); } ng.fillStyle(t?0x3a2f12:0x1f1830,1); ng.fillCircle(q.x,q.y,big); ng.lineStyle(sel?4:3,sel?0xffffff:t?0xffd166:col,1); ng.strokeCircle(q.x,q.y,big); }
-      VT(q.x,q.y-1,n.emoji,land?20:13,'#ffffff'); VT(q.x-big+1,q.y-big+1,amapRewardOf(n.id).emoji,10,'#ffffff');
-      if(n.mods&&n.mods.length&&!t)VT(q.x+big-1,q.y-big+1,'◆'+n.mods.length,9,'#ff9bb5','bold');
-      const inf=amapInfluence(n.id); let k=0; AMAP_FLAVORS.forEach(f=>{ for(let i=0;i<(inf[f.id]||0);i++){ ng.fillStyle(f.color,1); ng.fillCircle(q.x+big+5,q.y-big+5+k*6,2.6); k++; } });
-      if(n.mission&&!t)VT(q.x+big-1,q.y+big-1,WAVE_OBJECTIVES[n.mission].emoji,9,'#ffffff');
+      if(!this.textures.exists(tk))VT(q.x,q.y-1,AMAP_TYPES[n.type].emoji,land?20:13,'#ffffff'); // v6.35: ไอคอนข้อมูลย้ายไปแผง
       if(t){ if(this.textures.exists('delve_cleared_mark'))V(this.add.image(q.x+big-2,q.y+big-4,'delve_cleared_mark')).setDisplaySize(20,20); else VT(q.x,q.y+big+8,'✓',10,'#ffe08a','bold'); }
       if(n.id===next){ const a=VT(q.x,q.y-big-13,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); } });
     // v6.31 แผงถ้ำที่เลือก: ข้อมูล + mod ประจำถ้ำ + Build/Heat + Start (แทนหน้า Map Table)
@@ -6052,16 +6050,23 @@ class Game extends Phaser.Scene {
       const pg=this.add.graphics(); pg.fillStyle(0x1c1426,0.97); pg.fillRoundedRect(cx,y0,cw,PH-12,12); pg.lineStyle(2,sn.flavor.color,1); pg.strokeRoundedRect(cx,y0,cw,PH-12,12); this.menu.add(pg);
       { const bk='delve_bossfloor_'+sn.flavor.id; if(sn.type==='boss'&&this.textures.exists(bk)){ const im=this.add.image(cx+cw/2,y0+(PH-12)/2,bk); im.setScale(Math.max(cw/752,(PH-12)/416)); im.setCrop((752-cw/im.scaleX)/2,(416-(PH-12)/im.scaleY)/2,cw/im.scaleX,(PH-12)/im.scaleY); im.setAlpha(0.32); this.menu.add(im); } }
       const TL=(x,y,txt,sz,c,st)=>{const q=this.add.text(x,y,txt,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c}).setOrigin(0,0.5);this.menu.add(q);return q;};
-      TL(cx+12,y0+16,sn.emoji+' '+sn.name+(t?'  ✓×'+t:''),14,'#ffffff','bold');
-      TL(cx+12,y0+36,'⛏ Depth '+sn.d+' · '+sn.flavor.emoji+' '+sn.flavor.name+(sn.type!=='normal'?' · '+ty.emoji+' '+ty.name:'')+' · 🎁 '+rw.emoji+' '+rw.name+(IL?' · '+amapInfText(inf):''),10,'#cfc2df');
-      if(sn.mission){ const md=WAVE_OBJECTIVES[sn.mission]; TL(cx+cw-12,y0+16,'🎯 '+md.name,10,'#9dff9d','bold').setOrigin(1,0.5); }
-      let x=cx+12; const cy=y0+60;
-      if(!sn.mods.length)TL(x,cy,'No mods',11,'#8d8499');
-      sn.mods.forEach(id=>{ const d=recipeModDef(id); if(!d)return; const lbl=d.emoji+' '+d.name,tw=Math.min(120,lbl.length*6.2+14); const g=this.add.graphics(); g.fillStyle(d.mech?0x5a2340:0x3a2a50,1); g.fillRoundedRect(x,cy-11,tw,22,8); this.menu.add(g);
-        TL(x+7,cy,lbl,10,'#ffffff'); this._zone(x,cy-11,tw,22,()=>this.menuToast(d.emoji+' '+d.name+': '+d.desc+' · rewards ×'+d.reward.toFixed(2),'#e6dcf0')); x+=tw+5; });
+      // v6.35 แผงอ่านง่าย: หัว / ตาราง 2×2 / mods / ตัวคูณ / ปุ่ม
+      TL(cx+14,y0+18,sn.name,16,'#ffffff','bold');
+      { const bl=ty.emoji+' '+ty.name,bwid=bl.length*6.5+18; const g=this.add.graphics(); g.fillStyle(sn.flavor.color,0.28); g.fillRoundedRect(cx+cw-14-bwid,y0+8,bwid,20,10); this.menu.add(g); TL(cx+cw-14-bwid/2,y0+18,bl,10,'#ffffff','bold').setOrigin(0.5,0.5); }
+      TL(cx+14,y0+38,'⛏ Depth '+sn.d+(t?'   ·   ✓ Cleared ×'+t:'   ·   Not cleared yet'),11,t?'#ffe08a':'#bfb5ca');
+      const sep=this.add.graphics(); sep.lineStyle(1,0x4a4059,1); sep.lineBetween(cx+12,y0+52,cx+cw-12,y0+52); this.menu.add(sep);
+      const md=sn.mission?WAVE_OBJECTIVES[sn.mission]:null,colW=(cw-28)/2;
+      const cell=(i,lab,val,c)=>{ const xx=cx+14+(i%2)*colW,yy=y0+66+Math.floor(i/2)*34; TL(xx,yy,lab,9,'#8d8499','bold'); const v=TL(xx,yy+15,val,12,c||'#ffffff','bold'); if(v.width>colW-8)v.setScale((colW-8)/v.width); };
+      cell(0,'FLAVOR',sn.flavor.emoji+' '+sn.flavor.name); cell(1,'REWARD',rw.emoji+' '+rw.name,'#ffe08a');
+      cell(2,'MISSION',md?md.emoji+' '+md.name:'—','#9dff9d'); cell(3,'INFLUENCE',IL?amapInfText(inf):'None','#cfc2df');
+      const my=y0+142; TL(cx+14,my,'MODS',9,'#8d8499','bold');
+      if(!sn.mods.length)TL(cx+56,my,'No mods — easy cave',11,'#8d8499');
+      else { const n=sn.mods.length,gap=5,tw=Math.min(130,(cw-70-gap*(n-1))/n); let x=cx+56;
+        sn.mods.forEach(id=>{ const d=recipeModDef(id); if(!d)return; const g=this.add.graphics(); g.fillStyle(d.mech?0x5a2340:0x3a2a50,1); g.fillRoundedRect(x,my-12,tw,24,8); this.menu.add(g);
+          const l=TL(x+6,my,d.emoji+' '+d.name,10,'#ffffff'); if(l.width>tw-10)l.setScale((tw-10)/l.width); this._zone(x,my-12,tw,24,()=>this.menuToast(d.emoji+' '+d.name+': '+d.desc+' · rewards ×'+d.reward.toFixed(2),'#e6dcf0')); x+=tw+gap; }); }
       const over=egBuildCost()>egBuildPoints(),heat=0;
-      TL(cx+12,y0+84,'HP ×'+(m.hp*(1+0.1*IL)).toFixed(1)+' · Rewards ×'+(m.reward*(1+0.15*IL)*(1+PACT_REWARD_PER_HEAT*heat)).toFixed(2),11,'#ffe08a','bold');
-      const by=y0+PH-12-28,bw=(cw-24)/3;
+      TL(cx+14,y0+166,'❤ Enemy HP ×'+(m.hp*(1+0.1*IL)).toFixed(1)+'      🎁 Rewards ×'+(m.reward*(1+0.15*IL)*(1+PACT_REWARD_PER_HEAT*heat)).toFixed(2),11,'#ffe08a','bold');
+      const by=y0+PH-30,bw=(cw-24)/3;
       const chip=(bx,label,col,fn)=>{const g=this.add.graphics(); g.fillStyle(0x241a30,1); g.fillRoundedRect(bx,by-16,bw,32,9); g.lineStyle(2,col,0.9); g.strokeRoundedRect(bx,by-16,bw,32,9); this.menu.add(g); T(bx+bw/2,by,label,11,'#ffffff','bold'); this._zone(bx,by-16,bw,32,fn);};
       chip(cx+8,over?'⚠ Build':'🛠 Build',over?0xff6b6b:0x7fd4ff,()=>{this.menuScreen='egbuild';this.buildMenuScreen();});
       this.uiPillBtn(this.menu,cx+8+bw+8+(bw*2-4)/2,by,bw*2-4,34,over?0x4a4059:COLORS.pink,'▶','Start',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;}
