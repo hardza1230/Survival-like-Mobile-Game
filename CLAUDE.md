@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.50.1 (เจ้าของ):** เม็ด shotgun โชว์เลขทุกเม็ด (popDmg force + เยื้องตำแหน่งเล็กน้อย แทนเลขรวม ×N) · popDmg 20/28→16/23px ÷viewZoom
 - **v6.50.0 (เจ้าของ: Shotgun ยิงบอสหลายนัดแต่เห็นโดน 2 ฮิต):** ต้นเหตุ (1) เล็ง nearestEnemy = ลูกน้องที่ใกล้กว่าบอส (2) popDmg throttle 90ms → เม็ดที่โดนพร้อมกันเห็นเลขเดียว · แก้: สาย shotgun เล็งบอส/มินิ/elite ใน 430 ก่อน (`_sgBig`) spread แคบทั้งระยะ · `b.sgPellet` → hitEnemy wrapper ตั้ง `_sgHit` → damage() รวมเป็นเลขเดียว 'รวม ×N' (หน่วง 45ms, popDmg param `force`) · verified headless: บอส+ลูกน้องขวาง โดนครบทุกเม็ด เลข '43 ×6' · **เพลงให้เลือก:** `bgm_pick_01..10` ใน MENUS ของ gen_stage_bgm → `music_choices/*.mp3` (รอเจ้าของเลือกแล้วค่อยใส่เป็น bgm_s01)
 - **v6.49.9 (เจ้าของ: เสียงเลเวลอัพก้อง แสบหู):** sfx_levelup_soft ใหม่ (gen_stingers_synth): C4-E4-G4-C5 sine/tri สั้น clean ไม่มี reverb (เดิม bell C5-C6 + C7 + send)
 - **v6.49.8 (เจ้าของ: เพลงด่าน 1 ก้องเหมือนถ้ำ → 8-bit):** STAGES bgm_s01 ใน gen_stage_bgm: 132BPM major I-V-vi-IV, groove, pulse bass, sqr arp 16th, sqr lead · แถวรองรับ `room`/`wet` (s01 0.25/0.08 แทน 0.8/0.8) · bgm_m01 (มินิ) สร้างใหม่ตาม

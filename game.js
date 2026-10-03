@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.0';
+const GAME_VERSION = '6.50.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.1', date:'2026-10-03', title:'Damage numbers', items:['Every shotgun pellet shows its own damage number','Damage numbers are a little smaller'] },
   { v:'6.50.0', date:'2026-10-03', title:'Shotgun aims the boss', items:['Point-Blank Barrage pellets aim at a nearby boss, miniboss or elite instead of a closer minion, with a tight spread','Pellets that hit together show one combined damage number with the hit count'] },
   { v:'6.49.9', date:'2026-10-03', title:'Softer level-up sound', items:['The level-up sound is lower and softer with no echo'] },
   { v:'6.49.8', date:'2026-10-03', title:'Stage 1 8-bit music', items:['Stage 1 music is now a bright 8-bit tune without the cave-like echo'] },
@@ -11352,8 +11353,7 @@ class Game extends Phaser.Scene {
     // อย่าฟอก sprite ด้วย setTintFill ตอนโดนตี: skillsหลาย hit ทำให้ art กระพริบขาวจนอ่าน silhouette ไม่ออก
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
-    if(this._sgHit){ const a=e._sgNum||(e._sgNum={sum:0,n:0,crit:false}); a.sum+=amount;a.n++;a.crit=a.crit||crit;   // v6.50: เม็ด shotgun โดนพร้อมกัน → เลขรวม (เดิม throttle เหลือเลขเดียว ดูเหมือนโดนแค่ 1-2 ฮิต)
-      if(!a.pending){ a.pending=true; this.time.delayedCall(45,()=>{ a.pending=false; if(a.n>0)this.popDmg(Math.round(a.sum)+(a.n>1?' ×'+a.n:''),e.x,e.y,a.crit,true); a.sum=0;a.n=0;a.crit=false; }); } }
+    if(this._sgHit)this.popDmg(Math.round(amount),x+Phaser.Math.Between(-16,16),y+Phaser.Math.Between(-12,8),crit,true);   // v6.50.1 เจ้าของ: เม็ด shotgun แสดงดาเมจทุกเม็ด (ไม่ติด throttle)
     else this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
   killEnemy(e){ if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
@@ -12642,7 +12642,7 @@ class Game extends Phaser.Scene {
     if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px'}).setDepth(99999).setOrigin(0.5).setStroke('#2a1830',5).setShadow(0,2,'#000000',2,true,true); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
     // v6.49.4: ใหญ่ขึ้น+ขอบเข้ม ชดเชยการซูมกล้องโลก ให้อ่านออกบนพื้นสว่าง
-    const z=Math.max(0.5,this.viewZoom||1), fs=Math.round((crit?28:20)/z);
+    const z=Math.max(0.5,this.viewZoom||1), fs=Math.round((crit?23:16)/z);
     const str = crit ? ('💥 '+n) : n;
     t.setText(str).setColor(crit?'#ffd23f':'#fff6e0').setFontSize(fs+'px').setStroke('#2a1830',Math.round(5/z)).setPosition(x+Phaser.Math.Between(-8,8),y-14).setAlpha(1).setScale(crit?1.45:1.25);
     this.tweens.add({targets:t,scale:1,duration:crit?140:110,ease:'Back.out'});
