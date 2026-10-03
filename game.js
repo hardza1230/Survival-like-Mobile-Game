@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.8';
+const GAME_VERSION = '6.50.9';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.9', date:'2026-10-03', title:'Loading tips fix', items:['Loading tips now always show, even with an old cached page'] },
   { v:'6.50.8', date:'2026-10-03', title:'Easier Back button', items:['Back button has a bigger tap area and always takes priority'] },
   { v:'6.50.7', date:'2026-10-03', title:'Core upgrade preview', items:['Flavor Weave buttons show what the next upgrade gives'] },
   { v:'6.50.6', date:'2026-10-03', title:'Tutorial spotlight', items:['After the tutorial, a spotlight guides you to upgrade your first core'] },
@@ -1869,6 +1870,13 @@ const LoadMeter={ total:0, done:0, dev:0, seen:new Set(), t0:0, hist:[],
     if(!this.total){ const p=this.count?this.seen.size/this.count:0; L.set(p,'Loading game data… '+this.seen.size+' / '+this.count+' files'); return; }
     const p=Math.min(1,this.done/this.total), left=Math.max(0,this.total-this.done), h=this.hist, dt=h.length>1?(h[h.length-1][0]-h[0][0])/1000:0, sp=dt>0.3?(h[h.length-1][1]-h[0][1])/dt:0;
     const net=this.done-this.dev; let t=(this.dev>net?'Preparing game data… ':'Loading game data… ')+mb(this.done)+' / '+mb(this.total)+' MB · '+mb(left)+' MB left'; if(sp>0)t+=' · '+(sp/1048576).toFixed(1)+' MB/s'+(left>0?' · ~'+Math.ceil(left/sp)+'s':''); t+='\n'+mb(this.dev)+' MB from device · '+mb(net)+' MB downloaded'; L.set(p,t); } };
+// v6.50.9 ทริกบนหน้าโหลด: patch จาก game.js (index.html อาจโดนแคชเก่า) · ข้อความเดิม (MB/label) ไม่โชว์แล้ว
+(function(){ const L=window.GameLoader; if(!L||L._tipPatched)return; L._tipPatched=true;
+  const TIPS=['Dash makes you briefly invincible — dash through enemy attacks.','Red circles on the ground explode — step out fast.','Pick cards that boost your main attack early.','Elites drop more EXP and loot — hunt them down.','Grab hearts when HP is low; magnets pull in every EXP orb.','Your Unique skill charges over time — save it for bosses.','Higher difficulty gives better rewards.','Spend Sugar in the Temple to grow stronger between runs.','Keep moving — standing still lets the swarm surround you.','Watch the mission text above your hero to know what to do.'];
+  let i=Math.floor(Math.random()*TIPS.length); const put=()=>{ const el=document.getElementById('load-status'); if(el)el.textContent='💡 '+TIPS[i]; };
+  if(L._tipT){clearInterval(L._tipT);L._tipT=null;} put(); setInterval(()=>{ i=(i+1)%TIPS.length; put(); },4000);
+  L.set=function(progress){ const p=Math.max(0,Math.min(1,Number(progress)||0)),f=document.getElementById('load-fill'),pc=document.getElementById('load-percent'); if(f)f.style.width=Math.round(p*100)+'%'; if(pc)pc.textContent=Math.round(p*100)+'%'; put(); };
+})();
 function fileFromDevice(f){ try{ const x=f&&f.xhrLoader; return !!(x&&x.getResponseHeader&&x.getResponseHeader('x-mochi-cache')==='hit'); }catch(e){ return false; } }
 function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v?(u+'?v='+v):(ASSET_VER?(u+'?v='+ASSET_VER):u); }
 // เฟรมของสไปรต์ตัวละคร (ต้องเรียงตามไฟล์สตริป)
