@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.49.0';
+const GAME_VERSION = '6.49.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.49.1', date:'2026-10-03', title:'Loading no longer gets stuck', items:['If the loading screen stops at 100%, the game now continues on its own after a few seconds'] },
   { v:'6.49.0', date:'2026-10-03', title:'Faster later launches', items:['After the first full load, the game opens straight to the menu and prepares the rest in the background','The loading bar shows how much came from your device and how much was downloaded'] },
   { v:'6.48.2', date:'2026-10-03', title:'Clearer loading bar', items:['One continuous loading bar instead of two','Shows MB loaded, MB left, download speed and time left'] },
   { v:'6.48.1', date:'2026-10-03', title:'One loading song', items:['The loading song now plays through the whole loading screen and opening','Menu music starts only after the opening'] },
@@ -4641,13 +4642,15 @@ class Game extends Phaser.Scene {
     for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
     // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
     for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch){ const u=ASSET_AUDIO[k]; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); } continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
-    const fin=()=>{ this.load.off('load',mk);this.load.off('loaderror',mk); this.buildDeferredAnims();
+    const fin=()=>{ if(finDone)return; finDone=true; this.load.off('load',mk);this.load.off('loaderror',mk); this.buildDeferredAnims();
       this._allLoaded=true;this._allLoading=false;this._deferDone=true;
       const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}); [1,2].forEach(t=>{D[t].done=true;D[t].started=true;const q=D[t].q;D[t].q=[];q.forEach(cb=>setTimeout(cb,0));});
       this._stageArtReady=new Set(STAGES.map((_,i)=>i)); this._grpOk=new Proxy({}, {get:()=>true});
       try{localStorage.setItem('mochi_full_cached','1');}catch(e){} if(window.fetch&&navigator.serviceWorker&&navigator.serviceWorker.controller){ const us=[]; for(const k in ASSET_IMAGES)if(bootKeep(k))us.push(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)if(bootKeep(k))us.push(ASSET_SHEETS[k].url); for(const k in ASSET_AUDIO)if(bootKeepAudio(k))us.push(ASSET_AUDIO[k]); us.forEach(u=>fetch(verUrl(u)).catch(()=>{})); } // ไฟล์บูตครั้งแรกโหลดก่อน SW ทำงาน → ดึงซ้ำให้เก็บลงเครื่อง const wasQuiet=this._preloadQuiet; this._preloadQuiet=false; if(L&&!wasQuiet){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);} if(this.state==='menu')this.buildMenuScreen();
       const w=this._allWait;this._allWait=[];w.forEach(cb=>setTimeout(cb,0)); };
-    const mk=f=>{ LoadMeter.mark(f&&f.url,fileFromDevice(f)); if(!this._preloadQuiet)LoadMeter.show(); };
+    let lastT=Date.now(),finDone=false; const mk=f=>{ lastT=Date.now(); LoadMeter.mark(f&&f.url,fileFromDevice(f)); if(!this._preloadQuiet)LoadMeter.show(); };
+    // v6.49.1: มือถือบางเครื่อง loader ไม่ยิง 'complete' (ถอดรหัสเสียงค้าง) → ไม่มีไฟล์ใหม่ 6 วิ = ไปต่อ ของที่ขาดโหลดตอนใช้จริง
+    const wd=setInterval(()=>{ if(finDone){clearInterval(wd);return;} if(Date.now()-lastT>6000){ clearInterval(wd); fin(); } },1000);
     if(!n){fin();return;}
     if(L&&!quiet){ if(L._introDone)L.show('Loading game data…',0); LoadMeter.show(); }
     this.load.on('load',mk);this.load.on('loaderror',mk); this.load.once('complete',()=>setTimeout(fin,0)); if(!this.load.isLoading())this.load.start();
