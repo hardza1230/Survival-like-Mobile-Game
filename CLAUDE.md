@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.50.8 (เจ้าของ: Back กดไม่ค่อยติด):** _screenBg zone Back ขยาย x0-110, y by−16..by+bh+12 + ธง back · handleTap เช็ค Back ก่อนทุก zone
 - **v6.50.7 (เจ้าของ):** buildUpgrade เหนือปุ่มซื้อแก่นมีข้อความ 'Upgrade: '+u.show(1) (ได้เท่าไหร่ต่อเลเวล)
 - **v6.50.6 (เจ้าของ: tutorial บังคับกด):** `drawSpotlight(cont,x,y,w,h,label)` มืดรอบ+เจาะรู+กรอบทองเต้น+นิ้วชี้ · หน้าจบ tutorial สปอตปุ่ม Upgrade Flavor Cores (ซ่อน/ปิด Skip) · หน้า Weave ตอน _tutorialWeaveCoach สปอตปุ่มซื้อแก่นแรกที่ซื้อได้ และกรอง tapZones เหลือปุ่มนั้น
 - **v6.50.5 (เจ้าของ):** หน้าโหลด load-status โชว์ทริกการเล่น GameLoader.TIPS 10 ข้อ สุ่มเริ่ม วนทุก 4 วิ (แทน label/MB) · hide เคลียร์ interval
