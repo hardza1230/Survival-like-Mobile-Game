@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.44.0';
+const GAME_VERSION = '6.45.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.45.0', date:'2026-10-03', title:'Faster stage loading', items:['Entering a stage now waits only for that stage’s art and your hero, not every asset in the game','Stage music no longer waits for background downloads','Effects and menu art keep loading quietly while you play'] },
   { v:'6.44.0', date:'2026-10-03', title:'Safer, clearer result screens', items:['Result and defeat screens ignore taps for a moment so spamming Dash or Unique no longer skips them','Defeat screen uses the same painted panel as the stage and Delve results','Reward x2, Revive, Replay and Continue buttons are larger, glossy and easier to spot'] },
   { v:'6.43.0', date:'2026-10-03', title:'⚡ Faster menus · slower Endgame levels', items:['Each menu screen now loads only its own art — no more waiting for everything','The screen you open jumps to the front of the download queue','Temple, gear and reward art is ~4× smaller','Endgame (Delve) runs give 30% less EXP, so levels come a bit slower'] },
   { v:'6.42.1', date:'2026-10-03', title:'🐛 Fix: Sweet cave crash', items:['Fixed a crash when standing in a falling-star circle in Sweet-flavored Delve caves'] },
@@ -1870,6 +1871,13 @@ const MENU_GROUPS=[
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_paths\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
+// v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
+const STAGE_LATE_RE=/assets\/(?:art\/(?:build_paths|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
+const ENDGAME_ART_RE=/assets\/art\/(?:biomes|delve_bosses|pinnacle)\//;
+// ของที่ต้องมีก่อนเข้าด่าน = tier1 ลบ (ของตัวละครอื่น + ของมาทีหลัง + อาร์ต endgame ถ้าไม่ใช่ endgame)
+function stageCritical(k,u,ch,endgame){
+  const m=/^char_([a-z]+)/.exec(k); if(m&&m[1]!==ch)return false; if(k.startsWith('minion_')&&ch!=='yuzu')return false;
+  if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
 const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig)\/|incoming\/|character_cards\/|ui\/temple\/)/;
 function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 
@@ -4625,15 +4633,21 @@ class Game extends Phaser.Scene {
   // v6.38 โหลดเบื้องหลัง 2 ชั้น: tier 1 = ของที่ใช้ในด่าน (เข้าด่านรอแค่ชั้นนี้) · tier 2 = ของเฉพาะเมนู (วิหาร/ครัว/ขุด/Delve/การ์ดตัวละคร)
   // ย้ายไฟล์ของหน้าที่เปิดขึ้นหัวคิว loader (ไม่ต้องรอภาพเข้าด่านที่โหลดเบื้องหลังอยู่)
   prioritizeLoad(keys){ try{ const L=this.load.list; if(!L||!L.entries||!L.entries.length)return; const ks=new Set(keys),arr=L.entries; const front=arr.filter(f=>ks.has(f.key)); if(!front.length)return; const rest=arr.filter(f=>!ks.has(f.key)); arr.length=0; front.concat(rest).forEach(f=>arr.push(f)); }catch(e){} }
-  ensureGroup(re,done){ const need=[];
+  ensureGroup(re,done,opts={}){ const need=[],hit=typeof re==='function'?re:((k,u)=>re.test(u||''));
     const real=k=>{ if(!this.textures.exists(k))return false; const src=this.textures.get(k).getSourceImage(); return !(src instanceof HTMLCanvasElement); };
     const add=(k,fn)=>{ if(real(k))return; if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } need.push(k); fn(); };
-    for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if(!k.startsWith('screen_')&&!deferredImage(k)&&re.test(u||''))add(k,()=>this.load.image(k,verUrl(u))); }
-    for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!STAGE_SHEET_KEYS.has(k)&&re.test(sh.url||''))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
+    for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if((opts.all||(!k.startsWith('screen_')&&!deferredImage(k)))&&hit(k,u))add(k,()=>this.load.image(k,verUrl(u))); }
+    for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if((opts.all||!STAGE_SHEET_KEYS.has(k))&&hit(k,sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
+    if(opts.fx)for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(hit(k,fx.url))add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
     if(!need.length){ done(); return; }
     this.prioritizeLoad(need);
     if(!this.load.isLoading())this.load.start();
-    let lastKick=Date.now(); const t0=Date.now(),chk=()=>{ const miss=need.filter(k=>!real(k)),left=miss.length; const ents=S=>S?(S.entries||(S.values?[...S.values()]:[])):[],queued=k=>{ const L=this.load; return [L.list,L.inflight,L.queue].some(S=>ents(S).some(f=>f.key===k)); }; if(left&&Date.now()-lastKick>600&&miss.some(k=>!queued(k))){ lastKick=Date.now(); miss.forEach(k=>{ if(this.textures.exists(k)||queued(k))return; if(ASSET_IMAGES[k])this.load.image(k,verUrl(ASSET_IMAGES[k])); else if(ASSET_SHEETS[k]){ const sh=ASSET_SHEETS[k]; this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); } }); this.prioritizeLoad(miss); if(!this.load.isLoading())this.load.start(); } if(window.GameLoader)window.GameLoader.set(1-left/need.length,'Loading…'); if(!left||Date.now()-t0>20000){ this.registerStageAnimations&&this.registerStageAnimations(Object.keys(ASSET_SHEETS)); done(); return; } setTimeout(chk,80); }; setTimeout(chk,60); }
+    let lastKick=Date.now(); const t0=Date.now(),chk=()=>{ const miss=need.filter(k=>!real(k)),left=miss.length; const ents=S=>S?(S.entries||(S.values?[...S.values()]:[])):[],queued=k=>{ const L=this.load; return [L.list,L.inflight,L.queue].some(S=>ents(S).some(f=>f.key===k)); }; if(left&&Date.now()-lastKick>600&&miss.some(k=>!queued(k))){ lastKick=Date.now(); miss.forEach(k=>{ if(this.textures.exists(k)||queued(k))return; if(ASSET_IMAGES[k])this.load.image(k,verUrl(ASSET_IMAGES[k])); else if(ASSET_SHEETS[k]){ const sh=ASSET_SHEETS[k]; this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); } else if(ASSET_FX[k]){ const fx=ASSET_FX[k]; this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); } }); this.prioritizeLoad(miss); if(!this.load.isLoading())this.load.start(); } if(window.GameLoader&&!opts.quiet)window.GameLoader.set(1-left/need.length,opts.label||'Loading…'); if(!left||Date.now()-t0>20000){ this.buildDeferredAnims(); done(); return; } setTimeout(chk,80); }; setTimeout(chk,60); }
+  buildDeferredAnims(){ for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(this.textures.exists(k)&&!this.anims.exists(k))this.anims.create({key:k,frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}),frameRate:fx.rate,repeat:fx.loop?-1:0}); }
+      for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(sh.anim&&this.textures.exists(k)&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo}); }
+      if(this.textures.exists('fx_bossportal')&&!this.anims.exists('portal_idle'))this.anims.create({key:'portal_idle',frames:this.anims.generateFrameNumbers('fx_bossportal',{start:0,end:(ASSET_FX.fx_bossportal.frames||8)-1}),frameRate:12,repeat:-1});
+      for(const k of Object.keys(ASSET_SHEETS).filter(k=>k.startsWith('c3_mini')||k.startsWith('c3_boss')))if(this.textures.exists(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
+      this.registerStageAnimations(Object.keys(ASSET_SHEETS)); }
   ensureDeferred(done,tier=2){
     const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}),T=D[tier];
     if(T.done){done&&done();return;} if(done)T.q.push(done);
@@ -4645,32 +4659,28 @@ class Game extends Phaser.Scene {
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!STAGE_SHEET_KEYS.has(k)&&want(sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
     if(tier===1){ for(const k in ASSET_FX){ const fx=ASSET_FX[k]; add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
       for(const k in ASSET_AUDIO){ if(bootKeepAudio(k)||k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[sm]\d/.test(k)||k.startsWith('bgm_menu_'))continue; if(this.cache.audio.exists(k))continue; this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; } }
-    const fin=()=>{ for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(this.textures.exists(k)&&!this.anims.exists(k))this.anims.create({key:k,frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}),frameRate:fx.rate,repeat:fx.loop?-1:0}); }
-      for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(sh.anim&&this.textures.exists(k)&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo}); }
-      if(this.textures.exists('fx_bossportal')&&!this.anims.exists('portal_idle'))this.anims.create({key:'portal_idle',frames:this.anims.generateFrameNumbers('fx_bossportal',{start:0,end:(ASSET_FX.fx_bossportal.frames||8)-1}),frameRate:12,repeat:-1});
-      for(const k of Object.keys(ASSET_SHEETS).filter(k=>k.startsWith('c3_mini')||k.startsWith('c3_boss')))if(this.textures.exists(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
-      this.registerStageAnimations(Object.keys(ASSET_SHEETS));
+    const fin=()=>{ this.buildDeferredAnims();
       T.done=true; if(tier===1)this._deferDone=true; const cbs=T.q; T.q=[]; setTimeout(()=>{ cbs.forEach(cb=>cb()); if(tier===1&&!D[2].started)this.ensureDeferred(null,2); },0); }; // เรียกหลัง loader จบรอบ
     if(!n){fin();return;}
     const prog=v=>{ const L=window.GameLoader; if(L&&T.q.length)L.set(v,tier===1?'Loading battle assets…':'Loading menu art…'); };
     this.load.on('progress',prog); this.load.once('complete',()=>this.load.off('progress',prog));
     this.load.once('complete',fin); if(!this.load.isLoading())this.load.start(); }
+  critKey(){ return (this.character||Save.data.character||'momo')+((this._recipeRequested||this._pinnacleRequested||this.recipeMode)?'+eg':''); }
+  critReady(idx){ return !!(this._deferDone||(this._critOk&&this._critOk[this.critKey()+(idx>=10?'+c3':'')])); }
   ensureStageArt(idx,done){
-    if(!this._deferDone){ this.ensureDeferred(()=>this.ensureStageArt(idx,done),1); return; }
+    if(!this._deferDone){ const ch=this.character||Save.data.character||'momo',eg=!!(this._recipeRequested||this._pinnacleRequested||this.recipeMode),ck=this.critKey()+(idx>=10?'+c3':'');
+      if(!(this._critOk&&this._critOk[ck])){ this._critOk=this._critOk||{};
+        const c3=idx>=10;this.ensureGroup((k,u)=>!bootKeep(k)&&!MENU_ONLY_RE.test(u||'')&&stageCritical(k,u,ch,eg)&&(c3||!/art\/ch3_|^c3_/.test((u||'')+' '+k))&&(!Save.data.tutorialDone||!/training_floor/.test(u||'')),()=>{ this._critOk[ck]=true; this.ensureStageArt(idx,done); this.ensureDeferred(null,1); },{quiet:!this._enteringStageArt,label:'Loading battle assets…'});
+        return; } }
     if(!this._stageArtReady)this._stageArtReady=new Set();
     if(this._stageArtReady.has(idx)){done&&done();return;}
     if(!this._stageArtWait)this._stageArtWait=new Map();
     if(this._stageArtWait.has(idx)){if(done)this._stageArtWait.get(idx).push(done);return;}
-    const keys=this.stageArtKeys(idx),missing=keys.filter(k=>!this.textures.exists(k));
-    if(!missing.length){this.registerStageAnimations(keys);this._stageArtReady.add(idx);done&&done();return;}
+    const keys=this.stageArtKeys(idx),ks=new Set(keys);
+    if(!keys.some(k=>!this.textures.exists(k)||this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement)){this.registerStageAnimations(keys);this._stageArtReady.add(idx);done&&done();return;}
     this._stageArtWait.set(idx,done?[done]:[]);
-    if(!this._stageArtQueued)this._stageArtQueued=new Set();
-    for(const k of missing){if(this._stageArtQueued.has(k))continue;this._stageArtQueued.add(k);
-      if(ASSET_SHEETS[k]){const sh=ASSET_SHEETS[k];this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame});}
-      else this.load.image(k,verUrl(ASSET_IMAGES[k]));
-    }
-    this.load.once('complete',()=>{this.registerStageAnimations(keys);this._stageArtReady.add(idx);const wait=this._stageArtWait.get(idx)||[];this._stageArtWait.delete(idx);for(const cb of wait)cb();});
-    if(!this.load.isLoading())this.load.start();
+    // v6.45: รอเฉพาะไฟล์ของด่านนี้ (เดิมรอ loader 'complete' = รอของเบื้องหลังทั้งหมด)
+    this.ensureGroup(k=>ks.has(k),()=>{this.registerStageAnimations(keys);this._stageArtReady.add(idx);const wait=this._stageArtWait.get(idx)||[];this._stageArtWait.delete(idx);for(const cb of wait)cb();},{all:true,quiet:!this._enteringStageArt,label:'Loading stage…'});
   }
   ensureStageCards(chapter){
     if(!this._stageCardsQueued)this._stageCardsQueued=new Set();
@@ -7761,10 +7771,12 @@ class Game extends Phaser.Scene {
   ensureStageAudio(idx,done){
     const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage)].filter(Boolean);   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
-    const loader=window.GameLoader;let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
-    this.load.on('progress',value=>{if(loader&&this.state==='loading')loader.set(0.08+value*0.24,'Loading stage music...');});
-    this.load.on('loaderror',file=>{if(file&&pending.includes(file.key)){delete ASSET_AUDIO[file.key];if(loader)loader.set(0.30,'Some music failed to load — using fallback');}});
-    this.load.once('complete',finish);pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
+    // v6.45: รอเฉพาะไฟล์เพลงของด่าน (เดิมรอ loader 'complete' = รอของเบื้องหลังทั้งหมด) · ช้าเกิน 8 วิ = เข้าด่านก่อน เพลงตามมาทีหลัง
+    const loader=window.GameLoader,t0=Date.now();let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
+    const onErr=file=>{if(file&&pending.includes(file.key)){delete ASSET_AUDIO[file.key];if(loader)loader.set(0.30,'Some music failed to load — using fallback');}};
+    this.load.on('loaderror',onErr);pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.prioritizeLoad(pending);if(!this.load.isLoading())this.load.start();
+    const chk=()=>{const left=pending.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k)).length;if(loader&&this.state==='loading')loader.set(0.08+0.24*(1-left/pending.length),'Loading stage music...');
+      if(!left||Date.now()-t0>8000){this.load.off('loaderror',onErr);finish();return;}setTimeout(chk,80);};setTimeout(chk,60);
   }
   warmBossAudio(idx){
     const stage=(idx||0)+1,keys=[bgmKeyFor('mini',stage),bgmKeyFor('boss',stage)].filter(Boolean);
@@ -7813,7 +7825,7 @@ class Game extends Phaser.Scene {
     this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
-    if(!this._stageArtReady||!this._stageArtReady.has(idx)){
+    if(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx)){
       if(this._enteringStageArt)return;this._enteringStageArt=true;
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
       this.ensureStageArt(idx,()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);});return;
@@ -10957,7 +10969,8 @@ class Game extends Phaser.Scene {
   }
   // เล่น VFX flipbook (sprite animation) timesเดียวแล้วทำลาย · additive blend (พื้นดำหาย + เรืองแสง)
   spawnFxAnim(key,x,y,o={}){
-    if(!this.textures.exists(key)||!this.anims.exists(key))return null;
+    if(!this.textures.exists(key))return null;
+    if(!this.anims.exists(key)){ const fd=ASSET_FX[key]; if(!fd)return null; this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:fd.frames-1}),frameRate:fd.rate,repeat:fd.loop?-1:0}); }   // v6.45 FX มาหลังเริ่มด่าน: สร้าง anim ตอนใช้ครั้งแรก
     if(!o.force&&!this.fxOk())return null;
     const fx=ASSET_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
     s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(o.normal?Phaser.BlendModes.NORMAL:Phaser.BlendModes.ADD);   // ชีต VFX ใช้พื้นดำ: ADD เป็นค่าเริ่มต้นเพื่อไม่ให้เกิดกล่องดำบน WebGL/Android
