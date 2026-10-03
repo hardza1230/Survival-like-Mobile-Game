@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.35.0';
+const GAME_VERSION = '6.36.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.36.0', date:'2026-10-03', title:'🌍 Every Delve flavor plays differently', items:['❄️ Frosty: ice patches freeze monsters that cross them but slow you','🍯 Sweet: sugar comets fall — stand in one for a Sugar Rush','🍋 Sour: acid rain to dodge; soaked monsters take extra damage','🍄 Fermented: bloated monsters burst on death and chain','Simpler endgame: Flavor Influence removed; the cave panel now shows your next depth milestone']},
   { v:'6.35.0', date:'2026-10-03', title:'🗺 Cleaner Delve map', items:['Cave nodes show only their art — no more small overlay icons','Tapping a cave opens a redesigned info panel: header, Flavor / Reward / Mission / Influence grid, mod chips and multipliers']},
   { v:'6.34.1', date:'2026-10-03', title:'🛠 Fix: Delve map crash', items:['Opening Endgame (Delve map) no longer freezes or closes the app on phones']},
   { v:'6.34.0', date:'2026-10-03', title:'🎨 New art: Delve, biomes & Pinnacle', items:['Delve map now shows painted flavor floors, node plates, fog and boss-floor cards','Every cave flavor has its own painted floor; Spicy vents and embers use real art','Chapter 3 monsters now walk with 4-frame animations','The Pinnacle boss, The Hunger Beneath, has its own 8-pose art']},
@@ -4385,7 +4386,8 @@ const PACT_MILESTONES=[{heat:2,emoji:'🍬',name:'500 Sugar'},{heat:4,emoji:'�
 function pactBestChar(ch){ const m=Save.data.pactBestChar||{}; return m[ch]||0; }
 function amapFlavorOf(id){ const n=amapNode(id); return n?n.flavor:AMAP_FLAVORS[2]; }
 function amapClears(id){ return id==='0,0'?0:(amapData()[id]|0); }
-function amapInfluence(id){ const out={}; amapAdj(id).forEach(j=>{ const c=amapClears(j); if(!c)return; const f=amapFlavorOf(j).id; out[f]=Math.min(AMAP_INF_CAP,(out[f]||0)+c); }); return out; }
+function amapInfluence(id){ return {}; // v6.36 ตัดระบบ Influence (ผู้เล่นมองไม่เห็นผล)
+   const out={}; amapAdj(id).forEach(j=>{ const c=amapClears(j); if(!c)return; const f=amapFlavorOf(j).id; out[f]=Math.min(AMAP_INF_CAP,(out[f]||0)+c); }); return out; }
 function amapInfLayers(inf){ return Object.values(inf||{}).reduce((a,b)=>a+b,0); }
 function amapInfText(inf){ return AMAP_FLAVORS.filter(f=>inf[f.id]).map(f=>f.emoji+inf[f.id]).join(' '); }
 function atlasThemePoints(t){ t=t|0; return t>0?1+Math.floor(t/4):0; }
@@ -6058,7 +6060,7 @@ class Game extends Phaser.Scene {
       const md=sn.mission?WAVE_OBJECTIVES[sn.mission]:null,colW=(cw-28)/2;
       const cell=(i,lab,val,c)=>{ const xx=cx+14+(i%2)*colW,yy=y0+66+Math.floor(i/2)*34; TL(xx,yy,lab,9,'#8d8499','bold'); const v=TL(xx,yy+15,val,12,c||'#ffffff','bold'); if(v.width>colW-8)v.setScale((colW-8)/v.width); };
       cell(0,'FLAVOR',sn.flavor.emoji+' '+sn.flavor.name); cell(1,'REWARD',rw.emoji+' '+rw.name,'#ffe08a');
-      cell(2,'MISSION',md?md.emoji+' '+md.name:'—','#9dff9d'); cell(3,'INFLUENCE',IL?amapInfText(inf):'None','#cfc2df');
+      cell(2,'MISSION',md?md.emoji+' '+md.name:'—','#9dff9d'); { const pb=pactBestChar(egCharKey()),nm=PACT_MILESTONES.find(m=>m.heat>pb); cell(3,'NEXT MILESTONE',nm?'Depth '+nm.heat*5+' '+nm.emoji+' '+nm.name:'All claimed ✓','#ffb070'); }
       const my=y0+142; TL(cx+14,my,'MODS',9,'#8d8499','bold');
       if(!sn.mods.length)TL(cx+56,my,'No mods — easy cave',11,'#8d8499');
       else { const n=sn.mods.length,gap=5,tw=Math.min(130,(cw-70-gap*(n-1))/n); let x=cx+56;
@@ -7974,7 +7976,7 @@ class Game extends Phaser.Scene {
     x.lineCap='round'; for(let k=0;k<14;k++){ let px=R()*S,py=R()*S; x.strokeStyle='rgba(255,110,40,0.55)'; x.lineWidth=2+R()*2.5; x.shadowColor='#ff5a1e'; x.shadowBlur=8; x.beginPath(); x.moveTo(px,py); for(let j=0;j<5;j++){ px+=(R()-0.5)*90; py+=(R()-0.5)*90; x.lineTo(px,py); } x.stroke(); }
     x.shadowBlur=0; for(let i=0;i<40;i++){ x.fillStyle='rgba(255,190,90,0.35)'; x.beginPath(); x.arc(R()*S,R()*S,1+R()*2,0,TAU); x.fill(); }
     c.refresh(); }
-  setupBiome(nd){ this.clearBiome(); const fl=nd&&nd.flavor; if(!fl||nd.type==='home')return; this._biome=fl.id; const fk='biome_'+fl.id+'_floor'; if(fl.id!=='spicy'){ if(this.bgTile&&this.textures.exists(fk)){ this.bgTile.setTexture(fk); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.8); this.bgTile.clearTint(); this.bgTile.setAlpha(1); } return; }
+  setupBiome(nd){ this.clearBiome(); const fl=nd&&nd.flavor; if(!fl||nd.type==='home')return; this._biome=fl.id; const fk='biome_'+fl.id+'_floor'; if(fl.id!=='spicy'){ if(this.bgTile&&this.textures.exists(fk)){ this.bgTile.setTexture(fk); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.8); this.bgTile.clearTint(); this.bgTile.setAlpha(1); } this.setupBiome2(fl.id); return; }
     this.makeSpicyFloor(); if(this.bgTile){ this.bgTile.setTexture('biome_spicy_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(this.textures.get('biome_spicy_floor').getSourceImage().width>600?0.8:1); this.bgTile.clearTint(); this.bgTile.setAlpha(1); }
     this._vents=[]; for(let i=0;i<7;i++)this._vents.push(this.makeVent(i));
     this.time.delayedCall(1800,()=>this.showBanner('🌶️ Spicy Depths','Lava vents erupt in rhythm — lure monsters onto them! · Ember monsters leave fire trails',3000)); }
@@ -7982,7 +7984,7 @@ class Game extends Phaser.Scene {
     v.g=this.camWorld(this.add.image(v.x,v.y,'vfx_glow').setDepth(-99400).setTint(0xff4a1a).setScale(v.r*1.6/256).setAlpha(0.35));
     v.core=this.camWorld((this.textures.exists('biome_spicy_vent')?this.add.image(v.x,v.y,'biome_spicy_vent').setDisplaySize(110,110):this.add.text(v.x,v.y,'🌋',{fontSize:'26px'}).setOrigin(0.5)).setDepth(-99300)); return v; }
   placeVent(v){ const p=this.player,mv=this.moveDir||{x:0,y:-1},a=Math.atan2(mv.y,mv.x)+(Math.random()-0.5)*2.2,d=360+Math.random()*260; v.x=p.x+Math.cos(a)*d; v.y=p.y+Math.sin(a)*d; v.g.setPosition(v.x,v.y); v.core.setPosition(v.x,v.y); }
-  tickBiome(dt){ if(this._biome!=='spicy'||this.state!=='play')return; const p=this.player,dmgB=Math.max(6,Math.round(8*this.diffMul().dmg));
+  tickBiome(dt){ if(this.state!=='play')return; if(this._biome&&this._biome!=='spicy'){ this.tickBiome2(dt); return; } if(this._biome!=='spicy')return; const p=this.player,dmgB=Math.max(6,Math.round(8*this.diffMul().dmg));
     for(const v of this._vents||[]){ if(this.dist(p.x,p.y,v.x,v.y)>1000){ this.placeVent(v); v.t=-1.5; } v.t+=dt;
       const warn=v.per-1.1; if(v.t>0&&v.t<warn){ v.g.setAlpha(0.3+0.08*Math.sin(v.t*3)); v.g.setScale(v.r*1.6/256); }
       else if(v.t>=warn&&v.t<v.per){ const k=(v.t-warn)/1.1; v.g.setAlpha(0.45+0.5*k*(0.6+0.4*Math.sin(v.t*30))); v.g.setScale(v.r*(1.6+0.6*k)/256); }
@@ -7999,13 +8001,42 @@ class Game extends Phaser.Scene {
     if(this.dist(p.x,p.y,v.x,v.y)<520)Sfx.boom(); }
   dropEmber(x,y,dmg){ const P=this._embers||(this._embers=[]); if(P.length>=26){ const o=P.shift(); o.img.destroy(); }
     P.push({x,y,r:26,dmg,life:2.4,img:this.camWorld((this.textures.exists('biome_spicy_ember')?this.add.image(x,y,'biome_spicy_ember').setDisplaySize(56,56):this.add.image(x,y,'vfx_glow').setTint(0xff6a20).setScale(60/256)).setDepth(-99350).setAlpha(0.75))}); }
-  clearBiome(){ (this._vents||[]).forEach(v=>{v.g.destroy();v.core.destroy();}); this._vents=null; (this._embers||[]).forEach(f=>f.img.destroy()); this._embers=null; this._biome=null; }
+  clearBiome(){ (this._vents||[]).forEach(v=>{v.g.destroy();v.core.destroy();}); this._vents=null; (this._embers||[]).forEach(f=>f.img.destroy()); this._embers=null; (this._bzones||[]).forEach(z=>{z.img.destroy();if(z.g)z.g.destroy();}); this._bzones=null; this._biome=null; }
+  // v6.36 กลไก biome อีก 4 รส: frosty แผ่นน้ำแข็งแช่มอน · sweet ดาวตกน้ำตาล = Sugar Rush · sour ฝนกรด · fermented มอนบวมระเบิดลูกโซ่
+  setupBiome2(id){ this._bzones=[]; this._bzT=0;
+    const B={frosty:['❄️ Frosty Depths','Ice patches freeze monsters that cross them — but they slow you too'],sweet:['🍯 Sweet Depths','Sugar comets fall nearby — stand in one when it lands for a Sugar Rush'],sour:['🍋 Sour Depths','Acid rain! Dodge the drops — monsters caught take extra damage'],fermented:['🍄 Fermented Depths','Bloated monsters burst when they die — chain them, but keep your distance']}[id];
+    if(id==='frosty')for(let i=0;i<6;i++){ const z=this.bzMake('biome_frosty_slick',0x9fe6ff,90,0.5); this.bzPlace(z,true); this._bzones.push(z); }
+    if(B)this.time.delayedCall(1800,()=>this.showBanner(B[0],B[1],3000)); }
+  bzMake(key,tint,r,alpha){ const z={x:0,y:0,r,t:0}; z.img=this.camWorld((this.textures.exists(key)?this.add.image(0,0,key).setDisplaySize(r*2.2,r*2.2):this.add.image(0,0,'vfx_glow').setTint(tint).setScale(r*2/256)).setDepth(-99350).setAlpha(alpha)); return z; }
+  bzPlace(z,any){ const p=this.player,mv=this.moveDir||{x:0,y:-1},a=any?Math.random()*TAU:Math.atan2(mv.y,mv.x)+(Math.random()-0.5)*2.2,d=any?160+Math.random()*420:360+Math.random()*260; z.x=p.x+Math.cos(a)*d; z.y=p.y+Math.sin(a)*d; z.img.setPosition(z.x,z.y); }
+  bzWarn(x,y,r,col,ms,fn){ const g=this.camWorld(this.add.image(x,y,'vfx_ring').setDepth(-99300).setTint(col).setScale(r*2/256).setAlpha(0.25)); this.tweens.add({targets:g,alpha:0.85,duration:ms,onComplete:()=>{ g.destroy(); if(this.state==='play'&&this._biome)fn(); }}); return g; }
+  tickBiome2(dt){ const p=this.player,id=this._biome,dmgB=Math.max(5,Math.round(7*this.diffMul().dmg)); this._bzT+=dt;
+    if(id==='frosty'){ if((this._bzAcc=(this._bzAcc||0)+dt)<0.2)return; this._bzAcc=0;
+      for(const z of this._bzones){ if(this.dist(p.x,p.y,z.x,z.y)>1000)this.bzPlace(z,false);
+        if(this.dist(p.x,p.y,z.x,z.y)<z.r)this.moveSlowT=Math.max(this.moveSlowT||0,0.3);
+        this.enemies.getChildren().forEach(e=>{ if(!e.active||e.isBoss||e.isMini||this.dist(e.x,e.y,z.x,z.y)>z.r)return; if((e._iceAt||0)>this.elapsed-3)return; e._iceAt=this.elapsed; e.frozen=Math.max(e.frozen||0,1.6); this.burst&&this.burst(e.x,e.y,0x9fe6ff); }); } return; }
+    if(id==='sweet'){ if(this._bzT<(this._bzNext||4))return; this._bzT=0; this._bzNext=8+Math.random()*3;
+      const a=Math.random()*TAU,d=130+Math.random()*150,x=p.x+Math.cos(a)*d,y=p.y+Math.sin(a)*d,r=95;
+      const ic=this.camWorld((this.textures.exists('biome_sweet_bomb')?this.add.image(x,y-260,'biome_sweet_bomb').setDisplaySize(70,70):this.add.text(x,y-260,'☄️',{fontSize:'34px'}).setOrigin(0.5)).setDepth(9000));
+      this.tweens.add({targets:ic,y,duration:1400,ease:'Quad.easeIn'});
+      this.bzWarn(x,y,r,0xffd166,1400,()=>{ ic.destroy(); this.burst&&this.burst(x,y,0xffd166); this.vfxHitRing&&this.vfxHitRing(x,y,0xffd166,true);
+        this.enemies.getChildren().forEach(e=>{ if(e.active&&this.dist(e.x,e.y,x,y)<r+14)this.damage(e,e.isBoss?Math.round(e.maxhp*0.015):e.isMini?Math.round(e.maxhp*0.05):Math.max(20,Math.round(e.maxhp*0.5))); });
+        if(this.dist(p.x,p.y,x,y)<r){ this.sugarRush(); this.sugarStage=(this.sugarStage||0)+3; this.floatText(p.x,p.y-60,'🍯 Sugar Rush!',0xffd166); } }); return; }
+    if(id==='sour'){ if(this._bzT<(this._bzNext||3))return; this._bzT=0; this._bzNext=2.2+Math.random()*0.8;
+      for(let i=0;i<2;i++){ const a=Math.random()*TAU,d=i?Math.random()*60:80+Math.random()*180,x=p.x+Math.cos(a)*d,y=p.y+Math.sin(a)*d,r=72;
+        this.bzWarn(x,y,r,0xd8ff4a,1200,()=>{ const pd=this.camWorld((this.textures.exists('biome_sour_pool')?this.add.image(x,y,'biome_sour_pool').setDisplaySize(r*2.2,r*2.2):this.add.image(x,y,'vfx_glow').setTint(0xd8ff4a).setScale(r*2/256)).setDepth(-99340).setAlpha(0.7)); this.tweens.add({targets:pd,alpha:0,delay:500,duration:700,onComplete:()=>pd.destroy()});
+          this.enemies.getChildren().forEach(e=>{ if(!e.active||this.dist(e.x,e.y,x,y)>r+14)return; e._sourT=Math.max(e._sourT||0,4); this.damage(e,e.isBoss?Math.round(e.maxhp*0.008):e.isMini?Math.round(e.maxhp*0.03):Math.max(12,Math.round(e.maxhp*0.3))); });
+          if(this.dist(p.x,p.y,x,y)<r)this.hurtPlayer(dmgB,0.4); }); } return; } }
+  bloatBurst(x,y){ const r=95,p=this.player; if((this._bloatN=(this._bloatN||0))>24)return; this._bloatN++;
+    this.bzWarn(x,y,r,0xb07cff,450,()=>{ this._bloatN--; this.burst&&this.burst(x,y,0xb07cff); if(this.textures.exists('biome_fermented_patch')){ const c=this.camWorld(this.add.image(x,y,'biome_fermented_patch').setDisplaySize(r*2,r*2).setDepth(-99340).setAlpha(0.7)); this.tweens.add({targets:c,alpha:0,duration:900,onComplete:()=>c.destroy()}); }
+      this.enemies.getChildren().forEach(e=>{ if(e.active&&this.dist(e.x,e.y,x,y)<r+14)this.damage(e,e.isBoss?Math.round(e.maxhp*0.01):e.isMini?Math.round(e.maxhp*0.04):Math.max(20,Math.round(e.maxhp*0.7))); });
+      if(this.dist(p.x,p.y,x,y)<r)this.hurtPlayer(Math.max(5,Math.round(7*this.diffMul().dmg)),0.4); }); }
   clearRecipeShrine(){ if(this._shrine){ this._shrine.g.destroy(); this._shrine=null; } }
   recipeHas(id){ return !!(this.recipeMode&&this._recipe&&(this._recipe.mods||[]).includes(id)); }
   recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } this._hunger+=(e.isElite?8:1)*(this.recipeHas('horde')?1.15:1)*(1+atlasLv('appetite')*0.06); }
   claimPactMilestones(){ const ch=egCharKey(),heat=this._amapNode?Math.floor(this._amapNode.d/5):0,pb=pactBestChar(ch); if(heat<=pb)return; Save.data.pactBestChar=Save.data.pactBestChar||{}; Save.data.pactBestChar[ch]=heat;
     const got=[]; PACT_MILESTONES.forEach(m=>{ if(m.heat>pb&&m.heat<=heat){ got.push(m.emoji+' '+m.name);
-      if(m.heat===2)this.sugarStage+=500; else if(m.heat===4)this.grantCurrencyReward(5,'epic','🔥 Pact unlock'); else if(m.heat===6)Save.data.riftKeys=(Save.data.riftKeys||0)+1; else if(m.heat===8)this.grantGear('legend');
+      if(m.heat===2)this.sugarStage+=500; else if(m.heat===4)this.grantCurrencyReward(5,'epic','⛏ Depth milestone'); else if(m.heat===6)Save.data.riftKeys=(Save.data.riftKeys||0)+1; else if(m.heat===8)this.grantGear('legend');
       else { const u=GEAR_ALL.filter(g=>g.unique); const it=Phaser.Utils.Array.GetRandom(u); if(it)Save.receiveGearInstance(it.id,{isNew:true,itemLevel:85,chapter:5}); } } });
     Save.save(); if(got.length)this.time.delayedCall(5000,()=>this.showBanner('⛏ Depth milestone · '+(heat*5),got.join(' · '),2600)); }
   finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); this.claimPactMilestones();
@@ -10107,7 +10138,7 @@ class Game extends Phaser.Scene {
     if(this.anims.exists(key+'_walk')){ e.setFlipX(false); e.play(key+'_walk',true); }
     else if(e.anims){ e.anims.stop(); e.setFrame(atlasFrame); e.setFlipX(false); }
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
-    e._ember=false; if(this._biome==='spicy'&&!e.isBoss&&!e.isMini&&Math.random()<0.15){ e._ember=true; e._emberT=Math.random(); e.tintColor=0xff7a3d; e.setTint(0xff7a3d); }
+    e._bloat=false; if(this._biome==='fermented'&&!e.isBoss&&!e.isMini&&Math.random()<0.18){ e._bloat=true; e.tintColor=0xb07cff; e.setTint(0xb07cff); } e._ember=false; if(this._biome==='spicy'&&!e.isBoss&&!e.isMini&&Math.random()<0.15){ e._ember=true; e._emberT=Math.random(); e.tintColor=0xff7a3d; e.setTint(0xff7a3d); }
     this.camWorld(e);
     this.vfxSpawnPoof(x,y);return e;
   }
@@ -11133,7 +11164,7 @@ class Game extends Phaser.Scene {
   killEnemy(e){ if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
-    } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);if(this.basicAttack&&this.basicAttack.mods)this.modOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}this.replayOnKill(e);if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);else if(this._amapInf&&this._amapInf.spicy&&Math.random()<0.06*this._amapInf.spicy)this.spawnHazard(e.x,e.y,60,Math.max(3,Math.round((e.dmg||8)*0.6)),0xff6b4a);}
+    } if(e._bloat){ e._bloat=false; this.bloatBurst(e.x,e.y); } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);if(this.basicAttack&&this.basicAttack.mods)this.modOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}this.replayOnKill(e);if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);else if(this._amapInf&&this._amapInf.spicy&&Math.random()<0.06*this._amapInf.spicy)this.spawnHazard(e.x,e.y,60,Math.max(3,Math.round((e.dmg||8)*0.6)),0xff6b4a);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
