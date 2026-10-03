@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.6';
+const GAME_VERSION = '6.50.7';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.7', date:'2026-10-03', title:'Core upgrade preview', items:['Flavor Weave buttons show what the next upgrade gives'] },
   { v:'6.50.6', date:'2026-10-03', title:'Tutorial spotlight', items:['After the tutorial, a spotlight guides you to upgrade your first core'] },
   { v:'6.50.5', date:'2026-10-03', title:'Loading tips', items:['Loading screen shows rotating gameplay tips'] },
   { v:'6.50.4', date:'2026-10-03', title:'Stage 1 opening', items:['Stage 1 wave 1 is now a simple kill meter: defeat enemies to fill it'] },
@@ -6838,7 +6839,8 @@ class Game extends Phaser.Scene {
       const pw=Math.min(100,cardW-82),ph=29,ppx=x+cardW-pw-10,ppy=y+cardH-ph-10;
       const pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(ppx,ppy,pw,ph,10);
       const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🍬'+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
-      this.menu.add([g,em,st,tag,nm,gain,pg,pt]);
+      const nx=maxed?null:this.add.text(ppx+pw/2,ppy-3,'Upgrade: '+u.show(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5,1);
+      this.menu.add([g,em,st,tag,nm,gain,pg,pt]); if(nx)this.menu.add(nx);
       // v5.29 ⬆ Overcap ด้วยหินแก่นจากห้องลับใต้วิหาร
       { const oc=Save.overcap(k),ocMax=oc>=OVERCAP_MAX,cst=overcapCost(oc),stn=Save.coreStones(k),ok=!ocMax&&stn>=cst.stones&&(Save.data.sugar||0)>=cst.sugar,se={hp:'🔴',dmg:'🟠',def:'🔵'}[k];
         const ow=Math.max(60,ppx-x-75-8),oh=ph,ox=x+75,oy=ppy;
