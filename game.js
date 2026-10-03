@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.47.1';
+const GAME_VERSION = '6.48.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.48.0', date:'2026-10-03', title:'One loading screen', items:['All game data now loads on the first loading screen with a single progress bar','The opening scene and menu follow once everything is ready'] },
   { v:'6.47.1', date:'2026-10-03', title:'Chapter art fix', items:['Chapter covers and the Tutorial icon show right away on Choose Chapter','Menu screens refresh once all game data finishes loading'] },
   { v:'6.47.0', date:'2026-10-03', title:'Download once, play smoothly', items:['The whole game downloads once on the first screen with a progress bar','After that, menus and stages open without loading pauses','Later launches read from your device'] },
   { v:'6.46.0', date:'2026-10-03', title:'Assets saved on your device', items:['Art and sounds you have already loaded are kept on your device','Opening the game again downloads far less'] },
@@ -2227,8 +2228,7 @@ class Boot extends Phaser.Scene {
 class Opening extends Phaser.Scene {
   constructor(){ super('Opening'); }
   create(){
-    this.scene.start('Game');
-    if(window.GameLoader)window.GameLoader.hide();
+    this.scene.start('Game');   // v6.48: หน้าโหลดแรกค้างไว้ → Game.preloadAll โหลดทั้งเกมต่อในหลอดเดียว แล้วค่อยเล่นฉากเปิด
   }
 }
 
@@ -4615,7 +4615,7 @@ class Game extends Phaser.Scene {
     this.scale.on('resize',this.onResize,this);
     // รอซูมฉากเปิดจบก่อนถอดรหัสภาพด่านเบื้องหลัง (แย่งเฟรมบนมือถือ)
     const warm=()=>this.time.delayedCall(60,()=>this.preloadAll());   // v6.47 เจ้าของเลือก: โหลดทั้งเกมตั้งแต่หน้าแรก (ครั้งต่อไปมาจาก cache ในเครื่อง)
-    if(window.GameLoader&&window.GameLoader._introFinished)warm();else window.addEventListener('mochi-intro-finished',warm,{once:true});
+    warm();   // v6.48: โหลดทุกอย่างบนหน้าโหลดแรก ก่อนฉากเปิด/เมนู
   }
 
   // v6.47: โหลดทุก asset ครั้งเดียวหลังหน้าแรก (Service Worker เก็บไว้ในเครื่อง → เปิดครั้งต่อไปเร็ว) แล้วไม่มีการรอโหลดระหว่างเล่นอีก
