@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.49.6 (เจ้าของ: ไล่ตรวจระบบโหลดทั้งหมด):** บั๊กหลัก: ใน preloadAll `fin` โค้ดปิดหน้าโหลด/รีเซ็ต `_preloadQuiet`/rebuild เมนู ถูก `//` comment ทับตั้งแต่ v6.49.0 → เปิดครั้งแรกค้าง 100% (ยืนยันด้วย headless) · แยก `fin(partial)` (ปล่อยผู้เล่น) กับ `finalize()` (loader complete จริง → `_allComplete`, mochi_full_cached, `_stageArtReady` เฉพาะด่านที่ภาพครบ) · watchdog นับ 'fileprogress' ด้วย 10 วิ → partial ไม่ตั้งว่าโหลดครบ (ของขาดโหลดผ่าน ensureStageArt/ensureGroup) แล้ว finalize ตอน complete · startRun ระหว่าง quiet preload ไม่รอทั้งเกม ไป ensureStageArt เลย · `fillAssetCache()` 4 วิหลัง finalize เติมไฟล์ที่ไม่อยู่ใน cache SW (เปิดครั้งต่อไป 0 MB) · Phaser `loader.timeout` 120 วิ · sw.js ลบเวอร์ชันเก่าด้วย `keys(path,{ignoreSearch})` แทนวนทั้ง cache · gate เมนูใช้ `_allComplete`
 - **v6.49.5 (บั๊กเจ้าของ: เข้า Chapter 1 แล้วโหลดอีกรอบค้าง 30%):** gate 'Loading…' ใน buildMenuScreen ข้ามเมื่อ `mochi_full_cached`/`_allLoaded` · ที่เหลือมี timeout 8 วิ + try/catch กันค้าง
 - **v6.49.4 (เจ้าของ: มองดาเมจไม่เห็น):** popDmg ตัวใหญ่ 20/28px ÷viewZoom + ขอบเข้ม+เงา · เด้งแล้วค้าง ~0.35 วิก่อนลอยจาง · throttle 90ms (มอน>60 200ms)
 - **v6.49.3 (บั๊กเจ้าของ: กดปุ่มเมนูแล้วตารางเขียววาบ):** buildMenuScreen เลิก fade alpha 0→1 (เห็นกริดโลกด้านหลัง)

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.49.5';
+const GAME_VERSION = '6.49.6';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.49.6', date:'2026-10-03', title:'Loading fixes', items:['The first-launch loading screen now closes when loading finishes instead of staying at 100%','Starting a stage while data loads in the background only waits for that stage','Files missed on the first launch are saved to the device so later launches download nothing','A stalled download no longer blocks loading forever'] },
   { v:'6.49.5', date:'2026-10-03', title:'No second loading on menus', items:['Menus open right away after the game data is loaded','A menu can no longer get stuck on a loading screen'] },
   { v:'6.49.4', date:'2026-10-03', title:'Clearer damage numbers', items:['Damage numbers are bigger, outlined and stay on screen a little longer'] },
   { v:'6.49.3', date:'2026-10-03', title:'No more green flash in menus', items:['Opening a menu no longer flashes the green grid behind it'] },
@@ -4646,18 +4647,40 @@ class Game extends Phaser.Scene {
     for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
     // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
     for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch){ const u=ASSET_AUDIO[k]; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); } continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
-    const fin=()=>{ if(finDone)return; finDone=true; this.load.off('load',mk);this.load.off('loaderror',mk); this.buildDeferredAnims();
-      this._allLoaded=true;this._allLoading=false;this._deferDone=true;
+    // finalize = ทุกไฟล์โหลดเสร็จจริง (loader 'complete') → ถือว่าพร้อมทั้งเกม + จำไว้ว่าเครื่องมีไฟล์ครบ
+    const finalize=()=>{ if(this._allComplete)return; this._allComplete=true; this.load.off('load',mk);this.load.off('loaderror',mk);this.load.off('fileprogress',tick); this.buildDeferredAnims();
+      this._deferDone=true;
       const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}); [1,2].forEach(t=>{D[t].done=true;D[t].started=true;const q=D[t].q;D[t].q=[];q.forEach(cb=>setTimeout(cb,0));});
-      this._stageArtReady=new Set(STAGES.map((_,i)=>i)); this._grpOk=new Proxy({}, {get:()=>true});
-      try{localStorage.setItem('mochi_full_cached','1');}catch(e){} if(window.fetch&&navigator.serviceWorker&&navigator.serviceWorker.controller){ const us=[]; for(const k in ASSET_IMAGES)if(bootKeep(k))us.push(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)if(bootKeep(k))us.push(ASSET_SHEETS[k].url); for(const k in ASSET_AUDIO)if(bootKeepAudio(k))us.push(ASSET_AUDIO[k]); us.forEach(u=>fetch(verUrl(u)).catch(()=>{})); } // ไฟล์บูตครั้งแรกโหลดก่อน SW ทำงาน → ดึงซ้ำให้เก็บลงเครื่อง const wasQuiet=this._preloadQuiet; this._preloadQuiet=false; if(L&&!wasQuiet){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);} if(this.state==='menu')this.buildMenuScreen();
+      const real=k=>this.textures.exists(k)&&!(this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement);
+      this._stageArtReady=new Set(STAGES.map((_,i)=>i).filter(i=>this.stageArtKeys(i).every(real))); this._grpOk=new Proxy({}, {get:()=>true});
+      try{localStorage.setItem('mochi_full_cached','1');}catch(e){}
+      this.time.delayedCall(4000,()=>this.fillAssetCache()); };
+    // fin = ปล่อยผู้เล่นไปต่อ (ปิดหน้าโหลด/เข้าฉากเปิด) · partial = watchdog ตัดเพราะ loader เงียบนาน → ของที่ขาดโหลดตอนใช้ผ่าน ensureStageArt/ensureGroup
+    const fin=partial=>{ if(finDone)return; finDone=true; clearInterval(wd); this.buildDeferredAnims();
+      this._allLoaded=true;this._allLoading=false;
+      if(!partial)finalize();
+      const wasQuiet=this._preloadQuiet; this._preloadQuiet=false;
+      if(L&&!wasQuiet){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);}
+      if(this.state==='menu')this.buildMenuScreen();
       const w=this._allWait;this._allWait=[];w.forEach(cb=>setTimeout(cb,0)); };
-    let lastT=Date.now(),finDone=false; const mk=f=>{ lastT=Date.now(); LoadMeter.mark(f&&f.url,fileFromDevice(f)); if(!this._preloadQuiet)LoadMeter.show(); };
-    // v6.49.1: มือถือบางเครื่อง loader ไม่ยิง 'complete' (ถอดรหัสเสียงค้าง) → ไม่มีไฟล์ใหม่ 6 วิ = ไปต่อ ของที่ขาดโหลดตอนใช้จริง
-    const wd=setInterval(()=>{ if(finDone){clearInterval(wd);return;} if(Date.now()-lastT>6000){ clearInterval(wd); fin(); } },1000);
+    let lastT=Date.now(),finDone=false; const tick=()=>{ lastT=Date.now(); }; const mk=f=>{ lastT=Date.now(); LoadMeter.mark(f&&f.url,fileFromDevice(f)); if(!this._preloadQuiet)LoadMeter.show(); };
+    // v6.49.1: มือถือบางเครื่อง loader ไม่ยิง 'complete' (ถอดรหัสเสียงค้าง) → ไม่มีความคืบหน้า 10 วิ = ไปต่อแบบ partial
+    const wd=setInterval(()=>{ if(finDone){clearInterval(wd);return;} if(Date.now()-lastT>10000)fin(true); },1000);
     if(!n){fin();return;}
     if(L&&!quiet){ if(L._introDone)L.show('Loading game data…',0); LoadMeter.show(); }
-    this.load.on('load',mk);this.load.on('loaderror',mk); this.load.once('complete',()=>setTimeout(fin,0)); if(!this.load.isLoading())this.load.start();
+    this.load.on('load',mk);this.load.on('loaderror',mk);this.load.on('fileprogress',tick);
+    this.load.once('complete',()=>setTimeout(()=>{ if(!finDone)fin(); else{ finalize(); if(this.state==='menu')this.buildMenuScreen(); } },0)); if(!this.load.isLoading())this.load.start();
+  }
+  // v6.49.6: เติมไฟล์ที่ยังไม่อยู่ใน cache ของ Service Worker (ครั้งแรกบางไฟล์โหลดก่อน SW ทำงาน → เปิดครั้งต่อไปต้องดาวน์โหลดซ้ำ)
+  fillAssetCache(){
+    if(this._cacheFilling||!window.caches||!window.fetch||!navigator.serviceWorker||!navigator.serviceWorker.controller)return; this._cacheFilling=true;
+    const us=new Set(); for(const k in ASSET_IMAGES)us.add(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)us.add(ASSET_SHEETS[k].url); for(const k in ASSET_FX)us.add(ASSET_FX[k].url); for(const k in ASSET_AUDIO)us.add(ASSET_AUDIO[k]);
+    const list=[...us].map(verUrl).filter(u=>/[?&]v=/.test(u));
+    caches.open('mochi-assets-v1').then(c=>c.keys().then(ks=>{ const have=new Set(ks.map(r=>{ const x=new URL(r.url); return x.pathname+x.search; }));
+      const miss=list.filter(u=>{ const x=new URL(u,location.href); return !have.has(x.pathname+x.search); }); let i=0;
+      const next=()=>{ if(i>=miss.length)return Promise.resolve(); const u=miss[i++]; return fetch(u).catch(()=>{}).then(next); }; // fetch ผ่าน SW → SW เก็บลง cache เอง
+      return Promise.all([next(),next(),next()]).then(()=>{ this._cacheFilled=miss.length; }); }))
+    .catch(()=>{}).then(()=>{ this._cacheFilling=false; });
   }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[])];
@@ -5624,7 +5647,7 @@ class Game extends Phaser.Scene {
   buildMenuScreen(){ const s=this.menuScreen||'hub';
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
-    if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allLoaded){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
+    if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allComplete){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
       let fired=false; const go=()=>{ if(fired)return; fired=true; this._grpOk[s]=true; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu'&&this.menuScreen===s)this.buildMenuScreen(); };
       setTimeout(go,8000); try{ this.ensureGroup(menuGroupRe(s),go); }catch(e){ go(); } return; }if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
@@ -7874,7 +7897,7 @@ class Game extends Phaser.Scene {
     this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
-    if(!this._allLoaded){ if(this._enteringStageArt)return;this._enteringStageArt=true; this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
+    if(!this._allLoaded&&!(this._allLoading&&this._preloadQuiet)){ if(this._enteringStageArt)return;this._enteringStageArt=true; this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
     if(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx)){
       if(this._enteringStageArt)return;this._enteringStageArt=true;
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
@@ -13147,6 +13170,7 @@ window.__g = new Phaser.Game({
   },
   physics: { default:'arcade', arcade:{ gravity:{y:0}, debug:false } },
   render: { antialias:true, antialiasGL:true, roundPixels:false, powerPreference:'high-performance' },
+  loader: { timeout: 120000 },   // v6.49.6: ไฟล์ที่ค้าง (เน็ตหลุด) error แทนค้างตลอด → loader ยิง 'complete' ได้
   scene: [Boot, Opening, Game],
 });
 // ปรับขนาดตอนหมุนจอ/เปลี่ยนขนาด — debounce กันค่าเพี้ยนช่วงหมุน + อ่านค่าจริงหลังหมุนเสร็จ

@@ -13,7 +13,7 @@ self.addEventListener('fetch',e=>{
     const res=await fetch(req);
     if(res&&res.ok&&res.status===200){ c.put(req,res.clone()).catch(()=>{});
       // ลบเวอร์ชันเก่าของไฟล์เดียวกัน (hash ต่างกัน)
-      c.keys().then(ks=>ks.forEach(k=>{const u=new URL(k.url);if(u.pathname===url.pathname&&u.search!==url.search)c.delete(k);})).catch(()=>{}); }
+      c.keys(url.origin+url.pathname,{ignoreSearch:true}).then(ks=>ks.forEach(k=>{if(new URL(k.url).search!==url.search)c.delete(k);})).catch(()=>{}); }
     return res;
   }));
 });
