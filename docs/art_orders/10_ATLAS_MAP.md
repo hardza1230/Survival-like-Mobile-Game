@@ -1,3 +1,5 @@
+> ❌ **ยกเลิกแล้ว** — Mochi Delve (v6.30) มาแทนแผนที่ Atlas แบบเก่า ห้ามทำตามใบนี้ → ดู `11_MOCHI_DELVE.md` และ `NEXT_BATCH_REQUEST.md`
+
 # 10 · Recipe Atlas Journey Map (art scope)
 
 The system is done (v6.19.0) and runs on code-drawn placeholders. Drop PNG/WebP files into `assets/art/atlas/` and add them to `ASSET_IMAGES` under the same key. The code switches to the real art automatically.

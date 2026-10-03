@@ -7,24 +7,29 @@
 
 ## ลำดับการอ่าน
 1. `00_STYLE_GUIDE.md` — สไตล์/สี/มุมมอง/กฎเทคนิค (**อ่านก่อนทุกชุด**)
-2. เลือกชุดงานจากตารางด้านล่าง ทำครบทั้งชุดก่อนส่ง
+2. **`NEXT_BATCH_REQUEST.md` — งานที่ต้องทำตอนนี้ (รวมเป็นแผ่นรวม ประหยัดโควต้า) ← เริ่มที่นี่**
+3. ใบสั่งรายชุด (01–12) = สเปกละเอียดของแต่ละ key
+
+> 💰 **กฎประหยัดโควต้า:** ห้ามสร้างทีละภาพถ้ารวมได้ — ไอคอน/ของในฉาก/แผ่น node/เฟรมอนิเมชัน ให้สร้างเป็น **แผ่นรวม (sheet) ครั้งเดียว** แล้วฝั่งโค้ดตัดเอง · ดูกติกาใน `NEXT_BATCH_REQUEST.md` §0
 
 ## ชุดงาน (Batch) และสถานะ
 | # | ไฟล์ | เนื้อหา | จำนวน | ลำดับความสำคัญ | สถานะ |
 |---|---|---|---|---|---|
 | 01 | `01_FLOORS_SEAMLESS.md` | พื้นด่านแบบต่อขอบ C2-1…C3-5 | 10 | 🔴 สูงสุด (แก้ภาพแตก) | 🟩 ใส่เข้าเกมแล้ว v5.54 (webp ใน assets/art/floors) |
 | 02 | `02_MAP_DECOR.md` | ของตกแต่งพื้นรายด่าน (เริ่ม C2-1) | 8/ด่าน | 🔴 | 🟩 C2-1 v5.54 · C2-2 v6.0.7 · C2-3…C3-5 v6.0.8 ใส่เข้าเกมครบแล้ว |
-| 03 | `03_CH3_ENEMIES.md` | ศัตรู Chapter 3 (5 บทบาท) | 5 | 🟠 | 🟨 ภาพนิ่ง 5 ตัวใส่เกม v5.98.0 · รอชีตเดิน 4 เฟรม |
+| 03 | `03_CH3_ENEMIES.md` | ศัตรู Chapter 3 (5 บทบาท) | 5 | 🟡 | 🟨 ภาพนิ่งใส่แล้ว v5.98 · ชีตเดิน 4 เฟรม → **รอบ R2** |
 | 04 | `04_CH3_BOSSES.md` | มินิบอส 5 + บอส 5 ของ Chapter 3 | 10 | 🟠 | 🟩 action sheet 8 เฟรมครบ 10 ตัว ใส่เกม v6.0.0 |
 | 05 | `05_TEMPLE_DIG.md` | มินิเกมขุดใต้วิหาร | 16 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (webp ใน assets/art/dig) |
 | 06 | `06_ICONS_PERKS_RELICS.md` | ไอคอน Rank Perk / Ancient Perk / Relic | 26 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (การ์ด/แถว Relic, Rank Perks, Codex) |
 | 07 | `07_KITCHEN_PARTS.md` | ไอคอนชิ้นส่วนสูตร Kitchen (WHEN/DO/TWIST) | 55 | 🟢 | 🟩 ใส่เข้าเกมแล้ว v6.0.9 |
-| 08 | `08_PINNACLE_BOSS.md` | บอส Endgame "The Hunger Beneath" | 1 ชีต | 🟢 | ⬜ |
-| 09A | `09_MENU_UI.md` §9A | การ์ดเลือกด่าน 15 + ปก Chapter 2 | 17 | 🟠 | ⬜ |
-| 09B | `09_MENU_UI.md` §9B | พื้นหลังหน้าเมนูทุกหน้า | 25 | 🟡 | ⬜ |
+| 08 | `08_PINNACLE_BOSS.md` | บอส Endgame "The Hunger Beneath" | 1 ชีต | 🟠 | ⬜ → อยู่ใน **รอบ R2** ของ `NEXT_BATCH_REQUEST.md` |
+| 09A | `09_MENU_UI.md` §9A | การ์ดเลือกด่าน 15 + ปก Chapter 3/Endgame | 17 | 🟠 | 🟩 ใส่เข้าเกมแล้ว (โหลดจาก assets/incoming/menu_stage_cards) |
+| 09B | `09_MENU_UI.md` §9B | พื้นหลังหน้าเมนูทุกหน้า | 25 | 🟡 | 🟩 ใส่เข้าเกมแล้ว (โหลดจาก assets/incoming/menu_screens) |
 | 09C/D | `09_MENU_UI.md` §9C-D | ปุ่ม Hub 6 + ไทล์เมนูย่อย 19 | 25 | 🟠 | 🟩 ใส่เข้าเกมแล้ว v5.67 (ปุ่ม Hub, ไทล์กลุ่ม, ปุ่ม Depths/Kitchen/Perks) |
-| 10 | `10_ATLAS_MAP.md` | แผนที่ Atlas (พื้น+hub+pinnacle+node 3 สถานะ) | 6 | 🟠 | ⬜ (ระบบเสร็จ v6.19 ใช้ placeholder) |
-| 11 | `11_MOCHI_DELVE.md` | แผนที่ Mochi Delve ไม่รู้จบ (พื้น 5 รส + node 6 ชนิด + Mochitopia + fog) | 15 | 🔴 | ⬜ (แทน 10 เมื่อ v6.32) |
+| 10 | `10_ATLAS_MAP.md` | แผนที่ Atlas แบบเก่า | — | — | ❌ ยกเลิก (Mochi Delve v6.30 มาแทน → ใช้ 11) |
+| 11 | `11_MOCHI_DELVE.md` | แผนที่ Mochi Delve (พื้น 5 รส + แผ่น node + Mochitopia + fog) | 15 | 🔴 | ⬜ → **รอบ R1 + R3** |
+| 12 | `12_BIOME_SPICY.md` | Biome ในถ้ำ (พื้นต่อรส + ของในฉาก 5 รส) | 13 | 🔴 | ⬜ → **รอบ R1 + R3** (Spicy เล่นได้แล้ว v6.33 ใช้ placeholder) |
+| C2-5 | `C2_5_ROOT_KNIGHT_ANIMATION.md` | Root Knight 16 เฟรม | 1 ชีต | — | 🟩 ใส่เข้าเกมแล้ว v6.0.54 |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
 
@@ -36,7 +41,7 @@ assets/incoming/<batch>/            ← AI ทำอาร์ต วางไฟ
     └─ MANIFEST.md                  ← รายการไฟล์ + ขนาด + หมายเหตุ (template ด้านล่าง)
 assets/art/<batch>/                 ← AI เขียนโค้ด ย้าย/ย่อ/ตรวจแล้วใส่ที่นี่ (ไฟล์ที่เกมโหลดจริง)
 ```
-- `<batch>` = ชื่อโฟลเดอร์ที่**สร้างรอไว้แล้ว**: `floors`, `decor_c21` … `decor_c35`, `ch3_enemies`, `ch3_bosses`, `dig`, `icons`, `kitchen`, `pinnacle`, `menu_stage_cards`, `menu_screens`, `menu_buttons`
+- `<batch>` = ชื่อโฟลเดอร์ที่**สร้างรอไว้แล้ว**: `floors`, `decor_c21` … `decor_c35`, `ch3_enemies`, `ch3_bosses`, `dig`, `icons`, `kitchen`, `pinnacle`, `menu_stage_cards`, `menu_screens`, `menu_buttons`, `delve`, `biomes`
 - แต่ละโฟลเดอร์มี `.gitkeep` ไว้ให้โฟลเดอร์ว่างอยู่ใน git — ไม่ต้องลบ
 
 ### แผนที่ batch → ใบสั่ง → โฟลเดอร์
@@ -53,6 +58,8 @@ assets/art/<batch>/                 ← AI เขียนโค้ด ย้า
 | menu_stage_cards | 09A | assets/incoming/menu_stage_cards/ | assets/art/menu_stage_cards/ |
 | menu_screens | 09B | assets/incoming/menu_screens/ | assets/art/menu_screens/ |
 | menu_buttons | 09C/9D | assets/incoming/menu_buttons/ | assets/art/menu_buttons/ |
+| delve | 11 | assets/incoming/delve/ | assets/art/delve/ |
+| biomes | 12 | assets/incoming/biomes/ | assets/art/biomes/ |
 - **ห้ามแก้ไฟล์ใน `assets/` อื่น ๆ หรือ `game.js`** — ฝั่งอาร์ตวางแค่ใน `assets/incoming/`
 - ถ้าอัปผ่าน GitHub มือถือ: อัปเข้า `assets/incoming/<batch>/` ได้เลย ชื่อไฟล์ต้องตรง key
 

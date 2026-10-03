@@ -1,3 +1,5 @@
+> ⚠️ **อัปเดต v6.33:** ให้สร้างตาม `NEXT_BATCH_REQUEST.md` (รวมเป็นแผ่นรวม) · ยกเลิก `delve_bg_*` 5 ภาพ — ใช้ `biome_<flavor>_floor` (ใบ 12) แทนทั้งในถ้ำและบนแผนที่ · ยกเลิก `delve_path` (โค้ดวาดทางมุมฉากเองแล้ว v6.32) · ที่เหลือในใบนี้ใช้เป็นสเปกอ้างอิงของแต่ละ key
+
 # 11 · Mochi Delve — infinite map (art order)
 
 Replaces 10_ATLAS_MAP once v6.32 lands. Every key below has a code-drawn placeholder,
