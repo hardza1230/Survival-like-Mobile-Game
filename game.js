@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.47.0';
+const GAME_VERSION = '6.47.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.47.1', date:'2026-10-03', title:'Chapter art fix', items:['Chapter covers and the Tutorial icon show right away on Choose Chapter','Menu screens refresh once all game data finishes loading'] },
   { v:'6.47.0', date:'2026-10-03', title:'Download once, play smoothly', items:['The whole game downloads once on the first screen with a progress bar','After that, menus and stages open without loading pauses','Later launches read from your device'] },
   { v:'6.46.0', date:'2026-10-03', title:'Assets saved on your device', items:['Art and sounds you have already loaded are kept on your device','Opening the game again downloads far less'] },
   { v:'6.45.0', date:'2026-10-03', title:'Faster stage loading', items:['Entering a stage now waits only for that stage’s art and your hero, not every asset in the game','Stage music no longer waits for background downloads','Effects and menu art keep loading quietly while you play'] },
@@ -1861,7 +1862,7 @@ const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 const DEFER_RE=/assets\/(?:art\/(?:temple|rewards|build_paths|kitchen|delve|biomes|pinnacle|dig|icons|ch3_bosses|ch3_enemies|floors)\/|ui\/currency\/|gear\/|icons\/levelup\/|incoming\/)/;
 function bootDeferred(url){return DEFER_RE.test(url||'');}
 // v6.38 บูตโหลดเฉพาะของที่เมนูหลักใช้ · ที่เหลือทั้งหมดโหลดเบื้องหลัง (ensureDeferred) ก่อนเข้าด่าน/หน้าย่อย
-function bootKeep(k){return /^hub_btn_|^menu_hub|^vfx_poof$|^replay_progress_art$/.test(k);}
+function bootKeep(k){return /^hub_btn_|^menu_hub|^vfx_poof$|^replay_progress_art$|^chapter\d_cover$|^chapter_endgame_cover$|^tile___/.test(k);}
 // v6.43 (เจ้าของ: แยกโหลดเฉพาะหน้าที่เข้า) แต่ละหน้าเมนูรอแค่โฟลเดอร์ของตัวเอง · ที่เหลือโหลดเบื้องหลังตามเดิม
 const MENU_GROUPS=[
   [/^(upgrade|perks)$/,/assets\/(?:art\/temple\/|ui\/temple\/|art\/icons\/|ui\/currency\/)/],
@@ -4633,7 +4634,7 @@ class Game extends Phaser.Scene {
       this._allLoaded=true;this._allLoading=false;this._deferDone=true;
       const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}); [1,2].forEach(t=>{D[t].done=true;D[t].started=true;const q=D[t].q;D[t].q=[];q.forEach(cb=>setTimeout(cb,0));});
       this._stageArtReady=new Set(STAGES.map((_,i)=>i)); this._grpOk=new Proxy({}, {get:()=>true});
-      if(L){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);} if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen();
+      if(L){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);} if(this.state==='menu')this.buildMenuScreen();
       const w=this._allWait;this._allWait=[];w.forEach(cb=>setTimeout(cb,0)); };
     const prog=v=>{ if(L)L.set(v,'Loading game data… '+Math.round(v*100)+'%'); };
     if(!n){fin();return;}
