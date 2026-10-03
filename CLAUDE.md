@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.48.1 (เจ้าของ: ได้ยินเพลงเปลี่ยนกลางหน้าโหลด เหมือนโหลด 2 รอบ):** ต้นเหตุ showMenu ใน Game.create เรียก playMainBgm → หยุดเพลงหน้าโหลดกลางการโหลด · playMainBgm รอ `mochi-intro-finished` ถ้าฉากเปิดยังไม่จบ (`_waitIntro`) → เพลงหน้าโหลดเพลงเดียวจนเข้าเมนู
 - **v6.48.0 (เจ้าของ: รวมโหลดไว้หน้าแรกก่อนเมนู):** Opening ไม่ซ่อนหน้าโหลด · Game.create เรียก preloadAll ทันที (เดิมรอฉากเปิดจบ) → หลอดเดียวบนหน้าโหลดแรก · fin เรียก GameLoader.hide → เริ่มฉากเปิด → เมนู
 - **v6.47.1 (บั๊กเจ้าของ: ภาพหายหน้า Choose Chapter):** bootKeep เพิ่ม chapter*_cover/chapter_endgame_cover/tile___* · preloadAll จบแล้ว rebuild ทุกหน้าเมนู (เดิมแค่ hub)
 - **v6.47.0 (เจ้าของเลือก: โหลดหมดตอนหน้าแรก):** `preloadAll(done)` เรียกหลัง intro จบ (แทน warm) · โหลดทุก ASSET_IMAGES/SHEETS/FX + SFX พร้อมหลอด GameLoader 'Loading game data… N%' · เพลง `bgm_*` แค่ `fetch` ให้ Service Worker เก็บลงเครื่อง ไม่ decode (decode นาน) · จบแล้วตั้ง `_allLoaded/_deferDone`, tier1/2 done, `_stageArtReady` ทุกด่าน, `_grpOk` = Proxy true · startRun ถ้ายังไม่ `_allLoaded` รอ preloadAll · วัด 10Mbps (headless CPU ช้า): ครั้งแรก 39 วิ, ครั้งที่ 2 22 วิ (เน็ต 2MB, ที่เหลือคือ decode ภาพ) · กด Play→เข้าด่าน 0.5 วิ · ตรวจบั๊ก auto-play 6 รัน (ด่าน 1/5/8/13 + Delve 7/10) 0 error
