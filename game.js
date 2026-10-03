@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.49.1';
+const GAME_VERSION = '6.49.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.49.2', date:'2026-10-03', title:'Menu music starts with the light', items:['The menu song now begins as the light opens in the intro'] },
   { v:'6.49.1', date:'2026-10-03', title:'Loading no longer gets stuck', items:['If the loading screen stops at 100%, the game now continues on its own after a few seconds'] },
   { v:'6.49.0', date:'2026-10-03', title:'Faster later launches', items:['After the first full load, the game opens straight to the menu and prepares the rest in the background','The loading bar shows how much came from your device and how much was downloaded'] },
   { v:'6.48.2', date:'2026-10-03', title:'Clearer loading bar', items:['One continuous loading bar instead of two','Shows MB loaded, MB left, download speed and time left'] },
@@ -989,7 +990,7 @@ const Sfx = {
   playMiniBgm(stageNum=1){const key=bgmKeyFor('mini',stageNum);this._bgmIntense=true;if(!key||!this._playTrack(key,0.33))this.bgmIntense(true);},
   playMenuBgm(key){ if(!key){ if((this._currentBgmKey||'').startsWith('bgm_menu_'))this.playMainBgm(); return; } this._bgmIntense=false; this._playTrack(key,0.28); },   // v5.40
   playMainBgm(){ // v6.48.1: ระหว่างหน้าโหลด/ฉากเปิดใช้เพลงหน้าโหลดเพลงเดียว → เริ่มเพลงเมนูหลังฉากเปิดจบ
-    const GL=typeof window!=='undefined'&&window.GameLoader; if(GL&&!GL._introFinished){ if(!this._waitIntro){ this._waitIntro=true; window.addEventListener('mochi-intro-finished',()=>{ this._waitIntro=false; this.playMainBgm(); },{once:true}); } return; }
+    const GL=typeof window!=='undefined'&&window.GameLoader; if(GL&&!GL._introFinished&&!GL._lightOn){ if(!this._waitIntro){ this._waitIntro=true; window.addEventListener('mochi-intro-light',()=>{ this._waitIntro=false; this.playMainBgm(); },{once:true}); } return; }
     if(typeof window!=='undefined'&&window.LoaderMusic)window.LoaderMusic.stop();this._bgmIntense=false;if(!this._playTrack('bgm_main',0.28)){this.stopBgm();this.startBgm();}},
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
   _bgmNote(freq,dur,type,vol,delay){ if(!this.ctx||!this._bgmGain)return;

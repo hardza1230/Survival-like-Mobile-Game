@@ -47,8 +47,10 @@
       clearTimeout(this._introTimer);this._introTimer=null;
       root.style.opacity='0';root.style.pointerEvents='none';
       setTimeout(function(){if(root.style.opacity==='0')root.style.display='none';root.classList.remove('opening','intro-mode');},240);
-      this._introFinished=true;if(window.LoaderMusic)window.LoaderMusic.stop();window.dispatchEvent(new Event('mochi-intro-finished'));
+      this._introFinished=true;this.lightOn();if(window.LoaderMusic)window.LoaderMusic.stop();window.dispatchEvent(new Event('mochi-intro-finished'));
     },
+    // แสงกลางจอเริ่มโผล่ (48% ของฉากเปิด) → เริ่มเพลงเมนูได้
+    lightOn:function(){if(this._lightOn)return;this._lightOn=true;if(window.LoaderMusic)window.LoaderMusic.stop();window.dispatchEvent(new Event('mochi-intro-light'));},
     skipIntro:function(){var root=document.getElementById('game-loader');if(this._introDone&&root&&root.classList.contains('opening'))this.finishIntro();},
     show:function(label,progress){
       var root=document.getElementById('game-loader');
@@ -73,7 +75,7 @@
       if(!this._introDone && root.classList.contains('intro-mode')){
         this._introDone=true;
         var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var begin=()=>{root.classList.add('opening');this._introTimer=setTimeout(()=>this.finishIntro(),reduced?180:9400);};
+        var begin=()=>{root.classList.add('opening');this._introTimer=setTimeout(()=>this.finishIntro(),reduced?180:9400);setTimeout(()=>this.lightOn(),reduced?0:4500);};
         // Let the three lamps light in order even when the assets load quickly.
         var remaining=reduced?0:Math.max(0,3300-(performance.now()-(this._shownAt||performance.now())));
         clearTimeout(this._revealTimer);
