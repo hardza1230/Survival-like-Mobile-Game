@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.50.3';
+const GAME_VERSION = '6.50.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.50.4', date:'2026-10-03', title:'Stage 1 opening', items:['Stage 1 wave 1 is now a simple kill meter: defeat enemies to fill it'] },
   { v:'6.50.3', date:'2026-10-03', title:'Simpler first stage', items:['Stage 1 no longer has the Capture Zone mission — it now teaches Survive and Hunt only'] },
   { v:'6.50.2', date:'2026-10-03', title:'Clearer missions', items:['New missions now pop up in a speech bubble above your character','Mission reminders also appear above your character with progress'] },
   { v:'6.50.1', date:'2026-10-03', title:'Damage numbers', items:['Every shotgun pellet shows its own damage number','Damage numbers are a little smaller'] },
@@ -4299,6 +4300,7 @@ const STAGE_GIMMICKS = [
 /* ภารกิจสุ่มประจำWave Chapter 1 — เปลี่ยนสิ่งที่ผู้เล่นต้องทำโดยไม่เพิ่มภาระระบบฟิสิกส์หนัก */
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
+  fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
   hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite — it blinks away when you get close and leaves a trap'},
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
   capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the ring to purify it — the ring grows while enemies swarm in to stop you'},
@@ -4309,7 +4311,7 @@ const WAVE_OBJECTIVES = {
 };
 // Wave 2 is the miniboss. Fixed early missions give new players a reliable learning path on repeat runs.
 const CH1_EARLY_WAVE_PLAN={
-  0:{1:{type:'survive',tip:'Keep moving until the timer ends.'},3:{type:'survive',tip:'Stay alive — keep moving and let your attacks clear the swarm.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked enemies.'}},
+  0:{0:{type:'fill',tip:'Defeat enemies to fill the meter.'},1:{type:'survive',tip:'Keep moving and stay alive until the timer ends.'},3:{type:'survive',tip:'Stay alive — keep moving and let your attacks clear the swarm.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked enemies.'}},
   1:{1:{type:'survive',tip:'Keep moving and watch for pressure attacks.'},3:{type:'hunt',tip:'Follow 🎯 to the marked enemies and defeat them.'},4:{type:'purge',tip:'Stay near the Wisp and keep raiders away from it.'}},
   2:{1:{type:'capture',tip:'Stand inside the glowing ring to charge the furnace seal.'},3:{type:'purge',tip:'Protect the Wisp as it reaches each cursed core.'},4:{type:'hunt',tip:'Follow 🎯 and defeat the marked guards.'}}
 };
@@ -8472,9 +8474,10 @@ class Game extends Phaser.Scene {
     const planned=!this.recipeMode&&!this.riftMode?earlyWaveMission(this.stageIndex,w):null;
     if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
     const type=p&&p.forceType?p.forceType:planned?planned.type:this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
-    const lesson=planned?({1:'1/3',3:'2/3',4:'3/3'}[w]):null;
+    const _pk=planned?Object.keys(CH1_EARLY_WAVE_PLAN[this.stageIndex]).map(Number):[],lesson=planned?((_pk.indexOf(w)+1)+'/'+_pk.length):null;
     const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,lesson,color,progress:0,target:0,done:false};
     if(type==='survive')o.target=Math.max(1,p.dur||48);
+    else if(type==='fill')o.target=30+this.stageIndex*10;
     else if(type==='hunt'){
       o.target=2+(w>=4&&this.stageIndex>0?1:0)+(this.stageIndex>=3?1:0);o.desc='Find and defeat '+o.target+' marked Elite targets';this.spawnObjectiveElite();
     }else if(type==='purge'){
@@ -8677,6 +8680,7 @@ class Game extends Phaser.Scene {
   // เรียกจาก killEnemy: นับ kill ของโจทย์เสริม + Capture เติมเร็วเมื่อฆ่าในวง
   objOnKill(e){
     const o=this.waveObjective;if(!o||o.done)return;
+    if(o.type==='fill'&&e&&!e.isBoss&&!e.isMini){o.progress=Math.min(o.target,o.progress+1);this.renderWaveObjectiveHUD();if(o.progress>=o.target){this.completeWaveObjective();return;}}
     if(o.type==='seasonCycle'&&o.storm&&o.storm.cur&&o.storm.cur.idx===0&&e&&!e.isBoss&&!e.isMini)o.storm.cur.kills++;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
   }
   // ประเมินโจทย์เสริมตอนภารกิจสำเร็จ (เรียกก่อน clearWaveObjective)

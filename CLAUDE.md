@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.50.4 (เจ้าของ: เวฟ1 ไม่ต้องมีภารกิจ ฆ่าเติมหลอด):** objective ใหม่ `fill` (WAVE_OBJECTIVES) ฆ่ามอนธรรมดา +1 ใน objOnKill · target 30+10·stage · ไม่มี timer · **บั๊ก:** แผนเดิมใช้ key 1/3/4 แต่ waveIndex เริ่ม 0 → เวฟแรกจริงสุ่ม (เจอ capture) · ด่าน 1 = 0 fill/1 survive/2 มินิ/3 survive/4 hunt · lesson นับจาก key ของแผน · ด่าน 2-3 เวฟแรกยังสุ่ม
 - **v6.50.3 (เจ้าของ: ด่านแรกเอา capture ออก):** CH1_EARLY_WAVE_PLAN ด่าน 1 เวฟ 3 capture → survive (Survive/มินิ/Survive/Hunt) · capture ยังสอนที่ด่าน 3 เวฟ 1
 - **v6.50.2 (เจ้าของ: ไม่ทันเห็นภารกิจ · Stage 1 ไม่มี capture):** ภารกิจใหม่โชว์บับเบิลเหนือหัวตัวละคร 4.2 วิ + เสียง · เตือนทุก 12 วิเป็นบับเบิลพร้อม progress · ด่านที่เคลียร์แล้วเล่นซ้ำเป็นโหมด replay (หลอดฆ่า ไม่มีภารกิจ) จึงไม่เจอ capture — capture อยู่เวฟ 3 ตอนเล่นครั้งแรก
 - **v6.50.1 (เจ้าของ):** เม็ด shotgun โชว์เลขทุกเม็ด (popDmg force + เยื้องตำแหน่งเล็กน้อย แทนเลขรวม ×N) · popDmg 20/28→16/23px ÷viewZoom
