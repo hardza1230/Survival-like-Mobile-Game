@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.40.0';
+const GAME_VERSION = '6.41.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,7 +60,8 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
-  { v:'6.40.0', date:'2026-10-03', title:'⚖️ Balance from your save + boss fixes', items:['Fixed: Delve bosses (Jelly Warden / Candlewick) could become unkillable at 65% or 50% HP','Fixed: The Great Hunger (C1-5) could get stuck invulnerable at 40% HP','Delve: monster HP/damage grow more slowly after Floor 20 — Floor 40+ is no longer a hard wall','Delve boss floors are a bit tougher (HP ×2.5, was ×2)'] },
+  { v:'6.41.0', date:'2026-10-03', title:'⚔️ Weapons no longer melt everything', items:['Weapon item level power is lower: iLv60 ×4.3 (was ×5.7) · iLv89 ×5.0 (was ×8.8) · iLv100 ×5.2','Bosses now take a real fight instead of melting in seconds','Build choices, Weave and Perks matter more next to weapon power'] },
+  { v:'6.40.0', date:'2026-10-03', title:'⚖️ Balance from your save + boss fixes', items:['Fixed: Delve bosses (Jelly Warden / Candlewick) could become unkillable at 65% or 50% HP','Fixed: The Great Hunger (C1-5) could get stuck invulnerable at 40% HP','Delve: monster HP/damage grow more slowly after Floor 20 — Floor 40+ is no longer a hard wall'] },
   { v:'6.39.0', date:'2026-10-03', title:'👑 New Delve bosses', items:['Floor 10, 30, 50… : The Jelly Warden — leaps onto you and leaves sticky puddles that slow you · splits into 3 jelly guards at half HP','Floor 20, 40, 60… : Madame Candlewick — lights candles that pulse rings of fire (walk into a candle to snuff it) and splashes hot wax','At 40% HP Candlewick blows out the lights — only you and the lit candles glow'] },
   { v:'6.38.0', date:'2026-10-03', title:'⚡ Even faster startup', items:['The main menu now opens after downloading only about 7 MB','Battle art, effects and sounds load in the background while you are on the menu','Menu-only art (Temple, Kitchen, Depths, Delve, hero cards) loads last']},
   { v:'6.37.0', date:'2026-10-03', title:'⚡ Faster startup', items:['The game downloads about half as much before the main menu','Menu-only art and battle effects now load in the background after the menu appears','Smaller loading and menu music files']},
@@ -3432,7 +3433,8 @@ function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 // v6.16: Item Power — อาวุธ iLv สูง = ดาเมจผู้เล่นโตตาม progress (อยู่นอกเพดาน STAT_CAPS.dmgMul)
 // v6.18: Damage Effectiveness ของ flat แบบ PoE — อาวุธยิงถี่ได้ flat น้อย, ยิงหนักได้มาก
 const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
-function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.03,l-1):Math.pow(1.03,59)*Math.pow(1.015,l-60); }
+// v6.41 (เจ้าของ: อาวุธแรงจนการต่อสู้ไม่มีความหมาย) เดิม 1.03/lv ถึง 60 แล้ว 1.015 → iLv89 = ×8.8 · ใหม่ iLv60 ×4.3 · iLv89 ×5.0 · iLv100 ×5.2
+function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.025,l-1):Math.pow(1.025,59)*Math.pow(1.005,l-60); }
 function applyItemLevelBonus(p,item){applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
   if(slot==='weapon'||slot==='ring')p.dmgMul+=(1+0.24*q)-1;
   else if(slot==='gloves')p.critChance=(p.critChance||0)+0.06*q;
@@ -8932,7 +8934,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2.5:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
