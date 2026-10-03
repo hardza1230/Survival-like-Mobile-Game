@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.34.0';
+const GAME_VERSION = '6.34.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.34.1', date:'2026-10-03', title:'🛠 Fix: Delve map crash', items:['Opening Endgame (Delve map) no longer freezes or closes the app on phones']},
   { v:'6.34.0', date:'2026-10-03', title:'🎨 New art: Delve, biomes & Pinnacle', items:['Delve map now shows painted flavor floors, node plates, fog and boss-floor cards','Every cave flavor has its own painted floor; Spicy vents and embers use real art','Chapter 3 monsters now walk with 4-frame animations','The Pinnacle boss, The Hunger Beneath, has its own 8-pose art']},
   { v:'6.33.0', date:'2026-10-03', title:'🌶️ Spicy Depths biome', items:['Spicy caves now have their own lava floor','Lava vents erupt in rhythm — lure monsters onto them to roast whole packs','Ember monsters leave short-lived fire trails behind them']},
   { v:'6.32.0', date:'2026-10-02', title:'⛏ Delve missions & tunnels', items:['Every cave now has a mission (Hunt, Escort, Capture, Clean Air, Defend Nectar, Sever Roots) — finish it and fill the Hunger Meter to call the boss','Tunnels on the Delve map now turn at right angles','Bosses in the Delve appear beside you without a camera cutscene','The Pact screen is gone — its hardships are now cave mods (Gluttonous Boss, Brittle Shell, Ravenous Clock, Empty Pantry)','Pact unlocks became depth milestones (depth 10/20/30/40/60)'] },
@@ -6014,10 +6015,7 @@ class Game extends Phaser.Scene {
     const V=(o)=>{view.add(o);return o;}, VT=(x,y,t,sz,c,st)=>V(this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center'}).setOrigin(0.5));
     this.atlasViewClamp(); const [va,vz]=this.atlasVisRows(),d0=Math.max(0,va-12),d1=Math.min(L.landD,vz+12); this._amBand=[d0,d1];
     // เขตรส (พื้น) · แถบสีต่อช่อง (placeholder ของ delve_bg_<flavor>)
-    // v6.34 พื้นรสจริง (biome_<flavor>_floor) ต่อช่วงที่รสเดียวกันในแถว · ไม่มีอาร์ต = แถบสี
-    for(let d=Math.max(1,d0);d<=d1;d++){ let x0=-DELVE_W-1,cur=delveFlavorAt(x0,d); for(let x=x0+1;x<=DELVE_W+2;x++){ const fl=x<=DELVE_W+1?delveFlavorAt(x,d):null; if(fl===cur)continue; const tk='biome_'+cur.id+'_floor';
-        if(this.textures.exists(tk)){ const ts=V(this.add.tileSprite(L.C0+(x0-0.5)*L.CW,L.top+(d-0.5)*L.RH,(x-x0)*L.CW+1,L.RH+1,tk).setOrigin(0,0)); ts.setTileScale(0.35); ts.setTilePosition(x0*L.CW/0.35,d*L.RH/0.35); ts.setAlpha(d>L.fogD?0.22:0.55); }
-        x0=x; cur=fl; } }
+    // v6.34.1: เลิกปูพื้นรสเป็น tileSprite ต่อช่วง (158 ชิ้น → มือถือค้าง/แอปปิด) · ใช้แถบสีเดิม
     const bg=V(this.add.graphics());
     for(let d=Math.max(1,d0);d<=d1;d++){ const fogA=d>L.fogD?0.35:1; for(let x=-DELVE_W-1;x<=DELVE_W+1;x++){ const fl=delveFlavorAt(x,d); bg.fillStyle(fl.color,0.10*fogA); bg.fillRect(L.C0+(x-0.5)*L.CW,L.top+(d-0.5)*L.RH,L.CW+1,L.RH+1); }
       if(d%DELVE_SEG===0){ bg.lineStyle(2,0xffd166,0.35); bg.lineBetween(0,L.top+d*L.RH,L.MW,L.top+d*L.RH); }
