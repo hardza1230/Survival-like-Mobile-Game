@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.33.0';
+const GAME_VERSION = '6.34.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.34.0', date:'2026-10-03', title:'🎨 New art: Delve, biomes & Pinnacle', items:['Delve map now shows painted flavor floors, node plates, fog and boss-floor cards','Every cave flavor has its own painted floor; Spicy vents and embers use real art','Chapter 3 monsters now walk with 4-frame animations','The Pinnacle boss, The Hunger Beneath, has its own 8-pose art']},
   { v:'6.33.0', date:'2026-10-03', title:'🌶️ Spicy Depths biome', items:['Spicy caves now have their own lava floor','Lava vents erupt in rhythm — lure monsters onto them to roast whole packs','Ember monsters leave short-lived fire trails behind them']},
   { v:'6.32.0', date:'2026-10-02', title:'⛏ Delve missions & tunnels', items:['Every cave now has a mission (Hunt, Escort, Capture, Clean Air, Defend Nectar, Sever Roots) — finish it and fill the Hunger Meter to call the boss','Tunnels on the Delve map now turn at right angles','Bosses in the Delve appear beside you without a camera cutscene','The Pact screen is gone — its hardships are now cave mods (Gluttonous Boss, Brittle Shell, Ravenous Clock, Empty Pantry)','Pact unlocks became depth milestones (depth 10/20/30/40/60)'] },
   { v:'6.31.0', date:'2026-10-02', title:'⛏ Start runs from the Delve map', items:['Tap a cave to see its info and press Start — no separate Map Table screen','Every cave now comes with its own mods; deeper caves carry more of them','Mechanic mods (Haste, Volatile, Starving, Horde) appear from depth 10','No more paying currency for map mods'] },
@@ -1161,11 +1162,31 @@ const ASSET_IMAGES = {
   e_ant_worker:'assets/generated/e_ant_worker.png', e_ant_scout:'assets/generated/e_ant_scout_fixed.png',
   e_ant_spitter:'assets/generated/e_ant_spitter.png', e_ant_soldier:'assets/generated/e_ant_soldier.png',
   e_ant_drone:'assets/generated/e_ant_drone.png',
-  c3_e_basic:'assets/art/ch3_enemies/c3_e_basic.png',
-  c3_e_fast:'assets/art/ch3_enemies/c3_e_fast.png',
-  c3_e_shooter:'assets/art/ch3_enemies/c3_e_shooter.png',
-  c3_e_bomber:'assets/art/ch3_enemies/c3_e_bomber.png',
-  c3_e_tank:'assets/art/ch3_enemies/c3_e_tank.png',
+  // v6.34 อาร์ต R1–R3: biome / Delve (ศัตรู C3 ย้ายไป ASSET_SHEETS เป็นชีตเดิน 4 เฟรม)
+  biome_spicy_floor:'assets/art/biomes/biome_spicy_floor.webp', delve_bossfloor_spicy:'assets/art/delve/delve_bossfloor_spicy.webp',
+  biome_frosty_floor:'assets/art/biomes/biome_frosty_floor.webp', delve_bossfloor_frosty:'assets/art/delve/delve_bossfloor_frosty.webp',
+  biome_sweet_floor:'assets/art/biomes/biome_sweet_floor.webp', delve_bossfloor_sweet:'assets/art/delve/delve_bossfloor_sweet.webp',
+  biome_sour_floor:'assets/art/biomes/biome_sour_floor.webp', delve_bossfloor_sour:'assets/art/delve/delve_bossfloor_sour.webp',
+  biome_fermented_floor:'assets/art/biomes/biome_fermented_floor.webp', delve_bossfloor_fermented:'assets/art/delve/delve_bossfloor_fermented.webp',
+  biome_spicy_vent:'assets/art/biomes/biome_spicy_vent.webp',
+  biome_spicy_ember:'assets/art/biomes/biome_spicy_ember.webp',
+  biome_frosty_pillar:'assets/art/biomes/biome_frosty_pillar.webp',
+  biome_frosty_slick:'assets/art/biomes/biome_frosty_slick.webp',
+  biome_sweet_bomb:'assets/art/biomes/biome_sweet_bomb.webp',
+  biome_sweet_trail:'assets/art/biomes/biome_sweet_trail.webp',
+  biome_sour_pool:'assets/art/biomes/biome_sour_pool.webp',
+  biome_sour_drip:'assets/art/biomes/biome_sour_drip.webp',
+  biome_fermented_pod:'assets/art/biomes/biome_fermented_pod.webp',
+  biome_fermented_patch:'assets/art/biomes/biome_fermented_patch.webp',
+  delve_node_normal:'assets/art/delve/delve_node_normal.webp',
+  delve_node_vault:'assets/art/delve/delve_node_vault.webp',
+  delve_node_shrine:'assets/art/delve/delve_node_shrine.webp',
+  delve_node_elite:'assets/art/delve/delve_node_elite.webp',
+  delve_node_city:'assets/art/delve/delve_node_city.webp',
+  delve_node_boss:'assets/art/delve/delve_node_boss.webp',
+  delve_home:'assets/art/delve/delve_home.webp',
+  delve_cleared_mark:'assets/art/delve/delve_cleared_mark.webp',
+  delve_fog:'assets/art/delve/delve_fog.webp',
   codex_c3_mini1:'assets/art/ch3_bosses/c3_mini1.png',
   codex_c3_boss1:'assets/art/ch3_bosses/c3_boss1.png',
   codex_c3_mini2:'assets/art/ch3_bosses/c3_mini2.png',
@@ -1528,6 +1549,12 @@ const SKILL_CARD_COLOR = {
 const PASS_ICON  = { heart:'ic_mochi_vitality', magnet:'ic_magnet', power:'ic_power', swift:'ic_swift', haste:'ic_haste', crit:'ic_crit', guard:'ic_guard', regen:'ic_flavor_regen', sugarOnKill:'ic_sugar_on_kill',
   bitterResolve:'ic_bitter_resolve' };
 const ASSET_SHEETS = {
+  c3_e_basic:{url:'assets/art/ch3_enemies/c3_e_basic_walk.png',frame:128,anim:{frames:4,rate:7}},
+  c3_e_fast:{url:'assets/art/ch3_enemies/c3_e_fast_walk.png',frame:128,anim:{frames:4,rate:7}},
+  c3_e_shooter:{url:'assets/art/ch3_enemies/c3_e_shooter_walk.png',frame:128,anim:{frames:4,rate:7}},
+  c3_e_bomber:{url:'assets/art/ch3_enemies/c3_e_bomber_walk.png',frame:128,anim:{frames:4,rate:7}},
+  c3_e_tank:{url:'assets/art/ch3_enemies/c3_e_tank_walk.png',frame:128,anim:{frames:4,rate:7}},
+  boss_pinnacle:{url:'assets/art/pinnacle/boss_pinnacle_sheet.webp',frame:256},   // 0 idle 1 breath 2 wind-up 3 bite 4 summon 5 hurt 6 enrage 7 defeat
   c3_mini1:{url:'assets/art/ch3_bosses/c3_mini1_sheet.webp',frame:256},
   c3_boss1:{url:'assets/art/ch3_bosses/c3_boss1_sheet.webp',frame:256},
   c3_mini2:{url:'assets/art/ch3_bosses/c3_mini2_sheet.webp',frame:256},
@@ -5987,10 +6014,15 @@ class Game extends Phaser.Scene {
     const V=(o)=>{view.add(o);return o;}, VT=(x,y,t,sz,c,st)=>V(this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center'}).setOrigin(0.5));
     this.atlasViewClamp(); const [va,vz]=this.atlasVisRows(),d0=Math.max(0,va-12),d1=Math.min(L.landD,vz+12); this._amBand=[d0,d1];
     // เขตรส (พื้น) · แถบสีต่อช่อง (placeholder ของ delve_bg_<flavor>)
+    // v6.34 พื้นรสจริง (biome_<flavor>_floor) ต่อช่วงที่รสเดียวกันในแถว · ไม่มีอาร์ต = แถบสี
+    for(let d=Math.max(1,d0);d<=d1;d++){ let x0=-DELVE_W-1,cur=delveFlavorAt(x0,d); for(let x=x0+1;x<=DELVE_W+2;x++){ const fl=x<=DELVE_W+1?delveFlavorAt(x,d):null; if(fl===cur)continue; const tk='biome_'+cur.id+'_floor';
+        if(this.textures.exists(tk)){ const ts=V(this.add.tileSprite(L.C0+(x0-0.5)*L.CW,L.top+(d-0.5)*L.RH,(x-x0)*L.CW+1,L.RH+1,tk).setOrigin(0,0)); ts.setTileScale(0.35); ts.setTilePosition(x0*L.CW/0.35,d*L.RH/0.35); ts.setAlpha(d>L.fogD?0.22:0.55); }
+        x0=x; cur=fl; } }
     const bg=V(this.add.graphics());
     for(let d=Math.max(1,d0);d<=d1;d++){ const fogA=d>L.fogD?0.35:1; for(let x=-DELVE_W-1;x<=DELVE_W+1;x++){ const fl=delveFlavorAt(x,d); bg.fillStyle(fl.color,0.10*fogA); bg.fillRect(L.C0+(x-0.5)*L.CW,L.top+(d-0.5)*L.RH,L.CW+1,L.RH+1); }
       if(d%DELVE_SEG===0){ bg.lineStyle(2,0xffd166,0.35); bg.lineBetween(0,L.top+d*L.RH,L.MW,L.top+d*L.RH); }
       if(d%5===0||d===1)VT(18,L.top+d*L.RH,'D'+d,11,'#cfc2df','bold').setAlpha(0.7); }
+    if(this.textures.exists('delve_fog')&&d1>L.fogD){ const fy=L.top+(Math.max(d0,L.fogD)+0.5)*L.RH; V(this.add.tileSprite(0,fy,L.MW,L.top+(d1+1)*L.RH-fy,'delve_fog').setOrigin(0,0).setAlpha(0.55)); }
     // ป้ายเขตรส (ทุก 10 ชั้น)
     for(let d=Math.max(5,d0-(d0%10)+5);d<=d1;d+=10){ let prev=null; for(let x=-DELVE_W;x<=DELVE_W;x++){ const fl=delveFlavorAt(x,d); if(fl!==prev){ VT(L.C0+x*L.CW+40,L.top+(d-0.42)*L.RH,fl.emoji+' '+fl.name.toUpperCase(),11,'#ffffff','bold').setAlpha(d<=L.fogD?0.55:0.25); prev=fl; } } }
     // เส้นทาง
@@ -6015,11 +6047,12 @@ class Game extends Phaser.Scene {
       if(n.mods&&n.mods.length&&!t)VT(q.x+big-1,q.y-big+1,'◆'+n.mods.length,9,'#ff9bb5','bold');
       const inf=amapInfluence(n.id); let k=0; AMAP_FLAVORS.forEach(f=>{ for(let i=0;i<(inf[f.id]||0);i++){ ng.fillStyle(f.color,1); ng.fillCircle(q.x+big+5,q.y-big+5+k*6,2.6); k++; } });
       if(n.mission&&!t)VT(q.x+big-1,q.y+big-1,WAVE_OBJECTIVES[n.mission].emoji,9,'#ffffff');
-      if(t)VT(q.x,q.y+big+8,'✓',10,'#ffe08a','bold');
+      if(t){ if(this.textures.exists('delve_cleared_mark'))V(this.add.image(q.x+big-2,q.y+big-4,'delve_cleared_mark')).setDisplaySize(20,20); else VT(q.x,q.y+big+8,'✓',10,'#ffe08a','bold'); }
       if(n.id===next){ const a=VT(q.x,q.y-big-13,'▼',13,'#9dff9d','bold'); this.tweens.add({targets:a,y:a.y-5,yoyo:true,repeat:-1,duration:420}); } });
     // v6.31 แผงถ้ำที่เลือก: ข้อมูล + mod ประจำถ้ำ + Build/Heat + Start (แทนหน้า Map Table)
     if(panel){ const sn=selN,ty=AMAP_TYPES[sn.type],t=amapClears(sn.id),r=mapTableRecipe(),m=recipeMul(r),inf=amapInfluence(sn.id),IL=amapInfLayers(inf),rw=amapRewardOf(sn.id),y0=h-PH+6;
       const pg=this.add.graphics(); pg.fillStyle(0x1c1426,0.97); pg.fillRoundedRect(cx,y0,cw,PH-12,12); pg.lineStyle(2,sn.flavor.color,1); pg.strokeRoundedRect(cx,y0,cw,PH-12,12); this.menu.add(pg);
+      { const bk='delve_bossfloor_'+sn.flavor.id; if(sn.type==='boss'&&this.textures.exists(bk)){ const im=this.add.image(cx+cw/2,y0+(PH-12)/2,bk); im.setScale(Math.max(cw/752,(PH-12)/416)); im.setCrop((752-cw/im.scaleX)/2,(416-(PH-12)/im.scaleY)/2,cw/im.scaleX,(PH-12)/im.scaleY); im.setAlpha(0.32); this.menu.add(im); } }
       const TL=(x,y,txt,sz,c,st)=>{const q=this.add.text(x,y,txt,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c}).setOrigin(0,0.5);this.menu.add(q);return q;};
       TL(cx+12,y0+16,sn.emoji+' '+sn.name+(t?'  ✓×'+t:''),14,'#ffffff','bold');
       TL(cx+12,y0+36,'⛏ Depth '+sn.d+' · '+sn.flavor.emoji+' '+sn.flavor.name+(sn.type!=='normal'?' · '+ty.emoji+' '+ty.name:'')+' · 🎁 '+rw.emoji+' '+rw.name+(IL?' · '+amapInfText(inf):''),10,'#cfc2df');
@@ -7938,8 +7971,8 @@ class Game extends Phaser.Scene {
     x.lineCap='round'; for(let k=0;k<14;k++){ let px=R()*S,py=R()*S; x.strokeStyle='rgba(255,110,40,0.55)'; x.lineWidth=2+R()*2.5; x.shadowColor='#ff5a1e'; x.shadowBlur=8; x.beginPath(); x.moveTo(px,py); for(let j=0;j<5;j++){ px+=(R()-0.5)*90; py+=(R()-0.5)*90; x.lineTo(px,py); } x.stroke(); }
     x.shadowBlur=0; for(let i=0;i<40;i++){ x.fillStyle='rgba(255,190,90,0.35)'; x.beginPath(); x.arc(R()*S,R()*S,1+R()*2,0,TAU); x.fill(); }
     c.refresh(); }
-  setupBiome(nd){ this.clearBiome(); const fl=nd&&nd.flavor; if(!fl||nd.type==='home')return; this._biome=fl.id; if(fl.id!=='spicy')return;
-    this.makeSpicyFloor(); if(this.bgTile){ this.bgTile.setTexture('biome_spicy_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(1); this.bgTile.clearTint(); this.bgTile.setAlpha(1); }
+  setupBiome(nd){ this.clearBiome(); const fl=nd&&nd.flavor; if(!fl||nd.type==='home')return; this._biome=fl.id; const fk='biome_'+fl.id+'_floor'; if(fl.id!=='spicy'){ if(this.bgTile&&this.textures.exists(fk)){ this.bgTile.setTexture(fk); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.8); this.bgTile.clearTint(); this.bgTile.setAlpha(1); } return; }
+    this.makeSpicyFloor(); if(this.bgTile){ this.bgTile.setTexture('biome_spicy_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(this.textures.get('biome_spicy_floor').getSourceImage().width>600?0.8:1); this.bgTile.clearTint(); this.bgTile.setAlpha(1); }
     this._vents=[]; for(let i=0;i<7;i++)this._vents.push(this.makeVent(i));
     this.time.delayedCall(1800,()=>this.showBanner('🌶️ Spicy Depths','Lava vents erupt in rhythm — lure monsters onto them! · Ember monsters leave fire trails',3000)); }
   makeVent(i){ const p=this.player,a=Math.random()*TAU,d=180+Math.random()*420,v={x:p.x+Math.cos(a)*d,y:p.y+Math.sin(a)*d,t:-(1.2+i*0.75+Math.random()),per:4.6+Math.random()*1.6,r:78};
@@ -8735,7 +8768,7 @@ class Game extends Phaser.Scene {
     if(!b||!b.active)return;const r=this.bossRageInfo(),old=b.rage||this.bossRageInfo(0);if(b.rage&&r.tier<=b.rage.tier)return;
     if(!b._rageBaseHp){b._rageBaseHp=b.maxhp;b._rageBaseDmg=b.dmg;b._rageBaseSpd=b.spd;}
     const hpPct=b.maxhp>0?b.hp/b.maxhp:1,spdRatio=r.spd/(old.spd||1);b.maxhp=b._rageBaseHp*r.hp;b.hp=Math.max(1,b.maxhp*hpPct);b.dmg=Math.round((b.dmg||b._rageBaseDmg)*(r.dmg/(old.dmg||1)));b.spd=(b.spd||b._rageBaseSpd)*spdRatio;b.rage=r;b.rageCdMul=r.cd;
-    const st=STAGES[this.stageIndex];this.bossName.setText((b.isBoss?'👹 ':'💢 ')+(b.isBoss?st.boss:st.mini)+' · '+r.emoji+' '+r.name).setColor('#'+r.color.toString(16).padStart(6,'0'));
+    const st=STAGES[this.stageIndex];this.bossName.setText((b.isBoss?'👹 ':'💢 ')+(b.isBoss?(this._pinnacleRun?'The Hunger Beneath':st.boss):st.mini)+' · '+r.emoji+' '+r.name).setColor('#'+r.color.toString(16).padStart(6,'0'));
     if(announce&&r.tier>old.tier){this.showBanner(r.emoji+' Boss '+r.name,'Minions killed '+r.kills+' · reward x'+r.reward.toFixed(2),1500);this.screenFlash(r.color,0.14,300);Sfx.bossWarn();}
   }
   spawnMiniBoss(){
@@ -8829,7 +8862,7 @@ class Game extends Phaser.Scene {
     if(this.anims.exists(bkey+'_idle'))b.play(bkey+'_idle',true);else if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
     this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
     this.waveAlive=1; this.updateWaveText();
-    if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; b.tintColor=0x8a4dff; b.setTint(0x8a4dff); b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
+    if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; if(this.textures.exists('boss_pinnacle')){ if(b.anims)b.anims.stop(); b.setTexture('boss_pinnacle',0); b._pinnacleArt=true; b.tintColor=null; b.clearTint(); } else { b.tintColor=0x8a4dff; b.setTint(0x8a4dff); } b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
     this.bossIntro(b, this._pinnacleRun?'✦ PINNACLE · The Hunger Beneath':this.secretBoss?'The Echo of Hunger · Shadow of the Devourer':st.boss);
   }
   // ฉากปรากฏตัวบอส: WARNING → แพนfind → ปรากฏตัว/คำราม → แพนกลับ
@@ -12140,7 +12173,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // v4.87: บอสดุขึ้น — ตัวเร่งรอบโจมตี (ทุกบอส/มินิ) + คลั่งเมื่อ HP<30%
-  bossAggro(b){ let m=b.isBoss?1.45:1.3; if(b.hp<b.maxhp*0.3){ m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED','It attacks faster — keep moving!',1200); } } return m; }
+  bossAggro(b){ let m=b.isBoss?1.45:1.3; if(b.hp<b.maxhp*0.3){ m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; if(b._pinnacleArt)b.setFrame(6); b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED','It attacks faster — keep moving!',1200); } } return m; }
   // เล็งดักทาง: ยิงไปตำแหน่งที่ผู้เล่นกำลังจะไป (ไม่ใช่ที่ยืนอยู่)
   leadAim(x,y,speed){ const p=this.player,v=p.body?p.body.velocity:{x:0,y:0},t=Math.min(0.9,this.dist(x,y,p.x,p.y)/Math.max(1,speed)); return Math.atan2(p.y+v.y*t-y,p.x+v.x*t-x); }
   // คอมโบต่อท้าย: หลังบอสใช้ท่า มีโอกาสตามด้วยท่าสั้น (ยิงดักทาง / วงไล่ / พุ่งสั้น)

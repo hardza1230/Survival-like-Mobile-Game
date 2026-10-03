@@ -17,18 +17,18 @@
 |---|---|---|---|---|---|
 | 01 | `01_FLOORS_SEAMLESS.md` | พื้นด่านแบบต่อขอบ C2-1…C3-5 | 10 | 🔴 สูงสุด (แก้ภาพแตก) | 🟩 ใส่เข้าเกมแล้ว v5.54 (webp ใน assets/art/floors) |
 | 02 | `02_MAP_DECOR.md` | ของตกแต่งพื้นรายด่าน (เริ่ม C2-1) | 8/ด่าน | 🔴 | 🟩 C2-1 v5.54 · C2-2 v6.0.7 · C2-3…C3-5 v6.0.8 ใส่เข้าเกมครบแล้ว |
-| 03 | `03_CH3_ENEMIES.md` | ศัตรู Chapter 3 (5 บทบาท) | 5 | 🟡 | 🟨 ภาพนิ่งใส่แล้ว v5.98 · ชีตเดิน 4 เฟรม → **รอบ R2** |
+| 03 | `03_CH3_ENEMIES.md` | ศัตรู Chapter 3 (5 บทบาท) | 5 | 🟡 | 🟩 ชีตเดิน 4 เฟรมใส่เกมแล้ว v6.34 |
 | 04 | `04_CH3_BOSSES.md` | มินิบอส 5 + บอส 5 ของ Chapter 3 | 10 | 🟠 | 🟩 action sheet 8 เฟรมครบ 10 ตัว ใส่เกม v6.0.0 |
 | 05 | `05_TEMPLE_DIG.md` | มินิเกมขุดใต้วิหาร | 16 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (webp ใน assets/art/dig) |
 | 06 | `06_ICONS_PERKS_RELICS.md` | ไอคอน Rank Perk / Ancient Perk / Relic | 26 | 🟡 | 🟩 ใส่เข้าเกมแล้ว v5.67 (การ์ด/แถว Relic, Rank Perks, Codex) |
 | 07 | `07_KITCHEN_PARTS.md` | ไอคอนชิ้นส่วนสูตร Kitchen (WHEN/DO/TWIST) | 55 | 🟢 | 🟩 ใส่เข้าเกมแล้ว v6.0.9 |
-| 08 | `08_PINNACLE_BOSS.md` | บอส Endgame "The Hunger Beneath" | 1 ชีต | 🟠 | ⬜ → อยู่ใน **รอบ R2** ของ `NEXT_BATCH_REQUEST.md` |
+| 08 | `08_PINNACLE_BOSS.md` | บอส Endgame "The Hunger Beneath" | 1 ชีต | 🟠 | 🟩 ใส่เข้าเกมแล้ว v6.34 |
 | 09A | `09_MENU_UI.md` §9A | การ์ดเลือกด่าน 15 + ปก Chapter 3/Endgame | 17 | 🟠 | 🟩 ใส่เข้าเกมแล้ว (โหลดจาก assets/incoming/menu_stage_cards) |
 | 09B | `09_MENU_UI.md` §9B | พื้นหลังหน้าเมนูทุกหน้า | 25 | 🟡 | 🟩 ใส่เข้าเกมแล้ว (โหลดจาก assets/incoming/menu_screens) |
 | 09C/D | `09_MENU_UI.md` §9C-D | ปุ่ม Hub 6 + ไทล์เมนูย่อย 19 | 25 | 🟠 | 🟩 ใส่เข้าเกมแล้ว v5.67 (ปุ่ม Hub, ไทล์กลุ่ม, ปุ่ม Depths/Kitchen/Perks) |
 | 10 | `10_ATLAS_MAP.md` | แผนที่ Atlas แบบเก่า | — | — | ❌ ยกเลิก (Mochi Delve v6.30 มาแทน → ใช้ 11) |
-| 11 | `11_MOCHI_DELVE.md` | แผนที่ Mochi Delve (พื้น 5 รส + แผ่น node + Mochitopia + fog) | 15 | 🔴 | ⬜ → **รอบ R1 + R3** |
-| 12 | `12_BIOME_SPICY.md` | Biome ในถ้ำ (พื้นต่อรส + ของในฉาก 5 รส) | 13 | 🔴 | ⬜ → **รอบ R1 + R3** (Spicy เล่นได้แล้ว v6.33 ใช้ placeholder) |
+| 11 | `11_MOCHI_DELVE.md` | แผนที่ Mochi Delve (พื้น 5 รส + แผ่น node + Mochitopia + fog) | 15 | 🔴 | 🟩 ใส่เข้าเกมแล้ว v6.34 |
+| 12 | `12_BIOME_SPICY.md` | Biome ในถ้ำ (พื้นต่อรส + ของในฉาก 5 รส) | 13 | 🔴 | 🟩 อาร์ตใส่เกมแล้ว v6.34 · กลไกมีแค่ Spicy |
 | C2-5 | `C2_5_ROOT_KNIGHT_ANIMATION.md` | Root Knight 16 เฟรม | 1 ชีต | — | 🟩 ใส่เข้าเกมแล้ว v6.0.54 |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
