@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.42.0';
+const GAME_VERSION = '6.42.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.42.1', date:'2026-10-03', title:'🐛 Fix: Sweet cave crash', items:['Fixed a crash when standing in a falling-star circle in Sweet-flavored Delve caves'] },
   { v:'6.42.0', date:'2026-10-03', title:'🍖 Feast Targets', items:['Delve: regular monsters now fill the Hunger Meter only a little','Every ~16s a 🍖 Feast Target appears — the arrow points to it and it runs away','Kill it within 22s for +15% Hunger, or it escapes','Completing the cave mission now also gives +20% Hunger'] },
   { v:'6.41.0', date:'2026-10-03', title:'⚔️ Weapons no longer melt everything', items:['Weapon item level power is lower: iLv60 ×4.3 (was ×5.7) · iLv89 ×5.0 (was ×8.8) · iLv100 ×5.2','Bosses now take a real fight instead of melting in seconds','Build choices, Weave and Perks matter more next to weapon power'] },
   { v:'6.40.0', date:'2026-10-03', title:'⚖️ Balance from your save + boss fixes', items:['Fixed: Delve bosses (Jelly Warden / Candlewick) could become unkillable at 65% or 50% HP','Fixed: The Great Hunger (C1-5) could get stuck invulnerable at 40% HP','Delve: monster HP/damage grow more slowly after Floor 20 — Floor 40+ is no longer a hard wall'] },
@@ -9687,7 +9688,7 @@ class Game extends Phaser.Scene {
     this._rushEnd=(this.elapsed||0)+SUGAR_RUSH_SEC;
     const r=170; this.vfxHitRing&&this.vfxHitRing(p.x,p.y,0xff76c8,true); this.burst(p.x,p.y,0xffd166); this.screenFlash&&this.screenFlash(0xff9bd0,0.25,220);
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<r){ this.damage(e,this.relicDmg(1.2),e.x,e.y); if(!e.isBoss&&!e.isMini){ const a=Math.atan2(e.y-p.y,e.x-p.x); e.setVelocity(Math.cos(a)*380,Math.sin(a)*380); e.knock=0.22; } } });
-    this.showBanner('🍬 SUGAR RUSH! Lv '+this.level,got.slice(-2).join(' · ')+' · attacks ×1.7 speed for '+SUGAR_RUSH_SEC+'s',1300); Sfx.clear&&Sfx.clear(); }
+    this.showBanner('🍬 SUGAR RUSH!'+(got&&got.length?' Lv '+this.level:''),(got&&got.length?got.slice(-2).join(' · ')+' · ':'')+'attacks ×1.7 speed for '+SUGAR_RUSH_SEC+'s',1300); Sfx.clear&&Sfx.clear(); }
   openRecipeDraft(){ if(!(this._draftQ>0))return; const opts=[],seen=new Set(),add=o=>{ if(o&&!seen.has(o.key)){seen.add(o.key);opts.push(o);} };
     for(let t=0;t<6&&opts.length<3;t++){ add(this.modCard()); if(opts.length<3&&t%2===0)add(this.tradeCard()); }
     if(opts.length<3){ this.rollRelicChoices(3-opts.length).forEach(add); }
