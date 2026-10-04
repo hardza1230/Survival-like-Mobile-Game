@@ -1,3 +1,7 @@
+## Current release — v6.55.10 (VFX art batch 5)
+
+Painted Recipe meteor, orbiting lollipops and Dango helper replace runtime emoji presentation. Source PNGs: assets/incoming/vfx_recipe_summons; lossless WebPs: assets/vfx. Meteor warning/impact reuse batch 4 shock art. Combat and targeting values remain unchanged. All summon art clears on transitions; meteor epoch guard prevents damage crossing runs. Actual-method tests cover meteor timings/damage/cancellation, summon reuse/expiry and original helper shots. Full checks/web build pass; phone visual/performance review pending. All five scoped VFX batches are created and integrated; see assets/incoming/vfx_mint/NEXT_BATCHES.md.
+
 ## Current release — v6.55.9 (VFX art batch 4)
 
 Eight painted Recipe effects: shock, burst, freeze, sour, cleanse, immunity, burning ground and pulling hole. PNG sources: assets/incoming/vfx_recipe_fields; runtime WebPs: assets/vfx. Original combat values are preserved. Zone tweens stop at expiry; all tracked art and recipe zone references clear on transitions. Full automated checks/web build required; phone visual review pending. Remaining: batch 5 meteor, orbiting candy and helper.
@@ -191,7 +195,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.8 — Void, jam and boss transformation VFX)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.10 — All five scoped VFX batches integrated)
 - **v6.54.9 (เจ้าของ: อยากได้การ์ดสุ่มแบบ Jackpot แทน):** onBossDown → `openBossLootCards` (การ์ดคว่ำ 3 ใบจาก 7 ชนิด: Sugar/Currency/พลั่ว/ด้าย/🔩/หินแก่น/Gear · JACKPOT 25%+10%/ระดับยาก) แล้วค่อย revealStageReward · openMysteryCards รับ opt {prizes,title,hint} + fallback emoji ถ้าไม่มี artKey · ยกเลิก Sugar Bounty v6.54.8 (บอสยังไม่ดรอป orb/หัวใจ)
 - **v6.54.8 (เจ้าของ: ของดรอปบอสไร้ประโยชน์เพราะจบด่าน):** killEnemy บอสใหญ่ไม่ dropOrb/dropHeal → Sugar Bounty (60+30·stage)×diff reward เข้า sugarStage ตรง + แบนเนอร์ · มินิ/elite ดรอปเหมือนเดิม
 - **v6.55.5 (เจ้าของ):** บังคับ Mint ทุกครั้งที่กด Stage 3 จนกว่าจะเคลียร์ด่าน 3 (`stageMastery[2]`) ไม่ผูกกับ mintIntro แล้ว

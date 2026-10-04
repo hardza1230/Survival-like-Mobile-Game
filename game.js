@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.9';
+const GAME_VERSION = '6.55.10';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  {v:'6.55.10',date:'2026-10-04',title:'Painted Recipe summons and meteor',items:['Recipe meteor, orbiting candy and Dango helper now use painted candy art','Meteor warnings and impacts use Recipe art while keeping original timing and damage','Summons and pending meteor strikes clear when leaving a run']},
   {v:'6.55.9',date:'2026-10-04',title:'Painted Recipe fields and pulses',items:['Recipe shock, sugar burst, frost, sour, cleanse and immunity each have distinct painted effects','Burning ground and pulling holes use illustrated floor effects','Recipe visuals clean up at expiry and run transitions; combat values are unchanged']},
   {v:'6.55.8',date:'2026-10-04',title:'Painted void, jam and boss transformation',items:['Void Pull uses a purple vortex with an animated inward spiral','Jam Relic leaves illustrated glossy jam before detonating','The Great Hunger changes phase with a painted eight-frame energy burst','Leaving a run cancels pending jam and void callbacks']},
   {v:'6.55.7',date:'2026-10-04',title:'Painted charge, shield and Mint effects',items:['Strawberry charge aura and wind-cut trails use painted art','Protective bubble shields use translucent illustrated art','Mint lance shards, shatter bursts and Gale use the new VFX art','Effects are cleared on cancellation, stage transitions and scene shutdown']},
@@ -1560,6 +1561,9 @@ const ASSET_IMAGES = {
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
   // projectile sprite จริง — แทน spark/circle vector เดิม
   proj_sprinkle:'assets/generated/proj_sprinkle.png', proj_whirl:'assets/generated/proj_whirl.png',
+  vfx_recipe_meteor:'assets/vfx/recipe_meteor.webp',
+  vfx_recipe_orbit:'assets/vfx/recipe_orbit.webp',
+  vfx_recipe_buddy:'assets/vfx/recipe_buddy.webp',
   vfx_recipe_shock:'assets/vfx/recipe_shock.webp',
   vfx_recipe_burst:'assets/vfx/recipe_burst.webp',
   vfx_recipe_freeze:'assets/vfx/recipe_freeze.webp',
@@ -10192,6 +10196,10 @@ class Game extends Phaser.Scene {
     }
     return this.trackArtVfx(this.camWorld(this.add.circle(x,y,pull?R*0.5:R,col,0.22).setStrokeStyle(3,col,0.8).setDepth(-99000)));
   }
+  recipeIcon(key,x,y,size,fallback){
+    const o=this.textures.exists(key)?this.add.image(x,y,key).setDisplaySize(size,size):this.add.text(x,y,fallback,{fontSize:size+'px'});
+    return this.trackArtVfx(this.camWorld(o.setOrigin(0.5).setDepth(95000)));
+  }
   frEffect(r){ const p=this.player,px=p.x,py=p.y; let pw=(r.m==='strong'?1.5:r.m==='focus'?1.8:r.m==='slow'?1.8:r.m==='twin'?0.65:1)*(1+0.3*((r.el||1)-1))*(r.sig?1.25:1); const A=r.m==='big'?1.5:r.m==='focus'?0.6:1;
     if(r.m==='gamble'){ if(Math.random()<0.5){ this.floatText(px,py-50,'🎲 …nothing',0x9a8fb0); return; } pw*=2.5; this.floatText(px,py-50,'🎲 JACKPOT ×2.5',0xffd166); }
     const near=(R)=>{ const out=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<=R)out.push(e); }); return out; };
@@ -10209,14 +10217,17 @@ class Game extends Phaser.Scene {
       case 'cdr':{ this.uniqueCd=Math.max(0,(this.uniqueCd||0)-2*pw); this.floatText(px,py-50,'⏳ −'+(2*pw).toFixed(1)+'s',0xc7a6ff); break; }
       case 'vacuum':{ this.orbs.children.iterate(o=>{ if(o&&o.active){ const a=Math.atan2(py-o.y,px-o.x); o.setVelocity(Math.cos(a)*520,Math.sin(a)*520); o._vac=true; } }); break; }
       case 'burn':{ const R=90*A,z=this.recipeZoneArt('vfx_recipe_burn',px,py,R,0xff5a3d); this._frZones.push({x:px,y:py,R,t:3,acc:0,dmg:this.relicDmg(0.5)*pw,r,spr:z}); break; }
-      case 'buddy':{ const B=this._frBuddy; if(B){ B.t=Math.max(B.t,5*pw); B.pw=Math.max(B.pw,pw); B.r=r; } else { const spr=this.camWorld(this.add.text(px,py,'🍡',{fontSize:'26px'}).setOrigin(0.5).setDepth(95000)); this._frBuddy={t:5*pw,pw,r,acc:0,ang:0,spr}; } break; }
+      case 'buddy':{ const B=this._frBuddy; if(B){ B.t=Math.max(B.t,5*pw); B.pw=Math.max(B.pw,pw); B.r=r; } else { const spr=this.recipeIcon('vfx_recipe_buddy',px,py,42,'🍡'); this._frBuddy={t:5*pw,pw,r,acc:0,ang:0,spr}; } break; }
       case 'immune':{ p.iframe=Math.max(p.iframe||0,1*pw); this.frRing(px,py,40,0xffffff,'vfx_recipe_immune'); this.floatText(px,py-50,'🛡️ Immune',0xffffff); break; }
       case 'meteor':{ const L=near(420).sort(()=>Math.random()-0.5).slice(0,3); if(!L.length)L.push({x:px+Phaser.Math.Between(-120,120),y:py+Phaser.Math.Between(-120,120)});
-        L.forEach((t,i)=>{ const tx=t.x,ty=t.y,R=70*A,warn=this.camWorld(this.add.circle(tx,ty,R,0xff9ad5,0.15).setStrokeStyle(3,0xff9ad5,0.8).setDepth(-99000));
-          const m=this.camWorld(this.add.text(tx,ty-260,'☄️',{fontSize:'30px'}).setOrigin(0.5).setDepth(96000));
-          this.tweens.add({targets:m,y:ty,duration:420,delay:i*120,ease:'Quad.in',onComplete:()=>{ m.destroy(); warn.destroy(); this.frRing(tx,ty,R,0xff9ad5); this.screenShake(80,0.004);
+        L.forEach((t,i)=>{ const tx=t.x,ty=t.y,R=70*A,epoch=this._artEpoch||0;
+          const warn=this.recipeZoneArt('vfx_recipe_shock',tx,ty,R,0xff9ad5,true).setAlpha(0.25);
+          const m=this.recipeIcon('vfx_recipe_meteor',tx,ty-260,64,'☄️').setOrigin(0.5,0.75).setDepth(96000);
+          this.tweens.add({targets:m,y:ty,duration:420,delay:i*120,ease:'Quad.in',onComplete:()=>{ m.destroy(); warn.destroy();
+            if((this._artEpoch||0)!==epoch||(this.state!=='play'&&this.state!=='levelup'))return;
+            this.frRing(tx,ty,R,0xff9ad5,'vfx_recipe_shock'); this.screenShake(80,0.004);
             this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,tx,ty)<=R)this.frHit(e,this.relicDmg(2.2)*pw,r); }); }}); }); break; }
-      case 'orbit':{ const O=this._frOrbit; if(O){ O.t=Math.max(O.t,4*pw); O.pw=Math.max(O.pw,pw); O.r=r; } else { const sprs=[0,1,2].map(()=>this.camWorld(this.add.text(px,py,'🍭',{fontSize:'22px'}).setOrigin(0.5).setDepth(95000))); this._frOrbit={t:4*pw,pw,r,ang:0,acc:0,sprs,R:70*A}; } break; }
+      case 'orbit':{ const O=this._frOrbit; if(O){ O.t=Math.max(O.t,4*pw); O.pw=Math.max(O.pw,pw); O.r=r; } else { const sprs=[0,1,2].map(()=>this.recipeIcon('vfx_recipe_orbit',px,py,32,'🍭')); this._frOrbit={t:4*pw,pw,r,ang:0,acc:0,sprs,R:70*A}; } break; }
       case 'haste':{ this._frHasteT=Math.max(this._frHasteT||0,4*Math.min(2,pw)); this.floatText(px,py-50,'👟 Haste',0x8bd3a0); break; }
       case 'sour':{ const R=150*A; this.frRing(px,py,R,0xfff27a,'vfx_recipe_sour'); near(R).slice(0,12).forEach(e=>{ e._sourT=Math.max(e._sourT||0,5*pw); this.frHit(e,this.relicDmg(0.6)*pw,r); }); break; }
       case 'cleanse':{ const R=220*A; let n=0; if(this.foeBullets)this.foeBullets.children.iterate(b=>{ if(b&&b.active&&this.dist(b.x,b.y,px,py)<=R){ b.setActive(false).setVisible(false); if(b.body)b.body.enable=false; n++; } }); this.frRing(px,py,R,0xe8f4ff,'vfx_recipe_cleanse'); if(n)this.floatText(px,py-50,'🧽 ×'+n,0xe8f4ff); break; }

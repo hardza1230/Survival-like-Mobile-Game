@@ -1,14 +1,18 @@
+## Current release — v6.55.10 (VFX art batch 5)
+
+Painted Recipe meteor, orbiting lollipops and Dango helper replace runtime emoji presentation. Source PNGs: assets/incoming/vfx_recipe_summons; lossless WebPs: assets/vfx. Meteor warning/impact reuse batch 4 shock art. Combat and targeting values remain unchanged. All summon art clears on transitions; meteor epoch guard prevents damage crossing runs. Actual-method tests cover meteor timings/damage/cancellation, summon reuse/expiry and original helper shots. Full checks/web build pass; phone visual/performance review pending. All five scoped VFX batches are created and integrated; see assets/incoming/vfx_mint/NEXT_BATCHES.md.
+
 ## Current release — v6.55.9 (VFX art batch 4)
 
 Eight painted Recipe effects: shock, burst, freeze, sour, cleanse, immunity, burning ground and pulling hole. PNG sources: assets/incoming/vfx_recipe_fields; runtime WebPs: assets/vfx. Original combat values are preserved. Zone tweens stop at expiry; all tracked art and recipe zone references clear on transitions. Full automated checks/web build required; phone visual review pending. Remaining: batch 5 meteor, orbiting candy and helper.
 
-# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.8 · 4 ต.ค. 2026)
+# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.10 · 4 ต.ค. 2026)
 
 > อ่าน `CLAUDE.md` ให้จบก่อนทุกครั้ง (กติกา สาขา และวิธี release อยู่ในนั้น)
 > **สาขาเดียว:** `claude/vampire-survival-mobile-game-yo9e8w` · คุยกับเจ้าของเป็นภาษาไทย · ข้อความในเกมเป็นภาษาอังกฤษ
 > **วิธีทำงานกับเจ้าของ:** อ่านหัวข้อ C แล้ว **เสนอเป็นตัวเลือกให้เจ้าของเลือกเองก่อนลงมือ** (เจ้าของเป็นผู้กำกับ ไม่เขียนโค้ด)
 
-## Latest handoff — v6.55.8
+## Previous handoff — v6.55.8
 
 VFX art batch 3 is integrated too: purple Void Pull, jam Relic and Great Hunger metamorph. Run-scoped art timers cancel on transition; original combat/phase parameters retained. Remaining: batches 4–5.
 
