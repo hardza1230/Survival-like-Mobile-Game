@@ -24,9 +24,8 @@
   #game-loader{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;overflow:hidden;
     background:radial-gradient(circle at 50% 34%,#5c3a58 0,#33273f 46%,#1d1626 100%);
     color:#fff;font-family:system-ui,-apple-system,"Noto Sans Thai",sans-serif;transition:opacity .22s ease;}
-  #game-loader .card{position:relative;width:min(78vw,360px);text-align:center;
-    padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);}
-  #game-loader .status{min-height:23px;margin-top:10px;font-size:15px;color:#f5e8f0;}
+  #game-loader .card{position:relative;width:min(78vw,360px);text-align:center;box-sizing:border-box;padding:16px 20px !important;}
+  #game-loader .status{min-height:23px;margin-top:0;font-size:15px;color:#f5e8f0;}
   #game-loader .track{height:7px;margin-top:16px;padding:0;border-radius:999px;background:#17121e;overflow:hidden;position:relative;
     box-shadow:inset 0 1px 2px #0004,0 0 0 1px #ffffff15;}
   #game-loader .track:after{display:none}

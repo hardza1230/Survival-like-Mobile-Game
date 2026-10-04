@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.54.4';
+const GAME_VERSION = '6.54.5';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.54.5', date:'2026-10-04', title:'Loader box', items:['Loading tip box is evenly padded'] },
   { v:'6.54.4', date:'2026-10-04', title:'Loader patience', items:['The first-screen loader waits up to 30s for a stalled file before continuing'] },
   { v:'6.54.3', date:'2026-10-04', title:'Full load on start', items:['The game now always finishes loading everything on the first screen (from your device after the first time), so menus never show missing art'] },
   { v:'6.54.2', date:'2026-10-04', title:'Talent reset button', items:['Smaller Reset button that no longer covers the talent details'] },
