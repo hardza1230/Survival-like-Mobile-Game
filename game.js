@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.2';
+const GAME_VERSION = '6.55.3';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.55.3', date:'2026-10-04', title:'Meet Mint', items:['Stage 3 introduces Mint, the Frostleaf Guard, the first time you play it']},
   { v:'6.55.2', date:'2026-10-04', title:'Summary EXP bar · no boss pull', items:['Stage summary shows a bigger animated Character EXP bar with the total EXP gained','Boss suction/pull attacks no longer drag you']},
   { v:'6.55.1', date:'2026-10-04', title:'Hunt fix', items:['Hunt targets only flee when you get close, so they stay on screen']},
   { v:'6.55.0', date:'2026-10-04', title:'Double or Nothing', items:['Boss Loot: keep your prize, gamble it on Double or Nothing (1 of 3 cards loses it, 2 double it), or reroll the cards once with an ad']},
@@ -8521,6 +8522,9 @@ class Game extends Phaser.Scene {
   }
   startWave(w,seamless){
     if(this._replayMeter){this.waveIndex=w;this.beginReplaySwarm();return;}
+    if(this.stageIndex===2&&w===0&&!seamless&&!Save.data.mintIntro&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!this._inTutorial&&this.textures.exists('card_mint')){   // v6.55.3 แนะนำ Mint ที่ Stage 3
+      Save.data.mintIntro=1;Save.save();const me=this.character==='mint';
+      this.playStoryPanel('card_mint','NEW ALLY · MINT 🌿','Mint, the Frostleaf Guard',me?'Your Frost Lances stack Chill — 4 stacks freeze enemies solid. Mint Gale lets you dash through the swarm!':'A cool, agile fighter: Frost Lances stack Chill and 4 stacks freeze enemies. Try her in Heroes — she is already unlocked!',()=>this.startWave(w,seamless));return;}
     const beat=(STAGE_STORY_BEATS[this.stageIndex]||[])[w];this.waveIndex=w;this.boss=null;this.bossUI.forEach(o=>o.setVisible(false));
     this.playWaveCutscene(w,beat,()=>this.beginWave(w,seamless,beat));
   }
