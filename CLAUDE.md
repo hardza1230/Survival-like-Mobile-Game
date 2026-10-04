@@ -1,3 +1,11 @@
+## Current release — v6.55.7 (VFX art batch 2)
+
+Batch 2 includes three new generated raster assets: Strawberry charge aura, wind-cut ribbon and shield bubble. PNG intake: assets/incoming/vfx_charge_shield. Runtime WebP assets: assets/vfx. Strawberry/Momo auto Sniper and held Unique show the charge halo; released Unique leaves the painted wind ribbon. Aiming line and charge meter remain procedural for precise feedback. Shield art follows the player, adjusts with stacks and hides at zero shields.
+
+Batch 1 Mint assets are now wired too: ice-shard visual retains its original pooled collider, shatter/Gale sheets use NORMAL blend and 8 frames at 20fps. Gale trail uses an authored sheet frame instead of rectangle/leaf emoji when art is present. Combat/balance values remain those of v6.55.6.
+
+Tracked presentation objects clean up on menu/next run/shutdown, aura on cancel, bullet art on expiry/pool reuse. Full automated suite and web build pass; phone visual/performance review pending. Next: batch 3 (Void Pull, jam trail, boss transformation), then Recipe effects and helpers. See assets/incoming/vfx_mint/NEXT_BATCHES.md.
+
 ## Current release — v6.55.6 (4 Oct 2026)
 
 Continued from branch head v6.55.5 (6a36a21), including Stage 3 Mint introduction/forced first clear and all intervening development. This entry supersedes older version/status headings below.
@@ -169,7 +177,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.6 — Charged projectile and Boss Loot cleanup)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.7 — Painted charge, shield and Mint VFX)
 - **v6.54.9 (เจ้าของ: อยากได้การ์ดสุ่มแบบ Jackpot แทน):** onBossDown → `openBossLootCards` (การ์ดคว่ำ 3 ใบจาก 7 ชนิด: Sugar/Currency/พลั่ว/ด้าย/🔩/หินแก่น/Gear · JACKPOT 25%+10%/ระดับยาก) แล้วค่อย revealStageReward · openMysteryCards รับ opt {prizes,title,hint} + fallback emoji ถ้าไม่มี artKey · ยกเลิก Sugar Bounty v6.54.8 (บอสยังไม่ดรอป orb/หัวใจ)
 - **v6.54.8 (เจ้าของ: ของดรอปบอสไร้ประโยชน์เพราะจบด่าน):** killEnemy บอสใหญ่ไม่ dropOrb/dropHeal → Sugar Bounty (60+30·stage)×diff reward เข้า sugarStage ตรง + แบนเนอร์ · มินิ/elite ดรอปเหมือนเดิม
 - **v6.55.5 (เจ้าของ):** บังคับ Mint ทุกครั้งที่กด Stage 3 จนกว่าจะเคลียร์ด่าน 3 (`stageMastery[2]`) ไม่ผูกกับ mintIntro แล้ว

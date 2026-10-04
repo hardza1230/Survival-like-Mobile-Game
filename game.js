@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.6';
+const GAME_VERSION = '6.55.7';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  {v:'6.55.7',date:'2026-10-04',title:'Painted charge, shield and Mint effects',items:['Strawberry charge aura and wind-cut trails use painted art','Protective bubble shields use translucent illustrated art','Mint lance shards, shatter bursts and Gale use the new VFX art','Effects are cleared on cancellation, stage transitions and scene shutdown']},
   {v:'6.55.6',date:'2026-10-04',title:'Charged seed art and reward cleanup',items:['Strawberry Sniper shots and charged Unique use painted pink projectile VFX','Boss Loot cards and pending reveals are removed when closed or leaving a stage','Mint Piercer Build deals 75% more damage (was 60%)']},
   { v:'6.55.5', date:'2026-10-04', title:'Stage 3 needs Mint', items:['Until you clear Stage 3, tapping it with another hero sends you to pick Mint first']},
   { v:'6.55.4', date:'2026-10-04', title:'Mint takes Stage 3', items:['Before your first Stage 3, Mint warns you the Chili Engine Room is burning hot and takes over — pick her on the Heroes screen to enter']},
@@ -1557,6 +1558,10 @@ const ASSET_IMAGES = {
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
   // projectile sprite จริง — แทน spark/circle vector เดิม
   proj_sprinkle:'assets/generated/proj_sprinkle.png', proj_whirl:'assets/generated/proj_whirl.png',
+  vfx_strawberry_charge:'assets/vfx/strawberry_charge_aura.webp',
+  vfx_strawberry_wind:'assets/vfx/strawberry_wind_cut.webp',
+  vfx_shell_bubble:'assets/vfx/shell_bubble.webp',
+  proj_mint_shard:'assets/vfx/mint_ice_shard.webp',
   proj_strawberry_charge:'assets/vfx/strawberry_charge_projectile.webp',
   proj_frostlance:'assets/generated/proj_frostlance.png',   // หอกน้ำแข็งของมิ้นต์ (Frost Lance)
   proj_popcorn:'assets/generated/proj_popcorn.png', bubble:'assets/generated/proj_bubble.png',
@@ -1712,6 +1717,8 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
+  fx_mint_shatter:{url:'assets/vfx/mint_lance_shatter_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
+  fx_mint_gale:{url:'assets/vfx/mint_gale_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_cocoa_punch:{ url:'assets/fx_cocoa_punch_sheet.png', fw:128, fh:128, frames:8, rate:30, anchor:'center' },
   fx_flickerstrike:{ url:'assets/generated/fx_flickerstrike_sheet.png', fw:256, fh:256, frames:8, rate:34, anchor:'center' },   // Effectฟันของโกโก้ (Flicker Strike)
   fx_beam:     { url:'assets/fx_beam_sheet.png',     fw:352, fh:366, frames:8, rate:26, anchor:'left'   },
@@ -4989,12 +4996,14 @@ class Game extends Phaser.Scene {
   startSnipeCharge(p){ const a=this.strongestEnemy(900),pl=this.player;
     this._snipe={id:p.id,t0:performance.now(),sx:p.x,sy:p.y,ang:a?Math.atan2(a.y-pl.y,a.x-pl.x):Math.atan2(this.moveDir?this.moveDir.y:-1,this.moveDir?this.moveDir.x:0),dragged:false,full:false,
       g:this.camWorld(this.add.graphics().setDepth(90500))};
+    if(this.textures.exists('vfx_strawberry_charge'))this._snipe.aura=this.trackArtVfx(this.camWorld(this.add.image(pl.x,pl.y-24,'vfx_strawberry_charge').setDepth(90490).setDisplaySize(90,90).setAlpha(0.45)));
     if(Sfx.beatFx)Sfx.beatFx('hold'); }
   moveSnipeAim(p){ const s=this._snipe;if(!s)return; const dx=p.x-s.sx,dy=p.y-s.sy; if(Math.hypot(dx,dy)>18){ s.ang=Math.atan2(dy,dx); s.dragged=true; } }
-  cancelSnipe(){ const s=this._snipe;if(!s)return; if(s.g)s.g.destroy(); this._snipe=null; }
+  cancelSnipe(){ const s=this._snipe;if(!s)return; if(s.g)s.g.destroy();if(s.aura)s.aura.destroy(); this._snipe=null; }
   tickSnipe(){ const s=this._snipe;if(!s)return; if(this.state!=='play'){ this.cancelSnipe(); return; }
     const c=this.snipeCharge(),pl=this.player,g=s.g,len=1500,ca=Math.cos(s.ang),sa=Math.sin(s.ang),t=(this.elapsed||0);
     if(!s.dragged){ const a=this.strongestEnemy(900); if(a)s.ang=Math.atan2(a.y-pl.y,a.x-pl.x); }
+    if(s.aura&&s.aura.active)s.aura.setPosition(pl.x,pl.y-24).setDisplaySize(90+c*24,90+c*24).setAlpha(0.4+c*0.5).setRotation(t*1.2);
     if(c>=1&&!s.full){ s.full=true; Sfx.beatFx&&Sfx.beatFx('cue'); this.burst(pl.x,pl.y-58,0xffd166); }
     g.clear();
     g.lineStyle(2+c*3,s.full?0xffd166:0xff9ec4,0.35+0.35*c+(s.full?0.2*Math.sin(t*18):0)); g.lineBetween(pl.x+ca*30,pl.y+sa*30,pl.x+ca*len,pl.y+sa*len);
@@ -5016,6 +5025,10 @@ class Game extends Phaser.Scene {
     if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam();
     if(c>=1)this.showBanner('🎯 Perfect Shot','Full charge · '+hits+' hit'+(hits===1?'':'s'),900); }
   drawWindTrail(x0,y0,ang,len,w,c){ const ca=Math.cos(ang),sa=Math.sin(ang),nx=-sa,ny=ca,x1=x0+ca*len,y1=y0+sa*len;
+    if(this.textures.exists('vfx_strawberry_wind')){
+      const ribbon=this.trackArtVfx(this.camWorld(this.add.image(x0,y0,'vfx_strawberry_wind').setOrigin(0,0.5).setRotation(ang).setDepth(90400).setDisplaySize(len,w*2.4).setAlpha(0.65+c*0.2)));
+      this.tweens.add({targets:ribbon,alpha:0,duration:520+c*380,ease:'Cubic.in',onComplete:()=>ribbon.destroy()});return;
+    }
     const core=this.camWorld(this.add.graphics().setDepth(90400));
     core.lineStyle(w*1.6,0xffe6f0,0.22); core.lineBetween(x0,y0,x1,y1);
     core.lineStyle(w*0.6,0xffffff,0.85); core.lineBetween(x0,y0,x1,y1);
@@ -5078,10 +5091,13 @@ class Game extends Phaser.Scene {
     this.player.iframe=Math.max(this.player.iframe||0,0.35);
     const cx=this.player.x,cy=this.player.y;
     this.enemies.children.iterate(e=>{if(!e||!e.active||e.isBoss||e.isMini)return;const d=this.dist(e.x,e.y,cx,cy);if(d<r){const a=Math.atan2(e.y-cy,e.x-cx),f=(260+ul*60)*(1-d/r*0.5);e.setVelocity(Math.cos(a)*f,Math.sin(a)*f);e._knockT=0.25;}});
+    if(this.textures.exists('fx_mint_gale'))this.trackArtVfx(this.spawnFxAnim('fx_mint_gale',cx,cy,{scale:r*2.3/320,depth:9,normal:true}));
+    else {
     for(let k=0;k<2;k++){const ring=this.camWorld(this.add.circle(cx,cy,24,0xc8f4ff,0).setStrokeStyle(4-k,0xbff4e8,0.85).setDepth(9));
       this.tweens.add({targets:ring,radius:r*(1+k*0.35),alpha:0,duration:420+k*140,ease:'Cubic.out',onComplete:()=>ring.destroy()});}
     for(let i=0;i<14;i++){const a=i/14*TAU,ln=this.camWorld(this.add.rectangle(cx+Math.cos(a)*20,cy+Math.sin(a)*20,26,3,0xe6fffa,0.9).setRotation(a).setDepth(9));
       this.tweens.add({targets:ln,x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r,alpha:0,scaleX:0.3,duration:380,ease:'Cubic.out',onComplete:()=>ln.destroy()});}
+    }
     this.jelly&&this.jelly(0.25,-0.2);Sfx.dash&&Sfx.dash();Sfx.magnet&&Sfx.magnet();
     this.showBanner('🌬️ Mint Gale Lv'+ul,'Speed ×'+mul.toFixed(2)+' for '+dur.toFixed(1)+'s · ignore slows',950);
   }
@@ -5090,6 +5106,10 @@ class Game extends Phaser.Scene {
     this._windFx=(this._windFx||0)-dt;if(this._windFx>0||!this.player)return;this._windFx=0.045;
     const v=this.player.body?this.player.body.velocity:{x:0,y:0},sp=Math.hypot(v.x,v.y),a=sp>10?Math.atan2(v.y,v.x):Math.random()*TAU;
     const px=this.player.x-Math.cos(a)*18+Phaser.Math.Between(-14,14),py=this.player.y-Math.sin(a)*18+Phaser.Math.Between(-14,14);
+    if(this.textures.exists('fx_mint_gale')){
+      const gust=this.trackArtVfx(this.camWorld(this.add.image(px,py,'fx_mint_gale',6).setDisplaySize(48,32).setRotation(a).setDepth(this.player.y-1).setAlpha(0.4)));
+      this.tweens.add({targets:gust,x:px-Math.cos(a)*48,y:py-Math.sin(a)*48,alpha:0,duration:300,onComplete:()=>gust.destroy()});return;
+    }
     const ln=this.camWorld(this.add.rectangle(px,py,Phaser.Math.Between(22,40),2.5,Math.random()<0.5?0xe6fffa:0x9fe8d8,0.85).setRotation(a).setDepth(this.player.y-1));
     this.tweens.add({targets:ln,x:px-Math.cos(a)*46,y:py-Math.sin(a)*46,alpha:0,scaleX:0.2,duration:300,onComplete:()=>ln.destroy()});
     if(Math.random()<0.3){const lf=this.camWorld(this.add.text(px,py,'🍃',{fontSize:'14px'}).setOrigin(0.5).setDepth(this.player.y-1));
@@ -7843,7 +7863,7 @@ class Game extends Phaser.Scene {
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
     Save.save(); this._lastExpGain=Math.round(n);const pg=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;this._charExpGain={character:this.character,before:pg?pg.before:before,after:{lvl:cp.lvl,exp:cp.exp},gain:(pg?pg.gain:0)+this._lastExpGain}; this._lastLvlUps=ups; return ups;
   }
-  showMenu(){ this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
+  showMenu(){ this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
   setGameSpeed(s){ this.gameSpeed=s;
@@ -9516,7 +9536,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(520,()=>this.ensureStageAudio(next,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);
       if(window.GameLoader){window.GameLoader.set(1,'Entering a new stage!');this.time.delayedCall(160,()=>window.GameLoader.hide());}}));
   }
-  resetStageLoadout(){
+  resetStageLoadout(){ this.cancelSnipe();this.clearArtVfx();
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
@@ -10106,6 +10126,13 @@ class Game extends Phaser.Scene {
     return true; }
   // ฟองโล่รอบตัววาดทุกเฟรม (หนาขึ้นตามจำนวนชั้น)
   drawShellBubble(){ const n=this._shield||0,p=this.player;
+    if(this.textures.exists('vfx_shell_bubble')){
+      if(this._shellG)this._shellG.clear();
+      if(!n||!p||this.state==='menu'){if(this._shellArt)this._shellArt.setVisible(false);return;}
+      if(!this._shellArt||!this._shellArt.active)this._shellArt=this.trackArtVfx(this.camWorld(this.add.image(p.x,p.y,'vfx_shell_bubble').setDepth(95500)));
+      const r=36+Math.sin((this.elapsed||0)*5)*2.5+Math.min(3,n-1)*2;
+      this._shellArt.setVisible(true).setPosition(p.x,p.y).setDisplaySize(r*2.5,r*2.5).setAlpha(Math.min(0.55,0.32+n*0.07));return;
+    }
     if(!this._shellG){ if(!n)return; this._shellG=this.camWorld(this.add.graphics().setDepth(95500)); }
     const g=this._shellG; g.clear(); if(!n||!p||this.state==='menu')return;
     const t=this.elapsed||0,r=36+Math.sin(t*5)*2.5;
@@ -10640,7 +10667,7 @@ class Game extends Phaser.Scene {
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(closeLarge?-0.012:-0.08,closeLarge?0.012:0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
       if(path==='sniper'){
-        this.vfxCastGlow(0xffd166);
+        if(this.textures.exists('vfx_strawberry_charge')){const halo=this.trackArtVfx(this.camWorld(this.add.image(this.player.x,this.player.y-24,'vfx_strawberry_charge').setDisplaySize(88,88).setDepth(90490).setAlpha(0.65)));this.tweens.add({targets:halo,alpha:0,scaleX:halo.scaleX*0.65,scaleY:halo.scaleY*0.65,duration:340,onComplete:()=>halo.destroy()});}else this.vfxCastGlow(0xffd166);
         this.time.delayedCall(340,()=>{if(this.state==='play')fireOne();});
         for(let s=1;s<shots;s++)this.time.delayedCall(340+s*gap,fireOne);
       }else{fireOne(); for(let s=1;s<shots;s++)this.time.delayedCall(s*gap,fireOne);} }
@@ -11151,8 +11178,8 @@ class Game extends Phaser.Scene {
     if(this.state!=='play'&&this.state!=='levelup')return;
     this.burst(x,y,0x8fd0ff);
     const bloomR=118+lvl*8+(blizzard?40:0);
-    const ring=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0xbdf0ff).setDepth(6).setScale(0.2).setAlpha(0.9));
-    this.tweens.add({targets:ring,scale:bloomR/60,alpha:0,duration:300,onComplete:()=>ring.destroy()});
+    if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',x,y,{scale:bloomR*2.3/320,depth:6,normal:true}));
+    else {const ring=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0xbdf0ff).setDepth(6).setScale(0.2).setAlpha(0.9));this.tweens.add({targets:ring,scale:bloomR/60,alpha:0,duration:300,onComplete:()=>ring.destroy()});}
     // การันตีโดน: ระเบิดน้ำแข็ง AoE ในรัศมี (ดาเมจ + แช่) — แก้ปัญหา "ไม่ค่อยโดน"
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return; if(this.dist(e.x,e.y,x,y)>bloomR)return;
       this.damage(e,sdmg*1.6*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);
@@ -11161,7 +11188,7 @@ class Game extends Phaser.Scene {
     const arc=Math.PI*1.6;   // v4.20: สะเก็ดกระจายหลายแฉก ยิงตรง (ไม่โฮมมิ่ง) + เร็วขึ้น
     for(let i=0;i<count;i++){ const a=baseAng+(i/(count-1||1)-0.5)*arc+Phaser.Math.FloatBetween(-0.06,0.06);
       const b=this.getBullet(x,y,0xffffff,0.28); if(!b)break;
-      b.setTexture('proj_sprinkle').setTint(0xcaf3ff); b.faceVel=true; b.dmg=sdmg; b.life=0.5; b.pierce=true; b.hitGapV=0.1; b.homing=0;
+      b.setTexture('proj_sprinkle').setTint(0xcaf3ff);this.attachProjectileArt(b,'proj_mint_shard',24,0.67,0.5); b.faceVel=true; b.dmg=sdmg; b.life=0.5; b.pierce=true; b.hitGapV=0.1; b.homing=0;
       b.iceNeedle={freeze,frozenBonus:fb,shatter:blizzard,dmg:sdmg,lvl};
       this.physics.velocityFromRotation(a,760+Math.random()*140,b.body.velocity); }
     this.hitCratesInRadius(x,y,bloomR,sdmg);
@@ -11926,15 +11953,27 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(250,hop);
   }
   // Independent random event: three cards, one jackpot.
-  attachChargedSeed(b,height){
-    if(!this.textures.exists('proj_strawberry_charge'))return;
-    b._chargeFx=this.camWorld(this.add.image(b.x,b.y,'proj_strawberry_charge').setOrigin(0.78,0.52).setDepth(90000));
-    b._chargeFx.setScale(height/this.textures.get('proj_strawberry_charge').getSourceImage().height);
+  attachChargedSeed(b,height){this.attachProjectileArt(b,'proj_strawberry_charge',height,0.78,0.52);}
+  attachProjectileArt(b,key,height,ox=0.5,oy=0.5){
+    if(!this.textures.exists(key))return;
+    b._chargeFx=this.camWorld(this.add.image(b.x,b.y,key).setOrigin(ox,oy).setDepth(90000));
+    b._chargeFx.setScale(height/this.textures.get(key).getSourceImage().height);
     b.setAlpha(0); // Preserve the original bullet body and collision behavior.
+  }
+  trackArtVfx(o){
+    if(!o)return o;
+    if(!this._artVfx)this._artVfx=new Set();this._artVfx.add(o);
+    o.once('destroy',()=>this._artVfx&&this._artVfx.delete(o));
+    if(this.events&&!this._artVfxHook){this._artVfxHook=true;this.events.once('shutdown',()=>{this.clearArtVfx();this._artVfxHook=false;});}
+    return o;
+  }
+  clearArtVfx(){
+    for(const o of [...(this._artVfx||[])]){this.tweens.killTweensOf(o);if(o.active)o.destroy();}
+    if(this._artVfx)this._artVfx.clear();this._shellArt=null;
   }
   drawChargedSeed(x,y,ang,len,width){
     if(!this.textures.exists('proj_strawberry_charge'))return;
-    const fx=this.camWorld(this.add.image(x,y,'proj_strawberry_charge').setOrigin(0.78,0.52).setRotation(ang).setDepth(90410));
+    const fx=this.trackArtVfx(this.camWorld(this.add.image(x,y,'proj_strawberry_charge').setOrigin(0.78,0.52).setRotation(ang).setDepth(90410)));
     fx.setScale(Math.min(110,width*1.7)/this.textures.get('proj_strawberry_charge').getSourceImage().height);
     this.tweens.add({targets:fx,x:x+Math.cos(ang)*len,y:y+Math.sin(ang)*len,alpha:0,duration:260,ease:'Quad.in',onComplete:()=>fx.destroy()});
   }

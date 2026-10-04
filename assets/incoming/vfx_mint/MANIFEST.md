@@ -1,6 +1,6 @@
 # VFX art batch 1 — Mint
 
-Created 4 Oct 2026 for runtime v6.55.6. Artwork intake only; not yet wired into runtime.
+Created 4 Oct 2026 for runtime v6.55.6. Integrated in runtime v6.55.7: optimized WebP copies in assets/vfx; pool-safe projectile overlay and NORMAL-blended shatter/Gale animations.
 
 | File | Dimensions | Layout | Intended use |
 |---|---|---|---|
