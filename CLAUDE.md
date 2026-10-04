@@ -1,3 +1,13 @@
+## Current release — v6.55.6 (4 Oct 2026)
+
+Continued from branch head v6.55.5 (6a36a21), including Stage 3 Mint introduction/forced first clear and all intervening development. This entry supersedes older version/status headings below.
+
+- Strawberry/Momo Sniper basic shots and charged Unique now use `assets/vfx/strawberry_charge_projectile.webp`. Separate visual preserves the original physics hitbox; pool reuse and exit destroy it.
+- Mystery/Boss Loot modal owns its reveal timers and container. Close, replacement, stage exit/start and shutdown cancel pending callbacks and recursively stop tweens, destroy children and guard repeated reward acceptance. Double/Reroll continuation retains its existing flags.
+- Mint Piercer Build damage multiplier 1.60 → 1.75 (+9.375% relative); cooldown, range and pierce count unchanged. Card description matches.
+- Validation: full `npm run check`, reward lifecycle fixtures and `npm run build:www`. No local Chromium available; phone visual/playtest remains pending.
+- Next: phone review of Boss Loot Keep/Double/Reroll → next stage, charged projectile readability and Mint Piercer balance.
+
 ## Mint fully sprite based — v6.0.64
 
 User explicitly requested sprite sheets for every action. Gameplay no longer creates or updates the cutout rig, loads its atlas, or routes ghosts/attacks/hits through it. Existing sprite sheets handle all Mint actions. Frost Lance restores its original 360ms attack pose and immediate projectile launch. Experimental rig code/assets/tools remain available for reference, but are inactive in gameplay. Automated checks/build pass; mobile visual review remains pending.
@@ -159,7 +169,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.6 — Charged projectile and Boss Loot cleanup)
 - **v6.54.9 (เจ้าของ: อยากได้การ์ดสุ่มแบบ Jackpot แทน):** onBossDown → `openBossLootCards` (การ์ดคว่ำ 3 ใบจาก 7 ชนิด: Sugar/Currency/พลั่ว/ด้าย/🔩/หินแก่น/Gear · JACKPOT 25%+10%/ระดับยาก) แล้วค่อย revealStageReward · openMysteryCards รับ opt {prizes,title,hint} + fallback emoji ถ้าไม่มี artKey · ยกเลิก Sugar Bounty v6.54.8 (บอสยังไม่ดรอป orb/หัวใจ)
 - **v6.54.8 (เจ้าของ: ของดรอปบอสไร้ประโยชน์เพราะจบด่าน):** killEnemy บอสใหญ่ไม่ dropOrb/dropHeal → Sugar Bounty (60+30·stage)×diff reward เข้า sugarStage ตรง + แบนเนอร์ · มินิ/elite ดรอปเหมือนเดิม
 - **v6.55.5 (เจ้าของ):** บังคับ Mint ทุกครั้งที่กด Stage 3 จนกว่าจะเคลียร์ด่าน 3 (`stageMastery[2]`) ไม่ผูกกับ mintIntro แล้ว

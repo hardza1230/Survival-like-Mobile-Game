@@ -2,7 +2,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const source=fs.readFileSync('game.js','utf8');
-const methods=['openCrossroads','chooseCrossroad','resumeAfterCrossroads','clearCrossroads','scheduleStageEvent','openPrizeWheel','openMysteryCards','miniPrizePool'];
+const methods=['openCrossroads','chooseCrossroad','resumeAfterCrossroads','clearCrossroads','scheduleStageEvent','openPrizeWheel','openMysteryCards','clearMysteryCards','miniPrizePool'];
 function extract(name){const at=source.indexOf('  '+name+'(');assert(at>=0);const tail=source.slice(at+1);const next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);return source.slice(at,next?at+1+next.index:source.length);}
 const roads=source.match(/const CROSSROADS=\[[\s\S]*?\];/)[0];
 const Save={data:{threads:10,scrolls:2},threads(){return this.data.threads;},scrolls(){return this.data.scrolls;},addShovels(n){this.shovels=(this.shovels||0)+n;},save(){this.saved=(this.saved||0)+1;}};
@@ -10,13 +10,13 @@ const ctx={Save,Math:Object.create(Math),TAU:Math.PI*2,Sfx:new Proxy({},{get:()=
 vm.createContext(ctx);const layout=source.slice(source.indexOf('function prizeWheelLayout('),source.indexOf('const WORLD ='));const Reward=vm.runInContext(layout+roads+'\nclass Reward{'+methods.map(extract).join('\n')+'\n}\nReward',ctx);
 function scene(){
  const s=new Reward(),queue=[],objects=[],highlights=[];let now=0,id=0;
- function obj(kind,x=0,y=0,key){const o={kind,x,y,key,width:key==='prize_wheel_bg'?1024:256,height:key==='prize_wheel_bg'?1536:384,scaleX:1,scaleY:1,active:true,id:id++,highlightAtCreate:highlights.at(-1)};objects.push(o);
-  return new Proxy(o,{get(t,k){if(k in t)return t[k];return (...args)=>{if(k==='destroy')t.active=false;if(k==='setDisplaySize'){t.scaleX=args[0]/t.width;t.scaleY=args[1]/t.height;}if(k==='setScale')t.scaleX=t.scaleY=args[0];if(k==='setText')t.text=args[0];if(k==='lineStyle')t.stroke=args[1];if(k==='strokeCircle'&&t.stroke===0xffffff)highlights.push(args.slice(0,2));return o.proxy;};}});
+ function obj(kind,x=0,y=0,key){const o={kind,x,y,key,width:key==='prize_wheel_bg'?1024:256,height:key==='prize_wheel_bg'?1536:384,scaleX:1,scaleY:1,active:true,id:id++,highlightAtCreate:highlights.at(-1)};if(kind==='container')o.list=[];objects.push(o);
+  return new Proxy(o,{get(t,k){if(k in t)return t[k];return (...args)=>{if(k==='add'){t.list.push(...(Array.isArray(args[0])?args[0]:[args[0]]));}if(k==='destroy'){t.active=false;if(Array.isArray(t.list))for(const child of t.list)child.destroy();}if(k==='setDisplaySize'){t.scaleX=args[0]/t.width;t.scaleY=args[1]/t.height;}if(k==='setScale')t.scaleX=t.scaleY=args[0];if(k==='setText')t.text=args[0];if(k==='lineStyle')t.stroke=args[1];if(k==='strokeCircle'&&t.stroke===0xffffff)highlights.push(args.slice(0,2));return o.proxy;};}});
  }
  const add=(kind,...args)=>{const p=obj(kind,...args);p.proxy=p;return p;};
  Object.assign(s,{W:400,H:860,state:'play',mode:'breather',stageIndex:1,waveIndex:2,player:{hp:100,maxhp:200,dmgMul:2,cdMul:0.8,setVelocity(){}},physics:{paused:false,pause(){this.paused=true;},resume(){this.paused=false;}},textures:{get:()=>({getSourceImage:()=>({width:1024,height:1536})})},camUI:o=>o,popHeal(){},showBanner(){},screenFlash(){},screenShake(){},startWave(n){this.started=n;},currencyTierFor:()=>1,addRunSugar(){},grantCurrencyReward(){},diffMul:()=>({reward:1}),
- add:new Proxy({},{get:(_,kind)=>(...args)=>add(kind,...args)}),time:{delayedCall(delay,fn){queue.push({at:now+delay,fn});}},tweens:{killTweensOf(){},add(c){if(c.onComplete)queue.push({at:now+(c.duration||0)+(c.delay||0),fn:c.onComplete});}}});
- s.advance=(ms)=>{const target=now+ms;let count=0;while(true){queue.sort((a,b)=>a.at-b.at);if(!queue.length||queue[0].at>target)break;const q=queue.shift();now=q.at;q.fn();assert(++count<2000,'No infinite reward timers');}now=target;};s.objects=objects;s.highlights=highlights;return s;
+ add:new Proxy({},{get:(_,kind)=>(...args)=>add(kind,...args)}),time:{delayedCall(delay,fn){const ev={at:now+delay,fn,remove(){this.removed=true;}};queue.push(ev);return ev;}},tweens:{killTweensOf(target){for(const q of queue)if(q.target===target)q.removed=true;},add(c){if(c.onComplete)queue.push({at:now+(c.duration||0)+(c.delay||0),fn:c.onComplete,target:c.targets});}}});
+ s.advance=(ms)=>{const target=now+ms;let count=0;while(true){queue.sort((a,b)=>a.at-b.at);if(!queue.length||queue[0].at>target)break;const q=queue.shift();now=q.at;if(!q.removed)q.fn();assert(++count<2000,'No infinite reward timers');}now=target;};s.objects=objects;s.highlights=highlights;return s;
 }
 for(const index of [0,1]){const s=scene();s.openCrossroads(3);assert.equal(s._rollBtns.length,2);assert.equal(s.state,'rolling');assert(s.physics.paused);assert.equal(s._xr.gates,undefined);s.advance(20000);assert(s._xr,'Choice does not expire');const click=s._rollBtns[index].fn;click();click();assert.equal(s.state,'play');assert(!s.physics.paused);assert.equal(s._rollBtns.length,0);assert.equal(s.player.cdMul,0.8);
  if(index===0){assert.equal(s.player.hp,70);assert.equal(s.player.dmgMul,2.25);s.advance(90000);assert.equal(s.player.dmgMul,2);}else{assert.equal(s.player.hp,180);assert.equal(s.player.dmgMul,2);}s.advance(4000);assert.equal(s.started,3);}
@@ -56,3 +56,23 @@ for(const [w,h] of [[320,568],[360,800],[390,844],[430,932],[768,1024]]){
  assert(p.cy+p.R+84+46<h,'STOP button stays on screen');
 }
 console.log('Wheel regression: 60 outcomes, 12-prize pool, persistent resources, Unique recharge, full backdrop and separated boss HUD passed');
+
+// Closing or replacing a reward modal cancels reveals and cannot pay twice.
+for(const early of [0,100,500,1600]){
+ const s=scene();let paid=0,done=0;
+ const prize={name:'Sugar',sub:'+1',emoji:'x',color:0xff00ff,give(){paid++;}};
+ s.openMysteryCards(()=>done++,{prizes:[prize,prize,prize],choice:true});
+ s._rollBtns[0].fn();s.advance(early);s.clearMysteryCards();
+ const created=s.objects.length;s.advance(10000);
+ assert.equal(s.objects.length,created,'Cancelled flips cannot recreate reward art');
+ assert.equal(paid,0);assert.equal(done,0);assert.equal(s._mysteryCards,null);
+ assert(s.objects.every(o=>!o.active),'All nested cards and labels destroyed');
+}
+{
+ const s=scene();let paid=0,done=0;
+ const prize={name:'Sugar',sub:'+1',emoji:'x',color:0xff00ff,give(){paid++;}};
+ s.openMysteryCards(()=>done++,{prizes:[prize,prize,prize],choice:true});
+ s._rollBtns[0].fn();s.advance(1600);const keep=s._rollBtns[0].fn;keep();keep();s.advance(10000);
+ assert.equal(paid,1);assert.equal(done,1);assert.equal(s._mysteryCards,null);assert(s.objects.every(o=>!o.active));
+}
+console.log('Boss Loot lifecycle: cancelled reveals, recursive cleanup and repeated Keep grant once passed');

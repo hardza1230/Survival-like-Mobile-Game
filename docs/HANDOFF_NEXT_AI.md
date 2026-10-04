@@ -1,8 +1,16 @@
-# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v5.84.0 · 27 ก.ย. 2026)
+# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.6 · 4 ต.ค. 2026)
 
 > อ่าน `CLAUDE.md` ให้จบก่อนทุกครั้ง (กติกา สาขา และวิธี release อยู่ในนั้น)
 > **สาขาเดียว:** `claude/vampire-survival-mobile-game-yo9e8w` · คุยกับเจ้าของเป็นภาษาไทย · ข้อความในเกมเป็นภาษาอังกฤษ
 > **วิธีทำงานกับเจ้าของ:** อ่านหัวข้อ C แล้ว **เสนอเป็นตัวเลือกให้เจ้าของเลือกเองก่อนลงมือ** (เจ้าของเป็นผู้กำกับ ไม่เขียนโค้ด)
+
+## Latest handoff — v6.55.6
+
+Source of truth: the latest branch/game.js, not historical task/version entries below. Work continued from v6.55.5 (6a36a21).
+
+Implemented: painted Strawberry/Momo Sniper projectile for automatic shots and charged Unique; Boss Loot/Mystery card lifecycle cleanup including cancelled reveals and duplicate Keep guard; Mint Piercer damage 1.60 → 1.75. New VFX retains the original projectile collider and is cleaned on pool reuse/expiry/stage exit.
+
+Checks: full automated suite and web build pass. Local Chromium unavailable; phone playtest remains necessary. Next review: Boss Loot Keep/Double/Reroll then start a new stage; pink projectile direction/readability; modest Piercer damage buff. Older pending-art and version entries below are historical and must be checked against current runtime before acting.
 
 ## A. ขั้นตอน release (ทุกครั้ง)
 1. bump `GAME_VERSION` (game.js ~บรรทัด 45) และเพิ่ม `CHANGELOG` ต่อจาก `const CHANGELOG = [` (ข้อความภาษาอังกฤษ)
