@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.52.0';
+const GAME_VERSION = '6.52.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.52.1', date:'2026-10-04', title:'Talent tree & shorter cards', items:['Talents are now a tree: a Core branch plus one branch per Build — unlock nodes top to bottom','Build branches power up only in runs where you pick that build','Level-up cards: tags moved to the star line and repeated text removed'] },
   { v:'6.52.0', date:'2026-10-04', title:'Gear tutorial', items:['After beating the first boss, a guided tutorial shows how to roll, equip and craft items (with a free gift to try it)'] },
   { v:'6.51.2', date:'2026-10-04', title:'Build names & clearer results', items:['Build Path cards now use short build names (Sniper Build, Freeze Build, Titan Build…) for every hero','Defeat screen trimmed: big Time/Kills/Level, Sugar/Power/EXP highlighted, one-line cause'] },
   { v:'6.51.1', date:'2026-10-04', title:'Smoother stage start', items:['Stage graphics are prepared behind the loading screen, reducing the stutter when the first wave appears'] },
@@ -2768,6 +2769,13 @@ const CHAR_TALENTS = {
   ],
 };
 function charTalents(c){ return CHAR_TALENTS[c]||CHAR_TALENTS.momo; }
+// v6.52.1: Talent tree แบบสายตระกูล — 1 สายต่อ Build Path (ทำงานเฉพาะรันที่เลือกสายนั้น)
+function talentBranch(pt){ const e=pt.emoji||'✦',b='b_'+pt.id+'_';
+  return [{id:b+0,emoji:e,name:'Focus',max:3,per:'+6% damage',apply:(p,r)=>{p.dmgMul+=0.06*r;}},
+    {id:b+1,emoji:'⏱️',name:'Rhythm',max:3,per:'−4% cooldown',apply:(p,r)=>{p.cdMul*=(1-0.04*r);}},
+    {id:b+2,emoji:'🛡️',name:'Resolve',max:2,per:'+8% max HP',apply:(p,r)=>{const f=1+0.08*r;p.maxhp*=f;p.hp=Math.min(p.maxhp,p.hp*f);}},
+    {id:b+3,emoji:'👑',name:'Mastery',max:1,per:'+12% damage · +6% crit',apply:(p,r)=>{p.dmgMul+=0.12*r;p.critChance+=0.06*r;}}]; }
+function applyPathTalents(p,ch,path,tal){ const pt=(BASIC_PATHS[ch]||[]).find(x=>x.id===path); if(!pt||!tal)return; for(const d of talentBranch(pt)){const r=tal[d.id]||0;if(r>0)d.apply(p,r);} }
 // v4.88: Passive ประจำตัว (ทำงานตลอด · แรงขึ้นตามเลเวลตัวละคร)
 const CHAR_PASSIVES={
   momo:{emoji:'🍓',name:'Lucky Seeds',desc:'Critical hits heal you'},
@@ -5885,7 +5893,7 @@ class Game extends Phaser.Scene {
     const ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,st=ch.stats||{};
     if(st.hp)p.maxhp+=st.hp; if(st.dmg)p.dmgMul*=st.dmg; if(st.spd)p.baseSpeed*=st.spd; if(st.def)p.dmgTakenMul*=st.def; if(st.crit)p.critChance+=st.crit; if(st.cdr)p.cdMul*=st.cdr; if(st.regenFlat)p.regenFlat+=st.regenFlat;
     const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul+=((sw.dmgMul||1))-1; p.cdMul*=(sw.cdMul||1); }
-    const talents=Save.cp(Save.data.character).tal||{};for(const def of charTalents(Save.data.character)){const r=talents[def.id]||0;if(r>0&&def.apply)def.apply(p,r);}
+    const talents=Save.cp(Save.data.character).tal||{};for(const def of charTalents(Save.data.character)){const r=talents[def.id]||0;if(r>0&&def.apply)def.apply(p,r);}if(this.basicAttack&&this.basicAttack.path){applyPathTalents(p,Save.data.character,this.basicAttack.path,talents);this.basicAttack._ptal=this.basicAttack.path;}
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); }
     applySpecialCores(p);
     for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
@@ -9590,7 +9598,7 @@ class Game extends Phaser.Scene {
   // v5.11: ทุกการ์ดมีบรรทัดเน้นอ่านเร็ว · สีบอกชนิด: เขียว=ตัวเลขบัฟ · แดง=ข้อเสีย · ม่วง=Mutation · ทอง=Evolution · ฟ้า=Build Path · ส้ม=Infusion · ชมพู=Relic/ฟื้น · เหลือง=อื่น ๆ
   _cardHeadline(o){
     if(!o)return null;const desc=String(o.desc||'').replace(/\s*\[[^\]]*\]\s*$/,'').replace(/\s+·\s+\S+\s(Precision|Swarm|Guard|Tempo)\b.*$/,'').replace(/\s+🔗.*$/,''),kind=String(o.kind||'');
-    const clause=(last)=>{const parts=desc.split(/\s[·—]\s|\.(?=\s|$)|[;(]|\n/).map(x=>x.trim()).filter(Boolean);let c=(last?(parts[1]||parts[0]):parts[0])||'';if(c.length>34)c=c.slice(0,32).replace(/\s+\S*$/,'')+'…';return c;};
+    const clause=(last)=>{const parts=desc.split(/\s[·—]\s|\.(?=\s|$)|[;(]|\n/).map(x=>x.trim()).filter(Boolean);let c=(last?(parts[1]||parts[0]):parts[0])||'';if(c.length>30)c=c.slice(0,28).replace(/\s+\S*$/,'');return c;};
     const num=desc.match(/[+\-−×]\s?\d+(?:\.\d+)?%?(?:\s+[A-Za-z][A-Za-z/&]*){0,2}/);
     const G={t:'',c:'#8ff0b0',s:'#0c2a1a'};
     if(o.headline)return {t:o.headline,c:o.evolution?'#ffd76a':o.mutation?'#d9a8ff':kind==='Build Path'?'#8fe3ff':kind==='Flavor Infusion'?'#ffc27a':kind==='Relic'?'#ffb3e0':'#8ff0b0',s:'#172333'};
@@ -9620,6 +9628,9 @@ class Game extends Phaser.Scene {
     group.add(glow);
     const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
     let icon,badgeT,nameT,roleT,descT,starsT,ctaT; const hl=options.starting?null:this._cardHeadline(o);
+    // v6.52.1: คำอธิบายสั้นลง — แยกแท็กไปบรรทัดดาว · ตัดท่อนที่ซ้ำกับหัวข้อเขียว
+    let dd=String(o.desc||''),tagS='';{const ti=dd.search(/\s{2}·\s{2}|\s⬆\s/);if(ti>=0){tagS=dd.slice(ti).replace(/^\s*·\s*/,'').trim();dd=dd.slice(0,ti);}}
+    if(hl&&hl.t){const h=hl.t.replace(/^[^A-Za-z0-9+\-−×]+/,'').replace(/…$/,'').trim();if(h.length>3&&dd.trim().startsWith(h)){const r=dd.trim().slice(h.length).replace(/^[\s,·;—-]+/,'');if(r.length>3)dd=r.charAt(0).toUpperCase()+r.slice(1);}}
     if(wide){
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
       const halo=this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
@@ -9627,9 +9638,9 @@ class Game extends Phaser.Scene {
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
       nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
-      descT=this.add.text(textX,y+75,o.desc||'',{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
+      descT=this.add.text(textX,y+75,dd,{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
-      starsT=this.add.text(textX,y+h-20,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
+      starsT=this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
       ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }else{
@@ -9639,9 +9650,9 @@ class Game extends Phaser.Scene {
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
-      descT=this.add.text(x+w/2,y+h*0.60,o.desc||'',{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
+      descT=this.add.text(x+w/2,y+h*0.60,dd,{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
-      starsT=this.add.text(x+w/2,y+h*0.87,stars,{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
+      starsT=this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }
@@ -9700,7 +9711,7 @@ class Game extends Phaser.Scene {
   basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
-  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;b._pm=pathMods(b);this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
+  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
@@ -12470,12 +12481,37 @@ class Game extends Phaser.Scene {
     const pd=this.add.text(bx+12,py+31,(ps?ps.desc:'')+'  (power ×'+sc.toFixed(2)+' from Lv)',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#d4c2e6'}).setOrigin(0,0.5);
     this.menu.add([g,hd,tp,ex,pt,pd]);
     if(own.length>1){ const ra=this.add.text(hd.x+hd.width+14,top,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(ra); this._zone(ra.x-20,top-18,40,36,()=>{ const n=own[(oi+1)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); }); }
-    const listTop=py+54,rh=Math.max(44,Math.min(58,(this.H-listTop-70)/defs.length-6));
-    defs.forEach((d,i)=>{ const r=(cp.tal||{})[d.id]||0,maxed=r>=d.max,can=!maxed&&(cp.tp||0)>0;
-      this._rowBtn(listTop+i*(rh+6),rh,d.emoji,d.name+'  '+r+'/'+d.max,d.per,maxed?'MAX':can?'+1 🌟':'🔒 TP',maxed?'#ffe07a':can?'#8ff0b0':'#8a8198',can?()=>{ if((cp.tp||0)<=0||(cp.tal||{})[d.id]>=d.max)return; cp.tal=cp.tal||{}; cp.tal[d.id]=(cp.tal[d.id]||0)+1; cp.tp--; Save.save(); Sfx.progress('talent'); this.menuToast('🌟 '+d.name+' → '+(r+1)); this.buildTalents(); }:null,bx,bw); });
+    // v6.52.1: Talent tree แบบ Tap Titans — คอลัมน์ Core + 1 สายต่อ Build Path · โหนดถัดไปปลดเมื่อโหนดก่อนหน้า ≥1
+    const tal=cp.tal||{},cols=[{name:'Core',emoji:'⭐',col:0xffd166,nodes:defs}].concat((BASIC_PATHS[id]||[]).map((pt,k)=>({name:String(pt.name).replace(/ Build$/,''),emoji:pt.emoji,col:[0x7fd4ff,0xff8fb5,0x8ff0b0][k%3],nodes:talentBranch(pt)})));
+    const nc=cols.length,cw=bw/nc,tTop=py+60,maxN=Math.max(...cols.map(c=>c.nodes.length)),detH=96,nh=Math.max(46,Math.min(70,(this.H-tTop-34-detH-64)/maxN)),nr=Math.min(21,cw*0.27,nh*0.36);
+    const avail=(c,i)=>i===0||(tal[c.nodes[i-1].id]||0)>0;
+    if(!this._talSel||!cols.some(c=>c.nodes.some(n=>n.id===this._talSel)))this._talSel=defs[0]&&defs[0].id;
+    let sel=null,selOk=false,selCol=null;
+    cols.forEach((c,ci)=>{ const cx=bx+cw*ci+cw/2;
+      const hb=this.add.graphics();hb.fillStyle(c.col,0.18);hb.fillRoundedRect(bx+cw*ci+3,tTop,cw-6,26,9);hb.lineStyle(1.5,c.col,0.8);hb.strokeRoundedRect(bx+cw*ci+3,tTop,cw-6,26,9);
+      const ht=this.add.text(cx,tTop+13,c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(cw<95?10:12)+'px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([hb,ht]);
+      const ln=this.add.graphics();this.menu.add(ln);
+      c.nodes.forEach((n,i)=>{ const y=tTop+34+nr+i*nh,r=tal[n.id]||0,ok=avail(c,i),mx=r>=n.max,on=this._talSel===n.id;
+        if(i>0){ln.lineStyle(4,(r>0||ok)?c.col:0x3a3048,(r>0||ok)?0.9:0.6);ln.lineBetween(cx,y-nh+nr,cx,y-nr);}
+        const g2=this.add.graphics();g2.fillStyle(mx?0x5a4310:r>0?0x2f3d4f:ok?0x2a2236:0x1a1522,1);g2.fillCircle(cx,y,nr);g2.lineStyle(on?4:2,on?0xffffff:mx?0xffd166:r>0?c.col:ok?0x6a5b86:0x3a3048,1);g2.strokeCircle(cx,y,nr);
+        const em=this.add.text(cx,y-1,ok||r>0?n.emoji:'🔒',{fontSize:Math.round(nr*0.95)+'px'}).setOrigin(0.5).setAlpha(ok||r>0?1:0.55);
+        const rt=this.add.text(cx,y+nr+7,r+'/'+n.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:mx?'#ffe07a':r>0?'#cfe9ff':'#8a8198'}).setOrigin(0.5);
+        this.menu.add([g2,em,rt]); if(on){sel=n;selOk=ok;selCol=c;}
+        this._zone(cx-cw/2+2,y-nr-4,cw-4,nr*2+16,()=>{this._talSel=n.id;Sfx.select&&Sfx.select();this.buildMenuScreen();}); }); });
+    if(sel){ const dy=tTop+34+maxN*nh+4,r=tal[sel.id]||0,mx=r>=sel.max,can=selOk&&!mx&&(cp.tp||0)>0,dg=this.add.graphics();
+      dg.fillStyle(0x241a30,0.97);dg.fillRoundedRect(bx,dy,bw,detH-8,14);dg.lineStyle(2,selCol.col,0.9);dg.strokeRoundedRect(bx,dy,bw,detH-8,14);
+      const t1=this.add.text(bx+14,dy+18,sel.emoji+' '+sel.name+'  '+r+'/'+sel.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5);
+      const t2=this.add.text(bx+14,dy+42,sel.per,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-130}}).setOrigin(0,0.5);
+      const t3=this.add.text(bx+14,dy+68,selCol.name==='Core'?'Always active':'Active only in runs where you pick '+selCol.name+' Build',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',wordWrap:{width:bw-130}}).setOrigin(0,0.5);
+      const pbw=104,pbh=46,pbx=bx+bw-pbw-10,pby=dy+(detH-8-pbh)/2,pg=this.add.graphics();pg.fillStyle(mx?0x5a4310:can?0x3f9160:0x3a3048,1);pg.fillRoundedRect(pbx,pby,pbw,pbh,12);
+      const pt2=this.add.text(pbx+pbw/2,pby+pbh/2,mx?'MAX':!selOk?'🔒 Locked':can?'+1  🌟':'Need TP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5);
+      this.menu.add([dg,t1,t2,t3,pg,pt2]);
+      this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!selOk?'Unlock the node above first':'Need Talent Points — level up this hero','#ff9bb5');return;}
+        cp.tal=cp.tal||{};cp.tal[sel.id]=(cp.tal[sel.id]||0)+1;cp.tp--;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+sel.name+' '+cp.tal[sel.id]+'/'+sel.max,'#8ff0b0');this.buildMenuScreen(); }); }
+    const defsN=0,listTop=tTop+34+maxN*nh+detH,rh=0;
     // v4.88.2: รีเซ็ต Talent คืน TP ทั้งหมด (จ่าย Sugar · แตะ 2 ครั้งยืนยัน)
     const spent=Object.values(cp.tal||{}).reduce((a,v)=>a+(v||0),0),cost=80+40*spent,armed=this._talResetArm&&this._talResetArm.id===id&&Date.now()-this._talResetArm.t<2500;
-    const ry=listTop+defs.length*(rh+6)+22;
+    const ry=listTop+defsN*(rh+6)+22;
     this.uiPillBtn(this.menu,W/2,ry,Math.min(bw,300),38,spent>0?0xb45a7a:0x4a4059,'↺',spent<=0?'Reset Talents (nothing spent)':armed?'Tap again to confirm · 🍬'+cost:'Reset Talents · 🍬'+cost,()=>{
       if(spent<=0){this.menuToast('No talent points spent yet');return;}
       if((Save.data.sugar||0)<cost){this.menuToast('Need 🍬'+cost+' Sugar');return;}
