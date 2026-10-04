@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.22';
+const GAME_VERSION = '6.55.23';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -62,6 +62,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.23',date:'2026-10-04',title:'Slower hero levels',items:['Hero level EXP requirement now grows faster at higher levels']},
   {v:'6.55.22',date:'2026-10-04',title:'Detailed stat sources',items:['Stat breakdown lists each talent, Weave core, gear piece, item-level bonus, mod line, set and perk separately','Gear lines show item level, enhance level and base scaling']},
   {v:'6.55.21',date:'2026-10-04',title:'Defense and healing tuning',items:['Oath Shell Armor lowered to +1.5 per level','Kitchen Heal reduced to 2% HP','On Dash recipes trigger at most once every 1.5s']},
   {v:'6.55.20',date:'2026-10-04',title:'Oath Shell gives Armor',items:['Oath Shell now grants +4 Armor per level instead of stacking % damage reduction','Armor now also reduces contact damage from monsters','Stats Defense shows armor sources']},
@@ -2899,13 +2900,12 @@ const CHAR_PASSIVES={
 };
 function charPassiveScale(lvl){ return 1+Math.min(0.9,Math.max(0,(lvl||1)-1)*0.03); }
 // EXP ที่ต้องใช้เพื่อขึ้นจากเลเวล l → l+1
-function characterExpProgress(before,gain,progress){
-  const lv=Math.max(1,Math.floor(before.lvl||1)),base=17.5*lv*lv+22.5*lv-40;
-  const total=Math.max(0,base+(before.exp||0)+Math.max(0,gain||0)*Math.max(0,Math.min(1,progress)));
-  const lvl=Math.max(1,Math.floor((-22.5+Math.sqrt(506.25+70*(total+40)))/35));
-  return {lvl,exp:Math.max(0,total-(17.5*lvl*lvl+22.5*lvl-40)),need:charExpNeed(lvl)};
+function characterExpProgress(before,gain,progress){   // v6.55.23: วนตาม charExpNeed (ไม่ผูกสูตรเส้นตรงแล้ว)
+  let lvl=Math.max(1,Math.floor(before.lvl||1)),exp=Math.max(0,(before.exp||0)+Math.max(0,gain||0)*Math.max(0,Math.min(1,progress)));
+  while(exp>=charExpNeed(lvl)){exp-=charExpNeed(lvl);lvl++;}
+  return {lvl,exp,need:charExpNeed(lvl)};
 }
-function charExpNeed(l){ return 40 + l*35; }
+function charExpNeed(l){ return Math.round(50 + 40*Math.pow(Math.max(1,l),1.35)); }   // v6.55.23: เดิม 40+35l โตเส้นตรง ขึ้นไวเกิน · Lv1 90 / Lv5 333 / Lv10 945 / Lv20 2.3k
 
 /* ---- SKILL_TIERS: อธิบายว่า "per level" ปลดEffectอะไร (โชว์บนการ์ด) ---- */
 const SKILL_TIERS = {
