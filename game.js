@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.54.2';
+const GAME_VERSION = '6.54.3';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.54.3', date:'2026-10-04', title:'Full load on start', items:['The game now always finishes loading everything on the first screen (from your device after the first time), so menus never show missing art'] },
   { v:'6.54.2', date:'2026-10-04', title:'Talent reset button', items:['Smaller Reset button that no longer covers the talent details'] },
   { v:'6.54.1', date:'2026-10-04', title:'Menu art fix', items:['Menu pages redraw once their art finishes loading, so icons no longer show as placeholders'] },
   { v:'6.54.0', date:'2026-10-04', title:'Set collection & talent tutorial', items:['Codex › Sets: feed 5 spare copies of each piece to complete a set collection for a permanent bonus','Skill Codex renamed to Codex','After stage 1 the tutorial also shows how to spend a Talent Point'] },
@@ -4689,7 +4690,7 @@ class Game extends Phaser.Scene {
     const warm=()=>this.time.delayedCall(60,()=>this.preloadAll());   // v6.47 เจ้าของเลือก: โหลดทั้งเกมตั้งแต่หน้าแรก (ครั้งต่อไปมาจาก cache ในเครื่อง)
     // v6.49: เคยโหลดครบแล้ว = ไฟล์อยู่ในเครื่อง → เข้าเมนูเลย เตรียมที่เหลือเบื้องหลัง · ครั้งแรกโหลดครบก่อน (v6.48)
     let cached=false; try{cached=localStorage.getItem('mochi_full_cached')==='1';}catch(e){}
-    if(cached&&window.GameLoader){ window.GameLoader.hide(); this.time.delayedCall(60,()=>this.preloadAll(null,true)); } else warm();
+    warm();   // v6.54.3 เจ้าของ: บังคับโหลดทั้งหมดที่หน้าแรกทุกครั้ง (ไฟล์อยู่ในเครื่องแล้ว = เร็ว) ไม่โหลดเบื้องหลังระหว่างเล่น
   }
 
   // v6.47: โหลดทุก asset ครั้งเดียวหลังหน้าแรก (Service Worker เก็บไว้ในเครื่อง → เปิดครั้งต่อไปเร็ว) แล้วไม่มีการรอโหลดระหว่างเล่นอีก
