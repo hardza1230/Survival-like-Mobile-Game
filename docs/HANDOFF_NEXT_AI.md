@@ -1,3 +1,7 @@
+## Current release — v6.55.11 (Monster animation commit 1)
+
+Central monster presentation now owns idle/move and timed action poses, pauses animation while frozen, clears pooled state, and keeps walk-sheet proportions stable. Existing Acid Ant and stage 5 reset timers were removed. Hunt and Mini Jelly texture overrides reset presentation correctly. Optional action/death clips can be registered by later art batches; no new monster art in this commit. Actual-method tests and full checks/web build pass; phone visual review pending. Next: commit 2, Chapter 1 ant animation. Full 10-commit plan and integration schema: docs/MONSTER_ANIMATION_PLAN.md.
+
 ## Current release — v6.55.10 (VFX art batch 5)
 
 Painted Recipe meteor, orbiting lollipops and Dango helper replace runtime emoji presentation. Source PNGs: assets/incoming/vfx_recipe_summons; lossless WebPs: assets/vfx. Meteor warning/impact reuse batch 4 shock art. Combat and targeting values remain unchanged. All summon art clears on transitions; meteor epoch guard prevents damage crossing runs. Actual-method tests cover meteor timings/damage/cancellation, summon reuse/expiry and original helper shots. Full checks/web build pass; phone visual/performance review pending. All five scoped VFX batches are created and integrated; see assets/incoming/vfx_mint/NEXT_BATCHES.md.
@@ -6,7 +10,7 @@ Painted Recipe meteor, orbiting lollipops and Dango helper replace runtime emoji
 
 Eight painted Recipe effects: shock, burst, freeze, sour, cleanse, immunity, burning ground and pulling hole. PNG sources: assets/incoming/vfx_recipe_fields; runtime WebPs: assets/vfx. Original combat values are preserved. Zone tweens stop at expiry; all tracked art and recipe zone references clear on transitions. Full automated checks/web build required; phone visual review pending. Remaining: batch 5 meteor, orbiting candy and helper.
 
-# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.10 · 4 ต.ค. 2026)
+# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.11 · 4 ต.ค. 2026)
 
 > อ่าน `CLAUDE.md` ให้จบก่อนทุกครั้ง (กติกา สาขา และวิธี release อยู่ในนั้น)
 > **สาขาเดียว:** `claude/vampire-survival-mobile-game-yo9e8w` · คุยกับเจ้าของเป็นภาษาไทย · ข้อความในเกมเป็นภาษาอังกฤษ
