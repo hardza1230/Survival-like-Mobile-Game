@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.54.5';
+const GAME_VERSION = '6.54.6';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.54.6', date:'2026-10-04', title:'Faster second launch', items:['After the first launch, the game waits only for menu art (about half the data) and prepares battle art in the background','Starting a stage waits for battle art if it is not ready yet'] },
   { v:'6.54.5', date:'2026-10-04', title:'Loader box', items:['Loading tip box is evenly padded'] },
   { v:'6.54.4', date:'2026-10-04', title:'Loader patience', items:['The first-screen loader waits up to 30s for a stalled file before continuing'] },
   { v:'6.54.3', date:'2026-10-04', title:'Full load on start', items:['The game now always finishes loading everything on the first screen (from your device after the first time), so menus never show missing art'] },
@@ -1928,6 +1929,7 @@ const MENU_GROUPS=[
   [/^(chars|talents)$/,/assets\/(?:character_cards\/|art\/build_paths\/)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_paths\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
+const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|build_paths|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
 const STAGE_LATE_RE=/assets\/(?:art\/(?:build_paths|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
@@ -4692,20 +4694,21 @@ class Game extends Phaser.Scene {
     const warm=()=>this.time.delayedCall(60,()=>this.preloadAll());   // v6.47 เจ้าของเลือก: โหลดทั้งเกมตั้งแต่หน้าแรก (ครั้งต่อไปมาจาก cache ในเครื่อง)
     // v6.49: เคยโหลดครบแล้ว = ไฟล์อยู่ในเครื่อง → เข้าเมนูเลย เตรียมที่เหลือเบื้องหลัง · ครั้งแรกโหลดครบก่อน (v6.48)
     let cached=false; try{cached=localStorage.getItem('mochi_full_cached')==='1';}catch(e){}
-    warm();   // v6.54.3 เจ้าของ: บังคับโหลดทั้งหมดที่หน้าแรกทุกครั้ง (ไฟล์อยู่ในเครื่องแล้ว = เร็ว) ไม่โหลดเบื้องหลังระหว่างเล่น
+    if(cached)this.time.delayedCall(60,()=>this.preloadAll(null,false,UI_ART_RE)); else warm();   // v6.54.6: ครั้งต่อไป รอแค่ภาพเมนู/UI ก่อน แล้วภาพในด่านโหลดต่อเบื้องหลัง · v6.54.3 เจ้าของ: บังคับโหลดทั้งหมดที่หน้าแรกทุกครั้ง (ไฟล์อยู่ในเครื่องแล้ว = เร็ว) ไม่โหลดเบื้องหลังระหว่างเล่น
   }
 
   // v6.47: โหลดทุก asset ครั้งเดียวหลังหน้าแรก (Service Worker เก็บไว้ในเครื่อง → เปิดครั้งต่อไปเร็ว) แล้วไม่มีการรอโหลดระหว่างเล่นอีก
-  preloadAll(done,quiet){
+  preloadAll(done,quiet,only){
     if(this._allLoaded){done&&done();return;} if(this._allLoading){ if(done){ this._allWait.push(done); if(this._preloadQuiet){ this._preloadQuiet=false; const G=window.GameLoader; if(G){G.show('Preparing game data…',0);LoadMeter.show();} } } return;}
     this._preloadQuiet=!!quiet;
     this._allLoading=true;this._allWait=done?[done]:[];
     const L=window.GameLoader,real=k=>{ if(!this.textures.exists(k))return false; return !(this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement); };
     const drop=k=>{ if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } };
     let n=0;
-    for(const k in ASSET_IMAGES){ if(real(k))continue; drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
-    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
-    for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
+    const skip=u=>only&&!only.test(u); let skipped=0;
+    for(const k in ASSET_IMAGES){ if(real(k))continue; if(skip(ASSET_IMAGES[k])){skipped++;continue;} drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
+    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; if(only){skipped++;continue;} drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
+    for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; if(only){skipped++;continue;} drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
     // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
     for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch){ const u=ASSET_AUDIO[k]; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); } continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
     // finalize = ทุกไฟล์โหลดเสร็จจริง (loader 'complete') → ถือว่าพร้อมทั้งเกม + จำไว้ว่าเครื่องมีไฟล์ครบ
@@ -4723,7 +4726,9 @@ class Game extends Phaser.Scene {
       const wasQuiet=this._preloadQuiet; this._preloadQuiet=false;
       if(L&&!wasQuiet){L.set(1,'Ready!');setTimeout(()=>L.hide(),180);}
       if(this.state==='menu')this.buildMenuScreen();
-      const w=this._allWait;this._allWait=[];w.forEach(cb=>setTimeout(cb,0)); };
+      const w=this._allWait;this._allWait=[];
+      if(only&&skipped){ this._allLoaded=false;this._allComplete=false; setTimeout(()=>{ this.preloadAll(null,true); w.forEach(cb=>this.preloadAll(cb)); },50); return; }   // เฟส 2: ภาพในด่าน (เงียบ) · ใครรออยู่ให้รอเฟส 2
+      w.forEach(cb=>setTimeout(cb,0)); };
     let lastT=Date.now(),finDone=false; const tick=()=>{ lastT=Date.now(); }; const mk=f=>{ lastT=Date.now(); LoadMeter.mark(f&&f.url,fileFromDevice(f)); if(!this._preloadQuiet)LoadMeter.show(); };
     // v6.49.1: มือถือบางเครื่อง loader ไม่ยิง 'complete' (ถอดรหัสเสียงค้าง) → ไม่มีความคืบหน้า 10 วิ = ไปต่อแบบ partial
     const wd=setInterval(()=>{ if(finDone){clearInterval(wd);return;} if(Date.now()-lastT>30000)fin(true); },1000);
@@ -8007,7 +8012,7 @@ class Game extends Phaser.Scene {
     this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
-    if(!this._allLoaded&&!(this._allLoading&&this._preloadQuiet)){ if(this._enteringStageArt)return;this._enteringStageArt=true; this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
+    if(!this._allLoaded){ if(this._enteringStageArt)return;this._enteringStageArt=true; this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
     if(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx)){
       if(this._enteringStageArt)return;this._enteringStageArt=true;
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
