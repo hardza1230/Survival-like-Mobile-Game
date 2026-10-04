@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.25';
+const GAME_VERSION = '6.55.26';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,8 +60,11 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
+// v6.55.26: ดาเมจฐานฮีโร่ 90% → 100% (เลิกงง) · HP ศัตรูทุกตัว ×1/0.9 ให้ความยากเท่าเดิม
+
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.26',date:'2026-10-04',title:'Attack Power starts at 100%',items:['Heroes start at 100% Attack Power instead of 90%','Enemy HP raised to match, so difficulty is unchanged']},
   {v:'6.55.25',date:'2026-10-04',title:'Stats follow the formula',items:['Stats page ordered offense → defense → movement','Breakdown panel reads top to bottom like the formula: Base, bonuses, separate multipliers','Sub-rows use softer colors than group headers']},
   {v:'6.55.24',date:'2026-10-04',title:'Clearer stat breakdown',items:['Stat sources grouped into Hero, Temple, Gear and Progress with icons','Each source shows its share % and a bar; the biggest source is starred','Every stat explains its formula in plain words']},
   {v:'6.55.23',date:'2026-10-04',title:'Slower hero levels',items:['Hero level EXP requirement now grows faster at higher levels']},
@@ -4738,7 +4741,7 @@ class Game extends Phaser.Scene {
     this.player=this.physics.add.sprite(0,0,'mochi').setDepth(5);
     this.player.setCircle(24,6,6); this.player.setCollideWorldBounds(true);
     this.player.hp=90; this.player.maxhp=90; this.player.baseSpeed=BALANCE.moveSpeed;
-    this.player.iframe=0; this.player.pickup=105; this.player.dmgMul=0.90; this.player.wardGuardT=0;
+    this.player.iframe=0; this.player.pickup=105; this.player.dmgMul=1; this.player.wardGuardT=0;
     this.cameras.main.startFollow(this.player,false,0.2,0.2);  // roundPixels=false → กล้องเลื่อนลื่น ไม่กระตุกเป็นขั้น
     this._sqX=1; this._sqY=1;   // เจลลี่โมจิ: สเกลกระแทก (squash&stretch) ค่อย ๆ คืนสู่ 1 ทุกเฟรม + วอกแวกเบา ๆ
 
@@ -6052,7 +6055,7 @@ class Game extends Phaser.Scene {
   }
   // คำนวณสแตตจริงของ loadout (base + char + weapon + Flavor Weave + gear + bestiary + perks) โดยไม่แตะ player จริง
   previewStats(){
-    const p={maxhp:90,dmgMul:0.90,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
+    const p={maxhp:90,dmgMul:1,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
     // v6.55.18: เก็บ snapshot หลังแต่ละแหล่ง → หน้า Stats โชว์ว่าค่ามาจากไหน
     const snap=()=>({maxhp:p.maxhp,dmgMul:p.dmgMul,critChance:p.critChance,critMul:p.critMul,dmgTakenMul:p.dmgTakenMul,baseSpeed:p.baseSpeed,cdMul:p.cdMul,regen:(p.regen||0)+(p.regenFlat||0),armor:p.armor||0});
     const trace=[{label:'Base',s:snap()}],mark=l=>trace.push({label:l,s:snap()});p._trace=trace;
@@ -6120,11 +6123,11 @@ class Game extends Phaser.Scene {
     const items=[];if(tr[0])items.push({label:'Base',v:val(tr[0].s),base:true});
     for(let i=1;i<tr.length;i++){const d=val(tr[i].s)-val(tr[i-1].s);if(Math.abs(d)>1e-6)items.push({label:tr[i].label,v:d});}
     const posSum=items.reduce((a,it)=>a+(it.base?0:Math.max(0,it.v)),0)||1;let top=null;for(const it of items)if(!it.base&&it.v>0&&(!top||it.v>top.v))top=it;   // share = สัดส่วนของโบนัส (ไม่รวม Base)
-    const lines=[],bIt=items.find(it=>it.base);if(bIt){bIt._g=1;lines.push({step:true,label:'①  Base'});lines.push({g:GROUPS[0],label:'Hero base',v:bIt.v,base:true,pct:0});}
+    const lines=[],bIt=items.find(it=>it.base);if(bIt){bIt._g=1;lines.push({step:true,label:'①  Base'});lines.push({g:GROUPS[0],label:'Starting value',v:bIt.v,base:true,pct:0});}
     lines.push({step:true,label:key==='dmgMul'||key==='critChance'||key==='regen'?'②  + Bonuses (added together)':key==='maxhp'?'②  + Flat, then × %':'②  × Bonuses (multiplied)'});
     GROUPS.forEach(g=>{const its=items.filter(it=>!it._g&&g.test(it.label));if(!its.length)return;its.forEach(it=>it._g=1);const sub=its.reduce((a,it)=>a+it.v,0),bsub=its.reduce((a,it)=>a+(it.base?0:Math.max(0,it.v)),0);
       lines.push({hdr:true,g,label:g.icon+'  '+g.name,v:sub,pct:bsub/posSum*100});its.sort((a,b)=>(a.base?-1:b.base?1:b.v-a.v)).forEach(it=>lines.push({g,label:it.base?'Hero base':it.label.replace(/^(Talent|Weave|Gear|Mod|Set collection|Set|Perk) · /,''),v:it.v,base:it.base,pct:it.base?0:Math.max(0,it.v)/posSum*100,top:it===top}));});
-    const FORM={dmgMul:'Hit = Weapon damage × Attack Power% × Item Power × Crit (if crit) × more bonuses\nAttack Power starts at 90% (hero base) and every “+%” source adds together (increased), then multiplies the hit once.',
+    const FORM={dmgMul:'Hit = Weapon damage × Attack Power% × Item Power × Crit (if crit) × more bonuses\nAttack Power starts at 100% and every “+%” source adds together (increased), then multiplies the hit once.',
       maxhp:'Max HP = Base 90 + flat HP sources, then × % HP sources (Vigor, Resolve, Ancient).',
       critChance:'Crit chance = sum of all crit % · Crit hit = damage × Crit damage ('+'×'+p.critMul.toFixed(2)+')',
       dmgTakenMul:'Damage taken = Hit × 100/(100+Armor) × each “less damage” source multiplied together.\nArmor gives less and less as it grows — never reaches 100%.',
@@ -8258,7 +8261,7 @@ class Game extends Phaser.Scene {
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
         this.setGameSpeed(1);
-        this.player.maxhp=90; this.player.baseSpeed=BALANCE.moveSpeed; this.player.pickup=105; this.player.dmgMul=0.90;
+        this.player.maxhp=90; this.player.baseSpeed=BALANCE.moveSpeed; this.player.pickup=105; this.player.dmgMul=1;
 
         this.time.delayedCall(35,()=>{
           if(window.GameLoader)window.GameLoader.set(0.72,'Setting up the scene and enemies...');
@@ -8774,7 +8777,7 @@ class Game extends Phaser.Scene {
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ if(!allowRecycle)return null;e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // Other elite events retain their existing pool fallback.
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp;   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e._rootKnightPoseToken=(e._rootKnightPoseToken||0)+1;e._rootKnightPoseUntil=0;
       e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
@@ -9335,7 +9338,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=42.64;mOff=85.36;}
     if(this.stageIndex>=10&&ASSET_SHEETS[mkey]){mScale=.62;mRadius=70;mOff=58;}
     b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_SHEETS[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.0*realStageBossMul(this.stageIndex)*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
+    b.hp=st.bossHp*1.0/0.9*realStageBossMul(this.stageIndex)*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
     b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;b._rootKnightPoseUntil=0;b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;
@@ -9400,7 +9403,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*realStageBossMul(this.stageIndex)*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75/0.9*realStageBossMul(this.stageIndex)*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -9696,7 +9699,7 @@ class Game extends Phaser.Scene {
     this.clearYuzuCrew();this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.windRushT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
-    this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=0.90;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
+    this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=1;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
   onStageClear(){ this.clearSugarCoins();
@@ -10776,7 +10779,7 @@ class Game extends Phaser.Scene {
     e._bestiaryType=this.stageIndex>=10?'c3_'+(({dasher:'fast',siege:'tank'})[type]||(['basic','fast','shooter','bomber','tank'].includes(type)?type:'basic')):null;
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+Wave (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=([1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38)*(this.stageIndex>=2&&this.stageIndex<=4&&this.waveIndex<=1&&!this.recipeMode?1.35:1),c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=([1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38)*(this.stageIndex>=2&&this.stageIndex<=4&&this.waveIndex<=1&&!this.recipeMode?1.35:1),c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase()/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;
     e.bloomStacks=0;e.bloomUntil=0;e.frostbite=this.stageIndex===3;
     let scale=1;

@@ -22,7 +22,7 @@ for(const stage of [4,10,11,12,13,14]){
  for(const [type,hp,dmg,speed] of roles){
   const [base,scale,circle]=(stage===4?s5:c3)[type],key=base+'_animated',e=s.spawnEnemy(type,0,100);
   assert.equal(e._enemyArtKey,key);assert.equal(e.baseScale,scale);assert.deepEqual(e.circle,circle);
-  assert(Math.abs(e.hp-hp*curves(stage,[1,1.42,1.88,2.42,3.05,3.72],1.18)*(stage>=2&&stage<=4?1.35:1))<1e-8);
+  assert(Math.abs(e.hp*0.9-hp*curves(stage,[1,1.42,1.88,2.42,3.05,3.72],1.18)*(stage>=2&&stage<=4?1.35:1))<1e-8);
   assert.equal(e.dmg,Math.round(dmg*curves(stage,[1,1.05,1.12,1.20,1.30,1.42],1.09)));assert.equal(e.spd,speed);
   assert.equal(e.clip,key+'_idle');e.setVelocity(speed,0);s.tickEnemyPresentation(e,.016);assert.equal(e.clip,key+'_walk');
  }
@@ -32,7 +32,7 @@ for(const stage of [4,10,11,12,13,14]){
  const bomb=s.spawnEnemy('bomber',0,100);bomb.hp=bomb.maxhp*.3;s.warnAntBomber(bomb);assert.equal(bomb._enemyAction.state,'windup');const action=bomb._enemyAction;s.warnAntBomber(bomb);assert.equal(bomb._enemyAction,action);s.resetEnemyPresentation(bomb);assert.equal(bomb._antBombWarn,false);
 }
 s.stageIndex=4;
-{const e=s.spawnElite();assert.equal(e._enemyArtKey,'e_royal_oven_sentinel_animated');assert.equal(e.baseScale,.56);assert.deepEqual(e.circle,[54,74,74]);assert(Math.abs(e.hp-70*2.72*1.15)<1e-8);assert.equal(e.dmg,23);}
+{const e=s.spawnElite();assert.equal(e._enemyArtKey,'e_royal_oven_sentinel_animated');assert.equal(e.baseScale,.56);assert.deepEqual(e.circle,[54,74,74]);assert(Math.abs(e.hp*0.9-70*2.72*1.15)<1e-8);assert.equal(e.dmg,23);}
 {const e=s.spawnEnemy('dasher',0,100);s.stage5EnemyPose(e,4,400);assert.equal(e._enemyAction.state,'windup');assert.equal(e._enemyActionT,.4);s.stage5EnemyPose(e,6,120);assert.equal(e._enemyAction.state,'windup');s.stage5EnemyPose(e,5,340);assert.equal(e._enemyAction.state,'dash');assert.equal(e._enemyActionT,.34);}
 {let ghosts=0,legacy=0,completed;const ghost={setScale(){return this;},setFlipX(){return this;},setDepth(){return this;},once(event,f){assert.equal(event,'animationcomplete');completed=f;},play(key){assert.equal(key,'e_void_crumb_animated_death');},destroy(){this.destroyed=true;}};Object.assign(s,{fxOk:()=>true,trackArtVfx:o=>o,add:{sprite(){ghosts++;return ghost;},image(){legacy++;}}});const e=s.spawnEnemy('basic',0,100);s.playEnemyDeath(e);s.stage5DeathGhost(e);assert.equal(ghosts,1);assert.equal(legacy,0);completed();assert(ghost.destroyed);}
 for(const key of [...textures]){textures.delete(key);const type=key.includes('shooter')||key.includes('banquet')?'shooter':key.includes('fast')||key.includes('ripper')?'fast':key.includes('bomber')||key.includes('truffle')?'bomber':key.includes('tank')||key.includes('sentinel')?'tank':'basic';assert.equal(key.startsWith('c3_')?s.chapter3ArtKey(type):s.stage5ArtKey(type),key.replace(/_animated$/,''));textures.add(key);}
