@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.51.0';
+const GAME_VERSION = '6.51.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.51.1', date:'2026-10-04', title:'Smoother stage start', items:['Stage graphics are prepared behind the loading screen, reducing the stutter when the first wave appears'] },
   { v:'6.51.0', date:'2026-10-03', title:'Special cards shine', items:['Special upgrades (Mutation, Evolution, Relic, Build Path, Infusion, Fusion, Modifier) now glow with a pulsing frame, ribbon, shine and sparkles'] },
   { v:'6.50.9', date:'2026-10-03', title:'Loading tips fix', items:['Loading tips now always show, even with an old cached page'] },
   { v:'6.50.8', date:'2026-10-03', title:'Easier Back button', items:['Back button has a bigger tap area and always takes priority'] },
@@ -7930,6 +7931,9 @@ class Game extends Phaser.Scene {
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
       this.ensureStageArt(idx,()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);});return;
     }
+    // v6.51.1: วาด texture ของด่านล่วงหน้าหลังหน้าโหลด (decode/อัป GPU ครั้งแรก) → ไม่กระตุกตอนมอนชุดแรกโผล่
+    if(!this._warmed)this._warmed={}; const wk=idx+'|'+(this.character||Save.data.character);
+    if(!this._warmed[wk]){ this._warmed[wk]=true; this.warmStageTextures(idx,()=>{ if(this.state==='menu')this.startRun(idx); }); return; }
     const challenge=null;this._challengeRequested=null; // Story never inherits old curse tickets.
     const ticket=challenge?challenge.length*150:0;
     if(ticket&&(Save.data.sugar||0)<ticket){this.menuToast('Need 🍬'+ticket+' Sugar for the challenge ticket','#ff9bb5');return;}
@@ -8091,6 +8095,19 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
   }
   // 📜 Recipe run (R2): ไม่มีเวฟ/มินิ · ฆ่าเติม Hunger Meter เต็ม → บอสโผล่ทันที · เคลียร์เร็ว=จบเร็ว · กันค้าง: ครบ RECIPE_HUNGER_CAP วิ บอสมาเอง
+  warmStageTextures(idx,done){
+    const ch=this.character||Save.data.character||'momo',st=STAGES[idx]||{},keys=new Set();
+    const re=new RegExp('^(e_|proj_|fx_|vfx_|orb|candy|heal|chest|crate|vac|gift|char_'+ch+(idx>=10?'|c3_e_':'')+(idx>=5&&idx<10?'|ch2_':'')+')');
+    this.textures.getTextureKeys().forEach(k=>{ if(re.test(k))keys.add(k); });
+    Object.values(st).forEach(v=>{ if(typeof v==='string'&&this.textures.exists(v))keys.add(v); });
+    ['bg'+(idx+1),FLOOR_KEYS[idx],'mb'+(idx+1),'boss'+(idx+1)].forEach(k=>{ if(k&&this.textures.exists(k))keys.add(k); });
+    const list=[...keys]; if(!list.length){done();return;}
+    if(window.GameLoader)window.GameLoader.show('Preparing battle…',0.9);
+    const cam=this.cameras.main,c=this.add.container(cam.midPoint.x,cam.midPoint.y).setDepth(-1e6); let i=0;
+    const step=()=>{ c.removeAll(true); for(let n=0;n<24&&i<list.length;n++,i++){ const im=this.add.image(0,0,list[i]).setAlpha(0.01).setScale(0.05); c.add(im); }
+      if(i<list.length)setTimeout(step,16); else setTimeout(()=>{ c.destroy(true); if(window.GameLoader)window.GameLoader.hide(); done(); },32); };
+    step();
+  }
   usesReplaySurvival(){return !!(Save.data.stageMastery||{})[this.stageIndex]&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!this.endlessMode;}
   startReplayRun(st){
     this.clearWaveObjective();this._finalStoryShown=true;if(this.pipG)this.pipG.setVisible(false);
