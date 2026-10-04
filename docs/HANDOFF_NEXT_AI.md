@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.13 — monster animation commit 3
+# Latest delivery: v6.55.14 — monster animation commit 4
+
+Chapter 1 Fire monsters now use five real 16-frame painted sheets (Ember, Chili, Grinder, Pressure Pot, Golem), including Golem Elite. Runtime: assets/art/ch1_fire; source/manifest/exact prompts/packing/review: assets/incoming/ch1_fire_animations. Chili has left-facing art and separately repaired dash/recovery poses; Pressure Pot also has left-facing art; Ember, Grinder and Golem face right. Combat values, colliders and timers are preserved. Actual-method tests, full checks and web build pass; phone visual/performance review is pending. Remaining monster animation commits 5–10; next is commit 5 (Ice). See docs/MONSTER_ANIMATION_PLAN.md.
+
+## Previous delivery: v6.55.13 — monster animation commit 3
 
 Chapter 1 Drain monsters now use five real 16-frame painted sheets (Slime, Dasher, Caster, Bomber, Tank), including the Tank Elite. Runtime assets: assets/art/ch1_drain; source/manifest/prompts/review: assets/incoming/ch1_drain_animations. Combat stats, hitboxes and attack timing are unchanged. Tests and web build pass. Phone visual/performance review is pending. Next requested batch is commit 4 (Fire); commits 4–10 remain. See docs/MONSTER_ANIMATION_PLAN.md.
 

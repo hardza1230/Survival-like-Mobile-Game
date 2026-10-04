@@ -7,7 +7,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | 1 | Central presentation controller, freeze, pool reuse, stable proportions and action registration | Complete — v6.55.11 |
 | 2 | Chapter 1 stage 1: Worker, Scout, Spitter, Soldier, Drone and Acid Ant | Complete — v6.55.12 |
 | 3 | Chapter 1 stage 2: Drain Slime, Dasher, Caster, Bomber and Tank | Complete — v6.55.13 |
-| 4 | Chapter 1 stage 3: Ember, Chili, Grinder, Pressure Pot and Golem | Pending |
+| 4 | Chapter 1 stage 3: Ember, Chili, Grinder, Pressure Pot and Golem | Complete — v6.55.14 |
 | 5 | Chapter 1 stage 4: Wisp, Shard, Caster, Bubble and Guardian | Pending |
 | 6 | Chapter 1 stage 5 and Chapter 3: improve existing walk sheets, add missing action clips | Pending |
 | 7 | Chapter 2 stages 1–2: root/ferment and mycelium creatures, including Sporeling | Pending |
@@ -59,3 +59,7 @@ Six painted ant sheets and runtime integration delivered in v6.55.12. Source and
 ## Commit 3 delivery
 
 Five painted Drain sheets delivered in v6.55.13, including ordinary roles and the Drain Tank Elite. Each has six walk, two idle, four action, two hurt and two death frames. Sources, exact prompts, packing bounds and review preview: assets/incoming/ch1_drain_animations; runtime: assets/art/ch1_drain. Uniform per-species packing preserves proportions and foot baseline. Caster windup, Dasher dash and Bomber low-HP pressure poses use existing combat timings. Original stats, collision circles and bestiary art are preserved. Actual-method tests, asset validation, full checks and web build pass; phone visual/performance review remains pending. Remaining: commits 4–10; next is Fire monsters.
+
+## Commit 4 delivery
+
+Five painted Fire sheets delivered in v6.55.14: Ember, Chili, Grinder, Pressure Pot and Golem, including Golem Elite. Each contains six movement, two idle, four action, two hurt and two death poses. Source/manifest/prompts/packing report/review preview: assets/incoming/ch1_fire_animations; runtime: assets/art/ch1_fire. Chili dash/recovery frames and Pressure Pot walk frames were repaired independently to match its left-facing gait; facing metadata handles target direction. Uniform per-species packing preserves proportions and foot baseline. Grinder windup, Chili dash and Pressure Pot warnings follow existing combat timers. Original stage-scaled stats, role-specific collision circles and bestiary images are unchanged. Actual-method tests, asset validation, full checks and web build pass. Phone visual/performance review is pending. Remaining: commits 5–10; next is Ice monsters.
