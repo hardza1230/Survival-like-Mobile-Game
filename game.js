@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.54.8';
+const GAME_VERSION = '6.54.9';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.54.9', date:'2026-10-04', title:'Boss Loot cards', items:['Beating a stage boss opens Boss Loot: pick 1 of 3 face-down cards — Sugar, Currency, Shovels, Weave Thread, Gear Shards, Core Stones or Gear, with a chance of a JACKPOT card'] },
   { v:'6.54.8', date:'2026-10-04', title:'Boss Bounty', items:['Final bosses no longer drop EXP orbs and hearts at the end of a stage — you get a Sugar Boss Bounty added straight to your rewards instead (more on harder difficulties)'] },
   { v:'6.54.7', date:'2026-10-04', title:'Tutorial → Stage 1', items:['After the Flavor Weave tutorial, you are taken to Stage 1 with a spotlight on it'] },
   { v:'6.54.6', date:'2026-10-04', title:'Faster second launch', items:['After the first launch, the game waits only for menu art (about half the data) and prepares battle art in the background','Starting a stage waits for battle art if it is not ready yet'] },
@@ -9417,7 +9418,25 @@ class Game extends Phaser.Scene {
     if(progressUnlock){Save.data.unlockedStage=next;Save.save();}
     if(!Save.data.diffBest)Save.data.diffBest=[];if((this.stageDiff||1)>(Save.data.diffBest[this.stageIndex]||0)){Save.data.diffBest[this.stageIndex]=this.stageDiff||1;Save.save();}   // จำความยากสูงสุดที่ผ่าน
     this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();
-    this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked '+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null)));
+    const _note=canUnlock?('🔓 Unlocked '+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null);
+    this.time.delayedCall(700,()=>this.openBossLootCards(()=>this.revealStageReward(_note)));
+    if(false)this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked '+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null)));
+  }
+  // v6.54.9: ล้มบอส = การ์ดสุ่ม 3 ใบ (ของหลายชนิด) เลือก 1 แบบ Jackpot Event
+  openBossLootCards(done){
+    const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.max(1,Math.round(n*(1+si*0.3)*dr)),st=['hp','dmg','def'][Math.floor(Math.random()*3)],se={hp:'🔴',dmg:'🟠',def:'🔵'}[st];
+    const pool=[
+      {emoji:'🍭',artKey:'prize_sugar',name:'Sugar',sub:'+'+S(120),color:0xff7fb0,give:()=>{this.sugarStage+=S(120);}},
+      {emoji:'💠',artKey:'prize_currency',name:'Currency',sub:'×'+(2+Math.floor(si/3)),color:0x7fd0ff,give:()=>this.grantCurrencyReward(2+Math.floor(si/3),this.currencyTierFor(),'Boss card')},
+      {emoji:'⛏️',name:'Shovels',sub:'+'+(3+Math.floor(dr)),color:0xc9a36b,give:()=>Save.addShovels(3+Math.floor(dr))},
+      {emoji:'🧶',name:'Weave Thread',sub:'+'+S(25),color:0xd59bff,give:()=>Save.addThreads(S(25))},
+      {emoji:'🔩',name:'Gear Shards',sub:'+'+S(12),color:0xb8c4d6,give:()=>Save.addShards(S(12))},
+      {emoji:se,name:'Core Stone',sub:'+1 '+st.toUpperCase(),color:0xff9a6b,give:()=>Save.addCoreStone(st,1)},
+      {emoji:'🎁',artKey:'prize_jackpot',name:'Gear',sub:'Random item',color:0x8ff0b0,give:()=>{ const t=Math.random()<0.15*dr?'epic':'rare'; this.grantGear&&this.grantGear(t); }}];
+    const pick=Phaser.Utils.Array.Shuffle(pool.slice()).slice(0,3);
+    const jp={emoji:'🌟',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3 · Shovels +5',color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');Save.addShovels(5);}};
+    if(Math.random()<0.25+0.1*(dr-1))pick[Math.floor(Math.random()*3)]=jp;
+    this.openMysteryCards(done,{prizes:pick,title:'Boss Loot',hint:'Pick a card — anything could be inside!'});
   }
   // v4.23: เลิกให้เลือกกล่อง (การเลือกแบบไม่รู้ผล = ไม่มีความหมาย) → สุ่มรางวัลให้เลยแล้วโชว์ผลชัด ๆ
   revealStageReward(note){
@@ -11552,7 +11571,7 @@ class Game extends Phaser.Scene {
     this.stage5DeathGhost(e);
     this.chapter2DeathGhost(e);
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
-    { const wo=this.waveObjective; if(isBoss){ const bb=Math.round((60+(this.stageIndex||0)*30)*this.diffMul().reward); this.sugarStage+=bb; this.sugarRun=(this.sugarRun||0)+bb; this.time.delayedCall(900,()=>this.showBanner('🍬 Boss Bounty +'+bb+' Sugar','Boss loot goes straight to your rewards',1600)); } else if(!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,e.xp||1); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
+    { const wo=this.waveObjective; if(isBoss){} else if(!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,e.xp||1); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1)*(this.player.boxFindMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
@@ -11868,9 +11887,9 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(250,hop);
   }
   // Independent random event: three cards, one jackpot.
-  openMysteryCards(done){
+  openMysteryCards(done,opt={}){
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.round(n*(1+si*0.3)*dr);
-    const prizes=Phaser.Utils.Array.Shuffle([
+    const prizes=opt.prizes||Phaser.Utils.Array.Shuffle([
       {artKey:'prize_jackpot',emoji:'🌟',name:'JACKPOT',sub:'Sugar +'+S(200)+' · Currency ×2 · Full heal',color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(200));this.grantCurrencyReward(2,this.currencyTierFor(),'JACKPOT');this.player.hp=this.player.maxhp;}},
       {artKey:'prize_sugar',emoji:'🍭',name:'Sugar',sub:'+'+S(70),color:0xff7fb0,give:()=>this.addRunSugar(S(70))},
       {artKey:'prize_currency',emoji:'💠',name:'Currency',sub:'×1',color:0x7fd0ff,give:()=>this.grantCurrencyReward(1,this.currencyTierFor(),'Mystery card')},
@@ -11879,9 +11898,9 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,cw=Math.min(104,(w-60)/3),ch=cw*1.45,gap=12,x0=w/2-(cw*3+gap*2)/2,cy=h*0.48;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
     const bg=this.add.rectangle(0,0,w,h,0x0b0714,0.9).setOrigin(0);
-    const ttl=this.add.text(w/2+16,cy-ch/2-60,'Jackpot Event',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166',stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
+    const ttl=this.add.text(w/2+16,cy-ch/2-60,opt.title||'Jackpot Event',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffd166',stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
     const tierBadge=this.add.image(w/2-82,cy-ch/2-60,'prize_jackpot').setDisplaySize(38,38);
-    const hint=this.add.text(w/2,cy-ch/2-30,'One card hides the JACKPOT — pick one!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#e8dcff'}).setOrigin(0.5);
+    const hint=this.add.text(w/2,cy-ch/2-30,opt.hint||'One card hides the JACKPOT — pick one!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#e8dcff'}).setOrigin(0.5);
     cont.add([bg,tierBadge,ttl,hint]);
     let picked=false;
     const cards=prizes.map((p,i)=>{const x=x0+i*(cw+gap)+cw/2;const c=this.add.container(x,cy);const g=this.add.graphics();
@@ -11891,7 +11910,7 @@ class Game extends Phaser.Scene {
       return {c,g,q,p,x};});
     const flip=(cd,mine)=>{ this.tweens.killTweensOf(cd.c);
       this.tweens.add({targets:cd.c,scaleX:0,duration:140,onComplete:()=>{ const p=cd.p;cd.g.clear();cd.g.fillStyle(mine?0x2c2038:0x1d1626,1);cd.g.fillRoundedRect(-cw/2,-ch/2,cw,ch,14);cd.g.lineStyle(mine?4:2,p.color,mine?1:0.6);cd.g.strokeRoundedRect(-cw/2,-ch/2,cw,ch,14);
-        cd.q.setAlpha(0.24);const art=this.add.image(0,-16,p.artKey).setDisplaySize(p.jackpot?54:46,p.jackpot?54:46);cd.c.add(art);
+        cd.q.setAlpha(0.24);const art=p.artKey&&this.textures.exists(p.artKey)?this.add.image(0,-16,p.artKey).setDisplaySize(p.jackpot?54:46,p.jackpot?54:46):this.add.text(0,-16,p.emoji||'🎁',{fontSize:(p.jackpot?40:34)+'px'}).setOrigin(0.5);cd.c.add(art);
         const nm=this.add.text(0,ch*0.2,p.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#'+p.color.toString(16).padStart(6,'0')}).setOrigin(0.5);
         const sb=this.add.text(0,ch*0.34,p.sub,{fontFamily:'sans-serif',fontSize:'9px',color:'#d8cce6',align:'center',wordWrap:{width:cw-10}}).setOrigin(0.5,0);
         cd.c.add([nm,sb]);if(!mine)cd.c.setAlpha(0.55);
