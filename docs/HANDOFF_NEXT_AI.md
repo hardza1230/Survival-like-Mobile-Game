@@ -1,10 +1,12 @@
-# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.7 · 4 ต.ค. 2026)
+# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.8 · 4 ต.ค. 2026)
 
 > อ่าน `CLAUDE.md` ให้จบก่อนทุกครั้ง (กติกา สาขา และวิธี release อยู่ในนั้น)
 > **สาขาเดียว:** `claude/vampire-survival-mobile-game-yo9e8w` · คุยกับเจ้าของเป็นภาษาไทย · ข้อความในเกมเป็นภาษาอังกฤษ
 > **วิธีทำงานกับเจ้าของ:** อ่านหัวข้อ C แล้ว **เสนอเป็นตัวเลือกให้เจ้าของเลือกเองก่อนลงมือ** (เจ้าของเป็นผู้กำกับ ไม่เขียนโค้ด)
 
-## Latest handoff — v6.55.7
+## Latest handoff — v6.55.8
+
+VFX art batch 3 is integrated too: purple Void Pull, jam Relic and Great Hunger metamorph. Run-scoped art timers cancel on transition; original combat/phase parameters retained. Remaining: batches 4–5.
 
 VFX art batches 1 and 2 are integrated: Mint shards/shatter/Gale; Strawberry charge/wind; shield bubble. See assets/incoming/vfx_mint/NEXT_BATCHES.md for batches 3–5. Preserve existing combat timing/colliders. Review on phone; automated cleanup/pooling/shield tests and web build pass.
 

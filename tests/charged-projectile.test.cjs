@@ -27,3 +27,22 @@ a.clearArtVfx();assert.equal(a._artVfx.size,0);assert(created.every(o=>!o.active
 assert(source.includes("this.attachProjectileArt(b,'proj_mint_shard'"));
 assert(source.includes("spawnFxAnim('fx_mint_shatter'"));assert(source.includes("spawnFxAnim('fx_mint_gale'"));
 console.log('Painted VFX: shield follows/reuses/hides, charge cancellation, image wind trail and transition cleanup passed');
+// Void and jam timers must never leak combat into the next run.
+const TimedScene=vm.runInNewContext('class Scene{'+['trackArtVfx','clearArtVfx','artDelay','artLoop','castVoidPull','relicJamTrail','greatHungerMetamorph'].map(method).join('\n')+'\n}Scene',{Sfx:{ult(){},boom(){},bossWarn(){}},Math,TAU:Math.PI*2});
+function timedScene(){
+ const s=new TimedScene(),queue=[],objects=[],hits=[],explosions=[];let now=0;
+ const add=(x,y,key)=>{const o=image();Object.assign(o,{x,y,key,scaleX:1,scaleY:1});o.setTint=o.setStrokeStyle=o.setScale=()=>o;objects.push(o);return o;};
+ const event=(ms,fn,loop=false)=>{const e={at:now+ms,ms,fn,loop,removed:false,remove(){this.removed=true;}};queue.push(e);return e;};
+ const enemy={active:true,x:60,y:0,isBoss:false,setPosition(x,y){this.x=x;this.y=y;},setVelocity(){}};
+ Object.assign(s,{state:'play',player:{x:0,y:0},textures:{exists:()=>true},add:{image:add,circle:add},camWorld:o=>o,uniquePower:()=>1,relicDmg:()=>14,dist:(x,y,a,b)=>Math.hypot(x-a,y-b),enemies:{children:{iterate(fn){fn(enemy);}}},damage(e,n){hits.push(n);},explodeAt(x,y,r,n){explosions.push({x,y,r,n});},showBanner(){},vfxHitRing(){},burst(){},screenShake(){},screenFlash(){},stage5Pose(b,f,ms){this.pose={f,ms};},spawnFxAnim(key,x,y,opt){this.phaseFx={key,x,y,opt};return add(x,y,key);},time:{delayedCall(ms,fn){return event(ms,fn);},addEvent(c){return event(c.delay,c.callback,c.loop);}},tweens:{add(c){if(c.onComplete)event(c.duration,c.onComplete);},killTweensOf(){}}});
+ s.advance=ms=>{const end=now+ms;let n=0;while(true){queue.sort((a,b)=>a.at-b.at);if(!queue.length||queue[0].at>end)break;const ev=queue.shift();now=ev.at;if(!ev.removed){ev.fn();if(ev.loop&&!ev.removed){ev.at=now+ev.ms;queue.push(ev);}}assert(++n<1000);}now=end;};
+ Object.assign(s,{hits,explosions,objects});return s;
+}
+for(const leaveAt of [0,100,500,1700]){
+ const s=timedScene();s.castVoidPull(1,1);s.advance(leaveAt);const count=s.hits.length;s.clearArtVfx();s.state='play';s.player={x:800,y:800};s.advance(10000);
+ assert.equal(s.hits.length,count,'No old void damage in new run');assert.equal(s._artTimers.size,0);assert.equal(s._artVfx.size,0);
+}
+{const s=timedScene();s.castVoidPull(1,1);s.advance(2200);assert(s.hits.includes(7),'Original Lv1 tick damage');assert(s.hits.includes(32),'Original Lv1 finish damage');assert.equal(s._artTimers.size,0);assert.equal(s._artVfx.size,0);}
+for(const cancel of [true,false]){const s=timedScene();s.relicJamTrail({x:1,y:0});assert.deepEqual(s.objects.map(o=>o.x),[0,50,100]);if(cancel)s.clearArtVfx();s.advance(2000);assert.equal(s.explosions.length,cancel?0:3);for(const e of s.explosions){assert.equal(e.r,70);assert.equal(e.n,14);}assert.equal(s._artTimers.size,0);}
+{const s=timedScene();s.greatHungerMetamorph({active:true,x:1,y:2},4,0xffd166);assert.equal(s.pose.ms,2100);assert.equal(s.phaseFx.key,'fx_hunger_metamorph');assert(s.phaseFx.opt.normal);assert(s.phaseFx.opt.force);s.clearArtVfx();assert.equal(s._artVfx.size,0);}
+console.log('Void/jam/boss VFX: interrupted timers, next-run isolation, original damage/positions and phase art cleanup passed');

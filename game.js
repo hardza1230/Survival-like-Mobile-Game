@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.7';
+const GAME_VERSION = '6.55.8';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  {v:'6.55.8',date:'2026-10-04',title:'Painted void, jam and boss transformation',items:['Void Pull uses a purple vortex with an animated inward spiral','Jam Relic leaves illustrated glossy jam before detonating','The Great Hunger changes phase with a painted eight-frame energy burst','Leaving a run cancels pending jam and void callbacks']},
   {v:'6.55.7',date:'2026-10-04',title:'Painted charge, shield and Mint effects',items:['Strawberry charge aura and wind-cut trails use painted art','Protective bubble shields use translucent illustrated art','Mint lance shards, shatter bursts and Gale use the new VFX art','Effects are cleared on cancellation, stage transitions and scene shutdown']},
   {v:'6.55.6',date:'2026-10-04',title:'Charged seed art and reward cleanup',items:['Strawberry Sniper shots and charged Unique use painted pink projectile VFX','Boss Loot cards and pending reveals are removed when closed or leaving a stage','Mint Piercer Build deals 75% more damage (was 60%)']},
   { v:'6.55.5', date:'2026-10-04', title:'Stage 3 needs Mint', items:['Until you clear Stage 3, tapping it with another hero sends you to pick Mint first']},
@@ -1558,6 +1559,8 @@ const ASSET_IMAGES = {
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
   // projectile sprite จริง — แทน spark/circle vector เดิม
   proj_sprinkle:'assets/generated/proj_sprinkle.png', proj_whirl:'assets/generated/proj_whirl.png',
+  vfx_void_pull:'assets/vfx/void_pull.webp',
+  vfx_relic_jam:'assets/vfx/relic_jam_blob.webp',
   vfx_strawberry_charge:'assets/vfx/strawberry_charge_aura.webp',
   vfx_strawberry_wind:'assets/vfx/strawberry_wind_cut.webp',
   vfx_shell_bubble:'assets/vfx/shell_bubble.webp',
@@ -1717,6 +1720,7 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
+  fx_hunger_metamorph:{url:'assets/vfx/hunger_metamorph_sheet.webp',fw:320,fh:320,frames:8,rate:8,anchor:'center'},
   fx_mint_shatter:{url:'assets/vfx/mint_lance_shatter_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_mint_gale:{url:'assets/vfx/mint_gale_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_cocoa_punch:{ url:'assets/fx_cocoa_punch_sheet.png', fw:128, fh:128, frames:8, rate:30, anchor:'center' },
@@ -5216,26 +5220,28 @@ class Game extends Phaser.Scene {
     ul=ul||1;const up=this.uniquePower();
     // อ่อนช่วงแรก โตชันตามเลเวล (Lv1 เคยเก่งเกิน)
     const r=150+ul*30, duration=1.2+ul*0.55, pullLerp=0.09+ul*0.045, tickDmg=(3+ul*4)*dm*up;
-    // ออร่าม่วงล้วน (เอารูปอึออก) — วงแกนดำม่วง + วงรัศมีเรือง + อนุภาคหมุนวน
-    const core=this.camWorld(this.add.circle(this.player.x,this.player.y,44,0x2a0f3a,0.8).setDepth(6).setStrokeStyle(3,0x8b5cf0,0.9));
-    const ring=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x8b5cf0).setDepth(5).setDisplaySize(r*2,r*2).setAlpha(0.34));
-    this.tweens.add({targets:ring,alpha:{from:0.20,to:0.42},yoyo:true,repeat:-1,duration:400,ease:'Sine.inOut'});
-    this.tweens.add({targets:core,scale:{from:0.9,to:1.15},yoyo:true,repeat:-1,duration:360,ease:'Sine.inOut'});
+    // Purple artwork replaces the procedural core; retain the original pull/damage timings.
+    const painted=this.textures.exists('vfx_void_pull');
+    const core=this.trackArtVfx(this.camWorld(painted?this.add.image(this.player.x,this.player.y,'vfx_void_pull').setDisplaySize(r*2,r*2).setAlpha(0.72).setDepth(6):this.add.circle(this.player.x,this.player.y,44,0x2a0f3a,0.8).setDepth(6).setStrokeStyle(3,0x8b5cf0,0.9)));
+    if(painted)this.tweens.add({targets:core,rotation:Math.PI*2,duration:duration*1000});
+    const ring=this.trackArtVfx(this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_ring').setTint(0x8b5cf0).setDepth(5).setDisplaySize(r*2,r*2).setAlpha(painted?0.12:0.34)));
+    this.tweens.add({targets:ring,alpha:{from:painted?0.05:0.20,to:painted?0.12:0.42},yoyo:true,repeat:-1,duration:400,ease:'Sine.inOut'});
+    this.tweens.add({targets:core,scaleX:{from:core.scaleX*0.9,to:core.scaleX*1.08},scaleY:{from:core.scaleY*0.9,to:core.scaleY*1.08},yoyo:true,repeat:-1,duration:360,ease:'Sine.inOut'});
     let tick=0;
-    const pull=this.time.addEvent({delay:70,loop:true,callback:()=>{
+    const pull=this.artLoop(70,()=>{
       const cx=this.player.x,cy=this.player.y; if(core.active)core.setPosition(cx,cy); if(ring.active)ring.setPosition(cx,cy);
       tick++;
       this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=this.dist(e.x,e.y,cx,cy);if(d>r)return;
         if(!e.isBoss&&!e.isMini&&d>26){ // ดูดจริง: ลาก "Position" เข้าหาศูนย์กลาง (ทับ AI เดินตาม เห็นชัดว่าถูกดูด)
           e.setPosition(e.x+(cx-e.x)*pullLerp, e.y+(cy-e.y)*pullLerp); if(e.body)e.setVelocity(0,0);
-          if(tick%3===0){const p=this.camWorld(this.add.circle(e.x,e.y,3,0xb98cff,0.8).setDepth(9));this.tweens.add({targets:p,x:cx,y:cy,scale:0.2,alpha:0,duration:220,onComplete:()=>p.destroy()});}
+          if(tick%3===0){const p=this.trackArtVfx(this.camWorld(this.add.circle(e.x,e.y,3,0xb98cff,0.8).setDepth(9)));this.tweens.add({targets:p,x:cx,y:cy,scale:0.2,alpha:0,duration:220,onComplete:()=>p.destroy()});}
         }
         if(tick%3===0)this.damage(e,tickDmg*((e.isBoss||e.isMini)?0.5:1),e.x,e.y);
       });
-    }});
+    });
     this.showBanner('🕳️ Dark Chocolate Void Lv'+ul,'Pulls the crowd in '+duration.toFixed(1)+'s · radius '+r,1000);Sfx.ult&&Sfx.ult('vortex');
-    this.time.delayedCall(duration*1000,()=>{
-      pull.remove(false);this.tweens.killTweensOf(core);this.tweens.killTweensOf(ring);
+    this.artDelay(duration*1000,()=>{
+      pull.remove(false);this._artTimers.delete(pull);this.tweens.killTweensOf(core);this.tweens.killTweensOf(ring);
       if(core.active)this.tweens.add({targets:core,scale:0.1,alpha:0,duration:180,onComplete:()=>core.destroy()});else core.destroy&&core.destroy();
       if(ring.active)ring.destroy();
       if(this.state!=='play'&&this.state!=='levelup')return;
@@ -10316,9 +10322,9 @@ class Game extends Phaser.Scene {
           this.time.delayedCall(50,()=>{ if(this.state==='play'||this.state==='levelup')this.explodeAt(x,y,80,dmg); }); } } }
   }
   relicJamTrail(d){ const x0=this.player.x,y0=this.player.y,dmg=this.relicDmg(1.4);
-    for(let i=0;i<3;i++){ const x=x0+d.x*50*i,y=y0+d.y*50*i,blob=this.camWorld(this.add.circle(x,y,10,0xff5f88,0.9).setDepth(8).setStrokeStyle(2,0xffd1e0));
-      this.tweens.add({targets:blob,scale:1.35,duration:250,yoyo:true});
-      this.time.delayedCall(500+i*60,()=>{ if(blob.active)blob.destroy(); if(this.state==='play')this.explodeAt(x,y,70,dmg); }); }
+    for(let i=0;i<3;i++){ const x=x0+d.x*50*i,y=y0+d.y*50*i,blob=this.trackArtVfx(this.camWorld(this.textures.exists('vfx_relic_jam')?this.add.image(x,y,'vfx_relic_jam').setDisplaySize(32,26).setDepth(8):this.add.circle(x,y,10,0xff5f88,0.9).setDepth(8).setStrokeStyle(2,0xffd1e0)));
+      this.tweens.add({targets:blob,scaleX:blob.scaleX*1.35,scaleY:blob.scaleY*1.35,duration:250,yoyo:true});
+      this.artDelay(500+i*60,()=>{ if(blob.active)blob.destroy(); if(this.state==='play')this.explodeAt(x,y,70,dmg); }); }
   }
   endlessCards(n){ const b=this.basicAttack,d=this.basicAttackInfo(); b.endless=b.endless||{}; const out=[];
     for(const s of Phaser.Utils.Array.Shuffle(this.endlessStatDefs().slice())){ if(out.length>=n)break; const stack=(b.endless[s.id]||0)+1,rr=rollRarity();
@@ -11967,7 +11973,19 @@ class Game extends Phaser.Scene {
     if(this.events&&!this._artVfxHook){this._artVfxHook=true;this.events.once('shutdown',()=>{this.clearArtVfx();this._artVfxHook=false;});}
     return o;
   }
+  artDelay(ms,fn){
+    if(!this._artTimers)this._artTimers=new Set();const epoch=this._artEpoch||0;
+    const ev=this.time.delayedCall(ms,()=>{this._artTimers.delete(ev);if((this._artEpoch||0)===epoch)fn();});
+    this._artTimers.add(ev);return ev;
+  }
+  artLoop(ms,fn){
+    if(!this._artTimers)this._artTimers=new Set();const epoch=this._artEpoch||0;
+    const ev=this.time.addEvent({delay:ms,loop:true,callback:()=>{if((this._artEpoch||0)===epoch&&(this.state==='play'||this.state==='levelup'))fn();}});
+    this._artTimers.add(ev);return ev;
+  }
   clearArtVfx(){
+    this._artEpoch=(this._artEpoch||0)+1;
+    for(const ev of this._artTimers||[])ev.remove(false);if(this._artTimers)this._artTimers.clear();
     for(const o of [...(this._artVfx||[])]){this.tweens.killTweensOf(o);if(o.active)o.destroy();}
     if(this._artVfx)this._artVfx.clear();this._shellArt=null;
   }
@@ -12593,9 +12611,12 @@ class Game extends Phaser.Scene {
 
   greatHungerMetamorph(b,phase,color){
     if(!b||!b.active)return;this.stage5Pose(b,6,phase===4?2100:1650);const count=phase===4?14:phase===3?11:8,reach=phase===4?330:phase===3?270:220;
+    if(this.textures.exists('fx_hunger_metamorph')){const fx=this.trackArtVfx(this.spawnFxAnim('fx_hunger_metamorph',b.x,b.y,{scale:reach*2.3/320,depth:b.y-2,normal:true,alpha:0.82,force:true}));if(fx)this.tweens.add({targets:fx,alpha:0,delay:650,duration:350});}
+    else {
     for(let i=0;i<count;i++){const a=i*TAU/count,ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,0.5).setDepth(b.y+5).setRotation(a).setTint(i%3===0?0xffd166:color).setScale(0.08,0.38).setAlpha(0.92));this.tweens.add({targets:ray,scaleX:reach/256,scaleY:phase===4?0.9:0.62,alpha:0,duration:720+i*22,onComplete:()=>ray.destroy()});}
     for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y+3).setTint(i%2?color:0xffd166).setScale(0.35+i*0.18).setAlpha(0.88));this.tweens.add({targets:ring,scale:phase===4?3.4+i*0.35:2.45+i*0.28,rotation:(i%2?1:-1)*Math.PI*1.4,alpha:0,duration:850+i*130,onComplete:()=>ring.destroy()});}
     const shadow=this.camWorld(this.add.circle(b.x,b.y,32,0x030006,0.86).setDepth(b.y-2).setStrokeStyle(8,color,0.8));this.tweens.add({targets:shadow,radius:phase===4?240:175,alpha:0,duration:1100,onComplete:()=>shadow.destroy()});
+    }
     this.screenFlash(phase===4?0x030005:color,phase===4?0.82:0.46,phase===4?950:650);this.screenShake(phase===4?980:700,phase===4?0.032:0.022);Sfx.bossWarn();
   }
 
