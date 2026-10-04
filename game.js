@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.54.9';
+const GAME_VERSION = '6.55.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.55.0', date:'2026-10-04', title:'Double or Nothing', items:['Boss Loot: keep your prize, gamble it on Double or Nothing (1 of 3 cards loses it, 2 double it), or reroll the cards once with an ad']},
   { v:'6.54.9', date:'2026-10-04', title:'Boss Loot cards', items:['Beating a stage boss opens Boss Loot: pick 1 of 3 face-down cards — Sugar, Currency, Shovels, Weave Thread, Gear Shards, Core Stones or Gear, with a chance of a JACKPOT card'] },
   { v:'6.54.8', date:'2026-10-04', title:'Boss Bounty', items:['Final bosses no longer drop EXP orbs and hearts at the end of a stage — you get a Sugar Boss Bounty added straight to your rewards instead (more on harder difficulties)'] },
   { v:'6.54.7', date:'2026-10-04', title:'Tutorial → Stage 1', items:['After the Flavor Weave tutorial, you are taken to Stage 1 with a spotlight on it'] },
@@ -9423,7 +9424,7 @@ class Game extends Phaser.Scene {
     if(false)this.time.delayedCall(500,()=>this.revealStageReward(canUnlock?('🔓 Unlocked '+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null)));
   }
   // v6.54.9: ล้มบอส = การ์ดสุ่ม 3 ใบ (ของหลายชนิด) เลือก 1 แบบ Jackpot Event
-  openBossLootCards(done){
+  openBossLootCards(done){ if(!this._bossLootOpen){this._bossLootOpen=true;this._bossRerolled=false;} const _d0=done; done=()=>{this._bossLootOpen=false;_d0&&_d0();};
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.max(1,Math.round(n*(1+si*0.3)*dr)),st=['hp','dmg','def'][Math.floor(Math.random()*3)],se={hp:'🔴',dmg:'🟠',def:'🔵'}[st];
     const pool=[
       {emoji:'🍭',artKey:'prize_sugar',name:'Sugar',sub:'+'+S(120),color:0xff7fb0,give:()=>{this.sugarStage+=S(120);}},
@@ -9436,7 +9437,12 @@ class Game extends Phaser.Scene {
     const pick=Phaser.Utils.Array.Shuffle(pool.slice()).slice(0,3);
     const jp={emoji:'🌟',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3 · Shovels +5',color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');Save.addShovels(5);}};
     if(Math.random()<0.25+0.1*(dr-1))pick[Math.floor(Math.random()*3)]=jp;
-    this.openMysteryCards(done,{prizes:pick,title:'Boss Loot',hint:'Pick a card — anything could be inside!'});
+    this.openMysteryCards(done,{prizes:pick,title:'Boss Loot',hint:'Pick a card — anything could be inside!',choice:true,noReroll:!!this._bossRerolled,reroll:()=>{ this._bossRerolled=true; this.openBossLootCards(done); }});
+  }
+  // v6.55: เดิมพันสองเท่า — การ์ด 3 ใบ มี 💀 1 ใบ · รอด = ได้ของ ×2 · เจอ 💀 = เสียหมด
+  openDoubleOrNothing(p,done){
+    const skull={emoji:'💀',name:'Nothing',sub:'You lost the prize',color:0x8a3a4a,give:()=>{}},win={emoji:p.emoji,artKey:p.artKey,name:p.name+' ×2',sub:p.sub+' ×2',color:0xffd166,jackpot:true,give:()=>{p.give();p.give();}};
+    this.openMysteryCards(()=>{ this._bossRerolled=false; done&&done(); },{prizes:Phaser.Utils.Array.Shuffle([skull,win,Object.assign({},win)]),title:'Double or Nothing',hint:'2 cards double your prize · 1 card loses it all'});
   }
   // v4.23: เลิกให้เลือกกล่อง (การเลือกแบบไม่รู้ผล = ไม่มีความหมาย) → สุ่มรางวัลให้เลยแล้วโชว์ผลชัด ๆ
   revealStageReward(note){
@@ -11919,9 +11925,17 @@ class Game extends Phaser.Scene {
       if(Sfx.select)Sfx.select();flip(cd,true);const p=cd.p;
       this.time.delayedCall(420,()=>{ this.screenFlash(p.color,p.jackpot?0.6:0.3,300);if(p.jackpot){this.screenShake(360,0.012);if(Sfx.legend)Sfx.legend();hint.setText('JACKPOT!').setColor('#ffd166').setFontSize('20px');}else{if(Sfx.clear)Sfx.clear();hint.setText('You got '+p.name+' '+p.sub);}
         cards.forEach((o,j)=>{if(o!==cd)this.time.delayedCall(350+j*160,()=>flip(o,false));}); });
-      this.time.delayedCall(2300,()=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);this._rollBtns=null;
-        this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
-        p.give(); done&&done(); }}); }); }}));
+      const close=(times,after)=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);this._rollBtns=null;
+        if(!after){ this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume(); }
+        for(let k=0;k<times;k++)p.give(); if(after)after(); else done&&done(); }}); };
+      if(!opt.choice){ this.time.delayedCall(2300,()=>close(1)); return; }
+      // v6.55: Double or Nothing / Reroll (Ad)
+      this.time.delayedCall(1500,()=>{ const by=cy+ch/2+34,bw=Math.min(w-40,300),bh=46,btns=[];
+        const mk=(i,label,col,fn)=>{ const y=by+i*(bh+10),g=this.add.graphics();g.fillStyle(col,1);g.fillRoundedRect(w/2-bw/2,y,bw,bh,12);g.lineStyle(2,0xffffff,0.5);g.strokeRoundedRect(w/2-bw/2,y,bw,bh,12);const t=this.add.text(w/2,y+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',stroke:'#000',strokeThickness:3}).setOrigin(0.5);cont.add([g,t]);btns.push({x:w/2-bw/2,y,w:bw,h:bh,fn}); };
+        mk(0,'✅ Keep '+p.name,0x3f9160,()=>{ this._rollBtns=[]; close(1); });
+        if(!opt.noDouble)mk(1,'🎲 Double or Nothing',0xb8402f,()=>{ this._rollBtns=[]; close(0,()=>this.openDoubleOrNothing(p,done)); });
+        if(!opt.noReroll)mk(opt.noDouble?1:2,'📺 Reroll cards (Ad)',0x5a4fb8,()=>{ this._rollBtns=[]; this.showRewardedAd?this.showRewardedAd('Reroll the Boss Loot cards',()=>close(0,()=>opt.reroll())):close(0,()=>opt.reroll()); });
+        this._rollBtns=btns; }); }}));
   }
   // v5.18 กล่องมิมิค 12%: แตะแล้วกล่องกลายเป็นมอนกัด · ฆ่าได้ = กล่องระดับสูงขึ้น 1 ขั้น (ไม่เป็นมิมิคซ้ำ)
   awakenMimic(x,y,tier){
