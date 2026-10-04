@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.0';
+const GAME_VERSION = '6.55.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.55.1', date:'2026-10-04', title:'Hunt fix', items:['Hunt targets only flee when you get close, so they stay on screen']},
   { v:'6.55.0', date:'2026-10-04', title:'Double or Nothing', items:['Boss Loot: keep your prize, gamble it on Double or Nothing (1 of 3 cards loses it, 2 double it), or reroll the cards once with an ad']},
   { v:'6.54.9', date:'2026-10-04', title:'Boss Loot cards', items:['Beating a stage boss opens Boss Loot: pick 1 of 3 face-down cards — Sugar, Currency, Shovels, Weave Thread, Gear Shards, Core Stones or Gear, with a chance of a JACKPOT card'] },
   { v:'6.54.8', date:'2026-10-04', title:'Boss Bounty', items:['Final bosses no longer drop EXP orbs and hearts at the end of a stage — you get a Sugar Boss Bounty added straight to your rewards instead (more on harder difficulties)'] },
@@ -8980,7 +8981,7 @@ class Game extends Phaser.Scene {
     let huntD=Infinity;
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){
       // 🎯 Hunt: เป้าหมายวาร์ปหนีเมื่อเข้าใกล้ + ทิ้งกับดักไว้ที่เดิม
-      if(o.type==='hunt'){const dd=this.dist(this.player.x,this.player.y,e.x,e.y);if(dd<huntD)huntD=dd;e._huntFlee=!o._overtime&&dd<380;}   // v5.19.1 เป้าวิ่งหนีเมื่อเข้าใกล้
+      if(o.type==='hunt'){const dd=this.dist(this.player.x,this.player.y,e.x,e.y);if(dd<huntD)huntD=dd;e._huntFlee=!o._overtime&&dd<230;}   // v5.19.1 เป้าวิ่งหนีเมื่อเข้าใกล้
       if(o.type==='hunt'&&!o._overtime){e._blinkCd=(e._blinkCd??2.5)-dt;if(e._blinkCd<=0&&this.dist(this.player.x,this.player.y,e.x,e.y)<210){e._blinkCd=4.5;const ox=e.x,oy=e.y,a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-.7,.7),lim=WORLD/2-120;
         this.spawnHazard(ox,oy,55,Math.round(8+(this.stageIndex||0)*1.5),0xff5a8a);this.vfxSpawnPoof(ox,oy);e.setPosition(Phaser.Math.Clamp(ox+Math.cos(a)*270,-lim,lim),Phaser.Math.Clamp(oy+Math.sin(a)*270,-lim,lim));this.vfxSpawnPoof(e.x,e.y);this.floatText(e.x,e.y-50,'Blink!',0xff8ab0);}}
       if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
