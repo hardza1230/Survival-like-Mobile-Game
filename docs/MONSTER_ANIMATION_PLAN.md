@@ -6,7 +6,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 |---|---|---|
 | 1 | Central presentation controller, freeze, pool reuse, stable proportions and action registration | Complete — v6.55.11 |
 | 2 | Chapter 1 stage 1: Worker, Scout, Spitter, Soldier, Drone and Acid Ant | Complete — v6.55.12 |
-| 3 | Chapter 1 stage 2: Drain Slime, Dasher, Caster, Bomber and Tank | Pending |
+| 3 | Chapter 1 stage 2: Drain Slime, Dasher, Caster, Bomber and Tank | Complete — v6.55.13 |
 | 4 | Chapter 1 stage 3: Ember, Chili, Grinder, Pressure Pot and Golem | Pending |
 | 5 | Chapter 1 stage 4: Wisp, Shard, Caster, Bubble and Guardian | Pending |
 | 6 | Chapter 1 stage 5 and Chapter 3: improve existing walk sheets, add missing action clips | Pending |
@@ -55,3 +55,7 @@ Actual-method tests cover idle/walk transitions, loop reuse, speed scaling, free
 ## Commit 2 delivery
 
 Six painted ant sheets and runtime integration delivered in v6.55.12. Source and review preview: assets/incoming/ch1_ant_animations; runtime: assets/art/ch1_ants. Six walk frames, two idle frames and separate action/hurt/death clips per species. Spitter/Drone action rows were repaired independently. Authored facing and defeat ghost flip are documented in the manifest. New tests execute actual spawn/controller methods and prove original HP/damage/collision values. Remaining: commits 3–10; next is Drain monsters.
+
+## Commit 3 delivery
+
+Five painted Drain sheets delivered in v6.55.13, including ordinary roles and the Drain Tank Elite. Each has six walk, two idle, four action, two hurt and two death frames. Sources, exact prompts, packing bounds and review preview: assets/incoming/ch1_drain_animations; runtime: assets/art/ch1_drain. Uniform per-species packing preserves proportions and foot baseline. Caster windup, Dasher dash and Bomber low-HP pressure poses use existing combat timings. Original stats, collision circles and bestiary art are preserved. Actual-method tests, asset validation, full checks and web build pass; phone visual/performance review remains pending. Remaining: commits 4–10; next is Fire monsters.

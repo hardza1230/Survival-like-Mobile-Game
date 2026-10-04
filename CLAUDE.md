@@ -1,3 +1,7 @@
+# Latest delivery: v6.55.13 — monster animation commit 3
+
+Chapter 1 Drain monsters now use five real 16-frame painted sheets (Slime, Dasher, Caster, Bomber, Tank), including the Tank Elite. Runtime assets: assets/art/ch1_drain; source/manifest/prompts/review: assets/incoming/ch1_drain_animations. Combat stats, hitboxes and attack timing are unchanged. Tests and web build pass. Phone visual/performance review is pending. Next requested batch is commit 4 (Fire); commits 4–10 remain. See docs/MONSTER_ANIMATION_PLAN.md.
+
 ## Current release — v6.55.12 (Monster animation commit 2)
 
 Six Chapter 1 ant species have generated raster walk/idle/action/hurt/death sheets. PNG sources, prompts, packing report and animated review preview: assets/incoming/ch1_ant_animations. Runtime WebPs: assets/art/ch1_ants. Animated selection precedes old readable/static fallback; source frame size stays 96px. Spitter/Acid prepare shots without changing cadence; Scout windup/dash and contact bite hooks use authored frames; living injured bombers show a one-time warning. Both authored facing directions are supported. Actual-method tests prove eight role mappings and original HP/damage/scales/circles. Full checks/web build pass; phone review pending. Remaining monster commits 3–10; next: Drain monsters. See docs/MONSTER_ANIMATION_PLAN.md.
