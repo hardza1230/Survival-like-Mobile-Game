@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.52.1';
+const GAME_VERSION = '6.52.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.52.2', date:'2026-10-04', title:'Skill tree', items:['Talents use a Tap Titans–style skill tree: tabs per branch, a root that splits into 3 paths','Each level costs more Talent Points — choose where to invest','Build branches now have 7 nodes: Focus, Rhythm, Resolve, Precision, Second Wind, Guard, Mastery'] },
   { v:'6.52.1', date:'2026-10-04', title:'Talent tree & shorter cards', items:['Talents are now a tree: a Core branch plus one branch per Build — unlock nodes top to bottom','Build branches power up only in runs where you pick that build','Level-up cards: tags moved to the star line and repeated text removed'] },
   { v:'6.52.0', date:'2026-10-04', title:'Gear tutorial', items:['After beating the first boss, a guided tutorial shows how to roll, equip and craft items (with a free gift to try it)'] },
   { v:'6.51.2', date:'2026-10-04', title:'Build names & clearer results', items:['Build Path cards now use short build names (Sniper Build, Freeze Build, Titan Build…) for every hero','Defeat screen trimmed: big Time/Kills/Level, Sugar/Power/EXP highlighted, one-line cause'] },
@@ -2770,11 +2771,16 @@ const CHAR_TALENTS = {
 };
 function charTalents(c){ return CHAR_TALENTS[c]||CHAR_TALENTS.momo; }
 // v6.52.1: Talent tree แบบสายตระกูล — 1 สายต่อ Build Path (ทำงานเฉพาะรันที่เลือกสายนั้น)
-function talentBranch(pt){ const e=pt.emoji||'✦',b='b_'+pt.id+'_';
-  return [{id:b+0,emoji:e,name:'Focus',max:3,per:'+6% damage',apply:(p,r)=>{p.dmgMul+=0.06*r;}},
+function talentBranch(pt){ const e=pt.emoji||'✦',b='b_'+pt.id+'_';   // v6.52.2: root + 3 สาย (ลำดับ: root, แล้ว round-robin ลงคอลัมน์)
+  return [{id:b+0,emoji:e,name:'Focus',max:5,per:'+6% damage',apply:(p,r)=>{p.dmgMul+=0.06*r;}},
     {id:b+1,emoji:'⏱️',name:'Rhythm',max:3,per:'−4% cooldown',apply:(p,r)=>{p.cdMul*=(1-0.04*r);}},
-    {id:b+2,emoji:'🛡️',name:'Resolve',max:2,per:'+8% max HP',apply:(p,r)=>{const f=1+0.08*r;p.maxhp*=f;p.hp=Math.min(p.maxhp,p.hp*f);}},
+    {id:b+2,emoji:'🛡️',name:'Resolve',max:3,per:'+8% max HP',apply:(p,r)=>{const f=1+0.08*r;p.maxhp*=f;p.hp=Math.min(p.maxhp,p.hp*f);}},
+    {id:b+'p',emoji:'🎯',name:'Precision',max:3,per:'+4% crit chance',apply:(p,r)=>{p.critChance+=0.04*r;}},
+    {id:b+'r',emoji:'💗',name:'Second Wind',max:3,per:'+0.6 HP/s regen',apply:(p,r)=>{p.regen+=0.6*r;}},
+    {id:b+'g',emoji:'🧱',name:'Guard',max:3,per:'−5% damage taken',apply:(p,r)=>{p.dmgTakenMul*=(1-0.05*r);}},
     {id:b+3,emoji:'👑',name:'Mastery',max:1,per:'+12% damage · +6% crit',apply:(p,r)=>{p.dmgMul+=0.12*r;p.critChance+=0.06*r;}}]; }
+function talCost(r){ return r+1; }          // แต้มที่ต้องใช้อัปจาก rank r → r+1 (แพงขึ้นเรื่อย ๆ = ต้องเลือก)
+function talSpent(tal){ let n=0; for(const k in tal||{}){ const r=tal[k]||0; n+=r*(r+1)/2; } return n; }
 function applyPathTalents(p,ch,path,tal){ const pt=(BASIC_PATHS[ch]||[]).find(x=>x.id===path); if(!pt||!tal)return; for(const d of talentBranch(pt)){const r=tal[d.id]||0;if(r>0)d.apply(p,r);} }
 // v4.88: Passive ประจำตัว (ทำงานตลอด · แรงขึ้นตามเลเวลตัวละคร)
 const CHAR_PASSIVES={
@@ -12481,36 +12487,39 @@ class Game extends Phaser.Scene {
     const pd=this.add.text(bx+12,py+31,(ps?ps.desc:'')+'  (power ×'+sc.toFixed(2)+' from Lv)',{fontFamily:'sans-serif',fontSize:'9.5px',color:'#d4c2e6'}).setOrigin(0,0.5);
     this.menu.add([g,hd,tp,ex,pt,pd]);
     if(own.length>1){ const ra=this.add.text(hd.x+hd.width+14,top,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(ra); this._zone(ra.x-20,top-18,40,36,()=>{ const n=own[(oi+1)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); }); }
-    // v6.52.1: Talent tree แบบ Tap Titans — คอลัมน์ Core + 1 สายต่อ Build Path · โหนดถัดไปปลดเมื่อโหนดก่อนหน้า ≥1
-    const tal=cp.tal||{},cols=[{name:'Core',emoji:'⭐',col:0xffd166,nodes:defs}].concat((BASIC_PATHS[id]||[]).map((pt,k)=>({name:String(pt.name).replace(/ Build$/,''),emoji:pt.emoji,col:[0x7fd4ff,0xff8fb5,0x8ff0b0][k%3],nodes:talentBranch(pt)})));
-    const nc=cols.length,cw=bw/nc,tTop=py+60,maxN=Math.max(...cols.map(c=>c.nodes.length)),detH=96,nh=Math.max(46,Math.min(70,(this.H-tTop-34-detH-64)/maxN)),nr=Math.min(21,cw*0.27,nh*0.36);
-    const avail=(c,i)=>i===0||(tal[c.nodes[i-1].id]||0)>0;
-    if(!this._talSel||!cols.some(c=>c.nodes.some(n=>n.id===this._talSel)))this._talSel=defs[0]&&defs[0].id;
-    let sel=null,selOk=false,selCol=null;
-    cols.forEach((c,ci)=>{ const cx=bx+cw*ci+cw/2;
-      const hb=this.add.graphics();hb.fillStyle(c.col,0.18);hb.fillRoundedRect(bx+cw*ci+3,tTop,cw-6,26,9);hb.lineStyle(1.5,c.col,0.8);hb.strokeRoundedRect(bx+cw*ci+3,tTop,cw-6,26,9);
-      const ht=this.add.text(cx,tTop+13,c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(cw<95?10:12)+'px',color:'#ffffff'}).setOrigin(0.5);this.menu.add([hb,ht]);
-      const ln=this.add.graphics();this.menu.add(ln);
-      c.nodes.forEach((n,i)=>{ const y=tTop+34+nr+i*nh,r=tal[n.id]||0,ok=avail(c,i),mx=r>=n.max,on=this._talSel===n.id;
-        if(i>0){ln.lineStyle(4,(r>0||ok)?c.col:0x3a3048,(r>0||ok)?0.9:0.6);ln.lineBetween(cx,y-nh+nr,cx,y-nr);}
-        const g2=this.add.graphics();g2.fillStyle(mx?0x5a4310:r>0?0x2f3d4f:ok?0x2a2236:0x1a1522,1);g2.fillCircle(cx,y,nr);g2.lineStyle(on?4:2,on?0xffffff:mx?0xffd166:r>0?c.col:ok?0x6a5b86:0x3a3048,1);g2.strokeCircle(cx,y,nr);
-        const em=this.add.text(cx,y-1,ok||r>0?n.emoji:'🔒',{fontSize:Math.round(nr*0.95)+'px'}).setOrigin(0.5).setAlpha(ok||r>0?1:0.55);
-        const rt=this.add.text(cx,y+nr+7,r+'/'+n.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:mx?'#ffe07a':r>0?'#cfe9ff':'#8a8198'}).setOrigin(0.5);
-        this.menu.add([g2,em,rt]); if(on){sel=n;selOk=ok;selCol=c;}
-        this._zone(cx-cw/2+2,y-nr-4,cw-4,nr*2+16,()=>{this._talSel=n.id;Sfx.select&&Sfx.select();this.buildMenuScreen();}); }); });
-    if(sel){ const dy=tTop+34+maxN*nh+4,r=tal[sel.id]||0,mx=r>=sel.max,can=selOk&&!mx&&(cp.tp||0)>0,dg=this.add.graphics();
-      dg.fillStyle(0x241a30,0.97);dg.fillRoundedRect(bx,dy,bw,detH-8,14);dg.lineStyle(2,selCol.col,0.9);dg.strokeRoundedRect(bx,dy,bw,detH-8,14);
-      const t1=this.add.text(bx+14,dy+18,sel.emoji+' '+sel.name+'  '+r+'/'+sel.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5);
-      const t2=this.add.text(bx+14,dy+42,sel.per,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-130}}).setOrigin(0,0.5);
-      const t3=this.add.text(bx+14,dy+68,selCol.name==='Core'?'Always active':'Active only in runs where you pick '+selCol.name+' Build',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',wordWrap:{width:bw-130}}).setOrigin(0,0.5);
-      const pbw=104,pbh=46,pbx=bx+bw-pbw-10,pby=dy+(detH-8-pbh)/2,pg=this.add.graphics();pg.fillStyle(mx?0x5a4310:can?0x3f9160:0x3a3048,1);pg.fillRoundedRect(pbx,pby,pbw,pbh,12);
-      const pt2=this.add.text(pbx+pbw/2,pby+pbh/2,mx?'MAX':!selOk?'🔒 Locked':can?'+1  🌟':'Need TP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5);
-      this.menu.add([dg,t1,t2,t3,pg,pt2]);
-      this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!selOk?'Unlock the node above first':'Need Talent Points — level up this hero','#ff9bb5');return;}
-        cp.tal=cp.tal||{};cp.tal[sel.id]=(cp.tal[sel.id]||0)+1;cp.tp--;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+sel.name+' '+cp.tal[sel.id]+'/'+sel.max,'#8ff0b0');this.buildMenuScreen(); }); }
-    const defsN=0,listTop=tTop+34+maxN*nh+detH,rh=0;
+    // v6.52.2: Skill tree แบบ Tap Titans 2 — แท็บสาย · root แตก 3 สาย · ราคาแต้มเพิ่มตามเลเวล (ต้องเลือก)
+    const tal=cp.tal||{},cols=[{key:'core',name:'Core',emoji:'⭐',col:0xffd166,nodes:defs}].concat((BASIC_PATHS[id]||[]).map((pt,k)=>({key:pt.id,name:String(pt.name).replace(/ Build$/,''),emoji:pt.emoji,col:[0x7fd4ff,0xff8fb5,0x8ff0b0][k%3],nodes:talentBranch(pt)})));
+    if(!cols.some(c=>c.key===this._talTab))this._talTab='core'; const C=cols.find(c=>c.key===this._talTab),tTop=py+56,tw=bw/cols.length;
+    cols.forEach((c,ci)=>{ const x=bx+ci*tw,on=c===C,g3=this.add.graphics(); g3.fillStyle(on?c.col:0x2a2236,on?0.9:1); g3.fillRoundedRect(x+2,tTop,tw-4,30,9); g3.lineStyle(2,c.col,on?1:0.5); g3.strokeRoundedRect(x+2,tTop,tw-4,30,9);
+      const pts=c.nodes.reduce((a,n)=>a+(tal[n.id]||0),0),tx=this.add.text(x+tw/2,tTop+15,c.emoji+' '+c.name+(pts?' '+pts:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(tw<95?10:12)+'px',color:on?'#1a1022':'#e9dcff'}).setOrigin(0.5);
+      this.menu.add([g3,tx]); this._zone(x,tTop-4,tw,38,()=>{ this._talTab=c.key; this._talSel=null; Sfx.select&&Sfx.select(); this.buildMenuScreen(); }); });
+    const N=C.nodes,root=N[0],chains=[[],[],[]]; N.slice(1).forEach((n,i)=>chains[i%3].push(n)); const par={}; chains.forEach(ch2=>ch2.forEach((n,i)=>par[n.id]=i===0?root.id:ch2[i-1].id));
+    const detH=110,aTop=tTop+44,rows=1+Math.max(...chains.map(c=>c.length)),ns=Math.min(58,bw*0.16),rh2=Math.max(ns+20,Math.min(96,(this.H-aTop-detH-70)/rows));
+    const area=this.add.graphics(); area.fillStyle(0x140f1c,0.82); area.fillRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); area.lineStyle(2,C.col,0.55); area.strokeRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); this.menu.add(area);
+    const pos={}; pos[root.id]={x:bx+bw/2,y:aTop+rh2/2}; chains.forEach((ch2,k)=>ch2.forEach((n,i)=>pos[n.id]={x:bx+bw*(k+0.5)/3,y:aTop+rh2*(i+1.5)}));
+    const ln=this.add.graphics(); this.menu.add(ln); const okN=n=>n===root||(tal[par[n.id]]||0)>0;
+    N.forEach(n=>{ if(n===root)return; const a2=pos[par[n.id]],b2=pos[n.id],lit=okN(n); ln.lineStyle(5,lit?C.col:0x3a3048,lit?0.95:0.7);
+      if(a2.x===b2.x)ln.lineBetween(a2.x,a2.y+ns/2,b2.x,b2.y-ns/2); else { const my=(a2.y+b2.y)/2; ln.lineBetween(a2.x,a2.y+ns/2,a2.x,my); ln.lineBetween(a2.x,my,b2.x,my); ln.lineBetween(b2.x,my,b2.x,b2.y-ns/2); } });
+    if(!this._talSel||!N.some(n=>n.id===this._talSel))this._talSel=root.id; let sel=null;
+    N.forEach(n=>{ const P2=pos[n.id],r=tal[n.id]||0,ok=okN(n),mx=r>=n.max,on=this._talSel===n.id,x=P2.x-ns/2,y=P2.y-ns/2,g2=this.add.graphics();
+      g2.fillStyle(mx?0x6a4d10:r>0?this._darken(C.col,0.55):ok?0x2a2236:0x15111c,1); g2.fillRoundedRect(x,y,ns,ns,12); g2.lineStyle(on?4:2.5,on?0xffffff:mx?0xffd166:ok?C.col:0x3a3048,1); g2.strokeRoundedRect(x,y,ns,ns,12);
+      const em=this.add.text(P2.x,P2.y-2,ok?n.emoji:'🔒',{fontSize:Math.round(ns*0.5)+'px'}).setOrigin(0.5).setAlpha(ok?1:0.5);
+      const lb=this.add.text(x+ns-4,y+ns-3,String(r),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',stroke:'#000',strokeThickness:3}).setOrigin(1,1);
+      this.menu.add([g2,em,lb]); if(ok&&!mx&&(cp.tp||0)>=talCost(r)){ const up=this.add.text(x+ns-2,y+2,'⬆',{fontSize:'13px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0); this.menu.add(up); }
+      if(on)sel=n; this._zone(x-6,y-6,ns+12,ns+12,()=>{ this._talSel=n.id; Sfx.select&&Sfx.select(); this.buildMenuScreen(); }); });
+    { const n=sel,r=tal[n.id]||0,ok=okN(n),mx=r>=n.max,cost=talCost(r),can=ok&&!mx&&(cp.tp||0)>=cost,dy=aTop+rows*rh2+12,dg=this.add.graphics();
+      dg.fillStyle(0x0f0b15,0.97); dg.fillRoundedRect(bx,dy,bw,detH-8,14); dg.lineStyle(2,C.col,0.9); dg.strokeRoundedRect(bx,dy,bw,detH-8,14);
+      const t1=this.add.text(bx+14,dy+17,n.emoji+' '+n.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5),t1b=this.add.text(bx+bw-14,dy+17,'Lv. '+r+' / '+n.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd166'}).setOrigin(1,0.5);
+      const t2=this.add.text(bx+14,dy+42,'Each level: '+n.per,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
+      const t3=this.add.text(bx+14,dy+70,C.key==='core'?'Always active':'Only in runs with '+C.name+' Build',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
+      const pbw=118,pbh=58,pbx=bx+bw-pbw-10,pby=dy+30,pg=this.add.graphics(); pg.fillStyle(mx?0x5a4310:can?0xe0a020:0x3a3048,1); pg.fillRoundedRect(pbx,pby,pbw,pbh,10);
+      const pc=this.add.text(pbx+pbw/2,pby+15,mx?'':ok?cost+' Talent Point'+(cost>1?'s':''):'Locked',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#1a1022'}).setOrigin(0.5),pt2=this.add.text(pbx+pbw/2,pby+38,mx?'MAX':ok?'Upgrade':'🔒',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#3a2400',strokeThickness:3}).setOrigin(0.5);
+      this.menu.add([dg,t1,t1b,t2,t3,pg,pc,pt2]);
+      this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!ok?'Upgrade the node above first':'Need '+cost+' Talent Points — level up this hero','#ff9bb5');return;}
+        cp.tal=cp.tal||{};cp.tal[n.id]=r+1;cp.tp-=cost;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.buildMenuScreen(); }); }
+    const defsN=0,listTop=aTop+rows*rh2+12+detH-14,rh=0;
     // v4.88.2: รีเซ็ต Talent คืน TP ทั้งหมด (จ่าย Sugar · แตะ 2 ครั้งยืนยัน)
-    const spent=Object.values(cp.tal||{}).reduce((a,v)=>a+(v||0),0),cost=80+40*spent,armed=this._talResetArm&&this._talResetArm.id===id&&Date.now()-this._talResetArm.t<2500;
+    const spent=talSpent(cp.tal),cost=80+40*spent,armed=this._talResetArm&&this._talResetArm.id===id&&Date.now()-this._talResetArm.t<2500;
     const ry=listTop+defsN*(rh+6)+22;
     this.uiPillBtn(this.menu,W/2,ry,Math.min(bw,300),38,spent>0?0xb45a7a:0x4a4059,'↺',spent<=0?'Reset Talents (nothing spent)':armed?'Tap again to confirm · 🍬'+cost:'Reset Talents · 🍬'+cost,()=>{
       if(spent<=0){this.menuToast('No talent points spent yet');return;}
