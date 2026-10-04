@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.14 — monster animation commit 4
+# Latest delivery: v6.55.15 — monster animation commit 5
+
+Chapter 1 Ice monsters now use five real 16-frame painted sheets (Wisp, Shard, Caster, Frost Bubble, Guardian), including Guardian Elite. Runtime: assets/art/ch1_ice; sources/manifest/exact prompts/packing/review: assets/incoming/ch1_ice_animations. Combat values, timers, original collision circles and frostbite flags are preserved. Actual-method tests, full checks and web build pass; phone visual/performance review is pending. Remaining monster animation commits 6–10; next is commit 6 (existing Chapter 1 stage 5 and Chapter 3 sheets). See docs/MONSTER_ANIMATION_PLAN.md.
+
+## Previous delivery: v6.55.14 — monster animation commit 4
 
 Chapter 1 Fire monsters now use five real 16-frame painted sheets (Ember, Chili, Grinder, Pressure Pot, Golem), including Golem Elite. Runtime: assets/art/ch1_fire; source/manifest/exact prompts/packing/review: assets/incoming/ch1_fire_animations. Chili has left-facing art and separately repaired dash/recovery poses; Pressure Pot also has left-facing art; Ember, Grinder and Golem face right. Combat values, colliders and timers are preserved. Actual-method tests, full checks and web build pass; phone visual/performance review is pending. Remaining monster animation commits 5–10; next is commit 5 (Ice). See docs/MONSTER_ANIMATION_PLAN.md.
 
