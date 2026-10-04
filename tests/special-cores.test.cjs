@@ -14,5 +14,5 @@ ctx.affixDef=id=>({apply:(p,v)=>p[id]=(p[id]||0)+v});ctx.player={};vm.runInConte
 assert.deepEqual({...ctx.player},{pick:30,dash:12,xp:15,orbfind:15,uniquecd:9});
 save.data.rank=6;assert.equal(save.specialCoreLvl('magnet'),3);
 assert(method('promote').includes('UPG_ORDER'));assert(!method('promote').includes('specialCores'));
-assert(method('applyMeta').includes('applySpecialCores(p)'));assert(s.includes('    applySpecialCores(p);\n    for(const slot of GEAR_SLOTS)'));
+assert(method('applyMeta').includes('applySpecialCores(p)'));assert(s.includes("    applySpecialCores(p); mark('Special Cores');\n    for(const slot of GEAR_SLOTS)"));
 console.log('Special cores: rank gates, thread costs, insufficient funds, level caps, old saves, all five effects and promotion persistence passed');

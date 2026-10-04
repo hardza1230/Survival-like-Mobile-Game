@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.17';
+const GAME_VERSION = '6.55.18';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -62,6 +62,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.5:1;}
 const CHANGELOG = [
+  {v:'6.55.18',date:'2026-10-04',title:'Stat sources',items:['Tap any stat on the Heroes · Stats page to see where it comes from','Breakdown covers hero, weapon, talents, Flavor Weave, cores, gear, sets, Bestiary and perks','Stats preview now includes set bonuses and Ancient perks']},
   {v:'6.55.17',date:'2026-10-04',title:'Real challenge from Stage 3',items:['Power assist only applies on Stages 1–2; from Stage 3 stronger heroes face tougher enemies','Stage 3–5 bosses and minibosses have more HP','Level-ups slow down from Stage 3 onward']},
   {v:'6.55.16',date:'2026-10-04',title:'Stage 5 and Chapter 3 monster animations',items:['Ten monster identities gain six-frame movement and separate idle, action, hurt and defeat clips','Stage 5 firing and dash cues select authored clips with original timings','Chapter 3 silhouettes keep their original runtime size and combat values']},
   {v:'6.55.15',date:'2026-10-04',title:'Ice monster sprite animations',items:['Five ice creatures use painted movement, idle, action, hurt and defeat frames','Ice Shard dash, Syrup Turret firing and Frost Bubble warnings follow original timers','Frozen Gate Warden and Ice Elite retain their original combat values and collision circles']},
@@ -6038,16 +6039,24 @@ class Game extends Phaser.Scene {
   // คำนวณสแตตจริงของ loadout (base + char + weapon + Flavor Weave + gear + bestiary + perks) โดยไม่แตะ player จริง
   previewStats(){
     const p={maxhp:90,dmgMul:0.90,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
+    // v6.55.18: เก็บ snapshot หลังแต่ละแหล่ง → หน้า Stats โชว์ว่าค่ามาจากไหน
+    const snap=()=>({maxhp:p.maxhp,dmgMul:p.dmgMul,critChance:p.critChance,critMul:p.critMul,dmgTakenMul:p.dmgTakenMul,baseSpeed:p.baseSpeed,cdMul:p.cdMul,regen:(p.regen||0)+(p.regenFlat||0)});
+    const trace=[{label:'Base',s:snap()}],mark=l=>trace.push({label:l,s:snap()});p._trace=trace;
     const ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,st=ch.stats||{};
     if(st.hp)p.maxhp+=st.hp; if(st.dmg)p.dmgMul*=st.dmg; if(st.spd)p.baseSpeed*=st.spd; if(st.def)p.dmgTakenMul*=st.def; if(st.crit)p.critChance+=st.crit; if(st.cdr)p.cdMul*=st.cdr; if(st.regenFlat)p.regenFlat+=st.regenFlat;
-    const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul+=((sw.dmgMul||1))-1; p.cdMul*=(sw.cdMul||1); }
+    mark('Hero profile');
+    const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul+=((sw.dmgMul||1))-1; p.cdMul*=(sw.cdMul||1); } mark('Signature weapon');
     const talents=Save.cp(Save.data.character).tal||{};for(const def of charTalents(Save.data.character)){const r=talents[def.id]||0;if(r>0&&def.apply)def.apply(p,r);}if(this.basicAttack&&this.basicAttack.path){applyPathTalents(p,Save.data.character,this.basicAttack.path,talents);this.basicAttack._ptal=this.basicAttack.path;}
-    for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); }
-    applySpecialCores(p);
+    { const cpl=Save.cp(Save.data.character).lvl||1; if(Save.data.character==='cocoa'){ p.lowHpGuard=(p.lowHpGuard||0)+0.15*charPassiveScale(cpl); } } mark('Talents');
+    for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); } mark('Flavor Weave');
+    applySpecialCores(p); mark('Special Cores');
     for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
-    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
-    const rp=Save.data.rankPerks||{}; if(rp.vigor)p.maxhp*=1+0.06*rp.vigor; if(rp.might)p.dmgMul+=(1+0.05*rp.might)-1; if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
-    clampPlayerStats(p);   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
+    mark('Gear + mods');
+    { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply)def.bonuses[need].apply(p); } } for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid))def.collect.apply(p); } } mark('Gear sets');
+    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr)); mark('Bestiary');
+    const rp=Save.data.rankPerks||{}; if(rp.vigor)p.maxhp*=1+0.06*rp.vigor; if(rp.might)p.dmgMul+=(1+0.05*rp.might)-1; if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill); mark('Rank Perks');
+    if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; } mark('Ancient Perks');
+    clampPlayerStats(p); mark('Stat cap');   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
     return p;
   }
   buildStats(){
@@ -6069,13 +6078,31 @@ class Game extends Phaser.Scene {
     const portrait=w<=this.H,gap=6,cardW=w-28;
     if(portrait){ const artH=Math.min(260,Math.max(0,this.H-y-rows.length*(40+gap)-40)); if(artH>120){ this._characterCardArt(Save.data.character,w/2,y+artH/2,w*0.7,artH); y+=artH+8; } }
     const rh=portrait?Phaser.Math.Clamp((this.H-y-24-gap*(rows.length-1))/rows.length,40,58):40;
-    rows.forEach((r,i)=>{ const ry=y+i*(rh+gap),g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(14,ry,cardW,rh,10); g.lineStyle(1.4,0x4a4059,1); g.strokeRoundedRect(14,ry,cardW,rh,10); g.fillStyle(r[4],0.16); g.fillRoundedRect(14,ry,5,rh,{tl:10,bl:10,tr:0,br:0});
+    const keys=['dmgMul','maxhp','critChance','dmgTakenMul','baseSpeed','cdMul','regen'];
+    rows.forEach((r,i)=>{ const ry=y+i*(rh+gap),g=this.add.graphics();this._zone(14,ry,cardW,rh,()=>{Sfx.select&&Sfx.select();this.showStatSources(p,keys[i],r);}); g.fillStyle(0x2c2338,1); g.fillRoundedRect(14,ry,cardW,rh,10); g.lineStyle(1.4,0x4a4059,1); g.strokeRoundedRect(14,ry,cardW,rh,10); g.fillStyle(r[4],0.16); g.fillRoundedRect(14,ry,5,rh,{tl:10,bl:10,tr:0,br:0});
       const em=this.add.text(32,ry+rh/2,r[0],{fontSize:'19px'}).setOrigin(0.5);
       const nm=this.add.text(54,ry+8,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e8dcf0'}).setOrigin(0,0);
-      const sub=this.add.text(54,ry+23,r[3],{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(0,0);
+      const sub=this.add.text(54,ry+23,(r[3]?r[3]+' · ':'')+'tap for sources ›',{fontFamily:'sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(0,0);
       const val=this.add.text(w-24,ry+rh/2,r[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(1,0.5);
       this.menu.add([g,em,nm,sub,val]); });
     this.menu.setVisible(true);
+  }
+  // v6.55.18: แผงแหล่งที่มาของสแตต (เทียบ snapshot ก่อน/หลังแต่ละแหล่งใน previewStats)
+  showStatSources(p,key,row){
+    const tr=p._trace||[],w=this.W,h=this.H,fmt=(a,b)=>{const pct=v=>(v>0?'+':'')+(Math.round(v*1000)/10)+'%';
+      if(key==='maxhp'){const d=b-a;return (d>0?'+':'')+Math.round(d);} if(key==='baseSpeed'){const d=b-a;return (d>0?'+':'')+Math.round(d);} if(key==='regen'){const d=b-a;return (d>0?'+':'')+d.toFixed(1)+'/s';}
+      if(key==='dmgMul')return pct(b-a); if(key==='critChance')return pct(b-a); if(key==='dmgTakenMul')return pct(a-b)+' less'; if(key==='cdMul')return pct(a-b)+' faster'; return '';};
+    const base=tr[0]&&tr[0].s[key],lines=[];
+    if(tr[0]){const v=key==='dmgMul'||key==='critChance'?Math.round(base*100)+'%':key==='dmgTakenMul'?Math.round((1-base)*100)+'% less':key==='cdMul'?'×'+base.toFixed(2):key==='regen'?base.toFixed(1)+'/s':Math.round(base)+'';lines.push(['Base',v]);}
+    for(let i=1;i<tr.length;i++){const a=tr[i-1].s[key],b=tr[i].s[key];if(Math.abs(b-a)>1e-6)lines.push([tr[i].label,fmt(a,b)]);}
+    if(key==='critChance')lines.push(['Crit damage','×'+p.critMul.toFixed(2)]);
+    if(key==='dmgMul'&&(p.powerMul||1)!==1)lines.push(['Weapon item power','×'+p.powerMul.toFixed(2)+' (separate)']);
+    const ov=this.add.container(0,0).setDepth(150000),bg=this.add.rectangle(w/2,h/2,w,h,0x000000,0.6),pw=Math.min(w-32,380),ph=70+lines.length*26,px=(w-pw)/2,py=Math.max(40,(h-ph)/2),g=this.add.graphics();
+    g.fillStyle(0x241a30,0.98);g.fillRoundedRect(px,py,pw,ph,14);g.lineStyle(2,row[4],1);g.strokeRoundedRect(px,py,pw,ph,14);
+    const t=this.add.text(w/2,py+20,row[0]+' '+row[1]+'  '+row[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0.5);ov.add([bg,g,t]);
+    lines.forEach((l,i)=>{const ly=py+48+i*26,a=this.add.text(px+16,ly,l[0],{fontFamily:'sans-serif',fontSize:'12px',color:'#d8cde2'}).setOrigin(0,0.5),b=this.add.text(px+pw-16,ly,l[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:l[1][0]==='-'?'#ff9bb5':'#8ff0b0'}).setOrigin(1,0.5);ov.add([a,b]);});
+    const hint=this.add.text(w/2,py+ph-12,'Tap anywhere to close',{fontFamily:'sans-serif',fontSize:'9px',color:'#9a90ab'}).setOrigin(0.5);ov.add(hint);this.menu.add(ov);
+    const prev=this.tapZones;this.tapZones=[];this._zone(0,0,w,h,()=>{ov.destroy();this.tapZones=prev;});
   }
   // v6.53: Codex ชุดเซ็ท — ชิ้นไหนเข้าชุดไหน · โบนัสสวม 2/3 ชิ้น · เก็บครบ = โบนัสถาวร
   buildSetCodex(top){ const w=this.W,bw=Math.min(w-24,460),bx=(w-bw)/2,cnt=gearSetCounts(); let y=top;
