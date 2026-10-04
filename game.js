@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.53.0';
+const GAME_VERSION = '6.54.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.54.0', date:'2026-10-04', title:'Set collection & talent tutorial', items:['Codex › Sets: feed 5 spare copies of each piece to complete a set collection for a permanent bonus','Skill Codex renamed to Codex','After stage 1 the tutorial also shows how to spend a Talent Point'] },
   { v:'6.53.0', date:'2026-10-04', title:'Gear Sets codex', items:['New Codex › Sets tab: see which pieces belong to each set, their 2/3-piece bonuses and your progress','Collect every piece of a set for a small permanent bonus','3 new sets: Home Kitchen, Kitchen Brigade, Lucky Star','Equipment page shows your active set bonuses clearly'] },
   { v:'6.52.2', date:'2026-10-04', title:'Skill tree', items:['Talents use a Tap Titans–style skill tree: tabs per branch, a root that splits into 3 paths','Each level costs more Talent Points — choose where to invest','Build branches now have 7 nodes: Focus, Rhythm, Resolve, Precision, Second Wind, Guard, Mastery'] },
   { v:'6.52.1', date:'2026-10-04', title:'Talent tree & shorter cards', items:['Talents are now a tree: a Core branch plus one branch per Build — unlock nodes top to bottom','Build branches power up only in runs where you pick that build','Level-up cards: tags moved to the star line and repeated text removed'] },
@@ -3053,7 +3054,7 @@ const HUB_GROUPS = {
     sections:[ ['POWER',0xffd36e,[['upgrade','✦','Weave & Rank']]],
       ['GEAR',0x8fe3c4,[['gear','◆','Equipment'],['craft','🧪','Affix Forge'],['bazaar','🏪','Bazaar'],['gearInbox','📦','Inbox']]] ] },
   gCodex:{ title:'📖 Codex', rows:[
-    ['skills','✧','Skill Codex','Skills, passives and Awaken pairs'],
+    ['skills','✧','Codex','Skills, passives and Awaken pairs'],
     ['bestiary','☷','Bestiary','Discoveries and bonuses'] ] },
   gActivity:{ title:'🎉 Activities', rows:[
     ['daily','📅','Daily Missions','Daily reward and challenge stage'],
@@ -3193,7 +3194,9 @@ const GEAR_SETS = {
 const SET_ORDER=['home','brigade','fortune','chef','wind'];
 function gearSetPieces(sid){ return GEAR_ALL.filter(g=>g.set===sid); }
 function gearOwnsBase(id){ return (Save.data.gearItems||[]).some(it=>it.baseId===id)||(Save.data.ownedGear||[]).includes(id); }
-function gearSetCollected(sid){ const ps=gearSetPieces(sid); return ps.length>0&&ps.every(g=>gearOwnsBase(g.id)); }
+const SET_DEPOSIT_NEED=5;   // v6.54: ใส่ของชิ้นละ 5 (เผาทิ้ง) เพื่อปลดโบนัสสะสมถาวร
+function setDeposit(id){ return ((Save.data.setDeposit||{})[id])||0; }
+function gearSetCollected(sid){ const ps=gearSetPieces(sid); return ps.length>0&&ps.every(g=>setDeposit(g.id)>=SET_DEPOSIT_NEED); }
 function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
 /* ---- AFFIX (Phase 1 PoE): prefix/suffix + tier T1-T5 · ของแต่ละชิ้นสุ่มตอนได้มา · reroll ด้วย 🔩 ----
@@ -5714,15 +5717,16 @@ class Game extends Phaser.Scene {
   applyGearTut(){ const d=Save.data; if(this.state!=='menu')return;
     if(d.gearTut===undefined){ if(!(d.stageMastery||{})[0]||!d.tutorialDone||(d.unlockedStage||0)>1){ if((d.unlockedStage||0)>1)d.gearTut=-1; return; }
       d.gearTut=0; Save.addSugar(GACHA_LEVELS[0].cost); Save.addCurrency&&Save.addCurrency('transmute',3); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🍬'+GACHA_LEVELS[0].cost+' + 3 crafting orbs','#ffd166'); }
-    const st=d.gearTut; if(st<0||st>3)return;
-    const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'}];
+    const st=d.gearTut; if(st<0||st>4)return; if(st===4){const cp=Save.cp(d.character||'momo');if((cp.tp||0)<1&&!d._talTutGift){cp.tp=(cp.tp||0)+1;d._talTutGift=true;Save.save();}}
+    const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'},{m:/cp\.tal\[n\.id\]=r\+1/,t:'Spend a Talent Point — talents are permanent!'}];
     const cur=STEPS[st],src=z=>{try{return String(z.fn)}catch(e){return ''}};
     let z=this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
-    if(!z){ adv=false; z=this.tapZones.find(q=>q.tag===(st===3?'craft':'gear'))||this.tapZones.find(q=>/menuScreen='gLoadout'/.test(src(q))); label=z&&z.tag?'Open '+(st===3?'Crafting':'Equipment'):'Open Gear & Power'; }
+    if(!z&&st===4){ adv=false; z=this.tapZones.find(q=>q.tag==='tab_talents'); label='Open Talents'; if(!z){ z=this.tapZones.find(q=>/menuScreen='char'/.test(src(q))&&!/_heroesTab/.test(src(q))); label='Open Heroes'; } if(!z){ z=this.tapZones.find(q=>q.tag==='talents'||q.tag==='char'); label='Open Talents'; } if(!z){ z=this.tapZones.find(q=>q.back); label='Go back'; } }
+    if(!z&&st<4){ adv=false; z=this.tapZones.find(q=>q.tag===(st===3?'craft':'gear'))||this.tapZones.find(q=>/menuScreen='gLoadout'/.test(src(q))); label=z&&z.tag?'Open '+(st===3?'Crafting':'Equipment'):'Open Gear & Power'; }
     if(!z){ if(st===1&&this.menuScreen==='gear'){ const items=d.gearItems||[],it=items[items.length-1],b=it&&GEAR_ALL.find(g=>g.id===it.baseId);
         if(it&&b&&!Save.isGearEquipped(it.uid)&&this.gearSelectedUid!==it.uid){ this.gearSlot=b.slot; this.gearSelectedUid=it.uid; this.buildMenuScreen(); return; }
         d.gearTut=2; Save.save(); this.buildMenuScreen(); } return; }
-    const fn=z.fn; z.fn=()=>{ if(adv){ d.gearTut=st===3?-1:st+1; Save.save(); if(st===3)this.time.delayedCall(1500,()=>this.menuToast('✨ Tutorial done! Equip, roll and craft to grow stronger','#8dffb0')); } fn(); };
+    const fn=z.fn; z.fn=()=>{ if(adv){ d.gearTut=st===4?-1:st+1; Save.save(); if(st===3)this.time.delayedCall(1800,()=>this.menuToast('🌟 Next: power up your hero with Talents','#ffd166')); if(st===4)this.time.delayedCall(800,()=>this.menuToast('✨ Tutorial done! Gear, crafting and talents make you stronger','#8dffb0')); } fn(); };
     const skip={x:this.W-96,y:this.H-40,w:86,h:30,fn:()=>{ d.gearTut=-1; Save.save(); this.buildMenuScreen(); }};
     this.tapZones=[z,skip]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label);
     c.add(this.add.text(this.W-14,this.H-25,'Skip ›',{fontFamily:'sans-serif',fontSize:'12px',color:'#aaa0b8'}).setOrigin(1,0.5)); }
@@ -5952,19 +5956,22 @@ class Game extends Phaser.Scene {
   // v6.53: Codex ชุดเซ็ท — ชิ้นไหนเข้าชุดไหน · โบนัสสวม 2/3 ชิ้น · เก็บครบ = โบนัสถาวร
   buildSetCodex(top){ const w=this.W,bw=Math.min(w-24,460),bx=(w-bw)/2,cnt=gearSetCounts(); let y=top;
     const col=(Object.keys(GEAR_SETS).length);
-    const hd=this.add.text(w/2,y+6,'Wear pieces of the same set for bonuses · collect all pieces for a permanent bonus',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',align:'center',wordWrap:{width:bw}}).setOrigin(0.5,0);this.menu.add(hd);y+=hd.height+10;const ch=Math.max(92,Math.min(124,(this.H-y-10)/col-8));
-    SET_ORDER.filter(k=>GEAR_SETS[k]).forEach(sid=>{ const d=GEAR_SETS[sid],ps=gearSetPieces(sid),own=ps.filter(g=>gearOwnsBase(g.id)).length,done=own===ps.length,wear=cnt[sid]||0,g=this.add.graphics();
+    const hd=this.add.text(w/2,y+6,'Wear pieces of the same set for bonuses · tap a piece to feed a spare copy (5 each) — fill the whole set for a permanent bonus',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',align:'center',wordWrap:{width:bw}}).setOrigin(0.5,0);this.menu.add(hd);y+=hd.height+10;const ch=Math.max(92,Math.min(124,(this.H-y-10)/col-8));
+    SET_ORDER.filter(k=>GEAR_SETS[k]).forEach(sid=>{ const d=GEAR_SETS[sid],ps=gearSetPieces(sid),own=ps.reduce((a,g)=>a+Math.min(SET_DEPOSIT_NEED,setDeposit(g.id)),0),need=ps.length*SET_DEPOSIT_NEED,done=gearSetCollected(sid),wear=cnt[sid]||0,g=this.add.graphics();
       g.fillStyle(0x241a30,0.96);g.fillRoundedRect(bx,y,bw,ch,12);g.lineStyle(2,done?0xffd166:0x5a4b75,1);g.strokeRoundedRect(bx,y,bw,ch,12);
-      const t=this.add.text(bx+12,y+14,d.emoji+' '+d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5),st=this.add.text(bx+bw-12,y+14,wear>=2?'Active '+wear+'/'+ps.length:done?'Collected ✓':'Owned '+own+'/'+ps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:wear>=2?'#8ff0b0':done?'#ffd166':'#9a90ab'}).setOrigin(1,0.5);
+      const t=this.add.text(bx+12,y+14,d.emoji+' '+d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5),st=this.add.text(bx+bw-12,y+14,done?'Collection ✓'+(wear>=2?' · Wearing '+wear:''):wear>=2?'Wearing '+wear+'/'+ps.length:'Collection '+own+'/'+need,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:wear>=2?'#8ff0b0':done?'#ffd166':'#9a90ab'}).setOrigin(1,0.5);
       this.menu.add([g,t,st]); const is=Math.min(46,(bw*0.55-16)/ps.length-6);
       ps.forEach((it,i)=>{ const x=bx+12+i*(is+6),iy=y+30,has=gearOwnsBase(it.id),eq=Object.values(Save.data.gear||{}).includes(it.id),bg=this.add.graphics();bg.fillStyle(has?0x3a2f50:0x1a1522,1);bg.fillRoundedRect(x,iy,is,is,8);bg.lineStyle(2,eq?0x8ff0b0:has?0xc9a3ff:0x3a3048,1);bg.strokeRoundedRect(x,iy,is,is,8);
         const k=it.iconKey&&this.textures.exists(it.iconKey)?it.iconKey:('gear_'+it.id),ic=this.textures.exists(k)?this.add.image(x+is/2,iy+is/2,k).setDisplaySize(is-8,is-8):this.add.text(x+is/2,iy+is/2,it.emoji||'?',{fontSize:Math.round(is*0.5)+'px'}).setOrigin(0.5);ic.setAlpha(has?1:0.3);
-        const nm=this.add.text(x+is/2,iy+is+3,has?it.name:'???',{fontFamily:'sans-serif',fontSize:'7.5px',color:has?'#d8cde2':'#6f6680',align:'center',wordWrap:{width:is+6}}).setOrigin(0.5,0);this.menu.add([bg,ic,nm]); });
+        const dep=Math.min(SET_DEPOSIT_NEED,setDeposit(it.id)),spare=(Save.data.gearItems||[]).filter(q=>q.baseId===it.id&&!q.locked&&!q.favorite&&!Save.isGearEquipped(q.uid)),bar=this.add.graphics();bar.fillStyle(0x0d0a12,1);bar.fillRect(x+3,iy+is-6,is-6,4);bar.fillStyle(dep>=SET_DEPOSIT_NEED?0xffd166:0x8ff0b0,1);bar.fillRect(x+3,iy+is-6,(is-6)*dep/SET_DEPOSIT_NEED,4);this.menu.add(bar);
+        if(spare.length&&dep<SET_DEPOSIT_NEED){const pl=this.add.text(x+is-2,iy+1,'+'+spare.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0);this.menu.add(pl);}
+        this._zone(x,iy,is,is+14,()=>{ if(dep>=SET_DEPOSIT_NEED){this.menuToast(it.name+' is full (5/5)');return;} if(!spare.length){Sfx.select&&Sfx.select();this.menuToast(has?'Need a spare '+it.name+' (not equipped, locked or favorite)':'Find '+it.name+' first','#ff9bb5');return;} if(!Save.removeGearInstance(spare[0].uid)){Sfx.error&&Sfx.error();return;} Save.data.setDeposit=Save.data.setDeposit||{};Save.data.setDeposit[it.id]=dep+1;Save.save();Sfx.progress&&Sfx.progress('claim');const c2=gearSetCollected(sid);this.menuToast(c2?'🏆 '+d.name+' collection complete! '+d.collect.desc:'📥 '+it.name+' '+(dep+1)+'/'+SET_DEPOSIT_NEED,c2?'#ffd166':'#8ff0b0');this.buildMenuScreen(); });
+        const nm=this.add.text(x+is/2,iy+is+3,(has||dep>0)?(dep+'/'+SET_DEPOSIT_NEED+' '+it.name):'???',{fontFamily:'sans-serif',fontSize:'7.5px',color:has?'#d8cde2':'#6f6680',align:'center',wordWrap:{width:is+6}}).setOrigin(0.5,0);this.menu.add([bg,ic,nm]); });
       const tx=bx+bw*0.47; let ly=y+32; Object.keys(d.bonuses).forEach(n=>{ const on=wear>=+n,l=this.add.text(tx,ly,(on?'✅ ':'▫️ ')+d.bonuses[n].desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:on?'#8ff0b0':'#cfc3dd',wordWrap:{width:bw*0.5}}).setOrigin(0,0);this.menu.add(l);ly+=l.height+4; });
       if(d.collect){const l=this.add.text(tx,ly+2,(done?'🏆 ':'🔒 ')+d.collect.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:done?'#ffd166':'#8a8198',wordWrap:{width:bw*0.5}}).setOrigin(0,0);this.menu.add(l);}
       y+=ch+8; }); }
   buildSkillArchive(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Skill Codex','screen_codex');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Codex','screen_codex');
     const w=this.W,h=this.H,portrait=w<=h;let tab=this._skillArchiveTab||'weapons';if(tab==='attack'||tab==='passive')tab='weapons';   // v4.62: สกิล/passive เดิมเลิกใช้แล้ว (character-first)
     const tabY=portrait?82:50,tabH=32,tabGap=6,tabW=Math.min(120,(w-32-tabGap*3)/4),tabX=w/2-(tabW*4+tabGap*3)/2;
     const drawTab=(x,label,on,fn,color)=>{const g=this.add.graphics();g.fillStyle(on?this._darken(color,.55):0x292032,0.96);g.fillRoundedRect(x,tabY,tabW,tabH,10);g.lineStyle(1.8,on?color:0x51445f,1);g.strokeRoundedRect(x,tabY,tabW,tabH,10);const t=this.add.text(x+tabW/2,tabY+tabH/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:tabW<110?'9px':'10px',color:on?'#ffffff':'#998da7'}).setOrigin(0.5);this.menu.add([g,t]);this._zone(x,tabY,tabW,tabH,fn);};
@@ -6725,7 +6732,7 @@ class Game extends Phaser.Scene {
   }
   drawHeroesTabs(){
     const w=this.W,y=w<=this.H?76:49,tw=Math.min(130,(w-32)/3);
-    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{this.paintedNavButton(this.menu,w/2+(i-1)*(tw+3),y+16,tw,38,label,(this._heroesTab||'roster')===id,()=>{this._heroesTab=id;this.menuScreen='char';this.buildHeroes();});});
+    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{this.paintedNavButton(this.menu,w/2+(i-1)*(tw+3),y+16,tw,38,label,(this._heroesTab||'roster')===id,()=>{this._heroesTab=id;this.menuScreen='char';this.buildMenuScreen();});const lz=this.tapZones[this.tapZones.length-1];if(lz)lz.tag='tab_'+id;});
   }
   buildHeroes(){
     const tab=this._heroesTab||'roster';if(tab==='talents')this.buildTalents();else if(tab==='stats')this.buildStats();else this.buildChars();
