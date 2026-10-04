@@ -162,6 +162,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
 - **v6.54.9 (เจ้าของ: อยากได้การ์ดสุ่มแบบ Jackpot แทน):** onBossDown → `openBossLootCards` (การ์ดคว่ำ 3 ใบจาก 7 ชนิด: Sugar/Currency/พลั่ว/ด้าย/🔩/หินแก่น/Gear · JACKPOT 25%+10%/ระดับยาก) แล้วค่อย revealStageReward · openMysteryCards รับ opt {prizes,title,hint} + fallback emoji ถ้าไม่มี artKey · ยกเลิก Sugar Bounty v6.54.8 (บอสยังไม่ดรอป orb/หัวใจ)
 - **v6.54.8 (เจ้าของ: ของดรอปบอสไร้ประโยชน์เพราะจบด่าน):** killEnemy บอสใหญ่ไม่ dropOrb/dropHeal → Sugar Bounty (60+30·stage)×diff reward เข้า sugarStage ตรง + แบนเนอร์ · มินิ/elite ดรอปเหมือนเดิม
+- **v6.55.2 (เจ้าของ):** หน้าสรุปด่าน หลอด Character EXP ใหญ่/สว่างขึ้น เด้งอนิเมชัน 1.6 วิ · gainCharExp รวม EXP หลายครั้งในรันเดียว (`_charExpGain` รีเซ็ตใน startRun) · ปิด `drainPull` (บอสไม่ดูดผู้เล่นแล้ว)
 - **v6.55.1 (บั๊กเจ้าของ: Hunt เป้าหนีออกนอกจอ):** `_huntFlee` ระยะ 380→230 (หนีเฉพาะเมื่อเข้าใกล้ ไม่หนีหลุดจอ)
 - **v6.55.0 (เจ้าของ 2+6):** Boss Loot หลังเปิดการ์ด: ✅ Keep / 🎲 Double or Nothing (`openDoubleOrNothing` 3 ใบ 💀1 ×2 2) / 📺 Reroll (Ad, ครั้งเดียวต่อบอส `_bossRerolled`) · `openMysteryCards` opt.choice/reroll/noReroll
 - **v6.54.7 (เจ้าของ):** ซื้อแก่นใน tutorial Weave สำเร็จ → `_stage1Coach` + toast → 0.9 วิ ไปหน้าเลือกด่าน Chapter 1 · applyGearTut สปอต stage card tag `stage_0` 'Play Stage 1!' (กรองให้กดได้ใบเดียว)

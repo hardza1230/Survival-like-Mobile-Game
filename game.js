@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.1';
+const GAME_VERSION = '6.55.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.55.2', date:'2026-10-04', title:'Summary EXP bar · no boss pull', items:['Stage summary shows a bigger animated Character EXP bar with the total EXP gained','Boss suction/pull attacks no longer drag you']},
   { v:'6.55.1', date:'2026-10-04', title:'Hunt fix', items:['Hunt targets only flee when you get close, so they stay on screen']},
   { v:'6.55.0', date:'2026-10-04', title:'Double or Nothing', items:['Boss Loot: keep your prize, gamble it on Double or Nothing (1 of 3 cards loses it, 2 double it), or reroll the cards once with an ad']},
   { v:'6.54.9', date:'2026-10-04', title:'Boss Loot cards', items:['Beating a stage boss opens Boss Loot: pick 1 of 3 face-down cards — Sugar, Currency, Shovels, Weave Thread, Gear Shards, Core Stones or Gear, with a chance of a JACKPOT card'] },
@@ -7816,7 +7817,7 @@ class Game extends Phaser.Scene {
   gainCharExp(n){
     if(!Number.isFinite(n)||n<=0)return; const cp=Save.cp(this.character),before={lvl:cp.lvl,exp:cp.exp||0}; cp.exp=(cp.exp||0)+Math.round(n);
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
-    Save.save(); this._lastExpGain=Math.round(n);this._charExpGain={character:this.character,before,after:{lvl:cp.lvl,exp:cp.exp},gain:this._lastExpGain}; this._lastLvlUps=ups; return ups;
+    Save.save(); this._lastExpGain=Math.round(n);const pg=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;this._charExpGain={character:this.character,before:pg?pg.before:before,after:{lvl:cp.lvl,exp:cp.exp},gain:(pg?pg.gain:0)+this._lastExpGain}; this._lastLvlUps=ups; return ups;
   }
   showMenu(){ this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
@@ -8012,7 +8013,7 @@ class Game extends Phaser.Scene {
     const close=d=>{if(this.state!=='rolling')return;if(d){this._activeZoneMods.push(d.id);this._zoneMul=this.zoneModMul();this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});}cont.destroy(true);this._rollBtns=[];this.state='play';this.physics.resume();if(onResume)onResume();};
     this._rollBtns=options.concat([null]).map((d,i)=>{const x=(w-cw)/2,y=top+i*92,g=this.add.graphics();g.fillStyle(0x21172f,1);g.fillRoundedRect(x,y,cw,78,14);g.lineStyle(2,0xffd166,1);g.strokeRoundedRect(x,y,cw,78,14);cont.add(g);cont.add(this.add.text(w/2,y+18,d?d.name:'Continue without a curse',{fontFamily:'sans-serif',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5,0));cont.add(this.add.text(w/2,y+47,d?d.desc+' · rewards ×'+d.reward.toFixed(2):'Keep current difficulty and rewards',{fontFamily:'sans-serif',fontSize:'12px',color:'#e8dcff'}).setOrigin(0.5,0));return{x,y,w:cw,h:78,fn:()=>close(d)};});
   }
-  startRun(idx){ if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null;
+  startRun(idx){ if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null; this._charExpGain=null;
     if(this.state!=='menu')return;
     const endgameRequested=!!(this._recipeRequested||this._riftRequested||this._endlessRequested||this._bossRushRequested||this._pinnacleRequested);
     if(endgameRequested&&!this._farmFocusRequested){this.openEndgamePreparation(idx);return;}
@@ -9565,16 +9566,16 @@ class Game extends Phaser.Scene {
   buildSummaryExpBar(box,px,py,pw,ph,font,animate){
     const cp=Save.cp(this.character),snapshot=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;
     const before=snapshot?snapshot.before:{lvl:cp.lvl,exp:cp.exp||0},gain=snapshot?snapshot.gain:0;
-    const x=px+pw*.17,y=py+ph*.656,width=pw*.66,height=Math.max(7,Math.min(12,ph*.022));
-    const frame=this.add.graphics(),fill=this.add.graphics(),label=this.add.text(px+pw/2,py+ph*.635,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(7,font-2)+'px',color:'#c0ffe3'}).setOrigin(.5);
+    const x=px+pw*.15,y=py+ph*.652,width=pw*.70,height=Math.max(12,Math.min(18,ph*.03));
+    const frame=this.add.graphics(),fill=this.add.graphics(),label=this.add.text(px+pw/2,py+ph*.632,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(9,font-1)+'px',color:'#c0ffe3',stroke:'#10202a',strokeThickness:3}).setOrigin(.5);
     frame.fillStyle(0x101c25,.95);frame.fillRoundedRect(x,y,width,height,height/2);frame.lineStyle(1,0xd9fff0,.55);frame.strokeRoundedRect(x,y,width,height,height/2);box.push(frame,fill,label);
     const token=this._summarySoundToken,draw=p=>{if(this.state!=='summary'||this._summarySoundToken!==token)return;
       const value=characterExpProgress(before,gain,p),ratio=Math.min(1,value.exp/value.need);fill.clear();
-      if(ratio>0){fill.fillStyle(0x58b98e,1);fill.fillRoundedRect(x+2,y+2,Math.max(2,(width-4)*ratio),height-4,2);}
+      if(ratio>0){fill.fillStyle(0x6dffb4,1);fill.fillRoundedRect(x+2,y+2,Math.max(2,(width-4)*ratio),height-4,(height-4)/2);fill.fillStyle(0xffffff,.35);fill.fillRoundedRect(x+3,y+3,Math.max(2,(width-6)*ratio),(height-4)*.4,2);}
       label.setText('Character EXP · Lv '+value.lvl+' · '+Math.floor(value.exp)+' / '+value.need+(gain?'  (+'+gain+')':''));
     };
     draw(animate&&gain?0:1);
-    if(animate&&gain)this._summaryExpTween=this.tweens.addCounter({from:0,to:1,duration:1200,ease:'Linear',onUpdate:t=>draw(t.getValue()),onComplete:()=>draw(1)});
+    if(animate&&gain)this._summaryExpTween=this.tweens.addCounter({from:0,to:1,duration:1600,delay:500,ease:'Sine.inOut',onUpdate:t=>draw(t.getValue()),onComplete:()=>draw(1)});
   }
   showStageSummary(last){
     this.stopSummaryPresentation();
@@ -13241,6 +13242,7 @@ class Game extends Phaser.Scene {
       if(this.joy.active&&(Math.abs(this.joy.dx)+Math.abs(this.joy.dy))>0.12) this.player.setVelocity(this.joy.dx*spd,this.joy.dy*spd);
       else { this.player.setVelocity(this.player.body.velocity.x*0.8,this.player.body.velocity.y*0.8); if(this.player.body.velocity.length()<8)this.player.setVelocity(0,0); }
     }
+    if(this.drainPull)this.drainPull=null;   // v6.55.2 เจ้าของ: เอาสกิลดูดของบอสออก
     if(this.drainPull&&this.drainPull.t>0){this.drainPull.t-=dt;const a=Math.atan2(this.drainPull.y-this.player.y,this.drainPull.x-this.player.x),v=this.player.body.velocity,s=this.drainPull.strength||120;this.player.setVelocity(v.x+Math.cos(a)*s,v.y+Math.sin(a)*s);if(this.drainPull.t<=0)this.drainPull=null;}
     // ยิ่งยืนนิ่งนาน มอนยิ่งไหลมาเยอะ (กันแคมป์ + เพิ่มความกดดัน)
     { const movingNow=this.player.body&&this.player.body.velocity.length()>40; this._idleT=movingNow?0:Math.min(14,(this._idleT||0)+dt); this._idleP=Math.min(0.7,Math.max(0,(this._idleT-1.5))*0.075); }
