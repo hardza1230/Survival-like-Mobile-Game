@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.28';
+const GAME_VERSION = '6.55.29';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.29',date:'2026-10-04',title:'Accurate Power',items:['Power is now calculated from your real stats: damage, crit, attack speed, HP, armor and defense','Recommended Power per stage is derived from that stage’s enemy and boss strength']},
   {v:'6.55.28',date:'2026-10-04',title:'Flavor Weave pacing',items:['Flavor Spark gives +2% damage per level (was +3%)','Temple core costs now grow faster at higher ranks']},
   {v:'6.55.27',date:'2026-10-04',title:'Simpler stat breakdown',items:['Removed the starting-value box from the stat breakdown']},
   {v:'6.55.26',date:'2026-10-04',title:'Attack Power starts at 100%',items:['Heroes start at 100% Attack Power instead of 90%','Enemy HP raised to match, so difficulty is unchanged']},
@@ -4013,12 +4014,7 @@ const Save = {
     const reward=350+this.data.ascension*150;this.data.sugar=(this.data.sugar||0)+reward;this.save();return reward; },
   recordEndless(cycle,kills,seconds,character){const score=Math.round(cycle*100000+kills*100+seconds);this.data.endlessBest=Math.max(this.data.endlessBest||0,cycle);
     this.data.endlessBoard=(this.data.endlessBoard||[]).concat([{cycle,kills,seconds:Math.floor(seconds),character,score,date:new Date().toISOString().slice(0,10)}]).sort((a,b)=>b.score-a.score).slice(0,5);this.save();return score;},
-  power(id){ id=id||this.data.character||'momo';const cp=this.cp(id);let p=100+Math.max(0,(cp.lvl||1)-1)*28+(this.data.rank||0)*170;
-    for(const k in (this.data.stageMastery||{}))if(this.data.stageMastery[k])p+=POWER_TUNING.mastery[Number(k)]||0;
-    for(const k of UPG_ORDER)p+=this.talTotal(k)*22;
-    const tierPower={start:0,common:45,rare:105,epic:190,legend:280};
-    for(const slot of GEAR_SLOTS){const inst=this.equippedGearItem(slot.slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it)p+=(tierPower[it.tier]||0)+this.gearLv(inst.uid)*18+(inst.itemLevel||1)*2;}
-    const tal=cp.tal||{};for(const k in tal)p+=(tal[k]||0)*26;p+=(this.data.ascension||0)*250;return Math.max(100,Math.round(p/10)*10); },
+  power(id){ return heroPower(id||this.data.character||'momo',null); },   // v6.55.29: จากสแตตจริง (เดิมแต้มนับเลเวล/ยศ/ไอเทม)
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
     this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:100, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, tutorialDone:false, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
   // ---- Bestiary (Monster Card) ----
@@ -4241,6 +4237,46 @@ const STAGE_PROPS = {
     ['ch2_prop_atlas',0,-930,true,0.64,7],['ch2_prop_atlas',0,980,false,0.72,4,220]
   ],
 };
+// v6.55.29: สแตตฮีโร่จริง (ใช้ทั้งหน้า Stats และ Power) · basic = basicAttack ในรัน (null ในเมนู)
+function computeHeroStats(cid,basic){
+    const p={maxhp:90,dmgMul:1,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
+    // v6.55.18: เก็บ snapshot หลังแต่ละแหล่ง → หน้า Stats โชว์ว่าค่ามาจากไหน
+    const snap=()=>({maxhp:p.maxhp,dmgMul:p.dmgMul,critChance:p.critChance,critMul:p.critMul,dmgTakenMul:p.dmgTakenMul,baseSpeed:p.baseSpeed,cdMul:p.cdMul,regen:(p.regen||0)+(p.regenFlat||0),armor:p.armor||0});
+    const trace=[{label:'Base',s:snap()}],mark=l=>trace.push({label:l,s:snap()});p._trace=trace;
+    const ch=CHARACTERS[cid]||CHARACTERS.momo,st=ch.stats||{};
+    if(st.hp)p.maxhp+=st.hp; if(st.dmg)p.dmgMul*=st.dmg; if(st.spd)p.baseSpeed*=st.spd; if(st.def)p.dmgTakenMul*=st.def; if(st.crit)p.critChance+=st.crit; if(st.cdr)p.cdMul*=st.cdr; if(st.regenFlat)p.regenFlat+=st.regenFlat;
+    mark('Hero profile');
+    const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul+=((sw.dmgMul||1))-1; p.cdMul*=(sw.cdMul||1); } mark('Signature weapon');
+    // v6.55.22: แยกที่มาละเอียดราย talent / แก่น / ชิ้น gear / mod / เซ็ท / perk
+    const talents=Save.cp(cid).tal||{};for(const def of charTalents(cid)){const r=talents[def.id]||0;if(r>0&&def.apply){def.apply(p,r);mark('Talent · '+def.name+' '+r);}}
+    if(basic&&basic.path){applyPathTalents(p,cid,basic.path,talents);basic._ptal=basic.path;mark('Path talents');}
+    { const cpl=Save.cp(cid).lvl||1; if(cid==='cocoa'){ p.lowHpGuard=(p.lowHpGuard||0)+0.15*charPassiveScale(cpl); } }
+    for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply){UPGRADES[k].apply(p,tot);mark('Weave · '+UPGRADES[k].name+' Lv'+tot);} }
+    applySpecialCores(p); mark('Special Cores');
+    for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId),el=Save.gearLv(inst.uid),nm=(it?it.name:slot.slot)+(it&&it.tier!=='start'?' iLv'+(inst.itemLevel||1):'')+(el?' +'+el:'');
+      if(it&&it.apply){if(it.tier==='start')it.apply(p,el);else applyScaledGear(p,it,el,inst.itemLevel);mark('Gear · '+nm+(it.tier==='start'?'':' ('+Math.round(gearBaseScale(inst.itemLevel)*100)+'%)'));}
+      applyItemLevelBonus(p,inst);mark('Gear · '+nm+' iLv bonus');if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
+      if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply){d.apply(p,a.v);mark('Mod · '+(d.label||a.id)+' T'+(a.t!=null?a.t:'?')+' ('+(it?it.name:slot.slot)+')');} } }
+    { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply){def.bonuses[need].apply(p);mark('Set · '+def.name+' '+need+'pc');} } } for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid)){def.collect.apply(p);mark('Set collection · '+def.name);} } }
+    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr)); mark('Bestiary');
+    const rp=Save.data.rankPerks||{}; if(rp.vigor){p.maxhp*=1+0.06*rp.vigor;mark('Perk · Vigor '+rp.vigor);} if(rp.might){p.dmgMul+=(1+0.05*rp.might)-1;mark('Perk · Might '+rp.might);} if(rp.ironWill){p.dmgTakenMul*=(1-0.04*rp.ironWill);mark('Perk · Iron Will '+rp.ironWill);}
+    if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; } mark('Ancient Perks');
+    clampPlayerStats(p); mark('Stat cap');   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
+    return p;
+}
+// v6.55.29: Power = จากสแตตจริง · Offense = ดาเมจต่อวินาทีสัมพัทธ์ · Defense = HP ที่ต้องเสียจริง (Effective HP)
+// Power = 100 × √(Offense × Defense/90) → ฮีโร่ฐานไม่มีอะไร ≈ 100 · ดาเมจ ×2 หรือ EHP ×2 = Power ×1.41 · ทั้งคู่ ×2 = ×2
+const POWER_BASE_HIT=12;
+function heroOffense(p,cid){const crit=1+Math.min(1,p.critChance||0)*((p.critMul||1.55)-1),flat=((p.gearAttackMin||0)+(p.gearAttackMax||0))/2*(FLAT_EFF[cid]||1);
+  return Math.max(0.05,p.dmgMul||1)*(p.powerMul||1)*crit*(1+flat/POWER_BASE_HIT)/Math.max(0.1,p.cdMul||1);}
+function heroDefense(p){const taken=Math.max(0.05,(p.dmgTakenMul||1)*armorDamageMultiplier(p)),hp=Math.max(1,p.maxhp||90),reg=(p.regen||0)+(p.regenFlat||0);
+  return hp/taken*(1+reg*8/hp);}
+function heroPower(cid,basic){const p=computeHeroStats(cid,basic);return Math.max(1,Math.round(100*Math.sqrt(heroOffense(p,cid)*heroDefense(p)/90)));}
+// Power แนะนำต่อด่าน = คิดจากตัวเลขศัตรูจริงของด่าน (HP/ดาเมจ มอน + บอส) เทียบด่าน 1 · ปรับสูตรศัตรู = ค่าแนะนำตามเอง
+function stageThreat(i){const st=STAGES[i]||STAGES[0],c2=i===6?BALANCE.c2Mycelium:i===7?BALANCE.c2Nectar:i===8?BALANCE.c2Seasons:i===9?BALANCE.c2Root:{hp:1,dmg:1};
+  const mobHp=stageCurveValue(i,[1,1.42,1.88,2.42,3.05,3.72],1.18)*(c2.hp||1)*(i>=2&&i<=4?1.1:1),mobDmg=stageCurveValue(i,[1,1.05,1.12,1.20,1.30,1.42],1.09)*(c2.dmg||1);
+  const bossHp=(st.bossHp||920)*(2+i*0.13)*realStageBossMul(i),bossDmg=st.bossDmg||25;return {hp:Math.sqrt(mobHp*bossHp),dmg:Math.sqrt(mobDmg*bossDmg)};}
+function stageRecommendedPower(i){const t=stageThreat(i),b=stageThreat(0);return Math.round(100*Math.sqrt((t.hp/b.hp)*(t.dmg/b.dmg))/10)*10;}
 const STAGES = [
   { name:'The Sour Ant Nest', en:'The Sour Ant Nest', emoji:'🐜', grid:0x2d261f, tint:0x8ee04b,
     lore:'Momo falls through a crack under the pantry into a nest where acid crystals are warping the whole ant kingdom',
@@ -5744,7 +5780,7 @@ class Game extends Phaser.Scene {
   }
   // การ์ดบทแบบภาพประกอบ — ภาพฉากจริง + overlay อ่านง่าย + status ที่เป็นส่วนหนึ่งของกWaitบ
   // v4.61: สถานะพลังเทียบค่าแนะนำของด่าน — ใช้ทั้งการ์ดด่านและหน้าเลือกความยาก
-  powerStatus(idx){ const st=STAGES[idx]||STAGES[0],cur=Save.power(Save.data.character),rec=st.recommendedPower||100,ratio=cur/rec;
+  powerStatus(idx){ const st=STAGES[idx]||STAGES[0],cur=Save.power(Save.data.character),rec=stageRecommendedPower(STAGES.indexOf(st)),ratio=cur/rec;
     const t=ratio>=1.15?{label:'💪 Strong',color:0x66e0a0}:ratio>=0.9?{label:'✅ Ready',color:0x8fe3d0}:ratio>=0.7?{label:'⚠️ Tough',color:0xffc857}:{label:'⛔ Underpowered',color:0xff6b7d};
     return {cur,rec,ratio,...t,hex:'#'+t.color.toString(16).padStart(6,'0')}; }
   // คำแนะนำ "ทำอะไรให้เก่งขึ้น" + หน้าที่จะพาไป
@@ -5753,7 +5789,7 @@ class Game extends Phaser.Scene {
     const prev=idx-1;if(prev>=0&&STAGES[prev]){const p=STAGES[prev],lab=p.chapterStage?('C'+(p.chapter+1)+'-'+p.chapterStage):('Stage '+(prev+1));return {text:'💡 Replay '+lab+' for better gear, then equip it ›',screen:'gear'};}
     return {text:'💡 Equip and enhance better gear ›',screen:'gear'}; }
   uiStageCard(cont,x,y,w,h,st,index,open,fn){
-    const currentPower=Save.power(Save.data.character),recommended=st.recommendedPower||100,ps=this.powerStatus(index);
+    const currentPower=Save.power(Save.data.character),recommended=stageRecommendedPower(STAGES.indexOf(st)),ps=this.powerStatus(index);
     const colors=[0xb9e85d,0x6ed7df,0xff9a62,0x9bdfff,0xff78a9],color=colors[index%colors.length],r=17;
     const shadow=this.add.graphics();shadow.fillStyle(0x000000,0.55);shadow.fillRoundedRect(x+3,y+6,w,h,r);shadow.fillStyle(color,0.18);shadow.fillRoundedRect(x-2,y-2,w+4,h+4,r+2);cont.add(shadow);
     const cardKey='stage_card_s'+String(index+1).padStart(2,'0'),artKey=this.textures.exists(cardKey)?cardKey:'bg'+(index+1),art=this.textures.exists(artKey)?this._coverImage(x+2,y+2,w-4,h-4,artKey):null;if(art)cont.add(art);
@@ -6056,32 +6092,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // คำนวณสแตตจริงของ loadout (base + char + weapon + Flavor Weave + gear + bestiary + perks) โดยไม่แตะ player จริง
-  previewStats(){
-    const p={maxhp:90,dmgMul:1,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
-    // v6.55.18: เก็บ snapshot หลังแต่ละแหล่ง → หน้า Stats โชว์ว่าค่ามาจากไหน
-    const snap=()=>({maxhp:p.maxhp,dmgMul:p.dmgMul,critChance:p.critChance,critMul:p.critMul,dmgTakenMul:p.dmgTakenMul,baseSpeed:p.baseSpeed,cdMul:p.cdMul,regen:(p.regen||0)+(p.regenFlat||0),armor:p.armor||0});
-    const trace=[{label:'Base',s:snap()}],mark=l=>trace.push({label:l,s:snap()});p._trace=trace;
-    const ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,st=ch.stats||{};
-    if(st.hp)p.maxhp+=st.hp; if(st.dmg)p.dmgMul*=st.dmg; if(st.spd)p.baseSpeed*=st.spd; if(st.def)p.dmgTakenMul*=st.def; if(st.crit)p.critChance+=st.crit; if(st.cdr)p.cdMul*=st.cdr; if(st.regenFlat)p.regenFlat+=st.regenFlat;
-    mark('Hero profile');
-    const sw=SIGNATURE_WEAPONS[ch.weapon]; if(sw){ p.dmgMul+=((sw.dmgMul||1))-1; p.cdMul*=(sw.cdMul||1); } mark('Signature weapon');
-    // v6.55.22: แยกที่มาละเอียดราย talent / แก่น / ชิ้น gear / mod / เซ็ท / perk
-    const talents=Save.cp(Save.data.character).tal||{};for(const def of charTalents(Save.data.character)){const r=talents[def.id]||0;if(r>0&&def.apply){def.apply(p,r);mark('Talent · '+def.name+' '+r);}}
-    if(this.basicAttack&&this.basicAttack.path){applyPathTalents(p,Save.data.character,this.basicAttack.path,talents);this.basicAttack._ptal=this.basicAttack.path;mark('Path talents');}
-    { const cpl=Save.cp(Save.data.character).lvl||1; if(Save.data.character==='cocoa'){ p.lowHpGuard=(p.lowHpGuard||0)+0.15*charPassiveScale(cpl); } }
-    for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply){UPGRADES[k].apply(p,tot);mark('Weave · '+UPGRADES[k].name+' Lv'+tot);} }
-    applySpecialCores(p); mark('Special Cores');
-    for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId),el=Save.gearLv(inst.uid),nm=(it?it.name:slot.slot)+(it&&it.tier!=='start'?' iLv'+(inst.itemLevel||1):'')+(el?' +'+el:'');
-      if(it&&it.apply){if(it.tier==='start')it.apply(p,el);else applyScaledGear(p,it,el,inst.itemLevel);mark('Gear · '+nm+(it.tier==='start'?'':' ('+Math.round(gearBaseScale(inst.itemLevel)*100)+'%)'));}
-      applyItemLevelBonus(p,inst);mark('Gear · '+nm+' iLv bonus');if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
-      if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply){d.apply(p,a.v);mark('Mod · '+(d.label||a.id)+' T'+(a.t!=null?a.t:'?')+' ('+(it?it.name:slot.slot)+')');} } }
-    { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply){def.bonuses[need].apply(p);mark('Set · '+def.name+' '+need+'pc');} } } for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid)){def.collect.apply(p);mark('Set collection · '+def.name);} } }
-    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr)); mark('Bestiary');
-    const rp=Save.data.rankPerks||{}; if(rp.vigor){p.maxhp*=1+0.06*rp.vigor;mark('Perk · Vigor '+rp.vigor);} if(rp.might){p.dmgMul+=(1+0.05*rp.might)-1;mark('Perk · Might '+rp.might);} if(rp.ironWill){p.dmgTakenMul*=(1-0.04*rp.ironWill);mark('Perk · Iron Will '+rp.ironWill);}
-    if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; } mark('Ancient Perks');
-    clampPlayerStats(p); mark('Stat cap');   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
-    return p;
-  }
+  previewStats(){ return computeHeroStats(Save.data.character,this.basicAttack); }
   buildStats(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Heroes · Stats','screen_heroes');this.drawHeroesTabs();
     const w=this.W,p=this.previewStats(),ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,pow=Save.power(Save.data.character);
@@ -8293,7 +8304,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- STAGES / WAVES (Archero-style) ---------- */
   getPowerGuide(stageIndex){
-    const st=STAGES[stageIndex]||STAGES[0],rating=Save.power(this.character),recommended=st.recommendedPower||100,ratio=rating/recommended;
+    const st=STAGES[stageIndex]||STAGES[0],rating=Save.power(this.character),recommended=stageRecommendedPower(STAGES.indexOf(st)),ratio=rating/recommended;
     // v6.55.17: ช่วยเฉพาะด่าน 1-2 · ด่าน 3+ = ของจริง ไม่ผ่อน และพลังเกินแนะนำ → ศัตรูถึกขึ้น (มีเพดาน)
     const gap=stageIndex<2?Phaser.Math.Clamp(1-ratio,0,0.60):0,assist=gap*0.32,over=stageIndex>=2?Math.max(0,ratio-1):0;
     return{rating,recommended,ratio,enemyHp:(1-assist)*(1+Math.min(0.35,over*0.25)),enemyDmg:(1-assist*0.78)*(1+Math.min(0.20,over*0.15)),reward:1+gap*0.50,label:ratio>=1.15?'Above recommended':ratio>=0.90?'Ready':ratio>=0.70?'Challenging':'Underpowered'};
@@ -9307,7 +9318,7 @@ class Game extends Phaser.Scene {
   riftMul(){ if(!this.riftMode)return {hp:1,dmg:1,reward:1}; const m=(this.recipeMode&&this._amapNode)?delveMul(this._amapNode.d):riftTierMul(this._riftTier); for(const id of this._riftMods||[]){const x=recipeModDef(id);if(x){m.hp*=x.hp;m.dmg*=x.dmg;m.reward*=x.reward;}} if(this.recipeMode){ m.reward*=1+atlasLv('fortune')*0.08; const pl=this._pact||{}; m.hp*=1+0.15*(pl.hp||0); m.dmg*=1+0.15*(pl.dmg||0); m.reward*=1+PACT_REWARD_PER_HEAT*(this._pactHeat||0); const fi=this._amapInf||{},L=amapInfLayers(fi); if(L){ m.hp*=1+0.1*L+0.06*(fi.frosty||0); m.dmg*=1+0.1*L+0.08*(fi.fermented||0); m.reward*=1+0.15*L; } } return m; }   // ตัวคูณความยาก × Zone Modifiers
   zoneLevel(){ return stageZoneLevel(this.stageIndex||0,this.stageDiff||1); }   // Zone Level ของด่านที่กำลังเล่น
   // แนะนำระดับความยากจาก Power Rating เทียบค่าพลังแนะนำของด่าน
-  recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(st.recommendedPower||100); return ratio>=1.8?3:ratio>=1.15?2:1; }
+  recommendedDiff(idx){ const st=STAGES[idx]||STAGES[0], ratio=Save.power(Save.data.character)/(stageRecommendedPower(STAGES.indexOf(st))); return ratio>=1.8?3:ratio>=1.15?2:1; }
   bossRageInfo(kills){
     const n=kills==null?(this.stageKills||0):kills,tiers=[
       {min:0,name:'Normal',emoji:'😐',color:0xb8b0c4,hp:1,dmg:1,spd:1,cd:1,reward:1,gear:0.45,minTier:'common'},
