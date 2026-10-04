@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.26';
+const GAME_VERSION = '6.55.27';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.27',date:'2026-10-04',title:'Simpler stat breakdown',items:['Removed the starting-value box from the stat breakdown']},
   {v:'6.55.26',date:'2026-10-04',title:'Attack Power starts at 100%',items:['Heroes start at 100% Attack Power instead of 90%','Enemy HP raised to match, so difficulty is unchanged']},
   {v:'6.55.25',date:'2026-10-04',title:'Stats follow the formula',items:['Stats page ordered offense → defense → movement','Breakdown panel reads top to bottom like the formula: Base, bonuses, separate multipliers','Sub-rows use softer colors than group headers']},
   {v:'6.55.24',date:'2026-10-04',title:'Clearer stat breakdown',items:['Stat sources grouped into Hero, Temple, Gear and Progress with icons','Each source shows its share % and a bar; the biggest source is starred','Every stat explains its formula in plain words']},
@@ -6123,8 +6124,8 @@ class Game extends Phaser.Scene {
     const items=[];if(tr[0])items.push({label:'Base',v:val(tr[0].s),base:true});
     for(let i=1;i<tr.length;i++){const d=val(tr[i].s)-val(tr[i-1].s);if(Math.abs(d)>1e-6)items.push({label:tr[i].label,v:d});}
     const posSum=items.reduce((a,it)=>a+(it.base?0:Math.max(0,it.v)),0)||1;let top=null;for(const it of items)if(!it.base&&it.v>0&&(!top||it.v>top.v))top=it;   // share = สัดส่วนของโบนัส (ไม่รวม Base)
-    const lines=[],bIt=items.find(it=>it.base);if(bIt){bIt._g=1;lines.push({step:true,label:'①  Base'});lines.push({g:GROUPS[0],label:'Starting value',v:bIt.v,base:true,pct:0});}
-    lines.push({step:true,label:key==='dmgMul'||key==='critChance'||key==='regen'?'②  + Bonuses (added together)':key==='maxhp'?'②  + Flat, then × %':'②  × Bonuses (multiplied)'});
+    const lines=[],bIt=items.find(it=>it.base);if(bIt)bIt._g=1;   // v6.55.27: ซ่อนค่าเริ่มต้น (เจ้าของ: ไม่จำเป็น) — อยู่ในกล่องสูตรแทน
+    lines.push({step:true,label:key==='dmgMul'||key==='critChance'||key==='regen'?'①  + Bonuses (added together)':key==='maxhp'?'①  + Flat, then × %':'①  × Bonuses (multiplied)'});
     GROUPS.forEach(g=>{const its=items.filter(it=>!it._g&&g.test(it.label));if(!its.length)return;its.forEach(it=>it._g=1);const sub=its.reduce((a,it)=>a+it.v,0),bsub=its.reduce((a,it)=>a+(it.base?0:Math.max(0,it.v)),0);
       lines.push({hdr:true,g,label:g.icon+'  '+g.name,v:sub,pct:bsub/posSum*100});its.sort((a,b)=>(a.base?-1:b.base?1:b.v-a.v)).forEach(it=>lines.push({g,label:it.base?'Hero base':it.label.replace(/^(Talent|Weave|Gear|Mod|Set collection|Set|Perk) · /,''),v:it.v,base:it.base,pct:it.base?0:Math.max(0,it.v)/posSum*100,top:it===top}));});
     const FORM={dmgMul:'Hit = Weapon damage × Attack Power% × Item Power × Crit (if crit) × more bonuses\nAttack Power starts at 100% and every “+%” source adds together (increased), then multiplies the hit once.',
@@ -6135,7 +6136,7 @@ class Game extends Phaser.Scene {
     const multi=[];if(key==='dmgMul'&&(p.powerMul||1)!==1)multi.push({note:true,label:'⚡ Weapon Item Power ×'+p.powerMul.toFixed(2)+' (multiplies separately)'});
     if(key==='critChance')multi.push({note:true,label:'💥 Crit damage ×'+p.critMul.toFixed(2)});
     if(key==='dmgTakenMul')multi.push({note:true,label:'🛡️ Armor '+Math.round(p.armor||0)+' → −'+Math.round((1-armorDamageMultiplier(p))*100)+'% damage'});
-    if(multi.length){lines.push({step:true,label:'③  × Separate multipliers'});lines.push(...multi);}
+    if(multi.length){lines.push({step:true,label:'②  × Separate multipliers'});lines.push(...multi);}
     const ov=this.add.container(0,0).setDepth(150000),bg=this.add.rectangle(w/2,h/2,w,h,0x000000,0.66),pw=Math.min(w-16,430),px=(w-pw)/2;
     const ftxt=this.add.text(0,0,'ⓘ '+(FORM[key]||''),{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dd',wordWrap:{width:pw-28},lineSpacing:2});
     const avail=h-60-64-ftxt.height-24,rh=Math.max(14,Math.min(24,avail/Math.max(1,lines.length))),ph=64+lines.length*rh+ftxt.height+24,py=Math.max(24,(h-ph)/2),g=this.add.graphics();
