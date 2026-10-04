@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.3';
+const GAME_VERSION = '6.55.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.55.4', date:'2026-10-04', title:'Mint takes Stage 3', items:['Before your first Stage 3, Mint warns you the Chili Engine Room is burning hot and takes over — pick her on the Heroes screen to enter']},
   { v:'6.55.3', date:'2026-10-04', title:'Meet Mint', items:['Stage 3 introduces Mint, the Frostleaf Guard, the first time you play it']},
   { v:'6.55.2', date:'2026-10-04', title:'Summary EXP bar · no boss pull', items:['Stage summary shows a bigger animated Character EXP bar with the total EXP gained','Boss suction/pull attacks no longer drag you']},
   { v:'6.55.1', date:'2026-10-04', title:'Hunt fix', items:['Hunt targets only flee when you get close, so they stay on screen']},
@@ -5734,6 +5735,8 @@ class Game extends Phaser.Scene {
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); } }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
   applyGearTut(){ const d=Save.data; if(this.state!=='menu')return;
+    if(this._mintCoach){ const z=this.tapZones.find(q=>q.tag==='char_mint'); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character='mint'; this.character='mint'; Save.data.mintIntro=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(2); };
+      this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Pick Mint for Stage 3!'); return; }
     if(this._stage1Coach){ const z=this.tapZones.find(q=>q.tag==='stage_0'); if(!z)return; const fn=z.fn; z.fn=()=>{ this._stage1Coach=false; fn(); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Play Stage 1!'); return; }
     if(d.gearTut===undefined){ if(!(d.stageMastery||{})[0]||!d.tutorialDone||(d.unlockedStage||0)>1){ if((d.unlockedStage||0)>1)d.gearTut=-1; return; }
@@ -6777,7 +6780,7 @@ class Game extends Phaser.Scene {
       const role=this.add.text(x+cardW/2,y+artH+(landscape?48:58),c.role,{fontFamily:'sans-serif',fontSize:landscape?'7px':'9px',color:'#aee8dc',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
       const hint=this.add.text(x+cardW/2,y+artH+(landscape?60:73),CHARACTER_CARD_HINT[id],{fontFamily:'sans-serif',fontSize:landscape?'7px':'8px',color:'#d8cce5',align:'center',wordWrap:{width:cardW-12},maxLines:cardH<200?1:2}).setOrigin(0.5,0);
       const gate=CORE_UNLOCK_STAGE[id],label=selected?'Selected ✓':owned?'Tap to select':gate!=null?'🔒 Clear Stage '+(gate+1):'🔒 In development',status=this.add.text(x+cardW/2,y+cardH-12,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'10px',color:selected?'#ffd166':owned?'#8bd3a0':'#9a8fac'}).setOrigin(0.5);this.menu.add([name,weapon,stats,role,hint,status]);
-      if(!selected)this._zone(x,y,cardW,cardH,()=>{if(locked){this.showCharacterInfo(id);return;}Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});
+      if(!selected)this._zone(x,y,cardW,cardH,()=>{if(locked){this.showCharacterInfo(id);return;}Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});if(!selected){const lz=this.tapZones[this.tapZones.length-1];if(lz)lz.tag='char_'+id;}
       const info=this.add.text(x+cardW-20,y+19,'ⓘ',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff3d6',backgroundColor:'#3a294acc',padding:{x:3,y:1}}).setOrigin(0.5);this.menu.add(info);this._zone(x+cardW-43,y,43,44,()=>this.showCharacterInfo(id));
     });
     this.menu.setVisible(true);
@@ -6845,7 +6848,23 @@ class Game extends Phaser.Scene {
   }
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   startStoryStage(idx){
+    if(idx===2&&!Save.data.mintIntro&&this.character!=='mint'&&(FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('mint'))){this.showMintWarning();return;}   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
+  }
+  showMintWarning(){ const w=this.W,h=this.H; this.tapZones=[];
+    const shade=this.add.rectangle(0,0,w,h,0x0a0612,0.86).setOrigin(0); this.menu.add(shade);
+    const ah=Math.min(h*0.46,360),aw=ah*0.75,art=this.textures.exists('card_mint')?this.add.image(w/2,h*0.30,'card_mint').setDisplaySize(aw,ah):this.add.text(w/2,h*0.30,'🌿',{fontSize:'90px'}).setOrigin(0.5); this.menu.add(art);
+    this.tweens.add({targets:art,y:art.y-8,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const bw=Math.min(w-30,420),bh=150,bx=(w-bw)/2,by=h*0.30+ah/2+6,g=this.add.graphics();
+    g.fillStyle(0xffffff,0.97);g.fillRoundedRect(bx,by,bw,bh,18);g.fillTriangle(w/2-12,by+1,w/2+12,by+1,w/2,by-14);g.lineStyle(3,0x8fd0ff,1);g.strokeRoundedRect(bx,by,bw,bh,18);
+    const nm=this.add.text(bx+16,by+12,'🌿 Mint',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#2f7fb0'});
+    const tx=this.add.text(bx+16,by+38,'Wait! The Chili Engine Room ahead is burning hot — you’ll melt in there! Leave this one to me. My frost will cool it down!',{fontFamily:'sans-serif',fontSize:'14px',color:'#2a1a33',wordWrap:{width:bw-32},lineSpacing:4});
+    this.menu.add([g,nm,tx]);
+    const btw=Math.min(w-60,300),bth=48,bty=Math.min(h-40,by+bh+40),btn=this.add.graphics();btn.fillStyle(0x4fb6e8,1);btn.fillRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);btn.lineStyle(3,0xe6f7ff,1);btn.strokeRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);
+    const bt=this.add.text(w/2,bty,'❄️ Choose Mint',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#1d4f6e',strokeThickness:3}).setOrigin(0.5);this.menu.add([btn,bt]);
+    this.tweens.add({targets:[btn,bt],alpha:0.75,duration:600,yoyo:true,repeat:-1});
+    this.menu.setVisible(true);Sfx.select&&Sfx.select();
+    this._zone(w/2-btw/2,bty-bth/2,btw,bth,()=>{this._mintCoach=true;this._heroesTab='roster';this.menuScreen='char';this.buildMenuScreen();});
   }
   openDifficultyChoice(idx){this.startStoryStage(idx);} // Compatibility route, no choice screen.
   // แผงเลือก Zone Modifiers (สแตกได้ · เปิดเยอะ = ยาก+รางวัลดี) — เปิดจากหน้าเลือกความยาก
