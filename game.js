@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.54.3';
+const GAME_VERSION = '6.54.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.54.4', date:'2026-10-04', title:'Loader patience', items:['The first-screen loader waits up to 30s for a stalled file before continuing'] },
   { v:'6.54.3', date:'2026-10-04', title:'Full load on start', items:['The game now always finishes loading everything on the first screen (from your device after the first time), so menus never show missing art'] },
   { v:'6.54.2', date:'2026-10-04', title:'Talent reset button', items:['Smaller Reset button that no longer covers the talent details'] },
   { v:'6.54.1', date:'2026-10-04', title:'Menu art fix', items:['Menu pages redraw once their art finishes loading, so icons no longer show as placeholders'] },
@@ -4724,7 +4725,7 @@ class Game extends Phaser.Scene {
       const w=this._allWait;this._allWait=[];w.forEach(cb=>setTimeout(cb,0)); };
     let lastT=Date.now(),finDone=false; const tick=()=>{ lastT=Date.now(); }; const mk=f=>{ lastT=Date.now(); LoadMeter.mark(f&&f.url,fileFromDevice(f)); if(!this._preloadQuiet)LoadMeter.show(); };
     // v6.49.1: มือถือบางเครื่อง loader ไม่ยิง 'complete' (ถอดรหัสเสียงค้าง) → ไม่มีความคืบหน้า 10 วิ = ไปต่อแบบ partial
-    const wd=setInterval(()=>{ if(finDone){clearInterval(wd);return;} if(Date.now()-lastT>10000)fin(true); },1000);
+    const wd=setInterval(()=>{ if(finDone){clearInterval(wd);return;} if(Date.now()-lastT>30000)fin(true); },1000);
     if(!n){fin();return;}
     if(L&&!quiet){ if(L._introDone)L.show('Loading game data…',0); LoadMeter.show(); }
     this.load.on('load',mk);this.load.on('loaderror',mk);this.load.on('fileprogress',tick);
