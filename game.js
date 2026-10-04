@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.51.2';
+const GAME_VERSION = '6.52.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.52.0', date:'2026-10-04', title:'Gear tutorial', items:['After beating the first boss, a guided tutorial shows how to roll, equip and craft items (with a free gift to try it)'] },
   { v:'6.51.2', date:'2026-10-04', title:'Build names & clearer results', items:['Build Path cards now use short build names (Sniper Build, Freeze Build, Titan Build…) for every hero','Defeat screen trimmed: big Time/Kills/Level, Sugar/Power/EXP highlighted, one-line cause'] },
   { v:'6.51.1', date:'2026-10-04', title:'Smoother stage start', items:['Stage graphics are prepared behind the loading screen, reducing the stutter when the first wave appears'] },
   { v:'6.51.0', date:'2026-10-03', title:'Special cards shine', items:['Special upgrades (Mutation, Evolution, Relic, Build Path, Infusion, Fusion, Modifier) now glow with a pulsing frame, ribbon, shine and sparkles'] },
@@ -5680,7 +5681,23 @@ class Game extends Phaser.Scene {
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); }
+  // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
+  applyGearTut(){ const d=Save.data; if(this.state!=='menu')return;
+    if(d.gearTut===undefined){ if(!(d.stageMastery||{})[0]||!d.tutorialDone||(d.unlockedStage||0)>1){ if((d.unlockedStage||0)>1)d.gearTut=-1; return; }
+      d.gearTut=0; Save.addSugar(GACHA_LEVELS[0].cost); Save.addCurrency&&Save.addCurrency('transmute',3); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🍬'+GACHA_LEVELS[0].cost+' + 3 crafting orbs','#ffd166'); }
+    const st=d.gearTut; if(st<0||st>3)return;
+    const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'}];
+    const cur=STEPS[st],src=z=>{try{return String(z.fn)}catch(e){return ''}};
+    let z=this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
+    if(!z){ adv=false; z=this.tapZones.find(q=>q.tag===(st===3?'craft':'gear'))||this.tapZones.find(q=>/menuScreen='gLoadout'/.test(src(q))); label=z&&z.tag?'Open '+(st===3?'Crafting':'Equipment'):'Open Gear & Power'; }
+    if(!z){ if(st===1&&this.menuScreen==='gear'){ const items=d.gearItems||[],it=items[items.length-1],b=it&&GEAR_ALL.find(g=>g.id===it.baseId);
+        if(it&&b&&!Save.isGearEquipped(it.uid)&&this.gearSelectedUid!==it.uid){ this.gearSlot=b.slot; this.gearSelectedUid=it.uid; this.buildMenuScreen(); return; }
+        d.gearTut=2; Save.save(); this.buildMenuScreen(); } return; }
+    const fn=z.fn; z.fn=()=>{ if(adv){ d.gearTut=st===3?-1:st+1; Save.save(); if(st===3)this.time.delayedCall(1500,()=>this.menuToast('✨ Tutorial done! Equip, roll and craft to grow stronger','#8dffb0')); } fn(); };
+    const skip={x:this.W-96,y:this.H-40,w:86,h:30,fn:()=>{ d.gearTut=-1; Save.save(); this.buildMenuScreen(); }};
+    this.tapZones=[z,skip]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label);
+    c.add(this.add.text(this.W-14,this.H-25,'Skip ›',{fontFamily:'sans-serif',fontSize:'12px',color:'#aaa0b8'}).setOrigin(1,0.5)); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   buildHubGroup(key){
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
@@ -5730,7 +5747,7 @@ class Game extends Phaser.Scene {
         if(!locked&&this.hasClaimableTarget(target))this._drawNextGuide(x,ty,ww,th,'Reward ready');
         else if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,ty,ww,th,nxtG.tag);
         this._zone(x,ty,ww,th,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
-          this.menuScreen=target; this.buildMenuScreen(); });
+          this.menuScreen=target; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag=target;
       });
       y+=Math.ceil(tiles.length/cols)*(th+gap);
     });
