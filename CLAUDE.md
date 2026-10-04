@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.51.2 (เจ้าของ):** BASIC_PATHS name → ชื่อบิ้วสั้นทุกตัว (Sniper/Shotgun/Ricochet · Freeze/Barrage/Piercer · Brawler/Titan/Dash · Chain/Smite/Tempest · Prism/Focus/Sentinel · Swarm/Guardian/Workshop + ' Build') · การ์ดสายตัดบรรทัด 'BUILD PATH · PICK ONE' ริบบิ้น 'PICK ONE BUILD' · buildOver: ชื่อด่าน·ความยากใต้หัว, TIME/KILLS/LV ตัวใหญ่, Sugar/Power/Hero EXP ตัวใหญ่มีสี, สาเหตุตาย 1 บรรทัด + สถานะพลัง
 - **v6.51.1 (เจ้าของ: เริ่มด่านกระตุก):** วัด headless: JS เริ่มด่านถูก (~35ms) แต่ครั้งแรกมีเฟรมยาว 200ms+ ตอนมอนชุดแรกโผล่ (decode/อัป texture ครั้งแรก) · `warmStageTextures(idx)` ใน startRun ครั้งแรกต่อด่าน+ตัวละคร (`_warmed`) วาดภาพ e_/proj_/fx_/vfx_/pickup/char/ด่าน alpha .01 ทีละ 24/เฟรมหลังหน้า 'Preparing battle…' · หลังแก้เฟรมยาวสุดหลังเริ่ม 221→115ms (swiftshader)
 - **v6.51.0 (เจ้าของ: การ์ดพิเศษให้เด่น):** drawReadableChoiceCard: Mutation/Evolution/Relic/Path/Infusion/Fusion/Modifier = กรอบสีเต้น+ริบบิ้นบนการ์ด+แสงวิ่ง+ประกาย ✦ + เสียง legend (throttle 0.8s)
 - **v6.50.9 (บั๊กเจ้าของ: ทริกไม่ขึ้น ยังเห็นข้อความ MB):** น่าจะโดนแคช index.html เก่า → patch GameLoader.set + วนทริกจาก game.js (โหลด ?v=Date.now() เสมอ) ก่อน fileFromDevice
