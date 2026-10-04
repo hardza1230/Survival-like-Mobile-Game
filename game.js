@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.19';
+const GAME_VERSION = '6.55.20';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -62,6 +62,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.20',date:'2026-10-04',title:'Oath Shell gives Armor',items:['Oath Shell now grants +4 Armor per level instead of stacking % damage reduction','Armor now also reduces contact damage from monsters','Stats Defense shows armor sources']},
   {v:'6.55.19',date:'2026-10-04',title:'Gear and early challenge balance',items:['Gear base bonuses now scale with item level (low-level gear gives less)','Crit mods and glove crit growth reduced','Gacha item level is limited by story progress','Stage 3–5 opening waves are tougher; Stage 5 boss no longer outranks Chapter 2']},
   {v:'6.55.18',date:'2026-10-04',title:'Stat sources',items:['Tap any stat on the Heroes · Stats page to see where it comes from','Breakdown covers hero, weapon, talents, Flavor Weave, cores, gear, sets, Bestiary and perks','Stats preview now includes set bonuses and Ancient perks']},
   {v:'6.55.17',date:'2026-10-04',title:'Real challenge from Stage 3',items:['Power assist only applies on Stages 1–2; from Stage 3 stronger heroes face tougher enemies','Stage 3–5 bosses and minibosses have more HP','Level-ups slow down from Stage 3 onward']},
@@ -2971,8 +2972,8 @@ const UPGRADES = {
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
   dmg: { iconKey:'temple_flavor_spark',emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+3% damage/level',  color:0xf0a54a, base:45, per:3,
          apply:(p,tot)=>{ p.dmgMul+=(1+0.03*tot)-1; },           show:tot=>'+'+(3*tot)+'% DMG' },   // v4.55: เดิม +2 flat ต่อทุกฮิต (โกงกับตัวยิงถี่/tick) → เปลี่ยนเป็น %
-  def: { iconKey:'temple_oath_shell',emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'~1.5% less damage taken/level', color:0x6ec6ff, base:40, per:1,
-         apply:(p,tot)=>{ p.dmgTakenMul*=Math.pow(0.985,tot); },       show:tot=>'-'+Math.round((1-Math.pow(0.985,tot))*100)+'% DMG taken' },
+  def: { iconKey:'temple_oath_shell',emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'+4 armor/level', color:0x6ec6ff, base:40, per:4,
+         apply:(p,tot)=>{ p.armor=(p.armor||0)+4*tot; },       show:tot=>'+'+(4*tot)+' Armor' },   // v6.55.20: เดิม ×0.985^tot ไม่มีเพดาน → armor (100/(100+armor)) ลดผลเองเมื่อสูง
 };
 const UPG_ORDER=['hp','dmg','def'];
 // Special cores are permanent utility upgrades; they never gate or reset on promotion.
@@ -6048,7 +6049,7 @@ class Game extends Phaser.Scene {
   previewStats(){
     const p={maxhp:90,dmgMul:0.90,flatDmg:0,baseSpeed:BALANCE.moveSpeed,dmgTakenMul:1,critChance:0,critMul:1.55,cdMul:1,regen:0,regenFlat:0,pickup:105,lifesteal:0};
     // v6.55.18: เก็บ snapshot หลังแต่ละแหล่ง → หน้า Stats โชว์ว่าค่ามาจากไหน
-    const snap=()=>({maxhp:p.maxhp,dmgMul:p.dmgMul,critChance:p.critChance,critMul:p.critMul,dmgTakenMul:p.dmgTakenMul,baseSpeed:p.baseSpeed,cdMul:p.cdMul,regen:(p.regen||0)+(p.regenFlat||0)});
+    const snap=()=>({maxhp:p.maxhp,dmgMul:p.dmgMul,critChance:p.critChance,critMul:p.critMul,dmgTakenMul:p.dmgTakenMul,baseSpeed:p.baseSpeed,cdMul:p.cdMul,regen:(p.regen||0)+(p.regenFlat||0),armor:p.armor||0});
     const trace=[{label:'Base',s:snap()}],mark=l=>trace.push({label:l,s:snap()});p._trace=trace;
     const ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,st=ch.stats||{};
     if(st.hp)p.maxhp+=st.hp; if(st.dmg)p.dmgMul*=st.dmg; if(st.spd)p.baseSpeed*=st.spd; if(st.def)p.dmgTakenMul*=st.def; if(st.crit)p.critChance+=st.crit; if(st.cdr)p.cdMul*=st.cdr; if(st.regenFlat)p.regenFlat+=st.regenFlat;
@@ -6077,7 +6078,7 @@ class Game extends Phaser.Scene {
       ['💥','Attack Power',Math.round(p.dmgMul*100)+'','Power ×'+(p.powerMul||1).toFixed(2)+' · ATK '+(p.gearAttackMin||0)+'-'+(p.gearAttackMax||0),0xff8f5a],
       ['❤️','Max HP',Math.round(p.maxhp)+'','',0xff5f7a],
       ['🎯','Crit Chance',Math.round(p.critChance*100)+'%','×'+p.critMul.toFixed(2)+' crit damage',0xffd166],
-      ['🛡️','Defense',Math.round((1-p.dmgTakenMul)*100)+'% less','Armor '+(p.armor||0)+' · armor reduction '+Math.round((1-armorDamageMultiplier(p))*100)+'%',0x6ec6ff],
+      ['🛡️','Defense',Math.round((1-p.dmgTakenMul*armorDamageMultiplier(p))*100)+'% less','Armor '+(p.armor||0)+' · armor reduction '+Math.round((1-armorDamageMultiplier(p))*100)+'%',0x6ec6ff],
       ['👟','Move Speed',Math.round(p.baseSpeed)+'','',0x8bd3a0],
       ['⏱️','Cooldown',Math.round((1-p.cdMul)*100)+'% faster','skill cooldown ×'+p.cdMul.toFixed(2),0xb388ff],
       ['💗','Regen',((p.regen||0)+(p.regenFlat||0)).toFixed(1)+' /s','',0x66d3b3],
@@ -6101,6 +6102,7 @@ class Game extends Phaser.Scene {
       if(key==='maxhp'){const d=b-a;return (d>0?'+':'')+Math.round(d);} if(key==='baseSpeed'){const d=b-a;return (d>0?'+':'')+Math.round(d);} if(key==='regen'){const d=b-a;return (d>0?'+':'')+d.toFixed(1)+'/s';}
       if(key==='dmgMul')return pct(b-a); if(key==='critChance')return pct(b-a); if(key==='dmgTakenMul')return pct(a-b)+' less'; if(key==='cdMul')return pct(a-b)+' faster'; return '';};
     const base=tr[0]&&tr[0].s[key],lines=[];
+    if(key==='dmgTakenMul'){for(let i=1;i<tr.length;i++){const a=tr[i-1].s.armor,b=tr[i].s.armor;if(b!==a)lines.push([tr[i].label+' armor',(b>a?'+':'')+Math.round(b-a)]);}lines.push(['Armor total','-'+Math.round((1-armorDamageMultiplier(p))*100)+'% dmg']);}
     if(tr[0]){const v=key==='dmgMul'||key==='critChance'?Math.round(base*100)+'%':key==='dmgTakenMul'?Math.round((1-base)*100)+'% less':key==='cdMul'?'×'+base.toFixed(2):key==='regen'?base.toFixed(1)+'/s':Math.round(base)+'';lines.push(['Base',v]);}
     for(let i=1;i<tr.length;i++){const a=tr[i-1].s[key],b=tr[i].s[key];if(Math.abs(b-a)>1e-6)lines.push([tr[i].label,fmt(a,b)]);}
     if(key==='critChance')lines.push(['Crit damage','×'+p.critMul.toFixed(2)]);
@@ -12421,7 +12423,7 @@ class Game extends Phaser.Scene {
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
-    this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*(this.player.dmgTakenMul||1)*wardMul*crisisMul*this.cocoaGuard()*this.condTakenMul(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
+    this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*wardMul*crisisMul*this.cocoaGuard()*this.condTakenMul(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
