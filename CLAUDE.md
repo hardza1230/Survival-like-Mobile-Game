@@ -160,6 +160,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 ## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v5.90.0 — Fighter Animation)
+- **v6.54.8 (เจ้าของ: ของดรอปบอสไร้ประโยชน์เพราะจบด่าน):** killEnemy บอสใหญ่ไม่ dropOrb/dropHeal → Sugar Bounty (60+30·stage)×diff reward เข้า sugarStage ตรง + แบนเนอร์ · มินิ/elite ดรอปเหมือนเดิม
 - **v6.54.7 (เจ้าของ):** ซื้อแก่นใน tutorial Weave สำเร็จ → `_stage1Coach` + toast → 0.9 วิ ไปหน้าเลือกด่าน Chapter 1 · applyGearTut สปอต stage card tag `stage_0` 'Play Stage 1!' (กรองให้กดได้ใบเดียว)
 - **v6.54.6 (เจ้าของ: เปิดรอบ 2 ยังนาน):** วัด: ภาพทั้งหมด 747 ไฟล์ 149 Mpx (UI 78 / ในด่าน 71) คอขวด = decode ไม่ใช่เน็ต · ครั้งต่อไป (mochi_full_cached) `preloadAll(null,false,UI_ART_RE)` บล็อกแค่ภาพ UI (ข้าม ASSET_SHEETS/FX และภาพไม่ match `UI_ART_RE`) → fin แล้วเริ่มเฟส 2 แบบเงียบ · startRun เช็ค `!_allLoaded` → ถ้าเฟส 2 ยังไม่จบ preloadAll(done) โชว์หลอดรอ · headless: เฟส 1 12.4 วิ (เดิมรวม ~26 วิ) · ครั้งแรกสุดยังโหลดครบแบบเดิม
 - **v6.54.3 (เจ้าของ: บังคับโหลดทั้งหมดหน้าแรกแล้วเก็บในเครื่อง):** Game.create เรียก preloadAll แบบมีหลอดทุกครั้ง (เลิกโหมด quiet เมื่อ mochi_full_cached) · ไฟล์เก็บใน Service Worker cache เดิม → ครั้งต่อไปโหลดจากเครื่อง
