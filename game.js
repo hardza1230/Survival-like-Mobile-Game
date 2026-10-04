@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.4';
+const GAME_VERSION = '6.55.5';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.55.5', date:'2026-10-04', title:'Stage 3 needs Mint', items:['Until you clear Stage 3, tapping it with another hero sends you to pick Mint first']},
   { v:'6.55.4', date:'2026-10-04', title:'Mint takes Stage 3', items:['Before your first Stage 3, Mint warns you the Chili Engine Room is burning hot and takes over — pick her on the Heroes screen to enter']},
   { v:'6.55.3', date:'2026-10-04', title:'Meet Mint', items:['Stage 3 introduces Mint, the Frostleaf Guard, the first time you play it']},
   { v:'6.55.2', date:'2026-10-04', title:'Summary EXP bar · no boss pull', items:['Stage summary shows a bigger animated Character EXP bar with the total EXP gained','Boss suction/pull attacks no longer drag you']},
@@ -6848,7 +6849,7 @@ class Game extends Phaser.Scene {
   }
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   startStoryStage(idx){
-    if(idx===2&&!Save.data.mintIntro&&this.character!=='mint'&&(FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('mint'))){this.showMintWarning();return;}   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
+    if(idx===2&&!(Save.data.stageMastery||{})[2]&&this.character!=='mint'&&(FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('mint'))){this.showMintWarning();return;}   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
   }
   showMintWarning(){ const w=this.W,h=this.H; this.tapZones=[];
