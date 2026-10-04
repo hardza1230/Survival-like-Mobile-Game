@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.16';
+const GAME_VERSION = '6.55.17';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -59,7 +59,10 @@ const CROSSROADS=[
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
+// v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
+function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.5:1;}
 const CHANGELOG = [
+  {v:'6.55.17',date:'2026-10-04',title:'Real challenge from Stage 3',items:['Power assist only applies on Stages 1–2; from Stage 3 stronger heroes face tougher enemies','Stage 3–5 bosses and minibosses have more HP','Level-ups slow down from Stage 3 onward']},
   {v:'6.55.16',date:'2026-10-04',title:'Stage 5 and Chapter 3 monster animations',items:['Ten monster identities gain six-frame movement and separate idle, action, hurt and defeat clips','Stage 5 firing and dash cues select authored clips with original timings','Chapter 3 silhouettes keep their original runtime size and combat values']},
   {v:'6.55.15',date:'2026-10-04',title:'Ice monster sprite animations',items:['Five ice creatures use painted movement, idle, action, hurt and defeat frames','Ice Shard dash, Syrup Turret firing and Frost Bubble warnings follow original timers','Frozen Gate Warden and Ice Elite retain their original combat values and collision circles']},
   {v:'6.55.14',date:'2026-10-04',title:'Fire monster sprite animations',items:['Five fire creatures use painted walk, idle, action, hurt and defeat frames','Chili dash, Grinder firing and Pressure Pot warnings follow existing combat timing','Furnace Golem and Fire Elite retain original stats and collision sizes']},
@@ -8210,8 +8213,9 @@ class Game extends Phaser.Scene {
   /* ---------- STAGES / WAVES (Archero-style) ---------- */
   getPowerGuide(stageIndex){
     const st=STAGES[stageIndex]||STAGES[0],rating=Save.power(this.character),recommended=st.recommendedPower||100,ratio=rating/recommended;
-    const gap=Phaser.Math.Clamp(1-ratio,0,0.60),assist=gap*0.32;
-    return{rating,recommended,ratio,enemyHp:1-assist,enemyDmg:1-assist*0.78,reward:1+gap*0.50,label:ratio>=1.15?'Above recommended':ratio>=0.90?'Ready':ratio>=0.70?'Challenging':'Underpowered'};
+    // v6.55.17: ช่วยเฉพาะด่าน 1-2 · ด่าน 3+ = ของจริง ไม่ผ่อน และพลังเกินแนะนำ → ศัตรูถึกขึ้น (มีเพดาน)
+    const gap=stageIndex<2?Phaser.Math.Clamp(1-ratio,0,0.60):0,assist=gap*0.32,over=stageIndex>=2?Math.max(0,ratio-1):0;
+    return{rating,recommended,ratio,enemyHp:(1-assist)*(1+Math.min(0.35,over*0.25)),enemyDmg:(1-assist*0.78)*(1+Math.min(0.20,over*0.15)),reward:1+gap*0.50,label:ratio>=1.15?'Above recommended':ratio>=0.90?'Ready':ratio>=0.70?'Challenging':'Underpowered'};
   }
   clearChapterDepth(){
     for(const o of this._chapterDepthObjs||[]){if(!o)continue;this.tweens.killTweensOf(o);if(o.active)o.destroy();}this._chapterDepthObjs=[];
@@ -9255,7 +9259,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=42.64;mOff=85.36;}
     if(this.stageIndex>=10&&ASSET_SHEETS[mkey]){mScale=.62;mRadius=70;mOff=58;}
     b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_SHEETS[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.0*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
+    b.hp=st.bossHp*1.0*realStageBossMul(this.stageIndex)*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
     b.dmg=Math.round(st.bossDmg*1.1*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;b._rootKnightPoseUntil=0;b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;
@@ -9320,7 +9324,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75*realStageBossMul(this.stageIndex)*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -10057,7 +10061,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n*(this.player.xpMul||1)*(this.recipeMode?ENDGAME_XP_MUL:1);
-    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round(this.xpNext*1.26+6); /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
+    while(this.xp>=this.xpNext){ this.xp-=this.xpNext; this.level++; this.xpNext=Math.round((this.stageIndex>=2&&!this.recipeMode)?this.xpNext*1.32+9:this.xpNext*1.26+6); /* v6.55.17 ด่าน 3+ ช้าลง */ /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
