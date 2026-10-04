@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.27';
+const GAME_VERSION = '6.55.28';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.28',date:'2026-10-04',title:'Flavor Weave pacing',items:['Flavor Spark gives +2% damage per level (was +3%)','Temple core costs now grow faster at higher ranks']},
   {v:'6.55.27',date:'2026-10-04',title:'Simpler stat breakdown',items:['Removed the starting-value box from the stat breakdown']},
   {v:'6.55.26',date:'2026-10-04',title:'Attack Power starts at 100%',items:['Heroes start at 100% Attack Power instead of 90%','Enemy HP raised to match, so difficulty is unchanged']},
   {v:'6.55.25',date:'2026-10-04',title:'Stats follow the formula',items:['Stats page ordered offense → defense → movement','Breakdown panel reads top to bottom like the formula: Base, bonuses, separate multipliers','Sub-rows use softer colors than group headers']},
@@ -2978,8 +2979,8 @@ const TAL_MAX = 3;   // แต่ละแก่นอัพได้ Lv1..TAL_M
 const UPGRADES = {
   hp:  { iconKey:'temple_life_core',emoji:'❤️', tag:'CORE', name:'Life Core', unit:'+16 max HP/level', color:0xff5f7a, base:30, per:16,
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
-  dmg: { iconKey:'temple_flavor_spark',emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+3% damage/level',  color:0xf0a54a, base:45, per:3,
-         apply:(p,tot)=>{ p.dmgMul+=(1+0.03*tot)-1; },           show:tot=>'+'+(3*tot)+'% DMG' },   // v4.55: เดิม +2 flat ต่อทุกฮิต (โกงกับตัวยิงถี่/tick) → เปลี่ยนเป็น %
+  dmg: { iconKey:'temple_flavor_spark',emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+2% damage/level',  color:0xf0a54a, base:45, per:2,
+         apply:(p,tot)=>{ p.dmgMul+=(1+0.02*tot)-1; },           show:tot=>'+'+(2*tot)+'% DMG' },   // v6.55.28: 3% → 2% (เจ้าของ: Pareto Weave ถึง 50%)   // v4.55: เดิม +2 flat ต่อทุกฮิต (โกงกับตัวยิงถี่/tick) → เปลี่ยนเป็น %
   def: { iconKey:'temple_oath_shell',emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'+1.5 armor/level', color:0x6ec6ff, base:40, per:1.5,
          apply:(p,tot)=>{ p.armor=(p.armor||0)+1.5*tot; },       show:tot=>'+'+Math.round(1.5*tot)+' Armor' },   // v6.55.20: เดิม ×0.985^tot ไม่มีเพดาน → armor (100/(100+armor)) ลดผลเองเมื่อสูง
 };
@@ -3961,7 +3962,7 @@ const Save = {
   buySpecialCore(id){const core=SPECIAL_CORES.find(c=>c.id===id);if(!core||(this.data.rank||0)<core.rank||this.specialCoreLvl(id)>=3)return false;
     const cost=this.specialCoreCost(id);if(this.threads()<cost)return false;
     this.data.threads=this.threads()-cost;this.data.specialCores=this.data.specialCores||{};this.data.specialCores[id]=this.specialCoreLvl(id)+1;this.save();return true;},
-  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank*0.8)); },   // 🍬 Sugar
+  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank)*Math.pow(1.15,rank)); },   // 🍬 Sugar · v6.55.28: (1+rank)×1.15^rank (เดิม 1+0.8·rank) ยศ 5 รวม ×1.7, ยศ 10 ×2.9
   talCanBuy(k){ return this.talLvl(k)<TAL_MAX&&(this.data.sugar||0)>=this.talCost(k); },
   promoteThreadCost(){ const rank=this.data.rank||0;return 8+4*rank+2*rank*rank; },
   perkResetCost(){ return 6+3*(this.data.rank||0); },
