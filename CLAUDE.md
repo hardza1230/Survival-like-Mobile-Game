@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.15 — monster animation commit 5
+# Latest delivery: v6.55.16 — monster animation commit 6
+
+Ten real 16-pose sheets cover Chapter 1 stage 5 and Chapter 3 ordinary monsters, plus Stage 5 Elite. Runtime: assets/art/monster_batch6; source/manifest/prompts/packing/review: assets/incoming/monster_batch6. Original Chapter 3 apparent sizes, combat stats, collision circles and action timers are preserved. New Stage 5 keys use one authored defeat ghost. Actual-method tests, full checks and web build pass; phone visual/performance review is pending. Remaining commits 7–10; next is Chapter 2 stages 1–2 including Sporeling. Chapter 3 generic Elite remains in commit 10. See docs/MONSTER_ANIMATION_PLAN.md.
+
+## Previous delivery: v6.55.15 — monster animation commit 5
 
 Chapter 1 Ice monsters now use five real 16-frame painted sheets (Wisp, Shard, Caster, Frost Bubble, Guardian), including Guardian Elite. Runtime: assets/art/ch1_ice; sources/manifest/exact prompts/packing/review: assets/incoming/ch1_ice_animations. Combat values, timers, original collision circles and frostbite flags are preserved. Actual-method tests, full checks and web build pass; phone visual/performance review is pending. Remaining monster animation commits 6–10; next is commit 6 (existing Chapter 1 stage 5 and Chapter 3 sheets). See docs/MONSTER_ANIMATION_PLAN.md.
 

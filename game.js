@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.15';
+const GAME_VERSION = '6.55.16';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  {v:'6.55.16',date:'2026-10-04',title:'Stage 5 and Chapter 3 monster animations',items:['Ten monster identities gain six-frame movement and separate idle, action, hurt and defeat clips','Stage 5 firing and dash cues select authored clips with original timings','Chapter 3 silhouettes keep their original runtime size and combat values']},
   {v:'6.55.15',date:'2026-10-04',title:'Ice monster sprite animations',items:['Five ice creatures use painted movement, idle, action, hurt and defeat frames','Ice Shard dash, Syrup Turret firing and Frost Bubble warnings follow original timers','Frozen Gate Warden and Ice Elite retain their original combat values and collision circles']},
   {v:'6.55.14',date:'2026-10-04',title:'Fire monster sprite animations',items:['Five fire creatures use painted walk, idle, action, hurt and defeat frames','Chili dash, Grinder firing and Pressure Pot warnings follow existing combat timing','Furnace Golem and Fire Elite retain original stats and collision sizes']},
   {v:'6.55.13',date:'2026-10-04',title:'Drain monster sprite animations',items:['Five drain creatures now use painted movement, idle, attack, hurt and defeat frames','Backflow Fiend glides and dashes; Sewage Spitter prepares shots; pressure sacs show injury warnings','Drain enemy and elite combat values and collision sizes are preserved']},
@@ -1659,6 +1660,17 @@ function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
   }
 }
 const ASSET_SHEETS = {
+  e_void_crumb_animated:{url:'assets/art/monster_batch6/s5_void_crumb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  e_crown_ripper_animated:{url:'assets/art/monster_batch6/s5_crown_ripper_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
+  e_banquet_eye_animated:{url:'assets/art/monster_batch6/s5_banquet_eye_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  e_maw_truffle_animated:{url:'assets/art/monster_batch6/s5_maw_truffle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},
+  e_royal_oven_sentinel_animated:{url:'assets/art/monster_batch6/s5_royal_oven_sentinel_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c3_e_basic_animated:{url:'assets/art/monster_batch6/c3_basic_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c3_e_fast_animated:{url:'assets/art/monster_batch6/c3_fast_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
+  c3_e_shooter_animated:{url:'assets/art/monster_batch6/c3_shooter_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  c3_e_bomber_animated:{url:'assets/art/monster_batch6/c3_bomber_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},
+  c3_e_tank_animated:{url:'assets/art/monster_batch6/c3_tank_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+
   e_ice_wisp_animated:{url:'assets/art/ch1_ice/wisp_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
   e_ice_shard_animated:{url:'assets/art/ch1_ice/shard_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:4},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
   e_ice_caster_animated:{url:'assets/art/ch1_ice/caster_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
@@ -1979,13 +1991,13 @@ function registerRootKnightAnimations(scene){
 
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 const STAGE_SHEETS=[
-  ['boss1','e_ant_worker_animated','e_ant_scout_animated','e_ant_spitter_animated','e_ant_soldier_animated','e_ant_drone_animated','e_acid_animated'],['boss2','e_drain_slime_animated','e_drain_dasher_animated','e_drain_caster_animated','e_drain_bomber_animated','e_drain_tank_animated'],['boss3','e_fire_ember_animated','e_fire_chili_animated','e_fire_grinder_animated','e_fire_bomber_animated','e_fire_golem_animated'],['boss4','e_ice_wisp_animated','e_ice_shard_animated','e_ice_caster_animated','e_ice_bomber_animated','e_ice_guardian_animated'],['boss5_sovereign','boss5','mb5_banquet_executioner'],
+  ['boss1','e_ant_worker_animated','e_ant_scout_animated','e_ant_spitter_animated','e_ant_soldier_animated','e_ant_drone_animated','e_acid_animated'],['boss2','e_drain_slime_animated','e_drain_dasher_animated','e_drain_caster_animated','e_drain_bomber_animated','e_drain_tank_animated'],['boss3','e_fire_ember_animated','e_fire_chili_animated','e_fire_grinder_animated','e_fire_bomber_animated','e_fire_golem_animated'],['boss4','e_ice_wisp_animated','e_ice_shard_animated','e_ice_caster_animated','e_ice_bomber_animated','e_ice_guardian_animated'],['boss5_sovereign','boss5','mb5_banquet_executioner','e_void_crumb_animated','e_crown_ripper_animated','e_banquet_eye_animated','e_maw_truffle_animated','e_royal_oven_sentinel_animated'],
   ['boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas'],
   ['boss7_mycelium_behemoth','mb7_fungal_juggernaut','ch2_mycelium_enemy_atlas','ch2_prop_atlas'],
   ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas'],
   ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas'],
   ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas'],
-  ...[1,2,3,4,5].map(n=>['c3_mini'+n,'c3_boss'+n])
+  ...[1,2,3,4,5].map(n=>['c3_mini'+n,'c3_boss'+n,'c3_e_basic_animated','c3_e_fast_animated','c3_e_shooter_animated','c3_e_bomber_animated','c3_e_tank_animated'])
 ];
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
@@ -8678,7 +8690,7 @@ class Game extends Phaser.Scene {
   spawnElite(allowRecycle=true){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
-    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?this.antArtKey('elite'):(this.stageIndex===1?this.drainArtKey('elite'):this.stageIndex===2?this.fireArtKey('elite'):this.stageIndex===3?this.iceArtKey('elite'):this.stageIndex===4?'e_royal_oven_sentinel':this.stageIndex===5?'ch2_enemy_atlas':this.stageIndex===8?'ch2_seasons_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:this.stageIndex===8?5:0;
+    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?this.antArtKey('elite'):(this.stageIndex===1?this.drainArtKey('elite'):this.stageIndex===2?this.fireArtKey('elite'):this.stageIndex===3?this.iceArtKey('elite'):this.stageIndex===4?this.stage5ArtKey('elite'):this.stageIndex===5?'ch2_enemy_atlas':this.stageIndex===8?'ch2_seasons_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:this.stageIndex===8?5:0;
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ if(!allowRecycle)return null;e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // Other elite events retain their existing pool fallback.
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
@@ -10601,12 +10613,20 @@ class Game extends Phaser.Scene {
     const base=type==='fast'||type==='dasher'?'e_ice_shard':type==='shooter'?'e_ice_caster':type==='bomber'?'e_ice_bomber':type==='tank'||type==='siege'||type==='elite'?'e_ice_guardian':'e_ice_wisp';
     return this.textures.exists(base+'_animated')?base+'_animated':base;
   }
+  stage5ArtKey(type){
+    const base=type==='fast'||type==='dasher'?'e_crown_ripper':type==='shooter'?'e_banquet_eye':type==='bomber'?'e_maw_truffle':type==='tank'||type==='siege'||type==='elite'?'e_royal_oven_sentinel':'e_void_crumb';
+    return this.textures.exists(base+'_animated')?base+'_animated':base;
+  }
+  chapter3ArtKey(type){
+    const base='c3_e_'+(type==='fast'||type==='dasher'?'fast':type==='shooter'?'shooter':type==='bomber'?'bomber':type==='tank'||type==='siege'?'tank':'basic');
+    return this.textures.exists(base+'_animated')?base+'_animated':base;
+  }
   antSpitWindup(e){
-    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated'].includes(e._enemyArtKey))return;
+    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated','e_banquet_eye_animated','c3_e_shooter_animated'].includes(e._enemyArtKey))return;
     if(e.shootCd>0&&e.shootCd<=0.18&&(!e._enemyAction||e._enemyAction.state!=='windup'))this.enemyAction(e,'windup',e.shootCd*1000);
   }
   warnAntBomber(e){
-    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
+    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated','e_maw_truffle_animated','c3_e_bomber_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
     e._antBombWarn=true;this.enemyAction(e,'windup',400);
   }
   stopEnemyPresentation(e){
@@ -10666,8 +10686,8 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===1)key=this.drainArtKey(type);
     if(this.stageIndex===2)key=this.fireArtKey(type);
     if(this.stageIndex===3)key=this.iceArtKey(type);
-    if(this.stageIndex>=10&&this.textures.exists('c3_e_basic')) key=(type==='fast'||type==='dasher')?'c3_e_fast':type==='shooter'?'c3_e_shooter':type==='bomber'?'c3_e_bomber':(type==='tank'||type==='siege')?'c3_e_tank':'c3_e_basic';
-    if(this.stageIndex===4) key=(type==='fast'||type==='dasher')?'e_crown_ripper':type==='shooter'?'e_banquet_eye':type==='bomber'?'e_maw_truffle':(type==='tank'||type==='siege')?'e_royal_oven_sentinel':'e_void_crumb';
+    if(this.stageIndex>=10&&(this.textures.exists('c3_e_basic_animated')||this.textures.exists('c3_e_basic')))key=this.chapter3ArtKey(type);
+    if(this.stageIndex===4)key=this.stage5ArtKey(type);
     const ch2Frame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5}[type]??0,mycoFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,sporeling:6}[type]??0,nectarFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,grub:6}[type]??0,seasonFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0,rootFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0;let atlasFrame=0;
     if(this.stageIndex===5){key='ch2_enemy_atlas';atlasFrame=ch2Frame;}else if(this.stageIndex===6){key='ch2_mycelium_enemy_atlas';atlasFrame=mycoFrame;}else if(this.stageIndex===7){key='ch2_nectar_enemy_atlas';atlasFrame=nectarFrame;}else if(this.stageIndex===8){key='ch2_seasons_enemy_atlas';atlasFrame=seasonFrame;}else if(this.stageIndex===9){key='ch2_root_enemy_atlas';atlasFrame=rootFrame;}
     if(!e) e=this.enemies.create(x,y,key,atlasFrame);
@@ -12578,7 +12598,8 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(ms,()=>{if(!b.active||b._stage5PoseToken!==token)return;const idle=b.texture.key==='boss5_sovereign'?'boss5_sovereign_idle':b.texture.key+'_walk';if(this.anims.exists(idle))b.play(idle,true);else b.setFrame(0);});
   }
   stage5EnemyPose(e,frame,ms=360){
-    const keys=['e_void_crumb','e_crown_ripper','e_banquet_eye','e_maw_truffle','e_royal_oven_sentinel'];if(!e||!e.active||!keys.includes(e.texture.key))return;
+    const keys=['e_void_crumb','e_crown_ripper','e_banquet_eye','e_maw_truffle','e_royal_oven_sentinel'];if(!e||!e.active)return;const key=e._enemyArtKey||e.texture.key,base=key.replace(/_animated$/,'');if(!keys.includes(base))return;
+    if(ASSET_SHEETS[key]&&ASSET_SHEETS[key].actions){const state=frame===6?'hurt':base==='e_crown_ripper'?(frame===4?'windup':'dash'):base==='e_banquet_eye'?'attack':frame===4?'windup':'attack';this.enemyAction(e,state,ms);return;}
     this.enemyAction(e,frame===4?'windup':frame===5?'attack':frame===6?'hurt':'attack',ms,Math.max(0,Math.min(7,frame|0)));
   }
   stage5DeathGhost(e){

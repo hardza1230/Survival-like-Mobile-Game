@@ -9,7 +9,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | 3 | Chapter 1 stage 2: Drain Slime, Dasher, Caster, Bomber and Tank | Complete — v6.55.13 |
 | 4 | Chapter 1 stage 3: Ember, Chili, Grinder, Pressure Pot and Golem | Complete — v6.55.14 |
 | 5 | Chapter 1 stage 4: Wisp, Shard, Caster, Bubble and Guardian | Complete — v6.55.15 |
-| 6 | Chapter 1 stage 5 and Chapter 3: improve existing walk sheets, add missing action clips | Pending |
+| 6 | Chapter 1 stage 5 and Chapter 3: improve existing walk sheets, add missing action clips | Complete — v6.55.16 |
 | 7 | Chapter 2 stages 1–2: root/ferment and mycelium creatures, including Sporeling | Pending |
 | 8 | Chapter 2 stage 3: Nectar creatures, including Tiny Grub | Pending |
 | 9 | Chapter 2 stages 4–5: season and root creatures | Pending |
@@ -67,3 +67,7 @@ Five painted Fire sheets delivered in v6.55.14: Ember, Chili, Grinder, Pressure 
 ## Commit 5 delivery
 
 Five painted Ice sheets delivered in v6.55.15: Wisp, Shard, Caster, Frost Bubble and Guardian, including Guardian Elite. Each contains six movement, two idle, four action, two hurt and two death poses. Source/manifest/exact prompts/packing/review preview: assets/incoming/ch1_ice_animations; runtime: assets/art/ch1_ice. Caster preparation/release and Bubble warning poses were repaired separately to keep effects inside their cells. The same scale is used for all poses of a species, with centered silhouettes and a common ground baseline. Caster firing, Shard windup/dash and Frost Bubble warnings follow existing timers. Original stage-scaled combat values, collision circles and frostbite role flags are preserved. Actual-method tests, asset validation, full checks and web build pass; on-device visual/performance review remains pending. Remaining: commits 6–10; next is existing Chapter 1 stage 5 and Chapter 3 walk/action sheets.
+
+## Commit 6 delivery
+
+Ten generated 16-pose sheets delivered in v6.55.16: five Chapter 1 stage 5 identities and five Chapter 3 identities, including Stage 5 Elite. Six movement, two idle, four action, two hurt and two defeat frames per identity. Five action strips repaired independently to contain effects inside cells. Source/manifest/exact prompts/packing/review: assets/incoming/monster_batch6; runtime: assets/art/monster_batch6. Stage 5 frames remain 256px and Chapter 3 remains 128px with its original apparent-size padding. Combat values, role scales, colliders, shot/dash timers and bestiary references are preserved. New Stage 5 keys skip the old death-image helper to avoid duplicate ghosts. Tests execute 42 ordinary role spawns across six stages and the Stage 5 Elite, plus action/freeze/reset/fallback and alpha/packing coverage. Full checks/web build pass; phone visual/performance review pending. Remaining: commits 7–10. Next: Chapter 2 stages 1–2 and Sporeling; Chapter 3 generic Elite belongs to commit 10.
