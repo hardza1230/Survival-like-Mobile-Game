@@ -1,3 +1,7 @@
+## Current release — v6.55.9 (VFX art batch 4)
+
+Eight painted Recipe effects: shock, burst, freeze, sour, cleanse, immunity, burning ground and pulling hole. PNG sources: assets/incoming/vfx_recipe_fields; runtime WebPs: assets/vfx. Original combat values are preserved. Zone tweens stop at expiry; all tracked art and recipe zone references clear on transitions. Full automated checks/web build required; phone visual review pending. Remaining: batch 5 meteor, orbiting candy and helper.
+
 ## Current release — v6.55.8 (VFX art batch 3)
 
 Three new painted VFX: purple-only Void Pull, Relic jam blob, Great Hunger metamorph sheet. Source PNGs in assets/incoming/vfx_void_jam_boss; runtime WebPs in assets/vfx. Old brown Cocoa Vortex inspected and rejected because the existing cast explicitly requires purple-only visuals.

@@ -1,3 +1,7 @@
+## Current release — v6.55.9 (VFX art batch 4)
+
+Eight painted Recipe effects: shock, burst, freeze, sour, cleanse, immunity, burning ground and pulling hole. PNG sources: assets/incoming/vfx_recipe_fields; runtime WebPs: assets/vfx. Original combat values are preserved. Zone tweens stop at expiry; all tracked art and recipe zone references clear on transitions. Full automated checks/web build required; phone visual review pending. Remaining: batch 5 meteor, orbiting candy and helper.
+
 # ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.8 · 4 ต.ค. 2026)
 
 > อ่าน `CLAUDE.md` ให้จบก่อนทุกครั้ง (กติกา สาขา และวิธี release อยู่ในนั้น)

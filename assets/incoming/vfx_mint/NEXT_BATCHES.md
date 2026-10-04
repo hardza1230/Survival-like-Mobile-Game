@@ -7,7 +7,7 @@ This plan follows the runtime audit of v6.55.6. Each batch is committed separate
 | 1 | Mint ice shard, lance shatter, Gale/Wind Rush activation | Created and integrated in v6.55.7 |
 | 2 | Strawberry charge aura/wind-cut trail; shield bubble | Created and integrated in v6.55.7 |
 | 3 | Void Pull core/vortex; Relic jam trail; Great Hunger transformation effect | Created and integrated in v6.55.8; old brown Vortex rejected to preserve purple-only direction |
-| 4 | Recipe shock/burst/freeze/sour/cleanse; burning ground and pulling hole | Pending; inspect old Frost Pulse and Chili Nova first |
+| 4 | Recipe shock/burst/freeze/sour/cleanse; burning ground and pulling hole | Created and integrated in v6.55.9; distinct Recipe palette including immunity |
 | 5 | Recipe meteor, orbiting candy and helper creature | Pending |
 
 Runtime integration of batches 1 and 2 is complete. The main Mint lance and Strawberry charged projectile already have art; do not regenerate them.
