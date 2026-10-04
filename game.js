@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.23';
+const GAME_VERSION = '6.55.24';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -62,6 +62,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.24',date:'2026-10-04',title:'Clearer stat breakdown',items:['Stat sources grouped into Hero, Temple, Gear and Progress with icons','Each source shows its share % and a bar; the biggest source is starred','Every stat explains its formula in plain words']},
   {v:'6.55.23',date:'2026-10-04',title:'Slower hero levels',items:['Hero level EXP requirement now grows faster at higher levels']},
   {v:'6.55.22',date:'2026-10-04',title:'Detailed stat sources',items:['Stat breakdown lists each talent, Weave core, gear piece, item-level bonus, mod line, set and perk separately','Gear lines show item level, enhance level and base scaling']},
   {v:'6.55.21',date:'2026-10-04',title:'Defense and healing tuning',items:['Oath Shell Armor lowered to +1.5 per level','Kitchen Heal reduced to 2% HP','On Dash recipes trigger at most once every 1.5s']},
@@ -3638,7 +3639,8 @@ function gearBaseScale(ilvl){const l=Math.max(1,Math.min(100,Number(ilvl)||1));r
 function applyScaledGear(p,it,lv,ilvl){const f=gearBaseScale(ilvl),add=['dmgMul','critChance','critMul','maxhp','regen','regenFlat','pickup','lifeOnKill','lowHpDmg','bossDmg','lowHpGuard','flatDmg','lifesteal'],mul=['cdMul','dmgTakenMul','baseSpeed','xpMul','dashCdMul'],b={};
   for(const k of add)b[k]=p[k]||0;for(const k of mul)b[k]=p[k]==null?1:p[k];it.apply(p,lv);
   for(const k of add)if(typeof p[k]==='number')p[k]=b[k]+(p[k]-b[k])*f;for(const k of mul)if(typeof p[k]==='number'&&b[k]>0&&p[k]>0)p[k]=b[k]*Math.pow(p[k]/b[k],f);}
-function applyItemLevelBonus(p,item){applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
+function applyItemLevelBonus(p,item){const bse=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(bse&&bse.tier==='start')return;   // v6.55.24: ช่องว่าง ('None') ไม่ได้โบนัส iLv
+  applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
   if(slot==='weapon'||slot==='ring')p.dmgMul+=(1+0.24*q)-1;
   else if(slot==='gloves')p.critChance=(p.critChance||0)+0.04*q;
   else if(slot==='armor'){p.maxhp+=Math.round(80*q);p.dmgTakenMul*=1-0.06*q;}
@@ -6102,22 +6104,48 @@ class Game extends Phaser.Scene {
       this.menu.add([g,em,nm,sub,val]); });
     this.menu.setVisible(true);
   }
-  // v6.55.18: แผงแหล่งที่มาของสแตต (เทียบ snapshot ก่อน/หลังแต่ละแหล่งใน previewStats)
+  // v6.55.24: แผงที่มาของสแตต — จัดกลุ่ม + ไอคอน + % สัดส่วน (Pareto) + สูตรอ่านง่าย
   showStatSources(p,key,row){
-    const tr=p._trace||[],w=this.W,h=this.H,fmt=(a,b)=>{const pct=v=>(v>0?'+':'')+(Math.round(v*1000)/10)+'%';
-      if(key==='maxhp'){const d=b-a;return (d>0?'+':'')+Math.round(d);} if(key==='baseSpeed'){const d=b-a;return (d>0?'+':'')+Math.round(d);} if(key==='regen'){const d=b-a;return (d>0?'+':'')+d.toFixed(1)+'/s';}
-      if(key==='dmgMul')return pct(b-a); if(key==='critChance')return pct(b-a); if(key==='dmgTakenMul')return pct(a-b)+' less'; if(key==='cdMul')return pct(a-b)+' faster'; return '';};
-    const base=tr[0]&&tr[0].s[key],lines=[];
-    if(key==='dmgTakenMul'){for(let i=1;i<tr.length;i++){const a=tr[i-1].s.armor,b=tr[i].s.armor;if(b!==a)lines.push([tr[i].label+' armor',(b>a?'+':'')+Math.round(b-a)]);}lines.push(['Armor total','-'+Math.round((1-armorDamageMultiplier(p))*100)+'% dmg']);}
-    if(tr[0]){const v=key==='dmgMul'||key==='critChance'?Math.round(base*100)+'%':key==='dmgTakenMul'?Math.round((1-base)*100)+'% less':key==='cdMul'?'×'+base.toFixed(2):key==='regen'?base.toFixed(1)+'/s':Math.round(base)+'';lines.push(['Base',v]);}
-    for(let i=1;i<tr.length;i++){const a=tr[i-1].s[key],b=tr[i].s[key];if(Math.abs(b-a)>1e-6)lines.push([tr[i].label,fmt(a,b)]);}
-    if(key==='critChance')lines.push(['Crit damage','×'+p.critMul.toFixed(2)]);
-    if(key==='dmgMul'&&(p.powerMul||1)!==1)lines.push(['Weapon item power','×'+p.powerMul.toFixed(2)+' (separate)']);
-    const ov=this.add.container(0,0).setDepth(150000),bg=this.add.rectangle(w/2,h/2,w,h,0x000000,0.6),rh=Math.max(15,Math.min(26,(h-130)/Math.max(1,lines.length))),pw=Math.min(w-20,420),ph=70+lines.length*rh,px=(w-pw)/2,py=Math.max(40,(h-ph)/2),g=this.add.graphics();
-    g.fillStyle(0x241a30,0.98);g.fillRoundedRect(px,py,pw,ph,14);g.lineStyle(2,row[4],1);g.strokeRoundedRect(px,py,pw,ph,14);
-    const t=this.add.text(w/2,py+20,row[0]+' '+row[1]+'  '+row[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0.5);ov.add([bg,g,t]);
-    const fs=rh<20?'10px':'12px';lines.forEach((l,i)=>{const ly=py+48+i*rh,a=this.add.text(px+12,ly,l[0],{fontFamily:'sans-serif',fontSize:fs,color:'#d8cde2',fixedWidth:pw*0.66}).setOrigin(0,0.5),b=this.add.text(px+pw-12,ly,l[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs,color:l[1][0]==='-'?'#ff9bb5':'#8ff0b0'}).setOrigin(1,0.5);ov.add([a,b]);});
-    const hint=this.add.text(w/2,py+ph-12,'Tap anywhere to close',{fontFamily:'sans-serif',fontSize:'9px',color:'#9a90ab'}).setOrigin(0.5);ov.add(hint);this.menu.add(ov);
+    const tr=p._trace||[],w=this.W,h=this.H;
+    const GROUPS=[{id:'hero',icon:'🧬',name:'Hero',test:l=>/^(Base|Hero profile|Signature weapon|Talent|Path talents)/.test(l),col:'#ffb3c7'},
+      {id:'weave',icon:'✦',name:'Temple',test:l=>/^(Weave|Special Cores)/.test(l),col:'#ffd166'},
+      {id:'gear',icon:'⚔️',name:'Gear',test:l=>/^(Gear|Mod|Set)/.test(l),col:'#9fd8ff'},
+      {id:'prog',icon:'🏆',name:'Progress',test:l=>/^(Bestiary|Perk|Ancient)/.test(l),col:'#b9f0a8'},
+      {id:'cap',icon:'🔒',name:'Limits',test:()=>true,col:'#b0a6bf'}];
+    // ค่าที่ "นับได้" ต่อแหล่ง (หน่วยเดียวกันทั้งตาราง) เพื่อคิด % สัดส่วน
+    const val=s=>key==='dmgTakenMul'?(1-s.dmgTakenMul*100/(100+Math.max(0,s.armor||0)))*100:key==='cdMul'?(1-s.cdMul)*100:key==='dmgMul'||key==='critChance'?s[key]*100:s[key];
+    const unit=key==='maxhp'||key==='baseSpeed'?'':key==='regen'?'/s':'%';
+    const fmt=v=>(v>0?'+':v<0?'−':'')+(key==='regen'?Math.abs(v).toFixed(1):Math.round(Math.abs(v)*10)/10)+unit;
+    const items=[];if(tr[0])items.push({label:'Base',v:val(tr[0].s),base:true});
+    for(let i=1;i<tr.length;i++){const d=val(tr[i].s)-val(tr[i-1].s);if(Math.abs(d)>1e-6)items.push({label:tr[i].label,v:d});}
+    const posSum=items.reduce((a,it)=>a+(it.base?0:Math.max(0,it.v)),0)||1;let top=null;for(const it of items)if(!it.base&&it.v>0&&(!top||it.v>top.v))top=it;   // share = สัดส่วนของโบนัส (ไม่รวม Base)
+    const lines=[];GROUPS.forEach(g=>{const its=items.filter(it=>!it._g&&g.test(it.label));if(!its.length)return;its.forEach(it=>it._g=1);const sub=its.reduce((a,it)=>a+it.v,0),bsub=its.reduce((a,it)=>a+(it.base?0:Math.max(0,it.v)),0);
+      lines.push({hdr:true,g,label:g.icon+'  '+g.name,v:sub,pct:bsub/posSum*100});its.sort((a,b)=>(a.base?-1:b.base?1:b.v-a.v)).forEach(it=>lines.push({g,label:it.base?'Hero base':it.label.replace(/^(Talent|Weave|Gear|Mod|Set collection|Set|Perk) · /,''),v:it.v,base:it.base,pct:it.base?0:Math.max(0,it.v)/posSum*100,top:it===top}));});
+    const FORM={dmgMul:'Hit = Weapon damage × Attack Power% × Item Power × Crit (if crit) × more bonuses\nAttack Power starts at 90% (hero base) and every “+%” source adds together (increased), then multiplies the hit once.',
+      maxhp:'Max HP = Base 90 + flat HP sources, then × % HP sources (Vigor, Resolve, Ancient).',
+      critChance:'Crit chance = sum of all crit % · Crit hit = damage × Crit damage ('+'×'+p.critMul.toFixed(2)+')',
+      dmgTakenMul:'Damage taken = Hit × 100/(100+Armor) × each “less damage” source multiplied together.\nArmor gives less and less as it grows — never reaches 100%.',
+      baseSpeed:'Speed = Base × each % speed source multiplied.',cdMul:'Cooldown = Base cooldown × each “faster” source multiplied.',regen:'Regen = sum of all HP/s sources.'};
+    if(key==='dmgMul'&&(p.powerMul||1)!==1)lines.push({note:true,label:'⚡ Weapon Item Power ×'+p.powerMul.toFixed(2)+' (multiplies separately)'});
+    if(key==='critChance')lines.push({note:true,label:'💥 Crit damage ×'+p.critMul.toFixed(2)});
+    if(key==='dmgTakenMul')lines.push({note:true,label:'🛡️ Armor '+Math.round(p.armor||0)+' → −'+Math.round((1-armorDamageMultiplier(p))*100)+'% damage'});
+    const ov=this.add.container(0,0).setDepth(150000),bg=this.add.rectangle(w/2,h/2,w,h,0x000000,0.66),pw=Math.min(w-16,430),px=(w-pw)/2;
+    const ftxt=this.add.text(0,0,'ⓘ '+(FORM[key]||''),{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dd',wordWrap:{width:pw-28},lineSpacing:2});
+    const avail=h-60-64-ftxt.height-24,rh=Math.max(14,Math.min(24,avail/Math.max(1,lines.length))),ph=64+lines.length*rh+ftxt.height+24,py=Math.max(24,(h-ph)/2),g=this.add.graphics();
+    g.fillStyle(0x1f1729,0.98);g.fillRoundedRect(px,py,pw,ph,14);g.lineStyle(2,row[4],1);g.strokeRoundedRect(px,py,pw,ph,14);
+    const t=this.add.text(px+14,py+20,row[0]+' '+row[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5),tv=this.add.text(px+pw-14,py+20,row[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffd166'}).setOrigin(1,0.5);
+    const hc=this.add.text(px+pw-14,py+42,'value   bonus share',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8a7f99'}).setOrigin(1,0.5);ov.add([bg,g,t,tv,hc]);
+    const fs=rh<18?'9.5px':'11px',barX=px+pw*0.50,barW=pw*0.16;
+    lines.forEach((l,i)=>{const ly=py+56+i*rh+rh/2;
+      if(l.note){ov.add(this.add.text(px+14,ly,l.label,{fontFamily:'sans-serif',fontSize:fs,color:'#ffd9a8'}).setOrigin(0,0.5));return;}
+      if(l.hdr){const hb=this.add.graphics();hb.fillStyle(0x30253d,1);hb.fillRoundedRect(px+8,ly-rh/2+1,pw-16,rh-2,6);ov.add(hb);}
+      const x0=l.hdr?px+14:px+28,a=this.add.text(x0,ly,(l.top?'★ ':'')+l.label,{fontFamily:'sans-serif',fontStyle:l.hdr?'bold':'normal',fontSize:fs,color:l.top?'#ffd166':l.hdr?l.g.col:'#ddd2e6',fixedWidth:barX-x0-6}).setOrigin(0,0.5);
+      const b=this.add.text(px+pw-62,ly,fmt(l.v),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs,color:l.v<0?'#ff9bb5':'#8ff0b0'}).setOrigin(1,0.5);
+      const pc=this.add.text(px+pw-14,ly,l.v>0&&!l.base?Math.round(l.pct)+'%':'—',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs,color:l.pct>=30?'#ffd166':'#a99fb8'}).setOrigin(1,0.5);
+      const bar=this.add.graphics();bar.fillStyle(0x0f0b15,1);bar.fillRect(barX,ly-3,barW,6);if(l.v>0&&!l.base){bar.fillStyle(l.top||l.pct>=30?0xffd166:Phaser.Display.Color.HexStringToColor(l.g.col).color,l.hdr?1:0.8);bar.fillRect(barX,ly-3,barW*Math.min(1,l.pct/100),6);}
+      ov.add([a,b,pc,bar]);});
+    ftxt.setPosition(px+14,py+56+lines.length*rh+8);ov.add(ftxt);
+    const hint=this.add.text(w/2,py+ph-8,'Tap anywhere to close · ★ biggest source',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8a7f99'}).setOrigin(0.5,1);ov.add(hint);this.menu.add(ov);
     const prev=this.tapZones;this.tapZones=[];this._zone(0,0,w,h,()=>{ov.destroy();this.tapZones=prev;});
   }
   // v6.53: Codex ชุดเซ็ท — ชิ้นไหนเข้าชุดไหน · โบนัสสวม 2/3 ชิ้น · เก็บครบ = โบนัสถาวร
