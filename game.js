@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.20';
+const GAME_VERSION = '6.55.21';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -62,6 +62,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.21',date:'2026-10-04',title:'Defense and healing tuning',items:['Oath Shell Armor lowered to +1.5 per level','Kitchen Heal reduced to 2% HP','On Dash recipes trigger at most once every 1.5s']},
   {v:'6.55.20',date:'2026-10-04',title:'Oath Shell gives Armor',items:['Oath Shell now grants +4 Armor per level instead of stacking % damage reduction','Armor now also reduces contact damage from monsters','Stats Defense shows armor sources']},
   {v:'6.55.19',date:'2026-10-04',title:'Gear and early challenge balance',items:['Gear base bonuses now scale with item level (low-level gear gives less)','Crit mods and glove crit growth reduced','Gacha item level is limited by story progress','Stage 3–5 opening waves are tougher; Stage 5 boss no longer outranks Chapter 2']},
   {v:'6.55.18',date:'2026-10-04',title:'Stat sources',items:['Tap any stat on the Heroes · Stats page to see where it comes from','Breakdown covers hero, weapon, talents, Flavor Weave, cores, gear, sets, Bestiary and perks','Stats preview now includes set bonuses and Ancient perks']},
@@ -2972,8 +2973,8 @@ const UPGRADES = {
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
   dmg: { iconKey:'temple_flavor_spark',emoji:'✨', tag:'FLAVOR', name:'Flavor Spark', unit:'+3% damage/level',  color:0xf0a54a, base:45, per:3,
          apply:(p,tot)=>{ p.dmgMul+=(1+0.03*tot)-1; },           show:tot=>'+'+(3*tot)+'% DMG' },   // v4.55: เดิม +2 flat ต่อทุกฮิต (โกงกับตัวยิงถี่/tick) → เปลี่ยนเป็น %
-  def: { iconKey:'temple_oath_shell',emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'+4 armor/level', color:0x6ec6ff, base:40, per:4,
-         apply:(p,tot)=>{ p.armor=(p.armor||0)+4*tot; },       show:tot=>'+'+(4*tot)+' Armor' },   // v6.55.20: เดิม ×0.985^tot ไม่มีเพดาน → armor (100/(100+armor)) ลดผลเองเมื่อสูง
+  def: { iconKey:'temple_oath_shell',emoji:'🛡️', tag:'BOND', name:'Oath Shell', unit:'+1.5 armor/level', color:0x6ec6ff, base:40, per:1.5,
+         apply:(p,tot)=>{ p.armor=(p.armor||0)+1.5*tot; },       show:tot=>'+'+Math.round(1.5*tot)+' Armor' },   // v6.55.20: เดิม ×0.985^tot ไม่มีเพดาน → armor (100/(100+armor)) ลดผลเองเมื่อสูง
 };
 const UPG_ORDER=['hp','dmg','def'];
 // Special cores are permanent utility upgrades; they never gate or reset on promotion.
@@ -3045,7 +3046,7 @@ const OVERCAP_MAX=6;   // แก่นขั้นพิเศษ +1..+6 ถา�
 // cost = แต้มรสชาติ · สูตรหนึ่งรวมกันต้องไม่เกิน FR_FLAVOR_CAP (trigger ที่เกิดถี่ = แพง)
 const FR_FLAVOR_CAP=10, FR_SLOT_MAX=5, FR_MERGE_N=3, FR_LV_MAX=3, FR_SWAP_SUGAR=20;   // v5.38 ถอด/สลับชิ้นที่ใส่แล้ว = 🍬20
 const FR_TRIGGERS=[
-  {id:'dash',     emoji:'💨',name:'On Dash',            cost:3},
+  {id:'dash',     emoji:'💨',name:'On Dash',            cost:3, icd:1.5},
   {id:'crit',     emoji:'🎯',name:'On Critical Hit',    cost:4, icd:0.6},
   {id:'kill10',   emoji:'☠️',name:'Every 10 Kills',      cost:3},
   {id:'hurt',     emoji:'💢',name:'When Hit',            cost:2},
@@ -3072,7 +3073,7 @@ const FR_TRIGGERS=[
 const FR_EFFECTS=[
   {id:'shock',  emoji:'💥',name:'Shockwave',          cost:3},
   {id:'shots',  emoji:'✳️',name:'8-Way Shots',        cost:3},
-  {id:'heal',   emoji:'💚',name:'Heal 5% HP',         cost:3},
+  {id:'heal',   emoji:'💚',name:'Heal 2% HP',         cost:3},
   {id:'shield', emoji:'🫧',name:'Gain a Shield',      cost:4},
   {id:'freeze', emoji:'❄️',name:'Freeze Nearby',      cost:3},
   {id:'rage',   emoji:'🔥',name:'Rage +30% DMG 4s',   cost:4},
@@ -10301,7 +10302,7 @@ class Game extends Phaser.Scene {
     switch(r.e){
       case 'shock':{ const R=120*A; this.frRing(px,py,R,0xffc0e0,'vfx_recipe_shock'); near(R).forEach(e=>this.frHit(e,this.relicDmg(1.8)*pw,r)); break; }
       case 'shots':{ for(let i=0;i<8;i++){ const b=this.getBullet(px,py,0xffffff,0.2*A); if(!b)continue; b.setTexture('proj_sprinkle').setTint(r.m==='fire'?0xff7a3d:r.m==='ice'?0x9fe8ff:0xffd166); b.dmg=this.relicDmg(0.9)*pw; b.life=1.1; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(i/8*Math.PI*2,520,b.body.velocity); } break; }
-      case 'heal':{ const n=Math.max(1,Math.round(p.maxhp*0.05*pw*(p.healEffect||1))); p.hp=Math.min(p.maxhp,p.hp+n); this.popHeal(px,py,n); this.fireRecipes('heal'); break; }
+      case 'heal':{ const n=Math.max(1,Math.round(p.maxhp*0.02*pw*(p.healEffect||1))); p.hp=Math.min(p.maxhp,p.hp+n); this.popHeal(px,py,n); this.fireRecipes('heal'); break; }
       case 'recover':{ const n=Math.max(1,Math.round(p.maxhp*0.12*pw*(p.healEffect||1)));p.hp=Math.min(p.maxhp,p.hp+n);this.popHeal(px,py,n);this.fireRecipes('heal');break; }
       case 'burst':{ const R=165*A;this.frRing(px,py,R,0xffd166,'vfx_recipe_burst');near(R).slice(0,16).forEach(e=>this.frHit(e,this.relicDmg(1.4)*pw,r));break; }
       case 'shield':{ this._shield=Math.min(3,(this._shield||0)+(pw>=2?2:1)); this.floatText(px,py-44,'🫧 Shield',0x9fe8ff); break; }
