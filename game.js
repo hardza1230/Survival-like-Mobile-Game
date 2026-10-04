@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.54.1';
+const GAME_VERSION = '6.54.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  { v:'6.54.2', date:'2026-10-04', title:'Talent reset button', items:['Smaller Reset button that no longer covers the talent details'] },
   { v:'6.54.1', date:'2026-10-04', title:'Menu art fix', items:['Menu pages redraw once their art finishes loading, so icons no longer show as placeholders'] },
   { v:'6.54.0', date:'2026-10-04', title:'Set collection & talent tutorial', items:['Codex › Sets: feed 5 spare copies of each piece to complete a set collection for a permanent bonus','Skill Codex renamed to Codex','After stage 1 the tutorial also shows how to spend a Talent Point'] },
   { v:'6.53.0', date:'2026-10-04', title:'Gear Sets codex', items:['New Codex › Sets tab: see which pieces belong to each set, their 2/3-piece bonuses and your progress','Collect every piece of a set for a small permanent bonus','3 new sets: Home Kitchen, Kitchen Brigade, Lucky Star','Equipment page shows your active set bonuses clearly'] },
@@ -12563,11 +12564,11 @@ class Game extends Phaser.Scene {
       this.menu.add([dg,t1,t1b,t2,t3,pg,pc,pt2]);
       this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!ok?'Upgrade the node above first':'Need '+cost+' Talent Points — level up this hero','#ff9bb5');return;}
         cp.tal=cp.tal||{};cp.tal[n.id]=r+1;cp.tp-=cost;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.buildMenuScreen(); }); }
-    const defsN=0,listTop=aTop+rows*rh2+12+detH-14,rh=0;
+    const defsN=0,listTop=aTop+rows*rh2+12+detH-8+2,rh=0;
     // v4.88.2: รีเซ็ต Talent คืน TP ทั้งหมด (จ่าย Sugar · แตะ 2 ครั้งยืนยัน)
     const spent=talSpent(cp.tal),cost=80+40*spent,armed=this._talResetArm&&this._talResetArm.id===id&&Date.now()-this._talResetArm.t<2500;
     const ry=listTop+defsN*(rh+6)+22;
-    this.uiPillBtn(this.menu,W/2,ry,Math.min(bw,300),38,spent>0?0xb45a7a:0x4a4059,'↺',spent<=0?'Reset Talents (nothing spent)':armed?'Tap again to confirm · 🍬'+cost:'Reset Talents · 🍬'+cost,()=>{
+    this.uiPillBtn(this.menu,W/2,ry-4,Math.min(bw,200),28,spent>0?0xb45a7a:0x4a4059,'↺',spent<=0?'Reset (nothing spent)':armed?'Confirm · 🍬'+cost:'Reset · 🍬'+cost,()=>{
       if(spent<=0){this.menuToast('No talent points spent yet');return;}
       if((Save.data.sugar||0)<cost){this.menuToast('Need 🍬'+cost+' Sugar');return;}
       if(!armed){this._talResetArm={id,t:Date.now()};this.buildTalents();return;}
