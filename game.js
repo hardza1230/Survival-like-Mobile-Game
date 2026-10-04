@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.18';
+const GAME_VERSION = '6.55.19';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,8 +60,9 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
-function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.5:1;}
+function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.19',date:'2026-10-04',title:'Gear and early challenge balance',items:['Gear base bonuses now scale with item level (low-level gear gives less)','Crit mods and glove crit growth reduced','Gacha item level is limited by story progress','Stage 3–5 opening waves are tougher; Stage 5 boss no longer outranks Chapter 2']},
   {v:'6.55.18',date:'2026-10-04',title:'Stat sources',items:['Tap any stat on the Heroes · Stats page to see where it comes from','Breakdown covers hero, weapon, talents, Flavor Weave, cores, gear, sets, Bestiary and perks','Stats preview now includes set bonuses and Ancient perks']},
   {v:'6.55.17',date:'2026-10-04',title:'Real challenge from Stage 3',items:['Power assist only applies on Stages 1–2; from Stage 3 stronger heroes face tougher enemies','Stage 3–5 bosses and minibosses have more HP','Level-ups slow down from Stage 3 onward']},
   {v:'6.55.16',date:'2026-10-04',title:'Stage 5 and Chapter 3 monster animations',items:['Ten monster identities gain six-frame movement and separate idle, action, hurt and defeat clips','Stage 5 firing and dash cues select authored clips with original timings','Chapter 3 silhouettes keep their original runtime size and combat values']},
@@ -3303,7 +3304,7 @@ function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.dat
 const AFFIX_POOL = [
   // ── Prefix (สายรุก) ──
   { id:'dmg', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'💥', label:'Damage', pre:'Keen', fmt:v=>'+'+v+'%', tiers:[[13,16],[10,12],[7,9],[5,6],[3,4]], apply:(p,v)=>{ p.dmgMul+=((1+v/100))-1; } },
-  { id:'crit', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'🎯', label:'Crit', pre:'Sharp', fmt:v=>'+'+v+'%', tiers:[[6,7],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
+  { id:'crit', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'🎯', label:'Crit', pre:'Sharp', fmt:v=>'+'+v+'%', tiers:[[4,5],[3,4],[3,3],[2,2],[1,2]], apply:(p,v)=>{ p.critChance=(p.critChance||0)+v/100; } },
   { id:'critdmg', category:'offense', slots:['weapon','gloves','ring'], kind:'prefix', emoji:'💢', label:'Crit DMG', pre:'Fierce', fmt:v=>'+'+v+'%', tiers:[[45,60],[35,44],[25,34],[15,24],[8,14]], apply:(p,v)=>{ p.critMul=(p.critMul||1.55)+v/100; } },
   { id:'cd', category:'offense', slots:['weapon','gloves','amulet','ring'], kind:'prefix', emoji:'⏩', label:'Cooldown', pre:'Swift', fmt:v=>'-'+v+'%', tiers:[[6,8],[5,5],[4,4],[3,3],[2,2]], apply:(p,v)=>{ p.cdMul=Math.max(STAT_CAPS.cdMulMin,(p.cdMul||1)*(1-v/100)); } },
   { id:'bossdmg', category:'offense', slots:['weapon','ring'], kind:'prefix', emoji:'👑', label:'Boss DMG', pre:'Predatory', fmt:v=>'+'+v+'%', tiers:[[17,21],[13,16],[10,12],[7,9],[4,6]], apply:(p,v)=>{ p.bossDmg=(p.bossDmg||0)+v/100; } },
@@ -3629,9 +3630,14 @@ function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
 // v6.41 (เจ้าของ: อาวุธแรงจนการต่อสู้ไม่มีความหมาย) เดิม 1.03/lv ถึง 60 แล้ว 1.015 → iLv89 = ×8.8 · ใหม่ iLv60 ×4.3 · iLv89 ×5.0 · iLv100 ×5.2
 function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.025,l-1):Math.pow(1.025,59)*Math.pow(1.005,l-60); }
+// v6.55.19: สแตตฐานของไอเทม (desc ของ GEAR) สเกลตาม iLv — iLv1 = 35%, iLv60 = 100%, endgame สูงกว่า 100% เล็กน้อย · กันของ common ด่านแรกให้ +crit/+dmg เต็มค่า
+function gearBaseScale(ilvl){const l=Math.max(1,Math.min(100,Number(ilvl)||1));return l<=60?0.35+0.65*(l-1)/59:1+0.15*(l-60)/40;}
+function applyScaledGear(p,it,lv,ilvl){const f=gearBaseScale(ilvl),add=['dmgMul','critChance','critMul','maxhp','regen','regenFlat','pickup','lifeOnKill','lowHpDmg','bossDmg','lowHpGuard','flatDmg','lifesteal'],mul=['cdMul','dmgTakenMul','baseSpeed','xpMul','dashCdMul'],b={};
+  for(const k of add)b[k]=p[k]||0;for(const k of mul)b[k]=p[k]==null?1:p[k];it.apply(p,lv);
+  for(const k of add)if(typeof p[k]==='number')p[k]=b[k]+(p[k]-b[k])*f;for(const k of mul)if(typeof p[k]==='number'&&b[k]>0&&p[k]>0)p[k]=b[k]*Math.pow(p[k]/b[k],f);}
 function applyItemLevelBonus(p,item){applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
   if(slot==='weapon'||slot==='ring')p.dmgMul+=(1+0.24*q)-1;
-  else if(slot==='gloves')p.critChance=(p.critChance||0)+0.06*q;
+  else if(slot==='gloves')p.critChance=(p.critChance||0)+0.04*q;
   else if(slot==='armor'){p.maxhp+=Math.round(80*q);p.dmgTakenMul*=1-0.06*q;}
   else if(slot==='boots')p.baseSpeed*=1+0.10*q;
   else if(slot==='amulet'){p.maxhp+=Math.round(50*q);p.regen=(p.regen||0)+0.6*q;}
@@ -3639,6 +3645,8 @@ function applyItemLevelBonus(p,item){applyGearBaseStats(p,item);const q=Math.max
 function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot==='weapon'&&(it.chapter||1)===ch),support=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&(it.chapter||1)<=ch);}
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 times
 // v4.33: gacha เลือก "ช่วง" base item level เป็นชั้นละ 10 (สุ่ม iLv ในช่วง) · ยิ่งช่วงสูง = ของแรงกว่า = แพงขึ้น · เพดาน 60 (iLv 61-100 หาได้จาก drop เท่านั้น) · mod ยังสุ่ม 0-1 เสมอ
+// v6.55.19: เปิดได้ถึงช่วง iLv ที่ความคืบหน้าเนื้อเรื่องถึง (+4) · กัน account ใหม่ซื้ออาวุธ iLv60 (Item Power ×4) ตั้งแต่ต้น
+function gachaMaxBand(){const cap=storyItemLevelBase((Save.data&&Save.data.unlockedStage)||0)+4;let i=0;for(let k=0;k<GACHA_LEVELS.length;k++)if(GACHA_LEVELS[k].lo<=cap)i=k;return i;}
 const GACHA_LEVELS = [ {lo:1,hi:10,cost:150}, {lo:11,hi:20,cost:320}, {lo:21,hi:30,cost:560}, {lo:31,hi:40,cost:900}, {lo:41,hi:50,cost:1400}, {lo:51,hi:60,cost:2100} ];
 const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังNone)
 const AFFIX_REROLL_COST = 15;   // 🔩 สุ่มคุณสมบัติเสริมของชิ้นที่สวมอยู่ใหม่
@@ -3688,7 +3696,7 @@ const GEAR_COMPARE_STATS = [
 function gearInstanceStats(item){
   const p={dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,bossDmg:0,lowHpGuard:0,xpMul:1,dashCdMul:1,_gearRevive:0,flatDmg:0,lifesteal:0,regenPct:0,healEffect:1,sugarFindMul:1,boxFindMul:1,currencyFindMul:1,uniqueCdMul:1};
   if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,bossDmg:0,crisisGuard:0,xpGain:0,dashRecovery:0,revive:0};
-  const base=GEAR_ALL.find(g=>g.id===item.baseId); if(base&&base.apply)base.apply(p,item.enhanceLv||0);
+  const base=GEAR_ALL.find(g=>g.id===item.baseId); if(base&&base.apply){if(base.tier==='start')base.apply(p,item.enhanceLv||0);else applyScaledGear(p,base,item.enhanceLv||0,item.itemLevel);}
   applyItemLevelBonus(p,item);
   for(const a of (item.affixes||[])){const d=affixDef(a.id);if(d&&d.apply)d.apply(p,a.v);}
   return {attackMin:p.gearAttackMin||0,attackMax:p.gearAttackMax||0,armor:p.armor||0,dmg:(p.dmgMul-1)*100,hp:p.maxhp||0,crit:(p.critChance||0)*100,critDmg:((p.critMul||1.55)-1.55)*100,
@@ -6050,7 +6058,7 @@ class Game extends Phaser.Scene {
     { const cpl=Save.cp(Save.data.character).lvl||1; if(Save.data.character==='cocoa'){ p.lowHpGuard=(p.lowHpGuard||0)+0.15*charPassiveScale(cpl); } } mark('Talents');
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0&&UPGRADES[k].apply)UPGRADES[k].apply(p,tot); } mark('Flavor Weave');
     applySpecialCores(p); mark('Special Cores');
-    for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply)it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
+    for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId); if(it&&it.apply){if(it.tier==='start')it.apply(p,Save.gearLv(inst.uid));else applyScaledGear(p,it,Save.gearLv(inst.uid),inst.itemLevel);}applyItemLevelBonus(p,inst); if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel); if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply)d.apply(p,a.v); } }
     mark('Gear + mods');
     { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply)def.bonuses[need].apply(p); } } for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid))def.collect.apply(p); } } mark('Gear sets');
     const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr)); mark('Bestiary');
@@ -7394,15 +7402,15 @@ class Game extends Phaser.Scene {
       if(on&&lv>0){const bd=this.add.text(sx+ss/2-2,y-ss/2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(bd);}this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{this.gearSlot=slot;this.buildMenuScreen();});
     });
     // v4.32: gacha stepper (◄ ► เลือก base item level, กลาง=เปิด)
-    const glvI=Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
+    const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
     const gbw=Math.min(230,panelW-32),gbh=34,gby=h-55,gx0=pcx-gbw/2,aw=30,afG=(Save.data.sugar||0)>=gCost;
     const gbg=this.add.graphics();gbg.fillStyle(afG?0xffb020:0x3a3550,1);gbg.fillRoundedRect(gx0,gby,gbw,gbh,11);gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1);gbg.strokeRoundedRect(gx0,gby,gbw,gbh,11);
     const gbt=this.add.text(pcx,gby+gbh/2,'🎁 Gacha · iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
     const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
-    const rArr=this.add.text(gx0+gbw-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI<GACHA_LEVELS.length-1?'#17101d':'#8a7a55'}).setOrigin(0.5);
+    const rArr=this.add.text(gx0+gbw-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
     this.menu.add([gbg,gbt,lArr,rArr]);
     this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
-    this._zone(gx0+gbw-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(GACHA_LEVELS.length-1,glvI+1);Sfx.select();this.buildMenuScreen();});
+    this._zone(gx0+gbw-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,gbw-aw*2,gbh,()=>this.openGachaReveal());
     const rx=leftW+8,rw=w-rx-14,selDef=GEAR_SLOTS.find(g=>g.slot===sel);
     const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · equip / enhance',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
@@ -7453,15 +7461,15 @@ class Game extends Phaser.Scene {
     const gby=cy0+topH-28, gbh=28, half=Math.min(w*0.7,300);
     const gcx=w/2;
     // v4.32: gacha มี stepper เลือก base item level (◄ ► ปรับ, กลาง=เปิด) · iLv สูง=แพงขึ้น
-    const glvI=Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
+    const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
     const afG=(Save.data.sugar||0)>=gCost, gx0=gcx-half/2, aw=30;
     const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gx0,gby,half,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
     const gbt=this.add.text(gcx,gby+gbh/2,'🎁 Gacha  iLv'+glv.lo+'-'+glv.hi+'  🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
     const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
-    const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<GACHA_LEVELS.length-1?'#17101d':'#8a7a55'}).setOrigin(0.5);
+    const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
     this.menu.add([gbg,gbt,lArr,rArr]);
     this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
-    this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(GACHA_LEVELS.length-1,glvI+1);Sfx.select();this.buildMenuScreen();});
+    this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
     // ---- Item-instance inventory: new first, 8 per page (portrait-first) ----
     const selDef=GEAR_SLOTS.find(g=>g.slot===sel),items=Save.gearItemsForSlot(sel);
@@ -7876,7 +7884,7 @@ class Game extends Phaser.Scene {
   bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 Sold shards','+🍬'+(sh*2),1300); this.buildBazaar(); }
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
   openGachaReveal(){
-    const lvObj=GACHA_LEVELS[Math.max(0,Math.min(GACHA_LEVELS.length-1,this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.lo+Math.floor(Math.random()*(lvObj.hi-lvObj.lo+1));
+    const lvObj=GACHA_LEVELS[Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.lo+Math.floor(Math.random()*(lvObj.hi-lvObj.lo+1));
     if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (iLv '+lvObj.lo+'-'+lvObj.hi+')',1300);return;}
     if(!Save.spend(cost))return;this._gachaBusy=true;this.menu.removeAll(true);this.tapZones=[];
     const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090510,0.97).setOrigin(0,0),title=this.add.text(w/2,h*0.14,'🎁 Flavor box',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe08a'}).setOrigin(0.5);
@@ -7931,7 +7939,7 @@ class Game extends Phaser.Scene {
     // passivesสวรรค์ถาวร (HP/ATK/DEF) — ใช้ผลรวม ยศ×TAL_MAX + เลเวลWaitบนี้
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
     applySpecialCores(p);
-    for(const slot in GEAR){const inst=Save.equippedGearItem(slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it&&it.apply){it.apply(p,Save.gearLv(inst.uid));applyItemLevelBonus(p,inst); if(slot==='weapon'&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
+    for(const slot in GEAR){const inst=Save.equippedGearItem(slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it&&it.apply){if(it.tier==='start')it.apply(p,Save.gearLv(inst.uid));else applyScaledGear(p,it,Save.gearLv(inst.uid),inst.itemLevel);applyItemLevelBonus(p,inst); if(slot==='weapon'&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
       if(it.tier!=='start'){const affs=Save.ensureAffix(inst.uid,it.tier);for(const a of affs){const ad=affixDef(a.id);if(ad)ad.apply(p,a.v);}}}}
     // ชุดอุปกรณ์ (Set Bonus): สวมของชุดเดียวกันครบ 2/3 ชิ้น = โบนัสสะสม
     const setCounts=gearSetCounts();
@@ -10727,7 +10735,7 @@ class Game extends Phaser.Scene {
     e._bestiaryType=this.stageIndex>=10?'c3_'+(({dasher:'fast',siege:'tank'})[type]||(['basic','fast','shooter','bomber','tank'].includes(type)?type:'basic')):null;
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+Wave (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=[1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38,c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=([1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38)*(this.stageIndex>=2&&this.stageIndex<=4&&this.waveIndex<=1&&!this.recipeMode?1.35:1),c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase();   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;
     e.bloomStacks=0;e.bloomUntil=0;e.frostbite=this.stageIndex===3;
     let scale=1;
