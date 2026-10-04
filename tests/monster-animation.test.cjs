@@ -1,7 +1,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'('),tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next,n);return source.slice(at,at+1+next.index);}
-const Scene=vm.runInNewContext('class Scene{'+['stopEnemyPresentation','resetEnemyPresentation','enemyAction','tickEnemyPresentation','stage5EnemyPose','playEnemyDeath'].map(method).join('\n')+'\n}Scene',{Math});
+const Scene=vm.runInNewContext('class Scene{'+['stopEnemyPresentation','resetEnemyPresentation','enemyAction','tickEnemyPresentation','stage5EnemyPose','playEnemyDeath'].map(method).join('\n')+'\n}Scene',{Math,ASSET_SHEETS:{}});
 const known=new Set(['c3_e_basic_walk','e_acid_walk','e_crown_ripper_walk','future_walk','future_attack','future_death']);
 const s=new Scene();s.anims={exists:k=>known.has(k)};s.player={y:0};
 function mob(key,frame=0){return {active:true,texture:{key},frame:{name:frame},baseScale:0.7,x:20,y:30,body:{velocity:{x:0,y:0}},plays:[],anims:{isPlaying:false,isPaused:false,timeScale:1,stop(){this.isPlaying=false;this.isPaused=false;},pause(){this.isPaused=true;},resume(){this.isPaused=false;}},setTexture(k,f){this.texture={key:k};this.frame={name:f};return this;},setVelocity(x,y){this.body.velocity={x,y};return this;},setScale(x,y=x){this.scaleX=x;this.scaleY=y;return this;},play(k){this.plays.push(k);this.anims.isPlaying=true;this.anims.isPaused=false;return this;}};}

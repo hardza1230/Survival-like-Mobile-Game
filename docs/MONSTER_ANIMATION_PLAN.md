@@ -5,7 +5,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | Commit | Scope | Status |
 |---|---|---|
 | 1 | Central presentation controller, freeze, pool reuse, stable proportions and action registration | Complete — v6.55.11 |
-| 2 | Chapter 1 stage 1: Worker, Scout, Spitter, Soldier, Drone and Acid Ant | Pending |
+| 2 | Chapter 1 stage 1: Worker, Scout, Spitter, Soldier, Drone and Acid Ant | Complete — v6.55.12 |
 | 3 | Chapter 1 stage 2: Drain Slime, Dasher, Caster, Bomber and Tank | Pending |
 | 4 | Chapter 1 stage 3: Ember, Chili, Grinder, Pressure Pot and Golem | Pending |
 | 5 | Chapter 1 stage 4: Wisp, Shard, Caster, Bubble and Guardian | Pending |
@@ -51,3 +51,7 @@ Clips use `key_state`. Idle/walk loop by default; actions default to a single pl
 ## Validation
 
 Actual-method tests cover idle/walk transitions, loop reuse, speed scaling, freeze/thaw, frozen pose duration, action precedence, pool reuse between an animated attacker and a still atlas species, ghost death and idempotent action registration. Full `npm run check` and `npm run build:www` pass. On-device visual/performance verification is pending. No new monster images are delivered in commit 1; remaining work is commits 2–10.
+
+## Commit 2 delivery
+
+Six painted ant sheets and runtime integration delivered in v6.55.12. Source and review preview: assets/incoming/ch1_ant_animations; runtime: assets/art/ch1_ants. Six walk frames, two idle frames and separate action/hurt/death clips per species. Spitter/Drone action rows were repaired independently. Authored facing and defeat ghost flip are documented in the manifest. New tests execute actual spawn/controller methods and prove original HP/damage/collision values. Remaining: commits 3–10; next is Drain monsters.

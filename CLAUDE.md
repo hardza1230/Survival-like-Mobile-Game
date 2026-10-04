@@ -1,3 +1,7 @@
+## Current release — v6.55.12 (Monster animation commit 2)
+
+Six Chapter 1 ant species have generated raster walk/idle/action/hurt/death sheets. PNG sources, prompts, packing report and animated review preview: assets/incoming/ch1_ant_animations. Runtime WebPs: assets/art/ch1_ants. Animated selection precedes old readable/static fallback; source frame size stays 96px. Spitter/Acid prepare shots without changing cadence; Scout windup/dash and contact bite hooks use authored frames; living injured bombers show a one-time warning. Both authored facing directions are supported. Actual-method tests prove eight role mappings and original HP/damage/scales/circles. Full checks/web build pass; phone review pending. Remaining monster commits 3–10; next: Drain monsters. See docs/MONSTER_ANIMATION_PLAN.md.
+
 ## Current release — v6.55.11 (Monster animation commit 1)
 
 Central monster presentation now owns idle/move and timed action poses, pauses animation while frozen, clears pooled state, and keeps walk-sheet proportions stable. Existing Acid Ant and stage 5 reset timers were removed. Hunt and Mini Jelly texture overrides reset presentation correctly. Optional action/death clips can be registered by later art batches; no new monster art in this commit. Actual-method tests and full checks/web build pass; phone visual review pending. Next: commit 2, Chapter 1 ant animation. Full 10-commit plan and integration schema: docs/MONSTER_ANIMATION_PLAN.md.
@@ -199,7 +203,7 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.11 — Monster animation foundation)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.12 — Chapter 1 ant animations)
 - **v6.54.9 (เจ้าของ: อยากได้การ์ดสุ่มแบบ Jackpot แทน):** onBossDown → `openBossLootCards` (การ์ดคว่ำ 3 ใบจาก 7 ชนิด: Sugar/Currency/พลั่ว/ด้าย/🔩/หินแก่น/Gear · JACKPOT 25%+10%/ระดับยาก) แล้วค่อย revealStageReward · openMysteryCards รับ opt {prizes,title,hint} + fallback emoji ถ้าไม่มี artKey · ยกเลิก Sugar Bounty v6.54.8 (บอสยังไม่ดรอป orb/หัวใจ)
 - **v6.54.8 (เจ้าของ: ของดรอปบอสไร้ประโยชน์เพราะจบด่าน):** killEnemy บอสใหญ่ไม่ dropOrb/dropHeal → Sugar Bounty (60+30·stage)×diff reward เข้า sugarStage ตรง + แบนเนอร์ · มินิ/elite ดรอปเหมือนเดิม
 - **v6.55.5 (เจ้าของ):** บังคับ Mint ทุกครั้งที่กด Stage 3 จนกว่าจะเคลียร์ด่าน 3 (`stageMastery[2]`) ไม่ผูกกับ mintIntro แล้ว

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.11';
+const GAME_VERSION = '6.55.12';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -60,6 +60,7 @@ const CROSSROADS=[
 const HURT_IFRAME_MUL = 0.6;
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 const CHANGELOG = [
+  {v:'6.55.12',date:'2026-10-04',title:'Chapter 1 ant sprite animations',items:['Six ant species use painted walk, idle, action, hurt and death frames','Scouts crouch and dash; spitters prepare acid shots; injured bombers show a warning pose','Animated ants keep existing collision sizes and combat values']},
   {v:'6.55.11',date:'2026-10-04',title:'Monster animation foundation',items:['Monster movement and action poses share one animation controller','Frozen monsters pause frames; recycled monsters clear animation state','Sprite-sheet monsters keep their proportions instead of continuous stretching']},
   {v:'6.55.10',date:'2026-10-04',title:'Painted Recipe summons and meteor',items:['Recipe meteor, orbiting candy and Dango helper now use painted candy art','Meteor warnings and impacts use Recipe art while keeping original timing and damage','Summons and pending meteor strikes clear when leaving a run']},
   {v:'6.55.9',date:'2026-10-04',title:'Painted Recipe fields and pulses',items:['Recipe shock, sugar burst, frost, sour, cleanse and immunity each have distinct painted effects','Burning ground and pulling holes use illustrated floor effects','Recipe visuals clean up at expiry and run transitions; combat values are unchanged']},
@@ -1655,6 +1656,13 @@ function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
   }
 }
 const ASSET_SHEETS = {
+  e_ant_worker_animated:{url:'assets/art/ch1_ants/worker_sheet.webp',frame:96,facingLeft:true,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  e_ant_scout_animated:{url:'assets/art/ch1_ants/scout_sheet.webp',frame:96,facingLeft:true,anim:{frames:6,rate:13},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:4},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
+  e_ant_spitter_animated:{url:'assets/art/ch1_ants/spitter_sheet.webp',frame:96,facingLeft:true,deathFlip:true,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  e_ant_soldier_animated:{url:'assets/art/ch1_ants/soldier_sheet.webp',frame:96,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  e_ant_drone_animated:{url:'assets/art/ch1_ants/drone_sheet.webp',frame:96,facingLeft:true,deathFlip:true,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,6],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},
+  e_acid_animated:{url:'assets/art/ch1_ants/acid_sheet.webp',frame:96,facingLeft:false,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:8}}},
+
   c3_e_basic:{url:'assets/art/ch3_enemies/c3_e_basic_walk.png',frame:128,anim:{frames:4,rate:7}},
   c3_e_fast:{url:'assets/art/ch3_enemies/c3_e_fast_walk.png',frame:128,anim:{frames:4,rate:7}},
   c3_e_shooter:{url:'assets/art/ch3_enemies/c3_e_shooter_walk.png',frame:128,anim:{frames:4,rate:7}},
@@ -1950,7 +1958,7 @@ function registerRootKnightAnimations(scene){
 
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 const STAGE_SHEETS=[
-  ['boss1'],['boss2'],['boss3'],['boss4'],['boss5_sovereign','boss5','mb5_banquet_executioner'],
+  ['boss1','e_ant_worker_animated','e_ant_scout_animated','e_ant_spitter_animated','e_ant_soldier_animated','e_ant_drone_animated','e_acid_animated'],['boss2'],['boss3'],['boss4'],['boss5_sovereign','boss5','mb5_banquet_executioner'],
   ['boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas'],
   ['boss7_mycelium_behemoth','mb7_fungal_juggernaut','ch2_mycelium_enemy_atlas','ch2_prop_atlas'],
   ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas'],
@@ -8649,7 +8657,7 @@ class Game extends Phaser.Scene {
   spawnElite(allowRecycle=true){
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
-    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?(this.textures.exists('e_ant_drone_readable')?'e_ant_drone_readable':'e_ant_drone'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':this.stageIndex===4?'e_royal_oven_sentinel':this.stageIndex===5?'ch2_enemy_atlas':this.stageIndex===8?'ch2_seasons_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:this.stageIndex===8?5:0;
+    let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?this.antArtKey('elite'):(this.stageIndex===1?'e_drain_tank':this.stageIndex===2?'e_fire_golem':this.stageIndex===3?'e_ice_guardian':this.stageIndex===4?'e_royal_oven_sentinel':this.stageIndex===5?'ch2_enemy_atlas':this.stageIndex===8?'ch2_seasons_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:this.stageIndex===8?5:0;
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ if(!allowRecycle)return null;e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // Other elite events retain their existing pool fallback.
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
@@ -10555,10 +10563,23 @@ class Game extends Phaser.Scene {
   }
 
   /* ---------- SPAWN ---------- */
+  antArtKey(type){
+    const base=type==='acid'?'e_acid':type==='elite'||type==='bomber'?'e_ant_drone':type==='fast'||type==='dasher'?'e_ant_scout':type==='shooter'?'e_ant_spitter':type==='tank'||type==='siege'?'e_ant_soldier':'e_ant_worker';
+    if(this.textures.exists(base+'_animated'))return base+'_animated';
+    return this.textures.exists(base+'_readable')?base+'_readable':base;
+  }
+  antSpitWindup(e){
+    if(!['e_ant_spitter_animated','e_acid_animated'].includes(e._enemyArtKey))return;
+    if(e.shootCd>0&&e.shootCd<=0.18&&(!e._enemyAction||e._enemyAction.state!=='windup'))this.enemyAction(e,'windup',e.shootCd*1000);
+  }
+  warnAntBomber(e){
+    if(!e.bomber||e._enemyArtKey!=='e_ant_drone_animated'||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
+    e._antBombWarn=true;this.enemyAction(e,'windup',400);
+  }
   stopEnemyPresentation(e){
     if(e.anims){e.anims.stop();e.anims.timeScale=1;}
     e._enemyAction=null;e._enemyActionT=0;e._enemyPlayed=null;e._enemyFrozen=false;
-    e._enemyAnimState=null;e._enemyArtKey=null;e._stage5PoseToken=(e._stage5PoseToken||0)+1;
+    e._enemyAnimState=null;e._enemyArtKey=null;e._antBombWarn=false;e._stage5PoseToken=(e._stage5PoseToken||0)+1;
     e.rotation=0;e.stepT=0;e._sqX=1;e._sqY=1;
   }
   resetEnemyPresentation(e,frame=0){
@@ -10597,9 +10618,9 @@ class Game extends Phaser.Scene {
     const limit=hasWalk?0.03:0.08;e.setScale(sc*Math.max(1-limit,Math.min(1+limit,e._sqX)),sc*Math.max(1-limit,Math.min(1+limit,e._sqY)));
   }
   playEnemyDeath(e){
-    const key=e._enemyArtKey||e.texture.key,anim=key+'_death';
+    const key=e._enemyArtKey||e.texture.key,anim=key+'_death',def=ASSET_SHEETS[key],flip=def&&def.deathFlip?!e.flipX:!!e.flipX;
     if(!this.anims.exists(anim)||!this.fxOk()){this.deathFling(e);return;}
-    const ghost=this.trackArtVfx(this.camWorld(this.add.sprite(e.x,e.y,key,e._enemyRestFrame||0).setScale(e.baseScale||1).setFlipX(!!e.flipX).setDepth(e.depth||e.y)));
+    const ghost=this.trackArtVfx(this.camWorld(this.add.sprite(e.x,e.y,key,e._enemyRestFrame||0).setScale(e.baseScale||1).setFlipX(flip).setDepth(e.depth||e.y)));
     ghost.once('animationcomplete',()=>ghost.destroy());ghost.play(anim);
   }
   spawnEnemy(type,angOverride,radOverride){
@@ -10608,8 +10629,7 @@ class Game extends Phaser.Scene {
     const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
     let e=this.enemies.getFirstDead(false);
     let key=type==='acid'?'e_acid':type==='dasher'?'e_dasher':type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='siege'?'e_siege':type==='tank'?'e_tank':'e_basic';
-    if(this.stageIndex===0&&type!=='acid') key=(type==='fast'||type==='dasher')?'e_ant_scout':(type==='shooter'||type==='bomber')?'e_ant_spitter':(type==='tank'||type==='siege')?'e_ant_soldier':'e_ant_worker';
-    if(this.stageIndex===0&&this.textures.exists(key+'_readable'))key+='_readable';
+    if(this.stageIndex===0)key=this.antArtKey(type);
     if(this.stageIndex===1) key=(type==='fast'||type==='dasher')?'e_drain_dasher':type==='shooter'?'e_drain_caster':type==='bomber'?'e_drain_bomber':(type==='tank'||type==='siege')?'e_drain_tank':'e_drain_slime';
     if(this.stageIndex===2) key=(type==='fast'||type==='dasher')?'e_fire_chili':type==='shooter'?'e_fire_grinder':type==='bomber'?'e_fire_bomber':(type==='tank'||type==='siege')?'e_fire_golem':'e_fire_ember';
     if(this.stageIndex===3) key=(type==='fast'||type==='dasher')?'e_ice_shard':type==='shooter'?'e_ice_caster':type==='bomber'?'e_ice_bomber':(type==='tank'||type==='siege')?'e_ice_guardian':'e_ice_wisp';
@@ -11690,6 +11710,7 @@ class Game extends Phaser.Scene {
     if(e.hp>0&&Math.random()<0.24)this.c3BossPose(e,5,240);
     if(RL&&RL.chill&&!e.isBoss&&!e.isMini&&e.hp>0&&Math.random()<0.10){ e.frozen=Math.max(e.frozen||0,1); e.setVelocity(0,0); e.setTint(COLORS.ice); }
     if(!e.isBoss&&!e.isMini&&e.hp>0)this.enemyAction(e,'hurt',120);
+    this.warnAntBomber(e);
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
     if(crit){ this.hitStop(35); this.screenShake(90, 0.005); this.fireRecipes('crit'); }
     // อย่าฟอก sprite ด้วย setTintFill ตอนโดนตี: skillsหลาย hit ทำให้ art กระพริบขาวจนอ่าน silhouette ไม่ออก
@@ -12303,6 +12324,7 @@ class Game extends Phaser.Scene {
   gachaRoll(itemLevel=1){ const r=Math.random(), roll=r<0.68?'common':r<0.97?'rare':'epic';   // 68% common · 29% rare · 3% epic
     for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t,{gacha:true,itemLevel}); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
+    if(!e.shooter&&!e.acid&&!e.bomber&&!e.dasher&&this.anims.exists((e._enemyArtKey||e.texture.key)+'_attack'))this.enemyAction(e,'attack',340);
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
@@ -13494,17 +13516,17 @@ class Game extends Phaser.Scene {
       if(this.stageIndex===7&&this.waveObjective&&this.waveObjective.type==='defendNectar'&&['drone','honeyBomb','dartwing'].includes(e.nectarRole)&&this._nectarFlowers){let target=null,bd=Infinity;for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(e.x,e.y,f.x,f.y);if(d<bd){bd=d;target=f;}}if(target){tx=target.x;ty=target.y;}}
       const dx=tx-e.x, dy=ty-e.y, ang=Math.atan2(dy,dx), dd=Math.hypot(dx,dy);
       // หันหน้าเข้าหาผู้เล่นเสมอ
-      e.setFlipX(dx < 0);
+      const sheet=ASSET_SHEETS[e._enemyArtKey||e.texture.key];e.setFlipX(sheet&&sheet.facingLeft?dx>0:dx<0);
 
       if(e.acid){ e.shootCd-=dt;
-        if(dd<430){ e.setVelocity(Math.cos(ang)*(dd<210?-e.spd*0.7:e.spd*0.18),Math.sin(ang)*(dd<210?-e.spd*0.7:e.spd*0.18));
-          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.45,2.15); this.enemyAction(e,'attack',260,3);
+        if(dd<430){this.antSpitWindup(e); e.setVelocity(Math.cos(ang)*(dd<210?-e.spd*0.7:e.spd*0.18),Math.sin(ang)*(dd<210?-e.spd*0.7:e.spd*0.18));
+          if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.45,2.15); this.enemyAction(e,'attack',260,e._enemyArtKey==='e_acid_animated'?null:3);
             this.foeShot(e.x,e.y,ang,205,e.dmg,0x72ff3d,1.05);Sfx.zap();
 }
           return;}
       }
       if(e.shooter){ e.shootCd-=dt;
-        if(dd<300){ e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);
+        if(dd<300){this.antSpitWindup(e); e.setVelocity(Math.cos(ang)*e.spd*0.12,Math.sin(ang)*e.spd*0.12);
           if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2);if(this.stageIndex===4)this.stage5EnemyPose(e,4,430);else this.enemyAction(e,'attack',430);let fireAng=ang;if(((this.stageIndex===6&&(e.mycoRole==='sniper'||e.mycoRole==='oracle'))||(this.stageIndex===7&&(e.nectarRole==='pollenSniper'||e.nectarRole==='choirMoth'))||(this.stageIndex===8&&(e.seasonRole==='frostbell'||e.seasonRole==='seasonWisp'))||(this.stageIndex===9&&(e.rootRole==='sapOracle'||e.rootRole==='rootChoir')))&&this.player.body){const lead=(e.mycoRole==='sniper'||e.nectarRole==='pollenSniper'||e.seasonRole==='frostbell'||e.rootRole==='sapOracle')?.48:.28,px=this.player.x+this.player.body.velocity.x*lead,py=this.player.y+this.player.body.velocity.y*lead;fireAng=Math.atan2(py-e.y,px-e.x);}const shotColor=this.stageIndex===6?0xb46cff:this.stageIndex===7?0xffc95c:this.stageIndex===8?0x8fdcff:this.stageIndex===9?0xd56bff:0xffd27f;this.foeShot(e.x,e.y,fireAng,225+this.stageIndex*15,e.dmg,shotColor);if(e.nectarRole==='choirMoth'){this.foeShot(e.x,e.y,fireAng-.18,245,e.dmg,0xd95cff,.92);this.foeShot(e.x,e.y,fireAng+.18,245,e.dmg,0xd95cff,.92);}if(e.seasonRole==='seasonWisp'){for(const off of [-.27,-.09,.09,.27])this.foeShot(e.x,e.y,fireAng+off,255,e.dmg,off<0?0xff7040:0x8fdcff,.90);}if(e.rootRole==='rootChoir'){for(const off of [-.32,-.16,0,.16,.32])this.foeShot(e.x,e.y,fireAng+off,270,e.dmg,off===0?0xffd166:0xd56bff,.92);} Sfx.zap(); }
           return; } }
       if(e.dasher){   // สายพุ่งโฉบ: เข้าfind → หน่วงเล็ง(ตัวสั่น) → พุ่งเร็วตัดผ่าน → พักแล้ววนใหม่

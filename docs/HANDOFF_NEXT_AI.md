@@ -1,3 +1,7 @@
+## Current release — v6.55.12 (Monster animation commit 2)
+
+Six Chapter 1 ant species have generated raster walk/idle/action/hurt/death sheets. PNG sources, prompts, packing report and animated review preview: assets/incoming/ch1_ant_animations. Runtime WebPs: assets/art/ch1_ants. Animated selection precedes old readable/static fallback; source frame size stays 96px. Spitter/Acid prepare shots without changing cadence; Scout windup/dash and contact bite hooks use authored frames; living injured bombers show a one-time warning. Both authored facing directions are supported. Actual-method tests prove eight role mappings and original HP/damage/scales/circles. Full checks/web build pass; phone review pending. Remaining monster commits 3–10; next: Drain monsters. See docs/MONSTER_ANIMATION_PLAN.md.
+
 ## Current release — v6.55.11 (Monster animation commit 1)
 
 Central monster presentation now owns idle/move and timed action poses, pauses animation while frozen, clears pooled state, and keeps walk-sheet proportions stable. Existing Acid Ant and stage 5 reset timers were removed. Hunt and Mini Jelly texture overrides reset presentation correctly. Optional action/death clips can be registered by later art batches; no new monster art in this commit. Actual-method tests and full checks/web build pass; phone visual review pending. Next: commit 2, Chapter 1 ant animation. Full 10-commit plan and integration schema: docs/MONSTER_ANIMATION_PLAN.md.
@@ -10,7 +14,7 @@ Painted Recipe meteor, orbiting lollipops and Dango helper replace runtime emoji
 
 Eight painted Recipe effects: shock, burst, freeze, sour, cleanse, immunity, burning ground and pulling hole. PNG sources: assets/incoming/vfx_recipe_fields; runtime WebPs: assets/vfx. Original combat values are preserved. Zone tweens stop at expiry; all tracked art and recipe zone references clear on transitions. Full automated checks/web build required; phone visual review pending. Remaining: batch 5 meteor, orbiting candy and helper.
 
-# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.11 · 4 ต.ค. 2026)
+# ส่งงานต่อให้ AI ตัวถัดไป (อัปเดต v6.55.12 · 4 ต.ค. 2026)
 
 > อ่าน `CLAUDE.md` ให้จบก่อนทุกครั้ง (กติกา สาขา และวิธี release อยู่ในนั้น)
 > **สาขาเดียว:** `claude/vampire-survival-mobile-game-yo9e8w` · คุยกับเจ้าของเป็นภาษาไทย · ข้อความในเกมเป็นภาษาอังกฤษ
