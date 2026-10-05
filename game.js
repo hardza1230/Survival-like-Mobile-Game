@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.37';
+const GAME_VERSION = '6.55.38';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.38',date:'2026-10-05',title:'Enhancement cost curve',items:['Enhancement shard cost now grows steeply: +1 costs 2 🔩, +5 costs 10, +10 costs 77 (was 3 → 21)'] },
   {v:'6.55.37',date:'2026-10-05',title:'Enhancement tuned',items:['Removed the +1 minimum per enhancement level: every item now gains exactly +8% base ATK/Armor per level (+10 = ×1.8)'] },
   {v:'6.55.36',date:'2026-10-05',title:'Stronger enhancement',items:['Enhancement now adds +8% base ATK/Armor per level (was +4%); +10 = ×1.8','Every enhancement level always adds at least +1 to the number you see'] },
   {v:'6.55.35',date:'2026-10-05',title:'Item Power & Clean up',items:['Equipment shows ▲/▼ Power change for every item and Power before → after for the selected one','New 🧹 Clean up screen: sell or dismantle many items at once by grade, optionally only items weaker than what you wear','Auto-clean now works on every drop (not only when the bag is full), can sell or dismantle, and keeps drops that raise your Power'] },
@@ -3217,7 +3218,7 @@ function gearPowerDelta(item,basePow){try{const d=Save.data,cid=d.character||'mo
   const base=basePow!=null?basePow:heroPower(cid,null),list=d.gearItems||(d.gearItems=[]),added=!list.includes(item);if(added)list.push(item);eq[slot]=item.uid;let p=base;try{p=heroPower(cid,null);}finally{if(prev===undefined)delete eq[slot];else eq[slot]=prev;if(added)list.splice(list.indexOf(item),1);}return p-base;}catch(e){return 0;}}
 function gearEnhCost(lv){ return 60+lv*55; }   // 🍬 (legacy · ไม่ใช้แล้ว)
 // v4.34: ตีบวกใช้ 🔩 gear shards (ได้จาก dismantle) แทน Sugar — ยิ่ง +สูง ยิ่งกินวัสดุเยอะ
-function gearEnhShardCost(lv){ return 3+lv*2; }   // 🔩 +1..+10 = 3/5/7/9/11/13/15/17/19/21
+function gearEnhShardCost(lv){ return Math.round(2*Math.pow(1.5,Math.max(0,lv))); }   // v6.55.38 🔩 +1..+10 = 2/3/5/7/10/15/23/34/51/77 (ขั้นต่ำถูก ขั้นสูงแพงชัน)
 // 6 ช่องสวมใส่ (แบบ isekai drifter) · แต่ละช่องมีของ "None" ฟรี + ของซื้อ 2 ชิ้น · ตีบวกได้
 const GEAR_SLOTS = [
   { slot:'weapon', label:'Weapon',   emoji:'⚔️' },
