@@ -50,20 +50,21 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.67';
+const GAME_VERSION = '6.55.68';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
   {id:'rest',name:'Recover HP',desc:'Restore 40% of maximum HP',detail:'No cost',artKey:'heal',color:0x8ff0b0}
 ];
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
-const HURT_IFRAME_MUL = 0.6;
+const HURT_IFRAME_MUL = 0.8;   // v6.55.68 เจ้าของ: อมตะหลังโดนตีนานขึ้น (0.6→0.8)
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 // v6.55.26: ดาเมจฐานฮีโร่ 90% → 100% (เลิกงง) · HP ศัตรูทุกตัว ×1/0.9 ให้ความยากเท่าเดิม
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.68',date:'2026-10-05',title:'Longer hit invulnerability',items:['After taking a hit you are invulnerable a little longer (0.36s → 0.48s from monsters, 0.30s → 0.40s from shots)']},
   {v:'6.55.67',date:'2026-10-05',title:'Recipe survival limits',items:['Kitchen recipe healing is capped at 5% max HP every 2 seconds across all recipes','“When Hit” recipes can trigger at most once per 1.5 seconds','Recipe Immune and Shield effects share a 4-second cooldown and Immune lasts at most 1 second']},
   {v:'6.55.66',date:'2026-10-05',title:'Damage rebalance',items:['Normal monsters and elites hit 30% harder','Minibosses and bosses hit 25% softer']},
   {v:'6.55.65',date:'2026-10-05',title:'Path Uniques hit bosses harder',items:['Berry Blast deals ×2 damage to bosses and minibosses','Glacier Bloom chills bosses and bursts them for heavy damage when the ice breaks','Frost Lance Charge deals ×1.8 damage to bosses and minibosses']},
