@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.45';
+const GAME_VERSION = '6.55.46';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.46',date:'2026-10-05',title:'Open craft slots in compare',items:['Equipment compare shows how many Prefix / Suffix slots are still free to craft, equipped → selected']},
   {v:'6.55.45',date:'2026-10-05',title:'Scrollable menu pages',items:['Long menu pages (Affix Forge and others) can now be dragged up and down when they do not fit the screen','A tap still works as before; dragging more than a few pixels scrolls instead']},
   {v:'6.55.44',date:'2026-10-05',title:'Mod comparison table',items:['Equipment compare now lines up mods side by side: same mod on the same row with the change','New / Lost / ▲ / ▼ / Same tags, biggest changes first, implicit swaps flagged','One-line summary: how many mods you gain and lose']},
   {v:'6.55.43',date:'2026-10-05',title:'Taro path talents',items:['Chain, Smite and Tempest each get their own talent nodes and 3 real Capstones','Chain: Thunderhead / Overcharge / Grounded · Smite: Divine Hammer / Heavy Sky / Sanctuary · Tempest: Hurricane / Eye of the Storm / Wind Step']},
@@ -12026,7 +12027,11 @@ class Game extends Phaser.Scene {
         list.push({kind,label:d.emoji+' '+d.label,from:e?d.fmt(ev)+' T'+(e.a.t||3):'—',to:t?d.fmt(tv)+' T'+(t.a.t||3):'—',st,mag:st==='same'?0:st==='new'||st==='lost'?2:Math.abs(tv-ev)/ref,dtxt:st==='up'||st==='down'?(tv>ev?'+':'−')+d.fmt(Math.abs(tv-ev)).replace(/^[+−-]/,''):''});}
       list.sort((a,b)=>b.mag-a.mag); rows.push(...list); }
     return rows; }
-  drawModCompare(eqIt,selIt,isEq,y,w){ if(isEq||!selIt)return y; const rows=this.modCompareRows(eqIt,selIt); if(!rows.length)return y;
+  drawModCompare(eqIt,selIt,isEq,y,w){ if(!selIt)return y;
+    { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0,q=0;for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(!d)continue;if((d.kind||'suffix')==='prefix')p++;else q++;}return {p:K-p,s:K-q};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
+        part=(f)=>'P '+f.p+' · S '+f.s,tot=fs.p+fs.s,txt='🛠 Open craft slots  '+(fe?part(fe)+'  →  ':'')+part(fs)+(tot?'  ('+tot+' free)':'  (full)'),
+        col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
+    if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); if(!rows.length)return y;
     const gain=rows.filter(r=>r.st==='new'||r.st==='up').length,lose=rows.filter(r=>r.st==='lost'||r.st==='down').length,sw=rows.some(r=>r.kind==='implicit'&&r.st==='swap');
     const sum=this.add.text(w/2,y,'🟢 Gain '+gain+'   ·   🔴 Lose '+lose+(sw?'   ·   🔁 Implicit changes':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe7a8'}).setOrigin(.5,0);this.menu.add(sum);y+=15;
     const rh=13,top=y,h=16+rows.length*rh+(rows.some(r=>r.kind==='prefix')?3:0)+(rows.some(r=>r.kind==='suffix')?3:0)+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
