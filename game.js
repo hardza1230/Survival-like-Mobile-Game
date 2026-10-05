@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.63';
+const GAME_VERSION = '6.55.64';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.64',date:'2026-10-05',title:'Shotgun fires faster',items:['Shotgun Build fires about 45% faster and each volley has 3 more pellets','Each pellet deals a little less damage to keep the build fair']},
   {v:'6.55.63',date:'2026-10-05',title:'Shotgun sound',items:['Shotgun Build has its own blast-and-pump sound','Stronger screen shake on each shotgun volley']},
   {v:'6.55.62',date:'2026-10-05',title:'Shotgun feels heavy',items:['Shotgun Build fires slower, punchier volleys with a muzzle blast and screen kick','Pellets are shorter range, push enemies back and hit much harder up close (×2 within 120px)','Far pellets lose damage, so getting close matters']},
   {v:'6.55.61',date:'2026-10-05',title:'Mint path Uniques',items:['Freeze Build: Glacier Bloom — hold to grow an ice ring, release to freeze everything inside; still-frozen foes shatter for double damage','Piercer Build: Frost Lance Charge — hold to aim, release to dash through enemies and leave a slowing ice trail','Barrage Build keeps Mint Gale','New cards: Wider Bloom, Long Winter, Shard Spray, Long Lance, Twin Lance, Lance Burst']},
@@ -11228,7 +11229,7 @@ class Game extends Phaser.Scene {
     const basicRate=b?Math.pow(b.character==='mint'?0.93:0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
     if(b&&key==='sprinkle'&&b.path==='ricochet')base*=0.8;
     if(b&&key==='sprinkle'&&b.path==='sniper')base*=1.18;
-    if(b&&key==='sprinkle'&&b.path==='shotgun')base*=1.3;
+    if(b&&key==='sprinkle'&&b.path==='shotgun')base*=0.9;
     return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate*(b&&b._pm?b._pm.cd:1);
   }
   _cdBase(key,lvl){
@@ -11276,12 +11277,12 @@ class Game extends Phaser.Scene {
       let shots=aw?6:lvl>=6?4:lvl>=5?3:lvl>=3?2:1;   // v4.20 nerf ต่อ: multishot หายากขึ้นมาก (ส่วนใหญ่ 1-2 นัด) — ลดความ "ยิงรัวโกง"
       if(basic)shots=Math.min(12,shots+(basic.ranks.volley||0)+(basic.mutation==='fan'?2:0)+(basic.evolved?2:0));
       if(this.player.twinSprinkle) shots+=3;shots+=this.player.gearCount||0;if(sw.skill===key)shots+=this.player.weaponShots||0;if(basic)shots=Math.min(12,shots);
-      const path=basic?basic.path:null,R=basic?basic.ranks:{}; if(path==='sniper')shots=Math.max(1,Math.ceil(shots/2)); else if(path==='shotgun')shots=Math.min(14,shots+2+(R.buckshot||0));
+      const path=basic?basic.path:null,R=basic?basic.ranks:{}; if(path==='sniper')shots=Math.max(1,Math.ceil(shots/2)); else if(path==='shotgun')shots=Math.min(18,shots+5+(R.buckshot||0));
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
       const speed=(aw?1180:980)*(path==='sniper'?1.35:1), gap=path==='shotgun'?0:(aw?38:52);   // เร็ว + รัวถี่ (machine gun) ·s่งตรง ไม่โค้ง
       let idx=0;
       let _sgBig=null; if(path==='shotgun'){ let bd=430; this.enemies.children.iterate(e=>{ if(e&&e.active&&(e.isBoss||e.isMini||e.isElite)){ const dd=this.dist(e.x,e.y,this.player.x,this.player.y); if(dd<bd){bd=dd;_sgBig=e;} } }); }   // v6.50: เดิมเล็งลูกน้องที่ยืนใกล้กว่าบอส
-      const PT=this.player._pt||{}; let _vol=0; if(path==='shotgun'){this._sgVol=(this._sgVol||0)+1;_vol=this._sgVol;} if(path==='shotgun')shots=Math.min(14,shots+(PT.shell||0));
+      const PT=this.player._pt||{}; let _vol=0; if(path==='shotgun'){this._sgVol=(this._sgVol||0)+1;_vol=this._sgVol;} if(path==='shotgun')shots=Math.min(18,shots+(PT.shell||0));
       const fireOne=()=>{ if(this.state!=='play')return; const t=(_sgBig&&_sgBig.active)?_sgBig:this.nearestEnemy(aw?900:640); if(!t)return;
         const shotIndex=idx++,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return; const pop=basic?(basic.ranks.size||0):0; if(pop>0)b.seedPop=pop;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
@@ -11290,7 +11291,7 @@ class Game extends Phaser.Scene {
         b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;b.seedPierce=!!b.pierce;b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b.loopT=false;b._ptSniper=false;
         if(path==='sniper'){this.attachChargedSeed(b,38+lvl*2);b.dmg*=3.2;b.pierce=true;b.seedPierce=true;b.hitGapV=0.22;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);
           b.dmg*=1+(PT.sDmg||0);b.headshot+=PT.hs||0;b.bigMul+=PT.big||0;b.penGain=PT.pen||0;b.oneShot=!!PT.oneShot;b._ptSniper=true; if(this._ptHsNext){b.forceHs=true;this._ptHsNext=false;} if(PT.ghillie&&(this._ptStill||0)>=1.5&&!this._ptGhUsed){b.dmg*=2;this._ptGhUsed=true;}}
-        else if(path==='shotgun'){b.dmg*=0.8;b.life=0.3;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
+        else if(path==='shotgun'){b.dmg*=0.45;b.life=0.3;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
         else if(path==='ricochet'){b.dmg*=0.8;b.bounce+=2+(R.carom||0);b.bounceGain=0.08*(R.gather||0)+(PT.mom||0);b.dmg*=1+(PT.rDmg||0);if((PT.rDmg||0)>=0.119)b.bounce++;if(PT.pinball)b.bounce=Math.max(b.bounce,12);b.lastMul=PT.last||0;b.seekMul=1+(PT.seek||0);b.splitCh=PT.split||0;b.boomer2=!!PT.boomer;b.loopT=!!PT.loop;}   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
         const distance=this.dist(t.x,t.y,this.player.x,this.player.y);
         const closeLarge=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&distance<430;
