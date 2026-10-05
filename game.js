@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.77';
+const GAME_VERSION = '6.55.78';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.78',date:'2026-10-05',title:'Local weapon damage',items:['Damage % on a weapon (mod or implicit) now raises that weapon’s ATK by triple the percent instead of giving global damage','Equipment compare shows Weapon ATK with its total damage bonus']},
   {v:'6.55.77',date:'2026-10-05',title:'ATK is now a percent bonus',items:['Each point of gear ATK (and flat damage mods) now adds +5% to every hit instead of flat damage, so +1 ATK no longer outweighs every other mod']},
   {v:'6.55.76',date:'2026-10-05',title:'Low-tier mods toned down',items:['The weakest mod tier now gives about 20% of the best tier (was 40%), e.g. Damage T10 8% → 4%','Existing items keep their tier and are moved into the new value range']},
   {v:'6.55.75',date:'2026-10-05',title:'Stronger low-tier mods',items:['Low mod tiers are much stronger: the weakest tier now gives about 40% of the best tier (e.g. Damage T10 1% → 6%)','Existing items keep their tier and are raised into the new value range']},
@@ -3829,8 +3830,13 @@ function gearBaseStats(item){
   let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=Math.max(0,item.enhanceLv||0),enhance=1+.08*el;   // v6.55.37: +8%/ขั้น (+10 = ×1.8) เท่ากันทุก iLv (เอาขั้นต่ำ +1 ออก)
   const attack=['weapon','gloves','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1,Math.round(b0*enhance));})():0;
   const armor=['armor','boots','amulet'].includes(item.slot)?(()=>{const b0=(2+level*.15)*quality*variation*(item.slot==='armor'?1:.4);return Math.max(1,Math.round(b0*enhance));})():0;
-  return{attackMin:attack,attackMax:attack?Math.max(attack+1,Math.round(attack*1.4)):0,armor};
+  const lp=attack?1+weaponLocalPct(item)/100:1,amin=attack?Math.max(1,Math.round(attack*lp)):0;
+  return{attackMin:amin,attackMax:amin?Math.max(amin+1,Math.round(attack*1.4*lp)):0,armor};
 }
+// v6.55.78: mod Damage % บนอาวุธเป็น local แบบ PoE — คูณ ATK ของอาวุธชิ้นนั้น ×3 แทน +dmg ทั้งตัว
+const WEAPON_LOCAL_MUL=3;
+function weaponLocalMod(item,id){return !!item&&item.slot==='weapon'&&(id==='dmg'||id==='i_dmg');}
+function weaponLocalPct(item){if(!item||item.slot!=='weapon')return 0;let v=0;for(const a of (item.affixes||[]))if(a&&a.id==='dmg')v+=a.v||0;const im=ensureImplicit(item);if(im&&im.id==='i_dmg')v+=im.v||0;return v*WEAPON_LOCAL_MUL;}
 function gearBaseStatText(item){const b=gearBaseStats(item);return b.attackMax?'ATK '+b.attackMin+'-'+b.attackMax:b.armor?'Armor '+b.armor:'Starter';}
 function applyGearBaseStats(p,item){const b=gearBaseStats(item);p.gearAttackMin=(p.gearAttackMin||0)+b.attackMin;p.gearAttackMax=(p.gearAttackMax||0)+b.attackMax;p.armor=(p.armor||0)+b.armor;}
 function gearAttackRoll(p,rng=Math.random){const lo=p.gearAttackMin||0,hi=p.gearAttackMax||0;return lo+Math.floor(rng()*Math.max(1,hi-lo+1));}
@@ -3876,7 +3882,7 @@ function ensureImplicit(item){if(!item)return null;const base=GEAR_ALL.find(g=>g
   if(item.implicit&&implicitDef(item.implicit.id))return item.implicit;let s=_uidSeed(item.uid);const rnd=()=>{s=(Math.imul(s^(s>>>15),2246822507)+0x9e3779b9)>>>0;return (s%100000)/100000;};
   item.implicit=rollImplicit(item.slot||base.slot,item.itemLevel,base.tier,rnd);return item.implicit;}
 function implicitText(item){const im=ensureImplicit(item),d=im&&implicitDef(im.id);return d?d.emoji+' '+d.label+' '+d.fmt(im.v):'';}
-function applyScaledGear(p,it,lv,ilvl,inst){if(it&&!it.unique&&inst){const im=ensureImplicit(inst),d=im&&implicitDef(im.id);if(d)d.apply(p,im.v);return;}
+function applyScaledGear(p,it,lv,ilvl,inst){if(it&&!it.unique&&inst){const im=ensureImplicit(inst),d=im&&implicitDef(im.id);if(d&&!weaponLocalMod(inst,im.id))d.apply(p,im.v);return;}
   const f=gearBaseScale(ilvl),add=['dmgMul','critChance','critMul','maxhp','regen','regenFlat','pickup','lifeOnKill','lowHpDmg','bossDmg','lowHpGuard','flatDmg','lifesteal'],mul=['cdMul','dmgTakenMul','baseSpeed','xpMul','dashCdMul'],b={};
   for(const k of add)b[k]=p[k]||0;for(const k of mul)b[k]=p[k]==null?1:p[k];it.apply(p,lv);
   for(const k of add)if(typeof p[k]==='number')p[k]=b[k]+(p[k]-b[k])*f;for(const k of mul)if(typeof p[k]==='number'&&b[k]>0&&p[k]>0)p[k]=b[k]*Math.pow(p[k]/b[k],f);}
@@ -3940,7 +3946,7 @@ function gearInstanceStats(item){
   if(!item)return {dmg:0,hp:0,crit:0,critDmg:0,cdr:0,def:0,speed:0,pickup:0,regen:0,lifeKill:0,execute:0,bossDmg:0,crisisGuard:0,xpGain:0,dashRecovery:0,revive:0};
   const base=GEAR_ALL.find(g=>g.id===item.baseId); if(base&&base.apply){if(base.tier==='start')base.apply(p,item.enhanceLv||0);else applyScaledGear(p,base,item.enhanceLv||0,item.itemLevel,item);}
   applyItemLevelBonus(p,item);
-  for(const a of (item.affixes||[])){const d=affixDef(a.id);if(d&&d.apply)d.apply(p,a.v);}
+  for(const a of (item.affixes||[])){const d=affixDef(a.id);if(d&&d.apply&&!weaponLocalMod(item,a.id))d.apply(p,a.v);}
   return {attackMin:p.gearAttackMin||0,attackMax:p.gearAttackMax||0,armor:p.armor||0,dmg:(p.dmgMul-1)*100,hp:p.maxhp||0,crit:(p.critChance||0)*100,critDmg:((p.critMul||1.55)-1.55)*100,
     cdr:(1-(p.cdMul||1))*100,def:(1-(p.dmgTakenMul||1))*100,speed:((p.baseSpeed||1)-1)*100,
     pickup:((p.pickup||1)-1)*100,regen:p.regen||0,lifeKill:p.lifeOnKill||0,execute:(p.lowHpDmg||0)*100,bossDmg:(p.bossDmg||0)*100,
@@ -4490,7 +4496,7 @@ function computeHeroStats(cid,basic){
     for(const slot of GEAR_SLOTS){ const inst=Save.equippedGearItem(slot.slot); if(!inst)continue; const it=GEAR_ALL.find(g=>g.id===inst.baseId),el=Save.gearLv(inst.uid),nm=(it?it.name:slot.slot)+(it&&it.tier!=='start'?' iLv'+(inst.itemLevel||1):'')+(el?' +'+el:'');
       if(it&&it.apply){if(it.tier==='start')it.apply(p,el);else applyScaledGear(p,it,el,inst.itemLevel,inst);mark('Gear · '+nm+(it.tier==='start'?'':' ('+Math.round(gearBaseScale(inst.itemLevel)*100)+'%)'));}
       applyItemLevelBonus(p,inst);mark('Gear · '+nm+' iLv bonus');if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
-      if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply){d.apply(p,a.v);mark('Mod · '+(d.label||a.id)+' T'+(a.t!=null?a.t:'?')+' ('+(it?it.name:slot.slot)+')');} } }
+      if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply&&!weaponLocalMod(inst,a.id)){d.apply(p,a.v);mark('Mod · '+(d.label||a.id)+' T'+(a.t!=null?a.t:'?')+' ('+(it?it.name:slot.slot)+')');} } }
     { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply){def.bonuses[need].apply(p);mark('Set · '+def.name+' '+need+'pc');} } } for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid)){def.collect.apply(p);mark('Set collection · '+def.name);} } }
     const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr)); mark('Bestiary');
     const rp=Save.data.rankPerks||{}; if(rp.vigor){p.maxhp*=1+0.06*rp.vigor;mark('Perk · Vigor '+rp.vigor);} if(rp.might){p.dmgMul+=(1+0.05*rp.might)-1;mark('Perk · Might '+rp.might);} if(rp.ironWill){p.dmgTakenMul*=(1-0.04*rp.ironWill);mark('Perk · Iron Will '+rp.ironWill);}
@@ -8368,7 +8374,7 @@ class Game extends Phaser.Scene {
     for(const k in UPGRADES){ const tot=Save.talTotal(k); if(tot>0)UPGRADES[k].apply(p,tot); }
     applySpecialCores(p);
     for(const slot in GEAR){const inst=Save.equippedGearItem(slot),it=inst&&GEAR_ALL.find(g=>g.id===inst.baseId);if(it&&it.apply){if(it.tier==='start')it.apply(p,Save.gearLv(inst.uid));else applyScaledGear(p,it,Save.gearLv(inst.uid),inst.itemLevel,inst);applyItemLevelBonus(p,inst); if(slot==='weapon'&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
-      if(it.tier!=='start'){const affs=Save.ensureAffix(inst.uid,it.tier);for(const a of affs){const ad=affixDef(a.id);if(ad)ad.apply(p,a.v);}}}}
+      if(it.tier!=='start'){const affs=Save.ensureAffix(inst.uid,it.tier);for(const a of affs){const ad=affixDef(a.id);if(ad&&!weaponLocalMod(inst,a.id))ad.apply(p,a.v);}}}}
     // ชุดอุปกรณ์ (Set Bonus): สวมของชุดเดียวกันครบ 2/3 ชิ้น = โบนัสสะสม
     const setCounts=gearSetCounts();
     for(const sid in setCounts){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(setCounts[sid]>=+need&&def.bonuses[need].apply)def.bonuses[need].apply(p); } }
@@ -12154,12 +12160,12 @@ class Game extends Phaser.Scene {
   modCompareRows(eqIt,selIt){ const rows=[],aff=it=>{const m={};for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(d)m[a.id]={a,d};}return m;};
     const ie=eqIt&&ensureImplicit(eqIt),is=selIt&&ensureImplicit(selIt),de=ie&&implicitDef(ie.id),ds=is&&implicitDef(is.id);
     if(de||ds){const same=de&&ds&&ie.id===is.id&&String(implicitText(eqIt))===String(implicitText(selIt)),sameKind=de&&ds&&ie.id===is.id;
-      rows.push({kind:'implicit',label:'◇ Implicit',from:de?de.emoji+' '+de.fmt(ie.v):'—',to:ds?ds.emoji+' '+ds.fmt(is.v):'—',st:same?'same':!de?'new':!ds?'lost':sameKind?((is.v||0)>=(ie.v||0)?'up':'down'):'swap',mag:same?0:1,col:ds?IMPLICIT_COLOR[ds.rank]:'#9a90ab'});}
+      rows.push({kind:'implicit',label:'◇ Implicit'+((ie&&eqIt&&weaponLocalMod(eqIt,ie.id))||(is&&selIt&&weaponLocalMod(selIt,is.id))?' → ATK':''),from:de?de.emoji+' '+de.fmt(ie.v):'—',to:ds?ds.emoji+' '+ds.fmt(is.v):'—',st:same?'same':!de?'new':!ds?'lost':sameKind?((is.v||0)>=(ie.v||0)?'up':'down'):'swap',mag:same?0:1,col:ds?IMPLICIT_COLOR[ds.rank]:'#9a90ab'});}
     const E=aff(eqIt),S=aff(selIt);
     for(const kind of ['prefix','suffix']){ const ids=[...new Set([...Object.keys(E),...Object.keys(S)])].filter(id=>((E[id]||S[id]).d.kind||'suffix')===kind),list=[];
       for(const id of ids){const e=E[id],t=S[id],d=(e||t).d,ev=e?e.a.v:0,tv=t?t.a.v:0,ref=Math.max(Math.abs(ev),Math.abs(tv),1e-6);
         const st=!e?'new':!t?'lost':Math.abs(tv-ev)<1e-6?'same':tv>ev?'up':'down';
-        list.push({kind,label:d.emoji+' '+d.label,from:e?d.fmt(ev)+' T'+(e.a.t||3):'—',to:t?d.fmt(tv)+' T'+(t.a.t||3):'—',st,mag:st==='same'?0:st==='new'||st==='lost'?2:Math.abs(tv-ev)/ref,dtxt:st==='up'||st==='down'?(tv>ev?'+':'−')+d.fmt(Math.abs(tv-ev)).replace(/^[+−-]/,''):''});}
+        list.push({kind,label:d.emoji+' '+d.label+(weaponLocalMod(selIt||eqIt,id)?' → ATK':''),from:e?d.fmt(ev)+' T'+(e.a.t||3):'—',to:t?d.fmt(tv)+' T'+(t.a.t||3):'—',st,mag:st==='same'?0:st==='new'||st==='lost'?2:Math.abs(tv-ev)/ref,dtxt:st==='up'||st==='down'?(tv>ev?'+':'−')+d.fmt(Math.abs(tv-ev)).replace(/^[+−-]/,''):''});}
       list.sort((a,b)=>b.mag-a.mag); rows.push(...list); }
     return rows; }
   // v6.55.48: ตัวหนังสือขั้นต่ำ (หน้า Equipment/Craft) — ห่อ add.text ชั่วคราวระหว่างวาดหน้า
@@ -12168,7 +12174,7 @@ class Game extends Phaser.Scene {
     { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0,q=0;for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(!d)continue;if((d.kind||'suffix')==='prefix')p++;else q++;}return {p:K-p,s:K-q};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
         part=(f)=>'P '+f.p+' · S '+f.s,tot=fs.p+fs.s,txt='🛠 Open craft slots  '+(fe?part(fe)+'  →  ':'')+part(fs)+(tot?'  ('+tot+' free)':'  (full)'),
         col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
-    if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;rows.unshift({kind:'base',label:'⚔ '+r.label,from:gearStatText(r,r.from),to:gearStatText(r,r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
+    if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;const pc=v=>r.range?' (+'+Math.round((v[0]+v[1])/2*ATK_PCT*100)+'%)':'';rows.unshift({kind:'base',label:'⚔ '+(r.range?'Weapon ATK':r.label),from:gearStatText(r,r.from)+pc(r.from),to:gearStatText(r,r.to)+pc(r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
     // v6.55.72: ตารางอ่านง่าย — ตัวใหญ่ แถวสูง แถบสลับสี หัวกลุ่ม PREFIX/SUFFIX เต็มแถว
     const rh=20,secs=new Set(rows.filter(r=>r.kind==='prefix'||r.kind==='suffix').map(r=>r.kind)).size,top=y,h=22+rows.length*rh+secs*16+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
     const cL=22,cF=Math.round(w*0.60),cT=Math.round(w*0.82),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+6,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(o,0);this.menu.add(tx);};
