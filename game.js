@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.48';
+const GAME_VERSION = '6.55.49';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.49',date:'2026-10-05',title:'Profile frame',items:['Equipment shows the hero as a framed profile portrait, freeing more room for gear']},
   {v:'6.55.48',date:'2026-10-05',title:'Cleaner Equipment',items:['Hero portrait is smaller and can be hidden: tap ▲ Hide / ▼ Hero','Gacha moved below the slots; comparison table sits higher','Minimum text size 11px on Equipment and Affix Forge','Starter / empty pieces no longer clutter the item grid']},
   {v:'6.55.47',date:'2026-10-05',title:'Compare arrows',items:['Mod comparison shows ▲ / ▼ arrows on every changed value: green up, red down, ⇅ for implicit swaps']},
   {v:'6.55.46',date:'2026-10-05',title:'Open craft slots in compare',items:['Equipment compare shows how many Prefix / Suffix slots are still free to craft, equipped → selected']},
@@ -7684,14 +7685,17 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
     const sel=this.gearSlot||'weapon';
     // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
-    const folded=!!Save.data.gearFold, cy0=78, topH=folded?56:Math.min(h*0.25,190);
+    const folded=!!Save.data.gearFold, cy0=78, topH=folded?56:Math.min(h*0.19,160);
     let layout,rowY,ss;
     if(!folded){
-      const pcx=w/2, pcy=cy0+topH*0.46, pbW=Math.min(w*0.36,150), pbH=topH*0.94;
-      const pbg=this.add.graphics(); pbg.fillStyle(0x241a33,0.7); pbg.fillRoundedRect(pcx-pbW/2,cy0+2,pbW,pbH,16); pbg.lineStyle(2,0x4a4059,0.8); pbg.strokeRoundedRect(pcx-pbW/2,cy0+2,pbW,pbH,16);
-      this.menu.add(pbg);
-      if(this.textures.exists('card_'+id)){ this._characterCardArt(id,pcx,pcy,pbW*0.90,pbH*0.92); }
-      else { const em=this.add.text(pcx,pcy,CHARACTERS[id].emoji,{fontSize:Math.round(topH*0.5)+'px'}).setOrigin(0.5); this.menu.add(em); }
+      // v6.55.49: กรอบ Profile (ครอปหัว) แทนภาพเต็มตัว
+      const fs=Math.min(w*0.3,topH*0.74,118), fx=w/2, fy=cy0+4+fs/2, key='card_'+id;
+      const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(fx-fs/2,fy-fs/2,fs,fs,18); this.menu.add(fg);
+      if(this.textures.exists(key)){ const im=this.add.image(fx,fy,key),TW=im.width,TH=im.height,cw=TW*0.62,cx0=TW*0.19,cy1=TH*0.03;
+        im.setCrop(cx0,cy1,cw,cw).setOrigin((cx0+cw/2)/TW,(cy1+cw/2)/TH).setScale((fs-8)/cw); this.menu.add(im); }
+      else { const em=this.add.text(fx,fy,CHARACTERS[id].emoji,{fontSize:Math.round(fs*0.55)+'px'}).setOrigin(0.5); this.menu.add(em); }
+      const fr=this.add.graphics(); fr.lineStyle(5,0x2e2140,1); fr.strokeRoundedRect(fx-fs/2+1,fy-fs/2+1,fs-2,fs-2,18); fr.lineStyle(3,0xffd166,1); fr.strokeRoundedRect(fx-fs/2,fy-fs/2,fs,fs,18); fr.lineStyle(1,0xfff2c4,0.6); fr.strokeRoundedRect(fx-fs/2+4,fy-fs/2+4,fs-8,fs-8,15); this.menu.add(fr);
+      const cp=Save.cp?Save.cp(id):null, nm=this.add.text(fx,fy+fs/2+4,(CHARACTERS[id].name||id)+(cp?'  Lv'+cp.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:8,y:2}}).setOrigin(0.5,0); this.menu.add(nm);
       rowY=[cy0+topH*0.15, cy0+topH*0.47, cy0+topH*0.79];
       const leftX=Math.max(44,w*0.17), rightX=Math.min(w-44,w*0.83); ss=Math.min(50,topH*0.25);
       layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
