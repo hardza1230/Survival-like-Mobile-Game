@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.76';
+const GAME_VERSION = '6.55.77';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.77',date:'2026-10-05',title:'ATK is now a percent bonus',items:['Each point of gear ATK (and flat damage mods) now adds +5% to every hit instead of flat damage, so +1 ATK no longer outweighs every other mod']},
   {v:'6.55.76',date:'2026-10-05',title:'Low-tier mods toned down',items:['The weakest mod tier now gives about 20% of the best tier (was 40%), e.g. Damage T10 8% → 4%','Existing items keep their tier and are moved into the new value range']},
   {v:'6.55.75',date:'2026-10-05',title:'Stronger low-tier mods',items:['Low mod tiers are much stronger: the weakest tier now gives about 40% of the best tier (e.g. Damage T10 1% → 6%)','Existing items keep their tier and are raised into the new value range']},
   {v:'6.55.74',date:'2026-10-05',title:'Quick sell / scrap',items:['Toggle 💰 Sell or 🔩 Scrap next to Clean, then tap any unequipped item to sell or scrap it instantly (locked and favorite items are protected)']},
@@ -3836,6 +3837,8 @@ function gearAttackRoll(p,rng=Math.random){const lo=p.gearAttackMin||0,hi=p.gear
 function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 // v6.16: Item Power — อาวุธ iLv สูง = ดาเมจผู้เล่นโตตาม progress (อยู่นอกเพดาน STAT_CAPS.dmgMul)
 // v6.18: Damage Effectiveness ของ flat แบบ PoE — อาวุธยิงถี่ได้ flat น้อย, ยิงหนักได้มาก
+// v6.55.77: ATK แบบ PoE — ATK ของไอเทม (+flat DMG mod) = +5% ดาเมจต่อแต้ม คูณทุกฮิต (เดิมบวกตรง → ดาเมจฐานต่ำ ATK +1 ≈ +16%)
+const ATK_PCT=0.05;
 const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
 // v6.41 (เจ้าของ: อาวุธแรงจนการต่อสู้ไม่มีความหมาย) เดิม 1.03/lv ถึง 60 แล้ว 1.015 → iLv89 = ×8.8 · ใหม่ iLv60 ×4.3 · iLv89 ×5.0 · iLv100 ×5.2
 function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.025,l-1):Math.pow(1.025,59)*Math.pow(1.005,l-60); }
@@ -4500,8 +4503,8 @@ function computeHeroStats(cid,basic){
 const POWER_BASE_HIT=12;
 // v6.55.30: เผื่อการ์ด/เลเวลระหว่างด่าน (เฉลี่ยทั้งด่าน) → Power บนจอ = พลังตอนสู้จริงโดยประมาณ · ค่าแนะนำคูณตัวเดียวกัน (อัตราส่วนไม่เปลี่ยน)
 const RUN_CARD_OFF=1.5, RUN_CARD_DEF=1.15, RUN_CARD_MUL=Math.sqrt(RUN_CARD_OFF*RUN_CARD_DEF);
-function heroOffense(p,cid){const crit=1+Math.min(1,p.critChance||0)*((p.critMul||1.55)-1),flat=((p.gearAttackMin||0)+(p.gearAttackMax||0))/2*(FLAT_EFF[cid]||1);
-  return Math.max(0.05,p.dmgMul||1)*(p.powerMul||1)*crit*(1+flat/POWER_BASE_HIT)/Math.max(0.1,p.cdMul||1);}
+function heroOffense(p,cid){const crit=1+Math.min(1,p.critChance||0)*((p.critMul||1.55)-1),flat=((p.gearAttackMin||0)+(p.gearAttackMax||0))/2+(p.flatDmg||0);
+  return Math.max(0.05,p.dmgMul||1)*(p.powerMul||1)*crit*(1+flat*ATK_PCT)/Math.max(0.1,p.cdMul||1);}
 function heroDefense(p){const taken=Math.max(0.05,(p.dmgTakenMul||1)*armorDamageMultiplier(p)),hp=Math.max(1,p.maxhp||90),reg=(p.regen||0)+(p.regenFlat||0);
   return hp/taken*(1+reg*8/hp);}
 function heroPower(cid,basic){const p=computeHeroStats(cid,basic);return Math.max(1,Math.round(100*Math.sqrt(heroOffense(p,cid)*RUN_CARD_OFF*heroDefense(p)*RUN_CARD_DEF/90)));}
@@ -12258,7 +12261,7 @@ class Game extends Phaser.Scene {
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;
     }
     // v6.17: Flat DMG แบบ PoE — บวกเข้าฐานก่อนตัวคูณทั้งหมด (dmgMul/Power/คริ/บอส/เงื่อนไข) · ไม่ใส่ใน dot
-    if(!this._infTick&&!e.isDummy){ const b=this.basicAttack,ef=(b&&FLAT_EFF_PATH[b.path])||FLAT_EFF[this.character]||1; amount+=((this.player.flatDmg||0)+gearAttackRoll(this.player))*ef*(this.player.dmgMul||1); }
+    if(!this._infTick&&!e.isDummy){ const b=this.basicAttack,ef=(b&&FLAT_EFF_PATH[b.path])||FLAT_EFF[this.character]||1; void ef; amount*=1+((this.player.flatDmg||0)+gearAttackRoll(this.player))*ATK_PCT; }
     if((e.isBoss||e.isMini)&&this._bossShield)amount*=0.45;
     if((e.isBoss||e.isMini)&&this.player.bossDmg)amount*=1+this.player.bossDmg;
     if(this._frRageT>0)amount*=this._frRageMul||1;   // v5.36 🍳 Rage
