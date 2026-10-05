@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.46';
+const GAME_VERSION = '6.55.47';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.47',date:'2026-10-05',title:'Compare arrows',items:['Mod comparison shows ▲ / ▼ arrows on every changed value: green up, red down, ⇅ for implicit swaps']},
   {v:'6.55.46',date:'2026-10-05',title:'Open craft slots in compare',items:['Equipment compare shows how many Prefix / Suffix slots are still free to craft, equipped → selected']},
   {v:'6.55.45',date:'2026-10-05',title:'Scrollable menu pages',items:['Long menu pages (Affix Forge and others) can now be dragged up and down when they do not fit the screen','A tap still works as before; dragging more than a few pixels scrolls instead']},
   {v:'6.55.44',date:'2026-10-05',title:'Mod comparison table',items:['Equipment compare now lines up mods side by side: same mod on the same row with the change','New / Lost / ▲ / ▼ / Same tags, biggest changes first, implicit swaps flagged','One-line summary: how many mods you gain and lose']},
@@ -12033,17 +12034,17 @@ class Game extends Phaser.Scene {
         col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
     if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); if(!rows.length)return y;
     const gain=rows.filter(r=>r.st==='new'||r.st==='up').length,lose=rows.filter(r=>r.st==='lost'||r.st==='down').length,sw=rows.some(r=>r.kind==='implicit'&&r.st==='swap');
-    const sum=this.add.text(w/2,y,'🟢 Gain '+gain+'   ·   🔴 Lose '+lose+(sw?'   ·   🔁 Implicit changes':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe7a8'}).setOrigin(.5,0);this.menu.add(sum);y+=15;
+    const sum=this.add.text(w/2,y,'▲ Gain '+gain+'   ·   ▼ Lose '+lose+(sw?'   ·   ⇅ Implicit changes':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe7a8'}).setOrigin(.5,0);this.menu.add(sum);y+=15;
     const rh=13,top=y,h=16+rows.length*rh+(rows.some(r=>r.kind==='prefix')?3:0)+(rows.some(r=>r.kind==='suffix')?3:0)+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
     const cL=22,cF=Math.round(w*0.42),cT=Math.round(w*0.66),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+4,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:'#8d8499'}).setOrigin(o,0);this.menu.add(tx);};
     hd(cL,'MOD',0);hd(cF,'EQUIPPED',1);hd(cT,'SELECTED',1);hd(cS,'CHANGE',1);
-    const ST={new:['🟢 New','#7de0a1'],lost:['🔴 Lost','#ff8da2'],up:['▲','#7de0a1'],down:['▼','#ff8da2'],same:['= Same','#7a7088'],swap:['🔁 Swap','#ffd166']};
+    const ST={new:['▲ New','#7de0a1'],lost:['▼ Lost','#ff8da2'],up:['▲','#7de0a1'],down:['▼','#ff8da2'],same:['= Same','#7a7088'],swap:['⇅ Swap','#ffd166']},AR={new:' ▲',up:' ▲',lost:' ▼',down:' ▼',swap:' ⇅',same:''};
     let ry=top+16,last=null;
     for(const r of rows){ if(r.kind!==last&&r.kind!=='implicit'){ry+=3;const lc=r.kind==='prefix'?'#ffb27a':'#8be0c8',lb=this.add.text(cL-4,ry-1,r.kind==='prefix'?'P':'S',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:lc});this.menu.add(lb);} last=r.kind;
       const dim=r.st==='same',kc=r.kind==='prefix'?'#ffd2b0':r.kind==='suffix'?'#c2f0e2':r.col,[stT,stC]=ST[r.st],sty={fontFamily:'sans-serif',fontSize:'8.2px'};
       const a=this.add.text(cL+4,ry,r.label,{...sty,color:dim?'#7a7088':kc,wordWrap:{width:cF-cL-70},maxLines:1}).setOrigin(0,0);
       const b=this.add.text(cF,ry,String(r.from),{...sty,color:dim?'#6e6580':'#cbbfd6',wordWrap:{width:cT-cF-8}}).setOrigin(1,0);
-      const c=this.add.text(cT,ry,String(r.to),{...sty,fontStyle:dim?'normal':'bold',color:dim?'#6e6580':stC}).setOrigin(1,0);
+      const c=this.add.text(cT,ry,String(r.to)+AR[r.st],{...sty,fontStyle:dim?'normal':'bold',color:dim?'#6e6580':stC}).setOrigin(1,0);
       const d=this.add.text(cS,ry,r.dtxt?stT+' '+r.dtxt:stT,{...sty,fontStyle:'bold',color:stC}).setOrigin(1,0);
       if(dim)[a,b,c,d].forEach(o=>o.setAlpha(.7)); this.menu.add([a,b,c,d]); ry+=rh; }
     return top+h+6; }
