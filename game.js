@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.30';
+const GAME_VERSION = '6.55.31';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.31',date:'2026-10-05',title:'Power includes in-stage growth',items:['Power now estimates the strength you reach with in-stage level-up cards','Recommended Power uses the same estimate, so readiness checks are unchanged']},
   {v:'6.55.30',date:'2026-10-05',title:'Plain level-up cards',items:['Level-up cards no longer roll Rare, Epic or Legend; every card gives its normal value']},
   {v:'6.55.29',date:'2026-10-04',title:'Accurate Power',items:['Power is now calculated from your real stats: damage, crit, attack speed, HP, armor and defense','Recommended Power per stage is derived from that stage’s enemy and boss strength']},
   {v:'6.55.28',date:'2026-10-04',title:'Flavor Weave pacing',items:['Flavor Spark gives +2% damage per level (was +3%)','Temple core costs now grow faster at higher ranks']},
@@ -4268,16 +4269,18 @@ function computeHeroStats(cid,basic){
 // v6.55.29: Power = จากสแตตจริง · Offense = ดาเมจต่อวินาทีสัมพัทธ์ · Defense = HP ที่ต้องเสียจริง (Effective HP)
 // Power = 100 × √(Offense × Defense/90) → ฮีโร่ฐานไม่มีอะไร ≈ 100 · ดาเมจ ×2 หรือ EHP ×2 = Power ×1.41 · ทั้งคู่ ×2 = ×2
 const POWER_BASE_HIT=12;
+// v6.55.30: เผื่อการ์ด/เลเวลระหว่างด่าน (เฉลี่ยทั้งด่าน) → Power บนจอ = พลังตอนสู้จริงโดยประมาณ · ค่าแนะนำคูณตัวเดียวกัน (อัตราส่วนไม่เปลี่ยน)
+const RUN_CARD_OFF=1.5, RUN_CARD_DEF=1.15, RUN_CARD_MUL=Math.sqrt(RUN_CARD_OFF*RUN_CARD_DEF);
 function heroOffense(p,cid){const crit=1+Math.min(1,p.critChance||0)*((p.critMul||1.55)-1),flat=((p.gearAttackMin||0)+(p.gearAttackMax||0))/2*(FLAT_EFF[cid]||1);
   return Math.max(0.05,p.dmgMul||1)*(p.powerMul||1)*crit*(1+flat/POWER_BASE_HIT)/Math.max(0.1,p.cdMul||1);}
 function heroDefense(p){const taken=Math.max(0.05,(p.dmgTakenMul||1)*armorDamageMultiplier(p)),hp=Math.max(1,p.maxhp||90),reg=(p.regen||0)+(p.regenFlat||0);
   return hp/taken*(1+reg*8/hp);}
-function heroPower(cid,basic){const p=computeHeroStats(cid,basic);return Math.max(1,Math.round(100*Math.sqrt(heroOffense(p,cid)*heroDefense(p)/90)));}
+function heroPower(cid,basic){const p=computeHeroStats(cid,basic);return Math.max(1,Math.round(100*Math.sqrt(heroOffense(p,cid)*RUN_CARD_OFF*heroDefense(p)*RUN_CARD_DEF/90)));}
 // Power แนะนำต่อด่าน = คิดจากตัวเลขศัตรูจริงของด่าน (HP/ดาเมจ มอน + บอส) เทียบด่าน 1 · ปรับสูตรศัตรู = ค่าแนะนำตามเอง
 function stageThreat(i){const st=STAGES[i]||STAGES[0],c2=i===6?BALANCE.c2Mycelium:i===7?BALANCE.c2Nectar:i===8?BALANCE.c2Seasons:i===9?BALANCE.c2Root:{hp:1,dmg:1};
   const mobHp=stageCurveValue(i,[1,1.42,1.88,2.42,3.05,3.72],1.18)*(c2.hp||1)*(i>=2&&i<=4?1.1:1),mobDmg=stageCurveValue(i,[1,1.05,1.12,1.20,1.30,1.42],1.09)*(c2.dmg||1);
   const bossHp=(st.bossHp||920)*(2+i*0.13)*realStageBossMul(i),bossDmg=st.bossDmg||25;return {hp:Math.sqrt(mobHp*bossHp),dmg:Math.sqrt(mobDmg*bossDmg)};}
-function stageRecommendedPower(i){const t=stageThreat(i),b=stageThreat(0);return Math.round(100*Math.sqrt((t.hp/b.hp)*(t.dmg/b.dmg))/10)*10;}
+function stageRecommendedPower(i){const t=stageThreat(i),b=stageThreat(0);return Math.round(100*RUN_CARD_MUL*Math.sqrt((t.hp/b.hp)*(t.dmg/b.dmg))/10)*10;}
 const STAGES = [
   { name:'The Sour Ant Nest', en:'The Sour Ant Nest', emoji:'🐜', grid:0x2d261f, tint:0x8ee04b,
     lore:'Momo falls through a crack under the pantry into a nest where acid crystals are warping the whole ant kingdom',
