@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.50';
+const GAME_VERSION = '6.55.51';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.51',date:'2026-10-05',title:'Compact hero',items:['Equipment: hero is a small avatar at the top-left; all six gear slots sit in one row']},
   {v:'6.55.50',date:'2026-10-05',title:'Tidier Equipment',items:['Big Power banner answers “is it better?” first','One big Equip / Enhance button; Craft, ★ and 🔒 below','Sell and Dismantle moved into ⋯ More']},
   {v:'6.55.49',date:'2026-10-05',title:'Profile frame',items:['Equipment shows the hero as a framed profile portrait, freeing more room for gear']},
   {v:'6.55.48',date:'2026-10-05',title:'Cleaner Equipment',items:['Hero portrait is smaller and can be hidden: tap ▲ Hide / ▼ Hero','Gacha moved below the slots; comparison table sits higher','Minimum text size 11px on Equipment and Affix Forge','Starter / empty pieces no longer clutter the item grid']},
@@ -7686,24 +7687,16 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
     const sel=this.gearSlot||'weapon';
     // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
-    const folded=!!Save.data.gearFold, cy0=78, topH=folded?56:Math.min(h*0.19,160);
-    let layout,rowY,ss;
-    if(!folded){
-      // v6.55.49: กรอบ Profile (ครอปหัว) แทนภาพเต็มตัว
-      const fs=Math.min(w*0.3,topH*0.74,118), fx=w/2, fy=cy0+4+fs/2, key='card_'+id;
-      const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(fx-fs/2,fy-fs/2,fs,fs,18); this.menu.add(fg);
-      if(this.textures.exists(key)){ const im=this.add.image(fx,fy,key),TW=im.width,TH=im.height,cw=TW*0.62,cx0=TW*0.19,cy1=TH*0.03;
-        im.setCrop(cx0,cy1,cw,cw).setOrigin((cx0+cw/2)/TW,(cy1+cw/2)/TH).setScale((fs-8)/cw); this.menu.add(im); }
-      else { const em=this.add.text(fx,fy,CHARACTERS[id].emoji,{fontSize:Math.round(fs*0.55)+'px'}).setOrigin(0.5); this.menu.add(em); }
-      const fr=this.add.graphics(); fr.lineStyle(5,0x2e2140,1); fr.strokeRoundedRect(fx-fs/2+1,fy-fs/2+1,fs-2,fs-2,18); fr.lineStyle(3,0xffd166,1); fr.strokeRoundedRect(fx-fs/2,fy-fs/2,fs,fs,18); fr.lineStyle(1,0xfff2c4,0.6); fr.strokeRoundedRect(fx-fs/2+4,fy-fs/2+4,fs-8,fs-8,15); this.menu.add(fr);
-      const cp=Save.cp?Save.cp(id):null, nm=this.add.text(fx,fy+fs/2+4,(CHARACTERS[id].name||id)+(cp?'  Lv'+cp.lvl:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:8,y:2}}).setOrigin(0.5,0); this.menu.add(nm);
-      rowY=[cy0+topH*0.15, cy0+topH*0.47, cy0+topH*0.79];
-      const leftX=Math.max(44,w*0.17), rightX=Math.min(w-44,w*0.83); ss=Math.min(50,topH*0.25);
-      layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
-    } else {
-      ss=Math.min(46,(w-28)/6-8); rowY=[cy0+topH/2]; const step=(w-28)/6;
-      layout=['weapon','gloves','amulet','armor','boots','ring'].map((sl,i)=>[sl,14+step*(i+0.5),0]);
-    }
+    // v6.55.51: ตัวละครเป็นอวาตาร์เล็กซ้ายสุด + ช่องสวมใส่ 6 ช่องแถวเดียว
+    const folded=true, cy0=78, topH=56, av=46, ax=14, ay=cy0+topH/2-av/2, key='card_'+id;
+    { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,av,av,12); this.menu.add(fg);
+      if(this.textures.exists(key)){ const im=this.add.image(ax+av/2,ay+av/2,key),TW=im.width,TH=im.height,cw=TW*0.62,cx0=TW*0.19,cy1=TH*0.03;
+        im.setCrop(cx0,cy1,cw,cw).setOrigin((cx0+cw/2)/TW,(cy1+cw/2)/TH).setScale((av-6)/cw); this.menu.add(im); }
+      else { const em=this.add.text(ax+av/2,ay+av/2,CHARACTERS[id].emoji,{fontSize:'26px'}).setOrigin(0.5); this.menu.add(em); }
+      const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,av-2,av-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,av,av,12); this.menu.add(fr);
+      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+av-2,ay+av-2,'Lv'+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:3,y:0}}).setOrigin(1,1);this.menu.add(lv);} }
+    const x0=ax+av+8, step=(w-14-x0)/6, ss=Math.min(44,step-6), rowY=[cy0+topH/2];
+    const layout=['weapon','gloves','amulet','armor','boots','ring'].map((sl,i)=>[sl,x0+step*(i+0.5),0]);
     layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];
       const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
       const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
@@ -7719,8 +7712,7 @@ class Game extends Phaser.Scene {
       this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
     });
     // v6.53: แถบสถานะชุดเซ็ทที่สวม — ชัด ๆ เหนือปุ่ม gacha · แตะ = Codex › Sets
-    { const ftw=74,fty=cy0+topH+38,fg=this.add.graphics();fg.fillStyle(0x3a3550,1);fg.fillRoundedRect(12,fty,ftw,26,9);const ft=this.add.text(12+ftw/2,fty+13,folded?'▼ Hero':'▲ Hide',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add([fg,ft]);this._zone(12,fty,ftw,26,()=>{Save.data.gearFold=!folded;Save.save();Sfx.select();this.buildMenuScreen();}); }
-    { const sc=gearSetCounts(),act=SET_ORDER.filter(k=>sc[k]),sy=cy0+topH+38,sw2=w-12-92,sx2=92,g=this.add.graphics(); g.fillStyle(0x1a2433,0.94);g.fillRoundedRect(sx2,sy,sw2,26,9);g.lineStyle(1.5,act.some(k=>sc[k]>=2)?0x8ff0b0:0x4a5a78,1);g.strokeRoundedRect(sx2,sy,sw2,26,9);
+    { const sc=gearSetCounts(),act=SET_ORDER.filter(k=>sc[k]),sy=cy0+topH+38,sw2=w-24,sx2=12,g=this.add.graphics(); g.fillStyle(0x1a2433,0.94);g.fillRoundedRect(sx2,sy,sw2,26,9);g.lineStyle(1.5,act.some(k=>sc[k]>=2)?0x8ff0b0:0x4a5a78,1);g.strokeRoundedRect(sx2,sy,sw2,26,9);
       const txt=act.length?act.map(k=>{const d=GEAR_SETS[k],n=sc[k],tot=gearSetPieces(k).length,b=d.bonuses[Math.min(n,3)];return d.emoji+' '+n+'/'+tot+(n>=2&&b?' '+b.desc.replace(/^\d pcs:\s*/,''):'');}).join('   '):'🧩 No set pieces equipped · tap to see sets';
       const t=this.add.text(w/2,sy+13,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:act.some(k=>sc[k]>=2)?'#8ff0b0':'#cfe0ff'}).setOrigin(0.5);if(t.width>sw2-12)t.setScale((sw2-12)/t.width);
       this.menu.add([g,t]); this._zone(sx2,sy,sw2,26,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();}); }
