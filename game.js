@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.42';
+const GAME_VERSION = '6.55.43';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.43',date:'2026-10-05',title:'Taro path talents',items:['Chain, Smite and Tempest each get their own talent nodes and 3 real Capstones','Chain: Thunderhead / Overcharge / Grounded · Smite: Divine Hammer / Heavy Sky / Sanctuary · Tempest: Hurricane / Eye of the Storm / Wind Step']},
   {v:'6.55.42',date:'2026-10-05',title:'Cocoa path talents',items:['Brawler, Titan and Dash each get their own talent nodes and 3 real Capstones','Brawler: Shockstorm / Flurry / Iron Chin · Titan: Colossus / Earthsplitter / Stone Skin · Dash: Afterimage / Endless Dash / Slip']},
   {v:'6.55.41',date:'2026-10-05',title:'Mint path talents',items:['Freeze, Barrage and Piercer each get their own talent nodes and 3 real Capstones','Freeze: Absolute Zero / Shatter Nova / Frost Armor · Barrage: Lance Storm / Rapid Frost / Cold Stride · Piercer: Glacial Spear / Long Shot / Ice Wall']},
   {v:'6.55.40',date:'2026-10-05',title:'Momo path talents',items:['Sniper, Shotgun and Ricochet each get 7 unique talents and 3 real Capstones','Sniper: One Shot / Railgun / Ghillie · Shotgun: Dragon Breath / Double Barrel / Recoil Dash · Ricochet: Pinball / Boomerang / Sugar Loop','Other heroes keep generic path talents for now']},
@@ -2982,7 +2983,31 @@ const PATH_TALENTS={
     b2:{emoji:'🌊',name:'Wide Hook',max:3,per:'+8% impact size',apply:_P({range:0.08})},
     capA:{emoji:'🌪️',name:'Afterimage',max:1,per:'Dash buff +60% combo damage',apply:_P({dashm:0.60})},
     capB:{emoji:'♾️',name:'Endless Dash',max:1,per:'+2 Dash charges',apply:_P({dashc:2})},
-    capC:{emoji:'🍃',name:'Slip',max:1,per:'While Dash buff is active: −30% damage taken',apply:_K('dashGuard',1)}}};
+    capC:{emoji:'🍃',name:'Slip',max:1,per:'While Dash buff is active: −30% damage taken',apply:_K('dashGuard',1)}},
+  storm:{root:{emoji:'🌩️',name:'Charged Air',max:3,per:'+5% lightning damage',apply:_P({dmg:1.05})},
+    a1:{emoji:'✨',name:'Static Build',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
+    a2:{emoji:'👑',name:'Conductor',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
+    b1:{emoji:'⏱️',name:'Quick Spark',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
+    b2:{emoji:'📡',name:'Wide Arc',max:3,per:'+8% strike range',apply:_P({range:0.08})},
+    capA:{emoji:'⛈️',name:'Thunderhead',max:1,per:'+2 strikes',apply:_P({count:2})},
+    capB:{emoji:'⚡',name:'Overcharge',max:1,per:'+20% lightning damage',apply:_P({dmg:1.20})},
+    capC:{emoji:'🧲',name:'Grounded',max:1,per:'While moving: −20% damage taken',apply:_K('moveGuard',0.20)}},
+  smite:{root:{emoji:'🔨',name:'Heavy Bolt',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
+    a1:{emoji:'🎯',name:'Judgment+',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
+    a2:{emoji:'🩸',name:'Wrath',max:3,per:'+10% damage below 50% HP',apply:_P({low:0.10})},
+    b1:{emoji:'⏱️',name:'Steady Prayer',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
+    b2:{emoji:'📡',name:'Long Reach',max:3,per:'+8% strike range',apply:_P({range:0.08})},
+    capA:{emoji:'🌟',name:'Divine Hammer',max:1,per:'+40% damage to bosses/elites',apply:_P({big:0.40})},
+    capB:{emoji:'☁️',name:'Heavy Sky',max:1,per:'+30% damage · casts 10% slower',apply:_P({dmg:1.30,cd:1.10})},
+    capC:{emoji:'⛪',name:'Sanctuary',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}},
+  tempest:{root:{emoji:'🌪️',name:'Swift Storm',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
+    a1:{emoji:'✨',name:'Sharp Wind',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
+    a2:{emoji:'🔭',name:'Far Strike+',max:3,per:'+10% damage beyond 300px',apply:_P({far:0.10})},
+    b1:{emoji:'⏩',name:'Gale+',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
+    b2:{emoji:'📡',name:'Wide Gust',max:3,per:'+8% strike range',apply:_P({range:0.08})},
+    capA:{emoji:'🌀',name:'Hurricane',max:1,per:'−25% cast cooldown',apply:_P({cd:0.75})},
+    capB:{emoji:'👁️',name:'Eye of the Storm',max:1,per:'+35% damage beyond 300px',apply:_P({far:0.35})},
+    capC:{emoji:'💨',name:'Wind Step',max:1,per:'While moving: −20% damage taken',apply:_K('moveGuard',0.20)}}};
 const TAL_CAP_COST=5, TAL_SLOTS=['root','a1','a2','b1','b2','c1','c2','capA','capB','capC'];
 function _ptGeneric(pt){ return {
   root:{emoji:pt.emoji||'✦',name:'Path Focus',max:3,per:'+5% damage',apply:(p,r)=>{p.dmgMul+=0.05*r;}},
