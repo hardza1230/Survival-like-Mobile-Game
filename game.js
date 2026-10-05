@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.69';
+const GAME_VERSION = '6.55.70';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.70',date:'2026-10-05',title:'Glacier Bloom damage numbers',items:['Every enemy hit by Glacier Bloom (freeze and shatter) now shows its own damage number']},
   {v:'6.55.69',date:'2026-10-05',title:'Unique damage numbers',items:['Every enemy hit by Berry Blast or Frost Lance now shows its own damage number']},
   {v:'6.55.68',date:'2026-10-05',title:'Longer hit invulnerability',items:['After taking a hit you are invulnerable a little longer (0.36s → 0.48s from monsters, 0.30s → 0.40s from shots)']},
   {v:'6.55.67',date:'2026-10-05',title:'Recipe survival limits',items:['Kitchen recipe healing is capped at 5% max HP every 2 seconds across all recipes','“When Hit” recipes can trigger at most once per 1.5 seconds','Recipe Immune and Shield effects share a 4-second cooldown and Immune lasts at most 1 second']},
@@ -5410,16 +5411,16 @@ class Game extends Phaser.Scene {
   mintUniqueStart(){ const u=this.uniqueInfo(); this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     return {ul:this.uniqueLevel||1,unit:(this.player.dmgMul||1)*this.uniquePower()}; }
   releaseGlacierBloom(c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[],bosses=[];
-    this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active)return;
+    this._sgHit=true; try{ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active)return;
       if(e.isBoss||e.isMini){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); this.mintChill(e,0.6); this.damage(e,hit*1.5,e.x,e.y); bosses.push(e); return; }
-      e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); frozen.push(e); });
+      e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); frozen.push(e); }); } finally { this._sgHit=false; }
     if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',cx,cy,{scale:r*2.3/320,depth:6,normal:true}));
     const ring=this.camWorld(this.add.circle(cx,cy,20,0xbdf0ff,0.25).setStrokeStyle(4,0xffffff,0.9).setDepth(9)); this.tweens.add({targets:ring,radius:r,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
     this.screenFlash&&this.screenFlash(0xbdf0ff,0.18,220); this.screenShake(120,0.005); Sfx.magnet&&Sfx.magnet();
-    this.time.delayedCall(Math.max(200,dur*1000-150),()=>{ if(this.state!=='play')return; let n=0;
+    this.time.delayedCall(Math.max(200,dur*1000-150),()=>{ if(this.state!=='play')return; let n=0; this._sgHit=true; try{
       frozen.forEach(e=>{ if(!e.active||!(e.frozen>0))return; n++; const x=e.x,y=e.y; this.burst(x,y,0xbdf0ff); this.damage(e,hit*2,x,y);
         if(lv.m_shard)this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==e&&this.dist(o.x,o.y,x,y)<90)this.damage(o,hit*2*0.4*lv.m_shard,o.x,o.y); }); });
-      bosses.forEach(e=>{ if(!e.active)return; n++; this.burst(e.x,e.y,0xbdf0ff); this.vfxHitRing(e.x,e.y,0x9fe8ff,true); this.damage(e,hit*4*(1+0.4*(lv.m_shard||0)),e.x,e.y); });
+      bosses.forEach(e=>{ if(!e.active)return; n++; this.burst(e.x,e.y,0xbdf0ff); this.vfxHitRing(e.x,e.y,0x9fe8ff,true); this.damage(e,hit*4*(1+0.4*(lv.m_shard||0)),e.x,e.y); }); } finally { this._sgHit=false; }
       if(n){ this.screenShake(100,0.004); Sfx.boom&&Sfx.boom(); } });
     this.showBanner('❄️ Glacier Bloom',frozen.length+' frozen',800); }
   releaseFrostLance(ang,c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),L=this.lanceLen(),ca=Math.cos(ang),sa=Math.sin(ang),x0=pl.x,y0=pl.y,dmg=(40+ul*15)*unit*(0.7+0.3*c);
