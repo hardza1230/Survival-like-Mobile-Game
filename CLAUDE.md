@@ -272,7 +272,8 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
 - **v6.55.68 (เจ้าของ: อมตะหลังโดนตีนานขึ้นอีกนิด):** `HURT_IFRAME_MUL` 0.6→0.8 · ชนมอน 0.36→0.48 วิ · กระสุน default 0.30→0.40 วิ
 - **v6.55.69 (บั๊กเจ้าของ: Berry Blast เลขดาเมจไม่ขึ้นทุกตัว):** popDmg throttle → Berry Blast/Frost Lance ตั้ง `_sgHit` รอบ damage ต่อตัว = โชว์เลขทุกตัว
 - **v6.55.70:** Glacier Bloom (แช่+แตก) ตั้ง `_sgHit` เหมือนกัน → เลขดาเมจขึ้นทุกตัว
-- **เวอร์ชันปัจจุบัน v6.55.70** (`GAME_VERSION`) · สาขา `claude/gallant-shannon-vx0est` · Monster animation commit 1–6 เสร็จ (ดูหัวไฟล์)
+- **v6.55.71 (เจ้าของ: ออกนอกวงแล้วความคืบหน้าลด ทำไม่เสร็จ):** Capture ออกนอกวงไม่ลด progress (เดิม −0.35/วิ) · Defend Nectar ดอกตายหมดไม่หัก −7 วิ (ยังโดนดาเมจ) · ภารกิจอื่นไม่มีการลดอยู่แล้ว
+- **เวอร์ชันปัจจุบัน v6.55.71** (`GAME_VERSION`) · สาขา `claude/gallant-shannon-vx0est` · Monster animation commit 1–6 เสร็จ (ดูหัวไฟล์)
 - **งานค้าง:** (1) Monster animation commit 7 Chapter 2 ด่าน 1–2 รวม Sporeling → 8 Nectar รวม Tiny Grub → 9 Season/Root → 10 Elite/summon รวม Mini Jelly + Chapter 3 generic Elite + รีวิวภาพ/ประสิทธิภาพบนมือถือ (`docs/MONSTER_ANIMATION_PLAN.md`) (2) รีวิวบนมือถือจริงที่ค้าง: Mint Piercer balance เท่านั้น (เจ้าของทดสอบผ่านแล้ว 4 ต.ค. 2026: monster animation 2–6, VFX batch 1–5, Boss Loot Keep/Double/Reroll, เสียงทั้งหมด) (3) Play Store (พักไว้): ลบบัญชีในแอป, store listing, keystore, closed test
 - **v6.54.9 (เจ้าของ: อยากได้การ์ดสุ่มแบบ Jackpot แทน):** onBossDown → `openBossLootCards` (การ์ดคว่ำ 3 ใบจาก 7 ชนิด: Sugar/Currency/พลั่ว/ด้าย/🔩/หินแก่น/Gear · JACKPOT 25%+10%/ระดับยาก) แล้วค่อย revealStageReward · openMysteryCards รับ opt {prizes,title,hint} + fallback emoji ถ้าไม่มี artKey · ยกเลิก Sugar Bounty v6.54.8 (บอสยังไม่ดรอป orb/หัวใจ)
 - **v6.54.8 (เจ้าของ: ของดรอปบอสไร้ประโยชน์เพราะจบด่าน):** killEnemy บอสใหญ่ไม่ dropOrb/dropHeal → Sugar Bounty (60+30·stage)×diff reward เข้า sugarStage ตรง + แบนเนอร์ · มินิ/elite ดรอปเหมือนเดิม
