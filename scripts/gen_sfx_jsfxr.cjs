@@ -54,3 +54,4 @@ wav(mix([preset('powerUp',251,p=>{p.p_base_freq=0.3;p.p_freq_ramp=0.5;p.p_env_de
 wav(seq([523,659,784,988,1175,1319,1568],0.045,'tri',0.4),'sfx_beat_rainbow');
 wav(mix([seq([523,659,784,1047,784,1047,1319,1568],0.08,'square',0.3)],[preset('explosion',261,p=>{p.p_base_freq=0.15;p.p_env_decay=0.5;}),Math.floor(0.3*SR),0.8],[note(52,0.6,'sine',0.9),Math.floor(0.3*SR)]),'sfx_beat_fever');
 wav(mix([note(1568,0.06,'tri',0.5)],[note(2093,0.08,'tri',0.4),Math.floor(0.06*SR)]),'sfx_beat_cue');
+wav(mix([preset('explosion',311,p=>{p.p_base_freq=0.32;p.p_env_attack=0;p.p_env_sustain=0.03;p.p_env_decay=0.16;p.p_freq_ramp=-0.2;})],[note(58,0.18,'sine',1.0)],[preset('hitHurt',313,p=>{p.p_base_freq=0.6;p.p_env_decay=0.05;}),0,0.7],[note(1900,0.018,'square',0.22),Math.floor(0.26*SR)],[note(1200,0.022,'square',0.2),Math.floor(0.33*SR)]),'sfx_shotgun');

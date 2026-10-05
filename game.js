@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.62';
+const GAME_VERSION = '6.55.63';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.63',date:'2026-10-05',title:'Shotgun sound',items:['Shotgun Build has its own blast-and-pump sound','Stronger screen shake on each shotgun volley']},
   {v:'6.55.62',date:'2026-10-05',title:'Shotgun feels heavy',items:['Shotgun Build fires slower, punchier volleys with a muzzle blast and screen kick','Pellets are shorter range, push enemies back and hit much harder up close (×2 within 120px)','Far pellets lose damage, so getting close matters']},
   {v:'6.55.61',date:'2026-10-05',title:'Mint path Uniques',items:['Freeze Build: Glacier Bloom — hold to grow an ice ring, release to freeze everything inside; still-frozen foes shatter for double damage','Piercer Build: Frost Lance Charge — hold to aim, release to dash through enemies and leave a slowing ice trail','Barrage Build keeps Mint Gale','New cards: Wider Bloom, Long Winter, Shard Spray, Long Lance, Twin Lance, Lance Burst']},
   {v:'6.55.60',date:'2026-10-05',title:'Shotgun Unique: Berry Blast',items:['Momo Shotgun Build: hold Unique to aim a cone, release to fire a huge pellet blast with knockback','Enemies within 120px take double damage · Momo hops back from the recoil','New Shotgun cards: Wide Blast, Recoil Hop and Double Tap']},
@@ -979,6 +980,7 @@ const Sfx = {
   ult(type){if(!this._ok('ult',0.5))return;this.duckBgm(650,0.42);if(type==='vortex'&&this.playFile('sfx_ult_vortex',0.48))return;if(!this.playFile('sfx_ult_bomb',0.48))this.seq([660,880,1180],'triangle',0.10,0.07);},
   thunder(){if(this._ok('thunder',0.2)&&!this.playFile('sfx_thunder',0.34))this.zap();},
   beam(){if(this._ok('beam',0.15)&&!this.playFile('sfx_beam',0.3))this.zap();},
+  shotgun(){if(this._ok('shotgun',0.12)&&!this.playFile('sfx_shotgun',0.55))this.punch();},
   punch(){if(this._ok('punch',0.12)&&!this.playFile('sfx_punch',0.4))this.shoot();},
   beatTick(){ this.playFile('sfx_beat_tick',0.45,1)||this.tone(880,0.04,'square',0.04); },
   beatLoop(rate){ this.stopBeatLoop(); if(this.muted||this.sv<=0)return; try{const g=window.__g; if(g&&g.cache.audio.exists('sfx_beat_loop')){ this.duckBgm(9000,0.2); const s=g.sound.add('sfx_beat_loop',{volume:0.5*this.sv,loop:true,rate:rate||1}); s.play(); this._beatSnd=s; }}catch(e){} },
@@ -1921,6 +1923,7 @@ const ASSET_AUDIO = {
   sfx_magnet: 'assets/audio/sfx/gen/sfx_magnet.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_thunder: 'assets/audio/sfx/gen/sfx_thunder.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_punch: 'assets/audio/sfx/gen/sfx_punch.wav',
+  sfx_shotgun: 'assets/audio/sfx/gen/sfx_shotgun.wav',
   sfx_beat_tick:'assets/audio/sfx/gen/sfx_beat_tick.wav', sfx_beat_loop:'assets/audio/sfx/gen/sfx_beat_loop.wav', sfx_beat_hold:'assets/audio/sfx/gen/sfx_beat_hold.wav', sfx_beat_rush:'assets/audio/sfx/gen/sfx_beat_rush.wav', sfx_beat_gun:'assets/audio/sfx/gen/sfx_beat_gun.wav', sfx_beat_cyclone:'assets/audio/sfx/gen/sfx_beat_cyclone.wav', sfx_beat_titan:'assets/audio/sfx/gen/sfx_beat_titan.wav', sfx_beat_juggle:'assets/audio/sfx/gen/sfx_beat_juggle.wav', sfx_beat_rainbow:'assets/audio/sfx/gen/sfx_beat_rainbow.wav', sfx_beat_fever:'assets/audio/sfx/gen/sfx_beat_fever.wav', sfx_beat_cue:'assets/audio/sfx/gen/sfx_beat_cue.wav', sfx_beat_start:'assets/audio/sfx/gen/sfx_beat_start.wav', sfx_beat_perfect:'assets/audio/sfx/gen/sfx_beat_perfect.wav', sfx_beat_good:'assets/audio/sfx/gen/sfx_beat_good.wav', sfx_beat_miss:'assets/audio/sfx/gen/sfx_beat_miss.wav',
   sfx_punch_jab:'assets/audio/sfx/gen/sfx_punch_jab.wav', sfx_punch_heavy:'assets/audio/sfx/gen/sfx_punch_heavy.wav', sfx_punch_frenzy:'assets/audio/sfx/gen/sfx_punch_frenzy.wav',   // v5.53 คอมโบโกโก้   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_beam: 'assets/audio/sfx/gen/sfx_beam.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
@@ -11294,7 +11297,7 @@ class Game extends Phaser.Scene {
         const spread=closeLarge?0.045:0.16;
         const fan=path==='shotgun'?(shotIndex-(shots-1)/2)*spread:(basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0);
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(closeLarge?-0.012:-0.08,closeLarge?0.012:0.08);
-        this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot();
+        this.physics.velocityFromRotation(ang,speed,b.body.velocity); if(path!=='shotgun')Sfx.shoot();
         if(path==='shotgun'&&shotIndex===0)this.shotgunKick(ang); };
       if(path==='sniper'){
         if(this.textures.exists('vfx_strawberry_charge')){const halo=this.trackArtVfx(this.camWorld(this.add.image(this.player.x,this.player.y-24,'vfx_strawberry_charge').setDisplaySize(88,88).setDepth(90490).setAlpha(0.65)));this.tweens.add({targets:halo,alpha:0,scaleX:halo.scaleX*0.65,scaleY:halo.scaleY*0.65,duration:340,onComplete:()=>halo.destroy()});}else this.vfxCastGlow(0xffd166);
@@ -12225,7 +12228,7 @@ class Game extends Phaser.Scene {
       if(e._sourT>0)e._sourT-=step;
       if(e._burnT>0){ e._burnT-=step; this._infTick=true; this.damage(e,(e._burnDps||0)*step,e.x,e.y); this._infTick=false; if(Math.random()<0.3)this.burst&&this.burst(e.x,e.y,0xff5a3d); if(e._burnT<=0)e._burnDps=0; } }); }
   shotgunKick(ang){ const pl=this.player,g=this.camWorld(this.add.graphics().setDepth(90450)); g.fillStyle(0xfff1a8,0.75); g.slice(pl.x,pl.y,70,ang-0.45,ang+0.45,false); g.fillPath(); g.fillStyle(0xffffff,0.9); g.fillCircle(pl.x+Math.cos(ang)*26,pl.y+Math.sin(ang)*26,9);
-    this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()}); this.screenShake(70,0.003); if(Sfx.punch)Sfx.punch(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }
+    this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()}); this.screenShake(130,0.0075); if(Sfx.shotgun)Sfx.shotgun(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }
   pathBulletDmg(b,e){ let d=b.dmg;   // 🛤 Build Path: ตัวคูณตามสาย (sniper/shotgun)
     if(b.bigMul&&(e.isBoss||e.isMini||e.isElite))d*=1+b.bigMul;
     if(b.penGain&&b.hitTargets)d*=1+b.penGain*Math.max(0,b.hitTargets.size-1);
