@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.41';
+const GAME_VERSION = '6.55.42';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.42',date:'2026-10-05',title:'Cocoa path talents',items:['Brawler, Titan and Dash each get their own talent nodes and 3 real Capstones','Brawler: Shockstorm / Flurry / Iron Chin · Titan: Colossus / Earthsplitter / Stone Skin · Dash: Afterimage / Endless Dash / Slip']},
   {v:'6.55.41',date:'2026-10-05',title:'Mint path talents',items:['Freeze, Barrage and Piercer each get their own talent nodes and 3 real Capstones','Freeze: Absolute Zero / Shatter Nova / Frost Armor · Barrage: Lance Storm / Rapid Frost / Cold Stride · Piercer: Glacial Spear / Long Shot / Ice Wall']},
   {v:'6.55.40',date:'2026-10-05',title:'Momo path talents',items:['Sniper, Shotgun and Ricochet each get 7 unique talents and 3 real Capstones','Sniper: One Shot / Railgun / Ghillie · Shotgun: Dragon Breath / Double Barrel / Recoil Dash · Ricochet: Pinball / Boomerang / Sugar Loop','Other heroes keep generic path talents for now']},
   {v:'6.55.39',date:'2026-10-05',title:'Path talent trees (part 1)',items:['Every Build Path now has its own tree: Root, three branches (Power / Mechanic / Survival) and 3 Capstones — only 1 Capstone per path (5 TP)','Old path talent points were refunded','Path-specific node effects and Capstones arrive character by character in the next updates'] },
@@ -2957,7 +2958,31 @@ const PATH_TALENTS={
     b2:{emoji:'⏱️',name:'Steady Draw',max:3,per:'−4% lance cooldown',apply:_P({cd:0.96})},
     capA:{emoji:'🗡️',name:'Glacial Spear',max:1,per:'+40% damage to bosses/elites',apply:_P({big:0.40})},
     capB:{emoji:'🌠',name:'Long Shot',max:1,per:'+35% damage beyond 300px · +30% range',apply:_P({far:0.35,range:0.30})},
-    capC:{emoji:'🧱',name:'Ice Wall',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}}};
+    capC:{emoji:'🧱',name:'Ice Wall',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}},
+  brawler:{root:{emoji:'🥊',name:'Quick Fists',max:3,per:'+5% combo damage',apply:_P({dmg:1.05})},
+    a1:{emoji:'💪',name:'Heavy Hands',max:3,per:'+6% combo damage',apply:_P({dmg:1.06})},
+    a2:{emoji:'🩸',name:'Last Stand',max:3,per:'+10% damage below 50% HP',apply:_P({low:0.10})},
+    b1:{emoji:'💨',name:'Light Feet',max:3,per:'−4% combo cooldown',apply:_P({cd:0.96})},
+    b2:{emoji:'🌊',name:'Wide Swing',max:3,per:'+8% impact size',apply:_P({range:0.08})},
+    capA:{emoji:'💥',name:'Shockstorm',max:1,per:'+2 finisher shockwaves',apply:_P({wave:2})},
+    capB:{emoji:'🌀',name:'Flurry',max:1,per:'−20% combo cooldown',apply:_P({cd:0.80})},
+    capC:{emoji:'🧱',name:'Iron Chin',max:1,per:'−25% damage taken',apply:_K('chin',0.25)}},
+  titan:{root:{emoji:'🗿',name:'Stone Fist',max:3,per:'+6% damage',apply:_P({dmg:1.06})},
+    a1:{emoji:'👑',name:'Giant Breaker',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
+    a2:{emoji:'🩸',name:'Unbroken',max:3,per:'+10% damage below 50% HP',apply:_P({low:0.10})},
+    b1:{emoji:'🌋',name:'Aftershock',max:3,per:'+8% impact size',apply:_P({range:0.08})},
+    b2:{emoji:'⏱️',name:'Momentum',max:3,per:'−4% combo cooldown',apply:_P({cd:0.96})},
+    capA:{emoji:'⛰️',name:'Colossus',max:1,per:'+25% damage · +20% vs bosses/elites',apply:_P({dmg:1.25,big:0.20})},
+    capB:{emoji:'🪨',name:'Earthsplitter',max:1,per:'+40% impact size',apply:_P({range:0.40})},
+    capC:{emoji:'🧱',name:'Stone Skin',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}},
+  dashboxer:{root:{emoji:'🐾',name:'Bear Rush',max:3,per:'+5% combo damage',apply:_P({dmg:1.05})},
+    a1:{emoji:'👻',name:'Ghost Jab',max:3,per:'Dash buff +10% combo damage',apply:_P({dashm:0.10})},
+    a2:{emoji:'👑',name:'Hit and Run',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
+    b1:{emoji:'⏱️',name:'Footwork',max:3,per:'−4% combo cooldown',apply:_P({cd:0.96})},
+    b2:{emoji:'🌊',name:'Wide Hook',max:3,per:'+8% impact size',apply:_P({range:0.08})},
+    capA:{emoji:'🌪️',name:'Afterimage',max:1,per:'Dash buff +60% combo damage',apply:_P({dashm:0.60})},
+    capB:{emoji:'♾️',name:'Endless Dash',max:1,per:'+2 Dash charges',apply:_P({dashc:2})},
+    capC:{emoji:'🍃',name:'Slip',max:1,per:'While Dash buff is active: −30% damage taken',apply:_K('dashGuard',1)}}};
 const TAL_CAP_COST=5, TAL_SLOTS=['root','a1','a2','b1','b2','c1','c2','capA','capB','capC'];
 function _ptGeneric(pt){ return {
   root:{emoji:pt.emoji||'✦',name:'Path Focus',max:3,per:'+5% damage',apply:(p,r)=>{p.dmgMul+=0.05*r;}},
@@ -10715,7 +10740,7 @@ class Game extends Phaser.Scene {
     return m; }
   condTakenMul(){ const P=this.player,c=P&&P._cond; return this.ptTakenMul()*((!c||!c.c_close||P.hp/Math.max(1,P.maxhp)>=0.35)?1:Math.max(0.4,1-0.15*c.c_close)); }
   ptTakenMul(){ const P=this.player,PT=P&&P._pt; if(!PT)return 1; let m=1; const st=this._ptStill||0;
-    if(PT.still&&st>=0.6)m*=1-PT.still; if(PT.ghillie&&st>=1.5)m*=0.4; if(PT.stillWall&&st>=0.6)m*=0.6; if(PT.moveGuard&&st===0&&P.body&&P.body.velocity.length()>40)m*=1-PT.moveGuard; if(PT.farmor&&(this.elapsed||0)<(this._ptArmorT||0))m*=0.7;
+    if(PT.still&&st>=0.6)m*=1-PT.still; if(PT.ghillie&&st>=1.5)m*=0.4; if(PT.stillWall&&st>=0.6)m*=0.6; if(PT.moveGuard&&st===0&&P.body&&P.body.velocity.length()>40)m*=1-PT.moveGuard; if(PT.farmor&&(this.elapsed||0)<(this._ptArmorT||0))m*=0.7; if(PT.chin)m*=1-PT.chin; if(PT.dashGuard&&this._dashBuffT>0)m*=0.7;
     if(PT.surround){let n=0;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<170)n++;});if(n>=5)m*=1-PT.surround;} return m; }
   rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
