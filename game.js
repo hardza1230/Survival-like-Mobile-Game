@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.31';
+const GAME_VERSION = '6.55.32';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.32',date:'2026-10-05',title:'Implicit · Prefix · Suffix gear',items:['Gear now uses Implicit · Prefix · Suffix: each base item has one implicit line (Common to Mythic), up to 3 prefixes and 3 suffixes','Equipment compare shows ATK/Armor plus the implicit and mod lines only','Per-slot item level bonus folded into the implicit'] },
   {v:'6.55.31',date:'2026-10-05',title:'Power includes in-stage growth',items:['Power now estimates the strength you reach with in-stage level-up cards','Recommended Power uses the same estimate, so readiness checks are unchanged']},
   {v:'6.55.30',date:'2026-10-05',title:'Plain level-up cards',items:['Level-up cards no longer roll Rare, Epic or Legend; every card gives its normal value']},
   {v:'6.55.29',date:'2026-10-04',title:'Accurate Power',items:['Power is now calculated from your real stats: damage, crit, attack speed, HP, armor and defense','Recommended Power per stage is derived from that stage’s enemy and boss strength']},
@@ -3355,7 +3356,7 @@ const AFFIX_CATEGORY = {
   utility:{label:'Utility',color:0x5ad1c4,hex:'#91eadf'},
 };
 function affixCategory(mod){return AFFIX_CATEGORY[(mod&&mod.category)||'utility']||AFFIX_CATEGORY.utility;}
-const AFFIX_COUNT = { start:0, common:1, rare:2, epic:2, legend:3 };
+const AFFIX_COUNT = { start:0, common:1, rare:2, epic:3, legend:4 };   // v6.55.32: max 3 prefix + 3 suffix (RARITY_SLOTS)
 // item level → tier ดีสุดที่สุ่มได้ (ฐานดี = โรลได้ดีกว่า): legend→T1, epic→T2, rare→T3, common→T4
 const BASE_BEST_TIER = { start:5, common:4, rare:3, epic:2, legend:1 };
 // v4.48: mod พิเศษเฉพาะไอเทม iLv สูง (endgame chase) — hook เข้า field ที่ applyMeta reset/consume อยู่แล้วทั้งหมด (bossDmg/lowHpGuard/xpMul/dashCdMul เดิม + lifesteal/healEffect ที่ยังว่างจากคราวก่อน) ไม่มีกลไกใหม่ กัน regression
@@ -3425,7 +3426,7 @@ function rollOneAffixLocked(mod,best,ilvl,lock){ if(!lock||lock.id!==mod.id)retu
 function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl,mod.tiers.length-1), band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v,t11:1,tierSchema:2}; }
 function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:l<45?3:99;}   // ของเลเวลต่ำ = mod น้อย (กันของด่านแรกโกง) ค่อย ๆ ปลดตาม iLv
 function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel));if(!n)return[];const stub=base?{baseId:base.id,slot:base.slot,grade:base.tier,itemLevel}:null,pool=stub?craftAffixPoolForItem(stub):AFFIX_POOL,tItem=stub||{grade:baseTier,itemLevel};
-  const pre=pool.filter(a=>a.kind==='prefix'),suf=pool.filter(a=>a.kind==='suffix');let nPre,nSuf;if(n===1){if(Math.random()<.5){nPre=1;nSuf=0;}else{nPre=0;nSuf=1;}}else if(n===2){nPre=1;nSuf=1;}else{if(Math.random()<.5){nPre=2;nSuf=1;}else{nPre=1;nSuf=2;}}
+  const pre=pool.filter(a=>a.kind==='prefix'),suf=pool.filter(a=>a.kind==='suffix');let nPre,nSuf;if(n===1){if(Math.random()<.5){nPre=1;nSuf=0;}else{nPre=0;nSuf=1;}}else if(n===2){nPre=1;nSuf=1;}else if(n>=4){nPre=Math.min(3,Math.ceil(n/2));nSuf=Math.min(3,n-nPre);}else{if(Math.random()<.5){nPre=2;nSuf=1;}else{nPre=1;nSuf=2;}}
   const out=[],pick=(arr,k)=>{const p=arr.filter(m=>!out.some(a=>a.id===m.id));for(let i=0;i<k&&p.length;i++){const m=pickWeightedMod(p);p.splice(p.indexOf(m),1);out.push(rollOneAffix(m,affixBestTierForItem(tItem,m),itemLevel));}};pick(pre,nPre);pick(suf,nSuf);if(out.length<n)pick(pool,n-out.length);return out;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
@@ -3645,16 +3646,23 @@ const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1
 function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.025,l-1):Math.pow(1.025,59)*Math.pow(1.005,l-60); }
 // v6.55.19: สแตตฐานของไอเทม (desc ของ GEAR) สเกลตาม iLv — iLv1 = 35%, iLv60 = 100%, endgame สูงกว่า 100% เล็กน้อย · กันของ common ด่านแรกให้ +crit/+dmg เต็มค่า
 function gearBaseScale(ilvl){const l=Math.max(1,Math.min(100,Number(ilvl)||1));return l<=60?0.35+0.65*(l-1)/59:1+0.15*(l-60)/40;}
-function applyScaledGear(p,it,lv,ilvl){const f=gearBaseScale(ilvl),add=['dmgMul','critChance','critMul','maxhp','regen','regenFlat','pickup','lifeOnKill','lowHpDmg','bossDmg','lowHpGuard','flatDmg','lifesteal'],mul=['cdMul','dmgTakenMul','baseSpeed','xpMul','dashCdMul'],b={};
+// v6.55.32 (owner: mods too long → Implicit/Prefix/Suffix): each base keeps only 1 implicit line = its rarest stat · uniques keep their full effect
+const IMPLICIT_RANK=[['_gearRevive','Revive','',1,0,4],['lifesteal','Lifesteal HP','',1,0,3],['lifeOnKill','HP / Kill','',1,0,3],['lowHpGuard','Emergency Guard','%',100,0,3],['lowHpDmg','Low-HP DMG','%',100,0,3],['bossDmg','Boss DMG','%',100,0,3],['dashCdMul','Dash Recovery','%',-100,1,2],['xpMul','EXP Gain','%',100,1,2],['critMul','Crit DMG','%',100,0,2],['critChance','Crit','%',100,0,2],['cdMul','Cooldown','%',-100,1,1],['dmgTakenMul','Defense','%',-100,1,1],['baseSpeed','Move Speed','%',100,1,1],['regen','Regen/s','',1,0,1],['pickup','Pickup','%',100,1,0],['flatDmg','Flat DMG/hit','',1,0,0],['dmgMul','DMG','%',100,0,0],['maxhp','HP','',1,0,0]];
+const IMPLICIT_TIER=['Common','Uncommon','Rare','Very Rare','Mythic'],IMPLICIT_COLOR=['#c9c2d4','#8bd3a0','#8bd3ff','#ffcf5a','#ff8f3a'];
+const _implCache={};
+function gearImplicit(base){if(!base||base.tier==='start'||base.unique||!base.apply)return null;if(_implCache[base.id]!==undefined)return _implCache[base.id];
+  const mk=()=>({dmgMul:1,maxhp:0,critChance:0,critMul:1.55,cdMul:1,dmgTakenMul:1,baseSpeed:1,pickup:1,regen:0,lifeOnKill:0,lowHpDmg:0,bossDmg:0,lowHpGuard:0,xpMul:1,dashCdMul:1,_gearRevive:0,flatDmg:0,lifesteal:0}),a=mk(),b=mk();let r=null;
+  try{b.apply=null;base.apply(b,0);}catch(e){}
+  for(const [k,label,u,sc,isMul,rank] of IMPLICIT_RANK){const d=isMul?(b[k]||1)/(a[k]||1)-1:(b[k]||0)-(a[k]||0);if(Math.abs(d)>1e-6){r={key:k,label,unit:u,sc,isMul,rank:Math.min(4,rank+(base.tier==='legend'?1:0)),raw:d};break;}}
+  return _implCache[base.id]=r;}
+function implicitValue(base,ilvl){const im=gearImplicit(base);if(!im)return 0;if(im.key==='_gearRevive')return im.raw;const f=gearBaseScale(ilvl);return im.isMul?Math.pow(1+im.raw,f)-1:im.raw*f;}
+function implicitText(base,ilvl){const im=gearImplicit(base);if(!im)return '';const v=implicitValue(base,ilvl)*im.sc,n=Math.abs(v)>=10?Math.round(v):Math.round(v*10)/10;return im.label+' '+(n>0?'+':'')+n+im.unit;}
+function applyScaledGear(p,it,lv,ilvl){const im=gearImplicit(it);if(im){const k=im.key,v=implicitValue(it,ilvl);if(im.isMul)p[k]=(p[k]==null?1:p[k])*(1+v);else p[k]=(p[k]||0)+v;return;}const f=gearBaseScale(ilvl),add=['dmgMul','critChance','critMul','maxhp','regen','regenFlat','pickup','lifeOnKill','lowHpDmg','bossDmg','lowHpGuard','flatDmg','lifesteal'],mul=['cdMul','dmgTakenMul','baseSpeed','xpMul','dashCdMul'],b={};
   for(const k of add)b[k]=p[k]||0;for(const k of mul)b[k]=p[k]==null?1:p[k];it.apply(p,lv);
   for(const k of add)if(typeof p[k]==='number')p[k]=b[k]+(p[k]-b[k])*f;for(const k of mul)if(typeof p[k]==='number'&&b[k]>0&&p[k]>0)p[k]=b[k]*Math.pow(p[k]/b[k],f);}
 function applyItemLevelBonus(p,item){const bse=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(bse&&bse.tier==='start')return;   // v6.55.24: ช่องว่าง ('None') ไม่ได้โบนัส iLv
   applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
-  if(slot==='weapon'||slot==='ring')p.dmgMul+=(1+0.24*q)-1;
-  else if(slot==='gloves')p.critChance=(p.critChance||0)+0.04*q;
-  else if(slot==='armor'){p.maxhp+=Math.round(80*q);p.dmgTakenMul*=1-0.06*q;}
-  else if(slot==='boots')p.baseSpeed*=1+0.10*q;
-  else if(slot==='amulet'){p.maxhp+=Math.round(50*q);p.regen=(p.regen||0)+0.6*q;}
+  void q;void slot;   // v6.55.32: per-slot iLv bonus removed (implicit scales with iLv instead)
 }
 function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot==='weapon'&&(it.chapter||1)===ch),support=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&(it.chapter||1)<=ch);}
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 times
@@ -7562,7 +7570,7 @@ class Game extends Phaser.Scene {
       for(const [dir,label,px] of [[-1,'‹',w/2-76],[1,'›',w/2+76]]){const enabled=(dir<0?page>0:page<pages-1),pg=this.add.graphics();pg.fillStyle(enabled?0x3a3550:0x241a2e,1);pg.fillRoundedRect(px-pw/2,py,pw,ph,8);const tx=this.add.text(px,py+ph/2,label,{fontSize:'18px',color:enabled?'#ffffff':'#5e5062'}).setOrigin(0.5);this.menu.add([pg,tx]);if(enabled)this._zone(px-pw/2,py,pw,ph,()=>{this.gearPageBySlot[sel]=page+dir;this.buildMenuScreen();});} y+=ph+5; }
     selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
     if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
-      const rows=gearCompareRows(equipped,selected),affLines=it=>(it&&it.affixes||[]).map(a=>{const d=affixDef(a.id);return d?d.emoji+d.label+' '+d.fmt(a.v)+' T'+(a.t||3):'';}).filter(Boolean),eqAff=affLines(equipped),selAff=affLines(selected),affN=Math.max(eqAff.length,selAff.length),affTop=44+Math.max(1,rows.length)*14+6,panelH=affTop+(affN?14+affN*13:0)+8,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
+      const rows=gearCompareRows(equipped,selected).filter(r=>r.key==='attack'||r.key==='armor'),affLines=it=>{if(!it)return[];const ib=GEAR_ALL.find(g=>g.id===it.baseId),im=gearImplicit(ib),out=[];if(im)out.push({t:'◇ '+implicitText(ib,it.itemLevel)+' · '+IMPLICIT_TIER[im.rank],c:IMPLICIT_COLOR[im.rank]});else if(ib&&ib.unique)out.push({t:'★ '+ib.desc,c:'#ff8f3a'});const af=(it.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);for(const kind of ['prefix','suffix'])af.filter(x=>(x.d.kind||'suffix')===kind).slice(0,3).forEach(x=>out.push({t:(kind==='prefix'?'P ':'S ')+x.d.emoji+x.d.label+' '+x.d.fmt(x.a.v)+' T'+(x.a.t||3),c:kind==='prefix'?'#ffb27a':'#8be0c8'}));return out;},eqAff=affLines(equipped),selAff=affLines(selected),affN=Math.max(eqAff.length,selAff.length),affTop=44+Math.max(1,rows.length)*14+6,panelH=affTop+(affN?14+affN*13:0)+8,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
       const drawCompareCard=(x,item,itBase,title,on)=>{const itTl=item?(TIER_LABEL[item.grade]||TIER_LABEL.common):TIER_LABEL.start,g=this.add.graphics();g.fillStyle(on?0x332819:0x241a33,0.97);g.fillRoundedRect(x,y,cw,panelH,12);g.lineStyle(on?2:1.5,on?0xffd166:Phaser.Display.Color.HexStringToColor(itTl.color).color,1);g.strokeRoundedRect(x,y,cw,panelH,12);this.menu.add(g);
         const hd=this.add.text(x+8,y+7,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:on?'#ffd166':'#9a90ab'}).setOrigin(0,0);
         const artKey=item&&itBase?'gear_'+itBase.id:null,hasArt=artKey&&this.textures.exists(artKey);
@@ -7574,8 +7582,8 @@ class Game extends Phaser.Scene {
         const lt=this.add.text(leftX+8,ry,r.label+' '+from,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#d8c7da'}).setOrigin(0,0);
         const rt=this.add.text(rightX+8,ry,r.label+' '+to+arrow,{fontFamily:'sans-serif',fontStyle:Math.abs(r.delta)>0.001?'bold':'normal',fontSize:'8.5px',color:dc}).setOrigin(0,0);this.menu.add([lt,rt]);});
       if(!rows.length){const same=this.add.text(w/2,y+47,eq?'Currently equipped':'No numeric stat difference',{fontFamily:'sans-serif',fontSize:'9px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(same);}
-      if(affN){for(const [x,list] of [[leftX,eqAff],[rightX,selAff]]){const lg=this.add.graphics();lg.lineStyle(1,0x5a4f6e,0.8);lg.lineBetween(x+8,y+affTop-3,x+cw-8,y+affTop-3);const hd=this.add.text(x+8,y+affTop,'MODS',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#9a90ab'});this.menu.add([lg,hd]);
-        (list.length?list:['No affixes']).forEach((t,i)=>{const at=this.add.text(x+8,y+affTop+14+i*13,t,{fontFamily:'sans-serif',fontSize:'8px',color:'#c9a3ff',wordWrap:{width:cw-16},maxLines:1});this.menu.add(at);});}}
+      if(affN){for(const [x,list] of [[leftX,eqAff],[rightX,selAff]]){const lg=this.add.graphics();lg.lineStyle(1,0x5a4f6e,0.8);lg.lineBetween(x+8,y+affTop-3,x+cw-8,y+affTop-3);const hd=this.add.text(x+8,y+affTop,'IMPLICIT · PREFIX · SUFFIX',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#9a90ab'});this.menu.add([lg,hd]);
+        (list.length?list:[{t:'No mods',c:'#8d8499'}]).forEach((o,i)=>{const at=this.add.text(x+8,y+affTop+14+i*13,o.t,{fontFamily:'sans-serif',fontSize:'8px',color:o.c,wordWrap:{width:cw-16},maxLines:1});this.menu.add(at);});}}
       const state=this.add.text(rightX+cw-8,y+7,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'8px',color:rl.color}).setOrigin(1,0);this.menu.add(state); y+=panelH+6;
       const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
       const bgap=5,bw=(w-28-bgap*3)/4,bh=32,drawAction=(i,label,color,fn)=>{const bx=14+i*(bw+bgap),g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,y,bw,bh,9);const t=this.add.text(bx+bw/2,y+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff',align:'center'}).setOrigin(0.5);this.menu.add([g,t]);if(fn)this._zone(bx,y,bw,bh,fn);};
