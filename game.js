@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.64';
+const GAME_VERSION = '6.55.65';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.65',date:'2026-10-05',title:'Path Uniques hit bosses harder',items:['Berry Blast deals ×2 damage to bosses and minibosses','Glacier Bloom chills bosses and bursts them for heavy damage when the ice breaks','Frost Lance Charge deals ×1.8 damage to bosses and minibosses']},
   {v:'6.55.64',date:'2026-10-05',title:'Shotgun fires faster',items:['Shotgun Build fires about 45% faster and each volley has 3 more pellets','Each pellet deals a little less damage to keep the build fair']},
   {v:'6.55.63',date:'2026-10-05',title:'Shotgun sound',items:['Shotgun Build has its own blast-and-pump sound','Stronger screen shake on each shotgun volley']},
   {v:'6.55.62',date:'2026-10-05',title:'Shotgun feels heavy',items:['Shotgun Build fires slower, punchier volleys with a muzzle blast and screen kick','Pellets are shorter range, push enemies back and hit much harder up close (×2 within 120px)','Far pellets lose damage, so getting close matters']},
@@ -5404,9 +5405,9 @@ class Game extends Phaser.Scene {
   lanceLen(){ return 350*(1+0.3*(this.mintLv().l_far||0)); }
   mintUniqueStart(){ const u=this.uniqueInfo(); this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     return {ul:this.uniqueLevel||1,unit:(this.player.dmgMul||1)*this.uniquePower()}; }
-  releaseGlacierBloom(c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[];
+  releaseGlacierBloom(c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[],bosses=[];
     this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active)return;
-      if(e.isBoss||e.isMini){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); this.mintChill(e,0.6); return; }
+      if(e.isBoss||e.isMini){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); this.mintChill(e,0.6); this.damage(e,hit*1.5,e.x,e.y); bosses.push(e); return; }
       e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); frozen.push(e); });
     if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',cx,cy,{scale:r*2.3/320,depth:6,normal:true}));
     const ring=this.camWorld(this.add.circle(cx,cy,20,0xbdf0ff,0.25).setStrokeStyle(4,0xffffff,0.9).setDepth(9)); this.tweens.add({targets:ring,radius:r,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
@@ -5414,11 +5415,12 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(Math.max(200,dur*1000-150),()=>{ if(this.state!=='play')return; let n=0;
       frozen.forEach(e=>{ if(!e.active||!(e.frozen>0))return; n++; const x=e.x,y=e.y; this.burst(x,y,0xbdf0ff); this.damage(e,hit*2,x,y);
         if(lv.m_shard)this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==e&&this.dist(o.x,o.y,x,y)<90)this.damage(o,hit*2*0.4*lv.m_shard,o.x,o.y); }); });
+      bosses.forEach(e=>{ if(!e.active)return; n++; this.burst(e.x,e.y,0xbdf0ff); this.vfxHitRing(e.x,e.y,0x9fe8ff,true); this.damage(e,hit*4*(1+0.4*(lv.m_shard||0)),e.x,e.y); });
       if(n){ this.screenShake(100,0.004); Sfx.boom&&Sfx.boom(); } });
     this.showBanner('❄️ Glacier Bloom',frozen.length+' frozen',800); }
   releaseFrostLance(ang,c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),L=this.lanceLen(),ca=Math.cos(ang),sa=Math.sin(ang),x0=pl.x,y0=pl.y,dmg=(40+ul*15)*unit*(0.7+0.3*c);
     if(lv.l_twin&&!this._lanceTwin){ this._lanceTwin=true; this.uniqueCd=0.25; this.time.delayedCall(2000,()=>{ if(this._lanceTwin){ this._lanceTwin=false; this.uniqueCd=Math.max(this.uniqueCd,this.uniqueCooldown(this.uniqueInfo())-2); } }); } else this._lanceTwin=false;
-    let hits=0; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,al=rx*ca+ry*sa; if(al<-20||al>L+20)return; if(Math.abs(-rx*sa+ry*ca)>34+(e.body?e.body.halfWidth:18))return; hits++; this.damage(e,dmg,e.x,e.y); if(e.active)this.mintChill(e,0.8); });
+    let hits=0; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,al=rx*ca+ry*sa; if(al<-20||al>L+20)return; if(Math.abs(-rx*sa+ry*ca)>34+(e.body?e.body.halfWidth:18))return; hits++; this.damage(e,dmg*(e.isBoss||e.isMini?1.8:1),e.x,e.y); if(e.active)this.mintChill(e,0.8); });
     pl.iframe=Math.max(pl.iframe||0,0.45); this.poseAttack(420,'char_mint_gale');
     this.tweens.add({targets:pl,x:x0+ca*L,y:y0+sa*L,duration:170,ease:'Quad.out',onUpdate:()=>{ if(pl.body)pl.body.reset(pl.x,pl.y); },onComplete:()=>{ if(lv.l_burst&&this.state==='play'){ const bx=pl.x,by=pl.y; this.vfxHitRing(bx,by,0x9fe8ff,true); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,bx,by)<110)this.damage(e,dmg*(1+0.5*lv.l_burst)*0.6,e.x,e.y); }); Sfx.boom&&Sfx.boom(); } }});
     const g=this.camWorld(this.add.graphics().setDepth(5)); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);
@@ -5434,7 +5436,7 @@ class Game extends Phaser.Scene {
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const dx=e.x-pl.x,dy=e.y-pl.y,d=Math.hypot(dx,dy); if(d>R+(e.body?e.body.halfWidth:18))return;
         let da=Math.atan2(dy,dx)-ang; while(da>Math.PI)da-=Math.PI*2; while(da<-Math.PI)da+=Math.PI*2; if(Math.abs(da)>h&&d>40)return;
         const n=Math.max(1,Math.round(bm.pellets*(1-d/(R*1.6))*0.5)); hits++;
-        this.damage(e,unit*n*(d<120?2*pb:1),e.x,e.y);
+        this.damage(e,unit*n*(d<120?2*pb:1)*(e.isBoss||e.isMini?2:1),e.x,e.y);
         if(e.active&&!e.isBoss&&!e.isMini&&e.body){ const k=(d<120?520:320)/Math.max(1,d); e.body.velocity.x+=dx*k; e.body.velocity.y+=dy*k; } });
       for(let i=0;i<bm.pellets;i++){ const a=ang-h+bm.cone*(i+0.5)/bm.pellets+(Math.random()-0.5)*0.08,len=200+Math.random()*100;
         const dot=this.camWorld(this.add.circle(pl.x,pl.y,4,[0xff5c8a,0xffd166,0xffffff][i%3]).setDepth(90450));
