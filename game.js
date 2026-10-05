@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.60';
+const GAME_VERSION = '6.55.61';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.61',date:'2026-10-05',title:'Mint path Uniques',items:['Freeze Build: Glacier Bloom — hold to grow an ice ring, release to freeze everything inside; still-frozen foes shatter for double damage','Piercer Build: Frost Lance Charge — hold to aim, release to dash through enemies and leave a slowing ice trail','Barrage Build keeps Mint Gale','New cards: Wider Bloom, Long Winter, Shard Spray, Long Lance, Twin Lance, Lance Burst']},
   {v:'6.55.60',date:'2026-10-05',title:'Shotgun Unique: Berry Blast',items:['Momo Shotgun Build: hold Unique to aim a cone, release to fire a huge pellet blast with knockback','Enemies within 120px take double damage · Momo hops back from the recoil','New Shotgun cards: Wide Blast, Recoil Hop and Double Tap']},
   {v:'6.55.59',date:'2026-10-05',title:'Trade-in details',items:['Tap an item in Gear Trade-in to see its name, grade, item level, base stat, implicit and mods']},
   {v:'6.55.58',date:'2026-10-05',title:'Trade-in fix',items:['Gear Trade-in never lists gear you are wearing, including on older saves']},
@@ -2664,13 +2665,19 @@ const BASIC_PATHS={
   mint:[
     {id:'glacier',iconKey:'ic_path_glacier',name:'Freeze Build',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze crowds · shatter safely',desc:'Lances deal 10% less damage; Frozen enemies take 35% more. Bosses can be Chilled, but cannot freeze.',
       upgrades:[{id:'p_deepchill',iconKey:'ic_path_p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen',desc:'Frozen enemies take 12% more damage per rank.'},
-                {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing a normal enemy applies 1 Chill stack to nearby enemies; radius grows 20% per rank.'}]},
+                {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing a normal enemy applies 1 Chill stack to nearby enemies; radius grows 20% per rank.'},
+                {id:'m_grow',iconKey:'ic_path_glacier',name:'Wider Bloom',emoji:'🌸',max:3,headline:'Glacier Bloom +25% size',desc:'Glacier Bloom Unique: ice ring 25% larger per rank.'},
+                {id:'m_hold',iconKey:'ic_path_glacier',name:'Long Winter',emoji:'⏳',max:2,headline:'Bloom freezes +0.6s',desc:'Glacier Bloom Unique: freeze lasts 0.6s longer per rank.'},
+                {id:'m_shard',iconKey:'ic_path_glacier',name:'Shard Spray',emoji:'💎',max:2,headline:'Shatter splashes',desc:'Glacier Bloom Unique: each shatter hits enemies within 90px for 40% per rank.'}]},
     {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (up to 3 total), 22% sooner. Each lance deals 62% damage.',
       upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
                 {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'}]},
     {id:'pierce',iconKey:'ic_path_pierce',name:'Piercer Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Heavy lance · pierces 2 foes',desc:'Deal 75% more damage and reach 30% farther, but fire 40% slower. Pierce 2 normal enemies; shatter on bosses.',
       upgrades:[{id:'p_shatterpt',iconKey:'ic_path_p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% DMG to elites/bosses',desc:'Deal 15% more damage to elites, minibosses and bosses per rank.'},
-                {id:'p_coldblood',iconKey:'ic_path_p_coldblood',name:'Fracture Line',emoji:'💎',max:3,headline:'+1 pierced target',desc:'Pierce 1 extra normal enemy per rank before shattering; shatter immediately on bosses.'}]}],
+                {id:'p_coldblood',iconKey:'ic_path_p_coldblood',name:'Fracture Line',emoji:'💎',max:3,headline:'+1 pierced target',desc:'Pierce 1 extra normal enemy per rank before shattering; shatter immediately on bosses.'},
+                {id:'l_far',iconKey:'ic_path_pierce',name:'Long Lance',emoji:'📏',max:3,headline:'Lance dash +30% distance',desc:'Frost Lance Charge Unique: dash 30% farther per rank.'},
+                {id:'l_twin',iconKey:'ic_path_pierce',name:'Twin Lance',emoji:'✌️',max:1,headline:'Dash twice',desc:'Frost Lance Charge Unique: after a dash you can dash once more within 2s.'},
+                {id:'l_burst',iconKey:'ic_path_pierce',name:'Lance Burst',emoji:'💥',max:2,headline:'Ice blast at the end',desc:'Frost Lance Charge Unique: ice blast at the end of the dash, +50% damage per rank.'}]}],
   cocoa:[
     {id:'brawler',iconKey:'ic_path_brawler',name:'Brawler Build',emoji:'🥊',base:{dmg:0.72,cd:0.7,wave:1},desc:'Combo 30% faster, ×0.72 damage · every finisher blasts a shockwave · rush build',
       upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Shock Knuckles',emoji:'💥',max:2,fx:{wave:1},desc:'+1 extra shockwave after each finisher per rank'},
@@ -5260,7 +5267,7 @@ class Game extends Phaser.Scene {
 
       if(this._upBtn&&this._upBtn.visible&&Math.abs(p.x-this._upBtn.x)<38&&Math.abs(p.y-this._upBtn.y)<34){ this.openUpgradePanel(); return; }
       if(this._beat){ this.beatDown(p); return; }   // v5.55 มินิเกม Bear Beat Rush กินทุกการแตะ
-      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0){this._ubHold={id:p.id,t:performance.now()}; Sfx.beatFx('hold');} return; } if(this.isSniperUnique()||this.isBlastUnique()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
+      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.character==='cocoa'){ if(this.uniqueCd<=0){this._ubHold={id:p.id,t:performance.now()}; Sfx.beatFx('hold');} return; } if(this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
       if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.doDash(); return; }
 
@@ -5331,15 +5338,18 @@ class Game extends Phaser.Scene {
   }
   // v6.0.66 🎯 Momo สาย Sniper: Unique = กดค้างชาร์จ (หลอดเหนือหัว) · ลากนิ้วกำหนดทิศ · กล้องซูมออก · ปล่อย = กระสุนเส้นตรงทะลุทุกตัว ทิ้งรอยลมแหวก
   // v6.55.60 💥 Momo สาย Shotgun: Unique = Berry Blast · กดค้างเล็งกรวย (ลากกำหนดทิศ) ปล่อย = เม็ดกระจายใหญ่ ผลักกระเด็น · ใกล้ <120 ×2 · ถอยหลังจากแรงถีบ
+  // v6.55.61 ❄️ Mint: สาย glacier = Glacier Bloom · สาย pierce = Frost Lance Charge · อื่น ๆ (barrage) = Mint Gale เดิม
+  mintChargeKind(){ if(this.character!=='mint'||!this.basicAttack)return null; const pa=this.basicAttack.path; return pa==='glacier'?'bloom':pa==='pierce'?'lance':null; }
+  mintLv(){ return (this.basicAttack&&this.basicAttack.lv)||{}; }
   isBlastUnique(){ return this.character==='momo'&&this.basicAttack&&this.basicAttack.path==='shotgun'; }
   blastMods(){ const lv=(this.basicAttack&&this.basicAttack.lv)||{},w=lv.b_wide||0,r=lv.b_recoil||0;
     return {cone:(120+20*w)*Math.PI/180,pellets:11+2*w+(lv.buckshot||0),hop:80+40*r,iframe:0.35+0.3*r,double:(lv.b_double||0)>0}; }
   isSniperUnique(){ return this.character==='momo'&&this.basicAttack&&this.basicAttack.path==='sniper'; }
   snipeMods(){ const r=(this.basicAttack&&this.basicAttack.ranks)||{},lv=(this.basicAttack&&this.basicAttack.lv)||{},h=r.s_heavy||0,q=r.s_quick||0,b=r.s_bore||0,sp=lv.s_split||0;
     return {chargeMs:Math.max(400,(1100+h*350)*Math.pow(0.78,q)*(1-((this.player&&this.player._pt&&this.player._pt.chg)||0))),dmg:(1+0.45*h)*Math.max(0.5,1-0.12*q)*Math.max(0.6,1-0.1*sp),width:1+0.4*b,cd:1+0.15*b,split:sp}; }
-  snipeCharge(){ const s=this._snipe; return s?Math.min(1,(performance.now()-s.t0)/(s.blast?450:this.snipeMods().chargeMs)):0; }
-  startSnipeCharge(p){ const pl=this.player,a=this.isBlastUnique()?(this.nearestEnemy?this.nearestEnemy(500):null)||this.strongestEnemy(900):this.strongestEnemy(900);
-    this._snipe={id:p.id,t0:performance.now(),sx:p.x,sy:p.y,ang:a?Math.atan2(a.y-pl.y,a.x-pl.x):Math.atan2(this.moveDir?this.moveDir.y:-1,this.moveDir?this.moveDir.x:0),dragged:false,full:false,blast:this.isBlastUnique(),
+  snipeCharge(){ const s=this._snipe; return s?Math.min(1,(performance.now()-s.t0)/(s.blast?450:s.kind==='bloom'?1000:s.kind==='lance'?400:this.snipeMods().chargeMs)):0; }
+  startSnipeCharge(p){ const pl=this.player,a=(this.isBlastUnique()||this.mintChargeKind())?(this.nearestEnemy?this.nearestEnemy(500):null)||this.strongestEnemy(900):this.strongestEnemy(900);
+    this._snipe={id:p.id,t0:performance.now(),sx:p.x,sy:p.y,ang:a?Math.atan2(a.y-pl.y,a.x-pl.x):Math.atan2(this.moveDir?this.moveDir.y:-1,this.moveDir?this.moveDir.x:0),dragged:false,full:false,blast:this.isBlastUnique(),kind:this.mintChargeKind(),
       g:this.camWorld(this.add.graphics().setDepth(90500))};
     if(this.textures.exists('vfx_strawberry_charge'))this._snipe.aura=this.trackArtVfx(this.camWorld(this.add.image(pl.x,pl.y-24,'vfx_strawberry_charge').setDepth(90490).setDisplaySize(90,90).setAlpha(0.45)));
     if(Sfx.beatFx)Sfx.beatFx('hold'); }
@@ -5347,7 +5357,14 @@ class Game extends Phaser.Scene {
   cancelSnipe(){ const s=this._snipe;if(!s)return; if(s.g)s.g.destroy();if(s.aura)s.aura.destroy(); this._snipe=null; }
   tickSnipe(){ const s=this._snipe;if(!s)return; if(this.state!=='play'){ this.cancelSnipe(); return; }
     const c=this.snipeCharge(),pl=this.player,g=s.g,len=1500,ca=Math.cos(s.ang),sa=Math.sin(s.ang),t=(this.elapsed||0);
-    if(!s.dragged){ const a=s.blast?((this.nearestEnemy&&this.nearestEnemy(500))||this.strongestEnemy(900)):this.strongestEnemy(900); if(a)s.ang=Math.atan2(a.y-pl.y,a.x-pl.x); }
+    if(!s.dragged){ const a=(s.blast||s.kind)?((this.nearestEnemy&&this.nearestEnemy(500))||this.strongestEnemy(900)):this.strongestEnemy(900); if(a)s.ang=Math.atan2(a.y-pl.y,a.x-pl.x); }
+    if(s.kind==='bloom'){ const r=this.bloomRadius(c); if(c>=1&&!s.full){ s.full=true; Sfx.beatFx&&Sfx.beatFx('cue'); }
+      g.clear(); g.fillStyle(0x9fe8ff,0.1+0.12*c); g.fillCircle(pl.x,pl.y,r); g.lineStyle(3,s.full?0xffffff:0x9fe8ff,0.6+0.3*c+(s.full?0.2*Math.sin(t*18):0)); g.strokeCircle(pl.x,pl.y,r);
+      for(let k=0;k<6;k++){ const a=t*0.8+k*TAU/6; g.fillStyle(0xe6fbff,0.7); g.fillCircle(pl.x+Math.cos(a)*r,pl.y+Math.sin(a)*r,3+c*2); }
+      if(s.aura&&s.aura.active)s.aura.setVisible(false); return; }
+    if(s.kind==='lance'){ const L=this.lanceLen(),ca=Math.cos(s.ang),sa=Math.sin(s.ang); if(c>=1&&!s.full){ s.full=true; Sfx.beatFx&&Sfx.beatFx('cue'); }
+      g.clear(); g.lineStyle(30,0x9fe8ff,0.12+0.12*c); g.lineBetween(pl.x,pl.y,pl.x+ca*L,pl.y+sa*L); g.lineStyle(3,s.full?0xffffff:0x9fe8ff,0.7); g.lineBetween(pl.x,pl.y,pl.x+ca*L,pl.y+sa*L);
+      g.fillStyle(0xffffff,0.8); g.fillCircle(pl.x+ca*L,pl.y+sa*L,6+c*4); if(s.aura&&s.aura.active)s.aura.setVisible(false); return; }
     if(s.blast){ const bm=this.blastMods(),R=300,h=bm.cone/2; if(c>=1&&!s.full){ s.full=true; Sfx.beatFx&&Sfx.beatFx('cue'); }
       g.clear(); g.fillStyle(s.full?0xffd166:0xff76a8,0.12+0.14*c); g.slice(pl.x,pl.y,R,s.ang-h,s.ang+h,false); g.fillPath();
       g.lineStyle(2,s.full?0xffd166:0xff9ec4,0.5+0.4*c); g.beginPath(); g.arc(pl.x,pl.y,R,s.ang-h,s.ang+h); g.strokePath();
@@ -5363,6 +5380,8 @@ class Game extends Phaser.Scene {
     g.fillStyle(s.full?0xffd166:0xff76a8,1); g.fillRoundedRect(bx,by,Math.max(4,bw*c),10,5); }
   releaseSnipe(){ const s=this._snipe;if(!s)return; const c=this.snipeCharge(),ang=s.ang; this.cancelSnipe(); if(this.state!=='play'||this.uniqueCd>0)return;
     if(s.blast)return this.releaseBerryBlast(ang,c);
+    if(s.kind==='bloom')return this.releaseGlacierBloom(c);
+    if(s.kind==='lance')return this.releaseFrostLance(ang,c);
     const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player;
     const sm=this.snipeMods(); this.uniqueCd=this.uniqueCooldown(u)*sm.cd;this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     const mul=0.45+1.55*c, dmg=(60+ul*22)*dm*up*mul*(c>=1?1.25:1)*sm.dmg, w=(26+c*26)*sm.width, len=1500; let hits=0;
@@ -5376,6 +5395,33 @@ class Game extends Phaser.Scene {
     this.screenShake(160+c*160,0.006+c*0.008); if(c>=1&&this.hitStop)this.hitStop(60);
     if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam();
     if(c>=1)this.showBanner('🎯 Perfect Shot','Full charge · '+hits+' hit'+(hits===1?'':'s'),900); }
+  bloomRadius(c){ return (110+150*c)*(1+0.25*(this.mintLv().m_grow||0)); }
+  lanceLen(){ return 350*(1+0.3*(this.mintLv().l_far||0)); }
+  mintUniqueStart(){ const u=this.uniqueInfo(); this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
+    return {ul:this.uniqueLevel||1,unit:(this.player.dmgMul||1)*this.uniquePower()}; }
+  releaseGlacierBloom(c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[];
+    this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active)return;
+      if(e.isBoss||e.isMini){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); this.mintChill(e,0.6); return; }
+      e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); frozen.push(e); });
+    if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',cx,cy,{scale:r*2.3/320,depth:6,normal:true}));
+    const ring=this.camWorld(this.add.circle(cx,cy,20,0xbdf0ff,0.25).setStrokeStyle(4,0xffffff,0.9).setDepth(9)); this.tweens.add({targets:ring,radius:r,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
+    this.screenFlash&&this.screenFlash(0xbdf0ff,0.18,220); this.screenShake(120,0.005); Sfx.magnet&&Sfx.magnet();
+    this.time.delayedCall(Math.max(200,dur*1000-150),()=>{ if(this.state!=='play')return; let n=0;
+      frozen.forEach(e=>{ if(!e.active||!(e.frozen>0))return; n++; const x=e.x,y=e.y; this.burst(x,y,0xbdf0ff); this.damage(e,hit*2,x,y);
+        if(lv.m_shard)this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==e&&this.dist(o.x,o.y,x,y)<90)this.damage(o,hit*2*0.4*lv.m_shard,o.x,o.y); }); });
+      if(n){ this.screenShake(100,0.004); Sfx.boom&&Sfx.boom(); } });
+    this.showBanner('❄️ Glacier Bloom',frozen.length+' frozen',800); }
+  releaseFrostLance(ang,c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),L=this.lanceLen(),ca=Math.cos(ang),sa=Math.sin(ang),x0=pl.x,y0=pl.y,dmg=(40+ul*15)*unit*(0.7+0.3*c);
+    if(lv.l_twin&&!this._lanceTwin){ this._lanceTwin=true; this.uniqueCd=0.25; this.time.delayedCall(2000,()=>{ if(this._lanceTwin){ this._lanceTwin=false; this.uniqueCd=Math.max(this.uniqueCd,this.uniqueCooldown(this.uniqueInfo())-2); } }); } else this._lanceTwin=false;
+    let hits=0; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,al=rx*ca+ry*sa; if(al<-20||al>L+20)return; if(Math.abs(-rx*sa+ry*ca)>34+(e.body?e.body.halfWidth:18))return; hits++; this.damage(e,dmg,e.x,e.y); if(e.active)this.mintChill(e,0.8); });
+    pl.iframe=Math.max(pl.iframe||0,0.45); this.poseAttack(420,'char_mint_gale');
+    this.tweens.add({targets:pl,x:x0+ca*L,y:y0+sa*L,duration:170,ease:'Quad.out',onUpdate:()=>{ if(pl.body)pl.body.reset(pl.x,pl.y); },onComplete:()=>{ if(lv.l_burst&&this.state==='play'){ const bx=pl.x,by=pl.y; this.vfxHitRing(bx,by,0x9fe8ff,true); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,bx,by)<110)this.damage(e,dmg*(1+0.5*lv.l_burst)*0.6,e.x,e.y); }); Sfx.boom&&Sfx.boom(); } }});
+    const g=this.camWorld(this.add.graphics().setDepth(5)); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);
+    (this._iceTrails=this._iceTrails||[]).push({x0,y0,ca,sa,L,t:3,tick:0,g,dmg:dmg*0.12});
+    this.screenShake(110,0.005); Sfx.dash&&Sfx.dash(); this.showBanner('🗡️ Frost Lance',hits+' pierced',700); }
+  tickIceTrails(dt){ const T=this._iceTrails; if(!T||!T.length)return; for(let i=T.length-1;i>=0;i--){ const tr=T[i]; tr.t-=dt; tr.g.setAlpha(Math.min(1,tr.t)); if(tr.t<=0||this.state==='menu'){ tr.g.destroy(); T.splice(i,1); continue; }
+      tr.tick-=dt; if(tr.tick>0||this.state!=='play')continue; tr.tick=0.4;
+      this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-tr.x0,ry=e.y-tr.y0,al=rx*tr.ca+ry*tr.sa; if(al<0||al>tr.L||Math.abs(-rx*tr.sa+ry*tr.ca)>30)return; this.damage(e,tr.dmg,e.x,e.y); if(e.active&&e.body)e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); }); } }
   releaseBerryBlast(ang,c){ const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player,bm=this.blastMods();
     this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(380);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     const pb=1+0.15*(((this.basicAttack&&this.basicAttack.lv)||{}).pointblank||0);
@@ -10891,7 +10937,7 @@ class Game extends Phaser.Scene {
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const atk=[];
-    const COUNT_IDS={family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
+    const COUNT_IDS={family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
     const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades.slice():[];
     if(b.infusion)pathUps.push(INFUSION_UP);
     for(const u of d.upgrades.concat(pathUps)){const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
@@ -14011,7 +14057,7 @@ class Game extends Phaser.Scene {
     this.updatePickupReadability();
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
-    this.tickSnipe(); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt); this.modTick(dt); this.tickPathTalents(dt);
+    this.tickSnipe(); this.tickIceTrails(dt); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt); this.modTick(dt); this.tickPathTalents(dt);
     if(this._coach)this.tickTutorialCoach(dt);
     this.tickStage(dt);
     this.tickBossZoom();
