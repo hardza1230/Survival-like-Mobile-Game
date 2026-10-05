@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.55';
+const GAME_VERSION = '6.55.56';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.56',date:'2026-10-05',title:'Set button',items:['Set box removed from Equipment; a compact Set button next to Clean up opens Codex › Sets']},
   {v:'6.55.55',date:'2026-10-05',title:'Set guide & tidier gear panel',items:['Hero card is as tall as both gear rows; gear slots sit closer; Gacha button matches the slot width and is taller','New set box lists every piece, shows what is still missing and the next bonus','Sets now include amulets and rings: Home and Brigade gain common amulet/ring pieces; new Head Chef Medal and Golden Spoon Ring join the Royal Chef Set; 5-piece bonuses added']},
   {v:'6.55.54',date:'2026-10-05',title:'Worn gear on show',items:['Your six equipped pieces are shown large in a 3×2 grid next to the hero avatar']},
   {v:'6.55.53',date:'2026-10-05',title:'Balanced gear art',items:['Comparison cards: medium artwork on the left, name beside it','Grid icons sized down to fit more comfortably']},
@@ -7735,26 +7736,7 @@ class Game extends Phaser.Scene {
     this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
-    // v6.55.55: กล่องเซ็ท — ชิ้นที่ใส่แล้ว/ที่ยังขาด + โบนัสถัดไป · แตะ = Codex › Sets
-    let setBot=gby+gbh+8;
-    { const sc=gearSetCounts(), act=SET_ORDER.filter(k=>sc[k]).sort((p,q)=>sc[q]-sc[p]).slice(0,2), sx2=ax, sw2=half;
-      const rows=act.length||1, rh=48, sy=setBot, bh=rows*rh+6;
-      const g=this.add.graphics(); g.fillStyle(0x1a2433,0.94);g.fillRoundedRect(sx2,sy,sw2,bh,10);g.lineStyle(1.5,act.some(k=>sc[k]>=2)?0x8ff0b0:0x4a5a78,1);g.strokeRoundedRect(sx2,sy,sw2,bh,10); this.menu.add(g);
-      if(!act.length){ const t=this.add.text(sx2+sw2/2,sy+bh/2,'🧩 No set pieces equipped · tap to see sets',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#cfe0ff'}).setOrigin(0.5); if(t.width>sw2-12)t.setScale((sw2-12)/t.width); this.menu.add(t); }
-      act.forEach((k,ri)=>{ const d=GEAR_SETS[k],n=sc[k],ps=gearSetPieces(k),ry=sy+4+ri*rh;
-        const nxt=Object.keys(d.bonuses).map(Number).sort((p,q)=>p-q).find(v=>v>n), cur=Object.keys(d.bonuses).map(Number).filter(v=>v<=n).pop();
-        const hd=this.add.text(sx2+8,ry+2,d.emoji+' '+d.name+'  '+n+'/'+ps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:n>=2?'#8ff0b0':'#cfe0ff'}); this.menu.add(hd);
-        const info=nxt?('Need '+(nxt-n)+' more → '+d.bonuses[nxt].desc.replace(/^\d pcs:\s*/,'')):('✅ '+d.bonuses[cur].desc.replace(/^\d pcs:\s*/,''));
-        const ih=this.add.text(sx2+sw2-8,ry+3,info,{fontFamily:'sans-serif',fontSize:'11px',color:nxt?'#ffd9a8':'#8ff0b0'}).setOrigin(1,0); const room=sw2-24-hd.width; if(ih.width>room)ih.setScale(Math.max(0.6,room/ih.width)); this.menu.add(ih);
-        const isz=24, ix0=sx2+8;
-        ps.forEach((pc,pi)=>{ const on=Save.data.gear[pc.slot]===pc.id, cx=ix0+pi*(isz+6)+isz/2, cyy=ry+19+isz/2;
-          const pg=this.add.graphics(); pg.fillStyle(on?0x2f4a3a:0x2c2338,1); pg.fillRoundedRect(cx-isz/2,cyy-isz/2,isz,isz,6); pg.lineStyle(1.5,on?0x8ff0b0:0x4a4059,1); pg.strokeRoundedRect(cx-isz/2,cyy-isz/2,isz,isz,6); this.menu.add(pg);
-          const ak='gear_'+pc.id, ic=this.textures.exists(ak)?this.add.image(cx,cyy,ak).setDisplaySize(isz-4,isz-4):this.add.text(cx,cyy,pc.emoji,{fontSize:'14px'}).setOrigin(0.5); ic.setAlpha(on?1:0.35); this.menu.add(ic); });
-        const miss=ps.filter(pc=>Save.data.gear[pc.slot]!==pc.id).map(pc=>(GEAR_SLOTS.find(x=>x.slot===pc.slot)||{}).label||pc.slot);
-        if(miss.length){ const mx=ix0+ps.length*(isz+6)+4, mt=this.add.text(mx,ry+19+isz/2,'Missing: '+miss.join(', '),{fontFamily:'sans-serif',fontSize:'11px',color:'#9a90ab'}).setOrigin(0,0.5); const rm=sx2+sw2-8-mx; if(mt.width>rm)mt.setScale(Math.max(0.6,rm/mt.width)); this.menu.add(mt); }
-      });
-      this._zone(sx2,sy,sw2,bh,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();});
-      setBot=sy+bh; }
+    const setBot=gby+gbh;
     // ---- Item-instance inventory: new first, 8 per page (portrait-first) ----
     const selDef=GEAR_SLOTS.find(g=>g.slot===sel),items=Save.gearItemsForSlot(sel).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0);   // v6.55.48: ไม่โชว์ Starter/ช่องว่างในกริด
     let selected=Save.gearItem(this.gearSelectedUid);
@@ -7766,7 +7748,7 @@ class Game extends Phaser.Scene {
     const hdr=this.add.text(14,y,selDef.emoji+' '+selDef.label+(newCount?' · '+newCount+' NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0,0);
     const count=this.add.text(w-66,y,Save.gearInventoryCount()+' / '+cap,{fontFamily:'sans-serif',fontSize:'9px',color:Save.gearInventoryFull()?'#ff8da2':'#a99fbb'}).setOrigin(1,0);
     const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y,'📦 '+inboxN,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:inboxN?'#ffd166':'#7a7088'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-60,y-5,48,22,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});
-    {const cb=this.add.text(w/2+30,y,'🧹 Clean up',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe08a',backgroundColor:'#3a2d48',padding:{x:6,y:2}}).setOrigin(0.5,0);this.menu.add(cb);this._zone(w/2-12,y-5,84,22,()=>{this.menuScreen='gearClean';this.buildMenuScreen();});}
+    {let bx=hdr.x+hdr.width+8;const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?GEAR_SETS[k].emoji+' Set '+sc[k]+'/'+gearSetPieces(k).length:'🧩 Sets';const sb=this.add.text(bx,y,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:k&&sc[k]>=2?'#8ff0b0':'#cfe0ff',backgroundColor:'#26344a',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(sb);this._zone(bx-2,y-5,sb.width+4,22,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();});bx+=sb.width+6;const cb=this.add.text(bx,y,'🧹 Clean',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe08a',backgroundColor:'#3a2d48',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(cb);this._zone(bx-2,y-5,cb.width+4,22,()=>{this.menuScreen='gearClean';this.buildMenuScreen();});}
     y+=20;
     if(!items.length){ const empty=this.add.text(w/2,y+30,'No items in this slot',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
     const gap=6,cols=4,cw=(w-28-gap*(cols-1))/cols,ch=66,visible=items.slice(page*pageSize,page*pageSize+pageSize),basePow=heroPower(Save.data.character||'momo',null);
