@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.47';
+const GAME_VERSION = '6.55.48';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.48',date:'2026-10-05',title:'Cleaner Equipment',items:['Hero portrait is smaller and can be hidden: tap ▲ Hide / ▼ Hero','Gacha moved below the slots; comparison table sits higher','Minimum text size 11px on Equipment and Affix Forge','Starter / empty pieces no longer clutter the item grid']},
   {v:'6.55.47',date:'2026-10-05',title:'Compare arrows',items:['Mod comparison shows ▲ / ▼ arrows on every changed value: green up, red down, ⇅ for implicit swaps']},
   {v:'6.55.46',date:'2026-10-05',title:'Open craft slots in compare',items:['Equipment compare shows how many Prefix / Suffix slots are still free to craft, equipped → selected']},
   {v:'6.55.45',date:'2026-10-05',title:'Scrollable menu pages',items:['Long menu pages (Affix Forge and others) can now be dragged up and down when they do not fit the screen','A tap still works as before; dragging more than a few pixels scrolls instead']},
@@ -6084,7 +6085,7 @@ class Game extends Phaser.Scene {
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(11);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){const r=this._clampFonts(11);try{this.buildCraftBench();}finally{r();}} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); } }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
@@ -7682,17 +7683,22 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment','screen_equipment');
     const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
     const sel=this.gearSlot||'weapon';
-    const cy0=78, topH=Math.min(h*0.34,250);
-    // ---- ตัวละคร (portrait) ตรงกลาง ----
-    const pcx=w/2, pcy=cy0+topH*0.44, pbW=Math.min(w*0.42,190), pbH=topH*0.86;
-    const pbg=this.add.graphics(); pbg.fillStyle(0x241a33,0.7); pbg.fillRoundedRect(pcx-pbW/2,cy0+4,pbW,pbH,18); pbg.lineStyle(2,0x4a4059,0.8); pbg.strokeRoundedRect(pcx-pbW/2,cy0+4,pbW,pbH,18);
-    this.menu.add(pbg);
-    if(this.textures.exists('card_'+id)){ this._characterCardArt(id,pcx,pcy,pbW*0.90,pbH*0.92); }
-    else { const em=this.add.text(pcx,pcy,CHARACTERS[id].emoji,{fontSize:Math.round(topH*0.5)+'px'}).setOrigin(0.5); this.menu.add(em); }
-    // ---- 6 ช่องสวมใส่ (ซ้าย 3 / ขวา 3) ----
-    const rowY=[cy0+topH*0.14, cy0+topH*0.44, cy0+topH*0.74];
-    const leftX=Math.max(44,w*0.135), rightX=Math.min(w-44,w*0.865), ss=Math.min(56,topH*0.24);
-    const layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
+    // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
+    const folded=!!Save.data.gearFold, cy0=78, topH=folded?56:Math.min(h*0.25,190);
+    let layout,rowY,ss;
+    if(!folded){
+      const pcx=w/2, pcy=cy0+topH*0.46, pbW=Math.min(w*0.36,150), pbH=topH*0.94;
+      const pbg=this.add.graphics(); pbg.fillStyle(0x241a33,0.7); pbg.fillRoundedRect(pcx-pbW/2,cy0+2,pbW,pbH,16); pbg.lineStyle(2,0x4a4059,0.8); pbg.strokeRoundedRect(pcx-pbW/2,cy0+2,pbW,pbH,16);
+      this.menu.add(pbg);
+      if(this.textures.exists('card_'+id)){ this._characterCardArt(id,pcx,pcy,pbW*0.90,pbH*0.92); }
+      else { const em=this.add.text(pcx,pcy,CHARACTERS[id].emoji,{fontSize:Math.round(topH*0.5)+'px'}).setOrigin(0.5); this.menu.add(em); }
+      rowY=[cy0+topH*0.15, cy0+topH*0.47, cy0+topH*0.79];
+      const leftX=Math.max(44,w*0.17), rightX=Math.min(w-44,w*0.83); ss=Math.min(50,topH*0.25);
+      layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
+    } else {
+      ss=Math.min(46,(w-28)/6-8); rowY=[cy0+topH/2]; const step=(w-28)/6;
+      layout=['weapon','gloves','amulet','armor','boots','ring'].map((sl,i)=>[sl,14+step*(i+0.5),0]);
+    }
     layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];
       const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
       const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
@@ -7703,17 +7709,18 @@ class Game extends Phaser.Scene {
       this.menu.add([g,em]);
       const newN=Save.gearItemsForSlot(slot).filter(x=>x.isNew).length;
       if(newN){ const nd=this.add.circle(sx+ss/2-2,y-ss/2+2,7,0xff5689,1); const nn=this.add.text(nd.x,nd.y,String(Math.min(9,newN)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff'}).setOrigin(0.5); this.menu.add([nd,nn]); }
-      if(topH>=180){ const lb=this.add.text(sx,y+ss/2+9,def.label,{fontFamily:'sans-serif',fontSize:'10px',color:isSel?'#ffd166':'#9a90ab'}).setOrigin(0.5); this.menu.add(lb); }   // ซ่อนป้ายตอนจอเตี้ย (แนวนอน) กันทับ
+      if(!folded&&topH>=170){ const lb=this.add.text(sx,y+ss/2+7,def.label,{fontFamily:'sans-serif',fontSize:'11px',color:isSel?'#ffd166':'#9a90ab'}).setOrigin(0.5); this.menu.add(lb); }   // ป้ายใต้ช่อง (ไม่ทับปุ่มด้านล่าง)
       if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
-      this._zone(sx-ss/2,y-ss/2,ss,ss+14,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
+      this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
     });
     // v6.53: แถบสถานะชุดเซ็ทที่สวม — ชัด ๆ เหนือปุ่ม gacha · แตะ = Codex › Sets
-    { const sc=gearSetCounts(),act=SET_ORDER.filter(k=>sc[k]),sy=cy0+topH+6,sw2=Math.min(w-24,420),sx2=(w-sw2)/2,g=this.add.graphics(); g.fillStyle(0x1a2433,0.94);g.fillRoundedRect(sx2,sy,sw2,26,9);g.lineStyle(1.5,act.some(k=>sc[k]>=2)?0x8ff0b0:0x4a5a78,1);g.strokeRoundedRect(sx2,sy,sw2,26,9);
+    { const ftw=74,fty=cy0+topH+38,fg=this.add.graphics();fg.fillStyle(0x3a3550,1);fg.fillRoundedRect(12,fty,ftw,26,9);const ft=this.add.text(12+ftw/2,fty+13,folded?'▼ Hero':'▲ Hide',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add([fg,ft]);this._zone(12,fty,ftw,26,()=>{Save.data.gearFold=!folded;Save.save();Sfx.select();this.buildMenuScreen();}); }
+    { const sc=gearSetCounts(),act=SET_ORDER.filter(k=>sc[k]),sy=cy0+topH+38,sw2=w-12-92,sx2=92,g=this.add.graphics(); g.fillStyle(0x1a2433,0.94);g.fillRoundedRect(sx2,sy,sw2,26,9);g.lineStyle(1.5,act.some(k=>sc[k]>=2)?0x8ff0b0:0x4a5a78,1);g.strokeRoundedRect(sx2,sy,sw2,26,9);
       const txt=act.length?act.map(k=>{const d=GEAR_SETS[k],n=sc[k],tot=gearSetPieces(k).length,b=d.bonuses[Math.min(n,3)];return d.emoji+' '+n+'/'+tot+(n>=2&&b?' '+b.desc.replace(/^\d pcs:\s*/,''):'');}).join('   '):'🧩 No set pieces equipped · tap to see sets';
       const t=this.add.text(w/2,sy+13,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:act.some(k=>sc[k]>=2)?'#8ff0b0':'#cfe0ff'}).setOrigin(0.5);if(t.width>sw2-12)t.setScale((sw2-12)/t.width);
       this.menu.add([g,t]); this._zone(sx2,sy,sw2,26,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();}); }
     // ---- ปุ่มกล่องสุ่ม (gacha) — v4.49: เอาปุ่ม Forge Legend ออก · Legend เป็น drop-only เท่านั้น ----
-    const gby=cy0+topH-28, gbh=28, half=Math.min(w*0.7,300);
+    const gby=cy0+topH+6, gbh=28, half=Math.min(w-24,340);
     const gcx=w/2;
     // v4.32: gacha มี stepper เลือก base item level (◄ ► ปรับ, กลาง=เปิด) · iLv สูง=แพงขึ้น
     const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
@@ -7727,12 +7734,12 @@ class Game extends Phaser.Scene {
     this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
     // ---- Item-instance inventory: new first, 8 per page (portrait-first) ----
-    const selDef=GEAR_SLOTS.find(g=>g.slot===sel),items=Save.gearItemsForSlot(sel);
+    const selDef=GEAR_SLOTS.find(g=>g.slot===sel),items=Save.gearItemsForSlot(sel).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0);   // v6.55.48: ไม่โชว์ Starter/ช่องว่างในกริด
     let selected=Save.gearItem(this.gearSelectedUid);
     if(!selected||selected.slot!==sel){ selected=items.find(x=>x.isNew)||Save.equippedGearItem(sel)||items[0]||null; this.gearSelectedUid=selected?selected.uid:null; }
     if(!this.gearPageBySlot)this.gearPageBySlot={}; const pageSize=8,pages=Math.max(1,Math.ceil(items.length/pageSize));
     let page=Math.max(0,Math.min(pages-1,this.gearPageBySlot[sel]||0)); this.gearPageBySlot[sel]=page;
-    let y=cy0+topH+40;
+    let y=cy0+topH+72;
     const newCount=items.filter(x=>x.isNew).length,cap=Save.data.gearInventoryCap||100;
     const hdr=this.add.text(14,y,selDef.emoji+' '+selDef.label+(newCount?' · '+newCount+' NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0,0);
     const count=this.add.text(w-66,y,Save.gearInventoryCount()+' / '+cap,{fontFamily:'sans-serif',fontSize:'9px',color:Save.gearInventoryFull()?'#ff8da2':'#a99fbb'}).setOrigin(1,0);
@@ -8054,7 +8061,7 @@ class Game extends Phaser.Scene {
       const at=this.add.text(22,y+15,'🎯 AUTO-ROLL · '+(tgIds.length>1?tgIds.length+' TARGETS':tgt.label.toUpperCase()),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#f3ebff'}).setOrigin(0,.5),ac=this.add.text(22,y+32,'Stops on any target (at its tier or better) · burns '+cur.name+' each try',{fontFamily:'sans-serif',fontSize:'7.4px',color:'#d8ccf5'}).setOrigin(0,.5);this.menu.add([at,ac]);this._zone(14,y,w-28,aH,()=>this.autoRollToTarget());y+=aH+6;}
     const confirmRemove=this._craftConfirm==='annul:'+selected.uid+':'+this.craftLineIndex,confirmReset=this._craftConfirm==='scour:'+selected.uid,util=[
       ['regal','UPGRADE CAPACITY','Unlock 4 affix slots',()=>this.promoteFocusedItem(),!selected.locked&&rar==='magic'&&affs.length>=2&&Save.currency('regal')>0],
-      ['divine','REROLL TIER','Keep stat · new tier in item range',()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>=FLAME_REROLL_COST],
+      ['divine','REROLL TIER','Keep stat · new tier',()=>this.divineFocusedLine(),!selected.locked&&!!old&&Save.currency('divine')>=FLAME_REROLL_COST],
       ['annul',confirmRemove?'TAP AGAIN TO REMOVE':'REMOVE AFFIX','Delete selected line',()=>this._confirmCraftAction('annul:'+selected.uid+':'+this.craftLineIndex,'removal',()=>this.annulFocusedLine()),!selected.locked&&!!old&&Save.currency('annul')>0],
       ['scour',confirmReset?'TAP AGAIN TO RESET':'RESET ITEM','Clear every affix',()=>this._confirmCraftAction('scour:'+selected.uid,'reset',()=>this.scourFocusedItem()),!selected.locked&&(affs.length>0||rar!=='common')&&Save.currency('scour')>0]
     ],ug=6,uw=(w-34-ug)/2,uh=43;util.forEach(([currencyKey,label,desc,fn,ok],i)=>{const x=14+(i%2)*(uw+ug),uy=y+Math.floor(i/2)*(uh+6),g=this.add.graphics(),n=Save.currency(currencyKey),confirming=label.indexOf('TAP AGAIN')===0;g.fillStyle(confirming?0x5b302f:ok?0x3b3047:0x24202b,.98);g.fillRoundedRect(x,uy,uw,uh,9);g.lineStyle(confirming?2:1,confirming?0xff8f6a:ok?0x8c72a0:0x393342,1);g.strokeRoundedRect(x,uy,uw,uh,9);this.menu.add(g);this._currencyIcon(currencyKey,x+19,uy+uh/2,25,ok?1:.3);const tx=this.add.text(x+37,uy+14,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:confirming?'#ffd0bd':ok?'#eee2f2':'#665d6d'}).setOrigin(0,.5),ds=this.add.text(x+37,uy+29,desc,{fontFamily:'sans-serif',fontSize:'6.8px',color:ok?'#b8a9c3':'#665d6d'}).setOrigin(0,.5),ct=this.add.text(x+uw-7,uy+uh/2,'×'+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:ok?'#ffe08a':'#665d6d'}).setOrigin(1,.5);this.menu.add([tx,ds,ct]);if(ok)this._zone(x,uy,uw,uh,fn);});
@@ -12028,6 +12035,8 @@ class Game extends Phaser.Scene {
         list.push({kind,label:d.emoji+' '+d.label,from:e?d.fmt(ev)+' T'+(e.a.t||3):'—',to:t?d.fmt(tv)+' T'+(t.a.t||3):'—',st,mag:st==='same'?0:st==='new'||st==='lost'?2:Math.abs(tv-ev)/ref,dtxt:st==='up'||st==='down'?(tv>ev?'+':'−')+d.fmt(Math.abs(tv-ev)).replace(/^[+−-]/,''):''});}
       list.sort((a,b)=>b.mag-a.mag); rows.push(...list); }
     return rows; }
+  // v6.55.48: ตัวหนังสือขั้นต่ำ (หน้า Equipment/Craft) — ห่อ add.text ชั่วคราวระหว่างวาดหน้า
+  _clampFonts(min){ const add=this.add,f=add.text; add.text=function(x,y,t,st){ if(st&&st.fontSize){const n=parseFloat(st.fontSize);if(n<min)st=Object.assign({},st,{fontSize:min+'px'});} return f.call(add,x,y,t,st); }; return ()=>{ delete add.text; if(add.text!==f)add.text=f; }; }
   drawModCompare(eqIt,selIt,isEq,y,w){ if(!selIt)return y;
     { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0,q=0;for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(!d)continue;if((d.kind||'suffix')==='prefix')p++;else q++;}return {p:K-p,s:K-q};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
         part=(f)=>'P '+f.p+' · S '+f.s,tot=fs.p+fs.s,txt='🛠 Open craft slots  '+(fe?part(fe)+'  →  ':'')+part(fs)+(tot?'  ('+tot+' free)':'  (full)'),
