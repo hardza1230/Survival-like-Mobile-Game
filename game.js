@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.72';
+const GAME_VERSION = '6.55.73';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.73',date:'2026-10-05',title:'Power under hero',items:['The Power change box sits under the hero portrait, next to a smaller Gacha button, so the Equip button fits on screen']},
   {v:'6.55.72',date:'2026-10-05',title:'Cleaner equipment compare',items:['Equipped items show a small EQUIPPED tag in the inventory grid','The two large compare cards are replaced by a one-line name strip','The mod compare table uses bigger text, taller striped rows and PREFIX/SUFFIX headers, and includes ATK/Armor']},
   {v:'6.55.71',date:'2026-10-05',title:'Objective progress never drops',items:['Capture the Zone progress no longer drains when you step outside the zone','Losing all Nectar beds no longer removes objective progress']},
   {v:'6.55.70',date:'2026-10-05',title:'Glacier Bloom damage numbers',items:['Every enemy hit by Glacier Bloom (freeze and shatter) now shows its own damage number']},
@@ -7823,15 +7824,16 @@ class Game extends Phaser.Scene {
       this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
     });
     // ---- ปุ่มกล่องสุ่ม (gacha) — กว้างเท่ากริดช่องสวมใส่ ----
-    const gby=ay+avH+8, gbh=36, half=ax+avW+10+gridW-ax;
-    const gcx=ax+half/2;
+    const gby=ay+avH+8, gbh=36, half=gridW;   // v6.55.73: กาชาอยู่ใต้กริด · แถบ Power อยู่ใต้ตัวละคร
+    const gcx=x0+half/2; this._pwBox=[ax,gby,avW,gbh];
     const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
-    const afG=(Save.data.sugar||0)>=gCost, gx0=ax, aw=34;
+    const afG=(Save.data.sugar||0)>=gCost, gx0=x0, aw=28;
     const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gx0,gby,half,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
-    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 Gacha  iLv'+glv.lo+'-'+glv.hi+'  🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
     const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
     const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
-    this.menu.add([gbg,gbt,lArr,rArr]);
+    if(gbt.width>half-aw*2-4)gbt.setScale((half-aw*2-4)/gbt.width);this.menu.add([gbg,gbt,lArr,rArr]);
+    { const [px,py,pw,ph]=this._pwBox,bp=heroPower(Save.data.character||'momo',null),pg=this.add.graphics();pg.fillStyle(0x3a3550,1);pg.fillRoundedRect(px,py,pw,ph,10);this._pwG=pg;this._pwT=this.add.text(px+pw/2,py+ph/2,'⚡ '+bp,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(.5);this.menu.add([pg,this._pwT]); }
     this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
@@ -7871,8 +7873,8 @@ class Game extends Phaser.Scene {
     selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
     if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
       const rows=gearCompareRows(equipped,selected).filter(r=>r.key==='attack'||r.key==='armor'),affLines=it=>{if(!it)return[];const ib=GEAR_ALL.find(g=>g.id===it.baseId),im=ensureImplicit(it),idf=im&&implicitDef(im.id),out=[];if(idf)out.push({t:'◇ '+implicitText(it)+' · '+IMPLICIT_TIER[idf.rank],c:IMPLICIT_COLOR[idf.rank]});else if(ib&&ib.unique)out.push({t:'★ '+ib.desc,c:'#ff8f3a'});const af=(it.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);for(const kind of ['prefix','suffix'])af.filter(x=>(x.d.kind||'suffix')===kind).slice(0,3).forEach(x=>out.push({t:(kind==='prefix'?'P ':'S ')+x.d.emoji+x.d.label+' '+x.d.fmt(x.a.v)+' T'+(x.a.t||3),c:kind==='prefix'?'#ffb27a':'#8be0c8'}));return out;},eqAff=affLines(equipped),selAff=affLines(selected),affN=0,AH=Math.min(58,Math.round(w*0.15)),affTop=26+AH+Math.max(1,rows.length)*14+6,panelH=affTop+2,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
-      {const bp=heroPower(Save.data.character||'momo',null),dp=eq?0:gearPowerDelta(selected,bp),col=eq?0x3a3550:dp>0?0x2f6b47:dp<0?0x7a3442:0x3a3550,g=this.add.graphics();g.fillStyle(col,1);g.fillRoundedRect(14,y,w-28,34,10);
-        const pt=this.add.text(w/2,y+17,eq?'⚡ Power '+bp+'  ·  equipped':'⚡ '+bp+'  →  '+(bp+dp)+'   '+(dp>0?'▲ +'+dp:dp<0?'▼ '+dp:'= 0'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff'}).setOrigin(.5);this.menu.add([g,pt]);y+=40;}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
+      {const bp=heroPower(Save.data.character||'momo',null),dp=eq?0:gearPowerDelta(selected,bp),[px,py,pw,ph]=this._pwBox;if(dp){this._pwG.clear();this._pwG.fillStyle(dp>0?0x2f6b47:0x7a3442,1);this._pwG.fillRoundedRect(px,py,pw,ph,10);}
+        this._pwT.setText(eq||!dp?'⚡ '+bp:'⚡'+bp+'→'+(bp+dp)+'\n'+(dp>0?'▲ +'+dp:'▼ '+dp)).setFontSize(eq||!dp?14:11).setAlign('center');if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
       { const sh=30,g=this.add.graphics(),tc=Phaser.Display.Color.HexStringToColor(tl.color).color;g.fillStyle(0x241a33,0.97);g.fillRoundedRect(14,y,w-28,sh,10);g.lineStyle(1.5,tc,1);g.strokeRoundedRect(14,y,w-28,sh,10);this.menu.add(g);   // v6.55.72: แถบชื่อชิ้นที่เลือกแทนการ์ดใหญ่ 2 ใบ
         const ak='gear_'+base.id,ic=this.textures.exists(ak)?this.add.image(32,y+sh/2,ak).setDisplaySize(24,24):this.add.text(32,y+sh/2,base.emoji,{fontSize:'16px'}).setOrigin(0.5);
         const st=this.add.text(w-22,y+sh/2,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'10px',color:rl.color}).setOrigin(1,0.5);
