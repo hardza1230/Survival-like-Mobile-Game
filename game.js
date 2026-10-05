@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.58';
+const GAME_VERSION = '6.55.59';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.59',date:'2026-10-05',title:'Trade-in details',items:['Tap an item in Gear Trade-in to see its name, grade, item level, base stat, implicit and mods']},
   {v:'6.55.58',date:'2026-10-05',title:'Trade-in fix',items:['Gear Trade-in never lists gear you are wearing, including on older saves']},
   {v:'6.55.57',date:'2026-10-05',title:'Bigger hero card',items:['Hero card fills the space to the left of the gear slots','Equipment text one size smaller']},
   {v:'6.55.56',date:'2026-10-05',title:'Set button',items:['Set box removed from Equipment; a compact Set button next to Clean up opens Codex › Sets']},
@@ -8176,16 +8177,27 @@ class Game extends Phaser.Scene {
     const T=(x,y,t,sz,c,o)=>{const tx=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:w-30}}).setOrigin(o??.5,.5);this.menu.add(tx);return tx;};
     T(w/2,92+hs,'Pick 3 gear you don’t need ('+sel.length+'/3)',13,'#ffe08a');
     T(w/2,112+hs,pv?('New item: iLv '+pv.lo+'–'+pv.hi+' · grade from your picks'):'Result item level is based on the average iLv',11,pv?'#a8edc6':'#c5b5d1');
-    const cols=4,gap=8,cw=(w-28-gap*(cols-1))/cols,ch=cw+18,top=130+hs,rows=Math.max(1,Math.floor((h-top-80)/(ch+gap))),per=cols*rows,pages=Math.max(1,Math.ceil(items.length/per));
+    const cols=4,gap=8,cw=(w-28-gap*(cols-1))/cols,ch=cw+18,top=130+hs,PH=128,rows=Math.max(1,Math.floor((h-top-80-PH)/(ch+gap))),per=cols*rows,pages=Math.max(1,Math.ceil(items.length/per));
     this._tradePage=Math.min(this._tradePage||0,pages-1);
     if(!items.length)T(w/2,top+60,'No tradeable gear (locked, favorite and equipped items are protected)',12,'#c5b5d1');
     items.slice(this._tradePage*per,(this._tradePage+1)*per).forEach((it,i)=>{const cx=14+(i%cols)*(cw+gap),cy=top+Math.floor(i/cols)*(ch+gap),on=this._tradeSel.includes(it.uid),col=Phaser.Display.Color.HexStringToColor((TIER_LABEL[it.grade]||TIER_LABEL.common).color).color;
       const g=this.add.graphics();g.fillStyle(on?0x4a3a14:0x231a2e,.95);g.fillRoundedRect(cx,cy,cw,ch,9);g.lineStyle(on?3:1.5,on?0xffd166:col,1);g.strokeRoundedRect(cx,cy,cw,ch,9);this.menu.add(g);
-      const key='gear_'+it.baseId;if(this.textures.exists(key))this.menu.add(this.add.image(cx+cw/2,cy+cw/2,key).setDisplaySize(cw*.66,cw*.66).setAlpha(on?1:.85));
+      const key='gear_'+it.baseId;if(this.textures.exists(key))this.menu.add(this.add.image(cx+cw/2,cy+cw/2,key).setDisplaySize(cw*.66,cw*.66).setAlpha(on?1:.85));else this.menu.add(this.add.text(cx+cw/2,cy+cw/2,(GEAR_ALL.find(x=>x.id===it.baseId)||{}).emoji||'🎁',{fontSize:Math.round(cw*.4)+'px'}).setOrigin(.5));
       const t=this.add.text(cx+cw/2,cy+ch-11,'iLv '+(it.itemLevel||1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:on?'#ffe08a':'#ffffff'}).setOrigin(.5);this.menu.add(t);
       if(on)this.menu.add(this.add.text(cx+cw-8,cy+10,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd166'}).setOrigin(.5));
-      this._zone(cx,cy,cw,ch,()=>{const a=this._tradeSel,k=a.indexOf(it.uid);if(k>=0)a.splice(k,1);else if(a.length<3)a.push(it.uid);else{Sfx.error();return;}Sfx.select&&Sfx.select();this.buildTradeIn();});});
+      this._zone(cx,cy,cw,ch,()=>{this._tradeView=it.uid;const a=this._tradeSel,k=a.indexOf(it.uid);if(k>=0)a.splice(k,1);else if(a.length<3)a.push(it.uid);else{Sfx.error();return;}Sfx.select&&Sfx.select();this.buildTradeIn();});});
     const by=h-34;
+    // v6.55.59: แตะชิ้นไหน = โชว์รายละเอียดชิ้นนั้น
+    { const it=items.find(x=>x.uid===this._tradeView)||sel[sel.length-1]||null, py=by-26-PH, g=this.add.graphics(); g.fillStyle(0x1a1424,.95);g.fillRoundedRect(14,py,w-28,PH,10);g.lineStyle(1.5,0x6a5a80,1);g.strokeRoundedRect(14,py,w-28,PH,10);this.menu.add(g);
+      if(!it)T(w/2,py+PH/2,'Tap an item to see its details',11,'#9a90ab');
+      else{ const base=GEAR_ALL.find(x=>x.id===it.baseId)||{name:it.baseId},tl=TIER_LABEL[it.grade]||TIER_LABEL.common,affs=sortAffixesByKind(it.affixes||[]);
+        const key='gear_'+it.baseId; if(this.textures.exists(key))this.menu.add(this.add.image(42,py+30,key).setDisplaySize(40,40));else this.menu.add(this.add.text(42,py+30,base.emoji||'🎁',{fontSize:'26px'}).setOrigin(.5));
+        const L=(x,y,t,c,sz,b)=>{const o=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:b?'bold':'normal',fontSize:sz+'px',color:c,wordWrap:{width:w-x-22}}).setOrigin(0,0);this.menu.add(o);return o;};
+        L(70,py+8,gearAffixName(base.name,affs),tl.color,12,1);
+        L(70,py+26,tl.name+' · iLv '+(it.itemLevel||1)+' · '+gearBaseStatText(it)+(it.enh?' · +'+it.enh:'')+(Save.isGearEquipped(it.uid)?' · Equipped':''),'#cfc3dd',10);
+        let ly=py+52; const im=implicitText(it); if(im){L(24,ly,'Implicit  '+im,'#a8d8ff',10);ly+=14;}
+        if(!affs.length)L(24,ly,'No mods','#9a90ab',10);
+        affs.forEach(a=>{const d=affixDef(a.id);if(!d||ly>py+PH-14)return;L(24,ly,(d.kind==='prefix'?'P ':'S ')+(d.emoji||'')+' '+d.label+' '+(d.fmt?d.fmt(a.v):a.v)+'  T'+a.t,d.kind==='prefix'?'#ffc58a':'#a8edc6',10);ly+=14;}); } }
     if(pages>1)this.uiPillBtn(this.menu,w*.25,by,w*.42,38,COLORS.grape,'','Page '+(this._tradePage+1)+'/'+pages,()=>{this._tradePage=(this._tradePage+1)%pages;this.buildTradeIn();});
     this.uiPillBtn(this.menu,pages>1?w*.72:w/2,by,pages>1?w*.46:w-40,38,pv?COLORS.pink:0x3a3550,'',pv?'Trade 3 → 1':'Select 3',pv?()=>this.doTradeIn():null);
     this.menu.setVisible(true); }
