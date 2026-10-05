@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.29';
+const GAME_VERSION = '6.55.30';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.30',date:'2026-10-05',title:'Plain level-up cards',items:['Level-up cards no longer roll Rare, Epic or Legend; every card gives its normal value']},
   {v:'6.55.29',date:'2026-10-04',title:'Accurate Power',items:['Power is now calculated from your real stats: damage, crit, attack speed, HP, armor and defense','Recommended Power per stage is derived from that stage’s enemy and boss strength']},
   {v:'6.55.28',date:'2026-10-04',title:'Flavor Weave pacing',items:['Flavor Spark gives +2% damage per level (was +3%)','Temple core costs now grow faster at higher ranks']},
   {v:'6.55.27',date:'2026-10-04',title:'Simpler stat breakdown',items:['Removed the starting-value box from the stat breakdown']},
@@ -2451,7 +2452,7 @@ const RARITIES = [
   { id:'epic',   name:'Epic',     ranks:1, potency:1.30, color:0xc07bff, weight:5.5 },
   { id:'legend', name:'Legendary', ranks:1, potency:1.55, color:0xffcf40, weight:1.5 },
 ];
-function rollRarity(){ const tot=RARITIES.reduce((s,r)=>s+r.weight,0); let x=Math.random()*tot; for(const r of RARITIES){ x-=r.weight; if(x<=0)return r; } return RARITIES[0]; }
+function rollRarity(){ return RARITIES[0]; }   // v6.55.30: การ์ดเลเวลอัพเป็นธรรมดาเสมอ (เจ้าของ: ไม่เอา rare/epic/legend)
 /* ตัวคูณสเกลตอนโชว์ชีต action (idle/พุ่ง/โดนตี ฯลฯ) เฉพาะตัวที่อาร์ต action เล็กกว่าอาร์ต run — กันตัวหดตอนหยุดเดิน */
 const CHAR_ACTION_SCALE = {};   // ชีตท่า/วิ่งของมิ้นต์ใหม่สัดส่วนตรงกันแล้ว ไม่ต้องคูณชดเชย
 const AWAKEN_CAP = 2;         // ต่อหนึ่งด่านมี Awaken ได้ไม่เกิน 2 สาย เพื่อคุม power budget
