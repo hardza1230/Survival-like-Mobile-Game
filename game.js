@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.71';
+const GAME_VERSION = '6.55.72';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.72',date:'2026-10-05',title:'Cleaner equipment compare',items:['Equipped items show a small EQUIPPED tag in the inventory grid','The two large compare cards are replaced by a one-line name strip','The mod compare table uses bigger text, taller striped rows and PREFIX/SUFFIX headers, and includes ATK/Armor']},
   {v:'6.55.71',date:'2026-10-05',title:'Objective progress never drops',items:['Capture the Zone progress no longer drains when you step outside the zone','Losing all Nectar beds no longer removes objective progress']},
   {v:'6.55.70',date:'2026-10-05',title:'Glacier Bloom damage numbers',items:['Every enemy hit by Glacier Bloom (freeze and shatter) now shows its own damage number']},
   {v:'6.55.69',date:'2026-10-05',title:'Unique damage numbers',items:['Every enemy hit by Berry Blast or Frost Lance now shows its own damage number']},
@@ -7859,7 +7860,7 @@ class Game extends Phaser.Scene {
       if(item.favorite){const fav=this.add.text(x+cw-4,iy+3,'★',{fontSize:'10px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(fav);}
       if(item.craftedAt&&!item.isNew){const cb=this.add.text(x+4,iy+3,'⚒',{fontSize:'9px',color:'#c9a3ff'}).setOrigin(0,0);this.menu.add(cb);}
       if(item.locked){const lk=this.add.text(x+4,iy+ch-4,'🔒',{fontSize:'9px'}).setOrigin(0,1);this.menu.add(lk);}
-      if(eq){const ck=this.add.text(x+cw-4,iy+ch-4,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#8bd3a0'}).setOrigin(1,1);this.menu.add(ck);}
+      if(eq){const ck=this.add.text(x+cw-3,iy+3,'EQUIPPED',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#12301f',backgroundColor:'#8bd3a0',padding:{x:3,y:1}}).setOrigin(1,0);this.menu.add(ck);}   // v6.55.72: ป้ายใส่อยู่ในช่องไอเทม
       if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4,iy+20,'+'+item.enhanceLv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(lv);}
       this._zone(x,iy,cw,ch,()=>{this.gearSelectedUid=item.uid;if(item.isNew)Save.markGearSeen(item.uid);this.buildMenuScreen();});
     });
@@ -7872,22 +7873,12 @@ class Game extends Phaser.Scene {
       const rows=gearCompareRows(equipped,selected).filter(r=>r.key==='attack'||r.key==='armor'),affLines=it=>{if(!it)return[];const ib=GEAR_ALL.find(g=>g.id===it.baseId),im=ensureImplicit(it),idf=im&&implicitDef(im.id),out=[];if(idf)out.push({t:'◇ '+implicitText(it)+' · '+IMPLICIT_TIER[idf.rank],c:IMPLICIT_COLOR[idf.rank]});else if(ib&&ib.unique)out.push({t:'★ '+ib.desc,c:'#ff8f3a'});const af=(it.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);for(const kind of ['prefix','suffix'])af.filter(x=>(x.d.kind||'suffix')===kind).slice(0,3).forEach(x=>out.push({t:(kind==='prefix'?'P ':'S ')+x.d.emoji+x.d.label+' '+x.d.fmt(x.a.v)+' T'+(x.a.t||3),c:kind==='prefix'?'#ffb27a':'#8be0c8'}));return out;},eqAff=affLines(equipped),selAff=affLines(selected),affN=0,AH=Math.min(58,Math.round(w*0.15)),affTop=26+AH+Math.max(1,rows.length)*14+6,panelH=affTop+2,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
       {const bp=heroPower(Save.data.character||'momo',null),dp=eq?0:gearPowerDelta(selected,bp),col=eq?0x3a3550:dp>0?0x2f6b47:dp<0?0x7a3442:0x3a3550,g=this.add.graphics();g.fillStyle(col,1);g.fillRoundedRect(14,y,w-28,34,10);
         const pt=this.add.text(w/2,y+17,eq?'⚡ Power '+bp+'  ·  equipped':'⚡ '+bp+'  →  '+(bp+dp)+'   '+(dp>0?'▲ +'+dp:dp<0?'▼ '+dp:'= 0'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff'}).setOrigin(.5);this.menu.add([g,pt]);y+=40;}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
-      const drawCompareCard=(x,item,itBase,title,on)=>{const itTl=item?(TIER_LABEL[item.grade]||TIER_LABEL.common):TIER_LABEL.start,g=this.add.graphics();g.fillStyle(on?0x332819:0x241a33,0.97);g.fillRoundedRect(x,y,cw,panelH,12);g.lineStyle(on?2:1.5,on?0xffd166:Phaser.Display.Color.HexStringToColor(itTl.color).color,1);g.strokeRoundedRect(x,y,cw,panelH,12);this.menu.add(g);
-        const hd=this.add.text(x+8,y+7,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:on?'#ffd166':'#9a90ab'}).setOrigin(0,0);
-        const artKey=item&&itBase?'gear_'+itBase.id:null,hasArt=artKey&&this.textures.exists(artKey);
-        // v6.55.52: อาร์ตไอเทมใหญ่กลางการ์ด + แสงหลังตามเกรด
-        const tc=Phaser.Display.Color.HexStringToColor(itTl.color).color,ax=x+8+AH/2,ay=y+22+AH/2,glow=this.add.graphics();glow.fillStyle(tc,on?0.22:0.14);glow.fillCircle(ax,ay,AH*0.5);glow.fillStyle(tc,0.10);glow.fillCircle(ax,ay,AH*0.36);this.menu.add(glow);
-        const icon=hasArt?this.add.image(ax,ay,artKey).setDisplaySize(AH*0.9,AH*0.9):this.add.text(ax,ay,item&&itBase?itBase.emoji:'—',{fontSize:Math.round(AH*0.5)+'px'}).setOrigin(0.5);
-        const name=item&&itBase?gearAffixName(itBase.name,item.affixes||[]):'— Empty —';
-        const nm=this.add.text(x+AH+14,y+24,name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:itTl.color,wordWrap:{width:cw-AH-20},maxLines:3}).setOrigin(0,0);this.menu.add([hd,icon,nm]);};
-      drawCompareCard(leftX,equipped,eqBase,'EQUIPPED',false); drawCompareCard(rightX,selected,base,eq?'EQUIPPED NOW':'SELECTED',true);
-      rows.forEach((r,i)=>{const ry=y+26+AH+i*14,from=gearStatText(r,r.from),to=gearStatText(r,r.to),dc=r.delta>0.001?'#7de0a1':r.delta<-0.001?'#ff8da2':'#bbaabd',arrow=r.delta>0.001?' ▲':r.delta<-0.001?' ▼':'';
-        const lt=this.add.text(leftX+8,ry,r.label+' '+from,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#d8c7da'}).setOrigin(0,0);
-        const rt=this.add.text(rightX+8,ry,r.label+' '+to+arrow,{fontFamily:'sans-serif',fontStyle:Math.abs(r.delta)>0.001?'bold':'normal',fontSize:'8.5px',color:dc}).setOrigin(0,0);this.menu.add([lt,rt]);});
-      if(!rows.length){const same=this.add.text(w/2,y+29+AH,eq?'Currently equipped':'No numeric stat difference',{fontFamily:'sans-serif',fontSize:'9px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(same);}
-      if(affN){for(const [x,list] of [[leftX,eqAff],[rightX,selAff]]){const lg=this.add.graphics();lg.lineStyle(1,0x5a4f6e,0.8);lg.lineBetween(x+8,y+affTop-3,x+cw-8,y+affTop-3);const hd=this.add.text(x+8,y+affTop,'IMPLICIT · PREFIX · SUFFIX',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#9a90ab'});this.menu.add([lg,hd]);
-        (list.length?list:[{t:'No mods',c:'#8d8499'}]).forEach((o,i)=>{const at=this.add.text(x+8,y+affTop+14+i*13,o.t,{fontFamily:'sans-serif',fontSize:'8px',color:o.c,wordWrap:{width:cw-16},maxLines:1});this.menu.add(at);});}}
-      const state=this.add.text(rightX+cw-8,y+7,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'8px',color:rl.color}).setOrigin(1,0);this.menu.add(state); y+=panelH+6;
+      { const sh=30,g=this.add.graphics(),tc=Phaser.Display.Color.HexStringToColor(tl.color).color;g.fillStyle(0x241a33,0.97);g.fillRoundedRect(14,y,w-28,sh,10);g.lineStyle(1.5,tc,1);g.strokeRoundedRect(14,y,w-28,sh,10);this.menu.add(g);   // v6.55.72: แถบชื่อชิ้นที่เลือกแทนการ์ดใหญ่ 2 ใบ
+        const ak='gear_'+base.id,ic=this.textures.exists(ak)?this.add.image(32,y+sh/2,ak).setDisplaySize(24,24):this.add.text(32,y+sh/2,base.emoji,{fontSize:'16px'}).setOrigin(0.5);
+        const st=this.add.text(w-22,y+sh/2,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'10px',color:rl.color}).setOrigin(1,0.5);
+        const nm=this.add.text(48,y+sh/2,gearAffixName(base.name,selected.affixes||[])+(eq?'  (equipped)':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:tl.color}).setOrigin(0,0.5);
+        const mx=w-22-st.width-10-48;if(nm.width>mx)nm.setScale(Math.max(0.7,mx/nm.width));this.menu.add([ic,st,nm]);y+=sh+6;}
+      this._cmpBase=eq?[]:rows;
       y=this.drawModCompare(equipped,selected,eq,y,w);
       const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
       // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
@@ -12166,20 +12157,21 @@ class Game extends Phaser.Scene {
     { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0,q=0;for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(!d)continue;if((d.kind||'suffix')==='prefix')p++;else q++;}return {p:K-p,s:K-q};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
         part=(f)=>'P '+f.p+' · S '+f.s,tot=fs.p+fs.s,txt='🛠 Open craft slots  '+(fe?part(fe)+'  →  ':'')+part(fs)+(tot?'  ('+tot+' free)':'  (full)'),
         col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
-    if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); if(!rows.length)return y;
-    const gain=rows.filter(r=>r.st==='new'||r.st==='up').length,lose=rows.filter(r=>r.st==='lost'||r.st==='down').length,sw=rows.some(r=>r.kind==='implicit'&&r.st==='swap');
-    const rh=13,top=y,h=16+rows.length*rh+(rows.some(r=>r.kind==='prefix')?3:0)+(rows.some(r=>r.kind==='suffix')?3:0)+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
-    const cL=22,cF=Math.round(w*0.42),cT=Math.round(w*0.66),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+4,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:'#8d8499'}).setOrigin(o,0);this.menu.add(tx);};
-    hd(cL,'MOD',0);hd(cF,'EQUIPPED',1);hd(cT,'SELECTED',1);hd(cS,'CHANGE',1);
-    const ST={new:['▲ New','#7de0a1'],lost:['▼ Lost','#ff8da2'],up:['▲','#7de0a1'],down:['▼','#ff8da2'],same:['= Same','#7a7088'],swap:['⇅ Swap','#ffd166']},AR={new:' ▲',up:' ▲',lost:' ▼',down:' ▼',swap:' ⇅',same:''};
-    let ry=top+16,last=null;
-    for(const r of rows){ if(r.kind!==last&&r.kind!=='implicit'){ry+=3;const lc=r.kind==='prefix'?'#ffb27a':'#8be0c8',lb=this.add.text(cL-4,ry-1,r.kind==='prefix'?'P':'S',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:lc});this.menu.add(lb);} last=r.kind;
-      const dim=r.st==='same',kc=r.kind==='prefix'?'#ffd2b0':r.kind==='suffix'?'#c2f0e2':r.col,[stT,stC]=ST[r.st],sty={fontFamily:'sans-serif',fontSize:'8.2px'};
-      const a=this.add.text(cL+4,ry,r.label,{...sty,color:dim?'#7a7088':kc,wordWrap:{width:cF-cL-70},maxLines:1}).setOrigin(0,0);
-      const b=this.add.text(cF,ry,String(r.from),{...sty,color:dim?'#6e6580':'#cbbfd6',wordWrap:{width:cT-cF-8}}).setOrigin(1,0);
-      const c=this.add.text(cT,ry,String(r.to)+AR[r.st],{...sty,fontStyle:dim?'normal':'bold',color:dim?'#6e6580':stC}).setOrigin(1,0);
-      const d=this.add.text(cS,ry,r.dtxt?stT+' '+r.dtxt:stT,{...sty,fontStyle:'bold',color:stC}).setOrigin(1,0);
-      if(dim)[a,b,c,d].forEach(o=>o.setAlpha(.7)); this.menu.add([a,b,c,d]); ry+=rh; }
+    if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;rows.unshift({kind:'base',label:'⚔ '+r.label,from:gearStatText(r,r.from),to:gearStatText(r,r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
+    // v6.55.72: ตารางอ่านง่าย — ตัวใหญ่ แถวสูง แถบสลับสี หัวกลุ่ม PREFIX/SUFFIX เต็มแถว
+    const rh=20,secs=new Set(rows.filter(r=>r.kind==='prefix'||r.kind==='suffix').map(r=>r.kind)).size,top=y,h=22+rows.length*rh+secs*16+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
+    const cL=22,cF=Math.round(w*0.60),cT=Math.round(w*0.82),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+6,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(o,0);this.menu.add(tx);};
+    hd(cL,'MOD',0);hd(cF,'NOW',1);hd(cT,'NEW',1);
+    const ST={new:['NEW','#7de0a1'],lost:['LOST','#ff8da2'],up:['▲','#7de0a1'],down:['▼','#ff8da2'],same:['=','#7a7088'],swap:['⇅','#ffd166']};
+    let ry=top+22,last=null,zi=0;
+    for(const r of rows){ if(r.kind!==last&&(r.kind==='prefix'||r.kind==='suffix')){const lc=r.kind==='prefix'?'#ffb27a':'#8be0c8',lb=this.add.text(cL,ry+2,r.kind==='prefix'?'PREFIX':'SUFFIX',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:lc});const ln=this.add.graphics();ln.lineStyle(1,Phaser.Display.Color.HexStringToColor(lc).color,0.4);ln.lineBetween(cL+lb.width+6,ry+9,cS,ry+9);this.menu.add([lb,ln]);ry+=16;} last=r.kind;
+      if(zi++%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,rh);this.menu.add(zb);}
+      const dim=r.st==='same',[stT,stC]=ST[r.st],kc=r.kind==='prefix'?'#ffd2b0':r.kind==='suffix'?'#c2f0e2':r.col,sty={fontFamily:'sans-serif',fontSize:'11px'};
+      const a=this.add.text(cL,ry+2,r.label,{...sty,color:dim?'#8a809a':kc}).setOrigin(0,0);if(a.width>cF-cL-62)a.setScale((cF-cL-62)/a.width);
+      const b=this.add.text(cF,ry+2,String(r.from),{...sty,color:dim?'#7a7088':'#cbbfd6'}).setOrigin(1,0);
+      const c=this.add.text(cT,ry+2,String(r.to),{...sty,fontStyle:dim?'normal':'bold',color:dim?'#7a7088':stC}).setOrigin(1,0);
+      const d=this.add.text(cS,ry+2,stT,{...sty,fontStyle:'bold',color:stC}).setOrigin(1,0);
+      this.menu.add([a,b,c,d]); ry+=rh; }
     return top+h+6; }
   ptOnFreeze(e){ const PT=(this.player&&this.player._pt)||{};
     if(PT.fnova&&(this.elapsed||0)>=(this._ptNovaAt||0)){this._ptNovaAt=(this.elapsed||0)+0.25;const d=this.relicDmg?this.relicDmg(1.2):20;this.vfxHitRing(e.x,e.y,0xbdf0ff,false);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&this.dist(o.x,o.y,e.x,e.y)<95)this.damage(o,d,o.x,o.y);});}
