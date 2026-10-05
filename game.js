@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.75';
+const GAME_VERSION = '6.55.76';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.76',date:'2026-10-05',title:'Low-tier mods toned down',items:['The weakest mod tier now gives about 20% of the best tier (was 40%), e.g. Damage T10 8% → 4%','Existing items keep their tier and are moved into the new value range']},
   {v:'6.55.75',date:'2026-10-05',title:'Stronger low-tier mods',items:['Low mod tiers are much stronger: the weakest tier now gives about 40% of the best tier (e.g. Damage T10 1% → 6%)','Existing items keep their tier and are raised into the new value range']},
   {v:'6.55.74',date:'2026-10-05',title:'Quick sell / scrap',items:['Toggle 💰 Sell or 🔩 Scrap next to Clean, then tap any unequipped item to sell or scrap it instantly (locked and favorite items are protected)']},
   {v:'6.55.73',date:'2026-10-05',title:'Power under hero',items:['The Power change box sits under the hero portrait, next to a smaller Gacha button, so the Equip button fits on screen']},
@@ -3580,7 +3581,7 @@ function affixRarityTag(mod){ const w=affixWeight(mod); return w<=30?'★★★'
 const AFFIX_TIER_MAX=10;
 function expandAffixTiers(mod){
   if(!mod||!mod.tiers||mod.tiers.length>5)return;const old=mod.tiers;mod.tiers5=old;
-  const hi0=Math.round(old[0][1]*1.2),lo=Math.max(1,Math.round(hi0*0.4)),hi=Math.max(lo,hi0);   // v6.55.75: T10 ≈ 40% ของ T0 (เดิม ~6%) — mod ขั้นต่ำมีความหมายเทียบ ATK อาวุธ
+  const hi0=Math.round(old[0][1]*1.2),lo=Math.max(1,Math.round(hi0*0.2)),hi=Math.max(lo,hi0);   // v6.55.76: T10 ≈ 20% ของ T0 (v6.55.75 40%, เดิม ~6%) — mod ขั้นต่ำมีความหมายเทียบ ATK อาวุธ
   const n=Math.min(11,hi-lo+1),out=[];
   for(let t=0;t<n;t++){if(n<11){const value=hi-t;out.push([value,value]);}else{const f0=(10-t)/11,f1=(11-t)/11,a=Math.max(lo,Math.round(lo*Math.pow(hi/lo,f0))),b=Math.max(a,Math.round(lo*Math.pow(hi/lo,f1))-(t===0?0:1));out.push([a,Math.max(a,b)]);}}
   mod.tiers=out;if(mod.bestTier)mod.bestTier=Math.min(n-1,Math.round((mod.bestTier*2-1)*(n-1)/10));
@@ -4055,7 +4056,7 @@ const Save = {
   migrateAffixTiers11(){ const fix=list=>{ for(const it of (list||[])){ for(const a of ((it&&it.affixes)||[])){ if(a&&a.tierSchema!==2){ const d=affixDef(a.id); if(d){ a.t=affixTierForValue(d,a.v); a.t11=1;a.tierSchema=2; } } } } };
     fix(this.data.gearItems); fix(this.data.gearInbox);
     const ga=this.data.gearAffix||{}; for(const k in ga)fix([{affixes:ga[k]}]);
-    /* v6.55.75: ยกค่า mod เก่าเข้าช่วง tier ใหม่ */ if(!this.data.affixLo2){ this.data.affixLo2=1; const up=list=>{ for(const it of (list||[])){ for(const a of ((it&&it.affixes)||[])){ const d=a&&affixDef(a.id),tr=d&&d.tiers&&d.tiers[Math.min(d.tiers.length-1,a.t||0)]; if(tr&&(a.v||0)<tr[0])a.v=Math.round((tr[0]+tr[1])/2); } } }; up(this.data.gearItems); up(this.data.gearInbox); for(const k in ga)up([{affixes:ga[k]}]); } },
+    /* v6.55.75: ยกค่า mod เก่าเข้าช่วง tier ใหม่ */ if(!this.data.affixLo3){ this.data.affixLo3=1; const up=list=>{ for(const it of (list||[])){ for(const a of ((it&&it.affixes)||[])){ const d=a&&affixDef(a.id),tr=d&&d.tiers&&d.tiers[Math.min(d.tiers.length-1,a.t||0)]; if(tr&&((a.v||0)<tr[0]||(a.v||0)>tr[1]))a.v=Math.round((tr[0]+tr[1])/2); } } }; up(this.data.gearItems); up(this.data.gearInbox); for(const k in ga)up([{affixes:ga[k]}]); } },
   migrateGearInstances(gearDefaults){ let changed=false;
     if(!Array.isArray(this.data.gearItems)||Number(this.data.gearSchemaVersion||0)<1){
       this.data.gearItems=[]; this.data.equippedGear={}; this.data.gearUidSeq=0;
