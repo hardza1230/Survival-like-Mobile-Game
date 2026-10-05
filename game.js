@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.36';
+const GAME_VERSION = '6.55.37';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.37',date:'2026-10-05',title:'Enhancement tuned',items:['Removed the +1 minimum per enhancement level: every item now gains exactly +8% base ATK/Armor per level (+10 = ×1.8)'] },
   {v:'6.55.36',date:'2026-10-05',title:'Stronger enhancement',items:['Enhancement now adds +8% base ATK/Armor per level (was +4%); +10 = ×1.8','Every enhancement level always adds at least +1 to the number you see'] },
   {v:'6.55.35',date:'2026-10-05',title:'Item Power & Clean up',items:['Equipment shows ▲/▼ Power change for every item and Power before → after for the selected one','New 🧹 Clean up screen: sell or dismantle many items at once by grade, optionally only items weaker than what you wear','Auto-clean now works on every drop (not only when the bag is full), can sell or dismantle, and keeps drops that raise your Power'] },
   {v:'6.55.34',date:'2026-10-05',title:'Multi-target auto-roll',items:['Tap several mods in the roll pool to target them all; auto-roll stops on any of them','Tapping a tier sets the minimum for that target: picking T5 also accepts T4 or better (no extra cost)'] },
@@ -3648,9 +3649,9 @@ function currentRewardItemLevel(rng=Math.random){return rollItemLevel(rewardSour
 function gearBaseStats(item){
   const base=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(!base||base.tier==='start')return{attackMin:0,attackMax:0,armor:0};
   const level=Math.max(1,Math.min(100,Number(item.itemLevel)||1)),quality=({common:1,rare:1.12,epic:1.24,legend:1.4})[base.tier]||1;
-  let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=Math.max(0,item.enhanceLv||0),enhance=1+.08*el;   // v6.55.36: +8%/ขั้น (+10 = ×1.8) · ทุกขั้นได้อย่างน้อย +1
-  const attack=['weapon','gloves','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1+el,Math.round(b0*enhance),Math.round(b0)+el);})():0;
-  const armor=['armor','boots','amulet'].includes(item.slot)?(()=>{const b0=(2+level*.15)*quality*variation*(item.slot==='armor'?1:.4);return Math.max(1+el,Math.round(b0*enhance),Math.round(b0)+el);})():0;
+  let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=Math.max(0,item.enhanceLv||0),enhance=1+.08*el;   // v6.55.37: +8%/ขั้น (+10 = ×1.8) เท่ากันทุก iLv (เอาขั้นต่ำ +1 ออก)
+  const attack=['weapon','gloves','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1,Math.round(b0*enhance));})():0;
+  const armor=['armor','boots','amulet'].includes(item.slot)?(()=>{const b0=(2+level*.15)*quality*variation*(item.slot==='armor'?1:.4);return Math.max(1,Math.round(b0*enhance));})():0;
   return{attackMin:attack,attackMax:attack?Math.max(attack+1,Math.round(attack*1.4)):0,armor};
 }
 function gearBaseStatText(item){const b=gearBaseStats(item);return b.attackMax?'ATK '+b.attackMin+'-'+b.attackMax:b.armor?'Armor '+b.armor:'Starter';}
