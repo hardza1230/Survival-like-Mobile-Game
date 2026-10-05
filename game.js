@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.38';
+const GAME_VERSION = '6.55.39';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.39',date:'2026-10-05',title:'Path talent trees (part 1)',items:['Every Build Path now has its own tree: Root, three branches (Power / Mechanic / Survival) and 3 Capstones — only 1 Capstone per path (5 TP)','Old path talent points were refunded','Path-specific node effects and Capstones arrive character by character in the next updates'] },
   {v:'6.55.38',date:'2026-10-05',title:'Enhancement cost curve',items:['Enhancement shard cost now grows steeply: +1 costs 2 🔩, +5 costs 10, +10 costs 77 (was 3 → 21)'] },
   {v:'6.55.37',date:'2026-10-05',title:'Enhancement tuned',items:['Removed the +1 minimum per enhancement level: every item now gains exactly +8% base ATK/Armor per level (+10 = ×1.8)'] },
   {v:'6.55.36',date:'2026-10-05',title:'Stronger enhancement',items:['Enhancement now adds +8% base ATK/Armor per level (was +4%); +10 = ×1.8','Every enhancement level always adds at least +1 to the number you see'] },
@@ -2894,17 +2895,32 @@ const CHAR_TALENTS = {
 };
 function charTalents(c){ return CHAR_TALENTS[c]||CHAR_TALENTS.momo; }
 // v6.52.1: Talent tree แบบสายตระกูล — 1 สายต่อ Build Path (ทำงานเฉพาะรันที่เลือกสายนั้น)
-function talentBranch(pt){ const e=pt.emoji||'✦',b='b_'+pt.id+'_';   // v6.52.2: root + 3 สาย (ลำดับ: root, แล้ว round-robin ลงคอลัมน์)
-  return [{id:b+0,emoji:e,name:'Focus',max:5,per:'+6% damage',apply:(p,r)=>{p.dmgMul+=0.06*r;}},
-    {id:b+1,emoji:'⏱️',name:'Rhythm',max:3,per:'−4% cooldown',apply:(p,r)=>{p.cdMul*=(1-0.04*r);}},
-    {id:b+2,emoji:'🛡️',name:'Resolve',max:3,per:'+8% max HP',apply:(p,r)=>{const f=1+0.08*r;p.maxhp*=f;p.hp=Math.min(p.maxhp,p.hp*f);}},
-    {id:b+'p',emoji:'🎯',name:'Precision',max:3,per:'+4% crit chance',apply:(p,r)=>{p.critChance+=0.04*r;}},
-    {id:b+'r',emoji:'💗',name:'Second Wind',max:3,per:'+0.6 HP/s regen',apply:(p,r)=>{p.regen+=0.6*r;}},
-    {id:b+'g',emoji:'🧱',name:'Guard',max:3,per:'−5% damage taken',apply:(p,r)=>{p.dmgTakenMul*=(1-0.05*r);}},
-    {id:b+3,emoji:'👑',name:'Mastery',max:1,per:'+12% damage · +6% crit',apply:(p,r)=>{p.dmgMul+=0.12*r;p.critChance+=0.06*r;}}]; }
+// v6.55.39 Talent เฉพาะสาย (docs/TALENT_PATH_DESIGN.md): Root + กิ่ง A Power / B Mechanic / C Survival (2 node) + Capstone 3 ตัว เลือกได้ 1 (5 TP)
+// PATH_TALENTS[path] ใส่ node เฉพาะสายทับค่าเริ่มต้น (commit ถัดไปทีละตัวละคร) · capstone ที่ยังไม่มี = Coming soon
+const PATH_TALENTS={};
+const TAL_CAP_COST=5, TAL_SLOTS=['root','a1','a2','b1','b2','c1','c2','capA','capB','capC'];
+function _ptGeneric(pt){ return {
+  root:{emoji:pt.emoji||'✦',name:'Path Focus',max:3,per:'+5% damage',apply:(p,r)=>{p.dmgMul+=0.05*r;}},
+  a1:{emoji:'🎯',name:'Sharpness',max:3,per:'+3% crit chance',apply:(p,r)=>{p.critChance+=0.03*r;}},
+  a2:{emoji:'👑',name:'Giant Hunter',max:3,per:'+8% boss damage',apply:(p,r)=>{p.bossDmg=(p.bossDmg||0)+0.08*r;}},
+  b1:{emoji:'⏱️',name:'Tempo',max:3,per:'−4% cooldown',apply:(p,r)=>{p.cdMul*=(1-0.04*r);}},
+  b2:{emoji:'💨',name:'Quick Step',max:3,per:'−6% dash cooldown',apply:(p,r)=>{p.dashCdMul=(p.dashCdMul||1)*(1-0.06*r);}},
+  c1:{emoji:'🛡️',name:'Resolve',max:3,per:'+6% max HP',apply:(p,r)=>{const f=1+0.06*r;p.maxhp*=f;p.hp=Math.min(p.maxhp,(p.hp||p.maxhp)*f);}},
+  c2:{emoji:'🧱',name:'Guard',max:2,per:'−5% damage taken',apply:(p,r)=>{p.dmgTakenMul*=(1-0.05*r);}},
+  capA:{emoji:'💥',name:'Power Capstone',max:1,soon:true,per:'Coming soon'},
+  capB:{emoji:'⚙️',name:'Mechanic Capstone',max:1,soon:true,per:'Coming soon'},
+  capC:{emoji:'🛡️',name:'Survival Capstone',max:1,soon:true,per:'Coming soon'} }; }
+function talentBranch(pt){ const g=_ptGeneric(pt),o=PATH_TALENTS[pt.id]||{},b='pt_'+pt.id+'_';
+  return TAL_SLOTS.map(sl=>Object.assign({},g[sl],o[sl]||{},{id:b+sl,slot:sl,cap:sl.startsWith('cap')})); }
+function talNodeCost(n,r){ return n&&n.cap?TAL_CAP_COST:r+1; }
+// กติกาปลด: root เสมอ · x1 ต้อง root ≥1 · x2 ต้อง x1 ≥2 · cap ต้อง x2 ≥1 และยังไม่มี cap อื่น
+function talNodeOpen(nodes,tal,n){ const by={};for(const x of nodes)by[x.slot]=x;const r=s=>tal[by[s].id]||0;
+  if(n.slot==='root')return true; const br=n.slot[n.slot.length-1]==='1'||n.slot[n.slot.length-1]==='2'?n.slot[0]:n.slot.slice(3).toLowerCase();
+  if(n.slot.endsWith('1'))return r('root')>=1; if(n.slot.endsWith('2'))return r(br+'1')>=2;
+  if(n.cap){ if(n.soon)return false; if(['capA','capB','capC'].some(c=>c!==n.slot&&r(c)>0))return false; return r(br+'2')>=1; } return false; }
 function talCost(r){ return r+1; }          // แต้มที่ต้องใช้อัปจาก rank r → r+1 (แพงขึ้นเรื่อย ๆ = ต้องเลือก)
-function talSpent(tal){ let n=0; for(const k in tal||{}){ const r=tal[k]||0; n+=r*(r+1)/2; } return n; }
-function applyPathTalents(p,ch,path,tal){ const pt=(BASIC_PATHS[ch]||[]).find(x=>x.id===path); if(!pt||!tal)return; for(const d of talentBranch(pt)){const r=tal[d.id]||0;if(r>0)d.apply(p,r);} }
+function talSpent(tal){ let n=0; for(const k in tal||{}){ const r=tal[k]||0; n+=/_cap[ABC]$/.test(k)?r*TAL_CAP_COST:r*(r+1)/2; } return n; }
+function applyPathTalents(p,ch,path,tal){ const pt=(BASIC_PATHS[ch]||[]).find(x=>x.id===path); if(!pt||!tal)return; for(const d of talentBranch(pt)){const r=tal[d.id]||0;if(r>0&&d.apply)d.apply(p,r);} }
 // v4.88: Passive ประจำตัว (ทำงานตลอด · แรงขึ้นตามเลเวลตัวละคร)
 const CHAR_PASSIVES={
   momo:{emoji:'🍓',name:'Lucky Seeds',desc:'Critical hits heal you'},
@@ -3861,7 +3877,8 @@ const Save = {
     else {this.data.currency=this.data.currency||{};this.data.currency[d.id]=(this.data.currency[d.id]||0)+qty;}
     this.save();return {emoji:d.emoji,name:d.name,qty,unit:d.unit};},
   // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
-  cp(id){ if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
+  cp(id){ if(!this.data.talV2){ this.data.talV2=1; let any=0; for(const k in this.data.charProg||{}){ const c=this.data.charProg[k],t=c&&c.tal; if(!t)continue; for(const key of Object.keys(t)){ if(key.startsWith('b_')){ const r=t[key]||0; c.tp=(c.tp||0)+r*(r+1)/2; delete t[key]; if(r)any=1; } } } if(any)this.data.talRefundNote=1; this.save(); }
+    if(!this.data.charProg[id]) this.data.charProg[id]={ lvl:1, exp:0, tp:0, tal:{} }; return this.data.charProg[id]; },
   // ---- Equipment v2: unique instances. Legacy maps stay mirrored until every screen uses uid directly. ----
   nextGearUid(){ this.data.gearUidSeq=(this.data.gearUidSeq||0)+1; return 'gi_'+Date.now().toString(36)+'_'+this.data.gearUidSeq.toString(36); },
   gearItem(ref){ if(!ref||!Array.isArray(this.data.gearItems))return null; if(typeof ref==='object'&&ref.uid)return ref;
@@ -13065,11 +13082,13 @@ class Game extends Phaser.Scene {
     cols.forEach((c,ci)=>{ const x=bx+ci*tw,on=c===C,g3=this.add.graphics(); g3.fillStyle(on?c.col:0x2a2236,on?0.9:1); g3.fillRoundedRect(x+2,tTop,tw-4,30,9); g3.lineStyle(2,c.col,on?1:0.5); g3.strokeRoundedRect(x+2,tTop,tw-4,30,9);
       const pts=c.nodes.reduce((a,n)=>a+(tal[n.id]||0),0),tx=this.add.text(x+tw/2,tTop+15,c.emoji+' '+c.name+(pts?' '+pts:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(tw<95?10:12)+'px',color:on?'#1a1022':'#e9dcff'}).setOrigin(0.5);
       this.menu.add([g3,tx]); this._zone(x,tTop-4,tw,38,()=>{ this._talTab=c.key; this._talSel=null; Sfx.select&&Sfx.select(); this.buildMenuScreen(); }); });
-    const N=C.nodes,root=N[0],chains=[[],[],[]]; N.slice(1).forEach((n,i)=>chains[i%3].push(n)); const par={}; chains.forEach(ch2=>ch2.forEach((n,i)=>par[n.id]=i===0?root.id:ch2[i-1].id));
+    const N=C.nodes,root=N[0],isPath=C.key!=='core',chains=[[],[],[]],par={};
+    if(isPath){ ['a','b','c'].forEach((br,k)=>{ const x1=N.find(n=>n.slot===br+'1'),x2=N.find(n=>n.slot===br+'2'),cp2=N.find(n=>n.slot==='cap'+br.toUpperCase()); chains[k]=[x1,x2,cp2]; par[x1.id]=root.id; par[x2.id]=x1.id; par[cp2.id]=x2.id; }); }
+    else { N.slice(1).forEach((n,i)=>chains[i%3].push(n)); chains.forEach(ch2=>ch2.forEach((n,i)=>par[n.id]=i===0?root.id:ch2[i-1].id)); }
     const detH=110,aTop=tTop+44,rows=1+Math.max(...chains.map(c=>c.length)),ns=Math.min(58,bw*0.16),rh2=Math.max(ns+20,Math.min(96,(this.H-aTop-detH-70)/rows));
     const area=this.add.graphics(); area.fillStyle(0x140f1c,0.82); area.fillRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); area.lineStyle(2,C.col,0.55); area.strokeRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); this.menu.add(area);
     const pos={}; pos[root.id]={x:bx+bw/2,y:aTop+rh2/2}; chains.forEach((ch2,k)=>ch2.forEach((n,i)=>pos[n.id]={x:bx+bw*(k+0.5)/3,y:aTop+rh2*(i+1.5)}));
-    const ln=this.add.graphics(); this.menu.add(ln); const okN=n=>n===root||(tal[par[n.id]]||0)>0;
+    const ln=this.add.graphics(); this.menu.add(ln); const okN=n=>isPath?talNodeOpen(N,tal,n):(n===root||(tal[par[n.id]]||0)>0),costN=(n,r)=>isPath?talNodeCost(n,r):talCost(r);
     N.forEach(n=>{ if(n===root)return; const a2=pos[par[n.id]],b2=pos[n.id],lit=okN(n); ln.lineStyle(5,lit?C.col:0x3a3048,lit?0.95:0.7);
       if(a2.x===b2.x)ln.lineBetween(a2.x,a2.y+ns/2,b2.x,b2.y-ns/2); else { const my=(a2.y+b2.y)/2; ln.lineBetween(a2.x,a2.y+ns/2,a2.x,my); ln.lineBetween(a2.x,my,b2.x,my); ln.lineBetween(b2.x,my,b2.x,b2.y-ns/2); } });
     if(!this._talSel||!N.some(n=>n.id===this._talSel))this._talSel=root.id; let sel=null;
@@ -13077,19 +13096,20 @@ class Game extends Phaser.Scene {
       g2.fillStyle(mx?0x6a4d10:r>0?this._darken(C.col,0.55):ok?0x2a2236:0x15111c,1); g2.fillRoundedRect(x,y,ns,ns,12); g2.lineStyle(on?4:2.5,on?0xffffff:mx?0xffd166:ok?C.col:0x3a3048,1); g2.strokeRoundedRect(x,y,ns,ns,12);
       const em=this.add.text(P2.x,P2.y-2,ok?n.emoji:'🔒',{fontSize:Math.round(ns*0.5)+'px'}).setOrigin(0.5).setAlpha(ok?1:0.5);
       const lb=this.add.text(x+ns-4,y+ns-3,String(r),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',stroke:'#000',strokeThickness:3}).setOrigin(1,1);
-      this.menu.add([g2,em,lb]); if(ok&&!mx&&(cp.tp||0)>=talCost(r)){ const up=this.add.text(x+ns-2,y+2,'⬆',{fontSize:'13px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0); this.menu.add(up); }
+      this.menu.add([g2,em,lb]); if(n.cap){g2.lineStyle(1.5,0xffd166,0.6);g2.strokeRoundedRect(x-3,y-3,ns+6,ns+6,14);} if(ok&&!mx&&(cp.tp||0)>=costN(n,r)){ const up=this.add.text(x+ns-2,y+2,'⬆',{fontSize:'13px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0); this.menu.add(up); }
       if(on)sel=n; this._zone(x-6,y-6,ns+12,ns+12,()=>{ this._talSel=n.id; Sfx.select&&Sfx.select(); this.buildMenuScreen(); }); });
-    { const n=sel,r=tal[n.id]||0,ok=okN(n),mx=r>=n.max,cost=talCost(r),can=ok&&!mx&&(cp.tp||0)>=cost,dy=aTop+rows*rh2+12,dg=this.add.graphics();
+    { const n=sel,r=tal[n.id]||0,ok=okN(n),mx=r>=n.max,cost=costN(n,r),can=ok&&!mx&&(cp.tp||0)>=cost,dy=aTop+rows*rh2+12,dg=this.add.graphics();
       dg.fillStyle(0x0f0b15,0.97); dg.fillRoundedRect(bx,dy,bw,detH-8,14); dg.lineStyle(2,C.col,0.9); dg.strokeRoundedRect(bx,dy,bw,detH-8,14);
       const t1=this.add.text(bx+14,dy+17,n.emoji+' '+n.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5),t1b=this.add.text(bx+bw-14,dy+17,'Lv. '+r+' / '+n.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd166'}).setOrigin(1,0.5);
-      const t2=this.add.text(bx+14,dy+42,'Each level: '+n.per,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
+      const t2=this.add.text(bx+14,dy+42,(n.cap?'Capstone · pick 1: ':'Each level: ')+n.per,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
       const t3=this.add.text(bx+14,dy+70,C.key==='core'?'Always active':'Only in runs with '+C.name+' Build',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
       const pbw=118,pbh=58,pbx=bx+bw-pbw-10,pby=dy+30,pg=this.add.graphics(); pg.fillStyle(mx?0x5a4310:can?0xe0a020:0x3a3048,1); pg.fillRoundedRect(pbx,pby,pbw,pbh,10);
       const pc=this.add.text(pbx+pbw/2,pby+15,mx?'':ok?cost+' Talent Point'+(cost>1?'s':''):'Locked',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#1a1022'}).setOrigin(0.5),pt2=this.add.text(pbx+pbw/2,pby+38,mx?'MAX':ok?'Upgrade':'🔒',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#3a2400',strokeThickness:3}).setOrigin(0.5);
       this.menu.add([dg,t1,t1b,t2,t3,pg,pc,pt2]);
-      this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!ok?'Upgrade the node above first':'Need '+cost+' Talent Points — level up this hero','#ff9bb5');return;}
+      this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!ok?(n.soon?'Coming in a later update':n.cap&&N.some(o=>o.cap&&o!==n&&(tal[o.id]||0)>0)?'Only 1 Capstone per path — reset to change':'Upgrade the node above first'):'Need '+cost+' Talent Points — level up this hero','#ff9bb5');return;}
         cp.tal=cp.tal||{};cp.tal[n.id]=r+1;cp.tp-=cost;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.buildMenuScreen(); }); }
     const defsN=0,listTop=aTop+rows*rh2+12+detH-8+2,rh=0;
+    if(Save.data.talRefundNote){Save.data.talRefundNote=0;Save.save();this.menuToast('Path talents reworked — points refunded','#8ff0b0');}
     // v4.88.2: รีเซ็ต Talent คืน TP ทั้งหมด (จ่าย Sugar · แตะ 2 ครั้งยืนยัน)
     const spent=talSpent(cp.tal),cost=80+40*spent,armed=this._talResetArm&&this._talResetArm.id===id&&Date.now()-this._talResetArm.t<2500;
     const ry=listTop+defsN*(rh+6)+22;

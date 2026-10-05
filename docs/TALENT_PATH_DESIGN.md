@@ -1,6 +1,6 @@
 # Talent เฉพาะสาย (Build Path Talent) — แบบร่างก่อนทำ
 
-สถานะ: **รอเจ้าของอนุมัติ** · เขียน 4 ต.ค. 2026 (v6.55.23)
+สถานะ: **อนุมัติแล้ว (Capstone เลือก 1 · 5 TP)** · commit 1 ✅ v6.55.39 · เขียน 4 ต.ค. 2026 (v6.55.23)
 
 ## ปัญหาตอนนี้
 - ทุก Build Path (18 สาย) ใช้ 7 node ชุดเดียวกัน (`talentBranch`): Focus/Rhythm/Resolve/Precision/Second Wind/Guard/Mastery = ตัวเลขทั่วไป
