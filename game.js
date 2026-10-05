@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.44';
+const GAME_VERSION = '6.55.45';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.45',date:'2026-10-05',title:'Scrollable menu pages',items:['Long menu pages (Affix Forge and others) can now be dragged up and down when they do not fit the screen','A tap still works as before; dragging more than a few pixels scrolls instead']},
   {v:'6.55.44',date:'2026-10-05',title:'Mod comparison table',items:['Equipment compare now lines up mods side by side: same mod on the same row with the change','New / Lost / ▲ / ▼ / Same tags, biggest changes first, implicit swaps flagged','One-line summary: how many mods you gain and lose']},
   {v:'6.55.43',date:'2026-10-05',title:'Taro path talents',items:['Chain, Smite and Tempest each get their own talent nodes and 3 real Capstones','Chain: Thunderhead / Overcharge / Grounded · Smite: Divine Hammer / Heavy Sky / Sanctuary · Tempest: Hurricane / Eye of the Storm / Wind Step']},
   {v:'6.55.42',date:'2026-10-05',title:'Cocoa path talents',items:['Brawler, Titan and Dash each get their own talent nodes and 3 real Capstones','Brawler: Shockstorm / Flurry / Iron Chin · Titan: Colossus / Earthsplitter / Stone Skin · Dash: Afterimage / Endless Dash / Slip']},
@@ -5218,7 +5219,7 @@ class Game extends Phaser.Scene {
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } }
         return; }
-      if(this.state==='menu'){ if(this.menuScreen==='atlas'&&this._amRect&&this.atlasPointerDown(p))return; this.handleTap(p.x,p.y); return; }
+      if(this.state==='menu'){ if(this.menuScreen==='atlas'&&this._amRect&&this.atlasPointerDown(p))return; if((this._mScrollMax||0)>0){ this._mDrag={id:p.id,y0:p.y,x0:p.x,s0:this._mScroll||0,moved:false}; return; } this.handleTap(p.x,p.y); return; }
       if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(['dead','rushDone','summary','epilogue','rewardChoice'].includes(this.state)){ const now=Date.now(); if(this._endScreenState!==this.state){ this._endScreenState=this.state; this._endLockAt=Math.max(this._endLockAt||0,now+900); this._endOpenAt=now; }
         if(now<(this._endLockAt||0)){ this._endLockAt=Math.min(this._endOpenAt+2600,Math.max(this._endLockAt,now+380)); return; } }   // v6.44: กันกดแดช/Unique รัว ๆ แล้วข้ามหน้าจบด่าน
@@ -5245,9 +5246,10 @@ class Game extends Phaser.Scene {
       this.joyBase.setPosition(p.x,p.y).setVisible(true);
       this.joyKnob.setPosition(p.x,p.y).setVisible(true);
     });
-    this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); });
+    this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); else if(this.state==='menu'&&(this._mScrollMax||0)>0)this.setMenuScroll((this._mScroll||0)+dy*0.6); });
     this.input.on('pointermove',(p)=>{
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
+      if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ const D=this._mDrag,dy=p.y/RENDER_DPR-D.y0; if(Math.abs(dy)>8)D.moved=true; if(D.moved)this.setMenuScroll(D.s0-dy); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.moveSnipeAim({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR}); return; }
       if(this._beat){ this.beatMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(!this.joy.active||p.id!==this.joy.id) return;
@@ -5258,6 +5260,7 @@ class Game extends Phaser.Scene {
     });
     this.input.on('pointerup',(p)=>{
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
+      if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ const D=this._mDrag; this._mDrag=null; if(!D.moved)this.handleTap(D.x0,D.y0); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.releaseSnipe(); return; }
       if(this._ubHold&&this._ubHold.id===p.id){ const n=this.beatHoldNodes(); this._ubHold=null; this.clearBeatCharge(); this.startBeatRush(n>0,n); return; }   // v5.62 แตะสั้น = quick · กดค้าง = จุดตามเวลาที่ชาร์จ
       if(this._beat){ this.beatUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
@@ -5999,7 +6002,7 @@ class Game extends Phaser.Scene {
     cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
   // แตะเมนู: ตรงกรอบก่อน → ไม่โดนเลยค่อยขยายปุ่มเล็กให้ได้อย่างน้อย 44px (+slop) เลือกตัวที่ใกล้สุด
-  handleTap(px,py){ const zs=this.tapZones;let hit=null;
+  handleTap(px,py){ const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; if(_sc){ py+=_sc; const fb=this._tapFeedback; this._tapFeedback=(z,x,y)=>{ this._tapFeedback=fb; fb.call(this,{...z,y:z.y-_sc},x,y-_sc); }; }
     { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ this._tapFeedback(bz,px,py); Sfx.uiAction('back',()=>bz.fn()); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
     for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){hit=z;break;} }
     if(!hit){ let best=1e9; const MIN=44,SLOP=6;
@@ -6007,6 +6010,14 @@ class Game extends Phaser.Scene {
         if(px>=z.x-ew&&px<=z.x+z.w+ew&&py>=z.y-eh&&py<=z.y+z.h+eh){ const d=Math.hypot(px-(z.x+z.w/2),py-(z.y+z.h/2)); if(d<best){best=d;hit=z;} } } }
     if(!hit)return; this._tapFeedback(hit,px,py); Sfx.uiAction(hit.sound||'click',()=>hit.fn()); }
   // ไฟกระพริบบนปุ่ม + วงกระเพื่อมที่นิ้ว (อยู่นอก this.menu จึงไม่หายตอน rebuild)
+  // v6.55.45: หน้าเมนูที่ยาวเกินจอ ลากเลื่อนขึ้นลงได้ (แตะ = ปล่อยนิ้วโดยไม่ลาก)
+  setupMenuScroll(s){ const m=this.menu; this._mScrollMax=0; if(!m||!m.list||s==='atlas'||s==='hub'){ if(m)m.y=0; this._mScroll=0; return; }
+    if(this._mScrollFor!==s){ this._mScroll=0; this._mScrollFor=s; }
+    let bot=0; for(const o of m.list){ if(!o||!o.visible||o===this._mScrollFill)continue; try{ const b=o.getBounds(); if(b&&b.height<this.H*1.5&&b.bottom>bot)bot=b.bottom; }catch(e){} }
+    const max=Math.max(0,Math.ceil(bot-this.H+24)); this._mScrollMax=max;
+    if(max>0){ const f=this.add.rectangle(0,this.H,this.W,max+40,0x1c1426,1).setOrigin(0,0); m.addAt(f,0); this._mScrollFill=f; }
+    this.setMenuScroll(this._mScroll||0); }
+  setMenuScroll(v){ const max=this._mScrollMax||0; this._mScroll=Math.max(0,Math.min(max,v)); if(this.menu)this.menu.y=-this._mScroll; }
   _tapFeedback(z,px,py){ try{
     const g=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(140));
     const r=Math.min(14,z.h/2,z.w/2); g.fillStyle(0xffffff,0.22).fillRoundedRect(z.x,z.y,z.w,z.h,r);
@@ -6071,7 +6082,7 @@ class Game extends Phaser.Scene {
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut();
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear')this.buildGear(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft')this.buildCraftBench(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); } }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
@@ -7857,7 +7868,7 @@ class Game extends Phaser.Scene {
     this._playAffixRoulette(available,mod,rolled,cur);}
   // v5.43 ระดับความตื่นเต้นของผล: tier ดี (ตัวเลขน้อย) หรือ mod หายาก = ยิ่งอลังการ (0 ธรรมดา · 1 rare · 2 epic · 3 jackpot)
   affixHype(mod,rolled){ const t=rolled.t??10, wt=AFFIX_WEIGHT[mod.id]??100; let h=t<=1?3:t<=3?2:t<=5?1:0; if(wt<=30&&h<3)h++; return h; }
-  _playAffixRoulette(pool,winner,rolled,cur){
+  _playAffixRoulette(pool,winner,rolled,cur){ this.setMenuScroll(0);
     this._craftRolling=true;this.tapZones=[];const token=(this._craftRollToken||0)+1;this._craftRollToken=token;
     const hype=this.affixHype(winner,rolled),HC=[0xffd166,0x7fd0ff,0xc58bff,0xffc83a][hype],HN=['','✦ RARE ROLL','✦✦ EPIC ROLL','👑 JACKPOT'][hype];
     const w=this.W,h=this.H,cy=h*.49,shade=this.add.rectangle(0,0,w,h,0x0b0711,.84).setOrigin(0),panel=this.add.graphics();
@@ -7905,7 +7916,7 @@ class Game extends Phaser.Scene {
   }
   // v4.49: หมุนซ้ำ ๆ (สุ่ม) จนได้ mod เป้าหมายที่เลือก หรือ currency หมด — bulk action ไม่มีแอนิเมชันต่อครั้ง
   // v4.90: Auto-Roll หมุนให้เห็นทีละครั้ง (ไม่ต้องกดเอง) จนได้เป้า / currency หมด / กด Stop
-  autoRollToTarget(){
+  autoRollToTarget(){ this.setMenuScroll(0);
     if(this._craftRolling)return;
     const {item,base}=this._craftContext();
     if(!item||!base||base.tier==='start')return;
@@ -8115,7 +8126,7 @@ class Game extends Phaser.Scene {
   bazaarBuyCurrency(key,qty,cost,slotKey){ if(slotKey&&(Save.data.bazaarBought||[]).includes(slotKey))return; if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
     Save.addCurrency(key,qty); if(slotKey){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(slotKey);Save.save();} Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
   // ตู้สล็อต: หมุนไอคอนช้าลงเรื่อย ๆ แล้วหยุดที่รางวัล (ลุ้นสนุก)
-  bazaarSlotReveal(pool,land){ if(this._bazBusy)return; this._bazBusy=true; this.tapZones=[]; const w=this.W,h=this.H;
+  bazaarSlotReveal(pool,land){ this.setMenuScroll(0); if(this._bazBusy)return; this._bazBusy=true; this.tapZones=[]; const w=this.W,h=this.H;
     const veil=this.add.rectangle(0,0,w,h,0x0a0611,0.92).setOrigin(0),title=this.add.text(w/2,h*0.30,'🎰 Rolling…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5),glow=this.add.image(w/2,h*0.47,'vfx_glow').setTint(0xffd166).setScale(0.5).setAlpha(0.25),icon=this.add.image(w/2,h*0.47,'prize_chest').setDisplaySize(96,96);
     this.menu.add([veil,title,glow,icon]); this.menu.setVisible(true);
     let ticks=0,delay=55; const spin=()=>{ if(!icon.scene){this._bazBusy=false;return;} const key=Phaser.Utils.Array.GetRandom(pool);icon.setTexture(this.textures.exists(key)?key:'prize_chest').setDisplaySize(96,96); Sfx.select&&Sfx.select(); ticks++;
@@ -8169,7 +8180,7 @@ class Game extends Phaser.Scene {
     this.bazaarSlotReveal(CURRENCY.map(c=>c.asset),{artKey:d.asset,title:d.emoji+' '+d.name+'!',sub:auto?('AUTO #'+this._bazAutoN+' · Sugar '+(Save.data.sugar||0)+' · tap to stop'):'',auto:auto?()=>this.bazaarGambleCurrency(true):null}); }
   bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 Sold shards','+🍬'+(sh*2),1300); this.buildBazaar(); }
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
-  openGachaReveal(){
+  openGachaReveal(){ this.setMenuScroll(0);
     const lvObj=GACHA_LEVELS[Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.lo+Math.floor(Math.random()*(lvObj.hi-lvObj.lo+1));
     if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (iLv '+lvObj.lo+'-'+lvObj.hi+')',1300);return;}
     if(!Save.spend(cost))return;this._gachaBusy=true;this.menu.removeAll(true);this.tapZones=[];
