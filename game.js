@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.54';
+const GAME_VERSION = '6.55.55';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.55',date:'2026-10-05',title:'Set guide & tidier gear panel',items:['Hero card is as tall as both gear rows; gear slots sit closer; Gacha button matches the slot width and is taller','New set box lists every piece, shows what is still missing and the next bonus','Sets now include amulets and rings: Home and Brigade gain common amulet/ring pieces; new Head Chef Medal and Golden Spoon Ring join the Royal Chef Set; 5-piece bonuses added']},
   {v:'6.55.54',date:'2026-10-05',title:'Worn gear on show',items:['Your six equipped pieces are shown large in a 3×2 grid next to the hero avatar']},
   {v:'6.55.53',date:'2026-10-05',title:'Balanced gear art',items:['Comparison cards: medium artwork on the left, name beside it','Grid icons sized down to fit more comfortably']},
   {v:'6.55.52',date:'2026-10-05',title:'Big gear art',items:['Equipment comparison shows large item artwork with a grade-coloured glow','Larger gear slot and grid icons']},
@@ -3419,17 +3420,19 @@ const GEAR = {
   ],
   amulet: [
     { id:'am_none', tier:"start",   emoji:'📿', name:'None',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'am_ribbon', tier:"common", emoji:'🎀', name:'Lucky Ribbon',  cost:100, enh:true, desc:'+30 HP (+10/enh)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
-    { id:'am_clover', tier:"common", emoji:'🍀', name:'Clover Leaf',  cost:120, enh:true, desc:'+4% crit · +0.5 regen/s (+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.04+0.01*lv; p.regen=(p.regen||0)+0.5+0.15*lv; } },
+    { id:'am_ribbon', set:'home', tier:"common", emoji:'🎀', name:'Lucky Ribbon',  cost:100, enh:true, desc:'+30 HP (+10/enh)',          apply:(p,lv)=>{ p.maxhp+=30+10*lv; } },
+    { id:'am_clover', set:'brigade', tier:"common", emoji:'🍀', name:'Clover Leaf',  cost:120, enh:true, desc:'+4% crit · +0.5 regen/s (+1%/enh)', apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.04+0.01*lv; p.regen=(p.regen||0)+0.5+0.15*lv; } },
     { id:'am_star', set:'fortune', tier:"rare",   emoji:'⭐', name:'Sparkle Star',  cost:260, enh:true, desc:'+8% damage · +15 HP (+2%·+8/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.08+0.02*lv))-1; p.maxhp+=15+8*lv; } },
+    { id:'am_chef', tier:"epic", set:'chef', emoji:'🏅', name:'Head Chef Medal', cost:640, enh:true, desc:'+10% damage · +6% crit (+2%/enh)', apply:(p,lv)=>{ p.dmgMul+=0.10+0.02*lv; p.critChance=(p.critChance||0)+0.06; } },
     { id:'am_moon', tier:"epic", set:'wind',  emoji:'🌙', name:'Sweet Moon',  cost:640, enh:true, desc:'+12% damage · +40 HP · +1 regen/s (+2%/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.12+0.02*lv))-1; p.maxhp+=40+10*lv; p.regen=(p.regen||0)+1+0.2*lv; } },
     { id:'lg_phoenix', tier:"legend", emoji:'🔥', name:'Phoenix Amulet', cost:0, enh:true, fx:'revive', desc:'+120 HP · +1.5 regen/s · revive once per stage (+20HP/enh) 🔥', apply:(p,lv)=>{ p.maxhp+=120+20*lv; p.regen=(p.regen||0)+1.5+0.3*lv; p._gearRevive=(p._gearRevive||0)+1; } },
   ],
   ring: [
     { id:'ri_none', tier:"start",   emoji:'💍', name:'None',     cost:0,   enh:false, desc:'-', apply:(p,lv)=>{} },
-    { id:'ri_copper', tier:"common", emoji:'💍', name:'Copper Ring', cost:120, enh:true, desc:'+5% damage (+2%/enh)',       apply:(p,lv)=>{ p.dmgMul+=((1+0.05+0.02*lv))-1; } },
-    { id:'ri_silver', tier:"common", emoji:'💎', name:'Silver Crit Ring', cost:140, enh:true, desc:'+6% crit (+1%/enh)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.06+0.01*lv; } },
+    { id:'ri_copper', set:'home', tier:"common", emoji:'💍', name:'Copper Ring', cost:120, enh:true, desc:'+5% damage (+2%/enh)',       apply:(p,lv)=>{ p.dmgMul+=((1+0.05+0.02*lv))-1; } },
+    { id:'ri_silver', set:'brigade', tier:"common", emoji:'💎', name:'Silver Crit Ring', cost:140, enh:true, desc:'+6% crit (+1%/enh)',        apply:(p,lv)=>{ p.critChance=(p.critChance||0)+0.06+0.01*lv; } },
     { id:'ri_gold', set:'fortune', tier:"rare",   emoji:'💛', name:'Gold Ring',  cost:320, enh:true, desc:'+12% damage · +0.8 regen/s (+3%/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.12+0.03*lv))-1; p.regen=(p.regen||0)+0.8+0.2*lv; } },
+    { id:'ri_chef', tier:"epic", set:'chef', emoji:'🥄', name:'Golden Spoon Ring', cost:700, enh:true, desc:'+14% damage · +20% crit DMG (+3%/enh)', apply:(p,lv)=>{ p.dmgMul+=0.14+0.03*lv; p.critMul=(p.critMul||1.55)+0.2; } },
     { id:'ri_diamond', tier:"epic", set:'wind', emoji:'💠', name:'Diamond Ring',    cost:700, enh:true, desc:'+18% damage · +8% crit (+3%·+1%/enh)', apply:(p,lv)=>{ p.dmgMul+=((1+0.18+0.03*lv))-1; p.critChance=(p.critChance||0)+0.08+0.01*lv; } },
   ],
 };
@@ -3437,16 +3440,19 @@ const GEAR = {
 const GEAR_SETS = {
   chef:{ name:'Royal Chef Set', emoji:'👑', bonuses:{
     2:{ desc:'2 pcs: +10% damage', apply:p=>{ p.dmgMul+=(1.10)-1; } },
-    3:{ desc:'3 pcs: +10% crit · stronger crit DMG', apply:p=>{ p.critChance=(p.critChance||0)+0.10; p.critMul=(p.critMul||1.55)+0.3; } } }, collect:{desc:'Collected: +3% damage',apply:p=>{p.dmgMul+=0.03;}} },
+    3:{ desc:'3 pcs: +10% crit · stronger crit DMG', apply:p=>{ p.critChance=(p.critChance||0)+0.10; p.critMul=(p.critMul||1.55)+0.3; } },
+    5:{ desc:'5 pcs: +15% damage', apply:p=>{ p.dmgMul+=0.15; } } }, collect:{desc:'Collected: +3% damage',apply:p=>{p.dmgMul+=0.03;}} },
   wind:{ name:'Gale Master Set', emoji:'🌪️', bonuses:{
     2:{ desc:'2 pcs: -8% cooldown', apply:p=>{ p.cdMul=Math.max(STAT_CAPS.cdMulMin,(p.cdMul||1)*0.92); } },
     3:{ desc:'3 pcs: +10% move speed · +8% damage', apply:p=>{ p.baseSpeed*=1.10; p.dmgMul+=(1.08)-1; } } }, collect:{desc:'Collected: −3% cooldown',apply:p=>{p.cdMul*=0.97;}} },
   home:{ name:'Home Kitchen Set', emoji:'🏠', bonuses:{
     2:{ desc:'2 pcs: +8% max HP', apply:p=>{ p.maxhp*=1.08; } },
-    3:{ desc:'3 pcs: +6% damage · +0.5 HP/s', apply:p=>{ p.dmgMul+=0.06; p.regen=(p.regen||0)+0.5; } } }, collect:{desc:'Collected: +3% max HP',apply:p=>{p.maxhp*=1.03;}} },
+    3:{ desc:'3 pcs: +6% damage · +0.5 HP/s', apply:p=>{ p.dmgMul+=0.06; p.regen=(p.regen||0)+0.5; } },
+    5:{ desc:'5 pcs: +12% max HP · +1 HP/s', apply:p=>{ p.maxhp*=1.12; p.regen=(p.regen||0)+1; } } }, collect:{desc:'Collected: +3% max HP',apply:p=>{p.maxhp*=1.03;}} },
   brigade:{ name:'Kitchen Brigade Set', emoji:'🛡️', bonuses:{
     2:{ desc:'2 pcs: +12% max HP', apply:p=>{ p.maxhp*=1.12; } },
-    3:{ desc:'3 pcs: −10% damage taken · +6% damage', apply:p=>{ p.dmgTakenMul*=0.9; p.dmgMul+=0.06; } } }, collect:{desc:'Collected: −2% damage taken',apply:p=>{p.dmgTakenMul*=0.98;}} },
+    3:{ desc:'3 pcs: −10% damage taken · +6% damage', apply:p=>{ p.dmgTakenMul*=0.9; p.dmgMul+=0.06; } },
+    5:{ desc:'5 pcs: −10% damage taken · +10% max HP', apply:p=>{ p.dmgTakenMul*=0.9; p.maxhp*=1.1; } } }, collect:{desc:'Collected: −2% damage taken',apply:p=>{p.dmgTakenMul*=0.98;}} },
   fortune:{ name:'Lucky Star Set', emoji:'⭐', bonuses:{
     2:{ desc:'2 pcs: +6% crit chance', apply:p=>{ p.critChance=(p.critChance||0)+0.06; } },
     3:{ desc:'3 pcs: +8% move speed · +0.25 crit damage', apply:p=>{ p.baseSpeed*=1.08; p.critMul=(p.critMul||1.55)+0.25; } } }, collect:{desc:'Collected: +2% crit chance',apply:p=>{p.critChance=(p.critChance||0)+0.02;}} },
@@ -7691,16 +7697,17 @@ class Game extends Phaser.Scene {
     const sel=this.gearSlot||'weapon';
     // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
     // v6.55.51: ตัวละครเป็นอวาตาร์เล็กซ้ายสุด + ช่องสวมใส่ 6 ช่องแถวเดียว
-    const folded=true, cy0=78, topH=150, av=56, ax=14, ay=cy0+4, key='card_'+id;
-    { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,av,av,12); this.menu.add(fg);
-      if(this.textures.exists(key)){ const im=this.add.image(ax+av/2,ay+av/2,key),TW=im.width,TH=im.height,cw=TW*0.62,cx0=TW*0.19,cy1=TH*0.03;
-        im.setCrop(cx0,cy1,cw,cw).setOrigin((cx0+cw/2)/TW,(cy1+cw/2)/TH).setScale((av-6)/cw); this.menu.add(im); }
-      else { const em=this.add.text(ax+av/2,ay+av/2,CHARACTERS[id].emoji,{fontSize:'26px'}).setOrigin(0.5); this.menu.add(em); }
-      const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,av-2,av-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,av,av,12); this.menu.add(fr);
-      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+av-2,ay+av-2,'Lv'+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:3,y:0}}).setOrigin(1,1);this.menu.add(lv);} }
-    // v6.55.54: ของที่สวมอยู่ใหญ่ชัด 3×2
-    const x0=ax+av+10, step=(w-14-x0)/3, ss=Math.min(68,step-12), rowY=[cy0+4+ss/2, cy0+4+ss*1.5+10];
-    const layout=['weapon','armor','gloves','amulet','ring','boots'].map((sl,i)=>[sl,x0+step*(i%3+0.5),Math.floor(i/3)]);
+    // v6.55.55: อวาตาร์สูงเท่า 2 แถวช่องสวมใส่ · ช่องชิดกัน · gacha กว้างเท่ากริด · กล่องเซ็ทบอกชิ้นที่ขาด
+    const folded=true, cy0=78, sgap=8, ss=Math.min(70,Math.floor((w-28-10-sgap*2)/3.95)), avW=Math.round(ss*0.95), avH=ss*2+sgap;
+    const gridW=ss*3+sgap*2, ax=Math.round((w-(avW+10+gridW))/2), ay=cy0+4, key='card_'+id, x0=ax+avW+10;
+    { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,avW,avH,12); this.menu.add(fg);
+      if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=Math.min(TH*0.95,cw*avH/avW),cx0=TW*0.19,cy1=TH*0.03;
+        im.setCrop(cx0,cy1,cw,ch).setOrigin((cx0+cw/2)/TW,(cy1+ch/2)/TH).setScale(Math.min((avW-6)/cw,(avH-6)/ch)).setPosition(ax+avW/2,ay+avH/2); this.menu.add(im); }
+      else { const em=this.add.text(ax+avW/2,ay+avH/2,CHARACTERS[id].emoji,{fontSize:'30px'}).setOrigin(0.5); this.menu.add(em); }
+      const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,avW-2,avH-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,avW,avH,12); this.menu.add(fr);
+      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+avW/2,ay+avH-3,'Lv'+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:4,y:1}}).setOrigin(0.5,1);this.menu.add(lv);} }
+    const rowY=[ay+ss/2, ay+ss*1.5+sgap];
+    const layout=['weapon','armor','gloves','amulet','ring','boots'].map((sl,i)=>[sl,x0+ss/2+(ss+sgap)*(i%3),Math.floor(i/3)]);
     layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];
       const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
       const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
@@ -7715,32 +7722,46 @@ class Game extends Phaser.Scene {
       if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
       this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
     });
-    // v6.53: แถบสถานะชุดเซ็ทที่สวม — ชัด ๆ เหนือปุ่ม gacha · แตะ = Codex › Sets
-    { const sc=gearSetCounts(),act=SET_ORDER.filter(k=>sc[k]),sy=cy0+topH+38,sw2=w-24,sx2=12,g=this.add.graphics(); g.fillStyle(0x1a2433,0.94);g.fillRoundedRect(sx2,sy,sw2,26,9);g.lineStyle(1.5,act.some(k=>sc[k]>=2)?0x8ff0b0:0x4a5a78,1);g.strokeRoundedRect(sx2,sy,sw2,26,9);
-      const txt=act.length?act.map(k=>{const d=GEAR_SETS[k],n=sc[k],tot=gearSetPieces(k).length,b=d.bonuses[Math.min(n,3)];return d.emoji+' '+n+'/'+tot+(n>=2&&b?' '+b.desc.replace(/^\d pcs:\s*/,''):'');}).join('   '):'🧩 No set pieces equipped · tap to see sets';
-      const t=this.add.text(w/2,sy+13,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:act.some(k=>sc[k]>=2)?'#8ff0b0':'#cfe0ff'}).setOrigin(0.5);if(t.width>sw2-12)t.setScale((sw2-12)/t.width);
-      this.menu.add([g,t]); this._zone(sx2,sy,sw2,26,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();}); }
-    // ---- ปุ่มกล่องสุ่ม (gacha) — v4.49: เอาปุ่ม Forge Legend ออก · Legend เป็น drop-only เท่านั้น ----
-    const gby=cy0+topH+6, gbh=28, half=Math.min(w-24,340);
-    const gcx=w/2;
-    // v4.32: gacha มี stepper เลือก base item level (◄ ► ปรับ, กลาง=เปิด) · iLv สูง=แพงขึ้น
+    // ---- ปุ่มกล่องสุ่ม (gacha) — กว้างเท่ากริดช่องสวมใส่ ----
+    const gby=ay+avH+8, gbh=36, half=ax+avW+10+gridW-ax;
+    const gcx=ax+half/2;
     const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
-    const afG=(Save.data.sugar||0)>=gCost, gx0=gcx-half/2, aw=30;
+    const afG=(Save.data.sugar||0)>=gCost, gx0=ax, aw=34;
     const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gx0,gby,half,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
-    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 Gacha  iLv'+glv.lo+'-'+glv.hi+'  🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 Gacha  iLv'+glv.lo+'-'+glv.hi+'  🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
     const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
     const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
     this.menu.add([gbg,gbt,lArr,rArr]);
     this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
+    // v6.55.55: กล่องเซ็ท — ชิ้นที่ใส่แล้ว/ที่ยังขาด + โบนัสถัดไป · แตะ = Codex › Sets
+    let setBot=gby+gbh+8;
+    { const sc=gearSetCounts(), act=SET_ORDER.filter(k=>sc[k]).sort((p,q)=>sc[q]-sc[p]).slice(0,2), sx2=ax, sw2=half;
+      const rows=act.length||1, rh=48, sy=setBot, bh=rows*rh+6;
+      const g=this.add.graphics(); g.fillStyle(0x1a2433,0.94);g.fillRoundedRect(sx2,sy,sw2,bh,10);g.lineStyle(1.5,act.some(k=>sc[k]>=2)?0x8ff0b0:0x4a5a78,1);g.strokeRoundedRect(sx2,sy,sw2,bh,10); this.menu.add(g);
+      if(!act.length){ const t=this.add.text(sx2+sw2/2,sy+bh/2,'🧩 No set pieces equipped · tap to see sets',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#cfe0ff'}).setOrigin(0.5); if(t.width>sw2-12)t.setScale((sw2-12)/t.width); this.menu.add(t); }
+      act.forEach((k,ri)=>{ const d=GEAR_SETS[k],n=sc[k],ps=gearSetPieces(k),ry=sy+4+ri*rh;
+        const nxt=Object.keys(d.bonuses).map(Number).sort((p,q)=>p-q).find(v=>v>n), cur=Object.keys(d.bonuses).map(Number).filter(v=>v<=n).pop();
+        const hd=this.add.text(sx2+8,ry+2,d.emoji+' '+d.name+'  '+n+'/'+ps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:n>=2?'#8ff0b0':'#cfe0ff'}); this.menu.add(hd);
+        const info=nxt?('Need '+(nxt-n)+' more → '+d.bonuses[nxt].desc.replace(/^\d pcs:\s*/,'')):('✅ '+d.bonuses[cur].desc.replace(/^\d pcs:\s*/,''));
+        const ih=this.add.text(sx2+sw2-8,ry+3,info,{fontFamily:'sans-serif',fontSize:'11px',color:nxt?'#ffd9a8':'#8ff0b0'}).setOrigin(1,0); const room=sw2-24-hd.width; if(ih.width>room)ih.setScale(Math.max(0.6,room/ih.width)); this.menu.add(ih);
+        const isz=24, ix0=sx2+8;
+        ps.forEach((pc,pi)=>{ const on=Save.data.gear[pc.slot]===pc.id, cx=ix0+pi*(isz+6)+isz/2, cyy=ry+19+isz/2;
+          const pg=this.add.graphics(); pg.fillStyle(on?0x2f4a3a:0x2c2338,1); pg.fillRoundedRect(cx-isz/2,cyy-isz/2,isz,isz,6); pg.lineStyle(1.5,on?0x8ff0b0:0x4a4059,1); pg.strokeRoundedRect(cx-isz/2,cyy-isz/2,isz,isz,6); this.menu.add(pg);
+          const ak='gear_'+pc.id, ic=this.textures.exists(ak)?this.add.image(cx,cyy,ak).setDisplaySize(isz-4,isz-4):this.add.text(cx,cyy,pc.emoji,{fontSize:'14px'}).setOrigin(0.5); ic.setAlpha(on?1:0.35); this.menu.add(ic); });
+        const miss=ps.filter(pc=>Save.data.gear[pc.slot]!==pc.id).map(pc=>(GEAR_SLOTS.find(x=>x.slot===pc.slot)||{}).label||pc.slot);
+        if(miss.length){ const mx=ix0+ps.length*(isz+6)+4, mt=this.add.text(mx,ry+19+isz/2,'Missing: '+miss.join(', '),{fontFamily:'sans-serif',fontSize:'11px',color:'#9a90ab'}).setOrigin(0,0.5); const rm=sx2+sw2-8-mx; if(mt.width>rm)mt.setScale(Math.max(0.6,rm/mt.width)); this.menu.add(mt); }
+      });
+      this._zone(sx2,sy,sw2,bh,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();});
+      setBot=sy+bh; }
     // ---- Item-instance inventory: new first, 8 per page (portrait-first) ----
     const selDef=GEAR_SLOTS.find(g=>g.slot===sel),items=Save.gearItemsForSlot(sel).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0);   // v6.55.48: ไม่โชว์ Starter/ช่องว่างในกริด
     let selected=Save.gearItem(this.gearSelectedUid);
     if(!selected||selected.slot!==sel){ selected=items.find(x=>x.isNew)||Save.equippedGearItem(sel)||items[0]||null; this.gearSelectedUid=selected?selected.uid:null; }
     if(!this.gearPageBySlot)this.gearPageBySlot={}; const pageSize=8,pages=Math.max(1,Math.ceil(items.length/pageSize));
     let page=Math.max(0,Math.min(pages-1,this.gearPageBySlot[sel]||0)); this.gearPageBySlot[sel]=page;
-    let y=cy0+topH+72;
+    let y=setBot+12;
     const newCount=items.filter(x=>x.isNew).length,cap=Save.data.gearInventoryCap||100;
     const hdr=this.add.text(14,y,selDef.emoji+' '+selDef.label+(newCount?' · '+newCount+' NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0,0);
     const count=this.add.text(w-66,y,Save.gearInventoryCount()+' / '+cap,{fontFamily:'sans-serif',fontSize:'9px',color:Save.gearInventoryFull()?'#ff8da2':'#a99fbb'}).setOrigin(1,0);
