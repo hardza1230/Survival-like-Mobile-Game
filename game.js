@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.61';
+const GAME_VERSION = '6.55.62';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.62',date:'2026-10-05',title:'Shotgun feels heavy',items:['Shotgun Build fires slower, punchier volleys with a muzzle blast and screen kick','Pellets are shorter range, push enemies back and hit much harder up close (×2 within 120px)','Far pellets lose damage, so getting close matters']},
   {v:'6.55.61',date:'2026-10-05',title:'Mint path Uniques',items:['Freeze Build: Glacier Bloom — hold to grow an ice ring, release to freeze everything inside; still-frozen foes shatter for double damage','Piercer Build: Frost Lance Charge — hold to aim, release to dash through enemies and leave a slowing ice trail','Barrage Build keeps Mint Gale','New cards: Wider Bloom, Long Winter, Shard Spray, Long Lance, Twin Lance, Lance Burst']},
   {v:'6.55.60',date:'2026-10-05',title:'Shotgun Unique: Berry Blast',items:['Momo Shotgun Build: hold Unique to aim a cone, release to fire a huge pellet blast with knockback','Enemies within 120px take double damage · Momo hops back from the recoil','New Shotgun cards: Wide Blast, Recoil Hop and Double Tap']},
   {v:'6.55.59',date:'2026-10-05',title:'Trade-in details',items:['Tap an item in Gear Trade-in to see its name, grade, item level, base stat, implicit and mods']},
@@ -11224,6 +11225,7 @@ class Game extends Phaser.Scene {
     const basicRate=b?Math.pow(b.character==='mint'?0.93:0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
     if(b&&key==='sprinkle'&&b.path==='ricochet')base*=0.8;
     if(b&&key==='sprinkle'&&b.path==='sniper')base*=1.18;
+    if(b&&key==='sprinkle'&&b.path==='shotgun')base*=1.3;
     return base*(sw.skill===key?(this.player.weaponCdMul||1):1)*basicRate*(b&&b._pm?b._pm.cd:1);
   }
   _cdBase(key,lvl){
@@ -11285,14 +11287,15 @@ class Game extends Phaser.Scene {
         b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;b.seedPierce=!!b.pierce;b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b.loopT=false;b._ptSniper=false;
         if(path==='sniper'){this.attachChargedSeed(b,38+lvl*2);b.dmg*=3.2;b.pierce=true;b.seedPierce=true;b.hitGapV=0.22;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);
           b.dmg*=1+(PT.sDmg||0);b.headshot+=PT.hs||0;b.bigMul+=PT.big||0;b.penGain=PT.pen||0;b.oneShot=!!PT.oneShot;b._ptSniper=true; if(this._ptHsNext){b.forceHs=true;this._ptHsNext=false;} if(PT.ghillie&&(this._ptStill||0)>=1.5&&!this._ptGhUsed){b.dmg*=2;this._ptGhUsed=true;}}
-        else if(path==='shotgun'){b.dmg*=0.6;b.life=0.42;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;if(PT.kb)b.knockback=120+60*PT.kb;b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
+        else if(path==='shotgun'){b.dmg*=0.8;b.life=0.3;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
         else if(path==='ricochet'){b.dmg*=0.8;b.bounce+=2+(R.carom||0);b.bounceGain=0.08*(R.gather||0)+(PT.mom||0);b.dmg*=1+(PT.rDmg||0);if((PT.rDmg||0)>=0.119)b.bounce++;if(PT.pinball)b.bounce=Math.max(b.bounce,12);b.lastMul=PT.last||0;b.seekMul=1+(PT.seek||0);b.splitCh=PT.split||0;b.boomer2=!!PT.boomer;b.loopT=!!PT.loop;}   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
         const distance=this.dist(t.x,t.y,this.player.x,this.player.y);
         const closeLarge=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&distance<430;
         const spread=closeLarge?0.045:0.16;
         const fan=path==='shotgun'?(shotIndex-(shots-1)/2)*spread:(basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0);
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(closeLarge?-0.012:-0.08,closeLarge?0.012:0.08);
-        this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot(); };
+        this.physics.velocityFromRotation(ang,speed,b.body.velocity); Sfx.shoot();
+        if(path==='shotgun'&&shotIndex===0)this.shotgunKick(ang); };
       if(path==='sniper'){
         if(this.textures.exists('vfx_strawberry_charge')){const halo=this.trackArtVfx(this.camWorld(this.add.image(this.player.x,this.player.y-24,'vfx_strawberry_charge').setDisplaySize(88,88).setDepth(90490).setAlpha(0.65)));this.tweens.add({targets:halo,alpha:0,scaleX:halo.scaleX*0.65,scaleY:halo.scaleY*0.65,duration:340,onComplete:()=>halo.destroy()});}else this.vfxCastGlow(0xffd166);
         this.time.delayedCall(340,()=>{if(this.state==='play')fireOne();});
@@ -12221,12 +12224,15 @@ class Game extends Phaser.Scene {
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
       if(e._sourT>0)e._sourT-=step;
       if(e._burnT>0){ e._burnT-=step; this._infTick=true; this.damage(e,(e._burnDps||0)*step,e.x,e.y); this._infTick=false; if(Math.random()<0.3)this.burst&&this.burst(e.x,e.y,0xff5a3d); if(e._burnT<=0)e._burnDps=0; } }); }
+  shotgunKick(ang){ const pl=this.player,g=this.camWorld(this.add.graphics().setDepth(90450)); g.fillStyle(0xfff1a8,0.75); g.slice(pl.x,pl.y,70,ang-0.45,ang+0.45,false); g.fillPath(); g.fillStyle(0xffffff,0.9); g.fillCircle(pl.x+Math.cos(ang)*26,pl.y+Math.sin(ang)*26,9);
+    this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()}); this.screenShake(70,0.003); if(Sfx.punch)Sfx.punch(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }
   pathBulletDmg(b,e){ let d=b.dmg;   // 🛤 Build Path: ตัวคูณตามสาย (sniper/shotgun)
     if(b.bigMul&&(e.isBoss||e.isMini||e.isElite))d*=1+b.bigMul;
     if(b.penGain&&b.hitTargets)d*=1+b.penGain*Math.max(0,b.hitTargets.size-1);
     if(b.forceHs||(b.headshot&&Math.random()<b.headshot)){b.forceHs=false;d*=2.5;if(b.oneShot){if(e.isBoss||e.isMini)d*=1.6;else d=Math.max(d,e.hp+1);}this.popDmg('HEADSHOT',e.x,e.y-18,true);}
     const _pd=this.player?this.dist(e.x,e.y,this.player.x,this.player.y):999;
-    if(b.closeMul&&_pd<170)d*=1+b.closeMul;
+    if(b.sgPellet){ d*=_pd<120?2*(1+b.closeMul):_pd<200?1+b.closeMul:_pd>260?0.6:1; }   // v6.55.62 ลูกซอง: ใกล้แรงมาก ไกลอ่อน
+    else if(b.closeMul&&_pd<170)d*=1+b.closeMul;
     if(b.cqMul&&_pd<120)d*=1+b.cqMul;
     if(b.dragon)this.infusionOnHit(e,d,'spicy');
     if(b.lastMul&&(b.bounce||0)===0&&b._bounced)d*=1+b.lastMul;
