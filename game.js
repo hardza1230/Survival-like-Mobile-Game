@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.40';
+const GAME_VERSION = '6.55.41';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.41',date:'2026-10-05',title:'Mint path talents',items:['Freeze, Barrage and Piercer each get their own talent nodes and 3 real Capstones','Freeze: Absolute Zero / Shatter Nova / Frost Armor · Barrage: Lance Storm / Rapid Frost / Cold Stride · Piercer: Glacial Spear / Long Shot / Ice Wall']},
   {v:'6.55.40',date:'2026-10-05',title:'Momo path talents',items:['Sniper, Shotgun and Ricochet each get 7 unique talents and 3 real Capstones','Sniper: One Shot / Railgun / Ghillie · Shotgun: Dragon Breath / Double Barrel / Recoil Dash · Ricochet: Pinball / Boomerang / Sugar Loop','Other heroes keep generic path talents for now']},
   {v:'6.55.39',date:'2026-10-05',title:'Path talent trees (part 1)',items:['Every Build Path now has its own tree: Root, three branches (Power / Mechanic / Survival) and 3 Capstones — only 1 Capstone per path (5 TP)','Old path talent points were refunded','Path-specific node effects and Capstones arrive character by character in the next updates'] },
   {v:'6.55.38',date:'2026-10-05',title:'Enhancement cost curve',items:['Enhancement shard cost now grows steeply: +1 costs 2 🔩, +5 costs 10, +10 costs 77 (was 3 → 21)'] },
@@ -2899,6 +2900,9 @@ function charTalents(c){ return CHAR_TALENTS[c]||CHAR_TALENTS.momo; }
 // v6.55.39 Talent เฉพาะสาย (docs/TALENT_PATH_DESIGN.md): Root + กิ่ง A Power / B Mechanic / C Survival (2 node) + Capstone 3 ตัว เลือกได้ 1 (5 TP)
 // PATH_TALENTS[path] ใส่ node เฉพาะสายทับค่าเริ่มต้น (commit ถัดไปทีละตัวละคร) · capstone ที่ยังไม่มี = Coming soon
 const _K=(k,v)=>(p,r)=>{p._pt=p._pt||{};p._pt[k]=(p._pt[k]||0)+v*r;};
+// fx แบบ pathMods (dmg/cd คูณ ต่อ rank · อื่นบวก) → รวมเข้า b._pm ใน syncBasicAttack
+const _P=(fx)=>(p,r)=>{p._pt=p._pt||{};(p._pt.fx=p._pt.fx||[]).push([fx,r]);};
+function ptMergeFx(m,P){ for(const [fx,n] of ((P&&P.fx)||[]))for(const k in fx){ if(k==='dmg'||k==='cd')m[k]*=Math.pow(fx[k],n); else m[k]=(m[k]||0)+fx[k]*n; } return m; }
 const PATH_TALENTS={
   sniper:{root:{emoji:'🎯',name:'Steady Aim',max:3,per:'+10% Sniper seed damage',apply:_K('sDmg',0.10)},
     a1:{emoji:'💀',name:'Headhunter',max:3,per:'+5% headshot chance',apply:_K('hs',0.05)},
@@ -2929,7 +2933,31 @@ const PATH_TALENTS={
     c2:{emoji:'🧱',name:'Bouncy Skin',max:2,per:'When hit, release 3 bouncing seeds',apply:_K('skin',1)},
     capA:{emoji:'🎰',name:'Pinball',max:1,per:'Seeds bounce up to 12 times',apply:_K('pinball',1)},
     capB:{emoji:'🪃',name:'Boomerang',max:1,per:'After the last bounce, seeds fly back through enemies',apply:_K('boomer',1)},
-    capC:{emoji:'🍬',name:'Sugar Loop',max:1,per:'Bounce near you grants a shield (max 2, 6s cd)',apply:_K('loop',1)}}};
+    capC:{emoji:'🍬',name:'Sugar Loop',max:1,per:'Bounce near you grants a shield (max 2, 6s cd)',apply:_K('loop',1)}},
+  glacier:{root:{emoji:'🧊',name:'Cold Core',max:3,per:'+8% damage to Frozen enemies',apply:_P({frozen:0.08})},
+    a1:{emoji:'🥶',name:'Brittle',max:3,per:'+10% damage to Frozen enemies',apply:_P({frozen:0.10})},
+    a2:{emoji:'🏔️',name:'Glacier Weight',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
+    b1:{emoji:'⏱️',name:'Cold Rhythm',max:3,per:'−4% lance cooldown',apply:_P({cd:0.96})},
+    b2:{emoji:'🌬️',name:'Frost Reach',max:3,per:'+8% lance range',apply:_P({range:0.08})},
+    capA:{emoji:'❄️',name:'Absolute Zero',max:1,per:'Freezing needs 1 less Chill stack',apply:_K('azero',1)},
+    capB:{emoji:'💥',name:'Shatter Nova',max:1,per:'Each freeze blasts nearby enemies',apply:_K('fnova',1)},
+    capC:{emoji:'🛡️',name:'Frost Armor',max:1,per:'Each freeze: −30% damage taken for 3s',apply:_K('farmor',1)}},
+  barrage:{root:{emoji:'🌨️',name:'Sharp Volley',max:3,per:'+5% lance damage',apply:_P({dmg:1.05})},
+    a1:{emoji:'🔪',name:'Honed Tips',max:3,per:'+6% lance damage',apply:_P({dmg:1.06})},
+    a2:{emoji:'🎯',name:'Long Volley',max:3,per:'+10% damage beyond 300px',apply:_P({far:0.10})},
+    b1:{emoji:'⏱️',name:'Quick Hands',max:3,per:'−5% lance cooldown',apply:_P({cd:0.95})},
+    b2:{emoji:'📏',name:'Reach',max:3,per:'+6% lance range',apply:_P({range:0.06})},
+    capA:{emoji:'🌪️',name:'Lance Storm',max:1,per:'+1 lance',apply:_P({count:1})},
+    capB:{emoji:'⚡',name:'Rapid Frost',max:1,per:'−25% lance cooldown',apply:_P({cd:0.75})},
+    capC:{emoji:'💨',name:'Cold Stride',max:1,per:'While moving: −15% damage taken',apply:_K('moveGuard',0.15)}},
+  pierce:{root:{emoji:'🏹',name:'Heavy Shaft',max:3,per:'+6% lance damage',apply:_P({dmg:1.06})},
+    a1:{emoji:'👑',name:'Giant Piercer',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
+    a2:{emoji:'🔭',name:'Sniper’s Lance',max:3,per:'+12% damage beyond 300px',apply:_P({far:0.12})},
+    b1:{emoji:'📏',name:'Long Reach',max:3,per:'+8% lance range',apply:_P({range:0.08})},
+    b2:{emoji:'⏱️',name:'Steady Draw',max:3,per:'−4% lance cooldown',apply:_P({cd:0.96})},
+    capA:{emoji:'🗡️',name:'Glacial Spear',max:1,per:'+40% damage to bosses/elites',apply:_P({big:0.40})},
+    capB:{emoji:'🌠',name:'Long Shot',max:1,per:'+35% damage beyond 300px · +30% range',apply:_P({far:0.35,range:0.30})},
+    capC:{emoji:'🧱',name:'Ice Wall',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}}};
 const TAL_CAP_COST=5, TAL_SLOTS=['root','a1','a2','b1','b2','c1','c2','capA','capB','capC'];
 function _ptGeneric(pt){ return {
   root:{emoji:pt.emoji||'✦',name:'Path Focus',max:3,per:'+5% damage',apply:(p,r)=>{p.dmgMul+=0.05*r;}},
@@ -10170,7 +10198,7 @@ class Game extends Phaser.Scene {
   basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
-  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
+  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
@@ -10687,7 +10715,7 @@ class Game extends Phaser.Scene {
     return m; }
   condTakenMul(){ const P=this.player,c=P&&P._cond; return this.ptTakenMul()*((!c||!c.c_close||P.hp/Math.max(1,P.maxhp)>=0.35)?1:Math.max(0.4,1-0.15*c.c_close)); }
   ptTakenMul(){ const P=this.player,PT=P&&P._pt; if(!PT)return 1; let m=1; const st=this._ptStill||0;
-    if(PT.still&&st>=0.6)m*=1-PT.still; if(PT.ghillie&&st>=1.5)m*=0.4;
+    if(PT.still&&st>=0.6)m*=1-PT.still; if(PT.ghillie&&st>=1.5)m*=0.4; if(PT.stillWall&&st>=0.6)m*=0.6; if(PT.moveGuard&&st===0&&P.body&&P.body.velocity.length()>40)m*=1-PT.moveGuard; if(PT.farmor&&(this.elapsed||0)<(this._ptArmorT||0))m*=0.7;
     if(PT.surround){let n=0;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<170)n++;});if(n>=5)m*=1-PT.surround;} return m; }
   rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
@@ -11590,9 +11618,9 @@ class Game extends Phaser.Scene {
     if(!e||!e.active)return;const now=this.time.now;
     if(!(e._chillAt>0)||now-e._chillAt>2500)e._chill=0;
     e._chillAt=now;e._chill=(e._chill||0)+1;
-    const need=freeze>=0.9?3:4;
+    const _PT=(this.player&&this.player._pt)||{}; const need=(freeze>=0.9?3:4)-(_PT.azero?1:0);
     if(e.isBoss||e.isMini){e._chill=Math.min(e._chill,need);return;}
-    if(e._chill>=need){e._chill=0; if(!echo&&this.basicAttack?.character==='mint'&&this.basicAttack.path==='glacier'&&this.basicAttack.lv.p_coldsnap){const r=90*(1+0.2*this.basicAttack.lv.p_coldsnap);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&!o.isBoss&&!o.isMini&&this.dist(o.x,o.y,e.x,e.y)<=r)this.mintChill(o,0.6,true);});this.vfxHitRing(e.x,e.y,0x9fe8ff,false);} e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
+    if(e._chill>=need){e._chill=0; if(!echo)this.ptOnFreeze(e); if(!echo&&this.basicAttack?.character==='mint'&&this.basicAttack.path==='glacier'&&this.basicAttack.lv.p_coldsnap){const r=90*(1+0.2*this.basicAttack.lv.p_coldsnap);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&!o.isBoss&&!o.isMini&&this.dist(o.x,o.y,e.x,e.y)<=r)this.mintChill(o,0.6,true);});this.vfxHitRing(e.x,e.y,0x9fe8ff,false);} e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
       this.burst(e.x,e.y,0xbdf0ff);if(this.floatText)this.floatText(e.x,e.y-26,'❄ FROZEN',0xbdf0ff);}
     else e.setVelocity(e.body.velocity.x*0.7,e.body.velocity.y*0.7);
   }
@@ -11923,6 +11951,9 @@ class Game extends Phaser.Scene {
     if(PT.sip){this._ptBounces=(this._ptBounces||0)+1;if(this._ptBounces>=20){this._ptBounces=0;const P=this.player;P.hp=Math.min(P.maxhp,P.hp+P.maxhp*0.01*PT.sip);}}
     if(b.loopT&&this.dist(b.x,b.y,this.player.x,this.player.y)<120&&(this.elapsed||0)>=(this._ptLoopAt||0)){this._ptLoopAt=(this.elapsed||0)+6;this._shield=Math.min(2,(this._shield||0)+1);this.popDmg('🍬 SHIELD',this.player.x,this.player.y-30,false);}
     if(b.splitCh&&!b._split&&Math.random()<b.splitCh){const c=this.getBullet(b.x,b.y,0xffffff,b.scaleX||0.13);if(c){c.setTexture('proj_sprinkle').setTint(0xff7bd5);c.faceVel=true;c.dmg=b.dmg*0.6;c.life=1.2;c.pierce=false;c.hitGapV=0.16;c.bounce=1;c.homing=0;c._split=true;c.headshot=0;c.bigMul=0;c.closeMul=0;c.bounceGain=0;c.seedPierce=false;c.penGain=0;c.forceHs=false;c.cqMul=0;c.dragon=false;c.lastMul=0;c.seekMul=1;c.splitCh=0;c.boomer2=false;c.loopT=false;const t=this.nearestEnemy(400);const a=t&&t!==enemy?Math.atan2(t.y-b.y,t.x-b.x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,700,c.body.velocity);}} }
+  ptOnFreeze(e){ const PT=(this.player&&this.player._pt)||{};
+    if(PT.fnova&&(this.elapsed||0)>=(this._ptNovaAt||0)){this._ptNovaAt=(this.elapsed||0)+0.25;const d=this.relicDmg?this.relicDmg(1.2):20;this.vfxHitRing(e.x,e.y,0xbdf0ff,false);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&this.dist(o.x,o.y,e.x,e.y)<95)this.damage(o,d,o.x,o.y);});}
+    if(PT.farmor)this._ptArmorT=(this.elapsed||0)+3; }
   ptSkinBurst(){ const PT=(this.player&&this.player._pt)||{}; if(!PT.skin||(this.elapsed||0)<(this._ptSkinAt||0))return; this._ptSkinAt=(this.elapsed||0)+1.5;
     for(let i=0;i<3*PT.skin;i++){const c=this.getBullet(this.player.x,this.player.y,0xffffff,0.13);if(!c)break;c.setTexture('proj_sprinkle').setTint(0x5ad1ff);c.faceVel=true;c.dmg=(5.25+(this.skills.sprinkle||1)*1.5)*(this.player.dmgMul||1);c.life=1.4;c.pierce=false;c.hitGapV=0.16;c.bounce=2;c.homing=0;c.headshot=0;c.bigMul=0;c.closeMul=0;c.bounceGain=0;c.seedPierce=false;c.penGain=0;c.forceHs=false;c.cqMul=0;c.dragon=false;c.lastMul=0;c.seekMul=1;c.splitCh=0;c.boomer2=false;c.loopT=false;this.physics.velocityFromRotation(i*Math.PI*2/(3*PT.skin),720,c.body.velocity);} }
   tickPathTalents(dt){ const P=this.player; if(!P||!P._pt)return; const v=P.body?P.body.velocity.length():0; if(v<20)this._ptStill=(this._ptStill||0)+dt; else {this._ptStill=0;this._ptGhUsed=false;} }

@@ -270,7 +270,7 @@
 ## แผน commit (หลังอนุมัติ)
 1. โครงข้อมูลใหม่ `PATH_TALENTS[path]` + กติกา Capstone เลือก 1 + migration คืน TP + UI ต้นไม้ใหม่ (node ยังเป็น R ล้วน, N ยังไม่ทำงาน แต่ซ่อนไว้)
 2. Momo 3 สาย — hook N + Capstone ✅ (v6.55.40)
-3. Mint 3 สาย
+3. Mint 3 สาย ✅ (v6.55.41)
 4. Cocoa 3 สาย
 5. Taro 3 สาย
 6. Sesame 3 สาย
