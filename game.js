@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.57';
+const GAME_VERSION = '6.55.58';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.58',date:'2026-10-05',title:'Trade-in fix',items:['Gear Trade-in never lists gear you are wearing, including on older saves']},
   {v:'6.55.57',date:'2026-10-05',title:'Bigger hero card',items:['Hero card fills the space to the left of the gear slots','Equipment text one size smaller']},
   {v:'6.55.56',date:'2026-10-05',title:'Set button',items:['Set box removed from Equipment; a compact Set button next to Clean up opens Codex › Sets']},
   {v:'6.55.55',date:'2026-10-05',title:'Set guide & tidier gear panel',items:['Hero card is as tall as both gear rows; gear slots sit closer; Gacha button matches the slot width and is taller','New set box lists every piece, shows what is still missing and the next bonus','Sets now include amulets and rings: Home and Brigade gain common amulet/ring pieces; new Head Chef Medal and Golden Spoon Ring join the Royal Chef Set; 5-piece bonuses added']},
@@ -8164,7 +8165,9 @@ class Game extends Phaser.Scene {
     const artKey=got.instance?('gear_'+got.id):null;
     this.bazaarSlotReveal(GEAR_ALL.map(it=>'gear_'+it.id).filter(key=>this.textures.exists(key)),{artKey,emoji:got.emoji,title:'✨ '+got.name+'!',sub:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji+' '+(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got)}); }
   // v6.0.71 Trade-in: 3 ชิ้น → 1 ชิ้น · iLv = ค่าเฉลี่ย +2..+5 · เกรดสุ่มจากเกรดของที่ใส่
-  tradeInCandidates(){ return (Save.data.gearItems||[]).filter(x=>x&&!x.locked&&!x.favorite&&x.grade!=='start'&&!Save.isGearEquipped(x.uid)).sort((a,b)=>(b.itemLevel||1)-(a.itemLevel||1)); }
+  // v6.55.58: ของที่ใส่อยู่ไม่โชว์ใน Trade-in · กันเซฟที่ equippedGear หาย (ใช้ gear[slot] เดิม)
+  tradeWorn(x){ if(Save.isGearEquipped(x.uid))return true; const eq=(Save.data.equippedGear||{})[x.slot]; return !Save.gearItem(eq)&&(Save.data.gear||{})[x.slot]===x.baseId; }
+  tradeInCandidates(){ return (Save.data.gearItems||[]).filter(x=>x&&!x.locked&&!x.favorite&&x.grade!=='start'&&!this.tradeWorn(x)).sort((a,b)=>(b.itemLevel||1)-(a.itemLevel||1)); }
   tradeInPreview(sel){ if(sel.length<3)return null; const avg=sel.reduce((t,x)=>t+(x.itemLevel||1),0)/sel.length; return {lo:Math.min(100,Math.round(avg)+2),hi:Math.min(100,Math.round(avg)+5)}; }
   buildTradeIn(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Gear Trade-in','screen_bazaar','bazaar');
