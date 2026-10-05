@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.53';
+const GAME_VERSION = '6.55.54';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.54',date:'2026-10-05',title:'Worn gear on show',items:['Your six equipped pieces are shown large in a 3×2 grid next to the hero avatar']},
   {v:'6.55.53',date:'2026-10-05',title:'Balanced gear art',items:['Comparison cards: medium artwork on the left, name beside it','Grid icons sized down to fit more comfortably']},
   {v:'6.55.52',date:'2026-10-05',title:'Big gear art',items:['Equipment comparison shows large item artwork with a grade-coloured glow','Larger gear slot and grid icons']},
   {v:'6.55.51',date:'2026-10-05',title:'Compact hero',items:['Equipment: hero is a small avatar at the top-left; all six gear slots sit in one row']},
@@ -7690,22 +7691,23 @@ class Game extends Phaser.Scene {
     const sel=this.gearSlot||'weapon';
     // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
     // v6.55.51: ตัวละครเป็นอวาตาร์เล็กซ้ายสุด + ช่องสวมใส่ 6 ช่องแถวเดียว
-    const folded=true, cy0=78, topH=56, av=46, ax=14, ay=cy0+topH/2-av/2, key='card_'+id;
+    const folded=true, cy0=78, topH=150, av=56, ax=14, ay=cy0+4, key='card_'+id;
     { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,av,av,12); this.menu.add(fg);
       if(this.textures.exists(key)){ const im=this.add.image(ax+av/2,ay+av/2,key),TW=im.width,TH=im.height,cw=TW*0.62,cx0=TW*0.19,cy1=TH*0.03;
         im.setCrop(cx0,cy1,cw,cw).setOrigin((cx0+cw/2)/TW,(cy1+cw/2)/TH).setScale((av-6)/cw); this.menu.add(im); }
       else { const em=this.add.text(ax+av/2,ay+av/2,CHARACTERS[id].emoji,{fontSize:'26px'}).setOrigin(0.5); this.menu.add(em); }
       const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,av-2,av-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,av,av,12); this.menu.add(fr);
       const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+av-2,ay+av-2,'Lv'+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:3,y:0}}).setOrigin(1,1);this.menu.add(lv);} }
-    const x0=ax+av+8, step=(w-14-x0)/6, ss=Math.min(44,step-6), rowY=[cy0+topH/2];
-    const layout=['weapon','gloves','amulet','armor','boots','ring'].map((sl,i)=>[sl,x0+step*(i+0.5),0]);
+    // v6.55.54: ของที่สวมอยู่ใหญ่ชัด 3×2
+    const x0=ax+av+10, step=(w-14-x0)/3, ss=Math.min(68,step-12), rowY=[cy0+4+ss/2, cy0+4+ss*1.5+10];
+    const layout=['weapon','armor','gloves','amulet','ring','boots'].map((sl,i)=>[sl,x0+step*(i%3+0.5),Math.floor(i/3)]);
     layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];
       const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
       const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
       const g=this.add.graphics(); g.fillStyle(isSel?0x3a3550:0x2c2338,1); g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
       g.lineStyle(isSel?3:2, isSel?0xffd166:(on?0x8bd3a0:0x4a4059), 1); g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
       const artKey=on?'gear_'+it.id:null;
-      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-2,artKey).setDisplaySize(ss*0.72,ss*0.72):this.add.text(sx,y-2,on?it.emoji:def.emoji,{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
+      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-2,artKey).setDisplaySize(ss*0.86,ss*0.86):this.add.text(sx,y-2,on?it.emoji:def.emoji,{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
       this.menu.add([g,em]);
       const newN=Save.gearItemsForSlot(slot).filter(x=>x.isNew).length;
       if(newN){ const nd=this.add.circle(sx+ss/2-2,y-ss/2+2,7,0xff5689,1); const nn=this.add.text(nd.x,nd.y,String(Math.min(9,newN)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff'}).setOrigin(0.5); this.menu.add([nd,nn]); }
