@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.66';
+const GAME_VERSION = '6.55.67';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.67',date:'2026-10-05',title:'Recipe survival limits',items:['Kitchen recipe healing is capped at 5% max HP every 2 seconds across all recipes','“When Hit” recipes can trigger at most once per 1.5 seconds','Recipe Immune and Shield effects share a 4-second cooldown and Immune lasts at most 1 second']},
   {v:'6.55.66',date:'2026-10-05',title:'Damage rebalance',items:['Normal monsters and elites hit 30% harder','Minibosses and bosses hit 25% softer']},
   {v:'6.55.65',date:'2026-10-05',title:'Path Uniques hit bosses harder',items:['Berry Blast deals ×2 damage to bosses and minibosses','Glacier Bloom chills bosses and bursts them for heavy damage when the ice breaks','Frost Lance Charge deals ×1.8 damage to bosses and minibosses']},
   {v:'6.55.64',date:'2026-10-05',title:'Shotgun fires faster',items:['Shotgun Build fires about 45% faster and each volley has 3 more pellets','Each pellet deals a little less damage to keep the build fair']},
@@ -3227,7 +3228,7 @@ const FR_TRIGGERS=[
   {id:'dash',     emoji:'💨',name:'On Dash',            cost:3, icd:1.5},
   {id:'crit',     emoji:'🎯',name:'On Critical Hit',    cost:4, icd:0.6},
   {id:'kill10',   emoji:'☠️',name:'Every 10 Kills',      cost:3},
-  {id:'hurt',     emoji:'💢',name:'When Hit',            cost:2},
+  {id:'hurt',     emoji:'💢',name:'When Hit',            cost:2, icd:1.5},
   {id:'lowHp',    emoji:'🩸',name:'Below 30% HP',        cost:1, icd:8},
   {id:'unique',   emoji:'🌟',name:'On Unique Skill',     cost:2},
   {id:'xp20',     emoji:'⭐',name:'Every 20 EXP Orbs',   cost:2},
@@ -10685,6 +10686,9 @@ class Game extends Phaser.Scene {
       const icd=(td.icd||0.25)*(r.m==='faster'&&td.icd?0.7:1)*(td.icd?1-0.15*((r.tl||1)-1):1); if(now<r.next||this._frBudget>=8)continue; r.next=now+icd; this._frBudget++;
       if(r.m==='slow'){ this.time.delayedCall(1500,()=>{ if(this.state==='play')this.frRun(r,depth); }); continue; }
       this.frRun(r,depth); if(r.m==='repeat'||r.m==='twin')this.time.delayedCall(r.m==='twin'?90:500,()=>{ if(this.state==='play')this.frRun(r,depth); }); } }
+  // v6.55.67 เจ้าของ: heal/dash on hit = อมตะ → เพดานฮีลรวมจากสูตร 5% maxHP ต่อ 2 วิ · shield/immune ใช้ cooldown ร่วม 4 วิ
+  frHealCap(n){ const p=this.player,now=this.elapsed||0; if(now-(this._frHealWin||-9)>=2){ this._frHealWin=now; this._frHealSum=0; } const room=Math.floor(p.maxhp*0.05)-(this._frHealSum||0); const g=Math.max(0,Math.min(n,room)); this._frHealSum=(this._frHealSum||0)+g; return g; }
+  frGuardOk(){ const now=this.elapsed||0; if(now<(this._frGuardAt||0))return false; this._frGuardAt=now+4; return true; }
   frRun(r,depth){ const prev=this._frCur; this._frCur=r; this._frBusy=depth+1; Sfx.recipe();
     // 🎬 ป้ายสูตรเด้งเหนือหัว: ไอคอน trigger ▸ effect (จำกัด 1 ป้าย/0.3 วิ ต่อสูตร)
     const now=this.elapsed||0; if(now-(r._popAt||-9)>0.3){ r._popAt=now; const td=FR_TRIGGERS.find(x=>x.id===r.t),ed=FR_EFFECTS.find(x=>x.id===r.e),p=this.player;
@@ -10720,10 +10724,10 @@ class Game extends Phaser.Scene {
     switch(r.e){
       case 'shock':{ const R=120*A; this.frRing(px,py,R,0xffc0e0,'vfx_recipe_shock'); near(R).forEach(e=>this.frHit(e,this.relicDmg(1.8)*pw,r)); break; }
       case 'shots':{ for(let i=0;i<8;i++){ const b=this.getBullet(px,py,0xffffff,0.2*A); if(!b)continue; b.setTexture('proj_sprinkle').setTint(r.m==='fire'?0xff7a3d:r.m==='ice'?0x9fe8ff:0xffd166); b.dmg=this.relicDmg(0.9)*pw; b.life=1.1; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(i/8*Math.PI*2,520,b.body.velocity); } break; }
-      case 'heal':{ const n=Math.max(1,Math.round(p.maxhp*0.02*pw*(p.healEffect||1))); p.hp=Math.min(p.maxhp,p.hp+n); this.popHeal(px,py,n); this.fireRecipes('heal'); break; }
-      case 'recover':{ const n=Math.max(1,Math.round(p.maxhp*0.12*pw*(p.healEffect||1)));p.hp=Math.min(p.maxhp,p.hp+n);this.popHeal(px,py,n);this.fireRecipes('heal');break; }
+      case 'heal':{ const n=this.frHealCap(Math.round(p.maxhp*0.02*pw*(p.healEffect||1))); if(n<=0)break; p.hp=Math.min(p.maxhp,p.hp+n); this.popHeal(px,py,n); this.fireRecipes('heal'); break; }
+      case 'recover':{ const n=this.frHealCap(Math.round(p.maxhp*0.12*pw*(p.healEffect||1))); if(n<=0)break;p.hp=Math.min(p.maxhp,p.hp+n);this.popHeal(px,py,n);this.fireRecipes('heal');break; }
       case 'burst':{ const R=165*A;this.frRing(px,py,R,0xffd166,'vfx_recipe_burst');near(R).slice(0,16).forEach(e=>this.frHit(e,this.relicDmg(1.4)*pw,r));break; }
-      case 'shield':{ this._shield=Math.min(3,(this._shield||0)+(pw>=2?2:1)); this.floatText(px,py-44,'🫧 Shield',0x9fe8ff); break; }
+      case 'shield':{ if(!this.frGuardOk())break; this._shield=Math.min(3,(this._shield||0)+(pw>=2?2:1)); this.floatText(px,py-44,'🫧 Shield',0x9fe8ff); break; }
       case 'freeze':{ const R=140*A; this.frRing(px,py,R,0x9fe8ff,'vfx_recipe_freeze'); near(R).forEach(e=>{ if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,1.2*pw); e.setVelocity(0,0); e.setTint(COLORS.ice); } else this.frHit(e,this.relicDmg(0.8)*pw,r); }); break; }
       case 'rage':{ this._frRageT=4; this._frRageMul=Math.max(this._frRageMul&&this._frRageT>0?this._frRageMul:1,1+0.3*pw); this.floatText(px,py-50,'🔥 Rage',0xff7a3d); break; }
       case 'bolt':{ const L=near(360*A).sort((a,b)=>this.dist(a.x,a.y,px,py)-this.dist(b.x,b.y,px,py)).slice(0,3);
@@ -10732,7 +10736,7 @@ class Game extends Phaser.Scene {
       case 'vacuum':{ this.orbs.children.iterate(o=>{ if(o&&o.active){ const a=Math.atan2(py-o.y,px-o.x); o.setVelocity(Math.cos(a)*520,Math.sin(a)*520); o._vac=true; } }); break; }
       case 'burn':{ const R=90*A,z=this.recipeZoneArt('vfx_recipe_burn',px,py,R,0xff5a3d); this._frZones.push({x:px,y:py,R,t:3,acc:0,dmg:this.relicDmg(0.5)*pw,r,spr:z}); break; }
       case 'buddy':{ const B=this._frBuddy; if(B){ B.t=Math.max(B.t,5*pw); B.pw=Math.max(B.pw,pw); B.r=r; } else { const spr=this.recipeIcon('vfx_recipe_buddy',px,py,42,'🍡'); this._frBuddy={t:5*pw,pw,r,acc:0,ang:0,spr}; } break; }
-      case 'immune':{ p.iframe=Math.max(p.iframe||0,1*pw); this.frRing(px,py,40,0xffffff,'vfx_recipe_immune'); this.floatText(px,py-50,'🛡️ Immune',0xffffff); break; }
+      case 'immune':{ if(!this.frGuardOk())break; p.iframe=Math.max(p.iframe||0,1); this.frRing(px,py,40,0xffffff,'vfx_recipe_immune'); this.floatText(px,py-50,'🛡️ Immune',0xffffff); break; }
       case 'meteor':{ const L=near(420).sort(()=>Math.random()-0.5).slice(0,3); if(!L.length)L.push({x:px+Phaser.Math.Between(-120,120),y:py+Phaser.Math.Between(-120,120)});
         L.forEach((t,i)=>{ const tx=t.x,ty=t.y,R=70*A,epoch=this._artEpoch||0;
           const warn=this.recipeZoneArt('vfx_recipe_shock',tx,ty,R,0xff9ad5,true).setAlpha(0.25);

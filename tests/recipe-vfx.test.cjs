@@ -1,7 +1,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'('),tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next);return source.slice(at,at+1+next.index);}
-const Scene=vm.runInNewContext('class Scene{'+['trackArtVfx','clearArtVfx','frRing','recipeZoneArt','recipeIcon','frEffect','tickFR'].map(method).join('\n')+'\n}Scene',{Math,COLORS:{ice:0x9fe8ff},Phaser:{Math:{Between:()=>0}}});
+const Scene=vm.runInNewContext('class Scene{'+['trackArtVfx','clearArtVfx','frRing','recipeZoneArt','recipeIcon','frEffect','tickFR','frHealCap','frGuardOk'].map(method).join('\n')+'\n}Scene',{Math,COLORS:{ice:0x9fe8ff},Phaser:{Math:{Between:()=>0}}});
 function scene(){const s=new Scene(),objects=[],hits=[],tweens=[];
  const image=(x,y,key)=>{const o={active:true,x,y,key,scaleX:1,scaleY:1,once(k,fn){this.onDestroy=fn;return this;},setOrigin(){return this;},setPosition(x,y){this.x=x;this.y=y;return this;},setDisplaySize(w,h){this.w=w;this.h=h;return this;},setDepth(){return this;},setAlpha(v){this.alpha=v;return this;},setScale(x,y=x){this.scaleX=x;this.scaleY=y;return this;},destroy(){this.active=false;if(this.onDestroy)this.onDestroy();}};objects.push(o);return o;};
  const enemies=[{active:true,x:0,y:0,setVelocity(){},setTint(){}},{active:true,x:500,y:0}];
