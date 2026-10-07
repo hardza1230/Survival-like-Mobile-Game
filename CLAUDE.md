@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.80 — Mint Glacier M2
+# Latest delivery: v6.55.81 — Mint Crystal Impaler M3
+
+Crystal Impaler automatically charges one heavy lance (320ms, +80ms per Heavy Draw rank). Dash/hurt releases a weaker partial shot without adding or consuming Impale. Full hits add Impale (max 3, expires after 5s); the next full hit triggers Crystal Rupture with a 600ms target cooldown. Targeting prefers boss/miniboss, then elite, then ordinary enemies. Heavy Draw, Impaler and Executioner cards added; Overpenetration preserves the old p_coldblood ID. Extra lance investment converts to +12% damage per extra lance; old Shard Bloom ranks improve Rupture. Existing Unique can apply full-charge Impale. Phase gates, pooled resets, run cancellation and duplicate overlap are covered by actual-method tests. Full automated checks and web build pass. User owns in-game/mobile testing. Next: M4 path Evolutions and visual polish; monster batches remain independent.
+
+# Previous delivery: v6.55.80 — Mint Glacier M2
 
 Glacier now builds three Frost stacks on Frozen/Brittle targets; the next frost hit triggers Shatter or Crystal Rupture. Bosses/minibosses and explicit freeze-immune foes use three-second Brittle without hard freeze. Existing Frozen path/Talent/mod bonuses also affect Brittle. New cards Deep Freeze and Chain Shatter retain existing path IDs and all prior ranks. Reaction caps: two propagation steps, six bursts per reaction and per 200ms window, 24 neighbors per burst, three painted VFX per window, 450ms target cooldown. All damage scales from Frost Lance power, never max HP. Phase immunity is respected; spawn/pool reset clears stacks and uses a separate lifetime token. Glacier Unique detonation is run-scoped/cancelable and guards recycled targets. Full automated checks and web build pass. User owns in-game/mobile testing; balance/visual acceptance awaits their feedback. Next: M3 Crystal Impaler charge/Impale/Rupture, then M4 Evolutions/polish. Monster art batches remain independent.
 
@@ -227,7 +231,8 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.80 — Mint Glacier M2 · 7 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.81 — Mint Crystal Impaler M3 · 7 ต.ค. 2026)
+- **v6.55.81:** M3 ชาร์จหอก/Impale/Rupture และการ์ดครบ; automated tests และ build ผ่าน เจ้าของเล่นทดสอบในเกมเอง ถัดไป M4 Evolutions/polish.
 - **v6.55.80:** M2 Frost/Brittle/Shatter + Deep Freeze/Chain Shatter เสร็จ; automated tests และ build ผ่าน เจ้าของเล่นทดสอบในเกมเอง ถัดไป M3–M4.
 - **v6.55.79:** Mint M1 ชื่อสาย/น้ำหนักการ์ด/เพดานหอกเสร็จ; M2–M4 ยังรอทำ รายละเอียดและผลตรวจอยู่ที่หัวไฟล์และ docs/MINT_BUILD_PATH_REWORK_2026_10_07.md.
 - **v6.55.17 (เจ้าของ: account ใหม่ผ่าน Stage 3-5 สบายเกิน · ด่าน 1-2 ให้รู้สึกดี ที่เหลือของจริง):** `getPowerGuide` ผ่อน HP/ดาเมจเฉพาะ stageIndex<2 · ด่าน 3+ พลังเกินแนะนำ → ศัตรู HP +25%/ratio เกิน (เพดาน +35%) ดาเมจ +15% (เพดาน +20%) · `realStageBossMul` บอส/มินิ ด่าน 3-4 ×1.6 ด่าน 5 ×1.5 · EXP ด่าน 3+ (ไม่ใช่ recipe) โต ×1.32+9 (เดิม ×1.26+6) · npm run check ผ่าน · **ยังไม่ได้เล่นจริง — จูนตัวเลขได้**

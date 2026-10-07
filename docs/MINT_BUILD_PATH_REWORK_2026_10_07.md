@@ -1,6 +1,6 @@
 # Mint Build Path Rework — 7 Oct 2026
 
-Status: APPROVED — M1 v6.55.79 and M2 v6.55.80 implemented; M3–M4 remain planned.
+Status: APPROVED — M1 v6.55.79, M2 v6.55.80 and M3 v6.55.81 implemented; M4 remains planned.
 
 Runtime audit: actual current IDs are `glacier / barrage / pierce`. Keep these IDs unchanged; the earlier `freeze / piercer` references described display labels, not runtime IDs.
 Branch target: `claude/vampire-survival-mobile-game-yo9e8w`
@@ -294,3 +294,14 @@ Next: M2 Glacier Frost stacks / boss Brittle / bounded chain Shatter. M3 charge 
 - ✅ Actual-method regression tests cover normal/elite freeze, boss/miniboss/immune Brittle, expiry, Deep Freeze, echo non-recursion, chain depth and crowd budgets, non-Glacier preservation, damage bonus/phase gates, pool resets and delayed Unique cancellation/reuse. Full `npm run check` and `npm run build:www` pass.
 
 In-game/mobile testing and balance feedback belong to the user, as explicitly requested on 7 Oct. Automated checks do not certify combat feel or phone performance. New cards reuse existing painted icons/VFX; dedicated visual polish and path Evolutions remain M4. Next implementation: M3 Crystal Impaler charge/Impale/Rupture.
+
+## M3 delivery — v6.55.81
+
+- ✅ Automatic single-lance charge: 320ms, one pending charge at a time. Heavy Draw (max 3) adds 80ms and +18 percentage points to full-charge damage per rank. Release reacquires boss/miniboss priority, then nearby elite, then ordinary target. Dash or hurt releases partial power; partial hits neither build nor consume Impale.
+- ✅ Full hits add Impale, max 3, refreshed for 5s. Existing stacks add +6% impact damage each. A later full hit at three stacks consumes them for Crystal Rupture: impact power ×1.2 ordinary or ×1.8 elite/miniboss/boss, with a 600ms per-target cooldown. Impaler (max 1) adds two stacks per full hit on large targets. Phase immunity rejects buildup/consumption, including a phase transition caused by the impact itself.
+- ✅ Shatterpoint retains +15% large-target damage/rank and adds +10% Rupture/rank. Overpenetration retains p_coldblood and +1 target/rank, plus +6% damage/rank per preceding target (capped at three preceding targets). Executioner (max 3) adds +8% damage/rank below 30% HP to impact and linked Rupture. Boss/miniboss ends the lance; repeated overlap cannot hit one target twice.
+- ✅ Evolution/Talent/gear extra lance counts convert to +12% heavy-lance power per extra lance. Existing Shard Bloom ranks add +8% Rupture/rank. Permafrost damage/Chill and bounded Blizzard splash remain effective. Frost Lance Charge Unique retains its existing attack and adds Impale only at full charge on this path.
+- ✅ Charge timer/glow and stale projectiles clear safely across run transitions; pooled bullets reset Impaler metadata, and enemy spawn/presentation resets clear marks and cooldowns. Painted lance artwork scales independently from the collider. No new shard shower or max-range AoE is added to precision shots.
+- ✅ Actual-method tests cover charge timing, target reacquisition, partial/hurt release, all target classes, expiry, duplicate collisions, Rupture, cards, saved investment, phase transitions, pool reuse and cancellation. Full `npm run check` and `npm run build:www` pass.
+
+User handles in-game/mobile tests and balance feedback. Dedicated path Evolutions and final VFX/readability polish remain M4.

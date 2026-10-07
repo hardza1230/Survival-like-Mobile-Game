@@ -52,7 +52,7 @@
 | --- | --- | --- |
 | M1 | Names, focused card pools, Barrage lance cap conversion | ✅ v6.55.79 |
 | M2 | Glacier Frost stacks, boss Brittle, bounded chain Shatter | ✅ v6.55.80 |
-| M3 | Crystal Impaler charge, Impale stacks, Rupture | ⬜ |
+| M3 | Crystal Impaler charge, Impale stacks, Rupture | ✅ v6.55.81 |
 | M4 | Path Evolutions, VFX/readability and mobile review | ⬜ |
 
 See docs/MINT_BUILD_PATH_REWORK_2026_10_07.md. Monster animation batches remain separate.
