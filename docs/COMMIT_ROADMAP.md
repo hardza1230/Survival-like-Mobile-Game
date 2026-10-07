@@ -66,3 +66,7 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 | S3 one heavy Sniper seed/manual Unique | ✅ code v6.55.83 |
 | S4 close-range Shotgun/non-piercing Evolution | ✅ code v6.55.83 |
 | S5 path Evolutions/lifecycle/budgets/regression | ✅ code/check/build v6.55.83; user in-game/mobile review pending |
+
+## Story quota / EXP — v6.55.84
+
+✅ Code: all 15 stages, finite shared quotas, linear EXP and Lv18 base completion, replay, Stage 3 hero choice. Automated checks/build pass; user in-game/balance review pending. Details: docs/STORY_WAVE_BUDGET_2026_10_08.md.
