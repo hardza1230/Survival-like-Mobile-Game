@@ -3,7 +3,7 @@ const source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'(');assert(at>=0,n);const tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);return source.slice(at,at+1+next.index);}
 const math=Object.create(Math);math.random=()=>.9;
 const ctx={Math:math,COLORS:{ice:1},BALANCE:{skillPower:{frost:1}},FLAVOR_INFUSIONS:[],FLAT_EFF_PATH:{},FLAT_EFF:{mint:1},gearAttackRoll:()=>0,ATK_PCT:.05,Sfx:{magnet(){},boom(){}},Phaser:{Math:{Between:()=>0}}};
-const names=['glacierBrittle','glacierPrimed','glacierHitPower','glacierFrostHit','glacierEcho','mintChill','glacierShatter','stopEnemyPresentation','damage','releaseGlacierBloom','artDelay','clearArtVfx'];
+const names=['glacierBrittle','glacierPrimed','glacierHitPower','glacierFrostHit','glacierEcho','mintChill','glacierShatter','mintBurstFx','stopEnemyPresentation','damage','releaseGlacierBloom','artDelay','clearArtVfx'];
 const Scene=vm.runInNewContext('class Scene{'+names.map(method).join('\n')+'\n}Scene',ctx);
 function enemy(o={}){return {active:true,x:0,y:0,hp:1e6,maxhp:1e6,frozen:0,_glacierLifeToken:1,body:{velocity:{x:100,y:0}},setVelocity(x,y){this.body.velocity={x,y};},setTint(){},...o};}
 function scene(foes,path='glacier'){

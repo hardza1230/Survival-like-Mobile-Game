@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.81 — Mint Crystal Impaler M3
+# Latest delivery: v6.55.82 — Mint M4 path Evolutions + Strawberry/Momo audit
+
+Mint M1–M4 implementation is complete. Existing path/evolved save fields now select Hailstorm Arsenal (barrage: six queued 70%-power lances every 4s), Absolute Zero (glacier: +65% opening Shatter radius, +1 chain step up to 3, still six bursts), or Heaven Piercer (pierce: every third successful evolved full throw +35% power, 8+rank penetration and +35% Rupture). Partial/capped shots do not advance the evolved cycle. Cards/Codex/Recipe editor show path Evolutions. All Mint lances/shards share a 24-active cap; shards max 6/burst and 12/200ms; reaction VFX max 3/200ms. Glacier blooms replace shard spray and map Shard Bloom investment to power; excess Glacier lance count becomes +12% bloom power each. Standard lance fallback timers and Arsenal use run-scoped artDelay; stale projectile epochs reject hits. Heavy impact is throttled to 25ms hit-stop/350ms. Actual-method stress/regression checks and www build pass; user performs all in-game/mobile/balance/FPS testing. Reused painted art, no new sprite assets. Strawberry/Momo are one hero (runtime momo); audit documents Ricochet losing bounces after Evolution, count/text inconsistencies and proposed S1–S5, not implemented. See docs/STRAWBERRY_MOMO_AUDIT_2026_10_08.md. Monster batches remain independent.
+
+# Previous delivery: v6.55.81 — Mint Crystal Impaler M3
 
 Crystal Impaler automatically charges one heavy lance (320ms, +80ms per Heavy Draw rank). Dash/hurt releases a weaker partial shot without adding or consuming Impale. Full hits add Impale (max 3, expires after 5s); the next full hit triggers Crystal Rupture with a 600ms target cooldown. Targeting prefers boss/miniboss, then elite, then ordinary enemies. Heavy Draw, Impaler and Executioner cards added; Overpenetration preserves the old p_coldblood ID. Extra lance investment converts to +12% damage per extra lance; old Shard Bloom ranks improve Rupture. Existing Unique can apply full-charge Impale. Phase gates, pooled resets, run cancellation and duplicate overlap are covered by actual-method tests. Full automated checks and web build pass. User owns in-game/mobile testing. Next: M4 path Evolutions and visual polish; monster batches remain independent.
 
@@ -231,7 +235,8 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.81 — Mint Crystal Impaler M3 · 7 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.82 — Mint M4 · 8 ต.ค. 2026)
+- **v6.55.82:** Mint M1–M4 ลงโค้ดครบ; path Evolutions/เพดานโปรเจกไทล์และเอฟเฟกต์/ข้อความ/เซฟเดิมตรวจผ่าน และ build ผ่าน เจ้าของเล่นเทสเอง ถัดไปแก้ตาม feedback หรือ Strawberry S1–S5 เมื่อสั่ง. วิเคราะห์ Strawberry/Momo (ตัวเดียวกัน) อยู่ใน docs/STRAWBERRY_MOMO_AUDIT_2026_10_08.md.
 - **v6.55.81:** M3 ชาร์จหอก/Impale/Rupture และการ์ดครบ; automated tests และ build ผ่าน เจ้าของเล่นทดสอบในเกมเอง ถัดไป M4 Evolutions/polish.
 - **v6.55.80:** M2 Frost/Brittle/Shatter + Deep Freeze/Chain Shatter เสร็จ; automated tests และ build ผ่าน เจ้าของเล่นทดสอบในเกมเอง ถัดไป M3–M4.
 - **v6.55.79:** Mint M1 ชื่อสาย/น้ำหนักการ์ด/เพดานหอกเสร็จ; M2–M4 ยังรอทำ รายละเอียดและผลตรวจอยู่ที่หัวไฟล์และ docs/MINT_BUILD_PATH_REWORK_2026_10_07.md.

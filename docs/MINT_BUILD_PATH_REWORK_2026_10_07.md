@@ -1,6 +1,6 @@
 # Mint Build Path Rework — 7 Oct 2026
 
-Status: APPROVED — M1 v6.55.79, M2 v6.55.80 and M3 v6.55.81 implemented; M4 remains planned.
+Status: APPROVED — M1 v6.55.79, M2 v6.55.80, M3 v6.55.81 and M4 v6.55.82 implemented; user in-game/mobile acceptance pending.
 
 Runtime audit: actual current IDs are `glacier / barrage / pierce`. Keep these IDs unchanged; the earlier `freeze / piercer` references described display labels, not runtime IDs.
 Branch target: `claude/vampire-survival-mobile-game-yo9e8w`
@@ -305,3 +305,22 @@ In-game/mobile testing and balance feedback belong to the user, as explicitly re
 - ✅ Actual-method tests cover charge timing, target reacquisition, partial/hurt release, all target classes, expiry, duplicate collisions, Rupture, cards, saved investment, phase transitions, pool reuse and cancellation. Full `npm run check` and `npm run build:www` pass.
 
 User handles in-game/mobile tests and balance feedback. Dedicated path Evolutions and final VFX/readability polish remain M4.
+
+## M4 delivery — v6.55.82 (8 Oct 2026)
+
+One automatic capstone Evolution per selected path is implemented. The alternative Evolution ideas above remain design options, not additional unlock choices. Existing `path` IDs and `evolved` boolean are authoritative; saved Recipe builds require no migration.
+
+| Path | Evolution | Exact runtime payoff |
+| --- | --- | --- |
+| Barrage | Hailstorm Arsenal | Six additional compact lances queued 90ms apart, once every 4s during evolved normal casting. Each deals 70% current normal lance power, lives 0.65s, reacquires priority target and does not spawn shards. Normal volley retains cap 3 and +18% shard power per excess lance. |
+| Glacier Bloom | Absolute Zero | Root Shatter radius 110→181.5px; downstream radius stays 110px. +1 chain depth even at zero Chain Shatter rank, max 3. Existing six-burst/reaction and six/200ms caps, 24 neighbors/burst, 450ms target cooldown and boss Brittle remain. Evolution no longer forces a three-lance spread. |
+| Crystal Impaler | Heaven Piercer | Every third successfully spawned full throw while evolved gains ×1.35 impact power, 8+Overpenetration-rank normal penetrations and ×1.35 Rupture power (in addition to stronger impact). Boss/miniboss still ends the lance. Partial shots, pre-Evolution throws and failed capped spawns do not advance the cycle. Painted lance grows to 80px; collider stays unchanged. |
+
+- ✅ Shared Mint active projectile budget: 24 across normal lances, shards, Arsenal and Impaler. Budget rejection causes no phantom maximum-range bloom. Crate interaction remains. Existing excess Impaler counts convert to heavy-lance power; Glacier raw counts above four convert to +12% bloom power each.
+- ✅ Shards: max six per bloom, twelve new shards per 200ms. Planned shard count above six grants +12% shard/bloom power each instead. AoE remains when the scene spawn budget is full, at most 24 targets per bloom. Each Shard Bloom rank keeps its full planned count after Evolution (old reduced rounding removed).
+- ✅ Glacier bloom uses radial damage/Chill without shard projectiles. Existing `linger` ID becomes Frost Bloom in ordinary Glacier card UI: +8% base bloom-splash power per rank. Awaken shard-count bonuses also map to bloom power. Prior card/Talent/gear values and mutations remain effective; non-Mint combat is unchanged.
+- ✅ Reaction visuals share three painted shatter effects per 200ms, independent from damage processing. Impaler Rupture/giant impact uses 25ms hit-stop and restrained shake, at most once per 350ms. Standard painted effects reused; no character scale/collider changes or new art assets.
+- ✅ Standard lance fallback timers and Arsenal slots now use `artDelay`, cancellation/epoch/basic identity guards; all tagged Mint shots reject a previous run's epoch. Charge/Arsenal/cycle/budget state resets on transitions. Evolution names/descriptions in level-up, Codex and Recipe editor describe the chosen path.
+- ✅ Actual-method tests cover all capstones, exact queue timing/cancellation, evolved cycle/partial/capped shot behavior, boss phase immunity, extended chain geometry, investment conversion and dense crowds (500 enemies, 100 same-window blooms: twelve shards, three painted effects, 24 AoE targets per bloom). Full `npm run check` and `npm run build:www` pass.
+
+Automated stress checks validate work bounds, not real phone FPS. In-game/mobile visual, combat feel, balancing and FPS tests are performed by the user, as requested. No browser/mobile playtest is claimed. Mint M1–M4 code is complete; next is user feedback. Separate Strawberry/Momo analysis and possible future S1–S5 work: `docs/STRAWBERRY_MOMO_AUDIT_2026_10_08.md`.

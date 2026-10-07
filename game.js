@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.81';
+const GAME_VERSION = '6.55.82';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.82',date:'2026-10-08',title:'Mint: three path Evolutions',items:['Barrage evolves into Hailstorm Arsenal: six queued lances every 4 seconds, within the normal projectile budget','Glacier Bloom evolves into Absolute Zero: wider opening Shatter and one extra chain step, still capped at six bursts','Crystal Impaler evolves into Heaven Piercer: every third full throw gains power, penetration and Rupture damage','Mint projectiles, shard creation and reaction visuals have shared budgets; delayed shots cannot cross runs','Evolution cards, Codex and Recipe build editor describe each path; prior card investment remains effective']},
   {v:'6.55.81',date:'2026-10-07',title:'Crystal Impaler: charged boss hunter',items:['Crystal Impaler automatically charges one heavy lance; Dash or damage releases a weaker partial shot','Full charges build 3 Impale stacks; the next full hit consumes them for Crystal Rupture','Heavy Draw, Impaler and Executioner support the path; Overpenetration rewards lined-up enemies','Boss/miniboss/elite priority, phase immunity, old investment and charge/projectile lifecycle are preserved']},
   {v:'6.55.80',date:'2026-10-07',title:'Glacier Bloom: Frost and Brittle',items:['Frozen targets build 3 Frost stacks; the next frost hit triggers an area Shatter','Bosses and freeze-immune foes gain Brittle instead of being frozen, then take Crystal Rupture','Deep Freeze speeds Frost buildup; Chain Shatter primes nearby targets with bounded reactions','Frozen damage bonuses also work on Brittle; phase immunity and pooled-enemy resets are preserved']},
   {v:'6.55.79',date:'2026-10-07',title:'Mint build paths: focused cards',items:['Freeze becomes Glacier Bloom; Piercer becomes Crystal Impaler','Mint path choices favor matching cards: 65% path, 20% shared, 15% stat and survival','Barrage stays capped at three lances; excess lances grant +18% shard damage each','Packed Quiver preserves its bonus through Evolution; old path and talent IDs remain compatible']},
@@ -2588,7 +2589,12 @@ const SIGNATURE_WEAPONS = {
   jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
 };
 // v4.62: คำอธิบาย Evolution ต่อสกิล (ใช้ทั้งการ์ดเลเวลอัพและ Codex)
-const BASIC_EVO_DESC={yuzling:'Your selected crew evolves: Swarm hunts faster, Guardian slams wider, Workshop cooks stronger',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires at least 3 lances in a spread; each shatters into ice shards on impact or at maximum range',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
+const BASIC_EVO_DESC={yuzling:'Your selected crew evolves: Swarm hunts faster, Guardian slams wider, Workshop cooks stronger',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Evolves your selected path: Hailstorm Arsenal, Absolute Zero or Heaven Piercer; earlier upgrades remain active',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
+const MINT_EVOLUTIONS={
+  barrage:{name:'Hailstorm Arsenal',desc:'Every 4s, queue 6 compact lances at 70% power, 90ms apart. Normal volley stays capped at 3; excess lances still strengthen shards.'},
+  glacier:{name:'Absolute Zero',desc:'Opening Shatter radius +65%; chain gains 1 step (max 3). Still at most 6 bursts per reaction; shard investment strengthens the frost bloom.'},
+  pierce:{name:'Heaven Piercer',desc:'Every third full throw gains +35% lance power, 8 normal targets pierced and +35% Rupture power. Partial shots do not advance the cycle.'}
+};
 /* ---- BASIC ATTACK PROTOTYPE: ตัวละครเป็นแกน build แทนการสะสม auto-skill หลายชนิด ---- */
 const BASIC_ATTACKS = {
   yuzu:{name:'Citrus Crew',emoji:'🍋',skill:'yuzling',color:0xffd85e,evolution:'The Citrus Court',upgrades:[
@@ -2635,11 +2641,11 @@ const BASIC_ATTACKS = {
       {id:'power',name:'Frost Lance Edge',emoji:'🗡️',iconKey:'ic_mint_power',max:5,headline:'+12% Lance & Shard DMG',desc:'Frost Lance and its shatter deal 12% more damage per rank.'},
       {id:'rate',name:'Swift Ice Draw',emoji:'⏩',iconKey:'ic_mint_rate',max:5,headline:'-7% Lance interval',desc:'Fire Frost Lance 7% sooner per rank.'},
       {id:'rime',name:'Rime Mark',emoji:'🎯',iconKey:'ic_mint_chill',max:3,headline:'+10% DMG to Chilled',desc:'Your hits deal 10% more damage to Chilled enemies per rank, including bosses.'},
-      {id:'chill',name:'Frost Reach',emoji:'❄️',iconKey:'ic_mint_chill',max:3,headline:'+10% Lance range',desc:'Frost Lance reaches 10% farther per rank; shatter at impact or maximum range.'},
-      {id:'linger',name:'Shard Bloom',emoji:'💠',iconKey:'ic_mint_linger',max:3,headline:'+1 Shard',desc:'Each shatter releases 1 extra shard per rank.'}],
+      {id:'chill',name:'Frost Reach',emoji:'❄️',iconKey:'ic_mint_chill',max:3,headline:'+10% Lance range',desc:'Frost Lance reaches 10% farther per rank. Crystal Impaler stays a precision shot; other paths bloom at impact or maximum range.'},
+      {id:'linger',name:'Shard Bloom',emoji:'💠',iconKey:'ic_mint_linger',max:3,headline:'+1 Shard',desc:'Barrage: +1 shard per rank, up to 6 per burst; excess converts to damage. Glacier: stronger frost-bloom splash instead of shard projectiles.'}],
     mutations:[
-      {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',headline:'Impact bursts nearby foes',desc:'Lance hits burst around the target and deal 25% more to Frozen enemies.'},
-      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',headline:'Freeze at 3 Chill stacks',desc:'Normal enemies freeze at 3 stacks instead of 4; freezes last longer and lances deal 15% more. Bosses only slow.'}]},
+      {id:'blizzard',name:'Shatter Lance',emoji:'🌨️',headline:'Impact bursts nearby foes',desc:'Impact splash: Crystal Impaler hits nearby foes at 25% power; other paths at 50%. Barrage/Glacier also gain 25% Frozen-hit bonus.'},
+      {id:'permafrost',name:'Eternal Frost',emoji:'🥶',headline:'Freeze at 3 Chill stacks',desc:'Normal enemies freeze at 3 stacks instead of 4; freezes last longer and lances deal 15% more. Glacier bosses gain Brittle instead of Freeze.'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
       {id:'power',name:'Dense Charge',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'+12% Basic Attack damage per rank'},
@@ -2688,7 +2694,7 @@ const BASIC_PATHS={
     {id:'glacier',iconKey:'ic_path_glacier',name:'Glacier Bloom Build',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze → Frost → Shatter',desc:'Lances deal 10% less damage. Frozen/Brittle targets take 35% more; build 3 Frost stacks, then hit again to Shatter. Bosses gain Brittle instead of Freeze.',
       upgrades:[{id:'p_deepchill',iconKey:'ic_path_p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen/Brittle',desc:'Frozen and Brittle enemies take 12% more damage per rank, including bosses.'},
                 {id:'p_froststack',iconKey:'ic_path_p_deepchill',name:'Deep Freeze',emoji:'🥶',max:2,headline:'+1 Frost stack per hit',desc:'Frost hits on Frozen/Brittle targets add 1 extra Frost stack per rank (max 3). The next hit triggers Shatter or boss Rupture.'},
-                {id:'p_chainshatter',iconKey:'ic_path_p_coldsnap',name:'Chain Shatter',emoji:'💎',max:2,headline:'Shatter primes nearby foes',desc:'Shatter applies Chill and 1 Frost stack nearby. Fully primed targets can chain: +1 step per rank, max 2 steps and 6 bursts per reaction.'},
+                {id:'p_chainshatter',iconKey:'ic_path_p_coldsnap',name:'Chain Shatter',emoji:'💎',max:2,headline:'Shatter primes nearby foes',desc:'Shatter applies Chill and 1 Frost stack nearby. Fully primed targets can chain: +1 step per rank, max 2 steps (3 with Absolute Zero) and 6 bursts per reaction.'},
                 {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing an enemy or making it Brittle applies 1 Chill stack nearby; radius grows 20% per rank. Echo cannot trigger recursive waves.'},
                 {id:'m_grow',iconKey:'ic_path_glacier',name:'Wider Bloom',emoji:'🌸',max:3,headline:'Glacier Bloom +25% size',desc:'Glacier Bloom Unique: ice ring 25% larger per rank.'},
                 {id:'m_hold',iconKey:'ic_path_glacier',name:'Long Winter',emoji:'⏳',max:2,headline:'Bloom freezes +0.6s',desc:'Glacier Bloom Unique: freeze lasts 0.6s longer per rank.'},
@@ -2887,7 +2893,7 @@ function mintUpgradeGroup(path,id){
 function mintVolleyProfile(lvl,evolved,count,path){
   const cap=path==='barrage'?3:4,raw=(evolved?3:(lvl>=4?2:1))+(count||0);
   const overflow=path==='barrage'?Math.max(0,raw-cap):0;
-  return {count:Math.min(cap,raw),overflow,shardMul:1+0.18*overflow};
+  return {count:Math.min(cap,raw),overflow,shardMul:1+0.18*overflow,bloomMul:path==='glacier'?1+.12*Math.max(0,raw-cap):1};
 }
 function pickMintCards(entries,n){
   const pools={path:[],shared:[],universal:[]},out=[];
@@ -6611,7 +6617,8 @@ class Game extends Phaser.Scene {
     rows.push({head:'⭐ Mutation — pick 1 of 2 around Lv 9 (the other locks)',hex:'#ffd08a'});
     for(const m of d.mutations)rows.push({emoji:m.emoji,title:m.name,desc:m.desc,color:0xffc857});
     rows.push({head:'✨ Evolution — around Lv 15, then endless Power-Ups',hex:'#ffe98a'});
-    rows.push({emoji:'✨',title:d.evolution,desc:BASIC_EVO_DESC[d.skill]||'Upgrades the whole Basic Attack',color:0xffd54a});
+    if(ch==='mint')for(const e of Object.values(MINT_EVOLUTIONS))rows.push({emoji:'✨',title:e.name,desc:e.desc,color:0xffd54a});
+    else rows.push({emoji:'✨',title:d.evolution,desc:BASIC_EVO_DESC[d.skill]||'Upgrades the whole Basic Attack',color:0xffd54a});
     const n=rows.filter(r=>!r.head).length,nh=rows.length-n,avail=this.H-top-(this.W<=this.H?54:42),rh=Math.max(24,Math.min(this.W<=this.H?46:34,(avail-nh*4-rows.length*4)/(n+nh*0.8)));
     this._codexRows(top,rows,rh);
     this._codexNav(this._codexChar,pages,()=>{this._codexChar--;this.buildSkillArchive();},()=>{this._codexChar++;this.buildSkillArchive();},c.emoji+' '+c.name+'  ·  '+(this._codexChar+1)+' / '+pages);
@@ -6923,7 +6930,7 @@ class Game extends Phaser.Scene {
     if(P.length)rows.push({label:'🛤 Path',desc:(P.find(x=>x.id===e.path)||{}).desc||'Tap to pick a combat style',val:(P.find(x=>x.id===e.path)||{}).name||'—',cost:EG_COST.path,tap:()=>{e.path=cyc(P.map(x=>x.id),e.path);save();}});
     rows.push({label:'🍯 Infusion',desc:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).desc||'Tap to add an element to every hit',val:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name||'—',cost:EG_COST.inf,tap:()=>{e.inf=cyc(FLAVOR_INFUSIONS.map(f=>f.id),e.inf);save();}});
     rows.push({label:'⭐ Mutation',desc:(d.mutations.find(m=>m.id===e.mut)||{}).desc||'Tap to pick a mutation',val:(d.mutations.find(m=>m.id===e.mut)||{}).name||'—',cost:EG_COST.mut,tap:()=>{e.mut=cyc(d.mutations.map(m=>m.id),e.mut);if(!e.mut)e.evo=false;save();}});
-    rows.push({label:'✨ Evolution',desc:(typeof BASIC_EVO_DESC!=='undefined'&&BASIC_EVO_DESC[d.skill])||'Ultimate upgrade for your Basic Attack',val:e.evo?d.evolution:(e.mut?'off':'needs Mutation'),cost:EG_COST.evo,tap:()=>{if(!e.mut){this.menuToast('Pick a Mutation first','#ff9bb5');return;}e.evo=!e.evo;save();}});
+    rows.push({label:'✨ Evolution',desc:(ch==='mint'&&MINT_EVOLUTIONS[e.path]?.desc)||(typeof BASIC_EVO_DESC!=='undefined'&&BASIC_EVO_DESC[d.skill])||'Ultimate upgrade for your Basic Attack',val:e.evo?((ch==='mint'&&MINT_EVOLUTIONS[e.path]?.name)||d.evolution):(e.mut?'off':'needs Mutation'),cost:EG_COST.evo,tap:()=>{if(!e.mut){this.menuToast('Pick a Mutation first','#ff9bb5');return;}e.evo=!e.evo;save();}});
     for(const u of egUpgradeDefs(ch,e)){ const lv=e.lv[u.id]||0; rows.push({label:u.emoji+' '+u.name,val:'●'.repeat(lv)+'○'.repeat(u.max-lv),cost:1,desc:u.desc,tap:()=>{e.lv[u.id]=lv>=u.max?0:lv+1;save();}}); }
     const rh=Math.max(36,Math.min(50,Math.floor((h-y-70)/rows.length)-4));
     rows.forEach(r=>{ const g=this.add.graphics(); g.fillStyle(0x1c1426,1); g.fillRoundedRect(cx,y,cw,rh,8); g.lineStyle(1.5,0x4a4059,1); g.strokeRoundedRect(cx,y,cw,rh,8); this.menu.add(g);
@@ -10434,7 +10441,7 @@ class Game extends Phaser.Scene {
   }
   signatureWeaponInfo(){const ch=CHARACTERS[this.character]||CHARACTERS.momo;return SIGNATURE_WEAPONS[ch.weapon]||SIGNATURE_WEAPONS.berryBlaster;}
   usesBasicAttackBuild(){return !!BASIC_ATTACKS[this.character];}
-  basicAttackInfo(){return BASIC_ATTACKS[this.character]||null;}
+  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack,e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();}
@@ -10991,7 +10998,7 @@ class Game extends Phaser.Scene {
     if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
-      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
+      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
       return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
     }
     // 🧬 v6.10.0 B6: Evolution แล้ว + มี Relic ที่จับคู่ → การ์ด Fusion ใบเดียว
@@ -11287,7 +11294,7 @@ class Game extends Phaser.Scene {
     b.setAlpha(1);
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
-    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null;b.impaler=null; b.seedPop=0; b.seedPierce=false; b.hitTargets=null; b.headshot=0; b.bigMul=0; b.closeMul=0; b.bounceGain=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null; b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b._boomed=false;b.loopT=false;b._bounced=false;b._split=false;
+    b.bounce=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null;b.impaler=null;b.mintEpoch=null; b.seedPop=0; b.seedPierce=false; b.hitTargets=null; b.headshot=0; b.bigMul=0; b.closeMul=0; b.bounceGain=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null; b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b._boomed=false;b.loopT=false;b._bounced=false;b._split=false;
     return b;
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
@@ -11833,6 +11840,35 @@ class Game extends Phaser.Scene {
   }
   // ❄️ Mint active cast: สะบัดเกล็ดน้ำแข็งกระเด็นออกWaitบทิศ (เจาะ+แช่) · คู่กับเกล็ดโคจรใน tickCharSignature
   // ❄️ Frost Lance (Shatter Lance) — ชาร์จสั้น ๆ พุ่งหอกเจาะทะลุ แล้ว "shatters into ice shards" กระจายที่ปลายทาง (แบบลูกซอง)
+  mintBullet(x,y,tint,scale){
+    let active=0;this.bullets.children.iterate(b=>{if(b?.active&&b.mintEpoch!=null)active++;});
+    if(active>=24)return null;
+    const b=this.getBullet(x,y,tint,scale);if(b)b.mintEpoch=this._artEpoch||0;return b;
+  }
+  mintBurstFx(x,y,r=110){
+    const now=this.time.now;
+    if(this._mintVfxWindow==null||now-this._mintVfxWindow>=200){this._mintVfxWindow=now;this._mintVfxCount=0;}
+    if(this._mintVfxCount>=3)return;this._mintVfxCount++;
+    if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',x,y,{scale:r*2/320,depth:6,normal:true}));
+    else this.vfxHitRing(x,y,0xbdf0ff,true);
+  }
+  mintHeavyImpact(){
+    const now=this.time.now;if(now<(this._mintImpactAt??-Infinity)+350)return;this._mintImpactAt=now;
+    if(this.hitStop)this.hitStop(25);if(this.screenShake)this.screenShake(60,.002);
+  }
+  queueHailstorm(lvl,damage,freeze,basic){
+    const now=this.time.now;if(now<(this._mintArsenalAt??-Infinity)+4000)return;this._mintArsenalAt=now;
+    for(let k=0;k<6;k++)this.artDelay(k*90,()=>{
+      if(!this.player?.active||(this.state!=='play'&&this.state!=='levelup')||this.basicAttack!==basic||basic.path!=='barrage'||!basic.evolved)return;
+      const t=this.nearestEnemy(900);if(!t)return;
+      const b=this.mintBullet(this.player.x,this.player.y,0xffffff,.4+lvl*.028);if(!b)return;
+      const a=Math.atan2(t.y-this.player.y,t.x-this.player.x)+(k%2?.08:-.08);
+      b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xdaf7ff);
+      b.faceVel=true;b.dmg=damage*.7;b.life=.65;b.homing=0;b.pierceLeft=1;
+      b.iceNeedle={freeze,frozenBonus:1.2,shatter:false,dmg:b.dmg,lvl};
+      this.physics.velocityFromRotation(a,900,b.body.velocity);
+    });
+  }
   impalerTarget(range){
     const boss=this.priorityBossTarget(range);if(boss)return boss;
     let target=null,dist=range*range;
@@ -11864,27 +11900,29 @@ class Game extends Phaser.Scene {
     const raw=(basic.evolved?3:(lvl>=4?2:1))+(basic._pm?.count||0),countBonus=1+0.12*Math.max(0,raw-1);
     const damage=(16+lvl*4)*dm*(aw?1.2:1)*(basic.mutation==='permafrost'?1.15:1)*(.65+(.65+.18*(basic.lv.p_heavydraw||0))*progress)*countBonus;
     const range=(340+lvl*22)*(aw?1.28:1)*(1+.1*(basic.ranks.chill||0))*(1+(basic._pm?.range||0)),speed=1000;
-    const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.4+lvl*.028);if(!b)return;
-    b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xcaf3ff);b.faceVel=true;b.dmg=damage;b.life=range/speed;b.homing=0;
-    b.impaler={full,targets:new Set(),hits:0,pierces:2+(basic.lv.p_coldblood||0),epoch:c.epoch,basic};
+    const b=this.mintBullet(this.player.x,this.player.y,0xffffff,0.4+lvl*.028);if(!b)return;
+    if(full&&basic.evolved)basic._impalerFullShots=(basic._impalerFullShots||0)+1;
+    const giant=full&&basic.evolved&&basic._impalerFullShots%3===0;
+    b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xcaf3ff);b.faceVel=true;b.dmg=damage*(giant?1.35:1);b.life=range/speed;b.homing=0;
+    b.impaler={full,giant,targets:new Set(),hits:0,pierces:(giant?8:2)+(basic.lv.p_coldblood||0),epoch:c.epoch,basic};
     // Larger painted lance is independent of its unchanged projectile collider.
-    if(this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',full?44+4*(basic.lv.p_heavydraw||0):30);
+    if(this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',giant?80:full?44+4*(basic.lv.p_heavydraw||0):30);
     this.physics.velocityFromRotation(angle,speed,b.body.velocity);Sfx.frost();
   }
   impaleStacks(e){
     if(this.time.now-(e._mintImpaleAt??-Infinity)>5000)e._mintImpale=0;
     return Math.min(3,e._mintImpale||0);
   }
-  applyImpale(e,power,full){
+  applyImpale(e,power,full,ruptureBonus=1){
     if(!full||!e?.active||this.basicAttack?.path!=='pierce'||e._phaseGateLocked||(e._phaseInvuln||0)>0)return;
     const b=this.basicAttack,now=this.time.now,big=e.isBoss||e.isMini||e.isElite,stacks=this.impaleStacks(e);
     e._mintImpaleAt=now;
     if(stacks>=3){
       if(now<(e._mintRuptureAt??-Infinity)+600)return;
       e._mintImpale=0;e._mintRuptureAt=now;
-      const rupture=power*(big?1.8:1.2)*(1+.1*(b.lv.p_shatterpt||0)+.08*(b.lv.linger||0));
+      const rupture=power*(big?1.8:1.2)*(1+.1*(b.lv.p_shatterpt||0)+.08*(b.lv.linger||0))*ruptureBonus;
       this.damage(e,rupture,e.x,e.y);
-      if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',e.x,e.y,{scale:.75,depth:6,normal:true}));else this.vfxHitRing(e.x,e.y,0xbdf0ff,true);
+      this.mintBurstFx(e.x,e.y,120);this.mintHeavyImpact();
       if(this.floatText)this.floatText(e.x,e.y-28,'CRYSTAL RUPTURE',0xbdf0ff);
     }else{
       e._mintImpale=Math.min(3,stacks+1+(big?(b.lv.p_impaler||0):0));
@@ -11898,11 +11936,12 @@ class Game extends Phaser.Scene {
     if(e._phaseGateLocked||(e._phaseInvuln||0)>0){if(e.isBoss||e.isMini)this.killBullet(b);return;}
     const ranks=i.basic.lv,stacks=this.impaleStacks(e),pen=Math.min(3,i.hits),execute=e.hp/e.maxhp<.30?1+.08*(ranks.p_executioner||0):1;
     const damage=b.dmg*(1+.06*(ranks.p_coldblood||0)*pen)*(1+.06*stacks)*execute;
-    this.damage(e,damage,b.x,b.y);if(e.active){this.mintChill(e,i.basic.mutation==='permafrost'?.96:.6);this.applyImpale(e,damage,i.full);}
+    this.damage(e,damage,b.x,b.y);if(e.active){this.mintChill(e,i.basic.mutation==='permafrost'?.96:.6);this.applyImpale(e,damage,i.full,i.giant?1.35:1);}
     // Keep previous impact-mutation investment with a bounded, non-marking splash.
     if(i.basic.mutation==='blizzard'){
       let n=0;this.enemies.children.iterate(o=>{if(n>=16||!o||!o.active||o===e||this.dist(o.x,o.y,b.x,b.y)>60)return;n++;this.damage(o,damage*.25,o.x,o.y);});
     }
+    if(i.giant)this.mintHeavyImpact();
     i.hits++;if(i.hits>=i.pierces||e.isBoss||e.isMini)this.killBullet(b);
   }
   castFrostLance(lvl,aw,dm,basic){
@@ -11914,14 +11953,14 @@ class Game extends Phaser.Scene {
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
-    const volley=mintVolleyProfile(lvl,evo,basic?._pm?.count||0,basic?.path),lances=volley.count,   // v5.24 เพดาน 4 หอก
+    const volley=mintVolleyProfile(lvl,evo&&basic?.path!=='glacier',basic?._pm?.count||0,basic?.path),lances=volley.count,   // v5.24 เพดาน 4 หอก
       spread=0.16*(1+(basic?.path==='barrage'?0.2*(basic?.lv.p_quickdraw||0):0)), centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
-    // จำนวนสะเก็ดจาก Shard Bloom; Evolution แบ่งต่อแฉกเพื่อไม่ให้ล้นจอ
+    // Shard Bloom investment stays intact; shared budgets bound Barrage and Glacier maps it to bloom power.
     const shardBase=3+Math.min(3,(basic?.lv.linger||0))+(aw?2:0);   // v4.20: สะเก็ดน้อยลง (เดิม 6+..) ไม่ล้นจอ
-    const shardPer=evo?Math.max(2,Math.round(shardBase*0.6)):shardBase;
-    const shardDmg=dmg*0.55*(1+0.12*(basic?.ranks.p_splinter||0))*volley.shardMul, shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
+    const shardPer=shardBase;   // M4: keep every Shard Bloom rank useful after Evolution; shared budgets bound spawning.
+    const shardDmg=dmg*0.55*(1+0.12*(basic?.ranks.p_splinter||0))*volley.shardMul*volley.bloomMul, shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
-    const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
+    const chg=this.trackArtVfx(this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9)));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});
     const launch=()=>{
     if(!this.player?.active||(this.state!=='play'&&this.state!=='levelup'))return;
@@ -11929,18 +11968,19 @@ class Game extends Phaser.Scene {
     for(let L=0;L<lances;L++){ const a=ang+(L-centerL)*spread;
       const st={done:false,hits:0,targets:new Set()};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
       // หอกวิ่ง — สายเจาะทะลุศัตรูปกติได้ก่อนแตก; บอสแตกทันที
-      const b=this.getBullet(this.player.x,this.player.y,0xffffff,0.5); if(b){
+      const b=this.mintBullet(this.player.x,this.player.y,0xffffff,0.5); if(!b)continue; {
         b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.4+lvl*0.028); b.faceVel=true; b.dmg=dmg; b.life=flightT+0.2; b.hitGapV=0.1; b.homing=0;   // ยิงตรง ไม่ตามเป้า + หอกเล็กลง
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg,lvl};
         b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a,pierces:basic?.path==='pierce'?2+(basic.lv.p_coldblood||0):1};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
       // ถ้าพลาดทุกตัว → แตกที่สุดระยะ (fallback)
       const ex=this.player.x+Math.cos(a)*range, ey=this.player.y+Math.sin(a)*range;
-      this.time.delayedCall(flightT*1000,()=>{ if(!st.done){ st.done=true; this.frostShatterBurst(ex,ey,a,shardPer,shardDmg,shardFreeze,shardFB,blizzard,lvl); } });
+      this.artDelay(flightT*1000,()=>{ if(this.basicAttack!==basic)return; if(!st.done){ st.done=true; this.frostShatterBurst(ex,ey,a,shardPer,shardDmg,shardFreeze,shardFB,blizzard,lvl); } });
     }
     this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.frost();
     };
     launch();
+    if(evo&&basic?.path==='barrage')this.queueHailstorm(lvl,dmg,0.6*(permafrost?1.6:1),basic);
   }
   // แตกสะเก็ดน้ำแข็งที่ปลายหอก: โนวาวาบ + ยิงสะเก็ดกระจาย(เจาะ+แช่)
   // v5.10 Mint: โจมตีปกติไม่แช่ทันทีแล้ว → สะสม ❄ Chill (ช้าลง 30%) · ครบ 4 ชั้น (Permafrost 3) ภายใน 2.5 วิ = แช่แข็ง + ชั้นหาย · บอส/มินิแค่ช้าลงไม่แช่
@@ -11994,16 +12034,16 @@ class Game extends Phaser.Scene {
     if(now<(root._glacierBurstAt??-Infinity)+450||root._phaseGateLocked||(root._phaseInvuln||0)>0)return;
     if(this._glacierWindow==null||now-this._glacierWindow>=200){this._glacierWindow=now;this._glacierBursts=0;this._glacierVfx=0;}
     if(this._glacierBursts>=6)return;
-    const b=this.basicAttack,power=this.glacierHitPower(),chain=Math.min(2,b.lv.p_chainshatter||0),queue=[{e:root,depth:0}],seen=new Set();
+    const b=this.basicAttack,power=this.glacierHitPower(),chain=Math.min(3,(b.lv.p_chainshatter||0)+(b.evolved?1:0)),queue=[{e:root,depth:0}],seen=new Set();
     this._glacierBusy=true;
     try{
       while(queue.length&&seen.size<6&&this._glacierBursts<6&&(this.state==='play'||this.state==='levelup')){
         const {e,depth}=queue.shift();if(seen.has(e)||!this.glacierPrimed(e)||e._phaseGateLocked||(e._phaseInvuln||0)>0||now<(e._glacierBurstAt??-Infinity)+450)continue;
         seen.add(e);this._glacierBursts++;e._glacierBurstAt=now;e._glacierFrost=0;e._glacierFrostAt=now;
-        const x=e.x,y=e.y,r=110,immune=e.isBoss||e.isMini||e.freezeImmune;
+        const x=e.x,y=e.y,r=110*(b.evolved&&depth===0?1.65:1),immune=e.isBoss||e.isMini||e.freezeImmune;
         // Fixed attack scaling; normal damage() owns gear/crit/phase gates. No max-HP damage.
         this.damage(e,power*(immune?1.8:1.4),x,y);
-        if(this._glacierVfx<3){this._glacierVfx++;if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',x,y,{scale:r*2/320,depth:6,normal:true}));else this.vfxHitRing(x,y,0xbdf0ff,true);}
+        if(this._glacierVfx<3){this._glacierVfx++;this.mintBurstFx(x,y,r);}
         let targets=0;
         this.enemies.children.iterate(o=>{
           if(targets>=24||!o||!o.active||o===e||seen.has(o)||this.dist(o.x,o.y,x,y)>r)return;targets++;
@@ -12018,22 +12058,26 @@ class Game extends Phaser.Scene {
   }
   frostShatterBurst(x,y,baseAng,count,sdmg,freeze,fb,blizzard,lvl){
     if(this.state!=='play'&&this.state!=='levelup')return;
-    this.burst(x,y,0x8fd0ff);
-    const bloomR=118+lvl*8+(blizzard?40:0);
-    if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',x,y,{scale:bloomR*2.3/320,depth:6,normal:true}));
-    else {const ring=this.camWorld(this.add.image(x,y,'vfx_glow').setTint(0xbdf0ff).setDepth(6).setScale(0.2).setAlpha(0.9));this.tweens.add({targets:ring,scale:bloomR/60,alpha:0,duration:300,onComplete:()=>ring.destroy()});}
-    // การันตีโดน: ระเบิดน้ำแข็ง AoE ในรัศมี (ดาเมจ + แช่) — แก้ปัญหา "ไม่ค่อยโดน"
-    this.enemies.children.iterate(e=>{ if(!e||!e.active)return; if(this.dist(e.x,e.y,x,y)>bloomR)return;
-      this.damage(e,sdmg*1.6*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);
+    const glacier=this.basicAttack?.path==='glacier',now=this.time.now;
+    if(this._mintShardWindow==null||now-this._mintShardWindow>=200){this._mintShardWindow=now;this._mintShardCount=0;}
+    const shardCount=glacier?0:Math.min(6,Math.max(0,count),Math.max(0,12-(this._mintShardCount||0)));
+    // Planned count above six retains value in power; scene saturation never removes the bloom.
+    const power=sdmg*(glacier?1+.08*Math.max(0,count-3):1+.12*Math.max(0,count-6));
+    const bloomR=118+lvl*8+(blizzard?40:0);this.mintBurstFx(x,y,bloomR);
+    let hits=0;this.enemies.children.iterate(e=>{if(hits>=24||!e?.active||this.dist(e.x,e.y,x,y)>bloomR)return;hits++;
+      this.damage(e,power*1.6*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);
       if(e.active)this.mintChill(e,freeze*1.2);
     });
-    const arc=Math.PI*1.6;   // v4.20: สะเก็ดกระจายหลายแฉก ยิงตรง (ไม่โฮมมิ่ง) + เร็วขึ้น
-    for(let i=0;i<count;i++){ const a=baseAng+(i/(count-1||1)-0.5)*arc+Phaser.Math.FloatBetween(-0.06,0.06);
-      const b=this.getBullet(x,y,0xffffff,0.28); if(!b)break;
-      b.setTexture('proj_sprinkle').setTint(0xcaf3ff);this.attachProjectileArt(b,'proj_mint_shard',24,0.67,0.5); b.faceVel=true; b.dmg=sdmg; b.life=0.5; b.pierce=true; b.hitGapV=0.1; b.homing=0;
-      b.iceNeedle={freeze,frozenBonus:fb,shatter:blizzard,dmg:sdmg,lvl};
-      this.physics.velocityFromRotation(a,760+Math.random()*140,b.body.velocity); }
-    this.hitCratesInRadius(x,y,bloomR,sdmg);
+    const arc=Math.PI*1.6;
+    for(let i=0;i<shardCount;i++){
+      const a=baseAng+(i/(shardCount-1||1)-.5)*arc+Phaser.Math.FloatBetween(-.06,.06),b=this.mintBullet(x,y,0xffffff,.28);if(!b)break;
+      this._mintShardCount++;
+      b.setTexture('proj_sprinkle').setTint(0xcaf3ff);this.attachProjectileArt(b,'proj_mint_shard',24,.67,.5);
+      b.faceVel=true;b.dmg=power;b.life=.5;b.pierce=true;b.hitGapV=.1;b.homing=0;
+      b.iceNeedle={freeze,frozenBonus:fb,shatter:blizzard,dmg:power,lvl};
+      this.physics.velocityFromRotation(a,760+Math.random()*140,b.body.velocity);
+    }
+    this.hitCratesInRadius(x,y,bloomR,power);
   }
   // ประมวลผลIce Torrent: ทุก 0.4s ทำ DoT + ชะลอ (frozen สั้น ๆ เป็นจังหวะ = สโลว์) ให้ศัตรูในปล้อง แล้วค่อย ๆ จาง
   tickFrostStreams(dt){
@@ -12297,6 +12341,7 @@ class Game extends Phaser.Scene {
       if(!nb)break; hit.add(nb); this.chainBolt(src.x,src.y,nb.x,nb.y); this.damage(nb,bullet.dmg*0.55,nb.x,nb.y); src=nb; } }
   hitEnemy(bullet,enemy){ this._sgHit=!!bullet.sgPellet; try{ this._hitEnemyCore(bullet,enemy); } finally { this._sgHit=false; } }
   _hitEnemyCore(bullet,enemy){ if(!bullet.active||!enemy.active)return;
+    if(bullet.mintEpoch!=null&&bullet.mintEpoch!==(this._artEpoch||0)){this.killBullet(bullet);return;}
     if(bullet.impaler){this.hitImpaler(bullet,enemy);return;}
     if(bullet.bubblePrison){
       const x=enemy.x,y=enemy.y,lvl=bullet.bubbleLevel||1,r=bullet.bubbleRadius||70,aw=!!bullet.bubbleAwaken,dmg=bullet.dmg||8,prisonHp=enemy.maxhp||0;
@@ -12877,6 +12922,8 @@ class Game extends Phaser.Scene {
   }
   clearArtVfx(){
     this._impalerCharge=null;
+    this._mintArsenalAt=-Infinity;this._mintVfxWindow=null;this._mintVfxCount=0;this._mintShardWindow=null;this._mintShardCount=0;this._mintImpactAt=-Infinity;
+    if(this.basicAttack)this.basicAttack._impalerFullShots=0;
     this._glacierBusy=false;this._glacierWindow=null;this._glacierBursts=0;this._glacierVfx=0;
     this._artEpoch=(this._artEpoch||0)+1;
     for(const ev of this._artTimers||[])ev.remove(false);if(this._artTimers)this._artTimers.clear();
