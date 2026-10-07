@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.78';
+const GAME_VERSION = '6.55.79';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.79',date:'2026-10-07',title:'Mint build paths: focused cards',items:['Freeze becomes Glacier Bloom; Piercer becomes Crystal Impaler','Mint path choices favor matching cards: 65% path, 20% shared, 15% stat and survival','Barrage stays capped at three lances; excess lances grant +18% shard damage each','Packed Quiver preserves its bonus through Evolution; old path and talent IDs remain compatible']},
   {v:'6.55.78',date:'2026-10-05',title:'Local weapon damage',items:['Damage % on a weapon (mod or implicit) now raises that weapon’s ATK by triple the percent instead of giving global damage','Equipment compare shows Weapon ATK with its total damage bonus']},
   {v:'6.55.77',date:'2026-10-05',title:'ATK is now a percent bonus',items:['Each point of gear ATK (and flat damage mods) now adds +5% to every hit instead of flat damage, so +1 ATK no longer outweighs every other mod']},
   {v:'6.55.76',date:'2026-10-05',title:'Low-tier mods toned down',items:['The weakest mod tier now gives about 20% of the best tier (was 40%), e.g. Damage T10 8% → 4%','Existing items keep their tier and are moved into the new value range']},
@@ -2682,16 +2683,17 @@ const BASIC_PATHS={
   // สายของตัวอื่นใช้ระบบกลาง: base = ผลตอนเลือก · upgrades[].fx = ผลต่อ rank (dmg/cd คูณ · อื่น ๆ บวก)
   // คีย์: dmg cd count range big(vs elite/มินิ/บอส) frozen(vs ศัตรูแช่) far(>300px) low(HP เรา<50%) taken(ลดดาเมจที่รับ)
   mint:[
-    {id:'glacier',iconKey:'ic_path_glacier',name:'Freeze Build',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze crowds · shatter safely',desc:'Lances deal 10% less damage; Frozen enemies take 35% more. Bosses can be Chilled, but cannot freeze.',
+    {id:'glacier',iconKey:'ic_path_glacier',name:'Glacier Bloom Build',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze crowds · shatter safely',desc:'Lances deal 10% less damage; Frozen enemies take 35% more. Bosses can be Chilled, but cannot freeze.',
       upgrades:[{id:'p_deepchill',iconKey:'ic_path_p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen',desc:'Frozen enemies take 12% more damage per rank.'},
                 {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing a normal enemy applies 1 Chill stack to nearby enemies; radius grows 20% per rank.'},
                 {id:'m_grow',iconKey:'ic_path_glacier',name:'Wider Bloom',emoji:'🌸',max:3,headline:'Glacier Bloom +25% size',desc:'Glacier Bloom Unique: ice ring 25% larger per rank.'},
                 {id:'m_hold',iconKey:'ic_path_glacier',name:'Long Winter',emoji:'⏳',max:2,headline:'Bloom freezes +0.6s',desc:'Glacier Bloom Unique: freeze lasts 0.6s longer per rank.'},
                 {id:'m_shard',iconKey:'ic_path_glacier',name:'Shard Spray',emoji:'💎',max:2,headline:'Shatter splashes',desc:'Glacier Bloom Unique: each shatter hits enemies within 90px for 40% per rank.'}]},
-    {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (up to 3 total), 22% sooner. Each lance deals 62% damage.',
+    {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (max 3), 22% sooner at 62% damage. Each excess lance grants +18% shard damage instead.',
       upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
+                {id:'p_quiver',iconKey:'ic_path_barrage',name:'Packed Quiver',emoji:'🏹',max:1,fx:{count:1},headline:'+1 Lance / +18% Shard DMG',desc:'+1 lance, up to 3 total. At the cap, gain +18% shard damage instead; recalculates after Evolution.'},
                 {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'}]},
-    {id:'pierce',iconKey:'ic_path_pierce',name:'Piercer Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Heavy lance · pierces 2 foes',desc:'Deal 75% more damage and reach 30% farther, but fire 40% slower. Pierce 2 normal enemies; shatter on bosses.',
+    {id:'pierce',iconKey:'ic_path_pierce',name:'Crystal Impaler Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Heavy lance · pierces 2 foes',desc:'Deal 75% more damage and reach 30% farther, but fire 40% slower. Pierce 2 normal enemies; shatter on bosses.',
       upgrades:[{id:'p_shatterpt',iconKey:'ic_path_p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% DMG to elites/bosses',desc:'Deal 15% more damage to elites, minibosses and bosses per rank.'},
                 {id:'p_coldblood',iconKey:'ic_path_p_coldblood',name:'Fracture Line',emoji:'💎',max:3,headline:'+1 pierced target',desc:'Pierce 1 extra normal enemy per rank before shattering; shatter immediately on bosses.'},
                 {id:'l_far',iconKey:'ic_path_pierce',name:'Long Lance',emoji:'📏',max:3,headline:'Lance dash +30% distance',desc:'Frost Lance Charge Unique: dash 30% farther per rank.'},
@@ -2765,7 +2767,7 @@ const WEAPON_TAGS={momo:['ranged'],mint:['frost','ranged'],cocoa:['melee'],taro:
 // การ์ดอัปเกรด/สาย/mutation ที่ไม่อยู่ในตาราง = แท็กแรกของอาวุธประจำตัว
 const UP_TAGS=(()=>{const m={},put=(t,ids)=>ids.split(' ').forEach(i=>{m[i]=(m[i]||[]).concat(t);});
   put('crit','headshot deadeye s_heavy p_judge p_farstrike p_longsight p_lensbig lens sniper pierce smite p_shatterpt titan p_titanfist pack');
-  put('swarm','volley fan buckshot cluster shotgun ricochet carom gather prism p_refract p_facet family zestSwarm p_pulp splash barrage p_splinter s_split second parting p_feast juiceWorkshop p_sourMixer');
+  put('swarm','volley fan buckshot cluster shotgun ricochet carom gather prism p_refract p_facet p_quiver family zestSwarm p_pulp splash barrage p_splinter s_split second parting p_feast juiceWorkshop p_sourMixer');
   put('spark','arc chainlord surge stormcaller p_static p_overload tempest p_squall p_gale storm p_quickdraw s_quick p_swift');
   put('guard','fortress retaliate sentinel glacier p_bodyguard loyal citrusGuardian counter p_coldblood p_steady p_sweetHelper');
   put('frost','chill linger blizzard permafrost rime p_coldsnap p_deepchill sticky');
@@ -2855,7 +2857,7 @@ function modDef(id){ for(const c in FUSIONS){ const f=FUSIONS[c].find(x=>x.id===
 // รวมผลสาย (base + rank ของ upgrade สาย) → {dmg,cd,count,range,big,frozen,far,low,taken}
 const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:'One giant guardian · safety',juiceWorkshop:'Cheese helper · sour zones',
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
-  glacier:'Freeze control · safe play',barrage:'Wide volleys · clearing crowds',pierce:'Piercing lance · elites and bosses',
+  glacier:'Freeze and bloom · crowd control',barrage:'Rapid volleys · sustained damage',pierce:'Heavy lance · elite and boss damage',
   brawler:'Fast combos · shockwaves',titan:'Heavy punches · bosses',dashboxer:'Dash combos · hit and run',
   storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Rapid lightning · mobility',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
@@ -2864,6 +2866,35 @@ function pathMods(b){ const m={dmg:1,cd:1,count:0,range:0,big:0,frozen:0,far:0,l
   const pt=(BASIC_PATHS[b.character]||[]).find(x=>x.id===b.path); if(!pt||!pt.base)return m;
   const add=(fx,n)=>{ for(const k in fx){ if(k==='dmg'||k==='cd')m[k]*=Math.pow(fx[k],n); else m[k]+=fx[k]*n; } };
   add(pt.base,1); for(const u of pt.upgrades)add(u.fx||{},b.lv[u.id]||0); return m; }
+
+// Mint M1: classify existing mechanics; charge/Brittle/Impale arrive in M2/M3.
+const MINT_CARD_WEIGHTS={path:65,shared:20,universal:15};
+function mintUpgradeGroup(path,id){
+  if(!path)return 'shared';
+  if(id==='rate')return path==='barrage'?'path':null;
+  if(id==='linger')return path==='barrage'||path==='glacier'?'path':null;
+  if(['power','rime','chill','inf_deep'].includes(id))return 'shared';
+  const pt=BASIC_PATHS.mint.find(p=>p.id===path);
+  return pt&&pt.upgrades.some(u=>u.id===id)?'path':null;
+}
+function mintVolleyProfile(lvl,evolved,count,path){
+  const cap=path==='barrage'?3:4,raw=(evolved?3:(lvl>=4?2:1))+(count||0);
+  const overflow=path==='barrage'?Math.max(0,raw-cap):0;
+  return {count:Math.min(cap,raw),overflow,shardMul:1+0.18*overflow};
+}
+function pickMintCards(entries,n){
+  const pools={path:[],shared:[],universal:[]},out=[];
+  for(const e of entries)if(pools[e.group])pools[e.group].push(e);
+  while(out.length<n){
+    const groups=Object.keys(pools).filter(k=>pools[k].length);if(!groups.length)break;
+    let r=Math.random()*groups.reduce((sum,k)=>sum+MINT_CARD_WEIGHTS[k],0),group=groups[groups.length-1];
+    for(const k of groups){r-=MINT_CARD_WEIGHTS[k];if(r<0){group=k;break;}}
+    const pool=pools[group];r=Math.random()*pool.reduce((sum,e)=>sum+e.w,0);let index=pool.length-1;
+    for(let i=0;i<pool.length;i++){r-=pool[i].w;if(r<0){index=i;break;}}
+    const card=pool.splice(index,1)[0].card;card.poolGroup=group;out.push(card);
+  }
+  return out;
+}
 
 const CHARACTER_UNIQUES = {
   citrusParade:{name:'Citrus Parade',emoji:'🍋',cd:13,color:0xffd85e,desc:'The crew attacks nearby threats faster and harder for a short time'},
@@ -2995,7 +3026,7 @@ const PATH_TALENTS={
     a2:{emoji:'🎯',name:'Long Volley',max:3,per:'+10% damage beyond 300px',apply:_P({far:0.10})},
     b1:{emoji:'⏱️',name:'Quick Hands',max:3,per:'−5% lance cooldown',apply:_P({cd:0.95})},
     b2:{emoji:'📏',name:'Reach',max:3,per:'+6% lance range',apply:_P({range:0.06})},
-    capA:{emoji:'🌪️',name:'Lance Storm',max:1,per:'+1 lance',apply:_P({count:1})},
+    capA:{emoji:'🌪️',name:'Lance Storm',max:1,per:'+1 lance (max 3); at cap: +18% shard damage',apply:_P({count:1})},
     capB:{emoji:'⚡',name:'Rapid Frost',max:1,per:'−25% lance cooldown',apply:_P({cd:0.75})},
     capC:{emoji:'💨',name:'Cold Stride',max:1,per:'While moving: −15% damage taken',apply:_K('moveGuard',0.15)}},
   pierce:{root:{emoji:'🏹',name:'Heavy Shaft',max:3,per:'+6% lance damage',apply:_P({dmg:1.06})},
@@ -4930,7 +4961,7 @@ const EG_BUILD_BASE=8, EG_COST={path:2,inf:2,mut:3,evo:4};
 function egCharKey(){ return (Save.data&&Save.data.character)||'momo'; }
 function egBuild(ch){ ch=ch||egCharKey(); if(!Save.data.egBuild)Save.data.egBuild={}; const b=Save.data.egBuild[ch]||(Save.data.egBuild[ch]={path:null,inf:null,mut:null,evo:false,lv:{}}); b.lv=b.lv||{}; return b; }
 function egBuildPoints(){ return EG_BUILD_BASE+atlasPoints(); }
-function egUpgradeDefs(ch,b){ const d=BASIC_ATTACKS[ch]; if(!d)return []; let ups=d.upgrades.slice(); const P=BASIC_PATHS[ch]; if(P&&b.path){ const pt=P.find(x=>x.id===b.path); if(pt)ups=ups.concat(pt.upgrades); } if(b.inf)ups.push(INFUSION_UP); return ups; }
+function egUpgradeDefs(ch,b){ const d=BASIC_ATTACKS[ch]; if(!d)return []; let ups=d.upgrades.slice(); const P=BASIC_PATHS[ch]; if(P&&b.path){ const pt=P.find(x=>x.id===b.path); if(pt)ups=ups.concat(pt.upgrades); } if(b.inf)ups.push(INFUSION_UP); if(ch==='mint'&&b.path)ups=ups.filter(u=>mintUpgradeGroup(b.path,u.id)||(b.lv?.[u.id]||0)>0); return ups; }
 function egBuildCost(ch,b){ ch=ch||egCharKey(); b=b||egBuild(ch); const ok=new Set(egUpgradeDefs(ch,b).map(u=>u.id)); let c=(b.path?EG_COST.path:0)+(b.inf?EG_COST.inf:0)+(b.mut?EG_COST.mut:0)+(b.evo?EG_COST.evo:0); for(const k in b.lv){ if(ok.has(k))c+=b.lv[k]||0; } return c; }
 const ATLAS_NODES=[
   {id:'cartographer',emoji:'🧭',name:'Cartographer',max:3,desc:'+10% chance per level for dropped recipes to be one tier higher'},
@@ -8827,7 +8858,7 @@ class Game extends Phaser.Scene {
     this._egBuilt=true; if(egBuildCost(ch,e)>egBuildPoints())return;   // เกินแต้ม = ใช้ build เปล่า (ปุ่ม Run กันไว้แล้ว)
     const P=BASIC_PATHS[ch]; if(e.path&&P&&P.find(x=>x.id===e.path))b.path=e.path; if(e.inf&&FLAVOR_INFUSIONS.find(f=>f.id===e.inf))b.infusion=e.inf;
     if(e.mut&&d.mutations.find(m=>m.id===e.mut))b.mutation=e.mut; if(e.evo&&b.mutation)b.evolved=true;
-    for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
+    for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion,lv:e.lv})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
     this.syncBasicAttack(); this._egBuilt=true; }
   pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
   startRecipeRun(st){ this._recipeMission=null; this._feastT=null; this._feastOn=null; this._waitMsgAt=0; const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this.setupBiome(nd); this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
@@ -10960,12 +10991,13 @@ class Game extends Phaser.Scene {
       return [makeCard(fu,{evolution:true,special:true,kind:'Fusion',tags:fu.tags,color:0xff6ad5,headline:'🧬 '+fu.desc,apply:()=>{ b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,fu.desc,2200); Sfx.clear(); }})]; } }
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
+    const mintLocked=b.character==='mint'&&!!b.path;
     const atk=[];
-    const COUNT_IDS={family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
+    const COUNT_IDS={p_quiver:1,family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
     const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades.slice():[];
     if(b.infusion)pathUps.push(INFUSION_UP);
-    for(const u of d.upgrades.concat(pathUps)){const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
-      const rr=rollRarity(),potNote=(!COUNT_IDS[u.id]&&rr.potency>1)?('  ⚡+'+Math.round((rr.potency-1)*100)+'% roll'):''; atk.push({w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,desc:u.desc+potNote,apply:()=>{
+    for(const u of d.upgrades.concat(pathUps)){if(mintLocked&&!mintUpgradeGroup(b.path,u.id))continue;const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
+      const rr=rollRarity(),potNote=(!COUNT_IDS[u.id]&&rr.potency>1)?('  ⚡+'+Math.round((rr.potency-1)*100)+'% roll'):''; atk.push({group:mintLocked?mintUpgradeGroup(b.path,u.id):null,w:Math.max(1,5-cur*1.5),card:makeCard(u,{lvl:cur+1,max:u.max,rarity:rr,color:rr.color,desc:u.desc+potNote,apply:()=>{
         const isCount=COUNT_IDS[u.id],pot=isCount?1:(rr.potency||1);
         b.lv[u.id]=Math.min(u.max,(b.lv[u.id]||0)+1);
         b.ranks[u.id]=Math.min(u.max*(isCount?1:1.55),(b.ranks[u.id]||0)+pot);   // scalar = magnitude ถ่วง potency · count = จำนวนเต็ม
@@ -10976,6 +11008,17 @@ class Game extends Phaser.Scene {
     if(hpFrac<0.999){const rr=rollRarity(),amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)*(1+(rr.ranks-1)*0.5)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,rarity:rr,color:rr.color,kind:'Instant Heal',emoji:'💖',title:'Sweet Recovery',desc:'Restore HP instantly '+amount+' HP · No passive slot',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}
     const pick=(arr)=>{if(!arr.length)return null;let tot=arr.reduce((s,x)=>s+x.w,0),r=Math.random()*tot;for(let i=0;i<arr.length;i++){r-=arr[i].w;if(r<=0)return arr.splice(i,1)[0].card;}return arr.splice(0,1)[0].card;};
     const out=[];
+    if(mintLocked){
+      const pool=atk.slice();
+      // Modifier/trade choices are shared options, not replacements of a path card.
+      if(!noSpecial&&!this._inTutorial&&(this.level||1)>=4){const c=this.modCard();if(c)pool.push({group:'shared',w:2,card:c});}
+      if(!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5){const c=this.tradeCard();if(c)pool.push({group:'shared',w:1,card:c});}
+      for(const c of this.endlessCards(this.endlessStatDefs().length))pool.push({group:'universal',w:1,card:c});
+      if(healCard)pool.push({group:'universal',w:3,card:healCard});
+      out.push(...pickMintCards(pool,n));
+      if(hpFrac<0.40&&healCard&&!out.some(c=>c.key===healCard.key)){out.length>=n?out[n-1]=healCard:out.push(healCard);}
+      Phaser.Utils.Array.Shuffle(out);return out.slice(0,n);
+    }
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
     if(!noSpecial&&!this._inTutorial&&(this.level||1)>=4&&Math.random()<(out.length<n?1:0.35)){ const mc=this.modCard(); if(mc){ if(out.length>=n)out[n-1]=mc; else out.push(mc); } }   // v6.8.0 B3
     if(!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5&&Math.random()<0.25){ const tc=this.tradeCard(); if(tc){ const at=Math.min(out.length,n)-1; if(at>=0&&out.length>=n){ const j=out[at]&&out[at].kind==='Modifier'&&at>0?at-1:at; out[j]=tc; } else out.push(tc); } }   // v6.9.0 B4   // การ์ดอาวุธของตัวละครล้วน
@@ -11789,12 +11832,12 @@ class Game extends Phaser.Scene {
     this._lanceAng=ang;
     const dmg=(16+lvl*4)*dm*(aw?1.2:1)*(permafrost?1.15:1);
     const range=(340+lvl*22)*(aw?1.28:1)*(1+(basic?.ranks.chill||0)*0.1)*(1+(basic?._pm?.range||0));
-    const lances=Math.min(basic?.path==='barrage'?3:4,(evo?3:(lvl>=4?2:1))+(basic?._pm?.count||0)),   // v5.24 เพดาน 4 หอก
+    const volley=mintVolleyProfile(lvl,evo,basic?._pm?.count||0,basic?.path),lances=volley.count,   // v5.24 เพดาน 4 หอก
       spread=0.16*(1+(basic?.path==='barrage'?0.2*(basic?.lv.p_quickdraw||0):0)), centerL=(lances-1)/2, flightT=range/900;   // Lv1 หอกเดียว · Lv4+ 2 หอก · evo 3 หอก (ยิงตรง ไม่โฮมมิ่ง)
     // จำนวนสะเก็ดจาก Shard Bloom; Evolution แบ่งต่อแฉกเพื่อไม่ให้ล้นจอ
     const shardBase=3+Math.min(3,(basic?.lv.linger||0))+(aw?2:0);   // v4.20: สะเก็ดน้อยลง (เดิม 6+..) ไม่ล้นจอ
     const shardPer=evo?Math.max(2,Math.round(shardBase*0.6)):shardBase;
-    const shardDmg=dmg*0.55*(1+0.12*(basic?.ranks.p_splinter||0)), shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
+    const shardDmg=dmg*0.55*(1+0.12*(basic?.ranks.p_splinter||0))*volley.shardMul, shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
     const chg=this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});

@@ -45,3 +45,14 @@
 
 ## Phase E — Play Store (พักไว้จนเจ้าของสั่ง)
 - ⬜ **E1** ปุ่มลบบัญชีในแอป · ⬜ **E2** Store listing + screenshots · ⬜ **E3** Keystore + signed AAB · ⬜ **E4** Closed test · ⬜ **E5** รายได้ (AdMob)
+
+## Mint Build Path Rework — approved 7 Oct 2026
+
+| Commit | Scope | Status |
+| --- | --- | --- |
+| M1 | Names, focused card pools, Barrage lance cap conversion | ✅ v6.55.79 |
+| M2 | Glacier Frost stacks, boss Brittle, bounded chain Shatter | ⬜ |
+| M3 | Crystal Impaler charge, Impale stacks, Rupture | ⬜ |
+| M4 | Path Evolutions, VFX/readability and mobile review | ⬜ |
+
+See docs/MINT_BUILD_PATH_REWORK_2026_10_07.md. Monster animation batches remain separate.

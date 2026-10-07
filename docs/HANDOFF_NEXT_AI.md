@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.16 — monster animation commit 6
+# Latest delivery: v6.55.79 — Mint build paths M1
+
+Glacier Bloom / Barrage / Crystal Impaler names now share existing runtime IDs glacier/barrage/pierce. Ordinary Mint rolls use 65/20/15 path/shared/universal weights with exhausted-pool fallback and critical-HP Recovery; foreign path upgrades and rapid-fire cards on non-Barrage paths are excluded. Packed Quiver and all excess Barrage lance bonuses convert above the three-lance cap into +18% shard damage per excess lance, including after Evolution. Existing Talent/gear IDs and invested ranks remain valid; Endgame old off-path investment stays visible/costed/applied. Regression tests, full checks and web build pass. Browser smoke/phone visual review pending (Chromium download invalid ZIP). Next Mint task: M2 Glacier Frost stacks/Brittle/chain Shatter; M3/M4 remain planned. See docs/MINT_BUILD_PATH_REWORK_2026_10_07.md. Monster animation 7A/7B status is independent and unchanged.
+
+# Previous delivery: v6.55.16 — monster animation commit 6
 
 Ten real 16-pose sheets cover Chapter 1 stage 5 and Chapter 3 ordinary monsters, plus Stage 5 Elite. Runtime: assets/art/monster_batch6; source/manifest/prompts/packing/review: assets/incoming/monster_batch6. Original Chapter 3 apparent sizes, combat stats, collision circles and action timers are preserved. New Stage 5 keys use one authored defeat ghost. Actual-method tests, full checks and web build pass; phone visual/performance review is pending. Remaining commits 7–10; next is Chapter 2 stages 1–2 including Sporeling. Chapter 3 generic Elite remains in commit 10. See docs/MONSTER_ANIMATION_PLAN.md.
 

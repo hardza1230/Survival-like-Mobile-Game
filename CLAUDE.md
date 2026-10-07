@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.16 — monster animation commit 6
+# Latest delivery: v6.55.79 — Mint build paths M1
+
+Glacier Bloom / Barrage / Crystal Impaler names now share existing runtime IDs glacier/barrage/pierce. Ordinary Mint rolls use 65/20/15 path/shared/universal weights with exhausted-pool fallback and critical-HP Recovery; foreign path upgrades and rapid-fire cards on non-Barrage paths are excluded. Packed Quiver and all excess Barrage lance bonuses convert above the three-lance cap into +18% shard damage per excess lance, including after Evolution. Existing Talent/gear IDs and invested ranks remain valid; Endgame old off-path investment stays visible/costed/applied. Regression tests, full checks and web build pass. Browser smoke/phone visual review pending (Chromium download invalid ZIP). Next Mint task: M2 Glacier Frost stacks/Brittle/chain Shatter; M3/M4 remain planned. See docs/MINT_BUILD_PATH_REWORK_2026_10_07.md. Monster animation 7A/7B status is independent and unchanged.
+
+# Previous delivery: v6.55.16 — monster animation commit 6
 
 Ten real 16-pose sheets cover Chapter 1 stage 5 and Chapter 3 ordinary monsters, plus Stage 5 Elite. Runtime: assets/art/monster_batch6; source/manifest/prompts/packing/review: assets/incoming/monster_batch6. Original Chapter 3 apparent sizes, combat stats, collision circles and action timers are preserved. New Stage 5 keys use one authored defeat ghost. Actual-method tests, full checks and web build pass; phone visual/performance review is pending. Remaining commits 7–10; next is Chapter 2 stages 1–2 including Sporeling. Chapter 3 generic Elite remains in commit 10. See docs/MONSTER_ANIMATION_PLAN.md.
 
@@ -219,7 +223,8 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.16 — Monster animation commit 6 · 4 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.79 — Mint Build Path M1 · 7 ต.ค. 2026)
+- **v6.55.79:** Mint M1 ชื่อสาย/น้ำหนักการ์ด/เพดานหอกเสร็จ; M2–M4 ยังรอทำ รายละเอียดและผลตรวจอยู่ที่หัวไฟล์และ docs/MINT_BUILD_PATH_REWORK_2026_10_07.md.
 - **v6.55.17 (เจ้าของ: account ใหม่ผ่าน Stage 3-5 สบายเกิน · ด่าน 1-2 ให้รู้สึกดี ที่เหลือของจริง):** `getPowerGuide` ผ่อน HP/ดาเมจเฉพาะ stageIndex<2 · ด่าน 3+ พลังเกินแนะนำ → ศัตรู HP +25%/ratio เกิน (เพดาน +35%) ดาเมจ +15% (เพดาน +20%) · `realStageBossMul` บอส/มินิ ด่าน 3-4 ×1.6 ด่าน 5 ×1.5 · EXP ด่าน 3+ (ไม่ใช่ recipe) โต ×1.32+9 (เดิม ×1.26+6) · npm run check ผ่าน · **ยังไม่ได้เล่นจริง — จูนตัวเลขได้**
 - **v6.55.18 (เจ้าของ: Stats บอกแหล่งที่มา):** `previewStats` เก็บ snapshot หลังแต่ละแหล่ง (`p._trace`: Hero profile/Signature weapon/Talents/Flavor Weave/Special Cores/Gear + mods/Gear sets/Bestiary/Rank Perks/Ancient Perks/Stat cap) · เพิ่ม set bonus + deepRoots ให้ตรง applyMeta · หน้า Stats แตะแถว → `showStatSources` แผงแยกที่มา · ยังไม่เห็นหน้าจอจริง (ไม่มี Chromium ในเครื่องนี้)
 - **v6.55.19 (เจ้าของ: คริบ่อยจาก Gear+Mod · ของสวมใส่ทำให้เก่งเกินตั้งแต่แรก · แก้ค่าด่าน 5 สลับ C2-1 + ดันเวฟต้นด่าน 3-5):** `gearBaseScale(iLv)` iLv1=35%→iLv60=100%→iLv100=115% · `applyScaledGear` สเกล delta ของ GEAR.apply (บวก=คูณ f, คูณ=ยกกำลัง f) ใช้ใน applyMeta/previewStats/gearInstanceStats (ไม่สเกล tier start) · affix crit tiers [[4,5],[3,4],[3,3],[2,2],[1,2]] (เดิม [[6,7],...,[2,2]]) · gloves iLv crit 0.06→0.04 · `gachaMaxBand()` เปิด gacha ได้ถึง band ที่ lo ≤ storyItemLevelBase(unlockedStage)+4 · `realStageBossMul` ด่าน 5 1.5→1.25 · มอนด่าน 3-5 เวฟ 1-2 HP ×1.35 · tests fire/ice/late-monster อัปเดต HP · ยังไม่เล่นจริง

@@ -1,6 +1,8 @@
 # Mint Build Path Rework — 7 Oct 2026
 
-Status: DESIGN ONLY — do not change runtime balance/code from this document yet.
+Status: APPROVED — M1 implemented in v6.55.79; M2–M4 remain planned.
+
+Runtime audit: actual current IDs are `glacier / barrage / pierce`. Keep these IDs unchanged; the earlier `freeze / piercer` references described display labels, not runtime IDs.
 Branch target: `claude/vampire-survival-mobile-game-yo9e8w`
 
 ## Goal
@@ -19,8 +21,8 @@ Each path must own a different combat question:
 | Runtime ID | Display name | Player question | Primary strength | Primary weakness |
 | --- | --- | --- | --- | --- |
 | `barrage` | **Barrage** | How many attacks can I maintain? | sustained DPS + crowd clear | weak hit value, projectile/performance cap |
-| `freeze` | **Glacier Bloom** | How many enemies can I freeze and shatter together? | control + chain AoE | needs setup, weaker raw single-hit damage |
-| `piercer` | **Crystal Impaler** | Can I line up one devastating lance? | elite/boss burst + penetration | slow cadence, overkill vs trash |
+| `glacier` | **Glacier Bloom** | How many enemies can I freeze and shatter together? | control + chain AoE | needs setup, weaker raw single-hit damage |
+| `pierce` | **Crystal Impaler** | Can I line up one devastating lance? | elite/boss burst + penetration | slow cadence, overkill vs trash |
 
 Internal IDs should stay unchanged initially to avoid save migration; change only player-facing names when implemented.
 
@@ -240,7 +242,7 @@ Do not implement this Ascendancy cleanup in the first Mint Build Path code commi
 # 8. Implementation order (later, after design approval)
 
 Commit M1 — data/text/card-pool split only
-- keep runtime IDs freeze/barrage/piercer
+- keep runtime IDs glacier/barrage/pierce
 - rename display Freeze -> Glacier Bloom, Piercer -> Crystal Impaler
 - make post-choice card weighting/path exclusions explicit
 - implement dead-card conversion at Barrage projectile cap
@@ -268,3 +270,15 @@ Commit M4 — Evolutions + polish
 - Crystal Impaler has the best correct-play single-target burst, but not the best general wave clear.
 - Barrage remains performance-safe on mobile and does not regain unlimited projectile scaling.
 - Path choice visibly changes subsequent level-up offerings.
+
+## M1 delivery — v6.55.79
+
+- ✅ Rename player-facing paths to Glacier Bloom / Barrage / Crystal Impaler; existing IDs and Talent keys retained.
+- ✅ Ordinary post-choice Mint rolls use category weights 65 path / 20 shared / 15 universal. These are per-draw weights, not a fixed ratio in each three-card screen; empty groups are renormalized. Critical HP still guarantees Recovery. Path choice, Infusion, Mutation, Evolution and Fusion screens keep their existing progression. Recipe runs with a prebuilt loadout continue to use stat cards.
+- ✅ Shared weapon cards: Frost Lance Edge, Rime Mark, Frost Reach, Deep Flavor. Swift Ice Draw belongs to Barrage after lock; Shard Bloom belongs to Barrage/Glacier after lock. Prior investments keep their effects. Only the chosen path’s upgrade list is offered. Existing modifier/trade cards enter the shared group instead of replacing a drawn path card; their mechanics are unchanged.
+- ✅ Packed Quiver adds one lance with an explicit cap conversion. Barrage raw lance count includes base volley, path, card, Talent and gear bonuses. Each lance above the three-lance cap grants +18% shard damage, recalculated on every cast, including after Evolution. Direct lance damage and active projectile cap are unchanged. Non-Barrage cap behavior is unchanged. Focus mechanics are not introduced in M1.
+- ✅ Endgame editor uses the same upgrade exclusions for new investment, but keeps already invested off-path ranks visible, costed and applied so existing builds do not silently lose points/effects.
+- ✅ Regression coverage exercises actual card-roll and cast methods, exclusions, statistical weights, exhausted pools, critical HP, special progression, preserved old ranks and capped volley damage. Full checks and web build pass.
+- Browser smoke test could not run: Chromium is not installed and its download returned an invalid/truncated ZIP. Phone visual and balance review remains pending.
+
+Next: M2 Glacier Frost stacks / boss Brittle / bounded chain Shatter. M3 charge and Impale, and M4 Evolutions/VFX, are not implemented by this delivery. Existing Glacier Bloom and Frost Lance Charge Unique skills are retained.
