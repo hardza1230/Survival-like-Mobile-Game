@@ -9,7 +9,7 @@ vm.runInContext(block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('con
 const api=vm.runInContext('({BASIC_ATTACKS,BASIC_PATHS,mintUpgradeGroup,mintVolleyProfile,pickMintCards,pathMods,egUpgradeDefs})',ctx);
 const Scene=vm.runInContext('class Scene{'+['rollBasicAttackUpgrades','endlessCards','endlessStatDefs','castFrostLance'].map(method).join('\n')+'\n}Scene',ctx);
 function scene(path,character='mint'){
- const s=new Scene();Object.assign(s,{character,level:7,stageIndex:1,player:{hp:100,maxhp:100,dmgMul:1,baseSpeed:180,active:true,x:0,y:0},basicAttack:{character,path,lv:{},ranks:{},mastery:0},basicAttackInfo:()=>api.BASIC_ATTACKS[character],upTags:()=>[],tagCounts:()=>({}),syncBasicAttack(){this.basicAttack._pm=api.pathMods(this.basicAttack);this.basicAttack.mastery=Object.values(this.basicAttack.lv).reduce((a,b)=>a+b,0);},modCard:()=>null,tradeCard:()=>null,showBanner(){},popHeal(){},fusionReady:()=>null});return s;
+ const s=new Scene();Object.assign(s,{character,level:7,stageIndex:1,player:{hp:100,maxhp:100,dmgMul:1,baseSpeed:180,active:true,x:0,y:0},basicAttack:{character,path,lv:{},ranks:{},mastery:0},skills:{frost:1,sprinkle:1},basicAttackInfo:()=>api.BASIC_ATTACKS[character],upTags:()=>[],tagCounts:()=>({}),syncBasicAttack(){this.basicAttack._pm=api.pathMods(this.basicAttack);this.basicAttack.mastery=Object.values(this.basicAttack.lv).reduce((a,b)=>a+b,0);},modCard:()=>null,tradeCard:()=>null,showBanner(){},popHeal(){},fusionReady:()=>null});return s;
 }
 assert.deepEqual(Array.from(api.BASIC_PATHS.mint,p=>p.id),['glacier','barrage','pierce']);
 assert.deepEqual(Array.from(api.BASIC_PATHS.mint,p=>p.name),['Glacier Bloom Build','Barrage Build','Crystal Impaler Build']);
@@ -49,6 +49,6 @@ const base=cast(1,true),extra=cast(2,true);assert.equal(extra.length,3);assert.e
 // Endgame saves keep, count and apply previously invested off-path ranks; new builds cannot add them.
 assert(!api.egUpgradeDefs('mint',{path:'pierce',lv:{}}).some(u=>u.id==='rate'));
 assert(api.egUpgradeDefs('mint',{path:'pierce',lv:{rate:2,linger:1}}).some(u=>u.id==='rate'));
-// Other heroes retain their original ordinary attack cards.
-const momo=scene('shotgun','momo');assert(momo.rollBasicAttackUpgrades(3,{noSpecial:true}).every(c=>c.type==='basic'&&!c.poolGroup));
+// Strawberry now also has a focused pool; other hero changes remain independent.
+const momo=scene('shotgun','momo');assert(momo.rollBasicAttackUpgrades(3,{noSpecial:true}).every(c=>c.type==='basic'&&c.poolGroup));
 console.log('Mint M1: actual card rolls, exclusions, weighting, exhaustion, heal, specials, saved ranks and actual capped casts passed');

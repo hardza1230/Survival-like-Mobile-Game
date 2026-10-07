@@ -57,4 +57,12 @@
 
 See docs/MINT_BUILD_PATH_REWORK_2026_10_07.md. Monster animation batches remain separate.
 
-Strawberry/Momo runtime audit and proposed S1–S5 (not implemented): docs/STRAWBERRY_MOMO_AUDIT_2026_10_08.md. Strawberry and Momo are one current hero.
+Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; details and historical audit: docs/STRAWBERRY_MOMO_AUDIT_2026_10_08.md.
+
+| Work | Status |
+| --- | --- |
+| S1 focused cards/text/count conversion | ✅ code v6.55.83 |
+| S2 Ricochet bounce/visited/growth/boss fallback | ✅ code v6.55.83 |
+| S3 one heavy Sniper seed/manual Unique | ✅ code v6.55.83 |
+| S4 close-range Shotgun/non-piercing Evolution | ✅ code v6.55.83 |
+| S5 path Evolutions/lifecycle/budgets/regression | ✅ code/check/build v6.55.83; user in-game/mobile review pending |

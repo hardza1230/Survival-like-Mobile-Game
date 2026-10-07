@@ -1,3 +1,21 @@
+# สถานะล่าสุด — S1–S5 ลงโค้ดครบใน v6.55.83
+
+เนื้อหาวิเคราะห์เดิมด้านล่างเป็นฐานก่อนแก้ ไม่ใช่พฤติกรรมปัจจุบัน
+
+| งาน | ผลที่ลงแล้ว |
+| --- | --- |
+| S1 | แยกข้อความ Basic/Unique, pool 65/20/15, ซ่อนการ์ดข้ามสาย; จำนวนเกิน cap แปลงเป็นพลัง; เก็บ ID/rank เซฟเดิมและแสดงการลงทุนเดิมใน Recipe |
+| S2 | Ricochet หลัง Evolution ยังเด้ง; visited ตาม lifetime กันชนซ้ำ; max 8 เด้ง, growth บวกต่อเด้ง cap 2.2×; บอสเดี่ยวมี impact ชดเชย cap 80% base power และเคารพ phase gate |
+| S3 | Sniper Basic ชาร์จ 340ms ยิงหนึ่ง heavy seed; จำนวนเพิ่มแปลงเป็น +12% power/เม็ด; Heavy Draw +60ms และ +15 จุดเปอร์เซ็นต์ full power/rank; dash/hurt ปล่อย partial; Unique เป็นลำแสงเล็งด้วยมือ |
+| S4 | Shotgun +5 เม็ด, cap 12; overflow +8% power/เม็ด; Petal Breacher +35% power, close +20%, heavy center; ไม่บังคับทะลุหลัง Evolution |
+| S5 | Heart Railgun / Petal Breacher / Heart Pinball แยก Evolution พร้อมข้อความ card/Codex/Recipe; run epoch/basic identity guards; pooled reset; active seeds 32, splash 16 targets, painted VFX 3/200ms |
+
+Heart Railgun: full Basic +30% power, ทะลุ 10 เป้าก่อน mutation/gear; manual Unique ที่ชาร์จเต็ม +40% damage. Heart Pinball: +2 เด้งภายใน cap 8 และ final splash 25% seed power. Talent split/return/recoil/double volley และการลงทุนจำนวนเดิมยังรองรับภายใต้เพดานใหม่; Gathering Juice เปลี่ยนจากทบต้นเป็นบวกต่อเด้งโดยตั้งใจ
+
+ตรวจแล้ว: `tests/strawberry-builds.test.cjs` เรียก actual methods ทดสอบ focused rolls/previews, saved ranks, charge/partial/count conversion, evolved bounces/visited lifetimes, boss fallback/phase immunity, shotgun, manual Unique, pooling/cancellation และ 500-enemy/100-cast budgets. `npm run check` และ `npm run build:www` ผ่าน ผลนี้ไม่ใช่การรับรอง FPS หรือสมดุลจากการเล่นจริง เจ้าของทดสอบในเกม/มือถือเอง
+
+---
+
 # Strawberry / Momo — วิเคราะห์จากโค้ด 8 ต.ค. 2026
 
 ฐานตรวจ: branch `claude/vampire-survival-mobile-game-yo9e8w`, M3 commit `7cb9a58355e83d5eb82d8f1265601db6b37cef5d`; Mint M4 v6.55.82 ไม่เปลี่ยนการต่อสู้ของ Strawberry ในเอกสารนี้
