@@ -1,6 +1,6 @@
 # Mint Build Path Rework — 7 Oct 2026
 
-Status: APPROVED — M1 implemented in v6.55.79; M2–M4 remain planned.
+Status: APPROVED — M1 v6.55.79 and M2 v6.55.80 implemented; M3–M4 remain planned.
 
 Runtime audit: actual current IDs are `glacier / barrage / pierce`. Keep these IDs unchanged; the earlier `freeze / piercer` references described display labels, not runtime IDs.
 Branch target: `claude/vampire-survival-mobile-game-yo9e8w`
@@ -282,3 +282,15 @@ Commit M4 — Evolutions + polish
 - Browser smoke test could not run: Chromium is not installed and its download returned an invalid/truncated ZIP. Phone visual and balance review remains pending.
 
 Next: M2 Glacier Frost stacks / boss Brittle / bounded chain Shatter. M3 charge and Impale, and M4 Evolutions/VFX, are not implemented by this delivery. Existing Glacier Bloom and Frost Lance Charge Unique skills are retained.
+
+## M2 delivery — v6.55.80
+
+- ✅ Glacier-only loop: Chill reaches existing freeze threshold → ordinary enemy freezes; boss/miniboss or `freezeImmune` enemy gains Brittle for 3s. Existing `azero`/Permafrost setup thresholds remain supported. The setup hit does not count as a Frost hit.
+- ✅ Later frost hits on Frozen/Brittle targets add Frost, max 3; next hit consumes the stacks for Shatter/Rupture. Frost expires after 3s without refresh. Deep Freeze (`p_froststack`, max 2) adds +1 stack per hit/rank.
+- ✅ Deep Chill (`p_deepchill`), path/Talent Frozen multipliers and the Shatter modifier work on Brittle too. Bosses remain mobile and their phase gate/invulnerability rejects damage and Frost buildup. Icebound Echo also triggers on fresh Brittle; echoes cannot generate recursive echoes or Frost-hit detonations.
+- ✅ Shatter scales from current unmodified Frost Lance hit power: root ×1.4, boss/immune root ×1.8, nearby splash ×0.55 within 110px. Normal damage calculation then applies gear ATK, crit and target modifiers once. No %max-HP damage.
+- ✅ Chain Shatter (`p_chainshatter`, max 2) adds one Chill and one Frost to surviving nearby targets; a fully primed Frozen/Brittle target may chain. Two depth steps max; six bursts per reaction and per 200ms scene window; 24 nearby targets per burst; three painted shatter effects per window; 450ms per-target burst cooldown. No extra shard projectiles or recursive delayed chain timers.
+- ✅ Pool/spawn resets clear Chill, Frost, Brittle, burst cooldown and advance a dedicated lifetime token. Unique’s existing freeze/delayed explosion remains, but the timer now uses the run-scoped art lifecycle and checks lifetime tokens. It primes normal Frost and applies boss Brittle immediately; a phase-immune target cannot be newly primed.
+- ✅ Actual-method regression tests cover normal/elite freeze, boss/miniboss/immune Brittle, expiry, Deep Freeze, echo non-recursion, chain depth and crowd budgets, non-Glacier preservation, damage bonus/phase gates, pool resets and delayed Unique cancellation/reuse. Full `npm run check` and `npm run build:www` pass.
+
+In-game/mobile testing and balance feedback belong to the user, as explicitly requested on 7 Oct. Automated checks do not certify combat feel or phone performance. New cards reuse existing painted icons/VFX; dedicated visual polish and path Evolutions remain M4. Next implementation: M3 Crystal Impaler charge/Impale/Rupture.

@@ -51,7 +51,7 @@
 | Commit | Scope | Status |
 | --- | --- | --- |
 | M1 | Names, focused card pools, Barrage lance cap conversion | ✅ v6.55.79 |
-| M2 | Glacier Frost stacks, boss Brittle, bounded chain Shatter | ⬜ |
+| M2 | Glacier Frost stacks, boss Brittle, bounded chain Shatter | ✅ v6.55.80 |
 | M3 | Crystal Impaler charge, Impale stacks, Rupture | ⬜ |
 | M4 | Path Evolutions, VFX/readability and mobile review | ⬜ |
 

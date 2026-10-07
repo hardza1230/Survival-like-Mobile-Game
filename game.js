@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.79';
+const GAME_VERSION = '6.55.80';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,6 +64,7 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const CHANGELOG = [
+  {v:'6.55.80',date:'2026-10-07',title:'Glacier Bloom: Frost and Brittle',items:['Frozen targets build 3 Frost stacks; the next frost hit triggers an area Shatter','Bosses and freeze-immune foes gain Brittle instead of being frozen, then take Crystal Rupture','Deep Freeze speeds Frost buildup; Chain Shatter primes nearby targets with bounded reactions','Frozen damage bonuses also work on Brittle; phase immunity and pooled-enemy resets are preserved']},
   {v:'6.55.79',date:'2026-10-07',title:'Mint build paths: focused cards',items:['Freeze becomes Glacier Bloom; Piercer becomes Crystal Impaler','Mint path choices favor matching cards: 65% path, 20% shared, 15% stat and survival','Barrage stays capped at three lances; excess lances grant +18% shard damage each','Packed Quiver preserves its bonus through Evolution; old path and talent IDs remain compatible']},
   {v:'6.55.78',date:'2026-10-05',title:'Local weapon damage',items:['Damage % on a weapon (mod or implicit) now raises that weapon’s ATK by triple the percent instead of giving global damage','Equipment compare shows Weapon ATK with its total damage bonus']},
   {v:'6.55.77',date:'2026-10-05',title:'ATK is now a percent bonus',items:['Each point of gear ATK (and flat damage mods) now adds +5% to every hit instead of flat damage, so +1 ATK no longer outweighs every other mod']},
@@ -2683,9 +2684,11 @@ const BASIC_PATHS={
   // สายของตัวอื่นใช้ระบบกลาง: base = ผลตอนเลือก · upgrades[].fx = ผลต่อ rank (dmg/cd คูณ · อื่น ๆ บวก)
   // คีย์: dmg cd count range big(vs elite/มินิ/บอส) frozen(vs ศัตรูแช่) far(>300px) low(HP เรา<50%) taken(ลดดาเมจที่รับ)
   mint:[
-    {id:'glacier',iconKey:'ic_path_glacier',name:'Glacier Bloom Build',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze crowds · shatter safely',desc:'Lances deal 10% less damage; Frozen enemies take 35% more. Bosses can be Chilled, but cannot freeze.',
-      upgrades:[{id:'p_deepchill',iconKey:'ic_path_p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen',desc:'Frozen enemies take 12% more damage per rank.'},
-                {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing a normal enemy applies 1 Chill stack to nearby enemies; radius grows 20% per rank.'},
+    {id:'glacier',iconKey:'ic_path_glacier',name:'Glacier Bloom Build',emoji:'🧊',base:{dmg:0.9,frozen:0.35},headline:'Freeze → Frost → Shatter',desc:'Lances deal 10% less damage. Frozen/Brittle targets take 35% more; build 3 Frost stacks, then hit again to Shatter. Bosses gain Brittle instead of Freeze.',
+      upgrades:[{id:'p_deepchill',iconKey:'ic_path_p_deepchill',name:'Deep Chill',emoji:'🥶',max:3,fx:{frozen:0.12},headline:'+12% DMG to Frozen/Brittle',desc:'Frozen and Brittle enemies take 12% more damage per rank, including bosses.'},
+                {id:'p_froststack',iconKey:'ic_path_p_deepchill',name:'Deep Freeze',emoji:'🥶',max:2,headline:'+1 Frost stack per hit',desc:'Frost hits on Frozen/Brittle targets add 1 extra Frost stack per rank (max 3). The next hit triggers Shatter or boss Rupture.'},
+                {id:'p_chainshatter',iconKey:'ic_path_p_coldsnap',name:'Chain Shatter',emoji:'💎',max:2,headline:'Shatter primes nearby foes',desc:'Shatter applies Chill and 1 Frost stack nearby. Fully primed targets can chain: +1 step per rank, max 2 steps and 6 bursts per reaction.'},
+                {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing an enemy or making it Brittle applies 1 Chill stack nearby; radius grows 20% per rank. Echo cannot trigger recursive waves.'},
                 {id:'m_grow',iconKey:'ic_path_glacier',name:'Wider Bloom',emoji:'🌸',max:3,headline:'Glacier Bloom +25% size',desc:'Glacier Bloom Unique: ice ring 25% larger per rank.'},
                 {id:'m_hold',iconKey:'ic_path_glacier',name:'Long Winter',emoji:'⏳',max:2,headline:'Bloom freezes +0.6s',desc:'Glacier Bloom Unique: freeze lasts 0.6s longer per rank.'},
                 {id:'m_shard',iconKey:'ic_path_glacier',name:'Shard Spray',emoji:'💎',max:2,headline:'Shatter splashes',desc:'Glacier Bloom Unique: each shatter hits enemies within 90px for 40% per rank.'}]},
@@ -2770,7 +2773,7 @@ const UP_TAGS=(()=>{const m={},put=(t,ids)=>ids.split(' ').forEach(i=>{m[i]=(m[i
   put('swarm','volley fan buckshot cluster shotgun ricochet carom gather prism p_refract p_facet p_quiver family zestSwarm p_pulp splash barrage p_splinter s_split second parting p_feast juiceWorkshop p_sourMixer');
   put('spark','arc chainlord surge stormcaller p_static p_overload tempest p_squall p_gale storm p_quickdraw s_quick p_swift');
   put('guard','fortress retaliate sentinel glacier p_bodyguard loyal citrusGuardian counter p_coldblood p_steady p_sweetHelper');
-  put('frost','chill linger blizzard permafrost rime p_coldsnap p_deepchill sticky');
+  put('frost','chill linger blizzard permafrost rime p_coldsnap p_deepchill p_froststack p_chainshatter sticky');
   put('melee','brawler combo rush breaker drum dashp dashboxer p_blitz p_phantom p_shock p_quake p_footwork pointblank p_heavyPeel');
   put('ranged','seeker s_bore pane radius');
   put('fire','size inf_deep');
@@ -3013,8 +3016,8 @@ const PATH_TALENTS={
     capA:{emoji:'🎰',name:'Pinball',max:1,per:'Seeds bounce up to 12 times',apply:_K('pinball',1)},
     capB:{emoji:'🪃',name:'Boomerang',max:1,per:'After the last bounce, seeds fly back through enemies',apply:_K('boomer',1)},
     capC:{emoji:'🍬',name:'Sugar Loop',max:1,per:'Bounce near you grants a shield (max 2, 6s cd)',apply:_K('loop',1)}},
-  glacier:{root:{emoji:'🧊',name:'Cold Core',max:3,per:'+8% damage to Frozen enemies',apply:_P({frozen:0.08})},
-    a1:{emoji:'🥶',name:'Brittle',max:3,per:'+10% damage to Frozen enemies',apply:_P({frozen:0.10})},
+  glacier:{root:{emoji:'🧊',name:'Cold Core',max:3,per:'+8% damage to Frozen/Brittle enemies',apply:_P({frozen:0.08})},
+    a1:{emoji:'🥶',name:'Brittle',max:3,per:'+10% damage to Frozen/Brittle enemies',apply:_P({frozen:0.10})},
     a2:{emoji:'🏔️',name:'Glacier Weight',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
     b1:{emoji:'⏱️',name:'Cold Rhythm',max:3,per:'−4% lance cooldown',apply:_P({cd:0.96})},
     b2:{emoji:'🌬️',name:'Frost Reach',max:3,per:'+8% lance range',apply:_P({range:0.08})},
@@ -5458,16 +5461,16 @@ class Game extends Phaser.Scene {
   mintUniqueStart(){ const u=this.uniqueInfo(); this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     return {ul:this.uniqueLevel||1,unit:(this.player.dmgMul||1)*this.uniquePower()}; }
   releaseGlacierBloom(c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[],bosses=[];
-    this._sgHit=true; try{ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active)return;
-      if(e.isBoss||e.isMini){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); this.mintChill(e,0.6); this.damage(e,hit*1.5,e.x,e.y); bosses.push(e); return; }
-      e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); frozen.push(e); }); } finally { this._sgHit=false; }
+    this._sgHit=true; try{ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active||e._phaseGateLocked||(e._phaseInvuln||0)>0)return;
+      if(e.isBoss||e.isMini||e.freezeImmune){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); e._glacierBrittleUntil=this.time.now+3000; this.mintChill(e,0.6); this.damage(e,hit*1.5,e.x,e.y); bosses.push({e,token:e._glacierLifeToken}); return; }
+      e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); this.glacierFrostHit(e); frozen.push({e,token:e._glacierLifeToken}); }); } finally { this._sgHit=false; }
     if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',cx,cy,{scale:r*2.3/320,depth:6,normal:true}));
     const ring=this.camWorld(this.add.circle(cx,cy,20,0xbdf0ff,0.25).setStrokeStyle(4,0xffffff,0.9).setDepth(9)); this.tweens.add({targets:ring,radius:r,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
     this.screenFlash&&this.screenFlash(0xbdf0ff,0.18,220); this.screenShake(120,0.005); Sfx.magnet&&Sfx.magnet();
-    this.time.delayedCall(Math.max(200,dur*1000-150),()=>{ if(this.state!=='play')return; let n=0; this._sgHit=true; try{
-      frozen.forEach(e=>{ if(!e.active||!(e.frozen>0))return; n++; const x=e.x,y=e.y; this.burst(x,y,0xbdf0ff); this.damage(e,hit*2,x,y);
+    this.artDelay(Math.max(200,dur*1000-150),()=>{ if(this.state!=='play')return; let n=0; this._sgHit=true; try{
+      frozen.forEach(({e,token})=>{ if(!e.active||e._glacierLifeToken!==token||!(e.frozen>0))return; n++; const x=e.x,y=e.y; this.burst(x,y,0xbdf0ff); this.damage(e,hit*2,x,y);
         if(lv.m_shard)this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==e&&this.dist(o.x,o.y,x,y)<90)this.damage(o,hit*2*0.4*lv.m_shard,o.x,o.y); }); });
-      bosses.forEach(e=>{ if(!e.active)return; n++; this.burst(e.x,e.y,0xbdf0ff); this.vfxHitRing(e.x,e.y,0x9fe8ff,true); this.damage(e,hit*4*(1+0.4*(lv.m_shard||0)),e.x,e.y); }); } finally { this._sgHit=false; }
+      bosses.forEach(({e,token})=>{ if(!e.active||e._glacierLifeToken!==token)return; n++; this.burst(e.x,e.y,0xbdf0ff); this.vfxHitRing(e.x,e.y,0x9fe8ff,true); this.damage(e,hit*4*(1+0.4*(lv.m_shard||0)),e.x,e.y); }); } finally { this._sgHit=false; }
       if(n){ this.screenShake(100,0.004); Sfx.boom&&Sfx.boom(); } });
     this.showBanner('❄️ Glacier Bloom',frozen.length+' frozen',800); }
   releaseFrostLance(ang,c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),L=this.lanceLen(),ca=Math.cos(ang),sa=Math.sin(ang),x0=pl.x,y0=pl.y,dmg=(40+ul*15)*unit*(0.7+0.3*c);
@@ -9201,7 +9204,7 @@ class Game extends Phaser.Scene {
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*1.3/*v6.55.66 mob dmg*/*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e._rootKnightPoseToken=(e._rootKnightPoseToken||0)+1;e._rootKnightPoseUntil=0;
-      e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
+      e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e._glacierLifeToken=(e._glacierLifeToken||0)+1; e._glacierFrost=0; e._glacierFrostAt=0; e._glacierBrittleUntil=0; e._glacierBurstAt=-Infinity; e._chill=0; e._chillAt=null; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
     e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;e._feast=false;e._duelElite=false;e._mimic=null;this.resetEnemyPresentation(e,eliteFrame);this.camWorld(e);return e;
   }
@@ -9760,7 +9763,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex>=10&&ASSET_SHEETS[mkey]){mScale=.62;mRadius=70;mOff=58;}
     b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_SHEETS[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
     b.hp=st.bossHp*1.0/0.9*realStageBossMul(this.stageIndex)*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
-    b.dmg=Math.round(st.bossDmg*1.1*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
+    b.dmg=Math.round(st.bossDmg*1.1*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b._glacierLifeToken=(b._glacierLifeToken||0)+1; b._glacierFrost=0; b._glacierFrostAt=0; b._glacierBrittleUntil=0; b._glacierBurstAt=-Infinity; b._chill=0; b._chillAt=null; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;b._rootKnightPoseUntil=0;b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;
     b.atkCd=0.85; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
@@ -9787,7 +9790,7 @@ class Game extends Phaser.Scene {
       const sc=c3Raster?0.48:this.stageIndex===4?0.5:(this.stageIndex===5?0.46:(this.stageIndex===1?0.62:(mArt?0.8:1.25))); e.baseScale=sc; e._sqX=1; e._sqY=1; e.setScale(sc);
       const rr=c3Raster?58:this.stageIndex===4?46:(this.stageIndex===5?42:(mArt?40:22)), off=c3Raster?70:this.stageIndex===4?74:(this.stageIndex===5?78:(mArt?16:5)); e.setCircle(rr,off,c3Raster?90:off);
       e.isBoss=false; e.isMini=false; e.isElite=true;   // elite = ตายแล้วไม่ทริกเกอร์จบเวฟ
-      e.hp=st.bossHp*0.6*this.bossHpMul(); e.maxhp=e.hp; e.spd=68; e.dmg=Math.round(st.bossDmg); e.xp=12; e.frozen=0; e.knock=0; e.phase3=false;
+      e.hp=st.bossHp*0.6*this.bossHpMul(); e.maxhp=e.hp; e.spd=68; e.dmg=Math.round(st.bossDmg); e.xp=12; e.frozen=0; e._glacierLifeToken=(e._glacierLifeToken||0)+1; e._glacierFrost=0; e._glacierFrostAt=0; e._glacierBrittleUntil=0; e._glacierBurstAt=-Infinity; e._chill=0; e._chillAt=null; e.knock=0; e.phase3=false;
       e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.bloomStacks=0; e.bloomUntil=0;
       if(mArt){ e.tintColor=null; e.clearTint(); } else { e.tintColor=st.tint; e.setTint(st.tint); }
       if(mkey==='mb10_ancient_root_knight'&&this.anims.exists(mkey+'_walk'))e.play(mkey+'_walk',true);else if(this.anims.exists(mkey+'_idle'))e.play(mkey+'_idle',true);else if(this.anims.exists((mArt?mkey:'e_brute')+'_walk')) e.play((mArt?mkey:'e_brute')+'_walk',true); else if(e.anims){ e.anims.stop(); e.setFrame(0); }
@@ -9826,7 +9829,7 @@ class Game extends Phaser.Scene {
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
     b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75/0.9*realStageBossMul(this.stageIndex)*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
-    b.dmg=Math.round(st.bossDmg*1.3*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
+    b.dmg=Math.round(st.bossDmg*1.3*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b._glacierLifeToken=(b._glacierLifeToken||0)+1; b._glacierFrost=0; b._glacierFrostAt=0; b._glacierBrittleUntil=0; b._glacierBurstAt=-Infinity; b._chill=0; b._chillAt=null; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.myceliumBehemoth=this.stageIndex===6;b.hornetQueen=this.stageIndex===7;b.chronobloom=this.stageIndex===8;b.trueRootmother=this.stageIndex===9;
     b.atkCd=0.8; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -10993,7 +10996,7 @@ class Game extends Phaser.Scene {
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const mintLocked=b.character==='mint'&&!!b.path;
     const atk=[];
-    const COUNT_IDS={p_quiver:1,family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
+    const COUNT_IDS={p_froststack:1,p_chainshatter:1,p_quiver:1,family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
     const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades.slice():[];
     if(b.infusion)pathUps.push(INFUSION_UP);
     for(const u of d.upgrades.concat(pathUps)){if(mintLocked&&!mintUpgradeGroup(b.path,u.id))continue;const cur=b.lv[u.id]||0;if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
@@ -11152,6 +11155,7 @@ class Game extends Phaser.Scene {
     e._antBombWarn=true;this.enemyAction(e,'windup',400);
   }
   stopEnemyPresentation(e){
+    e._glacierLifeToken=(e._glacierLifeToken||0)+1;e._glacierFrost=0;e._glacierFrostAt=0;e._glacierBrittleUntil=0;e._glacierBurstAt=-Infinity;e._chill=0;e._chillAt=null;
     if(e.anims){e.anims.stop();e.anims.timeScale=1;}
     e._enemyAction=null;e._enemyActionT=0;e._enemyPlayed=null;e._enemyFrozen=false;
     e._enemyAnimState=null;e._enemyArtKey=null;e._antBombWarn=false;e._stage5PoseToken=(e._stage5PoseToken||0)+1;
@@ -11259,7 +11263,7 @@ class Game extends Phaser.Scene {
       const role={basic:['Ash Mochi',.82,26,38,48],fast:['Sunseed Sprinter',.86,22,42,56],dasher:['Sunseed Sprinter',.86,22,42,56],shooter:['Hollow Apple Sniper',.82,25,39,49],bomber:['Crownseed Pod',.84,27,37,48],tank:['Acorn Shield Knight',.66,38,26,42],siege:['Acorn Shield Knight',.72,38,26,42]}[type]||['Ash Mochi',.82,26,38,48];
       e.roleName=role[0];scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);
     }
-    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
+    e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e._glacierLifeToken=(e._glacierLifeToken||0)+1; e._glacierFrost=0; e._glacierFrostAt=0; e._glacierBrittleUntil=0; e._glacierBurstAt=-Infinity; e._chill=0; e._chillAt=null; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     e.setFlipX(false);this.resetEnemyPresentation(e,atlasFrame);
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
     e._bloat=false; e._feast=false; if(this._biome==='fermented'&&!e.isBoss&&!e.isMini&&Math.random()<0.18){ e._bloat=true; e.tintColor=0xb07cff; e.setTint(0xb07cff); } e._ember=false; if(this._biome==='spicy'&&!e.isBoss&&!e.isMini&&Math.random()<0.15){ e._ember=true; e._emberT=Math.random(); e.tintColor=0xff7a3d; e.setTint(0xff7a3d); }
@@ -11862,15 +11866,77 @@ class Game extends Phaser.Scene {
   }
   // แตกสะเก็ดน้ำแข็งที่ปลายหอก: โนวาวาบ + ยิงสะเก็ดกระจาย(เจาะ+แช่)
   // v5.10 Mint: โจมตีปกติไม่แช่ทันทีแล้ว → สะสม ❄ Chill (ช้าลง 30%) · ครบ 4 ชั้น (Permafrost 3) ภายใน 2.5 วิ = แช่แข็ง + ชั้นหาย · บอส/มินิแค่ช้าลงไม่แช่
+  glacierBrittle(e){
+    return this.basicAttack?.character==='mint'&&this.basicAttack.path==='glacier'&&(e._glacierBrittleUntil||0)>this.time.now;
+  }
+  glacierPrimed(e){ return !!(e&&e.active&&(e.frozen>0||this.glacierBrittle(e))); }
+  glacierHitPower(){
+    const b=this.basicAttack,p=this.player,lvl=this.skills.frost||1;
+    const inf=b.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===b.infusion)||{direct:1}).direct:1;
+    return (16+lvl*4)*(p.dmgMul||1)*(p.weaponDmgMul||1)*(BALANCE.skillPower.frost||1)*(1+0.12*(b.ranks.power||0)+0.05*(b.ranks.overdrive||0))*(b._pm?.dmg||1)*inf;
+  }
+  glacierFrostHit(e){
+    if(this._glacierBusy||!this.glacierPrimed(e)||e._phaseGateLocked||(e._phaseInvuln||0)>0)return;
+    const now=this.time.now;
+    if(now-(e._glacierFrostAt??-Infinity)>3000)e._glacierFrost=0;
+    e._glacierFrostAt=now;
+    if((e._glacierFrost||0)>=3){this.glacierShatter(e);return;}
+    e._glacierFrost=Math.min(3,(e._glacierFrost||0)+1+(this.basicAttack.lv.p_froststack||0));
+  }
+  glacierEcho(e,freeze){
+    const rank=this.basicAttack.lv.p_coldsnap||0;if(!rank)return;
+    const r=90*(1+0.2*rank);let n=0;
+    this.enemies.children.iterate(o=>{if(n>=24||!o||!o.active||o===e||this.dist(o.x,o.y,e.x,e.y)>r)return;n++;this.mintChill(o,freeze,true);});
+    this.vfxHitRing(e.x,e.y,0x9fe8ff,false);
+  }
   mintChill(e,freeze,echo=false){
-    if(!e||!e.active)return;const now=this.time.now;
-    if(!(e._chillAt>0)||now-e._chillAt>2500)e._chill=0;
+    if(!e||!e.active)return;const now=this.time.now,b=this.basicAttack,glacier=b?.character==='mint'&&b.path==='glacier';
+    if(glacier&&(e._phaseGateLocked||(e._phaseInvuln||0)>0))return;
+    const primed=glacier&&this.glacierPrimed(e);
+    if(e._chillAt==null||now-e._chillAt>2500)e._chill=0;
     e._chillAt=now;e._chill=(e._chill||0)+1;
-    const _PT=(this.player&&this.player._pt)||{}; const need=(freeze>=0.9?3:4)-(_PT.azero?1:0);
-    if(e.isBoss||e.isMini){e._chill=Math.min(e._chill,need);return;}
-    if(e._chill>=need){e._chill=0; if(!echo)this.ptOnFreeze(e); if(!echo&&this.basicAttack?.character==='mint'&&this.basicAttack.path==='glacier'&&this.basicAttack.lv.p_coldsnap){const r=90*(1+0.2*this.basicAttack.lv.p_coldsnap);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&!o.isBoss&&!o.isMini&&this.dist(o.x,o.y,e.x,e.y)<=r)this.mintChill(o,0.6,true);});this.vfxHitRing(e.x,e.y,0x9fe8ff,false);} e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
-      this.burst(e.x,e.y,0xbdf0ff);if(this.floatText)this.floatText(e.x,e.y-26,'❄ FROZEN',0xbdf0ff);}
+    const _PT=(this.player&&this.player._pt)||{},need=Math.max(1,(freeze>=0.9?3:4)-(_PT.azero?1:0));
+    const immune=e.isBoss||e.isMini||(glacier&&e.freezeImmune);
+    if(immune){
+      e._chill=Math.min(e._chill,need);
+      if(glacier&&e._chill>=need){const fresh=!this.glacierBrittle(e);e._glacierBrittleUntil=now+3000;
+        if(fresh&&!echo){this.glacierEcho(e,freeze);if(this.floatText)this.floatText(e.x,e.y-26,'BRITTLE',0xbdf0ff);}}
+      if(primed&&!echo)this.glacierFrostHit(e);
+      return;
+    }
+    if(e._chill>=need){e._chill=0;e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
+      if(!echo){this.ptOnFreeze(e);if(glacier&&e.active)this.glacierEcho(e,freeze);}
+      if(e.active){this.burst(e.x,e.y,0xbdf0ff);if(this.floatText)this.floatText(e.x,e.y-26,'FROZEN',0xbdf0ff);}}
     else e.setVelocity(e.body.velocity.x*0.7,e.body.velocity.y*0.7);
+    if(primed&&!echo&&e.active)this.glacierFrostHit(e);
+  }
+  glacierShatter(root){
+    if(this._glacierBusy||!this.glacierPrimed(root)||(this.state!=='play'&&this.state!=='levelup'))return;
+    const now=this.time.now;
+    if(now<(root._glacierBurstAt??-Infinity)+450||root._phaseGateLocked||(root._phaseInvuln||0)>0)return;
+    if(this._glacierWindow==null||now-this._glacierWindow>=200){this._glacierWindow=now;this._glacierBursts=0;this._glacierVfx=0;}
+    if(this._glacierBursts>=6)return;
+    const b=this.basicAttack,power=this.glacierHitPower(),chain=Math.min(2,b.lv.p_chainshatter||0),queue=[{e:root,depth:0}],seen=new Set();
+    this._glacierBusy=true;
+    try{
+      while(queue.length&&seen.size<6&&this._glacierBursts<6&&(this.state==='play'||this.state==='levelup')){
+        const {e,depth}=queue.shift();if(seen.has(e)||!this.glacierPrimed(e)||e._phaseGateLocked||(e._phaseInvuln||0)>0||now<(e._glacierBurstAt??-Infinity)+450)continue;
+        seen.add(e);this._glacierBursts++;e._glacierBurstAt=now;e._glacierFrost=0;e._glacierFrostAt=now;
+        const x=e.x,y=e.y,r=110,immune=e.isBoss||e.isMini||e.freezeImmune;
+        // Fixed attack scaling; normal damage() owns gear/crit/phase gates. No max-HP damage.
+        this.damage(e,power*(immune?1.8:1.4),x,y);
+        if(this._glacierVfx<3){this._glacierVfx++;if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',x,y,{scale:r*2/320,depth:6,normal:true}));else this.vfxHitRing(x,y,0xbdf0ff,true);}
+        let targets=0;
+        this.enemies.children.iterate(o=>{
+          if(targets>=24||!o||!o.active||o===e||seen.has(o)||this.dist(o.x,o.y,x,y)>r)return;targets++;
+          this.damage(o,power*0.55,o.x,o.y);if(!o.active||!chain||o._phaseGateLocked||(o._phaseInvuln||0)>0)return;
+          this.mintChill(o,0.6,true);if(!o.active)return;
+          if(now-(o._glacierFrostAt??-Infinity)>3000)o._glacierFrost=0;
+          o._glacierFrost=Math.min(3,(o._glacierFrost||0)+1);o._glacierFrostAt=now;
+          if(depth<chain&&o._glacierFrost>=3&&this.glacierPrimed(o))queue.push({e:o,depth:depth+1});
+        });
+      }
+    } finally {this._glacierBusy=false;}
   }
   frostShatterBurst(x,y,baseAng,count,sdmg,freeze,fb,blizzard,lvl){
     if(this.state!=='play'&&this.state!=='levelup')return;
@@ -12170,7 +12236,7 @@ class Game extends Phaser.Scene {
       return;
     }
     if(bullet.iceNeedle){ if(bullet.shatterState?.targets.has(enemy))return; if(!bullet.shatterInfo&&bullet.hitCd>0)return; bullet.hitCd=bullet.shatterInfo?0:(bullet.hitGapV||0.10); const nd=bullet.iceNeedle;
-      const frozenNow=enemy.frozen>0;
+      const frozenNow=enemy.frozen>0||this.glacierBrittle(enemy);
       this.damage(enemy,bullet.dmg*(frozenNow?nd.frozenBonus*(nd.shatter?1.25:1):1),bullet.x,bullet.y);
       if(enemy.active)this.mintChill(enemy,nd.freeze);
       if(nd.shatter){ const r=52+nd.lvl*5; this.burst(bullet.x,bullet.y,0x8fd0ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&e!==enemy&&this.dist(e.x,e.y,bullet.x,bullet.y)<r)this.damage(e,nd.dmg*0.5,e.x,e.y); }); }
@@ -12244,7 +12310,7 @@ class Game extends Phaser.Scene {
   modDmgMul(e){ const L=this.modList(); if(!L)return 1; let m=1; const P=this.player,v=P.body?P.body.velocity.length():0,dd=this.dist(P.x,P.y,e.x,e.y);
     for(const d of L){ const k=d.kind;
       if(k==='stillPower'&&v<20)m*=d.mul; else if(k==='movePower'&&v>40)m*=d.mul; else if(k==='closeBonus'&&dd<d.r)m*=d.mul; else if(k==='farBonus'&&dd>d.r)m*=d.mul;
-      else if(k==='execute'&&e.hp<e.maxhp*d.hp)m*=d.mul; else if(k==='bossBonus'&&(e.isBoss||e.isMini||e.isElite))m*=d.mul; else if(k==='frozenMul'&&e.frozen>0)m*=d.mul;
+      else if(k==='execute'&&e.hp<e.maxhp*d.hp)m*=d.mul; else if(k==='bossBonus'&&(e.isBoss||e.isMini||e.isElite))m*=d.mul; else if(k==='frozenMul'&&(e.frozen>0||this.glacierBrittle(e)))m*=d.mul;
       else if(k==='nthHit'){ this._modHits=(this._modHits||0)+1; if(this._modHits%d.n===0){ m*=d.mul; this.floatText&&this.floatText(e.x,e.y-30,d.emoji,0xffd166); if(d.boom)this.modBoom(e.x,e.y,d.boom,d.mul*0.5); } } }
     return m; }
   modBoom(x,y,r,mul,freeze){ if(this._modTick)return; const t=this.elapsed||0; if(t-(this._modBT||0)>0.25){this._modBT=t;this._modBN=0;} if(++this._modBN>8)return; this._modTick=true; this.explodeAt(x,y,r,this.relicDmg(mul)); if(freeze)this.modFreeze(x,y,r); this._modTick=false; }
@@ -12318,7 +12384,7 @@ class Game extends Phaser.Scene {
     if((this.stageIndex>=6&&this.stageIndex<=9)&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'&&e.nectarRole!=='waxGuard'&&e.seasonRole!=='equinoxGuard'&&e.rootRole!=='barkGuard'){let guarded=false;this.enemies.children.iterate(o=>{if(!guarded&&o&&o.active&&o!==e&&((o.mycoRole==='bulwark'&&this.stageIndex===6)||(o.nectarRole==='waxGuard'&&this.stageIndex===7)||(o.seasonRole==='equinoxGuard'&&this.stageIndex===8)||(o.rootRole==='barkGuard'&&this.stageIndex===9))&&this.dist(o.x,o.y,e.x,e.y)<175)guarded=true;});if(guarded)amount*=this.stageIndex===9?.78:this.stageIndex===8?.76:this.stageIndex===7?.74:.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
     { const pm=this.basicAttack&&this.basicAttack._pm; if(pm&&(pm.big||pm.frozen||pm.far||pm.low)){   // 🛤 Build Path: โบนัสตามเงื่อนไข
       if(pm.big&&(e.isBoss||e.isMini||e.isElite))amount*=1+pm.big;
-      if(pm.frozen&&e.frozen>0)amount*=1+pm.frozen;
+      if(pm.frozen&&(e.frozen>0||this.glacierBrittle(e)))amount*=1+pm.frozen;
       if(pm.far&&this.dist(e.x,e.y,this.player.x,this.player.y)>300)amount*=1+pm.far;
       if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
@@ -12731,6 +12797,7 @@ class Game extends Phaser.Scene {
     this._artTimers.add(ev);return ev;
   }
   clearArtVfx(){
+    this._glacierBusy=false;this._glacierWindow=null;this._glacierBursts=0;this._glacierVfx=0;
     this._artEpoch=(this._artEpoch||0)+1;
     for(const ev of this._artTimers||[])ev.remove(false);if(this._artTimers)this._artTimers.clear();
     for(const o of [...(this._artVfx||[])]){this.tweens.killTweensOf(o);if(o.active)o.destroy();}

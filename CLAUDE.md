@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.79 — Mint build paths M1
+# Latest delivery: v6.55.80 — Mint Glacier M2
+
+Glacier now builds three Frost stacks on Frozen/Brittle targets; the next frost hit triggers Shatter or Crystal Rupture. Bosses/minibosses and explicit freeze-immune foes use three-second Brittle without hard freeze. Existing Frozen path/Talent/mod bonuses also affect Brittle. New cards Deep Freeze and Chain Shatter retain existing path IDs and all prior ranks. Reaction caps: two propagation steps, six bursts per reaction and per 200ms window, 24 neighbors per burst, three painted VFX per window, 450ms target cooldown. All damage scales from Frost Lance power, never max HP. Phase immunity is respected; spawn/pool reset clears stacks and uses a separate lifetime token. Glacier Unique detonation is run-scoped/cancelable and guards recycled targets. Full automated checks and web build pass. User owns in-game/mobile testing; balance/visual acceptance awaits their feedback. Next: M3 Crystal Impaler charge/Impale/Rupture, then M4 Evolutions/polish. Monster art batches remain independent.
+
+# Previous delivery: v6.55.79 — Mint build paths M1
 
 Glacier Bloom / Barrage / Crystal Impaler names now share existing runtime IDs glacier/barrage/pierce. Ordinary Mint rolls use 65/20/15 path/shared/universal weights with exhausted-pool fallback and critical-HP Recovery; foreign path upgrades and rapid-fire cards on non-Barrage paths are excluded. Packed Quiver and all excess Barrage lance bonuses convert above the three-lance cap into +18% shard damage per excess lance, including after Evolution. Existing Talent/gear IDs and invested ranks remain valid; Endgame old off-path investment stays visible/costed/applied. Regression tests, full checks and web build pass. Browser smoke/phone visual review pending (Chromium download invalid ZIP). Next Mint task: M2 Glacier Frost stacks/Brittle/chain Shatter; M3/M4 remain planned. See docs/MINT_BUILD_PATH_REWORK_2026_10_07.md. Monster animation 7A/7B status is independent and unchanged.
 
@@ -223,7 +227,8 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.79 — Mint Build Path M1 · 7 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.80 — Mint Glacier M2 · 7 ต.ค. 2026)
+- **v6.55.80:** M2 Frost/Brittle/Shatter + Deep Freeze/Chain Shatter เสร็จ; automated tests และ build ผ่าน เจ้าของเล่นทดสอบในเกมเอง ถัดไป M3–M4.
 - **v6.55.79:** Mint M1 ชื่อสาย/น้ำหนักการ์ด/เพดานหอกเสร็จ; M2–M4 ยังรอทำ รายละเอียดและผลตรวจอยู่ที่หัวไฟล์และ docs/MINT_BUILD_PATH_REWORK_2026_10_07.md.
 - **v6.55.17 (เจ้าของ: account ใหม่ผ่าน Stage 3-5 สบายเกิน · ด่าน 1-2 ให้รู้สึกดี ที่เหลือของจริง):** `getPowerGuide` ผ่อน HP/ดาเมจเฉพาะ stageIndex<2 · ด่าน 3+ พลังเกินแนะนำ → ศัตรู HP +25%/ratio เกิน (เพดาน +35%) ดาเมจ +15% (เพดาน +20%) · `realStageBossMul` บอส/มินิ ด่าน 3-4 ×1.6 ด่าน 5 ×1.5 · EXP ด่าน 3+ (ไม่ใช่ recipe) โต ×1.32+9 (เดิม ×1.26+6) · npm run check ผ่าน · **ยังไม่ได้เล่นจริง — จูนตัวเลขได้**
 - **v6.55.18 (เจ้าของ: Stats บอกแหล่งที่มา):** `previewStats` เก็บ snapshot หลังแต่ละแหล่ง (`p._trace`: Hero profile/Signature weapon/Talents/Flavor Weave/Special Cores/Gear + mods/Gear sets/Bestiary/Rank Perks/Ancient Perks/Stat cap) · เพิ่ม set bonus + deepRoots ให้ตรง applyMeta · หน้า Stats แตะแถว → `showStatSources` แผงแยกที่มา · ยังไม่เห็นหน้าจอจริง (ไม่มี Chromium ในเครื่องนี้)
