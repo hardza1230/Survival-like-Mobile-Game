@@ -128,3 +128,7 @@ Five painted Build effects are integrated: Berry Blast, Shotgun muzzle flash, Gl
 ## Monster animation Batch 9 — v6.55.99
 
 Batch 9 is implemented: seven Four-Season Conservatory and seven Root Throne species each have 16 authored movement/idle/action/hurt/death poses (224 total). Runtime lossless-alpha WebP: assets/art/ch2_seasons and assets/art/ch2_root. Raw/packed PNGs, exact prompts, manifest, packing and animated review: assets/incoming/ch2_s4_animations and assets/incoming/ch2_s5_animations. Equinox Colossus Elite shares the existing golem identity while retaining .42 scale and [48,80,80] circle. Four shooters have preparation/fire clips, both dashers have windup/dash and both bombers warn once per life. Existing stats, colliders, aura values (.76 Seasons/.78 Root), five/six-shot siege volleys, objective nodes, boss/miniboss controllers and P1–P5 balance remain. Root identity references use atlas cells 0/1/6/2/3/4/5 in named species order; the old generic fallback retains its original type/frame mapping. Batch 9 regression fixtures capture original combat at v6.55.98. All scoped art orders A–E are delivered; owner mobile visual/FPS and gameplay review remain pending.
+
+## v6.56.0 — Talent icons
+
+218 individually mapped painted icons for Core and Build path Talents across seven heroes, with original spending and gameplay definitions preserved. Sources/prompts/packing: assets/incoming/talent_icons. Runtime: assets/art/talents. Mobile visual review pending.

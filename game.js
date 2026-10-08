@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.99';
+const GAME_VERSION = '6.56.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.56.0',date:'2026-10-08',title:'Painted Talent icons',items:['All 218 Core and Build path Talent nodes have individual painted icons across seven heroes','Locked nodes show dimmed art and a lock marker; selected Talent details share the same icon','Talent effects, ranks, point costs, prerequisites and saved progress remain']},
   {v:'6.55.99',date:'2026-10-08',title:'Living monsters: Seasons and Root Throne',items:['Fourteen Conservatory and Root Throne creatures now have painted movement, idle, attack, hurt and defeat poses','Equinox Elites share their golem identity; shooters prepare shots and bombers warn before exploding','Original combat, guard auras, seasonal volleys, root objectives and Story balance remain']},
   {v:'6.55.98',date:'2026-10-08',title:'Painted Build effects',items:['Berry Blast, Shotgun muzzle flashes, Glacier Bloom, ice shatter and Frost Lance trails now use painted effects','Original damage, ranges, charge timing and card bonuses remain','Effects clear on transitions and ice shatter visuals keep their existing budget']},
   {v:'6.55.97',date:'2026-10-08',title:'Distinct Build card icons',items:['Fifteen Sniper, Shotgun, Glacier Bloom and Crystal Impaler upgrades now have individual painted icons','Card effects, ranks and draft balance remain']},
@@ -1771,6 +1772,13 @@ function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
   }
 }
 const ASSET_SHEETS = {
+  talent_momo:{url:'assets/art/talents/momo_talents.webp',frame:128},
+  talent_mint:{url:'assets/art/talents/mint_talents.webp',frame:128},
+  talent_cocoa:{url:'assets/art/talents/cocoa_talents.webp',frame:128},
+  talent_taro:{url:'assets/art/talents/taro_talents.webp',frame:128},
+  talent_yuzu:{url:'assets/art/talents/yuzu_talents.webp',frame:128},
+  talent_sesame:{url:'assets/art/talents/sesame_talents.webp',frame:128},
+  talent_berry:{url:'assets/art/talents/berry_talents.webp',frame:128},
   e_void_crumb_animated:{url:'assets/art/monster_batch6/s5_void_crumb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
   e_crown_ripper_animated:{url:'assets/art/monster_batch6/s5_crown_ripper_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
   e_banquet_eye_animated:{url:'assets/art/monster_batch6/s5_banquet_eye_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
@@ -2168,13 +2176,13 @@ const MENU_GROUPS=[
   [/^dig$/,/assets\/art\/dig\//],
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
   [/^(gear|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/)/],
-  [/^(chars|talents)$/,/assets\/(?:character_cards\/|art\/build_(?:paths|cards)\/)/],
+  [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents)\/)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
-const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|build_(?:paths|cards)|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
+const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
-const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
+const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
 const ENDGAME_ART_RE=/assets\/art\/(?:biomes|delve_bosses|pinnacle)\//;
 // ของที่ต้องมีก่อนเข้าด่าน = tier1 ลบ (ของตัวละครอื่น + ของมาทีหลัง + อาร์ต endgame ถ้าไม่ใช่ endgame)
 function stageCritical(k,u,ch,endgame){
@@ -3065,6 +3073,240 @@ const UNIQUE_TIERS={
 
 /* ---- TALENTS: ผังพรสวรรค์ (แยกแต้มต่อตัวละคร) · ลง 1 แต้ม/rank · ผลใส่ตอน applyMeta ---- */
 /* ---- CHAR_TALENTS: "Talents" — ยกระดับ Unique Skill และสไตล์เล่นของตัวละคร ---- */
+const TALENT_ICON_FRAMES = {
+  "momo": {
+    "hp": 0,
+    "dmg": 1,
+    "crit": 2,
+    "cdr": 3,
+    "regen": 4,
+    "twinSprinkle": 5,
+    "pt_sniper_root": 6,
+    "pt_sniper_a1": 7,
+    "pt_sniper_a2": 8,
+    "pt_sniper_b1": 9,
+    "pt_sniper_b2": 10,
+    "pt_sniper_c1": 11,
+    "pt_sniper_c2": 12,
+    "pt_sniper_capA": 13,
+    "pt_sniper_capB": 14,
+    "pt_sniper_capC": 15,
+    "pt_shotgun_root": 16,
+    "pt_shotgun_a1": 17,
+    "pt_shotgun_a2": 18,
+    "pt_shotgun_b1": 19,
+    "pt_shotgun_b2": 20,
+    "pt_shotgun_c1": 21,
+    "pt_shotgun_c2": 22,
+    "pt_shotgun_capA": 23,
+    "pt_shotgun_capB": 24,
+    "pt_shotgun_capC": 25,
+    "pt_ricochet_root": 26,
+    "pt_ricochet_a1": 27,
+    "pt_ricochet_a2": 28,
+    "pt_ricochet_b1": 29,
+    "pt_ricochet_b2": 30,
+    "pt_ricochet_c1": 31,
+    "pt_ricochet_c2": 32,
+    "pt_ricochet_capA": 33,
+    "pt_ricochet_capB": 34,
+    "pt_ricochet_capC": 35
+  },
+  "mint": {
+    "dmg": 0,
+    "hp": 1,
+    "armor": 2,
+    "regen": 3,
+    "lifesteal": 4,
+    "magnet": 5,
+    "deepFreeze": 6,
+    "pt_glacier_root": 7,
+    "pt_glacier_a1": 8,
+    "pt_glacier_a2": 9,
+    "pt_glacier_b1": 10,
+    "pt_glacier_b2": 11,
+    "pt_glacier_c1": 12,
+    "pt_glacier_c2": 13,
+    "pt_glacier_capA": 14,
+    "pt_glacier_capB": 15,
+    "pt_glacier_capC": 16,
+    "pt_barrage_root": 17,
+    "pt_barrage_a1": 18,
+    "pt_barrage_a2": 19,
+    "pt_barrage_b1": 20,
+    "pt_barrage_b2": 21,
+    "pt_barrage_c1": 22,
+    "pt_barrage_c2": 23,
+    "pt_barrage_capA": 24,
+    "pt_barrage_capB": 25,
+    "pt_barrage_capC": 26,
+    "pt_pierce_root": 27,
+    "pt_pierce_a1": 28,
+    "pt_pierce_a2": 29,
+    "pt_pierce_b1": 30,
+    "pt_pierce_b2": 31,
+    "pt_pierce_c1": 32,
+    "pt_pierce_c2": 33,
+    "pt_pierce_capA": 34,
+    "pt_pierce_capB": 35,
+    "pt_pierce_capC": 36
+  },
+  "cocoa": {
+    "dmg": 0,
+    "crit": 1,
+    "spd": 2,
+    "lifesteal": 3,
+    "donutImpact": 4,
+    "pt_brawler_root": 5,
+    "pt_brawler_a1": 6,
+    "pt_brawler_a2": 7,
+    "pt_brawler_b1": 8,
+    "pt_brawler_b2": 9,
+    "pt_brawler_c1": 10,
+    "pt_brawler_c2": 11,
+    "pt_brawler_capA": 12,
+    "pt_brawler_capB": 13,
+    "pt_brawler_capC": 14,
+    "pt_titan_root": 15,
+    "pt_titan_a1": 16,
+    "pt_titan_a2": 17,
+    "pt_titan_b1": 18,
+    "pt_titan_b2": 19,
+    "pt_titan_c1": 20,
+    "pt_titan_c2": 21,
+    "pt_titan_capA": 22,
+    "pt_titan_capB": 23,
+    "pt_titan_capC": 24,
+    "pt_dashboxer_root": 25,
+    "pt_dashboxer_a1": 26,
+    "pt_dashboxer_a2": 27,
+    "pt_dashboxer_b1": 28,
+    "pt_dashboxer_b2": 29,
+    "pt_dashboxer_c1": 30,
+    "pt_dashboxer_c2": 31,
+    "pt_dashboxer_capA": 32,
+    "pt_dashboxer_capB": 33,
+    "pt_dashboxer_capC": 34
+  },
+  "taro": {
+    "hp": 0,
+    "spd": 1,
+    "cdr": 2,
+    "crit": 3,
+    "echoPath": 4,
+    "pt_storm_root": 5,
+    "pt_storm_a1": 6,
+    "pt_storm_a2": 7,
+    "pt_storm_b1": 8,
+    "pt_storm_b2": 9,
+    "pt_storm_c1": 10,
+    "pt_storm_c2": 11,
+    "pt_storm_capA": 12,
+    "pt_storm_capB": 13,
+    "pt_storm_capC": 14,
+    "pt_smite_root": 15,
+    "pt_smite_a1": 16,
+    "pt_smite_a2": 17,
+    "pt_smite_b1": 18,
+    "pt_smite_b2": 19,
+    "pt_smite_c1": 20,
+    "pt_smite_c2": 21,
+    "pt_smite_capA": 22,
+    "pt_smite_capB": 23,
+    "pt_smite_capC": 24,
+    "pt_tempest_root": 25,
+    "pt_tempest_a1": 26,
+    "pt_tempest_a2": 27,
+    "pt_tempest_b1": 28,
+    "pt_tempest_b2": 29,
+    "pt_tempest_c1": 30,
+    "pt_tempest_c2": 31,
+    "pt_tempest_capA": 32,
+    "pt_tempest_capB": 33,
+    "pt_tempest_capC": 34
+  },
+  "yuzu": {
+    "hp": 0,
+    "dmg": 1,
+    "spd": 2,
+    "regen": 3,
+    "parade": 4,
+    "pt_zestSwarm_root": 5,
+    "pt_zestSwarm_a1": 6,
+    "pt_zestSwarm_a2": 7,
+    "pt_zestSwarm_b1": 8,
+    "pt_zestSwarm_b2": 9,
+    "pt_zestSwarm_c1": 10,
+    "pt_zestSwarm_c2": 11,
+    "pt_zestSwarm_capA": 12,
+    "pt_zestSwarm_capB": 13,
+    "pt_zestSwarm_capC": 14,
+    "pt_citrusGuardian_root": 15,
+    "pt_citrusGuardian_a1": 16,
+    "pt_citrusGuardian_a2": 17,
+    "pt_citrusGuardian_b1": 18,
+    "pt_citrusGuardian_b2": 19,
+    "pt_citrusGuardian_c1": 20,
+    "pt_citrusGuardian_c2": 21,
+    "pt_citrusGuardian_capA": 22,
+    "pt_citrusGuardian_capB": 23,
+    "pt_citrusGuardian_capC": 24,
+    "pt_juiceWorkshop_root": 25,
+    "pt_juiceWorkshop_a1": 26,
+    "pt_juiceWorkshop_a2": 27,
+    "pt_juiceWorkshop_b1": 28,
+    "pt_juiceWorkshop_b2": 29,
+    "pt_juiceWorkshop_c1": 30,
+    "pt_juiceWorkshop_c2": 31,
+    "pt_juiceWorkshop_capA": 32,
+    "pt_juiceWorkshop_capB": 33,
+    "pt_juiceWorkshop_capC": 34
+  },
+  "sesame": {
+    "hp": 0,
+    "armor": 1,
+    "regen": 2,
+    "dmg": 3,
+    "mirrorWard": 4,
+    "pt_prism_root": 5,
+    "pt_prism_a1": 6,
+    "pt_prism_a2": 7,
+    "pt_prism_b1": 8,
+    "pt_prism_b2": 9,
+    "pt_prism_c1": 10,
+    "pt_prism_c2": 11,
+    "pt_prism_capA": 12,
+    "pt_prism_capB": 13,
+    "pt_prism_capC": 14,
+    "pt_lens_root": 15,
+    "pt_lens_a1": 16,
+    "pt_lens_a2": 17,
+    "pt_lens_b1": 18,
+    "pt_lens_b2": 19,
+    "pt_lens_c1": 20,
+    "pt_lens_c2": 21,
+    "pt_lens_capA": 22,
+    "pt_lens_capB": 23,
+    "pt_lens_capC": 24,
+    "pt_sentinel_root": 25,
+    "pt_sentinel_a1": 26,
+    "pt_sentinel_a2": 27,
+    "pt_sentinel_b1": 28,
+    "pt_sentinel_b2": 29,
+    "pt_sentinel_c1": 30,
+    "pt_sentinel_c2": 31,
+    "pt_sentinel_capA": 32,
+    "pt_sentinel_capB": 33,
+    "pt_sentinel_capC": 34
+  },
+  "berry": {
+    "dmg": 0,
+    "cdr": 1,
+    "hp": 2,
+    "crit": 3,
+    "pressurizedJam": 4
+  }
+};
 const CHAR_TALENTS = {
   momo: [   // สายสมดุล — เก่งWaitบด้าน + คริติคอล
     { id:'hp',      emoji:'❤️', name:'Vitality',  max:5, per:'+8% max HP',   apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
@@ -13984,6 +14226,11 @@ class Game extends Phaser.Scene {
     this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
   charPassiveOnKill(e){ const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
   // v4.88: หน้า Talent ประจำตัวละคร — ใช้ TP จากเลเวลตัวละคร (Save.cp) + โชว์ passive ประจำตัว
+  talentIcon(hero,node,x,y,size,open=true){
+    const key='talent_'+hero,frame=(TALENT_ICON_FRAMES[hero]||{})[node.id];
+    const icon=frame!==undefined&&this.textures.exists(key)?this.add.image(x,y,key,frame).setDisplaySize(size,size):this.add.text(x,y,node.emoji||'✦',{fontSize:Math.round(size*0.72)+'px'}).setOrigin(0.5);
+    icon.setAlpha(open?1:0.35);this.menu.add(icon);return icon;
+  }
   buildTalents(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Heroes · Talents','screen_heroes');this.drawHeroesTabs();
     const id=Save.data.character||'momo',ch=CHARACTERS[id]||{},cp=Save.cp(id),defs=charTalents(id),ps=CHAR_PASSIVES[id],sc=charPassiveScale(cp.lvl);
@@ -14021,18 +14268,22 @@ class Game extends Phaser.Scene {
     if(!this._talSel||!N.some(n=>n.id===this._talSel))this._talSel=root.id; let sel=null;
     N.forEach(n=>{ const P2=pos[n.id],r=tal[n.id]||0,ok=okN(n),mx=r>=n.max,on=this._talSel===n.id,x=P2.x-ns/2,y=P2.y-ns/2,g2=this.add.graphics();
       g2.fillStyle(mx?0x6a4d10:r>0?this._darken(C.col,0.55):ok?0x2a2236:0x15111c,1); g2.fillRoundedRect(x,y,ns,ns,12); g2.lineStyle(on?4:2.5,on?0xffffff:mx?0xffd166:ok?C.col:0x3a3048,1); g2.strokeRoundedRect(x,y,ns,ns,12);
-      const em=this.add.text(P2.x,P2.y-2,ok?n.emoji:'🔒',{fontSize:Math.round(ns*0.5)+'px'}).setOrigin(0.5).setAlpha(ok?1:0.5);
+      this.menu.add(g2);
+      this.talentIcon(id,n,P2.x,P2.y-2,ns*0.8,ok);
+      if(!ok){const lock=this.add.text(x+ns-3,y+3,'🔒',{fontSize:'12px',stroke:'#000000',strokeThickness:2}).setOrigin(1,0);this.menu.add(lock);}
       const lb=this.add.text(x+ns-4,y+ns-3,String(r),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',stroke:'#000',strokeThickness:3}).setOrigin(1,1);
-      this.menu.add([g2,em,lb]); if(n.cap){g2.lineStyle(1.5,0xffd166,0.6);g2.strokeRoundedRect(x-3,y-3,ns+6,ns+6,14);} if(ok&&!mx&&(cp.tp||0)>=costN(n,r)){ const up=this.add.text(x+ns-2,y+2,'⬆',{fontSize:'13px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0); this.menu.add(up); }
+      this.menu.add(lb); if(n.cap){g2.lineStyle(1.5,0xffd166,0.6);g2.strokeRoundedRect(x-3,y-3,ns+6,ns+6,14);} if(ok&&!mx&&(cp.tp||0)>=costN(n,r)){ const up=this.add.text(x+ns-2,y+2,'⬆',{fontSize:'13px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0); this.menu.add(up); }
       if(on)sel=n; this._zone(x-6,y-6,ns+12,ns+12,()=>{ this._talSel=n.id; Sfx.select&&Sfx.select(); this.buildMenuScreen(); }); });
     { const n=sel,r=tal[n.id]||0,ok=okN(n),mx=r>=n.max,cost=costN(n,r),can=ok&&!mx&&(cp.tp||0)>=cost,dy=aTop+rows*rh2+12,dg=this.add.graphics();
       dg.fillStyle(0x0f0b15,0.97); dg.fillRoundedRect(bx,dy,bw,detH-8,14); dg.lineStyle(2,C.col,0.9); dg.strokeRoundedRect(bx,dy,bw,detH-8,14);
-      const t1=this.add.text(bx+14,dy+17,n.emoji+' '+n.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5),t1b=this.add.text(bx+bw-14,dy+17,'Lv. '+r+' / '+n.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd166'}).setOrigin(1,0.5);
+      this.menu.add(dg);this.talentIcon(id,n,bx+24,dy+17,24,ok);
+      const t1=this.add.text(bx+42,dy+17,n.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5),t1b=this.add.text(bx+bw-14,dy+17,'Lv. '+r+' / '+n.max,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd166'}).setOrigin(1,0.5);
+      const titleRoom=Math.max(80,bw-64-t1b.width);if(t1.width>titleRoom)t1.setFontSize(Math.max(9,15*titleRoom/t1.width)+'px');
       const t2=this.add.text(bx+14,dy+42,(n.cap?'Capstone · pick 1: ':'Each level: ')+n.per,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
       const t3=this.add.text(bx+14,dy+70,C.key==='core'?'Always active':'Only in runs with '+C.name+' Build',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
       const pbw=118,pbh=58,pbx=bx+bw-pbw-10,pby=dy+30,pg=this.add.graphics(); pg.fillStyle(mx?0x5a4310:can?0xe0a020:0x3a3048,1); pg.fillRoundedRect(pbx,pby,pbw,pbh,10);
       const pc=this.add.text(pbx+pbw/2,pby+15,mx?'':ok?cost+' Talent Point'+(cost>1?'s':''):'Locked',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#1a1022'}).setOrigin(0.5),pt2=this.add.text(pbx+pbw/2,pby+38,mx?'MAX':ok?'Upgrade':'🔒',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#3a2400',strokeThickness:3}).setOrigin(0.5);
-      this.menu.add([dg,t1,t1b,t2,t3,pg,pc,pt2]);
+      this.menu.add([t1,t1b,t2,t3,pg,pc,pt2]);
       this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!ok?(n.soon?'Coming in a later update':n.cap&&N.some(o=>o.cap&&o!==n&&(tal[o.id]||0)>0)?'Only 1 Capstone per path — reset to change':'Upgrade the node above first'):'Need '+cost+' Talent Points — level up this hero','#ff9bb5');return;}
         cp.tal=cp.tal||{};cp.tal[n.id]=r+1;cp.tp-=cost;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.buildMenuScreen(); }); }
     const defsN=0,listTop=aTop+rows*rh2+12+detH-8+2,rh=0;

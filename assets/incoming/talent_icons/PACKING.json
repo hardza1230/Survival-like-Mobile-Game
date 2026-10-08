@@ -1,0 +1,4474 @@
+{
+  "momo": {
+    "originalSize": [
+      1161,
+      1355
+    ],
+    "sheetSize": [
+      768,
+      896
+    ],
+    "frameSize": 128,
+    "columns": 6,
+    "rows": 7,
+    "removedTinyAlphaPixels": 12,
+    "nodes": [
+      {
+        "id": "hp",
+        "name": "Vitality",
+        "emoji": "\u2764\ufe0f",
+        "per": "+8% max HP",
+        "group": "core",
+        "frame": 0,
+        "sourceBounds": [
+          45,
+          49,
+          192,
+          208
+        ],
+        "packedBounds": [
+          12,
+          8,
+          116,
+          120
+        ]
+      },
+      {
+        "id": "dmg",
+        "name": "Attack Power",
+        "emoji": "\ud83d\udca5",
+        "per": "+6% damage",
+        "group": "core",
+        "frame": 1,
+        "sourceBounds": [
+          236,
+          55,
+          373,
+          203
+        ],
+        "packedBounds": [
+          12,
+          8,
+          116,
+          120
+        ]
+      },
+      {
+        "id": "crit",
+        "name": "Critical",
+        "emoji": "\ud83c\udfaf",
+        "per": "+5% crit chance (\u00d71.8)",
+        "group": "core",
+        "frame": 2,
+        "sourceBounds": [
+          406,
+          48,
+          569,
+          209
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "cdr",
+        "name": "Fast Cast",
+        "emoji": "\u23f1\ufe0f",
+        "per": "-5% skill cooldown",
+        "group": "core",
+        "frame": 3,
+        "sourceBounds": [
+          590,
+          56,
+          751,
+          202
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "regen",
+        "name": "Regen",
+        "emoji": "\ud83d\udc97",
+        "per": "+0.5 HP/s",
+        "group": "core",
+        "frame": 4,
+        "sourceBounds": [
+          779,
+          55,
+          939,
+          204
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "twinSprinkle",
+        "name": "Radiant Heart Seeds",
+        "emoji": "\ud83c\udf53",
+        "per": "\u2726 Unique: Strawberry Rebound bursts seeds in 16 directions!",
+        "group": "core",
+        "frame": 5,
+        "sourceBounds": [
+          961,
+          49,
+          1134,
+          205
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_sniper_root",
+        "name": "Steady Aim",
+        "emoji": "\ud83c\udfaf",
+        "per": "+10% Sniper seed damage",
+        "group": "Sniper Build",
+        "frame": 6,
+        "sourceBounds": [
+          37,
+          231,
+          195,
+          385
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_sniper_a1",
+        "name": "Headhunter",
+        "emoji": "\ud83d\udc80",
+        "per": "+5% headshot chance",
+        "group": "Sniper Build",
+        "frame": 7,
+        "sourceBounds": [
+          226,
+          228,
+          376,
+          384
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_sniper_a2",
+        "name": "Overpenetration",
+        "emoji": "\ud83d\udd29",
+        "per": "+10% damage per enemy already pierced",
+        "group": "Sniper Build",
+        "frame": 8,
+        "sourceBounds": [
+          391,
+          241,
+          573,
+          381
+        ],
+        "packedBounds": [
+          8,
+          21,
+          120,
+          107
+        ]
+      },
+      {
+        "id": "pt_sniper_b1",
+        "name": "Fast Chamber",
+        "emoji": "\u23f1\ufe0f",
+        "per": "Charged Unique charges 10% faster",
+        "group": "Sniper Build",
+        "frame": 9,
+        "sourceBounds": [
+          587,
+          235,
+          741,
+          381
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_sniper_b2",
+        "name": "Dash Reload",
+        "emoji": "\ud83d\udca8",
+        "per": "After a dash, next seed is a guaranteed headshot",
+        "group": "Sniper Build",
+        "frame": 10,
+        "sourceBounds": [
+          763,
+          239,
+          952,
+          369
+        ],
+        "packedBounds": [
+          8,
+          25,
+          120,
+          102
+        ]
+      },
+      {
+        "id": "pt_sniper_c1",
+        "name": "Camouflage",
+        "emoji": "\ud83c\udf3f",
+        "per": "Standing still 0.6s: \u22126% damage taken",
+        "group": "Sniper Build",
+        "frame": 11,
+        "sourceBounds": [
+          957,
+          233,
+          1132,
+          384
+        ],
+        "packedBounds": [
+          8,
+          15,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "pt_sniper_c2",
+        "name": "Big Game",
+        "emoji": "\ud83d\udc51",
+        "per": "+12% damage to bosses/elites",
+        "group": "Sniper Build",
+        "frame": 12,
+        "sourceBounds": [
+          32,
+          403,
+          195,
+          566
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          120
+        ]
+      },
+      {
+        "id": "pt_sniper_capA",
+        "name": "One Shot",
+        "emoji": "\u2620\ufe0f",
+        "per": "Headshots execute normal enemies \u00b7 \u00d74 on bosses",
+        "group": "Sniper Build",
+        "frame": 13,
+        "sourceBounds": [
+          213,
+          404,
+          389,
+          570
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_sniper_capB",
+        "name": "Railgun",
+        "emoji": "\u26a1",
+        "per": "Full charged Unique fires a second beam 0.4s later",
+        "group": "Sniper Build",
+        "frame": 14,
+        "sourceBounds": [
+          392,
+          434,
+          581,
+          551
+        ],
+        "packedBounds": [
+          8,
+          29,
+          120,
+          98
+        ]
+      },
+      {
+        "id": "pt_sniper_capC",
+        "name": "Ghillie",
+        "emoji": "\ud83c\udf43",
+        "per": "Still 1.5s: \u221260% damage taken and next seed \u00d72",
+        "group": "Sniper Build",
+        "frame": 15,
+        "sourceBounds": [
+          584,
+          403,
+          760,
+          568
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_shotgun_root",
+        "name": "Point Blank+",
+        "emoji": "\ud83d\udca5",
+        "per": "+6% close-range bonus",
+        "group": "Shotgun Build",
+        "frame": 16,
+        "sourceBounds": [
+          762,
+          409,
+          949,
+          568
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          111
+        ]
+      },
+      {
+        "id": "pt_shotgun_a1",
+        "name": "Slug Core",
+        "emoji": "\ud83c\udfaf",
+        "per": "Centre pellet +20% damage",
+        "group": "Shotgun Build",
+        "frame": 17,
+        "sourceBounds": [
+          954,
+          411,
+          1135,
+          573
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_shotgun_a2",
+        "name": "Close Quarters",
+        "emoji": "\ud83e\udd4a",
+        "per": "Within 120px: +10% damage",
+        "group": "Shotgun Build",
+        "frame": 18,
+        "sourceBounds": [
+          25,
+          596,
+          207,
+          752
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "pt_shotgun_b1",
+        "name": "Extra Shell",
+        "emoji": "\u2795",
+        "per": "+1 pellet",
+        "group": "Shotgun Build",
+        "frame": 19,
+        "sourceBounds": [
+          228,
+          600,
+          378,
+          751
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_shotgun_b2",
+        "name": "Stopping Power",
+        "emoji": "\ud83c\udf2c\ufe0f",
+        "per": "Pellets knock enemies back harder",
+        "group": "Shotgun Build",
+        "frame": 20,
+        "sourceBounds": [
+          397,
+          600,
+          579,
+          742
+        ],
+        "packedBounds": [
+          8,
+          20,
+          120,
+          107
+        ]
+      },
+      {
+        "id": "pt_shotgun_c1",
+        "name": "Bulk Up",
+        "emoji": "\ud83d\udcaa",
+        "per": "+8% max HP",
+        "group": "Shotgun Build",
+        "frame": 21,
+        "sourceBounds": [
+          584,
+          599,
+          758,
+          752
+        ],
+        "packedBounds": [
+          8,
+          15,
+          120,
+          113
+        ]
+      },
+      {
+        "id": "pt_shotgun_c2",
+        "name": "Shell Shield",
+        "emoji": "\ud83d\udc1a",
+        "per": "5+ enemies nearby: \u22128% damage taken",
+        "group": "Shotgun Build",
+        "frame": 22,
+        "sourceBounds": [
+          765,
+          585,
+          952,
+          754
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_shotgun_capA",
+        "name": "Dragon Breath",
+        "emoji": "\ud83d\udd25",
+        "per": "Pellets set enemies on fire",
+        "group": "Shotgun Build",
+        "frame": 23,
+        "sourceBounds": [
+          968,
+          601,
+          1134,
+          743
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "pt_shotgun_capB",
+        "name": "Double Barrel",
+        "emoji": "\ud83d\udd2b",
+        "per": "Every 4th volley fires twice",
+        "group": "Shotgun Build",
+        "frame": 24,
+        "sourceBounds": [
+          27,
+          768,
+          199,
+          946
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_shotgun_capC",
+        "name": "Recoil Dash",
+        "emoji": "\u21a9\ufe0f",
+        "per": "Each volley hops you back \u00b7 brief invulnerability (1.2s cd)",
+        "group": "Shotgun Build",
+        "frame": 25,
+        "sourceBounds": [
+          216,
+          781,
+          382,
+          940
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_ricochet_root",
+        "name": "Rubber Seeds",
+        "emoji": "\ud83d\udc9e",
+        "per": "+4% damage \u00b7 rank 3: +1 bounce",
+        "group": "Ricochet Build",
+        "frame": 26,
+        "sourceBounds": [
+          397,
+          782,
+          576,
+          935
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "pt_ricochet_a1",
+        "name": "Momentum",
+        "emoji": "\ud83d\udcc8",
+        "per": "+6% damage gained per bounce",
+        "group": "Ricochet Build",
+        "frame": 27,
+        "sourceBounds": [
+          581,
+          785,
+          746,
+          933
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_ricochet_a2",
+        "name": "Last Bounce",
+        "emoji": "\ud83c\udfaf",
+        "per": "Final bounce +25% damage",
+        "group": "Ricochet Build",
+        "frame": 28,
+        "sourceBounds": [
+          756,
+          774,
+          948,
+          937
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          111
+        ]
+      },
+      {
+        "id": "pt_ricochet_b1",
+        "name": "Seeker",
+        "emoji": "\ud83e\udded",
+        "per": "Bounce search range +20%",
+        "group": "Ricochet Build",
+        "frame": 29,
+        "sourceBounds": [
+          959,
+          775,
+          1137,
+          938
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_ricochet_b2",
+        "name": "Split Bounce",
+        "emoji": "\ud83d\udd00",
+        "per": "15% chance a bounce splits into an extra seed",
+        "group": "Ricochet Build",
+        "frame": 30,
+        "sourceBounds": [
+          36,
+          961,
+          200,
+          1121
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_ricochet_c1",
+        "name": "Juice Sip",
+        "emoji": "\ud83e\uddc3",
+        "per": "Every 20 bounces heal 1% max HP",
+        "group": "Ricochet Build",
+        "frame": 31,
+        "sourceBounds": [
+          218,
+          963,
+          375,
+          1119
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_ricochet_c2",
+        "name": "Bouncy Skin",
+        "emoji": "\ud83e\uddf1",
+        "per": "When hit, release 3 bouncing seeds",
+        "group": "Ricochet Build",
+        "frame": 32,
+        "sourceBounds": [
+          398,
+          959,
+          572,
+          1110
+        ],
+        "packedBounds": [
+          8,
+          15,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "pt_ricochet_capA",
+        "name": "Pinball",
+        "emoji": "\ud83c\udfb0",
+        "per": "Seeds bounce up to 12 times",
+        "group": "Ricochet Build",
+        "frame": 33,
+        "sourceBounds": [
+          581,
+          960,
+          759,
+          1119
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_ricochet_capB",
+        "name": "Boomerang",
+        "emoji": "\ud83e\ude83",
+        "per": "After the last bounce, seeds fly back through enemies",
+        "group": "Ricochet Build",
+        "frame": 34,
+        "sourceBounds": [
+          776,
+          972,
+          943,
+          1109
+        ],
+        "packedBounds": [
+          8,
+          18,
+          120,
+          110
+        ]
+      },
+      {
+        "id": "pt_ricochet_capC",
+        "name": "Sugar Loop",
+        "emoji": "\ud83c\udf6c",
+        "per": "Bounce near you grants a shield (max 2, 6s cd)",
+        "group": "Ricochet Build",
+        "frame": 35,
+        "sourceBounds": [
+          954,
+          955,
+          1139,
+          1124
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          115
+        ]
+      }
+    ]
+  },
+  "mint": {
+    "originalSize": [
+      1161,
+      1355
+    ],
+    "sheetSize": [
+      768,
+      896
+    ],
+    "frameSize": 128,
+    "columns": 6,
+    "rows": 7,
+    "removedTinyAlphaPixels": 9,
+    "nodes": [
+      {
+        "id": "dmg",
+        "name": "Frost Lance Mastery",
+        "emoji": "\ud83e\uddca",
+        "per": "+8% damage",
+        "group": "core",
+        "frame": 0,
+        "sourceBounds": [
+          27,
+          26,
+          199,
+          178
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          113
+        ]
+      },
+      {
+        "id": "hp",
+        "name": "Tough Body",
+        "emoji": "\u2764\ufe0f",
+        "per": "+12% max HP",
+        "group": "core",
+        "frame": 1,
+        "sourceBounds": [
+          223,
+          25,
+          387,
+          184
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "armor",
+        "name": "Ice Armor",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "-6% damage taken",
+        "group": "core",
+        "frame": 2,
+        "sourceBounds": [
+          412,
+          25,
+          573,
+          184
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "regen",
+        "name": "Cool Recovery",
+        "emoji": "\ud83d\udc97",
+        "per": "+0.7 HP/s",
+        "group": "core",
+        "frame": 3,
+        "sourceBounds": [
+          603,
+          30,
+          760,
+          180
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "lifesteal",
+        "name": "Sweet Leech",
+        "emoji": "\ud83c\udf53",
+        "per": "+0.7 HP on kill",
+        "group": "core",
+        "frame": 4,
+        "sourceBounds": [
+          786,
+          34,
+          953,
+          179
+        ],
+        "packedBounds": [
+          8,
+          15,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "magnet",
+        "name": "Keen Nose",
+        "emoji": "\ud83e\uddf2",
+        "per": "+15% pickup range",
+        "group": "core",
+        "frame": 5,
+        "sourceBounds": [
+          976,
+          26,
+          1142,
+          183
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "deepFreeze",
+        "name": "Breath Over the Rift",
+        "emoji": "\ud83c\udf3f",
+        "per": "\u2726 Unique: Mint's breath zone expands its radius!",
+        "group": "core",
+        "frame": 6,
+        "sourceBounds": [
+          21,
+          201,
+          207,
+          358
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          111
+        ]
+      },
+      {
+        "id": "pt_glacier_root",
+        "name": "Cold Core",
+        "emoji": "\ud83e\uddca",
+        "per": "+8% damage to Frozen/Brittle enemies",
+        "group": "Glacier Bloom Build",
+        "frame": 7,
+        "sourceBounds": [
+          222,
+          205,
+          390,
+          364
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_glacier_a1",
+        "name": "Brittle",
+        "emoji": "\ud83e\udd76",
+        "per": "+10% damage to Frozen/Brittle enemies",
+        "group": "Glacier Bloom Build",
+        "frame": 8,
+        "sourceBounds": [
+          414,
+          210,
+          575,
+          364
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_glacier_a2",
+        "name": "Glacier Weight",
+        "emoji": "\ud83c\udfd4\ufe0f",
+        "per": "+10% damage to bosses/elites",
+        "group": "Glacier Bloom Build",
+        "frame": 9,
+        "sourceBounds": [
+          602,
+          209,
+          759,
+          366
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          120
+        ]
+      },
+      {
+        "id": "pt_glacier_b1",
+        "name": "Cold Rhythm",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% lance cooldown",
+        "group": "Glacier Bloom Build",
+        "frame": 10,
+        "sourceBounds": [
+          791,
+          209,
+          949,
+          366
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_glacier_b2",
+        "name": "Frost Reach",
+        "emoji": "\ud83c\udf2c\ufe0f",
+        "per": "+8% lance range",
+        "group": "Glacier Bloom Build",
+        "frame": 11,
+        "sourceBounds": [
+          970,
+          214,
+          1143,
+          358
+        ],
+        "packedBounds": [
+          8,
+          17,
+          120,
+          110
+        ]
+      },
+      {
+        "id": "pt_glacier_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Glacier Bloom Build",
+        "frame": 12,
+        "sourceBounds": [
+          27,
+          397,
+          192,
+          557
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_glacier_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Glacier Bloom Build",
+        "frame": 13,
+        "sourceBounds": [
+          214,
+          396,
+          385,
+          557
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_glacier_capA",
+        "name": "Absolute Zero",
+        "emoji": "\u2744\ufe0f",
+        "per": "Freezing needs 1 less Chill stack",
+        "group": "Glacier Bloom Build",
+        "frame": 14,
+        "sourceBounds": [
+          406,
+          397,
+          571,
+          556
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_glacier_capB",
+        "name": "Shatter Nova",
+        "emoji": "\ud83d\udca5",
+        "per": "Each freeze blasts nearby enemies",
+        "group": "Glacier Bloom Build",
+        "frame": 15,
+        "sourceBounds": [
+          593,
+          385,
+          761,
+          566
+        ],
+        "packedBounds": [
+          12,
+          8,
+          116,
+          120
+        ]
+      },
+      {
+        "id": "pt_glacier_capC",
+        "name": "Frost Armor",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "Each freeze: \u221230% damage taken for 3s",
+        "group": "Glacier Bloom Build",
+        "frame": 16,
+        "sourceBounds": [
+          783,
+          392,
+          954,
+          558
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_barrage_root",
+        "name": "Sharp Volley",
+        "emoji": "\ud83c\udf28\ufe0f",
+        "per": "+5% lance damage",
+        "group": "Barrage Build",
+        "frame": 17,
+        "sourceBounds": [
+          974,
+          390,
+          1143,
+          556
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_barrage_a1",
+        "name": "Honed Tips",
+        "emoji": "\ud83d\udd2a",
+        "per": "+6% lance damage",
+        "group": "Barrage Build",
+        "frame": 18,
+        "sourceBounds": [
+          24,
+          581,
+          199,
+          751
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_barrage_a2",
+        "name": "Long Volley",
+        "emoji": "\ud83c\udfaf",
+        "per": "+10% damage beyond 300px",
+        "group": "Barrage Build",
+        "frame": 19,
+        "sourceBounds": [
+          210,
+          592,
+          401,
+          743
+        ],
+        "packedBounds": [
+          8,
+          19,
+          120,
+          108
+        ]
+      },
+      {
+        "id": "pt_barrage_b1",
+        "name": "Quick Hands",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22125% lance cooldown",
+        "group": "Barrage Build",
+        "frame": 20,
+        "sourceBounds": [
+          408,
+          582,
+          578,
+          738
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_barrage_b2",
+        "name": "Reach",
+        "emoji": "\ud83d\udccf",
+        "per": "+6% lance range",
+        "group": "Barrage Build",
+        "frame": 21,
+        "sourceBounds": [
+          594,
+          587,
+          761,
+          744
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_barrage_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Barrage Build",
+        "frame": 22,
+        "sourceBounds": [
+          786,
+          587,
+          955,
+          750
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_barrage_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Barrage Build",
+        "frame": 23,
+        "sourceBounds": [
+          973,
+          586,
+          1137,
+          751
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_barrage_capA",
+        "name": "Lance Storm",
+        "emoji": "\ud83c\udf2a\ufe0f",
+        "per": "+1 lance (max 3); at cap: +18% shard damage",
+        "group": "Barrage Build",
+        "frame": 24,
+        "sourceBounds": [
+          24,
+          772,
+          199,
+          946
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_barrage_capB",
+        "name": "Rapid Frost",
+        "emoji": "\u26a1",
+        "per": "\u221225% lance cooldown",
+        "group": "Barrage Build",
+        "frame": 25,
+        "sourceBounds": [
+          221,
+          771,
+          385,
+          940
+        ],
+        "packedBounds": [
+          9,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_barrage_capC",
+        "name": "Cold Stride",
+        "emoji": "\ud83d\udca8",
+        "per": "While moving: \u221215% damage taken",
+        "group": "Barrage Build",
+        "frame": 26,
+        "sourceBounds": [
+          406,
+          776,
+          571,
+          943
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_pierce_root",
+        "name": "Heavy Shaft",
+        "emoji": "\ud83c\udff9",
+        "per": "+6% lance damage",
+        "group": "Crystal Impaler Build",
+        "frame": 27,
+        "sourceBounds": [
+          603,
+          781,
+          756,
+          941
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_pierce_a1",
+        "name": "Giant Piercer",
+        "emoji": "\ud83d\udc51",
+        "per": "+10% damage to bosses/elites",
+        "group": "Crystal Impaler Build",
+        "frame": 28,
+        "sourceBounds": [
+          786,
+          779,
+          952,
+          942
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_pierce_a2",
+        "name": "Sniper\u2019s Lance",
+        "emoji": "\ud83d\udd2d",
+        "per": "+12% damage beyond 300px",
+        "group": "Crystal Impaler Build",
+        "frame": 29,
+        "sourceBounds": [
+          967,
+          765,
+          1143,
+          934
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_pierce_b1",
+        "name": "Long Reach",
+        "emoji": "\ud83d\udccf",
+        "per": "+8% lance range",
+        "group": "Crystal Impaler Build",
+        "frame": 30,
+        "sourceBounds": [
+          20,
+          966,
+          205,
+          1130
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          113
+        ]
+      },
+      {
+        "id": "pt_pierce_b2",
+        "name": "Steady Draw",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% lance cooldown",
+        "group": "Crystal Impaler Build",
+        "frame": 31,
+        "sourceBounds": [
+          221,
+          970,
+          386,
+          1132
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_pierce_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Crystal Impaler Build",
+        "frame": 32,
+        "sourceBounds": [
+          406,
+          972,
+          579,
+          1137
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_pierce_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Crystal Impaler Build",
+        "frame": 33,
+        "sourceBounds": [
+          591,
+          974,
+          760,
+          1138
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_pierce_capA",
+        "name": "Glacial Spear",
+        "emoji": "\ud83d\udde1\ufe0f",
+        "per": "+40% damage to bosses/elites",
+        "group": "Crystal Impaler Build",
+        "frame": 34,
+        "sourceBounds": [
+          775,
+          966,
+          962,
+          1145
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_pierce_capB",
+        "name": "Long Shot",
+        "emoji": "\ud83c\udf20",
+        "per": "+35% damage beyond 300px \u00b7 +30% range",
+        "group": "Crystal Impaler Build",
+        "frame": 35,
+        "sourceBounds": [
+          971,
+          969,
+          1143,
+          1125
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_pierce_capC",
+        "name": "Ice Wall",
+        "emoji": "\ud83e\uddf1",
+        "per": "Still 0.6s: \u221240% damage taken",
+        "group": "Crystal Impaler Build",
+        "frame": 36,
+        "sourceBounds": [
+          27,
+          1161,
+          196,
+          1325
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      }
+    ]
+  },
+  "cocoa": {
+    "originalSize": [
+      1161,
+      1355
+    ],
+    "sheetSize": [
+      768,
+      896
+    ],
+    "frameSize": 128,
+    "columns": 6,
+    "rows": 7,
+    "removedTinyAlphaPixels": 29,
+    "nodes": [
+      {
+        "id": "dmg",
+        "name": "Destruction",
+        "emoji": "\ud83d\udca5",
+        "per": "+10% damage",
+        "group": "core",
+        "frame": 0,
+        "sourceBounds": [
+          22,
+          26,
+          181,
+          183
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "crit",
+        "name": "Slayer",
+        "emoji": "\ud83c\udfaf",
+        "per": "+6% crit chance (\u00d71.8)",
+        "group": "core",
+        "frame": 1,
+        "sourceBounds": [
+          207,
+          20,
+          374,
+          190
+        ],
+        "packedBounds": [
+          9,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "spd",
+        "name": "Footwork",
+        "emoji": "\ud83d\udc5f",
+        "per": "+5% move speed",
+        "group": "core",
+        "frame": 2,
+        "sourceBounds": [
+          402,
+          20,
+          566,
+          182
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "lifesteal",
+        "name": "Bloodthirst",
+        "emoji": "\ud83e\ude78",
+        "per": "+0.6 HP on kill",
+        "group": "core",
+        "frame": 3,
+        "sourceBounds": [
+          591,
+          35,
+          763,
+          186
+        ],
+        "packedBounds": [
+          8,
+          15,
+          120,
+          113
+        ]
+      },
+      {
+        "id": "donutImpact",
+        "name": "Bear-Sigil King",
+        "emoji": "\ud83d\udc3b",
+        "per": "\u2726 Unique: Cocoa's bear sigil shakes a wider area!",
+        "group": "core",
+        "frame": 4,
+        "sourceBounds": [
+          784,
+          20,
+          957,
+          192
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_brawler_root",
+        "name": "Quick Fists",
+        "emoji": "\ud83e\udd4a",
+        "per": "+5% combo damage",
+        "group": "Brawler Build",
+        "frame": 5,
+        "sourceBounds": [
+          991,
+          39,
+          1143,
+          187
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_brawler_a1",
+        "name": "Heavy Hands",
+        "emoji": "\ud83d\udcaa",
+        "per": "+6% combo damage",
+        "group": "Brawler Build",
+        "frame": 6,
+        "sourceBounds": [
+          22,
+          209,
+          189,
+          370
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_brawler_a2",
+        "name": "Last Stand",
+        "emoji": "\ud83e\ude78",
+        "per": "+10% damage below 50% HP",
+        "group": "Brawler Build",
+        "frame": 7,
+        "sourceBounds": [
+          219,
+          211,
+          367,
+          371
+        ],
+        "packedBounds": [
+          12,
+          8,
+          116,
+          120
+        ]
+      },
+      {
+        "id": "pt_brawler_b1",
+        "name": "Light Feet",
+        "emoji": "\ud83d\udca8",
+        "per": "\u22124% combo cooldown",
+        "group": "Brawler Build",
+        "frame": 8,
+        "sourceBounds": [
+          407,
+          205,
+          566,
+          369
+        ],
+        "packedBounds": [
+          9,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_brawler_b2",
+        "name": "Wide Swing",
+        "emoji": "\ud83c\udf0a",
+        "per": "+8% impact size",
+        "group": "Brawler Build",
+        "frame": 9,
+        "sourceBounds": [
+          592,
+          204,
+          767,
+          369
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_brawler_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Brawler Build",
+        "frame": 10,
+        "sourceBounds": [
+          797,
+          206,
+          947,
+          371
+        ],
+        "packedBounds": [
+          13,
+          8,
+          115,
+          120
+        ]
+      },
+      {
+        "id": "pt_brawler_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Brawler Build",
+        "frame": 11,
+        "sourceBounds": [
+          989,
+          208,
+          1133,
+          371
+        ],
+        "packedBounds": [
+          14,
+          8,
+          113,
+          120
+        ]
+      },
+      {
+        "id": "pt_brawler_capA",
+        "name": "Shockstorm",
+        "emoji": "\ud83d\udca5",
+        "per": "+2 finisher shockwaves",
+        "group": "Brawler Build",
+        "frame": 12,
+        "sourceBounds": [
+          17,
+          385,
+          192,
+          556
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_brawler_capB",
+        "name": "Flurry",
+        "emoji": "\ud83c\udf00",
+        "per": "\u221220% combo cooldown",
+        "group": "Brawler Build",
+        "frame": 13,
+        "sourceBounds": [
+          209,
+          394,
+          389,
+          548
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "pt_brawler_capC",
+        "name": "Iron Chin",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u221225% damage taken",
+        "group": "Brawler Build",
+        "frame": 14,
+        "sourceBounds": [
+          396,
+          387,
+          573,
+          561
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_titan_root",
+        "name": "Stone Fist",
+        "emoji": "\ud83d\uddff",
+        "per": "+6% damage",
+        "group": "Titan Build",
+        "frame": 15,
+        "sourceBounds": [
+          604,
+          387,
+          759,
+          550
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_titan_a1",
+        "name": "Giant Breaker",
+        "emoji": "\ud83d\udc51",
+        "per": "+10% damage to bosses/elites",
+        "group": "Titan Build",
+        "frame": 16,
+        "sourceBounds": [
+          784,
+          386,
+          961,
+          557
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_titan_a2",
+        "name": "Unbroken",
+        "emoji": "\ud83e\ude78",
+        "per": "+10% damage below 50% HP",
+        "group": "Titan Build",
+        "frame": 17,
+        "sourceBounds": [
+          985,
+          388,
+          1140,
+          557
+        ],
+        "packedBounds": [
+          12,
+          8,
+          115,
+          120
+        ]
+      },
+      {
+        "id": "pt_titan_b1",
+        "name": "Aftershock",
+        "emoji": "\ud83c\udf0b",
+        "per": "+8% impact size",
+        "group": "Titan Build",
+        "frame": 18,
+        "sourceBounds": [
+          15,
+          572,
+          196,
+          736
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_titan_b2",
+        "name": "Momentum",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% combo cooldown",
+        "group": "Titan Build",
+        "frame": 19,
+        "sourceBounds": [
+          214,
+          576,
+          368,
+          735
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_titan_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Titan Build",
+        "frame": 20,
+        "sourceBounds": [
+          400,
+          571,
+          564,
+          741
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_titan_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Titan Build",
+        "frame": 21,
+        "sourceBounds": [
+          588,
+          570,
+          754,
+          735
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_titan_capA",
+        "name": "Colossus",
+        "emoji": "\u26f0\ufe0f",
+        "per": "+25% damage \u00b7 +20% vs bosses/elites",
+        "group": "Titan Build",
+        "frame": 22,
+        "sourceBounds": [
+          780,
+          578,
+          958,
+          739
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_titan_capB",
+        "name": "Earthsplitter",
+        "emoji": "\ud83e\udea8",
+        "per": "+40% impact size",
+        "group": "Titan Build",
+        "frame": 23,
+        "sourceBounds": [
+          981,
+          570,
+          1142,
+          739
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_titan_capC",
+        "name": "Stone Skin",
+        "emoji": "\ud83e\uddf1",
+        "per": "Still 0.6s: \u221240% damage taken",
+        "group": "Titan Build",
+        "frame": 24,
+        "sourceBounds": [
+          15,
+          757,
+          199,
+          936
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_dashboxer_root",
+        "name": "Bear Rush",
+        "emoji": "\ud83d\udc3e",
+        "per": "+5% combo damage",
+        "group": "Dash Build",
+        "frame": 25,
+        "sourceBounds": [
+          204,
+          775,
+          386,
+          929
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          111
+        ]
+      },
+      {
+        "id": "pt_dashboxer_a1",
+        "name": "Ghost Jab",
+        "emoji": "\ud83d\udc7b",
+        "per": "Dash buff +10% combo damage",
+        "group": "Dash Build",
+        "frame": 26,
+        "sourceBounds": [
+          393,
+          765,
+          572,
+          927
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_dashboxer_a2",
+        "name": "Hit and Run",
+        "emoji": "\ud83d\udc51",
+        "per": "+10% damage to bosses/elites",
+        "group": "Dash Build",
+        "frame": 27,
+        "sourceBounds": [
+          589,
+          766,
+          772,
+          934
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_dashboxer_b1",
+        "name": "Footwork",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% combo cooldown",
+        "group": "Dash Build",
+        "frame": 28,
+        "sourceBounds": [
+          781,
+          760,
+          959,
+          935
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_dashboxer_b2",
+        "name": "Wide Hook",
+        "emoji": "\ud83c\udf0a",
+        "per": "+8% impact size",
+        "group": "Dash Build",
+        "frame": 29,
+        "sourceBounds": [
+          974,
+          766,
+          1143,
+          935
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          120
+        ]
+      },
+      {
+        "id": "pt_dashboxer_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Dash Build",
+        "frame": 30,
+        "sourceBounds": [
+          17,
+          952,
+          187,
+          1117
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_dashboxer_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Dash Build",
+        "frame": 31,
+        "sourceBounds": [
+          212,
+          947,
+          375,
+          1126
+        ],
+        "packedBounds": [
+          13,
+          8,
+          115,
+          120
+        ]
+      },
+      {
+        "id": "pt_dashboxer_capA",
+        "name": "Afterimage",
+        "emoji": "\ud83c\udf2a\ufe0f",
+        "per": "Dash buff +60% combo damage",
+        "group": "Dash Build",
+        "frame": 32,
+        "sourceBounds": [
+          392,
+          954,
+          570,
+          1114
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_dashboxer_capB",
+        "name": "Endless Dash",
+        "emoji": "\u267e\ufe0f",
+        "per": "+2 Dash charges",
+        "group": "Dash Build",
+        "frame": 33,
+        "sourceBounds": [
+          587,
+          957,
+          763,
+          1111
+        ],
+        "packedBounds": [
+          8,
+          15,
+          120,
+          113
+        ]
+      },
+      {
+        "id": "pt_dashboxer_capC",
+        "name": "Slip",
+        "emoji": "\ud83c\udf43",
+        "per": "While Dash buff is active: \u221230% damage taken",
+        "group": "Dash Build",
+        "frame": 34,
+        "sourceBounds": [
+          781,
+          954,
+          961,
+          1124
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      }
+    ]
+  },
+  "taro": {
+    "originalSize": [
+      1161,
+      1355
+    ],
+    "sheetSize": [
+      768,
+      896
+    ],
+    "frameSize": 128,
+    "columns": 6,
+    "rows": 7,
+    "removedTinyAlphaPixels": 4,
+    "nodes": [
+      {
+        "id": "hp",
+        "name": "Explorer Rations",
+        "emoji": "\u2764\ufe0f",
+        "per": "+8% max HP",
+        "group": "core",
+        "frame": 0,
+        "sourceBounds": [
+          12,
+          28,
+          191,
+          174
+        ],
+        "packedBounds": [
+          8,
+          18,
+          120,
+          109
+        ]
+      },
+      {
+        "id": "spd",
+        "name": "Read the Rift",
+        "emoji": "\ud83d\udc5f",
+        "per": "+5% move speed",
+        "group": "core",
+        "frame": 1,
+        "sourceBounds": [
+          214,
+          15,
+          379,
+          185
+        ],
+        "packedBounds": [
+          9,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "cdr",
+        "name": "Recall Rhythm",
+        "emoji": "\u23f1\ufe0f",
+        "per": "-5% skill cooldown",
+        "group": "core",
+        "frame": 2,
+        "sourceBounds": [
+          402,
+          17,
+          568,
+          190
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "crit",
+        "name": "Flavor Compass",
+        "emoji": "\ud83c\udfaf",
+        "per": "+5% crit chance",
+        "group": "core",
+        "frame": 3,
+        "sourceBounds": [
+          589,
+          14,
+          756,
+          183
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "echoPath",
+        "name": "Echo Map",
+        "emoji": "\ud83e\udded",
+        "per": "\u2726 Unique: records a longer path, wider blast, and longer speed boost!",
+        "group": "core",
+        "frame": 4,
+        "sourceBounds": [
+          786,
+          12,
+          965,
+          188
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_storm_root",
+        "name": "Charged Air",
+        "emoji": "\ud83c\udf29\ufe0f",
+        "per": "+5% lightning damage",
+        "group": "Chain Build",
+        "frame": 5,
+        "sourceBounds": [
+          987,
+          18,
+          1140,
+          187
+        ],
+        "packedBounds": [
+          13,
+          8,
+          114,
+          120
+        ]
+      },
+      {
+        "id": "pt_storm_a1",
+        "name": "Static Build",
+        "emoji": "\u2728",
+        "per": "+6% lightning damage",
+        "group": "Chain Build",
+        "frame": 6,
+        "sourceBounds": [
+          13,
+          209,
+          191,
+          379
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_storm_a2",
+        "name": "Conductor",
+        "emoji": "\ud83d\udc51",
+        "per": "+10% damage to bosses/elites",
+        "group": "Chain Build",
+        "frame": 7,
+        "sourceBounds": [
+          209,
+          201,
+          382,
+          381
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_storm_b1",
+        "name": "Quick Spark",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cast cooldown",
+        "group": "Chain Build",
+        "frame": 8,
+        "sourceBounds": [
+          405,
+          207,
+          564,
+          374
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_storm_b2",
+        "name": "Wide Arc",
+        "emoji": "\ud83d\udce1",
+        "per": "+8% strike range",
+        "group": "Chain Build",
+        "frame": 9,
+        "sourceBounds": [
+          587,
+          202,
+          761,
+          379
+        ],
+        "packedBounds": [
+          9,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_storm_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Chain Build",
+        "frame": 10,
+        "sourceBounds": [
+          786,
+          221,
+          954,
+          377
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_storm_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Chain Build",
+        "frame": 11,
+        "sourceBounds": [
+          983,
+          210,
+          1146,
+          377
+        ],
+        "packedBounds": [
+          9,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_storm_capA",
+        "name": "Thunderhead",
+        "emoji": "\u26c8\ufe0f",
+        "per": "+2 strikes",
+        "group": "Chain Build",
+        "frame": 12,
+        "sourceBounds": [
+          13,
+          389,
+          186,
+          570
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_storm_capB",
+        "name": "Overcharge",
+        "emoji": "\u26a1",
+        "per": "+20% lightning damage",
+        "group": "Chain Build",
+        "frame": 13,
+        "sourceBounds": [
+          210,
+          404,
+          380,
+          567
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_storm_capC",
+        "name": "Grounded",
+        "emoji": "\ud83e\uddf2",
+        "per": "While moving: \u221220% damage taken",
+        "group": "Chain Build",
+        "frame": 14,
+        "sourceBounds": [
+          400,
+          399,
+          579,
+          568
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_smite_root",
+        "name": "Heavy Bolt",
+        "emoji": "\ud83d\udd28",
+        "per": "+6% lightning damage",
+        "group": "Smite Build",
+        "frame": 15,
+        "sourceBounds": [
+          596,
+          403,
+          760,
+          574
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_smite_a1",
+        "name": "Judgment+",
+        "emoji": "\ud83c\udfaf",
+        "per": "+10% damage to bosses/elites",
+        "group": "Smite Build",
+        "frame": 16,
+        "sourceBounds": [
+          778,
+          384,
+          965,
+          579
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_smite_a2",
+        "name": "Wrath",
+        "emoji": "\ud83e\ude78",
+        "per": "+10% damage below 50% HP",
+        "group": "Smite Build",
+        "frame": 17,
+        "sourceBounds": [
+          976,
+          404,
+          1150,
+          577
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_smite_b1",
+        "name": "Steady Prayer",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cast cooldown",
+        "group": "Smite Build",
+        "frame": 18,
+        "sourceBounds": [
+          18,
+          583,
+          182,
+          773
+        ],
+        "packedBounds": [
+          15,
+          8,
+          112,
+          120
+        ]
+      },
+      {
+        "id": "pt_smite_b2",
+        "name": "Long Reach",
+        "emoji": "\ud83d\udce1",
+        "per": "+8% strike range",
+        "group": "Smite Build",
+        "frame": 19,
+        "sourceBounds": [
+          214,
+          577,
+          375,
+          764
+        ],
+        "packedBounds": [
+          16,
+          8,
+          112,
+          120
+        ]
+      },
+      {
+        "id": "pt_smite_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Smite Build",
+        "frame": 20,
+        "sourceBounds": [
+          391,
+          605,
+          559,
+          761
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_smite_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Smite Build",
+        "frame": 21,
+        "sourceBounds": [
+          590,
+          594,
+          753,
+          761
+        ],
+        "packedBounds": [
+          9,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_smite_capA",
+        "name": "Divine Hammer",
+        "emoji": "\ud83c\udf1f",
+        "per": "+40% damage to bosses/elites",
+        "group": "Smite Build",
+        "frame": 22,
+        "sourceBounds": [
+          772,
+          584,
+          962,
+          769
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_smite_capB",
+        "name": "Heavy Sky",
+        "emoji": "\u2601\ufe0f",
+        "per": "+30% damage \u00b7 casts 10% slower",
+        "group": "Smite Build",
+        "frame": 23,
+        "sourceBounds": [
+          977,
+          587,
+          1149,
+          775
+        ],
+        "packedBounds": [
+          13,
+          8,
+          115,
+          120
+        ]
+      },
+      {
+        "id": "pt_smite_capC",
+        "name": "Sanctuary",
+        "emoji": "\u26ea",
+        "per": "Still 0.6s: \u221240% damage taken",
+        "group": "Smite Build",
+        "frame": 24,
+        "sourceBounds": [
+          11,
+          789,
+          193,
+          955
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_tempest_root",
+        "name": "Swift Storm",
+        "emoji": "\ud83c\udf2a\ufe0f",
+        "per": "\u22124% cast cooldown",
+        "group": "Tempest Build",
+        "frame": 25,
+        "sourceBounds": [
+          211,
+          785,
+          384,
+          957
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_tempest_a1",
+        "name": "Sharp Wind",
+        "emoji": "\u2728",
+        "per": "+6% lightning damage",
+        "group": "Tempest Build",
+        "frame": 26,
+        "sourceBounds": [
+          405,
+          789,
+          572,
+          950
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_tempest_a2",
+        "name": "Far Strike+",
+        "emoji": "\ud83d\udd2d",
+        "per": "+10% damage beyond 300px",
+        "group": "Tempest Build",
+        "frame": 27,
+        "sourceBounds": [
+          591,
+          787,
+          770,
+          959
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_tempest_b1",
+        "name": "Gale+",
+        "emoji": "\u23e9",
+        "per": "\u22124% cast cooldown",
+        "group": "Tempest Build",
+        "frame": 28,
+        "sourceBounds": [
+          786,
+          792,
+          956,
+          957
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_tempest_b2",
+        "name": "Wide Gust",
+        "emoji": "\ud83d\udce1",
+        "per": "+8% strike range",
+        "group": "Tempest Build",
+        "frame": 29,
+        "sourceBounds": [
+          981,
+          793,
+          1146,
+          954
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_tempest_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Tempest Build",
+        "frame": 30,
+        "sourceBounds": [
+          16,
+          987,
+          184,
+          1143
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_tempest_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Tempest Build",
+        "frame": 31,
+        "sourceBounds": [
+          214,
+          976,
+          379,
+          1143
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_tempest_capA",
+        "name": "Hurricane",
+        "emoji": "\ud83c\udf00",
+        "per": "\u221225% cast cooldown",
+        "group": "Tempest Build",
+        "frame": 32,
+        "sourceBounds": [
+          399,
+          969,
+          570,
+          1152
+        ],
+        "packedBounds": [
+          11,
+          8,
+          116,
+          120
+        ]
+      },
+      {
+        "id": "pt_tempest_capB",
+        "name": "Eye of the Storm",
+        "emoji": "\ud83d\udc41\ufe0f",
+        "per": "+35% damage beyond 300px",
+        "group": "Tempest Build",
+        "frame": 33,
+        "sourceBounds": [
+          590,
+          972,
+          771,
+          1148
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_tempest_capC",
+        "name": "Wind Step",
+        "emoji": "\ud83d\udca8",
+        "per": "While moving: \u221220% damage taken",
+        "group": "Tempest Build",
+        "frame": 34,
+        "sourceBounds": [
+          779,
+          977,
+          963,
+          1144
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          115
+        ]
+      }
+    ]
+  },
+  "yuzu": {
+    "originalSize": [
+      1161,
+      1355
+    ],
+    "sheetSize": [
+      768,
+      896
+    ],
+    "frameSize": 128,
+    "columns": 6,
+    "rows": 7,
+    "removedTinyAlphaPixels": 16,
+    "nodes": [
+      {
+        "id": "hp",
+        "name": "Citrus Skin",
+        "emoji": "\u2764\ufe0f",
+        "per": "+8% max HP",
+        "group": "core",
+        "frame": 0,
+        "sourceBounds": [
+          20,
+          30,
+          176,
+          179
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "dmg",
+        "name": "Crew Spirit",
+        "emoji": "\ud83c\udf4b",
+        "per": "+6% minion damage",
+        "group": "core",
+        "frame": 1,
+        "sourceBounds": [
+          210,
+          21,
+          379,
+          185
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "spd",
+        "name": "Leader Pace",
+        "emoji": "\ud83d\udc5f",
+        "per": "+5% move speed",
+        "group": "core",
+        "frame": 2,
+        "sourceBounds": [
+          409,
+          30,
+          563,
+          174
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "regen",
+        "name": "Fresh Juice",
+        "emoji": "\ud83d\udc9a",
+        "per": "+0.5 HP/s",
+        "group": "core",
+        "frame": 3,
+        "sourceBounds": [
+          596,
+          20,
+          759,
+          183
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          120
+        ]
+      },
+      {
+        "id": "parade",
+        "name": "Royal Parade",
+        "emoji": "\ud83d\udc51",
+        "per": "\u2726 Unique: Citrus Parade lasts 2s longer",
+        "group": "core",
+        "frame": 4,
+        "sourceBounds": [
+          788,
+          24,
+          960,
+          183
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_root",
+        "name": "Path Focus",
+        "emoji": "\ud83d\udc1d",
+        "per": "+5% damage",
+        "group": "Swarm Build",
+        "frame": 5,
+        "sourceBounds": [
+          984,
+          27,
+          1140,
+          177
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_a1",
+        "name": "Sharpness",
+        "emoji": "\ud83c\udfaf",
+        "per": "+3% crit chance",
+        "group": "Swarm Build",
+        "frame": 6,
+        "sourceBounds": [
+          19,
+          209,
+          185,
+          368
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_a2",
+        "name": "Giant Hunter",
+        "emoji": "\ud83d\udc51",
+        "per": "+8% boss damage",
+        "group": "Swarm Build",
+        "frame": 7,
+        "sourceBounds": [
+          211,
+          205,
+          379,
+          373
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          120
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_b1",
+        "name": "Tempo",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cooldown",
+        "group": "Swarm Build",
+        "frame": 8,
+        "sourceBounds": [
+          406,
+          209,
+          569,
+          372
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          120
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_b2",
+        "name": "Quick Step",
+        "emoji": "\ud83d\udca8",
+        "per": "\u22126% dash cooldown",
+        "group": "Swarm Build",
+        "frame": 9,
+        "sourceBounds": [
+          593,
+          213,
+          761,
+          364
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Swarm Build",
+        "frame": 10,
+        "sourceBounds": [
+          791,
+          210,
+          961,
+          371
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Swarm Build",
+        "frame": 11,
+        "sourceBounds": [
+          982,
+          208,
+          1144,
+          369
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_capA",
+        "name": "Power Capstone",
+        "emoji": "\ud83d\udca5",
+        "per": "Coming soon",
+        "group": "Swarm Build",
+        "frame": 12,
+        "sourceBounds": [
+          15,
+          393,
+          188,
+          569
+        ],
+        "packedBounds": [
+          9,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_capB",
+        "name": "Mechanic Capstone",
+        "emoji": "\u2699\ufe0f",
+        "per": "Coming soon",
+        "group": "Swarm Build",
+        "frame": 13,
+        "sourceBounds": [
+          209,
+          397,
+          384,
+          565
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_zestSwarm_capC",
+        "name": "Survival Capstone",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "Coming soon",
+        "group": "Swarm Build",
+        "frame": 14,
+        "sourceBounds": [
+          407,
+          396,
+          572,
+          566
+        ],
+        "packedBounds": [
+          9,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_root",
+        "name": "Path Focus",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+5% damage",
+        "group": "Guardian Build",
+        "frame": 15,
+        "sourceBounds": [
+          596,
+          410,
+          759,
+          564
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_a1",
+        "name": "Sharpness",
+        "emoji": "\ud83c\udfaf",
+        "per": "+3% crit chance",
+        "group": "Guardian Build",
+        "frame": 16,
+        "sourceBounds": [
+          788,
+          398,
+          956,
+          559
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_a2",
+        "name": "Giant Hunter",
+        "emoji": "\ud83d\udc51",
+        "per": "+8% boss damage",
+        "group": "Guardian Build",
+        "frame": 17,
+        "sourceBounds": [
+          978,
+          394,
+          1150,
+          567
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_b1",
+        "name": "Tempo",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cooldown",
+        "group": "Guardian Build",
+        "frame": 18,
+        "sourceBounds": [
+          19,
+          589,
+          186,
+          755
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_b2",
+        "name": "Quick Step",
+        "emoji": "\ud83d\udca8",
+        "per": "\u22126% dash cooldown",
+        "group": "Guardian Build",
+        "frame": 19,
+        "sourceBounds": [
+          208,
+          598,
+          377,
+          746
+        ],
+        "packedBounds": [
+          8,
+          15,
+          120,
+          113
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Guardian Build",
+        "frame": 20,
+        "sourceBounds": [
+          404,
+          588,
+          574,
+          751
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Guardian Build",
+        "frame": 21,
+        "sourceBounds": [
+          596,
+          590,
+          766,
+          754
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_capA",
+        "name": "Power Capstone",
+        "emoji": "\ud83d\udca5",
+        "per": "Coming soon",
+        "group": "Guardian Build",
+        "frame": 22,
+        "sourceBounds": [
+          787,
+          584,
+          957,
+          759
+        ],
+        "packedBounds": [
+          9,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_capB",
+        "name": "Mechanic Capstone",
+        "emoji": "\u2699\ufe0f",
+        "per": "Coming soon",
+        "group": "Guardian Build",
+        "frame": 23,
+        "sourceBounds": [
+          973,
+          583,
+          1148,
+          757
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_citrusGuardian_capC",
+        "name": "Survival Capstone",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "Coming soon",
+        "group": "Guardian Build",
+        "frame": 24,
+        "sourceBounds": [
+          18,
+          778,
+          184,
+          940
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_root",
+        "name": "Path Focus",
+        "emoji": "\ud83e\uddc0",
+        "per": "+5% damage",
+        "group": "Workshop Build",
+        "frame": 25,
+        "sourceBounds": [
+          207,
+          783,
+          373,
+          939
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_a1",
+        "name": "Sharpness",
+        "emoji": "\ud83c\udfaf",
+        "per": "+3% crit chance",
+        "group": "Workshop Build",
+        "frame": 26,
+        "sourceBounds": [
+          398,
+          775,
+          565,
+          943
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_a2",
+        "name": "Giant Hunter",
+        "emoji": "\ud83d\udc51",
+        "per": "+8% boss damage",
+        "group": "Workshop Build",
+        "frame": 27,
+        "sourceBounds": [
+          591,
+          772,
+          766,
+          945
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_b1",
+        "name": "Tempo",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cooldown",
+        "group": "Workshop Build",
+        "frame": 28,
+        "sourceBounds": [
+          792,
+          778,
+          956,
+          940
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_b2",
+        "name": "Quick Step",
+        "emoji": "\ud83d\udca8",
+        "per": "\u22126% dash cooldown",
+        "group": "Workshop Build",
+        "frame": 29,
+        "sourceBounds": [
+          975,
+          780,
+          1141,
+          932
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Workshop Build",
+        "frame": 30,
+        "sourceBounds": [
+          16,
+          969,
+          188,
+          1127
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Workshop Build",
+        "frame": 31,
+        "sourceBounds": [
+          209,
+          965,
+          376,
+          1127
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_capA",
+        "name": "Power Capstone",
+        "emoji": "\ud83d\udca5",
+        "per": "Coming soon",
+        "group": "Workshop Build",
+        "frame": 32,
+        "sourceBounds": [
+          399,
+          962,
+          575,
+          1139
+        ],
+        "packedBounds": [
+          8,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_capB",
+        "name": "Mechanic Capstone",
+        "emoji": "\u2699\ufe0f",
+        "per": "Coming soon",
+        "group": "Workshop Build",
+        "frame": 33,
+        "sourceBounds": [
+          591,
+          966,
+          766,
+          1130
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_juiceWorkshop_capC",
+        "name": "Survival Capstone",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "Coming soon",
+        "group": "Workshop Build",
+        "frame": 34,
+        "sourceBounds": [
+          783,
+          960,
+          957,
+          1129
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      }
+    ]
+  },
+  "sesame": {
+    "originalSize": [
+      1161,
+      1354
+    ],
+    "sheetSize": [
+      768,
+      896
+    ],
+    "frameSize": 128,
+    "columns": 6,
+    "rows": 7,
+    "removedTinyAlphaPixels": 8,
+    "nodes": [
+      {
+        "id": "hp",
+        "name": "Steady Sesame Core",
+        "emoji": "\u2764\ufe0f",
+        "per": "+11% max HP",
+        "group": "core",
+        "frame": 0,
+        "sourceBounds": [
+          11,
+          44,
+          183,
+          199
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "armor",
+        "name": "Oath Architecture",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "-6% damage taken",
+        "group": "core",
+        "frame": 1,
+        "sourceBounds": [
+          202,
+          26,
+          386,
+          202
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "regen",
+        "name": "Flavor Lantern",
+        "emoji": "\ud83d\udc97",
+        "per": "+0.6 HP/s",
+        "group": "core",
+        "frame": 2,
+        "sourceBounds": [
+          407,
+          24,
+          566,
+          212
+        ],
+        "packedBounds": [
+          16,
+          8,
+          111,
+          120
+        ]
+      },
+      {
+        "id": "dmg",
+        "name": "Counter Seal",
+        "emoji": "\ud83d\udca5",
+        "per": "+6% damage",
+        "group": "core",
+        "frame": 3,
+        "sourceBounds": [
+          591,
+          26,
+          766,
+          213
+        ],
+        "packedBounds": [
+          11,
+          8,
+          116,
+          120
+        ]
+      },
+      {
+        "id": "mirrorWard",
+        "name": "Perfect Mirror Architecture",
+        "emoji": "\ud83e\ude9e",
+        "per": "\u2726 Unique: more mirrors, duration, and reflected shots!",
+        "group": "core",
+        "frame": 4,
+        "sourceBounds": [
+          785,
+          32,
+          964,
+          214
+        ],
+        "packedBounds": [
+          9,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_prism_root",
+        "name": "Path Focus",
+        "emoji": "\ud83c\udf08",
+        "per": "+5% damage",
+        "group": "Prism Build",
+        "frame": 5,
+        "sourceBounds": [
+          983,
+          32,
+          1146,
+          198
+        ],
+        "packedBounds": [
+          9,
+          8,
+          119,
+          120
+        ]
+      },
+      {
+        "id": "pt_prism_a1",
+        "name": "Sharpness",
+        "emoji": "\ud83c\udfaf",
+        "per": "+3% crit chance",
+        "group": "Prism Build",
+        "frame": 6,
+        "sourceBounds": [
+          18,
+          237,
+          189,
+          396
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_prism_a2",
+        "name": "Giant Hunter",
+        "emoji": "\ud83d\udc51",
+        "per": "+8% boss damage",
+        "group": "Prism Build",
+        "frame": 7,
+        "sourceBounds": [
+          211,
+          220,
+          391,
+          398
+        ],
+        "packedBounds": [
+          8,
+          8,
+          120,
+          119
+        ]
+      },
+      {
+        "id": "pt_prism_b1",
+        "name": "Tempo",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cooldown",
+        "group": "Prism Build",
+        "frame": 8,
+        "sourceBounds": [
+          419,
+          229,
+          583,
+          401
+        ],
+        "packedBounds": [
+          10,
+          8,
+          117,
+          120
+        ]
+      },
+      {
+        "id": "pt_prism_b2",
+        "name": "Quick Step",
+        "emoji": "\ud83d\udca8",
+        "per": "\u22126% dash cooldown",
+        "group": "Prism Build",
+        "frame": 9,
+        "sourceBounds": [
+          598,
+          232,
+          768,
+          397
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_prism_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Prism Build",
+        "frame": 10,
+        "sourceBounds": [
+          789,
+          234,
+          959,
+          399
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_prism_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Prism Build",
+        "frame": 11,
+        "sourceBounds": [
+          974,
+          217,
+          1151,
+          401
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "pt_prism_capA",
+        "name": "Power Capstone",
+        "emoji": "\ud83d\udca5",
+        "per": "Coming soon",
+        "group": "Prism Build",
+        "frame": 12,
+        "sourceBounds": [
+          7,
+          415,
+          197,
+          588
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_prism_capB",
+        "name": "Mechanic Capstone",
+        "emoji": "\u2699\ufe0f",
+        "per": "Coming soon",
+        "group": "Prism Build",
+        "frame": 13,
+        "sourceBounds": [
+          209,
+          423,
+          399,
+          584
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          111
+        ]
+      },
+      {
+        "id": "pt_prism_capC",
+        "name": "Survival Capstone",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "Coming soon",
+        "group": "Prism Build",
+        "frame": 14,
+        "sourceBounds": [
+          401,
+          419,
+          586,
+          584
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_lens_root",
+        "name": "Path Focus",
+        "emoji": "\ud83d\udd0d",
+        "per": "+5% damage",
+        "group": "Focus Build",
+        "frame": 15,
+        "sourceBounds": [
+          607,
+          420,
+          757,
+          588
+        ],
+        "packedBounds": [
+          14,
+          8,
+          114,
+          120
+        ]
+      },
+      {
+        "id": "pt_lens_a1",
+        "name": "Sharpness",
+        "emoji": "\ud83c\udfaf",
+        "per": "+3% crit chance",
+        "group": "Focus Build",
+        "frame": 16,
+        "sourceBounds": [
+          784,
+          418,
+          957,
+          585
+        ],
+        "packedBounds": [
+          8,
+          10,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_lens_a2",
+        "name": "Giant Hunter",
+        "emoji": "\ud83d\udc51",
+        "per": "+8% boss damage",
+        "group": "Focus Build",
+        "frame": 17,
+        "sourceBounds": [
+          968,
+          414,
+          1155,
+          588
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_lens_b1",
+        "name": "Tempo",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cooldown",
+        "group": "Focus Build",
+        "frame": 18,
+        "sourceBounds": [
+          15,
+          605,
+          188,
+          773
+        ],
+        "packedBounds": [
+          8,
+          9,
+          120,
+          118
+        ]
+      },
+      {
+        "id": "pt_lens_b2",
+        "name": "Quick Step",
+        "emoji": "\ud83d\udca8",
+        "per": "\u22126% dash cooldown",
+        "group": "Focus Build",
+        "frame": 19,
+        "sourceBounds": [
+          213,
+          607,
+          386,
+          762
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_lens_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Focus Build",
+        "frame": 20,
+        "sourceBounds": [
+          405,
+          619,
+          574,
+          763
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          111
+        ]
+      },
+      {
+        "id": "pt_lens_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Focus Build",
+        "frame": 21,
+        "sourceBounds": [
+          588,
+          600,
+          766,
+          766
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "pt_lens_capA",
+        "name": "Power Capstone",
+        "emoji": "\ud83d\udca5",
+        "per": "Coming soon",
+        "group": "Focus Build",
+        "frame": 22,
+        "sourceBounds": [
+          783,
+          598,
+          967,
+          763
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_lens_capB",
+        "name": "Mechanic Capstone",
+        "emoji": "\u2699\ufe0f",
+        "per": "Coming soon",
+        "group": "Focus Build",
+        "frame": 23,
+        "sourceBounds": [
+          967,
+          600,
+          1152,
+          765
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          114
+        ]
+      },
+      {
+        "id": "pt_lens_capC",
+        "name": "Survival Capstone",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "Coming soon",
+        "group": "Focus Build",
+        "frame": 24,
+        "sourceBounds": [
+          10,
+          784,
+          210,
+          954
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          111
+        ]
+      },
+      {
+        "id": "pt_sentinel_root",
+        "name": "Path Focus",
+        "emoji": "\ud83d\udd2d",
+        "per": "+5% damage",
+        "group": "Sentinel Build",
+        "frame": 25,
+        "sourceBounds": [
+          227,
+          790,
+          374,
+          952
+        ],
+        "packedBounds": [
+          13,
+          8,
+          115,
+          120
+        ]
+      },
+      {
+        "id": "pt_sentinel_a1",
+        "name": "Sharpness",
+        "emoji": "\ud83c\udfaf",
+        "per": "+3% crit chance",
+        "group": "Sentinel Build",
+        "frame": 26,
+        "sourceBounds": [
+          406,
+          785,
+          586,
+          949
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_sentinel_a2",
+        "name": "Giant Hunter",
+        "emoji": "\ud83d\udc51",
+        "per": "+8% boss damage",
+        "group": "Sentinel Build",
+        "frame": 27,
+        "sourceBounds": [
+          588,
+          781,
+          771,
+          949
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_sentinel_b1",
+        "name": "Tempo",
+        "emoji": "\u23f1\ufe0f",
+        "per": "\u22124% cooldown",
+        "group": "Sentinel Build",
+        "frame": 28,
+        "sourceBounds": [
+          791,
+          781,
+          945,
+          949
+        ],
+        "packedBounds": [
+          12,
+          8,
+          115,
+          120
+        ]
+      },
+      {
+        "id": "pt_sentinel_b2",
+        "name": "Quick Step",
+        "emoji": "\ud83d\udca8",
+        "per": "\u22126% dash cooldown",
+        "group": "Sentinel Build",
+        "frame": 29,
+        "sourceBounds": [
+          976,
+          793,
+          1149,
+          941
+        ],
+        "packedBounds": [
+          8,
+          16,
+          120,
+          112
+        ]
+      },
+      {
+        "id": "pt_sentinel_c1",
+        "name": "Resolve",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "+6% max HP",
+        "group": "Sentinel Build",
+        "frame": 30,
+        "sourceBounds": [
+          19,
+          982,
+          191,
+          1134
+        ],
+        "packedBounds": [
+          8,
+          14,
+          120,
+          113
+        ]
+      },
+      {
+        "id": "pt_sentinel_c2",
+        "name": "Guard",
+        "emoji": "\ud83e\uddf1",
+        "per": "\u22125% damage taken",
+        "group": "Sentinel Build",
+        "frame": 31,
+        "sourceBounds": [
+          208,
+          969,
+          386,
+          1138
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          117
+        ]
+      },
+      {
+        "id": "pt_sentinel_capA",
+        "name": "Power Capstone",
+        "emoji": "\ud83d\udca5",
+        "per": "Coming soon",
+        "group": "Sentinel Build",
+        "frame": 32,
+        "sourceBounds": [
+          396,
+          959,
+          585,
+          1133
+        ],
+        "packedBounds": [
+          8,
+          12,
+          120,
+          115
+        ]
+      },
+      {
+        "id": "pt_sentinel_capB",
+        "name": "Mechanic Capstone",
+        "emoji": "\u2699\ufe0f",
+        "per": "Coming soon",
+        "group": "Sentinel Build",
+        "frame": 33,
+        "sourceBounds": [
+          603,
+          958,
+          773,
+          1145
+        ],
+        "packedBounds": [
+          13,
+          8,
+          115,
+          120
+        ]
+      },
+      {
+        "id": "pt_sentinel_capC",
+        "name": "Survival Capstone",
+        "emoji": "\ud83d\udee1\ufe0f",
+        "per": "Coming soon",
+        "group": "Sentinel Build",
+        "frame": 34,
+        "sourceBounds": [
+          776,
+          968,
+          968,
+          1141
+        ],
+        "packedBounds": [
+          8,
+          13,
+          120,
+          114
+        ]
+      }
+    ]
+  },
+  "berry": {
+    "originalSize": [
+      1161,
+      1355
+    ],
+    "sheetSize": [
+      768,
+      896
+    ],
+    "frameSize": 128,
+    "columns": 6,
+    "rows": 7,
+    "removedTinyAlphaPixels": 0,
+    "nodes": [
+      {
+        "id": "dmg",
+        "name": "Jam Core Pressure",
+        "emoji": "\ud83d\udca5",
+        "per": "+7% damage",
+        "group": "core",
+        "frame": 0,
+        "sourceBounds": [
+          35,
+          29,
+          243,
+          245
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "cdr",
+        "name": "Fast Heart Trigger",
+        "emoji": "\u23f1\ufe0f",
+        "per": "-5% skill cooldown",
+        "group": "core",
+        "frame": 1,
+        "sourceBounds": [
+          262,
+          52,
+          458,
+          236
+        ],
+        "packedBounds": [
+          8,
+          11,
+          120,
+          116
+        ]
+      },
+      {
+        "id": "hp",
+        "name": "Packed Mochi",
+        "emoji": "\u2764\ufe0f",
+        "per": "+9% max HP",
+        "group": "core",
+        "frame": 2,
+        "sourceBounds": [
+          476,
+          38,
+          674,
+          243
+        ],
+        "packedBounds": [
+          10,
+          8,
+          118,
+          120
+        ]
+      },
+      {
+        "id": "crit",
+        "name": "Seed Sights",
+        "emoji": "\ud83c\udfaf",
+        "per": "+5% crit chance",
+        "group": "core",
+        "frame": 3,
+        "sourceBounds": [
+          688,
+          36,
+          890,
+          252
+        ],
+        "packedBounds": [
+          11,
+          8,
+          116,
+          120
+        ]
+      },
+      {
+        "id": "pressurizedJam",
+        "name": "Twin Pressure Chamber",
+        "emoji": "\ud83d\udc97",
+        "per": "\u2726 Unique: Jam Overdrive adds 2 salvos and rounds per barrel!",
+        "group": "core",
+        "frame": 4,
+        "sourceBounds": [
+          903,
+          47,
+          1149,
+          240
+        ],
+        "packedBounds": [
+          8,
+          20,
+          120,
+          108
+        ]
+      }
+    ]
+  }
+}
