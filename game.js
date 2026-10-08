@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.58.0';
+const GAME_VERSION = '6.58.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.58.1',date:'2026-10-08',title:'Smoother Chocolate Flicker',items:['Flicker now glides to targets with a visible path line and afterimages, slightly slower, and returns smoothly','Shorter Flicker range: Titan 190, Brawler 220, Dash Boxer 250','Dash Boxer: every Dash punches enemies along its path and ends with a finishing punch; Phantom Rush still makes it stronger']},
   {v:'6.58.0',date:'2026-10-08',title:'Chocolate Flicker control',items:['Toggle Flicker ON to warp into short punch sequences and return to your moving anchor; Dash or retreat cancels immediately','Brawler chains two punches, Titan lands one heavy impact, Dash Boxer chains three; bosses stay targeted while in range','Unique buttons show TAP or HOLD, charge progress and RELEASE when charged']},
   {v:'6.57.1',date:'2026-10-08',title:'Smoother Chocolate motion',items:['Chocolate keeps a continuous running cycle through Dash instead of freezing on one pose','Punch clips finish without repeated resets; moving cancels hidden poses so stopping never reveals a stale attack','Chocolate jelly motion uses small simulation steps for steadier recovery across frame rates']},
   {v:'6.57.0',date:'2026-10-08',title:'Chocolate: three ways to fight',items:['Brawler lands combos and moving Cyclone punches; Titan winds up heavy impacts and a targeted Colossus Fist','Dash Boxer keeps combo progress through Dash, empowers the next punch and unleashes Phantom Rush','Unique skills are one tap with no drag or swipe minigame; each path has its own Evolution']},
@@ -12085,16 +12086,30 @@ class Game extends Phaser.Scene {
     if(p.body?.reset)p.body.reset(clamp(x),clamp(y));else p.setPosition(clamp(x),clamp(y));p.setVelocity(vx,vy);
     this.cocoaVisual(p.x,p.y,34,'shadow',0xc9a3ff);
   }
+  // v6.58.1 Flicker เคลื่อนแบบลื่น: เส้นทาง + เงาตามหลัง แทนการวาร์ปทันที
+  cocoaGlideTo(dest,sec){
+    const p=this.player;if(!p?.active)return;this._cocoaGlide={player:p,sx:p.x,sy:p.y,dest,t:0,dur:sec,ghostAt:0};const dx=dest.x-p.x,dy=dest.y-p.y;if(Math.hypot(dx,dy)>8)p.setFlipX?.(dx<0);
+    if(!this.add?.graphics||!this.tweens)return;const g=this.camWorld(this.add.graphics().setDepth(p.depth-1));
+    g.lineStyle(10,0xc9a3ff,.22).lineBetween(p.x,p.y,dest.x,dest.y).lineStyle(3,0xffffff,.75).lineBetween(p.x,p.y,dest.x,dest.y);
+    this.tweens.add({targets:g,alpha:0,duration:Math.max(220,sec*1000+160),ease:'Quad.in',onComplete:()=>g.destroy()});
+  }
+  tickCocoaGlide(dt){
+    const gl=this._cocoaGlide,p=this.player;if(!gl)return;if(!p?.active||gl.player!==p){this._cocoaGlide=null;return;}
+    gl.t+=dt;const k=Math.min(1,gl.t/gl.dur),e=1-Math.pow(1-k,3),clamp=n=>Math.max(-WORLD/2+40,Math.min(WORLD/2-40,n));
+    const x=clamp(gl.sx+(gl.dest.x-gl.sx)*e),y=clamp(gl.sy+(gl.dest.y-gl.sy)*e),v=p.body?.velocity,vx=v?.x||0,vy=v?.y||0;if(p.body?.reset){p.body.reset(x,y);p.setVelocity(vx,vy);}else p.setPosition(x,y);
+    if(gl.t>=gl.ghostAt&&k<1&&this.add?.image&&this.tweens&&p.texture){gl.ghostAt=gl.t+.035;const gh=this.camWorld(this.add.image(x,y,p.texture.key,p.frame.name).setScale(p.scaleX,p.scaleY).setFlipX(p.flipX).setTint(0xc9a3ff).setAlpha(.45).setDepth(p.depth-1));this.tweens.add({targets:gh,alpha:0,duration:220,onComplete:()=>gh.destroy()});}
+    if(k>=1)this._cocoaGlide=null;
+  }
   finishCocoaFlicker(cancel=false){
-    const f=this._cocoaFlicker;if(!f)return;this._cocoaFlicker=null;this._cocoaFlickerPose=null;
+    const f=this._cocoaFlicker;if(!f)return;this._cocoaFlicker=null;this._cocoaFlickerPose=null;this._cocoaGlide=null;
     if(cancel&&this._cc){this._cc.gen=(this._cc.gen||0)+1;this._cc.busy=false;}
-    if(f.player===this.player&&this.player?.active){this.cocoaWarpTo(f.anchor.x,f.anchor.y);this._attackPoseTime=0;this._attackTextureKey=null;}
+    if(f.player===this.player&&this.player?.active){if(cancel)this.cocoaWarpTo(f.anchor.x,f.anchor.y);else this.cocoaGlideTo(f.anchor,.16);this._attackPoseTime=0;this._attackTextureKey=null;}
     if(this.cameras?.main&&this.player?.active)this.cameras.main.startFollow(this.player,false,.2,.2);
     if(!cancel&&this.skillCd)this.skillCd.meteor=Math.max(this.skillCd.meteor||0,.10);
   }
   startCocoaFlicker(lvl,aw,dm,evo,basic){
     if(this._cocoaFlicker||this._cc?.busy||this.dashTime>0||this.state!=='play'||(this._cocoaJobs?.length||0)>=20)return;
-    const anchor={x:this.player.x,y:this.player.y},range=basic.path==='titan'?260:basic.path==='dashboxer'?340:300,target=this.cocoaFlickerTarget(anchor,range,this._cocoaFlickerBoss);
+    const anchor={x:this.player.x,y:this.player.y},range=basic.path==='titan'?190:basic.path==='dashboxer'?250:220,target=this.cocoaFlickerTarget(anchor,range,this._cocoaFlickerBoss);
     if(!target||this.cocoaFlickerRetreat(anchor,target)){this._ccCdMul=.5;return;}
     this._cocoaFlickerBoss=target.isBoss||target.isMini?target:null;
     const f=this._cocoaFlicker={player:this.player,basic,path:basic.path,anchor,range,target,epoch:this._cocoaEpoch||0,left:basic.path==='titan'?1:basic.path==='dashboxer'?3:2};f.total=f.left;
@@ -12106,14 +12121,15 @@ class Game extends Phaser.Scene {
       if((this._cocoaJobs?.length||0)>=24){this.finishCocoaFlicker(true);return;}
       const beat=this._cc?.step||0,wind=basic.path==='titan'?(beat%5===4?.32:.24):(beat%5===4?.10:.05);
       const a=Math.atan2(anchor.y-f.target.y,anchor.x-f.target.x)+(f.total-f.left)*(basic.path==='dashboxer'?1.1:.65),gap=Math.max(52,(f.target.body?.halfWidth||20)+32);
-      this.cocoaWarpTo(f.target.x+Math.cos(a)*gap,f.target.y+Math.sin(a)*gap);
-      this._cocoaFlickerPose={t:0,wind};this._attackPoseTime=0;this._poseHold=0;
-      this.castCocoaRush(lvl,aw,dm/f.total,evo,basic,true);f.left--;
-      if(!this.cocoaLater(wind+.10,()=>{if(this._cocoaFlicker!==f)return;if(f.left>0&&!f.stop)strike();else this.finishCocoaFlicker();}))this.finishCocoaFlicker(true);
+      const glide=.15;this.cocoaGlideTo({x:f.target.x+Math.cos(a)*gap,y:f.target.y+Math.sin(a)*gap},glide);
+      if(!this.cocoaLater(glide,()=>{if(this._cocoaFlicker!==f)return;if(!f.target?.active){this.finishCocoaFlicker(true);return;}
+        this._cocoaFlickerPose={t:0,wind};this._attackPoseTime=0;this._poseHold=0;
+        this.castCocoaRush(lvl,aw,dm/f.total,evo,basic,true);f.left--;
+        if(!this.cocoaLater(wind+.20,()=>{if(this._cocoaFlicker!==f)return;if(f.left>0&&!f.stop)strike();else this.finishCocoaFlicker();}))this.finishCocoaFlicker(true);}))this.finishCocoaFlicker(true);
     };strike();
   }
   tickCocoaFlicker(dt){
-    const f=this._cocoaFlicker;if(!f)return;
+    this.tickCocoaGlide(dt);const f=this._cocoaFlicker;if(!f)return;
     if(f.player!==this.player||f.basic!==this.basicAttack||f.path!==this.basicAttack?.path||f.epoch!==(this._cocoaEpoch||0)){this.finishCocoaFlicker(true);return;}
     if(this.state!=='play')return;
     const v=this.player.body?.velocity;if(v){f.anchor.x=Math.max(-WORLD/2+40,Math.min(WORLD/2-40,f.anchor.x+v.x*dt));f.anchor.y=Math.max(-WORLD/2+40,Math.min(WORLD/2-40,f.anchor.y+v.y*dt));}
@@ -12128,7 +12144,7 @@ class Game extends Phaser.Scene {
     const jobs=this._cocoaJobs||[];this._cocoaJobs=[];let fired=0;
     for(const j of jobs){if(j.player!==this.player||j.basic!==this.basicAttack||j.path!==this.basicAttack?.path||j.epoch!==(this._cocoaEpoch||0))continue;j.t-=dt;if(j.t<=0&&fired<4&&this.state==='play'){fired++;j.fn();}else this._cocoaJobs.push(j);}
     const ph=this._cocoaPhantom;if(ph){ph.t-=dt;if(ph.t<=0||this.basicAttack?.path!=='dashboxer'){this._cocoaPhantom=null;this._cocoaTrail=null;}}
-    const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0)this._cocoaTrail=null;}
+    const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){this.cocoaHit(p.x,p.y,85,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,85,'punch',0xc9a3ff);Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}
   }
   cocoaVisual(x,y,r,kind='wave',color=0xffb347){
     if(!this.fxOk())return;const now=this.elapsed||0;if(now-(this._cocoaFxAt??-99)>.2){this._cocoaFxAt=now;this._cocoaFxN=0;}if((this._cocoaFxN||0)>=6)return;this._cocoaFxN=(this._cocoaFxN||0)+1;
@@ -12194,7 +12210,10 @@ class Game extends Phaser.Scene {
     }else{this._cocoaUniqueT=.2;const r=(115+ul*10)*size;this.cocoaHit(p.x,p.y,r,unit*2.2,{push:250});this.cocoaVisual(p.x,p.y,r);Sfx.comboPunch(0,'heavy');}
     this.showBanner(this.uniqueInfo().emoji+' '+this.uniqueInfo().name,path==='dashboxer'?'Dash to punch through enemies · temporary charges expire':'One tap · keep moving while the skill resolves',1400);
   }
-  cocoaStartTrail(){const ph=this._cocoaPhantom;if(!ph||ph.t<=0||this.basicAttack?.path!=='dashboxer')return;const p=this.player;this._cocoaTrail={x:p.x,y:p.y,power:ph.power,width:ph.width,seen:new Set(),fxAt:0};}
+  cocoaStartTrail(){const b=this.basicAttack;if(b?.path!=='dashboxer')return;const ph=this._cocoaPhantom&&this._cocoaPhantom.t>0?this._cocoaPhantom:null,p=this.player;
+    // v6.58.1 Dash Boxer: ทุก Dash ต่อยศัตรูตามเส้นทาง (Phantom Rush แรงกว่า) + หมัดปิดตอนจบ Dash
+    const lvl=this.skills?.meteor||1,base=(12+3.5*lvl)*(p.dmgMul||1)*(1+(b.ranks?.power||0)*.12)*(1+.1*(b.lv?.p_blitz||0))*.9;
+    this._cocoaTrail={x:p.x,y:p.y,power:ph?ph.power:base,width:ph?ph.width:40,seen:new Set(),fxAt:0,finale:ph?0:base*1.3};}
   cocoaTrailHit(tr,x,y){const dx=x-tr.x,dy=y-tr.y,len2=dx*dx+dy*dy;if(len2<1)return;
     this.enemies.children.iterate(e=>{if(!e||!e.active||tr.seen.has(e))return;const f=Math.max(0,Math.min(1,((e.x-tr.x)*dx+(e.y-tr.y)*dy)/len2)),nx=tr.x+dx*f,ny=tr.y+dy*f;if(this.dist(e.x,e.y,nx,ny)>tr.width)return;tr.seen.add(e);this.damage(e,tr.power,e.x,e.y);});
     if((this.elapsed||0)>=tr.fxAt){tr.fxAt=(this.elapsed||0)+.07;this.cocoaVisual(x,y,tr.width*1.7,'shadow',0xc9a3ff);}
@@ -12837,7 +12856,7 @@ class Game extends Phaser.Scene {
       const fl=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(0xbfe3ff).setDepth(7).setScale(0.10).setAlpha(0.7));
       this.tweens.add({targets:fl,alpha:0,scale:0.32,duration:220,onComplete:()=>fl.destroy()}); return;
     }
-    const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(3,0xfff2a8,1);
+    if(!this.add?.graphics||!this.tweens)return;const g=this.camWorld(this.add.graphics().setDepth(7)); g.lineStyle(3,0xfff2a8,1);
     g.beginPath(); g.moveTo(x,y-260); g.lineTo(x+Phaser.Math.Between(-14,14),y-130); g.lineTo(x,y); g.strokePath();
     const fl=this.camWorld(this.add.circle(x,y,22,0xfff2a8,0.6).setDepth(7));
     this.tweens.add({targets:[g,fl],alpha:0,duration:200,onComplete:()=>{ g.destroy(); fl.destroy(); }});
