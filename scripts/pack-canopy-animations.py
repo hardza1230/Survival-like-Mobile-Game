@@ -87,21 +87,32 @@ def extract_poses(image, row_columns=(4, 4, 4, 4)):
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('source_map')
-parser.add_argument('--batch', choices=['canopy', 'mycelium', 'nectar', 'elite'], default='canopy')
+parser.add_argument('--batch', choices=['canopy', 'mycelium', 'nectar', 'elite', 'seasons', 'root'], default='canopy')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 mycelium = args.batch == 'mycelium'
 nectar = args.batch == 'nectar'
 elite = args.batch == 'elite'
+late = {
+    'seasons': ('ch2_s4_animations', 'ch2_seasons', ['c24_budling', 'c24_sunscarab', 'c24_leafblade', 'c24_frostbell', 'c24_stormfruit', 'c24_equinox', 'c24_season_wisp']),
+    'root': ('ch2_s5_animations', 'ch2_root', ['c25_rootling', 'c25_thorn_charger', 'c25_bramble_assassin', 'c25_sap_oracle', 'c25_seed_bomb', 'c25_bark_guard', 'c25_root_choir']),
+}.get(args.batch)
 incoming = root / ('assets/incoming/elite_summons' if elite else 'assets/incoming/ch2_s3_animations' if nectar else 'assets/incoming/ch2_s2_animations' if mycelium else 'assets/incoming/ch2_s1_animations')
 runtime = root / ('assets/art/elite_summons' if elite else 'assets/art/ch2_nectar' if nectar else 'assets/art/ch2_mycelium' if mycelium else 'assets/art/ch2_canopy')
+if late:
+    incoming = root / 'assets/incoming' / late[0]
+    runtime = root / 'assets/art' / late[1]
 (incoming / 'raw').mkdir(parents=True, exist_ok=True)
 runtime.mkdir(parents=True, exist_ok=True)
 mapping = json.loads(Path(args.source_map).read_text(encoding='utf-8'))
 identities = ['c21_crown_sapling', 'mini_jelly', 'c3_elite', 'feast_target', 'mimic_chest'] if elite else ['c23_drone', 'c23_dartwing', 'c23_pollen_sniper', 'c23_honey_bomb', 'c23_wax_guard', 'c23_choir_moth', 'c23_grub'] if nectar else ['c22_drifter', 'c22_hopper', 'c22_sniper', 'c22_mold_sac', 'c22_bulwark', 'c22_oracle', 'c22_sporeling'] if mycelium else ['c21_sprout', 'c21_vine_hunter', 'c21_spore_lantern',
               'c21_fruit_pod', 'c21_root_beetle', 'c21_thorn_oracle']
+if late:
+    identities = late[2]
 assert set(mapping) == set(identities), 'Exactly the selected batch species are required'
 atlas = None if elite else Image.open(root / ('assets/ch2_nectar_enemy_atlas.png' if nectar else 'assets/ch2_mycelium_enemy_atlas.png' if mycelium else 'assets/ch2_enemy_atlas.png')).convert('RGBA')
+if late:
+    atlas = Image.open(root / ('assets/ch2_' + args.batch + '_enemy_atlas.png')).convert('RGBA')
 report, previews = {}, {}
 baseline = 236
 for index, name in enumerate(identities):
@@ -131,8 +142,9 @@ for index, name in enumerate(identities):
         else:
             old = old.resize((256, 256), Image.Resampling.LANCZOS)
     else:
-        old = atlas.crop((index % 4 * 256, index // 4 * 256,
-                          (index % 4 + 1) * 256, (index // 4 + 1) * 256))
+        atlas_index = [0, 1, 6, 2, 3, 4, 5][index] if args.batch == 'root' else index
+        old = atlas.crop((atlas_index % 4 * 256, atlas_index // 4 * 256,
+                          (atlas_index % 4 + 1) * 256, (atlas_index // 4 + 1) * 256))
     old_box = old.getchannel('A').point(lambda a: 255 if a > 24 else 0).getbbox()
     target_width, target_height = old_box[2] - old_box[0], old_box[3] - old_box[1]
     scale = min(target_width / statistics.median(c.width for c in cells[:6]),
@@ -155,7 +167,7 @@ for index, name in enumerate(identities):
     report[name] = {'sourceSize': list(image.size), 'sourceRowColumns': list(row_columns), 'sourceBounds': source_bounds, 'sourceFrameOrder': order,
                     'extraction': 'whole alpha components; detached details assigned to nearest pose',
                     'tinySpeckPixelsRemoved': removed,
-                    'oldAtlasFrame': (6 if name == 'c21_crown_sapling' else None) if elite else index, 'reference': reference, 'oldAtlasBounds': list(old_box),
+                    'oldAtlasFrame': (6 if name == 'c21_crown_sapling' else None) if elite else atlas_index, 'reference': reference, 'oldAtlasBounds': list(old_box),
                     'baseline': baseline, 'scale': scale, 'bounds': bounds}
     previews[name] = frames
 (incoming / 'PACKING.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
@@ -165,7 +177,7 @@ for frame in range(16):
     for column, name in enumerate(identities):
         canvas.paste(previews[name][frame], (256 * column, 0), previews[name][frame])
     review.append(canvas)
-review[0].save(incoming / ('elite_preview.webp' if elite else 'nectar_preview.webp' if nectar else 'mycelium_preview.webp' if mycelium else 'canopy_preview.webp'), save_all=True, append_images=review[1:],
+review[0].save(incoming / (args.batch + '_preview.webp' if late else 'elite_preview.webp' if elite else 'nectar_preview.webp' if nectar else 'mycelium_preview.webp' if mycelium else 'canopy_preview.webp'), save_all=True, append_images=review[1:],
                duration=[125] * 6 + [250] * 2 + [160] * 4 + [100] * 2 + [300] * 2,
                loop=0, quality=85)
 print('Packed', len(identities), args.batch, 'sheets with', len(identities) * 16, 'authored poses, alpha and fixed baseline')

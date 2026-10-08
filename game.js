@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.98';
+const GAME_VERSION = '6.55.99';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.99',date:'2026-10-08',title:'Living monsters: Seasons and Root Throne',items:['Fourteen Conservatory and Root Throne creatures now have painted movement, idle, attack, hurt and defeat poses','Equinox Elites share their golem identity; shooters prepare shots and bombers warn before exploding','Original combat, guard auras, seasonal volleys, root objectives and Story balance remain']},
   {v:'6.55.98',date:'2026-10-08',title:'Painted Build effects',items:['Berry Blast, Shotgun muzzle flashes, Glacier Bloom, ice shatter and Frost Lance trails now use painted effects','Original damage, ranges, charge timing and card bonuses remain','Effects clear on transitions and ice shatter visuals keep their existing budget']},
   {v:'6.55.97',date:'2026-10-08',title:'Distinct Build card icons',items:['Fifteen Sniper, Shotgun, Glacier Bloom and Crystal Impaler upgrades now have individual painted icons','Card effects, ranks and draft balance remain']},
   {v:'6.55.96',date:'2026-10-08',title:'Royal Chef equipment art',items:['Head Chef Medal and Golden Spoon Ring now have painted equipment icons','Equipment, crafting, Bazaar and reward views share the new art','Existing prices, upgrades and set bonuses remain']},
@@ -1902,9 +1903,23 @@ const ASSET_SHEETS = {
   ch2_nectar_enemy_atlas:{ url:'assets/ch2_nectar_enemy_atlas.png', frame:256 },
   mb8_royal_stinger:{ url:'assets/mb8_royal_stinger_sheet.png', frame:256, anim:{frames:2,rate:5,yoyo:true} },
   boss8_hornet_queen:{ url:'assets/boss8_hornet_queen_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  c24_budling_animated:{url:'assets/art/ch2_seasons/c24_budling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c24_sunscarab_animated:{url:'assets/art/ch2_seasons/c24_sunscarab_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c24_leafblade_animated:{url:'assets/art/ch2_seasons/c24_leafblade_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
+  c24_frostbell_animated:{url:'assets/art/ch2_seasons/c24_frostbell_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  c24_stormfruit_animated:{url:'assets/art/ch2_seasons/c24_stormfruit_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9,10,11],rate:10},attack:{frames:[8,9,10,11],rate:12}}},
+  c24_equinox_animated:{url:'assets/art/ch2_seasons/c24_equinox_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c24_season_wisp_animated:{url:'assets/art/ch2_seasons/c24_season_wisp_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
   ch2_seasons_enemy_atlas:{ url:'assets/ch2_seasons_enemy_atlas.png', frame:256 },
   mb9_season_keeper:{ url:'assets/mb9_season_keeper_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   boss9_chronobloom_orchid:{ url:'assets/boss9_chronobloom_orchid_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
+  c25_rootling_animated:{url:'assets/art/ch2_root/c25_rootling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c25_thorn_charger_animated:{url:'assets/art/ch2_root/c25_thorn_charger_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c25_bramble_assassin_animated:{url:'assets/art/ch2_root/c25_bramble_assassin_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
+  c25_sap_oracle_animated:{url:'assets/art/ch2_root/c25_sap_oracle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  c25_seed_bomb_animated:{url:'assets/art/ch2_root/c25_seed_bomb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9,10,11],rate:10},attack:{frames:[8,9,10,11],rate:12}}},
+  c25_bark_guard_animated:{url:'assets/art/ch2_root/c25_bark_guard_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c25_root_choir_animated:{url:'assets/art/ch2_root/c25_root_choir_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
   ch2_root_enemy_atlas:{ url:'assets/ch2_root_enemy_atlas.png', frame:256 },
   mb10_ancient_root_knight:{ url:'assets/mb10_ancient_root_knight_sheet.png', frame:256, anim:{start:4,frames:4,rate:7} },
   boss10_true_rootmother:{ url:'assets/boss10_true_rootmother_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
@@ -2135,8 +2150,8 @@ const STAGE_SHEETS=[
   ['c21_crown_sapling_animated','boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas','c21_sprout_animated','c21_vine_hunter_animated','c21_spore_lantern_animated','c21_fruit_pod_animated','c21_root_beetle_animated','c21_thorn_oracle_animated'],
   ['boss7_mycelium_behemoth','mb7_fungal_juggernaut','ch2_mycelium_enemy_atlas','ch2_prop_atlas','c22_drifter_animated','c22_hopper_animated','c22_sniper_animated','c22_mold_sac_animated','c22_bulwark_animated','c22_oracle_animated','c22_sporeling_animated'],
   ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas','c23_drone_animated','c23_dartwing_animated','c23_pollen_sniper_animated','c23_honey_bomb_animated','c23_wax_guard_animated','c23_choir_moth_animated','c23_grub_animated'],
-  ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas'],
-  ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas'],
+  ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas','c24_budling_animated','c24_sunscarab_animated','c24_leafblade_animated','c24_frostbell_animated','c24_stormfruit_animated','c24_equinox_animated','c24_season_wisp_animated'],
+  ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas','c25_rootling_animated','c25_thorn_charger_animated','c25_bramble_assassin_animated','c25_sap_oracle_animated','c25_seed_bomb_animated','c25_bark_guard_animated','c25_root_choir_animated'],
   ...[1,2,3,4,5].map(n=>['c3_elite_animated','c3_mini'+n,'c3_boss'+n,'c3_e_basic_animated','c3_e_fast_animated','c3_e_shooter_animated','c3_e_bomber_animated','c3_e_tank_animated'])
 ];
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
@@ -9381,7 +9396,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e._rootKnightPoseToken=(e._rootKnightPoseToken||0)+1;e._rootKnightPoseUntil=0;
       e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e._glacierLifeToken=(e._glacierLifeToken||0)+1; e._glacierFrost=0; e._glacierFrostAt=0; e._glacierBrittleUntil=0;e._mintImpale=0;e._mintImpaleAt=-Infinity;e._mintRuptureAt=-Infinity; e._glacierBurstAt=-Infinity; e._chill=0; e._chillAt=null; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
     e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=this.stageIndex===1?0x72e5d0:null;e.frostbite=this.stageIndex===3;e.bloomStacks=0;e.bloomUntil=0;
-    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;e._feast=false;e._duelElite=false;e._mimic=null;this.resetEnemyPresentation(e,eliteFrame);if(this.stageIndex===5&&this.textures.exists('c21_crown_sapling_animated'))this.applySpecialEnemyArt(e,'c21_crown_sapling_animated');else if(this.stageIndex>=10&&this.textures.exists('c3_elite_animated'))this.applySpecialEnemyArt(e,'c3_elite_animated');this.camWorld(e);this.storySpawned?.(objective);return e;
+    e.baseScale=this.stageIndex===0?0.95:(this.stageIndex===1?0.84:this.stageIndex===2?0.92:this.stageIndex===3?0.94:this.stageIndex===4?0.56:(this.stageIndex===5||this.stageIndex===8)?0.42:1.55);if(this.stageIndex===4)e.roleName='Crown Oven Guard';if(this.stageIndex===5)e.roleName='Crown Sapling';if(this.stageIndex===8)e.roleName='Equinox Colossus';   /* v4.50: stage8 (C2-4) elite ใช้ ch2_seasons atlas 256px → scale 0.42 (เดิม 1.55 = ตัวยักษ์+hitbox ผิด = ตีไม่โดน) */ e._sqX=1; e._sqY=1; e.setScale(e.baseScale).clearTint();if(e.tintColor)e.setTint(e.tintColor);e._rareElite=false;e._feast=false;e._duelElite=false;e._mimic=null;this.resetEnemyPresentation(e,eliteFrame);if(this.stageIndex===5&&this.textures.exists('c21_crown_sapling_animated'))this.applySpecialEnemyArt(e,'c21_crown_sapling_animated');else if(this.stageIndex===8&&this.textures.exists('c24_equinox_animated'))this.applySpecialEnemyArt(e,'c24_equinox_animated');else if(this.stageIndex>=10&&this.textures.exists('c3_elite_animated'))this.applySpecialEnemyArt(e,'c3_elite_animated');this.camWorld(e);this.storySpawned?.(objective);return e;
   }
   // เวฟธรรมดา = "Survive the timer" (นับถอยหลัง + มอนเกิดต่อเนื่องเป็นฝูง)
   startSurvivalWave(w, seamless){
@@ -11358,12 +11373,20 @@ class Game extends Phaser.Scene {
     const id=type==='fast'||type==='dasher'?'dartwing':type==='shooter'?'pollen_sniper':type==='bomber'?'honey_bomb':type==='tank'?'wax_guard':type==='siege'?'choir_moth':type==='grub'?'grub':'drone';
     const key='c23_'+id+'_animated';return this.textures.exists(key)?key:'ch2_nectar_enemy_atlas';
   }
+  seasonArtKey(type){
+    const id=({fast:'sunscarab',dasher:'leafblade',shooter:'frostbell',bomber:'stormfruit',tank:'equinox',siege:'season_wisp'})[type]||'budling';
+    const key='c24_'+id+'_animated';return this.textures.exists(key)?key:'ch2_seasons_enemy_atlas';
+  }
+  rootArtKey(type){
+    const id=({fast:'thorn_charger',dasher:'bramble_assassin',shooter:'sap_oracle',bomber:'seed_bomb',tank:'bark_guard',siege:'root_choir'})[type]||'rootling';
+    const key='c25_'+id+'_animated';return this.textures.exists(key)?key:'ch2_root_enemy_atlas';
+  }
   antSpitWindup(e){
-    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated','e_banquet_eye_animated','c3_e_shooter_animated','c21_spore_lantern_animated','c22_sniper_animated','c22_oracle_animated','c23_pollen_sniper_animated','c23_choir_moth_animated'].includes(e._enemyArtKey))return;
+    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated','e_banquet_eye_animated','c3_e_shooter_animated','c21_spore_lantern_animated','c22_sniper_animated','c22_oracle_animated','c23_pollen_sniper_animated','c23_choir_moth_animated','c24_frostbell_animated','c24_season_wisp_animated','c25_sap_oracle_animated','c25_root_choir_animated'].includes(e._enemyArtKey))return;
     if(e.shootCd>0&&e.shootCd<=0.18&&(!e._enemyAction||e._enemyAction.state!=='windup'))this.enemyAction(e,'windup',e.shootCd*1000);
   }
   warnAntBomber(e){
-    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated','e_maw_truffle_animated','c3_e_bomber_animated','c21_fruit_pod_animated','c22_mold_sac_animated','c23_honey_bomb_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
+    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated','e_maw_truffle_animated','c3_e_bomber_animated','c21_fruit_pod_animated','c22_mold_sac_animated','c23_honey_bomb_animated','c24_stormfruit_animated','c25_seed_bomb_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
     e._antBombWarn=true;this.enemyAction(e,'windup',400);
   }
   applySpecialEnemyArt(e,key){
@@ -11442,6 +11465,8 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===5){key=this.canopyArtKey(type);if(key!=='ch2_enemy_atlas')atlasFrame=0;}
     if(this.stageIndex===6){key=this.myceliumArtKey(type);if(key!=='ch2_mycelium_enemy_atlas')atlasFrame=0;}
     if(this.stageIndex===7){key=this.nectarArtKey(type);if(key!=='ch2_nectar_enemy_atlas')atlasFrame=0;}
+    if(this.stageIndex===8){key=this.seasonArtKey(type);if(key!=='ch2_seasons_enemy_atlas')atlasFrame=0;}
+    if(this.stageIndex===9){key=this.rootArtKey(type);if(key!=='ch2_root_enemy_atlas')atlasFrame=0;}
     if(!e) e=this.enemies.create(x,y,key,atlasFrame);
     else { e.setTexture(key,atlasFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool Full (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash

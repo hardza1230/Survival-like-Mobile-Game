@@ -1,0 +1,373 @@
+{
+  "8:basic": {
+    "combat": {
+      "hp": 147.09736889599998,
+      "dmg": 26,
+      "spd": 62.06,
+      "xp": 1,
+      "baseScale": 0.37,
+      "circle": [
+        43,
+        85,
+        85
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Spring Budling",
+      "seasonRole": "budling",
+      "rootRole": null,
+      "aura": null
+    },
+    "fallbackFrame": 0
+  },
+  "8:fast": {
+    "combat": {
+      "hp": 77.41966783999999,
+      "dmg": 24,
+      "spd": 130.54000000000002,
+      "xp": 1,
+      "baseScale": 0.35,
+      "circle": [
+        41,
+        87,
+        87
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Summer Sunscarab",
+      "seasonRole": "sunscarab",
+      "rootRole": null,
+      "aura": null
+    },
+    "fallbackFrame": 1
+  },
+  "8:dasher": {
+    "combat": {
+      "hp": 123.87146854399998,
+      "dmg": 37,
+      "spd": 74.9,
+      "xp": 2,
+      "baseScale": 0.39,
+      "circle": [
+        44,
+        84,
+        84
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": true,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Autumn Leafblade",
+      "seasonRole": "leafblade",
+      "rootRole": null,
+      "aura": null
+    },
+    "fallbackFrame": 2
+  },
+  "8:shooter": {
+    "combat": {
+      "hp": 147.09736889599998,
+      "dmg": 24,
+      "spd": 66.34,
+      "xp": 2,
+      "baseScale": 0.38,
+      "circle": [
+        43,
+        85,
+        85
+      ],
+      "shooter": true,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 1.1,
+      "roleName": "Winter Frostbell",
+      "seasonRole": "frostbell",
+      "rootRole": null,
+      "aura": null
+    },
+    "fallbackFrame": 3
+  },
+  "8:bomber": {
+    "combat": {
+      "hp": 185.80720281599997,
+      "dmg": 32,
+      "spd": 74.9,
+      "xp": 2,
+      "baseScale": 0.43,
+      "circle": [
+        47,
+        81,
+        81
+      ],
+      "shooter": false,
+      "bomber": true,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Stormcloud Fruit",
+      "seasonRole": "stormfruit",
+      "rootRole": null,
+      "aura": null
+    },
+    "fallbackFrame": 4
+  },
+  "8:tank": {
+    "combat": {
+      "hp": 619.3573427199999,
+      "dmg": 47,
+      "spd": 38.52,
+      "xp": 4,
+      "baseScale": 0.48,
+      "circle": [
+        54,
+        74,
+        74
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Equinox Gardener",
+      "seasonRole": "equinoxGuard",
+      "rootRole": null,
+      "aura": {
+        "size": [
+          230,
+          165
+        ],
+        "tint": 9428223,
+        "alpha": 0.33
+      }
+    },
+    "fallbackFrame": 5
+  },
+  "8:siege": {
+    "combat": {
+      "hp": 2012.9113638399997,
+      "dmg": 63,
+      "spd": 25.68,
+      "xp": 10,
+      "baseScale": 0.42,
+      "circle": [
+        47,
+        81,
+        81
+      ],
+      "shooter": true,
+      "bomber": false,
+      "dasher": false,
+      "siege": true,
+      "shootCd": 1.35,
+      "roleName": "Seasonal Wisp",
+      "seasonRole": "seasonWisp",
+      "rootRole": null,
+      "aura": null
+    },
+    "fallbackFrame": 6
+  },
+  "8:elite": {
+    "combat": {
+      "hp": 479.9055397499999,
+      "dmg": 43,
+      "spd": 48,
+      "xp": 8,
+      "baseScale": 0.42,
+      "circle": [
+        48,
+        80,
+        80
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "roleName": "Equinox Colossus",
+      "aura": null
+    },
+    "fallbackFrame": 5
+  },
+  "9:basic": {
+    "combat": {
+      "hp": 176.62006889898663,
+      "dmg": 29,
+      "spd": 62.64,
+      "xp": 1,
+      "baseScale": 0.38,
+      "circle": [
+        44,
+        84,
+        84
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Crown Rootling",
+      "seasonRole": null,
+      "rootRole": "rootling",
+      "aura": null
+    },
+    "fallbackFrame": 0
+  },
+  "9:fast": {
+    "combat": {
+      "hp": 92.95793099946664,
+      "dmg": 26,
+      "spd": 131.76000000000002,
+      "xp": 1,
+      "baseScale": 0.39,
+      "circle": [
+        44,
+        84,
+        84
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Thorn Charger",
+      "seasonRole": null,
+      "rootRole": "thornCharger",
+      "aura": null
+    },
+    "fallbackFrame": 1
+  },
+  "9:dasher": {
+    "combat": {
+      "hp": 148.73268959914662,
+      "dmg": 41,
+      "spd": 75.60000000000001,
+      "xp": 2,
+      "baseScale": 0.4,
+      "circle": [
+        45,
+        83,
+        83
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": true,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Bramble Assassin",
+      "seasonRole": null,
+      "rootRole": "brambleAssassin",
+      "aura": null
+    },
+    "fallbackFrame": 2
+  },
+  "9:shooter": {
+    "combat": {
+      "hp": 176.62006889898663,
+      "dmg": 26,
+      "spd": 66.96000000000001,
+      "xp": 2,
+      "baseScale": 0.41,
+      "circle": [
+        46,
+        82,
+        82
+      ],
+      "shooter": true,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 1.1,
+      "roleName": "Sap Oracle",
+      "seasonRole": null,
+      "rootRole": "sapOracle",
+      "aura": null
+    },
+    "fallbackFrame": 3
+  },
+  "9:bomber": {
+    "combat": {
+      "hp": 223.09903439871994,
+      "dmg": 35,
+      "spd": 75.60000000000001,
+      "xp": 2,
+      "baseScale": 0.44,
+      "circle": [
+        48,
+        80,
+        80
+      ],
+      "shooter": false,
+      "bomber": true,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Memory Seed Bomb",
+      "seasonRole": null,
+      "rootRole": "seedBomb",
+      "aura": null
+    },
+    "fallbackFrame": 4
+  },
+  "9:tank": {
+    "combat": {
+      "hp": 743.6634479957331,
+      "dmg": 53,
+      "spd": 38.88,
+      "xp": 4,
+      "baseScale": 0.49,
+      "circle": [
+        55,
+        73,
+        73
+      ],
+      "shooter": false,
+      "bomber": false,
+      "dasher": false,
+      "siege": false,
+      "shootCd": 0,
+      "roleName": "Bark Bulwark",
+      "seasonRole": null,
+      "rootRole": "barkGuard",
+      "aura": {
+        "size": [
+          235,
+          168
+        ],
+        "tint": 13986815,
+        "alpha": 0.34
+      }
+    },
+    "fallbackFrame": 5
+  },
+  "9:siege": {
+    "combat": {
+      "hp": 2416.9062059861326,
+      "dmg": 70,
+      "spd": 25.92,
+      "xp": 10,
+      "baseScale": 0.44,
+      "circle": [
+        49,
+        79,
+        79
+      ],
+      "shooter": true,
+      "bomber": false,
+      "dasher": false,
+      "siege": true,
+      "shootCd": 1.3,
+      "roleName": "Root Choir Leech",
+      "seasonRole": null,
+      "rootRole": "rootChoir",
+      "aura": null
+    },
+    "fallbackFrame": 6
+  }
+}

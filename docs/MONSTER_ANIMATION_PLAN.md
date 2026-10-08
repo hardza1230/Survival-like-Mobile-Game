@@ -13,7 +13,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | 7A | Chapter 2 stage 1: Fermented Canopy — 6 creatures | Complete — v6.55.92; owner mobile review pending |
 | 7B | Chapter 2 stage 2: Mycelium Marsh — 7 creatures including Sporeling | Complete — v6.55.93; owner mobile review pending |
 | 8 | Chapter 2 stage 3: Nectar creatures, including Tiny Grub | Complete — v6.55.94; owner mobile review pending |
-| 9 | Chapter 2 stages 4–5: season and root creatures | Pending |
+| 9 | Chapter 2 stages 4–5: season and root creatures | Complete — v6.55.99; owner mobile review pending |
 | 10 | Elite/special art including Mini Jelly and C2-1 Crown Sapling; full visual and mobile performance review | Art/code complete — v6.55.95; owner mobile review pending |
 
 ## Commit 7 split
@@ -83,3 +83,8 @@ Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. 
 ## Elite and special creatures — v6.55.95
 
 Elite/special art batch B is implemented: Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic Chest each have 16 authored poses. Packed RGBA PNG/raw/exact prompts/packing/contact/animated review: assets/incoming/elite_summons; runtime lossless alpha WebP: assets/art/elite_summons. Crown Sapling uses C2-1 atlas cell 6 identity; Chapter 3 Elite uses the ash/gold crowned seed knight design from the brief. Feast carries a food plate and uses flee clips, without an attack clip. Mimic is a toothy living chest. Existing world sprite boxes/circle radii/centers are preserved when 62px generic Elite and 48px chest art become 256px frames. Mini Jelly keeps .36 scale and [70,58,70] circle. HP/damage/speed/EXP, Elite gates, Warden half-HP three-child split, Feast timers/Hunger share and Mimic chance/tier/reward remain. Animated Feast pool reuse cancels its escape fade and clears fleeing state; missing sheets retain original art. Boss/miniboss pose/death controllers remain separate. Owner mobile visual/FPS review pending. Ordinary season/root art (batch 9), Chef gear and card/Unique VFX art remain.
+
+
+## Batch 9 delivery
+
+Batch 9 is implemented: seven Four-Season Conservatory and seven Root Throne species each have 16 authored movement/idle/action/hurt/death poses (224 total). Runtime lossless-alpha WebP: assets/art/ch2_seasons and assets/art/ch2_root. Raw/packed PNGs, exact prompts, manifest, packing and animated review: assets/incoming/ch2_s4_animations and assets/incoming/ch2_s5_animations. Equinox Colossus Elite shares the existing golem identity while retaining .42 scale and [48,80,80] circle. Four shooters have preparation/fire clips, both dashers have windup/dash and both bombers warn once per life. Existing stats, colliders, aura values (.76 Seasons/.78 Root), five/six-shot siege volleys, objective nodes, boss/miniboss controllers and P1–P5 balance remain. Root identity references use atlas cells 0/1/6/2/3/4/5 in named species order; the old generic fallback retains its original type/frame mapping. Batch 9 regression fixtures capture original combat at v6.55.98. All scoped art orders A–E are delivered; owner mobile visual/FPS and gameplay review remain pending.

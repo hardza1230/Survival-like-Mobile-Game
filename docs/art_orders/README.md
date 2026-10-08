@@ -1,4 +1,4 @@
-<!-- Latest: v6.55.98; batches 7A/7B/8 and B–E complete; batch 9 ordinary creatures remain. -->
+<!-- Latest: v6.55.99; all scoped art orders A–E are delivered; owner mobile visual/FPS review remains. -->
 # 🎨 Art Orders — ใบสั่งงานอาร์ตจริงแทนของชั่วคราว
 
 โฟลเดอร์นี้คือ "สัญญา" ระหว่าง **AI ทำอาร์ต** กับ **AI เขียนโค้ด** ของ Mochi Mayhem
@@ -8,7 +8,7 @@
 
 ## ลำดับการอ่าน
 1. `00_STYLE_GUIDE.md` — สไตล์/สี/มุมมอง/กฎเทคนิค (**อ่านก่อนทุกชุด**)
-2. **`14_REMAINING_ART.md` — งานที่เหลือทั้งหมด (อัปเดต v6.55.98; 7A/7B/8 และ B–E เสร็จแล้ว) ← เริ่มที่นี่** · `NEXT_BATCH_REQUEST.md` = กติกาประหยัดโควต้า §0 (งานในไฟล์นั้นเสร็จแล้ว)
+2. **`14_REMAINING_ART.md` — งานที่เหลือทั้งหมด (อัปเดต v6.55.99; A–E ส่งครบแล้ว รอตรวจบนมือถือจริง) ← เริ่มที่นี่** · `NEXT_BATCH_REQUEST.md` = กติกาประหยัดโควต้า §0 (งานในไฟล์นั้นเสร็จแล้ว)
 2b. **`NEXT_BATCH_REQUEST.md` — (เดิม) งานที่ต้องทำตอนนั้น (รวมเป็นแผ่นรวม ประหยัดโควต้า) ← เริ่มที่นี่**
 3. ใบสั่งรายชุด (01–12) = สเปกละเอียดของแต่ละ key
 
@@ -33,7 +33,7 @@
 | 12 | `12_BIOME_SPICY.md` | Biome ในถ้ำ (พื้นต่อรส + ของในฉาก 5 รส) | 13 | 🔴 | 🟩 อาร์ตใส่เกมแล้ว v6.34 · กลไกมีแค่ Spicy |
 | 13 | `13_DELVE_BOSSES.md` | บอส Delve ชั้น 10/20 + ของประกอบ | 3 | 🔴 | 🟩 ใส่เกมแล้ว v6.39 + กลไกครบ |
 | C2-5 | `C2_5_ROOT_KNIGHT_ANIMATION.md` | Root Knight 16 เฟรม | 1 ชีต | — | 🟩 ใส่เข้าเกมแล้ว v6.0.54 |
-| 14 | `14_REMAINING_ART.md` | **งานที่เหลือ:** อนิเมชัน C2-4 ถึง C2-5 | 14 มอน | 🔴 | 🟩 7A/7B/8 และ B–E ครบ v6.55.98; เหลือ 9 |
+| 14 | `14_REMAINING_ART.md` | **ส่งครบ:** อนิเมชัน C2-4 ถึง C2-5 และงาน A–E | 14 ชีต Batch 9 ส่งแล้ว | 🔴 | 🟩 A–E ครบ v6.55.99; รอตรวจมือถือ |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
 
@@ -108,3 +108,8 @@ Fifteen Build upgrade cards now have distinct painted icons: four Sniper, five S
 ## Build VFX delivery — v6.55.98
 
 Five painted Build effects are integrated: Berry Blast, Shotgun muzzle flash, Glacier Bloom, Glacier Shatter (eight authored frames each), and static Frost Lance ground trail. Runtime alpha WebP: assets/vfx; raw/packed PNGs, exact prompt, frame metadata and review: assets/incoming/vfx_path_uniques. Effects use NORMAL blend, central tracked cleanup and original missing-art fallbacks. Existing three-per-200ms shatter visual budget remains; trail expiry removes art and transition cleanup removes both art and trail damage state. Damage/range/charge timing, freeze duration, three-second trail/0.4s damage ticks, twin dash and card effects remain. Owner phone visual/FPS review pending. Remaining art: batch 9, 14 ordinary season/root creatures.
+
+
+## Batch 9 delivery — v6.55.99
+
+Batch 9 is implemented: seven Four-Season Conservatory and seven Root Throne species each have 16 authored movement/idle/action/hurt/death poses (224 total). Runtime lossless-alpha WebP: assets/art/ch2_seasons and assets/art/ch2_root. Raw/packed PNGs, exact prompts, manifest, packing and animated review: assets/incoming/ch2_s4_animations and assets/incoming/ch2_s5_animations. Equinox Colossus Elite shares the existing golem identity while retaining .42 scale and [48,80,80] circle. Four shooters have preparation/fire clips, both dashers have windup/dash and both bombers warn once per life. Existing stats, colliders, aura values (.76 Seasons/.78 Root), five/six-shot siege volleys, objective nodes, boss/miniboss controllers and P1–P5 balance remain. Root identity references use atlas cells 0/1/6/2/3/4/5 in named species order; the old generic fallback retains its original type/frame mapping. Batch 9 regression fixtures capture original combat at v6.55.98. All scoped art orders A–E are delivered; owner mobile visual/FPS and gameplay review remain pending.

@@ -1,4 +1,4 @@
-# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.98 · 8 ต.ค. 2026)
+# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.99 · 8 ต.ค. 2026)
 
 อ่าน `00_STYLE_GUIDE.md` และกติกาประหยัดโควต้าใน `NEXT_BATCH_REQUEST.md` §0 ก่อนเริ่ม
 (1 ครั้งที่สร้างภาพ = 1 แผ่นรวม · กริดเท่ากัน · วัตถุไม่ล้นช่อง · พื้นโปร่งใสหรือเขียว `#00FF00` · ไม่มีตัวหนังสือ/เส้นกริด)
@@ -9,7 +9,7 @@
 
 | ลำดับ | งาน | จำนวนภาพที่ต้องสร้าง | ความสำคัญ |
 |---|---|---|---|
-| A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (9; 7A/7B/8 เสร็จแล้ว) | เหลือ 2 ด่าน × 7 ตัว = 14 ชีต | 🔴 |
+| A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 | ✅ ครบ 7A/7B/8/9 v6.55.99 | 🔴 |
 | B | Elite / ตัวพิเศษ / Mini Jelly รวม Crown Sapling | ✅ ครบ 5 ชีต v6.55.95 | 🟠 |
 | C | อาร์ตอุปกรณ์ชุด Chef | ✅ ครบ 2 ชิ้น v6.55.96 | 🟠 |
 | D | ไอคอนการ์ด Unique ของสาย Build | ✅ 15 ไอคอน + ช่องสำรอง v6.55.97 | 🟡 |
@@ -19,9 +19,9 @@
 
 ---
 
-## A. ชีตอนิเมชันมอนสเตอร์ Chapter 2 🔴
+## A. ชีตอนิเมชันมอนสเตอร์ Chapter 2 ✅ ส่งครบ v6.55.99
 
-**อัปเดต v6.55.95:** A1 / Batch 7A ครบ 6 ตัว และ A2 / Batch 7B ครบ 7 ตัวรวม Sporeling ส่งและผูกเข้าเกมแล้ว A3 / Batch 8 ครบ 7 ตัวแล้ว เหลือ A4–A5 รวม 14 ตัว การตรวจภาพ/FPS บนมือถือจริงยังรอเจ้าของ ส่วน Elite C2-1 คือ Crown Sapling (atlas ช่อง 6) เป็นคนละตัวกับ Root-Back Beetle และย้ายไป Batch 10
+**อัปเดต v6.55.99:** A1–A5 ส่งครบและผูกเข้าเกมแล้ว รวม Batch 7A/7B/8/9 ส่วน B–E ก็ส่งครบแล้ว เหลือการตรวจภาพ/FPS และเกมเพลย์บนมือถือจริงโดยเจ้าของ
 
 ตอนนี้ C2-4 ถึง C2-5 ใช้ **atlas ภาพนิ่ง** คือ 1 ช่องต่อ 1 สายพันธุ์ ยังไม่มีท่าเดิน, ท่าโจมตี, ท่าเจ็บ หรือท่าตาย ส่วน C2-1 ถึง C2-3 ใช้ชีตอนิเมชันแล้ว
 
@@ -86,7 +86,7 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 | `c23_choir_moth` | Choir Moth | siege / shooter | กางปีกร้องเพลง |
 | `c23_grub` | **Tiny Grub** | ตัวเล็กที่ถูกเรียกออกมา | คลานดุ๊กดิ๊ก |
 
-### A4 · commit 9 — C2-4 Four-Season Conservatory (`assets/ch2_seasons_enemy_atlas.png`)
+### A4 · commit 9 ✅ delivered v6.55.99 — C2-4 Four-Season Conservatory (`assets/ch2_seasons_enemy_atlas.png`)
 ส่งที่ `assets/incoming/ch2_s4_animations/`
 
 | key | ชื่อ | บทบาท | จุดเด่นของท่าโจมตี |
@@ -99,7 +99,7 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 | `c24_equinox` | Equinox Gardener | tank (และ **Elite**) | ฟาดกรรไกรตัดกิ่ง |
 | `c24_season_wisp` | Seasonal Wisp | siege / shooter | วิญญาณเปลี่ยนสี 4 ฤดู |
 
-### A5 · commit 9 — C2-5 Root Throne (`assets/ch2_root_enemy_atlas.png`)
+### A5 · commit 9 ✅ delivered v6.55.99 — C2-5 Root Throne (`assets/ch2_root_enemy_atlas.png`)
 ส่งที่ `assets/incoming/ch2_s5_animations/`
 
 | key | ชื่อ | บทบาท | จุดเด่นของท่าโจมตี |
@@ -214,3 +214,8 @@ Fifteen Build upgrade cards now have distinct painted icons: four Sniper, five S
 ## Build VFX delivery — v6.55.98
 
 Five painted Build effects are integrated: Berry Blast, Shotgun muzzle flash, Glacier Bloom, Glacier Shatter (eight authored frames each), and static Frost Lance ground trail. Runtime alpha WebP: assets/vfx; raw/packed PNGs, exact prompt, frame metadata and review: assets/incoming/vfx_path_uniques. Effects use NORMAL blend, central tracked cleanup and original missing-art fallbacks. Existing three-per-200ms shatter visual budget remains; trail expiry removes art and transition cleanup removes both art and trail damage state. Damage/range/charge timing, freeze duration, three-second trail/0.4s damage ticks, twin dash and card effects remain. Owner phone visual/FPS review pending. Remaining art: batch 9, 14 ordinary season/root creatures.
+
+
+## Batch 9 delivery — v6.55.99
+
+Batch 9 is implemented: seven Four-Season Conservatory and seven Root Throne species each have 16 authored movement/idle/action/hurt/death poses (224 total). Runtime lossless-alpha WebP: assets/art/ch2_seasons and assets/art/ch2_root. Raw/packed PNGs, exact prompts, manifest, packing and animated review: assets/incoming/ch2_s4_animations and assets/incoming/ch2_s5_animations. Equinox Colossus Elite shares the existing golem identity while retaining .42 scale and [48,80,80] circle. Four shooters have preparation/fire clips, both dashers have windup/dash and both bombers warn once per life. Existing stats, colliders, aura values (.76 Seasons/.78 Root), five/six-shot siege volleys, objective nodes, boss/miniboss controllers and P1–P5 balance remain. Root identity references use atlas cells 0/1/6/2/3/4/5 in named species order; the old generic fallback retains its original type/frame mapping. Batch 9 regression fixtures capture original combat at v6.55.98. All scoped art orders A–E are delivered; owner mobile visual/FPS and gameplay review remain pending.
