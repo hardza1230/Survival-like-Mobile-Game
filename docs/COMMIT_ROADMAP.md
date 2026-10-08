@@ -74,3 +74,7 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 ## Swarm feedback — v6.55.85
 
 ✅ Timed Swarm persists until countdown end; denser controlled spawns and pulses, larger finite objective/replay quotas, unchanged XP budgets. Actual director-loop regressions/checks/build pass; user gameplay review pending.
+
+## Hunt recovery — v6.55.86
+
+✅ Objective-owned retry, reserved slot, pooled visibility/bounds and no duplicate target. Actual-method check/build pass; C1-5 wave4 user retest pending.

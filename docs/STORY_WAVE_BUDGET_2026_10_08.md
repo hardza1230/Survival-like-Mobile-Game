@@ -1,3 +1,15 @@
+# Hunt recovery — v6.55.86
+
+เจ้าของพบ C1-5 wave4 Hunt ไม่มีมอน/เป้าหมาย เกิดช่อง lost retry ในโค้ดเดิม: spawnElite ล้มเหลวแล้วตั้ง timer 1s ถ้าครบเวลาตอน state levelup callback จะถูกทิ้งและไม่ลองอีก เมื่อโควต้ามอนทั่วไปหมดจึงไม่มีเป้าใหม่ให้ทำภารกิจ
+
+แก้เป็น deadline บน objective: tickWaveObjective เรียก ensureHuntTarget เฉพาะ play/wave และยังไม่จบ ถ้าไม่มี marked target ให้ลองสร้างเมื่อ deadline ครบ Failed pool/cap รอ 1s; หลังฆ่าเป้ารอ 700ms ไม่มี timer เก่าข้าม objective/run และไม่สร้างซ้ำถ้ามีเป้าอยู่ Story ordinary reinforcements สำรอง 1 ช่องเมื่อ Hunt ขาดเป้า เป้าข้าม quota ได้แต่ไม่ข้าม live cap
+
+Target คืน alpha1, ล้าง flee/blink และยกเลิก tween เก่าของ pooled enemy; เกิดและเคลื่อนที่ภายใน WORLD/2−120 และหยุดวิ่งหนีที่ขอบ ไม่เพิ่ม kill/progress เมื่อกู้ตัวที่หาย รางวัล/จำนวนเป้าหมาย/Swarm/EXP ยังคงเดิม
+
+`tests/hunt-recovery.test.cjs` เรียก actual spawn/ensure/tick/target-down methods: C1-5 wave4 full cap + level-up interruption, exhausted quota/reserved slot, full pool retries, missing target, dedup, sequential completion 15 stages, bounds และ objective/mode replacement ตรวจรวมและ build ผ่าน ผู้เล่นทดสอบจริงเอง
+
+---
+
 # ปรับตาม feedback — v6.55.85
 
 v6.55.84 ลดจำนวนมากเกินไป และ Survive the Swarm ใช้โควต้าหมดก่อนเวลาจบ ทำให้ช่วงท้ายไม่มีมอน ด้านล่างเป็นเอกสารเดิมก่อนปรับ ให้ยึดค่าชุดนี้เป็นปัจจุบัน

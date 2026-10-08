@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.85';
+const GAME_VERSION = '6.55.86';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.86',date:'2026-10-08',title:'Hunt targets recover after upgrades and spawn pressure',items:['Hunt checks for its missing marked target every active frame instead of losing a one-shot retry during level-up','Ordinary reinforcements reserve one live slot for the next Hunt target, even after their quota runs out','Marked targets reset pooled flee/alpha state and spawn inside the arena','Target recovery preserves progress, quota and EXP; no duplicate target or delayed spawn across objectives']},
   {v:'6.55.85',date:'2026-10-08',title:'Restore Swarm pressure through the final seconds',items:['Timed Survive the Swarm replenishes until the countdown ends instead of exhausting a tiny total quota','Larger controlled live caps, faster small groups and capped surge pulses restore crowd pressure','Objective waves have larger finite reserves; miniboss and boss caps stay separate','The same 1020 base EXP budget and fast-clear compensation remain; extra Swarm kills cannot add unbounded EXP']},
   {v:'6.55.84',date:'2026-10-08',title:'Story waves: finite monsters and fair EXP',items:['All story stages use finite enemy quotas and lower live caps; summons share the quota','Each completed stage grants a base 1020 EXP budget: Lv18 before the boss, with leftover EXP paid for fast objectives','Story EXP uses a linear curve; Recipe and other Endgame curves remain unchanged','Stage 3 no longer forces Mint; objective overtime points toward completion instead of cutting EXP','Replay uses a finite shared quota; queued upgrades finish before the next encounter']},
   {v:'6.55.83',date:'2026-10-08',title:'Strawberry: three focused seed builds',items:['Sniper charges one heavy seed; extra shots convert to power and Heart Railgun rewards a fully charged Unique','Ricochet keeps bouncing after Evolution, visits new targets and gains bounded boss fallback damage','Shotgun evolves into Petal Breacher with stronger close hits and a heavy center pellet, never automatic piercing','Focused card pools, cap conversion and Basic/Unique descriptions preserve old upgrades and Recipe builds','Run-scoped shots, charge cancellation and projectile/splash budgets cover the complete S1–S5 rework']},
@@ -9238,7 +9239,9 @@ class Game extends Phaser.Scene {
   }
   storyCanSpawn(objective=false,type=null){
     if(!this.usesStoryBudget?.()||!this._storyBudget)return true;
-    if(this.enemies.countActive(true)>=Math.min(this.maxLive||100,this.storyLiveCap()))return false;
+    let cap=Math.min(this.maxLive||100,this.storyLiveCap());
+    if(!objective&&this.waveObjective?.type==='hunt'&&!this.waveObjective.done&&!this.huntTargetActive?.())cap=Math.max(0,cap-1);
+    if(this.enemies.countActive(true)>=cap)return false;
     if(type==='shooter'){let n=0;this.enemies.children.iterate(e=>{if(e?.active&&e.shooter)n++;});if(n>=2+Math.min(2,Math.floor(this.stageIndex/5)))return false;}
     return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota));
   }
@@ -9677,11 +9680,20 @@ class Game extends Phaser.Scene {
     if(w._state==='channel'){const cf=Phaser.Math.Clamp(w._channel/t.channel,0,1),cx=w.x-bw/2,cy=w.y-52;g.fillStyle(0x000000,0.55);g.fillRoundedRect(cx-2,cy-2,bw+4,8,4);g.fillStyle(0x1a2a24,1);g.fillRoundedRect(cx,cy,bw,4,2);g.fillStyle(0x8affd0,1);g.fillRoundedRect(cx,cy,Math.max(2,bw*cf),4,2);}
   }
   floatText(x,y,msg,color){ const t=this.camWorld(this.add.text(x,y,msg,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#'+(color||0xffffff).toString(16).padStart(6,'0'),stroke:'#000',strokeThickness:4}).setOrigin(.5).setDepth(95000));this.tweens.add({targets:t,y:y-28,alpha:{from:1,to:0},duration:1100,ease:'Cubic.out',onComplete:()=>t.destroy()}); }
+  huntTargetActive(){
+    let found=false;this.enemies.children.iterate(e=>{if(e?.active&&e._waveObjectiveTarget)found=true;});return found;
+  }
+  ensureHuntTarget(){
+    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done||this.state!=='play'||this.mode!=='wave'||this.huntTargetActive())return;
+    if(this.time.now<(o._huntSpawnAt||0))return;this.spawnObjectiveElite();
+  }
   spawnObjectiveElite(){
-    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done)return;const e=this.spawnElite(false,true);if(!e){
-      // A full enemy pool must never leave Hunt without a target.
-      this.time.delayedCall(1000,()=>{if(this.state==='play'&&this.mode==='wave'&&this.waveObjective===o&&!o.done)this.spawnObjectiveElite();});return;
+    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done||this.huntTargetActive())return;const e=this.spawnElite(false,true);if(!e){
+      // Keep the retry on the objective; level-up pauses cannot consume it.
+      o._huntSpawnAt=this.time.now+1000;return;
     }
+    o._huntSpawnAt=0;this.tweens.killTweensOf(e);e._fleeing=false;e._huntFlee=false;e._blinkCd=2.5;e.setAlpha(1);
+    const lim=WORLD/2-120;e.setPosition(Phaser.Math.Clamp(e.x,-lim,lim),Phaser.Math.Clamp(e.y,-lim,lim));
     e.hp*=1.6;e.maxhp=e.hp;e._waveObjectiveTarget=true;   // เป้าหมายล่า = ถึกกว่าNormal (เดิม ×0.68 อ่อนไป)
     // Dedicated Hunt creature across every stage; stop any stage elite walk cycle before replacing its texture.
     e.anims.stop();e.setTexture('objective_sugar_stalker');e.setCircle(48,80,80);
@@ -9696,10 +9708,11 @@ class Game extends Phaser.Scene {
   onWaveObjectiveTargetDown(e){
     const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done)return;o.progress++;this.renderWaveObjectiveHUD();
     if(o.progress>=o.target){this.completeWaveObjective();return;}
-    this.time.delayedCall(700,()=>{if((this.state==='play'||this.state==='levelup')&&this.mode==='wave'&&this.waveObjective===o&&!o.done)this.spawnObjectiveElite();});
+    o._huntSpawnAt=this.time.now+700;
   }
   tickWaveObjective(dt){
     const o=this.waveObjective;if(!o||o.done)return;
+    this.ensureHuntTarget?.();
     this.tickWaveEvent(dt);
     this.tickBonusChallenge(dt);
     // v4.87.1: กันปั๊มเลเวล — ภารกิจไม่มี timer (hunt/purge/capture) ถ้าลากนานเกิน มอนธรรมดาหยุดให้ EXP + เป้า Hunt เลิกวาร์ปหนี
@@ -9707,7 +9720,7 @@ class Game extends Phaser.Scene {
     let huntD=Infinity;
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._waveObjectiveTarget){
       // 🎯 Hunt: เป้าหมายวาร์ปหนีเมื่อเข้าใกล้ + ทิ้งกับดักไว้ที่เดิม
-      if(o.type==='hunt'){const dd=this.dist(this.player.x,this.player.y,e.x,e.y);if(dd<huntD)huntD=dd;e._huntFlee=!o._overtime&&dd<230;}   // v5.19.1 เป้าวิ่งหนีเมื่อเข้าใกล้
+      if(o.type==='hunt'){const lim=WORLD/2-120;e.setPosition(Phaser.Math.Clamp(e.x,-lim,lim),Phaser.Math.Clamp(e.y,-lim,lim));const dd=this.dist(this.player.x,this.player.y,e.x,e.y);if(dd<huntD)huntD=dd;e._huntFlee=!o._overtime&&dd<230&&Math.abs(e.x)<lim-8&&Math.abs(e.y)<lim-8;}   // v5.19.1 เป้าวิ่งหนีเมื่อเข้าใกล้
       if(o.type==='hunt'&&!o._overtime){e._blinkCd=(e._blinkCd??2.5)-dt;if(e._blinkCd<=0&&this.dist(this.player.x,this.player.y,e.x,e.y)<210){e._blinkCd=4.5;const ox=e.x,oy=e.y,a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-.7,.7),lim=WORLD/2-120;
         this.spawnHazard(ox,oy,55,Math.round(8+(this.stageIndex||0)*1.5),0xff5a8a);this.vfxSpawnPoof(ox,oy);e.setPosition(Phaser.Math.Clamp(ox+Math.cos(a)*270,-lim,lim),Phaser.Math.Clamp(oy+Math.sin(a)*270,-lim,lim));this.vfxSpawnPoof(e.x,e.y);this.floatText(e.x,e.y-50,'Blink!',0xff8ab0);}}
       if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});

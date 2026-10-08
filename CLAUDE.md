@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.85 — restore timed Swarm pressure
+# Latest delivery: v6.55.86 — recover missing Hunt targets
+
+Reported C1-5 wave4 Hunt stuck with no monsters. Found a lost-retry path: failed spawn used a one-shot timer whose callback dropped the retry if level-up was open. Hunt now owns a retry deadline and actual objective tick ensures one marked target while playing; failures retry every 1s, defeated targets have a 700ms gap. Recovery handles a disappeared target without crediting a kill, avoids duplicate targets, and has no delayed callback crossing objectives/runs. Story ordinary reinforcements reserve one live slot when Hunt lacks a target; reserved target bypasses ordinary quota but shares hard live cap. Target resets pooled alpha/flee/blink state and cancels old tweens. Spawn and active target positions clamp inside arena; flee stops at the arena edge. Quest targets/progress/rewards, Swarm tuning and Story XP budget are unchanged. Actual-method tests cover C1-5 wave4 cap exhaustion plus level-up, full pool, all 15 stages sequential Hunt completion, disappearance, dedup, arena bounds and objective/mode replacement. Full check/build pass; user owns in-game/mobile verification.
+
+# Previous delivery: v6.55.85 — restore timed Swarm pressure
 
 Player feedback: v6.55.84 reduced crowds too far and timed Survive the Swarm exhausted its reinforcement quota before the countdown. Timed story Swarm now replenishes until waveTimer reaches zero, with hard live caps and unchanged bounded EXP. This exemption is only active timed Story survive, not objective/replay/mini/boss/Endgame. Base story live caps 18/22/26/30/34 (+4 per later chapter); Swarm adds 6, movement objectives use 80%. Timed refill: groups 6–8 every 1.2s below 85% cap, surge pulses at ~10s then every 14s, max 10–14 in available slots. Other objective/replay refill: 4–5 every 1.6s below 80%. Finite objective quotas now 50/56/64/72/80; replay shared quota 240. XP per enemy still uses original 30/32/36/40/44 units (replay 182), so more reinforcements do not dilute early EXP. Combat/settlement cap remains 1020 base EXP total and Lv5/8/11/14/18 milestones. Timed reinforcements can grant normal Sugar within the fixed encounter duration, but cannot extend its timer or EXP budget. Mini/boss caps, Stage 3 free hero choice and Story HP scaling remain v6.55.84. Actual stage-loop regressions prove new enemies still arrive in the final five seconds under rapid clears, live caps hold for slow clears, and settlement EXP matches both. Full checks/build pass; user owns in-game/mobile balance review.
 
@@ -247,7 +251,8 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.85 — Swarm pressure · 8 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.86 — Hunt recovery · 8 ต.ค. 2026)
+- **v6.55.86:** แก้ Hunt เป้าหาย/ไม่เกิด: objective-owned retry หลังหน้าการ์ด, สำรอง live slot, กันเป้าซ้ำและหนีออกนอกสนาม actual-method tests/checks/build ผ่าน รอเจ้าของทดสอบ C1-5 เวฟ 4.
 - **v6.55.85:** แก้ Swarm มอนหมดก่อนเวลา: เติมต่อจน countdown จบ เพิ่ม live caps/ชุดเกิด/ระลอก; เควสทั่วไปยังมี quota เพิ่มขึ้น EXP ฐานเดิมและ Lv18 ก่อนบอส ตรวจ tick loop/checks/build ผ่าน รอเจ้าของเล่นจริง.
 - **v6.55.84:** ทุกด่านเนื้อเรื่องใช้โควต้ามอน/งบ EXP และสูตรเลเวลเชิงเส้น เป้าหมาย Lv18 ก่อนบอส; ด่าน 3 ไม่บังคับ Mint; checks/build ผ่าน รอเจ้าของเล่นเทสด่าน 1–3 และช่วงท้าย ดู docs/STORY_WAVE_BUDGET_2026_10_08.md.
 - **v6.55.83:** Strawberry S1–S5 ลงโค้ดครบ: focused cards, Sniper heavy seed, Ricochet visited/cap/boss fallback, Shotgun close-range Evolution, timer/pool/performance budgets; automated checks/build ผ่าน เจ้าของทดสอบในเกมเอง ผลสมดุล/มือถือยังรอ feedback.
