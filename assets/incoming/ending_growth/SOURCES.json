@@ -1,0 +1,10 @@
+{
+  "result_victory": "assets/incoming/ending_growth/raw/result_victory_generated.png",
+  "result_defeat": "assets/incoming/ending_growth/raw/result_defeat_generated.png",
+  "epilogue_ch1": "assets/incoming/ending_growth/raw/epilogue_ch1_generated.png",
+  "epilogue_ch2": "assets/incoming/ending_growth/raw/epilogue_ch2_generated.png",
+  "epilogue_ch3": "assets/incoming/ending_growth/raw/epilogue_ch3_generated.png",
+  "growth_levelup": "assets/incoming/ending_growth/raw/growth_levelup_generated.png",
+  "growth_mastery": "assets/incoming/ending_growth/raw/growth_mastery_generated.png",
+  "growth_unlock": "assets/incoming/ending_growth/raw/growth_unlock_generated.png"
+}

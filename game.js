@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.56.0';
+const GAME_VERSION = '6.56.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.56.1',date:'2026-10-08',title:'Illustrated endings and growth',items:['Victory and defeat screens have painted environments; all fifteen stage epilogues have story illustrations','Level-ups, first Stage Mastery and newly unlocked Build or Unique powers use painted growth effects','Story text, reward amounts, EXP, Talent Points, revive rules and progression remain']},
   {v:'6.56.0',date:'2026-10-08',title:'Painted Talent icons',items:['All 218 Core and Build path Talent nodes have individual painted icons across seven heroes','Locked nodes show dimmed art and a lock marker; selected Talent details share the same icon','Talent effects, ranks, point costs, prerequisites and saved progress remain']},
   {v:'6.55.99',date:'2026-10-08',title:'Living monsters: Seasons and Root Throne',items:['Fourteen Conservatory and Root Throne creatures now have painted movement, idle, attack, hurt and defeat poses','Equinox Elites share their golem identity; shooters prepare shots and bombers warn before exploding','Original combat, guard auras, seasonal volleys, root objectives and Story balance remain']},
   {v:'6.55.98',date:'2026-10-08',title:'Painted Build effects',items:['Berry Blast, Shotgun muzzle flashes, Glacier Bloom, ice shatter and Frost Lance trails now use painted effects','Original damage, ranges, charge timing and card bonuses remain','Effects clear on transitions and ice shatter visuals keep their existing budget']},
@@ -1173,6 +1174,23 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  result_victory:'assets/ui/results/result_victory.webp',
+  result_defeat:'assets/ui/results/result_defeat.webp',
+  epilogue_s1:'assets/story/epilogues/epilogue_s1.webp',
+  epilogue_s2:'assets/story/epilogues/epilogue_s2.webp',
+  epilogue_s3:'assets/story/epilogues/epilogue_s3.webp',
+  epilogue_s4:'assets/story/epilogues/epilogue_s4.webp',
+  epilogue_s5:'assets/story/epilogues/epilogue_s5.webp',
+  epilogue_s6:'assets/story/epilogues/epilogue_s6.webp',
+  epilogue_s7:'assets/story/epilogues/epilogue_s7.webp',
+  epilogue_s8:'assets/story/epilogues/epilogue_s8.webp',
+  epilogue_s9:'assets/story/epilogues/epilogue_s9.webp',
+  epilogue_s10:'assets/story/epilogues/epilogue_s10.webp',
+  epilogue_s11:'assets/story/epilogues/epilogue_s11.webp',
+  epilogue_s12:'assets/story/epilogues/epilogue_s12.webp',
+  epilogue_s13:'assets/story/epilogues/epilogue_s13.webp',
+  epilogue_s14:'assets/story/epilogues/epilogue_s14.webp',
+  epilogue_s15:'assets/story/epilogues/epilogue_s15.webp',
   delve10_minijelly:'assets/art/delve_bosses/delve10_minijelly.webp',
   delve10_puddle:'assets/art/delve_bosses/delve10_puddle.webp',
   delve10_keyring:'assets/art/delve_bosses/delve10_keyring.webp',
@@ -1943,6 +1961,9 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
+  growth_levelup:{url:'assets/vfx/growth_levelup.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center'},
+  growth_mastery:{url:'assets/vfx/growth_mastery.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center'},
+  growth_unlock:{url:'assets/vfx/growth_unlock.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center'},
   vfx_berry_blast:{url:'assets/vfx/berry_blast_sheet.webp',fw:384,fh:256,frames:8,rate:32,anchor:'left'},
   vfx_shotgun_muzzle:{url:'assets/vfx/shotgun_muzzle_sheet.webp',fw:192,fh:128,frames:8,rate:60,anchor:'left'},
   vfx_glacier_bloom:{url:'assets/vfx/glacier_bloom_sheet.webp',fw:384,fh:384,frames:8,rate:20,anchor:'center'},
@@ -2162,7 +2183,7 @@ const STAGE_SHEETS=[
   ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas','c25_rootling_animated','c25_thorn_charger_animated','c25_bramble_assassin_animated','c25_sap_oracle_animated','c25_seed_bomb_animated','c25_bark_guard_animated','c25_root_choir_animated'],
   ...[1,2,3,4,5].map(n=>['c3_elite_animated','c3_mini'+n,'c3_boss'+n,'c3_e_basic_animated','c3_e_fast_animated','c3_e_shooter_animated','c3_e_bomber_animated','c3_e_tank_animated'])
 ];
-function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
+function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 // v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
 const DEFER_RE=/assets\/(?:art\/(?:temple|rewards|build_(?:paths|cards)|kitchen|delve|biomes|pinnacle|dig|icons|ch3_bosses|ch3_enemies|floors)\/|ui\/currency\/|gear\/|icons\/levelup\/|incoming\/)/;
@@ -5093,6 +5114,11 @@ const STAGE_STORY_BEATS = [
   ]
 ];
 // สรุปเรื่องราวตอนล้มบอสจบด่าน (โชว์ก่อนหน้าสรุปสถิติ) — what happened + why press on
+function epilogueLayout(w,h){
+  const wide=w>h,tx=wide?w*.73:w/2,textW=wide?w*.45:w*.86;
+  const artW=wide?Math.min(w*.44,h*1.04):Math.min(w*.92,h*.29*16/9);
+  return {wide,tx,textW,artX:wide?w*.24:w/2,artY:wide?h*.47:h*.23,artW,artH:artW*9/16,kickerY:wide?h*.08:h*.055,titleY:wide?h*.20:h*.425,bodyY:wide?h*.43:h*.60,whyY:wide?h*.70:h*.785,buttonY:wide?h*.89:h*.925,buttonW:Math.min(270,textW),buttonH:wide?42:Math.min(52,h*.085),titleFont:wide?20:Math.min(25,w*.067),bodyFont:wide?12:Math.min(15,w*.042),whyFont:wide?12:Math.min(14,w*.039)};
+}
 const STAGE_EPILOGUE = [
   { title:'The Empress Falls Silent',
     body:'The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Momo toward the drains where the sour acid still flows.',
@@ -5555,7 +5581,7 @@ class Game extends Phaser.Scene {
     .catch(()=>{}).then(()=>{ this._cacheFilling=false; });
   }
   stageArtKeys(idx){
-    const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[])];
+    const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'epilogue_s'+(idx+1),'result_victory','result_defeat'];
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
     return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]);
@@ -10604,35 +10630,47 @@ class Game extends Phaser.Scene {
     this.showStageEpilogue(last);
   }
   /* หน้าสรุปเรื่องราวตอนล้มบอส — เกิดอะไรขึ้น + ทำไมไปด่านต่อไป → แตะไปหน้าสรุปสถิติ */
+  resultBackdrop(key){
+    if(this.textures.exists(key))return this._coverImage(0,0,this.W,this.H,key).setTint(key==='result_defeat'?0x9b8eaa:0xbca8bf);
+    return this.add.rectangle(0,0,this.W,this.H,0x100b19,0.92).setOrigin(0,0);
+  }
+  playGrowthWorld(kind){
+    const key='growth_'+kind,p=this.player;if(!p||!this.textures.exists(key))return false;
+    const now=this.time.now;this._growthVfxAt=this._growthVfxAt||{};
+    if(now-(this._growthVfxAt[kind]??-Infinity)<500)return true;this._growthVfxAt[kind]=now;
+    const fx=this.spawnFxAnim(key,p.x,p.y-12,{scale:220/256,depth:8,anchor:'center',normal:true});if(fx)this.trackArtVfx(fx);return !!fx;
+  }
+  playSummaryGrowth(kind){
+    const key='growth_'+kind;if(!this.textures.exists(key))return;
+    const def=ASSET_FX[key];if(!this.anims.exists(key))this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:7}),frameRate:def.rate,repeat:0});
+    const x=this.W/2+(this._firstMastery&&this._lastLvlUps>0?(kind==='mastery'?-45:45):0);
+    const fx=this.camUI(this.add.sprite(x,this.H*.14,key,0).setDisplaySize(Math.min(100,this.W*.25),Math.min(100,this.W*.25)).setBlendMode(Phaser.BlendModes.NORMAL));
+    this.over.add(fx);this._summaryGrowthVfx=this._summaryGrowthVfx||new Set();this._summaryGrowthVfx.add(fx);
+    fx.once('destroy',()=>this._summaryGrowthVfx&&this._summaryGrowthVfx.delete(fx));fx.once('animationcomplete',()=>fx.destroy());fx.play(key);
+  }
   showStageEpilogue(last){
     const ep=this.riftMode?null:STAGE_EPILOGUE[this.stageIndex];
-    if(!ep){ this.showStageSummary(last); return; }   // ไม่มีเรื่องราว = ข้ามไปหน้าสรุปเลย
-    this.state='epilogue'; this.physics.pause(); this.player.setVelocity(0,0);
-    const w=this.W,h=this.H, st=STAGES[this.stageIndex], tint=st.tint||0xffd166; this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x0d0a14,0.94).setOrigin(0,0);
-    const glow=this.add.image(w/2,h*0.24,'vfx_glow').setTint(tint).setScale(1.7).setAlpha(0.4);
-    const kicker=this.add.text(w/2,h*0.14,st.emoji+'  '+st.name+'  ·  Cleared',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#'+tint.toString(16).padStart(6,'0')}).setOrigin(0.5);
-    const title=this.add.text(w/2,h*0.22,ep.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a',align:'center',wordWrap:{width:w*0.86}}).setOrigin(0.5);
-    const body=this.add.text(w/2,h*0.44,ep.body,{fontFamily:'sans-serif',fontSize:'15px',color:'#e6ddef',align:'center',lineSpacing:6,wordWrap:{width:w*0.82}}).setOrigin(0.5);
-    const arrow=this.add.text(w/2,h*0.63,'▼',{fontSize:'18px',color:'#'+tint.toString(16).padStart(6,'0')}).setOrigin(0.5);
-    const why=this.add.text(w/2,h*0.70,ep.why,{fontFamily:'sans-serif',fontStyle:'bold italic',fontSize:'15px',color:'#ffffff',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
-    const box=[bg,glow,kicker,title,body,arrow,why];
-    const bw=250,bh=58,byc=h*0.85;
-    const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw/2,byc-bh/2,bw,bh,22); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw/2,byc-bh/2,bw,bh,22);
-    const bt=this.add.text(w/2,byc,last?'📜 The Story So Far ▶':'▶ Continue',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff'}).setOrigin(0.5);
-    box.push(btn,bt); this.over.add(box); this.over.setVisible(true);
-    this._epilogueBtns=[{x:w/2-bw/2,y:byc-bh/2,w:bw,h:bh,fn:()=>{ if(this.state!=='epilogue')return; this.showStageSummary(last); }}];
-    body.setAlpha(0); title.setAlpha(0);
-    this.tweens.add({targets:title,alpha:1,y:{from:h*0.20,to:h*0.22},duration:520,ease:'Cubic.out'});
-    this.tweens.add({targets:body,alpha:1,duration:600,delay:280});
-    this.tweens.add({targets:arrow,y:{from:h*0.63-4,to:h*0.63+4},yoyo:true,repeat:-1,duration:640,ease:'Sine.inOut'});
-    this.tweens.add({targets:bt,alpha:{from:0.7,to:1},yoyo:true,repeat:-1,duration:720});
-    this.screenFlash(tint,0.25,400);
+    if(!ep){this.showStageSummary(last);return;}
+    this.state='epilogue';this.physics.pause();this.player.setVelocity(0,0);
+    const w=this.W,h=this.H,st=STAGES[this.stageIndex],tint=st.tint||0xffd166,L=epilogueLayout(w,h);this.over.removeAll(true);
+    const bg=this.add.rectangle(0,0,w,h,0x0d0a14,0.97).setOrigin(0,0),box=[bg],key='epilogue_s'+(this.stageIndex+1);
+    if(this.textures.exists(key)){const art=this.add.image(L.artX,L.artY,key).setDisplaySize(L.artW,L.artH);box.push(art);}
+    else box.push(this.add.image(L.artX,L.artY,'vfx_glow').setTint(tint).setDisplaySize(L.artW,L.artH).setAlpha(.25));
+    const kicker=this.add.text(L.tx,L.kickerY,st.name+' · Cleared',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#d9b9e8',align:'center',wordWrap:{width:L.textW}}).setOrigin(.5);
+    const title=this.add.text(L.tx,L.titleY,ep.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:L.titleFont+'px',color:'#ffe08a',align:'center',wordWrap:{width:L.textW}}).setOrigin(.5);
+    const body=this.add.text(L.tx,L.bodyY,ep.body,{fontFamily:'sans-serif',fontSize:L.bodyFont+'px',color:'#e6ddef',align:'center',lineSpacing:3,wordWrap:{width:L.textW}}).setOrigin(.5);
+    const why=this.add.text(L.tx,L.whyY,ep.why,{fontFamily:'sans-serif',fontStyle:'bold italic',fontSize:L.whyFont+'px',color:'#ffffff',align:'center',wordWrap:{width:L.textW}}).setOrigin(.5);
+    box.push(kicker,title,body,why);
+    const z=this._endBtn(box,L.tx,L.buttonY,L.buttonW,L.buttonH,COLORS.pink,last?'View Summary':'Continue',{primary:true,font:16});
+    this.over.add(box);this.over.setVisible(true);
+    this._epilogueBtns=[{...z,fn:()=>{if(this.state!=='epilogue')return;this.showStageSummary(last);}}];
+    title.setAlpha(0);body.setAlpha(0);this.tweens.add({targets:title,alpha:1,duration:400,ease:'Cubic.out'});this.tweens.add({targets:body,alpha:1,duration:500,delay:180});this.screenFlash(tint,.18,350);
   }
   /* หน้าสรุปStage — แตะเพื่อไปต่อ */
   stopSummaryPresentation(){
     this._summarySoundToken=(this._summarySoundToken||0)+1;
     (this._summarySoundTimers||[]).forEach(t=>t.remove(false));this._summarySoundTimers=[];
+    for(const fx of [...(this._summaryGrowthVfx||[])]){this.tweens.killTweensOf(fx);if(fx.active)fx.destroy();}if(this._summaryGrowthVfx)this._summaryGrowthVfx.clear();
     if(this._summaryExpTween){this._summaryExpTween.stop();this._summaryExpTween=null;}
     Sfx.stopCraft();
   }
@@ -10644,7 +10682,7 @@ class Game extends Phaser.Scene {
     if(ticks){sugarText.setText('+0');for(let i=1;i<=ticks;i++)later(280+i*80,()=>{sugarText.setText('+'+Math.floor(total*i/ticks));Sfx.result('count',.9+i*.025);});}
     const at=280+ticks*80;
     rewards.forEach((group,i)=>{group.forEach(o=>o.setAlpha(0));later(at+160+i*160,()=>{group.forEach(o=>o.setAlpha(1));Sfx.result('reveal');});});
-    if(this._firstMastery||this._lastLvlUps>0)later(at+160+rewards.length*160,()=>Sfx.result('important'));
+    if(this._firstMastery||this._lastLvlUps>0)later(at+160+rewards.length*160,()=>{Sfx.result('important');if(this._firstMastery)this.playSummaryGrowth?.('mastery');if(this._lastLvlUps>0)this.playSummaryGrowth?.('levelup');});
     if(this.events&&!this._summaryShutdownHook){this._summaryShutdownHook=true;this.events.once('shutdown',()=>{this.stopSummaryPresentation();this._summaryShutdownHook=false;});}
   }
   buildSummaryExpBar(box,px,py,pw,ph,font,animate){
@@ -10666,7 +10704,7 @@ class Game extends Phaser.Scene {
     this.state='summary'; this.physics.pause(); this.player.setVelocity(0,0);
     this._summaryLast=last;
     const w=this.W,h=this.H, st=STAGES[this.stageIndex]; this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x100b19,0.9).setOrigin(0,0);
+    const bg=this.resultBackdrop(this._quitSummary?'result_defeat':'result_victory');
     const extra=this.sugarStage>0&&!this._summaryDoubled?56:0;
     const pw=Math.min(w-20,(h-20-extra)*2/3),ph=pw*1.5,px=(w-pw)/2,py=(h-ph-extra)/2;
     const panel=this.add.image(w/2,py+ph/2,'stage_summary_panel').setDisplaySize(pw,ph);
@@ -10757,7 +10795,7 @@ class Game extends Phaser.Scene {
     this.gainCharExp(this.kills+200);
     Sfx.victory();
     const w=this.W,h=this.H; this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x14101a,0.9).setOrigin(0,0);
+    const bg=this.resultBackdrop('result_victory');
     const em=this.add.text(w/2,h*0.24,'🏆',{fontSize:'70px'}).setOrigin(0.5);
     const ch2=this.stageIndex===5,t=this.add.text(w/2,h*0.37,ch2?'First Canopy Conquered!':'Victory! The curse is broken',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd166',align:'center',wordWrap:{width:w*0.85}}).setOrigin(0.5);
     const lore=this.add.text(w/2,h*0.47,ch2?'The Rootmother pulls up her roots and flees to the deeper garden, warning that four crown seeds remain — the Chapter 2 path has only just begun 🌿':'The Great Hunger collapses; flavor and memory return to the great kitchen 🍡',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6',align:'center',wordWrap:{width:w*0.82}}).setOrigin(0.5);
@@ -11025,7 +11063,7 @@ class Game extends Phaser.Scene {
   }
   checkUniqueAutoUpgrade(){
     let target=1;for(let lv=2;lv<=UNIQUE_MAX_LV;lv++)if(this.level>=uniqueAt[lv])target=lv;if(target<=(this.uniqueLevel||1))return;
-    const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();
+    const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();this.playGrowthWorld?.('unlock');
   }
   openLevelUp(){
     if(this.recipeMode&&!this._forcedOpts){ this.recipeLevelUp(); return; }   // v6.24: Recipe = สแตตอัตโนมัติ + Sugar Rush · ทุก 5 เลเวล = Draft การ์ดเปลี่ยนวิธีเล่น
@@ -11418,7 +11456,7 @@ class Game extends Phaser.Scene {
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
-      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();}}));
+      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();this.playGrowthWorld?.('unlock');}}));
     }
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
     if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
@@ -11442,7 +11480,7 @@ class Game extends Phaser.Scene {
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
-      return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();}})];
+      return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();this.playGrowthWorld?.('unlock');}})];
     }
     // 🧬 v6.10.0 B6: Evolution แล้ว + มี Relic ที่จับคู่ → การ์ด Fusion ใบเดียว
     if(!noSpecial&&b.evolved){ const fu=this.fusionReady(); if(fu){ this.showBanner('🧬 Fusion Ready!',d.evolution+' + '+RELICS[fu.relic].name,1600);
@@ -13527,7 +13565,7 @@ class Game extends Phaser.Scene {
     this._artTimers.add(ev);return ev;
   }
   clearArtVfx(){
-    this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;
+    this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;this._growthVfxAt=null;
     this._mintArsenalAt=-Infinity;this._mintVfxWindow=null;this._mintVfxCount=0;this._mintShardWindow=null;this._mintShardCount=0;this._mintImpactAt=-Infinity;
     if(this.basicAttack)this.basicAttack._impalerFullShots=0;
     this._glacierBusy=false;this._glacierWindow=null;this._glacierBursts=0;this._glacierVfx=0;
@@ -14619,9 +14657,11 @@ class Game extends Phaser.Scene {
   // --- VFX: level up celebration burst ---
   vfxLevelUp(){
     const p=this.player; if(!p)return;
+    if(!this.playGrowthWorld('levelup')){
     if(this.textures.exists('fx_levelup')&&this.anims.exists('fx_levelup')) this.spawnFxAnim('fx_levelup',p.x,p.y,{scale:220/ASSET_FX.fx_levelup.fw,depth:8,anchor:'center'});
     else { const ring=this.camWorld(this.add.image(p.x,p.y,'vfx_ring').setTint(0xffe08a).setDepth(8).setScale(0.2,0.16).setAlpha(0.9));
       this.tweens.add({targets:ring,scaleX:3.2,scaleY:2.6,alpha:0,duration:450,ease:'Quad.out',onComplete:()=>ring.destroy()}); }
+    }
     const cols=[0xffe08a,0xff8fb5,0xbfe8ff,0xb6f0d6];
     cols.forEach(c=>this._emit(this.pDust,p.x,p.y,c,4));   // ฝุ่นหลากสีพุ่งฉลอง
   }
@@ -14805,7 +14845,7 @@ class Game extends Phaser.Scene {
     this.buildOver(); }
   buildOver(){const w=this.W,h=this.H;this.over.removeAll(true);this._overBtns=[];this.endLock(1100);
     // v6.44: หน้าตายใช้แผงเดียวกับหน้าสรุป Endgame/ด่าน + ปุ่มเด่น
-    const bg=this.add.rectangle(0,0,w,h,0x100b17,0.92).setOrigin(0,0);
+    const bg=this.resultBackdrop('result_defeat');
     const canRevive=!this._adRevived&&!this.endlessMode,extra=(canRevive?58:0)+56+(this.endlessMode?0:50);
     const pw=Math.min(w-20,(h-20-extra)*2/3),ph=pw*1.5,px=(w-pw)/2,py=Math.max(8,(h-ph-extra)/2);
     const panel=this.textures.exists('stage_summary_panel')?this.add.image(w/2,py+ph/2,'stage_summary_panel').setDisplaySize(pw,ph).setTint(0xffd6e2):this.add.rectangle(w/2,py+ph/2,pw,ph,0x241c2d);

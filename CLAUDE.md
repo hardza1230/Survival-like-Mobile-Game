@@ -1,4 +1,8 @@
-# Latest delivery: v6.56.0 — painted Talent icons
+# Latest delivery: v6.56.1 — endings, epilogues and growth
+
+Two painted victory/defeat environments, all fifteen stage epilogue illustrations and three eight-frame growth effects are integrated. Sources/prompts/packing: assets/incoming/ending_growth. Runtime: assets/ui/results, assets/story/epilogues and assets/vfx/growth_*.webp. Portrait epilogues stack illustration and text; landscape separates them into columns. Story wording and Continue/Summary state guards remain; Rift skips epilogues. Painted backgrounds sit behind the existing summary/death panel and final victory. Level-ups, first mastery, character level gains in summary, Build selection, Evolution and Unique auto-upgrade have NORMAL alpha effects; world effects throttle and central cleanup cancels them, summary effects cancel on redraw/navigation/shutdown. Original EXP/TP/rewards/revive/save/gameplay calculations remain. Reward reveal/Jackpot and crafting art remain separate future work. Owner mobile visual/FPS review pending.
+
+# Previous delivery: v6.56.0 — painted Talent icons
 
 All 218 Core and Build path Talent nodes across seven heroes have individually mapped painted atlas icons. Runtime 128px frames: assets/art/talents; raw generated PNGs, normalized RGBA atlases, exact prompts, node/frame packing and contact review: assets/incoming/talent_icons. Tree nodes and selected details share the same art. Locked art is dimmed with a separate lock badge, ranks and capstone borders remain visible. Heroes/Talents menu group loads atlas sheets; missing art preserves emoji. Talent definitions, effects, ranks, TP costs, prerequisites, capstone exclusivity, reset/save and gameplay balance remain. tests/talent-icons.test.cjs compares the original definition hash and exercises actual rendering/point spending at three viewports, alpha contracts and missing art. Owner mobile visual review pending.
 

@@ -1,0 +1,640 @@
+{
+  "results": {
+    "result_victory": {
+      "originalSize": [
+        1024,
+        1536
+      ],
+      "runtimeSize": [
+        768,
+        1152
+      ]
+    },
+    "result_defeat": {
+      "originalSize": [
+        1024,
+        1536
+      ],
+      "runtimeSize": [
+        768,
+        1152
+      ]
+    }
+  },
+  "epilogues": {
+    "epilogue_s1": {
+      "chapter": 1,
+      "sourceCell": 0,
+      "sourceBounds": [
+        0,
+        0,
+        683,
+        384
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s2": {
+      "chapter": 1,
+      "sourceCell": 1,
+      "sourceBounds": [
+        683,
+        0,
+        1366,
+        384
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s3": {
+      "chapter": 1,
+      "sourceCell": 2,
+      "sourceBounds": [
+        0,
+        384,
+        683,
+        767
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s4": {
+      "chapter": 1,
+      "sourceCell": 3,
+      "sourceBounds": [
+        683,
+        384,
+        1366,
+        767
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s5": {
+      "chapter": 1,
+      "sourceCell": 4,
+      "sourceBounds": [
+        0,
+        767,
+        683,
+        1151
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s6": {
+      "chapter": 2,
+      "sourceCell": 0,
+      "sourceBounds": [
+        0,
+        0,
+        683,
+        384
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s7": {
+      "chapter": 2,
+      "sourceCell": 1,
+      "sourceBounds": [
+        683,
+        0,
+        1366,
+        384
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s8": {
+      "chapter": 2,
+      "sourceCell": 2,
+      "sourceBounds": [
+        0,
+        384,
+        683,
+        767
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s9": {
+      "chapter": 2,
+      "sourceCell": 3,
+      "sourceBounds": [
+        683,
+        384,
+        1366,
+        767
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s10": {
+      "chapter": 2,
+      "sourceCell": 4,
+      "sourceBounds": [
+        0,
+        767,
+        683,
+        1151
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s11": {
+      "chapter": 3,
+      "sourceCell": 0,
+      "sourceBounds": [
+        0,
+        0,
+        683,
+        384
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s12": {
+      "chapter": 3,
+      "sourceCell": 1,
+      "sourceBounds": [
+        683,
+        0,
+        1366,
+        384
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s13": {
+      "chapter": 3,
+      "sourceCell": 2,
+      "sourceBounds": [
+        0,
+        384,
+        683,
+        768
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s14": {
+      "chapter": 3,
+      "sourceCell": 3,
+      "sourceBounds": [
+        683,
+        384,
+        1366,
+        768
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    },
+    "epilogue_s15": {
+      "chapter": 3,
+      "sourceCell": 4,
+      "sourceBounds": [
+        0,
+        768,
+        683,
+        1152
+      ],
+      "runtimeSize": [
+        768,
+        432
+      ]
+    }
+  },
+  "growth": {
+    "growth_levelup": {
+      "originalSize": [
+        1774,
+        887
+      ],
+      "sheetSize": [
+        2048,
+        256
+      ],
+      "frameSize": 256,
+      "uniqueFrames": 8,
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            0,
+            0,
+            444,
+            444
+          ],
+          "packedBounds": [
+            41,
+            24,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            444,
+            0,
+            887,
+            444
+          ],
+          "packedBounds": [
+            20,
+            26,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            887,
+            0,
+            1330,
+            444
+          ],
+          "packedBounds": [
+            20,
+            29,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          "packedBounds": [
+            20,
+            30,
+            231,
+            236
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            0,
+            444,
+            444,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            444,
+            444,
+            887,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            232
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceBounds": [
+            887,
+            444,
+            1330,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            226
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceBounds": [
+            1330,
+            444,
+            1774,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            228,
+            228
+          ]
+        }
+      ]
+    },
+    "growth_mastery": {
+      "originalSize": [
+        1774,
+        887
+      ],
+      "sheetSize": [
+        2048,
+        256
+      ],
+      "frameSize": 256,
+      "uniqueFrames": 8,
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            0,
+            0,
+            444,
+            444
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            444,
+            0,
+            887,
+            444
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            887,
+            0,
+            1330,
+            444
+          ],
+          "packedBounds": [
+            20,
+            27,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          "packedBounds": [
+            20,
+            25,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            0,
+            444,
+            444,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            444,
+            444,
+            887,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceBounds": [
+            887,
+            444,
+            1330,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            232
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceBounds": [
+            1330,
+            444,
+            1774,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            227,
+            236
+          ]
+        }
+      ]
+    },
+    "growth_unlock": {
+      "originalSize": [
+        1774,
+        887
+      ],
+      "sheetSize": [
+        2048,
+        256
+      ],
+      "frameSize": 256,
+      "uniqueFrames": 8,
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            0,
+            0,
+            444,
+            444
+          ],
+          "packedBounds": [
+            28,
+            33,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            444,
+            0,
+            887,
+            444
+          ],
+          "packedBounds": [
+            20,
+            29,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            887,
+            0,
+            1330,
+            444
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          "packedBounds": [
+            20,
+            27,
+            230,
+            236
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            0,
+            444,
+            444,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            444,
+            444,
+            887,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            230
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceBounds": [
+            887,
+            444,
+            1330,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            236,
+            228
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceBounds": [
+            1330,
+            444,
+            1774,
+            887
+          ],
+          "packedBounds": [
+            20,
+            20,
+            231,
+            236
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "version": "6.56.0",
+  "epilogues": [
+    {
+      "title": "The Empress Falls Silent",
+      "body": "The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Momo toward the drains where the sour acid still flows.",
+      "why": "Follow the poisoned current downstream to find its source."
+    },
+    {
+      "title": "The Pipes Run Clear",
+      "body": "Clogmaw bursts and the fermented flood drains away. In the last trickle Momo hears a furnace roar far below — something is boiling the stolen acid into raw power.",
+      "why": "Descend to the Chili Engine before it finishes stoking."
+    },
+    {
+      "title": "The Furnace Goes Cold",
+      "body": "Mr. Griddle sputters out and his cursed engine stalls. But that heat was feeding a freezer above, where sweet flavor-spirits are being frozen as the next batch of fuel.",
+      "why": "Climb to the Sugar Frost Prison and free the captured flavors."
+    },
+    {
+      "title": "The Ice Lets Go",
+      "body": "The Golem melts into slush and the frozen spirits drift free, whispering their thanks. They warn of a crown-shaped oven higher up, where the Bitter Chef prepares his final course.",
+      "why": "Ascend to the Crown Oven and end the Bitter Chef for good."
+    },
+    {
+      "title": "The Great Hunger Recedes",
+      "body": "The Great Hunger collapses and taste floods back into Mochitopia in a rush of color and sound. Yet from the cooling oven a single crown seed rolls free — and roots upward, toward the garden above.",
+      "why": "Chapter 1 is complete. Chase the seed into the Fermented Canopy."
+    },
+    {
+      "title": "The First Bloom Withers",
+      "body": "Rootmother’s Bud unwinds into drifting spores, revealing that it was only an avatar grown from the crown seed. Beneath the canopy, a fungal pulse answers from the Mycelium Marsh.",
+      "why": "Follow the moving pocket of clean air into the marsh and find the body feeding the colony."
+    },
+    {
+      "title": "The Marsh Remembers",
+      "body": "The Mycelium Behemoth releases every memory trapped in its colony. Their scent leads upward to a royal hive feeding on the garden’s last nectar.",
+      "why": "Carry the clean memories into the Nectar Hive before the royal ferment consumes them."
+    },
+    {
+      "title": "The Crown Loses Its Swarm",
+      "body": "The Ferment Hornet Queen falls and the protected nectar flowers ring like bells. Their rhythm opens a glass path where four seasons are running at once.",
+      "why": "Enter the Four-Season Conservatory and repair the broken calendar."
+    },
+    {
+      "title": "The Last Hour Opens",
+      "body": "Chronobloom Orchid returns each season to its rightful path. Beneath its clock, an ancient stair descends toward the first root and the throne that planted every curse.",
+      "why": "Descend to the Root Throne and face the True Rootmother."
+    },
+    {
+      "title": "Memories Choose Their Own Shape",
+      "body": "The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. Momo sees the crown seed bloom once more, now harmless and free.",
+      "why": "Chapter 2 is complete. But the freed memories keep pointing somewhere older — to the fields where the first crown was planted."
+    },
+    {
+      "title": "The Harvest Lies Down",
+      "body": "The Harvest Colossus crumbles back into ash and straw. Beneath it, rows of hollow trees stretch toward the horizon, their flavor carved out and carried away.",
+      "why": "Walk into the Hollow Orchard and find where the stolen taste went."
+    },
+    {
+      "title": "The Orchard Breathes Again",
+      "body": "The Hollow Bloom scatters its stolen flavors back into the trees, and the first fruit in centuries begins to swell. The last sap still flows uphill — toward a broken greenhouse of glass.",
+      "why": "Follow the sap into the Glass Greenhouse Ruins."
+    },
+    {
+      "title": "Every Future Shatters But One",
+      "body": "The Glass Gardener’s panes break and the false futures fade. Only one reflection stays true: a sealed vault holding every crown seed ever grown.",
+      "why": "Open the Seed Vault before another crown can be planted."
+    },
+    {
+      "title": "The Vault Is Empty of Fear",
+      "body": "The Seedwarden falls and the jars of crown seeds dim into ordinary seeds, harmless and small. Under the vault floor, a single ancient root pulses toward a quiet throne.",
+      "why": "Climb the root to the Throne of the First Seed and meet the Planter."
+    },
+    {
+      "title": "The Cycle Ends With a Choice",
+      "body": "The First Planter kneels as the last crown seed cracks in Momo’s hands. It was never a seed of hunger — only a seed of wanting, planted too deep. Momo plants it again, in the sun, and it grows into an ordinary sweet tree. Mochitopia is whole.",
+      "why": "The story is complete. The endgame kitchens are open — Recipe Maps, the Atlas and the Pinnacle await."
+    }
+  ],
+  "uniqueUpgrade": "  checkUniqueAutoUpgrade(){\n    let target=1;for(let lv=2;lv<=UNIQUE_MAX_LV;lv++)if(this.level>=uniqueAt[lv])target=lv;if(target<=(this.uniqueLevel||1))return;\n    const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();\n  }\n",
+  "charExp": "  gainCharExp(n){\n    if(!Number.isFinite(n)||n<=0)return; const cp=Save.cp(this.character),before={lvl:cp.lvl,exp:cp.exp||0}; cp.exp=(cp.exp||0)+Math.round(n);\n    let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }\n    Save.save(); this._lastExpGain=Math.round(n);const pg=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;this._charExpGain={character:this.character,before:pg?pg.before:before,after:{lvl:cp.lvl,exp:cp.exp},gain:(pg?pg.gain:0)+this._lastExpGain}; this._lastLvlUps=ups; return ups;\n  }\n"
+}

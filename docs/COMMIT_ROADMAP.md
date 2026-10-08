@@ -132,3 +132,7 @@ Batch 9 is implemented: seven Four-Season Conservatory and seven Root Throne spe
 ## v6.56.0 — Talent icons
 
 218 individually mapped painted icons for Core and Build path Talents across seven heroes, with original spending and gameplay definitions preserved. Sources/prompts/packing: assets/incoming/talent_icons. Runtime: assets/art/talents. Mobile visual review pending.
+
+## v6.56.1 — Endings, epilogues and growth
+
+Two result scenes, fifteen stage story panels and three eight-frame growth effects, preserving original story, progression and rewards. Source package: assets/incoming/ending_growth. Owner mobile review pending; reward reveal/Jackpot effects remain future work.
