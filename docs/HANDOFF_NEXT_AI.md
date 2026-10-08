@@ -1,4 +1,8 @@
-# Latest delivery: v6.56.1 — endings, epilogues and growth
+# Latest delivery: v6.56.2 — equipment mods and comparison
+
+Equipment selection shows full implicit/unique/prefix/suffix lines again, including equipped items. Compare opens a separate scrollable page with equipped/selected item names, base ATK/armor, wrapped mod values, tier and explicit increase/decrease/gained/lost/unchanged/different labels. Item arrows allow browsing without equipping; landscape Equipment also exposes Mods/Compare. Original equipment, crafting, enhancement, sell/dismantle guards and save values remain. Regression tests exercise actual render methods, long text at three viewports, missing mods, same-item inspection and navigation without item mutations. Owner mobile review pending.
+
+# Previous delivery: v6.56.1 — endings, epilogues and growth
 
 Two painted victory/defeat environments, all fifteen stage epilogue illustrations and three eight-frame growth effects are integrated. Sources/prompts/packing: assets/incoming/ending_growth. Runtime: assets/ui/results, assets/story/epilogues and assets/vfx/growth_*.webp. Portrait epilogues stack illustration and text; landscape separates them into columns. Story wording and Continue/Summary state guards remain; Rift skips epilogues. Painted backgrounds sit behind the existing summary/death panel and final victory. Level-ups, first mastery, character level gains in summary, Build selection, Evolution and Unique auto-upgrade have NORMAL alpha effects; world effects throttle and central cleanup cancels them, summary effects cancel on redraw/navigation/shutdown. Original EXP/TP/rewards/revive/save/gameplay calculations remain. Reward reveal/Jackpot and crafting art remain separate future work. Owner mobile visual/FPS review pending.
 

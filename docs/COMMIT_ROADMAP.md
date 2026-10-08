@@ -136,3 +136,7 @@ Batch 9 is implemented: seven Four-Season Conservatory and seven Root Throne spe
 ## v6.56.1 — Endings, epilogues and growth
 
 Two result scenes, fifteen stage story panels and three eight-frame growth effects, preserving original story, progression and rewards. Source package: assets/incoming/ending_growth. Owner mobile review pending; reward reveal/Jackpot effects remain future work.
+
+## Equipment mods and comparison — v6.56.2
+
+- Implemented: selected/equipped full mod display, dedicated readable Compare page, item navigation and landscape entry. Gear values and actions unchanged; owner phone review pending.
