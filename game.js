@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.57.0';
+const GAME_VERSION = '6.57.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.57.1',date:'2026-10-08',title:'Smoother Chocolate motion',items:['Chocolate keeps a continuous running cycle through Dash instead of freezing on one pose','Punch clips finish without repeated resets; moving cancels hidden poses so stopping never reveals a stale attack','Chocolate jelly motion uses small simulation steps for steadier recovery across frame rates']},
   {v:'6.57.0',date:'2026-10-08',title:'Chocolate: three ways to fight',items:['Brawler lands combos and moving Cyclone punches; Titan winds up heavy impacts and a targeted Colossus Fist','Dash Boxer keeps combo progress through Dash, empowers the next punch and unleashes Phantom Rush','Unique skills are one tap with no drag or swipe minigame; each path has its own Evolution']},
   {v:'6.56.5',date:'2026-10-08',title:'Previous Equipment layout restored',items:['Equipment page returns to the layout from before v6.56.2','Smooth menu scrolling from v6.56.4 is kept']},
   {v:'6.56.4',date:'2026-10-08',title:'Menus feel more responsive',items:['Drag menus with momentum and a gentle stop','Buttons respond visually when touched','Dragging or stopping a moving list does not activate items']},
@@ -14542,7 +14543,9 @@ class Game extends Phaser.Scene {
     if(!this._hasFrames)return;
     const moving=this.player.body&&this.player.body.velocity.length()>24;
     // Keep the gait clock running through casts, hits and dash transitions.
-    this._charRunT=(this._charRunT||0)+(moving?dt:0);
+    this._charRunT=(this._charRunT||0)+(moving?dt*(this.character==='cocoa'&&this.dashTime>0?1.6:1):0);
+    // A suppressed Chocolate punch must not appear halfway through when movement stops.
+    if(this.character==='cocoa'&&(moving||this.dashTime>0)){this._attackPoseTime=0;this._attackTextureKey=null;}
     if(this._attackPoseTime>0){
       this._attackPoseTime=Math.max(0,this._attackPoseTime-dt);
       const attackKey=this._attackTextureKey||'char_'+this.character+'_attack';
@@ -14562,6 +14565,10 @@ class Game extends Phaser.Scene {
     const runCharKey=baseCharKey+'_run';
     const hasRun=this.textures.exists(runCharKey);
     if(this.dashTime>0){
+      if(this.character==='cocoa'&&hasRun){
+        if(this.player.texture.key!==runCharKey)this.player.setTexture(runCharKey);
+        this.player.setFrame(Math.floor(this._charRunT*16)%12);return;
+      }
       if(this.character==='momo'&&this.textures.exists('char_momo_dash')){
         if(this.player.texture.key!=='char_momo_dash'){this.player.setTexture('char_momo_dash');this._momoDashT=0;}
         this._momoDashT+=dt;this.player.setFrame(Math.min(7,Math.floor(this._momoDashT*40)));return;
@@ -14600,13 +14607,20 @@ class Game extends Phaser.Scene {
   poseAttack(ms,textureKey){
     const key=textureKey||'char_'+this.character+'_attack';
     if(!this._hasFrames)return;
-    this._castRecoilT=0.18;
     const moving=this.player.body&&this.player.body.velocity.length()>24;
+    if(this.character!=='cocoa')this._castRecoilT=0.18;
     // No full-body pose should interrupt locomotion, including fallback casts.
     if(!this.textures.exists(key)){
       if(!moving&&this.dashTime<=0)this.poseFlash(CF.cast,ms);
       return;
     }
+    if(this.character==='cocoa'){
+      if(moving||this.dashTime>0||this._poseHold>0)return;
+      // Finish the visible clip; fast attacks still deal damage on their original schedule.
+      if(this._attackPoseTime>0&&this.player.texture.key===key)return;
+      ms=Math.max(320,ms||400);
+    }
+    if(this.character==='cocoa')this._castRecoilT=0.18;
     this._poseHold=0;this._attackTextureKey=key;this._attackPoseDuration=(ms||400)/1000;this._attackPoseTime=this._attackPoseDuration;
     if(moving||this.dashTime>0)return;
     this.player.setTexture(key).setFrame(0);
@@ -14616,9 +14630,19 @@ class Game extends Phaser.Scene {
     const p=this.player; if(!p||!p.body)return;
     if(this._sqVX===undefined){ this._sqVX=0; this._sqVY=0; this._wob=0; this._lean=0; }
     const stiff=210, damp=12;
-    this._sqVX += (-(this._sqX-1)*stiff - this._sqVX*damp)*dt;
-    this._sqVY += (-(this._sqY-1)*stiff - this._sqVY*damp)*dt;
-    this._sqX += this._sqVX*dt; this._sqY += this._sqVY*dt;
+    if(this.character==='cocoa'){
+      // Bound long-frame recovery and integrate the visual spring in small steps.
+      const span=Math.min(dt,.1),steps=Math.max(1,Math.ceil(span*120)),step=span/steps;
+      for(let i=0;i<steps;i++){
+        this._sqVX += (-(this._sqX-1)*stiff-this._sqVX*damp)*step;
+        this._sqVY += (-(this._sqY-1)*stiff-this._sqVY*damp)*step;
+        this._sqX += this._sqVX*step;this._sqY += this._sqVY*step;
+      }
+    }else{
+      this._sqVX += (-(this._sqX-1)*stiff - this._sqVX*damp)*dt;
+      this._sqVY += (-(this._sqY-1)*stiff - this._sqVY*damp)*dt;
+      this._sqX += this._sqVX*dt; this._sqY += this._sqVY*dt;
+    }
     this._sqX=Phaser.Math.Clamp(this._sqX,0.55,1.6); this._sqY=Phaser.Math.Clamp(this._sqY,0.55,1.6);
     const sp=p.body.velocity.length(), moving=sp>24;
     // หันหน้าซ้าย-ขวาตามทิศทางการวิ่ง
@@ -14627,7 +14651,7 @@ class Game extends Phaser.Scene {
     const breathe=Math.sin(this._wob)*(moving?0.025:0.012);
     const waddle=moving?Math.sin(this._wob*0.5)*0.025:0;
     const leanT=moving?Phaser.Math.Clamp(p.body.velocity.x/1100,-0.16,0.16):0;
-    this._lean += (leanT-this._lean)*Math.min(1,dt*7);
+    this._lean += (leanT-this._lean)*(this.character==='cocoa'?1-Math.exp(-dt*7):Math.min(1,dt*7));
     this._castRecoilT=Math.max(0,(this._castRecoilT||0)-dt);
     const recoil=Math.sin(Math.PI*this._castRecoilT/0.18)*0.035;
     p.rotation = waddle + this._lean*0.45 - recoil*(p.flipX?-1:1);

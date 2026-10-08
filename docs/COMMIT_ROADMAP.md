@@ -150,3 +150,7 @@ Momentum, immediate pressed feedback, drag/tap separation and lifecycle regressi
 
 ## v6.57.0 — Chocolate C1–C5
 Three path Basic loops, one-tap path Uniques, separate Evolutions, retained card/Talent IDs, Recipe/Codex UI, bounded jobs and actual-cast regression coverage. Owner phone gameplay/FPS/balance review pending.
+
+## v6.57.1 — Chocolate motion
+
+Delivered continuous Dash gait, uninterrupted punch clips, cancellation of hidden punches and stable visual spring recovery. Focused animation regressions, all-hero motion and Cocoa combat tests, full check/build and browser fixture passed. Phone feel/FPS review remains pending.
