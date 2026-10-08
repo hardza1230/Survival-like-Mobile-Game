@@ -1,4 +1,8 @@
-# Latest delivery: v6.56.2 — equipment mods and comparison
+# Latest delivery: v6.56.3 — equipment browsing and decision flow
+
+Equipment uses instance cards with readable names/mod previews, All/New/Crafted/Favorite filters, newest/iLv/rarity/enhancement sorting and a paginated explicit-mod picker. Gacha and utility actions are under More tools. Selecting an item opens a dedicated detail page; Equip/Enhance, Compare and Craft stay pinned while details scroll. Compare starts with all normalized numerical stat gains/losses, including base/implicit/affix effects, and collapses unchanged mod rows behind a counted toggle. Full item mods remain visible with shared Prefix/Suffix headings. Existing action callbacks, enhancement costs/risks, protection guards and gear/save values remain; missing/destroyed items are handled. Fixed footer objects/zones are compensated by existing menu scrolling and cleared on screen builds. Focused tests cover browsing immutability, filters/sorts/mod intersections, actual render methods and scroll hit coordinates. Owner phone touch/FPS review pending.
+
+# Previous delivery: v6.56.2 — equipment mods and comparison
 
 Equipment selection shows full implicit/unique/prefix/suffix lines again, including equipped items. Compare opens a separate scrollable page with equipped/selected item names, base ATK/armor, wrapped mod values, tier and explicit increase/decrease/gained/lost/unchanged/different labels. Item arrows allow browsing without equipping; landscape Equipment also exposes Mods/Compare. Original equipment, crafting, enhancement, sell/dismantle guards and save values remain. Regression tests exercise actual render methods, long text at three viewports, missing mods, same-item inspection and navigation without item mutations. Owner mobile review pending.
 

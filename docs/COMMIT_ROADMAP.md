@@ -140,3 +140,7 @@ Two result scenes, fifteen stage story panels and three eight-frame growth effec
 ## Equipment mods and comparison — v6.56.2
 
 - Implemented: selected/equipped full mod display, dedicated readable Compare page, item navigation and landscape entry. Gear values and actions unchanged; owner phone review pending.
+
+## Equipment browsing and decision flow — v6.56.3
+
+- Implemented: item detail page with pinned actions, complete stat gain/loss summary, folded unchanged mods, readable inventory previews, filters/sorting/mod picker. Original gear actions and save values remain; phone review pending.
