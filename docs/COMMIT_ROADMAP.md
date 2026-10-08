@@ -154,3 +154,7 @@ Three path Basic loops, one-tap path Uniques, separate Evolutions, retained card
 ## v6.57.1 — Chocolate motion
 
 Delivered continuous Dash gait, uninterrupted punch clips, cancellation of hidden punches and stable visual spring recovery. Focused animation regressions, all-hero motion and Cocoa combat tests, full check/build and browser fixture passed. Phone feel/FPS review remains pending.
+
+## v6.58.0 — Flicker control + Unique charge hints
+
+Delivered Chocolate ON/OFF control, short path-specific warp sequences, moving anchor/camera, boss lock and immediate retreat/Dash cancellation. Existing four hold Uniques now show HOLD/progress/RELEASE and support owning-finger release outside the canvas. Actual-method regressions and full check/build passed; browser fixture reviewed. Phone feel/FPS and boss balance comparison pending.
