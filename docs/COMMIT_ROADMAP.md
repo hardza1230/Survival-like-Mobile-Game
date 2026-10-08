@@ -98,3 +98,8 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 ## Monster animation Batch 7B — v6.55.93
 
 ✅ Seven Mycelium Marsh creatures including Sporeling: 112 authored poses, packed alpha sheets, stage loading and existing presentation integration. Original combat/colliders, guard aura, Drifter acid, Mold Sac two-child split and capped zero-XP Sporeling spawns remain. Source/manifest/prompts/packing/review: assets/incoming/ch2_s2_animations. Owner mobile visual/FPS review pending. Next: batch 8, Nectar Hive including Tiny Grub.
+
+
+## Batch 8 delivered — v6.55.94
+
+Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. Flying species flap wings; Dartwing has windup/dash, both Pollen Sniper and Choir Moth have preparation/firing, Honey Bomb has a once-per-life low-HP warning. Runtime assets: assets/art/ch2_nectar. Original/raw/packed sources, exact prompts, packing and review: assets/incoming/ch2_s3_animations. Original HP/damage/speed/EXP, circles, wax guard aura and 0.74 guard multiplier, flower targeting, Choir Moth three-shot fan, caps and Story P1–P5 remain. Atlas cell 7 flower fallback, generic Elite and boss/miniboss art remain. Tiny Grub has an existing atlas/type mapping but no current spawn caller or special stat branch; its existing basic stats/1 EXP remain, without adding summons. Owner mobile visual/FPS review pending. Next: batch 9, Four-Season Conservatory and Root Throne.

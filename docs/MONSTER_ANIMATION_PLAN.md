@@ -12,7 +12,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | 6 | Chapter 1 stage 5 and Chapter 3: improve existing walk sheets, add missing action clips | Complete — v6.55.16 |
 | 7A | Chapter 2 stage 1: Fermented Canopy — 6 creatures | Complete — v6.55.92; owner mobile review pending |
 | 7B | Chapter 2 stage 2: Mycelium Marsh — 7 creatures including Sporeling | Complete — v6.55.93; owner mobile review pending |
-| 8 | Chapter 2 stage 3: Nectar creatures, including Tiny Grub | Pending |
+| 8 | Chapter 2 stage 3: Nectar creatures, including Tiny Grub | Complete — v6.55.94; owner mobile review pending |
 | 9 | Chapter 2 stages 4–5: season and root creatures | Pending |
 | 10 | Elite/summon coverage including Mini Jelly and C2-1 Crown Sapling; full visual and mobile performance review | Pending |
 
@@ -73,3 +73,8 @@ Six generated 16-pose sheets delivered in v6.55.92. Source/raw/manifest/exact pr
 ## Commit 7B delivery
 
 Seven generated 16-pose sheets delivered in v6.55.93, including the smaller zero-XP Sporeling. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s2_animations; runtime lossless alpha WebPs: assets/art/ch2_mycelium. Existing packer accepts --batch mycelium while Canopy remains the default. Both Sniper and Oracle use preparation/release clips; Hopper uses windup/dash; Mold Sac has a once-per-life pressure warning. Original combat values, circles, Bulwark aura/guard, Drifter acid, two-child Mold Sac split and shared live caps are preserved. Original atlas stays for fallback and Clean Air Wisp. Generic Elite and boss/miniboss art are outside 7B. Actual-method regressions cover eight roles, partial-load fallback, actions/freeze/pool reuse/death and the original death hooks with capped zero-XP child spawns. Mobile visual/FPS acceptance remains pending. Remaining: 8, 9 and 10. Next: 8 C2-3 Nectar Hive including Tiny Grub.
+
+
+## Batch 8 delivered — v6.55.94
+
+Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. Flying species flap wings; Dartwing has windup/dash, both Pollen Sniper and Choir Moth have preparation/firing, Honey Bomb has a once-per-life low-HP warning. Runtime assets: assets/art/ch2_nectar. Original/raw/packed sources, exact prompts, packing and review: assets/incoming/ch2_s3_animations. Original HP/damage/speed/EXP, circles, wax guard aura and 0.74 guard multiplier, flower targeting, Choir Moth three-shot fan, caps and Story P1–P5 remain. Atlas cell 7 flower fallback, generic Elite and boss/miniboss art remain. Tiny Grub has an existing atlas/type mapping but no current spawn caller or special stat branch; its existing basic stats/1 EXP remain, without adding summons. Owner mobile visual/FPS review pending. Next: batch 9, Four-Season Conservatory and Root Throne.

@@ -1,4 +1,4 @@
-"""Pack generated Canopy or Mycelium sheets without changing authored pose proportions.
+"""Pack generated Canopy, Mycelium or Nectar sheets without changing authored pose proportions.
 
 Usage: python scripts/pack-canopy-animations.py source-map.json [--batch mycelium]
 The map contains the selected batch keys and local generated PNG paths. Requires Pillow/NumPy.
@@ -85,19 +85,20 @@ def extract_poses(image):
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('source_map')
-parser.add_argument('--batch', choices=['canopy', 'mycelium'], default='canopy')
+parser.add_argument('--batch', choices=['canopy', 'mycelium', 'nectar'], default='canopy')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 mycelium = args.batch == 'mycelium'
-incoming = root / ('assets/incoming/ch2_s2_animations' if mycelium else 'assets/incoming/ch2_s1_animations')
-runtime = root / ('assets/art/ch2_mycelium' if mycelium else 'assets/art/ch2_canopy')
+nectar = args.batch == 'nectar'
+incoming = root / ('assets/incoming/ch2_s3_animations' if nectar else 'assets/incoming/ch2_s2_animations' if mycelium else 'assets/incoming/ch2_s1_animations')
+runtime = root / ('assets/art/ch2_nectar' if nectar else 'assets/art/ch2_mycelium' if mycelium else 'assets/art/ch2_canopy')
 (incoming / 'raw').mkdir(parents=True, exist_ok=True)
 runtime.mkdir(parents=True, exist_ok=True)
 mapping = json.loads(Path(args.source_map).read_text(encoding='utf-8'))
-identities = ['c22_drifter', 'c22_hopper', 'c22_sniper', 'c22_mold_sac', 'c22_bulwark', 'c22_oracle', 'c22_sporeling'] if mycelium else ['c21_sprout', 'c21_vine_hunter', 'c21_spore_lantern',
+identities = ['c23_drone', 'c23_dartwing', 'c23_pollen_sniper', 'c23_honey_bomb', 'c23_wax_guard', 'c23_choir_moth', 'c23_grub'] if nectar else ['c22_drifter', 'c22_hopper', 'c22_sniper', 'c22_mold_sac', 'c22_bulwark', 'c22_oracle', 'c22_sporeling'] if mycelium else ['c21_sprout', 'c21_vine_hunter', 'c21_spore_lantern',
               'c21_fruit_pod', 'c21_root_beetle', 'c21_thorn_oracle']
 assert set(mapping) == set(identities), 'Exactly the selected batch species are required'
-atlas = Image.open(root / ('assets/ch2_mycelium_enemy_atlas.png' if mycelium else 'assets/ch2_enemy_atlas.png')).convert('RGBA')
+atlas = Image.open(root / ('assets/ch2_nectar_enemy_atlas.png' if nectar else 'assets/ch2_mycelium_enemy_atlas.png' if mycelium else 'assets/ch2_enemy_atlas.png')).convert('RGBA')
 report, previews = {}, {}
 baseline = 236
 for index, name in enumerate(identities):
@@ -146,7 +147,7 @@ for frame in range(16):
     for column, name in enumerate(identities):
         canvas.paste(previews[name][frame], (256 * column, 0), previews[name][frame])
     review.append(canvas)
-review[0].save(incoming / ('mycelium_preview.webp' if mycelium else 'canopy_preview.webp'), save_all=True, append_images=review[1:],
+review[0].save(incoming / ('nectar_preview.webp' if nectar else 'mycelium_preview.webp' if mycelium else 'canopy_preview.webp'), save_all=True, append_images=review[1:],
                duration=[125] * 6 + [250] * 2 + [160] * 4 + [100] * 2 + [300] * 2,
                loop=0, quality=85)
 print('Packed', len(identities), args.batch, 'sheets with', len(identities) * 16, 'authored poses, alpha and fixed baseline')

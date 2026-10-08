@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.93 — monster animation Batch 7B
+# Latest delivery: v6.55.94 — monster animation Batch 8
+
+Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. Flying species flap wings; Dartwing has windup/dash, both Pollen Sniper and Choir Moth have preparation/firing, Honey Bomb has a once-per-life low-HP warning. Runtime assets: assets/art/ch2_nectar. Original/raw/packed sources, exact prompts, packing and review: assets/incoming/ch2_s3_animations. Original HP/damage/speed/EXP, circles, wax guard aura and 0.74 guard multiplier, flower targeting, Choir Moth three-shot fan, caps and Story P1–P5 remain. Atlas cell 7 flower fallback, generic Elite and boss/miniboss art remain. Tiny Grub has an existing atlas/type mapping but no current spawn caller or special stat branch; its existing basic stats/1 EXP remain, without adding summons. Owner mobile visual/FPS review pending. Next: batch 9, Four-Season Conservatory and Root Throne.
+
+# Previous delivery: v6.55.93 — monster animation Batch 7B
 
 Seven Mycelium Marsh creatures including Sporeling have generated 16-pose sheets, RGBA PNG sources and lossless WebP runtime assets. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s2_animations; runtime: assets/art/ch2_mycelium. Existing stage loading, per-species fallback and central presentation handle movement/idle/actions/hurt/death/freeze/pool reuse. Both Sniper and Oracle prepare/firing clips; Cap Hopper has windup/dash; Mold Sac warns once per life. Original HP/damage/speed, collider circles, guard aura, Drifter acid, Mold Sac two-child split, zero Sporeling EXP, live caps and P1–P5 balance remain. Old atlas cell 7 stays for Clean Air Wisp; generic Elite and boss/miniboss art are outside 7B. Packing reuses scripts/pack-canopy-animations.py with --batch mycelium; default 7A mode remains intact. Owner mobile visual/FPS review pending. Next: monster batch 8, Nectar Hive including Tiny Grub.
 

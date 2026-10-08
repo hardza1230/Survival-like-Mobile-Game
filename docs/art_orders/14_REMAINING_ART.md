@@ -1,4 +1,4 @@
-# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.93 · 8 ต.ค. 2026)
+# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.94 · 8 ต.ค. 2026)
 
 อ่าน `00_STYLE_GUIDE.md` และกติกาประหยัดโควต้าใน `NEXT_BATCH_REQUEST.md` §0 ก่อนเริ่ม
 (1 ครั้งที่สร้างภาพ = 1 แผ่นรวม · กริดเท่ากัน · วัตถุไม่ล้นช่อง · พื้นโปร่งใสหรือเขียว `#00FF00` · ไม่มีตัวหนังสือ/เส้นกริด)
@@ -9,7 +9,7 @@
 
 | ลำดับ | งาน | จำนวนภาพที่ต้องสร้าง | ความสำคัญ |
 |---|---|---|---|
-| A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (8–9; 7A/7B เสร็จแล้ว) | เหลือ 3 ด่าน × 7 ตัว = 21 ชีต | 🔴 |
+| A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (9; 7A/7B/8 เสร็จแล้ว) | เหลือ 2 ด่าน × 7 ตัว = 14 ชีต | 🔴 |
 | B | Elite / ตัวเรียก / Mini Jelly รวม Crown Sapling (commit 10) | 5 ชีต | 🟠 |
 | C | อาร์ตอุปกรณ์ชุด Chef ที่ยังเป็นอีโมจิ | 1 แผ่นรวม (2 ชิ้น) | 🟠 |
 | D | ไอคอนการ์ด Unique ของสาย Build | 1 แผ่นรวม (16 ช่อง) | 🟡 |
@@ -21,9 +21,9 @@
 
 ## A. ชีตอนิเมชันมอนสเตอร์ Chapter 2 🔴
 
-**อัปเดต v6.55.93:** A1 / Batch 7A ครบ 6 ตัว และ A2 / Batch 7B ครบ 7 ตัวรวม Sporeling ส่งและผูกเข้าเกมแล้ว เหลือ A3–A5 รวม 21 ตัว การตรวจภาพ/FPS บนมือถือจริงยังรอเจ้าของ ส่วน Elite C2-1 คือ Crown Sapling (atlas ช่อง 6) เป็นคนละตัวกับ Root-Back Beetle และย้ายไป Batch 10
+**อัปเดต v6.55.94:** A1 / Batch 7A ครบ 6 ตัว และ A2 / Batch 7B ครบ 7 ตัวรวม Sporeling ส่งและผูกเข้าเกมแล้ว A3 / Batch 8 ครบ 7 ตัวแล้ว เหลือ A4–A5 รวม 14 ตัว การตรวจภาพ/FPS บนมือถือจริงยังรอเจ้าของ ส่วน Elite C2-1 คือ Crown Sapling (atlas ช่อง 6) เป็นคนละตัวกับ Root-Back Beetle และย้ายไป Batch 10
 
-ตอนนี้ C2-3 ถึง C2-5 ใช้ **atlas ภาพนิ่ง** คือ 1 ช่องต่อ 1 สายพันธุ์ ยังไม่มีท่าเดิน, ท่าโจมตี, ท่าเจ็บ หรือท่าตาย ส่วน C2-1 และ C2-2 ใช้ชีตอนิเมชันแล้ว
+ตอนนี้ C2-4 ถึง C2-5 ใช้ **atlas ภาพนิ่ง** คือ 1 ช่องต่อ 1 สายพันธุ์ ยังไม่มีท่าเดิน, ท่าโจมตี, ท่าเจ็บ หรือท่าตาย ส่วน C2-1 ถึง C2-3 ใช้ชีตอนิเมชันแล้ว
 
 Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ชุดตัวอย่างเหล่านี้เป็นแบบ:
 - `assets/incoming/ch1_ice_animations/`
@@ -73,7 +73,7 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 | `c22_oracle` | Threadweaver Oracle | siege / shooter | ทอใยเรืองแสง |
 | `c22_sporeling` | **Sporeling** | ตัวเล็กที่แตกออกจากตัวอื่น | ตัวเล็กมาก ท่าวิ่งงุ่มง่าม |
 
-### A3 · commit 8 — C2-3 Nectar Hive (`assets/ch2_nectar_enemy_atlas.png`)
+### A3 · commit 8 ✅ delivered v6.55.94 — C2-3 Nectar Hive (`assets/ch2_nectar_enemy_atlas.png`)
 ส่งที่ `assets/incoming/ch2_s3_animations/` · ตัวบินทั้งหมดให้กระพือปีก
 
 | key | ชื่อ | บทบาท | จุดเด่นของท่าโจมตี |
@@ -193,3 +193,6 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 3. อัปเดตสถานะในตาราง `README.md` เป็น ✅ ส่งแล้ว
 
 จากนั้นฝั่งโค้ดจะจัดการต่อเอง: ตัดภาพ → แปลงเป็น webp → ย้ายไป `assets/art/` → ผูกเข้าเกม → ทดสอบ
+
+
+Batch 8 complete: seven creatures/112 poses. Remaining ordinary creatures: 14 in batches 9–10. Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. Flying species flap wings; Dartwing has windup/dash, both Pollen Sniper and Choir Moth have preparation/firing, Honey Bomb has a once-per-life low-HP warning. Runtime assets: assets/art/ch2_nectar. Original/raw/packed sources, exact prompts, packing and review: assets/incoming/ch2_s3_animations. Original HP/damage/speed/EXP, circles, wax guard aura and 0.74 guard multiplier, flower targeting, Choir Moth three-shot fan, caps and Story P1–P5 remain. Atlas cell 7 flower fallback, generic Elite and boss/miniboss art remain. Tiny Grub has an existing atlas/type mapping but no current spawn caller or special stat branch; its existing basic stats/1 EXP remain, without adding summons. Owner mobile visual/FPS review pending. Next: batch 9, Four-Season Conservatory and Root Throne.

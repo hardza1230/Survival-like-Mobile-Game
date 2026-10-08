@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.93';
+const GAME_VERSION = '6.55.94';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.94',date:'2026-10-08',title:'Living monsters: Nectar Hive',items:['Seven Hive creatures including Tiny Grub now have painted movement, idle, attack, hurt and defeat poses','Flying creatures flap their wings; Dartwing and both pollen shooters use authored action clips','Original combat, shield aura and flower defense remain']},
   {v:'6.55.93',date:'2026-10-08',title:'Living monsters: Mycelium Marsh',items:['Seven Marsh creatures, including summoned Sporelings, now have painted movement, idle, attack, hurt and defeat poses','Cap Hopper preparation and both mushroom shooters use authored action clips','Original combat, guard aura, summon rules and boss art are preserved']},
   {v:'6.55.92',date:'2026-10-08',title:'Living monsters: Fermented Canopy',items:['Six Canopy creatures now have painted movement, idle, attack, hurt and defeat poses','Vine Hunter dash preparation and Spore Lantern firing use authored animation clips','Original combat values, collision circles and Crown Sapling Elite art are preserved']},
   {v:'6.55.91',date:'2026-10-08',title:'P5: build drafts for every Story hero',items:['Yuzu, Cocoa, Taro and Sesame now receive the same chosen-path draft guarantees as Strawberry and Mint','Berry and heroes before choosing a path receive an eligible core attack choice','Emergency recovery preserves one build choice; exhausted or banished upgrades stay excluded','Existing powers, milestones, earned EXP, pickups and late-wave pacing remain']},
@@ -1864,6 +1865,13 @@ const ASSET_SHEETS = {
   mb6_sporewarden:{ url:'assets/mb6_sporewarden_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   mb7_fungal_juggernaut:{ url:'assets/mb7_fungal_juggernaut_sheet.png', frame:256, anim:{frames:2,rate:3,yoyo:true} },
   boss7_mycelium_behemoth:{ url:'assets/boss7_mycelium_behemoth_sheet.png', frame:256, anim:{frames:2,rate:3,yoyo:true} },
+  c23_drone_animated:{url:'assets/art/ch2_nectar/c23_drone_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c23_dartwing_animated:{url:'assets/art/ch2_nectar/c23_dartwing_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
+  c23_pollen_sniper_animated:{url:'assets/art/ch2_nectar/c23_pollen_sniper_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  c23_honey_bomb_animated:{url:'assets/art/ch2_nectar/c23_honey_bomb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9,10,11],rate:10},attack:{frames:[8,9,10,11],rate:12}}},
+  c23_wax_guard_animated:{url:'assets/art/ch2_nectar/c23_wax_guard_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c23_choir_moth_animated:{url:'assets/art/ch2_nectar/c23_choir_moth_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  c23_grub_animated:{url:'assets/art/ch2_nectar/c23_grub_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
   ch2_nectar_enemy_atlas:{ url:'assets/ch2_nectar_enemy_atlas.png', frame:256 },
   mb8_royal_stinger:{ url:'assets/mb8_royal_stinger_sheet.png', frame:256, anim:{frames:2,rate:5,yoyo:true} },
   boss8_hornet_queen:{ url:'assets/boss8_hornet_queen_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
@@ -2095,7 +2103,7 @@ const STAGE_SHEETS=[
   ['boss1','e_ant_worker_animated','e_ant_scout_animated','e_ant_spitter_animated','e_ant_soldier_animated','e_ant_drone_animated','e_acid_animated'],['boss2','e_drain_slime_animated','e_drain_dasher_animated','e_drain_caster_animated','e_drain_bomber_animated','e_drain_tank_animated'],['boss3','e_fire_ember_animated','e_fire_chili_animated','e_fire_grinder_animated','e_fire_bomber_animated','e_fire_golem_animated'],['boss4','e_ice_wisp_animated','e_ice_shard_animated','e_ice_caster_animated','e_ice_bomber_animated','e_ice_guardian_animated'],['boss5_sovereign','boss5','mb5_banquet_executioner','e_void_crumb_animated','e_crown_ripper_animated','e_banquet_eye_animated','e_maw_truffle_animated','e_royal_oven_sentinel_animated'],
   ['boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas','c21_sprout_animated','c21_vine_hunter_animated','c21_spore_lantern_animated','c21_fruit_pod_animated','c21_root_beetle_animated','c21_thorn_oracle_animated'],
   ['boss7_mycelium_behemoth','mb7_fungal_juggernaut','ch2_mycelium_enemy_atlas','ch2_prop_atlas','c22_drifter_animated','c22_hopper_animated','c22_sniper_animated','c22_mold_sac_animated','c22_bulwark_animated','c22_oracle_animated','c22_sporeling_animated'],
-  ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas'],
+  ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas','c23_drone_animated','c23_dartwing_animated','c23_pollen_sniper_animated','c23_honey_bomb_animated','c23_wax_guard_animated','c23_choir_moth_animated','c23_grub_animated'],
   ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas'],
   ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas'],
   ...[1,2,3,4,5].map(n=>['c3_mini'+n,'c3_boss'+n,'c3_e_basic_animated','c3_e_fast_animated','c3_e_shooter_animated','c3_e_bomber_animated','c3_e_tank_animated'])
@@ -11310,12 +11318,16 @@ class Game extends Phaser.Scene {
     const id=type==='fast'||type==='dasher'?'hopper':type==='shooter'?'sniper':type==='bomber'?'mold_sac':type==='tank'?'bulwark':type==='siege'?'oracle':type==='sporeling'?'sporeling':'drifter';
     const key='c22_'+id+'_animated';return this.textures.exists(key)?key:'ch2_mycelium_enemy_atlas';
   }
+  nectarArtKey(type){
+    const id=type==='fast'||type==='dasher'?'dartwing':type==='shooter'?'pollen_sniper':type==='bomber'?'honey_bomb':type==='tank'?'wax_guard':type==='siege'?'choir_moth':type==='grub'?'grub':'drone';
+    const key='c23_'+id+'_animated';return this.textures.exists(key)?key:'ch2_nectar_enemy_atlas';
+  }
   antSpitWindup(e){
-    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated','e_banquet_eye_animated','c3_e_shooter_animated','c21_spore_lantern_animated','c22_sniper_animated','c22_oracle_animated'].includes(e._enemyArtKey))return;
+    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated','e_banquet_eye_animated','c3_e_shooter_animated','c21_spore_lantern_animated','c22_sniper_animated','c22_oracle_animated','c23_pollen_sniper_animated','c23_choir_moth_animated'].includes(e._enemyArtKey))return;
     if(e.shootCd>0&&e.shootCd<=0.18&&(!e._enemyAction||e._enemyAction.state!=='windup'))this.enemyAction(e,'windup',e.shootCd*1000);
   }
   warnAntBomber(e){
-    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated','e_maw_truffle_animated','c3_e_bomber_animated','c21_fruit_pod_animated','c22_mold_sac_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
+    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated','e_maw_truffle_animated','c3_e_bomber_animated','c21_fruit_pod_animated','c22_mold_sac_animated','c23_honey_bomb_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
     e._antBombWarn=true;this.enemyAction(e,'windup',400);
   }
   stopEnemyPresentation(e){
@@ -11383,6 +11395,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===5){key='ch2_enemy_atlas';atlasFrame=ch2Frame;}else if(this.stageIndex===6){key='ch2_mycelium_enemy_atlas';atlasFrame=mycoFrame;}else if(this.stageIndex===7){key='ch2_nectar_enemy_atlas';atlasFrame=nectarFrame;}else if(this.stageIndex===8){key='ch2_seasons_enemy_atlas';atlasFrame=seasonFrame;}else if(this.stageIndex===9){key='ch2_root_enemy_atlas';atlasFrame=rootFrame;}
     if(this.stageIndex===5){key=this.canopyArtKey(type);if(key!=='ch2_enemy_atlas')atlasFrame=0;}
     if(this.stageIndex===6){key=this.myceliumArtKey(type);if(key!=='ch2_mycelium_enemy_atlas')atlasFrame=0;}
+    if(this.stageIndex===7){key=this.nectarArtKey(type);if(key!=='ch2_nectar_enemy_atlas')atlasFrame=0;}
     if(!e) e=this.enemies.create(x,y,key,atlasFrame);
     else { e.setTexture(key,atlasFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool Full (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
