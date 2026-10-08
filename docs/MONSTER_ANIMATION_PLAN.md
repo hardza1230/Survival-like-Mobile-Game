@@ -14,7 +14,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | 7B | Chapter 2 stage 2: Mycelium Marsh — 7 creatures including Sporeling | Complete — v6.55.93; owner mobile review pending |
 | 8 | Chapter 2 stage 3: Nectar creatures, including Tiny Grub | Complete — v6.55.94; owner mobile review pending |
 | 9 | Chapter 2 stages 4–5: season and root creatures | Pending |
-| 10 | Elite/summon coverage including Mini Jelly and C2-1 Crown Sapling; full visual and mobile performance review | Pending |
+| 10 | Elite/special art including Mini Jelly and C2-1 Crown Sapling; full visual and mobile performance review | Art/code complete — v6.55.95; owner mobile review pending |
 
 ## Commit 7 split
 
@@ -78,3 +78,8 @@ Seven generated 16-pose sheets delivered in v6.55.93, including the smaller zero
 ## Batch 8 delivered — v6.55.94
 
 Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. Flying species flap wings; Dartwing has windup/dash, both Pollen Sniper and Choir Moth have preparation/firing, Honey Bomb has a once-per-life low-HP warning. Runtime assets: assets/art/ch2_nectar. Original/raw/packed sources, exact prompts, packing and review: assets/incoming/ch2_s3_animations. Original HP/damage/speed/EXP, circles, wax guard aura and 0.74 guard multiplier, flower targeting, Choir Moth three-shot fan, caps and Story P1–P5 remain. Atlas cell 7 flower fallback, generic Elite and boss/miniboss art remain. Tiny Grub has an existing atlas/type mapping but no current spawn caller or special stat branch; its existing basic stats/1 EXP remain, without adding summons. Owner mobile visual/FPS review pending. Next: batch 9, Four-Season Conservatory and Root Throne.
+
+
+## Elite and special creatures — v6.55.95
+
+Elite/special art batch B is implemented: Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic Chest each have 16 authored poses. Packed RGBA PNG/raw/exact prompts/packing/contact/animated review: assets/incoming/elite_summons; runtime lossless alpha WebP: assets/art/elite_summons. Crown Sapling uses C2-1 atlas cell 6 identity; Chapter 3 Elite uses the ash/gold crowned seed knight design from the brief. Feast carries a food plate and uses flee clips, without an attack clip. Mimic is a toothy living chest. Existing world sprite boxes/circle radii/centers are preserved when 62px generic Elite and 48px chest art become 256px frames. Mini Jelly keeps .36 scale and [70,58,70] circle. HP/damage/speed/EXP, Elite gates, Warden half-HP three-child split, Feast timers/Hunger share and Mimic chance/tier/reward remain. Animated Feast pool reuse cancels its escape fade and clears fleeing state; missing sheets retain original art. Boss/miniboss pose/death controllers remain separate. Owner mobile visual/FPS review pending. Ordinary season/root art (batch 9), Chef gear and card/Unique VFX art remain.

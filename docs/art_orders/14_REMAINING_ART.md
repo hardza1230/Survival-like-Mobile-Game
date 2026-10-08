@@ -1,4 +1,4 @@
-# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.94 · 8 ต.ค. 2026)
+# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.95 · 8 ต.ค. 2026)
 
 อ่าน `00_STYLE_GUIDE.md` และกติกาประหยัดโควต้าใน `NEXT_BATCH_REQUEST.md` §0 ก่อนเริ่ม
 (1 ครั้งที่สร้างภาพ = 1 แผ่นรวม · กริดเท่ากัน · วัตถุไม่ล้นช่อง · พื้นโปร่งใสหรือเขียว `#00FF00` · ไม่มีตัวหนังสือ/เส้นกริด)
@@ -10,7 +10,7 @@
 | ลำดับ | งาน | จำนวนภาพที่ต้องสร้าง | ความสำคัญ |
 |---|---|---|---|
 | A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (9; 7A/7B/8 เสร็จแล้ว) | เหลือ 2 ด่าน × 7 ตัว = 14 ชีต | 🔴 |
-| B | Elite / ตัวเรียก / Mini Jelly รวม Crown Sapling (commit 10) | 5 ชีต | 🟠 |
+| B | Elite / ตัวพิเศษ / Mini Jelly รวม Crown Sapling | ✅ ครบ 5 ชีต v6.55.95 | 🟠 |
 | C | อาร์ตอุปกรณ์ชุด Chef ที่ยังเป็นอีโมจิ | 1 แผ่นรวม (2 ชิ้น) | 🟠 |
 | D | ไอคอนการ์ด Unique ของสาย Build | 1 แผ่นรวม (16 ช่อง) | 🟡 |
 | E | VFX ของ Unique ใหม่ (Berry Blast / Glacier Bloom / Frost Lance) | 1 แผ่นรวม (เฟรมอนิเมชัน) | 🟡 |
@@ -21,7 +21,7 @@
 
 ## A. ชีตอนิเมชันมอนสเตอร์ Chapter 2 🔴
 
-**อัปเดต v6.55.94:** A1 / Batch 7A ครบ 6 ตัว และ A2 / Batch 7B ครบ 7 ตัวรวม Sporeling ส่งและผูกเข้าเกมแล้ว A3 / Batch 8 ครบ 7 ตัวแล้ว เหลือ A4–A5 รวม 14 ตัว การตรวจภาพ/FPS บนมือถือจริงยังรอเจ้าของ ส่วน Elite C2-1 คือ Crown Sapling (atlas ช่อง 6) เป็นคนละตัวกับ Root-Back Beetle และย้ายไป Batch 10
+**อัปเดต v6.55.95:** A1 / Batch 7A ครบ 6 ตัว และ A2 / Batch 7B ครบ 7 ตัวรวม Sporeling ส่งและผูกเข้าเกมแล้ว A3 / Batch 8 ครบ 7 ตัวแล้ว เหลือ A4–A5 รวม 14 ตัว การตรวจภาพ/FPS บนมือถือจริงยังรอเจ้าของ ส่วน Elite C2-1 คือ Crown Sapling (atlas ช่อง 6) เป็นคนละตัวกับ Root-Back Beetle และย้ายไป Batch 10
 
 ตอนนี้ C2-4 ถึง C2-5 ใช้ **atlas ภาพนิ่ง** คือ 1 ช่องต่อ 1 สายพันธุ์ ยังไม่มีท่าเดิน, ท่าโจมตี, ท่าเจ็บ หรือท่าตาย ส่วน C2-1 ถึง C2-3 ใช้ชีตอนิเมชันแล้ว
 
@@ -116,7 +116,7 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 
 ---
 
-## B. Elite / ตัวที่ถูกเรียก / Mini Jelly (commit 10) 🟠
+## B. Elite / ตัวที่ถูกเรียก / Mini Jelly ✅ ส่งแล้ว v6.55.95
 ส่งที่ `assets/incoming/elite_summons/` ใช้สเปก 4×4 แบบเดียวกับ A
 
 | key | ตัว | ใช้ที่ไหน | หมายเหตุ |
@@ -196,3 +196,6 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 
 
 Batch 8 complete: seven creatures/112 poses. Remaining ordinary creatures: 14 in batches 9–10. Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. Flying species flap wings; Dartwing has windup/dash, both Pollen Sniper and Choir Moth have preparation/firing, Honey Bomb has a once-per-life low-HP warning. Runtime assets: assets/art/ch2_nectar. Original/raw/packed sources, exact prompts, packing and review: assets/incoming/ch2_s3_animations. Original HP/damage/speed/EXP, circles, wax guard aura and 0.74 guard multiplier, flower targeting, Choir Moth three-shot fan, caps and Story P1–P5 remain. Atlas cell 7 flower fallback, generic Elite and boss/miniboss art remain. Tiny Grub has an existing atlas/type mapping but no current spawn caller or special stat branch; its existing basic stats/1 EXP remain, without adding summons. Owner mobile visual/FPS review pending. Next: batch 9, Four-Season Conservatory and Root Throne.
+
+
+Elite/special art batch B is implemented: Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic Chest each have 16 authored poses. Packed RGBA PNG/raw/exact prompts/packing/contact/animated review: assets/incoming/elite_summons; runtime lossless alpha WebP: assets/art/elite_summons. Crown Sapling uses C2-1 atlas cell 6 identity; Chapter 3 Elite uses the ash/gold crowned seed knight design from the brief. Feast carries a food plate and uses flee clips, without an attack clip. Mimic is a toothy living chest. Existing world sprite boxes/circle radii/centers are preserved when 62px generic Elite and 48px chest art become 256px frames. Mini Jelly keeps .36 scale and [70,58,70] circle. HP/damage/speed/EXP, Elite gates, Warden half-HP three-child split, Feast timers/Hunger share and Mimic chance/tier/reward remain. Animated Feast pool reuse cancels its escape fade and clears fleeing state; missing sheets retain original art. Boss/miniboss pose/death controllers remain separate. Owner mobile visual/FPS review pending. Ordinary season/root art (batch 9), Chef gear and card/Unique VFX art remain.

@@ -1,4 +1,4 @@
-<!-- Latest: v6.55.94; batches 7A/7B/8 complete (20 species); next batch 9. -->
+<!-- Latest: v6.55.95; batches 7A/7B/8 and elite/special B complete; batch 9 remains. -->
 # 🎨 Art Orders — ใบสั่งงานอาร์ตจริงแทนของชั่วคราว
 
 โฟลเดอร์นี้คือ "สัญญา" ระหว่าง **AI ทำอาร์ต** กับ **AI เขียนโค้ด** ของ Mochi Mayhem
@@ -8,7 +8,7 @@
 
 ## ลำดับการอ่าน
 1. `00_STYLE_GUIDE.md` — สไตล์/สี/มุมมอง/กฎเทคนิค (**อ่านก่อนทุกชุด**)
-2. **`14_REMAINING_ART.md` — งานที่เหลือทั้งหมด (อัปเดต v6.55.94; 7A/7B/8 เสร็จแล้ว ต่อ 9) ← เริ่มที่นี่** · `NEXT_BATCH_REQUEST.md` = กติกาประหยัดโควต้า §0 (งานในไฟล์นั้นเสร็จแล้ว)
+2. **`14_REMAINING_ART.md` — งานที่เหลือทั้งหมด (อัปเดต v6.55.95; 7A/7B/8 และ Elite/ตัวพิเศษเสร็จแล้ว) ← เริ่มที่นี่** · `NEXT_BATCH_REQUEST.md` = กติกาประหยัดโควต้า §0 (งานในไฟล์นั้นเสร็จแล้ว)
 2b. **`NEXT_BATCH_REQUEST.md` — (เดิม) งานที่ต้องทำตอนนั้น (รวมเป็นแผ่นรวม ประหยัดโควต้า) ← เริ่มที่นี่**
 3. ใบสั่งรายชุด (01–12) = สเปกละเอียดของแต่ละ key
 
@@ -33,7 +33,7 @@
 | 12 | `12_BIOME_SPICY.md` | Biome ในถ้ำ (พื้นต่อรส + ของในฉาก 5 รส) | 13 | 🔴 | 🟩 อาร์ตใส่เกมแล้ว v6.34 · กลไกมีแค่ Spicy |
 | 13 | `13_DELVE_BOSSES.md` | บอส Delve ชั้น 10/20 + ของประกอบ | 3 | 🔴 | 🟩 ใส่เกมแล้ว v6.39 + กลไกครบ |
 | C2-5 | `C2_5_ROOT_KNIGHT_ANIMATION.md` | Root Knight 16 เฟรม | 1 ชีต | — | 🟩 ใส่เข้าเกมแล้ว v6.0.54 |
-| 14 | `14_REMAINING_ART.md` | **งานที่เหลือ:** อนิเมชัน C2-4 ถึง C2-5 + Elite/Mini Jelly/Crown Sapling + Chef + ไอคอนการ์ดสาย + VFX Unique | 14 มอน + 5 ตัวพิเศษ + 3 แผ่นรวม | 🔴 | 🟩 7A/7B/8 ครบ 20 ตัว v6.55.94; ต่อ 9 |
+| 14 | `14_REMAINING_ART.md` | **งานที่เหลือ:** อนิเมชัน C2-4 ถึง C2-5 + Chef + ไอคอนการ์ดสาย + VFX Unique | 14 มอน + 3 แผ่นรวม | 🔴 | 🟩 7A/7B/8 และตัวพิเศษครบ v6.55.95; เหลือ 9 |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
 
@@ -90,3 +90,6 @@ date: YYYY-MM-DD
 
 
 Batch 8 completed at v6.55.94: seven Nectar Hive sheets including Tiny Grub. Seven Nectar Hive creatures including Tiny Grub receive 16 authored poses each. Flying species flap wings; Dartwing has windup/dash, both Pollen Sniper and Choir Moth have preparation/firing, Honey Bomb has a once-per-life low-HP warning. Runtime assets: assets/art/ch2_nectar. Original/raw/packed sources, exact prompts, packing and review: assets/incoming/ch2_s3_animations. Original HP/damage/speed/EXP, circles, wax guard aura and 0.74 guard multiplier, flower targeting, Choir Moth three-shot fan, caps and Story P1–P5 remain. Atlas cell 7 flower fallback, generic Elite and boss/miniboss art remain. Tiny Grub has an existing atlas/type mapping but no current spawn caller or special stat branch; its existing basic stats/1 EXP remain, without adding summons. Owner mobile visual/FPS review pending. Next: batch 9, Four-Season Conservatory and Root Throne.
+
+
+Elite/special art batch B is implemented: Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic Chest each have 16 authored poses. Packed RGBA PNG/raw/exact prompts/packing/contact/animated review: assets/incoming/elite_summons; runtime lossless alpha WebP: assets/art/elite_summons. Crown Sapling uses C2-1 atlas cell 6 identity; Chapter 3 Elite uses the ash/gold crowned seed knight design from the brief. Feast carries a food plate and uses flee clips, without an attack clip. Mimic is a toothy living chest. Existing world sprite boxes/circle radii/centers are preserved when 62px generic Elite and 48px chest art become 256px frames. Mini Jelly keeps .36 scale and [70,58,70] circle. HP/damage/speed/EXP, Elite gates, Warden half-HP three-child split, Feast timers/Hunger share and Mimic chance/tier/reward remain. Animated Feast pool reuse cancels its escape fade and clears fleeing state; missing sheets retain original art. Boss/miniboss pose/death controllers remain separate. Owner mobile visual/FPS review pending. Ordinary season/root art (batch 9), Chef gear and card/Unique VFX art remain.

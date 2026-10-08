@@ -1,4 +1,4 @@
-"""Pack generated Canopy, Mycelium or Nectar sheets without changing authored pose proportions.
+"""Pack generated Canopy, Mycelium, Nectar or special-creature sheets without changing authored pose proportions.
 
 Usage: python scripts/pack-canopy-animations.py source-map.json [--batch mycelium]
 The map contains the selected batch keys and local generated PNG paths. Requires Pillow/NumPy.
@@ -13,7 +13,7 @@ from PIL import Image
 import numpy as np
 
 
-def extract_poses(image):
+def extract_poses(image, row_columns=(4, 4, 4, 4)):
     """Keep whole transparent components even when a pose crosses a nominal cell edge."""
     rgba = np.array(image)
     mask = rgba[:, :, 3] > 16
@@ -53,17 +53,19 @@ def extract_poses(image):
         b = component['box']
         b[0], b[1], b[2], b[3] = min(b[0], left), min(b[1], y), max(b[2], right), max(b[3], y + 1)
     pieces = sorted(components.values(), key=lambda c: c['area'], reverse=True)
-    main = pieces[:16]
-    centers, groups = {}, {i: [] for i in range(16)}
+    count = sum(row_columns)
+    main = pieces[:count]
+    centers, groups = {}, {i: [] for i in range(count)}
     for component in main:
         x, y = component['sx'] / component['area'], component['sy'] / component['area']
-        frame = min(3, int(y * 4 / image.height)) * 4 + min(3, int(x * 4 / image.width))
+        row = min(3, int(y * 4 / image.height))
+        frame = sum(row_columns[:row]) + min(row_columns[row] - 1, int(x * row_columns[row] / image.width))
         assert frame not in centers, ('merged/ambiguous source poses', frame)
         centers[frame] = (x, y)
         groups[frame].append(component)
-    assert len(centers) == 16
+    assert len(centers) == count
     removed = 0
-    for component in pieces[16:]:
+    for component in pieces[count:]:
         if component['area'] < 4:
             removed += component['area']
             continue
@@ -71,7 +73,7 @@ def extract_poses(image):
         frame = min(centers, key=lambda f: (centers[f][0] - x)**2 + (centers[f][1] - y)**2)
         groups[frame].append(component)
     cells, bounds = [], []
-    for frame in range(16):
+    for frame in range(count):
         pieces = groups[frame]
         box = [min(c['box'][0] for c in pieces), min(c['box'][1] for c in pieces),
                max(c['box'][2] for c in pieces), max(c['box'][3] for c in pieces)]
@@ -85,20 +87,21 @@ def extract_poses(image):
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('source_map')
-parser.add_argument('--batch', choices=['canopy', 'mycelium', 'nectar'], default='canopy')
+parser.add_argument('--batch', choices=['canopy', 'mycelium', 'nectar', 'elite'], default='canopy')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 mycelium = args.batch == 'mycelium'
 nectar = args.batch == 'nectar'
-incoming = root / ('assets/incoming/ch2_s3_animations' if nectar else 'assets/incoming/ch2_s2_animations' if mycelium else 'assets/incoming/ch2_s1_animations')
-runtime = root / ('assets/art/ch2_nectar' if nectar else 'assets/art/ch2_mycelium' if mycelium else 'assets/art/ch2_canopy')
+elite = args.batch == 'elite'
+incoming = root / ('assets/incoming/elite_summons' if elite else 'assets/incoming/ch2_s3_animations' if nectar else 'assets/incoming/ch2_s2_animations' if mycelium else 'assets/incoming/ch2_s1_animations')
+runtime = root / ('assets/art/elite_summons' if elite else 'assets/art/ch2_nectar' if nectar else 'assets/art/ch2_mycelium' if mycelium else 'assets/art/ch2_canopy')
 (incoming / 'raw').mkdir(parents=True, exist_ok=True)
 runtime.mkdir(parents=True, exist_ok=True)
 mapping = json.loads(Path(args.source_map).read_text(encoding='utf-8'))
-identities = ['c23_drone', 'c23_dartwing', 'c23_pollen_sniper', 'c23_honey_bomb', 'c23_wax_guard', 'c23_choir_moth', 'c23_grub'] if nectar else ['c22_drifter', 'c22_hopper', 'c22_sniper', 'c22_mold_sac', 'c22_bulwark', 'c22_oracle', 'c22_sporeling'] if mycelium else ['c21_sprout', 'c21_vine_hunter', 'c21_spore_lantern',
+identities = ['c21_crown_sapling', 'mini_jelly', 'c3_elite', 'feast_target', 'mimic_chest'] if elite else ['c23_drone', 'c23_dartwing', 'c23_pollen_sniper', 'c23_honey_bomb', 'c23_wax_guard', 'c23_choir_moth', 'c23_grub'] if nectar else ['c22_drifter', 'c22_hopper', 'c22_sniper', 'c22_mold_sac', 'c22_bulwark', 'c22_oracle', 'c22_sporeling'] if mycelium else ['c21_sprout', 'c21_vine_hunter', 'c21_spore_lantern',
               'c21_fruit_pod', 'c21_root_beetle', 'c21_thorn_oracle']
 assert set(mapping) == set(identities), 'Exactly the selected batch species are required'
-atlas = Image.open(root / ('assets/ch2_nectar_enemy_atlas.png' if nectar else 'assets/ch2_mycelium_enemy_atlas.png' if mycelium else 'assets/ch2_enemy_atlas.png')).convert('RGBA')
+atlas = None if elite else Image.open(root / ('assets/ch2_nectar_enemy_atlas.png' if nectar else 'assets/ch2_mycelium_enemy_atlas.png' if mycelium else 'assets/ch2_enemy_atlas.png')).convert('RGBA')
 report, previews = {}, {}
 baseline = 236
 for index, name in enumerate(identities):
@@ -106,15 +109,30 @@ for index, name in enumerate(identities):
     image = Image.open(source).convert('RGBA')
     # Generated grids can have slight canvas-aspect drift. Extraction uses both
     # source axes; final cells remain exactly square without stretching anatomy.
-    assert .95 <= image.width / image.height <= 1.05, (name, image.size)
+    assert .90 <= image.width / image.height <= 1.10, (name, image.size)
     shutil.copyfile(source, incoming / 'raw' / (name + '_generated.png'))
-    cells, source_bounds, removed = extract_poses(image)
+    # Mimic delivered six locomotion poses in its first row and four in each
+    # remaining row. Select existing authored actions into the final 4x4 grid.
+    row_columns = (6, 4, 4, 4) if name == 'mimic_chest' else (4, 4, 4, 4)
+    cells, source_bounds, removed = extract_poses(image, row_columns)
     # The lantern generator placed charge in idle slot 7 and release in slot 9.
     # Reorder existing authored poses into the runtime contract without redrawing.
-    order = [0, 1, 2, 3, 4, 5, 6, 11, 8, 7, 9, 10, 12, 13, 14, 15] if name == 'c21_spore_lantern' else list(range(16))
+    order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17] if name == 'mimic_chest' else [0, 1, 2, 3, 4, 5, 6, 11, 8, 7, 9, 10, 12, 13, 14, 15] if name == 'c21_spore_lantern' else list(range(16))
     cells = [cells[i] for i in order]
-    old = atlas.crop((index % 4 * 256, index // 4 * 256,
-                      (index % 4 + 1) * 256, (index // 4 + 1) * 256))
+    reference = None
+    if elite:
+        reference = {'c21_crown_sapling': 'assets/ch2_enemy_atlas.png',
+            'mini_jelly': 'assets/art/delve_bosses/delve10_minijelly.webp',
+            'c3_elite': 'assets/e_tank.png', 'feast_target': 'assets/e_tank.png',
+            'mimic_chest': 'assets/chest.png'}[name]
+        old = Image.open(root / reference).convert('RGBA')
+        if name == 'c21_crown_sapling':
+            old = old.crop((512, 256, 768, 512))
+        else:
+            old = old.resize((256, 256), Image.Resampling.LANCZOS)
+    else:
+        old = atlas.crop((index % 4 * 256, index // 4 * 256,
+                          (index % 4 + 1) * 256, (index // 4 + 1) * 256))
     old_box = old.getchannel('A').point(lambda a: 255 if a > 24 else 0).getbbox()
     target_width, target_height = old_box[2] - old_box[0], old_box[3] - old_box[1]
     scale = min(target_width / statistics.median(c.width for c in cells[:6]),
@@ -134,10 +152,10 @@ for index, name in enumerate(identities):
         bounds.append([x, y, cell.width, cell.height])
     sheet.save(incoming / (name + '_sheet.png'))
     sheet.save(runtime / (name + '_sheet.webp'), lossless=True, method=6)
-    report[name] = {'sourceSize': list(image.size), 'sourceBounds': source_bounds, 'sourceFrameOrder': order,
+    report[name] = {'sourceSize': list(image.size), 'sourceRowColumns': list(row_columns), 'sourceBounds': source_bounds, 'sourceFrameOrder': order,
                     'extraction': 'whole alpha components; detached details assigned to nearest pose',
                     'tinySpeckPixelsRemoved': removed,
-                    'oldAtlasFrame': index, 'oldAtlasBounds': list(old_box),
+                    'oldAtlasFrame': (6 if name == 'c21_crown_sapling' else None) if elite else index, 'reference': reference, 'oldAtlasBounds': list(old_box),
                     'baseline': baseline, 'scale': scale, 'bounds': bounds}
     previews[name] = frames
 (incoming / 'PACKING.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
@@ -147,7 +165,7 @@ for frame in range(16):
     for column, name in enumerate(identities):
         canvas.paste(previews[name][frame], (256 * column, 0), previews[name][frame])
     review.append(canvas)
-review[0].save(incoming / ('nectar_preview.webp' if nectar else 'mycelium_preview.webp' if mycelium else 'canopy_preview.webp'), save_all=True, append_images=review[1:],
+review[0].save(incoming / ('elite_preview.webp' if elite else 'nectar_preview.webp' if nectar else 'mycelium_preview.webp' if mycelium else 'canopy_preview.webp'), save_all=True, append_images=review[1:],
                duration=[125] * 6 + [250] * 2 + [160] * 4 + [100] * 2 + [300] * 2,
                loop=0, quality=85)
 print('Packed', len(identities), args.batch, 'sheets with', len(identities) * 16, 'authored poses, alpha and fixed baseline')
