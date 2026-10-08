@@ -45,8 +45,8 @@ for(const character of Object.keys(api.BASIC_ATTACKS)){
 }
 // Milestones remain explicit screens at their existing gates for all four heroes.
 for(const character of remaining){const s=scene(null,character);s.level=6;const paths=s.rollBasicAttackUpgrades(3);assert(paths.every(c=>c.kind==='Build Path'));paths[0].apply();assert(s.basicAttack.path);s.basicAttack.mastery=10;assert(s.rollBasicAttackUpgrades(3).every(c=>c.mutation));s.basicAttack.mutation='chosen';s.basicAttack.mastery=20;assert(s.rollBasicAttackUpgrades(3)[0].evolution);}
-// Random loot and special modes retain the original ungrouped drafts for new heroes.
+// Other heroes retain ungrouped special/loot drafts; Cocoa now keeps selected-path drafts like Mint/Berry.
 for(const character of remaining.concat('berry'))for(const flag of ['recipeMode','riftMode','bossRush','endlessMode','_inTutorial','noSpecial']){
- const s=scene(api.BASIC_PATHS[character]?.[0].id,character);if(flag!=='noSpecial')s[flag]=true;const out=s.rollBasicAttackUpgrades(3,flag==='noSpecial'?{noSpecial:true}:undefined);assert(!out.some(c=>c.poolGroup));
+ const s=scene(api.BASIC_PATHS[character]?.[0].id,character);if(flag!=='noSpecial')s[flag]=true;const out=s.rollBasicAttackUpgrades(3,flag==='noSpecial'?{noSpecial:true}:undefined);if(character==='cocoa')assert(out.some(c=>c.poolGroup==='path'));else assert(!out.some(c=>c.poolGroup));
 }
 console.log('P5: twelve remaining paths, all seven heroes before path selection, Berry core choices, recovery and n=1/2/3, authored rank/effect application, caps/banish/exhaustion, stage-local path replacement, special milestones and mode/loot isolation passed');

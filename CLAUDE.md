@@ -1,4 +1,10 @@
-# Latest delivery: v6.56.5 — Equipment page reverted to the pre-v6.56.2 layout at owner request (v6.56.4 menu scrolling kept). Do not reapply v6.56.2–3 Equipment redesign without asking.
+# Latest delivery: v6.57.0 — Chocolate C1–C5 build rework
+
+Cocoa keeps path/card/Talent IDs and saved investment. Five-hit Basic combos advance only on landed, phase-valid primary punches. Brawler keeps rhythm for 2.5s and emits at most 3 finisher waves (overflow wave ranks add power); Titan uses fixed 240/320ms wind-ups and a 500ms minimum attack interval; Dash Boxer keeps combo progress on Dash and empowers the next landed punch. One-tap Unique: Bear Slam before choosing a path, moving Chocolate Cyclone, a fixed-location Colossus Fist chosen Boss > Mini > Elite > strongest ordinary, or Phantom Rush with separate expiring temporary Dash charges and once-per-target actual Dash-path damage. Unique levels, Drum refunds/minimum reuse, existing Talent effects, mutations, Recipe ranks and conditional damage flow are preserved. Evolutions are Overdrive, Colossus and Phantom Chocolatier; card/Codex/Recipe/Unique text follows the path. Legacy hold/drag/swipe/warp gameplay is removed. Runtime jobs are capped, paused with combat, bound to player/basic/path/epoch and cleared at death/exit/reset/start/shutdown. Reuses painted Cocoa punch, bear impact and existing sounds; no new generated art. Actual-cast tests and browser fixture review cover the new mechanics; full checks and build:www passed on the merged v6.56.5 base. Owner phone feel/FPS/balance review pending.
+
+Equipment remains at the restored v6.56.5 layout. The Chocolate rework does not reapply the v6.56.2–3 redesign.
+
+# Previous delivery: v6.56.5 — Equipment page reverted to the pre-v6.56.2 layout at owner request (v6.56.4 menu scrolling kept). Do not reapply v6.56.2–3 Equipment redesign without asking.
 
 # Previous delivery: v6.56.4 — responsive menu touch
 

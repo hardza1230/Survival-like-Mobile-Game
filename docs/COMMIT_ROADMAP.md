@@ -147,3 +147,6 @@ Two result scenes, fifteen stage story panels and three eight-frame growth effec
 
 ## v6.56.4 — responsive menu touch
 Momentum, immediate pressed feedback, drag/tap separation and lifecycle regression coverage. Owner mobile feel/performance review pending.
+
+## v6.57.0 — Chocolate C1–C5
+Three path Basic loops, one-tap path Uniques, separate Evolutions, retained card/Talent IDs, Recipe/Codex UI, bounded jobs and actual-cast regression coverage. Owner phone gameplay/FPS/balance review pending.
