@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.88';
+const GAME_VERSION = '6.55.89';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.89',date:'2026-10-08',title:'P3: staged Story hunts',items:['Story Hunts alternate clearing foes and defeating a marked Elite','Each Hunt round shows its current step and kill progress','The opening fill mission ends with a marked Elite showdown','Progress survives upgrade pauses and missing-target recovery; rewards are paid once at the end']},
   {v:'6.55.88',date:'2026-10-08',title:'P2: meaningful health and magnet pickups',items:['Story hearts heal 18% max HP with healing bonuses, stay on the ground at full HP, and have shared drop limits','Story magnets have one ground slot, cooldown and combat-earned bad-luck protection; empty magnets remain for later','No guaranteed post-miniboss Story magnet; magnets collect earned EXP only','Story on-kill recovery respects healing restrictions and shares a 3% max HP per second budget','Pickup limits reset per stage; P1 combat growth, Swarm and Hunt fixes remain']},
   {v:'6.55.87',date:'2026-10-08',title:'P1: earn growth through combat and objectives',items:['Every defeated story enemy grants EXP based on its real reward; harder foes and marked Hunt targets are worth more','Removed combat EXP cutoffs and automatic missing-EXP compensation: boss level now reflects what you defeated','Successful objectives grant fixed 20/30/40/50/60 EXP; failed objectives receive no completion EXP','Wave transitions collect only earned orbs, with no duplicate reward; replay checkpoints use fixed earned rewards','Finite objective quotas, timed Swarm, Hunt recovery and the linear Story level curve remain; health and magnet balance is P2']},
   {v:'6.55.86',date:'2026-10-08',title:'Hunt targets recover after upgrades and spawn pressure',items:['Hunt checks for its missing marked target every active frame instead of losing a one-shot retry during level-up','Ordinary reinforcements reserve one live slot for the next Hunt target, even after their quota runs out','Marked targets reset pooled flee/alpha state and spawn inside the arena','Target recovery preserves progress, quota and EXP; no duplicate target or delayed spawn across objectives']},
@@ -9242,10 +9243,11 @@ class Game extends Phaser.Scene {
   storyCanSpawn(objective=false,type=null){
     if(!this.usesStoryBudget?.()||!this._storyBudget)return true;
     let cap=Math.min(this.maxLive||100,this.storyLiveCap());
-    if(!objective&&this.waveObjective?.type==='hunt'&&!this.waveObjective.done&&!this.huntTargetActive?.())cap=Math.max(0,cap-1);
+    if(!objective&&this.waveObjective?.type==='hunt'&&!this.waveObjective.done&&this.waveObjective._huntPhase!=='clear'&&!this.huntTargetActive?.())cap=Math.max(0,cap-1);
     if(this.enemies.countActive(true)>=cap)return false;
     if(type==='shooter'){let n=0;this.enemies.children.iterate(e=>{if(e?.active&&e.shooter)n++;});if(n>=2+Math.min(2,Math.floor(this.stageIndex/5)))return false;}
-    return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota));
+    const o=this.waveObjective,gateNeedsFoes=o?.type==='hunt'&&o._huntPhase==='clear'&&this.enemies.countActive(true)<Math.max(0,o._huntKillGoal-o._huntKills);
+    return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota||gateNeedsFoes));
   }
   storySpawned(objective=false){if(this.usesStoryBudget?.()&&this._storyBudget&&!objective)this._storyBudget.spawned++;}
   storyEnemyXp(e){
@@ -9344,7 +9346,7 @@ class Game extends Phaser.Scene {
     if(type==='survive')o.target=Math.max(1,p.dur||48);
     else if(type==='fill')o.target=this.usesStoryBudget?.()?this._storyBudget.quota:30+this.stageIndex*10;
     else if(type==='hunt'){
-      o.target=2+(w>=4&&this.stageIndex>0?1:0)+(this.stageIndex>=3?1:0);o.desc='Find and defeat '+o.target+' marked Elite targets';this.spawnObjectiveElite();
+      o.target=2+(w>=4&&this.stageIndex>0?1:0)+(this.stageIndex>=3?1:0);o.desc='Find and defeat '+o.target+' marked Elite targets';if(this.usesStoryBudget?.())this.startStoryHuntRound(o);else this.spawnObjectiveElite();
     }else if(type==='purge'){
       o.target=3+(w>=4?1:0);o.desc='Protect the wisp as it purifies '+o.target+' cores — clear raiders near it';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);this.spawnPurifyWisp();
     }else if(type==='cleanAir'){
@@ -9359,6 +9361,7 @@ class Game extends Phaser.Scene {
       o.target=25;o.desc='Purify the ring for '+o.target+'s — it grows as you purify, enemies swarm to stop you';this.spawnCaptureZone();
     }
     if(planned)o.desc=planned.tip;
+    if(o._huntPhase)o.desc='Clear foes to reveal each marked Elite, then defeat it';
     this.startBonusChallenge(o);
     this.renderWaveObjectiveHUD();
   }
@@ -9545,6 +9548,7 @@ class Game extends Phaser.Scene {
   // เรียกจาก killEnemy: นับ kill ของโจทย์เสริม + Capture เติมเร็วเมื่อฆ่าในวง
   objOnKill(e){
     const o=this.waveObjective;if(!o||o.done)return;
+    if(o.type==='hunt'&&o._huntPhase==='clear'&&e&&!e.isBoss&&!e.isMini&&!e._waveObjectiveTarget){o._huntKills=Math.min(o._huntKillGoal,o._huntKills+1);if(o._huntKills>=o._huntKillGoal){o._huntPhase='elite';o._huntSpawnAt=this.time.now;this.showBanner('Elite revealed','Follow the marker and defeat the Elite',1500);}this.renderWaveObjectiveHUD();}
     if(o.type==='fill'&&e&&!e.isBoss&&!e.isMini){o.progress=Math.min(o.target,o.progress+1);this.renderWaveObjectiveHUD();if(o.progress>=o.target){this.completeWaveObjective();return;}}
     if(o.type==='seasonCycle'&&o.storm&&o.storm.cur&&o.storm.cur.idx===0&&e&&!e.isBoss&&!e.isMini)o.storm.cur.kills++;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
   }
@@ -9687,15 +9691,18 @@ class Game extends Phaser.Scene {
     if(w._state==='channel'){const cf=Phaser.Math.Clamp(w._channel/t.channel,0,1),cx=w.x-bw/2,cy=w.y-52;g.fillStyle(0x000000,0.55);g.fillRoundedRect(cx-2,cy-2,bw+4,8,4);g.fillStyle(0x1a2a24,1);g.fillRoundedRect(cx,cy,bw,4,2);g.fillStyle(0x8affd0,1);g.fillRoundedRect(cx,cy,Math.max(2,bw*cf),4,2);}
   }
   floatText(x,y,msg,color){ const t=this.camWorld(this.add.text(x,y,msg,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#'+(color||0xffffff).toString(16).padStart(6,'0'),stroke:'#000',strokeThickness:4}).setOrigin(.5).setDepth(95000));this.tweens.add({targets:t,y:y-28,alpha:{from:1,to:0},duration:1100,ease:'Cubic.out',onComplete:()=>t.destroy()}); }
+  startStoryHuntRound(o){
+    o._huntPhase='clear';o._huntKills=0;o._huntKillGoal=6+2*Math.floor((this.stageIndex||0)/5);o._huntSpawnAt=0;
+  }
   huntTargetActive(){
     let found=false;this.enemies.children.iterate(e=>{if(e?.active&&e._waveObjectiveTarget)found=true;});return found;
   }
   ensureHuntTarget(){
-    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done||this.state!=='play'||this.mode!=='wave'||this.huntTargetActive())return;
+    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done||this.state!=='play'||this.mode!=='wave'||o._huntPhase==='clear'||this.huntTargetActive())return;
     if(this.time.now<(o._huntSpawnAt||0))return;this.spawnObjectiveElite();
   }
   spawnObjectiveElite(){
-    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done||this.huntTargetActive())return;const e=this.spawnElite(false,true);if(!e){
+    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done||o._huntPhase==='clear'||this.huntTargetActive())return;const e=this.spawnElite(false,true);if(!e){
       // Keep the retry on the objective; level-up pauses cannot consume it.
       o._huntSpawnAt=this.time.now+1000;return;
     }
@@ -9713,9 +9720,10 @@ class Game extends Phaser.Scene {
   }
   clearObjectiveTargetFx(e){ if(e._objectiveAura){this.tweens.killTweensOf(e._objectiveAura);if(e._objectiveAura.active)e._objectiveAura.destroy();e._objectiveAura=null;} if(e._objectiveMark){this.tweens.killTweensOf(e._objectiveMark);if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;} }
   onWaveObjectiveTargetDown(e){
-    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done)return;o.progress++;this.renderWaveObjectiveHUD();
+    const o=this.waveObjective;if(!o||o.type!=='hunt'||o.done||o._huntPhase==='clear')return;o.progress++;
     if(o.progress>=o.target){this.completeWaveObjective();return;}
-    o._huntSpawnAt=this.time.now+700;
+    if(o._huntPhase){this.startStoryHuntRound(o);this.renderWaveObjectiveHUD();this.showBanner('Next Hunt round','Clear foes to reveal the next Elite',1400);return;}
+    this.renderWaveObjectiveHUD();o._huntSpawnAt=this.time.now+700;
   }
   tickWaveObjective(dt){
     const o=this.waveObjective;if(!o||o.done)return;
@@ -9731,7 +9739,7 @@ class Game extends Phaser.Scene {
       if(o.type==='hunt'&&!o._overtime){e._blinkCd=(e._blinkCd??2.5)-dt;if(e._blinkCd<=0&&this.dist(this.player.x,this.player.y,e.x,e.y)<210){e._blinkCd=4.5;const ox=e.x,oy=e.y,a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-.7,.7),lim=WORLD/2-120;
         this.spawnHazard(ox,oy,55,Math.round(8+(this.stageIndex||0)*1.5),0xff5a8a);this.vfxSpawnPoof(ox,oy);e.setPosition(Phaser.Math.Clamp(ox+Math.cos(a)*270,-lim,lim),Phaser.Math.Clamp(oy+Math.sin(a)*270,-lim,lim));this.vfxSpawnPoof(e.x,e.y);this.floatText(e.x,e.y-50,'Blink!',0xff8ab0);}}
       if(e._objectiveMark)e._objectiveMark.setPosition(e.x,e.y-72).setDepth(e.y+8);if(e._objectiveAura)e._objectiveAura.setPosition(e.x,e.y).setDepth(e.y-1);}});
-    if(o.type==='hunt')this.tickHuntCurse(dt,huntD);
+    if(o.type==='hunt'&&o._huntPhase!=='clear')this.tickHuntCurse(dt,huntD);else if(o._huntPhase==='clear')this.endHuntCurse();
     if(o.type==='survive')o.progress=Phaser.Math.Clamp(o.target-Math.max(0,this.waveTimer),0,o.target);
     else if(o.type==='purge'){
       this.tickPurifyWisp(dt);
@@ -9754,11 +9762,13 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);return;}
     this.renderBonusHUD();
     const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o):Math.floor(o.progress)+' / '+o.target);
-    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*frac);
+    const step=o._huntPhase?'Step '+(o.progress*2+(o._huntPhase==='clear'?1:2))+'/'+(o.target*2)+' · '+(o._huntPhase==='clear'?'Clear '+o._huntKills+'/'+o._huntKillGoal:'Defeat marked Elite'):(o.type==='fill'&&this.usesStoryBudget?.()?'Step 1/2 · Clear '+Math.floor(o.progress)+'/'+o.target:null);
+    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(step||((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value)).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
     const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;
+    if(o.type==='fill'&&this.usesStoryBudget?.()){o.type='hunt';o.name='Elite Showdown';o.emoji='🎯';o.progress=0;o.target=1;o._huntPhase='elite';o._huntSpawnAt=this.time.now;o.desc='Defeat the marked Elite to finish this mission';this.renderWaveObjectiveHUD();this.showBanner('Step 2/2: Elite Showdown',o.desc,1800);return;}
     if(this.recipeMode&&this._recipeMission){ o.done=true; this.resolveBonusChallenge(); const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this._hunger+=this.recipeHungerGoal()*MISSION_HUNGER; this.showBanner('✅ Mission complete · Sugar +'+bn+' · Hunger +'+Math.round(MISSION_HUNGER*100)+'%',this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); Sfx.clear(); return; }o.done=true;this.resolveBonusChallenge();const bonus=6+(this.stageIndex+1)*2+this.waveIndex*2;this.sugarStage+=bonus;this.sugarRun+=bonus;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     const title='✅ Objective Complete · Sugar +'+bonus;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;if(this.usesStoryBudget?.()){this.clearFoes();this.clearEnemies();this.settleStoryBudget(true);}this.showBanner(title,this.usesStoryBudget?.()?'Earned EXP collected + objective reward — choose upgrades':'Clear the remaining enemies to advance',1500);Sfx.clear();
   }

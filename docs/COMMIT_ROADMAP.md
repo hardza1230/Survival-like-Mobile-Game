@@ -82,3 +82,11 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 ## Earned growth P1 — v6.55.87
 
 ✅ P1: uncapped earned combat EXP, fixed success rewards, no missing-EXP top-up, earned orb settlement/failure/replay handling. Automated checks/build pass; user gameplay pending. P2 drops/health/magnet and P3–P5 remain planned. Details: docs/EARNED_GROWTH_P1_2026_10_08.md.
+
+
+## Story growth phases — 8 Oct 2026
+- ✅ P1 earned combat/objective EXP (v6.55.87)
+- ✅ P2 field pickups and on-kill recovery (v6.55.88)
+- ✅ P3 staged Hunts and opening Elite showdown (v6.55.89); owner mobile playtest pending
+- ⬜ P4 builds/cards/boss pressure
+- ⬜ P5 expand after playtesting
