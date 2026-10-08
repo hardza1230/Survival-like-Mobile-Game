@@ -14542,7 +14542,7 @@ class Game extends Phaser.Scene {
   updatePose(dt){
     if(!this._hasFrames)return;
     const moving=this.player.body&&this.player.body.velocity.length()>24;
-    // Keep the gait clock running through casts, hits and dash transitions.
+    // Keep gait phase through casts, hits and Dash; Chocolate accelerates its cadence during Dash.
     this._charRunT=(this._charRunT||0)+(moving?dt*(this.character==='cocoa'&&this.dashTime>0?1.6:1):0);
     // A suppressed Chocolate punch must not appear halfway through when movement stops.
     if(this.character==='cocoa'&&(moving||this.dashTime>0)){this._attackPoseTime=0;this._attackTextureKey=null;}
