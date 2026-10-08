@@ -78,3 +78,7 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 ## Hunt recovery — v6.55.86
 
 ✅ Objective-owned retry, reserved slot, pooled visibility/bounds and no duplicate target. Actual-method check/build pass; C1-5 wave4 user retest pending.
+
+## Earned growth P1 — v6.55.87
+
+✅ P1: uncapped earned combat EXP, fixed success rewards, no missing-EXP top-up, earned orb settlement/failure/replay handling. Automated checks/build pass; user gameplay pending. P2 drops/health/magnet and P3–P5 remain planned. Details: docs/EARNED_GROWTH_P1_2026_10_08.md.

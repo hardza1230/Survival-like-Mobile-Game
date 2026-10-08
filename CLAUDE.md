@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.86 — recover missing Hunt targets
+# Latest delivery: v6.55.87 — P1 earned growth
+
+P1 is implemented: story combat EXP is earned per defeated enemy, no combat issuance cap and no automatic missing-EXP top-up. storyEnemyXp uses 2x authored enemy EXP, Hunt target 24 and miniboss 60. Five successful encounter rewards are fixed 20/30/40/50/60 (200 total), not a guaranteed end-stage level. Failed/timeout objectives only collect earned orbs. Settlement tracks questPaid to prevent duplicate reward; replay mini gets 40, final progress pays remaining 160, without changing shared quota. Story orb allocation failure pays earned EXP immediately; normal collection/completion each apply XP multiplier once. Final-boss escorts also grant earned EXP; boss defeat gathers their earned orbs without a second objective bonus. Linear Story level curve, spawn caps/quotas/timed Swarm, Hunt recovery, optional Mint in Stage 3 and boss HP tuning stay. Tutorial/Recipe/Rift/Boss Rush/Endless retain original EXP. Tests now prove more actual kills -> more EXP and levels, harder targets matter, collected/uncollected earned parity, no completion compensation, failure/replay idempotence, full orb pool fallback and multipliers across 15 stages. Full checks/www build pass; actual gameplay balance remains user-owned. P2 health/magnet/drop balance and subsequent quest/card phases are pending, not included in P1. See docs/EARNED_GROWTH_P1_2026_10_08.md. Old quota/guaranteed-Lv18 notes below are historical.
+
+# Previous delivery: v6.55.86 — recover missing Hunt targets
 
 Reported C1-5 wave4 Hunt stuck with no monsters. Found a lost-retry path: failed spawn used a one-shot timer whose callback dropped the retry if level-up was open. Hunt now owns a retry deadline and actual objective tick ensures one marked target while playing; failures retry every 1s, defeated targets have a 700ms gap. Recovery handles a disappeared target without crediting a kill, avoids duplicate targets, and has no delayed callback crossing objectives/runs. Story ordinary reinforcements reserve one live slot when Hunt lacks a target; reserved target bypasses ordinary quota but shares hard live cap. Target resets pooled alpha/flee/blink state and cancels old tweens. Spawn and active target positions clamp inside arena; flee stops at the arena edge. Quest targets/progress/rewards, Swarm tuning and Story XP budget are unchanged. Actual-method tests cover C1-5 wave4 cap exhaustion plus level-up, full pool, all 15 stages sequential Hunt completion, disappearance, dedup, arena bounds and objective/mode replacement. Full check/build pass; user owns in-game/mobile verification.
 
@@ -251,7 +255,8 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
-## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.86 — Hunt recovery · 8 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (อัปเดตล่าสุด: v6.55.87 — P1 earned growth · 8 ต.ค. 2026)
+- **v6.55.87:** P1 คืนคุณค่า EXP: ทุก kill ได้ EXP ตามศัตรู ยกเลิก cap/top-up จบเควสได้โบนัสคงที่ รวบรวมเฉพาะออร์บที่หาได้แล้ว ไม่รับประกัน Lv18; checks/build ผ่าน รอเจ้าของเล่นเทส P2 เลือด/แม่เหล็กยังรอ.
 - **v6.55.86:** แก้ Hunt เป้าหาย/ไม่เกิด: objective-owned retry หลังหน้าการ์ด, สำรอง live slot, กันเป้าซ้ำและหนีออกนอกสนาม actual-method tests/checks/build ผ่าน รอเจ้าของทดสอบ C1-5 เวฟ 4.
 - **v6.55.85:** แก้ Swarm มอนหมดก่อนเวลา: เติมต่อจน countdown จบ เพิ่ม live caps/ชุดเกิด/ระลอก; เควสทั่วไปยังมี quota เพิ่มขึ้น EXP ฐานเดิมและ Lv18 ก่อนบอส ตรวจ tick loop/checks/build ผ่าน รอเจ้าของเล่นจริง.
 - **v6.55.84:** ทุกด่านเนื้อเรื่องใช้โควต้ามอน/งบ EXP และสูตรเลเวลเชิงเส้น เป้าหมาย Lv18 ก่อนบอส; ด่าน 3 ไม่บังคับ Mint; checks/build ผ่าน รอเจ้าของเล่นเทสด่าน 1–3 และช่วงท้าย ดู docs/STORY_WAVE_BUDGET_2026_10_08.md.
