@@ -1,4 +1,4 @@
-# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.97 · 8 ต.ค. 2026)
+# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.98 · 8 ต.ค. 2026)
 
 อ่าน `00_STYLE_GUIDE.md` และกติกาประหยัดโควต้าใน `NEXT_BATCH_REQUEST.md` §0 ก่อนเริ่ม
 (1 ครั้งที่สร้างภาพ = 1 แผ่นรวม · กริดเท่ากัน · วัตถุไม่ล้นช่อง · พื้นโปร่งใสหรือเขียว `#00FF00` · ไม่มีตัวหนังสือ/เส้นกริด)
@@ -13,7 +13,7 @@
 | B | Elite / ตัวพิเศษ / Mini Jelly รวม Crown Sapling | ✅ ครบ 5 ชีต v6.55.95 | 🟠 |
 | C | อาร์ตอุปกรณ์ชุด Chef | ✅ ครบ 2 ชิ้น v6.55.96 | 🟠 |
 | D | ไอคอนการ์ด Unique ของสาย Build | ✅ 15 ไอคอน + ช่องสำรอง v6.55.97 | 🟡 |
-| E | VFX ของ Unique ใหม่ (Berry Blast / Glacier Bloom / Frost Lance) | 1 แผ่นรวม (เฟรมอนิเมชัน) | 🟡 |
+| E | VFX ของ Unique ใหม่ (Berry Blast / Glacier Bloom / Frost Lance) | ✅ ครบ 5 เอฟเฟกต์ v6.55.98 | 🟡 |
 
 ทุกเฟรมและทุกช่องต้องเป็นตัวละครหรือวัตถุตัวเดิม ห้ามออกแบบใหม่ ฝั่งโค้ดจะใช้ hitbox และขนาดเดิมของมันต่อ
 
@@ -171,8 +171,8 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 
 ---
 
-## E. VFX ของ Unique ใหม่ 🟡
-ตอนนี้ VFX ของ Unique เหล่านี้ยังเป็นรูปทรงที่โค้ดวาดเอง (กรวยสี, วงกลม, เส้น)
+## E. VFX ของ Unique ใหม่ ✅ ส่งแล้ว v6.55.98
+ครบ 4 ชีต × 8 เฟรม และทางน้ำแข็ง 1 ภาพ ผูกเข้าเกมแล้ว กลไกต่อสู้คงเดิม
 
 - ส่งที่ `assets/incoming/vfx_path_uniques/`
 - เฟรมเรียงซ้าย→ขวา 8 เฟรมต่อแถว พื้นโปร่งใส ใช้ blend แบบ NORMAL (ดูกติกา VFX ใน CLAUDE.md: alpha ตามความสว่าง ไม่ใช้พื้นดำ)
@@ -209,3 +209,8 @@ Head Chef Medal and Golden Spoon Ring now use painted 256px RGBA icons through t
 ## Build card delivery — v6.55.97
 
 Fifteen Build upgrade cards now have distinct painted icons: four Sniper, five Shotgun, three Glacier Bloom and three Crystal Impaler cards. The 4x4 source sheet keeps the final cell reserved/transparent. Runtime lossless alpha WebP: assets/art/build_cards; original/normalized sheet, 256px RGBA PNGs, exact prompt, packing and preview: assets/incoming/build_cards. Only upgrade iconKey mappings change; build-selection art, effects, ranks, prices, draft weighting and P1–P5 balance remain. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures) and Unique VFX.
+
+
+## Build VFX delivery — v6.55.98
+
+Five painted Build effects are integrated: Berry Blast, Shotgun muzzle flash, Glacier Bloom, Glacier Shatter (eight authored frames each), and static Frost Lance ground trail. Runtime alpha WebP: assets/vfx; raw/packed PNGs, exact prompt, frame metadata and review: assets/incoming/vfx_path_uniques. Effects use NORMAL blend, central tracked cleanup and original missing-art fallbacks. Existing three-per-200ms shatter visual budget remains; trail expiry removes art and transition cleanup removes both art and trail damage state. Damage/range/charge timing, freeze duration, three-second trail/0.4s damage ticks, twin dash and card effects remain. Owner phone visual/FPS review pending. Remaining art: batch 9, 14 ordinary season/root creatures.

@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.97 — Build card icons
+# Latest delivery: v6.55.98 — Build path VFX
+
+Five painted Build effects are integrated: Berry Blast, Shotgun muzzle flash, Glacier Bloom, Glacier Shatter (eight authored frames each), and static Frost Lance ground trail. Runtime alpha WebP: assets/vfx; raw/packed PNGs, exact prompt, frame metadata and review: assets/incoming/vfx_path_uniques. Effects use NORMAL blend, central tracked cleanup and original missing-art fallbacks. Existing three-per-200ms shatter visual budget remains; trail expiry removes art and transition cleanup removes both art and trail damage state. Damage/range/charge timing, freeze duration, three-second trail/0.4s damage ticks, twin dash and card effects remain. Owner phone visual/FPS review pending. Remaining art: batch 9, 14 ordinary season/root creatures.
+
+# Previous delivery: v6.55.97 — Build card icons
 
 Fifteen Build upgrade cards now have distinct painted icons: four Sniper, five Shotgun, three Glacier Bloom and three Crystal Impaler cards. The 4x4 source sheet keeps the final cell reserved/transparent. Runtime lossless alpha WebP: assets/art/build_cards; original/normalized sheet, 256px RGBA PNGs, exact prompt, packing and preview: assets/incoming/build_cards. Only upgrade iconKey mappings change; build-selection art, effects, ranks, prices, draft weighting and P1–P5 balance remain. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures) and Unique VFX.
 

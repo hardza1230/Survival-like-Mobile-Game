@@ -1,0 +1,531 @@
+{
+  "originalSize": [
+    1586,
+    992
+  ],
+  "alphaThreshold": 16,
+  "effects": [
+    {
+      "name": "berry_blast",
+      "frameSize": [
+        384,
+        256
+      ],
+      "frames": 8,
+      "anchor": "left",
+      "commonScale": 1.5675675675675675,
+      "sourceFrames": [
+        {
+          "sourceBox": [
+            0,
+            0,
+            198,
+            198
+          ],
+          "alphaBounds": [
+            48,
+            83,
+            140,
+            149
+          ]
+        },
+        {
+          "sourceBox": [
+            198,
+            0,
+            396,
+            198
+          ],
+          "alphaBounds": [
+            19,
+            57,
+            154,
+            174
+          ]
+        },
+        {
+          "sourceBox": [
+            396,
+            0,
+            594,
+            198
+          ],
+          "alphaBounds": [
+            16,
+            56,
+            160,
+            181
+          ]
+        },
+        {
+          "sourceBox": [
+            594,
+            0,
+            793,
+            198
+          ],
+          "alphaBounds": [
+            18,
+            43,
+            177,
+            191
+          ]
+        },
+        {
+          "sourceBox": [
+            793,
+            0,
+            991,
+            198
+          ],
+          "alphaBounds": [
+            31,
+            54,
+            181,
+            180
+          ]
+        },
+        {
+          "sourceBox": [
+            991,
+            0,
+            1189,
+            198
+          ],
+          "alphaBounds": [
+            32,
+            59,
+            180,
+            181
+          ]
+        },
+        {
+          "sourceBox": [
+            1189,
+            0,
+            1387,
+            198
+          ],
+          "alphaBounds": [
+            35,
+            63,
+            182,
+            173
+          ]
+        },
+        {
+          "sourceBox": [
+            1387,
+            0,
+            1586,
+            198
+          ],
+          "alphaBounds": [
+            48,
+            71,
+            159,
+            175
+          ]
+        }
+      ]
+    },
+    {
+      "name": "shotgun_muzzle",
+      "frameSize": [
+        192,
+        128
+      ],
+      "frames": 8,
+      "anchor": "left",
+      "commonScale": 0.6380368098159509,
+      "sourceFrames": [
+        {
+          "sourceBox": [
+            0,
+            198,
+            198,
+            400
+          ],
+          "alphaBounds": [
+            45,
+            87,
+            144,
+            154
+          ]
+        },
+        {
+          "sourceBox": [
+            198,
+            198,
+            396,
+            400
+          ],
+          "alphaBounds": [
+            19,
+            55,
+            165,
+            174
+          ]
+        },
+        {
+          "sourceBox": [
+            396,
+            198,
+            594,
+            400
+          ],
+          "alphaBounds": [
+            13,
+            44,
+            168,
+            184
+          ]
+        },
+        {
+          "sourceBox": [
+            594,
+            198,
+            793,
+            400
+          ],
+          "alphaBounds": [
+            16,
+            37,
+            189,
+            200
+          ]
+        },
+        {
+          "sourceBox": [
+            793,
+            198,
+            991,
+            400
+          ],
+          "alphaBounds": [
+            20,
+            45,
+            180,
+            180
+          ]
+        },
+        {
+          "sourceBox": [
+            991,
+            198,
+            1189,
+            400
+          ],
+          "alphaBounds": [
+            26,
+            48,
+            193,
+            186
+          ]
+        },
+        {
+          "sourceBox": [
+            1189,
+            198,
+            1387,
+            400
+          ],
+          "alphaBounds": [
+            28,
+            61,
+            183,
+            174
+          ]
+        },
+        {
+          "sourceBox": [
+            1387,
+            198,
+            1586,
+            400
+          ],
+          "alphaBounds": [
+            28,
+            80,
+            163,
+            176
+          ]
+        }
+      ]
+    },
+    {
+      "name": "glacier_bloom",
+      "frameSize": [
+        384,
+        384
+      ],
+      "frames": 8,
+      "anchor": "center",
+      "commonScale": 2.1301775147928996,
+      "sourceFrames": [
+        {
+          "sourceBox": [
+            0,
+            400,
+            198,
+            605
+          ],
+          "alphaBounds": [
+            51,
+            66,
+            162,
+            170
+          ]
+        },
+        {
+          "sourceBox": [
+            198,
+            400,
+            396,
+            605
+          ],
+          "alphaBounds": [
+            31,
+            54,
+            169,
+            182
+          ]
+        },
+        {
+          "sourceBox": [
+            396,
+            400,
+            594,
+            605
+          ],
+          "alphaBounds": [
+            20,
+            42,
+            179,
+            203
+          ]
+        },
+        {
+          "sourceBox": [
+            594,
+            400,
+            793,
+            605
+          ],
+          "alphaBounds": [
+            25,
+            34,
+            189,
+            203
+          ]
+        },
+        {
+          "sourceBox": [
+            793,
+            400,
+            991,
+            605
+          ],
+          "alphaBounds": [
+            30,
+            41,
+            184,
+            196
+          ]
+        },
+        {
+          "sourceBox": [
+            991,
+            400,
+            1189,
+            605
+          ],
+          "alphaBounds": [
+            36,
+            49,
+            187,
+            200
+          ]
+        },
+        {
+          "sourceBox": [
+            1189,
+            400,
+            1387,
+            605
+          ],
+          "alphaBounds": [
+            46,
+            47,
+            187,
+            191
+          ]
+        },
+        {
+          "sourceBox": [
+            1387,
+            400,
+            1586,
+            605
+          ],
+          "alphaBounds": [
+            49,
+            51,
+            156,
+            187
+          ]
+        }
+      ]
+    },
+    {
+      "name": "glacier_shatter",
+      "frameSize": [
+        192,
+        192
+      ],
+      "frames": 8,
+      "anchor": "center",
+      "commonScale": 0.9940828402366864,
+      "sourceFrames": [
+        {
+          "sourceBox": [
+            0,
+            605,
+            198,
+            808
+          ],
+          "alphaBounds": [
+            50,
+            66,
+            163,
+            174
+          ]
+        },
+        {
+          "sourceBox": [
+            198,
+            605,
+            396,
+            808
+          ],
+          "alphaBounds": [
+            27,
+            42,
+            171,
+            198
+          ]
+        },
+        {
+          "sourceBox": [
+            396,
+            605,
+            594,
+            808
+          ],
+          "alphaBounds": [
+            21,
+            39,
+            175,
+            199
+          ]
+        },
+        {
+          "sourceBox": [
+            594,
+            605,
+            793,
+            808
+          ],
+          "alphaBounds": [
+            25,
+            32,
+            189,
+            201
+          ]
+        },
+        {
+          "sourceBox": [
+            793,
+            605,
+            991,
+            808
+          ],
+          "alphaBounds": [
+            24,
+            36,
+            188,
+            196
+          ]
+        },
+        {
+          "sourceBox": [
+            991,
+            605,
+            1189,
+            808
+          ],
+          "alphaBounds": [
+            36,
+            52,
+            182,
+            194
+          ]
+        },
+        {
+          "sourceBox": [
+            1189,
+            605,
+            1387,
+            808
+          ],
+          "alphaBounds": [
+            55,
+            53,
+            184,
+            187
+          ]
+        },
+        {
+          "sourceBox": [
+            1387,
+            605,
+            1586,
+            808
+          ],
+          "alphaBounds": [
+            44,
+            56,
+            153,
+            179
+          ]
+        }
+      ]
+    },
+    {
+      "name": "frost_lance_trail",
+      "frameSize": [
+        512,
+        96
+      ],
+      "frames": 1,
+      "anchor": "left",
+      "commonScale": 1.1612903225806452,
+      "sourceFrames": [
+        {
+          "sourceBox": [
+            0,
+            808,
+            1586,
+            992
+          ],
+          "alphaBounds": [
+            39,
+            67,
+            198,
+            129
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.97';
+const GAME_VERSION = '6.55.98';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.98',date:'2026-10-08',title:'Painted Build effects',items:['Berry Blast, Shotgun muzzle flashes, Glacier Bloom, ice shatter and Frost Lance trails now use painted effects','Original damage, ranges, charge timing and card bonuses remain','Effects clear on transitions and ice shatter visuals keep their existing budget']},
   {v:'6.55.97',date:'2026-10-08',title:'Distinct Build card icons',items:['Fifteen Sniper, Shotgun, Glacier Bloom and Crystal Impaler upgrades now have individual painted icons','Card effects, ranks and draft balance remain']},
   {v:'6.55.96',date:'2026-10-08',title:'Royal Chef equipment art',items:['Head Chef Medal and Golden Spoon Ring now have painted equipment icons','Equipment, crafting, Bazaar and reward views share the new art','Existing prices, upgrades and set bonuses remain']},
   {v:'6.55.95',date:'2026-10-08',title:'Living elites and special creatures',items:['Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic now have authored animated art','Feast targets carry their food while fleeing; Mimics open their lid to bite','Original combat, encounter timing, summons and rewards remain']},
@@ -1184,6 +1185,7 @@ const ASSET_IMAGES = {
   prize_scroll:'assets/art/rewards/prize_scroll.webp',
   prize_recharge:'assets/art/rewards/prize_recharge.webp',
   prize_sugar_bag:'assets/art/rewards/prize_sugar_bag.webp',
+  vfx_frost_lance_trail:'assets/vfx/frost_lance_trail.webp',
   ic_card_s_heavy:'assets/art/build_cards/s_heavy.webp',
   ic_card_s_quick:'assets/art/build_cards/s_quick.webp',
   ic_card_s_bore:'assets/art/build_cards/s_bore.webp',
@@ -1918,6 +1920,10 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 const ASSET_FX = {
+  vfx_berry_blast:{url:'assets/vfx/berry_blast_sheet.webp',fw:384,fh:256,frames:8,rate:32,anchor:'left'},
+  vfx_shotgun_muzzle:{url:'assets/vfx/shotgun_muzzle_sheet.webp',fw:192,fh:128,frames:8,rate:60,anchor:'left'},
+  vfx_glacier_bloom:{url:'assets/vfx/glacier_bloom_sheet.webp',fw:384,fh:384,frames:8,rate:20,anchor:'center'},
+  vfx_glacier_shatter:{url:'assets/vfx/glacier_shatter_sheet.webp',fw:192,fh:192,frames:8,rate:32,anchor:'center'},
   fx_hunger_metamorph:{url:'assets/vfx/hunger_metamorph_sheet.webp',fw:320,fh:320,frames:8,rate:8,anchor:'center'},
   fx_mint_shatter:{url:'assets/vfx/mint_lance_shatter_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_mint_gale:{url:'assets/vfx/mint_gale_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
@@ -5586,13 +5592,14 @@ class Game extends Phaser.Scene {
     this._sgHit=true; try{ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active||e._phaseGateLocked||(e._phaseInvuln||0)>0)return;
       if(e.isBoss||e.isMini||e.freezeImmune){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); e._glacierBrittleUntil=this.time.now+3000; this.mintChill(e,0.6); this.damage(e,hit*1.5,e.x,e.y); bosses.push({e,token:e._glacierLifeToken}); return; }
       e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); this.glacierFrostHit(e); frozen.push({e,token:e._glacierLifeToken}); }); } finally { this._sgHit=false; }
-    if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',cx,cy,{scale:r*2.3/320,depth:6,normal:true}));
-    const ring=this.camWorld(this.add.circle(cx,cy,20,0xbdf0ff,0.25).setStrokeStyle(4,0xffffff,0.9).setDepth(9)); this.tweens.add({targets:ring,radius:r,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
+    if(this.textures.exists('vfx_glacier_bloom'))this.trackArtVfx(this.spawnFxAnim('vfx_glacier_bloom',cx,cy,{scale:r*2/384,depth:6,normal:true}));
+    else {if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',cx,cy,{scale:r*2.3/320,depth:6,normal:true}));
+      const ring=this.trackArtVfx(this.camWorld(this.add.circle(cx,cy,20,0xbdf0ff,0.25).setStrokeStyle(4,0xffffff,0.9).setDepth(9))); this.tweens.add({targets:ring,radius:r,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});}
     this.screenFlash&&this.screenFlash(0xbdf0ff,0.18,220); this.screenShake(120,0.005); Sfx.magnet&&Sfx.magnet();
     this.artDelay(Math.max(200,dur*1000-150),()=>{ if(this.state!=='play')return; let n=0; this._sgHit=true; try{
-      frozen.forEach(({e,token})=>{ if(!e.active||e._glacierLifeToken!==token||!(e.frozen>0))return; n++; const x=e.x,y=e.y; this.burst(x,y,0xbdf0ff); this.damage(e,hit*2,x,y);
+      frozen.forEach(({e,token})=>{ if(!e.active||e._glacierLifeToken!==token||!(e.frozen>0))return; n++; const x=e.x,y=e.y; if(this.textures.exists('vfx_glacier_shatter'))this.mintBurstFx(x,y,90);else this.burst(x,y,0xbdf0ff); this.damage(e,hit*2,x,y);
         if(lv.m_shard)this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==e&&this.dist(o.x,o.y,x,y)<90)this.damage(o,hit*2*0.4*lv.m_shard,o.x,o.y); }); });
-      bosses.forEach(({e,token})=>{ if(!e.active||e._glacierLifeToken!==token)return; n++; this.burst(e.x,e.y,0xbdf0ff); this.vfxHitRing(e.x,e.y,0x9fe8ff,true); this.damage(e,hit*4*(1+0.4*(lv.m_shard||0)),e.x,e.y); }); } finally { this._sgHit=false; }
+      bosses.forEach(({e,token})=>{ if(!e.active||e._glacierLifeToken!==token)return; n++; if(this.textures.exists('vfx_glacier_shatter'))this.mintBurstFx(e.x,e.y,110);else {this.burst(e.x,e.y,0xbdf0ff); this.vfxHitRing(e.x,e.y,0x9fe8ff,true);} this.damage(e,hit*4*(1+0.4*(lv.m_shard||0)),e.x,e.y); }); } finally { this._sgHit=false; }
       if(n){ this.screenShake(100,0.004); Sfx.boom&&Sfx.boom(); } });
     this.showBanner('❄️ Glacier Bloom',frozen.length+' frozen',800); }
   releaseFrostLance(ang,c){ const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),L=this.lanceLen(),ca=Math.cos(ang),sa=Math.sin(ang),x0=pl.x,y0=pl.y,dmg=(40+ul*15)*unit*(0.7+0.3*c);
@@ -5600,10 +5607,12 @@ class Game extends Phaser.Scene {
     let hits=0; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,al=rx*ca+ry*sa; if(al<-20||al>L+20)return; if(Math.abs(-rx*sa+ry*ca)>34+(e.body?e.body.halfWidth:18))return; hits++; this._sgHit=true; try{ this.damage(e,dmg*(e.isBoss||e.isMini?1.8:1),e.x,e.y); } finally { this._sgHit=false; } if(e.active)this.mintChill(e,0.8); if(e.active&&this.basicAttack?.path==='pierce')this.applyImpale(e,dmg*(e.isBoss||e.isMini?1.8:1),c>=0.99); });
     pl.iframe=Math.max(pl.iframe||0,0.45); this.poseAttack(420,'char_mint_gale');
     this.tweens.add({targets:pl,x:x0+ca*L,y:y0+sa*L,duration:170,ease:'Quad.out',onUpdate:()=>{ if(pl.body)pl.body.reset(pl.x,pl.y); },onComplete:()=>{ if(lv.l_burst&&this.state==='play'){ const bx=pl.x,by=pl.y; this.vfxHitRing(bx,by,0x9fe8ff,true); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,bx,by)<110)this.damage(e,dmg*(1+0.5*lv.l_burst)*0.6,e.x,e.y); }); Sfx.boom&&Sfx.boom(); } }});
-    const g=this.camWorld(this.add.graphics().setDepth(5)); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);
+    let g;
+    if(this.textures.exists('vfx_frost_lance_trail'))g=this.trackArtVfx(this.camWorld(this.add.image(x0,y0,'vfx_frost_lance_trail').setOrigin(0,0.5).setRotation(ang).setDepth(5).setBlendMode(Phaser.BlendModes.NORMAL).setDisplaySize(L,68)));
+    else {g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(5))); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);}
     (this._iceTrails=this._iceTrails||[]).push({x0,y0,ca,sa,L,t:3,tick:0,g,dmg:dmg*0.12});
     this.screenShake(110,0.005); Sfx.dash&&Sfx.dash(); this.showBanner('🗡️ Frost Lance',hits+' pierced',700); }
-  tickIceTrails(dt){ const T=this._iceTrails; if(!T||!T.length)return; for(let i=T.length-1;i>=0;i--){ const tr=T[i]; tr.t-=dt; tr.g.setAlpha(Math.min(1,tr.t)); if(tr.t<=0||this.state==='menu'){ tr.g.destroy(); T.splice(i,1); continue; }
+  tickIceTrails(dt){ const T=this._iceTrails; if(!T||!T.length)return; for(let i=T.length-1;i>=0;i--){ const tr=T[i]; tr.t-=dt; if(!tr.g?.active){T.splice(i,1);continue;} tr.g.setAlpha(Math.min(1,tr.t)); if(tr.t<=0||this.state==='menu'){ tr.g.destroy(); T.splice(i,1); continue; }
       tr.tick-=dt; if(tr.tick>0||this.state!=='play')continue; tr.tick=0.4;
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-tr.x0,ry=e.y-tr.y0,al=rx*tr.ca+ry*tr.sa; if(al<0||al>tr.L||Math.abs(-rx*tr.sa+ry*tr.ca)>30)return; this.damage(e,tr.dmg,e.x,e.y); if(e.active&&e.body)e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); }); } }
   releaseBerryBlast(ang,c){ const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player,bm=this.blastMods(),basic=this.basicAttack;
@@ -5615,7 +5624,8 @@ class Game extends Phaser.Scene {
         const n=Math.max(1,Math.round(bm.pellets*(1-d/(R*1.6))*0.5)); hits++;
         this._sgHit=true; try{ this.damage(e,unit*n*(d<120?2*pb:1)*(e.isBoss||e.isMini?2:1),e.x,e.y); } finally { this._sgHit=false; }
         if(e.active&&!e.isBoss&&!e.isMini&&e.body){ const k=(d<120?520:320)/Math.max(1,d); e.body.velocity.x+=dx*k; e.body.velocity.y+=dy*k; } });
-      for(let i=0;i<bm.pellets;i++){ const a=ang-h+bm.cone*(i+0.5)/bm.pellets+(Math.random()-0.5)*0.08,len=200+Math.random()*100;
+      if(this.textures.exists('vfx_berry_blast'))this.trackArtVfx(this.spawnFxAnim('vfx_berry_blast',pl.x,pl.y,{scaleX:R/384,scaleY:Math.min(600,2*R*Math.sin(Math.min(Math.PI/2,h)))/256,rotation:ang,depth:90450,normal:true}));
+      else for(let i=0;i<bm.pellets;i++){ const a=ang-h+bm.cone*(i+0.5)/bm.pellets+(Math.random()-0.5)*0.08,len=200+Math.random()*100;
         const dot=this.camWorld(this.add.circle(pl.x,pl.y,4,[0xff5c8a,0xffd166,0xffffff][i%3]).setDepth(90450));
         this.tweens.add({targets:dot,x:pl.x+Math.cos(a)*len,y:pl.y+Math.sin(a)*len,alpha:0,duration:220,ease:'Quad.out',onComplete:()=>dot.destroy()}); }
       this.burst(pl.x+Math.cos(ang)*40,pl.y+Math.sin(ang)*40,0xff76a8); this.screenShake(140,0.007); if(Sfx.boom)Sfx.boom();
@@ -12139,7 +12149,8 @@ class Game extends Phaser.Scene {
     const now=this.time.now;
     if(this._mintVfxWindow==null||now-this._mintVfxWindow>=200){this._mintVfxWindow=now;this._mintVfxCount=0;}
     if(this._mintVfxCount>=3)return;this._mintVfxCount++;
-    if(this.textures.exists('fx_mint_shatter'))this.trackArtVfx(this.spawnFxAnim('fx_mint_shatter',x,y,{scale:r*2/320,depth:6,normal:true}));
+    const painted=this.basicAttack?.path==='glacier'&&this.textures.exists('vfx_glacier_shatter'),key=painted?'vfx_glacier_shatter':'fx_mint_shatter';
+    if(this.textures.exists(key))this.trackArtVfx(this.spawnFxAnim(key,x,y,{scale:r*2/(painted?192:320),depth:6,normal:true}));
     else this.vfxHitRing(x,y,0xbdf0ff,true);
   }
   mintHeavyImpact(){
@@ -12772,8 +12783,10 @@ class Game extends Phaser.Scene {
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
       if(e._sourT>0)e._sourT-=step;
       if(e._burnT>0){ e._burnT-=step; this._infTick=true; this.damage(e,(e._burnDps||0)*step,e.x,e.y); this._infTick=false; if(Math.random()<0.3)this.burst&&this.burst(e.x,e.y,0xff5a3d); if(e._burnT<=0)e._burnDps=0; } }); }
-  shotgunKick(ang){ const pl=this.player,g=this.camWorld(this.add.graphics().setDepth(90450)); g.fillStyle(0xfff1a8,0.75); g.slice(pl.x,pl.y,70,ang-0.45,ang+0.45,false); g.fillPath(); g.fillStyle(0xffffff,0.9); g.fillCircle(pl.x+Math.cos(ang)*26,pl.y+Math.sin(ang)*26,9);
-    this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()}); this.screenShake(130,0.0075); if(Sfx.shotgun)Sfx.shotgun(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }
+  shotgunKick(ang){ const pl=this.player;
+    if(this.textures.exists('vfx_shotgun_muzzle'))this.trackArtVfx(this.spawnFxAnim('vfx_shotgun_muzzle',pl.x+Math.cos(ang)*20,pl.y+Math.sin(ang)*20,{scale:0.55,rotation:ang,depth:90450,normal:true}));
+    else {const g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(90450))); g.fillStyle(0xfff1a8,0.75); g.slice(pl.x,pl.y,70,ang-0.45,ang+0.45,false); g.fillPath(); g.fillStyle(0xffffff,0.9); g.fillCircle(pl.x+Math.cos(ang)*26,pl.y+Math.sin(ang)*26,9);
+    this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()});} this.screenShake(130,0.0075); if(Sfx.shotgun)Sfx.shotgun(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }
   pathBulletDmg(b,e){ let d=b.dmg;   // 🛤 Build Path: ตัวคูณตามสาย (sniper/shotgun)
     if(b.bigMul&&(e.isBoss||e.isMini||e.isElite))d*=1+b.bigMul;
     if(b.penGain&&b.hitTargets)d*=1+b.penGain*Math.max(0,b.berrySeed?b.hitTargets.size:b.hitTargets.size-1);
@@ -13254,7 +13267,7 @@ class Game extends Phaser.Scene {
     this._artEpoch=(this._artEpoch||0)+1;
     for(const ev of this._artTimers||[])ev.remove(false);if(this._artTimers)this._artTimers.clear();
     for(const o of [...(this._artVfx||[])]){this.tweens.killTweensOf(o);if(o.active)o.destroy();}
-    if(this._artVfx)this._artVfx.clear();this._shellArt=null;this._frZones=[];this._frBuddy=null;this._frOrbit=null;
+    if(this._artVfx)this._artVfx.clear();this._iceTrails=[];this._shellArt=null;this._frZones=[];this._frBuddy=null;this._frOrbit=null;
   }
   drawChargedSeed(x,y,ang,len,width){
     if(!this.textures.exists('proj_strawberry_charge'))return;
