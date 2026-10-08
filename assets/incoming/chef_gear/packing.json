@@ -1,0 +1,52 @@
+{
+  "originalSize": [
+    1774,
+    887
+  ],
+  "sheetSize": [
+    512,
+    256
+  ],
+  "alphaThreshold": 16,
+  "icons": [
+    {
+      "key": "gear_am_chef",
+      "path": "assets/gear/amulets/am_chef.png",
+      "sourceCell": 0,
+      "sourceAlphaBounds": [
+        78,
+        76,
+        889,
+        793
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "fit": [
+        224,
+        224
+      ]
+    },
+    {
+      "key": "gear_ri_chef",
+      "path": "assets/gear/rings/ri_chef.png",
+      "sourceCell": 1,
+      "sourceAlphaBounds": [
+        58,
+        86,
+        741,
+        776
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "fit": [
+        224,
+        224
+      ]
+    }
+  ],
+  "sourceSplitX": 947
+}

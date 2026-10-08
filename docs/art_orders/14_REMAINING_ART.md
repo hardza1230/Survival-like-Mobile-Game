@@ -1,4 +1,4 @@
-# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.95 · 8 ต.ค. 2026)
+# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.96 · 8 ต.ค. 2026)
 
 อ่าน `00_STYLE_GUIDE.md` และกติกาประหยัดโควต้าใน `NEXT_BATCH_REQUEST.md` §0 ก่อนเริ่ม
 (1 ครั้งที่สร้างภาพ = 1 แผ่นรวม · กริดเท่ากัน · วัตถุไม่ล้นช่อง · พื้นโปร่งใสหรือเขียว `#00FF00` · ไม่มีตัวหนังสือ/เส้นกริด)
@@ -11,7 +11,7 @@
 |---|---|---|---|
 | A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (9; 7A/7B/8 เสร็จแล้ว) | เหลือ 2 ด่าน × 7 ตัว = 14 ชีต | 🔴 |
 | B | Elite / ตัวพิเศษ / Mini Jelly รวม Crown Sapling | ✅ ครบ 5 ชีต v6.55.95 | 🟠 |
-| C | อาร์ตอุปกรณ์ชุด Chef ที่ยังเป็นอีโมจิ | 1 แผ่นรวม (2 ชิ้น) | 🟠 |
+| C | อาร์ตอุปกรณ์ชุด Chef | ✅ ครบ 2 ชิ้น v6.55.96 | 🟠 |
 | D | ไอคอนการ์ด Unique ของสาย Build | 1 แผ่นรวม (16 ช่อง) | 🟡 |
 | E | VFX ของ Unique ใหม่ (Berry Blast / Glacier Bloom / Frost Lance) | 1 แผ่นรวม (เฟรมอนิเมชัน) | 🟡 |
 
@@ -129,8 +129,8 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 
 ---
 
-## C. อาร์ตอุปกรณ์ชุด Chef 🟠
-ตอนนี้ 2 ชิ้นนี้ยังแสดงเป็นอีโมจิในหน้า Equipment
+## C. อาร์ตอุปกรณ์ชุด Chef ✅ ส่งแล้ว v6.55.96
+ทั้ง 2 ชิ้นมีภาพ PNG โปร่งใสและผูกเข้าเกมแล้ว ผ่านระบบอุปกรณ์เดิม ราคาและค่าสเตตัสคงเดิม
 
 - ทำ 1 แผ่นรวม **2 คอลัมน์ × 1 แถว** ช่องละ 256×256 พื้นโปร่งใส
 - สไตล์ให้ตรงกับไอคอนในโฟลเดอร์ `assets/gear/amulets/` และ `assets/gear/rings/`
@@ -199,3 +199,8 @@ Batch 8 complete: seven creatures/112 poses. Remaining ordinary creatures: 14 in
 
 
 Elite/special art batch B is implemented: Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic Chest each have 16 authored poses. Packed RGBA PNG/raw/exact prompts/packing/contact/animated review: assets/incoming/elite_summons; runtime lossless alpha WebP: assets/art/elite_summons. Crown Sapling uses C2-1 atlas cell 6 identity; Chapter 3 Elite uses the ash/gold crowned seed knight design from the brief. Feast carries a food plate and uses flee clips, without an attack clip. Mimic is a toothy living chest. Existing world sprite boxes/circle radii/centers are preserved when 62px generic Elite and 48px chest art become 256px frames. Mini Jelly keeps .36 scale and [70,58,70] circle. HP/damage/speed/EXP, Elite gates, Warden half-HP three-child split, Feast timers/Hunger share and Mimic chance/tier/reward remain. Animated Feast pool reuse cancels its escape fade and clears fleeing state; missing sheets retain original art. Boss/miniboss pose/death controllers remain separate. Owner mobile visual/FPS review pending. Ordinary season/root art (batch 9), Chef gear and card/Unique VFX art remain.
+
+
+## Chef delivery — v6.55.96
+
+Head Chef Medal and Golden Spoon Ring now use painted 256px RGBA icons through the existing gear image loader and shared equipment/crafting/Bazaar/reward views. Runtime: assets/gear/amulets/am_chef.png and assets/gear/rings/ri_chef.png. Combined sheet, original generation, exact prompt and packing metadata: assets/incoming/chef_gear. Prices, enhancement effects, stats and Royal Chef set bonuses are unchanged. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures), Unique build card icons and Unique VFX.

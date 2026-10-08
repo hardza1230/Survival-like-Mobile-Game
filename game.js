@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.95';
+const GAME_VERSION = '6.55.96';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.96',date:'2026-10-08',title:'Royal Chef equipment art',items:['Head Chef Medal and Golden Spoon Ring now have painted equipment icons','Equipment, crafting, Bazaar and reward views share the new art','Existing prices, upgrades and set bonuses remain']},
   {v:'6.55.95',date:'2026-10-08',title:'Living elites and special creatures',items:['Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic now have authored animated art','Feast targets carry their food while fleeing; Mimics open their lid to bite','Original combat, encounter timing, summons and rewards remain']},
   {v:'6.55.94',date:'2026-10-08',title:'Living monsters: Nectar Hive',items:['Seven Hive creatures including Tiny Grub now have painted movement, idle, attack, hurt and defeat poses','Flying creatures flap their wings; Dartwing and both pollen shooters use authored action clips','Original combat, shield aura and flower defense remain']},
   {v:'6.55.93',date:'2026-10-08',title:'Living monsters: Mycelium Marsh',items:['Seven Marsh creatures, including summoned Sporelings, now have painted movement, idle, attack, hurt and defeat poses','Cap Hopper preparation and both mushroom shooters use authored action clips','Original combat, guard aura, summon rules and boss art are preserved']},
@@ -1317,11 +1318,13 @@ const ASSET_IMAGES = {
   gear_am_clover:'assets/gear/amulets/am_clover.png',
   gear_am_star:'assets/gear/amulets/am_star.png',
   gear_am_moon:'assets/gear/amulets/am_moon.png',
+  gear_am_chef:'assets/gear/amulets/am_chef.png',
   gear_lg_phoenix:'assets/gear/amulets/lg_phoenix.png',
   gear_ri_copper:'assets/gear/rings/ri_copper.png',
   gear_ri_silver:'assets/gear/rings/ri_silver.png',
   gear_ri_gold:'assets/gear/rings/ri_gold.png',
   gear_ri_diamond:'assets/gear/rings/ri_diamond.png',
+  gear_ri_chef:'assets/gear/rings/ri_chef.png',
   story_intro_fall:'assets/story/intro_fall.webp', story_final_hunger:'assets/story/final_hunger.webp',
   card_momo:'assets/character_cards/card_momo.png', card_mint:'assets/character_cards/card_mint_frostleaf.png',
   card_cocoa:'assets/character_cards/card_cocoa.png', card_taro:'assets/character_cards/card_taro.png',

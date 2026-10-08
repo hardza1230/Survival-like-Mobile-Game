@@ -1,4 +1,4 @@
-<!-- Latest: v6.55.95; batches 7A/7B/8 and elite/special B complete; batch 9 remains. -->
+<!-- Latest: v6.55.96; batches 7A/7B/8, elite/special B and Chef C complete; batch 9 and card/VFX art remain. -->
 # 🎨 Art Orders — ใบสั่งงานอาร์ตจริงแทนของชั่วคราว
 
 โฟลเดอร์นี้คือ "สัญญา" ระหว่าง **AI ทำอาร์ต** กับ **AI เขียนโค้ด** ของ Mochi Mayhem
@@ -8,7 +8,7 @@
 
 ## ลำดับการอ่าน
 1. `00_STYLE_GUIDE.md` — สไตล์/สี/มุมมอง/กฎเทคนิค (**อ่านก่อนทุกชุด**)
-2. **`14_REMAINING_ART.md` — งานที่เหลือทั้งหมด (อัปเดต v6.55.95; 7A/7B/8 และ Elite/ตัวพิเศษเสร็จแล้ว) ← เริ่มที่นี่** · `NEXT_BATCH_REQUEST.md` = กติกาประหยัดโควต้า §0 (งานในไฟล์นั้นเสร็จแล้ว)
+2. **`14_REMAINING_ART.md` — งานที่เหลือทั้งหมด (อัปเดต v6.55.96; 7A/7B/8, Elite/ตัวพิเศษ และ Chef เสร็จแล้ว) ← เริ่มที่นี่** · `NEXT_BATCH_REQUEST.md` = กติกาประหยัดโควต้า §0 (งานในไฟล์นั้นเสร็จแล้ว)
 2b. **`NEXT_BATCH_REQUEST.md` — (เดิม) งานที่ต้องทำตอนนั้น (รวมเป็นแผ่นรวม ประหยัดโควต้า) ← เริ่มที่นี่**
 3. ใบสั่งรายชุด (01–12) = สเปกละเอียดของแต่ละ key
 
@@ -33,7 +33,7 @@
 | 12 | `12_BIOME_SPICY.md` | Biome ในถ้ำ (พื้นต่อรส + ของในฉาก 5 รส) | 13 | 🔴 | 🟩 อาร์ตใส่เกมแล้ว v6.34 · กลไกมีแค่ Spicy |
 | 13 | `13_DELVE_BOSSES.md` | บอส Delve ชั้น 10/20 + ของประกอบ | 3 | 🔴 | 🟩 ใส่เกมแล้ว v6.39 + กลไกครบ |
 | C2-5 | `C2_5_ROOT_KNIGHT_ANIMATION.md` | Root Knight 16 เฟรม | 1 ชีต | — | 🟩 ใส่เข้าเกมแล้ว v6.0.54 |
-| 14 | `14_REMAINING_ART.md` | **งานที่เหลือ:** อนิเมชัน C2-4 ถึง C2-5 + Chef + ไอคอนการ์ดสาย + VFX Unique | 14 มอน + 3 แผ่นรวม | 🔴 | 🟩 7A/7B/8 และตัวพิเศษครบ v6.55.95; เหลือ 9 |
+| 14 | `14_REMAINING_ART.md` | **งานที่เหลือ:** อนิเมชัน C2-4 ถึง C2-5 + ไอคอนการ์ดสาย + VFX Unique | 14 มอน + 2 แผ่นรวม | 🔴 | 🟩 7A/7B/8, ตัวพิเศษ และ Chef ครบ v6.55.96; เหลือ 9 และการ์ด/VFX |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
 
@@ -93,3 +93,8 @@ Batch 8 completed at v6.55.94: seven Nectar Hive sheets including Tiny Grub. Sev
 
 
 Elite/special art batch B is implemented: Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic Chest each have 16 authored poses. Packed RGBA PNG/raw/exact prompts/packing/contact/animated review: assets/incoming/elite_summons; runtime lossless alpha WebP: assets/art/elite_summons. Crown Sapling uses C2-1 atlas cell 6 identity; Chapter 3 Elite uses the ash/gold crowned seed knight design from the brief. Feast carries a food plate and uses flee clips, without an attack clip. Mimic is a toothy living chest. Existing world sprite boxes/circle radii/centers are preserved when 62px generic Elite and 48px chest art become 256px frames. Mini Jelly keeps .36 scale and [70,58,70] circle. HP/damage/speed/EXP, Elite gates, Warden half-HP three-child split, Feast timers/Hunger share and Mimic chance/tier/reward remain. Animated Feast pool reuse cancels its escape fade and clears fleeing state; missing sheets retain original art. Boss/miniboss pose/death controllers remain separate. Owner mobile visual/FPS review pending. Ordinary season/root art (batch 9), Chef gear and card/Unique VFX art remain.
+
+
+## Chef delivery — v6.55.96
+
+Head Chef Medal and Golden Spoon Ring now use painted 256px RGBA icons through the existing gear image loader and shared equipment/crafting/Bazaar/reward views. Runtime: assets/gear/amulets/am_chef.png and assets/gear/rings/ri_chef.png. Combined sheet, original generation, exact prompt and packing metadata: assets/incoming/chef_gear. Prices, enhancement effects, stats and Royal Chef set bonuses are unchanged. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures), Unique build card icons and Unique VFX.
