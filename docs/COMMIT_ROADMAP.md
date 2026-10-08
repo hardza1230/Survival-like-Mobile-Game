@@ -89,4 +89,4 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 - ✅ P2 field pickups and on-kill recovery (v6.55.88)
 - ✅ P3 staged Hunts and opening Elite showdown (v6.55.89); owner mobile playtest pending
 - ✅ P4 Story Strawberry/Mint draft guarantees and late objective pacing (v6.55.90); owner mobile playtest pending
-- ⬜ P5 expand after playtesting
+- ✅ P5 remaining hero draft guarantees (v6.55.91); current balance retained at owner request, mobile/playtest-dependent tuning pending

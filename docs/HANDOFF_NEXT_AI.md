@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.90 — P4 Story build choices and late-wave pressure
+# Latest delivery: v6.55.91 — P5 all-hero Story drafts
+
+P4 Story draft guarantees now cover Yuzu/Cocoa/Taro/Sesame across 12 existing paths. Berry and all heroes before path selection receive eligible core attack choices. Recovery preserves one path/core choice; full/banished upgrades remain excluded. Existing authored effects, ranks, milestones, special-mode/noSpecial pools, P1 earned EXP, P2 pickups, P3 Hunts and P4 cadence remain unchanged. Owner has not played P4 and explicitly requested keeping current values; no power/crowd/boss retuning. See docs/ALL_HERO_DRAFTS_P5_2026_10_08.md. P1–P5 code implementation complete; mobile/balance playtesting remains pending.
+
+# Previous delivery: v6.55.90 — P4 Story build choices and late-wave pressure
 
 Normal Story Strawberry/Mint drafts guarantee an eligible chosen-path upgrade, plus an eligible shared attack choice when slots allow; critical healing preserves the path slot. Banished/maxed cards stay excluded, noSpecial loot and special modes keep weighted pools, and special milestone screens keep their gates. Stage 3–15 late objective waves refill at 1.4s/5 foes then 1.2s/6 foes, within existing live/shooter caps and finite reserves. Stages 1–2, timed Swarm, replay cadence, mini/boss modes and special modes retain their pace. P1 earned EXP, P2 pickups and P3 staged Hunts remain. See docs/BUILD_PRESSURE_P4_2026_10_08.md. Owner gameplay/mobile tuning is pending; P5 remains pending.
 

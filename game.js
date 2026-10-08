@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.90';
+const GAME_VERSION = '6.55.91';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.91',date:'2026-10-08',title:'P5: build drafts for every Story hero',items:['Yuzu, Cocoa, Taro and Sesame now receive the same chosen-path draft guarantees as Strawberry and Mint','Berry and heroes before choosing a path receive an eligible core attack choice','Emergency recovery preserves one build choice; exhausted or banished upgrades stay excluded','Existing powers, milestones, earned EXP, pickups and late-wave pacing remain']},
   {v:'6.55.90',date:'2026-10-08',title:'P4: build choices and late-wave pressure',items:['Story Strawberry and Mint drafts always offer an available upgrade for the chosen path','A shared attack option accompanies the path choice when space and eligible cards allow','Emergency healing keeps a slot without replacing the path choice','Stages 3–15 refill late objective waves faster while preserving crowd caps, earned EXP and rewards']},
   {v:'6.55.89',date:'2026-10-08',title:'P3: staged Story hunts',items:['Story Hunts alternate clearing foes and defeating a marked Elite','Each Hunt round shows its current step and kill progress','The opening fill mission ends with a marked Elite showdown','Progress survives upgrade pauses and missing-target recovery; rewards are paid once at the end']},
   {v:'6.55.88',date:'2026-10-08',title:'P2: meaningful health and magnet pickups',items:['Story hearts heal 18% max HP with healing bonuses, stay on the ground at full HP, and have shared drop limits','Story magnets have one ground slot, cooldown and combat-earned bad-luck protection; empty magnets remain for later','No guaranteed post-miniboss Story magnet; magnets collect earned EXP only','Story on-kill recovery respects healing restrictions and shares a 3% max HP per second budget','Pickup limits reset per stage; P1 combat growth, Swarm and Hunt fixes remain']},
@@ -2958,7 +2959,8 @@ function pickMintCards(entries,n,buildDraft=false){
   for(const e of entries)if(pools[e.group])pools[e.group].push(e);
   while(out.length<n){
     const groups=Object.keys(pools).filter(k=>pools[k].length);if(!groups.length)break;
-    const required=buildDraft&&out.length===0&&pools.path.length?'path':buildDraft&&out.length===1&&pools.shared.some(e=>e.card.type==='basic'&&!e.card.special)?'shared':null;
+    const hasCore=pools.shared.some(e=>e.card.type==='basic'&&!e.card.special);
+    const required=buildDraft&&out.length===0?(pools.path.length?'path':hasCore?'shared':null):buildDraft&&out.length===1&&hasCore?'shared':null;
     let r=Math.random()*groups.reduce((sum,k)=>sum+MINT_CARD_WEIGHTS[k],0),group=required||groups[groups.length-1];
     if(!required)for(const k of groups){r-=MINT_CARD_WEIGHTS[k];if(r<0){group=k;break;}}
     const pool=required==='shared'?pools.shared.filter(e=>e.card.type==='basic'&&!e.card.special):pools[group];r=Math.random()*pool.reduce((sum,e)=>sum+e.w,0);let index=pool.length-1;
@@ -11131,7 +11133,8 @@ class Game extends Phaser.Scene {
       return [makeCard(fu,{evolution:true,special:true,kind:'Fusion',tags:fu.tags,color:0xff6ad5,headline:'🧬 '+fu.desc,apply:()=>{ b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,fu.desc,2200); Sfx.clear(); }})]; } }
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
-    const mintLocked=b.character==='mint'&&!!b.path,berryLocked=b.character==='momo'&&!!b.path,focused=mintLocked||berryLocked,groupOf=id=>mintLocked?mintUpgradeGroup(b.path,id):berryUpgradeGroup(b.path,id);
+    const mintLocked=b.character==='mint'&&!!b.path,berryLocked=b.character==='momo'&&!!b.path,storyCards=!noSpecial&&this.usesStoryBudget?.(),chosenPath=PATHS?.find(pt=>pt.id===b.path);
+    const focused=mintLocked||berryLocked||storyCards,groupOf=id=>mintLocked?mintUpgradeGroup(b.path,id):berryLocked?berryUpgradeGroup(b.path,id):chosenPath?.upgrades.some(u=>u.id===id)?'path':'shared';
     const atk=[];
     const COUNT_IDS={s_slug:1,s_seek:1,s_return:1,p_heavydraw:1,p_impaler:1,p_executioner:1,p_froststack:1,p_chainshatter:1,p_quiver:1,family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
     const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades.slice():[];
@@ -11155,9 +11158,9 @@ class Game extends Phaser.Scene {
       if(!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5){const c=this.tradeCard();if(c)pool.push({group:'shared',w:1,card:c});}
       for(const c of this.endlessCards(this.endlessStatDefs().length))pool.push({group:'universal',w:1,card:c});
       if(healCard)pool.push({group:'universal',w:3,card:healCard});
-      const buildDraft=!noSpecial&&this.usesStoryBudget?.();
+      const buildDraft=storyCards;
       out.push(...pickMintCards(pool,n,buildDraft));
-      if(hpFrac<0.40&&healCard&&!out.some(c=>c.key===healCard.key)){if(out.length<n)out.push(healCard);else{let at=buildDraft?out.findLastIndex(c=>c.poolGroup!=='path'):n-1;if(at<0&&out.filter(c=>c.poolGroup==='path').length>1)at=out.length-1;if(at>=0)out[at]=healCard;}}
+      if(hpFrac<0.40&&healCard&&!out.some(c=>c.key===healCard.key)){if(out.length<n)out.push(healCard);else{const protectedChoice=buildDraft?(out.find(c=>c.poolGroup==='path')||out.find(c=>c.poolGroup==='shared'&&c.type==='basic'&&!c.special)):null,at=buildDraft?out.findLastIndex(c=>c!==protectedChoice):n-1;if(at>=0)out[at]=healCard;}}
       Phaser.Utils.Array.Shuffle(out);return out.slice(0,n);
     }
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
