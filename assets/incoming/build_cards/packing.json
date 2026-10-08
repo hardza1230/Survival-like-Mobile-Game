@@ -1,0 +1,377 @@
+{
+  "originalSize": [
+    1254,
+    1254
+  ],
+  "sheetSize": [
+    1024,
+    1024
+  ],
+  "alphaThreshold": 16,
+  "reservedCell": [
+    3,
+    3
+  ],
+  "icons": [
+    {
+      "id": "s_heavy",
+      "key": "ic_card_s_heavy",
+      "sourceBox": [
+        0,
+        0,
+        313,
+        313
+      ],
+      "sourceAlphaBounds": [
+        41,
+        95,
+        296,
+        291
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "s_quick",
+      "key": "ic_card_s_quick",
+      "sourceBox": [
+        313,
+        0,
+        627,
+        313
+      ],
+      "sourceAlphaBounds": [
+        45,
+        67,
+        277,
+        300
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "s_bore",
+      "key": "ic_card_s_bore",
+      "sourceBox": [
+        627,
+        0,
+        940,
+        313
+      ],
+      "sourceAlphaBounds": [
+        25,
+        83,
+        272,
+        295
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "s_split",
+      "key": "ic_card_s_split",
+      "sourceBox": [
+        940,
+        0,
+        1254,
+        313
+      ],
+      "sourceAlphaBounds": [
+        21,
+        78,
+        276,
+        303
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "b_wide",
+      "key": "ic_card_b_wide",
+      "sourceBox": [
+        0,
+        313,
+        313,
+        627
+      ],
+      "sourceAlphaBounds": [
+        41,
+        61,
+        290,
+        295
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "b_recoil",
+      "key": "ic_card_b_recoil",
+      "sourceBox": [
+        313,
+        313,
+        627,
+        627
+      ],
+      "sourceAlphaBounds": [
+        38,
+        71,
+        279,
+        286
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "b_double",
+      "key": "ic_card_b_double",
+      "sourceBox": [
+        627,
+        313,
+        940,
+        627
+      ],
+      "sourceAlphaBounds": [
+        19,
+        62,
+        277,
+        293
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "buckshot",
+      "key": "ic_card_buckshot",
+      "sourceBox": [
+        940,
+        313,
+        1254,
+        627
+      ],
+      "sourceAlphaBounds": [
+        30,
+        62,
+        276,
+        289
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "m_grow",
+      "key": "ic_card_m_grow",
+      "sourceBox": [
+        0,
+        627,
+        313,
+        940
+      ],
+      "sourceAlphaBounds": [
+        41,
+        49,
+        293,
+        288
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "m_hold",
+      "key": "ic_card_m_hold",
+      "sourceBox": [
+        313,
+        627,
+        627,
+        940
+      ],
+      "sourceAlphaBounds": [
+        50,
+        39,
+        281,
+        288
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "m_shard",
+      "key": "ic_card_m_shard",
+      "sourceBox": [
+        627,
+        627,
+        940,
+        940
+      ],
+      "sourceAlphaBounds": [
+        24,
+        42,
+        275,
+        286
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "l_far",
+      "key": "ic_card_l_far",
+      "sourceBox": [
+        940,
+        627,
+        1254,
+        940
+      ],
+      "sourceAlphaBounds": [
+        33,
+        87,
+        289,
+        272
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "l_twin",
+      "key": "ic_card_l_twin",
+      "sourceBox": [
+        0,
+        940,
+        313,
+        1254
+      ],
+      "sourceAlphaBounds": [
+        49,
+        40,
+        282,
+        259
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "l_burst",
+      "key": "ic_card_l_burst",
+      "sourceBox": [
+        313,
+        940,
+        627,
+        1254
+      ],
+      "sourceAlphaBounds": [
+        38,
+        38,
+        279,
+        261
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    },
+    {
+      "id": "pointblank",
+      "key": "ic_card_pointblank",
+      "sourceBox": [
+        627,
+        940,
+        940,
+        1254
+      ],
+      "sourceAlphaBounds": [
+        24,
+        34,
+        276,
+        255
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "fit": [
+        220,
+        220
+      ]
+    }
+  ]
+}

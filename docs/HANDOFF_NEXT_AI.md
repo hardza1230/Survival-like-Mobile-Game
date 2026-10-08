@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.96 — Chef equipment art
+# Latest delivery: v6.55.97 — Build card icons
+
+Fifteen Build upgrade cards now have distinct painted icons: four Sniper, five Shotgun, three Glacier Bloom and three Crystal Impaler cards. The 4x4 source sheet keeps the final cell reserved/transparent. Runtime lossless alpha WebP: assets/art/build_cards; original/normalized sheet, 256px RGBA PNGs, exact prompt, packing and preview: assets/incoming/build_cards. Only upgrade iconKey mappings change; build-selection art, effects, ranks, prices, draft weighting and P1–P5 balance remain. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures) and Unique VFX.
+
+# Previous delivery: v6.55.96 — Chef equipment art
 
 Head Chef Medal and Golden Spoon Ring now use painted 256px RGBA icons through the existing gear image loader and shared equipment/crafting/Bazaar/reward views. Runtime: assets/gear/amulets/am_chef.png and assets/gear/rings/ri_chef.png. Combined sheet, original generation, exact prompt and packing metadata: assets/incoming/chef_gear. Prices, enhancement effects, stats and Royal Chef set bonuses are unchanged. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures), Unique build card icons and Unique VFX.
 

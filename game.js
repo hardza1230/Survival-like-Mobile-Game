@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.96';
+const GAME_VERSION = '6.55.97';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.97',date:'2026-10-08',title:'Distinct Build card icons',items:['Fifteen Sniper, Shotgun, Glacier Bloom and Crystal Impaler upgrades now have individual painted icons','Card effects, ranks and draft balance remain']},
   {v:'6.55.96',date:'2026-10-08',title:'Royal Chef equipment art',items:['Head Chef Medal and Golden Spoon Ring now have painted equipment icons','Equipment, crafting, Bazaar and reward views share the new art','Existing prices, upgrades and set bonuses remain']},
   {v:'6.55.95',date:'2026-10-08',title:'Living elites and special creatures',items:['Crown Sapling, Mini Jelly, Chapter 3 Elite, Feast Target and Mimic now have authored animated art','Feast targets carry their food while fleeing; Mimics open their lid to bite','Original combat, encounter timing, summons and rewards remain']},
   {v:'6.55.94',date:'2026-10-08',title:'Living monsters: Nectar Hive',items:['Seven Hive creatures including Tiny Grub now have painted movement, idle, attack, hurt and defeat poses','Flying creatures flap their wings; Dartwing and both pollen shooters use authored action clips','Original combat, shield aura and flower defense remain']},
@@ -1183,6 +1184,21 @@ const ASSET_IMAGES = {
   prize_scroll:'assets/art/rewards/prize_scroll.webp',
   prize_recharge:'assets/art/rewards/prize_recharge.webp',
   prize_sugar_bag:'assets/art/rewards/prize_sugar_bag.webp',
+  ic_card_s_heavy:'assets/art/build_cards/s_heavy.webp',
+  ic_card_s_quick:'assets/art/build_cards/s_quick.webp',
+  ic_card_s_bore:'assets/art/build_cards/s_bore.webp',
+  ic_card_s_split:'assets/art/build_cards/s_split.webp',
+  ic_card_b_wide:'assets/art/build_cards/b_wide.webp',
+  ic_card_b_recoil:'assets/art/build_cards/b_recoil.webp',
+  ic_card_b_double:'assets/art/build_cards/b_double.webp',
+  ic_card_buckshot:'assets/art/build_cards/buckshot.webp',
+  ic_card_m_grow:'assets/art/build_cards/m_grow.webp',
+  ic_card_m_hold:'assets/art/build_cards/m_hold.webp',
+  ic_card_m_shard:'assets/art/build_cards/m_shard.webp',
+  ic_card_l_far:'assets/art/build_cards/l_far.webp',
+  ic_card_l_twin:'assets/art/build_cards/l_twin.webp',
+  ic_card_l_burst:'assets/art/build_cards/l_burst.webp',
+  ic_card_pointblank:'assets/art/build_cards/pointblank.webp',
   ic_path_sniper:'assets/art/build_paths/sniper.webp',
   ic_path_shotgun:'assets/art/build_paths/shotgun.webp',
   ic_path_ricochet:'assets/art/build_paths/ricochet.webp',
@@ -2120,7 +2136,7 @@ const STAGE_SHEETS=[
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 // v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
-const DEFER_RE=/assets\/(?:art\/(?:temple|rewards|build_paths|kitchen|delve|biomes|pinnacle|dig|icons|ch3_bosses|ch3_enemies|floors)\/|ui\/currency\/|gear\/|icons\/levelup\/|incoming\/)/;
+const DEFER_RE=/assets\/(?:art\/(?:temple|rewards|build_(?:paths|cards)|kitchen|delve|biomes|pinnacle|dig|icons|ch3_bosses|ch3_enemies|floors)\/|ui\/currency\/|gear\/|icons\/levelup\/|incoming\/)/;
 function bootDeferred(url){return DEFER_RE.test(url||'');}
 // v6.38 บูตโหลดเฉพาะของที่เมนูหลักใช้ · ที่เหลือทั้งหมดโหลดเบื้องหลัง (ensureDeferred) ก่อนเข้าด่าน/หน้าย่อย
 function bootKeep(k){return /^hub_btn_|^menu_hub|^vfx_poof$|^replay_progress_art$|^chapter\d_cover$|^chapter_endgame_cover$|^tile___/.test(k);}
@@ -2129,15 +2145,15 @@ const MENU_GROUPS=[
   [/^(upgrade|perks)$/,/assets\/(?:art\/temple\/|ui\/temple\/|art\/icons\/|ui\/currency\/)/],
   [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
   [/^dig$/,/assets\/art\/dig\//],
-  [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_paths\/|art\/biomes\/)/],
+  [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
   [/^(gear|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/)/],
-  [/^(chars|talents)$/,/assets\/(?:character_cards\/|art\/build_paths\/)/],
-  [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_paths\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
+  [/^(chars|talents)$/,/assets\/(?:character_cards\/|art\/build_(?:paths|cards)\/)/],
+  [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
-const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|build_paths|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
+const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|build_(?:paths|cards)|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
-const STAGE_LATE_RE=/assets\/(?:art\/(?:build_paths|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
+const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
 const ENDGAME_ART_RE=/assets\/art\/(?:biomes|delve_bosses|pinnacle)\//;
 // ของที่ต้องมีก่อนเข้าด่าน = tier1 ลบ (ของตัวละครอื่น + ของมาทีหลัง + อาร์ต endgame ถ้าไม่ใช่ endgame)
 function stageCritical(k,u,ch,endgame){
@@ -2764,17 +2780,17 @@ const BASIC_PATHS={
       upgrades:[{id:'headshot',iconKey:'ic_path_headshot',name:'Headshot',emoji:'🎯',max:3,desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
                 {id:'deadeye',iconKey:'ic_path_deadeye',name:'Deadeye',emoji:'👁️',max:3,desc:'+15% damage to elites, minibosses and bosses per rank'},
                  {id:'s_draw',iconKey:'ic_path_sniper',name:'Heavy Draw',emoji:'🎯',max:3,headline:'Basic: +15% full-charge power',desc:'Basic full-charge multiplier gains +15 percentage points per rank; auto-charge takes +60ms longer per rank. Partial shots gain less'},
-                 {id:'s_heavy',iconKey:'ic_path_sniper',name:'Heavy Round',emoji:'💣',max:3,desc:'Charged Unique: +45% damage per rank · charge takes +0.35s longer per rank'},
-                 {id:'s_quick',iconKey:'ic_path_sniper',name:'Quick Scope',emoji:'⏱️',max:3,desc:'Charged Unique: charge 22% faster per rank · −12% shot damage per rank'},
-                 {id:'s_bore',iconKey:'ic_path_sniper',name:'Wide Bore',emoji:'🌪️',max:3,desc:'Charged Unique: beam 40% wider per rank · +15% Unique cooldown per rank'},
-                 {id:'s_split',iconKey:'ic_path_sniper',name:'Split Shot',emoji:'🔱',max:2,desc:'Charged Unique: +1 pair of side beams per rank (55% damage each) · main shot −10% per rank'}]},
+                 {id:'s_heavy',iconKey:'ic_card_s_heavy',name:'Heavy Round',emoji:'💣',max:3,desc:'Charged Unique: +45% damage per rank · charge takes +0.35s longer per rank'},
+                 {id:'s_quick',iconKey:'ic_card_s_quick',name:'Quick Scope',emoji:'⏱️',max:3,desc:'Charged Unique: charge 22% faster per rank · −12% shot damage per rank'},
+                 {id:'s_bore',iconKey:'ic_card_s_bore',name:'Wide Bore',emoji:'🌪️',max:3,desc:'Charged Unique: beam 40% wider per rank · +15% Unique cooldown per rank'},
+                 {id:'s_split',iconKey:'ic_card_s_split',name:'Split Shot',emoji:'🔱',max:2,desc:'Charged Unique: +1 pair of side beams per rank (55% damage each) · main shot −10% per rank'}]},
     {id:'shotgun',iconKey:'ic_path_shotgun',name:'Shotgun Build',emoji:'💥',desc:'+5 Basic pellets, max 12; overflow +8% power each. ×0.45 power per pellet; close large targets tighten the spread. Within 120px: ×2 and +40% damage',
-      upgrades:[{id:'pointblank',iconKey:'ic_path_pointblank',name:'Point Blank',emoji:'🔥',max:3,desc:'+15% close-range bonus per rank'},
-                {id:'buckshot',iconKey:'ic_path_buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'},
+      upgrades:[{id:'pointblank',iconKey:'ic_card_pointblank',name:'Point Blank',emoji:'🔥',max:3,desc:'+15% close-range bonus per rank'},
+                {id:'buckshot',iconKey:'ic_card_buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'},
                 {id:'s_slug',iconKey:'ic_path_shotgun',name:'Heart Slug',emoji:'💥',max:1,headline:'Basic: heavy center pellet',desc:'Center Basic pellet gains +60% power. Keeps close-range bonus and does not become a piercing sniper shot'},
-                {id:'b_wide',iconKey:'ic_path_shotgun',name:'Wide Blast',emoji:'🌸',max:3,desc:'Berry Blast Unique: cone +20° and +2 pellets per rank'},
-                {id:'b_recoil',iconKey:'ic_path_shotgun',name:'Recoil Hop',emoji:'🐇',max:2,desc:'Berry Blast Unique: hop back 40px farther per rank · +0.3s invulnerability per rank'},
-                {id:'b_double',iconKey:'ic_path_shotgun',name:'Double Tap',emoji:'✌️',max:1,desc:'Berry Blast Unique: a second blast fires 0.35s later at 60% damage'}]},
+                {id:'b_wide',iconKey:'ic_card_b_wide',name:'Wide Blast',emoji:'🌸',max:3,desc:'Berry Blast Unique: cone +20° and +2 pellets per rank'},
+                {id:'b_recoil',iconKey:'ic_card_b_recoil',name:'Recoil Hop',emoji:'🐇',max:2,desc:'Berry Blast Unique: hop back 40px farther per rank · +0.3s invulnerability per rank'},
+                {id:'b_double',iconKey:'ic_card_b_double',name:'Double Tap',emoji:'✌️',max:1,desc:'Berry Blast Unique: a second blast fires 0.35s later at 60% damage'}]},
     {id:'ricochet',iconKey:'ic_path_ricochet',name:'Ricochet Build',emoji:'💞',desc:'Fire 25% faster · +2 bounces to unvisited targets, ×0.8 starting power. At most 8 bounces; bounce power caps at ×2.2. Isolated bosses receive an extra impact',
       upgrades:[{id:'carom',iconKey:'ic_path_carom',name:'Carom',emoji:'🔁',max:3,desc:'+1 Basic bounce per rank, max 8. Excess planned bounces add +8% starting seed power each (max +80%)'},
                 {id:'s_seek',iconKey:'ic_path_ricochet',name:'Seeking Hearts',emoji:'💞',max:2,headline:'Basic: +20% bounce reach',desc:'Basic bounce acquire radius +20% per rank; still visits each enemy once per seed'},
@@ -2788,9 +2804,9 @@ const BASIC_PATHS={
                 {id:'p_froststack',iconKey:'ic_path_p_deepchill',name:'Deep Freeze',emoji:'🥶',max:2,headline:'+1 Frost stack per hit',desc:'Frost hits on Frozen/Brittle targets add 1 extra Frost stack per rank (max 3). The next hit triggers Shatter or boss Rupture.'},
                 {id:'p_chainshatter',iconKey:'ic_path_p_coldsnap',name:'Chain Shatter',emoji:'💎',max:2,headline:'Shatter primes nearby foes',desc:'Shatter applies Chill and 1 Frost stack nearby. Fully primed targets can chain: +1 step per rank, max 2 steps (3 with Absolute Zero) and 6 bursts per reaction.'},
                 {id:'p_coldsnap',iconKey:'ic_path_p_coldsnap',name:'Icebound Echo',emoji:'❄️',max:3,headline:'Freeze sends a Chill wave',desc:'Freezing an enemy or making it Brittle applies 1 Chill stack nearby; radius grows 20% per rank. Echo cannot trigger recursive waves.'},
-                {id:'m_grow',iconKey:'ic_path_glacier',name:'Wider Bloom',emoji:'🌸',max:3,headline:'Glacier Bloom +25% size',desc:'Glacier Bloom Unique: ice ring 25% larger per rank.'},
-                {id:'m_hold',iconKey:'ic_path_glacier',name:'Long Winter',emoji:'⏳',max:2,headline:'Bloom freezes +0.6s',desc:'Glacier Bloom Unique: freeze lasts 0.6s longer per rank.'},
-                {id:'m_shard',iconKey:'ic_path_glacier',name:'Shard Spray',emoji:'💎',max:2,headline:'Shatter splashes',desc:'Glacier Bloom Unique: each shatter hits enemies within 90px for 40% per rank.'}]},
+                {id:'m_grow',iconKey:'ic_card_m_grow',name:'Wider Bloom',emoji:'🌸',max:3,headline:'Glacier Bloom +25% size',desc:'Glacier Bloom Unique: ice ring 25% larger per rank.'},
+                {id:'m_hold',iconKey:'ic_card_m_hold',name:'Long Winter',emoji:'⏳',max:2,headline:'Bloom freezes +0.6s',desc:'Glacier Bloom Unique: freeze lasts 0.6s longer per rank.'},
+                {id:'m_shard',iconKey:'ic_card_m_shard',name:'Shard Spray',emoji:'💎',max:2,headline:'Shatter splashes',desc:'Glacier Bloom Unique: each shatter hits enemies within 90px for 40% per rank.'}]},
     {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (max 3), 22% sooner at 62% damage. Each excess lance grants +18% shard damage instead.',
       upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
                 {id:'p_quiver',iconKey:'ic_path_barrage',name:'Packed Quiver',emoji:'🏹',max:1,fx:{count:1},headline:'+1 Lance / +18% Shard DMG',desc:'+1 lance, up to 3 total. At the cap, gain +18% shard damage instead; recalculates after Evolution.'},
@@ -2801,9 +2817,9 @@ const BASIC_PATHS={
                 {id:'p_heavydraw',iconKey:'ic_path_pierce',name:'Heavy Draw',emoji:'🏹',max:3,headline:'+18% full-charge power',desc:'Full-charge multiplier gains +18 percentage points per rank; charge takes +80ms per rank. Partial shots gain less.'},
                 {id:'p_impaler',iconKey:'ic_path_p_shatterpt',name:'Impaler',emoji:'🎯',max:1,headline:'+1 Impale vs elites/bosses',desc:'Full lance hits add 2 Impale instead of 1 on elites/minibosses/bosses (max 3). The next full hit consumes stacks for Rupture.'},
                 {id:'p_executioner',iconKey:'ic_path_pierce',name:'Executioner',emoji:'🗡️',max:3,headline:'+8% DMG below 30% HP',desc:'Heavy lance and its Rupture deal +8% damage per rank to targets below 30% HP; no instant boss kills.'},
-                {id:'l_far',iconKey:'ic_path_pierce',name:'Long Lance',emoji:'📏',max:3,headline:'Lance dash +30% distance',desc:'Frost Lance Charge Unique: dash 30% farther per rank.'},
-                {id:'l_twin',iconKey:'ic_path_pierce',name:'Twin Lance',emoji:'✌️',max:1,headline:'Dash twice',desc:'Frost Lance Charge Unique: after a dash you can dash once more within 2s.'},
-                {id:'l_burst',iconKey:'ic_path_pierce',name:'Lance Burst',emoji:'💥',max:2,headline:'Ice blast at the end',desc:'Frost Lance Charge Unique: ice blast at the end of the dash, +50% damage per rank.'}]}],
+                {id:'l_far',iconKey:'ic_card_l_far',name:'Long Lance',emoji:'📏',max:3,headline:'Lance dash +30% distance',desc:'Frost Lance Charge Unique: dash 30% farther per rank.'},
+                {id:'l_twin',iconKey:'ic_card_l_twin',name:'Twin Lance',emoji:'✌️',max:1,headline:'Dash twice',desc:'Frost Lance Charge Unique: after a dash you can dash once more within 2s.'},
+                {id:'l_burst',iconKey:'ic_card_l_burst',name:'Lance Burst',emoji:'💥',max:2,headline:'Ice blast at the end',desc:'Frost Lance Charge Unique: ice blast at the end of the dash, +50% damage per rank.'}]}],
   cocoa:[
     {id:'brawler',iconKey:'ic_path_brawler',name:'Brawler Build',emoji:'🥊',base:{dmg:0.72,cd:0.7,wave:1},desc:'Combo 30% faster, ×0.72 damage · every finisher blasts a shockwave · rush build',
       upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Shock Knuckles',emoji:'💥',max:2,fx:{wave:1},desc:'+1 extra shockwave after each finisher per rank'},

@@ -1,4 +1,4 @@
-# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.96 · 8 ต.ค. 2026)
+# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.97 · 8 ต.ค. 2026)
 
 อ่าน `00_STYLE_GUIDE.md` และกติกาประหยัดโควต้าใน `NEXT_BATCH_REQUEST.md` §0 ก่อนเริ่ม
 (1 ครั้งที่สร้างภาพ = 1 แผ่นรวม · กริดเท่ากัน · วัตถุไม่ล้นช่อง · พื้นโปร่งใสหรือเขียว `#00FF00` · ไม่มีตัวหนังสือ/เส้นกริด)
@@ -12,7 +12,7 @@
 | A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (9; 7A/7B/8 เสร็จแล้ว) | เหลือ 2 ด่าน × 7 ตัว = 14 ชีต | 🔴 |
 | B | Elite / ตัวพิเศษ / Mini Jelly รวม Crown Sapling | ✅ ครบ 5 ชีต v6.55.95 | 🟠 |
 | C | อาร์ตอุปกรณ์ชุด Chef | ✅ ครบ 2 ชิ้น v6.55.96 | 🟠 |
-| D | ไอคอนการ์ด Unique ของสาย Build | 1 แผ่นรวม (16 ช่อง) | 🟡 |
+| D | ไอคอนการ์ด Unique ของสาย Build | ✅ 15 ไอคอน + ช่องสำรอง v6.55.97 | 🟡 |
 | E | VFX ของ Unique ใหม่ (Berry Blast / Glacier Bloom / Frost Lance) | 1 แผ่นรวม (เฟรมอนิเมชัน) | 🟡 |
 
 ทุกเฟรมและทุกช่องต้องเป็นตัวละครหรือวัตถุตัวเดิม ห้ามออกแบบใหม่ ฝั่งโค้ดจะใช้ hitbox และขนาดเดิมของมันต่อ
@@ -144,8 +144,8 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 
 ---
 
-## D. ไอคอนการ์ด Unique ของสาย Build 🟡
-ตอนนี้การ์ดเหล่านี้ยืมไอคอนของสายมาใช้ (เช่น `ic_path_sniper` ใช้กับทุกการ์ด Sniper) ทำให้แยกการ์ดไม่ออก
+## D. ไอคอนการ์ด Unique ของสาย Build ✅ ส่งแล้ว v6.55.97
+ครบ 15 ไอคอนเฉพาะการ์ดและ 1 ช่องสำรองโปร่งใส ผูกเข้าการ์ดเดิมแล้ว เอฟเฟกต์และค่าการ์ดคงเดิม
 
 - ทำ 1 แผ่นรวม **4 คอลัมน์ × 4 แถว** ช่องละ 256×256
 - สไตล์ให้เหมือนไอคอนใน `assets/art/build_paths/`
@@ -204,3 +204,8 @@ Elite/special art batch B is implemented: Crown Sapling, Mini Jelly, Chapter 3 E
 ## Chef delivery — v6.55.96
 
 Head Chef Medal and Golden Spoon Ring now use painted 256px RGBA icons through the existing gear image loader and shared equipment/crafting/Bazaar/reward views. Runtime: assets/gear/amulets/am_chef.png and assets/gear/rings/ri_chef.png. Combined sheet, original generation, exact prompt and packing metadata: assets/incoming/chef_gear. Prices, enhancement effects, stats and Royal Chef set bonuses are unchanged. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures), Unique build card icons and Unique VFX.
+
+
+## Build card delivery — v6.55.97
+
+Fifteen Build upgrade cards now have distinct painted icons: four Sniper, five Shotgun, three Glacier Bloom and three Crystal Impaler cards. The 4x4 source sheet keeps the final cell reserved/transparent. Runtime lossless alpha WebP: assets/art/build_cards; original/normalized sheet, 256px RGBA PNGs, exact prompt, packing and preview: assets/incoming/build_cards. Only upgrade iconKey mappings change; build-selection art, effects, ranks, prices, draft weighting and P1–P5 balance remain. Owner mobile visual review pending. Remaining art: batch 9 (14 ordinary season/root creatures) and Unique VFX.
