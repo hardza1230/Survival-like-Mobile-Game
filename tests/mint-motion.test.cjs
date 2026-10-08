@@ -30,4 +30,3 @@ for(const ch of ['momo','mint','cocoa','taro','yuzu','sesame','berry']){
  assert.equal(c._charRunT,stopped+.05,ch+' resume phase');
 }
 console.log('Hero motion: all seven heroes, moving/repeated/stationary casts, scale, Gale, dash, hurt, fallback and gait continuity passed');
-
