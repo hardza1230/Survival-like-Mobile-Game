@@ -1,4 +1,4 @@
-# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (v6.55.63 · 5 ต.ค. 2026)
+# 🎨 ใบสั่งงานอาร์ตที่เหลือทั้งหมด (อัปเดต v6.55.92 · 8 ต.ค. 2026)
 
 อ่าน `00_STYLE_GUIDE.md` และกติกาประหยัดโควต้าใน `NEXT_BATCH_REQUEST.md` §0 ก่อนเริ่ม
 (1 ครั้งที่สร้างภาพ = 1 แผ่นรวม · กริดเท่ากัน · วัตถุไม่ล้นช่อง · พื้นโปร่งใสหรือเขียว `#00FF00` · ไม่มีตัวหนังสือ/เส้นกริด)
@@ -9,8 +9,8 @@
 
 | ลำดับ | งาน | จำนวนภาพที่ต้องสร้าง | ความสำคัญ |
 |---|---|---|---|
-| A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (commit 7–9) | 5 ด่าน × 7–8 ตัว | 🔴 |
-| B | Elite / ตัวเรียก / Mini Jelly (commit 10) | 4 ชีต | 🟠 |
+| A | ชีตอนิเมชันมอนสเตอร์ Chapter 2 (7B–9; 7A เสร็จแล้ว) | เหลือ 4 ด่าน × 7 ตัว = 28 ชีต | 🔴 |
+| B | Elite / ตัวเรียก / Mini Jelly รวม Crown Sapling (commit 10) | 5 ชีต | 🟠 |
 | C | อาร์ตอุปกรณ์ชุด Chef ที่ยังเป็นอีโมจิ | 1 แผ่นรวม (2 ชิ้น) | 🟠 |
 | D | ไอคอนการ์ด Unique ของสาย Build | 1 แผ่นรวม (16 ช่อง) | 🟡 |
 | E | VFX ของ Unique ใหม่ (Berry Blast / Glacier Bloom / Frost Lance) | 1 แผ่นรวม (เฟรมอนิเมชัน) | 🟡 |
@@ -21,7 +21,9 @@
 
 ## A. ชีตอนิเมชันมอนสเตอร์ Chapter 2 🔴
 
-ตอนนี้ Chapter 2 ใช้ **atlas ภาพนิ่ง** คือ 1 ช่องต่อ 1 สายพันธุ์ ยังไม่มีท่าเดิน, ท่าโจมตี, ท่าเจ็บ หรือท่าตาย
+**อัปเดต v6.55.92:** A1 / Batch 7A ส่งและผูกเข้าเกมครบ 6 ตัวแล้ว เหลือ A2–A5 รวม 28 ตัว การตรวจภาพ/FPS บนมือถือจริงยังรอเจ้าของ ส่วน Elite C2-1 คือ Crown Sapling (atlas ช่อง 6) เป็นคนละตัวกับ Root-Back Beetle และย้ายไป Batch 10
+
+ตอนนี้ C2-2 ถึง C2-5 ใช้ **atlas ภาพนิ่ง** คือ 1 ช่องต่อ 1 สายพันธุ์ ยังไม่มีท่าเดิน, ท่าโจมตี, ท่าเจ็บ หรือท่าตาย ส่วน C2-1 ใช้ชีตอนิเมชันแล้ว
 
 Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ชุดตัวอย่างเหล่านี้เป็นแบบ:
 - `assets/incoming/ch1_ice_animations/`
@@ -46,7 +48,7 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 - หันหน้าไปทางขวา ถ้าหันซ้ายให้เขียนบอกใน MANIFEST
 - ต้นแบบหน้าตา: ใช้ภาพจากช่อง atlas เดิมเป็นแบบ ดูตารางในแต่ละด่านด้านล่าง
 
-### A1 · commit 7 — C2-1 Fermented Canopy (`assets/ch2_enemy_atlas.png`)
+### A1 · Batch 7A — C2-1 Fermented Canopy ✅ v6.55.92 (`assets/ch2_enemy_atlas.png`)
 ส่งที่ `assets/incoming/ch2_s1_animations/`
 
 | key | ชื่อ | บทบาท | จุดเด่นของท่าโจมตี |
@@ -55,7 +57,7 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 | `c21_vine_hunter` | Vine Hunter | fast / dasher | ย่อตัวแล้วพุ่ง |
 | `c21_spore_lantern` | Spore Lantern | shooter | โคมเรืองแสงก่อนยิงสปอร์ |
 | `c21_fruit_pod` | Rotten Fruit Pod | bomber | บวมพองก่อนแตก |
-| `c21_root_beetle` | Root-Back Beetle | tank (และ **Elite**) | กระแทกพื้น |
+| `c21_root_beetle` | Root-Back Beetle | tank | กระแทกพื้น |
 | `c21_thorn_oracle` | Thorn Oracle | siege | ยกไม้เท้าหนาม |
 
 ### A2 · commit 7 — C2-2 Mycelium Marsh (`assets/ch2_mycelium_enemy_atlas.png`)
@@ -119,6 +121,7 @@ Chapter 1 และ Chapter 3 ทำครบแล้ว ให้ใช้ช�
 
 | key | ตัว | ใช้ที่ไหน | หมายเหตุ |
 |---|---|---|---|
+| `c21_crown_sapling` | Crown Sapling | Elite ของ C2-1 | ใช้ต้นแบบ atlas C2-1 ช่อง 6; เป็นคนละตัวกับ Root-Back Beetle |
 | `mini_jelly` | Mini Jelly (ลูกเจลลี่ 3 ตัวที่ Jelly Warden แบ่งตัวออกมา) | Delve ชั้น 10/30/50… | หน้าตาเป็นเวอร์ชันจิ๋วของ `boss_delve10` (Jelly Warden) สีเดียวกัน |
 | `c3_elite` | Elite ทั่วไปของ Chapter 3 (ตอนนี้ใช้ตัว tank ขยาย) | ด่าน C3-1…C3-5 | ตัวใหญ่ หุ้มเกราะเมล็ดพันธุ์สีเทาเถ้าทอง มีมงกุฎเล็ก |
 | `feast_target` | เป้า 🍖 Feast ใน Delve (ตอนนี้ใช้ Elite ย้อมส้ม) | Delve ทุกชั้น | โมจิอ้วนถือจานอาหาร ท่าวิ่งหนี ไม่มีท่าโจมตี (ช่อง 8–11 = ท่าวิ่งหนีเร็ว) |

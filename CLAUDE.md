@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.91 — P5 all-hero Story drafts
+# Latest delivery: v6.55.92 — monster animation Batch 7A
+
+Six Fermented Canopy species have generated 16-pose sheets, packed RGBA PNG sources and lossless WebP runtime assets. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s1_animations; runtime: assets/art/ch2_canopy. Stage loading, original atlas fallback, movement/idle/action/hurt/death, shooter windup, bomber warning, freeze/thaw and pooled reset use the existing presentation controller. Original combat, collision circles, Story P1–P5 and pacing are preserved. Audit correction: C2-1 Elite is separate Crown Sapling (atlas cell 6), not Root-Back Beetle; its art stays intact and its animation is now listed in batch 10. Owner performs mobile visual/FPS review; pending. Next monster batch: 7B, seven Mycelium Marsh creatures including Sporeling. See docs/MONSTER_ANIMATION_PLAN.md and docs/art_orders/14_REMAINING_ART.md.
+
+# Previous delivery: v6.55.91 — P5 all-hero Story drafts
 
 P4 Story draft guarantees now cover Yuzu/Cocoa/Taro/Sesame across 12 existing paths. Berry and all heroes before path selection receive eligible core attack choices. Recovery preserves one path/core choice; full/banished upgrades remain excluded. Existing authored effects, ranks, milestones, special-mode/noSpecial pools, P1 earned EXP, P2 pickups, P3 Hunts and P4 cadence remain unchanged. Owner has not played P4 and explicitly requested keeping current values; no power/crowd/boss retuning. See docs/ALL_HERO_DRAFTS_P5_2026_10_08.md. P1–P5 code implementation complete; mobile/balance playtesting remains pending.
 

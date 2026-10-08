@@ -90,3 +90,7 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 - ✅ P3 staged Hunts and opening Elite showdown (v6.55.89); owner mobile playtest pending
 - ✅ P4 Story Strawberry/Mint draft guarantees and late objective pacing (v6.55.90); owner mobile playtest pending
 - ✅ P5 remaining hero draft guarantees (v6.55.91); current balance retained at owner request, mobile/playtest-dependent tuning pending
+
+## Monster animation Batch 7A — v6.55.92
+
+✅ Six Fermented Canopy creatures: generated 16-pose sheets, packed alpha assets, stage loading and presentation integration. Original balance/colliders and separate Crown Sapling Elite identity are preserved. Source, exact prompts, packing and review: assets/incoming/ch2_s1_animations. Next: 7B, seven Mycelium Marsh creatures including Sporeling. Crown Sapling animation moves to batch 10; owner mobile visual/FPS review remains pending.

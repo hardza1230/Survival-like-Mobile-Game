@@ -10,17 +10,19 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | 4 | Chapter 1 stage 3: Ember, Chili, Grinder, Pressure Pot and Golem | Complete — v6.55.14 |
 | 5 | Chapter 1 stage 4: Wisp, Shard, Caster, Bubble and Guardian | Complete — v6.55.15 |
 | 6 | Chapter 1 stage 5 and Chapter 3: improve existing walk sheets, add missing action clips | Complete — v6.55.16 |
-| 7A | Chapter 2 stage 1: Fermented Canopy — 6 creatures | In progress |
+| 7A | Chapter 2 stage 1: Fermented Canopy — 6 creatures | Complete — v6.55.92; owner mobile review pending |
 | 7B | Chapter 2 stage 2: Mycelium Marsh — 7 creatures including Sporeling | Pending |
 | 8 | Chapter 2 stage 3: Nectar creatures, including Tiny Grub | Pending |
 | 9 | Chapter 2 stages 4–5: season and root creatures | Pending |
-| 10 | Elite/summon coverage including Mini Jelly; full visual and mobile performance review | Pending |
+| 10 | Elite/summon coverage including Mini Jelly and C2-1 Crown Sapling; full visual and mobile performance review | Pending |
 
 ## Commit 7 split
 
 The original commit 7 was too large, so it is now two independent delivery commits. Commit 7A covers only C2-1 Fermented Canopy: Ferment Sprout, Vine Hunter, Spore Lantern, Rotten Fruit Pod, Root-Back Beetle and Thorn Oracle. Commit 7B covers only C2-2 Mycelium Marsh: Mycelium Drifter, Cap Hopper, Puffcap Sniper, Mold Sac, Mycelium Bulwark, Threadweaver Oracle and Sporeling. Each commit must include its own generated sheets, runtime integration, MANIFEST, tests/checks, version bump and documentation update. Do not wait for 7B before validating or shipping 7A.
 
 ## Audit findings
+
+Batch 7A audit: C2-1 Elite is the separate Crown Sapling in atlas cell 6, not Root-Back Beetle (cell 4). Preserve its current identity in 7A; its animation belongs to batch 10.
 
 Chapter 1 stages 1–4 mostly use individual still images (the Acid Ant has a walk sheet). Chapter 2 atlases contain different species per cell, not consecutive animation poses. Chapter 1 stage 5 and Chapter 3 already have four-frame walk clips. The previous enemy update additionally rotated and stretched all monsters during movement, including sheet-driven monsters. Freeze stopped AI velocity but did not pause sprite animation. Acid Ant and stage 5 action pose reset callbacks could survive pool reuse.
 
@@ -62,4 +64,8 @@ Five painted Ice sheets delivered in v6.55.15. Source/review: assets/incoming/ch
 
 ## Commit 6 delivery
 
-Ten generated 16-pose sheets delivered in v6.55.16: five Chapter 1 stage 5 identities and five Chapter 3 identities, including Stage 5 Elite. Source/review: assets/incoming/monster_batch6; runtime: assets/art/monster_batch6. Full checks/web build pass; phone visual/performance review pending. Remaining: commits 7A–10. Next: 7A C2-1 Fermented Canopy only; 7B C2-2 follows separately.
+Ten generated 16-pose sheets delivered in v6.55.16: five Chapter 1 stage 5 identities and five Chapter 3 identities, including Stage 5 Elite. Source/review: assets/incoming/monster_batch6; runtime: assets/art/monster_batch6. Full checks/web build pass; phone visual/performance review pending.
+
+## Commit 7A delivery
+
+Six generated 16-pose sheets delivered in v6.55.92. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s1_animations; runtime lossless alpha WebPs: assets/art/ch2_canopy. Whole-component extraction preserves leaves, limbs and staffs crossing nominal raw cell boundaries; one scale per species and fixed 236px baseline preserve proportions. Lantern source poses are reordered to separate idle/charge/release. Existing attack, cooldown, dash, freeze, collider and combat behavior is unchanged. Crown Sapling Elite (atlas cell 6) retains its original identity and moves to batch 10. Actual-method regressions cover all seven normal roles, partial-load fallback, authored actions/death, freeze/thaw and pool reuse. Mobile visual/FPS review remains pending. Remaining: 7B, 8, 9 and 10. Next: 7B C2-2 Mycelium Marsh, seven creatures including Sporeling.

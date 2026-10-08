@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.91';
+const GAME_VERSION = '6.55.92';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.92',date:'2026-10-08',title:'Living monsters: Fermented Canopy',items:['Six Canopy creatures now have painted movement, idle, attack, hurt and defeat poses','Vine Hunter dash preparation and Spore Lantern firing use authored animation clips','Original combat values, collision circles and Crown Sapling Elite art are preserved']},
   {v:'6.55.91',date:'2026-10-08',title:'P5: build drafts for every Story hero',items:['Yuzu, Cocoa, Taro and Sesame now receive the same chosen-path draft guarantees as Strawberry and Mint','Berry and heroes before choosing a path receive an eligible core attack choice','Emergency recovery preserves one build choice; exhausted or banished upgrades stay excluded','Existing powers, milestones, earned EXP, pickups and late-wave pacing remain']},
   {v:'6.55.90',date:'2026-10-08',title:'P4: build choices and late-wave pressure',items:['Story Strawberry and Mint drafts always offer an available upgrade for the chosen path','A shared attack option accompanies the path choice when space and eligible cards allow','Emergency healing keeps a slot without replacing the path choice','Stages 3–15 refill late objective waves faster while preserving crowd caps, earned EXP and rewards']},
   {v:'6.55.89',date:'2026-10-08',title:'P3: staged Story hunts',items:['Story Hunts alternate clearing foes and defeating a marked Elite','Each Hunt round shows its current step and kill progress','The opening fill mission ends with a marked Elite showdown','Progress survives upgrade pauses and missing-target recovery; rewards are paid once at the end']},
@@ -1843,6 +1844,12 @@ const ASSET_SHEETS = {
   e_banquet_eye:{ url:'assets/e_banquet_eye_sheet.png', frame:256, anim:{frames:4,rate:7,yoyo:true} },
   e_maw_truffle:{ url:'assets/e_maw_truffle_sheet.png', frame:256, anim:{frames:4,rate:8,yoyo:true} },
   e_royal_oven_sentinel:{ url:'assets/e_royal_oven_sentinel_sheet.png', frame:256, anim:{frames:4,rate:6,yoyo:true} },
+  c21_sprout_animated:{url:'assets/art/ch2_canopy/c21_sprout_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c21_vine_hunter_animated:{url:'assets/art/ch2_canopy/c21_vine_hunter_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
+  c21_spore_lantern_animated:{url:'assets/art/ch2_canopy/c21_spore_lantern_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
+  c21_fruit_pod_animated:{url:'assets/art/ch2_canopy/c21_fruit_pod_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},
+  c21_root_beetle_animated:{url:'assets/art/ch2_canopy/c21_root_beetle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c21_thorn_oracle_animated:{url:'assets/art/ch2_canopy/c21_thorn_oracle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
   ch2_enemy_atlas:{ url:'assets/ch2_enemy_atlas.png', frame:256 },
   ch2_mycelium_enemy_atlas:{ url:'assets/ch2_mycelium_enemy_atlas.png', frame:256 },
   ch2_prop_atlas:{ url:'assets/ch2_prop_atlas.png', frame:256 },
@@ -2078,7 +2085,7 @@ function registerRootKnightAnimations(scene){
 function isArtKey(k){ return ASSET_IMAGES[k]||ASSET_SHEETS[k]; }
 const STAGE_SHEETS=[
   ['boss1','e_ant_worker_animated','e_ant_scout_animated','e_ant_spitter_animated','e_ant_soldier_animated','e_ant_drone_animated','e_acid_animated'],['boss2','e_drain_slime_animated','e_drain_dasher_animated','e_drain_caster_animated','e_drain_bomber_animated','e_drain_tank_animated'],['boss3','e_fire_ember_animated','e_fire_chili_animated','e_fire_grinder_animated','e_fire_bomber_animated','e_fire_golem_animated'],['boss4','e_ice_wisp_animated','e_ice_shard_animated','e_ice_caster_animated','e_ice_bomber_animated','e_ice_guardian_animated'],['boss5_sovereign','boss5','mb5_banquet_executioner','e_void_crumb_animated','e_crown_ripper_animated','e_banquet_eye_animated','e_maw_truffle_animated','e_royal_oven_sentinel_animated'],
-  ['boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas'],
+  ['boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas','c21_sprout_animated','c21_vine_hunter_animated','c21_spore_lantern_animated','c21_fruit_pod_animated','c21_root_beetle_animated','c21_thorn_oracle_animated'],
   ['boss7_mycelium_behemoth','mb7_fungal_juggernaut','ch2_mycelium_enemy_atlas','ch2_prop_atlas'],
   ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas'],
   ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas'],
@@ -11287,12 +11294,16 @@ class Game extends Phaser.Scene {
     const base='c3_e_'+(type==='fast'||type==='dasher'?'fast':type==='shooter'?'shooter':type==='bomber'?'bomber':type==='tank'||type==='siege'?'tank':'basic');
     return this.textures.exists(base+'_animated')?base+'_animated':base;
   }
+  canopyArtKey(type){
+    const id=type==='fast'||type==='dasher'?'vine_hunter':type==='shooter'?'spore_lantern':type==='bomber'?'fruit_pod':type==='tank'?'root_beetle':type==='siege'?'thorn_oracle':'sprout';
+    const key='c21_'+id+'_animated';return this.textures.exists(key)?key:'ch2_enemy_atlas';
+  }
   antSpitWindup(e){
-    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated','e_banquet_eye_animated','c3_e_shooter_animated'].includes(e._enemyArtKey))return;
+    if(!['e_ant_spitter_animated','e_acid_animated','e_drain_caster_animated','e_fire_grinder_animated','e_ice_caster_animated','e_banquet_eye_animated','c3_e_shooter_animated','c21_spore_lantern_animated'].includes(e._enemyArtKey))return;
     if(e.shootCd>0&&e.shootCd<=0.18&&(!e._enemyAction||e._enemyAction.state!=='windup'))this.enemyAction(e,'windup',e.shootCd*1000);
   }
   warnAntBomber(e){
-    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated','e_maw_truffle_animated','c3_e_bomber_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
+    if(!e.bomber||!['e_ant_drone_animated','e_drain_bomber_animated','e_fire_bomber_animated','e_ice_bomber_animated','e_maw_truffle_animated','c3_e_bomber_animated','c21_fruit_pod_animated'].includes(e._enemyArtKey)||e._antBombWarn||e.hp<=0||e.hp/e.maxhp>0.35)return;
     e._antBombWarn=true;this.enemyAction(e,'windup',400);
   }
   stopEnemyPresentation(e){
@@ -11358,6 +11369,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===4)key=this.stage5ArtKey(type);
     const ch2Frame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5}[type]??0,mycoFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,sporeling:6}[type]??0,nectarFrame={basic:0,fast:1,dasher:1,shooter:2,bomber:3,tank:4,siege:5,grub:6}[type]??0,seasonFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0,rootFrame={basic:0,fast:1,dasher:2,shooter:3,bomber:4,tank:5,siege:6}[type]??0;let atlasFrame=0;
     if(this.stageIndex===5){key='ch2_enemy_atlas';atlasFrame=ch2Frame;}else if(this.stageIndex===6){key='ch2_mycelium_enemy_atlas';atlasFrame=mycoFrame;}else if(this.stageIndex===7){key='ch2_nectar_enemy_atlas';atlasFrame=nectarFrame;}else if(this.stageIndex===8){key='ch2_seasons_enemy_atlas';atlasFrame=seasonFrame;}else if(this.stageIndex===9){key='ch2_root_enemy_atlas';atlasFrame=rootFrame;}
+    if(this.stageIndex===5){key=this.canopyArtKey(type);if(key!=='ch2_enemy_atlas')atlasFrame=0;}
     if(!e) e=this.enemies.create(x,y,key,atlasFrame);
     else { e.setTexture(key,atlasFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool Full (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
