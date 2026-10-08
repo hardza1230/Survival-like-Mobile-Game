@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.87';
+const GAME_VERSION = '6.55.88';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.88',date:'2026-10-08',title:'P2: meaningful health and magnet pickups',items:['Story hearts heal 18% max HP with healing bonuses, stay on the ground at full HP, and have shared drop limits','Story magnets have one ground slot, cooldown and combat-earned bad-luck protection; empty magnets remain for later','No guaranteed post-miniboss Story magnet; magnets collect earned EXP only','Story on-kill recovery respects healing restrictions and shares a 3% max HP per second budget','Pickup limits reset per stage; P1 combat growth, Swarm and Hunt fixes remain']},
   {v:'6.55.87',date:'2026-10-08',title:'P1: earn growth through combat and objectives',items:['Every defeated story enemy grants EXP based on its real reward; harder foes and marked Hunt targets are worth more','Removed combat EXP cutoffs and automatic missing-EXP compensation: boss level now reflects what you defeated','Successful objectives grant fixed 20/30/40/50/60 EXP; failed objectives receive no completion EXP','Wave transitions collect only earned orbs, with no duplicate reward; replay checkpoints use fixed earned rewards','Finite objective quotas, timed Swarm, Hunt recovery and the linear Story level curve remain; health and magnet balance is P2']},
   {v:'6.55.86',date:'2026-10-08',title:'Hunt targets recover after upgrades and spawn pressure',items:['Hunt checks for its missing marked target every active frame instead of losing a one-shot retry during level-up','Ordinary reinforcements reserve one live slot for the next Hunt target, even after their quota runs out','Marked targets reset pooled flee/alpha state and spawn inside the arena','Target recovery preserves progress, quota and EXP; no duplicate target or delayed spawn across objectives']},
   {v:'6.55.85',date:'2026-10-08',title:'Restore Swarm pressure through the final seconds',items:['Timed Survive the Swarm replenishes until the countdown ends instead of exhausting a tiny total quota','Larger controlled live caps, faster small groups and capped surge pulses restore crowd pressure','Objective waves have larger finite reserves; miniboss and boss caps stay separate','The same 1020 base EXP budget and fast-clear compensation remain; extra Swarm kills cannot add unbounded EXP']},
@@ -3882,7 +3883,7 @@ function bazaarDaySeed(){ const d=new Date(); return d.getUTCFullYear()*10000+(d
 // R8: Unique — ของเปลี่ยน build (แลกข้อเสีย) · ดรอปเฉพาะบอสรัน Recipe ของธีมที่กำหนด · tier legend + unique:true (ไม่อยู่ใน pool สุ่มปกติ)
 const UNIQUE_GEAR={
   weapon:{ id:'uq_glass_pin', chapter:5, tier:'legend', unique:true, themes:[0,5,10], emoji:'🥖', name:'Glass Rolling Pin', cost:0, enh:true, desc:'UNIQUE · +80% damage · but -45% max HP', apply:(p,lv)=>{p.dmgMul+=(1.80+0.04*lv)-1;p._uqGlass=0.55;} },
-  ring:{ id:'uq_hunger_ring', chapter:5, tier:'legend', unique:true, themes:[1,6,11], emoji:'💍', name:'Ring of Endless Hunger', cost:0, enh:true, desc:'UNIQUE · heal 3 HP per kill · but no regeneration', apply:(p,lv)=>{p.lifesteal=(p.lifesteal||0)+3+lv*0.5;p._uqNoRegen=true;} },
+  ring:{ id:'uq_hunger_ring', chapter:5, tier:'legend', unique:true, themes:[1,6,11], emoji:'💍', name:'Ring of Endless Hunger', cost:0, enh:true, desc:'UNIQUE · heal 3 HP per kill · Story on-kill recovery cap 3% HP/s · no regeneration', apply:(p,lv)=>{p.lifesteal=(p.lifesteal||0)+3+lv*0.5;p._uqNoRegen=true;} },
   boots:{ id:'uq_rush_boots', chapter:5, tier:'legend', unique:true, themes:[2,7,12], emoji:'👟', name:'Sugar Rush Boots', cost:0, enh:true, desc:'UNIQUE · +30% move speed · +15% damage · but take 20% more damage', apply:(p,lv)=>{p.baseSpeed*=1.30;p.dmgMul+=(1.15+0.02*lv)-1;p.dmgTakenMul*=1.20;} },
   amulet:{ id:'uq_echo_locket', chapter:5, tier:'legend', unique:true, themes:[3,8,13], emoji:'📿', name:'Echo Locket', cost:0, enh:true, desc:'UNIQUE · critical hits explode for 45% damage nearby · +8% crit', apply:(p,lv)=>{p.critChance+=0.08;p._uqCritBurst=0.45+0.03*lv;} },
   armor:{ id:'uq_candy_shell', chapter:5, tier:'legend', unique:true, themes:[4,9,14], emoji:'🛡️', name:'Candy Shell Plate', cost:0, enh:true, desc:'UNIQUE · take 35% less damage · but deal 20% less damage', apply:(p,lv)=>{p.dmgTakenMul*=0.65-0.01*lv;p.dmgMul+=(0.80)-1;} },
@@ -8837,7 +8838,7 @@ class Game extends Phaser.Scene {
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
   startStage(i){
-    const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
+    const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
     this.bossUI.forEach(o=>o.setVisible(false));
@@ -12754,8 +12755,9 @@ class Game extends Phaser.Scene {
     else if(isElite && Math.random()<0.5) this.grantCurrencyReward(1,this.currencyTierFor(),null);
     // 🧪 มอนธรรมดามีโอกาสดรอป currency เป็นชิ้นในสนาม (เก็บ → สะสมในสรุปด่าน)
     else if(!big && Math.random()<0.028){ const ck=rollWeightedCurrency(this.currencyTierFor()); if(ck)this.spawnCurrencyDrop(e.x,e.y,ck); }
-    if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
-    if(this.player.lifeOnKill&&(!this._lifeOnKillCd||this._lifeOnKillCd<=0)){this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifeOnKill*(this.player.healEffect||1));this._lifeOnKillCd=0.45;}
+    if(this.usesStoryBudget?.())this.storyOnKillHealing();
+    else if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
+    if(!this.usesStoryBudget?.()&&this.player.lifeOnKill&&(!this._lifeOnKillCd||this._lifeOnKillCd<=0)){this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifeOnKill*(this.player.healEffect||1));this._lifeOnKillCd=0.45;}
     if(!big) Sfx.pop();
     // Bestiary: นับจำนวนที่ฆ่าตามชนิด
     const si=Math.min(STAGES.length-1,Math.max(0,this.stageIndex||0));   // v4.62: เดิม cap 5 → บอส/มินิ C2-2..C2-5 ถูกนับเป็นของ C2-1
@@ -12777,10 +12779,11 @@ class Game extends Phaser.Scene {
     this.chapter2DeathGhost(e);
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     { const wo=this.waveObjective; if(isBoss){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this.storyEnemyXp(e):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
-    if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
+    if(this.usesStoryBudget?.())this.storyFieldDrops(e);
+    else if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1)*(this.player.boxFindMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
-    if(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008)) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
+    if(!this.usesStoryBudget?.()&&(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008))) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
     if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
     if(this.stageIndex===6&&e.mycoRole==='drifter')this.spawnBossObject('acid',e.x,e.y,4.2);
     if(this.stageIndex===6&&e.mycoRole==='moldSac'){const sx=e.x,sy=e.y;for(let i=0;i<2;i++)this.time.delayedCall(80+i*90,()=>{if(!this._busy())return;const child=this.spawnEnemy('sporeling');if(child)child.setPosition(sx+Phaser.Math.Between(-34,34),sy+Phaser.Math.Between(-34,34));});}
@@ -12847,13 +12850,39 @@ class Game extends Phaser.Scene {
   collectOrb(player,o){ if(!o.active)return; const ox=o.x,oy=o.y,ov=o.value||1; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); if(o._storyBudget)o._storyBudget.paid+=ov;Sfx.xp(); this.jelly(0.9,-0.9);
     this.vfxCollectSparkle(ox,oy,this.orbStyle(ov).tint); this.gainXp(ov); this.fireRecipes('xp20'); }
   // ---- ไอเทมฟื้นฟู HP ----
-  dropHeal(x,y){ let h=this.heals.getFirstDead(false);
+  fieldDropState(){return this._fieldDrops||(this._fieldDrops={heartAt:-Infinity,magnetAt:-Infinity,hearts:0,magnets:0,magnetProgress:0});}
+  healingItemPower(){return Math.max(0,this.player.healEffect??1)*(this.recipeHas?.('noheal')?0:1)*this.pactHealMul();}
+  storyFieldDrops(e){
+    const d=this.fieldDropState();if(e.isBoss)return;
+    d.magnetProgress=Math.min(70,d.magnetProgress+(e.isMini?8:e.isElite?4:1));
+    if(e.isMini||(e.isElite&&Math.random()<.18))this.dropHeal(e.x,e.y,e.isMini?'mini':'elite');
+    // A post-mini magnet has no purpose because P1 already gathers earned orbs.
+    if(e.isMini||d.magnets>=3||this.vacs.countActive(true)>=1||(this.elapsed||0)-d.magnetAt<35||!(d.magnetProgress>=25||(e.isElite&&d.magnetProgress>=10)))return;
+    let count=0,xp=0;this.orbs.children.iterate(o=>{if(o?.active){count++;xp+=o.value||1;}});
+    if((count>=6||xp>=20)&&(d.magnetProgress>=25||(e.isElite&&d.magnetProgress>=10))&&(d.magnetProgress>=70||Math.random()<(e.isElite?0.15:0.02)))this.spawnVac(e.x,e.y);
+  }
+  storyOnKillHealing(){
+    const p=this.player,power=(this.recipeHas?.('noheal')?0:1)*this.pactHealMul();if(power<=0||p.hp>=p.maxhp)return;
+    let raw=p.lifesteal||0;if(p.lifeOnKill&&!(this._lifeOnKillCd>0)){raw+=p.lifeOnKill*(p.healEffect>0?p.healEffect:1);this._lifeOnKillCd=.45;}
+    if(raw<=0)return;const now=this.elapsed||0;
+    if(!this._storyKillHeal||now-this._storyKillHeal.at>=1)this._storyKillHeal={at:now,sum:0};
+    const w=this._storyKillHeal,amount=Math.max(0,Math.min(raw*power,p.maxhp*.03-w.sum,p.maxhp-p.hp));
+    p.hp+=amount;w.sum+=amount;
+  }
+  dropHeal(x,y,source='crate'){
+    const story=this.usesStoryBudget?.(),d=story?this.fieldDropState():null,now=this.elapsed||0;
+    if(story){if(this.healingItemPower()<=0||this.heals.countActive(true)>=2||d.hearts>=4||(source!=='mini'&&now-d.heartAt<25))return null;}
+    let h=this.heals.getFirstDead(false);
     if(!h) h=this.heals.create(x,y,'heal'); else { h.setActive(true).setVisible(true); h.body.enable=true; h.setPosition(x,y); }
-    if(!h)return;
+    if(!h)return null;
+    if(d){d.heartAt=now;d.hearts++;}
     h.body.setAllowGravity(false); this.camWorld(h); this.showPickupCue(h,0xff5f97,1.35); if(this.iso)h.setDepth(Math.max(80000,h.y));
-    this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectHeal(player,h){ if(!h.active)return; this.tweens.killTweensOf(h); this.hidePickupCue(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
-    const amt=this.recipeHas&&this.recipeHas('noheal')?0:Math.round((this.player.maxhp*0.18+6)*(this.player.healEffect||1)*this.pactHealMul()); this.player.hp=Math.min(this.player.maxhp,this.player.hp+amt);
+    this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'});return h; }
+  collectHeal(player,h){ if(!h.active)return;
+    const power=this.healingItemPower(),p=this.player;if(p.hp>=p.maxhp||power<=0)return;
+    const requested=Math.round((this.usesStoryBudget?.()?p.maxhp*.18:p.maxhp*.18+6)*power),amt=Math.max(0,Math.min(p.maxhp-p.hp,this.usesStoryBudget?.()?Math.min(requested,p.maxhp*.35):requested));if(amt<=0)return;
+    this.tweens.killTweensOf(h); this.hidePickupCue(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
+    this.player.hp+=amt;
     Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.fireRecipes('heal'); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5);
     if(this.textures.exists('fx_heal')&&this.anims.exists('fx_heal')) this.spawnFxAnim('fx_heal',this.player.x,this.player.y,{scale:150/ASSET_FX.fx_heal.fw,depth:8,anchor:'center'}); }
   popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+n+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
@@ -12881,7 +12910,7 @@ class Game extends Phaser.Scene {
     if(c._eventCache)this.onWaveEventCache(c);
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.screenShake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดWaitปออร์บ
-    if(Math.random()<0.28) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // โอกาสดWaitปฟื้นฟู (ลดจากครึ่งนึง ให้หัวใจหายากขึ้น)
+    if(Math.random()<(this.usesStoryBudget?.()?0.20:0.28)) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // โอกาสดWaitปฟื้นฟู (ลดจากครึ่งนึง ให้หัวใจหายากขึ้น)
     if(Math.random()<0.10) this.spawnLoot(x,y);   // โอกาสเล็ก ๆ ได้ของสวมใส่ (low tier)
     if(Math.random()<0.07) this.spawnVac(x,y);    // โอกาสเล็ก ๆ ได้Magnet
     if(Math.random()<0.25){ this.sugarStage+=3; this.sugarRun+=3; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); }
@@ -12905,13 +12934,17 @@ class Game extends Phaser.Scene {
   }
 
   // ---- ไอเทมMagnet (vacuum): เก็บแล้วดูดออร์บ EXP ทั้งจอเข้าตัวทันที ----
-  spawnVac(x,y){ let v=this.vacs.getFirstDead(false);
+  spawnVac(x,y){
+    const story=this.usesStoryBudget?.(),d=story?this.fieldDropState():null,now=this.elapsed||0;
+    if(story&&(this.vacs.countActive(true)>=1||d.magnets>=3||now-d.magnetAt<35))return null;
+    let v=this.vacs.getFirstDead(false);
     if(!v) v=this.vacs.create(x,y,'vac'); else { v.setActive(true).setVisible(true); v.body.enable=true; v.setPosition(x,y); }
-    if(!v)return;
+    if(!v)return null;
+    if(d){d.magnetAt=now;d.magnets++;d.magnetProgress=0;}
     v.body.setAllowGravity(false); this.camWorld(v); this.showPickupCue(v,0xff5a6e,1.40); if(this.iso)v.setDepth(Math.max(80000,v.y));
-    this.tweens.add({targets:v,y:y-10,duration:540,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectVac(player,v){ if(!v.active)return; Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
-    Sfx.heal(); this.burst(v.x,v.y,0xff5a6e); this.floatText(v.x,v.y-24,'Magnet!',0xff9dcc);
+    this.tweens.add({targets:v,y:y-10,duration:540,yoyo:true,repeat:-1,ease:'Sine.inOut'});return v; }
+  collectVac(player,v){ if(!v.active)return;let any=false;this.orbs.children.iterate(o=>{if(o?.active)any=true;});if(!any&&this.usesStoryBudget?.())return;Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
+    this.burst(v.x,v.y,0xff5a6e); this.floatText(v.x,v.y-24,'Magnet!',0xff9dcc);
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
