@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.56.4';
+const GAME_VERSION = '6.56.5';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.56.5',date:'2026-10-08',title:'Previous Equipment layout restored',items:['Equipment page returns to the layout from before v6.56.2','Smooth menu scrolling from v6.56.4 is kept']},
   {v:'6.56.4',date:'2026-10-08',title:'Menus feel more responsive',items:['Drag menus with momentum and a gentle stop','Buttons respond visually when touched','Dragging or stopping a moving list does not activate items']},
   {v:'6.56.3',date:'2026-10-08',title:'Equipment decisions made simpler',items:['Tap inventory items to open details with fixed Equip, Compare and Craft actions','Compare starts with complete stat changes and hides unchanged mods until expanded','Inventory has readable names, mod previews, filters, sorting and a mod picker']},
   {v:'6.56.2',date:'2026-10-08',title:'Equipment mods and clearer comparison',items:['Selected equipment shows its implicit, unique effect and all prefix/suffix mods again','A dedicated Compare view shows equipped and selected values with explicit changes','Equipment stats, crafting, enhancement and saved items remain unchanged']},
@@ -2199,7 +2200,7 @@ const MENU_GROUPS=[
   [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
   [/^dig$/,/assets\/art\/dig\//],
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
-  [/^(gear|gearDetail|gearCompare|gearFilter|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/)/],
+  [/^(gear|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/)/],
   [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents)\/)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
@@ -4399,11 +4400,6 @@ function gearCompareRows(equipped,selected){
   return GEAR_COMPARE_STATS.map(d=>d.range?Object.assign({},d,{from:[a.attackMin||0,a.attackMax||0],to:[b.attackMin||0,b.attackMax||0],delta:((b.attackMin||0)+(b.attackMax||0)-(a.attackMin||0)-(a.attackMax||0))/2}):Object.assign({},d,{from:a[d.key]||0,to:b[d.key]||0,delta:(b[d.key]||0)-(a[d.key]||0)}))
     .filter(r=>r.range?(r.from[1]>0||r.to[1]>0):(Math.abs(r.from)>0.001||Math.abs(r.to)>0.001)).sort((x,y)=>{const primary=k=>['attack','armor'].includes(k)?1:0;return primary(y.key)-primary(x.key)||Math.abs(y.delta)-Math.abs(x.delta);});
 }
-function gearBrowseItems(items,opts={}){
-  const rank={legend:4,epic:3,rare:2,common:1,start:0};return items.filter(it=>it&&it.grade!=='start'&&!String(it.baseId).includes('_none')&&(opts.filter!=='new'||it.isNew)&&(opts.filter!=='crafted'||it.craftedAt)&&(opts.filter!=='favorite'||it.favorite)&&(!opts.mod||(it.affixes||[]).some(a=>a.id===opts.mod))).slice().sort((a,b)=>{
-    const d=opts.sort==='level'?(b.itemLevel||1)-(a.itemLevel||1):opts.sort==='rarity'?(rank[b.grade]||0)-(rank[a.grade]||0):opts.sort==='enhance'?(b.enhanceLv||0)-(a.enhanceLv||0):(b.acquiredAt||0)-(a.acquiredAt||0);return d||String(a.uid).localeCompare(String(b.uid));
-  });
-}
 function gearStatText(row,value){if(row.range)return value.join('-');const n=Math.abs(value-Math.round(value))<0.05?Math.round(value):Math.round(value*10)/10;return (n>0?'+':'')+n+(row.pct?'%':'');}
 function gearSetCompareText(slot,selected){ if(!selected)return ''; const current=gearSetCounts(),next=Object.assign({},current),old=Save.equippedGearItem(slot),oldBase=old&&GEAR_ALL.find(g=>g.id===old.baseId),newBase=GEAR_ALL.find(g=>g.id===selected.baseId);
   if(oldBase&&oldBase.set)next[oldBase.set]=Math.max(0,(next[oldBase.set]||0)-1); if(newBase&&newBase.set)next[newBase.set]=(next[newBase.set]||0)+1;
@@ -6590,8 +6586,8 @@ class Game extends Phaser.Scene {
   // v6.55.45: หน้าเมนูที่ยาวเกินจอ ลากเลื่อนขึ้นลงได้ (แตะ = ปล่อยนิ้วโดยไม่ลาก)
   setupMenuScroll(s){ const m=this.menu; this._mScrollMax=0; if(!m||!m.list||s==='atlas'||s==='hub'){ if(m)m.y=0; this._mScroll=0; return; }
     if(this._mScrollFor!==s){ this._mScroll=0; this._mScrollFor=s; }
-    m.y=0;let bot=0; for(const o of m.list){ if(!o||!o.visible||o===this._mScrollFill||o===this._gearPinned)continue; try{ const b=o.getBounds(); if(b&&b.height<this.H*1.5&&b.bottom>bot)bot=b.bottom; }catch(e){} }
-    const max=Math.max(0,Math.ceil(bot-this.H+(this._gearPinned?90:24))); this._mScrollMax=max;
+    let bot=0; for(const o of m.list){ if(!o||!o.visible||o===this._mScrollFill)continue; try{ const b=o.getBounds(); if(b&&b.height<this.H*1.5&&b.bottom>bot)bot=b.bottom; }catch(e){} }
+    const max=Math.max(0,Math.ceil(bot-this.H+24)); this._mScrollMax=max;
     if(max>0){ const f=this.add.rectangle(0,this.H,this.W,max+40,0x1c1426,1).setOrigin(0,0); m.addAt(f,0); this._mScrollFill=f; }
     this.setMenuScroll(this._mScroll||0); }
   cancelMenuMotion(){ this._mVelocity=0;this._mDrag=null;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;} }
@@ -6679,7 +6675,7 @@ class Game extends Phaser.Scene {
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearDetail')this.buildGearDetail(); else if(s==='gearFilter')this.buildGearFilter(); else if(s==='gearCompare')this.buildGearCompare(); else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){const r=this._clampFonts(11);try{this.buildCraftBench();}finally{r();}} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){const r=this._clampFonts(11);try{this.buildCraftBench();}finally{r();}} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); } }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
@@ -6692,13 +6688,13 @@ class Game extends Phaser.Scene {
       d.gearTut=0; Save.addSugar(GACHA_LEVELS[0].cost); Save.addCurrency&&Save.addCurrency('transmute',3); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🍬'+GACHA_LEVELS[0].cost+' + 3 crafting orbs','#ffd166'); }
     const st=d.gearTut; if(st<0||st>4)return; if(st===4){const cp=Save.cp(d.character||'momo');if((cp.tp||0)<1&&!d._talTutGift){cp.tp=(cp.tp||0)+1;d._talTutGift=true;Save.save();}}
     const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'},{m:/cp\.tal\[n\.id\]=r\+1/,t:'Spend a Talent Point — talents are permanent!'}];
-    if(st===0&&this.menuScreen==='gear'&&!this._gearTools){this._gearTools=true;this.buildMenuScreen();return;}
     const cur=STEPS[st],src=z=>{try{return String(z.fn)}catch(e){return ''}};
     let z=this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
-    if(!z&&(st===1||st===2)&&this.menuScreen==='gear'){const target=st===1?(d.gearItems||[]).slice().reverse().find(it=>!Save.isGearEquipped(it.uid)):Save.gearItem(this.gearSelectedUid)||Save.equippedGearItem(this.gearSlot||'weapon');z=target&&this.tapZones.find(q=>q.gearItemUid===target.uid);if(z){adv=false;label='Open item details';}}
     if(!z&&st===4){ adv=false; z=this.tapZones.find(q=>q.tag==='tab_talents'); label='Open Talents'; if(!z){ z=this.tapZones.find(q=>/menuScreen='char'/.test(src(q))&&!/_heroesTab/.test(src(q))); label='Open Heroes'; } if(!z){ z=this.tapZones.find(q=>q.tag==='talents'||q.tag==='char'); label='Open Talents'; } if(!z){ z=this.tapZones.find(q=>q.back); label='Go back'; } }
     if(!z&&st<4){ adv=false; z=this.tapZones.find(q=>q.tag===(st===3?'craft':'gear'))||this.tapZones.find(q=>/menuScreen='gLoadout'/.test(src(q))); label=z&&z.tag?'Open '+(st===3?'Crafting':'Equipment'):'Open Gear & Power'; }
-    if(!z){if(st===1&&this.menuScreen==='gear'){const it=(d.gearItems||[]).slice().reverse().find(it=>!Save.isGearEquipped(it.uid));if(it){this.gearSlot=it.slot;this.gearSelectedUid=it.uid;this._gearFilter='all';this._gearModFilter=null;this._gearSort='newest';this.gearPageBySlot={};this.openGearDetail(it);return;}}return;}
+    if(!z){ if(st===1&&this.menuScreen==='gear'){ const items=d.gearItems||[],it=items[items.length-1],b=it&&GEAR_ALL.find(g=>g.id===it.baseId);
+        if(it&&b&&!Save.isGearEquipped(it.uid)&&this.gearSelectedUid!==it.uid){ this.gearSlot=b.slot; this.gearSelectedUid=it.uid; this.buildMenuScreen(); return; }
+        d.gearTut=2; Save.save(); this.buildMenuScreen(); } return; }
     const fn=z.fn; z.fn=()=>{ if(adv){ d.gearTut=st===4?-1:st+1; Save.save(); if(st===3)this.time.delayedCall(1800,()=>this.menuToast('🌟 Next: power up your hero with Talents','#ffd166')); if(st===4)this.time.delayedCall(800,()=>this.menuToast('✨ Tutorial done! Gear, crafting and talents make you stronger','#8dffb0')); } fn(); };
     const skip={x:this.W-96,y:this.H-40,w:86,h:30,fn:()=>{ d.gearTut=-1; Save.save(); this.buildMenuScreen(); }};
     this.tapZones=[z,skip]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label);
@@ -8240,70 +8236,138 @@ class Game extends Phaser.Scene {
     this._zone(w/2-rw/2,ry2,rw,34,()=>{ if(this._perkResetConfirm){if(Save.respecPerks())Sfx.clear();else this.menuToast('Need perks and 🧶'+Save.perkResetCost()+' Weave Thread','#ff9bb5');this._perkResetConfirm=false;}else{this._perkResetConfirm=true;Sfx.select();} this.buildRankPerks(); });
     this.menu.setVisible(true);
   }
-  gearUiText(x,y,text,size=13,color='#e8ddec',width=this.W-28,bold=false){
-    const t=this.add.text(x,y,String(text),{fontFamily:'sans-serif',fontStyle:bold?'bold':'normal',fontSize:size+'px',color,wordWrap:{width}}).setOrigin(0,0);this.menu.add(t);return t;
+  buildGearLandscape(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment','screen_equipment');
+    const w=this.W,h=this.H,id=this.character||Save.data.character||'momo',sel=this.gearSlot||'weapon';
+    const leftW=Math.min(345,w*0.45),panelX=12,panelY=56,panelW=leftW-20,panelH=h-70,pcx=panelX+panelW/2,pcy=panelY+panelH*0.40;
+    const pbg=this.add.graphics();pbg.fillStyle(0x241a33,0.72);pbg.fillRoundedRect(panelX,panelY,panelW,panelH,16);pbg.lineStyle(1.5,0x4a4059,0.8);pbg.strokeRoundedRect(panelX,panelY,panelW,panelH,16);this.menu.add(pbg);
+    if(!this._characterCardArt(id,pcx,pcy,panelW*0.60,panelH*0.72)){const em=this.add.text(pcx,pcy,CHARACTERS[id].emoji,{fontSize:'54px'}).setOrigin(0.5);this.menu.add(em);}
+    const ss=43,leftX=panelX+34,rightX=panelX+panelW-34,rowY=[panelY+42,panelY+104,panelY+166];
+    const layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
+    layout.forEach(([slot,sx,ri])=>{const y=rowY[ri],def=GEAR_SLOTS.find(g=>g.slot===slot),curId=Save.data.gear[slot],it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0],lv=Save.gearLv(it.id),on=!it.id.includes('_none'),isSel=slot===sel;
+      const g=this.add.graphics();g.fillStyle(isSel?0x3a3550:0x2c2338,1);g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,11);g.lineStyle(isSel?3:2,isSel?0xffd166:(on?0x8bd3a0:0x4a4059),1);g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,11);
+      const artKey=on?'gear_'+it.id:null,em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-1,artKey).setDisplaySize(ss*0.72,ss*0.72):this.add.text(sx,y-1,on?it.emoji:def.emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(on?1:0.45);this.menu.add([g,em]);
+      if(on&&lv>0){const bd=this.add.text(sx+ss/2-2,y-ss/2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(bd);}this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{this.gearSlot=slot;this.buildMenuScreen();});
+    });
+    // v4.32: gacha stepper (◄ ► เลือก base item level, กลาง=เปิด)
+    const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
+    const gbw=Math.min(230,panelW-32),gbh=34,gby=h-55,gx0=pcx-gbw/2,aw=30,afG=(Save.data.sugar||0)>=gCost;
+    const gbg=this.add.graphics();gbg.fillStyle(afG?0xffb020:0x3a3550,1);gbg.fillRoundedRect(gx0,gby,gbw,gbh,11);gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1);gbg.strokeRoundedRect(gx0,gby,gbw,gbh,11);
+    const gbt=this.add.text(pcx,gby+gbh/2,'🎁 Gacha · iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
+    const rArr=this.add.text(gx0+gbw-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
+    this.menu.add([gbg,gbt,lArr,rArr]);
+    this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
+    this._zone(gx0+gbw-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
+    this._zone(gx0+aw,gby,gbw-aw*2,gbh,()=>this.openGachaReveal());
+    const rx=leftW+8,rw=w-rx-14,selDef=GEAR_SLOTS.find(g=>g.slot===sel);
+    const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · equip / enhance',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
+    const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
+    items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhShardCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
+      if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Sfx.equipmentEnhance(Save.enhance(it.id));}else{Sfx.error();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}
+      else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{if(Save.equipGearBase(sel,it.id))Sfx.equipment('equip');this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
+      this._rowBtn(80+i*(rowH+rowGap),rowH,owned?it.emoji:'❔',nm,owned?it.desc:'Not discovered yet',label,color,fn,rx,rw);
+    });
+    this.menu.setVisible(true);
   }
-  gearUiButton(x,y,w,h,label,fn,color=0x34496b,target=this.menu){
-    const g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(x,y,w,h,10);const t=this.add.text(x+w/2,y+h/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:fn?'#eaf2ff':'#a397b4',align:'center',wordWrap:{width:w-12}}).setOrigin(.5);target.add([g,t]);if(fn)this._zone(x,y,w,h,fn);return [g,t];
-  }
-  gearBrowse(){return gearBrowseItems(Save.gearItemsForSlot(this.gearSlot||'weapon'),{filter:this._gearFilter||'all',sort:this._gearSort||'newest',mod:this._gearModFilter});}
-  openGearDetail(item){this.gearSelectedUid=item.uid;if(item.isNew)Save.markGearSeen(item.uid);this._gearShowSame=null;this._gearMore=null;this.menuScreen='gearDetail';this.buildMenuScreen();}
-  buildGearLandscape(){this.buildGear();}
   buildGear(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment','screen_equipment');if(Save.data.gearTut===0)this._gearTools=true;const w=this.W,slot=this.gearSlot||'weapon';let y=w>this.H?62:84;
-    const gap=6,sw=(w-28-gap*5)/6;
-    GEAR_SLOTS.forEach((d,i)=>{const x=14+i*(sw+gap),eq=Save.equippedGearItem(d.slot),base=eq&&GEAR_ALL.find(g=>g.id===eq.baseId),g=this.add.graphics();g.fillStyle(slot===d.slot?0x514065:0x282034,1);g.fillRoundedRect(x,y,sw,48,10);g.lineStyle(2,slot===d.slot?0xffd166:0x574563,1);g.strokeRoundedRect(x,y,sw,48,10);const key=base&&'gear_'+base.id,im=key&&this.textures.exists(key)?this.add.image(x+sw/2,y+24,key).setDisplaySize(Math.min(sw-8,38),38):this.add.text(x+sw/2,y+24,d.emoji,{fontSize:'22px'}).setOrigin(.5);this.menu.add([g,im]);this._zone(x,y,sw,48,()=>{this.gearSlot=d.slot;this.gearSelectedUid=null;this._gearModFilter=null;this.gearPageBySlot={};this.buildMenuScreen();});});y+=58;
-    const sd=GEAR_SLOTS.find(d=>d.slot===slot),title=this.gearUiText(14,y,sd.label+' · '+this.gearBrowse().length+' / '+Save.gearItemsForSlot(slot).filter(it=>it.grade!=='start').length+' items',14,'#ffe08a',w-28,true);y+=title.height+8;
-    const half=(w-34)/2,filters=['all','new','crafted','favorite'],labels={all:'All',new:'New',crafted:'Crafted',favorite:'Favorites'},sorts=['newest','level','rarity','enhance'],sl={newest:'Newest',level:'Item level',rarity:'Rarity',enhance:'Enhancement'};
-    const reset=()=>{this.gearPageBySlot={};this._mScroll=0;this.buildMenuScreen();};
-    this.gearUiButton(14,y,half,40,'Filter: '+labels[this._gearFilter||'all'],()=>{this._gearFilter=filters[(filters.indexOf(this._gearFilter||'all')+1)%filters.length];reset();});
-    this.gearUiButton(20+half,y,half,40,'Sort: '+sl[this._gearSort||'newest'],()=>{this._gearSort=sorts[(sorts.indexOf(this._gearSort||'newest')+1)%sorts.length];reset();});y+=46;
-    const md=this._gearModFilter&&affixDef(this._gearModFilter);this.gearUiButton(14,y,w-28,40,'Mod: '+(md?md.label:'Any')+'  ›',()=>{this._gearModPage=0;this.menuScreen='gearFilter';this.buildMenuScreen();});y+=48;
-    if(this._gearQuick){this.gearUiButton(14,y,w-28,44,(this._gearQuick==='sell'?'QUICK SELL':'QUICK DISMANTLE')+' ON · Tap here to turn off',()=>{this._gearQuick=null;this.buildMenuScreen();},0x754138);y+=52;}
-    const items=this.gearBrowse(),cols=w>600?4:2,pageSize=cols*3,pages=Math.max(1,Math.ceil(items.length/pageSize));this.gearPageBySlot=this.gearPageBySlot||{};const page=Math.max(0,Math.min(pages-1,this.gearPageBySlot[slot]||0));this.gearPageBySlot[slot]=page;
-    if(!items.length){const t=this.gearUiText(14,y,'No matching items. Clear filters to see the whole slot.',13,'#c1b1d0',w-28);y+=t.height+12;this.gearUiButton(14,y,w-28,40,'Clear filters',()=>{this._gearFilter='all';this._gearModFilter=null;reset();});y+=50;}
-    const cw=(w-28-gap*(cols-1))/cols,ch=150,visible=items.slice(page*pageSize,(page+1)*pageSize);
-    visible.forEach((it,i)=>{const base=GEAR_ALL.find(b=>b.id===it.baseId);if(!base)return;const x=14+(i%cols)*(cw+gap),cy=y+Math.floor(i/cols)*(ch+gap),tl=TIER_LABEL[it.grade]||TIER_LABEL.common,g=this.add.graphics();g.fillStyle(Save.isGearEquipped(it.uid)?0x2b3b31:0x241b30,1);g.fillRoundedRect(x,cy,cw,ch,12);g.lineStyle(1.5,Phaser.Display.Color.HexStringToColor(tl.color).color,1);g.strokeRoundedRect(x,cy,cw,ch,12);this.menu.add(g);
-      const key='gear_'+base.id,im=this.textures.exists(key)?this.add.image(x+25,cy+25,key).setDisplaySize(36,36):this.add.text(x+25,cy+25,base.emoji,{fontSize:'24px'}).setOrigin(.5);this.menu.add(im);if(it.favorite||it.locked){const badge=this.add.text(x+5,cy+3,(it.favorite?'★':'')+(it.locked?'🔒':''),{fontSize:'11px',color:'#ffe08a'});this.menu.add(badge);}this.gearUiText(x+48,cy+10,'iLv '+(it.itemLevel||1)+(it.enhanceLv?' · +'+it.enhanceLv:''),11,'#d6c8e0',cw-56,true);
-      this.gearUiText(x+48,cy+26,Save.isGearEquipped(it.uid)?'Equipped':it.isNew?'New':it.craftedAt?'Crafted':it.favorite?'Favorite':tl.name,10,Save.isGearEquipped(it.uid)?'#9ee1b1':tl.color,cw-56);
-      const name=this.gearUiText(x+10,cy+49,base.name.length>32?base.name.slice(0,31)+'…':base.name,12,tl.color,cw-20,true);if(name.height>32)name.setFontSize(10);
-      this.gearUiText(x+10,cy+85,gearBaseStatText(it),12,'#fff4df',cw-20,true);
-      const af=(it.affixes||[]).map(a=>({a,d:affixDef(a.id)})).find(x=>x.d),preview=af?af.d.label+' '+af.d.fmt(af.a.v):base.unique?'Unique effect':implicitText(it)||'No mods';const txt=this.gearUiText(x+10,cy+106,preview.length>30?preview.slice(0,29)+'…':preview,11,'#c0aed0',cw-20);if(txt.height>32)txt.setFontSize(9);
-      this._zone(x,cy,cw,ch,()=>{if(this._gearQuick&&!Save.isGearEquipped(it.uid)){if(it.locked||it.favorite){this.menuToast('Locked / favorite items are protected');return;}const n=this._gearQuick==='sell'?Save.sellGearInstance(it.uid):Save.dismantleGearInstance(it.uid);if(n){Sfx.equipment(this._gearQuick==='sell'?'sell':'dismantle');this.menuToast(this._gearQuick==='sell'?'Sold +🍬'+n:'Scrapped +🔩'+n);}this.buildMenuScreen();return;}this.openGearDetail(it);});this.tapZones[this.tapZones.length-1].gearItemUid=it.uid;
-    });y+=Math.ceil(visible.length/cols)*(ch+gap);
-    if(pages>1){this.gearUiButton(14,y,half,40,'‹ '+(page+1)+' / '+pages,page>0?()=>{this.gearPageBySlot[slot]=page-1;this._mScroll=0;this.buildMenuScreen();}:null);this.gearUiButton(20+half,y,half,40,'Next ›',page<pages-1?()=>{this.gearPageBySlot[slot]=page+1;this._mScroll=0;this.buildMenuScreen();}:null);y+=48;}
-    const equipped=Save.equippedGearItem(slot);if(equipped){this.gearUiButton(14,y,w-28,40,'Inspect equipped '+sd.label,()=>this.openGearDetail(equipped),0x355c43);this.tapZones[this.tapZones.length-1].gearItemUid=equipped.uid;y+=48;}
-    this.gearUiButton(14,y,w-28,40,this._gearTools?'Hide equipment tools':'More equipment tools  ›',()=>{this._gearTools=!this._gearTools;if(!this._gearTools)this._gearQuick=null;this.buildMenuScreen();},0x30253e);y+=48;
-    if(this._gearTools){for(const [lb,scr] of [['Gear Inbox ('+Save.gearInboxCount()+')','gearInbox'],['Clean up','gearClean'],['Equipment sets','skills']]){this.gearUiButton(14,y,w-28,40,lb,()=>{if(scr==='skills')this._skillArchiveTab='sets';this.menuScreen=scr;this.buildMenuScreen();});y+=46;}
-      for(const [mode,label] of [['sell','Quick sell'],['dis','Quick dismantle']]){this.gearUiButton(14,y,w-28,40,(this._gearQuick===mode?'ON · ':'')+label,()=>{this._gearQuick=this._gearQuick===mode?null:mode;this.buildMenuScreen();},0x604136);y+=46;}
-      const gi=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),lv=GACHA_LEVELS[gi];this.gearUiButton(14,y,44,44,'‹',gi>0?()=>{this._gachaLevel=gi-1;this.buildMenuScreen();}:null);this.gearUiButton(64,y,w-128,44,'Gacha iLv '+lv.lo+'–'+lv.hi+' · '+lv.cost+' Sugar',()=>this.openGachaReveal(),0x8b642b);this.gearUiButton(w-58,y,44,44,'›',gi<gachaMaxBand()?()=>{this._gachaLevel=gi+1;this.buildMenuScreen();}:null);}
-    this.menu.setVisible(true);
-  }
-  buildGearFilter(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Filter by Mod','screen_equipment','gear');const w=this.W,slot=this.gearSlot||'weapon',items=Save.gearItemsForSlot(slot),ids=[...new Set(items.flatMap(it=>(it.affixes||[]).map(a=>a.id)))].filter(id=>affixDef(id)).sort((a,b)=>affixDef(a).label.localeCompare(affixDef(b).label));let y=w>this.H?62:84;
-    const choose=id=>{this._gearModFilter=id;this.gearPageBySlot={};this.menuScreen='gear';this.buildMenuScreen();};this.gearUiButton(14,y,w-28,44,'Any mod',()=>choose(null));y+=52;
-    const size=8,pages=Math.max(1,Math.ceil(ids.length/size)),page=Math.max(0,Math.min(pages-1,this._gearModPage||0));
-    for(const id of ids.slice(page*size,(page+1)*size)){const d=affixDef(id),n=items.filter(it=>(it.affixes||[]).some(a=>a.id===id)).length;this.gearUiButton(14,y,w-28,48,(this._gearModFilter===id?'✓ ':'')+d.label+' · '+n+(n===1?' item':' items'),()=>choose(id));y+=54;}
-    if(!ids.length){const t=this.gearUiText(14,y,'No explicit mods in this slot yet.',13,'#b6a5c8',w-28);y+=t.height+12;}
-    if(pages>1){const half=(w-34)/2;this.gearUiButton(14,y,half,40,'‹ '+(page+1)+' / '+pages,page>0?()=>{this._gearModPage=page-1;this._mScroll=0;this.buildMenuScreen();}:null);this.gearUiButton(20+half,y,half,40,'Next ›',page<pages-1?()=>{this._gearModPage=page+1;this._mScroll=0;this.buildMenuScreen();}:null);}
-    this.menu.setVisible(true);
-  }
-  buildGearDetail(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Item Details','screen_equipment','gear');const w=this.W,selected=Save.gearItem(this.gearSelectedUid),base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId);
-    if(!selected||!base){this.gearUiText(14,w>this.H?62:84,'This item is no longer in your inventory.',14,'#d7bedc',w-28);this.menu.setVisible(true);return;}
-    const sel=selected.slot,eq=Save.isGearEquipped(selected.uid),equipped=Save.equippedGearItem(sel);this.gearSlot=sel;let y=w>this.H?62:84;
-    const name=this.gearUiText(14,y,base.name,20,(TIER_LABEL[selected.grade]||TIER_LABEL.common).color,w-28,true);y+=name.height+8;
-    const info=this.gearUiText(14,y,(eq?'Equipped · ':'')+'iLv '+(selected.itemLevel||1)+' · Enhancement +'+(selected.enhanceLv||0),12,'#cdbbd7',w-28);y+=info.height+12;
-    if(eq&&base.enh){const lv=selected.enhanceLv||0,od=enhanceOdds(lv),risk=od.destroy>0?' · Can destroy item':od.brk>0?' · Can lose enhancement':'';const t=this.gearUiText(14,y,lv>=GEAR_ENH_MAX?'Maximum enhancement':'Enhance cost: '+gearEnhShardCost(lv)+' shards'+risk,12,'#ffd5a3',w-28);y+=t.height+12;}
-    if(!eq)y=this.drawGearChanges(equipped,selected,y,w);
-    y=this.drawGearMods(selected,y,w);const set=gearSetCompareText(sel,selected);if(set){const t=this.gearUiText(14,y,set,12,'#b9dfff',w-28);y+=t.height+10;}
-    this.drawGearActions(selected,base,sel,y,w);this.menu.setVisible(true);
-  }
-  drawGearActions(selected,base,sel,y,w){
-    const eq=Save.isGearEquipped(selected.uid),bgap=6,full=w-28,bh=44,bh2=40,y1=this.H-56,y2=y,y3=y2+bh2+bgap,cw2=(full-12)/3,sw=(full-12)/3,hw=(full-bgap)/2,moreOpen=this._gearMore===selected.uid;
-    const SL={2:[14,y1,cw2,bh],cmp:[20+cw2,y1,cw2,bh],c:[26+cw2*2,y1,cw2,bh],0:[14,y2,sw,bh2],1:[20+sw,y2,sw,bh2],m:[26+sw*2,y2,sw,bh2],3:[14,y3,hw,bh2],s:[20+hw,y3,hw,bh2]};
-    const bar=this.add.container(0,0),bg=this.add.rectangle(0,this.H-66,w,66,0x191020,1).setOrigin(0,0);bar.add(bg);
-    const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i],fixed=i===2||i==='c'||i==='cmp',target=fixed?bar:this.menu,g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,by,bw,bhh,10);const text=i===2?(eq?(base.enh&&(selected.enhanceLv||0)<GEAR_ENH_MAX?'Enhance +'+((selected.enhanceLv||0)+1):'Max enhanced'):'Equip'):i==='c'?'Craft':label,t=this.add.text(bx+bw/2,by+bhh/2,text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:tc||'#ffffff',align:'center',wordWrap:{width:bw-8}}).setOrigin(.5);target.add([g,t]);if(fn){this._zone(bx,by,bw,bhh,fn);if(fixed)this.tapZones[this.tapZones.length-1].fixedY=by;}};
+    if(this.W>this.H){this.buildGearLandscape();return;}
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment','screen_equipment');
+    const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
+    const sel=this.gearSlot||'weapon';
+    // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
+    // v6.55.51: ตัวละครเป็นอวาตาร์เล็กซ้ายสุด + ช่องสวมใส่ 6 ช่องแถวเดียว
+    // v6.55.55: อวาตาร์สูงเท่า 2 แถวช่องสวมใส่ · ช่องชิดกัน · gacha กว้างเท่ากริด · กล่องเซ็ทบอกชิ้นที่ขาด
+    const folded=true, cy0=78, sgap=8, ss=Math.min(70,Math.floor((w-28-10-sgap*2)/3.95)), avH=ss*2+sgap;
+    const gridW=ss*3+sgap*2, x0=w-12-gridW, ax=12, ay=cy0+4, key='card_'+id, avW=x0-10-ax;
+    { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,avW,avH,12); this.menu.add(fg);
+      if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=Math.min(TH*0.95,cw*avH/avW),cx0=TW*0.19,cy1=TH*0.03;
+        im.setCrop(cx0,cy1,cw,ch).setOrigin((cx0+cw/2)/TW,(cy1+ch/2)/TH).setScale(Math.min((avW-6)/cw,(avH-6)/ch)).setPosition(ax+avW/2,ay+avH/2); this.menu.add(im); }
+      else { const em=this.add.text(ax+avW/2,ay+avH/2,CHARACTERS[id].emoji,{fontSize:'30px'}).setOrigin(0.5); this.menu.add(em); }
+      const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,avW-2,avH-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,avW,avH,12); this.menu.add(fr);
+      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+avW/2,ay+avH-3,'Lv'+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:4,y:1}}).setOrigin(0.5,1);this.menu.add(lv);} }
+    const rowY=[ay+ss/2, ay+ss*1.5+sgap];
+    const layout=['weapon','armor','gloves','amulet','ring','boots'].map((sl,i)=>[sl,x0+ss/2+(ss+sgap)*(i%3),Math.floor(i/3)]);
+    layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];
+      const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
+      const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
+      const g=this.add.graphics(); g.fillStyle(isSel?0x3a3550:0x2c2338,1); g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
+      g.lineStyle(isSel?3:2, isSel?0xffd166:(on?0x8bd3a0:0x4a4059), 1); g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
+      const artKey=on?'gear_'+it.id:null;
+      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-2,artKey).setDisplaySize(ss*0.86,ss*0.86):this.add.text(sx,y-2,on?it.emoji:def.emoji,{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
+      this.menu.add([g,em]);
+      const newN=Save.gearItemsForSlot(slot).filter(x=>x.isNew).length;
+      if(newN){ const nd=this.add.circle(sx+ss/2-2,y-ss/2+2,7,0xff5689,1); const nn=this.add.text(nd.x,nd.y,String(Math.min(9,newN)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff'}).setOrigin(0.5); this.menu.add([nd,nn]); }
+      if(!folded&&topH>=170){ const lb=this.add.text(sx,y+ss/2+7,def.label,{fontFamily:'sans-serif',fontSize:'11px',color:isSel?'#ffd166':'#9a90ab'}).setOrigin(0.5); this.menu.add(lb); }   // ป้ายใต้ช่อง (ไม่ทับปุ่มด้านล่าง)
+      if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
+      this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
+    });
+    // ---- ปุ่มกล่องสุ่ม (gacha) — กว้างเท่ากริดช่องสวมใส่ ----
+    const gby=ay+avH+8, gbh=36, half=gridW;   // v6.55.73: กาชาอยู่ใต้กริด · แถบ Power อยู่ใต้ตัวละคร
+    const gcx=x0+half/2; this._pwBox=[ax,gby,avW,gbh];
+    const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
+    const afG=(Save.data.sugar||0)>=gCost, gx0=x0, aw=28;
+    const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gx0,gby,half,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
+    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
+    const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
+    if(gbt.width>half-aw*2-4)gbt.setScale((half-aw*2-4)/gbt.width);this.menu.add([gbg,gbt,lArr,rArr]);
+    { const [px,py,pw,ph]=this._pwBox,bp=heroPower(Save.data.character||'momo',null),pg=this.add.graphics();pg.fillStyle(0x3a3550,1);pg.fillRoundedRect(px,py,pw,ph,10);this._pwG=pg;this._pwT=this.add.text(px+pw/2,py+ph/2,'⚡ '+bp,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(.5);this.menu.add([pg,this._pwT]); }
+    this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
+    this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
+    this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
+    const setBot=gby+gbh;
+    // ---- Item-instance inventory: new first, 8 per page (portrait-first) ----
+    const selDef=GEAR_SLOTS.find(g=>g.slot===sel),items=Save.gearItemsForSlot(sel).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0);   // v6.55.48: ไม่โชว์ Starter/ช่องว่างในกริด
+    let selected=Save.gearItem(this.gearSelectedUid);
+    if(!selected||selected.slot!==sel){ selected=items.find(x=>x.isNew)||Save.equippedGearItem(sel)||items[0]||null; this.gearSelectedUid=selected?selected.uid:null; }
+    if(!this.gearPageBySlot)this.gearPageBySlot={}; const pageSize=8,pages=Math.max(1,Math.ceil(items.length/pageSize));
+    let page=Math.max(0,Math.min(pages-1,this.gearPageBySlot[sel]||0)); this.gearPageBySlot[sel]=page;
+    let y=setBot+12;
+    const newCount=items.filter(x=>x.isNew).length,cap=Save.data.gearInventoryCap||100;
+    const hdr=this.add.text(14,y,selDef.emoji+' '+selDef.label+(newCount?' · '+newCount+' NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0,0);
+    const count=this.add.text(w-66,y,Save.gearInventoryCount()+' / '+cap,{fontFamily:'sans-serif',fontSize:'9px',color:Save.gearInventoryFull()?'#ff8da2':'#a99fbb'}).setOrigin(1,0);
+    const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y,'📦 '+inboxN,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:inboxN?'#ffd166':'#7a7088'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-60,y-5,48,22,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});
+    {let bx=hdr.x+hdr.width+8;const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?GEAR_SETS[k].emoji+' Set '+sc[k]+'/'+gearSetPieces(k).length:'🧩 Sets';const sb=this.add.text(bx,y,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:k&&sc[k]>=2?'#8ff0b0':'#cfe0ff',backgroundColor:'#26344a',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(sb);this._zone(bx-2,y-5,sb.width+4,22,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();});bx+=sb.width+6;const cb=this.add.text(bx,y,'🧹 Clean',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe08a',backgroundColor:'#3a2d48',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(cb);this._zone(bx-2,y-5,cb.width+4,22,()=>{this.menuScreen='gearClean';this.buildMenuScreen();});bx+=cb.width+6;for(const [md,lb,on] of [['sell','💰 Sell','#3f7a4c'],['dis','🔩 Scrap','#7a5a2c']]){const act=this._gearQuick===md,qb=this.add.text(bx,y,lb,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:act?'#ffffff':'#bdb3c9',backgroundColor:act?on:'#2c2338',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(qb);this._zone(bx-2,y-5,qb.width+4,22,()=>{this._gearQuick=act?null:md;Sfx.select();this.buildMenuScreen();});bx+=qb.width+6;}if(bx>count.x-count.width-2)count.setVisible(false);}   // v6.55.74: โหมดขาย/ย่อยด่วน (toggle)
+    y+=20;
+    if(!items.length){ const empty=this.add.text(w/2,y+30,'No items in this slot',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
+    const gap=6,cols=4,cw=(w-28-gap*(cols-1))/cols,ch=66,visible=items.slice(page*pageSize,page*pageSize+pageSize),basePow=heroPower(Save.data.character||'momo',null);
+    visible.forEach((item,i)=>{ const base=GEAR_ALL.find(g=>g.id===item.baseId); if(!base)return; const col=i%cols,row=Math.floor(i/cols),x=14+col*(cw+gap),iy=y+row*(ch+gap),on=selected&&selected.uid===item.uid,eq=Save.isGearEquipped(item.uid),tl=TIER_LABEL[item.grade]||TIER_LABEL.common;
+      const color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,iy,cw,ch,10);g.lineStyle(on?3:1.5,on?0xffd166:color,1);g.strokeRoundedRect(x,iy,cw,ch,10);
+      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+23,artKey).setDisplaySize(42,42):this.add.text(x+cw/2,iy+23,base.emoji,{fontSize:'26px'}).setOrigin(0.5),nm=this.add.text(x+cw/2,iy+47,gearBaseStatText(item)+' · Lv'+(item.itemLevel||1),{fontFamily:'sans-serif',fontSize:'7px',color:'#e8dce9'}).setOrigin(0.5);
+      this.menu.add([g,em,nm]);
+      if(!eq&&item.grade!=='start'){const dp=gearPowerDelta(item,basePow);if(dp){const pt=this.add.text(x+cw/2,iy+58,(dp>0?'▲+':'▼')+dp,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:dp>0?'#7de0a1':'#ff8da2'}).setOrigin(0.5);this.menu.add(pt);}}
+      if(item.isNew){const nb=this.add.text(x+4,iy+3,'NEW',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ff8fb0'}).setOrigin(0,0);this.menu.add(nb);}
+      if(item.favorite){const fav=this.add.text(x+cw-4,iy+3,'★',{fontSize:'10px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(fav);}
+      if(item.craftedAt&&!item.isNew){const cb=this.add.text(x+4,iy+3,'⚒',{fontSize:'9px',color:'#c9a3ff'}).setOrigin(0,0);this.menu.add(cb);}
+      if(item.locked){const lk=this.add.text(x+4,iy+ch-4,'🔒',{fontSize:'9px'}).setOrigin(0,1);this.menu.add(lk);}
+      if(eq){const ck=this.add.text(x+cw-3,iy+3,'EQUIPPED',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#12301f',backgroundColor:'#8bd3a0',padding:{x:3,y:1}}).setOrigin(1,0);this.menu.add(ck);}   // v6.55.72: ป้ายใส่อยู่ในช่องไอเทม
+      if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4,iy+20,'+'+item.enhanceLv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(lv);}
+      if(this._gearQuick&&!eq&&!item.locked&&!item.favorite){const qq=this.add.graphics();qq.lineStyle(2,this._gearQuick==='sell'?0x7de0a1:0xffb27a,0.9);qq.strokeRoundedRect(x+2,iy+2,cw-4,ch-4,9);this.menu.add(qq);}
+      this._zone(x,iy,cw,ch,()=>{ if(this._gearQuick&&!eq){ if(item.locked||item.favorite){this.menuToast('Locked / favorite items are protected');return;} const n=this._gearQuick==='sell'?Save.sellGearInstance(item.uid):Save.dismantleGearInstance(item.uid); if(n){Sfx.equipment(this._gearQuick==='sell'?'sell':'dismantle');this.menuToast(this._gearQuick==='sell'?'Sold +🍬'+n:'Scrapped +🔩'+n);if(this.gearSelectedUid===item.uid)this.gearSelectedUid=null;} this.buildMenuScreen(); return; }
+        this.gearSelectedUid=item.uid;if(item.isNew)Save.markGearSeen(item.uid);this.buildMenuScreen();});
+    });
+    y+=Math.ceil(visible.length/cols)*(ch+gap);
+    if(pages>1){ const py=y-1,pw=68,ph=24;
+      const pt=this.add.text(w/2,py+ph/2,(page+1)+' / '+pages,{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(pt);
+      for(const [dir,label,px] of [[-1,'‹',w/2-76],[1,'›',w/2+76]]){const enabled=(dir<0?page>0:page<pages-1),pg=this.add.graphics();pg.fillStyle(enabled?0x3a3550:0x241a2e,1);pg.fillRoundedRect(px-pw/2,py,pw,ph,8);const tx=this.add.text(px,py+ph/2,label,{fontSize:'18px',color:enabled?'#ffffff':'#5e5062'}).setOrigin(0.5);this.menu.add([pg,tx]);if(enabled)this._zone(px-pw/2,py,pw,ph,()=>{this.gearPageBySlot[sel]=page+dir;this.buildMenuScreen();});} y+=ph+5; }
+    selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
+    if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
+      const rows=gearCompareRows(equipped,selected).filter(r=>r.key==='attack'||r.key==='armor'),affLines=it=>{if(!it)return[];const ib=GEAR_ALL.find(g=>g.id===it.baseId),im=ensureImplicit(it),idf=im&&implicitDef(im.id),out=[];if(idf)out.push({t:'◇ '+implicitText(it)+' · '+IMPLICIT_TIER[idf.rank],c:IMPLICIT_COLOR[idf.rank]});else if(ib&&ib.unique)out.push({t:'★ '+ib.desc,c:'#ff8f3a'});const af=(it.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);for(const kind of ['prefix','suffix'])af.filter(x=>(x.d.kind||'suffix')===kind).slice(0,3).forEach(x=>out.push({t:(kind==='prefix'?'P ':'S ')+x.d.emoji+x.d.label+' '+x.d.fmt(x.a.v)+' T'+(x.a.t||3),c:kind==='prefix'?'#ffb27a':'#8be0c8'}));return out;},eqAff=affLines(equipped),selAff=affLines(selected),affN=0,AH=Math.min(58,Math.round(w*0.15)),affTop=26+AH+Math.max(1,rows.length)*14+6,panelH=affTop+2,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
+      {const bp=heroPower(Save.data.character||'momo',null),dp=eq?0:gearPowerDelta(selected,bp),[px,py,pw,ph]=this._pwBox;if(dp){this._pwG.clear();this._pwG.fillStyle(dp>0?0x2f6b47:0x7a3442,1);this._pwG.fillRoundedRect(px,py,pw,ph,10);}
+        this._pwT.setText(eq||!dp?'⚡ '+bp:'⚡'+bp+'→'+(bp+dp)+'\n'+(dp>0?'▲ +'+dp:'▼ '+dp)).setFontSize(eq||!dp?14:11).setAlign('center');if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
+      { const sh=30,g=this.add.graphics(),tc=Phaser.Display.Color.HexStringToColor(tl.color).color;g.fillStyle(0x241a33,0.97);g.fillRoundedRect(14,y,w-28,sh,10);g.lineStyle(1.5,tc,1);g.strokeRoundedRect(14,y,w-28,sh,10);this.menu.add(g);   // v6.55.72: แถบชื่อชิ้นที่เลือกแทนการ์ดใหญ่ 2 ใบ
+        const ak='gear_'+base.id,ic=this.textures.exists(ak)?this.add.image(32,y+sh/2,ak).setDisplaySize(24,24):this.add.text(32,y+sh/2,base.emoji,{fontSize:'16px'}).setOrigin(0.5);
+        const st=this.add.text(w-22,y+sh/2,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'10px',color:rl.color}).setOrigin(1,0.5);
+        const nm=this.add.text(48,y+sh/2,gearAffixName(base.name,selected.affixes||[])+(eq?'  (equipped)':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:tl.color}).setOrigin(0,0.5);
+        const mx=w-22-st.width-10-48;if(nm.width>mx)nm.setScale(Math.max(0.7,mx/nm.width));this.menu.add([ic,st,nm]);y+=sh+6;}
+      this._cmpBase=eq?[]:rows;
+      y=this.drawModCompare(equipped,selected,eq,y,w);
+      const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
+      // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
+      const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.44),sw=(full-cw2-bgap*3)/3,hw=(full-bgap)/2,moreOpen=this._gearMore===selected.uid;
+      const SL={2:[14,y1,full,bh],c:[14,y2,cw2,bh2],0:[14+cw2+bgap,y2,sw,bh2],1:[14+cw2+bgap*2+sw,y2,sw,bh2],m:[14+cw2+bgap*3+sw*2,y2,sw,bh2],3:[14,y3,hw,bh2],s:[14+hw+bgap,y3,hw,bh2]};
+      const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i],g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,by,bw,bhh,10);if(i===2){g.fillStyle(0xffffff,0.12);g.fillRoundedRect(bx+3,by+3,bw-6,bhh/2-3,8);}const t=this.add.text(bx+bw/2,by+bhh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:i===2?'14px':'12px',color:tc||'#ffffff',align:'center'}).setOrigin(0.5);if(t.width>bw-8)t.setScale((bw-8)/t.width);this.menu.add([g,t]);if(fn)this._zone(bx,by,bw,bhh,fn);};
       drawAction(0,selected.favorite?'★':'☆',selected.favorite?0xb88925:0x3a3550,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
       drawAction(1,selected.locked?'🔒':'🔓',selected.locked?0x85506f:0x3a3550,()=>{if(Save.gearItem(selected.uid)){const locked=Save.toggleGearLock(selected.uid);Sfx.equipment(locked?'lock':'unlock');}this.buildMenuScreen();});
       if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
@@ -8319,17 +8383,9 @@ class Game extends Phaser.Scene {
       { const canCraft=selected.grade!=='start'&&!selected.locked; drawAction('c','🧪 Craft',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
       const canSell=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',sv=gearSellSugar(selected);
       if(moreOpen)drawAction('s',canSell?('💰 Sell 🍬+'+sv):'Protected',canSell?0x6e5634:0x3a3550,canSell?()=>{const ck='sell:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Sell again to confirm',1400);return;}this._gearConfirm=null;const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('sell');this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}}:null,canSell?'#ffe6b0':'#8d8195');
-
-    drawAction('cmp','Compare',0x34496b,()=>{this._gearShowSame=null;this.menuScreen='gearCompare';this.buildMenuScreen();});
-    const pinned=this.tapZones.filter(z=>z.fixedY!=null);this.tapZones=this.tapZones.filter(z=>z.fixedY==null);this._zone(0,this.H-66,w,66,()=>{},'none');this.tapZones[this.tapZones.length-1].fixedY=this.H-66;this.tapZones.push(...pinned);this.menu.add(bar);this._gearPinned=bar;
-  }
-  drawGearChanges(equipped,selected,y,w){
-    const rows=gearCompareRows(equipped,selected).filter(r=>Math.abs(r.delta)>.001),top=y,g=this.add.graphics();this.menu.add(g);let cy=y+12;
-    const title=this.gearUiText(26,cy,'IF EQUIPPED · STAT CHANGES',13,'#ffe08a',w-52,true);cy+=title.height+10;
-    if(!rows.length){const t=this.gearUiText(26,cy,'No numerical stat changes. Check special effects below.',12,'#c7b9d4',w-52);cy+=t.height+10;}
-    for(const sign of [1,-1]){const group=rows.filter(r=>r.delta*sign>0);if(!group.length)continue;const col=sign>0?'#9de2b1':'#ffa1b2',h=this.gearUiText(26,cy,sign>0?'GAINS':'LOSSES',11,col,w-52,true);cy+=h.height+5;
-      for(const r of group){const value=r.range?gearStatText(r,r.from)+' → '+gearStatText(r,r.to):gearStatText(r,r.delta),t=this.gearUiText(26,cy,r.label+'  '+value,13,col,w-52);cy+=t.height+6;}}
-    g.fillStyle(0x241a30,.98);g.fillRoundedRect(14,top,w-28,cy-top+4,12);return cy+14;
+      y=(moreOpen?y3:y2)+bh2;
+    }
+    this.menu.setVisible(true);
   }
   // v6.55.35 🧹 Clean up: ขาย/ย่อยหลายชิ้นในครั้งเดียวตามตัวกรอง · ไม่แตะของสวม/ล็อก/★/คราฟแล้ว/unique · + ตั้งค่า auto ตอนดรอป
   gearCleanCfg(){const d=Save.data;if(!d.gearCleanCfg)d.gearCleanCfg={common:true,rare:true,epic:false,legend:false,weaker:true,out:'sell'};return d.gearCleanCfg;}
@@ -12970,7 +13026,7 @@ class Game extends Phaser.Scene {
   modCompareRows(eqIt,selIt){ const rows=[],aff=it=>{const m={};for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(d)m[a.id]={a,d};}return m;};
     const ie=eqIt&&ensureImplicit(eqIt),is=selIt&&ensureImplicit(selIt),de=ie&&implicitDef(ie.id),ds=is&&implicitDef(is.id);
     if(de||ds){const same=de&&ds&&ie.id===is.id&&String(implicitText(eqIt))===String(implicitText(selIt)),sameKind=de&&ds&&ie.id===is.id;
-      rows.push({kind:'implicit',label:'◇ Implicit'+((ie&&eqIt&&weaponLocalMod(eqIt,ie.id))||(is&&selIt&&weaponLocalMod(selIt,is.id))?' → ATK':''),from:de?de.label+' '+de.fmt(ie.v):'—',to:ds?ds.label+' '+ds.fmt(is.v):'—',st:same?'same':!de?'new':!ds?'lost':sameKind?((is.v||0)>=(ie.v||0)?'up':'down'):'swap',mag:same?0:1,col:ds?IMPLICIT_COLOR[ds.rank]:'#9a90ab'});}
+      rows.push({kind:'implicit',label:'◇ Implicit'+((ie&&eqIt&&weaponLocalMod(eqIt,ie.id))||(is&&selIt&&weaponLocalMod(selIt,is.id))?' → ATK':''),from:de?de.emoji+' '+de.fmt(ie.v):'—',to:ds?ds.emoji+' '+ds.fmt(is.v):'—',st:same?'same':!de?'new':!ds?'lost':sameKind?((is.v||0)>=(ie.v||0)?'up':'down'):'swap',mag:same?0:1,col:ds?IMPLICIT_COLOR[ds.rank]:'#9a90ab'});}
     const E=aff(eqIt),S=aff(selIt);
     for(const kind of ['prefix','suffix']){ const ids=[...new Set([...Object.keys(E),...Object.keys(S)])].filter(id=>((E[id]||S[id]).d.kind||'suffix')===kind),list=[];
       for(const id of ids){const e=E[id],t=S[id],d=(e||t).d,ev=e?e.a.v:0,tv=t?t.a.v:0,ref=Math.max(Math.abs(ev),Math.abs(tv),1e-6);
@@ -12980,51 +13036,26 @@ class Game extends Phaser.Scene {
     return rows; }
   // v6.55.48: ตัวหนังสือขั้นต่ำ (หน้า Equipment/Craft) — ห่อ add.text ชั่วคราวระหว่างวาดหน้า
   _clampFonts(min){ const add=this.add,f=add.text; add.text=function(x,y,t,st){ if(st&&st.fontSize){const n=parseFloat(st.fontSize);if(n<min)st=Object.assign({},st,{fontSize:min+'px'});} return f.call(add,x,y,t,st); }; return ()=>{ delete add.text; if(add.text!==f)add.text=f; }; }
-  drawGearMods(item,y,w){
-    if(!item)return y;const x=14,bw=w-28,base=GEAR_ALL.find(g=>g.id===item.baseId),lines=[];
-    const im=ensureImplicit(item),idf=im&&implicitDef(im.id);
-    if(idf)lines.push({label:'IMPLICIT',text:implicitText(item)+' · '+IMPLICIT_TIER[idf.rank],color:IMPLICIT_COLOR[idf.rank]});
-    if(base&&base.unique)lines.push({label:'UNIQUE EFFECT',text:base.desc,color:'#ffbc80'});
-    for(const kind of ['prefix','suffix'])for(const a of item.affixes||[]){const d=affixDef(a.id);if(d&&(d.kind||'suffix')===kind)lines.push({label:kind.toUpperCase(),text:d.label+' '+d.fmt(a.v)+' · T'+(a.t??3),color:kind==='prefix'?'#ffd2b0':'#b3efdc'});}
-    const bg=this.add.graphics();this.menu.add(bg);const top=y;let cy=y+12;
-    const put=(text,color,size,bold=false)=>{const t=this.add.text(x+12,cy,text,{fontFamily:'sans-serif',fontStyle:bold?'bold':'normal',fontSize:size+'px',color,wordWrap:{width:bw-24}}).setOrigin(0,0);this.menu.add(t);cy+=t.height+6;return t;};
-    put('ITEM MODS','#ffe08a',12,true);put(gearBaseStatText(item)+' · iLv '+(item.itemLevel||1),'#e2d8eb',12);
-    if(!lines.length)put('No mods on this item','#b4a8c4',12);
-    let group=null;for(const line of lines){if(line.label!==group){put(line.label,line.color,10,true);group=line.label;}put(line.text,line.color,13);}
-    bg.fillStyle(0x21182e,.97);bg.fillRoundedRect(x,top,bw,cy-top+4,10);bg.lineStyle(1,0x59476c,.9);bg.strokeRoundedRect(x,top,bw,cy-top+4,10);return cy+12;
-  }
-  buildGearCompare(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment Compare','screen_equipment','gear');
-    const w=this.W,slot=this.gearSlot||'weapon',eq=Save.equippedGearItem(slot),items=Save.gearItemsForSlot(slot).filter(it=>it.grade!=='start'&&!String(it.baseId).includes('_none'));
-    let selected=Save.gearItem(this.gearSelectedUid);if(!selected||selected.slot!==slot)selected=eq||items[0]||null;
-    if(!selected){const t=this.add.text(w/2,90,'No items in this slot',{fontFamily:'sans-serif',fontSize:'14px',color:'#c7bdd6'}).setOrigin(.5);this.menu.add(t);this.menu.setVisible(true);return;}
-    this.gearSelectedUid=selected.uid;let y=w>this.H?62:84;
-    if(items.length>1){const idx=items.findIndex(it=>it.uid===selected.uid),g=this.add.graphics();g.fillStyle(0x34496b,1);g.fillRoundedRect(14,y,w-28,38,10);const t=this.add.text(w/2,y+19,'‹ Item     '+(Math.max(0,idx)+1)+' / '+items.length+'     Item ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#e1eeff'}).setOrigin(.5);this.menu.add([g,t]);for(const dir of [-1,1])this._zone(dir<0?14:w/2,y,(w-28)/2,38,()=>{this.gearSelectedUid=items[((idx<0?0:idx)+dir+items.length)%items.length].uid;this._mScroll=0;this.buildMenuScreen();});y+=46;}
-    const same=!!eq&&eq.uid===selected.uid,cw=(w-34)/2,cards=[];let cardH=76;
-    for(const [it,x,label] of [[eq,14,'EQUIPPED'],[selected,20+cw,'SELECTED']]){const base=it&&GEAR_ALL.find(g=>g.id===it.baseId),bg=this.add.graphics(),head=this.add.text(x+10,y+8,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:label==='SELECTED'?'#ffe08a':'#b8c9e4'}),name=this.add.text(x+10,y+26,base?base.name:'Empty slot',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',wordWrap:{width:cw-20}}),il=this.add.text(x+10,y+32+name.height,it?'iLv '+(it.itemLevel||1)+' · +'+(it.enhanceLv||0):'No equipment',{fontFamily:'sans-serif',fontSize:'11px',color:'#c7bdd6'});cardH=Math.max(cardH,il.y-y+il.height+10);cards.push({bg,x,label});this.menu.add([bg,head,name,il]);}
-    for(const c of cards){c.bg.fillStyle(c.label==='SELECTED'?0x30253e:0x201b2c,.98);c.bg.fillRoundedRect(c.x,y,cw,cardH,10);}y+=cardH+8;
-    const hint=this.add.text(16,y,same?'This item is already equipped. Use Item arrows to compare another.':'Green: increase / gained · Red: decrease / lost · Gold: different effect',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6',wordWrap:{width:w-32}});this.menu.add(hint);y+=hint.height+12;
-    if(same)y=this.drawGearMods(selected,y,w);else{y=this.drawGearChanges(eq,selected,y,w);this._cmpBase=gearCompareRows(eq,selected).filter(r=>r.key==='attack'||r.key==='armor');y=this.drawModCompare(eq,selected,false,y,w);}
-    const set=gearSetCompareText(slot,selected);if(set){const t=this.add.text(16,y,set,{fontFamily:'sans-serif',fontSize:'12px',color:'#a6d6ff',wordWrap:{width:w-32}});this.menu.add(t);y+=t.height+12;}
-    const base=GEAR_ALL.find(g=>g.id===selected.baseId);if(base)this.drawGearActions(selected,base,slot,y,w);this.menu.setVisible(true);
-  }
-  drawModCompare(eqIt,selIt,isEq,y,w){
-    if(!selIt)return y;if(isEq)return this.drawGearMods(selIt,y,w);
-    const rows=this.modCompareRows(eqIt,selIt);for(const r of (this._cmpBase||[]).slice().reverse())rows.unshift({kind:'base',label:r.range?'Weapon ATK':r.label,from:gearStatText(r,r.from),to:gearStatText(r,r.to),st:r.delta>.001?'up':r.delta<-.001?'down':'same'});
-    const eb=eqIt&&GEAR_ALL.find(g=>g.id===eqIt.baseId),sb=GEAR_ALL.find(g=>g.id===selIt.baseId);
-    if(eb?.unique||sb?.unique)rows.push({kind:'unique',label:'Unique effect',from:eb?.unique?eb.desc:'—',to:sb?.unique?sb.desc:'—',st:eb?.id===sb?.id?'same':!eb?.unique?'new':!sb?.unique?'lost':'swap'});
-    const identical=rows.filter(r=>r.st==='same').length,showSame=this._gearShowSame===selIt.uid,visible=rows.filter(r=>showSame||r.st!=='same');
-    const ST={new:['GAINED','#7de0a1'],lost:['LOST','#ff8da2'],up:['INCREASE','#7de0a1'],down:['DECREASE','#ff8da2'],same:['UNCHANGED','#b1a5c1'],swap:['DIFFERENT','#ffd166']};
-    const top=y,bw=w-28,g=this.add.graphics();this.menu.add(g);let cy=y+12;
-    const txt=(x,yy,t,col,size,width,bold=false)=>{const o=this.add.text(x,yy,String(t),{fontFamily:'sans-serif',fontStyle:bold?'bold':'normal',fontSize:size+'px',color:col,wordWrap:{width}}).setOrigin(0,0);this.menu.add(o);return o;};
-    const title=txt(26,cy,'MOD COMPARISON','#ffe08a',13,bw-24,true);cy+=title.height+10;
-    if(!rows.length){const t=txt(26,cy,'No mods on either item','#b4a8c4',13,bw-24);cy+=t.height+10;}
-    for(const r of visible){const [status,color]=ST[r.st],group=r.kind==='base'?'BASE':r.kind==='implicit'?'IMPLICIT':r.kind==='unique'?'UNIQUE':r.kind.toUpperCase();const label=txt(26,cy,group+' · '+r.label,'#eee4f5',13,bw-24,true);cy+=label.height+7;
-      const gap=12,vw=(bw-24-gap)/2,left=txt(26,cy,r.from,'#c5bfd4',12,vw),right=txt(26+vw+gap,cy,r.to,r.st==='same'?'#c5bfd4':color,12,vw);cy+=Math.max(left.height,right.height)+6;
-      const delta=txt(26,cy,status+(r.dtxt?' · '+r.dtxt:''),color,11,bw-24,true);cy+=delta.height+12;g.lineStyle(1,0x59476c,.5);g.lineBetween(26,cy-6,w-26,cy-6);}
-    if(identical){this.gearUiButton(26,cy,bw-24,40,(showSame?'Hide':'Show')+' unchanged mods ('+identical+')',()=>{this._gearShowSame=showSame?null:selIt.uid;this.buildMenuScreen();},0x3c304b);cy+=48;}
-    g.fillStyle(0x21182e,.97);g.fillRoundedRect(14,top,bw,cy-top+4,10);g.lineStyle(1,0x59476c,.9);g.strokeRoundedRect(14,top,bw,cy-top+4,10);return cy+12;
-  }
+  drawModCompare(eqIt,selIt,isEq,y,w){ if(!selIt)return y;
+    { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0,q=0;for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(!d)continue;if((d.kind||'suffix')==='prefix')p++;else q++;}return {p:K-p,s:K-q};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
+        part=(f)=>'P '+f.p+' · S '+f.s,tot=fs.p+fs.s,txt='🛠 Open craft slots  '+(fe?part(fe)+'  →  ':'')+part(fs)+(tot?'  ('+tot+' free)':'  (full)'),
+        col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
+    if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;const pc=v=>r.range?' (+'+Math.round((v[0]+v[1])/2*ATK_PCT*100)+'%)':'';rows.unshift({kind:'base',label:'⚔ '+(r.range?'Weapon ATK':r.label),from:gearStatText(r,r.from)+pc(r.from),to:gearStatText(r,r.to)+pc(r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
+    // v6.55.72: ตารางอ่านง่าย — ตัวใหญ่ แถวสูง แถบสลับสี หัวกลุ่ม PREFIX/SUFFIX เต็มแถว
+    const rh=20,secs=new Set(rows.filter(r=>r.kind==='prefix'||r.kind==='suffix').map(r=>r.kind)).size,top=y,h=22+rows.length*rh+secs*16+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
+    const cL=22,cF=Math.round(w*0.60),cT=Math.round(w*0.82),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+6,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(o,0);this.menu.add(tx);};
+    hd(cL,'MOD',0);hd(cF,'NOW',1);hd(cT,'NEW',1);
+    const ST={new:['NEW','#7de0a1'],lost:['LOST','#ff8da2'],up:['▲','#7de0a1'],down:['▼','#ff8da2'],same:['=','#7a7088'],swap:['⇅','#ffd166']};
+    let ry=top+22,last=null,zi=0;
+    for(const r of rows){ if(r.kind!==last&&(r.kind==='prefix'||r.kind==='suffix')){const lc=r.kind==='prefix'?'#ffb27a':'#8be0c8',lb=this.add.text(cL,ry+2,r.kind==='prefix'?'PREFIX':'SUFFIX',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:lc});const ln=this.add.graphics();ln.lineStyle(1,Phaser.Display.Color.HexStringToColor(lc).color,0.4);ln.lineBetween(cL+lb.width+6,ry+9,cS,ry+9);this.menu.add([lb,ln]);ry+=16;} last=r.kind;
+      if(zi++%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,rh);this.menu.add(zb);}
+      const dim=r.st==='same',[stT,stC]=ST[r.st],kc=r.kind==='prefix'?'#ffd2b0':r.kind==='suffix'?'#c2f0e2':r.col,sty={fontFamily:'sans-serif',fontSize:'11px'};
+      const a=this.add.text(cL,ry+2,r.label,{...sty,color:dim?'#8a809a':kc}).setOrigin(0,0);if(a.width>cF-cL-62)a.setScale((cF-cL-62)/a.width);
+      const b=this.add.text(cF,ry+2,String(r.from),{...sty,color:dim?'#7a7088':'#cbbfd6'}).setOrigin(1,0);
+      const c=this.add.text(cT,ry+2,String(r.to),{...sty,fontStyle:dim?'normal':'bold',color:dim?'#7a7088':stC}).setOrigin(1,0);
+      const d=this.add.text(cS,ry+2,stT,{...sty,fontStyle:'bold',color:stC}).setOrigin(1,0);
+      this.menu.add([a,b,c,d]); ry+=rh; }
+    return top+h+6; }
   ptOnFreeze(e){ const PT=(this.player&&this.player._pt)||{};
     if(PT.fnova&&(this.elapsed||0)>=(this._ptNovaAt||0)){this._ptNovaAt=(this.elapsed||0)+0.25;const d=this.relicDmg?this.relicDmg(1.2):20;this.vfxHitRing(e.x,e.y,0xbdf0ff,false);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&this.dist(o.x,o.y,e.x,e.y)<95)this.damage(o,d,o.x,o.y);});}
     if(PT.farmor)this._ptArmorT=(this.elapsed||0)+3; }

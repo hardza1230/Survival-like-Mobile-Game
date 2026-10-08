@@ -1,4 +1,6 @@
-# Latest delivery: v6.56.4 — responsive menu touch
+# Latest delivery: v6.56.5 — Equipment page reverted to the pre-v6.56.2 layout at owner request (v6.56.4 menu scrolling kept). Do not reapply v6.56.2–3 Equipment redesign without asking.
+
+# Previous delivery: v6.56.4 — responsive menu touch
 
 Shared menus have frame-time independent momentum scrolling, immediate touch highlights, horizontal/vertical drag cancellation, stop-moving-list tap suppression, stale-velocity rejection and pointer/screen lifecycle cleanup. Fixed equipment footer stays aligned through existing scroll compensation. Atlas gestures and combat remain unchanged. Full checks/build and owner phone feel/FPS validation are separate; owner phone review pending.
 
