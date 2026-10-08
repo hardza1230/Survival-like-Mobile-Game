@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.56.3';
+const GAME_VERSION = '6.56.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.56.4',date:'2026-10-08',title:'Menus feel more responsive',items:['Drag menus with momentum and a gentle stop','Buttons respond visually when touched','Dragging or stopping a moving list does not activate items']},
   {v:'6.56.3',date:'2026-10-08',title:'Equipment decisions made simpler',items:['Tap inventory items to open details with fixed Equip, Compare and Craft actions','Compare starts with complete stat changes and hides unchanged mods until expanded','Inventory has readable names, mod previews, filters, sorting and a mod picker']},
   {v:'6.56.2',date:'2026-10-08',title:'Equipment mods and clearer comparison',items:['Selected equipment shows its implicit, unique effect and all prefix/suffix mods again','A dedicated Compare view shows equipped and selected values with explicit changes','Equipment stats, crafting, enhancement and saved items remain unchanged']},
   {v:'6.56.1',date:'2026-10-08',title:'Illustrated endings and growth',items:['Victory and defeat screens have painted environments; all fifteen stage epilogues have story illustrations','Level-ups, first Stage Mastery and newly unlocked Build or Unique powers use painted growth effects','Story text, reward amounts, EXP, Talent Points, revive rules and progression remain']},
@@ -5726,7 +5727,7 @@ class Game extends Phaser.Scene {
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } }
         return; }
-      if(this.state==='menu'){ if(this.menuScreen==='atlas'&&this._amRect&&this.atlasPointerDown(p))return; if((this._mScrollMax||0)>0){ this._mDrag={id:p.id,y0:p.y,x0:p.x,s0:this._mScroll||0,moved:false}; return; } this.handleTap(p.x,p.y); return; }
+      if(this.state==='menu'){ if(this.menuScreen==='atlas'&&this._amRect&&this.atlasPointerDown(p))return; this.menuPointerDown(p); return; return; }
       if(this.state==='tutorial'){this.advanceTutorial();return;}
       if(['dead','rushDone','summary','epilogue','rewardChoice'].includes(this.state)){ const now=Date.now(); if(this._endScreenState!==this.state){ this._endScreenState=this.state; this._endLockAt=Math.max(this._endLockAt||0,now+900); this._endOpenAt=now; }
         if(now<(this._endLockAt||0)){ this._endLockAt=Math.min(this._endOpenAt+2600,Math.max(this._endLockAt,now+380)); return; } }   // v6.44: กันกดแดช/Unique รัว ๆ แล้วข้ามหน้าจบด่าน
@@ -5756,7 +5757,7 @@ class Game extends Phaser.Scene {
     this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); else if(this.state==='menu'&&(this._mScrollMax||0)>0)this.setMenuScroll((this._mScroll||0)+dy*0.6); });
     this.input.on('pointermove',(p)=>{
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
-      if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ const D=this._mDrag,dy=p.y/RENDER_DPR-D.y0; if(Math.abs(dy)>8)D.moved=true; if(D.moved)this.setMenuScroll(D.s0-dy); return; }
+      if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.moveSnipeAim({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR}); return; }
       if(this._beat){ this.beatMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(!this.joy.active||p.id!==this.joy.id) return;
@@ -5765,9 +5766,11 @@ class Game extends Phaser.Scene {
       if(len>max){ dx=dx/len*max; dy=dy/len*max; }
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
     });
+    this.input.on('gameout',()=>{if(this.state==='menu')this.cancelMenuMotion();});
+    this.input.on('pointerupoutside',()=>{if(this.state==='menu')this.cancelMenuMotion();});
     this.input.on('pointerup',(p)=>{
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
-      if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ const D=this._mDrag; this._mDrag=null; if(!D.moved)this.handleTap(D.x0,D.y0); return; }
+      if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.releaseSnipe(); return; }
       if(this._ubHold&&this._ubHold.id===p.id){ const n=this.beatHoldNodes(); this._ubHold=null; this.clearBeatCharge(); this.startBeatRush(n>0,n); return; }   // v5.62 แตะสั้น = quick · กดค้าง = จุดตามเวลาที่ชาร์จ
       if(this._beat){ this.beatUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
@@ -6591,6 +6594,26 @@ class Game extends Phaser.Scene {
     const max=Math.max(0,Math.ceil(bot-this.H+(this._gearPinned?90:24))); this._mScrollMax=max;
     if(max>0){ const f=this.add.rectangle(0,this.H,this.W,max+40,0x1c1426,1).setOrigin(0,0); m.addAt(f,0); this._mScrollFill=f; }
     this.setMenuScroll(this._mScroll||0); }
+  cancelMenuMotion(){ this._mVelocity=0;this._mDrag=null;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;} }
+  menuPointerDown(p){
+    if(this._mDrag)return;const moving=Math.abs(this._mVelocity||0)>35;this._mVelocity=0;
+    this._mDrag={id:p.id,x0:p.x,y0:p.y,lastY:p.y,lastAt:performance.now(),s0:this._mScroll||0,moved:false,stopped:moving,velocity:0};
+    if(moving)return;const y=p.y+(this._mScroll||0),zones=this.tapZones||[];let z=zones.find(q=>q.back&&p.x>=q.x&&p.x<=q.x+q.w&&y>=q.y&&y<=q.y+q.h);
+    if(!z)for(let i=zones.length-1;i>=0;i--){const q=zones[i];if(p.x>=q.x&&p.x<=q.x+q.w&&y>=q.y&&y<=q.y+q.h){z=q;break;}}
+    if(z&&z.sound!=='none'){const g=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(139));g.fillStyle(0xffffff,.16).fillRoundedRect(z.x,z.y-(this._mScroll||0),z.w,z.h,Math.min(12,z.h/2));this._menuPress=g;}
+  }
+  menuPointerMove(p){const d=this._mDrag;if(!d||d.id!==p.id)return;const now=performance.now(),dy=p.y-d.y0;
+    if(Math.hypot(p.x-d.x0,dy)>8){d.moved=true;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;}}
+    if(d.moved&&(this._mScrollMax||0)>0){const elapsed=Math.max(.008,(now-d.lastAt)/1000),v=(d.lastY-p.y)/elapsed;d.velocity=d.velocity*.35+Math.max(-2200,Math.min(2200,v))*.65;this.setMenuScroll(d.s0-dy);}
+    d.lastY=p.y;d.lastAt=now;
+  }
+  menuPointerUp(p){const d=this._mDrag;if(!d||d.id!==p.id)return;this._mDrag=null;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;}
+    if(d.moved){this._mVelocity=performance.now()-d.lastAt<100?d.velocity:0;return;}
+    if(!d.stopped&&Math.hypot(p.x-d.x0,p.y-d.y0)<=8)this.handleTap(p.x,p.y);
+  }
+  tickMenuMotion(dt){if(this.state!=='menu'){if(this._mDrag||this._mVelocity||this._menuPress)this.cancelMenuMotion();return;}if(this._mDrag||!(this._mScrollMax>0))return;
+    const v=this._mVelocity||0;if(Math.abs(v)<8){this._mVelocity=0;return;}dt=Math.min(.05,Math.max(0,dt));const decay=Math.exp(-7*dt),before=this._mScroll||0;this.setMenuScroll(before+v*(1-decay)/7);this._mVelocity=(this._mScroll<=0||this._mScroll>=this._mScrollMax)?0:v*decay;
+  }
   setMenuScroll(v){ const max=this._mScrollMax||0; this._mScroll=Math.max(0,Math.min(max,v)); if(this.menu)this.menu.y=-this._mScroll; if(this._gearPinned)this._gearPinned.y=this._mScroll;for(const z of this.tapZones||[])if(z.fixedY!=null)z.y=z.fixedY+this._mScroll; }
   _tapFeedback(z,px,py){ try{
     const g=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(140));
@@ -6645,7 +6668,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ const s=this.menuScreen||'hub'; this._gearPinned=null;
+  buildMenuScreen(){ this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._gearPinned=null;
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
     if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allComplete){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
@@ -14918,7 +14941,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); this.tickBeat(delta/1000); if(this._beat)return; dt*=(this.gameSpeed||1); this.elapsed+=dt; if(this._rushOn)this.tickSugarRush();   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); this.tickBeat(delta/1000); if(this._beat)return; dt*=(this.gameSpeed||1); this.elapsed+=dt; if(this._rushOn)this.tickSugarRush();   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 

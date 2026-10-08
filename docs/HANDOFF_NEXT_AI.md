@@ -1,4 +1,8 @@
-# Latest delivery: v6.56.3 — equipment browsing and decision flow
+# Latest delivery: v6.56.4 — responsive menu touch
+
+Shared menus have frame-time independent momentum scrolling, immediate touch highlights, horizontal/vertical drag cancellation, stop-moving-list tap suppression, stale-velocity rejection and pointer/screen lifecycle cleanup. Fixed equipment footer stays aligned through existing scroll compensation. Atlas gestures and combat remain unchanged. Full checks/build and owner phone feel/FPS validation are separate; owner phone review pending.
+
+# Previous delivery: v6.56.3 — equipment browsing and decision flow
 
 Equipment uses instance cards with readable names/mod previews, All/New/Crafted/Favorite filters, newest/iLv/rarity/enhancement sorting and a paginated explicit-mod picker. Gacha and utility actions are under More tools. Selecting an item opens a dedicated detail page; Equip/Enhance, Compare and Craft stay pinned while details scroll. Compare starts with all normalized numerical stat gains/losses, including base/implicit/affix effects, and collapses unchanged mod rows behind a counted toggle. Full item mods remain visible with shared Prefix/Suffix headings. Existing action callbacks, enhancement costs/risks, protection guards and gear/save values remain; missing/destroyed items are handled. Fixed footer objects/zones are compensated by existing menu scrolling and cleared on screen builds. Focused tests cover browsing immutability, filters/sorts/mod intersections, actual render methods and scroll hit coordinates. Owner phone touch/FPS review pending.
 
