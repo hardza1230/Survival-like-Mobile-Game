@@ -1,4 +1,8 @@
-# Latest delivery: v6.58.2 — sticky Flicker and Dash Boxer leap
+# Latest delivery: v6.58.3 — Chocolate identity and impact
+
+From owner-approved critique items 1 and 3. The Flicker ON/OFF button is gone. Each path has one identity: Brawler auto-flickers (gliding) to monsters within 150px and punches in place when a foe is already adjacent or none is in reach; Titan stands and winds up; Dash Boxer uses Dash Leap. Finisher punches add 40ms hit-stop, stronger shake (Titan heavier) and 340 knockback. Five combo dots above Chocolate show rhythm; the fifth glows before the finisher. Dash Leap landing adds dust ring, ground cracks and 35ms hit-stop. Flicker/build/control tests rewritten for the new rules; full npm check passed. Owner phone feel review pending. Critique items 2 (visible path defence), 4 (decision moments) and 5 (Uniques tied to play) remain proposals.
+
+# Previous delivery: v6.58.2 — sticky Flicker and Dash Boxer leap
 
 Owner feedback: Flicker should stay with the monster instead of returning, and move more slowly between targets; Dash Boxer should feel like a dash-plunge (Xiao-like). Flicker no longer returns to an anchor: each strike glides 260ms to the next target and Chocolate stays where the chain ends; camera keeps following the player. Dash Boxer Dash leaps (200ms glide) to the best monster within 280px in the aimed direction (nearest when not aiming), punches along the path and slams on landing (110px, 1.5x finisher, light shake); no target = normal Dash with trail. Flicker/build tests updated; full npm check passed. Owner phone feel review pending.
 
