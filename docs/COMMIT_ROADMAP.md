@@ -70,3 +70,7 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 ## Story quota / EXP — v6.55.84
 
 ✅ Code: all 15 stages, finite shared quotas, linear EXP and Lv18 base completion, replay, Stage 3 hero choice. Automated checks/build pass; user in-game/balance review pending. Details: docs/STORY_WAVE_BUDGET_2026_10_08.md.
+
+## Swarm feedback — v6.55.85
+
+✅ Timed Swarm persists until countdown end; denser controlled spawns and pulses, larger finite objective/replay quotas, unchanged XP budgets. Actual director-loop regressions/checks/build pass; user gameplay review pending.

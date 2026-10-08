@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.84';
+const GAME_VERSION = '6.55.85';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -64,11 +64,12 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 
 function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
 const STORY_WAVE_PLAN=[
-  {quota:30,live:12,xp:84},{quota:32,live:14,xp:126},{quota:36,live:16,xp:180},
-  {quota:40,live:18,xp:234},{quota:44,live:20,xp:396}
+  {quota:50,live:18,xpUnits:30,xp:84},{quota:56,live:22,xpUnits:32,xp:126},{quota:64,live:26,xpUnits:36,xp:180},
+  {quota:72,live:30,xpUnits:40,xp:234},{quota:80,live:34,xpUnits:44,xp:396}
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.85',date:'2026-10-08',title:'Restore Swarm pressure through the final seconds',items:['Timed Survive the Swarm replenishes until the countdown ends instead of exhausting a tiny total quota','Larger controlled live caps, faster small groups and capped surge pulses restore crowd pressure','Objective waves have larger finite reserves; miniboss and boss caps stay separate','The same 1020 base EXP budget and fast-clear compensation remain; extra Swarm kills cannot add unbounded EXP']},
   {v:'6.55.84',date:'2026-10-08',title:'Story waves: finite monsters and fair EXP',items:['All story stages use finite enemy quotas and lower live caps; summons share the quota','Each completed stage grants a base 1020 EXP budget: Lv18 before the boss, with leftover EXP paid for fast objectives','Story EXP uses a linear curve; Recipe and other Endgame curves remain unchanged','Stage 3 no longer forces Mint; objective overtime points toward completion instead of cutting EXP','Replay uses a finite shared quota; queued upgrades finish before the next encounter']},
   {v:'6.55.83',date:'2026-10-08',title:'Strawberry: three focused seed builds',items:['Sniper charges one heavy seed; extra shots convert to power and Heart Railgun rewards a fully charged Unique','Ricochet keeps bouncing after Evolution, visits new targets and gains bounded boss fallback damage','Shotgun evolves into Petal Breacher with stronger close hits and a heavy center pellet, never automatic piercing','Focused card pools, cap conversion and Basic/Unique descriptions preserve old upgrades and Recipe builds','Run-scoped shots, charge cancellation and projectile/splash budgets cover the complete S1–S5 rework']},
   {v:'6.55.82',date:'2026-10-08',title:'Mint: three path Evolutions',items:['Barrage evolves into Hailstorm Arsenal: six queued lances every 4 seconds, within the normal projectile budget','Glacier Bloom evolves into Absolute Zero: wider opening Shatter and one extra chain step, still capped at six bursts','Crystal Impaler evolves into Heaven Piercer: every third full throw gains power, penetration and Rupture damage','Mint projectiles, shard creation and reaction visuals have shared budgets; delayed shots cannot cross runs','Evolution cards, Codex and Recipe build editor describe each path; prior card investment remains effective']},
@@ -9224,20 +9225,22 @@ class Game extends Phaser.Scene {
     if(!this.usesStoryBudget?.()){this._storyBudget=null;return;}
     const key=this._replayMeter?'replay':w;if(this._storyBudget?.key===key)return;
     const p=STORY_WAVE_PLAN[Math.min(4,Math.max(0,w))];
-    this._storyBudget={key,total:this._replayMeter?1020:p.xp,combat:Math.round((this._replayMeter?1020:p.xp)*.6),quota:this._replayMeter?182:p.quota,spawned:0,issued:0,paid:0,done:false};
+    this._storyBudget={key,total:this._replayMeter?1020:p.xp,combat:Math.round((this._replayMeter?1020:p.xp)*.6),quota:this._replayMeter?240:p.quota,xpUnits:this._replayMeter?182:p.xpUnits,spawned:0,issued:0,paid:0,done:false};
   }
+  storyTimedSwarm(){return !!(this.usesStoryBudget?.()&&!this._replayMeter&&this.mode==='wave'&&this.waveObjective?.type==='survive'&&!this.waveObjective.done&&this.waveTimer>0);}
+  storySpawnPace(){return this.storyTimedSwarm()?{batch:6+Math.min(2,this.waveIndex||0),interval:1.2,refill:.85}:{batch:4+(this.waveIndex>=3?1:0),interval:1.6,refill:.8};}
   storyLiveCap(){
     const chapter=Math.min(2,Math.floor(this.stageIndex/5));
     if(this.mode==='boss'||this.mode==='bossWarning')return [4,6,8][chapter];
     if(this.mode==='mini'||this.mode==='miniWarning')return [8,10,12][chapter];
     const base=STORY_WAVE_PLAN[Math.min(4,Math.max(0,this.waveIndex||0))].live+chapter*4;
-    return Math.max(8,Math.floor(base*(this.waveObjective&&this.waveObjective.type!=='survive'?.75:1)));
+    return this.storyTimedSwarm()?base+6:Math.max(8,Math.floor(base*(this.waveObjective&&this.waveObjective.type!=='survive'?.8:1)));
   }
   storyCanSpawn(objective=false,type=null){
     if(!this.usesStoryBudget?.()||!this._storyBudget)return true;
     if(this.enemies.countActive(true)>=Math.min(this.maxLive||100,this.storyLiveCap()))return false;
     if(type==='shooter'){let n=0;this.enemies.children.iterate(e=>{if(e?.active&&e.shooter)n++;});if(n>=2+Math.min(2,Math.floor(this.stageIndex/5)))return false;}
-    return objective||(!this._storyBudget.done&&this._storyBudget.spawned<this._storyBudget.quota);
+    return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota));
   }
   storySpawned(objective=false){if(this.usesStoryBudget?.()&&this._storyBudget&&!objective)this._storyBudget.spawned++;}
   settleStoryBudget(fraction=1){
@@ -9254,10 +9257,10 @@ class Game extends Phaser.Scene {
     this.spawnInterval=Math.max(0.5,p.interval-si*0.03-(si>=2?0.14:0));this.spawnBatch=p.batch+Math.floor(si/2)+1+(si>=2?1:0);if(this._challengeRun.includes('crowd')){this.spawnInterval=Math.max(0.5,this.spawnInterval*0.85);this.spawnBatch+=1;}
     const liveCap=si===6?BALANCE.c2Mycelium.maxLive:si===7?BALANCE.c2Nectar.maxLive:si===8?BALANCE.c2Seasons.maxLive:si===9?BALANCE.c2Root.maxLive:115;this.maxLive=Math.round(Math.min(liveCap,p.max+si*(si>=2?7:4)+6+(si>=2?12:0))*PERF_LIVE_MUL);this._baseMaxLive=this.maxLive;this.applyPerfLive();this.eliteEvery=14+Math.max(0,3-w);this.eliteAcc=this.eliteEvery;   // เพดานฝูงบนจอมากขึ้น
     if(this.usesStoryBudget?.()){
-      this.beginStoryBudget(w);this.maxLive=STORY_WAVE_PLAN[Math.min(4,w)].live+Math.min(2,Math.floor(si/5))*4;
-      this._baseMaxLive=this.maxLive;this.applyPerfLive();this.spawnBatch=3+(w>=3?1:0);this.spawnInterval=2.4;
+      this.beginStoryBudget(w);this.maxLive=STORY_WAVE_PLAN[Math.min(4,w)].live+6+Math.min(2,Math.floor(si/5))*4;
+      this._baseMaxLive=this.maxLive;this.applyPerfLive();this.spawnBatch=4+(w>=3?1:0);this.spawnInterval=1.6;
     }
-    this.waveAllowsElite=w===3||w===4;this.swarmAcc=Phaser.Math.FloatBetween(24,32);
+    this.waveAllowsElite=w===3||w===4;this.swarmAcc=this.usesStoryBudget?.()?10:Phaser.Math.FloatBetween(24,32);
   }
   spawnWaveEnemy(){const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];let t=Phaser.Utils.Array.GetRandom(types);if(this.stageIndex===0&&t!=='basic'&&Math.random()<0.55)t='basic';this.spawnEnemy(t);}   // v5.71 ด่านแรกตัวพุ่ง/ยิงน้อยลง
   // Soft director: ผู้เล่นฆ่าเร็วได้เจอฝูงเพิ่มเล็กน้อย แต่มี cap รายเวฟและไม่เปลี่ยน type pool/ดาเมจ
@@ -9275,6 +9278,11 @@ class Game extends Phaser.Scene {
       this.spawnEnemy(Phaser.Utils.Array.GetRandom(types),ang,rad*Phaser.Math.FloatBetween(0.94,1.06)); }
   }
   spawnSwarm(){
+    if(this.usesStoryBudget?.()){
+      if(!this.storyTimedSwarm())return;
+      const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true),n=Math.min(room,10+Math.min(4,this.waveIndex||0));
+      if(n<3)return;this.spawnWaveRing(n);this.showBanner('Swarm surge','Keep moving — another group is closing in',900);Sfx.bossWarn();return;
+    }
     const n=Math.min(this.maxLive-this.enemies.countActive(true),10+this.stageIndex*2+this.waveIndex*2);if(n<=4)return;
     const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['fast','basic'];
     for(let i=0;i<n;i++)this.spawnEnemy(Phaser.Utils.Array.GetRandom(types));
@@ -9780,14 +9788,14 @@ class Game extends Phaser.Scene {
       if(this.spawnAcc<=0){const idleP=this._idleP||0,pressure=Math.min(1,this.wavePressure()+idleP),dynamicInterval=this.spawnInterval*(1-pressure*0.32);this.spawnAcc=dynamicInterval;
         const live=this.enemies.countActive(true);
         const dynamicMax=Math.min(74+Math.round(idleP*26),this.maxLive+Math.round(pressure*10)),dynamicBatch=this.spawnBatch+(pressure>=0.50?1:0)+(idleP>=0.45?1:0);
-        if(this.usesStoryBudget?.()){const cap=Math.min(this.maxLive,this.storyLiveCap());if(live<Math.ceil(cap*.6))this.spawnWaveRing(Math.min(this.spawnBatch,cap-live));}
+        if(this.usesStoryBudget?.()){const cap=Math.min(this.maxLive,this.storyLiveCap()),pace=this.storySpawnPace();this.spawnAcc=pace.interval;if(live<Math.ceil(cap*pace.refill))this.spawnWaveRing(Math.min(pace.batch,cap-live));}
         else if(live<dynamicMax){const n=Math.min(dynamicBatch,dynamicMax-live);this.spawnWaveRing(n);} }
       if(this.waveAllowsElite){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
-      if(this.swarmAcc!=null&&!this.usesStoryBudget?.()){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
+      if(this.swarmAcc!=null&&(!this.usesStoryBudget?.()||this.storyTimedSwarm())){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=this.usesStoryBudget?.()?14:Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
       const st=STAGES[this.stageIndex]; if(this.recipeMode||this._replayMeter)return;
       if(st){ if(_timed)this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+'s');
         else this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · '+_obj.emoji+' '+_obj.name);
-        if(this.usesStoryBudget?.()&&this._storyBudget)this.timeTxt.setText(this.timeTxt.text+' · Reserves '+Math.max(0,this._storyBudget.quota-this._storyBudget.spawned)); }
+        if(this.usesStoryBudget?.()&&this._storyBudget&&!this.storyTimedSwarm())this.timeTxt.setText(this.timeTxt.text+' · Reserves '+Math.max(0,this._storyBudget.quota-this._storyBudget.spawned)); }
       if(_timed&&this.waveTimer<=0){
         if(this.waveObjective)this.completeWaveObjective();   // survive ครบเวลา = สำเร็จ
         else{this.mode='waveclear';this.showBanner('⏳ Time’s Up!','Clear all remaining enemies to advance',1800);}
@@ -12749,7 +12757,7 @@ class Game extends Phaser.Scene {
     this.stage5DeathGhost(e);
     this.chapter2DeathGhost(e);
     if(isBoss) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
-    { const wo=this.waveObjective; if(isBoss){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this._storyBudget.combat/this._storyBudget.quota*(e.isMini?8:e.isElite?3:1):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
+    { const wo=this.waveObjective; if(isBoss){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this._storyBudget.combat/(this._storyBudget.xpUnits||this._storyBudget.quota)*(e.isMini?8:e.isElite?3:1):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1)*(this.player.boxFindMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
