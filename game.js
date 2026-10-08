@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.55.89';
+const GAME_VERSION = '6.55.90';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.55.90',date:'2026-10-08',title:'P4: build choices and late-wave pressure',items:['Story Strawberry and Mint drafts always offer an available upgrade for the chosen path','A shared attack option accompanies the path choice when space and eligible cards allow','Emergency healing keeps a slot without replacing the path choice','Stages 3–15 refill late objective waves faster while preserving crowd caps, earned EXP and rewards']},
   {v:'6.55.89',date:'2026-10-08',title:'P3: staged Story hunts',items:['Story Hunts alternate clearing foes and defeating a marked Elite','Each Hunt round shows its current step and kill progress','The opening fill mission ends with a marked Elite showdown','Progress survives upgrade pauses and missing-target recovery; rewards are paid once at the end']},
   {v:'6.55.88',date:'2026-10-08',title:'P2: meaningful health and magnet pickups',items:['Story hearts heal 18% max HP with healing bonuses, stay on the ground at full HP, and have shared drop limits','Story magnets have one ground slot, cooldown and combat-earned bad-luck protection; empty magnets remain for later','No guaranteed post-miniboss Story magnet; magnets collect earned EXP only','Story on-kill recovery respects healing restrictions and shares a 3% max HP per second budget','Pickup limits reset per stage; P1 combat growth, Swarm and Hunt fixes remain']},
   {v:'6.55.87',date:'2026-10-08',title:'P1: earn growth through combat and objectives',items:['Every defeated story enemy grants EXP based on its real reward; harder foes and marked Hunt targets are worth more','Removed combat EXP cutoffs and automatic missing-EXP compensation: boss level now reflects what you defeated','Successful objectives grant fixed 20/30/40/50/60 EXP; failed objectives receive no completion EXP','Wave transitions collect only earned orbs, with no duplicate reward; replay checkpoints use fixed earned rewards','Finite objective quotas, timed Swarm, Hunt recovery and the linear Story level curve remain; health and magnet balance is P2']},
@@ -2952,16 +2953,17 @@ function mintVolleyProfile(lvl,evolved,count,path){
   const overflow=path==='barrage'?Math.max(0,raw-cap):0;
   return {count:Math.min(cap,raw),overflow,shardMul:1+0.18*overflow,bloomMul:path==='glacier'?1+.12*Math.max(0,raw-cap):1};
 }
-function pickMintCards(entries,n){
+function pickMintCards(entries,n,buildDraft=false){
   const pools={path:[],shared:[],universal:[]},out=[];
   for(const e of entries)if(pools[e.group])pools[e.group].push(e);
   while(out.length<n){
     const groups=Object.keys(pools).filter(k=>pools[k].length);if(!groups.length)break;
-    let r=Math.random()*groups.reduce((sum,k)=>sum+MINT_CARD_WEIGHTS[k],0),group=groups[groups.length-1];
-    for(const k of groups){r-=MINT_CARD_WEIGHTS[k];if(r<0){group=k;break;}}
-    const pool=pools[group];r=Math.random()*pool.reduce((sum,e)=>sum+e.w,0);let index=pool.length-1;
+    const required=buildDraft&&out.length===0&&pools.path.length?'path':buildDraft&&out.length===1&&pools.shared.some(e=>e.card.type==='basic'&&!e.card.special)?'shared':null;
+    let r=Math.random()*groups.reduce((sum,k)=>sum+MINT_CARD_WEIGHTS[k],0),group=required||groups[groups.length-1];
+    if(!required)for(const k of groups){r-=MINT_CARD_WEIGHTS[k];if(r<0){group=k;break;}}
+    const pool=required==='shared'?pools.shared.filter(e=>e.card.type==='basic'&&!e.card.special):pools[group];r=Math.random()*pool.reduce((sum,e)=>sum+e.w,0);let index=pool.length-1;
     for(let i=0;i<pool.length;i++){r-=pool[i].w;if(r<0){index=i;break;}}
-    const card=pool.splice(index,1)[0].card;card.poolGroup=group;out.push(card);
+    const entry=pool[index];pools[group].splice(pools[group].indexOf(entry),1);const card=entry.card;card.poolGroup=group;out.push(card);
   }
   return out;
 }
@@ -9232,7 +9234,11 @@ class Game extends Phaser.Scene {
     this._storyBudget={key,reward:this._replayMeter?200:p.reward,questPaid:0,quota:this._replayMeter?240:p.quota,spawned:0,issued:0,paid:0,done:false};
   }
   storyTimedSwarm(){return !!(this.usesStoryBudget?.()&&!this._replayMeter&&this.mode==='wave'&&this.waveObjective?.type==='survive'&&!this.waveObjective.done&&this.waveTimer>0);}
-  storySpawnPace(){return this.storyTimedSwarm()?{batch:6+Math.min(2,this.waveIndex||0),interval:1.2,refill:.85}:{batch:4+(this.waveIndex>=3?1:0),interval:1.6,refill:.8};}
+  storySpawnPace(){
+    if(this.storyTimedSwarm())return {batch:6+Math.min(2,this.waveIndex||0),interval:1.2,refill:.85};
+    const late=this.usesStoryBudget?.()&&!this._replayMeter&&this.stageIndex>=2&&this.mode==='wave'&&!this.waveObjective?.done?Math.min(2,Math.max(0,(this.waveIndex||0)-2)):0;
+    return {batch:late?4+late:4+(this.waveIndex>=3?1:0),interval:late?1.6-.2*late:1.6,refill:.8};
+  }
   storyLiveCap(){
     const chapter=Math.min(2,Math.floor(this.stageIndex/5));
     if(this.mode==='boss'||this.mode==='bossWarning')return [4,6,8][chapter];
@@ -11149,8 +11155,9 @@ class Game extends Phaser.Scene {
       if(!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5){const c=this.tradeCard();if(c)pool.push({group:'shared',w:1,card:c});}
       for(const c of this.endlessCards(this.endlessStatDefs().length))pool.push({group:'universal',w:1,card:c});
       if(healCard)pool.push({group:'universal',w:3,card:healCard});
-      out.push(...pickMintCards(pool,n));
-      if(hpFrac<0.40&&healCard&&!out.some(c=>c.key===healCard.key)){out.length>=n?out[n-1]=healCard:out.push(healCard);}
+      const buildDraft=!noSpecial&&this.usesStoryBudget?.();
+      out.push(...pickMintCards(pool,n,buildDraft));
+      if(hpFrac<0.40&&healCard&&!out.some(c=>c.key===healCard.key)){if(out.length<n)out.push(healCard);else{let at=buildDraft?out.findLastIndex(c=>c.poolGroup!=='path'):n-1;if(at<0&&out.filter(c=>c.poolGroup==='path').length>1)at=out.length-1;if(at>=0)out[at]=healCard;}}
       Phaser.Utils.Array.Shuffle(out);return out.slice(0,n);
     }
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
