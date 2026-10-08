@@ -93,4 +93,8 @@ Strawberry/Momo are one current hero. S1–S5 implemented together in v6.55.83; 
 
 ## Monster animation Batch 7A — v6.55.92
 
-✅ Six Fermented Canopy creatures: generated 16-pose sheets, packed alpha assets, stage loading and presentation integration. Original balance/colliders and separate Crown Sapling Elite identity are preserved. Source, exact prompts, packing and review: assets/incoming/ch2_s1_animations. Next: 7B, seven Mycelium Marsh creatures including Sporeling. Crown Sapling animation moves to batch 10; owner mobile visual/FPS review remains pending.
+✅ Six Fermented Canopy creatures: generated 16-pose sheets, packed alpha assets, stage loading and presentation integration. Original balance/colliders and separate Crown Sapling Elite identity are preserved. Source, exact prompts, packing and review: assets/incoming/ch2_s1_animations. Crown Sapling animation moves to batch 10; owner mobile visual/FPS review remains pending.
+
+## Monster animation Batch 7B — v6.55.93
+
+✅ Seven Mycelium Marsh creatures including Sporeling: 112 authored poses, packed alpha sheets, stage loading and existing presentation integration. Original combat/colliders, guard aura, Drifter acid, Mold Sac two-child split and capped zero-XP Sporeling spawns remain. Source/manifest/prompts/packing/review: assets/incoming/ch2_s2_animations. Owner mobile visual/FPS review pending. Next: batch 8, Nectar Hive including Tiny Grub.

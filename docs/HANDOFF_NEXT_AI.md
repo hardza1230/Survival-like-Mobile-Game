@@ -1,4 +1,8 @@
-# Latest delivery: v6.55.92 — monster animation Batch 7A
+# Latest delivery: v6.55.93 — monster animation Batch 7B
+
+Seven Mycelium Marsh creatures including Sporeling have generated 16-pose sheets, RGBA PNG sources and lossless WebP runtime assets. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s2_animations; runtime: assets/art/ch2_mycelium. Existing stage loading, per-species fallback and central presentation handle movement/idle/actions/hurt/death/freeze/pool reuse. Both Sniper and Oracle prepare/firing clips; Cap Hopper has windup/dash; Mold Sac warns once per life. Original HP/damage/speed, collider circles, guard aura, Drifter acid, Mold Sac two-child split, zero Sporeling EXP, live caps and P1–P5 balance remain. Old atlas cell 7 stays for Clean Air Wisp; generic Elite and boss/miniboss art are outside 7B. Packing reuses scripts/pack-canopy-animations.py with --batch mycelium; default 7A mode remains intact. Owner mobile visual/FPS review pending. Next: monster batch 8, Nectar Hive including Tiny Grub.
+
+# Previous delivery: v6.55.92 — monster animation Batch 7A
 
 Six Fermented Canopy species have generated 16-pose sheets, packed RGBA PNG sources and lossless WebP runtime assets. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s1_animations; runtime: assets/art/ch2_canopy. Stage loading, original atlas fallback, movement/idle/action/hurt/death, shooter windup, bomber warning, freeze/thaw and pooled reset use the existing presentation controller. Original combat, collision circles, Story P1–P5 and pacing are preserved. Audit correction: C2-1 Elite is separate Crown Sapling (atlas cell 6), not Root-Back Beetle; its art stays intact and its animation is now listed in batch 10. Owner performs mobile visual/FPS review; pending. Next monster batch: 7B, seven Mycelium Marsh creatures including Sporeling. See docs/MONSTER_ANIMATION_PLAN.md and docs/art_orders/14_REMAINING_ART.md.
 

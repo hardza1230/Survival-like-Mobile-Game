@@ -11,7 +11,7 @@ Audited v6.55.10; foundation delivered in v6.55.11. Scope: ordinary monsters, el
 | 5 | Chapter 1 stage 4: Wisp, Shard, Caster, Bubble and Guardian | Complete — v6.55.15 |
 | 6 | Chapter 1 stage 5 and Chapter 3: improve existing walk sheets, add missing action clips | Complete — v6.55.16 |
 | 7A | Chapter 2 stage 1: Fermented Canopy — 6 creatures | Complete — v6.55.92; owner mobile review pending |
-| 7B | Chapter 2 stage 2: Mycelium Marsh — 7 creatures including Sporeling | Pending |
+| 7B | Chapter 2 stage 2: Mycelium Marsh — 7 creatures including Sporeling | Complete — v6.55.93; owner mobile review pending |
 | 8 | Chapter 2 stage 3: Nectar creatures, including Tiny Grub | Pending |
 | 9 | Chapter 2 stages 4–5: season and root creatures | Pending |
 | 10 | Elite/summon coverage including Mini Jelly and C2-1 Crown Sapling; full visual and mobile performance review | Pending |
@@ -68,4 +68,8 @@ Ten generated 16-pose sheets delivered in v6.55.16: five Chapter 1 stage 5 ident
 
 ## Commit 7A delivery
 
-Six generated 16-pose sheets delivered in v6.55.92. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s1_animations; runtime lossless alpha WebPs: assets/art/ch2_canopy. Whole-component extraction preserves leaves, limbs and staffs crossing nominal raw cell boundaries; one scale per species and fixed 236px baseline preserve proportions. Lantern source poses are reordered to separate idle/charge/release. Existing attack, cooldown, dash, freeze, collider and combat behavior is unchanged. Crown Sapling Elite (atlas cell 6) retains its original identity and moves to batch 10. Actual-method regressions cover all seven normal roles, partial-load fallback, authored actions/death, freeze/thaw and pool reuse. Mobile visual/FPS review remains pending. Remaining: 7B, 8, 9 and 10. Next: 7B C2-2 Mycelium Marsh, seven creatures including Sporeling.
+Six generated 16-pose sheets delivered in v6.55.92. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s1_animations; runtime lossless alpha WebPs: assets/art/ch2_canopy. Whole-component extraction preserves leaves, limbs and staffs crossing nominal raw cell boundaries; one scale per species and fixed 236px baseline preserve proportions. Lantern source poses are reordered to separate idle/charge/release. Existing attack, cooldown, dash, freeze, collider and combat behavior is unchanged. Crown Sapling Elite (atlas cell 6) retains its original identity and moves to batch 10. Actual-method regressions cover all seven normal roles, partial-load fallback, authored actions/death, freeze/thaw and pool reuse. Mobile visual/FPS review remains pending.
+
+## Commit 7B delivery
+
+Seven generated 16-pose sheets delivered in v6.55.93, including the smaller zero-XP Sporeling. Source/raw/manifest/exact prompts/packing/review: assets/incoming/ch2_s2_animations; runtime lossless alpha WebPs: assets/art/ch2_mycelium. Existing packer accepts --batch mycelium while Canopy remains the default. Both Sniper and Oracle use preparation/release clips; Hopper uses windup/dash; Mold Sac has a once-per-life pressure warning. Original combat values, circles, Bulwark aura/guard, Drifter acid, two-child Mold Sac split and shared live caps are preserved. Original atlas stays for fallback and Clean Air Wisp. Generic Elite and boss/miniboss art are outside 7B. Actual-method regressions cover eight roles, partial-load fallback, actions/freeze/pool reuse/death and the original death hooks with capped zero-XP child spawns. Mobile visual/FPS acceptance remains pending. Remaining: 8, 9 and 10. Next: 8 C2-3 Nectar Hive including Tiny Grub.

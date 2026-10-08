@@ -1,7 +1,7 @@
-"""Pack generated Canopy sheets without changing their authored pose proportions.
+"""Pack generated Canopy or Mycelium sheets without changing authored pose proportions.
 
-Usage: python scripts/pack-canopy-animations.py source-map.json
-The map contains the six c21_* keys and local generated PNG paths. Requires Pillow/NumPy.
+Usage: python scripts/pack-canopy-animations.py source-map.json [--batch mycelium]
+The map contains the selected batch keys and local generated PNG paths. Requires Pillow/NumPy.
 Original generated sheets are retained under incoming/raw; runtime is lossless RGBA.
 """
 import argparse
@@ -85,23 +85,27 @@ def extract_poses(image):
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('source_map')
+parser.add_argument('--batch', choices=['canopy', 'mycelium'], default='canopy')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-incoming = root / 'assets/incoming/ch2_s1_animations'
-runtime = root / 'assets/art/ch2_canopy'
+mycelium = args.batch == 'mycelium'
+incoming = root / ('assets/incoming/ch2_s2_animations' if mycelium else 'assets/incoming/ch2_s1_animations')
+runtime = root / ('assets/art/ch2_mycelium' if mycelium else 'assets/art/ch2_canopy')
 (incoming / 'raw').mkdir(parents=True, exist_ok=True)
 runtime.mkdir(parents=True, exist_ok=True)
 mapping = json.loads(Path(args.source_map).read_text(encoding='utf-8'))
-identities = ['c21_sprout', 'c21_vine_hunter', 'c21_spore_lantern',
+identities = ['c22_drifter', 'c22_hopper', 'c22_sniper', 'c22_mold_sac', 'c22_bulwark', 'c22_oracle', 'c22_sporeling'] if mycelium else ['c21_sprout', 'c21_vine_hunter', 'c21_spore_lantern',
               'c21_fruit_pod', 'c21_root_beetle', 'c21_thorn_oracle']
-assert set(mapping) == set(identities), 'Exactly the six Batch 7A species are required'
-atlas = Image.open(root / 'assets/ch2_enemy_atlas.png').convert('RGBA')
+assert set(mapping) == set(identities), 'Exactly the selected batch species are required'
+atlas = Image.open(root / ('assets/ch2_mycelium_enemy_atlas.png' if mycelium else 'assets/ch2_enemy_atlas.png')).convert('RGBA')
 report, previews = {}, {}
 baseline = 236
 for index, name in enumerate(identities):
     source = Path(mapping[name])
     image = Image.open(source).convert('RGBA')
-    assert image.width == image.height, (name, image.size)
+    # Generated grids can have slight canvas-aspect drift. Extraction uses both
+    # source axes; final cells remain exactly square without stretching anatomy.
+    assert .95 <= image.width / image.height <= 1.05, (name, image.size)
     shutil.copyfile(source, incoming / 'raw' / (name + '_generated.png'))
     cells, source_bounds, removed = extract_poses(image)
     # The lantern generator placed charge in idle slot 7 and release in slot 9.
@@ -142,7 +146,7 @@ for frame in range(16):
     for column, name in enumerate(identities):
         canvas.paste(previews[name][frame], (256 * column, 0), previews[name][frame])
     review.append(canvas)
-review[0].save(incoming / 'canopy_preview.webp', save_all=True, append_images=review[1:],
+review[0].save(incoming / ('mycelium_preview.webp' if mycelium else 'canopy_preview.webp'), save_all=True, append_images=review[1:],
                duration=[125] * 6 + [250] * 2 + [160] * 4 + [100] * 2 + [300] * 2,
                loop=0, quality=85)
-print('Packed six Canopy sheets with 96 authored poses, alpha and fixed baseline')
+print('Packed', len(identities), args.batch, 'sheets with', len(identities) * 16, 'authored poses, alpha and fixed baseline')
