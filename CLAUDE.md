@@ -1,4 +1,8 @@
-# Latest delivery: v6.58.1 — smoother Chocolate Flicker and active Dash Boxer
+# Latest delivery: v6.58.2 — sticky Flicker and Dash Boxer leap
+
+Owner feedback: Flicker should stay with the monster instead of returning, and move more slowly between targets; Dash Boxer should feel like a dash-plunge (Xiao-like). Flicker no longer returns to an anchor: each strike glides 260ms to the next target and Chocolate stays where the chain ends; camera keeps following the player. Dash Boxer Dash leaps (200ms glide) to the best monster within 280px in the aimed direction (nearest when not aiming), punches along the path and slams on landing (110px, 1.5x finisher, light shake); no target = normal Dash with trail. Flicker/build tests updated; full npm check passed. Owner phone feel review pending.
+
+# Previous delivery: v6.58.1 — smoother Chocolate Flicker and active Dash Boxer
 
 Owner feedback: Flicker felt abrupt and too far; Dash Boxer Dash did nothing visible. Flicker now glides (150ms ease-out) to each target with a path line and purple afterimages, waits a little longer between punches and glides back to the moving anchor after a normal finish (cancel still snaps back). Range narrowed to Titan 190 / Brawler 220 / Dash Boxer 250. Dash Boxer: every Dash now punches enemies along its path once and ends with a finishing punch; Phantom Rush keeps its stronger trail. Flicker tests updated for glide timing; full npm check passed. Owner phone feel review pending.
 
