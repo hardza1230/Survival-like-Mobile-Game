@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.59.9 — Chocolate Infuse synergy (commit 3/4)
+# Latest delivery: v6.60.0 — Chocolate path Talents (commit 4/4, card/Mutation/Evo/Infuse/Talent plan complete)
+
+PATH_TALENTS brawler/titan/dashboxer rewritten (node IDs kept, saved ranks stay). New _pt keys read via ptv(k): ffRange/ffBlast/ffBurn/ffTwin/ffMeteor, trSpeed/trRel/trCost/trRegen/rage4/trGuard/trLust, dbLeap/dbSlam/dbRefund. Rage Four capstone: titanMaxLv()=4, TITAN_RAGE_MUL[4]=5.5, bar draws 4 segments. Bloodlust in charPassiveOnKill; Iron Body in ptTakenMul. Talent icon art still maps by old node IDs (names changed). talent-icons hash updated. npm check passed; owner phone review pending.
+
+# Previous delivery: v6.59.9 — Chocolate Infuse synergy (commit 3/4)
 
 cocoaInfMatch/cocoaHasInf: Spicy+Fire Fist burn ×1.5 (infusionOnHit); Sour+Titan release sets e._titanMarkT 4s → +25% damage taken in damage(); Sweet+Titan Blood Rage HP cost ×0.7; Minty+Dash Boxer leap landing freezes non-boss 1s (cocoaLeapMutation). Matching Infusion cards headline "★ Build match: …". npm check passed. Next: commit 4 Talents.
 
