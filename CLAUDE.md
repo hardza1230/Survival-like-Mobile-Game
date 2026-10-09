@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.59.4 — Titan hold-to-charge
+# Latest delivery: v6.59.5 — Fire Fist
+
+Owner: replace Earth Stomp (path id 'brawler' kept) with fire-fist projectiles. castCocoaRush brawler targets within max(380,reach*2.6) and calls cocoaFireFist: getBullet proj_rocket tinted orange, speed 720, dmg unit*.85; 5th = big piercing fireball (speed 620, explode reach*.9 scaled by wave ranks, ×1.55·finMul); rush mutation fans 3 fireballs. Combo advances on fire. Stomp slow removed. Tests mock getBullet (dmg setter records a hit). npm check passed; owner phone review pending.
+
+# Previous delivery: v6.59.4 — Titan hold-to-charge
 
 Owner: charge should be a held button that sinks while held, cooldown starts on release, shorter cooldown, walk while charging. Titan Unique is now hold (isTitanHold): pointerdown sets _titanHold, tickTitanRage charges only while held (walking allowed, HP drain kept), button scales .86; release → releaseTitanCharge → useCharacterSkill with _titanRelease level; Colossus Fist uses TITAN_RAGE_MUL/radius/titanRageImpact. Basic finisher no longer spends rage. Colossus cd 24→12. Standing-still auto charge removed. npm check passed; owner phone review pending.
 
