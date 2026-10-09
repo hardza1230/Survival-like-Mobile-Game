@@ -13,7 +13,7 @@ function punch(q){q.castCocoaRush(1,false,q.basicAttack._pm.dmg,false,q.basicAtt
 // Basic progress depends on hits, never swinging at empty space or an immune phase.
 for(const path of ['brawler','titan','dashboxer']){const q=scene(path,[foe(500)]);punch(q);assert.equal(q._cc.step,0);assert.equal(q._cc.n,0);q.foes[0].x=65;for(let i=0;i<5;i++)punch(q);assert.equal(q._cc.step,0);assert.equal(q._cc.n,5);assert(q.rec.length>=5);q.foes[0].x=500;advance(q,q.cocoaComboHold()+.1);assert.equal(q._cc.step,0);assert.equal(q._cc.n,0);}
 {const q=scene('titan',[foe(65,0,{isBoss:true,_phaseGateLocked:true})]);punch(q);assert.equal(q._cc.n,0);assert.equal(q.rec.length,0);q.foes[0]._phaseGateLocked=false;punch(q);assert.equal(q._cc.n,1);}
-{const dead=foe(60),next=foe(-65),q=scene('brawler',[dead,next]);q.castCocoaRush(1,false,1,false,q.basicAttack);dead.active=false;advance(q,.1);assert.equal(q.rec[0].e,next);}
+{const dead=foe(60),next=foe(-65),q=scene('brawler',[dead,next]);q.castCocoaRush(1,false,1,false,q.basicAttack);dead.active=false;advance(q,.13);assert.equal(q.rec[0].e,next);}
 // Titan wind-up remains fixed even at maximum haste; its marked impact stays in world space.
 {const q=scene('titan');q.basicAttack.ranks.rate=7.75;q.castCocoaRush(1,false,1,false,q.basicAttack);advance(q,.2);assert.equal(q.rec.length,0);advance(q,.05);assert.equal(q.rec.length,1);}
 {const q=scene('titan');q.basicAttack.ranks.rate=7.75;q.player.cdMul=.3;q.basicAttack._pm.cd=.2;assert(q.cdOf('meteor',5)*q.player.cdMul>=.5);}

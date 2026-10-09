@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.58.6';
+const GAME_VERSION = '6.58.7';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.58.7',date:'2026-10-09',title:'Chocolate punch feel',items:['Chocolate only swings at enemies a punch can reach and always aims at them, so fewer punches hit air','Punch damage now lands when the arm is extended, and a new punch restarts the animation during recovery']},
   {v:'6.58.6',date:'2026-10-09',title:'Chocolate glow fix',items:['Removed the constant flashing glow around Chocolate; punch impacts keep their own effects']},
   {v:'6.58.5',date:'2026-10-09',title:'Dash Boxer Unique recharge',items:['Every Dash on the Dash Boxer path cuts 1 second from the Unique cooldown']},
   {v:'6.58.4',date:'2026-10-09',title:'Dash Boxer vs bosses',items:['Dash Leap prefers a nearby boss or mini-boss, deals extra slam damage to it and grants brief invulnerability during the leap and landing','Phantom Rush now auto-leaps 3 times (4 at level 3) onto the strongest enemy, then makes Dash free for a few seconds','Chocolate Unique banners now say plainly what each Unique does']},
@@ -12174,16 +12175,16 @@ class Game extends Phaser.Scene {
     if(this._cocoaFlickerOn&&!flickerHit&&!noFlick){this.startCocoaFlicker(lvl,aw,dm,evo,basic);return;}
     const p=this.player,cc=this._cc||(this._cc={n:0,t:0,step:0,gen:0});if(cc.busy||this.dashTime>0||(this._cocoaJobs?.length||0)>=24)return;
     const reach=Math.min(235,Math.max(flickerHit?((this._cocoaFlicker?.target?.body?.halfWidth||20)+32)*1.5:0,(82+lvl*6)*(1+(basic.ranks.size||0)*.12)*(1+(basic._pm?.range||0))*(aw?1.2:1)));
-    const target=flickerHit?this._cocoaFlicker?.target:this.nearestEnemy(reach*1.6);if(!target){this._ccCdMul=.5;return;}if(cc.t>this.cocoaComboHold()){cc.step=0;cc.n=0;}
+    const target=flickerHit?this._cocoaFlicker?.target:this.nearestEnemy(reach*1.2);if(!target){this._ccCdMul=.5;return;}if(cc.t>this.cocoaComboHold()){cc.step=0;cc.n=0;}
     const path=basic.path,beat=cc.step%5,fin=beat===4,gen=cc.gen||0,empowered=path==='dashboxer'&&this._cocoaNextPunch;
     const unit=(12+lvl*3.5)*dm*1.4*(aw?1.1:1)*this.cocoaDashBuffMul(),finMul=1+(basic.ranks.combo||0)*.18;
-    const angle=()=>{if(!flickerHit&&this.joy?.active&&this.moveDir.lengthSq()>.04)return this.moveDir.angle();const next=target.active?target:this.nearestEnemy(reach*1.6)||target;return Math.atan2(next.y-p.y,next.x-p.x);};
+    const angle=()=>{const next=target.active?target:this.nearestEnemy(reach*1.2)||target;if(!next.active&&!flickerHit&&this.joy?.active&&this.moveDir.lengthSq()>.04)return this.moveDir.angle();return Math.atan2(next.y-p.y,next.x-p.x);};
     const a=angle(),lock={x:p.x+Math.cos(a)*reach*.6,y:p.y+Math.sin(a)*reach*.6};p.setFlipX(Math.cos(a)<0);cc.busy=true;
-    const wind=path==='titan'?(fin?.32:.24):(fin?.10:.05),mark=path==='titan'?this.cocoaMark(lock.x,lock.y,reach*(fin?1.15:.62)):null;
+    const wind=path==='titan'?(fin?.32:.24):(fin?.16:.12),mark=path==='titan'?this.cocoaMark(lock.x,lock.y,reach*(fin?1.15:.62)):null;
     this._ccCdMul=path==='titan'?(fin?1.3:1):fin?1.08:.72;this.poseAttack(wind*1000+150);
     this.cocoaLater(wind,()=>{
       this.cocoaUnmark(mark);if((cc.gen||0)!==gen)return;cc.busy=false;
-      const ang=path==='titan'?a:angle(),x=path==='titan'?lock.x:p.x+Math.cos(ang)*reach*.6,y=path==='titan'?lock.y:p.y+Math.sin(ang)*reach*.6;
+      const ang=path==='titan'?a:angle(),td=target.active?Math.min(reach*.6,this.dist(p.x,p.y,target.x,target.y)):reach*.6,x=path==='titan'?lock.x:p.x+Math.cos(ang)*td,y=path==='titan'?lock.y:p.y+Math.sin(ang)*td;
       const r=fin?(path==='titan'?reach*1.4:reach*1.05):reach*.64;
       const power=unit*(fin?(path==='titan'?2:1.55)*finMul*(basic.mutation==='breaker'?1.25:1):.8)*(1+Math.min(.4,cc.n*.01))*(empowered?1.35:1);
       const landed=this.cocoaHit(x,y,r,power,{push:fin?340:70,leech:true});if(landed&&fin){this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);Sfx.comboPunch(cc.n,fin?'heavy':'jab');
@@ -14748,7 +14749,7 @@ class Game extends Phaser.Scene {
     if(this.character==='cocoa'){
       if(moving||this.dashTime>0||this._poseHold>0)return;
       // Finish the visible clip; fast attacks still deal damage on their original schedule.
-      if(this._attackPoseTime>0&&this.player.texture.key===key)return;
+      if(this._attackPoseTime>this._attackPoseDuration*.45&&this.player.texture.key===key)return;
       ms=Math.max(320,ms||400);
     }
     if(this.character==='cocoa')this._castRecoilT=0.18;
