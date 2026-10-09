@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.62.0 — Delve auto upgrades
+# Latest delivery: v6.63.0 — Delve play mods
+
+Owner chose critique item 1. RECIPE_MECH_MODS +5 play:true mods: splitter (non-boss death → 2 fast minis 35% HP, _splitKid no re-split), restless (still >1s → 1% maxHP per 0.25s), shrink (circle from run start 950→360 at 6.5/s, outside 1.5%/0.25s), elitepack (eliteEvery×0.4), twinboss (elite HP×6 bodyguard 0.9s after boss). tickDelveMods in update when recipeMode; clearDelveMods in startRecipeRun/exitStage. delveMods guarantees 1 play mod when count>0; play mods allowed at any depth. Not playtested.
+
+# Previous delivery: v6.62.0 — Delve auto upgrades
 
 Owner: in Endgame Delve, normal cards auto-upgrade; special cards are chosen. recipeLevelUp rolls rollBasicAttackUpgrades(3): special cards → _specQ shown via openRecipeDraft (remaining levels deferred in pendingLvl); otherwise first normal card auto-applies (fallback endless stat); _egBuilt keeps endless stats; Sugar Rush + every-5 Modifier/Trade-off/Relic draft unchanged. npm check passed.
 

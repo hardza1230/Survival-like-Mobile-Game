@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.62.0';
+const GAME_VERSION = '6.63.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.63.0', date:'2026-10-09', title:'Delve mods that change play', items:['5 new Delve mods: Splitting Jelly, Restless Floor, Closing Pot, Elite Pack, Bodyguard.','Every Delve cave with mods now has at least one play-changing mod, from the first depths.'] },
   { v:'6.62.0', date:'2026-10-09', title:'Delve auto upgrades', items:['Endgame Delve: normal upgrade cards apply automatically on level-up.','Build Path, Mutation, Evolution, Infusion and Fusion still let you choose; Relic drafts every 5 levels stay.'] },
   { v:'6.61.0', date:'2026-10-09', title:'Phantom Rush Shadow Mark', items:['Each Phantom Rush slam marks the target: +8% damage taken per mark (max 4) for 5s.'] },
   { v:'6.60.9', date:'2026-10-09', title:'Phantom Rush vs bosses', items:['Phantom Rush leaps deal extra damage to bosses and mini-bosses.'] },
@@ -5352,7 +5353,13 @@ const RECIPE_MECH_MODS=[
   {id:'haste',emoji:'💨',name:'Sugar Rush',desc:'Enemies move 30% faster',hp:1,dmg:1,reward:1.30,mech:true},
   {id:'volatile',emoji:'💥',name:'Volatile',desc:'Enemies burst into a hazard when they die',hp:1,dmg:1,reward:1.35,mech:true},
   {id:'noheal',emoji:'🚫',name:'Starving',desc:'No healing: heal drops and regen do nothing',hp:1,dmg:1,reward:1.45,mech:true},
-  {id:'horde',emoji:'🐜',name:'Horde',desc:'Far more enemies spawn · meter fills faster',hp:0.9,dmg:1,reward:1.25,mech:true}
+  {id:'horde',emoji:'🐜',name:'Horde',desc:'Far more enemies spawn · meter fills faster',hp:0.9,dmg:1,reward:1.25,mech:true},
+  // v6.63: mod ที่เปลี่ยนวิธีเล่นจริง (play:true) — ทุกถ้ำที่มี mod จะได้อย่างน้อย 1 ตัว
+  {id:'splitter',emoji:'🧫',name:'Splitting Jelly',desc:'Enemies split into 2 fast minis when they die',hp:0.85,dmg:1,reward:1.35,mech:true,play:true},
+  {id:'restless',emoji:'🏃',name:'Restless Floor',desc:'Standing still for over 1s burns 4% max HP/s',hp:1,dmg:1,reward:1.35,mech:true,play:true},
+  {id:'shrink',emoji:'⭕',name:'Closing Pot',desc:'The safe zone shrinks over time · outside it burns',hp:1,dmg:1,reward:1.40,mech:true,play:true},
+  {id:'elitepack',emoji:'💀',name:'Elite Pack',desc:'Elites arrive far more often',hp:1,dmg:1,reward:1.40,mech:true,play:true},
+  {id:'twinboss',emoji:'👥',name:'Bodyguard',desc:'The boss arrives with a giant elite bodyguard',hp:1,dmg:1,reward:1.40,mech:true,play:true}
 ];
 // v6.32: เงื่อนไข Pact เดิมย้ายมาเป็น mod ของถ้ำ (ไม่มีหน้า Pact แล้ว)
 const RECIPE_PACT_MODS=[
@@ -5423,7 +5430,8 @@ function amapNode(id){ if(typeof id!=='string')return null; const p=id.split(','
 const DELVE_MISSIONS=['hunt','purge','capture','cleanAir','defendNectar','breakRoots'];
 function delveMission(n){ if(n.type==='home'||n.type==='boss'||n.type==='vault'||n.type==='shrine')return null; return DELVE_MISSIONS[Math.floor(_dh(n.x*7+3,n.d+421)*DELVE_MISSIONS.length)%DELVE_MISSIONS.length]; }
 function delveModCount(n){ if(n.d<=0)return 0; let k=Math.floor(n.d/6)+(n.r2<0.35?1:0); if(n.type==='elite')k++; if(n.type==='boss')k=Math.max(2,k); if(n.type==='vault'||n.type==='shrine'||n.type==='city')k--; return Math.max(0,Math.min(4,k)); }
-function delveMods(n){ const k=delveModCount(n),R=mulberry32(Math.floor(_dh(n.x,n.d+911)*1e9)),pool=RECIPE_MODS.filter(m=>!m.mech||n.d>=10).map(m=>m.id),out=[];
+function delveMods(n){ const k=delveModCount(n),R=mulberry32(Math.floor(_dh(n.x,n.d+911)*1e9)),pool=RECIPE_MODS.filter(m=>m.play||!m.mech||n.d>=10).map(m=>m.id),out=[];
+  if(k>0){ const pp=pool.filter(id=>RECIPE_MODS.find(q=>q.id===id).play); const id=pp[Math.floor(R()*pp.length)]; out.push(id); pool.splice(pool.indexOf(id),1); }
   while(out.length<k&&pool.length)out.push(pool.splice(Math.floor(R()*pool.length),1)[0]); return out; }
 function amapAdj(id){ const n=amapNode(id); if(!n)return []; const d=n.d,out=[];
   if(d>0)delveLinks(d-1).E.forEach(e=>{ if(e[1]===id)out.push(e[0]); });
@@ -9106,7 +9114,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false; if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false; if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -9399,12 +9407,12 @@ class Game extends Phaser.Scene {
     for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion,lv:e.lv})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
     this.syncBasicAttack(); this._egBuilt=true; }
   pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
-  startRecipeRun(st){ this._recipeMission=null; this._feastT=null; this._feastOn=null; this._waitMsgAt=0; const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this.setupBiome(nd); this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
+  startRecipeRun(st){ this.clearDelveMods(); this._recipeMission=null; this._feastT=null; this._feastOn=null; this._waitMsgAt=0; const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this.setupBiome(nd); this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
     this.stageTxt.setText((nd?'⛏ Depth '+nd.d:'📜 Recipe T'+r.tier)+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+(nd?nd.emoji+' '+nd.name:st.name));
     this.applyEgBuild();
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
-      this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; { const fi=this._amapInf||{}; if(fi.sweet){this.spawnInterval*=1-0.08*fi.sweet; this.spawnBatch+=fi.sweet>=2?1:0;} if(fi.sour&&this.eliteEvery)this.eliteEvery*=1-0.15*fi.sour; } this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999;
+      this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; { const fi=this._amapInf||{}; if(fi.sweet){this.spawnInterval*=1-0.08*fi.sweet; this.spawnBatch+=fi.sweet>=2?1:0;} if(fi.sour&&this.eliteEvery)this.eliteEvery*=1-0.15*fi.sour; } this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999; if(this.recipeHas('elitepack')&&this.eliteEvery){this.eliteEvery*=0.4;this.eliteAcc=Math.min(this.eliteAcc||0,this.eliteEvery);}
       { const ms=nd&&nd.mission; this._recipeMission=ms?{type:ms,done:false}:null; if(ms){ this.setupWaveObjective(1,{dur:52,forceType:ms}); const d=WAVE_OBJECTIVES[ms]; this.showBanner('🎯 '+d.name+' + 🍽 Hunger','Finish the mission and fill the meter to call the boss',2600); } else this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }
       // v6.14 (B9): Starting Relic — เลือก relic 1 ชิ้นตอนเริ่มรัน Endgame
       this.time.delayedCall(900,()=>{ if(this._busy()&&this.state==='play'&&!(this.relics&&this.relics.length)){ if(this.offerRelic())this.showBanner('🔮 Starting Relic','Choose one to shape this run',1800); } }); }); }
@@ -10406,6 +10414,13 @@ class Game extends Phaser.Scene {
     }
     this.screenShake(180,0.006);
   }
+  tickDelveMods(dt){ const p=this.player; if(!p||!p.active)return; const now=this.elapsed||0;
+    if(this.recipeHas('restless')){ const v=p.body?Math.hypot(p.body.velocity.x,p.body.velocity.y):0; this._stillT=v<25?(this._stillT||0)+dt:0;
+      if(this._stillT>1){ this._rlAcc=(this._rlAcc||0)+dt; if(this._rlAcc>=0.25){ this._rlAcc=0; if(!(p.iframe>0)){ p.hp=Math.max(1,p.hp-p.maxhp*0.01); this.drawBars&&this.drawBars(); } p.setTint&&p.setTint(0xff7a5a); this.time.delayedCall(90,()=>p.active&&p.clearTint&&p.clearTint()); if(now-(this._rlMsgAt||0)>4){ this._rlMsgAt=now; this.floatText?.(p.x,p.y-60,'🏃 Keep moving!',0xff9b7a); } } } }
+    if(this.recipeHas('shrink')){ if(!this._shz){ this._shz={x:p.x,y:p.y,t0:now}; this._shzG=this.camWorld(this.add.graphics().setDepth(-90000)); }
+      const z=this._shz,r=Math.max(360,950-(now-z.t0)*6.5); z.r=r; const g=this._shzG; g.clear(); g.lineStyle(6,0xff4d6d,0.75); g.strokeCircle(z.x,z.y,r); g.lineStyle(2,0xffffff,0.35); g.strokeCircle(z.x,z.y,r-8);
+      if(this.dist(p.x,p.y,z.x,z.y)>r){ this._shAcc=(this._shAcc||0)+dt; if(this._shAcc>=0.25){ this._shAcc=0; if(!(p.iframe>0)){ p.hp=Math.max(1,p.hp-p.maxhp*0.015); this.drawBars&&this.drawBars(); } if(now-(this._shMsgAt||0)>3){ this._shMsgAt=now; this.floatText?.(p.x,p.y-60,'⭕ Back inside!',0xff4d6d); } } } } }
+  clearDelveMods(){ if(this._shzG){ this._shzG.destroy(); this._shzG=null; } this._shz=null; this._stillT=0; }
   spawnFinalBoss(){
     if(this.state==='levelup'){this._queuedBossIntro='final';return;}
     if(this.state!=='play')return;
@@ -10444,7 +10459,7 @@ class Game extends Phaser.Scene {
     b.atkCd=0.8; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
     if(this.anims.exists(bkey+'_idle'))b.play(bkey+'_idle',true);else if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
-    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
+    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);if(this.recipeMode&&this.recipeHas('twinboss'))this.time.delayedCall(900,()=>{if(this.state!=='play'||!this.boss)return;const g=this.spawnElite();if(g){g.hp*=6;g.maxhp=g.hp;g.setPosition(this.boss.x+120,this.boss.y);g.setScale((g.baseScale||1)*1.4);g.tintColor=0xb07aff;g.setTint(0xb07aff);this.showBanner('👥 Bodyguard','The boss brought a giant elite!',1600);}});this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
     this.waveAlive=1; this.updateWaveText();
     if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; if(this.textures.exists('boss_pinnacle')){ if(b.anims)b.anims.stop(); b.setTexture('boss_pinnacle',0); b._pinnacleArt=true; b.tintColor=null; b.clearTint(); } else { b.tintColor=0x8a4dff; b.setTint(0x8a4dff); } b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
     const _dvb=this.setupDelveBoss(b); if(_dvb){ if(this.bossName)this.bossName.setText('👹 '+(b.delveBoss==='warden'?'The Jelly Warden':'Madame Candlewick')+' · Floor '+this._amapNode.d); this.bossIntro(b,_dvb); return; }
@@ -13308,7 +13323,7 @@ class Game extends Phaser.Scene {
   killEnemy(e){ if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
-    } if(e._bloat){ e._bloat=false; this.bloatBurst(e.x,e.y); } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);if(this.basicAttack&&this.basicAttack.mods)this.modOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}this.replayOnKill(e);if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);else if(this._amapInf&&this._amapInf.spicy&&Math.random()<0.06*this._amapInf.spicy)this.spawnHazard(e.x,e.y,60,Math.max(3,Math.round((e.dmg||8)*0.6)),0xff6b4a);}
+    } if(e._bloat){ e._bloat=false; this.bloatBurst(e.x,e.y); } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);if(this.basicAttack&&this.basicAttack.mods)this.modOnKill(e);e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}this.replayOnKill(e);if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('splitter')&&!e._splitKid){const x0=e.x,y0=e.y;for(let k=0;k<2;k++){const c=this.spawnEnemy('fast');if(c){c.setPosition(x0+(k?18:-18),y0);c._splitKid=true;c.hp*=0.35;c.maxhp=c.hp;c.setScale((c.baseScale||c.scaleX)*0.75);}}}e._splitKid=false;if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);else if(this._amapInf&&this._amapInf.spicy&&Math.random()<0.06*this._amapInf.spicy)this.spawnHazard(e.x,e.y,60,Math.max(3,Math.round((e.dmg||8)*0.6)),0xff6b4a);}
     if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
@@ -15136,7 +15151,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt; if(this._rushOn)this.tickSugarRush();   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt; if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
