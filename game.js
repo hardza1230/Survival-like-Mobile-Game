@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.59.8';
+const GAME_VERSION = '6.59.9';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.59.9',date:'2026-10-09',title:'Chocolate Infuse synergy',items:['Spicy + Fire Fist: burn ×1.5','Sour + Titan: release marks foes to take +25% for 4s','Sweet + Titan: Blood Rage costs 30% less HP','Minty + Dash Boxer: Dash Leap landing freezes foes','Matching Infusion cards show ★ Build match']},
   {v:'6.59.8',date:'2026-10-09',title:'Chocolate Evolutions',items:['Fire Fist: Inferno Overdrive — 5th-punch fireball calls 3 fire meteors','Titan: Cocoa Colossus — level 3 release hits the whole screen and heals 10% HP','Dash Boxer: Phantom Chocolatier — every Dash fires 2 homing shadow fists']},
   {v:'6.59.7',date:'2026-10-09',title:'Chocolate path cards',items:['Fire Fist: Blast Radius, Rapid Fire, Twin Fists, Ember Trail, Heat Seeker cards','Titan: Quick Fury and Lava Crater cards','Dash Boxer: Long Leap, Slam Wave, Rush Battery cards','Each path now has its own 3 Mutations (Napalm, Ricochet, Blood Pact, Stunning Quake, Afterimage, Chain Leap)']},
   {v:'6.59.6',date:'2026-10-09',title:'Rocket Gauntlet',items:['Fire Fist Unique is now Rocket Gauntlet: 3–5 homing fire gauntlets at the strongest enemies','Gauntlets that hit a Boss or Mini stick and explode 3–4 more times','Cooldown 18s']},
@@ -11531,7 +11532,7 @@ class Game extends Phaser.Scene {
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
     if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
       this.showBanner('🍯 Flavor Infusion','Infuse your attack with a flavor',1600);
-      return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,tags:TAGS_OF.infusion[f.id],kind:'Flavor Infusion',special:true,color:f.color,apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
+      return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,tags:TAGS_OF.infusion[f.id],kind:'Flavor Infusion',special:true,color:f.color,...(this.cocoaInfMatch(f.id)?{headline:'★ Build match: '+this.cocoaInfMatch(f.id)}:{}),apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
     }
     // v6.12 (B7): Dual Infusion — ธาตุที่สอง (ติด 50% ของฮิต) ตั้งแต่เลเวล 22
     if(!noSpecial&&b.infusion&&!b.infusion2&&!this._inTutorial&&(this.level||1)>=22){
@@ -12248,7 +12249,7 @@ class Game extends Phaser.Scene {
     let r=this._titanRage||0;const prev=Math.floor(r);
     if(this._titanHold&&(this.uniqueCd>0||this.state!=='play'))this._titanHold=null;
     if(this.uniqueBtn){const k=this._titanHold?.86:1;if(this.uniqueBtn.scaleX!==k){this.uniqueBtn.setScale(k);this.uniqueTxt?.setScale(k);}}
-    if(this._titanHold){r=Math.min(3,r+dt*(1+.2*(b.lv?.p_fastrage||0))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;}
+    if(this._titanHold){r=Math.min(3,r+dt*(1+.2*(b.lv?.p_fastrage||0))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*(this.cocoaHasInf('sweet')?.7:1)*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;}
     else{r=0;this._rageCharging=false;
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron)*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){Sfx.comboPunch(10+lv*10,'heavy');this.screenShake(60+lv*30,.002+lv*.0012);}
@@ -12310,6 +12311,7 @@ class Game extends Phaser.Scene {
       const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1),t=this.cocoaPriorityTarget(480),x=t?t.x:p.x,y=t?t.y:p.y,r=(102+ul*10)*size*(1+lv*.15),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;
       this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);Sfx.beatFx('titan');if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
         if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1.5);});
+        if(this.cocoaHasInf('sour')){const until=(this.elapsed||0)+4;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)e._titanMarkT=until;});}
         if(lv>=3&&b?.evolved){this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<900&&!(e._phaseGateLocked||e._phaseInvuln>0))this.damage(e,unit*.85*rm*.5,e.x,e.y);});p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.1);this.screenFlash?.(0xffd27a,.35,260);}
         if(lv>=2&&b?.lv?.p_crater)this.cocoaPool(x,y,r*.7,unit*.25*(1+.5*(b.lv.p_crater-1)),3,0xff3a10);});
       this.cocoaLater(.65,()=>{this.cocoaHit(x,y,r*1.2,unit*.7);this.cocoaVisual(x,y,r*1.2,'wave',0xd59b65);});
@@ -12333,6 +12335,7 @@ class Game extends Phaser.Scene {
     p.setVelocity(0,0);p.iframe=Math.max(p.iframe||0,.45);if(best.isBoss||best.isMini)tr.bossT=best;this.cocoaGlideTo({x:p.x+(best.x-p.x)*k,y:p.y+(best.y-p.y)*k},.2);this.dashTime=.22;const sw=b.lv?.p_slamwave||0;tr.finale*=1.5*(1+.1*sw);tr.finaleR=Math.round(110*(1+.2*sw));tr.leap=true;
   }
   cocoaLeapMutation(x,y,r,power){const m=this.basicAttack?.mutation,p=this.player;
+    if(this.cocoaHasInf('minty'))this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1);});
     if(m==='afterimage')for(let i=0;i<3;i++)this.cocoaLater(.5+i*.6,()=>{this.cocoaHit(x,y,r*.8,power*.4,{push:80});this.cocoaVisual(x,y,r*.8,'punch',0xc9a3ff);});
     if(m==='chainleap')this.cocoaLater(.12,()=>{if(!p?.active)return;let best=null,bd=230;this.enemies.children.iterate(e=>{if(!e?.active||e._phaseGateLocked)return;const d=this.dist(e.x,e.y,p.x,p.y);if(d>r*.6&&d<bd){bd=d;best=e;}});if(!best)return;
       p.iframe=Math.max(p.iframe||0,.4);this.cocoaGlideTo({x:best.x,y:best.y},.16);this.cocoaLater(.17,()=>{if(!p.active)return;this.cocoaHit(p.x,p.y,r*.85,power*.7,{push:160});this.cocoaVisual(p.x,p.y,r*.85,'fist',0xc9a3ff);this.cocoaLandingFx(p.x,p.y,r*.85);});});}
@@ -13151,9 +13154,12 @@ class Game extends Phaser.Scene {
       for(let i=had;i<TAG_TIERS.length;i++){ if(n<TAG_TIERS[i])break; d.t[i](p); got=i+1; this.showBanner(d.emoji+' '+d.name+' ×'+TAG_TIERS[i],'Set bonus: '+d.b[i],1700); }
       this._tagTier[t]=got; }
     clampPlayerStats(p); }
+  // v6.59.9 Infuse ที่เข้ากับสาย Chocolate
+  cocoaInfMatch(inf){const b=this.basicAttack;if(this.character!=='cocoa'||!b?.path)return null;const M={brawler:{spicy:'Burn ×1.5'},titan:{sour:'Release marks foes +25% dmg taken 4s',sweet:'Blood Rage costs 30% less HP'},dashboxer:{minty:'Dash Leap landing freezes foes'}};return M[b.path]?.[inf]||null;}
+  cocoaHasInf(inf){const b=this.basicAttack;return b?.infusion===inf||b?.infusion2===inf;}
   infusionPow(){ const b=this.basicAttack; return 1+0.35*((b&&b.lv&&b.lv.inf_deep)||0); }
   infusionOnHit(e,amount,inf){ const pw=this.infusionPow();
-    if(inf==='spicy'){ e._burnDps=Math.min((e._burnDps||0)+amount*0.30*pw/2, amount*0.6*pw); e._burnT=2; }
+    if(inf==='spicy'){ const bm=this.character==='cocoa'&&this.basicAttack?.path==='brawler'?1.5:1; e._burnDps=Math.min((e._burnDps||0)+amount*0.30*pw*bm/2, amount*0.6*pw*bm); e._burnT=2; }
     else if(inf==='sour'){ e._sourT=3; e._sourPow=pw; }
     else if(inf==='sweet'){ const now=this.elapsed||0; if(now>=(this._sweetCd||0)){ this._sweetCd=now+0.3; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(0.5,p.maxhp*0.005*pw)); } }
     else if(inf==='minty'){ if(!e.isBoss&&!e.isMini&&Math.random()<0.30)e.frozen=Math.max(e.frozen||0,0.35*pw); } }
@@ -13194,7 +13200,7 @@ class Game extends Phaser.Scene {
       if(pm.far&&this.dist(e.x,e.y,this.player.x,this.player.y)>300)amount*=1+pm.far;
       if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
-    if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);
+    if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);if(e._titanMarkT>(this.elapsed||0))amount*=1.25;
     { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this.player.powerMul||1); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }

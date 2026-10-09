@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.59.8 — Chocolate Evolutions (commit 2/4)
+# Latest delivery: v6.59.9 — Chocolate Infuse synergy (commit 3/4)
+
+cocoaInfMatch/cocoaHasInf: Spicy+Fire Fist burn ×1.5 (infusionOnHit); Sour+Titan release sets e._titanMarkT 4s → +25% damage taken in damage(); Sweet+Titan Blood Rage HP cost ×0.7; Minty+Dash Boxer leap landing freezes non-boss 1s (cocoaLeapMutation). Matching Infusion cards headline "★ Build match: …". npm check passed. Next: commit 4 Talents.
+
+# Previous delivery: v6.59.8 — Chocolate Evolutions (commit 2/4)
 
 Fire Fist evo Inferno Overdrive: finisher fireball adds 3 fire meteors (cocoaLater hits along aim). Titan evo Cocoa Colossus: level-3 release also hits all foes within 900 (×0.5 release power) and heals 10% max HP. Dash Boxer evo Phantom Chocolatier: cocoaEvoDash fires 2 homing shadow fists every Dash. npm check passed. Next: commit 3 Infuse synergy, commit 4 Talents.
 
