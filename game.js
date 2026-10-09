@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.58.7';
+const GAME_VERSION = '6.58.8';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.58.8',date:'2026-10-09',title:'Pickups and EXP',items:['Heal numbers no longer show long decimals','Hearts and magnets can always be picked up, even at full HP or with no EXP on the ground','Magnets drop less often','Story enemies give a little less EXP']},
   {v:'6.58.7',date:'2026-10-09',title:'Chocolate punch feel',items:['Chocolate only swings at enemies a punch can reach and always aims at them, so fewer punches hit air','Punch damage now lands when the arm is extended, and a new punch restarts the animation during recovery']},
   {v:'6.58.6',date:'2026-10-09',title:'Chocolate glow fix',items:['Removed the constant flashing glow around Chocolate; punch impacts keep their own effects']},
   {v:'6.58.5',date:'2026-10-09',title:'Dash Boxer Unique recharge',items:['Every Dash on the Dash Boxer path cuts 1 second from the Unique cooldown']},
@@ -9639,9 +9640,9 @@ class Game extends Phaser.Scene {
   }
   storySpawned(objective=false){if(this.usesStoryBudget?.()&&this._storyBudget&&!objective)this._storyBudget.spawned++;}
   storyEnemyXp(e){
-    if(e.isMini)return 60;
-    if(e._waveObjectiveTarget)return 24;
-    return Math.max(1,(e.xp||1)*2);
+    if(e.isMini)return 50;
+    if(e._waveObjectiveTarget)return 20;
+    return Math.max(1,Math.round((e.xp||1)*1.7));
   }
   settleStoryBudget(completed=false,partial=false){
     const b=this._storyBudget;if(!this.usesStoryBudget?.()||!b||b.done)return;
@@ -13163,7 +13164,7 @@ class Game extends Phaser.Scene {
     else if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1)*(this.player.boxFindMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
-    if(!this.usesStoryBudget?.()&&(isMini||(isElite&&Math.random()<0.12)||(!big&&Math.random()<0.008))) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
+    if(!this.usesStoryBudget?.()&&(isMini||(isElite&&Math.random()<0.08)||(!big&&Math.random()<0.005))) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
     if((isMini&&Math.random()<0.25)||(isElite&&Math.random()<0.06)) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
     if(this.stageIndex===6&&e.mycoRole==='drifter')this.spawnBossObject('acid',e.x,e.y,4.2);
     if(this.stageIndex===6&&e.mycoRole==='moldSac'){const sx=e.x,sy=e.y;for(let i=0;i<2;i++)this.time.delayedCall(80+i*90,()=>{if(!this._busy())return;const child=this.spawnEnemy('sporeling');if(child)child.setPosition(sx+Phaser.Math.Between(-34,34),sy+Phaser.Math.Between(-34,34));});}
@@ -13237,9 +13238,9 @@ class Game extends Phaser.Scene {
     d.magnetProgress=Math.min(70,d.magnetProgress+(e.isMini?8:e.isElite?4:1));
     if(e.isMini||(e.isElite&&Math.random()<.18))this.dropHeal(e.x,e.y,e.isMini?'mini':'elite');
     // A post-mini magnet has no purpose because P1 already gathers earned orbs.
-    if(e.isMini||d.magnets>=3||this.vacs.countActive(true)>=1||(this.elapsed||0)-d.magnetAt<35||!(d.magnetProgress>=25||(e.isElite&&d.magnetProgress>=10)))return;
+    if(e.isMini||d.magnets>=2||this.vacs.countActive(true)>=1||(this.elapsed||0)-d.magnetAt<50||!(d.magnetProgress>=25||(e.isElite&&d.magnetProgress>=10)))return;
     let count=0,xp=0;this.orbs.children.iterate(o=>{if(o?.active){count++;xp+=o.value||1;}});
-    if((count>=6||xp>=20)&&(d.magnetProgress>=25||(e.isElite&&d.magnetProgress>=10))&&(d.magnetProgress>=70||Math.random()<(e.isElite?0.15:0.02)))this.spawnVac(e.x,e.y);
+    if((count>=6||xp>=20)&&(d.magnetProgress>=25||(e.isElite&&d.magnetProgress>=10))&&(d.magnetProgress>=70||Math.random()<(e.isElite?0.1:0.012)))this.spawnVac(e.x,e.y);
   }
   storyOnKillHealing(){
     const p=this.player,power=(this.recipeHas?.('noheal')?0:1)*this.pactHealMul();if(power<=0||p.hp>=p.maxhp)return;
@@ -13259,13 +13260,13 @@ class Game extends Phaser.Scene {
     h.body.setAllowGravity(false); this.camWorld(h); this.showPickupCue(h,0xff5f97,1.35); if(this.iso)h.setDepth(Math.max(80000,h.y));
     this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'});return h; }
   collectHeal(player,h){ if(!h.active)return;
-    const power=this.healingItemPower(),p=this.player;if(p.hp>=p.maxhp||power<=0)return;
-    const requested=Math.round((this.usesStoryBudget?.()?p.maxhp*.18:p.maxhp*.18+6)*power),amt=Math.max(0,Math.min(p.maxhp-p.hp,this.usesStoryBudget?.()?Math.min(requested,p.maxhp*.35):requested));if(amt<=0)return;
+    const power=this.healingItemPower(),p=this.player;
+    const requested=Math.round((this.usesStoryBudget?.()?p.maxhp*.18:p.maxhp*.18+6)*power),amt=Math.max(0,Math.min(p.maxhp-p.hp,this.usesStoryBudget?.()?Math.min(requested,p.maxhp*.35):requested));
     this.tweens.killTweensOf(h); this.hidePickupCue(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
     this.player.hp+=amt;
-    Sfx.heal(); this.jelly(0,2.2); this.popHeal(this.player.x,this.player.y,amt); this.fireRecipes('heal'); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5);
+    Sfx.heal(); this.jelly(0,2.2); if(amt>=0.5)this.popHeal(this.player.x,this.player.y,amt); this.fireRecipes('heal'); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5);
     if(this.textures.exists('fx_heal')&&this.anims.exists('fx_heal')) this.spawnFxAnim('fx_heal',this.player.x,this.player.y,{scale:150/ASSET_FX.fx_heal.fw,depth:8,anchor:'center'}); }
-  popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+n+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
+  popHeal(x,y,n){ const t=this.camWorld(this.add.text(x,y-20,'+'+Math.round(n)+' HP',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8bffb0'}).setDepth(20).setOrigin(0.5));
     this.tweens.add({targets:t,y:y-56,alpha:0,duration:700,onComplete:()=>t.destroy()}); }
   // ---- กล่อง/โหลทุบได้ (ธีมครัว) ----
   spawnCrate(){ const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*(0.25+Math.random()*0.3);
@@ -13292,7 +13293,7 @@ class Game extends Phaser.Scene {
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดWaitปออร์บ
     if(Math.random()<(this.usesStoryBudget?.()?0.20:0.28)) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // โอกาสดWaitปฟื้นฟู (ลดจากครึ่งนึง ให้หัวใจหายากขึ้น)
     if(Math.random()<0.10) this.spawnLoot(x,y);   // โอกาสเล็ก ๆ ได้ของสวมใส่ (low tier)
-    if(Math.random()<0.07) this.spawnVac(x,y);    // โอกาสเล็ก ๆ ได้Magnet
+    if(Math.random()<0.04) this.spawnVac(x,y);    // โอกาสเล็ก ๆ ได้Magnet
     if(Math.random()<0.25){ this.sugarStage+=3; this.sugarRun+=3; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); }
   }
   // ---- ไอเทมกิมมิคประจำด่าน: ไม่ถูกดูดอัตโนมัติและค้างไว้ให้วางแผนเก็บ ----
@@ -13316,14 +13317,14 @@ class Game extends Phaser.Scene {
   // ---- ไอเทมMagnet (vacuum): เก็บแล้วดูดออร์บ EXP ทั้งจอเข้าตัวทันที ----
   spawnVac(x,y){
     const story=this.usesStoryBudget?.(),d=story?this.fieldDropState():null,now=this.elapsed||0;
-    if(story&&(this.vacs.countActive(true)>=1||d.magnets>=3||now-d.magnetAt<35))return null;
+    if(story&&(this.vacs.countActive(true)>=1||d.magnets>=2||now-d.magnetAt<50))return null;
     let v=this.vacs.getFirstDead(false);
     if(!v) v=this.vacs.create(x,y,'vac'); else { v.setActive(true).setVisible(true); v.body.enable=true; v.setPosition(x,y); }
     if(!v)return null;
     if(d){d.magnetAt=now;d.magnets++;d.magnetProgress=0;}
     v.body.setAllowGravity(false); this.camWorld(v); this.showPickupCue(v,0xff5a6e,1.40); if(this.iso)v.setDepth(Math.max(80000,v.y));
     this.tweens.add({targets:v,y:y-10,duration:540,yoyo:true,repeat:-1,ease:'Sine.inOut'});return v; }
-  collectVac(player,v){ if(!v.active)return;let any=false;this.orbs.children.iterate(o=>{if(o?.active)any=true;});if(!any&&this.usesStoryBudget?.())return;Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
+  collectVac(player,v){ if(!v.active)return;Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
     this.burst(v.x,v.y,0xff5a6e); this.floatText(v.x,v.y-24,'Magnet!',0xff9dcc);
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }

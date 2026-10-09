@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.58.7 — Chocolate punch feel
+# Latest delivery: v6.58.8 — Pickups and EXP
+
+Owner: heal popup showed long decimals (rounded now); hearts/magnets always collectable (full HP or no ground EXP just consumes them). Story magnets max 2/stage, 50s gap, chance elite .10 / ordinary .012; special modes elite .08 / ordinary .005, crate .04. Story enemy EXP 2x→1.7x, Hunt 24→20, mini 60→50. field-pickups/story-budget tests updated; full npm check passed.
+
+# Previous delivery: v6.58.7 — Chocolate punch feel
 
 Owner: basic punches whiffed and animation/impact out of sync. Target range reach*1.6→1.2, punch aims at target (move dir only fallback), impact point stops at target distance. Non-Titan wind-up .05/.10→.12/.16 so damage lands at arm extension; attack clip may restart once past 55% (recovery). Full npm check passed; owner phone feel review pending.
 
