@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.60.9 — Phantom Rush vs bosses
+# Latest delivery: v6.61.0 — Phantom Rush Shadow Mark
+
+Owner chose idea 1. Each Phantom leap slam marks the target (_shadowN max 4, _shadowUntil 5s); damage() ×(1+0.08·marks). npm check passed.
+
+# Previous delivery: v6.60.9 — Phantom Rush vs bosses
 
 Owner: Phantom Rush weak vs bosses. Each auto-leap slam adds a direct hit of slam×1.6 to the targeted boss/mini (respects phase gates); ordinary foes unchanged. npm check passed.
 
