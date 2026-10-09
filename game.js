@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.59.0';
+const GAME_VERSION = '6.59.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.59.1',date:'2026-10-09',title:'Titan charge bar',items:['Blood Rage charges twice as slowly (1.8s per level)','A charge bar with level dividers now shows above Chocolate','Bigger releases leave a longer punch cooldown (1.2s / 2.6s / 4.5s)']},
   {v:'6.59.0',date:'2026-10-09',title:'Titan Blood Rage',items:['Titan: stand still to charge Blood Rage (3 levels) — it drains your HP while charging','The 5th punch spends it for up to ×4.2 damage; bigger charge = bigger slow-mo, rings, cracks and TITAN CRUSH','Titan regenerates more than other paths while not charging','New Titan cards: Iron Blood (cheaper charge, more regen) and Second Wind (heal on big release)']},
   {v:'6.58.8',date:'2026-10-09',title:'Pickups and EXP',items:['Heal numbers no longer show long decimals','Hearts and magnets can always be picked up, even at full HP or with no EXP on the ground','Magnets drop less often','Story enemies give a little less EXP']},
   {v:'6.58.7',date:'2026-10-09',title:'Chocolate punch feel',items:['Chocolate only swings at enemies a punch can reach and always aims at them, so fewer punches hit air','Punch damage now lands when the arm is extended, and a new punch restarts the animation during recovery']},
@@ -3051,7 +3052,7 @@ const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:
   storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Rapid lightning · mobility',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
 };
-const TITAN_RAGE_MUL=[1,1.8,2.8,4.2];
+const TITAN_RAGE_MUL=[1,1.8,2.8,4.2],TITAN_RAGE_SEC=1.8,TITAN_RAGE_CD=[0,1.2,2.6,4.5];
 function pathMods(b){ const m={dmg:1,cd:1,count:0,range:0,big:0,frozen:0,far:0,low:0,taken:0,dashc:0,dashm:0,wave:0}; if(!b||!b.path)return m;
   const pt=(BASIC_PATHS[b.character]||[]).find(x=>x.id===b.path); if(!pt||!pt.base)return m;
   const add=(fx,n)=>{ for(const k in fx){ if(k==='dmg'||k==='cd')m[k]*=Math.pow(fx[k],n); else m[k]+=fx[k]*n; } };
@@ -12193,7 +12194,7 @@ class Game extends Phaser.Scene {
       const r=fin?(path==='titan'?reach*1.4:reach*1.05):reach*.64;
       const rage=fin&&path==='titan'?this.titanRageSpend():0,rr=r*(1+rage*.15);
       const power=unit*(fin?(path==='titan'?2:1.55)*finMul*(basic.mutation==='breaker'?1.25:1):.8)*(1+Math.min(.4,cc.n*.01))*(empowered?1.35:1)*TITAN_RAGE_MUL[rage];
-      const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true});if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);Sfx.comboPunch(cc.n,fin?'heavy':'jab');
+      const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true});if(rage>0)this.skillCd.meteor=Math.max(this.skillCd.meteor||0,TITAN_RAGE_CD[rage]);if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);Sfx.comboPunch(cc.n,fin?'heavy':'jab');
       if(!landed)return;cc.n=Math.min(40,cc.n+1);cc.t=0;cc.step=(beat+1)%5;this.cocoaBeatCharge(.25);if(empowered)this._cocoaNextPunch=false;
       const live=()=>this._cc===cc&&(cc.gen||0)===gen;
       if(fin&&path==='brawler'){
@@ -12213,15 +12214,15 @@ class Game extends Phaser.Scene {
     const p=this.player,b=this.basicAttack,iron=b.lv?.p_ironblood||0,moving=p.body&&p.body.velocity.length()>40;
     if(!this._rageG||!this._rageG.active)this._rageG=this.camWorld(this.add.graphics().setDepth(7));
     const near=!!this.nearestEnemy(420);let r=this._titanRage||0;const prev=Math.floor(r);
-    if(!moving&&near&&this.dashTime<=0){r=Math.min(3,r+dt/0.9);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;}
+    if(!moving&&near&&this.dashTime<=0){r=Math.min(3,r+dt/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;}
     else{r=Math.max(0,r-dt*.8);this._rageCharging=false;
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron)*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){Sfx.comboPunch(10+lv*10,'heavy');this.screenShake(60+lv*30,.002+lv*.0012);}
     const G=this._rageG;G.clear();if(r<=0.02)return;
     const t=this.time.now/1000,col=lv>=3?0xff2a2a:lv>=2?0xff6a1a:0xffb347,rad=34+r*12+Math.sin(t*(6+lv*4))*3;
     G.lineStyle(3+lv,col,.55+lv*.12).strokeCircle(p.x,p.y+6,rad);G.fillStyle(col,.08+lv*.05).fillCircle(p.x,p.y+6,rad);
-    const frac=r-lv;if(lv<3){G.lineStyle(4,0xffffff,.8);G.beginPath();G.arc(p.x,p.y+6,rad+7,-Math.PI/2,-Math.PI/2+frac*Math.PI*2);G.strokePath();}
-    for(let i=0;i<lv;i++)G.fillStyle(col,1).fillCircle(p.x-12+i*12,p.y-48,4);
+    {const bw=60,bh=8,bx=p.x-bw/2,by=p.y-66;G.fillStyle(0x1a0d06,.85).fillRoundedRect(bx-2,by-2,bw+4,bh+4,3);G.fillStyle(col,1).fillRect(bx,by,bw*(r/3),bh);
+     G.fillStyle(0xffffff,.9);for(let i=1;i<3;i++)G.fillRect(bx+bw*i/3-1,by-2,2,bh+4);if(lv>=3){G.lineStyle(2,0xffe08a,.6+.4*Math.sin(t*12)).strokeRoundedRect(bx-3,by-3,bw+6,bh+6,3);}}
     if(lv>=2&&this.fxOk()&&Math.random()<.35){const a=Math.random()*Math.PI*2,d=rad*(.6+Math.random()*.6);const s=this.camWorld(this.add.circle(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,2+lv,col).setDepth(8));this.tweens.add({targets:s,y:s.y-30-lv*10,alpha:0,duration:420,onComplete:()=>s.destroy()});}
   }
   titanRageSpend(){const lv=Math.floor(this._titanRage||0);this._titanRage=0;

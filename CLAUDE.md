@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.59.0 — Titan Blood Rage
+# Latest delivery: v6.59.1 — Titan charge bar
+
+Owner: slower charge, bar above head with level dividers, bigger release = longer cooldown. TITAN_RAGE_SEC 0.9→1.8s/level; bar (60px, dividers at 1/3, 2/3, gold pulse at max) replaces arc/dots; TITAN_RAGE_CD [0,1.2,2.6,4.5]s applied to skillCd.meteor on release. npm check passed; owner phone review pending. Brawler: owner asked for 10 new concepts.
+
+# Previous delivery: v6.59.0 — Titan Blood Rage
 
 Owner: Titan needs spectacle and a bigger risk. Standing still near enemies charges _titanRage 0→3 (0.9s/level) draining 2.5% maxHP/s ×(1+0.5·level) (min 1 HP); moving decays it. Finisher spends it: TITAN_RAGE_MUL [1,1.8,2.8,4.2], radius +15%/level; titanRageImpact scales hit-stop/shake/flash/rings/crater/TITAN CRUSH text with level. Titan regen +1.2% maxHP/s while not charging (outside normal cap). Cards p_ironblood (−20% cost, +0.4% regen) and p_secondwind (heal 4%×level on lv2+ release). npm check passed; owner phone review pending. Brawler replacement still awaiting owner choice.
 
