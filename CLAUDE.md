@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.64.0 — Slower meters, manual Delve cards
+# Latest delivery: v6.65.0 — Endgame Build removed
+
+Owner clarified "auto build" meant Endgame Build. startRecipeRun no longer calls applyEgBuild (_egBuilt=false); Delve panel Build chip/over-budget gate removed, Start full width (buildEgBuild/egBuild helpers now dead code). v6.62 auto upgrades restored (openLevelUp recipe redirect + closeLevelUp recipe branch). v6.64 slower meters kept. npm check passed.
+
+# Previous delivery: v6.64.0 — Slower meters, manual Delve cards
 
 Owner: replay progress and Delve Hunger fill slower; remove auto build. replayOnKill 1/8→0.75/6; HUNGER_PER_KILL .25→.19, elite 8→6, FEAST_SHARE .15→.12, MISSION_HUNGER .2→.16. openLevelUp no longer redirects recipeMode to recipeLevelUp (Sugar Rush auto stats + every-5 draft now unused); closeLevelUp reopens for pending levels in recipe too. npm check passed.
 

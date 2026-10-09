@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.64.0';
+const GAME_VERSION = '6.65.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.65.0', date:'2026-10-09', title:'Endgame Build removed', items:['The Delve Build page is gone; every run starts from your normal Basic Attack.','Delve auto upgrades are back: normal cards apply automatically, special cards are still your choice.'] },
   { v:'6.64.0', date:'2026-10-09', title:'Slower meters, manual Delve cards', items:['Replay stage progress bar fills about 25% slower.','Delve Hunger Meter fills about 25% slower (kills, elites, Feast, missions).','Delve auto upgrades removed: you pick level-up cards yourself again.'] },
   { v:'6.63.0', date:'2026-10-09', title:'Delve mods that change play', items:['5 new Delve mods: Splitting Jelly, Restless Floor, Closing Pot, Elite Pack, Bodyguard.','Every Delve cave with mods now has at least one play-changing mod, from the first depths.'] },
   { v:'6.62.0', date:'2026-10-09', title:'Delve auto upgrades', items:['Endgame Delve: normal upgrade cards apply automatically on level-up.','Build Path, Mutation, Evolution, Infusion and Fusion still let you choose; Relic drafts every 5 levels stay.'] },
@@ -7438,12 +7439,11 @@ class Game extends Phaser.Scene {
       else { const n=sn.mods.length,gap=5,tw=Math.min(130,(cw-70-gap*(n-1))/n); let x=cx+56;
         sn.mods.forEach(id=>{ const d=recipeModDef(id); if(!d)return; const g=this.add.graphics(); g.fillStyle(d.mech?0x5a2340:0x3a2a50,1); g.fillRoundedRect(x,my-12,tw,24,8); this.menu.add(g);
           const l=TL(x+6,my,d.emoji+' '+d.name,10,'#ffffff'); if(l.width>tw-10)l.setScale((tw-10)/l.width); this._zone(x,my-12,tw,24,()=>this.menuToast(d.emoji+' '+d.name+': '+d.desc+' · rewards ×'+d.reward.toFixed(2),'#e6dcf0')); x+=tw+gap; }); }
-      const over=egBuildCost()>egBuildPoints(),heat=0;
+      const heat=0;
       TL(cx+14,y0+166,'❤ Enemy HP ×'+(m.hp*(1+0.1*IL)).toFixed(1)+'      🎁 Rewards ×'+(m.reward*(1+0.15*IL)*(1+PACT_REWARD_PER_HEAT*heat)).toFixed(2),11,'#ffe08a','bold');
       const by=y0+PH-30,bw=(cw-24)/3;
       const chip=(bx,label,col,fn)=>{const g=this.add.graphics(); g.fillStyle(0x241a30,1); g.fillRoundedRect(bx,by-16,bw,32,9); g.lineStyle(2,col,0.9); g.strokeRoundedRect(bx,by-16,bw,32,9); this.menu.add(g); T(bx+bw/2,by,label,11,'#ffffff','bold'); this._zone(bx,by-16,bw,32,fn);};
-      chip(cx+8,over?'⚠ Build':'🛠 Build',over?0xff6b6b:0x7fd4ff,()=>{this.menuScreen='egbuild';this.buildMenuScreen();});
-      this.uiPillBtn(this.menu,cx+8+bw+8+(bw*2-4)/2,by,bw*2-4,34,over?0x4a4059:COLORS.pink,'▶','Start',()=>{ if(egBuildCost()>egBuildPoints()){this.menuToast('Build is over budget — fix it in 🛠 Build','#ff6b6b');return;}
+      this.uiPillBtn(this.menu,cx+cw/2,by,cw-16,34,COLORS.pink,'▶','Start',()=>{
         const rr=mapTableRecipe(); this.stageDiff=1; this._recipeRequested=rr; this._farmFocusRequested=rw.id==='sugar'?'all':rw.id; this._sugarRewardMap=rw.id==='sugar'; this.startRun(rr.theme); }); }
     else T(w/2,h-34,'Drag to dig through the map · pinch or ➕➖ to zoom · tap a cave',10,'#9d93aa');
   }
@@ -9411,7 +9411,7 @@ class Game extends Phaser.Scene {
   startRecipeRun(st){ this.clearDelveMods(); this._recipeMission=null; this._feastT=null; this._feastOn=null; this._waitMsgAt=0; const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this.setupBiome(nd); this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
     this.stageTxt.setText((nd?'⛏ Depth '+nd.d:'📜 Recipe T'+r.tier)+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+(nd?nd.emoji+' '+nd.name:st.name));
-    this.applyEgBuild();
+    this._egBuilt=false;   // v6.65: Endgame Build removed
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
       this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; { const fi=this._amapInf||{}; if(fi.sweet){this.spawnInterval*=1-0.08*fi.sweet; this.spawnBatch+=fi.sweet>=2?1:0;} if(fi.sour&&this.eliteEvery)this.eliteEvery*=1-0.15*fi.sour; } this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999; if(this.recipeHas('elitepack')&&this.eliteEvery){this.eliteEvery*=0.4;this.eliteAcc=Math.min(this.eliteAcc||0,this.eliteEvery);}
       { const ms=nd&&nd.mission; this._recipeMission=ms?{type:ms,done:false}:null; if(ms){ this.setupWaveObjective(1,{dur:52,forceType:ms}); const d=WAVE_OBJECTIVES[ms]; this.showBanner('🎯 '+d.name+' + 🍽 Hunger','Finish the mission and fill the meter to call the boss',2600); } else this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }
@@ -11211,7 +11211,7 @@ class Game extends Phaser.Scene {
     const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+(u.tiers||UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique])[target],1900);Sfx.clear();this.playGrowthWorld?.('unlock');
   }
   openLevelUp(){
-    // v6.64: auto build removed — Recipe/Delve uses normal card choice   // v6.24: Recipe = สแตตอัตโนมัติ + Sugar Rush · ทุก 5 เลเวล = Draft การ์ดเปลี่ยนวิธีเล่น
+    if(this.recipeMode&&!this._forcedOpts){ this.recipeLevelUp(); return; }   // v6.24: Recipe = สแตตอัตโนมัติ + Sugar Rush · ทุก 5 เลเวล = Draft การ์ดเปลี่ยนวิธีเล่น
     const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
@@ -11313,7 +11313,7 @@ class Game extends Phaser.Scene {
     this._relicPick=false;
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
-    if(this.pendingLvl>0){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
+    if(this.pendingLvl>0&&!this.recipeMode){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
     if(this.recipeMode&&this.refreshUpBtn)this.refreshUpBtn();
     if(this.recipeMode&&((this._draftQ||0)>0||this._specQ?.length||(this.pendingLvl||0)>0)){ this.state='play'; this.physics.resume(); this.time.delayedCall(250,()=>{ if(this.state!=='play')return; if(this._specQ?.length)this.openRecipeDraft(); else if((this.pendingLvl||0)>0)this.recipeLevelUp(); else this.openRecipeDraft(); }); return; }
     if(this._rushNextPending){ this._rushNextPending=false; this.time.delayedCall(60,()=>{ if(this.bossRush)this.bossRushNext(); }); }
