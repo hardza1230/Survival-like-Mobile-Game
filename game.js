@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.59.5';
+const GAME_VERSION = '6.59.6';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.59.6',date:'2026-10-09',title:'Rocket Gauntlet',items:['Fire Fist Unique is now Rocket Gauntlet: 3–5 homing fire gauntlets at the strongest enemies','Gauntlets that hit a Boss or Mini stick and explode 3–4 more times','Cooldown 18s']},
   {v:'6.59.5',date:'2026-10-09',title:'Fire Fist',items:['Chocolate Earth Stomp becomes Fire Fist: punches fly out as fire projectiles','The 5th punch is a big piercing fireball that explodes','Normal walking speed restored on this path']},
   {v:'6.59.4',date:'2026-10-09',title:'Titan hold-to-charge',items:['Titan: hold the Unique button to charge Blood Rage while you keep walking (costs HP)','The button sinks while held; cooldown starts only when you release','Releasing slams Colossus Fist with up to ×4.2 damage and bigger spectacle','Colossus Fist cooldown 24s → 12s']},
   {v:'6.59.3',date:'2026-10-09',title:'Titan channel',items:['Titan Blood Rage charging is no longer interrupted by getting hit','Enemy hits do not knock Chocolate back while channeling; only your own joystick movement stops the charge']},
@@ -2892,7 +2893,7 @@ const BASIC_PATHS={
                 {id:'l_twin',iconKey:'ic_card_l_twin',name:'Twin Lance',emoji:'✌️',max:1,headline:'Dash twice',desc:'Frost Lance Charge Unique: after a dash you can dash once more within 2s.'},
                 {id:'l_burst',iconKey:'ic_card_l_burst',name:'Lance Burst',emoji:'💥',max:2,headline:'Ice blast at the end',desc:'Frost Lance Charge Unique: ice blast at the end of the dash, +50% damage per rank.'}]}],
   cocoa:[
-    {id:'brawler',iconKey:'ic_path_brawler',name:'Fire Fist Build',emoji:'🔥',base:{dmg:0.72,cd:0.7,wave:1},desc:'Throw blazing fist projectiles at range. The 5th punch is a big piercing fireball that explodes. Tap Unique: moving Chocolate Cyclone',
+    {id:'brawler',iconKey:'ic_path_brawler',name:'Fire Fist Build',emoji:'🔥',base:{dmg:0.72,cd:0.7,wave:1},desc:'Throw blazing fist projectiles at range. The 5th punch is a big piercing fireball that explodes. Tap Unique: Rocket Gauntlet',
       upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Shock Knuckles',emoji:'💥',max:2,fx:{wave:1},desc:'+1 finisher wave per rank, up to 3 waves. Extra waves beyond the cap add +8% wave power each'},
                 {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Footwork',emoji:'💨',max:3,fx:{cd:0.94},desc:'-6% combo cooldown per rank'}]},
     {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. Higher regen than other paths. Hold Unique: charge Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage',
@@ -3052,7 +3053,7 @@ function modDef(id){ for(const c in FUSIONS){ const f=FUSIONS[c].find(x=>x.id===
 const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:'One giant guardian · safety',juiceWorkshop:'Cheese helper · sour zones',
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
   glacier:'Freeze and bloom · crowd control',barrage:'Rapid volleys · sustained damage',pierce:'Heavy lance · elite and boss damage',
-  brawler:'Ranged fire fists · moving Cyclone',titan:'Heavy wind-up · hold for Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
+  brawler:'Ranged fire fists · Rocket Gauntlet',titan:'Heavy wind-up · hold for Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
   storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Rapid lightning · mobility',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
 };
@@ -3100,7 +3101,7 @@ const COCOA_EVOLUTIONS={
   dashboxer:{name:'Phantom Chocolatier',desc:'The first punch after Dash gets one 65%-power shadow follow-up; combo progress survives Dash.'}
 };
 const COCOA_UNIQUES={
-  brawler:{name:'Chocolate Cyclone',emoji:'🌀',cd:20,color:0xffb347,desc:'Tap once: 6–12 punches sweep around you as you walk, then a final wave opens an escape route',tiers:{2:'8 sweep punches and a wider finale',3:'10 sweep punches and stronger impact',4:'12 sweep punches and the widest finale'}},
+  brawler:{name:'Rocket Gauntlet',emoji:'🚀',cd:18,color:0xff7a2a,desc:'Tap once: launch 3 homing fire gauntlets at the strongest nearby enemies. A gauntlet that hits a Boss or Mini sticks and explodes 3 more times',tiers:{2:'4 gauntlets',3:'Bigger explosions',4:'5 gauntlets and a 4th sticky blast'}},
   titan:{name:'Colossus Fist',emoji:'👊',cd:12,color:0xd59b65,desc:'Hold to charge Blood Rage while walking (drains HP, up to 3 levels); release to slam a giant fist on the strongest nearby enemy for up to ×4.2 damage. Cooldown starts on release',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
   dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 3 times onto the strongest enemy (boss first), slamming on each landing. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
 };
@@ -12263,9 +12264,13 @@ class Game extends Phaser.Scene {
     const b=this.basicAttack,path=b?.path,p=this.player,unit=(22+ul*6)*dm*this.uniquePower()*(1+(b?.ranks.power||0)*.12),size=Math.min(1.8,1+(b?.ranks.size||0)*.12+(b?._pm?.range||0))*(p.donutImpact?1.15:1);
     this._cocoaUsedAt=this.elapsed||0;this._cocoaMinGap=this.uniqueCd*.5;
     if(path==='brawler'){
-      const hits=6+(ul-1)*2,r=(112+ul*8)*size;this._cocoaUniqueT=hits*.15+.12;
-      for(let i=0;i<hits;i++)this.cocoaLater(i*.15,()=>{this.cocoaHit(p.x,p.y,r,unit*.42);const a=i*2.4;this.cocoaVisual(p.x+Math.cos(a)*r*.65,p.y+Math.sin(a)*r*.65,58,'punch');Sfx.comboPunch(i,'jab');});
-      this.cocoaLater(hits*.15,()=>{this.cocoaHit(p.x,p.y,r*1.32,unit*1.8,{push:320});this.cocoaVisual(p.x,p.y,r*1.32);Sfx.beatFx('cyclone');this.screenShake(100,.003);});
+      // v6.59.6 Rocket Gauntlet: ถุงมือไฟติดตามเป้า · โดนบอส/มินิเกาะติดแล้วระเบิดซ้ำ
+      const n=ul>=4?5:ul>=2?4:3,r=(70+ul*8)*size*(ul>=3?1.2:1),stick=ul>=4?4:3,used=new Set(),pick=()=>{let best=null,bv=-1;this.enemies.children.iterate(e=>{if(!e||!e.active||used.has(e)||this.dist(e.x,e.y,p.x,p.y)>620)return;const v=(e.isBoss?1e9:e.isMini?1e8:0)+(e.maxhp||e.hp||0);if(v>bv){bv=v;best=e;}});if(best)used.add(best);return best;};
+      this._cocoaUniqueT=1.2;
+      for(let i=0;i<n;i++){const t=pick()||this.cocoaPriorityTarget(620),a=t?Math.atan2(t.y-p.y,t.x-p.x)+(i-(n-1)/2)*.35:(this.moveDir?.angle?.()||0)+(i-(n-1)/2)*.5;
+        this.cocoaLater(i*.08,()=>{const b=this.getBullet?.(p.x,p.y,0xff7a2a,1.4);if(!b)return;b.dmg=unit*1.1;b.life=1.8;b.homing=520;b.lockedTarget=t||null;b.explode=r;b.faceVel=true;b.knockback=200;
+          if(this.textures?.exists?.('proj_rocket'))b.setTexture('proj_rocket').setTint(0xff6a1a).setScale(.85);if(b.body&&this.physics)this.physics.velocityFromRotation(a,560,b.body.velocity);Sfx.shoot?.();});
+        if(t&&(t.isBoss||t.isMini))for(let k=0;k<stick;k++)this.cocoaLater(.75+k*.35,()=>{if(!t.active)return;this.cocoaHit(t.x,t.y,r*.8,unit*.7,{push:0});this.cocoaVisual(t.x,t.y,r*.8,'wave',0xff6a1a);this.screenShake?.(70,.003);Sfx.beatFx?.('titan');});}
     }else if(path==='titan'){
       const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv],t=this.cocoaPriorityTarget(480),x=t?t.x:p.x,y=t?t.y:p.y,r=(102+ul*10)*size*(1+lv*.15),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;
       this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);Sfx.beatFx('titan');if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);});
@@ -12278,7 +12283,7 @@ class Game extends Phaser.Scene {
         p.iframe=Math.max(p.iframe||0,.5);this.cocoaGlideTo({x:p.x+(t.x-p.x)*k,y:p.y+(t.y-p.y)*k},.2);
         this.cocoaLater(.2,()=>{if(!p.active)return;this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.comboPunch(i,'heavy');});});
     }else{this._cocoaUniqueT=.2;const r=(115+ul*10)*size;this.cocoaHit(p.x,p.y,r,unit*2.2,{push:250});this.cocoaVisual(p.x,p.y,r);Sfx.comboPunch(0,'heavy');}
-    this.showBanner(this.uniqueInfo().emoji+' '+this.uniqueInfo().name,path==='dashboxer'?'Auto-leaping onto the strongest enemy · then Dash is free for a few seconds':path==='titan'?'Giant fist slams the strongest enemy':path==='brawler'?'Spinning punches around you · keep moving':'Slam nearby enemies',1400);
+    this.showBanner(this.uniqueInfo().emoji+' '+this.uniqueInfo().name,path==='dashboxer'?'Auto-leaping onto the strongest enemy · then Dash is free for a few seconds':path==='titan'?'Giant fist slams the strongest enemy':path==='brawler'?'Homing fire gauntlets · they stick to bosses and explode':'Slam nearby enemies',1400);
   }
   // v6.58.2 Dash Boxer: Dash พุ่งไปหามอนในทิศที่กด (ไม่กด = ตัวใกล้สุด) แล้วทุบลงพื้นตอนถึง
   cocoaDashLeap(d){

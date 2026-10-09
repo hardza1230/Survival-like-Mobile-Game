@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.59.5 — Fire Fist
+# Latest delivery: v6.59.6 — Rocket Gauntlet
+
+Owner chose Rocket Gauntlet as the Fire Fist (brawler) Unique, replacing Chocolate Cyclone. castCocoaUnique brawler: 3/4/4/5 homing proj_rocket gauntlets (Unique Lv1–4) at distinct strongest targets within 620 (boss>mini>max HP), dmg unit*1.1, explode r; gauntlets targeting Boss/Mini add 3 (Lv4: 4) sticky blasts at the target every .35s from .75s. CD 20→18. Tests updated (one hit per gauntlet; pause test moved to titan). npm check passed; owner phone review pending.
+
+# Previous delivery: v6.59.5 — Fire Fist
 
 Owner: replace Earth Stomp (path id 'brawler' kept) with fire-fist projectiles. castCocoaRush brawler targets within max(380,reach*2.6) and calls cocoaFireFist: getBullet proj_rocket tinted orange, speed 720, dmg unit*.85; 5th = big piercing fireball (speed 620, explode reach*.9 scaled by wave ranks, ×1.55·finMul); rush mutation fans 3 fireballs. Combo advances on fire. Stomp slow removed. Tests mock getBullet (dmg setter records a hit). npm check passed; owner phone review pending.
 
