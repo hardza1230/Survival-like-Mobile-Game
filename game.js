@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.60.0';
+const GAME_VERSION = '6.60.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.60.1',date:'2026-10-09',title:'Fire Fist without homing',items:['Removed the Heat Seeker card: Fire Fist fists fly straight']},
   {v:'6.60.0',date:'2026-10-09',title:'Chocolate path Talents',items:['Fire Fist talents: range, blast, burn, twin fists · Capstones Meteor Finisher / Barrage / Fire Shield','Titan talents: charge speed, release damage, lower HP cost, regen · Capstones Rage Four / Iron Body / Bloodlust','Dash Boxer talents: leap range, landing slam, Unique refund · stronger Afterimage and Endless Dash']},
   {v:'6.59.9',date:'2026-10-09',title:'Chocolate Infuse synergy',items:['Spicy + Fire Fist: burn ×1.5','Sour + Titan: release marks foes to take +25% for 4s','Sweet + Titan: Blood Rage costs 30% less HP','Minty + Dash Boxer: Dash Leap landing freezes foes','Matching Infusion cards show ★ Build match']},
   {v:'6.59.8',date:'2026-10-09',title:'Chocolate Evolutions',items:['Fire Fist: Inferno Overdrive — 5th-punch fireball calls 3 fire meteors','Titan: Cocoa Colossus — level 3 release hits the whole screen and heals 10% HP','Dash Boxer: Phantom Chocolatier — every Dash fires 2 homing shadow fists']},
@@ -2901,8 +2902,7 @@ const BASIC_PATHS={
       upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Blast Radius',emoji:'💥',max:3,fx:{},headline:'+25% fireball blast',desc:'The 5th-punch fireball explosion is 25% bigger per rank'},
                 {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Rapid Fire',emoji:'💨',max:3,fx:{cd:0.92},headline:'+8% fist fire rate',desc:'Fire fists 8% faster per rank'},
                 {id:'p_twin',iconKey:'ic_path_brawler',name:'Twin Fists',emoji:'✌️',max:2,fx:{},headline:'Double fist volleys',desc:'Every 3rd fist fires 2 fists; rank 2 makes it every 2nd fist'},
-                {id:'p_ember',iconKey:'ic_path_brawler',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'},
-                {id:'p_homing',iconKey:'ic_path_brawler',name:'Heat Seeker',emoji:'🎯',max:1,fx:{},headline:'Homing fists',desc:'Fire fists curve toward the nearest enemy'}]},
+                {id:'p_ember',iconKey:'ic_path_brawler',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'}]},
     {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. Higher regen than other paths. Hold Unique: charge Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage',
       upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Giant Slayer',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_quake',iconKey:'ic_path_p_quake',name:'Quake',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'},
@@ -12280,7 +12280,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<n;i++){const a=ang+(i-(n-1)/2)*.22,b=this.getBullet(p.x+Math.cos(a)*24,p.y+Math.sin(a)*24,fin?0xff5a1f:0xff9a3c,fin?1.9:1.25);if(!b)continue;
       b.dmg=power*(n>1&&fin?.6:1);b.life=(fin?.9:.7)*rng;b.pierce=!!fin;b.explode=fin?Math.round(reach*.9*(1+(basic?._pm?.wave||1)*.12)*(1+.25*(L.p_shock||0)+this.ptv('ffBlast'))):0;b.knockback=fin?260:90;b.faceVel=true;
       if(fin&&mut==='napalm'){b.firePool=Math.round(b.explode*.8);b.firePoolT=2;}else if(!fin&&(L.p_ember||this.ptv('ffBurn'))){b.firePool=40;b.firePoolT=1.2;}
-      if(!fin&&mut==='ricochet')b.bounce=2;if(L.p_homing)b.homing=320;
+      if(!fin&&mut==='ricochet')b.bounce=2;
       if(this.textures?.exists?.('proj_rocket')){b.setTexture('proj_rocket').setTint(fin?0xff5a1f:0xffa040).setScale(fin?.95:.6);}
       if(b.body&&this.physics)this.physics.velocityFromRotation(a,fin?620:720,b.body.velocity);}
     if(fin)this.screenShake?.(90,.004);
