@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.60.5';
+const GAME_VERSION = '6.60.6';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.60.6', date:'2026-10-09', title:'Chocolate punches while walking', items:['Chocolate before choosing a build path now shows her punch pose while walking too.'] },
   { v:'6.60.5', date:'2026-10-09', title:'Chocolate attacks while walking', items:['Fire Fist and Dash Boxer now show their punch poses while walking, not only when standing still.'] },
   { v:'6.60.4', date:'2026-10-09', title:'Titan jump attacks', items:['Titan: attacking while walking is now a jump — hop forward for normal hits, a leaping slam for the finisher.'] },
   { v:'6.60.3', date:'2026-10-09', title:'Build path art', items:['Chocolate gets new painted moves per path: Titan hops, leap slams, rage charge and Colossus jump; Fire Fist jabs and finisher; Dash Boxer jabs, leaps and Phantom Rush; new hurt and victory poses','Fire fists, fireballs, Rocket Gauntlets, fire pools, lava craters, meteors, shockwaves, rage auras and dash rings are painted','Mint: Barrage volley, Hailstorm, Impaler charge glow, Impale stack crystals and Crystal Rupture','Strawberry: Sniper impacts, pellet hits, ricochet bounces and links, Heart Pinball splash'] },
@@ -12266,7 +12267,7 @@ class Game extends Phaser.Scene {
     const angle=()=>{const next=target.active?target:this.nearestEnemy(reach*1.2)||target;if(!next.active&&!flickerHit&&this.joy?.active&&this.moveDir.lengthSq()>.04)return this.moveDir.angle();return Math.atan2(next.y-p.y,next.x-p.x);};
     const a=angle(),lock={x:p.x+Math.cos(a)*reach*.6,y:p.y+Math.sin(a)*reach*.6};p.setFlipX(Math.cos(a)<0);cc.busy=true;
     const wind=path==='titan'?(fin?.32:.24):(fin?.16:.12),mark=path==='titan'?this.cocoaMark(lock.x,lock.y,reach*(fin?1.15:.62)):null;
-    this._ccCdMul=path==='titan'?(fin?1.3:1):fin?1.08:.72;if(path==='titan'){this.bpPose?.(fin?'char_cocoa_titan_slam':'char_cocoa_titan_hop',wind+.2);if(this.joy?.active&&this.moveDir?.lengthSq?.()>.04){const hop=reach*(fin?.5:.35);this.cocoaGlideTo({x:p.x+Math.cos(a)*hop,y:p.y+Math.sin(a)*hop},wind,true);}}else{const pk=fire?(fin?'char_cocoa_fire_fin':'char_cocoa_fire_jab'):path==='dashboxer'?'char_cocoa_dash_jab':null;if(pk&&this.bpPose)this.bpPose(pk,wind+.2);else this.poseAttack(wind*1000+150,pk||undefined);}
+    this._ccCdMul=path==='titan'?(fin?1.3:1):fin?1.08:.72;if(path==='titan'){this.bpPose?.(fin?'char_cocoa_titan_slam':'char_cocoa_titan_hop',wind+.2);if(this.joy?.active&&this.moveDir?.lengthSq?.()>.04){const hop=reach*(fin?.5:.35);this.cocoaGlideTo({x:p.x+Math.cos(a)*hop,y:p.y+Math.sin(a)*hop},wind,true);}}else{const pk=fire?(fin?'char_cocoa_fire_fin':'char_cocoa_fire_jab'):path==='dashboxer'?'char_cocoa_dash_jab':'char_cocoa_attack';if(pk&&this.bpPose)this.bpPose(pk,wind+.2);else this.poseAttack(wind*1000+150,pk||undefined);}
     this.cocoaLater(wind,()=>{
       this.cocoaUnmark(mark);if((cc.gen||0)!==gen)return;cc.busy=false;
       const ang=path==='titan'?a:angle(),td=target.active?Math.min(reach*.6,this.dist(p.x,p.y,target.x,target.y)):reach*.6,x=path==='titan'?lock.x:p.x+Math.cos(ang)*td,y=path==='titan'?lock.y:p.y+Math.sin(ang)*td;
