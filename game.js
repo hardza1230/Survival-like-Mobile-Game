@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.61.0';
+const GAME_VERSION = '6.62.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.62.0', date:'2026-10-09', title:'Delve auto upgrades', items:['Endgame Delve: normal upgrade cards apply automatically on level-up.','Build Path, Mutation, Evolution, Infusion and Fusion still let you choose; Relic drafts every 5 levels stay.'] },
   { v:'6.61.0', date:'2026-10-09', title:'Phantom Rush Shadow Mark', items:['Each Phantom Rush slam marks the target: +8% damage taken per mark (max 4) for 5s.'] },
   { v:'6.60.9', date:'2026-10-09', title:'Phantom Rush vs bosses', items:['Phantom Rush leaps deal extra damage to bosses and mini-bosses.'] },
   { v:'6.60.8', date:'2026-10-09', title:'Phantom Rush reuse fix', items:['Dash Boxer: once Dashes bring the Unique cooldown to zero you can cast Phantom Rush again right away, even while the last one is still active.'] },
@@ -11247,17 +11248,21 @@ class Game extends Phaser.Scene {
   recipeLevelUp(){ const b=this.basicAttack,n=this.pendingLvl||0; this.pendingLvl=0; if(!b||n<=0)return; b.endless=b.endless||{};
     const got=[]; for(let i=0;i<n;i++){ const lv=this.level-n+1+i;
       if(lv%RECIPE_DRAFT_EVERY===0){ this._draftQ=(this._draftQ||0)+1; continue; }
+      if(!this._egBuilt){ const ro=this.rollBasicAttackUpgrades(3)||[],sp=ro.filter(c=>c.special);   // v6.62: การ์ดธรรมดาอัปให้อัตโนมัติ · การ์ดพิเศษ (Build/Mutation/Evo/Infusion/Fusion) ให้เลือกเอง
+        if(sp.length){ this._specQ=(this._specQ||[]).concat([sp]); this.pendingLvl=n-i-1; break; }
+        const nm=ro.filter(c=>c.kind!=='Modifier'&&c.kind!=='Trade-off'&&c.type!=='heal'),c=nm[0]||ro.find(c=>c.type==='heal');
+        if(c&&c.apply){ c.apply(); got.push((c.emoji||'')+' '+c.title); continue; } }
       const defs=this.endlessStatDefs(); if(!defs.length)continue; const d=Phaser.Utils.Array.GetRandom(defs); b.endless[d.id]=(b.endless[d.id]||0)+1; d.apply(this.player); got.push(d.emoji+' '+d.title); }
     clampPlayerStats(this.player); if(this.drawBars)this.drawBars(); if(this._upBtn)this._upBtn.setVisible(false);
     if(got.length)this.sugarRush(got);
-    if((this._draftQ||0)>0&&this.state==='play')this.time.delayedCall(got.length?450:0,()=>{ if(this.state==='play')this.openRecipeDraft(); }); }
+    if(((this._draftQ||0)>0||this._specQ?.length)&&this.state==='play')this.time.delayedCall(got.length?450:0,()=>{ if(this.state==='play')this.openRecipeDraft(); }); }
   sugarRush(got){ const p=this.player; 
     if(!this._rushOn){ this._rushOn=true; p.cdMul*=0.6; p.dmgMul+=0.25; }
     this._rushEnd=(this.elapsed||0)+SUGAR_RUSH_SEC;
     const r=170; this.vfxHitRing&&this.vfxHitRing(p.x,p.y,0xff76c8,true); this.burst(p.x,p.y,0xffd166); this.screenFlash&&this.screenFlash(0xff9bd0,0.25,220);
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<r){ this.damage(e,this.relicDmg(1.2),e.x,e.y); if(!e.isBoss&&!e.isMini){ const a=Math.atan2(e.y-p.y,e.x-p.x); e.setVelocity(Math.cos(a)*380,Math.sin(a)*380); e.knock=0.22; } } });
     this.showBanner('🍬 SUGAR RUSH!'+(got&&got.length?' Lv '+this.level:''),(got&&got.length?got.slice(-2).join(' · ')+' · ':'')+'attacks ×1.7 speed for '+SUGAR_RUSH_SEC+'s',1300); Sfx.clear&&Sfx.clear(); }
-  openRecipeDraft(){ if(!(this._draftQ>0))return; const opts=[],seen=new Set(),add=o=>{ if(o&&!seen.has(o.key)){seen.add(o.key);opts.push(o);} };
+  openRecipeDraft(){ if(this._specQ?.length){ this._forcedOpts=this._specQ.shift(); this._draftPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return; } if(!(this._draftQ>0))return; const opts=[],seen=new Set(),add=o=>{ if(o&&!seen.has(o.key)){seen.add(o.key);opts.push(o);} };
     for(let t=0;t<6&&opts.length<3;t++){ add(this.modCard()); if(opts.length<3&&t%2===0)add(this.tradeCard()); }
     if(opts.length<3){ this.rollRelicChoices(3-opts.length).forEach(add); }
     if(!opts.length){ this._draftQ--; return; }
@@ -11294,7 +11299,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
     if(this.pendingLvl>0&&!this.recipeMode){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
     if(this.recipeMode&&this.refreshUpBtn)this.refreshUpBtn();
-    if(this.recipeMode&&((this._draftQ||0)>0||(this.pendingLvl||0)>0)){ this.state='play'; this.physics.resume(); this.time.delayedCall(250,()=>{ if(this.state!=='play')return; if((this.pendingLvl||0)>0)this.recipeLevelUp(); else this.openRecipeDraft(); }); return; }
+    if(this.recipeMode&&((this._draftQ||0)>0||this._specQ?.length||(this.pendingLvl||0)>0)){ this.state='play'; this.physics.resume(); this.time.delayedCall(250,()=>{ if(this.state!=='play')return; if(this._specQ?.length)this.openRecipeDraft(); else if((this.pendingLvl||0)>0)this.recipeLevelUp(); else this.openRecipeDraft(); }); return; }
     if(this._rushNextPending){ this._rushNextPending=false; this.time.delayedCall(60,()=>{ if(this.bossRush)this.bossRushNext(); }); }
     this.state='play'; this.physics.resume();
     const queued=this._queuedBossIntro;this._queuedBossIntro=null;

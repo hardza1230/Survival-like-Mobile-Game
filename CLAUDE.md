@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.61.0 — Phantom Rush Shadow Mark
+# Latest delivery: v6.62.0 — Delve auto upgrades
+
+Owner: in Endgame Delve, normal cards auto-upgrade; special cards are chosen. recipeLevelUp rolls rollBasicAttackUpgrades(3): special cards → _specQ shown via openRecipeDraft (remaining levels deferred in pendingLvl); otherwise first normal card auto-applies (fallback endless stat); _egBuilt keeps endless stats; Sugar Rush + every-5 Modifier/Trade-off/Relic draft unchanged. npm check passed.
+
+# Previous delivery: v6.61.0 — Phantom Rush Shadow Mark
 
 Owner chose idea 1. Each Phantom leap slam marks the target (_shadowN max 4, _shadowUntil 5s); damage() ×(1+0.08·marks). npm check passed.
 
