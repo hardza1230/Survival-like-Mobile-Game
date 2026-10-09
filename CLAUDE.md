@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.58.5 — Dash Boxer Unique recharge
+# Latest delivery: v6.58.6 — Chocolate glow fix
+
+Owner bug: constant flashing aura around Chocolate from Lv1. Cause: castSkill drew vfxCastGlow on every Bear Core Combo tick (even with no enemy). Skipped for cocoa meteor; punch impact FX unchanged. Verified with headless screenshot; npm check passed.
+
+# Previous delivery: v6.58.5 — Dash Boxer Unique recharge
 
 Owner request: every Dash on the Dash Boxer path reduces Unique cooldown by 1s (applied in doDash after cocoaDashLeap). Full npm check passed.
 

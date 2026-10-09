@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.58.5';
+const GAME_VERSION = '6.58.6';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.58.6',date:'2026-10-09',title:'Chocolate glow fix',items:['Removed the constant flashing glow around Chocolate; punch impacts keep their own effects']},
   {v:'6.58.5',date:'2026-10-09',title:'Dash Boxer Unique recharge',items:['Every Dash on the Dash Boxer path cuts 1 second from the Unique cooldown']},
   {v:'6.58.4',date:'2026-10-09',title:'Dash Boxer vs bosses',items:['Dash Leap prefers a nearby boss or mini-boss, deals extra slam damage to it and grants brief invulnerability during the leap and landing','Phantom Rush now auto-leaps 3 times (4 at level 3) onto the strongest enemy, then makes Dash free for a few seconds','Chocolate Unique banners now say plainly what each Unique does']},
   {v:'6.58.3',date:'2026-10-08',title:'Chocolate identity and impact',items:['Flicker button removed: Brawler auto-flickers to monsters within short range, Titan stands and winds up, Dash Boxer uses Dash Leap','Combo finisher now has hit-stop, stronger screen shake and heavier knockback','Five combo dots above Chocolate show the rhythm; the last dot glows when the finisher is next','Dash Leap landing leaves a dust ring and ground cracks']},
@@ -11902,7 +11903,7 @@ class Game extends Phaser.Scene {
     const dm=this.player.dmgMul*(BALANCE.skillPower[key]||1)*weaponMul*basicDmg, cf={}, aw=lvl>=SKILL_AWAKEN_LV; this.pulseSkill(key);   // cf ปิดแล้ว (เลิกระบบคอมโบ) — เหลือแต่ Awaken
     if(aw&&Math.random()<0.5)this.awakenSpark(key);
     const _castColors={sprinkle:0xffb6e1,star:0xffe08a,thunder:0xfff2a8,whirl:0x8fd0ff,boomer:0xf0a92e,frost:0x7fc9ff,popcorn:0xffed8a,bubble:0x80e8d0,aura:0xff9ec4,fork:0xcccccc,mine:0xff8fb5,beam:0xfff2a8,meteor:0xffa54d,cloud:0xb6f0d6,rocket:0xff5a6e,wave:0xbfe8ff,mirror:0x9fe8ff,memory:0xd59cff,thread:0xffc6df,decoy:0x8fe8d0,triseal:0xffd166,echoStep:0xbca7ff};
-    this.vfxCastGlow(_castColors[key]||0xffffff);
+    if(!(this.character==='cocoa'&&key==='meteor'))this.vfxCastGlow(_castColors[key]||0xffffff);   // v6.58.6 Chocolate เรียกทุกจังหวะหมัด (แม้ไม่มีศัตรู) → แสงวับรอบตัวตลอด
     if((this.character==='taro'&&key==='thunder')||(this.character==='sesame'&&key==='mirror'))this.poseAttack(440);
     if(key==='meteor'&&basic&&this.character==='cocoa'){this.castCocoaRush(lvl,aw,dm,basic.evolved,basic);return;}
     if(key==='sprinkle'){ if(basic&&this.character==='momo'){this.castBerryBlaster(lvl,aw,dm,basic);return;} if(!this.nearestEnemy(aw?900:640))return;
