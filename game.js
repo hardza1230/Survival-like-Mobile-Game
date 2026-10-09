@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.59.2';
+const GAME_VERSION = '6.59.3';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.59.3',date:'2026-10-09',title:'Titan channel',items:['Titan Blood Rage charging is no longer interrupted by getting hit','Enemy hits do not knock Chocolate back while channeling; only your own joystick movement stops the charge']},
   {v:'6.59.2',date:'2026-10-09',title:'Earth Stomp',items:['Chocolate Brawler becomes Earth Stomp: walk 20% slower and stomp the ground','Every stomp damages all enemies around you; the 5th stomp sends shockwaves','No more auto-flicker jumping between enemies']},
   {v:'6.59.1',date:'2026-10-09',title:'Titan charge bar',items:['Blood Rage charges twice as slowly (1.8s per level)','A charge bar with level dividers now shows above Chocolate','Bigger releases leave a longer punch cooldown (1.2s / 2.6s / 4.5s)']},
   {v:'6.59.0',date:'2026-10-09',title:'Titan Blood Rage',items:['Titan: stand still to charge Blood Rage (3 levels) — it drains your HP while charging','The 5th punch spends it for up to ×4.2 damage; bigger charge = bigger slow-mo, rings, cracks and TITAN CRUSH','Titan regenerates more than other paths while not charging','New Titan cards: Iron Blood (cheaper charge, more regen) and Second Wind (heal on big release)']},
@@ -12209,10 +12210,13 @@ class Game extends Phaser.Scene {
     });
   }
   // v6.59.0 Titan Blood Rage: ยืนนิ่งชาร์จ (เสียเลือด) · หมัดที่ 5 ใช้หมด · ยิ่งเสี่ยงยิ่งอลังการ · regen สูงกว่าสายอื่น
+  // v6.59.3 Channeling ไม่ถูกขัด: นับว่าเดินเฉพาะเมื่อผู้เล่นโยกจอยเอง (แรงกระแทกไม่นับ) และไม่โดนผลักระหว่างชาร์จ
+  titanMoving(){return !!(this.joy?.active&&Math.hypot(this.joy.dx||0,this.joy.dy||0)>.15);}
+  titanChanneling(){return this.titanRageOn()&&!this.titanMoving()&&(this._titanRage||0)>0;}
   titanRageOn(){return this.character==='cocoa'&&this.basicAttack?.path==='titan'&&this.state==='play'&&this.player?.active;}
   tickTitanRage(dt){
     const g=this._rageG;if(!this.titanRageOn()){this._titanRage=0;if(g)g.clear();return;}
-    const p=this.player,b=this.basicAttack,iron=b.lv?.p_ironblood||0,moving=p.body&&p.body.velocity.length()>40;
+    const p=this.player,b=this.basicAttack,iron=b.lv?.p_ironblood||0,moving=this.titanMoving();
     if(!this._rageG||!this._rageG.active)this._rageG=this.camWorld(this.add.graphics().setDepth(7));
     const near=!!this.nearestEnemy(420);let r=this._titanRage||0;const prev=Math.floor(r);
     if(!moving&&near&&this.dashTime<=0){r=Math.min(3,r+dt/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;}
@@ -13801,14 +13805,14 @@ class Game extends Phaser.Scene {
     for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t,{gacha:true,itemLevel}); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0)return;
     if(!e.shooter&&!e.acid&&!e.bomber&&!e.dasher&&this.anims.exists((e._enemyArtKey||e.texture.key)+'_attack'))this.enemyAction(e,'attack',340);
-    if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
+    if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.())this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
-    if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
+    if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.())this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
     this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*wardMul*crisisMul*this.cocoaGuard()*this.condTakenMul(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
-    const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;
+    const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.()){this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;}
     if(this.player.hp<=0) this.die(); }
   // 💀 สะสมดาเมจที่รับตามแหล่ง (หน้าตายบอกสาเหตุ) · รีเซ็ตใน startRun
   _noteHit(src,dmg){ if(this._miniFight&&this.mode==='mini')this._miniFight.hits++; const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
