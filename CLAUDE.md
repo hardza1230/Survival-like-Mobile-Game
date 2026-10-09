@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.60.4 — Titan jump attacks
+# Latest delivery: v6.60.5 — Chocolate attacks while walking
+
+Owner: other paths should also show attack poses while walking. castCocoaRush Fire Fist (fire_jab/fire_fin) and Dash Boxer (dash_jab) use bpPose (plays while moving) instead of poseAttack; no-path Chocolate keeps poseAttack. npm check passed.
+
+# Previous delivery: v6.60.4 — Titan jump attacks
 
 Owner: Titan should keep walking and attacks become jumps. castCocoaRush titan uses bpPose hop/slam (plays while moving) and, if joystick active, glides toward target reach*.35 (finisher .5) over wind-up via cocoaGlideTo(noLine). Damage point/iframes unchanged. npm check passed.
 
