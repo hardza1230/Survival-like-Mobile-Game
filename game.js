@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.59.7';
+const GAME_VERSION = '6.59.8';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.59.8',date:'2026-10-09',title:'Chocolate Evolutions',items:['Fire Fist: Inferno Overdrive — 5th-punch fireball calls 3 fire meteors','Titan: Cocoa Colossus — level 3 release hits the whole screen and heals 10% HP','Dash Boxer: Phantom Chocolatier — every Dash fires 2 homing shadow fists']},
   {v:'6.59.7',date:'2026-10-09',title:'Chocolate path cards',items:['Fire Fist: Blast Radius, Rapid Fire, Twin Fists, Ember Trail, Heat Seeker cards','Titan: Quick Fury and Lava Crater cards','Dash Boxer: Long Leap, Slam Wave, Rush Battery cards','Each path now has its own 3 Mutations (Napalm, Ricochet, Blood Pact, Stunning Quake, Afterimage, Chain Leap)']},
   {v:'6.59.6',date:'2026-10-09',title:'Rocket Gauntlet',items:['Fire Fist Unique is now Rocket Gauntlet: 3–5 homing fire gauntlets at the strongest enemies','Gauntlets that hit a Boss or Mini stick and explode 3–4 more times','Cooldown 18s']},
   {v:'6.59.5',date:'2026-10-09',title:'Fire Fist',items:['Chocolate Earth Stomp becomes Fire Fist: punches fly out as fire projectiles','The 5th punch is a big piercing fireball that explodes','Normal walking speed restored on this path']},
@@ -3105,9 +3106,9 @@ function pickMintCards(entries,n,buildDraft=false){
 
 // Chocolate keeps saved path, upgrade and Talent IDs; runtime moves are selected by path.
 const COCOA_EVOLUTIONS={
-  brawler:{name:'Chocolate Overdrive',desc:'Each landed finisher adds 2 rapid punches and a final wave. Shockwaves remain capped at 3.'},
-  titan:{name:'Cocoa Colossus',desc:'Heavy finishers produce one 70%-power aftershock; Earthbreaker strengthens this same echo.'},
-  dashboxer:{name:'Phantom Chocolatier',desc:'The first punch after Dash gets one 65%-power shadow follow-up; combo progress survives Dash.'}
+  brawler:{name:'Inferno Overdrive',desc:'Every 5th-punch fireball also calls down 3 fire meteors where it lands.'},
+  titan:{name:'Cocoa Colossus',desc:'Heavy finishers make a 70%-power aftershock. A level 3 Blood Rage release also strikes every enemy on screen and heals 10% max HP.'},
+  dashboxer:{name:'Phantom Chocolatier',desc:'Every Dash also fires 2 homing shadow fists, and the first punch after Dash gets a shadow follow-up.'}
 };
 const COCOA_UNIQUES={
   brawler:{name:'Rocket Gauntlet',emoji:'🚀',cd:18,color:0xff7a2a,desc:'Tap once: launch 3 homing fire gauntlets at the strongest nearby enemies. A gauntlet that hits a Boss or Mini sticks and explodes 3 more times',tiers:{2:'4 gauntlets',3:'Bigger explosions',4:'5 gauntlets and a 4th sticky blast'}},
@@ -5838,7 +5839,7 @@ class Game extends Phaser.Scene {
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;
     if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
-    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-1-.5*(this.basicAttack.lv?.p_recharge||0));}
+    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);this.cocoaEvoDash?.();if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-1-.5*(this.basicAttack.lv?.p_recharge||0));}
     this.player.iframe=Math.max(this.player.iframe,0.28);
     Sfx.dash();
     this.flashBtn(this.dashBtn);
@@ -12279,7 +12280,12 @@ class Game extends Phaser.Scene {
       if(this.textures?.exists?.('proj_rocket')){b.setTexture('proj_rocket').setTint(fin?0xff5a1f:0xffa040).setScale(fin?.95:.6);}
       if(b.body&&this.physics)this.physics.velocityFromRotation(a,fin?620:720,b.body.velocity);}
     if(fin)this.screenShake?.(90,.004);
+    if(fin&&basic?.evolved){const d=Math.min(520,reach*3);for(let i=0;i<3;i++)this.cocoaLater(.35+i*.15,()=>{if(!p.active)return;const x=p.x+Math.cos(ang)*d*(.5+i*.25)+(Math.random()-.5)*60,y=p.y+Math.sin(ang)*d*(.5+i*.25)+(Math.random()-.5)*60;this.cocoaHit(x,y,reach*.7,power*.5,{push:120});this.cocoaVisual(x,y,reach*.7,'fist',0xff5a1f);this.screenShake?.(60,.003);});}
   }
+  cocoaEvoDash(){const b=this.basicAttack,p=this.player;if(b?.path!=='dashboxer'||!b.evolved||!p?.active||!this.getBullet)return;
+    const lvl=this.skills?.meteor||1,power=(12+lvl*3.5)*(p.dmgMul||1)*1.1;
+    for(let i=0;i<2;i++){const t=this.nearestEnemy(520);const a=t?Math.atan2(t.y-p.y,t.x-p.x)+(i?.4:-.4):i*Math.PI;const s=this.getBullet(p.x,p.y,0xc9a3ff,1.2);if(!s)continue;
+      s.dmg=power;s.life=1.4;s.homing=480;s.lockedTarget=t||null;s.faceVel=true;s.knockback=120;if(this.textures?.exists?.('proj_rocket'))s.setTexture('proj_rocket').setTint(0xc9a3ff).setScale(.6);if(s.body&&this.physics)this.physics.velocityFromRotation(a,600,s.body.velocity);}}
   // v6.59.7 แอ่งไฟ/ลาวาของ Chocolate (สูงสุด 12)
   cocoaPool(x,y,r,dps,t,col=0xff6a1a){const pools=this._cocoaPools||(this._cocoaPools=[]);if(pools.length>=12){const o=pools.shift();o.g?.destroy?.();}
     let g=null;if(this.add?.graphics){g=this.camWorld(this.add.graphics().setDepth(5));g.fillStyle(col,.28).fillCircle(x,y,r);g.lineStyle(2,col,.6).strokeCircle(x,y,r);}
@@ -12304,6 +12310,7 @@ class Game extends Phaser.Scene {
       const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1),t=this.cocoaPriorityTarget(480),x=t?t.x:p.x,y=t?t.y:p.y,r=(102+ul*10)*size*(1+lv*.15),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;
       this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);Sfx.beatFx('titan');if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
         if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1.5);});
+        if(lv>=3&&b?.evolved){this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<900&&!(e._phaseGateLocked||e._phaseInvuln>0))this.damage(e,unit*.85*rm*.5,e.x,e.y);});p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.1);this.screenFlash?.(0xffd27a,.35,260);}
         if(lv>=2&&b?.lv?.p_crater)this.cocoaPool(x,y,r*.7,unit*.25*(1+.5*(b.lv.p_crater-1)),3,0xff3a10);});
       this.cocoaLater(.65,()=>{this.cocoaHit(x,y,r*1.2,unit*.7);this.cocoaVisual(x,y,r*1.2,'wave',0xd59b65);});
     }else if(path==='dashboxer'){

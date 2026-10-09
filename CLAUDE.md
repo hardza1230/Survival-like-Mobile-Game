@@ -2,7 +2,15 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.59.6 — Rocket Gauntlet
+# Latest delivery: v6.59.8 — Chocolate Evolutions (commit 2/4)
+
+Fire Fist evo Inferno Overdrive: finisher fireball adds 3 fire meteors (cocoaLater hits along aim). Titan evo Cocoa Colossus: level-3 release also hits all foes within 900 (×0.5 release power) and heals 10% max HP. Dash Boxer evo Phantom Chocolatier: cocoaEvoDash fires 2 homing shadow fists every Dash. npm check passed. Next: commit 3 Infuse synergy, commit 4 Talents.
+
+# Previous delivery: v6.59.7 — Chocolate path cards + path Mutations (commit 1/4)
+
+Fire Fist cards Blast Radius (p_shock +25% blast), Rapid Fire (p_footwork cd .92), Twin Fists, Ember Trail, Heat Seeker; Titan Quick Fury, Lava Crater; Dash Boxer Long Leap, Slam Wave, Rush Battery. COCOA_PATH_MUTS gives each path 3 Mutations (brawler rush/napalm/ricochet, titan breaker/bloodpact/quakestun, dashboxer counter/afterimage/chainleap) via cocoaAttackInfo. Fire/lava pools: cocoaPool/tickCocoaPools (cap 12, cleared in clearCocoaCombat).
+
+# Previous delivery: v6.59.6 — Rocket Gauntlet
 
 Owner chose Rocket Gauntlet as the Fire Fist (brawler) Unique, replacing Chocolate Cyclone. castCocoaUnique brawler: 3/4/4/5 homing proj_rocket gauntlets (Unique Lv1–4) at distinct strongest targets within 620 (boss>mini>max HP), dmg unit*1.1, explode r; gauntlets targeting Boss/Mini add 3 (Lv4: 4) sticky blasts at the target every .35s from .75s. CD 20→18. Tests updated (one hit per gauntlet; pause test moved to titan). npm check passed; owner phone review pending.
 
