@@ -1,0 +1,404 @@
+{
+  "assets": 44,
+  "frames": 296,
+  "totalBytes": 16527722,
+  "baseVersion": "6.60.2",
+  "checks": [
+    {
+      "key": "cocoa_titan_leap_slam_sheet",
+      "width": 1024,
+      "height": 768,
+      "frames": 12,
+      "uniqueFrames": 12,
+      "minVisibleMargin": 22,
+      "sha256": "dc19f7a03d0b281a9a5857638a6e0e9caf30bbd873655ea716146437e4bc9ecd"
+    },
+    {
+      "key": "cocoa_titan_light_hop_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "2dd47e799e0cc916bef57400d44eb0414b981add0bb9982ffd7ea854bafd28b3"
+    },
+    {
+      "key": "cocoa_titan_charge_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "885ebabb3cdd511f0fd098593a49186ecb156d0b1ae0b127e8d38b88807c8291"
+    },
+    {
+      "key": "cocoa_titan_charge_walk_sheet",
+      "width": 1024,
+      "height": 768,
+      "frames": 12,
+      "uniqueFrames": 12,
+      "minVisibleMargin": 22,
+      "sha256": "fa0a40e20f7c722010b83613f2a935fd1ea9add1f3e3b5a6cc26aba825743231"
+    },
+    {
+      "key": "cocoa_titan_colossus_sheet",
+      "width": 1024,
+      "height": 1024,
+      "frames": 16,
+      "uniqueFrames": 16,
+      "minVisibleMargin": 22,
+      "sha256": "d522714711139442ac128810121dbef2763cb4f1d92615d75e2134e40be63a77"
+    },
+    {
+      "key": "vfx_titan_landing_crack",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 24,
+      "sha256": "21fc8264bee00ddadf951b4da4f8ee88112a416e8862f6d85939fd8935973fc6"
+    },
+    {
+      "key": "vfx_titan_shockwave",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 25,
+      "sha256": "e84bc7b899a6a7530f85505c04f9306d73888e2f9d8aa7fd62a670034d3ffc34"
+    },
+    {
+      "key": "vfx_titan_rage_aura_lv1",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 27,
+      "sha256": "64db7d004dafc90f757651b080569a7bc1155437841c5ba4cdfc035da9700717"
+    },
+    {
+      "key": "vfx_titan_rage_aura_lv2",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 24,
+      "sha256": "ddc58a96cded5e0bae98ad1e3b0d23b8b7d25272bcf50a1c25b24b131aa4f9be"
+    },
+    {
+      "key": "vfx_titan_rage_aura_lv3",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 25,
+      "sha256": "f7b3cacb4b1043afa418076facc1f5ac512092862467475f07db623bacde863a"
+    },
+    {
+      "key": "vfx_titan_crush_burst",
+      "width": 1024,
+      "height": 768,
+      "frames": 12,
+      "uniqueFrames": 12,
+      "minVisibleMargin": 26,
+      "sha256": "6a14bec1c74e90dfbedffe6c3f08d586a0f7b6ffb1c28eec760ae8c6db1268aa"
+    },
+    {
+      "key": "vfx_titan_lava_crater",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 24,
+      "sha256": "c308cefadb9b62565fc156e35805e247dd8f989d2e0f21b364f3dcc1cb880a82"
+    },
+    {
+      "key": "cocoa_fire_jab_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "14e791b2506548d8e8c58d0fafd6e24c4b28554251c847b337ea724f8436941c"
+    },
+    {
+      "key": "cocoa_fire_finisher_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "94f2307e77fb2a4cc2eef0f9a267f91ca489f59ec9c87164c4e876c61c4f7b96"
+    },
+    {
+      "key": "cocoa_rocket_launch_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "702b456012ced88103cd7d2ca3132c43db5a804cc4bfdf5b894a2c4ea6796da9"
+    },
+    {
+      "key": "vfx_fire_fist_proj",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 77,
+      "sha256": "2115dee77f246ecd32346cf5a6285f9ec1996eeae1324223fd6805676dc14c83"
+    },
+    {
+      "key": "vfx_fireball_big",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 26,
+      "sha256": "b45bc3a3c081e01c48c89088c387db5d277e5eafdc98606eca8ccace2ae97dc0"
+    },
+    {
+      "key": "vfx_fireball_explode",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 24,
+      "sha256": "03f7d9f3962814fa7251db37e8b2a9c1c9c792a381eed7eb7e0473172639dfa2"
+    },
+    {
+      "key": "vfx_rocket_gauntlet",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 49,
+      "sha256": "2322bcb5c26777012f94e4d03ed1f8273375ed08c5e20aa0d5841b317aadd030"
+    },
+    {
+      "key": "vfx_gauntlet_stick",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 24,
+      "sha256": "ed1f40b8e310aa660e8f24253c9bf856cef18bea977413735da43f1ee3f5d44f"
+    },
+    {
+      "key": "vfx_fire_pool",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 23,
+      "sha256": "733143a92762c2950b04843df4371446484157077a1dd4feac2db42687d2cdc6"
+    },
+    {
+      "key": "vfx_fire_meteor",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 26,
+      "sha256": "63444c1c129a33b35b16ab6b3f84f0f151bebe12474bf58d20f45e6f8998e98f"
+    },
+    {
+      "key": "cocoa_dash_leap_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 23,
+      "sha256": "8fb0d4fa578d17d983f71762c526a01428fb7d27a2439e7dd8f12b119a1049cb"
+    },
+    {
+      "key": "cocoa_dash_jab_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "82133fdc79ae336f2b8baa54e0e2a619a132ad6f2e85eb354713e3029965d53e"
+    },
+    {
+      "key": "cocoa_phantom_rush_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "ab3b61283e8a14f17e9cbce5076e9028714272c5ab48855ef69f6d19d681874d"
+    },
+    {
+      "key": "vfx_dash_afterimage",
+      "width": 256,
+      "height": 256,
+      "frames": 1,
+      "uniqueFrames": 1,
+      "minVisibleMargin": 24,
+      "sha256": "856866875177dfed057ded986f6b1ed9cb142c942fd782e6aa32d589350b22cc"
+    },
+    {
+      "key": "vfx_dash_slam_ring",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 26,
+      "sha256": "796a57964051920b15e25a53e777a1862261d0273f72e32dc9d551b328db3662"
+    },
+    {
+      "key": "vfx_shadow_fist",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 65,
+      "sha256": "837319705ac4aef2f93d5e0f8365105e3251d21a9891ae7219bb39d5e825e7f4"
+    },
+    {
+      "key": "vfx_chain_leap_line",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 24,
+      "sha256": "160f4f776061138280b349706a1f4984cf16d5a24bed5b302cd2cbbdbd62c775"
+    },
+    {
+      "key": "cocoa_hurt_sheet",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 22,
+      "sha256": "5bd529f4328fb67878e48bd01360d7bb2487ce56b4a779daca993b3e55c04f31"
+    },
+    {
+      "key": "cocoa_victory_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "9f780d54c21da2132cee9f1c90784e1bbf84a0c63bdaf4f477a07e7b3c532ec2"
+    },
+    {
+      "key": "vfx_barrage_volley",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 23,
+      "sha256": "7c77f43da6fd2a9c1d25bd3245f921a42f30e763cce4c2c8e17446970ded0470"
+    },
+    {
+      "key": "vfx_hailstorm",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 25,
+      "sha256": "d76f6939faac1e53e836354d6a736a55f3c7eb9572e41694a5c7c29ac37626df"
+    },
+    {
+      "key": "vfx_impaler_charge",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 26,
+      "sha256": "c3e6cdf526ad372ec19d44eae436f75262ced2c63afaaa2c6c30f92a86ab2a10"
+    },
+    {
+      "key": "vfx_impale_stack_1",
+      "width": 128,
+      "height": 128,
+      "frames": 1,
+      "uniqueFrames": 1,
+      "minVisibleMargin": 12,
+      "sha256": "05888fe7f2b38d3c588478ce2b3ba108d0945f92d4ed45e903d07349677ad293"
+    },
+    {
+      "key": "vfx_impale_stack_2",
+      "width": 128,
+      "height": 128,
+      "frames": 1,
+      "uniqueFrames": 1,
+      "minVisibleMargin": 12,
+      "sha256": "e2fd147b1338d61cd568234745ca7d918f3ffaf7f44dbe01ade3a4ca64a2220c"
+    },
+    {
+      "key": "vfx_impale_stack_3",
+      "width": 128,
+      "height": 128,
+      "frames": 1,
+      "uniqueFrames": 1,
+      "minVisibleMargin": 12,
+      "sha256": "57c5004d83d881e132904faf1aed261943c4be0a7bb3339441b0c25ab1da3071"
+    },
+    {
+      "key": "vfx_crystal_rupture",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 25,
+      "sha256": "ffc3c758c9e12c0efce6a97513b703de997e79226ac445bdfbbfe56228e7ac81"
+    },
+    {
+      "key": "mint_lance_throw_charged_sheet",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 22,
+      "sha256": "9e5c19b50fb716b21b88ddf50c97732bbb36107b3a0fd78be41a4eed3e603033"
+    },
+    {
+      "key": "vfx_sniper_impact",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 25,
+      "sha256": "02f02b739f350a112b640b071f707550c77dc3f8dbb6b3fbcd860797d1e1b392"
+    },
+    {
+      "key": "vfx_pellet_hit",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 97,
+      "sha256": "11362ae60b3ad5843a8cfccdc7932ad6478520d68e7eafc296ecad3155cc8e7a"
+    },
+    {
+      "key": "vfx_ricochet_bounce",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 27,
+      "sha256": "85cd8704f07700df7c7fabbfa8ed76054f14ed04d582a33178c759c92becb99a"
+    },
+    {
+      "key": "vfx_ricochet_link",
+      "width": 1024,
+      "height": 256,
+      "frames": 4,
+      "uniqueFrames": 4,
+      "minVisibleMargin": 27,
+      "sha256": "8984c2d42dc8996c1f2da411e46ab91ef1913bf161c9859348255a1dd273096e"
+    },
+    {
+      "key": "vfx_heart_pinball_splash",
+      "width": 1024,
+      "height": 512,
+      "frames": 8,
+      "uniqueFrames": 8,
+      "minVisibleMargin": 26,
+      "sha256": "3d43f96b1304c946fb4bb415803bfec955502fa9e14bee8e3497d60fefe73749"
+    }
+  ]
+}

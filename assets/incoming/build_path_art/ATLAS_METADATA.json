@@ -1,0 +1,3576 @@
+[
+  {
+    "key": "cocoa_titan_leap_slam_sheet",
+    "grid": [
+      4,
+      3
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1448,
+      1086
+    ],
+    "scale": 0.5471698113207547,
+    "sourceRects": [
+      {
+        "left": 38,
+        "top": 151,
+        "width": 287,
+        "height": 223
+      },
+      {
+        "left": 382,
+        "top": 141,
+        "width": 307,
+        "height": 230
+      },
+      {
+        "left": 723,
+        "top": 73,
+        "width": 332,
+        "height": 300
+      },
+      {
+        "left": 1113,
+        "top": 18,
+        "width": 308,
+        "height": 315
+      },
+      {
+        "left": 13,
+        "top": 401,
+        "width": 288,
+        "height": 315
+      },
+      {
+        "left": 380,
+        "top": 465,
+        "width": 338,
+        "height": 265
+      },
+      {
+        "left": 742,
+        "top": 438,
+        "width": 360,
+        "height": 292
+      },
+      {
+        "left": 1124,
+        "top": 421,
+        "width": 308,
+        "height": 318
+      },
+      {
+        "left": 17,
+        "top": 786,
+        "width": 353,
+        "height": 288
+      },
+      {
+        "left": 404,
+        "top": 778,
+        "width": 312,
+        "height": 290
+      },
+      {
+        "left": 744,
+        "top": 791,
+        "width": 306,
+        "height": 282
+      },
+      {
+        "left": 1110,
+        "top": 802,
+        "width": 299,
+        "height": 267
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 50,
+        "top": 113,
+        "width": 157,
+        "height": 122,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 44,
+        "top": 109,
+        "width": 168,
+        "height": 126,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 37,
+        "top": 55,
+        "width": 182,
+        "height": 164,
+        "bottom": 219
+      },
+      {
+        "i": 3,
+        "left": 44,
+        "top": 33,
+        "width": 169,
+        "height": 172,
+        "bottom": 205
+      },
+      {
+        "i": 4,
+        "left": 49,
+        "top": 21,
+        "width": 158,
+        "height": 172,
+        "bottom": 193
+      },
+      {
+        "i": 5,
+        "left": 36,
+        "top": 40,
+        "width": 185,
+        "height": 145,
+        "bottom": 185
+      },
+      {
+        "i": 6,
+        "left": 30,
+        "top": 45,
+        "width": 197,
+        "height": 160,
+        "bottom": 205
+      },
+      {
+        "i": 7,
+        "left": 44,
+        "top": 47,
+        "width": 169,
+        "height": 174,
+        "bottom": 221
+      },
+      {
+        "i": 8,
+        "left": 32,
+        "top": 77,
+        "width": 193,
+        "height": 158,
+        "bottom": 235
+      },
+      {
+        "i": 9,
+        "left": 43,
+        "top": 76,
+        "width": 171,
+        "height": 159,
+        "bottom": 235
+      },
+      {
+        "i": 10,
+        "left": 45,
+        "top": 81,
+        "width": 167,
+        "height": 154,
+        "bottom": 235
+      },
+      {
+        "i": 11,
+        "left": 46,
+        "top": 89,
+        "width": 164,
+        "height": 146,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_titan_light_hop_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5178571428571429,
+    "sourceRects": [
+      {
+        "left": 56,
+        "top": 157,
+        "width": 312,
+        "height": 299
+      },
+      {
+        "left": 507,
+        "top": 196,
+        "width": 319,
+        "height": 260
+      },
+      {
+        "left": 942,
+        "top": 86,
+        "width": 309,
+        "height": 316
+      },
+      {
+        "left": 1371,
+        "top": 86,
+        "width": 334,
+        "height": 336
+      },
+      {
+        "left": 61,
+        "top": 509,
+        "width": 322,
+        "height": 316
+      },
+      {
+        "left": 529,
+        "top": 571,
+        "width": 336,
+        "height": 285
+      },
+      {
+        "left": 943,
+        "top": 492,
+        "width": 329,
+        "height": 322
+      },
+      {
+        "left": 1388,
+        "top": 556,
+        "width": 315,
+        "height": 299
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 47,
+        "top": 80,
+        "width": 162,
+        "height": 155,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 46,
+        "top": 100,
+        "width": 165,
+        "height": 135,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 48,
+        "top": 51,
+        "width": 160,
+        "height": 164,
+        "bottom": 215
+      },
+      {
+        "i": 3,
+        "left": 42,
+        "top": 33,
+        "width": 173,
+        "height": 174,
+        "bottom": 207
+      },
+      {
+        "i": 4,
+        "left": 45,
+        "top": 53,
+        "width": 167,
+        "height": 164,
+        "bottom": 217
+      },
+      {
+        "i": 5,
+        "left": 41,
+        "top": 79,
+        "width": 174,
+        "height": 148,
+        "bottom": 227
+      },
+      {
+        "i": 6,
+        "left": 43,
+        "top": 68,
+        "width": 170,
+        "height": 167,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 47,
+        "top": 80,
+        "width": 163,
+        "height": 155,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_titan_charge_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5187032418952618,
+    "sourceRects": [
+      {
+        "left": 53,
+        "top": 114,
+        "width": 318,
+        "height": 326
+      },
+      {
+        "left": 482,
+        "top": 113,
+        "width": 334,
+        "height": 327
+      },
+      {
+        "left": 927,
+        "top": 113,
+        "width": 337,
+        "height": 327
+      },
+      {
+        "left": 1358,
+        "top": 109,
+        "width": 358,
+        "height": 332
+      },
+      {
+        "left": 20,
+        "top": 506,
+        "width": 401,
+        "height": 340
+      },
+      {
+        "left": 481,
+        "top": 515,
+        "width": 358,
+        "height": 331
+      },
+      {
+        "left": 925,
+        "top": 520,
+        "width": 333,
+        "height": 326
+      },
+      {
+        "left": 1384,
+        "top": 520,
+        "width": 317,
+        "height": 326
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 46,
+        "top": 66,
+        "width": 165,
+        "height": 169,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 42,
+        "top": 65,
+        "width": 173,
+        "height": 170,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 41,
+        "top": 65,
+        "width": 175,
+        "height": 170,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 35,
+        "top": 63,
+        "width": 186,
+        "height": 172,
+        "bottom": 235
+      },
+      {
+        "i": 4,
+        "left": 24,
+        "top": 59,
+        "width": 208,
+        "height": 176,
+        "bottom": 235
+      },
+      {
+        "i": 5,
+        "left": 35,
+        "top": 63,
+        "width": 186,
+        "height": 172,
+        "bottom": 235
+      },
+      {
+        "i": 6,
+        "left": 42,
+        "top": 66,
+        "width": 173,
+        "height": 169,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 46,
+        "top": 66,
+        "width": 164,
+        "height": 169,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_titan_charge_walk_sheet",
+    "grid": [
+      4,
+      3
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "transparent",
+    "sourceSize": [
+      1448,
+      1086
+    ],
+    "scale": 0.6011560693641619,
+    "sourceRects": [
+      {
+        "left": 15,
+        "top": 44,
+        "width": 316,
+        "height": 320
+      },
+      {
+        "left": 373,
+        "top": 40,
+        "width": 323,
+        "height": 323
+      },
+      {
+        "left": 735,
+        "top": 41,
+        "width": 336,
+        "height": 323
+      },
+      {
+        "left": 1099,
+        "top": 37,
+        "width": 343,
+        "height": 329
+      },
+      {
+        "left": 9,
+        "top": 399,
+        "width": 346,
+        "height": 324
+      },
+      {
+        "left": 373,
+        "top": 397,
+        "width": 343,
+        "height": 327
+      },
+      {
+        "left": 741,
+        "top": 387,
+        "width": 342,
+        "height": 335
+      },
+      {
+        "left": 1101,
+        "top": 392,
+        "width": 343,
+        "height": 332
+      },
+      {
+        "left": 15,
+        "top": 738,
+        "width": 323,
+        "height": 325
+      },
+      {
+        "left": 364,
+        "top": 735,
+        "width": 340,
+        "height": 330
+      },
+      {
+        "left": 735,
+        "top": 739,
+        "width": 333,
+        "height": 327
+      },
+      {
+        "left": 1100,
+        "top": 735,
+        "width": 328,
+        "height": 326
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 33,
+        "top": 43,
+        "width": 190,
+        "height": 192,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 31,
+        "top": 41,
+        "width": 194,
+        "height": 194,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 27,
+        "top": 41,
+        "width": 202,
+        "height": 194,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 25,
+        "top": 37,
+        "width": 206,
+        "height": 198,
+        "bottom": 235
+      },
+      {
+        "i": 4,
+        "left": 24,
+        "top": 40,
+        "width": 208,
+        "height": 195,
+        "bottom": 235
+      },
+      {
+        "i": 5,
+        "left": 25,
+        "top": 38,
+        "width": 206,
+        "height": 197,
+        "bottom": 235
+      },
+      {
+        "i": 6,
+        "left": 25,
+        "top": 34,
+        "width": 206,
+        "height": 201,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 25,
+        "top": 35,
+        "width": 206,
+        "height": 200,
+        "bottom": 235
+      },
+      {
+        "i": 8,
+        "left": 31,
+        "top": 40,
+        "width": 194,
+        "height": 195,
+        "bottom": 235
+      },
+      {
+        "i": 9,
+        "left": 26,
+        "top": 37,
+        "width": 204,
+        "height": 198,
+        "bottom": 235
+      },
+      {
+        "i": 10,
+        "left": 28,
+        "top": 38,
+        "width": 200,
+        "height": 197,
+        "bottom": 235
+      },
+      {
+        "i": 11,
+        "left": 30,
+        "top": 39,
+        "width": 197,
+        "height": 196,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_titan_colossus_sheet",
+    "grid": [
+      4,
+      4
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.6258992805755396,
+    "sourceRects": [
+      {
+        "left": 29,
+        "top": 133,
+        "width": 243,
+        "height": 190
+      },
+      {
+        "left": 348,
+        "top": 150,
+        "width": 242,
+        "height": 174
+      },
+      {
+        "left": 636,
+        "top": 55,
+        "width": 298,
+        "height": 253
+      },
+      {
+        "left": 949,
+        "top": 45,
+        "width": 283,
+        "height": 256
+      },
+      {
+        "left": 61,
+        "top": 411,
+        "width": 217,
+        "height": 171
+      },
+      {
+        "left": 336,
+        "top": 365,
+        "width": 267,
+        "height": 239
+      },
+      {
+        "left": 635,
+        "top": 346,
+        "width": 294,
+        "height": 268
+      },
+      {
+        "left": 945,
+        "top": 350,
+        "width": 287,
+        "height": 256
+      },
+      {
+        "left": 28,
+        "top": 646,
+        "width": 276,
+        "height": 258
+      },
+      {
+        "left": 349,
+        "top": 663,
+        "width": 272,
+        "height": 257
+      },
+      {
+        "left": 659,
+        "top": 666,
+        "width": 285,
+        "height": 264
+      },
+      {
+        "left": 987,
+        "top": 643,
+        "width": 243,
+        "height": 278
+      },
+      {
+        "left": 23,
+        "top": 985,
+        "width": 315,
+        "height": 235
+      },
+      {
+        "left": 342,
+        "top": 1003,
+        "width": 286,
+        "height": 212
+      },
+      {
+        "left": 634,
+        "top": 959,
+        "width": 298,
+        "height": 254
+      },
+      {
+        "left": 973,
+        "top": 963,
+        "width": 254,
+        "height": 244
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 52,
+        "top": 116,
+        "width": 152,
+        "height": 119,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 53,
+        "top": 126,
+        "width": 151,
+        "height": 109,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 35,
+        "top": 57,
+        "width": 187,
+        "height": 158,
+        "bottom": 215
+      },
+      {
+        "i": 3,
+        "left": 40,
+        "top": 39,
+        "width": 177,
+        "height": 160,
+        "bottom": 199
+      },
+      {
+        "i": 4,
+        "left": 60,
+        "top": 56,
+        "width": 136,
+        "height": 107,
+        "bottom": 163
+      },
+      {
+        "i": 5,
+        "left": 45,
+        "top": 30,
+        "width": 167,
+        "height": 150,
+        "bottom": 180
+      },
+      {
+        "i": 6,
+        "left": 36,
+        "top": 22,
+        "width": 184,
+        "height": 168,
+        "bottom": 190
+      },
+      {
+        "i": 7,
+        "left": 38,
+        "top": 39,
+        "width": 180,
+        "height": 160,
+        "bottom": 199
+      },
+      {
+        "i": 8,
+        "left": 42,
+        "top": 48,
+        "width": 173,
+        "height": 161,
+        "bottom": 209
+      },
+      {
+        "i": 9,
+        "left": 43,
+        "top": 58,
+        "width": 170,
+        "height": 161,
+        "bottom": 219
+      },
+      {
+        "i": 10,
+        "left": 39,
+        "top": 64,
+        "width": 178,
+        "height": 165,
+        "bottom": 229
+      },
+      {
+        "i": 11,
+        "left": 52,
+        "top": 61,
+        "width": 152,
+        "height": 174,
+        "bottom": 235
+      },
+      {
+        "i": 12,
+        "left": 30,
+        "top": 88,
+        "width": 197,
+        "height": 147,
+        "bottom": 235
+      },
+      {
+        "i": 13,
+        "left": 39,
+        "top": 102,
+        "width": 179,
+        "height": 133,
+        "bottom": 235
+      },
+      {
+        "i": 14,
+        "left": 35,
+        "top": 76,
+        "width": 187,
+        "height": 159,
+        "bottom": 235
+      },
+      {
+        "i": 15,
+        "left": 49,
+        "top": 82,
+        "width": 159,
+        "height": 153,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "vfx_titan_landing_crack",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_titan_shockwave",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5012048192771085,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_titan_rage_aura_lv1",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5546666666666666,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_titan_rage_aura_lv2",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5048543689320388,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_titan_rage_aura_lv3",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.4759725400457666,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_titan_crush_burst",
+    "grid": [
+      4,
+      3
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1448,
+      1086
+    ],
+    "scale": 0.5826330532212886,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 362,
+        "top": 0,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 724,
+        "top": 0,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 0,
+        "top": 362,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 362,
+        "top": 362,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 724,
+        "top": 362,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 1086,
+        "top": 362,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 0,
+        "top": 724,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 362,
+        "top": 724,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 724,
+        "top": 724,
+        "width": 362,
+        "height": 362
+      },
+      {
+        "left": 1086,
+        "top": 724,
+        "width": 362,
+        "height": 362
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_titan_lava_crater",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "transparent",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.3969465648854962,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "cocoa_fire_jab_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.4369747899159664,
+    "sourceRects": [
+      {
+        "left": 44,
+        "top": 78,
+        "width": 337,
+        "height": 343
+      },
+      {
+        "left": 478,
+        "top": 78,
+        "width": 349,
+        "height": 343
+      },
+      {
+        "left": 885,
+        "top": 78,
+        "width": 475,
+        "height": 344
+      },
+      {
+        "left": 1379,
+        "top": 78,
+        "width": 386,
+        "height": 344
+      },
+      {
+        "left": 39,
+        "top": 476,
+        "width": 350,
+        "height": 346
+      },
+      {
+        "left": 467,
+        "top": 476,
+        "width": 371,
+        "height": 347
+      },
+      {
+        "left": 884,
+        "top": 476,
+        "width": 476,
+        "height": 348
+      },
+      {
+        "left": 1373,
+        "top": 476,
+        "width": 395,
+        "height": 347
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 55,
+        "top": 85,
+        "width": 147,
+        "height": 150,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 52,
+        "top": 85,
+        "width": 153,
+        "height": 150,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 24,
+        "top": 85,
+        "width": 208,
+        "height": 150,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 44,
+        "top": 85,
+        "width": 169,
+        "height": 150,
+        "bottom": 235
+      },
+      {
+        "i": 4,
+        "left": 52,
+        "top": 84,
+        "width": 153,
+        "height": 151,
+        "bottom": 235
+      },
+      {
+        "i": 5,
+        "left": 47,
+        "top": 83,
+        "width": 162,
+        "height": 152,
+        "bottom": 235
+      },
+      {
+        "i": 6,
+        "left": 24,
+        "top": 83,
+        "width": 208,
+        "height": 152,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 42,
+        "top": 83,
+        "width": 173,
+        "height": 152,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_fire_finisher_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.44731182795698926,
+    "sourceRects": [
+      {
+        "left": 57,
+        "top": 99,
+        "width": 333,
+        "height": 314
+      },
+      {
+        "left": 499,
+        "top": 102,
+        "width": 342,
+        "height": 312
+      },
+      {
+        "left": 933,
+        "top": 98,
+        "width": 342,
+        "height": 316
+      },
+      {
+        "left": 1375,
+        "top": 102,
+        "width": 394,
+        "height": 310
+      },
+      {
+        "left": 13,
+        "top": 514,
+        "width": 465,
+        "height": 319
+      },
+      {
+        "left": 497,
+        "top": 518,
+        "width": 354,
+        "height": 316
+      },
+      {
+        "left": 932,
+        "top": 523,
+        "width": 342,
+        "height": 311
+      },
+      {
+        "left": 1375,
+        "top": 517,
+        "width": 341,
+        "height": 318
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 54,
+        "top": 95,
+        "width": 149,
+        "height": 140,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 52,
+        "top": 95,
+        "width": 153,
+        "height": 140,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 52,
+        "top": 94,
+        "width": 153,
+        "height": 141,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 40,
+        "top": 96,
+        "width": 176,
+        "height": 139,
+        "bottom": 235
+      },
+      {
+        "i": 4,
+        "left": 24,
+        "top": 92,
+        "width": 208,
+        "height": 143,
+        "bottom": 235
+      },
+      {
+        "i": 5,
+        "left": 49,
+        "top": 94,
+        "width": 158,
+        "height": 141,
+        "bottom": 235
+      },
+      {
+        "i": 6,
+        "left": 52,
+        "top": 96,
+        "width": 153,
+        "height": 139,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 52,
+        "top": 93,
+        "width": 153,
+        "height": 142,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_rocket_launch_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.49406175771971494,
+    "sourceRects": [
+      {
+        "left": 74,
+        "top": 175,
+        "width": 277,
+        "height": 273
+      },
+      {
+        "left": 489,
+        "top": 171,
+        "width": 318,
+        "height": 278
+      },
+      {
+        "left": 888,
+        "top": 76,
+        "width": 405,
+        "height": 372
+      },
+      {
+        "left": 1340,
+        "top": 23,
+        "width": 421,
+        "height": 428
+      },
+      {
+        "left": 54,
+        "top": 574,
+        "width": 324,
+        "height": 280
+      },
+      {
+        "left": 489,
+        "top": 562,
+        "width": 375,
+        "height": 292
+      },
+      {
+        "left": 955,
+        "top": 576,
+        "width": 332,
+        "height": 277
+      },
+      {
+        "left": 1397,
+        "top": 575,
+        "width": 282,
+        "height": 279
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 60,
+        "top": 100,
+        "width": 137,
+        "height": 135,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 50,
+        "top": 98,
+        "width": 157,
+        "height": 137,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 28,
+        "top": 51,
+        "width": 200,
+        "height": 184,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 24,
+        "top": 24,
+        "width": 208,
+        "height": 211,
+        "bottom": 235
+      },
+      {
+        "i": 4,
+        "left": 48,
+        "top": 97,
+        "width": 160,
+        "height": 138,
+        "bottom": 235
+      },
+      {
+        "i": 5,
+        "left": 36,
+        "top": 91,
+        "width": 185,
+        "height": 144,
+        "bottom": 235
+      },
+      {
+        "i": 6,
+        "left": 46,
+        "top": 98,
+        "width": 164,
+        "height": 137,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 59,
+        "top": 97,
+        "width": 139,
+        "height": 138,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "vfx_fire_fist_proj",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.2047244094488189,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_fireball_big",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.3977055449330784,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_fireball_explode",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.46846846846846846,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_rocket_gauntlet",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.3193612774451098,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_gauntlet_stick",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.46846846846846846,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_fire_pool",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "transparent",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.40545808966861596,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_fire_meteor",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.47058823529411764,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "cocoa_dash_leap_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5174129353233831,
+    "sourceRects": [
+      {
+        "left": 45,
+        "top": 189,
+        "width": 303,
+        "height": 250
+      },
+      {
+        "left": 490,
+        "top": 120,
+        "width": 344,
+        "height": 309
+      },
+      {
+        "left": 932,
+        "top": 153,
+        "width": 366,
+        "height": 262
+      },
+      {
+        "left": 1345,
+        "top": 128,
+        "width": 402,
+        "height": 290
+      },
+      {
+        "left": 63,
+        "top": 528,
+        "width": 329,
+        "height": 297
+      },
+      {
+        "left": 518,
+        "top": 535,
+        "width": 396,
+        "height": 300
+      },
+      {
+        "left": 970,
+        "top": 555,
+        "width": 351,
+        "height": 273
+      },
+      {
+        "left": 1391,
+        "top": 552,
+        "width": 304,
+        "height": 279
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 50,
+        "top": 106,
+        "width": 157,
+        "height": 129,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 39,
+        "top": 55,
+        "width": 178,
+        "height": 160,
+        "bottom": 215
+      },
+      {
+        "i": 2,
+        "left": 34,
+        "top": 67,
+        "width": 189,
+        "height": 136,
+        "bottom": 203
+      },
+      {
+        "i": 3,
+        "left": 24,
+        "top": 55,
+        "width": 208,
+        "height": 150,
+        "bottom": 205
+      },
+      {
+        "i": 4,
+        "left": 43,
+        "top": 57,
+        "width": 170,
+        "height": 154,
+        "bottom": 211
+      },
+      {
+        "i": 5,
+        "left": 26,
+        "top": 72,
+        "width": 205,
+        "height": 155,
+        "bottom": 227
+      },
+      {
+        "i": 6,
+        "left": 37,
+        "top": 94,
+        "width": 182,
+        "height": 141,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 50,
+        "top": 91,
+        "width": 157,
+        "height": 144,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_dash_jab_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.4642857142857143,
+    "sourceRects": [
+      {
+        "left": 37,
+        "top": 77,
+        "width": 334,
+        "height": 343
+      },
+      {
+        "left": 486,
+        "top": 74,
+        "width": 346,
+        "height": 341
+      },
+      {
+        "left": 943,
+        "top": 77,
+        "width": 428,
+        "height": 344
+      },
+      {
+        "left": 1390,
+        "top": 74,
+        "width": 334,
+        "height": 350
+      },
+      {
+        "left": 46,
+        "top": 501,
+        "width": 358,
+        "height": 342
+      },
+      {
+        "left": 466,
+        "top": 499,
+        "width": 448,
+        "height": 341
+      },
+      {
+        "left": 930,
+        "top": 510,
+        "width": 341,
+        "height": 324
+      },
+      {
+        "left": 1370,
+        "top": 498,
+        "width": 344,
+        "height": 342
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 51,
+        "top": 76,
+        "width": 155,
+        "height": 159,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 48,
+        "top": 77,
+        "width": 161,
+        "height": 158,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 29,
+        "top": 75,
+        "width": 199,
+        "height": 160,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 51,
+        "top": 72,
+        "width": 155,
+        "height": 163,
+        "bottom": 235
+      },
+      {
+        "i": 4,
+        "left": 45,
+        "top": 76,
+        "width": 166,
+        "height": 159,
+        "bottom": 235
+      },
+      {
+        "i": 5,
+        "left": 24,
+        "top": 77,
+        "width": 208,
+        "height": 158,
+        "bottom": 235
+      },
+      {
+        "i": 6,
+        "left": 49,
+        "top": 85,
+        "width": 158,
+        "height": 150,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 48,
+        "top": 76,
+        "width": 160,
+        "height": 159,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_phantom_rush_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.4759725400457666,
+    "sourceRects": [
+      {
+        "left": 12,
+        "top": 102,
+        "width": 429,
+        "height": 299
+      },
+      {
+        "left": 465,
+        "top": 109,
+        "width": 396,
+        "height": 289
+      },
+      {
+        "left": 910,
+        "top": 113,
+        "width": 401,
+        "height": 248
+      },
+      {
+        "left": 1342,
+        "top": 113,
+        "width": 422,
+        "height": 235
+      },
+      {
+        "left": 10,
+        "top": 518,
+        "width": 437,
+        "height": 275
+      },
+      {
+        "left": 460,
+        "top": 527,
+        "width": 400,
+        "height": 306
+      },
+      {
+        "left": 897,
+        "top": 546,
+        "width": 416,
+        "height": 316
+      },
+      {
+        "left": 1339,
+        "top": 559,
+        "width": 401,
+        "height": 291
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 26,
+        "top": 77,
+        "width": 204,
+        "height": 142,
+        "bottom": 219
+      },
+      {
+        "i": 1,
+        "left": 34,
+        "top": 77,
+        "width": 188,
+        "height": 138,
+        "bottom": 215
+      },
+      {
+        "i": 2,
+        "left": 33,
+        "top": 93,
+        "width": 191,
+        "height": 118,
+        "bottom": 211
+      },
+      {
+        "i": 3,
+        "left": 28,
+        "top": 95,
+        "width": 201,
+        "height": 112,
+        "bottom": 207
+      },
+      {
+        "i": 4,
+        "left": 24,
+        "top": 84,
+        "width": 208,
+        "height": 131,
+        "bottom": 215
+      },
+      {
+        "i": 5,
+        "left": 33,
+        "top": 77,
+        "width": 190,
+        "height": 146,
+        "bottom": 223
+      },
+      {
+        "i": 6,
+        "left": 29,
+        "top": 85,
+        "width": 198,
+        "height": 150,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 33,
+        "top": 96,
+        "width": 191,
+        "height": 139,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "vfx_dash_afterimage",
+    "grid": [
+      1,
+      1
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1448,
+      1086
+    ],
+    "scale": 0.17493692178301093,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_dash_slam_ring",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.52,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_shadow_fist",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.25296442687747034,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_chain_leap_line",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.3830570902394107,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "cocoa_hurt_sheet",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.42105263157894735,
+    "sourceRects": [
+      {
+        "left": 45,
+        "top": 148,
+        "width": 494,
+        "height": 468
+      },
+      {
+        "left": 605,
+        "top": 154,
+        "width": 452,
+        "height": 461
+      },
+      {
+        "left": 1144,
+        "top": 154,
+        "width": 424,
+        "height": 461
+      },
+      {
+        "left": 1665,
+        "top": 155,
+        "width": 445,
+        "height": 461
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 24,
+        "top": 38,
+        "width": 208,
+        "height": 197,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 33,
+        "top": 41,
+        "width": 190,
+        "height": 194,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 39,
+        "top": 41,
+        "width": 179,
+        "height": 194,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 35,
+        "top": 41,
+        "width": 187,
+        "height": 194,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "cocoa_victory_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.4473007712082262,
+    "sourceRects": [
+      {
+        "left": 48,
+        "top": 64,
+        "width": 359,
+        "height": 363
+      },
+      {
+        "left": 485,
+        "top": 73,
+        "width": 359,
+        "height": 353
+      },
+      {
+        "left": 932,
+        "top": 53,
+        "width": 401,
+        "height": 375
+      },
+      {
+        "left": 1390,
+        "top": 56,
+        "width": 353,
+        "height": 356
+      },
+      {
+        "left": 47,
+        "top": 460,
+        "width": 403,
+        "height": 389
+      },
+      {
+        "left": 489,
+        "top": 486,
+        "width": 372,
+        "height": 360
+      },
+      {
+        "left": 927,
+        "top": 493,
+        "width": 364,
+        "height": 355
+      },
+      {
+        "left": 1375,
+        "top": 486,
+        "width": 360,
+        "height": 361
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 48,
+        "top": 73,
+        "width": 161,
+        "height": 162,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 48,
+        "top": 77,
+        "width": 161,
+        "height": 158,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 39,
+        "top": 67,
+        "width": 179,
+        "height": 168,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 49,
+        "top": 64,
+        "width": 158,
+        "height": 159,
+        "bottom": 223
+      },
+      {
+        "i": 4,
+        "left": 38,
+        "top": 45,
+        "width": 180,
+        "height": 174,
+        "bottom": 219
+      },
+      {
+        "i": 5,
+        "left": 45,
+        "top": 66,
+        "width": 166,
+        "height": 161,
+        "bottom": 227
+      },
+      {
+        "i": 6,
+        "left": 47,
+        "top": 76,
+        "width": 163,
+        "height": 159,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 48,
+        "top": 74,
+        "width": 161,
+        "height": 161,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "vfx_barrage_volley",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.49523809523809526,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_hailstorm",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.4964200477326969,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_impaler_charge",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5576407506702413,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_impale_stack_1",
+    "grid": [
+      1,
+      1
+    ],
+    "frameSize": 128,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.24046242774566473,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_impale_stack_2",
+    "grid": [
+      1,
+      1
+    ],
+    "frameSize": 128,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.2379862700228833,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_impale_stack_3",
+    "grid": [
+      1,
+      1
+    ],
+    "frameSize": 128,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.21181262729124237,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_crystal_rupture",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.48826291079812206,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "mint_lance_throw_charged_sheet",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "transparent",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5683060109289617,
+    "sourceRects": [
+      {
+        "left": 97,
+        "top": 195,
+        "width": 299,
+        "height": 238
+      },
+      {
+        "left": 523,
+        "top": 195,
+        "width": 298,
+        "height": 237
+      },
+      {
+        "left": 943,
+        "top": 195,
+        "width": 322,
+        "height": 241
+      },
+      {
+        "left": 1394,
+        "top": 163,
+        "width": 330,
+        "height": 276
+      },
+      {
+        "left": 52,
+        "top": 576,
+        "width": 366,
+        "height": 247
+      },
+      {
+        "left": 465,
+        "top": 589,
+        "width": 284,
+        "height": 233
+      },
+      {
+        "left": 980,
+        "top": 593,
+        "width": 361,
+        "height": 234
+      },
+      {
+        "left": 1426,
+        "top": 576,
+        "width": 274,
+        "height": 252
+      }
+    ],
+    "anchors": [
+      {
+        "i": 0,
+        "left": 43,
+        "top": 100,
+        "width": 170,
+        "height": 135,
+        "bottom": 235
+      },
+      {
+        "i": 1,
+        "left": 44,
+        "top": 100,
+        "width": 169,
+        "height": 135,
+        "bottom": 235
+      },
+      {
+        "i": 2,
+        "left": 37,
+        "top": 98,
+        "width": 183,
+        "height": 137,
+        "bottom": 235
+      },
+      {
+        "i": 3,
+        "left": 34,
+        "top": 78,
+        "width": 188,
+        "height": 157,
+        "bottom": 235
+      },
+      {
+        "i": 4,
+        "left": 24,
+        "top": 95,
+        "width": 208,
+        "height": 140,
+        "bottom": 235
+      },
+      {
+        "i": 5,
+        "left": 48,
+        "top": 103,
+        "width": 161,
+        "height": 132,
+        "bottom": 235
+      },
+      {
+        "i": 6,
+        "left": 26,
+        "top": 102,
+        "width": 205,
+        "height": 133,
+        "bottom": 235
+      },
+      {
+        "i": 7,
+        "left": 50,
+        "top": 92,
+        "width": 156,
+        "height": 143,
+        "bottom": 235
+      }
+    ]
+  },
+  {
+    "key": "vfx_sniper_impact",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.41106719367588934,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_pellet_hit",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.2711864406779661,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_ricochet_bounce",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.52,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_ricochet_link",
+    "grid": [
+      4,
+      1
+    ],
+    "frameSize": 256,
+    "loop": true,
+    "background": "black",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "scale": 0.4397463002114165,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 543,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1086,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      },
+      {
+        "left": 1629,
+        "top": 0,
+        "width": 543,
+        "height": 724
+      }
+    ],
+    "anchors": []
+  },
+  {
+    "key": "vfx_heart_pinball_splash",
+    "grid": [
+      4,
+      2
+    ],
+    "frameSize": 256,
+    "loop": false,
+    "background": "black",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "scale": 0.5445026178010471,
+    "sourceRects": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 444,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 887,
+        "top": 0,
+        "width": 444,
+        "height": 444
+      },
+      {
+        "left": 1331,
+        "top": 0,
+        "width": 443,
+        "height": 444
+      },
+      {
+        "left": 0,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 444,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      },
+      {
+        "left": 887,
+        "top": 444,
+        "width": 444,
+        "height": 443
+      },
+      {
+        "left": 1331,
+        "top": 444,
+        "width": 443,
+        "height": 443
+      }
+    ],
+    "anchors": []
+  }
+]
