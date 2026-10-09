@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.60.1';
+const GAME_VERSION = '6.60.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.60.2', date:'2026-10-09', title:'Roomier Shotgun', items:['Strawberry Shotgun keeps a wider fan near bosses and elites','Pellets fly about a third farther'] },
   {v:'6.60.1',date:'2026-10-09',title:'Fire Fist without homing',items:['Removed the Heat Seeker card: Fire Fist fists fly straight']},
   {v:'6.60.0',date:'2026-10-09',title:'Chocolate path Talents',items:['Fire Fist talents: range, blast, burn, twin fists · Capstones Meteor Finisher / Barrage / Fire Shield','Titan talents: charge speed, release damage, lower HP cost, regen · Capstones Rage Four / Iron Body / Bloodlust','Dash Boxer talents: leap range, landing slam, Unique refund · stronger Afterimage and Endless Dash']},
   {v:'6.59.9',date:'2026-10-09',title:'Chocolate Infuse synergy',items:['Spicy + Fire Fist: burn ×1.5','Sour + Titan: release marks foes to take +25% for 4s','Sweet + Titan: Blood Rage costs 30% less HP','Minty + Dash Boxer: Dash Leap landing freezes foes','Matching Infusion cards show ★ Build match']},
@@ -11961,13 +11962,13 @@ class Game extends Phaser.Scene {
         b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;b.seedPierce=!!b.pierce;b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b.loopT=false;b._ptSniper=false;
         if(path==='sniper'){this.attachChargedSeed(b,38+lvl*2);b.dmg*=3.2;b.pierce=true;b.seedPierce=true;b.hitGapV=0.22;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);
           b.dmg*=1+(PT.sDmg||0);b.headshot+=PT.hs||0;b.bigMul+=PT.big||0;b.penGain=PT.pen||0;b.oneShot=!!PT.oneShot;b._ptSniper=true; if(this._ptHsNext){b.forceHs=true;this._ptHsNext=false;} if(PT.ghillie&&(this._ptStill||0)>=1.5&&!this._ptGhUsed){b.dmg*=2;this._ptGhUsed=true;}}
-        else if(path==='shotgun'){b.dmg*=0.45;b.life=0.3;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
+        else if(path==='shotgun'){b.dmg*=0.45;b.life=0.4;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
         else if(path==='ricochet'){b.dmg*=0.8;b.bounce+=2+(R.carom||0);b.bounceGain=0.08*(R.gather||0)+(PT.mom||0);b.dmg*=1+(PT.rDmg||0);if((PT.rDmg||0)>=0.119)b.bounce++;if(PT.pinball)b.bounce=Math.max(b.bounce,12);b.lastMul=PT.last||0;b.seekMul=1+(PT.seek||0);b.splitCh=PT.split||0;b.boomer2=!!PT.boomer;b.loopT=!!PT.loop;}   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
         const distance=this.dist(t.x,t.y,this.player.x,this.player.y);
         const closeLarge=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&distance<430;
-        const spread=closeLarge?0.045:0.16;
+        const spread=closeLarge?0.11:0.16;
         const fan=path==='shotgun'?(shotIndex-(shots-1)/2)*spread:(basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0);
-        const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(closeLarge?-0.012:-0.08,closeLarge?0.012:0.08);
+        const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(closeLarge?-0.04:-0.08,closeLarge?0.04:0.08);
         this.physics.velocityFromRotation(ang,speed,b.body.velocity); if(path!=='shotgun')Sfx.shoot();
         if(path==='shotgun'&&shotIndex===0)this.shotgunKick(ang); };
       if(path==='sniper'){
@@ -12475,8 +12476,8 @@ class Game extends Phaser.Scene {
       }
       b.dmg*=1+.08*Math.min(10,Math.max(0,b.bounce-8));b.bounce=Math.min(8,b.bounce);meta.base=b.dmg;
       const closeBig=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&this.dist(t.x,t.y,this.player.x,this.player.y)<430;
-      const spread=path==='shotgun'?(idx-(shots-1)/2)*(closeBig?.045:.16):(basic.mutation==='fan'?(idx-(shots-1)/2)*.055:0);
-      const a=Math.atan2(t.y-this.player.y,t.x-this.player.x)+spread+Phaser.Math.FloatBetween(closeBig?-.012:-.08,closeBig?.012:.08);
+      const spread=path==='shotgun'?(idx-(shots-1)/2)*(closeBig?.11:.16):(basic.mutation==='fan'?(idx-(shots-1)/2)*.055:0);
+      const a=Math.atan2(t.y-this.player.y,t.x-this.player.x)+spread+Phaser.Math.FloatBetween(closeBig?-.04:-.08,closeBig?.04:.08);
       this.physics.velocityFromRotation(a,aw?1180:980,b.body.velocity);
       if(path==='shotgun'&&idx===0)this.shotgunKick(a);else if(path!=='shotgun')Sfx.shoot();
     };
