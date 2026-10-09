@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.59.1 — Titan charge bar
+# Latest delivery: v6.59.2 — Earth Stomp
+
+Owner chose Earth Stomp to replace Brawler (id 'brawler' kept for saves). Flicker disabled (_cocoaFlickerOn=false); stomp hits all foes within reach*1.05 (finisher 1.35) centred on Chocolate, shake per stomp, finisher waves/rush mutation around player; Brawler path move speed ×0.8. Path name/desc updated. Flicker tests rewritten for stomp. npm check passed; owner phone review pending.
+
+# Previous delivery: v6.59.1 — Titan charge bar
 
 Owner: slower charge, bar above head with level dividers, bigger release = longer cooldown. TITAN_RAGE_SEC 0.9→1.8s/level; bar (60px, dividers at 1/3, 2/3, gold pulse at max) replaces arc/dots; TITAN_RAGE_CD [0,1.2,2.6,4.5]s applied to skillCd.meteor on release. npm check passed; owner phone review pending. Brawler: owner asked for 10 new concepts.
 

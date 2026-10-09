@@ -15,37 +15,21 @@ function mobile(path,foes=[foe(130,0,{isBoss:true})]){const q=scene(path,foes),p
 function tick(q,t,step=.01){for(let n=0;n<t-1e-9;n+=step){const dt=Math.min(step,t-n);q.tickCocoaFlicker(dt);advance(q,dt,dt);}}
 // OFF keeps the original close-range behavior; ON reaches a boss without living at its feet.
 // Flicker is Brawler-only and automatic: no button, short 150px reach, two split punches, stays beside the target.
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);assert(q._cocoaFlicker,'brawler auto-flickers');assert.equal(q.player.iframe,0);tick(q,1.6);assert.equal(q.rec.length,2);assert(!q._cocoaFlicker);assert(q.player.x>40,'stays beside target');assert.equal(q.follow,q.player);assert.equal(q._cc.n,2);}
+// v6.59.2 Brawler = Earth Stomp: never flickers or moves; each stomp hits every foe around Chocolate.
+{const a=foe(60,0),b=foe(-60,20),far=foe(400,0),q=mobile('brawler',[a,b,far]);q.castCocoaRush(1,false,1,false,q.basicAttack);assert(!q._cocoaFlicker,'stomp never flickers');tick(q,.4);assert.equal(q.player.x,0);assert(q.rec.some(r=>r.e===a)&&q.rec.some(r=>r.e===b),'area hit');assert(!q.rec.some(r=>r.e===far));}
+{const q=mobile('brawler',[foe(400,0)]);q.castCocoaRush(1,false,1,false,q.basicAttack);tick(q,.4);assert.equal(q.rec.length,0,'nothing in stomp range');}
 for(const path of ['titan','dashboxer']){const q=mobile(path);q.castCocoaRush(1,false,1,false,q.basicAttack);assert(!q._cocoaFlicker,path+' never flickers');assert.equal(q.player.x,0);}
-{const q=mobile('brawler',[foe(400,0,{isBoss:true})]);q.castCocoaRush(1,false,1,false,q.basicAttack);assert(!q._cocoaFlicker,'out of 150px reach');assert.equal(q.player.x,0);}
-{const q=mobile('brawler',[foe(55,0)]);q.castCocoaRush(1,false,1,false,q.basicAttack);assert(!q._cocoaFlicker,'adjacent foe is punched in place');tick(q,.4);assert.equal(q.rec.length,1);assert.equal(q.player.x,0);}
 {const q=mobile('brawler');const btn={visible:true,setVisible(v){this.visible=v;return this;},setFillStyle(){return this;},setStrokeStyle(){return this;}};q.flickerBtn=btn;q.flickerTxt={setVisible(){return this;},setText(){return this;}};q.refreshFlickerUI();assert.equal(q.flickerBtn.visible,false,'no Flicker button');}
 // The boss remains locked over a closer ordinary foe; joystick heading chooses ordinary targets; retreat never starts a chain.
-{const boss=foe(130,0,{isBoss:true}),small=foe(20,120),q=mobile('brawler',[small,boss]);q.castCocoaRush(1,false,1,false,q.basicAttack);tick(q,1.6);assert(q.rec.every(r=>r.e===boss));}
-{const q=mobile('brawler',[foe(130),foe(0,130)]);q.joy={active:true,dx:0,dy:1};q.moveDir={x:0,y:1,lengthSq:()=>1,angle:()=>Math.PI/2};q.castCocoaRush(1,false,1,false,q.basicAttack);assert.equal(q._cocoaFlicker.target,q.foes[1]);}
-{const q=mobile('brawler');q.joy={active:true,dx:-1,dy:0};q.castCocoaRush(1,false,1,false,q.basicAttack);assert(!q._cocoaFlicker);}
 // Mid-chain retreat, Dash and hurt cancel pending hits.
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);q.joy={active:true,dx:-1,dy:0};tick(q,.01);assert(!q._cocoaFlicker);tick(q,1.6);assert.equal(q.rec.length,0);}
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);q.doDash();assert(!q._cocoaFlicker);assert.equal(q.player.velocity.x,560);tick(q,.5);assert.equal(q.rec.length,0);}
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);q._dpCh=0;q.doDash();assert(!q._cocoaFlicker);tick(q,1.6);assert.equal(q.rec.length,0);}
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);q.poseFlash(5,100);tick(q,1.6);assert(!q._cocoaFlicker);assert.equal(q.rec.length,0);}
 // Dash Boxer Dash leaps to an aimed monster and slams on landing; with nothing in range it is a normal Dash.
 {const q=mobile('dashboxer');q.doDash();assert.equal(q.player.velocity.x,0);assert(q._cocoaGlide);tick(q,.4);assert(q.player.x>60,'leapt to target');assert(q.rec.length>=1,'landing slam');}
 {const q=mobile('dashboxer',[foe(900,0)]);q.doDash();assert.equal(q.player.velocity.x,560);assert(!q._cocoaGlide);}
 // World bounds, pause, reset/path/dead target, saturation and large ticks never strand a chain.
-{const q=mobile('brawler',[foe(1990,0,{isBoss:true})]);q.player.x=1900;q.castCocoaRush(1,false,1,false,q.basicAttack);tick(q,1.2);assert(q.player.x<=1960);}
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);q.state='levelup';tick(q,1.6);assert(q._cocoaFlicker);assert.equal(q.rec.length,0);q.state='play';tick(q,1.6);assert.equal(q.rec.length,2);assert(!q._cocoaFlicker);}
-for(const mutation of ['reset','path','dead']){const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);if(mutation==='reset')q.clearCocoaCombat();if(mutation==='path')q.basicAttack.path='titan';if(mutation==='dead')q.foes[0].active=false;tick(q,1.6);assert(!q._cocoaFlicker,mutation);assert.equal(q.follow,q.player);assert.equal(q.rec.length,0);}
-{const q=mobile('brawler');for(let i=0;i<24;i++)q.cocoaLater(1,()=>{});q.castCocoaRush(1,false,1,false,q.basicAttack);assert(!q._cocoaFlicker);}
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);tick(q,6,.5);assert(!q._cocoaFlicker);assert(q.rec.length<=2);}
 // Combo dots: five dots above Chocolate, drawn only while a combo is in progress.
-{const q=mobile('brawler',[foe(55,0)]);q.castCocoaRush(1,false,1,false,q.basicAttack);tick(q,.4);assert.equal(q._cc.step,1);}
-console.log('Flicker: Brawler-only auto reach, Titan/Dash Boxer stand/leap, boss lock/aim, retreat/Dash/hurt cancellation, Dash Leap, bounds, pause/reset/stale targets and bounded jobs passed');
+console.log('Flicker: Brawler Earth Stomp area hits, Titan/Dash Boxer stand/leap, boss lock/aim, retreat/Dash/hurt cancellation, Dash Leap, bounds, pause/reset/stale targets and bounded jobs passed');
 
-for(const path of ['brawler']){const a=mobile(path,[foe(65,0,{isBoss:true})]);a.castCocoaRush(1,false,1,false,a.basicAttack);tick(a,.4);const base=a.rec.reduce((sum,r)=>sum+r.power,0),b=mobile(path);b.castCocoaRush(1,false,1,false,b.basicAttack);tick(b,1.6);const total=b.rec.reduce((sum,r)=>sum+r.power,0);assert(total>=base*.99&&total<=base*1.03,path+' split power');}
 
 // Hurt cancels pending punches, and replacing a player cannot leave the camera following a stale anchor.
-{const q=mobile('brawler');q.castCocoaRush(1,false,1,false,q.basicAttack);const replacement={x:10,y:20,active:true};q.player=replacement;q.tickCocoaFlicker(.01);assert(!q._cocoaFlicker);assert.equal(q.follow,replacement);assert.equal(replacement.x,10);}
 
 // Actual auto-cast loop waits for a chain instead of wasting a full cooldown on a blocked cast.
-{const body=s.slice(s.indexOf('    // auto-cast skills tick')+'    // auto-cast skills tick'.length,s.indexOf('    if(this.ringBalls.length)',s.indexOf('    // auto-cast skills tick')));ctx.SKILLDEFS={meteor:{}};const auto=vm.runInContext('(function(dt){'+body+'})',ctx),q=mobile('brawler');q.skills={meteor:1};q.skillCd.meteor=0;q.castCocoaRush(1,false,1,false,q.basicAttack);let casts=0;q.castSkill=()=>casts++;auto.call(q,.1);assert.equal(casts,0);assert(q.skillCd.meteor<0);tick(q,1.6);assert(q.skillCd.meteor>=.1);auto.call(q,.05);assert.equal(casts,0);auto.call(q,.06);assert.equal(casts,1);}
