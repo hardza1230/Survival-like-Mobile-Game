@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.60.6';
+const GAME_VERSION = '6.60.7';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.60.7', date:'2026-10-09', title:'Unique button moved up', items:['The Unique button sits higher above Dash so the Dash charge dots no longer block taps.'] },
   { v:'6.60.6', date:'2026-10-09', title:'Chocolate punches while walking', items:['Chocolate before choosing a build path now shows her punch pose while walking too.'] },
   { v:'6.60.5', date:'2026-10-09', title:'Chocolate attacks while walking', items:['Fire Fist and Dash Boxer now show their punch poses while walking, not only when standing still.'] },
   { v:'6.60.4', date:'2026-10-09', title:'Titan jump attacks', items:['Titan: attacking while walking is now a jump — hop forward for normal hits, a leaping slam for the finisher.'] },
@@ -6378,7 +6379,7 @@ class Game extends Phaser.Scene {
   // 🎮 ปุ่ม Dash/Unique ตาม Settings: ขนาด (ctrlSize 0-2) + ฝั่ง (ctrlLeft = ถนัดซ้าย)
   ctrlScale(){ const st=Save.data.settings||{}; return [1,1.2,1.4][st.ctrlSize||0]||1; }
   layoutControls(){ if(!this.dashBtn||!this.uniqueBtn)return; const st=Save.data.settings||{},k=this.ctrlScale(),r=36*k;
-    const x=st.ctrlLeft?22+r:this.W-22-r, dy=this.H-42-r, uy=dy-r*2-8*k;
+    const x=st.ctrlLeft?22+r:this.W-22-r, dy=this.H-42-r, uy=dy-r*2-30*k;
     this.dashBtn.setPosition(x,dy).setRadius(r); this.dashTxt.setPosition(x,dy).setScale(k);
     this.uniqueBtn.setPosition(x,uy).setRadius(r); this.uniqueTxt.setPosition(x,uy-6*k).setScale(k);
     this.uniqueHint?.setPosition(x,uy+19*k).setScale(k);

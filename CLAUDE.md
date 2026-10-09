@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.60.6 — Chocolate punches while walking
+# Latest delivery: v6.60.7 — Unique button moved up
+
+Owner: Unique hard to tap when Dash shows charges. layoutControls unique gap above Dash 8k→30k px. npm check passed.
+
+# Previous delivery: v6.60.6 — Chocolate punches while walking
 
 No-path Chocolate uses bpPose('char_cocoa_attack') in castCocoaRush so the punch pose plays while moving. npm check passed.
 
