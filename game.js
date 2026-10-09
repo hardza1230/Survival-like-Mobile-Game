@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.59.3';
+const GAME_VERSION = '6.59.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.59.4',date:'2026-10-09',title:'Titan hold-to-charge',items:['Titan: hold the Unique button to charge Blood Rage while you keep walking (costs HP)','The button sinks while held; cooldown starts only when you release','Releasing slams Colossus Fist with up to ×4.2 damage and bigger spectacle','Colossus Fist cooldown 24s → 12s']},
   {v:'6.59.3',date:'2026-10-09',title:'Titan channel',items:['Titan Blood Rage charging is no longer interrupted by getting hit','Enemy hits do not knock Chocolate back while channeling; only your own joystick movement stops the charge']},
   {v:'6.59.2',date:'2026-10-09',title:'Earth Stomp',items:['Chocolate Brawler becomes Earth Stomp: walk 20% slower and stomp the ground','Every stomp damages all enemies around you; the 5th stomp sends shockwaves','No more auto-flicker jumping between enemies']},
   {v:'6.59.1',date:'2026-10-09',title:'Titan charge bar',items:['Blood Rage charges twice as slowly (1.8s per level)','A charge bar with level dividers now shows above Chocolate','Bigger releases leave a longer punch cooldown (1.2s / 2.6s / 4.5s)']},
@@ -2893,7 +2894,7 @@ const BASIC_PATHS={
     {id:'brawler',iconKey:'ic_path_brawler',name:'Earth Stomp Build',emoji:'🦶',base:{dmg:0.72,cd:0.7,wave:1},desc:'Walk 20% slower and stomp the ground: every hit damages all enemies around you. The 5th stomp sends out shockwaves. Tap Unique: moving Chocolate Cyclone',
       upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Shock Knuckles',emoji:'💥',max:2,fx:{wave:1},desc:'+1 finisher wave per rank, up to 3 waves. Extra waves beyond the cap add +8% wave power each'},
                 {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Footwork',emoji:'💨',max:3,fx:{cd:0.94},desc:'-6% combo cooldown per rank'}]},
-    {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. Stand still to charge Blood Rage (up to 3 levels) while losing HP; the 5th hit spends it for up to ×4.2 damage. Higher regen than other paths. Tap Unique: targeted Colossus Fist',
+    {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. Higher regen than other paths. Hold Unique: charge Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage',
       upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Giant Slayer',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_quake',iconKey:'ic_path_p_quake',name:'Quake',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'},
                 {id:'p_ironblood',iconKey:'ic_path_titan',name:'Iron Blood',emoji:'🩸',max:3,fx:{},headline:'-20% charge HP cost',desc:'Blood Rage costs 20% less HP per rank and Titan regen +0.4% max HP/s per rank'},
@@ -3050,7 +3051,7 @@ function modDef(id){ for(const c in FUSIONS){ const f=FUSIONS[c].find(x=>x.id===
 const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:'One giant guardian · safety',juiceWorkshop:'Cheese helper · sour zones',
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
   glacier:'Freeze and bloom · crowd control',barrage:'Rapid volleys · sustained damage',pierce:'Heavy lance · elite and boss damage',
-  brawler:'Area stomps around you · moving Cyclone',titan:'Heavy wind-up · Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
+  brawler:'Area stomps around you · moving Cyclone',titan:'Heavy wind-up · hold for Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
   storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Rapid lightning · mobility',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
 };
@@ -3099,7 +3100,7 @@ const COCOA_EVOLUTIONS={
 };
 const COCOA_UNIQUES={
   brawler:{name:'Chocolate Cyclone',emoji:'🌀',cd:20,color:0xffb347,desc:'Tap once: 6–12 punches sweep around you as you walk, then a final wave opens an escape route',tiers:{2:'8 sweep punches and a wider finale',3:'10 sweep punches and stronger impact',4:'12 sweep punches and the widest finale'}},
-  titan:{name:'Colossus Fist',emoji:'👊',cd:24,color:0xd59b65,desc:'Tap once: mark a nearby Boss, Mini or Elite before ordinary targets, then drop a giant fist and one aftershock. The marked location stays fixed',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
+  titan:{name:'Colossus Fist',emoji:'👊',cd:12,color:0xd59b65,desc:'Hold to charge Blood Rage while walking (drains HP, up to 3 levels); release to slam a giant fist on the strongest nearby enemy for up to ×4.2 damage. Cooldown starts on release',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
   dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 3 times onto the strongest enemy (boss first), slamming on each landing. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
 };
 function cocoaAttackInfo(d,b){if(!d)return d;const e=COCOA_EVOLUTIONS[b?.path];return {...d,...(e?{evolution:e.name,evolutionDesc:e.desc}:{}),upgrades:d.upgrades.map(u=>u.id==='combo'?{...u,desc:'+18% finisher power per rank; applies to all five-hit path combos'}:u)};}
@@ -5772,7 +5773,7 @@ class Game extends Phaser.Scene {
 
       if(this._upBtn&&this._upBtn.visible&&Math.abs(p.x-this._upBtn.x)<38&&Math.abs(p.y-this._upBtn.y)<34){ this.openUpgradePanel(); return; }
       if(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2){this.toggleCocoaFlicker();return;}
-      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
+      if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.isTitanHold?.()){ if(this.uniqueCd<=0&&!this._titanHold)this._titanHold={id:p.id}; return; } if(this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
       if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.doDash(); return; }
 
@@ -5793,10 +5794,11 @@ class Game extends Phaser.Scene {
       this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
     });
     this.input.on('gameout',()=>{if(this.state==='menu')this.cancelMenuMotion();});
-    this.input.on('pointerupoutside',p=>{if(this.state==='menu')this.cancelMenuMotion();else if(this._snipe&&p.id===this._snipe.id)this.releaseSnipe();});
+    this.input.on('pointerupoutside',p=>{if(this.state==='menu')this.cancelMenuMotion();else if(this._titanHold&&p.id===this._titanHold.id)this.releaseTitanCharge();else if(this._snipe&&p.id===this._snipe.id)this.releaseSnipe();});
     this.input.on('pointerup',(p)=>{
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
+      if(this._titanHold&&p.id===this._titanHold.id){ this.releaseTitanCharge(); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.releaseSnipe(); return; }
       if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
         this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
@@ -12071,8 +12073,8 @@ class Game extends Phaser.Scene {
       for(let k=0;k<rings;k++) this.creamWave(maxR,dmg,k*180,aw?520:390); Sfx.boom(); }
   }
   updateUniqueHint(){
-    if(!this.uniqueHint)return;const hold=this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind();
-    const text=this._snipe?(this.snipeCharge()>=1?'RELEASE':'CHARGE '+Math.round(this.snipeCharge()*100)+'%'):this.uniqueCd>0?Math.ceil(this.uniqueCd)+'s':hold?'HOLD':'TAP';
+    if(!this.uniqueHint)return;const hold=this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()||!!this.isTitanHold?.();
+    const text=this._titanHold?('RAGE '+Math.floor(this._titanRage||0)+'/3'):this._snipe?(this.snipeCharge()>=1?'RELEASE':'CHARGE '+Math.round(this.snipeCharge()*100)+'%'):this.uniqueCd>0?Math.ceil(this.uniqueCd)+'s':hold?'HOLD':'TAP';
     if(this._uniqueHintLabel!==text){this._uniqueHintLabel=text;this.uniqueHint.setText(text);}this.uniqueHint.setAlpha(this.uniqueCd>0?.65:1);
   }
   refreshFlickerUI(){
@@ -12194,9 +12196,9 @@ class Game extends Phaser.Scene {
       this.cocoaUnmark(mark);if((cc.gen||0)!==gen)return;cc.busy=false;
       const ang=path==='titan'?a:angle(),td=target.active?Math.min(reach*.6,this.dist(p.x,p.y,target.x,target.y)):reach*.6,x=path==='titan'?lock.x:stomp?p.x:p.x+Math.cos(ang)*td,y=path==='titan'?lock.y:stomp?p.y:p.y+Math.sin(ang)*td;
       const r=stomp?reach*(fin?1.35:1.05):fin?(path==='titan'?reach*1.4:reach*1.05):reach*.64;
-      const rage=fin&&path==='titan'?this.titanRageSpend():0,rr=r*(1+rage*.15);
+      const rage=0,rr=r*(1+rage*.15);
       const power=unit*(fin?(path==='titan'?2:1.55)*finMul*(basic.mutation==='breaker'?1.25:1):.8)*(1+Math.min(.4,cc.n*.01))*(empowered?1.35:1)*TITAN_RAGE_MUL[rage];
-      const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true});if(rage>0)this.skillCd.meteor=Math.max(this.skillCd.meteor||0,TITAN_RAGE_CD[rage]);if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}if(stomp){this.screenShake?.(fin?140:60,fin?.006:.0025);this.cocoaVisual(x,y,r,'wave',0xc98a4a);}else this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);Sfx.comboPunch(cc.n,fin?'heavy':'jab');
+      const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true});if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}if(stomp){this.screenShake?.(fin?140:60,fin?.006:.0025);this.cocoaVisual(x,y,r,'wave',0xc98a4a);}else this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);Sfx.comboPunch(cc.n,fin?'heavy':'jab');
       if(!landed)return;cc.n=Math.min(40,cc.n+1);cc.t=0;cc.step=(beat+1)%5;this.cocoaBeatCharge(.25);if(empowered)this._cocoaNextPunch=false;
       const live=()=>this._cc===cc&&(cc.gen||0)===gen;
       if(fin&&path==='brawler'){
@@ -12211,6 +12213,8 @@ class Game extends Phaser.Scene {
   }
   // v6.59.0 Titan Blood Rage: ยืนนิ่งชาร์จ (เสียเลือด) · หมัดที่ 5 ใช้หมด · ยิ่งเสี่ยงยิ่งอลังการ · regen สูงกว่าสายอื่น
   // v6.59.3 Channeling ไม่ถูกขัด: นับว่าเดินเฉพาะเมื่อผู้เล่นโยกจอยเอง (แรงกระแทกไม่นับ) และไม่โดนผลักระหว่างชาร์จ
+  isTitanHold(){return this.character==='cocoa'&&this.basicAttack?.path==='titan';}
+  releaseTitanCharge(){const h=this._titanHold;this._titanHold=null;if(!h||this.state!=='play'||this.uniqueCd>0)return;this._titanRelease=Math.min(3,Math.floor(this._titanRage||0));this._titanRage=0;this.useCharacterSkill();this._titanRelease=0;}
   titanMoving(){return !!(this.joy?.active&&Math.hypot(this.joy.dx||0,this.joy.dy||0)>.15);}
   titanChanneling(){return this.titanRageOn()&&!this.titanMoving()&&(this._titanRage||0)>0;}
   titanRageOn(){return this.character==='cocoa'&&this.basicAttack?.path==='titan'&&this.state==='play'&&this.player?.active;}
@@ -12218,9 +12222,11 @@ class Game extends Phaser.Scene {
     const g=this._rageG;if(!this.titanRageOn()){this._titanRage=0;if(g)g.clear();return;}
     const p=this.player,b=this.basicAttack,iron=b.lv?.p_ironblood||0,moving=this.titanMoving();
     if(!this._rageG||!this._rageG.active)this._rageG=this.camWorld(this.add.graphics().setDepth(7));
-    const near=!!this.nearestEnemy(420);let r=this._titanRage||0;const prev=Math.floor(r);
-    if(!moving&&near&&this.dashTime<=0){r=Math.min(3,r+dt/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;}
-    else{r=Math.max(0,r-dt*.8);this._rageCharging=false;
+    let r=this._titanRage||0;const prev=Math.floor(r);
+    if(this._titanHold&&(this.uniqueCd>0||this.state!=='play'))this._titanHold=null;
+    if(this.uniqueBtn){const k=this._titanHold?.86:1;if(this.uniqueBtn.scaleX!==k){this.uniqueBtn.setScale(k);this.uniqueTxt?.setScale(k);}}
+    if(this._titanHold){r=Math.min(3,r+dt/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;}
+    else{r=0;this._rageCharging=false;
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron)*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){Sfx.comboPunch(10+lv*10,'heavy');this.screenShake(60+lv*30,.002+lv*.0012);}
     const G=this._rageG;G.clear();if(r<=0.02)return;
@@ -12230,7 +12236,7 @@ class Game extends Phaser.Scene {
      G.fillStyle(0xffffff,.9);for(let i=1;i<3;i++)G.fillRect(bx+bw*i/3-1,by-2,2,bh+4);if(lv>=3){G.lineStyle(2,0xffe08a,.6+.4*Math.sin(t*12)).strokeRoundedRect(bx-3,by-3,bw+6,bh+6,3);}}
     if(lv>=2&&this.fxOk()&&Math.random()<.35){const a=Math.random()*Math.PI*2,d=rad*(.6+Math.random()*.6);const s=this.camWorld(this.add.circle(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,2+lv,col).setDepth(8));this.tweens.add({targets:s,y:s.y-30-lv*10,alpha:0,duration:420,onComplete:()=>s.destroy()});}
   }
-  titanRageSpend(){const lv=Math.floor(this._titanRage||0);this._titanRage=0;
+  titanRageSpend(given){const lv=Math.min(3,given||0);this._titanRage=0;
     const sw=this.basicAttack?.lv?.p_secondwind||0,p=this.player;if(lv>=2&&sw&&p)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.04*lv*sw);return Math.min(3,lv);}
   titanRageImpact(x,y,r,lv,basic){
     const col=lv>=3?0xff2a2a:lv>=2?0xff6a1a:0xffb347;
@@ -12250,8 +12256,8 @@ class Game extends Phaser.Scene {
       for(let i=0;i<hits;i++)this.cocoaLater(i*.15,()=>{this.cocoaHit(p.x,p.y,r,unit*.42);const a=i*2.4;this.cocoaVisual(p.x+Math.cos(a)*r*.65,p.y+Math.sin(a)*r*.65,58,'punch');Sfx.comboPunch(i,'jab');});
       this.cocoaLater(hits*.15,()=>{this.cocoaHit(p.x,p.y,r*1.32,unit*1.8,{push:320});this.cocoaVisual(p.x,p.y,r*1.32);Sfx.beatFx('cyclone');this.screenShake(100,.003);});
     }else if(path==='titan'){
-      const t=this.cocoaPriorityTarget(480),x=t?t.x:p.x,y=t?t.y:p.y,r=(102+ul*10)*size,mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;
-      this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85,{center:3.6,push:260});this.cocoaVisual(x,y,r,'fist',0xd59b65);Sfx.beatFx('titan');this.screenShake(130,.005);});
+      const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv],t=this.cocoaPriorityTarget(480),x=t?t.x:p.x,y=t?t.y:p.y,r=(102+ul*10)*size*(1+lv*.15),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;
+      this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);Sfx.beatFx('titan');if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);});
       this.cocoaLater(.65,()=>{this.cocoaHit(x,y,r*1.2,unit*.7);this.cocoaVisual(x,y,r*1.2,'wave',0xd59b65);});
     }else if(path==='dashboxer'){
       const duration=5+ul*.5;this._cocoaUniqueT=duration;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);Sfx.beatFx('rush');
