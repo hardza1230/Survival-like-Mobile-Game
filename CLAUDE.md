@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.60.3 — Build path art wired
+# Latest delivery: v6.60.4 — Titan jump attacks
+
+Owner: Titan should keep walking and attacks become jumps. castCocoaRush titan uses bpPose hop/slam (plays while moving) and, if joystick active, glides toward target reach*.35 (finisher .5) over wind-up via cocoaGlideTo(noLine). Damage point/iframes unchanged. npm check passed.
+
+# Previous delivery: v6.60.3 — Build path art wired
 
 Owner art (ea6493a, 44 files) packed by scripts/pack-build-path-art.py to assets/art/bp_fx (character sheets halved to 128px cells; black VFX converted to luminance alpha, NORMAL blend). Keys: char_cocoa_{titan_slam,titan_hop,titan_charge,titan_walk,titan_colossus,fire_jab,fire_fin,rocket,dash_leap,dash_jab,phantom,hurt,victory}, char_mint_lance_charged, bpx_* VFX (stageCritical filters bpx_<char>). BP_POSE_SCALE restores on-screen size. Helpers bpPose (timed override in updatePose), bpFx, bpLoop, attachProjectileAnim; impale markers via tickImpaleMarks. Hooks in castCocoaRush, titanRageImpact, tickTitanRage (aura + charge/walk loop), cocoaFireFist, castCocoaUnique, cocoaPool, cocoaDashLeap, cocoaLandingFx, castFrostLance/queueHailstorm/impaler/applyImpale, hitBerrySeed. npm check + headless smoke passed; owner phone visual/FPS review pending.
 
