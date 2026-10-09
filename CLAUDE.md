@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.58.3 — Chocolate identity and impact
+# Latest delivery: v6.58.4 — Dash Boxer vs bosses
+
+Owner: Dash path fun but mini/boss fights hard, Unique unclear. Dash Leap now prefers a boss/mini within 320px (unless aiming away), grants iframes and adds an extra boss slam on landing. Phantom Rush Unique auto-leaps 3–4 times onto the strongest enemy (boss first) then gives free shadow Dashes; Unique descriptions/banners say plainly what each path does. Full npm check passed; owner phone review pending.
+
+# Previous delivery: v6.58.3 — Chocolate identity and impact
 
 From owner-approved critique items 1 and 3. The Flicker ON/OFF button is gone. Each path has one identity: Brawler auto-flickers (gliding) to monsters within 150px and punches in place when a foe is already adjacent or none is in reach; Titan stands and winds up; Dash Boxer uses Dash Leap. Finisher punches add 40ms hit-stop, stronger shake (Titan heavier) and 340 knockback. Five combo dots above Chocolate show rhythm; the fifth glows before the finisher. Dash Leap landing adds dust ring, ground cracks and 35ms hit-stop. Flicker/build/control tests rewritten for the new rules; full npm check passed. Owner phone feel review pending. Critique items 2 (visible path defence), 4 (decision moments) and 5 (Uniques tied to play) remain proposals.
 

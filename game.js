@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.58.3';
+const GAME_VERSION = '6.58.4';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.58.4',date:'2026-10-09',title:'Dash Boxer vs bosses',items:['Dash Leap prefers a nearby boss or mini-boss, deals extra slam damage to it and grants brief invulnerability during the leap and landing','Phantom Rush now auto-leaps 3 times (4 at level 3) onto the strongest enemy, then makes Dash free for a few seconds','Chocolate Unique banners now say plainly what each Unique does']},
   {v:'6.58.3',date:'2026-10-08',title:'Chocolate identity and impact',items:['Flicker button removed: Brawler auto-flickers to monsters within short range, Titan stands and winds up, Dash Boxer uses Dash Leap','Combo finisher now has hit-stop, stronger screen shake and heavier knockback','Five combo dots above Chocolate show the rhythm; the last dot glows when the finisher is next','Dash Leap landing leaves a dust ring and ground cracks']},
   {v:'6.58.2',date:'2026-10-08',title:'Sticky Flicker and Dash Boxer leap',items:['Flicker stays with the monster it hits instead of returning, and glides more slowly to the next target','Dash Boxer: Dash leaps to a nearby monster in the direction you aim and slams on landing; no monster in range means a normal Dash']},
   {v:'6.58.1',date:'2026-10-08',title:'Smoother Chocolate Flicker',items:['Flicker now glides to targets with a visible path line and afterimages, slightly slower, and returns smoothly','Shorter Flicker range: Titan 190, Brawler 220, Dash Boxer 250','Dash Boxer: every Dash punches enemies along its path and ends with a finishing punch; Phantom Rush still makes it stronger']},
@@ -3088,7 +3089,7 @@ const COCOA_EVOLUTIONS={
 const COCOA_UNIQUES={
   brawler:{name:'Chocolate Cyclone',emoji:'🌀',cd:20,color:0xffb347,desc:'Tap once: 6–12 punches sweep around you as you walk, then a final wave opens an escape route',tiers:{2:'8 sweep punches and a wider finale',3:'10 sweep punches and stronger impact',4:'12 sweep punches and the widest finale'}},
   titan:{name:'Colossus Fist',emoji:'👊',cd:24,color:0xd59b65,desc:'Tap once: mark a nearby Boss, Mini or Elite before ordinary targets, then drop a giant fist and one aftershock. The marked location stays fixed',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
-  dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: enter a 5.5–7s shadow mode with 2–3 temporary Dash charges. Every Dash punches along its actual path once per enemy; temporary charges expire',tiers:{2:'6s shadow mode and stronger trail punches',3:'3 temporary charges and 6.5s shadow mode',4:'7s shadow mode and maximum trail power'}}
+  dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 3 times onto the strongest enemy (boss first), slamming on each landing. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
 };
 function cocoaAttackInfo(d,b){if(!d)return d;const e=COCOA_EVOLUTIONS[b?.path];return {...d,...(e?{evolution:e.name,evolutionDesc:e.desc}:{}),upgrades:d.upgrades.map(u=>u.id==='combo'?{...u,desc:'+18% finisher power per rank; applies to all five-hit path combos'}:u)};}
 
@@ -12146,7 +12147,7 @@ class Game extends Phaser.Scene {
     const jobs=this._cocoaJobs||[];this._cocoaJobs=[];let fired=0;
     for(const j of jobs){if(j.player!==this.player||j.basic!==this.basicAttack||j.path!==this.basicAttack?.path||j.epoch!==(this._cocoaEpoch||0))continue;j.t-=dt;if(j.t<=0&&fired<4&&this.state==='play'){fired++;j.fn();}else this._cocoaJobs.push(j);}
     const ph=this._cocoaPhantom;if(ph){ph.t-=dt;if(ph.t<=0||this.basicAttack?.path!=='dashboxer'){this._cocoaPhantom=null;this._cocoaTrail=null;}}
-    const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){const fr=tr.finaleR||85;this.cocoaHit(p.x,p.y,fr,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,fr,tr.finaleR?'fist':'punch',0xc9a3ff);if(tr.finaleR){this.screenShake?.(110,.005);this.hitStop?.(35);this.cocoaLandingFx(p.x,p.y,fr);}Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}
+    const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){const fr=tr.finaleR||85;this.cocoaHit(p.x,p.y,fr,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,fr,tr.finaleR?'fist':'punch',0xc9a3ff);if(tr.bossT?.active&&this.dist(tr.bossT.x,tr.bossT.y,p.x,p.y)<=fr+(tr.bossT.body?.halfWidth||40))this.damage(tr.bossT,tr.finale*.9,tr.bossT.x,tr.bossT.y);if(tr.finaleR){p.iframe=Math.max(p.iframe||0,.3);this.screenShake?.(110,.005);this.hitStop?.(35);this.cocoaLandingFx(p.x,p.y,fr);}Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}
   }
   cocoaVisual(x,y,r,kind='wave',color=0xffb347){
     if(!this.fxOk())return;const now=this.elapsed||0;if(now-(this._cocoaFxAt??-99)>.2){this._cocoaFxAt=now;this._cocoaFxN=0;}if((this._cocoaFxN||0)>=6)return;this._cocoaFxN=(this._cocoaFxN||0)+1;
@@ -12211,16 +12212,22 @@ class Game extends Phaser.Scene {
       this.cocoaLater(.65,()=>{this.cocoaHit(x,y,r*1.2,unit*.7);this.cocoaVisual(x,y,r*1.2,'wave',0xd59b65);});
     }else if(path==='dashboxer'){
       const duration=5+ul*.5;this._cocoaUniqueT=duration;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);Sfx.beatFx('rush');
+      // v6.58.4 Phantom Rush: พุ่งทุบอัตโนมัติ 3–4 ครั้งใส่เป้าแข็งสุด (บอสก่อน)
+      const leaps=ul>=3?4:3,slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));
+      for(let i=0;i<leaps;i++)this.cocoaLater(.05+i*.42,()=>{const t=this.cocoaPriorityTarget(480);if(!t||!p.active)return;const d=this.dist(t.x,t.y,p.x,p.y),gap=Math.max(36,(t.body?.halfWidth||20)+18),k=Math.max(0,(d-gap)/Math.max(1,d));
+        p.iframe=Math.max(p.iframe||0,.5);this.cocoaGlideTo({x:p.x+(t.x-p.x)*k,y:p.y+(t.y-p.y)*k},.2);
+        this.cocoaLater(.2,()=>{if(!p.active)return;this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.comboPunch(i,'heavy');});});
     }else{this._cocoaUniqueT=.2;const r=(115+ul*10)*size;this.cocoaHit(p.x,p.y,r,unit*2.2,{push:250});this.cocoaVisual(p.x,p.y,r);Sfx.comboPunch(0,'heavy');}
-    this.showBanner(this.uniqueInfo().emoji+' '+this.uniqueInfo().name,path==='dashboxer'?'Dash to punch through enemies · temporary charges expire':'One tap · keep moving while the skill resolves',1400);
+    this.showBanner(this.uniqueInfo().emoji+' '+this.uniqueInfo().name,path==='dashboxer'?'Auto-leaping onto the strongest enemy · then Dash is free for a few seconds':path==='titan'?'Giant fist slams the strongest enemy':path==='brawler'?'Spinning punches around you · keep moving':'Slam nearby enemies',1400);
   }
   // v6.58.2 Dash Boxer: Dash พุ่งไปหามอนในทิศที่กด (ไม่กด = ตัวใกล้สุด) แล้วทุบลงพื้นตอนถึง
   cocoaDashLeap(d){
     const b=this.basicAttack,p=this.player,tr=this._cocoaTrail;if(b?.path!=='dashboxer'||!tr||!p?.active)return;
     const aim=this.joy?.active&&this.moveDir?.lengthSq()>.04;let best=null,score=-Infinity;
-    this.enemies.children.iterate(e=>{if(!e?.active||e._phaseGateLocked)return;const dx=e.x-p.x,dy=e.y-p.y,dist=Math.hypot(dx,dy);if(dist>280||dist<20)return;const dot=(dx*d.x+dy*d.y)/dist;if(aim&&dot<.5)return;const v=(aim?dot*200:0)-dist;if(v>score){score=v;best=e;}});
+    const big=this.cocoaPriorityTarget(320);if(big&&(big.isBoss||big.isMini)&&!big._phaseGateLocked){const dx=big.x-p.x,dy=big.y-p.y,dd=Math.hypot(dx,dy)||1;if(!aim||(dx*d.x+dy*d.y)/dd>.2)best=big;}
+    if(!best)this.enemies.children.iterate(e=>{if(!e?.active||e._phaseGateLocked)return;const dx=e.x-p.x,dy=e.y-p.y,dist=Math.hypot(dx,dy);if(dist>280||dist<20)return;const dot=(dx*d.x+dy*d.y)/dist;if(aim&&dot<.5)return;const v=(aim?dot*200:0)-dist;if(v>score){score=v;best=e;}});
     if(!best)return;const dist=this.dist(best.x,best.y,p.x,p.y),gap=Math.max(36,(best.body?.halfWidth||20)+18),k=Math.max(0,(dist-gap)/dist);
-    p.setVelocity(0,0);this.cocoaGlideTo({x:p.x+(best.x-p.x)*k,y:p.y+(best.y-p.y)*k},.2);this.dashTime=.22;tr.finale*=1.5;tr.finaleR=110;
+    p.setVelocity(0,0);p.iframe=Math.max(p.iframe||0,.45);if(best.isBoss||best.isMini)tr.bossT=best;this.cocoaGlideTo({x:p.x+(best.x-p.x)*k,y:p.y+(best.y-p.y)*k},.2);this.dashTime=.22;tr.finale*=1.5;tr.finaleR=110;
   }
   cocoaLandingFx(x,y,r){
     if(!this.add?.graphics||!this.tweens)return;const g=this.camWorld(this.add.graphics().setDepth(y-1));
