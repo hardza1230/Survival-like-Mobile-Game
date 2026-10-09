@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.58.4';
+const GAME_VERSION = '6.58.5';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.58.5',date:'2026-10-09',title:'Dash Boxer Unique recharge',items:['Every Dash on the Dash Boxer path cuts 1 second from the Unique cooldown']},
   {v:'6.58.4',date:'2026-10-09',title:'Dash Boxer vs bosses',items:['Dash Leap prefers a nearby boss or mini-boss, deals extra slam damage to it and grants brief invulnerability during the leap and landing','Phantom Rush now auto-leaps 3 times (4 at level 3) onto the strongest enemy, then makes Dash free for a few seconds','Chocolate Unique banners now say plainly what each Unique does']},
   {v:'6.58.3',date:'2026-10-08',title:'Chocolate identity and impact',items:['Flicker button removed: Brawler auto-flickers to monsters within short range, Titan stands and winds up, Dash Boxer uses Dash Leap','Combo finisher now has hit-stop, stronger screen shake and heavier knockback','Five combo dots above Chocolate show the rhythm; the last dot glows when the finisher is next','Dash Leap landing leaves a dust ring and ground cracks']},
   {v:'6.58.2',date:'2026-10-08',title:'Sticky Flicker and Dash Boxer leap',items:['Flicker stays with the monster it hits instead of returning, and glides more slowly to the next target','Dash Boxer: Dash leaps to a nearby monster in the direction you aim and slams on landing; no monster in range means a normal Dash']},
@@ -5804,7 +5805,7 @@ class Game extends Phaser.Scene {
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;
     if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
-    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);}
+    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-1);}
     this.player.iframe=Math.max(this.player.iframe,0.28);
     Sfx.dash();
     this.flashBtn(this.dashBtn);
