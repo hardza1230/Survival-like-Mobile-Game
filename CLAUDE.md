@@ -10,7 +10,7 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 D1: SET_COLLECT_ON=false — gearSetCollected false, codex deposit tap/bars/collect line hidden; load refunds setDeposit ×10 shards. D2: Bazaar tab 'Gacha' (was Boxes) holds Gear Gacha (openGachaReveal, band from Equipment) + Trade-in + supply box; Equipment gacha button kept (tutorial). D3: CUR_ALIAS exalt/regal→transmute, chaos→alt; curKey() in currencyDef/Save.currency/add/spend/order payout; load merges old stock; CURRENCY list 5 entries; prices transmute 120 alt 110. Tests: progression-polish context + 3 nav tabs. npm check passed. Next: E.
 
-# Previous delivery: v6.78.0 — Consolidation C1/C2/C3/C5 (C done)
+# Older delivery: v6.78.0 — Consolidation C1/C2/C3/C5 (C done)
 
 C3: BESTIARY_STATS_ON=false (bestiaryBonusTotal → {}), Sugar per tier unchanged. C5: Bazaar Orders tab removed; Save.load refunds active sugarOrder cost (miners already Depths-only). C1: OVERCAP_ON=false hides Overcap button; owned overcap still counts in talTotal (shown +N); dug Core Stones → +STONE_THREADS(25) thread; load converts stored coreStones to threads. C2: Special Cores button moved from Weave to Rank Perks (above Ancient, already there); back returns to perks via _specialFrom. dig test context got OVERCAP_ON/STONE_THREADS. npm check passed. Next: D.
 
@@ -173,7 +173,7 @@ Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55
 
 
 ## 5. ถัดไป
-- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A–D เสร็จ → E ต่อ) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
+- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A–E เสร็จ → F ต่อ) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
 - รอ feedback เจ้าของจากการเล่นจริง: Kitchen upkeep (v6.69), Story C2–C3 buff/Temple cost (v6.68), item mods (v6.67), Delve
 - งานค้างระยะยาว: Monster animation ที่เหลือ (`docs/MONSTER_ANIMATION_PLAN.md`), Play Store (พักไว้: ลบบัญชีในแอป, store listing, keystore, closed test)
 - แผน commit เก่า: `docs/COMMIT_ROADMAP.md`

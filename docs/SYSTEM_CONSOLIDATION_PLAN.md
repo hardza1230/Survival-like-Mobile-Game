@@ -30,9 +30,9 @@ Status: ⬜ todo · 🟨 in progress · ✅ done
 - ✅ D3 Currency 8 → 4–5 kinds (convert old stock).
 
 ## E. Endgame
-- ⬜ E1 Delve boss needs one goal (Hunger or Mission, not both).
-- ⬜ E2 Remove Zone Modifiers and Endless/Ascension entry points.
-- ⬜ E3 Atlas passives + Pact milestones → one depth-reward track.
+- ✅ E1 Delve boss needs one goal (Hunger or Mission, not both).
+- ✅ E2 Remove Zone Modifiers and Endless/Ascension entry points.
+- ✅ E3 Atlas passives + Pact milestones → one depth-reward track.
 
 ## F. Dead code removal (no player-visible change)
 - ⬜ F1 Endgame Build, Recipe draft/Sugar Rush, Rift, Cookbook, slot level-up, openUpgradePanel, legacy PASSIVES/SKILLDEFS paths, castDiamondDust.
