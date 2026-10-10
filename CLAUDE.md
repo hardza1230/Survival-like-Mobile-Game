@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.85.1 — Objective arrow orbits the hero
+# Latest delivery: v6.86.0 — Ricochet link fixed + unused FX files deleted
+
+ricochetLink(x,y,tx,ty): static frame 0 of bpx_momo_link (origin .1, scaleX d/205), alpha tween 250ms + 600ms safety destroy, max 6 alive (_rlN). Owner asked to delete effect art of unknown/unlogged origin that was not wired: assets/vfx/vfx_{chili_nova,frost_pulse,telegraph_hazard,ult_sugarbomb,ult_cocoavortex,proj_donut}*.png, generated/vfx_burn_zone.png, and registered-but-never-played fx_ult_bomb, fx_popcorn, fx_flickerstrike, fx_star_guard, fx_bosssummon (files + registry entries). Wired assets untouched. scripts/batch_generate_vfx.mjs still lists the deleted outputs (generator only). npm check passed.
+
+# Previous delivery: v6.85.1 — Objective arrow orbits the hero
 
 updateObjectiveArrow: arrow placed at player screen pos (same world→ui mapping as drawOverheadStatus) + radius 62 with bob, angle from player to target, scale .8, hidden when target <140px. npm check passed.
 

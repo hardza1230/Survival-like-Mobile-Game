@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.85.1';
+const GAME_VERSION = '6.86.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.86.0', date:'2026-10-10', title:'🍓 Ricochet link is back', items:['Ricochet bounces show a quick pink link to the next target again — it now fades out instantly and never sticks','Removed unused effect files']},
   { v:'6.85.1', date:'2026-10-10', title:'➤ Objective arrow on your hero', items:['The objective arrow now circles your hero instead of sitting at the screen edge']},
   { v:'6.85.0', date:'2026-10-10', title:'🌿 Meet Mint + ricochet fix', items:['First time entering Stage 3, Mint introduces herself and shows how to switch heroes — you can keep your current hero','Fixed pink ricochet link lines staying stuck on screen']},
   { v:'6.84.1', date:'2026-10-10', title:'🛠️ Tablet ghost props fix', items:['Fixed stage props (boxes, pillars) appearing stuck on screen over menus on tablets']},
@@ -1771,7 +1772,7 @@ const ASSET_IMAGES = {
   tile_talents:'assets/art/menu_buttons/tile_talents.webp',
   tile_upgrade:'assets/art/menu_buttons/tile_upgrade.webp',  bg1:'assets/generated/bg1_sour_ant_nest.webp', bg2:'assets/generated/bg2_rotting_drain.jpg', bg3:'assets/bg3.webp', bg4:'assets/bg4.webp', bg5:'assets/bg5.webp', bg6:'assets/bg6.png',
   fx_frost:'assets/fx_frost.png', fx_donut:'assets/fx_donut.png',   // VFX รูปจริงที่ผ่านการตรวจ alpha แล้ว
-  fx_ult_bomb:'assets/fx_ult_bomb.png', fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
+  fx_ult_vortex:'assets/fx_ult_vortex.png',   // VFX อัลติ (bomb/blackhole)
   proj_rocket:'assets/proj_rocket.png', proj_fork:'assets/proj_fork.png', proj_boomer:'assets/proj_boomer.png',   // กระสุนรูปจริง (คีย์เขียว)
   // projectile sprite จริง — แทน spark/circle vector เดิม
   proj_sprinkle:'assets/generated/proj_sprinkle.png', proj_whirl:'assets/generated/proj_whirl.png',
@@ -1974,7 +1975,6 @@ const ASSET_SHEETS = {
   char_sesame:{ url:'assets/char_sesame_awakened_sheet.png', frame:128 },
   char_sesame_run:{ url:'assets/characters/sesame_run_sheet.png', frame:128 },
   char_sesame_attack:{ url:'assets/characters/sesame_attack_sheet.png', frame:128 },
-  fx_star_guard:{ url:'assets/fx_star_guard_sheet.png', frame:128, anim:{frames:8,rate:14} },
   // บอสหลัก: action sheet 8 เฟรม ผูก pose กับท่าจริง
   boss1:      { url:'assets/generated/boss1_green_ant_queen_sheet.png', frame:160 },
   boss2:      { url:'assets/generated/boss2_clogmaw_sheet.png', frame:256, anim:{frames:2, rate:3, yoyo:true} },
@@ -2093,7 +2093,6 @@ const ASSET_FX = {
   fx_mint_shatter:{url:'assets/vfx/mint_lance_shatter_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_mint_gale:{url:'assets/vfx/mint_gale_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_cocoa_punch:{ url:'assets/fx_cocoa_punch_sheet.png', fw:128, fh:128, frames:8, rate:30, anchor:'center' },
-  fx_flickerstrike:{ url:'assets/generated/fx_flickerstrike_sheet.png', fw:256, fh:256, frames:8, rate:34, anchor:'center' },   // Effectฟันของโกโก้ (Flicker Strike)
   fx_beam:     { url:'assets/fx_beam_sheet.png',     fw:352, fh:366, frames:8, rate:26, anchor:'left'   },
   fx_boom:     { url:'assets/fx_boom_sheet.png',     fw:352, fh:366, frames:8, rate:24, anchor:'center' },
   fx_frostnova:{ url:'assets/fx_frostnova_sheet.png',fw:352, fh:366, frames:8, rate:24, anchor:'center' },
@@ -2104,12 +2103,10 @@ const ASSET_FX = {
   fx_heal:     { url:'assets/fx_heal_sheet.png',     fw:352, fh:366, frames:8, rate:22, anchor:'center' },
   fx_wave:     { url:'assets/fx_wave_sheet.png',     fw:352, fh:366, frames:8, rate:26, anchor:'center' },
   fx_bubble:   { url:'assets/fx_bubble_sheet.png',   fw:352, fh:366, frames:8, rate:22, anchor:'center' },
-  fx_popcorn:  { url:'assets/fx_popcorn_sheet.png',  fw:352, fh:366, frames:8, rate:24, anchor:'center' },
   fx_aura:     { url:'assets/fx_aura_sheet.png',     fw:352, fh:366, frames:8, rate:14, anchor:'center', loop:true },   // ออร่าถาวร วนลูป
   fx_mine:     { url:'assets/fx_mine_sheet.png',     fw:61,  fh:70,  frames:8, rate:24, anchor:'center' },
   fx_donutimpact:{ url:'assets/fx_donutimpact_sheet.png',fw:286,fh:92,frames:8,rate:24, anchor:'center' },
   fx_bossnova: { url:'assets/fx_bossnova_sheet.png', fw:286, fh:64,  frames:8, rate:22, anchor:'center' },
-  fx_bosssummon:{ url:'assets/fx_bosssummon_sheet.png',fw:61, fh:68,  frames:8, rate:20, anchor:'center' },
   fx_bossportal:{ url:'assets/fx_bossportal_sheet.png',fw:127,fh:127, frames:8, rate:20, anchor:'center' },
   fx_enrage:   { url:'assets/fx_enrage_sheet.png',   fw:61,  fh:61,  frames:8, rate:16, anchor:'center', loop:true },   // ออร่าEnragedบอส วนลูป
 };
@@ -12584,6 +12581,11 @@ class Game extends Phaser.Scene {
   fxGaleScreen(){ const ls=[...Array(16)].map(()=>({y:Math.random(),d:Math.random()*.4,len:.15+Math.random()*.25})),lv=[...Array(14)].map(()=>({y:Math.random(),d:Math.random()*.5,r:4+Math.random()*4}));
     this.screenFx(1.3,(g,w,h,k,el)=>{ for(const l of ls){ const t=(el-l.d)/.8; if(t<0||t>1)continue; const x=(-.3+t*1.6)*w; g.lineStyle(2,0xd6fff0,.5*Math.sin(t*Math.PI)).lineBetween(x,l.y*h,x-l.len*w,l.y*h+6); }
       for(const f of lv){ const t=(el-f.d)/.9; if(t<0||t>1)continue; g.fillStyle(0x6fe0a8,.85*Math.sin(t*Math.PI)).fillEllipse((-.1+t*1.2)*w,f.y*h+Math.sin(t*12)*14,f.r*2.4,f.r); } }); }
+  // v6.86 เส้นเชื่อม Ricochet: รูปนิ่งเฟรมเดียว จางหายใน .25 วิ แล้วทำลายเสมอ (เดิมเป็น anim loop ไม่ถูกลบ → ค้างจอ) · จำกัด 6 เส้นพร้อมกัน
+  ricochetLink(x,y,tx,ty){ try{ if(!this.textures.exists('bpx_momo_link'))return; this._rlN=this._rlN||0; if(this._rlN>=6)return; const d=Math.hypot(tx-x,ty-y); if(d<12)return;
+    const im=this.trackArtVfx(this.camWorld(this.add.image(x,y,'bpx_momo_link',0).setOrigin(.1,.5).setRotation(Math.atan2(ty-y,tx-x)).setScale(d/205,.35).setDepth(90400).setAlpha(.9))); this._rlN++;
+    let done=false; const kill=()=>{ if(done)return; done=true; this._rlN=Math.max(0,this._rlN-1); if(im&&im.active)im.destroy(); };
+    this.tweens.add({targets:im,alpha:0,duration:250,ease:'Quad.in',onComplete:kill}); this.time.delayedCall(600,kill); }catch(e){} }
   // v6.83 หน้าจอแตก: เส้นร้าววาดด้วยโค้ดทับทั้งจอ (กล้องหลัก) ตอนปล่อย Titan Rage lv2+
   titanScreenCrack(lv){ try{ const cam=this.cameras.main,v=cam.worldView,cx=v.centerX+(Math.random()-.5)*v.width*.2,cy=v.centerY+(Math.random()-.5)*v.height*.2,R=Math.hypot(v.width,v.height)*.6,g=this.camWorld(this.add.graphics().setDepth(95000));
     const n=lv>=3?14:9; g.fillStyle(0xffffff,lv>=3?.22:.14).fillCircle(cx,cy,26+lv*8);
@@ -12842,7 +12844,7 @@ class Game extends Phaser.Scene {
     if(b.seedPop>0)this.berrySplash(x,y,b.dmg*(.25+.12*b.seedPop),46+14*b.seedPop,e);
     if(m.path==='sniper'){if(m.visited.size>=m.pierces)this.killBullet(b);return;}
     let t=null,bd=(360*(b.seekMul||1))**2;this.enemies.children.iterate(o=>{if(!o?.active||m.visited.get(o)===(o._glacierLifeToken||0)||o._phaseGateLocked||(o._phaseInvuln||0)>0)return;const dd=(o.x-b.x)**2+(o.y-b.y)**2;if(dd<bd){bd=dd;t=o;}});
-    if(b.bounce>0&&t){this.bpFx?.('bpx_momo_bounce',x,y,80);/* v6.85 ตัดเส้น link (anim loop:true ไม่เคยถูกลบ → เส้นชมพูค้างเต็มจอ) */b.bounce--;b._bounced=true;m.legs++;Sfx.bp?.('strawberry_ricochet_bounce',.36,.07,0.95+Math.min(.3,.04*m.legs));b.dmg=m.base*Math.min(2.2,1+(b.bounceGain||0)*m.legs);this.ptOnBounce(b,e);b.life=Math.max(b.life,.35);const a=Math.atan2(t.y-b.y,t.x-b.x);this.physics.velocityFromRotation(a,980,b.body.velocity);return;}
+    if(b.bounce>0&&t){this.bpFx?.('bpx_momo_bounce',x,y,80);this.ricochetLink?.(x,y,t.x,t.y);b.bounce--;b._bounced=true;m.legs++;Sfx.bp?.('strawberry_ricochet_bounce',.36,.07,0.95+Math.min(.3,.04*m.legs));b.dmg=m.base*Math.min(2.2,1+(b.bounceGain||0)*m.legs);this.ptOnBounce(b,e);b.life=Math.max(b.life,.35);const a=Math.atan2(t.y-b.y,t.x-b.x);this.physics.velocityFromRotation(a,980,b.body.velocity);return;}
     if(!t&&m.path==='ricochet'&&(e.isBoss||e.isMini)&&e.active&&!e._phaseGateLocked&&!(e._phaseInvuln>0))this.damage(e,m.base*Math.min(.8,.25+.04*(b.bounce||0)+.1*(m.basic.lv.s_return||0)),x,y);
     if(m.path==='ricochet'&&m.evolved){this.bpFx?.('bpx_momo_pinball',x,y,170);Sfx.bp?.('strawberry_pinball_final',.55,.12);this.berrySplash(x,y,b.dmg*.25,72);}
     // Returning seed keeps its combat value, but cannot hit a visited lifetime again.
