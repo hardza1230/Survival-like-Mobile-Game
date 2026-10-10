@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.71.0';
+const GAME_VERSION = '6.72.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.72.0',date:'2026-10-10',title:'Simpler builds (step 2)',items:['Modifier and Trade-off cards no longer appear in level-ups — they are offered alongside Relics','Relics, Modifiers and Trade-offs now share 5 slots per stage','Relic choices at levels 6, 12 and 18 (was once at level 8)']},
   {v:'6.71.0',date:'2026-10-10',title:'Simpler builds (step 1)',items:['Build Tag set bonuses removed','Second Flavor Infusion (level 22) removed — one element per run']},
   {v:'6.70.0',date:'2026-10-10',title:'Mint buff',items:['Mint base damage 92% → 100% and crit 2% → 5%','Frost Lance fires faster at higher levels (fastest 1.0s, was 1.25s)','Second lance from level 3 (was level 4)','Bosses and minibosses take +4% damage per Chill stack (max +16%); Glacier Brittle bosses take +15% more']},
   {v:'6.69.1',date:'2026-10-10',title:'Kitchen 8-Way Shots fix',items:['8-Way Shots recipe no longer uses Item Power or crits, like every other recipe']},
@@ -2748,7 +2749,7 @@ const PASSIVES = {
 };
 /* ---- 🔮 RELICS (v4.57): ของวิเศษในรัน — เปลี่ยน "กลไก" ไม่ใช่แค่ +ตัวเลข · ถือได้ RELIC_CAP ชิ้น/ด่าน (รีเซ็ตพร้อม loadout)
    ได้จาก: เลเวล 6 (การันตี) · กล่องมินิบอส · กล่องลับในแมพ 30% · hook อยู่ที่ damage/killEnemy/hurtPlayer/die/doDash (ดู relicOn*) */
-const RELIC_CAP = 3;
+const RELIC_CAP = 5;   // v6.72: Relic + Modifier + Trade-off รวมช่องเดียว (เดิม Relic 3 + Mod 3 + Trade 2)
 const RELICS = {
   splinter:  { emoji:'💥', name:'Crit Splinter',  desc:'Crits splinter into 2 shards that hit nearby enemies for 40% damage' },
   leech:     { emoji:'🩸', name:'Berry Leech',    desc:'Crits heal 1% max HP (0.25s cooldown)' },
@@ -11256,7 +11257,7 @@ class Game extends Phaser.Scene {
     this.lvlUp.add(t);
     this.banishMode=false;
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
-    if(!this._forcedOpts&&!this._relicLvDone&&!this._inTutorial&&(this.level||1)>=8&&this.relicSlotsLeft()>0){ this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
+    const _rlv=[6,12,18][this._relicLvN||0]; if(!this._forcedOpts&&_rlv&&!this._inTutorial&&(this.level||1)>=_rlv&&this.relicSlotsLeft()>0){ this._relicLvN=(this._relicLvN||0)+1; this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
     if(this._draftPick){ this._draftPick=false; t.setText('🌟 LEVEL '+this.level+' DRAFT — pick 1 game-changer · tap again to confirm'); }
     if(this._relicPick)t.setText('🔮 RELIC — choose 1 (changes how you fight) · tap again to confirm');
     const opts=this._forcedOpts||this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._forcedOpts=null; this._lvlOpts=opts;
@@ -11541,9 +11542,9 @@ class Game extends Phaser.Scene {
     const B=this._frBuddy; if(B){ B.t-=dt; B.ang+=dt*2.4; B.spr.setPosition(p.x+Math.cos(B.ang)*56,p.y+Math.sin(B.ang)*56-10); B.acc+=dt;
       if(B.acc>=0.45){ B.acc=0; const e=this.nearestEnemy(420); if(e){ const b=this.getBullet(B.spr.x,B.spr.y,0xffffff,0.18); if(b){ b.setTexture('proj_sprinkle').setTint(0xffb3cd); b.dmg=this.relicDmg(0.7)*B.pw; b.life=1.2; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(Math.atan2(e.y-B.spr.y,e.x-B.spr.x),560,b.body.velocity); } } }
       if(B.t<=0){ B.spr.destroy(); this._frBuddy=null; } } }
-  resetRelics(){ this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
+  resetRelics(){ this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
-  relicSlotsLeft(){ return RELIC_CAP-((this.relics&&this.relics.length)||0); }
+  relicSlotsLeft(){ const b=this.basicAttack||{},m=(b.mods||[]).filter(id=>!id.startsWith('f_')).length+((b.trades||[]).length); return RELIC_CAP-((this.relics&&this.relics.length)||0)-m; }   // v6.72 A2/A3: Modifier + Trade-off share Relic slots
   // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
   ancientEchoDash(){ if(!Save.ancientHas('echoDash'))return; const t=this.elapsed||0; this._dashChain=(this._dashChain||[]).filter(x=>t-x<2.5); this._dashChain.push(t);
     if(this._dashChain.length<3)return; this._dashChain=[]; const p=this.player,R=130,dmg=this.relicDmg(2.2);
@@ -11560,6 +11561,9 @@ class Game extends Phaser.Scene {
     while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]));
       out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+tagLabel(TAGS_OF.relic[k]),headline:d.headline+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
+    // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
+    if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);}
+      for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
     return out;
   }
   offerRelic(){ if(this._inTutorial)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
@@ -11691,8 +11695,8 @@ class Game extends Phaser.Scene {
     if(focused){
       const pool=atk.slice();
       // Modifier/trade choices are shared options, not replacements of a path card.
-      if(!noSpecial&&!this._inTutorial&&(this.level||1)>=4){const c=this.modCard();if(c)pool.push({group:'shared',w:2,card:c});}
-      if(!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5){const c=this.tradeCard();if(c)pool.push({group:'shared',w:1,card:c});}
+      if(false&&!noSpecial&&!this._inTutorial&&(this.level||1)>=4){const c=this.modCard();if(c)pool.push({group:'shared',w:2,card:c});}
+      if(false&&!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5){const c=this.tradeCard();if(c)pool.push({group:'shared',w:1,card:c});}
       for(const c of this.endlessCards(this.endlessStatDefs().length))pool.push({group:'universal',w:1,card:c});
       if(healCard)pool.push({group:'universal',w:3,card:healCard});
       const buildDraft=storyCards||cocoaLocked;
@@ -11701,8 +11705,8 @@ class Game extends Phaser.Scene {
       Phaser.Utils.Array.Shuffle(out);return out.slice(0,n);
     }
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
-    if(!noSpecial&&!this._inTutorial&&(this.level||1)>=4&&Math.random()<(out.length<n?1:0.35)){ const mc=this.modCard(); if(mc){ if(out.length>=n)out[n-1]=mc; else out.push(mc); } }   // v6.8.0 B3
-    if(!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5&&Math.random()<0.25){ const tc=this.tradeCard(); if(tc){ const at=Math.min(out.length,n)-1; if(at>=0&&out.length>=n){ const j=out[at]&&out[at].kind==='Modifier'&&at>0?at-1:at; out[j]=tc; } else out.push(tc); } }   // v6.9.0 B4   // การ์ดอาวุธของตัวละครล้วน
+    if(false&&!noSpecial&&!this._inTutorial&&(this.level||1)>=4&&Math.random()<(out.length<n?1:0.35)){ const mc=this.modCard(); if(mc){ if(out.length>=n)out[n-1]=mc; else out.push(mc); } }   // v6.8.0 B3
+    if(false&&!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5&&Math.random()<0.25){ const tc=this.tradeCard(); if(tc){ const at=Math.min(out.length,n)-1; if(at>=0&&out.length>=n){ const j=out[at]&&out[at].kind==='Modifier'&&at>0?at-1:at; out[j]=tc; } else out.push(tc); } }   // v6.9.0 B4   // การ์ดอาวุธของตัวละครล้วน
     if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
     else if(out.length<n&&healCard){out.push(healCard);healCard=null;}
     // ♾️ เติมช่องที่เหลือด้วยการ์ดสแตตไม่รู้จบ (อาวุธตันแล้วก็ยังมีอะไรให้เลือกเสมอ)
