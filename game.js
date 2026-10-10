@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.82.1';
+const GAME_VERSION = '6.82.2';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.82.2', date:'2026-10-10', title:'🔫 Shotgun BOOM', items:['Shotgun Unique now fires with the heavy sniper crack sound, played the moment you release']},
   { v:'6.82.1', date:'2026-10-10', title:'🔫 Shotgun blast sound fix', items:['Unique sounds are no longer dropped when many other sounds play at once, so the shotgun BOOM is always heard','Unique sounds are a little louder']},
   { v:'6.82.0', date:'2026-10-10', title:'🔊 Unique skill sounds', items:['New sounds for every Unique: shotgun pump and blast, sniper crack, Titan charge and giant ground slam, rocket salvo, Phantom Rush, Mint Gale, lances and Glacier Bloom, Strawberry Rebound, Chain Bolt, Prism Barrage and Citrus Parade']},
   { v:'6.81.0', date:'2026-10-10', title:'🎵 New campaign soundtrack', items:['45 new music tracks: every Story stage from C1-1 to C3-5 now has its own stage, miniboss and boss theme']},
@@ -6174,7 +6175,8 @@ class Game extends Phaser.Scene {
   releaseBerryBlast(ang,c){ const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player,bm=this.blastMods(),basic=this.basicAttack;
     this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(380);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     const pb=1+0.15*(((this.basicAttack&&this.basicAttack.lv)||{}).pointblank||0);
-    const fire=(mul)=>{ if(this.state!=='play')return; const R=300,h=bm.cone/2,unit=(14+ul*5)*dm*up*(0.7+0.3*c)*mul; let hits=0;
+    const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */
+      const R=300,h=bm.cone/2,unit=(14+ul*5)*dm*up*(0.7+0.3*c)*mul; let hits=0;
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const dx=e.x-pl.x,dy=e.y-pl.y,d=Math.hypot(dx,dy); if(d>R+(e.body?e.body.halfWidth:18))return;
         let da=Math.atan2(dy,dx)-ang; while(da>Math.PI)da-=Math.PI*2; while(da<-Math.PI)da+=Math.PI*2; if(Math.abs(da)>h&&d>40)return;
         const n=Math.max(1,Math.round(bm.pellets*(1-d/(R*1.6))*0.5)); hits++;
@@ -6184,7 +6186,7 @@ class Game extends Phaser.Scene {
       else for(let i=0;i<bm.pellets;i++){ const a=ang-h+bm.cone*(i+0.5)/bm.pellets+(Math.random()-0.5)*0.08,len=200+Math.random()*100;
         const dot=this.camWorld(this.add.circle(pl.x,pl.y,4,[0xff5c8a,0xffd166,0xffffff][i%3]).setDepth(90450));
         this.tweens.add({targets:dot,x:pl.x+Math.cos(a)*len,y:pl.y+Math.sin(a)*len,alpha:0,duration:220,ease:'Quad.out',onComplete:()=>dot.destroy()}); }
-      this.burst(pl.x+Math.cos(ang)*40,pl.y+Math.sin(ang)*40,0xff76a8); this.screenShake(140,0.007); (Sfx.bp?.('uq_shotgun_blast',.8,.1)&&Sfx.uqReady?.('uq_shotgun_blast'))||(Sfx.boom&&Sfx.boom());
+      this.burst(pl.x+Math.cos(ang)*40,pl.y+Math.sin(ang)*40,0xff76a8); this.screenShake(140,0.007);
       return hits; };
     const hits=fire(1);
     // แรงถีบ: ถอยหลังจากทิศยิง + อมตะสั้น ๆ
