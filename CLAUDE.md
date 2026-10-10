@@ -2,13 +2,13 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.92.0 — Perf: per-frame nearestEnemy memo + BGM eviction
-
-Owner chose perf items 4+5. nearestEnemy(maxD) memoised per game.loop.frame + player x/y per maxD (recompute if cached target died); raw scan moved to _nearestEnemyRaw. evictOtherBgm(keep) called in ensureStageAudio: removes decoded bgm_[smb]N/stage/boss/chN from cache.audio (+sound.removeByKey) except current stage/mini/boss keys and the playing track; files stay in SW cache, reload lazily. npm check passed.
-
 # Latest delivery: v6.93.0 — Lighter GPU memory (perf item 1)
 
 stageOnlyArtKeys() (STAGE_SHEET_KEYS + STAGE_DECOR items + floor_cN, minus bootKeep): preloadAll only downloads them into SW/HTTP cache (dl fetch, LoadMeter) instead of decoding into WebGL; ensureStageArt decodes per stage. syncBgTile() on postupdate: bgTile sized ≈ view + 2 pattern periods (even multiples of frame×tileScale, cap WORLD), position snapped to period multiples at camera centre → no 4000×4000 canvas (−64MB), pattern stays fixed in world. v6.92: nearestEnemy per-frame cache, evictOtherBgm. npm check passed. No on-device FPS measured.
+
+# Previous delivery: v6.92.0 — Perf: per-frame nearestEnemy memo + BGM eviction
+
+Owner chose perf items 4+5. nearestEnemy(maxD) memoised per game.loop.frame + player x/y per maxD (recompute if cached target died); raw scan moved to _nearestEnemyRaw. evictOtherBgm(keep) called in ensureStageAudio: removes decoded bgm_[smb]N/stage/boss/chN from cache.audio (+sound.removeByKey) except current stage/mini/boss keys and the playing track; files stay in SW cache, reload lazily. npm check passed.
 
 # Previous delivery: v6.91.0 — White screen on phone (GPU memory)
 
