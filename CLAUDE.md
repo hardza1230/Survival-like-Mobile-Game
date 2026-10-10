@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.69.1 — 8-Way Shots fix
+# Latest delivery: v6.70.0 — Mint buff
+
+Owner chose critique fixes A+B+C. CHARACTERS.mint dmg .92→1.00, crit .02→.05. cdOf mint frost base max(1.0,1.7−.07·lvl) (was max(1.25,1.95−.08·lvl)). mintVolleyProfile 2nd lance at lvl≥3 (was 4). damage(): Mint vs boss/mini ×(1+.04·min(4,_chill)) while chill fresh (≤2.5s); Glacier Brittle boss ×1.15. mint-glacier test updated 135→155.25. Mint Gale damage (option D) not done. npm check passed.
+
+# Previous delivery: v6.69.1 — 8-Way Shots fix
 
 Kitchen shots bullets set b.frShot (reset in getBullet); hitEnemy sets _frDmg while resolving them, so damage() skips powerMul and crit like other recipes. npm check passed.
 

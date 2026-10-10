@@ -32,7 +32,7 @@ for(const path of ['barrage','pierce']){const a=enemy(),b=enemy({isBoss:true}),s
 // Pooled reset clears Frost/Brittle/cooldown/Chill and advances a separate lifetime token.
 {const e=enemy({_glacierFrost:3,_glacierBrittleUntil:3000,_chill:4,_glacierBurstAt:100}),s=scene([e]);s.stopEnemyPresentation(e);assert.equal(e._glacierFrost,0);assert.equal(e._chill,0);assert.equal(e._glacierLifeToken,2);assert.equal(e._glacierBrittleUntil,0);assert.equal(e._glacierBurstAt,-Infinity);}
 // Actual damage() applies Frozen path bonuses to Brittle, including boss phase gates.
-{const e=enemy({isBoss:true,phase2:true,phase3:true,_glacierBrittleUntil:3000}),s=scene([e]);s.damage=Scene.prototype.damage;s.player.critChance=0;s.stageIndex=0;s.condDmgMul=()=>1;s.warnAntBomber=()=>{};s.popDmg=()=>{};s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,135);s.time.now=3001;s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,235);e._phaseInvuln=1;s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,235);}
+{const e=enemy({isBoss:true,phase2:true,phase3:true,_glacierBrittleUntil:3000}),s=scene([e]);s.damage=Scene.prototype.damage;s.player.critChance=0;s.stageIndex=0;s.condDmgMul=()=>1;s.warnAntBomber=()=>{};s.popDmg=()=>{};s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,155.25);s.time.now=3001;s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,255.25);e._phaseInvuln=1;s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,255.25);}
 // Unique delayed damage is canceled on transition and cannot damage a recycled enemy.
 for(const cancel of [true,false]){
  const e=enemy({isBoss:true}),s=scene([e]);s.releaseGlacierBloom(1);assert.equal(e.frozen,0);assert(s.glacierBrittle(e));const before=s.hits.length;

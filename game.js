@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.69.1';
+const GAME_VERSION = '6.70.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.70.0',date:'2026-10-10',title:'Mint buff',items:['Mint base damage 92% → 100% and crit 2% → 5%','Frost Lance fires faster at higher levels (fastest 1.0s, was 1.25s)','Second lance from level 3 (was level 4)','Bosses and minibosses take +4% damage per Chill stack (max +16%); Glacier Brittle bosses take +15% more']},
   {v:'6.69.1',date:'2026-10-10',title:'Kitchen 8-Way Shots fix',items:['8-Way Shots recipe no longer uses Item Power or crits, like every other recipe']},
   {v:'6.69.0',date:'2026-10-10',title:'Kitchen recipes now have a price',items:['Each active recipe costs −6% Max HP and −4% Attack Power (more for ★ and signature dishes)','Recipe slots: max 3 (extra recipes return their parts)','Heal, Recover, Shield, Immune and Cooldown parts are retired (parts returned to your bag)','Recipe damage no longer uses Item Power or crits; total power capped at ×2.5','Rage/Haste last 4s with an 8s cooldown; Minty refreezes a foe at most every 3s']},
   {v:'6.68.0',date:'2026-10-10',title:'Tougher Chapter 2–3, pricier Temple',items:['Story monsters from Chapter 2 on grow tougher each stage','Story bosses and minibosses in Chapter 2–3 have double HP','Temple Sugar upgrades cost more at higher ranks','Delve and other endgame modes are unchanged']},
@@ -2774,7 +2775,7 @@ const RELIC_SYNERGIES = [
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 const CHARACTERS = {
   momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'Nimble gunner',desc:'Sweet but Strong — rapid fire, fast movement, steady crits',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
-  mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — lances stack Chill (slow); 4 stacks freeze the enemy solid',stats:{hp:18,dmg:0.92,spd:1.12,def:0.90,crit:0.02,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
+  mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — lances stack Chill (slow); 4 stacks freeze the enemy solid. Chilled bosses take more damage',stats:{hp:18,dmg:1.00,spd:1.12,def:0.90,crit:0.05,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'A sturdy boxer: Brawler sweeps crowds, Titan crushes marked targets, Dash Boxer strikes through movement. Toggle Flicker to warp into short punch chains and return; Dash cancels. Each path has a one-tap Unique',stats:{hp:46,dmg:1.03,spd:0.94,def:0.84,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
   sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Mirror sniper',desc:'Fires a Mirror Beam that hits bosses at full damage. Hold still to charge Focus — the beam grows stronger and wider; moving lets it fade. Rewards in-and-out play',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
@@ -3152,7 +3153,7 @@ function mintUpgradeGroup(path,id){
   return pt&&pt.upgrades.some(u=>u.id===id)?'path':null;
 }
 function mintVolleyProfile(lvl,evolved,count,path){
-  const cap=path==='barrage'?3:4,raw=(evolved?3:(lvl>=4?2:1))+(count||0);
+  const cap=path==='barrage'?3:4,raw=(evolved?3:(lvl>=3?2:1))+(count||0);   // v6.70 หอกที่ 2 ตั้งแต่ Lv3
   const overflow=path==='barrage'?Math.max(0,raw-cap):0;
   return {count:Math.min(cap,raw),overflow,shardMul:1+0.18*overflow,bloomMul:path==='glacier'?1+.12*Math.max(0,raw-cap):1};
 }
@@ -12001,7 +12002,8 @@ class Game extends Phaser.Scene {
     let base=lvl>=SKILL_AWAKEN_LV?this._cdBase(key,SKILL_AWAKEN_LV)*0.85:this._cdBase(key,lvl);
     const sw=this.signatureWeaponInfo(),b=this.basicAttackInfo()?.skill===key?this.basicAttack:null;
     if(b&&this.character==='cocoa'&&key==='meteor')base=0.64;
-    if(b&&this.character==='mint'&&key==='frost')base=Math.max(1.25,1.95-lvl*0.08);   // มินต์ = basic attack ยิงถี่ (แทนคูลดาวน์ frost ปกติที่ช้า)
+    if(b&&this.character==='mint'&&key==='frost')base=Math.max(1.0,1.7-lvl*0.07);   // v6.70 Mint buff (เดิม max(1.25,1.95-0.08lvl))
+       // มินต์ = basic attack ยิงถี่ (แทนคูลดาวน์ frost ปกติที่ช้า)
     if(b&&this.character==='sesame'&&key==='mirror')base=Math.max(0.85,1.45-lvl*0.06);   // งาดำ = Mirror Beam ยิงเป็นจังหวะ (แทน pulse field เดิม)
     const basicRate=b?Math.pow(b.character==='mint'?0.93:0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1;
     if(b&&key==='sprinkle'&&b.path==='ricochet')base*=0.8;
@@ -13326,6 +13328,7 @@ class Game extends Phaser.Scene {
       if(pm.frozen&&(e.frozen>0||this.glacierBrittle(e)))amount*=1+pm.frozen;
       if(pm.far&&this.dist(e.x,e.y,this.player.x,this.player.y)>300)amount*=1+pm.far;
       if(pm.low&&this.player.hp/Math.max(1,this.player.maxhp)<0.5)amount*=1+pm.low; } }
+    if(this.basicAttack?.character==='mint'&&(e.isBoss||e.isMini)){ if(e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.04*Math.min(4,e._chill); if(this.basicAttack.path==='glacier'&&this.glacierBrittle(e))amount*=1.15; }   // v6.70 Chill/Brittle มีผลกับบอส
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);if(e._titanMarkT>(this.elapsed||0))amount*=1.25;if(e._shadowUntil>(this.elapsed||0))amount*=1+0.08*(e._shadowN||0);
     { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
