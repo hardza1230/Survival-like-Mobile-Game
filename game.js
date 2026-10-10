@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.73.0';
+const GAME_VERSION = '6.74.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.74.0',date:'2026-10-10',title:'Simpler builds (step 3)',items:['Conditional cards (Desperate Bite, Dash Fury, Rooted Aim, Pristine Power, Giant Slayer, Frenzy Feast, Last Stand) left level-ups and now appear as Relics at double strength','They share the 5 Relic slots']},
   {v:'6.73.0',date:'2026-10-10',title:'Build path sounds',items:['35 new sounds for Chocolate, Mint and Strawberry build paths: fire fists, rockets, Titan slams and Rage charge, Dash Boxer leaps, lances, Impale, Glacier shatter, Sniper charge and shots, Ricochet bounces','New sounds for Unique charge, Evolution, boss shield break and boss phase change']},
   {v:'6.72.0',date:'2026-10-10',title:'Simpler builds (step 2)',items:['Modifier and Trade-off cards no longer appear in level-ups — they are offered alongside Relics','Relics, Modifiers and Trade-offs now share 5 slots per stage','Relic choices at levels 6, 12 and 18 (was once at level 8)']},
   {v:'6.71.0',date:'2026-10-10',title:'Simpler builds (step 1)',items:['Build Tag set bonuses removed','Second Flavor Infusion (level 22) removed — one element per run']},
@@ -11585,7 +11586,7 @@ class Game extends Phaser.Scene {
       if(B.t<=0){ B.spr.destroy(); this._frBuddy=null; } } }
   resetRelics(){ this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
-  relicSlotsLeft(){ const b=this.basicAttack||{},m=(b.mods||[]).filter(id=>!id.startsWith('f_')).length+((b.trades||[]).length); return RELIC_CAP-((this.relics&&this.relics.length)||0)-m; }   // v6.72 A2/A3: Modifier + Trade-off share Relic slots
+  relicSlotsLeft(){ const b=this.basicAttack||{},m=(b.mods||[]).filter(id=>!id.startsWith('f_')).length+((b.trades||[]).length)+((b.condRelics||[]).length); return RELIC_CAP-((this.relics&&this.relics.length)||0)-m; }   // v6.72 A2/A3: Modifier + Trade-off share Relic slots
   // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
   ancientEchoDash(){ if(!Save.ancientHas('echoDash'))return; const t=this.elapsed||0; this._dashChain=(this._dashChain||[]).filter(x=>t-x<2.5); this._dashChain.push(t);
     if(this._dashChain.length<3)return; this._dashChain=[]; const p=this.player,R=130,dmg=this.relicDmg(2.2);
@@ -11603,7 +11604,7 @@ class Game extends Phaser.Scene {
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]));
       out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+tagLabel(TAGS_OF.relic[k]),headline:d.headline+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
     // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
-    if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);}
+    if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);} if(Math.random()<0.45){const cc=this.condRelicCard();if(cc)extra.push(cc);}
       for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
     return out;
   }
@@ -11660,10 +11661,13 @@ class Game extends Phaser.Scene {
       {id:'espd',  emoji:'👟', title:'Nimble Step',     desc:'+4% move speed',     capped:()=>p.baseSpeed>=BALANCE.moveSpeed*C.speedMul, apply:p=>{p.baseSpeed=Math.min(BALANCE.moveSpeed*C.speedMul,p.baseSpeed*1.04);}},
       {id:'eregen',emoji:'💗', title:'Sweet Renewal',   desc:'+0.5 HP/s regen',    capped:()=>false, apply:p=>{p.regen=(p.regen||0)+0.5;}},
       {id:'eguard',emoji:'🛡️', title:'Mochi Shell',     desc:'Take 4% less damage',capped:()=>(p.dmgTakenMul||1)<=C.dmgTakenMin, apply:p=>{p.dmgTakenMul=Math.max(C.dmgTakenMin,(p.dmgTakenMul||1)*0.96);}},
-      // v6.11 (B5): การ์ดมีเงื่อนไข · stack เก็บใน p._cond
-      ...[['c_low','🩸','Desperate Bite','+20% damage while HP < 50%',8],['c_dash','💨','Dash Fury','+25% damage for 2s after a Dash',6],['c_still','🧘','Rooted Aim','+15% damage while standing still',8],['c_full','✨','Pristine Power','+12% damage while HP ≥ 90%',8],['c_boss','👑','Giant Slayer','+15% damage vs elites & bosses',8],['c_streak','🔥','Frenzy Feast','+1.5% damage per kill streak (max 20%)',5],['c_close','🛡️','Last Stand','Take 15% less damage while HP < 35%',4]].map(([id,emoji,title,desc,max])=>({id,emoji,title,desc,cond:true,capped:()=>((p._cond||{})[id]||0)>=max,apply:p=>{p._cond=p._cond||{};p._cond[id]=(p._cond[id]||0)+1;}})),
+      // v6.74 A4: การ์ดเงื่อนไขย้ายไปหน้า Relic (condRelicCard)
     ].filter(d=>!d.capped());
   }
+  condRelicCard(){ const b=this.basicAttack; if(!b)return null; const own=b.condRelics||[];
+    const D=[['c_low','🩸','Desperate Bite','+40% damage while HP < 50%'],['c_dash','💨','Dash Fury','+50% damage for 2s after a Dash'],['c_still','🧘','Rooted Aim','+30% damage while standing still'],['c_full','✨','Pristine Power','+24% damage while HP ≥ 90%'],['c_boss','👑','Giant Slayer','+30% damage vs elites & bosses'],['c_streak','🔥','Frenzy Feast','+3% damage per kill streak (max 20%)'],['c_close','🛡️','Last Stand','Take 30% less damage while HP < 35%']].filter(d=>!own.includes(d[0]));
+    if(!D.length)return null; const [id,emoji,title,desc]=Phaser.Utils.Array.GetRandom(D);
+    return {type:'relic',key:'cond_'+id,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji,title,desc,headline:'🎯 '+desc,apply:()=>{ b.condRelics=(b.condRelics||[]).concat(id); const p=this.player; p._cond=p._cond||{}; p._cond[id]=(p._cond[id]||0)+2; this.showBanner(emoji+' '+title,desc,1600); Sfx.clear(); }}; }
   condDmgMul(e){ const P=this.player,c=P&&P._cond; if(!c)return 1; let m=1; const f=P.hp/Math.max(1,P.maxhp);
     if(c.c_low&&f<0.5)m+=0.20*c.c_low; if(c.c_full&&f>=0.9)m+=0.12*c.c_full;
     if(c.c_dash&&(this.elapsed||0)-(this._lastDashAt??-99)<2)m+=0.25*c.c_dash;

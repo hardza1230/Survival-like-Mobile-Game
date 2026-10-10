@@ -2,7 +2,15 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: Build SFX asset handoff (runtime remains v6.72.0)
+# Latest delivery: v6.74.0 — Consolidation A4
+
+Conditional endless cards (c_low/c_dash/c_still/c_full/c_boss/c_streak/c_close) removed from endlessStatDefs; condRelicCard() offers them in rollRelicChoices (45%) as one-pick relics giving 2 stacks of p._cond (b.condRelics, counted in relicSlotsLeft). npm check passed.
+
+# Previous delivery: v6.73.0 — Build path SFX wired
+
+35 MANIFEST keys in ASSET_AUDIO. Sfx.bp(name,vol,gap,rate) throttled one-shot; Sfx.bpLoopStart/Rate/Stop single charge loop (stopped on mute, togglePause, exitStage, die, release/cancel). Hooks in cocoaFireFist, bullet._bpBoom explode, castCocoaUnique (rocket/stick/colossus/phantom/shadow mark), tickTitanRage (rage loop + level), castCocoaRush titan leap/slam, Dash Leap step/landing, cocoaEvoDash, castFrostLance/releaseImpalerCharge, castImpalerLance loop, queueHailstorm, applyImpale stack/rupture, releaseGlacierBloom, glacierShatter, berry sniper loop/shot/impact, ricochet bounce, pinball final/cast, startSnipeCharge/tickSnipe charge cues, Evolution card, endWeakPoint shield break, beginBossPhaseTransition. Call sites use Sfx.bp?.(). Listening QC pending.
+
+# Previous delivery: Build SFX asset handoff
 
 Owner authorized ElevenLabs generation and requested asset delivery for another AI to integrate. 35 MP3 files in `assets/audio/sfx/build_paths/`; see `docs/audio_orders/BUILD_PATH_SFX_INTEGRATION.md` and MANIFEST.json for exact keys/events/loop handling. All decode and are non-silent; listening QC and runtime hooks pending. Three optional P2 sounds not generated. Owner explicitly requests files + handoff only; game.js/version/balance unchanged. Next AI: integrate via existing audio/Sfx backend, stop charge loops on cancellation, limit frequent voices, then bump version and run normal checks.
 
@@ -137,7 +145,7 @@ Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55
 
 
 ## 5. ถัดไป
-- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A1–A3 เสร็จ → A4 ต่อ) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
+- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A1–A4 เสร็จ → A5 ต่อ) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
 - รอ feedback เจ้าของจากการเล่นจริง: Kitchen upkeep (v6.69), Story C2–C3 buff/Temple cost (v6.68), item mods (v6.67), Delve
 - งานค้างระยะยาว: Monster animation ที่เหลือ (`docs/MONSTER_ANIMATION_PLAN.md`), Play Store (พักไว้: ลบบัญชีในแอป, store listing, keystore, closed test)
 - แผน commit เก่า: `docs/COMMIT_ROADMAP.md`
