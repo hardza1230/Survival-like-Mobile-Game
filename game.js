@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.95.0';
+const GAME_VERSION = '6.95.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.95.1', date:'2026-10-10', title:'🎥 Wider view', items:['The battle camera is zoomed out a little so you can see more of the field']},
   { v:'6.95.0', date:'2026-10-10', title:'📊 Play Stats', items:['Settings → Play Stats shows your recent runs: wins and tries per stage and difficulty, clear time, what defeated you, heroes, builds and cards picked','Stats stay on this device only']},
   { v:'6.94.0', date:'2026-10-10', title:'🧹 Cleanup', items:['Removed leftover code from cut systems: Endgame Build, auto Sugar Rush level-ups, Endless, Ascension, Tag Sets, Overcap, Set Collection and Bestiary stats','No change to how the game plays']},
   { v:'6.93.0', date:'2026-10-10', title:'⚡ Lighter memory', items:['Stage monster, boss and decoration art is downloaded at start but only unpacked when you enter that stage — much less memory use and a faster first start']},
@@ -6707,7 +6708,7 @@ class Game extends Phaser.Scene {
   }
 
   // zoom กล้องให้ "visible field width" คงที่ทุกเครื่อง (อ้างอิงมือถือ ~430px) — แท็บเล็ตจอกว้าง = zoom เข้ามากขึ้น ตัวละครไม่เล็กจิ๋ว
-  computeViewZoom(){ const REF_W=430, BASE=0.76; this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
+  computeViewZoom(){ const REF_W=430, BASE=0.70;   /* v6.95.1 wider view (was .76) */ this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
   // ซูมออกระหว่างบอสด้วย lerp ต่อเฟรม เพื่อให้เห็นสนามกว้างและทำงานสม่ำเสมอทุกอุปกรณ์
   applyMainZoom(){ if(this.cameras&&this.cameras.main)this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tickBossZoom(){
