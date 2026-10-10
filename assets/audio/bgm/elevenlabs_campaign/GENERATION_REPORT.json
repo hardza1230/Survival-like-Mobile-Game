@@ -1,0 +1,673 @@
+{
+  "started": "2026-10-10T13:55:02.060Z",
+  "results": [
+    {
+      "id": "bgm_s11",
+      "status": "success",
+      "reused": true,
+      "filename": "bgm_s11_source.mp3",
+      "sha256": "cd3db436f44620abb377ce1e17c9812ae7527a2d8366cd3281dd70f1e621fae2"
+    },
+    {
+      "id": "bgm_s01",
+      "status": "pending",
+      "started": "2026-10-10T13:55:02.208Z"
+    },
+    {
+      "id": "bgm_m01",
+      "status": "pending",
+      "started": "2026-10-10T13:55:02.323Z"
+    },
+    {
+      "id": "bgm_s01",
+      "status": "success",
+      "filename": "bgm_s01_source.mp3",
+      "bytes": 1536813,
+      "sha256": "440fd4e5019cd75ea7e3351485083c53ccee9d26ded249ced49a199bced9098f",
+      "song_id": "8n3LglOs0Xmn5oZjBdQs",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:12.930Z"
+    },
+    {
+      "id": "bgm_b01",
+      "status": "pending",
+      "started": "2026-10-10T13:55:12.942Z"
+    },
+    {
+      "id": "bgm_m01",
+      "status": "success",
+      "filename": "bgm_m01_source.mp3",
+      "bytes": 1152621,
+      "sha256": "de6cc532b4a3a3abe37ebd82dceb1854a44443bdc358873970e823064996dcc0",
+      "song_id": "cEDooYjjYRhx9tRJ1PzZ",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:13.167Z"
+    },
+    {
+      "id": "bgm_s02",
+      "status": "pending",
+      "started": "2026-10-10T13:55:13.189Z"
+    },
+    {
+      "id": "bgm_s02",
+      "status": "success",
+      "filename": "bgm_s02_source.mp3",
+      "bytes": 1536813,
+      "sha256": "546b3d94864b4a68036e358d1fdca17e6b3871e3e8a6f9f3ac28f9f13c619fe4",
+      "song_id": "oONdIcSCCmB8cQoKakQw",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:23.870Z"
+    },
+    {
+      "id": "bgm_m02",
+      "status": "pending",
+      "started": "2026-10-10T13:55:23.877Z"
+    },
+    {
+      "id": "bgm_b01",
+      "status": "success",
+      "filename": "bgm_b01_source.mp3",
+      "bytes": 1536813,
+      "sha256": "51e8771a502e084158d0f94e856077d530701faa6a875188843f8cb1bc1f781e",
+      "song_id": "AMLYsSytIJQV2159ARg5",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:23.908Z"
+    },
+    {
+      "id": "bgm_b02",
+      "status": "pending",
+      "started": "2026-10-10T13:55:23.917Z"
+    },
+    {
+      "id": "bgm_m02",
+      "status": "success",
+      "filename": "bgm_m02_source.mp3",
+      "bytes": 1152621,
+      "sha256": "086a55995e682540390363b785e42a91edb593ee31cbeb463a035c8467ee304e",
+      "song_id": "rNXxNzIIr42sU5WVVcSH",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:31.822Z"
+    },
+    {
+      "id": "bgm_s03",
+      "status": "pending",
+      "started": "2026-10-10T13:55:31.831Z"
+    },
+    {
+      "id": "bgm_b02",
+      "status": "success",
+      "filename": "bgm_b02_source.mp3",
+      "bytes": 1536813,
+      "sha256": "f435e7d9f9d664d015415635de9a0b4f1f933ffee8b5a75217bbeb9e94a275f9",
+      "song_id": "z7SD3Jh8nFd8tDkjoSrY",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:34.858Z"
+    },
+    {
+      "id": "bgm_m03",
+      "status": "pending",
+      "started": "2026-10-10T13:55:34.864Z"
+    },
+    {
+      "id": "bgm_s03",
+      "status": "success",
+      "filename": "bgm_s03_source.mp3",
+      "bytes": 1536813,
+      "sha256": "48e8ef54e511b4703885abef01cc2c085b35e082c2409b4bcf37a4435753a654",
+      "song_id": "SOyF0mpfSHxHOHW9q6hj",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:42.442Z"
+    },
+    {
+      "id": "bgm_b03",
+      "status": "pending",
+      "started": "2026-10-10T13:55:42.453Z"
+    },
+    {
+      "id": "bgm_m03",
+      "status": "success",
+      "filename": "bgm_m03_source.mp3",
+      "bytes": 1152621,
+      "sha256": "50ef914d343a7a54ca93b230fb14857adb0ae6ce788a740804ab250b3494287a",
+      "song_id": "IcWoKQAMm5lXaJ764Hou",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:42.942Z"
+    },
+    {
+      "id": "bgm_s04",
+      "status": "pending",
+      "started": "2026-10-10T13:55:42.991Z"
+    },
+    {
+      "id": "bgm_b03",
+      "status": "success",
+      "filename": "bgm_b03_source.mp3",
+      "bytes": 1536813,
+      "sha256": "1a493af5b5802d9d6f2cfc63b0182379085f0524f858552cd113338ec8dd824c",
+      "song_id": "G8MmCuWjSp8eSCnmEHFp",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:52.256Z"
+    },
+    {
+      "id": "bgm_m04",
+      "status": "pending",
+      "started": "2026-10-10T13:55:52.264Z"
+    },
+    {
+      "id": "bgm_s04",
+      "status": "success",
+      "filename": "bgm_s04_source.mp3",
+      "bytes": 1536813,
+      "sha256": "58627af2355dd2dac47d9c8f32af28e3419a1c2fb6c8b3eacb87d7e983f4a145",
+      "song_id": "MqNX3bOswPg4XVJysgez",
+      "character_cost": null,
+      "finished": "2026-10-10T13:55:52.724Z"
+    },
+    {
+      "id": "bgm_b04",
+      "status": "pending",
+      "started": "2026-10-10T13:55:52.731Z"
+    },
+    {
+      "id": "bgm_m04",
+      "status": "success",
+      "filename": "bgm_m04_source.mp3",
+      "bytes": 1152621,
+      "sha256": "d66161e180f25a24bd1e3e5e7b21577e67d1db1908eda203b9991e998c57d995",
+      "song_id": "o7gnkHOoolzeeCO1nB6d",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:01.954Z"
+    },
+    {
+      "id": "bgm_s05",
+      "status": "pending",
+      "started": "2026-10-10T13:56:01.962Z"
+    },
+    {
+      "id": "bgm_b04",
+      "status": "success",
+      "filename": "bgm_b04_source.mp3",
+      "bytes": 1536813,
+      "sha256": "0d1d27c5114fc5d3dc4e884c0c8aaa9008626d44ed95a4be16b65ac56e47ea25",
+      "song_id": "XIA2fUn7kSN0SUZ7cdGM",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:02.740Z"
+    },
+    {
+      "id": "bgm_m05",
+      "status": "pending",
+      "started": "2026-10-10T13:56:02.749Z"
+    },
+    {
+      "id": "bgm_m05",
+      "status": "success",
+      "filename": "bgm_m05_source.mp3",
+      "bytes": 1152621,
+      "sha256": "7d5cc33bca5efbf3c0f62f10ab76a7e890453054afef45814b1a38878eb5b260",
+      "song_id": "xfZVT87psydo06QotFpL",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:11.783Z"
+    },
+    {
+      "id": "bgm_b05",
+      "status": "pending",
+      "started": "2026-10-10T13:56:11.798Z"
+    },
+    {
+      "id": "bgm_s05",
+      "status": "success",
+      "filename": "bgm_s05_source.mp3",
+      "bytes": 1536813,
+      "sha256": "2b9b060430a7f5e9e82e9fb670c225d5002ac2f235675498a41592b1b7f0df8d",
+      "song_id": "aIiGp6mQPaVRX5RDy4mM",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:13.185Z"
+    },
+    {
+      "id": "bgm_s06",
+      "status": "pending",
+      "started": "2026-10-10T13:56:13.199Z"
+    },
+    {
+      "id": "bgm_b05",
+      "status": "success",
+      "filename": "bgm_b05_source.mp3",
+      "bytes": 1536813,
+      "sha256": "9e2b3d1da3d06a899260ab5447feac95a389eecc04e5f3e09c91107838c6173a",
+      "song_id": "k3SD61GrMj9BFSG3CXWp",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:22.384Z"
+    },
+    {
+      "id": "bgm_m06",
+      "status": "pending",
+      "started": "2026-10-10T13:56:22.398Z"
+    },
+    {
+      "id": "bgm_s06",
+      "status": "success",
+      "filename": "bgm_s06_source.mp3",
+      "bytes": 1536813,
+      "sha256": "7d6aeaeba9564b748f6a0c50910dc5cf061f1b7cb789187ba214537731be37a1",
+      "song_id": "uW8q8w5Clresh3jXKLAQ",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:25.444Z"
+    },
+    {
+      "id": "bgm_b06",
+      "status": "pending",
+      "started": "2026-10-10T13:56:25.455Z"
+    },
+    {
+      "id": "bgm_m06",
+      "status": "success",
+      "filename": "bgm_m06_source.mp3",
+      "bytes": 1152621,
+      "sha256": "d806ba99463485842273fd57d0ae52e5173ab6eadb509c944b6e522266fa238b",
+      "song_id": "wPOjEvUYyjU2HSXcxNFC",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:31.492Z"
+    },
+    {
+      "id": "bgm_s07",
+      "status": "pending",
+      "started": "2026-10-10T13:56:31.510Z"
+    },
+    {
+      "id": "bgm_b06",
+      "status": "success",
+      "filename": "bgm_b06_source.mp3",
+      "bytes": 1536813,
+      "sha256": "0ca86d715bbc28059a450ac7d1c4c03b640c70cb0cada7784b57a05b37c2bd4f",
+      "song_id": "x0BtasHnROdOplyeILqN",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:36.916Z"
+    },
+    {
+      "id": "bgm_m07",
+      "status": "pending",
+      "started": "2026-10-10T13:56:36.935Z"
+    },
+    {
+      "id": "bgm_s07",
+      "status": "success",
+      "filename": "bgm_s07_source.mp3",
+      "bytes": 1536813,
+      "sha256": "d3df7d935c42c2e86c263be5e47b0b1794ac24542485630dc5bc4b374f1d3e3c",
+      "song_id": "RmED5kLDMh9HJpZHHYbD",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:40.939Z"
+    },
+    {
+      "id": "bgm_b07",
+      "status": "pending",
+      "started": "2026-10-10T13:56:40.954Z"
+    },
+    {
+      "id": "bgm_m07",
+      "status": "success",
+      "filename": "bgm_m07_source.mp3",
+      "bytes": 1152621,
+      "sha256": "b3f4976d6a5311271c5b17ba54796c66dcd64f6f955e0a75acadf2276796ce3c",
+      "song_id": "h57wvp2BAaOPhPtXrVgh",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:46.164Z"
+    },
+    {
+      "id": "bgm_s08",
+      "status": "pending",
+      "started": "2026-10-10T13:56:46.179Z"
+    },
+    {
+      "id": "bgm_b07",
+      "status": "success",
+      "filename": "bgm_b07_source.mp3",
+      "bytes": 1536813,
+      "sha256": "427dac6a323319f43217b4152a23e7c8712940f34cbaf17b32bf60218b5d0b76",
+      "song_id": "qHX66eo9gJJLl05NLcJz",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:50.480Z"
+    },
+    {
+      "id": "bgm_m08",
+      "status": "pending",
+      "started": "2026-10-10T13:56:50.499Z"
+    },
+    {
+      "id": "bgm_s08",
+      "status": "success",
+      "filename": "bgm_s08_source.mp3",
+      "bytes": 1536813,
+      "sha256": "0d411a922d708044fc91aa7b9363b5f4ebd847d4e116267160e0b42137d37183",
+      "song_id": "Jv96B606IOpsS8GIZji1",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:56.093Z"
+    },
+    {
+      "id": "bgm_b08",
+      "status": "pending",
+      "started": "2026-10-10T13:56:56.105Z"
+    },
+    {
+      "id": "bgm_m08",
+      "status": "success",
+      "filename": "bgm_m08_source.mp3",
+      "bytes": 1152621,
+      "sha256": "14b477a44dc51700a641e500f34acb8f9449dd10dc9cf5c96d1607f08d324461",
+      "song_id": "lCAiWoxgPCzwkoN2ytE8",
+      "character_cost": null,
+      "finished": "2026-10-10T13:56:59.709Z"
+    },
+    {
+      "id": "bgm_s09",
+      "status": "pending",
+      "started": "2026-10-10T13:56:59.723Z"
+    },
+    {
+      "id": "bgm_b08",
+      "status": "success",
+      "filename": "bgm_b08_source.mp3",
+      "bytes": 1536813,
+      "sha256": "242f8a921d86ab84249d24619f2e75f2f92cdb5ba17a9bf5bf67a1935a0d6c44",
+      "song_id": "HQfUxgRiQ6zEjFcxTDqC",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:07.269Z"
+    },
+    {
+      "id": "bgm_m09",
+      "status": "pending",
+      "started": "2026-10-10T13:57:07.284Z"
+    },
+    {
+      "id": "bgm_s09",
+      "status": "success",
+      "filename": "bgm_s09_source.mp3",
+      "bytes": 1536813,
+      "sha256": "547e6ad12e48e4a9b45663289f24b6efd925c42cb7a601506e0be224791d748c",
+      "song_id": "02GfYkqVjEclij9I1TvO",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:10.194Z"
+    },
+    {
+      "id": "bgm_b09",
+      "status": "pending",
+      "started": "2026-10-10T13:57:10.209Z"
+    },
+    {
+      "id": "bgm_m09",
+      "status": "success",
+      "filename": "bgm_m09_source.mp3",
+      "bytes": 1152621,
+      "sha256": "138bee69e32429b3d7f64d8f1fa26403b1e78b24c19e3efdf05aba6844b74612",
+      "song_id": "eyB4KyX0WcRbGFEWwqG9",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:17.651Z"
+    },
+    {
+      "id": "bgm_s10",
+      "status": "pending",
+      "started": "2026-10-10T13:57:17.675Z"
+    },
+    {
+      "id": "bgm_b09",
+      "status": "success",
+      "filename": "bgm_b09_source.mp3",
+      "bytes": 1536813,
+      "sha256": "0d128a0c224c12245ae56c82415fa75b791437853b4a118cefe5faf20b7e4b33",
+      "song_id": "lwYWrslqqsKlD9ReKKY5",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:22.117Z"
+    },
+    {
+      "id": "bgm_m10",
+      "status": "pending",
+      "started": "2026-10-10T13:57:22.128Z"
+    },
+    {
+      "id": "bgm_s10",
+      "status": "success",
+      "filename": "bgm_s10_source.mp3",
+      "bytes": 1536813,
+      "sha256": "106847bcc363fba7940f70bd0e85c0c04cc5757f5d70557d5be1000bbc10c6a2",
+      "song_id": "nbutel736bjTDUNTWfHK",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:27.609Z"
+    },
+    {
+      "id": "bgm_b10",
+      "status": "pending",
+      "started": "2026-10-10T13:57:27.625Z"
+    },
+    {
+      "id": "bgm_m10",
+      "status": "success",
+      "filename": "bgm_m10_source.mp3",
+      "bytes": 1152621,
+      "sha256": "95b30ea6b7e1dbbb3af9c393aac3a47c1a0a01b4c8ee801672fec8f31497bf29",
+      "song_id": "2ttXzo7kBLdELSf8JPjL",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:30.423Z"
+    },
+    {
+      "id": "bgm_m11",
+      "status": "pending",
+      "started": "2026-10-10T13:57:30.447Z"
+    },
+    {
+      "id": "bgm_b10",
+      "status": "success",
+      "filename": "bgm_b10_source.mp3",
+      "bytes": 1536813,
+      "sha256": "35052effa1bcc64be767e0eb7a415987bd3c99ca193a521774ee2a29fbeffad7",
+      "song_id": "yTh6gZ7xbnKGBabtnPkJ",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:38.944Z"
+    },
+    {
+      "id": "bgm_b11",
+      "status": "pending",
+      "started": "2026-10-10T13:57:38.957Z"
+    },
+    {
+      "id": "bgm_m11",
+      "status": "success",
+      "filename": "bgm_m11_source.mp3",
+      "bytes": 1152621,
+      "sha256": "aacb4d38cd3affa75094df57c3f4a94b1d337034a0fe76dc4e7e2f9687d3016f",
+      "song_id": "2dApU0ohBKyupbsaUZ8h",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:40.141Z"
+    },
+    {
+      "id": "bgm_s12",
+      "status": "pending",
+      "started": "2026-10-10T13:57:40.158Z"
+    },
+    {
+      "id": "bgm_s12",
+      "status": "success",
+      "filename": "bgm_s12_source.mp3",
+      "bytes": 1536813,
+      "sha256": "ccef462fcd5e0ed3f738493388a9a936c278829139bf914f4f9ad28d97220794",
+      "song_id": "6PepxwvnJDIWsfjHUE7y",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:49.405Z"
+    },
+    {
+      "id": "bgm_m12",
+      "status": "pending",
+      "started": "2026-10-10T13:57:49.417Z"
+    },
+    {
+      "id": "bgm_b11",
+      "status": "success",
+      "filename": "bgm_b11_source.mp3",
+      "bytes": 1536813,
+      "sha256": "20094c1ae5982e9a316883295e0f9742a6e35d5c0e8c1b22891239323ce6bbb3",
+      "song_id": "pTkXS8jdGHUY8DPBdgAr",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:49.932Z"
+    },
+    {
+      "id": "bgm_b12",
+      "status": "pending",
+      "started": "2026-10-10T13:57:49.946Z"
+    },
+    {
+      "id": "bgm_m12",
+      "status": "success",
+      "filename": "bgm_m12_source.mp3",
+      "bytes": 1152621,
+      "sha256": "1bf709471f268a461614c65c008ce9e11a73997be6546cc82de76e1930a7d194",
+      "song_id": "vzJ46T1RW4TNm1O0DQFt",
+      "character_cost": null,
+      "finished": "2026-10-10T13:57:58.392Z"
+    },
+    {
+      "id": "bgm_s13",
+      "status": "pending",
+      "started": "2026-10-10T13:57:58.417Z"
+    },
+    {
+      "id": "bgm_b12",
+      "status": "success",
+      "filename": "bgm_b12_source.mp3",
+      "bytes": 1536813,
+      "sha256": "affcbc4c19c8b601e86797e47c5ad27e2d3f14f8bd763d8cc08caff3bc93a52d",
+      "song_id": "m0VNo7cLWNjSUMylhSXw",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:00.162Z"
+    },
+    {
+      "id": "bgm_m13",
+      "status": "pending",
+      "started": "2026-10-10T13:58:00.176Z"
+    },
+    {
+      "id": "bgm_s13",
+      "status": "success",
+      "filename": "bgm_s13_source.mp3",
+      "bytes": 1536813,
+      "sha256": "2ac32f572ffd4741780b4b7abda039efe5eb5ef8d456e6570661ac149b6e9c76",
+      "song_id": "uVlf4ptQbI0A23cKU2Jm",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:10.085Z"
+    },
+    {
+      "id": "bgm_b13",
+      "status": "pending",
+      "started": "2026-10-10T13:58:10.105Z"
+    },
+    {
+      "id": "bgm_m13",
+      "status": "success",
+      "filename": "bgm_m13_source.mp3",
+      "bytes": 1152621,
+      "sha256": "db45274c4ec96861f59d8a3102b4ea375691499881dbc9bdadd1a2a27f78cf5d",
+      "song_id": "7RQeMgQvluxTsBTOvw5z",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:10.664Z"
+    },
+    {
+      "id": "bgm_s14",
+      "status": "pending",
+      "started": "2026-10-10T13:58:10.676Z"
+    },
+    {
+      "id": "bgm_b13",
+      "status": "success",
+      "filename": "bgm_b13_source.mp3",
+      "bytes": 1536813,
+      "sha256": "ccab56b2cc081526339458baf96adfd6e34d2fce5296914328427b66afc5bb48",
+      "song_id": "d8S0GoUp0LcSVJ9ihw52",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:21.161Z"
+    },
+    {
+      "id": "bgm_m14",
+      "status": "pending",
+      "started": "2026-10-10T13:58:21.175Z"
+    },
+    {
+      "id": "bgm_s14",
+      "status": "success",
+      "filename": "bgm_s14_source.mp3",
+      "bytes": 1536813,
+      "sha256": "9dc9fe59842fc956947c96d57d3cefcf3a3f71d51e4b70b58bfb46e4df7e298a",
+      "song_id": "Scl6sWIOIhaVRhhFUP85",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:21.214Z"
+    },
+    {
+      "id": "bgm_b14",
+      "status": "pending",
+      "started": "2026-10-10T13:58:21.227Z"
+    },
+    {
+      "id": "bgm_m14",
+      "status": "success",
+      "filename": "bgm_m14_source.mp3",
+      "bytes": 1152621,
+      "sha256": "43284b9c1fc334bfeca3e9483daecfa39ba99ad4a314ea5cd5d64c123f5c86da",
+      "song_id": "Py110ZBJpf4rpwVVY3Wp",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:30.108Z"
+    },
+    {
+      "id": "bgm_s15",
+      "status": "pending",
+      "started": "2026-10-10T13:58:30.131Z"
+    },
+    {
+      "id": "bgm_b14",
+      "status": "success",
+      "filename": "bgm_b14_source.mp3",
+      "bytes": 1536813,
+      "sha256": "9dae13da238465f323c018d0699622fca714fca45344f53d7d348a7869472273",
+      "song_id": "KL9mHprC3n90CRcYPigb",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:32.225Z"
+    },
+    {
+      "id": "bgm_m15",
+      "status": "pending",
+      "started": "2026-10-10T13:58:32.248Z"
+    },
+    {
+      "id": "bgm_s15",
+      "status": "success",
+      "filename": "bgm_s15_source.mp3",
+      "bytes": 1536813,
+      "sha256": "db9f6383bec03fff1e61ee5de36f9320d3c6c623b4a6643b7ac98dbc45aa86da",
+      "song_id": "81LAX9ltbAOvXzwQds8L",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:40.869Z"
+    },
+    {
+      "id": "bgm_b15",
+      "status": "pending",
+      "started": "2026-10-10T13:58:40.893Z"
+    },
+    {
+      "id": "bgm_m15",
+      "status": "success",
+      "filename": "bgm_m15_source.mp3",
+      "bytes": 1152621,
+      "sha256": "3c8b0df933ca101f911abf87ed9404058d9d0afb5fdf54b4d0f196429245e0ae",
+      "song_id": "8iWbipqGMxkjU8tJmHc9",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:41.916Z"
+    },
+    {
+      "id": "bgm_b15",
+      "status": "success",
+      "filename": "bgm_b15_source.mp3",
+      "bytes": 1536813,
+      "sha256": "03401313f49bc23c949902e48e975c310edb3461516f5c82730c97412f921319",
+      "song_id": "I3rCtTAnrcq8j2CYvrif",
+      "character_cost": null,
+      "finished": "2026-10-10T13:58:51.636Z"
+    }
+  ],
+  "finished": "2026-10-10T13:58:51.651Z"
+}

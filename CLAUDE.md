@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: Unique spectacle audio + Stage 3-1 trial (assets only)
+# Latest delivery: 45 campaign music loops (assets only)
+
+Owner requested theme-based normal music + fun exciting miniboss/boss fights for all C1-1..C3-5. 45 playback MP3 in assets/audio/bgm/elevenlabs_campaign/: 44 new ElevenLabs compositions + reused C3-1 trial. See docs/audio_orders/CAMPAIGN_MUSIC_45_HANDOFF.md / MANIFEST.json. All decode and contain audio, listening review pending. Not integrated: runtime remains v6.80.0. Next AI: register sNN/mNN/bNN paths; update bgmKeyFor boss routing before chapter fallback, preserve endgame priority and lazy loading.
+
+# Previous delivery: Unique spectacle audio + Stage 3-1 trial (assets only)
 
 26 new ElevenLabs Unique SFX in `assets/audio/sfx/unique_skills/`: pump-shotgun, sniper crack/whistle, max-charge Titan ground slam, all six active hero ability families. Stage 3-1 Ashen Seedfields music original + ~62s prepared loop in `assets/audio/bgm/incoming_stage31/`. See `docs/audio_orders/UNIQUE_SFX_STAGE31_HANDOFF.md` for precise hooks and loop/mixing rules. Existing 35 Build sounds already integrated in v6.73.0. New assets NOT wired, runtime remains v6.79.0; listening review pending. Owner wants another AI to integrate. Next: follow handoff, preserve combat timing, then version/check/deploy.
 
