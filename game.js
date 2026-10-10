@@ -50,7 +50,10 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.87.1';
+const GAME_VERSION = '6.88.0';
+// v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
+const MIN_APK_VERSION = '6.88.0';
+const APK_DOWNLOAD_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +73,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.88.0', date:'2026-10-10', title:'📲 App update notice', items:['Players on an older Android app get a notice with a download link when a newer app version is released (Later hides it for the day)']},
   { v:'6.87.1', date:'2026-10-10', title:'📦 More kept on device', items:['Loading-screen art and the cloud-save library are now kept on your device too']},
   { v:'6.87.0', date:'2026-10-10', title:'📦 Faster, offline-ready start', items:['The game code is now kept on your device too: the app opens fast on slow internet and can start offline after the first full download','Downloaded game data is protected from being cleared by the phone when storage is low']},
   { v:'6.86.0', date:'2026-10-10', title:'🍓 Ricochet link is back', items:['Ricochet bounces show a quick pink link to the next target again — it now fades out instantly and never sticks','Removed unused effect files']},
@@ -5796,6 +5800,7 @@ class Game extends Phaser.Scene {
     this.lvlCards=[]; this.dmgPool=[]; this.tapZones=[]; this.menuScreen='hub';
 
     this.buildHUD(); this.buildMenus(); this.showMenu();
+    this.time.delayedCall(2500,()=>this.checkApkUpdate?.());   // v6.88 แจ้ง APK เก่า
     this.setupCameras();
     this.setupParticles();
     this.setupInput();
@@ -12588,6 +12593,23 @@ class Game extends Phaser.Scene {
     const im=this.trackArtVfx(this.camWorld(this.add.image(x,y,'bpx_momo_link',0).setOrigin(.1,.5).setRotation(Math.atan2(ty-y,tx-x)).setScale(d/205,.35).setDepth(90400).setAlpha(.9))); this._rlN++;
     let done=false; const kill=()=>{ if(done)return; done=true; this._rlN=Math.max(0,this._rlN-1); if(im&&im.active)im.destroy(); };
     this.tweens.add({targets:im,alpha:0,duration:250,ease:'Quad.in',onComplete:kill}); this.time.delayedCall(600,kill); }catch(e){} }
+  // v6.88 แจ้งเตือน APK เก่า: เทียบ versionName ของแอป (App.getInfo) กับ GitHub Release ล่าสุด · เฉพาะในแอป · วันละครั้ง
+  async checkApkUpdate(){ try{
+    if(!Cloud.native?.()||this._apkChecked)return; this._apkChecked=true;
+    const App=window.Capacitor?.Plugins?.App; const info=App?await App.getInfo().catch(()=>null):null; const cur=(info&&info.version)||'0.0.0';
+    const n=v=>String(v).split('.').map(x=>parseInt(x,10)||0), a=n(cur), b=n(MIN_APK_VERSION); let older=false; for(let k=0;k<3;k++){ if((a[k]||0)!==(b[k]||0)){ older=(a[k]||0)<(b[k]||0); break; } }
+    let skip=null; try{skip=localStorage.getItem('mochi_apk_skip');}catch(e){} if(!older||skip===MIN_APK_VERSION+'|'+new Date().toDateString())return;
+    this.showApkUpdate(cur,MIN_APK_VERSION,APK_DOWNLOAD_URL); }catch(e){} }
+  showApkUpdate(cur,latest,url){ if(this.state!=='menu')return; const w=this.W,h=this.H,ov=this.add.container(0,0).setDepth(9000);
+    const sh=this.add.rectangle(0,0,w,h,0x0a0612,0.82).setOrigin(0),bw=Math.min(w-32,400),bh=210,bx=(w-bw)/2,by=(h-bh)/2,g=this.add.graphics();
+    g.fillStyle(0x2a2038,1).fillRoundedRect(bx,by,bw,bh,18); g.lineStyle(2.5,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,18);
+    const t=this.add.text(w/2,by+26,'📲 New app version',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5);
+    const d=this.add.text(w/2,by+62,'Your app is v'+cur+'. Version v'+latest+' is ready. Install it for the best loading speed and fixes. Your save is kept.',{fontFamily:'sans-serif',fontSize:'12px',color:'#e6dcf0',align:'center',wordWrap:{width:bw-36},lineSpacing:3}).setOrigin(0.5,0);
+    ov.add([sh,g,t,d]); this.menu.add(ov);
+    const prev=this.tapZones; this.tapZones=[]; const close=()=>{ ov.destroy(); this.tapZones=prev; };
+    const btn=(y,label,col,fn)=>{ const bg=this.add.graphics(); bg.fillStyle(col,1).fillRoundedRect(w/2-bw/2+24,y-20,bw-48,40,14); const tx=this.add.text(w/2,y,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5); ov.add([bg,tx]); this._zone(w/2-bw/2+24,y-20,bw-48,40,fn); };
+    btn(by+bh-72,'⬇ Download update',0x4fae6a,()=>{ try{ const B=window.Capacitor?.Plugins?.Browser; if(B)B.open({url}); else window.open(url,'_blank'); }catch(e){ try{window.open(url,'_blank');}catch(_){} } close(); });
+    btn(by+bh-26,'Later',0x5a4b75,()=>{ try{localStorage.setItem('mochi_apk_skip',latest+'|'+new Date().toDateString());}catch(e){} close(); }); Sfx.select&&Sfx.select(); }
   // v6.83 หน้าจอแตก: เส้นร้าววาดด้วยโค้ดทับทั้งจอ (กล้องหลัก) ตอนปล่อย Titan Rage lv2+
   titanScreenCrack(lv){ try{ const cam=this.cameras.main,v=cam.worldView,cx=v.centerX+(Math.random()-.5)*v.width*.2,cy=v.centerY+(Math.random()-.5)*v.height*.2,R=Math.hypot(v.width,v.height)*.6,g=this.camWorld(this.add.graphics().setDepth(95000));
     const n=lv>=3?14:9; g.fillStyle(0xffffff,lv>=3?.22:.14).fillCircle(cx,cy,26+lv*8);
