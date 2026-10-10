@@ -147,7 +147,7 @@
 </div>
 <!-- Supabase JS SDK (cloud save) — โหลดจาก CDN · ถ้าโหลดไม่ได้เกมยังเล่นได้ (เซฟ localStorage) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script>if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}});}</script>
 <script src="phaser.min.js"></script>
 <script>
   // โหลด game.js แบบกันแคชค้าง (WebView/Pages เคยเสิร์ฟไฟล์เก่า)
