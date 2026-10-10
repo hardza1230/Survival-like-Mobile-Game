@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.95.2 — Level-up FX on normal card picks
+# Latest delivery: v6.96.0 — Hero status bar under feet + v6.94 crash fix
+
+Owner screenshot (reference game): level badge + HP bar + thin EXP bar under hero; keep HP numbers (Titan needs them). drawOverheadStatus: bar now at player screen y+30 — level square (pOverLv number only, 11px) left, HP 60×10 with 'hp / max' (pOverHp 9px), EXP 4px orange under (xp/xpNext). CRASH FIX from v6.94 cleanup (tests stubbed these, npm check missed them): rollBasicAttackUpgrades makeCard still used TAG_SETS_ON (ReferenceError on level-up cards), applyMeta still called gearSetCollected, syncBasicAttack called this.refreshTagSets, menu dispatch 'egbuild'. All removed; headless run + level-up cards show no page errors. npm check passed.
+
+# Previous delivery: v6.95.2 — Level-up FX on normal card picks
 
 Owner: level-up effect only seemed to show on Evolution. pickCardAt now calls playGrowthWorld('levelup',0.6) for every non-evolution card (Evolution keeps growth_unlock). playGrowthWorld(kind,ts) sets anims.timeScale (0.6 → ~1.1s), 500ms throttle unchanged (multi-pick shows once). npm check passed.
 

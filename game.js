@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.95.2';
+const GAME_VERSION = '6.96.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.96.0', date:'2026-10-10', title:'❤️ New hero status bar', items:['Your level, HP (with numbers) and EXP now sit in a compact bar under your hero','Fixed a crash from the v6.94 cleanup that could stop level-up cards and run start']},
   { v:'6.95.2', date:'2026-10-10', title:'⭐ Card pick effect', items:['Picking any card now plays the level-up burst around your hero, a little slower so it is easy to see']},
   { v:'6.95.1', date:'2026-10-10', title:'🎥 Wider view', items:['The battle camera is zoomed out a little so you can see more of the field']},
   { v:'6.95.0', date:'2026-10-10', title:'📊 Play Stats', items:['Settings → Play Stats shows your recent runs: wins and tries per stage and difficulty, clear time, what defeated you, heroes, builds and cards picked','Stats stay on this device only']},
@@ -5213,7 +5214,7 @@ function computeHeroStats(cid,basic){
       if(it&&it.apply){if(it.tier==='start')it.apply(p,el);else applyScaledGear(p,it,el,inst.itemLevel,inst);mark('Gear · '+nm+(it.tier==='start'?'':' ('+Math.round(gearBaseScale(inst.itemLevel)*100)+'%)'));}
       applyItemLevelBonus(p,inst);mark('Gear · '+nm+' iLv bonus');if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
       if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply&&!weaponLocalMod(inst,a.id)){d.apply(p,a.v);mark('Mod · '+(d.label||a.id)+' T'+(a.t!=null?a.t:'?')+' ('+(it?it.name:slot.slot)+')');} } }
-    { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply){def.bonuses[need].apply(p);mark('Set · '+def.name+' '+need+'pc');} } } for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid)){def.collect.apply(p);mark('Set collection · '+def.name);} } }
+    { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply){def.bonuses[need].apply(p);mark('Set · '+def.name+' '+need+'pc');} } } }
     const rp=Save.data.rankPerks||{}; if(rp.vigor){p.maxhp*=1+0.06*rp.vigor;mark('Perk · Vigor '+rp.vigor);} if(rp.might){p.dmgMul+=(1+0.05*rp.might)-1;mark('Perk · Might '+rp.might);} if(rp.ironWill){p.dmgTakenMul*=(1-0.04*rp.ironWill);mark('Perk · Iron Will '+rp.ironWill);}
     if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; } mark('Ancient Perks');
     if(applyFrUpkeep(p))mark('Kitchen upkeep');
@@ -6508,8 +6509,8 @@ class Game extends Phaser.Scene {
 
     // Archero-style overhead: หลอดเลือด + เลเวล + ตัวเลข Northหัวผู้เล่น (screen-space บน uiCam = ติดตัวเป๊ะ)
     this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(80); this.camUI(this.pOverG);
-    this.pOverLv=this.add.text(0,0,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:4}).setOrigin(0.5,1).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
-    this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
+    this.pOverLv=this.add.text(0,0,'1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
+    this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
     this.hudList=[this.uniqueHint,this.flickerBtn,this.flickerTxt,this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.replayProgressFrame,this.replayProgressFill,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp,this.muteBtn,this.muteTxt];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
@@ -6549,16 +6550,20 @@ class Game extends Phaser.Scene {
     const cam=this.cameras.main, wv=cam.worldView; if(!wv||!wv.width||!wv.height)return;
     // แปลงPositionผู้เล่น (world) → พิกัดจอ logical (0..this.W/H) ที่ uiCam ใช้ · หาร width/height กัน DPR/zoom
     const ox=(this.player.x-wv.x)/wv.width*this.W;
-    let oy=(this.player.y-wv.y)/wv.height*this.H - 42;
+    // v6.96 แถบสถานะใต้เท้า: ป้ายเลเวลซ้าย + หลอด HP (มีตัวเลข) + หลอด EXP บาง ๆ ข้างใต้
+    let oy=(this.player.y-wv.y)/wv.height*this.H + 30;
     oy=Phaser.Math.Clamp(oy, this._pad+66, this.H-150);   // กันหลุดขอบบน/ล่าง
-    const w=72,h=9,bx=ox-w/2;
-    og.fillStyle(0x000000,0.55); og.fillRoundedRect(bx-2,oy-2,w+4,h+4,5);
-    og.fillStyle(0x3a1a24,1); og.fillRoundedRect(bx,oy,w,h,4);
+    const w=60,h=10,xh=4,bs=h+xh+3,bx=ox-w/2+bs/2+1,lx=bx-bs-3;
+    og.fillStyle(0x000000,0.55); og.fillRoundedRect(lx-2,oy-2,bs+3+w+4,bs+4,5);
+    og.fillStyle(0x3a3150,1); og.fillRoundedRect(lx,oy,bs,bs,4); og.lineStyle(1.5,0xffe27a,0.85); og.strokeRoundedRect(lx,oy,bs,bs,4);
+    og.fillStyle(0x3a1a24,1); og.fillRoundedRect(bx,oy,w,h,3);
     const col=hpf>0.5?0x5ef07a:(hpf>0.25?0xffd166:0xff5f5f);
-    if(hpf>0){ og.fillStyle(col,1); og.fillRoundedRect(bx,oy,Math.max(3,w*hpf),h,4); }
-    og.lineStyle(1.5,0xffffff,0.25); og.strokeRoundedRect(bx,oy,w,h,4);
-    if(this.pOverHp)this.pOverHp.setPosition(ox,oy+h/2+0.5).setText(Math.max(0,Math.ceil(this.player.hp))+' / '+Math.round(this.player.maxhp));
-    if(this.pOverLv)this.pOverLv.setPosition(ox,oy-3).setText('Lv '+(this.level||1));
+    if(hpf>0){ og.fillStyle(col,1); og.fillRoundedRect(bx,oy,Math.max(3,w*hpf),h,3); }
+    og.lineStyle(1,0xffffff,0.25); og.strokeRoundedRect(bx,oy,w,h,3);
+    const xf=Phaser.Math.Clamp((this.xp||0)/Math.max(1,this.xpNext||1),0,1),xy=oy+h+3;
+    og.fillStyle(0x1c1530,1); og.fillRect(bx,xy,w,xh); if(xf>0){ og.fillStyle(0xffa63d,1); og.fillRect(bx,xy,Math.max(1,w*xf),xh); }
+    if(this.pOverHp)this.pOverHp.setPosition(bx+w/2,oy+h/2+0.5).setText(Math.max(0,Math.ceil(this.player.hp))+' / '+Math.round(this.player.maxhp));
+    if(this.pOverLv)this.pOverLv.setPosition(lx+bs/2,oy+bs/2+0.5).setText(String(this.level||1));
   }
   // 🎮 ปุ่ม Dash/Unique ตาม Settings: ขนาด (ctrlSize 0-2) + ฝั่ง (ctrlLeft = ถนัดซ้าย)
   ctrlScale(){ const st=Save.data.settings||{}; return [1,1.2,1.4][st.ctrlSize||0]||1; }
@@ -6956,7 +6961,7 @@ class Game extends Phaser.Scene {
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){const r=this._clampFonts(11);try{this.buildCraftBench();}finally{r();}} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='stats')this.buildStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){const r=this._clampFonts(11);try{this.buildCraftBench();}finally{r();}} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='stats')this.buildStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); } }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
@@ -11228,7 +11233,7 @@ class Game extends Phaser.Scene {
   basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
-  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}this.refreshTagSets();{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
+  syncBasicAttack(){const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
@@ -11721,7 +11726,7 @@ class Game extends Phaser.Scene {
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;
    // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
-    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};const tg=tagList(extra.tags||this.upTags(u.id)),tc=this.tagCounts(),up=tg.find(t=>TAG_TIERS.includes((tc[t]||0)+1)&&!((b.lv||{})[u.id]>0));c.desc=(c.desc||'')+(up&&TAG_SETS_ON?'  ⬆ '+TAG_SETS[up].emoji+'×'+((tc[up]||0)+1)+' bonus':'');return c;};
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
