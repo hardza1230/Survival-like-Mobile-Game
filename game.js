@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.78.0';
+const GAME_VERSION = '6.79.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.79.0', date:'2026-10-10', title:'🛍️ Simpler gear economy', items:['Set collection deposits removed — sets give bonuses when worn; old deposits refunded as Gear Shards (10 each)','Bazaar Gacha tab now holds Gear Gacha, Trade-in and supply boxes in one place','Crafting currencies cut from 8 to 5: Wish Candy and Crown Icing became Spark Sugar, Wild Jam became Twist Cream (your stock was converted)']},
   { v:'6.78.0', date:'2026-10-10', title:'🧹 Fewer meta systems', items:['Bestiary now gives Sugar only (no permanent stats)','Sugar Orders removed — any active order is refunded','Overcap merged into core levels: your Overcap levels stay, Core Stones now give 🧶 Weave Thread (old stones converted)','Special Cores now open from the Rank Perks screen, next to Ancient Perks']},
   { v:'6.77.1', date:'2026-10-10', title:'🌨️ Mint Barrage visual fix', items:['Barrage no longer shows a big 3-prong slash that reached farther than the real lances — now a small muzzle flash']},
   { v:'6.77.0', date:'2026-10-10', title:'🛡️ Titan control & Kitchen unlock', items:['Titan basic attacks no longer lunge toward enemies — walk freely while punching','🍳 Kitchen now unlocks after clearing Chapter 2 (saved recipes stay and work again once unlocked)']},
@@ -4119,7 +4120,9 @@ function gearSetPieces(sid){ return GEAR_ALL.filter(g=>g.set===sid); }
 function gearOwnsBase(id){ return (Save.data.gearItems||[]).some(it=>it.baseId===id)||(Save.data.ownedGear||[]).includes(id); }
 const SET_DEPOSIT_NEED=5;   // v6.54: ใส่ของชิ้นละ 5 (เผาทิ้ง) เพื่อปลดโบนัสสะสมถาวร
 function setDeposit(id){ return ((Save.data.setDeposit||{})[id])||0; }
-function gearSetCollected(sid){ const ps=gearSetPieces(sid); return ps.length>0&&ps.every(g=>setDeposit(g.id)>=SET_DEPOSIT_NEED); }
+/* v6.79 D1: set collection deposits removed — worn set bonuses only; deposits refunded as shards */
+const SET_COLLECT_ON=false, SET_DEPOSIT_REFUND=10;
+function gearSetCollected(sid){ if(!SET_COLLECT_ON)return false; const ps=gearSetPieces(sid); return ps.length>0&&ps.every(g=>setDeposit(g.id)>=SET_DEPOSIT_NEED); }
 function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
 /* ---- AFFIX (Phase 1 PoE): prefix/suffix + tier T1-T5 · ของแต่ละชิ้นสุ่มตอนได้มา · reroll ด้วย 🔩 ----
@@ -4270,20 +4273,20 @@ function sortAffixesByKind(affs){return affs.slice();}
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Roll a new random stat on a Common or Magic item'},
-  {key:'alt',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Replace the selected Magic affix'},
-  {key:'regal',emoji:'🟡',asset:'currency_crown_icing',name:'Crown Icing',desc:'Promote Magic gear to Rare'},
-  {key:'chaos',emoji:'🟠',asset:'currency_wild_jam',name:'Wild Jam',desc:'Replace the selected Rare affix'},
-  {key:'exalt',emoji:'🔴',asset:'currency_wish_candy',name:'Wish Candy',desc:'Roll a new random stat into an empty Rare line'},
+  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Add a new random stat to an empty line, or upgrade rarity'},
+  {key:'alt',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Replace the selected stat'},
   {key:'divine',emoji:'⚪',asset:'currency_crystal_glaze',name:'Crystal Glaze',desc:'Reroll the selected stat’s value on any item — burns 3 per use'},
   {key:'annul',emoji:'🟣',asset:'currency_fading_gumdrop',name:'Fading Gumdrop',desc:'Remove the selected affix line'},
   {key:'scour',emoji:'⚫',asset:'currency_plain_dough',name:'Plain Dough',desc:'Reset all affixes and return the item to Common'},
 ];
-function currencyDef(k){ return CURRENCY.find(c=>c.key===k); }
+/* v6.79 D3: 8 → 5 crafting currencies. Old keys alias: Wish Candy/Crown Icing → Spark Sugar, Wild Jam → Twist Cream */
+const CUR_ALIAS={exalt:'transmute',regal:'transmute',chaos:'alt'};
+function curKey(k){ return CUR_ALIAS[k]||k; }
+function currencyDef(k){ k=curKey(k); return CURRENCY.find(c=>c.key===k); }
 // v4.30: flame-sand แบบ Torchlight — reroll ค่าของ mod ที่เลือก ใช้ได้ทุก rarity แต่ "ผลาญเยอะ" (เผา 3 ต่อครั้ง)
 const FLAME_REROLL_COST = 3;
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
-const CURRENCY_BUY = { transmute:40, alt:60, regal:120, chaos:160, exalt:320, divine:320, scour:30, annul:90 };
+const CURRENCY_BUY = { transmute:120, alt:110, regal:120, chaos:110, exalt:120, divine:320, scour:30, annul:90 };   // v6.79 merged keys share a price
 // ราคากล่องสุ่ม currency = ค่าเฉลี่ยราคาขายใหม่ (90%) ตามน้ำหนักสุ่มจริง
 let _bazBoxCost=0; function bazaarCurrencyBoxCost(){ if(_bazBoxCost)return _bazBoxCost; let t=0; const N=6000; for(let i=0;i<N;i++){const k=rollWeightedCurrency('epic')||'alt';t+=(CURRENCY_BUY[k]||60)*0.9;} _bazBoxCost=Math.max(10,Math.round(t/N/5)*5); return _bazBoxCost; }
 // One active Sugar Order: the reward is earned by clearing a regular stage, scaled by DIFFS[].reward.
@@ -4620,6 +4623,7 @@ const Save = {
     if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (Berry) → คืนเป็นโมโม่
     if(!this.data.charProg)this.data.charProg={};
     if(!(typeof OVERCAP_ON!=='undefined'&&OVERCAP_ON)&&this.data.coreStones){ let n=0; for(const k in this.data.coreStones)n+=Math.max(0,this.data.coreStones[k]||0); if(n)this.data.threads=(this.data.threads||0)+n*STONE_THREADS; this.data.coreStones={}; }   // v6.78 C1 refund
+    if(this.data.setDeposit&&!(typeof SET_COLLECT_ON!=='undefined'&&SET_COLLECT_ON)){ let n=0; for(const k in this.data.setDeposit)n+=Math.max(0,this.data.setDeposit[k]||0); if(n)this.data.shards=(this.data.shards||0)+n*10; this.data.setDeposit={}; }   // v6.79 D1 refund
     if(!this.data.bestiary)this.data.bestiary={};
     if(this.data.sugarOrder){ const o=this.data.sugarOrder; this.data.sugar=(this.data.sugar||0)+(o.cost||0); this.data.sugarOrder=null; }   // v6.78 C5: refund removed Sugar Orders
     // v4.12: bosses/minibosses แยกรายด่าน (boss0..5 / mini0..5) — เซฟเดิมนับรวมเป็น 'boss'/'mini' → ยกไป entry ด่าน 1
@@ -4636,7 +4640,8 @@ const Save = {
     if(this.data.shards==null)this.data.shards=0;   // 🔩 เศษอุปกรณ์ (จากของซ้ำ) → หลอมของตำนาน
     if(!this.data.gearAffix)this.data.gearAffix={};   // affix ต่อชิ้น (E: loot chase)
     if(!this.data.gearRarity)this.data.gearRarity={};   // rarity ที่คราฟต์ (common/magic/rare) ต่อชิ้น
-    if(!this.data.currency)this.data.currency={};   // 🧪 currency คราฟต์ (Phase 2)
+    if(!this.data.currency)this.data.currency={};
+    for(const ok in CUR_ALIAS){ const n=this.data.currency[ok]||0; if(n){ const nk=CUR_ALIAS[ok]; this.data.currency[nk]=(this.data.currency[nk]||0)+n; } delete this.data.currency[ok]; }   // v6.79 D3 merge old stock   // 🧪 currency คราฟต์ (Phase 2)
     if(this.data.ascension==null)this.data.ascension=0;
     if(this.data.endlessBest==null)this.data.endlessBest=0;
     if(!Array.isArray(this.data.endlessBoard))this.data.endlessBoard=[];
@@ -4678,7 +4683,7 @@ const Save = {
     const qty=Math.max(1,Math.round(d.base*tier.reward));this.data.sugarOrder=null;
     if(d.id==='shovels'){const dig=this.dig();dig.shovels+=qty;}
     else if(d.id==='threads')this.data.threads=(this.data.threads||0)+qty;
-    else {this.data.currency=this.data.currency||{};this.data.currency[d.id]=(this.data.currency[d.id]||0)+qty;}
+    else {this.data.currency=this.data.currency||{};const ck=curKey(d.id);this.data.currency[ck]=(this.data.currency[ck]||0)+qty;}
     this.save();return {emoji:d.emoji,name:d.name,qty,unit:d.unit};},
   // ความคืบหน้าตัวละคร (เลเวล/EXP/แต้มพรสวรรค์/ผังที่ลง)
   cp(id){ if(!this.data.talV2){ this.data.talV2=1; let any=0; for(const k in this.data.charProg||{}){ const c=this.data.charProg[k],t=c&&c.tal; if(!t)continue; for(const key of Object.keys(t)){ if(key.startsWith('b_')){ const r=t[key]||0; c.tp=(c.tp||0)+r*(r+1)/2; delete t[key]; if(r)any=1; } } } if(any)this.data.talRefundNote=1; this.save(); }
@@ -4801,9 +4806,9 @@ const Save = {
   setGearRarity(ref,r){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref; if(item)item.craftState=r;
     if(!this.data.gearRarity)this.data.gearRarity={}; this.data.gearRarity[id]=r; this.save(); },
   // 🧪 currency
-  currency(k){ return (this.data.currency&&this.data.currency[k])||0; },
-  addCurrency(k,n){ if(!this.data.currency)this.data.currency={}; this.data.currency[k]=(this.data.currency[k]||0)+n; this.save(); },
-  spendCurrency(k,n){ if((this.currency(k))>=n){ this.data.currency[k]-=n; this.save(); return true; } return false; },
+  currency(k){ k=curKey(k); return (this.data.currency&&this.data.currency[k])||0; },
+  addCurrency(k,n){ k=curKey(k); if(!this.data.currency)this.data.currency={}; this.data.currency[k]=(this.data.currency[k]||0)+n; this.save(); },
+  spendCurrency(k,n){ k=curKey(k); if((this.currency(k))>=n){ this.data.currency[k]-=n; this.save(); return true; } return false; },
   enhance(ref){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,lv=this.gearLv(ref);
     const o=enhanceOdds(lv),r=Math.random(); let result;
     if(r<o.destroy)result='destroy'; else if(r<o.destroy+o.brk)result='break'; else result='success';
@@ -7160,19 +7165,19 @@ class Game extends Phaser.Scene {
   // v6.53: Codex ชุดเซ็ท — ชิ้นไหนเข้าชุดไหน · โบนัสสวม 2/3 ชิ้น · เก็บครบ = โบนัสถาวร
   buildSetCodex(top){ const w=this.W,bw=Math.min(w-24,460),bx=(w-bw)/2,cnt=gearSetCounts(); let y=top;
     const col=(Object.keys(GEAR_SETS).length);
-    const hd=this.add.text(w/2,y+6,'Wear pieces of the same set for bonuses · tap a piece to feed a spare copy (5 each) — fill the whole set for a permanent bonus',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',align:'center',wordWrap:{width:bw}}).setOrigin(0.5,0);this.menu.add(hd);y+=hd.height+10;const ch=Math.max(92,Math.min(124,(this.H-y-10)/col-8));
+    const hd=this.add.text(w/2,y+6,'Wear pieces of the same set for bonuses',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',align:'center',wordWrap:{width:bw}}).setOrigin(0.5,0);this.menu.add(hd);y+=hd.height+10;const ch=Math.max(92,Math.min(124,(this.H-y-10)/col-8));
     SET_ORDER.filter(k=>GEAR_SETS[k]).forEach(sid=>{ const d=GEAR_SETS[sid],ps=gearSetPieces(sid),own=ps.reduce((a,g)=>a+Math.min(SET_DEPOSIT_NEED,setDeposit(g.id)),0),need=ps.length*SET_DEPOSIT_NEED,done=gearSetCollected(sid),wear=cnt[sid]||0,g=this.add.graphics();
       g.fillStyle(0x241a30,0.96);g.fillRoundedRect(bx,y,bw,ch,12);g.lineStyle(2,done?0xffd166:0x5a4b75,1);g.strokeRoundedRect(bx,y,bw,ch,12);
-      const t=this.add.text(bx+12,y+14,d.emoji+' '+d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5),st=this.add.text(bx+bw-12,y+14,done?'Collection ✓'+(wear>=2?' · Wearing '+wear:''):wear>=2?'Wearing '+wear+'/'+ps.length:'Collection '+own+'/'+need,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:wear>=2?'#8ff0b0':done?'#ffd166':'#9a90ab'}).setOrigin(1,0.5);
+      const t=this.add.text(bx+12,y+14,d.emoji+' '+d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5),st=this.add.text(bx+bw-12,y+14,done?'Collection ✓'+(wear>=2?' · Wearing '+wear:''):wear>=2?'Wearing '+wear+'/'+ps.length:SET_COLLECT_ON?'Collection '+own+'/'+need:'Wearing '+wear+'/'+ps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:wear>=2?'#8ff0b0':done?'#ffd166':'#9a90ab'}).setOrigin(1,0.5);
       this.menu.add([g,t,st]); const is=Math.min(46,(bw*0.55-16)/ps.length-6);
       ps.forEach((it,i)=>{ const x=bx+12+i*(is+6),iy=y+30,has=gearOwnsBase(it.id),eq=Object.values(Save.data.gear||{}).includes(it.id),bg=this.add.graphics();bg.fillStyle(has?0x3a2f50:0x1a1522,1);bg.fillRoundedRect(x,iy,is,is,8);bg.lineStyle(2,eq?0x8ff0b0:has?0xc9a3ff:0x3a3048,1);bg.strokeRoundedRect(x,iy,is,is,8);
         const k=it.iconKey&&this.textures.exists(it.iconKey)?it.iconKey:('gear_'+it.id),ic=this.textures.exists(k)?this.add.image(x+is/2,iy+is/2,k).setDisplaySize(is-8,is-8):this.add.text(x+is/2,iy+is/2,it.emoji||'?',{fontSize:Math.round(is*0.5)+'px'}).setOrigin(0.5);ic.setAlpha(has?1:0.3);
-        const dep=Math.min(SET_DEPOSIT_NEED,setDeposit(it.id)),spare=(Save.data.gearItems||[]).filter(q=>q.baseId===it.id&&!q.locked&&!q.favorite&&!Save.isGearEquipped(q.uid)),bar=this.add.graphics();bar.fillStyle(0x0d0a12,1);bar.fillRect(x+3,iy+is-6,is-6,4);bar.fillStyle(dep>=SET_DEPOSIT_NEED?0xffd166:0x8ff0b0,1);bar.fillRect(x+3,iy+is-6,(is-6)*dep/SET_DEPOSIT_NEED,4);this.menu.add(bar);
-        if(spare.length&&dep<SET_DEPOSIT_NEED){const pl=this.add.text(x+is-2,iy+1,'+'+spare.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0);this.menu.add(pl);}
-        this._zone(x,iy,is,is+14,()=>{ if(dep>=SET_DEPOSIT_NEED){this.menuToast(it.name+' is full (5/5)');return;} if(!spare.length){Sfx.select&&Sfx.select();this.menuToast(has?'Need a spare '+it.name+' (not equipped, locked or favorite)':'Find '+it.name+' first','#ff9bb5');return;} if(!Save.removeGearInstance(spare[0].uid)){Sfx.error&&Sfx.error();return;} Save.data.setDeposit=Save.data.setDeposit||{};Save.data.setDeposit[it.id]=dep+1;Save.save();Sfx.progress&&Sfx.progress('claim');const c2=gearSetCollected(sid);this.menuToast(c2?'🏆 '+d.name+' collection complete! '+d.collect.desc:'📥 '+it.name+' '+(dep+1)+'/'+SET_DEPOSIT_NEED,c2?'#ffd166':'#8ff0b0');this.buildMenuScreen(); });
-        const nm=this.add.text(x+is/2,iy+is+3,(has||dep>0)?(dep+'/'+SET_DEPOSIT_NEED+' '+it.name):'???',{fontFamily:'sans-serif',fontSize:'7.5px',color:has?'#d8cde2':'#6f6680',align:'center',wordWrap:{width:is+6}}).setOrigin(0.5,0);this.menu.add([bg,ic,nm]); });
+        const dep=Math.min(SET_DEPOSIT_NEED,setDeposit(it.id)),spare=(Save.data.gearItems||[]).filter(q=>q.baseId===it.id&&!q.locked&&!q.favorite&&!Save.isGearEquipped(q.uid)),bar=this.add.graphics();if(SET_COLLECT_ON){bar.fillStyle(0x0d0a12,1);bar.fillRect(x+3,iy+is-6,is-6,4);}bar.fillStyle(dep>=SET_DEPOSIT_NEED?0xffd166:0x8ff0b0,1);if(SET_COLLECT_ON)bar.fillRect(x+3,iy+is-6,(is-6)*dep/SET_DEPOSIT_NEED,4);this.menu.add(bar);
+        if(SET_COLLECT_ON&&spare.length&&dep<SET_DEPOSIT_NEED){const pl=this.add.text(x+is-2,iy+1,'+'+spare.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0);this.menu.add(pl);}
+        if(SET_COLLECT_ON)this._zone(x,iy,is,is+14,()=>{ if(dep>=SET_DEPOSIT_NEED){this.menuToast(it.name+' is full (5/5)');return;} if(!spare.length){Sfx.select&&Sfx.select();this.menuToast(has?'Need a spare '+it.name+' (not equipped, locked or favorite)':'Find '+it.name+' first','#ff9bb5');return;} if(!Save.removeGearInstance(spare[0].uid)){Sfx.error&&Sfx.error();return;} Save.data.setDeposit=Save.data.setDeposit||{};Save.data.setDeposit[it.id]=dep+1;Save.save();Sfx.progress&&Sfx.progress('claim');const c2=gearSetCollected(sid);this.menuToast(c2?'🏆 '+d.name+' collection complete! '+d.collect.desc:'📥 '+it.name+' '+(dep+1)+'/'+SET_DEPOSIT_NEED,c2?'#ffd166':'#8ff0b0');this.buildMenuScreen(); });
+        const nm=this.add.text(x+is/2,iy+is+3,(has||dep>0)?(SET_COLLECT_ON?dep+'/'+SET_DEPOSIT_NEED+' ':'')+it.name:'???',{fontFamily:'sans-serif',fontSize:'7.5px',color:has?'#d8cde2':'#6f6680',align:'center',wordWrap:{width:is+6}}).setOrigin(0.5,0);this.menu.add([bg,ic,nm]); });
       const tx=bx+bw*0.47; let ly=y+32; Object.keys(d.bonuses).forEach(n=>{ const on=wear>=+n,l=this.add.text(tx,ly,(on?'✅ ':'▫️ ')+d.bonuses[n].desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:on?'#8ff0b0':'#cfc3dd',wordWrap:{width:bw*0.5}}).setOrigin(0,0);this.menu.add(l);ly+=l.height+4; });
-      if(d.collect){const l=this.add.text(tx,ly+2,(done?'🏆 ':'🔒 ')+d.collect.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:done?'#ffd166':'#8a8198',wordWrap:{width:bw*0.5}}).setOrigin(0,0);this.menu.add(l);}
+      if(d.collect&&SET_COLLECT_ON){const l=this.add.text(tx,ly+2,(done?'🏆 ':'🔒 ')+d.collect.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:done?'#ffd166':'#8a8198',wordWrap:{width:bw*0.5}}).setOrigin(0,0);this.menu.add(l);}
       y+=ch+8; }); }
   buildSkillArchive(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Codex','screen_codex');
@@ -8879,7 +8884,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,tab=(this._bazTab==='orders'?'buy':this._bazTab)||'buy',hs=this._hdrShift(),top=(tab==='buy'?153:121)+hs;
     this.menu.add(this.add.image(22,54+hs,'prize_sugar').setDisplaySize(20,20));
     this.menu.add(this.add.text(37,54+hs,String(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(0,.5));
-    [['buy','Shop'],['gamble','Boxes'],['sell','Sell']].forEach(([id,label],i)=>{const tw=(w-28)/3;   /* v6.78 C5: Sugar Orders removed */this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-5,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();});});
+    [['buy','Shop'],['gamble','Gacha'],['sell','Sell']].forEach(([id,label],i)=>{const tw=(w-28)/3;   /* v6.78 C5: Sugar Orders removed */this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-5,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();});});
     let y=top;
     const heading=(title)=>{this.menu.add(this.add.text(14,y,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe3ac'}));y+=23;};
     const grid=(products,cardH)=>{const cols=w>h?3:2,gap=8,cw=(w-28-gap*(cols-1))/cols;products.forEach((p,i)=>this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(cardH+gap),cw,cardH,p));y+=Math.ceil(products.length/cols)*(cardH+gap);};
@@ -8891,9 +8896,11 @@ class Game extends Phaser.Scene {
       heading('Crafting supplies');
       grid(st.cur.map((c,i)=>{const d=currencyDef(c.key),cost=(CURRENCY_BUY[c.key]||60)*c.qty;return{art:d.asset,name:d.name+' ×'+c.qty,desc:'Crafting material',price:'Sugar '+cost,sold:bought.includes('c'+i),afford:(Save.data.sugar||0)>=cost,fn:()=>this.bazaarBuyCurrency(c.key,c.qty,cost,'c'+i)};}),cardH);
     }else if(tab==='gamble'){
-      heading('Mystery boxes');
+      heading('Gear & mystery boxes');
       const cardH=Math.min(230,Math.max(150,(h-y-65)/2-8));
-      grid([{art:'prize_chest',name:'Gear Trade-in',desc:'Give 3 gear · get 1 new piece at their item level',price:'Trade 3 → 1',afford:true,color:0xffd166,fn:()=>{this._tradeSel=[];this._tradePage=0;this.menuScreen='tradein';this.buildTradeIn();}},
+      const gb=GACHA_LEVELS[Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0))];   // v6.79 D2: Gacha + Trade-in + supplies in one shop tab
+      grid([{art:'prize_chest',name:'Gear Gacha',desc:'1 random gear · iLv '+gb.lo+'-'+gb.hi+' (change band in Equipment)',price:'Roll · Sugar '+gb.cost,afford:(Save.data.sugar||0)>=gb.cost,color:0xffb020,fn:()=>this.openGachaReveal()},
+        {art:'prize_chest',name:'Gear Trade-in',desc:'Give 3 gear · get 1 new piece at their item level',price:'Trade 3 → 1',afford:true,color:0xffd166,fn:()=>{this._tradeSel=[];this._tradePage=0;this.menuScreen='tradein';this.buildTradeIn();}},
         {art:'prize_currency',name:'Crafting supply box',desc:'1 random crafting material',price:'Open · Sugar '+bazaarCurrencyBoxCost(),afford:(Save.data.sugar||0)>=bazaarCurrencyBoxCost(),color:0x8edbd0,fn:()=>this.bazaarGambleCurrency(false),alt:{label:'▶▶ AUTO',fn:()=>this.bazaarGambleCurrency(true)}}],cardH);
       this.menu.add(this.add.text(w/2,y+12,'Tap a box to open it · rewards go to your inventory',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',wordWrap:{width:w-32},align:'center'}).setOrigin(.5,0));
     }else if(tab==='orders'){

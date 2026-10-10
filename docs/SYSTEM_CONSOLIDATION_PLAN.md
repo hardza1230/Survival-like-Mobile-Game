@@ -25,9 +25,9 @@ Status: ⬜ todo · 🟨 in progress · ✅ done
 - ✅ C5 Idle miners shown inside Depths only; Sugar Orders removed (refund).
 
 ## D. Gear
-- ⬜ D1 Set deposit collection removed (worn sets only; refund deposits as shards).
-- ⬜ D2 One shop: Gacha + Trade-in + Bazaar in one screen.
-- ⬜ D3 Currency 8 → 4–5 kinds (convert old stock).
+- ✅ D1 Set deposit collection removed (worn sets only; refund deposits as shards).
+- ✅ D2 One shop: Gacha + Trade-in + Bazaar in one screen.
+- ✅ D3 Currency 8 → 4–5 kinds (convert old stock).
 
 ## E. Endgame
 - ⬜ E1 Delve boss needs one goal (Hunger or Mission, not both).
