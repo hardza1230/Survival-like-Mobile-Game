@@ -18,11 +18,11 @@ Status: ⬜ todo · 🟨 in progress · ✅ done
 - ✅ B2 Miniboss chest: already prize wheel + Mimic only (no change).
 
 ## C. Meta (save migration + refunds)
-- ⬜ C1 Overcap folded into Weave core levels.
-- ⬜ C2 Special Cores + Ancient Perks folded into Rank Perks tree.
-- ⬜ C3 Bestiary gives Sugar/collection only (no stats).
+- ✅ C1 Overcap folded into Weave core levels.
+- ✅ C2 Special Cores + Ancient Perks folded into Rank Perks tree.
+- ✅ C3 Bestiary gives Sugar/collection only (no stats).
 - ✅ C4 Kitchen gated behind Chapter 2 clear (owner chose gate; recipes kept, inactive while locked).
-- ⬜ C5 Idle miners shown inside Depths only; Sugar Orders removed (refund).
+- ✅ C5 Idle miners shown inside Depths only; Sugar Orders removed (refund).
 
 ## D. Gear
 - ⬜ D1 Set deposit collection removed (worn sets only; refund deposits as shards).
