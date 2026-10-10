@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.72.0 — Consolidation A2/A3
+# Latest delivery: Build SFX asset handoff (runtime remains v6.72.0)
+
+Owner authorized ElevenLabs generation and requested asset delivery for another AI to integrate. 35 MP3 files in `assets/audio/sfx/build_paths/`; see `docs/audio_orders/BUILD_PATH_SFX_INTEGRATION.md` and MANIFEST.json for exact keys/events/loop handling. All decode and are non-silent; listening QC and runtime hooks pending. Three optional P2 sounds not generated. Owner explicitly requests files + handoff only; game.js/version/balance unchanged. Next AI: integrate via existing audio/Sfx backend, stop charge loops on cancellation, limit frequent voices, then bump version and run normal checks.
+
+# Previous delivery: v6.72.0 — Consolidation A2/A3
 
 Modifier + Trade-off cards removed from level-up pools (guarded false&&); rollRelicChoices adds modCard (60%) / tradeCard (35%, stage≥5 or recipe) into relic offers. RELIC_CAP 3→5 shared: relicSlotsLeft subtracts non-fusion mods + trades (MOD_MAX/TRADE_MAX still inner caps). Level relic offers at Lv6/12/18 (_relicLvN, reset in resetRelics). Not playtested — owner tests (owner: no headless sims, waste of time/tokens). Next: A4 conditional cards. npm check passed.
 

@@ -1,0 +1,666 @@
+{
+  "audit": {
+    "version": "6.70.0",
+    "commit": "7642caa4f1f7340ffa5f15e82f40fcaf6bf7a779",
+    "registered_sfx": 101,
+    "missing_registered_files": 0,
+    "basis": "Source and repository file existence; no listening test performed"
+  },
+  "endpoint": "https://api.elevenlabs.io/v1/sound-generation",
+  "method": "POST",
+  "default_selection": "priority <= 1",
+  "notes": [
+    "Each job requires one API request; this JSON is a job manifest, not a native bulk API request body.",
+    "Existing generic audio is functional; these jobs add distinct sound identity.",
+    "Generated files require listening QA and code integration.",
+    "Generate minimum 0.5 seconds, then trim frequent hit cues to approximately 0.08–0.20 seconds where appropriate."
+  ],
+  "jobs": [
+    {
+      "id": "cocoa_fire_fist",
+      "filename": "cocoa_fire_fist.mp3",
+      "group": "Chocolate Fire",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Fire Fist launch",
+      "current_audio": "comboPunch jab",
+      "source_evidence": "cocoaFireFist",
+      "request": {
+        "text": "A quick warm fire puff and padded boxing swoosh. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_fire_finisher",
+      "filename": "cocoa_fire_finisher.mp3",
+      "group": "Chocolate Fire",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Fire finisher launch",
+      "current_audio": "comboPunch heavy",
+      "source_evidence": "cocoaFireFist",
+      "request": {
+        "text": "A powerful flaming fist launch, deep warm whoosh and crisp soft punch. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_fire_explosion",
+      "filename": "cocoa_fire_explosion.mp3",
+      "group": "Chocolate Fire",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Fireball / gauntlet explosion",
+      "current_audio": "generic explosion",
+      "source_evidence": "castCocoaUnique",
+      "request": {
+        "text": "A compact candy fireball explosion, rounded bass thump and brief ember crackle. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_rocket_launch",
+      "filename": "cocoa_rocket_launch.mp3",
+      "group": "Chocolate Fire",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Rocket Gauntlet launch",
+      "current_audio": "Sfx.shoot",
+      "source_evidence": "castCocoaUnique",
+      "request": {
+        "text": "A playful rocket boxing glove launch, short pneumatic pop and fiery zip. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_rocket_stick_burst",
+      "filename": "cocoa_rocket_stick_burst.mp3",
+      "group": "Chocolate Fire",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Repeated burst on boss",
+      "current_audio": "beatFx titan",
+      "source_evidence": "castCocoaUnique",
+      "request": {
+        "text": "One compact sticky rocket glove detonation, punchy warm pop, tiny sizzling tail. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_meteor_impact",
+      "filename": "cocoa_meteor_impact.mp3",
+      "group": "Chocolate Fire",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Finisher meteors",
+      "current_audio": "no dedicated call in meteor callback",
+      "source_evidence": "cocoaFireFist",
+      "request": {
+        "text": "A small fiery meteor hits soft chocolate earth, low crunchy thud and ember burst. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_titan_leap",
+      "filename": "cocoa_titan_leap.mp3",
+      "group": "Chocolate Titan",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Titan jump windup",
+      "current_audio": "shared movement/punch",
+      "source_evidence": "titan / castCocoaUnique",
+      "request": {
+        "text": "A heavyweight bear jumps, compressed low airy swoosh with a soft takeoff thump. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_titan_slam",
+      "filename": "cocoa_titan_slam.mp3",
+      "group": "Chocolate Titan",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Titan basic landing",
+      "current_audio": "comboPunch heavy",
+      "source_evidence": "Titan basic combat",
+      "request": {
+        "text": "A heavy boxing bear slams chocolate ground, deep padded impact and short crumble. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_rage_charge",
+      "filename": "cocoa_rage_charge.mp3",
+      "group": "Chocolate Titan",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Rage charge",
+      "current_audio": "shared punch / beat cues",
+      "source_evidence": "titanRage",
+      "request": {
+        "text": "Seamless restrained warm energy rumble for a heavyweight candy hero charging rage, steady intensity. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 1.5,
+        "loop": true,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_rage_level",
+      "filename": "cocoa_rage_level.mp3",
+      "group": "Chocolate Titan",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Rage threshold reached",
+      "current_audio": "comboPunch heavy",
+      "source_evidence": "titanRage",
+      "request": {
+        "text": "A single warm rising energy pulse ending in a rounded clear confirmation knock. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_colossus_slam",
+      "filename": "cocoa_colossus_slam.mp3",
+      "group": "Chocolate Titan",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Colossus Unique landing",
+      "current_audio": "beatFx titan",
+      "source_evidence": "castCocoaUnique",
+      "request": {
+        "text": "An enormous candy bear lands, strong deep slam then a rolling earth shockwave, compact decay. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_flicker_step",
+      "filename": "cocoa_flicker_step.mp3",
+      "group": "Chocolate Dash",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Flicker / Dash Leap travel",
+      "current_audio": "Sfx.dash",
+      "source_evidence": "cocoaDashLeap / flicker",
+      "request": {
+        "text": "A very quick shadow teleport zip with a soft airy snap, nimble and purple magical character. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_dash_landing",
+      "filename": "cocoa_dash_landing.mp3",
+      "group": "Chocolate Dash",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Dash Leap landing",
+      "current_audio": "comboPunch heavy",
+      "source_evidence": "cocoaDashLeap / trail finale",
+      "request": {
+        "text": "A nimble shadow boxer lands a sharp padded punch, quick air snap and dry impact. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_shadow_fist",
+      "filename": "cocoa_shadow_fist.mp3",
+      "group": "Chocolate Dash",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Evolution shadow fist launch",
+      "current_audio": "no dedicated launch call",
+      "source_evidence": "cocoaEvoDash",
+      "request": {
+        "text": "A spectral boxing fist launches with a silky dark magical zip and soft low pop. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_phantom_start",
+      "filename": "cocoa_phantom_start.mp3",
+      "group": "Chocolate Dash",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Phantom Rush activation",
+      "current_audio": "beatFx rush",
+      "source_evidence": "castCocoaUnique",
+      "request": {
+        "text": "A brief swirling purple shadow power activation, three fast airy accents and a rounded energy swell. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_shadow_mark",
+      "filename": "cocoa_shadow_mark.mp3",
+      "group": "Chocolate Dash",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Shadow Mark increment",
+      "current_audio": "comboPunch heavy on landing",
+      "source_evidence": "castCocoaUnique",
+      "request": {
+        "text": "A single tiny dark crystal mark locks onto a target, soft resonant tick with brief low shimmer. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_lance_launch",
+      "filename": "mint_lance_launch.mp3",
+      "group": "Mint",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Ice lance launch",
+      "current_audio": "Sfx.frost",
+      "source_evidence": "castFrostLance / releaseImpalerCharge",
+      "request": {
+        "text": "A crisp ice spear shoots forward, clean cold swoosh and delicate rounded crystal click. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_barrage_volley",
+      "filename": "mint_barrage_volley.mp3",
+      "group": "Mint",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Barrage evolved volley start",
+      "current_audio": "Sfx.frost",
+      "source_evidence": "Barrage volley",
+      "request": {
+        "text": "One tightly grouped six-shard ice volley, compact fluttering crystalline launch accents. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.65,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_hailstorm_cast",
+      "filename": "mint_hailstorm_cast.mp3",
+      "group": "Mint",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Hailstorm / Diamond Dust start",
+      "current_audio": "Sfx.frost",
+      "source_evidence": "Diamond Dust / Hailstorm",
+      "request": {
+        "text": "A magical icy cloud opens with a soft cold rush and a brief sprinkle of crystalline hail. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_impaler_charge",
+      "filename": "mint_impaler_charge.mp3",
+      "group": "Mint",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Impaler auto charge",
+      "current_audio": "no dedicated charge call",
+      "source_evidence": "castImpalerLance",
+      "request": {
+        "text": "Seamless gentle cold energy gathering hum with fine icy shimmer, steady intensity, no ending. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 1,
+        "loop": true,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_impale_stack",
+      "filename": "mint_impale_stack.mp3",
+      "group": "Mint",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Impale stack increment",
+      "current_audio": "no dedicated stack call",
+      "source_evidence": "applyImpale",
+      "request": {
+        "text": "One small ice crystal embeds in a target, dry icy tick and short soft resonance. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_crystal_rupture",
+      "filename": "mint_crystal_rupture.mp3",
+      "group": "Mint",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Crystal Rupture",
+      "current_audio": "mintHeavyImpact shared cue",
+      "source_evidence": "applyImpale",
+      "request": {
+        "text": "Three embedded ice crystals rupture together, satisfying bass pop and clean sparkling ice fragments. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.85,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_glacier_bloom",
+      "filename": "mint_glacier_bloom.mp3",
+      "group": "Mint",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Glacier bloom cast",
+      "current_audio": "Sfx.frost",
+      "source_evidence": "Glacier bloom",
+      "request": {
+        "text": "A broad magical ice flower blooms, smooth frosty swell and delicate crystal petals opening. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_glacier_shatter",
+      "filename": "mint_glacier_shatter.mp3",
+      "group": "Mint",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Glacier mass shatter",
+      "current_audio": "Sfx.boom",
+      "source_evidence": "Glacier frozen-target detonation",
+      "request": {
+        "text": "A compact cluster of frozen candy crystals shatters, rounded crunch and bright soft fragments. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "strawberry_sniper_charge",
+      "filename": "strawberry_sniper_charge.mp3",
+      "group": "Strawberry",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Sniper auto charge",
+      "current_audio": "no dedicated charge call",
+      "source_evidence": "cast Berry charge / _berryCharge",
+      "request": {
+        "text": "Seamless gentle pink magical railgun charge hum, focused sweet energy shimmer, steady intensity. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 1,
+        "loop": true,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "strawberry_sniper_shot",
+      "filename": "strawberry_sniper_shot.mp3",
+      "group": "Strawberry",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Heavy Seed / Heart Railgun release",
+      "current_audio": "shared shoot / beam",
+      "source_evidence": "releaseBerryCharge",
+      "request": {
+        "text": "One precise powerful magical strawberry seed railgun shot, firm low pop and fast clean energy zip. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "strawberry_sniper_impact",
+      "filename": "strawberry_sniper_impact.mp3",
+      "group": "Strawberry",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Sniper impact",
+      "current_audio": "shared hit / crit",
+      "source_evidence": "Sniper berrySeed impact",
+      "request": {
+        "text": "One dense magical seed impact, tight rounded crack and short sweet energy sparkle. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "strawberry_ricochet_bounce",
+      "filename": "strawberry_ricochet_bounce.mp3",
+      "group": "Strawberry",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Seed bounce",
+      "current_audio": "shared hit",
+      "source_evidence": "Ricochet berrySeed impact",
+      "request": {
+        "text": "One tiny elastic candy seed ricochet, soft rubbery ping and short rounded tap. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "strawberry_pinball_cast",
+      "filename": "strawberry_pinball_cast.mp3",
+      "group": "Strawberry",
+      "priority": 0,
+      "status": "missing_dedicated_or_reused",
+      "event": "Heart Pinball / Rebound activation",
+      "current_audio": "Sfx.shoot",
+      "source_evidence": "Strawberry Rebound",
+      "request": {
+        "text": "A playful magical strawberry pinball burst opens, quick springy whoosh and three soft candy pops. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "strawberry_pinball_final",
+      "filename": "strawberry_pinball_final.mp3",
+      "group": "Strawberry",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Last bounce splash",
+      "current_audio": "shared hit",
+      "source_evidence": "Heart Pinball last impact",
+      "request": {
+        "text": "A bouncing heart seed ends in a compact juicy candy splash with a soft punchy pop. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "shared_unique_charge_start",
+      "filename": "shared_unique_charge_start.mp3",
+      "group": "Shared feedback",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Manual Unique charge start",
+      "current_audio": "beatFx hold",
+      "source_evidence": "begin Unique charge",
+      "request": {
+        "text": "A gentle magical ability charge begins, short soft rising breath with a clear rounded onset. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "shared_unique_charge_full",
+      "filename": "shared_unique_charge_full.mp3",
+      "group": "Shared feedback",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Manual Unique fully charged",
+      "current_audio": "beatFx cue",
+      "source_evidence": "tick Unique charge",
+      "request": {
+        "text": "A single clear warm ability-ready confirmation pulse with a tiny soft sparkle. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "shared_build_evolution",
+      "filename": "shared_build_evolution.mp3",
+      "group": "Shared feedback",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Build Evolution confirmed",
+      "current_audio": "Sfx.clear / levelup",
+      "source_evidence": "Build evolution reward",
+      "request": {
+        "text": "A brief triumphant magical candy power transformation, rising sparkle and a confident warm impact, no melody. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "boss_shield_break",
+      "filename": "boss_shield_break.mp3",
+      "group": "Boss feedback",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Boss weak-point shield break",
+      "current_audio": "Sfx.clear",
+      "source_evidence": "boss weak-point shield broken",
+      "request": {
+        "text": "A magical boss shield cracks then bursts, clear low impact and short crystalline debris. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "boss_phase_transition",
+      "filename": "boss_phase_transition.mp3",
+      "group": "Boss feedback",
+      "priority": 1,
+      "status": "missing_dedicated_or_reused",
+      "event": "Boss phase transition",
+      "current_audio": "Sfx.bossWarn",
+      "source_evidence": "boss phase transition",
+      "request": {
+        "text": "A brief ominous candy fantasy boss power surge, low rounded swell and a clear threatening impact. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "cocoa_fire_pool",
+      "filename": "cocoa_fire_pool.mp3",
+      "group": "Optional ambience",
+      "priority": 2,
+      "status": "missing_dedicated_or_reused",
+      "event": "Nearby fire / lava pool ambience",
+      "current_audio": "no dedicated pool loop",
+      "source_evidence": "cocoaPool",
+      "request": {
+        "text": "Seamless quiet warm fire crackle with soft low bubbling, small magical candy lava pool. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 3,
+        "loop": true,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "mint_hailstorm_loop",
+      "filename": "mint_hailstorm_loop.mp3",
+      "group": "Optional ambience",
+      "priority": 2,
+      "status": "missing_dedicated_or_reused",
+      "event": "Hailstorm ambience",
+      "current_audio": "cast frost only",
+      "source_evidence": "Diamond Dust / Hailstorm",
+      "request": {
+        "text": "Seamless quiet airy icy wind with sparse small hail taps, restrained magical ice storm. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 3,
+        "loop": true,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "strawberry_shotgun_identity",
+      "filename": "strawberry_shotgun_identity.mp3",
+      "group": "Optional replacement",
+      "priority": 2,
+      "status": "missing_dedicated_or_reused",
+      "event": "Dedicated strawberry shotgun identity",
+      "current_audio": "sfx_shotgun exists",
+      "source_evidence": "Shotgun Build",
+      "request": {
+        "text": "One juicy magical strawberry seed shotgun blast, several tightly grouped soft pops and a short warm thump. Cute candy fantasy mobile game SFX. Dry isolated sound, fast response, soft highs, no voices, no music, no background noise.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.35,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    }
+  ]
+}

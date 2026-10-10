@@ -1,0 +1,286 @@
+{
+  "files": 35,
+  "listening_review": "Not performed; technical decode and signal checks only",
+  "results": [
+    {
+      "filename": "boss_phase_transition.mp3",
+      "duration_seconds": 1.2,
+      "peak_dbfs": 2.76,
+      "rms_dbfs": -6.2,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "boss_shield_break.mp3",
+      "duration_seconds": 0.88,
+      "peak_dbfs": 3.18,
+      "rms_dbfs": -11.73,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_colossus_slam.mp3",
+      "duration_seconds": 1.2,
+      "peak_dbfs": 2.94,
+      "rms_dbfs": -10.95,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_dash_landing.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -28.49,
+      "rms_dbfs": -43.01,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_fire_explosion.mp3",
+      "duration_seconds": 0.8,
+      "peak_dbfs": -2.65,
+      "rms_dbfs": -16.52,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_fire_finisher.mp3",
+      "duration_seconds": 0.6802,
+      "peak_dbfs": 2.66,
+      "rms_dbfs": -8.82,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_fire_fist.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": 2.14,
+      "rms_dbfs": -12.42,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_flicker_step.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": 2.63,
+      "rms_dbfs": -11.99,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_meteor_impact.mp3",
+      "duration_seconds": 0.8,
+      "peak_dbfs": 1.23,
+      "rms_dbfs": -12.68,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_phantom_start.mp3",
+      "duration_seconds": 0.88,
+      "peak_dbfs": -6.02,
+      "rms_dbfs": -24.87,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_rage_charge.mp3",
+      "duration_seconds": 1.86,
+      "peak_dbfs": 1.48,
+      "rms_dbfs": -14.05,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_rage_level.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -5.06,
+      "rms_dbfs": -20.3,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_rocket_launch.mp3",
+      "duration_seconds": 0.6,
+      "peak_dbfs": 1.92,
+      "rms_dbfs": -15.14,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_rocket_stick_burst.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -17.57,
+      "rms_dbfs": -39.61,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_shadow_fist.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -7.34,
+      "rms_dbfs": -24.55,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_shadow_mark.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -12.18,
+      "rms_dbfs": -35.45,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_titan_leap.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -1.85,
+      "rms_dbfs": -15.84,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "cocoa_titan_slam.mp3",
+      "duration_seconds": 0.6802,
+      "peak_dbfs": 1.17,
+      "rms_dbfs": -15.83,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_barrage_volley.mp3",
+      "duration_seconds": 0.64,
+      "peak_dbfs": -3.83,
+      "rms_dbfs": -28.38,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_crystal_rupture.mp3",
+      "duration_seconds": 0.84,
+      "peak_dbfs": -2.57,
+      "rms_dbfs": -21.27,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_glacier_bloom.mp3",
+      "duration_seconds": 0.8,
+      "peak_dbfs": -5.61,
+      "rms_dbfs": -36.46,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_glacier_shatter.mp3",
+      "duration_seconds": 0.8,
+      "peak_dbfs": -8.35,
+      "rms_dbfs": -32.95,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_hailstorm_cast.mp3",
+      "duration_seconds": 1.0,
+      "peak_dbfs": -8.55,
+      "rms_dbfs": -23.44,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_impale_stack.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": 3.14,
+      "rms_dbfs": -18.2,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_impaler_charge.mp3",
+      "duration_seconds": 1.5,
+      "peak_dbfs": -0.19,
+      "rms_dbfs": -20.89,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "mint_lance_launch.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": 1.23,
+      "rms_dbfs": -16.27,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "shared_build_evolution.mp3",
+      "duration_seconds": 1.36,
+      "peak_dbfs": 3.16,
+      "rms_dbfs": -11.81,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "shared_unique_charge_full.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -3.42,
+      "rms_dbfs": -21.0,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "shared_unique_charge_start.mp3",
+      "duration_seconds": 0.6,
+      "peak_dbfs": 1.74,
+      "rms_dbfs": -15.65,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "strawberry_pinball_cast.mp3",
+      "duration_seconds": 0.8,
+      "peak_dbfs": 1.37,
+      "rms_dbfs": -22.59,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "strawberry_pinball_final.mp3",
+      "duration_seconds": 0.6,
+      "peak_dbfs": -41.61,
+      "rms_dbfs": -58.43,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "strawberry_ricochet_bounce.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -20.55,
+      "rms_dbfs": -40.67,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "strawberry_sniper_charge.mp3",
+      "duration_seconds": 1.5,
+      "peak_dbfs": -4.31,
+      "rms_dbfs": -21.82,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "strawberry_sniper_impact.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": 3.24,
+      "rms_dbfs": -20.56,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "strawberry_sniper_shot.mp3",
+      "duration_seconds": 0.6,
+      "peak_dbfs": 3.21,
+      "rms_dbfs": -13.34,
+      "decode_ok": true,
+      "non_silent": true
+    }
+  ]
+}
