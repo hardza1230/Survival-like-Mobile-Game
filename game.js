@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.82.3';
+const GAME_VERSION = '6.83.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.83.0', date:'2026-10-10', title:'💥 Titan slam spectacle', items:['Titan Rage slam effects play slower so you can see the full impact','Rage level 2+ cracks the screen; full Rage holds a longer impact freeze']},
   { v:'6.82.3', date:'2026-10-10', title:'🔇 No more buzzing boss warning', items:['Removed the low buzzing boss-warning siren that also faded other sounds; boss attacks now use a short telegraph cue']},
   { v:'6.82.2', date:'2026-10-10', title:'🔫 Shotgun BOOM', items:['Shotgun Unique now fires with the heavy sniper crack sound, played the moment you release']},
   { v:'6.82.1', date:'2026-10-10', title:'🔫 Shotgun blast sound fix', items:['Unique sounds are no longer dropped when many other sounds play at once, so the shotgun BOOM is always heard','Unique sounds are a little louder']},
@@ -12522,13 +12523,25 @@ class Game extends Phaser.Scene {
     const sw=this.basicAttack?.lv?.p_secondwind||0,p=this.player;if(lv>=2&&sw&&p)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.04*lv*sw);return Math.min(this.titanMaxLv(),lv);}
   titanRageImpact(x,y,r,lv,basic){
     const col=lv>=3?0xff2a2a:lv>=2?0xff6a1a:0xffb347;
-    this.bpFx?.('bpx_cocoa_crack',x,y,r*2.6,{depth:5,force:true});this.bpFx?.('bpx_cocoa_shockwave',x,y,r*(2.4+lv*.3),{force:true});if(lv>=3)this.bpFx?.('bpx_cocoa_crush',x,y-r*.3,r*3,{force:true});
-    this.hitStop?.(50+lv*35);this.screenShake(160+lv*90,.006+lv*.004);
+    const slow=(o,ts)=>{try{if(o&&o.anims)o.anims.timeScale=ts;}catch(e){}return o;},ts=lv>=3?.38:lv>=2?.5:.7;   // v6.83 เล่น VFX ช้าลงให้เห็นความอลังการ
+    slow(this.bpFx?.('bpx_cocoa_crack',x,y,r*2.6,{depth:5,force:true}),ts*.8);slow(this.bpFx?.('bpx_cocoa_shockwave',x,y,r*(2.4+lv*.3),{force:true}),ts);if(lv>=3)slow(this.bpFx?.('bpx_cocoa_crush',x,y-r*.3,r*3,{force:true}),ts);
+    if(lv>=2)this.titanScreenCrack?.(lv);
+    this.hitStop?.(lv>=3?220:50+lv*45);this.screenShake(160+lv*90,.006+lv*.004);
     if(lv>=2)this.screenFlash?.(col,.12+lv*.06,180+lv*60);
     for(let i=0;i<lv+1;i++)this.cocoaLater(i*.09,()=>{const ring=this.camWorld(this.add.circle(x,y,r*.4,col,0).setStrokeStyle(6-i,col,.9).setDepth(8));this.tweens.add({targets:ring,scale:2.4+lv*.5,alpha:0,duration:420+i*80,onComplete:()=>ring.destroy()});});
     if(lv>=2){const cr=this.camWorld(this.add.graphics().setDepth(5));cr.fillStyle(0x3a2414,.55).fillEllipse(x,y,r*1.6,r*.9);cr.lineStyle(3,0x1d120a,.8);for(let i=0;i<6+lv*2;i++){const a=Math.random()*Math.PI*2,l=r*(.6+Math.random()*.7);cr.lineBetween(x,y,x+Math.cos(a)*l,y+Math.sin(a)*l*.6);}this.tweens.add({targets:cr,alpha:0,delay:1600,duration:500,onComplete:()=>cr.destroy()});}
     if(lv>=3){this.cocoaVisual(x,y,r*1.5,'fist',0xff4a2a);const t=this.add.text(x,y-r*.6,'TITAN CRUSH!',{fontSize:'30px',fontStyle:'900',color:'#ffd27a',stroke:'#5a1500',strokeThickness:7}).setOrigin(.5).setDepth(9);this.camWorld(t);this.tweens.add({targets:t,y:t.y-50,scale:1.3,alpha:0,duration:900,onComplete:()=>t.destroy()});Sfx.beatFx?.('titan');}
   }
+  // v6.83 หน้าจอแตก: เส้นร้าววาดด้วยโค้ดทับทั้งจอ (กล้องหลัก) ตอนปล่อย Titan Rage lv2+
+  titanScreenCrack(lv){ try{ const cam=this.cameras.main,v=cam.worldView,cx=v.centerX+(Math.random()-.5)*v.width*.2,cy=v.centerY+(Math.random()-.5)*v.height*.2,R=Math.hypot(v.width,v.height)*.6,g=this.camWorld(this.add.graphics().setDepth(95000));
+    const n=lv>=3?14:9; g.fillStyle(0xffffff,lv>=3?.22:.14).fillCircle(cx,cy,26+lv*8);
+    for(let i=0;i<n;i++){ let a=i/n*Math.PI*2+(Math.random()-.5)*.4,px=cx,py=cy; const seg=5+Math.floor(Math.random()*3);
+      for(let k=0;k<seg;k++){ const l=R/seg*(.7+Math.random()*.6); a+=(Math.random()-.5)*.5; const nx=px+Math.cos(a)*l,ny=py+Math.sin(a)*l;
+        g.lineStyle(Math.max(1.2,(4.5-k*.6)*(lv>=3?1.2:1)),0xffffff,.85).lineBetween(px,py,nx,ny); g.lineStyle(1,0x2a1a10,.6).lineBetween(px+1.5,py+1.5,nx+1.5,ny+1.5);
+        if(k>0&&Math.random()<.35){ const b=a+(Math.random()<.5?1:-1)*(.6+Math.random()*.5),bl=l*.6; g.lineStyle(1.5,0xffffff,.7).lineBetween(px,py,px+Math.cos(b)*bl,py+Math.sin(b)*bl); }
+        px=nx; py=ny; } }
+    for(let i=0;i<3;i++){ g.lineStyle(1.5,0xffffff,.45).strokeCircle(cx,cy,60+i*55+Math.random()*20); }
+    this.tweens.add({targets:g,alpha:0,delay:lv>=3?900:550,duration:700,onComplete:()=>g.destroy()}); }catch(e){} }
   // v6.59.5 Brawler = Fire Fist: ปล่อยหมัดไฟเป็น projectile · หมัดที่ 5 ใหญ่ ทะลุ ระเบิด
   cocoaFireFist(ang,power,fin,reach,basic){
     const p=this.player;if(!this.getBullet||!p)return;const L=basic?.lv||{},mut=basic?.mutation;let n=fin&&mut==='rush'?3:1;
