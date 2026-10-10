@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.77.0 — Titan no lunge, C4 Kitchen gate
+# Latest delivery: v6.77.1 — Mint Barrage volley FX
+
+bpx_mint_volley was a 220px fan (anchor left) on every Barrage cast with ≥2 lances (from first card) — looked like a 3-prong hit beyond real reach. Now 70px center muzzle flash 30px ahead. npm check passed.
+
+# Previous delivery: v6.77.0 — Titan no lunge, C4 Kitchen gate
 
 Titan castCocoaRush: joystick glide toward target removed (poses kept). C4 option ก: kitchenOpen() = stageMastery[9]; frActive() returns [] when locked (no recipes/upkeep), Hub Kitchen tile shows 🔒 + menuToast. Saved recipes untouched. npm check passed.
 

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.77.0';
+const GAME_VERSION = '6.77.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.77.1', date:'2026-10-10', title:'🌨️ Mint Barrage visual fix', items:['Barrage no longer shows a big 3-prong slash that reached farther than the real lances — now a small muzzle flash']},
   { v:'6.77.0', date:'2026-10-10', title:'🛡️ Titan control & Kitchen unlock', items:['Titan basic attacks no longer lunge toward enemies — walk freely while punching','🍳 Kitchen now unlocks after clearing Chapter 2 (saved recipes stay and work again once unlocked)']},
   {v:'6.76.0',date:'2026-10-10',title:'One side challenge at a time',items:['When a Sugar Courier or Supply Cache appears, it replaces that wave’s Bonus Challenge instead of stacking on top of it']},
   {v:'6.75.0',date:'2026-10-10',title:'Simpler builds (step 4)',items:['Fusion no longer needs its own card: once your Evolution and the matching Relic are both held, the Fusion bonus turns on automatically']},
@@ -12826,7 +12827,7 @@ class Game extends Phaser.Scene {
     const launch=()=>{
     if(!this.player?.active||(this.state!=='play'&&this.state!=='levelup'))return;
     const lanceKey=this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer';
-    if(basic?.path==='barrage'&&lances>1)this.bpFx?.('bpx_mint_volley',this.player.x,this.player.y,220,{anchor:'left',rotation:ang});
+    if(basic?.path==='barrage'&&lances>1)this.bpFx?.('bpx_mint_volley',this.player.x+Math.cos(ang)*30,this.player.y+Math.sin(ang)*30,70,{anchor:'center',rotation:ang});   /* v6.77.1: เดิม fan 220px ดูเหมือนตี 3 แฉกไกลเกินจริง → muzzle flash เล็ก */
     for(let L=0;L<lances;L++){ const a=ang+(L-centerL)*spread;
       const st={done:false,hits:0,targets:new Set()};   // แต่ละหอกแตกได้ครั้งเดียว (กระทบเป้า หรือสุดระยะ)
       // หอกวิ่ง — สายเจาะทะลุศัตรูปกติได้ก่อนแตก; บอสแตกทันที
