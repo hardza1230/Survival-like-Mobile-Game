@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.69.0';
+const GAME_VERSION = '6.69.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.69.1',date:'2026-10-10',title:'Kitchen 8-Way Shots fix',items:['8-Way Shots recipe no longer uses Item Power or crits, like every other recipe']},
   {v:'6.69.0',date:'2026-10-10',title:'Kitchen recipes now have a price',items:['Each active recipe costs −6% Max HP and −4% Attack Power (more for ★ and signature dishes)','Recipe slots: max 3 (extra recipes return their parts)','Heal, Recover, Shield, Immune and Cooldown parts are retired (parts returned to your bag)','Recipe damage no longer uses Item Power or crits; total power capped at ×2.5','Rage/Haste last 4s with an 8s cooldown; Minty refreezes a foe at most every 3s']},
   {v:'6.68.0',date:'2026-10-10',title:'Tougher Chapter 2–3, pricier Temple',items:['Story monsters from Chapter 2 on grow tougher each stage','Story bosses and minibosses in Chapter 2–3 have double HP','Temple Sugar upgrades cost more at higher ranks','Delve and other endgame modes are unchanged']},
   {v:'6.67.0',date:'2026-10-10',title:'Simpler item mods + Play mods',items:['Prefix and Suffix are gone: every item has up to 3 mod lines, plus its implicit','New Play mods change how you fight: Dash Nova, Crit Arc, Kill Shell, Standing DMG, Full-HP Foe DMG and Retaliate on Hit','Old items with more than 3 mods keep their 3 best-tier mods']},
@@ -11441,7 +11442,7 @@ class Game extends Phaser.Scene {
     const near=(R)=>{ const out=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<=R)out.push(e); }); return out; };
     switch(r.e){
       case 'shock':{ const R=120*A; this.frRing(px,py,R,0xffc0e0,'vfx_recipe_shock'); near(R).forEach(e=>this.frHit(e,this.relicDmg(1.8)*pw,r)); break; }
-      case 'shots':{ for(let i=0;i<8;i++){ const b=this.getBullet(px,py,0xffffff,0.2*A); if(!b)continue; b.setTexture('proj_sprinkle').setTint(r.m==='fire'?0xff7a3d:r.m==='ice'?0x9fe8ff:0xffd166); b.dmg=this.relicDmg(0.9)*pw; b.life=1.1; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(i/8*Math.PI*2,520,b.body.velocity); } break; }
+      case 'shots':{ for(let i=0;i<8;i++){ const b=this.getBullet(px,py,0xffffff,0.2*A); if(!b)continue; b.setTexture('proj_sprinkle').setTint(r.m==='fire'?0xff7a3d:r.m==='ice'?0x9fe8ff:0xffd166); b.dmg=this.relicDmg(0.9)*pw; b.frShot=true; b.life=1.1; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(i/8*Math.PI*2,520,b.body.velocity); } break; }
       case 'heal':{ const n=this.frHealCap(Math.round(p.maxhp*0.02*pw*(p.healEffect||1))); if(n<=0)break; p.hp=Math.min(p.maxhp,p.hp+n); this.popHeal(px,py,n); this.fireRecipes('heal'); break; }
       case 'recover':{ const n=this.frHealCap(Math.round(p.maxhp*0.12*pw*(p.healEffect||1))); if(n<=0)break;p.hp=Math.min(p.maxhp,p.hp+n);this.popHeal(px,py,n);this.fireRecipes('heal');break; }
       case 'burst':{ const R=165*A;this.frRing(px,py,R,0xffd166,'vfx_recipe_burst');near(R).slice(0,16).forEach(e=>this.frHit(e,this.relicDmg(1.4)*pw,r));break; }
@@ -11992,7 +11993,7 @@ class Game extends Phaser.Scene {
     b.setAlpha(1);
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
-    b.bounce=0; b.firePool=0; b.firePoolT=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null;b.impaler=null;b.mintEpoch=null;b.berrySeed=null;b.sgPellet=false;b._ptSniper=false; b.seedPop=0; b.seedPierce=false; b.hitTargets=null; b.headshot=0; b.bigMul=0; b.closeMul=0; b.bounceGain=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null; b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b._boomed=false;b.loopT=false;b._bounced=false;b._split=false;
+    b.bounce=0; b.firePool=0; b.firePoolT=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null;b.impaler=null;b.mintEpoch=null;b.berrySeed=null;b.sgPellet=false;b.frShot=false;b._ptSniper=false; b.seedPop=0; b.seedPierce=false; b.hitTargets=null; b.headshot=0; b.bigMul=0; b.closeMul=0; b.bounceGain=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null; b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b._boomed=false;b.loopT=false;b._bounced=false;b._split=false;
     return b;
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
@@ -13141,7 +13142,7 @@ class Game extends Phaser.Scene {
     for(let j=0;j<bullet.chain;j++){ let nb=null,nd=300*300;
       this.enemies.children.iterate(o=>{ if(o&&o.active&&!hit.has(o)){ const d=(o.x-src.x)**2+(o.y-src.y)**2; if(d<nd){nd=d;nb=o;} } });
       if(!nb)break; hit.add(nb); this.chainBolt(src.x,src.y,nb.x,nb.y); this.damage(nb,bullet.dmg*0.55,nb.x,nb.y); src=nb; } }
-  hitEnemy(bullet,enemy){ this._sgHit=!!bullet.sgPellet; try{ this._hitEnemyCore(bullet,enemy); } finally { this._sgHit=false; } }
+  hitEnemy(bullet,enemy){ this._sgHit=!!bullet.sgPellet; const fr=!!bullet.frShot; if(fr)this._frDmg=true; try{ this._hitEnemyCore(bullet,enemy); } finally { this._sgHit=false; if(fr)this._frDmg=false; } }
   _hitEnemyCore(bullet,enemy){ if(!bullet.active||!enemy.active)return;
     if(bullet.mintEpoch!=null&&bullet.mintEpoch!==(this._artEpoch||0)){this.killBullet(bullet);return;}
     if(bullet.berrySeed){this.hitBerrySeed(bullet,enemy);return;}
