@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.96.0';
+const GAME_VERSION = '6.96.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.96.1', date:'2026-10-10', title:'⏳ Download counter', items:['The loading screen now shows how many files are done, like (47 / 1200)']},
   { v:'6.96.0', date:'2026-10-10', title:'❤️ New hero status bar', items:['Your level, HP (with numbers) and EXP now sit in a compact bar under your hero','Fixed a crash from the v6.94 cleanup that could stop level-up cards and run start']},
   { v:'6.95.2', date:'2026-10-10', title:'⭐ Card pick effect', items:['Picking any card now plays the level-up burst around your hero, a little slower so it is easy to see']},
   { v:'6.95.1', date:'2026-10-10', title:'🎥 Wider view', items:['The battle camera is zoomed out a little so you can see more of the field']},
@@ -2375,7 +2376,7 @@ const LoadMeter={ total:0, done:0, dev:0, seen:new Set(), t0:0, hist:[],
   const TIPS=['Dash makes you briefly invincible — dash through enemy attacks.','Red circles on the ground explode — step out fast.','Pick cards that boost your main attack early.','Elites drop more EXP and loot — hunt them down.','Grab hearts when HP is low; magnets pull in every EXP orb.','Your Unique skill charges over time — save it for bosses.','Higher difficulty gives better rewards.','Spend Sugar in the Temple to grow stronger between runs.','Keep moving — standing still lets the swarm surround you.','Watch the mission text above your hero to know what to do.'];
   let i=Math.floor(Math.random()*TIPS.length); const put=()=>{ const el=document.getElementById('load-status'); if(el)el.textContent='💡 '+TIPS[i]; };
   if(L._tipT){clearInterval(L._tipT);L._tipT=null;} put(); setInterval(()=>{ i=(i+1)%TIPS.length; put(); },4000);
-  L.set=function(progress){ const p=Math.max(0,Math.min(1,Number(progress)||0)),f=document.getElementById('load-fill'),pc=document.getElementById('load-percent'); if(f)f.style.width=Math.round(p*100)+'%'; if(pc)pc.textContent=Math.round(p*100)+'%'; put(); };
+  L.set=function(progress){ const p=Math.max(0,Math.min(1,Number(progress)||0)),f=document.getElementById('load-fill'),pc=document.getElementById('load-percent'); if(f)f.style.width=Math.round(p*100)+'%'; if(pc){ const n=LoadMeter.count||0; pc.textContent=Math.round(p*100)+'%'+(n?'  ('+Math.min(n,LoadMeter.seen.size)+' / '+n+')':''); } put(); };   /* v6.96.1 file count (xx / yy) */
 })();
 function fileFromDevice(f){ try{ const x=f&&f.xhrLoader; return !!(x&&x.getResponseHeader&&x.getResponseHeader('x-mochi-cache')==='hit'); }catch(e){ return false; } }
 function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v?(u+'?v='+v):(ASSET_VER?(u+'?v='+ASSET_VER):u); }
