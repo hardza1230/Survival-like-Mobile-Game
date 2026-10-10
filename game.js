@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.83.1';
+const GAME_VERSION = '6.84.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.84.0', date:'2026-10-10', title:'📺 Unique screen effects', items:['Momo: sniper scope while charging + white flash on fire, shotgun smoke burst, Rebound hits the screen edges','Mint: Glacier Bloom freezes the screen then it shatters, Frost Lance streaks across, Mint Gale blows wind and leaves across the screen','Cocoa: rocket heat haze with rising ash, Phantom Rush dims the world purple']},
   { v:'6.83.1', date:'2026-10-10', title:'🔇 No warning beeps', items:['Removed the beeping danger alarm that played whenever a boss or elite prepared a big attack (the red warning visuals stay)']},
   { v:'6.83.0', date:'2026-10-10', title:'💥 Titan slam spectacle', items:['Titan Rage slam effects play slower so you can see the full impact','Rage level 2+ cracks the screen; full Rage holds a longer impact freeze']},
   { v:'6.82.3', date:'2026-10-10', title:'🔇 No more buzzing boss warning', items:['Removed the low buzzing boss-warning siren that also faded other sounds; boss attacks now use a short telegraph cue']},
@@ -6100,9 +6101,9 @@ class Game extends Phaser.Scene {
     this._snipe={id:p.id,t0:performance.now(),sx:p.x,sy:p.y,ang:a?Math.atan2(a.y-pl.y,a.x-pl.x):Math.atan2(this.moveDir?this.moveDir.y:-1,this.moveDir?this.moveDir.x:0),dragged:false,full:false,blast:this.isBlastUnique(),kind:this.mintChargeKind(),
       g:this.camWorld(this.add.graphics().setDepth(90500))};
     if(this.textures.exists('vfx_strawberry_charge'))this._snipe.aura=this.trackArtVfx(this.camWorld(this.add.image(pl.x,pl.y-24,'vfx_strawberry_charge').setDepth(90490).setDisplaySize(90,90).setAlpha(0.45)));
-    if(this._snipe.blast)Sfx.bp?.('uq_shotgun_pump',.6,.2); else if(!this._snipe.kind){ Sfx.bpLoopStart?.('uq_sniper_charge',.22); } else Sfx.bp?.('shared_unique_charge_start',.5,.2)||(Sfx.beatFx&&Sfx.beatFx('hold')); }   /* v6.82 Unique SFX */
+    if(this._snipe.blast)Sfx.bp?.('uq_shotgun_pump',.6,.2); else if(!this._snipe.kind){ Sfx.bpLoopStart?.('uq_sniper_charge',.22); this.fxScopeStart?.(); } else Sfx.bp?.('shared_unique_charge_start',.5,.2)||(Sfx.beatFx&&Sfx.beatFx('hold')); }   /* v6.82 Unique SFX */
   moveSnipeAim(p){ const s=this._snipe;if(!s)return; const dx=p.x-s.sx,dy=p.y-s.sy; if(Math.hypot(dx,dy)>18){ s.ang=Math.atan2(dy,dx); s.dragged=true; } }
-  cancelSnipe(){ const s=this._snipe;if(!s)return; if(typeof Sfx!=='undefined')Sfx.bpLoopStop?.('uq_sniper_charge'); if(s.g)s.g.destroy();if(s.aura)s.aura.destroy(); this._snipe=null; }
+  cancelSnipe(){ const s=this._snipe;if(!s)return; if(typeof Sfx!=='undefined')Sfx.bpLoopStop?.('uq_sniper_charge'); if(this._scopeFx)this.fxScopeStop?.(); if(s.g)s.g.destroy();if(s.aura)s.aura.destroy(); this._snipe=null; }
   tickSnipe(){ const s=this._snipe;if(!s)return; if(this.state!=='play'){ this.cancelSnipe(); return; }
     const c=this.snipeCharge(),pl=this.player,g=s.g,len=1500,ca=Math.cos(s.ang),sa=Math.sin(s.ang),t=(this.elapsed||0);
     if(!s.dragged){ const a=(s.blast||s.kind)?((this.nearestEnemy&&this.nearestEnemy(500))||this.strongestEnemy(900)):this.strongestEnemy(900); if(a)s.ang=Math.atan2(a.y-pl.y,a.x-pl.x); }
@@ -6142,13 +6143,14 @@ class Game extends Phaser.Scene {
     beam(ang,dmg,w); if(this.player._pt&&this.player._pt.railgun&&c>=1)this.artDelay(400,()=>{if(this.state==='play'&&this.basicAttack===basic&&(this._artEpoch||0)===epoch)beam(ang,dmg*0.7,w*0.8);Sfx.bp?.('uq_sniper_fire',.35,.15,.9);});
     for(let i=1;i<=sm.split;i++){ beam(ang+0.14*i,dmg*0.55,w*0.6); beam(ang-0.14*i,dmg*0.55,w*0.6); }
     this.screenShake(160+c*160,0.006+c*0.008); if(c>=1&&this.hitStop)this.hitStop(60);
+    this.fxScopeStop?.(true);
     if(!Sfx.bp?.('uq_sniper_fire',.5+.3*Math.min(1,c),.15,c>=1?1:.92)){ if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam(); } else this.artDelay(260,()=>{ if(this.state==='play')Sfx.bp?.('uq_sniper_bolt',.3,.5); });
     if(c>=1)this.showBanner('🎯 Perfect Shot','Full charge · '+hits+' hit'+(hits===1?'':'s'),900); }
   bloomRadius(c){ return (110+150*c)*(1+0.25*(this.mintLv().m_grow||0)); }
   lanceLen(){ return 350*(1+0.3*(this.mintLv().l_far||0)); }
   mintUniqueStart(){ const u=this.uniqueInfo(); this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.fireRecipes('unique');
     return {ul:this.uniqueLevel||1,unit:(this.player.dmgMul||1)*this.uniquePower()}; }
-  releaseGlacierBloom(c){ if(c>=1)Sfx.bp?.('uq_mint_bloom_full',.7,.3); else Sfx.bp?.('mint_glacier_bloom',.65,.3); const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[],bosses=[];
+  releaseGlacierBloom(c){ if(c>=1){Sfx.bp?.('uq_mint_bloom_full',.7,.3);this.fxFreezeScreen?.();} else Sfx.bp?.('mint_glacier_bloom',.65,.3); const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[],bosses=[];
     this._sgHit=true; try{ this.enemies.children.iterate(e=>{ if(!e||!e.active||this.dist(e.x,e.y,cx,cy)>r)return; this.damage(e,hit*0.5,e.x,e.y); if(!e.active||e._phaseGateLocked||(e._phaseInvuln||0)>0)return;
       if(e.isBoss||e.isMini||e.freezeImmune){ e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); e._glacierBrittleUntil=this.time.now+3000; this.mintChill(e,0.6); this.damage(e,hit*1.5,e.x,e.y); bosses.push({e,token:e._glacierLifeToken}); return; }
       e.frozen=Math.max(e.frozen||0,dur); e.setVelocity(0,0); e.setTint(COLORS.ice); this.glacierFrostHit(e); frozen.push({e,token:e._glacierLifeToken}); }); } finally { this._sgHit=false; }
@@ -6171,7 +6173,7 @@ class Game extends Phaser.Scene {
     if(this.textures.exists('vfx_frost_lance_trail'))g=this.trackArtVfx(this.camWorld(this.add.image(x0,y0,'vfx_frost_lance_trail').setOrigin(0,0.5).setRotation(ang).setDepth(5).setBlendMode(Phaser.BlendModes.NORMAL).setDisplaySize(L,68)));
     else {g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(5))); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);}
     (this._iceTrails=this._iceTrails||[]).push({x0,y0,ca,sa,L,t:3,tick:0,g,dmg:dmg*0.12});
-    this.screenShake(110,0.005); Sfx.bp?.('uq_mint_lance_release',.6,.2)||(Sfx.dash&&Sfx.dash()); this.showBanner('🗡️ Frost Lance',hits+' pierced',700); }
+    this.screenShake(110,0.005); (this.fxLanceScreen?.(ang),Sfx.bp?.('uq_mint_lance_release',.6,.2))||(Sfx.dash&&Sfx.dash()); this.showBanner('🗡️ Frost Lance',hits+' pierced',700); }
   tickIceTrails(dt){ const T=this._iceTrails; if(!T||!T.length)return; for(let i=T.length-1;i>=0;i--){ const tr=T[i]; tr.t-=dt; if(!tr.g?.active){T.splice(i,1);continue;} tr.g.setAlpha(Math.min(1,tr.t)); if(tr.t<=0||this.state==='menu'){ tr.g.destroy(); T.splice(i,1); continue; }
       tr.tick-=dt; if(tr.tick>0||this.state!=='play')continue; tr.tick=0.4;
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-tr.x0,ry=e.y-tr.y0,al=rx*tr.ca+ry*tr.sa; if(al<0||al>tr.L||Math.abs(-rx*tr.sa+ry*tr.ca)>30)return; this.damage(e,tr.dmg,e.x,e.y); if(e.active&&e.body)e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); }); } }
@@ -6191,7 +6193,7 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:dot,x:pl.x+Math.cos(a)*len,y:pl.y+Math.sin(a)*len,alpha:0,duration:220,ease:'Quad.out',onComplete:()=>dot.destroy()}); }
       this.burst(pl.x+Math.cos(ang)*40,pl.y+Math.sin(ang)*40,0xff76a8); this.screenShake(140,0.007);
       return hits; };
-    const hits=fire(1);
+    const hits=fire(1); if(c>=1)this.fxShotgunScreen?.(ang);
     // แรงถีบ: ถอยหลังจากทิศยิง + อมตะสั้น ๆ
     const bx=pl.x-Math.cos(ang)*bm.hop,by=pl.y-Math.sin(ang)*bm.hop; pl.iframe=Math.max(pl.iframe||0,bm.iframe);
     this.tweens.add({targets:pl,x:bx,y:by,duration:160,ease:'Quad.out',onUpdate:()=>{ if(pl.body)pl.body.reset(pl.x,pl.y); }});
@@ -6229,7 +6231,7 @@ class Game extends Phaser.Scene {
       // ใช้ homing (โค้งเข้าหาเป้า) + bounce (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด) แทน chain lightning
       const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), bounce=ul>=4?3:ul>=3?2:1;
       for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.berryBullet(this.player.x,this.player.y,0.28+ul*0.012,this.basicAttack);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=0;b.faceVel=true;Object.assign(b.berrySeed,{path:'ricochet',evolved:!!this.basicAttack?.evolved,base:b.dmg});this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
-      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);Sfx.bp?.('uq_rebound_burst',.6,.3)||Sfx.shoot();
+      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
       this.castWindRush(ul);
     }else if(c.unique==='voidPull'){
@@ -6261,7 +6263,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<14;i++){const a=i/14*TAU,ln=this.camWorld(this.add.rectangle(cx+Math.cos(a)*20,cy+Math.sin(a)*20,26,3,0xe6fffa,0.9).setRotation(a).setDepth(9));
       this.tweens.add({targets:ln,x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r,alpha:0,scaleX:0.3,duration:380,ease:'Cubic.out',onComplete:()=>ln.destroy()});}
     }
-    this.jelly&&this.jelly(0.25,-0.2);if(!Sfx.bp?.('uq_mint_gale',.6,.3)){Sfx.dash&&Sfx.dash();Sfx.magnet&&Sfx.magnet();}
+    this.jelly&&this.jelly(0.25,-0.2);this.fxGaleScreen?.();if(!Sfx.bp?.('uq_mint_gale',.6,.3)){Sfx.dash&&Sfx.dash();Sfx.magnet&&Sfx.magnet();}
     this.showBanner('🌬️ Mint Gale Lv'+ul,'Speed ×'+mul.toFixed(2)+' for '+dur.toFixed(1)+'s · ignore slows',950);
   }
   tickWindRush(dt){
@@ -12533,6 +12535,49 @@ class Game extends Phaser.Scene {
     if(lv>=2){const cr=this.camWorld(this.add.graphics().setDepth(5));cr.fillStyle(0x3a2414,.55).fillEllipse(x,y,r*1.6,r*.9);cr.lineStyle(3,0x1d120a,.8);for(let i=0;i<6+lv*2;i++){const a=Math.random()*Math.PI*2,l=r*(.6+Math.random()*.7);cr.lineBetween(x,y,x+Math.cos(a)*l,y+Math.sin(a)*l*.6);}this.tweens.add({targets:cr,alpha:0,delay:1600,duration:500,onComplete:()=>cr.destroy()});}
     if(lv>=3){this.cocoaVisual(x,y,r*1.5,'fist',0xff4a2a);const t=this.add.text(x,y-r*.6,'TITAN CRUSH!',{fontSize:'30px',fontStyle:'900',color:'#ffd27a',stroke:'#5a1500',strokeThickness:7}).setOrigin(.5).setDepth(9);this.camWorld(t);this.tweens.add({targets:t,y:t.y-50,scale:1.3,alpha:0,duration:900,onComplete:()=>t.destroy()});Sfx.beatFx?.('titan');}
   }
+  // v6.84 Screen FX: overlay วาดด้วยโค้ด ยึดติดกล้อง (local 0..vw,0..vh) · draw(g,vw,vh,t01) เรียกทุกเฟรม · คืน object ให้ kill() ได้
+  screenFx(life,draw,{fadeIn=0,hold=null}={}){ try{ const cam=this.cameras.main,g=this.camWorld(this.add.graphics().setDepth(95000)),t0=this.time.now,fx={g,dead:false};
+    const step=()=>{ if(fx.dead||!g.active)return; const v=cam.worldView,el=(this.time.now-t0)/1000,k=life>0?Math.min(1,el/life):0; g.setPosition(v.x,v.y); g.clear(); try{draw(g,v.width,v.height,k,el);}catch(e){} if(life>0&&el>=life)fx.kill(); };
+    fx.kill=()=>{ if(fx.dead)return; fx.dead=true; this.events.off('postupdate',step); if(g.active)g.destroy(); };
+    this.events.on('postupdate',step); step(); return fx; }catch(e){ return {kill(){}}; } }
+  scrEdge(g,w,h,col,a,th){ for(let i=0;i<6;i++){ const al=a*(1-i/6),d=i*th/6; g.lineStyle(th/6+1,col,al).strokeRect(d,d,w-2*d,h-2*d); } }
+  // 🍓 Shotgun: ขอบจอสะบัด + ควันดินปืน
+  fxShotgunScreen(ang){ const puffs=[...Array(7)].map(()=>({x:.5+Math.cos(ang)*(.1+Math.random()*.3)+(Math.random()-.5)*.15,y:.5+Math.sin(ang)*(.1+Math.random()*.3)+(Math.random()-.5)*.15,r:30+Math.random()*40}));
+    this.screenFx(.7,(g,w,h,k)=>{ this.scrEdge(g,w,h,0xff76a8,.55*(1-k),36); for(const p of puffs){ g.fillStyle(0xd8d0d8,.28*(1-k)).fillCircle(p.x*w,p.y*h,p.r*(1+k*.8)); } }); }
+  // 🍓 Sniper: กล้องเล็งระหว่างชาร์จ
+  fxScopeStart(){ this.fxScopeStop(); this._scopeFx=this.screenFx(0,(g,w,h,k,el)=>{ const cx=w/2,cy=h/2,R=Math.min(w,h)*(.46-.06*Math.min(1,el/1.2));
+      g.fillStyle(0x000000,.55); g.fillRect(0,0,w,cy-R); g.fillRect(0,cy+R,w,h-cy-R); g.fillRect(0,cy-R,cx-R,2*R); g.fillRect(cx+R,cy-R,w-cx-R,2*R);
+      for(let i=0;i<10;i++){ g.lineStyle(R*.07,0x000000,.5*(1-i/10)).strokeCircle(cx,cy,R-i*R*.035); }
+      g.lineStyle(1.5,0xff9ec4,.7); g.lineBetween(cx-R*.9,cy,cx-14,cy); g.lineBetween(cx+14,cy,cx+R*.9,cy); g.lineBetween(cx,cy-R*.9,cx,cy-14); g.lineBetween(cx,cy+14,cx,cy+R*.9); g.strokeCircle(cx,cy,6); }); }
+  fxScopeStop(fire){ if(this._scopeFx){ this._scopeFx.kill(); this._scopeFx=null; } if(fire)this.screenFx(.22,(g,w,h,k)=>{ g.fillStyle(0xffffff,.65*(1-k)).fillRect(0,0,w,h); }); }
+  // 🍓 Rebound: รอยกระแทกชมพูที่ขอบจอ
+  fxReboundScreen(){ const hits=[...Array(5)].map((_,i)=>{ const s=i%4; return {s,u:.15+Math.random()*.7,d:i*.12}; });
+    this.screenFx(1.1,(g,w,h,k,el)=>{ for(const p of hits){ const t=(el-p.d)/.6; if(t<0||t>1)continue; const x=p.s===0?0:p.s===1?w:p.u*w,y=p.s===2?0:p.s===3?h:p.u*h;
+      g.fillStyle(0xff5c8a,.5*(1-t)).fillCircle(x,y,20+t*70); g.lineStyle(3,0xffd1e0,.8*(1-t)).strokeCircle(x,y,10+t*90);
+      for(let j=0;j<6;j++){ const a=j/6*Math.PI*2; g.lineBetween(x+Math.cos(a)*(14+t*40),y+Math.sin(a)*(14+t*40),x+Math.cos(a)*(24+t*70),y+Math.sin(a)*(24+t*70)); } } }); }
+  // 🍫 Fire: ขอบจอแดงร้อน + ขี้เถ้าลอยขึ้น
+  fxHeatScreen(){ const ash=[...Array(24)].map(()=>({x:Math.random(),y:.8+Math.random()*.3,v:.25+Math.random()*.35,r:1.5+Math.random()*2.5,c:Math.random()<.4?0xffb347:0x5a4040}));
+    this.screenFx(1.2,(g,w,h,k,el)=>{ this.scrEdge(g,w,h,0xff3a1a,.5*(1-k*k),60); for(const a of ash){ g.fillStyle(a.c,.8*(1-k)).fillCircle((a.x+Math.sin(el*3+a.y*9)*.02)*w,(a.y-a.v*el)*h,a.r); } }); }
+  // 🍫 Dash Phantom: โลกหม่นม่วง เวลาหยุด
+  fxPhantomScreen(sec){ this.screenFx(sec,(g,w,h,k,el)=>{ const a=k<.1?k/.1:k>.85?(1-k)/.15:1; g.fillStyle(0x1a0f2a,.42*a).fillRect(0,0,w,h); this.scrEdge(g,w,h,0xc9a3ff,.45*a,40);
+      for(let i=0;i<5;i++){ const y=((el*.6+i/5)%1)*h; g.lineStyle(1,0xc9a3ff,.18*a).lineBetween(0,y,w,y); } }); }
+  // 🌿 Glacier Bloom: น้ำแข็งเกาะจอจากมุม แล้วแตกร่วง
+  fxFreezeScreen(){ const cs=[[0,0],[1,0],[0,1],[1,1]],spikes=cs.map(([cx,cy])=>[...Array(9)].map(()=>({a:Math.random()*Math.PI/2,l:.25+Math.random()*.35})));
+    const shards=[...Array(26)].map(()=>({x:Math.random(),y:Math.random()*.5,v:.6+Math.random(),r:4+Math.random()*7,rot:Math.random()*6}));
+    this.screenFx(2.2,(g,w,h,k,el)=>{ const grow=Math.min(1,el/.35),hold=el<1.5,fade=hold?1:Math.max(0,1-(el-1.5)/.7);
+      if(hold){ g.fillStyle(0xbfeaff,.16*grow).fillRect(0,0,w,h);
+        cs.forEach(([cx,cy],i)=>{ const ox=cx*w,oy=cy*h,sx=cx?-1:1,sy=cy?-1:1; g.fillStyle(0xe8f8ff,.55*grow);
+          g.fillTriangle(ox,oy,ox+sx*w*.32*grow,oy,ox,oy+sy*h*.28*grow);
+          for(const sp of spikes[i]){ const L=Math.min(w,h)*sp.l*grow,ex=ox+sx*Math.cos(sp.a)*L,ey=oy+sy*Math.sin(sp.a)*L; g.lineStyle(2.5,0xffffff,.8*grow).lineBetween(ox,oy,ex,ey); g.lineStyle(1,0x9fe8ff,.7*grow).lineBetween(ex,ey,ex+sx*12,ey-sy*8); } });
+        this.scrEdge(g,w,h,0x9fe8ff,.6*grow,50); }
+      else for(const s of shards){ const t=el-1.5; g.fillStyle(0xe8f8ff,.85*fade); const x=s.x*w,y=(s.y+s.v*t*t*1.6)*h; g.fillTriangle(x,y-s.r,x+s.r*.8,y+s.r,x-s.r*.8,y+s.r*.6); } }); }
+  // 🌿 Frost Lance: รอยไอเย็นพาดจอตามทิศหอก
+  fxLanceScreen(ang){ this.screenFx(.6,(g,w,h,k)=>{ const cx=w/2,cy=h/2,L=Math.hypot(w,h),c=Math.cos(ang),sn=Math.sin(ang); this.scrEdge(g,w,h,0x9fe8ff,.45*(1-k),30);
+      g.lineStyle(26*(1-k)+2,0xbfeaff,.35*(1-k)).lineBetween(cx-c*L*.1,cy-sn*L*.1,cx+c*L*k*1.2,cy+sn*L*k*1.2); g.lineStyle(3,0xffffff,.8*(1-k)).lineBetween(cx,cy,cx+c*L*k*1.2,cy+sn*L*k*1.2); }); }
+  // 🌿 Mint Gale: ลม+ใบมินต์พัดผ่านจอ ซ้าย→ขวา
+  fxGaleScreen(){ const ls=[...Array(16)].map(()=>({y:Math.random(),d:Math.random()*.4,len:.15+Math.random()*.25})),lv=[...Array(14)].map(()=>({y:Math.random(),d:Math.random()*.5,r:4+Math.random()*4}));
+    this.screenFx(1.3,(g,w,h,k,el)=>{ for(const l of ls){ const t=(el-l.d)/.8; if(t<0||t>1)continue; const x=(-.3+t*1.6)*w; g.lineStyle(2,0xd6fff0,.5*Math.sin(t*Math.PI)).lineBetween(x,l.y*h,x-l.len*w,l.y*h+6); }
+      for(const f of lv){ const t=(el-f.d)/.9; if(t<0||t>1)continue; g.fillStyle(0x6fe0a8,.85*Math.sin(t*Math.PI)).fillEllipse((-.1+t*1.2)*w,f.y*h+Math.sin(t*12)*14,f.r*2.4,f.r); } }); }
   // v6.83 หน้าจอแตก: เส้นร้าววาดด้วยโค้ดทับทั้งจอ (กล้องหลัก) ตอนปล่อย Titan Rage lv2+
   titanScreenCrack(lv){ try{ const cam=this.cameras.main,v=cam.worldView,cx=v.centerX+(Math.random()-.5)*v.width*.2,cy=v.centerY+(Math.random()-.5)*v.height*.2,R=Math.hypot(v.width,v.height)*.6,g=this.camWorld(this.add.graphics().setDepth(95000));
     const n=lv>=3?14:9; g.fillStyle(0xffffff,lv>=3?.22:.14).fillCircle(cx,cy,26+lv*8);
@@ -12591,7 +12636,7 @@ class Game extends Phaser.Scene {
         if(lv>=2&&b?.lv?.p_crater)this.cocoaPool(x,y,r*.7,unit*.25*(1+.5*(b.lv.p_crater-1)),3,0xff3a10);});
       this.cocoaLater(.65,()=>{this.cocoaHit(x,y,r*1.2,unit*.7);this.cocoaVisual(x,y,r*1.2,'wave',0xd59b65);Sfx.bp?.('uq_titan_aftershock',.45,.3);});
     }else if(path==='dashboxer'){
-      const duration=5+ul*.5;this._cocoaUniqueT=1.5;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);Sfx.bp?.('uq_phantom_enter',.65,.3)||Sfx.bp?.('cocoa_phantom_start',.65,.3);
+      const duration=5+ul*.5;this._cocoaUniqueT=1.5;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);this.fxPhantomScreen?.(1.4);Sfx.bp?.('uq_phantom_enter',.65,.3)||Sfx.bp?.('cocoa_phantom_start',.65,.3);
       // v6.58.4 Phantom Rush: พุ่งทุบอัตโนมัติ 3–4 ครั้งใส่เป้าแข็งสุด (บอสก่อน)
       const leaps=ul>=3?4:3,slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));
       for(let i=0;i<leaps;i++)this.cocoaLater(.05+i*.42,()=>{const t=this.cocoaPriorityTarget(480);if(!t||!p.active)return;const d=this.dist(t.x,t.y,p.x,p.y),gap=Math.max(36,(t.body?.halfWidth||20)+18),k=Math.max(0,(d-gap)/Math.max(1,d));
@@ -13343,7 +13388,7 @@ class Game extends Phaser.Scene {
     this.damage(enemy,_bd,bullet.x,bullet.y);if(enemy.active&&bullet.knockback&&!enemy.isBoss&&!enemy.isMini){const a=Math.atan2(enemy.y-this.player.y,enemy.x-this.player.x);enemy.setVelocity(Math.cos(a)*bullet.knockback,Math.sin(a)*bullet.knockback);enemy.knock=0.22;} this.chainFrom(bullet,enemy);
     if(bullet.seedPop>0){ const pr=bullet.seedPop,r=46+pr*14,pd=bullet.dmg*(0.25+pr*0.12); this.burst(bullet.x,bullet.y,0xff6b8a); this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==enemy&&this.dist(o.x,o.y,bullet.x,bullet.y)<r)this.damage(o,pd,o.x,o.y); }); }   // Juicy Burst: เมล็ดแตกกระเซ็นโดนรอบข้าง
     if(bullet.firePool)this.cocoaPool(bullet.x,bullet.y,bullet.firePool,bullet.dmg*(bullet.firePoolT>1.5?.35:.2)*(1+.3*(this.basicAttack?.lv?.p_ember||0)+this.ptv('ffBurn')),bullet.firePoolT||1.2);
-    if(bullet.explode){ if(bullet._bpBoom)this.bpFx?.(bullet._bpBoom,bullet.x,bullet.y,bullet.explode*2.4); if(bullet._uqRocket)Sfx.bp?.('uq_rocket_detonation',.6,.6)||Sfx.bp?.('cocoa_fire_explosion',.55,.09); else if(bullet._bpBoom==='bpx_cocoa_explode')Sfx.bp?.('cocoa_fire_explosion',.55,.09); this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8);if(bullet.sticky)this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,bullet.x,bullet.y)<bullet.explode)e.frozen=Math.max(e.frozen||0,0.45);});this.killBullet(bullet); return; }   // จรวดระเบิด AoE
+    if(bullet.explode){ if(bullet._bpBoom)this.bpFx?.(bullet._bpBoom,bullet.x,bullet.y,bullet.explode*2.4); if(bullet._uqRocket&&(this.time.now-(this._heatFxAt||0)>1500)){this._heatFxAt=this.time.now;this.fxHeatScreen?.();} if(bullet._uqRocket)Sfx.bp?.('uq_rocket_detonation',.6,.6)||Sfx.bp?.('cocoa_fire_explosion',.55,.09); else if(bullet._bpBoom==='bpx_cocoa_explode')Sfx.bp?.('cocoa_fire_explosion',.55,.09); this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8);if(bullet.sticky)this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,bullet.x,bullet.y)<bullet.explode)e.frozen=Math.max(e.frozen||0,0.45);});this.killBullet(bullet); return; }   // จรวดระเบิด AoE
     if(bullet.bounce>0){ bullet.bounce--; bullet._bounced=true; if(bullet.bounceGain)bullet.dmg*=1+bullet.bounceGain; this.ptOnBounce(bullet,enemy);
       let nb=null,nd=(360*(bullet.seekMul||1))**2;
       this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==enemy){ const d=(o.x-bullet.x)**2+(o.y-bullet.y)**2; if(d<nd){nd=d;nb=o;} } });

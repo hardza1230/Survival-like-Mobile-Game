@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.83.1 — Boss warning fully silent
+# Latest delivery: v6.84.0 — Unique screen FX (Momo, Mint, Cocoa)
+
+screenFx(life,draw) helper: code-drawn Graphics depth 95000 re-positioned to camera worldView on scene 'postupdate' (life 0 = until kill()). scrEdge vignette helper. Hooks: sniper fxScopeStart in startSnipeCharge (stopped in cancelSnipe) + fxScopeStop(true) white flash in releaseSnipe; shotgun full-charge fxShotgunScreen; Rebound fxReboundScreen; brawler rocket first detonation fxHeatScreen (1.5s throttle); Phantom fxPhantomScreen(1.4); Glacier Bloom full fxFreezeScreen (ice corners 1.5s then shards); releaseFrostLance fxLanceScreen; castWindRush fxGaleScreen. Titan crack from v6.83. Taro/Sesame/Yuzu intentionally not done (owner: later). No settings toggle yet. npm check passed.
+
+# Previous delivery: v6.83.1 — Boss warning fully silent
 
 Owner: beeping 'ตื๊ด ๆ' alarm on every danger. It was sfx_hazard (sfx_vfx_telegraph_hazard.wav, 1s) that v6.82.3 put into Sfx.bossWarn (~32 telegraph call sites). bossWarn(){} is now a no-op; visuals unchanged. npm check passed.
 
