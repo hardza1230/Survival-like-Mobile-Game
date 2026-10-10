@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.89.1';
+const GAME_VERSION = '6.90.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.90.0', date:'2026-10-10', title:'🧶 Temple Weave costs more', items:['Flavor Weave core upgrades cost about 3× more Sugar, and each next level climbs faster']},
   { v:'6.89.1', date:'2026-10-10', title:'🦷 Mimic slot on every wheel', items:['Every miniboss chest wheel now has a MIMIC slot (12%). Land on it and the Mimic jumps out — beat it for a better chest']},
   { v:'6.89.0', date:'2026-10-10', title:'🦷 Mimic on the wheel', items:['Mimics now appear as a result on the miniboss chest prize wheel — beat it for a better chest','No more early “Suspicious Chest” warning']},
   { v:'6.88.0', date:'2026-10-10', title:'📲 App update notice', items:['Players on an older Android app get a notice with a download link when a newer app version is released (Later hides it for the day)']},
@@ -3836,6 +3837,7 @@ function passivePairHint(key){
    การ์ด 3 ใบรีเซ็ตกลับ Lv0 + ราคาแพงขึ้น (×(1+rank·0.8)) → อัพFullใหม่ → เลื่อนยศ ... ไปเรื่อย ๆ
    ผลรวมที่ใช้จริง = rank·TAL_MAX + เลเวลWaitบนี้ (ยศยิ่งสูง สแตตยิ่งเยอะ · ดาเมจเป็น flat กันเวอร์) */
 const TAL_MAX = 3;   // แต่ละแก่นอัพได้ Lv1..TAL_MAX ต่อยศ (v4.7 ลดจาก 5→3 ให้เลื่อนยศ/ได้ RP ไวขึ้น)
+const WEAVE_COST_MUL=3, WEAVE_LV_GROWTH=1.8;   // v6.90 Temple Weave Sugar cost
 const UPGRADES = {
   hp:  { iconKey:'temple_life_core',emoji:'❤️', tag:'CORE', name:'Life Core', unit:'+16 max HP/level', color:0xff5f7a, base:30, per:16,
          apply:(p,tot)=>{ p.maxhp+=16*tot; },                          show:tot=>'+'+(16*tot)+' HP' },
@@ -4912,7 +4914,7 @@ const Save = {
   buySpecialCore(id){const core=SPECIAL_CORES.find(c=>c.id===id);if(!core||(this.data.rank||0)<core.rank||this.specialCoreLvl(id)>=3)return false;
     const cost=this.specialCoreCost(id);if(this.threads()<cost)return false;
     this.data.threads=this.threads()-cost;this.data.specialCores=this.data.specialCores||{};this.data.specialCores[id]=this.specialCoreLvl(id)+1;this.save();return true;},
-  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank)*Math.pow(1.25,rank)); },   // v6.68: 1.15→1.25 per rank (Sugar upgrades nerfed)   // 🍬 Sugar · v6.55.28: (1+rank)×1.15^rank (เดิม 1+0.8·rank) ยศ 5 รวม ×1.7, ยศ 10 ×2.9
+  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*WEAVE_COST_MUL*Math.pow(WEAVE_LV_GROWTH,lvl)*(1+rank)*Math.pow(1.25,rank)); },   // v6.90 เจ้าของ: แพงขึ้นทั้งหมด ×3 + โตตามเลเวล ×1.8/ขั้น (เดิม ×(lvl+1))   // v6.68: 1.15→1.25 per rank (Sugar upgrades nerfed)   // 🍬 Sugar · v6.55.28: (1+rank)×1.15^rank (เดิม 1+0.8·rank) ยศ 5 รวม ×1.7, ยศ 10 ×2.9
   talCanBuy(k){ return this.talLvl(k)<TAL_MAX&&(this.data.sugar||0)>=this.talCost(k); },
   promoteThreadCost(){ const rank=this.data.rank||0;return 8+4*rank+2*rank*rank; },
   perkResetCost(){ return 6+3*(this.data.rank||0); },

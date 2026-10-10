@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.89.1 — MIMIC slot on every miniboss wheel
+# Latest delivery: v6.90.0 — Temple Weave Sugar cost raised
+
+Owner: Weave too strong, low levels too cheap. Save.talCost = base×WEAVE_COST_MUL(3)×WEAVE_LV_GROWTH(1.8)^lvl×(1+rank)×1.25^rank (was base×(lvl+1)×…). Rank0 HP core 30/60/90 → 90/162/292. Thread costs unchanged. npm check passed.
+
+# Previous delivery: v6.89.1 — MIMIC slot on every miniboss wheel
 
 Owner: mimic should be a visible wheel slot from the start, random. openPrizeWheel adds MIMIC prize when opts.onMimic (weight so P=MIMIC_WHEEL_CHANCE 0.12), always kept among the 8 shown slots; landing → awakenMimic (kill → better chest, that chest has c._noMimic so no slot). spawnChest no longer pre-rolls c._mimic. Tutorial: no mimic. miniboss-rewards test mock updated. npm check passed.
 
