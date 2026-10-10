@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: 45 campaign music loops (assets only)
+# Latest delivery: v6.81.0 — 45 campaign music tracks wired
+
+ASSET_AUDIO bgm_s01..15/bgm_m01..15 repointed to assets/audio/bgm/elevenlabs_campaign/c1..c3/; bgm_b01..15 added. bgmKeyFor: per-stage boss bgm_bNN after stage branch (endgame priority + chapter/legacy fallback kept). Boot/background skip regex /^bgm_[smb]\d/ so they stay lazy (ensureStageAudio stage, warmBossAudio mini+boss). Old stage/ files kept as unused fallback. Listening QC on phone pending. npm check passed.
+
+# Previous delivery: 45 campaign music loops (assets only)
 
 Owner requested theme-based normal music + fun exciting miniboss/boss fights for all C1-1..C3-5. 45 playback MP3 in assets/audio/bgm/elevenlabs_campaign/: 44 new ElevenLabs compositions + reused C3-1 trial. See docs/audio_orders/CAMPAIGN_MUSIC_45_HANDOFF.md / MANIFEST.json. All decode and contain audio, listening review pending. Not integrated: runtime remains v6.80.0. Next AI: register sNN/mNN/bNN paths; update bgmKeyFor boss routing before chapter fallback, preserve endgame priority and lazy loading.
 

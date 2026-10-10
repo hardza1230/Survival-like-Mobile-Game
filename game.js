@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.80.0';
+const GAME_VERSION = '6.81.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.81.0', date:'2026-10-10', title:'🎵 New campaign soundtrack', items:['45 new music tracks: every Story stage from C1-1 to C3-5 now has its own stage, miniboss and boss theme']},
   { v:'6.80.0', date:'2026-10-10', title:'⛏ Simpler endgame', items:['Delve boss now needs only the Hunger Meter — missions are optional bonus Sugar','Zone Modifiers and mid-run curses removed','Endless and Ascension removed from the menu','Atlas passives and depth milestones merged into one 🏁 Depth Track: bonuses unlock by record depth (no points to spend)']},
   { v:'6.79.0', date:'2026-10-10', title:'🛍️ Simpler gear economy', items:['Set collection deposits removed — sets give bonuses when worn; old deposits refunded as Gear Shards (10 each)','Bazaar Gacha tab now holds Gear Gacha, Trade-in and supply boxes in one place','Crafting currencies cut from 8 to 5: Wish Candy and Crown Icing became Spark Sugar, Wild Jam became Twist Cream (your stock was converted)']},
   { v:'6.78.0', date:'2026-10-10', title:'🧹 Fewer meta systems', items:['Bestiary now gives Sugar only (no permanent stats)','Sugar Orders removed — any active order is refunded','Overcap merged into core levels: your Overcap levels stay, Core Stones now give 🧶 Weave Thread (old stones converted)','Special Cores now open from the Rank Perks screen, next to Ancient Perks']},
@@ -2244,37 +2245,53 @@ const ASSET_AUDIO = {
   bgm_ch3:        'assets/audio/bgm/bgm_ch3.mp3',
   bgm_ch3_boss:   'assets/audio/bgm/bgm_ch3_boss.mp3',
   // v5.4+ เพลงประจำด่าน 1 ด่าน 1 เพลง (scripts/gen_stage_bgm.cjs) · ต้องเขียน path เต็ม (build-www คัดลอกเฉพาะ path ที่เห็นในโค้ด)
-  bgm_s01: 'assets/audio/bgm/stage/bgm_s01.mp3',
-  bgm_s02: 'assets/audio/bgm/stage/bgm_s02.mp3',
-  bgm_s03: 'assets/audio/bgm/stage/bgm_s03.mp3',
-  bgm_s04: 'assets/audio/bgm/stage/bgm_s04.mp3',
-  bgm_s05: 'assets/audio/bgm/stage/bgm_s05.mp3',
-  bgm_s06: 'assets/audio/bgm/stage/bgm_s06.mp3',
-  bgm_s07: 'assets/audio/bgm/stage/bgm_s07.mp3',
-  bgm_s08: 'assets/audio/bgm/stage/bgm_s08.mp3',
-  bgm_s09: 'assets/audio/bgm/stage/bgm_s09.mp3',
-  bgm_s10: 'assets/audio/bgm/stage/bgm_s10.mp3',
-  bgm_s11: 'assets/audio/bgm/stage/bgm_s11.mp3',
-  bgm_s12: 'assets/audio/bgm/stage/bgm_s12.mp3',
-  bgm_s13: 'assets/audio/bgm/stage/bgm_s13.mp3',
-  bgm_s14: 'assets/audio/bgm/stage/bgm_s14.mp3',
-  bgm_s15: 'assets/audio/bgm/stage/bgm_s15.mp3',
+  bgm_s01: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s01.mp3',
+  bgm_s02: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s02.mp3',
+  bgm_s03: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s03.mp3',
+  bgm_s04: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s04.mp3',
+  bgm_s05: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s05.mp3',
+  bgm_s06: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_s06.mp3',
+  bgm_s07: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_s07.mp3',
+  bgm_s08: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_s08.mp3',
+  bgm_s09: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_s09.mp3',
+  bgm_s10: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_s10.mp3',
+  bgm_s11: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_s11.mp3',
+  bgm_s12: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_s12.mp3',
+  bgm_s13: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_s13.mp3',
+  bgm_s14: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_s14.mp3',
+  bgm_s15: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_s15.mp3',
   // v5.8 เพลงสู้มินิบอสประจำด่าน (gen_stage_bgm.cjs MINIS)
-  bgm_m01: 'assets/audio/bgm/stage/bgm_m01.mp3',
-  bgm_m02: 'assets/audio/bgm/stage/bgm_m02.mp3',
-  bgm_m03: 'assets/audio/bgm/stage/bgm_m03.mp3',
-  bgm_m04: 'assets/audio/bgm/stage/bgm_m04.mp3',
-  bgm_m05: 'assets/audio/bgm/stage/bgm_m05.mp3',
-  bgm_m06: 'assets/audio/bgm/stage/bgm_m06.mp3',
-  bgm_m07: 'assets/audio/bgm/stage/bgm_m07.mp3',
-  bgm_m08: 'assets/audio/bgm/stage/bgm_m08.mp3',
-  bgm_m09: 'assets/audio/bgm/stage/bgm_m09.mp3',
-  bgm_m10: 'assets/audio/bgm/stage/bgm_m10.mp3',
-  bgm_m11: 'assets/audio/bgm/stage/bgm_m11.mp3',
-  bgm_m12: 'assets/audio/bgm/stage/bgm_m12.mp3',
-  bgm_m13: 'assets/audio/bgm/stage/bgm_m13.mp3',
-  bgm_m14: 'assets/audio/bgm/stage/bgm_m14.mp3',
-  bgm_m15: 'assets/audio/bgm/stage/bgm_m15.mp3',
+  bgm_m01: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_m01.mp3',
+  bgm_m02: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_m02.mp3',
+  bgm_m03: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_m03.mp3',
+  bgm_m04: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_m04.mp3',
+  bgm_m05: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_m05.mp3',
+  bgm_m06: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_m06.mp3',
+  bgm_m07: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_m07.mp3',
+  bgm_m08: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_m08.mp3',
+  bgm_m09: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_m09.mp3',
+  bgm_m10: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_m10.mp3',
+  bgm_m11: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_m11.mp3',
+  bgm_m12: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_m12.mp3',
+  bgm_m13: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_m13.mp3',
+  bgm_m14: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_m14.mp3',
+  bgm_m15: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_m15.mp3',
+  // v6.81 บอสรายด่าน (ElevenLabs campaign)
+  bgm_b01: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b01.mp3',
+  bgm_b02: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b02.mp3',
+  bgm_b03: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b03.mp3',
+  bgm_b04: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b04.mp3',
+  bgm_b05: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b05.mp3',
+  bgm_b06: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b06.mp3',
+  bgm_b07: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b07.mp3',
+  bgm_b08: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b08.mp3',
+  bgm_b09: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b09.mp3',
+  bgm_b10: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b10.mp3',
+  bgm_b11: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b11.mp3',
+  bgm_b12: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b12.mp3',
+  bgm_b13: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b13.mp3',
+  bgm_b14: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b14.mp3',
+  bgm_b15: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b15.mp3',
   bgm_endgame:      'assets/audio/bgm/bgm_endgame.mp3',        // v5.3 Recipe Maps (แจ๊ซ+ชิปทูน กลางดึก)
   bgm_endgame_boss: 'assets/audio/bgm/bgm_endgame_boss.mp3',   // v5.3 บอส Recipe + Pinnacle
 };
@@ -2283,7 +2300,8 @@ let BGM_MODE=null;   // 'endgame' = Recipe Maps / Pinnacle ใช้เพลง
 function bgmKeyFor(kind,stageNum){
   if(BGM_MODE==='endgame'){const k='bgm_endgame'+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
   if(kind==='mini'){const k='bgm_m'+String(stageNum).padStart(2,'0');return ASSET_AUDIO[k]?k:null;}
-  if(kind==='stage'){const k='bgm_s'+String(stageNum).padStart(2,'0');if(ASSET_AUDIO[k])return k;}   // เพลงประจำด่าน (ใหม่)
+  if(kind==='stage'){const k='bgm_s'+String(stageNum).padStart(2,'0');if(ASSET_AUDIO[k])return k;}
+  if(kind==='boss'){const k='bgm_b'+String(stageNum).padStart(2,'0');if(ASSET_AUDIO[k])return k;}   // v6.81 per-stage boss   // เพลงประจำด่าน (ใหม่)
   const ch=stageNum>=11?3:stageNum>=6?2:1;
   if(ch>1){const k='bgm_ch'+ch+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
   return 'bgm_'+kind+Math.max(1,Math.min(5,stageNum));
@@ -2371,7 +2389,7 @@ class Boot extends Phaser.Scene {
     if(false)for(const k in ASSET_FX) this.load.spritesheet(k, verUrl(ASSET_FX[k].url), { frameWidth:ASSET_FX[k].fw, frameHeight:ASSET_FX[k].fh });
     // เปิดเกมให้ไว: โหลด SFX + เพลงเมนูก่อน ส่วนเพลงประจำด่านค่อยโหลดเมื่อเลือกด่าน
     for(const k in ASSET_AUDIO){
-      if(!bootKeepAudio(k))continue; if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[sm]\d/.test(k)||k.startsWith('bgm_menu_'))continue;
+      if(!bootKeepAudio(k))continue; if(k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[smb]\d/.test(k)||k.startsWith('bgm_menu_'))continue;
       this.load.audio(k, verUrl(ASSET_AUDIO[k]));
     }
     // ไฟล์ใดเสียให้ใช้กราฟิก/เสียงสำWaitง เกมจึงไม่ติดค้างอยู่ที่หน้าโหลด
@@ -5848,7 +5866,7 @@ class Game extends Phaser.Scene {
     for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if(!k.startsWith('screen_')&&!deferredImage(k)&&want(u))add(k,()=>this.load.image(k,verUrl(u))); }
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!STAGE_SHEET_KEYS.has(k)&&want(sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
     if(tier===1){ for(const k in ASSET_FX){ const fx=ASSET_FX[k]; add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
-      for(const k in ASSET_AUDIO){ if(bootKeepAudio(k)||k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[sm]\d/.test(k)||k.startsWith('bgm_menu_'))continue; if(this.cache.audio.exists(k))continue; this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; } }
+      for(const k in ASSET_AUDIO){ if(bootKeepAudio(k)||k.startsWith('bgm_stage')||k.startsWith('bgm_boss')||k.startsWith('bgm_ch')||k.startsWith('bgm_endgame')||/^bgm_[smb]\d/.test(k)||k.startsWith('bgm_menu_'))continue; if(this.cache.audio.exists(k))continue; this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; } }
     const fin=()=>{ this.buildDeferredAnims();
       T.done=true; if(tier===1)this._deferDone=true; const cbs=T.q; T.q=[]; setTimeout(()=>{ cbs.forEach(cb=>cb()); if(tier===1&&!D[2].started)this.ensureDeferred(null,2); },0); }; // เรียกหลัง loader จบรอบ
     if(!n){fin();return;}
