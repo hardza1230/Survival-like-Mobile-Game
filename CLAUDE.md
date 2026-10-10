@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.94.0 — Consolidation F (dead code removed)
+# Latest delivery: v6.95.0 — Local Play Stats (option ก)
+
+Owner chose local-only stats first (Supabase upload = later option ข, ask before creating a table). Stats module (before CLOUD_URL): localStorage mochi_stats, last 300 runs {t,mode story/delve/bossrush/rift/pinnacle,stage,diff,depth,hero,cards≤40,result win/dead/quit,sec,level,kills,wave,boss,path,cause=_lastHitSrc,topDmg}. Hooks: startRun delayedCall(0) Stats.start (tutorial skipped), pickCardAt Stats.card, victory 'win', die 'dead', quitStage 'quit' (bossRush 'dead'); end() only once per run. Settings row 📊 Play Stats → menuScreen 'stats' buildStats (per stage★diff wins/tries/avg clear/top death, heroes/builds/modes, recent runs + cards, double-tap clear). tests/play-stats.test.cjs added to npm check. Headless screenshot of screen OK. npm check passed.
+
+# Previous delivery: v6.94.0 — Consolidation F (dead code removed)
 
 Owner: remove Endgame Build, Sugar Rush auto level-ups, Endless, Ascension, and every switch-disabled system; Zone Modifiers kept (owner undecided). Removed: egBuild/egBuildPoints/egUpgradeDefs/egBuildCost/EG_*, buildEgBuild, applyEgBuild, _egBuilt; recipeLevelUp, openRecipeDraft, slotLevelUp, refreshUpBtn, openUpgradePanel (⬆ button), RECIPE_DRAFT_EVERY, _draftQ/_specQ/_draftPick (sugarRush() kept: Sweet biome comets use it); buildEndgame screen, Save.canAscend/ascend/recordEndless, endlessMode/endlessCycle/secretBoss branches (endgameUnlocked = ascension>0 || storyComplete); TAG_SETS_ON/tagLabel/refreshTagSets/pause tag grid (TAG_SETS/tagCounts kept); OVERCAP_ON/buyOvercap/overcapCost/OVERCAP_MAX (owned overcap still counts, stones→threads kept); SET_COLLECT_ON/gearSetCollected/setDeposit UI; BESTIARY_STATS_ON/bestiaryBonus*/bestiaryTotals. Save refund migrations kept. Tests/validators updated. npm check passed.
 

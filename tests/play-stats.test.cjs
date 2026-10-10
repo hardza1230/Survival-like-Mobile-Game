@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync(__dirname+'/../game.js','utf8');const a=src.indexOf('const STATS_MAX='),b=src.indexOf("const CLOUD_URL=");
+const store={};const ctx={localStorage:{getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=String(v);},removeItem:k=>{delete store[k];}},JSON,Date,Math,Object,Array,String};vm.createContext(ctx);
+vm.runInContext(src.slice(a,b)+';this.Stats=Stats;',ctx);const S=ctx.Stats;
+const g={stageIndex:3,stageDiff:2,character:'mint',level:7,kills:120,elapsed:185.4,waveIndex:2,mode:'mini',basicAttack:{path:'pierce'},_dmgBy:{shot:40,mini:90},_lastHitSrc:'mini'};
+S.start({...g,_inTutorial:true});S.end(g,'dead');assert.equal(S.load().length,0);
+S.start(g);S.card('Squall','Basic Attack');S.card('Ember','Relic');S.end(g,'dead');S.end(g,'win');
+const r=S.load();assert.equal(r.length,1);assert.equal(r[0].mode,'story');assert.equal(r[0].cause,'mini');assert.equal(r[0].sec,185);assert.deepEqual(r[0].cards,['Squall','Relic: Ember']);assert.equal(r[0].path,'pierce');
+S.start({...g,recipeMode:true,_amapNode:{d:12}});S.end(g,'win');assert.equal(S.load()[1].mode,'delve');assert.equal(S.load()[1].depth,12);assert.equal(S.load()[1].cause,null);
+for(let i=0;i<320;i++){S.start(g);S.end(g,'quit');}assert.equal(S.load().length,300);S.clear();assert.equal(S.load().length,0);
+store.mochi_stats='{bad';assert.deepEqual(S.load(),[]);
+console.log('Play stats: tutorial skipped, one end per run, cards/cause/mode/depth, 300-run cap, clear and corrupt storage passed');
