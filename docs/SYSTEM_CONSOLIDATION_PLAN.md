@@ -10,7 +10,7 @@ Status: ⬜ todo · 🟨 in progress · ✅ done
 - ✅ A2 Merge Modifier cards into the Relic pool (offered via offerRelic, share RELIC_CAP).
 - ✅ A3 Merge Trade-off cards into the Relic pool as "trade" relics.
 - ✅ A4 Merge conditional endless cards (c_low, c_dash, c_still, c_full, c_boss, c_streak, c_close) into the Relic pool.
-- ⬜ A5 Fusion → Evolution bonus when the matching relic is held (no separate card).
+- ✅ A5 Fusion → Evolution bonus when the matching relic is held (no separate card).
 - ⬜ A6 Remove card rarity code (disabled since v6.55.30).
 
 ## B. In-stage

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.74.0';
+const GAME_VERSION = '6.75.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.75.0',date:'2026-10-10',title:'Simpler builds (step 4)',items:['Fusion no longer needs its own card: once your Evolution and the matching Relic are both held, the Fusion bonus turns on automatically']},
   {v:'6.74.0',date:'2026-10-10',title:'Simpler builds (step 3)',items:['Conditional cards (Desperate Bite, Dash Fury, Rooted Aim, Pristine Power, Giant Slayer, Frenzy Feast, Last Stand) left level-ups and now appear as Relics at double strength','They share the 5 Relic slots']},
   {v:'6.73.0',date:'2026-10-10',title:'Build path sounds',items:['35 new sounds for Chocolate, Mint and Strawberry build paths: fire fists, rockets, Titan slams and Rage charge, Dash Boxer leaps, lances, Impale, Glacier shatter, Sniper charge and shots, Ricochet bounces','New sounds for Unique charge, Evolution, boss shield break and boss phase change']},
   {v:'6.72.0',date:'2026-10-10',title:'Simpler builds (step 2)',items:['Modifier and Trade-off cards no longer appear in level-ups — they are offered alongside Relics','Relics, Modifiers and Trade-offs now share 5 slots per stage','Relic choices at levels 6, 12 and 18 (was once at level 8)']},
@@ -11610,7 +11611,7 @@ class Game extends Phaser.Scene {
   }
   offerRelic(){ if(this._inTutorial)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
     this._forcedOpts=opts; this._relicPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return true; }
-  gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics();
+  gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics(); this.time.delayedCall(600,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});
     this.relics.push(k); this._rel[k]=true; this.time.delayedCall(0,()=>this.refreshTagSets()); const p=this.player,d=RELICS[k];
     if(k==='glass'){ p.dmgMul+=(1.4)-1; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
     if(k==='magnet'){ p.pickup*=1.6; p.xpMul=(p.xpMul||1)*1.2; }
@@ -11712,10 +11713,10 @@ class Game extends Phaser.Scene {
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
-      return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();Sfx.bp?.('shared_build_evolution',.7,1);this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();this.playGrowthWorld?.('unlock');}})];
+      return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.time.delayedCall(2300,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});Sfx.bp?.('shared_build_evolution',.7,1);this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();this.playGrowthWorld?.('unlock');}})];
     }
     // 🧬 v6.10.0 B6: Evolution แล้ว + มี Relic ที่จับคู่ → การ์ด Fusion ใบเดียว
-    if(!noSpecial&&b.evolved){ const fu=this.fusionReady(); if(fu){ this.showBanner('🧬 Fusion Ready!',d.evolution+' + '+RELICS[fu.relic].name,1600);
+    if(false&&!noSpecial&&b.evolved){ const fu=this.fusionReady(); if(fu){ /* v6.75 A5: Fusion ใช้อัตโนมัติ (autoFusion) */ this.showBanner('🧬 Fusion Ready!',d.evolution+' + '+RELICS[fu.relic].name,1600);
       return [makeCard(fu,{evolution:true,special:true,kind:'Fusion',tags:fu.tags,color:0xff6ad5,headline:'🧬 '+fu.desc,apply:()=>{ b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,fu.desc,2200); Sfx.clear(); }})]; } }
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
@@ -13288,6 +13289,7 @@ class Game extends Phaser.Scene {
   ptSkinBurst(){ const PT=(this.player&&this.player._pt)||{}; if(!PT.skin||(this.elapsed||0)<(this._ptSkinAt||0))return; this._ptSkinAt=(this.elapsed||0)+1.5;
     for(let i=0;i<3*PT.skin;i++){const c=this.getBullet(this.player.x,this.player.y,0xffffff,0.13);if(!c)break;c.setTexture('proj_sprinkle').setTint(0x5ad1ff);c.faceVel=true;c.dmg=(5.25+(this.skills.sprinkle||1)*1.5)*(this.player.dmgMul||1);c.life=1.4;c.pierce=false;c.hitGapV=0.16;c.bounce=2;c.homing=0;c.headshot=0;c.bigMul=0;c.closeMul=0;c.bounceGain=0;c.seedPierce=false;c.penGain=0;c.forceHs=false;c.cqMul=0;c.dragon=false;c.lastMul=0;c.seekMul=1;c.splitCh=0;c.boomer2=false;c.loopT=false;this.physics.velocityFromRotation(i*Math.PI*2/(3*PT.skin),720,c.body.velocity);} }
   tickPathTalents(dt){ const P=this.player; if(!P||!P._pt)return; const v=P.body?P.body.velocity.length():0; if(v<20)this._ptStill=(this._ptStill||0)+dt; else {this._ptStill=0;this._ptGhUsed=false;} }
+  autoFusion(){ const fu=this.fusionReady(),b=this.basicAttack; if(!fu||!b)return; b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,'Evolution + '+((RELICS[fu.relic]||{}).name||'Relic')+' · '+fu.desc,2200); Sfx.bp?.('shared_build_evolution',.6,1); }
   fusionReady(){ const b=this.basicAttack; if(!b||!b.evolved)return null; const L=FUSIONS[b.character]||[]; return L.find(f=>this._rel&&this._rel[f.relic]&&!(b.mods||[]).includes(f.id))||null; }
   modList(){ const b=this.basicAttack; return (b&&b.mods&&b.mods.length)?b.mods.map(modDef).filter(Boolean):null; }
   modDmgMul(e){ const L=this.modList(); if(!L)return 1; let m=1; const P=this.player,v=P.body?P.body.velocity.length():0,dd=this.dist(P.x,P.y,e.x,e.y);
