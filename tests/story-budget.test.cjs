@@ -39,7 +39,7 @@ for(const flag of ['recipeMode','riftMode','bossRush','endlessMode','_inTutorial
 {const s=scene();s.level=18;s._powerGuide={enemyHp:1};assert.equal(s.bossHpMul(),1.425);s.recipeMode=true;assert.equal(s.bossHpMul(),1.935);}
 assert(method('spawnEnemy').includes('storyCanSpawn?.(false,type)'));assert(method('spawnEnemy').includes('storySpawned?.()'));
 assert(method('spawnElite').includes('storyCanSpawn?.(objective)'));assert(method('spawnObjectiveElite').includes('spawnElite(false,true)'));
-assert(!method('startStoryStage').includes('showMintWarning'));assert(method('spawnFinalBoss').indexOf("state==='levelup'")<method('spawnFinalBoss').indexOf('bossAdds'));
+assert(method('showMintWarning').includes('Keep my hero'));assert(method('spawnFinalBoss').indexOf("state==='levelup'")<method('spawnFinalBoss').indexOf('bossAdds'));
 assert(method('completeWaveObjective').includes('clearEnemies();this.settleStoryBudget(true)'));
 console.log('P1 earned growth: all 15 stages, actual kill/collected-orb rewards, harder targets, fixed success bonus, failures, replay/mini, no top-up/cutoff, orb pool fallback, multipliers and Endgame exclusions passed');
 

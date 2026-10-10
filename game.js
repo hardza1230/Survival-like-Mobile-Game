@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.84.1';
+const GAME_VERSION = '6.85.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.85.0', date:'2026-10-10', title:'🌿 Meet Mint + ricochet fix', items:['First time entering Stage 3, Mint introduces herself and shows how to switch heroes — you can keep your current hero','Fixed pink ricochet link lines staying stuck on screen']},
   { v:'6.84.1', date:'2026-10-10', title:'🛠️ Tablet ghost props fix', items:['Fixed stage props (boxes, pillars) appearing stuck on screen over menus on tablets']},
   { v:'6.84.0', date:'2026-10-10', title:'📺 Unique screen effects', items:['Momo: sniper scope while charging + white flash on fire, shotgun smoke burst, Rebound hits the screen edges','Mint: Glacier Bloom freezes the screen then it shatters, Frost Lance streaks across, Mint Gale blows wind and leaves across the screen','Cocoa: rocket heat haze with rising ash, Phantom Rush dims the world purple']},
   { v:'6.83.1', date:'2026-10-10', title:'🔇 No warning beeps', items:['Removed the beeping danger alarm that played whenever a boss or elite prepared a big attack (the red warning visuals stay)']},
@@ -8109,6 +8110,7 @@ class Game extends Phaser.Scene {
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   startStoryStage(idx){
     // Mint is an optional ally; Stage 3 accepts the player's selected hero.   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
+    if(idx===2&&!Save.data.mintIntro&&!(Save.data.stageMastery||{})[2]){ Save.data.mintIntro=1; Save.save(); this._mintIntroIdx=idx; this.showMintWarning(); return; }   // v6.85 แนะนำ Mint + สอนเลือกฮีโร่ (ไม่บังคับ)
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
   }
   showMintWarning(){ const w=this.W,h=this.H; this.tapZones=[];
@@ -8118,13 +8120,15 @@ class Game extends Phaser.Scene {
     const bw=Math.min(w-30,420),bh=150,bx=(w-bw)/2,by=h*0.30+ah/2+6,g=this.add.graphics();
     g.fillStyle(0xffffff,0.97);g.fillRoundedRect(bx,by,bw,bh,18);g.fillTriangle(w/2-12,by+1,w/2+12,by+1,w/2,by-14);g.lineStyle(3,0x8fd0ff,1);g.strokeRoundedRect(bx,by,bw,bh,18);
     const nm=this.add.text(bx+16,by+12,'🌿 Mint',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#2f7fb0'});
-    const tx=this.add.text(bx+16,by+38,'Wait! The Chili Engine Room ahead is burning hot — you’ll melt in there! Leave this one to me. My frost will cool it down!',{fontFamily:'sans-serif',fontSize:'14px',color:'#2a1a33',wordWrap:{width:bw-32},lineSpacing:4});
+    const tx=this.add.text(bx+16,by+38,'The Chili Engine Room ahead is burning hot! My frost can cool it down. Want to try me? Tap Heroes on the main menu any time to switch hero.',{fontFamily:'sans-serif',fontSize:'14px',color:'#2a1a33',wordWrap:{width:bw-32},lineSpacing:4});
     this.menu.add([g,nm,tx]);
     const btw=Math.min(w-60,300),bth=48,bty=Math.min(h-40,by+bh+40),btn=this.add.graphics();btn.fillStyle(0x4fb6e8,1);btn.fillRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);btn.lineStyle(3,0xe6f7ff,1);btn.strokeRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);
     const bt=this.add.text(w/2,bty,'❄️ Choose Mint',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#1d4f6e',strokeThickness:3}).setOrigin(0.5);this.menu.add([btn,bt]);
     this.tweens.add({targets:[btn,bt],alpha:0.75,duration:600,yoyo:true,repeat:-1});
     this.menu.setVisible(true);Sfx.select&&Sfx.select();
     this._zone(w/2-btw/2,bty-bth/2,btw,bth,()=>{this._mintCoach=true;this._heroesTab='roster';this.menuScreen='char';this.buildMenuScreen();});
+    { const ky=Math.min(h-14,bty+bth/2+30),kt=this.add.text(w/2,ky,'Keep my hero ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#d8cde2'}).setOrigin(0.5);this.menu.add(kt);
+      this._zone(w/2-110,ky-18,220,36,()=>{ const i=this._mintIntroIdx??2; this._mintIntroIdx=null; this.startStoryStage(i); }); }
   }
   openDifficultyChoice(idx){this.startStoryStage(idx);} // Compatibility route, no choice screen.
   // แผงเลือก Zone Modifiers (สแตกได้ · เปิดเยอะ = ยาก+รางวัลดี) — เปิดจากหน้าเลือกความยาก
@@ -12837,7 +12841,7 @@ class Game extends Phaser.Scene {
     if(b.seedPop>0)this.berrySplash(x,y,b.dmg*(.25+.12*b.seedPop),46+14*b.seedPop,e);
     if(m.path==='sniper'){if(m.visited.size>=m.pierces)this.killBullet(b);return;}
     let t=null,bd=(360*(b.seekMul||1))**2;this.enemies.children.iterate(o=>{if(!o?.active||m.visited.get(o)===(o._glacierLifeToken||0)||o._phaseGateLocked||(o._phaseInvuln||0)>0)return;const dd=(o.x-b.x)**2+(o.y-b.y)**2;if(dd<bd){bd=dd;t=o;}});
-    if(b.bounce>0&&t){this.bpFx?.('bpx_momo_bounce',x,y,80);{const d=Math.hypot(t.x-x,t.y-y);this.bpFx?.('bpx_momo_link',x,y,256,{anchor:'left',rotation:Math.atan2(t.y-y,t.x-x),scaleX:d/256,scaleY:.35});}b.bounce--;b._bounced=true;m.legs++;Sfx.bp?.('strawberry_ricochet_bounce',.36,.07,0.95+Math.min(.3,.04*m.legs));b.dmg=m.base*Math.min(2.2,1+(b.bounceGain||0)*m.legs);this.ptOnBounce(b,e);b.life=Math.max(b.life,.35);const a=Math.atan2(t.y-b.y,t.x-b.x);this.physics.velocityFromRotation(a,980,b.body.velocity);return;}
+    if(b.bounce>0&&t){this.bpFx?.('bpx_momo_bounce',x,y,80);/* v6.85 ตัดเส้น link (anim loop:true ไม่เคยถูกลบ → เส้นชมพูค้างเต็มจอ) */b.bounce--;b._bounced=true;m.legs++;Sfx.bp?.('strawberry_ricochet_bounce',.36,.07,0.95+Math.min(.3,.04*m.legs));b.dmg=m.base*Math.min(2.2,1+(b.bounceGain||0)*m.legs);this.ptOnBounce(b,e);b.life=Math.max(b.life,.35);const a=Math.atan2(t.y-b.y,t.x-b.x);this.physics.velocityFromRotation(a,980,b.body.velocity);return;}
     if(!t&&m.path==='ricochet'&&(e.isBoss||e.isMini)&&e.active&&!e._phaseGateLocked&&!(e._phaseInvuln>0))this.damage(e,m.base*Math.min(.8,.25+.04*(b.bounce||0)+.1*(m.basic.lv.s_return||0)),x,y);
     if(m.path==='ricochet'&&m.evolved){this.bpFx?.('bpx_momo_pinball',x,y,170);Sfx.bp?.('strawberry_pinball_final',.55,.12);this.berrySplash(x,y,b.dmg*.25,72);}
     // Returning seed keeps its combat value, but cannot hit a visited lifetime again.
