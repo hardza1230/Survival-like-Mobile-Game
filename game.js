@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.84.0';
+const GAME_VERSION = '6.84.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.84.1', date:'2026-10-10', title:'🛠️ Tablet ghost props fix', items:['Fixed stage props (boxes, pillars) appearing stuck on screen over menus on tablets']},
   { v:'6.84.0', date:'2026-10-10', title:'📺 Unique screen effects', items:['Momo: sniper scope while charging + white flash on fire, shotgun smoke burst, Rebound hits the screen edges','Mint: Glacier Bloom freezes the screen then it shatters, Frost Lance streaks across, Mint Gale blows wind and leaves across the screen','Cocoa: rocket heat haze with rising ash, Phantom Rush dims the world purple']},
   { v:'6.83.1', date:'2026-10-10', title:'🔇 No warning beeps', items:['Removed the beeping danger alarm that played whenever a boss or elite prepared a big attack (the red warning visuals stay)']},
   { v:'6.83.0', date:'2026-10-10', title:'💥 Titan slam spectacle', items:['Titan Rage slam effects play slower so you can see the full impact','Rage level 2+ cracks the screen; full Rage holds a longer impact freeze']},
@@ -9482,7 +9483,7 @@ class Game extends Phaser.Scene {
     this.clearStageProps();
     const add=(key,x,y,solid,sc,frame=0,depthOffset=0)=>{ if(!this.textures.exists(key))return; sc=sc||1;
       const physical=i===0&&key!=='nest_acid'&&key!=='nest_hole';
-      if(solid||physical){ const s=this.solidProps.create(x,y,key,frame); s.setScale(sc).setDepth(y+depthOffset).refreshBody();
+      if(solid||physical){ const s=this.solidProps.create(x,y,key,frame); this.camWorld(s); s.setScale(sc).setDepth(y+depthOffset).refreshBody();   /* v6.84.1 กันโผล่ค้างบน uiCam (แท็บเล็ต) */
         if(s.body){
           if(key==='nest_hole'){ // หลุมกลม → กล่องชนอยู่ตรงกลางคลุมเกือบทั้งปาก กันเดินทะลุทุกมุม
             const d=Math.max(24,Math.min(s.displayWidth,s.displayHeight)*0.72);
