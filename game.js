@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.92.0';
+const GAME_VERSION = '6.93.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.93.0', date:'2026-10-10', title:'⚡ Lighter memory', items:['Stage monster, boss and decoration art is downloaded at start but only unpacked when you enter that stage — much less memory use and a faster first start']},
   { v:'6.92.0', date:'2026-10-10', title:'⚡ Performance', items:['Targeting work is shared within each frame instead of recalculated many times','Music from other stages is released from memory when you enter a stage']},
   { v:'6.91.0', date:'2026-10-10', title:'🛠️ White screen fix', items:['Entering a stage now frees other stages’ art from graphics memory, preventing the white screen on phones','If graphics memory still runs out, the game saves and reloads by itself instead of staying white']},
   { v:'6.90.0', date:'2026-10-10', title:'🧶 Temple Weave costs more', items:['Flavor Weave core upgrades cost about 3× more Sugar, and each next level climbs faster']},
@@ -2392,6 +2393,9 @@ const STAGE_SHEETS=[
   ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas','c25_rootling_animated','c25_thorn_charger_animated','c25_bramble_assassin_animated','c25_sap_oracle_animated','c25_seed_bomb_animated','c25_bark_guard_animated','c25_root_choir_animated'],
   ...[1,2,3,4,5].map(n=>['c3_elite_animated','c3_mini'+n,'c3_boss'+n,'c3_e_basic_animated','c3_e_fast_animated','c3_e_shooter_animated','c3_e_bomber_animated','c3_e_tank_animated'])
 ];
+/* v6.93 คีย์ภาพที่ใช้เฉพาะในด่าน */
+let _stageOnlyArt=null;
+function stageOnlyArtKeys(){ if(_stageOnlyArt)return _stageOnlyArt; const s=new Set(STAGE_SHEET_KEYS); try{ for(const i in STAGE_DECOR){ const d=STAGE_DECOR[i]; if(d&&d.items)for(const it of d.items)s.add(it.key); } }catch(e){} for(const k in ASSET_IMAGES)if(/^floor_c\d/.test(k))s.add(k); for(const k of [...s])if(bootKeep(k))s.delete(k); return _stageOnlyArt=s; }
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 // v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
@@ -5736,6 +5740,7 @@ class Game extends Phaser.Scene {
     // พื้นหลังโซนครัว (รูปจริง) — เลเยอร์ใต้สุด + กริดเส้นจาง ๆ ทับไว้เป็นจุดอ้างอิงการเคลื่อนที่
     this.bgTile=this.camWorld(this.add.tileSprite(0,0,WORLD,WORLD,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(1));
     this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12;     // ลดการขยาย texture ที่ทำให้พื้นหลังดูเบลอ
+    this.events.on('postupdate',()=>this.syncBgTile?.());   // v6.93 พื้นขนาดพอดีจอ ตามกล้อง
     this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.10).setDepth(-100000);   // เส้นกริดจางลง (พื้นสวยแล้ว)
     // faux-2.5D: เลเยอร์เงาใต้ตัว (วาดใหม่ทุกเฟรม) + จัดลำดับความลึกตามแกน Y
     this.iso=true;   // สวิตช์เปิด/ปิดโหมด 2.5D เบา ๆ
@@ -5828,8 +5833,10 @@ class Game extends Phaser.Scene {
     const drop=k=>{ if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } };
     let n=0;
     const skip=u=>only&&!only.test(u); let skipped=0;
-    for(const k in ASSET_IMAGES){ if(real(k))continue; if(skip(ASSET_IMAGES[k])){skipped++;continue;} drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
-    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; if(only){skipped++;continue;} drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
+    // v6.93 ภาพเฉพาะในด่าน (ศัตรู/บอส/ของตกแต่ง/พื้น) = ดาวน์โหลดเก็บลงเครื่องอย่างเดียว ไม่ถอดรหัสเข้า GPU · ensureStageArt โหลดตอนเข้าด่าน
+    const SO=stageOnlyArtKeys(),dl=u=>{ if(!window.fetch)return; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); };
+    for(const k in ASSET_IMAGES){ if(real(k))continue; if(skip(ASSET_IMAGES[k])){skipped++;continue;} if(SO.has(k)){ if(!only)dl(ASSET_IMAGES[k]); continue; } drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
+    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; if(only){skipped++;continue;} if(SO.has(k)){ dl(sh.url); continue; } drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
     for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; if(only){skipped++;continue;} drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
     // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
     for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch){ const u=ASSET_AUDIO[k]; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); } continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
@@ -12630,6 +12637,14 @@ class Game extends Phaser.Scene {
     const btn=(y,label,col,fn)=>{ const bg=this.add.graphics(); bg.fillStyle(col,1).fillRoundedRect(w/2-bw/2+24,y-20,bw-48,40,14); const tx=this.add.text(w/2,y,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5); ov.add([bg,tx]); this._zone(w/2-bw/2+24,y-20,bw-48,40,fn); };
     btn(by+bh-72,'⬇ Download update',0x4fae6a,()=>{ try{ const B=window.Capacitor?.Plugins?.Browser; if(B)B.open({url}); else window.open(url,'_blank'); }catch(e){ try{window.open(url,'_blank');}catch(_){} } close(); });
     btn(by+bh-26,'Later',0x5a4b75,()=>{ try{localStorage.setItem('mochi_apk_skip',latest+'|'+new Date().toDateString());}catch(e){} close(); }); Sfx.select&&Sfx.select(); }
+  // v6.93 พื้นด่านเดิมเป็น TileSprite 4000×4000 (canvas 64MB) → ย่อเหลือ ~จอ + ลายพื้น 2 รอบ แล้วขยับตามกล้องทีละ "1 รอบลาย" (ลายพื้นยึดโลก ไม่เลื่อน)
+  syncBgTile(){ const t=this.bgTile; if(!t||!t.active||!t.frame)return; const cam=this.cameras.main,v=cam.worldView; if(!v||!v.width)return;
+    const P=Math.max(32,t.frame.width*Math.abs(t.tileScaleX||1)),Q=Math.max(32,t.frame.height*Math.abs(t.tileScaleY||1));
+    const vw=Math.max(v.width,this.W/Math.max(.2,cam.zoom/(RENDER_DPR||1))),vh=Math.max(v.height,this.H/Math.max(.2,cam.zoom/(RENDER_DPR||1)));
+    const nx=2*Math.ceil((vw/2+P)/P),ny=2*Math.ceil((vh/2+Q)/Q),w=Math.min(WORLD,nx*P),h=Math.min(WORLD,ny*Q);
+    const key=t.texture.key+'|'+P+'|'+Q;
+    if(this._bgKey!==key||Math.abs(t.width-w)>1||Math.abs(t.height-h)>1){ if(t.width<w-1||t.height<h-1||this._bgKey!==key)t.setSize(w,h); this._bgKey=key; t.tilePositionX=0; t.tilePositionY=0; }
+    const x=Math.round(v.centerX/P)*P,y=Math.round(v.centerY/Q)*Q; if(t.x!==x||t.y!==y)t.setPosition(x,y); }
   // v6.83 หน้าจอแตก: เส้นร้าววาดด้วยโค้ดทับทั้งจอ (กล้องหลัก) ตอนปล่อย Titan Rage lv2+
   titanScreenCrack(lv){ try{ const cam=this.cameras.main,v=cam.worldView,cx=v.centerX+(Math.random()-.5)*v.width*.2,cy=v.centerY+(Math.random()-.5)*v.height*.2,R=Math.hypot(v.width,v.height)*.6,g=this.camWorld(this.add.graphics().setDepth(95000));
     const n=lv>=3?14:9; g.fillStyle(0xffffff,lv>=3?.22:.14).fillCircle(cx,cy,26+lv*8);
