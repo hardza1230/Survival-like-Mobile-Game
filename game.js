@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.82.0';
+const GAME_VERSION = '6.82.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.82.1', date:'2026-10-10', title:'🔫 Shotgun blast sound fix', items:['Unique sounds are no longer dropped when many other sounds play at once, so the shotgun BOOM is always heard','Unique sounds are a little louder']},
   { v:'6.82.0', date:'2026-10-10', title:'🔊 Unique skill sounds', items:['New sounds for every Unique: shotgun pump and blast, sniper crack, Titan charge and giant ground slam, rocket salvo, Phantom Rush, Mint Gale, lances and Glacier Bloom, Strawberry Rebound, Chain Bolt, Prism Barrage and Citrus Parade']},
   { v:'6.81.0', date:'2026-10-10', title:'🎵 New campaign soundtrack', items:['45 new music tracks: every Story stage from C1-1 to C3-5 now has its own stage, miniboss and boss theme']},
   { v:'6.80.0', date:'2026-10-10', title:'⛏ Simpler endgame', items:['Delve boss now needs only the Hunger Meter — missions are optional bonus Sugar','Zone Modifiers and mid-run curses removed','Endless and Ascension removed from the menu','Atlas passives and depth milestones merged into one 🏁 Depth Track: bonuses unlock by record depth (no points to spend)']},
@@ -1036,9 +1037,9 @@ const Sfx = {
     if(this.muted||this.sv<=0)return false;
     try{const g=window.__g; if(g&&g.cache&&g.cache.audio&&g.cache.audio.exists(key)){
       const now=performance.now(); this._live=this._live.filter(x=>x.end>now);
-      if(this._live.length>=10||this._live.filter(x=>x.k===key).length>=3)return true;   // จำกัดเสียงซ้อน กันเสียงแตกตอนมอนตายเป็นฝูง (true = ไม่ fallback ไป synth)
+      const uq=key.startsWith('sfx_uq_'); if((!uq&&this._live.length>=10)||this._live.filter(x=>x.k===key).length>=3)return true;   // v6.82.1 Unique ไม่โดนตัดจากเพดานเสียงรวม   // จำกัดเสียงซ้อน กันเสียงแตกตอนมอนตายเป็นฝูง (true = ไม่ fallback ไป synth)
       const r=rate||(0.92+Math.random()*0.16);   // สุ่มระดับเสียง ±8% ไม่ให้ซ้ำแบบหุ่นยนต์
-      const snd=g.sound.add(key,{volume:Math.min(0.42,vol*0.68)*this.sv,rate:r}); snd.once('complete',()=>{try{snd.destroy();}catch(e){}}); snd.play();
+      const snd=g.sound.add(key,{volume:Math.min(uq?0.6:0.42,vol*(uq?0.85:0.68))*this.sv,rate:r}); snd.once('complete',()=>{try{snd.destroy();}catch(e){}}); snd.play();
       this._live.push({k:key,end:now+Math.min(1500,((snd.duration||0.4)*1000)/r)}); return true;}}catch(e){}
     return false;
   },
@@ -1089,6 +1090,7 @@ const Sfx = {
   beatLoop(rate){ this.stopBeatLoop(); if(this.muted||this.sv<=0)return; try{const g=window.__g; if(g&&g.cache.audio.exists('sfx_beat_loop')){ this.duckBgm(9000,0.2); const s=g.sound.add('sfx_beat_loop',{volume:0.5*this.sv,loop:true,rate:rate||1}); s.play(); this._beatSnd=s; }}catch(e){} },
   bp(n,vol=0.5,gap=0.08,rate){ if(this.muted||this.sv<=0)return true; if(!this._ok('bp_'+n,gap))return true; return this.playFile('sfx_'+n,vol,rate||(0.96+Math.random()*0.08)); },
   bpLoopStart(n,vol=0.28){ if(this._bpLoop&&this._bpLoopKey===n)return; this.bpLoopStop(); if(this.muted||this.sv<=0)return; try{const g=window.__g; if(g&&g.cache.audio.exists('sfx_'+n)){ const s=g.sound.add('sfx_'+n,{volume:vol*this.sv,loop:true}); s.play(); this._bpLoop=s; this._bpLoopKey=n; }}catch(e){} },
+  uqReady(n){ try{return !!window.__g?.cache.audio.exists('sfx_'+n);}catch(e){return false;} },
   bpLoopRate(r){ const s=this._bpLoop; if(s)try{s.setRate(r);}catch(e){} },
   bpLoopStop(k){ if(k&&this._bpLoopKey!==k)return; const s=this._bpLoop; this._bpLoop=null; this._bpLoopKey=null; if(s){ try{s.stop();s.destroy();}catch(e){} } },
   stopBeatLoop(){ const s=this._beatSnd; this._beatSnd=null; if(s){ try{s.stop();s.destroy();}catch(e){} } },
@@ -6182,7 +6184,7 @@ class Game extends Phaser.Scene {
       else for(let i=0;i<bm.pellets;i++){ const a=ang-h+bm.cone*(i+0.5)/bm.pellets+(Math.random()-0.5)*0.08,len=200+Math.random()*100;
         const dot=this.camWorld(this.add.circle(pl.x,pl.y,4,[0xff5c8a,0xffd166,0xffffff][i%3]).setDepth(90450));
         this.tweens.add({targets:dot,x:pl.x+Math.cos(a)*len,y:pl.y+Math.sin(a)*len,alpha:0,duration:220,ease:'Quad.out',onComplete:()=>dot.destroy()}); }
-      this.burst(pl.x+Math.cos(ang)*40,pl.y+Math.sin(ang)*40,0xff76a8); this.screenShake(140,0.007); Sfx.bp?.('uq_shotgun_blast',.7,.1)||(Sfx.boom&&Sfx.boom());
+      this.burst(pl.x+Math.cos(ang)*40,pl.y+Math.sin(ang)*40,0xff76a8); this.screenShake(140,0.007); (Sfx.bp?.('uq_shotgun_blast',.8,.1)&&Sfx.uqReady?.('uq_shotgun_blast'))||(Sfx.boom&&Sfx.boom());
       return hits; };
     const hits=fire(1);
     // แรงถีบ: ถอยหลังจากทิศยิง + อมตะสั้น ๆ

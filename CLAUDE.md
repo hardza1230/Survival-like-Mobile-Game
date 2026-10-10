@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.82.0 — Unique SFX wired (26 sfx_uq_*)
+# Latest delivery: v6.82.1 — Shotgun blast audible
+
+Owner: pump heard, blast BOOM missing. Cause (likely): playFile global cap 10 live voices dropped it in busy fights (returns true = no fallback). sfx_uq_* now bypass the global cap (per-key cap 3 kept), louder ceiling .6/×.85. releaseBerryBlast falls back to Sfx.boom if uq file not yet loaded (Sfx.uqReady). npm check passed.
+
+# Previous delivery: v6.82.0 — Unique SFX wired (26 sfx_uq_*)
 
 ASSET_AUDIO sfx_uq_* (assets/audio/sfx/unique_skills/). Hooks via Sfx.bp/bpLoop: startSnipeCharge (blast pump / sniper charge loop, stopped in cancelSnipe), tickSnipe full (shotgun_full / sniper_full), releaseSnipe uq_sniper_fire (replaces boom+beam, bolt +260ms, railgun echo reduced), releaseBerryBlast uq_shotgun_blast; Titan rage loop uq_titan_charge (was cocoa_rage_charge), uq_titan_full at titanMaxLv, castCocoaUnique titan uq_titan_drop / uq_titan_slam_full at max / uq_titan_aftershock on .65s hit; brawler rockets b._uqRocket → uq_rocket_salvo (gap .8) + uq_rocket_detonation (getBullet now resets _uqRocket and _bpBoom); phantom enter/strike (flicker step removed there); castWindRush uq_mint_gale, releaseFrostLance lance_release, releaseGlacierBloom c>=1 bloom_full; Rebound uq_rebound_burst; castPathRecall chain_cast/chain_hit; castOathWard prism_charge/volley (gap .18); Citrus Parade uq_yuzu_parade. Not wired: uq_yuzu_crew_hit (optional), Stage 3-1 trial music (bgm_s11 already new campaign track). Listening QC pending. npm check passed.
 
