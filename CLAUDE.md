@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.75.0 — Consolidation A5
+# Latest delivery: v6.76.0 — Consolidation B1 (A6/B2 no change)
+
+B1: startWaveEvent clears this._bonus so Courier/Cache replaces that wave's Bonus Challenge. A6: card rarity already fixed to common (rollRarity) and frame code inert — left as is. B2: miniboss chest already uses prize wheel + Mimic only (no mystery-card layer) — no change. npm check passed. Next: C (meta, needs save refunds).
+
+# Previous delivery: v6.75.0 — Consolidation A5
 
 Fusion card disabled; autoFusion() applies the matching FUSIONS mod automatically when Evolution and its relic are both held (called 2.3s after Evolution pick and 0.6s after gainRelic). npm check passed.
 
@@ -149,7 +153,7 @@ Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55
 
 
 ## 5. ถัดไป
-- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A1–A5 เสร็จ → A6 ต่อ) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
+- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A, B เสร็จ → C ต่อ ต้องย้ายเซฟ+คืนของ) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
 - รอ feedback เจ้าของจากการเล่นจริง: Kitchen upkeep (v6.69), Story C2–C3 buff/Temple cost (v6.68), item mods (v6.67), Delve
 - งานค้างระยะยาว: Monster animation ที่เหลือ (`docs/MONSTER_ANIMATION_PLAN.md`), Play Store (พักไว้: ลบบัญชีในแอป, store listing, keystore, closed test)
 - แผน commit เก่า: `docs/COMMIT_ROADMAP.md`

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.75.0';
+const GAME_VERSION = '6.76.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.76.0',date:'2026-10-10',title:'One side challenge at a time',items:['When a Sugar Courier or Supply Cache appears, it replaces that wave’s Bonus Challenge instead of stacking on top of it']},
   {v:'6.75.0',date:'2026-10-10',title:'Simpler builds (step 4)',items:['Fusion no longer needs its own card: once your Evolution and the matching Relic are both held, the Fusion bonus turns on automatically']},
   {v:'6.74.0',date:'2026-10-10',title:'Simpler builds (step 3)',items:['Conditional cards (Desperate Bite, Dash Fury, Rooted Aim, Pristine Power, Giant Slayer, Frenzy Feast, Last Stand) left level-ups and now appear as Relics at double strength','They share the 5 Relic slots']},
   {v:'6.73.0',date:'2026-10-10',title:'Build path sounds',items:['35 new sounds for Chocolate, Mint and Strawberry build paths: fire fists, rockets, Titan slams and Rage charge, Dash Boxer leaps, lances, Impale, Glacier shatter, Sniper charge and shots, Ricochet bounces','New sounds for Unique charge, Evolution, boss shield break and boss phase change']},
@@ -10032,7 +10033,7 @@ class Game extends Phaser.Scene {
   }
   // Optional mid-wave detours. They never delay the main objective.
   startWaveEvent(){
-    this.clearWaveEvent();
+    this.clearWaveEvent(); this._bonus=null; this.renderBonusHUD?.();   // v6.76 B1: Courier/Cache แทนที่ Bonus Challenge ของเวฟนั้น (ภารกิจเสริมทีละอย่าง)
     const cache=Math.random()<0.5;
     if(cache){
       const crates=[];

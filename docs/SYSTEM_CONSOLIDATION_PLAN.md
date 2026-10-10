@@ -11,11 +11,11 @@ Status: ⬜ todo · 🟨 in progress · ✅ done
 - ✅ A3 Merge Trade-off cards into the Relic pool as "trade" relics.
 - ✅ A4 Merge conditional endless cards (c_low, c_dash, c_still, c_full, c_boss, c_streak, c_close) into the Relic pool.
 - ✅ A5 Fusion → Evolution bonus when the matching relic is held (no separate card).
-- ⬜ A6 Remove card rarity code (disabled since v6.55.30).
+- ✅ A6 Card rarity: no change needed — fixed to common since v6.55.30, frame code inert.
 
 ## B. In-stage
-- ⬜ B1 Sugar Courier / Supply Cache become Bonus Challenge variants.
-- ⬜ B2 Miniboss chest: keep prize wheel + Mimic, drop the gold mystery-card layer.
+- ✅ B1 Sugar Courier / Supply Cache become Bonus Challenge variants.
+- ✅ B2 Miniboss chest: already prize wheel + Mimic only (no change).
 
 ## C. Meta (save migration + refunds)
 - ⬜ C1 Overcap folded into Weave core levels.
