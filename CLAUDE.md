@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.83.0 — Titan slam slower + screen crack
+# Latest delivery: v6.83.1 — Boss warning fully silent
+
+Owner: beeping 'ตื๊ด ๆ' alarm on every danger. It was sfx_hazard (sfx_vfx_telegraph_hazard.wav, 1s) that v6.82.3 put into Sfx.bossWarn (~32 telegraph call sites). bossWarn(){} is now a no-op; visuals unchanged. npm check passed.
+
+# Previous delivery: v6.83.0 — Titan slam slower + screen crack
 
 titanRageImpact: crack/shockwave/crush sprites anims.timeScale (lv1 .7, lv2 .5, lv3 .38); hitStop lv3 220ms. New titanScreenCrack(lv) code-drawn white crack lines over camera worldView (depth 95000, lv2+, fades after .55/.9s). No screen-crack art asset exists in repo. npm check passed.
 

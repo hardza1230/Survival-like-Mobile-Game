@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.83.0';
+const GAME_VERSION = '6.83.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.83.1', date:'2026-10-10', title:'🔇 No warning beeps', items:['Removed the beeping danger alarm that played whenever a boss or elite prepared a big attack (the red warning visuals stay)']},
   { v:'6.83.0', date:'2026-10-10', title:'💥 Titan slam spectacle', items:['Titan Rage slam effects play slower so you can see the full impact','Rage level 2+ cracks the screen; full Rage holds a longer impact freeze']},
   { v:'6.82.3', date:'2026-10-10', title:'🔇 No more buzzing boss warning', items:['Removed the low buzzing boss-warning siren that also faded other sounds; boss attacks now use a short telegraph cue']},
   { v:'6.82.2', date:'2026-10-10', title:'🔫 Shotgun BOOM', items:['Shotgun Unique now fires with the heavy sniper crack sound, played the moment you release']},
@@ -1166,7 +1167,7 @@ const Sfx = {
   back(){this.ui('back');},
   confirm(){this.ui('confirm');},
   error(){this.ui('error');},
-  bossWarn(){if(!this._ok('bossWarn',1.1))return;this.playFile('sfx_hazard',0.42);},   // v6.82.3 ตัดเสียงไซเรนซอว์ทุ้ม (sfx_boss_warn ฟังเหมือนแมลงวัน) + เลิก duck เพลง
+  bossWarn(){},   // v6.84 เงียบ: เจ้าของไม่เอาเสียงเตือนท่าบอส (ไซเรน v6.82.3 / ตื๊ด ๆ sfx_hazard v6.84)   // v6.82.3 ตัดเสียงไซเรนซอว์ทุ้ม (sfx_boss_warn ฟังเหมือนแมลงวัน) + เลิก duck เพลง
   clear(){if(!this._ok('clear',0.8))return;this.duckBgm(650,0.48);if(!this.playFile('sfx_levelup',0.42))this.seq([659,784,1047],'triangle',0.11,0.12);},
   victory(){this.duckBgm(1000,0.3);if(this.playFile('sfx_victory',0.55,1))return;this.seq([523,659,784,1047,1319],'triangle',0.13,0.14);},
   chestSpin(){this.stopChestSpin();if(this.muted||this.sv<=0)return;try{const g=window.__g;if(g&&g.cache.audio.exists('sfx_chest_spin')){this.duckBgm(4200,0.25);const s=g.sound.add('sfx_chest_spin',{volume:0.42*this.sv});s.once('complete',()=>{try{s.destroy();}catch(e){}if(this._chestSnd===s)this._chestSnd=null;});s.play();this._chestSnd=s;}}catch(e){}},
