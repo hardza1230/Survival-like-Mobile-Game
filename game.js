@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.90.0';
+const GAME_VERSION = '6.91.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.91.0', date:'2026-10-10', title:'🛠️ White screen fix', items:['Entering a stage now frees other stages’ art from graphics memory, preventing the white screen on phones','If graphics memory still runs out, the game saves and reloads by itself instead of staying white']},
   { v:'6.90.0', date:'2026-10-10', title:'🧶 Temple Weave costs more', items:['Flavor Weave core upgrades cost about 3× more Sugar, and each next level climbs faster']},
   { v:'6.89.1', date:'2026-10-10', title:'🦷 Mimic slot on every wheel', items:['Every miniboss chest wheel now has a MIMIC slot (12%). Land on it and the Mimic jumps out — beat it for a better chest']},
   { v:'6.89.0', date:'2026-10-10', title:'🦷 Mimic on the wheel', items:['Mimics now appear as a result on the miniboss chest prize wheel — beat it for a better chest','No more early “Suspicious Chest” warning']},
@@ -5868,6 +5869,14 @@ class Game extends Phaser.Scene {
       return Promise.all([next(),next(),next()]).then(()=>{ this._cacheFilled=miss.length; }); }))
     .catch(()=>{}).then(()=>{ this._cacheFilling=false; });
   }
+  // v6.91 ปล่อย texture ของด่านอื่น (เดิมโหลดทั้งเกม ~940MB เข้า GPU → มือถือจอขาว) · ไฟล์ยังอยู่ใน cache เครื่อง โหลดกลับเร็วตอนเข้าด่านนั้น
+  freeOtherStageArt(idx){ try{ const keep=new Set(this.stageArtKeys(idx)),drop=new Set();
+      for(let j=0;j<(STAGES||[]).length;j++){ if(j===idx)continue; for(const k of this.stageArtKeys(j))if(!keep.has(k)&&!bootKeep(k))drop.add(k); }
+      if(!drop.size)return; const am=this.anims; const all=am.anims?am.anims.getArray():[];
+      for(const a of all){ const f=a.frames&&a.frames[0]; if(f&&drop.has(f.textureKey))am.remove(a.key); }
+      let n=0; for(const k of drop){ if(this.textures.exists(k)){ this.textures.remove(k); n++; } }
+      if(n){ for(let j=0;j<(STAGES||[]).length;j++)if(j!==idx&&this._stageArtReady)this._stageArtReady.delete(j); if(this._warmed)for(const wk in this._warmed)if(!wk.startsWith(idx+'|'))delete this._warmed[wk]; }
+    }catch(e){} }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'epilogue_s'+(idx+1),'result_victory','result_defeat'];
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
@@ -9385,6 +9394,7 @@ class Game extends Phaser.Scene {
     // v6.51.1: วาด texture ของด่านล่วงหน้าหลังหน้าโหลด (decode/อัป GPU ครั้งแรก) → ไม่กระตุกตอนมอนชุดแรกโผล่
     if(!this._warmed)this._warmed={}; const wk=idx+'|'+(this.character||Save.data.character);
     if(!this._warmed[wk]){ this._warmed[wk]=true; this.warmStageTextures(idx,()=>{ if(this.state==='menu')this.startRun(idx); }); return; }
+    this.freeOtherStageArt?.(idx);   // v6.91 ปล่อยภาพด่านอื่นออกจาก GPU
     const challenge=null;this._challengeRequested=null; // Story never inherits old curse tickets.
     const ticket=challenge?challenge.length*150:0;
     if(ticket&&(Save.data.sugar||0)<ticket){this.menuToast('Need 🍬'+ticket+' Sugar for the challenge ticket','#ff9bb5');return;}
@@ -15609,6 +15619,12 @@ window.__g = new Phaser.Game({
   loader: { timeout: 120000 },   // v6.49.6: ไฟล์ที่ค้าง (เน็ตหลุด) error แทนค้างตลอด → loader ยิง 'complete' ได้
   scene: [Boot, Opening, Game],
 });
+// v6.91 กราฟิก (WebGL) ดับเพราะหน่วยความจำเต็ม → จอขาวแต่เสียงยังเล่น: เซฟแล้วรีโหลดเอง
+(function(){ const hook=()=>{ const cv=window.__g&&window.__g.canvas; if(!cv){setTimeout(hook,500);return;}
+  cv.addEventListener('webglcontextlost',e=>{ try{e.preventDefault();}catch(_){} try{Save.save();}catch(_){} try{localStorage.setItem('mochi_ctx_lost',String(Date.now()));}catch(_){}
+    try{ const d=document.createElement('div'); d.style.cssText='position:fixed;inset:0;z-index:99999;background:#1b1424;color:#ffe08a;display:flex;align-items:center;justify-content:center;font:bold 16px sans-serif;text-align:center;padding:24px'; d.textContent='Graphics memory ran out — reloading…'; document.body.appendChild(d); }catch(_){}
+    setTimeout(()=>location.reload(),1200); },false); };
+  hook(); })();
 // ปรับขนาดตอนหมุนจอ/เปลี่ยนขนาด — debounce กันค่าเพี้ยนช่วงหมุน + อ่านค่าจริงหลังหมุนเสร็จ
 let _rzT=null;
 function _applyResize(){ const g=window.__g; if(!g||!g.scale)return;
