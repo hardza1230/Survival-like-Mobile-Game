@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.91.0';
+const GAME_VERSION = '6.92.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.92.0', date:'2026-10-10', title:'⚡ Performance', items:['Targeting work is shared within each frame instead of recalculated many times','Music from other stages is released from memory when you enter a stage']},
   { v:'6.91.0', date:'2026-10-10', title:'🛠️ White screen fix', items:['Entering a stage now frees other stages’ art from graphics memory, preventing the white screen on phones','If graphics memory still runs out, the game saves and reloads by itself instead of staying white']},
   { v:'6.90.0', date:'2026-10-10', title:'🧶 Temple Weave costs more', items:['Flavor Weave core upgrades cost about 3× more Sugar, and each next level climbs faster']},
   { v:'6.89.1', date:'2026-10-10', title:'🦷 Mimic slot on every wheel', items:['Every miniboss chest wheel now has a MIMIC slot (12%). Land on it and the Mimic jumps out — beat it for a better chest']},
@@ -9326,8 +9327,12 @@ class Game extends Phaser.Scene {
   menuMusic(s){ if(this.state!=='menu')return; const key={upgrade:'bgm_menu_temple',perks:'bgm_menu_temple',dig:'bgm_menu_depths',kitchen:'bgm_menu_kitchen'}[s]||null;
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
     this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({upgrade:1,perks:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
+  // v6.92 เพลงที่ถอดรหัสแล้วกินแรม ~20MB/เพลง → ลบเพลงด่าน/บอสของด่านอื่นออกจาก cache (ไฟล์ยังอยู่ในเครื่อง โหลดกลับเร็ว)
+  evictOtherBgm(keep){ try{ const ks=new Set((keep||[]).filter(Boolean)),cur=Sfx._currentBgmKey,ca=this.cache.audio; const all=ca.entries&&ca.entries.keys?ca.entries.keys():[];
+      for(const k of all){ if(!/^bgm_(?:[smb]\d|stage|boss|ch\d)/.test(k)||ks.has(k)||k===cur)continue; try{ this.sound.removeByKey?.(k); }catch(e){} ca.remove(k); } }catch(e){} }
   ensureStageAudio(idx,done){
-    const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage)].filter(Boolean);   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
+    const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage)].filter(Boolean);
+    this.evictOtherBgm?.([...keys,bgmKeyFor('mini',stage),bgmKeyFor('boss',stage)]);   // v6.92 คืนแรมเพลงด่านอื่น   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
     // v6.45: รอเฉพาะไฟล์เพลงของด่าน (เดิมรอ loader 'complete' = รอของเบื้องหลังทั้งหมด) · ช้าเกิน 8 วิ = เข้าด่านก่อน เพลงตามมาทีหลัง
     const loader=window.GameLoader,t0=Date.now();let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
@@ -13385,7 +13390,8 @@ class Game extends Phaser.Scene {
       const d=(e.x-x)**2+(e.y-y)**2;if(d<bd){bd=d;best=e;}});
     return best;
   }
-  nearestEnemy(maxD){ const priority=this.priorityBossTarget(maxD);if(priority)return priority;let best=null,bd=maxD*maxD;
+  nearestEnemy(maxD){ const fr=this.game.loop.frame,px=this.player.x,py=this.player.y; if(this._neF!==fr||this._nePX!==px||this._nePY!==py){ this._neF=fr; this._nePX=px; this._nePY=py; this._neC=new Map(); } const hit=this._neC.get(maxD); if(hit!==undefined&&(!hit||hit.active))return hit; const res=this._nearestEnemyRaw(maxD); this._neC.set(maxD,res); return res; }   // v6.92 จำผลต่อเฟรม (เรียก ~37 จุด)
+  _nearestEnemyRaw(maxD){ const priority=this.priorityBossTarget(maxD);if(priority)return priority;let best=null,bd=maxD*maxD;
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2; if(d<bd){bd=d;best=e;} });
     return best; }
   strongestEnemy(maxD){const priority=this.priorityBossTarget(maxD);if(priority)return priority;let best=null,hp=-1,bd=maxD*maxD;this.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=(e.x-this.player.x)**2+(e.y-this.player.y)**2;if(d<=bd&&(e.hp||0)>hp){hp=e.hp||0;best=e;}});return best;}
