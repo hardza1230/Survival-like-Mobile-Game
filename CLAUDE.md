@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.87.0 — Offline-ready shell (option 2: small app + first-run download)
+# Latest delivery: v6.87.1 — SW caches loader art + Supabase SDK
+
+sw.js: /assets/ requests without ?v (index.html loader bg kitchen_night.webp, kitchen_loader.css url() images city/foreground/sakura) and cdn.jsdelivr.net (supabase-js, opaque) now go through shellFetch (network-first 3.5s → cached). Everything else already cached: hashed assets (cache-first) + shell (v6.87.0). Cloud save API calls (supabase.co) intentionally not cached. npm check passed.
+
+# Previous delivery: v6.87.0 — Offline-ready shell (option 2: small app + first-run download)
 
 Owner chose 'small APK + download game data on first launch'. Already existed: preloadAll full first-run download with progress (mochi_full_cached) + sw.js cache-first for assets?v=hash. Added: sw.js SHELL cache for navigate/index.html/*.js/css/json (network-first, 3.5s timeout → cached copy; offline works), index.html requests navigator.storage.persist(). capacitor server.url (Pages) unchanged. Not yet: bundling shell inside APK (needs server.url removal + updater), Play Store AAB/keystore. npm check passed.
 

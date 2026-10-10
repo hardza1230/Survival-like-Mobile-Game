@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.87.0';
+const GAME_VERSION = '6.87.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.87.1', date:'2026-10-10', title:'📦 More kept on device', items:['Loading-screen art and the cloud-save library are now kept on your device too']},
   { v:'6.87.0', date:'2026-10-10', title:'📦 Faster, offline-ready start', items:['The game code is now kept on your device too: the app opens fast on slow internet and can start offline after the first full download','Downloaded game data is protected from being cleared by the phone when storage is low']},
   { v:'6.86.0', date:'2026-10-10', title:'🍓 Ricochet link is back', items:['Ricochet bounces show a quick pink link to the next target again — it now fades out instantly and never sticks','Removed unused effect files']},
   { v:'6.85.1', date:'2026-10-10', title:'➤ Objective arrow on your hero', items:['The objective arrow now circles your hero instead of sitting at the screen edge']},
