@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.65.0';
+const GAME_VERSION = '6.66.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -69,6 +69,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.66.0', date:'2026-10-10', title:'Delve cards chosen by you', items:['Delve level-ups show the same card choice as Story stages; nothing is applied automatically.'] },
   { v:'6.65.0', date:'2026-10-09', title:'Endgame Build removed', items:['The Delve Build page is gone; every run starts from your normal Basic Attack.','Delve auto upgrades are back: normal cards apply automatically, special cards are still your choice.'] },
   { v:'6.64.0', date:'2026-10-09', title:'Slower meters, manual Delve cards', items:['Replay stage progress bar fills about 25% slower.','Delve Hunger Meter fills about 25% slower (kills, elites, Feast, missions).','Delve auto upgrades removed: you pick level-up cards yourself again.'] },
   { v:'6.63.0', date:'2026-10-09', title:'Delve mods that change play', items:['5 new Delve mods: Splitting Jelly, Restless Floor, Closing Pot, Elite Pack, Bodyguard.','Every Delve cave with mods now has at least one play-changing mod, from the first depths.'] },
@@ -11211,7 +11212,7 @@ class Game extends Phaser.Scene {
     const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+(u.tiers||UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique])[target],1900);Sfx.clear();this.playGrowthWorld?.('unlock');
   }
   openLevelUp(){
-    if(this.recipeMode&&!this._forcedOpts){ this.recipeLevelUp(); return; }   // v6.24: Recipe = สแตตอัตโนมัติ + Sugar Rush · ทุก 5 เลเวล = Draft การ์ดเปลี่ยนวิธีเล่น
+    // v6.66: Delve picks cards like Story (no auto upgrades)   // v6.24: Recipe = สแตตอัตโนมัติ + Sugar Rush · ทุก 5 เลเวล = Draft การ์ดเปลี่ยนวิธีเล่น
     const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
@@ -11313,7 +11314,7 @@ class Game extends Phaser.Scene {
     this._relicPick=false;
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
-    if(this.pendingLvl>0&&!this.recipeMode){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
+    if(this.pendingLvl>0){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
     if(this.recipeMode&&this.refreshUpBtn)this.refreshUpBtn();
     if(this.recipeMode&&((this._draftQ||0)>0||this._specQ?.length||(this.pendingLvl||0)>0)){ this.state='play'; this.physics.resume(); this.time.delayedCall(250,()=>{ if(this.state!=='play')return; if(this._specQ?.length)this.openRecipeDraft(); else if((this.pendingLvl||0)>0)this.recipeLevelUp(); else this.openRecipeDraft(); }); return; }
     if(this._rushNextPending){ this._rushNextPending=false; this.time.delayedCall(60,()=>{ if(this.bossRush)this.bossRushNext(); }); }
