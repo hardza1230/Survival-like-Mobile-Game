@@ -22,7 +22,7 @@ for(const stage of [4,10,11,12,13,14]){
  for(const [type,hp,dmg,speed] of roles){
   const [base,scale,circle]=(stage===4?s5:c3)[type],key=base+'_animated',e=s.spawnEnemy(type,0,100);
   assert.equal(e._enemyArtKey,key);assert.equal(e.baseScale,scale);assert.deepEqual(e.circle,circle);
-  assert(Math.abs(e.hp*0.9-hp*curves(stage,[1,1.42,1.88,2.42,3.05,3.72],1.18)*(stage>=2&&stage<=4?1.35:1))<1e-8);
+  assert(Math.abs(e.hp*0.9-hp*curves(stage,[1,1.42,1.88,2.42,3.05,3.72],1.28)*(stage>=2&&stage<=4?1.35:1))<1e-8);
   assert.equal(e.dmg,Math.round(dmg*1.3*curves(stage,[1,1.05,1.12,1.20,1.30,1.42],1.09)));assert.equal(e.spd,speed);
   assert.equal(e.clip,key+'_idle');e.setVelocity(speed,0);s.tickEnemyPresentation(e,.016);assert.equal(e.clip,key+'_walk');
  }

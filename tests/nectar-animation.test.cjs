@@ -24,7 +24,7 @@ const roles=[['basic','drone',19,10,58,1,.37,[43,85,85],0],['fast','dartwing',10
 for(const [type,id,hp,dmg,speed,xp,scale,circle,oldFrame] of roles){
  const key='c23_'+id+'_animated',e=s.spawnEnemy(type,0,100);
  assert.equal(e.texture.key,key);assert.equal(e._enemyArtKey,key);assert.equal(e._enemyRestFrame,0);assert.equal(e.baseScale,scale);assert.deepEqual(e.circle,circle);
- assert(Math.abs(e.hp-hp*3.72*1.18**2*1.12/.9)<1e-8);assert.equal(e.dmg,Math.round(dmg*1.3*1.42*1.09**2*1.08));assert.equal(e.spd,speed*1.06);assert.equal(e.xp,xp);assert.equal(e.clip,key+'_idle');
+ assert(Math.abs(e.hp-hp*3.72*1.28**2*1.12/.9)<1e-8);assert.equal(e.dmg,Math.round(dmg*1.3*1.42*1.09**2*1.08));assert.equal(e.spd,speed*1.06);assert.equal(e.xp,xp);assert.equal(e.clip,key+'_idle');
  if(type==='tank'){assert.deepEqual(e._aura.size,[225,160]);assert.equal(e._aura.tint,0xffc95c);assert.equal(e._aura.alpha,.32);}if(type==='siege'){assert(e.shooter);assert.equal(e.shootCd,1.4);assert.equal(e.nectarRole,'choirMoth');}
  e.setVelocity(speed,0);s.tickEnemyPresentation(e,.016);assert.equal(e.clip,key+'_walk');
  s.enemyAction(e,'attack',340);assert.equal(e.clip,key+'_attack');s.enemyAction(e,'hurt',120);assert.equal(e._enemyAction.state,'attack');

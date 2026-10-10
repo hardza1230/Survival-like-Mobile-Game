@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.67.0';
+const GAME_VERSION = '6.68.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -62,13 +62,15 @@ const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/re
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 // v6.55.26: ดาเมจฐานฮีโร่ 90% → 100% (เลิกงง) · HP ศัตรูทุกตัว ×1/0.9 ให้ความยากเท่าเดิม
 
-function realStageBossMul(i){return i===2||i===3?1.6:i===4?1.25:1;}
+const STORY_MOB_TAIL=1.28;   // v6.68: story mob HP growth per stage after C2-1 (was 1.18)
+function realStageBossMul(i,endgame){return i===2||i===3?1.6:i===4?1.25:(i>=5&&!endgame)?2:1;}   // v6.68: C2–C3 story boss/mini HP ×2
 const STORY_WAVE_PLAN=[
   {quota:50,live:18,reward:20},{quota:56,live:22,reward:30},{quota:64,live:26,reward:40},
   {quota:72,live:30,reward:50},{quota:80,live:34,reward:60}
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.68.0',date:'2026-10-10',title:'Tougher Chapter 2–3, pricier Temple',items:['Story monsters from Chapter 2 on grow tougher each stage','Story bosses and minibosses in Chapter 2–3 have double HP','Temple Sugar upgrades cost more at higher ranks','Delve and other endgame modes are unchanged']},
   {v:'6.67.0',date:'2026-10-10',title:'Simpler item mods + Play mods',items:['Prefix and Suffix are gone: every item has up to 3 mod lines, plus its implicit','New Play mods change how you fight: Dash Nova, Crit Arc, Kill Shell, Standing DMG, Full-HP Foe DMG and Retaliate on Hit','Old items with more than 3 mods keep their 3 best-tier mods']},
   { v:'6.66.0', date:'2026-10-10', title:'Delve cards chosen by you', items:['Delve level-ups show the same card choice as Story stages; nothing is applied automatically.'] },
   { v:'6.65.0', date:'2026-10-09', title:'Endgame Build removed', items:['The Delve Build page is gone; every run starts from your normal Basic Attack.','Delve auto upgrades are back: normal cards apply automatically, special cards are still your choice.'] },
@@ -4777,7 +4779,7 @@ const Save = {
   buySpecialCore(id){const core=SPECIAL_CORES.find(c=>c.id===id);if(!core||(this.data.rank||0)<core.rank||this.specialCoreLvl(id)>=3)return false;
     const cost=this.specialCoreCost(id);if(this.threads()<cost)return false;
     this.data.threads=this.threads()-cost;this.data.specialCores=this.data.specialCores||{};this.data.specialCores[id]=this.specialCoreLvl(id)+1;this.save();return true;},
-  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank)*Math.pow(1.15,rank)); },   // 🍬 Sugar · v6.55.28: (1+rank)×1.15^rank (เดิม 1+0.8·rank) ยศ 5 รวม ×1.7, ยศ 10 ×2.9
+  talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*(lvl+1)*(1+rank)*Math.pow(1.25,rank)); },   // v6.68: 1.15→1.25 per rank (Sugar upgrades nerfed)   // 🍬 Sugar · v6.55.28: (1+rank)×1.15^rank (เดิม 1+0.8·rank) ยศ 5 รวม ×1.7, ยศ 10 ×2.9
   talCanBuy(k){ return this.talLvl(k)<TAL_MAX&&(this.data.sugar||0)>=this.talCost(k); },
   promoteThreadCost(){ const rank=this.data.rank||0;return 8+4*rank+2*rank*rank; },
   perkResetCost(){ return 6+3*(this.data.rank||0); },
@@ -5090,7 +5092,7 @@ function heroDefense(p){const taken=Math.max(0.05,(p.dmgTakenMul||1)*armorDamage
 function heroPower(cid,basic){const p=computeHeroStats(cid,basic);return Math.max(1,Math.round(100*Math.sqrt(heroOffense(p,cid)*RUN_CARD_OFF*heroDefense(p)*RUN_CARD_DEF/90)));}
 // Power แนะนำต่อด่าน = คิดจากตัวเลขศัตรูจริงของด่าน (HP/ดาเมจ มอน + บอส) เทียบด่าน 1 · ปรับสูตรศัตรู = ค่าแนะนำตามเอง
 function stageThreat(i){const st=STAGES[i]||STAGES[0],c2=i===6?BALANCE.c2Mycelium:i===7?BALANCE.c2Nectar:i===8?BALANCE.c2Seasons:i===9?BALANCE.c2Root:{hp:1,dmg:1};
-  const mobHp=stageCurveValue(i,[1,1.42,1.88,2.42,3.05,3.72],1.18)*(c2.hp||1)*(i>=2&&i<=4?1.1:1),mobDmg=stageCurveValue(i,[1,1.05,1.12,1.20,1.30,1.42],1.09)*(c2.dmg||1);
+  const mobHp=stageCurveValue(i,[1,1.42,1.88,2.42,3.05,3.72],1.28)*(c2.hp||1)*(i>=2&&i<=4?1.1:1),mobDmg=stageCurveValue(i,[1,1.05,1.12,1.20,1.30,1.42],1.09)*(c2.dmg||1);
   const bossHp=(st.bossHp||920)*(2+i*0.13)*realStageBossMul(i),bossDmg=st.bossDmg||25;return {hp:Math.sqrt(mobHp*bossHp),dmg:Math.sqrt(mobDmg*bossDmg)};}
 function stageRecommendedPower(i){const t=stageThreat(i),b=stageThreat(0);return Math.round(100*RUN_CARD_MUL*Math.sqrt((t.hp/b.hp)*(t.dmg/b.dmg))/10)*10;}
 const STAGES = [
@@ -9814,7 +9816,7 @@ class Game extends Phaser.Scene {
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ if(!allowRecycle)return null;e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // Other elite events retain their existing pool fallback.
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],1.17),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.32,1.72,2.18,2.72,3.35],this.recipeMode?1.17:1.27),waveCurve=[1,1.06,1.13,1.21,1.30][this.waveIndex]||1.30,s=stageCurve*waveCurve*pg.enemyHp*1.15*this.killPowerMul()*this.diffMul().hp/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // elite ถึกขึ้นเล็กน้อย + สเกลตามมอนที่ตาย + ระดับความยาก
     e.hp=70*s; e.maxhp=e.hp; e.spd=48; e.dmg=Math.round(18*1.3/*v6.55.66 mob dmg*/*stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*pg.enemyDmg*this.diffMul().dmg); e.xp=8;
     if(this.stageIndex===0)e.setCircle(28,20,20);else if(this.stageIndex===4)e.setCircle(54,74,74);else if(this.stageIndex===5||this.stageIndex===8)e.setCircle(48,80,80);else e.setCircle(26,5,5); e._rootKnightPoseToken=(e._rootKnightPoseToken||0)+1;e._rootKnightPoseUntil=0;
       e.isBoss=false; e.isMini=false; e.isElite=true; e.frozen=0; e._glacierLifeToken=(e._glacierLifeToken||0)+1; e._glacierFrost=0; e._glacierFrostAt=0; e._glacierBrittleUntil=0;e._mintImpale=0;e._mintImpaleAt=-Infinity;e._mintRuptureAt=-Infinity; e._glacierBurstAt=-Infinity; e._chill=0; e._chillAt=null; e.knock=0;   // v4.50: stage8 (C2-4) elite ใช้ atlas 256px → hitbox เหมือน stage5
@@ -10395,7 +10397,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===8){mRadius=57;mOff=71;}if(this.stageIndex===9){mRadius=42.64;mOff=85.36;}
     if(this.stageIndex>=10&&ASSET_SHEETS[mkey]){mScale=.62;mRadius=70;mOff=58;}
     b.setScale(mScale).setCircle(mRadius,mOff,this.stageIndex>=10&&ASSET_SHEETS[mkey]?82:mOff); b.isMini=true; b.isBoss=false;
-    b.hp=st.bossHp*1.0/0.9*realStageBossMul(this.stageIndex)*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
+    b.hp=st.bossHp*1.0/0.9*realStageBossMul(this.stageIndex,this.recipeMode)*this.bossHpMul()*this.diffMul().hp; b.maxhp=b.hp; b.spd=this.stageIndex===6?104:96;   // มินิบอส C2-2 เดินเร็วขึ้นเล็กน้อย แต่ทุกท่าหนักมี telegraph
     b.dmg=Math.round(st.bossDmg*1.1*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=15; b.frozen=0; b._glacierLifeToken=(b._glacierLifeToken||0)+1; b._glacierFrost=0; b._glacierFrostAt=0; b._glacierBrittleUntil=0;b._mintImpale=0;b._mintImpaleAt=-Infinity;b._mintRuptureAt=-Infinity; b._glacierBurstAt=-Infinity; b._chill=0; b._chillAt=null; b.knock=0; b.phase3=false;   // ต้องอยู่นอก comment: ป้องกันมินิบอสไร้ดาเมจ/ค่า combat undefined
     if(mArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.juggernaut=this.stageIndex===6;b.royalStinger=this.stageIndex===7;b.seasonKeeper=this.stageIndex===8;b.rootKnight=this.stageIndex===9;b._rootKnightPoseUntil=0;b._rootKnightPoseToken=(b._rootKnightPoseToken||0)+1;
@@ -10469,7 +10471,7 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75/0.9*realStageBossMul(this.stageIndex)*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75/0.9*realStageBossMul(this.stageIndex,this.recipeMode)*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b._glacierLifeToken=(b._glacierLifeToken||0)+1; b._glacierFrost=0; b._glacierFrostAt=0; b._glacierBrittleUntil=0;b._mintImpale=0;b._mintImpaleAt=-Infinity;b._mintRuptureAt=-Infinity; b._glacierBurstAt=-Infinity; b._chill=0; b._chillAt=null; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
@@ -11919,7 +11921,7 @@ class Game extends Phaser.Scene {
     e._bestiaryType=this.stageIndex>=10?'c3_'+(({dasher:'fast',siege:'tank'})[type]||(['basic','fast','shooter','bomber','tank'].includes(type)?type:'basic')):null;
     this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+Wave (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
-    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],1.18),waveCurve=([1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38)*(this.stageIndex>=2&&this.stageIndex<=4&&this.waveIndex<=1&&!this.recipeMode?1.35:1),c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase()/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
+    const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],this.recipeMode?1.18:1.28),waveCurve=([1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38)*(this.stageIndex>=2&&this.stageIndex<=4&&this.waveIndex<=1&&!this.recipeMode?1.35:1),c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase()/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
     e.shooter=false; e.bomber=false; e.acid=false; e.shootCd=0; e.dasher=false; e.siege=false; e.dashState=null; e.tintColor=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;
     e.bloomStacks=0;e.bloomUntil=0;e.frostbite=this.stageIndex===3;
     let scale=1;
