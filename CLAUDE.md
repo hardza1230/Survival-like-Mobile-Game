@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.89.0 — Mimic is a prize-wheel outcome
+# Latest delivery: v6.89.1 — MIMIC slot on every miniboss wheel
+
+Owner: mimic should be a visible wheel slot from the start, random. openPrizeWheel adds MIMIC prize when opts.onMimic (weight so P=MIMIC_WHEEL_CHANCE 0.12), always kept among the 8 shown slots; landing → awakenMimic (kill → better chest, that chest has c._noMimic so no slot). spawnChest no longer pre-rolls c._mimic. Tutorial: no mimic. miniboss-rewards test mock updated. npm check passed.
+
+# Previous delivery: v6.89.0 — Mimic is a prize-wheel outcome
 
 collectChest mini: no pre-wheel awakenMimic; openPrizeWheel(tier,done,{mimic,onMimic}) — when c._mimic (12% roll in spawnChest unchanged) a MIMIC slot (mimic_chest_animated art, w 0) is forced winner, no tier upgrade; on land onMimic → awakenMimic (kill → better chest as before) instead of give/done. Pre-pickup mimic cue + 'Suspicious Chest' banner removed. npm check passed.
 

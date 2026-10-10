@@ -50,7 +50,8 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.89.0';
+const GAME_VERSION = '6.89.1';
+const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
 const APK_DOWNLOAD_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
@@ -73,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.89.1', date:'2026-10-10', title:'🦷 Mimic slot on every wheel', items:['Every miniboss chest wheel now has a MIMIC slot (12%). Land on it and the Mimic jumps out — beat it for a better chest']},
   { v:'6.89.0', date:'2026-10-10', title:'🦷 Mimic on the wheel', items:['Mimics now appear as a result on the miniboss chest prize wheel — beat it for a better chest','No more early “Suspicious Chest” warning']},
   { v:'6.88.0', date:'2026-10-10', title:'📲 App update notice', items:['Players on an older Android app get a notice with a download link when a newer app version is released (Later hides it for the day)']},
   { v:'6.87.1', date:'2026-10-10', title:'📦 More kept on device', items:['Loading-screen art and the cloud-save library are now kept on your device too']},
@@ -13854,7 +13856,7 @@ class Game extends Phaser.Scene {
     c.setTexture(art).clearTint().setAlpha(1);
     if(kind==='pick')c.body.setSize(120,154).setOffset(36,51);else c.body.setSize(c.width*0.82,c.height*0.72).setOffset(c.width*0.09,c.height*0.14);
     c.rewardKind=kind||'level';c.body.setAllowGravity(false); this.camWorld(c);
-    if(kind==='mini'){ c._tier=this._nextChestTier||'bronze'; this._nextChestTier=null; c._mimic=!this._noMimicNext&&!this._inTutorial&&Math.random()<0.12; this._noMimicNext=false; this.miniChestDrop(c,x,y); return; }
+    if(kind==='mini'){ c._tier=this._nextChestTier||'bronze'; this._nextChestTier=null; c._mimic=false; c._noMimic=!!this._noMimicNext; this._noMimicNext=false;   /* v6.89.1 Mimic สุ่มในวงล้อแทน */ this.miniChestDrop(c,x,y); return; }
     this.showPickupCue(c,kind==='pick'?0xff9dc4:0xffd166,kind==='pick'?1.18:1.42); if(this.iso)c.setDepth(Math.max(80000,c.y));
     this.tweens.add({targets:c,y:y-12,duration:500,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // v5.12: กล่องมินิบอสหล่นจากฟ้า → กระแทกพื้น (จอสั่น+ฝุ่น) → เสาแสงสีตามระดับกล่อง มองเห็นจากไกล
@@ -13917,13 +13919,13 @@ class Game extends Phaser.Scene {
   openPrizeWheel(tier,done,opts={}){
     if(this.state==='rolling'){done&&done();return;}
     // v5.15: ลุ้นอัปเกรดระดับกลางวงล้อ (ตัดสินตั้งแต่ต้น โชว์ตอนหมุนไปได้ ~55%) bronze→silver 25% · silver→gold 15%
-    const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=opts.mimic?0:[0.25,0.15,0][ri],upTier=Math.random()<upChance?order[ri+1]:null;
+    const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=[0.25,0.15,0][ri],upTier=Math.random()<upChance?order[ri+1]:null;
     const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],rewards=this.miniPrizePool(upTier||tier);
+    let mim=null; if(opts.onMimic){ let base=0; rewards.forEach(p=>base+=p.w); mim={id:'mimic',artKey:this.textures.exists('mimic_chest_animated')?'mimic_chest_animated':'prize_chest',emoji:'🦷',name:'MIMIC!',w:base*MIMIC_WHEEL_CHANCE/(1-MIMIC_WHEEL_CHANCE),color:0xd23a5a,mimic:true,give:()=>{}}; rewards.push(mim); }   // v6.89.1 Mimic เป็นช่องหนึ่งในวงล้อเสมอ
     let tw=0;rewards.forEach(p=>tw+=p.w);let r=Math.random()*tw,winner=rewards[rewards.length-1];for(const prize of rewards){r-=prize.w;if(r<=0){winner=prize;break;}}
-    if(opts.mimic){ const mim={id:'mimic',artKey:this.textures.exists('mimic_chest_animated')?'mimic_chest_animated':'prize_chest',emoji:'🦷',name:'MIMIC!',w:0,color:0xd23a5a,mimic:true,give:()=>{}}; rewards.push(mim); winner=mim; }   // v6.89 Mimic อยู่ในวงล้อ
     // Roll from every reward first, then show eight slots including the winner.
     // This keeps all reward odds intact and leaves readable spacing on phones.
-    const pool=rewards.length<=8?rewards:Phaser.Utils.Array.Shuffle([winner,...Phaser.Utils.Array.Shuffle(rewards.filter(p=>p!==winner)).slice(0,7)]),winIdx=pool.indexOf(winner);
+    const must=[winner].concat(mim&&winner!==mim?[mim]:[]),pool=rewards.length<=8?rewards:Phaser.Utils.Array.Shuffle([...must,...Phaser.Utils.Array.Shuffle(rewards.filter(p=>!must.includes(p))).slice(0,8-must.length)]),winIdx=pool.indexOf(winner);
     this._prevRollState=this.state;this.state='rolling';this.physics.pause();
     const w=this.W,h=this.H,texture=this.textures.get('prize_wheel_bg').getSourceImage(),layout=prizeWheelLayout(w,h,texture.width,texture.height),{cx,cy,R}=layout,n=pool.length;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
@@ -14133,7 +14135,7 @@ class Game extends Phaser.Scene {
   collectChest(player,c){ if(!c.active)return;
     const kind=c.rewardKind;if(kind!=='mini'&&kind!=='pick')return;
     // Claim the pooled pickup before callbacks can open a modal or overlap again.
-    const tier=c._tier||'bronze',mimic=!!c._mimic;
+    const tier=c._tier||'bronze',noMimic=!!c._noMimic;
     c.rewardKind=null;c._mimic=false;
     c.setActive(false).setVisible(false);if(c.body){c.body.enable=false;if(c.body.stop)c.body.stop();}
     this.tweens.killTweensOf(c);this.hidePickupCue(c);this.clearMimicCue(c);
@@ -14142,7 +14144,7 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const mx=c.x,my=c.y;
-    if(kind==='mini'){ this.openPrizeWheel(tier,ft=>{const finalTier=ft||tier,after=()=>{this.grantMiniChestBonus(finalTier);if(!this.offerRelic())this.showBanner('Relic slots full','Wheel and chest bonuses received',1600);};after();},{mimic,onMimic:()=>this.awakenMimic(mx,my,tier)});return;} // Keep the full reward sequence; no random upgrade box fallback.
+    if(kind==='mini'){ this.openPrizeWheel(tier,ft=>{const finalTier=ft||tier,after=()=>{this.grantMiniChestBonus(finalTier);if(!this.offerRelic())this.showBanner('Relic slots full','Wheel and chest bonuses received',1600);};after();},{onMimic:(this._inTutorial||noMimic)?null:()=>this.awakenMimic(mx,my,tier)});return;} // Keep the full reward sequence; no random upgrade box fallback.
     if(kind==='pick'&&Math.random()<0.10&&this.offerRelic())return;   // 🔮 กล่องลับ 10% = Relic (v5.19.1 ลดจาก 30%)
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
   }
