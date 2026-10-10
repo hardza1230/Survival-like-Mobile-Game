@@ -21,7 +21,7 @@ Status: ⬜ todo · 🟨 in progress · ✅ done
 - ⬜ C1 Overcap folded into Weave core levels.
 - ⬜ C2 Special Cores + Ancient Perks folded into Rank Perks tree.
 - ⬜ C3 Bestiary gives Sugar/collection only (no stats).
-- ⬜ C4 Kitchen gated behind Chapter 2 clear (or disabled — owner to decide).
+- ✅ C4 Kitchen gated behind Chapter 2 clear (owner chose gate; recipes kept, inactive while locked).
 - ⬜ C5 Idle miners shown inside Depths only; Sugar Orders removed (refund).
 
 ## D. Gear

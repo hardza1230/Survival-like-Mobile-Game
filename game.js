@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.76.0';
+const GAME_VERSION = '6.77.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.77.0', date:'2026-10-10', title:'🛡️ Titan control & Kitchen unlock', items:['Titan basic attacks no longer lunge toward enemies — walk freely while punching','🍳 Kitchen now unlocks after clearing Chapter 2 (saved recipes stay and work again once unlocked)']},
   {v:'6.76.0',date:'2026-10-10',title:'One side challenge at a time',items:['When a Sugar Courier or Supply Cache appears, it replaces that wave’s Bonus Challenge instead of stacking on top of it']},
   {v:'6.75.0',date:'2026-10-10',title:'Simpler builds (step 4)',items:['Fusion no longer needs its own card: once your Evolution and the matching Relic are both held, the Fusion bonus turns on automatically']},
   {v:'6.74.0',date:'2026-10-10',title:'Simpler builds (step 3)',items:['Conditional cards (Desperate Bite, Dash Fury, Rooted Aim, Pristine Power, Giant Slayer, Frenzy Feast, Last Stand) left level-ups and now appear as Relics at double strength','They share the 5 Relic slots']},
@@ -3925,7 +3926,9 @@ const FR_KIND={t:FR_TRIGGERS,e:FR_EFFECTS,m:FR_MODS};
 function frIconKey(key){ const icon=key&&'fr_'+key[0]+'_'+key.slice(2); return icon&&ASSET_IMAGES[icon]?icon:null; }
 function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); return (FR_KIND[k]||[]).find(x=>x.id===id)||null; }   // key = 't:dash' / 'e:shock' / 'm:big'
 // v6.69 Kitchen upkeep: ทุกสูตรที่ใช้งานต้องแลก −6% Max HP / −4% AP (+2% ต่อ ★ ของ DO, +2% signature)
-function frActive(){ return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
+/* v6.77 C4: Kitchen locked until Chapter 2 (stage 10) cleared */
+function kitchenOpen(){ return !!((Save.data&&Save.data.stageMastery)||{})[9]; }
+function frActive(){ if(!kitchenOpen())return []; return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
 function frUpkeep(){ let hp=0,dmg=0; for(const r of frActive()){ const x=0.02*(Save.frLv(r.e)-1)+(frSignature(r)?0.02:0); hp+=0.06+x; dmg+=0.04+x; } return {hp,dmg}; }
 function applyFrUpkeep(p){ const u=frUpkeep(); if(!u.hp)return false; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-u.hp))); p.dmgMul-=u.dmg; return true; }
 function frCost(r){ return r?['t','e','m'].reduce((a,k)=>a+((frPart(r[k])||{}).cost||0),0):0; }
@@ -8101,7 +8104,7 @@ class Game extends Phaser.Scene {
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
     { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),g3=this.add.graphics(); g3.fillStyle(0x1f3a30,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x7fe0b0,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
       const t3=this.add.text(kx+rkW/2,rkY+rkH/2,'🍳 Kitchen',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#b8f5d8'}).setOrigin(0.5);
-      this.menu.add([g3,t3]); this._smallBtnIcon(t3,'tile_kitchen'); this._zone(kx,rkY,rkW,rkH,()=>{ this.menuScreen='kitchen'; this.buildMenuScreen(); }); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
+      this.menu.add([g3,t3]); this._smallBtnIcon(t3,'tile_kitchen'); this._zone(kx,rkY,rkW,rkH,()=>{ if(!kitchenOpen()){this.menuToast?.('🔒 Kitchen unlocks after clearing Chapter 2');return;} this.menuScreen='kitchen'; this.buildMenuScreen(); }); if(!kitchenOpen())t3.setText('🔒 Kitchen'); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
     const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
     const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
     this.menu.add([rkg,rkt]); this._smallBtnIcon(rkt,'tile_perks'); this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
@@ -12378,7 +12381,7 @@ class Game extends Phaser.Scene {
     const angle=()=>{const next=target.active?target:this.nearestEnemy(reach*1.2)||target;if(!next.active&&!flickerHit&&this.joy?.active&&this.moveDir.lengthSq()>.04)return this.moveDir.angle();return Math.atan2(next.y-p.y,next.x-p.x);};
     const a=angle(),lock={x:p.x+Math.cos(a)*reach*.6,y:p.y+Math.sin(a)*reach*.6};p.setFlipX(Math.cos(a)<0);cc.busy=true;
     const wind=path==='titan'?(fin?.32:.24):(fin?.16:.12),mark=path==='titan'?this.cocoaMark(lock.x,lock.y,reach*(fin?1.15:.62)):null;
-    this._ccCdMul=path==='titan'?(fin?1.3:1):fin?1.08:.72;if(path==='titan'){this.bpPose?.(fin?'char_cocoa_titan_slam':'char_cocoa_titan_hop',wind+.2);if(fin)Sfx.bp?.('cocoa_titan_leap',.38,.25);if(this.joy?.active&&this.moveDir?.lengthSq?.()>.04){const hop=reach*(fin?.5:.35);this.cocoaGlideTo({x:p.x+Math.cos(a)*hop,y:p.y+Math.sin(a)*hop},wind,true);}}else{const pk=fire?(fin?'char_cocoa_fire_fin':'char_cocoa_fire_jab'):path==='dashboxer'?'char_cocoa_dash_jab':'char_cocoa_attack';if(pk&&this.bpPose)this.bpPose(pk,wind+.2);else this.poseAttack(wind*1000+150,pk||undefined);}
+    this._ccCdMul=path==='titan'?(fin?1.3:1):fin?1.08:.72;if(path==='titan'){this.bpPose?.(fin?'char_cocoa_titan_slam':'char_cocoa_titan_hop',wind+.2);if(fin)Sfx.bp?.('cocoa_titan_leap',.38,.25);/* v6.77: no lunge — walk freely while attacking */}else{const pk=fire?(fin?'char_cocoa_fire_fin':'char_cocoa_fire_jab'):path==='dashboxer'?'char_cocoa_dash_jab':'char_cocoa_attack';if(pk&&this.bpPose)this.bpPose(pk,wind+.2);else this.poseAttack(wind*1000+150,pk||undefined);}
     this.cocoaLater(wind,()=>{
       this.cocoaUnmark(mark);if((cc.gen||0)!==gen)return;cc.busy=false;
       const ang=path==='titan'?a:angle(),td=target.active?Math.min(reach*.6,this.dist(p.x,p.y,target.x,target.y)):reach*.6,x=path==='titan'?lock.x:p.x+Math.cos(ang)*td,y=path==='titan'?lock.y:p.y+Math.sin(ang)*td;

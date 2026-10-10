@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.76.0 — Consolidation B1 (A6/B2 no change)
+# Latest delivery: v6.77.0 — Titan no lunge, C4 Kitchen gate
+
+Titan castCocoaRush: joystick glide toward target removed (poses kept). C4 option ก: kitchenOpen() = stageMastery[9]; frActive() returns [] when locked (no recipes/upkeep), Hub Kitchen tile shows 🔒 + menuToast. Saved recipes untouched. npm check passed.
+
+# Previous delivery: v6.76.0 — Consolidation B1 (A6/B2 no change)
 
 B1: startWaveEvent clears this._bonus so Courier/Cache replaces that wave's Bonus Challenge. A6: card rarity already fixed to common (rollRarity) and frame code inert — left as is. B2: miniboss chest already uses prize wheel + Mimic only (no mystery-card layer) — no change. npm check passed. Next: C (meta, needs save refunds).
 
@@ -30,7 +34,7 @@ Modifier + Trade-off cards removed from level-up pools (guarded false&&); rollRe
 
 Owner approved system cut/merge plan: docs/SYSTEM_CONSOLIDATION_PLAN.md (track status there). A1: TAG_SETS_ON=false disables Tag Set tier bonuses (refreshTagSets no-op), tag labels/⬆ hints on cards, pause tag grid and HUD tag counts; TAG_SETS/tagCounts kept (trade-off/unique _tagIgnite/_tagChill unaffected). Dual Infusion offer disabled (infusion2 paths remain harmless). Next: A2 Modifiers into Relic pool. npm check passed.
 
-# Previous delivery: v6.70.0 — Mint buff
+# Older delivery: v6.70.0 — Mint buff
 
 Owner chose critique fixes A+B+C. CHARACTERS.mint dmg .92→1.00, crit .02→.05. cdOf mint frost base max(1.0,1.7−.07·lvl) (was max(1.25,1.95−.08·lvl)). mintVolleyProfile 2nd lance at lvl≥3 (was 4). damage(): Mint vs boss/mini ×(1+.04·min(4,_chill)) while chill fresh (≤2.5s); Glacier Brittle boss ×1.15. mint-glacier test updated 135→155.25. Mint Gale damage (option D) not done. npm check passed.
 
