@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.66.0 — Delve cards chosen like Story
+# Latest delivery: v6.67.0 — Item mods: no prefix/suffix, max 3, Play mods
+
+Owner chose mod critique item 1 + remove prefix/suffix. All affix defs kind='mod' at runtime (MOD_LINE_MAX 3, CRAFT_AFFIX_CAP 3, AFFIX_COUNT legend 3); Save.migrateModLines3 trims old items to 3 best tiers (flag modLines3). Craft bench one MODS column; compare one MODS section. 6 Play mods (category 'play', weight ~30): m_dashnova (doDash → gearModBoom), m_critarc (damage crit → gearCritArc, 2 foes), m_killshell (killEnemy → gearKillShell, shield cap 2), m_stillfocus/m_opener (damage mul), m_thorns (charPassiveOnHurt, 1s cd). Fields reset in applyMeta. Validator affix count 41. npm check + headless craft screen passed.
+
+# Previous delivery: v6.66.0 — Delve cards chosen like Story
 
 Owner: normal cards in Delve should not auto-apply; pick like Story. openLevelUp recipe redirect to recipeLevelUp removed again; closeLevelUp reopens for pending levels (recipeLevelUp/Sugar Rush/every-5 draft unused). Endgame Build stays removed. npm check passed.
 

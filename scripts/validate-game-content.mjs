@@ -21,7 +21,7 @@ for(const contract of [
 const affixBlock=source.match(/const AFFIX_POOL = \[([\s\S]*?)\n\];\nconst AFFIX_CATEGORY/);
 if(!affixBlock)throw new Error('Cannot find expanded AFFIX_POOL block');
 const affixIds=[...affixBlock[1].matchAll(/id:'([^']+)'/g)].map(match=>match[1]);
-if(affixIds.length!==35||new Set(affixIds).size!==35)throw new Error(`Expected 35 unique affixes, found ${affixIds.length}`);
+if(affixIds.length!==41||new Set(affixIds).size!==41)throw new Error(`Expected 41 unique affixes, found ${affixIds.length}`);
 for(const category of ['offense','defense','utility']){
   const count=(affixBlock[1].match(new RegExp(`category:'${category}'`,'g'))||[]).length;
   if(count<4)throw new Error(`Expected at least four ${category} affixes, found ${count}`);
