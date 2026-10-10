@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.95.1';
+const GAME_VERSION = '6.95.2';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.95.2', date:'2026-10-10', title:'⭐ Card pick effect', items:['Picking any card now plays the level-up burst around your hero, a little slower so it is easy to see']},
   { v:'6.95.1', date:'2026-10-10', title:'🎥 Wider view', items:['The battle camera is zoomed out a little so you can see more of the field']},
   { v:'6.95.0', date:'2026-10-10', title:'📊 Play Stats', items:['Settings → Play Stats shows your recent runs: wins and tries per stage and difficulty, clear time, what defeated you, heroes, builds and cards picked','Stats stay on this device only']},
   { v:'6.94.0', date:'2026-10-10', title:'🧹 Cleanup', items:['Removed leftover code from cut systems: Endgame Build, auto Sugar Rush level-ups, Endless, Ascension, Tag Sets, Overcap, Set Collection and Bestiary stats','No change to how the game plays']},
@@ -10935,11 +10936,11 @@ class Game extends Phaser.Scene {
     if(this.textures.exists(key))return this._coverImage(0,0,this.W,this.H,key).setTint(key==='result_defeat'?0x9b8eaa:0xbca8bf);
     return this.add.rectangle(0,0,this.W,this.H,0x100b19,0.92).setOrigin(0,0);
   }
-  playGrowthWorld(kind){
+  playGrowthWorld(kind,ts){
     const key='growth_'+kind,p=this.player;if(!p||!this.textures.exists(key))return false;
     const now=this.time.now;this._growthVfxAt=this._growthVfxAt||{};
     if(now-(this._growthVfxAt[kind]??-Infinity)<500)return true;this._growthVfxAt[kind]=now;
-    const fx=this.spawnFxAnim(key,p.x,p.y-12,{scale:220/256,depth:8,anchor:'center',normal:true});if(fx)this.trackArtVfx(fx);return !!fx;
+    const fx=this.spawnFxAnim(key,p.x,p.y-12,{scale:220/256,depth:8,anchor:'center',normal:true});if(fx){if(ts&&fx.anims)fx.anims.timeScale=ts;this.trackArtVfx(fx);}return !!fx;
   }
   playSummaryGrowth(kind){
     const key='growth_'+kind;if(!this.textures.exists(key))return;
@@ -11401,7 +11402,7 @@ class Game extends Phaser.Scene {
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
-    Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
+    Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution))this.playGrowthWorld?.('levelup',0.6);   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
   }
   // แตะครั้งแรก = โชว์กWaitบเรืองWaitบการ์ด ให้ผู้เล่นรู้ว่ากำลังเลือกใบนี้ (ก่อนแตะซ้ำยืนยัน)
   highlightCard(c){

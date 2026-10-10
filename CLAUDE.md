@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.95.1 — Wider battle camera
+# Latest delivery: v6.95.2 — Level-up FX on normal card picks
+
+Owner: level-up effect only seemed to show on Evolution. pickCardAt now calls playGrowthWorld('levelup',0.6) for every non-evolution card (Evolution keeps growth_unlock). playGrowthWorld(kind,ts) sets anims.timeScale (0.6 → ~1.1s), 500ms throttle unchanged (multi-pick shows once). npm check passed.
+
+# Previous delivery: v6.95.1 — Wider battle camera
 
 Owner: widen camera a bit. computeViewZoom BASE .76→.70 (~9% more field). Spawn/decor/culling radii already divide by viewZoom so they follow. npm check passed.
 
