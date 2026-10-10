@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.82.2 — Shotgun uses sniper fire SFX
+# Latest delivery: v6.82.3 — Buzzing boss warning removed
+
+Owner: fly-like boss sound that fades everything. Culprit: Sfx.bossWarn → sfx_boss_warn.mp3 (2.7s; gen_stingers_synth detuned saw siren ~73Hz with 3.2Hz vibrato = buzz) called from ~32 boss/elite telegraphs, plus duckBgm(900,.34). bossWarn now plays only short sfx_hazard (vol .42), no duck, no saw fallback. npm check passed.
+
+# Previous delivery: v6.82.2 — Shotgun uses sniper fire SFX
 
 Owner: shotgun blast still silent after v6.82.1, sniper fire audible → releaseBerryBlast fire() now plays uq_sniper_fire (rate .85) at the START of fire() (before VFX, try/catch), fallback Sfx.boom. uq_shotgun_blast unused. npm check passed.
 
