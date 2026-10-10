@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.68.0';
+const GAME_VERSION = '6.69.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.69.0',date:'2026-10-10',title:'Kitchen recipes now have a price',items:['Each active recipe costs −6% Max HP and −4% Attack Power (more for ★ and signature dishes)','Recipe slots: max 3 (extra recipes return their parts)','Heal, Recover, Shield, Immune and Cooldown parts are retired (parts returned to your bag)','Recipe damage no longer uses Item Power or crits; total power capped at ×2.5','Rage/Haste last 4s with an 8s cooldown; Minty refreezes a foe at most every 3s']},
   {v:'6.68.0',date:'2026-10-10',title:'Tougher Chapter 2–3, pricier Temple',items:['Story monsters from Chapter 2 on grow tougher each stage','Story bosses and minibosses in Chapter 2–3 have double HP','Temple Sugar upgrades cost more at higher ranks','Delve and other endgame modes are unchanged']},
   {v:'6.67.0',date:'2026-10-10',title:'Simpler item mods + Play mods',items:['Prefix and Suffix are gone: every item has up to 3 mod lines, plus its implicit','New Play mods change how you fight: Dash Nova, Crit Arc, Kill Shell, Standing DMG, Full-HP Foe DMG and Retaliate on Hit','Old items with more than 3 mods keep their 3 best-tier mods']},
   { v:'6.66.0', date:'2026-10-10', title:'Delve cards chosen by you', items:['Delve level-ups show the same card choice as Story stages; nothing is applied automatically.'] },
@@ -3796,7 +3797,7 @@ const ANCIENT_PERKS=[
 const OVERCAP_MAX=6;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
 /* ---- v5.35 🍳 Flavor Recipes: ประกอบ perk เอง = Trigger + Effect (+ Modifier) · ชิ้นส่วนได้จากการขุด ---- */
 // cost = แต้มรสชาติ · สูตรหนึ่งรวมกันต้องไม่เกิน FR_FLAVOR_CAP (trigger ที่เกิดถี่ = แพง)
-const FR_FLAVOR_CAP=10, FR_SLOT_MAX=5, FR_MERGE_N=3, FR_LV_MAX=3, FR_SWAP_SUGAR=20;   // v5.38 ถอด/สลับชิ้นที่ใส่แล้ว = 🍬20
+const FR_FLAVOR_CAP=10, FR_SLOT_MAX=3, FR_MERGE_N=3, FR_LV_MAX=3, FR_SWAP_SUGAR=20;   // v5.38 ถอด/สลับชิ้นที่ใส่แล้ว = 🍬20
 const FR_TRIGGERS=[
   {id:'dash',     emoji:'💨',name:'On Dash',            cost:3, icd:1.5},
   {id:'crit',     emoji:'🎯',name:'On Critical Hit',    cost:4, icd:0.6},
@@ -3825,16 +3826,16 @@ const FR_TRIGGERS=[
 const FR_EFFECTS=[
   {id:'shock',  emoji:'💥',name:'Shockwave',          cost:3},
   {id:'shots',  emoji:'✳️',name:'8-Way Shots',        cost:3},
-  {id:'heal',   emoji:'💚',name:'Heal 2% HP',         cost:3},
-  {id:'shield', emoji:'🫧',name:'Gain a Shield',      cost:4},
+  {id:'heal',cut:true,   emoji:'💚',name:'Heal 2% HP',         cost:3},
+  {id:'shield',cut:true, emoji:'🫧',name:'Gain a Shield',      cost:4},
   {id:'freeze', emoji:'❄️',name:'Freeze Nearby',      cost:3},
   {id:'rage',   emoji:'🔥',name:'Rage +30% DMG 4s',   cost:4},
   {id:'bolt',   emoji:'⚡',name:'Lightning ×3',        cost:3},
-  {id:'cdr',    emoji:'⏳',name:'Unique Cooldown −2s', cost:3},
+  {id:'cdr',cut:true,    emoji:'⏳',name:'Unique Cooldown −2s', cost:3},
   {id:'vacuum', emoji:'🧲',name:'Pull All EXP',       cost:2},
   {id:'burn',   emoji:'🌶️',name:'Burning Ground',     cost:3},
   {id:'buddy',  emoji:'🍡',name:'Mochi Buddy 5s',     cost:4},
-  {id:'immune', emoji:'🛡️',name:'Immune 1s',          cost:4},
+  {id:'immune',cut:true, emoji:'🛡️',name:'Immune 1s',          cost:4},
   // v5.47 เพิ่มความหลากหลาย
   {id:'meteor', emoji:'☄️',name:'Candy Meteors ×3',   cost:4},
   {id:'orbit',  emoji:'🍭',name:'Lollipop Orbit 4s',  cost:4},
@@ -3842,7 +3843,7 @@ const FR_EFFECTS=[
   {id:'sour',   emoji:'🍋',name:'Sour Splash',        cost:2},
   {id:'cleanse',emoji:'🧽',name:'Wipe Enemy Shots',   cost:3},
   {id:'hole',   emoji:'🕳️',name:'Syrup Vortex',       cost:4},
-  {id:'recover',emoji:'💗',name:'Heal 12% HP',cost:4},
+  {id:'recover',cut:true,emoji:'💗',name:'Heal 12% HP',cost:4},
   {id:'burst',emoji:'🌈',name:'Rainbow Burst',cost:4},
 ];
 const FR_MODS=[
@@ -3874,6 +3875,10 @@ function frSignature(r){ const t=r&&(r.t||'').replace(/^t:/,''),e=r&&(r.e||'').r
 const FR_KIND={t:FR_TRIGGERS,e:FR_EFFECTS,m:FR_MODS};
 function frIconKey(key){ const icon=key&&'fr_'+key[0]+'_'+key.slice(2); return icon&&ASSET_IMAGES[icon]?icon:null; }
 function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); return (FR_KIND[k]||[]).find(x=>x.id===id)||null; }   // key = 't:dash' / 'e:shock' / 'm:big'
+// v6.69 Kitchen upkeep: ทุกสูตรที่ใช้งานต้องแลก −6% Max HP / −4% AP (+2% ต่อ ★ ของ DO, +2% signature)
+function frActive(){ return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
+function frUpkeep(){ let hp=0,dmg=0; for(const r of frActive()){ const x=0.02*(Save.frLv(r.e)-1)+(frSignature(r)?0.02:0); hp+=0.06+x; dmg+=0.04+x; } return {hp,dmg}; }
+function applyFrUpkeep(p){ const u=frUpkeep(); if(!u.hp)return false; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-u.hp))); p.dmgMul-=u.dmg; return true; }
 function frCost(r){ return r?['t','e','m'].reduce((a,k)=>a+((frPart(r[k])||{}).cost||0),0):0; }
 function frSentence(r){ const t=frPart(r&&r.t),e=frPart(r&&r.e),m=frPart(r&&r.m); if(!t||!e)return 'Empty recipe'; const sg=frSignature(r);
   return (sg?'⭐ '+sg.name+' · ':'')+t.name+' → '+e.name+(m?' ('+m.name+')':''); }
@@ -4553,7 +4558,7 @@ const Save = {
     for(const slot in gearDefaults){ if(!this.data.gear[slot])this.data.gear[slot]=gearDefaults[slot];
       if(!this.data.ownedGear.includes(gearDefaults[slot]))this.data.ownedGear.push(gearDefaults[slot]); }
     gearMigrated=this.migrateGearInstances(gearDefaults);
-    this.migrateAffixTiers11(); this.migrateModLines3();
+    this.migrateAffixTiers11(); this.migrateModLines3(); this.migrateKitchen3();
     if(!this.data.chars||!this.data.chars.length)this.data.chars=['momo'];
     if(!this.data.character)this.data.character='momo';
     if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (Berry) → คืนเป็นโมโม่
@@ -4635,6 +4640,9 @@ const Save = {
       affixes:clone(opts.affixes!=null?opts.affixes:rollAffixes(base.tier,opts.itemLevel||currentRewardItemLevel(),base)), locked:!!opts.locked, favorite:!!opts.favorite,
       isNew:opts.isNew!==false, acquiredAt:Number(opts.acquiredAt)||Date.now() }; },
   // v6.67: prefix/suffix gone → keep at most 3 mods per item (best tiers kept)
+  migrateKitchen3(){ if(this.data.kitchen3)return; this.data.kitchen3=true; const rs=Array.isArray(this.data.frRecipes)?this.data.frRecipes:[],p=this.frParts();
+    rs.forEach((r,i)=>{ if(!r)return; for(const k of ['t','e','m']){ if(r[k]&&(i>=FR_SLOT_MAX||(frPart(r[k])||{}).cut)){ p[r[k]]=(p[r[k]]||0)+1; r[k]=null; } } });
+    this.data.frRecipes=rs.slice(0,FR_SLOT_MAX); if((this.data.frSlots||1)>FR_SLOT_MAX){ this.data.frSlots=FR_SLOT_MAX; this.data.frSlotRP=5; } },
   migrateModLines3(){ if(this.data.modLines3)return; const trim=it=>{ if(it&&Array.isArray(it.affixes)&&it.affixes.length>3)it.affixes=it.affixes.slice().sort((a,b)=>(a.t??10)-(b.t??10)).slice(0,3); };
     (this.data.gearItems||[]).forEach(trim); (this.data.gearInbox||[]).forEach(trim); const ga=this.data.gearAffix||{}; for(const k in ga){ if(Array.isArray(ga[k])&&ga[k].length>3){const o={affixes:ga[k]};trim(o);ga[k]=o.affixes;} } this.data.modLines3=true; },
   // v4.91: tier เดิม 1-5 → T0-T10 คำนวณจากค่าที่โรลไว้ (ค่า v ไม่เปลี่ยน)
@@ -5077,6 +5085,7 @@ function computeHeroStats(cid,basic){
     const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr)); mark('Bestiary');
     const rp=Save.data.rankPerks||{}; if(rp.vigor){p.maxhp*=1+0.06*rp.vigor;mark('Perk · Vigor '+rp.vigor);} if(rp.might){p.dmgMul+=(1+0.05*rp.might)-1;mark('Perk · Might '+rp.might);} if(rp.ironWill){p.dmgTakenMul*=(1-0.04*rp.ironWill);mark('Perk · Iron Will '+rp.ironWill);}
     if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; } mark('Ancient Perks');
+    if(applyFrUpkeep(p))mark('Kitchen upkeep');
     clampPlayerStats(p); mark('Stat cap');   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
     return p;
 }
@@ -8139,7 +8148,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,hs=this._hdrShift(),slots=Save.frSlots(),R=Save.frRecipes();
     if(this._kSel==null)this._kSel={slot:0,k:'t'};
     const sel=this._kSel; if(sel.slot>=slots)sel.slot=0;
-    const sub=this.add.text(w/2,62+hs,'Build your own perks: WHEN ▸ DO ▸ (TWIST) · max 🍯'+FR_FLAVOR_CAP+' flavor each',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9'}).setOrigin(0.5); this.menu.add(sub);
+    const sub=this.add.text(w/2,62+hs,'Each recipe costs −6% Max HP & −4% AP (+2% per ★ / signature)'+(frActive().length?' · now −'+Math.round(frUpkeep().hp*100)+'% HP':''),{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9'}).setOrigin(0.5); this.menu.add(sub);
     const cw=w-28,rowH=portraitRow(h),top=78+hs; function portraitRow(H){ return Math.max(44,Math.min(58,(H-420)/5)); }
     const lbl={t:'WHEN',e:'DO',m:'TWIST'},col={t:0xffb36b,e:0x7fd0ff,m:0xc7a6ff};
     for(let i=0;i<FR_SLOT_MAX;i++){ const y=top+i*(rowH+6),locked=i>=slots,r=R[i],on=!locked&&sel.slot===i;
@@ -8158,7 +8167,7 @@ class Game extends Phaser.Scene {
     // ถุงชิ้นส่วนของหมวดที่เลือก
     const by=top+FR_SLOT_MAX*(rowH+6)+6,parts=Save.frParts(),kind=sel.k,list=FR_KIND[kind],cur=R[sel.slot];
     const bh=this.add.text(14,by,'🎒 '+({t:'WHEN (trigger)',e:'DO (effect)',m:'TWIST (modifier)'})[kind]+' parts · tap to place in slot '+(sel.slot+1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a8'}); this.menu.add(bh);
-    const cols=3,gw=(w-28-(cols-1)*6)/cols,gh=40,rowsFit=Math.max(1,Math.floor((h-(by+18)-50)/(gh+5))),per=cols*rowsFit,own=list.filter(pt=>(parts[kind+':'+pt.id]||0)>0),pages=Math.max(1,Math.ceil(own.length/per)),pg=Math.min(pages-1,this._kPage||0); this._kPage=pg; let n=0;
+    const cols=3,gw=(w-28-(cols-1)*6)/cols,gh=40,rowsFit=Math.max(1,Math.floor((h-(by+18)-50)/(gh+5))),per=cols*rowsFit,own=list.filter(pt=>!pt.cut&&(parts[kind+':'+pt.id]||0)>0),pages=Math.max(1,Math.ceil(own.length/per)),pg=Math.min(pages-1,this._kPage||0); this._kPage=pg; let n=0;
     if(pages>1){ const ny=by+18+rowsFit*(gh+5)+4,nt=this.add.text(w/2,ny+8,'‹   '+(pg+1)+' / '+pages+'   ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8'}).setOrigin(0.5); this.menu.add(nt); this._zone(w/2-80,ny-4,60,24,()=>{ this._kPage=(pg-1+pages)%pages; this.buildKitchen(); }); this._zone(w/2+20,ny-4,60,24,()=>{ this._kPage=(pg+1)%pages; this.buildKitchen(); }); }
     own.slice(pg*per,pg*per+per).forEach(pt=>{ const key=kind+':'+pt.id,c=parts[key]||0; const x=14+(n%cols)*(gw+6),y=by+18+Math.floor(n/cols)*(gh+5); n++;
       const trial=Object.assign({},cur,{[kind]:key}),ok=frCost(trial)<=FR_FLAVOR_CAP,g=this.add.graphics();
@@ -8996,6 +9005,7 @@ class Game extends Phaser.Scene {
     // หมายเหตุ: Bestiary + Ascension ไม่ให้สแตตรบแล้ว (ยุบแหล่งสแตตที่ทับซ้อน v2.45.0)
     //  · Bestiary → v4.8 คืนสแตตถาวร (bestiaryTotals ด้านบน) + ยังให้ Sugar ตอนปลดขั้น  · Ascension → Sugar ก้อนใหญ่ตอน Ascend
     //  เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank (พรถาวร) · Talent เฉพาะตัว · Gear
+    applyFrUpkeep(p);
     clampPlayerStats(p);   // เพดานรวม (STAT_CAPS) — ความเร็ว/คูลดาวน์/คริ/ดาเมจ/เกราะ
     p.hp=p.maxhp;
   }
@@ -11382,9 +11392,9 @@ class Game extends Phaser.Scene {
     if(n>1)g.lineStyle(2,0x9fe8ff,0.7).strokeCircle(p.x,p.y,r+6);
     g.fillStyle(0xffffff,0.7).fillCircle(p.x-r*0.45,p.y-r*0.5,4); }
   // ===== v5.36 🍳 Flavor Recipes runtime: fireRecipes(trigger) → effect · chain ลึกสุด 2 · จำกัด 8 ครั้ง/วิ =====
-  frInit(){ const rs=Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e);
+  frInit(){ const rs=frActive();
     this._fr=rs.map(r=>({t:r.t.slice(2),e:r.e.slice(2),m:r.m?r.m.slice(2):null,n:0,next:0,tl:Save.frLv(r.t),el:Save.frLv(r.e),sig:!!frSignature(r)})); this._frBusy=0; this._frBudget=0; this._frSec=0;
-    this._frRageT=0; this._frHasteT=0; this._frZones=[]; this._frTimer=0; this._frTimer10=0; this._frStill=0; this._frLowArm=true; this._frMoveT=0; this._frFullT=0; this._frSurT=0; this._frMk=[]; this._frBigWas=false; if(this._frOrbit&&this._frOrbit.sprs)this._frOrbit.sprs.forEach(x=>x.destroy()); this._frOrbit=null; if(this._frBuddy&&this._frBuddy.spr)this._frBuddy.spr.destroy(); this._frBuddy=null; }
+    this._frRageT=0; this._frHasteT=0; this._frRageCd=0; this._frHasteCd=0; this._frZones=[]; this._frTimer=0; this._frTimer10=0; this._frStill=0; this._frLowArm=true; this._frMoveT=0; this._frFullT=0; this._frSurT=0; this._frMk=[]; this._frBigWas=false; if(this._frOrbit&&this._frOrbit.sprs)this._frOrbit.sprs.forEach(x=>x.destroy()); this._frOrbit=null; if(this._frBuddy&&this._frBuddy.spr)this._frBuddy.spr.destroy(); this._frBuddy=null; }
   fireRecipes(trig){ const L=this._fr; if(!L||!L.length||this.state!=='play')return;
     const depth=this._frBusy||0; if(depth>0&&!(this._frCur&&this._frCur.m==='chain'))return; if(depth>=2)return;   // chain เฉพาะสูตรที่มี 🔗 Linked
     const now=this.elapsed||0; if(Math.floor(now)!==this._frSec){ this._frSec=Math.floor(now); this._frBudget=0; }
@@ -11402,9 +11412,9 @@ class Game extends Phaser.Scene {
       const t=this.camWorld(this.add.text(p.x,p.y-58,(td?td.emoji:'')+'▸'+(ed?ed.emoji:''),{fontSize:'16px',stroke:'#2a1f35',strokeThickness:3}).setOrigin(0.5).setDepth(99000).setScale(0.4));
       this.tweens.add({targets:t,scale:1,duration:140,ease:'Back.out'}); this.tweens.add({targets:t,y:t.y-26,alpha:0,delay:260,duration:420,onComplete:()=>t.destroy()}); }
     try{ this.frEffect(r); } finally{ this._frBusy=depth; this._frCur=prev; } }
-  frHit(e,dmg,r){ if(!e||!e.active)return; this.damage(e,dmg,e.x,e.y); if(!e.active)return;
+  frHit(e,dmg,r){ if(!e||!e.active)return; this._frDmg=true; try{ this.damage(e,dmg,e.x,e.y); } finally{ this._frDmg=false; } if(!e.active)return;
     if(r.m==='fire'){ e._burnDps=Math.max(e._burnDps||0,dmg*0.25); e._burnT=2; }
-    if(r.m==='ice'&&!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,0.6); e.setTint(COLORS.ice); }
+    if(r.m==='ice'&&!e.isBoss&&!e.isMini&&(this.elapsed||0)>=(e._frIceAt||0)){ e._frIceAt=(this.elapsed||0)+3; e.frozen=Math.max(e.frozen||0,0.6); e.setTint(COLORS.ice); }
     if(r.m==='sour')e._sourT=Math.max(e._sourT||0,3);
     if(r.m==='sweet'){ const p=this.player,now=this.elapsed||0; if(now-(this._frSweetWin||-9)>=1){ this._frSweetWin=now; this._frSweetSum=0; } if(this._frSweetSum<p.maxhp*0.05){ const n=Math.max(1,Math.round(p.maxhp*0.01)); this._frSweetSum+=n; p.hp=Math.min(p.maxhp,p.hp+n); } } }
   frRing(x,y,R,col,key='vfx_recipe_shock'){
@@ -11427,6 +11437,7 @@ class Game extends Phaser.Scene {
   }
   frEffect(r){ const p=this.player,px=p.x,py=p.y; let pw=(r.m==='strong'?1.5:r.m==='focus'?1.8:r.m==='slow'?1.8:r.m==='twin'?0.65:1)*(1+0.3*((r.el||1)-1))*(r.sig?1.25:1); const A=r.m==='big'?1.5:r.m==='focus'?0.6:1;
     if(r.m==='gamble'){ if(Math.random()<0.5){ this.floatText(px,py-50,'🎲 …nothing',0x9a8fb0); return; } pw*=2.5; this.floatText(px,py-50,'🎲 JACKPOT ×2.5',0xffd166); }
+    pw=Math.min(pw,2.5);   // v6.69 เพดานพลังรวม
     const near=(R)=>{ const out=[]; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<=R)out.push(e); }); return out; };
     switch(r.e){
       case 'shock':{ const R=120*A; this.frRing(px,py,R,0xffc0e0,'vfx_recipe_shock'); near(R).forEach(e=>this.frHit(e,this.relicDmg(1.8)*pw,r)); break; }
@@ -11436,7 +11447,7 @@ class Game extends Phaser.Scene {
       case 'burst':{ const R=165*A;this.frRing(px,py,R,0xffd166,'vfx_recipe_burst');near(R).slice(0,16).forEach(e=>this.frHit(e,this.relicDmg(1.4)*pw,r));break; }
       case 'shield':{ if(!this.frGuardOk())break; this._shield=Math.min(3,(this._shield||0)+(pw>=2?2:1)); this.floatText(px,py-44,'🫧 Shield',0x9fe8ff); break; }
       case 'freeze':{ const R=140*A; this.frRing(px,py,R,0x9fe8ff,'vfx_recipe_freeze'); near(R).forEach(e=>{ if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,1.2*pw); e.setVelocity(0,0); e.setTint(COLORS.ice); } else this.frHit(e,this.relicDmg(0.8)*pw,r); }); break; }
-      case 'rage':{ this._frRageT=4; this._frRageMul=Math.max(this._frRageMul&&this._frRageT>0?this._frRageMul:1,1+0.3*pw); this.floatText(px,py-50,'🔥 Rage',0xff7a3d); break; }
+      case 'rage':{ const nw=this.elapsed||0; if(nw<(this._frRageCd||0))break; this._frRageCd=nw+8; this._frRageT=4; this._frRageMul=Math.max(this._frRageMul&&this._frRageT>0?this._frRageMul:1,1+0.3*pw); this.floatText(px,py-50,'🔥 Rage',0xff7a3d); break; }
       case 'bolt':{ const L=near(360*A).sort((a,b)=>this.dist(a.x,a.y,px,py)-this.dist(b.x,b.y,px,py)).slice(0,3);
         L.forEach(e=>{ const ln=this.camWorld(this.add.line(0,0,px,py-20,e.x,e.y,0xfff27a,1).setOrigin(0,0).setLineWidth(3).setDepth(90000)); this.tweens.add({targets:ln,alpha:0,duration:200,onComplete:()=>ln.destroy()}); this.frHit(e,this.relicDmg(1.6)*pw,r); }); break; }
       case 'cdr':{ this.uniqueCd=Math.max(0,(this.uniqueCd||0)-2*pw); this.floatText(px,py-50,'⏳ −'+(2*pw).toFixed(1)+'s',0xc7a6ff); break; }
@@ -11453,7 +11464,7 @@ class Game extends Phaser.Scene {
             this.frRing(tx,ty,R,0xff9ad5,'vfx_recipe_shock'); this.screenShake(80,0.004);
             this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,tx,ty)<=R)this.frHit(e,this.relicDmg(2.2)*pw,r); }); }}); }); break; }
       case 'orbit':{ const O=this._frOrbit; if(O){ O.t=Math.max(O.t,4*pw); O.pw=Math.max(O.pw,pw); O.r=r; } else { const sprs=[0,1,2].map(()=>this.recipeIcon('vfx_recipe_orbit',px,py,32,'🍭')); this._frOrbit={t:4*pw,pw,r,ang:0,acc:0,sprs,R:70*A}; } break; }
-      case 'haste':{ this._frHasteT=Math.max(this._frHasteT||0,4*Math.min(2,pw)); this.floatText(px,py-50,'👟 Haste',0x8bd3a0); break; }
+      case 'haste':{ const nw=this.elapsed||0; if(nw<(this._frHasteCd||0))break; this._frHasteCd=nw+8; this._frHasteT=4; this.floatText(px,py-50,'👟 Haste',0x8bd3a0); break; }
       case 'sour':{ const R=150*A; this.frRing(px,py,R,0xfff27a,'vfx_recipe_sour'); near(R).slice(0,12).forEach(e=>{ e._sourT=Math.max(e._sourT||0,5*pw); this.frHit(e,this.relicDmg(0.6)*pw,r); }); break; }
       case 'cleanse':{ const R=220*A; let n=0; if(this.foeBullets)this.foeBullets.children.iterate(b=>{ if(b&&b.active&&this.dist(b.x,b.y,px,py)<=R){ b.setActive(false).setVisible(false); if(b.body)b.body.enable=false; n++; } }); this.frRing(px,py,R,0xe8f4ff,'vfx_recipe_cleanse'); if(n)this.floatText(px,py-50,'🧽 ×'+n,0xe8f4ff); break; }
       case 'hole':{ const e0=this.nearestEnemy?this.nearestEnemy(360):null,hx=e0?e0.x:px,hy=e0?e0.y:py,R=160*A,z=this.recipeZoneArt('vfx_recipe_hole',hx,hy,R,0x7a3dbf,true); this.tweens.add({targets:z,angle:360,duration:2000}); this._frZones.push({x:hx,y:hy,R,t:2,acc:0,dmg:this.relicDmg(0.45)*pw,r,spr:z,pull:true}); break; }
@@ -13318,10 +13329,10 @@ class Game extends Phaser.Scene {
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);if(e._titanMarkT>(this.elapsed||0))amount*=1.25;if(e._shadowUntil>(this.elapsed||0))amount*=1+0.08*(e._shadowN||0);
     { const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
-    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this.player.powerMul||1); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
+    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;
     if(!this._infTick&&!e.isDummy){ const P=this.player; if(P.gearStillDmg&&P.body&&P.body.velocity.length()<25)amount*=1+P.gearStillDmg; if(P.gearOpener&&e.hp>=e.maxhp)amount*=1+P.gearOpener; }   // 🪞 Oath Focus
-    let crit=false; if(this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();
+    let crit=false; if(!this._frDmg&&this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();
     if(crit&&CP&&CP.id==='momo'&&(this.elapsed||0)>=(CP.cd||0)){ CP.cd=(this.elapsed||0)+0.35; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(1,p.maxhp*0.006*CP.s)); }   // 🍓 Lucky Seeds
     if(crit&&RL&&(RL.splinter||RL.leech))this.relicOnCrit(e,amount,x,y);
     if(crit&&this.player.gearCritArc&&!this._gmTick&&!this._infTick&&!e.isDummy)this.gearCritArc(e,amount);

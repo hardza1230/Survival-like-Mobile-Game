@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.68.0 — Story C2–C3 buff, Temple cost nerf
+# Latest delivery: v6.69.0 — Kitchen upkeep and rework
+
+Owner approved: recipes had no downside. FR_SLOT_MAX 5→3; frUpkeep/applyFrUpkeep (applyMeta + computeHeroStats 'Kitchen upkeep'): per active recipe −6% maxHP, −4% dmgMul, +2% per DO ★ above 1 and +2% signature. Effects heal/recover/shield/immune/cdr marked cut (hidden in bag, skipped by frActive). Save.migrateKitchen3 (flag kitchen3) returns parts from slots ≥3 and cut parts, frSlots capped 3, frSlotRP=5. frHit sets _frDmg → damage() skips powerMul and crit. frEffect pw capped 2.5. Rage/Haste 4s with 8s cd. Minty refreeze ≥3s per foe (e._frIceAt). npm check passed.
+
+# Previous delivery: v6.68.0 — Story C2–C3 buff, Temple cost nerf
 
 Owner chose buff 1 + nerf Sugar upgrades. STORY_MOB_TAIL 1.18→1.28 (stage curve tail after index 5, story only; recipeMode keeps 1.18/1.17); realStageBossMul(i,endgame) ×2 for i≥5 when not recipeMode (boss + mini). Save.talCost rank factor 1.15^rank→1.25^rank. stageThreat/recommended power follow automatically. Kitchen review given to owner, not changed. npm check passed.
 
