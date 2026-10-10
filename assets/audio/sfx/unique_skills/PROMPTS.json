@@ -1,0 +1,352 @@
+{
+  "jobs": [
+    {
+      "id": "uq_shotgun_pump",
+      "filename": "uq_shotgun_pump.mp3",
+      "group": "Momo Shotgun",
+      "event": "startSnipeCharge blast",
+      "request": {
+        "text": "One unmistakable pump-action shotgun rack: chunky metal shuck-CHAK, slide pulled back then slammed forward, tactile mechanical weight. No gunshot. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_shotgun_full",
+      "filename": "uq_shotgun_full.mp3",
+      "group": "Momo Shotgun",
+      "event": "tickSnipe blast full",
+      "request": {
+        "text": "One firm shotgun chamber lock clicks into place, metallic ka-CHUNK and a tight low pressure thump. No gunshot. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_shotgun_blast",
+      "filename": "uq_shotgun_blast.mp3",
+      "group": "Momo Shotgun",
+      "event": "releaseBerryBlast fire",
+      "request": {
+        "text": "One massive pump shotgun blast, immediate punchy BOOM, crunchy pellet spray whoosh and short roomless bass decay. Powerful satisfying recoil, no reload. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_sniper_charge",
+      "filename": "uq_sniper_charge.mp3",
+      "group": "Momo Sniper",
+      "event": "startSnipeCharge sniper",
+      "request": {
+        "text": "Seamless steady high-pressure electromagnetic sniper charge hum, focused rising-feeling tension but constant loop energy, subtle mechanism vibration. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 2,
+        "loop": true,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_sniper_full",
+      "filename": "uq_sniper_full.mp3",
+      "group": "Momo Sniper",
+      "event": "tickSnipe sniper full",
+      "request": {
+        "text": "A precision sniper capacitor locks at full power: clean metal click with one charged resonant pulse. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_sniper_fire",
+      "filename": "uq_sniper_fire.mp3",
+      "group": "Momo Sniper",
+      "event": "releaseSnipe beam",
+      "request": {
+        "text": "One huge precision sniper railgun shot: immediate sharp CRACK with deep punch, followed instantly by a clear fast fweeeew projectile air whistle trailing away. Strong attack, no charging intro. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.25,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_sniper_bolt",
+      "filename": "uq_sniper_bolt.mp3",
+      "group": "Momo Sniper",
+      "event": "after releaseSnipe",
+      "request": {
+        "text": "One weighty sniper bolt cycle, metallic clack, short cartridge tick and firm rechamber click. No gunshot. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.65,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_titan_charge",
+      "filename": "uq_titan_charge.mp3",
+      "group": "Cocoa Titan",
+      "event": "Titan hold rage",
+      "request": {
+        "text": "Seamless deep heavyweight magical fist pressure rumble with gritty earth vibration and restrained energy crackle, constant loop energy. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 2,
+        "loop": true,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_titan_full",
+      "filename": "uq_titan_full.mp3",
+      "group": "Cocoa Titan",
+      "event": "titan rage reaches max",
+      "request": {
+        "text": "A colossal fist reaches full charge: deep rising pressure locks into one thunderous low energy pulse, clear ready cue, no landing. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.75,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_titan_drop",
+      "filename": "uq_titan_drop.mp3",
+      "group": "Cocoa Titan",
+      "event": "castCocoaUnique titan takeoff",
+      "request": {
+        "text": "An enormous charged fist descends rapidly through air, short mighty downward whoosh, heavy mass and pressure, no impact. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_titan_slam_full",
+      "filename": "uq_titan_slam_full.mp3",
+      "group": "Cocoa Titan",
+      "event": "castCocoaUnique titan actual impact",
+      "request": {
+        "text": "One gigantic fully charged fist SLAMS the ground: immediate colossal deep THOOM, huge earth crack, heavy rock debris and a rolling low shockwave. Spectacular weight, no windup intro. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_titan_aftershock",
+      "filename": "uq_titan_aftershock.mp3",
+      "group": "Cocoa Titan",
+      "event": "titan delayed aftershock",
+      "request": {
+        "text": "One powerful ground aftershock rolls outward, deep rumbling impact with coarse earth crumble, smaller than the main colossal slam. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_rocket_salvo",
+      "filename": "uq_rocket_salvo.mp3",
+      "group": "Cocoa Fire",
+      "event": "castCocoaUnique brawler first release",
+      "request": {
+        "text": "A heroic salvo of three heavy rocket boxing gauntlets launches: rapid pneumatic thunks and roaring fire whooshes in a compact burst. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_rocket_detonation",
+      "filename": "uq_rocket_detonation.mp3",
+      "group": "Cocoa Fire",
+      "event": "Unique gauntlet explosion",
+      "request": {
+        "text": "One heavy homing fire gauntlet detonates, hard punchy blast with warm roaring flame and brief ember debris, stronger than a basic fireball. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_phantom_enter",
+      "filename": "uq_phantom_enter.mp3",
+      "group": "Cocoa Dash",
+      "event": "castCocoaUnique dashboxer start",
+      "request": {
+        "text": "A spectacular shadow boxer transformation: fast swirling spectral pressure rush then a tight dark energy snap, no voice. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_phantom_strike",
+      "filename": "uq_phantom_strike.mp3",
+      "group": "Cocoa Dash",
+      "event": "Phantom actual leap landing",
+      "request": {
+        "text": "One ultra-fast spectral teleport zip immediately hits a heavy boxing impact, crisp air crack and deep dry punch, compact shadow tail. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_mint_gale",
+      "filename": "uq_mint_gale.mp3",
+      "group": "Mint Barrage",
+      "event": "castWindRush",
+      "request": {
+        "text": "A powerful icy wind burst accelerates outward, immediate airy pressure blast with crystalline streaks and a clean sweeping gust. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_mint_lance_release",
+      "filename": "uq_mint_lance_release.mp3",
+      "group": "Mint Impaler",
+      "event": "releaseFrostLance",
+      "request": {
+        "text": "A fully charged giant ice lance rushes forward, sharp clean crystalline release and strong piercing icy fweeeew air streak. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_mint_bloom_full",
+      "filename": "uq_mint_bloom_full.mp3",
+      "group": "Mint Glacier",
+      "event": "releaseGlacierBloom full",
+      "request": {
+        "text": "A fully charged enormous ice flower erupts, deep cold pressure boom and a broad expanding crystalline ring, majestic and decisive. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.3,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_rebound_burst",
+      "filename": "uq_rebound_burst.mp3",
+      "group": "Momo Ricochet",
+      "event": "Strawberry Rebound activation",
+      "request": {
+        "text": "A powerful magical heart pinball burst, immediate punchy candy cannon pop followed by tightly grouped elastic ricochet pings, energetic and satisfying. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_taro_chain_cast",
+      "filename": "uq_taro_chain_cast.mp3",
+      "group": "Taro",
+      "event": "castPathRecall first discharge",
+      "request": {
+        "text": "One spectacular violet chain lightning discharge, immediate electrical CRACK and deep thunder punch followed by several rapid branching zaps. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.3,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_taro_chain_hit",
+      "filename": "uq_taro_chain_hit.mp3",
+      "group": "Taro",
+      "event": "chain fork accent not each foe",
+      "request": {
+        "text": "One short powerful electrical chain jump, dry sizzling snap and tight low electric pop. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_sesame_prism_charge",
+      "filename": "uq_sesame_prism_charge.mp3",
+      "group": "Sesame",
+      "event": "castOathWard initial gather",
+      "request": {
+        "text": "A magical mirror focuses heavy prism energy, short crystalline inhale and firm glass resonance gathering inward. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_sesame_prism_volley",
+      "filename": "uq_sesame_prism_volley.mp3",
+      "group": "Sesame",
+      "event": "castOathWard one volley",
+      "request": {
+        "text": "One powerful fan of prism laser beams fires, firm energy cannon pulse and clean bright glass-edged whoosh, thick central beam. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_yuzu_parade",
+      "filename": "uq_yuzu_parade.mp3",
+      "group": "Yuzu",
+      "event": "useCharacterSkill citrusParade",
+      "request": {
+        "text": "A joyful powerful citrus crew rally: fast energetic air sweep, bright fizzy citrus pop accents and one strong celebratory stomp. No melody or voice. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 1.3,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "uq_yuzu_crew_hit",
+      "filename": "uq_yuzu_crew_hit.mp3",
+      "group": "Yuzu",
+      "event": "empowered crew attack grouped",
+      "request": {
+        "text": "One punchy citrus companion strike, firm juicy pop and quick sparkling zest swish, compact energetic impact. Isolated premium fantasy action game SFX. Bold cinematic weight, crisp fast onset, controlled bass, smooth highs. No voices, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    }
+  ],
+  "music": {
+    "id": "bgm_stage31_ashen_seedfields_source",
+    "filename": "bgm_stage31_ashen_seedfields_source.mp3",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 64000,
+      "force_instrumental": true,
+      "prompt": "Instrumental gameplay loop for Ashen Seedfields, Chapter 3 Stage 1 of a cute but dark fantasy candy survival action game. Burned harvest fields, ash blowing past ancient scarecrows, forgotten seeds, a looming harvest colossus. 120 BPM, 4/4, D minor, exactly 32 bars, stable tempo and harmony suitable for a seamless loop. Begin immediately with the established groove, no intro, no outro, no fade, no final resolving cadence; final bar flows back into the first. Driving rounded toms and restrained electronic drums, warm plucked marimba motif, low strings ostinato, woody percussion, subtle airy flute and dusty magical pads. Adventurous, haunted, determined, slightly playful, rich and polished. Medium combat intensity with breathing room for heavy shotgun and spell SFX; avoid constant crash cymbals, shrill lead or dense high mids. Memorable short recurring motif, variation in the middle, return to original texture for the final eight bars. No vocals, chanting, spoken words or sound effects."
+    }
+  }
+}

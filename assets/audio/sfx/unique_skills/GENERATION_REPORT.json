@@ -1,0 +1,249 @@
+{
+  "started": "2026-10-10T13:47:26.840Z",
+  "results": [
+    {
+      "id": "uq_shotgun_pump",
+      "status": "success",
+      "filename": "uq_shotgun_pump.mp3",
+      "bytes": 8821,
+      "sha256": "242b7d9718b4f236d86d5ea5b757137b76770cd2c609ffb74f689002ec9d333a",
+      "character_cost": "5",
+      "song_id": null
+    },
+    {
+      "id": "uq_shotgun_full",
+      "status": "success",
+      "filename": "uq_shotgun_full.mp3",
+      "bytes": 8821,
+      "sha256": "1ee011af53628d52413403f18d5d291d44616385209c003c41072f997b75d1b4",
+      "character_cost": "5",
+      "song_id": null
+    },
+    {
+      "id": "uq_shotgun_blast",
+      "status": "success",
+      "filename": "uq_shotgun_blast.mp3",
+      "bytes": 18434,
+      "sha256": "cc6d048fafb9c03e211926d5534f10779d6a74635f321cf835ebf3dfa0dbeb1b",
+      "character_cost": "11",
+      "song_id": null
+    },
+    {
+      "id": "uq_sniper_charge",
+      "status": "success",
+      "filename": "uq_sniper_charge.mp3",
+      "bytes": 37242,
+      "sha256": "0d2e832a27b780d98a8f77eef3e40c7e2ba79915de78cb2d2fa786e2b07451f0",
+      "character_cost": "20",
+      "song_id": null
+    },
+    {
+      "id": "uq_sniper_full",
+      "status": "success",
+      "filename": "uq_sniper_full.mp3",
+      "bytes": 8821,
+      "sha256": "2978516546283af85d49bdd89ca63159525193d7676dc7f34ed665a7942b8663",
+      "character_cost": "5",
+      "song_id": null
+    },
+    {
+      "id": "bgm_stage31_ashen_seedfields_source",
+      "status": "success",
+      "filename": "bgm_stage31_ashen_seedfields_source.mp3",
+      "bytes": 1536813,
+      "sha256": "cd3db436f44620abb377ce1e17c9812ae7527a2d8366cd3281dd70f1e621fae2",
+      "character_cost": null,
+      "song_id": "arn123ow5p9dMQ1wKGNz"
+    },
+    {
+      "id": "uq_sniper_fire",
+      "status": "success",
+      "filename": "uq_sniper_fire.mp3",
+      "bytes": 20942,
+      "sha256": "0c3c8f70699c7946c8eaded4acc5021b4e276d8f8741563fd0db6ceb508dbc75",
+      "character_cost": "12",
+      "song_id": null
+    },
+    {
+      "id": "uq_sniper_bolt",
+      "status": "success",
+      "filename": "uq_sniper_bolt.mp3",
+      "bytes": 11328,
+      "sha256": "042745ffe03cf0f4998bc9fe36a33caa00446c9df4d8486c3311141e0d51e4b7",
+      "character_cost": "6",
+      "song_id": null
+    },
+    {
+      "id": "uq_titan_charge",
+      "status": "success",
+      "filename": "uq_titan_charge.mp3",
+      "bytes": 37242,
+      "sha256": "f308cf83f3e15772cf799f746c652254db0d101b84bada868a1c625542f07468",
+      "character_cost": "20",
+      "song_id": null
+    },
+    {
+      "id": "uq_titan_full",
+      "status": "success",
+      "filename": "uq_titan_full.mp3",
+      "bytes": 12582,
+      "sha256": "53ed8d7529436f3bf3e380ef4b4b5c8d24e88644029b8aab173e174313887298",
+      "character_cost": "8",
+      "song_id": null
+    },
+    {
+      "id": "uq_titan_drop",
+      "status": "success",
+      "filename": "uq_titan_drop.mp3",
+      "bytes": 10493,
+      "sha256": "1b88b2f8f919d7918779f7e74165a6d85008eaf0fc1a14aa81774eeb28b3dbf2",
+      "character_cost": "6",
+      "song_id": null
+    },
+    {
+      "id": "uq_titan_slam_full",
+      "status": "success",
+      "filename": "uq_titan_slam_full.mp3",
+      "bytes": 29301,
+      "sha256": "805b87d43e3a7ba1a047d1a72542f5ce770eb83ea0938df61c66f91d673dcd2b",
+      "character_cost": "18",
+      "song_id": null
+    },
+    {
+      "id": "uq_titan_aftershock",
+      "status": "success",
+      "filename": "uq_titan_aftershock.mp3",
+      "bytes": 17180,
+      "sha256": "019c586fdb21fc5d6d4c94ce3c8841b42b65db8574888486d5a9e05af7212318",
+      "character_cost": "10",
+      "song_id": null
+    },
+    {
+      "id": "uq_rocket_salvo",
+      "status": "success",
+      "filename": "uq_rocket_salvo.mp3",
+      "bytes": 17180,
+      "sha256": "d6f3dca39e0b1246fa7ea5881e99082d48dcf12c8e9c7dc45e77c5d3176cc0c2",
+      "character_cost": "10",
+      "song_id": null
+    },
+    {
+      "id": "uq_rocket_detonation",
+      "status": "success",
+      "filename": "uq_rocket_detonation.mp3",
+      "bytes": 20106,
+      "sha256": "4364e97c45781004d2ab9dfe9b3729cfdf46239c91f2a7a5612ebefa74338ba3",
+      "character_cost": "12",
+      "song_id": null
+    },
+    {
+      "id": "uq_phantom_enter",
+      "status": "success",
+      "filename": "uq_phantom_enter.mp3",
+      "bytes": 18434,
+      "sha256": "ab9e07fa05301e242055f8e72c59caed5a1af5c17818f0c98f89fcc955b5e6e6",
+      "character_cost": "11",
+      "song_id": null
+    },
+    {
+      "id": "uq_phantom_strike",
+      "status": "success",
+      "filename": "uq_phantom_strike.mp3",
+      "bytes": 12164,
+      "sha256": "ba579945a4634c2cfff69f0a31f93e33d791c1e5680630abf9b4888ba825fb86",
+      "character_cost": "7",
+      "song_id": null
+    },
+    {
+      "id": "uq_mint_gale",
+      "status": "success",
+      "filename": "uq_mint_gale.mp3",
+      "bytes": 20106,
+      "sha256": "d317e46d8591b34398a6d75eece8251101a282669c96af6b05dd581c1a344667",
+      "character_cost": "12",
+      "song_id": null
+    },
+    {
+      "id": "uq_mint_lance_release",
+      "status": "success",
+      "filename": "uq_mint_lance_release.mp3",
+      "bytes": 17180,
+      "sha256": "81e7adcb7e87feddbbe73649dc9db172dc0806e3a7e61dbf30e094474a945c32",
+      "character_cost": "10",
+      "song_id": null
+    },
+    {
+      "id": "uq_mint_bloom_full",
+      "status": "success",
+      "filename": "uq_mint_bloom_full.mp3",
+      "bytes": 21359,
+      "sha256": "5b85d2409e474151cd9a44f4571b4eb68321efe6ca5a4f424a1e30cafc768acb",
+      "character_cost": "13",
+      "song_id": null
+    },
+    {
+      "id": "uq_rebound_burst",
+      "status": "success",
+      "filename": "uq_rebound_burst.mp3",
+      "bytes": 17180,
+      "sha256": "f93b965037894588db1c873ce45f03ffd0bc3ea5e8dbe2bdd0080aed8686db2e",
+      "character_cost": "10",
+      "song_id": null
+    },
+    {
+      "id": "uq_taro_chain_cast",
+      "status": "success",
+      "filename": "uq_taro_chain_cast.mp3",
+      "bytes": 21359,
+      "sha256": "e0089528ffe15bdb4aa68345ddc4158a9d84e36a7d7d9727a73abd1c3f9d6961",
+      "character_cost": "13",
+      "song_id": null
+    },
+    {
+      "id": "uq_taro_chain_hit",
+      "status": "success",
+      "filename": "uq_taro_chain_hit.mp3",
+      "bytes": 8821,
+      "sha256": "7a7e8dcfac0e8cfbf30e49b92793e0e653c75c91d220199c7f8fdeeaa76bd044",
+      "character_cost": "5",
+      "song_id": null
+    },
+    {
+      "id": "uq_sesame_prism_charge",
+      "status": "success",
+      "filename": "uq_sesame_prism_charge.mp3",
+      "bytes": 10493,
+      "sha256": "7cdff4752f078f4d732f8475a752927e93bb00439c1a9b98ad7f1b1a752eddcc",
+      "character_cost": "6",
+      "song_id": null
+    },
+    {
+      "id": "uq_sesame_prism_volley",
+      "status": "success",
+      "filename": "uq_sesame_prism_volley.mp3",
+      "bytes": 12164,
+      "sha256": "f3be2a469ad0bb3586d8fba2a391fca6a678e1e1075d6bd97a806cb0b459083d",
+      "character_cost": "7",
+      "song_id": null
+    },
+    {
+      "id": "uq_yuzu_parade",
+      "status": "success",
+      "filename": "uq_yuzu_parade.mp3",
+      "bytes": 21359,
+      "sha256": "6585d6712ea13210edee81cee36a9a4731f462d511dc18aec45f726264d9dde3",
+      "character_cost": "13",
+      "song_id": null
+    },
+    {
+      "id": "uq_yuzu_crew_hit",
+      "status": "success",
+      "filename": "uq_yuzu_crew_hit.mp3",
+      "bytes": 8821,
+      "sha256": "c01b3123bbae14c92a9ac62f1f848c88bbe5d71754732a1946cb31c8d2372c60",
+      "character_cost": "5",
+      "song_id": null
+    }
+  ],
+  "finished": "2026-10-10T13:48:16.608Z"
+}

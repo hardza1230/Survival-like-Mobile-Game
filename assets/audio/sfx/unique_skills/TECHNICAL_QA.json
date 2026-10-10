@@ -1,0 +1,236 @@
+{
+  "results": [
+    {
+      "filename": "bgm_stage31_ashen_seedfields_loop.mp3",
+      "duration_seconds": 62.032,
+      "peak_dbfs": -5.68,
+      "rms_dbfs": -19.97,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "bgm_stage31_ashen_seedfields_source.mp3",
+      "duration_seconds": 64.032,
+      "peak_dbfs": -0.47,
+      "rms_dbfs": -15.22,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_mint_bloom_full.mp3",
+      "duration_seconds": 1.28,
+      "peak_dbfs": -0.12,
+      "rms_dbfs": -9.12,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_mint_gale.mp3",
+      "duration_seconds": 1.2,
+      "peak_dbfs": 1.32,
+      "rms_dbfs": -15.71,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_mint_lance_release.mp3",
+      "duration_seconds": 1.0,
+      "peak_dbfs": 0.86,
+      "rms_dbfs": -19.58,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_phantom_enter.mp3",
+      "duration_seconds": 1.08,
+      "peak_dbfs": 1.71,
+      "rms_dbfs": -16.19,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_phantom_strike.mp3",
+      "duration_seconds": 0.68,
+      "peak_dbfs": 0.46,
+      "rms_dbfs": -11.05,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_rebound_burst.mp3",
+      "duration_seconds": 1.0,
+      "peak_dbfs": -4.83,
+      "rms_dbfs": -23.71,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_rocket_detonation.mp3",
+      "duration_seconds": 1.2,
+      "peak_dbfs": 0.51,
+      "rms_dbfs": -9.22,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_rocket_salvo.mp3",
+      "duration_seconds": 1.0,
+      "peak_dbfs": 0.34,
+      "rms_dbfs": -8.74,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_sesame_prism_charge.mp3",
+      "duration_seconds": 0.6,
+      "peak_dbfs": -1.5,
+      "rms_dbfs": -18.96,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_sesame_prism_volley.mp3",
+      "duration_seconds": 0.68,
+      "peak_dbfs": -0.39,
+      "rms_dbfs": -11.66,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_shotgun_blast.mp3",
+      "duration_seconds": 1.08,
+      "peak_dbfs": 1.52,
+      "rms_dbfs": -17.85,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_shotgun_full.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": 0.77,
+      "rms_dbfs": -20.04,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_shotgun_pump.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -0.37,
+      "rms_dbfs": -21.21,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_sniper_bolt.mp3",
+      "duration_seconds": 0.64,
+      "peak_dbfs": 0.56,
+      "rms_dbfs": -21.68,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_sniper_charge.mp3",
+      "duration_seconds": 2.25,
+      "peak_dbfs": -0.13,
+      "rms_dbfs": -4.05,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_sniper_fire.mp3",
+      "duration_seconds": 1.24,
+      "peak_dbfs": 1.51,
+      "rms_dbfs": -8.53,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_sniper_full.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": 0.16,
+      "rms_dbfs": -22.33,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_taro_chain_cast.mp3",
+      "duration_seconds": 1.28,
+      "peak_dbfs": 1.54,
+      "rms_dbfs": -4.68,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_taro_chain_hit.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -0.75,
+      "rms_dbfs": -18.67,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_titan_aftershock.mp3",
+      "duration_seconds": 1.0,
+      "peak_dbfs": -0.25,
+      "rms_dbfs": -11.69,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_titan_charge.mp3",
+      "duration_seconds": 2.25,
+      "peak_dbfs": -2.65,
+      "rms_dbfs": -12.5,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_titan_drop.mp3",
+      "duration_seconds": 0.6,
+      "peak_dbfs": -1.0,
+      "rms_dbfs": -12.56,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_titan_full.mp3",
+      "duration_seconds": 0.72,
+      "peak_dbfs": -0.52,
+      "rms_dbfs": -8.66,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_titan_slam_full.mp3",
+      "duration_seconds": 1.76,
+      "peak_dbfs": -0.25,
+      "rms_dbfs": -15.63,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_yuzu_crew_hit.mp3",
+      "duration_seconds": 0.48,
+      "peak_dbfs": -1.77,
+      "rms_dbfs": -19.2,
+      "decode_ok": true,
+      "non_silent": true
+    },
+    {
+      "filename": "uq_yuzu_parade.mp3",
+      "duration_seconds": 1.28,
+      "peak_dbfs": 0.45,
+      "rms_dbfs": -9.28,
+      "decode_ok": true,
+      "non_silent": true
+    }
+  ],
+  "music_processing": {
+    "source_seconds": 64.032,
+    "loop_pcm_seconds": 62.032,
+    "circular_crossfade_seconds": 2,
+    "normalization": "-18 LUFS target, true peak -1.5 dB target",
+    "note": "Crossfade reduces boundary discontinuity; generated tempo/harmony and perceived loop seam require listening review. MP3 player gapless support matters."
+  },
+  "listening_review": "Not performed"
+}

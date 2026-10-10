@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.79.0 — Consolidation D1/D2/D3 (D done)
+# Latest delivery: Unique spectacle audio + Stage 3-1 trial (assets only)
+
+26 new ElevenLabs Unique SFX in `assets/audio/sfx/unique_skills/`: pump-shotgun, sniper crack/whistle, max-charge Titan ground slam, all six active hero ability families. Stage 3-1 Ashen Seedfields music original + ~62s prepared loop in `assets/audio/bgm/incoming_stage31/`. See `docs/audio_orders/UNIQUE_SFX_STAGE31_HANDOFF.md` for precise hooks and loop/mixing rules. Existing 35 Build sounds already integrated in v6.73.0. New assets NOT wired, runtime remains v6.79.0; listening review pending. Owner wants another AI to integrate. Next: follow handoff, preserve combat timing, then version/check/deploy.
+
+# Previous delivery: v6.79.0 — Consolidation D1/D2/D3 (D done)
 
 D1: SET_COLLECT_ON=false — gearSetCollected false, codex deposit tap/bars/collect line hidden; load refunds setDeposit ×10 shards. D2: Bazaar tab 'Gacha' (was Boxes) holds Gear Gacha (openGachaReveal, band from Equipment) + Trade-in + supply box; Equipment gacha button kept (tutorial). D3: CUR_ALIAS exalt/regal→transmute, chaos→alt; curKey() in currencyDef/Save.currency/add/spend/order payout; load merges old stock; CURRENCY list 5 entries; prices transmute 120 alt 110. Tests: progression-polish context + 3 nav tabs. npm check passed. Next: E.
 
