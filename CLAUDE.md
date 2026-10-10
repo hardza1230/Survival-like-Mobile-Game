@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.70.0 — Mint buff
+# Latest delivery: v6.71.0 — Consolidation A1
+
+Owner approved system cut/merge plan: docs/SYSTEM_CONSOLIDATION_PLAN.md (track status there). A1: TAG_SETS_ON=false disables Tag Set tier bonuses (refreshTagSets no-op), tag labels/⬆ hints on cards, pause tag grid and HUD tag counts; TAG_SETS/tagCounts kept (trade-off/unique _tagIgnite/_tagChill unaffected). Dual Infusion offer disabled (infusion2 paths remain harmless). Next: A2 Modifiers into Relic pool. npm check passed.
+
+# Previous delivery: v6.70.0 — Mint buff
 
 Owner chose critique fixes A+B+C. CHARACTERS.mint dmg .92→1.00, crit .02→.05. cdOf mint frost base max(1.0,1.7−.07·lvl) (was max(1.25,1.95−.08·lvl)). mintVolleyProfile 2nd lance at lvl≥3 (was 4). damage(): Mint vs boss/mini ×(1+.04·min(4,_chill)) while chill fresh (≤2.5s); Glacier Brittle boss ×1.15. mint-glacier test updated 135→155.25. Mint Gale damage (option D) not done. npm check passed.
 
@@ -125,6 +129,7 @@ Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55
 
 
 ## 5. ถัดไป
+- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A1 เสร็จ → A2 ต่อ)
 - รอ feedback เจ้าของจากการเล่นจริง: Kitchen upkeep (v6.69), Story C2–C3 buff/Temple cost (v6.68), item mods (v6.67), Delve
 - งานค้างระยะยาว: Monster animation ที่เหลือ (`docs/MONSTER_ANIMATION_PLAN.md`), Play Store (พักไว้: ลบบัญชีในแอป, store listing, keystore, closed test)
 - แผน commit เก่า: `docs/COMMIT_ROADMAP.md`

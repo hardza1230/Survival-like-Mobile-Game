@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.70.0';
+const GAME_VERSION = '6.71.0';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'6.71.0',date:'2026-10-10',title:'Simpler builds (step 1)',items:['Build Tag set bonuses removed','Second Flavor Infusion (level 22) removed — one element per run']},
   {v:'6.70.0',date:'2026-10-10',title:'Mint buff',items:['Mint base damage 92% → 100% and crit 2% → 5%','Frost Lance fires faster at higher levels (fastest 1.0s, was 1.25s)','Second lance from level 3 (was level 4)','Bosses and minibosses take +4% damage per Chill stack (max +16%); Glacier Brittle bosses take +15% more']},
   {v:'6.69.1',date:'2026-10-10',title:'Kitchen 8-Way Shots fix',items:['8-Way Shots recipe no longer uses Item Power or crits, like every other recipe']},
   {v:'6.69.0',date:'2026-10-10',title:'Kitchen recipes now have a price',items:['Each active recipe costs −6% Max HP and −4% Attack Power (more for ★ and signature dishes)','Recipe slots: max 3 (extra recipes return their parts)','Heal, Recover, Shield, Immune and Cooldown parts are retired (parts returned to your bag)','Recipe damage no longer uses Item Power or crits; total power capped at ×2.5','Rage/Haste last 4s with an 8s cooldown; Minty refreezes a foe at most every 3s']},
@@ -3020,6 +3021,7 @@ const INFUSION_UP={id:'inf_deep',name:'Deep Flavor',emoji:'✨',max:3,headline:'
 // 🏷️ Tag Sets (v6.7.0 · B1) — 8 แท็ก · ทุกการ์ด/สาย/รสชาติ/Relic/mod ไอเทม มีแท็ก · สะสม 2/4/6 = โบนัสเซ็ต
 // แหล่งนับ: อาวุธประจำตัว (ฐาน) · การ์ดอัปเกรดที่มี (1 ต่อใบ) · Path · Infusion · Mutation · Evolution · Relic · ไอเทมที่สวม (แท็กละ 1 ต่อชิ้น)
 const TAG_TIERS=[2,4,6];
+const TAG_SETS_ON=false;   // v6.71 A1: Tag Set bonuses cut (docs/SYSTEM_CONSOLIDATION_PLAN.md)
 const TAG_SETS={
   fire:  {emoji:'🔥',name:'Fire',  b:['+6% damage','15% of hits ignite','+15% damage'],
     t:[p=>{p.dmgMul+=(1.06)-1;},p=>{p._tagIgnite=Math.max(p._tagIgnite||0,0.15);},p=>{p.dmgMul+=(1.15)-1;}]},
@@ -3054,7 +3056,7 @@ const TAGS_OF={
   relic:{splinter:['crit'],leech:['guard'],burst:['fire','swarm'],shell:['guard'],jam:['swarm'],crown:['crit'],glass:['crit'],momentum:['melee'],lastbreath:['guard'],chill:['frost'],magnet:['ranged'],firstbite:['crit'],dashcharge:['spark','melee'],trophy:['guard'],harvest:['swarm']},
   affix:{crit:['crit'],critdmg:['crit'],precision:['crit'],gambler:['crit'],focus:['crit','spark'],hp:['guard'],def:['guard'],regen:['guard'],hppct:['guard'],regenpct:['guard'],bulwark:['guard'],crisisguard:['guard'],laststand:['guard'],mend:['guard'],nourish:['guard'],lifekill:['guard'],vampiric:['guard','melee'],cd:['spark'],uniquecd:['spark'],spd:['spark'],dash:['spark'],sprint:['spark'],wayfarer:['spark'],dmg:['fire'],bossdmg:['fire'],edge:['melee'],berserk:['melee','fire']}};
 function tagList(t){ return !t?[]:Array.isArray(t)?t:[t]; }
-function tagLabel(t){ const ts=tagList(t).filter(x=>TAG_SETS[x]); return ts.length?'  ·  '+ts.map(x=>TAG_SETS[x].emoji+' '+TAG_SETS[x].name).join(' '):''; }
+function tagLabel(t){ if(!TAG_SETS_ON)return ''; const ts=tagList(t).filter(x=>TAG_SETS[x]); return ts.length?'  ·  '+ts.map(x=>TAG_SETS[x].emoji+' '+TAG_SETS[x].name).join(' '):''; }
 // 🧩 Modifiers (v6.8.0 · B3) — การ์ดเปลี่ยนกลไก ตัวละครละ 6 ใบ · ได้สูงสุด MOD_MAX ใบ/ด่าน · ออกตั้งแต่เลเวล 4
 // kind: hitBoom/hitChain/nthHit/killBurst/killTrap/dashNova/dashTrail/pulse/stillPower/movePower/closeBonus/farBonus/execute/bossBonus/frozenMul
 const MOD_MAX=3;
@@ -6397,7 +6399,7 @@ class Game extends Phaser.Scene {
     this.drawOverheadStatus(hpf);
     // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
     if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
-      const tc=this.tagCounts?this.tagCounts():{},tg=Object.keys(tc).filter(t=>tc[t]>=2&&TAG_SETS[t]).map(t=>TAG_SETS[t].emoji+tc[t]).join(' ');
+      const tc=this.tagCounts?this.tagCounts():{},tg=Object.keys(tc).filter(t=>TAG_SETS_ON&&tc[t]>=2&&TAG_SETS[t]).map(t=>TAG_SETS[t].emoji+tc[t]).join(' ');
       this.statTxt.setText([rel,sh,tg].filter(Boolean).join('   ')); }
     // บรรทัดชื่อด่านโชว์ 6 วิแรกของด่านแล้วจางหาย (ดูซ้ำได้ในหน้า Pause)
     if(this.stageTxt&&this.stageTxt.visible){ const a=Phaser.Math.Clamp(((this._stageTxtAt??-99)+6-(this.elapsed||0))/1.2,0,1); this.stageTxt.setAlpha(a); }
@@ -9065,7 +9067,7 @@ class Game extends Phaser.Scene {
     pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,pH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,pH,14);
     // v6.7.1 (B2): ตารางแท็กบิ้ว — จำนวน · ขั้นที่ได้ · อีกกี่ชิ้นถึงโบนัสถัดไป
     let tagBot=panelY+pH;
-    if(portrait){ const tc=this.tagCounts?this.tagCounts():{},keys=Object.keys(TAG_SETS).sort((a,b)=>(tc[b]||0)-(tc[a]||0)),ty=panelY+pH+10,cw=(pw-8)/2,rh=34;
+    if(portrait&&TAG_SETS_ON){ const tc=this.tagCounts?this.tagCounts():{},keys=Object.keys(TAG_SETS).sort((a,b)=>(tc[b]||0)-(tc[a]||0)),ty=panelY+pH+10,cw=(pw-8)/2,rh=34;
       const hd=this.add.text(px+4,ty,'🏷️ Build Tags',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9dff9d'}).setOrigin(0,0); this.pauseUI.add(hd);
       keys.forEach((t,i)=>{ const d=TAG_SETS[t],n=tc[t]||0,tier=TAG_TIERS.filter(x=>n>=x).length,next=TAG_TIERS[tier],x=px+(i%2)*(cw+8),y=ty+20+Math.floor(i/2)*(rh+4),on=n>0;
         const g=this.add.graphics(); g.fillStyle(tier?0x23382a:0x241a33,on?0.92:0.55); g.fillRoundedRect(x,y,cw,rh,8); g.lineStyle(1.2,tier?0x9dff9d:0x4a4059,on?0.9:0.5); g.strokeRoundedRect(x,y,cw,rh,8);
@@ -11632,7 +11634,7 @@ class Game extends Phaser.Scene {
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;
     if(this.recipeMode&&this._egBuilt)return this.endlessCards(n);   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
-    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};const tg=tagList(extra.tags||this.upTags(u.id)),tc=this.tagCounts(),up=tg.find(t=>TAG_TIERS.includes((tc[t]||0)+1)&&!((b.lv||{})[u.id]>0));c.desc=(c.desc||'')+tagLabel(tg)+(up?'  ⬆ '+TAG_SETS[up].emoji+'×'+((tc[up]||0)+1)+' bonus':'');return c;};
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};const tg=tagList(extra.tags||this.upTags(u.id)),tc=this.tagCounts(),up=tg.find(t=>TAG_TIERS.includes((tc[t]||0)+1)&&!((b.lv||{})[u.id]>0));c.desc=(c.desc||'')+tagLabel(tg)+(up&&TAG_SETS_ON?'  ⬆ '+TAG_SETS[up].emoji+'×'+((tc[up]||0)+1)+' bonus':'');return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
@@ -11645,7 +11647,7 @@ class Game extends Phaser.Scene {
       return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,tags:TAGS_OF.infusion[f.id],kind:'Flavor Infusion',special:true,color:f.color,...(this.cocoaInfMatch(f.id)?{headline:'★ Build match: '+this.cocoaInfMatch(f.id)}:{}),apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
     }
     // v6.12 (B7): Dual Infusion — ธาตุที่สอง (ติด 50% ของฮิต) ตั้งแต่เลเวล 22
-    if(!noSpecial&&b.infusion&&!b.infusion2&&!this._inTutorial&&(this.level||1)>=22){
+    if(false&&!noSpecial&&b.infusion&&!b.infusion2&&!this._inTutorial&&(this.level||1)>=22){
       this.showBanner('🍯 Dual Infusion','Blend a second flavor (50% of hits)',1600);
       return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.filter(f=>f.id!==b.infusion)).slice(0,3).map(f=>makeCard(f,{desc:f.desc+' · procs on 50% of hits',tags:TAGS_OF.infusion[f.id],kind:'Dual Infusion',special:true,color:f.color,apply:()=>{b.infusion2=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' Dual Flavor','Second flavor blended in',1800);Sfx.clear();}}));
     }
@@ -13278,7 +13280,7 @@ class Game extends Phaser.Scene {
     (this.relics||[]).forEach(k=>add(TAGS_OF.relic[k]));
     const eq=(Save.data&&Save.data.equippedGear)||{}; for(const s in eq){ const seen={}; (Save.gearAffixes(eq[s])||[]).forEach(a=>tagList(TAGS_OF.affix[a.id]).forEach(t=>seen[t]=1)); add(Object.keys(seen)); }
     return c; }
-  refreshTagSets(){ const p=this.player; if(!p)return; this._tagTier=this._tagTier||{}; const c=this.tagCounts();
+  refreshTagSets(){ const p=this.player; if(!p||!TAG_SETS_ON)return; this._tagTier=this._tagTier||{}; const c=this.tagCounts();
     for(const t in TAG_SETS){ const d=TAG_SETS[t],n=c[t]||0,had=this._tagTier[t]||0; let got=had;
       for(let i=had;i<TAG_TIERS.length;i++){ if(n<TAG_TIERS[i])break; d.t[i](p); got=i+1; this.showBanner(d.emoji+' '+d.name+' ×'+TAG_TIERS[i],'Set bonus: '+d.b[i],1700); }
       this._tagTier[t]=got; }
