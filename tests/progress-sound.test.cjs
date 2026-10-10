@@ -6,7 +6,7 @@ for(const type of ['daily','achievement']){
  const context={d,spec:{key:'today'},localDayKey:()=> 'yesterday',a:achievement,Save:{data:{achievements:{}},addSugar:n=>total+=n},Sfx:{progress:k=>cues.push(k)}};
  const callback=bind(actionLine(type==='daily'?'if(d.claimDay===spec.key)return;':'if(Save.data.achievements[a.id]||!a.test'),context);callback();const reward=total;assert(reward>0);callback();assert.equal(total,reward);assert.deepEqual(cues,[type]);
 }
-for(const [marker,cue] of [['if(Save.buyTal(k))','core'],['if(Save.buySpecialCore(core.id))','core'],['if(Save.buyOvercap(k))','overcap']]){
+for(const [marker,cue] of [['if(Save.buyTal(k))','core'],['if(Save.buySpecialCore(core.id))','core']]){
  for(const success of [true,false]){const cues=[];const c={k:'hp',core:{id:'magnet',name:'Magnet'},u:{name:'HP'},cost:1,stn:0,cst:{stones:1,sugar:1},se:'',Save:{buyTal:()=>success,buySpecialCore:()=>success,buyOvercap:()=>success,overcap:()=>1},Sfx:{progress:k=>cues.push(k),select(){},error(){}}};bind(actionLine(marker),c)();assert.deepEqual(cues,success?[cue]:[]);}
 }
 const a=source.indexOf('const Sfx = {'),b=source.indexOf('\n};',a)+3;const played=[],voices=[];const c={window:{__g:{cache:{audio:{exists:()=>true}},sound:{add:(key,opts)=>{const s={key,opts,isPlaying:false,once(e,f){this.done=f;},play(){this.isPlaying=true;played.push(key);},stop(){this.isPlaying=false;},destroy(){this.destroyed=true;}};voices.push(s);return s;}}}},performance:{now:()=>1000},Math,setTimeout,clearTimeout};vm.createContext(c);const S=vm.runInContext(source.slice(a,b)+'\nSfx',c);

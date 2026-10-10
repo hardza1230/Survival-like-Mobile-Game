@@ -20,5 +20,5 @@ for(let stage=0;stage<15;stage++){
 // Opening fill becomes a showdown without clearing foes, XP, bonus or pickup state.
 {const s=scene(0);s.waveObjective={type:'fill',progress:2,target:2,color:1};s._fieldDrops={hearts:2};s.completeWaveObjective();assert.equal(s.waveObjective.type,'hunt');assert.equal(s.waveObjective._huntPhase,'elite');assert.equal(s.waveObjective.target,1);assert.equal(s.settlements,undefined);assert.equal(s.sugarRun,0);assert.equal(s._fieldDrops.hearts,2);s.onWaveObjectiveTargetDown({});assert.equal(s.settlements,1);}
 // Other modes keep the single-step fill flow.
-for(const flag of ['recipeMode','riftMode','bossRush','endlessMode','_inTutorial']){const s=scene(0);s[flag]=true;s.waveObjective={type:'fill'};s.completeWaveObjective();assert.equal(s.waveObjective,null);assert.equal(s.settlements,undefined);}
+for(const flag of ['recipeMode','riftMode','bossRush','_inTutorial']){const s=scene(0);s[flag]=true;s.waveObjective={type:'fill'};s.completeWaveObjective();assert.equal(s.waveObjective,null);assert.equal(s.settlements,undefined);}
 console.log('P3 staged missions: all 15 stages, exact kill gates, sequential Elite rounds, pause/pool/missing target recovery, HUD, single final reward, fill showdown and special-mode isolation passed');

@@ -5,8 +5,8 @@ function method(n){const at=src.indexOf('  '+n+'(');assert(at>=0,n);const tail=s
 function block(a,b){return src.slice(src.indexOf(a),src.indexOf(b));}
 let seed=44;const math=Object.create(Math);math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/2**32;};
 const ctx={Math:math,Phaser:{Utils:{Array:{Shuffle:a=>a}},Math:{FloatBetween:()=>0}},SKILL_ICON:{sprinkle:'ic_momo_power'},tagList:()=>[],tagLabel:()=>'',TAG_TIERS:[],TAG_SETS:{},WEAPON_TAGS:{},Sfx:{shoot(){},frost(){},clear(){},heal(){},beam(){},boom(){}},rollRarity:()=>({color:1,potency:1,ranks:1}),STAT_CAPS:{dmgMul:10,critChance:.8,cdMulMin:.3,speedMul:3,dmgTakenMin:.35},BALANCE:{moveSpeed:180},CF:{hurt:5}};vm.createContext(ctx);
-vm.runInContext(block('const BASIC_EVO_DESC=','/* ---- BASIC ATTACK PROTOTYPE')+block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const INFUSION_UP=','// 🏷️ Tag Sets')+block('const MINT_CARD_WEIGHTS=','const CHARACTER_UNIQUES = {')+block('const BUILD_PATH_STYLES=','// Mint M1:')+block('function egUpgradeDefs(','function egBuildCost('),ctx);
-const api=vm.runInContext('({berryShotProfile,berryUpgradeGroup,berryAttackInfo,berryCardHeadline,egUpgradeDefs,pathMods})',ctx);
+vm.runInContext(block('const BASIC_EVO_DESC=','/* ---- BASIC ATTACK PROTOTYPE')+block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const INFUSION_UP=','// 🏷️ Tag Sets')+block('const MINT_CARD_WEIGHTS=','const CHARACTER_UNIQUES = {')+block('const BUILD_PATH_STYLES=','// Mint M1:'),ctx);
+const api=vm.runInContext('({berryShotProfile,berryUpgradeGroup,berryAttackInfo,berryCardHeadline,pathMods})',ctx);
 const names=['attachChargedSeed','berryBullet','berrySplash','castBerryBlaster','tickBerryCharge','releaseBerryCharge','hitBerrySeed','pathBulletDmg','_hitEnemyCore','ptOnBounce','basicAttackInfo','rollBasicAttackUpgrades','endlessCards','endlessStatDefs','getBullet','killBullet','artDelay','trackArtVfx','clearArtVfx','poseFlash','releaseSnipe','snipeMods','cancelSnipe'];
 const Scene=vm.runInContext('class Scene{'+names.map(method).join('\n')+'\n}Scene',ctx);
 function scene(path,foes=[]){
@@ -23,7 +23,7 @@ function fire(s,lvl=1){s.castBerryBlaster(lvl,false,1,s.basicAttack);if(s.basicA
 for(const path of ['sniper','shotgun','ricochet']){
  const s=scene(path),pool=s.rollBasicAttackUpgrades(99,{noSpecial:true});assert(pool.some(c=>c.poolGroup==='path'));assert(pool.some(c=>c.poolGroup==='shared'));assert(pool.some(c=>c.poolGroup==='universal'));
  assert(pool.some(c=>c.key==='rate')===(path==='ricochet'));assert(pool.some(c=>c.key==='s_draw')===(path==='sniper'));assert(pool.some(c=>c.key==='s_slug')===(path==='shotgun'));assert(pool.some(c=>c.key==='s_seek')===(path==='ricochet'));
- s.player.hp=20;assert(s.rollBasicAttackUpgrades(3,{noSpecial:true}).some(c=>c.key==='sweetRecovery'));assert(!api.egUpgradeDefs('momo',{path,lv:{}}).some(u=>u.id==='rate')===(path!=='ricochet'));assert(api.egUpgradeDefs('momo',{path,lv:{rate:2}}).some(u=>u.id==='rate'));
+ s.player.hp=20;assert(s.rollBasicAttackUpgrades(3,{noSpecial:true}).some(c=>c.key==='sweetRecovery'));
 }
 {const s=scene('sniper'),c=s.rollBasicAttackUpgrades(99,{noSpecial:true}).find(c=>c.key==='volley');assert(c.title==='Dense Chamber');assert(c.headline.includes('100% → 112%'));c.apply();assert.equal(s.basicAttack.ranks.volley,1);assert.equal(api.berryShotProfile(1,false,s.basicAttack).power,1.12);}
 // Statistical weights are per draw, exhausted pools are already covered by Mint's common sampler.

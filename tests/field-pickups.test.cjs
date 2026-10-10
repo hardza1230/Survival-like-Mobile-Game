@@ -21,7 +21,7 @@ for(const [effect,missing,expected] of [[2,80,35],[1,4,4],[.5,80,9]]){const s=sc
 // Dense kills cannot turn healing gear into unlimited recovery. Hungry Pact forbids items only.
 {const s=scene();s.player.hp=1;s.player.lifesteal=3;s.player.lifeOnKill=2;for(let k=0;k<200;k++)s.storyOnKillHealing();assert.equal(s.player.hp,4);s.elapsed=.99;s.storyOnKillHealing();assert.equal(s.player.hp,4);s.elapsed=1;s.storyOnKillHealing();assert.equal(s.player.hp,7);s.recipeHas=()=>true;s.elapsed=2;s.storyOnKillHealing();assert.equal(s.player.hp,7);s.recipeHas=()=>false;s.pactHealMul=()=>0;s.storyOnKillHealing();assert.equal(s.player.hp,7);s.pactHealMul=()=>1;s.player.healEffect=0;s.storyOnKillHealing();assert.equal(s.player.hp,10);assert.equal(s.dropHeal(0,0),null);}
 // Special modes keep old drop frequency and heart amount; full HP preservation is shared QoL.
-for(const flag of ['recipeMode','riftMode','bossRush','endlessMode','_inTutorial']){const s=scene();s[flag]=true;for(let k=0;k<6;k++){assert(s.dropHeal(0,0));assert(s.spawnVac(0,0));}s.collectHeal(null,s.heals.pool[0]);assert.equal(s.player.hp,64);assert.equal(s._fieldDrops,undefined);}
+for(const flag of ['recipeMode','riftMode','bossRush','_inTutorial']){const s=scene();s[flag]=true;for(let k=0;k<6;k++){assert(s.dropHeal(0,0));assert(s.spawnVac(0,0));}s.collectHeal(null,s.heals.pool[0]);assert.equal(s.player.hp,64);assert.equal(s._fieldDrops,undefined);}
 assert(method('startStage').includes('this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0'));
 assert(method('killEnemy').includes('this.storyFieldDrops(e)'));assert(method('killEnemy').includes('this.storyOnKillHealing()'));
 assert(method('breakCrate').includes('this.usesStoryBudget?.()?0.20:0.28'));

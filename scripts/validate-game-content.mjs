@@ -355,7 +355,7 @@ if (!source.includes('updatePickupReadability()') || !source.includes('this.play
 if (!source.includes('castPathRecall(dm,ul)') || !source.includes('castOathWard(dm,ul)')) {
   throw new Error('Premium Taro/Sesame unique reworks are missing');
 }
-for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)','buildEndgame()','recordEndless(cycle,kills,seconds,character)','The Echo of Hunger']) {
+for (const contract of ['chiliBossAttack(b)','frostBossAttack(b)']) {
   if (!source.includes(contract)) throw new Error(`Missing Stage 3/4 or endgame contract: ${contract}`);
 }
 for(const contract of ["this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper':type==='shooter'?'e_banquet_eye'","this.stage5Pose(b,pose","this.stage5DeathGhost(e)"]){

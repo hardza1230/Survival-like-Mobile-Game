@@ -5,7 +5,7 @@ const C=vm.runInNewContext('class Scene{'+['isEndgameRun','focusGearPool','check
 const s=new C();Object.assign(s,{state:'play',mode:'wave',openEndgameCurse(){this.choices=(this.choices||0)+1;}});
 assert.equal(s.checkEndgameCurse(1),false);assert.equal(s.choices,undefined);
 s.recipeMode=true;assert.equal(s.checkEndgameCurse(.24),false);assert.equal(s.checkEndgameCurse(.25),true);assert.equal(s.checkEndgameCurse(.74),false);assert.equal(s.checkEndgameCurse(.75),true);assert.equal(s.checkEndgameCurse(1),false);assert.equal(s.choices,2);
-s._curseCheckpoint=0;s.state='levelup';assert.equal(s.checkEndgameCurse(1),false);assert.equal(s._curseCheckpoint,0);s.state='play';s.recipeMode=false;s.endlessMode=true;assert(s.checkEndgameCurse(.3));s.endlessMode=false;s.bossRush=true;s.mode='breather';assert(s.checkEndgameCurse(.8));
+s._curseCheckpoint=0;s.state='levelup';assert.equal(s.checkEndgameCurse(1),false);assert.equal(s._curseCheckpoint,0);s.state='play';s.recipeMode=false;s.bossRush=true;s.mode='breather';assert(s.checkEndgameCurse(.8));
 const pool=['weapon','armor','gloves','boots','ring','amulet'].map(slot=>({slot}));s._farmFocus='weapon';assert.deepEqual(Array.from(s.focusGearPool(pool),x=>x.slot),['weapon']);s._farmFocus='armor';assert.deepEqual(Array.from(s.focusGearPool(pool),x=>x.slot),['armor','gloves','boots']);s._farmFocus='all';assert.equal(s.focusGearPool(pool),pool);
 assert(!method('onWaveCleared').includes('openCrossroads'));
 assert(method('startRun').includes('this._activeZoneMods=[]'));

@@ -19,7 +19,7 @@ for(let i=1;i<difficulties.length;i++){
   if(b.hp<=a.hp||b.dmg<=a.dmg||b.reward<=a.reward)throw new Error(`Difficulty ${b.name} must strictly increase risk and reward`);
   if((b.reward/a.reward)<0.95*(b.hp/a.hp))throw new Error(`Difficulty ${b.name} reward falls too far behind its HP increase`);
 }
-for(const token of ["waves:5, recommendedPower:560","waves:5, recommendedPower:940","waves:5, recommendedPower:7600","c2Root:{ hp:1.16, dmg:1.12, speed:1.08, maxLive:88 }","(this.endlessCycle||0)*0.18","this.secretBoss?1.65:1"]){
+for(const token of ["waves:5, recommendedPower:560","waves:5, recommendedPower:940","waves:5, recommendedPower:7600","c2Root:{ hp:1.16, dmg:1.12, speed:1.08, maxLive:88 }"]){
   if(!source.includes(token))throw new Error(`Missing balance contract: ${token}`);
 }
 console.log('validated ten-stage power curve, five difficulty tiers, Chapter 2 finale targets, and Endless scaling');

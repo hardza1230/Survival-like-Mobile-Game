@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.93.0 — Lighter GPU memory (perf item 1)
+# Latest delivery: v6.94.0 — Consolidation F (dead code removed)
+
+Owner: remove Endgame Build, Sugar Rush auto level-ups, Endless, Ascension, and every switch-disabled system; Zone Modifiers kept (owner undecided). Removed: egBuild/egBuildPoints/egUpgradeDefs/egBuildCost/EG_*, buildEgBuild, applyEgBuild, _egBuilt; recipeLevelUp, openRecipeDraft, slotLevelUp, refreshUpBtn, openUpgradePanel (⬆ button), RECIPE_DRAFT_EVERY, _draftQ/_specQ/_draftPick (sugarRush() kept: Sweet biome comets use it); buildEndgame screen, Save.canAscend/ascend/recordEndless, endlessMode/endlessCycle/secretBoss branches (endgameUnlocked = ascension>0 || storyComplete); TAG_SETS_ON/tagLabel/refreshTagSets/pause tag grid (TAG_SETS/tagCounts kept); OVERCAP_ON/buyOvercap/overcapCost/OVERCAP_MAX (owned overcap still counts, stones→threads kept); SET_COLLECT_ON/gearSetCollected/setDeposit UI; BESTIARY_STATS_ON/bestiaryBonus*/bestiaryTotals. Save refund migrations kept. Tests/validators updated. npm check passed.
+
+# Previous delivery: v6.93.0 — Lighter GPU memory (perf item 1)
 
 stageOnlyArtKeys() (STAGE_SHEET_KEYS + STAGE_DECOR items + floor_cN, minus bootKeep): preloadAll only downloads them into SW/HTTP cache (dl fetch, LoadMeter) instead of decoding into WebGL; ensureStageArt decodes per stage. syncBgTile() on postupdate: bgTile sized ≈ view + 2 pattern periods (even multiples of frame×tileScale, cap WORLD), position snapped to period multiples at camera centre → no 4000×4000 canvas (−64MB), pattern stays fixed in world. v6.92: nearestEnemy per-frame cache, evictOtherBgm. npm check passed. No on-device FPS measured.
 

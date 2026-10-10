@@ -5,8 +5,8 @@ function block(from,to){return source.slice(source.indexOf(from),source.indexOf(
 let seed=7;const rng=Object.create(Math);rng.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
 const ctx={Math:rng,Phaser:{Utils:{Array:{Shuffle:a=>a}},Math:{FloatBetween:(a,b)=>(a+b)/2}},SKILL_ICON:{frost:'ic_frost'},tagList:()=>[],tagLabel:()=>'',TAG_TIERS:[],TAG_SETS:{},WEAPON_TAGS:{},Sfx:{clear(){},frost(){},heal(){}},rollRarity:()=>({color:1,potency:1,ranks:1}),STAT_CAPS:{dmgMul:10,critChance:.8,cdMulMin:.3,speedMul:3,dmgTakenMin:.35},BALANCE:{moveSpeed:180}};
 vm.createContext(ctx);
-vm.runInContext(block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const INFUSION_UP=', '// 🏷️ Tag Sets')+block('const MINT_CARD_WEIGHTS=', 'const CHARACTER_UNIQUES = {')+block('const BUILD_PATH_STYLES=', '// Mint M1:')+block('const BASIC_EVO_DESC=', '/* ---- BASIC ATTACK PROTOTYPE')+block('function egUpgradeDefs(', 'function egBuildCost('),ctx);
-const api=vm.runInContext('({BASIC_ATTACKS,BASIC_PATHS,mintUpgradeGroup,mintVolleyProfile,pickMintCards,pathMods,egUpgradeDefs})',ctx);
+vm.runInContext(block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const INFUSION_UP=', '// 🏷️ Tag Sets')+block('const MINT_CARD_WEIGHTS=', 'const CHARACTER_UNIQUES = {')+block('const BUILD_PATH_STYLES=', '// Mint M1:')+block('const BASIC_EVO_DESC=', '/* ---- BASIC ATTACK PROTOTYPE'),ctx);
+const api=vm.runInContext('({BASIC_ATTACKS,BASIC_PATHS,mintUpgradeGroup,mintVolleyProfile,pickMintCards,pathMods})',ctx);
 const Scene=vm.runInContext('class Scene{'+['rollBasicAttackUpgrades','endlessCards','endlessStatDefs','castFrostLance','usesStoryBudget','storySpawnPace','storyTimedSwarm','storyLiveCap','storyCanSpawn'].map(method).join('\n')+'\n}Scene',ctx);
 function scene(path,character='mint'){
  const s=new Scene();Object.assign(s,{character,level:7,stageIndex:1,player:{hp:100,maxhp:100,dmgMul:1,baseSpeed:180,active:true,x:0,y:0},basicAttack:{character,path,lv:{},ranks:{},mastery:0},skills:{frost:1,sprinkle:1},basicAttackInfo:()=>api.BASIC_ATTACKS[character],upTags:()=>[],tagCounts:()=>({}),syncBasicAttack(){this.basicAttack._pm=api.pathMods(this.basicAttack);this.basicAttack.mastery=Object.values(this.basicAttack.lv).reduce((a,b)=>a+b,0);},modCard:()=>null,tradeCard:()=>null,showBanner(){},popHeal(){},fusionReady:()=>null});return s;
@@ -46,7 +46,7 @@ for(const character of Object.keys(api.BASIC_ATTACKS)){
 // Milestones remain explicit screens at their existing gates for all four heroes.
 for(const character of remaining){const s=scene(null,character);s.level=6;const paths=s.rollBasicAttackUpgrades(3);assert(paths.every(c=>c.kind==='Build Path'));paths[0].apply();assert(s.basicAttack.path);s.basicAttack.mastery=10;assert(s.rollBasicAttackUpgrades(3).every(c=>c.mutation));s.basicAttack.mutation='chosen';s.basicAttack.mastery=20;assert(s.rollBasicAttackUpgrades(3)[0].evolution);}
 // Other heroes retain ungrouped special/loot drafts; Cocoa now keeps selected-path drafts like Mint/Berry.
-for(const character of remaining.concat('berry'))for(const flag of ['recipeMode','riftMode','bossRush','endlessMode','_inTutorial','noSpecial']){
+for(const character of remaining.concat('berry'))for(const flag of ['recipeMode','riftMode','bossRush','_inTutorial','noSpecial']){
  const s=scene(api.BASIC_PATHS[character]?.[0].id,character);if(flag!=='noSpecial')s[flag]=true;const out=s.rollBasicAttackUpgrades(3,flag==='noSpecial'?{noSpecial:true}:undefined);if(character==='cocoa')assert(out.some(c=>c.poolGroup==='path'));else assert(!out.some(c=>c.poolGroup));
 }
 console.log('P5: twelve remaining paths, all seven heroes before path selection, Berry core choices, recovery and n=1/2/3, authored rank/effect application, caps/banish/exhaustion, stage-local path replacement, special milestones and mode/loot isolation passed');

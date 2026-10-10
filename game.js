@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.93.0';
+const GAME_VERSION = '6.94.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.94.0', date:'2026-10-10', title:'🧹 Cleanup', items:['Removed leftover code from cut systems: Endgame Build, auto Sugar Rush level-ups, Endless, Ascension, Tag Sets, Overcap, Set Collection and Bestiary stats','No change to how the game plays']},
   { v:'6.93.0', date:'2026-10-10', title:'⚡ Lighter memory', items:['Stage monster, boss and decoration art is downloaded at start but only unpacked when you enter that stage — much less memory use and a faster first start']},
   { v:'6.92.0', date:'2026-10-10', title:'⚡ Performance', items:['Targeting work is shared within each frame instead of recalculated many times','Music from other stages is released from memory when you enter a stage']},
   { v:'6.91.0', date:'2026-10-10', title:'🛠️ White screen fix', items:['Entering a stage now frees other stages’ art from graphics memory, preventing the white screen on phones','If graphics memory still runs out, the game saves and reloads by itself instead of staying white']},
@@ -3139,7 +3140,6 @@ const INFUSION_UP={id:'inf_deep',name:'Deep Flavor',emoji:'✨',max:3,headline:'
 // 🏷️ Tag Sets (v6.7.0 · B1) — 8 แท็ก · ทุกการ์ด/สาย/รสชาติ/Relic/mod ไอเทม มีแท็ก · สะสม 2/4/6 = โบนัสเซ็ต
 // แหล่งนับ: อาวุธประจำตัว (ฐาน) · การ์ดอัปเกรดที่มี (1 ต่อใบ) · Path · Infusion · Mutation · Evolution · Relic · ไอเทมที่สวม (แท็กละ 1 ต่อชิ้น)
 const TAG_TIERS=[2,4,6];
-const TAG_SETS_ON=false;   // v6.71 A1: Tag Set bonuses cut (docs/SYSTEM_CONSOLIDATION_PLAN.md)
 const TAG_SETS={
   fire:  {emoji:'🔥',name:'Fire',  b:['+6% damage','15% of hits ignite','+15% damage'],
     t:[p=>{p.dmgMul+=(1.06)-1;},p=>{p._tagIgnite=Math.max(p._tagIgnite||0,0.15);},p=>{p.dmgMul+=(1.15)-1;}]},
@@ -3174,7 +3174,6 @@ const TAGS_OF={
   relic:{splinter:['crit'],leech:['guard'],burst:['fire','swarm'],shell:['guard'],jam:['swarm'],crown:['crit'],glass:['crit'],momentum:['melee'],lastbreath:['guard'],chill:['frost'],magnet:['ranged'],firstbite:['crit'],dashcharge:['spark','melee'],trophy:['guard'],harvest:['swarm']},
   affix:{crit:['crit'],critdmg:['crit'],precision:['crit'],gambler:['crit'],focus:['crit','spark'],hp:['guard'],def:['guard'],regen:['guard'],hppct:['guard'],regenpct:['guard'],bulwark:['guard'],crisisguard:['guard'],laststand:['guard'],mend:['guard'],nourish:['guard'],lifekill:['guard'],vampiric:['guard','melee'],cd:['spark'],uniquecd:['spark'],spd:['spark'],dash:['spark'],sprint:['spark'],wayfarer:['spark'],dmg:['fire'],bossdmg:['fire'],edge:['melee'],berserk:['melee','fire']}};
 function tagList(t){ return !t?[]:Array.isArray(t)?t:[t]; }
-function tagLabel(t){ if(!TAG_SETS_ON)return ''; const ts=tagList(t).filter(x=>TAG_SETS[x]); return ts.length?'  ·  '+ts.map(x=>TAG_SETS[x].emoji+' '+TAG_SETS[x].name).join(' '):''; }
 // 🧩 Modifiers (v6.8.0 · B3) — การ์ดเปลี่ยนกลไก ตัวละครละ 6 ใบ · ได้สูงสุด MOD_MAX ใบ/ด่าน · ออกตั้งแต่เลเวล 4
 // kind: hitBoom/hitChain/nthHit/killBurst/killTrap/dashNova/dashTrail/pulse/stillPower/movePower/closeBonus/farBonus/execute/bossBonus/frozenMul
 const MOD_MAX=3;
@@ -3917,8 +3916,6 @@ const ANCIENT_PERKS=[
   { id:'sugarVein',     emoji:'🍬', name:'Sugar Vein',     desc:'+20% Sugar from kills' },
   { id:'deepRoots',     emoji:'🌳', name:'Deep Roots',     desc:'+8% max HP · +0.6 HP regen per second' },
 ];
-const OVERCAP_MAX=6;
-const OVERCAP_ON=false;   /* v6.78 C1: Overcap folded into core levels — owned +N stays as permanent bonus levels, no new buys; stones → Weave Thread */
 const STONE_THREADS=25;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
 /* ---- v5.35 🍳 Flavor Recipes: ประกอบ perk เอง = Trigger + Effect (+ Modifier) · ชิ้นส่วนได้จากการขุด ---- */
 // cost = แต้มรสชาติ · สูตรหนึ่งรวมกันต้องไม่เกิน FR_FLAVOR_CAP (trigger ที่เกิดถี่ = แพง)
@@ -4012,7 +4009,6 @@ function frSentence(r){ const t=frPart(r&&r.t),e=frPart(r&&r.e),m=frPart(r&&r.m)
 // ชิ้นส่วนที่ขุดได้: trigger 40 / effect 40 / modifier 20 · ชิ้นที่ต้อง chain หายากกว่า
 function frRollPart(){ const r=Math.random(), k=r<0.4?'t':r<0.8?'e':'m'; let pool=FR_KIND[k];
   if(k==='t'&&Math.random()<0.75)pool=pool.filter(x=>!x.chain); return k+':'+Phaser.Utils.Array.GetRandom(pool).id; }
-function overcapCost(lvl){ return {stones:lvl+1,sugar:150*(lvl+1)}; }
 // ตารางน้ำหนักของในกระดาน (commit ถัดไปเติมหินแก่น/คัมภีร์/กับดัก/ทางลับ)
 function digTable(depth){ return [['empty',Math.max(16,32-depth)],['thread',45],['chest',5+depth*0.6],['stone',8+depth*0.8],['scroll',1.5+depth*0.2],['part',7+depth*0.5],['trap',6+depth*0.4],['ore',depth>=3?6+depth*0.5:0],['gift',depth>=5?1.5+depth*0.25:0]]; }
 // v5.47 กระดานโตตามความลึก 5×5 → 8×8 (ทุก 3 ชั้น +1)
@@ -4188,11 +4184,8 @@ const GEAR_SETS = {
 const SET_ORDER=['home','brigade','fortune','chef','wind'];
 function gearSetPieces(sid){ return GEAR_ALL.filter(g=>g.set===sid); }
 function gearOwnsBase(id){ return (Save.data.gearItems||[]).some(it=>it.baseId===id)||(Save.data.ownedGear||[]).includes(id); }
-const SET_DEPOSIT_NEED=5;   // v6.54: ใส่ของชิ้นละ 5 (เผาทิ้ง) เพื่อปลดโบนัสสะสมถาวร
-function setDeposit(id){ return ((Save.data.setDeposit||{})[id])||0; }
 /* v6.79 D1: set collection deposits removed — worn set bonuses only; deposits refunded as shards */
-const SET_COLLECT_ON=false, SET_DEPOSIT_REFUND=10;
-function gearSetCollected(sid){ if(!SET_COLLECT_ON)return false; const ps=gearSetPieces(sid); return ps.length>0&&ps.every(g=>setDeposit(g.id)>=SET_DEPOSIT_NEED); }
+const SET_DEPOSIT_REFUND=10;
 function gearSetCounts(){ const c={}; for(const slot in GEAR){ const id=Save.data.gear[slot]; const it=GEAR[slot].find(g=>g.id===id); if(it&&it.set)c[it.set]=(c[it.set]||0)+1; } return c; }
 
 /* ---- AFFIX (Phase 1 PoE): prefix/suffix + tier T1-T5 · ของแต่ละชิ้นสุ่มตอนได้มา · reroll ด้วย 🔩 ----
@@ -4692,8 +4685,8 @@ const Save = {
     if(!this.data.character)this.data.character='momo';
     if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (Berry) → คืนเป็นโมโม่
     if(!this.data.charProg)this.data.charProg={};
-    if(!(typeof OVERCAP_ON!=='undefined'&&OVERCAP_ON)&&this.data.coreStones){ let n=0; for(const k in this.data.coreStones)n+=Math.max(0,this.data.coreStones[k]||0); if(n)this.data.threads=(this.data.threads||0)+n*STONE_THREADS; this.data.coreStones={}; }   // v6.78 C1 refund
-    if(this.data.setDeposit&&!(typeof SET_COLLECT_ON!=='undefined'&&SET_COLLECT_ON)){ let n=0; for(const k in this.data.setDeposit)n+=Math.max(0,this.data.setDeposit[k]||0); if(n)this.data.shards=(this.data.shards||0)+n*10; this.data.setDeposit={}; }   // v6.79 D1 refund
+    if(this.data.coreStones){ let n=0; for(const k in this.data.coreStones)n+=Math.max(0,this.data.coreStones[k]||0); if(n)this.data.threads=(this.data.threads||0)+n*STONE_THREADS; this.data.coreStones={}; }   // v6.78 C1 refund
+    if(this.data.setDeposit){ let n=0; for(const k in this.data.setDeposit)n+=Math.max(0,this.data.setDeposit[k]||0); if(n)this.data.shards=(this.data.shards||0)+n*10; this.data.setDeposit={}; }   // v6.79 D1 refund
     if(!this.data.bestiary)this.data.bestiary={};
     if(this.data.sugarOrder){ const o=this.data.sugarOrder; this.data.sugar=(this.data.sugar||0)+(o.cost||0); this.data.sugarOrder=null; }   // v6.78 C5: refund removed Sugar Orders
     // v4.12: bosses/minibosses แยกรายด่าน (boss0..5 / mini0..5) — เซฟเดิมนับรวมเป็น 'boss'/'mini' → ยกไป entry ด่าน 1
@@ -4713,8 +4706,6 @@ const Save = {
     if(!this.data.currency)this.data.currency={};
     for(const ok in CUR_ALIAS){ const n=this.data.currency[ok]||0; if(n){ const nk=CUR_ALIAS[ok]; this.data.currency[nk]=(this.data.currency[nk]||0)+n; } delete this.data.currency[ok]; }   // v6.79 D3 merge old stock   // 🧪 currency คราฟต์ (Phase 2)
     if(this.data.ascension==null)this.data.ascension=0;
-    if(this.data.endlessBest==null)this.data.endlessBest=0;
-    if(!Array.isArray(this.data.endlessBoard))this.data.endlessBoard=[];
     if(!this.data.daily)this.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false};
     if(this.data.tutorialDone==null)this.data.tutorialDone=false;
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
@@ -4913,8 +4904,6 @@ const Save = {
   ancientHas(id){ return !!(this.data.ancient||{})[id]; },
   scrolls(){ return this.data.scrolls||0; },
   unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
-  buyOvercap(k){ const lvl=this.overcap(k); if(lvl>=OVERCAP_MAX)return false; const c=overcapCost(lvl); if(this.coreStones(k)<c.stones||(this.data.sugar||0)<c.sugar)return false;
-    this.data.coreStones[k]-=c.stones; this.data.sugar-=c.sugar; if(!this.data.overcap)this.data.overcap={}; this.data.overcap[k]=lvl+1; this.save(); return true; },
   specialCoreLvl(id){ const n=Number((this.data.specialCores||{})[id])||0;return Math.max(0,Math.min(3,Math.floor(n))); },
   specialCoreCost(id){const core=SPECIAL_CORES.find(c=>c.id===id);return core?core.base*(this.specialCoreLvl(id)+1):0;},
   buySpecialCore(id){const core=SPECIAL_CORES.find(c=>c.id===id);if(!core||(this.data.rank||0)<core.rank||this.specialCoreLvl(id)>=3)return false;
@@ -4961,16 +4950,11 @@ const Save = {
     if(d.shopN>=DIG_SHOP_DAILY_LIMIT||!this.spend(DIG_SHOP_COST))return false;
     d.shopN++;d.shovels+=DIG_SHOP_SHOVELS;this.save();return true; },
   addShovels(n){ const d=this.dig(); d.shovels=(d.shovels||0)+n; this.save(); },
-  canAscend(){ return storyComplete(); },   // v4.72: Endgame ปลดหลังจบเนื้อเรื่องทั้งหมด (ด่าน ready สุดท้าย) ไม่ใช่แค่ Ch1
-  endgameUnlocked(){ return (this.data.ascension||0)>0||this.canAscend(); },
+  endgameUnlocked(){ return (this.data.ascension||0)>0||storyComplete(); },
   // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว
   zoneModsUnlocked(){ return false; },   // v6.80 E2: Zone Modifiers removed
   zoneMods(){ return Array.isArray(this.data.zoneMods)?this.data.zoneMods:[]; },
   toggleZoneMod(id){ if(!Array.isArray(this.data.zoneMods))this.data.zoneMods=[]; const i=this.data.zoneMods.indexOf(id); if(i>=0)this.data.zoneMods.splice(i,1); else this.data.zoneMods.push(id); this.save(); },
-  ascend(){ if(!this.canAscend())return 0;this.data.ascension=(this.data.ascension||0)+1;this.data.stageMastery={};this.data.diffBest=[];this.data.unlockedStage=0;
-    const reward=350+this.data.ascension*150;this.data.sugar=(this.data.sugar||0)+reward;this.save();return reward; },
-  recordEndless(cycle,kills,seconds,character){const score=Math.round(cycle*100000+kills*100+seconds);this.data.endlessBest=Math.max(this.data.endlessBest||0,cycle);
-    this.data.endlessBoard=(this.data.endlessBoard||[]).concat([{cycle,kills,seconds:Math.floor(seconds),character,score,date:new Date().toISOString().slice(0,10)}]).sort((a,b)=>b.score-a.score).slice(0,5);this.save();return score;},
   power(id){ return heroPower(id||this.data.character||'momo',null); },   // v6.55.29: จากสแตตจริง (เดิมแต้มนับเลเวล/ยศ/ไอเทม)
   reset(){ try{ localStorage.removeItem('mochi_save'); }catch(e){}
     this.data={ sugar:0, unlockedStage:0, upgrades:{}, gear:{}, gearLv:{}, ownedGear:[], gearItems:[], equippedGear:{}, gearInventoryCap:100, gearInbox:[], gearAutoDismantle:'off', gearSchemaVersion:0, gearUidSeq:0, character:'momo', chars:[], charProg:{}, rank:0, ascension:0, endlessBest:0, endlessBoard:[], bestiary:{}, stageMastery:{}, achievements:{}, daily:{claimDay:'',streak:0,challengeDay:'',challengeDone:false}, tutorialDone:false, settings:Object.assign({},DEFAULT_SETTINGS) }; this.load(); },
@@ -5048,7 +5032,6 @@ const Cloud = {
 /* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
 const BESTIARY_THRESHOLDS = [25, 150, 500, 1500, 5000, 15000, 40000, 100000];   // 8 ระดับ · ระดับสูง (6-8) = รางวัลของการฆ่ามอนสะสมเยอะ ๆ
 const BEST_MAX_TIER = BESTIARY_THRESHOLDS.length;
-const BEST_HI_SCALE = [1.7, 2.6, 3.8];   // tier 6/7/8 = สเกลจากโบนัส tier 5 (โตขึ้นเยอะที่ tier สูง)
 const BESTIARY = [
   { id:'basic',   emoji:'🐜', name:'Sour Worker Ant',   tex:'e_ant_worker',  desc:'The nest basic worker',
     bonus:[{hp:1},{hp:2},{hp:3},{hp:5},{hp:9,def:0.01}] },
@@ -5133,13 +5116,8 @@ C3_BOSS_CODEX.forEach(([mini,boss],i)=>{
   BESTIARY.push({id:'boss'+(i+10),emoji:'👑',name:boss,tex:'codex_c3_boss'+n,desc:stage+' boss',bonus:[1,2,3,4,5].map(x=>({hp:x,dmg:x*0.004}))});
 });
 /* v6.78 C3: Bestiary gives Sugar/collection only, no stats */
-const BESTIARY_STATS_ON=false;
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
 // โบนัสสแตตของ tier ที่ระบุ (tier 0-4 = ค่าใน bonus[] · tier 5-7 = สเกลจาก tier 5)
-function bestiaryBonusAt(m,tierIdx){ if(tierIdx<0||!m.bonus)return {}; if(tierIdx<m.bonus.length)return m.bonus[tierIdx]||{}; const base=m.bonus[m.bonus.length-1]||{},sc=BEST_HI_SCALE[tierIdx-m.bonus.length]||3.8,out={}; for(const k in base)out[k]=base[k]*sc; return out; }
-function bestiaryBonusTotal(type){ if(!BESTIARY_STATS_ON)return {}; const m=BESTIARY.find(x=>x.id===type); if(!m)return {}; const lv=bestiaryLv(type),tot={}; for(let i=0;i<lv;i++){ const b=bestiaryBonusAt(m,i); for(const k in b)tot[k]=(tot[k]||0)+b[k]; } return tot; }
-function bestiaryTotals(){ const tot={hp:0,dmg:0,def:0,spd:0,crit:0,cdr:0}; for(const m of BESTIARY){ const b=bestiaryBonusTotal(m.id); for(const k in b)tot[k]=(tot[k]||0)+(b[k]||0); } return tot; }
-function bestiaryBonusText(b){ const parts=[]; if(b.hp)parts.push('+'+Math.round(b.hp)+' HP'); if(b.dmg)parts.push('+'+(b.dmg*100).toFixed(1)+'% DMG'); if(b.def)parts.push('-'+(b.def*100).toFixed(1)+'% DMG taken'); if(b.spd)parts.push('+'+(b.spd*100).toFixed(1)+'% SPD'); if(b.crit)parts.push('+'+(b.crit*100).toFixed(1)+'% Crit'); if(b.cdr)parts.push('-'+(b.cdr*100).toFixed(1)+'% CD'); return parts.join(' · '); }
 
 /* ---- STAGES: 5 โซนครัว · แต่ละStage = Wave → Miniboss (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
 /* ---- STAGE_PROPS: เลย์เอาต์ props ต่อStage [key,x,y,solid,scale] — ทำแผนที่ให้เป็น "Room" ที่ออกแบบไว้ ----
@@ -5217,7 +5195,6 @@ function computeHeroStats(cid,basic){
       applyItemLevelBonus(p,inst);mark('Gear · '+nm+' iLv bonus');if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
       if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply&&!weaponLocalMod(inst,a.id)){d.apply(p,a.v);mark('Mod · '+(d.label||a.id)+' T'+(a.t!=null?a.t:'?')+' ('+(it?it.name:slot.slot)+')');} } }
     { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply){def.bonuses[need].apply(p);mark('Set · '+def.name+' '+need+'pc');} } } for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid)){def.collect.apply(p);mark('Set collection · '+def.name);} } }
-    const bst=bestiaryTotals(); if(bst.hp)p.maxhp+=bst.hp; if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1; if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def)); if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd)); if(bst.crit)p.critChance+=bst.crit; if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr)); mark('Bestiary');
     const rp=Save.data.rankPerks||{}; if(rp.vigor){p.maxhp*=1+0.06*rp.vigor;mark('Perk · Vigor '+rp.vigor);} if(rp.might){p.dmgMul+=(1+0.05*rp.might)-1;mark('Perk · Might '+rp.might);} if(rp.ironWill){p.dmgTakenMul*=(1-0.04*rp.ironWill);mark('Perk · Iron Will '+rp.ironWill);}
     if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; } mark('Ancient Perks');
     if(applyFrUpkeep(p))mark('Kitchen upkeep');
@@ -5507,7 +5484,7 @@ const RIFT_MODS=[
   {id:'glass',emoji:'🔪',name:'Razor Edge',desc:'Enemies hit 40% harder but have less HP',hp:0.85,dmg:1.4,reward:1.25},
   {id:'titan',emoji:'🗿',name:'Titanic',desc:'Enemies have 55% more HP',hp:1.55,dmg:1,reward:1.30}
 ];
-const RECIPE_DRAFT_EVERY=5, SUGAR_RUSH_SEC=5;
+const SUGAR_RUSH_SEC=5;
 const PINNACLE_KEY_COST=3, RECIPE_PAR=170, RECIPE_HUNGER_CAP=180, RECIPE_TIME_CAP=300, RECIPE_FRAGS_PER_KEY=4, RECIPE_BOSS_HP=0.7;   // R10: บอส recipe เบาลง 30% ให้รันจบใน ~2-3 นาที แต่ยังสเกลตาม tier
 // 📜 Recipe Maps (endgame Phase R · R1 = data model + stash) — แผนที่แบบ PoE: ธีม(ด่าน)+Tier+mods
 const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16;
@@ -5657,13 +5634,7 @@ const PACT_TERMS=[
 const PACT_REWARD_PER_HEAT=0.07;
 function pactLv(id){ const t=(Save.data&&Save.data.pact)||{}; const d=PACT_TERMS.find(x=>x.id===id); return d?Math.max(0,Math.min(d.max,t[id]||0)):0; }
 function pactHeat(){ return PACT_TERMS.reduce((a,d)=>a+pactLv(d.id)*d.heat,0); }
-// Endgame Build (v6.2.0): ตั้ง build ก่อนเข้า Recipe · แต้ม = 8 + Atlas points · ระหว่างรันได้แค่การ์ดสแตต endless
-const EG_BUILD_BASE=8, EG_COST={path:2,inf:2,mut:3,evo:4};
 function egCharKey(){ return (Save.data&&Save.data.character)||'momo'; }
-function egBuild(ch){ ch=ch||egCharKey(); if(!Save.data.egBuild)Save.data.egBuild={}; const b=Save.data.egBuild[ch]||(Save.data.egBuild[ch]={path:null,inf:null,mut:null,evo:false,lv:{}}); b.lv=b.lv||{}; return b; }
-function egBuildPoints(){ return EG_BUILD_BASE+atlasPoints(); }
-function egUpgradeDefs(ch,b){ const d=BASIC_ATTACKS[ch]; if(!d)return []; let ups=(ch==='momo'?berryAttackInfo(d,b):ch==='cocoa'?cocoaAttackInfo(d,b):d).upgrades.slice(); const P=BASIC_PATHS[ch]; if(P&&b.path){ const pt=P.find(x=>x.id===b.path); if(pt)ups=ups.concat(pt.upgrades); } if(b.inf)ups.push(INFUSION_UP); if(ch==='mint'&&b.path)ups=ups.filter(u=>mintUpgradeGroup(b.path,u.id)||(b.lv?.[u.id]||0)>0);if(ch==='momo'&&b.path){for(const pt of P||[])for(const u of pt.upgrades)if((b.lv?.[u.id]||0)>0&&!ups.some(x=>x.id===u.id))ups.push(u);ups=ups.filter(u=>berryUpgradeGroup(b.path,u.id)||(b.lv?.[u.id]||0)>0);} return ups; }
-function egBuildCost(ch,b){ ch=ch||egCharKey(); b=b||egBuild(ch); const ok=new Set(egUpgradeDefs(ch,b).map(u=>u.id)); let c=(b.path?EG_COST.path:0)+(b.inf?EG_COST.inf:0)+(b.mut?EG_COST.mut:0)+(b.evo?EG_COST.evo:0); for(const k in b.lv){ if(ok.has(k))c+=b.lv[k]||0; } return c; }
 const ATLAS_NODES=[
   {id:'cartographer',emoji:'🧭',name:'Cartographer',max:3,desc:'+10% chance per level for dropped recipes to be one tier higher'},
   {id:'bounty',emoji:'📜',name:'Bountiful Pantry',max:3,desc:'+8% chance per level to drop a second recipe'},
@@ -6040,7 +6011,6 @@ class Game extends Phaser.Scene {
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
 
-      if(this._upBtn&&this._upBtn.visible&&Math.abs(p.x-this._upBtn.x)<38&&Math.abs(p.y-this._upBtn.y)<34){ this.openUpgradePanel(); return; }
       if(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2){this.toggleCocoaFlicker();return;}
       if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.isTitanHold?.()){ if(this.uniqueCd<=0&&!this._titanHold)this._titanHold={id:p.id}; return; } if(this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
@@ -6529,7 +6499,7 @@ class Game extends Phaser.Scene {
     this.bossUI.forEach(o=>o.setVisible(false));
   }
   hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
-  drawBars(){ if(this._upBtn&&this._upBtn.active)this._upBtn.setVisible(this.state==='play'&&(this.pendingLvl||0)>0);
+  drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
     const bx=pad+16, bw=(this.W-138)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
@@ -6548,8 +6518,8 @@ class Game extends Phaser.Scene {
     this.drawOverheadStatus(hpf);
     // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
     if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
-      const tc=this.tagCounts?this.tagCounts():{},tg=Object.keys(tc).filter(t=>TAG_SETS_ON&&tc[t]>=2&&TAG_SETS[t]).map(t=>TAG_SETS[t].emoji+tc[t]).join(' ');
-      this.statTxt.setText([rel,sh,tg].filter(Boolean).join('   ')); }
+      
+      this.statTxt.setText([rel,sh].filter(Boolean).join('   ')); }
     // บรรทัดชื่อด่านโชว์ 6 วิแรกของด่านแล้วจางหาย (ดูซ้ำได้ในหน้า Pause)
     if(this.stageTxt&&this.stageTxt.visible){ const a=Phaser.Math.Clamp(((this._stageTxtAt??-99)+6-(this.elapsed||0))/1.2,0,1); this.stageTxt.setAlpha(a); }
 
@@ -6967,7 +6937,7 @@ class Game extends Phaser.Scene {
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){const r=this._clampFonts(11);try{this.buildCraftBench();}finally{r();}} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='endgame')this.buildEndgame(); else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){const r=this._clampFonts(11);try{this.buildCraftBench();}finally{r();}} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(s==='egbuild')this.buildEgBuild(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); } }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
@@ -7118,7 +7088,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H;
     // สรุปโบนัสรวม (สแตตถาวร + Sugar)
     const totLv=BESTIARY.reduce((a,m)=>a+bestiaryLv(m.id),0);
-    const bt=bestiaryTotals(),bText=bestiaryBonusText(bt)||'🍬 '+(totLv*40)+' Sugar earned';
+    const bText='🍬 '+(totLv*40)+' Sugar earned';
     const hs=this._hdrShift();
     const sumTxt=this.add.text(w/2,50+hs,'Kill tiers ('+totLv+'/'+(BESTIARY.length*BEST_MAX_TIER)+') = 🍬 Sugar rewards',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5);
     const sumBonus=this.add.text(w/2,64+hs,'Total: '+bText,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-28},align:'center'}).setOrigin(0.5,0);
@@ -7163,7 +7133,7 @@ class Game extends Phaser.Scene {
       const barColor=lv>=5?0xffd166:(lv>=3?0xb98cff:0x8bd3a0);
       if(pct>0){ g.fillStyle(barColor,1); g.fillRoundedRect(bx,by,Math.max(6,barW*pct),barH,3); }
       // bonus text — สแตตถาวรสะสม + Sugar
-      const curB=bestiaryBonusTotal(m.id),bStat=bestiaryBonusText(curB);
+      const bStat='';
       const bLabel=lv>0?((bStat?bStat+'  · ':'')+'🍬+'+(lv*40)):'Tier 1 → 🍬+40';
       const blT=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontStyle:lv>0?'bold':'normal',fontSize:'8px',color:lv>0?'#8bd3ff':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
       const desc=this.add.text(cx+8,cy+cardH-13,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
@@ -7254,18 +7224,14 @@ class Game extends Phaser.Scene {
   buildSetCodex(top){ const w=this.W,bw=Math.min(w-24,460),bx=(w-bw)/2,cnt=gearSetCounts(); let y=top;
     const col=(Object.keys(GEAR_SETS).length);
     const hd=this.add.text(w/2,y+6,'Wear pieces of the same set for bonuses',{fontFamily:'sans-serif',fontSize:'10px',color:'#b7abc9',align:'center',wordWrap:{width:bw}}).setOrigin(0.5,0);this.menu.add(hd);y+=hd.height+10;const ch=Math.max(92,Math.min(124,(this.H-y-10)/col-8));
-    SET_ORDER.filter(k=>GEAR_SETS[k]).forEach(sid=>{ const d=GEAR_SETS[sid],ps=gearSetPieces(sid),own=ps.reduce((a,g)=>a+Math.min(SET_DEPOSIT_NEED,setDeposit(g.id)),0),need=ps.length*SET_DEPOSIT_NEED,done=gearSetCollected(sid),wear=cnt[sid]||0,g=this.add.graphics();
+    SET_ORDER.filter(k=>GEAR_SETS[k]).forEach(sid=>{ const d=GEAR_SETS[sid],ps=gearSetPieces(sid),done=false,wear=cnt[sid]||0,g=this.add.graphics();
       g.fillStyle(0x241a30,0.96);g.fillRoundedRect(bx,y,bw,ch,12);g.lineStyle(2,done?0xffd166:0x5a4b75,1);g.strokeRoundedRect(bx,y,bw,ch,12);
-      const t=this.add.text(bx+12,y+14,d.emoji+' '+d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5),st=this.add.text(bx+bw-12,y+14,done?'Collection ✓'+(wear>=2?' · Wearing '+wear:''):wear>=2?'Wearing '+wear+'/'+ps.length:SET_COLLECT_ON?'Collection '+own+'/'+need:'Wearing '+wear+'/'+ps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:wear>=2?'#8ff0b0':done?'#ffd166':'#9a90ab'}).setOrigin(1,0.5);
+      const t=this.add.text(bx+12,y+14,d.emoji+' '+d.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0.5),st=this.add.text(bx+bw-12,y+14,done?'Collection ✓'+(wear>=2?' · Wearing '+wear:''):'Wearing '+wear+'/'+ps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:wear>=2?'#8ff0b0':done?'#ffd166':'#9a90ab'}).setOrigin(1,0.5);
       this.menu.add([g,t,st]); const is=Math.min(46,(bw*0.55-16)/ps.length-6);
       ps.forEach((it,i)=>{ const x=bx+12+i*(is+6),iy=y+30,has=gearOwnsBase(it.id),eq=Object.values(Save.data.gear||{}).includes(it.id),bg=this.add.graphics();bg.fillStyle(has?0x3a2f50:0x1a1522,1);bg.fillRoundedRect(x,iy,is,is,8);bg.lineStyle(2,eq?0x8ff0b0:has?0xc9a3ff:0x3a3048,1);bg.strokeRoundedRect(x,iy,is,is,8);
         const k=it.iconKey&&this.textures.exists(it.iconKey)?it.iconKey:('gear_'+it.id),ic=this.textures.exists(k)?this.add.image(x+is/2,iy+is/2,k).setDisplaySize(is-8,is-8):this.add.text(x+is/2,iy+is/2,it.emoji||'?',{fontSize:Math.round(is*0.5)+'px'}).setOrigin(0.5);ic.setAlpha(has?1:0.3);
-        const dep=Math.min(SET_DEPOSIT_NEED,setDeposit(it.id)),spare=(Save.data.gearItems||[]).filter(q=>q.baseId===it.id&&!q.locked&&!q.favorite&&!Save.isGearEquipped(q.uid)),bar=this.add.graphics();if(SET_COLLECT_ON){bar.fillStyle(0x0d0a12,1);bar.fillRect(x+3,iy+is-6,is-6,4);}bar.fillStyle(dep>=SET_DEPOSIT_NEED?0xffd166:0x8ff0b0,1);if(SET_COLLECT_ON)bar.fillRect(x+3,iy+is-6,(is-6)*dep/SET_DEPOSIT_NEED,4);this.menu.add(bar);
-        if(SET_COLLECT_ON&&spare.length&&dep<SET_DEPOSIT_NEED){const pl=this.add.text(x+is-2,iy+1,'+'+spare.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#8ff0b0',stroke:'#000',strokeThickness:3}).setOrigin(1,0);this.menu.add(pl);}
-        if(SET_COLLECT_ON)this._zone(x,iy,is,is+14,()=>{ if(dep>=SET_DEPOSIT_NEED){this.menuToast(it.name+' is full (5/5)');return;} if(!spare.length){Sfx.select&&Sfx.select();this.menuToast(has?'Need a spare '+it.name+' (not equipped, locked or favorite)':'Find '+it.name+' first','#ff9bb5');return;} if(!Save.removeGearInstance(spare[0].uid)){Sfx.error&&Sfx.error();return;} Save.data.setDeposit=Save.data.setDeposit||{};Save.data.setDeposit[it.id]=dep+1;Save.save();Sfx.progress&&Sfx.progress('claim');const c2=gearSetCollected(sid);this.menuToast(c2?'🏆 '+d.name+' collection complete! '+d.collect.desc:'📥 '+it.name+' '+(dep+1)+'/'+SET_DEPOSIT_NEED,c2?'#ffd166':'#8ff0b0');this.buildMenuScreen(); });
-        const nm=this.add.text(x+is/2,iy+is+3,(has||dep>0)?(SET_COLLECT_ON?dep+'/'+SET_DEPOSIT_NEED+' ':'')+it.name:'???',{fontFamily:'sans-serif',fontSize:'7.5px',color:has?'#d8cde2':'#6f6680',align:'center',wordWrap:{width:is+6}}).setOrigin(0.5,0);this.menu.add([bg,ic,nm]); });
+        const nm=this.add.text(x+is/2,iy+is+3,has?it.name:'???',{fontFamily:'sans-serif',fontSize:'7.5px',color:has?'#d8cde2':'#6f6680',align:'center',wordWrap:{width:is+6}}).setOrigin(0.5,0);this.menu.add([bg,ic,nm]); });
       const tx=bx+bw*0.47; let ly=y+32; Object.keys(d.bonuses).forEach(n=>{ const on=wear>=+n,l=this.add.text(tx,ly,(on?'✅ ':'▫️ ')+d.bonuses[n].desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:on?'#8ff0b0':'#cfc3dd',wordWrap:{width:bw*0.5}}).setOrigin(0,0);this.menu.add(l);ly+=l.height+4; });
-      if(d.collect&&SET_COLLECT_ON){const l=this.add.text(tx,ly+2,(done?'🏆 ':'🔒 ')+d.collect.desc,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:done?'#ffd166':'#8a8198',wordWrap:{width:bw*0.5}}).setOrigin(0,0);this.menu.add(l);}
       y+=ch+8; }); }
   buildSkillArchive(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Codex','screen_codex');
@@ -7628,31 +7594,6 @@ class Game extends Phaser.Scene {
         const rr=mapTableRecipe(); this.stageDiff=1; this._recipeRequested=rr; this._farmFocusRequested=rw.id==='sugar'?'all':rw.id; this._sugarRewardMap=rw.id==='sugar'; this.startRun(rr.theme); }); }
     else T(w/2,h-34,'Drag to dig through the map · pinch or ➕➖ to zoom · tap a cave',10,'#9d93aa');
   }
-  buildEgBuild(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🛠 Endgame Build','screen_atlas');
-    const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,ch=egCharKey(),d=BASIC_ATTACKS[ch],e=egBuild(ch),P=BASIC_PATHS[ch]||[];let y=(w<=h?100:70);
-    const T=(x,yy,t,sz,c,st,o)=>{const q=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,wordWrap:{width:cw-90}}).setOrigin(o===undefined?0.5:o,0);this.menu.add(q);return q;};
-    if(!d){ T(w/2,y,'This hero has no build yet',13,'#ffb070'); this.menu.setVisible(true); return; }
-    const used=egBuildCost(ch,e),tot=egBuildPoints(),left=tot-used;
-    T(w/2,y,(CHARACTERS[ch]?CHARACTERS[ch].name:ch)+' · set your build before Recipe runs. In runs you only get stat cards.',11,'#e6dcf0'); y+=34;
-    T(w/2,y,'Build points '+used+' / '+tot+'   (+1 per Atlas point)',13,left<0?'#ff6b6b':'#ffe08a','bold'); y+=26;
-    if(ch==='cocoa'){const uq=COCOA_UNIQUES[e.path]||CHARACTER_UNIQUES.flickerStrike;const info=T(cx+10,y,uq.emoji+' '+uq.name+' · '+uq.desc,11,'#dbc5ff','normal',0);y+=info.height+12;}
-    const save=()=>{Save.save();Sfx.select&&Sfx.select();this.buildEgBuild();};
-    const cyc=(list,cur)=>{ const i=list.indexOf(cur); return i+1>=list.length?null:list[i+1]; };
-    const rows=[];
-    if(P.length)rows.push({label:'🛤 Path',desc:(P.find(x=>x.id===e.path)||{}).desc||'Tap to pick a combat style',val:(P.find(x=>x.id===e.path)||{}).name||'—',cost:EG_COST.path,tap:()=>{e.path=cyc(P.map(x=>x.id),e.path);save();}});
-    rows.push({label:'🍯 Infusion',desc:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).desc||'Tap to add an element to every hit',val:(FLAVOR_INFUSIONS.find(f=>f.id===e.inf)||{}).name||'—',cost:EG_COST.inf,tap:()=>{e.inf=cyc(FLAVOR_INFUSIONS.map(f=>f.id),e.inf);save();}});
-    rows.push({label:'⭐ Mutation',desc:(d.mutations.find(m=>m.id===e.mut)||{}).desc||'Tap to pick a mutation',val:(d.mutations.find(m=>m.id===e.mut)||{}).name||'—',cost:EG_COST.mut,tap:()=>{e.mut=cyc(d.mutations.map(m=>m.id),e.mut);if(!e.mut)e.evo=false;save();}});
-    rows.push({label:'✨ Evolution',desc:(ch==='momo'&&BERRY_EVOLUTIONS[e.path]?.desc)||(ch==='mint'&&MINT_EVOLUTIONS[e.path]?.desc)||(ch==='cocoa'&&COCOA_EVOLUTIONS[e.path]?.desc)||(typeof BASIC_EVO_DESC!=='undefined'&&BASIC_EVO_DESC[d.skill])||'Ultimate upgrade for your Basic Attack',val:e.evo?((ch==='momo'&&BERRY_EVOLUTIONS[e.path]?.name)||(ch==='mint'&&MINT_EVOLUTIONS[e.path]?.name)||(ch==='cocoa'&&COCOA_EVOLUTIONS[e.path]?.name)||d.evolution):(e.mut?'off':'needs Mutation'),cost:EG_COST.evo,tap:()=>{if(!e.mut){this.menuToast('Pick a Mutation first','#ff9bb5');return;}e.evo=!e.evo;save();}});
-    for(const u of egUpgradeDefs(ch,e)){ const lv=e.lv[u.id]||0; rows.push({label:u.emoji+' '+u.name,val:'●'.repeat(lv)+'○'.repeat(u.max-lv),cost:1,desc:u.desc,tap:()=>{e.lv[u.id]=lv>=u.max?0:lv+1;save();}}); }
-    const rh=Math.max(36,Math.min(50,Math.floor((h-y-70)/rows.length)-4));
-    rows.forEach(r=>{ const g=this.add.graphics(); g.fillStyle(0x1c1426,1); g.fillRoundedRect(cx,y,cw,rh,8); g.lineStyle(1.5,0x4a4059,1); g.strokeRoundedRect(cx,y,cw,rh,8); this.menu.add(g);
-      T(cx+10,y+4,r.label,12,'#ffffff','bold',0); if(r.desc){const dq=this.add.text(cx+10,y+20,r.desc,{fontFamily:'sans-serif',fontSize:'9px',color:'#bfb5ca',wordWrap:{width:cw-20}});if(dq.height>rh-22)dq.setText(r.desc.slice(0,Math.floor(r.desc.length*(rh-22)/dq.height)-1)+'…');this.menu.add(dq);} const v=this.add.text(cx+cw-10,y+rh/2,r.val+'  ·  '+r.cost+'pt',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffe08a'}).setOrigin(1,0).setY(y+5); this.menu.add(v);
-      this._zone(cx,y,cw,rh,r.tap); y+=rh+4; });
-    this.uiPillBtn(this.menu,w/2,y+24,Math.min(cw,240),38,0x8a3050,'↺','Reset build',()=>{ Save.data.egBuild[ch]={path:null,inf:null,mut:null,evo:false,lv:{}}; Save.save(); this.buildEgBuild(); });
-    if(left<0)this.menuToast('Over budget — this build will not apply','#ff6b6b');
-    this.menu.setVisible(true);
-  }
   buildPact(cx,cw,y,T){ const w=this.W,h=this.H,heat=pactHeat();
     T(w/2,y,'Hunger Pact: harder Recipe runs, bigger rewards. Applies to every Recipe until you change it.',11,'#e6dcf0');
     T(w/2,y+30,'🔥 Heat '+heat+'   ·   Rewards ×'+(1+PACT_REWARD_PER_HEAT*heat).toFixed(2)+'   ·   Best '+(Save.data.pactBest||0),13,'#ffb070','bold'); y+=56;
@@ -7762,15 +7703,6 @@ class Game extends Phaser.Scene {
     box.push(g,this.add.text(w/2,by,'↩ Back to Boss Rush',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5));
     this._overBtns.push({x:w/2-bw/2,y:by-24,w:bw,h:48,fn:()=>{window.__pendingMenu='bossrush';this.scene.restart();}});
     this.over.add(box); this.over.setVisible(true); }
-  buildEndgame(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Beyond Hunger','screen_endgame');const w=this.W,h=this.H,unlocked=Save.endgameUnlocked(),canAscend=Save.canAscend(),asc=Save.data.ascension||0,best=Save.data.endlessBest||0;
-    const status=this.add.text(w/2,74,unlocked?'✦ ENDGAME UNLOCKED ✦':'🔒 Finish the story to unlock the endgame',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:unlocked?'#ffe08a':'#9f91aa'}).setOrigin(0.5);this.menu.add(status);
-    const card=(y,color,title,desc,label,fn)=>{const cw=Math.min(w-32,520),x=(w-cw)/2,ch=Math.min(132,h*0.22),g=this.add.graphics();g.fillStyle(0x251a32,0.97);g.fillRoundedRect(x,y,cw,ch,17);g.lineStyle(2,color,0.9);g.strokeRoundedRect(x,y,cw,ch,17);const t=this.add.text(x+18,y+17,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff'}),d=this.add.text(x+18,y+47,desc,{fontFamily:'sans-serif',fontSize:'10px',color:'#cfc3dc',wordWrap:{width:cw-36},lineSpacing:4}),b=this.add.text(x+cw-18,y+ch-18,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0.5);this.menu.add([g,t,d,b]);if(fn)this._zone(x,y,cw,ch,fn);};
-    const y1=100,y2=y1+Math.min(145,h*0.24);card(y1,0xd58cff,'🌙 Midnight Kitchen · Endless','5 waves then a boss, enemies grow stronger each cycle · every 3 cycles The Echo of Hunger appears\nBest '+best+' cycles',unlocked?'Tap to start':'Not unlocked',unlocked?()=>{this._endlessRequested=true;this.stageDiff=Math.max(2,Math.min(3,(Save.data.diffBest?.[4]||2)));this.startRun(4);}:null);
-    const confirm=this._ascendConfirm;card(y2,0xffa952,'☀ Ascension '+asc,'Start a new stage journey — resets Mastery/unlocked stages but keeps characters, Gear and Rank, plus a big Sugar bonus per Ascension',canAscend?(confirm?'⚠ Tap again to confirm':'Ascend · gain Sugar '+(350+(asc+1)*150)):'Complete this Mastery run first',canAscend?()=>{if(this._ascendConfirm){const r=Save.ascend();this._ascendConfirm=false;Sfx.clear();this.showBanner('☀ ASCENSION '+Save.data.ascension,'Permanent power up · Sugar +'+r,2200);}else{this._ascendConfirm=true;Sfx.select();}this.buildEndgame();}:null);
-    const board=(Save.data.endlessBoard||[]),top=y2+Math.min(150,h*0.25),head=this.add.text(w/2,top,'🏆 Local Endless ranking',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#bfe8ff'}).setOrigin(0.5);this.menu.add(head);
-    const lines=board.length?board.map((r,i)=>(i+1)+'. Cycle '+r.cycle+' · ☠'+r.kills+' · '+Math.floor(r.seconds/60)+':'+String(r.seconds%60).padStart(2,'0')+' · '+(CHARACTERS[r.character]?.name||r.character)).join('\n'):'No records yet';const list=this.add.text(w/2,top+24,lines,{fontFamily:'sans-serif',fontSize:'10px',color:'#d8c4e3',align:'center',lineSpacing:5}).setOrigin(0.5,0);this.menu.add(list);this.menu.setVisible(true);
-  }
   startTutorial(done,manual=false){
     this._tutorialDone=done;this._tutorialStep=0;this._tutorialManual=manual;this.state='tutorial';this.menu.setVisible(false);this.physics.pause();this.drawTutorial();
   }
@@ -8253,13 +8185,7 @@ class Game extends Phaser.Scene {
       const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🍬'+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
       const nx=maxed?null:this.add.text(ppx+pw/2,ppy-3,'Upgrade: '+u.show(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5,1);
       this.menu.add([g,em,st,tag,nm,gain,pg,pt]); if(nx)this.menu.add(nx);
-      // v5.29 ⬆ Overcap ด้วยหินแก่นจากห้องลับใต้วิหาร
-      if(OVERCAP_ON){ const oc=Save.overcap(k),ocMax=oc>=OVERCAP_MAX,cst=overcapCost(oc),stn=Save.coreStones(k),ok=!ocMax&&stn>=cst.stones&&(Save.data.sugar||0)>=cst.sugar,se={hp:'🔴',dmg:'🟠',def:'🔵'}[k];
-        const ow=Math.max(60,ppx-x-75-8),oh=ph,ox=x+75,oy=ppy;
-        if(ow>=60){ const og=this.add.graphics(); og.fillStyle(ok?0x4a3a1a:0x2a2232,1); og.fillRoundedRect(ox,oy,ow,oh,10); og.lineStyle(1.5,ok?0xffd166:0x3a3048,1); og.strokeRoundedRect(ox,oy,ow,oh,10);
-          const ot=this.add.text(ox+ow/2,oy+oh/2,ocMax?('⬆ Overcap MAX +'+oc):('⬆ +'+oc+'/'+OVERCAP_MAX+' · '+se+stn+'/'+cst.stones+' 🍬'+cst.sugar),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ow<130?'8px':'9.5px',color:ocMax?'#8bd3a0':(ok?'#ffe08a':'#8d8195')}).setOrigin(0.5);
-          this.menu.add([og,ot]); if(!ocMax)this._zone(ox,oy,ow,oh,()=>{ if(Save.buyOvercap(k)){ Sfx.progress('overcap'); this.menuToast('⬆ '+u.name+' Overcap +'+Save.overcap(k)+' — permanent!','#ffd166'); } else { Sfx.select(); this.menuToast(stn<cst.stones?('Need '+cst.stones+' '+se+' Core Stones — dig them in ⛏️ Depths'):('Need 🍬 '+cst.sugar+' Sugar'),'#ff9bb5'); } this.buildMenuScreen(); }); }
-        if(oc>0)st.setText(stars+' +'+oc); } else if(Save.overcap(k)>0)st.setText(stars+' +'+Save.overcap(k));
+      if(Save.overcap(k)>0)st.setText(stars+' +'+Save.overcap(k));
       if(this._tutorialWeaveCoach&&!maxed&&afford&&!this._coachSpot)this._coachSpot={x:ppx,y:ppy,w:pw,h:ph};
       if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this._tutorialWeaveCoach){ this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
     });
@@ -8478,7 +8404,7 @@ class Game extends Phaser.Scene {
       if(roll<0.55){ const n=digThreadAmt(d.depth)*4; Save.data.threads=Save.threads()+n; return {t:'🏺 Ancient Chest! 🧶 +'+n+' Weave Thread',c:'#ffd166'}; }
       const k=rollWeightedCurrency(d.depth>=6?'epic':'rare'),n=Phaser.Math.Between(2,4); if(k){ Save.addCurrency(k,n); const cd=currencyDef(k); return {t:'🏺 Ancient Chest! '+(cd?cd.emoji+' '+cd.name:'Currency')+' ×'+n,c:'#ffd166'}; }
       return {t:'🏺 Ancient Chest!',c:'#ffd166'}; }
-    const st=(DIG_ITEMS[c.c]||{}).stone; if(st&&!OVERCAP_ON){ Save.data.threads=Save.threads()+STONE_THREADS; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' Core Stone! 🧶 +'+STONE_THREADS+' Weave Thread',c:'#ffd166'}; }
+    const st=(DIG_ITEMS[c.c]||{}).stone; if(st){ Save.data.threads=Save.threads()+STONE_THREADS; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' Core Stone! 🧶 +'+STONE_THREADS+' Weave Thread',c:'#ffd166'}; }
     if(st){ Save.data.coreStones=Save.data.coreStones||{}; Save.data.coreStones[st]=(Save.data.coreStones[st]||0)+1; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' '+DIG_ITEMS[c.c].name+'! Overcap '+UPGRADES[st].name+' in the Temple',c:'#ffd166'}; }
     if(c.c==='scroll'){ Save.data.scrolls=(Save.data.scrolls||0)+1; Sfx.digRare(); const n=Save.data.scrolls; return {t:'📜 Scroll Fragment '+Math.min(n,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK+(n>=SCROLL_PER_PERK?' — unlock an Ancient Perk in 🏅 Rank Perks!':''),c:'#ffd9a8'}; }
     if(c.c==='part'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); Sfx.digRare(); return {t:'🧩 Recipe Part: '+pt.emoji+' '+pt.name,c:'#9ff0c8'}; }
@@ -9158,7 +9084,6 @@ class Game extends Phaser.Scene {
     // ชุดอุปกรณ์ (Set Bonus): สวมของชุดเดียวกันครบ 2/3 ชิ้น = โบนัสสะสม
     const setCounts=gearSetCounts();
     for(const sid in setCounts){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(setCounts[sid]>=+need&&def.bonuses[need].apply)def.bonuses[need].apply(p); } }
-    for(const sid in GEAR_SETS){ const def=GEAR_SETS[sid]; if(def.collect&&gearSetCollected(sid))def.collect.apply(p); }   // v6.53: สะสมครบเซ็ต = โบนัสถาวรเล็กน้อย
     // Rank Perks (ถาวร เลือกเอง) — vigor/might บวกสแตต · greed/boxLuck ตั้งตัวคูณรันนี้
     const rp=Save.data.rankPerks||{};
     if(rp.vigor)p.maxhp*=1+0.06*rp.vigor;
@@ -9168,16 +9093,6 @@ class Game extends Phaser.Scene {
     this.rankSugarMul=1+0.08*(rp.greed||0);
     this._boxLuckMul=1+0.30*(rp.boxLuck||0);
     this._currencyLuckMul=1+0.10*(rp.fortune||0);
-    // Bestiary = สแตตถาวรจากการฆ่ามอนสะสม (คืนมาแล้ว v4.8) — hp flat · dmg/def/spd/cdr เป็น % · crit เป็น chance
-    const bst=bestiaryTotals();
-    if(bst.hp)p.maxhp+=bst.hp;
-    if(bst.dmg)p.dmgMul+=((1+bst.dmg))-1;
-    if(bst.def)p.dmgTakenMul*=(1-Math.min(0.55,bst.def));
-    if(bst.spd)p.baseSpeed*=(1+Math.min(0.4,bst.spd));
-    if(bst.crit)p.critChance+=bst.crit;
-    if(bst.cdr)p.cdMul*=(1-Math.min(0.5,bst.cdr));
-    // หมายเหตุ: Bestiary + Ascension ไม่ให้สแตตรบแล้ว (ยุบแหล่งสแตตที่ทับซ้อน v2.45.0)
-    //  · Bestiary → v4.8 คืนสแตตถาวร (bestiaryTotals ด้านบน) + ยังให้ Sugar ตอนปลดขั้น  · Ascension → Sugar ก้อนใหญ่ตอน Ascend
     //  เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank (พรถาวร) · Talent เฉพาะตัว · Gear
     applyFrUpkeep(p);
     clampPlayerStats(p);   // เพดานรวม (STAT_CAPS) — ความเร็ว/คูลดาวน์/คริ/ดาเมจ/เกราะ
@@ -9237,20 +9152,7 @@ class Game extends Phaser.Scene {
     pnl.fillStyle(0x241a33,0.7); pnl.fillRoundedRect(px,panelY,pw,pH,14); pnl.lineStyle(1.5,0x4a4059,0.8); pnl.strokeRoundedRect(px,panelY,pw,pH,14);
     // v6.7.1 (B2): ตารางแท็กบิ้ว — จำนวน · ขั้นที่ได้ · อีกกี่ชิ้นถึงโบนัสถัดไป
     let tagBot=panelY+pH;
-    if(portrait&&TAG_SETS_ON){ const tc=this.tagCounts?this.tagCounts():{},keys=Object.keys(TAG_SETS).sort((a,b)=>(tc[b]||0)-(tc[a]||0)),ty=panelY+pH+10,cw=(pw-8)/2,rh=34;
-      const hd=this.add.text(px+4,ty,'🏷️ Build Tags',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9dff9d'}).setOrigin(0,0); this.pauseUI.add(hd);
-      keys.forEach((t,i)=>{ const d=TAG_SETS[t],n=tc[t]||0,tier=TAG_TIERS.filter(x=>n>=x).length,next=TAG_TIERS[tier],x=px+(i%2)*(cw+8),y=ty+20+Math.floor(i/2)*(rh+4),on=n>0;
-        const g=this.add.graphics(); g.fillStyle(tier?0x23382a:0x241a33,on?0.92:0.55); g.fillRoundedRect(x,y,cw,rh,8); g.lineStyle(1.2,tier?0x9dff9d:0x4a4059,on?0.9:0.5); g.strokeRoundedRect(x,y,cw,rh,8);
-        const dots='●'.repeat(tier)+'○'.repeat(TAG_TIERS.length-tier);
-        const a=this.add.text(x+8,y+4,d.emoji+' '+d.name+' '+n+'  '+dots,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#ffffff':'#8a7f9a'}).setOrigin(0,0);
-        const b=this.add.text(x+8,y+19,next?((next-n)+' more → '+d.b[tier]):'MAX',{fontFamily:'sans-serif',fontSize:'9px',color:tier?'#bff5c8':'#b9adc9',wordWrap:{width:cw-14},maxLines:1}).setOrigin(0,0);
-        this.pauseUI.add([g,a,b]); });
-      tagBot=ty+20+Math.ceil(keys.length/2)*(rh+4);
-      const bA=this.basicAttack,FL=bA&&FUSIONS[bA.character]; if(FL){ let fy=tagBot+6; this.pauseUI.add(this.add.text(px+4,fy,'🧬 Fusion Goals',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ff9be8'}).setOrigin(0,0)); fy+=18;
-        FL.forEach(f=>{ const done=(bA.mods||[]).includes(f.id),ev=!!bA.evolved,rl=!!(this._rel&&this._rel[f.relic]),R=RELICS[f.relic];
-          const line=(done?'✅ ':'')+f.emoji+' '+f.name+'  =  '+(ev?'✓':'○')+' Evolve + '+(rl?'✓':'○')+' '+R.emoji+' '+R.name;
-          this.pauseUI.add(this.add.text(px+8,fy,line,{fontFamily:'sans-serif',fontSize:'10px',color:done?'#9dff9d':'#e6d9f2',wordWrap:{width:pw-16},maxLines:1}).setOrigin(0,0)); fy+=15; });
-        tagBot=fy; } }
+    
     // v4.65: แนวตั้งตรงกลางว่าง → อธิบาย Relic ที่ถืออยู่ (ผู้เล่นมักลืมว่าแต่ละชิ้นทำอะไร)
     if(portrait&&this.relics&&this.relics.length){ let ry=tagBot+8; const lt=this.add.text(px+4,ry,'🔮 Your Relics',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9b8ff'}).setOrigin(0,0);this.pauseUI.add(lt);ry+=22;
       const room=Math.max(0,h-138-54-12-27-ry),maxShown=Math.max(0,Math.floor((room-18)/52));
@@ -9314,16 +9216,15 @@ class Game extends Phaser.Scene {
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องที่สะสมมา (แจกจริง)
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor((this.kills||0)*0.4));
     if(this.bossRush){ _closeStory(); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead(); this.finishBossRush(false); return; }
-    if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);
     this._quitSummary=true; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ Sfx.bpLoopStop?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false; if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ Sfx.bpLoopStop?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
     if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸');
-    if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character);Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
+    Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
     this.boss=null; if(this.bossUI)this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.clearExitPortal();this.clearWaveObjective();this.clearStageProps(); if(this.pipG)this.pipG.clear();
@@ -9355,7 +9256,7 @@ class Game extends Phaser.Scene {
     pending.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k])));this.load.start();
   }
 
-  isEndgameRun(){return !!(this.recipeMode||this.riftMode||this.endlessMode||this.bossRush);}
+  isEndgameRun(){return !!(this.recipeMode||this.riftMode||this.bossRush);}
   focusGearPool(pool){
     if(this._farmFocus!=='weapon'&&this._farmFocus!=='armor')return pool;
     return pool.filter(it=>this._farmFocus==='weapon'?it.slot==='weapon':['armor','gloves','boots'].includes(it.slot));
@@ -9365,7 +9266,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,bw=Math.min(w-40,360),x=w/2,top=Math.max(110,h*0.22);
     const choices=[['all','All loot','Standard drop pool'],['weapon','Weapons','Equipment drops are weapons'],['armor','Armor','Armor, gloves and boots'],['materials','Crafting materials','Equipment rewards become crafting currency']];
     choices.forEach(([id,name,desc],i)=>{this.menu.add(this.add.text(x,top+i*66+27,desc,{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc2df'}).setOrigin(0.5));this.uiPillBtn(this.menu,x,top+i*66,bw,52,COLORS.grape,'',name,()=>{this._farmFocusRequested=id;this.startRun(idx);});});
-    this.uiPillBtn(this.menu,x,top+choices.length*66,bw,42,COLORS.pink,'','Back',()=>{this._recipeRequested=null;this._riftRequested=null;this._endlessRequested=false;this._bossRushRequested=false;this._pinnacleRequested=false;this._farmFocusRequested=null;this.menuScreen='endgame';this.buildMenuScreen();});
+    this.uiPillBtn(this.menu,x,top+choices.length*66,bw,42,COLORS.pink,'','Back',()=>{this._recipeRequested=null;this._riftRequested=null;this._bossRushRequested=false;this._pinnacleRequested=false;this._farmFocusRequested=null;this.menuScreen='endgame';this.buildMenuScreen();});
   }
   checkEndgameCurse(progress,onResume){
     if(!this.isEndgameRun()||this.state!=='play'||this._inTutorial||!['wave','breather'].includes(this.mode))return false;
@@ -9389,10 +9290,10 @@ class Game extends Phaser.Scene {
     const close=d=>{if(this.state!=='rolling')return;if(d){this._activeZoneMods.push(d.id);this._zoneMul=this.zoneModMul();this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});}cont.destroy(true);this._rollBtns=[];this.state='play';this.physics.resume();if(onResume)onResume();};
     this._rollBtns=options.concat([null]).map((d,i)=>{const x=(w-cw)/2,y=top+i*92,g=this.add.graphics();g.fillStyle(0x21172f,1);g.fillRoundedRect(x,y,cw,78,14);g.lineStyle(2,0xffd166,1);g.strokeRoundedRect(x,y,cw,78,14);cont.add(g);cont.add(this.add.text(w/2,y+18,d?d.name:'Continue without a curse',{fontFamily:'sans-serif',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5,0));cont.add(this.add.text(w/2,y+47,d?d.desc+' · rewards ×'+d.reward.toFixed(2):'Keep current difficulty and rewards',{fontFamily:'sans-serif',fontSize:'12px',color:'#e8dcff'}).setOrigin(0.5,0));return{x,y,w:cw,h:78,fn:()=>close(d)};});
   }
-  startRun(idx){ if(this.state==='menu'){this._cocoaFlickerOn=false;this.finishCocoaFlicker(true);this.refreshFlickerUI();} if(this._upBtn){this._upBtn.destroy();this._upBtn=null;} if(this._upPanel){this._upPanel.destroy(true);this._upPanel=null;} this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null; this._charExpGain=null;
+  startRun(idx){ if(this.state==='menu'){this._cocoaFlickerOn=false;this.finishCocoaFlicker(true);this.refreshFlickerUI();}  this._dmgBy={}; this._lastHitSrc=null; this._orderReward=null; this._charExpGain=null;
     if(this.state!=='menu')return;
     this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;
-    const endgameRequested=!!(this._recipeRequested||this._riftRequested||this._endlessRequested||this._bossRushRequested||this._pinnacleRequested);
+    const endgameRequested=!!(this._recipeRequested||this._riftRequested||this._bossRushRequested||this._pinnacleRequested);
     if(endgameRequested&&!this._farmFocusRequested){this.openEndgamePreparation(idx);return;}
     this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
@@ -9429,7 +9330,7 @@ class Game extends Phaser.Scene {
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         if(this.killTxt)this.killTxt.setText('☠ 0');
-        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.endlessMode=!!this._endlessRequested;this._endlessRequested=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}this.endlessCycle=0;this.secretBoss=false;
+        this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
@@ -9582,7 +9483,7 @@ class Game extends Phaser.Scene {
       if(i<list.length)setTimeout(step,16); else setTimeout(()=>{ c.destroy(true); if(window.GameLoader)window.GameLoader.hide(); done(); },32); };
     step();
   }
-  usesReplaySurvival(){return !!(Save.data.stageMastery||{})[this.stageIndex]&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!this.endlessMode;}
+  usesReplaySurvival(){return !!(Save.data.stageMastery||{})[this.stageIndex]&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush;}
   startReplayRun(st){
     this.clearWaveObjective();this._finalStoryShown=true;if(this.pipG)this.pipG.setVisible(false);
     this._replayMeter={kills:0,goal:140,time:0,miniTriggered:false,miniDone:false,done:false};
@@ -9610,17 +9511,10 @@ class Game extends Phaser.Scene {
     }
   }
   recipeHungerGoal(){ return Math.round((260+((this._recipe&&this._recipe.tier)||1)*10)*(1+0.2*((this._pact&&this._pact.hunger)||0))); }
-  applyEgBuild(){ const b=this.basicAttack,d=this.basicAttackInfo(); if(!b||!d)return; const ch=this.character,e=egBuild(ch);
-    this._egBuilt=true; if(egBuildCost(ch,e)>egBuildPoints())return;   // เกินแต้ม = ใช้ build เปล่า (ปุ่ม Run กันไว้แล้ว)
-    const P=BASIC_PATHS[ch]; if(e.path&&P&&P.find(x=>x.id===e.path))b.path=e.path; if(e.inf&&FLAVOR_INFUSIONS.find(f=>f.id===e.inf))b.infusion=e.inf;
-    if(e.mut&&d.mutations.find(m=>m.id===e.mut))b.mutation=e.mut; if(e.evo&&b.mutation)b.evolved=true;
-    for(const u of egUpgradeDefs(ch,{path:b.path,inf:b.infusion,lv:e.lv})){ const n=Math.min(u.max,e.lv[u.id]||0); if(n>0){ b.lv[u.id]=n; b.ranks[u.id]=n; } }
-    this.syncBasicAttack(); this._egBuilt=true; }
   pactHealMul(){ return this.recipeMode&&this._pact?Math.max(0,1-0.5*(this._pact.heal||0)):1; }   // R10: T16=246 (เดิม 310) เพราะมอนอึดขึ้นตาม tier อยู่แล้ว
-  startRecipeRun(st){ this.clearDelveMods(); this._recipeMission=null; this._feastT=null; this._feastOn=null; this._waitMsgAt=0; const r=this._recipe; this._draftQ=0; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this.setupBiome(nd); this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
+  startRecipeRun(st){ this.clearDelveMods(); this._recipeMission=null; this._feastT=null; this._feastOn=null; this._waitMsgAt=0; const r=this._recipe; this._rushOn=false; const nd=r&&r.node!=null?amapNode(r.node):null; this._amapNode=nd; this._amapInf=nd?amapInfluence(nd.id):{}; { const L=amapInfLayers(this._amapInf); if(L)this.time.delayedCall(2600,()=>this.showBanner('🍽 Flavor Influence '+amapInfText(this._amapInf),AMAP_FLAVORS.filter(f=>this._amapInf[f.id]).map(f=>f.eff).join(' · ')+' · rewards +'+Math.round(15*L)+'%',2600)); } if(nd){ this.clearStageProps&&this.clearStageProps(); if(this.bgTile&&this.textures.exists('train_floor')){ this.bgTile.setTexture('train_floor'); if(this.bgTile.setTileScale)this.bgTile.setTileScale(0.9); this.bgTile.setAlpha(1); this.bgTile.setTint(Phaser.Display.Color.HSLToColor(nd.hue/360,0.45,0.74).color); } if(this.stageTxt)this.stageTxt.setText(nd.emoji+' '+nd.name+' · Depth '+nd.d); } this.setupBiome(nd); this._finalStoryShown=true; this._hunger=0; this._hungerT=0; this._hungerDone=false; this._recipeEventDone=false; this._recipeEventN=0; this.clearRecipeShrine(); this._recipeFillT=0;
     const pf=(this._pact&&this._pact.frail)||0; if(pf){ const p=this.player; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-0.1*pf))); p.hp=Math.min(p.hp,p.maxhp); }
     this.stageTxt.setText((nd?'⛏ Depth '+nd.d:'📜 Recipe T'+r.tier)+(this._pactHeat?' · 🔥'+this._pactHeat:'')+' · '+(nd?nd.emoji+' '+nd.name:st.name));
-    this._egBuilt=false;   // v6.65: Endgame Build removed
     this.time.delayedCall(1200,()=>{ if(!this._busy())return; this.waveIndex=1; this.waveObjective=null; this.mode='wave'; this.startSurvivalWave(1);
       this.spawnInterval*=(this.recipeHas('horde')?0.5:0.7)*(1-0.15*((this._pact&&this._pact.horde)||0)); this.spawnBatch+=this.recipeHas('horde')?2:1; { const fi=this._amapInf||{}; if(fi.sweet){this.spawnInterval*=1-0.08*fi.sweet; this.spawnBatch+=fi.sweet>=2?1:0;} if(fi.sour&&this.eliteEvery)this.eliteEvery*=1-0.15*fi.sour; } this.maxLive=Math.min(this.maxLive+10,110); this.waveTimer=99999; if(this.recipeHas('elitepack')&&this.eliteEvery){this.eliteEvery*=0.4;this.eliteAcc=Math.min(this.eliteAcc||0,this.eliteEvery);}
       { const ms=nd&&nd.mission; this._recipeMission=ms?{type:ms,done:false}:null; if(ms){ this.setupWaveObjective(1,{dur:52,forceType:ms}); const d=WAVE_OBJECTIVES[ms]; this.showBanner('🎯 '+d.name+' + 🍽 Hunger','Fill the meter to call the boss · mission = bonus Sugar',2600); } else this.showBanner('🍽 Feed the Hunger Meter','Kill to fill it — the boss appears when it’s full',2400); }
@@ -9918,7 +9812,7 @@ class Game extends Phaser.Scene {
       if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((o.lesson?'MISSION '+o.lesson+': ':'MISSION: ')+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});if(o&&!this._inTutorial){this.showSpeechBubble(o.emoji+' '+o.desc,4200);Sfx.card&&Sfx.card();}}
     this.updateWaveText();
   }
-  usesStoryBudget(){return !this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!this.endlessMode;}
+  usesStoryBudget(){return !this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush;}
   beginStoryBudget(w){
     if(!this.usesStoryBudget?.()){this._storyBudget=null;return;}
     const key=this._replayMeter?'replay':w;if(this._storyBudget?.key===key)return;
@@ -10546,7 +10440,7 @@ class Game extends Phaser.Scene {
   // HP บอสไต่ตามเลเวลในรันและ Power Guide แบบอ่อน ๆ เท่านั้น ไม่สเกลตาม rank Fullจน progression ไร้ความหมาย
   bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(3.0,(1+Math.max(0,(this.level||1)-1)*(this.usesStoryBudget?.()?0.025:0.055))*pg.enemyHp); }
   // ยิ่งฆ่ามอนในด่านเยอะ ศัตรู/บอสยิ่งถึกขึ้น (ทวีคูณ) — ทำให้เกมยากขึ้นเรื่อย ๆ ระหว่างด่าน
-  killPowerMul(){ if(this.usesStoryBudget?.())return 1;return (1 + Math.min(1.8, (this.stageKills||0)*0.005))*(this.endlessMode?1+(this.endlessCycle||0)*0.18:1); }
+  killPowerMul(){ if(this.usesStoryBudget?.())return 1;return (1 + Math.min(1.8, (this.stageKills||0)*0.005)); }
   // ผ่อนความยากให้ผู้เล่นใหม่: Stage 1 + ช่วงต้นStage (ฆ่ายังน้อย) + ยังไม่จบ tutorial → มอนเลือดน้อยลง (แก้ feedback "~4 hits per enemy")
   newbieEase(){ let m=1; if(this.stageIndex===0)m*=0.60; if((this.stageKills||0)<25)m*=0.85; if(!Save.data.tutorialDone)m*=0.8; return m; }
   tutorialActive(){ return !!this._inTutorial; }
@@ -10647,7 +10541,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===12&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg13','CHAPTER 3 · GLASS GREENHOUSE','THE GLASS GARDENER','A thousand reflections turn toward Momo — the gardener chooses which future grows',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===13&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg14','CHAPTER 3 · THE SEED VAULT','THE SEEDWARDEN','The vault shakes as its last guardian lights every jar of crown seeds',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===14&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg15','FINAL CHAPTER · THE FIRST SEED','THE FIRST PLANTER','The throne turns. The one who planted the first crown finally looks at Momo',()=>this.spawnFinalBoss());return;}
-    const st=STAGES[this.stageIndex]; this.mode='boss';this.secretBoss=!!(this.endlessMode&&((this.endlessCycle+1)%3===0));
+    const st=STAGES[this.stageIndex]; this.mode='boss';
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
     const bkey=this.stageIndex>=10?'c3_boss'+(this.stageIndex-9):this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':this.stageIndex===6?'boss7_mycelium_behemoth':this.stageIndex===7?'boss8_hornet_queen':this.stageIndex===8?'boss9_chronobloom_orchid':this.stageIndex===9?'boss10_true_rootmother':'boss'+(this.stageIndex+1);
@@ -10662,9 +10556,9 @@ class Game extends Phaser.Scene {
     const _dIdx=Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1));   // 0=Normal 1=ยาก 2=นรก
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
-    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75/0.9*realStageBossMul(this.stageIndex,this.recipeMode)*_bossScale*(this.secretBoss?1.65:1)*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
-    b.spd=this.secretBoss?108:94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
-    b.dmg=Math.round(st.bossDmg*1.3*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg*(this.secretBoss?1.28:1)); b.xp=30; b.frozen=0; b._glacierLifeToken=(b._glacierLifeToken||0)+1; b._glacierFrost=0; b._glacierFrostAt=0; b._glacierBrittleUntil=0;b._mintImpale=0;b._mintImpaleAt=-Infinity;b._mintRuptureAt=-Infinity; b._glacierBurstAt=-Infinity; b._chill=0; b._chillAt=null; b.knock=0; b.phase3=false; b.phase4=false;b._secretBoss=this.secretBoss;   // บอสใหญ่ + บอสลับ Endless
+    b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75/0.9*realStageBossMul(this.stageIndex,this.recipeMode)*_bossScale*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1); b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    b.spd=94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
+    b.dmg=Math.round(st.bossDmg*1.3*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=30; b.frozen=0; b._glacierLifeToken=(b._glacierLifeToken||0)+1; b._glacierFrost=0; b._glacierFrostAt=0; b._glacierBrittleUntil=0;b._mintImpale=0;b._mintImpaleAt=-Infinity;b._mintRuptureAt=-Infinity; b._glacierBurstAt=-Infinity; b._chill=0; b._chillAt=null; b.knock=0; b.phase3=false; b.phase4=false;
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
     b.shooter=false; b.bomber=false; b.acid=false; b.dasher=false; b.siege=false; b.dashState=null; b.myceliumBehemoth=this.stageIndex===6;b.hornetQueen=this.stageIndex===7;b.chronobloom=this.stageIndex===8;b.trueRootmother=this.stageIndex===9;
     b.atkCd=0.8; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
@@ -10674,7 +10568,7 @@ class Game extends Phaser.Scene {
     this.waveAlive=1; this.updateWaveText();
     if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; if(this.textures.exists('boss_pinnacle')){ if(b.anims)b.anims.stop(); b.setTexture('boss_pinnacle',0); b._pinnacleArt=true; b.tintColor=null; b.clearTint(); } else { b.tintColor=0x8a4dff; b.setTint(0x8a4dff); } b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
     const _dvb=this.setupDelveBoss(b); if(_dvb){ if(this.bossName)this.bossName.setText('👹 '+(b.delveBoss==='warden'?'The Jelly Warden':'Madame Candlewick')+' · Floor '+this._amapNode.d); this.bossIntro(b,_dvb); return; }
-    this.bossIntro(b, this._pinnacleRun?'✦ PINNACLE · The Hunger Beneath':this.secretBoss?'The Echo of Hunger · Shadow of the Devourer':st.boss);
+    this.bossIntro(b, this._pinnacleRun?'✦ PINNACLE · The Hunger Beneath':st.boss);
   }
   // ฉากปรากฏตัวบอส: WARNING → แพนfind → ปรากฏตัว/คำราม → แพนกลับ
   bossIntro(b,name){
@@ -10880,8 +10774,6 @@ class Game extends Phaser.Scene {
     if(this.bossRush){ this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest(); this.mode='breather'; this.bossRushBossDown(); return; }
     if(this.recipeMode)this.finishRecipeBoss();
     if(this.riftMode&&!this.recipeMode){ const t=this._riftTier||1,keys=1+(t>=5?1:0)+(t>=10?1:0); Save.data.riftKeys=(Save.data.riftKeys||0)+keys; Save.data.riftBest=Math.max(Save.data.riftBest||1,t+1); Save.save(); this.showBanner('🌀 Rift Tier '+t+' cleared!','+'+keys+' 🗝️ Rift Key · Tier '+(t+1)+' unlocked',2600); }
-    if(this.endlessMode){const cleared=(this.endlessCycle||0)+1,bonus=80+cleared*35+(this.secretBoss?180:0);this.sugarStage+=bonus;Save.addSugar(this.sugarStage);this.sugarStage=0;Save.data.endlessBest=Math.max(Save.data.endlessBest||0,cleared);Save.save();this.endlessCycle=cleared;this._curseCheckpoint=0;this.secretBoss=false;this.waveIndex=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.45);this.mode='breather';
-      this.showBanner('🌙 ENDLESS round '+cleared+' complete','Checkpoint saved · Sugar +'+bonus+(cleared%3===0?' · secret boss defeated!':''),2600);this.time.delayedCall(3200,()=>{if(this._busy()&&this.mode==='breather')this.startWave(0,false);});return;}
     const next=this.stageIndex+1,progressUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next,canUnlock=progressUnlock&&isStageReady(next);
     if(progressUnlock){Save.data.unlockedStage=next;Save.save();}
     if(!Save.data.diffBest)Save.data.diffBest=[];if((this.stageDiff||1)>(Save.data.diffBest[this.stageIndex]||0)){Save.data.diffBest[this.stageIndex]=this.stageDiff||1;Save.save();}   // จำความยากสูงสุดที่ผ่าน
@@ -10963,7 +10855,7 @@ class Game extends Phaser.Scene {
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
   onStageClear(){ this.clearSugarCoins();
-    this._orderReward=(!this._inTutorial&&!this.bossRush&&!this.riftMode&&!this.recipeMode&&!this.endlessMode)?Save.completeSugarOrder(this.stageDiff):null;
+    this._orderReward=(!this._inTutorial&&!this.bossRush&&!this.riftMode&&!this.recipeMode)?Save.completeSugarOrder(this.stageDiff):null;
     // v5.32 ⛏️ พลั่วจากการผ่านด่าน: ปกติ 1 / ยาก 2 / นรก 3 (กฎเหล็ก) · ไม่ให้ใน tutorial
     if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1))+1; Save.addShovels(n); this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
@@ -11434,7 +11326,6 @@ class Game extends Phaser.Scene {
     this.banishMode=false;
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
     const _rlv=[6,12,18][this._relicLvN||0]; if(!this._forcedOpts&&_rlv&&!this._inTutorial&&(this.level||1)>=_rlv&&this.relicSlotsLeft()>0){ this._relicLvN=(this._relicLvN||0)+1; this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
-    if(this._draftPick){ this._draftPick=false; t.setText('🌟 LEVEL '+this.level+' DRAFT — pick 1 game-changer · tap again to confirm'); }
     if(this._relicPick)t.setText('🔮 RELIC — choose 1 (changes how you fight) · tap again to confirm');
     const opts=this._forcedOpts||this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._forcedOpts=null; this._lvlOpts=opts;
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
@@ -11471,61 +11362,18 @@ class Game extends Phaser.Scene {
   }
   // v6.6.0: Recipe level-up = สะสมแต้ม ⬆ ปุ่มมุมขวา · แตะเปิดหน้าอัปเกรด ใช้ได้หลายแต้มทีเดียว
   // v6.24 (เจ้าของเลือก 1+2): เลเวลทั่วไป = สแตต endless อัตโนมัติ + Sugar Rush 5 วิ · เลเวล 5/10/15… = Draft เลือก 1 ใน 3 (Modifier/Trade-off/Relic)
-  recipeLevelUp(){ const b=this.basicAttack,n=this.pendingLvl||0; this.pendingLvl=0; if(!b||n<=0)return; b.endless=b.endless||{};
-    const got=[]; for(let i=0;i<n;i++){ const lv=this.level-n+1+i;
-      if(lv%RECIPE_DRAFT_EVERY===0){ this._draftQ=(this._draftQ||0)+1; continue; }
-      if(!this._egBuilt){ const ro=this.rollBasicAttackUpgrades(3)||[],sp=ro.filter(c=>c.special);   // v6.62: การ์ดธรรมดาอัปให้อัตโนมัติ · การ์ดพิเศษ (Build/Mutation/Evo/Infusion/Fusion) ให้เลือกเอง
-        if(sp.length){ this._specQ=(this._specQ||[]).concat([sp]); this.pendingLvl=n-i-1; break; }
-        const nm=ro.filter(c=>c.kind!=='Modifier'&&c.kind!=='Trade-off'&&c.type!=='heal'),c=nm[0]||ro.find(c=>c.type==='heal');
-        if(c&&c.apply){ c.apply(); got.push((c.emoji||'')+' '+c.title); continue; } }
-      const defs=this.endlessStatDefs(); if(!defs.length)continue; const d=Phaser.Utils.Array.GetRandom(defs); b.endless[d.id]=(b.endless[d.id]||0)+1; d.apply(this.player); got.push(d.emoji+' '+d.title); }
-    clampPlayerStats(this.player); if(this.drawBars)this.drawBars(); if(this._upBtn)this._upBtn.setVisible(false);
-    if(got.length)this.sugarRush(got);
-    if(((this._draftQ||0)>0||this._specQ?.length)&&this.state==='play')this.time.delayedCall(got.length?450:0,()=>{ if(this.state==='play')this.openRecipeDraft(); }); }
   sugarRush(got){ const p=this.player; 
     if(!this._rushOn){ this._rushOn=true; p.cdMul*=0.6; p.dmgMul+=0.25; }
     this._rushEnd=(this.elapsed||0)+SUGAR_RUSH_SEC;
     const r=170; this.vfxHitRing&&this.vfxHitRing(p.x,p.y,0xff76c8,true); this.burst(p.x,p.y,0xffd166); this.screenFlash&&this.screenFlash(0xff9bd0,0.25,220);
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<r){ this.damage(e,this.relicDmg(1.2),e.x,e.y); if(!e.isBoss&&!e.isMini){ const a=Math.atan2(e.y-p.y,e.x-p.x); e.setVelocity(Math.cos(a)*380,Math.sin(a)*380); e.knock=0.22; } } });
     this.showBanner('🍬 SUGAR RUSH!'+(got&&got.length?' Lv '+this.level:''),(got&&got.length?got.slice(-2).join(' · ')+' · ':'')+'attacks ×1.7 speed for '+SUGAR_RUSH_SEC+'s',1300); Sfx.clear&&Sfx.clear(); }
-  openRecipeDraft(){ if(this._specQ?.length){ this._forcedOpts=this._specQ.shift(); this._draftPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return; } if(!(this._draftQ>0))return; const opts=[],seen=new Set(),add=o=>{ if(o&&!seen.has(o.key)){seen.add(o.key);opts.push(o);} };
-    for(let t=0;t<6&&opts.length<3;t++){ add(this.modCard()); if(opts.length<3&&t%2===0)add(this.tradeCard()); }
-    if(opts.length<3){ this.rollRelicChoices(3-opts.length).forEach(add); }
-    if(!opts.length){ this._draftQ--; return; }
-    this._draftQ--; this._forcedOpts=opts; this._draftPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); }
-  slotLevelUp(){ const n=this.pendingLvl||0; if(this._upPanel)return; this.refreshUpBtn(); if(n>0&&this._upBtnN!==n){ this._upBtnN=n; if(this._upBtn)this.tweens.add({targets:this._upBtn,scale:{from:1.25,to:1},duration:220,ease:'Back.out'}); } }
-  refreshUpBtn(){ const n=this.pendingLvl||0;
-    if(!this._upBtn||!this._upBtn.active){ const c=this.camUI(this.add.container(0,0).setDepth(160)); const g=this.add.graphics(); g.fillStyle(0x241a30,0.92); g.fillRoundedRect(-34,-30,68,60,14); g.lineStyle(3,0x9dff9d,1); g.strokeRoundedRect(-34,-30,68,60,14);
-      const t=this.add.text(0,-8,'⬆',{fontSize:'24px'}).setOrigin(0.5); const lv=this.add.text(0,18,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9dff9d'}).setOrigin(0.5); c.add([g,t,lv]); c._lv=lv; this._upBtn=c; }
-    this._upBtn.setPosition(this.W-46,(this._pad||0)+150).setVisible(n>0); this._upBtn._lv.setText(n+' pt'); }
-  openUpgradePanel(){ if(!(this.pendingLvl>0)||this.state!=='play')return; const b=this.basicAttack; if(!b)return; b.endless=b.endless||{};
-    this.state='rolling'; this.physics.pause(); this.time.paused=true; if(this._upBtn)this._upBtn.setVisible(false); Sfx.select&&Sfx.select();
-    const W=this.W,H=this.H,cont=this.camUI(this.add.container(0,0).setDepth(170)); this._upPanel=cont;
-    const close=()=>{ cont.destroy(true); this._upPanel=null; this._rollBtns=[]; this.state='play'; this.physics.resume(); this.time.paused=false; this.refreshUpBtn(); };
-    const draw=()=>{ cont.removeAll(true); this._rollBtns=[]; const defs=this.endlessStatDefs(); if(!(this.pendingLvl>0)||!defs.length){ close(); return; }
-      cont.add(this.add.rectangle(W/2,H/2,W,H,0x0c0814,0.82));
-      const cw=Math.min(360,W-32),x0=(W-cw)/2,rh=50,top=Math.max(70,H/2-(defs.length*(rh+6)+130)/2);
-      cont.add(this.add.text(W/2,top,'⬆ UPGRADE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5,0));
-      cont.add(this.add.text(W/2,top+30,'Points: '+this.pendingLvl+'  ·  tap a stat to spend 1',{fontFamily:'sans-serif',fontSize:'13px',color:'#9dff9d'}).setOrigin(0.5,0));
-      defs.forEach((d,i)=>{ const y=top+58+i*(rh+6),g=this.add.graphics(); g.fillStyle(0x21172f,1); g.fillRoundedRect(x0,y,cw,rh,12); g.lineStyle(2,0x7a5cff,1); g.strokeRoundedRect(x0,y,cw,rh,12); cont.add(g);
-        cont.add(this.add.text(x0+28,y+rh/2,d.emoji,{fontSize:'24px'}).setOrigin(0.5));
-        cont.add(this.add.text(x0+52,y+8,d.title+((b.endless[d.id]||0)?'  ×'+b.endless[d.id]:''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#fff'}));
-        cont.add(this.add.text(x0+52,y+28,d.desc,{fontFamily:'sans-serif',fontSize:'12px',color:'#9dff9d'}));
-        cont.add(this.add.text(x0+cw-24,y+rh/2,'+',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a'}).setOrigin(0.5));
-        this._rollBtns.push({x:x0,y,w:cw,h:rh,fn:()=>{ this.pendingLvl--; b.endless[d.id]=(b.endless[d.id]||0)+1; d.apply(this.player); if(d.id==='ehp'&&this.drawBars)this.drawBars(); Sfx.card&&Sfx.card(); draw(); }}); });
-      const by=top+58+defs.length*(rh+6)+8,bw=(cw-10)/2;
-      const btn=(x,label,col,fn)=>{ const g=this.add.graphics(); g.fillStyle(col,1); g.fillRoundedRect(x,by,bw,46,12); cont.add(g); cont.add(this.add.text(x+bw/2,by+23,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#fff'}).setOrigin(0.5)); this._rollBtns.push({x,y:by,w:bw,h:46,fn}); };
-      btn(x0,'🎲 Auto spend all',0x6a4fc4,()=>{ let guard=200; while(this.pendingLvl>0&&guard--){ const ds=this.endlessStatDefs(); if(!ds.length)break; const d=Phaser.Utils.Array.GetRandom(ds); this.pendingLvl--; b.endless[d.id]=(b.endless[d.id]||0)+1; d.apply(this.player);} if(this.drawBars)this.drawBars(); Sfx.card&&Sfx.card(); draw(); });
-      btn(x0+bw+10,'▶ Resume',0x2f9e6a,close); };
-    draw(); }
   closeLevelUp(){
     Sfx.card();
     this._relicPick=false;
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
     if(this.pendingLvl>0){ this.openLevelUp(); return; }   // v6.23.1: Recipe เก็บแต้มไว้ที่ปุ่ม ⬆ ด้านข้าง — เดิมเรียก openLevelUp แล้วมันแค่ return (slotLevelUp) ทิ้ง state='levelup'+physics pause ไว้ = เกมค้างหลังเลือก Relic
-    if(this.recipeMode&&this.refreshUpBtn)this.refreshUpBtn();
-    if(this.recipeMode&&((this._draftQ||0)>0||this._specQ?.length||(this.pendingLvl||0)>0)){ this.state='play'; this.physics.resume(); this.time.delayedCall(250,()=>{ if(this.state!=='play')return; if(this._specQ?.length)this.openRecipeDraft(); else if((this.pendingLvl||0)>0)this.recipeLevelUp(); else this.openRecipeDraft(); }); return; }
     if(this._rushNextPending){ this._rushNextPending=false; this.time.delayedCall(60,()=>{ if(this.bossRush)this.bossRushNext(); }); }
     this.state='play'; this.physics.resume();
     const queued=this._queuedBossIntro;this._queuedBossIntro=null;
@@ -11736,7 +11584,7 @@ class Game extends Phaser.Scene {
     const fr=((FUSIONS[(this.basicAttack||{}).character]||[]).map(f=>f.relic)),w=pool.map(k=>(RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1)*(fr.includes(k)?2:1)),out=[];
     while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]));
-      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc+tagLabel(TAGS_OF.relic[k]),headline:d.headline+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
+      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:d.headline+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
     // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
     if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);} if(Math.random()<0.45){const cc=this.condRelicCard();if(cc)extra.push(cc);}
       for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
@@ -11745,7 +11593,7 @@ class Game extends Phaser.Scene {
   offerRelic(){ if(this._inTutorial)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
     this._forcedOpts=opts; this._relicPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return true; }
   gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics(); this.time.delayedCall(600,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});
-    this.relics.push(k); this._rel[k]=true; this.time.delayedCall(0,()=>this.refreshTagSets()); const p=this.player,d=RELICS[k];
+    this.relics.push(k); this._rel[k]=true; const p=this.player,d=RELICS[k];
     if(k==='glass'){ p.dmgMul+=(1.4)-1; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
     if(k==='magnet'){ p.pickup*=1.6; p.xpMul=(p.xpMul||1)*1.2; }
     const syn=RELIC_SYNERGIES.find(s=>(s.a===k||s.b===k)&&this._rel[s.a]&&this._rel[s.b]);
@@ -11816,8 +11664,8 @@ class Game extends Phaser.Scene {
   rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;
-    if(this.recipeMode&&this._egBuilt)return this.endlessCards(n);   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
-    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};const tg=tagList(extra.tags||this.upTags(u.id)),tc=this.tagCounts(),up=tg.find(t=>TAG_TIERS.includes((tc[t]||0)+1)&&!((b.lv||{})[u.id]>0));c.desc=(c.desc||'')+tagLabel(tg)+(up&&TAG_SETS_ON?'  ⬆ '+TAG_SETS[up].emoji+'×'+((tc[up]||0)+1)+' bonus':'');return c;};
+   // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};const tg=tagList(extra.tags||this.upTags(u.id)),tc=this.tagCounts(),up=tg.find(t=>TAG_TIERS.includes((tc[t]||0)+1)&&!((b.lv||{})[u.id]>0));c.desc=(c.desc||'')+(up&&TAG_SETS_ON?'  ⬆ '+TAG_SETS[up].emoji+'×'+((tc[up]||0)+1)+' bonus':'');return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
@@ -13538,11 +13386,11 @@ class Game extends Phaser.Scene {
     for(const d of L){ if(d.kind!=='pulse')continue; this._modT[d.id]=(this._modT[d.id]||0)+dt; if(this._modT[d.id]>=d.every){ this._modT[d.id]=0; this.modBoom(this.player.x,this.player.y,d.r,d.mul,d.freeze); } } }
   modCard(){ const b=this.basicAttack; if(!b)return null; const set=MODIFIERS[b.character]||MODIFIERS.momo,have=(b.mods||[]).filter(id=>!id.startsWith('f_')); if(have.length>=MOD_MAX)return null;
     const pool=set.filter(m=>!have.includes(m.id)&&!this.banishedKeys?.['b:'+m.id]); if(!pool.length)return null; const m=Phaser.Utils.Array.GetRandom(pool);
-    return {type:'basic',key:m.id,lvl:1,max:1,kind:'Modifier',special:true,color:0xff9f43,emoji:m.emoji,title:m.name,desc:m.desc+'  ·  '+(have.length+1)+'/'+MOD_MAX+tagLabel(m.tags),headline:'🧩 '+m.desc,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
+    return {type:'basic',key:m.id,lvl:1,max:1,kind:'Modifier',special:true,color:0xff9f43,emoji:m.emoji,title:m.name,desc:m.desc+'  ·  '+(have.length+1)+'/'+MOD_MAX,headline:'🧩 '+m.desc,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
       apply:()=>{ b.mods=(b.mods||[]).concat(m.id); this.syncBasicAttack(); this.showBanner('🧩 '+m.emoji+' '+m.name,m.desc,1700); Sfx.clear(); }}; }
   tradeCard(){ const b=this.basicAttack; if(!b)return null; const have=b.trades||[]; if(have.length>=TRADE_MAX)return null;
     const pool=TRADEOFFS.filter(t=>!have.includes(t.id)&&!this.banishedKeys?.['b:'+t.id]); if(!pool.length)return null; const t=Phaser.Utils.Array.GetRandom(pool);
-    return {type:'basic',key:t.id,lvl:1,max:1,kind:'Trade-off',special:true,color:0xe0566e,emoji:t.emoji,title:t.name,desc:'✅ '+t.gain+'   ❌ '+t.cost+tagLabel(t.tags),headline:'⚖️ '+t.gain+' · '+t.cost,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
+    return {type:'basic',key:t.id,lvl:1,max:1,kind:'Trade-off',special:true,color:0xe0566e,emoji:t.emoji,title:t.name,desc:'✅ '+t.gain+'   ❌ '+t.cost,headline:'⚖️ '+t.gain+' · '+t.cost,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
       apply:()=>{ b.trades=(b.trades||[]).concat(t.id); t.apply(this.player); clampPlayerStats(this.player); if(this.drawBars)this.drawBars(); this.syncBasicAttack(); this.showBanner('⚖️ '+t.emoji+' '+t.name,'✅ '+t.gain+'  ·  ❌ '+t.cost,1900); Sfx.clear(); }}; }
   upTags(id){ const b=this.basicAttack,wt=(b&&WEAPON_TAGS[b.character])||[]; { const m=modDef(id)||tradeDef(id); if(m)return m.tags; } return UP_TAGS[id]||(id==='evolution'?wt:wt.slice(0,1)); }
   tagCounts(){ const c={},add=t=>tagList(t).forEach(x=>{if(TAG_SETS[x])c[x]=(c[x]||0)+1;}), b=this.basicAttack;
@@ -13551,11 +13399,6 @@ class Game extends Phaser.Scene {
     (this.relics||[]).forEach(k=>add(TAGS_OF.relic[k]));
     const eq=(Save.data&&Save.data.equippedGear)||{}; for(const s in eq){ const seen={}; (Save.gearAffixes(eq[s])||[]).forEach(a=>tagList(TAGS_OF.affix[a.id]).forEach(t=>seen[t]=1)); add(Object.keys(seen)); }
     return c; }
-  refreshTagSets(){ const p=this.player; if(!p||!TAG_SETS_ON)return; this._tagTier=this._tagTier||{}; const c=this.tagCounts();
-    for(const t in TAG_SETS){ const d=TAG_SETS[t],n=c[t]||0,had=this._tagTier[t]||0; let got=had;
-      for(let i=had;i<TAG_TIERS.length;i++){ if(n<TAG_TIERS[i])break; d.t[i](p); got=i+1; this.showBanner(d.emoji+' '+d.name+' ×'+TAG_TIERS[i],'Set bonus: '+d.b[i],1700); }
-      this._tagTier[t]=got; }
-    clampPlayerStats(p); }
   // v6.59.9 Infuse ที่เข้ากับสาย Chocolate
   cocoaInfMatch(inf){const b=this.basicAttack;if(this.character!=='cocoa'||!b?.path)return null;const M={brawler:{spicy:'Burn ×1.5'},titan:{sour:'Release marks foes +25% dmg taken 4s',sweet:'Blood Rage costs 30% less HP'},dashboxer:{minty:'Dash Leap landing freezes foes'}};return M[b.path]?.[inf]||null;}
   cocoaHasInf(inf){const b=this.basicAttack;return b?.infusion===inf||b?.infusion2===inf;}
@@ -14266,8 +14109,8 @@ class Game extends Phaser.Scene {
   }
   // มอบของสวมใส่ตาม tier (สุ่มชิ้นที่ยังNone) — คืน item หรือ null ถ้ามีครบแล้ว
   // Endgame drop = โหมด endgame (Boss Rush/Endless/Zone Mods) และจบเนื้อเรื่องแล้วเท่านั้น
-  endgameDropActive(){ return storyComplete()&&(!!this.riftMode||!!this.bossRush||!!this.endlessMode||((this._activeZoneMods||[]).length>0)); }
-  endgameDepth(){ return (this._pinnacleRun?24:0)+(this.riftMode?(this._riftTier||1)*3:0)+(this._activeZoneMods||[]).length*4+(this.endlessMode?(this.endlessCycle||0)*2:0)+(this.bossRush?(this._rushPos||0)*2:0); }
+  endgameDropActive(){ return storyComplete()&&(!!this.riftMode||!!this.bossRush||((this._activeZoneMods||[]).length>0)); }
+  endgameDepth(){ return (this._pinnacleRun?24:0)+(this.riftMode?(this._riftTier||1)*3:0)+(this._activeZoneMods||[]).length*4+(this.bossRush?(this._rushPos||0)*2:0); }
   grantGear(tier,opts={}){ if(tier==='legend')Sfx.legend(); const inPlay=!opts.tradeLv&&(this.state==='play'||(this.state!=='menu'&&!opts.gacha&&this.endgameDropActive())),sourceStage=inPlay?this.stageIndex:rewardSourceStage();
     // v4.32: gacha เลือก base item level ได้ (opts.itemLevel) → chapter ตาม iLv นั้น · in-play/menu ใช้ stage เดิม
     const gachaLv=(opts.gacha||opts.tradeLv)?Math.max(1,Math.min(100,Math.floor(opts.itemLevel||opts.tradeLv||1))):0,eg=inPlay&&this.endgameDropActive(),
@@ -15360,7 +15203,7 @@ class Game extends Phaser.Scene {
       if(this.player.body)this.player.body.enable=true; this.clearFoes(); this.screenFlash(0xffe08a,0.5,420); if(Sfx.clear)Sfx.clear();
       this.player.iframe=2.2; this.player.wardGuardT=1.6; if(this.popHeal)this.popHeal(this.player.x,this.player.y,Math.round(this.player.hp));
       if(this.showBanner)this.showBanner('🕯️ Revive Candle!','Revived to fight on · remaining '+this._reviveLeft+' times',1800); return; }
-    _closeStory(); if(this.endlessMode)Save.recordEndless(this.endlessCycle||0,this.kills||0,this.elapsed||0,this.character); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();
+    _closeStory();  this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();
     this._openedBoxes=this.openRunBoxes();   // เปิดกล่องที่สะสมมา (ไม่ให้หายตอนตาย)
     this._deathSugar=this.sugarStage||0;this._deathPowerBefore=Save.power(this.character);Save.addSugar(this._deathSugar);const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),exp=Math.round((this.kills+this.stageIndex*15)*pg.reward);this.gainCharExp(exp);this._deathExp=exp;this._deathPowerAfter=Save.power(this.character);this.sugarStage=0;this.physics.pause();this.player.setVelocity(0,0);
     if(this._hasFrames){const baseCharKey='char_'+this.character;if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);this.player.setFrame(CF.ko);this.player.setScale(this._pBase||1);this.player.setRotation(0);}
@@ -15368,7 +15211,7 @@ class Game extends Phaser.Scene {
   buildOver(){const w=this.W,h=this.H;this.over.removeAll(true);this._overBtns=[];this.endLock(1100);
     // v6.44: หน้าตายใช้แผงเดียวกับหน้าสรุป Endgame/ด่าน + ปุ่มเด่น
     const bg=this.resultBackdrop('result_defeat');
-    const canRevive=!this._adRevived&&!this.endlessMode,extra=(canRevive?58:0)+56+(this.endlessMode?0:50);
+    const canRevive=!this._adRevived,extra=(canRevive?58:0)+56+50;
     const pw=Math.min(w-20,(h-20-extra)*2/3),ph=pw*1.5,px=(w-pw)/2,py=Math.max(8,(h-ph-extra)/2);
     const panel=this.textures.exists('stage_summary_panel')?this.add.image(w/2,py+ph/2,'stage_summary_panel').setDisplaySize(pw,ph).setTint(0xffd6e2):this.add.rectangle(w/2,py+ph/2,pw,ph,0x241c2d);
     const font=Math.max(8,Math.min(13,pw*.035));
@@ -15387,10 +15230,10 @@ class Game extends Phaser.Scene {
     let y=py+ph+8;
     if(canRevive){const z=this._endBtn(box,w/2,y+25,Math.min(w-28,pw*.92),50,0x2fae6a,'📺 REVIVE (Watch Ad) · HP 50%',{primary:true,pulse:true});this._overBtns.push({...z,fn:()=>this.showRewardedAd('Revive back into the field · HP 50%',()=>this.adRevive())});y+=58;}
     const zl=this._endBtn(box,w/2,py+ph*.88,pw*.66,Math.max(40,ph*.082),COLORS.pink,'↻ Replay',{primary:!canRevive,font:Math.min(16,pw*.045)}),bh=46,zr=this._endBtn(box,w/2,y+bh/2,Math.min(w-28,pw*.92),bh,COLORS.grape,this.recipeMode?'⛏ Back to Delve':'🏠 Back to Hub');
-    this._overBtns.push({...zl,fn:()=>{this.over.setVisible(false);this.physics.resume();this.state='menu';if(this.endlessMode)this._endlessRequested=true;if(this._challengeRun&&this._challengeRun.length)this._challengeRequested=this._challengeRun.slice();this.startRun(this.stageIndex);}});
+    this._overBtns.push({...zl,fn:()=>{this.over.setVisible(false);this.physics.resume();this.state='menu';if(this._challengeRun&&this._challengeRun.length)this._challengeRequested=this._challengeRun.slice();this.startRun(this.stageIndex);}});
     this._overBtns.push({...zr,fn:()=>{if(this.recipeMode){window.__pendingMenu='atlas';}this.scene.restart();}});
     y+=bh+10;
-    if(!this.endlessMode){const z=this._endBtn(box,w/2,y+20,Math.min(w-28,pw*.92),40,0x4a3466,adv.text,{font:11});this._overBtns.push({...z,fn:()=>{window.__pendingMenu=adv.screen;this.scene.restart();}});}
+    { const z=this._endBtn(box,w/2,y+20,Math.min(w-28,pw*.92),40,0x4a3466,adv.text,{font:11});this._overBtns.push({...z,fn:()=>{window.__pendingMenu=adv.screen;this.scene.restart();}});}
     this.over.add(box);this.over.setVisible(true); }
   // ---- Rewarded Ad: แสดงโฆษณาแล้วให้รางวัล (ตอนนี้เดโมจำลอง · ต่อ AdMob จริงได้ที่ hasRealAds/plugin) ----
   showRewardedAd(label,onReward){
