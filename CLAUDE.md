@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.85.0 — Ricochet link ribbons removed + optional Mint intro
+# Latest delivery: v6.85.1 — Objective arrow orbits the hero
+
+updateObjectiveArrow: arrow placed at player screen pos (same world→ui mapping as drawOverheadStatus) + radius 62 with bob, angle from player to target, scale .8, hidden when target <140px. npm check passed.
+
+# Previous delivery: v6.85.0 — Ricochet link ribbons removed + optional Mint intro
 
 Owner screenshot: pink ribbons stuck on map. Cause: hitEnemy ricochet bounce spawned bpx_momo_link (ASSET_FX loop:true → animationcomplete never fires → never destroyed). Link FX removed (bounce burst kept). Mint intro: startStoryStage(2) first time (no Save.data.mintIntro, stage 3 not cleared) shows showMintWarning (text now optional: Choose Mint → heroes coach / 'Keep my hero' → starts stage). story-budget test assertion updated. npm check passed.
 

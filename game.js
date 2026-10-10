@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.85.0';
+const GAME_VERSION = '6.85.1';
 // Miniboss rewards: choose damage at an HP cost, or recovery.
 const CROSSROADS=[
   {id:'blood',name:'Blood Pact',desc:'+25% damage for 90 seconds',detail:'Lose 30% of current HP',artKey:'prize_jackpot',color:0xff6f9d},
@@ -70,6 +70,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.85.1', date:'2026-10-10', title:'➤ Objective arrow on your hero', items:['The objective arrow now circles your hero instead of sitting at the screen edge']},
   { v:'6.85.0', date:'2026-10-10', title:'🌿 Meet Mint + ricochet fix', items:['First time entering Stage 3, Mint introduces herself and shows how to switch heroes — you can keep your current hero','Fixed pink ricochet link lines staying stuck on screen']},
   { v:'6.84.1', date:'2026-10-10', title:'🛠️ Tablet ghost props fix', items:['Fixed stage props (boxes, pillars) appearing stuck on screen over menus on tablets']},
   { v:'6.84.0', date:'2026-10-10', title:'📺 Unique screen effects', items:['Momo: sniper scope while charging + white flash on fire, shotgun smoke burst, Rebound hits the screen edges','Mint: Glacier Bloom freezes the screen then it shatters, Frost Lance streaks across, Mint Gale blows wind and leaves across the screen','Cocoa: rocket heat haze with rising ash, Phantom Rush dims the world purple']},
@@ -15379,11 +15380,12 @@ class Game extends Phaser.Scene {
     if(!target && this.mode==='waveclear') target=this._nearestEnemy();   // ชี้ไปหาศัตรูที่เหลือตอนต้องเคลียร์
     if(!target){if(this.objectiveArrow)this.objectiveArrow.setVisible(false);if(this.objectiveDist)this.objectiveDist.setVisible(false);return;}
     // ลูกศรหมุนWaitบ "screen center" → ต้องวัดมุมจากจุดกึ่งกลางกล้อง (โลก) ไม่ใช่Positionผู้เล่น (กล้อง lerp/deadzone ทำให้ผู้เล่นไม่อยู่กลางจอเป๊ะ = ลูกศรเพี้ยน)
-    const cam=this.cameras.main,wv=cam.worldView,ox=wv.centerX,oy=wv.centerY;
-    const dx=target.x-ox,dy=target.y-oy,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
-    const cx=this.W/2,cy=this.H/2,margin=64,ca=Math.cos(a),sa=Math.sin(a);
-    const tx=Math.abs(ca)>0.001?(cx-margin)/Math.abs(ca):9999,ty=Math.abs(sa)>0.001?(cy-margin-65)/Math.abs(sa):9999,t=Math.min(tx,ty);
-    this.objectiveArrow.setPosition(cx+ca*t,cy+sa*t).setRotation(a).setVisible(true).setColor(this.mode==='portal'?'#c99cff':'#ffef7a');
+    // v6.86 ลูกศรโคจรรอบตัวผู้เล่น (เจ้าของขอ ให้สังเกตง่าย) · ซ่อนเมื่อเป้าอยู่ใกล้ในจอ
+    const cam=this.cameras.main,wv=cam.worldView,p=this.player; if(!wv||!wv.width)return;
+    const dx=target.x-p.x,dy=target.y-p.y,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
+    const px=(p.x-wv.x)/wv.width*this.W,py=(p.y-wv.y)/wv.height*this.H-10,R=62,bob=Math.sin((this.elapsed||0)*6)*4;
+    const near=d<140;
+    this.objectiveArrow.setPosition(px+Math.cos(a)*(R+bob),py+Math.sin(a)*(R+bob)).setRotation(a).setVisible(!near).setScale(.8).setColor(this.mode==='portal'?'#c99cff':'#ffef7a');
     this.objectiveDist.setVisible(false);   // บอกเฉพาะทิศ ไม่เปิดเผยระยะตามดีไซน์
   }
   /* ---------- UPDATE ---------- */
