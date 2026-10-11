@@ -6078,7 +6078,7 @@ class Game extends Phaser.Scene {
       if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
         this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
     });
-    this.setupKeyboard();
+    this.setupKeyboard?.();
   }
   // v7.0 KEYBOARD (เล่นบนเบราว์เซอร์คอม): WASD/ลูกศร=เดิน · Space/Shift=Dash · E/J (กดค้าง)=Unique · F=Flicker · Esc/P=หยุด · 1-4=เลือกการ์ด
   setupKeyboard(){ const kb=this.input.keyboard; if(!kb)return; this._kbKeys=kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT',false);
