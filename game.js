@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.4.1';
+const GAME_VERSION = '7.4.2';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.4.2', date:'2026-10-11', title:'🛠️ Heroes screen fix', items:['Opening Heroes after visiting its Stats tab no longer jumps to Play Stats — character select works again','Back from Play Stats → Settings → Back now leaves Settings in one tap']},
   { v:'7.4.1', date:'2026-10-11', title:'🧠 Lighter pictures', items:['Oversized art (main menu, Temple cores and emblems, menu buttons, stage progress bar, stage summary) resized to match the screen — about 55MB less graphics memory, same look']},
   { v:'7.4.0', date:'2026-10-11', title:'🧠 Graphics memory plan', items:['The loading screen now only downloads files; menu screens, other heroes and endgame art load when you open them (start-up graphics memory about 641MB → 256MB)','Menus keep graphics memory under a budget and release pictures you are not looking at','Performance setting is back to Auto · after a graphics crash the game restarts in low-memory mode','Play Stats shows how much graphics memory is in use']},
   { v:'7.3.2', date:'2026-10-11', title:'🧠 Less graphics memory', items:['The stage floor no longer reserves a giant 4000×4000 image in graphics memory (about 64MB saved)']},
@@ -7157,7 +7158,7 @@ class Game extends Phaser.Scene {
     const by=compact?10:38, bh=compact?32:34;
     const bg2=this.add.graphics(); bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(12,by,82,bh,11); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(12,by,82,bh,11);
     const bt=this.add.text(53,by+bh/2,'‹ Back',{fontFamily:'sans-serif',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
-    this.menu.add([bg2,bt]); this._zone(0,Math.max(0,by-16),110,bh+28,()=>{ Sfx.back(); const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].back=true;
+    this.menu.add([bg2,bt]); this._zone(0,Math.max(0,by-16),110,bh+28,()=>{ Sfx.back(); if(backScreen&&this._navStack&&this._navStack[this._navStack.length-1]===backScreen)this._navStack.pop(); const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].back=true;
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
@@ -7178,7 +7179,7 @@ class Game extends Phaser.Scene {
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -8049,7 +8050,7 @@ class Game extends Phaser.Scene {
     const hint=this.add.text(w/2,h-14,'Tap a row to change it · saved automatically',{fontFamily:'sans-serif',fontSize:'10px',color:'#8f849f'}).setOrigin(0.5);this.menu.add(hint);this.menu.setVisible(true);
   }
   // v6.95 📊 หน้าสถิติการเล่น (ข้อมูลในเครื่องนี้เท่านั้น)
-  buildStats(){
+  buildPlayStats(){   // v7.4.2 ชื่อแยกจาก buildStats (แท็บ Stats หน้า Heroes) — เดิมชื่อซ้ำ ตัวหลังทับ → เปิด Heroes แล้วเด้งมาหน้านี้
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📊 Play Stats','screen_settings','settings');
     const w=this.W,h=this.H,cw=Math.min(w-24,520),x0=(w-cw)/2,runs=Stats.load();let y=w<=h?88:62;
     const T=(x,yy,t,sz,c,st,o)=>{const q=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#e6dcf0',wordWrap:{width:cw-12}}).setOrigin(o===undefined?0:o,0);this.menu.add(q);return q;};
@@ -8081,7 +8082,7 @@ class Game extends Phaser.Scene {
       if(r.cards&&r.cards.length){ const q=T(x0+18,y,'Cards: '+r.cards.slice(0,8).join(', ')+(r.cards.length>8?'…':''),9,'#9d93aa'); q.setWordWrapWidth(cw-24); if(q.height>13)q.setText(q.text.slice(0,Math.floor(q.text.length*13/q.height))+'…'); y+=16; } });
     this.uiPillBtn(this.menu,w/2,h-62,Math.min(cw,240),36,COLORS.grape,'📋','Copy to clipboard',()=>{ Sfx.select(); Stats.copy().then(ok=>this.menuToast(ok?'📋 Stats copied — paste them anywhere':'Copy failed on this device',ok?'#8ff0b0':'#ff9bb5')); });
     const ct=this._statsClear||0,clr=this.add.text(w/2,h-26,ct?'⚠️ Tap again to delete all stats':'🗑️ Clear stats',{fontFamily:'sans-serif',fontSize:'11px',color:ct?'#ff8fb5':'#6f6578'}).setOrigin(0.5);this.menu.add(clr);
-    this._zone(w/2-110,h-40,220,28,()=>{ if(this._statsClear){ this._statsClear=0; Stats.clear(); this.menuToast('Stats cleared'); } else this._statsClear=1; Sfx.select(); this.buildStats(); });
+    this._zone(w/2-110,h-40,220,28,()=>{ if(this._statsClear){ this._statsClear=0; Stats.clear(); this.menuToast('Stats cleared'); } else this._statsClear=1; Sfx.select(); this.buildPlayStats(); });
     this.menu.setVisible(true);
   }
   // toast ที่เห็นได้ในหน้าเมนู (showBanner ผูกกล้องโลก ไม่โชว์ตอนอยู่เมนู)
