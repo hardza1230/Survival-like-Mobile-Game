@@ -1656,3 +1656,7 @@ Validation: npm check includes frost-burn-audio test; production build and Pages
 
 Owner screenshot showed only hair in wide portrait equipment panel. Fixed crop to constant upper 55% rather than shrinking source height with panel aspect; contain scale keeps face and image inside frame on phone/tablet. Dash Boxer Dash Leap stops layering cocoa_flicker_step onto normal Dash; landing returns original comboPunch heavy. Phantom Rush Unique activation/auto-strike sounds unchanged. Regression tests check real crop block across widths and texture ratios; full check and build required.
 
+# Delivery: v7.3.2 — Floor TileSprite GPU fix (−64MB)
+
+Owner: "ran out of graphics memory". Headless measure (412×915 @DPR3): 705MB textures at menu, all GL-uploaded; biggest = TileSprite's own 4000×4000 canvas (64MB). v6.93 syncBgTile never worked (used t.frame = the TileSprite canvas, so P≈4000). Now bgTile is a hidden 2×2 TileSprite kept only as state (texture/tileScale/alpha/tint API unchanged) and syncBgTile draws the floor with ≤64 pooled plain Images of displayTexture snapped to the view (0 extra GPU). Measured 641MB menu / 612MB in stage. Screenshot: floor seamless after moving. GPU memory plan proposed to owner (pending approval). npm check passed.
+

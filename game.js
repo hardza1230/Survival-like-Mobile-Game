@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.5.1';
+const GAME_VERSION = '7.6.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.0', date:'2026-10-11', title:'✨ Unique Mastery talent', items:['Unique skills no longer level up during a stage','Raise your Unique in Heroes → Talents → Core: new Unique Mastery node (3 levels · 3 / 5 / 8 TP, no prerequisite)','Every stage starts with the Unique level you bought']},
   { v:'7.5.1', date:'2026-10-11', title:'🎰 Casino wheel sound', items:['Prize wheel now clacks like a real casino wheel: wooden peg ticks, a drum roll while it slows down and a bell when it stops']},
   { v:'7.5.0', date:'2026-10-11', title:'📅 Daily Quests', items:['Daily Missions are now Daily Quests: 5 quests a day (defeat enemies, clear stages, collect or dismantle gear, earn Sugar, dig and more)','Each finished quest gives 20 points · open a Small Box at 40, a Big Box at 70 and the Grand Box (with a gear item) at 100','Tap a quest to jump to where you can do it · new quests every day at midnight']},
   { v:'7.4.2', date:'2026-10-11', title:'🛠️ Heroes screen fix', items:['Opening Heroes after visiting its Stats tab no longer jumps to Play Stats — character select works again','Back from Play Stats → Settings → Back now leaves Settings in one tap']},
@@ -3767,7 +3768,10 @@ const CHAR_TALENTS = {
     { id:'pressurizedJam', emoji:'💗', name:'Twin Pressure Chamber', max:1, per:'✦ Unique: Jam Overdrive adds 2 salvos and rounds per barrel!', apply:(p,r)=>{ p.pressurizedJam=true; } },
   ],
 };
-function charTalents(c){ return CHAR_TALENTS[c]||CHAR_TALENTS.momo; }
+// v7.6 เจ้าของ: Unique ไม่อัปในด่านแล้ว · อัปได้ที่ Talent เท่านั้น (โหนด Core ทุกตัวละคร ไม่ต้องปลดก่อน · TP 3/5/8)
+const UNIQUE_TALENT={id:'unique',emoji:'✨',name:'Unique Mastery',max:3,costs:[3,5,8],free:true,per:'+1 Unique level · stronger, faster Unique',apply:(p,r)=>{p.uniqueTalLv=1+r;}};
+function charTalents(c){ return (CHAR_TALENTS[c]||CHAR_TALENTS.momo).concat([UNIQUE_TALENT]); }
+function uniqueTalentLevel(c){ try{ const r=((Save.cp(c).tal)||{}).unique||0; return Math.max(1,Math.min(UNIQUE_MAX_LV,1+r)); }catch(e){ return 1; } }
 // v6.52.1: Talent tree แบบสายตระกูล — 1 สายต่อ Build Path (ทำงานเฉพาะรันที่เลือกสายนั้น)
 // v6.55.39 Talent เฉพาะสาย (docs/TALENT_PATH_DESIGN.md): Root + กิ่ง A Power / B Mechanic / C Survival (2 node) + Capstone 3 ตัว เลือกได้ 1 (5 TP)
 // PATH_TALENTS[path] ใส่ node เฉพาะสายทับค่าเริ่มต้น (commit ถัดไปทีละตัวละคร) · capstone ที่ยังไม่มี = Coming soon
@@ -3899,7 +3903,7 @@ function talNodeOpen(nodes,tal,n){ const by={};for(const x of nodes)by[x.slot]=x
   if(n.slot.endsWith('1'))return r('root')>=1; if(n.slot.endsWith('2'))return r(br+'1')>=2;
   if(n.cap){ if(n.soon)return false; if(['capA','capB','capC'].some(c=>c!==n.slot&&r(c)>0))return false; return r(br+'2')>=1; } return false; }
 function talCost(r){ return r+1; }          // แต้มที่ต้องใช้อัปจาก rank r → r+1 (แพงขึ้นเรื่อย ๆ = ต้องเลือก)
-function talSpent(tal){ let n=0; for(const k in tal||{}){ const r=tal[k]||0; n+=/_cap[ABC]$/.test(k)?r*TAL_CAP_COST:r*(r+1)/2; } return n; }
+function talSpent(tal){ let n=0; for(const k in tal||{}){ const r=tal[k]||0; n+=k==='unique'?UNIQUE_TALENT.costs.slice(0,r).reduce((a,b)=>a+b,0):/_cap[ABC]$/.test(k)?r*TAL_CAP_COST:r*(r+1)/2; } return n; }
 function applyPathTalents(p,ch,path,tal){ const pt=(BASIC_PATHS[ch]||[]).find(x=>x.id===path); if(!pt||!tal)return; p._pt={}; for(const d of talentBranch(pt)){const r=tal[d.id]||0;if(r>0&&d.apply)d.apply(p,r);} }
 // v4.88: Passive ประจำตัว (ทำงานตลอด · แรงขึ้นตามเลเวลตัวละคร)
 const CHAR_PASSIVES={
@@ -5968,7 +5972,7 @@ class Game extends Phaser.Scene {
     this.skillCd={}; for(const k in SKILLDEFS) this.skillCd[k]=0;
     this.whirlAng=0;
 
-    this.dashTime=0; this.dashReady=true; this.dashCd=0; this.uniqueCd=0; this.uniqueLevel=1;
+    this.dashTime=0; this.dashReady=true; this.dashCd=0; this.uniqueCd=0; this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;
     this.moveDir=new Phaser.Math.Vector2(0,-1);
 
     this.input.addPointer(2);
@@ -9683,7 +9687,7 @@ class Game extends Phaser.Scene {
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}
         Stats.start(this);   /* v6.99.1 direct (delayedCall could stall while time paused) */
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
-        this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
+        this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
         this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
         this.clearStarGuardFx();
@@ -11223,7 +11227,7 @@ class Game extends Phaser.Scene {
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
-    this.clearYuzuCrew();this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=1;this.wardGuardT=0;this.pathHasteT=0;this.windRushT=0;this.stageKills=0;
+    this.clearYuzuCrew();this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;this.wardGuardT=0;this.pathHasteT=0;this.windRushT=0;this.stageKills=0;
     this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=1;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
@@ -11681,7 +11685,7 @@ class Game extends Phaser.Scene {
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
     this.xp+=n*(this.player.xpMul||1);   /* v6.99 Delve = Story XP */
-    while(this.xp+1e-8>=this.xpNext){ this.xp=Math.max(0,this.xp-this.xpNext); this.level++; this.xpNext=(this.usesStoryBudget?.()||this.recipeMode)?storyXpNext(this.level):Math.round((this.stageIndex>=2&&!this.recipeMode)?this.xpNext*1.32+9:this.xpNext*1.26+6); /* v6.55.17 ด่าน 3+ ช้าลง */ /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
+    while(this.xp+1e-8>=this.xpNext){ this.xp=Math.max(0,this.xp-this.xpNext); this.level++; this.xpNext=(this.usesStoryBudget?.()||this.recipeMode)?storyXpNext(this.level):Math.round((this.stageIndex>=2&&!this.recipeMode)?this.xpNext*1.32+9:this.xpNext*1.26+6); /* v6.55.17 ด่าน 3+ ช้าลง */ /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } /* v7.6 Unique อัปที่ Talent เท่านั้น (เดิม checkUniqueAutoUpgrade) */ this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
@@ -15041,8 +15045,8 @@ class Game extends Phaser.Scene {
     const detH=110,aTop=tTop+44,rows=1+Math.max(...chains.map(c=>c.length)),ns=Math.min(58,bw*0.16),rh2=Math.max(ns+20,Math.min(96,(this.H-aTop-detH-70)/rows));
     const area=this.add.graphics(); area.fillStyle(0x140f1c,0.82); area.fillRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); area.lineStyle(2,C.col,0.55); area.strokeRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); this.menu.add(area);
     const pos={}; pos[root.id]={x:bx+bw/2,y:aTop+rh2/2}; chains.forEach((ch2,k)=>ch2.forEach((n,i)=>pos[n.id]={x:bx+bw*(k+0.5)/3,y:aTop+rh2*(i+1.5)}));
-    const ln=this.add.graphics(); this.menu.add(ln); const okN=n=>isPath?talNodeOpen(N,tal,n):(n===root||(tal[par[n.id]]||0)>0),costN=(n,r)=>isPath?talNodeCost(n,r):talCost(r);
-    N.forEach(n=>{ if(n===root)return; const a2=pos[par[n.id]],b2=pos[n.id],lit=okN(n); ln.lineStyle(5,lit?C.col:0x3a3048,lit?0.95:0.7);
+    const ln=this.add.graphics(); this.menu.add(ln); const okN=n=>isPath?talNodeOpen(N,tal,n):(n===root||n.free||(tal[par[n.id]]||0)>0),costN=(n,r)=>isPath?talNodeCost(n,r):n.costs?n.costs[r]:talCost(r);
+    N.forEach(n=>{ if(n===root||n.free)return; const a2=pos[par[n.id]],b2=pos[n.id],lit=okN(n); ln.lineStyle(5,lit?C.col:0x3a3048,lit?0.95:0.7);
       if(a2.x===b2.x)ln.lineBetween(a2.x,a2.y+ns/2,b2.x,b2.y-ns/2); else { const my=(a2.y+b2.y)/2; ln.lineBetween(a2.x,a2.y+ns/2,a2.x,my); ln.lineBetween(a2.x,my,b2.x,my); ln.lineBetween(b2.x,my,b2.x,b2.y-ns/2); } });
     if(!this._talSel||!N.some(n=>n.id===this._talSel))this._talSel=root.id; let sel=null;
     N.forEach(n=>{ const P2=pos[n.id],r=tal[n.id]||0,ok=okN(n),mx=r>=n.max,on=this._talSel===n.id,x=P2.x-ns/2,y=P2.y-ns/2,g2=this.add.graphics();
