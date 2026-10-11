@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.1';
+const GAME_VERSION = '7.7.2';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.2',date:'2026-10-11',title:'Shared Temple music',items:['Flavor Weave Temple and Temple Depths share Tea For Two At The End Of The World']},
   {v:'7.7.1',date:'2026-10-11',title:'Temple audio refresh',items:['Shorter Core upgrade and Weave promotion sounds','Temple music uses Tea For Two At The End Of The World']},
   {v:'7.7.0',date:'2026-10-11',title:'Unique art and status clarity',items:['Painted Unique Mastery icon','Tremor and Frost Burn icons with live stack counts','Brief skill-specific edge accents keep combat readable']},
   { v:'7.6.15', date:'2026-10-11', title:'Softer Strawberry shots', items:['Normal Strawberry seed shots use a short warm pop instead of the shared buzzing shoot sound']},
@@ -9629,7 +9630,7 @@ class Game extends Phaser.Scene {
     this.showMenu();
   }
   // v5.40 เพลงประจำหน้าวิหาร/ขุด/ครัว (โหลดตอนเข้าหน้าครั้งแรก)
-  menuMusic(s){ if(this.state!=='menu')return; const key={upgrade:'bgm_menu_temple',perks:'bgm_menu_temple',dig:'bgm_menu_depths',kitchen:'bgm_menu_kitchen'}[s]||null;
+  menuMusic(s){ if(this.state!=='menu')return; const key={upgrade:'bgm_menu_temple',perks:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
     this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({upgrade:1,perks:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   // v6.92 เพลงที่ถอดรหัสแล้วกินแรม ~20MB/เพลง → ลบเพลงด่าน/บอสของด่านอื่นออกจาก cache (ไฟล์ยังอยู่ในเครื่อง โหลดกลับเร็ว)

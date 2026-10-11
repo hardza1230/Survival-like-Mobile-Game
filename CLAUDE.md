@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.1 — Short Temple feedback and owner BGM
+# Latest delivery: v7.7.2 — Shared Flavor Weave / Temple Depths BGM
+
+Owner clarified Temple Depths (dig), not just Temple/Perks. menuMusic dig now selects the same bgm_menu_temple key as upgrade/perks: shared track and no restart when switching temple pages. Old depths file retained; kitchen/stage routes unchanged.
+
+# Previous delivery: v7.7.1 — Short Temple feedback and owner BGM
 
 Core success trimmed 2.68s to .8s from audible onset; Weave promotion trimmed 3.2s to 1.4s. New sibling files in assets/audio/sfx/temple_short (8ms attack/140ms tail fade), existing keys repointed, voice replacement unchanged. bgm_menu_temple now points to tea_for_two_temple.mp3, byte-identical owner uploaded Tea For Two At The End Of The World (SHA in MANIFEST). Shared Temple/Perks music route preserved; other menus/stages untouched. Full check/build required; subjective phone listening pending.
 
