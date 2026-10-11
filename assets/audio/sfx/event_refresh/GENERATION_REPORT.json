@@ -1,0 +1,1602 @@
+{
+  "started": "2026-10-11T00:59:40.865Z",
+  "results": [
+    {
+      "id": "shoot",
+      "status": "pending"
+    },
+    {
+      "id": "hit",
+      "status": "pending"
+    },
+    {
+      "id": "shoot",
+      "status": "success",
+      "filename": "shoot.mp3",
+      "bytes": 12164,
+      "sha256": "15f9c74111d6bd1dfb95c0c9e70c80f094d2a780c9d7628fcdc336210a0fcc70",
+      "character_cost": "7"
+    },
+    {
+      "id": "xp",
+      "status": "pending"
+    },
+    {
+      "id": "hit",
+      "status": "success",
+      "filename": "hit.mp3",
+      "bytes": 8821,
+      "sha256": "036aa0f87325ab3e74a7f23e7560b1fc12aa49c119208335c62f01e060bb77af",
+      "character_cost": "5"
+    },
+    {
+      "id": "dash",
+      "status": "pending"
+    },
+    {
+      "id": "dash",
+      "status": "success",
+      "filename": "dash.mp3",
+      "bytes": 12164,
+      "sha256": "801ec1d2332a8db0ac311cc15beb5fb5a6757581d835061da609227d1ea027cd",
+      "character_cost": "7"
+    },
+    {
+      "id": "levelup",
+      "status": "pending"
+    },
+    {
+      "id": "xp",
+      "status": "success",
+      "filename": "xp.mp3",
+      "bytes": 8821,
+      "sha256": "377a45d7e982f228dc83ea7e86a5e9bd1cf754126133520eed7b526b2ccb3d66",
+      "character_cost": "5"
+    },
+    {
+      "id": "chest",
+      "status": "pending"
+    },
+    {
+      "id": "levelup",
+      "status": "success",
+      "filename": "levelup.mp3",
+      "bytes": 18434,
+      "sha256": "57eb6ac59f76987056545a72b2a4196382886764d0fb55db47da86012a3eaba1",
+      "character_cost": "11"
+    },
+    {
+      "id": "craft_result_open",
+      "status": "pending"
+    },
+    {
+      "id": "chest",
+      "status": "success",
+      "filename": "chest.mp3",
+      "bytes": 12164,
+      "sha256": "ac9a1263579f3ee5ac5ad420a2faa494e67afcbb1927736fe1517d2bebfd8336",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_result_count",
+      "status": "pending"
+    },
+    {
+      "id": "craft_result_open",
+      "status": "success",
+      "filename": "craft_result_open.mp3",
+      "bytes": 12164,
+      "sha256": "be54aacfb5d16342816f1eff051e1879d156c2459ae30a15bf7f317e13d80bb7",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_result_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "craft_result_count",
+      "status": "success",
+      "filename": "craft_result_count.mp3",
+      "bytes": 8821,
+      "sha256": "2caa88aed2f1d15f70abcd0deb9390db7da096b7a2055f06285b94a8436f5830",
+      "character_cost": "5"
+    },
+    {
+      "id": "craft_result_important",
+      "status": "pending"
+    },
+    {
+      "id": "craft_result_reveal",
+      "status": "success",
+      "filename": "craft_result_reveal.mp3",
+      "bytes": 12164,
+      "sha256": "76cdb4750b8cecbfd8bb1a1d8519ff4556980d230059ef8a91f544a94b178f3b",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_result_double",
+      "status": "pending"
+    },
+    {
+      "id": "craft_result_important",
+      "status": "success",
+      "filename": "craft_result_important.mp3",
+      "bytes": 18434,
+      "sha256": "c5b998f2a0d806eb6fc0414f8781d4d028b99ec19dc582a31bba3c0a100a4437",
+      "character_cost": "11"
+    },
+    {
+      "id": "craft_progress_core",
+      "status": "pending"
+    },
+    {
+      "id": "craft_result_double",
+      "status": "success",
+      "filename": "craft_result_double.mp3",
+      "bytes": 12164,
+      "sha256": "1280bb1554f45359b2658f76495d9465571ef3d215e5761528215a928e1748a3",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_progress_talent",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_core",
+      "status": "success",
+      "filename": "craft_progress_core.mp3",
+      "bytes": 12164,
+      "sha256": "3ab002aad7f7c52b8e3fe37f7ca519489bf7b8869d1d928b6cc6b489d8a6e05e",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_progress_overcap",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_talent",
+      "status": "success",
+      "filename": "craft_progress_talent.mp3",
+      "bytes": 12164,
+      "sha256": "54e7a86c32566dc62709b457a1f88f42e3ddfef9930a5a47668f7b2850c4a814",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_progress_promotion",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_overcap",
+      "status": "success",
+      "filename": "craft_progress_overcap.mp3",
+      "bytes": 12164,
+      "sha256": "e5f7ccb7439467626e6f236a43dab52efc184bd9e3a2982587573fa1753f50c3",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_progress_perk",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_promotion",
+      "status": "success",
+      "filename": "craft_progress_promotion.mp3",
+      "bytes": 18434,
+      "sha256": "57612b6f432558b183628cbcf1a34ad0bddfdf06eacada61c56e95039bb9b930",
+      "character_cost": "11"
+    },
+    {
+      "id": "craft_progress_ancient",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_perk",
+      "status": "success",
+      "filename": "craft_progress_perk.mp3",
+      "bytes": 12164,
+      "sha256": "e6a657fdad52c0c148cdf951864f97f204308aecc4ba1cbf7695e3194b954ef2",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_progress_daily",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_daily",
+      "status": "success",
+      "filename": "craft_progress_daily.mp3",
+      "bytes": 12164,
+      "sha256": "b9aacbebdc042be0bc356124a82dc5441b55e72d617ea1a3985aa3b32cb4cdce",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_progress_achievement",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_ancient",
+      "status": "success",
+      "filename": "craft_progress_ancient.mp3",
+      "bytes": 18434,
+      "sha256": "e6519d63f459b43e0911c4eb791abe370cec0fd2f59afcd7a8465cbaa4728bcd",
+      "character_cost": "11"
+    },
+    {
+      "id": "craft_progress_quest",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_quest",
+      "status": "success",
+      "filename": "craft_progress_quest.mp3",
+      "bytes": 12164,
+      "sha256": "c18d5144318b453d3a8401ce00c7c501c229890d4c75e3720d4363b67ffd3893",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_progress_claim",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_achievement",
+      "status": "success",
+      "filename": "craft_progress_achievement.mp3",
+      "bytes": 12164,
+      "sha256": "8b154f061c4e402b34a6b9a0f1b99456aadaec22c381e2ee3ee706fba114baef",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_equip",
+      "status": "pending"
+    },
+    {
+      "id": "craft_progress_claim",
+      "status": "success",
+      "filename": "craft_progress_claim.mp3",
+      "bytes": 12164,
+      "sha256": "8dda61155bdd80437e03de426aab047c68f9eb4823520c5e0f986790e6ce8f88",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_lock",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_equip",
+      "status": "success",
+      "filename": "craft_gear_equip.mp3",
+      "bytes": 12164,
+      "sha256": "5b11c9f2751246ecc2d6adba30e111009cc7c340146015800153e15faf5d805d",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_unlock",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_lock",
+      "status": "success",
+      "filename": "craft_gear_lock.mp3",
+      "bytes": 12164,
+      "sha256": "f6b78e07e549655fef3a0b9441e680e66ee381394494374f2fe9af66eed29ede",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_enhance_success",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_unlock",
+      "status": "success",
+      "filename": "craft_gear_unlock.mp3",
+      "bytes": 12164,
+      "sha256": "55d91e3a9c75c33e2572cdec3f1add1f176828552be43edc0a6d7e601dcbbffc",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_enhance_break",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_enhance_break",
+      "status": "success",
+      "filename": "craft_gear_enhance_break.mp3",
+      "bytes": 12164,
+      "sha256": "5deb6bf0724fb0c64fee885c442529b93eac60912eef41414aaebaec6786149e",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_enhance_destroy",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_enhance_success",
+      "status": "success",
+      "filename": "craft_gear_enhance_success.mp3",
+      "bytes": 12164,
+      "sha256": "d497c87fd58ae31c59796f7d5cbc4804245236b01bb420e48735ee3258f0fe65",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_dismantle",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_enhance_destroy",
+      "status": "success",
+      "filename": "craft_gear_enhance_destroy.mp3",
+      "bytes": 12164,
+      "sha256": "056ef3a89db576ac5e88bc07dda184dfa593f5559b2422dc459f0198a03f936f",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_gear_sell",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_dismantle",
+      "status": "success",
+      "filename": "craft_gear_dismantle.mp3",
+      "bytes": 12164,
+      "sha256": "f74ea355804817d0cdaad413dfaa930f94ab00ee74ff70cca11a74a8cc034f5e",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_capacity",
+      "status": "pending"
+    },
+    {
+      "id": "craft_gear_sell",
+      "status": "success",
+      "filename": "craft_gear_sell.mp3",
+      "bytes": 12164,
+      "sha256": "727dc4c866298dd66a6b55ed6066c20c536d6f0b51d629df775dd3f5f8ef024d",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_reroll",
+      "status": "pending"
+    },
+    {
+      "id": "craft_capacity",
+      "status": "success",
+      "filename": "craft_capacity.mp3",
+      "bytes": 12164,
+      "sha256": "d98d041c51c5cf9cf860d9458fbc13c53890b0d47b75f59c42e6cecd9571c317",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_remove",
+      "status": "pending"
+    },
+    {
+      "id": "craft_reroll",
+      "status": "success",
+      "filename": "craft_reroll.mp3",
+      "bytes": 12164,
+      "sha256": "9b757d50db9428c6dcd9a203c0ecdbdf7b029bfd519107a604340154785d456f",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_reset",
+      "status": "pending"
+    },
+    {
+      "id": "craft_remove",
+      "status": "success",
+      "filename": "craft_remove.mp3",
+      "bytes": 12164,
+      "sha256": "a3d3cb7170f307b93a4310438f12bf58fd64c520a75d33b64b8a0a25a1ee4bf5",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_start",
+      "status": "pending"
+    },
+    {
+      "id": "craft_reset",
+      "status": "success",
+      "filename": "craft_reset.mp3",
+      "bytes": 12164,
+      "sha256": "15073840dd2addee9ecc2bb508cc591c994acdb2e270b1f2928ba718d3d2b62f",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_tick",
+      "status": "pending"
+    },
+    {
+      "id": "craft_start",
+      "status": "success",
+      "filename": "craft_start.mp3",
+      "bytes": 12164,
+      "sha256": "1a0231b0421bae8698927a06b938e0bbc201d10b7fda7c83bb625c12a7bdac83",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_slow",
+      "status": "pending"
+    },
+    {
+      "id": "craft_tick",
+      "status": "success",
+      "filename": "craft_tick.mp3",
+      "bytes": 8821,
+      "sha256": "2601d1b495e32d47c299c04e51ed28965dd8e9efa95df5c93af3281f89339637",
+      "character_cost": "5"
+    },
+    {
+      "id": "craft_common",
+      "status": "pending"
+    },
+    {
+      "id": "craft_slow",
+      "status": "success",
+      "filename": "craft_slow.mp3",
+      "bytes": 12164,
+      "sha256": "960633b69ecb54208da18bc4a26da68eb3617cf4511a2951fe47ef835ff9d762",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_rare",
+      "status": "pending"
+    },
+    {
+      "id": "craft_common",
+      "status": "success",
+      "filename": "craft_common.mp3",
+      "bytes": 12164,
+      "sha256": "ddac5c38c889561fddd2747bd73fc3f0dcb5724d5326fff6b477177649c35a08",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_jackpot",
+      "status": "pending"
+    },
+    {
+      "id": "craft_rare",
+      "status": "success",
+      "filename": "craft_rare.mp3",
+      "bytes": 18434,
+      "sha256": "70e666f7e0134761e498b3eec90baabac7dd663e95b86844a87a00966cddb364",
+      "character_cost": "11"
+    },
+    {
+      "id": "craft_near",
+      "status": "pending"
+    },
+    {
+      "id": "craft_jackpot",
+      "status": "success",
+      "filename": "craft_jackpot.mp3",
+      "bytes": 26793,
+      "sha256": "f160b530e31439ce77a1e542f78ca93a7e0784c9af95471bae541b9df4dceafa",
+      "character_cost": "16"
+    },
+    {
+      "id": "craft_cancel",
+      "status": "pending"
+    },
+    {
+      "id": "craft_near",
+      "status": "success",
+      "filename": "craft_near.mp3",
+      "bytes": 12164,
+      "sha256": "39454838b517e418bc33b67734b05cb8718919626a7521fc76dc766a89fbf225",
+      "character_cost": "7"
+    },
+    {
+      "id": "craft_exhaust",
+      "status": "pending"
+    },
+    {
+      "id": "craft_cancel",
+      "status": "success",
+      "filename": "craft_cancel.mp3",
+      "bytes": 12164,
+      "sha256": "7de86fac4b5a199489bf057d6d31428acd6854479c462e5c6ffab469c2155566",
+      "character_cost": "7"
+    },
+    {
+      "id": "ui_click",
+      "status": "pending"
+    },
+    {
+      "id": "craft_exhaust",
+      "status": "success",
+      "filename": "craft_exhaust.mp3",
+      "bytes": 12164,
+      "sha256": "ef86ea78f63eeae9106da452c41b5bdb7e7839cefa091bd29cdae4c43ff70f13",
+      "character_cost": "7"
+    },
+    {
+      "id": "ui_back",
+      "status": "pending"
+    },
+    {
+      "id": "ui_click",
+      "status": "success",
+      "filename": "ui_click.mp3",
+      "bytes": 8821,
+      "sha256": "ecb78bb46059a4f88c03301fb049bb41d1ea211633e8e5679c884aeb96336dad",
+      "character_cost": "5"
+    },
+    {
+      "id": "ui_confirm",
+      "status": "pending"
+    },
+    {
+      "id": "ui_back",
+      "status": "success",
+      "filename": "ui_back.mp3",
+      "bytes": 12164,
+      "sha256": "02dd9f195ab41ca3ef0a8c320fa8386166ae7111c8ed4775e8f866c56d58168b",
+      "character_cost": "7"
+    },
+    {
+      "id": "ui_error",
+      "status": "pending"
+    },
+    {
+      "id": "ui_confirm",
+      "status": "success",
+      "filename": "ui_confirm.mp3",
+      "bytes": 12164,
+      "sha256": "54a46f4d0f582a607efbb2490600bfb852bdd98cdb0c343a52d7c35e9f19ccf0",
+      "character_cost": "7"
+    },
+    {
+      "id": "frost",
+      "status": "pending"
+    },
+    {
+      "id": "ui_error",
+      "status": "success",
+      "filename": "ui_error.mp3",
+      "bytes": 12164,
+      "sha256": "7eb26b16ed79916caac6c6c300abd5534dd4f83d5de06dc300eddea50a4a3566",
+      "character_cost": "7"
+    },
+    {
+      "id": "ult_bomb",
+      "status": "pending"
+    },
+    {
+      "id": "frost",
+      "status": "success",
+      "filename": "frost.mp3",
+      "bytes": 12164,
+      "sha256": "fe6565a61346b78ad89ddba9885aa449876de2e5b30edf01205cef0f64c5917b",
+      "character_cost": "7"
+    },
+    {
+      "id": "ult_vortex",
+      "status": "pending"
+    },
+    {
+      "id": "ult_bomb",
+      "status": "success",
+      "filename": "ult_bomb.mp3",
+      "bytes": 12164,
+      "sha256": "70faf3a040850eb2f268a486fd11548a5d31e6ca37569f5fcb8d94e8914a4365",
+      "character_cost": "7"
+    },
+    {
+      "id": "donut",
+      "status": "pending"
+    },
+    {
+      "id": "ult_vortex",
+      "status": "success",
+      "filename": "ult_vortex.mp3",
+      "bytes": 12164,
+      "sha256": "b3ba3ddfd621de6b9cb4408da37c2e5226e37b22ca2a346aa2b25986963e8a14",
+      "character_cost": "7"
+    },
+    {
+      "id": "hazard",
+      "status": "pending"
+    },
+    {
+      "id": "donut",
+      "status": "success",
+      "filename": "donut.mp3",
+      "bytes": 12164,
+      "sha256": "07b32a85fb566f2a3f239697b6a5187fedec24b943184d6ee62e5d192d7e6a7b",
+      "character_cost": "7"
+    },
+    {
+      "id": "crit",
+      "status": "pending"
+    },
+    {
+      "id": "hazard",
+      "status": "success",
+      "filename": "hazard.mp3",
+      "bytes": 12164,
+      "sha256": "897c037e5bfa7d2d2dcd13b1a72dc41130722c5dd030a5ded2ed2ec250fed25b",
+      "character_cost": "7"
+    },
+    {
+      "id": "kill_big",
+      "status": "pending"
+    },
+    {
+      "id": "crit",
+      "status": "success",
+      "filename": "crit.mp3",
+      "bytes": 12164,
+      "sha256": "4760aafdae6291237060ff4404f07bbb787eefac89ff41071c85eec16320696f",
+      "character_cost": "7"
+    },
+    {
+      "id": "hurt",
+      "status": "pending"
+    },
+    {
+      "id": "kill_big",
+      "status": "success",
+      "filename": "kill_big.mp3",
+      "bytes": 12164,
+      "sha256": "888fbf4a5a67695c169cb0ae04252f03bb4bc5a4e8d5866193483e2a8244cd07",
+      "character_cost": "7"
+    },
+    {
+      "id": "heal",
+      "status": "pending"
+    },
+    {
+      "id": "hurt",
+      "status": "success",
+      "filename": "hurt.mp3",
+      "bytes": 12164,
+      "sha256": "f435170a816c70b922bf74ad0d83279d7d9270d2f162a97efdb1a4c15aa624c8",
+      "character_cost": "7"
+    },
+    {
+      "id": "magnet",
+      "status": "pending"
+    },
+    {
+      "id": "heal",
+      "status": "success",
+      "filename": "heal.mp3",
+      "bytes": 12164,
+      "sha256": "a5a82d51a6c6d8da03dacddf910c03fef3e31930102342942fa2ff9f24129d9a",
+      "character_cost": "7"
+    },
+    {
+      "id": "thunder",
+      "status": "pending"
+    },
+    {
+      "id": "magnet",
+      "status": "success",
+      "filename": "magnet.mp3",
+      "bytes": 12164,
+      "sha256": "e2d84ec80f3ddcef47c301c3ef8087c871a24ea9f41884c63289e74201e32b1a",
+      "character_cost": "7"
+    },
+    {
+      "id": "punch",
+      "status": "pending"
+    },
+    {
+      "id": "thunder",
+      "status": "success",
+      "filename": "thunder.mp3",
+      "bytes": 12164,
+      "sha256": "fc86c51da53b361acec1af164c5188c826223b570e59b285485a4fca40e67932",
+      "character_cost": "7"
+    },
+    {
+      "id": "shotgun",
+      "status": "pending"
+    },
+    {
+      "id": "punch",
+      "status": "success",
+      "filename": "punch.mp3",
+      "bytes": 12164,
+      "sha256": "cbf4e0e4f8e22ce790713f1338f307a6f3d7b587b835f78150c1ffb3b6d7e506",
+      "character_cost": "7"
+    },
+    {
+      "id": "punch_jab",
+      "status": "pending"
+    },
+    {
+      "id": "shotgun",
+      "status": "success",
+      "filename": "shotgun.mp3",
+      "bytes": 12164,
+      "sha256": "89ffba119bf06c2a8098fc9b24f8bb18d9449faf1d6b880891c5124e3caa46e9",
+      "character_cost": "7"
+    },
+    {
+      "id": "punch_heavy",
+      "status": "pending"
+    },
+    {
+      "id": "punch_jab",
+      "status": "success",
+      "filename": "punch_jab.mp3",
+      "bytes": 8821,
+      "sha256": "3f610caeb0cc3163192540c7aa6e9a3f256a70ddf629bf94f2580e7699760e48",
+      "character_cost": "5"
+    },
+    {
+      "id": "punch_frenzy",
+      "status": "pending"
+    },
+    {
+      "id": "punch_heavy",
+      "status": "success",
+      "filename": "punch_heavy.mp3",
+      "bytes": 12164,
+      "sha256": "5c25ad96df55945b28e3edf25006cfa5f038641e7c75488b4d6195bf443bdd6c",
+      "character_cost": "7"
+    },
+    {
+      "id": "beam",
+      "status": "pending"
+    },
+    {
+      "id": "punch_frenzy",
+      "status": "success",
+      "filename": "punch_frenzy.mp3",
+      "bytes": 12164,
+      "sha256": "d5a6c734e27c2d1350a7f05c90c8c5e648c30d8802c66e0d43ec51df6654ca46",
+      "character_cost": "7"
+    },
+    {
+      "id": "burn",
+      "status": "pending"
+    },
+    {
+      "id": "beam",
+      "status": "success",
+      "filename": "beam.mp3",
+      "bytes": 12164,
+      "sha256": "d2be84a448a01321c16354ba2aa5f503c85c93f1b0740bc15c3639c03d90b69a",
+      "character_cost": "7"
+    },
+    {
+      "id": "card",
+      "status": "pending"
+    },
+    {
+      "id": "burn",
+      "status": "success",
+      "filename": "burn.mp3",
+      "bytes": 12164,
+      "sha256": "b19cb520b4c19255f10c0c3a2473af0892aa68433fa7e5a9484ee49367003245",
+      "character_cost": "7"
+    },
+    {
+      "id": "legend",
+      "status": "pending"
+    },
+    {
+      "id": "card",
+      "status": "success",
+      "filename": "card.mp3",
+      "bytes": 12164,
+      "sha256": "9fc1a35846c0caa8f8909c355b42d30b9a60f0dcef85ffec0ae2e22b49562aff",
+      "character_cost": "7"
+    },
+    {
+      "id": "victory",
+      "status": "pending"
+    },
+    {
+      "id": "legend",
+      "status": "success",
+      "filename": "legend.mp3",
+      "bytes": 26793,
+      "sha256": "502d38944b35daf1d21e195c0900d5ef2ea5a405ea374b01d267c653e843fea3",
+      "character_cost": "16"
+    },
+    {
+      "id": "boss_clear",
+      "status": "pending"
+    },
+    {
+      "id": "victory",
+      "status": "success",
+      "filename": "victory.mp3",
+      "bytes": 26793,
+      "sha256": "d2bd1d08d5d9510a4dc4746d7038bd9462c09153e924278927ffcc34c13321c6",
+      "character_cost": "16"
+    },
+    {
+      "id": "chest_spin",
+      "status": "pending"
+    },
+    {
+      "id": "boss_clear",
+      "status": "success",
+      "filename": "boss_clear.mp3",
+      "bytes": 26793,
+      "sha256": "2708260d36d04055fa737fdd2167e921143b183499c8849065facb9b9635ec81",
+      "character_cost": "16"
+    },
+    {
+      "id": "chest_tick",
+      "status": "pending"
+    },
+    {
+      "id": "chest_tick",
+      "status": "success",
+      "filename": "chest_tick.mp3",
+      "bytes": 8821,
+      "sha256": "b234553dfbd4e8b54dbae0644e898bdc6e484ce9386ecbb86f77e5fa6f021a2e",
+      "character_cost": "5"
+    },
+    {
+      "id": "dig_hit",
+      "status": "pending"
+    },
+    {
+      "id": "chest_spin",
+      "status": "success",
+      "filename": "chest_spin.mp3",
+      "bytes": 37242,
+      "sha256": "327e8fe1041e17e5c062ff6e389f9b028c95370d0992e640be11cdfdcba2a6f5",
+      "character_cost": "20"
+    },
+    {
+      "id": "dig_break",
+      "status": "pending"
+    },
+    {
+      "id": "dig_hit",
+      "status": "success",
+      "filename": "dig_hit.mp3",
+      "bytes": 8821,
+      "sha256": "9c2f3252982609bcb7924ec2c50fa290153d1e698c1cd77c7fe10c4ba9818631",
+      "character_cost": "5"
+    },
+    {
+      "id": "dig_find",
+      "status": "pending"
+    },
+    {
+      "id": "dig_break",
+      "status": "success",
+      "filename": "dig_break.mp3",
+      "bytes": 12164,
+      "sha256": "2072714b9da45f81fde1ce3898c314147e386dbca78680a9e56a262858b33e92",
+      "character_cost": "7"
+    },
+    {
+      "id": "recipe_fire",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find",
+      "status": "success",
+      "filename": "dig_find.mp3",
+      "bytes": 12164,
+      "sha256": "cbdbed1917cfdc75531ae2463bab964bfb9e1fd4ad6b7342c8682223717148eb",
+      "character_cost": "7"
+    },
+    {
+      "id": "recipe_merge",
+      "status": "pending"
+    },
+    {
+      "id": "recipe_fire",
+      "status": "success",
+      "filename": "recipe_fire.mp3",
+      "bytes": 12164,
+      "sha256": "78d13e5e8821e324661a2111c452bb87c4d4ea1edb148de77696f39831013f66",
+      "character_cost": "7"
+    },
+    {
+      "id": "dig_rare",
+      "status": "pending"
+    },
+    {
+      "id": "recipe_merge",
+      "status": "success",
+      "filename": "recipe_merge.mp3",
+      "bytes": 12164,
+      "sha256": "daa01fc1209a95b7bd1e1d6ca46c1ce8d85ba5878c3dd43fa89b83d8efe37ddf",
+      "character_cost": "7"
+    },
+    {
+      "id": "dig_trap",
+      "status": "pending"
+    },
+    {
+      "id": "dig_rare",
+      "status": "success",
+      "filename": "dig_rare.mp3",
+      "bytes": 18434,
+      "sha256": "5205fa4c102a509daddbfac645ed0505ba973602efbf5c6a37ddb947da6c0f44",
+      "character_cost": "11"
+    },
+    {
+      "id": "dig_descend",
+      "status": "pending"
+    },
+    {
+      "id": "dig_trap",
+      "status": "success",
+      "filename": "dig_trap.mp3",
+      "bytes": 12164,
+      "sha256": "faea0b31388f91e2f40b79f30d541847e804e5b21f140c0638f71852ab434a76",
+      "character_cost": "7"
+    },
+    {
+      "id": "slot_spin",
+      "status": "pending"
+    },
+    {
+      "id": "dig_descend",
+      "status": "success",
+      "filename": "dig_descend.mp3",
+      "bytes": 12164,
+      "sha256": "321f41f15995a215392accf64992ad25fb229666527239e3287ddf0b7d25800e",
+      "character_cost": "7"
+    },
+    {
+      "id": "slot_miss",
+      "status": "pending"
+    },
+    {
+      "id": "slot_miss",
+      "status": "success",
+      "filename": "slot_miss.mp3",
+      "bytes": 12164,
+      "sha256": "b9d47f98d1d174d99d9e1c66cf27a2acef053d59f37cb9afad1268e7258efeac",
+      "character_cost": "7"
+    },
+    {
+      "id": "slot_near",
+      "status": "pending"
+    },
+    {
+      "id": "slot_spin",
+      "status": "success",
+      "filename": "slot_spin.mp3",
+      "bytes": 37242,
+      "sha256": "7fb5a9a5e1c1126b43b15c8843b35baf0ea204e2d056f96cedbef35b5d046dc0",
+      "character_cost": "20"
+    },
+    {
+      "id": "slot_jackpot",
+      "status": "pending"
+    },
+    {
+      "id": "slot_near",
+      "status": "success",
+      "filename": "slot_near.mp3",
+      "bytes": 12164,
+      "sha256": "100ac9917c5493ea277594ceb5b80de7378aaa76d2e1da65f4f9ef108938b640",
+      "character_cost": "7"
+    },
+    {
+      "id": "chest_win",
+      "status": "pending"
+    },
+    {
+      "id": "slot_jackpot",
+      "status": "success",
+      "filename": "slot_jackpot.mp3",
+      "bytes": 26793,
+      "sha256": "143a9a72d34ab5f7daa0abb1d554986ed86d86eefdeb7d0d741aad1d11e18509",
+      "character_cost": "16"
+    },
+    {
+      "id": "defeat",
+      "status": "pending"
+    },
+    {
+      "id": "chest_win",
+      "status": "success",
+      "filename": "chest_win.mp3",
+      "bytes": 12164,
+      "sha256": "8782e3f855c92cc158a2348c7d81934df86a1159994687299b44b5c0403751f3",
+      "character_cost": "7"
+    },
+    {
+      "id": "boss_warn",
+      "status": "pending"
+    },
+    {
+      "id": "defeat",
+      "status": "success",
+      "filename": "defeat.mp3",
+      "bytes": 12164,
+      "sha256": "65d94a02c3a3b005bc3a23f61c9b1cebf3087da3d7bae1d567c09c5c534c1750",
+      "character_cost": "7"
+    },
+    {
+      "id": "ui_panel_open",
+      "status": "pending"
+    },
+    {
+      "id": "boss_warn",
+      "status": "success",
+      "filename": "boss_warn.mp3",
+      "bytes": 12164,
+      "sha256": "b85b565968ac125150809955c1d6ea5f47f0f46782774118a94893a6089b920d",
+      "character_cost": "7"
+    },
+    {
+      "id": "ui_panel_close",
+      "status": "pending"
+    },
+    {
+      "id": "ui_panel_open",
+      "status": "success",
+      "filename": "ui_panel_open.mp3",
+      "bytes": 8821,
+      "sha256": "8b470bc3b7aaa75654f3693bbaf0cf9b3e722c2904d250860b5a2d752017e62a",
+      "character_cost": "5"
+    },
+    {
+      "id": "ui_tab_change",
+      "status": "pending"
+    },
+    {
+      "id": "ui_panel_close",
+      "status": "success",
+      "filename": "ui_panel_close.mp3",
+      "bytes": 8821,
+      "sha256": "07d3478f8e347dae35e23bc40d3387b3916e5908008af45a57e383dcf39ed678",
+      "character_cost": "5"
+    },
+    {
+      "id": "ui_toggle_on",
+      "status": "pending"
+    },
+    {
+      "id": "ui_tab_change",
+      "status": "success",
+      "filename": "ui_tab_change.mp3",
+      "bytes": 8821,
+      "sha256": "e77a3380631c0a41cae26a535e239c2fac433743a85520ee79cd6887e4b02589",
+      "character_cost": "5"
+    },
+    {
+      "id": "ui_toggle_off",
+      "status": "pending"
+    },
+    {
+      "id": "ui_toggle_on",
+      "status": "success",
+      "filename": "ui_toggle_on.mp3",
+      "bytes": 8821,
+      "sha256": "ab49d0f170f1a3a13da791745d99940be7e33e4345e12fdd37c8d13b2702b4ae",
+      "character_cost": "5"
+    },
+    {
+      "id": "ui_compare_open",
+      "status": "pending"
+    },
+    {
+      "id": "ui_toggle_off",
+      "status": "success",
+      "filename": "ui_toggle_off.mp3",
+      "bytes": 8821,
+      "sha256": "66c8796549b3ec4509a16a1f5a5cbf3622e8809c8234cbc742a91f0c38cad21c",
+      "character_cost": "5"
+    },
+    {
+      "id": "ui_item_focus",
+      "status": "pending"
+    },
+    {
+      "id": "ui_compare_open",
+      "status": "success",
+      "filename": "ui_compare_open.mp3",
+      "bytes": 8821,
+      "sha256": "4001d259d10b1e1550b44b58b05b5406aaf95bec6501a989c96ff2b4dc6256e8",
+      "character_cost": "5"
+    },
+    {
+      "id": "ui_purchase_success",
+      "status": "pending"
+    },
+    {
+      "id": "ui_item_focus",
+      "status": "success",
+      "filename": "ui_item_focus.mp3",
+      "bytes": 8821,
+      "sha256": "cfa4a7489f877dd8ad24fa58b40190f52aad147795cc30aedcea7cd39577b167",
+      "character_cost": "5"
+    },
+    {
+      "id": "hero_select",
+      "status": "pending"
+    },
+    {
+      "id": "ui_purchase_success",
+      "status": "success",
+      "filename": "ui_purchase_success.mp3",
+      "bytes": 10493,
+      "sha256": "c690606ada06fbbd6167f778e365124ac16f70878f2c6b78eef1568ed2b8f0c7",
+      "character_cost": "6"
+    },
+    {
+      "id": "hero_unlock",
+      "status": "pending"
+    },
+    {
+      "id": "hero_select",
+      "status": "success",
+      "filename": "hero_select.mp3",
+      "bytes": 10493,
+      "sha256": "56ee4310acc2f3f9610938fe2b74daa4ae118b098d78326fb04bca7e9e616c95",
+      "character_cost": "6"
+    },
+    {
+      "id": "card_offer_open",
+      "status": "pending"
+    },
+    {
+      "id": "hero_unlock",
+      "status": "success",
+      "filename": "hero_unlock.mp3",
+      "bytes": 21359,
+      "sha256": "aeb75f4d89f5eb4265274a84369b603ee29e93778c1adf69acb4532ec33094d6",
+      "character_cost": "13"
+    },
+    {
+      "id": "card_flip",
+      "status": "pending"
+    },
+    {
+      "id": "card_offer_open",
+      "status": "success",
+      "filename": "card_offer_open.mp3",
+      "bytes": 12164,
+      "sha256": "1719586b0ae89f82d3958179c3f93d0474367502f902100ce11fcd8bdbdcd3e9",
+      "character_cost": "7"
+    },
+    {
+      "id": "card_focus",
+      "status": "pending"
+    },
+    {
+      "id": "card_flip",
+      "status": "success",
+      "filename": "card_flip.mp3",
+      "bytes": 8821,
+      "sha256": "48fdee0513842ac4e16cc4a0fe4a92bece515883ec2e56eaa1b41e460f587497",
+      "character_cost": "5"
+    },
+    {
+      "id": "card_confirm",
+      "status": "pending"
+    },
+    {
+      "id": "card_focus",
+      "status": "success",
+      "filename": "card_focus.mp3",
+      "bytes": 8821,
+      "sha256": "e967703a7300c6a8a6b70d8804a8e34432a716644569dbb1ceb06a855f86fcf3",
+      "character_cost": "5"
+    },
+    {
+      "id": "card_reroll",
+      "status": "pending"
+    },
+    {
+      "id": "card_confirm",
+      "status": "success",
+      "filename": "card_confirm.mp3",
+      "bytes": 10493,
+      "sha256": "91a730ceb92771deee3d788c125e7476c936d276d5da2894918eac5cac7cba8d",
+      "character_cost": "6"
+    },
+    {
+      "id": "build_path_select",
+      "status": "pending"
+    },
+    {
+      "id": "card_reroll",
+      "status": "success",
+      "filename": "card_reroll.mp3",
+      "bytes": 10493,
+      "sha256": "ba5c85bba901ca38fa853524b27519a6cb8d0b0b633c0ff3d24f0cc040076109",
+      "character_cost": "6"
+    },
+    {
+      "id": "infusion_apply",
+      "status": "pending"
+    },
+    {
+      "id": "build_path_select",
+      "status": "success",
+      "filename": "build_path_select.mp3",
+      "bytes": 17180,
+      "sha256": "bbd77c45e7e83390f89dcb83cda127b3a06597ce9dc1e8badfc72a595d62ad1f",
+      "character_cost": "10"
+    },
+    {
+      "id": "relic_acquire",
+      "status": "pending"
+    },
+    {
+      "id": "infusion_apply",
+      "status": "success",
+      "filename": "infusion_apply.mp3",
+      "bytes": 13836,
+      "sha256": "347345ed8ba4d48ee6ca9fcbb965814cddd3f4c54a1aa0ef09ad33db978f5fa4",
+      "character_cost": "8"
+    },
+    {
+      "id": "modifier_acquire",
+      "status": "pending"
+    },
+    {
+      "id": "relic_acquire",
+      "status": "success",
+      "filename": "relic_acquire.mp3",
+      "bytes": 17180,
+      "sha256": "838a636259b1b4ded59a6896a54c1694df077e3ab53c748d7e337e38df40cf37",
+      "character_cost": "10"
+    },
+    {
+      "id": "tradeoff_acquire",
+      "status": "pending"
+    },
+    {
+      "id": "modifier_acquire",
+      "status": "success",
+      "filename": "modifier_acquire.mp3",
+      "bytes": 12164,
+      "sha256": "e7d53a146e6c3ae8f62182867ce35ade9c89e4a14c0e637181f501f7a6b8caea",
+      "character_cost": "7"
+    },
+    {
+      "id": "skill_rank_up",
+      "status": "pending"
+    },
+    {
+      "id": "tradeoff_acquire",
+      "status": "success",
+      "filename": "tradeoff_acquire.mp3",
+      "bytes": 13836,
+      "sha256": "c80c077ba34e1e8bc34b5e397f954400fa2dea018931acc2286d143ffcb879da",
+      "character_cost": "8"
+    },
+    {
+      "id": "skill_awaken",
+      "status": "pending"
+    },
+    {
+      "id": "skill_rank_up",
+      "status": "success",
+      "filename": "skill_rank_up.mp3",
+      "bytes": 11328,
+      "sha256": "2131d85c1330b65e6d622b219c8681ee378253a8f550377eb0b970b275c14072",
+      "character_cost": "6"
+    },
+    {
+      "id": "unique_rank_up",
+      "status": "pending"
+    },
+    {
+      "id": "skill_awaken",
+      "status": "success",
+      "filename": "skill_awaken.mp3",
+      "bytes": 21359,
+      "sha256": "7050bd1f961058f9916e60ec4131f8dbf15945d27c1991ecf9d63fce86dfa9e8",
+      "character_cost": "13"
+    },
+    {
+      "id": "codex_rank_up",
+      "status": "pending"
+    },
+    {
+      "id": "unique_rank_up",
+      "status": "success",
+      "filename": "unique_rank_up.mp3",
+      "bytes": 17180,
+      "sha256": "5429cfdf8927a97cdd2ca59dc3db95a003d0fc9ed641da2b8c904fd1910b543f",
+      "character_cost": "10"
+    },
+    {
+      "id": "growth_summary_level",
+      "status": "pending"
+    },
+    {
+      "id": "codex_rank_up",
+      "status": "success",
+      "filename": "codex_rank_up.mp3",
+      "bytes": 13836,
+      "sha256": "85af3c3f23ce4e4467cb6c797b07fbaef9980c666a6fc77ce51e265b52d945d3",
+      "character_cost": "8"
+    },
+    {
+      "id": "growth_mastery",
+      "status": "pending"
+    },
+    {
+      "id": "growth_mastery",
+      "status": "success",
+      "filename": "growth_mastery.mp3",
+      "bytes": 20106,
+      "sha256": "8af79a46585de613169290920ed97025e71e8e06c450f173c2750a04b0858977",
+      "character_cost": "12"
+    },
+    {
+      "id": "wave_start",
+      "status": "pending"
+    },
+    {
+      "id": "growth_summary_level",
+      "status": "success",
+      "filename": "growth_summary_level.mp3",
+      "bytes": 17180,
+      "sha256": "6d17051f264594f3f5660580eeaa1261300f938c4c81fa0092977d9b1b5726b4",
+      "character_cost": "10"
+    },
+    {
+      "id": "wave_clear",
+      "status": "pending"
+    },
+    {
+      "id": "wave_clear",
+      "status": "success",
+      "filename": "wave_clear.mp3",
+      "bytes": 13836,
+      "sha256": "ea9e10cf32fad53b8340847f1561216558685990e90693e8f651c4e1fee15f7d",
+      "character_cost": "8"
+    },
+    {
+      "id": "stage_clear",
+      "status": "pending"
+    },
+    {
+      "id": "wave_start",
+      "status": "success",
+      "filename": "wave_start.mp3",
+      "bytes": 12164,
+      "sha256": "2fbacf8c74dd540d1023f64cb37a65b220fbe0e86742086f1697ef129772081b",
+      "character_cost": "7"
+    },
+    {
+      "id": "miniboss_arrival",
+      "status": "pending"
+    },
+    {
+      "id": "miniboss_arrival",
+      "status": "success",
+      "filename": "miniboss_arrival.mp3",
+      "bytes": 18434,
+      "sha256": "63c3fe6fc3e1010eca073e36925334a2cbbbd2d6b4f164a40a65b3429cb55918",
+      "character_cost": "11"
+    },
+    {
+      "id": "miniboss_defeat",
+      "status": "pending"
+    },
+    {
+      "id": "stage_clear",
+      "status": "success",
+      "filename": "stage_clear.mp3",
+      "bytes": 29301,
+      "sha256": "caf22cf0b2ef8e66ab846a0040bc420c71009984371d507d474b97be0a858aeb",
+      "character_cost": "18"
+    },
+    {
+      "id": "boss_attack_telegraph",
+      "status": "pending"
+    },
+    {
+      "id": "boss_attack_telegraph",
+      "status": "success",
+      "filename": "boss_attack_telegraph.mp3",
+      "bytes": 10493,
+      "sha256": "18d9862141e02689934d9e880adec09f72b435ff4bfff359bbf77e7cf3e20d32",
+      "character_cost": "6"
+    },
+    {
+      "id": "story_panel_open",
+      "status": "pending"
+    },
+    {
+      "id": "miniboss_defeat",
+      "status": "success",
+      "filename": "miniboss_defeat.mp3",
+      "bytes": 20106,
+      "sha256": "45a4438e25b6229212702779cde48580e4a7ecb85f4168a187d95477f46b4350",
+      "character_cost": "12"
+    },
+    {
+      "id": "story_advance",
+      "status": "pending"
+    },
+    {
+      "id": "story_panel_open",
+      "status": "success",
+      "filename": "story_panel_open.mp3",
+      "bytes": 13836,
+      "sha256": "310bacb686f9418a77d1ffc4c4a6dfa309799b0ec7b52079e377573182020a3b",
+      "character_cost": "8"
+    },
+    {
+      "id": "portal_enter",
+      "status": "pending"
+    },
+    {
+      "id": "story_advance",
+      "status": "success",
+      "filename": "story_advance.mp3",
+      "bytes": 8821,
+      "sha256": "a5abce5f21d407217060382c70939a6ff4d8c06f9fb1de14678da88704b80396",
+      "character_cost": "5"
+    },
+    {
+      "id": "revive",
+      "status": "pending"
+    },
+    {
+      "id": "portal_enter",
+      "status": "success",
+      "filename": "portal_enter.mp3",
+      "bytes": 17180,
+      "sha256": "d1cb2679a8eea40206c41e195bbb57a46ce5cf208ee9c8ed38ea1c798db3cc59",
+      "character_cost": "10"
+    },
+    {
+      "id": "pickup_sugar",
+      "status": "pending"
+    },
+    {
+      "id": "revive",
+      "status": "success",
+      "filename": "revive.mp3",
+      "bytes": 20106,
+      "sha256": "b68c13274341033a0029167b1f11cf920e7ef7b9acc2745e48c388f41f9b7791",
+      "character_cost": "12"
+    },
+    {
+      "id": "pickup_currency",
+      "status": "pending"
+    },
+    {
+      "id": "pickup_sugar",
+      "status": "success",
+      "filename": "pickup_sugar.mp3",
+      "bytes": 8821,
+      "sha256": "8ef4a443bfb43da074242f4b6a5bba414fa564c1dcd6d2618fc7ed3b0d3ad05d",
+      "character_cost": "5"
+    },
+    {
+      "id": "pickup_gear",
+      "status": "pending"
+    },
+    {
+      "id": "pickup_currency",
+      "status": "success",
+      "filename": "pickup_currency.mp3",
+      "bytes": 8821,
+      "sha256": "13d19604b5cc90f38674686b1e1070eeaddda922901afcfa83e1eb14c645690d",
+      "character_cost": "5"
+    },
+    {
+      "id": "loot_common_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "pickup_gear",
+      "status": "success",
+      "filename": "pickup_gear.mp3",
+      "bytes": 10493,
+      "sha256": "8cfc5cfe4c465f5c8ba166f39fd120b9f901f0dc465b065476f7c35d6b7c4b6d",
+      "character_cost": "6"
+    },
+    {
+      "id": "loot_magic_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_common_reveal",
+      "status": "success",
+      "filename": "loot_common_reveal.mp3",
+      "bytes": 11328,
+      "sha256": "318361af8761325763362349b9f09ce1a133f3986a563e8bf81486f69a1f5f4f",
+      "character_cost": "6"
+    },
+    {
+      "id": "loot_rare_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_magic_reveal",
+      "status": "success",
+      "filename": "loot_magic_reveal.mp3",
+      "bytes": 13836,
+      "sha256": "e4a9b7dfa5d76e6d40d40d1bfbfbd0b5681d70dd5d3ca387d06d47a48f7ed6c2",
+      "character_cost": "8"
+    },
+    {
+      "id": "loot_epic_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_rare_reveal",
+      "status": "success",
+      "filename": "loot_rare_reveal.mp3",
+      "bytes": 17180,
+      "sha256": "f4dd22e1eb9d4c43f46a1d921fe30410ef95b5ff916e66113462af23a8218790",
+      "character_cost": "10"
+    },
+    {
+      "id": "loot_unique_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_epic_reveal",
+      "status": "success",
+      "filename": "loot_epic_reveal.mp3",
+      "bytes": 20106,
+      "sha256": "6ed80cbaa4fc9d51a470f943fd2391f937ed1818323b96f78ea4927a49bcf8ba",
+      "character_cost": "12"
+    },
+    {
+      "id": "buff_pickup",
+      "status": "pending"
+    },
+    {
+      "id": "buff_pickup",
+      "status": "success",
+      "filename": "buff_pickup.mp3",
+      "bytes": 12164,
+      "sha256": "329205a2f3501102077a5a972698008f399848c29374ef9172bda495dc71ab03",
+      "character_cost": "7"
+    },
+    {
+      "id": "gear_favorite_on",
+      "status": "pending"
+    },
+    {
+      "id": "loot_unique_reveal",
+      "status": "success",
+      "filename": "loot_unique_reveal.mp3",
+      "bytes": 26793,
+      "sha256": "18585a7483bf61a655cd2adedbcae6fb65c4aebf1b54747f9d034fc161c04aaa",
+      "character_cost": "16"
+    },
+    {
+      "id": "gear_favorite_off",
+      "status": "pending"
+    },
+    {
+      "id": "gear_favorite_off",
+      "status": "success",
+      "filename": "gear_favorite_off.mp3",
+      "bytes": 8821,
+      "sha256": "42d98a31f8067db1a28322e84c50882218427e0f8b640cda38d40f2508c45877",
+      "character_cost": "5"
+    },
+    {
+      "id": "gear_bulk_cleanup",
+      "status": "pending"
+    },
+    {
+      "id": "gear_favorite_on",
+      "status": "success",
+      "filename": "gear_favorite_on.mp3",
+      "bytes": 8821,
+      "sha256": "f3bbc401ad2edb66c6a3f46f28dbe5247a27ff9b40792a130defc47692cdc3b9",
+      "character_cost": "5"
+    },
+    {
+      "id": "gear_bulk_cleanup",
+      "status": "success",
+      "filename": "gear_bulk_cleanup.mp3",
+      "bytes": 15090,
+      "sha256": "c5bc4b55d086d90e36e7eafc3c45b3e87044aaa7bf5c50dc3b153c07b21e8a07",
+      "character_cost": "9"
+    }
+  ],
+  "finished": "2026-10-11T01:01:21.162Z"
+}

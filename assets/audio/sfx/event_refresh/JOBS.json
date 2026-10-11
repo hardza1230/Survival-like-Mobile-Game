@@ -1,0 +1,2535 @@
+{
+  "version": "7.0.0",
+  "date": "2026-10-11",
+  "jobs": [
+    {
+      "id": "shoot",
+      "filename": "shoot.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_shoot",
+      "existing_path": "assets/audio/sfx/sfx_skill_sprinkle.wav",
+      "event": "shoot",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One tight candy projectile launch, a dry pneumatic pop and tiny fast zip. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hit",
+      "filename": "hit.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_hit",
+      "existing_path": "assets/audio/sfx/gen/sfx_hit.wav",
+      "event": "hit",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One padded enemy hit, dry rounded punch with a tiny candy crunch. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "xp",
+      "filename": "xp.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_xp",
+      "existing_path": "assets/audio/sfx/gen/sfx_xp.wav",
+      "event": "xp",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One tiny rewarding experience-orb plink, soft upward glass droplet. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dash",
+      "filename": "dash.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_dash",
+      "existing_path": "assets/audio/sfx/sfx_jump_squish.wav",
+      "event": "dash",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One fast agile dodge whoosh with a soft air snap. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "levelup",
+      "filename": "levelup.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_levelup",
+      "existing_path": "assets/audio/sfx/gen/sfx_levelup_soft.mp3",
+      "event": "levelup",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A distinct HERO LEVEL-UP celebration: immediate uplifting magical bloom, ascending golden sparkle and confident warm landing pulse; short triumphant cue, no long melody. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "chest",
+      "filename": "chest.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_chest",
+      "existing_path": "assets/audio/sfx/sfx_chest_open.wav",
+      "event": "chest",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A treasure chest lid opens with a woody latch clack and sparkling reward air puff. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_result_open",
+      "filename": "craft_result_open.mp3",
+      "group": "Results",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_result_open",
+      "existing_path": "assets/audio/sfx/results/result_open.wav",
+      "event": "craft_result_open",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Reward summary opens: soft panel sweep and warm expectancy sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_result_count",
+      "filename": "craft_result_count.mp3",
+      "group": "Results",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_result_count",
+      "existing_path": "assets/audio/sfx/results/result_count.wav",
+      "event": "craft_result_count",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Exactly one tiny coin counting tick, dry light wooden plink, very short decay. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_result_reveal",
+      "filename": "craft_result_reveal.mp3",
+      "group": "Results",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_result_reveal",
+      "existing_path": "assets/audio/sfx/results/result_reveal.wav",
+      "event": "craft_result_reveal",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One ordinary summary reward row appears, soft reward pop and little sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_result_important",
+      "filename": "craft_result_important.mp3",
+      "group": "Results",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_result_important",
+      "existing_path": "assets/audio/sfx/results/result_important.wav",
+      "event": "craft_result_important",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One important summary progression milestone, confident bright golden bloom and firm reward pulse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_result_double",
+      "filename": "craft_result_double.mp3",
+      "group": "Results",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_result_double",
+      "existing_path": "assets/audio/sfx/results/result_double.wav",
+      "event": "craft_result_double",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One doubled reward celebration, two distinct bright paired reward pops and sparkling flourish. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_core",
+      "filename": "craft_progress_core.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_core",
+      "existing_path": "assets/audio/sfx/progress/progress_core.wav",
+      "event": "craft_progress_core",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A permanent core upgrade locks in, grounded magical socket click and warm energy pulse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_talent",
+      "filename": "craft_progress_talent.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_talent",
+      "existing_path": "assets/audio/sfx/progress/progress_talent.wav",
+      "event": "craft_progress_talent",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One talent node upgraded, crystalline pin clicks in with a nimble bright star shimmer. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_overcap",
+      "filename": "craft_progress_overcap.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_overcap",
+      "existing_path": "assets/audio/sfx/progress/progress_overcap.wav",
+      "event": "craft_progress_overcap",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A breakthrough beyond a cap, short compressed energy rise and firm magical expansion. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_promotion",
+      "filename": "craft_progress_promotion.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_promotion",
+      "existing_path": "assets/audio/sfx/progress/progress_promotion.wav",
+      "event": "craft_progress_promotion",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A new hero rank promotion, noble golden pulse and brief stately uplifting sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_perk",
+      "filename": "craft_progress_perk.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_perk",
+      "existing_path": "assets/audio/sfx/progress/progress_perk.wav",
+      "event": "craft_progress_perk",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A rank perk unlock, soft embossed badge snap and warm rewarding shimmer. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_ancient",
+      "filename": "craft_progress_ancient.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_ancient",
+      "existing_path": "assets/audio/sfx/progress/progress_ancient.wav",
+      "event": "craft_progress_ancient",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "An ancient power unlock, deep stone seal opens and luminous magical resonance. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_daily",
+      "filename": "craft_progress_daily.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_daily",
+      "existing_path": "assets/audio/sfx/progress/progress_daily.wav",
+      "event": "craft_progress_daily",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A daily gift claimed, friendly warm present pop with tiny happy sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_achievement",
+      "filename": "craft_progress_achievement.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_achievement",
+      "existing_path": "assets/audio/sfx/progress/progress_achievement.wav",
+      "event": "craft_progress_achievement",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "An achievement completed, crisp medal click and confident golden celebratory ping. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_quest",
+      "filename": "craft_progress_quest.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_quest",
+      "existing_path": "assets/audio/sfx/progress/progress_quest.wav",
+      "event": "craft_progress_quest",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A quest completed, small parchment stamp and short optimistic reward sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_progress_claim",
+      "filename": "craft_progress_claim.mp3",
+      "group": "Progress",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_progress_claim",
+      "existing_path": "assets/audio/sfx/progress/progress_claim.wav",
+      "event": "craft_progress_claim",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One inbox reward successfully claimed, clear soft acceptance pop and collected chime. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_equip",
+      "filename": "craft_gear_equip.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_equip",
+      "existing_path": "assets/audio/sfx/gear/gear_equip.wav",
+      "event": "craft_gear_equip",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One gear piece fitted, satisfying cloth rustle and firm metallic clasp snap. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_lock",
+      "filename": "craft_gear_lock.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_lock",
+      "existing_path": "assets/audio/sfx/gear/gear_lock.wav",
+      "event": "craft_gear_lock",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One item protection lock engages, small firm mechanical lock clack. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_unlock",
+      "filename": "craft_gear_unlock.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_unlock",
+      "existing_path": "assets/audio/sfx/gear/gear_unlock.wav",
+      "event": "craft_gear_unlock",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One item protection lock opens, lighter mechanical click and release. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_enhance_success",
+      "filename": "craft_gear_enhance_success.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_enhance_success",
+      "existing_path": "assets/audio/sfx/gear/gear_enhance_success.wav",
+      "event": "craft_gear_enhance_success",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One gear enhancement succeeds, rising forge energy and clean firm metallic starburst. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_enhance_break",
+      "filename": "craft_gear_enhance_break.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_enhance_break",
+      "existing_path": "assets/audio/sfx/gear/gear_enhance_break.wav",
+      "event": "craft_gear_enhance_break",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One gear enhancement fails, strained metal crack and subdued downward pulse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_enhance_destroy",
+      "filename": "craft_gear_enhance_destroy.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_enhance_destroy",
+      "existing_path": "assets/audio/sfx/gear/gear_enhance_destroy.wav",
+      "event": "craft_gear_enhance_destroy",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One item breaks completely, low shattering metal debris and short grave collapse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_dismantle",
+      "filename": "craft_gear_dismantle.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_dismantle",
+      "existing_path": "assets/audio/sfx/gear/gear_dismantle.wav",
+      "event": "craft_gear_dismantle",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One gear item dismantled into parts, dry metallic snap and small component clinks. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_gear_sell",
+      "filename": "craft_gear_sell.mp3",
+      "group": "Gear",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_gear_sell",
+      "existing_path": "assets/audio/sfx/gear/gear_sell.wav",
+      "event": "craft_gear_sell",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One sale completed, short coin jingle and soft settled register click. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_capacity",
+      "filename": "craft_capacity.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_capacity",
+      "existing_path": "assets/audio/sfx/craft/craft_capacity.wav",
+      "event": "craft_capacity",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One new crafting slot opens, expanding magical socket click and clean energy lift. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_reroll",
+      "filename": "craft_reroll.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_reroll",
+      "existing_path": "assets/audio/sfx/craft/craft_reroll.wav",
+      "event": "craft_reroll",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One modifier rerolled, compact magical twisting spin and a firm new-value click. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_remove",
+      "filename": "craft_remove.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_remove",
+      "existing_path": "assets/audio/sfx/craft/craft_remove.wav",
+      "event": "craft_remove",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One modifier removed, short extracting magical suction pop with empty socket click. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_reset",
+      "filename": "craft_reset.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_reset",
+      "existing_path": "assets/audio/sfx/craft/craft_reset.wav",
+      "event": "craft_reset",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "All modifiers cleared, soft descending magical wipe and decisive neutral thump. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_start",
+      "filename": "craft_start.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_start",
+      "existing_path": "assets/audio/sfx/craft/craft_start.wav",
+      "event": "craft_start",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A crafting reel begins, short spring engagement clack and playful rolling kickoff. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_tick",
+      "filename": "craft_tick.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_tick",
+      "existing_path": "assets/audio/sfx/craft/craft_tick.wav",
+      "event": "craft_tick",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Exactly one tiny crafting reel peg tick, very dry light click, minimal decay. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_slow",
+      "filename": "craft_slow.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_slow",
+      "existing_path": "assets/audio/sfx/craft/craft_slow.wav",
+      "event": "craft_slow",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A crafting reel slows down, a compact three-tick deceleration with anticipation. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_common",
+      "filename": "craft_common.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_common",
+      "existing_path": "assets/audio/sfx/craft/craft_common.wav",
+      "event": "craft_common",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "An ordinary crafted mod appears, dry seal pop with modest warm sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_rare",
+      "filename": "craft_rare.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_rare",
+      "existing_path": "assets/audio/sfx/craft/craft_rare.wav",
+      "event": "craft_rare",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A rare crafted mod appears, brighter crystalline unveil with a satisfying firm energy snap. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_jackpot",
+      "filename": "craft_jackpot.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_jackpot",
+      "existing_path": "assets/audio/sfx/craft/craft_jackpot.wav",
+      "event": "craft_jackpot",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "An exceptional crafted mod jackpot, bold golden magic burst and short exciting celebratory shimmer. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_near",
+      "filename": "craft_near.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_near",
+      "existing_path": "assets/audio/sfx/craft/craft_near.wav",
+      "event": "craft_near",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A crafting target almost succeeds, anticipation rises then softly falls in a playful near-miss bounce. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_cancel",
+      "filename": "craft_cancel.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_cancel",
+      "existing_path": "assets/audio/sfx/craft/craft_cancel.wav",
+      "event": "craft_cancel",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Crafting is canceled, short gentle downward paper sweep and settled click. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "craft_exhaust",
+      "filename": "craft_exhaust.mp3",
+      "group": "Craft",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_craft_exhaust",
+      "existing_path": "assets/audio/sfx/craft/craft_exhaust.wav",
+      "event": "craft_exhaust",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Crafting resources run out, subdued low empty-container knock and small falling blip. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_click",
+      "filename": "ui_click.mp3",
+      "group": "UI",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_ui_click",
+      "existing_path": "assets/audio/sfx/ui/ui_click.wav",
+      "event": "ui_click",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Exactly one tactile soft candy button click, dry tiny pop, no ring or melody. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_back",
+      "filename": "ui_back.mp3",
+      "group": "UI",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_ui_back",
+      "existing_path": "assets/audio/sfx/ui/ui_back.wav",
+      "event": "ui_back",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One back-navigation cue, light downward soft air flick and small settled tap. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_confirm",
+      "filename": "ui_confirm.mp3",
+      "group": "UI",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_ui_confirm",
+      "existing_path": "assets/audio/sfx/ui/ui_confirm.wav",
+      "event": "ui_confirm",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One positive interface confirmation, clean firm soft tick and brief upward sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_error",
+      "filename": "ui_error.mp3",
+      "group": "UI",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_ui_error",
+      "existing_path": "assets/audio/sfx/ui/ui_error.wav",
+      "event": "ui_error",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One blocked action cue, two short gentle low knocks, clearly different from confirmation, never harsh. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "frost",
+      "filename": "frost.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_frost",
+      "existing_path": "assets/audio/sfx/sfx_skill_frost.wav",
+      "event": "frost",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One frost spell release with crisp icy swoosh and small crystalline pulse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ult_bomb",
+      "filename": "ult_bomb.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_ult_bomb",
+      "existing_path": "assets/audio/sfx/sfx_ult_sugarbomb.wav",
+      "event": "ult_bomb",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One compact powerful magical sugar bomb blast with a rounded bass thump and candy debris. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ult_vortex",
+      "filename": "ult_vortex.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_ult_vortex",
+      "existing_path": "assets/audio/sfx_vfx_ult_cocoavortex.wav",
+      "event": "ult_vortex",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One dark cocoa vortex activation, spiraling low magical suction and soft energy snap. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "donut",
+      "filename": "donut.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_donut",
+      "existing_path": "assets/audio/sfx_vfx_proj_donut.wav",
+      "event": "donut",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One playful spinning donut projectile zip, rubbery fast whoosh with a soft airy pop. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hazard",
+      "filename": "hazard.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_hazard",
+      "existing_path": "assets/audio/sfx_vfx_telegraph_hazard.wav",
+      "event": "hazard",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One concise danger telegraph, urgent low rising pulse with a distinct alert tick, no siren. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "crit",
+      "filename": "crit.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_crit",
+      "existing_path": "assets/audio/sfx/gen/sfx_crit.wav",
+      "event": "crit",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One tight critical impact with a compact punch and crystalline crack, stronger than ordinary hit. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "kill_big",
+      "filename": "kill_big.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_kill_big",
+      "existing_path": "assets/audio/sfx/gen/sfx_kill_big.wav",
+      "event": "kill_big",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One satisfying large-enemy defeat, deep compact thump and candy crumble, no victory fanfare. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hurt",
+      "filename": "hurt.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_hurt",
+      "existing_path": "assets/audio/sfx/gen/sfx_hurt_soft.mp3",
+      "event": "hurt",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One soft padded player damage cue, brief low downturned thump, deliberately restrained and non-shrill. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "heal",
+      "filename": "heal.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_heal",
+      "existing_path": "assets/audio/sfx/gen/sfx_heal.wav",
+      "event": "heal",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One warm gentle healing bloom, soft upward liquid chime and calm glow. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "magnet",
+      "filename": "magnet.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_magnet",
+      "existing_path": "assets/audio/sfx/gen/sfx_magnet.wav",
+      "event": "magnet",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One pickup magnet sweep, ascending soft suction whoosh and tiny collected sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "thunder",
+      "filename": "thunder.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_thunder",
+      "existing_path": "assets/audio/sfx/gen/sfx_thunder.wav",
+      "event": "thunder",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One powerful short thunder strike, electrical crack and rounded low rumble. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "punch",
+      "filename": "punch.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_punch",
+      "existing_path": "assets/audio/sfx/gen/sfx_punch.wav",
+      "event": "punch",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One dry padded boxing impact, tight low body thump and brief glove slap. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "shotgun",
+      "filename": "shotgun.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_shotgun",
+      "existing_path": "assets/audio/sfx/gen/sfx_shotgun.wav",
+      "event": "shotgun",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One punchy basic shotgun shot, tightly clustered candy pellet blast and strong rounded low pop. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "punch_jab",
+      "filename": "punch_jab.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_punch_jab",
+      "existing_path": "assets/audio/sfx/gen/sfx_punch_jab.wav",
+      "event": "punch_jab",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One light quick glove jab, dry padded slap with a short airy snap. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "punch_heavy",
+      "filename": "punch_heavy.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_punch_heavy",
+      "existing_path": "assets/audio/sfx/gen/sfx_punch_heavy.wav",
+      "event": "punch_heavy",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One heavy boxing finisher impact, firm low thud and short glove crunch. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "punch_frenzy",
+      "filename": "punch_frenzy.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_punch_frenzy",
+      "existing_path": "assets/audio/sfx/gen/sfx_punch_frenzy.wav",
+      "event": "punch_frenzy",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One compact three-hit boxing frenzy flourish, three rapidly grouped padded thumps. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "beam",
+      "filename": "beam.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_beam",
+      "existing_path": "assets/audio/sfx/gen/sfx_beam.wav",
+      "event": "beam",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One brief concentrated magical beam release, clean charged pop and fast energy streak. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "burn",
+      "filename": "burn.mp3",
+      "group": "Combat",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_burn",
+      "existing_path": "assets/audio/sfx/gen/sfx_burn.wav",
+      "event": "burn",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One short ignition tick, a warm flame puff with fine soft ember crackle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card",
+      "filename": "card.mp3",
+      "group": "Cards",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_card",
+      "existing_path": "assets/audio/sfx/gen/sfx_card.wav",
+      "event": "card",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One card accepted and placed, crisp paper slap and short confirming sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "legend",
+      "filename": "legend.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_legend",
+      "existing_path": "assets/audio/sfx/gen/sfx_legend.wav",
+      "event": "legend",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One majestic legendary treasure reveal, warm golden shimmer opening into a powerful rounded reward pulse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "victory",
+      "filename": "victory.mp3",
+      "group": "Stage",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_victory",
+      "existing_path": "assets/audio/sfx/gen/sfx_victory.mp3",
+      "event": "victory",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A joyful final victory reward fanfare, bold uplifting golden sparkle and triumphant warm impact, short celebratory arc. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "boss_clear",
+      "filename": "boss_clear.mp3",
+      "group": "Stage",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_boss_clear",
+      "existing_path": "assets/audio/sfx/gen/sfx_boss_clear.mp3",
+      "event": "boss_clear",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "A decisive boss defeat celebration, weighty victory impact and short heroic rising sparkle, distinct from level-up. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "chest_spin",
+      "filename": "chest_spin.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_chest_spin",
+      "existing_path": "assets/audio/sfx/gen/sfx_chest_spin.mp3",
+      "event": "chest_spin",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Seamless steady soft treasure wheel mechanical rotation, rounded ticks and subtle magical shimmer, no final reveal. Cute premium candy fantasy game SFX. Seamless loop, steady intensity, no ending. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 2,
+        "loop": true,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "chest_tick",
+      "filename": "chest_tick.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_chest_tick",
+      "existing_path": "assets/audio/sfx/gen/sfx_chest_tick.mp3",
+      "event": "chest_tick",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One tiny treasure wheel peg tick, dry woody click, no resonance. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_hit",
+      "filename": "dig_hit.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_dig_hit",
+      "existing_path": "assets/audio/sfx/gen/sfx_dig_hit.mp3",
+      "event": "dig_hit",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One short shovel strike into soil and rock, dry earthy tap. Cute premium candy fantasy game SFX. Extremely brief transient with minimal tail. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_break",
+      "filename": "dig_break.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_dig_break",
+      "existing_path": "assets/audio/sfx/gen/sfx_dig_break.mp3",
+      "event": "dig_break",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One small rock block breaks, crunchy crumble and low dry thud. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find",
+      "filename": "dig_find.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_dig_find",
+      "existing_path": "assets/audio/sfx/gen/sfx_dig_find.mp3",
+      "event": "dig_find",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One buried ordinary resource discovery, gentle earth pop and short rewarding glass plink. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "recipe_fire",
+      "filename": "recipe_fire.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_recipe_fire",
+      "existing_path": "assets/audio/sfx/gen/sfx_recipe_fire.mp3",
+      "event": "recipe_fire",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One kitchen recipe proc, quick sizzling magical cooking pop. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "recipe_merge",
+      "filename": "recipe_merge.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_recipe_merge",
+      "existing_path": "assets/audio/sfx/gen/sfx_recipe_merge.mp3",
+      "event": "recipe_merge",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One recipe ingredients fuse, liquid stirring swirl and satisfying warm blend pulse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_rare",
+      "filename": "dig_rare.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_dig_rare",
+      "existing_path": "assets/audio/sfx/gen/sfx_dig_rare.mp3",
+      "event": "dig_rare",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One rare underground discovery, crystalline unveil and short brighter sparkling reward rise. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_trap",
+      "filename": "dig_trap.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_dig_trap",
+      "existing_path": "assets/audio/sfx/gen/sfx_dig_trap.mp3",
+      "event": "dig_trap",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One sudden underground trap spring, dry mechanical snap and short low warning thump. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_descend",
+      "filename": "dig_descend.mp3",
+      "group": "DigKitchen",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_dig_descend",
+      "existing_path": "assets/audio/sfx/gen/sfx_dig_descend.mp3",
+      "event": "dig_descend",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One descent into a deeper cavern, smooth downward airy sweep with a soft low stone pulse. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_spin",
+      "filename": "slot_spin.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_slot_spin",
+      "existing_path": "assets/audio/sfx/gen/sfx_slot_spin.mp3",
+      "event": "slot_spin",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "Seamless gentle slot reel turning, small rolling wooden mechanical ticks, stable rhythm, no outcome. Cute premium candy fantasy game SFX. Seamless loop, steady intensity, no ending. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 2,
+        "loop": true,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_miss",
+      "filename": "slot_miss.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_slot_miss",
+      "existing_path": "assets/audio/sfx/gen/sfx_slot_miss.mp3",
+      "event": "slot_miss",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One gentle unsuccessful slot outcome, short downturned rubbery pop, not harsh or humiliating. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_near",
+      "filename": "slot_near.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_slot_near",
+      "existing_path": "assets/audio/sfx/gen/sfx_slot_near.mp3",
+      "event": "slot_near",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One near-miss slot outcome, rising anticipation blip then a soft falling bounce. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_jackpot",
+      "filename": "slot_jackpot.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_slot_jackpot",
+      "existing_path": "assets/audio/sfx/gen/sfx_slot_jackpot.mp3",
+      "event": "slot_jackpot",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One exciting slot jackpot reveal, bright joyful candy sparkle and strong rewarding golden burst. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "chest_win",
+      "filename": "chest_win.mp3",
+      "group": "Loot",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_chest_win",
+      "existing_path": "assets/audio/sfx/gen/sfx_chest_win.mp3",
+      "event": "chest_win",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One chest reward confirmed, warm rounded treasure pop with upward sparkle. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "defeat",
+      "filename": "defeat.mp3",
+      "group": "Stage",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_defeat",
+      "existing_path": "assets/audio/sfx/gen/sfx_defeat.wav",
+      "event": "defeat",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One restrained defeat stinger, gentle downward dark magical swell ending softly, no harsh buzzer. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "boss_warn",
+      "filename": "boss_warn.mp3",
+      "group": "Stage",
+      "mode": "replace_existing_file",
+      "existing_key": "sfx_boss_warn",
+      "existing_path": "assets/audio/sfx/gen/sfx_boss_warn.mp3",
+      "event": "boss_warn",
+      "hook": "Existing ASSET_AUDIO key / Sfx method",
+      "request": {
+        "text": "One major boss arrival warning, deep ominous swelling pulse and a clear threatening impact, concise. Cute premium candy fantasy game SFX. Dry isolated sound, smooth highs, no voice, background ambience or music.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_panel_open",
+      "filename": "ui_panel_open.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_panel_open",
+      "hook": "menu modal open",
+      "request": {
+        "text": "Soft compact panel opening sweep, airy outward swish and padded pop. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_panel_close",
+      "filename": "ui_panel_close.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_panel_close",
+      "hook": "menu modal close",
+      "request": {
+        "text": "Short soft panel closing sweep, downward air swish and dry closing tap. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_tab_change",
+      "filename": "ui_tab_change.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_tab_change",
+      "hook": "menu tabs / Heroes / Equipment tabs",
+      "request": {
+        "text": "One tiny lateral page swipe and dry tab detent click. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_toggle_on",
+      "filename": "ui_toggle_on.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_toggle_on",
+      "hook": "settings toggle enabled",
+      "request": {
+        "text": "One springy switch clicks on, optimistic compact upward pop. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_toggle_off",
+      "filename": "ui_toggle_off.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_toggle_off",
+      "hook": "settings toggle disabled",
+      "request": {
+        "text": "One soft switch clicks off, compact lower settled pop. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_compare_open",
+      "filename": "ui_compare_open.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_compare_open",
+      "hook": "gear Compare panel",
+      "request": {
+        "text": "Two tiny balanced glass ticks and short unfolding paper sweep, compare view opens. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_item_focus",
+      "filename": "ui_item_focus.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_item_focus",
+      "hook": "gear inventory selection / detail",
+      "request": {
+        "text": "One dry small leather-and-metal inventory item focus tap. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "ui_purchase_success",
+      "filename": "ui_purchase_success.mp3",
+      "group": "UI",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "ui_purchase_success",
+      "hook": "successful shop purchase",
+      "request": {
+        "text": "One settled coin payment clink and warm acceptance pop. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hero_select",
+      "filename": "hero_select.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "hero_select",
+      "hook": "Heroes roster selection",
+      "request": {
+        "text": "One confident friendly character selection accent, light springy pop and warm sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hero_unlock",
+      "filename": "hero_unlock.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "hero_unlock",
+      "hook": "hero unlock reward / purchase",
+      "request": {
+        "text": "One new playable hero unlock, expansive joyful magical welcome bloom and confident bright impact. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.3,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_offer_open",
+      "filename": "card_offer_open.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "card_offer_open",
+      "hook": "openLevelUp after cards become visible",
+      "request": {
+        "text": "One short group of exactly three paper cards fans into view, quick shuff-shuff with a soft magical anticipation sparkle; not a reward fanfare. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_flip",
+      "filename": "card_flip.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "card_flip",
+      "hook": "reward card flip animation",
+      "request": {
+        "text": "One crisp physical card flips through air, tiny paper flick and soft landing. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_focus",
+      "filename": "card_focus.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "card_focus",
+      "hook": "pickCardAt first tap / highlightCard",
+      "request": {
+        "text": "One light paper tap selecting a card, dry clean onset and tiny soft focus glint. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_confirm",
+      "filename": "card_confirm.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "card_confirm",
+      "hook": "pickCardAt second tap accepted / closeLevelUp",
+      "request": {
+        "text": "One chosen card locks in: satisfying crisp card placement slap and warm short confirmation pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_reroll",
+      "filename": "card_reroll.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "card_reroll",
+      "hook": "actual card reroll if enabled",
+      "request": {
+        "text": "One small hand of cards reshuffles quickly, dry paper flutter ending in a soft deck tap. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "build_path_select",
+      "filename": "build_path_select.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "build_path_select",
+      "hook": "rollBasicChoices Build Path apply",
+      "request": {
+        "text": "One build identity selected, decisive warm magical branching pulse and crisp seal click. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "infusion_apply",
+      "filename": "infusion_apply.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "infusion_apply",
+      "hook": "Flavor Infusion apply",
+      "request": {
+        "text": "One flavor infusion poured into power, short liquid swirl and warm fizzy magical blend pop. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "relic_acquire",
+      "filename": "relic_acquire.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "relic_acquire",
+      "hook": "rollRelicChoices apply / actual relic grant",
+      "request": {
+        "text": "One mysterious relic acquired, low magical resonance with a jewel click and violet sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "modifier_acquire",
+      "filename": "modifier_acquire.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "modifier_acquire",
+      "hook": "modCard apply",
+      "request": {
+        "text": "One new combat modifier clicks into a magical socket, a sharp embossed snap and compact energized pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "tradeoff_acquire",
+      "filename": "tradeoff_acquire.mp3",
+      "group": "Cards",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "tradeoff_acquire",
+      "hook": "tradeCard apply",
+      "request": {
+        "text": "One deliberate power bargain locks in, dual contrasting light and dark pulses ending in a firm seal click. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "skill_rank_up",
+      "filename": "skill_rank_up.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "skill_rank_up",
+      "hook": "ordinary skill card upgrade success",
+      "request": {
+        "text": "One attack skill rank increases, compact rising energy snap and short bright star ping; smaller than hero level-up. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.65,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "skill_awaken",
+      "filename": "skill_awaken.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "skill_awaken",
+      "hook": "Skill Awakened / SKILL_AWAKEN_LV apply",
+      "request": {
+        "text": "One skill awakens to a new form, powerful short magical unfolding rush and decisive glowing impact. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.3,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "unique_rank_up",
+      "filename": "unique_rank_up.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "unique_rank_up",
+      "hook": "checkUniqueAutoUpgrade",
+      "request": {
+        "text": "One Unique skill level increases, weighty focused energy surge with a confident bright readiness emblem pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "codex_rank_up",
+      "filename": "codex_rank_up.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "codex_rank_up",
+      "hook": "killEnemy Codex Rank Unlocked",
+      "request": {
+        "text": "One bestiary knowledge rank earned, parchment page flutter and firm scholarly medal sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "growth_summary_level",
+      "filename": "growth_summary_level.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "growth_summary_level",
+      "hook": "playSummaryGrowth levelup / permanent hero gains",
+      "request": {
+        "text": "One permanent hero-growth milestone shown in results, warm friendly rising bloom and short reassuring golden pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "growth_mastery",
+      "filename": "growth_mastery.mp3",
+      "group": "Progress",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "growth_mastery",
+      "hook": "playSummaryGrowth mastery / first stage mastery",
+      "request": {
+        "text": "One stage mastery badge earned, firm embossed medal stamp and majestic golden shimmer. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "wave_start",
+      "filename": "wave_start.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "wave_start",
+      "hook": "startWave / actual wave event start",
+      "request": {
+        "text": "One new battle wave starts, quick forward airy sweep and confident compact drum pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "wave_clear",
+      "filename": "wave_clear.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "wave_clear",
+      "hook": "next wave breather / wave complete",
+      "request": {
+        "text": "One wave completed, compact relieved upward sparkle and light settled success thump. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "stage_clear",
+      "filename": "stage_clear.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "stage_clear",
+      "hook": "victoryStage / story stage completion",
+      "request": {
+        "text": "One whole stage cleared, joyful substantial magical victory bloom and proud short golden flourish, distinct from hero level-up. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "miniboss_arrival",
+      "filename": "miniboss_arrival.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "miniboss_arrival",
+      "hook": "spawnMiniBoss intro",
+      "request": {
+        "text": "One energetic miniboss challenge arrival, compact low drum surge and metallic threat accent, exciting rather than terrifying. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "miniboss_defeat",
+      "filename": "miniboss_defeat.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "miniboss_defeat",
+      "hook": "killEnemy isMini / actual miniboss death",
+      "request": {
+        "text": "One miniboss defeated, satisfying heavy collapse and short upbeat victory sparkle, smaller than stage clear. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "boss_attack_telegraph",
+      "filename": "boss_attack_telegraph.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "boss_attack_telegraph",
+      "hook": "boss hazard warning / actual attack telegraph",
+      "request": {
+        "text": "One concise urgent attack warning, short directional airy tension rise ending in a clear dry danger tick. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "story_panel_open",
+      "filename": "story_panel_open.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "story_panel_open",
+      "hook": "showEpilogue / narrative panel",
+      "request": {
+        "text": "One story parchment panel unfolds, gentle paper rustle and soft mysterious glow. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "story_advance",
+      "filename": "story_advance.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "story_advance",
+      "hook": "epilogue next page / continue",
+      "request": {
+        "text": "One small story page turns, delicate paper swipe and subtle settled tap. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "portal_enter",
+      "filename": "portal_enter.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "portal_enter",
+      "hook": "stage portal / transition accepted",
+      "request": {
+        "text": "One magical portal entered, smooth inward airy swirl and warm low spatial pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "revive",
+      "filename": "revive.mp3",
+      "group": "Stage",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "revive",
+      "hook": "actual revive success",
+      "request": {
+        "text": "One revival into battle, powerful warm breath of magic and ascending life spark ending in a confident pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "pickup_sugar",
+      "filename": "pickup_sugar.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "pickup_sugar",
+      "hook": "sugar coin collection",
+      "request": {
+        "text": "One tiny sugar coin pickup, dry bright rounded coin plink with immediate decay. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "pickup_currency",
+      "filename": "pickup_currency.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "pickup_currency",
+      "hook": "currency pickup / reward",
+      "request": {
+        "text": "One crafting currency pickup, tiny distinctive metallic crystal clink and soft sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "pickup_gear",
+      "filename": "pickup_gear.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "pickup_gear",
+      "hook": "field Gear Gift collected",
+      "request": {
+        "text": "One gear item collected, short metallic pouch clink and rewarding soft pop. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_common_reveal",
+      "filename": "loot_common_reveal.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "loot_common_reveal",
+      "hook": "gacha / chest common item reveal",
+      "request": {
+        "text": "One ordinary item reveal, modest warm pouch pop and short small sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.65,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_magic_reveal",
+      "filename": "loot_magic_reveal.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "loot_magic_reveal",
+      "hook": "gacha / chest magic item reveal",
+      "request": {
+        "text": "One magical item reveal, clear blue crystalline pop and brief two-tone sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_rare_reveal",
+      "filename": "loot_rare_reveal.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "loot_rare_reveal",
+      "hook": "gacha / chest rare item reveal",
+      "request": {
+        "text": "One rare item reveal, brighter golden gem pulse and compact rewarding shimmer. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_epic_reveal",
+      "filename": "loot_epic_reveal.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "loot_epic_reveal",
+      "hook": "gacha / chest epic item reveal",
+      "request": {
+        "text": "One epic item reveal, substantial violet magical burst and rich crystalline shimmer. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_unique_reveal",
+      "filename": "loot_unique_reveal.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "loot_unique_reveal",
+      "hook": "unique gear reveal / grantGear unique",
+      "request": {
+        "text": "One singular unique item reveal, majestic deep magical seal breaks and a memorable powerful jewel sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "buff_pickup",
+      "filename": "buff_pickup.mp3",
+      "group": "Loot",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "buff_pickup",
+      "hook": "collect stage gimmick powerup",
+      "request": {
+        "text": "One temporary buff pickup, quick energetic magical gulp and bright short power pulse. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "gear_favorite_on",
+      "filename": "gear_favorite_on.mp3",
+      "group": "Gear",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "gear_favorite_on",
+      "hook": "favorite item set",
+      "request": {
+        "text": "One favorite star pins to gear, tiny warm star ping and soft pin click. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "gear_favorite_off",
+      "filename": "gear_favorite_off.mp3",
+      "group": "Gear",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "gear_favorite_off",
+      "hook": "favorite item removed",
+      "request": {
+        "text": "One favorite pin released, dry tiny click and soft downward sparkle. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "gear_bulk_cleanup",
+      "filename": "gear_bulk_cleanup.mp3",
+      "group": "Gear",
+      "mode": "new_event_identity",
+      "existing_key": null,
+      "event": "gear_bulk_cleanup",
+      "hook": "successful bulk sell / dismantle",
+      "request": {
+        "text": "One batch of unwanted gear cleared, compact grouped metallic parts clinks and settled useful-resource pop. Cute premium candy fantasy mobile game SFX. Clear immediate onset, smooth highs, dry isolated sound, no voice, music or background ambience.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    }
+  ],
+  "aliases": [
+    {
+      "key": "sfx_btn",
+      "use": "sfx_ui_click"
+    }
+  ],
+  "retained": [
+    {
+      "key": "sfx_cocoa_fire_fist",
+      "path": "assets/audio/sfx/build_paths/cocoa_fire_fist.mp3"
+    },
+    {
+      "key": "sfx_cocoa_fire_finisher",
+      "path": "assets/audio/sfx/build_paths/cocoa_fire_finisher.mp3"
+    },
+    {
+      "key": "sfx_cocoa_fire_explosion",
+      "path": "assets/audio/sfx/build_paths/cocoa_fire_explosion.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rocket_launch",
+      "path": "assets/audio/sfx/build_paths/cocoa_rocket_launch.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rocket_stick_burst",
+      "path": "assets/audio/sfx/build_paths/cocoa_rocket_stick_burst.mp3"
+    },
+    {
+      "key": "sfx_cocoa_meteor_impact",
+      "path": "assets/audio/sfx/build_paths/cocoa_meteor_impact.mp3"
+    },
+    {
+      "key": "sfx_cocoa_titan_leap",
+      "path": "assets/audio/sfx/build_paths/cocoa_titan_leap.mp3"
+    },
+    {
+      "key": "sfx_cocoa_titan_slam",
+      "path": "assets/audio/sfx/build_paths/cocoa_titan_slam.mp3"
+    },
+    {
+      "key": "sfx_uq_mint_bloom_full",
+      "path": "assets/audio/sfx/unique_skills/uq_mint_bloom_full.mp3"
+    },
+    {
+      "key": "sfx_uq_mint_gale",
+      "path": "assets/audio/sfx/unique_skills/uq_mint_gale.mp3"
+    },
+    {
+      "key": "sfx_uq_mint_lance_release",
+      "path": "assets/audio/sfx/unique_skills/uq_mint_lance_release.mp3"
+    },
+    {
+      "key": "sfx_uq_phantom_enter",
+      "path": "assets/audio/sfx/unique_skills/uq_phantom_enter.mp3"
+    },
+    {
+      "key": "sfx_uq_phantom_strike",
+      "path": "assets/audio/sfx/unique_skills/uq_phantom_strike.mp3"
+    },
+    {
+      "key": "sfx_uq_rebound_burst",
+      "path": "assets/audio/sfx/unique_skills/uq_rebound_burst.mp3"
+    },
+    {
+      "key": "sfx_uq_rocket_detonation",
+      "path": "assets/audio/sfx/unique_skills/uq_rocket_detonation.mp3"
+    },
+    {
+      "key": "sfx_uq_rocket_salvo",
+      "path": "assets/audio/sfx/unique_skills/uq_rocket_salvo.mp3"
+    },
+    {
+      "key": "sfx_uq_sesame_prism_charge",
+      "path": "assets/audio/sfx/unique_skills/uq_sesame_prism_charge.mp3"
+    },
+    {
+      "key": "sfx_uq_sesame_prism_volley",
+      "path": "assets/audio/sfx/unique_skills/uq_sesame_prism_volley.mp3"
+    },
+    {
+      "key": "sfx_uq_shotgun_blast",
+      "path": "assets/audio/sfx/unique_skills/uq_shotgun_blast.mp3"
+    },
+    {
+      "key": "sfx_uq_shotgun_full",
+      "path": "assets/audio/sfx/unique_skills/uq_shotgun_full.mp3"
+    },
+    {
+      "key": "sfx_uq_shotgun_pump",
+      "path": "assets/audio/sfx/unique_skills/uq_shotgun_pump.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_bolt",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_bolt.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_charge",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_charge.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_fire",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_fire.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_full",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_full.mp3"
+    },
+    {
+      "key": "sfx_uq_taro_chain_cast",
+      "path": "assets/audio/sfx/unique_skills/uq_taro_chain_cast.mp3"
+    },
+    {
+      "key": "sfx_uq_taro_chain_hit",
+      "path": "assets/audio/sfx/unique_skills/uq_taro_chain_hit.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_aftershock",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_aftershock.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_charge",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_charge.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_drop",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_drop.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_full",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_full.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_slam_full",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_slam_full.mp3"
+    },
+    {
+      "key": "sfx_uq_yuzu_crew_hit",
+      "path": "assets/audio/sfx/unique_skills/uq_yuzu_crew_hit.mp3"
+    },
+    {
+      "key": "sfx_uq_yuzu_parade",
+      "path": "assets/audio/sfx/unique_skills/uq_yuzu_parade.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rage_charge",
+      "path": "assets/audio/sfx/build_paths/cocoa_rage_charge.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rage_level",
+      "path": "assets/audio/sfx/build_paths/cocoa_rage_level.mp3"
+    },
+    {
+      "key": "sfx_cocoa_colossus_slam",
+      "path": "assets/audio/sfx/build_paths/cocoa_colossus_slam.mp3"
+    },
+    {
+      "key": "sfx_cocoa_flicker_step",
+      "path": "assets/audio/sfx/build_paths/cocoa_flicker_step.mp3"
+    },
+    {
+      "key": "sfx_cocoa_dash_landing",
+      "path": "assets/audio/sfx/build_paths/cocoa_dash_landing.mp3"
+    },
+    {
+      "key": "sfx_cocoa_shadow_fist",
+      "path": "assets/audio/sfx/build_paths/cocoa_shadow_fist.mp3"
+    },
+    {
+      "key": "sfx_cocoa_phantom_start",
+      "path": "assets/audio/sfx/build_paths/cocoa_phantom_start.mp3"
+    },
+    {
+      "key": "sfx_cocoa_shadow_mark",
+      "path": "assets/audio/sfx/build_paths/cocoa_shadow_mark.mp3"
+    },
+    {
+      "key": "sfx_mint_lance_launch",
+      "path": "assets/audio/sfx/build_paths/mint_lance_launch.mp3"
+    },
+    {
+      "key": "sfx_mint_barrage_volley",
+      "path": "assets/audio/sfx/build_paths/mint_barrage_volley.mp3"
+    },
+    {
+      "key": "sfx_mint_hailstorm_cast",
+      "path": "assets/audio/sfx/build_paths/mint_hailstorm_cast.mp3"
+    },
+    {
+      "key": "sfx_mint_impaler_charge",
+      "path": "assets/audio/sfx/build_paths/mint_impaler_charge.mp3"
+    },
+    {
+      "key": "sfx_mint_impale_stack",
+      "path": "assets/audio/sfx/build_paths/mint_impale_stack.mp3"
+    },
+    {
+      "key": "sfx_mint_crystal_rupture",
+      "path": "assets/audio/sfx/build_paths/mint_crystal_rupture.mp3"
+    },
+    {
+      "key": "sfx_mint_glacier_bloom",
+      "path": "assets/audio/sfx/build_paths/mint_glacier_bloom.mp3"
+    },
+    {
+      "key": "sfx_mint_glacier_shatter",
+      "path": "assets/audio/sfx/build_paths/mint_glacier_shatter.mp3"
+    },
+    {
+      "key": "sfx_strawberry_sniper_charge",
+      "path": "assets/audio/sfx/build_paths/strawberry_sniper_charge.mp3"
+    },
+    {
+      "key": "sfx_strawberry_sniper_shot",
+      "path": "assets/audio/sfx/build_paths/strawberry_sniper_shot.mp3"
+    },
+    {
+      "key": "sfx_strawberry_sniper_impact",
+      "path": "assets/audio/sfx/build_paths/strawberry_sniper_impact.mp3"
+    },
+    {
+      "key": "sfx_strawberry_ricochet_bounce",
+      "path": "assets/audio/sfx/build_paths/strawberry_ricochet_bounce.mp3"
+    },
+    {
+      "key": "sfx_strawberry_pinball_cast",
+      "path": "assets/audio/sfx/build_paths/strawberry_pinball_cast.mp3"
+    },
+    {
+      "key": "sfx_strawberry_pinball_final",
+      "path": "assets/audio/sfx/build_paths/strawberry_pinball_final.mp3"
+    },
+    {
+      "key": "sfx_shared_unique_charge_start",
+      "path": "assets/audio/sfx/build_paths/shared_unique_charge_start.mp3"
+    },
+    {
+      "key": "sfx_shared_unique_charge_full",
+      "path": "assets/audio/sfx/build_paths/shared_unique_charge_full.mp3"
+    },
+    {
+      "key": "sfx_shared_build_evolution",
+      "path": "assets/audio/sfx/build_paths/shared_build_evolution.mp3"
+    },
+    {
+      "key": "sfx_boss_shield_break",
+      "path": "assets/audio/sfx/build_paths/boss_shield_break.mp3"
+    },
+    {
+      "key": "sfx_boss_phase_transition",
+      "path": "assets/audio/sfx/build_paths/boss_phase_transition.mp3"
+    },
+    {
+      "key": "sfx_btn",
+      "path": "assets/audio/sfx/sfx_btn_click.wav"
+    },
+    {
+      "key": "sfx_beat_tick",
+      "path": "assets/audio/sfx/gen/sfx_beat_tick.wav"
+    },
+    {
+      "key": "sfx_beat_loop",
+      "path": "assets/audio/sfx/gen/sfx_beat_loop.wav"
+    },
+    {
+      "key": "sfx_beat_hold",
+      "path": "assets/audio/sfx/gen/sfx_beat_hold.wav"
+    },
+    {
+      "key": "sfx_beat_rush",
+      "path": "assets/audio/sfx/gen/sfx_beat_rush.wav"
+    },
+    {
+      "key": "sfx_beat_gun",
+      "path": "assets/audio/sfx/gen/sfx_beat_gun.wav"
+    },
+    {
+      "key": "sfx_beat_cyclone",
+      "path": "assets/audio/sfx/gen/sfx_beat_cyclone.wav"
+    },
+    {
+      "key": "sfx_beat_titan",
+      "path": "assets/audio/sfx/gen/sfx_beat_titan.wav"
+    },
+    {
+      "key": "sfx_beat_juggle",
+      "path": "assets/audio/sfx/gen/sfx_beat_juggle.wav"
+    },
+    {
+      "key": "sfx_beat_rainbow",
+      "path": "assets/audio/sfx/gen/sfx_beat_rainbow.wav"
+    },
+    {
+      "key": "sfx_beat_fever",
+      "path": "assets/audio/sfx/gen/sfx_beat_fever.wav"
+    },
+    {
+      "key": "sfx_beat_cue",
+      "path": "assets/audio/sfx/gen/sfx_beat_cue.wav"
+    },
+    {
+      "key": "sfx_beat_start",
+      "path": "assets/audio/sfx/gen/sfx_beat_start.wav"
+    },
+    {
+      "key": "sfx_beat_perfect",
+      "path": "assets/audio/sfx/gen/sfx_beat_perfect.wav"
+    },
+    {
+      "key": "sfx_beat_good",
+      "path": "assets/audio/sfx/gen/sfx_beat_good.wav"
+    },
+    {
+      "key": "sfx_beat_miss",
+      "path": "assets/audio/sfx/gen/sfx_beat_miss.wav"
+    }
+  ]
+}
