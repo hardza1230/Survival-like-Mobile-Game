@@ -62,3 +62,13 @@ for(const evo of [false,true]){const e=enemy({isBoss:true,x:100}),s=scene('snipe
 {const s=scene('sniper',[enemy({x:100})]);s.player._pt.railgun=true;s._snipe={ang:0,kind:null};s.releaseSnipe();const n=s.hits.length;s.clearArtVfx();s.advance(500);assert.equal(s.hits.length,n);}
 assert(src.includes("if(basic&&this.character==='momo'){this.castBerryBlaster(lvl,aw,dm,basic);return;}"));
 console.log('Strawberry S1–S5: focused rolls/previews, saved ranks, charge/count conversion, evolved bounce/lifetimes, boss fallback/phase gates, non-piercing shotgun, Unique and dense-crowd lifecycle budgets passed');
+// Owner-approved starter buff: actual projectile damage and real cooldown route.
+{const s=scene(null,[enemy()]);const bullet=fire(s)[0];assert(Math.abs(bullet.dmg-6.75*1.5)<1e-9);s.basicAttack.path='ricochet';s.shots.length=0;assert(Math.abs(fire(s)[0].dmg-6.75*.8)<1e-9);}
+{
+ const CdScene=vm.runInNewContext('class CdScene{'+method('cdOf')+'}CdScene',{Math,SKILL_AWAKEN_LV:6});
+ const s=new CdScene();s.character='momo';s.player={weaponCdMul:1,cdMul:1};s.windRushT=0;s.basicAttack={character:'momo',path:null,ranks:{rate:0,tempo:0},_pm:{cd:1}};s.basicAttackInfo=()=>({skill:'sprinkle'});s.signatureWeaponInfo=()=>({skill:'sprinkle'});s._cdBase=()=>1;
+ assert(Math.abs(s.cdOf('sprinkle',1)-1/1.15)<1e-12);
+ for(const path of ['sniper','shotgun','ricochet']){s.basicAttack.path=path;assert(Math.abs(s.cdOf('sprinkle',1)-({sniper:1.18,shotgun:.9,ricochet:.8}[path]))<1e-12);}
+ s.character='mint';s.basicAttack.path=null;s.basicAttack.character='mint';assert.equal(s.cdOf('sprinkle',1),1);s.character='momo';s.basicAttackInfo=()=>({skill:'frost'});assert.equal(s.cdOf('sprinkle',1),1);
+}
+console.log('Strawberry starter: +50% seed damage, exactly +15% fire rate, path selection removes bonuses and foreign hero/skill isolation passed');

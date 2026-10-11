@@ -1734,3 +1734,12 @@ Owner: Titan Unique wider, show a growing ring while charging so you know what w
 
 Owner asked for Titan boss-damage formula (given in chat: boss HP C2-2 ≈60.5k / C2-4 ≈97k at ★1; Titan basics ≈150 DPS; Rage-4 slam ≈710 ≈1.2% of C2-2 HP; phase gates clip big hits). Chose A: titanPctSlam(x,y,r,lv) after the slam's cocoaHit — every boss/mini inside the slam ring takes maxhp × [0,1,2,3,5]% by Rage (minis ×0.5) through damage() with _frDmg (no crit/powerMul; bossDmg/flat still apply; phase gates still clip; skipped while gate-locked/invulnerable). tests/titan-pct-slam.test.cjs; titanPctSlam added to cocoa test method lists.
 
+
+# Previous delivery: v7.6.14 — Titan Ground Pound (no 5-hit combo)
+
+Owner: remove the 5-hit combo/finisher from Titan and replace it. castCocoaRush: `ti=path==='titan'`, `fin=!ti&&beat===4`, Titan cc.step stays 0. Every Titan punch = Ground Pound: wind .24, slam pose, r=reach×.95, power unit×1.15×(1+.08·ranks.combo)×(breaker 1.12), push 170, bossMul 1.4, shockwave+crack+small shake, cdMul 1.05. Tremor (cocoaHit opts.tremor=5+ranks.combo): per enemy +6% dmg per stack, 3s window (`e._trem/_tremT`, reset on spawn next to _frostBurnStacks). Earthbreaker/Cocoa Colossus echo on every pound (.25 / .35). Knockout Force desc for Titan via cocoaAttackInfo. Brawler/Dash Boxer keep the 5-beat cycle. Test appended to cocoa-builds.
+
+# Previous delivery: v7.6.13 — Colossus Fist double aftershock
+
+Owner: more damage, aftershock in two waves, slightly higher initial hit. Slam unit×0.85×rage → unit×1.0×rage (+18%). Aftershock (was 1 wave at .65s, unit×0.7, r×1.2) → two waves at 0.6s (r×1.25, unit×(0.9+0.3·lv)) and 1.0s (r×1.5, unit×(0.7+0.25·lv)), each with cocoaVisual wave, bpx_cocoa_shockwave, screen shake scaled by Rage and the aftershock sound (2nd lower pitch). Still centred on the release spot; % boss HP from v7.6.12 only on the main slam. cocoa-builds Titan counts updated (3 hits single foe; 2→4→6 in the geometry test).
+

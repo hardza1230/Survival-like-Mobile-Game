@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.2';
+const GAME_VERSION = '7.7.3';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.3',date:'2026-10-11',title:'Strawberry starter boost',items:['Before choosing a Build: seed hits deal 50% more damage and fire 15% faster','Sniper, Shotgun and Ricochet keep their existing values']},
   {v:'7.7.2',date:'2026-10-11',title:'Shared Temple music',items:['Flavor Weave Temple and Temple Depths share Tea For Two At The End Of The World']},
   {v:'7.7.1',date:'2026-10-11',title:'Temple audio refresh',items:['Shorter Core upgrade and Weave promotion sounds','Temple music uses Tea For Two At The End Of The World']},
   {v:'7.7.0',date:'2026-10-11',title:'Unique art and status clarity',items:['Painted Unique Mastery icon','Tremor and Frost Burn icons with live stack counts','Brief skill-specific edge accents keep combat readable']},
@@ -12470,7 +12471,7 @@ class Game extends Phaser.Scene {
     if(b&&this.character==='mint'&&key==='frost')base=Math.max(1.0,1.7-lvl*0.07);   // v6.70 Mint buff (เดิม max(1.25,1.95-0.08lvl))
        // มินต์ = basic attack ยิงถี่ (แทนคูลดาวน์ frost ปกติที่ช้า)
     if(b&&this.character==='sesame'&&key==='mirror')base=Math.max(0.85,1.45-lvl*0.06);   // งาดำ = Mirror Beam ยิงเป็นจังหวะ (แทน pulse field เดิม)
-    const basicRate=(b?Math.pow(b.character==='mint'?0.93:0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1)*(this.windRushT>0&&this.character==='mint'&&!(b&&b.path)?0.65:1);   // v7.6.7 Mint Gale ก่อนเลือกสาย: ตีเร็วขึ้น 35%
+    const basicRate=(b?Math.pow(b.character==='mint'?0.93:0.92,b.ranks.rate||0)*Math.pow(0.97,b.ranks.tempo||0)*(b.mutation==='rush'?0.82:1):1)*(this.windRushT>0&&this.character==='mint'&&!(b&&b.path)?0.65:1)*(b&&this.character==='momo'&&key==='sprinkle'&&!b.path?1/1.15:1);   // v7.6.7 Mint Gale ก่อนเลือกสาย: ตีเร็วขึ้น 35%
     if(b&&key==='sprinkle'&&b.path==='ricochet')base*=0.8;
     if(b&&key==='sprinkle'&&b.path==='sniper')base*=1.18;
     if(b&&key==='sprinkle'&&b.path==='shotgun')base*=0.9;
@@ -12532,7 +12533,7 @@ class Game extends Phaser.Scene {
         const shotIndex=idx++,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return; const pop=basic?(basic.ranks.size||0):0; if(pop>0)b.seedPop=pop;   // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
-        b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=(basic?(basic.mutation==='ricochet'?2:0):0)+(this.player.gearBounce||0); b.homing=0;
+        b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1)*(this.character==='momo'&&basic&&!basic.path?1.5:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=(basic?(basic.mutation==='ricochet'?2:0):0)+(this.player.gearBounce||0); b.homing=0;
         b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;b.seedPierce=!!b.pierce;b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b.loopT=false;b._ptSniper=false;
         if(path==='sniper'){this.attachChargedSeed(b,38+lvl*2);b.dmg*=3.2;b.pierce=true;b.seedPierce=true;b.hitGapV=0.22;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);
           b.dmg*=1+(PT.sDmg||0);b.headshot+=PT.hs||0;b.bigMul+=PT.big||0;b.penGain=PT.pen||0;b.oneShot=!!PT.oneShot;b._ptSniper=true; if(this._ptHsNext){b.forceHs=true;this._ptHsNext=false;} if(PT.ghillie&&(this._ptStill||0)>=1.5&&!this._ptGhUsed){b.dmg*=2;this._ptGhUsed=true;}}
@@ -13153,7 +13154,7 @@ class Game extends Phaser.Scene {
   castBerryBlaster(lvl,aw,dm,basic){
     if(!this.nearestEnemy(900))return;
     const profile=berryShotProfile(lvl,aw,basic,this.player),path=basic.path,PT=this.player._pt||{};
-    const power=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*profile.power;
+    const power=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*profile.power*(path?1:1.5);
     if(path==='sniper'){
       if(this._berryCharge)return;
       const ms=340+60*(basic.lv.s_draw||0),t=this.nearestEnemy(1100),a=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):0;

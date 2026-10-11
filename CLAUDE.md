@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.2 — Shared Flavor Weave / Temple Depths BGM
+# Latest delivery: v7.7.3 — Strawberry before-Build buff
+
+Owner approved pre-path Strawberry seed power ×1.5 and fire frequency ×1.15. castBerryBlaster applies multiplier only with no basic.path; legacy seed fallback mirrors condition. cdOf multiplies only momo Basic sprinkle no-path interval by 1/1.15 (not .85, which would be +17.6% rate). Selected Sniper/Shotgun/Ricochet, Unique and other heroes unchanged. Focused starter projectile and actual cdOf regression plus full check/build required. Phone C2-5 pacing review pending.
+
+# Previous delivery: v7.7.2 — Shared Flavor Weave / Temple Depths BGM
 
 Owner clarified Temple Depths (dig), not just Temple/Perks. menuMusic dig now selects the same bgm_menu_temple key as upgrade/perks: shared track and no restart when switching temple pages. Old depths file retained; kitchen/stage routes unchanged.
 
@@ -19,14 +23,6 @@ New ImageGen skill_edges 4x4 atlas (13 runtime skill mappings, 3 spare), two bri
 New ElevenLabs soft_seed_shot.mp3 is low-passed at 3.8kHz and trimmed/faded to 240ms, warm rounded pop. Separate Sfx.strawberryShoot (0.22 volume, 120ms throttle, gentle sine fallback) routes normal Berry Blaster/ricochet seeds only; sniper charge/shot and shotgun/Unique unchanged. Generic shoot still used by other skills/heroes. MANIFEST records prompt/processing/technical QA; subjective phone listening pending. Merged current v7.6.14; Ground Pound/Tremor, regen aura and disabled screen overlay behavior retained. Art backlog audit lives in docs/art_orders/16_CURRENT_ART_BACKLOG.md.
 
 # Previous delivery: v7.6.0 — Unique levels only from Talent
-# Previous delivery: v7.6.14 — Titan Ground Pound (no 5-hit combo)
-
-Owner: remove the 5-hit combo/finisher from Titan and replace it. castCocoaRush: `ti=path==='titan'`, `fin=!ti&&beat===4`, Titan cc.step stays 0. Every Titan punch = Ground Pound: wind .24, slam pose, r=reach×.95, power unit×1.15×(1+.08·ranks.combo)×(breaker 1.12), push 170, bossMul 1.4, shockwave+crack+small shake, cdMul 1.05. Tremor (cocoaHit opts.tremor=5+ranks.combo): per enemy +6% dmg per stack, 3s window (`e._trem/_tremT`, reset on spawn next to _frostBurnStacks). Earthbreaker/Cocoa Colossus echo on every pound (.25 / .35). Knockout Force desc for Titan via cocoaAttackInfo. Brawler/Dash Boxer keep the 5-beat cycle. Test appended to cocoa-builds.
-
-# Previous delivery: v7.6.13 — Colossus Fist double aftershock
-
-Owner: more damage, aftershock in two waves, slightly higher initial hit. Slam unit×0.85×rage → unit×1.0×rage (+18%). Aftershock (was 1 wave at .65s, unit×0.7, r×1.2) → two waves at 0.6s (r×1.25, unit×(0.9+0.3·lv)) and 1.0s (r×1.5, unit×(0.7+0.25·lv)), each with cocoaVisual wave, bpx_cocoa_shockwave, screen shake scaled by Rage and the aftershock sound (2nd lower pitch). Still centred on the release spot; % boss HP from v7.6.12 only on the main slam. cocoa-builds Titan counts updated (3 hits single foe; 2→4→6 in the geometry test).
-
 # Older history
 
 Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55) are archived verbatim in `docs/CLAUDE_HISTORY.md`. Search there (grep a function or version) when you need why something was done. When you finish work: add a new "# Latest delivery" block here, rename the previous one to "# Previous delivery", and keep only ~6 recent blocks in this file (move older ones to the end of docs/CLAUDE_HISTORY.md).
