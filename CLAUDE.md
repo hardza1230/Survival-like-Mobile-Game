@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.6 — Detailed Play Stats copy
+# Latest delivery: v7.6.7 — Screen VFX off, starter Unique boosts
+
+Owner: (1) new painted screen VFX look silly → heroScreenEffect() returns null (v7.3 hero_screen_* overlays off; files kept; v6.84 code-drawn screenFx unchanged). (2) Cocoa Unique before choosing a path (castCocoaUnique default branch) now also sets _cocoaRegenT=5+ul s at _cocoaRegenPct=2%+0.5%·ul max HP/s, ticked after normal regen (outside the 3% cap, honours noheal + pactHealMul), reset with uniqueLevel at run start. (3) Mint Gale (castWindRush) before a path: basicRate ×0.65 while windRushT>0 (character mint, no path). (4) Strawberry Rebound already heals % max HP (5.5%+1.8%·ul) — told owner, unchanged.
+
+# Previous delivery: v7.6.6 — Detailed Play Stats copy
 
 Owner: copy should include levels, equipped gear, talents etc. Stats.kit(hero,basic) snapshot at Stats.start → r.kit {clv,tp,ulv,pw,st (HP/DMG×/Crit/CD×/Armor/Taken×), tal 'id:r', weave 'rank · HP/DMG/DEF · perks', gear per GEAR_SLOTS 'slot: name +enh iLv grade [mod v Tn…]' (starter → 'starter')}. Stats.end adds dmg top-5 share %, end maxHP, pwEnd. toText: profile line (sugar, unlocked stage, heroes Lv) + per-run indented lines hero/talents/weave/gear/damage. All in try/catch (vm tests). Quick headless eval of toText OK.
 
@@ -17,10 +21,6 @@ Owner: (1) tapping the equipped item should show its mods — drawModCompare ret
 # Previous delivery: v7.6.3 — Cocoa intro at C2-1 + audible punches
 
 Owner: unlock/introduce Cocoa at C2-1 like Mint. HERO_INTROS table (after CORE_UNLOCK_STAGE): Mint idx 2 (flag mintIntro, text unchanged), Cocoa idx 5 (flag cocoaIntro, card_cocoa, 'Fermented Canopy armored roots / Root Beetles — bear gauntlets punch through'). Cocoa is already unlocked by clearing C1-5 (CORE_UNLOCK_STAGE cocoa:4). startStoryStage(idx): first entry, stage not mastered, hero owned and not already selected → showMintWarning(hi) (name kept for tests; now generic) → Choose → Heroes coach spotlight 'Pick Cocoa for C2-1!' (this._mintCoach holds the intro entry) → startStoryStage(hi.idx); 'Keep my hero' starts the stage. typeof guards for vm tests. Owner: Cocoa punches silent — files/calls existed (comboPunch jab/heavy, Sfx.bp cocoa_*); global 10-voice cap in playFile dropped them in crowded fights → sfx_punch* and sfx_cocoa_* bypass the global cap like sfx_uq_* (per-key cap 3 kept).
-
-# Previous delivery: v7.6.2 — 'reading sourceSize' crash on stage change
-
-Owner screenshot: "Cannot read properties of null (reading 'sourceSize')" entering C2-1 right after C1-5 (also seen entering Stage 3 after switching to Mint). Cause: freeOtherStageArt / texEvict (v7.4) removed textures + anims while pooled (inactive) enemies/bosses, the player's stale currentAnim or container children still pointed at their destroyed Frames (Frame.data=null → realWidth crash). New texDetach(drop): walks display list (recursing containers) + every scene Group's children; any anim (current/next) touching a dropped texture is stopped and cleared, any object textured with one is set to '__DEFAULT' and hidden. Both free paths call it before removing anims/textures; freeOtherStageArt now drops anims if ANY frame uses a dropped texture (was first frame only). tests/texture-detach.test.cjs. Owner asked not to run headless sims for this; not re-tested on device yet.
 
 # Older history
 
