@@ -1,0 +1,56 @@
+{
+  "jobs": [
+    {
+      "id": "sfx_streak_real",
+      "event": "คอมโบต่อเนื่อง",
+      "hook": "Sfx.streak(step)",
+      "filename": "sfx_streak_real.mp3",
+      "request": {
+        "text": "A single short satisfying candy fantasy combo success accent: rounded punchy pop with a clear upward sparkling ping. Dry fast onset, brief tail, no melody. One cue only; runtime will vary pitch by combo step. Isolated mobile action game sound effect. No voices, music or background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "sfx_heartbeat_real",
+      "event": "หัวใจเต้น HP ต่ำ",
+      "hook": "Sfx.heartbeat(intensity)",
+      "filename": "sfx_heartbeat_real.mp3",
+      "request": {
+        "text": "Exactly one heartbeat pair: low padded lub-DUB, two deep warm thumps spaced about 140 milliseconds apart, dry close sound, no breathing, no atmosphere. Brief decay, silence after the pair. Isolated mobile action game sound effect. No voices, music or background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "sfx_crit_accent_real",
+      "event": "ping เสริมคริติคอล",
+      "hook": "Sfx.crit()",
+      "filename": "sfx_crit_accent_real.mp3",
+      "request": {
+        "text": "One tiny bright critical-hit accent: clear satisfying metallic crystal ping with a very short rounded sparkle. Crisp immediate onset, smooth highs, no bass hit or explosion. Isolated mobile action game sound effect. No voices, music or background noise.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "sfx_bigkill_accent_real",
+      "event": "ชั้นทุ้มและแตกกระจายตอนฆ่าตัวใหญ่",
+      "hook": "Sfx.bigKill()",
+      "filename": "sfx_bigkill_accent_real.mp3",
+      "request": {
+        "text": "One compact deep heavy enemy-defeat impact accent: a strong padded bass THUMP immediately followed by a short crunchy debris puff. Dry fast attack, controlled low bass, smooth highs. No magical fanfare. Isolated mobile action game sound effect. No voices, music or background noise.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.55,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    }
+  ]
+}

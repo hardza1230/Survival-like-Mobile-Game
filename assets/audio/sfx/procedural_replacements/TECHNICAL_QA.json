@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "filename": "sfx_bigkill_accent_real.mp3",
+      "duration_seconds": 0.6,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "39d4622826324a6318b442f11f5a606aad69adb484b9a98028b2c385d183fdcc"
+    },
+    {
+      "filename": "sfx_crit_accent_real.mp3",
+      "duration_seconds": 0.48,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "f582e6ac04d1949ba1002c4658777a68732e20f7823aac7e4dabadf62f012ae7"
+    },
+    {
+      "filename": "sfx_heartbeat_real.mp3",
+      "duration_seconds": 0.48,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "d40a7ee4b66f7d0e450e268eba3e41fd9f5cdb4fbf76a87cf3ac5ee3e1bdb656"
+    },
+    {
+      "filename": "sfx_streak_real.mp3",
+      "duration_seconds": 0.48,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "7a27a8c38095f5fd0271a4f23d1638b44c6f6c032713b3447f453a14874cc672"
+    }
+  ],
+  "listening_review": "Not performed"
+}

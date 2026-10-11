@@ -5,6 +5,9 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 # Latest delivery: v7.0.0 — Keyboard + desktop browser fit
 
 Owner: play in browser with keyboard/mouse + fit the screen. setupKeyboard() (called after pointer handlers): WASD/arrows drive joy with id -78 (tickKeyboard at top of update; never overrides an active touch joystick), Space/Shift doDash, E/J hold = fake pointerdown/up on uniqueBtn with id -77 (works for tap, Titan hold, sniper/blast/Mint charge), F flicker, Esc/P togglePause, 1–4 pick level-up card (double pickCardAt = confirm). Mouse already worked (click-drag joystick, buttons). DESKTOP_FIT (no touch, not Capacitor native): viewSize() = 9:16 portrait (h·9/16) centered via injected #desk-fit canvas CSS; RENDER_W/H and _applyResize use it. Headless 1280×720: keys move/dash/unique/card, mouse click Dash + drag move OK. npm check passed.
+# Previous delivery: Remaining procedural SFX asset handoff
+
+Owner clarified SFX (not visual VFX) and requested all sounds still generated directly in code. Audit v6.99.3: 162 registered audio keys, all files present; 2 pure-procedural events (combo streak, low-HP heartbeat) + 2 unconditional synth layers (crit ping, bigKill bass/debris). All 4 generated via ElevenLabs, decoded/non-silent, delivered in assets/audio/sfx/procedural_replacements/. See docs/audio_orders/REMAINING_PROCEDURAL_SFX.md for complete inventory/fallback audit and integration steps. Files only: runtime NOT wired; listening QC pending. Preserve existing main crit/kill sounds and oscillator fallback; do not regenerate existing file-backed SFX. Next AI integrates 4 hooks, then version/check/deploy.
 
 # Previous delivery: v6.99.3 — Play Stats Back → Settings
 
