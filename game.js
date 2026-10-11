@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.10';
+const GAME_VERSION = '7.6.11';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.11', date:'2026-10-11', title:'💚 Healing aura', items:['Unique heals now show a green rising aura around the hero (like big card upgrades) with a restore chime, instead of the green screen edge']},
   { v:'7.6.10', date:'2026-10-11', title:'🗿 Rage 4 + healing glow', items:['Titan can charge Blood Rage to level 4 · a level-4 slam covers almost the whole screen','After a Colossus Fist slam, Cocoa regenerates a % of max HP per second (bigger HP = faster regen)','A green screen glow shows when a Unique is healing you','Talent Rage Four → Rage Overflow: max-Rage release ×1.3 damage and double post-slam regen']},
   { v:'7.6.9', date:'2026-10-11', title:'🗿 Colossus Fist rework', items:['Titan’s Colossus Fist now slams all around Cocoa instead of leaping onto one enemy','Much wider slam that grows with Blood Rage','While charging, a ring shows the real slam area and marks every enemy that will be hit']},
   { v:'7.6.8', date:'2026-10-11', title:'⚔🛡 Attack and Defense power', items:['Equipment shows ⚔ ATK and 🛡 DEF instead of one Power number','Each item card shows how much ATK and DEF it adds or removes, so you can tell damage gear from tank gear']},
@@ -6543,7 +6544,7 @@ class Game extends Phaser.Scene {
       // ใช้ homing (โค้งเข้าหาเป้า) + bounce (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด) แทน chain lightning
       const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), bounce=ul>=4?3:ul>=3?2:1;
       for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.berryBullet(this.player.x,this.player.y,0.28+ul*0.012,this.basicAttack);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=0;b.faceVel=true;Object.assign(b.berrySeed,{path:'ricochet',evolved:!!this.basicAttack?.evolved,base:b.dmg});this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
-      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.healScreen?.(0.9);this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();
+      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.healAura?.();this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
       this.castWindRush(ul);
     }else if(c.unique==='voidPull'){
@@ -12836,8 +12837,11 @@ class Game extends Phaser.Scene {
   titanMaxLv(){return 4;}   // v7.6.10 เจ้าของ: ชาร์จได้ 4 Rage ทุกคน (เดิมต้อง Capstone)
   // v7.6.9 เจ้าของ: Colossus Fist ทุบรอบตัว · กว้างขึ้น · วงพรีวิวตอนชาร์จ = ระยะจริง
   // v7.6.10 regen ตาม % Max HP (เลือดเยอะ = ฟื้นเยอะ) + ขอบจอสีเขียวให้รู้ว่ากำลังฮีล
-  startHeroRegen(sec,pct,label){ const on=this._cocoaRegenT>0; this._cocoaRegenT=Math.max(on?this._cocoaRegenT:0,sec); this._cocoaRegenPct=Math.max(on?(this._cocoaRegenPct||0):0,pct); this.healScreen?.(sec); if(label&&this.player)this.floatText?.(this.player.x,this.player.y-70,'+'+(Math.round(pct*1000)/10)+'% HP/s','#7dff9a'); }
-  healScreen(sec=1){ if(this._healFx)this._healFx.kill(); if((Save.data.settings?.vfx??2)===0)return; this._healFx=this.screenFx(sec,(g,w,h,k,el)=>{ const a=.42*Math.min(1,k*8)*Math.min(1,(1-k)*3)*(.65+.35*Math.sin(el*7)); this.scrEdge(g,w,h,0x5dff8a,a,Math.min(w,h)*.09); }); }
+  startHeroRegen(sec,pct,label){ const on=this._cocoaRegenT>0; this._cocoaRegenT=Math.max(on?this._cocoaRegenT:0,sec); this._cocoaRegenPct=Math.max(on?(this._cocoaRegenPct||0):0,pct); this.healAura?.(); if(label&&this.player)this.floatText?.(this.player.x,this.player.y-70,'+'+(Math.round(pct*1000)/10)+'% HP/s','#7dff9a'); }
+  // v7.6.11 เจ้าของ: เลิกขอบจอเขียว → ออร่าแบบอัปการ์ดเลเวลสูง (growth_unlock ย้อมเขียว ตามตัว) + เสียงฟื้นฟู revive
+  healAura(){ try{ Sfx.playFile?.('sfx_event_revive',.5,1.05); }catch(e){} const p=this.player; if(!p||!this.textures.exists('growth_unlock')||(Save.data.settings?.vfx??2)===0)return;
+    if(this._healAura&&this._healAura.active)this._healAura.destroy(); const fx=this.spawnFxAnim('growth_unlock',p.x,p.y-12,{scale:240/256,depth:p.depth+1,anchor:'center',normal:true}); if(!fx)return; fx.setTint(0x8dffb0); if(fx.anims)fx.anims.timeScale=.6; this._healAura=fx; this.trackArtVfx?.(fx);
+    const follow=()=>{ if(!fx.active||!p.active){ this.events.off('postupdate',follow); return; } fx.setPosition(p.x,p.y-12); }; this.events.on('postupdate',follow); }
   titanSlamRadius(rage){ const b=this.basicAttack,ul=this.uniqueLevel||1,size=Math.min(1.8,1+(b?.ranks?.size||0)*.12+(b?._pm?.range||0))*(this.player?.donutImpact?1.15:1),r=Math.max(0,rage||0),b0=(150+ul*12)*size;
     if(r<=3)return b0*(1+r*.22); const lo=b0*1.66,hi=Math.max(lo,600*Math.min(1.3,size)); return lo+(hi-lo)*(Math.min(4,r)-3); }   // v7.6.10 Rage 4 = เกือบทั้งจอ
   titanRageSpend(given){const lv=Math.min(this.titanMaxLv(),given||0);this._titanRage=0;

@@ -1704,3 +1704,7 @@ Owner: (1) tapping the equipped item should show its mods — drawModCompare ret
 
 Owner Play Stats: Titan died to the C2-2 boss after 9:18 (Brawler cleared C2-1 in 4:12). Titan basic punches are the slowest path (≥0.5s interval, 0.24/0.32 wind, fin cd ×1.3) with no boss bonus; its boss damage relies on Colossus Fist, which v7.6 weakened unless Unique Mastery is bought (uniquePower 1.0 vs up to 1.72 before). Buff: cocoaHit opts.bossMul (bosses/minis only); Titan basic punch bossMul 1.4; CHARACTER_UNIQUES titan Colossus Fist cd 12→9. Not playtested; owner to retry C2-2.
 
+# Delivery: v7.6.6 — Detailed Play Stats copy
+
+Owner: copy should include levels, equipped gear, talents etc. Stats.kit(hero,basic) snapshot at Stats.start → r.kit {clv,tp,ulv,pw,st (HP/DMG×/Crit/CD×/Armor/Taken×), tal 'id:r', weave 'rank · HP/DMG/DEF · perks', gear per GEAR_SLOTS 'slot: name +enh iLv grade [mod v Tn…]' (starter → 'starter')}. Stats.end adds dmg top-5 share %, end maxHP, pwEnd. toText: profile line (sugar, unlocked stage, heroes Lv) + per-run indented lines hero/talents/weave/gear/damage. All in try/catch (vm tests). Quick headless eval of toText OK.
+

@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.10 — Titan Rage 4, post-slam regen, heal glow
+# Latest delivery: v7.6.11 — Healing aura instead of green screen edge
+
+Owner: change the heal sound, remove the green edge VFX, use an aura like high-level card upgrades. healScreen removed → healAura(): growth_unlock flipbook (same art as Evolution/Unique rank-up) tinted 0x8dffb0, timeScale 0.6, follows the player via postupdate until done; sound sfx_event_revive (vol .5). Called from startHeroRegen (Cocoa pre-path slam, Titan release) and Strawberry Rebound heal. VFX Off skips the aura (sound still plays). '+x% HP/s' float kept.
+
+# Previous delivery: v7.6.10 — Titan Rage 4, post-slam regen, heal glow
 
 Owner: Titan charges to 4 Rage; the last level clears almost the whole screen; after release regen scales with Max HP; starter Unique heal was invisible → green screen effect. titanMaxLv()=4 always (TITAN_RAGE_MUL[4]=5.5). titanSlamRadius: rage≤3 b0·(1+0.22r) (b0=(150+12·ul)·size), 3→4 lerps to max(b0·1.66, 600·min(1.3,size)). Release calls startHeroRegen(3+1.5·lv s, (0.8%+0.6%·lv) max HP/s, ×2 with capstone). Capstone capA 'Rage Four' → 'Rage Overflow' (ptv rage4: max-Rage release ×1.3 dmg + double regen); talent baseline hash updated. startHeroRegen(sec,pct) shares _cocoaRegenT/_cocoaRegenPct (keeps the stronger), float '+x% HP/s', healScreen(sec) green pulsing scrEdge (respects VFX off); used by Cocoa pre-path slam, Titan release, Strawberry Rebound heal (0.9s). Play Stats fixes: 'damage:' was damage TAKEN by source → 'damage taken from:'; profile lists every hero in CHAR_ORDER that is owned or levelled.
 
@@ -17,10 +21,6 @@ Owner: split Power into attack and defense so items read as damage vs tank gear.
 # Previous delivery: v7.6.7 — Screen VFX off, starter Unique boosts
 
 Owner: (1) new painted screen VFX look silly → heroScreenEffect() returns null (v7.3 hero_screen_* overlays off; files kept; v6.84 code-drawn screenFx unchanged). (2) Cocoa Unique before choosing a path (castCocoaUnique default branch) now also sets _cocoaRegenT=5+ul s at _cocoaRegenPct=2%+0.5%·ul max HP/s, ticked after normal regen (outside the 3% cap, honours noheal + pactHealMul), reset with uniqueLevel at run start. (3) Mint Gale (castWindRush) before a path: basicRate ×0.65 while windRushT>0 (character mint, no path). (4) Strawberry Rebound already heals % max HP (5.5%+1.8%·ul) — told owner, unchanged.
-
-# Previous delivery: v7.6.6 — Detailed Play Stats copy
-
-Owner: copy should include levels, equipped gear, talents etc. Stats.kit(hero,basic) snapshot at Stats.start → r.kit {clv,tp,ulv,pw,st (HP/DMG×/Crit/CD×/Armor/Taken×), tal 'id:r', weave 'rank · HP/DMG/DEF · perks', gear per GEAR_SLOTS 'slot: name +enh iLv grade [mod v Tn…]' (starter → 'starter')}. Stats.end adds dmg top-5 share %, end maxHP, pwEnd. toText: profile line (sugar, unlocked stage, heroes Lv) + per-run indented lines hero/talents/weave/gear/damage. All in try/catch (vm tests). Quick headless eval of toText OK.
 
 # Older history
 
