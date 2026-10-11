@@ -1,0 +1,74 @@
+{
+  "jobs": [
+    {
+      "id": "capture_charge",
+      "filename": "capture_charge.mp3",
+      "group": "Runtime polish",
+      "hook": "capture_charge",
+      "request": {
+        "text": "Steady seamless fantasy capture-zone channeling loop: warm resonant magical pulses, delicate crystalline oscillation and rising-feeling airy energy held at constant pitch. Rhythmic satisfying charging texture, no completion flourish. Isolated original game SFX, smooth highs and phone-audible warm midrange. No speech, song or background ambience.",
+        "duration_seconds": 4,
+        "loop": true,
+        "prompt_influence": 0.7,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "mode": "runtime_integrated"
+    },
+    {
+      "id": "capture_complete",
+      "filename": "capture_complete.mp3",
+      "group": "Runtime polish",
+      "hook": "capture_complete",
+      "request": {
+        "text": "Fantasy capture zone secured: powerful warm magical seal locks, deep resonant impact and a triumphant crystal bloom with a sparkling tail. One decisive completed-objective cue. Isolated original game SFX, smooth highs and phone-audible warm midrange. No speech, song or background ambience.",
+        "duration_seconds": 2.8,
+        "loop": false,
+        "prompt_influence": 0.7,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "mode": "runtime_integrated"
+    },
+    {
+      "id": "mint_ice_charge",
+      "filename": "mint_ice_charge.mp3",
+      "group": "Runtime polish",
+      "hook": "mint_ice_charge",
+      "request": {
+        "text": "Seamless loop of gathering frost magic for an ice mage: tactile tiny freezing crystal crackles, deep silky glacial energy hum, resonant icy glass harmonics and cold rushing air. Powerful clear sustained charging texture, no explosion or full-charge chime. Isolated original game SFX, smooth highs and phone-audible warm midrange. No speech, song or background ambience.",
+        "duration_seconds": 3,
+        "loop": true,
+        "prompt_influence": 0.7,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "mode": "runtime_integrated"
+    },
+    {
+      "id": "slot_spin_power",
+      "filename": "slot_spin_power.mp3",
+      "group": "Runtime polish",
+      "hook": "slot_spin_power",
+      "request": {
+        "text": "A thrilling chunky fantasy slot machine spinning continuously: fast satisfying brass ratchet reels, punchy wooden mechanical clacks, rolling coin chatter and shimmering magical energy. Seamless constant-speed loop, rich midrange physical rhythm, not thin electronic beeps, no win ending. Isolated original game SFX, smooth highs and phone-audible warm midrange. No speech, song or background ambience.",
+        "duration_seconds": 4,
+        "loop": true,
+        "prompt_influence": 0.7,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "mode": "runtime_integrated"
+    },
+    {
+      "id": "slot_reward_power",
+      "filename": "slot_reward_power.mp3",
+      "group": "Runtime polish",
+      "hook": "slot_reward_power",
+      "request": {
+        "text": "Huge fantasy slot machine reward celebration: immediate weighty brass jackpot bell and low punch, cascading gold coins, three triumphant sparkling chime accents rising into an enormous magical treasure burst with a luxurious five second decay. Clear energetic arcade payoff, not background music. Isolated original game SFX, smooth highs and phone-audible warm midrange. No speech, song or background ambience.",
+        "duration_seconds": 5,
+        "loop": false,
+        "prompt_influence": 0.7,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "mode": "runtime_integrated"
+    }
+  ]
+}

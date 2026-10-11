@@ -1,0 +1,76 @@
+{
+  "generator": "ImageGen",
+  "use": "Short-lived alpha overlay on Unique cast and rank-up; centered combat area transparent",
+  "images": [
+    {
+      "hero": "mint",
+      "file": "mint.webp",
+      "size": [
+        432,
+        768
+      ],
+      "alpha_center": 0,
+      "source": "exec-1a33da1b-2e0a-400b-8831-7ab38c88f8ca.png"
+    },
+    {
+      "hero": "momo",
+      "file": "momo.webp",
+      "size": [
+        432,
+        768
+      ],
+      "alpha_center": 0,
+      "source": "exec-9ff3aa04-c229-45b3-a736-78e71a5d2958.png"
+    },
+    {
+      "hero": "cocoa",
+      "file": "cocoa.webp",
+      "size": [
+        432,
+        768
+      ],
+      "alpha_center": 0,
+      "source": "exec-538a5052-2a03-4e1e-89f2-02cfddd3f8ec.png"
+    },
+    {
+      "hero": "taro",
+      "file": "taro.webp",
+      "size": [
+        432,
+        768
+      ],
+      "alpha_center": 0,
+      "source": "exec-6fc53189-fa64-40c1-9c39-b914c12d52c7.png"
+    },
+    {
+      "hero": "sesame",
+      "file": "sesame.webp",
+      "size": [
+        432,
+        768
+      ],
+      "alpha_center": 0,
+      "source": "exec-0c86ffef-53da-4f25-b3f4-c29c622cf36e.png"
+    },
+    {
+      "hero": "yuzu",
+      "file": "yuzu.webp",
+      "size": [
+        432,
+        768
+      ],
+      "alpha_center": 0,
+      "source": "exec-c0f8675d-aad9-41d2-87c0-1119c9b29c86.png"
+    },
+    {
+      "hero": "berry",
+      "file": "berry.webp",
+      "size": [
+        432,
+        768
+      ],
+      "alpha_center": 0,
+      "source": "exec-aad43ca5-81ed-4c96-8939-ba10b74f29ad.png"
+    }
+  ]
+}

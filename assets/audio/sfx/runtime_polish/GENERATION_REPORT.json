@@ -1,0 +1,66 @@
+{
+  "started": "2026-10-11T02:02:25.151Z",
+  "results": [
+    {
+      "id": "capture_charge",
+      "status": "pending"
+    },
+    {
+      "id": "capture_complete",
+      "status": "pending"
+    },
+    {
+      "id": "capture_complete",
+      "status": "success",
+      "filename": "capture_complete.mp3",
+      "bytes": 45183,
+      "sha256": "376c402b061c2b4674781f1eb287cdaae5c1e12f403daad30a3bca498acef20f",
+      "character_cost": "28"
+    },
+    {
+      "id": "mint_ice_charge",
+      "status": "pending"
+    },
+    {
+      "id": "capture_charge",
+      "status": "success",
+      "filename": "capture_charge.mp3",
+      "bytes": 65245,
+      "sha256": "3726e3f51f2b218f3e1e366e5337d8073a4df10306eeb1fadf8bcb0901cb2c60",
+      "character_cost": "40"
+    },
+    {
+      "id": "slot_spin_power",
+      "status": "pending"
+    },
+    {
+      "id": "mint_ice_charge",
+      "status": "success",
+      "filename": "mint_ice_charge.mp3",
+      "bytes": 48945,
+      "sha256": "9a3ec6a264c123b24a386ceab6e1b5350648c0d863320487482508466535e7fb",
+      "character_cost": "30"
+    },
+    {
+      "id": "slot_reward_power",
+      "status": "pending"
+    },
+    {
+      "id": "slot_spin_power",
+      "status": "success",
+      "filename": "slot_spin_power.mp3",
+      "bytes": 65245,
+      "sha256": "0f94e9215e54338a665ef4ab24ac5b497a52a178ffe092f8ad38374a7465c32a",
+      "character_cost": "40"
+    },
+    {
+      "id": "slot_reward_power",
+      "status": "success",
+      "filename": "slot_reward_power.mp3",
+      "bytes": 81128,
+      "sha256": "9d3663d86f7d76087ad31fb287ae62bee48a7974b0074dfb06bb0d350c76697f",
+      "character_cost": "50"
+    }
+  ],
+  "finished": "2026-10-11T02:02:32.082Z"
+}

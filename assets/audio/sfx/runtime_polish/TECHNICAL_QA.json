@@ -1,0 +1,50 @@
+{
+  "listening_review": "Not performed. Decode/non-silent checks do not establish artistic quality, tail length or mixing.",
+  "results": [
+    {
+      "id": "capture_charge",
+      "duration_seconds": 4.0,
+      "peak_dbfs": 0.45,
+      "rms_dbfs": -13.15,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "3726e3f51f2b218f3e1e366e5337d8073a4df10306eeb1fadf8bcb0901cb2c60"
+    },
+    {
+      "id": "capture_complete",
+      "duration_seconds": 2.76,
+      "peak_dbfs": -9.89,
+      "rms_dbfs": -27.39,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "376c402b061c2b4674781f1eb287cdaae5c1e12f403daad30a3bca498acef20f"
+    },
+    {
+      "id": "mint_ice_charge",
+      "duration_seconds": 3.0,
+      "peak_dbfs": -2.04,
+      "rms_dbfs": -17.35,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "9a3ec6a264c123b24a386ceab6e1b5350648c0d863320487482508466535e7fb"
+    },
+    {
+      "id": "slot_spin_power",
+      "duration_seconds": 4.0,
+      "peak_dbfs": 2.32,
+      "rms_dbfs": -18.54,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "0f94e9215e54338a665ef4ab24ac5b497a52a178ffe092f8ad38374a7465c32a"
+    },
+    {
+      "id": "slot_reward_power",
+      "duration_seconds": 5.0,
+      "peak_dbfs": 3.36,
+      "rms_dbfs": -11.58,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "9d3663d86f7d76087ad31fb287ae62bee48a7974b0074dfb06bb0d350c76697f"
+    }
+  ]
+}
