@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.3 — Cocoa intro at C2-1 + audible punches
+# Latest delivery: v7.6.4 — Equipped item mods, Sell/Dismantle back, heavier punches
+
+Owner: (1) tapping the equipped item should show its mods — drawModCompare returned right after 'Open mod slots' when isEq; now lists implicit (+tier name) and every affix (emoji label value, Tn) in a MODS panel, 'No mods yet' fallback. (2) Remove the ⋯ More button; Sell/Dismantle always shown (moreOpen=true, row 2 = Craft 52% + ★ + 🔒). (3) Cocoa punches sounded like tiny jabs: punch_jab.mp3 measured −34dB mean / almost no <200Hz; Sfx.comboPunch now uses sfx_punch (event_refresh/punch.mp3, −11.6dB, strongest bass) with random pitch 0.98–1.18 for jabs, and heavy = punch at rate ~0.85 + punch_heavy layer. Quick UI screenshots of the gear screen OK; punch sound not listened to.
+
+# Previous delivery: v7.6.3 — Cocoa intro at C2-1 + audible punches
 
 Owner: unlock/introduce Cocoa at C2-1 like Mint. HERO_INTROS table (after CORE_UNLOCK_STAGE): Mint idx 2 (flag mintIntro, text unchanged), Cocoa idx 5 (flag cocoaIntro, card_cocoa, 'Fermented Canopy armored roots / Root Beetles — bear gauntlets punch through'). Cocoa is already unlocked by clearing C1-5 (CORE_UNLOCK_STAGE cocoa:4). startStoryStage(idx): first entry, stage not mastered, hero owned and not already selected → showMintWarning(hi) (name kept for tests; now generic) → Choose → Heroes coach spotlight 'Pick Cocoa for C2-1!' (this._mintCoach holds the intro entry) → startStoryStage(hi.idx); 'Keep my hero' starts the stage. typeof guards for vm tests. Owner: Cocoa punches silent — files/calls existed (comboPunch jab/heavy, Sfx.bp cocoa_*); global 10-voice cap in playFile dropped them in crowded fights → sfx_punch* and sfx_cocoa_* bypass the global cap like sfx_uq_* (per-key cap 3 kept).
 
@@ -17,10 +21,6 @@ Owner: at the bottom map edge the Sniper charge (tickBossZoom ×0.72 zoom-out) l
 # Previous delivery: v7.6.0 — Unique levels only from Talent
 
 Owner: Unique must not level up in a stage; only via Talent. UNIQUE_TALENT {id:'unique', max 3, costs [3,5,8] TP, free:true} appended by charTalents(c) (CHAR_TALENTS untouched; no packed icon → ✨ emoji). buildTalents core: okN allows n.free, costN uses n.costs, no prerequisite line; talSpent refunds unique costs. uniqueTalentLevel(c)=1+tal.unique (cap UNIQUE_MAX_LV). All three run resets set uniqueLevel from it; level-up no longer calls checkUniqueAutoUpgrade (function + uniqueAt kept for tests/validator). talent-art baseline hash + talent-icons test updated; tests/unique-talent.test.cjs. Headless: buy 1 rank (3 TP) → stage starts Unique Lv2, stays Lv2 at run level 40. Balance: players now start runs at Lv1 Unique unless they spend TP — watch difficulty.
-
-# Previous delivery: v7.5.1 — Casino prize-wheel audio
-
-Owner: wheel spin should feel like a casino. scripts/gen_wheel_sfx.py (numpy → ffmpeg mp3) makes assets/audio/sfx/wheel/ wheel_clack (peg/flapper), wheel_roll (2.4s swelling drum roll), wheel_win (bell ding ×3 + coin sparkle); ASSET_AUDIO sfx_wheel_*. Sfx.wheelTick(slow) constant pitch ±4% (was chestTick rising pitch), louder after STOP; doStop stops slot spin loop and schedules wheelRoll to end at landing (sum of slowdown steps − 2.4s); landing plays wheelWin before reward. Capture objective still uses chestTick. Owner asked about NFT items — answered (not recommended now), no code. Listening on phone pending.
 
 # Older history
 

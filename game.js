@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.3';
+const GAME_VERSION = '7.6.4';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.4', date:'2026-10-11', title:'🔍 Equipped item mods + punchier Cocoa', items:['Tapping an item you are wearing now lists its implicit and every mod with its tier','Sell and Dismantle buttons are always visible again (no more ⋯ menu)','Cocoa’s punches use a heavier, meatier impact sound']},
   { v:'7.6.3', date:'2026-10-11', title:'🐻 Meet Cocoa at C2-1', items:['Before your first C2-1 run, Cocoa offers to punch through the Fermented Canopy’s armored roots — choose her or keep your hero','Cocoa’s punches are no longer muted in crowded fights']},
   { v:'7.6.2', date:'2026-10-11', title:'🛠️ Stage change crash fix', items:['Fixed a crash (“reading sourceSize”) when starting a new stage or switching hero after playing another stage']},
   { v:'7.6.1', date:'2026-10-11', title:'🎯 Camera + card levels', items:['The camera stays centred on your hero at the map edge too, so the Sniper scope lines up with your character','Level-up cards show levels as numbers (Lv 3 / 5) instead of stars · endless upgrades show Lv 3 / ∞']},
@@ -1157,8 +1158,9 @@ const Sfx = {
   beatGrade(k){ this.playFile('sfx_beat_'+k,0.6,1)||this.tone(k==='miss'?160:k==='perfect'?1320:880,0.1,'triangle',0.06); },
   // v5.53 หมัดคอมโบ: pitch ไล่ขึ้นตามคอมโบ · heavy/frenzy = ท่าปิด
   comboPunch(n,kind){ const r=0.9+Math.min(0.55,n*0.011); if(kind==='frenzy'){this.playFile('sfx_punch_frenzy',0.75,1)||this.boom();return;}
-    if(kind==='heavy'){ if(this._ok('pheavy',0.08))this.playFile('sfx_punch_heavy',0.7,r*0.9)||this.boom(); return; }
-    if(this._ok('pjab',0.045))this.playFile('sfx_punch_jab',0.5,r)||this.punch(); },
+    // v7.6.4 เจ้าของ: หมัดเดิม (punch_jab −34dB) เบา/แจ๊บ ๆ → ใช้ punch.mp3 (ทุ้มหนัก −12dB) สุ่ม pitch · หมัดปิดคอมโบ = punch ต่ำ + punch_heavy ซ้อน
+    if(kind==='heavy'){ if(this._ok('pheavy',0.08)){ this.playFile('sfx_punch',0.78,0.82+Math.random()*0.06)||this.boom(); this.playFile('sfx_punch_heavy',0.5,0.9); } return; }
+    if(this._ok('pjab',0.05))this.playFile('sfx_punch',0.55,Math.min(1.18,0.98+Math.random()*0.1+Math.min(0.1,n*0.004)))||this.punch(); },
   magnet(){if(this._ok('magnet',0.4))this.playFile('sfx_magnet',0.4);},
   card(){if(this._ok('card',0.2))this.playFile('sfx_card',0.34,1);},
   legend(){if(!this._ok('legend',1))return;this.duckBgm(900,0.4);if(!this.playFile('sfx_legend',0.5,1))this.seq([523,659,784,1047,1319],'triangle',0.1,0.09);},
@@ -8966,7 +8968,7 @@ class Game extends Phaser.Scene {
       y=this.drawModCompare(equipped,selected,eq,y,w);
       const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
       // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
-      const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.44),sw=(full-cw2-bgap*3)/3,hw=(full-bgap)/2,moreOpen=this._gearMore===selected.uid;
+      const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.52),sw=(full-cw2-bgap*2)/2,hw=(full-bgap)/2,moreOpen=true;   // v7.6.4 เจ้าของ: เลิกปุ่ม ⋯ · ย่อย/ขาย แสดงตลอด
       const SL={2:[14,y1,full,bh],c:[14,y2,cw2,bh2],0:[14+cw2+bgap,y2,sw,bh2],1:[14+cw2+bgap*2+sw,y2,sw,bh2],m:[14+cw2+bgap*3+sw*2,y2,sw,bh2],3:[14,y3,hw,bh2],s:[14+hw+bgap,y3,hw,bh2]};
       const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i],g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,by,bw,bhh,10);if(i===2){g.fillStyle(0xffffff,0.12);g.fillRoundedRect(bx+3,by+3,bw-6,bhh/2-3,8);}const t=this.add.text(bx+bw/2,by+bhh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:i===2?'14px':'12px',color:tc||'#ffffff',align:'center'}).setOrigin(0.5);if(t.width>bw-8)t.setScale((bw-8)/t.width);this.menu.add([g,t]);if(fn)this._zone(bx,by,bw,bhh,fn);};
       drawAction(0,selected.favorite?'★':'☆',selected.favorite?0xb88925:0x3a3550,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
@@ -8980,7 +8982,6 @@ class Game extends Phaser.Scene {
           this.buildMenuScreen(); }:null);}
       const canDis=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',gain=gearDismantleValue(selected);
       if(moreOpen)drawAction(3,canDis?('🔩 Dismantle +'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const ck='dis:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Dismantle again to confirm',1400);return;}this._gearConfirm=null;const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);
-      drawAction('m',moreOpen?'✕':'⋯',0x2c2338,()=>{this._gearMore=moreOpen?null:selected.uid;this.buildMenuScreen();},'#cfc3dd');
       { const canCraft=selected.grade!=='start'&&!selected.locked; drawAction('c','🧪 Craft',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
       const canSell=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',sv=gearSellSugar(selected);
       if(moreOpen)drawAction('s',canSell?('💰 Sell 🍬+'+sv):'Protected',canSell?0x6e5634:0x3a3550,canSell?()=>{const ck='sell:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Sell again to confirm',1400);return;}this._gearConfirm=null;const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('sell');this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}}:null,canSell?'#ffe6b0':'#8d8195');
@@ -13755,7 +13756,18 @@ class Game extends Phaser.Scene {
     { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0;for(const a of ((it&&it.affixes)||[])){if(affixDef(a.id))p++;}return {p:Math.max(0,K-p),s:0};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
         part=(f)=>f.p+' free',tot=fs.p+fs.s,txt='🛠 Open mod slots  '+(fe?part(fe)+'  →  ':'')+(tot?part(fs):'full'),
         col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
-    if(isEq)return y; const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;const pc=v=>r.range?' (+'+Math.round((v[0]+v[1])/2*ATK_PCT*100)+'%)':'';rows.unshift({kind:'base',label:'⚔ '+(r.range?'Weapon ATK':r.label),from:gearStatText(r,r.from)+pc(r.from),to:gearStatText(r,r.to)+pc(r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
+    if(isEq){   // v7.6.4 เจ้าของ: กดชิ้นที่ใส่อยู่ต้องเห็น Mod ของมัน (เดิมโชว์แค่ตอนเทียบกับชิ้นใหม่)
+      const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id);
+      if(idf)lines.push(['◇ '+implicitText(selIt)+' · '+IMPLICIT_TIER[idf.rank],IMPLICIT_COLOR[idf.rank]]);else if(ib&&ib.unique)lines.push(['★ '+ib.desc,'#ff8f3a']);
+      for(const a of (selIt.affixes||[])){const d=affixDef(a.id);if(d)lines.push([d.emoji+' '+d.label+' '+d.fmt(a.v),'#ffe6c4','T'+(a.t||3)]);}
+      if(!lines.some(l=>l[2]))lines.push(['No mods yet · tap Craft to add some','#8a809a']);
+      const rh=20,top=y,h=22+lines.length*rh+4,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
+      this.menu.add(this.add.text(22,top+6,'MODS',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a0'}));
+      lines.forEach((l,i)=>{ const ry=top+22+i*rh; if(i%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,rh);this.menu.add(zb);}
+        const t=this.add.text(22,ry+2,l[0],{fontFamily:'sans-serif',fontSize:'11px',color:l[1]});const room=w-44-(l[2]?34:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
+        if(l[2])this.menu.add(this.add.text(w-22,ry+2,l[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a99fbb'}).setOrigin(1,0)); });
+      return y+h+6; }
+    const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;const pc=v=>r.range?' (+'+Math.round((v[0]+v[1])/2*ATK_PCT*100)+'%)':'';rows.unshift({kind:'base',label:'⚔ '+(r.range?'Weapon ATK':r.label),from:gearStatText(r,r.from)+pc(r.from),to:gearStatText(r,r.to)+pc(r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
     // v6.55.72: ตารางอ่านง่าย — ตัวใหญ่ แถวสูง แถบสลับสี หัวกลุ่ม PREFIX/SUFFIX เต็มแถว
     const rh=20,secs=rows.some(r=>r.kind==='mod')?1:0,top=y,h=22+rows.length*rh+secs*16+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
     const cL=22,cF=Math.round(w*0.60),cT=Math.round(w*0.82),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+6,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(o,0);this.menu.add(tx);};

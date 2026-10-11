@@ -1676,3 +1676,7 @@ Owner: replace daily challenge with the usual quest board. DQ_POOL (before POWER
 
 Owner: can't reach character select after visiting Play Stats. Cause: v6.95 added Play Stats as a second Game.buildStats() method; the later definition silently replaced the Heroes Stats tab's buildStats, so once _heroesTab='stats' every Heroes open rendered Play Stats (Back → Settings). Play Stats is now buildPlayStats (route 'playstats' + Clear button); Heroes tab keeps buildStats. Back with a fixed backScreen pops that screen from the nav stack top (no double Back on Settings). New tests/no-duplicate-methods.test.cjs scans every class for duplicate method names (caught the old bug). Headless: Heroes → Stats tab shows 'Heroes · Stats'; playstats → Back → settings → Back → previous screen.
 
+# Delivery: v7.5.1 — Casino prize-wheel audio
+
+Owner: wheel spin should feel like a casino. scripts/gen_wheel_sfx.py (numpy → ffmpeg mp3) makes assets/audio/sfx/wheel/ wheel_clack (peg/flapper), wheel_roll (2.4s swelling drum roll), wheel_win (bell ding ×3 + coin sparkle); ASSET_AUDIO sfx_wheel_*. Sfx.wheelTick(slow) constant pitch ±4% (was chestTick rising pitch), louder after STOP; doStop stops slot spin loop and schedules wheelRoll to end at landing (sum of slowdown steps − 2.4s); landing plays wheelWin before reward. Capture objective still uses chestTick. Owner asked about NFT items — answered (not recommended now), no code. Listening on phone pending.
+
