@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.13 — Colossus Fist double aftershock
+# Latest delivery: v7.6.14 — Titan Ground Pound (no 5-hit combo)
+
+Owner: remove the 5-hit combo/finisher from Titan and replace it. castCocoaRush: `ti=path==='titan'`, `fin=!ti&&beat===4`, Titan cc.step stays 0. Every Titan punch = Ground Pound: wind .24, slam pose, r=reach×.95, power unit×1.15×(1+.08·ranks.combo)×(breaker 1.12), push 170, bossMul 1.4, shockwave+crack+small shake, cdMul 1.05. Tremor (cocoaHit opts.tremor=5+ranks.combo): per enemy +6% dmg per stack, 3s window (`e._trem/_tremT`, reset on spawn next to _frostBurnStacks). Earthbreaker/Cocoa Colossus echo on every pound (.25 / .35). Knockout Force desc for Titan via cocoaAttackInfo. Brawler/Dash Boxer keep the 5-beat cycle. Test appended to cocoa-builds.
+
+# Previous delivery: v7.6.13 — Colossus Fist double aftershock
 
 Owner: more damage, aftershock in two waves, slightly higher initial hit. Slam unit×0.85×rage → unit×1.0×rage (+18%). Aftershock (was 1 wave at .65s, unit×0.7, r×1.2) → two waves at 0.6s (r×1.25, unit×(0.9+0.3·lv)) and 1.0s (r×1.5, unit×(0.7+0.25·lv)), each with cocoaVisual wave, bpx_cocoa_shockwave, screen shake scaled by Rage and the aftershock sound (2nd lower pitch). Still centred on the release spot; % boss HP from v7.6.12 only on the main slam. cocoa-builds Titan counts updated (3 hits single foe; 2→4→6 in the geometry test).
 
