@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.99.0 — Delve grows like Story (option 3)
+# Latest delivery: v6.99.1 — Play Stats fix + faster Phantom Rush
+
+Owner: Play Stats showed nothing. Cause: 'win' hook was only in victory() (final stage only) + Stats.start ran via time.delayedCall(0) (can stall while time paused). Now Stats.start(this) runs directly after the run-flag line in startRun, showStageSummary records 'win' (skipped when state dead or _quitSummary; typeof guard for tests), end() fills depth from _amapNode. Headless: stage summary → 1 run saved. Phantom Rush (dashboxer castCocoaUnique): leaps 3/4→4/5 (ul≥3), interval .42→.30s, glide/strike delay .2→.14s; desc '4 times'; cocoa-builds test cap 5. npm check passed.
+
+# Previous delivery: v6.99.0 — Delve grows like Story (option 3)
 
 Clarified to owner: damage() is identical in every mode; difference was growth. Now recipeMode uses storyXpNext (12+6·(lv−1)) and no ENDGAME_XP_MUL (const removed), and rollBasicAttackUpgrades storyCards = usesStoryBudget || recipeMode (path-focused drafts). Rift/BossRush unchanged. Risk: Delve has unlimited enemies → levels may climb fast; watch Play Stats. Tests updated (story-budget xpNext 18, story-build-pressure/all-hero-drafts recipeMode now grouped). npm check passed.
 

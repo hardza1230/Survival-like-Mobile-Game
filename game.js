@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.99.0';
+const GAME_VERSION = '6.99.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.99.1', date:'2026-10-11', title:'👻 Faster Phantom Rush', items:['Phantom Rush leaps faster and one more time (4, or 5 at Unique Lv3+)','Play Stats now records stage clears, not only the final stage']},
   { v:'6.99.0', date:'2026-10-11', title:'⛏ Delve grows like Story', items:['Delve now uses the Story level-up pace and the Story card choices for your build']},
   { v:'6.98.1', date:'2026-10-11', title:'⛏ Delve boss tuning', items:['Delve boss minimum HP lowered to 30% of the C3-5 boss']},
   { v:'6.98.0', date:'2026-10-11', title:'⛏ Tougher Delve bosses', items:['Delve bosses now start at least as tough as the C3-5 boss and grow with depth','Progress bars fill smoothly with a moving shine and a glowing tip','Play Stats: new Copy to clipboard button']},
@@ -3310,7 +3311,7 @@ const COCOA_EVOLUTIONS={
 const COCOA_UNIQUES={
   brawler:{name:'Rocket Gauntlet',emoji:'🚀',cd:18,color:0xff7a2a,desc:'Tap once: launch 3 homing fire gauntlets at the strongest nearby enemies. A gauntlet that hits a Boss or Mini sticks and explodes 3 more times',tiers:{2:'4 gauntlets',3:'Bigger explosions',4:'5 gauntlets and a 4th sticky blast'}},
   titan:{name:'Colossus Fist',emoji:'👊',cd:12,color:0xd59b65,desc:'Hold to charge Blood Rage while walking (drains HP, up to 3 levels); release to slam a giant fist on the strongest nearby enemy for up to ×4.2 damage. Cooldown starts on release',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
-  dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 3 times onto the strongest enemy (boss first), slamming on each landing. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
+  dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 4 times onto the strongest enemy (boss first), slamming on each landing. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
 };
 const COCOA_PATH_MUTS={
   brawler:[{id:'rush',name:'Fireball Barrage',emoji:'☄️',desc:'The 5th punch launches 3 fireballs instead of 1'},
@@ -4990,7 +4991,7 @@ const Stats={
   card(title,kind){ const c=this._cur; if(!c||!title)return; if(c.cards.length<40)c.cards.push((kind&&kind!=='Basic Attack'?kind+': ':'')+title); },
   end(g,result){ const c=this._cur; if(!c)return; this._cur=null;
     try{ const by=g._dmgBy||{},top=Object.keys(by).sort((a,b)=>by[b]-by[a])[0]||null;
-      c.result=result; c.sec=Math.round(g.elapsed||0); c.level=g.level||1; c.kills=g.kills||0; c.wave=(g.waveIndex|0)+1; c.boss=g.mode==='boss'||!!g.boss;
+      c.result=result; if(c.depth==null&&g._amapNode)c.depth=g._amapNode.d; c.sec=Math.round(g.elapsed||0); c.level=g.level||1; c.kills=g.kills||0; c.wave=(g.waveIndex|0)+1; c.boss=g.mode==='boss'||!!g.boss;
       c.path=(g.basicAttack&&g.basicAttack.path)||null; c.cause=result==='dead'?(g._lastHitSrc||top||'?'):null; c.topDmg=top;
       const a=this.load(); a.push(c); this.saveAll(a); }catch(e){} },
   clear(){ try{ localStorage.removeItem('mochi_stats'); }catch(e){} },
@@ -9402,8 +9403,8 @@ class Game extends Phaser.Scene {
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         if(this.killTxt)this.killTxt.setText('☠ 0');
-        this.time.delayedCall(0,()=>Stats.start(this));
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}
+        Stats.start(this);   /* v6.99.1 direct (delayedCall could stall while time paused) */
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=1; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
@@ -11034,6 +11035,7 @@ class Game extends Phaser.Scene {
   }
   showStageSummary(last){
     this.stopSummaryPresentation();
+    if(this.state!=='dead'&&!this._quitSummary&&typeof Stats!=='undefined')Stats.end(this,'win');   /* v6.99.1 stage clears never reached victory() */
     this.state='summary'; this.physics.pause(); this.player.setVelocity(0,0);
     this._summaryLast=last;
     const w=this.W,h=this.H, st=STAGES[this.stageIndex]; this.over.removeAll(true);
@@ -12640,10 +12642,10 @@ class Game extends Phaser.Scene {
     }else if(path==='dashboxer'){
       const duration=5+ul*.5;this._cocoaUniqueT=1.5;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);this.fxPhantomScreen?.(1.4);Sfx.bp?.('uq_phantom_enter',.65,.3)||Sfx.bp?.('cocoa_phantom_start',.65,.3);
       // v6.58.4 Phantom Rush: พุ่งทุบอัตโนมัติ 3–4 ครั้งใส่เป้าแข็งสุด (บอสก่อน)
-      const leaps=ul>=3?4:3,slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));
-      for(let i=0;i<leaps;i++)this.cocoaLater(.05+i*.42,()=>{const t=this.cocoaPriorityTarget(480);if(!t||!p.active)return;const d=this.dist(t.x,t.y,p.x,p.y),gap=Math.max(36,(t.body?.halfWidth||20)+18),k=Math.max(0,(d-gap)/Math.max(1,d));
-        p.iframe=Math.max(p.iframe||0,.5);this.bpPose?.('char_cocoa_phantom',.4);this.cocoaGlideTo({x:p.x+(t.x-p.x)*k,y:p.y+(t.y-p.y)*k},.2);
-        this.cocoaLater(.2,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});
+      const leaps=ul>=3?5:4,slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));
+      for(let i=0;i<leaps;i++)this.cocoaLater(.05+i*.3,()=>{const t=this.cocoaPriorityTarget(480);if(!t||!p.active)return;const d=this.dist(t.x,t.y,p.x,p.y),gap=Math.max(36,(t.body?.halfWidth||20)+18),k=Math.max(0,(d-gap)/Math.max(1,d));
+        p.iframe=Math.max(p.iframe||0,.5);this.bpPose?.('char_cocoa_phantom',.4);this.cocoaGlideTo({x:p.x+(t.x-p.x)*k,y:p.y+(t.y-p.y)*k},.14);
+        this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});
     }else{this._cocoaUniqueT=.2;const r=(115+ul*10)*size;this.cocoaHit(p.x,p.y,r,unit*2.2,{push:250});this.cocoaVisual(p.x,p.y,r);Sfx.comboPunch(0,'heavy');}
     this.showBanner(this.uniqueInfo().emoji+' '+this.uniqueInfo().name,path==='dashboxer'?'Auto-leaping onto the strongest enemy · then Dash is free for a few seconds':path==='titan'?'Giant fist slams the strongest enemy':path==='brawler'?'Homing fire gauntlets · they stick to bosses and explode':'Slam nearby enemies',1400);
   }
