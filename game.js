@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.0';
+const GAME_VERSION = '7.7.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.1',date:'2026-10-11',title:'Temple audio refresh',items:['Shorter Core upgrade and Weave promotion sounds','Temple music uses Tea For Two At The End Of The World']},
   {v:'7.7.0',date:'2026-10-11',title:'Unique art and status clarity',items:['Painted Unique Mastery icon','Tremor and Frost Burn icons with live stack counts','Brief skill-specific edge accents keep combat readable']},
   { v:'7.6.15', date:'2026-10-11', title:'Softer Strawberry shots', items:['Normal Strawberry seed shots use a short warm pop instead of the shared buzzing shoot sound']},
   { v:'7.6.14', date:'2026-10-11', title:'🗿 Titan Ground Pound', items:['Titan no longer uses the five-hit combo: every punch is the same heavy Ground Pound with a slam, shockwave and crack','Each pound adds Tremor to enemies it hits: +6% damage from pounds per stack (up to 5, lasts 3s), so long boss fights ramp up','Knockout Force on Titan: +8% pound power and +1 max Tremor stack per rank','Earthbreaker and Cocoa Colossus now make a smaller aftershock on every pound instead of only the finisher']},
@@ -2270,10 +2271,10 @@ const ASSET_AUDIO = {
   sfx_craft_result_reveal:'assets/audio/sfx/event_refresh/craft_result_reveal.mp3',
   sfx_craft_result_important:'assets/audio/sfx/event_refresh/craft_result_important.mp3',
   sfx_craft_result_double:'assets/audio/sfx/event_refresh/craft_result_double.mp3',
-  sfx_craft_progress_core:'assets/audio/sfx/playtest_revision/temple_core.mp3',
+  sfx_craft_progress_core:'assets/audio/sfx/temple_short/temple_core_short.mp3',
   sfx_craft_progress_talent:'assets/audio/sfx/playtest_revision/temple_talent.mp3',
   sfx_craft_progress_overcap:'assets/audio/sfx/event_refresh/craft_progress_overcap.mp3',
-  sfx_craft_progress_promotion:'assets/audio/sfx/playtest_revision/temple_weave.mp3',
+  sfx_craft_progress_promotion:'assets/audio/sfx/temple_short/temple_weave_short.mp3',
   sfx_craft_progress_perk:'assets/audio/sfx/event_refresh/craft_progress_perk.mp3',
   sfx_craft_progress_ancient:'assets/audio/sfx/event_refresh/craft_progress_ancient.mp3',
   sfx_craft_progress_daily:'assets/audio/sfx/event_refresh/craft_progress_daily.mp3',
@@ -2344,7 +2345,7 @@ const ASSET_AUDIO = {
   sfx_defeat: 'assets/audio/sfx/event_refresh/defeat.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_boss_warn: 'assets/audio/sfx/event_refresh/boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
   bgm_main:       'assets/audio/bgm/menu/bgm_menu_moonlit_rose_lite.mp3',
-  bgm_menu_temple:  'assets/audio/bgm/menu/bgm_menu_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
+  bgm_menu_temple:  'assets/audio/bgm/menu/tea_for_two_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
   bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร
   bgm_stage1:     'assets/audio/bgm/min/bgm_stage1.mp3',

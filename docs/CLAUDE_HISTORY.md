@@ -1729,3 +1729,8 @@ Owner: Titan charges to 4 Rage; the last level clears almost the whole screen; a
 
 Owner: Titan Unique wider, show a growing ring while charging so you know what will be hit, punch all around instead of walking/leaping onto the enemy. titanSlamRadius(rage)=(150+12·ul)·size·(1+0.22·rage) (was (102+10·ul)·size·(1+0.15·lv) on cocoaPriorityTarget). Release centres on the player's position at release (x=p.x,y=p.y; aftershock same spot); center ×3.6 zone = r×0.48. tickTitanRage draws the live slam ring (fill + pulsing edge + inner bonus ring) and outlines up to 40 enemies inside (bosses/minis gold). cocoa-builds Titan test updated to the new geometry; titanSlamRadius added to the cocoa test method lists.
 
+
+# Previous delivery: v7.6.12 — Colossus Fist % boss HP (owner chose option A)
+
+Owner asked for Titan boss-damage formula (given in chat: boss HP C2-2 ≈60.5k / C2-4 ≈97k at ★1; Titan basics ≈150 DPS; Rage-4 slam ≈710 ≈1.2% of C2-2 HP; phase gates clip big hits). Chose A: titanPctSlam(x,y,r,lv) after the slam's cocoaHit — every boss/mini inside the slam ring takes maxhp × [0,1,2,3,5]% by Rage (minis ×0.5) through damage() with _frDmg (no crit/powerMul; bossDmg/flat still apply; phase gates still clip; skipped while gate-locked/invulnerable). tests/titan-pct-slam.test.cjs; titanPctSlam added to cocoa test method lists.
+

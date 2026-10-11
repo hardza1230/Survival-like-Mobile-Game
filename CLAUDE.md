@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.0 — P1 art feedback
+# Latest delivery: v7.7.1 — Short Temple feedback and owner BGM
+
+Core success trimmed 2.68s to .8s from audible onset; Weave promotion trimmed 3.2s to 1.4s. New sibling files in assets/audio/sfx/temple_short (8ms attack/140ms tail fade), existing keys repointed, voice replacement unchanged. bgm_menu_temple now points to tea_for_two_temple.mp3, byte-identical owner uploaded Tea For Two At The End Of The World (SHA in MANIFEST). Shared Temple/Perks music route preserved; other menus/stages untouched. Full check/build required; subjective phone listening pending.
+
+# Previous delivery: v7.7.0 — P1 art feedback
 
 New ImageGen skill_edges 4x4 atlas (13 runtime skill mappings, 3 spare), two brief mirrored edge accents <=18% viewport width, alpha <=.34 and <=.75s, no painted full-screen frame; removed old hero_screen registrations (files retained). Shared Unique Mastery icon under art/talents for menu loading; original 218 talent mappings untouched. Tremor/Frost Burn painted markers with actual counts (including >5 Tremor), cap 40 marked enemies, fade/pulse, expiry/death/pool/transition/off cleanup. Berry Core equipment crop fixed (.14..82 source height) after 28 source-crop review panels exposed missing mouth. Static image/geometry review only; browser UI automation unavailable; owner phone visual/FPS review pending, do not claim live screenshot QA. docs/art_orders/P1_DELIVERY_7_7.md and preview files. npm check plus P1 lifecycle test and build required.
 
@@ -18,10 +22,6 @@ Owner: remove the 5-hit combo/finisher from Titan and replace it. castCocoaRush:
 # Previous delivery: v7.6.13 — Colossus Fist double aftershock
 
 Owner: more damage, aftershock in two waves, slightly higher initial hit. Slam unit×0.85×rage → unit×1.0×rage (+18%). Aftershock (was 1 wave at .65s, unit×0.7, r×1.2) → two waves at 0.6s (r×1.25, unit×(0.9+0.3·lv)) and 1.0s (r×1.5, unit×(0.7+0.25·lv)), each with cocoaVisual wave, bpx_cocoa_shockwave, screen shake scaled by Rage and the aftershock sound (2nd lower pitch). Still centred on the release spot; % boss HP from v7.6.12 only on the main slam. cocoa-builds Titan counts updated (3 hits single foe; 2→4→6 in the geometry test).
-
-# Previous delivery: v7.6.12 — Colossus Fist % boss HP (owner chose option A)
-
-Owner asked for Titan boss-damage formula (given in chat: boss HP C2-2 ≈60.5k / C2-4 ≈97k at ★1; Titan basics ≈150 DPS; Rage-4 slam ≈710 ≈1.2% of C2-2 HP; phase gates clip big hits). Chose A: titanPctSlam(x,y,r,lv) after the slam's cocoaHit — every boss/mini inside the slam ring takes maxhp × [0,1,2,3,5]% by Rage (minis ×0.5) through damage() with _frDmg (no crit/powerMul; bossDmg/flat still apply; phase gates still clip; skipped while gate-locked/invulnerable). tests/titan-pct-slam.test.cjs; titanPctSlam added to cocoa test method lists.
 
 # Older history
 

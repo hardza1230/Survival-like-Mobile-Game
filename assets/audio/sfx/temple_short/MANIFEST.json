@@ -1,0 +1,26 @@
+[
+  {
+    "file": "temple_core_short.mp3",
+    "source": "assets\\audio\\sfx\\playtest_revision\\temple_core.mp3",
+    "original_seconds": 2.68,
+    "target_seconds": 0.8,
+    "start_seconds": 0.193,
+    "processing": "shortened with 8ms attack fade and 140ms tail fade",
+    "bytes": 13835
+  },
+  {
+    "file": "temple_weave_short.mp3",
+    "source": "assets\\audio\\sfx\\playtest_revision\\temple_weave.mp3",
+    "original_seconds": 3.2,
+    "target_seconds": 1.4,
+    "start_seconds": 0,
+    "processing": "shortened with 8ms attack fade and 140ms tail fade",
+    "bytes": 23448
+  },
+  {
+    "bgm": "assets\\audio\\bgm\\menu\\tea_for_two_temple.mp3",
+    "source_title": "SCENE [EP-004-02] — BGM V01 — Tea For Two At The End Of The World.mp3",
+    "sha256": "c42fd9ffce9d4325166fd68b774bea400bdf0c148acc3b06a6d09c10e207e181",
+    "copied_byte_exact": true
+  }
+]
