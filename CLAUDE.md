@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.99.3 — Play Stats Back → Settings
+# Latest delivery: v7.0.0 — Keyboard + desktop browser fit
+
+Owner: play in browser with keyboard/mouse + fit the screen. setupKeyboard() (called after pointer handlers): WASD/arrows drive joy with id -78 (tickKeyboard at top of update; never overrides an active touch joystick), Space/Shift doDash, E/J hold = fake pointerdown/up on uniqueBtn with id -77 (works for tap, Titan hold, sniper/blast/Mint charge), F flicker, Esc/P togglePause, 1–4 pick level-up card (double pickCardAt = confirm). Mouse already worked (click-drag joystick, buttons). DESKTOP_FIT (no touch, not Capacitor native): viewSize() = 9:16 portrait (h·9/16) centered via injected #desk-fit canvas CSS; RENDER_W/H and _applyResize use it. Headless 1280×720: keys move/dash/unique/card, mouse click Dash + drag move OK. npm check passed.
+
+# Previous delivery: v6.99.3 — Play Stats Back → Settings
 
 Owner (device, v6.99.2): Back still went to hub (nav stack path differs on device). buildStats now passes backScreen 'settings' to _screenBg. npm check passed.
 

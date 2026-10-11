@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.99.3';
+const GAME_VERSION = '7.0.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.0.0', date:'2026-10-11', title:'⌨️ Keyboard & mouse', items:['Play in a desktop browser: WASD or arrow keys to move, Space/Shift to Dash, hold E (or J) for your Unique, F for Flicker, Esc/P to pause, 1–4 to pick a level-up card','Mouse: click-and-drag to move, click buttons and cards as before','On a computer the game shows in a phone-shaped window in the middle of the screen']},
   { v:'6.99.3', date:'2026-10-11', title:'🔧 Play Stats back', items:['Back on Play Stats always returns to Settings']},
   { v:'6.99.2', date:'2026-10-11', title:'🔧 Play Stats fix', items:['Play Stats opens its own page again and Back returns to Settings','Fixed Heroes getting stuck on the Stats tab after opening Play Stats']},
   { v:'6.99.1', date:'2026-10-11', title:'👻 Faster Phantom Rush', items:['Phantom Rush leaps faster and one more time (4, or 5 at Unique Lv3+)','Play Stats now records stage clears, not only the final stage']},
@@ -6077,7 +6078,23 @@ class Game extends Phaser.Scene {
       if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
         this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
     });
+    this.setupKeyboard();
   }
+  // v7.0 KEYBOARD (เล่นบนเบราว์เซอร์คอม): WASD/ลูกศร=เดิน · Space/Shift=Dash · E/J (กดค้าง)=Unique · F=Flicker · Esc/P=หยุด · 1-4=เลือกการ์ด
+  setupKeyboard(){ const kb=this.input.keyboard; if(!kb)return; this._kbKeys=kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT',false);
+    const fake=(type,btn,id)=>{ if(!btn)return; this.input.emit(type,{x:btn.x*RENDER_DPR,y:btn.y*RENDER_DPR,id}); };
+    kb.on('keydown',ev=>{ const k=ev.code; if(ev.repeat)return; Sfx.unlock&&Sfx.unlock();
+      if(k==='Escape'||k==='KeyP'){ if(this.state==='play'||this.state==='paused')this.togglePause(); return; }
+      if(this.state==='levelup'&&/^Digit[1-4]$/.test(k)){ const c=(this.lvlCards||[])[+k.slice(5)-1]; if(c){ const x=(c.left+c.right)/2,y=(c.top+c.bottom)/2; this.levelCardReadyAt=0; this.pickCardAt(x,y); if(this.state==='levelup'&&this._pendingCardConfirm===c)this.pickCardAt(x,y); } return; }
+      if(this.state!=='play')return;
+      if(k==='Space'||k==='ShiftLeft'||k==='ShiftRight'){ if(this.dashBtn&&this.dashBtn.visible)this.doDash(); return; }
+      if(k==='KeyE'||k==='KeyJ'){ if(this.uniqueBtn&&this.uniqueBtn.visible){ this._kbUnique=true; fake('pointerdown',this.uniqueBtn,-77); } return; }
+      if(k==='KeyF'){ if(this.flickerBtn&&this.flickerBtn.visible)this.toggleCocoaFlicker(); return; } });
+    kb.on('keyup',ev=>{ const k=ev.code; if((k==='KeyE'||k==='KeyJ')&&this._kbUnique){ this._kbUnique=false; fake('pointerup',this.uniqueBtn,-77); } });
+    if(kb.addCapture)kb.addCapture('SPACE,UP,DOWN,LEFT,RIGHT'); }
+  tickKeyboard(){ const K=this._kbKeys; if(!K||!this.joy)return; const x=(K.D.isDown||K.RIGHT.isDown?1:0)-(K.A.isDown||K.LEFT.isDown?1:0),y=(K.S.isDown||K.DOWN.isDown?1:0)-(K.W.isDown||K.UP.isDown?1:0);
+    if(x||y){ if(this.joy.active&&this.joy.id!==-78)return; const l=Math.hypot(x,y); this.joy.active=true; this.joy.id=-78; this.joy.dx=x/l; this.joy.dy=y/l; }
+    else if(this.joy.active&&this.joy.id===-78){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0; } }
   dist(ax,ay,bx,by){ return Math.hypot(ax-bx,ay-by); }
 
   doDash(){
@@ -15408,7 +15425,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play')return; this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt; if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play')return; this.tickKeyboard(); this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt; if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
@@ -15558,8 +15575,14 @@ const LOW_MEMORY_DEVICE = Number(navigator.deviceMemory||8)<=4;
 // v5.50: คุณภาพกราฟิก (0 Auto · 1 Low · 2 High) — ความละเอียด render มีผลตอนเปิดเกมใหม่
 const QUALITY_SETTING=(()=>{try{const d=JSON.parse(localStorage.getItem('mochi_save')||'{}');const q=d&&d.settings&&d.settings.quality;return q===1||q===2?q:0;}catch(e){return 0;}})();
 const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):(LOW_MEMORY_DEVICE?1.5:2)));
-const RENDER_W = Math.max(1,Math.round(window.innerWidth*RENDER_DPR));
-const RENDER_H = Math.max(1,Math.round(window.innerHeight*RENDER_DPR));
+// v7.0 เล่นบนคอม (ไม่มีจอสัมผัส): บีบเป็นจอแนวตั้งแบบมือถือ 9:16 ตรงกลางจอ แทนการยืดเต็มจอกว้าง
+const DESKTOP_FIT=(()=>{ try{ return !window.Capacitor?.isNativePlatform?.()&&!('ontouchstart' in window)&&!(navigator.maxTouchPoints>0); }catch(e){ return false; } })();
+function viewSize(){ const w=window.innerWidth,h=window.innerHeight; if(!DESKTOP_FIT||w<=h*0.62)return {w,h,fit:false}; return {w:Math.round(h*9/16),h,fit:true}; }
+function applyCanvasFit(){ const v=viewSize(); let st=document.getElementById('desk-fit'); if(!st){ st=document.createElement('style'); st.id='desk-fit'; document.head.appendChild(st); }
+  st.textContent=v.fit?'canvas{left:calc(50% - '+(v.w/2)+'px)!important;right:auto!important;width:'+v.w+'px!important;box-shadow:0 0 40px rgba(0,0,0,.6);}':''; return v; }
+const _vs0=applyCanvasFit();
+const RENDER_W = Math.max(1,Math.round(_vs0.w*RENDER_DPR));
+const RENDER_H = Math.max(1,Math.round(_vs0.h*RENDER_DPR));
 // Phaser Text มี CanvasTexture แยกและค่าเริ่มต้น resolution 1 จึงต้องเพิ่มตาม DPR เช่นกัน
 const _textFactory=Phaser.GameObjects.GameObjectFactory.prototype.text;
 Phaser.GameObjects.GameObjectFactory.prototype.text=function(x,y,value,style){
@@ -15588,7 +15611,7 @@ window.__g = new Phaser.Game({
 // ปรับขนาดตอนหมุนจอ/เปลี่ยนขนาด — debounce กันค่าเพี้ยนช่วงหมุน + อ่านค่าจริงหลังหมุนเสร็จ
 let _rzT=null;
 function _applyResize(){ const g=window.__g; if(!g||!g.scale)return;
-  const w=window.innerWidth, h=window.innerHeight;
+  const v=applyCanvasFit(), w=v.w, h=v.h;
   g.scale.resize(Math.round(w*RENDER_DPR),Math.round(h*RENDER_DPR)); g.scale.refresh(); }
 function _scheduleResize(){ clearTimeout(_rzT); _rzT=setTimeout(_applyResize,160); _applyResize(); }
 window.addEventListener('resize', _scheduleResize);
