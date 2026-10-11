@@ -1712,3 +1712,7 @@ Owner: copy should include levels, equipped gear, talents etc. Stats.kit(hero,ba
 
 Owner: (1) new painted screen VFX look silly → heroScreenEffect() returns null (v7.3 hero_screen_* overlays off; files kept; v6.84 code-drawn screenFx unchanged). (2) Cocoa Unique before choosing a path (castCocoaUnique default branch) now also sets _cocoaRegenT=5+ul s at _cocoaRegenPct=2%+0.5%·ul max HP/s, ticked after normal regen (outside the 3% cap, honours noheal + pactHealMul), reset with uniqueLevel at run start. (3) Mint Gale (castWindRush) before a path: basicRate ×0.65 while windRushT>0 (character mint, no path). (4) Strawberry Rebound already heals % max HP (5.5%+1.8%·ul) — told owner, unchanged.
 
+# Delivery: v7.6.8 — ⚔ ATK / 🛡 DEF power split on Equipment
+
+Owner: split Power into attack and defense so items read as damage vs tank gear. heroAD(cid,basic) → {a: round(100·heroOffense), d: round(heroDefense)} (same parts heroPower combines); gearADDelta(item,base) swaps the item in like gearPowerDelta. Equipment power box shows '⚔ ATK a   🛡 DEF d'; selecting an unequipped item shows both lines 'ATK a→a+Δ ▲Δ' / 'DEF …' (box green both up, red both down, amber mixed); list cards show ⚔±/🛡± instead of ▲±. this._adBase cached per build. Overall heroPower (stage recommendations, auto-keep, clean list) unchanged. Quick UI screenshot OK.
+
