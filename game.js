@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.98.1';
+const GAME_VERSION = '6.99.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.99.0', date:'2026-10-11', title:'⛏ Delve grows like Story', items:['Delve now uses the Story level-up pace and the Story card choices for your build']},
   { v:'6.98.1', date:'2026-10-11', title:'⛏ Delve boss tuning', items:['Delve boss minimum HP lowered to 30% of the C3-5 boss']},
   { v:'6.98.0', date:'2026-10-11', title:'⛏ Tougher Delve bosses', items:['Delve bosses now start at least as tough as the C3-5 boss and grow with depth','Progress bars fill smoothly with a moving shine and a glowing tip','Play Stats: new Copy to clipboard button']},
   { v:'6.97.0', date:'2026-10-11', title:'✨ Card sound + loot pull', items:['Picking a card now plays a power-up chime with the burst','Dropped currency and gear gently float to you when you get close — no need to stand on them']},
@@ -5625,7 +5626,6 @@ function amapGuardiansDown(){ return delveBossesDown(); }
 // ตัวคูณความลึก (ไม่มีเพดาน · ยิ่งยากรางวัลยิ่งดี)
 // v6.40 จูนจากเซฟจริงเจ้าของ: หลังชั้น 20 ของตัน (iLv>60 โตแค่ 1.5%/lv) → ชะลอการโตเลือด/ดาเมจ ไม่ให้ชั้น 40+ เป็นกำแพง
 const DELVE_BOSS_FLOOR=0.3;   // v6.98.1 owner: Delve boss floor = 30% of C3-5 Normal boss
-const ENDGAME_XP_MUL=0.7;   // v6.43 เจ้าของ: เลเวลใน Endgame ขึ้นเร็วไป
 const HUNGER_PER_KILL=0.19, FEAST_SHARE=0.12, FEAST_EVERY=16, FEAST_FIRST=6, FEAST_LIFE=22, MISSION_HUNGER=0.16;   // v6.42 Feast Targets
 function delveMul(d){ const a=Math.min(d,20),b=Math.max(0,d-20); return {hp:Math.pow(1.08,a)*Math.pow(1.05,b),dmg:Math.pow(1.06,a)*Math.pow(1.04,b),reward:1+0.05*d}; }
 // v6.22 Atlas Influence (3A): ทุกแมพมีรสประจำตัว · เคลียร์แล้วรสซึมไปแมพที่เชื่อม (+1 ชั้น/การเคลียร์ เพดาน 3/รส) · ชั้นละ ยาก+10% รางวัล+15% (กฎเหล็ก)
@@ -11390,8 +11390,8 @@ class Game extends Phaser.Scene {
 
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
-    this.xp+=n*(this.player.xpMul||1)*(this.recipeMode?ENDGAME_XP_MUL:1);
-    while(this.xp+1e-8>=this.xpNext){ this.xp=Math.max(0,this.xp-this.xpNext); this.level++; this.xpNext=this.usesStoryBudget?.()?storyXpNext(this.level):Math.round((this.stageIndex>=2&&!this.recipeMode)?this.xpNext*1.32+9:this.xpNext*1.26+6); /* v6.55.17 ด่าน 3+ ช้าลง */ /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
+    this.xp+=n*(this.player.xpMul||1);   /* v6.99 Delve = Story XP */
+    while(this.xp+1e-8>=this.xpNext){ this.xp=Math.max(0,this.xp-this.xpNext); this.level++; this.xpNext=(this.usesStoryBudget?.()||this.recipeMode)?storyXpNext(this.level):Math.round((this.stageIndex>=2&&!this.recipeMode)?this.xpNext*1.32+9:this.xpNext*1.26+6); /* v6.55.17 ด่าน 3+ ช้าลง */ /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } this.checkUniqueAutoUpgrade(); this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
     this.lvlTxt.setText('Lv '+this.level);
     if(this.pendingLvl>0 && this.state==='play') this.openLevelUp();
   }
@@ -11788,7 +11788,7 @@ class Game extends Phaser.Scene {
       return [makeCard(fu,{evolution:true,special:true,kind:'Fusion',tags:fu.tags,color:0xff6ad5,headline:'🧬 '+fu.desc,apply:()=>{ b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,fu.desc,2200); Sfx.clear(); }})]; } }
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
-    const mintLocked=b.character==='mint'&&!!b.path,berryLocked=b.character==='momo'&&!!b.path,cocoaLocked=b.character==='cocoa'&&!!b.path,storyCards=!noSpecial&&this.usesStoryBudget?.(),chosenPath=PATHS?.find(pt=>pt.id===b.path);
+    const mintLocked=b.character==='mint'&&!!b.path,berryLocked=b.character==='momo'&&!!b.path,cocoaLocked=b.character==='cocoa'&&!!b.path,storyCards=!noSpecial&&(this.usesStoryBudget?.()||(this.recipeMode&&!this._inTutorial)),chosenPath=PATHS?.find(pt=>pt.id===b.path);
     const focused=mintLocked||berryLocked||cocoaLocked||storyCards,groupOf=id=>mintLocked?mintUpgradeGroup(b.path,id):berryLocked?berryUpgradeGroup(b.path,id):chosenPath?.upgrades.some(u=>u.id===id)?'path':'shared';
     const atk=[];
     const COUNT_IDS={s_slug:1,s_seek:1,s_return:1,p_heavydraw:1,p_impaler:1,p_executioner:1,p_froststack:1,p_chainshatter:1,p_quiver:1,family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)

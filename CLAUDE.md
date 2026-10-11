@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.98.1 — Delve boss floor 30%
+# Latest delivery: v6.99.0 — Delve grows like Story (option 3)
+
+Clarified to owner: damage() is identical in every mode; difference was growth. Now recipeMode uses storyXpNext (12+6·(lv−1)) and no ENDGAME_XP_MUL (const removed), and rollBasicAttackUpgrades storyCards = usesStoryBudget || recipeMode (path-focused drafts). Rift/BossRush unchanged. Risk: Delve has unlimited enemies → levels may climb fast; watch Play Stats. Tests updated (story-budget xpNext 18, story-build-pressure/all-hero-drafts recipeMode now grouped). npm check passed.
+
+# Previous delivery: v6.98.1 — Delve boss floor 30%
 
 Owner: lower Delve boss floor to 30% of C3-5. DELVE_BOSS_FLOOR=0.3 (next to ENDGAME_XP_MUL) multiplies the v6.98 floor (d1 normal node ≈144k). npm check passed.
 

@@ -27,7 +27,8 @@ for(const character of ['momo','mint'])for(const path of api.BASIC_PATHS[charact
 }
 // Weighted loot/noSpecial and special modes remain able to roll universal choices.
 const savedRandom=rng.random;rng.random=()=>.999999;
-for(const flag of ['recipeMode','riftMode','bossRush','_inTutorial']){const s=scene('barrage');s[flag]=true;assert(!s.rollBasicAttackUpgrades(3).some(c=>c.poolGroup==='path'));}
+for(const flag of ['riftMode','bossRush','_inTutorial']){const s=scene('barrage');s[flag]=true;assert(!s.rollBasicAttackUpgrades(3).some(c=>c.poolGroup==='path'));}
+{const s=scene('barrage');s.recipeMode=true;assert(s.rollBasicAttackUpgrades(3).some(c=>c.poolGroup==='path'));}
 {const s=scene('barrage');assert(!s.rollBasicAttackUpgrades(3,{noSpecial:true}).some(c=>c.poolGroup==='path'));assert(s.rollBasicAttackUpgrades(3).some(c=>c.poolGroup==='path'));}
 rng.random=savedRandom;
 // Critical healing may replace an extra path card, but retains one path choice.
