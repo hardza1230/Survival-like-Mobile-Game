@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.0.1 — Desktop loader/intro fit
+# Latest delivery: Full event SFX refresh (assets only)
+
+Owner requested complete sound-event audit including reused file-backed cues. 133 ElevenLabs files in assets/audio/sfx/event_refresh/: 85 core replacements + 48 distinct UI/cards/growth/loot/stage events. See docs/audio_orders/FULL_EVENT_SFX_133_HANDOFF.md; all 458 static Sfx callsites in SFX_ALL_CALLSITES.json. Existing Build/Unique/procedural banks retained. Core issue: Sfx.clear reuses levelup, card confirmation reuses Unique charge. New files NOT wired; runtime remains v7.0.1; listening/tail trimming pending. Next AI: semantic event routing, preserve uiAction dedup/voice caps, do not restore disabled systems, then version/check/deploy.
+
+# Previous delivery: v7.0.1 — Desktop loader/intro fit
 
 Owner screenshot (1920 desktop): intro kitchen art zoomed (kitchen_loader.css .k-stage width max(100vw,…)). index.html media (hover:hover)(pointer:fine)(min-aspect-ratio:62/100): #game-loader boxed to 56.25vh centered, .k-stage 56.28vh, petals 20px. Headless 1600×860 OK. npm check passed.
 

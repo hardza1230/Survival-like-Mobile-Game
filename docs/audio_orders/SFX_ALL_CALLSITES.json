@@ -1,0 +1,3404 @@
+{
+  "version": "7.0.0",
+  "note": "Static source callsites; source paths/contexts are search aids, not proof of reachability. Includes guarded legacy paths. Silent candidate UI events are explicitly listed in new jobs.",
+  "registered": [
+    {
+      "key": "sfx_cocoa_fire_fist",
+      "path": "assets/audio/sfx/build_paths/cocoa_fire_fist.mp3"
+    },
+    {
+      "key": "sfx_cocoa_fire_finisher",
+      "path": "assets/audio/sfx/build_paths/cocoa_fire_finisher.mp3"
+    },
+    {
+      "key": "sfx_cocoa_fire_explosion",
+      "path": "assets/audio/sfx/build_paths/cocoa_fire_explosion.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rocket_launch",
+      "path": "assets/audio/sfx/build_paths/cocoa_rocket_launch.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rocket_stick_burst",
+      "path": "assets/audio/sfx/build_paths/cocoa_rocket_stick_burst.mp3"
+    },
+    {
+      "key": "sfx_cocoa_meteor_impact",
+      "path": "assets/audio/sfx/build_paths/cocoa_meteor_impact.mp3"
+    },
+    {
+      "key": "sfx_cocoa_titan_leap",
+      "path": "assets/audio/sfx/build_paths/cocoa_titan_leap.mp3"
+    },
+    {
+      "key": "sfx_cocoa_titan_slam",
+      "path": "assets/audio/sfx/build_paths/cocoa_titan_slam.mp3"
+    },
+    {
+      "key": "sfx_uq_mint_bloom_full",
+      "path": "assets/audio/sfx/unique_skills/uq_mint_bloom_full.mp3"
+    },
+    {
+      "key": "sfx_uq_mint_gale",
+      "path": "assets/audio/sfx/unique_skills/uq_mint_gale.mp3"
+    },
+    {
+      "key": "sfx_uq_mint_lance_release",
+      "path": "assets/audio/sfx/unique_skills/uq_mint_lance_release.mp3"
+    },
+    {
+      "key": "sfx_uq_phantom_enter",
+      "path": "assets/audio/sfx/unique_skills/uq_phantom_enter.mp3"
+    },
+    {
+      "key": "sfx_uq_phantom_strike",
+      "path": "assets/audio/sfx/unique_skills/uq_phantom_strike.mp3"
+    },
+    {
+      "key": "sfx_uq_rebound_burst",
+      "path": "assets/audio/sfx/unique_skills/uq_rebound_burst.mp3"
+    },
+    {
+      "key": "sfx_uq_rocket_detonation",
+      "path": "assets/audio/sfx/unique_skills/uq_rocket_detonation.mp3"
+    },
+    {
+      "key": "sfx_uq_rocket_salvo",
+      "path": "assets/audio/sfx/unique_skills/uq_rocket_salvo.mp3"
+    },
+    {
+      "key": "sfx_uq_sesame_prism_charge",
+      "path": "assets/audio/sfx/unique_skills/uq_sesame_prism_charge.mp3"
+    },
+    {
+      "key": "sfx_uq_sesame_prism_volley",
+      "path": "assets/audio/sfx/unique_skills/uq_sesame_prism_volley.mp3"
+    },
+    {
+      "key": "sfx_uq_shotgun_blast",
+      "path": "assets/audio/sfx/unique_skills/uq_shotgun_blast.mp3"
+    },
+    {
+      "key": "sfx_uq_shotgun_full",
+      "path": "assets/audio/sfx/unique_skills/uq_shotgun_full.mp3"
+    },
+    {
+      "key": "sfx_uq_shotgun_pump",
+      "path": "assets/audio/sfx/unique_skills/uq_shotgun_pump.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_bolt",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_bolt.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_charge",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_charge.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_fire",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_fire.mp3"
+    },
+    {
+      "key": "sfx_uq_sniper_full",
+      "path": "assets/audio/sfx/unique_skills/uq_sniper_full.mp3"
+    },
+    {
+      "key": "sfx_uq_taro_chain_cast",
+      "path": "assets/audio/sfx/unique_skills/uq_taro_chain_cast.mp3"
+    },
+    {
+      "key": "sfx_uq_taro_chain_hit",
+      "path": "assets/audio/sfx/unique_skills/uq_taro_chain_hit.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_aftershock",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_aftershock.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_charge",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_charge.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_drop",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_drop.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_full",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_full.mp3"
+    },
+    {
+      "key": "sfx_uq_titan_slam_full",
+      "path": "assets/audio/sfx/unique_skills/uq_titan_slam_full.mp3"
+    },
+    {
+      "key": "sfx_uq_yuzu_crew_hit",
+      "path": "assets/audio/sfx/unique_skills/uq_yuzu_crew_hit.mp3"
+    },
+    {
+      "key": "sfx_uq_yuzu_parade",
+      "path": "assets/audio/sfx/unique_skills/uq_yuzu_parade.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rage_charge",
+      "path": "assets/audio/sfx/build_paths/cocoa_rage_charge.mp3"
+    },
+    {
+      "key": "sfx_cocoa_rage_level",
+      "path": "assets/audio/sfx/build_paths/cocoa_rage_level.mp3"
+    },
+    {
+      "key": "sfx_cocoa_colossus_slam",
+      "path": "assets/audio/sfx/build_paths/cocoa_colossus_slam.mp3"
+    },
+    {
+      "key": "sfx_cocoa_flicker_step",
+      "path": "assets/audio/sfx/build_paths/cocoa_flicker_step.mp3"
+    },
+    {
+      "key": "sfx_cocoa_dash_landing",
+      "path": "assets/audio/sfx/build_paths/cocoa_dash_landing.mp3"
+    },
+    {
+      "key": "sfx_cocoa_shadow_fist",
+      "path": "assets/audio/sfx/build_paths/cocoa_shadow_fist.mp3"
+    },
+    {
+      "key": "sfx_cocoa_phantom_start",
+      "path": "assets/audio/sfx/build_paths/cocoa_phantom_start.mp3"
+    },
+    {
+      "key": "sfx_cocoa_shadow_mark",
+      "path": "assets/audio/sfx/build_paths/cocoa_shadow_mark.mp3"
+    },
+    {
+      "key": "sfx_mint_lance_launch",
+      "path": "assets/audio/sfx/build_paths/mint_lance_launch.mp3"
+    },
+    {
+      "key": "sfx_mint_barrage_volley",
+      "path": "assets/audio/sfx/build_paths/mint_barrage_volley.mp3"
+    },
+    {
+      "key": "sfx_mint_hailstorm_cast",
+      "path": "assets/audio/sfx/build_paths/mint_hailstorm_cast.mp3"
+    },
+    {
+      "key": "sfx_mint_impaler_charge",
+      "path": "assets/audio/sfx/build_paths/mint_impaler_charge.mp3"
+    },
+    {
+      "key": "sfx_mint_impale_stack",
+      "path": "assets/audio/sfx/build_paths/mint_impale_stack.mp3"
+    },
+    {
+      "key": "sfx_mint_crystal_rupture",
+      "path": "assets/audio/sfx/build_paths/mint_crystal_rupture.mp3"
+    },
+    {
+      "key": "sfx_mint_glacier_bloom",
+      "path": "assets/audio/sfx/build_paths/mint_glacier_bloom.mp3"
+    },
+    {
+      "key": "sfx_mint_glacier_shatter",
+      "path": "assets/audio/sfx/build_paths/mint_glacier_shatter.mp3"
+    },
+    {
+      "key": "sfx_strawberry_sniper_charge",
+      "path": "assets/audio/sfx/build_paths/strawberry_sniper_charge.mp3"
+    },
+    {
+      "key": "sfx_strawberry_sniper_shot",
+      "path": "assets/audio/sfx/build_paths/strawberry_sniper_shot.mp3"
+    },
+    {
+      "key": "sfx_strawberry_sniper_impact",
+      "path": "assets/audio/sfx/build_paths/strawberry_sniper_impact.mp3"
+    },
+    {
+      "key": "sfx_strawberry_ricochet_bounce",
+      "path": "assets/audio/sfx/build_paths/strawberry_ricochet_bounce.mp3"
+    },
+    {
+      "key": "sfx_strawberry_pinball_cast",
+      "path": "assets/audio/sfx/build_paths/strawberry_pinball_cast.mp3"
+    },
+    {
+      "key": "sfx_strawberry_pinball_final",
+      "path": "assets/audio/sfx/build_paths/strawberry_pinball_final.mp3"
+    },
+    {
+      "key": "sfx_shared_unique_charge_start",
+      "path": "assets/audio/sfx/build_paths/shared_unique_charge_start.mp3"
+    },
+    {
+      "key": "sfx_shared_unique_charge_full",
+      "path": "assets/audio/sfx/build_paths/shared_unique_charge_full.mp3"
+    },
+    {
+      "key": "sfx_shared_build_evolution",
+      "path": "assets/audio/sfx/build_paths/shared_build_evolution.mp3"
+    },
+    {
+      "key": "sfx_boss_shield_break",
+      "path": "assets/audio/sfx/build_paths/boss_shield_break.mp3"
+    },
+    {
+      "key": "sfx_boss_phase_transition",
+      "path": "assets/audio/sfx/build_paths/boss_phase_transition.mp3"
+    },
+    {
+      "key": "sfx_shoot",
+      "path": "assets/audio/sfx/sfx_skill_sprinkle.wav"
+    },
+    {
+      "key": "sfx_hit",
+      "path": "assets/audio/sfx/gen/sfx_hit.wav"
+    },
+    {
+      "key": "sfx_xp",
+      "path": "assets/audio/sfx/gen/sfx_xp.wav"
+    },
+    {
+      "key": "sfx_dash",
+      "path": "assets/audio/sfx/sfx_jump_squish.wav"
+    },
+    {
+      "key": "sfx_levelup",
+      "path": "assets/audio/sfx/gen/sfx_levelup_soft.mp3"
+    },
+    {
+      "key": "sfx_chest",
+      "path": "assets/audio/sfx/sfx_chest_open.wav"
+    },
+    {
+      "key": "sfx_btn",
+      "path": "assets/audio/sfx/sfx_btn_click.wav"
+    },
+    {
+      "key": "sfx_craft_result_open",
+      "path": "assets/audio/sfx/results/result_open.wav"
+    },
+    {
+      "key": "sfx_craft_result_count",
+      "path": "assets/audio/sfx/results/result_count.wav"
+    },
+    {
+      "key": "sfx_craft_result_reveal",
+      "path": "assets/audio/sfx/results/result_reveal.wav"
+    },
+    {
+      "key": "sfx_craft_result_important",
+      "path": "assets/audio/sfx/results/result_important.wav"
+    },
+    {
+      "key": "sfx_craft_result_double",
+      "path": "assets/audio/sfx/results/result_double.wav"
+    },
+    {
+      "key": "sfx_craft_progress_core",
+      "path": "assets/audio/sfx/progress/progress_core.wav"
+    },
+    {
+      "key": "sfx_craft_progress_talent",
+      "path": "assets/audio/sfx/progress/progress_talent.wav"
+    },
+    {
+      "key": "sfx_craft_progress_overcap",
+      "path": "assets/audio/sfx/progress/progress_overcap.wav"
+    },
+    {
+      "key": "sfx_craft_progress_promotion",
+      "path": "assets/audio/sfx/progress/progress_promotion.wav"
+    },
+    {
+      "key": "sfx_craft_progress_perk",
+      "path": "assets/audio/sfx/progress/progress_perk.wav"
+    },
+    {
+      "key": "sfx_craft_progress_ancient",
+      "path": "assets/audio/sfx/progress/progress_ancient.wav"
+    },
+    {
+      "key": "sfx_craft_progress_daily",
+      "path": "assets/audio/sfx/progress/progress_daily.wav"
+    },
+    {
+      "key": "sfx_craft_progress_achievement",
+      "path": "assets/audio/sfx/progress/progress_achievement.wav"
+    },
+    {
+      "key": "sfx_craft_progress_quest",
+      "path": "assets/audio/sfx/progress/progress_quest.wav"
+    },
+    {
+      "key": "sfx_craft_progress_claim",
+      "path": "assets/audio/sfx/progress/progress_claim.wav"
+    },
+    {
+      "key": "sfx_craft_gear_equip",
+      "path": "assets/audio/sfx/gear/gear_equip.wav"
+    },
+    {
+      "key": "sfx_craft_gear_lock",
+      "path": "assets/audio/sfx/gear/gear_lock.wav"
+    },
+    {
+      "key": "sfx_craft_gear_unlock",
+      "path": "assets/audio/sfx/gear/gear_unlock.wav"
+    },
+    {
+      "key": "sfx_craft_gear_enhance_success",
+      "path": "assets/audio/sfx/gear/gear_enhance_success.wav"
+    },
+    {
+      "key": "sfx_craft_gear_enhance_break",
+      "path": "assets/audio/sfx/gear/gear_enhance_break.wav"
+    },
+    {
+      "key": "sfx_craft_gear_enhance_destroy",
+      "path": "assets/audio/sfx/gear/gear_enhance_destroy.wav"
+    },
+    {
+      "key": "sfx_craft_gear_dismantle",
+      "path": "assets/audio/sfx/gear/gear_dismantle.wav"
+    },
+    {
+      "key": "sfx_craft_gear_sell",
+      "path": "assets/audio/sfx/gear/gear_sell.wav"
+    },
+    {
+      "key": "sfx_craft_capacity",
+      "path": "assets/audio/sfx/craft/craft_capacity.wav"
+    },
+    {
+      "key": "sfx_craft_reroll",
+      "path": "assets/audio/sfx/craft/craft_reroll.wav"
+    },
+    {
+      "key": "sfx_craft_remove",
+      "path": "assets/audio/sfx/craft/craft_remove.wav"
+    },
+    {
+      "key": "sfx_craft_reset",
+      "path": "assets/audio/sfx/craft/craft_reset.wav"
+    },
+    {
+      "key": "sfx_craft_start",
+      "path": "assets/audio/sfx/craft/craft_start.wav"
+    },
+    {
+      "key": "sfx_craft_tick",
+      "path": "assets/audio/sfx/craft/craft_tick.wav"
+    },
+    {
+      "key": "sfx_craft_slow",
+      "path": "assets/audio/sfx/craft/craft_slow.wav"
+    },
+    {
+      "key": "sfx_craft_common",
+      "path": "assets/audio/sfx/craft/craft_common.wav"
+    },
+    {
+      "key": "sfx_craft_rare",
+      "path": "assets/audio/sfx/craft/craft_rare.wav"
+    },
+    {
+      "key": "sfx_craft_jackpot",
+      "path": "assets/audio/sfx/craft/craft_jackpot.wav"
+    },
+    {
+      "key": "sfx_craft_near",
+      "path": "assets/audio/sfx/craft/craft_near.wav"
+    },
+    {
+      "key": "sfx_craft_cancel",
+      "path": "assets/audio/sfx/craft/craft_cancel.wav"
+    },
+    {
+      "key": "sfx_craft_exhaust",
+      "path": "assets/audio/sfx/craft/craft_exhaust.wav"
+    },
+    {
+      "key": "sfx_ui_click",
+      "path": "assets/audio/sfx/ui/ui_click.wav"
+    },
+    {
+      "key": "sfx_ui_back",
+      "path": "assets/audio/sfx/ui/ui_back.wav"
+    },
+    {
+      "key": "sfx_ui_confirm",
+      "path": "assets/audio/sfx/ui/ui_confirm.wav"
+    },
+    {
+      "key": "sfx_ui_error",
+      "path": "assets/audio/sfx/ui/ui_error.wav"
+    },
+    {
+      "key": "sfx_frost",
+      "path": "assets/audio/sfx/sfx_skill_frost.wav"
+    },
+    {
+      "key": "sfx_ult_bomb",
+      "path": "assets/audio/sfx/sfx_ult_sugarbomb.wav"
+    },
+    {
+      "key": "sfx_ult_vortex",
+      "path": "assets/audio/sfx_vfx_ult_cocoavortex.wav"
+    },
+    {
+      "key": "sfx_donut",
+      "path": "assets/audio/sfx_vfx_proj_donut.wav"
+    },
+    {
+      "key": "sfx_hazard",
+      "path": "assets/audio/sfx_vfx_telegraph_hazard.wav"
+    },
+    {
+      "key": "sfx_crit",
+      "path": "assets/audio/sfx/gen/sfx_crit.wav"
+    },
+    {
+      "key": "sfx_kill_big",
+      "path": "assets/audio/sfx/gen/sfx_kill_big.wav"
+    },
+    {
+      "key": "sfx_hurt",
+      "path": "assets/audio/sfx/gen/sfx_hurt_soft.mp3"
+    },
+    {
+      "key": "sfx_heal",
+      "path": "assets/audio/sfx/gen/sfx_heal.wav"
+    },
+    {
+      "key": "sfx_magnet",
+      "path": "assets/audio/sfx/gen/sfx_magnet.wav"
+    },
+    {
+      "key": "sfx_thunder",
+      "path": "assets/audio/sfx/gen/sfx_thunder.wav"
+    },
+    {
+      "key": "sfx_punch",
+      "path": "assets/audio/sfx/gen/sfx_punch.wav"
+    },
+    {
+      "key": "sfx_shotgun",
+      "path": "assets/audio/sfx/gen/sfx_shotgun.wav"
+    },
+    {
+      "key": "sfx_beat_tick",
+      "path": "assets/audio/sfx/gen/sfx_beat_tick.wav"
+    },
+    {
+      "key": "sfx_beat_loop",
+      "path": "assets/audio/sfx/gen/sfx_beat_loop.wav"
+    },
+    {
+      "key": "sfx_beat_hold",
+      "path": "assets/audio/sfx/gen/sfx_beat_hold.wav"
+    },
+    {
+      "key": "sfx_beat_rush",
+      "path": "assets/audio/sfx/gen/sfx_beat_rush.wav"
+    },
+    {
+      "key": "sfx_beat_gun",
+      "path": "assets/audio/sfx/gen/sfx_beat_gun.wav"
+    },
+    {
+      "key": "sfx_beat_cyclone",
+      "path": "assets/audio/sfx/gen/sfx_beat_cyclone.wav"
+    },
+    {
+      "key": "sfx_beat_titan",
+      "path": "assets/audio/sfx/gen/sfx_beat_titan.wav"
+    },
+    {
+      "key": "sfx_beat_juggle",
+      "path": "assets/audio/sfx/gen/sfx_beat_juggle.wav"
+    },
+    {
+      "key": "sfx_beat_rainbow",
+      "path": "assets/audio/sfx/gen/sfx_beat_rainbow.wav"
+    },
+    {
+      "key": "sfx_beat_fever",
+      "path": "assets/audio/sfx/gen/sfx_beat_fever.wav"
+    },
+    {
+      "key": "sfx_beat_cue",
+      "path": "assets/audio/sfx/gen/sfx_beat_cue.wav"
+    },
+    {
+      "key": "sfx_beat_start",
+      "path": "assets/audio/sfx/gen/sfx_beat_start.wav"
+    },
+    {
+      "key": "sfx_beat_perfect",
+      "path": "assets/audio/sfx/gen/sfx_beat_perfect.wav"
+    },
+    {
+      "key": "sfx_beat_good",
+      "path": "assets/audio/sfx/gen/sfx_beat_good.wav"
+    },
+    {
+      "key": "sfx_beat_miss",
+      "path": "assets/audio/sfx/gen/sfx_beat_miss.wav"
+    },
+    {
+      "key": "sfx_punch_jab",
+      "path": "assets/audio/sfx/gen/sfx_punch_jab.wav"
+    },
+    {
+      "key": "sfx_punch_heavy",
+      "path": "assets/audio/sfx/gen/sfx_punch_heavy.wav"
+    },
+    {
+      "key": "sfx_punch_frenzy",
+      "path": "assets/audio/sfx/gen/sfx_punch_frenzy.wav"
+    },
+    {
+      "key": "sfx_beam",
+      "path": "assets/audio/sfx/gen/sfx_beam.wav"
+    },
+    {
+      "key": "sfx_burn",
+      "path": "assets/audio/sfx/gen/sfx_burn.wav"
+    },
+    {
+      "key": "sfx_card",
+      "path": "assets/audio/sfx/gen/sfx_card.wav"
+    },
+    {
+      "key": "sfx_legend",
+      "path": "assets/audio/sfx/gen/sfx_legend.wav"
+    },
+    {
+      "key": "sfx_victory",
+      "path": "assets/audio/sfx/gen/sfx_victory.mp3"
+    },
+    {
+      "key": "sfx_boss_clear",
+      "path": "assets/audio/sfx/gen/sfx_boss_clear.mp3"
+    },
+    {
+      "key": "sfx_chest_spin",
+      "path": "assets/audio/sfx/gen/sfx_chest_spin.mp3"
+    },
+    {
+      "key": "sfx_chest_tick",
+      "path": "assets/audio/sfx/gen/sfx_chest_tick.mp3"
+    },
+    {
+      "key": "sfx_dig_hit",
+      "path": "assets/audio/sfx/gen/sfx_dig_hit.mp3"
+    },
+    {
+      "key": "sfx_dig_break",
+      "path": "assets/audio/sfx/gen/sfx_dig_break.mp3"
+    },
+    {
+      "key": "sfx_dig_find",
+      "path": "assets/audio/sfx/gen/sfx_dig_find.mp3"
+    },
+    {
+      "key": "sfx_recipe_fire",
+      "path": "assets/audio/sfx/gen/sfx_recipe_fire.mp3"
+    },
+    {
+      "key": "sfx_recipe_merge",
+      "path": "assets/audio/sfx/gen/sfx_recipe_merge.mp3"
+    },
+    {
+      "key": "sfx_dig_rare",
+      "path": "assets/audio/sfx/gen/sfx_dig_rare.mp3"
+    },
+    {
+      "key": "sfx_dig_trap",
+      "path": "assets/audio/sfx/gen/sfx_dig_trap.mp3"
+    },
+    {
+      "key": "sfx_dig_descend",
+      "path": "assets/audio/sfx/gen/sfx_dig_descend.mp3"
+    },
+    {
+      "key": "sfx_slot_spin",
+      "path": "assets/audio/sfx/gen/sfx_slot_spin.mp3"
+    },
+    {
+      "key": "sfx_slot_miss",
+      "path": "assets/audio/sfx/gen/sfx_slot_miss.mp3"
+    },
+    {
+      "key": "sfx_slot_near",
+      "path": "assets/audio/sfx/gen/sfx_slot_near.mp3"
+    },
+    {
+      "key": "sfx_slot_jackpot",
+      "path": "assets/audio/sfx/gen/sfx_slot_jackpot.mp3"
+    },
+    {
+      "key": "sfx_chest_win",
+      "path": "assets/audio/sfx/gen/sfx_chest_win.mp3"
+    },
+    {
+      "key": "sfx_defeat",
+      "path": "assets/audio/sfx/gen/sfx_defeat.wav"
+    },
+    {
+      "key": "sfx_boss_warn",
+      "path": "assets/audio/sfx/gen/sfx_boss_warn.mp3"
+    }
+  ],
+  "calls": [
+    {
+      "line": 4616,
+      "context_method": "for",
+      "method": "setVolumes",
+      "snippet": "function applyVolSettings(st){ st=st||{}; Sfx.setVolumes(st.musicVol==null?1:st.musicVol, st.sfxVol==null?1:st.sfxVol); }"
+    },
+    {
+      "line": 6021,
+      "context_method": "setupInput",
+      "method": "unlock",
+      "snippet": "Sfx.unlock();"
+    },
+    {
+      "line": 6028,
+      "context_method": "setupInput",
+      "method": "toggle",
+      "snippet": "if(hit==='mute'){ const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }"
+    },
+    {
+      "line": 6030,
+      "context_method": "setupInput",
+      "method": "select",
+      "snippet": "if(hit==='speed'&&this.state==='play'){ this.setGameSpeed((this.gameSpeed||1)>=3?1:(this.gameSpeed||1)+1); Sfx.select(); return; } }"
+    },
+    {
+      "line": 6032,
+      "context_method": "setupInput",
+      "method": "uiAction",
+      "snippet": "for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } }"
+    },
+    {
+      "line": 6039,
+      "context_method": "setupInput",
+      "method": "uiAction",
+      "snippet": "if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}"
+    },
+    {
+      "line": 6042,
+      "context_method": "setupInput",
+      "method": "uiAction",
+      "snippet": "if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม"
+    },
+    {
+      "line": 6043,
+      "context_method": "setupInput",
+      "method": "uiAction",
+      "snippet": "if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)"
+    },
+    {
+      "line": 6044,
+      "context_method": "setupInput",
+      "method": "uiAction",
+      "snippet": "if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}"
+    },
+    {
+      "line": 6086,
+      "context_method": "setupKeyboard",
+      "method": "unlock",
+      "snippet": "kb.on('keydown',ev=>{ const k=ev.code; if(ev.repeat)return; Sfx.unlock&&Sfx.unlock();"
+    },
+    {
+      "line": 6113,
+      "context_method": "doDash",
+      "method": "dash",
+      "snippet": "Sfx.dash();"
+    },
+    {
+      "line": 6155,
+      "context_method": "startSnipeCharge",
+      "method": "bp",
+      "snippet": "if(this._snipe.blast)Sfx.bp?.('uq_shotgun_pump',.6,.2); else if(!this._snipe.kind){ Sfx.bpLoopStart?.('uq_sniper_charge',.22); this.fxScopeStart?.(); } else Sfx.bp?.('shared_unique_charge_start',.5,.2)||(Sfx.beatFx&&Sfx.beatFx('hold')); }   /* v6.82 Unique SFX */"
+    },
+    {
+      "line": 6155,
+      "context_method": "startSnipeCharge",
+      "method": "bpLoopStart",
+      "snippet": "if(this._snipe.blast)Sfx.bp?.('uq_shotgun_pump',.6,.2); else if(!this._snipe.kind){ Sfx.bpLoopStart?.('uq_sniper_charge',.22); this.fxScopeStart?.(); } else Sfx.bp?.('shared_unique_charge_start',.5,.2)||(Sfx.beatFx&&Sfx.beatFx('hold')); }   /* v6.82 Unique SFX */"
+    },
+    {
+      "line": 6155,
+      "context_method": "startSnipeCharge",
+      "method": "bp",
+      "snippet": "if(this._snipe.blast)Sfx.bp?.('uq_shotgun_pump',.6,.2); else if(!this._snipe.kind){ Sfx.bpLoopStart?.('uq_sniper_charge',.22); this.fxScopeStart?.(); } else Sfx.bp?.('shared_unique_charge_start',.5,.2)||(Sfx.beatFx&&Sfx.beatFx('hold')); }   /* v6.82 Unique SFX */"
+    },
+    {
+      "line": 6155,
+      "context_method": "startSnipeCharge",
+      "method": "beatFx",
+      "snippet": "if(this._snipe.blast)Sfx.bp?.('uq_shotgun_pump',.6,.2); else if(!this._snipe.kind){ Sfx.bpLoopStart?.('uq_sniper_charge',.22); this.fxScopeStart?.(); } else Sfx.bp?.('shared_unique_charge_start',.5,.2)||(Sfx.beatFx&&Sfx.beatFx('hold')); }   /* v6.82 Unique SFX */"
+    },
+    {
+      "line": 6157,
+      "context_method": "cancelSnipe",
+      "method": "bpLoopStop",
+      "snippet": "cancelSnipe(){ const s=this._snipe;if(!s)return; if(typeof Sfx!=='undefined')Sfx.bpLoopStop?.('uq_sniper_charge'); if(this._scopeFx)this.fxScopeStop?.(); if(s.g)s.g.destroy();if(s.aura)s.aura.destroy(); this._snipe=null; }"
+    },
+    {
+      "line": 6161,
+      "context_method": "tickSnipe",
+      "method": "bp",
+      "snippet": "if(s.kind==='bloom'){ const r=this.bloomRadius(c); if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }"
+    },
+    {
+      "line": 6161,
+      "context_method": "tickSnipe",
+      "method": "beatFx",
+      "snippet": "if(s.kind==='bloom'){ const r=this.bloomRadius(c); if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }"
+    },
+    {
+      "line": 6165,
+      "context_method": "tickSnipe",
+      "method": "bp",
+      "snippet": "if(s.kind==='lance'){ const L=this.lanceLen(),ca=Math.cos(s.ang),sa=Math.sin(s.ang); if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }"
+    },
+    {
+      "line": 6165,
+      "context_method": "tickSnipe",
+      "method": "beatFx",
+      "snippet": "if(s.kind==='lance'){ const L=this.lanceLen(),ca=Math.cos(s.ang),sa=Math.sin(s.ang); if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }"
+    },
+    {
+      "line": 6168,
+      "context_method": "tickSnipe",
+      "method": "bp",
+      "snippet": "if(s.blast){ const bm=this.blastMods(),R=300,h=bm.cone/2; if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('uq_shotgun_full',.55,.3)||Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }"
+    },
+    {
+      "line": 6168,
+      "context_method": "tickSnipe",
+      "method": "bp",
+      "snippet": "if(s.blast){ const bm=this.blastMods(),R=300,h=bm.cone/2; if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('uq_shotgun_full',.55,.3)||Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }"
+    },
+    {
+      "line": 6168,
+      "context_method": "tickSnipe",
+      "method": "beatFx",
+      "snippet": "if(s.blast){ const bm=this.blastMods(),R=300,h=bm.cone/2; if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('uq_shotgun_full',.55,.3)||Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }"
+    },
+    {
+      "line": 6175,
+      "context_method": "tickSnipe",
+      "method": "bp",
+      "snippet": "if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('uq_sniper_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); this.burst(pl.x,pl.y-58,0xffd166); }"
+    },
+    {
+      "line": 6175,
+      "context_method": "tickSnipe",
+      "method": "beatFx",
+      "snippet": "if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('uq_sniper_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); this.burst(pl.x,pl.y-58,0xffd166); }"
+    },
+    {
+      "line": 6194,
+      "context_method": "releaseSnipe",
+      "method": "bp",
+      "snippet": "beam(ang,dmg,w); if(this.player._pt&&this.player._pt.railgun&&c>=1)this.artDelay(400,()=>{if(this.state==='play'&&this.basicAttack===basic&&(this._artEpoch||0)===epoch)beam(ang,dmg*0.7,w*0.8);Sfx.bp?.('uq_sniper_fire',.35,.15,.9);});"
+    },
+    {
+      "line": 6198,
+      "context_method": "releaseSnipe",
+      "method": "bp",
+      "snippet": "if(!Sfx.bp?.('uq_sniper_fire',.5+.3*Math.min(1,c),.15,c>=1?1:.92)){ if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam(); } else this.artDelay(260,()=>{ if(this.state==='play')Sfx.bp?.('uq_sniper_bolt',.3,.5); });"
+    },
+    {
+      "line": 6198,
+      "context_method": "releaseSnipe",
+      "method": "boom",
+      "snippet": "if(!Sfx.bp?.('uq_sniper_fire',.5+.3*Math.min(1,c),.15,c>=1?1:.92)){ if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam(); } else this.artDelay(260,()=>{ if(this.state==='play')Sfx.bp?.('uq_sniper_bolt',.3,.5); });"
+    },
+    {
+      "line": 6198,
+      "context_method": "releaseSnipe",
+      "method": "beam",
+      "snippet": "if(!Sfx.bp?.('uq_sniper_fire',.5+.3*Math.min(1,c),.15,c>=1?1:.92)){ if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam(); } else this.artDelay(260,()=>{ if(this.state==='play')Sfx.bp?.('uq_sniper_bolt',.3,.5); });"
+    },
+    {
+      "line": 6198,
+      "context_method": "releaseSnipe",
+      "method": "bp",
+      "snippet": "if(!Sfx.bp?.('uq_sniper_fire',.5+.3*Math.min(1,c),.15,c>=1?1:.92)){ if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam(); } else this.artDelay(260,()=>{ if(this.state==='play')Sfx.bp?.('uq_sniper_bolt',.3,.5); });"
+    },
+    {
+      "line": 6204,
+      "context_method": "releaseGlacierBloom",
+      "method": "bp",
+      "snippet": "releaseGlacierBloom(c){ if(c>=1){Sfx.bp?.('uq_mint_bloom_full',.7,.3);this.fxFreezeScreen?.();} else Sfx.bp?.('mint_glacier_bloom',.65,.3); const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[],bosses=[];"
+    },
+    {
+      "line": 6204,
+      "context_method": "releaseGlacierBloom",
+      "method": "bp",
+      "snippet": "releaseGlacierBloom(c){ if(c>=1){Sfx.bp?.('uq_mint_bloom_full',.7,.3);this.fxFreezeScreen?.();} else Sfx.bp?.('mint_glacier_bloom',.65,.3); const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),r=this.bloomRadius(c),cx=pl.x,cy=pl.y,dur=2+0.6*(lv.m_hold||0),hit=(30+ul*10)*unit,frozen=[],bosses=[];"
+    },
+    {
+      "line": 6211,
+      "context_method": "releaseGlacierBloom",
+      "method": "magnet",
+      "snippet": "this.screenFlash&&this.screenFlash(0xbdf0ff,0.18,220); this.screenShake(120,0.005); Sfx.magnet&&Sfx.magnet();"
+    },
+    {
+      "line": 6216,
+      "context_method": "releaseGlacierBloom",
+      "method": "bp",
+      "snippet": "if(n){ this.screenShake(100,0.004); Sfx.bp?.('mint_glacier_shatter',.6,.2)||(Sfx.boom&&Sfx.boom()); } });"
+    },
+    {
+      "line": 6216,
+      "context_method": "releaseGlacierBloom",
+      "method": "boom",
+      "snippet": "if(n){ this.screenShake(100,0.004); Sfx.bp?.('mint_glacier_shatter',.6,.2)||(Sfx.boom&&Sfx.boom()); } });"
+    },
+    {
+      "line": 6222,
+      "context_method": "releaseFrostLance",
+      "method": "boom",
+      "snippet": "this.tweens.add({targets:pl,x:x0+ca*L,y:y0+sa*L,duration:170,ease:'Quad.out',onUpdate:()=>{ if(pl.body)pl.body.reset(pl.x,pl.y); },onComplete:()=>{ if(lv.l_burst&&this.state==='play'){ const bx=pl.x,by=pl.y; this.vfxHitRing(bx,by,0x9fe8ff,true); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,bx,by)<110)this.damage(e,dmg*(1+0.5*lv.l_burst)*0.6,e.x,e.y); }); Sfx.boom&&Sfx.boom(); } }});"
+    },
+    {
+      "line": 6227,
+      "context_method": "releaseFrostLance",
+      "method": "bp",
+      "snippet": "this.screenShake(110,0.005); (this.fxLanceScreen?.(ang),Sfx.bp?.('uq_mint_lance_release',.6,.2))||(Sfx.dash&&Sfx.dash()); this.showBanner('🗡️ Frost Lance',hits+' pierced',700); }"
+    },
+    {
+      "line": 6227,
+      "context_method": "releaseFrostLance",
+      "method": "dash",
+      "snippet": "this.screenShake(110,0.005); (this.fxLanceScreen?.(ang),Sfx.bp?.('uq_mint_lance_release',.6,.2))||(Sfx.dash&&Sfx.dash()); this.showBanner('🗡️ Frost Lance',hits+' pierced',700); }"
+    },
+    {
+      "line": 6234,
+      "context_method": "releaseBerryBlast",
+      "method": "bp",
+      "snippet": "const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */"
+    },
+    {
+      "line": 6234,
+      "context_method": "releaseBerryBlast",
+      "method": "uqReady",
+      "snippet": "const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */"
+    },
+    {
+      "line": 6234,
+      "context_method": "releaseBerryBlast",
+      "method": "boom",
+      "snippet": "const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */"
+    },
+    {
+      "line": 6278,
+      "context_method": "useCharacterSkill",
+      "method": "bp",
+      "snippet": "if(c.unique==='citrusParade'){this._yuzuParadeT=5+ul+(this.player.yuzuParade?2:0);Sfx.bp?.('uq_yuzu_parade',.6,.5);this.showBanner('🍋 Citrus Parade','The Citrus Crew rallies!',1200);return;}"
+    },
+    {
+      "line": 6285,
+      "context_method": "useCharacterSkill",
+      "method": "bp",
+      "snippet": "this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();"
+    },
+    {
+      "line": 6285,
+      "context_method": "useCharacterSkill",
+      "method": "shoot",
+      "snippet": "this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();"
+    },
+    {
+      "line": 6317,
+      "context_method": "castWindRush",
+      "method": "bp",
+      "snippet": "this.jelly&&this.jelly(0.25,-0.2);this.fxGaleScreen?.();if(!Sfx.bp?.('uq_mint_gale',.6,.3)){Sfx.dash&&Sfx.dash();Sfx.magnet&&Sfx.magnet();}"
+    },
+    {
+      "line": 6317,
+      "context_method": "castWindRush",
+      "method": "dash",
+      "snippet": "this.jelly&&this.jelly(0.25,-0.2);this.fxGaleScreen?.();if(!Sfx.bp?.('uq_mint_gale',.6,.3)){Sfx.dash&&Sfx.dash();Sfx.magnet&&Sfx.magnet();}"
+    },
+    {
+      "line": 6317,
+      "context_method": "castWindRush",
+      "method": "magnet",
+      "snippet": "this.jelly&&this.jelly(0.25,-0.2);this.fxGaleScreen?.();if(!Sfx.bp?.('uq_mint_gale',.6,.3)){Sfx.dash&&Sfx.dash();Sfx.magnet&&Sfx.magnet();}"
+    },
+    {
+      "line": 6347,
+      "context_method": "castDiamondDust",
+      "method": "frost",
+      "snippet": "this.hitCratesInRadius(cx,cy,r,dmg);Sfx.frost();"
+    },
+    {
+      "line": 6350,
+      "context_method": "castDiamondDust",
+      "method": "frost",
+      "snippet": "this.showBanner('❄️ Diamond Dust Lv'+ul,'Ice shard rain '+dur.toFixed(1)+'s · radius '+r+' · freeze crowd + guard',950);Sfx.frost();"
+    },
+    {
+      "line": 6366,
+      "context_method": "castJamOverdrive",
+      "method": "shoot",
+      "snippet": "petals.forEach((p,i)=>{if(!p.active)return;const a=p._a+fired*0.55;p.setPosition(this.player.x+Math.cos(a)*48,this.player.y+Math.sin(a)*34);});this.vfxHitRing(this.player.x,this.player.y,0xff5f88,false);Sfx.shoot();"
+    },
+    {
+      "line": 6370,
+      "context_method": "castJamOverdrive",
+      "method": "clear",
+      "snippet": "this.showBanner('💗 Jam Overdrive Lv'+ul,barrels+' barrels · '+salvos+' salvos · auto lock-on',950);Sfx.clear();"
+    },
+    {
+      "line": 6403,
+      "context_method": "castPathRecall",
+      "method": "bp",
+      "snippet": "Sfx.bp?.('uq_taro_chain_hit',.4,.3)||Sfx.zap();"
+    },
+    {
+      "line": 6403,
+      "context_method": "castPathRecall",
+      "method": "zap",
+      "snippet": "Sfx.bp?.('uq_taro_chain_hit',.4,.3)||Sfx.zap();"
+    },
+    {
+      "line": 6408,
+      "context_method": "castPathRecall",
+      "method": "bp",
+      "snippet": "this.showBanner('⚡ Chain Bolt Lv'+ul,'Chains up to '+(jumps*forks)+' · power '+Math.round(dmg)+' · Dash ready',950);Sfx.bp?.('uq_taro_chain_cast',.6,.3)||Sfx.zap();"
+    },
+    {
+      "line": 6408,
+      "context_method": "castPathRecall",
+      "method": "zap",
+      "snippet": "this.showBanner('⚡ Chain Bolt Lv'+ul,'Chains up to '+(jumps*forks)+' · power '+Math.round(dmg)+' · Dash ready',950);Sfx.bp?.('uq_taro_chain_cast',.6,.3)||Sfx.zap();"
+    },
+    {
+      "line": 6435,
+      "context_method": "castVoidPull",
+      "method": "ult",
+      "snippet": "this.showBanner('🕳️ Dark Chocolate Void Lv'+ul,'Pulls the crowd in '+duration.toFixed(1)+'s · radius '+r,1000);Sfx.ult&&Sfx.ult('vortex');"
+    },
+    {
+      "line": 6443,
+      "context_method": "castVoidPull",
+      "method": "boom",
+      "snippet": "this.vfxHitRing(cx,cy,0x8b5cf0,true);this.burst(cx,cy,0x8b5cf0);this.screenShake(160,0.006);Sfx.boom();"
+    },
+    {
+      "line": 6459,
+      "context_method": "castOathWard",
+      "method": "bp",
+      "snippet": "this.showBanner('🔮 Prism Barrage Lv'+ul,'Sweeping mirror beams · '+volleys+' volleys',1000); Sfx.bp?.('uq_sesame_prism_charge',.55,.3)||Sfx.zap();"
+    },
+    {
+      "line": 6459,
+      "context_method": "castOathWard",
+      "method": "zap",
+      "snippet": "this.showBanner('🔮 Prism Barrage Lv'+ul,'Sweeping mirror beams · '+volleys+' volleys',1000); Sfx.bp?.('uq_sesame_prism_charge',.55,.3)||Sfx.zap();"
+    },
+    {
+      "line": 6465,
+      "context_method": "castOathWard",
+      "method": "bp",
+      "snippet": "this.screenShake(90,0.004); Sfx.bp?.('uq_sesame_prism_volley',.45,.18)||Sfx.zap();"
+    },
+    {
+      "line": 6465,
+      "context_method": "castOathWard",
+      "method": "zap",
+      "snippet": "this.screenShake(90,0.004); Sfx.bp?.('uq_sesame_prism_volley',.45,.18)||Sfx.zap();"
+    },
+    {
+      "line": 6745,
+      "context_method": "cookDish",
+      "method": "clear",
+      "snippet": "Sfx.clear(); if(Sfx.pop)Sfx.pop();"
+    },
+    {
+      "line": 6745,
+      "context_method": "cookDish",
+      "method": "pop",
+      "snippet": "Sfx.clear(); if(Sfx.pop)Sfx.pop();"
+    },
+    {
+      "line": 6893,
+      "context_method": "uiStageCard",
+      "method": "select",
+      "snippet": "cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());"
+    },
+    {
+      "line": 6897,
+      "context_method": "handleTap",
+      "method": "uiAction",
+      "snippet": "{ const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ this._tapFeedback(bz,px,py); Sfx.uiAction('back',()=>bz.fn()); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย"
+    },
+    {
+      "line": 6902,
+      "context_method": "handleTap",
+      "method": "uiAction",
+      "snippet": "if(!hit)return; this._tapFeedback(hit,px,py); Sfx.uiAction(hit.sound||'click',()=>hit.fn()); }"
+    },
+    {
+      "line": 6981,
+      "context_method": "_screenBg",
+      "method": "back",
+      "snippet": "this.menu.add([bg2,bt]); this._zone(0,Math.max(0,by-16),110,bh+28,()=>{ Sfx.back(); const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].back=true;"
+    },
+    {
+      "line": 7001,
+      "context_method": "applyGearTut",
+      "method": "select",
+      "snippet": "if(this._mintCoach){ const z=this.tapZones.find(q=>q.tag==='char_mint'); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character='mint'; this.character='mint'; Save.data.mintIntro=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(2); };"
+    },
+    {
+      "line": 7039,
+      "context_method": "buildHubGroup",
+      "method": "select",
+      "snippet": "this._zone(x,y,bw,rh,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}"
+    },
+    {
+      "line": 7068,
+      "context_method": "_buildHubTiles",
+      "method": "select",
+      "snippet": "this._zone(x,ty,ww,th,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}"
+    },
+    {
+      "line": 7223,
+      "context_method": "buildStats",
+      "method": "select",
+      "snippet": "rows.forEach((r,i)=>{ const ry=y+i*(rh+gap),g=this.add.graphics();this._zone(14,ry,cardW,rh,()=>{Sfx.select&&Sfx.select();this.showStatSources(p,keys[i],r);}); g.fillStyle(0x2c2338,1); g.fillRoundedRect(14,ry,cardW,rh,10); g.lineStyle(1.4,0x4a4059,1); g.strokeRoundedRect(14,ry,cardW,rh,10); g.fillStyle(r[4],0.16); g.fillRoundedRect(14,ry,5,rh,{tl:10,bl:10,tr:0,br:0});"
+    },
+    {
+      "line": 7329,
+      "context_method": "_codexNav",
+      "method": "select",
+      "snippet": "const nav=(cx,lab,en,fn)=>{const g=this.add.graphics();g.fillStyle(en?0x463653:0x28212e,1);g.fillRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);g.lineStyle(1,en?0xa98cf0:0x44394d,1);g.strokeRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);const tt=this.add.text(cx,navY,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:en?'#f5eaff':'#665d70'}).setOrigin(0.5);this.menu.add([g,tt]);if(en)this._zone(cx-navW/2,navY-navH/2,navW,navH,()=>{Sfx.select&&Sfx.select();fn();});};"
+    },
+    {
+      "line": 7418,
+      "context_method": "buildDaily",
+      "method": "progress",
+      "snippet": "if(!claimed)this._zone(w/2-bw/2,by-20,bw,40,()=>{if(d.claimDay===spec.key)return;const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;Save.addSugar(50+d.streak*15);Sfx.progress('daily');this.showBanner('🎁 Daily Reward','Streak '+d.streak+' days · get 🍬 '+(50+d.streak*15),1700);this.buildDaily();});"
+    },
+    {
+      "line": 7473,
+      "context_method": "craftRecipe",
+      "method": "chest",
+      "snippet": "Save.save(); Sfx.chest&&Sfx.chest(); this.menuToast('📜 '+RECIPE_RARITY[r.rarity].label+' · '+(r.mods.length?r.mods.map(id=>recipeModDef(id).emoji).join(' '):'no mods'),'#9dff9d'); }"
+    },
+    {
+      "line": 7574,
+      "context_method": "atlasTapAt",
+      "method": "select",
+      "snippet": "Sfx.select&&Sfx.select();"
+    },
+    {
+      "line": 7662,
+      "context_method": "buildPact",
+      "method": "select",
+      "snippet": "this._zone(cx,y,cw,rh,()=>{ if(!Save.data.pact)Save.data.pact={}; Save.data.pact[d.id]=lv>=d.max?0:lv+1; Save.save(); Sfx.select&&Sfx.select(); this.buildAtlas(); });"
+    },
+    {
+      "line": 7801,
+      "context_method": "drawTutorial",
+      "method": "select",
+      "snippet": "this.over.add([step,em,name,title,desc,hint]);this.over.setVisible(true);Sfx.select();"
+    },
+    {
+      "line": 7823,
+      "context_method": "buildAchievements",
+      "method": "progress",
+      "snippet": "this.menu.add([g,em,nm,ds,state]);if(ok&&!claimed){this.drawBadgeDot(this.menu,x+cw-10,y+10);this._zone(x,y,cw,rh,()=>{if(Save.data.achievements[a.id]||!a.test(Save.data))return;Save.data.achievements[a.id]=true;Save.addSugar(a.reward);Sfx.progress('achievement');this.showBanner(a.emoji+' Achievement unlocked!',a.name+' · get 🍬 '+a.reward,1600);this.buildAchievements();});}"
+    },
+    {
+      "line": 7844,
+      "context_method": "buildSettings",
+      "method": "select",
+      "snippet": "rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{if(r.open){Sfx.select();this._heroesTab='roster';this.menuScreen='playstats';this.buildMenuScreen();return;}r.toggle();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls();this.buildSettings();},rx,rw);});"
+    },
+    {
+      "line": 7844,
+      "context_method": "buildSettings",
+      "method": "select",
+      "snippet": "rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{if(r.open){Sfx.select();this._heroesTab='roster';this.menuScreen='playstats';this.buildMenuScreen();return;}r.toggle();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls();this.buildSettings();},rx,rw);});"
+    },
+    {
+      "line": 7858,
+      "context_method": "buildSettings",
+      "method": "clear",
+      "snippet": "if(this._resetTaps>=3){ Save.reset(); this._resetTaps=0; this.character='momo'; Sfx.clear(); this.menuScreen='hub'; this.buildMenuScreen(); return; }"
+    },
+    {
+      "line": 7859,
+      "context_method": "buildSettings",
+      "method": "select",
+      "snippet": "Sfx.select(); this.buildSettings();"
+    },
+    {
+      "line": 7893,
+      "context_method": "buildStats",
+      "method": "select",
+      "snippet": "this.uiPillBtn(this.menu,w/2,h-62,Math.min(cw,240),36,COLORS.grape,'📋','Copy to clipboard',()=>{ Sfx.select(); Stats.copy().then(ok=>this.menuToast(ok?'📋 Stats copied — paste them anywhere':'Copy failed on this device',ok?'#8ff0b0':'#ff9bb5')); });"
+    },
+    {
+      "line": 7895,
+      "context_method": "buildStats",
+      "method": "select",
+      "snippet": "this._zone(w/2-110,h-40,220,28,()=>{ if(this._statsClear){ this._statsClear=0; Stats.clear(); this.menuToast('Stats cleared'); } else this._statsClear=1; Sfx.select(); this.buildStats(); });"
+    },
+    {
+      "line": 7906,
+      "context_method": "doGoogleAuth",
+      "method": "select",
+      "snippet": "Sfx.select();"
+    },
+    {
+      "line": 7921,
+      "context_method": "claimReadyQuests",
+      "method": "progress",
+      "snippet": "if(claimed){ Save.save(); if(this.menuToast)this.menuToast('🎯 Quest complete! +🍬'+total+' · '+claimed.t,'#ffe08a'); Sfx.progress('quest'); }   // menuToast is safe in the hub (bannerT not built there)"
+    },
+    {
+      "line": 8008,
+      "context_method": "buildHub",
+      "method": "select",
+      "snippet": "this.menu.add([qg,qt,qr]); this._zone(qx,qy,qw,qh,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=nq.go; this.buildMenuScreen(); });"
+    },
+    {
+      "line": 8032,
+      "context_method": "buildHub",
+      "method": "select",
+      "snippet": "this.uiMenuCard(this.menu,cx,cy,bw,bh,0x565266,'🔒',label,'Clear Stage '+need[i]+' to unlock',()=>{this.menuToast&&this.menuToast('🔒 Locked — clear Stage '+need[i]+' first','#ff9bb5');Sfx.select&&Sfx.select();},false); }"
+    },
+    {
+      "line": 8066,
+      "context_method": "paintedNavButton",
+      "method": "select",
+      "snippet": "cont.add([art,text]);if(fn)this._zone(cx-w/2,cy-h/2,w,h,()=>{Sfx.select&&Sfx.select();fn();});"
+    },
+    {
+      "line": 8094,
+      "context_method": "buildChars",
+      "method": "select",
+      "snippet": "if(!selected)this._zone(x,y,cardW,cardH,()=>{if(locked){this.showCharacterInfo(id);return;}Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});if(!selected){const lz=this.tapZones[this.tapZones.length-1];if(lz)lz.tag='char_'+id;}"
+    },
+    {
+      "line": 8178,
+      "context_method": "showMintWarning",
+      "method": "select",
+      "snippet": "this.menu.setVisible(true);Sfx.select&&Sfx.select();"
+    },
+    {
+      "line": 8209,
+      "context_method": "buildZoneModifiers",
+      "method": "select",
+      "snippet": "this.menu.add([cg,ct]);if(active.length)this._zone(x+half+8,y,half,42,()=>{Save.data.zoneMods=[];Save.save();Sfx.select&&Sfx.select();this.buildZoneModifiers(idx);});"
+    },
+    {
+      "line": 8215,
+      "context_method": "rerollZoneMods",
+      "method": "select",
+      "snippet": "rerollZoneMods(idx){ if(Save.currency('chaos')<1){ Sfx.select&&Sfx.select(); this.menuToast&&this.menuToast('Need '+currencyDef('chaos').emoji+' '+currencyDef('chaos').name+' to reroll','#ff9bb5'); return; }"
+    },
+    {
+      "line": 8217,
+      "context_method": "rerollZoneMods",
+      "method": "clear",
+      "snippet": "Save.data.zoneMods=picked; Save.save(); Sfx.clear&&Sfx.clear(); this.buildZoneModifiers(idx); }"
+    },
+    {
+      "line": 8281,
+      "context_method": "buildUpgrade",
+      "method": "progress",
+      "snippet": "if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this._tutorialWeaveCoach){ this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });"
+    },
+    {
+      "line": 8281,
+      "context_method": "buildUpgrade",
+      "method": "select",
+      "snippet": "if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this._tutorialWeaveCoach){ this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });"
+    },
+    {
+      "line": 8292,
+      "context_method": "buildUpgrade",
+      "method": "progress",
+      "snippet": "if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion');"
+    },
+    {
+      "line": 8317,
+      "context_method": "buildSpecialCores",
+      "method": "progress",
+      "snippet": "if(!locked&&!maxed)this._zone(left+cw*.69,y+rowH*.635,cw*.275,rowH*.205,()=>{if(Save.buySpecialCore(core.id)){Sfx.progress('core');this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});"
+    },
+    {
+      "line": 8342,
+      "context_method": "buildKitchen",
+      "method": "digRare",
+      "snippet": "if(nx)this._zone(14,y,cw,rowH,()=>{ if(Save.frUnlockSlot()){ Sfx.digRare(); this.menuToast('🍳 Recipe slot '+(i+1)+' unlocked!','#9ff0c8'); } else { Sfx.select(); this.menuToast('Need 🏅 '+rc+' Rank Points — raise your Weave rank','#ff9bb5'); } this.buildMenuScreen(); });"
+    },
+    {
+      "line": 8342,
+      "context_method": "buildKitchen",
+      "method": "select",
+      "snippet": "if(nx)this._zone(14,y,cw,rowH,()=>{ if(Save.frUnlockSlot()){ Sfx.digRare(); this.menuToast('🍳 Recipe slot '+(i+1)+' unlocked!','#9ff0c8'); } else { Sfx.select(); this.menuToast('Need 🏅 '+rc+' Rank Points — raise your Weave rank','#ff9bb5'); } this.buildMenuScreen(); });"
+    },
+    {
+      "line": 8348,
+      "context_method": "buildKitchen",
+      "method": "select",
+      "snippet": "this.menu.add([pg,tx]); if(ik)this.menu.add(this.add.image(px+isz/2+2,py+ph/2,ik).setDisplaySize(isz,isz)); this._zone(px,py,pw,ph,()=>{ if(sel.slot===i&&sel.k===k&&r[k]){ if(Save.frRemove(i,k)==='sugar')this.menuToast('Removing a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); Sfx.select(); } else { if(sel.k!==k)this._kPage=0; sel.slot=i; sel.k=k; Sfx.select(); } this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 8348,
+      "context_method": "buildKitchen",
+      "method": "select",
+      "snippet": "this.menu.add([pg,tx]); if(ik)this.menu.add(this.add.image(px+isz/2+2,py+ph/2,ik).setDisplaySize(isz,isz)); this._zone(px,py,pw,ph,()=>{ if(sel.slot===i&&sel.k===k&&r[k]){ if(Save.frRemove(i,k)==='sugar')this.menuToast('Removing a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); Sfx.select(); } else { if(sel.k!==k)this._kPage=0; sel.slot=i; sel.k=k; Sfx.select(); } this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 8365,
+      "context_method": "buildKitchen",
+      "method": "recipeMerge",
+      "snippet": "this._zone(x+gw-32,y,32,gh,()=>{ if(Save.frMerge(key)){ Sfx.recipeMerge(); this.digRareBurst&&this.digRareBurst(x+gw/2,y+gh/2,gh,0xffd166); this.menuToast('✨ '+pt.name+' is now ★'+Save.frLv(key)+'!','#ffe08a'); } this.buildMenuScreen(); }); }"
+    },
+    {
+      "line": 8366,
+      "context_method": "buildKitchen",
+      "method": "select",
+      "snippet": "this.menu.add([g,t1,t2]); if(ik)this.menu.add(this.add.image(x+isz/2+4,y+gh/2,ik).setDisplaySize(isz,isz).setAlpha(ok?1:0.45)); this._zone(x,y,zw,gh,()=>{ const pr=Save.frPlace(sel.slot,key); if(pr==='sugar'){ Sfx.select(); this.menuToast('Swapping a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); } else if(pr){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 8366,
+      "context_method": "buildKitchen",
+      "method": "card",
+      "snippet": "this.menu.add([g,t1,t2]); if(ik)this.menu.add(this.add.image(x+isz/2+4,y+gh/2,ik).setDisplaySize(isz,isz).setAlpha(ok?1:0.45)); this._zone(x,y,zw,gh,()=>{ const pr=Save.frPlace(sel.slot,key); if(pr==='sugar'){ Sfx.select(); this.menuToast('Swapping a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); } else if(pr){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 8366,
+      "context_method": "buildKitchen",
+      "method": "select",
+      "snippet": "this.menu.add([g,t1,t2]); if(ik)this.menu.add(this.add.image(x+isz/2+4,y+gh/2,ik).setDisplaySize(isz,isz).setAlpha(ok?1:0.45)); this._zone(x,y,zw,gh,()=>{ const pr=Save.frPlace(sel.slot,key); if(pr==='sugar'){ Sfx.select(); this.menuToast('Swapping a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); } else if(pr){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 8366,
+      "context_method": "buildKitchen",
+      "method": "select",
+      "snippet": "this.menu.add([g,t1,t2]); if(ik)this.menu.add(this.add.image(x+isz/2+4,y+gh/2,ik).setDisplaySize(isz,isz).setAlpha(ok?1:0.45)); this._zone(x,y,zw,gh,()=>{ const pr=Save.frPlace(sel.slot,key); if(pr==='sugar'){ Sfx.select(); this.menuToast('Swapping a part costs 🍬'+FR_SWAP_SUGAR,'#ff9bb5'); } else if(pr){ Sfx.card?Sfx.card():Sfx.select(); if(kind==='t')sel.k='e'; else if(kind==='e')sel.k='m'; } else { Sfx.select(); this.menuToast('Too much flavor! Max 🍯'+FR_FLAVOR_CAP+' per recipe','#ff9bb5'); } this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 8369,
+      "context_method": "buildKitchen",
+      "method": "clear",
+      "snippet": "this._zone(w/2-135,h-34,270,29,()=>{if(this._kResetConfirm){if(Save.frResetRecipes()){Sfx.clear();this._kSel={slot:0,k:'t'};}else this.menuToast('Need recipes and 🧶'+Save.kitchenResetCost()+' Weave Thread','#ff9bb5');this._kResetConfirm=false;}else{this._kResetConfirm=true;Sfx.select();}this.buildKitchen();});"
+    },
+    {
+      "line": 8369,
+      "context_method": "buildKitchen",
+      "method": "select",
+      "snippet": "this._zone(w/2-135,h-34,270,29,()=>{if(this._kResetConfirm){if(Save.frResetRecipes()){Sfx.clear();this._kSel={slot:0,k:'t'};}else this.menuToast('Need recipes and 🧶'+Save.kitchenResetCost()+' Weave Thread','#ff9bb5');this._kResetConfirm=false;}else{this._kResetConfirm=true;Sfx.select();}this.buildKitchen();});"
+    },
+    {
+      "line": 8408,
+      "context_method": "buildDig",
+      "method": "digFind",
+      "snippet": "btn(w/2-bw-6,free?'🎁 Daily ⛏️×10':(bought>=DIG_SHOP_DAILY_LIMIT?'✓ Shop sold out':'🍬120 → ⛏️×5'),free?0x3a5a3a:0x755035,free||canBuy,()=>{ if(free){if(Save.digClaimFree()){Sfx.digFind();this.menuToast('⛏️ +10 shovels — come back tomorrow!');}}else if(Save.digBuyShovels()){Sfx.digFind();this.menuToast('⛏️ +5 shovels');}this.buildDig(); });"
+    },
+    {
+      "line": 8408,
+      "context_method": "buildDig",
+      "method": "digFind",
+      "snippet": "btn(w/2-bw-6,free?'🎁 Daily ⛏️×10':(bought>=DIG_SHOP_DAILY_LIMIT?'✓ Shop sold out':'🍬120 → ⛏️×5'),free?0x3a5a3a:0x755035,free||canBuy,()=>{ if(free){if(Save.digClaimFree()){Sfx.digFind();this.menuToast('⛏️ +10 shovels — come back tomorrow!');}}else if(Save.digBuyShovels()){Sfx.digFind();this.menuToast('⛏️ +5 shovels');}this.buildDig(); });"
+    },
+    {
+      "line": 8418,
+      "context_method": "buildDig",
+      "method": "digFind",
+      "snippet": "if(nx)sb(rx+rw-(m.lv?132:76),70,(m.lv?'⬆ ':'Hire ')+'🍬'+nx.cost,(Save.data.sugar||0)>=nx.cost,()=>{ if(Save.minersUpgrade()){Sfx.digFind();this.menuToast('👷 Miners Lv'+Save.miners().lv+'!','#a8ffb0');this.buildDig();} else this.menuToast('Need 🍬'+nx.cost,'#ff9bb5'); });"
+    },
+    {
+      "line": 8419,
+      "context_method": "buildDig",
+      "method": "digFind",
+      "snippet": "if(m.lv)sb(rx+rw-58,52,'Collect',m.store>=1,()=>{ const n=Save.minersCollect(); if(n>0){Sfx.digFind();this.menuToast('🧶 +'+n+' threads from the miners','#a8ffb0');this.buildDig();} else this.menuToast('Miners are still digging…','#b7abc9'); });"
+    },
+    {
+      "line": 8437,
+      "context_method": "digCell",
+      "method": "select",
+      "snippet": "if((d.shovels||0)<1){ Sfx.select(); this.menuToast(Save.digFreeReady()?'No shovels — claim your free ⛏️ below!':'No shovels left — clear stages to earn more ⛏️','#ff9bb5'); return; }"
+    },
+    {
+      "line": 8447,
+      "context_method": "digCell",
+      "method": "digHit",
+      "snippet": "Sfx.digHit(); this.digTween({targets:cont,x:{from:cx-4,to:cx+4},duration:40,yoyo:true,repeat:2,onComplete:()=>cont.setX(cx)}); this.digDust(cx,cy,cs,4,0.5);"
+    },
+    {
+      "line": 8450,
+      "context_method": "digCell",
+      "method": "digBreak",
+      "snippet": "this.digLater(170,()=>{ c.open=true; this.advanceDaily('dig');if(this._digPending)this._digPending.dailyAdvanced=true; Sfx.digBreak(); this.digShatter(cx,cy,cs,c.hard?0x8a7866:0x96623f); this.drawDigCell(cont,c,cs);"
+    },
+    {
+      "line": 8481,
+      "context_method": "digChestOpen",
+      "method": "chestWin",
+      "snippet": "this.digRareBurst(x,y,cs,0xffd166); if(Sfx.chestWin)Sfx.chestWin();"
+    },
+    {
+      "line": 8492,
+      "context_method": "digResolve",
+      "method": "digFind",
+      "snippet": "if(c.c==='thread'||c.c==='sugar'){ const n=digThreadAmt(d.depth); Save.data.threads=Save.threads()+n; Sfx.digFind(); return {t:'🧶 +'+n+' Weave Thread',c:'#ffe08a'}; }"
+    },
+    {
+      "line": 8493,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "if(c.c==='chest'){ Sfx.digRare(); const roll=Math.random();"
+    },
+    {
+      "line": 8498,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "const st=(DIG_ITEMS[c.c]||{}).stone; if(st){ Save.data.threads=Save.threads()+STONE_THREADS; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' Core Stone! 🧶 +'+STONE_THREADS+' Weave Thread',c:'#ffd166'}; }"
+    },
+    {
+      "line": 8499,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "if(st){ Save.data.coreStones=Save.data.coreStones||{}; Save.data.coreStones[st]=(Save.data.coreStones[st]||0)+1; Sfx.digRare(); return {t:DIG_ITEMS[c.c].emoji+' '+DIG_ITEMS[c.c].name+'! Overcap '+UPGRADES[st].name+' in the Temple',c:'#ffd166'}; }"
+    },
+    {
+      "line": 8500,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "if(c.c==='scroll'){ Save.data.scrolls=(Save.data.scrolls||0)+1; Sfx.digRare(); const n=Save.data.scrolls; return {t:'📜 Scroll Fragment '+Math.min(n,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK+(n>=SCROLL_PER_PERK?' — unlock an Ancient Perk in 🏅 Rank Perks!':''),c:'#ffd9a8'}; }"
+    },
+    {
+      "line": 8501,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "if(c.c==='part'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); Sfx.digRare(); return {t:'🧩 Recipe Part: '+pt.emoji+' '+pt.name,c:'#9ff0c8'}; }"
+    },
+    {
+      "line": 8502,
+      "context_method": "digResolve",
+      "method": "digTrap",
+      "snippet": "if(c.c==='trap'){ const lost=d.shovels>0?1:0; d.shovels-=lost; Sfx.digTrap(); return {t:'🪤 Trap! '+(lost?'−1 ⛏️':'Nothing to lose… lucky!'),c:'#ff9bb5'}; }"
+    },
+    {
+      "line": 8503,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "if(c.c==='stair'){ d.stairFound=true; Sfx.digRare(); return {t:'🕳️ Secret Passage! Drop 2 depths into a hidden vault',c:'#c7a6ff'}; }"
+    },
+    {
+      "line": 8504,
+      "context_method": "digResolve",
+      "method": "digFind",
+      "snippet": "if(c.c==='ore'){ const n=Math.round(Phaser.Math.Between(20,45)*(1+d.depth*0.12)); Save.addSugar(n); Sfx.digFind(); return {t:'🍬 Sugar Ore +'+n+' Sugar',c:'#ffd9a8'}; }"
+    },
+    {
+      "line": 8505,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "if(c.c==='gift'){ Sfx.digRare(); if(Sfx.chestWin)Sfx.chestWin(); const got=[]; const tn=digThreadAmt(d.depth)*3; Save.data.threads=Save.threads()+tn; got.push('🧶'+tn);"
+    },
+    {
+      "line": 8505,
+      "context_method": "digResolve",
+      "method": "chestWin",
+      "snippet": "if(c.c==='gift'){ Sfx.digRare(); if(Sfx.chestWin)Sfx.chestWin(); const got=[]; const tn=digThreadAmt(d.depth)*3; Save.data.threads=Save.threads()+tn; got.push('🧶'+tn);"
+    },
+    {
+      "line": 8511,
+      "context_method": "digResolve",
+      "method": "digRare",
+      "snippet": "if(c.c==='gem'){ d.gemFound=true; Sfx.digRare(); return {t:'🪜 Ladder found! Head down to floor '+(d.depth+1),c:'#c7a6ff'}; }"
+    },
+    {
+      "line": 8513,
+      "context_method": "digDescend",
+      "method": "digDescend",
+      "snippet": "digDescend(){ const d=Save.dig(); if(!(d.gemFound||d.stairFound)||this.digBusy())return; const secret=!!d.stairFound; d.depth+=secret?2:1; d.best=Math.max(d.best||1,d.depth); d.gemFound=false; d.stairFound=false; d.secret=secret; d.board=digMakeBoard(d.depth+(secret?4:0),d.depth); Save.save(); Sfx.digDescend();"
+    },
+    {
+      "line": 8543,
+      "context_method": "buildRankPerks",
+      "method": "progress",
+      "snippet": "if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.progress('perk');}else Sfx.error(); this.buildRankPerks(); });"
+    },
+    {
+      "line": 8543,
+      "context_method": "buildRankPerks",
+      "method": "error",
+      "snippet": "if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.progress('perk');}else Sfx.error(); this.buildRankPerks(); });"
+    },
+    {
+      "line": 8558,
+      "context_method": "buildRankPerks",
+      "method": "progress",
+      "snippet": "this.menu.add([g,icon,nm,ds]); if(can)this._zone(x,yy,cardW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.progress('ancient'); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });"
+    },
+    {
+      "line": 8565,
+      "context_method": "buildRankPerks",
+      "method": "clear",
+      "snippet": "this._zone(w/2-rw/2,ry2,rw,34,()=>{ if(this._perkResetConfirm){if(Save.respecPerks())Sfx.clear();else this.menuToast('Need perks and 🧶'+Save.perkResetCost()+' Weave Thread','#ff9bb5');this._perkResetConfirm=false;}else{this._perkResetConfirm=true;Sfx.select();} this.buildRankPerks(); });"
+    },
+    {
+      "line": 8565,
+      "context_method": "buildRankPerks",
+      "method": "select",
+      "snippet": "this._zone(w/2-rw/2,ry2,rw,34,()=>{ if(this._perkResetConfirm){if(Save.respecPerks())Sfx.clear();else this.menuToast('Need perks and 🧶'+Save.perkResetCost()+' Weave Thread','#ff9bb5');this._perkResetConfirm=false;}else{this._perkResetConfirm=true;Sfx.select();} this.buildRankPerks(); });"
+    },
+    {
+      "line": 8589,
+      "context_method": "buildGearLandscape",
+      "method": "select",
+      "snippet": "this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});"
+    },
+    {
+      "line": 8590,
+      "context_method": "buildGearLandscape",
+      "method": "select",
+      "snippet": "this._zone(gx0+gbw-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});"
+    },
+    {
+      "line": 8596,
+      "context_method": "buildGearLandscape",
+      "method": "equipmentEnhance",
+      "snippet": "if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Sfx.equipmentEnhance(Save.enhance(it.id));}else{Sfx.error();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}"
+    },
+    {
+      "line": 8596,
+      "context_method": "buildGearLandscape",
+      "method": "error",
+      "snippet": "if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Sfx.equipmentEnhance(Save.enhance(it.id));}else{Sfx.error();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}"
+    },
+    {
+      "line": 8597,
+      "context_method": "buildGearLandscape",
+      "method": "equipment",
+      "snippet": "else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{if(Save.equipGearBase(sel,it.id))Sfx.equipment('equip');this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}"
+    },
+    {
+      "line": 8645,
+      "context_method": "buildGear",
+      "method": "select",
+      "snippet": "this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});"
+    },
+    {
+      "line": 8646,
+      "context_method": "buildGear",
+      "method": "select",
+      "snippet": "this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});"
+    },
+    {
+      "line": 8660,
+      "context_method": "buildGear",
+      "method": "select",
+      "snippet": "{let bx=hdr.x+hdr.width+8;const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?GEAR_SETS[k].emoji+' Set '+sc[k]+'/'+gearSetPieces(k).length:'🧩 Sets';const sb=this.add.text(bx,y,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:k&&sc[k]>=2?'#8ff0b0':'#cfe0ff',backgroundColor:'#26344a',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(sb);this._zone(bx-2,y-5,sb.width+4,22,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();});bx+=sb.width+6;const cb=this.add.text(bx,y,'🧹 Clean',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe08a',backgroundColor:'#3a2d48',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(cb);this._zone(bx-2,y-5,cb.width+4,22,()=>{this.menuScreen='gearClean';this.buildMen"
+    },
+    {
+      "line": 8676,
+      "context_method": "buildGear",
+      "method": "equipment",
+      "snippet": "this._zone(x,iy,cw,ch,()=>{ if(this._gearQuick&&!eq){ if(item.locked||item.favorite){this.menuToast('Locked / favorite items are protected');return;} const n=this._gearQuick==='sell'?Save.sellGearInstance(item.uid):Save.dismantleGearInstance(item.uid); if(n){Sfx.equipment(this._gearQuick==='sell'?'sell':'dismantle');this.menuToast(this._gearQuick==='sell'?'Sold +🍬'+n:'Scrapped +🔩'+n);if(this.gearSelectedUid===item.uid)this.gearSelectedUid=null;} this.buildMenuScreen(); return; }"
+    },
+    {
+      "line": 8701,
+      "context_method": "buildGear",
+      "method": "equipment",
+      "snippet": "drawAction(1,selected.locked?'🔒':'🔓',selected.locked?0x85506f:0x3a3550,()=>{if(Save.gearItem(selected.uid)){const locked=Save.toggleGearLock(selected.uid);Sfx.equipment(locked?'lock':'unlock');}this.buildMenuScreen();});"
+    },
+    {
+      "line": 8702,
+      "context_method": "buildGear",
+      "method": "equipment",
+      "snippet": "if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});"
+    },
+    {
+      "line": 8704,
+      "context_method": "buildGear",
+      "method": "error",
+      "snippet": "drawAction(2,can?('⚒ Enhance +'+(lv+1)+'   🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);"
+    },
+    {
+      "line": 8704,
+      "context_method": "buildGear",
+      "method": "equipmentEnhance",
+      "snippet": "drawAction(2,can?('⚒ Enhance +'+(lv+1)+'   🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);"
+    },
+    {
+      "line": 8710,
+      "context_method": "buildGear",
+      "method": "error",
+      "snippet": "if(moreOpen)drawAction(3,canDis?('🔩 Dismantle +'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const ck='dis:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Dismantle again to confirm',1400);return;}this._gearConfirm=null;const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);"
+    },
+    {
+      "line": 8710,
+      "context_method": "buildGear",
+      "method": "equipment",
+      "snippet": "if(moreOpen)drawAction(3,canDis?('🔩 Dismantle +'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const ck='dis:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Dismantle again to confirm',1400);return;}this._gearConfirm=null;const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);"
+    },
+    {
+      "line": 8714,
+      "context_method": "buildGear",
+      "method": "error",
+      "snippet": "if(moreOpen)drawAction('s',canSell?('💰 Sell 🍬+'+sv):'Protected',canSell?0x6e5634:0x3a3550,canSell?()=>{const ck='sell:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Sell again to confirm',1400);return;}this._gearConfirm=null;const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('sell');this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}}:null,canSell?'#ffe6b0':'#8d8195');"
+    },
+    {
+      "line": 8714,
+      "context_method": "buildGear",
+      "method": "equipment",
+      "snippet": "if(moreOpen)drawAction('s',canSell?('💰 Sell 🍬+'+sv):'Protected',canSell?0x6e5634:0x3a3550,canSell?()=>{const ck='sell:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Sell again to confirm',1400);return;}this._gearConfirm=null;const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('sell');this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}}:null,canSell?'#ffe6b0':'#8d8195');"
+    },
+    {
+      "line": 8735,
+      "context_method": "buildGearClean",
+      "method": "select",
+      "snippet": "btn(16,y,w-32,40,list.length?(this._cleanArm?'TAP AGAIN TO CONFIRM':'🧹 '+(c.out==='sell'?'Sell ':'Dismantle ')+list.length+' items'):'Nothing to clean',list.length>0,list.length?()=>{if(!this._cleanArm){this._cleanArm=true;Sfx.select&&Sfx.select();this.buildGearClean();return;}let n=0,got=0;for(const it of list){const v=c.out==='sell'?Save.sellGearInstance(it.uid):Save.dismantleGearInstance(it.uid);if(v){n++;got+=v;}}this._cleanArm=false;Sfx.equipment(c.out==='sell'?'sell':'dismantle');this.buildGearClean();this.showBanner('🧹 Cleaned '+n+' items',(c.out==='sell'?'🍬 +':'🔩 +')+got,1500);}:null,0xb0563f);y+=54;"
+    },
+    {
+      "line": 8735,
+      "context_method": "buildGearClean",
+      "method": "equipment",
+      "snippet": "btn(16,y,w-32,40,list.length?(this._cleanArm?'TAP AGAIN TO CONFIRM':'🧹 '+(c.out==='sell'?'Sell ':'Dismantle ')+list.length+' items'):'Nothing to clean',list.length>0,list.length?()=>{if(!this._cleanArm){this._cleanArm=true;Sfx.select&&Sfx.select();this.buildGearClean();return;}let n=0,got=0;for(const it of list){const v=c.out==='sell'?Save.sellGearInstance(it.uid):Save.dismantleGearInstance(it.uid);if(v){n++;got+=v;}}this._cleanArm=false;Sfx.equipment(c.out==='sell'?'sell':'dismantle');this.buildGearClean();this.showBanner('🧹 Cleaned '+n+' items',(c.out==='sell'?'🍬 +':'🔩 +')+got,1500);}:null,0xb0563f);y+=54;"
+    },
+    {
+      "line": 8757,
+      "context_method": "buildGearInbox",
+      "method": "progress",
+      "snippet": "const by=ry+8,bh=44,bw=56,cx=w-132,claim=this.add.graphics();claim.fillStyle(Save.gearInventoryFull()?0x3a3550:0x3f9160,1);claim.fillRoundedRect(cx,by,bw,bh,9);const ct=this.add.text(cx+bw/2,by+bh/2,Save.gearInventoryFull()?'Bag Full':'Claim',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#fff'}).setOrigin(.5);this.menu.add([claim,ct]);if(!Save.gearInventoryFull())this._zone(cx,by,bw,bh,()=>{if(Save.claimGearInbox(item.uid)){Sfx.progress('claim');this.buildGearInbox();}});"
+    },
+    {
+      "line": 8758,
+      "context_method": "buildGearInbox",
+      "method": "equipment",
+      "snippet": "const safe=item.grade!=='epic'&&item.grade!=='legend'&&!item.locked&&!item.favorite,dg=this.add.graphics();dg.fillStyle(safe?0x8d4b3e:0x3a3550,1);dg.fillRoundedRect(w-70,by,bw,bh,9);const dt=this.add.text(w-42,by+bh/2,safe?('Dismantle\\n🔩+'+gearDismantleValue(item)):'Protected',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.5px',color:'#fff',align:'center'}).setOrigin(.5);this.menu.add([dg,dt]);if(safe)this._zone(w-70,by,bw,bh,()=>{const n=Save.dismantleGearInbox(item.uid);if(n){Sfx.equipment('dismantle');this.buildGearInbox();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}});"
+    },
+    {
+      "line": 8767,
+      "context_method": "rerollGearAffix",
+      "method": "error",
+      "snippet": "if(!it||it.tier==='start'){ Sfx.error(); this.showBanner('✨ Cannot reroll','No affix-rollable item in this slot',1300); return; }"
+    },
+    {
+      "line": 8768,
+      "context_method": "rerollGearAffix",
+      "method": "error",
+      "snippet": "if((Save.data.shards||0)<AFFIX_REROLL_COST){ Sfx.error(); this.showBanner('🔩 Not enough shards','Requires '+AFFIX_REROLL_COST+' shards',1300); return; }"
+    },
+    {
+      "line": 8770,
+      "context_method": "rerollGearAffix",
+      "method": "clear",
+      "snippet": "Save.rerollAffix(it.id,it.tier); Sfx.clear(); this.buildMenuScreen();"
+    },
+    {
+      "line": 8777,
+      "context_method": "randomCraftSelected",
+      "method": "error",
+      "snippet": "randomCraftSelected(){if(this._craftRolling)return;const {item,base}=this._craftContext();if(!item||!base||base.tier==='start')return;if(item.locked){Sfx.error();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}"
+    },
+    {
+      "line": 8779,
+      "context_method": "randomCraftSelected",
+      "method": "error",
+      "snippet": "if(!old&&affs.filter(a=>affixKindOf(a)===kind).length>=AFFIX_KIND_MAX){Sfx.error();this.showBanner('Slots full','This item already has '+AFFIX_KIND_MAX+' mods',1300);return;}"
+    },
+    {
+      "line": 8781,
+      "context_method": "randomCraftSelected",
+      "method": "error",
+      "snippet": "if(!available.length){Sfx.error();this.showBanner('No stats left','This item has every possible stat rolled',1300);return;}"
+    },
+    {
+      "line": 8782,
+      "context_method": "randomCraftSelected",
+      "method": "error",
+      "snippet": "const key=craftCurrencyForLine(rar,!!old),cur=currencyDef(key),lk=this.craftLockFor(item),need=1+(lk?TIER_LOCK_COST:0);if(Save.currency(key)<need){Sfx.error();this.showBanner(cur.emoji+' Need '+need+' '+cur.name,'Available: '+Save.currency(key)+(lk?' · tier lock costs +'+TIER_LOCK_COST:''),1500);return;}"
+    },
+    {
+      "line": 8804,
+      "context_method": "_playAffixRoulette",
+      "method": "craft",
+      "snippet": "Sfx.craft('start');"
+    },
+    {
+      "line": 8811,
+      "context_method": "_playAffixRoulette",
+      "method": "craft",
+      "snippet": "if(!hype){this.screenFlash(affixCategory(winner).color,.52,360);Sfx.craft('common');return 360;}"
+    },
+    {
+      "line": 8814,
+      "context_method": "_playAffixRoulette",
+      "method": "craft",
+      "snippet": "Sfx.craft(hype>=3?'jackpot':'rare');if(hype>=3)this.time.delayedCall(260,()=>{burst(16,0xffffff);this.screenFlash(0xffffff,.6,260);});"
+    },
+    {
+      "line": 8817,
+      "context_method": "_playAffixRoulette",
+      "method": "stopCraft",
+      "snippet": "const finish=()=>{if(this._craftRollToken!==token)return;this._craftRollToken=token+1;this.tweens.killTweensOf(rows[1].t);Sfx.stopCraft();"
+    },
+    {
+      "line": 8821,
+      "context_method": "_playAffixRoulette",
+      "method": "craft",
+      "snippet": "let stopped=false;const doStop=()=>{ if(this._craftRollToken!==token)return; if(stopped){finish();return;} stopped=true;Sfx.craft('slow');this.tweens.killTweensOf(skT);skT.setScale(1).setText('⏩ Skip');skG.clear();skG.fillStyle(0x3a3550,.98);skG.fillRoundedRect(skX,skY,skW,skH,9);skG.lineStyle(1.5,0x9a8cc0,1);skG.strokeRoundedRect(skX,skY,skW,skH,9);hint.setText('Slowing down…'); };"
+    },
+    {
+      "line": 8827,
+      "context_method": "_playAffixRoulette",
+      "method": "craft",
+      "snippet": "if(!stopped){show(rows[1],Phaser.Utils.Array.GetRandom(pool));show(rows[0],Phaser.Utils.Array.GetRandom(pool));show(rows[2],Phaser.Utils.Array.GetRandom(pool));Sfx.craft('tick');this.time.delayedCall(60,tick);return;}"
+    },
+    {
+      "line": 8829,
+      "context_method": "_playAffixRoulette",
+      "method": "craft",
+      "snippet": "Sfx.craft('tick',1.1-step*.015);"
+    },
+    {
+      "line": 8842,
+      "context_method": "autoRollToTarget",
+      "method": "error",
+      "snippet": "if(item.locked){Sfx.error();this.showBanner('🔒 Item locked','Unlock it before crafting',1300);return;}"
+    },
+    {
+      "line": 8844,
+      "context_method": "autoRollToTarget",
+      "method": "error",
+      "snippet": "if(!targetId){Sfx.error();this.showBanner('🎯 Pick a target first','Tap a mod in the roll pool to target it',1600);return;}"
+    },
+    {
+      "line": 8859,
+      "context_method": "autoRollToTarget",
+      "method": "craft",
+      "snippet": "if(kind!=='hit')Sfx.craft(kind==='stop'?'cancel':'exhaust');"
+    },
+    {
+      "line": 8883,
+      "context_method": "autoRollToTarget",
+      "method": "craft",
+      "snippet": "Sfx.craft('start');let ri=0;const reel=()=>{if(this._craftRollToken!==token)return;if(ri++<6){Sfx.craft('tick');const r=available[Math.floor(Math.random()*available.length)];cur.setText(r.emoji+'  '+r.label).setColor('#8f83a3');this.time.delayedCall(55,reel);}else reveal();};"
+    },
+    {
+      "line": 8883,
+      "context_method": "autoRollToTarget",
+      "method": "craft",
+      "snippet": "Sfx.craft('start');let ri=0;const reel=()=>{if(this._craftRollToken!==token)return;if(ri++<6){Sfx.craft('tick');const r=available[Math.floor(Math.random()*available.length)];cur.setText(r.emoji+'  '+r.label).setColor('#8f83a3');this.time.delayedCall(55,reel);}else reveal();};"
+    },
+    {
+      "line": 8887,
+      "context_method": "autoRollToTarget",
+      "method": "craft",
+      "snippet": "if(!hit){if(near){Sfx.craft('near');fb.setText('😮 So close! Same '+tcat+' family').setColor('#ffb86b');this.screenFlash(0xffa94d,.22,220);this.tweens.add({targets:rowG,alpha:.55,duration:90,yoyo:true,repeat:2});}"
+    },
+    {
+      "line": 8888,
+      "context_method": "autoRollToTarget",
+      "method": "craft",
+      "snippet": "else{Sfx.craft('common');fb.setText(['Aww…','Not this time…','Nope 😢','So sad…'][rolls%4]).setColor('#9aa4c8');this.tweens.add({targets:cur,y:cy+4,duration:160,yoyo:true});}}"
+    },
+    {
+      "line": 8889,
+      "context_method": "autoRollToTarget",
+      "method": "craft",
+      "snippet": "if(hit){fb.setText('🎉 JACKPOT! 🎉').setColor('#ffe08a');Sfx.craft('jackpot');for(let i=0;i<14;i++){const a=i/14*Math.PI*2,sp=T(w/2,'✦','14px',i%2?'#ffd166':'#ff9ad5',1).setY(cy);this.menu.add(sp);this.tweens.add({targets:sp,x:w/2+Math.cos(a)*(90+Math.random()*50),y:cy+Math.sin(a)*(70+Math.random()*40),alpha:0,duration:700+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>sp.destroy()});}this.tweens.add({targets:[title,cur],scale:1.25,duration:140,yoyo:true,repeat:2});this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);}skT.setText('✓ Done');return end('hit');}"
+    },
+    {
+      "line": 8893,
+      "context_method": "promoteFocusedItem",
+      "method": "error",
+      "snippet": "promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.error();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.craft('capacity');this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}"
+    },
+    {
+      "line": 8893,
+      "context_method": "promoteFocusedItem",
+      "method": "craft",
+      "snippet": "promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.error();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.craft('capacity');this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}"
+    },
+    {
+      "line": 8894,
+      "context_method": "divineFocusedLine",
+      "method": "error",
+      "snippet": "divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.error();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v)+' · T'+a.t,rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);a.t=rolled.t;a.v=rolled.v;a.t11=1;a.tierSchema=2;Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'TIER REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.craft('reroll');this.screenFlash(0xffffff,.36,260"
+    },
+    {
+      "line": 8894,
+      "context_method": "divineFocusedLine",
+      "method": "craft",
+      "snippet": "divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.error();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v)+' · T'+a.t,rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);a.t=rolled.t;a.v=rolled.v;a.t11=1;a.tierSchema=2;Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'TIER REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.craft('reroll');this.screenFlash(0xffffff,.36,260"
+    },
+    {
+      "line": 8895,
+      "context_method": "annulFocusedLine",
+      "method": "error",
+      "snippet": "annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.error();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}const old=affs[line],mod=affixDef(old.id);affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);this._craftResult={uid:item.uid,title:'AFFIX REMOVED',before:mod.label+' '+mod.fmt(old.v),after:'Empty line'};Sfx.craft('remove');this.showBanner('🟣 Line removed','An empty affix line is now available',1300);this.buildCraftBench();}"
+    },
+    {
+      "line": 8895,
+      "context_method": "annulFocusedLine",
+      "method": "craft",
+      "snippet": "annulFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0;if(!affs[line])return;if(Save.currency('annul')<1){Sfx.error();this.showBanner('🟣 Need Fading Gumdrop','Available: '+Save.currency('annul'),1200);return;}const old=affs[line],mod=affixDef(old.id);affs.splice(line,1);Save.spendCurrency('annul',1);Save.setAffixes(item.uid,affs);this.craftLineIndex=Math.max(0,line-1);this._craftResult={uid:item.uid,title:'AFFIX REMOVED',before:mod.label+' '+mod.fmt(old.v),after:'Empty line'};Sfx.craft('remove');this.showBanner('🟣 Line removed','An empty affix line is now available',1300);this.buildCraftBench();}"
+    },
+    {
+      "line": 8896,
+      "context_method": "scourFocusedItem",
+      "method": "error",
+      "snippet": "scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.error();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}const count=Save.gearAffixes(item.uid).length;Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;this.craftTargets={};this._craftResult={uid:item.uid,title:'ITEM RESET',before:count+' affix'+(count===1?'':'es'),after:'0 affixes · 1 slot'};Sfx.craft('reset');this.showBanner('⚫ Item reset','All affixes removed · one line available',1300);this.buildCraftBench();}"
+    },
+    {
+      "line": 8896,
+      "context_method": "scourFocusedItem",
+      "method": "craft",
+      "snippet": "scourFocusedItem(){const {item}=this._craftContext();if(!item||item.locked)return;if(Save.currency('scour')<1){Sfx.error();this.showBanner('⚫ Need Plain Dough','Available: '+Save.currency('scour'),1200);return;}const count=Save.gearAffixes(item.uid).length;Save.spendCurrency('scour',1);Save.setAffixes(item.uid,[]);Save.setGearRarity(item.uid,'common');this.craftLineIndex=0;this.craftTargetId=null;this.craftTargets={};this._craftResult={uid:item.uid,title:'ITEM RESET',before:count+' affix'+(count===1?'':'es'),after:'0 affixes · 1 slot'};Sfx.craft('reset');this.showBanner('⚫ Item reset','All affixes removed · one line available',1300);this.buildCraftBench();}"
+    },
+    {
+      "line": 8897,
+      "context_method": "_confirmCraftAction",
+      "method": "confirm",
+      "snippet": "_confirmCraftAction(key,label,fn){if(this._craftConfirm===key){this._craftConfirm=null;Sfx.confirm();fn();return;}this._craftConfirm=key;Sfx.confirm();this.showBanner('⚠ Confirm '+label,'Tap the same action again within 3 seconds',1800);this.buildCraftBench();this.time.delayedCall(3000,()=>{if(this._craftConfirm===key){this._craftConfirm=null;if(this.menuScreen==='craft')this.buildCraftBench();}});}"
+    },
+    {
+      "line": 8897,
+      "context_method": "_confirmCraftAction",
+      "method": "confirm",
+      "snippet": "_confirmCraftAction(key,label,fn){if(this._craftConfirm===key){this._craftConfirm=null;Sfx.confirm();fn();return;}this._craftConfirm=key;Sfx.confirm();this.showBanner('⚠ Confirm '+label,'Tap the same action again within 3 seconds',1800);this.buildCraftBench();this.time.delayedCall(3000,()=>{if(this._craftConfirm===key){this._craftConfirm=null;if(this.menuScreen==='craft')this.buildCraftBench();}});}"
+    },
+    {
+      "line": 8914,
+      "context_method": "buildCraftBench",
+      "method": "select",
+      "snippet": "const bw2=Math.min(w-28,300),bx2=(w-bw2)/2,by2=y+92,bh2=44;[['🎁 Roll gear at Equipment','gear',0x8bd3a0],['🏪 Browse the Bazaar','bazaar',0xffb36b]].forEach(([lb,scr,col],i)=>{const yy=by2+i*(bh2+10),g2=this.add.graphics();g2.fillStyle(0x2c2338,0.97);g2.fillRoundedRect(bx2,yy,bw2,bh2,12);g2.lineStyle(1.6,col,0.9);g2.strokeRoundedRect(bx2,yy,bw2,bh2,12);const t2=this.add.text(w/2,yy+bh2/2,lb+'  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#fff7ed'}).setOrigin(.5);this.menu.add([g2,t2]);this._zone(bx2,yy,bw2,bh2,()=>{Sfx.select&&Sfx.select();this.menuScreen=scr;this.buildMenuScreen();});});"
+    },
+    {
+      "line": 8944,
+      "context_method": "buildCraftBench",
+      "method": "equipment",
+      "snippet": "{const isEq=Save.isGearEquipped(selected.uid),bw=(w-28-6)/2,bh=24;[[isEq?'✓ Equipped':'⚔️ Equip now',isEq?0x2f5a44:0x3f9160,isEq?null:()=>{if(Save.equipGearInstance(slot,selected.uid)){Sfx.equipment('equip');this.showBanner('⚔️ Equipped',base.name,1000);}this.buildCraftBench();}],"
+    },
+    {
+      "line": 8960,
+      "context_method": "buildCraftBench",
+      "method": "select",
+      "snippet": "if(can)this._zone(x,yy,cw,rh-2,()=>{const T=this.craftTargets||(this.craftTargets={});T[tm.id]=(lockOn&&lock.t===t)?null:t;this.craftTargetId=tm.id;Sfx.select();this.buildCraftBench();});"
+    },
+    {
+      "line": 9013,
+      "context_method": "buildBazaar",
+      "method": "clear",
+      "snippet": "const rc=Save.bazaarRefreshCost();this.paintedNavButton(this.menu,w-90,130+hs,152,28,rc?'Refresh · '+rc:'Restock tomorrow',false,()=>{if(rc&&Save.refreshBazaar()){Sfx.clear();this.buildBazaar();}else this.menuToast('Restocks after a stage clear','#c5b5d1');});"
+    },
+    {
+      "line": 9029,
+      "context_method": "buildBazaar",
+      "method": "clear",
+      "snippet": "this._rowBtn(y,52,art,o.name,'Stage reward: '+o.base+' '+o.unit,isActive?'ACTIVE':'Sugar '+o.cost,isActive?'#ffd166':active?'#7a7088':'#a8edc6',active?null:()=>{if(Save.buySugarOrder(o.id))Sfx.clear();else this.menuToast('Not enough Sugar','#f295a8');this.buildBazaar();});y+=59;});"
+    },
+    {
+      "line": 9042,
+      "context_method": "bazaarBuyGear",
+      "method": "error",
+      "snippet": "if(!Save.spend(cost)){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300);return;}"
+    },
+    {
+      "line": 9046,
+      "context_method": "bazaarBuyGear",
+      "method": "clear",
+      "snippet": "Sfx.clear();this.showBanner('🛒 Purchased',it.emoji+' '+it.name+' · iLv '+ilvl+gearDeliverySuffix(delivery),1600);this.buildBazaar(); }"
+    },
+    {
+      "line": 9047,
+      "context_method": "bazaarBuyCurrency",
+      "method": "error",
+      "snippet": "bazaarBuyCurrency(key,qty,cost,slotKey){ if(slotKey&&(Save.data.bazaarBought||[]).includes(slotKey))return; if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }"
+    },
+    {
+      "line": 9048,
+      "context_method": "bazaarBuyCurrency",
+      "method": "clear",
+      "snippet": "Save.addCurrency(key,qty); if(slotKey){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(slotKey);Save.save();} Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }"
+    },
+    {
+      "line": 9053,
+      "context_method": "bazaarSlotReveal",
+      "method": "select",
+      "snippet": "let ticks=0,delay=55; const spin=()=>{ if(!icon.scene){this._bazBusy=false;return;} const key=Phaser.Utils.Array.GetRandom(pool);icon.setTexture(this.textures.exists(key)?key:'prize_chest').setDisplaySize(96,96); Sfx.select&&Sfx.select(); ticks++;"
+    },
+    {
+      "line": 9056,
+      "context_method": "bazaarSlotReveal",
+      "method": "clear",
+      "snippet": "title.setText(land.title||'✨ Prize!'); glow.setScale(2.6).setAlpha(0.85); this.screenFlash(0xffd166,0.5,420); Sfx.clear();"
+    },
+    {
+      "line": 9063,
+      "context_method": "bazaarGambleGear",
+      "method": "error",
+      "snippet": "bazaarGambleGear(){ if(this._bazBusy)return; if(!Save.spend(180)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires 180 Sugar',1300); return; }"
+    },
+    {
+      "line": 9065,
+      "context_method": "bazaarGambleGear",
+      "method": "error",
+      "snippet": "if(!got){Save.addSugar(180);Sfx.error();this.showBanner('🎁 No eligible base','Sugar refunded',1500);return;}"
+    },
+    {
+      "line": 9088,
+      "context_method": "buildTradeIn",
+      "method": "error",
+      "snippet": "this._zone(cx,cy,cw,ch,()=>{this._tradeView=it.uid;const a=this._tradeSel,k=a.indexOf(it.uid);if(k>=0)a.splice(k,1);else if(a.length<3)a.push(it.uid);else{Sfx.error();return;}Sfx.select&&Sfx.select();this.buildTradeIn();});});"
+    },
+    {
+      "line": 9088,
+      "context_method": "buildTradeIn",
+      "method": "select",
+      "snippet": "this._zone(cx,cy,cw,ch,()=>{this._tradeView=it.uid;const a=this._tradeSel,k=a.indexOf(it.uid);if(k>=0)a.splice(k,1);else if(a.length<3)a.push(it.uid);else{Sfx.error();return;}Sfx.select&&Sfx.select();this.buildTradeIn();});});"
+    },
+    {
+      "line": 9106,
+      "context_method": "doTradeIn",
+      "method": "error",
+      "snippet": "if(!sel.every(x=>Save.removeGearInstance(x.uid))){Sfx.error();this.buildTradeIn();return;}"
+    },
+    {
+      "line": 9109,
+      "context_method": "doTradeIn",
+      "method": "equipment",
+      "snippet": "Sfx.equipment&&Sfx.equipment('equip');"
+    },
+    {
+      "line": 9111,
+      "context_method": "bazaarGambleCurrency",
+      "method": "error",
+      "snippet": "bazaarGambleCurrency(auto){ if(this._bazBusy)return; const cost=bazaarCurrencyBoxCost(); if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); if(auto)this.buildBazaar(); return; }"
+    },
+    {
+      "line": 9115,
+      "context_method": "bazaarSellShards",
+      "method": "clear",
+      "snippet": "bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 Sold shards','+🍬'+(sh*2),1300); this.buildBazaar(); }"
+    },
+    {
+      "line": 9116,
+      "context_method": "bazaarSellCurrency",
+      "method": "select",
+      "snippet": "bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }"
+    },
+    {
+      "line": 9119,
+      "context_method": "openGachaReveal",
+      "method": "error",
+      "snippet": "if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (iLv '+lvObj.lo+'-'+lvObj.hi+')',1300);return;}"
+    },
+    {
+      "line": 9124,
+      "context_method": "openGachaReveal",
+      "method": "chest",
+      "snippet": "this.menu.add([bg,title,glow,chest,status]);this.menu.setVisible(true);Sfx.chest();"
+    },
+    {
+      "line": 9135,
+      "context_method": "openGachaReveal",
+      "method": "clear",
+      "snippet": "this.screenFlash(color,tier==='legend'?0.85:tier==='epic'?0.68:tier==='rare'?0.48:0.30,520);this.screenShake(tier==='legend'?620:tier==='epic'?480:260,tier==='legend'?0.02:tier==='epic'?0.014:0.007);Sfx.clear();"
+    },
+    {
+      "line": 9198,
+      "context_method": "showMenu",
+      "method": "bgmIntense",
+      "snippet": "showMenu(){ this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }"
+    },
+    {
+      "line": 9198,
+      "context_method": "showMenu",
+      "method": "playMainBgm",
+      "snippet": "showMenu(){ this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }"
+    },
+    {
+      "line": 9208,
+      "context_method": "togglePause",
+      "method": "bpLoopStop",
+      "snippet": "togglePause(){ Sfx.bpLoopStop?.();"
+    },
+    {
+      "line": 9211,
+      "context_method": "togglePause",
+      "method": "select",
+      "snippet": "this.buildPause(); this.pauseTxt.setText('▶'); Sfx.select();"
+    },
+    {
+      "line": 9213,
+      "context_method": "togglePause",
+      "method": "select",
+      "snippet": "if(this.pauseUI)this.pauseUI.setVisible(false); this.pauseTxt.setText('⏸'); Sfx.select(); }"
+    },
+    {
+      "line": 9265,
+      "context_method": "buildPause",
+      "method": "select",
+      "snippet": "this._pauseBtns.push({x:sbx-sbw/2,y:sby-sbh/2,w:sbw,h:sbh,fn:()=>{Sfx.select();this.buildPauseSettings();}});"
+    },
+    {
+      "line": 9293,
+      "context_method": "buildPauseSettings",
+      "method": "select",
+      "snippet": "this._pauseBtns.push({x:rx,y,w:rw,h:rh,fn:()=>{fn();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls&&this.layoutControls();this.buildPauseSettings();}});});"
+    },
+    {
+      "line": 9296,
+      "context_method": "buildPauseSettings",
+      "method": "select",
+      "snippet": "this._pauseBtns.push({x:w/2-bw/2,y:by-bh/2,w:bw,h:bh,fn:()=>{Sfx.select();this.buildPause();}});"
+    },
+    {
+      "line": 9310,
+      "context_method": "quitStage",
+      "method": "bgmIntense",
+      "snippet": "if(this.bossRush){ _closeStory(); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead(); this.finishBossRush(false); return; }"
+    },
+    {
+      "line": 9310,
+      "context_method": "quitStage",
+      "method": "dead",
+      "snippet": "if(this.bossRush){ _closeStory(); this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead(); this.finishBossRush(false); return; }"
+    },
+    {
+      "line": 9314,
+      "context_method": "exitStage",
+      "method": "bpLoopStop",
+      "snippet": "exitStage(){ Sfx.bpLoopStop?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}"
+    },
+    {
+      "line": 9328,
+      "context_method": "menuMusic",
+      "method": "playMenuBgm",
+      "snippet": "if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;"
+    },
+    {
+      "line": 9374,
+      "context_method": "autoEndgameCurse",
+      "method": "bossWarn",
+      "snippet": "this.showBanner('☠ Curse: '+d.name,d.desc+' · rewards ×'+d.reward.toFixed(2),2200); Sfx.bossWarn&&Sfx.bossWarn(); this.screenFlash&&this.screenFlash(0x6b2bd9,0.25); }"
+    },
+    {
+      "line": 9540,
+      "context_method": "startStage",
+      "method": "playStageBgm",
+      "snippet": "Sfx.playStageBgm(1);   // v6.49.7: เดิม return ก่อนเล่นเพลง → tutorial เงียบ"
+    },
+    {
+      "line": 9544,
+      "context_method": "startStage",
+      "method": "playStageBgm",
+      "snippet": "Sfx.playStageBgm(i+1);"
+    },
+    {
+      "line": 9560,
+      "context_method": "startStage",
+      "method": "bossWarn",
+      "snippet": "this.time.delayedCall(1400,()=>{ if(!this._busy())return; this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); }); return; }"
+    },
+    {
+      "line": 9599,
+      "context_method": "tickReplayProgress",
+      "method": "bossWarn",
+      "snippet": "this.showBanner('Miniboss incoming','Defeat it, then continue filling the meter',2200);Sfx.bossWarn();this.scheduleStageEvent(2200,'miniWarning',()=>this.spawnMiniBoss());return;"
+    },
+    {
+      "line": 9602,
+      "context_method": "tickReplayProgress",
+      "method": "bossWarn",
+      "snippet": "m.done=true;this.clearWaveObjective();this.mode='bossWarning';this.settleStoryBudget?.(true);this.updateWaveText();Sfx.bossWarn();"
+    },
+    {
+      "line": 9630,
+      "context_method": "tickRecipeHunger",
+      "method": "bossWarn",
+      "snippet": "this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); } }"
+    },
+    {
+      "line": 9673,
+      "context_method": "ventErupt",
+      "method": "boom",
+      "snippet": "if(this.dist(p.x,p.y,v.x,v.y)<520)Sfx.boom(); }"
+    },
+    {
+      "line": 9708,
+      "context_method": "recipeOnKill",
+      "method": "chestWin",
+      "snippet": "recipeOnKill(e){ if(!this.recipeMode||this.mode!=='wave'||this._hungerDone)return; if(e._rareElite){ e._rareElite=false; this._hunger+=20; this.grantCurrencyReward(2,this.currencyTierFor(),'✨ Rare Elite down!'); } if(e._feast){ e._feast=false; this._feastOn=null; const g=this.recipeHungerGoal(),add=g*FEAST_SHARE; this._hunger+=add; this.floatText&&this.floatText(e.x,e.y-40,'🍖 +'+Math.round(add)+' Hunger','#ffd166'); this.screenShake&&this.screenShake(120,0.004); Sfx.chestWin&&Sfx.chestWin(); this._feastT=Math.min(this._feastT,FEAST_EVERY*0.5); return; } this._hunger+=(e.isElite?6:HUNGER_PER_KILL)*(this.recipeHas('horde')?1.15:1)*(1+atlasLv('appetite')*0.06); }"
+    },
+    {
+      "line": 9912,
+      "context_method": "beginWave",
+      "method": "bossWarn",
+      "snippet": "this.showBanner('⚠️ '+(beat?beat.title:st.mini),beat?beat.sub:(st.mini+' — get ready to find space to dodge'),2600);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);"
+    },
+    {
+      "line": 9917,
+      "context_method": "beginWave",
+      "method": "card",
+      "snippet": "if(!this._inTutorial)this.showBanner(o?(o.emoji+' '+o.name):(beat?beat.title:('Part '+(w+1))),o?((o.lesson?'MISSION '+o.lesson+': ':'MISSION: ')+o.desc):(beat?beat.sub:p.desc),3800);if(o&&!this._inTutorial&&this.waveObjTxt)this.tweens.add({targets:this.waveObjTxt,scale:{from:1.5,to:1},duration:500,ease:'Back.out',delay:3800});if(o&&!this._inTutorial){this.showSpeechBubble(o.emoji+' '+o.desc,4200);Sfx.card&&Sfx.card();}}"
+    },
+    {
+      "line": 9993,
+      "context_method": "spawnSwarm",
+      "method": "bossWarn",
+      "snippet": "if(n<3)return;this.spawnWaveRing(n);this.showBanner('Swarm surge','Keep moving — another group is closing in',900);Sfx.bossWarn();return;"
+    },
+    {
+      "line": 9999,
+      "context_method": "spawnSwarm",
+      "method": "bossWarn",
+      "snippet": "this.showBanner(beat.title,beat.sub,1800);Sfx.bossWarn();this.screenShake(180,0.005);"
+    },
+    {
+      "line": 10122,
+      "context_method": "stormEndSeason",
+      "method": "clear",
+      "snippet": "if(ok){o.storm.passed[c.idx]=true;o.progress=o.storm.passed.filter(Boolean).length;this.floatText(this.player.x,this.player.y-60,info.emoji+' TRIAL PASSED!',info.color);this.screenFlash(info.color,.22,260);Sfx.clear&&Sfx.clear();}"
+    },
+    {
+      "line": 10159,
+      "context_method": "tickNectarGarden",
+      "method": "boom",
+      "snippet": "if(f.hp<=0){f.hp=0;f.alive=false;alive--;if(f.sprite)f.sprite.setVisible(false);if(f.ring)f.ring.setVisible(false);this.burst(f.x,f.y,0xffc95c);Sfx.boom();}"
+    },
+    {
+      "line": 10241,
+      "context_method": "failBonus",
+      "method": "bossWarn",
+      "snippet": "this.showBanner('⚠️ Bonus Failed — Ambush!',(reason?reason+' · ':'')+'Elite enemies close in',1500);this.screenFlash(0xff5a6e,0.22,260);if(Sfx.bossWarn)Sfx.bossWarn();"
+    },
+    {
+      "line": 10306,
+      "context_method": "tickCaptureFX",
+      "method": "chestTick",
+      "snippet": "const step=Math.floor(f*10);if(step>(o._capStep||0)){o._capStep=step;if(Sfx.chestTick)Sfx.chestTick(step*3);"
+    },
+    {
+      "line": 10314,
+      "context_method": "captureRush",
+      "method": "select",
+      "snippet": "this.showBanner('⚠ Incoming!','Enemies are rushing the zone',900);if(Sfx.select)Sfx.select();"
+    },
+    {
+      "line": 10319,
+      "context_method": "captureDoneFX",
+      "method": "chestWin",
+      "snippet": "if(Sfx.chestWin)Sfx.chestWin();if(Sfx.ult)Sfx.ult();if(Sfx.clear)this.time.delayedCall(180,()=>Sfx.clear());"
+    },
+    {
+      "line": 10319,
+      "context_method": "captureDoneFX",
+      "method": "ult",
+      "snippet": "if(Sfx.chestWin)Sfx.chestWin();if(Sfx.ult)Sfx.ult();if(Sfx.clear)this.time.delayedCall(180,()=>Sfx.clear());"
+    },
+    {
+      "line": 10319,
+      "context_method": "captureDoneFX",
+      "method": "clear",
+      "snippet": "if(Sfx.chestWin)Sfx.chestWin();if(Sfx.ult)Sfx.ult();if(Sfx.clear)this.time.delayedCall(180,()=>Sfx.clear());"
+    },
+    {
+      "line": 10469,
+      "context_method": "completeWaveObjective",
+      "method": "clear",
+      "snippet": "if(this.recipeMode&&this._recipeMission){ o.done=true; this.resolveBonusChallenge(); const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this._hunger+=this.recipeHungerGoal()*MISSION_HUNGER; this.showBanner('✅ Mission complete · Sugar +'+bn+' · Hunger +'+Math.round(MISSION_HUNGER*100)+'%',this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); Sfx.clear(); return; }o.done=true;this.resolveBonusChallenge();const bonus=6+(this.stageIndex+1)*2+this.waveIndex*2;this.sugarStage+=bonus;this.sugarRun+=bonus;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);"
+    },
+    {
+      "line": 10470,
+      "context_method": "completeWaveObjective",
+      "method": "clear",
+      "snippet": "const title='✅ Objective Complete · Sugar +'+bonus;this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;if(this.usesStoryBudget?.()){this.clearFoes();this.clearEnemies();this.settleStoryBudget(true);}this.showBanner(title,this.usesStoryBudget?.()?'Earned EXP collected + objective reward — choose upgrades':'Clear the remaining enemies to advance',1500);Sfx.clear();"
+    },
+    {
+      "line": 10492,
+      "context_method": "tickHuntCurse",
+      "method": "hurt",
+      "snippet": "if(!this._huntCursed){this._huntCursed=true;this.showBanner('💀 Hunter’s Curse','Chase the target or your HP keeps draining!',1600);if(Sfx.hurt)Sfx.hurt();}"
+    },
+    {
+      "line": 10572,
+      "context_method": "applyBossRage",
+      "method": "bossWarn",
+      "snippet": "if(announce&&r.tier>old.tier){this.showBanner(r.emoji+' Boss '+r.name,'Minions killed '+r.kills+' · reward x'+r.reward.toFixed(2),1500);this.screenFlash(r.color,0.14,300);Sfx.bossWarn();}"
+    },
+    {
+      "line": 10579,
+      "context_method": "spawnMiniBoss",
+      "method": "bossWarn",
+      "snippet": "this.showBanner('💢 Miniboss!', st.mini, 2000); Sfx.bossWarn(); Sfx.playMiniBgm(this.stageIndex+1); this.screenShake(200,0.008);"
+    },
+    {
+      "line": 10579,
+      "context_method": "spawnMiniBoss",
+      "method": "playMiniBgm",
+      "snippet": "this.showBanner('💢 Miniboss!', st.mini, 2000); Sfx.bossWarn(); Sfx.playMiniBgm(this.stageIndex+1); this.screenShake(200,0.008);"
+    },
+    {
+      "line": 10684,
+      "context_method": "bossIntro",
+      "method": "playBossBgm",
+      "snippet": "Sfx.playBossBgm(this.stageIndex+1);Sfx.bossWarn();"
+    },
+    {
+      "line": 10684,
+      "context_method": "bossIntro",
+      "method": "bossWarn",
+      "snippet": "Sfx.playBossBgm(this.stageIndex+1);Sfx.bossWarn();"
+    },
+    {
+      "line": 10736,
+      "context_method": "bossIntro",
+      "method": "bossWarn",
+      "snippet": "this.tweens.add({targets:b,alpha:1,y:targetY,scale:base,duration:1700,ease:'Back.out',onComplete:()=>{if(!b.active)return;this.screenShake(980,0.030);this.screenFlash(0xff3f78,0.52,760);Sfx.bossWarn();eclipse.destroy();corona.destroy();}});"
+    },
+    {
+      "line": 10755,
+      "context_method": "bossIntro",
+      "method": "bossWarn",
+      "snippet": "this.tweens.add({targets:b,alpha:1,scale:base,duration:1650,ease:'Back.out',onComplete:()=>{if(!b.active)return;this.behemothPose(b,7,1200);this.screenFlash(0x7d3cff,.48,620);this.screenShake(760,.022);Sfx.bossWarn();shadow.destroy();}});"
+    },
+    {
+      "line": 10783,
+      "context_method": "bossIntroQuick",
+      "method": "playBossBgm",
+      "snippet": "bossIntroQuick(b,name){ const base=b.baseScale||1.55; Sfx.playBossBgm(this.stageIndex+1); Sfx.bossWarn();"
+    },
+    {
+      "line": 10783,
+      "context_method": "bossIntroQuick",
+      "method": "bossWarn",
+      "snippet": "bossIntroQuick(b,name){ const base=b.baseScale||1.55; Sfx.playBossBgm(this.stageIndex+1); Sfx.bossWarn();"
+    },
+    {
+      "line": 10802,
+      "context_method": "bossDefeat",
+      "method": "clear",
+      "snippet": "Sfx.clear(); this.hitStop(grand?140:90); this.screenFlash(0xffffff,grand?0.92:0.7,grand?680:420); this.screenShake(grand?900:600,grand?0.024:0.016);"
+    },
+    {
+      "line": 10825,
+      "context_method": "onWaveCleared",
+      "method": "bgmIntense",
+      "snippet": "this.boss=null;Sfx.bgmIntense(false);if(String(Sfx._currentBgmKey||'').startsWith('bgm_m'))Sfx.playStageBgm(this.stageIndex+1);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();"
+    },
+    {
+      "line": 10825,
+      "context_method": "onWaveCleared",
+      "method": "playStageBgm",
+      "snippet": "this.boss=null;Sfx.bgmIntense(false);if(String(Sfx._currentBgmKey||'').startsWith('bgm_m'))Sfx.playStageBgm(this.stageIndex+1);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();"
+    },
+    {
+      "line": 10829,
+      "context_method": "onWaveCleared",
+      "method": "bossWarn",
+      "snippet": "this.scheduleStageEvent(300,'bossWarning',()=>{const rage=this.bossRageInfo();this.showBanner('⚠️ '+rage.emoji+' Boss '+rage.name,st.boss+' · Minions '+rage.kills+' · reward x'+rage.reward.toFixed(2),2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);"
+    },
+    {
+      "line": 10853,
+      "context_method": "openCrossroads",
+      "method": "chest",
+      "snippet": "});Sfx.chest();"
+    },
+    {
+      "line": 10863,
+      "context_method": "chooseCrossroad",
+      "method": "heal",
+      "snippet": "}else{p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.4);Sfx.heal();this.showBanner('Recovered HP','Restored 40% of maximum HP',2000);}"
+    },
+    {
+      "line": 10864,
+      "context_method": "chooseCrossroad",
+      "method": "chestWin",
+      "snippet": "Sfx.chestWin&&Sfx.chestWin();this.resumeAfterCrossroads();"
+    },
+    {
+      "line": 10877,
+      "context_method": "onBossDown",
+      "method": "bossClear",
+      "snippet": "this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bossClear();this.time.delayedCall(3000,()=>{if(!this.boss&&this.state!=='menu')Sfx.playStageBgm(this.stageIndex+1);});this.clearFoes();this.clearEnemies();this.clearBossObjects();"
+    },
+    {
+      "line": 10877,
+      "context_method": "onBossDown",
+      "method": "playStageBgm",
+      "snippet": "this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bossClear();this.time.delayedCall(3000,()=>{if(!this.boss&&this.state!=='menu')Sfx.playStageBgm(this.stageIndex+1);});this.clearFoes();this.clearEnemies();this.clearBossObjects();"
+    },
+    {
+      "line": 10880,
+      "context_method": "onBossDown",
+      "method": "chest",
+      "snippet": "if(this.bossRush){ this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest(); this.mode='breather'; this.bossRushBossDown(); return; }"
+    },
+    {
+      "line": 10886,
+      "context_method": "onBossDown",
+      "method": "chest",
+      "snippet": "this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();"
+    },
+    {
+      "line": 10915,
+      "context_method": "revealStageReward",
+      "method": "clear",
+      "snippet": "this._stageReward=this.rollStageReward('fortune');Sfx.clear();"
+    },
+    {
+      "line": 10946,
+      "context_method": "enterPortal",
+      "method": "clear",
+      "snippet": "this.screenFlash(0xb98cff,0.75,520);Sfx.clear();"
+    },
+    {
+      "line": 10972,
+      "context_method": "onStageClear",
+      "method": "clear",
+      "snippet": "Sfx.clear();"
+    },
+    {
+      "line": 11028,
+      "context_method": "stopSummaryPresentation",
+      "method": "stopCraft",
+      "snippet": "Sfx.stopCraft();"
+    },
+    {
+      "line": 11033,
+      "context_method": "animateSummaryRewards",
+      "method": "result",
+      "snippet": "Sfx.result('open');"
+    },
+    {
+      "line": 11035,
+      "context_method": "animateSummaryRewards",
+      "method": "result",
+      "snippet": "if(ticks){sugarText.setText('+0');for(let i=1;i<=ticks;i++)later(280+i*80,()=>{sugarText.setText('+'+Math.floor(total*i/ticks));Sfx.result('count',.9+i*.025);});}"
+    },
+    {
+      "line": 11037,
+      "context_method": "animateSummaryRewards",
+      "method": "result",
+      "snippet": "rewards.forEach((group,i)=>{group.forEach(o=>o.setAlpha(0));later(at+160+i*160,()=>{group.forEach(o=>o.setAlpha(1));Sfx.result('reveal');});});"
+    },
+    {
+      "line": 11038,
+      "context_method": "animateSummaryRewards",
+      "method": "result",
+      "snippet": "if(this._firstMastery||this._lastLvlUps>0)later(at+160+rewards.length*160,()=>{Sfx.result('important');if(this._firstMastery)this.playSummaryGrowth?.('mastery');if(this._lastLvlUps>0)this.playSummaryGrowth?.('levelup');});"
+    },
+    {
+      "line": 11121,
+      "context_method": "adDoubleSugar",
+      "method": "result",
+      "snippet": "if(this.state==='summary')this.showStageSummary(this._summaryLast);if(bonus>0)Sfx.result('double'); }"
+    },
+    {
+      "line": 11151,
+      "context_method": "victory",
+      "method": "victory",
+      "snippet": "Sfx.victory();"
+    },
+    {
+      "line": 11242,
+      "context_method": "drawReadableChoiceCard",
+      "method": "legend",
+      "snippet": "if(!this._spSndAt||this.time.now-this._spSndAt>800){this._spSndAt=this.time.now;Sfx.legend&&Sfx.legend();}"
+    },
+    {
+      "line": 11308,
+      "context_method": "_coachNext",
+      "method": "select",
+      "snippet": "this.drawCoachBubble(step); Sfx.select&&Sfx.select(); }"
+    },
+    {
+      "line": 11319,
+      "context_method": "_coachFinish",
+      "method": "clear",
+      "snippet": "this.sugarStage=0; Sfx.clear&&Sfx.clear();"
+    },
+    {
+      "line": 11408,
+      "context_method": "pickStartingSkillAt",
+      "method": "select",
+      "snippet": "const c=(this.startSkillCards||[]).find(z=>px>=z.left&&px<=z.right&&py>=z.top&&py<=z.bottom);if(!c)return;Sfx.select();this.skills[c.key]=1;if(c.key==='star')this.rebuildRing();this.lvlUp.setVisible(false);this.buildSkillBar();"
+    },
+    {
+      "line": 11421,
+      "context_method": "checkUniqueAutoUpgrade",
+      "method": "clear",
+      "snippet": "const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+(u.tiers||UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique])[target],1900);Sfx.clear();this.playGrowthWorld?.('unlock');"
+    },
+    {
+      "line": 11426,
+      "context_method": "openLevelUp",
+      "method": "levelup",
+      "snippet": "if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }"
+    },
+    {
+      "line": 11456,
+      "context_method": "pickCardAt",
+      "method": "select",
+      "snippet": "if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \\u201c'+c.title+'\\u201d · tap again to confirm');return;}"
+    },
+    {
+      "line": 11457,
+      "context_method": "pickCardAt",
+      "method": "bp",
+      "snippet": "Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);Sfx.bp?.('shared_unique_charge_full',.5,.35,1.15);}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)"
+    },
+    {
+      "line": 11478,
+      "context_method": "sugarRush",
+      "method": "clear",
+      "snippet": "this.showBanner('🍬 SUGAR RUSH!'+(got&&got.length?' Lv '+this.level:''),(got&&got.length?got.slice(-2).join(' · ')+' · ':'')+'attacks ×1.7 speed for '+SUGAR_RUSH_SEC+'s',1300); Sfx.clear&&Sfx.clear(); }"
+    },
+    {
+      "line": 11480,
+      "context_method": "closeLevelUp",
+      "method": "card",
+      "snippet": "Sfx.card();"
+    },
+    {
+      "line": 11511,
+      "context_method": "consumeShell",
+      "method": "pick",
+      "snippet": "this.floatText(p.x,p.y-44,'🫧 Blocked!',0x9fe8ff); this.screenFlash(0x9fe8ff,0.18,160); Sfx.pick?.();"
+    },
+    {
+      "line": 11546,
+      "context_method": "frRun",
+      "method": "recipe",
+      "snippet": "frRun(r,depth){ const prev=this._frCur; this._frCur=r; this._frBusy=depth+1; Sfx.recipe();"
+    },
+    {
+      "line": 11760,
+      "context_method": "condRelicCard",
+      "method": "clear",
+      "snippet": "return {type:'relic',key:'cond_'+id,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji,title,desc,headline:'🎯 '+desc,apply:()=>{ b.condRelics=(b.condRelics||[]).concat(id); const p=this.player; p._cond=p._cond||{}; p._cond[id]=(p._cond[id]||0)+2; this.showBanner(emoji+' '+title,desc,1600); Sfx.clear(); }}; }"
+    },
+    {
+      "line": 11781,
+      "context_method": "rollBasicAttackUpgrades",
+      "method": "clear",
+      "snippet": "return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();this.playGrowthWorld?.('unlock');}}));"
+    },
+    {
+      "line": 11786,
+      "context_method": "rollBasicAttackUpgrades",
+      "method": "clear",
+      "snippet": "return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,tags:TAGS_OF.infusion[f.id],kind:'Flavor Infusion',special:true,color:f.color,...(this.cocoaInfMatch(f.id)?{headline:'★ Build match: '+this.cocoaInfMatch(f.id)}:{}),apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));"
+    },
+    {
+      "line": 11791,
+      "context_method": "rollBasicAttackUpgrades",
+      "method": "clear",
+      "snippet": "return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.filter(f=>f.id!==b.infusion)).slice(0,3).map(f=>makeCard(f,{desc:f.desc+' · procs on 50% of hits',tags:TAGS_OF.infusion[f.id],kind:'Dual Infusion',special:true,color:f.color,apply:()=>{b.infusion2=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' Dual Flavor','Second flavor blended in',1800);Sfx.clear();}}));"
+    },
+    {
+      "line": 11805,
+      "context_method": "rollBasicAttackUpgrades",
+      "method": "bp",
+      "snippet": "return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.time.delayedCall(2300,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});Sfx.bp?.('shared_build_evolution',.7,1);this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();this.playGrowthWorld?.('unlock');}})];"
+    },
+    {
+      "line": 11805,
+      "context_method": "rollBasicAttackUpgrades",
+      "method": "clear",
+      "snippet": "return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.time.delayedCall(2300,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});Sfx.bp?.('shared_build_evolution',.7,1);this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();this.playGrowthWorld?.('unlock');}})];"
+    },
+    {
+      "line": 11809,
+      "context_method": "rollBasicAttackUpgrades",
+      "method": "clear",
+      "snippet": "return [makeCard(fu,{evolution:true,special:true,kind:'Fusion',tags:fu.tags,color:0xff6ad5,headline:'🧬 '+fu.desc,apply:()=>{ b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,fu.desc,2200); Sfx.clear(); }})]; } }"
+    },
+    {
+      "line": 11827,
+      "context_method": "rollBasicAttackUpgrades",
+      "method": "heal",
+      "snippet": "if(hpFrac<0.999){const rr=rollRarity(),amount=Math.max(1,Math.round(this.player.maxhp*0.25*(this.player.healEffect||1)*(1+(rr.ranks-1)*0.5)));healCard={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,rarity:rr,color:rr.color,kind:'Instant Heal',emoji:'💖',title:'Sweet Recovery',desc:'Restore HP instantly '+amount+' HP · No passive slot',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};}"
+    },
+    {
+      "line": 11868,
+      "context_method": "rollUpgrades",
+      "method": "heal",
+      "snippet": "const recovery={type:'heal',key:'sweetRecovery',iconKey:'ic_sweet_recovery',lvl:1,max:1,kind:'Instant Heal',badgeColor:'#ff8fb5',color:0xff6f9d,emoji:'💖',title:'Sweet Recovery',desc:'Restore HP instantly '+amount+' HP · No passive slot',apply:()=>{const before=this.player.hp;this.player.hp=Math.min(this.player.maxhp,this.player.hp+amount);const healed=Math.round(this.player.hp-before);if(healed>0)this.popHeal(this.player.x,this.player.y,healed);Sfx.heal();}};"
+    },
+    {
+      "line": 11882,
+      "context_method": "rollUpgrades",
+      "method": "clear",
+      "snippet": "A(key,a.emoji,'Awaken: '+a.name,pair+' · '+a.desc,()=>{ this.skills[key]=SKILL_AWAKEN_LV; if(key==='star')this.rebuildRing(); this.buildSkillBar(); if(this.showBanner)this.showBanner('⚡ Skill Awakened! '+a.emoji, d.name+' → '+a.name, 2400); Sfx.clear(); }); }"
+    },
+    {
+      "line": 12222,
+      "context_method": "castSkill",
+      "method": "shoot",
+      "snippet": "this.physics.velocityFromRotation(ang,speed,b.body.velocity); if(path!=='shotgun')Sfx.shoot();"
+    },
+    {
+      "line": 12248,
+      "context_method": "castSkill",
+      "method": "thunder",
+      "snippet": "Sfx.thunder(); }"
+    },
+    {
+      "line": 12254,
+      "context_method": "castSkill",
+      "method": "shoot",
+      "snippet": "Sfx.shoot(); }"
+    },
+    {
+      "line": 12262,
+      "context_method": "castSkill",
+      "method": "shoot",
+      "snippet": "this.physics.velocityFromRotation(ang,430,b.body.velocity); } Sfx.shoot(); }"
+    },
+    {
+      "line": 12278,
+      "context_method": "castSkill",
+      "method": "frost",
+      "snippet": "this.damage(e,(e.isBoss||e.isMini)?dmg*1.7:dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r2,Math.max(dmg,10)); Sfx.frost(); });"
+    },
+    {
+      "line": 12286,
+      "context_method": "castSkill",
+      "method": "frost",
+      "snippet": "this.damage(e,(e.isBoss||e.isMini)?dmg*1.7:dmg,e.x,e.y); }); this.hitCratesInRadius(this.player.x,this.player.y,r,Math.max(dmg,10)); Sfx.frost(); }   // บอส/มินิแช่ไม่ได้ → ชดเชยด้วยดาเมจเย็นเจาะเกราะ (แก้ Mint สู้มินิยาก)"
+    },
+    {
+      "line": 12292,
+      "context_method": "castSkill",
+      "method": "shoot",
+      "snippet": "Sfx.shoot(); }"
+    },
+    {
+      "line": 12301,
+      "context_method": "castSkill",
+      "method": "shoot",
+      "snippet": "Sfx.shoot(); }"
+    },
+    {
+      "line": 12313,
+      "context_method": "castSkill",
+      "method": "shoot",
+      "snippet": "this.physics.velocityFromRotation(ang,560,b.body.velocity); } Sfx.shoot(); }"
+    },
+    {
+      "line": 12322,
+      "context_method": "castSkill",
+      "method": "zap",
+      "snippet": "for(let k=0;k<beams;k++) this.fireBeam(base+(k-(beams-1)/2)*0.18,len,wide,dmg); Sfx.zap(); }"
+    },
+    {
+      "line": 12341,
+      "context_method": "castSkill",
+      "method": "frost",
+      "snippet": "this.tweens.add({targets:cloud,alpha:0,delay:Math.max(0,dur*1000-350),duration:400,onComplete:()=>cloud.destroy()}); Sfx.frost(); }"
+    },
+    {
+      "line": 12346,
+      "context_method": "castSkill",
+      "method": "shoot",
+      "snippet": "this.physics.velocityFromRotation(base+(s-(cnt-1)/2)*0.3,300,b.body.velocity); } Sfx.shoot(); }"
+    },
+    {
+      "line": 12348,
+      "context_method": "castSkill",
+      "method": "boom",
+      "snippet": "for(let k=0;k<rings;k++) this.creamWave(maxR,dmg,k*180,aw?520:390); Sfx.boom(); }"
+    },
+    {
+      "line": 12363,
+      "context_method": "toggleCocoaFlicker",
+      "method": "uiAction",
+      "snippet": "this.refreshFlickerUI();Sfx.uiAction('click',()=>{});"
+    },
+    {
+      "line": 12438,
+      "context_method": "tickCocoaCombat",
+      "method": "bp",
+      "snippet": "const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){const fr=tr.finaleR||85;this.cocoaHit(p.x,p.y,fr,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,fr,tr.finaleR?'fist':'punch',0xc9a3ff);if(tr.bossT?.active&&this.dist(tr.bossT.x,tr.bossT.y,p.x,p.y)<=fr+(tr.bossT.body?.halfWidth||40))this.damage(tr.bossT,tr.finale*.9,tr.bossT.x,tr.bossT.y);if(tr.finaleR){p.iframe=Math.max(p.iframe||0,.3);this.screenShake?.(110,.005);this.hitStop?.(35);this.cocoaLandingFx(p.x,p.y,fr);if(tr.leap)this.cocoaLeapMutation(p.x,p.y,fr,tr.finale);}(tr.leap&&Sfx.bp?.('cocoa_dash_landing',.6,.1))||Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}"
+    },
+    {
+      "line": 12438,
+      "context_method": "tickCocoaCombat",
+      "method": "comboPunch",
+      "snippet": "const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){const fr=tr.finaleR||85;this.cocoaHit(p.x,p.y,fr,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,fr,tr.finaleR?'fist':'punch',0xc9a3ff);if(tr.bossT?.active&&this.dist(tr.bossT.x,tr.bossT.y,p.x,p.y)<=fr+(tr.bossT.body?.halfWidth||40))this.damage(tr.bossT,tr.finale*.9,tr.bossT.x,tr.bossT.y);if(tr.finaleR){p.iframe=Math.max(p.iframe||0,.3);this.screenShake?.(110,.005);this.hitStop?.(35);this.cocoaLandingFx(p.x,p.y,fr);if(tr.leap)this.cocoaLeapMutation(p.x,p.y,fr,tr.finale);}(tr.leap&&Sfx.bp?.('cocoa_dash_landing',.6,.1))||Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}"
+    },
+    {
+      "line": 12469,
+      "context_method": "castCocoaRush",
+      "method": "bp",
+      "snippet": "this._ccCdMul=path==='titan'?(fin?1.3:1):fin?1.08:.72;if(path==='titan'){this.bpPose?.(fin?'char_cocoa_titan_slam':'char_cocoa_titan_hop',wind+.2);if(fin)Sfx.bp?.('cocoa_titan_leap',.38,.25);/* v6.77: no lunge — walk freely while attacking */}else{const pk=fire?(fin?'char_cocoa_fire_fin':'char_cocoa_fire_jab'):path==='dashboxer'?'char_cocoa_dash_jab':'char_cocoa_attack';if(pk&&this.bpPose)this.bpPose(pk,wind+.2);else this.poseAttack(wind*1000+150,pk||undefined);}"
+    },
+    {
+      "line": 12477,
+      "context_method": "castCocoaRush",
+      "method": "bp",
+      "snippet": "const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true});if(landed&&path==='titan'){this.bpFx?.('bpx_cocoa_shockwave',x,y,rr*(fin?2.4:1.7));if(fin)this.bpFx?.('bpx_cocoa_crack',x,y,rr*2.2,{depth:5});}if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);(path==='titan'&&Sfx.bp?.('cocoa_titan_slam',fin?.65:.42,.08))||Sfx.comboPunch(cc.n,fin?'heavy':'jab');"
+    },
+    {
+      "line": 12477,
+      "context_method": "castCocoaRush",
+      "method": "comboPunch",
+      "snippet": "const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true});if(landed&&path==='titan'){this.bpFx?.('bpx_cocoa_shockwave',x,y,rr*(fin?2.4:1.7));if(fin)this.bpFx?.('bpx_cocoa_crack',x,y,rr*2.2,{depth:5});}if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);(path==='titan'&&Sfx.bp?.('cocoa_titan_slam',fin?.65:.42,.08))||Sfx.comboPunch(cc.n,fin?'heavy':'jab');"
+    },
+    {
+      "line": 12498,
+      "context_method": "tickTitanRage",
+      "method": "bpLoopStop",
+      "snippet": "const g=this._rageG;if(!this.titanRageOn()){this._titanRage=0;Sfx.bpLoopStop?.('uq_titan_charge');if(g)g.clear();if(this._rageAura){if(this._rageAura.active)this._rageAura.destroy();this._rageAura=null;}return;}"
+    },
+    {
+      "line": 12504,
+      "context_method": "tickTitanRage",
+      "method": "bpLoopStart",
+      "snippet": "if(this._titanHold){const M=this.titanMaxLv();r=Math.min(M,r+dt*(1+.2*(b.lv?.p_fastrage||0)+this.ptv('trSpeed'))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*(this.cocoaHasInf('sweet')?.7:1)*Math.max(.3,1-this.ptv('trCost'))*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;Sfx.bpLoopStart?.('uq_titan_charge',.26);Sfx.bpLoopRate?.(.9+.08*r);}"
+    },
+    {
+      "line": 12504,
+      "context_method": "tickTitanRage",
+      "method": "bpLoopRate",
+      "snippet": "if(this._titanHold){const M=this.titanMaxLv();r=Math.min(M,r+dt*(1+.2*(b.lv?.p_fastrage||0)+this.ptv('trSpeed'))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*(this.cocoaHasInf('sweet')?.7:1)*Math.max(.3,1-this.ptv('trCost'))*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;Sfx.bpLoopStart?.('uq_titan_charge',.26);Sfx.bpLoopRate?.(.9+.08*r);}"
+    },
+    {
+      "line": 12505,
+      "context_method": "tickTitanRage",
+      "method": "bpLoopStop",
+      "snippet": "else{r=0;this._rageCharging=false;Sfx.bpLoopStop?.('uq_titan_charge');"
+    },
+    {
+      "line": 12507,
+      "context_method": "tickTitanRage",
+      "method": "bp",
+      "snippet": "this._titanRage=r;const lv=Math.floor(r);if(lv>prev){if(lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_full',.65,.5);else Sfx.bp?.('cocoa_rage_level',.6,.1,0.92+0.08*lv);this.screenShake(60+lv*30,.002+lv*.0012);}"
+    },
+    {
+      "line": 12507,
+      "context_method": "tickTitanRage",
+      "method": "bp",
+      "snippet": "this._titanRage=r;const lv=Math.floor(r);if(lv>prev){if(lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_full',.65,.5);else Sfx.bp?.('cocoa_rage_level',.6,.1,0.92+0.08*lv);this.screenShake(60+lv*30,.002+lv*.0012);}"
+    },
+    {
+      "line": 12529,
+      "context_method": "titanRageImpact",
+      "method": "beatFx",
+      "snippet": "if(lv>=3){this.cocoaVisual(x,y,r*1.5,'fist',0xff4a2a);const t=this.add.text(x,y-r*.6,'TITAN CRUSH!',{fontSize:'30px',fontStyle:'900',color:'#ffd27a',stroke:'#5a1500',strokeThickness:7}).setOrigin(.5).setDepth(9);this.camWorld(t);this.tweens.add({targets:t,y:t.y-50,scale:1.3,alpha:0,duration:900,onComplete:()=>t.destroy()});Sfx.beatFx?.('titan');}"
+    },
+    {
+      "line": 12595,
+      "context_method": "showApkUpdate",
+      "method": "select",
+      "snippet": "btn(by+bh-26,'Later',0x5a4b75,()=>{ try{localStorage.setItem('mochi_apk_skip',latest+'|'+new Date().toDateString());}catch(e){} close(); }); Sfx.select&&Sfx.select(); }"
+    },
+    {
+      "line": 12625,
+      "context_method": "cocoaFireFist",
+      "method": "bp",
+      "snippet": "Sfx.bp?.(fin?'cocoa_fire_finisher':'cocoa_fire_fist',fin?.6:.42,.06);"
+    },
+    {
+      "line": 12627,
+      "context_method": "cocoaFireFist",
+      "method": "bp",
+      "snippet": "const nMet=fin?(basic?.evolved?3:0)+(this.ptv('ffMeteor')?2:0):0;if(nMet){const d=Math.min(520,reach*3);for(let i=0;i<nMet;i++)this.cocoaLater(.35+i*.15,()=>{if(!p.active)return;const x=p.x+Math.cos(ang)*d*(.5+(i%3)*.25)+(Math.random()-.5)*60,y=p.y+Math.sin(ang)*d*(.5+(i%3)*.25)+(Math.random()-.5)*60;this.cocoaHit(x,y,reach*.7,power*.5,{push:120});this.bpFx?.('bpx_cocoa_meteor',x,y,reach*2);this.cocoaVisual(x,y,reach*.7,'fist',0xff5a1f);this.screenShake?.(60,.003);Sfx.bp?.('cocoa_meteor_impact',.5,.08);});}"
+    },
+    {
+      "line": 12632,
+      "context_method": "cocoaEvoDash",
+      "method": "bp",
+      "snippet": "s.dmg=power;s.life=1.4;s.homing=480;s.lockedTarget=t||null;s.faceVel=true;s.knockback=120;if(this.textures?.exists?.('proj_rocket'))s.setTexture('proj_rocket').setTint(0xc9a3ff).setScale(.6);this.attachProjectileAnim?.(s,'bpx_cocoa_shadowfist',100);if(s.body&&this.physics)this.physics.velocityFromRotation(a,600,s.body.velocity);}Sfx.bp?.('cocoa_shadow_fist',.45,.12);}"
+    },
+    {
+      "line": 12651,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "if(this.textures?.exists?.('proj_rocket'))b.setTexture('proj_rocket').setTint(0xff6a1a).setScale(.85);this.attachProjectileAnim?.(b,'bpx_cocoa_gauntlet',120);b._bpBoom='bpx_cocoa_explode';b._uqRocket=true;if(b.body&&this.physics)this.physics.velocityFromRotation(a,560,b.body.velocity);Sfx.bp?.('uq_rocket_salvo',.6,.8);});"
+    },
+    {
+      "line": 12652,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "if(t&&(t.isBoss||t.isMini))for(let k=0;k<stick;k++)this.cocoaLater(.75+k*.35,()=>{if(!t.active)return;this.cocoaHit(t.x,t.y,r*.8,unit*.7,{push:0});this.bpFx?.('bpx_cocoa_stick',t.x,t.y,r*1.8);this.cocoaVisual(t.x,t.y,r*.8,'wave',0xff6a1a);this.screenShake?.(70,.003);Sfx.bp?.('cocoa_rocket_stick_burst',.5,.1);});}"
+    },
+    {
+      "line": 12654,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel')),t=this.cocoaPriorityTarget(480),x=t?t.x:p.x,y=t?t.y:p.y,r=(102+ul*10)*size*(1+lv*.15),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);"
+    },
+    {
+      "line": 12655,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);"
+    },
+    {
+      "line": 12655,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);"
+    },
+    {
+      "line": 12660,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "this.cocoaLater(.65,()=>{this.cocoaHit(x,y,r*1.2,unit*.7);this.cocoaVisual(x,y,r*1.2,'wave',0xd59b65);Sfx.bp?.('uq_titan_aftershock',.45,.3);});"
+    },
+    {
+      "line": 12662,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "const duration=5+ul*.5;this._cocoaUniqueT=1.5;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);this.fxPhantomScreen?.(1.4);Sfx.bp?.('uq_phantom_enter',.65,.3)||Sfx.bp?.('cocoa_phantom_start',.65,.3);"
+    },
+    {
+      "line": 12662,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "const duration=5+ul*.5;this._cocoaUniqueT=1.5;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);this.fxPhantomScreen?.(1.4);Sfx.bp?.('uq_phantom_enter',.65,.3)||Sfx.bp?.('cocoa_phantom_start',.65,.3);"
+    },
+    {
+      "line": 12667,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});"
+    },
+    {
+      "line": 12667,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});"
+    },
+    {
+      "line": 12667,
+      "context_method": "castCocoaUnique",
+      "method": "bp",
+      "snippet": "this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});"
+    },
+    {
+      "line": 12667,
+      "context_method": "castCocoaUnique",
+      "method": "comboPunch",
+      "snippet": "this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});"
+    },
+    {
+      "line": 12668,
+      "context_method": "castCocoaUnique",
+      "method": "comboPunch",
+      "snippet": "}else{this._cocoaUniqueT=.2;const r=(115+ul*10)*size;this.cocoaHit(p.x,p.y,r,unit*2.2,{push:250});this.cocoaVisual(p.x,p.y,r);Sfx.comboPunch(0,'heavy');}"
+    },
+    {
+      "line": 12678,
+      "context_method": "cocoaDashLeap",
+      "method": "bp",
+      "snippet": "p.setVelocity(0,0);p.iframe=Math.max(p.iframe||0,.45);this.bpPose?.('char_cocoa_dash_leap',.32);this.cocoaAfterimages?.(p.x,p.y,best.x,best.y);Sfx.bp?.('cocoa_flicker_step',.45,.1);if(best.isBoss||best.isMini)tr.bossT=best;this.cocoaGlideTo({x:p.x+(best.x-p.x)*k,y:p.y+(best.y-p.y)*k},.2);this.dashTime=.22;const sw=b.lv?.p_slamwave||0;tr.finale*=1.5*(1+.1*sw+this.ptv('dbSlam'));tr.finaleR=Math.round(110*(1+.2*sw));tr.leap=true;"
+    },
+    {
+      "line": 12739,
+      "context_method": "castBearDonut",
+      "method": "punch",
+      "snippet": "}); Sfx.punch();"
+    },
+    {
+      "line": 12751,
+      "context_method": "bearDonutImpact",
+      "method": "boom",
+      "snippet": "this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r*1.7)this.damage(e,dmg*(aw?1.05:0.8),e.x,e.y);});Sfx.boom();}"
+    },
+    {
+      "line": 12774,
+      "context_method": "castMirrorBeam",
+      "method": "boom",
+      "snippet": "else this.vfxHitRing(e.x,e.y,PRISM,true); this.popDmg(Math.round(burst),e.x,e.y,true); Sfx.boom(); } };"
+    },
+    {
+      "line": 12778,
+      "context_method": "castMirrorBeam",
+      "method": "beam",
+      "snippet": "this.vfxHitRing(this.player.x,this.player.y,over?0xffe08a:PRISM,true); Sfx.beam();"
+    },
+    {
+      "line": 12799,
+      "context_method": "castBerryBlaster",
+      "method": "bpLoopStart",
+      "snippet": "const c={basic,lvl,aw,power,ms,start:this.time.now,angle:a,epoch:this._artEpoch||0,glow};this._berryCharge=c;Sfx.bpLoopStart?.('strawberry_sniper_charge',.2);"
+    },
+    {
+      "line": 12823,
+      "context_method": "castBerryBlaster",
+      "method": "shoot",
+      "snippet": "if(path==='shotgun'&&idx===0)this.shotgunKick(a);else if(path!=='shotgun')Sfx.shoot();"
+    },
+    {
+      "line": 12836,
+      "context_method": "releaseBerryCharge",
+      "method": "bpLoopStop",
+      "snippet": "const c=this._berryCharge;if(!c)return;this._berryCharge=null;Sfx.bpLoopStop?.('strawberry_sniper_charge');if(c.timer){c.timer.remove(false);this._artTimers?.delete(c.timer);}if(c.glow?.active)c.glow.destroy();"
+    },
+    {
+      "line": 12847,
+      "context_method": "releaseBerryCharge",
+      "method": "bp",
+      "snippet": "this.physics.velocityFromRotation(a,(c.aw?1180:980)*1.35,b.body.velocity);this.poseAttack(340);Sfx.bp?.('strawberry_sniper_shot',complete?.62:.45,.1)||Sfx.shoot();"
+    },
+    {
+      "line": 12847,
+      "context_method": "releaseBerryCharge",
+      "method": "shoot",
+      "snippet": "this.physics.velocityFromRotation(a,(c.aw?1180:980)*1.35,b.body.velocity);this.poseAttack(340);Sfx.bp?.('strawberry_sniper_shot',complete?.62:.45,.1)||Sfx.shoot();"
+    },
+    {
+      "line": 12856,
+      "context_method": "hitBerrySeed",
+      "method": "bp",
+      "snippet": "if(m.path==='sniper'){this.bpFx?.('bpx_momo_sniperhit',x,y,110);Sfx.bp?.('strawberry_sniper_impact',.5,.08);}else if(b.sgPellet){const now=this.time.now;if(now-(this._bpPelletAt||0)>70){this._bpPelletAt=now;this.bpFx?.('bpx_momo_pellethit',x,y,56);}}"
+    },
+    {
+      "line": 12862,
+      "context_method": "hitBerrySeed",
+      "method": "bp",
+      "snippet": "if(b.bounce>0&&t){this.bpFx?.('bpx_momo_bounce',x,y,80);this.ricochetLink?.(x,y,t.x,t.y);b.bounce--;b._bounced=true;m.legs++;Sfx.bp?.('strawberry_ricochet_bounce',.36,.07,0.95+Math.min(.3,.04*m.legs));b.dmg=m.base*Math.min(2.2,1+(b.bounceGain||0)*m.legs);this.ptOnBounce(b,e);b.life=Math.max(b.life,.35);const a=Math.atan2(t.y-b.y,t.x-b.x);this.physics.velocityFromRotation(a,980,b.body.velocity);return;}"
+    },
+    {
+      "line": 12864,
+      "context_method": "hitBerrySeed",
+      "method": "bp",
+      "snippet": "if(m.path==='ricochet'&&m.evolved){this.bpFx?.('bpx_momo_pinball',x,y,170);Sfx.bp?.('strawberry_pinball_final',.55,.12);this.berrySplash(x,y,b.dmg*.25,72);}"
+    },
+    {
+      "line": 12891,
+      "context_method": "queueHailstorm",
+      "method": "bp",
+      "snippet": "if(k===0){this.bpFx?.('bpx_mint_hail',t.x,t.y-40,280);Sfx.bp?.('mint_hailstorm_cast',.6,.5);}"
+    },
+    {
+      "line": 12912,
+      "context_method": "castImpalerLance",
+      "method": "bpLoopStart",
+      "snippet": "this.poseAttack(ms+200);this.tickImpalerCharge();Sfx.bpLoopStart?.('mint_impaler_charge',.22);"
+    },
+    {
+      "line": 12921,
+      "context_method": "releaseImpalerCharge",
+      "method": "bpLoopStop",
+      "snippet": "const c=this._impalerCharge;if(!c)return;this._impalerCharge=null;Sfx.bpLoopStop?.('mint_impaler_charge');"
+    },
+    {
+      "line": 12938,
+      "context_method": "releaseImpalerCharge",
+      "method": "bp",
+      "snippet": "this.physics.velocityFromRotation(angle,speed,b.body.velocity);Sfx.bp?.('mint_lance_launch',full?.62:.45,.09)||Sfx.frost();"
+    },
+    {
+      "line": 12938,
+      "context_method": "releaseImpalerCharge",
+      "method": "frost",
+      "snippet": "this.physics.velocityFromRotation(angle,speed,b.body.velocity);Sfx.bp?.('mint_lance_launch',full?.62:.45,.09)||Sfx.frost();"
+    },
+    {
+      "line": 12956,
+      "context_method": "applyImpale",
+      "method": "bp",
+      "snippet": "this.bpFx?.('bpx_mint_rupture',e.x,e.y,220,{force:true});this.mintBurstFx(e.x,e.y,120);this.mintHeavyImpact();Sfx.bp?.('mint_crystal_rupture',.7,.15);"
+    },
+    {
+      "line": 12959,
+      "context_method": "applyImpale",
+      "method": "bp",
+      "snippet": "e._mintImpale=Math.min(3,stacks+1+(big?(b.lv.p_impaler||0):0));if(e._mintImpale>stacks)Sfx.bp?.('mint_impale_stack',.45,.08,0.94+0.06*e._mintImpale);(this._impMarked||(this._impMarked=new Set())).add(e);"
+    },
+    {
+      "line": 13012,
+      "context_method": "castFrostLance",
+      "method": "bp",
+      "snippet": "this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.bp?.(basic?.path==='barrage'?'mint_barrage_volley':'mint_lance_launch',.5,.09)||Sfx.frost();"
+    },
+    {
+      "line": 13012,
+      "context_method": "castFrostLance",
+      "method": "frost",
+      "snippet": "this.hitCratesInRadius(this.player.x,this.player.y,range,dmg); Sfx.bp?.(basic?.path==='barrage'?'mint_barrage_volley':'mint_lance_launch',.5,.09)||Sfx.frost();"
+    },
+    {
+      "line": 13068,
+      "context_method": "glacierShatter",
+      "method": "bp",
+      "snippet": "if(this._glacierBursts>=6)return;Sfx.bp?.('mint_glacier_shatter',.42,.12);"
+    },
+    {
+      "line": 13146,
+      "context_method": "castMirrorGlaze",
+      "method": "zap",
+      "snippet": "this.time.delayedCall(duration,()=>{pulse.remove(false);if(ring.active)this.tweens.add({targets:ring,alpha:0,duration:180,onComplete:()=>ring.destroy()});});Sfx.zap();"
+    },
+    {
+      "line": 13154,
+      "context_method": "castMemoryJam",
+      "method": "clear",
+      "snippet": "} Sfx.clear();"
+    },
+    {
+      "line": 13167,
+      "context_method": "castFlavorThread",
+      "method": "zap",
+      "snippet": "for(let n=0;n<ticks;n++)this.time.delayedCall(n*180,()=>{for(let i=0;i<linked.length;i++){const a=linked[i],b=linked[(i+1)%linked.length];if(a.active&&b.active)this.chainBolt(a.x,a.y,b.x,b.y);}linked.forEach(e=>{if(!e.active)return;this.damage(e,dmg,e.x,e.y);if(!e.isBoss&&!e.isMini){const a=Math.atan2(cy-e.y,cx-e.x);e.setVelocity(Math.cos(a)*150,Math.sin(a)*150);e.knock=0.10;}});});Sfx.zap();"
+    },
+    {
+      "line": 13174,
+      "context_method": "castCoreDecoy",
+      "method": "boom",
+      "snippet": "this.time.delayedCall(dur*1000,()=>{lure.remove(false);this.tweens.killTweensOf(core);core.destroy();this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.damage(e,dmg,e.x,e.y);});this.burst(x,y,0x8fe8d0);if(aw)this.time.delayedCall(220,()=>{this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r*1.25)this.damage(e,dmg*0.7,e.x,e.y);});});if(aw)this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*0.04);Sfx.boom();});"
+    },
+    {
+      "line": 13182,
+      "context_method": "castTriadSeal",
+      "method": "boom",
+      "snippet": "const blast=()=>{this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r)this.damage(e,dmg,e.x,e.y);});this.burst(cx,cy,0xffd166);Sfx.boom();};blast();if(aw)this.time.delayedCall(300,blast);"
+    },
+    {
+      "line": 13188,
+      "context_method": "castEchoStep",
+      "method": "shoot",
+      "snippet": "if(aw){this.player.baseSpeed*=1.10;this.time.delayedCall(900,()=>{this.player.baseSpeed/=1.10;});}Sfx.shoot();"
+    },
+    {
+      "line": 13202,
+      "context_method": "deployCupcakeSentry",
+      "method": "shoot",
+      "snippet": "s.setRotation(-0.08);this.tweens.add({targets:s,rotation:0,duration:120,ease:'Back.out'});Sfx.shoot();"
+    },
+    {
+      "line": 13208,
+      "context_method": "deployCupcakeSentry",
+      "method": "boom",
+      "snippet": "this.hitCratesInRadius(x,y,r,dmg*2.2);Sfx.boom();"
+    },
+    {
+      "line": 13301,
+      "context_method": "meteorStrike",
+      "method": "boom",
+      "snippet": "this.screenShake(80,0.004); Sfx.boom(); }}); });"
+    },
+    {
+      "line": 13322,
+      "context_method": "explodeAt",
+      "method": "boom",
+      "snippet": "this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r) this.damage(e,dmg,e.x,e.y); }); this.hitCratesInRadius(x,y,r,dmg); Sfx.boom(); }"
+    },
+    {
+      "line": 13392,
+      "context_method": "_hitEnemyCore",
+      "method": "boom",
+      "snippet": "this.hitCratesInRadius(bx,by,r,dmg); this.vfxHitRing(bx,by,0x80e8d0,true); Sfx.boom();"
+    },
+    {
+      "line": 13415,
+      "context_method": "_hitEnemyCore",
+      "method": "bp",
+      "snippet": "if(bullet.explode){ if(bullet._bpBoom)this.bpFx?.(bullet._bpBoom,bullet.x,bullet.y,bullet.explode*2.4); if(bullet._uqRocket&&(this.time.now-(this._heatFxAt||0)>1500)){this._heatFxAt=this.time.now;this.fxHeatScreen?.();} if(bullet._uqRocket)Sfx.bp?.('uq_rocket_detonation',.6,.6)||Sfx.bp?.('cocoa_fire_explosion',.55,.09); else if(bullet._bpBoom==='bpx_cocoa_explode')Sfx.bp?.('cocoa_fire_explosion',.55,.09); this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8);if(bullet.sticky)this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,bullet.x,bullet.y)<bullet.explode)e.frozen=Math.max(e.frozen||0,0.45);});this.killBullet(bullet); return; }   // จรวดระเบิด AoE"
+    },
+    {
+      "line": 13415,
+      "context_method": "_hitEnemyCore",
+      "method": "bp",
+      "snippet": "if(bullet.explode){ if(bullet._bpBoom)this.bpFx?.(bullet._bpBoom,bullet.x,bullet.y,bullet.explode*2.4); if(bullet._uqRocket&&(this.time.now-(this._heatFxAt||0)>1500)){this._heatFxAt=this.time.now;this.fxHeatScreen?.();} if(bullet._uqRocket)Sfx.bp?.('uq_rocket_detonation',.6,.6)||Sfx.bp?.('cocoa_fire_explosion',.55,.09); else if(bullet._bpBoom==='bpx_cocoa_explode')Sfx.bp?.('cocoa_fire_explosion',.55,.09); this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8);if(bullet.sticky)this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,bullet.x,bullet.y)<bullet.explode)e.frozen=Math.max(e.frozen||0,0.45);});this.killBullet(bullet); return; }   // จรวดระเบิด AoE"
+    },
+    {
+      "line": 13415,
+      "context_method": "_hitEnemyCore",
+      "method": "bp",
+      "snippet": "if(bullet.explode){ if(bullet._bpBoom)this.bpFx?.(bullet._bpBoom,bullet.x,bullet.y,bullet.explode*2.4); if(bullet._uqRocket&&(this.time.now-(this._heatFxAt||0)>1500)){this._heatFxAt=this.time.now;this.fxHeatScreen?.();} if(bullet._uqRocket)Sfx.bp?.('uq_rocket_detonation',.6,.6)||Sfx.bp?.('cocoa_fire_explosion',.55,.09); else if(bullet._bpBoom==='bpx_cocoa_explode')Sfx.bp?.('cocoa_fire_explosion',.55,.09); this.explodeAt(bullet.x,bullet.y,bullet.explode,bullet.dmg*0.8);if(bullet.sticky)this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,bullet.x,bullet.y)<bullet.explode)e.frozen=Math.max(e.frozen||0,0.45);});this.killBullet(bullet); return; }   // จรวดระเบิด AoE"
+    },
+    {
+      "line": 13467,
+      "context_method": "autoFusion",
+      "method": "bp",
+      "snippet": "autoFusion(){ const fu=this.fusionReady(),b=this.basicAttack; if(!fu||!b)return; b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,'Evolution + '+((RELICS[fu.relic]||{}).name||'Relic')+' · '+fu.desc,2200); Sfx.bp?.('shared_build_evolution',.6,1); }"
+    },
+    {
+      "line": 13498,
+      "context_method": "modCard",
+      "method": "clear",
+      "snippet": "apply:()=>{ b.mods=(b.mods||[]).concat(m.id); this.syncBasicAttack(); this.showBanner('🧩 '+m.emoji+' '+m.name,m.desc,1700); Sfx.clear(); }}; }"
+    },
+    {
+      "line": 13502,
+      "context_method": "tradeCard",
+      "method": "clear",
+      "snippet": "apply:()=>{ b.trades=(b.trades||[]).concat(t.id); t.apply(this.player); clampPlayerStats(this.player); if(this.drawBars)this.drawBars(); this.syncBasicAttack(); this.showBanner('⚖️ '+t.emoji+' '+t.name,'✅ '+t.gain+'  ·  ❌ '+t.cost,1900); Sfx.clear(); }}; }"
+    },
+    {
+      "line": 13526,
+      "context_method": "shotgunKick",
+      "method": "shotgun",
+      "snippet": "this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()});} this.screenShake(130,0.0075); if(Sfx.shotgun)Sfx.shotgun(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }"
+    },
+    {
+      "line": 13563,
+      "context_method": "damage",
+      "method": "crit",
+      "snippet": "let crit=false; if(!this._frDmg&&this.player.critChance && Math.random()<this.player.critChance){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick)Sfx.crit();"
+    },
+    {
+      "line": 13599,
+      "context_method": "killEnemy",
+      "method": "bigKill",
+      "snippet": "if(isElite||isMini){this.hitStop(45);Sfx.bigKill();}   // Juice: ฆ่าตัวใหญ่/elite = กระแทกหยุดเสี้ยววิ (บอสมีฉากตายของตัวเอง)"
+    },
+    {
+      "line": 13608,
+      "context_method": "killEnemy",
+      "method": "pop",
+      "snippet": "if(!big) Sfx.pop();"
+    },
+    {
+      "line": 13613,
+      "context_method": "killEnemy",
+      "method": "chest",
+      "snippet": "if(bSugar){ this.showBanner('📖 Codex Rank Unlocked','+🍬 '+bSugar,1100); Sfx.chest&&Sfx.chest(); }"
+    },
+    {
+      "line": 13619,
+      "context_method": "killEnemy",
+      "method": "clear",
+      "snippet": "if(big){ this.screenShake(isBoss?400:220,isBoss?0.012:0.008); this.burst(e.x,e.y,0xff9ec4); if(isMini)Sfx.clear(); }"
+    },
+    {
+      "line": 13641,
+      "context_method": "killEnemy",
+      "method": "boom",
+      "snippet": "this.burst(bx,by,0xff8b6b); Sfx.boom();"
+    },
+    {
+      "line": 13702,
+      "context_method": "collectOrb",
+      "method": "xp",
+      "snippet": "collectOrb(player,o){ if(!o.active)return; const ox=o.x,oy=o.y,ov=o.value||1; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); if(o._storyBudget)o._storyBudget.paid+=ov;Sfx.xp(); this.jelly(0.9,-0.9);"
+    },
+    {
+      "line": 13738,
+      "context_method": "collectHeal",
+      "method": "heal",
+      "snippet": "Sfx.heal(); this.jelly(0,2.2); if(amt>=0.5)this.popHeal(this.player.x,this.player.y,amt); this.fireRecipes('heal'); this.burst(h.x,h.y,0xff8fb5); this.vfxCollectSparkle(h.x,h.y,0xff8fb5);"
+    },
+    {
+      "line": 13763,
+      "context_method": "breakCrate",
+      "method": "boom",
+      "snippet": "this.burst(x,y,0xe59a4d); Sfx.boom(); this.screenShake(90,0.004);"
+    },
+    {
+      "line": 13785,
+      "context_method": "collectStageGimmick",
+      "method": "clear",
+      "snippet": "this.burst(x,y,def.color);this.vfxCollectSparkle(x,y,def.color);this.showBanner(def.emoji+' '+def.name,def.desc,1250);Sfx.clear();"
+    },
+    {
+      "line": 13798,
+      "context_method": "collectVac",
+      "method": "magnet",
+      "snippet": "collectVac(player,v){ if(!v.active)return;Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;"
+    },
+    {
+      "line": 13818,
+      "context_method": "collectLoot",
+      "method": "select",
+      "snippet": "Sfx.select();this.burst(g.x,g.y,0x9fe8ff); return; }"
+    },
+    {
+      "line": 13820,
+      "context_method": "collectLoot",
+      "method": "select",
+      "snippet": "const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;Sfx.select();this.burst(g.x,g.y,rarity.color);"
+    },
+    {
+      "line": 13905,
+      "context_method": "tickSugarCoins",
+      "method": "xp",
+      "snippet": "if(c._t>0.5&&d<26){this.sugarStage+=c._v;this.sugarRun+=c._v;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);if(Sfx.xp)Sfx.xp();c.destroy();arr.splice(i,1);}}"
+    },
+    {
+      "line": 13930,
+      "context_method": "openPrizeWheel",
+      "method": "chestSpin",
+      "snippet": "this.tweens.add({targets:center,angle:{from:-8,to:8},yoyo:true,repeat:-1,duration:120});Sfx.chestSpin();"
+    },
+    {
+      "line": 13943,
+      "context_method": "openPrizeWheel",
+      "method": "card",
+      "snippet": "const doStop=()=>{ if(stopped)return;stopped=true;this._rollBtns=[];Sfx.card?Sfx.card():Sfx.select();this.tweens.killTweensOf(st);st.setText('…').setScale(1);sg.setAlpha(0.45);hint.setText('Slowing down…');"
+    },
+    {
+      "line": 13943,
+      "context_method": "openPrizeWheel",
+      "method": "select",
+      "snippet": "const doStop=()=>{ if(stopped)return;stopped=true;this._rollBtns=[];Sfx.card?Sfx.card():Sfx.select();this.tweens.killTweensOf(st);st.setText('…').setScale(1);sg.setAlpha(0.45);hint.setText('Slowing down…');"
+    },
+    {
+      "line": 13949,
+      "context_method": "openPrizeWheel",
+      "method": "chestTick",
+      "snippet": "cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(sl.baseScaleX*1.2,sl.baseScaleY*1.2);Sfx.chestTick(k);this.tweens.add({targets:sl.lab,y:{from:sl.y-12,to:sl.y},duration:170,ease:'Bounce.out'});"
+    },
+    {
+      "line": 13962,
+      "context_method": "openPrizeWheel",
+      "method": "legend",
+      "snippet": "this.screenFlash(T.color,0.35,260);if(Sfx.legend)Sfx.legend(); };"
+    },
+    {
+      "line": 13964,
+      "context_method": "openPrizeWheel",
+      "method": "stopChestSpin",
+      "snippet": "this.tweens.killTweensOf(center);center.setVisible(false);Sfx.stopChestSpin();Sfx.chestWin();"
+    },
+    {
+      "line": 13964,
+      "context_method": "openPrizeWheel",
+      "method": "chestWin",
+      "snippet": "this.tweens.killTweensOf(center);center.setVisible(false);Sfx.stopChestSpin();Sfx.chestWin();"
+    },
+    {
+      "line": 13976,
+      "context_method": "openPrizeWheel",
+      "method": "legend",
+      "snippet": "this.screenFlash(p.color,p.jackpot?0.6:0.35,320);if(p.jackpot){this.screenShake(400,0.012);if(Sfx.legend)Sfx.legend();}"
+    },
+    {
+      "line": 14072,
+      "context_method": "openMysteryCards",
+      "method": "select",
+      "snippet": "if(Sfx.select)Sfx.select();flip(cd,true);const p=cd.p;"
+    },
+    {
+      "line": 14073,
+      "context_method": "openMysteryCards",
+      "method": "legend",
+      "snippet": "later(420,()=>{ this.screenFlash(p.color,p.jackpot?0.6:0.3,300);if(p.jackpot){this.screenShake(360,0.012);if(Sfx.legend)Sfx.legend();hint.setText('JACKPOT!').setColor('#ffd166').setFontSize('20px');}else{if(Sfx.clear)Sfx.clear();hint.setText('You got '+p.name+' '+p.sub);}"
+    },
+    {
+      "line": 14073,
+      "context_method": "openMysteryCards",
+      "method": "clear",
+      "snippet": "later(420,()=>{ this.screenFlash(p.color,p.jackpot?0.6:0.3,300);if(p.jackpot){this.screenShake(360,0.012);if(Sfx.legend)Sfx.legend();hint.setText('JACKPOT!').setColor('#ffd166').setFontSize('20px');}else{if(Sfx.clear)Sfx.clear();hint.setText('You got '+p.name+' '+p.sub);}"
+    },
+    {
+      "line": 14093,
+      "context_method": "awakenMimic",
+      "method": "bossWarn",
+      "snippet": "this.screenShake(260,0.014);this.screenFlash(0xff5a6e,0.3,260);if(Sfx.bossWarn)Sfx.bossWarn();this.burst(x,y,0xff5a6e);"
+    },
+    {
+      "line": 14110,
+      "context_method": "miniChestDrop",
+      "method": "boom",
+      "snippet": "shadow.destroy(); this.screenShake(220,0.012); if(Sfx.boom)Sfx.boom(); this.burst(x,y,T.color);"
+    },
+    {
+      "line": 14134,
+      "context_method": "collectChest",
+      "method": "clear",
+      "snippet": "Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);"
+    },
+    {
+      "line": 14153,
+      "context_method": "chargeTelegraph",
+      "method": "bossWarn",
+      "snippet": "Sfx.bossWarn&&Sfx.bossWarn();"
+    },
+    {
+      "line": 14157,
+      "context_method": "chargeTelegraph",
+      "method": "dash",
+      "snippet": "this.screenFlash(0xff5a6e,0.16,150);Sfx.dash&&Sfx.dash();"
+    },
+    {
+      "line": 14189,
+      "context_method": "playRollAnimation",
+      "method": "select",
+      "snippet": "const show=(card)=>{ drawCard(card.color||0xffd166);drawHalo(card.color||0xffd166,0.12); setFace(card); nm.setText(card.title||''); const t=ico.visible?ico:em; t.setScale(t===ico?1:1);this.tweens.add({targets:t,scaleX:{from:(t===ico?0.85:0.8),to:1},scaleY:{from:(t===ico?0.85:0.8),to:1},duration:90}); if(Sfx.select)Sfx.select(); };"
+    },
+    {
+      "line": 14207,
+      "context_method": "landRollBox",
+      "method": "clear",
+      "snippet": "this.screenFlash(col,0.42,340); this.hitStop&&this.hitStop(8); if(Sfx.clear)Sfx.clear(); this.burst(this.player.x,this.player.y,col); this.vfxLevelUp&&this.vfxLevelUp();"
+    },
+    {
+      "line": 14227,
+      "context_method": "grantGear",
+      "method": "legend",
+      "snippet": "grantGear(tier,opts={}){ if(tier==='legend')Sfx.legend(); const inPlay=!opts.tradeLv&&(this.state==='play'||(this.state!=='menu'&&!opts.gacha&&this.endgameDropActive())),sourceStage=inPlay?this.stageIndex:rewardSourceStage();"
+    },
+    {
+      "line": 14251,
+      "context_method": "touchEnemy",
+      "method": "hurt",
+      "snippet": "this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; this.player.hp-=edmg*armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*wardMul*crisisMul*this.cocoaGuard()*this.condTakenMul(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)"
+    },
+    {
+      "line": 14270,
+      "context_method": "hurtPlayer",
+      "method": "hurt",
+      "snippet": "this.player.iframe=(ix||0.5)*HURT_IFRAME_MUL; this.player.hp-=dmg; this.onBonusHurt(); this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(150,0.009);"
+    },
+    {
+      "line": 14300,
+      "context_method": "spawnHazard",
+      "method": "boom",
+      "snippet": "Sfx.boom();"
+    },
+    {
+      "line": 14346,
+      "context_method": "startWeakPoint",
+      "method": "bossWarn",
+      "snippet": "this.showBanner('🛡️ Boss Shielded!','Destroy the weak points: '+this._weakCount+' (gold) to break the shield!',2000);Sfx.bossWarn();"
+    },
+    {
+      "line": 14352,
+      "context_method": "endWeakPoint",
+      "method": "bp",
+      "snippet": "if(broken&&b&&b.active){const dmg=b.maxhp*0.08;b.hp-=dmg;this.popDmg(Math.round(dmg),b.x,b.y,true);b.atkCd=Math.max(b.atkCd||1,2.2);b.frozen=Math.max(b.frozen||0,0.6);this.screenFlash(0xffe07a,0.3,360);this.screenShake(220,0.01);this.hitStop(60);this.showBanner('🛡️ Shield Broken!','The boss is stunned — hit it hard!',1600);Sfx.bp?.('boss_shield_break',.7,.5)||Sfx.clear();if(b.hp<=0)this.killEnemy(b);}"
+    },
+    {
+      "line": 14352,
+      "context_method": "endWeakPoint",
+      "method": "clear",
+      "snippet": "if(broken&&b&&b.active){const dmg=b.maxhp*0.08;b.hp-=dmg;this.popDmg(Math.round(dmg),b.x,b.y,true);b.atkCd=Math.max(b.atkCd||1,2.2);b.frozen=Math.max(b.frozen||0,0.6);this.screenFlash(0xffe07a,0.3,360);this.screenShake(220,0.01);this.hitStop(60);this.showBanner('🛡️ Shield Broken!','The boss is stunned — hit it hard!',1600);Sfx.bp?.('boss_shield_break',.7,.5)||Sfx.clear();if(b.hp<=0)this.killEnemy(b);}"
+    },
+    {
+      "line": 14386,
+      "context_method": "antQueenAttack",
+      "method": "zap",
+      "snippet": "else if(pick==='acid'){this.bossPose(b,4,900);this.time.delayedCall(320,()=>{if(!b.active)return;const n=b.phase3?16:b.phase2?12:9,a0=Math.random()*Math.PI*2;for(let i=0;i<n;i++)this.foeShot(b.x,b.y,a0+i/n*Math.PI*2,180+(i%2)*55,12,0x74ff38,1.2);for(let i=0;i<(b.phase3?5:3);i++)this.spawnBossObject('acid',px+Phaser.Math.Between(-190,190),py+Phaser.Math.Between(-190,190),8);Sfx.zap();});b.atkCd=2.1*fast;}"
+    },
+    {
+      "line": 14391,
+      "context_method": "antQueenAttack",
+      "method": "bossWarn",
+      "snippet": "else{this.bossPose(b,6,1200);this.showBanner('☣️ ACID CROWN NOVA','Find the gaps between the waves!',900);this.time.delayedCall(360,()=>{if(!b.active)return;this.bossNovaWave(b.x,b.y,285,20,0);if(b.phase3)this.bossNovaWave(b.x,b.y,285,20,380);for(let i=0;i<16;i++)this.foeShot(b.x,b.y,i*Math.PI/8,155+(i%2)*75,12,0xa7ff54,1.3);this.screenShake(340,0.014);Sfx.bossWarn();});b.atkCd=2.7*fast;}"
+    },
+    {
+      "line": 14433,
+      "context_method": "beginBossPhaseTransition",
+      "method": "bp",
+      "snippet": "if(!b||!b.active)return;Sfx.bp?.('boss_phase_transition',.7,1);b._phaseGateLocked=false;b._phaseInvuln=Math.max(0.2,duration||1.4);b._phaseInvulnColor=color||0xffd166;b.setVelocity(0,0);"
+    },
+    {
+      "line": 14516,
+      "context_method": "behemothMetamorph",
+      "method": "bossWarn",
+      "snippet": "this.screenFlash(color,phase===3?.52:.34,phase===3?720:520);this.screenShake(phase===3?760:520,phase===3?.022:.014);Sfx.bossWarn();"
+    },
+    {
+      "line": 14530,
+      "context_method": "myceliumBehemothAttack",
+      "method": "zap",
+      "snippet": "this.time.delayedCall(480,()=>{if(!b.active)return;for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,220+(i%2)*52,bd-3,i%2?0xb46cff:0x6fffe0,1.12);}Sfx.zap();});b.atkCd=2.85*fast;"
+    },
+    {
+      "line": 14540,
+      "context_method": "myceliumBehemothAttack",
+      "method": "bossWarn",
+      "snippet": "this.time.delayedCall(720,()=>{if(!b.active)return;const n=26,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n||i===(gap+3)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,245+(i%2)*42,bd,i%2?0xd95cff:0x56e5bd,1.15);}this.screenShake(520,.017);Sfx.bossWarn();});b.atkCd=4.05*fast;"
+    },
+    {
+      "line": 14561,
+      "context_method": "hornetQueenMetamorph",
+      "method": "bossWarn",
+      "snippet": "this.screenFlash(color,phase===3?.66:.42,phase===3?850:600);this.screenShake(phase===3?900:580,phase===3?.026:.017);Sfx.bossWarn();"
+    },
+    {
+      "line": 14587,
+      "context_method": "chronobloomMetamorph",
+      "method": "bossWarn",
+      "snippet": "const color=phase===3?0xffd166:0x8fdcff;this.chronobloomPose(b,phase===3?7:6,phase===3?2150:1750);for(let i=0;i<(phase===3?20:14);i++){const a=i*TAU/(phase===3?20:14),ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(this.seasonInfo(i%4).color).setScale(.08,.46).setAlpha(.92).setDepth(b.y+3));this.tweens.add({targets:ray,scaleX:phase===3?2.45:1.8,alpha:0,duration:900+i*28,onComplete:()=>ray.destroy()});}this.screenFlash(color,phase===3?.70:.45,phase===3?900:640);this.screenShake(phase===3?920:600,phase===3?.027:.018);Sfx.bossWarn();"
+    },
+    {
+      "line": 14626,
+      "context_method": "trueRootMetamorph",
+      "method": "bossWarn",
+      "snippet": "this.screenFlash(phase===4?0x08000e:color,phase===4?.86:.58,phase===4?1100:760);this.screenShake(phase===4?1100:760,phase===4?.032:.023);Sfx.bossWarn();"
+    },
+    {
+      "line": 14653,
+      "context_method": "greatHungerMetamorph",
+      "method": "bossWarn",
+      "snippet": "this.screenFlash(phase===4?0x030005:color,phase===4?0.82:0.46,phase===4?950:650);this.screenShake(phase===4?980:700,phase===4?0.032:0.022);Sfx.bossWarn();"
+    },
+    {
+      "line": 14668,
+      "context_method": "greatHungerAttack",
+      "method": "zap",
+      "snippet": "this.time.delayedCall(560,()=>{if(!b.active)return;for(let s=-3;s<=3;s++)this.foeShot(b.x,b.y,a+s*0.115,390,bd,0xffd166,1.15);this.spawnHazard(px,py,86,bd+5,0xff8a4d);this.screenShake(260,0.010);Sfx.zap();});b.atkCd=2.45*fast;"
+    },
+    {
+      "line": 14681,
+      "context_method": "greatHungerAttack",
+      "method": "zap",
+      "snippet": "this.time.delayedCall(720,()=>{if(!b.active)return;const n=b.phase4?22:18,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,185+(i%2)*45,bd,0xd95cff,1.0);}Sfx.zap();});b.atkCd=3.15*fast;"
+    },
+    {
+      "line": 14689,
+      "context_method": "greatHungerAttack",
+      "method": "bossWarn",
+      "snippet": "this.time.delayedCall(520,()=>{if(!b.active)return;for(let i=0;i<18;i++){if(i%6===0)continue;this.foeShot(b.x,b.y,i*TAU/18,245,bd,0xffd166,1.12);}this.screenShake(520,0.017);Sfx.bossWarn();});b.atkCd=3.6*fast;"
+    },
+    {
+      "line": 14726,
+      "context_method": "buildTalents",
+      "method": "select",
+      "snippet": "if(own.length>1){ const sw=d=>{ const n=own[(oi+d+own.length)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); };"
+    },
+    {
+      "line": 14737,
+      "context_method": "buildTalents",
+      "method": "select",
+      "snippet": "if(own.length>1){ const ra=this.add.text(hd.x+hd.width+14,top,'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(ra); this._zone(ra.x-20,top-18,40,36,()=>{ const n=own[(oi+1)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); }); }"
+    },
+    {
+      "line": 14743,
+      "context_method": "buildTalents",
+      "method": "select",
+      "snippet": "this.menu.add([g3,tx]); this._zone(x,tTop-4,tw,38,()=>{ this._talTab=c.key; this._talSel=null; Sfx.select&&Sfx.select(); this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 14761,
+      "context_method": "buildTalents",
+      "method": "select",
+      "snippet": "if(on)sel=n; this._zone(x-6,y-6,ns+12,ns+12,()=>{ this._talSel=n.id; Sfx.select&&Sfx.select(); this.buildMenuScreen(); }); });"
+    },
+    {
+      "line": 14772,
+      "context_method": "buildTalents",
+      "method": "select",
+      "snippet": "this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!ok?(n.soon?'Coming in a later update':n.cap&&N.some(o=>o.cap&&o!==n&&(tal[o.id]||0)>0)?'Only 1 Capstone per path — reset to change':'Upgrade the node above first'):'Need '+cost+' Talent Points — level up this hero','#ff9bb5');return;}"
+    },
+    {
+      "line": 14773,
+      "context_method": "buildTalents",
+      "method": "progress",
+      "snippet": "cp.tal=cp.tal||{};cp.tal[n.id]=r+1;cp.tp-=cost;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.buildMenuScreen(); }); }"
+    },
+    {
+      "line": 14783,
+      "context_method": "buildTalents",
+      "method": "select",
+      "snippet": "this._talResetArm=null; Save.data.sugar-=cost; cp.tp=(cp.tp||0)+spent; cp.tal={}; Save.save(); Sfx.select&&Sfx.select(); this.menuToast('↺ Talents reset · +'+spent+' TP'); this.buildTalents(); });"
+    },
+    {
+      "line": 14966,
+      "context_method": "_bossThinkCore",
+      "method": "zap",
+      "snippet": "Sfx.zap(); b.atkCd=1.6*fast;"
+    },
+    {
+      "line": 14970,
+      "context_method": "_bossThinkCore",
+      "method": "zap",
+      "snippet": "Sfx.zap(); b.atkCd=1.3*fast;"
+    },
+    {
+      "line": 14980,
+      "context_method": "_bossThinkCore",
+      "method": "bossWarn",
+      "snippet": "Sfx.bossWarn(); b.atkCd=2.4*fast;"
+    },
+    {
+      "line": 14985,
+      "context_method": "_bossThinkCore",
+      "method": "zap",
+      "snippet": "Sfx.zap(); this.screenShake(160,0.006); b.atkCd=1.8*fast;"
+    },
+    {
+      "line": 14990,
+      "context_method": "_bossThinkCore",
+      "method": "zap",
+      "snippet": "Sfx.zap(); b.atkCd=2.1*fast;"
+    },
+    {
+      "line": 15018,
+      "context_method": "showKillStreak",
+      "method": "streak",
+      "snippet": "this.screenShake(130,0.004); Sfx.streak(mark[0]);"
+    },
+    {
+      "line": 15304,
+      "context_method": "die",
+      "method": "bpLoopStop",
+      "snippet": "die(){ if(this.state==='dead')return; Sfx.bpLoopStop?.(); this.cancelBeat();"
+    },
+    {
+      "line": 15316,
+      "context_method": "die",
+      "method": "clear",
+      "snippet": "if(this.player.body)this.player.body.enable=true; this.clearFoes(); this.screenFlash(0xffe08a,0.5,420); if(Sfx.clear)Sfx.clear();"
+    },
+    {
+      "line": 15319,
+      "context_method": "die",
+      "method": "bgmIntense",
+      "snippet": "Stats.end(this,'dead'); _closeStory();  this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();"
+    },
+    {
+      "line": 15319,
+      "context_method": "die",
+      "method": "dead",
+      "snippet": "Stats.end(this,'dead'); _closeStory();  this.state='dead'; if(this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} Sfx.bgmIntense(false);Sfx.dead();"
+    },
+    {
+      "line": 15370,
+      "context_method": "_playSimAd",
+      "method": "clear",
+      "snippet": "else { cd.setText('🎁'); Sfx.clear&&Sfx.clear(); this.time.delayedCall(520,()=>{ c.destroy(true); this._adBusy=false; onReward&&onReward(); }); } };"
+    },
+    {
+      "line": 15379,
+      "context_method": "adRevive",
+      "method": "clear",
+      "snippet": "this.screenFlash(0xffe08a,0.5,420); Sfx.clear&&Sfx.clear();"
+    },
+    {
+      "line": 15422,
+      "context_method": "tickNearDeath",
+      "method": "heartbeat",
+      "snippet": "if(this._hbAcc<=0){ this._hbAcc=Math.max(0.34,0.92-sev*0.55); Sfx.heartbeat(sev); this.screenShake(70,0.001+sev*0.0016); }"
+    },
+    {
+      "line": 15491,
+      "context_method": "update",
+      "method": "zap",
+      "snippet": "this.foeShot(e.x,e.y,ang,205,e.dmg,0x72ff3d,1.05);Sfx.zap();"
+    },
+    {
+      "line": 15497,
+      "context_method": "update",
+      "method": "zap",
+      "snippet": "if(e.shootCd<=0){ e.shootCd=Phaser.Math.FloatBetween(1.3,2.2);if(this.stageIndex===4)this.stage5EnemyPose(e,4,430);else this.enemyAction(e,'attack',430);let fireAng=ang;if(((this.stageIndex===6&&(e.mycoRole==='sniper'||e.mycoRole==='oracle'))||(this.stageIndex===7&&(e.nectarRole==='pollenSniper'||e.nectarRole==='choirMoth'))||(this.stageIndex===8&&(e.seasonRole==='frostbell'||e.seasonRole==='seasonWisp'))||(this.stageIndex===9&&(e.rootRole==='sapOracle'||e.rootRole==='rootChoir')))&&this.player.body){const lead=(e.mycoRole==='sniper'||e.nectarRole==='pollenSniper'||e.seasonRole==='frostbell'||e.rootRole==='sapOracle')?.48:.28,px=this.player.x+this.player.body.velocity.x*lead,py=this.player.y+this.player.body.velocity.y*lead;fireAng=Math.atan2(py-e.y,px-e.x);}const shotColor=this.stageIndex"
+    },
+    {
+      "line": 15511,
+      "context_method": "update",
+      "method": "dash",
+      "snippet": "if(e.body)this.physics.velocityFromRotation(ang,e.spd*4.6,e.body.velocity); Sfx.dash&&Sfx.dash(); } }"
+    }
+  ]
+}
