@@ -1,0 +1,812 @@
+[
+  {
+    "key": "sfx_cocoa_fire_fist",
+    "path": "assets/audio/sfx/build_paths/cocoa_fire_fist.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_fire_finisher",
+    "path": "assets/audio/sfx/build_paths/cocoa_fire_finisher.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_fire_explosion",
+    "path": "assets/audio/sfx/build_paths/cocoa_fire_explosion.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_rocket_launch",
+    "path": "assets/audio/sfx/build_paths/cocoa_rocket_launch.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_rocket_stick_burst",
+    "path": "assets/audio/sfx/build_paths/cocoa_rocket_stick_burst.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_meteor_impact",
+    "path": "assets/audio/sfx/build_paths/cocoa_meteor_impact.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_titan_leap",
+    "path": "assets/audio/sfx/build_paths/cocoa_titan_leap.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_titan_slam",
+    "path": "assets/audio/sfx/build_paths/cocoa_titan_slam.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_mint_bloom_full",
+    "path": "assets/audio/sfx/unique_skills/uq_mint_bloom_full.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_mint_gale",
+    "path": "assets/audio/sfx/unique_skills/uq_mint_gale.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_mint_lance_release",
+    "path": "assets/audio/sfx/unique_skills/uq_mint_lance_release.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_phantom_enter",
+    "path": "assets/audio/sfx/unique_skills/uq_phantom_enter.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_phantom_strike",
+    "path": "assets/audio/sfx/unique_skills/uq_phantom_strike.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_rebound_burst",
+    "path": "assets/audio/sfx/unique_skills/uq_rebound_burst.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_rocket_detonation",
+    "path": "assets/audio/sfx/unique_skills/uq_rocket_detonation.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_rocket_salvo",
+    "path": "assets/audio/sfx/unique_skills/uq_rocket_salvo.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_sesame_prism_charge",
+    "path": "assets/audio/sfx/unique_skills/uq_sesame_prism_charge.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_sesame_prism_volley",
+    "path": "assets/audio/sfx/unique_skills/uq_sesame_prism_volley.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_shotgun_blast",
+    "path": "assets/audio/sfx/unique_skills/uq_shotgun_blast.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_shotgun_full",
+    "path": "assets/audio/sfx/unique_skills/uq_shotgun_full.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_shotgun_pump",
+    "path": "assets/audio/sfx/unique_skills/uq_shotgun_pump.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_sniper_bolt",
+    "path": "assets/audio/sfx/unique_skills/uq_sniper_bolt.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_sniper_charge",
+    "path": "assets/audio/sfx/unique_skills/uq_sniper_charge.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_sniper_fire",
+    "path": "assets/audio/sfx/unique_skills/uq_sniper_fire.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_sniper_full",
+    "path": "assets/audio/sfx/unique_skills/uq_sniper_full.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_taro_chain_cast",
+    "path": "assets/audio/sfx/unique_skills/uq_taro_chain_cast.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_taro_chain_hit",
+    "path": "assets/audio/sfx/unique_skills/uq_taro_chain_hit.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_titan_aftershock",
+    "path": "assets/audio/sfx/unique_skills/uq_titan_aftershock.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_titan_charge",
+    "path": "assets/audio/sfx/unique_skills/uq_titan_charge.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_titan_drop",
+    "path": "assets/audio/sfx/unique_skills/uq_titan_drop.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_titan_full",
+    "path": "assets/audio/sfx/unique_skills/uq_titan_full.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_titan_slam_full",
+    "path": "assets/audio/sfx/unique_skills/uq_titan_slam_full.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_yuzu_crew_hit",
+    "path": "assets/audio/sfx/unique_skills/uq_yuzu_crew_hit.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_uq_yuzu_parade",
+    "path": "assets/audio/sfx/unique_skills/uq_yuzu_parade.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_rage_charge",
+    "path": "assets/audio/sfx/build_paths/cocoa_rage_charge.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_rage_level",
+    "path": "assets/audio/sfx/build_paths/cocoa_rage_level.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_colossus_slam",
+    "path": "assets/audio/sfx/build_paths/cocoa_colossus_slam.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_flicker_step",
+    "path": "assets/audio/sfx/build_paths/cocoa_flicker_step.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_dash_landing",
+    "path": "assets/audio/sfx/build_paths/cocoa_dash_landing.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_shadow_fist",
+    "path": "assets/audio/sfx/build_paths/cocoa_shadow_fist.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_phantom_start",
+    "path": "assets/audio/sfx/build_paths/cocoa_phantom_start.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_cocoa_shadow_mark",
+    "path": "assets/audio/sfx/build_paths/cocoa_shadow_mark.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_lance_launch",
+    "path": "assets/audio/sfx/build_paths/mint_lance_launch.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_barrage_volley",
+    "path": "assets/audio/sfx/build_paths/mint_barrage_volley.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_hailstorm_cast",
+    "path": "assets/audio/sfx/build_paths/mint_hailstorm_cast.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_impaler_charge",
+    "path": "assets/audio/sfx/build_paths/mint_impaler_charge.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_impale_stack",
+    "path": "assets/audio/sfx/build_paths/mint_impale_stack.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_crystal_rupture",
+    "path": "assets/audio/sfx/build_paths/mint_crystal_rupture.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_glacier_bloom",
+    "path": "assets/audio/sfx/build_paths/mint_glacier_bloom.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_mint_glacier_shatter",
+    "path": "assets/audio/sfx/build_paths/mint_glacier_shatter.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_strawberry_sniper_charge",
+    "path": "assets/audio/sfx/build_paths/strawberry_sniper_charge.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_strawberry_sniper_shot",
+    "path": "assets/audio/sfx/build_paths/strawberry_sniper_shot.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_strawberry_sniper_impact",
+    "path": "assets/audio/sfx/build_paths/strawberry_sniper_impact.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_strawberry_ricochet_bounce",
+    "path": "assets/audio/sfx/build_paths/strawberry_ricochet_bounce.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_strawberry_pinball_cast",
+    "path": "assets/audio/sfx/build_paths/strawberry_pinball_cast.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_strawberry_pinball_final",
+    "path": "assets/audio/sfx/build_paths/strawberry_pinball_final.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_shared_unique_charge_start",
+    "path": "assets/audio/sfx/build_paths/shared_unique_charge_start.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_shared_unique_charge_full",
+    "path": "assets/audio/sfx/build_paths/shared_unique_charge_full.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_shared_build_evolution",
+    "path": "assets/audio/sfx/build_paths/shared_build_evolution.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_boss_shield_break",
+    "path": "assets/audio/sfx/build_paths/boss_shield_break.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_boss_phase_transition",
+    "path": "assets/audio/sfx/build_paths/boss_phase_transition.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_shoot",
+    "path": "assets/audio/sfx/sfx_skill_sprinkle.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_hit",
+    "path": "assets/audio/sfx/gen/sfx_hit.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_xp",
+    "path": "assets/audio/sfx/gen/sfx_xp.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_dash",
+    "path": "assets/audio/sfx/sfx_jump_squish.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_levelup",
+    "path": "assets/audio/sfx/gen/sfx_levelup_soft.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_chest",
+    "path": "assets/audio/sfx/sfx_chest_open.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_btn",
+    "path": "assets/audio/sfx/sfx_btn_click.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_result_open",
+    "path": "assets/audio/sfx/results/result_open.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_result_count",
+    "path": "assets/audio/sfx/results/result_count.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_result_reveal",
+    "path": "assets/audio/sfx/results/result_reveal.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_result_important",
+    "path": "assets/audio/sfx/results/result_important.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_result_double",
+    "path": "assets/audio/sfx/results/result_double.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_core",
+    "path": "assets/audio/sfx/progress/progress_core.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_talent",
+    "path": "assets/audio/sfx/progress/progress_talent.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_overcap",
+    "path": "assets/audio/sfx/progress/progress_overcap.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_promotion",
+    "path": "assets/audio/sfx/progress/progress_promotion.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_perk",
+    "path": "assets/audio/sfx/progress/progress_perk.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_ancient",
+    "path": "assets/audio/sfx/progress/progress_ancient.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_daily",
+    "path": "assets/audio/sfx/progress/progress_daily.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_achievement",
+    "path": "assets/audio/sfx/progress/progress_achievement.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_quest",
+    "path": "assets/audio/sfx/progress/progress_quest.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_progress_claim",
+    "path": "assets/audio/sfx/progress/progress_claim.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_equip",
+    "path": "assets/audio/sfx/gear/gear_equip.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_lock",
+    "path": "assets/audio/sfx/gear/gear_lock.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_unlock",
+    "path": "assets/audio/sfx/gear/gear_unlock.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_enhance_success",
+    "path": "assets/audio/sfx/gear/gear_enhance_success.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_enhance_break",
+    "path": "assets/audio/sfx/gear/gear_enhance_break.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_enhance_destroy",
+    "path": "assets/audio/sfx/gear/gear_enhance_destroy.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_dismantle",
+    "path": "assets/audio/sfx/gear/gear_dismantle.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_gear_sell",
+    "path": "assets/audio/sfx/gear/gear_sell.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_capacity",
+    "path": "assets/audio/sfx/craft/craft_capacity.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_reroll",
+    "path": "assets/audio/sfx/craft/craft_reroll.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_remove",
+    "path": "assets/audio/sfx/craft/craft_remove.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_reset",
+    "path": "assets/audio/sfx/craft/craft_reset.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_start",
+    "path": "assets/audio/sfx/craft/craft_start.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_tick",
+    "path": "assets/audio/sfx/craft/craft_tick.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_slow",
+    "path": "assets/audio/sfx/craft/craft_slow.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_common",
+    "path": "assets/audio/sfx/craft/craft_common.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_rare",
+    "path": "assets/audio/sfx/craft/craft_rare.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_jackpot",
+    "path": "assets/audio/sfx/craft/craft_jackpot.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_near",
+    "path": "assets/audio/sfx/craft/craft_near.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_cancel",
+    "path": "assets/audio/sfx/craft/craft_cancel.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_craft_exhaust",
+    "path": "assets/audio/sfx/craft/craft_exhaust.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_ui_click",
+    "path": "assets/audio/sfx/ui/ui_click.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_ui_back",
+    "path": "assets/audio/sfx/ui/ui_back.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_ui_confirm",
+    "path": "assets/audio/sfx/ui/ui_confirm.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_ui_error",
+    "path": "assets/audio/sfx/ui/ui_error.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_frost",
+    "path": "assets/audio/sfx/sfx_skill_frost.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_ult_bomb",
+    "path": "assets/audio/sfx/sfx_ult_sugarbomb.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_ult_vortex",
+    "path": "assets/audio/sfx_vfx_ult_cocoavortex.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_donut",
+    "path": "assets/audio/sfx_vfx_proj_donut.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_hazard",
+    "path": "assets/audio/sfx_vfx_telegraph_hazard.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_crit",
+    "path": "assets/audio/sfx/gen/sfx_crit.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_kill_big",
+    "path": "assets/audio/sfx/gen/sfx_kill_big.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_hurt",
+    "path": "assets/audio/sfx/gen/sfx_hurt_soft.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_heal",
+    "path": "assets/audio/sfx/gen/sfx_heal.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_magnet",
+    "path": "assets/audio/sfx/gen/sfx_magnet.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_thunder",
+    "path": "assets/audio/sfx/gen/sfx_thunder.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_punch",
+    "path": "assets/audio/sfx/gen/sfx_punch.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_shotgun",
+    "path": "assets/audio/sfx/gen/sfx_shotgun.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_tick",
+    "path": "assets/audio/sfx/gen/sfx_beat_tick.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_loop",
+    "path": "assets/audio/sfx/gen/sfx_beat_loop.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_hold",
+    "path": "assets/audio/sfx/gen/sfx_beat_hold.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_rush",
+    "path": "assets/audio/sfx/gen/sfx_beat_rush.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_gun",
+    "path": "assets/audio/sfx/gen/sfx_beat_gun.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_cyclone",
+    "path": "assets/audio/sfx/gen/sfx_beat_cyclone.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_titan",
+    "path": "assets/audio/sfx/gen/sfx_beat_titan.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_juggle",
+    "path": "assets/audio/sfx/gen/sfx_beat_juggle.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_rainbow",
+    "path": "assets/audio/sfx/gen/sfx_beat_rainbow.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_fever",
+    "path": "assets/audio/sfx/gen/sfx_beat_fever.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_cue",
+    "path": "assets/audio/sfx/gen/sfx_beat_cue.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_start",
+    "path": "assets/audio/sfx/gen/sfx_beat_start.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_perfect",
+    "path": "assets/audio/sfx/gen/sfx_beat_perfect.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_good",
+    "path": "assets/audio/sfx/gen/sfx_beat_good.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beat_miss",
+    "path": "assets/audio/sfx/gen/sfx_beat_miss.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_punch_jab",
+    "path": "assets/audio/sfx/gen/sfx_punch_jab.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_punch_heavy",
+    "path": "assets/audio/sfx/gen/sfx_punch_heavy.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_punch_frenzy",
+    "path": "assets/audio/sfx/gen/sfx_punch_frenzy.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_beam",
+    "path": "assets/audio/sfx/gen/sfx_beam.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_burn",
+    "path": "assets/audio/sfx/gen/sfx_burn.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_card",
+    "path": "assets/audio/sfx/gen/sfx_card.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_legend",
+    "path": "assets/audio/sfx/gen/sfx_legend.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_victory",
+    "path": "assets/audio/sfx/gen/sfx_victory.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_boss_clear",
+    "path": "assets/audio/sfx/gen/sfx_boss_clear.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_chest_spin",
+    "path": "assets/audio/sfx/gen/sfx_chest_spin.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_chest_tick",
+    "path": "assets/audio/sfx/gen/sfx_chest_tick.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_dig_hit",
+    "path": "assets/audio/sfx/gen/sfx_dig_hit.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_dig_break",
+    "path": "assets/audio/sfx/gen/sfx_dig_break.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_dig_find",
+    "path": "assets/audio/sfx/gen/sfx_dig_find.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_recipe_fire",
+    "path": "assets/audio/sfx/gen/sfx_recipe_fire.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_recipe_merge",
+    "path": "assets/audio/sfx/gen/sfx_recipe_merge.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_dig_rare",
+    "path": "assets/audio/sfx/gen/sfx_dig_rare.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_dig_trap",
+    "path": "assets/audio/sfx/gen/sfx_dig_trap.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_dig_descend",
+    "path": "assets/audio/sfx/gen/sfx_dig_descend.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_slot_spin",
+    "path": "assets/audio/sfx/gen/sfx_slot_spin.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_slot_miss",
+    "path": "assets/audio/sfx/gen/sfx_slot_miss.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_slot_near",
+    "path": "assets/audio/sfx/gen/sfx_slot_near.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_slot_jackpot",
+    "path": "assets/audio/sfx/gen/sfx_slot_jackpot.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_chest_win",
+    "path": "assets/audio/sfx/gen/sfx_chest_win.mp3",
+    "exists": true
+  },
+  {
+    "key": "sfx_defeat",
+    "path": "assets/audio/sfx/gen/sfx_defeat.wav",
+    "exists": true
+  },
+  {
+    "key": "sfx_boss_warn",
+    "path": "assets/audio/sfx/gen/sfx_boss_warn.mp3",
+    "exists": true
+  }
+]

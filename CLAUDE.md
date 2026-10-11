@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.99.3 — Play Stats Back → Settings
+# Latest delivery: Remaining procedural SFX asset handoff
+
+Owner clarified SFX (not visual VFX) and requested all sounds still generated directly in code. Audit v6.99.3: 162 registered audio keys, all files present; 2 pure-procedural events (combo streak, low-HP heartbeat) + 2 unconditional synth layers (crit ping, bigKill bass/debris). All 4 generated via ElevenLabs, decoded/non-silent, delivered in assets/audio/sfx/procedural_replacements/. See docs/audio_orders/REMAINING_PROCEDURAL_SFX.md for complete inventory/fallback audit and integration steps. Files only: runtime NOT wired; listening QC pending. Preserve existing main crit/kill sounds and oscillator fallback; do not regenerate existing file-backed SFX. Next AI integrates 4 hooks, then version/check/deploy.
+
+# Previous delivery: v6.99.3 — Play Stats Back → Settings
 
 Owner (device, v6.99.2): Back still went to hub (nav stack path differs on device). buildStats now passes backScreen 'settings' to _screenBg. npm check passed.
 

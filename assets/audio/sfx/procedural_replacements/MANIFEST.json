@@ -1,0 +1,54 @@
+{
+  "status": "delivered_not_integrated",
+  "audited_version": "6.99.3",
+  "files": [
+    {
+      "key": "sfx_streak_real",
+      "path": "assets/audio/sfx/procedural_replacements/sfx_streak_real.mp3",
+      "event": "คอมโบต่อเนื่อง",
+      "hook": "Sfx.streak(step)",
+      "loop": false,
+      "id": "sfx_streak_real",
+      "status": "success",
+      "filename": "sfx_streak_real.mp3",
+      "bytes": 8821,
+      "sha256": "7a27a8c38095f5fd0271a4f23d1638b44c6f6c032713b3447f453a14874cc672"
+    },
+    {
+      "key": "sfx_heartbeat_real",
+      "path": "assets/audio/sfx/procedural_replacements/sfx_heartbeat_real.mp3",
+      "event": "หัวใจเต้น HP ต่ำ",
+      "hook": "Sfx.heartbeat(intensity)",
+      "loop": false,
+      "id": "sfx_heartbeat_real",
+      "status": "success",
+      "filename": "sfx_heartbeat_real.mp3",
+      "bytes": 8821,
+      "sha256": "d40a7ee4b66f7d0e450e268eba3e41fd9f5cdb4fbf76a87cf3ac5ee3e1bdb656"
+    },
+    {
+      "key": "sfx_crit_accent_real",
+      "path": "assets/audio/sfx/procedural_replacements/sfx_crit_accent_real.mp3",
+      "event": "ping เสริมคริติคอล",
+      "hook": "Sfx.crit()",
+      "loop": false,
+      "id": "sfx_crit_accent_real",
+      "status": "success",
+      "filename": "sfx_crit_accent_real.mp3",
+      "bytes": 8821,
+      "sha256": "f582e6ac04d1949ba1002c4658777a68732e20f7823aac7e4dabadf62f012ae7"
+    },
+    {
+      "key": "sfx_bigkill_accent_real",
+      "path": "assets/audio/sfx/procedural_replacements/sfx_bigkill_accent_real.mp3",
+      "event": "ชั้นทุ้มและแตกกระจายตอนฆ่าตัวใหญ่",
+      "hook": "Sfx.bigKill()",
+      "loop": false,
+      "id": "sfx_bigkill_accent_real",
+      "status": "success",
+      "filename": "sfx_bigkill_accent_real.mp3",
+      "bytes": 10493,
+      "sha256": "39d4622826324a6318b442f11f5a606aad69adb484b9a98028b2c385d183fdcc"
+    }
+  ]
+}
