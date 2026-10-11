@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.99.2';
+const GAME_VERSION = '6.99.3';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.99.3', date:'2026-10-11', title:'🔧 Play Stats back', items:['Back on Play Stats always returns to Settings']},
   { v:'6.99.2', date:'2026-10-11', title:'🔧 Play Stats fix', items:['Play Stats opens its own page again and Back returns to Settings','Fixed Heroes getting stuck on the Stats tab after opening Play Stats']},
   { v:'6.99.1', date:'2026-10-11', title:'👻 Faster Phantom Rush', items:['Phantom Rush leaps faster and one more time (4, or 5 at Unique Lv3+)','Play Stats now records stage clears, not only the final stage']},
   { v:'6.99.0', date:'2026-10-11', title:'⛏ Delve grows like Story', items:['Delve now uses the Story level-up pace and the Story card choices for your build']},
@@ -7845,7 +7846,7 @@ class Game extends Phaser.Scene {
   }
   // v6.95 📊 หน้าสถิติการเล่น (ข้อมูลในเครื่องนี้เท่านั้น)
   buildStats(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📊 Play Stats','screen_settings');
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('📊 Play Stats','screen_settings','settings');
     const w=this.W,h=this.H,cw=Math.min(w-24,520),x0=(w-cw)/2,runs=Stats.load();let y=w<=h?88:62;
     const T=(x,yy,t,sz,c,st,o)=>{const q=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#e6dcf0',wordWrap:{width:cw-12}}).setOrigin(o===undefined?0:o,0);this.menu.add(q);return q;};
     const lab=i=>{const st=STAGES[i];return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1));};
