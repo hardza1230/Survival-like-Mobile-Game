@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.5.0';
+const GAME_VERSION = '7.5.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.5.1', date:'2026-10-11', title:'🎰 Casino wheel sound', items:['Prize wheel now clacks like a real casino wheel: wooden peg ticks, a drum roll while it slows down and a bell when it stops']},
   { v:'7.5.0', date:'2026-10-11', title:'📅 Daily Quests', items:['Daily Missions are now Daily Quests: 5 quests a day (defeat enemies, clear stages, collect or dismantle gear, earn Sugar, dig and more)','Each finished quest gives 20 points · open a Small Box at 40, a Big Box at 70 and the Grand Box (with a gear item) at 100','Tap a quest to jump to where you can do it · new quests every day at midnight']},
   { v:'7.4.2', date:'2026-10-11', title:'🛠️ Heroes screen fix', items:['Opening Heroes after visiting its Stats tab no longer jumps to Play Stats — character select works again','Back from Play Stats → Settings → Back now leaves Settings in one tap']},
   { v:'7.4.1', date:'2026-10-11', title:'🧠 Lighter pictures', items:['Oversized art (main menu, Temple cores and emblems, menu buttons, stage progress bar, stage summary) resized to match the screen — about 55MB less graphics memory, same look']},
@@ -1232,6 +1233,10 @@ const Sfx = {
   digTrap(){if(!this.playFile('sfx_dig_trap',0.55))this.tone(90,0.2,'sawtooth',0.1,50);},
   digDescend(){if(!this.playFile('sfx_dig_descend',0.55,1))this.seq([880,660,440],'sine',0.12,0.08);},
   slotSpin(){this.eventLoopStart('event_slot_spin_power',.4);},
+  // v7.5.1 วงล้อคาสิโน: หมุดไม้แกร๊ก (pitch คงที่ สุ่มนิดหน่อย) · ตอนช้าลงดังขึ้น · กลองรัวก่อนหยุด · ระฆังตอนจบ
+  wheelTick(slow){ if(!this.playFile('sfx_wheel_clack',slow?.55:.3,.96+Math.random()*.08))this.chestTick(0); },
+  wheelRoll(){ this.playFile('sfx_wheel_roll',.42,1); },
+  wheelWin(){ this.playFile('sfx_wheel_win',.55,1); },
   stopSlotSpin(){this.eventLoopStop('event_slot_spin_power');},
   slotReward(big=false){this.stopSlotSpin();this.stopCraft();this.rewardCue(big?'sfx_event_slot_reward_power':'sfx_chest_win',big?.68:.5);},
   rewardCue(key,vol=.6){if(this._rewardSnd){try{this._rewardSnd.stop();this._rewardSnd.destroy();}catch(e){}this._rewardSnd=null;}if(this.muted||this.sv<=0)return false;try{const g=window.__g;if(!g?.cache.audio.exists(key))return false;const snd=g.sound.add(key,{volume:vol*this.sv,rate:1});this._rewardSnd=snd;snd.once('complete',()=>{if(this._rewardSnd===snd)this._rewardSnd=null;snd.destroy();});snd.play();return true;}catch(e){return false;}},
@@ -2172,6 +2177,7 @@ const ASSET_AUDIO = {
   sfx_event_capture_complete:'assets/audio/sfx/runtime_polish/capture_complete.mp3',
   sfx_event_mint_ice_charge:'assets/audio/sfx/runtime_polish/mint_ice_charge.mp3',
   sfx_event_slot_spin_power:'assets/audio/sfx/runtime_polish/slot_spin_power.mp3',
+  sfx_wheel_clack:'assets/audio/sfx/wheel/wheel_clack.mp3', sfx_wheel_roll:'assets/audio/sfx/wheel/wheel_roll.mp3', sfx_wheel_win:'assets/audio/sfx/wheel/wheel_win.mp3',   // v7.5.1 วงล้อสไตล์คาสิโน (scripts/gen_wheel_sfx.py)
   sfx_event_slot_reward_power:'assets/audio/sfx/runtime_polish/slot_reward_power.mp3',
   // v6.73 Build path SFX (docs/audio_orders/BUILD_PATH_SFX_INTEGRATION.md)
   sfx_cocoa_fire_fist: 'assets/audio/sfx/build_paths/cocoa_fire_fist.mp3',
@@ -14228,15 +14234,16 @@ class Game extends Phaser.Scene {
     const st=this.add.text(cx,by+bh/2,'🛑 STOP!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#ffffff'}).setOrigin(0.5);cont.add([sg,st]);
     this.tweens.add({targets:[st],scale:{from:1,to:1.08},yoyo:true,repeat:-1,duration:260});
     const doStop=()=>{ if(stopped)return;stopped=true;this._rollBtns=[];Sfx.card?Sfx.card():Sfx.select();this.tweens.killTweensOf(st);st.setText('…').setScale(1);sg.setAlpha(0.45);hint.setText('Slowing down…');
-      const pos=cur,dist=((winIdx-pos)%n+n)%n,rem=n*2+dist+(dist<2?n:0);total=k+rem;steps=[];for(let q=0;q<rem;q++){const t=q/Math.max(1,rem-1);steps.push(50+Math.pow(t,3)*380);} this._stopBase=k; };
+      const pos=cur,dist=((winIdx-pos)%n+n)%n,rem=n*2+dist+(dist<2?n:0);total=k+rem;steps=[];for(let q=0;q<rem;q++){const t=q/Math.max(1,rem-1);steps.push(50+Math.pow(t,3)*380);} this._stopBase=k;
+      try{ Sfx.stopSlotSpin?.(); const left=steps.reduce((a2,b2)=>a2+b2,0); this.time.delayedCall(Math.max(0,left-2400),()=>{ if(cont.active)Sfx.wheelRoll?.(); }); }catch(e){} };   // v7.5.1 กด STOP: เพลงหมุนหยุด เหลือหมุดไม้ช้าลง + กลองรัวจบตอนวงล้อหยุด
     this._rollBtns=[{x:bx,y:by,w:bw,h:bh,fn:doStop}];hint.setText('Tap STOP!');
     this.time.delayedCall(6000,()=>{ if(cont.active)doStop(); });
     const chestScaleX=center.scaleX,chestScaleY=center.scaleY;
     const hop=()=>{ if(!cont.active)return; if(cur>=0){const prev=slots[cur];prev.draw(false);prev.lab.setScale(prev.baseScaleX,prev.baseScaleY);}
-      cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(sl.baseScaleX*1.2,sl.baseScaleY*1.2);Sfx.chestTick(k);this.tweens.add({targets:sl.lab,y:{from:sl.y-12,to:sl.y},duration:170,ease:'Bounce.out'});
+      cur=(cur+1)%n;const sl=slots[cur];sl.draw(true);sl.lab.setScale(sl.baseScaleX*1.2,sl.baseScaleY*1.2);if(Sfx.wheelTick)Sfx.wheelTick(stopped);else Sfx.chestTick(k);this.tweens.add({targets:sl.lab,y:{from:sl.y-12,to:sl.y},duration:170,ease:'Bounce.out'});
       this.tweens.add({targets:center,scaleX:{from:chestScaleX*1.18,to:chestScaleX},scaleY:{from:chestScaleY*0.84,to:chestScaleY},duration:150,ease:'Back.out'});
       k++;if(upTier&&stopped&&k===this._stopBase+Math.floor((total-this._stopBase)*0.5))upgrade();
-      if(k>=total){sg.setVisible(false);st.setVisible(false);this.time.delayedCall(260,()=>land());return;}
+      if(k>=total){sg.setVisible(false);st.setVisible(false);Sfx.wheelWin?.();this.time.delayedCall(260,()=>land());return;}
       this.time.delayedCall(stopped?steps[k-this._stopBase]||60:45,hop); };
     const upgrade=()=>{ const hex='#'+T.color.toString(16).padStart(6,'0');
       rays.setFillStyle(T.color,0.05).setStrokeStyle(1,T.color,0.18);ring.clear();ring.lineStyle(4,T.color,0.8);ring.strokeCircle(cx,cy,R);

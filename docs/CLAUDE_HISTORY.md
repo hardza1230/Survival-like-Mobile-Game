@@ -1652,3 +1652,7 @@ Glacier Bloom hit power +10%, initial hit and delayed shatter apply Frost Burn (
 
 Validation: npm check includes frost-burn-audio test; production build and Pages verification tracked in docs/RUNTIME_POLISH_7_3.md. No headless gameplay simulation; owner phone playtest pending for balance/audio/art.
 
+# Delivery: v7.3.1 — Equipment portrait and Dash Boxer audio
+
+Owner screenshot showed only hair in wide portrait equipment panel. Fixed crop to constant upper 55% rather than shrinking source height with panel aspect; contain scale keeps face and image inside frame on phone/tablet. Dash Boxer Dash Leap stops layering cocoa_flicker_step onto normal Dash; landing returns original comboPunch heavy. Phantom Rush Unique activation/auto-strike sounds unchanged. Regression tests check real crop block across widths and texture ratios; full check and build required.
+

@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.5.0 — Daily Quests (points + 3 reward boxes)
+# Latest delivery: v7.5.1 — Casino prize-wheel audio
+
+Owner: wheel spin should feel like a casino. scripts/gen_wheel_sfx.py (numpy → ffmpeg mp3) makes assets/audio/sfx/wheel/ wheel_clack (peg/flapper), wheel_roll (2.4s swelling drum roll), wheel_win (bell ding ×3 + coin sparkle); ASSET_AUDIO sfx_wheel_*. Sfx.wheelTick(slow) constant pitch ±4% (was chestTick rising pitch), louder after STOP; doStop stops slot spin loop and schedules wheelRoll to end at landing (sum of slowdown steps − 2.4s); landing plays wheelWin before reward. Capture objective still uses chestTick. Owner asked about NFT items — answered (not recommended now), no code. Listening on phone pending.
+
+# Previous delivery: v7.5.0 — Daily Quests (points + 3 reward boxes)
 
 Owner: replace daily challenge with the usual quest board. DQ_POOL (before POWER_TUNING): kills 150, clear 2, elite/mini 3, boss 1, cards 15, sugar 600, gear 4 (req stageMastery[0]), shards 20 (req 0), dig 5 (req 1). dqPick(day) seeded: kills+clear + 3 shuffled unlocked. DailyQ.data() resets per localDayKey (Save.data.dailyQ {day,quests[{id,p}],boxes}); tick(id,n) caps, banner on complete, throttled save; _mute skips (box/login rewards). DQ_PTS 20 → DQ_BOXES 40 bronze / 70 silver / 100 gold (chest_badge_* art). Hooks (all typeof-guarded for vm tests): advanceDaily(kind) → tick (existing kills/dig callers), killEnemy elite/mini/boss, Stats.card cards, Stats.end win clear, Save.addSugar sugar, dismantleGearInstance/Inbox shards, grantGear gear. buildDaily rewritten: compact Login Reward + points bar with 3 tappable boxes + 5 quest rows (tap → chapter/gear/dig) + reset countdown; dqOpenBox(i): Sugar 80/160/320 ×(1+0.5·chapter), shards/currencies after S1, shovels after S2, Grand gives grantGear rare/epic(25%); popup, rewardCue loot/chest. Badge: login unclaimed or box ready. Old dailySpec/challenge data left (unused). tests/daily-quests.test.cjs. Headless screenshots OK.
 
@@ -21,10 +25,6 @@ Owner approved plan (P1+P2+P4+P5 now, P3 next, P6 later). artClass(k,u) (after b
 # Previous delivery: v7.3.2 — Floor TileSprite GPU fix (−64MB)
 
 Owner: "ran out of graphics memory". Headless measure (412×915 @DPR3): 705MB textures at menu, all GL-uploaded; biggest = TileSprite's own 4000×4000 canvas (64MB). v6.93 syncBgTile never worked (used t.frame = the TileSprite canvas, so P≈4000). Now bgTile is a hidden 2×2 TileSprite kept only as state (texture/tileScale/alpha/tint API unchanged) and syncBgTile draws the floor with ≤64 pooled plain Images of displayTexture snapped to the view (0 extra GPU). Measured 641MB menu / 612MB in stage. Screenshot: floor seamless after moving. GPU memory plan proposed to owner (pending approval). npm check passed.
-
-# Previous delivery: v7.3.1 — Equipment portrait and Dash Boxer audio
-
-Owner screenshot showed only hair in wide portrait equipment panel. Fixed crop to constant upper 55% rather than shrinking source height with panel aspect; contain scale keeps face and image inside frame on phone/tablet. Dash Boxer Dash Leap stops layering cocoa_flicker_step onto normal Dash; landing returns original comboPunch heavy. Phantom Rush Unique activation/auto-strike sounds unchanged. Regression tests check real crop block across widths and texture ratios; full check and build required.
 
 # Older history
 
