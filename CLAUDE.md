@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.96.1 — Loader file counter
+# Latest delivery: v6.97.0 — Card pick chime + loot magnet
+
+Owner: card-pick burst felt plain → pickCardAt (non-evolution) also plays Sfx.bp('shared_unique_charge_full',.5,.35,1.15). Owner: currency had to be walked over → tickLootMagnet(dt) (called after updatePickupReadability in update): loots group (currency + gear gifts) within 120px kill bob tween, hide pickup cue, glide to player at 160–540px/s (slower than EXP vac); g._mag reset in spawnLoot/spawnCurrencyDrop. Headless: drop at 100px collected, 300px stays. Delve level question: measured v6.93 vs current in story C1-4 — same XP/kills/level; asked owner for Play Stats screenshot. npm check passed.
+
+# Previous delivery: v6.96.1 — Loader file counter
 
 Owner screenshot (reference game shows "(47 / 53)"). Patched GameLoader.set (game.js tip IIFE) writes load-percent as 'NN%  (seen / count)' from LoadMeter.seen.size / LoadMeter.count. npm check passed.
 

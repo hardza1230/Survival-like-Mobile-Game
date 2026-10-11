@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.96.1';
+const GAME_VERSION = '6.97.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.97.0', date:'2026-10-11', title:'✨ Card sound + loot pull', items:['Picking a card now plays a power-up chime with the burst','Dropped currency and gear gently float to you when you get close — no need to stand on them']},
   { v:'6.96.1', date:'2026-10-10', title:'⏳ Download counter', items:['The loading screen now shows how many files are done, like (47 / 1200)']},
   { v:'6.96.0', date:'2026-10-10', title:'❤️ New hero status bar', items:['Your level, HP (with numbers) and EXP now sit in a compact bar under your hero','Fixed a crash from the v6.94 cleanup that could stop level-up cards and run start']},
   { v:'6.95.2', date:'2026-10-10', title:'⭐ Card pick effect', items:['Picking any card now plays the level-up burst around your hero, a little slower so it is easy to see']},
@@ -11408,7 +11409,7 @@ class Game extends Phaser.Scene {
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
-    Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution))this.playGrowthWorld?.('levelup',0.6);   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
+    Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);Sfx.bp?.('shared_unique_charge_full',.5,.35,1.15);}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
   }
   // แตะครั้งแรก = โชว์กWaitบเรืองWaitบการ์ด ให้ผู้เล่นรู้ว่ากำลังเลือกใบนี้ (ก่อนแตะซ้ำยืนยัน)
   highlightCard(c){
@@ -13616,6 +13617,11 @@ class Game extends Phaser.Scene {
     o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
     o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
   }
+  // v6.97 ของตก (currency/gear) ดูดเข้าหาตัวเมื่ออยู่ใกล้ ~120px · ช้ากว่าเม็ด EXP
+  tickLootMagnet(dt){ const p=this.player; if(!p||!this.loots||this.state!=='play')return; const R=120,R2=R*R;
+    this.loots.children.iterate(g=>{ if(!g||!g.active)return; const dx=p.x-g.x,dy=p.y-g.y,d2=dx*dx+dy*dy; if(d2>R2&&!g._mag)return;
+      if(!g._mag){ g._mag=true; this.tweens.killTweensOf(g); this.hidePickupCue(g); }
+      const d=Math.sqrt(d2)||1,sp=Math.min(d,(160+380*(1-Math.min(1,d/R)))*dt); g.x+=dx/d*sp; g.y+=dy/d*sp; if(g.body)g.body.reset(g.x,g.y); }); }
   hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam','_curIcon','_pillar','_pillarCore']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
   // ลำแสงเล็ก ๆ ชี้จุดที่ไอเทม/currency ตก (มองเห็นง่ายขึ้น)
   spawnDropBeam(o,color){ if(!o)return; const beam=this.camWorld(this.add.image(o.x,o.y-2,'vfx_glow').setTint(color).setDepth((o.depth||80000)-1).setAlpha(0.5).setBlendMode(Phaser.BlendModes.ADD));
@@ -13751,14 +13757,14 @@ class Game extends Phaser.Scene {
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
     const box='gift';   // ไอเทมปิดกล่องจนจบด่าน ใช้ภาพกล่องของขวัญจริง
-    if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
+    if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); } if(g)g._mag=false;
     if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost+(this.endgameDropActive()?1:0));const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
     g.body.setAllowGravity(false);g.clearTint();g.setAlpha(1);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   // 🧪 Currency ดรอปเป็นชิ้นในสนาม (เก็บ = สะสมเข้า _runCurrency + Save · โชว์ในสรุปด่าน)
   spawnCurrencyDrop(x,y,key){ let g=this.loots.getFirstDead(false);
     if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
-    if(!g)return;g.dropType='currency';g.curKey=key;g.lootTier=null;const col=0x9fe8ff,d=currencyDef(key);
+    if(!g)return;g._mag=false;g.dropType='currency';g.curKey=key;g.lootTier=null;const col=0x9fe8ff,d=currencyDef(key);
     g.setTexture(d.asset&&this.textures.exists(d.asset)?d.asset:'prize_currency').clearTint().setAlpha(1);
     g.body.setAllowGravity(false);this.camWorld(g);this.showPickupCue(g,col,1.0);this.spawnDropBeam(g,col); if(this.iso)g.setDepth(Math.max(80000,g.y));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
@@ -15405,7 +15411,7 @@ class Game extends Phaser.Scene {
     this.tickCocoaCombat(dt);this.tickCocoaDash(dt);
     if(this.dashBtn) this.dashBtn.setFillStyle(COLORS.mint,this.dashReady?0.28:0.10);
     this.drawDashRing();
-    this.updatePickupReadability();
+    this.updatePickupReadability(); this.tickLootMagnet(dt);
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
     this.tickSnipe(); this.tickIceTrails(dt); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt); this.modTick(dt); this.tickPathTalents(dt);
