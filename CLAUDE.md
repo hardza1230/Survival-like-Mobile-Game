@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.7 — Screen VFX off, starter Unique boosts
+# Latest delivery: v7.6.8 — ⚔ ATK / 🛡 DEF power split on Equipment
+
+Owner: split Power into attack and defense so items read as damage vs tank gear. heroAD(cid,basic) → {a: round(100·heroOffense), d: round(heroDefense)} (same parts heroPower combines); gearADDelta(item,base) swaps the item in like gearPowerDelta. Equipment power box shows '⚔ ATK a   🛡 DEF d'; selecting an unequipped item shows both lines 'ATK a→a+Δ ▲Δ' / 'DEF …' (box green both up, red both down, amber mixed); list cards show ⚔±/🛡± instead of ▲±. this._adBase cached per build. Overall heroPower (stage recommendations, auto-keep, clean list) unchanged. Quick UI screenshot OK.
+
+# Previous delivery: v7.6.7 — Screen VFX off, starter Unique boosts
 
 Owner: (1) new painted screen VFX look silly → heroScreenEffect() returns null (v7.3 hero_screen_* overlays off; files kept; v6.84 code-drawn screenFx unchanged). (2) Cocoa Unique before choosing a path (castCocoaUnique default branch) now also sets _cocoaRegenT=5+ul s at _cocoaRegenPct=2%+0.5%·ul max HP/s, ticked after normal regen (outside the 3% cap, honours noheal + pactHealMul), reset with uniqueLevel at run start. (3) Mint Gale (castWindRush) before a path: basicRate ×0.65 while windRushT>0 (character mint, no path). (4) Strawberry Rebound already heals % max HP (5.5%+1.8%·ul) — told owner, unchanged.
 
@@ -17,10 +21,6 @@ Owner Play Stats: Titan died to the C2-2 boss after 9:18 (Brawler cleared C2-1 i
 # Previous delivery: v7.6.4 — Equipped item mods, Sell/Dismantle back, heavier punches
 
 Owner: (1) tapping the equipped item should show its mods — drawModCompare returned right after 'Open mod slots' when isEq; now lists implicit (+tier name) and every affix (emoji label value, Tn) in a MODS panel, 'No mods yet' fallback. (2) Remove the ⋯ More button; Sell/Dismantle always shown (moreOpen=true, row 2 = Craft 52% + ★ + 🔒). (3) Cocoa punches sounded like tiny jabs: punch_jab.mp3 measured −34dB mean / almost no <200Hz; Sfx.comboPunch now uses sfx_punch (event_refresh/punch.mp3, −11.6dB, strongest bass) with random pitch 0.98–1.18 for jabs, and heavy = punch at rate ~0.85 + punch_heavy layer. Quick UI screenshots of the gear screen OK; punch sound not listened to.
-
-# Previous delivery: v7.6.3 — Cocoa intro at C2-1 + audible punches
-
-Owner: unlock/introduce Cocoa at C2-1 like Mint. HERO_INTROS table (after CORE_UNLOCK_STAGE): Mint idx 2 (flag mintIntro, text unchanged), Cocoa idx 5 (flag cocoaIntro, card_cocoa, 'Fermented Canopy armored roots / Root Beetles — bear gauntlets punch through'). Cocoa is already unlocked by clearing C1-5 (CORE_UNLOCK_STAGE cocoa:4). startStoryStage(idx): first entry, stage not mastered, hero owned and not already selected → showMintWarning(hi) (name kept for tests; now generic) → Choose → Heroes coach spotlight 'Pick Cocoa for C2-1!' (this._mintCoach holds the intro entry) → startStoryStage(hi.idx); 'Keep my hero' starts the stage. typeof guards for vm tests. Owner: Cocoa punches silent — files/calls existed (comboPunch jab/heavy, Sfx.bp cocoa_*); global 10-voice cap in playFile dropped them in crowded fights → sfx_punch* and sfx_cocoa_* bypass the global cap like sfx_uq_* (per-key cap 3 kept).
 
 # Older history
 

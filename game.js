@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.7';
+const GAME_VERSION = '7.6.8';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.8', date:'2026-10-11', title:'⚔🛡 Attack and Defense power', items:['Equipment shows ⚔ ATK and 🛡 DEF instead of one Power number','Each item card shows how much ATK and DEF it adds or removes, so you can tell damage gear from tank gear']},
   { v:'7.6.7', date:'2026-10-11', title:'🐻❄️ Starter Unique boosts', items:['Painted full-screen Unique overlays are off for now (classic screen effects return)','Cocoa before choosing a path: Unique slam also gives 2.5–4% max HP regen per second for 6–9s','Mint before choosing a path: Mint Gale also makes basic attacks 35% faster while it lasts']},
   { v:'7.6.6', date:'2026-10-11', title:'📊 Detailed Play Stats copy', items:['Copied stats now include hero level, Unique level, power, key stats, talents, Weave, equipped gear with mods and damage share per run']},
   { v:'7.6.5', date:'2026-10-11', title:'🗿 Titan vs giants', items:['Titan basic punches deal +40% damage to bosses and minibosses','Colossus Fist cooldown 12s → 9s']},
@@ -5435,6 +5436,10 @@ function heroOffense(p,cid){const crit=1+Math.min(1,p.critChance||0)*((p.critMul
   return Math.max(0.05,p.dmgMul||1)*(p.powerMul||1)*crit*(1+flat*ATK_PCT)/Math.max(0.1,p.cdMul||1);}
 function heroDefense(p){const taken=Math.max(0.05,(p.dmgTakenMul||1)*armorDamageMultiplier(p)),hp=Math.max(1,p.maxhp||90),reg=(p.regen||0)+(p.regenFlat||0);
   return hp/taken*(1+reg*8/hp);}
+// v7.6.8 เจ้าของ: แยก Power เป็น ⚔ ATK (ตีแรง) / 🛡 DEF (อึด) เพื่อดูว่าไอเทมไหนเสริมด้านไหน · ATK = 100×offense · DEF = HP ที่ปรับตามเกราะ/ลดดาเมจ/regen
+function heroAD(cid,basic){const p=computeHeroStats(cid,basic);return {a:Math.max(1,Math.round(100*heroOffense(p,cid))),d:Math.max(1,Math.round(heroDefense(p)))};}
+function gearADDelta(item,base){try{const d=Save.data,cid=d.character||'momo',slot=item&&item.slot;if(!slot)return {a:0,d:0};const eq=d.equippedGear||(d.equippedGear={}),prev=eq[slot];if(prev===item.uid)return {a:0,d:0};
+  const b0=base||heroAD(cid,null),list=d.gearItems||(d.gearItems=[]),added=!list.includes(item);if(added)list.push(item);eq[slot]=item.uid;let n=b0;try{n=heroAD(cid,null);}finally{if(prev===undefined)delete eq[slot];else eq[slot]=prev;if(added)list.splice(list.indexOf(item),1);}return {a:n.a-b0.a,d:n.d-b0.d};}catch(e){return {a:0,d:0};}}
 function heroPower(cid,basic){const p=computeHeroStats(cid,basic);return Math.max(1,Math.round(100*Math.sqrt(heroOffense(p,cid)*RUN_CARD_OFF*heroDefense(p)*RUN_CARD_DEF/90)));}
 // Power แนะนำต่อด่าน = คิดจากตัวเลขศัตรูจริงของด่าน (HP/ดาเมจ มอน + บอส) เทียบด่าน 1 · ปรับสูตรศัตรู = ค่าแนะนำตามเอง
 function stageThreat(i){const st=STAGES[i]||STAGES[0],c2=i===6?BALANCE.c2Mycelium:i===7?BALANCE.c2Nectar:i===8?BALANCE.c2Seasons:i===9?BALANCE.c2Root:{hp:1,dmg:1};
@@ -8931,7 +8936,7 @@ class Game extends Phaser.Scene {
     const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
     const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
     if(gbt.width>half-aw*2-4)gbt.setScale((half-aw*2-4)/gbt.width);this.menu.add([gbg,gbt,lArr,rArr]);
-    { const [px,py,pw,ph]=this._pwBox,bp=heroPower(Save.data.character||'momo',null),pg=this.add.graphics();pg.fillStyle(0x3a3550,1);pg.fillRoundedRect(px,py,pw,ph,10);this._pwG=pg;this._pwT=this.add.text(px+pw/2,py+ph/2,'⚡ '+bp,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(.5);this.menu.add([pg,this._pwT]); }
+    { const [px,py,pw,ph]=this._pwBox,ad=this._adBase=heroAD(Save.data.character||'momo',null),pg=this.add.graphics();pg.fillStyle(0x3a3550,1);pg.fillRoundedRect(px,py,pw,ph,10);this._pwG=pg;this._pwT=this.add.text(px+pw/2,py+ph/2,'⚔ ATK '+ad.a+'   🛡 DEF '+ad.d,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',align:'center'}).setOrigin(.5);if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);this.menu.add([pg,this._pwT]); }
     this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
@@ -8955,7 +8960,7 @@ class Game extends Phaser.Scene {
       const color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,iy,cw,ch,10);g.lineStyle(on?3:1.5,on?0xffd166:color,1);g.strokeRoundedRect(x,iy,cw,ch,10);
       const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+23,artKey).setDisplaySize(42,42):this.add.text(x+cw/2,iy+23,base.emoji,{fontSize:'26px'}).setOrigin(0.5),nm=this.add.text(x+cw/2,iy+47,gearBaseStatText(item)+' · Lv'+(item.itemLevel||1),{fontFamily:'sans-serif',fontSize:'7px',color:'#e8dce9'}).setOrigin(0.5);
       this.menu.add([g,em,nm]);
-      if(!eq&&item.grade!=='start'){const dp=gearPowerDelta(item,basePow);if(dp){const pt=this.add.text(x+cw/2,iy+58,(dp>0?'▲+':'▼')+dp,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:dp>0?'#7de0a1':'#ff8da2'}).setOrigin(0.5);this.menu.add(pt);}}
+      if(!eq&&item.grade!=='start'){const dd=gearADDelta(item,this._adBase||(this._adBase=heroAD(Save.data.character||'momo',null))),parts=[];if(dd.a)parts.push(['⚔'+(dd.a>0?'+':'')+dd.a,dd.a>0]);if(dd.d)parts.push(['🛡'+(dd.d>0?'+':'')+dd.d,dd.d>0]);parts.forEach((q,qi)=>{const pt=this.add.text(x+cw/2+(parts.length>1?(qi?1:-1)*cw*0.24:0),iy+58,q[0],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:q[1]?'#7de0a1':'#ff8da2'}).setOrigin(0.5);this.menu.add(pt);});}   /* v7.6.8 ⚔/🛡 แยก */
       if(item.isNew){const nb=this.add.text(x+4,iy+3,'NEW',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ff8fb0'}).setOrigin(0,0);this.menu.add(nb);}
       if(item.favorite){const fav=this.add.text(x+cw-4,iy+3,'★',{fontSize:'10px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(fav);}
       if(item.craftedAt&&!item.isNew){const cb=this.add.text(x+4,iy+3,'⚒',{fontSize:'9px',color:'#c9a3ff'}).setOrigin(0,0);this.menu.add(cb);}
@@ -8973,8 +8978,10 @@ class Game extends Phaser.Scene {
     selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
     if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
       const rows=gearCompareRows(equipped,selected).filter(r=>r.key==='attack'||r.key==='armor'),affLines=it=>{if(!it)return[];const ib=GEAR_ALL.find(g=>g.id===it.baseId),im=ensureImplicit(it),idf=im&&implicitDef(im.id),out=[];if(idf)out.push({t:'◇ '+implicitText(it)+' · '+IMPLICIT_TIER[idf.rank],c:IMPLICIT_COLOR[idf.rank]});else if(ib&&ib.unique)out.push({t:'★ '+ib.desc,c:'#ff8f3a'});const af=(it.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);for(const kind of ['prefix','suffix'])af.filter(x=>(x.d.kind||'suffix')===kind).slice(0,3).forEach(x=>out.push({t:(kind==='prefix'?'P ':'S ')+x.d.emoji+x.d.label+' '+x.d.fmt(x.a.v)+' T'+(x.a.t||3),c:kind==='prefix'?'#ffb27a':'#8be0c8'}));return out;},eqAff=affLines(equipped),selAff=affLines(selected),affN=0,AH=Math.min(58,Math.round(w*0.15)),affTop=26+AH+Math.max(1,rows.length)*14+6,panelH=affTop+2,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
-      {const bp=heroPower(Save.data.character||'momo',null),dp=eq?0:gearPowerDelta(selected,bp),[px,py,pw,ph]=this._pwBox;if(dp){this._pwG.clear();this._pwG.fillStyle(dp>0?0x2f6b47:0x7a3442,1);this._pwG.fillRoundedRect(px,py,pw,ph,10);}
-        this._pwT.setText(eq||!dp?'⚡ '+bp:'⚡'+bp+'→'+(bp+dp)+'\n'+(dp>0?'▲ +'+dp:'▼ '+dp)).setFontSize(eq||!dp?14:11).setAlign('center');if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
+      {const ad=this._adBase||heroAD(Save.data.character||'momo',null),dd=eq?{a:0,d:0}:gearADDelta(selected,ad),[px,py,pw,ph]=this._pwBox,any=dd.a||dd.d;   // v7.6.8 ⚔ ATK / 🛡 DEF แยกกัน
+        if(any){const up=dd.a>=0&&dd.d>=0,dn=dd.a<=0&&dd.d<=0;this._pwG.clear();this._pwG.fillStyle(up?0x2f6b47:dn?0x7a3442:0x6b5a2a,1);this._pwG.fillRoundedRect(px,py,pw,ph,10);}
+        const ln=(ic,lab,v,dv)=>ic+' '+lab+' '+v+(dv?'→'+(v+dv)+(dv>0?' ▲':' ▼')+Math.abs(dv):'');
+        this._pwT.setScale(1).setText(any?ln('⚔','ATK',ad.a,dd.a)+'\n'+ln('🛡','DEF',ad.d,dd.d):'⚔ ATK '+ad.a+'   🛡 DEF '+ad.d).setFontSize(any?11:13).setAlign('center');if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
       { const sh=30,g=this.add.graphics(),tc=Phaser.Display.Color.HexStringToColor(tl.color).color;g.fillStyle(0x241a33,0.97);g.fillRoundedRect(14,y,w-28,sh,10);g.lineStyle(1.5,tc,1);g.strokeRoundedRect(14,y,w-28,sh,10);this.menu.add(g);   // v6.55.72: แถบชื่อชิ้นที่เลือกแทนการ์ดใหญ่ 2 ใบ
         const ak='gear_'+base.id,ic=this.textures.exists(ak)?this.add.image(32,y+sh/2,ak).setDisplaySize(24,24):this.add.text(32,y+sh/2,base.emoji,{fontSize:'16px'}).setOrigin(0.5);
         const st=this.add.text(w-22,y+sh/2,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'10px',color:rl.color}).setOrigin(1,0.5);
