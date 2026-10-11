@@ -1392,3 +1392,251 @@ Dedicated deterministic forge WAVs for manual/auto roulette, visual tick cadence
 - อาวุธประจำตัว: โมโม่=ปืนเมล็ดหัวใจ, มินต์=แกนลมเย็น, โกโก้=ถุงมือตราหมี, ตาโร่=เข็มทิศสายฟ้า, งาดำ=กระจกคำสัตย์, Berry Core=ปืนแกนแยม
 - ผู้เล่นเริ่มด้วยอาวุธประจำตัวและเลือกอาวุธรอง 1 ชิ้น; อาวุธประจำตัวนับรวมในเพดานอาวุธ 4 ช่อง
 - Weapon Mastery มีผลเฉพาะอาวุธประจำตัว และ resetStageLoadout() ต้องคืนอาวุธประจำตัวทุกด่าน
+
+# Delivery: Wisp purification and special-card SFX (assets only)
+
+Six new files in assets/audio/sfx/wisp_special/MANIFEST.json; see docs/audio_orders/WISP_SPECIAL_CARD_SFX.md. Wisp charge controlled loop + completion/interrupt; special-card pickup/offer/confirm distinct from normal level-up. Runtime unchanged v7.1.0. Live code channel progresses only while near, pauses otherwise; stop charge before purifyCore and all cleanup. openLevelUp sound check happens before guaranteed Relic construction: classify origin after choices, not solely pendingLvl. Next AI integrates, listens, checks/version/deploy.
+
+# Delivery: Playtest SFX revision (assets only, 41 files)
+
+Owner feedback: Slot/card/levelup/draw/Temple/mine/Enhance too short or weak; add poison and Hunt the Threat. Generated 41 original cues with structured 2–4.5s reward payoffs, shorter frequent strikes. assets/audio/sfx/playtest_revision/MANIFEST.json + docs/audio_orders/SFX_PLAYTEST_REVISION_41.md. Existing v7.1.0 integration untouched; runtime v7.1.0. Next AI must repoint keys, wire actual Hunt/poison/mine branches, enforce one outcome and stopped loops/voice channels, listen/tune, bump/check/deploy. No subjective listening approval claimed.
+
+# Delivery: v7.1.0 — Event SFX refresh wired (133 + 4 procedural)
+
+All 85 replace_existing keys in ASSET_AUDIO repointed to assets/audio/sfx/event_refresh/* (punch_heavy/frenzy share a line, fixed by hand); 48 new keys sfx_event_* + 4 sfx_*_real (procedural_replacements) registered. Sfx.ev(id,vol,gap,rate) = throttled playFile('sfx_event_'+id). Wired: streak/heartbeat/crit accent/bigKill accent use *_real files (synth fallback); pickCardAt 1st tap card_focus, 2nd tap semantic cue (Build Path→build_path_select, Infusion→infusion_apply, Relic→relic_acquire, Modifier→modifier_acquire, Trade-off→tradeoff_acquire, else card_confirm; Evolution keeps its own) — replaces shared_unique_charge_full; closeLevelUp Sfx.card skipped within 250ms of that cue; openLevelUp plays card_offer_open when no level-up fanfare (chest/relic offers); checkUniqueAutoUpgrade unique_rank_up; spawnMiniBoss miniboss_arrival; mini kill miniboss_defeat; sugar coin pickup_sugar; field currency pickup_currency; gear gift pickup_gear. NOT yet wired (registered, unused): ui_panel/tab/toggle/compare/item_focus/purchase, hero_select/unlock, card_flip/reroll, skill_rank_up/awaken, codex_rank_up, growth_*, wave_start/clear, stage_clear, boss_attack_telegraph, story_*, portal_enter, revive, loot_*_reveal, buff_pickup, gear_favorite/bulk. chest_spin/slot_spin still one-shot helpers. ending-growth-art test normalizes the new unique cue. Listening QC pending. npm check passed.
+
+# Delivery: Full event SFX refresh (assets only)
+
+Owner requested complete sound-event audit including reused file-backed cues. 133 ElevenLabs files in assets/audio/sfx/event_refresh/: 85 core replacements + 48 distinct UI/cards/growth/loot/stage events. See docs/audio_orders/FULL_EVENT_SFX_133_HANDOFF.md; all 458 static Sfx callsites in SFX_ALL_CALLSITES.json. Existing Build/Unique/procedural banks retained. Core issue: Sfx.clear reuses levelup, card confirmation reuses Unique charge. New files NOT wired; runtime remains v7.0.1; listening/tail trimming pending. Next AI: semantic event routing, preserve uiAction dedup/voice caps, do not restore disabled systems, then version/check/deploy.
+
+# Delivery: v7.0.1 — Desktop loader/intro fit
+
+Owner screenshot (1920 desktop): intro kitchen art zoomed (kitchen_loader.css .k-stage width max(100vw,…)). index.html media (hover:hover)(pointer:fine)(min-aspect-ratio:62/100): #game-loader boxed to 56.25vh centered, .k-stage 56.28vh, petals 20px. Headless 1600×860 OK. npm check passed.
+
+# Delivery: v7.0.0 — Keyboard + desktop browser fit
+
+Owner: play in browser with keyboard/mouse + fit the screen. setupKeyboard() (called after pointer handlers): WASD/arrows drive joy with id -78 (tickKeyboard at top of update; never overrides an active touch joystick), Space/Shift doDash, E/J hold = fake pointerdown/up on uniqueBtn with id -77 (works for tap, Titan hold, sniper/blast/Mint charge), F flicker, Esc/P togglePause, 1–4 pick level-up card (double pickCardAt = confirm). Mouse already worked (click-drag joystick, buttons). DESKTOP_FIT (no touch, not Capacitor native): viewSize() = 9:16 portrait (h·9/16) centered via injected #desk-fit canvas CSS; RENDER_W/H and _applyResize use it. Headless 1280×720: keys move/dash/unique/card, mouse click Dash + drag move OK. npm check passed.
+# Delivery: Remaining procedural SFX asset handoff
+
+Owner clarified SFX (not visual VFX) and requested all sounds still generated directly in code. Audit v6.99.3: 162 registered audio keys, all files present; 2 pure-procedural events (combo streak, low-HP heartbeat) + 2 unconditional synth layers (crit ping, bigKill bass/debris). All 4 generated via ElevenLabs, decoded/non-silent, delivered in assets/audio/sfx/procedural_replacements/. See docs/audio_orders/REMAINING_PROCEDURAL_SFX.md for complete inventory/fallback audit and integration steps. Files only: runtime NOT wired; listening QC pending. Preserve existing main crit/kill sounds and oscillator fallback; do not regenerate existing file-backed SFX. Next AI integrates 4 hooks, then version/check/deploy.
+
+# Delivery: v6.99.3 — Play Stats Back → Settings
+
+Owner (device, v6.99.2): Back still went to hub (nav stack path differs on device). buildStats now passes backScreen 'settings' to _screenBg. npm check passed.
+
+# Delivery: v6.99.2 — Play Stats route clash
+
+Owner: Play Stats Back went to hub; Heroes then stuck. Cause: menu route 'stats' already existed (Heroes → Stats tab: sets _heroesTab='stats', menuScreen='char'), so the Settings row opened Heroes. Play Stats route renamed 'playstats' (buildStats); row resets _heroesTab='roster'. Headless: settings → playstats → Back = settings. npm check passed.
+
+# Delivery: v6.99.1 — Play Stats fix + faster Phantom Rush
+
+Owner: Play Stats showed nothing. Cause: 'win' hook was only in victory() (final stage only) + Stats.start ran via time.delayedCall(0) (can stall while time paused). Now Stats.start(this) runs directly after the run-flag line in startRun, showStageSummary records 'win' (skipped when state dead or _quitSummary; typeof guard for tests), end() fills depth from _amapNode. Headless: stage summary → 1 run saved. Phantom Rush (dashboxer castCocoaUnique): leaps 3/4→4/5 (ul≥3), interval .42→.30s, glide/strike delay .2→.14s; desc '4 times'; cocoa-builds test cap 5. npm check passed.
+
+# Delivery: v6.99.0 — Delve grows like Story (option 3)
+
+Clarified to owner: damage() is identical in every mode; difference was growth. Now recipeMode uses storyXpNext (12+6·(lv−1)) and no ENDGAME_XP_MUL (const removed), and rollBasicAttackUpgrades storyCards = usesStoryBudget || recipeMode (path-focused drafts). Rift/BossRush unchanged. Risk: Delve has unlimited enemies → levels may climb fast; watch Play Stats. Tests updated (story-budget xpNext 18, story-build-pressure/all-hero-drafts recipeMode now grouped). npm check passed.
+
+# Delivery: v6.98.1 — Delve boss floor 30%
+
+Owner: lower Delve boss floor to 30% of C3-5. DELVE_BOSS_FLOOR=0.3 (next to ENDGAME_XP_MUL) multiplies the v6.98 floor (d1 normal node ≈144k). npm check passed.
+
+# Delivery: v6.98.0 — Delve boss HP floor, live progress bar, stats copy
+
+Owner: Delve bosses too weak from first depths (no continuity from C3-5). Cause: v6.68 ×2 boss mul is story-only + RECIPE_BOSS_HP .7 + theme stage bossHp (theme 0 d1 ≈2.7k vs C3-5 Normal ≈446k). spawnFinalBoss: recipeMode && _amapNode && !pinnacle → b.hp=max(old, C3-5 Normal boss × node(1/elite 1.5/boss 2) × delveMul(d).hp × pact boss) (d1 ≈481k). Miniboss untouched. Progress bar: animateProgressBar(dt) in update — _pbTarget set by renderReplayProgress/renderRecipeProgress (no direct crop), smooth lerp crop, moving white shine, pulsing head glow + pop on gain (pbFx graphics depth 56, cleared in clearWaveObjective). Play Stats: Stats.toText()/copy() (navigator.clipboard → textarea execCommand fallback), 'Copy to clipboard' pill above Clear. npm check passed. Not playtested.
+
+# Delivery: v6.97.0 — Card pick chime + loot magnet
+
+Owner: card-pick burst felt plain → pickCardAt (non-evolution) also plays Sfx.bp('shared_unique_charge_full',.5,.35,1.15). Owner: currency had to be walked over → tickLootMagnet(dt) (called after updatePickupReadability in update): loots group (currency + gear gifts) within 120px kill bob tween, hide pickup cue, glide to player at 160–540px/s (slower than EXP vac); g._mag reset in spawnLoot/spawnCurrencyDrop. Headless: drop at 100px collected, 300px stays. Delve level question: measured v6.93 vs current in story C1-4 — same XP/kills/level; asked owner for Play Stats screenshot. npm check passed.
+
+# Delivery: v6.96.1 — Loader file counter
+
+Owner screenshot (reference game shows "(47 / 53)"). Patched GameLoader.set (game.js tip IIFE) writes load-percent as 'NN%  (seen / count)' from LoadMeter.seen.size / LoadMeter.count. npm check passed.
+
+# Delivery: v6.96.0 — Hero status bar under feet + v6.94 crash fix
+
+Owner screenshot (reference game): level badge + HP bar + thin EXP bar under hero; keep HP numbers (Titan needs them). drawOverheadStatus: bar now at player screen y+30 — level square (pOverLv number only, 11px) left, HP 60×10 with 'hp / max' (pOverHp 9px), EXP 4px orange under (xp/xpNext). CRASH FIX from v6.94 cleanup (tests stubbed these, npm check missed them): rollBasicAttackUpgrades makeCard still used TAG_SETS_ON (ReferenceError on level-up cards), applyMeta still called gearSetCollected, syncBasicAttack called this.refreshTagSets, menu dispatch 'egbuild'. All removed; headless run + level-up cards show no page errors. npm check passed.
+
+# Delivery: v6.95.2 — Level-up FX on normal card picks
+
+Owner: level-up effect only seemed to show on Evolution. pickCardAt now calls playGrowthWorld('levelup',0.6) for every non-evolution card (Evolution keeps growth_unlock). playGrowthWorld(kind,ts) sets anims.timeScale (0.6 → ~1.1s), 500ms throttle unchanged (multi-pick shows once). npm check passed.
+
+# Delivery: v6.95.1 — Wider battle camera
+
+Owner: widen camera a bit. computeViewZoom BASE .76→.70 (~9% more field). Spawn/decor/culling radii already divide by viewZoom so they follow. npm check passed.
+
+# Delivery: v6.95.0 — Local Play Stats (option ก)
+
+Owner chose local-only stats first (Supabase upload = later option ข, ask before creating a table). Stats module (before CLOUD_URL): localStorage mochi_stats, last 300 runs {t,mode story/delve/bossrush/rift/pinnacle,stage,diff,depth,hero,cards≤40,result win/dead/quit,sec,level,kills,wave,boss,path,cause=_lastHitSrc,topDmg}. Hooks: startRun delayedCall(0) Stats.start (tutorial skipped), pickCardAt Stats.card, victory 'win', die 'dead', quitStage 'quit' (bossRush 'dead'); end() only once per run. Settings row 📊 Play Stats → menuScreen 'stats' buildStats (per stage★diff wins/tries/avg clear/top death, heroes/builds/modes, recent runs + cards, double-tap clear). tests/play-stats.test.cjs added to npm check. Headless screenshot of screen OK. npm check passed.
+
+# Delivery: v6.94.0 — Consolidation F (dead code removed)
+
+Owner: remove Endgame Build, Sugar Rush auto level-ups, Endless, Ascension, and every switch-disabled system; Zone Modifiers kept (owner undecided). Removed: egBuild/egBuildPoints/egUpgradeDefs/egBuildCost/EG_*, buildEgBuild, applyEgBuild, _egBuilt; recipeLevelUp, openRecipeDraft, slotLevelUp, refreshUpBtn, openUpgradePanel (⬆ button), RECIPE_DRAFT_EVERY, _draftQ/_specQ/_draftPick (sugarRush() kept: Sweet biome comets use it); buildEndgame screen, Save.canAscend/ascend/recordEndless, endlessMode/endlessCycle/secretBoss branches (endgameUnlocked = ascension>0 || storyComplete); TAG_SETS_ON/tagLabel/refreshTagSets/pause tag grid (TAG_SETS/tagCounts kept); OVERCAP_ON/buyOvercap/overcapCost/OVERCAP_MAX (owned overcap still counts, stones→threads kept); SET_COLLECT_ON/gearSetCollected/setDeposit UI; BESTIARY_STATS_ON/bestiaryBonus*/bestiaryTotals. Save refund migrations kept. Tests/validators updated. npm check passed.
+
+# Delivery: v6.93.0 — Lighter GPU memory (perf item 1)
+
+stageOnlyArtKeys() (STAGE_SHEET_KEYS + STAGE_DECOR items + floor_cN, minus bootKeep): preloadAll only downloads them into SW/HTTP cache (dl fetch, LoadMeter) instead of decoding into WebGL; ensureStageArt decodes per stage. syncBgTile() on postupdate: bgTile sized ≈ view + 2 pattern periods (even multiples of frame×tileScale, cap WORLD), position snapped to period multiples at camera centre → no 4000×4000 canvas (−64MB), pattern stays fixed in world. v6.92: nearestEnemy per-frame cache, evictOtherBgm. npm check passed. No on-device FPS measured.
+
+# Delivery: v6.92.0 — Perf: per-frame nearestEnemy memo + BGM eviction
+
+Owner chose perf items 4+5. nearestEnemy(maxD) memoised per game.loop.frame + player x/y per maxD (recompute if cached target died); raw scan moved to _nearestEnemyRaw. evictOtherBgm(keep) called in ensureStageAudio: removes decoded bgm_[smb]N/stage/boss/chN from cache.audio (+sound.removeByKey) except current stage/mini/boss keys and the playing track; files stay in SW cache, reload lazily. npm check passed.
+
+# Delivery: v6.91.0 — White screen on phone (GPU memory)
+
+Owner: C1-4 white screen with combat audio. Headless renders fine → device GPU memory: preloadAll decodes all art (~940MB RGBA) into WebGL → context lost. Fixes: (1) freeOtherStageArt(idx) at startRun (after warm) removes textures in other stages' stageArtKeys (minus current/bootKeep) + anims whose first frame uses them, clears _stageArtReady/_warmed for those stages → ensureStageArt reloads from SW cache next time (headless verified C1-4 → C1-1 reload, enemies/hero OK). (2) canvas webglcontextlost → Save.save, overlay 'Graphics memory ran out — reloading…', reload 1.2s. Not changed: preloadAll still decodes everything at boot. npm check passed.
+
+# Delivery: v6.90.0 — Temple Weave Sugar cost raised
+
+Owner: Weave too strong, low levels too cheap. Save.talCost = base×WEAVE_COST_MUL(3)×WEAVE_LV_GROWTH(1.8)^lvl×(1+rank)×1.25^rank (was base×(lvl+1)×…). Rank0 HP core 30/60/90 → 90/162/292. Thread costs unchanged. npm check passed.
+
+# Delivery: v6.89.1 — MIMIC slot on every miniboss wheel
+
+Owner: mimic should be a visible wheel slot from the start, random. openPrizeWheel adds MIMIC prize when opts.onMimic (weight so P=MIMIC_WHEEL_CHANCE 0.12), always kept among the 8 shown slots; landing → awakenMimic (kill → better chest, that chest has c._noMimic so no slot). spawnChest no longer pre-rolls c._mimic. Tutorial: no mimic. miniboss-rewards test mock updated. npm check passed.
+
+# Delivery: v6.89.0 — Mimic is a prize-wheel outcome
+
+collectChest mini: no pre-wheel awakenMimic; openPrizeWheel(tier,done,{mimic,onMimic}) — when c._mimic (12% roll in spawnChest unchanged) a MIMIC slot (mimic_chest_animated art, w 0) is forced winner, no tier upgrade; on land onMimic → awakenMimic (kill → better chest as before) instead of give/done. Pre-pickup mimic cue + 'Suspicious Chest' banner removed. npm check passed.
+
+# Delivery: v6.88.0 — Old APK update notice
+
+MIN_APK_VERSION (next to GAME_VERSION) + APK_DOWNLOAD_URL (rolling 'latest' release asset). checkApkUpdate (2.5s after first menu, native only): App.getInfo().version (versionName = GAME_VERSION at APK build via set-android-version.mjs; no App plugin → '0.0.0') < MIN → showApkUpdate modal (Download via Browser plugin / Later = hide for the day, localStorage mochi_apk_skip). Do NOT compare with GitHub release: 'latest' rebuilds every push. Bump MIN_APK_VERSION only when a native change needs reinstall (capacitor config, plugins, icons, bundled shell). npm check passed.
+
+# Delivery: v6.87.1 — SW caches loader art + Supabase SDK
+
+sw.js: /assets/ requests without ?v (index.html loader bg kitchen_night.webp, kitchen_loader.css url() images city/foreground/sakura) and cdn.jsdelivr.net (supabase-js, opaque) now go through shellFetch (network-first 3.5s → cached). Everything else already cached: hashed assets (cache-first) + shell (v6.87.0). Cloud save API calls (supabase.co) intentionally not cached. npm check passed.
+
+# Delivery: v6.87.0 — Offline-ready shell (option 2: small app + first-run download)
+
+Owner chose 'small APK + download game data on first launch'. Already existed: preloadAll full first-run download with progress (mochi_full_cached) + sw.js cache-first for assets?v=hash. Added: sw.js SHELL cache for navigate/index.html/*.js/css/json (network-first, 3.5s timeout → cached copy; offline works), index.html requests navigator.storage.persist(). capacitor server.url (Pages) unchanged. Not yet: bundling shell inside APK (needs server.url removal + updater), Play Store AAB/keystore. npm check passed.
+
+# Delivery: v6.86.0 — Ricochet link fixed + unused FX files deleted
+
+ricochetLink(x,y,tx,ty): static frame 0 of bpx_momo_link (origin .1, scaleX d/205), alpha tween 250ms + 600ms safety destroy, max 6 alive (_rlN). Owner asked to delete effect art of unknown/unlogged origin that was not wired: assets/vfx/vfx_{chili_nova,frost_pulse,telegraph_hazard,ult_sugarbomb,ult_cocoavortex,proj_donut}*.png, generated/vfx_burn_zone.png, and registered-but-never-played fx_ult_bomb, fx_popcorn, fx_flickerstrike, fx_star_guard, fx_bosssummon (files + registry entries). Wired assets untouched. scripts/batch_generate_vfx.mjs still lists the deleted outputs (generator only). npm check passed.
+
+# Delivery: v6.85.1 — Objective arrow orbits the hero
+
+updateObjectiveArrow: arrow placed at player screen pos (same world→ui mapping as drawOverheadStatus) + radius 62 with bob, angle from player to target, scale .8, hidden when target <140px. npm check passed.
+
+# Delivery: v6.85.0 — Ricochet link ribbons removed + optional Mint intro
+
+Owner screenshot: pink ribbons stuck on map. Cause: hitEnemy ricochet bounce spawned bpx_momo_link (ASSET_FX loop:true → animationcomplete never fires → never destroyed). Link FX removed (bounce burst kept). Mint intro: startStoryStage(2) first time (no Save.data.mintIntro, stage 3 not cleared) shows showMintWarning (text now optional: Choose Mint → heroes coach / 'Keep my hero' → starts stage). story-budget test assertion updated. npm check passed.
+
+# Delivery: v6.84.1 — Tablet ghost props
+
+Owner screenshot (tablet): box + crystal pillar drawn bright over level-up overlay. Cause: buildStageProps solidProps.create sprites never camWorld'd (solidProps not in _worldObjs) → also rendered by uiCam at their world coords; tablet's larger W/H puts more of world origin area in uiCam view. Fix: camWorld(s) on each solid prop. npm check passed.
+
+# Delivery: v6.84.0 — Unique screen FX (Momo, Mint, Cocoa)
+
+screenFx(life,draw) helper: code-drawn Graphics depth 95000 re-positioned to camera worldView on scene 'postupdate' (life 0 = until kill()). scrEdge vignette helper. Hooks: sniper fxScopeStart in startSnipeCharge (stopped in cancelSnipe) + fxScopeStop(true) white flash in releaseSnipe; shotgun full-charge fxShotgunScreen; Rebound fxReboundScreen; brawler rocket first detonation fxHeatScreen (1.5s throttle); Phantom fxPhantomScreen(1.4); Glacier Bloom full fxFreezeScreen (ice corners 1.5s then shards); releaseFrostLance fxLanceScreen; castWindRush fxGaleScreen. Titan crack from v6.83. Taro/Sesame/Yuzu intentionally not done (owner: later). No settings toggle yet. npm check passed.
+
+# Delivery: v6.83.1 — Boss warning fully silent
+
+Owner: beeping 'ตื๊ด ๆ' alarm on every danger. It was sfx_hazard (sfx_vfx_telegraph_hazard.wav, 1s) that v6.82.3 put into Sfx.bossWarn (~32 telegraph call sites). bossWarn(){} is now a no-op; visuals unchanged. npm check passed.
+
+# Delivery: v6.83.0 — Titan slam slower + screen crack
+
+titanRageImpact: crack/shockwave/crush sprites anims.timeScale (lv1 .7, lv2 .5, lv3 .38); hitStop lv3 220ms. New titanScreenCrack(lv) code-drawn white crack lines over camera worldView (depth 95000, lv2+, fades after .55/.9s). No screen-crack art asset exists in repo. npm check passed.
+
+# Delivery: v6.82.3 — Buzzing boss warning removed
+
+Owner: fly-like boss sound that fades everything. Culprit: Sfx.bossWarn → sfx_boss_warn.mp3 (2.7s; gen_stingers_synth detuned saw siren ~73Hz with 3.2Hz vibrato = buzz) called from ~32 boss/elite telegraphs, plus duckBgm(900,.34). bossWarn now plays only short sfx_hazard (vol .42), no duck, no saw fallback. npm check passed.
+
+# Delivery: v6.82.2 — Shotgun uses sniper fire SFX
+
+Owner: shotgun blast still silent after v6.82.1, sniper fire audible → releaseBerryBlast fire() now plays uq_sniper_fire (rate .85) at the START of fire() (before VFX, try/catch), fallback Sfx.boom. uq_shotgun_blast unused. npm check passed.
+
+# Delivery: v6.82.1 — Shotgun blast audible
+
+Owner: pump heard, blast BOOM missing. Cause (likely): playFile global cap 10 live voices dropped it in busy fights (returns true = no fallback). sfx_uq_* now bypass the global cap (per-key cap 3 kept), louder ceiling .6/×.85. releaseBerryBlast falls back to Sfx.boom if uq file not yet loaded (Sfx.uqReady). npm check passed.
+
+# Delivery: v6.82.0 — Unique SFX wired (26 sfx_uq_*)
+
+ASSET_AUDIO sfx_uq_* (assets/audio/sfx/unique_skills/). Hooks via Sfx.bp/bpLoop: startSnipeCharge (blast pump / sniper charge loop, stopped in cancelSnipe), tickSnipe full (shotgun_full / sniper_full), releaseSnipe uq_sniper_fire (replaces boom+beam, bolt +260ms, railgun echo reduced), releaseBerryBlast uq_shotgun_blast; Titan rage loop uq_titan_charge (was cocoa_rage_charge), uq_titan_full at titanMaxLv, castCocoaUnique titan uq_titan_drop / uq_titan_slam_full at max / uq_titan_aftershock on .65s hit; brawler rockets b._uqRocket → uq_rocket_salvo (gap .8) + uq_rocket_detonation (getBullet now resets _uqRocket and _bpBoom); phantom enter/strike (flicker step removed there); castWindRush uq_mint_gale, releaseFrostLance lance_release, releaseGlacierBloom c>=1 bloom_full; Rebound uq_rebound_burst; castPathRecall chain_cast/chain_hit; castOathWard prism_charge/volley (gap .18); Citrus Parade uq_yuzu_parade. Not wired: uq_yuzu_crew_hit (optional), Stage 3-1 trial music (bgm_s11 already new campaign track). Listening QC pending. npm check passed.
+
+# Delivery: v6.81.0 — 45 campaign music tracks wired
+
+ASSET_AUDIO bgm_s01..15/bgm_m01..15 repointed to assets/audio/bgm/elevenlabs_campaign/c1..c3/; bgm_b01..15 added. bgmKeyFor: per-stage boss bgm_bNN after stage branch (endgame priority + chapter/legacy fallback kept). Boot/background skip regex /^bgm_[smb]\d/ so they stay lazy (ensureStageAudio stage, warmBossAudio mini+boss). Old stage/ files kept as unused fallback. Listening QC on phone pending. npm check passed.
+
+# Delivery: 45 campaign music loops (assets only)
+
+Owner requested theme-based normal music + fun exciting miniboss/boss fights for all C1-1..C3-5. 45 playback MP3 in assets/audio/bgm/elevenlabs_campaign/: 44 new ElevenLabs compositions + reused C3-1 trial. See docs/audio_orders/CAMPAIGN_MUSIC_45_HANDOFF.md / MANIFEST.json. All decode and contain audio, listening review pending. Not integrated: runtime remains v6.80.0. Next AI: register sNN/mNN/bNN paths; update bgmKeyFor boss routing before chapter fallback, preserve endgame priority and lazy loading.
+
+# Delivery: Unique spectacle audio + Stage 3-1 trial (assets only)
+
+26 new ElevenLabs Unique SFX in `assets/audio/sfx/unique_skills/`: pump-shotgun, sniper crack/whistle, max-charge Titan ground slam, all six active hero ability families. Stage 3-1 Ashen Seedfields music original + ~62s prepared loop in `assets/audio/bgm/incoming_stage31/`. See `docs/audio_orders/UNIQUE_SFX_STAGE31_HANDOFF.md` for precise hooks and loop/mixing rules. Existing 35 Build sounds already integrated in v6.73.0. New assets NOT wired, runtime remains v6.79.0; listening review pending. Owner wants another AI to integrate. Next: follow handoff, preserve combat timing, then version/check/deploy.
+
+# Delivery: v6.79.0 — Consolidation D1/D2/D3 (D done)
+
+D1: SET_COLLECT_ON=false — gearSetCollected false, codex deposit tap/bars/collect line hidden; load refunds setDeposit ×10 shards. D2: Bazaar tab 'Gacha' (was Boxes) holds Gear Gacha (openGachaReveal, band from Equipment) + Trade-in + supply box; Equipment gacha button kept (tutorial). D3: CUR_ALIAS exalt/regal→transmute, chaos→alt; curKey() in currencyDef/Save.currency/add/spend/order payout; load merges old stock; CURRENCY list 5 entries; prices transmute 120 alt 110. Tests: progression-polish context + 3 nav tabs. npm check passed. Next: E.
+
+# Delivery: v6.78.0 — Consolidation C1/C2/C3/C5 (C done)
+
+C3: BESTIARY_STATS_ON=false (bestiaryBonusTotal → {}), Sugar per tier unchanged. C5: Bazaar Orders tab removed; Save.load refunds active sugarOrder cost (miners already Depths-only). C1: OVERCAP_ON=false hides Overcap button; owned overcap still counts in talTotal (shown +N); dug Core Stones → +STONE_THREADS(25) thread; load converts stored coreStones to threads. C2: Special Cores button moved from Weave to Rank Perks (above Ancient, already there); back returns to perks via _specialFrom. dig test context got OVERCAP_ON/STONE_THREADS. npm check passed. Next: D.
+
+# Delivery: v6.77.1 — Mint Barrage volley FX
+
+bpx_mint_volley was a 220px fan (anchor left) on every Barrage cast with ≥2 lances (from first card) — looked like a 3-prong hit beyond real reach. Now 70px center muzzle flash 30px ahead. npm check passed.
+
+# Delivery: v6.77.0 — Titan no lunge, C4 Kitchen gate
+
+Titan castCocoaRush: joystick glide toward target removed (poses kept). C4 option ก: kitchenOpen() = stageMastery[9]; frActive() returns [] when locked (no recipes/upkeep), Hub Kitchen tile shows 🔒 + menuToast. Saved recipes untouched. npm check passed.
+
+# Delivery: v6.76.0 — Consolidation B1 (A6/B2 no change)
+
+B1: startWaveEvent clears this._bonus so Courier/Cache replaces that wave's Bonus Challenge. A6: card rarity already fixed to common (rollRarity) and frame code inert — left as is. B2: miniboss chest already uses prize wheel + Mimic only (no mystery-card layer) — no change. npm check passed. Next: C (meta, needs save refunds).
+
+# Delivery: v6.75.0 — Consolidation A5
+
+Fusion card disabled; autoFusion() applies the matching FUSIONS mod automatically when Evolution and its relic are both held (called 2.3s after Evolution pick and 0.6s after gainRelic). npm check passed.
+
+# Delivery: v6.74.0 — Consolidation A4
+
+Conditional endless cards (c_low/c_dash/c_still/c_full/c_boss/c_streak/c_close) removed from endlessStatDefs; condRelicCard() offers them in rollRelicChoices (45%) as one-pick relics giving 2 stacks of p._cond (b.condRelics, counted in relicSlotsLeft). npm check passed.
+
+# Delivery: v6.73.0 — Build path SFX wired
+
+35 MANIFEST keys in ASSET_AUDIO. Sfx.bp(name,vol,gap,rate) throttled one-shot; Sfx.bpLoopStart/Rate/Stop single charge loop (stopped on mute, togglePause, exitStage, die, release/cancel). Hooks in cocoaFireFist, bullet._bpBoom explode, castCocoaUnique (rocket/stick/colossus/phantom/shadow mark), tickTitanRage (rage loop + level), castCocoaRush titan leap/slam, Dash Leap step/landing, cocoaEvoDash, castFrostLance/releaseImpalerCharge, castImpalerLance loop, queueHailstorm, applyImpale stack/rupture, releaseGlacierBloom, glacierShatter, berry sniper loop/shot/impact, ricochet bounce, pinball final/cast, startSnipeCharge/tickSnipe charge cues, Evolution card, endWeakPoint shield break, beginBossPhaseTransition. Call sites use Sfx.bp?.(). Listening QC pending.
+
+# Delivery: Build SFX asset handoff
+
+Owner authorized ElevenLabs generation and requested asset delivery for another AI to integrate. 35 MP3 files in `assets/audio/sfx/build_paths/`; see `docs/audio_orders/BUILD_PATH_SFX_INTEGRATION.md` and MANIFEST.json for exact keys/events/loop handling. All decode and are non-silent; listening QC and runtime hooks pending. Three optional P2 sounds not generated. Owner explicitly requests files + handoff only; game.js/version/balance unchanged. Next AI: integrate via existing audio/Sfx backend, stop charge loops on cancellation, limit frequent voices, then bump version and run normal checks.
+
+# Delivery: v6.72.0 — Consolidation A2/A3
+
+Modifier + Trade-off cards removed from level-up pools (guarded false&&); rollRelicChoices adds modCard (60%) / tradeCard (35%, stage≥5 or recipe) into relic offers. RELIC_CAP 3→5 shared: relicSlotsLeft subtracts non-fusion mods + trades (MOD_MAX/TRADE_MAX still inner caps). Level relic offers at Lv6/12/18 (_relicLvN, reset in resetRelics). Not playtested — owner tests (owner: no headless sims, waste of time/tokens). Next: A4 conditional cards. npm check passed.
+
+# Delivery: v6.71.0 — Consolidation A1
+
+Owner approved system cut/merge plan: docs/SYSTEM_CONSOLIDATION_PLAN.md (track status there). A1: TAG_SETS_ON=false disables Tag Set tier bonuses (refreshTagSets no-op), tag labels/⬆ hints on cards, pause tag grid and HUD tag counts; TAG_SETS/tagCounts kept (trade-off/unique _tagIgnite/_tagChill unaffected). Dual Infusion offer disabled (infusion2 paths remain harmless). Next: A2 Modifiers into Relic pool. npm check passed.
+
+# Delivery: v6.70.0 — Mint buff
+
+Owner chose critique fixes A+B+C. CHARACTERS.mint dmg .92→1.00, crit .02→.05. cdOf mint frost base max(1.0,1.7−.07·lvl) (was max(1.25,1.95−.08·lvl)). mintVolleyProfile 2nd lance at lvl≥3 (was 4). damage(): Mint vs boss/mini ×(1+.04·min(4,_chill)) while chill fresh (≤2.5s); Glacier Brittle boss ×1.15. mint-glacier test updated 135→155.25. Mint Gale damage (option D) not done. npm check passed.
+
+# Delivery: v6.69.1 — 8-Way Shots fix
+
+Kitchen shots bullets set b.frShot (reset in getBullet); hitEnemy sets _frDmg while resolving them, so damage() skips powerMul and crit like other recipes. npm check passed.
+
+# Delivery: v6.69.0 — Kitchen upkeep and rework
+
+Owner approved: recipes had no downside. FR_SLOT_MAX 5→3; frUpkeep/applyFrUpkeep (applyMeta + computeHeroStats 'Kitchen upkeep'): per active recipe −6% maxHP, −4% dmgMul, +2% per DO ★ above 1 and +2% signature. Effects heal/recover/shield/immune/cdr marked cut (hidden in bag, skipped by frActive). Save.migrateKitchen3 (flag kitchen3) returns parts from slots ≥3 and cut parts, frSlots capped 3, frSlotRP=5. frHit sets _frDmg → damage() skips powerMul and crit. frEffect pw capped 2.5. Rage/Haste 4s with 8s cd. Minty refreeze ≥3s per foe (e._frIceAt). npm check passed.
+
+# Delivery: v6.68.0 — Story C2–C3 buff, Temple cost nerf
+
+Owner chose buff 1 + nerf Sugar upgrades. STORY_MOB_TAIL 1.18→1.28 (stage curve tail after index 5, story only; recipeMode keeps 1.18/1.17); realStageBossMul(i,endgame) ×2 for i≥5 when not recipeMode (boss + mini). Save.talCost rank factor 1.15^rank→1.25^rank. stageThreat/recommended power follow automatically. Kitchen review given to owner, not changed. npm check passed.
+
+# Delivery: v6.67.0 — Item mods: no prefix/suffix, max 3, Play mods
+
+Owner chose mod critique item 1 + remove prefix/suffix. All affix defs kind='mod' at runtime (MOD_LINE_MAX 3, CRAFT_AFFIX_CAP 3, AFFIX_COUNT legend 3); Save.migrateModLines3 trims old items to 3 best tiers (flag modLines3). Craft bench one MODS column; compare one MODS section. 6 Play mods (category 'play', weight ~30): m_dashnova (doDash → gearModBoom), m_critarc (damage crit → gearCritArc, 2 foes), m_killshell (killEnemy → gearKillShell, shield cap 2), m_stillfocus/m_opener (damage mul), m_thorns (charPassiveOnHurt, 1s cd). Fields reset in applyMeta. Validator affix count 41. npm check + headless craft screen passed.
+
+# Delivery: v6.66.0 — Delve cards chosen like Story
+
+Owner: normal cards in Delve should not auto-apply; pick like Story. openLevelUp recipe redirect to recipeLevelUp removed again; closeLevelUp reopens for pending levels (recipeLevelUp/Sugar Rush/every-5 draft unused). Endgame Build stays removed. npm check passed.
+
+# Delivery: v6.65.0 — Endgame Build removed
+
+Owner clarified "auto build" meant Endgame Build. startRecipeRun no longer calls applyEgBuild (_egBuilt=false); Delve panel Build chip/over-budget gate removed, Start full width (buildEgBuild/egBuild helpers now dead code). v6.62 auto upgrades restored (openLevelUp recipe redirect + closeLevelUp recipe branch). v6.64 slower meters kept. npm check passed.
+
+# Delivery: v6.64.0 — Slower meters, manual Delve cards
+
+Owner: replay progress and Delve Hunger fill slower; remove auto build. replayOnKill 1/8→0.75/6; HUNGER_PER_KILL .25→.19, elite 8→6, FEAST_SHARE .15→.12, MISSION_HUNGER .2→.16. openLevelUp no longer redirects recipeMode to recipeLevelUp (Sugar Rush auto stats + every-5 draft now unused); closeLevelUp reopens for pending levels in recipe too. npm check passed.
+

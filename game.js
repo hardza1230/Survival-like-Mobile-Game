@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.4.0';
+const GAME_VERSION = '7.4.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.4.1', date:'2026-10-11', title:'🧠 Lighter pictures', items:['Oversized art (main menu, Temple cores and emblems, menu buttons, stage progress bar, stage summary) resized to match the screen — about 55MB less graphics memory, same look']},
   { v:'7.4.0', date:'2026-10-11', title:'🧠 Graphics memory plan', items:['The loading screen now only downloads files; menu screens, other heroes and endgame art load when you open them (start-up graphics memory about 641MB → 256MB)','Menus keep graphics memory under a budget and release pictures you are not looking at','Performance setting is back to Auto · after a graphics crash the game restarts in low-memory mode','Play Stats shows how much graphics memory is in use']},
   { v:'7.3.2', date:'2026-10-11', title:'🧠 Less graphics memory', items:['The stage floor no longer reserves a giant 4000×4000 image in graphics memory (about 64MB saved)']},
   { v:'7.3.1', date:'2026-10-11', title:'Equipment portrait and Dash audio', items:['Equipment portraits keep the face visible on wide portrait screens','Dash Boxer uses its original Dash and landing punch sounds']},
@@ -6686,7 +6687,7 @@ class Game extends Phaser.Scene {
     this.waveObjBg=this.add.rectangle(w/2,pad+131,Math.min(230,w-84),7,0x100b16,0.72).setOrigin(0.5,0).setScrollFactor(1).setDepth(52).setVisible(false);
     this.waveObjBar=this.add.rectangle(w/2-Math.min(230,w-84)/2,pad+132,Math.min(230,w-84),5,0xffd166,1).setOrigin(0,0).setScrollFactor(1).setDepth(53).setVisible(false);
     const progressTexture=this.textures.get('replay_progress_art');
-    if(!progressTexture.has('empty')){progressTexture.add('empty',0,100,95,1750,164);progressTexture.add('fill',0,207,604,1520,74);}
+    if(!progressTexture.has('empty')){const q=progressTexture.getSourceImage().width/1942;progressTexture.add('empty',0,100*q,95*q,1750*q,164*q);progressTexture.add('fill',0,207*q,604*q,1520*q,74*q);}   // v7.4.1 พิกัดตามขนาดจริง (ภาพย่อแล้ว)
     const meterW=Math.min(350,w-34),meterY=pad+HUD_ROWS.progress;
     this.replayProgressFrame=this.add.image(w/2,meterY,'replay_progress_art','empty').setDisplaySize(meterW,33).setDepth(54).setVisible(false);
     this.replayProgressFill=this.add.image(w/2-meterW*.435,meterY,'replay_progress_art','fill').setOrigin(0,.5).setDisplaySize(meterW*.87,15).setDepth(55).setVisible(false);
@@ -8247,7 +8248,7 @@ class Game extends Phaser.Scene {
   }
   paintedNavButton(cont,cx,cy,w,h,label,active,fn){
     const texture=this.textures.get('painted_nav_button');
-    if(!texture.has('button'))texture.add('button',0,93,135,1985,425);
+    if(!texture.has('button')){const q=texture.getSourceImage().width/2172;texture.add('button',0,93*q,135*q,1985*q,425*q);}   // v7.4.1 พิกัดตามขนาดจริง
     const halo=this.add.graphics();if(active){halo.fillStyle(0xffce81,.14);halo.fillRoundedRect(cx-w/2-2,cy-h/2-2,w+4,h+4,12);halo.lineStyle(1.5,0xffe3a2,.95);halo.strokeRoundedRect(cx-w/2,cy-h/2,w,h,10);}cont.add(halo);
     const art=this.add.image(cx,cy,'painted_nav_button','button').setDisplaySize(w,h).setAlpha(active?1:.72);
     const text=this.add.text(cx,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:w<100?'10px':'12px',color:active?'#fff0c7':'#eee0f3',stroke:'#271229',strokeThickness:2}).setOrigin(.5);
@@ -9981,7 +9982,7 @@ class Game extends Phaser.Scene {
     const tgt=this._pbTarget; if(this._pbShow==null||tgt<this._pbShow-0.2)this._pbShow=tgt;
     if(tgt>(this._pbLast??tgt)+0.004)this._pbPop=1; this._pbLast=tgt;
     this._pbShow+=(tgt-this._pbShow)*Math.min(1,dt*6); const f=Math.max(0,Math.min(1,this._pbShow));
-    L.setCrop(0,0,Math.max(1,1520*f),74); const x0=L.x,w=L.displayWidth*f,h=L.displayHeight,y=L.y; if(w<3)return;
+    L.setCrop(0,0,Math.max(1,L.frame.width*f),L.frame.height); const x0=L.x,w=L.displayWidth*f,h=L.displayHeight,y=L.y; if(w<3)return;
     const t=(this.time.now||0)/1000,sx=x0+((t*0.55)%1.4-0.2)*Math.max(w,40);
     if(sx>x0&&sx<x0+w){ g.fillStyle(0xffffff,0.28); g.fillRect(Math.max(x0,sx-7),y-h/2+1,Math.min(14,x0+w-Math.max(x0,sx-7)),h-2); g.fillStyle(0xffffff,0.5); g.fillRect(Math.max(x0,sx-1.5),y-h/2+1,3,h-2); }
     this._pbPop=Math.max(0,(this._pbPop||0)-dt*3); const pul=0.5+0.5*Math.sin(t*6),hx=x0+w;
