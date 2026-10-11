@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.0.0';
+const GAME_VERSION = '7.0.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.0.1', date:'2026-10-11', title:'🖥 Desktop loading screen', items:['On a computer the loading and opening screens now use the same phone-shaped window as the game']},
   { v:'7.0.0', date:'2026-10-11', title:'⌨️ Keyboard & mouse', items:['Play in a desktop browser: WASD or arrow keys to move, Space/Shift to Dash, hold E (or J) for your Unique, F for Flicker, Esc/P to pause, 1–4 to pick a level-up card','Mouse: click-and-drag to move, click buttons and cards as before','On a computer the game shows in a phone-shaped window in the middle of the screen']},
   { v:'6.99.3', date:'2026-10-11', title:'🔧 Play Stats back', items:['Back on Play Stats always returns to Settings']},
   { v:'6.99.2', date:'2026-10-11', title:'🔧 Play Stats fix', items:['Play Stats opens its own page again and Back returns to Settings','Fixed Heroes getting stuck on the Stats tab after opening Play Stats']},
