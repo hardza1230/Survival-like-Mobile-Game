@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.0.1';
+const GAME_VERSION = '7.1.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.1.0', date:'2026-10-11', title:'🔊 New sound pack', items:['133 new sound effects: refreshed combat, UI, crafting, gear, loot, chest and stage sounds','Distinct sounds for focusing and confirming cards, Build Path / Infusion / Relic / Modifier / Trade-off picks, Unique rank-ups, miniboss arrival and defeat, and picking up Sugar, currency and gear','Combo streak, low-HP heartbeat, crit and big-kill accents now use real recorded-style sounds']},
   { v:'7.0.1', date:'2026-10-11', title:'🖥 Desktop loading screen', items:['On a computer the loading and opening screens now use the same phone-shaped window as the game']},
   { v:'7.0.0', date:'2026-10-11', title:'⌨️ Keyboard & mouse', items:['Play in a desktop browser: WASD or arrow keys to move, Space/Shift to Dash, hold E (or J) for your Unique, F for Flicker, Esc/P to pause, 1–4 to pick a level-up card','Mouse: click-and-drag to move, click buttons and cards as before','On a computer the game shows in a phone-shaped window in the middle of the screen']},
   { v:'6.99.3', date:'2026-10-11', title:'🔧 Play Stats back', items:['Back on Play Stats always returns to Settings']},
@@ -1110,11 +1111,11 @@ const Sfx = {
   // --- SFX mix: เสียงถี่เบา/ห่างขึ้น และเสียงสำคัญ duck เพลงชั่วคราว ---
   shoot(){if(this._ok('shoot',0.12)){if(!this.playFile('sfx_shoot',0.25))this.tone(920,0.045,'triangle',0.035,1280);}},
   pop(){if(this._ok('pop',0.11)){if(!this.playFile('sfx_hit',0.22))this.tone(430,0.055,'sine',0.045,240);}},
-  streak(step){const base=540+step*150;this.tone(base,0.10,'triangle',0.075,base+300);this.tone(base*1.5,0.11,'sine',0.05,base*1.5+240,0.05);},   // เสียงคอมโบ pitch สูงขึ้นตามสเต็ป
+  streak(step){if(this.playFile('sfx_streak_real',0.32,1+Math.min(0.5,(step||0)*0.06)))return;const base=540+step*150;this.tone(base,0.10,'triangle',0.075,base+300);this.tone(base*1.5,0.11,'sine',0.05,base*1.5+240,0.05);},   // เสียงคอมโบ pitch สูงขึ้นตามสเต็ป
   xp(){ const t=this.ctx?this.ctx.currentTime:0; this._xpStep=(t-this._xpAt<0.7)?Math.min(12,this._xpStep+1):0; this._xpAt=t;   // ไล่โน้ตสูงขึ้นตอนเก็บต่อเนื่อง
     if(this._ok('xp',0.07)){const r=1+this._xpStep*0.045; if(!this.playFile('sfx_xp',0.16,r))this.tone(760*r,0.05,'sine',0.035,1020*r);}},
-  crit(){ if(!this._ok('crit',0.09))return; if(!this.playFile('sfx_crit',0.32))this.playFile('sfx_hit',0.30,1.25+Math.random()*0.1); this.tone(1480,0.06,'triangle',0.045,2100); },   // คริ = เสียงตีสูง + ping
-  bigKill(){ if(!this._ok('bigKill',0.18))return; this.duckBgm(260,0.7); if(!this.playFile('sfx_kill_big',0.34)&&!this.playFile('sfx_ult_bomb',0.30,1.15))this.tone(150,0.18,'sine',0.08,65); this.tone(90,0.22,'sine',0.09,45); this.noise(0.12,0.05,0.02,true); },   // ฆ่าตัวใหญ่ = ซ้อน 3 ชั้น
+  crit(){ if(!this._ok('crit',0.09))return; if(!this.playFile('sfx_crit',0.32))this.playFile('sfx_hit',0.30,1.25+Math.random()*0.1); if(!this.playFile('sfx_crit_accent_real',0.22))this.tone(1480,0.06,'triangle',0.045,2100); },   // คริ = เสียงตีสูง + ping
+  bigKill(){ if(!this._ok('bigKill',0.18))return; this.duckBgm(260,0.7); if(!this.playFile('sfx_kill_big',0.34)&&!this.playFile('sfx_ult_bomb',0.30,1.15))this.tone(150,0.18,'sine',0.08,65); if(!this.playFile('sfx_bigkill_accent_real',0.3)){ this.tone(90,0.22,'sine',0.09,45); this.noise(0.12,0.05,0.02,true); } },   // ฆ่าตัวใหญ่ = ซ้อน 3 ชั้น
   setVolumes(mv,sv){ this.mv=mv; this.sv=sv; if(this._bgmGain)this._bgmGain.gain.value=0.5*mv; this.bgmIntense(this._bgmIntense); },
   hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hurt',0.36,0.96+Math.random()*0.08)&&!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
   dash(){if(this._ok('dash',0.25)){if(!this.playFile('sfx_dash',0.34))this.noise(0.11,0.055,0,true);}},
@@ -1125,6 +1126,7 @@ const Sfx = {
   punch(){if(this._ok('punch',0.12)&&!this.playFile('sfx_punch',0.4))this.shoot();},
   beatTick(){ this.playFile('sfx_beat_tick',0.45,1)||this.tone(880,0.04,'square',0.04); },
   beatLoop(rate){ this.stopBeatLoop(); if(this.muted||this.sv<=0)return; try{const g=window.__g; if(g&&g.cache.audio.exists('sfx_beat_loop')){ this.duckBgm(9000,0.2); const s=g.sound.add('sfx_beat_loop',{volume:0.5*this.sv,loop:true,rate:rate||1}); s.play(); this._beatSnd=s; }}catch(e){} },
+  ev(n,vol=0.5,gap=0.1,rate){ if(this.muted||this.sv<=0)return true; if(!this._ok('ev_'+n,gap))return true; return this.playFile('sfx_event_'+n,vol,rate||1); },   // v7.1 event_refresh semantic cues
   bp(n,vol=0.5,gap=0.08,rate){ if(this.muted||this.sv<=0)return true; if(!this._ok('bp_'+n,gap))return true; return this.playFile('sfx_'+n,vol,rate||(0.96+Math.random()*0.08)); },
   bpLoopStart(n,vol=0.28){ if(this._bpLoop&&this._bpLoopKey===n)return; this.bpLoopStop(); if(this.muted||this.sv<=0)return; try{const g=window.__g; if(g&&g.cache.audio.exists('sfx_'+n)){ const s=g.sound.add('sfx_'+n,{volume:vol*this.sv,loop:true}); s.play(); this._bpLoop=s; this._bpLoopKey=n; }}catch(e){} },
   uqReady(n){ try{return !!window.__g?.cache.audio.exists('sfx_'+n);}catch(e){return false;} },
@@ -1223,7 +1225,7 @@ const Sfx = {
   bossClear(){this.duckBgm(3200,0.12);if(!this.playFile('sfx_boss_clear',0.6,1))this.seq([523,659,784,1047],'triangle',0.13,0.12);},
   dead(){this.duckBgm(900,0.3);if(this.playFile('sfx_defeat',0.5,1))return;this.seq([392,311,247,196],'sine',0.10,0.14);},
   heal(){if(this._ok('heal',0.28)&&!this.playFile('sfx_heal',0.4))this.seq([784,988,1319],'sine',0.07,0.06);},
-  heartbeat(intensity){const v=0.05+0.05*(intensity||0);this.tone(58,0.10,'sine',v,40);this.tone(70,0.11,'sine',v*0.85,44,0.14);},   // เสียงหัวใจเต้น "thump-thump" ตอนใกล้ตาย
+  heartbeat(intensity){if(this.playFile('sfx_heartbeat_real',0.3+0.25*(intensity||0),1))return;const v=0.05+0.05*(intensity||0);this.tone(58,0.10,'sine',v,40);this.tone(70,0.11,'sine',v*0.85,44,0.14);},   // เสียงหัวใจเต้น "thump-thump" ตอนใกล้ตาย
 
   // ===== เพลงพื้นหลัง (BGM จริง + สังเคราะห์ fallback) =====
   _playTrack(key,volume){
@@ -2203,91 +2205,91 @@ const ASSET_AUDIO = {
   sfx_shared_build_evolution: 'assets/audio/sfx/build_paths/shared_build_evolution.mp3',
   sfx_boss_shield_break: 'assets/audio/sfx/build_paths/boss_shield_break.mp3',
   sfx_boss_phase_transition: 'assets/audio/sfx/build_paths/boss_phase_transition.mp3',
-  sfx_shoot:      'assets/audio/sfx/sfx_skill_sprinkle.wav',
-  sfx_hit:        'assets/audio/sfx/gen/sfx_hit.wav',
-  sfx_xp:         'assets/audio/sfx/gen/sfx_xp.wav',
-  sfx_dash:       'assets/audio/sfx/sfx_jump_squish.wav',
-  sfx_levelup:    'assets/audio/sfx/gen/sfx_levelup_soft.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
-  sfx_chest:      'assets/audio/sfx/sfx_chest_open.wav',
+  sfx_shoot:      'assets/audio/sfx/event_refresh/shoot.mp3',
+  sfx_hit:        'assets/audio/sfx/event_refresh/hit.mp3',
+  sfx_xp:         'assets/audio/sfx/event_refresh/xp.mp3',
+  sfx_dash:       'assets/audio/sfx/event_refresh/dash.mp3',
+  sfx_levelup:    'assets/audio/sfx/event_refresh/levelup.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
+  sfx_chest:      'assets/audio/sfx/event_refresh/chest.mp3',
   sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
-  sfx_craft_result_open:'assets/audio/sfx/results/result_open.wav',
-  sfx_craft_result_count:'assets/audio/sfx/results/result_count.wav',
-  sfx_craft_result_reveal:'assets/audio/sfx/results/result_reveal.wav',
-  sfx_craft_result_important:'assets/audio/sfx/results/result_important.wav',
-  sfx_craft_result_double:'assets/audio/sfx/results/result_double.wav',
-  sfx_craft_progress_core:'assets/audio/sfx/progress/progress_core.wav',
-  sfx_craft_progress_talent:'assets/audio/sfx/progress/progress_talent.wav',
-  sfx_craft_progress_overcap:'assets/audio/sfx/progress/progress_overcap.wav',
-  sfx_craft_progress_promotion:'assets/audio/sfx/progress/progress_promotion.wav',
-  sfx_craft_progress_perk:'assets/audio/sfx/progress/progress_perk.wav',
-  sfx_craft_progress_ancient:'assets/audio/sfx/progress/progress_ancient.wav',
-  sfx_craft_progress_daily:'assets/audio/sfx/progress/progress_daily.wav',
-  sfx_craft_progress_achievement:'assets/audio/sfx/progress/progress_achievement.wav',
-  sfx_craft_progress_quest:'assets/audio/sfx/progress/progress_quest.wav',
-  sfx_craft_progress_claim:'assets/audio/sfx/progress/progress_claim.wav',
-  sfx_craft_gear_equip:'assets/audio/sfx/gear/gear_equip.wav',
-  sfx_craft_gear_lock:'assets/audio/sfx/gear/gear_lock.wav',
-  sfx_craft_gear_unlock:'assets/audio/sfx/gear/gear_unlock.wav',
-  sfx_craft_gear_enhance_success:'assets/audio/sfx/gear/gear_enhance_success.wav',
-  sfx_craft_gear_enhance_break:'assets/audio/sfx/gear/gear_enhance_break.wav',
-  sfx_craft_gear_enhance_destroy:'assets/audio/sfx/gear/gear_enhance_destroy.wav',
-  sfx_craft_gear_dismantle:'assets/audio/sfx/gear/gear_dismantle.wav',
-  sfx_craft_gear_sell:'assets/audio/sfx/gear/gear_sell.wav',
-  sfx_craft_capacity:'assets/audio/sfx/craft/craft_capacity.wav',
-  sfx_craft_reroll:'assets/audio/sfx/craft/craft_reroll.wav',
-  sfx_craft_remove:'assets/audio/sfx/craft/craft_remove.wav',
-  sfx_craft_reset:'assets/audio/sfx/craft/craft_reset.wav',
-  sfx_craft_start:'assets/audio/sfx/craft/craft_start.wav',
-  sfx_craft_tick:'assets/audio/sfx/craft/craft_tick.wav',
-  sfx_craft_slow:'assets/audio/sfx/craft/craft_slow.wav',
-  sfx_craft_common:'assets/audio/sfx/craft/craft_common.wav',
-  sfx_craft_rare:'assets/audio/sfx/craft/craft_rare.wav',
-  sfx_craft_jackpot:'assets/audio/sfx/craft/craft_jackpot.wav',
-  sfx_craft_near:'assets/audio/sfx/craft/craft_near.wav',
-  sfx_craft_cancel:'assets/audio/sfx/craft/craft_cancel.wav',
-  sfx_craft_exhaust:'assets/audio/sfx/craft/craft_exhaust.wav',
-  sfx_ui_click:'assets/audio/sfx/ui/ui_click.wav',
-  sfx_ui_back:'assets/audio/sfx/ui/ui_back.wav',
-  sfx_ui_confirm:'assets/audio/sfx/ui/ui_confirm.wav',
-  sfx_ui_error:'assets/audio/sfx/ui/ui_error.wav',
-  sfx_frost:      'assets/audio/sfx/sfx_skill_frost.wav',
-  sfx_ult_bomb:   'assets/audio/sfx/sfx_ult_sugarbomb.wav',
-  sfx_ult_vortex: 'assets/audio/sfx_vfx_ult_cocoavortex.wav',
-  sfx_donut:      'assets/audio/sfx_vfx_proj_donut.wav',
-  sfx_hazard:     'assets/audio/sfx_vfx_telegraph_hazard.wav',
-  sfx_crit: 'assets/audio/sfx/gen/sfx_crit.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_kill_big: 'assets/audio/sfx/gen/sfx_kill_big.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_hurt: 'assets/audio/sfx/gen/sfx_hurt_soft.mp3',   // v5.19.1 เสียงนุ่ม (เดิม sfx_hurt.wav แตก)   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_heal: 'assets/audio/sfx/gen/sfx_heal.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_magnet: 'assets/audio/sfx/gen/sfx_magnet.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_thunder: 'assets/audio/sfx/gen/sfx_thunder.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_punch: 'assets/audio/sfx/gen/sfx_punch.wav',
-  sfx_shotgun: 'assets/audio/sfx/gen/sfx_shotgun.wav',
+  sfx_craft_result_open:'assets/audio/sfx/event_refresh/craft_result_open.mp3',
+  sfx_craft_result_count:'assets/audio/sfx/event_refresh/craft_result_count.mp3',
+  sfx_craft_result_reveal:'assets/audio/sfx/event_refresh/craft_result_reveal.mp3',
+  sfx_craft_result_important:'assets/audio/sfx/event_refresh/craft_result_important.mp3',
+  sfx_craft_result_double:'assets/audio/sfx/event_refresh/craft_result_double.mp3',
+  sfx_craft_progress_core:'assets/audio/sfx/event_refresh/craft_progress_core.mp3',
+  sfx_craft_progress_talent:'assets/audio/sfx/event_refresh/craft_progress_talent.mp3',
+  sfx_craft_progress_overcap:'assets/audio/sfx/event_refresh/craft_progress_overcap.mp3',
+  sfx_craft_progress_promotion:'assets/audio/sfx/event_refresh/craft_progress_promotion.mp3',
+  sfx_craft_progress_perk:'assets/audio/sfx/event_refresh/craft_progress_perk.mp3',
+  sfx_craft_progress_ancient:'assets/audio/sfx/event_refresh/craft_progress_ancient.mp3',
+  sfx_craft_progress_daily:'assets/audio/sfx/event_refresh/craft_progress_daily.mp3',
+  sfx_craft_progress_achievement:'assets/audio/sfx/event_refresh/craft_progress_achievement.mp3',
+  sfx_craft_progress_quest:'assets/audio/sfx/event_refresh/craft_progress_quest.mp3',
+  sfx_craft_progress_claim:'assets/audio/sfx/event_refresh/craft_progress_claim.mp3',
+  sfx_craft_gear_equip:'assets/audio/sfx/event_refresh/craft_gear_equip.mp3',
+  sfx_craft_gear_lock:'assets/audio/sfx/event_refresh/craft_gear_lock.mp3',
+  sfx_craft_gear_unlock:'assets/audio/sfx/event_refresh/craft_gear_unlock.mp3',
+  sfx_craft_gear_enhance_success:'assets/audio/sfx/event_refresh/craft_gear_enhance_success.mp3',
+  sfx_craft_gear_enhance_break:'assets/audio/sfx/event_refresh/craft_gear_enhance_break.mp3',
+  sfx_craft_gear_enhance_destroy:'assets/audio/sfx/event_refresh/craft_gear_enhance_destroy.mp3',
+  sfx_craft_gear_dismantle:'assets/audio/sfx/event_refresh/craft_gear_dismantle.mp3',
+  sfx_craft_gear_sell:'assets/audio/sfx/event_refresh/craft_gear_sell.mp3',
+  sfx_craft_capacity:'assets/audio/sfx/event_refresh/craft_capacity.mp3',
+  sfx_craft_reroll:'assets/audio/sfx/event_refresh/craft_reroll.mp3',
+  sfx_craft_remove:'assets/audio/sfx/event_refresh/craft_remove.mp3',
+  sfx_craft_reset:'assets/audio/sfx/event_refresh/craft_reset.mp3',
+  sfx_craft_start:'assets/audio/sfx/event_refresh/craft_start.mp3',
+  sfx_craft_tick:'assets/audio/sfx/event_refresh/craft_tick.mp3',
+  sfx_craft_slow:'assets/audio/sfx/event_refresh/craft_slow.mp3',
+  sfx_craft_common:'assets/audio/sfx/event_refresh/craft_common.mp3',
+  sfx_craft_rare:'assets/audio/sfx/event_refresh/craft_rare.mp3',
+  sfx_craft_jackpot:'assets/audio/sfx/event_refresh/craft_jackpot.mp3',
+  sfx_craft_near:'assets/audio/sfx/event_refresh/craft_near.mp3',
+  sfx_craft_cancel:'assets/audio/sfx/event_refresh/craft_cancel.mp3',
+  sfx_craft_exhaust:'assets/audio/sfx/event_refresh/craft_exhaust.mp3',
+  sfx_ui_click:'assets/audio/sfx/event_refresh/ui_click.mp3',
+  sfx_ui_back:'assets/audio/sfx/event_refresh/ui_back.mp3',
+  sfx_ui_confirm:'assets/audio/sfx/event_refresh/ui_confirm.mp3',
+  sfx_ui_error:'assets/audio/sfx/event_refresh/ui_error.mp3',
+  sfx_frost:      'assets/audio/sfx/event_refresh/frost.mp3',
+  sfx_ult_bomb:   'assets/audio/sfx/event_refresh/ult_bomb.mp3',
+  sfx_ult_vortex: 'assets/audio/sfx/event_refresh/ult_vortex.mp3',
+  sfx_donut:      'assets/audio/sfx/event_refresh/donut.mp3',
+  sfx_hazard:     'assets/audio/sfx/event_refresh/hazard.mp3',
+  sfx_crit: 'assets/audio/sfx/event_refresh/crit.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_kill_big: 'assets/audio/sfx/event_refresh/kill_big.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_hurt: 'assets/audio/sfx/event_refresh/hurt.mp3',   // v5.19.1 เสียงนุ่ม (เดิม sfx_hurt.wav แตก)   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_heal: 'assets/audio/sfx/event_refresh/heal.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_magnet: 'assets/audio/sfx/event_refresh/magnet.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_thunder: 'assets/audio/sfx/event_refresh/thunder.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_punch: 'assets/audio/sfx/event_refresh/punch.mp3',
+  sfx_shotgun: 'assets/audio/sfx/event_refresh/shotgun.mp3',
   sfx_beat_tick:'assets/audio/sfx/gen/sfx_beat_tick.wav', sfx_beat_loop:'assets/audio/sfx/gen/sfx_beat_loop.wav', sfx_beat_hold:'assets/audio/sfx/gen/sfx_beat_hold.wav', sfx_beat_rush:'assets/audio/sfx/gen/sfx_beat_rush.wav', sfx_beat_gun:'assets/audio/sfx/gen/sfx_beat_gun.wav', sfx_beat_cyclone:'assets/audio/sfx/gen/sfx_beat_cyclone.wav', sfx_beat_titan:'assets/audio/sfx/gen/sfx_beat_titan.wav', sfx_beat_juggle:'assets/audio/sfx/gen/sfx_beat_juggle.wav', sfx_beat_rainbow:'assets/audio/sfx/gen/sfx_beat_rainbow.wav', sfx_beat_fever:'assets/audio/sfx/gen/sfx_beat_fever.wav', sfx_beat_cue:'assets/audio/sfx/gen/sfx_beat_cue.wav', sfx_beat_start:'assets/audio/sfx/gen/sfx_beat_start.wav', sfx_beat_perfect:'assets/audio/sfx/gen/sfx_beat_perfect.wav', sfx_beat_good:'assets/audio/sfx/gen/sfx_beat_good.wav', sfx_beat_miss:'assets/audio/sfx/gen/sfx_beat_miss.wav',
-  sfx_punch_jab:'assets/audio/sfx/gen/sfx_punch_jab.wav', sfx_punch_heavy:'assets/audio/sfx/gen/sfx_punch_heavy.wav', sfx_punch_frenzy:'assets/audio/sfx/gen/sfx_punch_frenzy.wav',   // v5.53 คอมโบโกโก้   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_beam: 'assets/audio/sfx/gen/sfx_beam.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_burn: 'assets/audio/sfx/gen/sfx_burn.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_card: 'assets/audio/sfx/gen/sfx_card.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_legend: 'assets/audio/sfx/gen/sfx_legend.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_victory: 'assets/audio/sfx/gen/sfx_victory.mp3',   // v5.2 แฟนแฟร์ยาว (gen_stingers_synth)
-  sfx_boss_clear: 'assets/audio/sfx/gen/sfx_boss_clear.mp3',
-  sfx_chest_spin: 'assets/audio/sfx/gen/sfx_chest_spin.mp3',   // v5.19 เปิดกล่องแบบ VS
-  sfx_chest_tick: 'assets/audio/sfx/gen/sfx_chest_tick.mp3',
-  sfx_dig_hit: 'assets/audio/sfx/gen/sfx_dig_hit.mp3',   // v5.26 Temple Depths
-  sfx_dig_break: 'assets/audio/sfx/gen/sfx_dig_break.mp3',
-  sfx_dig_find: 'assets/audio/sfx/gen/sfx_dig_find.mp3',
-  sfx_recipe_fire: 'assets/audio/sfx/gen/sfx_recipe_fire.mp3',
-  sfx_recipe_merge: 'assets/audio/sfx/gen/sfx_recipe_merge.mp3',
-  sfx_dig_rare: 'assets/audio/sfx/gen/sfx_dig_rare.mp3',
-  sfx_dig_trap: 'assets/audio/sfx/gen/sfx_dig_trap.mp3',
-  sfx_dig_descend: 'assets/audio/sfx/gen/sfx_dig_descend.mp3',
-  sfx_slot_spin: 'assets/audio/sfx/gen/sfx_slot_spin.mp3',   // v5.45 auto-roll
-  sfx_slot_miss: 'assets/audio/sfx/gen/sfx_slot_miss.mp3',
-  sfx_slot_near: 'assets/audio/sfx/gen/sfx_slot_near.mp3',
-  sfx_slot_jackpot: 'assets/audio/sfx/gen/sfx_slot_jackpot.mp3',
-  sfx_chest_win: 'assets/audio/sfx/gen/sfx_chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
-  sfx_defeat: 'assets/audio/sfx/gen/sfx_defeat.wav',   // v4.99 สร้างด้วย jsfxr (public domain)
-  sfx_boss_warn: 'assets/audio/sfx/gen/sfx_boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
+  sfx_punch_jab:'assets/audio/sfx/event_refresh/punch_jab.mp3', sfx_punch_heavy:'assets/audio/sfx/event_refresh/punch_heavy.mp3', sfx_punch_frenzy:'assets/audio/sfx/event_refresh/punch_frenzy.mp3',   // v5.53 คอมโบโกโก้   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_beam: 'assets/audio/sfx/event_refresh/beam.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_burn: 'assets/audio/sfx/event_refresh/burn.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_card: 'assets/audio/sfx/event_refresh/card.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_legend: 'assets/audio/sfx/event_refresh/legend.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_victory: 'assets/audio/sfx/event_refresh/victory.mp3',   // v5.2 แฟนแฟร์ยาว (gen_stingers_synth)
+  sfx_boss_clear: 'assets/audio/sfx/event_refresh/boss_clear.mp3',
+  sfx_chest_spin: 'assets/audio/sfx/event_refresh/chest_spin.mp3',   // v5.19 เปิดกล่องแบบ VS
+  sfx_chest_tick: 'assets/audio/sfx/event_refresh/chest_tick.mp3',
+  sfx_dig_hit: 'assets/audio/sfx/event_refresh/dig_hit.mp3',   // v5.26 Temple Depths
+  sfx_dig_break: 'assets/audio/sfx/event_refresh/dig_break.mp3',
+  sfx_dig_find: 'assets/audio/sfx/event_refresh/dig_find.mp3',
+  sfx_recipe_fire: 'assets/audio/sfx/event_refresh/recipe_fire.mp3',
+  sfx_recipe_merge: 'assets/audio/sfx/event_refresh/recipe_merge.mp3',
+  sfx_dig_rare: 'assets/audio/sfx/event_refresh/dig_rare.mp3',
+  sfx_dig_trap: 'assets/audio/sfx/event_refresh/dig_trap.mp3',
+  sfx_dig_descend: 'assets/audio/sfx/event_refresh/dig_descend.mp3',
+  sfx_slot_spin: 'assets/audio/sfx/event_refresh/slot_spin.mp3',   // v5.45 auto-roll
+  sfx_slot_miss: 'assets/audio/sfx/event_refresh/slot_miss.mp3',
+  sfx_slot_near: 'assets/audio/sfx/event_refresh/slot_near.mp3',
+  sfx_slot_jackpot: 'assets/audio/sfx/event_refresh/slot_jackpot.mp3',
+  sfx_chest_win: 'assets/audio/sfx/event_refresh/chest_win.mp3',   // v5.2 ท่อนชนะตอนล้มบอส
+  sfx_defeat: 'assets/audio/sfx/event_refresh/defeat.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
+  sfx_boss_warn: 'assets/audio/sfx/event_refresh/boss_warn.mp3',   // v5.1 scripts/gen_stingers_synth.cjs (กลองศึก+ไซเรนทุ้ม)
   bgm_main:       'assets/audio/bgm/menu/bgm_menu_moonlit_rose_lite.mp3',
   bgm_menu_temple:  'assets/audio/bgm/menu/bgm_menu_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
@@ -2356,6 +2358,59 @@ const ASSET_AUDIO = {
   bgm_b15: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b15.mp3',
   bgm_endgame:      'assets/audio/bgm/bgm_endgame.mp3',        // v5.3 Recipe Maps (แจ๊ซ+ชิปทูน กลางดึก)
   bgm_endgame_boss: 'assets/audio/bgm/bgm_endgame_boss.mp3',   // v5.3 บอส Recipe + Pinnacle
+  // v7.1 event SFX refresh (assets/audio/sfx/event_refresh, new event identities)
+  sfx_event_ui_panel_open: 'assets/audio/sfx/event_refresh/ui_panel_open.mp3',
+  sfx_event_ui_panel_close: 'assets/audio/sfx/event_refresh/ui_panel_close.mp3',
+  sfx_event_ui_tab_change: 'assets/audio/sfx/event_refresh/ui_tab_change.mp3',
+  sfx_event_ui_toggle_on: 'assets/audio/sfx/event_refresh/ui_toggle_on.mp3',
+  sfx_event_ui_toggle_off: 'assets/audio/sfx/event_refresh/ui_toggle_off.mp3',
+  sfx_event_ui_compare_open: 'assets/audio/sfx/event_refresh/ui_compare_open.mp3',
+  sfx_event_ui_item_focus: 'assets/audio/sfx/event_refresh/ui_item_focus.mp3',
+  sfx_event_ui_purchase_success: 'assets/audio/sfx/event_refresh/ui_purchase_success.mp3',
+  sfx_event_hero_select: 'assets/audio/sfx/event_refresh/hero_select.mp3',
+  sfx_event_hero_unlock: 'assets/audio/sfx/event_refresh/hero_unlock.mp3',
+  sfx_event_card_offer_open: 'assets/audio/sfx/event_refresh/card_offer_open.mp3',
+  sfx_event_card_flip: 'assets/audio/sfx/event_refresh/card_flip.mp3',
+  sfx_event_card_focus: 'assets/audio/sfx/event_refresh/card_focus.mp3',
+  sfx_event_card_confirm: 'assets/audio/sfx/event_refresh/card_confirm.mp3',
+  sfx_event_card_reroll: 'assets/audio/sfx/event_refresh/card_reroll.mp3',
+  sfx_event_build_path_select: 'assets/audio/sfx/event_refresh/build_path_select.mp3',
+  sfx_event_infusion_apply: 'assets/audio/sfx/event_refresh/infusion_apply.mp3',
+  sfx_event_relic_acquire: 'assets/audio/sfx/event_refresh/relic_acquire.mp3',
+  sfx_event_modifier_acquire: 'assets/audio/sfx/event_refresh/modifier_acquire.mp3',
+  sfx_event_tradeoff_acquire: 'assets/audio/sfx/event_refresh/tradeoff_acquire.mp3',
+  sfx_event_skill_rank_up: 'assets/audio/sfx/event_refresh/skill_rank_up.mp3',
+  sfx_event_skill_awaken: 'assets/audio/sfx/event_refresh/skill_awaken.mp3',
+  sfx_event_unique_rank_up: 'assets/audio/sfx/event_refresh/unique_rank_up.mp3',
+  sfx_event_codex_rank_up: 'assets/audio/sfx/event_refresh/codex_rank_up.mp3',
+  sfx_event_growth_summary_level: 'assets/audio/sfx/event_refresh/growth_summary_level.mp3',
+  sfx_event_growth_mastery: 'assets/audio/sfx/event_refresh/growth_mastery.mp3',
+  sfx_event_wave_start: 'assets/audio/sfx/event_refresh/wave_start.mp3',
+  sfx_event_wave_clear: 'assets/audio/sfx/event_refresh/wave_clear.mp3',
+  sfx_event_stage_clear: 'assets/audio/sfx/event_refresh/stage_clear.mp3',
+  sfx_event_miniboss_arrival: 'assets/audio/sfx/event_refresh/miniboss_arrival.mp3',
+  sfx_event_miniboss_defeat: 'assets/audio/sfx/event_refresh/miniboss_defeat.mp3',
+  sfx_event_boss_attack_telegraph: 'assets/audio/sfx/event_refresh/boss_attack_telegraph.mp3',
+  sfx_event_story_panel_open: 'assets/audio/sfx/event_refresh/story_panel_open.mp3',
+  sfx_event_story_advance: 'assets/audio/sfx/event_refresh/story_advance.mp3',
+  sfx_event_portal_enter: 'assets/audio/sfx/event_refresh/portal_enter.mp3',
+  sfx_event_revive: 'assets/audio/sfx/event_refresh/revive.mp3',
+  sfx_event_pickup_sugar: 'assets/audio/sfx/event_refresh/pickup_sugar.mp3',
+  sfx_event_pickup_currency: 'assets/audio/sfx/event_refresh/pickup_currency.mp3',
+  sfx_event_pickup_gear: 'assets/audio/sfx/event_refresh/pickup_gear.mp3',
+  sfx_event_loot_common_reveal: 'assets/audio/sfx/event_refresh/loot_common_reveal.mp3',
+  sfx_event_loot_magic_reveal: 'assets/audio/sfx/event_refresh/loot_magic_reveal.mp3',
+  sfx_event_loot_rare_reveal: 'assets/audio/sfx/event_refresh/loot_rare_reveal.mp3',
+  sfx_event_loot_epic_reveal: 'assets/audio/sfx/event_refresh/loot_epic_reveal.mp3',
+  sfx_event_loot_unique_reveal: 'assets/audio/sfx/event_refresh/loot_unique_reveal.mp3',
+  sfx_event_buff_pickup: 'assets/audio/sfx/event_refresh/buff_pickup.mp3',
+  sfx_event_gear_favorite_on: 'assets/audio/sfx/event_refresh/gear_favorite_on.mp3',
+  sfx_event_gear_favorite_off: 'assets/audio/sfx/event_refresh/gear_favorite_off.mp3',
+  sfx_event_gear_bulk_cleanup: 'assets/audio/sfx/event_refresh/gear_bulk_cleanup.mp3',
+  sfx_streak_real: 'assets/audio/sfx/procedural_replacements/sfx_streak_real.mp3',
+  sfx_heartbeat_real: 'assets/audio/sfx/procedural_replacements/sfx_heartbeat_real.mp3',
+  sfx_crit_accent_real: 'assets/audio/sfx/procedural_replacements/sfx_crit_accent_real.mp3',
+  sfx_bigkill_accent_real: 'assets/audio/sfx/procedural_replacements/sfx_bigkill_accent_real.mp3',
 };
 // เลือกเพลงตามด่าน: Ch1 (ด่าน 1-5) ใช้เพลงรายด่าน · Ch2 (6-10) / Ch3 (11-15) ใช้เพลงประจำบท ถ้าไฟล์หาย fallback เพลงด่าน 5
 let BGM_MODE=null;   // 'endgame' = Recipe Maps / Pinnacle ใช้เพลง endgame แทนเพลงประจำด่าน (ตั้งใน startRun)
@@ -10575,7 +10630,7 @@ class Game extends Phaser.Scene {
   spawnMiniBoss(){
     if(this.state==='levelup'){this._queuedBossIntro='mini';return;}
     if(this.state!=='play')return;
-    this._miniFight={t0:this.elapsed||0,hits:0};   // v5.13 วัดผลงานสู้มินิบอส → ระดับกล่อง
+    this._miniFight={t0:this.elapsed||0,hits:0}; Sfx.ev?.('miniboss_arrival',.6,2);   // v5.13 วัดผลงานสู้มินิบอส → ระดับกล่อง
     const st=STAGES[this.stageIndex];
     this.showBanner('💢 Miniboss!', st.mini, 2000); Sfx.bossWarn(); Sfx.playMiniBgm(this.stageIndex+1); this.screenShake(200,0.008);
     const adds=2+this.stageIndex;
@@ -11419,12 +11474,12 @@ class Game extends Phaser.Scene {
   }
   checkUniqueAutoUpgrade(){
     let target=1;for(let lv=2;lv<=UNIQUE_MAX_LV;lv++)if(this.level>=uniqueAt[lv])target=lv;if(target<=(this.uniqueLevel||1))return;
-    const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+(u.tiers||UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique])[target],1900);Sfx.clear();this.playGrowthWorld?.('unlock');
+    const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+(u.tiers||UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique])[target],1900);(Sfx.ev?.('unique_rank_up',.6,.5)||Sfx.clear());this.playGrowthWorld?.('unlock');
   }
   openLevelUp(){
     // v6.66: Delve picks cards like Story (no auto upgrades)   // v6.24: Recipe = สแตตอัตโนมัติ + Sugar Rush · ทุก 5 เลเวล = Draft การ์ดเปลี่ยนวิธีเล่น
     const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
-    if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); }
+    if(!_wasLvl&&!this._forcedOpts&&performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); } else if(!_wasLvl)Sfx.ev?.('card_offer_open',.45,.6);
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
     this.lvlUp.add(bg);
@@ -11454,8 +11509,8 @@ class Game extends Phaser.Scene {
   pickCardAt(px,py){
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
-    if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
-    Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);Sfx.bp?.('shared_unique_charge_full',.5,.35,1.15);}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
+    if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.ev?.('card_focus',.45,.05)||Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
+    Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);const kd=c.opt&&c.opt.kind,cue=kd==='Build Path'?'build_path_select':kd==='Flavor Infusion'?'infusion_apply':kd==='Relic'?'relic_acquire':kd==='Modifier'?'modifier_acquire':kd==='Trade-off'?'tradeoff_acquire':(c.opt&&c.opt.awaken)?'skill_awaken':'card_confirm';Sfx.ev?.(cue,.55,.3);this._cardCueAt=Date.now();}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
   }
   // แตะครั้งแรก = โชว์กWaitบเรืองWaitบการ์ด ให้ผู้เล่นรู้ว่ากำลังเลือกใบนี้ (ก่อนแตะซ้ำยืนยัน)
   highlightCard(c){
@@ -11478,7 +11533,7 @@ class Game extends Phaser.Scene {
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<r){ this.damage(e,this.relicDmg(1.2),e.x,e.y); if(!e.isBoss&&!e.isMini){ const a=Math.atan2(e.y-p.y,e.x-p.x); e.setVelocity(Math.cos(a)*380,Math.sin(a)*380); e.knock=0.22; } } });
     this.showBanner('🍬 SUGAR RUSH!'+(got&&got.length?' Lv '+this.level:''),(got&&got.length?got.slice(-2).join(' · ')+' · ':'')+'attacks ×1.7 speed for '+SUGAR_RUSH_SEC+'s',1300); Sfx.clear&&Sfx.clear(); }
   closeLevelUp(){
-    Sfx.card();
+    if(Date.now()-(this._cardCueAt||0)>250)Sfx.card();
     this._relicPick=false;
     this._coachCardPick=(this._coachCardPick||0)+1;   // นับการเลือกการ์ด (ใช้ในบทสอนเลเวลอัพ)
     this.lvlUp.setVisible(false); this.pendingLvl=Math.max(0,(this.pendingLvl||1)-1);
@@ -13617,7 +13672,7 @@ class Game extends Phaser.Scene {
     this.vfxDeathPoof(e.x,e.y,deathColor,big||isElite);
     if(!big)this.playEnemyDeath(e);   // v5.78 ตัวกระเด็นหมุนออกจากผู้เล่น
     { const now=this.time.now; this._mkT=(this._mkT||[]).filter(t=>now-t<260); this._mkT.push(now); if(this._mkT.length>=6&&now-(this._mkShakeAt||0)>450){ this._mkShakeAt=now; this._mkT=[]; this.screenShake(90,0.0035); } }   // ฆ่ารวดเป็นกลุ่ม = จอสั่นเบา
-    if(big){ this.screenShake(isBoss?400:220,isBoss?0.012:0.008); this.burst(e.x,e.y,0xff9ec4); if(isMini)Sfx.clear(); }
+    if(big){ this.screenShake(isBoss?400:220,isBoss?0.012:0.008); this.burst(e.x,e.y,0xff9ec4); if(isMini)(Sfx.ev?.('miniboss_defeat',.65,1)||Sfx.clear()); }
     if(e._aura){ e._aura.destroy(); e._aura=null; }   // เก็บออร่าEnraged
     if(e._phaseShieldFx){this.tweens.killTweensOf(e._phaseShieldFx);if(e._phaseShieldFx.active)e._phaseShieldFx.destroy();e._phaseShieldFx=null;}
     e._phaseInvuln=0;e._phaseGateLocked=false;
@@ -13816,9 +13871,9 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false; g.clearTint();
     if(g.dropType==='currency'&&g.curKey){ const k=g.curKey; Save.addCurrency(k,1); if(!this._runCurrency)this._runCurrency={}; this._runCurrency[k]=(this._runCurrency[k]||0)+1;
-      Sfx.select();this.burst(g.x,g.y,0x9fe8ff); return; }
+      (Sfx.ev?.('pickup_currency',.5,.08)||Sfx.select());this.burst(g.x,g.y,0x9fe8ff); return; }
     // ไอเทม = เก็บเป็น "กล่อง" ไว้ก่อน เปิดลุ้นตอนจบด่าน (suspense)
-    const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;Sfx.select();this.burst(g.x,g.y,rarity.color);
+    const tier=g.lootTier||'common',rarity=FIELD_DROP_TABLE[tier]||FIELD_DROP_TABLE.common;(Sfx.ev?.('pickup_gear',.5,.08)||Sfx.select());this.burst(g.x,g.y,rarity.color);
     if(!this._runBoxes)this._runBoxes=[]; this._runBoxes.push(tier);
   }
   // เปิดกล่องไอเทมที่สะสมมาทั้งด่าน → แจกจริง คืน list สำหรับหน้าสรุป
@@ -13903,7 +13958,7 @@ class Game extends Phaser.Scene {
     for(let i=arr.length-1;i>=0;i--){const c=arr[i];if(!c.active){arr.splice(i,1);continue;}
       if(this.state!=='play')continue;c._t+=dt;const d=this.dist(c.x,c.y,p.x,p.y);
       if(c._t>3.5||(c._t>0.8&&d<pick)){const sp=c._t>3?9:14;c.x+=(p.x-c.x)*Math.min(1,dt*sp);c.y+=(p.y-c.y)*Math.min(1,dt*sp);}
-      if(c._t>0.5&&d<26){this.sugarStage+=c._v;this.sugarRun+=c._v;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);if(Sfx.xp)Sfx.xp();c.destroy();arr.splice(i,1);}}
+      if(c._t>0.5&&d<26){this.sugarStage+=c._v;this.sugarRun+=c._v;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);(Sfx.ev?.('pickup_sugar',.35,.07)||(Sfx.xp&&Sfx.xp()));c.destroy();arr.splice(i,1);}}
   }
   clearSugarCoins(){ const arr=this._coins||[];for(const c of arr){if(c.active){this.sugarStage+=c._v;this.sugarRun+=c._v;c.destroy();}}this._coins=[];if(this._coinEv){this._coinEv.remove(false);this._coinEv=null;} }
   openPrizeWheel(tier,done,opts={}){
