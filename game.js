@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.5';
+const GAME_VERSION = '7.6.6';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.6', date:'2026-10-11', title:'📊 Detailed Play Stats copy', items:['Copied stats now include hero level, Unique level, power, key stats, talents, Weave, equipped gear with mods and damage share per run']},
   { v:'7.6.5', date:'2026-10-11', title:'🗿 Titan vs giants', items:['Titan basic punches deal +40% damage to bosses and minibosses','Colossus Fist cooldown 12s → 9s']},
   { v:'7.6.4', date:'2026-10-11', title:'🔍 Equipped item mods + punchier Cocoa', items:['Tapping an item you are wearing now lists its implicit and every mod with its tier','Sell and Dismantle buttons are always visible again (no more ⋯ menu)','Cocoa’s punches use a heavier, meatier impact sound']},
   { v:'7.6.3', date:'2026-10-11', title:'🐻 Meet Cocoa at C2-1', items:['Before your first C2-1 run, Cocoa offers to punch through the Fermented Canopy’s armored roots — choose her or keep your hero','Cocoa’s punches are no longer muted in crowded fights']},
@@ -5164,18 +5165,31 @@ const Stats={
   load(){ try{ const a=JSON.parse(localStorage.getItem('mochi_stats')||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } },
   saveAll(a){ try{ localStorage.setItem('mochi_stats',JSON.stringify(a.slice(-STATS_MAX))); }catch(e){} },
   modeOf(g){ return g._pinnacleRun?'pinnacle':g.bossRush?'bossrush':g.recipeMode?'delve':g.riftMode?'rift':'story'; },
-  start(g){ try{ if(g._inTutorial){ this._cur=null; return; } this._cur={ t:Date.now(), mode:this.modeOf(g), stage:g.stageIndex|0, diff:g.stageDiff||1, depth:g._amapNode?g._amapNode.d:null, hero:g.character, cards:[] }; }catch(e){ this._cur=null; } },
+  start(g){ try{ if(g._inTutorial){ this._cur=null; return; } this._cur={ t:Date.now(), mode:this.modeOf(g), stage:g.stageIndex|0, diff:g.stageDiff||1, depth:g._amapNode?g._amapNode.d:null, hero:g.character, cards:[] }; try{ this._cur.kit=this.kit(g.character,g.basicAttack); }catch(e){} }catch(e){ this._cur=null; } },
+  // v7.6.6 เจ้าของ: copy ได้ละเอียดขึ้น — เลเวลตัวละคร/Unique/พลัง/สแตต/Weave/Talent/ของสวมใส่ ตอนเริ่มรัน
+  kit(hero,basic){ const k={}; try{ const cp=Save.cp(hero)||{}; k.clv=cp.lvl||1; k.tp=cp.tp||0; k.tal=Object.entries(cp.tal||{}).filter(e=>e[1]>0).map(e=>e[0].replace(/^pt_/,'')+':'+e[1]).join(' '); }catch(e){}
+    try{ k.ulv=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(hero):1; }catch(e){}
+    try{ k.pw=heroPower(hero,basic); const p=computeHeroStats(hero,basic); k.st='HP '+Math.round(p.maxhp)+' · DMG ×'+(p.dmgMul||1).toFixed(2)+' · Crit '+Math.round((p.critChance||0)*100)+'% · CD ×'+(p.cdMul||1).toFixed(2)+' · Armor '+Math.round(p.armor||0)+' · Taken ×'+(p.dmgTakenMul||1).toFixed(2); }catch(e){}
+    try{ const d=Save.data; k.weave='rank '+(d.rank||0)+' · HP '+Save.talLvl('hp')+' DMG '+Save.talLvl('dmg')+' DEF '+Save.talLvl('def')+' · perks '+Object.entries(d.rankPerks||{}).filter(e=>e[1]>0).map(e=>e[0]+':'+e[1]).join(' '); }catch(e){}
+    try{ k.gear=GEAR_SLOTS.map(sl=>{ const it=Save.equippedGearItem(sl.slot); if(!it)return sl.slot+': -'; const b=GEAR_ALL.find(x=>x.id===it.baseId)||{}; if(it.grade==='start'&&!(it.affixes||[]).length&&!it.enhanceLv)return sl.slot+': starter'; const mods=(it.affixes||[]).map(a=>{const d=affixDef(a.id);return d?d.label+' '+d.fmt(a.v)+' T'+(a.t||3):a.id;}).join(', ');
+      return sl.slot+': '+(typeof gearAffixName==='function'?gearAffixName(b.name||it.baseId,it.affixes||[]):(b.name||it.baseId))+(it.enhanceLv?' +'+it.enhanceLv:'')+' iLv'+(it.itemLevel||'?')+' '+(it.grade||'')+(mods?' ['+mods+']':''); }).join(' / '); }catch(e){}
+    return k; },
   card(title,kind){ const c=this._cur; if(!c||!title)return; if(typeof DailyQ!=='undefined')DailyQ.tick('cards'); if(c.cards.length<40)c.cards.push((kind&&kind!=='Basic Attack'?kind+': ':'')+title); },
   end(g,result){ const c=this._cur; if(!c)return; this._cur=null; if(result==='win'&&typeof DailyQ!=='undefined')(typeof DailyQ!=='undefined')&&DailyQ.tick('clear');
     try{ const by=g._dmgBy||{},top=Object.keys(by).sort((a,b)=>by[b]-by[a])[0]||null;
       c.result=result; if(c.depth==null&&g._amapNode)c.depth=g._amapNode.d; c.sec=Math.round(g.elapsed||0); c.level=g.level||1; c.kills=g.kills||0; c.wave=(g.waveIndex|0)+1; c.boss=g.mode==='boss'||!!g.boss;
       c.path=(g.basicAttack&&g.basicAttack.path)||null; c.cause=result==='dead'?(g._lastHitSrc||top||'?'):null; c.topDmg=top;
+      try{ const tot=Object.values(by).reduce((x,y)=>x+y,0)||1; c.dmg=Object.keys(by).sort((a,b)=>by[b]-by[a]).slice(0,5).map(k=>k+' '+Math.round(100*by[k]/tot)+'%').join(', '); c.maxhp=Math.round((g.player&&g.player.maxhp)||0); c.pwEnd=typeof heroPower==='function'?heroPower(c.hero,g.basicAttack):null; }catch(e){}
       const a=this.load(); a.push(c); this.saveAll(a); }catch(e){} },
   clear(){ try{ localStorage.removeItem('mochi_stats'); }catch(e){} },
   stageLab(i){ const st=(typeof STAGES!=='undefined')&&STAGES[i]; return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1)); },
   toText(){ const a=this.load(),L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
     a.forEach(r=>{ const d=new Date(r.t||0),dt=d.toISOString().slice(0,16).replace('T',' '),where=r.mode==='story'?this.stageLab(r.stage)+' ★'+r.diff:(r.mode+(r.depth!=null?' D'+r.depth:'')+' ('+this.stageLab(r.stage)+')');
-      L.push([dt,r.result,r.mode,where,(r.hero||'?')+(r.path?' ('+r.path+')':''),Math.floor((r.sec||0)/60)+':'+String((r.sec||0)%60).padStart(2,'0'),'Lv'+r.level,r.kills+' kills','wave '+r.wave+(r.boss?' boss':''),r.cause||'-',(r.cards||[]).join(', ')].join(' | ')); });
+      L.push([dt,r.result,r.mode,where,(r.hero||'?')+(r.path?' ('+r.path+')':''),Math.floor((r.sec||0)/60)+':'+String((r.sec||0)%60).padStart(2,'0'),'Lv'+r.level,r.kills+' kills','wave '+r.wave+(r.boss?' boss':''),r.cause||'-',(r.cards||[]).join(', ')].join(' | '));
+      const k=r.kit; if(k){ L.push('   hero Lv'+(k.clv||'?')+' · Unique Lv'+(k.ulv||1)+' · power '+(k.pw||'?')+(r.pwEnd?'→'+r.pwEnd:'')+' · unspent TP '+(k.tp||0)+(k.st?' · '+k.st:''));
+        if(k.tal)L.push('   talents: '+k.tal); if(k.weave)L.push('   weave: '+k.weave); if(k.gear)L.push('   gear: '+k.gear); }
+      if(r.dmg)L.push('   damage: '+r.dmg+(r.maxhp?' · end maxHP '+r.maxhp:'')); });
+    try{ const d=Save.data; L.splice(1,0,'profile: sugar '+(d.sugar||0)+' · stage unlocked '+this.stageLab(d.unlockedStage||0)+' · heroes '+(d.chars||[]).map(h=>{ const cp=Save.cp(h)||{}; return h+' Lv'+(cp.lvl||1); }).join(', ')); }catch(e){}
     return L.join('\n'); },
   copy(){ const t=this.toText(); const fb=()=>{ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok; }catch(e){ return false; } };
     try{ if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t).then(()=>true,()=>fb()); }catch(e){} return Promise.resolve(fb()); }

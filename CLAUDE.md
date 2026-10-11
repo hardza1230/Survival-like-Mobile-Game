@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.5 — Titan vs high-HP bosses
+# Latest delivery: v7.6.6 — Detailed Play Stats copy
+
+Owner: copy should include levels, equipped gear, talents etc. Stats.kit(hero,basic) snapshot at Stats.start → r.kit {clv,tp,ulv,pw,st (HP/DMG×/Crit/CD×/Armor/Taken×), tal 'id:r', weave 'rank · HP/DMG/DEF · perks', gear per GEAR_SLOTS 'slot: name +enh iLv grade [mod v Tn…]' (starter → 'starter')}. Stats.end adds dmg top-5 share %, end maxHP, pwEnd. toText: profile line (sugar, unlocked stage, heroes Lv) + per-run indented lines hero/talents/weave/gear/damage. All in try/catch (vm tests). Quick headless eval of toText OK.
+
+# Previous delivery: v7.6.5 — Titan vs high-HP bosses
 
 Owner Play Stats: Titan died to the C2-2 boss after 9:18 (Brawler cleared C2-1 in 4:12). Titan basic punches are the slowest path (≥0.5s interval, 0.24/0.32 wind, fin cd ×1.3) with no boss bonus; its boss damage relies on Colossus Fist, which v7.6 weakened unless Unique Mastery is bought (uniquePower 1.0 vs up to 1.72 before). Buff: cocoaHit opts.bossMul (bosses/minis only); Titan basic punch bossMul 1.4; CHARACTER_UNIQUES titan Colossus Fist cd 12→9. Not playtested; owner to retry C2-2.
 
@@ -17,10 +21,6 @@ Owner: unlock/introduce Cocoa at C2-1 like Mint. HERO_INTROS table (after CORE_U
 # Previous delivery: v7.6.2 — 'reading sourceSize' crash on stage change
 
 Owner screenshot: "Cannot read properties of null (reading 'sourceSize')" entering C2-1 right after C1-5 (also seen entering Stage 3 after switching to Mint). Cause: freeOtherStageArt / texEvict (v7.4) removed textures + anims while pooled (inactive) enemies/bosses, the player's stale currentAnim or container children still pointed at their destroyed Frames (Frame.data=null → realWidth crash). New texDetach(drop): walks display list (recursing containers) + every scene Group's children; any anim (current/next) touching a dropped texture is stopped and cleared, any object textured with one is set to '__DEFAULT' and hidden. Both free paths call it before removing anims/textures; freeOtherStageArt now drops anims if ANY frame uses a dropped texture (was first frame only). tests/texture-detach.test.cjs. Owner asked not to run headless sims for this; not re-tested on device yet.
-
-# Previous delivery: v7.6.1 — Camera always centred + numeric card levels
-
-Owner: at the bottom map edge the Sniper charge (tickBossZoom ×0.72 zoom-out) left the hero far below the screen-centred scope. Cause: cameras.main.setBounds(WORLD) clamps scroll (even normal play stops centring ~650px from the edge). Now cameras.main.removeBounds() — camera always follows the hero; physics world bounds unchanged; floor already drawn around the view by syncBgTile (seamless beyond the edge, headless screenshot). Level-up cards: stars → 'Lv N / max', max ≥99 (endless Power Up) → 'Lv N / ∞'. Owner also reported a crash entering Stage 3 the first time after choosing Mint (intro → Heroes coach → Mint): could NOT reproduce headless (first launch, cached launch, 4GB low-memory; 256MB textures, no errors) — asked owner for version/symptom.
 
 # Older history
 
