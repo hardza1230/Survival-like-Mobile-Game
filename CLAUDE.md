@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.97.0 — Card pick chime + loot magnet
+# Latest delivery: v6.98.0 — Delve boss HP floor, live progress bar, stats copy
+
+Owner: Delve bosses too weak from first depths (no continuity from C3-5). Cause: v6.68 ×2 boss mul is story-only + RECIPE_BOSS_HP .7 + theme stage bossHp (theme 0 d1 ≈2.7k vs C3-5 Normal ≈446k). spawnFinalBoss: recipeMode && _amapNode && !pinnacle → b.hp=max(old, C3-5 Normal boss × node(1/elite 1.5/boss 2) × delveMul(d).hp × pact boss) (d1 ≈481k). Miniboss untouched. Progress bar: animateProgressBar(dt) in update — _pbTarget set by renderReplayProgress/renderRecipeProgress (no direct crop), smooth lerp crop, moving white shine, pulsing head glow + pop on gain (pbFx graphics depth 56, cleared in clearWaveObjective). Play Stats: Stats.toText()/copy() (navigator.clipboard → textarea execCommand fallback), 'Copy to clipboard' pill above Clear. npm check passed. Not playtested.
+
+# Previous delivery: v6.97.0 — Card pick chime + loot magnet
 
 Owner: card-pick burst felt plain → pickCardAt (non-evolution) also plays Sfx.bp('shared_unique_charge_full',.5,.35,1.15). Owner: currency had to be walked over → tickLootMagnet(dt) (called after updatePickupReadability in update): loots group (currency + gear gifts) within 120px kill bob tween, hide pickup cue, glide to player at 160–540px/s (slower than EXP vac); g._mag reset in spawnLoot/spawnCurrencyDrop. Headless: drop at 100px collected, 300px stays. Delve level question: measured v6.93 vs current in story C1-4 — same XP/kills/level; asked owner for Play Stats screenshot. npm check passed.
 
