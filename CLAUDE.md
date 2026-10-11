@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.3.1 — Equipment portrait and Dash Boxer audio
+# Latest delivery: v7.3.2 — Floor TileSprite GPU fix (−64MB)
+
+Owner: "ran out of graphics memory". Headless measure (412×915 @DPR3): 705MB textures at menu, all GL-uploaded; biggest = TileSprite's own 4000×4000 canvas (64MB). v6.93 syncBgTile never worked (used t.frame = the TileSprite canvas, so P≈4000). Now bgTile is a hidden 2×2 TileSprite kept only as state (texture/tileScale/alpha/tint API unchanged) and syncBgTile draws the floor with ≤64 pooled plain Images of displayTexture snapped to the view (0 extra GPU). Measured 641MB menu / 612MB in stage. Screenshot: floor seamless after moving. GPU memory plan proposed to owner (pending approval). npm check passed.
+
+# Previous delivery: v7.3.1 — Equipment portrait and Dash Boxer audio
 
 Owner screenshot showed only hair in wide portrait equipment panel. Fixed crop to constant upper 55% rather than shrinking source height with panel aspect; contain scale keeps face and image inside frame on phone/tablet. Dash Boxer Dash Leap stops layering cocoa_flicker_step onto normal Dash; landing returns original comboPunch heavy. Phantom Rush Unique activation/auto-strike sounds unchanged. Regression tests check real crop block across widths and texture ratios; full check and build required.
 

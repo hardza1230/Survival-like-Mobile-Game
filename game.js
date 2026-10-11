@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.3.1';
+const GAME_VERSION = '7.3.2';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.3.2', date:'2026-10-11', title:'🧠 Less graphics memory', items:['The stage floor no longer reserves a giant 4000×4000 image in graphics memory (about 64MB saved)']},
   { v:'7.3.1', date:'2026-10-11', title:'Equipment portrait and Dash audio', items:['Equipment portraits keep the face visible on wide portrait screens','Dash Boxer uses its original Dash and landing punch sounds']},
   { v:'7.3.0', date:'2026-10-11', title:'❄️ Frost Burn + sound spectacle', items:['Glacier Bloom gains 10% hit power and stacking Frost Burn (max 5, 8s)','Capture Zone and Mint charges now have controlled rising sound loops','Stronger Slot spin and reward audio, clearer curse/toxic feedback','Unique rank-up has a persistent highlighted notice; seven heroes gain painted screen effects']},
   { v:'7.2.0', date:'2026-10-11', title:'🛠 Playtest fixes', items:['Golden jars and Crown-Root anchors: stand next to them to charge and crack them (they show a ring and a timer)','Mimic now really wakes up and fights (it used to turn straight into a new chest)','PC: hold E or right mouse to charge Sniper/Shotgun and aim with the mouse cursor','PC: number keys pick options on Jackpot, wheels and reward panels; Space/Enter presses STOP','Affix Forge text no longer changes size when you pick a mod','Loading music no longer keeps playing into the stage','Defaults: VFX High, Performance High, Screen Shake Normal','New sounds: Wisp purification charge, special card offers, Hunt the Threat, dig finds, slot/loot/card revisions']},
@@ -5848,7 +5849,7 @@ class Game extends Phaser.Scene {
     this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     // พื้นหลังโซนครัว (รูปจริง) — เลเยอร์ใต้สุด + กริดเส้นจาง ๆ ทับไว้เป็นจุดอ้างอิงการเคลื่อนที่
-    this.bgTile=this.camWorld(this.add.tileSprite(0,0,WORLD,WORLD,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(1));
+    this.bgTile=this.camWorld(this.add.tileSprite(0,0,2,2,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(1));
     this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12;     // ลดการขยาย texture ที่ทำให้พื้นหลังดูเบลอ
     this.events.on('postupdate',()=>this.syncBgTile?.());   // v6.93 พื้นขนาดพอดีจอ ตามกล้อง
     this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.10).setDepth(-100000);   // เส้นกริดจางลง (พื้นสวยแล้ว)
@@ -12734,13 +12735,16 @@ class Game extends Phaser.Scene {
     btn(by+bh-72,'⬇ Download update',0x4fae6a,()=>{ try{ const B=window.Capacitor?.Plugins?.Browser; if(B)B.open({url}); else window.open(url,'_blank'); }catch(e){ try{window.open(url,'_blank');}catch(_){} } close(); });
     btn(by+bh-26,'Later',0x5a4b75,()=>{ try{localStorage.setItem('mochi_apk_skip',latest+'|'+new Date().toDateString());}catch(e){} close(); }); Sfx.select&&Sfx.select(); }
   // v6.93 พื้นด่านเดิมเป็น TileSprite 4000×4000 (canvas 64MB) → ย่อเหลือ ~จอ + ลายพื้น 2 รอบ แล้วขยับตามกล้องทีละ "1 รอบลาย" (ลายพื้นยึดโลก ไม่เลื่อน)
-  syncBgTile(){ const t=this.bgTile; if(!t||!t.active||!t.frame)return; const cam=this.cameras.main,v=cam.worldView; if(!v||!v.width)return;
-    const P=Math.max(32,t.frame.width*Math.abs(t.tileScaleX||1)),Q=Math.max(32,t.frame.height*Math.abs(t.tileScaleY||1));
-    const vw=Math.max(v.width,this.W/Math.max(.2,cam.zoom/(RENDER_DPR||1))),vh=Math.max(v.height,this.H/Math.max(.2,cam.zoom/(RENDER_DPR||1)));
-    const nx=2*Math.ceil((vw/2+P)/P),ny=2*Math.ceil((vh/2+Q)/Q),w=Math.min(WORLD,nx*P),h=Math.min(WORLD,ny*Q);
-    const key=t.texture.key+'|'+P+'|'+Q;
-    if(this._bgKey!==key||Math.abs(t.width-w)>1||Math.abs(t.height-h)>1){ if(t.width<w-1||t.height<h-1||this._bgKey!==key)t.setSize(w,h); this._bgKey=key; t.tilePositionX=0; t.tilePositionY=0; }
-    const x=Math.round(v.centerX/P)*P,y=Math.round(v.centerY/Q)*Q; if(t.x!==x||t.y!==y)t.setPosition(x,y); }
+  syncBgTile(){ const t=this.bgTile,fr=t&&(t.displayFrame||t.frame); if(!t||!t.active||!fr||!t.displayTexture)return; const cam=this.cameras.main,v=cam.worldView; if(!v||!v.width)return;
+    // v7.4 GPU memory: the TileSprite stays 2×2 + hidden (its own canvas was WORLD-size = 43–64MB on the GPU); the floor is drawn by a small pool of plain Images sharing the source texture (0 extra GPU memory)
+    if(t.width>4||t.height>4)t.setSize(2,2); if(t.visible)t.setVisible(false);
+    const P=Math.max(32,fr.width*Math.abs(t.tileScaleX||1)),Q=Math.max(32,fr.height*Math.abs(t.tileScaleY||1));
+    const x0=Math.floor(v.x/P)*P,y0=Math.floor(v.y/Q)*Q,nx=Math.ceil((v.right-x0)/P),ny=Math.ceil((v.bottom-y0)/Q),need=nx*ny,pool=this._bgImgs||(this._bgImgs=[]);
+    for(let k=pool.length-1;k>=0;k--)if(!pool[k]||!pool[k].scene)pool.splice(k,1);
+    while(pool.length<need&&pool.length<64)pool.push(this.camWorld(this.add.image(0,0,t.displayTexture.key,fr.name).setOrigin(0,0)));
+    const tinted=t.isTinted,tint=t.tintTopLeft,key=t.displayTexture.key;
+    pool.forEach((im,k)=>{ if(k>=need){ if(im.visible)im.setVisible(false); return; } if(im.texture.key!==key||im.frame.name!==fr.name)im.setTexture(key,fr.name);
+      im.setPosition(x0+(k%nx)*P,y0+Math.floor(k/nx)*Q).setDisplaySize(P+1,Q+1).setDepth(t.depth).setAlpha(t.alpha).setVisible(true); if(tinted)im.setTint(tint); else if(im.isTinted)im.clearTint(); }); }
   // v6.83 หน้าจอแตก: เส้นร้าววาดด้วยโค้ดทับทั้งจอ (กล้องหลัก) ตอนปล่อย Titan Rage lv2+
   titanScreenCrack(lv){ try{ const cam=this.cameras.main,v=cam.worldView,cx=v.centerX+(Math.random()-.5)*v.width*.2,cy=v.centerY+(Math.random()-.5)*v.height*.2,R=Math.hypot(v.width,v.height)*.6,g=this.camWorld(this.add.graphics().setDepth(95000));
     const n=lv>=3?14:9; g.fillStyle(0xffffff,lv>=3?.22:.14).fillCircle(cx,cy,26+lv*8);
