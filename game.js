@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.9';
+const GAME_VERSION = '7.6.10';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.10', date:'2026-10-11', title:'🗿 Rage 4 + healing glow', items:['Titan can charge Blood Rage to level 4 · a level-4 slam covers almost the whole screen','After a Colossus Fist slam, Cocoa regenerates a % of max HP per second (bigger HP = faster regen)','A green screen glow shows when a Unique is healing you','Talent Rage Four → Rage Overflow: max-Rage release ×1.3 damage and double post-slam regen']},
   { v:'7.6.9', date:'2026-10-11', title:'🗿 Colossus Fist rework', items:['Titan’s Colossus Fist now slams all around Cocoa instead of leaping onto one enemy','Much wider slam that grows with Blood Rage','While charging, a ring shows the real slam area and marks every enemy that will be hit']},
   { v:'7.6.8', date:'2026-10-11', title:'⚔🛡 Attack and Defense power', items:['Equipment shows ⚔ ATK and 🛡 DEF instead of one Power number','Each item card shows how much ATK and DEF it adds or removes, so you can tell damage gear from tank gear']},
   { v:'7.6.7', date:'2026-10-11', title:'🐻❄️ Starter Unique boosts', items:['Painted full-screen Unique overlays are off for now (classic screen effects return)','Cocoa before choosing a path: Unique slam also gives 2.5–4% max HP regen per second for 6–9s','Mint before choosing a path: Mint Gale also makes basic attacks 35% faster while it lasts']},
@@ -3864,7 +3865,7 @@ const PATH_TALENTS={
     a2:{emoji:'👊',name:'Crushing Release',max:3,per:'+10% Colossus Fist damage',apply:_K('trRel',0.10)},
     b1:{emoji:'🩸',name:'Iron Veins',max:3,per:'Blood Rage costs 8% less HP',apply:_K('trCost',0.08)},
     b2:{emoji:'💗',name:'Stone Regen',max:3,per:'+0.3% max HP/s Titan regen',apply:_K('trRegen',0.003)},
-    capA:{emoji:'🔥',name:'Rage Four',max:1,per:'Blood Rage gains a 4th level (×5.5 release)',apply:_K('rage4',1)},
+    capA:{emoji:'🔥',name:'Rage Overflow',max:1,per:'Max-Rage release deals ×1.3 damage and doubles the regen after release',apply:_K('rage4',1)},
     capB:{emoji:'🪨',name:'Iron Body',max:1,per:'−30% damage taken while charging',apply:_K('trGuard',0.30)},
     capC:{emoji:'🧛',name:'Bloodlust',max:1,per:'Kills while charging heal 1% max HP',apply:_K('trLust',1)}},
   dashboxer:{root:{emoji:'🐾',name:'Bear Rush',max:3,per:'+5% combo damage',apply:_P({dmg:1.05})},
@@ -5191,8 +5192,8 @@ const Stats={
       L.push([dt,r.result,r.mode,where,(r.hero||'?')+(r.path?' ('+r.path+')':''),Math.floor((r.sec||0)/60)+':'+String((r.sec||0)%60).padStart(2,'0'),'Lv'+r.level,r.kills+' kills','wave '+r.wave+(r.boss?' boss':''),r.cause||'-',(r.cards||[]).join(', ')].join(' | '));
       const k=r.kit; if(k){ L.push('   hero Lv'+(k.clv||'?')+' · Unique Lv'+(k.ulv||1)+' · power '+(k.pw||'?')+(r.pwEnd?'→'+r.pwEnd:'')+' · unspent TP '+(k.tp||0)+(k.st?' · '+k.st:''));
         if(k.tal)L.push('   talents: '+k.tal); if(k.weave)L.push('   weave: '+k.weave); if(k.gear)L.push('   gear: '+k.gear); }
-      if(r.dmg)L.push('   damage: '+r.dmg+(r.maxhp?' · end maxHP '+r.maxhp:'')); });
-    try{ const d=Save.data; L.splice(1,0,'profile: sugar '+(d.sugar||0)+' · stage unlocked '+this.stageLab(d.unlockedStage||0)+' · heroes '+(d.chars||[]).map(h=>{ const cp=Save.cp(h)||{}; return h+' Lv'+(cp.lvl||1); }).join(', ')); }catch(e){}
+      if(r.dmg)L.push('   damage taken from: '+r.dmg+(r.maxhp?' · end maxHP '+r.maxhp:'')); });
+    try{ const d=Save.data; L.splice(1,0,'profile: sugar '+(d.sugar||0)+' · stage unlocked '+this.stageLab(d.unlockedStage||0)+' · heroes '+(typeof CHAR_ORDER!=='undefined'?CHAR_ORDER:(d.chars||[])).filter(h=>(d.chars||[]).includes(h)||((d.charProg||{})[h]||{}).lvl>1).map(h=>{ const cp=Save.cp(h)||{}; return h+' Lv'+(cp.lvl||1); }).join(', ')); }catch(e){}
     return L.join('\n'); },
   copy(){ const t=this.toText(); const fb=()=>{ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok; }catch(e){ return false; } };
     try{ if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t).then(()=>true,()=>fb()); }catch(e){} return Promise.resolve(fb()); }
@@ -6542,7 +6543,7 @@ class Game extends Phaser.Scene {
       // ใช้ homing (โค้งเข้าหาเป้า) + bounce (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด) แทน chain lightning
       const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), bounce=ul>=4?3:ul>=3?2:1;
       for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.berryBullet(this.player.x,this.player.y,0.28+ul*0.012,this.basicAttack);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=0;b.faceVel=true;Object.assign(b.berrySeed,{path:'ricochet',evolved:!!this.basicAttack?.evolved,base:b.dmg});this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
-      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();
+      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.healScreen?.(0.9);this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
       this.castWindRush(ul);
     }else if(c.unique==='voidPull'){
@@ -12832,9 +12833,13 @@ class Game extends Phaser.Scene {
     if(lv>=2&&this.fxOk()&&Math.random()<.35){const a=Math.random()*Math.PI*2,d=rad*(.6+Math.random()*.6);const s=this.camWorld(this.add.circle(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,2+lv,col).setDepth(8));this.tweens.add({targets:s,y:s.y-30-lv*10,alpha:0,duration:420,onComplete:()=>s.destroy()});}
   }
   ptv(k){return this.player?._pt?.[k]||0;}
-  titanMaxLv(){return this.ptv('rage4')?4:3;}
+  titanMaxLv(){return 4;}   // v7.6.10 เจ้าของ: ชาร์จได้ 4 Rage ทุกคน (เดิมต้อง Capstone)
   // v7.6.9 เจ้าของ: Colossus Fist ทุบรอบตัว · กว้างขึ้น · วงพรีวิวตอนชาร์จ = ระยะจริง
-  titanSlamRadius(rage){ const b=this.basicAttack,ul=this.uniqueLevel||1,size=Math.min(1.8,1+(b?.ranks?.size||0)*.12+(b?._pm?.range||0))*(this.player?.donutImpact?1.15:1); return (150+ul*12)*size*(1+(rage||0)*.22); }
+  // v7.6.10 regen ตาม % Max HP (เลือดเยอะ = ฟื้นเยอะ) + ขอบจอสีเขียวให้รู้ว่ากำลังฮีล
+  startHeroRegen(sec,pct,label){ const on=this._cocoaRegenT>0; this._cocoaRegenT=Math.max(on?this._cocoaRegenT:0,sec); this._cocoaRegenPct=Math.max(on?(this._cocoaRegenPct||0):0,pct); this.healScreen?.(sec); if(label&&this.player)this.floatText?.(this.player.x,this.player.y-70,'+'+(Math.round(pct*1000)/10)+'% HP/s','#7dff9a'); }
+  healScreen(sec=1){ if(this._healFx)this._healFx.kill(); if((Save.data.settings?.vfx??2)===0)return; this._healFx=this.screenFx(sec,(g,w,h,k,el)=>{ const a=.42*Math.min(1,k*8)*Math.min(1,(1-k)*3)*(.65+.35*Math.sin(el*7)); this.scrEdge(g,w,h,0x5dff8a,a,Math.min(w,h)*.09); }); }
+  titanSlamRadius(rage){ const b=this.basicAttack,ul=this.uniqueLevel||1,size=Math.min(1.8,1+(b?.ranks?.size||0)*.12+(b?._pm?.range||0))*(this.player?.donutImpact?1.15:1),r=Math.max(0,rage||0),b0=(150+ul*12)*size;
+    if(r<=3)return b0*(1+r*.22); const lo=b0*1.66,hi=Math.max(lo,600*Math.min(1.3,size)); return lo+(hi-lo)*(Math.min(4,r)-3); }   // v7.6.10 Rage 4 = เกือบทั้งจอ
   titanRageSpend(given){const lv=Math.min(this.titanMaxLv(),given||0);this._titanRage=0;
     const sw=this.basicAttack?.lv?.p_secondwind||0,p=this.player;if(lv>=2&&sw&&p)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.04*lv*sw);return Math.min(this.titanMaxLv(),lv);}
   titanRageImpact(x,y,r,lv,basic){
@@ -12980,8 +12985,8 @@ class Game extends Phaser.Scene {
           if(this.textures?.exists?.('proj_rocket'))b.setTexture('proj_rocket').setTint(0xff6a1a).setScale(.85);this.attachProjectileAnim?.(b,'bpx_cocoa_gauntlet',120);b._bpBoom='bpx_cocoa_explode';b._uqRocket=true;if(b.body&&this.physics)this.physics.velocityFromRotation(a,560,b.body.velocity);Sfx.bp?.('uq_rocket_salvo',.6,.8);});
         if(t&&(t.isBoss||t.isMini))for(let k=0;k<stick;k++)this.cocoaLater(.75+k*.35,()=>{if(!t.active)return;this.cocoaHit(t.x,t.y,r*.8,unit*.7,{push:0});this.bpFx?.('bpx_cocoa_stick',t.x,t.y,r*1.8);this.cocoaVisual(t.x,t.y,r*.8,'wave',0xff6a1a);this.screenShake?.(70,.003);Sfx.bp?.('cocoa_rocket_stick_burst',.5,.1);});}
     }else if(path==='titan'){
-      const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel')),x=p.x,y=p.y,r=this.titanSlamRadius(lv),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
-      this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
+      const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel'))*(lv>=4&&this.ptv('rage4')?1.3:1),x=p.x,y=p.y,r=this.titanSlamRadius(lv),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
+      this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.startHeroRegen?.(3+lv*1.5,(.008+.006*lv)*(this.ptv('rage4')?2:1),'🗿 Titan Recovery');this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
         if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1.5);});
         if(this.cocoaHasInf('sour')){const until=(this.elapsed||0)+4;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)e._titanMarkT=until;});}
         if(lv>=3&&b?.evolved){this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<900&&!(e._phaseGateLocked||e._phaseInvuln>0))this.damage(e,unit*.85*rm*.5,e.x,e.y);});p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.1);this.screenFlash?.(0xffd27a,.35,260);}
@@ -12995,7 +13000,7 @@ class Game extends Phaser.Scene {
         p.iframe=Math.max(p.iframe||0,.5);this.bpPose?.('char_cocoa_phantom',.4);this.cocoaGlideTo({x:p.x+(t.x-p.x)*k,y:p.y+(t.y-p.y)*k},.14);
         this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});
     }else{this._cocoaUniqueT=.2;const r=(115+ul*10)*size;this.cocoaHit(p.x,p.y,r,unit*2.2,{push:250});this.cocoaVisual(p.x,p.y,r);Sfx.comboPunch(0,'heavy');
-      this._cocoaRegenT=5+ul;this._cocoaRegenPct=.02+.005*ul;this.burst?.(p.x,p.y,0x7dff9a);this.showBanner('🐻 Bear Grit Slam','Regen '+Math.round(this._cocoaRegenPct*1000)/10+'% max HP/s for '+this._cocoaRegenT+'s',1100);}   // v7.6.7 เจ้าของ: ก่อนเลือกสาย กดแล้ว regen เลือดสูงขึ้น
+      this.startHeroRegen?.(5+ul,.02+.005*ul);this.burst?.(p.x,p.y,0x7dff9a);this.showBanner('🐻 Bear Grit Slam','Regen '+Math.round((.02+.005*ul)*1000)/10+'% max HP/s for '+(5+ul)+'s',1100);}   // v7.6.7 เจ้าของ: ก่อนเลือกสาย กดแล้ว regen เลือดสูงขึ้น
     this.showBanner(this.uniqueInfo().emoji+' '+this.uniqueInfo().name,path==='dashboxer'?'Auto-leaping onto the strongest enemy · then Dash is free for a few seconds':path==='titan'?'Giant fist slams the strongest enemy':path==='brawler'?'Homing fire gauntlets · they stick to bosses and explode':'Slam nearby enemies',1400);
   }
   // v6.58.2 Dash Boxer: Dash พุ่งไปหามอนในทิศที่กด (ไม่กด = ตัวใกล้สุด) แล้วทุบลงพื้นตอนถึง
