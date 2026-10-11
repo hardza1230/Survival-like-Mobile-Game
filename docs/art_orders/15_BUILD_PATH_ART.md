@@ -1,3 +1,5 @@
+> อัปเดตสถานะ 11 ต.ค. 2026: ใช้ [16_CURRENT_ART_BACKLOG.md](16_CURRENT_ART_BACKLOG.md) เป็นรายการงานค้าง/งานใหม่ปัจจุบัน ใบนี้เก็บสเปกเดิม; Build art ส่งและผูกแล้ว แต่ Titan เปลี่ยนกลไกใน v7.6.14 และ screen overlay ชุดใหม่ถูกพักใช้งานตั้งแต่ v7.6.7.
+
 # 15 — Build Path Art: Strawberry / Mint / Chocolate
 
 ใบสั่งงานอาร์ตสำหรับ AI ตัวสร้างภาพ · อ่าน `00_STYLE_GUIDE.md` ก่อน (มุมมอง ¾ top-down, alpha จริง, ไม่มีตัวหนังสือ)

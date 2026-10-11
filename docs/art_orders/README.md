@@ -1,3 +1,5 @@
+> อัปเดตสถานะ 11 ต.ค. 2026: ใช้ [16_CURRENT_ART_BACKLOG.md](16_CURRENT_ART_BACKLOG.md) เป็นรายการงานค้าง/งานใหม่ปัจจุบัน ใบนี้เก็บสเปกเดิม; Build art ส่งและผูกแล้ว แต่ Titan เปลี่ยนกลไกใน v7.6.14 และ screen overlay ชุดใหม่ถูกพักใช้งานตั้งแต่ v7.6.7.
+
 <!-- Latest: v6.55.99; all scoped art orders A–E are delivered; owner mobile visual/FPS review remains. -->
 # 🎨 Art Orders — ใบสั่งงานอาร์ตจริงแทนของชั่วคราว
 
