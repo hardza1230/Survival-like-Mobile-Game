@@ -1,0 +1,664 @@
+{
+  "jobs": [
+    {
+      "id": "slot_spin",
+      "filename": "slot_spin.mp3",
+      "group": "Slot",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_slot_spin",
+      "hook": "slot_spin",
+      "event": "slot_spin",
+      "request": {
+        "text": "A satisfying mechanical fantasy slot machine running steadily: deep wooden reel clacks, weighty brass ratchet rhythm, little coin chatter. Continuous even speed, seamless loop, no final win flourish. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3,
+        "loop": true,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_stop",
+      "filename": "slot_stop.mp3",
+      "group": "Slot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "slot_stop",
+      "event": "slot_stop",
+      "request": {
+        "text": "Three weighty slot reel stops in sequence, thunk thunk THUNK, each brass latch louder, final chunky resonant lock. Exciting physical mechanism, no music. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_near",
+      "filename": "slot_near.mp3",
+      "group": "Slot",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_slot_near",
+      "hook": "slot_near",
+      "event": "slot_near",
+      "request": {
+        "text": "Slot machine almost jackpot: rising bright anticipation with two reel clicks, suspenseful final click and a playful descending glass wobble. Strong satisfying tension then disappointment. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_miss",
+      "filename": "slot_miss.mp3",
+      "group": "Slot",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_slot_miss",
+      "hook": "slot_miss",
+      "event": "slot_miss",
+      "request": {
+        "text": "Fantasy slot machine losing result, heavy final wooden reel clunk followed by a short descending rubbery brass wobble. Playful, clean, never shrill. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "slot_jackpot",
+      "filename": "slot_jackpot.mp3",
+      "group": "Slot",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_slot_jackpot",
+      "hook": "slot_jackpot",
+      "event": "slot_jackpot",
+      "request": {
+        "text": "Big fantasy slot jackpot celebration: immediate massive brass bell hit, cascading gold coins, three triumphant sparkling chime accents rising to a rich final magical burst. Strong bass punch, luxurious four second payoff, not a song. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 4,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "levelup",
+      "filename": "levelup.mp3",
+      "group": "Growth",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_levelup",
+      "hook": "levelup",
+      "event": "levelup",
+      "request": {
+        "text": "Hero level up in a colorful fantasy RPG: immediate bold rising magical whoosh, warm low impact, clearly rising three bell steps, glorious radiant crystal bloom with an airy sparkling decay. Memorable prominent three second reward cue. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_offer_open",
+      "filename": "card_offer_open.mp3",
+      "group": "Cards",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "card_offer_open",
+      "event": "card_offer_open",
+      "request": {
+        "text": "A row of magical upgrade cards appears: rapid papery card fan unfurl, forceful soft air sweep, bright clustered crystal sparkle and resonant magical landing. Dramatic clear arrival, one unified event. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_focus",
+      "filename": "card_focus.mp3",
+      "group": "Cards",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "card_focus",
+      "event": "card_focus",
+      "request": {
+        "text": "Selecting one magic card: tactile thick paper snap, solid low wooden tap and one distinct bright crystal ping. Immediate clean satisfying focus accent, not a fanfare. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "card_confirm",
+      "filename": "card_confirm.mp3",
+      "group": "Cards",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "card_confirm",
+      "event": "card_confirm",
+      "request": {
+        "text": "Confirming a powerful upgrade card: firm paper seal slam, punchy warm impact, rising magical energy and a beautiful sustained shining bell bloom. Decisive rewarding progression, one complete cue. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "item_roll_start",
+      "filename": "item_roll_start.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "item_roll_start",
+      "event": "item_roll_start",
+      "request": {
+        "text": "Starting a fantasy equipment draw: ornate chest latch clicks, deep lid opening and a swirling rising magical energy funnel. Exciting anticipation, no reveal or jackpot at end. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "item_roll_loop",
+      "filename": "item_roll_loop.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "item_roll_loop",
+      "event": "item_roll_loop",
+      "request": {
+        "text": "Magical equipment draw anticipation: steady spinning crystal ratchet, shimmering energy swirl and gentle rhythmic mechanical ticks. Seamless loop at constant intensity, no final reward cadence. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3,
+        "loop": true,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_common_reveal",
+      "filename": "loot_common_reveal.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "loot_common_reveal",
+      "event": "loot_common_reveal",
+      "request": {
+        "text": "A common item reveal, solid chest pop and polished metal clink with a short warm sparkle. Satisfying grounded small reward, no epic crescendo. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_magic_reveal",
+      "filename": "loot_magic_reveal.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "loot_magic_reveal",
+      "event": "loot_magic_reveal",
+      "request": {
+        "text": "A magical item reveal, chest pop then two ascending glass bell accents and a warm magical puff. Clear medium reward with shimmering tail. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.7,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_rare_reveal",
+      "filename": "loot_rare_reveal.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "loot_rare_reveal",
+      "event": "loot_rare_reveal",
+      "request": {
+        "text": "Rare equipment reveal, punchy low magic impact, three rising crystal strikes and a bright blue energy burst with sparkling decay. Noticeably exciting rare reward. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_epic_reveal",
+      "filename": "loot_epic_reveal.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "loot_epic_reveal",
+      "event": "loot_epic_reveal",
+      "request": {
+        "text": "Epic equipment reveal, deep chest impact and sweeping rising violet magic, broad resonant bell bloom and cascading gemstones. Rich powerful three second reward sting. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "loot_unique_reveal",
+      "filename": "loot_unique_reveal.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "loot_unique_reveal",
+      "event": "loot_unique_reveal",
+      "request": {
+        "text": "Unique equipment reveal, heavy low impact, swirling supernatural energy, clear rising luminous bell cluster and explosive golden crystal halo with a long luxurious sparkle tail. Grand premium reward sting. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "legend",
+      "filename": "legend.mp3",
+      "group": "Loot",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_legend",
+      "hook": "legend",
+      "event": "legend",
+      "request": {
+        "text": "Legendary item reveal, colossal warm magical impact, dramatic air rush, stately ascending golden bell strikes, enormous radiant treasure burst and delicate coin and crystal cascade fading naturally. Spectacular single reward, not background music. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 4.5,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "temple_weave",
+      "filename": "temple_weave.mp3",
+      "group": "Temple",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "temple_weave",
+      "event": "temple_weave",
+      "request": {
+        "text": "Successful sacred thread weaving upgrade at a fantasy temple: taut silk threads pull and twang, deep ceremonial stone resonance, three ascending luminous bells, radiant woven magic bloom. Rich uplifting permanent growth payoff. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "temple_talent",
+      "filename": "temple_talent.mp3",
+      "group": "Temple",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "temple_talent",
+      "event": "temple_talent",
+      "request": {
+        "text": "Unlocking a talent in a sacred fantasy temple: stone seal opens, shimmering threads connect, resonant bell pulses climb into a brilliant warm magical bloom. Clear substantial permanent upgrade. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "temple_core",
+      "filename": "temple_core.mp3",
+      "group": "Temple",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "temple_core",
+      "event": "temple_core",
+      "request": {
+        "text": "Strengthening a sacred core at a fantasy shrine: low pulsating energy gathers, solid stone socket locks, bright ascending crystal resonance and warm shining power release. Weighty satisfying upgrade. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.7,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_hit",
+      "filename": "dig_hit.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_dig_hit",
+      "hook": "dig_hit",
+      "event": "dig_hit",
+      "request": {
+        "text": "One powerful pickaxe strike into compact earth and stone: sharp forged iron attack, chunky low rocky thud, scattered grit and a brief ringing tool tail. Physical satisfying mining hit, not tiny UI click. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_break",
+      "filename": "dig_break.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_dig_break",
+      "hook": "dig_break",
+      "event": "dig_break",
+      "request": {
+        "text": "Breaking a mine rock block with a pickaxe: initial heavy metal crack, deep stone fracture, tumbling chunks and falling granular dirt. Strong crunchy rewarding impact with natural debris decay. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_descend",
+      "filename": "dig_descend.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_dig_descend",
+      "hook": "dig_descend",
+      "event": "dig_descend",
+      "request": {
+        "text": "Descending a wooden ladder into a deeper mine: three deliberate boots on creaking wooden rungs, small gravel falling, descending airy cavern whoosh and low resonant arrival thump. One short scene transition, no continuous footsteps. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find_resource",
+      "filename": "dig_find_resource.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_resource",
+      "event": "dig_find_resource",
+      "request": {
+        "text": "Discovering ordinary ore in a broken mine block: tumbling dirt, several bright metal ore clinks and a small warm discovery sparkle. Grounded useful resource reward. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.5,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find_item",
+      "filename": "dig_find_item.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_item",
+      "event": "dig_find_item",
+      "request": {
+        "text": "Discovering equipment in a mine: heavy buried metal chest latch pops, soil drops away, resonant silver chime and a warm magical treasure shimmer. Distinct from ore and currency. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find_rare",
+      "filename": "dig_find_rare.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_rare",
+      "event": "dig_find_rare",
+      "request": {
+        "text": "Discovering rare treasure underground: deep rock reveal crack, rising crystal resonance, rich sparkling treasure burst and lingering cave echo. Exciting rare find with a memorable payoff. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find_currency",
+      "filename": "dig_find_currency.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_currency",
+      "event": "dig_find_currency",
+      "request": {
+        "text": "Discovering a buried coin cache: earth crumbles then a pleasing waterfall of gold coins clinks into a small pouch, ending in one bright reward ping. No generic crystal burst. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_trap",
+      "filename": "dig_trap.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": "sfx_dig_trap",
+      "hook": "dig_trap",
+      "event": "dig_trap",
+      "request": {
+        "text": "A mine trap is triggered: sudden rusty mechanical snap, gritty rock fall and ominous low magical sting. Strong immediate readable warning, no screams. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "poison_apply",
+      "filename": "poison_apply.mp3",
+      "group": "Events",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "poison_apply",
+      "event": "poison_apply",
+      "request": {
+        "text": "Player becomes poisoned: immediate wet toxic splat, bubbling acidic fizz and a distinctive descending sickly glass wobble. Clear brief danger cue, not a repeated damage loop. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find_thread",
+      "filename": "dig_find_thread.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_thread",
+      "event": "dig_find_thread",
+      "request": {
+        "text": "A hunt for a valuable thread begins in a fantasy game: taut silk string pluck, quick hunting air sweep, two urgent wooden percussion knocks and a luminous resonant thread twang. Exciting readable objective announcement, no speech. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "original_generation_id": "hunt_thread_start"
+    },
+    {
+      "id": "dig_find_thread_rare",
+      "filename": "dig_find_thread_rare.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_thread_rare",
+      "event": "dig_find_thread_rare",
+      "request": {
+        "text": "Completing a precious thread hunt: taut silk thread snaps into a woven seal, warm low success impact, bright ascending bells and rich radiant magical shimmer. Satisfying objective completion. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "original_generation_id": "hunt_thread_complete"
+    },
+    {
+      "id": "enhance_start",
+      "filename": "enhance_start.mp3",
+      "group": "Enhance",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "enhance_start",
+      "event": "enhance_start",
+      "request": {
+        "text": "Fantasy blacksmith equipment enhancement begins: two crisp hammer blows on a steel anvil, metallic ringing and magical sparks gathering around the item. Nostalgic early online RPG forge feel, original sound. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "enhance_success",
+      "filename": "enhance_success.mp3",
+      "group": "Enhance",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "enhance_success",
+      "event": "enhance_success",
+      "request": {
+        "text": "Successful fantasy equipment enhancement: three accelerating hammer strikes on a steel anvil, last strike powerful and low, then a brilliant ascending crystal success burst and sustained warm metallic sparkle. Nostalgic online RPG forging payoff, original sound. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 3.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "enhance_fail",
+      "filename": "enhance_fail.mp3",
+      "group": "Enhance",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "enhance_fail",
+      "event": "enhance_fail",
+      "request": {
+        "text": "Failed equipment enhancement in a fantasy blacksmith forge: one sharp hammer strike, unstable ringing metal, sputtering magic sparks and a descending dull clank. Clear failure without item shattering. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.4,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "enhance_destroy",
+      "filename": "enhance_destroy.mp3",
+      "group": "Enhance",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "enhance_destroy",
+      "event": "enhance_destroy",
+      "request": {
+        "text": "Equipment breaks during fantasy forging: heavy hammer strike, loud crystalline metal fracture, scattering tiny steel fragments and collapsing magical energy with a low dark tail. Distinct decisive break result, no explosion. Isolated game SFX, clear immediate attack, smooth highs, audible warm midrange on phone speakers. No voice, ambient bed or background music.",
+        "duration_seconds": 2.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find_scroll",
+      "filename": "dig_find_scroll.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_scroll",
+      "event": "dig_find_scroll",
+      "request": {
+        "text": "Finding an ancient scroll fragment underground: crumbly earth falls away, dry parchment unfurls, a mysterious old brass bell rings and a restrained magical shimmer fades. Clearly different from metal coins and ore. Isolated game SFX, immediate clear attack, warm phone-audible midrange, smooth highs. No speech, ambient bed or background music.",
+        "duration_seconds": 2.2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_find_part",
+      "filename": "dig_find_part.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_find_part",
+      "event": "dig_find_part",
+      "request": {
+        "text": "Finding a fantasy cooking recipe component underground: chunky ceramic and wooden puzzle pieces click together, tiny kitchen utensil clinks and a cheerful warm sparkle. Distinct crafted puzzle reward, no chest burst. Isolated game SFX, immediate clear attack, warm phone-audible midrange, smooth highs. No speech, ambient bed or background music.",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "dig_ladder_found",
+      "filename": "dig_ladder_found.mp3",
+      "group": "Mine",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "dig_ladder_found",
+      "event": "dig_ladder_found",
+      "request": {
+        "text": "Discovering the exit ladder in a mine: stone panel shifts open, old wooden ladder creaks, bright airy upward reveal and a clear optimistic bell ping. A discovery cue, not footsteps or descent. Isolated game SFX, immediate clear attack, warm phone-audible midrange, smooth highs. No speech, ambient bed or background music.",
+        "duration_seconds": 2,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hunt_threat_start",
+      "filename": "hunt_threat_start.mp3",
+      "group": "Events",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "hunt_threat_start",
+      "event": "hunt_threat_start",
+      "request": {
+        "text": "Hunt the Threat objective begins, a dangerous marked elite is revealed: sharp hunting air sweep, two forceful low drum knocks, taut ominous string accent and bright urgent magical marker ping. Exciting mission announcement, not treasure discovery. Isolated game SFX, immediate clear attack, warm phone-audible midrange, smooth highs. No speech, ambient bed or background music.",
+        "duration_seconds": 2.6,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hunt_threat_complete",
+      "filename": "hunt_threat_complete.mp3",
+      "group": "Events",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "hunt_threat_complete",
+      "event": "hunt_threat_complete",
+      "request": {
+        "text": "Defeating a marked elite and completing a hunt objective: weighty victorious impact, three rising clear brass bell accents and a radiant magical flourish. Satisfying triumphant objective completion, no voice or song. Isolated game SFX, immediate clear attack, warm phone-audible midrange, smooth highs. No speech, ambient bed or background music.",
+        "duration_seconds": 3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    },
+    {
+      "id": "hunt_curse_apply",
+      "filename": "hunt_curse_apply.mp3",
+      "group": "Events",
+      "mode": "feedback_revision",
+      "existing_key": null,
+      "hook": "hunt_curse_apply",
+      "event": "hunt_curse_apply",
+      "request": {
+        "text": "Hunter curse activates on the player: sudden dark magical seal snap, low hollow spectral pulse and descending uneasy shimmering sting. Readable brief danger warning, no scream, no repeated damage ticks. Isolated game SFX, immediate clear attack, warm phone-audible midrange, smooth highs. No speech, ambient bed or background music.",
+        "duration_seconds": 1.5,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    }
+  ],
+  "reason": "Owner playtest: previous sounds too short and understated; nine requested feedback areas. Longer structured event payoffs, frequent mining hit remains short.",
+  "date": "2026-10-11"
+}

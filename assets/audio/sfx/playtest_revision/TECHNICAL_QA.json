@@ -1,0 +1,374 @@
+{
+  "listening_review": "Not performed. Decode/non-silent checks do not establish artistic quality, tail length or mixing.",
+  "results": [
+    {
+      "id": "slot_spin",
+      "duration_seconds": 3.0,
+      "peak_dbfs": -1.62,
+      "rms_dbfs": -19.5,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "e8dfe4fcd098511cfa85bccdc9bfb5ec915a251467e28ae3fd79c7228b6456b4"
+    },
+    {
+      "id": "slot_stop",
+      "duration_seconds": 1.2,
+      "peak_dbfs": 2.19,
+      "rms_dbfs": -23.19,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "56a110ac8b178760da33445485ffd3769a202c8420f9a9dcec966bfdc61da412"
+    },
+    {
+      "id": "slot_near",
+      "duration_seconds": 2.0,
+      "peak_dbfs": 3.31,
+      "rms_dbfs": -9.65,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "b963fe1e73da6cd97a253750924bfdfd1248ca7625638a4c2294c62d6bf9c278"
+    },
+    {
+      "id": "slot_miss",
+      "duration_seconds": 1.28,
+      "peak_dbfs": 3.05,
+      "rms_dbfs": -9.71,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "e58ba13fbfc4777ca83551b8b6f7e3e3a87ca7057ea1dba71e1111d28309cf62"
+    },
+    {
+      "id": "slot_jackpot",
+      "duration_seconds": 4.0,
+      "peak_dbfs": 3.48,
+      "rms_dbfs": -14.66,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "b9e138a0c0f422df477bc845561945bc69900d2faa057780ddfc868bb8ce5ea4"
+    },
+    {
+      "id": "levelup",
+      "duration_seconds": 3.0,
+      "peak_dbfs": 2.99,
+      "rms_dbfs": -12.85,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "18184578902a1df68a0c886e816dc1998ea3f98d1ef00d814e03dfa54b108bcd"
+    },
+    {
+      "id": "card_offer_open",
+      "duration_seconds": 1.76,
+      "peak_dbfs": 2.7,
+      "rms_dbfs": -15.79,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "e1595135386c7b7d3c40b498ee21bdbf8d31214102c414b132cd805a5ad55cd1"
+    },
+    {
+      "id": "card_focus",
+      "duration_seconds": 0.8,
+      "peak_dbfs": 3.1,
+      "rms_dbfs": -20.73,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "5e0ae18871420a86a77c8eb38c3c670ea6c494c1f06d78ce6dd82160c2a5b7b2"
+    },
+    {
+      "id": "card_confirm",
+      "duration_seconds": 2.2,
+      "peak_dbfs": 4.0,
+      "rms_dbfs": -10.02,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "d803fda468c6af8358d7e00a4806a8de64441db47b856bf929aa52891b34a5a6"
+    },
+    {
+      "id": "item_roll_start",
+      "duration_seconds": 2.2,
+      "peak_dbfs": 1.94,
+      "rms_dbfs": -24.74,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "2bc89f1c4fa4aec782b89a346811f607cd59692df4e101295a7bd3c22c6a3eaa"
+    },
+    {
+      "id": "item_roll_loop",
+      "duration_seconds": 3.0,
+      "peak_dbfs": -1.67,
+      "rms_dbfs": -17.72,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "febf401d4df6025c901d3eb1f6e998d5ef4dca69492fd6f3dfe0522c20eb1735"
+    },
+    {
+      "id": "loot_common_reveal",
+      "duration_seconds": 1.2,
+      "peak_dbfs": -11.84,
+      "rms_dbfs": -30.8,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "dd3767baddbef7164ae629bcc0adb4fe99a14cb41b6e676d1afb97cf6fff5761"
+    },
+    {
+      "id": "loot_magic_reveal",
+      "duration_seconds": 1.68,
+      "peak_dbfs": -0.22,
+      "rms_dbfs": -21.98,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "69d20fa89d868f4b93d6cf9232de3a2cdd2237bc39282140b6c8a29226d82857"
+    },
+    {
+      "id": "loot_rare_reveal",
+      "duration_seconds": 2.28,
+      "peak_dbfs": 2.52,
+      "rms_dbfs": -15.22,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "5aab8c2ff0941e193349e91c098399e3ecc1b5056cb76060ea53a0a393d4aa01"
+    },
+    {
+      "id": "loot_epic_reveal",
+      "duration_seconds": 3.0,
+      "peak_dbfs": 1.61,
+      "rms_dbfs": -16.18,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "9a8f7ce883f69021ab5a04b570e4be52dfd1d072d34bdd473e97a1610945a2a9"
+    },
+    {
+      "id": "loot_unique_reveal",
+      "duration_seconds": 3.76,
+      "peak_dbfs": 2.39,
+      "rms_dbfs": -12.98,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "4edd77298a10c3534c51586a4cbc5a965a6514633e5f764df0418ae040e0770b"
+    },
+    {
+      "id": "legend",
+      "duration_seconds": 4.48,
+      "peak_dbfs": 1.58,
+      "rms_dbfs": -19.7,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "8bb4c205bca688a421b84735a1c1c430fd0beb96c716293586ccb964de8988ec"
+    },
+    {
+      "id": "temple_weave",
+      "duration_seconds": 3.2,
+      "peak_dbfs": -1.67,
+      "rms_dbfs": -19.82,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "89219fc42387cc8eec88876649d6b45a91cf45ff9466617a218b59e071d5f1e2"
+    },
+    {
+      "id": "temple_talent",
+      "duration_seconds": 3.0,
+      "peak_dbfs": -5.71,
+      "rms_dbfs": -18.18,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "c279fcbd9f0c505f54ac01b1abe9a8310c9b7895db3caa58ff701ddbd0eabd89"
+    },
+    {
+      "id": "temple_core",
+      "duration_seconds": 2.68,
+      "peak_dbfs": 2.84,
+      "rms_dbfs": -10.71,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "6b4b0d2993ef16994e383d4db662e02015a4b6e076998d991ef45062cd63f2ad"
+    },
+    {
+      "id": "dig_hit",
+      "duration_seconds": 0.88,
+      "peak_dbfs": 3.83,
+      "rms_dbfs": -15.99,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "0ffaa6ceae1a8f74c0b6e794a4102cb50f30a74bd5b04b8c2afbb3f2f475ec8b"
+    },
+    {
+      "id": "dig_break",
+      "duration_seconds": 1.76,
+      "peak_dbfs": 3.65,
+      "rms_dbfs": -14.11,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "6da38b93d5728fe9b71d867374e9d9e9d25f67741e4ee5642322ee697c5c21fe"
+    },
+    {
+      "id": "dig_descend",
+      "duration_seconds": 3.0,
+      "peak_dbfs": 2.8,
+      "rms_dbfs": -14.22,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "d3f14c11dedd7ad5eebe7e92f8a804dafaa0098495d28ce2cf49e1db8d9dd1f2"
+    },
+    {
+      "id": "dig_find_resource",
+      "duration_seconds": 1.48,
+      "peak_dbfs": 2.98,
+      "rms_dbfs": -20.44,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "a0674b81aed454cb7c5d9bf70b7718174fa894b687343becaacee31179358d43"
+    },
+    {
+      "id": "dig_find_item",
+      "duration_seconds": 2.2,
+      "peak_dbfs": -2.19,
+      "rms_dbfs": -26.26,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "cd7a786490a2cf6812b22a4e929ecdff593b9d08403e1001964beb3a72d5dde7"
+    },
+    {
+      "id": "dig_find_rare",
+      "duration_seconds": 3.2,
+      "peak_dbfs": -4.38,
+      "rms_dbfs": -23.48,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "c595fae1c072216256c5f2a67851d59049a268d098aaacb35d427f563e96d7f1"
+    },
+    {
+      "id": "dig_find_currency",
+      "duration_seconds": 1.6,
+      "peak_dbfs": 3.87,
+      "rms_dbfs": -14.57,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "bf6b4dca09d258cfb2fc9a536d2946a9f4940f0c6af156457ab946ec8e51166e"
+    },
+    {
+      "id": "dig_trap",
+      "duration_seconds": 1.36,
+      "peak_dbfs": -6.29,
+      "rms_dbfs": -22.11,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "7580c60e3e0cd7243d6c084b883301359073ef0a4bb303baa635d10e80b7f518"
+    },
+    {
+      "id": "poison_apply",
+      "duration_seconds": 1.36,
+      "peak_dbfs": 3.69,
+      "rms_dbfs": -19.27,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "25c4f5a902f089263991e2d2bbf210553e346369115c4d03f0eb4ef4722d6fd2"
+    },
+    {
+      "id": "dig_find_thread",
+      "duration_seconds": 2.76,
+      "peak_dbfs": 2.19,
+      "rms_dbfs": -23.26,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "2e9e9300d9a43ab2ca11bc472dc98909f6372b452c0e41d56f7ae235cbe1aaeb"
+    },
+    {
+      "id": "dig_find_thread_rare",
+      "duration_seconds": 2.76,
+      "peak_dbfs": 2.91,
+      "rms_dbfs": -15.65,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "d631ca67696a2d9f0ea1ec1e62e5a37a752543b85641f91e133963348637e5b4"
+    },
+    {
+      "id": "enhance_start",
+      "duration_seconds": 1.76,
+      "peak_dbfs": 2.95,
+      "rms_dbfs": -17.78,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "ddab610bd2ba26ab854c75cc4b76775705a1a3f944cc0b3b6dda2652d595437c"
+    },
+    {
+      "id": "enhance_success",
+      "duration_seconds": 3.2,
+      "peak_dbfs": 1.91,
+      "rms_dbfs": -20.42,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "3ce918ccf93d48fea9e40ba10ccd1f0837bbdd1cfc135a081910b595aa6ab4c5"
+    },
+    {
+      "id": "enhance_fail",
+      "duration_seconds": 2.4,
+      "peak_dbfs": 4.2,
+      "rms_dbfs": -17.42,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "a7bd92e7bff6023cf52ad7188b11eb92ebe1e2b1251eb8fec4c43e2f22139c72"
+    },
+    {
+      "id": "enhance_destroy",
+      "duration_seconds": 2.76,
+      "peak_dbfs": 2.85,
+      "rms_dbfs": -15.35,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "1b179af3cfaf5e9ae98834799d9d79cc02dec18423a30f0cd654299c2ea23ba1"
+    },
+    {
+      "id": "dig_find_scroll",
+      "duration_seconds": 2.2,
+      "peak_dbfs": 1.78,
+      "rms_dbfs": -22.04,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "c04bcb49da2066bd79fba99e613dc6f99bf5f163f12c156b844ede4847195673"
+    },
+    {
+      "id": "dig_find_part",
+      "duration_seconds": 1.76,
+      "peak_dbfs": 2.6,
+      "rms_dbfs": -21.56,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "14da376127d21e9b358c32bfebe954233c25136f87e079ec61da583c77bda01d"
+    },
+    {
+      "id": "dig_ladder_found",
+      "duration_seconds": 2.0,
+      "peak_dbfs": 2.23,
+      "rms_dbfs": -15.26,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "471876c66019c719cd03ef73f5c3c90bf6b80909dbdc0aaf3befd8bdb1ff398d"
+    },
+    {
+      "id": "hunt_threat_start",
+      "duration_seconds": 2.56,
+      "peak_dbfs": 0.97,
+      "rms_dbfs": -15.47,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "46d5437bb2f17a1304d981fa9d62e235a61a1caf5270711373d65e21883a30f4"
+    },
+    {
+      "id": "hunt_threat_complete",
+      "duration_seconds": 3.0,
+      "peak_dbfs": 2.45,
+      "rms_dbfs": -16.3,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "2479d582dbf9f13f351562ded4ae57d4006b6f8f10fd5ba2dc12c79c667166fd"
+    },
+    {
+      "id": "hunt_curse_apply",
+      "duration_seconds": 1.48,
+      "peak_dbfs": 1.81,
+      "rms_dbfs": -22.69,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "8a0267c0d77b76bd7ab90b504948d706b0b491dbb873a0b592df8b9c0a88bd31"
+    }
+  ]
+}

@@ -1,0 +1,502 @@
+{
+  "started": "2026-10-11T01:26:16.665Z",
+  "results": [
+    {
+      "id": "slot_spin",
+      "status": "pending"
+    },
+    {
+      "id": "slot_stop",
+      "status": "pending"
+    },
+    {
+      "id": "slot_stop",
+      "status": "success",
+      "filename": "slot_stop.mp3",
+      "bytes": 20106,
+      "sha256": "56a110ac8b178760da33445485ffd3769a202c8420f9a9dcec966bfdc61da412",
+      "character_cost": "12"
+    },
+    {
+      "id": "slot_near",
+      "status": "pending"
+    },
+    {
+      "id": "slot_spin",
+      "status": "success",
+      "filename": "slot_spin.mp3",
+      "bytes": 48945,
+      "sha256": "e8dfe4fcd098511cfa85bccdc9bfb5ec915a251467e28ae3fd79c7228b6456b4",
+      "character_cost": "30"
+    },
+    {
+      "id": "slot_miss",
+      "status": "pending"
+    },
+    {
+      "id": "slot_near",
+      "status": "success",
+      "filename": "slot_near.mp3",
+      "bytes": 33062,
+      "sha256": "b963fe1e73da6cd97a253750924bfdfd1248ca7625638a4c2294c62d6bf9c278",
+      "character_cost": "20"
+    },
+    {
+      "id": "slot_jackpot",
+      "status": "pending"
+    },
+    {
+      "id": "slot_miss",
+      "status": "success",
+      "filename": "slot_miss.mp3",
+      "bytes": 21359,
+      "sha256": "e58ba13fbfc4777ca83551b8b6f7e3e3a87ca7057ea1dba71e1111d28309cf62",
+      "character_cost": "13"
+    },
+    {
+      "id": "levelup",
+      "status": "pending"
+    },
+    {
+      "id": "slot_jackpot",
+      "status": "success",
+      "filename": "slot_jackpot.mp3",
+      "bytes": 65245,
+      "sha256": "b9e138a0c0f422df477bc845561945bc69900d2faa057780ddfc868bb8ce5ea4",
+      "character_cost": "40"
+    },
+    {
+      "id": "card_offer_open",
+      "status": "pending"
+    },
+    {
+      "id": "levelup",
+      "status": "success",
+      "filename": "levelup.mp3",
+      "bytes": 48945,
+      "sha256": "18184578902a1df68a0c886e816dc1998ea3f98d1ef00d814e03dfa54b108bcd",
+      "character_cost": "30"
+    },
+    {
+      "id": "card_focus",
+      "status": "pending"
+    },
+    {
+      "id": "card_offer_open",
+      "status": "success",
+      "filename": "card_offer_open.mp3",
+      "bytes": 29301,
+      "sha256": "e1595135386c7b7d3c40b498ee21bdbf8d31214102c414b132cd805a5ad55cd1",
+      "character_cost": "18"
+    },
+    {
+      "id": "card_confirm",
+      "status": "pending"
+    },
+    {
+      "id": "card_focus",
+      "status": "success",
+      "filename": "card_focus.mp3",
+      "bytes": 13836,
+      "sha256": "5e0ae18871420a86a77c8eb38c3c670ea6c494c1f06d78ce6dd82160c2a5b7b2",
+      "character_cost": "8"
+    },
+    {
+      "id": "item_roll_start",
+      "status": "pending"
+    },
+    {
+      "id": "card_confirm",
+      "status": "success",
+      "filename": "card_confirm.mp3",
+      "bytes": 36406,
+      "sha256": "d803fda468c6af8358d7e00a4806a8de64441db47b856bf929aa52891b34a5a6",
+      "character_cost": "22"
+    },
+    {
+      "id": "item_roll_loop",
+      "status": "pending"
+    },
+    {
+      "id": "item_roll_start",
+      "status": "success",
+      "filename": "item_roll_start.mp3",
+      "bytes": 36406,
+      "sha256": "2bc89f1c4fa4aec782b89a346811f607cd59692df4e101295a7bd3c22c6a3eaa",
+      "character_cost": "22"
+    },
+    {
+      "id": "loot_common_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "item_roll_loop",
+      "status": "success",
+      "filename": "item_roll_loop.mp3",
+      "bytes": 48945,
+      "sha256": "febf401d4df6025c901d3eb1f6e998d5ef4dca69492fd6f3dfe0522c20eb1735",
+      "character_cost": "30"
+    },
+    {
+      "id": "loot_magic_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_common_reveal",
+      "status": "success",
+      "filename": "loot_common_reveal.mp3",
+      "bytes": 20106,
+      "sha256": "dd3767baddbef7164ae629bcc0adb4fe99a14cb41b6e676d1afb97cf6fff5761",
+      "character_cost": "12"
+    },
+    {
+      "id": "loot_rare_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_magic_reveal",
+      "status": "success",
+      "filename": "loot_magic_reveal.mp3",
+      "bytes": 28047,
+      "sha256": "69d20fa89d868f4b93d6cf9232de3a2cdd2237bc39282140b6c8a29226d82857",
+      "character_cost": "17"
+    },
+    {
+      "id": "loot_epic_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_rare_reveal",
+      "status": "success",
+      "filename": "loot_rare_reveal.mp3",
+      "bytes": 37660,
+      "sha256": "5aab8c2ff0941e193349e91c098399e3ecc1b5056cb76060ea53a0a393d4aa01",
+      "character_cost": "23"
+    },
+    {
+      "id": "loot_unique_reveal",
+      "status": "pending"
+    },
+    {
+      "id": "loot_epic_reveal",
+      "status": "success",
+      "filename": "loot_epic_reveal.mp3",
+      "bytes": 48945,
+      "sha256": "9a8f7ce883f69021ab5a04b570e4be52dfd1d072d34bdd473e97a1610945a2a9",
+      "character_cost": "30"
+    },
+    {
+      "id": "legend",
+      "status": "pending"
+    },
+    {
+      "id": "loot_unique_reveal",
+      "status": "success",
+      "filename": "loot_unique_reveal.mp3",
+      "bytes": 61066,
+      "sha256": "4edd77298a10c3534c51586a4cbc5a965a6514633e5f764df0418ae040e0770b",
+      "character_cost": "38"
+    },
+    {
+      "id": "temple_weave",
+      "status": "pending"
+    },
+    {
+      "id": "legend",
+      "status": "success",
+      "filename": "legend.mp3",
+      "bytes": 72768,
+      "sha256": "8bb4c205bca688a421b84735a1c1c430fd0beb96c716293586ccb964de8988ec",
+      "character_cost": "45"
+    },
+    {
+      "id": "temple_talent",
+      "status": "pending"
+    },
+    {
+      "id": "temple_weave",
+      "status": "success",
+      "filename": "temple_weave.mp3",
+      "bytes": 52288,
+      "sha256": "89219fc42387cc8eec88876649d6b45a91cf45ff9466617a218b59e071d5f1e2",
+      "character_cost": "32"
+    },
+    {
+      "id": "temple_core",
+      "status": "pending"
+    },
+    {
+      "id": "temple_talent",
+      "status": "success",
+      "filename": "temple_talent.mp3",
+      "bytes": 48945,
+      "sha256": "c279fcbd9f0c505f54ac01b1abe9a8310c9b7895db3caa58ff701ddbd0eabd89",
+      "character_cost": "30"
+    },
+    {
+      "id": "dig_hit",
+      "status": "pending"
+    },
+    {
+      "id": "temple_core",
+      "status": "success",
+      "filename": "temple_core.mp3",
+      "bytes": 43929,
+      "sha256": "6b4b0d2993ef16994e383d4db662e02015a4b6e076998d991ef45062cd63f2ad",
+      "character_cost": "27"
+    },
+    {
+      "id": "dig_break",
+      "status": "pending"
+    },
+    {
+      "id": "dig_hit",
+      "status": "success",
+      "filename": "dig_hit.mp3",
+      "bytes": 15090,
+      "sha256": "0ffaa6ceae1a8f74c0b6e794a4102cb50f30a74bd5b04b8c2afbb3f2f475ec8b",
+      "character_cost": "9"
+    },
+    {
+      "id": "dig_descend",
+      "status": "pending"
+    },
+    {
+      "id": "dig_break",
+      "status": "success",
+      "filename": "dig_break.mp3",
+      "bytes": 29301,
+      "sha256": "6da38b93d5728fe9b71d867374e9d9e9d25f67741e4ee5642322ee697c5c21fe",
+      "character_cost": "18"
+    },
+    {
+      "id": "dig_find_resource",
+      "status": "pending"
+    },
+    {
+      "id": "dig_descend",
+      "status": "success",
+      "filename": "dig_descend.mp3",
+      "bytes": 48945,
+      "sha256": "d3f14c11dedd7ad5eebe7e92f8a804dafaa0098495d28ce2cf49e1db8d9dd1f2",
+      "character_cost": "30"
+    },
+    {
+      "id": "dig_find_item",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_resource",
+      "status": "success",
+      "filename": "dig_find_resource.mp3",
+      "bytes": 24703,
+      "sha256": "a0674b81aed454cb7c5d9bf70b7718174fa894b687343becaacee31179358d43",
+      "character_cost": "15"
+    },
+    {
+      "id": "dig_find_rare",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_item",
+      "status": "success",
+      "filename": "dig_find_item.mp3",
+      "bytes": 36406,
+      "sha256": "cd7a786490a2cf6812b22a4e929ecdff593b9d08403e1001964beb3a72d5dde7",
+      "character_cost": "22"
+    },
+    {
+      "id": "dig_find_currency",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_currency",
+      "status": "success",
+      "filename": "dig_find_currency.mp3",
+      "bytes": 26793,
+      "sha256": "bf6b4dca09d258cfb2fc9a536d2946a9f4940f0c6af156457ab946ec8e51166e",
+      "character_cost": "16"
+    },
+    {
+      "id": "dig_trap",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_rare",
+      "status": "success",
+      "filename": "dig_find_rare.mp3",
+      "bytes": 52288,
+      "sha256": "c595fae1c072216256c5f2a67851d59049a268d098aaacb35d427f563e96d7f1",
+      "character_cost": "32"
+    },
+    {
+      "id": "poison_apply",
+      "status": "pending"
+    },
+    {
+      "id": "dig_trap",
+      "status": "success",
+      "filename": "dig_trap.mp3",
+      "bytes": 23031,
+      "sha256": "7580c60e3e0cd7243d6c084b883301359073ef0a4bb303baa635d10e80b7f518",
+      "character_cost": "14"
+    },
+    {
+      "id": "dig_find_thread",
+      "status": "pending",
+      "original_generation_id": "hunt_thread_start"
+    },
+    {
+      "id": "poison_apply",
+      "status": "success",
+      "filename": "poison_apply.mp3",
+      "bytes": 23031,
+      "sha256": "25c4f5a902f089263991e2d2bbf210553e346369115c4d03f0eb4ef4722d6fd2",
+      "character_cost": "14"
+    },
+    {
+      "id": "dig_find_thread_rare",
+      "status": "pending",
+      "original_generation_id": "hunt_thread_complete"
+    },
+    {
+      "id": "dig_find_thread",
+      "status": "success",
+      "filename": "dig_find_thread.mp3",
+      "bytes": 45183,
+      "sha256": "2e9e9300d9a43ab2ca11bc472dc98909f6372b452c0e41d56f7ae235cbe1aaeb",
+      "character_cost": "28",
+      "original_generation_id": "hunt_thread_start"
+    },
+    {
+      "id": "enhance_start",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_thread_rare",
+      "status": "success",
+      "filename": "dig_find_thread_rare.mp3",
+      "bytes": 45183,
+      "sha256": "d631ca67696a2d9f0ea1ec1e62e5a37a752543b85641f91e133963348637e5b4",
+      "character_cost": "28",
+      "original_generation_id": "hunt_thread_complete"
+    },
+    {
+      "id": "enhance_success",
+      "status": "pending"
+    },
+    {
+      "id": "enhance_start",
+      "status": "success",
+      "filename": "enhance_start.mp3",
+      "bytes": 29301,
+      "sha256": "ddab610bd2ba26ab854c75cc4b76775705a1a3f944cc0b3b6dda2652d595437c",
+      "character_cost": "18"
+    },
+    {
+      "id": "enhance_fail",
+      "status": "pending"
+    },
+    {
+      "id": "enhance_success",
+      "status": "success",
+      "filename": "enhance_success.mp3",
+      "bytes": 52288,
+      "sha256": "3ce918ccf93d48fea9e40ba10ccd1f0837bbdd1cfc135a081910b595aa6ab4c5",
+      "character_cost": "32"
+    },
+    {
+      "id": "enhance_destroy",
+      "status": "pending"
+    },
+    {
+      "id": "enhance_fail",
+      "status": "success",
+      "filename": "enhance_fail.mp3",
+      "bytes": 39332,
+      "sha256": "a7bd92e7bff6023cf52ad7188b11eb92ebe1e2b1251eb8fec4c43e2f22139c72",
+      "character_cost": "24"
+    },
+    {
+      "id": "enhance_destroy",
+      "status": "success",
+      "filename": "enhance_destroy.mp3",
+      "bytes": 45183,
+      "sha256": "1b179af3cfaf5e9ae98834799d9d79cc02dec18423a30f0cd654299c2ea23ba1",
+      "character_cost": "28"
+    },
+    {
+      "id": "dig_find_scroll",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_part",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_scroll",
+      "status": "success",
+      "filename": "dig_find_scroll.mp3",
+      "bytes": 36406,
+      "sha256": "c04bcb49da2066bd79fba99e613dc6f99bf5f163f12c156b844ede4847195673",
+      "character_cost": "22"
+    },
+    {
+      "id": "dig_ladder_found",
+      "status": "pending"
+    },
+    {
+      "id": "dig_find_part",
+      "status": "success",
+      "filename": "dig_find_part.mp3",
+      "bytes": 29301,
+      "sha256": "14da376127d21e9b358c32bfebe954233c25136f87e079ec61da583c77bda01d",
+      "character_cost": "18"
+    },
+    {
+      "id": "hunt_threat_start",
+      "status": "pending"
+    },
+    {
+      "id": "hunt_threat_start",
+      "status": "success",
+      "filename": "hunt_threat_start.mp3",
+      "bytes": 41839,
+      "sha256": "46d5437bb2f17a1304d981fa9d62e235a61a1caf5270711373d65e21883a30f4",
+      "character_cost": "26"
+    },
+    {
+      "id": "hunt_threat_complete",
+      "status": "pending"
+    },
+    {
+      "id": "dig_ladder_found",
+      "status": "success",
+      "filename": "dig_ladder_found.mp3",
+      "bytes": 33062,
+      "sha256": "471876c66019c719cd03ef73f5c3c90bf6b80909dbdc0aaf3befd8bdb1ff398d",
+      "character_cost": "20"
+    },
+    {
+      "id": "hunt_curse_apply",
+      "status": "pending"
+    },
+    {
+      "id": "hunt_curse_apply",
+      "status": "success",
+      "filename": "hunt_curse_apply.mp3",
+      "bytes": 24703,
+      "sha256": "8a0267c0d77b76bd7ab90b504948d706b0b491dbb873a0b592df8b9c0a88bd31",
+      "character_cost": "15"
+    },
+    {
+      "id": "hunt_threat_complete",
+      "status": "success",
+      "filename": "hunt_threat_complete.mp3",
+      "bytes": 48945,
+      "sha256": "2479d582dbf9f13f351562ded4ae57d4006b6f8f10fd5ba2dc12c79c667166fd",
+      "character_cost": "30"
+    }
+  ],
+  "finished": "2026-10-11T01:27:33.763Z"
+}
