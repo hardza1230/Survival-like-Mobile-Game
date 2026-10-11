@@ -20,7 +20,7 @@ const PERF_LIVE_MUL = 0.8;   // v5.49: ลดมอนบนจอ 20% (มื�
 const FX_PER_FRAME = 6;      // v5.49: เอฟเฟกต์ตกแต่งสร้างได้ไม่เกินนี้ต่อเฟรม
 // v5.50: ระดับประหยัด 0-2 (Auto ปรับตาม FPS · Low=2 · High=0) → ลดงบ FX และจำนวนมอน
 const PERF={lvl:0,low:0,high:0,acc:0};
-function perfQuality(){ const st=Save.data&&Save.data.settings; const q=st&&st.quality; return q===0||q===1||q===2?q:2; }
+function perfQuality(){ const st=Save.data&&Save.data.settings; const q=st&&st.quality; return q===0||q===1||q===2?q:0; }
 const COLORS = {
   bg1: 0x3b3357, mochi: 0xfff2f7, mochiEdge: 0xff9ec4, candy: 0xffd166,
   pink: 0xff85b3, grape: 0xa98cf0, toast: 0xf0b35a, mint: 0x66d3b3, ice: 0xa9dcff,
@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.3.2';
+const GAME_VERSION = '7.4.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.4.0', date:'2026-10-11', title:'🧠 Graphics memory plan', items:['The loading screen now only downloads files; menu screens, other heroes and endgame art load when you open them (start-up graphics memory about 641MB → 256MB)','Menus keep graphics memory under a budget and release pictures you are not looking at','Performance setting is back to Auto · after a graphics crash the game restarts in low-memory mode','Play Stats shows how much graphics memory is in use']},
   { v:'7.3.2', date:'2026-10-11', title:'🧠 Less graphics memory', items:['The stage floor no longer reserves a giant 4000×4000 image in graphics memory (about 64MB saved)']},
   { v:'7.3.1', date:'2026-10-11', title:'Equipment portrait and Dash audio', items:['Equipment portraits keep the face visible on wide portrait screens','Dash Boxer uses its original Dash and landing punch sounds']},
   { v:'7.3.0', date:'2026-10-11', title:'❄️ Frost Burn + sound spectacle', items:['Glacier Bloom gains 10% hit power and stacking Frost Burn (max 5, 8s)','Capture Zone and Mint charges now have controlled rising sound loops','Stronger Slot spin and reward audio, clearer curse/toxic feedback','Unique rank-up has a persistent highlighted notice; seven heroes gain painted screen effects']},
@@ -2542,6 +2543,20 @@ function stageCritical(k,u,ch,endgame){
   if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
 const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig)\/|incoming\/|character_cards\/|ui\/temple\/)/;
 function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
+// v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
+const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
+function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:temple|delve|talents)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
+function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
+// null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+  if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
+  if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
+function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
+let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
+const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:400;
+function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
 
 class Boot extends Phaser.Scene {
   constructor(){ super('Boot'); }
@@ -4714,7 +4729,7 @@ function gachaMaxBand(){const cap=storyItemLevelBase((Save.data&&Save.data.unloc
 const GACHA_LEVELS = [ {lo:1,hi:10,cost:150}, {lo:11,hi:20,cost:320}, {lo:21,hi:30,cost:560}, {lo:31,hi:40,cost:900}, {lo:41,hi:50,cost:1400}, {lo:51,hi:60,cost:2100} ];
 const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังNone)
 const AFFIX_REROLL_COST = 15;   // 🔩 สุ่มคุณสมบัติเสริมของชิ้นที่สวมอยู่ใหม่
-const DEFAULT_SETTINGS={sound:true,shake:2,flash:true,damageNumbers:true,vfx:2,quality:2,musicVol:1,sfxVol:1};   // v7.2 owner: VFX High · Performance High · Shake Normal
+const DEFAULT_SETTINGS={sound:true,shake:2,flash:true,damageNumbers:true,vfx:2,quality:0,musicVol:1,sfxVol:1};   // v7.2 owner: VFX High · Shake Normal · v7.4 Performance Auto (GPU memory)
 const VOL_STEPS=[1,0.75,0.5,0.25,0];
 function applyVolSettings(st){ st=st||{}; Sfx.setVolumes(st.musicVol==null?1:st.musicVol, st.sfxVol==null?1:st.sfxVol); }
 // ---- Monetization: rewarded ads + IAP (จุดต่อ Capacitor AdMob/Billing · ตอนนี้ยังNone plugin = ใช้เดโมจำลอง) ----
@@ -4826,6 +4841,7 @@ const Save = {
     if(this.data.tutorialDone==null)this.data.tutorialDone=false;
     this.data.settings=Object.assign({},DEFAULT_SETTINGS,this.data.settings||{});
     if(!this.data.settingsHigh72){ this.data.settingsHigh72=1; Object.assign(this.data.settings,{vfx:2,quality:2,shake:2}); }   // v7.2 one-time move to new defaults
+    if(!this.data.settingsAuto74){ this.data.settingsAuto74=1; this.data.settings.quality=0; }   // v7.4 Performance กลับเป็น Auto (High = DPR 3 กินหน่วยความจำกราฟิก)
     Sfx.muted=!this.data.settings.sound; applyVolSettings(this.data.settings);
     if(gearMigrated){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} }
     return this.data; },
@@ -5103,7 +5119,7 @@ const Stats={
       const a=this.load(); a.push(c); this.saveAll(a); }catch(e){} },
   clear(){ try{ localStorage.removeItem('mochi_stats'); }catch(e){} },
   stageLab(i){ const st=(typeof STAGES!=='undefined')&&STAGES[i]; return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1)); },
-  toText(){ const a=this.load(),L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs','date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
+  toText(){ const a=this.load(),L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
     a.forEach(r=>{ const d=new Date(r.t||0),dt=d.toISOString().slice(0,16).replace('T',' '),where=r.mode==='story'?this.stageLab(r.stage)+' ★'+r.diff:(r.mode+(r.depth!=null?' D'+r.depth:'')+' ('+this.stageLab(r.stage)+')');
       L.push([dt,r.result,r.mode,where,(r.hero||'?')+(r.path?' ('+r.path+')':''),Math.floor((r.sec||0)/60)+':'+String((r.sec||0)%60).padStart(2,'0'),'Lv'+r.level,r.kills+' kills','wave '+r.wave+(r.boss?' boss':''),r.cause||'-',(r.cards||[]).join(', ')].join(' | ')); });
     return L.join('\n'); },
@@ -5924,10 +5940,12 @@ class Game extends Phaser.Scene {
 
     this.buildHUD(); this.buildMenus(); this.showMenu();
     this.time.delayedCall(2500,()=>this.checkApkUpdate?.());   // v6.88 แจ้ง APK เก่า
+    this.time.delayedCall(1600,()=>{ try{ if(localStorage.getItem('mochi_lowmem_note')!=='1'||this.state!=='menu')return; localStorage.removeItem('mochi_lowmem_note'); this.menuToast&&this.menuToast('Low-memory mode is on after a graphics crash · change it in Settings › Performance','#ffd166'); }catch(e){} });   // v7.4
     this.setupCameras();
     this.setupParticles();
     this.setupInput();
     this.scale.on('resize',this.onResize,this);
+    if(!this._texHook){ this._texHook=true; this.load.on('filecomplete',k=>this.texTouch([k])); }   // v7.4 LRU: เวลาที่ภาพถูกถอดรหัส
     // รอซูมฉากเปิดจบก่อนถอดรหัสภาพด่านเบื้องหลัง (แย่งเฟรมบนมือถือ)
     const warm=()=>this.time.delayedCall(60,()=>this.preloadAll());   // v6.47 เจ้าของเลือก: โหลดทั้งเกมตั้งแต่หน้าแรก (ครั้งต่อไปมาจาก cache ในเครื่อง)
     // v6.49: เคยโหลดครบแล้ว = ไฟล์อยู่ในเครื่อง → เข้าเมนูเลย เตรียมที่เหลือเบื้องหลัง · ครั้งแรกโหลดครบก่อน (v6.48)
@@ -5946,9 +5964,11 @@ class Game extends Phaser.Scene {
     const skip=u=>only&&!only.test(u); let skipped=0;
     // v6.93 ภาพเฉพาะในด่าน (ศัตรู/บอส/ของตกแต่ง/พื้น) = ดาวน์โหลดเก็บลงเครื่องอย่างเดียว ไม่ถอดรหัสเข้า GPU · ensureStageArt โหลดตอนเข้าด่าน
     const SO=stageOnlyArtKeys(),dl=u=>{ if(!window.fetch)return; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); };
-    for(const k in ASSET_IMAGES){ if(real(k))continue; if(skip(ASSET_IMAGES[k])){skipped++;continue;} if(SO.has(k)){ if(!only)dl(ASSET_IMAGES[k]); continue; } drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
-    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; if(only){skipped++;continue;} if(SO.has(k)){ dl(sh.url); continue; } drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
-    for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; if(only){skipped++;continue;} drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
+    // v7.4 ทุกภาพที่ไม่ใช่ core (หน้าเมนูย่อย/ฮีโร่ตัวอื่น/endgame/ด่าน) = ดาวน์โหลดอย่างเดียว · ถอดรหัสตอนเปิดหน้านั้น/เข้าด่าน (ensureGroup/ensureStageArt/runArt)
+    const hero=this.character||Save.data.character||'momo',lz=(k,u)=>SO.has(k)||lazyArt(k,u,hero);
+    for(const k in ASSET_IMAGES){ if(real(k))continue; if(skip(ASSET_IMAGES[k])){skipped++;continue;} if(lz(k,ASSET_IMAGES[k])){ if(!only)dl(ASSET_IMAGES[k]); continue; } drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
+    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; if(only){skipped++;continue;} if(lz(k,sh.url)){ dl(sh.url); continue; } drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
+    for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; if(only){skipped++;continue;} if(lz(k,fx.url)){ dl(fx.url); continue; } drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
     // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
     for(const k in ASSET_AUDIO){ if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch){ const u=ASSET_AUDIO[k]; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); } continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
     // finalize = ทุกไฟล์โหลดเสร็จจริง (loader 'complete') → ถือว่าพร้อมทั้งเกม + จำไว้ว่าเครื่องมีไฟล์ครบ
@@ -5956,7 +5976,7 @@ class Game extends Phaser.Scene {
       this._deferDone=true;
       const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}); [1,2].forEach(t=>{D[t].done=true;D[t].started=true;const q=D[t].q;D[t].q=[];q.forEach(cb=>setTimeout(cb,0));});
       const real=k=>this.textures.exists(k)&&!(this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement);
-      this._stageArtReady=new Set(STAGES.map((_,i)=>i).filter(i=>this.stageArtKeys(i).every(real))); this._grpOk=new Proxy({}, {get:()=>true});
+      this._stageArtReady=new Set(STAGES.map((_,i)=>i).filter(i=>this.stageArtKeys(i).every(real)));
       try{localStorage.setItem('mochi_full_cached','1');}catch(e){}
       this.time.delayedCall(4000,()=>this.fillAssetCache()); };
     // fin = ปล่อยผู้เล่นไปต่อ (ปิดหน้าโหลด/เข้าฉากเปิด) · partial = watchdog ตัดเพราะ loader เงียบนาน → ของที่ขาดโหลดตอนใช้ผ่าน ensureStageArt/ensureGroup
@@ -5996,6 +6016,42 @@ class Game extends Phaser.Scene {
       let n=0; for(const k of drop){ if(this.textures.exists(k)){ this.textures.remove(k); n++; } }
       if(n){ for(let j=0;j<(STAGES||[]).length;j++)if(j!==idx&&this._stageArtReady)this._stageArtReady.delete(j); if(this._warmed)for(const wk in this._warmed)if(!wk.startsWith(idx+'|'))delete this._warmed[wk]; }
     }catch(e){} }
+  // v7.4 ตัวจัดงบหน่วยความจำกราฟิก (GPU): นับ MB ที่ถอดรหัสแล้ว · คืนภาพ lazy ที่ไม่ได้แสดงอยู่ เรียงจากที่ใช้ล่าสุดนานสุด (LRU)
+  realTex(k){ if(!this.textures.exists(k))return false; const s=this.textures.get(k).getSourceImage(); return !(s instanceof HTMLCanvasElement); }
+  texBytes(k){ const t=this.textures.list[k]; let b=0; if(t)for(const x of t.source||[])if(x&&x.width)b+=x.width*x.height*4; return b; }
+  texMB(){ let b=0; for(const k in this.textures.list)if(k[0]!=='_')b+=this.texBytes(k); return b/1e6; }
+  texInUse(){ const used=new Set(),walk=list=>{ for(const o of list){ if(!o||o.active===false)continue; if(o.texture&&o.texture.key)used.add(o.texture.key); if(o.displayTexture&&o.displayTexture.key)used.add(o.displayTexture.key); if(Array.isArray(o.list))walk(o.list); } }; walk(this.children.list); return used; }
+  texTouch(keys){ const T=this._texT||(this._texT={}),now=Date.now(); for(const k of keys)T[k]=now; }
+  // ภาพ lazy ทีละใบในหน้าเมนู: มีแล้ว = true · ยังไม่มี = สั่งโหลด แล้ววาดหน้านี้ใหม่เมื่อเสร็จ
+  lazyTex(k){ if(this.realTex(k))return true; const u=ASSET_IMAGES[k]; if(!u)return false; const Q=this._lazyQ||(this._lazyQ={}); if(Q[k]&&Date.now()-Q[k]<15000)return false; Q[k]=Date.now(); const scr=this.menuScreen;
+    if(this.textures.exists(k))this.textures.remove(k);
+    this.load.once('filecomplete-image-'+k,()=>{ if(this.state==='menu'&&this.menuScreen===scr)this.buildMenuScreen(); }); this.load.image(k,verUrl(u)); if(!this.load.isLoading())this.load.start(); return false; }
+  // pred(k,cls) เลือกผู้สมัคร · budgetMB=null คืนทุกตัวที่ตรง · ตัวที่แสดงอยู่บนจอไม่ถูกคืนเด็ดขาด
+  texEvict(pred,budgetMB){ try{ const used=this.texInUse(),T=this._texT||{},cand=[];
+      for(const k in this.textures.list){ if(k[0]==='_'||used.has(k)||!this.realTex(k))continue; const c=artClass(k); if(c&&pred(k,c))cand.push(k); }
+      if(!cand.length)return 0; cand.sort((a,b)=>(T[a]||0)-(T[b]||0));
+      let mb=budgetMB==null?0:this.texMB(); const drop=new Set();
+      for(const k of cand){ if(budgetMB!=null&&mb<=budgetMB)break; drop.add(k); mb-=this.texBytes(k)/1e6; }
+      if(!drop.size)return 0; const am=this.anims,all=am.anims?am.anims.getArray():[];
+      for(const a of all)if((a.frames||[]).some(f=>drop.has(f.textureKey)))am.remove(a.key);
+      for(const k of drop)this.textures.remove(k);
+      if(this._stageArtReady)for(const j of [...this._stageArtReady])if(this.stageArtKeys(j).some(k=>drop.has(k)))this._stageArtReady.delete(j);
+      if(this._stageCardsQueued)for(const k of drop)this._stageCardsQueued.delete(k);
+      this._warmed={}; this._critOk={}; this._grpOk={}; this._texEvicted=(this._texEvicted||0)+drop.size;
+      return drop.size; }catch(e){ return 0; } }
+  texBudget(){ if(this.texMB()>TEX_BUDGET_MB)this.texEvict(()=>true,TEX_BUDGET_MB); }
+  runArtEndgame(){ return !!(this._recipeRequested||this._pinnacleRequested||this._riftRequested||this.recipeMode); }
+  // ภาพ lazy ที่ด่านนี้ต้องใช้: ฮีโร่ที่เลือก (+มินเนียนยูซุ) และอาร์ต endgame เมื่อเล่น Delve/Pinnacle/Rift
+  runArtKeys(){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),out=[];
+    const add=(k,u)=>{ const c=artClass(k,u); if((c==='hero'&&artHero(k)===ch)||(c==='endgame'&&eg))out.push(k); };
+    for(const k in ASSET_IMAGES)add(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(k,ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(k,ASSET_FX[k].url); return out; }
+  // เข้าด่าน: คืนภาพหน้าเมนูย่อย/ฮีโร่ตัวอื่น/endgame ที่ไม่ใช้ (เมนูถูกเคลียร์ก่อนเรียก)
+  texFreeForRun(){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame();
+    return this.texEvict((k,c)=>c==='menu'||(c==='hero'&&artHero(k)!==ch)||(c==='endgame'&&!eg),null); }
+  // หน้าเมนูย่อย: ภาพ lazy ของกลุ่มหน้านี้ที่ยังไม่ถอดรหัส
+  menuLazyMissing(s){ const re=menuGroupRe(s),ch=this.character||Save.data.character||'momo',out=[];
+    const chk=(k,u)=>{ if(re.test(u||'')&&lazyArt(k,u,ch)&&artClass(k,u)!=='hero'&&!k.startsWith('screen_')&&!this.realTex(k))out.push(k); };
+    for(const k in ASSET_IMAGES)chk(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)chk(k,ASSET_SHEETS[k].url); return out; }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'epilogue_s'+(idx+1),'result_victory','result_defeat'];
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
@@ -7081,7 +7137,7 @@ class Game extends Phaser.Scene {
     const compact=w>h;
     const bg=artKey&&this.textures.exists(artKey)?this._coverImage(0,0,w,h,artKey):this.add.rectangle(0,0,w,h,0x1a1420,0.97).setOrigin(0,0);
     const veil=artKey&&this.textures.exists(artKey)?this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0):null;
-    if(artKey&&artKey.startsWith('screen_')&&!this.textures.exists(artKey)&&ASSET_IMAGES[artKey]){
+    if(artKey&&!this.textures.exists(artKey)&&ASSET_IMAGES[artKey]){   // v7.4 พื้นหลังทุกหน้า (ไม่ใช่แค่ screen_) โหลดตอนเปิดหน้า
       const url=ASSET_IMAGES[artKey];
       this.load.once('filecomplete-image-'+artKey,()=>{
         if(!bg.active||this.state!=='menu'||!this.menu.list.includes(bg))return;
@@ -7109,7 +7165,13 @@ class Game extends Phaser.Scene {
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
     if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allComplete){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
       let fired=false; const go=()=>{ if(fired)return; fired=true; this._grpOk[s]=true; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu'&&this.menuScreen===s)this.buildMenuScreen(); };
-      setTimeout(go,8000); try{ this.ensureGroup(menuGroupRe(s),go); }catch(e){ go(); } return; }if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
+      setTimeout(go,8000); try{ this.ensureGroup(menuGroupRe(s),go); }catch(e){ go(); } return; }
+    // v7.4 ภาพของหน้าย่อยถอดรหัสตอนเปิดหน้า (ไม่ได้ถอดรหัสตอนบูตแล้ว) · ลองครั้งเดียวต่อ 15 วิ กันวนถ้าไฟล์เสีย
+    if(s!=='hub'){ const T=this._menuArtTry||(this._menuArtTry={}),miss=Date.now()-(T[s]||0)>15000?this.menuLazyMissing(s):[];
+      if(miss.length){ T[s]=Date.now(); const ks=new Set(miss); if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
+        let fired=false; const go=()=>{ if(fired)return; fired=true; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu'&&this.menuScreen===s)this.buildMenuScreen(); };
+        setTimeout(go,10000); try{ this.ensureGroup(k=>ks.has(k),go,{all:true,quiet:true}); }catch(e){ go(); } return; } }
+    if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
@@ -7117,7 +7179,9 @@ class Game extends Phaser.Scene {
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
-    if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); } }
+    if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
+    // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
+    try{ this.texTouch(this.texInUse()); this.texBudget(); }catch(e){} }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
   applyGearTut(){ const d=Save.data; if(this.state!=='menu')return;
     if(this._mintCoach){ const z=this.tapZones.find(q=>q.tag==='char_mint'); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character='mint'; this.character='mint'; Save.data.mintIntro=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(2); };
@@ -7545,7 +7609,7 @@ class Game extends Phaser.Scene {
     const detail=this.add.text(w/2,y2+82,(spec.kind==='clear'?diff.emoji+' '+diff.name+' · ':'Progress '+(d.challengeProgress||0)+'/'+spec.target+' · ')+'bonus 🍬 '+(120+spec.diff*30),{fontFamily:'sans-serif',fontSize:'11px',color:'#ffd6a0'}).setOrigin(0.5);
     // v4.65: การ์ดภารกิจรายวันเคยว่างครึ่งใบ → ใส่ภาพด่าน + lore + ป้ายพลัง
     { const ax=28,aw=w-56,ay=y2+100,ah=(y2+h2-66)-ay,artKey=spec.kind==='dig'?'dig_bg':'bg'+(spec.stage+1);
-      if(ah>70){ if(this.textures.exists(artKey)){const art=this._coverImage(ax,ay,aw,ah,artKey);if(art)this.menu.add(art);}
+      if(ah>70){ if(this.lazyTex(artKey)){const art=this._coverImage(ax,ay,aw,ah,artKey);if(art)this.menu.add(art);}
         const shade=this.add.graphics();shade.fillGradientStyle(0x090711,0x090711,0x090711,0x090711,0.05,0.05,0.85,0.85);shade.fillRect(ax,ay,aw,ah);shade.lineStyle(1.5,0xd95cff,0.6);shade.strokeRect(ax,ay,aw,ah);this.menu.add(shade);
         const ps=this.powerStatus(spec.stage),bd=this.add.text(ax+aw-8,ay+8,spec.kind==='dig'?'⛏️ '+Save.dig().shovels+' shovels':'⚡ '+ps.cur+' / '+ps.rec+'  '+ps.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:spec.kind==='dig'?'#ffd9a8':ps.hex,backgroundColor:'#0d0913cc',padding:{x:6,y:3}}).setOrigin(1,0);
         const lore=this.add.text(ax+10,ay+ah-10,spec.kind==='dig'?'Open tiles in Temple Depths. Hard tiles count when broken.':st.lore||'',{fontFamily:'sans-serif',fontSize:'10px',color:'#eadff2',wordWrap:{width:aw-20},maxLines:3,stroke:'#120a16',strokeThickness:2}).setOrigin(0,1);
@@ -7958,7 +8022,7 @@ class Game extends Phaser.Scene {
       {k:'ctrlSize',e:'🎮',n:'Button Size',sub:'Dash & Unique button size',value:()=>['Normal','Large','Extra Large'][st.ctrlSize||0],toggle:()=>{st.ctrlSize=((st.ctrlSize||0)+1)%3;}},
       {k:'ctrlLeft',e:'✋',n:'Button Side',sub:'Left-handed? Move buttons left',value:()=>st.ctrlLeft?'Left':'Right',toggle:()=>{st.ctrlLeft=!st.ctrlLeft;}},
       {k:'vfx',e:'🎆',n:'VFX Quality',sub:'Particle count and boss effects',value:()=>['Low','Mid','High'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
-      {k:'quality',e:'⚡',n:'Performance',sub:'Auto adapts to your phone · resolution applies on restart',value:()=>['Auto','Low','High'][st.quality||0],toggle:()=>{st.quality=((st.quality||0)+1)%3;this.menuToast&&this.menuToast('Resolution changes apply next launch');}},
+      {k:'quality',e:'⚡',n:'Performance',sub:'Auto adapts to your phone · resolution applies on restart',value:()=>(_lowMemFlag?'Low-memory · ':'')+['Auto','Low','High'][st.quality||0],toggle:()=>{st.quality=((st.quality||0)+1)%3;clearLowMem();this.menuToast&&this.menuToast('Resolution changes apply next launch');}},
       {k:'stats',e:'📊',n:'Play Stats',sub:'Your runs on this device: wins, deaths, cards',value:()=>'Open',toggle:()=>{},open:true},
     ];
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
@@ -7990,6 +8054,8 @@ class Game extends Phaser.Scene {
     const T=(x,yy,t,sz,c,st,o)=>{const q=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#e6dcf0',wordWrap:{width:cw-12}}).setOrigin(o===undefined?0:o,0);this.menu.add(q);return q;};
     const lab=i=>{const st=STAGES[i];return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1));};
     const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    // v7.4 หน่วยความจำกราฟิกที่ใช้อยู่ (ภาพที่ถอดรหัสเข้า GPU) — ไว้เทียบเวลาเจอจอขาว/กราฟิกดับ
+    { const mem='Graphics memory: '+Math.round(this.texMB())+' MB / budget '+TEX_BUDGET_MB+' MB · render ×'+(Math.round(RENDER_DPR*100)/100)+(LOW_MEMORY_DEVICE?' · low-memory':''); Stats._mem=mem; T(x0,y,mem,11,'#8fd3ff','bold'); y+=18; }
     if(!runs.length){ T(w/2,y+40,'No runs recorded yet.\nPlay a stage and come back here.',14,'#bfb5ca','bold',0.5); this.menu.setVisible(true); return; }
     const wins=runs.filter(r=>r.result==='win').length;
     T(x0,y,'Saved on this device only · last '+runs.length+' runs · '+wins+' wins ('+Math.round(100*wins/runs.length)+'%)',11,'#9dff9d','bold'); y+=22;
@@ -9400,7 +9466,7 @@ class Game extends Phaser.Scene {
       ['🔊','Sound',()=>st.sound?'On':'Off',()=>{st.sound=!st.sound;Sfx.muted=!st.sound;if(Sfx.master)Sfx.master.gain.value=Sfx.muted?0:0.24;if(this.sound)this.sound.mute=Sfx.muted;}],
       ['🎵','Music Volume',()=>Math.round((st.musicVol==null?1:st.musicVol)*100)+'%',()=>cyc('musicVol')],
       ['🔔','Effects Volume',()=>Math.round((st.sfxVol==null?1:st.sfxVol)*100)+'%',()=>cyc('sfxVol')],
-      ['⚡','Performance',()=>['Auto','Low','High'][st.quality||0],()=>{st.quality=((st.quality||0)+1)%3;}],
+      ['⚡','Performance',()=>(_lowMemFlag?'Low-memory · ':'')+['Auto','Low','High'][st.quality||0],()=>{st.quality=((st.quality||0)+1)%3;clearLowMem();}],
       ['🎆','VFX Quality',()=>['Low','Mid','High'][st.vfx||0],()=>{st.vfx=((st.vfx||0)+1)%3;}],
       ['💥','Damage Numbers',()=>st.damageNumbers?'On':'Off',()=>{st.damageNumbers=!st.damageNumbers;}],
       ['📳','Screen Shake',()=>['Off','Light','Normal'][st.shake||0],()=>{st.shake=((st.shake||0)+1)%3;}],
@@ -9514,6 +9580,11 @@ class Game extends Phaser.Scene {
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
     if(!this._allLoaded){ if(this._enteringStageArt)return;this._enteringStageArt=true; this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
+    // v7.4 ภาพฮีโร่ที่เลือก (+ endgame) ไม่ได้ถอดรหัสตอนบูต → โหลดก่อนเข้าด่าน (ลองครั้งเดียวต่อ 25 วิ กันวน)
+    if(Date.now()-(this._runArtTry||0)>25000){ const miss=this.runArtKeys().filter(k=>!this.realTex(k));
+      if(miss.length){ if(this._enteringStageArt)return; this._enteringStageArt=true; this._runArtTry=Date.now(); const ks=new Set(miss);
+        if(window.GameLoader)window.GameLoader.show('Loading hero artwork...',0.1);
+        this.ensureGroup(k=>ks.has(k),()=>{ this._enteringStageArt=false; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu')this.startRun(idx); },{all:true,fx:true,label:'Loading hero artwork…'}); return; } }
     if(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx)){
       if(this._enteringStageArt)return;this._enteringStageArt=true;
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
@@ -9534,6 +9605,7 @@ class Game extends Phaser.Scene {
     this.state='loading';
     BGM_MODE=(this._recipeRequested||this._pinnacleRequested)?'endgame':null;
     this.menu.setVisible(false);
+    try{ this.menu.removeAll(true); this.texFreeForRun(); }catch(e){}   // v7.4 คืนภาพหน้าเมนูย่อย/ฮีโร่ตัวอื่นออกจาก GPU ระหว่างเล่น
     if(window.GameLoader)window.GameLoader.show('Preparing the stage...',0.08);
 
     // เพลงหลายด่านเป็นไฟล์ใหญ่ จึงโหลดเฉพาะด่านที่เลือกภายในหน้านี้
@@ -15728,10 +15800,10 @@ class Game extends Phaser.Scene {
 
 // Phaser 3 None GameConfig.resolution สำหรับ canvas หลัก: สร้าง backing store เป็น physical pixels เอง
 const DEVICE_DPR = window.devicePixelRatio||1;
-const LOW_MEMORY_DEVICE = Number(navigator.deviceMemory||8)<=4;
+const LOW_MEMORY_DEVICE = Number(navigator.deviceMemory||8)<=4||_lowMemFlag;   // v7.4 + โหมดหน่วยความจำต่ำหลังกราฟิกดับ
 // v5.50: คุณภาพกราฟิก (0 Auto · 1 Low · 2 High) — ความละเอียด render มีผลตอนเปิดเกมใหม่
-const QUALITY_SETTING=(()=>{try{const d=JSON.parse(localStorage.getItem('mochi_save')||'{}');const q=d&&d.settings&&d.settings.quality;return q===0||q===1||q===2?q:2;}catch(e){return 0;}})();
-const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):(LOW_MEMORY_DEVICE?1.5:2)));
+const QUALITY_SETTING=(()=>{try{const d=JSON.parse(localStorage.getItem('mochi_save')||'{}');if(!d||!d.settingsAuto74)return 0;const q=d.settings&&d.settings.quality;return q===0||q===1||q===2?q:0;}catch(e){return 0;}})();
+const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, _lowMemFlag?1.5:9, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):(LOW_MEMORY_DEVICE?1.5:2)));
 // v7.0 เล่นบนคอม (ไม่มีจอสัมผัส): บีบเป็นจอแนวตั้งแบบมือถือ 9:16 ตรงกลางจอ แทนการยืดเต็มจอกว้าง
 const DESKTOP_FIT=(()=>{ try{ return !window.Capacitor?.isNativePlatform?.()&&!('ontouchstart' in window)&&!(navigator.maxTouchPoints>0); }catch(e){ return false; } })();
 function viewSize(){ const w=window.innerWidth,h=window.innerHeight; if(!DESKTOP_FIT||w<=h*0.62)return {w,h,fit:false}; return {w:Math.round(h*9/16),h,fit:true}; }
@@ -15761,8 +15833,8 @@ window.__g = new Phaser.Game({
 });
 // v6.91 กราฟิก (WebGL) ดับเพราะหน่วยความจำเต็ม → จอขาวแต่เสียงยังเล่น: เซฟแล้วรีโหลดเอง
 (function(){ const hook=()=>{ const cv=window.__g&&window.__g.canvas; if(!cv){setTimeout(hook,500);return;}
-  cv.addEventListener('webglcontextlost',e=>{ try{e.preventDefault();}catch(_){} try{Save.save();}catch(_){} try{localStorage.setItem('mochi_ctx_lost',String(Date.now()));}catch(_){}
-    try{ const d=document.createElement('div'); d.style.cssText='position:fixed;inset:0;z-index:99999;background:#1b1424;color:#ffe08a;display:flex;align-items:center;justify-content:center;font:bold 16px sans-serif;text-align:center;padding:24px'; d.textContent='Graphics memory ran out — reloading…'; document.body.appendChild(d); }catch(_){}
+  cv.addEventListener('webglcontextlost',e=>{ try{e.preventDefault();}catch(_){} try{Save.save();}catch(_){} try{localStorage.setItem('mochi_ctx_lost',String(Date.now())); localStorage.setItem('mochi_lowmem','1'); localStorage.setItem('mochi_lowmem_note','1');}catch(_){}
+    try{ const d=document.createElement('div'); d.style.cssText='position:fixed;inset:0;z-index:99999;background:#1b1424;color:#ffe08a;display:flex;align-items:center;justify-content:center;font:bold 16px sans-serif;text-align:center;padding:24px'; d.textContent='Graphics memory ran out — reloading in low-memory mode…'; document.body.appendChild(d); }catch(_){}
     setTimeout(()=>location.reload(),1200); },false); };
   hook(); })();
 // ปรับขนาดตอนหมุนจอ/เปลี่ยนขนาด — debounce กันค่าเพี้ยนช่วงหมุน + อ่านค่าจริงหลังหมุนเสร็จ
