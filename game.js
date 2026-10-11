@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.0';
+const GAME_VERSION = '7.6.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.1', date:'2026-10-11', title:'🎯 Camera + card levels', items:['The camera stays centred on your hero at the map edge too, so the Sniper scope lines up with your character','Level-up cards show levels as numbers (Lv 3 / 5) instead of stars · endless upgrades show Lv 3 / ∞']},
   { v:'7.6.0', date:'2026-10-11', title:'✨ Unique Mastery talent', items:['Unique skills no longer level up during a stage','Raise your Unique in Heroes → Talents → Core: new Unique Mastery node (3 levels · 3 / 5 / 8 TP, no prerequisite)','Every stage starts with the Unique level you bought']},
   { v:'7.5.1', date:'2026-10-11', title:'🎰 Casino wheel sound', items:['Prize wheel now clacks like a real casino wheel: wooden peg ticks, a drum roll while it slows down and a bell when it stops']},
   { v:'7.5.0', date:'2026-10-11', title:'📅 Daily Quests', items:['Daily Missions are now Daily Quests: 5 quests a day (defeat enemies, clear stages, collect or dismantle gear, earn Sugar, dig and more)','Each finished quest gives 20 points · open a Small Box at 40, a Big Box at 70 and the Grand Box (with a gear item) at 100','Tap a quest to jump to where you can do it · new quests every day at midnight']},
@@ -5903,7 +5904,7 @@ class Game extends Phaser.Scene {
     // ในแอป: หลังLockedอิน Google เด้งกลับผ่าน deep link → ซิงค์ + Updatesหน้าSettings + แจ้งผล
     if(typeof Cloud!=='undefined'){ Cloud._onLogin=()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud(); this._acctChecked=false; if(this.menuToast)this.menuToast('✅ Signed in with Google','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); }; if(Cloud.bindDeepLink)Cloud.ensureClient&&Cloud.ensureClient(); }
 
-    this.cameras.main.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
+    this.cameras.main.removeBounds();   // v7.6.1 กล้องอยู่กลางตัวละครเสมอ (เดิมชนขอบโลก → ขอบล่าง/ชาร์จสไนเปอร์ซูมออก ตัวละครหลุดไปล่างจอ วงเล็งไม่ตรง) · พื้นวาดตามมุมกล้องอยู่แล้ว
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
     // พื้นหลังโซนครัว (รูปจริง) — เลเยอร์ใต้สุด + กริดเส้นจาง ๆ ทับไว้เป็นจุดอ้างอิงการเคลื่อนที่
     this.bgTile=this.camWorld(this.add.tileSprite(0,0,2,2,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(1));
@@ -11481,7 +11482,7 @@ class Game extends Phaser.Scene {
       nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       descT=this.add.text(textX,y+75,dd,{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
-      let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
+      let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
       ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
@@ -11493,7 +11494,7 @@ class Game extends Phaser.Scene {
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       descT=this.add.text(x+w/2,y+h*0.60,dd,{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
-      let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;if(mx>5)stars=lvl>1?'★ Stack '+(lvl-1):'★ New';else for(let s=0;s<mx;s++)stars+=s<lvl?'★':'☆';}
+      let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
