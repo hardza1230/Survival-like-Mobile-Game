@@ -1,0 +1,12 @@
+{
+  "source": "ElevenLabs sound generation",
+  "prompt": {
+    "text": "One single soft rounded strawberry seed blaster shot for a cute mobile action game. Warm low-mid wooden pop with a tiny airy puff, gentle cushioned transient, playful and satisfying. Very short clean decay for rapid repeated normal attacks. Dry close sound, no reverb, no metallic ping, no buzzing, no insect chirp, no squeak, no high-pitched electronic laser, no sharp crack, no voice, no music, no repeated shots. Single isolated pop only.",
+    "duration_seconds": 0.5,
+    "prompt_influence": 0.55
+  },
+  "processing": "100 Hz highpass / 3.8 kHz lowpass; 240ms trim; 80ms fade out",
+  "decoded_duration": 0.24,
+  "peak": 0.1989755630493164,
+  "runtime": "Sfx.strawberryShoot normal seed shots only"
+}

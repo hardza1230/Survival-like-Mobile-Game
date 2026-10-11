@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.0 — Unique levels only from Talent
+# Latest delivery: v7.6.1 — Soft Strawberry normal attack
+
+New ElevenLabs soft_seed_shot.mp3 is low-passed at 3.8kHz and trimmed/faded to 240ms, warm rounded pop. Separate Sfx.strawberryShoot (0.22 volume, 120ms throttle, gentle sine fallback) routes normal Berry Blaster/ricochet seeds only; sniper charge/shot and shotgun/Unique unchanged. Generic shoot still used by other skills/heroes. MANIFEST records prompt/processing/technical QA; subjective phone listening pending. Base is other AI v7.6.0, Unique Mastery and wheel updates retained.
+
+# Previous delivery: v7.6.0 — Unique levels only from Talent
 
 Owner: Unique must not level up in a stage; only via Talent. UNIQUE_TALENT {id:'unique', max 3, costs [3,5,8] TP, free:true} appended by charTalents(c) (CHAR_TALENTS untouched; no packed icon → ✨ emoji). buildTalents core: okN allows n.free, costN uses n.costs, no prerequisite line; talSpent refunds unique costs. uniqueTalentLevel(c)=1+tal.unique (cap UNIQUE_MAX_LV). All three run resets set uniqueLevel from it; level-up no longer calls checkUniqueAutoUpgrade (function + uniqueAt kept for tests/validator). talent-art baseline hash + talent-icons test updated; tests/unique-talent.test.cjs. Headless: buy 1 rank (3 TP) → stage starts Unique Lv2, stays Lv2 at run level 40. Balance: players now start runs at Lv1 Unique unless they spend TP — watch difficulty.
 

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.0';
+const GAME_VERSION = '7.6.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.1', date:'2026-10-11', title:'Softer Strawberry shots', items:['Normal Strawberry seed shots use a short warm pop instead of the shared buzzing shoot sound']},
   { v:'7.6.0', date:'2026-10-11', title:'✨ Unique Mastery talent', items:['Unique skills no longer level up during a stage','Raise your Unique in Heroes → Talents → Core: new Unique Mastery node (3 levels · 3 / 5 / 8 TP, no prerequisite)','Every stage starts with the Unique level you bought']},
   { v:'7.5.1', date:'2026-10-11', title:'🎰 Casino wheel sound', items:['Prize wheel now clacks like a real casino wheel: wooden peg ticks, a drum roll while it slows down and a bell when it stops']},
   { v:'7.5.0', date:'2026-10-11', title:'📅 Daily Quests', items:['Daily Missions are now Daily Quests: 5 quests a day (defeat enemies, clear stages, collect or dismantle gear, earn Sugar, dig and more)','Each finished quest gives 20 points · open a Small Box at 40, a Big Box at 70 and the Grand Box (with a gear item) at 100','Tap a quest to jump to where you can do it · new quests every day at midnight']},
@@ -1119,6 +1120,7 @@ const Sfx = {
   seq(notes,type='triangle',vol=0.26,step=0.1){ notes.forEach((f,i)=>this.tone(f,step*1.7,type,vol,0,i*step)); },
 
   // --- SFX mix: เสียงถี่เบา/ห่างขึ้น และเสียงสำคัญ duck เพลงชั่วคราว ---
+  strawberryShoot(){if(this._ok('strawberryShoot',0.12)){if(!this.playFile('sfx_strawberry_soft_shot',0.22))this.tone(340,0.065,'sine',0.035,180);}},
   shoot(){if(this._ok('shoot',0.12)){if(!this.playFile('sfx_shoot',0.25))this.tone(920,0.045,'triangle',0.035,1280);}},
   pop(){if(this._ok('pop',0.11)){if(!this.playFile('sfx_hit',0.22))this.tone(430,0.055,'sine',0.045,240);}},
   streak(step){if(this.playFile('sfx_streak_real',0.32,1+Math.min(0.5,(step||0)*0.06)))return;const base=540+step*150;this.tone(base,0.10,'triangle',0.075,base+300);this.tone(base*1.5,0.11,'sine',0.05,base*1.5+240,0.05);},   // เสียงคอมโบ pitch สูงขึ้นตามสเต็ป
@@ -2242,6 +2244,7 @@ const ASSET_AUDIO = {
   sfx_shared_build_evolution: 'assets/audio/sfx/build_paths/shared_build_evolution.mp3',
   sfx_boss_shield_break: 'assets/audio/sfx/build_paths/boss_shield_break.mp3',
   sfx_boss_phase_transition: 'assets/audio/sfx/build_paths/boss_phase_transition.mp3',
+  sfx_strawberry_soft_shot: 'assets/audio/sfx/strawberry/soft_seed_shot.mp3',
   sfx_shoot:      'assets/audio/sfx/event_refresh/shoot.mp3',
   sfx_hit:        'assets/audio/sfx/event_refresh/hit.mp3',
   sfx_xp:         'assets/audio/sfx/event_refresh/xp.mp3',
@@ -12493,7 +12496,7 @@ class Game extends Phaser.Scene {
         const spread=closeLarge?0.11:0.16;
         const fan=path==='shotgun'?(shotIndex-(shots-1)/2)*spread:(basic&&basic.mutation==='fan'?(shotIndex-(shots-1)/2)*0.055:0);
         const ang=Math.atan2(t.y-this.player.y,t.x-this.player.x)+fan+Phaser.Math.FloatBetween(closeLarge?-0.04:-0.08,closeLarge?0.04:0.08);
-        this.physics.velocityFromRotation(ang,speed,b.body.velocity); if(path!=='shotgun')Sfx.shoot();
+        this.physics.velocityFromRotation(ang,speed,b.body.velocity); if(path!=='shotgun'){if(this.character==='momo')Sfx.strawberryShoot();else Sfx.shoot();}
         if(path==='shotgun'&&shotIndex===0)this.shotgunKick(ang); };
       if(path==='sniper'){
         if(this.textures.exists('vfx_strawberry_charge')){const halo=this.trackArtVfx(this.camWorld(this.add.image(this.player.x,this.player.y-24,'vfx_strawberry_charge').setDisplaySize(88,88).setDepth(90490).setAlpha(0.65)));this.tweens.add({targets:halo,alpha:0,scaleX:halo.scaleX*0.65,scaleY:halo.scaleY*0.65,duration:340,onComplete:()=>halo.destroy()});}else this.vfxCastGlow(0xffd166);
@@ -13103,7 +13106,7 @@ class Game extends Phaser.Scene {
       const spread=path==='shotgun'?(idx-(shots-1)/2)*(closeBig?.11:.16):(basic.mutation==='fan'?(idx-(shots-1)/2)*.055:0);
       const a=Math.atan2(t.y-this.player.y,t.x-this.player.x)+spread+Phaser.Math.FloatBetween(closeBig?-.04:-.08,closeBig?.04:.08);
       this.physics.velocityFromRotation(a,aw?1180:980,b.body.velocity);
-      if(path==='shotgun'&&idx===0)this.shotgunKick(a);else if(path!=='shotgun')Sfx.shoot();
+      if(path==='shotgun'&&idx===0)this.shotgunKick(a);else if(path!=='shotgun')Sfx.strawberryShoot();
     };
     if(path==='shotgun'){
       this._sgVol=(this._sgVol||0)+1;for(let k=0;k<shots;k++)fire(k);
