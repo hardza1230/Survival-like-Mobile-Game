@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.1 — Camera always centred + numeric card levels
+# Latest delivery: v7.6.2 — 'reading sourceSize' crash on stage change
+
+Owner screenshot: "Cannot read properties of null (reading 'sourceSize')" entering C2-1 right after C1-5 (also seen entering Stage 3 after switching to Mint). Cause: freeOtherStageArt / texEvict (v7.4) removed textures + anims while pooled (inactive) enemies/bosses, the player's stale currentAnim or container children still pointed at their destroyed Frames (Frame.data=null → realWidth crash). New texDetach(drop): walks display list (recursing containers) + every scene Group's children; any anim (current/next) touching a dropped texture is stopped and cleared, any object textured with one is set to '__DEFAULT' and hidden. Both free paths call it before removing anims/textures; freeOtherStageArt now drops anims if ANY frame uses a dropped texture (was first frame only). tests/texture-detach.test.cjs. Owner asked not to run headless sims for this; not re-tested on device yet.
+
+# Previous delivery: v7.6.1 — Camera always centred + numeric card levels
 
 Owner: at the bottom map edge the Sniper charge (tickBossZoom ×0.72 zoom-out) left the hero far below the screen-centred scope. Cause: cameras.main.setBounds(WORLD) clamps scroll (even normal play stops centring ~650px from the edge). Now cameras.main.removeBounds() — camera always follows the hero; physics world bounds unchanged; floor already drawn around the view by syncBgTile (seamless beyond the edge, headless screenshot). Level-up cards: stars → 'Lv N / max', max ≥99 (endless Power Up) → 'Lv N / ∞'. Owner also reported a crash entering Stage 3 the first time after choosing Mint (intro → Heroes coach → Mint): could NOT reproduce headless (first launch, cached launch, 4GB low-memory; 256MB textures, no errors) — asked owner for version/symptom.
 
@@ -21,10 +25,6 @@ Owner: replace daily challenge with the usual quest board. DQ_POOL (before POWER
 # Previous delivery: v7.4.2 — Heroes screen stuck on Play Stats
 
 Owner: can't reach character select after visiting Play Stats. Cause: v6.95 added Play Stats as a second Game.buildStats() method; the later definition silently replaced the Heroes Stats tab's buildStats, so once _heroesTab='stats' every Heroes open rendered Play Stats (Back → Settings). Play Stats is now buildPlayStats (route 'playstats' + Clear button); Heroes tab keeps buildStats. Back with a fixed backScreen pops that screen from the nav stack top (no double Back on Settings). New tests/no-duplicate-methods.test.cjs scans every class for duplicate method names (caught the old bug). Headless: Heroes → Stats tab shows 'Heroes · Stats'; playstats → Back → settings → Back → previous screen.
-
-# Previous delivery: v7.4.1 — GPU memory P3 (oversized art downscaled)
-
-PIL Lanczos in place (same paths/formats, build-www hashes change URLs): menu_hub_v3 1440×3200→1080×2400, temple life/flavor/oath 1254²→256², special_cores_sheet 2172×724→870×290, rank_emblems 1536×1024→576×384, special_core_card 2172×724→1086×362, painted_nav_button 2172×724→869×290, replay_progress_sheet 1942×809→777×324, stage_summary_panel 1024×1536→768×1152. Hardcoded pixel frames now scale by source width (replay 'empty'/'fill' q=w/1942, nav 'button' q=w/2172) and animateProgressBar crop uses L.frame.width/height (was 1520×74). Boot estimate 225–262MB per hero; headless hub/Special Cores/progress bar 50% OK. P6 (ASTC/ETC2) not started.
 
 # Older history
 

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.1';
+const GAME_VERSION = '7.6.2';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.2', date:'2026-10-11', title:'🛠️ Stage change crash fix', items:['Fixed a crash (“reading sourceSize”) when starting a new stage or switching hero after playing another stage']},
   { v:'7.6.1', date:'2026-10-11', title:'🎯 Camera + card levels', items:['The camera stays centred on your hero at the map edge too, so the Sniper scope lines up with your character','Level-up cards show levels as numbers (Lv 3 / 5) instead of stars · endless upgrades show Lv 3 / ∞']},
   { v:'7.6.0', date:'2026-10-11', title:'✨ Unique Mastery talent', items:['Unique skills no longer level up during a stage','Raise your Unique in Heroes → Talents → Core: new Unique Mastery node (3 levels · 3 / 5 / 8 TP, no prerequisite)','Every stage starts with the Unique level you bought']},
   { v:'7.5.1', date:'2026-10-11', title:'🎰 Casino wheel sound', items:['Prize wheel now clacks like a real casino wheel: wooden peg ticks, a drum roll while it slows down and a bell when it stops']},
@@ -6054,7 +6055,7 @@ class Game extends Phaser.Scene {
   freeOtherStageArt(idx){ try{ const keep=new Set(this.stageArtKeys(idx)),drop=new Set();
       for(let j=0;j<(STAGES||[]).length;j++){ if(j===idx)continue; for(const k of this.stageArtKeys(j))if(!keep.has(k)&&!bootKeep(k))drop.add(k); }
       if(!drop.size)return; const am=this.anims; const all=am.anims?am.anims.getArray():[];
-      for(const a of all){ const f=a.frames&&a.frames[0]; if(f&&drop.has(f.textureKey))am.remove(a.key); }
+      this.texDetach(drop); for(const a of all){ if((a.frames||[]).some(f=>drop.has(f.textureKey)))am.remove(a.key); }
       let n=0; for(const k of drop){ if(this.textures.exists(k)){ this.textures.remove(k); n++; } }
       if(n){ for(let j=0;j<(STAGES||[]).length;j++)if(j!==idx&&this._stageArtReady)this._stageArtReady.delete(j); if(this._warmed)for(const wk in this._warmed)if(!wk.startsWith(idx+'|'))delete this._warmed[wk]; }
     }catch(e){} }
@@ -6063,6 +6064,13 @@ class Game extends Phaser.Scene {
   texBytes(k){ const t=this.textures.list[k]; let b=0; if(t)for(const x of t.source||[])if(x&&x.width)b+=x.width*x.height*4; return b; }
   texMB(){ let b=0; for(const k in this.textures.list)if(k[0]!=='_')b+=this.texBytes(k); return b/1e6; }
   texInUse(){ const used=new Set(),walk=list=>{ for(const o of list){ if(!o||o.active===false)continue; if(o.texture&&o.texture.key)used.add(o.texture.key); if(o.displayTexture&&o.displayTexture.key)used.add(o.displayTexture.key); if(Array.isArray(o.list))walk(o.list); } }; walk(this.children.list); return used; }
+  // v7.6.2 ก่อนลบ texture: ตัดทุกอ็อบเจกต์ (รวมตัวที่พักใน pool) ออกจากภาพ/อนิเมชันนั้น — เดิมเหลือเฟรมที่ถูกทำลาย → 'reading sourceSize' crash ตอนเปลี่ยนด่าน
+  texDetach(drop){ if(!drop||!drop.size)return; const seen=new Set(),fix=o=>{ if(!o||seen.has(o))return; seen.add(o);
+      const a=o.anims; if(a&&(a.currentAnim||a.nextAnim)){ const bad=an=>an&&(an.frames||[]).some(f=>!f||!f.frame||drop.has(f.textureKey)); if(bad(a.currentAnim)||bad(a.nextAnim)){ try{a.stop();}catch(e){} a.currentAnim=null;a.currentFrame=null;a.nextAnim=null;if(a.nextAnimsQueue)a.nextAnimsQueue.length=0; } }
+      if(o.texture&&drop.has(o.texture.key)&&o.setTexture){ try{o.setTexture('__DEFAULT');o.setVisible(false);}catch(e){} }
+      if(Array.isArray(o.list))o.list.forEach(fix); };
+    try{ (this.children.list||[]).forEach(fix); }catch(e){}
+    for(const k in this){ try{ const g=this[k]; if(g&&g.children&&typeof g.getChildren==='function'&&g.children.entries)g.getChildren().forEach(fix); }catch(e){} } }
   texTouch(keys){ const T=this._texT||(this._texT={}),now=Date.now(); for(const k of keys)T[k]=now; }
   // ภาพ lazy ทีละใบในหน้าเมนู: มีแล้ว = true · ยังไม่มี = สั่งโหลด แล้ววาดหน้านี้ใหม่เมื่อเสร็จ
   lazyTex(k){ if(this.realTex(k))return true; const u=ASSET_IMAGES[k]; if(!u)return false; const Q=this._lazyQ||(this._lazyQ={}); if(Q[k]&&Date.now()-Q[k]<15000)return false; Q[k]=Date.now(); const scr=this.menuScreen;
@@ -6075,7 +6083,7 @@ class Game extends Phaser.Scene {
       let mb=budgetMB==null?0:this.texMB(); const drop=new Set();
       for(const k of cand){ if(budgetMB!=null&&mb<=budgetMB)break; drop.add(k); mb-=this.texBytes(k)/1e6; }
       if(!drop.size)return 0; const am=this.anims,all=am.anims?am.anims.getArray():[];
-      for(const a of all)if((a.frames||[]).some(f=>drop.has(f.textureKey)))am.remove(a.key);
+      this.texDetach(drop); for(const a of all)if((a.frames||[]).some(f=>drop.has(f.textureKey)))am.remove(a.key);
       for(const k of drop)this.textures.remove(k);
       if(this._stageArtReady)for(const j of [...this._stageArtReady])if(this.stageArtKeys(j).some(k=>drop.has(k)))this._stageArtReady.delete(j);
       if(this._stageCardsQueued)for(const k of drop)this._stageCardsQueued.delete(k);
