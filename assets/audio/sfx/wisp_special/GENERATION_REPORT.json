@@ -1,0 +1,78 @@
+{
+  "started": "2026-10-11T01:33:56.448Z",
+  "results": [
+    {
+      "id": "wisp_purify_charge",
+      "status": "pending"
+    },
+    {
+      "id": "wisp_purify_complete",
+      "status": "pending"
+    },
+    {
+      "id": "wisp_purify_complete",
+      "status": "success",
+      "filename": "wisp_purify_complete.mp3",
+      "bytes": 45183,
+      "sha256": "6dac70aff1cd86d6bce591238035e4e4fc5bed252966156a8ecdc328f0b5e6de",
+      "character_cost": "28"
+    },
+    {
+      "id": "wisp_purify_interrupt",
+      "status": "pending"
+    },
+    {
+      "id": "wisp_purify_charge",
+      "status": "success",
+      "filename": "wisp_purify_charge.mp3",
+      "bytes": 48945,
+      "sha256": "0ef4c4edf0556860c7ef47cb5e7db1242e6ae9f3db4453caccf6b04a7ba2e23c",
+      "character_cost": "30"
+    },
+    {
+      "id": "special_card_pickup",
+      "status": "pending"
+    },
+    {
+      "id": "wisp_purify_interrupt",
+      "status": "success",
+      "filename": "wisp_purify_interrupt.mp3",
+      "bytes": 13836,
+      "sha256": "8f650bbe4062cd5ef5598d7b75020d2426be4cc876bc526b2977f0371e447d4b",
+      "character_cost": "8"
+    },
+    {
+      "id": "special_card_offer",
+      "status": "pending"
+    },
+    {
+      "id": "special_card_pickup",
+      "status": "success",
+      "filename": "special_card_pickup.mp3",
+      "bytes": 26793,
+      "sha256": "7ec4f4b4d53e85f152f8dfb54ce50eef61326c96ad67ca558177437204edf1b9",
+      "character_cost": "16"
+    },
+    {
+      "id": "special_card_confirm",
+      "status": "pending"
+    },
+    {
+      "id": "special_card_offer",
+      "status": "success",
+      "filename": "special_card_offer.mp3",
+      "bytes": 37660,
+      "sha256": "4e8bc1ef018b645f4836e5abeadd35f5e25f3229f7e5c0e8510c7b59e800b07b",
+      "character_cost": "23"
+    },
+    {
+      "id": "special_card_confirm",
+      "status": "success",
+      "filename": "special_card_confirm.mp3",
+      "bytes": 43929,
+      "sha256": "4892e78bd5cad622c41dfdfa6240d2a59fc2950a85668c3b5cb22fe02cc7707f",
+      "character_cost": "27"
+    }
+  ],
+  "finished": "2026-10-11T01:34:03.238Z"
+}

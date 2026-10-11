@@ -1,0 +1,59 @@
+{
+  "listening_review": "Not performed. Decode/non-silent checks do not establish artistic quality, tail length or mixing.",
+  "results": [
+    {
+      "id": "wisp_purify_charge",
+      "duration_seconds": 3.0,
+      "peak_dbfs": -2.13,
+      "rms_dbfs": -14.78,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "0ef4c4edf0556860c7ef47cb5e7db1242e6ae9f3db4453caccf6b04a7ba2e23c"
+    },
+    {
+      "id": "wisp_purify_complete",
+      "duration_seconds": 2.76,
+      "peak_dbfs": -3.07,
+      "rms_dbfs": -23.62,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "6dac70aff1cd86d6bce591238035e4e4fc5bed252966156a8ecdc328f0b5e6de"
+    },
+    {
+      "id": "wisp_purify_interrupt",
+      "duration_seconds": 0.8,
+      "peak_dbfs": 2.39,
+      "rms_dbfs": -10.68,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "8f650bbe4062cd5ef5598d7b75020d2426be4cc876bc526b2977f0371e447d4b"
+    },
+    {
+      "id": "special_card_pickup",
+      "duration_seconds": 1.6,
+      "peak_dbfs": -0.01,
+      "rms_dbfs": -23.65,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "7ec4f4b4d53e85f152f8dfb54ce50eef61326c96ad67ca558177437204edf1b9"
+    },
+    {
+      "id": "special_card_offer",
+      "duration_seconds": 2.28,
+      "peak_dbfs": 0.45,
+      "rms_dbfs": -19.35,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "4e8bc1ef018b645f4836e5abeadd35f5e25f3229f7e5c0e8510c7b59e800b07b"
+    },
+    {
+      "id": "special_card_confirm",
+      "duration_seconds": 2.68,
+      "peak_dbfs": 2.09,
+      "rms_dbfs": -16.24,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "4892e78bd5cad622c41dfdfa6240d2a59fc2950a85668c3b5cb22fe02cc7707f"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "status": "assets_only_not_integrated",
+  "base_commit": "68ab2738cb26b55d185c03d42d21b102eeee7f44",
+  "delivery_version": "7.1.0",
+  "files": [
+    {
+      "id": "wisp_purify_charge",
+      "filename": "wisp_purify_charge.mp3",
+      "group": "Wisp",
+      "hook": "wisp_purify_charge",
+      "mode": "new_event_identity",
+      "request": {
+        "text": "A gentle luminous spirit continuously channeling purification energy into a cursed stone: warm resonant crystal hum, delicate wavering glass harmonics and softly pulsing magical light. Seamless stable loop, no final explosion or reward, no voice or choir. Isolated fantasy game SFX. Immediate readable attack, smooth highs, warm phone-audible midrange. No speech, background music or ambient bed.",
+        "duration_seconds": 3,
+        "loop": true,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "key": "sfx_event_wisp_purify_charge",
+      "path": "assets/audio/sfx/wisp_special/wisp_purify_charge.mp3",
+      "duration_seconds": 3,
+      "peak_dbfs": -2.13,
+      "rms_dbfs": -14.78,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "0ef4c4edf0556860c7ef47cb5e7db1242e6ae9f3db4453caccf6b04a7ba2e23c"
+    },
+    {
+      "id": "wisp_purify_complete",
+      "filename": "wisp_purify_complete.mp3",
+      "group": "Wisp",
+      "hook": "wisp_purify_complete",
+      "mode": "new_event_identity",
+      "request": {
+        "text": "A cursed stone is purified by a small friendly light spirit: firm warm stone-seal crack, glowing magical release, three clear crystalline bell accents and soft radiant sparkle decay. Uplifting cleansing success, distinct from hero level up. Isolated fantasy game SFX. Immediate readable attack, smooth highs, warm phone-audible midrange. No speech, background music or ambient bed.",
+        "duration_seconds": 2.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "key": "sfx_event_wisp_purify_complete",
+      "path": "assets/audio/sfx/wisp_special/wisp_purify_complete.mp3",
+      "duration_seconds": 2.76,
+      "peak_dbfs": -3.07,
+      "rms_dbfs": -23.62,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "6dac70aff1cd86d6bce591238035e4e4fc5bed252966156a8ecdc328f0b5e6de"
+    },
+    {
+      "id": "wisp_purify_interrupt",
+      "filename": "wisp_purify_interrupt.mp3",
+      "group": "Wisp",
+      "hook": "wisp_purify_interrupt",
+      "mode": "new_event_identity",
+      "request": {
+        "text": "A small light spirit stops channeling into a stone: quiet descending glass energy sigh and soft airy magical extinguish. Gentle short interruption cue, no failure fanfare. Isolated fantasy game SFX. Immediate readable attack, smooth highs, warm phone-audible midrange. No speech, background music or ambient bed.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "key": "sfx_event_wisp_purify_interrupt",
+      "path": "assets/audio/sfx/wisp_special/wisp_purify_interrupt.mp3",
+      "duration_seconds": 0.8,
+      "peak_dbfs": 2.39,
+      "rms_dbfs": -10.68,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "8f650bbe4062cd5ef5598d7b75020d2426be4cc876bc526b2977f0371e447d4b"
+    },
+    {
+      "id": "special_card_pickup",
+      "filename": "special_card_pickup.mp3",
+      "group": "Special cards",
+      "hook": "special_card_pickup",
+      "mode": "new_event_identity",
+      "request": {
+        "text": "Collecting a rare magical card on the battlefield: crisp thick parchment snap, tactile enchanted seal pop, deep soft impact and an intriguing resonant glass twinkle. Distinct special-card pickup, no rising hero level-up scale. Isolated fantasy game SFX. Immediate readable attack, smooth highs, warm phone-audible midrange. No speech, background music or ambient bed.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "key": "sfx_event_special_card_pickup",
+      "path": "assets/audio/sfx/wisp_special/special_card_pickup.mp3",
+      "duration_seconds": 1.6,
+      "peak_dbfs": -0.01,
+      "rms_dbfs": -23.65,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "7ec4f4b4d53e85f152f8dfb54ce50eef61326c96ad67ca558177437204edf1b9"
+    },
+    {
+      "id": "special_card_offer",
+      "filename": "special_card_offer.mp3",
+      "group": "Special cards",
+      "hook": "special_card_offer",
+      "mode": "new_event_identity",
+      "request": {
+        "text": "A special relic card selection is unveiled: rich parchment fan unfurls, magical seal opens with low resonant energy, two mysterious shimmering crystal accents and luminous air bloom. Elegant special reward offer, no hero level-up melody. Isolated fantasy game SFX. Immediate readable attack, smooth highs, warm phone-audible midrange. No speech, background music or ambient bed.",
+        "duration_seconds": 2.3,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "key": "sfx_event_special_card_offer",
+      "path": "assets/audio/sfx/wisp_special/special_card_offer.mp3",
+      "duration_seconds": 2.28,
+      "peak_dbfs": 0.45,
+      "rms_dbfs": -19.35,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "4e8bc1ef018b645f4836e5abeadd35f5e25f3229f7e5c0e8510c7b59e800b07b"
+    },
+    {
+      "id": "special_card_confirm",
+      "filename": "special_card_confirm.mp3",
+      "group": "Special cards",
+      "hook": "special_card_confirm",
+      "mode": "new_event_identity",
+      "request": {
+        "text": "Accepting a special magical card: decisive enchanted parchment seal stamp, weighty warm magical impact, broad resonant crystal bloom and slow luxurious sparkle decay. Powerful special acquisition, no ascending three-note level-up scale. Isolated fantasy game SFX. Immediate readable attack, smooth highs, warm phone-audible midrange. No speech, background music or ambient bed.",
+        "duration_seconds": 2.7,
+        "loop": false,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "key": "sfx_event_special_card_confirm",
+      "path": "assets/audio/sfx/wisp_special/special_card_confirm.mp3",
+      "duration_seconds": 2.68,
+      "peak_dbfs": 2.09,
+      "rms_dbfs": -16.24,
+      "decode_ok": true,
+      "non_silent": true,
+      "sha256": "4892e78bd5cad622c41dfdfa6240d2a59fc2950a85668c3b5cb22fe02cc7707f"
+    }
+  ]
+}

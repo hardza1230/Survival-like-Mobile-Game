@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: Playtest SFX revision (assets only, 41 files)
+# Latest delivery: Wisp purification and special-card SFX (assets only)
+
+Six new files in assets/audio/sfx/wisp_special/MANIFEST.json; see docs/audio_orders/WISP_SPECIAL_CARD_SFX.md. Wisp charge controlled loop + completion/interrupt; special-card pickup/offer/confirm distinct from normal level-up. Runtime unchanged v7.1.0. Live code channel progresses only while near, pauses otherwise; stop charge before purifyCore and all cleanup. openLevelUp sound check happens before guaranteed Relic construction: classify origin after choices, not solely pendingLvl. Next AI integrates, listens, checks/version/deploy.
+
+# Previous delivery: Playtest SFX revision (assets only, 41 files)
 
 Owner feedback: Slot/card/levelup/draw/Temple/mine/Enhance too short or weak; add poison and Hunt the Threat. Generated 41 original cues with structured 2–4.5s reward payoffs, shorter frequent strikes. assets/audio/sfx/playtest_revision/MANIFEST.json + docs/audio_orders/SFX_PLAYTEST_REVISION_41.md. Existing v7.1.0 integration untouched; runtime v7.1.0. Next AI must repoint keys, wire actual Hunt/poison/mine branches, enforce one outcome and stopped loops/voice channels, listen/tune, bump/check/deploy. No subjective listening approval claimed.
 
