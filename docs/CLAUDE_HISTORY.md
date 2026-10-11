@@ -1708,3 +1708,7 @@ Owner Play Stats: Titan died to the C2-2 boss after 9:18 (Brawler cleared C2-1 i
 
 Owner: copy should include levels, equipped gear, talents etc. Stats.kit(hero,basic) snapshot at Stats.start → r.kit {clv,tp,ulv,pw,st (HP/DMG×/Crit/CD×/Armor/Taken×), tal 'id:r', weave 'rank · HP/DMG/DEF · perks', gear per GEAR_SLOTS 'slot: name +enh iLv grade [mod v Tn…]' (starter → 'starter')}. Stats.end adds dmg top-5 share %, end maxHP, pwEnd. toText: profile line (sugar, unlocked stage, heroes Lv) + per-run indented lines hero/talents/weave/gear/damage. All in try/catch (vm tests). Quick headless eval of toText OK.
 
+# Delivery: v7.6.7 — Screen VFX off, starter Unique boosts
+
+Owner: (1) new painted screen VFX look silly → heroScreenEffect() returns null (v7.3 hero_screen_* overlays off; files kept; v6.84 code-drawn screenFx unchanged). (2) Cocoa Unique before choosing a path (castCocoaUnique default branch) now also sets _cocoaRegenT=5+ul s at _cocoaRegenPct=2%+0.5%·ul max HP/s, ticked after normal regen (outside the 3% cap, honours noheal + pactHealMul), reset with uniqueLevel at run start. (3) Mint Gale (castWindRush) before a path: basicRate ×0.65 while windRushT>0 (character mint, no path). (4) Strawberry Rebound already heals % max HP (5.5%+1.8%·ul) — told owner, unchanged.
+

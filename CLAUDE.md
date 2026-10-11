@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.11 — Healing aura instead of green screen edge
+# Latest delivery: v7.6.12 — Colossus Fist % boss HP (owner chose option A)
+
+Owner asked for Titan boss-damage formula (given in chat: boss HP C2-2 ≈60.5k / C2-4 ≈97k at ★1; Titan basics ≈150 DPS; Rage-4 slam ≈710 ≈1.2% of C2-2 HP; phase gates clip big hits). Chose A: titanPctSlam(x,y,r,lv) after the slam's cocoaHit — every boss/mini inside the slam ring takes maxhp × [0,1,2,3,5]% by Rage (minis ×0.5) through damage() with _frDmg (no crit/powerMul; bossDmg/flat still apply; phase gates still clip; skipped while gate-locked/invulnerable). tests/titan-pct-slam.test.cjs; titanPctSlam added to cocoa test method lists.
+
+# Previous delivery: v7.6.11 — Healing aura instead of green screen edge
 
 Owner: change the heal sound, remove the green edge VFX, use an aura like high-level card upgrades. healScreen removed → healAura(): growth_unlock flipbook (same art as Evolution/Unique rank-up) tinted 0x8dffb0, timeScale 0.6, follows the player via postupdate until done; sound sfx_event_revive (vol .5). Called from startHeroRegen (Cocoa pre-path slam, Titan release) and Strawberry Rebound heal. VFX Off skips the aura (sound still plays). '+x% HP/s' float kept.
 
@@ -17,10 +21,6 @@ Owner: Titan Unique wider, show a growing ring while charging so you know what w
 # Previous delivery: v7.6.8 — ⚔ ATK / 🛡 DEF power split on Equipment
 
 Owner: split Power into attack and defense so items read as damage vs tank gear. heroAD(cid,basic) → {a: round(100·heroOffense), d: round(heroDefense)} (same parts heroPower combines); gearADDelta(item,base) swaps the item in like gearPowerDelta. Equipment power box shows '⚔ ATK a   🛡 DEF d'; selecting an unequipped item shows both lines 'ATK a→a+Δ ▲Δ' / 'DEF …' (box green both up, red both down, amber mixed); list cards show ⚔±/🛡± instead of ▲±. this._adBase cached per build. Overall heroPower (stage recommendations, auto-keep, clean list) unchanged. Quick UI screenshot OK.
-
-# Previous delivery: v7.6.7 — Screen VFX off, starter Unique boosts
-
-Owner: (1) new painted screen VFX look silly → heroScreenEffect() returns null (v7.3 hero_screen_* overlays off; files kept; v6.84 code-drawn screenFx unchanged). (2) Cocoa Unique before choosing a path (castCocoaUnique default branch) now also sets _cocoaRegenT=5+ul s at _cocoaRegenPct=2%+0.5%·ul max HP/s, ticked after normal regen (outside the 3% cap, honours noheal + pactHealMul), reset with uniqueLevel at run start. (3) Mint Gale (castWindRush) before a path: basicRate ×0.65 while windRushT>0 (character mint, no path). (4) Strawberry Rebound already heals % max HP (5.5%+1.8%·ul) — told owner, unchanged.
 
 # Older history
 
