@@ -1745,3 +1745,7 @@ Owner: more damage, aftershock in two waves, slightly higher initial hit. Slam u
 
 
 # Previous delivery: v7.6.0 — Unique levels only from Talent
+
+# Previous delivery: v7.6.15 — Soft Strawberry normal attack
+
+New ElevenLabs soft_seed_shot.mp3 is low-passed at 3.8kHz and trimmed/faded to 240ms, warm rounded pop. Separate Sfx.strawberryShoot (0.22 volume, 120ms throttle, gentle sine fallback) routes normal Berry Blaster/ricochet seeds only; sniper charge/shot and shotgun/Unique unchanged. Generic shoot still used by other skills/heroes. MANIFEST records prompt/processing/technical QA; subjective phone listening pending. Merged current v7.6.14; Ground Pound/Tremor, regen aura and disabled screen overlay behavior retained. Art backlog audit lives in docs/art_orders/16_CURRENT_ART_BACKLOG.md.

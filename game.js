@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.4';
+const GAME_VERSION = '7.7.5';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.7.5', date:'2026-10-11', title:'💎 One currency per craft', items:['Every Affix Forge action now costs exactly 1 currency','Tier Lock no longer adds +2 currency per roll','Crystal Glaze tier reroll costs 1 instead of 3']},
   { v:'7.7.4', date:'2026-10-11', title:'⚡ Faster Auto-Roll', items:['Affix Forge Auto-Roll is about 3–4× faster: the first rolls still spin, then each roll takes about a quarter of a second','Near-miss pauses are shorter too']},
   {v:'7.7.3',date:'2026-10-11',title:'Strawberry starter boost',items:['Before choosing a Build: seed hits deal 50% more damage and fire 15% faster','Sniper, Shotgun and Ricochet keep their existing values']},
   {v:'7.7.2',date:'2026-10-11',title:'Shared Temple music',items:['Flavor Weave Temple and Temple Depths share Tea For Two At The End Of The World']},
@@ -4485,7 +4486,7 @@ function tierWeights(best,max=AFFIX_TIER_MAX){ const out=[]; const peak=Math.pow
 function tierChances(best,max=AFFIX_TIER_MAX){ const w=tierWeights(best,max),tot=w.reduce((s,x)=>s+x[1],0),o={}; w.forEach(([t,v])=>o[t]=v/tot); return o; }
 function rollTier(best,ilvl,max=AFFIX_TIER_MAX){ const list=tierWeights(best,max); let tot=0; for(const x of list)tot+=x[1]; let r=Math.random()*tot; for(const [t,w] of list){ r-=w; if(r<=0)return t; } return max; }
 // v5.42 🔒 Tier lock: ถ้าล็อคไว้กับ mod นี้ → tier ที่ออกต้องดีเท่ากับหรือดีกว่า lock (ตัวเลขน้อย = ดี)
-const TIER_LOCK_COST=2;   // currency เพิ่มต่อ roll ขณะล็อค
+const TIER_LOCK_COST=0;   // currency เพิ่มต่อ roll ขณะล็อค
 function rollOneAffixLocked(mod,best,ilvl,lock){ if(!lock||lock.id!==mod.id)return rollOneAffix(mod,best,ilvl);
   const list=tierWeights(best,mod.tiers.length-1).filter(([t])=>t<=Math.max(best,lock.t)); let tot=0; for(const x of list)tot+=x[1]; let r=Math.random()*tot,t=list.length?list[list.length-1][0]:best; for(const [tt,w] of list){ r-=w; if(r<=0){t=tt;break;} }
   const band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; return {id:mod.id,t,v:band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)),t11:1,tierSchema:2}; }
@@ -4518,7 +4519,7 @@ const CUR_ALIAS={exalt:'transmute',regal:'transmute',chaos:'alt'};
 function curKey(k){ return CUR_ALIAS[k]||k; }
 function currencyDef(k){ k=curKey(k); return CURRENCY.find(c=>c.key===k); }
 // v4.30: flame-sand แบบ Torchlight — reroll ค่าของ mod ที่เลือก ใช้ได้ทุก rarity แต่ "ผลาญเยอะ" (เผา 3 ต่อครั้ง)
-const FLAME_REROLL_COST = 3;
+const FLAME_REROLL_COST = 1;
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
 const CURRENCY_BUY = { transmute:120, alt:110, regal:120, chaos:110, exalt:120, divine:320, scour:30, annul:90 };   // v6.79 merged keys share a price
 // ราคากล่องสุ่ม currency = ค่าเฉลี่ยราคาขายใหม่ (90%) ตามน้ำหนักสุ่มจริง
