@@ -1,3 +1,5 @@
+> P1 ส่งใน v7.7.0: ชีต edge accents แยก 13 สกิล, Unique Mastery, Tremor/Frost Burn และแก้ Berry Core crop แล้ว ดู P1_DELIVERY_7_7.md สำหรับหลักฐานและข้อจำกัด QA; รีวิวเล่นจริงบนมือถือยังค้าง
+
 # งานอาร์ตปัจจุบัน — ตรวจ 11 ต.ค. 2026
 
 ฐานตรวจ: runtime v7.6.14 (`0b010e8`) รวมเสียง Strawberry ใน v7.6.15

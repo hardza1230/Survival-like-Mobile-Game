@@ -1716,3 +1716,16 @@ Owner: (1) new painted screen VFX look silly → heroScreenEffect() returns null
 
 Owner: split Power into attack and defense so items read as damage vs tank gear. heroAD(cid,basic) → {a: round(100·heroOffense), d: round(heroDefense)} (same parts heroPower combines); gearADDelta(item,base) swaps the item in like gearPowerDelta. Equipment power box shows '⚔ ATK a   🛡 DEF d'; selecting an unequipped item shows both lines 'ATK a→a+Δ ▲Δ' / 'DEF …' (box green both up, red both down, amber mixed); list cards show ⚔±/🛡± instead of ▲±. this._adBase cached per build. Overall heroPower (stage recommendations, auto-keep, clean list) unchanged. Quick UI screenshot OK.
 
+
+# Previous delivery: v7.6.11 — Healing aura instead of green screen edge
+
+Owner: change the heal sound, remove the green edge VFX, use an aura like high-level card upgrades. healScreen removed → healAura(): growth_unlock flipbook (same art as Evolution/Unique rank-up) tinted 0x8dffb0, timeScale 0.6, follows the player via postupdate until done; sound sfx_event_revive (vol .5). Called from startHeroRegen (Cocoa pre-path slam, Titan release) and Strawberry Rebound heal. VFX Off skips the aura (sound still plays). '+x% HP/s' float kept.
+
+# Previous delivery: v7.6.10 — Titan Rage 4, post-slam regen, heal glow
+
+Owner: Titan charges to 4 Rage; the last level clears almost the whole screen; after release regen scales with Max HP; starter Unique heal was invisible → green screen effect. titanMaxLv()=4 always (TITAN_RAGE_MUL[4]=5.5). titanSlamRadius: rage≤3 b0·(1+0.22r) (b0=(150+12·ul)·size), 3→4 lerps to max(b0·1.66, 600·min(1.3,size)). Release calls startHeroRegen(3+1.5·lv s, (0.8%+0.6%·lv) max HP/s, ×2 with capstone). Capstone capA 'Rage Four' → 'Rage Overflow' (ptv rage4: max-Rage release ×1.3 dmg + double regen); talent baseline hash updated. startHeroRegen(sec,pct) shares _cocoaRegenT/_cocoaRegenPct (keeps the stronger), float '+x% HP/s', healScreen(sec) green pulsing scrEdge (respects VFX off); used by Cocoa pre-path slam, Titan release, Strawberry Rebound heal (0.9s). Play Stats fixes: 'damage:' was damage TAKEN by source → 'damage taken from:'; profile lists every hero in CHAR_ORDER that is owned or levelled.
+
+# Previous delivery: v7.6.9 — Colossus Fist slams around Cocoa
+
+Owner: Titan Unique wider, show a growing ring while charging so you know what will be hit, punch all around instead of walking/leaping onto the enemy. titanSlamRadius(rage)=(150+12·ul)·size·(1+0.22·rage) (was (102+10·ul)·size·(1+0.15·lv) on cocoaPriorityTarget). Release centres on the player's position at release (x=p.x,y=p.y; aftershock same spot); center ×3.6 zone = r×0.48. tickTitanRage draws the live slam ring (fill + pulsing edge + inner bonus ring) and outlines up to 40 enemies inside (bosses/minis gold). cocoa-builds Titan test updated to the new geometry; titanSlamRadius added to the cocoa test method lists.
+

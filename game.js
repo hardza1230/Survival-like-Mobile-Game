@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.15';
+const GAME_VERSION = '7.7.0';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.0',date:'2026-10-11',title:'Unique art and status clarity',items:['Painted Unique Mastery icon','Tremor and Frost Burn icons with live stack counts','Brief skill-specific edge accents keep combat readable']},
   { v:'7.6.15', date:'2026-10-11', title:'Softer Strawberry shots', items:['Normal Strawberry seed shots use a short warm pop instead of the shared buzzing shoot sound']},
   { v:'7.6.14', date:'2026-10-11', title:'🗿 Titan Ground Pound', items:['Titan no longer uses the five-hit combo: every punch is the same heavy Ground Pound with a slam, shockwave and crack','Each pound adds Tremor to enemies it hits: +6% damage from pounds per stack (up to 5, lasts 3s), so long boss fights ramp up','Knockout Force on Titan: +8% pound power and +1 max Tremor stack per rank','Earthbreaker and Cocoa Colossus now make a smaller aftershock on every pound instead of only the finisher']},
   { v:'7.6.13', date:'2026-10-11', title:'🗿 Double Aftershock', items:['Colossus Fist hits a bit harder (+18% slam)','Aftershock now rolls out in two waves that grow with Blood Rage, each with its own shockwave and screen shake']},
@@ -1320,13 +1321,9 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
-  hero_screen_momo:'assets/art/screen_effects/momo.webp',
-  hero_screen_mint:'assets/art/screen_effects/mint.webp',
-  hero_screen_cocoa:'assets/art/screen_effects/cocoa.webp',
-  hero_screen_taro:'assets/art/screen_effects/taro.webp',
-  hero_screen_sesame:'assets/art/screen_effects/sesame.webp',
-  hero_screen_yuzu:'assets/art/screen_effects/yuzu.webp',
-  hero_screen_berry:'assets/art/screen_effects/berry.webp',
+  ic_unique_mastery:'assets/art/talents/unique_mastery.webp',
+  ic_status_tremor:'assets/art/p1_feedback/tremor.webp',
+  ic_status_frostburn:'assets/art/p1_feedback/frost_burn.webp',
   bpx_cocoa_afterimage:'assets/art/bp_fx/vfx_dash_afterimage.webp',
   bpx_mint_impale1:'assets/art/bp_fx/vfx_impale_stack_1.webp',
   bpx_mint_impale2:'assets/art/bp_fx/vfx_impale_stack_2.webp',
@@ -1947,6 +1944,7 @@ function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
   }
 }
 const ASSET_SHEETS = {
+  p1_skill_edges:{url:'assets/art/p1_feedback/skill_edges.webp',frame:256},
   talent_momo:{url:'assets/art/talents/momo_talents.webp',frame:128},
   talent_mint:{url:'assets/art/talents/mint_talents.webp',frame:128},
   talent_cocoa:{url:'assets/art/talents/cocoa_talents.webp',frame:128},
@@ -8914,7 +8912,7 @@ class Game extends Phaser.Scene {
     const folded=true, cy0=78, sgap=8, ss=Math.min(70,Math.floor((w-28-10-sgap*2)/3.95)), avH=ss*2+sgap;
     const gridW=ss*3+sgap*2, x0=w-12-gridW, ax=12, ay=cy0+4, key='card_'+id, avW=x0-10-ax;
     { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,avW,avH,12); this.menu.add(fg);
-      if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=TH*0.55,cx0=TW*0.19,cy1=TH*0.03;
+      if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=TH*(id==='berry'?.68:.55),cx0=TW*0.19,cy1=TH*(id==='berry'?.14:.03);
         im.setCrop(cx0,cy1,cw,ch).setOrigin((cx0+cw/2)/TW,(cy1+ch/2)/TH).setScale(Math.min((avW-6)/cw,(avH-6)/ch)).setPosition(ax+avW/2,ay+avH/2); this.menu.add(im); }
       else { const em=this.add.text(ax+avW/2,ay+avH/2,CHARACTERS[id].emoji,{fontSize:'30px'}).setOrigin(0.5); this.menu.add(em); }
       const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,avW-2,avH-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,avW,avH,12); this.menu.add(fr);
@@ -12869,11 +12867,22 @@ class Game extends Phaser.Scene {
     if(lv>=3){this.cocoaVisual(x,y,r*1.5,'fist',0xff4a2a);const t=this.add.text(x,y-r*.6,'TITAN CRUSH!',{fontSize:'30px',fontStyle:'900',color:'#ffd27a',stroke:'#5a1500',strokeThickness:7}).setOrigin(.5).setDepth(9);this.camWorld(t);this.tweens.add({targets:t,y:t.y-50,scale:1.3,alpha:0,duration:900,onComplete:()=>t.destroy()});Sfx.beatFx?.('titan');}
   }
   // v6.84 Screen FX: overlay วาดด้วยโค้ด ยึดติดกล้อง (local 0..vw,0..vh) · draw(g,vw,vh,t01) เรียกทุกเฟรม · คืน object ให้ kill() ได้
-  heroScreenEffect(life=1.2,alpha=.46){ return null;   // v7.6.7 เจ้าของ: ภาพวาดเต็มจอแบบใหม่ดูตลก — ปิดไว้ก่อน ใช้ screenFx แบบเดิม (ไฟล์ hero_screen_* เก็บไว้ทำใหม่)
-    const key='hero_screen_'+this.character;if(!this.textures.exists(key)||(Save.data.settings?.vfx??2)===0)return null;
-    if(this._heroScreen?.kill)this._heroScreen.kill();const cam=this.cameras.main,img=this.camWorld(this.add.image(0,0,key).setOrigin(0,0).setDepth(94000)),t0=this.time.now,fx={dead:false};
-    const step=()=>{if(fx.dead||!img.active)return;const v=cam.worldView,k=Math.min(1,(this.time.now-t0)/(life*1000));img.setPosition(v.x,v.y).setDisplaySize(v.width,v.height).setAlpha(alpha*Math.min(1,k*8)*Math.min(1,(1-k)*4));if(k>=1)fx.kill();};
-    fx.kill=()=>{if(fx.dead)return;fx.dead=true;this.events.off('postupdate',step);if(img.active)img.destroy();if(this._heroScreen===fx)this._heroScreen=null;};this._heroScreen=fx;this.events.on('postupdate',step);step();return fx;
+  heroScreenEffect(life=.65,alpha=.32){
+    if((Save.data.settings?.vfx??2)===0||!this.textures.exists('p1_skill_edges'))return null;
+    const path=this.basicAttack?.path,frames={momo:{shotgun:1,sniper:2,ricochet:0},mint:{glacier:3,impaler:4,barrage:5},cocoa:{brawler:6,titan:7,dashboxer:8},taro:9,sesame:10,yuzu:11,berry:12},spec=frames[this.character],frame=typeof spec==='number'?spec:(spec?.[path]??({momo:0,mint:5,cocoa:7}[this.character]));if(frame===undefined)return null;
+    this._heroScreen?.kill();life=Math.min(.75,Math.max(.25,life));alpha=Math.min(.34,alpha);const cam=this.cameras.main,t0=this.time.now,fx={dead:false};
+    const images=[0,1].map(i=>this.camWorld(this.add.image(0,0,'p1_skill_edges',frame).setOrigin(i,1).setFlipX(i===1).setDepth(94000)));
+    const step=()=>{if(fx.dead)return;const v=cam.worldView,k=Math.min(1,(this.time.now-t0)/(life*1000)),size=Math.min(150,v.width*.18,v.height*.24);images.forEach((im,i)=>{if(im.active)im.setPosition(v.x+(i?v.width:0),v.y+v.height*.72).setDisplaySize(size,size).setAlpha(alpha*Math.sin(Math.PI*k));});if(k>=1)fx.kill();};
+    fx.kill=()=>{if(fx.dead)return;fx.dead=true;this.events.off('postupdate',step);for(const im of images)if(im.active)im.destroy();if(this._heroScreen===fx)this._heroScreen=null;};this._heroScreen=fx;this.events.on('postupdate',step);step();return fx;
+  }
+  clearStatusArt(){for(const pack of this._statusArt?.values()||[])for(const o of pack.items)o.destroy();this._statusArt?.clear();}
+  tickStatusArt(){
+    if((Save.data.settings?.vfx??2)===0){this.clearStatusArt();return;}if(!this.enemies?.children)return;
+    const map=this._statusArt||(this._statusArt=new Map()),seen=new Set(),now=this.time.now;let count=0;
+    this.enemies.children.iterate(e=>{if(!e?.active||count>=40)return;const frost=e._frostBurnUntil>now?e._frostBurnStacks||0:0,tremor=now-(e._tremT??-1e9)<=3000?e._trem||0:0;if(!frost&&!tremor)return;seen.add(e);count++;
+      let pack=map.get(e);if(!pack){const pairs=['ic_status_tremor','ic_status_frostburn'].map(key=>({im:this.textures.exists(key)?this.camWorld(this.add.image(0,0,key).setDisplaySize(18,18).setDepth(93000)):null,tx:this.camWorld(this.add.text(0,0,'',{fontSize:'11px',fontStyle:'bold',color:'#ffffff',stroke:'#201526',strokeThickness:3}).setDepth(93001).setOrigin(0,.5))}));pack={pairs,items:pairs.flatMap(p=>[p.im,p.tx].filter(Boolean))};map.set(e,pack);}
+      const active=[tremor,frost].filter(Boolean).length;let col=0;[tremor,frost].forEach((n,i)=>{const pair=pack.pairs[i];pair.im?.setVisible(n>0);pair.tx.setVisible(n>0);if(n){const x=e.x+(col++-(active-1)/2)*34,y=e.y-Math.min(75,Math.max(28,e.body?.halfHeight||28))-12;pair.im?.setPosition(x-6,y).setAlpha(i===1?.8+.15*Math.sin(now*.006):.95);pair.tx.setPosition(x+5,y).setText(String(n));}});
+    });for(const [e,pack] of map)if(!seen.has(e)){for(const o of pack.items)o.destroy();map.delete(e);}
   }
   screenFx(life,draw,{fadeIn=0,hold=null}={}){ try{ const cam=this.cameras.main,g=this.camWorld(this.add.graphics().setDepth(95000)),t0=this.time.now,fx={g,dead:false};
     const step=()=>{ if(fx.dead||!g.active)return; const v=cam.worldView,el=(this.time.now-t0)/1000,k=life>0?Math.min(1,el/life):0; g.setPosition(v.x,v.y); g.clear(); try{draw(g,v.width,v.height,k,el);}catch(e){} if(life>0&&el>=life)fx.kill(); };
@@ -14388,7 +14397,7 @@ class Game extends Phaser.Scene {
     const ev=this.time.addEvent({delay:ms,loop:true,callback:()=>{if((this._artEpoch||0)===epoch&&(this.state==='play'||this.state==='levelup'))fn();}});
     this._artTimers.add(ev);return ev;
   }
-  clearArtVfx(){if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
+  clearArtVfx(){this.clearStatusArt?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
     this.clearCocoaCombat?.();this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;this._growthVfxAt=null;
     this._mintArsenalAt=-Infinity;this._mintVfxWindow=null;this._mintVfxCount=0;this._mintShardWindow=null;this._mintShardCount=0;this._mintImpactAt=-Infinity;
     if(this.basicAttack)this.basicAttack._impalerFullShots=0;
@@ -15089,7 +15098,7 @@ class Game extends Phaser.Scene {
   charPassiveOnKill(e){ if(this._titanHold&&this.ptv('trLust')){const p=this.player;p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.01);} const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
   // v4.88: หน้า Talent ประจำตัวละคร — ใช้ TP จากเลเวลตัวละคร (Save.cp) + โชว์ passive ประจำตัว
   talentIcon(hero,node,x,y,size,open=true){
-    const key='talent_'+hero,frame=(TALENT_ICON_FRAMES[hero]||{})[node.id];
+    const key=node.id==='unique'?'ic_unique_mastery':'talent_'+hero,frame=node.id==='unique'?0:(TALENT_ICON_FRAMES[hero]||{})[node.id];
     const icon=frame!==undefined&&this.textures.exists(key)?this.add.image(x,y,key,frame).setDisplaySize(size,size):this.add.text(x,y,node.emoji||'✦',{fontSize:Math.round(size*0.72)+'px'}).setOrigin(0.5);
     icon.setAlpha(open?1:0.35);this.menu.add(icon);return icon;
   }
@@ -15825,7 +15834,7 @@ class Game extends Phaser.Scene {
     const regenPerSec=(this.recipeHas('noheal')||this.player._uqNoRegen?0:1)*this.pactHealMul()*Math.min(this.player.maxhp*0.03,(this.player.regen||0)+(this.player.regenFlat||0)+this.player.maxhp*(this.player.regenPct||0));
     if(regenPerSec>0&&this.player.hp<this.player.maxhp)this.player.hp=Math.min(this.player.maxhp,this.player.hp+regenPerSec*dt);
     if(this._cocoaRegenT>0){ this._cocoaRegenT-=dt; if(!this.recipeHas('noheal')&&this.player.hp<this.player.maxhp)this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(this._cocoaRegenPct||0)*this.pactHealMul()*dt); }   // v7.6.7 Cocoa Unique regen (นอกเพดาน 3%)
-    this.tickTitanRage(dt);this.tickImpaleMarks?.();
+    this.tickStatusArt?.();this.tickTitanRage(dt);this.tickImpaleMarks?.();
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
     this.tickCocoaFlicker(dt);this.updatePose(dt);this.animatePlayer(dt);if(this._impalerCharge)this.tickImpalerCharge();if(this._berryCharge)this.tickBerryCharge();

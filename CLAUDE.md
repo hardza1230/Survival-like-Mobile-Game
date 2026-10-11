@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.15 — Soft Strawberry normal attack
+# Latest delivery: v7.7.0 — P1 art feedback
+
+New ImageGen skill_edges 4x4 atlas (13 runtime skill mappings, 3 spare), two brief mirrored edge accents <=18% viewport width, alpha <=.34 and <=.75s, no painted full-screen frame; removed old hero_screen registrations (files retained). Shared Unique Mastery icon under art/talents for menu loading; original 218 talent mappings untouched. Tremor/Frost Burn painted markers with actual counts (including >5 Tremor), cap 40 marked enemies, fade/pulse, expiry/death/pool/transition/off cleanup. Berry Core equipment crop fixed (.14..82 source height) after 28 source-crop review panels exposed missing mouth. Static image/geometry review only; browser UI automation unavailable; owner phone visual/FPS review pending, do not claim live screenshot QA. docs/art_orders/P1_DELIVERY_7_7.md and preview files. npm check plus P1 lifecycle test and build required.
+
+# Previous delivery: v7.6.15 — Soft Strawberry normal attack
 
 New ElevenLabs soft_seed_shot.mp3 is low-passed at 3.8kHz and trimmed/faded to 240ms, warm rounded pop. Separate Sfx.strawberryShoot (0.22 volume, 120ms throttle, gentle sine fallback) routes normal Berry Blaster/ricochet seeds only; sniper charge/shot and shotgun/Unique unchanged. Generic shoot still used by other skills/heroes. MANIFEST records prompt/processing/technical QA; subjective phone listening pending. Merged current v7.6.14; Ground Pound/Tremor, regen aura and disabled screen overlay behavior retained. Art backlog audit lives in docs/art_orders/16_CURRENT_ART_BACKLOG.md.
 
@@ -18,18 +22,6 @@ Owner: more damage, aftershock in two waves, slightly higher initial hit. Slam u
 # Previous delivery: v7.6.12 — Colossus Fist % boss HP (owner chose option A)
 
 Owner asked for Titan boss-damage formula (given in chat: boss HP C2-2 ≈60.5k / C2-4 ≈97k at ★1; Titan basics ≈150 DPS; Rage-4 slam ≈710 ≈1.2% of C2-2 HP; phase gates clip big hits). Chose A: titanPctSlam(x,y,r,lv) after the slam's cocoaHit — every boss/mini inside the slam ring takes maxhp × [0,1,2,3,5]% by Rage (minis ×0.5) through damage() with _frDmg (no crit/powerMul; bossDmg/flat still apply; phase gates still clip; skipped while gate-locked/invulnerable). tests/titan-pct-slam.test.cjs; titanPctSlam added to cocoa test method lists.
-
-# Previous delivery: v7.6.11 — Healing aura instead of green screen edge
-
-Owner: change the heal sound, remove the green edge VFX, use an aura like high-level card upgrades. healScreen removed → healAura(): growth_unlock flipbook (same art as Evolution/Unique rank-up) tinted 0x8dffb0, timeScale 0.6, follows the player via postupdate until done; sound sfx_event_revive (vol .5). Called from startHeroRegen (Cocoa pre-path slam, Titan release) and Strawberry Rebound heal. VFX Off skips the aura (sound still plays). '+x% HP/s' float kept.
-
-# Previous delivery: v7.6.10 — Titan Rage 4, post-slam regen, heal glow
-
-Owner: Titan charges to 4 Rage; the last level clears almost the whole screen; after release regen scales with Max HP; starter Unique heal was invisible → green screen effect. titanMaxLv()=4 always (TITAN_RAGE_MUL[4]=5.5). titanSlamRadius: rage≤3 b0·(1+0.22r) (b0=(150+12·ul)·size), 3→4 lerps to max(b0·1.66, 600·min(1.3,size)). Release calls startHeroRegen(3+1.5·lv s, (0.8%+0.6%·lv) max HP/s, ×2 with capstone). Capstone capA 'Rage Four' → 'Rage Overflow' (ptv rage4: max-Rage release ×1.3 dmg + double regen); talent baseline hash updated. startHeroRegen(sec,pct) shares _cocoaRegenT/_cocoaRegenPct (keeps the stronger), float '+x% HP/s', healScreen(sec) green pulsing scrEdge (respects VFX off); used by Cocoa pre-path slam, Titan release, Strawberry Rebound heal (0.9s). Play Stats fixes: 'damage:' was damage TAKEN by source → 'damage taken from:'; profile lists every hero in CHAR_ORDER that is owned or levelled.
-
-# Previous delivery: v7.6.9 — Colossus Fist slams around Cocoa
-
-Owner: Titan Unique wider, show a growing ring while charging so you know what will be hit, punch all around instead of walking/leaping onto the enemy. titanSlamRadius(rage)=(150+12·ul)·size·(1+0.22·rage) (was (102+10·ul)·size·(1+0.15·lv) on cocoaPriorityTarget). Release centres on the player's position at release (x=p.x,y=p.y; aftershock same spot); center ×3.6 zone = r×0.48. tickTitanRage draws the live slam ring (fill + pulsing edge + inner bonus ring) and outlines up to 40 enemies inside (bosses/minis gold). cocoa-builds Titan test updated to the new geometry; titanSlamRadius added to the cocoa test method lists.
 
 # Older history
 

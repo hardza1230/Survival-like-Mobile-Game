@@ -1,0 +1,60 @@
+{
+  "source": "ImageGen",
+  "icons": {
+    "unique_mastery": {
+      "size": [
+        128,
+        128
+      ],
+      "path": "assets/art/talents/unique_mastery.webp"
+    },
+    "tremor": [
+      128,
+      128
+    ],
+    "frost_burn": [
+      128,
+      128
+    ]
+  },
+  "skill_edges": {
+    "size": [
+      1024,
+      1024
+    ],
+    "grid": [
+      4,
+      4
+    ],
+    "frame_size": 256,
+    "frames": [
+      "rebound",
+      "shotgun",
+      "sniper",
+      "glacier",
+      "lance",
+      "gale",
+      "rocket",
+      "titan",
+      "phantom",
+      "mirror",
+      "thunder",
+      "citrus",
+      "berry_core",
+      "pink_spare",
+      "cyan_spare",
+      "amber_spare"
+    ]
+  },
+  "runtime": {
+    "edge_lifetime_max_s": 0.75,
+    "edge_alpha_max": 0.34,
+    "edge_width_max_view_fraction": 0.18,
+    "status_enemy_limit": 40
+  },
+  "source_ids": {
+    "icons": "exec-dc6e92f5-0733-4207-a95e-5786f24b7fe1",
+    "edges": "exec-4259a91e-f872-4225-b8ec-53e10e15f178",
+    "mockup": "exec-b789c9cb-6376-41c9-a6d1-d88f194ebb68"
+  }
+}
