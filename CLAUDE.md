@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v6.98.0 — Delve boss HP floor, live progress bar, stats copy
+# Latest delivery: v6.98.1 — Delve boss floor 30%
+
+Owner: lower Delve boss floor to 30% of C3-5. DELVE_BOSS_FLOOR=0.3 (next to ENDGAME_XP_MUL) multiplies the v6.98 floor (d1 normal node ≈144k). npm check passed.
+
+# Previous delivery: v6.98.0 — Delve boss HP floor, live progress bar, stats copy
 
 Owner: Delve bosses too weak from first depths (no continuity from C3-5). Cause: v6.68 ×2 boss mul is story-only + RECIPE_BOSS_HP .7 + theme stage bossHp (theme 0 d1 ≈2.7k vs C3-5 Normal ≈446k). spawnFinalBoss: recipeMode && _amapNode && !pinnacle → b.hp=max(old, C3-5 Normal boss × node(1/elite 1.5/boss 2) × delveMul(d).hp × pact boss) (d1 ≈481k). Miniboss untouched. Progress bar: animateProgressBar(dt) in update — _pbTarget set by renderReplayProgress/renderRecipeProgress (no direct crop), smooth lerp crop, moving white shine, pulsing head glow + pop on gain (pbFx graphics depth 56, cleared in clearWaveObjective). Play Stats: Stats.toText()/copy() (navigator.clipboard → textarea execCommand fallback), 'Copy to clipboard' pill above Clear. npm check passed. Not playtested.
 

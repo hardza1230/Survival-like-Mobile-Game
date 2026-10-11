@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '6.98.0';
+const GAME_VERSION = '6.98.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'6.98.1', date:'2026-10-11', title:'⛏ Delve boss tuning', items:['Delve boss minimum HP lowered to 30% of the C3-5 boss']},
   { v:'6.98.0', date:'2026-10-11', title:'⛏ Tougher Delve bosses', items:['Delve bosses now start at least as tough as the C3-5 boss and grow with depth','Progress bars fill smoothly with a moving shine and a glowing tip','Play Stats: new Copy to clipboard button']},
   { v:'6.97.0', date:'2026-10-11', title:'✨ Card sound + loot pull', items:['Picking a card now plays a power-up chime with the burst','Dropped currency and gear gently float to you when you get close — no need to stand on them']},
   { v:'6.96.1', date:'2026-10-10', title:'⏳ Download counter', items:['The loading screen now shows how many files are done, like (47 / 1200)']},
@@ -5623,6 +5624,7 @@ function atlasPinnacleOpen(){ return (delveSave().best||0)>=30; }
 function amapGuardiansDown(){ return delveBossesDown(); }
 // ตัวคูณความลึก (ไม่มีเพดาน · ยิ่งยากรางวัลยิ่งดี)
 // v6.40 จูนจากเซฟจริงเจ้าของ: หลังชั้น 20 ของตัน (iLv>60 โตแค่ 1.5%/lv) → ชะลอการโตเลือด/ดาเมจ ไม่ให้ชั้น 40+ เป็นกำแพง
+const DELVE_BOSS_FLOOR=0.3;   // v6.98.1 owner: Delve boss floor = 30% of C3-5 Normal boss
 const ENDGAME_XP_MUL=0.7;   // v6.43 เจ้าของ: เลเวลใน Endgame ขึ้นเร็วไป
 const HUNGER_PER_KILL=0.19, FEAST_SHARE=0.12, FEAST_EVERY=16, FEAST_FIRST=6, FEAST_LIFE=22, MISSION_HUNGER=0.16;   // v6.42 Feast Targets
 function delveMul(d){ const a=Math.min(d,20),b=Math.max(0,d-20); return {hp:Math.pow(1.08,a)*Math.pow(1.05,b),dmg:Math.pow(1.06,a)*Math.pow(1.04,b),reward:1+0.05*d}; }
@@ -10640,7 +10642,7 @@ class Game extends Phaser.Scene {
     // Normal (ง่าย) = เลือด Fix ตายตัว Noneตัวคูณ (ไม่สเกลตามเลเวล/ความยาก) · ยาก = เริ่มคูณ · นรก = คูณโหดมาก
     const _bossScale=_dIdx===0?1.0:(_dIdx===1?this.bossHpMul()*this.diffMul().hp:this.bossHpMul()*this.diffMul().hp*1.6);
     b.hp=st.bossHp*(2.0+this.stageIndex*0.13)*1.75/0.9*realStageBossMul(this.stageIndex,this.recipeMode)*_bossScale*(this.recipeMode?(this._amapNode?(this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1):1)*this.riftMul().hp*RECIPE_BOSS_HP*(1+0.25*((this._pact&&this._pact.boss)||0)):1);
-    if(this.recipeMode&&this._amapNode&&!this._pinnacleRun){ const L=STAGES.length-1,ref=STAGES[L].bossHp*(2.0+L*0.13)*1.75/0.9*realStageBossMul(L,false),nm=this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1; b.hp=Math.max(b.hp,ref*nm*delveMul(this._amapNode.d||1).hp*(1+0.25*((this._pact&&this._pact.boss)||0))); }   /* v6.98 Delve boss ≥ C3-5 boss (owner: continuity) */ b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
+    if(this.recipeMode&&this._amapNode&&!this._pinnacleRun){ const L=STAGES.length-1,ref=STAGES[L].bossHp*(2.0+L*0.13)*1.75/0.9*realStageBossMul(L,false),nm=this._amapNode.type==='boss'?2:this._amapNode.type==='elite'?1.5:1; b.hp=Math.max(b.hp,ref*DELVE_BOSS_FLOOR*nm*delveMul(this._amapNode.d||1).hp*(1+0.25*((this._pact&&this._pact.boss)||0))); }   /* v6.98 Delve boss ≥ C3-5 boss (owner: continuity) */ b.maxhp=b.hp;   // R10: เดิม diff1 ไม่คูณ diffMul → บอส Recipe/Rift ไม่สเกลตาม Tier เลย   // บอสใหญ่ HP: easy fix · hard/hell คูณ
     b.spd=94;   // เดิม 46 ช้าเกิน → บอสตามผู้เล่นไม่ทัน ลากออกนอกจอ = "Boss vanished" · เร่งให้เกาะติด
     b.dmg=Math.round(st.bossDmg*1.3*0.75/*v6.55.66 boss dmg*/*(this._powerGuide||this.getPowerGuide(this.stageIndex)).enemyDmg*this.diffMul().dmg); b.xp=30; b.frozen=0; b._glacierLifeToken=(b._glacierLifeToken||0)+1; b._glacierFrost=0; b._glacierFrostAt=0; b._glacierBrittleUntil=0;b._mintImpale=0;b._mintImpaleAt=-Infinity;b._mintRuptureAt=-Infinity; b._glacierBurstAt=-Infinity; b._chill=0; b._chillAt=null; b.knock=0; b.phase3=false; b.phase4=false;
     if(isArt){ b.tintColor=null; b.clearTint(); } else { b.tintColor=st.tint; b.setTint(st.tint); }
