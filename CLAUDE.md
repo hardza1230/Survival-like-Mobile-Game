@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.4 — Equipped item mods, Sell/Dismantle back, heavier punches
+# Latest delivery: v7.6.5 — Titan vs high-HP bosses
+
+Owner Play Stats: Titan died to the C2-2 boss after 9:18 (Brawler cleared C2-1 in 4:12). Titan basic punches are the slowest path (≥0.5s interval, 0.24/0.32 wind, fin cd ×1.3) with no boss bonus; its boss damage relies on Colossus Fist, which v7.6 weakened unless Unique Mastery is bought (uniquePower 1.0 vs up to 1.72 before). Buff: cocoaHit opts.bossMul (bosses/minis only); Titan basic punch bossMul 1.4; CHARACTER_UNIQUES titan Colossus Fist cd 12→9. Not playtested; owner to retry C2-2.
+
+# Previous delivery: v7.6.4 — Equipped item mods, Sell/Dismantle back, heavier punches
 
 Owner: (1) tapping the equipped item should show its mods — drawModCompare returned right after 'Open mod slots' when isEq; now lists implicit (+tier name) and every affix (emoji label value, Tn) in a MODS panel, 'No mods yet' fallback. (2) Remove the ⋯ More button; Sell/Dismantle always shown (moreOpen=true, row 2 = Craft 52% + ★ + 🔒). (3) Cocoa punches sounded like tiny jabs: punch_jab.mp3 measured −34dB mean / almost no <200Hz; Sfx.comboPunch now uses sfx_punch (event_refresh/punch.mp3, −11.6dB, strongest bass) with random pitch 0.98–1.18 for jabs, and heavy = punch at rate ~0.85 + punch_heavy layer. Quick UI screenshots of the gear screen OK; punch sound not listened to.
 
@@ -17,10 +21,6 @@ Owner screenshot: "Cannot read properties of null (reading 'sourceSize')" enteri
 # Previous delivery: v7.6.1 — Camera always centred + numeric card levels
 
 Owner: at the bottom map edge the Sniper charge (tickBossZoom ×0.72 zoom-out) left the hero far below the screen-centred scope. Cause: cameras.main.setBounds(WORLD) clamps scroll (even normal play stops centring ~650px from the edge). Now cameras.main.removeBounds() — camera always follows the hero; physics world bounds unchanged; floor already drawn around the view by syncBgTile (seamless beyond the edge, headless screenshot). Level-up cards: stars → 'Lv N / max', max ≥99 (endless Power Up) → 'Lv N / ∞'. Owner also reported a crash entering Stage 3 the first time after choosing Mint (intro → Heroes coach → Mint): could NOT reproduce headless (first launch, cached launch, 4GB low-memory; 256MB textures, no errors) — asked owner for version/symptom.
-
-# Previous delivery: v7.6.0 — Unique levels only from Talent
-
-Owner: Unique must not level up in a stage; only via Talent. UNIQUE_TALENT {id:'unique', max 3, costs [3,5,8] TP, free:true} appended by charTalents(c) (CHAR_TALENTS untouched; no packed icon → ✨ emoji). buildTalents core: okN allows n.free, costN uses n.costs, no prerequisite line; talSpent refunds unique costs. uniqueTalentLevel(c)=1+tal.unique (cap UNIQUE_MAX_LV). All three run resets set uniqueLevel from it; level-up no longer calls checkUniqueAutoUpgrade (function + uniqueAt kept for tests/validator). talent-art baseline hash + talent-icons test updated; tests/unique-talent.test.cjs. Headless: buy 1 rank (3 TP) → stage starts Unique Lv2, stays Lv2 at run level 40. Balance: players now start runs at Lv1 Unique unless they spend TP — watch difficulty.
 
 # Older history
 

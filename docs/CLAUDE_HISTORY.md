@@ -1680,3 +1680,7 @@ Owner: can't reach character select after visiting Play Stats. Cause: v6.95 adde
 
 Owner: wheel spin should feel like a casino. scripts/gen_wheel_sfx.py (numpy → ffmpeg mp3) makes assets/audio/sfx/wheel/ wheel_clack (peg/flapper), wheel_roll (2.4s swelling drum roll), wheel_win (bell ding ×3 + coin sparkle); ASSET_AUDIO sfx_wheel_*. Sfx.wheelTick(slow) constant pitch ±4% (was chestTick rising pitch), louder after STOP; doStop stops slot spin loop and schedules wheelRoll to end at landing (sum of slowdown steps − 2.4s); landing plays wheelWin before reward. Capture objective still uses chestTick. Owner asked about NFT items — answered (not recommended now), no code. Listening on phone pending.
 
+# Delivery: v7.6.0 — Unique levels only from Talent
+
+Owner: Unique must not level up in a stage; only via Talent. UNIQUE_TALENT {id:'unique', max 3, costs [3,5,8] TP, free:true} appended by charTalents(c) (CHAR_TALENTS untouched; no packed icon → ✨ emoji). buildTalents core: okN allows n.free, costN uses n.costs, no prerequisite line; talSpent refunds unique costs. uniqueTalentLevel(c)=1+tal.unique (cap UNIQUE_MAX_LV). All three run resets set uniqueLevel from it; level-up no longer calls checkUniqueAutoUpgrade (function + uniqueAt kept for tests/validator). talent-art baseline hash + talent-icons test updated; tests/unique-talent.test.cjs. Headless: buy 1 rank (3 TP) → stage starts Unique Lv2, stays Lv2 at run level 40. Balance: players now start runs at Lv1 Unique unless they spend TP — watch difficulty.
+

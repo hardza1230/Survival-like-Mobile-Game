@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.4';
+const GAME_VERSION = '7.6.5';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.5', date:'2026-10-11', title:'🗿 Titan vs giants', items:['Titan basic punches deal +40% damage to bosses and minibosses','Colossus Fist cooldown 12s → 9s']},
   { v:'7.6.4', date:'2026-10-11', title:'🔍 Equipped item mods + punchier Cocoa', items:['Tapping an item you are wearing now lists its implicit and every mod with its tier','Sell and Dismantle buttons are always visible again (no more ⋯ menu)','Cocoa’s punches use a heavier, meatier impact sound']},
   { v:'7.6.3', date:'2026-10-11', title:'🐻 Meet Cocoa at C2-1', items:['Before your first C2-1 run, Cocoa offers to punch through the Fermented Canopy’s armored roots — choose her or keep your hero','Cocoa’s punches are no longer muted in crowded fights']},
   { v:'7.6.2', date:'2026-10-11', title:'🛠️ Stage change crash fix', items:['Fixed a crash (“reading sourceSize”) when starting a new stage or switching hero after playing another stage']},
@@ -3453,7 +3454,7 @@ const COCOA_EVOLUTIONS={
 };
 const COCOA_UNIQUES={
   brawler:{name:'Rocket Gauntlet',emoji:'🚀',cd:18,color:0xff7a2a,desc:'Tap once: launch 3 homing fire gauntlets at the strongest nearby enemies. A gauntlet that hits a Boss or Mini sticks and explodes 3 more times',tiers:{2:'4 gauntlets',3:'Bigger explosions',4:'5 gauntlets and a 4th sticky blast'}},
-  titan:{name:'Colossus Fist',emoji:'👊',cd:12,color:0xd59b65,desc:'Hold to charge Blood Rage while walking (drains HP, up to 3 levels); release to slam a giant fist on the strongest nearby enemy for up to ×4.2 damage. Cooldown starts on release',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
+  titan:{name:'Colossus Fist',emoji:'👊',cd:9,color:0xd59b65,desc:'Hold to charge Blood Rage while walking (drains HP, up to 3 levels); release to slam a giant fist on the strongest nearby enemy for up to ×4.2 damage. Cooldown starts on release',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
   dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 4 times onto the strongest enemy (boss first), slamming on each landing. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
 };
 const COCOA_PATH_MUTS={
@@ -12741,7 +12742,7 @@ class Game extends Phaser.Scene {
   cocoaHit(x,y,r,power,opts={}){
     let landed=false;const p=this.player;
     this.enemies.children.iterate(e=>{if(!e||!e.active||this.dist(e.x,e.y,x,y)>r)return;if((e.isBoss||e.isMini)&&(e._phaseGateLocked||e._phaseInvuln>0))return;landed=true;
-      this.damage(e,power*(opts.center&&this.dist(e.x,e.y,x,y)<=r*.48?opts.center:1),e.x,e.y);
+      this.damage(e,power*(opts.center&&this.dist(e.x,e.y,x,y)<=r*.48?opts.center:1)*(opts.bossMul&&(e.isBoss||e.isMini)?opts.bossMul:1),e.x,e.y);
       if(opts.leech&&(e.isBoss||e.isMini))this.cocoaBossLeech();
       if(e.active&&!e.isBoss&&!e.isMini&&!e.isElite&&opts.push){const a=Math.atan2(e.y-y,e.x-x);e.setVelocity(Math.cos(a)*opts.push,Math.sin(a)*opts.push);e.knock=Math.max(e.knock||0,.14);}
     });this.hitCratesInRadius(x,y,r,power);return landed;
@@ -12766,7 +12767,7 @@ class Game extends Phaser.Scene {
       const r=fin?(path==='titan'?reach*1.4:reach*1.05):reach*.64;
       const rage=0,rr=r*(1+rage*.15);
       const power=unit*(fin?(path==='titan'?2:1.55)*finMul*(basic.mutation==='breaker'?1.25:1):.8)*(1+Math.min(.4,cc.n*.01))*(empowered?1.35:1)*TITAN_RAGE_MUL[rage];
-      const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true});if(landed&&path==='titan'){this.bpFx?.('bpx_cocoa_shockwave',x,y,rr*(fin?2.4:1.7));if(fin)this.bpFx?.('bpx_cocoa_crack',x,y,rr*2.2,{depth:5});}if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);(path==='titan'&&Sfx.bp?.('cocoa_titan_slam',fin?.65:.42,.08))||Sfx.comboPunch(cc.n,fin?'heavy':'jab');
+      const landed=this.cocoaHit(x,y,rr,power,{push:fin?340+rage*80:70,leech:true,bossMul:path==='titan'?1.4:1});   /* v7.6.5 Titan หมัดหนัก +40% ใส่บอส/มินิ */if(landed&&path==='titan'){this.bpFx?.('bpx_cocoa_shockwave',x,y,rr*(fin?2.4:1.7));if(fin)this.bpFx?.('bpx_cocoa_crack',x,y,rr*2.2,{depth:5});}if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}this.cocoaVisual(x,y,r,fin&&path==='titan'?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);(path==='titan'&&Sfx.bp?.('cocoa_titan_slam',fin?.65:.42,.08))||Sfx.comboPunch(cc.n,fin?'heavy':'jab');
       if(!landed)return;cc.n=Math.min(40,cc.n+1);cc.t=0;cc.step=(beat+1)%5;this.cocoaBeatCharge(.25);if(empowered)this._cocoaNextPunch=false;
       const live=()=>this._cc===cc&&(cc.gen||0)===gen;
       if(fin&&path==='brawler'){
