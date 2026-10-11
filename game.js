@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.3.0';
+const GAME_VERSION = '7.3.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.3.1', date:'2026-10-11', title:'Equipment portrait and Dash audio', items:['Equipment portraits keep the face visible on wide portrait screens','Dash Boxer uses its original Dash and landing punch sounds']},
   { v:'7.3.0', date:'2026-10-11', title:'❄️ Frost Burn + sound spectacle', items:['Glacier Bloom gains 10% hit power and stacking Frost Burn (max 5, 8s)','Capture Zone and Mint charges now have controlled rising sound loops','Stronger Slot spin and reward audio, clearer curse/toxic feedback','Unique rank-up has a persistent highlighted notice; seven heroes gain painted screen effects']},
   { v:'7.2.0', date:'2026-10-11', title:'🛠 Playtest fixes', items:['Golden jars and Crown-Root anchors: stand next to them to charge and crack them (they show a ring and a timer)','Mimic now really wakes up and fights (it used to turn straight into a new chest)','PC: hold E or right mouse to charge Sniper/Shotgun and aim with the mouse cursor','PC: number keys pick options on Jackpot, wheels and reward panels; Space/Enter presses STOP','Affix Forge text no longer changes size when you pick a mod','Loading music no longer keeps playing into the stage','Defaults: VFX High, Performance High, Screen Shake Normal','New sounds: Wisp purification charge, special card offers, Hunt the Threat, dig finds, slot/loot/card revisions']},
   { v:'7.1.0', date:'2026-10-11', title:'🔊 New sound pack', items:['133 new sound effects: refreshed combat, UI, crafting, gear, loot, chest and stage sounds','Distinct sounds for focusing and confirming cards, Build Path / Infusion / Relic / Modifier / Trade-off picks, Unique rank-ups, miniboss arrival and defeat, and picking up Sugar, currency and gear','Combo streak, low-HP heartbeat, crit and big-kill accents now use real recorded-style sounds']},
@@ -8730,7 +8731,7 @@ class Game extends Phaser.Scene {
     const folded=true, cy0=78, sgap=8, ss=Math.min(70,Math.floor((w-28-10-sgap*2)/3.95)), avH=ss*2+sgap;
     const gridW=ss*3+sgap*2, x0=w-12-gridW, ax=12, ay=cy0+4, key='card_'+id, avW=x0-10-ax;
     { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,avW,avH,12); this.menu.add(fg);
-      if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=Math.min(TH*0.95,cw*avH/avW),cx0=TW*0.19,cy1=TH*0.03;
+      if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=TH*0.55,cx0=TW*0.19,cy1=TH*0.03;
         im.setCrop(cx0,cy1,cw,ch).setOrigin((cx0+cw/2)/TW,(cy1+ch/2)/TH).setScale(Math.min((avW-6)/cw,(avH-6)/ch)).setPosition(ax+avW/2,ay+avH/2); this.menu.add(im); }
       else { const em=this.add.text(ax+avW/2,ay+avH/2,CHARACTERS[id].emoji,{fontSize:'30px'}).setOrigin(0.5); this.menu.add(em); }
       const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,avW-2,avH-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,avW,avH,12); this.menu.add(fr);
@@ -12568,7 +12569,7 @@ class Game extends Phaser.Scene {
     const jobs=this._cocoaJobs||[];this._cocoaJobs=[];let fired=0;
     for(const j of jobs){if(j.player!==this.player||j.basic!==this.basicAttack||j.path!==this.basicAttack?.path||j.epoch!==(this._cocoaEpoch||0))continue;j.t-=dt;if(j.t<=0&&fired<4&&this.state==='play'){fired++;j.fn();}else this._cocoaJobs.push(j);}
     const ph=this._cocoaPhantom;if(ph){ph.t-=dt;if(ph.t<=0||this.basicAttack?.path!=='dashboxer'){this._cocoaPhantom=null;this._cocoaTrail=null;}}
-    const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){const fr=tr.finaleR||85;this.cocoaHit(p.x,p.y,fr,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,fr,tr.finaleR?'fist':'punch',0xc9a3ff);if(tr.bossT?.active&&this.dist(tr.bossT.x,tr.bossT.y,p.x,p.y)<=fr+(tr.bossT.body?.halfWidth||40))this.damage(tr.bossT,tr.finale*.9,tr.bossT.x,tr.bossT.y);if(tr.finaleR){p.iframe=Math.max(p.iframe||0,.3);this.screenShake?.(110,.005);this.hitStop?.(35);this.cocoaLandingFx(p.x,p.y,fr);if(tr.leap)this.cocoaLeapMutation(p.x,p.y,fr,tr.finale);}(tr.leap&&Sfx.bp?.('cocoa_dash_landing',.6,.1))||Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}
+    const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){const fr=tr.finaleR||85;this.cocoaHit(p.x,p.y,fr,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,fr,tr.finaleR?'fist':'punch',0xc9a3ff);if(tr.bossT?.active&&this.dist(tr.bossT.x,tr.bossT.y,p.x,p.y)<=fr+(tr.bossT.body?.halfWidth||40))this.damage(tr.bossT,tr.finale*.9,tr.bossT.x,tr.bossT.y);if(tr.finaleR){p.iframe=Math.max(p.iframe||0,.3);this.screenShake?.(110,.005);this.hitStop?.(35);this.cocoaLandingFx(p.x,p.y,fr);if(tr.leap)this.cocoaLeapMutation(p.x,p.y,fr,tr.finale);}Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}
   }
   cocoaVisual(x,y,r,kind='wave',color=0xffb347){
     if(!this.fxOk())return;const now=this.elapsed||0;if(now-(this._cocoaFxAt??-99)>.2){this._cocoaFxAt=now;this._cocoaFxN=0;}if((this._cocoaFxN||0)>=6)return;this._cocoaFxN=(this._cocoaFxN||0)+1;
@@ -12814,7 +12815,7 @@ class Game extends Phaser.Scene {
     const big=this.cocoaPriorityTarget(320*rng);if(big&&(big.isBoss||big.isMini)&&!big._phaseGateLocked){const dx=big.x-p.x,dy=big.y-p.y,dd=Math.hypot(dx,dy)||1;if(!aim||(dx*d.x+dy*d.y)/dd>.2)best=big;}
     if(!best)this.enemies.children.iterate(e=>{if(!e?.active||e._phaseGateLocked)return;const dx=e.x-p.x,dy=e.y-p.y,dist=Math.hypot(dx,dy);if(dist>280*rng||dist<20)return;const dot=(dx*d.x+dy*d.y)/dist;if(aim&&dot<.5)return;const v=(aim?dot*200:0)-dist;if(v>score){score=v;best=e;}});
     if(!best)return;const dist=this.dist(best.x,best.y,p.x,p.y),gap=Math.max(36,(best.body?.halfWidth||20)+18),k=Math.max(0,(dist-gap)/dist);
-    p.setVelocity(0,0);p.iframe=Math.max(p.iframe||0,.45);this.bpPose?.('char_cocoa_dash_leap',.32);this.cocoaAfterimages?.(p.x,p.y,best.x,best.y);Sfx.bp?.('cocoa_flicker_step',.45,.1);if(best.isBoss||best.isMini)tr.bossT=best;this.cocoaGlideTo({x:p.x+(best.x-p.x)*k,y:p.y+(best.y-p.y)*k},.2);this.dashTime=.22;const sw=b.lv?.p_slamwave||0;tr.finale*=1.5*(1+.1*sw+this.ptv('dbSlam'));tr.finaleR=Math.round(110*(1+.2*sw));tr.leap=true;
+    p.setVelocity(0,0);p.iframe=Math.max(p.iframe||0,.45);this.bpPose?.('char_cocoa_dash_leap',.32);this.cocoaAfterimages?.(p.x,p.y,best.x,best.y);if(best.isBoss||best.isMini)tr.bossT=best;this.cocoaGlideTo({x:p.x+(best.x-p.x)*k,y:p.y+(best.y-p.y)*k},.2);this.dashTime=.22;const sw=b.lv?.p_slamwave||0;tr.finale*=1.5*(1+.1*sw+this.ptv('dbSlam'));tr.finaleR=Math.round(110*(1+.2*sw));tr.leap=true;
   }
   cocoaAfterimages(x0,y0,x1,y1){if(!this.textures?.exists?.('bpx_cocoa_afterimage'))return;const fl=this.player.flipX;for(let i=0;i<3;i++){const k=i/3,g=this.trackArtVfx(this.camWorld(this.add.image(x0+(x1-x0)*k,y0+(y1-y0)*k,'bpx_cocoa_afterimage').setScale(.42).setFlipX(fl).setAlpha(.55-i*.12).setDepth(y0-1)));this.tweens.add({targets:g,alpha:0,duration:320+i*60,onComplete:()=>g.destroy()});}}
   cocoaLeapMutation(x,y,r,power){const m=this.basicAttack?.mutation,p=this.player;
