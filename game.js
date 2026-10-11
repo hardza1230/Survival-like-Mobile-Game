@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.2';
+const GAME_VERSION = '7.6.3';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.3', date:'2026-10-11', title:'🐻 Meet Cocoa at C2-1', items:['Before your first C2-1 run, Cocoa offers to punch through the Fermented Canopy’s armored roots — choose her or keep your hero','Cocoa’s punches are no longer muted in crowded fights']},
   { v:'7.6.2', date:'2026-10-11', title:'🛠️ Stage change crash fix', items:['Fixed a crash (“reading sourceSize”) when starting a new stage or switching hero after playing another stage']},
   { v:'7.6.1', date:'2026-10-11', title:'🎯 Camera + card levels', items:['The camera stays centred on your hero at the map edge too, so the Sniper scope lines up with your character','Level-up cards show levels as numbers (Lv 3 / 5) instead of stars · endless upgrades show Lv 3 / ∞']},
   { v:'7.6.0', date:'2026-10-11', title:'✨ Unique Mastery talent', items:['Unique skills no longer level up during a stage','Raise your Unique in Heroes → Talents → Core: new Unique Mastery node (3 levels · 3 / 5 / 8 TP, no prerequisite)','Every stage starts with the Unique level you bought']},
@@ -1087,7 +1088,7 @@ const Sfx = {
     if(this.muted||this.sv<=0)return false;
     try{const g=window.__g; if(g&&g.cache&&g.cache.audio&&g.cache.audio.exists(key)){
       const now=performance.now(); this._live=this._live.filter(x=>x.end>now);
-      const uq=key.startsWith('sfx_uq_'); if((!uq&&this._live.length>=10)||this._live.filter(x=>x.k===key).length>=3)return true;   // v6.82.1 Unique ไม่โดนตัดจากเพดานเสียงรวม   // จำกัดเสียงซ้อน กันเสียงแตกตอนมอนตายเป็นฝูง (true = ไม่ fallback ไป synth)
+      const uq=key.startsWith('sfx_uq_')||key.startsWith('sfx_punch')||key.startsWith('sfx_cocoa_');   /* v7.6.3 หมัด Cocoa ถี่สุด เคยโดนเพดานรวมตัดเงียบตอนชุลมุน */ if((!uq&&this._live.length>=10)||this._live.filter(x=>x.k===key).length>=3)return true;   // v6.82.1 Unique ไม่โดนตัดจากเพดานเสียงรวม   // จำกัดเสียงซ้อน กันเสียงแตกตอนมอนตายเป็นฝูง (true = ไม่ fallback ไป synth)
       const r=rate||(0.92+Math.random()*0.16);   // สุ่มระดับเสียง ±8% ไม่ให้ซ้ำแบบหุ่นยนต์
       const snd=g.sound.add(key,{volume:Math.min(uq?0.6:0.42,vol*(uq?0.85:0.68))*this.sv,rate:r}); snd.once('complete',()=>{try{snd.destroy();}catch(e){}}); snd.play();
       this._live.push({k:key,end:now+Math.min(1500,((snd.duration||0.4)*1000)/r)}); return true;}}catch(e){}
@@ -3048,6 +3049,13 @@ const CHARACTERS = {
 const CHAR_ORDER=['momo','mint','cocoa','taro','yuzu','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
 const FIGHTER_PLAYTEST_ALL=true; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
 const CORE_UNLOCK_STAGE={mint:0,cocoa:4,taro:5,yuzu:9};
+// v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) — Mint ที่ Stage 3 · Cocoa ที่ C2-1 (เจ้าของสั่ง)
+const HERO_INTROS=[
+  {idx:2,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
+    text:'The Chili Engine Room ahead is burning hot! My frost can cool it down. Want to try me? Tap Heroes on the main menu any time to switch hero.'},
+  {idx:5,id:'cocoa',flag:'cocoaIntro',card:'card_cocoa',emoji:'🐻',name:'Cocoa',color:'#8a4b22',edge:0xd9a066,btn:0xa0612f,btnEdge:0xffe2bf,stroke:'#4a2410',label:'🐻 Choose Cocoa',
+    text:'The Fermented Canopy is choked with thick roots and armored Root Beetles — little seeds just bounce off their bark! My bear gauntlets punch straight through. Let me take the front line? Tap Heroes on the main menu any time to switch hero.'},
+];
 const CHARACTER_CARD_HINT={momo:'Fast shots · easy to learn',mint:'Frost lances · slow & freeze',cocoa:'Melee combos · sturdy fighter',taro:'Chain lightning · dash to reposition',sesame:'Charged mirror beam · precise boss damage',yuzu:'Summon a citrus crew · command minions'};
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
@@ -7234,8 +7242,8 @@ class Game extends Phaser.Scene {
     try{ this.texTouch(this.texInUse()); this.texBudget(); }catch(e){} }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
   applyGearTut(){ const d=Save.data; if(this.state!=='menu')return;
-    if(this._mintCoach){ const z=this.tapZones.find(q=>q.tag==='char_mint'); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character='mint'; this.character='mint'; Save.data.mintIntro=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(2); };
-      this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Pick Mint for Stage 3!'); return; }
+    if(this._mintCoach){ const hi=this._mintCoach===true?HERO_INTROS[0]:this._mintCoach; const z=this.tapZones.find(q=>q.tag==='char_'+hi.id); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character=hi.id; this.character=hi.id; Save.data[hi.flag]=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(hi.idx); };
+      this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); const st=STAGES[hi.idx],lab=st&&st.chapterStage?'C'+(st.chapter+1)+'-'+st.chapterStage:'Stage '+(hi.idx+1); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Pick '+hi.name+' for '+lab+'!'); return; }
     if(this._stage1Coach){ const z=this.tapZones.find(q=>q.tag==='stage_0'); if(!z)return; const fn=z.fn; z.fn=()=>{ this._stage1Coach=false; fn(); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Play Stage 1!'); return; }
     if(d.gearTut===undefined){ if(!(d.stageMastery||{})[0]||!d.tutorialDone||(d.unlockedStage||0)>1){ if((d.unlockedStage||0)>1)d.gearTut=-1; return; }
@@ -8424,25 +8432,25 @@ class Game extends Phaser.Scene {
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   startStoryStage(idx){
     // Mint is an optional ally; Stage 3 accepts the player's selected hero.   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
-    if(idx===2&&!Save.data.mintIntro&&!(Save.data.stageMastery||{})[2]){ Save.data.mintIntro=1; Save.save(); this._mintIntroIdx=idx; this.showMintWarning(); return; }   // v6.85 แนะนำ Mint + สอนเลือกฮีโร่ (ไม่บังคับ)
+    { const hi=typeof HERO_INTROS!=='undefined'?HERO_INTROS.find(x=>x.idx===idx):(idx===2?{idx:2,id:'mint',flag:'mintIntro'}:null),d=Save.data; if(hi&&!d[hi.flag]&&!(d.stageMastery||{})[idx]){ d[hi.flag]=1; Save.save(); const owned=(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL)||(d.chars||[]).includes(hi.id)||hi.id==='mint'; if(owned&&(this.character||d.character)!==hi.id){ this._mintIntroIdx=idx; this.showMintWarning(hi); return; } } }   // v6.85 แนะนำ Mint · v7.6.3 + Cocoa (ข้ามถ้ายังไม่ปลดหรือใช้ตัวนั้นอยู่แล้ว)
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
   }
-  showMintWarning(){ const w=this.W,h=this.H; this.tapZones=[];
+  showMintWarning(hi=HERO_INTROS[0]){ const w=this.W,h=this.H; this.tapZones=[];   // ชื่อเดิม · ใช้กับฮีโร่ทุกตัวใน HERO_INTROS
     const shade=this.add.rectangle(0,0,w,h,0x0a0612,0.86).setOrigin(0); this.menu.add(shade);
-    const ah=Math.min(h*0.46,360),aw=ah*0.75,art=this.textures.exists('card_mint')?this.add.image(w/2,h*0.30,'card_mint').setDisplaySize(aw,ah):this.add.text(w/2,h*0.30,'🌿',{fontSize:'90px'}).setOrigin(0.5); this.menu.add(art);
+    const ah=Math.min(h*0.46,360),aw=ah*0.75,art=this.textures.exists(hi.card)?this.add.image(w/2,h*0.30,hi.card).setDisplaySize(aw,ah):this.add.text(w/2,h*0.30,hi.emoji,{fontSize:'90px'}).setOrigin(0.5); this.menu.add(art);
     this.tweens.add({targets:art,y:art.y-8,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const bw=Math.min(w-30,420),bh=150,bx=(w-bw)/2,by=h*0.30+ah/2+6,g=this.add.graphics();
-    g.fillStyle(0xffffff,0.97);g.fillRoundedRect(bx,by,bw,bh,18);g.fillTriangle(w/2-12,by+1,w/2+12,by+1,w/2,by-14);g.lineStyle(3,0x8fd0ff,1);g.strokeRoundedRect(bx,by,bw,bh,18);
-    const nm=this.add.text(bx+16,by+12,'🌿 Mint',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#2f7fb0'});
-    const tx=this.add.text(bx+16,by+38,'The Chili Engine Room ahead is burning hot! My frost can cool it down. Want to try me? Tap Heroes on the main menu any time to switch hero.',{fontFamily:'sans-serif',fontSize:'14px',color:'#2a1a33',wordWrap:{width:bw-32},lineSpacing:4});
+    g.fillStyle(0xffffff,0.97);g.fillRoundedRect(bx,by,bw,bh,18);g.fillTriangle(w/2-12,by+1,w/2+12,by+1,w/2,by-14);g.lineStyle(3,hi.edge,1);g.strokeRoundedRect(bx,by,bw,bh,18);
+    const nm=this.add.text(bx+16,by+12,hi.emoji+' '+hi.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hi.color});
+    const tx=this.add.text(bx+16,by+38,hi.text,{fontFamily:'sans-serif',fontSize:'14px',color:'#2a1a33',wordWrap:{width:bw-32},lineSpacing:4});
     this.menu.add([g,nm,tx]);
-    const btw=Math.min(w-60,300),bth=48,bty=Math.min(h-40,by+bh+40),btn=this.add.graphics();btn.fillStyle(0x4fb6e8,1);btn.fillRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);btn.lineStyle(3,0xe6f7ff,1);btn.strokeRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);
-    const bt=this.add.text(w/2,bty,'❄️ Choose Mint',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#1d4f6e',strokeThickness:3}).setOrigin(0.5);this.menu.add([btn,bt]);
+    const btw=Math.min(w-60,300),bth=48,bty=Math.min(h-40,by+bh+40),btn=this.add.graphics();btn.fillStyle(hi.btn,1);btn.fillRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);btn.lineStyle(3,hi.btnEdge,1);btn.strokeRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);
+    const bt=this.add.text(w/2,bty,hi.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:hi.stroke,strokeThickness:3}).setOrigin(0.5);this.menu.add([btn,bt]);
     this.tweens.add({targets:[btn,bt],alpha:0.75,duration:600,yoyo:true,repeat:-1});
     this.menu.setVisible(true);Sfx.select&&Sfx.select();
-    this._zone(w/2-btw/2,bty-bth/2,btw,bth,()=>{this._mintCoach=true;this._heroesTab='roster';this.menuScreen='char';this.buildMenuScreen();});
+    this._zone(w/2-btw/2,bty-bth/2,btw,bth,()=>{this._mintCoach=hi;this._heroesTab='roster';this.menuScreen='char';this.buildMenuScreen();});
     { const ky=Math.min(h-14,bty+bth/2+30),kt=this.add.text(w/2,ky,'Keep my hero ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#d8cde2'}).setOrigin(0.5);this.menu.add(kt);
-      this._zone(w/2-110,ky-18,220,36,()=>{ const i=this._mintIntroIdx??2; this._mintIntroIdx=null; this.startStoryStage(i); }); }
+      this._zone(w/2-110,ky-18,220,36,()=>{ const i=this._mintIntroIdx??hi.idx; this._mintIntroIdx=null; this.startStoryStage(i); }); }
   }
   openDifficultyChoice(idx){this.startStoryStage(idx);} // Compatibility route, no choice screen.
   // แผงเลือก Zone Modifiers (สแตกได้ · เปิดเยอะ = ยาก+รางวัลดี) — เปิดจากหน้าเลือกความยาก
