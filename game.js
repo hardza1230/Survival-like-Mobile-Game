@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.3';
+const GAME_VERSION = '7.7.4';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.7.4', date:'2026-10-11', title:'⚡ Faster Auto-Roll', items:['Affix Forge Auto-Roll is about 3–4× faster: the first rolls still spin, then each roll takes about a quarter of a second','Near-miss pauses are shorter too']},
   {v:'7.7.3',date:'2026-10-11',title:'Strawberry starter boost',items:['Before choosing a Build: seed hits deal 50% more damage and fire 15% faster','Sniper, Shotgun and Ricochet keep their existing values']},
   {v:'7.7.2',date:'2026-10-11',title:'Shared Temple music',items:['Flavor Weave Temple and Temple Depths share Tea For Two At The End Of The World']},
   {v:'7.7.1',date:'2026-10-11',title:'Temple audio refresh',items:['Shorter Core upgrade and Weave promotion sounds','Temple music uses Tea For Two At The End Of The World']},
@@ -9186,15 +9187,15 @@ class Game extends Phaser.Scene {
       const mT=T(w/2+80,'−'+need,'11px','#ff9aa8',1).setY(cy+66);this.menu.add(mT);this.tweens.add({targets:mT,y:cy+48,alpha:0,duration:700,onComplete:()=>mT.destroy()});
       count.setText('Roll '+rolls);spentT.setText('Spent '+spentTxt());fb.setText('');
       // reel: สลับชื่อ mod มั่ว ๆ ก่อนเผยผล (เหมือนสล็อต)
-      Sfx.craft('start');let ri=0;const reel=()=>{if(this._craftRollToken!==token)return;if(ri++<6){Sfx.craft('tick');const r=available[Math.floor(Math.random()*available.length)];cur.setText(r.emoji+'  '+r.label).setColor('#8f83a3');this.time.delayedCall(55,reel);}else reveal();};
+      Sfx.craft('start');let ri=0;const reel=()=>{if(this._craftRollToken!==token)return;/* v7.7.4 เร็วขึ้น: 3 ครั้งแรกหมุนให้เห็น แล้วเร่งเป็นรีลสั้น */const fast=rolls>3;if(ri++<(fast?2:4)){Sfx.craft('tick');const r=available[Math.floor(Math.random()*available.length)];cur.setText(r.emoji+'  '+r.label).setColor('#8f83a3');this.time.delayedCall(fast?30:45,reel);}else reveal();};
       const reveal=()=>{
       const hit=(mod.id in tmap)&&(tmap[mod.id]==null||rolled.t<=tmap[mod.id]),c=affixCategory(mod),near=!hit&&c.label===tcat;
       this.tweens.killTweensOf(cur);cur.setText(mod.emoji+'  '+mod.label+'  '+mod.fmt(rolled.v)+' · T'+rolled.t).setColor(hit?'#fff3b0':c.hex).setScale(1.15);this.tweens.add({targets:cur,scale:1,duration:120});
       if(!hit){if(near){Sfx.craft('near');fb.setText('😮 So close! Same '+tcat+' family').setColor('#ffb86b');this.screenFlash(0xffa94d,.22,220);this.tweens.add({targets:rowG,alpha:.55,duration:90,yoyo:true,repeat:2});}
         else{Sfx.craft('common');fb.setText(['Aww…','Not this time…','Nope 😢','So sad…'][rolls%4]).setColor('#9aa4c8');this.tweens.add({targets:cur,y:cy+4,duration:160,yoyo:true});}}
       if(hit){fb.setText('🎉 JACKPOT! 🎉').setColor('#ffe08a');Sfx.craft('jackpot');for(let i=0;i<14;i++){const a=i/14*Math.PI*2,sp=T(w/2,'✦','14px',i%2?'#ffd166':'#ff9ad5',1).setY(cy);this.menu.add(sp);this.tweens.add({targets:sp,x:w/2+Math.cos(a)*(90+Math.random()*50),y:cy+Math.sin(a)*(70+Math.random()*40),alpha:0,duration:700+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>sp.destroy()});}this.tweens.add({targets:[title,cur],scale:1.25,duration:140,yoyo:true,repeat:2});this._craftResult={uid:item.uid,title:'🎯 TARGET HIT',before:'Auto-rolled '+rolls+'×',after:mod.label+' '+mod.fmt(rolled.v)+' · T'+rolled.t};this.screenFlash(0xffd166,.6,420);const hy=this.affixHype(mod,rolled);if(hy){this.screenShake(150+hy*80,.004+hy*.004);}skT.setText('✓ Done');return end('hit');}
-      this.time.delayedCall(near?900:(rolls<3?650:520),step);};reel();};
-    this.time.delayedCall(200,step);
+      this.time.delayedCall(near?(rolls>3?380:600):(rolls<3?380:150),step);};reel();};
+    this.time.delayedCall(120,step);
   }
   promoteFocusedItem(){const {item,base}=this._craftContext();if(!item||!base||item.locked)return;const rar=Save.gearRarity(item.uid,base.tier),affs=Save.gearAffixes(item.uid);if(rar!=='magic'||affs.length<2)return;if(Save.currency('regal')<1){Sfx.error();this.showBanner('🟡 Need Crown Icing','Available: '+Save.currency('regal'),1200);return;}Save.spendCurrency('regal',1);Save.setGearRarity(item.uid,'rare');this._craftResult={uid:item.uid,title:'AFFIX CAPACITY UP',before:'2 affix slots',after:'4 affix slots unlocked'};Sfx.craft('capacity');this.showBanner('🟡 Affix capacity upgraded','Two new crafting lines unlocked',1400);this.buildCraftBench();}
   divineFocusedLine(){const {item}=this._craftContext();if(!item||item.locked)return;const affs=Save.gearAffixes(item.uid).slice(),line=this.craftLineIndex||0,a=affs[line],mod=a&&affixDef(a.id);if(!a||!mod)return;if(Save.currency('divine')<FLAME_REROLL_COST){Sfx.error();this.showBanner('⚪ Need '+FLAME_REROLL_COST+' Crystal Glaze','Available: '+Save.currency('divine'),1300);return;}const before=mod.fmt(a.v)+' · T'+a.t,rolled=rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1);a.t=rolled.t;a.v=rolled.v;a.t11=1;a.tierSchema=2;Save.spendCurrency('divine',FLAME_REROLL_COST);Save.setAffixes(item.uid,affs);this._craftResult={uid:item.uid,title:'TIER REROLLED',before:mod.label+' '+before,after:mod.label+' '+mod.fmt(a.v)+' · T'+a.t};Sfx.craft('reroll');this.screenFlash(0xffffff,.36,260);this.showBanner('⚪ Tier rerolled',mod.label+' '+mod.fmt(a.v)+' · T'+a.t+'  (−'+FLAME_REROLL_COST+' ⚪)',1400);this.buildCraftBench();}

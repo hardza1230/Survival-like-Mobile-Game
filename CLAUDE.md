@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.3 — Strawberry before-Build buff
+# Latest delivery: v7.7.4 — Faster Affix Forge Auto-Roll
+
+Owner: Auto-Roll faster. autoRollToTarget: reel ticks 4×45ms for the first 3 rolls, then 2×30ms; delay after a miss 380ms (first 3) → 150ms, near-miss 600 → 380ms; first step 200 → 120ms. About 0.85s → about 0.21s per roll after warm-up.
+
+# Previous delivery: v7.7.3 — Strawberry before-Build buff
 
 Owner approved pre-path Strawberry seed power ×1.5 and fire frequency ×1.15. castBerryBlaster applies multiplier only with no basic.path; legacy seed fallback mirrors condition. cdOf multiplies only momo Basic sprinkle no-path interval by 1/1.15 (not .85, which would be +17.6% rate). Selected Sniper/Shotgun/Ricochet, Unique and other heroes unchanged. Focused starter projectile and actual cdOf regression plus full check/build required. Phone C2-5 pacing review pending.
 
@@ -22,7 +26,6 @@ New ImageGen skill_edges 4x4 atlas (13 runtime skill mappings, 3 spare), two bri
 
 New ElevenLabs soft_seed_shot.mp3 is low-passed at 3.8kHz and trimmed/faded to 240ms, warm rounded pop. Separate Sfx.strawberryShoot (0.22 volume, 120ms throttle, gentle sine fallback) routes normal Berry Blaster/ricochet seeds only; sniper charge/shot and shotgun/Unique unchanged. Generic shoot still used by other skills/heroes. MANIFEST records prompt/processing/technical QA; subjective phone listening pending. Merged current v7.6.14; Ground Pound/Tremor, regen aura and disabled screen overlay behavior retained. Art backlog audit lives in docs/art_orders/16_CURRENT_ART_BACKLOG.md.
 
-# Previous delivery: v7.6.0 — Unique levels only from Talent
 # Older history
 
 Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55) are archived verbatim in `docs/CLAUDE_HISTORY.md`. Search there (grep a function or version) when you need why something was done. When you finish work: add a new "# Latest delivery" block here, rename the previous one to "# Previous delivery", and keep only ~6 recent blocks in this file (move older ones to the end of docs/CLAUDE_HISTORY.md).

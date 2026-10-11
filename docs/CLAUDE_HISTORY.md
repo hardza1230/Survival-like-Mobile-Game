@@ -1743,3 +1743,5 @@ Owner: remove the 5-hit combo/finisher from Titan and replace it. castCocoaRush:
 
 Owner: more damage, aftershock in two waves, slightly higher initial hit. Slam unit×0.85×rage → unit×1.0×rage (+18%). Aftershock (was 1 wave at .65s, unit×0.7, r×1.2) → two waves at 0.6s (r×1.25, unit×(0.9+0.3·lv)) and 1.0s (r×1.5, unit×(0.7+0.25·lv)), each with cocoaVisual wave, bpx_cocoa_shockwave, screen shake scaled by Rage and the aftershock sound (2nd lower pitch). Still centred on the release spot; % boss HP from v7.6.12 only on the main slam. cocoa-builds Titan counts updated (3 hits single foe; 2→4→6 in the geometry test).
 
+
+# Previous delivery: v7.6.0 — Unique levels only from Talent
