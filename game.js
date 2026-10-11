@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.6.8';
+const GAME_VERSION = '7.6.9';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.6.9', date:'2026-10-11', title:'🗿 Colossus Fist rework', items:['Titan’s Colossus Fist now slams all around Cocoa instead of leaping onto one enemy','Much wider slam that grows with Blood Rage','While charging, a ring shows the real slam area and marks every enemy that will be hit']},
   { v:'7.6.8', date:'2026-10-11', title:'⚔🛡 Attack and Defense power', items:['Equipment shows ⚔ ATK and 🛡 DEF instead of one Power number','Each item card shows how much ATK and DEF it adds or removes, so you can tell damage gear from tank gear']},
   { v:'7.6.7', date:'2026-10-11', title:'🐻❄️ Starter Unique boosts', items:['Painted full-screen Unique overlays are off for now (classic screen effects return)','Cocoa before choosing a path: Unique slam also gives 2.5–4% max HP regen per second for 6–9s','Mint before choosing a path: Mint Gale also makes basic attacks 35% faster while it lasts']},
   { v:'7.6.6', date:'2026-10-11', title:'📊 Detailed Play Stats copy', items:['Copied stats now include hero level, Unique level, power, key stats, talents, Weave, equipped gear with mods and damage share per run']},
@@ -12824,12 +12825,16 @@ class Game extends Phaser.Scene {
     const G=this._rageG;G.clear();if(r<=0.02)return;
     const t=this.time.now/1000,col=lv>=3?0xff2a2a:lv>=2?0xff6a1a:0xffb347,rad=34+r*12+Math.sin(t*(6+lv*4))*3;
     G.lineStyle(3+lv,col,.55+lv*.12).strokeCircle(p.x,p.y+6,rad);G.fillStyle(col,.08+lv*.05).fillCircle(p.x,p.y+6,rad);
+    {const SR=this.titanSlamRadius(r);G.fillStyle(col,.06+lv*.03).fillCircle(p.x,p.y,SR);G.lineStyle(3,col,.5+.35*Math.abs(Math.sin(t*5))).strokeCircle(p.x,p.y,SR);G.lineStyle(1.5,0xffffff,.35).strokeCircle(p.x,p.y,SR*.48);   // v7.6.9 วงระยะทุบจริง (วงใน = โซนแรงพิเศษ)
+      let n=0;this.enemies.children.iterate(e=>{if(n>=40||!e||!e.active||this.dist(e.x,e.y,p.x,p.y)>SR)return;n++;const er=Math.max(12,(e.body?.halfWidth||14)+4);G.lineStyle(2,e.isBoss||e.isMini?0xffe08a:col,.85).strokeCircle(e.x,e.y,er);});}
     {const bw=60,bh=8,bx=p.x-bw/2,by=p.y-66;G.fillStyle(0x1a0d06,.85).fillRoundedRect(bx-2,by-2,bw+4,bh+4,3);const MX=this.titanMaxLv();G.fillStyle(col,1).fillRect(bx,by,bw*(r/MX),bh);
      G.fillStyle(0xffffff,.9);for(let i=1;i<MX;i++)G.fillRect(bx+bw*i/MX-1,by-2,2,bh+4);if(lv>=MX){G.lineStyle(2,0xffe08a,.6+.4*Math.sin(t*12)).strokeRoundedRect(bx-3,by-3,bw+6,bh+6,3);}}
     if(lv>=2&&this.fxOk()&&Math.random()<.35){const a=Math.random()*Math.PI*2,d=rad*(.6+Math.random()*.6);const s=this.camWorld(this.add.circle(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,2+lv,col).setDepth(8));this.tweens.add({targets:s,y:s.y-30-lv*10,alpha:0,duration:420,onComplete:()=>s.destroy()});}
   }
   ptv(k){return this.player?._pt?.[k]||0;}
   titanMaxLv(){return this.ptv('rage4')?4:3;}
+  // v7.6.9 เจ้าของ: Colossus Fist ทุบรอบตัว · กว้างขึ้น · วงพรีวิวตอนชาร์จ = ระยะจริง
+  titanSlamRadius(rage){ const b=this.basicAttack,ul=this.uniqueLevel||1,size=Math.min(1.8,1+(b?.ranks?.size||0)*.12+(b?._pm?.range||0))*(this.player?.donutImpact?1.15:1); return (150+ul*12)*size*(1+(rage||0)*.22); }
   titanRageSpend(given){const lv=Math.min(this.titanMaxLv(),given||0);this._titanRage=0;
     const sw=this.basicAttack?.lv?.p_secondwind||0,p=this.player;if(lv>=2&&sw&&p)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.04*lv*sw);return Math.min(this.titanMaxLv(),lv);}
   titanRageImpact(x,y,r,lv,basic){
@@ -12975,7 +12980,7 @@ class Game extends Phaser.Scene {
           if(this.textures?.exists?.('proj_rocket'))b.setTexture('proj_rocket').setTint(0xff6a1a).setScale(.85);this.attachProjectileAnim?.(b,'bpx_cocoa_gauntlet',120);b._bpBoom='bpx_cocoa_explode';b._uqRocket=true;if(b.body&&this.physics)this.physics.velocityFromRotation(a,560,b.body.velocity);Sfx.bp?.('uq_rocket_salvo',.6,.8);});
         if(t&&(t.isBoss||t.isMini))for(let k=0;k<stick;k++)this.cocoaLater(.75+k*.35,()=>{if(!t.active)return;this.cocoaHit(t.x,t.y,r*.8,unit*.7,{push:0});this.bpFx?.('bpx_cocoa_stick',t.x,t.y,r*1.8);this.cocoaVisual(t.x,t.y,r*.8,'wave',0xff6a1a);this.screenShake?.(70,.003);Sfx.bp?.('cocoa_rocket_stick_burst',.5,.1);});}
     }else if(path==='titan'){
-      const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel')),t=this.cocoaPriorityTarget(480),x=t?t.x:p.x,y=t?t.y:p.y,r=(102+ul*10)*size*(1+lv*.15),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
+      const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel')),x=p.x,y=p.y,r=this.titanSlamRadius(lv),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
       this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*.85*rm,{center:3.6,push:260+lv*80});this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
         if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1.5);});
         if(this.cocoaHasInf('sour')){const until=(this.elapsed||0)+4;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)e._titanMarkT=until;});}

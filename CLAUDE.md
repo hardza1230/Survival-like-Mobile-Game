@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.6.8 — ⚔ ATK / 🛡 DEF power split on Equipment
+# Latest delivery: v7.6.9 — Colossus Fist slams around Cocoa
+
+Owner: Titan Unique wider, show a growing ring while charging so you know what will be hit, punch all around instead of walking/leaping onto the enemy. titanSlamRadius(rage)=(150+12·ul)·size·(1+0.22·rage) (was (102+10·ul)·size·(1+0.15·lv) on cocoaPriorityTarget). Release centres on the player's position at release (x=p.x,y=p.y; aftershock same spot); center ×3.6 zone = r×0.48. tickTitanRage draws the live slam ring (fill + pulsing edge + inner bonus ring) and outlines up to 40 enemies inside (bosses/minis gold). cocoa-builds Titan test updated to the new geometry; titanSlamRadius added to the cocoa test method lists.
+
+# Previous delivery: v7.6.8 — ⚔ ATK / 🛡 DEF power split on Equipment
 
 Owner: split Power into attack and defense so items read as damage vs tank gear. heroAD(cid,basic) → {a: round(100·heroOffense), d: round(heroDefense)} (same parts heroPower combines); gearADDelta(item,base) swaps the item in like gearPowerDelta. Equipment power box shows '⚔ ATK a   🛡 DEF d'; selecting an unequipped item shows both lines 'ATK a→a+Δ ▲Δ' / 'DEF …' (box green both up, red both down, amber mixed); list cards show ⚔±/🛡± instead of ▲±. this._adBase cached per build. Overall heroPower (stage recommendations, auto-keep, clean list) unchanged. Quick UI screenshot OK.
 
@@ -17,10 +21,6 @@ Owner: copy should include levels, equipped gear, talents etc. Stats.kit(hero,ba
 # Previous delivery: v7.6.5 — Titan vs high-HP bosses
 
 Owner Play Stats: Titan died to the C2-2 boss after 9:18 (Brawler cleared C2-1 in 4:12). Titan basic punches are the slowest path (≥0.5s interval, 0.24/0.32 wind, fin cd ×1.3) with no boss bonus; its boss damage relies on Colossus Fist, which v7.6 weakened unless Unique Mastery is bought (uniquePower 1.0 vs up to 1.72 before). Buff: cocoaHit opts.bossMul (bosses/minis only); Titan basic punch bossMul 1.4; CHARACTER_UNIQUES titan Colossus Fist cd 12→9. Not playtested; owner to retry C2-2.
-
-# Previous delivery: v7.6.4 — Equipped item mods, Sell/Dismantle back, heavier punches
-
-Owner: (1) tapping the equipped item should show its mods — drawModCompare returned right after 'Open mod slots' when isEq; now lists implicit (+tier name) and every affix (emoji label value, Tn) in a MODS panel, 'No mods yet' fallback. (2) Remove the ⋯ More button; Sell/Dismantle always shown (moreOpen=true, row 2 = Craft 52% + ★ + 🔒). (3) Cocoa punches sounded like tiny jabs: punch_jab.mp3 measured −34dB mean / almost no <200Hz; Sfx.comboPunch now uses sfx_punch (event_refresh/punch.mp3, −11.6dB, strongest bass) with random pitch 0.98–1.18 for jabs, and heavy = punch at rate ~0.85 + punch_heavy layer. Quick UI screenshots of the gear screen OK; punch sound not listened to.
 
 # Older history
 
