@@ -62,10 +62,11 @@
     show:function(label,progress){
       var root=document.getElementById('game-loader');
       if(!root)return;
+      var visibilityToken=this._visibilityToken=(this._visibilityToken||0)+1,me=this;
       root.style.display='flex'; root.style.pointerEvents='auto';
       if(!this._shownAt)this._shownAt=performance.now();
       root.classList.toggle('intro-mode',!this._introDone); root.classList.toggle('loading-mode',this._introDone); root.classList.remove('opening');
-      requestAnimationFrame(function(){root.style.opacity='1';});
+      requestAnimationFrame(function(){if(me._visibilityToken===visibilityToken)root.style.opacity='1';});
       this.set(progress == null ? 0 : progress,label);
     },
     set:function(progress,label){
@@ -76,7 +77,7 @@
       if(pct)pct.textContent=Math.round(p*100)+'%';
       if(status&&!this._tipT){var T=this.TIPS,me=this,i=Math.floor(Math.random()*T.length);status.textContent='💡 '+T[i];this._tipT=setInterval(function(){i=(i+1)%T.length;var el=document.getElementById('load-status');if(el)el.textContent='💡 '+T[i];},4000);}
     },
-    hide:function(){clearInterval(this._tipT);this._tipT=null;if(window.LoaderMusic)window.LoaderMusic.stop();
+    hide:function(){this._visibilityToken=(this._visibilityToken||0)+1;clearInterval(this._tipT);this._tipT=null;if(window.LoaderMusic)window.LoaderMusic.stop();
       var root=document.getElementById('game-loader');
       if(!root)return;
       if(!this._introDone && root.classList.contains('intro-mode')){

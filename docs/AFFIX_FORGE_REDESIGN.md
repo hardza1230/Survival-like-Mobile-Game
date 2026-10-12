@@ -28,3 +28,7 @@ Actual menu-method tests cover 320/390/430/768/844 px widths, empty/full lines, 
 ## Follow-up
 
 If real playtests continue to show no use for destructive crafting, a separate economy change can remove these currencies and migrate balances into useful resources. Do not silently delete existing holdings in a UI redesign. Assess whether any current base-stat scaling benefits from zero mods before proposing such a migration.
+
+## v7.7.24 live loading correction
+
+Live QA exposed an already-cached menu overlay remaining at 30%. `GameLoader.show` scheduled an unconditional opacity write in requestAnimationFrame; a synchronous `ensureGroup` completion called hide first, then that pending RAF reopened the loader. A visibility generation token cancels the stale callback when hide runs. A focused DOM-stub regression reproduces the original ordering and checks a subsequent show still works. Late background loads now keep the Equipment/Forge veil at .84 instead of reverting to .54.

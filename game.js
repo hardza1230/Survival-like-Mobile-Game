@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.23';
+const GAME_VERSION = '7.7.24';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.24',date:'2026-10-13',title:'Cached menu loading',items:['Prevent a completed menu loader from reopening when images are already cached','Keep Equipment and Forge background dimming consistent while art loads']},
   {v:'7.7.23',date:'2026-10-13',title:'Focused Affix Forge',items:['Clear selected-item and mod panels with shared menu controls','Optional odds and tier details with honest target tracking','Remove and Reset moved into Advanced with explicit consequences']},
   {v:'7.7.22',date:'2026-10-12',title:'Equipment loading and proportions',items:['Load current hero and owned equipment instead of the entire art catalogue','Balanced loadout columns and readable hero captions on small phones']},
   {v:'7.7.21',date:'2026-10-12',title:'Clearer Equipment',items:['Shared Heroes header and buttons with quieter equipment panels','Labeled slots, readable four-column inventory and separate management controls','Grouped item details and contextual protection message']},
@@ -7276,7 +7277,7 @@ class Game extends Phaser.Scene {
       this.load.once('filecomplete-image-'+artKey,()=>{
         if(!bg.active||this.state!=='menu'||!this.menu.list.includes(bg))return;
         const art=this._coverImage(0,0,w,h,artKey).setAlpha(0);this.menu.addAt(art,0);
-        this.menu.remove(bg,true);this.menu.addAt(this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0),1);
+        this.menu.remove(bg,true);this.menu.addAt(this.add.rectangle(0,0,w,h,0x110c19,(title==='Equipment'||title==='Affix Forge')?.84:.54).setOrigin(0,0),1);
         this.tweens.add({targets:art,alpha:1,duration:180});
       });
       this.load.image(artKey,verUrl(url));if(!this.load.isLoading())this.load.start();

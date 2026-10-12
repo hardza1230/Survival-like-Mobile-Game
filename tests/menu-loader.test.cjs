@@ -1,0 +1,7 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),src=fs.readFileSync('index.html','utf8');
+const start=src.indexOf('  window.GameLoader = {'),end=src.indexOf('\n  };',start)+5;
+const root={style:{},classList:{toggle(){},remove(){},contains(){return false;}}},fill={style:{}},pct={},status={},frames=[],timers=[];
+const ctx={window:{},document:{getElementById:id=>({'game-loader':root,'load-fill':fill,'load-percent':pct,'load-status':status}[id])},performance:{now:()=>100},requestAnimationFrame:fn=>frames.push(fn),setTimeout:fn=>timers.push(fn),setInterval:()=>1,clearInterval(){},clearTimeout(){},Math};vm.createContext(ctx);vm.runInContext(src.slice(start,end),ctx);const L=ctx.window.GameLoader;L._introDone=true;
+L.show('Cached menu',.3);L.hide();frames.splice(0).forEach(fn=>fn());assert.equal(root.style.opacity,'0','late show callback must not reopen completed loader');assert.equal(root.style.pointerEvents,'none');timers.splice(0).forEach(fn=>fn());assert.equal(root.style.display,'none');
+L.show('First',.3);L.hide();L.show('Second',.5);frames.splice(0).forEach(fn=>fn());timers.splice(0).forEach(fn=>fn());assert.equal(root.style.opacity,'1');assert.equal(root.style.display,'flex');assert.equal(root.style.pointerEvents,'auto');assert.equal(pct.textContent,'50%');L.hide();timers.splice(0).forEach(fn=>fn());assert.equal(root.style.display,'none');
+console.log('Menu loader: synchronous cache completion, stale RAF cancellation and subsequent show/hide passed');
