@@ -1776,3 +1776,7 @@ Owner clarified Temple Depths (dig), not just Temple/Perks. menuMusic dig now se
 # Previous delivery: v7.7.1 — Short Temple feedback and owner BGM
 
 Core success trimmed 2.68s to .8s from audible onset; Weave promotion trimmed 3.2s to 1.4s. New sibling files in assets/audio/sfx/temple_short (8ms attack/140ms tail fade), existing keys repointed, voice replacement unchanged. bgm_menu_temple now points to tea_for_two_temple.mp3, byte-identical owner uploaded Tea For Two At The End Of The World (SHA in MANIFEST). Shared Temple/Perks music route preserved; other menus/stages untouched. Full check/build required; subjective phone listening pending.
+
+# Previous delivery: v7.7.6 — Titan Rage IV moved to Endgame
+
+Owner: Rage 4 too big/OP for a starter; back to Rage 3, Rage 4 from Endgame. titanMaxLv() = titanRage4Unlocked()?4:3 (typeof guard for vm tests). titanRage4Unlocked() = pactBestChar('cocoa')>=TITAN_RAGE4_HEAT (3 = Delve boss cleared at Depth 15+ with Chocolate; saves that already reached it unlock immediately). claimPactMilestones adds a '🗿 Titan Rage IV unlocked' line; Delve NEXT MILESTONE cell shows it for Chocolate. Rage Overflow capstone ×1.3 now applies at max Rage (3 or 4). Titan path desc updated. tests/titan-rage4-unlock.test.cjs.

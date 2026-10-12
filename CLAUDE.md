@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.11 — Verified F1 cleanup and status
+# Latest delivery: v7.7.12 — Reference hero roster cards
+
+Owner supplied image(2).png: large top preview, six landscape full-art cards in a two-column phone roster, colored frames/gold selected check and pink selection footer. Generated six matching ImageGen illustrations; menu-only alpha WebP at assets/art/hero_roster (768×460, ~0.8MB total, ~8.5MB decoded). Existing portrait art remains in the large preview/details. Heroes group and lazy classification load/free the new cards; no combat asset replacement. Card taps preview only; footer confirms Save.data.character and runtime character. Locked guards/playtest unlocks, tabs, Details and menu scroll remain. Native labels stay sharp and are not embedded in artwork. Full check/build and actual-method flow tests passed; visual QA uses reconstructed draw calls because Chromium cannot be installed here. Owner live phone touch/visual review pending.
+
+# Previous delivery: v7.7.11 — Verified F1 cleanup and status
 
 F1 core work was already delivered in v6.94; old plan checkbox was stale. Remove four unreachable methods: castDiamondDust, buildCookbook, buildRift and rollRiftPreview (only called by that dead Rift menu). Current routes redirect old Rift/Recipe entries to Atlas. Preserve Sweet-biome comet sugarRush/tickSugarRush, Delve riftMode/tier/mod helpers, live PASSIVES/SKILLDEFS metadata and save refund/conversion migrations. Update SYSTEM_CONSOLIDATION_PLAN with those exact boundaries. Full check/build passed; no headless gameplay simulation; owner phone QA remains. Heroes layout was also visually reviewed from actual buildChars draw calls at 320/390/768/844px (reconstructed display list, not a live screenshot); Chromium download failed.
 
@@ -21,10 +25,6 @@ Heroes keeps existing art, tabs, selection/save/unlock behavior. Selected hero s
 # Previous delivery: v7.7.7 — Ricochet damage consistency
 
 Ricochet splash remains for crowds, with one splash per ordinary enemy lifetime per seed and none on bosses/minibosses. Final Evolution splash excludes the direct victim. Isolated boss return applies only on the first hit, not after collecting bounce power from escorts or from split seeds. Split Talent creates at most one child per parent and inherits visited history/shared splash ledger. Existing growth, fire rate, direct-hit damage, Sniper/Shotgun and phase guards remain. Targeted regression and full checks/build required; owner phone balance review pending.
-
-# Previous delivery: v7.7.6 — Titan Rage IV moved to Endgame
-
-Owner: Rage 4 too big/OP for a starter; back to Rage 3, Rage 4 from Endgame. titanMaxLv() = titanRage4Unlocked()?4:3 (typeof guard for vm tests). titanRage4Unlocked() = pactBestChar('cocoa')>=TITAN_RAGE4_HEAT (3 = Delve boss cleared at Depth 15+ with Chocolate; saves that already reached it unlock immediately). claimPactMilestones adds a '🗿 Titan Rage IV unlocked' line; Delve NEXT MILESTONE cell shows it for Chocolate. Rage Overflow capstone ×1.3 now applies at max Rage (3 or 4). Titan path desc updated. tests/titan-rage4-unlock.test.cjs.
 
 # Older history
 
@@ -96,7 +96,7 @@ Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archiv
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.7.11 · 12 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.7.12 · 12 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)
