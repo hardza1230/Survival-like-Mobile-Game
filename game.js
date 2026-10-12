@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.21';
+const GAME_VERSION = '7.7.22';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.22',date:'2026-10-12',title:'Equipment loading and proportions',items:['Load current hero and owned equipment instead of the entire art catalogue','Balanced loadout columns and readable hero captions on small phones']},
   {v:'7.7.21',date:'2026-10-12',title:'Clearer Equipment',items:['Shared Heroes header and buttons with quieter equipment panels','Labeled slots, readable four-column inventory and separate management controls','Grouped item details and contextual protection message']},
   {v:'7.7.20',date:'2026-10-12',title:'Compact Heroes spacing',items:['Tighter hero card rows on tall phone screens','Bounded space before the selection button while keeping full card artwork']},
   {v:'7.7.19',date:'2026-10-12',title:'Painted frame compatibility',items:['Painted main menu frames render on both Canvas and WebGL','Preserved corner proportions using cropped image pieces']},
@@ -6194,8 +6195,14 @@ class Game extends Phaser.Scene {
   texFreeForRun(){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame();
     return this.texEvict((k,c)=>c==='menu'||(c==='hero'&&artHero(k)!==ch)||(c==='endgame'&&!eg),null); }
   // หน้าเมนูย่อย: ภาพ lazy ของกลุ่มหน้านี้ที่ยังไม่ถอดรหัส
+  equipmentAssetNeeded(k,u){
+    if(u.includes('/character_cards/'))return k==='card_'+(this.character||Save.data.character||'momo');
+    if(u.includes('/hero_roster_ui/'))return ['hr_ui_back','hr_ui_currency','hr_ui_tab_on','hr_ui_tab_off','hr_ic_back','hr_ic_candy'].includes(k);
+    if(k.startsWith('gear_')){const ids=new Set((Save.data.gearItems||[]).map(it=>it.baseId));for(const id of Object.values(Save.data.gear||{}))ids.add(id);return ids.has(k.slice(5));}
+    return true;
+  }
   menuLazyMissing(s){ const re=menuGroupRe(s),ch=this.character||Save.data.character||'momo',out=[];
-    const chk=(k,u)=>{ if(re.test(u||'')&&lazyArt(k,u,ch)&&artClass(k,u)!=='hero'&&!k.startsWith('screen_')&&!this.realTex(k))out.push(k); };
+    const chk=(k,u)=>{ if(re.test(u||'')&&(s!=='gear'||this.equipmentAssetNeeded(k,u||''))&&lazyArt(k,u,ch)&&artClass(k,u)!=='hero'&&!k.startsWith('screen_')&&!this.realTex(k))out.push(k); };
     for(const k in ASSET_IMAGES)chk(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)chk(k,ASSET_SHEETS[k].url); return out; }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'epilogue_s'+(idx+1),'result_victory','result_defeat'];
@@ -7292,7 +7299,7 @@ class Game extends Phaser.Scene {
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
     if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allComplete){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
       let fired=false; const go=()=>{ if(fired)return; fired=true; this._grpOk[s]=true; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu'&&this.menuScreen===s)this.buildMenuScreen(); };
-      setTimeout(go,8000); try{ this.ensureGroup(menuGroupRe(s),go); }catch(e){ go(); } return; }
+      setTimeout(go,8000); try{ this.ensureGroup(s==='gear'?((k,u)=>menuGroupRe(s).test(u||'')&&this.equipmentAssetNeeded(k,u||'')):menuGroupRe(s),go); }catch(e){ go(); } return; }
     // v7.4 ภาพของหน้าย่อยถอดรหัสตอนเปิดหน้า (ไม่ได้ถอดรหัสตอนบูตแล้ว) · ลองครั้งเดียวต่อ 15 วิ กันวนถ้าไฟล์เสีย
     if(s!=='hub'){ const T=this._menuArtTry||(this._menuArtTry={}),miss=Date.now()-(T[s]||0)>15000?this.menuLazyMissing(s):[];
       if(miss.length){ T[s]=Date.now(); const ks=new Set(miss); if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
@@ -8907,14 +8914,14 @@ class Game extends Phaser.Scene {
     // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
     // v6.55.51: ตัวละครเป็นอวาตาร์เล็กซ้ายสุด + ช่องสวมใส่ 6 ช่องแถวเดียว
     // v6.55.55: อวาตาร์สูงเท่า 2 แถวช่องสวมใส่ · ช่องชิดกัน · gacha กว้างเท่ากริด · กล่องเซ็ทบอกชิ้นที่ขาด
-    const folded=true, cy0=Math.max(58,112*w/941), sgap=8, ss=Math.min(64,Math.floor((w-28-10-sgap*2)/3.95)), avH=ss*2+sgap+32;
+    const folded=true, cy0=Math.max(58,112*w/941), sgap=8, ss=Math.min(92,Math.floor((w*.61-sgap*2)/3)), avH=ss*2+sgap+32;
     const gridW=ss*3+sgap*2, x0=w-12-gridW, ax=12, ay=cy0+4, key='card_'+id, avW=x0-10-ax;
     { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,avW,avH,12); this.menu.add(fg);
       if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=TH*(id==='berry'?.68:.55),cx0=TW*0.19,cy1=TH*(id==='berry'?.14:.03);
         im.setCrop(cx0,cy1,cw,ch).setOrigin((cx0+cw/2)/TW,(cy1+ch/2)/TH).setScale(Math.min((avW-6)/cw,(avH-6)/ch)).setPosition(ax+avW/2,ay+avH/2); this.menu.add(im); }
       else { const em=this.add.text(ax+avW/2,ay+avH/2,CHARACTERS[id].emoji,{fontSize:'30px'}).setOrigin(0.5); this.menu.add(em); }
       const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,avW-2,avH-2,12); fr.lineStyle(1.2,0x655271,1); fr.strokeRoundedRect(ax,ay,avW,avH,12); this.menu.add(fr);
-      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+avW/2,ay+avH-3,(CHARACTERS[id].name||id)+' · Lv'+cp.lvl,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:4,y:1}}).setOrigin(0.5,1);this.menu.add(lv);} }
+      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+avW/2,ay+avH-3,(CHARACTERS[id].name||id)+(avW<135?'\nLv':' · Lv')+cp.lvl,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:4,y:1}}).setOrigin(0.5,1);this.menu.add(lv);} }
     const rowY=[ay+16+ss/2, ay+32+ss*1.5+sgap];
     const layout=['weapon','armor','gloves','amulet','ring','boots'].map((sl,i)=>[sl,x0+ss/2+(ss+sgap)*(i%3),Math.floor(i/3)]);
     layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];

@@ -13,3 +13,5 @@ Implementation must reuse actual GEAR/save data, routing, lock/protection/cost r
 
 ## Implemented v7.7.21
 Shared Heroes header/buttons; matte darkened existing backdrop, thin rarity/selected borders, labeled equipment slots and compact avatar, four-column readable inventory and independent management controls, grouped native-text item details, preserved original modifier comparisons and upgrade/craft/protection/sell/scrap callbacks. Duplicate disabled Protected buttons replaced with one state-specific explanation. Landscape keeps existing route. No new assets or game mechanics.
+
+Live loading follow-up v7.7.22: restrict Equipment group readiness/lazy loading to current portrait, owned/equipped item artwork and used shared header/button keys. New loot enters the owned set on the next menu rebuild. Other screens keep their original groups. Loadout columns scale with screen width; narrow hero captions wrap.
