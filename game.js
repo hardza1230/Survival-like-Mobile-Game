@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.16';
+const GAME_VERSION = '7.7.17';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.17',date:'2026-10-12',title:'Main menu frame proportions',items:['Painted menu corners retain their shape with nine-slice scaling','Logo keeps its original aspect ratio above the hero capsule']},
   {v:'7.7.16',date:'2026-10-12',title:'Painted main menu',items:['Approved candy castle menu with painted logo and pink Play button','Shared plum menu frames, full-width More and responsive portrait layout','Live quest, currency, unlocks and progress badges remain interactive']},
   {v:'7.7.15',date:'2026-10-12',title:'Unified responsive Heroes',items:['Shared painted buttons, header and typography across Heroes, Talents and Stats','Portrait roster fills tall mobile screens with responsive spacing','Contained hero preview and cleaner card labels']},
   {v:'7.7.14',date:'2026-10-12',title:'Painted Heroes interface',items:['Rounded self-hosted lettering, painted pink-and-gold panels and buttons','Hero role icons, cherry blossoms, candy counter and selected badge art','Portrait spacing follows the approved reference; hero names and roles stay separate']},
@@ -8217,7 +8218,7 @@ class Game extends Phaser.Scene {
   drawBadgeDot(cont,x,y){ const g=this.add.graphics(); g.fillStyle(0x000000,0.4); g.fillCircle(x+1,y+1,7); g.fillStyle(0xff3b5c,1); g.fillCircle(x,y,6.5); g.lineStyle(1.5,0xffffff,0.95); g.strokeCircle(x,y,6.5); cont.add(g);
     this.tweens.add({targets:g,alpha:{from:1,to:0.45},duration:640,yoyo:true,repeat:-1}); return g; }
   hubChrome(key,x,y,w,h){
-    const k='hub_ui_'+key;if(this.textures.exists(k)){const im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;}
+    const k='hub_ui_'+key;if(this.textures.exists(k)){let im;if(this.add.nineslice&&this.textures.get){const source=this.textures.get(k).getSourceImage(),scale=h/source.height;im=this.add.nineslice(x+w/2,y+h/2,k,null,w/scale,source.height,source.width*.13,source.width*.13,source.height*.25,source.height*.25).setScale(scale);}else im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;}
     const g=this.add.graphics();g.fillStyle(key==='play'?0xc93970:0x291733,.96).fillRoundedRect(x,y,w,h,Math.min(14,h/2));g.lineStyle(2,0xe5bb6b,.95).strokeRoundedRect(x,y,w,h,Math.min(14,h/2));this.menu.add(g);return g;
   }
   hubText(x,y,value,size,color='#fff0df',originX=0,originY=.5){
@@ -8244,7 +8245,7 @@ class Game extends Phaser.Scene {
     const nq=this.nextQuest();if(nq){const qx=side,qy=top+pillH+Math.max(6,h*.01),qw=w-side*2,qh=portrait?Math.max(32,h*.04):32;
       this.hubChrome('quest',qx,qy,qw,qh);const qt=this.hubText(qx+qw*.055,qy+qh/2,'Next: '+nq.t,Math.max(10,Math.min(16,w*.029)),'#ffe9b0');let fs=parseFloat(qt.style.fontSize);while(qt.width>qw*.73&&fs>9)qt.setFontSize(--fs+'px');
       this.hubText(qx+qw*.95,qy+qh/2,'🍬 '+nq.r+' ›',Math.max(10,w*.028),'#a8f0c0',1);this._zone(qx,qy,qw,qh,()=>{this.menuScreen=nq.go;this.buildMenuScreen();});}
-    const logoW=portrait?w*.87:w*.43,logoH=portrait?Math.min(logoW*310/1200,h*.085):logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?h*.445:h*.40;
+    const logoW=portrait?w*.87:w*.43,logoH=logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?Math.min(h*.445,L.menuTop-Math.max(25,h*.03)-12-logoH):h*.40;
     if(this.textures.exists('hub_ui_logo'))this.menu.add(this.add.image(logoX,logoY+logoH/2,'hub_ui_logo').setDisplaySize(logoW,logoH));else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
     const ch=CHARACTERS[this.character||'momo'],heroW=portrait?w*.66:w*.42,heroH=portrait?Math.max(25,h*.03):28,heroY=portrait?L.menuTop-heroH-8:h*.65;
     this.hubChrome('pill',logoX-heroW/2,heroY,heroW,heroH);const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');

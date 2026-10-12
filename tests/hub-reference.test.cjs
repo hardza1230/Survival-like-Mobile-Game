@@ -10,4 +10,5 @@ for(const [W,H]of[[320,568],[390,844],[400,820],[524,931],[768,1024],[844,390]])
  for(const [i,id]of['chapter','char','gLoadout','gActivity','gCodex','gMore'].entries()){s.route=null;s.toast=null;s.tapZones.find(z=>z.tag===id).fn();if(!unlocked&&i>=2&&i<=4){assert(!s.route);assert(s.toast.includes('Locked'));}else assert.equal(s.route,id);}
  s.tapZones[0].fn();assert.equal(s.route,'news');s.tapZones[1].fn();assert.equal(s.route,'gLoadout');assert(nodes.some(n=>n.text==='1655'));assert(nodes.some(n=>n.text==='Next: Hunt 1 Legendary item'));
 }
+{const s=new S();let args,scale;s.menu={add(){}};s.textures={exists:()=>true,get:()=>({getSourceImage:()=>({width:768,height:200})})};s.add={nineslice(...a){args=a;return {setScale(v){scale=v;return this;}};}};s.hubChrome('pill',10,20,300,30);assert.equal(scale,.15);assert.equal(args[4]*scale,300);assert.equal(args[5]*scale,30);assert(args[6]*2<args[4]);}
 console.log('Main menu: six routes, locks/tutorial override, quest/version, native currency, nonoverlapping responsive boxes, full-width Play/More and fallback passed');
