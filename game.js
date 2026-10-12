@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.10';
+const GAME_VERSION = '7.7.11';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.11',date:'2026-10-12',title:'Unused code cleanup',items:['Removed unreachable old Cookbook, Rift menu and Diamond Dust methods','Current Delve, hero skills, Sweet biome Sugar Rush and save migrations stay intact']},
   {v:'7.7.10',date:'2026-10-12',title:'Game speed x4',items:['Speed button cycles x1, x2, x3, x4, then back to x1','Physics, timers, tweens and combat time share the selected speed','Starting a new run still resets speed to x1']},
   {v:'7.7.9',date:'2026-10-12',title:'Visible arena edges',items:['Floor artwork stops at the walkable boundary instead of continuing beyond it','A clear arena rim marks all four edges; the camera stays centred for aiming','Floor tiles retain their shared-texture memory budget and clip correctly at corners']},
   {v:'7.7.8',date:'2026-10-12',title:'A clearer hero roster',items:['Selected hero summary, larger character art and readable roles and ratings','Hero cards keep a comfortable size and scroll instead of squeezing to fit','Responsive phone, tablet and landscape grids; tap the selected hero for abilities']},
@@ -6612,25 +6613,6 @@ class Game extends Phaser.Scene {
     if(Math.random()<0.3){const lf=this.camWorld(this.add.text(px,py,'🍃',{fontSize:'14px'}).setOrigin(0.5).setDepth(this.player.y-1));
       this.tweens.add({targets:lf,x:px-Math.cos(a)*60+Phaser.Math.Between(-20,20),y:py-Math.sin(a)*60+Phaser.Math.Between(-20,20),angle:Phaser.Math.Between(-180,180),alpha:0,duration:520,onComplete:()=>lf.destroy()});}
   }
-  castDiamondDust(dm,ul){
-    ul=ul||1;const up=this.uniquePower();
-    const r=150+(ul-1)*26+(this.player.deepFreeze?30:0),dur=2.2+ul*0.35;
-    this.player.iframe=Math.max(this.player.iframe,0.6+ul*0.18);
-    const field=this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_magic_circle').setTint(0x9fd8ff).setDepth(3).setDisplaySize(r*2,r*2).setAlpha(0.28));
-    this.tweens.add({targets:field,rotation:Math.PI,alpha:{from:0.14,to:0.30},yoyo:true,repeat:-1,duration:600,ease:'Sine.inOut'});
-    const storm=this.time.addEvent({delay:300,loop:true,callback:()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
-      const cx=this.player.x,cy=this.player.y;field.setPosition(cx,cy);
-      for(let i=0;i<4+ul;i++){const a=Math.random()*TAU,rr=Math.random()*r,ix=cx+Math.cos(a)*rr,iy=cy+Math.sin(a)*rr;
-        const ic=this.camWorld(this.add.image(ix,iy-42,'proj_sprinkle').setTint(0x9fe8ff).setDepth(9).setScale(0.42,0.95).setAlpha(0.9));
-        this.tweens.add({targets:ic,y:iy,alpha:0,duration:220,onComplete:()=>ic.destroy()});}
-      const dmg=(10+ul*3.2)*dm*up;
-      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,cx,cy)<r){this.damage(e,(e.isBoss||e.isMini)?dmg*0.6:dmg,e.x,e.y);if(!e.isBoss&&!e.isMini){e.frozen=Math.max(e.frozen||0,0.7+ul*0.12);e.setVelocity(e.body.velocity.x*0.3,e.body.velocity.y*0.3);e.setTint(COLORS.ice);}}});
-      this.hitCratesInRadius(cx,cy,r,dmg);Sfx.frost();
-    }});
-    this.time.delayedCall(dur*1000,()=>{storm.remove(false);this.tweens.killTweensOf(field);if(field.active)this.tweens.add({targets:field,alpha:0,duration:200,onComplete:()=>field.destroy()});});
-    this.showBanner('❄️ Diamond Dust Lv'+ul,'Ice shard rain '+dur.toFixed(1)+'s · radius '+r+' · freeze crowd + guard',950);Sfx.frost();
-  }
-  // ⚡ โกโก้ Unique — Flicker Strike: วาร์ปไปฟันศัตรูรัว ๆ ต่อเนื่อง (สายคอมโบประชิด) Invincibleช่วงคอมโบ · คูลดาวน์เร็ว
   blinkTo(x,y){ const lim=WORLD/2-40; x=Phaser.Math.Clamp(x,-lim,lim); y=Phaser.Math.Clamp(y,-lim,lim);
     if(this.textures.exists(this.player.texture.key)){ const g=this.camWorld(this.add.image(this.player.x,this.player.y,this.player.texture.key,this.player.frame&&this.player.frame.name).setDepth((this.player.y||0)-1).setAlpha(0.55).setTintFill(0x9f6bff).setScale(this.player.scaleX,this.player.scaleY).setFlipX(this.player.flipX)); this.tweens.add({targets:g,alpha:0,duration:220,onComplete:()=>g.destroy()}); }
     this.player.setPosition(x,y); if(this.player.body)this.player.setVelocity(0,0); }
@@ -7397,37 +7379,6 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // 🍳 สมุดสูตร — โชว์สูตร (COMBOS) แยกตามตัวละคร · ค้นพบแล้ว (Save.cookbook) / ยังไม่พบ / Signature Recipe ⭐
-  buildCookbook(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 Cookbook','',this.menuScreenBack||'gCodex');
-    const w=this.W,h=this.H, portrait=w<=h;
-    const total=COMBOS.length, found=COMBOS.filter(c=>Save.cookbookHas(c.key)).length;
-    const sumTxt=this.add.text(w/2,53,'Cook recipes (weapon + matching passive) in a stage = permanent unlock · discovered '+found+' / '+total+' recipes',
-      {fontFamily:'sans-serif',fontSize:'10px',color:'#ffe08a',wordWrap:{width:w-170}}).setOrigin(0.5);
-    this.menu.add(sumTxt);
-    // จัดกลุ่มตามสกิลพื้นฐาน (อาวุธ) เรียงตามลำดับตัวละคร
-    const byChar=CHAR_ORDER.map(id=>({id,ba:BASIC_ATTACKS[id]})).filter(o=>o.ba);
-    let y=portrait?76:70; const sx=14, aw=w-28;
-    byChar.forEach(o=>{
-      const ba=o.ba, ch=CHARACTERS[o.id], recs=COMBOS.filter(c=>c.a===ba.skill);
-      if(!recs.length)return;
-      const hd=this.add.text(sx,y,ba.emoji+' '+ba.name+'  ('+(ch?ch.name:o.id)+')',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ff9ec4'}).setOrigin(0,0);
-      this.menu.add(hd); y+=18;
-      const cols=portrait?1:3, gap=6, cw=(aw-gap*(cols-1))/cols, rh=34;
-      recs.forEach((c,i)=>{
-        const known=Save.cookbookHas(c.key), pas=PASSIVES[c.b];
-        const col=i%cols, row=Math.floor(i/cols), x=sx+col*(cw+gap), ry=y+row*(rh+gap);
-        const bc=known?(c.sig?0xffb020:0xffd166):0x4a4059;
-        const g=this.add.graphics(); g.fillStyle(known?(c.sig?0x40320f:0x2f2718):0x241a33,0.95); g.fillRoundedRect(x,ry,cw,rh,8); g.lineStyle(c.sig?2:1.4,bc,known?1:0.6); g.strokeRoundedRect(x,ry,cw,rh,8); this.menu.add(g);
-        const tag=(c.sig?'⭐ ':'')+(known?'✓ ':'🔒 ');
-        const nm=this.add.text(x+7,ry+5,tag+c.emoji+' '+(known?c.name:'Secret recipe'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:known?'#ffe08a':'#8a7fa0',wordWrap:{width:cw-14}}).setOrigin(0,0);
-        const sub=known?c.desc:('Collect '+(pas?pas.emoji+' '+pas.name:c.b)+' with weapon');
-        const st=this.add.text(x+7,ry+rh-11,sub,{fontFamily:'sans-serif',fontSize:'8px',color:known?'#c7bdd6':'#8a7fa0',wordWrap:{width:cw-14}}).setOrigin(0,0.5);
-        this.menu.add([nm,st]);
-      });
-      y+=Math.ceil(recs.length/cols)*(rh+gap)+8;
-    });
-    this.menu.setVisible(true);
-  }
   buildBestiary(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 Bestiary','screen_bestiary');
     const w=this.W,h=this.H;
@@ -7771,8 +7722,6 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // 🌀 Mochi Rift menu — เลือก Tier · สุ่มด่าน+mod (Reroll ฟรี) · Pinnacle ใช้ 3 กุญแจ
-  rollRiftPreview(){ const pool=[];for(let i=0;i<STAGES.length;i++)if(isStageReady(i))pool.push(i); const t=this._riftTierSel||1,n=t>=5?3:2;
-    this._riftPreview={stage:Phaser.Utils.Array.GetRandom(pool),mods:Phaser.Utils.Array.Shuffle(RIFT_MODS.map(m=>m.id)).slice(0,n),tier:t}; }
   recipeBag(){ if(!Array.isArray(Save.data.recipes))Save.data.recipes=[]; return Save.data.recipes; }
   craftRecipe(r,cid){ const rar=r.rarity||'normal';
     if(cid==='transmute'&&rar!=='normal')return this.menuToast('Only Normal recipes can be upgraded to Magic','#ff9bb5');
@@ -8002,36 +7951,6 @@ class Game extends Phaser.Scene {
       this._zone(cx,y,cw,rh,()=>{ if(!can){this.menuToast(lv>=n.max?'Already maxed':'No free Atlas points — clear more themes and tiers','#ff9bb5');return;} if(!Save.data.atlasTree)Save.data.atlasTree={}; Save.data.atlasTree[n.id]=lv+1; Save.save(); this.buildAtlas(); });
       y+=rh+6; });
     this.uiPillBtn(this.menu,w/2,y+24,Math.min(cw,240),40,0x8a3050,'↺','Respec (free)',()=>{ Save.data.atlasTree={}; Save.save(); this.menuToast('Atlas points refunded','#9dff9d'); this.buildAtlas(); });
-  }
-  buildRift(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('🌀 Mochi Rift');
-    const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,top=(w<=h?100:70),best=Math.max(1,Save.data.riftBest||1),keys=Save.data.riftKeys||0;
-    const T=(y,t,sz,c,st)=>{const o=this.add.text(w/2,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c,align:'center',wordWrap:{width:cw-16}}).setOrigin(0.5,0);this.menu.add(o);return o;};
-    if(!Save.endgameUnlocked()){ T(top+40,'🔒 Finish the story to open the Rift',15,'#ff9bb5','bold'); this.menu.setVisible(true); return; }
-    this._riftTierSel=Math.max(1,Math.min(best,this._riftTierSel||best)); if(!this._riftPreview||this._riftPreview.tier!==this._riftTierSel)this.rollRiftPreview();
-    const pv=this._riftPreview,st=STAGES[pv.stage],m=riftTierMul(pv.tier);
-    T(top,'Random stage + random mods. Higher tiers are harder and pay more.\nClear a Rift to earn 🗝️ Rift Keys.',11,'#e6dcf0');
-    let y=top+40; T(y,'🗝️ Keys: '+keys+'   ·   Best tier: '+best,13,'#ffe08a','bold'); y+=30;
-    // tier stepper
-    const bw=46,g=this.add.graphics();g.fillStyle(0x241a30,1);g.fillRoundedRect(cx,y,cw,48,12);this.menu.add(g);
-    T(y+8,'TIER '+pv.tier,20,'#ffffff','bold');
-    const btn=(x,label,fn)=>{const tt=this.add.text(x,y+24,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffd166'}).setOrigin(0.5);this.menu.add(tt);this._zone(x-bw/2,y,bw,48,fn);};
-    btn(cx+bw/2+4,'‹',()=>{this._riftTierSel=Math.max(1,pv.tier-1);this._riftPreview=null;this.buildRift();});
-    btn(cx+cw-bw/2-4,'›',()=>{this._riftTierSel=Math.min(best,pv.tier+1);this._riftPreview=null;this.buildRift();});
-    y+=60;
-    const pg=this.add.graphics();pg.fillStyle(0x1c1426,1);pg.fillRoundedRect(cx,y,cw,150,14);pg.lineStyle(2,0x8a4dff,0.9);pg.strokeRoundedRect(cx,y,cw,150,14);this.menu.add(pg);
-    T(y+10,st.emoji+' '+st.name,15,'#ffffff','bold');
-    T(y+34,'Enemy HP ×'+m.hp.toFixed(2)+' · DMG ×'+m.dmg.toFixed(2)+' · Reward ×'+m.reward.toFixed(2),10,'#bfb5ca');
-    pv.mods.forEach((id,i)=>{const md=RIFT_MODS.find(q=>q.id===id);T(y+56+i*28,md.emoji+' '+md.name+' — '+md.desc,11,'#ffc3d6');});
-    y+=162;
-    const half=(cw-10)/2;
-    this.uiPillBtn(this.menu,cx+half/2,y+24,half,46,COLORS.grape,'🎲','Reroll',()=>{this.rollRiftPreview();this.buildRift();});
-    this.uiPillBtn(this.menu,cx+half+10+half/2,y+24,half,46,COLORS.pink,'🌀','Enter Rift',()=>{ this.stageDiff=1; this._riftRequested={tier:pv.tier,mods:pv.mods.slice()}; this._riftPreview=null; this.startRun(pv.stage); });
-    y+=66;
-    const can=keys>=PINNACLE_KEY_COST,pk=Save.data.pinnacleKills||0;
-    this.uiPillBtn(this.menu,w/2,y+26,Math.min(cw,320),52,can?0x6b2bd9:0x4a4059,'✦','Pinnacle Boss ('+PINNACLE_KEY_COST+' 🗝️)',()=>{ if(!can){this.menuToast('Need '+PINNACLE_KEY_COST+' Rift Keys — clear more Rifts','#ff9bb5');return;} Save.data.riftKeys=keys-PINNACLE_KEY_COST;Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); });
-    T(y+60,'The Hunger Beneath · Hell difficulty · guaranteed Legendary iLv 95+ · Defeated: '+pk,10,'#bfb5ca');
-    this.menu.setVisible(true);
   }
   finishPinnacle(won){ this._pinnacleRun=false; let label='';
     if(won){ Save.data.pinnacleKills=(Save.data.pinnacleKills||0)+1; this.sugarStage+=900; this.grantCurrencyReward(8,'legend','✦ Pinnacle defeated!');
@@ -11828,8 +11747,7 @@ class Game extends Phaser.Scene {
     g.setScale(1);this.tweens.killTweensOf(g);
     this.tweens.add({targets:g,alpha:{from:0.55,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});
   }
-  // v6.6.0: Recipe level-up = สะสมแต้ม ⬆ ปุ่มมุมขวา · แตะเปิดหน้าอัปเกรด ใช้ได้หลายแต้มทีเดียว
-  // v6.24 (เจ้าของเลือก 1+2): เลเวลทั่วไป = สแตต endless อัตโนมัติ + Sugar Rush 5 วิ · เลเวล 5/10/15… = Draft เลือก 1 ใน 3 (Modifier/Trade-off/Relic)
+  // Sweet-biome comet pickup still activates this temporary combat buff.
   sugarRush(got){ const p=this.player;
     if(!this._rushOn){ this._rushOn=true; p.cdMul*=0.6; p.dmgMul+=0.25; }
     this._rushEnd=(this.elapsed||0)+SUGAR_RUSH_SEC;

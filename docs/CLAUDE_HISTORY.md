@@ -1753,3 +1753,26 @@ New ElevenLabs soft_seed_shot.mp3 is low-passed at 3.8kHz and trimmed/faded to 2
 # Previous delivery: v7.7.0 — P1 art feedback
 
 New ImageGen skill_edges 4x4 atlas (13 runtime skill mappings, 3 spare), two brief mirrored edge accents <=18% viewport width, alpha <=.34 and <=.75s, no painted full-screen frame; removed old hero_screen registrations (files retained). Shared Unique Mastery icon under art/talents for menu loading; original 218 talent mappings untouched. Tremor/Frost Burn painted markers with actual counts (including >5 Tremor), cap 40 marked enemies, fade/pulse, expiry/death/pool/transition/off cleanup. Berry Core equipment crop fixed (.14..82 source height) after 28 source-crop review panels exposed missing mouth. Static image/geometry review only; browser UI automation unavailable; owner phone visual/FPS review pending, do not claim live screenshot QA. docs/art_orders/P1_DELIVERY_7_7.md and preview files. npm check plus P1 lifecycle test and build required.
+
+
+# Delivery notes archived 12 October 2026
+
+# Previous delivery: v7.7.5 — Every craft costs 1 currency
+
+Owner: currency spent 1 at a time for everything. TIER_LOCK_COST 2 → 0 (lock is free, need stays 1+0), FLAME_REROLL_COST 3 → 1 (Crystal Glaze tier reroll). All other spendCurrency calls were already 1.
+
+# Previous delivery: v7.7.4 — Faster Affix Forge Auto-Roll
+
+Owner: Auto-Roll faster. autoRollToTarget: reel ticks 4×45ms for the first 3 rolls, then 2×30ms; delay after a miss 380ms (first 3) → 150ms, near-miss 600 → 380ms; first step 200 → 120ms. About 0.85s → about 0.21s per roll after warm-up.
+
+# Previous delivery: v7.7.3 — Strawberry before-Build buff
+
+Owner approved pre-path Strawberry seed power ×1.5 and fire frequency ×1.15. castBerryBlaster applies multiplier only with no basic.path; legacy seed fallback mirrors condition. cdOf multiplies only momo Basic sprinkle no-path interval by 1/1.15 (not .85, which would be +17.6% rate). Selected Sniper/Shotgun/Ricochet, Unique and other heroes unchanged. Focused starter projectile and actual cdOf regression plus full check/build required. Phone C2-5 pacing review pending.
+
+# Previous delivery: v7.7.2 — Shared Flavor Weave / Temple Depths BGM
+
+Owner clarified Temple Depths (dig), not just Temple/Perks. menuMusic dig now selects the same bgm_menu_temple key as upgrade/perks: shared track and no restart when switching temple pages. Old depths file retained; kitchen/stage routes unchanged.
+
+# Previous delivery: v7.7.1 — Short Temple feedback and owner BGM
+
+Core success trimmed 2.68s to .8s from audible onset; Weave promotion trimmed 3.2s to 1.4s. New sibling files in assets/audio/sfx/temple_short (8ms attack/140ms tail fade), existing keys repointed, voice replacement unchanged. bgm_menu_temple now points to tea_for_two_temple.mp3, byte-identical owner uploaded Tea For Two At The End Of The World (SHA in MANIFEST). Shared Temple/Perks music route preserved; other menus/stages untouched. Full check/build required; subjective phone listening pending.

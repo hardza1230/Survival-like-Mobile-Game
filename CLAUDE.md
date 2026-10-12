@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.10 — Speed x4
+# Latest delivery: v7.7.11 — Verified F1 cleanup and status
+
+F1 core work was already delivered in v6.94; old plan checkbox was stale. Remove four unreachable methods: castDiamondDust, buildCookbook, buildRift and rollRiftPreview (only called by that dead Rift menu). Current routes redirect old Rift/Recipe entries to Atlas. Preserve Sweet-biome comet sugarRush/tickSugarRush, Delve riftMode/tier/mod helpers, live PASSIVES/SKILLDEFS metadata and save refund/conversion migrations. Update SYSTEM_CONSOLIDATION_PLAN with those exact boundaries. Full check/build passed; no headless gameplay simulation; owner phone QA remains. Heroes layout was also visually reviewed from actual buildChars draw calls at 320/390/768/844px (reconstructed display list, not a live screenshot); Chromium download failed.
+
+# Previous delivery: v7.7.10 — Speed x4
 
 Speed tap cycles 1→2→3→4→1; setGameSpeed normalizes invalid values and clamps 1–4. Arcade uses inverse 1/s, timers/tweens use s and update dt uses gameSpeed as before. Hit-stop defers physics scaling while other clocks retain selected speed; original restore path uses current speed. Run reset remains x1. Regression/full checks/build required; phone x4 feel/FPS review pending. No automated headless gameplay simulation per owner instruction.
 
@@ -22,29 +26,9 @@ Ricochet splash remains for crowds, with one splash per ordinary enemy lifetime 
 
 Owner: Rage 4 too big/OP for a starter; back to Rage 3, Rage 4 from Endgame. titanMaxLv() = titanRage4Unlocked()?4:3 (typeof guard for vm tests). titanRage4Unlocked() = pactBestChar('cocoa')>=TITAN_RAGE4_HEAT (3 = Delve boss cleared at Depth 15+ with Chocolate; saves that already reached it unlock immediately). claimPactMilestones adds a '🗿 Titan Rage IV unlocked' line; Delve NEXT MILESTONE cell shows it for Chocolate. Rage Overflow capstone ×1.3 now applies at max Rage (3 or 4). Titan path desc updated. tests/titan-rage4-unlock.test.cjs.
 
-# Previous delivery: v7.7.5 — Every craft costs 1 currency
-
-Owner: currency spent 1 at a time for everything. TIER_LOCK_COST 2 → 0 (lock is free, need stays 1+0), FLAME_REROLL_COST 3 → 1 (Crystal Glaze tier reroll). All other spendCurrency calls were already 1.
-
-# Previous delivery: v7.7.4 — Faster Affix Forge Auto-Roll
-
-Owner: Auto-Roll faster. autoRollToTarget: reel ticks 4×45ms for the first 3 rolls, then 2×30ms; delay after a miss 380ms (first 3) → 150ms, near-miss 600 → 380ms; first step 200 → 120ms. About 0.85s → about 0.21s per roll after warm-up.
-
-# Previous delivery: v7.7.3 — Strawberry before-Build buff
-
-Owner approved pre-path Strawberry seed power ×1.5 and fire frequency ×1.15. castBerryBlaster applies multiplier only with no basic.path; legacy seed fallback mirrors condition. cdOf multiplies only momo Basic sprinkle no-path interval by 1/1.15 (not .85, which would be +17.6% rate). Selected Sniper/Shotgun/Ricochet, Unique and other heroes unchanged. Focused starter projectile and actual cdOf regression plus full check/build required. Phone C2-5 pacing review pending.
-
-# Previous delivery: v7.7.2 — Shared Flavor Weave / Temple Depths BGM
-
-Owner clarified Temple Depths (dig), not just Temple/Perks. menuMusic dig now selects the same bgm_menu_temple key as upgrade/perks: shared track and no restart when switching temple pages. Old depths file retained; kitchen/stage routes unchanged.
-
-# Previous delivery: v7.7.1 — Short Temple feedback and owner BGM
-
-Core success trimmed 2.68s to .8s from audible onset; Weave promotion trimmed 3.2s to 1.4s. New sibling files in assets/audio/sfx/temple_short (8ms attack/140ms tail fade), existing keys repointed, voice replacement unchanged. bgm_menu_temple now points to tea_for_two_temple.mp3, byte-identical owner uploaded Tea For Two At The End Of The World (SHA in MANIFEST). Shared Temple/Perks music route preserved; other menus/stages untouched. Full check/build required; subjective phone listening pending.
-
 # Older history
 
-Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55) are archived verbatim in `docs/CLAUDE_HISTORY.md`. Search there (grep a function or version) when you need why something was done. When you finish work: add a new "# Latest delivery" block here, rename the previous one to "# Previous delivery", and keep only ~6 recent blocks in this file (move older ones to the end of docs/CLAUDE_HISTORY.md).
+Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archived verbatim in `docs/CLAUDE_HISTORY.md`. Search there (grep a function or version) when you need why something was done. When you finish work: add a new "# Latest delivery" block here, rename the previous one to "# Previous delivery", and keep only ~6 recent blocks in this file (move older ones to the end of docs/CLAUDE_HISTORY.md).
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
@@ -112,7 +96,7 @@ Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v6.69.0 · 10 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.7.11 · 12 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)
@@ -133,9 +117,9 @@ Full delivery notes before v6.64 and the old "สถานะ" log (v1.x–v6.55
 
 
 ## 5. ถัดไป
-- **กำลังทำ:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A–E เสร็จ → F ต่อ) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
+- **เสร็จแล้ว:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A–F ตรวจสถานะแล้ว; คงส่วนที่ runtime ยังใช้) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
 - รอ feedback เจ้าของจากการเล่นจริง: Kitchen upkeep (v6.69), Story C2–C3 buff/Temple cost (v6.68), item mods (v6.67), Delve
-- งานค้างระยะยาว: Monster animation ที่เหลือ (`docs/MONSTER_ANIMATION_PLAN.md`), Play Store (พักไว้: ลบบัญชีในแอป, store listing, keystore, closed test)
+- งานค้างระยะยาว: มือถือ visual/FPS QA ของอาร์ตที่ส่งแล้ว (`docs/art_orders/16_CURRENT_ART_BACKLOG.md`), Play Store (พักไว้: ลบบัญชีในแอป, store listing, keystore, closed test)
 - แผน commit เก่า: `docs/COMMIT_ROADMAP.md`
 
 ## 6. เอกสารออกแบบ (Artifacts — ความจำภาพ)

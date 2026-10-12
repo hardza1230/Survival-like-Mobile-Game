@@ -35,4 +35,6 @@ Status: ⬜ todo · 🟨 in progress · ✅ done
 - ✅ E3 Atlas passives + Pact milestones → one depth-reward track.
 
 ## F. Dead code removal (no player-visible change)
-- ⬜ F1 Endgame Build, Recipe draft/Sugar Rush, Rift, Cookbook, slot level-up, openUpgradePanel, legacy PASSIVES/SKILLDEFS paths, castDiamondDust.
+- ✅ F1 Current verified cleanup: Endgame Build, Recipe draft/auto Sugar Rush, slot level-up and openUpgradePanel were removed in v6.94 (see `docs/CLAUDE_HISTORY.md`). v7.7.11 removes the unreachable old Rift menu/preview, Cookbook menu and Diamond Dust method. No current menu or combat caller reaches those methods.
+- Keep live dependencies: `sugarRush()`/`tickSugarRush()` serve Sweet-biome comet pickups; `riftMode`/tier/mod helpers serve current Delve runs; PASSIVES/SKILLDEFS still supply live skill metadata and compatibility paths. Save refund/conversion migrations remain. Removing these is not dead-code cleanup and would change current behavior.
+- Verification: full npm check and web build pass. Actual phone gameplay/FPS review remains owner work.
