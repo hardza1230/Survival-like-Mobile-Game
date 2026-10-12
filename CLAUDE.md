@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.5 — Every craft costs 1 currency
+# Latest delivery: v7.7.6 — Titan Rage IV moved to Endgame
+
+Owner: Rage 4 too big/OP for a starter; back to Rage 3, Rage 4 from Endgame. titanMaxLv() = titanRage4Unlocked()?4:3 (typeof guard for vm tests). titanRage4Unlocked() = pactBestChar('cocoa')>=TITAN_RAGE4_HEAT (3 = Delve boss cleared at Depth 15+ with Chocolate; saves that already reached it unlock immediately). claimPactMilestones adds a '🗿 Titan Rage IV unlocked' line; Delve NEXT MILESTONE cell shows it for Chocolate. Rage Overflow capstone ×1.3 now applies at max Rage (3 or 4). Titan path desc updated. tests/titan-rage4-unlock.test.cjs.
+
+# Previous delivery: v7.7.5 — Every craft costs 1 currency
 
 Owner: currency spent 1 at a time for everything. TIER_LOCK_COST 2 → 0 (lock is free, need stays 1+0), FLAME_REROLL_COST 3 → 1 (Crystal Glaze tier reroll). All other spendCurrency calls were already 1.
 
@@ -21,10 +25,6 @@ Owner clarified Temple Depths (dig), not just Temple/Perks. menuMusic dig now se
 # Previous delivery: v7.7.1 — Short Temple feedback and owner BGM
 
 Core success trimmed 2.68s to .8s from audible onset; Weave promotion trimmed 3.2s to 1.4s. New sibling files in assets/audio/sfx/temple_short (8ms attack/140ms tail fade), existing keys repointed, voice replacement unchanged. bgm_menu_temple now points to tea_for_two_temple.mp3, byte-identical owner uploaded Tea For Two At The End Of The World (SHA in MANIFEST). Shared Temple/Perks music route preserved; other menus/stages untouched. Full check/build required; subjective phone listening pending.
-
-# Previous delivery: v7.7.0 — P1 art feedback
-
-New ImageGen skill_edges 4x4 atlas (13 runtime skill mappings, 3 spare), two brief mirrored edge accents <=18% viewport width, alpha <=.34 and <=.75s, no painted full-screen frame; removed old hero_screen registrations (files retained). Shared Unique Mastery icon under art/talents for menu loading; original 218 talent mappings untouched. Tremor/Frost Burn painted markers with actual counts (including >5 Tremor), cap 40 marked enemies, fade/pulse, expiry/death/pool/transition/off cleanup. Berry Core equipment crop fixed (.14..82 source height) after 28 source-crop review panels exposed missing mouth. Static image/geometry review only; browser UI automation unavailable; owner phone visual/FPS review pending, do not claim live screenshot QA. docs/art_orders/P1_DELIVERY_7_7.md and preview files. npm check plus P1 lifecycle test and build required.
 
 # Older history
 

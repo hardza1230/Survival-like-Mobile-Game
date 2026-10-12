@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.5';
+const GAME_VERSION = '7.7.6';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  { v:'7.7.6', date:'2026-10-12', title:'🗿 Rage IV is an Endgame reward', items:['Titan charges up to 3 Blood Rage again (×4.2 Colossus Fist)','Rage IV (×5.5, almost full-screen) now unlocks permanently when Chocolate beats a Mochi Delve boss at Depth 15 or deeper','Rage Overflow capstone now powers up your maximum Rage release, whether that is Rage III or Rage IV']},
   { v:'7.7.5', date:'2026-10-11', title:'💎 One currency per craft', items:['Every Affix Forge action now costs exactly 1 currency','Tier Lock no longer adds +2 currency per roll','Crystal Glaze tier reroll costs 1 instead of 3']},
   { v:'7.7.4', date:'2026-10-11', title:'⚡ Faster Auto-Roll', items:['Affix Forge Auto-Roll is about 3–4× faster: the first rolls still spin, then each roll takes about a quarter of a second','Near-miss pauses are shorter too']},
   {v:'7.7.3',date:'2026-10-11',title:'Strawberry starter boost',items:['Before choosing a Build: seed hits deal 50% more damage and fire 15% faster','Sniper, Shotgun and Ricochet keep their existing values']},
@@ -3259,7 +3260,7 @@ const BASIC_PATHS={
                 {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Rapid Fire',emoji:'💨',max:3,fx:{cd:0.92},headline:'+8% fist fire rate',desc:'Fire fists 8% faster per rank'},
                 {id:'p_twin',iconKey:'ic_path_brawler',name:'Twin Fists',emoji:'✌️',max:2,fx:{},headline:'Double fist volleys',desc:'Every 3rd fist fires 2 fists; rank 2 makes it every 2nd fist'},
                 {id:'p_ember',iconKey:'ic_path_brawler',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'}]},
-    {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. No five-hit combo: every punch is a Ground Pound that adds Tremor (+6% damage taken per stack, up to 5, 3s). Higher regen than other paths. Hold Unique: charge Blood Rage (costs HP) and release a Colossus Fist for up to ×5.5 damage',
+    {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. No five-hit combo: every punch is a Ground Pound that adds Tremor (+6% damage taken per stack, up to 5, 3s). Higher regen than other paths. Hold Unique: charge up to 3 Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage. Endgame: beat a Delve boss at Depth 15+ with Chocolate to unlock Rage IV (×5.5, almost full-screen)',
       upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Giant Slayer',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_quake',iconKey:'ic_path_p_quake',name:'Quake',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'},
                 {id:'p_ironblood',iconKey:'ic_path_titan',name:'Iron Blood',emoji:'🩸',max:3,fx:{},headline:'-20% charge HP cost',desc:'Blood Rage costs 20% less HP per rank and Titan regen +0.4% max HP/s per rank'},
@@ -5853,6 +5854,8 @@ function amapRewardOf(id){ const n=amapNode(id); if(!n)return AMAP_REWARDS[0]; c
 // v6.29: Pact milestone ปลดครั้งเดียวต่อตัวละคร ตาม Heat สูงสุดที่ผ่าน
 const PACT_MILESTONES=[{heat:2,emoji:'🍬',name:'500 Sugar'},{heat:4,emoji:'💠',name:'5 epic currency'},{heat:6,emoji:'🗝️',name:'Pinnacle key'},{heat:8,emoji:'🌟',name:'Legendary gear'},{heat:12,emoji:'✨',name:'Unique gear'}];
 function pactBestChar(ch){ const m=Save.data.pactBestChar||{}; return m[ch]||0; }
+const TITAN_RAGE4_HEAT=3;   // v7.7.6 Rage IV = Cocoa เคลียร์บอส Delve ที่ Depth 15 (heat 3)
+function titanRage4Unlocked(){ try{ return typeof Save!=='undefined'&&!!Save.data&&pactBestChar('cocoa')>=TITAN_RAGE4_HEAT; }catch(e){ return false; } }
 function amapFlavorOf(id){ const n=amapNode(id); return n?n.flavor:AMAP_FLAVORS[2]; }
 function amapClears(id){ return id==='0,0'?0:(amapData()[id]|0); }
 function amapInfluence(id){ return {}; // v6.36 ตัดระบบ Influence (ผู้เล่นมองไม่เห็นผล)
@@ -7941,7 +7944,7 @@ class Game extends Phaser.Scene {
       const md=sn.mission?WAVE_OBJECTIVES[sn.mission]:null,colW=(cw-28)/2;
       const cell=(i,lab,val,c)=>{ const xx=cx+14+(i%2)*colW,yy=y0+66+Math.floor(i/2)*34; TL(xx,yy,lab,9,'#8d8499','bold'); const v=TL(xx,yy+15,val,12,c||'#ffffff','bold'); if(v.width>colW-8)v.setScale((colW-8)/v.width); };
       cell(0,'FLAVOR',sn.flavor.emoji+' '+sn.flavor.name); cell(1,'REWARD',rw.emoji+' '+rw.name,'#ffe08a');
-      cell(2,'MISSION',md?md.emoji+' '+md.name:'—','#9dff9d'); { const pb=pactBestChar(egCharKey()),nm=PACT_MILESTONES.find(m=>m.heat>pb); cell(3,'NEXT MILESTONE',nm?'Depth '+nm.heat*5+' '+nm.emoji+' '+nm.name:'All claimed ✓','#ffb070'); }
+      cell(2,'MISSION',md?md.emoji+' '+md.name:'—','#9dff9d'); { const pb=pactBestChar(egCharKey()),nm=(egCharKey()==='cocoa'&&pb<TITAN_RAGE4_HEAT&&!PACT_MILESTONES.some(m=>m.heat>pb&&m.heat<TITAN_RAGE4_HEAT))?{heat:TITAN_RAGE4_HEAT,emoji:'🗿',name:'Titan Rage IV'}:PACT_MILESTONES.find(m=>m.heat>pb); cell(3,'NEXT MILESTONE',nm?'Depth '+nm.heat*5+' '+nm.emoji+' '+nm.name:'All claimed ✓','#ffb070'); }
       const my=y0+142; TL(cx+14,my,'MODS',9,'#8d8499','bold');
       if(!sn.mods.length)TL(cx+56,my,'No mods — easy cave',11,'#8d8499');
       else { const n=sn.mods.length,gap=5,tw=Math.min(130,(cw-70-gap*(n-1))/n); let x=cx+56;
@@ -10030,6 +10033,7 @@ class Game extends Phaser.Scene {
     const got=[]; PACT_MILESTONES.forEach(m=>{ if(m.heat>pb&&m.heat<=heat){ got.push(m.emoji+' '+m.name);
       if(m.heat===2)this.sugarStage+=500; else if(m.heat===4)this.grantCurrencyReward(5,'epic','⛏ Depth milestone'); else if(m.heat===6)Save.data.riftKeys=(Save.data.riftKeys||0)+1; else if(m.heat===8)this.grantGear('legend');
       else { const u=GEAR_ALL.filter(g=>g.unique); const it=Phaser.Utils.Array.GetRandom(u); if(it)Save.receiveGearInstance(it.id,{isNew:true,itemLevel:85,chapter:5}); } } });
+    if(ch==='cocoa'&&pb<TITAN_RAGE4_HEAT&&heat>=TITAN_RAGE4_HEAT)got.push('🗿 Titan Rage IV unlocked');
     Save.save(); if(got.length)this.time.delayedCall(5000,()=>this.showBanner('⛏ Depth milestone · '+(heat*5),got.join(' · '),2600)); }
   finishRecipeBoss(){ const r=this._recipe; if(!r)return; this.clearRecipeShrine(); this.claimPactMilestones();
     if(this._sugarRewardMap){ this._sugarRewardMap=false; this.sugarStage=Math.round((this.sugarStage||0)*1.5); } if((this._pactHeat||0)>(Save.data.pactBest||0)){ Save.data.pactBest=this._pactHeat; Save.save(); this.time.delayedCall(2600,()=>this.showBanner('🔥 New Pact record: Heat '+this._pactHeat,'',2000)); }
@@ -12845,7 +12849,7 @@ class Game extends Phaser.Scene {
     if(lv>=2&&this.fxOk()&&Math.random()<.35){const a=Math.random()*Math.PI*2,d=rad*(.6+Math.random()*.6);const s=this.camWorld(this.add.circle(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,2+lv,col).setDepth(8));this.tweens.add({targets:s,y:s.y-30-lv*10,alpha:0,duration:420,onComplete:()=>s.destroy()});}
   }
   ptv(k){return this.player?._pt?.[k]||0;}
-  titanMaxLv(){return 4;}   // v7.6.10 เจ้าของ: ชาร์จได้ 4 Rage ทุกคน (เดิมต้อง Capstone)
+  titanMaxLv(){return typeof titanRage4Unlocked==='function'&&titanRage4Unlocked()?4:3;}   // v7.7.6 เจ้าของ: Rage 4 OP ไปสำหรับเริ่มต้น → ปกติ 3 · ปลด 4 จาก Endgame (Cocoa ชนะบอส Delve Depth 15)
   // v7.6.9 เจ้าของ: Colossus Fist ทุบรอบตัว · กว้างขึ้น · วงพรีวิวตอนชาร์จ = ระยะจริง
   // v7.6.10 regen ตาม % Max HP (เลือดเยอะ = ฟื้นเยอะ) + ขอบจอสีเขียวให้รู้ว่ากำลังฮีล
   startHeroRegen(sec,pct,label){ const on=this._cocoaRegenT>0; this._cocoaRegenT=Math.max(on?this._cocoaRegenT:0,sec); this._cocoaRegenPct=Math.max(on?(this._cocoaRegenPct||0):0,pct); this.healAura?.(); if(label&&this.player)this.floatText?.(this.player.x,this.player.y-70,'+'+(Math.round(pct*1000)/10)+'% HP/s','#7dff9a'); }
@@ -13014,7 +13018,7 @@ class Game extends Phaser.Scene {
           if(this.textures?.exists?.('proj_rocket'))b.setTexture('proj_rocket').setTint(0xff6a1a).setScale(.85);this.attachProjectileAnim?.(b,'bpx_cocoa_gauntlet',120);b._bpBoom='bpx_cocoa_explode';b._uqRocket=true;if(b.body&&this.physics)this.physics.velocityFromRotation(a,560,b.body.velocity);Sfx.bp?.('uq_rocket_salvo',.6,.8);});
         if(t&&(t.isBoss||t.isMini))for(let k=0;k<stick;k++)this.cocoaLater(.75+k*.35,()=>{if(!t.active)return;this.cocoaHit(t.x,t.y,r*.8,unit*.7,{push:0});this.bpFx?.('bpx_cocoa_stick',t.x,t.y,r*1.8);this.cocoaVisual(t.x,t.y,r*.8,'wave',0xff6a1a);this.screenShake?.(70,.003);Sfx.bp?.('cocoa_rocket_stick_burst',.5,.1);});}
     }else if(path==='titan'){
-      const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel'))*(lv>=4&&this.ptv('rage4')?1.3:1),x=p.x,y=p.y,r=this.titanSlamRadius(lv),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
+      const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel'))*(lv>0&&lv>=this.titanMaxLv()&&this.ptv('rage4')?1.3:1),x=p.x,y=p.y,r=this.titanSlamRadius(lv),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
       this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*1.0*rm,{center:3.6,push:260+lv*80});this.titanPctSlam?.(x,y,r,lv);this.startHeroRegen?.(3+lv*1.5,(.008+.006*lv)*(this.ptv('rage4')?2:1),'🗿 Titan Recovery');this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
         if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1.5);});
         if(this.cocoaHasInf('sour')){const until=(this.elapsed||0)+4;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)e._titanMarkT=until;});}
