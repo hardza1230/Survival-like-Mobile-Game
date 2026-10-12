@@ -25,3 +25,6 @@ Nunito เป็นฟอนต์ทดแทนที่ใกล้เคี�
 - npm run check และ npm run build:www ผ่าน; ตรวจ live UI หลัง deploy แยกจากการทดสอบเครื่องจริง
 
 รายละเอียดการตัด atlas ดู assets/incoming/hero_roster_ui/MANIFEST.md.
+
+## v7.7.15 — owner screenshot corrections
+Talents and Stats now share the same header, tab assets and Nunito. Talent branch/Upgrade/Reset chrome uses the same painted buttons. Tall portrait extra height is distributed: 35% preview, 40% across the two row gaps, 25% footer spacing. Horizontal card gaps and card art aspect stay fixed; full card illustrations remain visible. Hero portrait now fits inside the preview frame. Mobile 400×820 and 524×931 added to regression coverage.
