@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.7';
+const GAME_VERSION = '7.7.8';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.8',date:'2026-10-12',title:'A clearer hero roster',items:['Selected hero summary, larger character art and readable roles and ratings','Hero cards keep a comfortable size and scroll instead of squeezing to fit','Responsive phone, tablet and landscape grids; tap the selected hero for abilities']},
   {v:'7.7.7',date:'2026-10-12',title:'Ricochet damage consistency',items:['Ricochet splashes ordinary enemies once per seed, never bosses or minibosses','Heart Pinball final splash excludes its direct target; boss return only applies to a first isolated hit','Split Talent creates at most one child per seed and keeps prior target history']},
   { v:'7.7.6', date:'2026-10-12', title:'🗿 Rage IV is an Endgame reward', items:['Titan charges up to 3 Blood Rage again (×4.2 Colossus Fist)','Rage IV (×5.5, almost full-screen) now unlocks permanently when Chocolate beats a Mochi Delve boss at Depth 15 or deeper','Rage Overflow capstone now powers up your maximum Rage release, whether that is Rage III or Rage IV']},
   { v:'7.7.5', date:'2026-10-11', title:'💎 One currency per craft', items:['Every Affix Forge action now costs exactly 1 currency','Tier Lock no longer adds +2 currency per roll','Crystal Glaze tier reroll costs 1 instead of 3']},
@@ -8384,30 +8385,52 @@ class Game extends Phaser.Scene {
     const tab=this._heroesTab||'roster';if(tab==='talents')this.buildTalents();else if(tab==='stats')this.buildStats();else this.buildChars();
   }
   buildChars(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Heroes','screen_heroes');this.drawHeroesTabs();
+    this.menu.y=0;this.menu.removeAll(true);this.tapZones=[];this._screenBg('Heroes','screen_heroes');this.drawHeroesTabs();
     if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
-    const w=this.W,h=this.H,landscape=w>h,cols=landscape?6:2,gap=landscape?7:10,y0=landscape?102:Math.max(134,h*0.16);
+    const w=this.W,h=this.H,landscape=w>h,side=14,gap=12;
     const roster=CHAR_ORDER.filter(id=>id!=='sesame'||FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('sesame'));
-    const rows=Math.ceil(roster.length/cols),side=landscape?10:14,cardW=(w-side*2-gap*(cols-1))/cols;
-    const cardH=Math.min(landscape?Math.max(185,h-y0-14):260,(h-y0-14-gap*(rows-1))/rows);
-    const formNote=this.add.text(w/2,landscape?91:119,'Choose Character Card · Core Form ⇄ Awakened Form',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'11px',color:'#bfe8ff'}).setOrigin(0.5);this.menu.add(formNote);
-    roster.forEach((id,i)=>{const c=CHARACTERS[id],row=Math.floor(i/cols),col=i%cols,rowCount=Math.min(cols,roster.length-row*cols),rowW=rowCount*cardW+(rowCount-1)*gap,x0=(w-rowW)/2,x=x0+col*(cardW+gap),y=y0+row*(cardH+gap);
-      const owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),selected=Save.data.character===id,locked=!owned,border=selected?0xffd166:(owned?0x8bd3a0:0x554a63);
-      const panel=this.add.graphics();panel.fillStyle(selected?0x35273d:0x241a33,0.94);panel.fillRoundedRect(x,y,cardW,cardH,landscape?12:16);panel.lineStyle(selected?3:1.7,border,selected?1:0.82);panel.strokeRoundedRect(x,y,cardW,cardH,landscape?12:16);this.menu.add(panel);
-      const artH=cardH*(landscape?0.43:0.44),art=this._characterCardArt(id,x+cardW/2,y+8+artH/2,cardW*0.92,artH,owned?1:0.42);
-      if(!art){const em=this.add.text(x+cardW/2,y+artH/2,c.emoji,{fontSize:landscape?'40px':'54px'}).setOrigin(0.5);this.menu.add(em);}
-      const name=this.add.text(x+cardW/2,y+artH+4,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'10px':'13px',color:'#ffffff',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
-      const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(x+cardW/2,y+artH+(landscape?19:24),sw.emoji+' '+sw.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'8px':'10px',color:'#f4d694',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
-      const r=c.rating,stats=this.add.text(x+cardW/2,y+artH+(landscape?34:42),'❤️'+r.hp+'  💥'+r.atk+'  👟'+r.spd+'  🛡️'+r.def,{fontFamily:'sans-serif',fontSize:landscape?'8px':'9px',color:'#d9c9e8',align:'center'}).setOrigin(0.5,0);
-      const role=this.add.text(x+cardW/2,y+artH+(landscape?48:58),c.role,{fontFamily:'sans-serif',fontSize:landscape?'7px':'9px',color:'#aee8dc',align:'center',wordWrap:{width:cardW-10},maxLines:1}).setOrigin(0.5,0);
-      const hint=this.add.text(x+cardW/2,y+artH+(landscape?60:73),CHARACTER_CARD_HINT[id],{fontFamily:'sans-serif',fontSize:landscape?'7px':'8px',color:'#d8cce5',align:'center',wordWrap:{width:cardW-12},maxLines:cardH<200?1:2}).setOrigin(0.5,0);
-      const gate=CORE_UNLOCK_STAGE[id],label=selected?'Selected ✓':owned?'Tap to select':gate!=null?'🔒 Clear Stage '+(gate+1):'🔒 In development',status=this.add.text(x+cardW/2,y+cardH-12,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:landscape?'9px':'10px',color:selected?'#ffd166':owned?'#8bd3a0':'#9a8fac'}).setOrigin(0.5);this.menu.add([name,weapon,stats,role,hint,status]);
-      if(!selected)this._zone(x,y,cardW,cardH,()=>{if(locked){this.showCharacterInfo(id);return;}Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});if(!selected){const lz=this.tapZones[this.tapZones.length-1];if(lz)lz.tag='char_'+id;}
-      const info=this.add.text(x+cardW-20,y+19,'ⓘ',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff3d6',backgroundColor:'#3a294acc',padding:{x:3,y:1}}).setOrigin(0.5);this.menu.add(info);this._zone(x+cardW-43,y,43,44,()=>this.showCharacterInfo(id));
+    const cols=landscape?Math.max(2,Math.min(4,Math.floor((w-16)/190))):w>=700?3:2;
+    const cardW=(w-side*2-gap*(cols-1))/cols,cardH=landscape?264:Math.max(276,Math.min(304,cardW*1.52));
+    const activeId=roster.includes(Save.data.character)?Save.data.character:roster[0],active=CHARACTERS[activeId];
+    const top=landscape?94:124,heroH=108,hero=this.add.graphics();
+    hero.fillStyle(0x171125,.96).fillRoundedRect(side,top,w-side*2,heroH,18);
+    hero.lineStyle(1.5,active.color,.7).strokeRoundedRect(side,top,w-side*2,heroH,18);
+    hero.fillStyle(active.color,.12).fillRoundedRect(side+3,top+3,94,heroH-6,15);this.menu.add(hero);
+    if(!this._characterCardArt(activeId,side+48,top+heroH/2,88,heroH-8))this.menu.add(this.add.text(side+48,top+heroH/2,active.emoji,{fontSize:'46px'}).setOrigin(.5));
+    const tx=side+109,room=w-side-tx-14;
+    const selected=this.add.text(tx,top+13,'YOUR HERO  ✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe3a2'});
+    const title=this.add.text(tx,top+31,active.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#fff3e8',wordWrap:{width:room},maxLines:1});
+    const role=this.add.text(tx,top+60,active.role,{fontFamily:'sans-serif',fontSize:'12px',color:'#c6e9e1',wordWrap:{width:room},maxLines:1});
+    const details=this.add.text(tx,top+83,'View abilities  ›',{fontFamily:'sans-serif',fontSize:'11px',color:'#e5ccef'});this.menu.add([selected,title,role,details]);
+    this._zone(side,top,w-side*2,heroH,()=>this.showCharacterInfo(activeId));this.tapZones[this.tapZones.length-1].tag='hero_details';
+    const labelY=top+heroH+19;
+    this.menu.add(this.add.text(side,labelY,'CHOOSE YOUR HERO',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#eee0f4'}));
+    this.menu.add(this.add.text(w-side,labelY,roster.length+' heroes',{fontFamily:'sans-serif',fontSize:'11px',color:'#bbaecb'}).setOrigin(1,0));
+    const y0=labelY+28;
+    roster.forEach((id,i)=>{const c=CHARACTERS[id],row=Math.floor(i/cols),col=i%cols,rowCount=Math.min(cols,roster.length-row*cols),rowW=rowCount*cardW+(rowCount-1)*gap,x=(w-rowW)/2+col*(cardW+gap),y=y0+row*(cardH+gap);
+      const owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,locked=!owned,colHex='#'+c.color.toString(16).padStart(6,'0');
+      const panel=this.add.graphics();panel.fillStyle(chosen?0x34233d:0x21182d,.97).fillRoundedRect(x,y,cardW,cardH,17);
+      panel.lineStyle(chosen?2.5:1,chosen?0xffd166:c.color,chosen?1:.5).strokeRoundedRect(x,y,cardW,cardH,17);
+      panel.fillStyle(c.color,.10).fillRoundedRect(x+5,y+5,cardW-10,126,13);this.menu.add(panel);
+      if(!this._characterCardArt(id,x+cardW/2,y+67,cardW-22,120,owned?1:.4))this.menu.add(this.add.text(x+cardW/2,y+65,c.emoji,{fontSize:'52px'}).setOrigin(.5));
+      const name=this.add.text(x+12,y+134,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:cardW<165?'16px':'18px',color:'#fff6ef',wordWrap:{width:cardW-24},maxLines:1});
+      const role=this.add.text(x+12,y+159,c.role,{fontFamily:'sans-serif',fontSize:'11px',color:colHex,wordWrap:{width:cardW-24},maxLines:1});
+      const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(x+12,y+179,sw.name,{fontFamily:'sans-serif',fontSize:'10px',color:'#c8b7d5',wordWrap:{width:cardW-24},maxLines:2});this.menu.add([name,role,weapon]);
+      const r=c.rating,cellW=(cardW-20)/4;
+      [['HP',r.hp,0xff9ebc],['ATK',r.atk,0xffd18e],['SPD',r.spd,0xb1ebd5],['DEF',r.def,0xadcfff]].forEach(([label,value,color],k)=>{
+        const cx=x+10+(k+.5)*cellW;
+        this.menu.add(this.add.text(cx,y+211,label,{fontFamily:'sans-serif',fontSize:'9px',color:'#b5a7c3'}).setOrigin(.5));
+        this.menu.add(this.add.text(cx,y+227,String(value),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(.5));
+      });
+      const gate=CORE_UNLOCK_STAGE[id],label=chosen?'Selected ✓':owned?'Select hero':gate!=null?'Clear Stage '+(gate+1):'In development',pillY=y+cardH-17;
+      panel.fillStyle(chosen?0xffd166:c.color,chosen?.2:.12).fillRoundedRect(x+10,pillY-12,cardW-20,24,8);
+      this.menu.add(this.add.text(x+cardW/2,pillY,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:chosen?'#ffe3a2':owned?colHex:'#b0a0bc'}).setOrigin(.5));
+      this._zone(x,y,cardW,cardH,()=>{if(locked||chosen){this.showCharacterInfo(id);return;}Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='char_'+id;
+      const info=this.add.text(x+cardW-20,y+19,'ⓘ',{fontFamily:'sans-serif',fontSize:'20px',color:'#fff3d6'}).setOrigin(.5);this.menu.add(info);this._zone(x+cardW-44,y,44,44,()=>this.showCharacterInfo(id));
     });
     this.menu.setVisible(true);
   }
-  showCharacterInfo(id){const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-90,310),x=(w-bw)/2,y=(h-bh)/2;
+  showCharacterInfo(id){const returnScroll=this._mScroll||0;this.cancelMenuMotion();this.setMenuScroll(0);const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-60,410),x=(w-bw)/2,y=(h-bh)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);
     const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
     const title=this.add.text(w/2,y+32,c.emoji+' '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
@@ -8415,7 +8438,7 @@ class Game extends Phaser.Scene {
     const desc=this.add.text(x+22,y+111,c.desc,{fontFamily:'sans-serif',fontSize:'14px',color:'#e7daed',wordWrap:{width:bw-44},lineSpacing:6}).setOrigin(0,0);
     const condition=this.add.text(w/2,y+bh-62,unlock,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#a8f0c0',align:'center'}).setOrigin(0.5);
     const close=this.add.text(w/2,y+bh-26,'Tap to close',{fontFamily:'sans-serif',fontSize:'12px',color:'#b9aac9'}).setOrigin(0.5);this.menu.add([shade,panel,title,role,desc,condition,close]);
-    this.tapZones=[];this._zone(0,0,w,h,()=>this.buildChars());
+    this.tapZones=[];this._zone(0,0,w,h,()=>{this._mScroll=returnScroll;this.buildMenuScreen();});
   }
   buildChapterSelect(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Choose Chapter','screen_chapter');
