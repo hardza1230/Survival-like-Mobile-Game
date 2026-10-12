@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.18';
+const GAME_VERSION = '7.7.19';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.19',date:'2026-10-12',title:'Painted frame compatibility',items:['Painted main menu frames render on both Canvas and WebGL','Preserved corner proportions using cropped image pieces']},
   {v:'7.7.18',date:'2026-10-12',title:'Main menu reference polish',items:['Removed the Next target bar from the main menu','Improved currency padding, narrower version, readable button labels and centred More','Natural logo and blossom proportions, tighter full-width buttons, gold progress tag and visible chevrons']},
   {v:'7.7.17',date:'2026-10-12',title:'Main menu frame proportions',items:['Painted menu corners retain their shape with nine-slice scaling','Logo keeps its original aspect ratio above the hero capsule']},
   {v:'7.7.16',date:'2026-10-12',title:'Painted main menu',items:['Approved candy castle menu with painted logo and pink Play button','Shared plum menu frames, full-width More and responsive portrait layout','Live quest, currency, unlocks and progress badges remain interactive']},
@@ -8219,7 +8220,17 @@ class Game extends Phaser.Scene {
   drawBadgeDot(cont,x,y){ const g=this.add.graphics(); g.fillStyle(0x000000,0.4); g.fillCircle(x+1,y+1,7); g.fillStyle(0xff3b5c,1); g.fillCircle(x,y,6.5); g.lineStyle(1.5,0xffffff,0.95); g.strokeCircle(x,y,6.5); cont.add(g);
     this.tweens.add({targets:g,alpha:{from:1,to:0.45},duration:640,yoyo:true,repeat:-1}); return g; }
   hubChrome(key,x,y,w,h){
-    const k='hub_ui_'+key;if(this.textures.exists(k)){let im;if(this.add.nineslice&&this.textures.get){const source=this.textures.get(k).getSourceImage(),scale=h/source.height;im=this.add.nineslice(x+w/2,y+h/2,k,null,w/scale,source.height,source.width*.13,source.width*.13,source.height*.25,source.height*.25).setScale(scale);}else im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;}
+    const k='hub_ui_'+key;if(this.textures.exists(k)){
+      if(this.add.container&&this.textures.get){
+        const source=this.textures.get(k).getSourceImage(),sw=source.width,sh=source.height,scale=h/sh,edge=sw*.13,cap=sh*.25,dx=Math.min(w/2,edge*scale),dy=cap*scale;
+        const xs=[0,edge,sw-edge,sw],ys=[0,cap,sh-cap,sh],xd=[0,dx,w-dx,w],yd=[0,dy,h-dy,h],group=this.add.container(x,y);
+        // Phaser NineSlice has no Canvas renderer. Ordinary cropped Images work in both renderers.
+        for(let r=0;r<3;r++)for(let c=0;c<3;c++){const sx=xs[c],sy=ys[r],cw=xs[c+1]-sx,ch=ys[r+1]-sy,dw=xd[c+1]-xd[c],dh=yd[r+1]-yd[r];if(dw<=0||dh<=0)continue;const ax=dw/cw,ay=dh/ch;
+          const piece=this.add.image(xd[c]-sx*ax,yd[r]-sy*ay,k).setOrigin(0).setCrop(sx,sy,cw,ch).setScale(ax,ay);group.add(piece);}
+        this.menu.add(group);return group;
+      }
+      const im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;
+    }
     const g=this.add.graphics();g.fillStyle(key==='play'?0xc93970:0x291733,.96).fillRoundedRect(x,y,w,h,Math.min(14,h/2));g.lineStyle(2,0xe5bb6b,.95).strokeRoundedRect(x,y,w,h,Math.min(14,h/2));this.menu.add(g);return g;
   }
   hubArt(key,cx,cy,maxW,maxH){
