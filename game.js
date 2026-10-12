@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.19';
+const GAME_VERSION = '7.7.20';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.20',date:'2026-10-12',title:'Compact Heroes spacing',items:['Tighter hero card rows on tall phone screens','Bounded space before the selection button while keeping full card artwork']},
   {v:'7.7.19',date:'2026-10-12',title:'Painted frame compatibility',items:['Painted main menu frames render on both Canvas and WebGL','Preserved corner proportions using cropped image pieces']},
   {v:'7.7.18',date:'2026-10-12',title:'Main menu reference polish',items:['Removed the Next target bar from the main menu','Improved currency padding, narrower version, readable button labels and centred More','Natural logo and blossom proportions, tighter full-width buttons, gold progress tag and visible chevrons']},
   {v:'7.7.17',date:'2026-10-12',title:'Main menu frame proportions',items:['Painted menu corners retain their shape with nine-slice scaling','Logo keeps its original aspect ratio above the hero capsule']},
@@ -8350,7 +8351,7 @@ class Game extends Phaser.Scene {
   buildChars(){
     this.menu.y=0;this.menu.removeAll(true);this.tapZones=[];this._screenBg('Heroes','screen_heroes');this.drawRosterTabs();
     if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
-    const w=this.W,h=this.H,p=w/941,landscape=w>h,side=30*p,extra=landscape?0:Math.max(0,h-1672*p),gap=18*p,rowGap=gap+extra*.20;
+    const w=this.W,h=this.H,p=w/941,landscape=w>h,side=30*p,extra=landscape?0:Math.max(0,h-1672*p),gap=18*p,rowGap=Math.min(gap+extra*.20,26*p);
     const roster=CHAR_ORDER.filter(id=>id!=='sesame'||FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('sesame'));
     if(!roster.includes(this._heroPreview))this._heroPreview=roster.includes(Save.data.character)?Save.data.character:roster[0];
     const id=this._heroPreview,c=CHARACTERS[id];
@@ -8388,7 +8389,7 @@ class Game extends Phaser.Scene {
       this.rosterIcon(meta[1].toLowerCase(),x+36*p,y+ch-28*p,32*p);if(chosen)this.rosterIcon('check',x+cw-34*p,y+34*p,59*p);
       this._zone(x,y,cw,ch,()=>{this._heroPreview=key;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='char_'+key;
     });
-    const rows=Math.ceil(roster.length/cols),fy=y0+rows*ch+(rows-1)*rowGap+87*p+extra*.25,bw=Math.min(panelW*.78,390),owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,button=this.add.graphics();
+    const rows=Math.ceil(roster.length/cols),fy=y0+rows*ch+(rows-1)*rowGap+87*p+Math.min(extra*.25,24*p),bw=Math.min(panelW*.78,390),owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,button=this.add.graphics();
     this.rosterChrome('footer',w/2-bw/2,fy-46*p,bw,92*p);this.rosterIcon('blossom',w/2-bw*.31,fy,46*p);
     this.menu.add(this.add.text(w/2+50*p,fy-2,chosen?'Selected: '+c.name:owned?'Select '+c.name:'Locked: '+c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(14,38*p)+'px',color:'#fff5ed',stroke:'#81334e',strokeThickness:1}).setOrigin(.5));
     this._zone(w/2-bw/2,fy-46*p,bw,92*p,()=>{if(!owned){this.showCharacterInfo(id);return;}if(chosen)return;Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='hero_confirm';

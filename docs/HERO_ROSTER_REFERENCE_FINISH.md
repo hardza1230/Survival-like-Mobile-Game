@@ -28,3 +28,6 @@ Nunito เป็นฟอนต์ทดแทนที่ใกล้เคี�
 
 ## v7.7.15 — owner screenshot corrections
 Talents and Stats now share the same header, tab assets and Nunito. Talent branch/Upgrade/Reset chrome uses the same painted buttons. Tall portrait extra height is distributed: 35% preview, 40% across the two row gaps, 25% footer spacing. Horizontal card gaps and card art aspect stay fixed; full card illustrations remain visible. Hero portrait now fits inside the preview frame. Mobile 400×820 and 524×931 added to regression coverage.
+
+## v7.7.20 — compact rows after phone feedback
+Bound row gap to26p and additional pre-footer space to24p; avoid unbounded padding on tall phones. Exact691×1536 viewport added to regression. Card illustration aspect and preview/confirmation stay unchanged.
