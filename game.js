@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.6';
+const GAME_VERSION = '7.7.7';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.7',date:'2026-10-12',title:'Ricochet damage consistency',items:['Ricochet splashes ordinary enemies once per seed, never bosses or minibosses','Heart Pinball final splash excludes its direct target; boss return only applies to a first isolated hit','Split Talent creates at most one child per seed and keeps prior target history']},
   { v:'7.7.6', date:'2026-10-12', title:'🗿 Rage IV is an Endgame reward', items:['Titan charges up to 3 Blood Rage again (×4.2 Colossus Fist)','Rage IV (×5.5, almost full-screen) now unlocks permanently when Chocolate beats a Mochi Delve boss at Depth 15 or deeper','Rage Overflow capstone now powers up your maximum Rage release, whether that is Rage III or Rage IV']},
   { v:'7.7.5', date:'2026-10-11', title:'💎 One currency per craft', items:['Every Affix Forge action now costs exactly 1 currency','Tier Lock no longer adds +2 currency per roll','Crystal Glaze tier reroll costs 1 instead of 3']},
   { v:'7.7.4', date:'2026-10-11', title:'⚡ Faster Auto-Roll', items:['Affix Forge Auto-Roll is about 3–4× faster: the first rolls still spin, then each roll takes about a quarter of a second','Near-miss pauses are shorter too']},
@@ -3095,7 +3096,7 @@ const MINT_EVOLUTIONS={
 const BERRY_EVOLUTIONS={
   sniper:{name:'Heart Railgun',desc:'Full Basic charges gain +30% power and pierce 10 targets. Full-charge manual Unique beam gains +40% damage. Extra seeds still convert to power.'},
   shotgun:{name:'Petal Breacher',desc:'Basic pellets gain +35% power, +20% damage within 120px, and a heavy center pellet. +2 pellets; overflow above 12 converts to power. No automatic piercing.'},
-  ricochet:{name:'Heart Pinball',desc:'Basic seeds gain +2 bounces, up to 8; last impact splashes at 25% power. Gathering Juice keeps working; isolated bosses receive a bounded extra impact.'}
+  ricochet:{name:'Heart Pinball',desc:'Basic seeds gain +2 bounces, up to 8; last impact splashes ordinary enemies at 25% power. Each seed splashes a target once; bosses take direct hits, with a bounded return only when hit first and isolated.'}
 };
 function berryUpgradeGroup(path,id){
   if(!path)return 'shared';
@@ -3129,7 +3130,7 @@ function berryAttackInfo(d,b){
   return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>{
     if(u.id==='rate')return {...u,headline:'Basic interval −8%',desc:'Ricochet Basic fires 8% sooner per rank. Does not shorten manual Unique charge.'};
     if(u.id==='volley')return {...u,name:path==='sniper'?'Dense Chamber':u.name,headline:path==='sniper'?'+12% Heavy Seed power':'+1 Basic seed / overflow power',desc:path==='sniper'?'+12% base Heavy Seed power per rank; remains one shot, including after Evolution.':'+1 Basic seed per rank. Cap '+(path==='shotgun'?12:8)+'; each excess seed adds +8% base volley power.'};
-    if(u.id==='size')return {...u,headline:'Basic impact splash',desc:'Basic hits splash at 25% +12% per rank; radius 46px +14px per rank. At most 16 nearby targets per impact.'};
+    if(u.id==='size')return {...u,headline:'Basic impact splash',desc:'Basic hits splash at 25% +12% per rank; radius 46px +14px per rank. Max 16 nearby targets per impact. Ricochet splashes each ordinary target once per seed; bosses and minibosses take direct hits.'};
     return u;
   }),mutations:d.mutations.map(m=>path==='sniper'?{...m,name:m.id==='fan'?'Focused Chamber':'Fracture Seed',desc:m.id==='fan'?'+2 planned seeds convert to +24% base Heavy Seed power; no spread.':'+2 Heavy Seed penetrations; preserves Sniper precision instead of bouncing.'}:m)};
 }
@@ -13150,10 +13151,11 @@ class Game extends Phaser.Scene {
   // ❄️ Frost Lance (Shatter Lance) — ชาร์จสั้น ๆ พุ่งหอกเจาะทะลุ แล้ว "shatters into ice shards" กระจายที่ปลายทาง (แบบลูกซอง)
   berryBullet(x,y,scale,basic){
     let n=0;this.bullets.children.iterate(b=>{if(b?.active&&b.berrySeed)n++;});if(n>=32)return null;
-    const b=this.getBullet(x,y,0xffffff,scale);if(b)b.berrySeed={basic,epoch:this._artEpoch||0,visited:new Map(),legs:0,base:0};return b;
+    const b=this.getBullet(x,y,0xffffff,scale);if(b)b.berrySeed={basic,epoch:this._artEpoch||0,visited:new Map(),splashed:new Map(),legs:0,base:0};return b;
   }
-  berrySplash(x,y,power,r,skip=null){
-    let n=0;this.enemies.children.iterate(e=>{if(n>=16||!e?.active||e===skip||this.dist(e.x,e.y,x,y)>r)return;n++;this.damage(e,power,e.x,e.y);});
+  berrySplash(x,y,power,r,skip=null,seed=null){
+    let n=0;this.enemies.children.iterate(e=>{if(n>=16||!e?.active||e===skip||e._phaseGateLocked||(e._phaseInvuln||0)>0||this.dist(e.x,e.y,x,y)>r)return;
+      if(seed?.path==='ricochet'){if(e.isBoss||e.isMini)return;const life=e._glacierLifeToken||0;if(seed.splashed.get(e)===life)return;seed.splashed.set(e,life);}n++;this.damage(e,power,e.x,e.y);});
     const now=this.time.now;if(this._berryFxAt==null||now-this._berryFxAt>=200){this._berryFxAt=now;this._berryFxCount=0;}
     if(this._berryFxCount<3){this._berryFxCount++;this.vfxHitRing(x,y,0xff9ec4,false);}
   }
@@ -13225,12 +13227,12 @@ class Game extends Phaser.Scene {
     if(m.path==='sniper'){this.bpFx?.('bpx_momo_sniperhit',x,y,110);Sfx.bp?.('strawberry_sniper_impact',.5,.08);}else if(b.sgPellet){const now=this.time.now;if(now-(this._bpPelletAt||0)>70){this._bpPelletAt=now;this.bpFx?.('bpx_momo_pellethit',x,y,56);}}
     if(e.active&&b.knockback&&!e.isBoss&&!e.isMini){const a=Math.atan2(e.y-this.player.y,e.x-this.player.x);e.setVelocity(Math.cos(a)*b.knockback,Math.sin(a)*b.knockback);e.knock=.22;}
     this.chainFrom(b,e);
-    if(b.seedPop>0)this.berrySplash(x,y,b.dmg*(.25+.12*b.seedPop),46+14*b.seedPop,e);
+    if(b.seedPop>0)this.berrySplash(x,y,b.dmg*(.25+.12*b.seedPop),46+14*b.seedPop,e,m);
     if(m.path==='sniper'){if(m.visited.size>=m.pierces)this.killBullet(b);return;}
     let t=null,bd=(360*(b.seekMul||1))**2;this.enemies.children.iterate(o=>{if(!o?.active||m.visited.get(o)===(o._glacierLifeToken||0)||o._phaseGateLocked||(o._phaseInvuln||0)>0)return;const dd=(o.x-b.x)**2+(o.y-b.y)**2;if(dd<bd){bd=dd;t=o;}});
     if(b.bounce>0&&t){this.bpFx?.('bpx_momo_bounce',x,y,80);this.ricochetLink?.(x,y,t.x,t.y);b.bounce--;b._bounced=true;m.legs++;Sfx.bp?.('strawberry_ricochet_bounce',.36,.07,0.95+Math.min(.3,.04*m.legs));b.dmg=m.base*Math.min(2.2,1+(b.bounceGain||0)*m.legs);this.ptOnBounce(b,e);b.life=Math.max(b.life,.35);const a=Math.atan2(t.y-b.y,t.x-b.x);this.physics.velocityFromRotation(a,980,b.body.velocity);return;}
-    if(!t&&m.path==='ricochet'&&(e.isBoss||e.isMini)&&e.active&&!e._phaseGateLocked&&!(e._phaseInvuln>0))this.damage(e,m.base*Math.min(.8,.25+.04*(b.bounce||0)+.1*(m.basic.lv.s_return||0)),x,y);
-    if(m.path==='ricochet'&&m.evolved){this.bpFx?.('bpx_momo_pinball',x,y,170);Sfx.bp?.('strawberry_pinball_final',.55,.12);this.berrySplash(x,y,b.dmg*.25,72);}
+    if(!t&&m.legs===0&&m.visited.size===1&&!b._split&&m.path==='ricochet'&&(e.isBoss||e.isMini)&&e.active&&!e._phaseGateLocked&&!(e._phaseInvuln>0))this.damage(e,m.base*Math.min(.8,.25+.04*(b.bounce||0)+.1*(m.basic.lv.s_return||0)),x,y);
+    if(m.path==='ricochet'&&m.evolved){this.bpFx?.('bpx_momo_pinball',x,y,170);Sfx.bp?.('strawberry_pinball_final',.55,.12);this.berrySplash(x,y,b.dmg*.25,72,e,m);}
     // Returning seed keeps its combat value, but cannot hit a visited lifetime again.
     if(b.boomer2&&!b._boomed&&b._bounced){b._boomed=true;m.path='sniper';m.pierces=m.visited.size+4;b.pierce=true;b.life=Math.max(b.life,.9);const a=Math.atan2(this.player.y-y,this.player.x-x);this.physics.velocityFromRotation(a,980,b.body.velocity);return;}
     this.killBullet(b);
@@ -13805,7 +13807,7 @@ class Game extends Phaser.Scene {
   ptOnBounce(b,enemy){ const PT=(this.player&&this.player._pt)||{};
     if(PT.sip){this._ptBounces=(this._ptBounces||0)+1;if(this._ptBounces>=20){this._ptBounces=0;const P=this.player;P.hp=Math.min(P.maxhp,P.hp+P.maxhp*0.01*PT.sip);}}
     if(b.loopT&&this.dist(b.x,b.y,this.player.x,this.player.y)<120&&(this.elapsed||0)>=(this._ptLoopAt||0)){this._ptLoopAt=(this.elapsed||0)+6;this._shield=Math.min(2,(this._shield||0)+1);this.popDmg('🍬 SHIELD',this.player.x,this.player.y-30,false);}
-    if(b.splitCh&&!b._split&&Math.random()<b.splitCh){const c=b.berrySeed?this.berryBullet(b.x,b.y,b.scaleX||.13,b.berrySeed.basic):this.getBullet(b.x,b.y,0xffffff,b.scaleX||.13);if(c){c.setTexture('proj_sprinkle').setTint(0xff7bd5);c.faceVel=true;c.dmg=b.dmg*0.6;c.life=1.2;c.pierce=false;c.hitGapV=0.16;c.bounce=1;c.homing=0;c._split=true;c.headshot=0;c.bigMul=0;c.closeMul=0;c.bounceGain=0;c.seedPierce=false;c.penGain=0;c.forceHs=false;c.cqMul=0;c.dragon=false;c.lastMul=0;c.seekMul=1;c.splitCh=0;c.boomer2=false;c.loopT=false;if(c.berrySeed)Object.assign(c.berrySeed,{path:b.berrySeed.path,evolved:false,base:c.dmg,visited:new Map([[enemy,enemy._glacierLifeToken||0]])});const t=this.nearestEnemy(400);const a=t&&t!==enemy?Math.atan2(t.y-b.y,t.x-b.x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,700,c.body.velocity);}} }
+    if(b.splitCh&&!b._split&&Math.random()<b.splitCh){const c=b.berrySeed?this.berryBullet(b.x,b.y,b.scaleX||.13,b.berrySeed.basic):this.getBullet(b.x,b.y,0xffffff,b.scaleX||.13);if(c){b._split=true;c.setTexture('proj_sprinkle').setTint(0xff7bd5);c.faceVel=true;c.dmg=b.dmg*0.6;c.life=1.2;c.pierce=false;c.hitGapV=0.16;c.bounce=1;c.homing=0;c._split=true;c.headshot=0;c.bigMul=0;c.closeMul=0;c.bounceGain=0;c.seedPierce=false;c.penGain=0;c.forceHs=false;c.cqMul=0;c.dragon=false;c.lastMul=0;c.seekMul=1;c.splitCh=0;c.boomer2=false;c.loopT=false;if(c.berrySeed)Object.assign(c.berrySeed,{path:b.berrySeed.path,evolved:false,base:c.dmg,visited:new Map(b.berrySeed.visited),splashed:b.berrySeed.splashed});const t=this.nearestEnemy(400);const a=t&&t!==enemy?Math.atan2(t.y-b.y,t.x-b.x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,700,c.body.velocity);}} }
   // v6.55.44: ตารางจับคู่ mod ชิ้นที่ใส่ ↔ ชิ้นที่เลือก + สรุปบรรทัดเดียว
   modCompareRows(eqIt,selIt){ const rows=[],aff=it=>{const m={};for(const a of ((it&&it.affixes)||[])){const d=affixDef(a.id);if(d)m[a.id]={a,d};}return m;};
     const ie=eqIt&&ensureImplicit(eqIt),is=selIt&&ensureImplicit(selIt),de=ie&&implicitDef(ie.id),ds=is&&implicitDef(is.id);

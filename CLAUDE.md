@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.6 — Titan Rage IV moved to Endgame
+# Latest delivery: v7.7.7 — Ricochet damage consistency
+
+Ricochet splash remains for crowds, with one splash per ordinary enemy lifetime per seed and none on bosses/minibosses. Final Evolution splash excludes the direct victim. Isolated boss return applies only on the first hit, not after collecting bounce power from escorts or from split seeds. Split Talent creates at most one child per parent and inherits visited history/shared splash ledger. Existing growth, fire rate, direct-hit damage, Sniper/Shotgun and phase guards remain. Targeted regression and full checks/build required; owner phone balance review pending.
+
+# Previous delivery: v7.7.6 — Titan Rage IV moved to Endgame
 
 Owner: Rage 4 too big/OP for a starter; back to Rage 3, Rage 4 from Endgame. titanMaxLv() = titanRage4Unlocked()?4:3 (typeof guard for vm tests). titanRage4Unlocked() = pactBestChar('cocoa')>=TITAN_RAGE4_HEAT (3 = Delve boss cleared at Depth 15+ with Chocolate; saves that already reached it unlock immediately). claimPactMilestones adds a '🗿 Titan Rage IV unlocked' line; Delve NEXT MILESTONE cell shows it for Chocolate. Rage Overflow capstone ×1.3 now applies at max Rage (3 or 4). Titan path desc updated. tests/titan-rage4-unlock.test.cjs.
 

@@ -72,3 +72,15 @@ console.log('Strawberry S1–S5: focused rolls/previews, saved ranks, charge/cou
  s.character='mint';s.basicAttack.path=null;s.basicAttack.character='mint';assert.equal(s.cdOf('sprinkle',1),1);s.character='momo';s.basicAttackInfo=()=>({skill:'frost'});assert.equal(s.cdOf('sprinkle',1),1);
 }
 console.log('Strawberry starter: +50% seed damage, exactly +15% fire rate, path selection removes bonuses and foreign hero/skill isolation passed');
+// Ricochet: escorts cannot feed repeated splash damage into bosses/minibosses.
+for(const flag of ['isBoss','isMini']){
+ const big=enemy({x:30,[flag]:true,_glacierLifeToken:1}),a=enemy({x:0,_glacierLifeToken:1}),c=enemy({x:60,_glacierLifeToken:1});
+ const s=scene('ricochet',[big,a,c]);s.basicAttack.evolved=true;s.basicAttack.ranks.size=3;s.basicAttack.ranks.gather=3;
+ const b=fire(s)[0];s.hitBerrySeed(b,big);b.x=a.x;s.hitBerrySeed(b,a);b.x=c.x;s.hitBerrySeed(b,c);
+ assert.equal(s.hits.filter(h=>h.e===big).length,1,'one direct big-target hit despite overlapping impact/final splashes');
+}
+{const big=enemy({x:40,isBoss:true}),a=enemy({x:0}),s=scene('ricochet',[a,big]);s.basicAttack.evolved=true;const b=fire(s)[0];s.hitBerrySeed(b,a);b.x=40;s.hitBerrySeed(b,big);assert.equal(s.hits.filter(h=>h.e===big).length,1,'return cannot trigger after a bounce into boss');}
+{const e=enemy({isBoss:true}),s=scene('ricochet',[e]);s.basicAttack.evolved=true;s.basicAttack.ranks.size=3;const b=fire(s)[0];s.hitBerrySeed(b,e);assert.equal(s.hits.length,2,'isolated boss keeps only direct hit and bounded return');}
+{const e=enemy({_glacierLifeToken:1}),s=scene('ricochet',[e]),m={path:'ricochet',splashed:new Map()};s.berrySplash(0,0,2,100,null,m);s.berrySplash(0,0,2,100,null,m);assert.equal(s.hits.length,1);e._glacierLifeToken=2;s.berrySplash(0,0,2,100,null,m);assert.equal(s.hits.length,2,'reused enemy lifetime remains eligible');}
+{const a=enemy({_glacierLifeToken:1}),c=enemy({x:50,_glacierLifeToken:1}),s=scene('ricochet',[a,c]);s.player._pt.split=1;const b=fire(s)[0];s.hitBerrySeed(b,a);assert.equal(s.shots.length,2);const child=s.shots[1];s.ptOnBounce(b,c);assert.equal(s.shots.length,2,'parent splits once');assert.equal(child.berrySeed.visited.get(a),1);assert.equal(child.berrySeed.splashed,b.berrySeed.splashed);const before=s.hits.length;s.hitBerrySeed(child,a);assert.equal(s.hits.length,before);}
+console.log('Ricochet escort boss/miniboss overlap, first-hit return, once-per-lifetime splash and one-child split regressions passed');
