@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.15 — Unified responsive Heroes
+# Latest delivery: v7.7.16 — Approved painted main menu
+
+Owner approved ImageGen main-menu concept. Separate clean background, logo, pink Play and shared plum chrome from native labels. Full-width Play/More around 2×2 secondary menu; responsive portrait/landscape geometry. Preserve currency/quest data, exact routes, tutorial unlock override, notification dots and next-action tag. Assets boot-kept and reloaded via hub menu group after run eviction. Details/provenance in docs/HUB_REFERENCE_FINISH.md and assets/incoming/hub_reference. Full checks/build and live UI review required; no headless combat simulation.
+
+# Previous delivery: v7.7.15 — Unified responsive Heroes
 
 Owner screenshots image(4)–image(7): Talents/Stats used old chrome; tall mobile roster left a large empty bottom. All three now share painted header/tabs and Nunito; talent branch, Upgrade and Reset buttons reuse the same painted assets. Content starts below the shared tabs. Tall portrait uses extra height for preview, row spacing and footer placement, preserving card art aspect and full image; hero preview is contained inside its frame. Lower label shading softened. Actual-method regression, full check/build and live menu visual QA required. No combat simulation.
 
@@ -100,7 +104,7 @@ Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archiv
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.7.15 · 12 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.7.16 · 12 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)
