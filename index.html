@@ -12,7 +12,12 @@
 <link rel="stylesheet" href="assets/art/entry/kitchen_loader.css?v=6.0.36">
 <link rel="preload" as="image" href="assets/art/entry/kitchen_night.webp">
 <title>Mochi Mayhem</title>
+<link rel="preload" href="assets/fonts/NunitoUI-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="assets/fonts/NunitoUI-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="license" href="assets/fonts/OFL-Nunito.txt">
 <style>
+  @font-face{font-family:NunitoUI;src:url('assets/fonts/NunitoUI-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap;}
+  @font-face{font-family:NunitoUI;src:url('assets/fonts/NunitoUI-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap;}
   html,body{position:fixed;inset:0;width:100%;height:100%;margin:0;padding:0;overflow:hidden;background:#241d2e;
     touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:none;}
   canvas{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;
@@ -157,7 +162,8 @@
     var s=document.createElement('script');
     s.src='game.js?v='+Date.now();
     s.onerror=function(){ var b=document.getElementById('err-box'); if(b)b.style.display='block'; };
-    document.body.appendChild(s);
+    var ready=document.fonts?Promise.all([document.fonts.load('700 24px NunitoUI'),document.fonts.load('400 16px NunitoUI')]):Promise.resolve();
+    Promise.race([ready,new Promise(function(resolve){setTimeout(resolve,1500);})]).catch(function(){}).then(function(){document.body.appendChild(s);});
   })();
 </script>
 <script>

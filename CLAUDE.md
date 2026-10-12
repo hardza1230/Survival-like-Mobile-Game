@@ -2,9 +2,9 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.7.12 — Reference hero roster cards
+# Latest delivery: v7.7.14 — Reference hero roster cards
 
-Owner supplied image(2).png: large top preview, six landscape full-art cards in a two-column phone roster, colored frames/gold selected check and pink selection footer. Generated six matching ImageGen illustrations; menu-only alpha WebP at assets/art/hero_roster (768×460, ~0.8MB total, ~8.5MB decoded). Existing portrait art remains in the large preview/details. Heroes group and lazy classification load/free the new cards; no combat asset replacement. Card taps preview only; footer confirms Save.data.character and runtime character. Locked guards/playtest unlocks, tabs, Details and menu scroll remain. Native labels stay sharp and are not embedded in artwork. Full check/build and actual-method flow tests passed; visual QA uses reconstructed draw calls because Chromium cannot be installed here. Owner live phone touch/visual review pending.
+Owner supplied image(2).png: large top preview, six landscape full-art cards in a two-column phone roster, colored frames/gold selected check and pink selection footer. Generated six matching ImageGen illustrations; menu-only alpha WebP at assets/art/hero_roster (768×460, ~0.8MB total, ~8.5MB decoded). Existing portrait art remains in the large preview/details. Heroes group and lazy classification load/free the new cards; no combat asset replacement. Card taps preview only; footer confirms Save.data.character and runtime character. Locked guards/playtest unlocks, tabs, Details and menu scroll remain. Native labels stay sharp and are not embedded in artwork. Full check/build and actual-method flow tests passed; Initial visual QA used reconstructed draw calls. Live cloud-browser review confirmed all six cards, top preview, native labels, frames and footer load at v7.7.12; v7.7.14 separates name/role labels on wide portrait screens. v7.7.14 adds self-hosted Nunito lettering, painted chrome and role icons; see docs/HERO_ROSTER_REFERENCE_FINISH.md. Owner live phone touch/visual review pending.
 
 # Previous delivery: v7.7.11 — Verified F1 cleanup and status
 
@@ -96,7 +96,7 @@ Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archiv
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.7.12 · 12 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.7.14 · 12 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)

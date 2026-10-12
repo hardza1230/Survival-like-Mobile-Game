@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.12';
+const GAME_VERSION = '7.7.14';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,8 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.14',date:'2026-10-12',title:'Painted Heroes interface',items:['Rounded self-hosted lettering, painted pink-and-gold panels and buttons','Hero role icons, cherry blossoms, candy counter and selected badge art','Portrait spacing follows the approved reference; hero names and roles stay separate']},
+  {v:'7.7.13',date:'2026-10-12',title:'Hero card label spacing',items:['Hero names and role labels stay separated on wide portrait screens','Stronger lower shading keeps card labels readable over bright effects']},
   {v:'7.7.12',date:'2026-10-12',title:'Illustrated hero cards',items:['Six new full-art horizontal hero cards matching the approved reference','Large hero preview, gold selected frame and two-column phone roster','Tap a card to preview; confirm with the pink Select button']},
   {v:'7.7.11',date:'2026-10-12',title:'Unused code cleanup',items:['Removed unreachable old Cookbook, Rift menu and Diamond Dust methods','Current Delve, hero skills, Sweet biome Sugar Rush and save migrations stay intact']},
   {v:'7.7.10',date:'2026-10-12',title:'Game speed x4',items:['Speed button cycles x1, x2, x3, x4, then back to x1','Physics, timers, tweens and combat time share the selected speed','Starting a new run still resets speed to x1']},
@@ -1530,6 +1532,26 @@ const ASSET_IMAGES = {
   gear_ri_diamond:'assets/gear/rings/ri_diamond.png',
   gear_ri_chef:'assets/gear/rings/ri_chef.png',
   story_intro_fall:'assets/story/intro_fall.webp', story_final_hunger:'assets/story/final_hunger.webp',
+  hr_ui_back:'assets/art/hero_roster_ui/ui_back.webp',
+  hr_ui_currency:'assets/art/hero_roster_ui/ui_currency.webp',
+  hr_ui_tab_on:'assets/art/hero_roster_ui/ui_tab_on.webp',
+  hr_ui_tab_off:'assets/art/hero_roster_ui/ui_tab_off.webp',
+  hr_ui_preview:'assets/art/hero_roster_ui/ui_preview.webp',
+  hr_ui_badge:'assets/art/hero_roster_ui/ui_badge.webp',
+  hr_ui_details:'assets/art/hero_roster_ui/ui_details.webp',
+  hr_ui_footer:'assets/art/hero_roster_ui/ui_footer.webp',
+  hr_ic_ranged:'assets/art/hero_roster_ui/ic_ranged.webp',
+  hr_ic_control:'assets/art/hero_roster_ui/ic_control.webp',
+  hr_ic_melee:'assets/art/hero_roster_ui/ic_melee.webp',
+  hr_ic_lightning:'assets/art/hero_roster_ui/ic_lightning.webp',
+  hr_ic_summoner:'assets/art/hero_roster_ui/ic_summoner.webp',
+  hr_ic_precision:'assets/art/hero_roster_ui/ic_precision.webp',
+  hr_ic_back:'assets/art/hero_roster_ui/ic_back.webp',
+  hr_ic_next:'assets/art/hero_roster_ui/ic_next.webp',
+  hr_ic_check:'assets/art/hero_roster_ui/ic_check.webp',
+  hr_ic_blossom:'assets/art/hero_roster_ui/ic_blossom.webp',
+  hr_ic_candy:'assets/art/hero_roster_ui/ic_candy.webp',
+  hr_ic_flower:'assets/art/hero_roster_ui/ic_flower.webp',
   roster_momo:'assets/art/hero_roster/momo.webp',roster_mint:'assets/art/hero_roster/mint.webp',roster_cocoa:'assets/art/hero_roster/cocoa.webp',roster_taro:'assets/art/hero_roster/taro.webp',roster_yuzu:'assets/art/hero_roster/yuzu.webp',roster_sesame:'assets/art/hero_roster/sesame.webp',
   card_momo:'assets/character_cards/card_momo.png', card_mint:'assets/character_cards/card_mint_frostleaf.png',
   card_cocoa:'assets/character_cards/card_cocoa.png', card_taro:'assets/character_cards/card_taro.png',
@@ -2567,10 +2589,10 @@ const MENU_GROUPS=[
   [/^dig$/,/assets\/art\/dig\//],
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
   [/^(gear|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/)/],
-  [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster)\/)/],
+  [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster(?:_ui)?)\/)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
-const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hero_roster|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
+const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hero_roster(?:_ui)?|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
 const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
@@ -2585,7 +2607,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:temple|delve|talents|hero_roster)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:temple|delve|talents|hero_roster(?:_ui)?)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -7234,6 +7256,7 @@ class Game extends Phaser.Scene {
       });
       this.load.image(artKey,verUrl(url));if(!this.load.isLoading())this.load.start();
     }
+    if(title==='Heroes'&&(this._heroesTab||'roster')==='roster'){this.menu.add(veil?[bg,veil]:[bg]);this.drawRosterHeader(backScreen);return;}
     const headY=compact?27:52;
     const t=this.add.text(w/2,headY,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'20px':'22px',color:'#ff8fb5'}).setOrigin(0.5);
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'14px':'16px',color:'#ffe08a'}).setOrigin(1,0.5);
@@ -8310,62 +8333,76 @@ class Game extends Phaser.Scene {
   buildHeroes(){
     const tab=this._heroesTab||'roster';if(tab==='talents')this.buildTalents();else if(tab==='stats')this.buildStats();else this.buildChars();
   }
+  rosterChrome(key,x,y,w,h){
+    const k='hr_ui_'+key;if(this.textures.exists(k)){const im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;}
+    const g=this.add.graphics();g.fillStyle(key==='footer'||key==='tab_on'?0xc93970:0x291733,.95).fillRoundedRect(x,y,w,h,Math.min(14,h/2));g.lineStyle(2,0xe5bb6b,.9).strokeRoundedRect(x,y,w,h,Math.min(14,h/2));this.menu.add(g);return g;
+  }
+  rosterIcon(key,x,y,size){
+    const k='hr_ic_'+key;if(!this.textures.exists(k))return null;const im=this.add.image(x,y,k).setDisplaySize(size,size);this.menu.add(im);return im;
+  }
+  drawRosterHeader(backScreen){
+    const w=this.W,p=w/941,landscape=w>this.H,cy=landscape?27:59*p,bw=180*p,bh=61*p,left=38*p;
+    this.rosterChrome('back',left,cy-bh/2,bw,bh);this.rosterIcon('back',left+44*p,cy,30*p);
+    this.menu.add(this.add.text(left+110*p,cy,'Back',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(12,31*p)+'px',color:'#f5e6f3'}).setOrigin(.5));
+    this._zone(left,cy-bh/2,bw,bh,()=>{Sfx.back();const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub';this._curMenu=prev;this.menuScreen=prev;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].back=true;
+    const rx=w-218*p;this.rosterChrome('currency',rx,cy-bh/2,bw,bh);this.rosterIcon('candy',rx+39*p,cy,40*p);
+    this.menu.add(this.add.text(rx+bw-21*p,cy,String(Save.data.sugar||0),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(13,34*p)+'px',color:'#ffe39b'}).setOrigin(1,.5));
+    this.rosterIcon('blossom',w/2-139*p,cy,28*p);this.rosterIcon('blossom',w/2+139*p,cy,28*p);
+    this.menu.add(this.add.text(w/2,cy,'Heroes',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(22,54*p)+'px',color:'#fff1d8',stroke:'#7b3248',strokeThickness:Math.max(1,3*p)}).setOrigin(.5));
+  }
   drawRosterTabs(){
-    const w=this.W,y=w<=this.H?76:49,tw=Math.min(130,(w-32)/3);
-    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{
-      const x=w/2+(i-1)*(tw+3)-tw/2,g=this.add.graphics(),on=id==='roster';
-      g.fillStyle(on?0xffd487:0x76527b,1).fillRoundedRect(x,y-3,tw,36,12);
-      g.fillStyle(on?0xc93970:0x2e1939,.98).fillRoundedRect(x+2,y-1,tw-4,32,10);
-      g.lineStyle(1,on?0xffe9b9:0x9e739f,.9).strokeRoundedRect(x+4,y+1,tw-8,28,9);this.menu.add(g);
-      this.menu.add(this.add.text(x+tw/2,y+15,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:on?'#fff6ed':'#e8d9ef',stroke:'#38203b',strokeThickness:1}).setOrigin(.5));
-      this._zone(x,y-3,tw,36,()=>{this._heroesTab=id;this.menuScreen='char';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='tab_'+id;
+    const w=this.W,p=w/941,portrait=w<=this.H,tw=258*p,h=66*p,y=portrait?110*p:50,x0=(w-(tw*3+12*p*2))/2;
+    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{const x=x0+i*(tw+12*p);this.rosterChrome(id==='roster'?'tab_on':'tab_off',x,y,tw,h);
+      this.menu.add(this.add.text(x+tw/2,y+h/2,label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(13,31*p)+'px',color:'#fff3f3',stroke:'#482139',strokeThickness:Math.max(1,2*p)}).setOrigin(.5));
+      this._zone(x,y,tw,h,()=>{this._heroesTab=id;this.menuScreen='char';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='tab_'+id;
     });
   }
   buildChars(){
     this.menu.y=0;this.menu.removeAll(true);this.tapZones=[];this._screenBg('Heroes','screen_heroes');this.drawRosterTabs();
     if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
-    const w=this.W,h=this.H,landscape=w>h,side=Math.max(12,Math.min(24,w*.032)),gap=Math.max(8,Math.min(16,w*.018));
+    const w=this.W,h=this.H,p=w/941,landscape=w>h,side=30*p,gap=18*p;
     const roster=CHAR_ORDER.filter(id=>id!=='sesame'||FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('sesame'));
     if(!roster.includes(this._heroPreview))this._heroPreview=roster.includes(Save.data.character)?Save.data.character:roster[0];
     const id=this._heroPreview,c=CHARACTERS[id];
     const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Chain lightning.\nDash to reposition.',0xd1a0ff],yuzu:['Summoner','Summoner','Command a citrus crew.\nYour minions fight for you.',0xf5ec83],sesame:['Precision','Precision','Charged mirror beams.\nPrecise boss damage.',0xe4e0eb]};
     const detail=info[id],cols=landscape?Math.max(2,Math.min(4,Math.floor(w/215))):2;
-    const panelW=w-side*2,top=landscape?94:120,panelH=Math.max(148,Math.min(210,panelW*.415)),g=this.add.graphics();
-    g.fillStyle(0x241329,.87).fillRoundedRect(side,top,panelW,panelH,16);this.menu.add(g);
+    const panelW=w-side*2,top=landscape?102:193*p,panelH=landscape?160:368*p,g=this.add.graphics();
+    this.rosterChrome('preview',side,top,panelW,panelH);this.menu.add(g);
     const aw=panelW*.53;
-    if(!this._characterCardArt(id,side+aw*.50,top+panelH*.51,aw*1.04,panelH*.99))this.menu.add(this.add.text(side+aw/2,top+panelH/2,c.emoji,{fontSize:'64px'}).setOrigin(.5));
-    const tx=side+aw+5,rw=panelW-aw-18,fs=Math.max(18,Math.min(25,rw/6));
-    const title=this.add.text(tx,top+14,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#fff1de',stroke:'#692e43',strokeThickness:2});this.menu.add(title);
+    if(!this._characterCardArt(id,side+aw*.50,top+panelH*.51,aw*1.15,panelH*1.17))this.menu.add(this.add.text(side+aw/2,top+panelH/2,c.emoji,{fontSize:'64px'}).setOrigin(.5));
+    const tx=side+aw+5,rw=panelW-aw-18,fs=Math.max(18,58*p);
+    const title=this.add.text(tx,top+14,c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#fff1de',stroke:'#692e43',strokeThickness:2});this.menu.add(title);
     let nf=fs;while(title.width>rw&&nf>15){nf--;title.setFontSize(nf+'px');}
     const badgeY=top+panelH*.27;
     g.lineStyle(1.5,detail[3],.9).lineBetween(tx,top+panelH*.23,tx+rw,top+panelH*.23);
-    g.fillStyle(0x9f2f58,.4).fillRoundedRect(tx,badgeY,rw,22,11);g.lineStyle(1,detail[3],.75).strokeRoundedRect(tx,badgeY,rw,22,11);
-    this.menu.add(this.add.text(tx+rw/2,badgeY+11,detail[0],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe8ee'}).setOrigin(.5));
-    const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(tx,top+panelH*.47,sw.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe5aa',wordWrap:{width:rw},maxLines:1});this.menu.add(weapon);
-    const hint=this.add.text(tx,top+panelH*.60,detail[2],{fontFamily:'sans-serif',fontSize:'11px',color:'#ddd0e3',lineSpacing:2,wordWrap:{width:rw},maxLines:2});this.menu.add(hint);
-    const dy=top+panelH-24;
-    g.fillStyle(0x3b2344,.95).fillRoundedRect(tx,dy-12,rw,25,13);g.lineStyle(1.3,0xae87b0,.9).strokeRoundedRect(tx,dy-12,rw,25,13);
-    this.menu.add(this.add.text(tx+rw/2,dy,'Details  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff1ee'}).setOrigin(.5));this._zone(tx,dy-15,rw,31,()=>this.showCharacterInfo(id));this.tapZones[this.tapZones.length-1].tag='hero_details';
-    g.lineStyle(3,0xe5bb6b,.95).strokeRoundedRect(side,top,panelW,panelH,16);g.lineStyle(1,0xffe3a4,.8).strokeRoundedRect(side+3,top+3,panelW-6,panelH-6,13);
-    const labelY=top+panelH+22;
-    this.menu.add(this.add.text(w/2,labelY,'✿  Choose your hero  ✿',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff0df',stroke:'#44233c',strokeThickness:2}).setOrigin(.5));
-    const cw=(panelW-gap*(cols-1))/cols,ch=cw*.60,y0=labelY+21;
+    this.rosterChrome('badge',tx,badgeY,rw,25*p*2);this.rosterIcon(detail[1].toLowerCase(),tx+28*p,badgeY+25*p,32*p);
+    this.menu.add(this.add.text(tx+rw*.55,badgeY+25*p,detail[0],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,24*p)+'px',color:'#ffe8ee'}).setOrigin(.5));
+    const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(tx,top+panelH*.47,sw.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(11,28*p)+'px',color:'#ffe5aa',wordWrap:{width:rw},maxLines:1});this.menu.add(weapon);
+    const hint=this.add.text(tx,top+panelH*.60,detail[2],{fontFamily:'NunitoUI, sans-serif',fontSize:Math.max(10,25*p)+'px',color:'#ddd0e3',lineSpacing:2,wordWrap:{width:rw},maxLines:2});this.menu.add(hint);
+    const dy=top+panelH-42*p;
+    this.rosterChrome('details',tx,dy-27*p,rw,54*p);this.rosterIcon('next',tx+rw*.81,dy,25*p);
+    this.menu.add(this.add.text(tx+rw*.44,dy,'Details',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(11,25*p)+'px',color:'#fff1ee'}).setOrigin(.5));this._zone(tx,dy-27*p,rw,54*p,()=>this.showCharacterInfo(id));this.tapZones[this.tapZones.length-1].tag='hero_details';
+
+    const labelY=top+panelH+49*p;
+    this.rosterIcon('flower',w*.30,labelY,27*p);this.rosterIcon('flower',w*.70,labelY,27*p);
+    this.menu.add(this.add.text(w/2,labelY,'Choose your hero',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(15,36*p)+'px',color:'#fff0df',stroke:'#44233c',strokeThickness:2}).setOrigin(.5));
+    const cw=(panelW-gap*(cols-1))/cols,ch=cw*.60,y0=labelY+33*p;
     roster.forEach((key,i)=>{const row=Math.floor(i/cols),col=i%cols,rowCount=Math.min(cols,roster.length-row*cols),rowW=rowCount*cw+(rowCount-1)*gap,x=(w-rowW)/2+col*(cw+gap),y=y0+row*(ch+gap),hero=CHARACTERS[key],owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(key),chosen=Save.data.character===key,preview=key===id,meta=info[key],round=cw*42/768,artKey='roster_'+key;
       const back=this.add.graphics();back.fillStyle(0x211427,.95).fillRoundedRect(x,y,cw,ch,round);this.menu.add(back);
       if(this.textures.exists(artKey))this.menu.add(this.add.image(x+cw/2,y+ch/2,artKey).setDisplaySize(cw,ch).setAlpha(owned?1:.4));else this._characterCardArt(key,x+cw*.57,y+ch*.48,cw*.85,ch*.93,owned?1:.4);
-      const shade=this.add.graphics();shade.fillStyle(0x1b0c26,.44).fillRoundedRect(x+2,y+ch-43,cw-4,41,Math.max(3,round-2));this.menu.add(shade);
+      const shade=this.add.graphics();shade.fillStyle(0x1b0c26,.44).fillRoundedRect(x+2,y+ch-108*p,cw-4,106*p,Math.max(3,round-2));this.menu.add(shade);
       const frame=this.add.graphics();if(chosen){frame.lineStyle(9,0xffd366,.18).strokeRoundedRect(x,y,cw,ch,round);frame.lineStyle(3,0xffdc79,1).strokeRoundedRect(x,y,cw,ch,round);frame.lineStyle(1,0xfff0af,.95).strokeRoundedRect(x+3,y+3,cw-6,ch-6,Math.max(2,round-3));}else frame.lineStyle(preview?2.5:1.6,preview?0xffe3b7:meta[3],preview?1:.7).strokeRoundedRect(x,y,cw,ch,round);
       this.menu.add(frame);
-      this.menu.add(this.add.text(x+11,y+ch-36,hero.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(15,Math.min(21,cw*.095))+'px',color:'#ffffff',stroke:'#251124',strokeThickness:3}).setOrigin(0,0));
-      this.menu.add(this.add.text(x+11,y+ch-15,owned?meta[1]:'Locked',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#'+meta[3].toString(16).padStart(6,'0'),stroke:'#251124',strokeThickness:2}).setOrigin(0,.5));
-      if(chosen){const cx=x+cw-17,cy=y+17;frame.fillStyle(0x7c3a4f,.95).fillCircle(cx,cy,12);frame.lineStyle(2,0xffe080,1).strokeCircle(cx,cy,12);this.menu.add(this.add.text(cx,cy,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff0ab'}).setOrigin(.5));}
+      this.menu.add(this.add.text(x+11,y+ch-98*p,hero.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(13,32*p)+'px',color:'#ffffff',stroke:'#251124',strokeThickness:3}).setOrigin(0,0));
+      this.menu.add(this.add.text(x+67*p,y+ch-28*p,owned?meta[1]:'Locked',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,25*p)+'px',color:'#'+meta[3].toString(16).padStart(6,'0'),stroke:'#251124',strokeThickness:2}).setOrigin(0,.5));
+      this.rosterIcon(meta[1].toLowerCase(),x+36*p,y+ch-28*p,32*p);if(chosen)this.rosterIcon('check',x+cw-34*p,y+34*p,59*p);
       this._zone(x,y,cw,ch,()=>{this._heroPreview=key;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='char_'+key;
     });
-    const rows=Math.ceil(roster.length/cols),fy=y0+rows*ch+(rows-1)*gap+31,bw=Math.min(panelW*.78,390),owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,button=this.add.graphics();
-    button.fillStyle(0x6d3c47,1).fillRoundedRect(w/2-bw/2,fy-22,bw,46,23);button.fillStyle(0xffd286,1).fillRoundedRect(w/2-bw/2,fy-25,bw,46,23);button.fillStyle(owned?0xcb376c:0x57405e,1).fillRoundedRect(w/2-bw/2+3,fy-22,bw-6,40,20);button.lineStyle(1.5,0xffe3b1,1).strokeRoundedRect(w/2-bw/2+6,fy-19,bw-12,34,17);this.menu.add(button);
-    this.menu.add(this.add.text(w/2,fy-2,chosen?'✿  Selected: '+c.name:owned?'Select '+c.name:'Locked: '+c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(19,bw/14)+'px',color:'#fff5ed',stroke:'#81334e',strokeThickness:1}).setOrigin(.5));
-    this._zone(w/2-bw/2,fy-25,bw,46,()=>{if(!owned){this.showCharacterInfo(id);return;}if(chosen)return;Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='hero_confirm';
-    this.menu.add(this.add.text(w/2,fy+34,'Tap a hero to preview',{fontFamily:'sans-serif',fontSize:'11px',color:'#cbb6d1'}).setOrigin(.5));this.menu.setVisible(true);
+    const rows=Math.ceil(roster.length/cols),fy=y0+rows*ch+(rows-1)*gap+87*p,bw=Math.min(panelW*.78,390),owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,button=this.add.graphics();
+    this.rosterChrome('footer',w/2-bw/2,fy-46*p,bw,92*p);this.rosterIcon('blossom',w/2-bw*.31,fy,46*p);
+    this.menu.add(this.add.text(w/2+50*p,fy-2,chosen?'Selected: '+c.name:owned?'Select '+c.name:'Locked: '+c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(14,38*p)+'px',color:'#fff5ed',stroke:'#81334e',strokeThickness:1}).setOrigin(.5));
+    this._zone(w/2-bw/2,fy-46*p,bw,92*p,()=>{if(!owned){this.showCharacterInfo(id);return;}if(chosen)return;Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='hero_confirm';
+    this.menu.add(this.add.text(w/2,fy+70*p,'Tap a hero to preview',{fontFamily:'NunitoUI, sans-serif',fontSize:Math.max(10,24*p)+'px',color:'#cbb6d1'}).setOrigin(.5));this.menu.setVisible(true);
   }
   showCharacterInfo(id){const returnScroll=this._mScroll||0;this.cancelMenuMotion();this.setMenuScroll(0);const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-60,410),x=(w-bw)/2,y=(h-bh)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);
