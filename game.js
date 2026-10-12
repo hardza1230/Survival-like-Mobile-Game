@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.20';
+const GAME_VERSION = '7.7.21';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.21',date:'2026-10-12',title:'Clearer Equipment',items:['Shared Heroes header and buttons with quieter equipment panels','Labeled slots, readable four-column inventory and separate management controls','Grouped item details and contextual protection message']},
   {v:'7.7.20',date:'2026-10-12',title:'Compact Heroes spacing',items:['Tighter hero card rows on tall phone screens','Bounded space before the selection button while keeping full card artwork']},
   {v:'7.7.19',date:'2026-10-12',title:'Painted frame compatibility',items:['Painted main menu frames render on both Canvas and WebGL','Preserved corner proportions using cropped image pieces']},
   {v:'7.7.18',date:'2026-10-12',title:'Main menu reference polish',items:['Removed the Next target bar from the main menu','Improved currency padding, narrower version, readable button labels and centred More','Natural logo and blossom proportions, tighter full-width buttons, gold progress tag and visible chevrons']},
@@ -2604,7 +2605,7 @@ const MENU_GROUPS=[
   [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
   [/^dig$/,/assets\/art\/dig\//],
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
-  [/^(gear|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/)/],
+  [/^(gear|craft|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/|art\/hero_roster_ui\/)/],
   [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster(?:_ui)?)\/)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
@@ -7272,7 +7273,7 @@ class Game extends Phaser.Scene {
       });
       this.load.image(artKey,verUrl(url));if(!this.load.isLoading())this.load.start();
     }
-    if(artKey==='screen_heroes'){this.menu.add(veil?[bg,veil]:[bg]);this.drawRosterHeader(backScreen);return;}
+    if(artKey==='screen_heroes'||title==='Equipment'){if(title==='Equipment'&&veil)veil.setAlpha(.84);this.menu.add(veil?[bg,veil]:[bg]);this.drawRosterHeader(backScreen,title==='Equipment'?'Equipment':'Heroes');return;}
     const headY=compact?27:52;
     const t=this.add.text(w/2,headY,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'20px':'22px',color:'#ff8fb5'}).setOrigin(0.5);
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'14px':'16px',color:'#ffe08a'}).setOrigin(1,0.5);
@@ -8331,15 +8332,15 @@ class Game extends Phaser.Scene {
   rosterIcon(key,x,y,size){
     const k='hr_ic_'+key;if(!this.textures.exists(k))return null;const im=this.add.image(x,y,k).setDisplaySize(size,size);this.menu.add(im);return im;
   }
-  drawRosterHeader(backScreen){
+  drawRosterHeader(backScreen,title='Heroes'){
     const w=this.W,p=w/941,landscape=w>this.H,cy=landscape?27:59*p,bw=180*p,bh=61*p,left=38*p;
     this.rosterChrome('back',left,cy-bh/2,bw,bh);this.rosterIcon('back',left+44*p,cy,30*p);
     this.menu.add(this.add.text(left+110*p,cy,'Back',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(12,31*p)+'px',color:'#f5e6f3'}).setOrigin(.5));
     this._zone(left,cy-bh/2,bw,bh,()=>{Sfx.back();const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub';this._curMenu=prev;this.menuScreen=prev;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].back=true;
     const rx=w-218*p;this.rosterChrome('currency',rx,cy-bh/2,bw,bh);this.rosterIcon('candy',rx+39*p,cy,40*p);
     this.menu.add(this.add.text(rx+bw-21*p,cy,String(Save.data.sugar||0),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(13,34*p)+'px',color:'#ffe39b'}).setOrigin(1,.5));
-    this.rosterIcon('blossom',w/2-139*p,cy,28*p);this.rosterIcon('blossom',w/2+139*p,cy,28*p);
-    this.menu.add(this.add.text(w/2,cy,'Heroes',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(22,54*p)+'px',color:'#fff1d8',stroke:'#7b3248',strokeThickness:Math.max(1,3*p)}).setOrigin(.5));
+    if(title==='Heroes'){this.rosterIcon('blossom',w/2-139*p,cy,28*p);this.rosterIcon('blossom',w/2+139*p,cy,28*p);}
+    this.menu.add(this.add.text(w/2,cy,title,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(22,54*p)+'px',color:'#fff1d8',stroke:'#7b3248',strokeThickness:Math.max(1,3*p)}).setOrigin(.5));
   }
   drawRosterTabs(){
     const w=this.W,p=w/941,portrait=w<=this.H,tw=258*p,h=66*p,y=portrait?110*p:50,x0=(w-(tw*3+12*p*2))/2;
@@ -8906,41 +8907,41 @@ class Game extends Phaser.Scene {
     // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
     // v6.55.51: ตัวละครเป็นอวาตาร์เล็กซ้ายสุด + ช่องสวมใส่ 6 ช่องแถวเดียว
     // v6.55.55: อวาตาร์สูงเท่า 2 แถวช่องสวมใส่ · ช่องชิดกัน · gacha กว้างเท่ากริด · กล่องเซ็ทบอกชิ้นที่ขาด
-    const folded=true, cy0=78, sgap=8, ss=Math.min(70,Math.floor((w-28-10-sgap*2)/3.95)), avH=ss*2+sgap;
+    const folded=true, cy0=Math.max(58,112*w/941), sgap=8, ss=Math.min(64,Math.floor((w-28-10-sgap*2)/3.95)), avH=ss*2+sgap+32;
     const gridW=ss*3+sgap*2, x0=w-12-gridW, ax=12, ay=cy0+4, key='card_'+id, avW=x0-10-ax;
     { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,avW,avH,12); this.menu.add(fg);
       if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=TH*(id==='berry'?.68:.55),cx0=TW*0.19,cy1=TH*(id==='berry'?.14:.03);
         im.setCrop(cx0,cy1,cw,ch).setOrigin((cx0+cw/2)/TW,(cy1+ch/2)/TH).setScale(Math.min((avW-6)/cw,(avH-6)/ch)).setPosition(ax+avW/2,ay+avH/2); this.menu.add(im); }
       else { const em=this.add.text(ax+avW/2,ay+avH/2,CHARACTERS[id].emoji,{fontSize:'30px'}).setOrigin(0.5); this.menu.add(em); }
-      const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,avW-2,avH-2,12); fr.lineStyle(2.5,0xffd166,1); fr.strokeRoundedRect(ax,ay,avW,avH,12); this.menu.add(fr);
-      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+avW/2,ay+avH-3,'Lv'+cp.lvl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:4,y:1}}).setOrigin(0.5,1);this.menu.add(lv);} }
-    const rowY=[ay+ss/2, ay+ss*1.5+sgap];
+      const fr=this.add.graphics(); fr.lineStyle(4,0x2e2140,1); fr.strokeRoundedRect(ax+1,ay+1,avW-2,avH-2,12); fr.lineStyle(1.2,0x655271,1); fr.strokeRoundedRect(ax,ay,avW,avH,12); this.menu.add(fr);
+      const cp=Save.cp?Save.cp(id):null; if(cp){const lv=this.add.text(ax+avW/2,ay+avH-3,(CHARACTERS[id].name||id)+' · Lv'+cp.lvl,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd9a8',backgroundColor:'#2e2140',padding:{x:4,y:1}}).setOrigin(0.5,1);this.menu.add(lv);} }
+    const rowY=[ay+16+ss/2, ay+32+ss*1.5+sgap];
     const layout=['weapon','armor','gloves','amulet','ring','boots'].map((sl,i)=>[sl,x0+ss/2+(ss+sgap)*(i%3),Math.floor(i/3)]);
     layout.forEach(([slot,sx,ri])=>{ const y=rowY[ri];
       const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
       const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===sel;
       const g=this.add.graphics(); g.fillStyle(isSel?0x3a3550:0x2c2338,1); g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
-      g.lineStyle(isSel?3:2, isSel?0xffd166:(on?0x8bd3a0:0x4a4059), 1); g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
+      g.lineStyle(isSel?2:1, isSel?0xff7ba8:(on?0x6f9d8d:0x4a4059), 1); g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,12);
       const artKey=on?'gear_'+it.id:null;
-      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-2,artKey).setDisplaySize(ss*0.86,ss*0.86):this.add.text(sx,y-2,on?it.emoji:def.emoji,{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
-      this.menu.add([g,em]);
+      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-2,artKey).setDisplaySize(ss*0.86,ss*0.86):this.add.text(sx,y-2,on?it.emoji:'—',{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);
+      this.menu.add([g,em]);this.menu.add(this.add.text(sx,y-ss/2-13,def.label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e9dce8'}).setOrigin(.5,0));
       const newN=Save.gearItemsForSlot(slot).filter(x=>x.isNew).length;
-      if(newN){ const nd=this.add.circle(sx+ss/2-2,y-ss/2+2,7,0xff5689,1); const nn=this.add.text(nd.x,nd.y,String(Math.min(9,newN)),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff'}).setOrigin(0.5); this.menu.add([nd,nn]); }
-      if(!folded&&topH>=170){ const lb=this.add.text(sx,y+ss/2+7,def.label,{fontFamily:'sans-serif',fontSize:'11px',color:isSel?'#ffd166':'#9a90ab'}).setOrigin(0.5); this.menu.add(lb); }   // ป้ายใต้ช่อง (ไม่ทับปุ่มด้านล่าง)
-      if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
+      if(newN){ const nd=this.add.circle(sx+ss/2-2,y-ss/2+2,7,0xff5689,1); const nn=this.add.text(nd.x,nd.y,String(Math.min(9,newN)),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff'}).setOrigin(0.5); this.menu.add([nd,nn]); }
+      if(!folded&&topH>=170){ const lb=this.add.text(sx,y+ss/2+7,def.label,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:isSel?'#ffd166':'#9a90ab'}).setOrigin(0.5); this.menu.add(lb); }   // ป้ายใต้ช่อง (ไม่ทับปุ่มด้านล่าง)
+      if(on&&lv>0){ const bd=this.add.text(sx+ss/2-4,y-ss/2+2,'+'+lv,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,0); this.menu.add(bd); }
       this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{ this.gearSlot=slot; this.buildMenuScreen(); });
     });
     // ---- ปุ่มกล่องสุ่ม (gacha) — กว้างเท่ากริดช่องสวมใส่ ----
-    const gby=ay+avH+8, gbh=36, half=gridW;   // v6.55.73: กาชาอยู่ใต้กริด · แถบ Power อยู่ใต้ตัวละคร
-    const gcx=x0+half/2; this._pwBox=[ax,gby,avW,gbh];
+    const gby=ay+avH+44, gbh=36, half=w-28;   // v6.55.73: กาชาอยู่ใต้กริด · แถบ Power อยู่ใต้ตัวละคร
+    const gcx=w/2; this._pwBox=[ax,gby-38,avW,30];
     const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
-    const afG=(Save.data.sugar||0)>=gCost, gx0=x0, aw=28;
-    const gbg=this.add.graphics(); gbg.fillStyle(afG?0xffb020:0x3a3550,1); gbg.fillRoundedRect(gx0,gby,half,gbh,10); gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1); gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
-    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
-    const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
-    const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
+    const afG=(Save.data.sugar||0)>=gCost, gx0=14, aw=34;
+    const gbg=this.add.graphics(); gbg.fillStyle(0x30243d,1); gbg.fillRoundedRect(gx0,gby,half,gbh,10); gbg.lineStyle(1,0x655271,1); gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
+    const gbt=this.add.text(gcx,gby+gbh/2,'🎁 iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
+    const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI>0?'#ffe0ed':'#74657d'}).setOrigin(0.5);
+    const rArr=this.add.text(gx0+half-aw/2,gby+gbh/2,'►',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:glvI<gachaMaxBand()?'#ffe0ed':'#74657d'}).setOrigin(0.5);
     if(gbt.width>half-aw*2-4)gbt.setScale((half-aw*2-4)/gbt.width);this.menu.add([gbg,gbt,lArr,rArr]);
-    { const [px,py,pw,ph]=this._pwBox,ad=this._adBase=heroAD(Save.data.character||'momo',null),pg=this.add.graphics();pg.fillStyle(0x3a3550,1);pg.fillRoundedRect(px,py,pw,ph,10);this._pwG=pg;this._pwT=this.add.text(px+pw/2,py+ph/2,'⚔ ATK '+ad.a+'   🛡 DEF '+ad.d,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',align:'center'}).setOrigin(.5);if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);this.menu.add([pg,this._pwT]); }
+    { const [px,py,pw,ph]=this._pwBox,ad=this._adBase=heroAD(Save.data.character||'momo',null),pg=this.add.graphics();pg.fillStyle(0x3a3550,1);pg.fillRoundedRect(px,py,pw,ph,10);this._pwG=pg;this._pwT=this.add.text(px+pw/2,py+ph/2,'⚔ ATK '+ad.a+'   🛡 DEF '+ad.d,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',align:'center'}).setOrigin(.5);if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);this.menu.add([pg,this._pwT]); }
     this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
@@ -8953,31 +8954,36 @@ class Game extends Phaser.Scene {
     let page=Math.max(0,Math.min(pages-1,this.gearPageBySlot[sel]||0)); this.gearPageBySlot[sel]=page;
     let y=setBot+12;
     const newCount=items.filter(x=>x.isNew).length,cap=Save.data.gearInventoryCap||100;
-    const hdr=this.add.text(14,y,selDef.emoji+' '+selDef.label+(newCount?' · '+newCount+' NEW':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0,0);
-    const count=this.add.text(w-66,y,Save.gearInventoryCount()+' / '+cap,{fontFamily:'sans-serif',fontSize:'9px',color:Save.gearInventoryFull()?'#ff8da2':'#a99fbb'}).setOrigin(1,0);
-    const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y,'📦 '+inboxN,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:inboxN?'#ffd166':'#7a7088'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-60,y-5,48,22,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});
-    {let bx=hdr.x+hdr.width+8;const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?GEAR_SETS[k].emoji+' Set '+sc[k]+'/'+gearSetPieces(k).length:'🧩 Sets';const sb=this.add.text(bx,y,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:k&&sc[k]>=2?'#8ff0b0':'#cfe0ff',backgroundColor:'#26344a',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(sb);this._zone(bx-2,y-5,sb.width+4,22,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();});bx+=sb.width+6;const cb=this.add.text(bx,y,'🧹 Clean',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#ffe08a',backgroundColor:'#3a2d48',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(cb);this._zone(bx-2,y-5,cb.width+4,22,()=>{this.menuScreen='gearClean';this.buildMenuScreen();});bx+=cb.width+6;for(const [md,lb,on] of [['sell','💰 Sell','#3f7a4c'],['dis','🔩 Scrap','#7a5a2c']]){const act=this._gearQuick===md,qb=this.add.text(bx,y,lb,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:act?'#ffffff':'#bdb3c9',backgroundColor:act?on:'#2c2338',padding:{x:6,y:2}}).setOrigin(0,0);this.menu.add(qb);this._zone(bx-2,y-5,qb.width+4,22,()=>{this._gearQuick=act?null:md;Sfx.select();this.buildMenuScreen();});bx+=qb.width+6;}if(bx>count.x-count.width-2)count.setVisible(false);}   // v6.55.74: โหมดขาย/ย่อยด่วน (toggle)
-    y+=20;
-    if(!items.length){ const empty=this.add.text(w/2,y+30,'No items in this slot',{fontFamily:'sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
-    const gap=6,cols=4,cw=(w-28-gap*(cols-1))/cols,ch=66,visible=items.slice(page*pageSize,page*pageSize+pageSize),basePow=heroPower(Save.data.character||'momo',null);
+    const hdr=this.add.text(14,y,'Inventory',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'18px',color:'#fff0e7'});
+    const count=this.add.text(w-72,y+4,Save.gearInventoryCount()+' / '+cap,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#b9abc5'}).setOrigin(1,0);
+    const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y+4,'📦 '+inboxN,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:inboxN?'#ffd166':'#9c8ba9'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-62,y-2,48,28,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});
+    y+=28;this.heroButton(14,y,Math.min(114,(w-34)/2),30,selDef.label,null,{active:true,fontSize:12});
+    {const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?'Set '+sc[k]+'/'+gearSetPieces(k).length:'Sets',bx=w/2+3;
+      this.heroButton(bx,y,w/2-17,30,lbl,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();},{fontSize:12});}
+    y+=38;const toolW=(w-40)/3;
+    this.heroButton(14,y,toolW,32,'Clean',()=>{this.menuScreen='gearClean';this.buildMenuScreen();},{fontSize:12});
+    for(const [i,md,label]of [[1,'sell','Sell'],[2,'dis','Scrap']]){const active=this._gearQuick===md;this.heroButton(14+i*(toolW+6),y,toolW,32,label,()=>{this._gearQuick=active?null:md;this.buildMenuScreen();},{active,fontSize:12});}
+    y+=42;
+    if(!items.length){ const empty=this.add.text(w/2,y+30,'No items in this slot',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
+    const gap=6,cols=4,cw=(w-28-gap*(cols-1))/cols,ch=Math.max(92,cw*1.16),visible=items.slice(page*pageSize,page*pageSize+pageSize),basePow=heroPower(Save.data.character||'momo',null);
     visible.forEach((item,i)=>{ const base=GEAR_ALL.find(g=>g.id===item.baseId); if(!base)return; const col=i%cols,row=Math.floor(i/cols),x=14+col*(cw+gap),iy=y+row*(ch+gap),on=selected&&selected.uid===item.uid,eq=Save.isGearEquipped(item.uid),tl=TIER_LABEL[item.grade]||TIER_LABEL.common;
-      const color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,iy,cw,ch,10);g.lineStyle(on?3:1.5,on?0xffd166:color,1);g.strokeRoundedRect(x,iy,cw,ch,10);
-      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+23,artKey).setDisplaySize(42,42):this.add.text(x+cw/2,iy+23,base.emoji,{fontSize:'26px'}).setOrigin(0.5),nm=this.add.text(x+cw/2,iy+47,gearBaseStatText(item)+' · Lv'+(item.itemLevel||1),{fontFamily:'sans-serif',fontSize:'7px',color:'#e8dce9'}).setOrigin(0.5);
+      const color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,iy,cw,ch,10);g.lineStyle(on?2:1,on?0xff7ba8:color,1);g.strokeRoundedRect(x,iy,cw,ch,10);
+      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+ch*.28,artKey).setDisplaySize(Math.min(48,cw*.70),Math.min(48,cw*.70)):this.add.text(x+cw/2,iy+ch*.28,base.emoji,{fontSize:'26px'}).setOrigin(0.5),nm=this.add.text(x+cw/2,iy+ch*.67,gearBaseStatText(item)+'\nLv'+(item.itemLevel||1),{fontFamily:'NunitoUI, sans-serif',fontSize:'9px',color:'#f0e3ef'}).setOrigin(0.5);
       this.menu.add([g,em,nm]);
-      if(!eq&&item.grade!=='start'){const dd=gearADDelta(item,this._adBase||(this._adBase=heroAD(Save.data.character||'momo',null))),parts=[];if(dd.a)parts.push(['⚔'+(dd.a>0?'+':'')+dd.a,dd.a>0]);if(dd.d)parts.push(['🛡'+(dd.d>0?'+':'')+dd.d,dd.d>0]);parts.forEach((q,qi)=>{const pt=this.add.text(x+cw/2+(parts.length>1?(qi?1:-1)*cw*0.24:0),iy+58,q[0],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7.6px',color:q[1]?'#7de0a1':'#ff8da2'}).setOrigin(0.5);this.menu.add(pt);});}   /* v7.6.8 ⚔/🛡 แยก */
-      if(item.isNew){const nb=this.add.text(x+4,iy+3,'NEW',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ff8fb0'}).setOrigin(0,0);this.menu.add(nb);}
+      if(!eq&&item.grade!=='start'){const dd=gearADDelta(item,this._adBase||(this._adBase=heroAD(Save.data.character||'momo',null))),parts=[];if(dd.a)parts.push(['⚔'+(dd.a>0?'+':'')+dd.a,dd.a>0]);if(dd.d)parts.push(['🛡'+(dd.d>0?'+':'')+dd.d,dd.d>0]);parts.forEach((q,qi)=>{const pt=this.add.text(x+cw/2+(parts.length>1?(qi?1:-1)*cw*0.24:0),iy+ch*.90,q[0],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:q[1]?'#7de0a1':'#ff8da2'}).setOrigin(0.5);this.menu.add(pt);});}   /* v7.6.8 ⚔/🛡 แยก */
+      if(item.isNew){const nb=this.add.text(x+4,iy+3,'NEW',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ff8fb0'}).setOrigin(0,0);this.menu.add(nb);}
       if(item.favorite){const fav=this.add.text(x+cw-4,iy+3,'★',{fontSize:'10px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(fav);}
       if(item.craftedAt&&!item.isNew){const cb=this.add.text(x+4,iy+3,'⚒',{fontSize:'9px',color:'#c9a3ff'}).setOrigin(0,0);this.menu.add(cb);}
       if(item.locked){const lk=this.add.text(x+4,iy+ch-4,'🔒',{fontSize:'9px'}).setOrigin(0,1);this.menu.add(lk);}
-      if(eq){const ck=this.add.text(x+cw-3,iy+3,'EQUIPPED',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#12301f',backgroundColor:'#8bd3a0',padding:{x:3,y:1}}).setOrigin(1,0);this.menu.add(ck);}   // v6.55.72: ป้ายใส่อยู่ในช่องไอเทม
-      if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4,iy+20,'+'+item.enhanceLv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(lv);}
+      if(eq){const ck=this.add.text(x+cw-3,iy+3,'EQUIPPED',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'7px',color:'#12301f',backgroundColor:'#8bd3a0',padding:{x:3,y:1}}).setOrigin(1,0);this.menu.add(ck);}   // v6.55.72: ป้ายใส่อยู่ในช่องไอเทม
+      if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4,iy+20,'+'+item.enhanceLv,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(lv);}
       if(this._gearQuick&&!eq&&!item.locked&&!item.favorite){const qq=this.add.graphics();qq.lineStyle(2,this._gearQuick==='sell'?0x7de0a1:0xffb27a,0.9);qq.strokeRoundedRect(x+2,iy+2,cw-4,ch-4,9);this.menu.add(qq);}
       this._zone(x,iy,cw,ch,()=>{ if(this._gearQuick&&!eq){ if(item.locked||item.favorite){this.menuToast('Locked / favorite items are protected');return;} const n=this._gearQuick==='sell'?Save.sellGearInstance(item.uid):Save.dismantleGearInstance(item.uid); if(n){Sfx.equipment(this._gearQuick==='sell'?'sell':'dismantle');this.menuToast(this._gearQuick==='sell'?'Sold +🍬'+n:'Scrapped +🔩'+n);if(this.gearSelectedUid===item.uid)this.gearSelectedUid=null;} this.buildMenuScreen(); return; }
         this.gearSelectedUid=item.uid;if(item.isNew)Save.markGearSeen(item.uid);this.buildMenuScreen();});
     });
     y+=Math.ceil(visible.length/cols)*(ch+gap);
     if(pages>1){ const py=y-1,pw=68,ph=24;
-      const pt=this.add.text(w/2,py+ph/2,(page+1)+' / '+pages,{fontFamily:'sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(pt);
+      const pt=this.add.text(w/2,py+ph/2,(page+1)+' / '+pages,{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(pt);
       for(const [dir,label,px] of [[-1,'‹',w/2-76],[1,'›',w/2+76]]){const enabled=(dir<0?page>0:page<pages-1),pg=this.add.graphics();pg.fillStyle(enabled?0x3a3550:0x241a2e,1);pg.fillRoundedRect(px-pw/2,py,pw,ph,8);const tx=this.add.text(px,py+ph/2,label,{fontSize:'18px',color:enabled?'#ffffff':'#5e5062'}).setOrigin(0.5);this.menu.add([pg,tx]);if(enabled)this._zone(px-pw/2,py,pw,ph,()=>{this.gearPageBySlot[sel]=page+dir;this.buildMenuScreen();});} y+=ph+5; }
     selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
     if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
@@ -8986,18 +8992,18 @@ class Game extends Phaser.Scene {
         if(any){const up=dd.a>=0&&dd.d>=0,dn=dd.a<=0&&dd.d<=0;this._pwG.clear();this._pwG.fillStyle(up?0x2f6b47:dn?0x7a3442:0x6b5a2a,1);this._pwG.fillRoundedRect(px,py,pw,ph,10);}
         const ln=(ic,lab,v,dv)=>ic+' '+lab+' '+v+(dv?'→'+(v+dv)+(dv>0?' ▲':' ▼')+Math.abs(dv):'');
         this._pwT.setScale(1).setText(any?ln('⚔','ATK',ad.a,dd.a)+'\n'+ln('🛡','DEF',ad.d,dd.d):'⚔ ATK '+ad.a+'   🛡 DEF '+ad.d).setFontSize(any?11:13).setAlign('center');if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
-      { const sh=30,g=this.add.graphics(),tc=Phaser.Display.Color.HexStringToColor(tl.color).color;g.fillStyle(0x241a33,0.97);g.fillRoundedRect(14,y,w-28,sh,10);g.lineStyle(1.5,tc,1);g.strokeRoundedRect(14,y,w-28,sh,10);this.menu.add(g);   // v6.55.72: แถบชื่อชิ้นที่เลือกแทนการ์ดใหญ่ 2 ใบ
-        const ak='gear_'+base.id,ic=this.textures.exists(ak)?this.add.image(32,y+sh/2,ak).setDisplaySize(24,24):this.add.text(32,y+sh/2,base.emoji,{fontSize:'16px'}).setOrigin(0.5);
-        const st=this.add.text(w-22,y+sh/2,tl.name+' · '+rl.name,{fontFamily:'sans-serif',fontSize:'10px',color:rl.color}).setOrigin(1,0.5);
-        const nm=this.add.text(48,y+sh/2,gearAffixName(base.name,selected.affixes||[])+(eq?'  (equipped)':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:tl.color}).setOrigin(0,0.5);
-        const mx=w-22-st.width-10-48;if(nm.width>mx)nm.setScale(Math.max(0.7,mx/nm.width));this.menu.add([ic,st,nm]);y+=sh+6;}
+      {const sh=78,g=this.add.graphics();g.fillStyle(0x241a33,.98).fillRoundedRect(14,y,w-28,sh,12);g.lineStyle(1,0x655271,1).strokeRoundedRect(14,y,w-28,sh,12);this.menu.add(g);
+        const ak='gear_'+base.id,ic=this.textures.exists(ak)?this.add.image(42,y+sh/2,ak).setDisplaySize(46,46):this.add.text(42,y+sh/2,base.emoji,{fontSize:'26px'}).setOrigin(.5);
+        const nm=this.add.text(74,y+14,gearAffixName(base.name,selected.affixes||[]),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:tl.color}).setOrigin(0,.5);let nf=14;while(nm.width>w-94&&nf>11)nm.setFontSize(--nf+'px');
+        const st=this.add.text(74,y+36,(eq?'Equipped · ':'')+tl.name+' · '+rl.name,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:rl.color}).setOrigin(0,.5);
+        const bs=this.add.text(74,y+59,gearBaseStatText(selected)+' · Lv'+(selected.itemLevel||1),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#f1e5ef'}).setOrigin(0,.5);this.menu.add([ic,nm,st,bs]);y+=sh+8;}
       this._cmpBase=eq?[]:rows;
       y=this.drawModCompare(equipped,selected,eq,y,w);
-      const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
+      const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'NunitoUI, sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
       // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
       const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.52),sw=(full-cw2-bgap*2)/2,hw=(full-bgap)/2,moreOpen=true;   // v7.6.4 เจ้าของ: เลิกปุ่ม ⋯ · ย่อย/ขาย แสดงตลอด
       const SL={2:[14,y1,full,bh],c:[14,y2,cw2,bh2],0:[14+cw2+bgap,y2,sw,bh2],1:[14+cw2+bgap*2+sw,y2,sw,bh2],m:[14+cw2+bgap*3+sw*2,y2,sw,bh2],3:[14,y3,hw,bh2],s:[14+hw+bgap,y3,hw,bh2]};
-      const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i],g=this.add.graphics();g.fillStyle(color,1);g.fillRoundedRect(bx,by,bw,bhh,10);if(i===2){g.fillStyle(0xffffff,0.12);g.fillRoundedRect(bx+3,by+3,bw-6,bhh/2-3,8);}const t=this.add.text(bx+bw/2,by+bhh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:i===2?'14px':'12px',color:tc||'#ffffff',align:'center'}).setOrigin(0.5);if(t.width>bw-8)t.setScale((bw-8)/t.width);this.menu.add([g,t]);if(fn)this._zone(bx,by,bw,bhh,fn);};
+      const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i];this.heroButton(bx,by,bw,bhh,label,fn,{active:i===2&&!!fn,disabled:!fn,fontSize:i===2?15:12});if(fn)this.tapZones[this.tapZones.length-1].fn=fn;};
       drawAction(0,selected.favorite?'★':'☆',selected.favorite?0xb88925:0x3a3550,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
       drawAction(1,selected.locked?'🔒':'🔓',selected.locked?0x85506f:0x3a3550,()=>{if(Save.gearItem(selected.uid)){const locked=Save.toggleGearLock(selected.uid);Sfx.equipment(locked?'lock':'unlock');}this.buildMenuScreen();});
       if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
@@ -9008,10 +9014,11 @@ class Game extends Phaser.Scene {
             else {this.gearSelectedUid=null;this.screenFlash(0xff4a5a,.6,440);this.showBanner('💀 Item destroyed','It shattered at high enhancement',1800);} }
           this.buildMenuScreen(); }:null);}
       const canDis=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',gain=gearDismantleValue(selected);
-      if(moreOpen)drawAction(3,canDis?('🔩 Dismantle +'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const ck='dis:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Dismantle again to confirm',1400);return;}this._gearConfirm=null;const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);
+      if(moreOpen&&canDis)drawAction(3,canDis?('🔩 Dismantle +'+gain):'Protected',canDis?0x8d4b3e:0x3a3550,canDis?()=>{const ck='dis:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Dismantle again to confirm',1400);return;}this._gearConfirm=null;const n=Save.dismantleGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('🔩 Dismantled','Gear shards +'+n,1200);}}:null);
       { const canCraft=selected.grade!=='start'&&!selected.locked; drawAction('c','🧪 Craft',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
       const canSell=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',sv=gearSellSugar(selected);
-      if(moreOpen)drawAction('s',canSell?('💰 Sell 🍬+'+sv):'Protected',canSell?0x6e5634:0x3a3550,canSell?()=>{const ck='sell:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Sell again to confirm',1400);return;}this._gearConfirm=null;const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('sell');this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}}:null,canSell?'#ffe6b0':'#8d8195');
+      if(moreOpen&&canSell)drawAction('s',canSell?('💰 Sell 🍬+'+sv):'Protected',canSell?0x6e5634:0x3a3550,canSell?()=>{const ck='sell:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Sell again to confirm',1400);return;}this._gearConfirm=null;const n=Save.sellGearInstance(selected.uid);if(n){this.gearSelectedUid=null;Sfx.equipment('sell');this.buildMenuScreen();this.showBanner('💰 Sold for Sugar','🍬 +'+n,1200);}}:null,canSell?'#ffe6b0':'#8d8195');
+      if(!canDis&&!canSell){this.menu.add(this.add.text(w/2,y3+10,eq?'Equipped items are protected':selected.locked?'Locked items are protected':selected.favorite?'Favorite items are protected':'Starter items are protected',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:'#b9abc5'}).setOrigin(.5));}
       y=(moreOpen?y3:y2)+bh2;
     }
     this.menu.setVisible(true);
@@ -13815,28 +13822,28 @@ class Game extends Phaser.Scene {
   drawModCompare(eqIt,selIt,isEq,y,w){ if(!selIt)return y;
     { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0;for(const a of ((it&&it.affixes)||[])){if(affixDef(a.id))p++;}return {p:Math.max(0,K-p),s:0};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
         part=(f)=>f.p+' free',tot=fs.p+fs.s,txt='🛠 Open mod slots  '+(fe?part(fe)+'  →  ':'')+(tot?part(fs):'full'),
-        col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
+        col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
     if(isEq){   // v7.6.4 เจ้าของ: กดชิ้นที่ใส่อยู่ต้องเห็น Mod ของมัน (เดิมโชว์แค่ตอนเทียบกับชิ้นใหม่)
       const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id);
       if(idf)lines.push(['◇ '+implicitText(selIt)+' · '+IMPLICIT_TIER[idf.rank],IMPLICIT_COLOR[idf.rank]]);else if(ib&&ib.unique)lines.push(['★ '+ib.desc,'#ff8f3a']);
       for(const a of (selIt.affixes||[])){const d=affixDef(a.id);if(d)lines.push([d.emoji+' '+d.label+' '+d.fmt(a.v),'#ffe6c4','T'+(a.t||3)]);}
       if(!lines.some(l=>l[2]))lines.push(['No mods yet · tap Craft to add some','#8a809a']);
-      const rh=20,top=y,h=22+lines.length*rh+4,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
-      this.menu.add(this.add.text(22,top+6,'MODS',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a0'}));
+      const rh=24,top=y,h=22+lines.length*rh+4,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
+      this.menu.add(this.add.text(22,top+6,'MODS',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a0'}));
       lines.forEach((l,i)=>{ const ry=top+22+i*rh; if(i%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,rh);this.menu.add(zb);}
-        const t=this.add.text(22,ry+2,l[0],{fontFamily:'sans-serif',fontSize:'11px',color:l[1]});const room=w-44-(l[2]?34:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
-        if(l[2])this.menu.add(this.add.text(w-22,ry+2,l[2],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a99fbb'}).setOrigin(1,0)); });
+        const t=this.add.text(22,ry+2,l[0],{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:l[1]});const room=w-44-(l[2]?34:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
+        if(l[2])this.menu.add(this.add.text(w-22,ry+2,l[2],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a99fbb'}).setOrigin(1,0)); });
       return y+h+6; }
     const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;const pc=v=>r.range?' (+'+Math.round((v[0]+v[1])/2*ATK_PCT*100)+'%)':'';rows.unshift({kind:'base',label:'⚔ '+(r.range?'Weapon ATK':r.label),from:gearStatText(r,r.from)+pc(r.from),to:gearStatText(r,r.to)+pc(r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
     // v6.55.72: ตารางอ่านง่าย — ตัวใหญ่ แถวสูง แถบสลับสี หัวกลุ่ม PREFIX/SUFFIX เต็มแถว
-    const rh=20,secs=rows.some(r=>r.kind==='mod')?1:0,top=y,h=22+rows.length*rh+secs*16+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
-    const cL=22,cF=Math.round(w*0.60),cT=Math.round(w*0.82),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+6,t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(o,0);this.menu.add(tx);};
+    const rh=24,secs=rows.some(r=>r.kind==='mod')?1:0,top=y,h=22+rows.length*rh+secs*16+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
+    const cL=22,cF=Math.round(w*0.60),cT=Math.round(w*0.82),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+6,t,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(o,0);this.menu.add(tx);};
     hd(cL,'MOD',0);hd(cF,'NOW',1);hd(cT,'NEW',1);
     const ST={new:['NEW','#7de0a1'],lost:['LOST','#ff8da2'],up:['▲','#7de0a1'],down:['▼','#ff8da2'],same:['=','#7a7088'],swap:['⇅','#ffd166']};
     let ry=top+22,last=null,zi=0;
-    for(const r of rows){ if(r.kind!==last&&r.kind==='mod'){const lc='#ffd9a0',lb=this.add.text(cL,ry+2,'MODS',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:lc});const ln=this.add.graphics();ln.lineStyle(1,Phaser.Display.Color.HexStringToColor(lc).color,0.4);ln.lineBetween(cL+lb.width+6,ry+9,cS,ry+9);this.menu.add([lb,ln]);ry+=16;} last=r.kind;
+    for(const r of rows){ if(r.kind!==last&&r.kind==='mod'){const lc='#ffd9a0',lb=this.add.text(cL,ry+2,'MODS',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:lc});const ln=this.add.graphics();ln.lineStyle(1,Phaser.Display.Color.HexStringToColor(lc).color,0.4);ln.lineBetween(cL+lb.width+6,ry+9,cS,ry+9);this.menu.add([lb,ln]);ry+=16;} last=r.kind;
       if(zi++%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,rh);this.menu.add(zb);}
-      const dim=r.st==='same',[stT,stC]=ST[r.st],kc=r.kind==='mod'?'#ffe6c4':r.col,sty={fontFamily:'sans-serif',fontSize:'11px'};
+      const dim=r.st==='same',[stT,stC]=ST[r.st],kc=r.kind==='mod'?'#ffe6c4':r.col,sty={fontFamily:'NunitoUI, sans-serif',fontSize:'11px'};
       const a=this.add.text(cL,ry+2,r.label,{...sty,color:dim?'#8a809a':kc}).setOrigin(0,0);if(a.width>cF-cL-62)a.setScale((cF-cL-62)/a.width);
       const b=this.add.text(cF,ry+2,String(r.from),{...sty,color:dim?'#7a7088':'#cbbfd6'}).setOrigin(1,0);
       const c=this.add.text(cT,ry+2,String(r.to),{...sty,fontStyle:dim?'normal':'bold',color:dim?'#7a7088':stC}).setOrigin(1,0);
