@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.9';
+const GAME_VERSION = '7.7.10';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.10',date:'2026-10-12',title:'Game speed x4',items:['Speed button cycles x1, x2, x3, x4, then back to x1','Physics, timers, tweens and combat time share the selected speed','Starting a new run still resets speed to x1']},
   {v:'7.7.9',date:'2026-10-12',title:'Visible arena edges',items:['Floor artwork stops at the walkable boundary instead of continuing beyond it','A clear arena rim marks all four edges; the camera stays centred for aiming','Floor tiles retain their shared-texture memory budget and clip correctly at corners']},
   {v:'7.7.8',date:'2026-10-12',title:'A clearer hero roster',items:['Selected hero summary, larger character art and readable roles and ratings','Hero cards keep a comfortable size and scroll instead of squeezing to fit','Responsive phone, tablet and landscape grids; tap the selected hero for abilities']},
   {v:'7.7.7',date:'2026-10-12',title:'Ricochet damage consistency',items:['Ricochet splashes ordinary enemies once per seed, never bosses or minibosses','Heart Pinball final splash excludes its direct target; boss return only applies to a first isolated hit','Split Talent creates at most one child per seed and keeps prior target history']},
@@ -6291,7 +6292,7 @@ class Game extends Phaser.Scene {
         for(const [b,k] of [[this.muteBtn,'mute'],[this.pauseBtn,'pause'],[this.speedBtn,'speed']]){ if(!b||!b.visible)continue; const d=this.dist(p.x,p.y,b.x,b.y); if(d<bd){bd=d;hit=k;} }
         if(hit==='mute'){ const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); return; }
         if(hit==='pause'&&(this.state==='play'||this.state==='paused')){ this.togglePause(); return; }
-        if(hit==='speed'&&this.state==='play'){ this.setGameSpeed((this.gameSpeed||1)>=3?1:(this.gameSpeed||1)+1); Sfx.select(); return; } }
+        if(hit==='speed'&&this.state==='play'){ this.setGameSpeed((this.gameSpeed||1)>=4?1:(this.gameSpeed||1)+1); Sfx.select(); return; } }
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } }
         return; }
@@ -9538,7 +9539,7 @@ class Game extends Phaser.Scene {
   showMenu(){ this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
-  setGameSpeed(s){ this.gameSpeed=s;
+  setGameSpeed(s){ s=Number.isFinite(s)?Math.max(1,Math.min(4,Math.round(s))):1;this.gameSpeed=s;
     // Arcade physics.world.timeScale is INVERTED (bigger = slower step), so use 1/s
     // to actually move bodies (player/enemies/bullets) faster along with timers/tweens/dt.
     if(this.physics&&this.physics.world&&!this._isHitStop) this.physics.world.timeScale=1/s;
