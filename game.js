@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.8';
+const GAME_VERSION = '7.7.9';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.9',date:'2026-10-12',title:'Visible arena edges',items:['Floor artwork stops at the walkable boundary instead of continuing beyond it','A clear arena rim marks all four edges; the camera stays centred for aiming','Floor tiles retain their shared-texture memory budget and clip correctly at corners']},
   {v:'7.7.8',date:'2026-10-12',title:'A clearer hero roster',items:['Selected hero summary, larger character art and readable roles and ratings','Hero cards keep a comfortable size and scroll instead of squeezing to fit','Responsive phone, tablet and landscape grids; tap the selected hero for abilities']},
   {v:'7.7.7',date:'2026-10-12',title:'Ricochet damage consistency',items:['Ricochet splashes ordinary enemies once per seed, never bosses or minibosses','Heart Pinball final splash excludes its direct target; boss return only applies to a first isolated hit','Split Talent creates at most one child per seed and keeps prior target history']},
   { v:'7.7.6', date:'2026-10-12', title:'🗿 Rage IV is an Endgame reward', items:['Titan charges up to 3 Blood Rage again (×4.2 Colossus Fist)','Rage IV (×5.5, almost full-screen) now unlocks permanently when Chocolate beats a Mochi Delve boss at Depth 15 or deeper','Rage Overflow capstone now powers up your maximum Rage release, whether that is Rage III or Rage IV']},
@@ -5959,6 +5960,9 @@ class Game extends Phaser.Scene {
     this.bgTile=this.camWorld(this.add.tileSprite(0,0,2,2,'bg1').setOrigin(0.5).setDepth(-100002).setAlpha(1));
     this.bgTile.tileScaleX=this.bgTile.tileScaleY=1.12;     // ลดการขยาย texture ที่ทำให้พื้นหลังดูเบลอ
     this.events.on('postupdate',()=>this.syncBgTile?.());   // v6.93 พื้นขนาดพอดีจอ ตามกล้อง
+    this.arenaRim=this.camWorld(this.add.graphics().setDepth(-99999));
+    this.arenaRim.lineStyle(20,0x221c35,.9).strokeRect(-WORLD/2+10,-WORLD/2+10,WORLD-20,WORLD-20);
+    this.arenaRim.lineStyle(3,0xe5d5ac,.8).strokeRect(-WORLD/2+2,-WORLD/2+2,WORLD-4,WORLD-4);
     this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.10).setDepth(-100000);   // เส้นกริดจางลง (พื้นสวยแล้ว)
     // faux-2.5D: เลเยอร์เงาใต้ตัว (วาดใหม่ทุกเฟรม) + จัดลำดับความลึกตามแกน Y
     this.iso=true;   // สวิตช์เปิด/ปิดโหมด 2.5D เบา ๆ
@@ -6263,7 +6267,7 @@ class Game extends Phaser.Scene {
     this.uiCam.setZoom(RENDER_DPR);
     this.uiCam.centerOn(this.W/2,this.H/2);
     // แยกสิ่งที่แต่ละกล้องเรนเดอร์
-    this._worldObjs=[this.bgTile,this.gridBg,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots,this.gimmicks,this.portals,this.bossObjects,this.waveNodes];
+    this._worldObjs=[this.bgTile,this.gridBg,this.arenaRim,this.shadowG,this.aura,this.player,this.enemies,this.orbs,this.bullets,this.foeBullets,this.heals,this.crates,this.chests,this.vacs,this.loots,this.gimmicks,this.portals,this.bossObjects,this.waveNodes];
     this.uiCam.ignore(this._worldObjs);
     const ui=[this.vig,this.lowHpVig,this.bannerT,this.bannerS,this.muteBtn,this.muteTxt,this.pauseBtn,this.pauseTxt,this.pauseUI,this.fpsTxt,this.menu,this.lvlUp,this.storyLayer,this.over,this.joyBase,this.joyKnob]
       .concat(this.hudList||[],this.bossUI||[]).filter(Boolean);
@@ -12986,12 +12990,15 @@ class Game extends Phaser.Scene {
     // v7.4 GPU memory: the TileSprite stays 2×2 + hidden (its own canvas was WORLD-size = 43–64MB on the GPU); the floor is drawn by a small pool of plain Images sharing the source texture (0 extra GPU memory)
     if(t.width>4||t.height>4)t.setSize(2,2); if(t.visible)t.setVisible(false);
     const P=Math.max(32,fr.width*Math.abs(t.tileScaleX||1)),Q=Math.max(32,fr.height*Math.abs(t.tileScaleY||1));
-    const x0=Math.floor(v.x/P)*P,y0=Math.floor(v.y/Q)*Q,nx=Math.ceil((v.right-x0)/P),ny=Math.ceil((v.bottom-y0)/Q),need=nx*ny,pool=this._bgImgs||(this._bgImgs=[]);
+    // The camera stays centred for aiming; floor art stops at the actual walkable world.
+    const half=WORLD/2,left=Math.max(-half,v.x),top=Math.max(-half,v.y),right=Math.min(half,v.right),bottom=Math.min(half,v.bottom);
+    const x0=Math.floor(left/P)*P,y0=Math.floor(top/Q)*Q,nx=Math.max(0,Math.ceil((right-x0)/P)),ny=Math.max(0,Math.ceil((bottom-y0)/Q)),need=right>left&&bottom>top?nx*ny:0,pool=this._bgImgs||(this._bgImgs=[]);
     for(let k=pool.length-1;k>=0;k--)if(!pool[k]||!pool[k].scene)pool.splice(k,1);
     while(pool.length<need&&pool.length<64)pool.push(this.camWorld(this.add.image(0,0,t.displayTexture.key,fr.name).setOrigin(0,0)));
     const tinted=t.isTinted,tint=t.tintTopLeft,key=t.displayTexture.key;
     pool.forEach((im,k)=>{ if(k>=need){ if(im.visible)im.setVisible(false); return; } if(im.texture.key!==key||im.frame.name!==fr.name)im.setTexture(key,fr.name);
-      im.setPosition(x0+(k%nx)*P,y0+Math.floor(k/nx)*Q).setDisplaySize(P+1,Q+1).setDepth(t.depth).setAlpha(t.alpha).setVisible(true); if(tinted)im.setTint(tint); else if(im.isTinted)im.clearTint(); }); }
+      const x=x0+(k%nx)*P,y=y0+Math.floor(k/nx)*Q,w=P+1,h=Q+1,cx=Math.max(0,-half-x),cy=Math.max(0,-half-y),cw=Math.min(w,half-x)-cx,ch=Math.min(h,half-y)-cy;
+      im.setPosition(x,y).setDisplaySize(w,h).setCrop(cx/w*fr.width,cy/h*fr.height,cw/w*fr.width,ch/h*fr.height).setDepth(t.depth).setAlpha(t.alpha).setVisible(cw>0&&ch>0);if(tinted)im.setTint(tint);else if(im.isTinted)im.clearTint(); }); }
   // v6.83 หน้าจอแตก: เส้นร้าววาดด้วยโค้ดทับทั้งจอ (กล้องหลัก) ตอนปล่อย Titan Rage lv2+
   titanScreenCrack(lv){ try{ const cam=this.cameras.main,v=cam.worldView,cx=v.centerX+(Math.random()-.5)*v.width*.2,cy=v.centerY+(Math.random()-.5)*v.height*.2,R=Math.hypot(v.width,v.height)*.6,g=this.camWorld(this.add.graphics().setDepth(95000));
     const n=lv>=3?14:9; g.fillStyle(0xffffff,lv>=3?.22:.14).fillCircle(cx,cy,26+lv*8);
