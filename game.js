@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.7.17';
+const GAME_VERSION = '7.7.18';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.7.18',date:'2026-10-12',title:'Main menu reference polish',items:['Removed the Next target bar from the main menu','Improved currency padding, narrower version, readable button labels and centred More','Natural logo and blossom proportions, tighter full-width buttons, gold progress tag and visible chevrons']},
   {v:'7.7.17',date:'2026-10-12',title:'Main menu frame proportions',items:['Painted menu corners retain their shape with nine-slice scaling','Logo keeps its original aspect ratio above the hero capsule']},
   {v:'7.7.16',date:'2026-10-12',title:'Painted main menu',items:['Approved candy castle menu with painted logo and pink Play button','Shared plum menu frames, full-width More and responsive portrait layout','Live quest, currency, unlocks and progress badges remain interactive']},
   {v:'7.7.15',date:'2026-10-12',title:'Unified responsive Heroes',items:['Shared painted buttons, header and typography across Heroes, Talents and Stats','Portrait roster fills tall mobile screens with responsive spacing','Contained hero preview and cleaner card labels']},
@@ -8221,13 +8222,20 @@ class Game extends Phaser.Scene {
     const k='hub_ui_'+key;if(this.textures.exists(k)){let im;if(this.add.nineslice&&this.textures.get){const source=this.textures.get(k).getSourceImage(),scale=h/source.height;im=this.add.nineslice(x+w/2,y+h/2,k,null,w/scale,source.height,source.width*.13,source.width*.13,source.height*.25,source.height*.25).setScale(scale);}else im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;}
     const g=this.add.graphics();g.fillStyle(key==='play'?0xc93970:0x291733,.96).fillRoundedRect(x,y,w,h,Math.min(14,h/2));g.lineStyle(2,0xe5bb6b,.95).strokeRoundedRect(x,y,w,h,Math.min(14,h/2));this.menu.add(g);return g;
   }
+  hubArt(key,cx,cy,maxW,maxH){
+    const k='hub_ui_'+key;if(!this.textures.exists(k))return null;const im=this.add.image(cx,cy,k),scale=Math.min(maxW/im.width,maxH/im.height);im.setScale(scale);this.menu.add(im);return im;
+  }
+  hubGuideTag(B,label){
+    const t=this.hubText(B.x+B.w-12,B.y+1,label,Math.max(9,Math.min(14,this.W*.027)),'#51300e',1),tw=t.width+16,th=Math.max(19,this.W*.043),x=B.x+B.w-tw-5,y=B.y-th*.38;
+    const g=this.add.graphics();g.fillStyle(0x5b330c,.55).fillRoundedRect(x,y+2,tw,th,5);g.fillGradientStyle(0xffeda8,0xffdc72,0xf4c65a,0xe7ae3e,1).fillRoundedRect(x,y,tw,th,5);g.lineStyle(1.5,0xfff0b8,1).strokeRoundedRect(x,y,tw,th,5);this.menu.add(g);t.setPosition(x+tw/2,y+th/2).setOrigin(.5);this.menu.remove(t);this.menu.add(t);
+  }
   hubText(x,y,value,size,color='#fff0df',originX=0,originY=.5){
-    const t=this.add.text(x,y,value,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:size+'px',color,stroke:'#482139',strokeThickness:1}).setOrigin(originX,originY);this.menu.add(t);return t;
+    const t=this.add.text(x,y,value,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:size+'px',color,stroke:'#482139',strokeThickness:0}).setOrigin(originX,originY);this.menu.add(t);return t;
   }
   hubLayout(){
-    const w=this.W,h=this.H,portrait=w<=h,side=Math.max(10,w*.032),gap=Math.max(6,w*.016),right=portrait?w-side:w*.97,left=portrait?side:w*.48;
-    const width=right-left,menuTop=portrait?h*.572:94,bottom=h-(portrait?Math.max(30,h*.05):12),unit=(bottom-menuTop-gap*3)/4.25;
-    const playH=unit*1.15,rowH=unit,moreH=unit*1.1,half=(width-gap)/2;
+    const w=this.W,h=this.H,portrait=w<=h,side=Math.max(10,w*.026),gap=Math.max(5,w*.012),right=portrait?w-side:w*.97,left=portrait?side:w*.48;
+    const width=right-left,menuTop=portrait?h*.572:94,bottom=h-(portrait?Math.max(36,h*.065):12),unit=(bottom-menuTop-gap*3)/4.25;
+    const playH=unit*1.30,rowH=unit,moreH=unit*.95,half=(width-gap)/2;
     return {portrait,side,gap,menuTop,boxes:[{x:left,y:menuTop,w:width,h:playH},{x:left,y:menuTop+playH+gap,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+gap,w:half,h:rowH},{x:left,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left,y:menuTop+playH+rowH*2+gap*3,w:width,h:moreH}]};
   }
   buildHub(){
@@ -8237,32 +8245,31 @@ class Game extends Phaser.Scene {
     const shade=this.add.graphics();shade.fillGradientStyle(0x100817,0x100817,0x100817,0x100817,.02,.02,.15,.55);shade.fillRect(0,0,w,h);this.menu.add(shade);
     // Subtle background motion stays behind every interactive UI element.
     if(bg.type==='Image')this.tweens.add({targets:bg,scaleX:bg.scaleX*1.025,scaleY:bg.scaleY*1.025,duration:10000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    const pillW=portrait?w*.245:140,pillH=portrait?Math.max(28,h*.04):30,top=portrait?h*.012:10;
-    this.hubChrome('pill',side,top,pillW,pillH);if(this.textures.exists('hub_ui_candy'))this.menu.add(this.add.image(side+pillW*.21,top+pillH/2,'hub_ui_candy').setDisplaySize(pillH*.66,pillH*.66));
-    const sugar=this.hubText(side+pillW*.86,top+pillH/2,String(Save.data.sugar||0),Math.max(13,pillH*.47),'#ffe5aa',1);let sf=parseFloat(sugar.style.fontSize);while(sugar.width>pillW*.57&&sf>9)sugar.setFontSize(--sf+'px');
-    this.hubChrome('pill',w-side-pillW,top,pillW,pillH);this.hubText(w-side-pillW/2,top+pillH/2,'v'+GAME_VERSION,Math.max(11,pillH*.37),'#fff0df',.5);
-    this._zone(w-side-pillW,top,pillW,pillH,()=>{this.menuScreen='news';this.buildMenuScreen();});if(this.hasNewsBadge())this.drawBadgeDot(this.menu,w-side-5,top+4);
-    const nq=this.nextQuest();if(nq){const qx=side,qy=top+pillH+Math.max(6,h*.01),qw=w-side*2,qh=portrait?Math.max(32,h*.04):32;
-      this.hubChrome('quest',qx,qy,qw,qh);const qt=this.hubText(qx+qw*.055,qy+qh/2,'Next: '+nq.t,Math.max(10,Math.min(16,w*.029)),'#ffe9b0');let fs=parseFloat(qt.style.fontSize);while(qt.width>qw*.73&&fs>9)qt.setFontSize(--fs+'px');
-      this.hubText(qx+qw*.95,qy+qh/2,'🍬 '+nq.r+' ›',Math.max(10,w*.028),'#a8f0c0',1);this._zone(qx,qy,qw,qh,()=>{this.menuScreen=nq.go;this.buildMenuScreen();});}
+    const pillW=portrait?Math.max(112,w*.28):150,pillH=portrait?Math.max(34,h*.044):34,versionW=pillW*.76,top=portrait?Math.max(12,h*.016):10;
+    this.hubChrome('pill',side,top,pillW,pillH);const candySize=pillH*.60,candyX=side+pillH*.67;
+    this.hubArt('candy',candyX,top+pillH/2,candySize,candySize);
+    const sugar=this.hubText(side+pillW-pillH*.48,top+pillH/2,String(Save.data.sugar||0),Math.max(14,pillH*.46),'#ffe5aa',1);let sf=parseFloat(sugar.style.fontSize);while(sugar.width>pillW-pillH*1.45&&sf>10)sugar.setFontSize(--sf+'px');
+    this.hubChrome('pill',w-side-versionW,top,versionW,pillH);this.hubText(w-side-versionW/2,top+pillH/2,'v'+GAME_VERSION,Math.max(11,pillH*.34),'#fff0df',.5);
+    this._zone(w-side-versionW,top,versionW,pillH,()=>{this.menuScreen='news';this.buildMenuScreen();});if(this.hasNewsBadge())this.drawBadgeDot(this.menu,w-side-7,top+6);
     const logoW=portrait?w*.87:w*.43,logoH=logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?Math.min(h*.445,L.menuTop-Math.max(25,h*.03)-12-logoH):h*.40;
-    if(this.textures.exists('hub_ui_logo'))this.menu.add(this.add.image(logoX,logoY+logoH/2,'hub_ui_logo').setDisplaySize(logoW,logoH));else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
+    if(this.textures.exists('hub_ui_logo'))this.hubArt('logo',logoX,logoY+logoH/2,logoW,logoH);else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
     const ch=CHARACTERS[this.character||'momo'],heroW=portrait?w*.66:w*.42,heroH=portrait?Math.max(25,h*.03):28,heroY=portrait?L.menuTop-heroH-8:h*.65;
     this.hubChrome('pill',logoX-heroW/2,heroY,heroW,heroH);const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');
     const items=[['Play','Choose a stage','chapter','hub_btn_play'],['Heroes','Choose & awaken','char','hub_btn_heroes'],['Gear & Power','Equipment · Craft','gLoadout','hub_btn_gear'],['Activities','Daily · Achievements','gActivity','hub_btn_activity'],['Codex','Skills · Bestiary','gCodex','hub_btn_codex'],['More','Settings · Guide','gMore','hub_btn_more']];
     const tutDone=!!Save.data.tutorialDone,us=Save.data.unlockedStage||0,need=[0,0,1,2,1,0],nxt=this.hubNextStep();
     items.forEach(([label,sub,target,icon],i)=>{const B=L.boxes[i],locked=us<need[i]&&!tutDone,primary=i===0,art=this.hubChrome(primary?'play':'secondary',B.x,B.y,B.w,B.h);if(locked)art.setAlpha(.60);
-      const size=Math.min(B.h*.77,B.w*.24),ix=B.x+size*.70,cy=B.y+B.h/2;
+      const more=i===5,size=Math.min(B.h*.78,B.w*(primary||more?.19:.21)),cy=B.y+B.h/2,arrowSize=Math.max(17,B.h*.30),arrowX=B.x+B.w-Math.max(20,B.h*.38);
+      const tx=more?B.x+B.w/2+size*.36:B.x+size*1.35,ix=more?B.x+B.w/2-size*.85:B.x+size*.72,room=more?B.w*.5:arrowX-tx-arrowSize*.65;
       if(!locked&&this.textures.exists(icon))this.menu.add(this.add.image(ix,cy,icon).setDisplaySize(size,size));else this.hubText(ix,cy,locked?'🔒':'✦',Math.max(18,size*.5),'#ffe3aa',.5);
-      const tx=B.x+size*1.35,room=B.w-size*1.35-B.h*.35,fs=primary?Math.min(36,B.h*.36):Math.min(21,B.h*.25);
-      const title=this.hubText(tx,B.y+B.h*.40,label,Math.max(12,fs));let tf=Math.max(12,fs);while(title.width>room&&tf>10)title.setFontSize(--tf+'px');
-      const st=this.hubText(tx,B.y+B.h*.68,locked?'Clear Stage '+need[i]+' to unlock':sub,Math.max(8,Math.min(13,B.h*.15)),'#d9bfd6');let ss=parseFloat(st.style.fontSize);while(st.width>room&&ss>7)st.setFontSize(--ss+'px');
-      if(this.textures.exists('hub_ui_arrow'))this.menu.add(this.add.image(B.x+B.w-B.h*.26,cy,'hub_ui_arrow').setDisplaySize(B.h*.18,B.h*.23));
+      const fs=primary?Math.min(44,B.h*.43):more?Math.min(28,B.h*.35):Math.max(14,Math.min(23,w*.039));
+      const title=this.hubText(tx,B.y+B.h*.40,label,fs,'#fff7ed',more?.5:0);let tf=fs;while(title.width>room&&tf>12)title.setFontSize(--tf+'px');
+      const st=this.hubText(tx,B.y+B.h*.69,locked?'Clear Stage '+need[i]+' to unlock':sub,primary||more?Math.max(10,Math.min(15,B.h*.18)):Math.max(9,Math.min(12,w*.024)),'#ead5e7',more?.5:0);let ss=parseFloat(st.style.fontSize);while(st.width>room&&ss>8)st.setFontSize(--ss+'px');
+      if(!this.hubArt('arrow',arrowX,cy,arrowSize*.72,arrowSize))this.hubText(arrowX,cy,'›',Math.max(28,arrowSize*1.5),'#ffe183',.5);
       this._zone(B.x,B.y,B.w,B.h,()=>{if(locked){this.menuToast('Locked — clear Stage '+need[i]+' first','#ff9bb5');return;}this.menuScreen=target;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag=target;
       if(!locked&&((i===1&&this.hasTargetBadge('char'))||(i===2&&this.hasGroupBadge('gLoadout'))||(i===3&&this.hasGroupBadge('gActivity'))))this.drawBadgeDot(this.menu,B.x+9,B.y+8);
-      if(nxt&&nxt.hub===i){const tag=this.hubText(B.x+B.w-8,B.y+4,nxt.tag,Math.max(8,Math.min(12,B.h*.16)),'#3e2416',1);tag.setBackgroundColor('#ffd77b').setPadding(5,2);}
+      if(nxt&&nxt.hub===i)this.hubGuideTag(B,nxt.tag);
     });
-    if(portrait&&this.textures.exists('hub_ui_divider'))this.menu.add(this.add.image(w/2,h-h*.022,'hub_ui_divider').setDisplaySize(w*.72,Math.max(12,h*.025)));
+    if(portrait&&this.textures.exists('hub_ui_divider'))this.hubArt('divider',w/2,h-h*.031,w*.72,h*.038);
     // แจ้งเตือนเมื่อมีเมนูใหม่เพิ่งปลดLocked (ครั้งเดียว)
     const seen=Save.data.hubUnlockSeen||0;
     if(us>seen){ if(need.some(n=>n>seen&&n<=us))this.time.delayedCall(350,()=>{if(this.state==='menu'&&this.menuScreen==='hub'&&this.menuToast)this.menuToast('🔓 New menu unlocked! Go explore~','#8bd3a0');}); Save.data.hubUnlockSeen=us; Save.save(); }

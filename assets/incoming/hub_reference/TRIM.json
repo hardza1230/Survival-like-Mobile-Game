@@ -1,0 +1,38 @@
+{
+  "play": {
+    "left": 7,
+    "top": 10,
+    "width": 759,
+    "height": 185
+  },
+  "secondary": {
+    "left": 4,
+    "top": 15,
+    "width": 754,
+    "height": 250
+  },
+  "pill": {
+    "left": 9,
+    "top": 27,
+    "width": 749,
+    "height": 200
+  },
+  "logo": {
+    "left": 7,
+    "top": 2,
+    "width": 750,
+    "height": 187
+  },
+  "arrow": {
+    "left": 19,
+    "top": 3,
+    "width": 65,
+    "height": 100
+  },
+  "divider": {
+    "left": 19,
+    "top": 1,
+    "width": 466,
+    "height": 109
+  }
+}

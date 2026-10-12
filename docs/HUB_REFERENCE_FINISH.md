@@ -14,3 +14,5 @@
 Asset provenance and crop coordinates: assets/incoming/hub_reference. Keep routes, save fields and combat behavior intact. QA: actual menu methods at phone/tablet/landscape sizes, full checks/build, then live UI review. Owner tests real gameplay.
 
 Live review correction v7.7.17: nine-slice chrome scales corners uniformly to button height and extends only its centre. Logo keeps original 1200:310 crop aspect, with vertical placement computed above the hero capsule; no overlap.
+
+Owner image(9) feedback v7.7.18: remove Next target widget entirely from Hub (quest reward system stays live); pad candy/number, narrow version; alpha-trim frames; larger full-width Play and tighter row gaps; larger bright Nunito labels without muddy outlines; centred More group; preserve native image aspect for logo, arrow, footer; gold gradient guide badge. Live screenshot image(9) was v7.7.16; v7.7.17 proportions are included in this correction.
