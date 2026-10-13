@@ -1,6 +1,6 @@
 # v7.8.3 single-screen Forge
 
-Read docs/FORGE_SINGLE_SCREEN.md. Complete remote CI and real-method menu visual review; preserve 150 catalog / 78 active / 72 gated. Review page uses synthetic data and never saves user progress. Owner phone feel confirmation remains pending.
+Read docs/FORGE_SINGLE_SCREEN.md. Full CI/build and 21 real-browser menu cases passed (including native Roll/Tier/Choose); preserve 150 catalog / 78 active / 72 gated. Review page uses synthetic data and never saves user progress. Owner phone feel confirmation remains pending.
 
 # v7.8.2 Forge sparse-row hotfix
 

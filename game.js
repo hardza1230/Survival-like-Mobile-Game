@@ -1474,7 +1474,7 @@ const ASSET_IMAGES = {
   hub_ui_background:'assets/art/hub_reference/background.webp',
   hub_ui_candy:'assets/art/hub_reference/candy.webp',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
-  fg_ui_atlas:'assets/incoming/forge_ui/source-atlas.png',
+  fg_ui_atlas:'assets/art/forge_ui/atlas.png',
   craft_bench_bg:'assets/ui/craft_bench_bg.webp',
   chapter1_cover:'assets/ui/chapter1_cover.webp',
   chapter2_cover:'assets/ui/chapter2_cover.webp',
@@ -2613,12 +2613,12 @@ const MENU_GROUPS=[
   [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
   [/^dig$/,/assets\/art\/dig\//],
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
-  [/^craft$/,/assets\/(?:gear\/|ui\/currency\/|art\/hero_roster_ui\/|incoming\/forge_ui\/)/],
+  [/^craft$/,/assets\/(?:gear\/|ui\/currency\/|art\/hero_roster_ui\/|art\/forge_ui\/)/],
   [/^(gear|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/|art\/hero_roster_ui\/)/],
   [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster(?:_ui)?)\/)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
-const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
+const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
 const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
@@ -2628,12 +2628,12 @@ function stageCritical(k,u,ch,endgame){
   const m=/^(?:char|bpx)_([a-z]+)/.exec(k); if(m&&m[1]!==ch)return false; if(k.startsWith('minion_')&&ch!=='yuzu')return false;
   if(!endgame&&['mini_jelly_animated','feast_target_animated'].includes(k))return false;
   if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
-const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig)\/|incoming\/|character_cards\/|ui\/temple\/)/;
+const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig|forge_ui)\/|incoming\/|character_cards\/|ui\/temple\/)/;
 function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:temple|delve|talents|hero_roster(?:_ui)?)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:temple|delve|talents|hero_roster(?:_ui)?|forge_ui)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)

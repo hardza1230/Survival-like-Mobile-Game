@@ -1815,3 +1815,10 @@ Heroes keeps existing art, tabs, selection/save/unlock behavior. Selected hero s
 # Previous delivery: v7.7.7 — Ricochet damage consistency
 
 Ricochet splash remains for crowds, with one splash per ordinary enemy lifetime per seed and none on bosses/minibosses. Final Evolution splash excludes the direct victim. Isolated boss return applies only on the first hit, not after collecting bounce power from escorts or from split seeds. Split Talent creates at most one child per parent and inherits visited history/shared splash ledger. Existing growth, fire rate, direct-hit damage, Sniper/Shotgun and phase guards remain. Targeted regression and full checks/build required; owner phone balance review pending.
+
+
+# Archived delivery notes — 13 Oct 2026
+
+# Previous delivery: v7.7.20 — Compact Heroes on tall phones
+
+Owner phone 691×1536 showed oversized gaps from distributing extra height into card rows and selection footer. Bound row gaps to26×width/941 and added footer spacing to24×width/941; retain full 768×460 roster art and original preview/confirm flows. Add exact reported phone geometry to regression. Equipment redesign requested as a visual concept; implementation remains separate from this spacing fix.

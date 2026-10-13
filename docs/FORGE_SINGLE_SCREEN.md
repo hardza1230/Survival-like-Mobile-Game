@@ -11,4 +11,4 @@ Owner-approved mockups and fixed spacing are implemented in one route. Power, Su
 - GitHub Pages workflow now runs the complete existing check command before assembling/deploying.
 - Real-method menu-only QA is available at forge-review.html with synthetic data and view selectors; no combat simulation or real save writes.
 
-Validation: JS syntax compiled; viewport geometry checked. Full CI and visual review results must be recorded after the workflow finishes.
+Validation completed: npm run check and web assembly passed on GitHub Actions. Real Phaser Canvas menu rendered successfully in 21 cases (seven viewport sizes × Power/Sustain/Utility), including font and hit bounds, atlas loading, target tracking, paging, modal/family navigation, Equip, paid Choose and native Roll/Tier currency costs. Screenshots of all three baseline states are in docs/forge_ui/. Cached background opacity and equipped badge alignment were corrected and reverified. Android APK build passed on retry after a temporary Maven dependency-download 403. No combat simulation was run. Physical-phone feel/FPS remains owner QA.

@@ -4,7 +4,7 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 # Latest delivery: v7.8.3 — Single-screen Forge
 
-Owner approved the mockups and exact spacing. Forge keeps its controls in one screen with real ranges, equipped tags, paged pools/families and recoverable paid choices. Approved ImageGen atlas is reused directly via 12 frame regions and Canvas-safe fixed-corner chrome. See docs/FORGE_SINGLE_SCREEN.md. Complete CI now gates Pages deployment; real-method menu QA is in forge-review.html (synthetic save, no combat). Record CI/live visual verification before marking delivery complete.
+Owner approved the mockups and exact spacing. Forge keeps its controls in one screen with real ranges, equipped tags, paged pools/families and recoverable paid choices. Approved ImageGen atlas is reused directly via 12 frame regions and Canvas-safe fixed-corner chrome. See docs/FORGE_SINGLE_SCREEN.md. Complete CI now gates Pages deployment; real-method menu QA is in forge-review.html (synthetic save, no combat). Full checks/build and 21 real-browser UI cases passed, including native Roll/Tier costs and paid Choose. Baseline proof screenshots are in docs/forge_ui/. Cached veil and Equipped alignment corrected. Phone feel/FPS remains owner QA.
 
 # Previous delivery: v7.8.2 — Forge sparse-row crash
 
@@ -25,10 +25,6 @@ Owner approved minimal Forge concept and critique of rarely used Remove/Reset. S
 # Previous delivery: v7.7.22 — Selected minimal Equipment elements
 
 Owner approved curated Equipment changes: shared Heroes header/buttons, quieter background and thin slot borders, labeled six slots, four-column inventory with larger labels, separate management toolbar, grouped item title/rarity/base stats, Enhance as primary, Craft/Favorite/Lock as secondary and contextual protection message replacing duplicate disabled Protected buttons. Keep original save/gear/upgrade odds/cost/protected guards/crafted-item confirmation and mod comparison; landscape route preserved. Existing painted chrome loaded via gear menu group; no new art generation. v7.7.22 restricts gear menu loading to current portrait, owned/equipped icon keys and shared chrome actually used; balances loadout column widths and wraps narrow hero captions. Actual-method equipment action/filter tests plus full check/build and live menu QA required. No combat simulation.
-
-# Previous delivery: v7.7.20 — Compact Heroes on tall phones
-
-Owner phone 691×1536 showed oversized gaps from distributing extra height into card rows and selection footer. Bound row gaps to26×width/941 and added footer spacing to24×width/941; retain full 768×460 roster art and original preview/confirm flows. Add exact reported phone geometry to regression. Equipment redesign requested as a visual concept; implementation remains separate from this spacing fix.
 
 # Older history
 

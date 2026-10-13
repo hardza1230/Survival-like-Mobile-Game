@@ -1,3 +1,7 @@
+# Recovery completed — v7.8.3
+
+This checkpoint is superseded by docs/FORGE_SINGLE_SCREEN.md. The original ImageGen atlas was reused; candidate reconstruction, full checks/build, 21 real-browser UI cases and deployment succeeded. The checkpoint below is historical.
+
 # Affix Forge single-screen implementation checkpoint
 
 Owner approved the three mockups and detailed plan on 13 Oct 2026, then requested completing and checking each step in order.
