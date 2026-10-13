@@ -1,3 +1,7 @@
+# v7.8.2 Forge sparse-row hotfix
+
+Owner crash reproduced and fixed in `gearAffixName`: empty rows from `forgeLines` must be skipped when deriving item names. Renderer regression now includes gear with 0/1/2 mods on five viewport sizes. Save/economy unchanged. Owner phone confirmation pending.
+
 # v7.8.1 scroll follow-up
 
 Read docs/MENU_SCROLL_7_8_1.md. Verify long-page feel on owner phone. Forge remains 150 catalog / 78 active / 72 gated.

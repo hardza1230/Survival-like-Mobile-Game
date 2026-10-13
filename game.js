@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.1';
+const GAME_VERSION = '7.8.2';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.2',date:'2026-10-13',title:'Forge empty-mod fix',items:['Gear with empty mod rows now opens in Affix Forge without crashing','Existing mods, item names and crafting costs are preserved']},
   {v:'7.8.1',date:'2026-10-13',title:'Long-menu scrolling',items:['Stable content bounds across redraws; painted backdrops stay fixed','Reversing a drag at the page edge responds immediately; shorter momentum and a slim scroll indicator','Missed taps no longer leave stale coordinate transforms; crafting overlays do not scroll']},
   {v:'7.8.0',date:'2026-10-13',title:'Three-row Forge and farming builds',items:['Spark rolls Power; Cream offers two saved Sustain choices; Jam rolls a selected Playstyle family','Replacing a mod preserves relative tier; Crystal Glaze keeps its existing tier reroll','150-mod catalog with 78 runtime-backed effects and 72 gated entries','Legacy mods and currency purchase value are preserved']},
   {v:'7.7.24',date:'2026-10-13',title:'Cached menu loading',items:['Prevent a completed menu loader from reopening when images are already cached','Keep Equipment and Forge background dimming consistent while art loads']},
@@ -4596,7 +4597,7 @@ function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);retur
 function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel),3),item={baseId:base&&base.id,slot:base&&base.slot||'weapon',grade:baseTier,itemLevel,affixes:[]};for(let line=0;line<n;line++){const mod=pickWeightedMod(forgePool(item,line));if(mod)item.affixes.push(Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),itemLevel),{line}));}return item.affixes;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ if(!affs||!affs.length)return baseName;
-  const best=(k)=>{ let b=null; for(const a of affs){ const d=affixDef(a.id); if(d&&d[k]&&(!b||a.t<b.t))b=a; } return b?affixDef(b.id):null; };
+  const best=(k)=>{ let b=null; for(const a of affs){ if(!a)continue; const d=affixDef(a.id); if(d&&d[k]&&(!b||a.t<b.t))b=a; } return b?affixDef(b.id):null; };
   const pre=best('pre'), suf=best('suf');
   return (pre&&pre.pre?pre.pre+' ':'')+baseName+(suf&&suf.suf?' '+suf.suf:''); }
 

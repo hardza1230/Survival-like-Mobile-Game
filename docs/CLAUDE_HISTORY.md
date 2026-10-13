@@ -1780,3 +1780,38 @@ Core success trimmed 2.68s to .8s from audible onset; Weave promotion trimmed 3.
 # Previous delivery: v7.7.6 — Titan Rage IV moved to Endgame
 
 Owner: Rage 4 too big/OP for a starter; back to Rage 3, Rage 4 from Endgame. titanMaxLv() = titanRage4Unlocked()?4:3 (typeof guard for vm tests). titanRage4Unlocked() = pactBestChar('cocoa')>=TITAN_RAGE4_HEAT (3 = Delve boss cleared at Depth 15+ with Chocolate; saves that already reached it unlock immediately). claimPactMilestones adds a '🗿 Titan Rage IV unlocked' line; Delve NEXT MILESTONE cell shows it for Chocolate. Rage Overflow capstone ×1.3 now applies at max Rage (3 or 4). Titan path desc updated. tests/titan-rage4-unlock.test.cjs.
+
+
+# Archived delivery notes (13 Oct 2026)
+
+# Previous delivery: v7.7.19 — Approved painted main menu
+
+Owner approved ImageGen main-menu concept. Separate clean background, logo, pink Play and shared plum chrome from native labels. Full-width Play/More around 2×2 secondary menu; responsive portrait/landscape geometry. Preserve currency/quest data, exact routes, tutorial unlock override, notification dots and next-action tag. Assets boot-kept and reloaded via hub menu group after run eviction. Details/provenance in docs/HUB_REFERENCE_FINISH.md and assets/incoming/hub_reference. Owner follow-up image(9): v7.7.18 removes Next from Hub; padded sugar, narrower version, trimmed chrome, larger labels, centred More, proportional footer/logo, visible arrows and gold guide tag. v7.7.17 corrects observed frame/logo compression with nine-slice painted chrome and original logo aspect. v7.7.19 replaces WebGL-only Phaser NineSlice with nine ordinary cropped Images so Canvas shows the same painted frames; corner scales and complete coverage tested. Full checks/build and live UI review required; no headless combat simulation.
+
+# Previous delivery: v7.7.15 — Unified responsive Heroes
+
+Owner screenshots image(4)–image(7): Talents/Stats used old chrome; tall mobile roster left a large empty bottom. All three now share painted header/tabs and Nunito; talent branch, Upgrade and Reset buttons reuse the same painted assets. Content starts below the shared tabs. Tall portrait uses extra height for preview, row spacing and footer placement, preserving card art aspect and full image; hero preview is contained inside its frame. Lower label shading softened. Actual-method regression, full check/build and live menu visual QA required. No combat simulation.
+
+# Previous delivery: v7.7.14 — Reference hero roster cards
+
+Owner supplied image(2).png: large top preview, six landscape full-art cards in a two-column phone roster, colored frames/gold selected check and pink selection footer. Generated six matching ImageGen illustrations; menu-only alpha WebP at assets/art/hero_roster (768×460, ~0.8MB total, ~8.5MB decoded). Existing portrait art remains in the large preview/details. Heroes group and lazy classification load/free the new cards; no combat asset replacement. Card taps preview only; footer confirms Save.data.character and runtime character. Locked guards/playtest unlocks, tabs, Details and menu scroll remain. Native labels stay sharp and are not embedded in artwork. Full check/build and actual-method flow tests passed; Initial visual QA used reconstructed draw calls. Live cloud-browser review confirmed all six cards, top preview, native labels, frames and footer load at v7.7.12; v7.7.14 separates name/role labels on wide portrait screens. v7.7.14 adds self-hosted Nunito lettering, painted chrome and role icons; see docs/HERO_ROSTER_REFERENCE_FINISH.md. Owner live phone touch/visual review pending.
+
+# Previous delivery: v7.7.11 — Verified F1 cleanup and status
+
+F1 core work was already delivered in v6.94; old plan checkbox was stale. Remove four unreachable methods: castDiamondDust, buildCookbook, buildRift and rollRiftPreview (only called by that dead Rift menu). Current routes redirect old Rift/Recipe entries to Atlas. Preserve Sweet-biome comet sugarRush/tickSugarRush, Delve riftMode/tier/mod helpers, live PASSIVES/SKILLDEFS metadata and save refund/conversion migrations. Update SYSTEM_CONSOLIDATION_PLAN with those exact boundaries. Full check/build passed; no headless gameplay simulation; owner phone QA remains. Heroes layout was also visually reviewed from actual buildChars draw calls at 320/390/768/844px (reconstructed display list, not a live screenshot); Chromium download failed.
+
+# Previous delivery: v7.7.10 — Speed x4
+
+Speed tap cycles 1→2→3→4→1; setGameSpeed normalizes invalid values and clamps 1–4. Arcade uses inverse 1/s, timers/tweens use s and update dt uses gameSpeed as before. Hit-stop defers physics scaling while other clocks retain selected speed; original restore path uses current speed. Run reset remains x1. Regression/full checks/build required; phone x4 feel/FPS review pending. No automated headless gameplay simulation per owner instruction.
+
+# Previous delivery: v7.7.9 — Visible arena bounds
+
+The physics world already stopped the hero at ±2000 while camera-centred floor Images painted indefinitely outside it. Clip pooled floor Images to the actual world rectangle, including partial corner tiles; draw a thin world rim in the world camera only. Preserve physics dimensions, player collision, camera centring/zoom and the shared-source floor memory budget. Actual-method crop/bounds regression/check/build required; owner phone edge/touch review pending.
+
+# Previous delivery: v7.7.8 — Heroes roster readability
+
+Heroes keeps existing art, tabs, selection/save/unlock behavior. Selected hero summary above a responsive roster; larger names/art, labeled HP/ATK/SPD/DEF ratings and explicit Select hero actions. Cards have a minimum readable height and use menu scrolling instead of shrinking all six into one viewport; landscape uses 2–4 columns, wide portrait 3. Selected hero/card opens existing abilities details; closing rebuilds the screen and restores scrolling zones. Owner approved redesign of this screen. Visual QA/check/build required; phone touch review remains owner work.
+
+# Previous delivery: v7.7.7 — Ricochet damage consistency
+
+Ricochet splash remains for crowds, with one splash per ordinary enemy lifetime per seed and none on bosses/minibosses. Final Evolution splash excludes the direct victim. Isolated boss return applies only on the first hit, not after collecting bounce power from escorts or from split seeds. Split Talent creates at most one child per parent and inherits visited history/shared splash ledger. Existing growth, fire rate, direct-hit damage, Sniper/Shotgun and phase guards remain. Targeted regression and full checks/build required; owner phone balance review pending.
