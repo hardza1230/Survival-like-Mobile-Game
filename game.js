@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.8';
+const GAME_VERSION = '7.8.9';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.9',date:'2026-10-13',title:'Painted Stats and Gear & Power',items:['Hero-colored tabs and selection controls','New illustrated stat frames and icons','New Gear & Power cards and castle workshop background']},
   {v:'7.8.8',date:'2026-10-13',title:'Cleaner Heroes and home controls',items:['More moved to a gear beside the version','Compact hero tabs, role labels and selection controls','Cleaner color-accented Stats with larger labels and source details']},
   {v:'7.8.7',date:'2026-10-13',title:'A calmer, livelier home',items:['Cleaner menu cards with coral, mint, indigo and warm gold accents','Gentle drifting petals and subtle logo motion','Home effects stop when leaving the menu and respect reduced motion']},
   {v:'7.8.6',date:'2026-10-13',title:'Forge mobile readability',items:['One-line mod results with tier-only labels','Larger Roll, Tier and mod information controls','Full values and chances remain in mod details']},
@@ -1561,6 +1562,27 @@ const ASSET_IMAGES = {
   gear_ri_diamond:'assets/gear/rings/ri_diamond.png',
   gear_ri_chef:'assets/gear/rings/ri_chef.png',
   story_intro_fall:'assets/story/intro_fall.webp', story_final_hunger:'assets/story/final_hunger.webp',
+  mui_stat_frame_attack:'assets/art/mobile_ui_789/stat_frame_attack.webp',
+  mui_stat_frame_crit:'assets/art/mobile_ui_789/stat_frame_crit.webp',
+  mui_stat_frame_cooldown:'assets/art/mobile_ui_789/stat_frame_cooldown.webp',
+  mui_stat_frame_hp:'assets/art/mobile_ui_789/stat_frame_hp.webp',
+  mui_stat_frame_defense:'assets/art/mobile_ui_789/stat_frame_defense.webp',
+  mui_stat_frame_regen:'assets/art/mobile_ui_789/stat_frame_regen.webp',
+  mui_stat_frame_speed:'assets/art/mobile_ui_789/stat_frame_speed.webp',
+  mui_stat_icon_attack:'assets/art/mobile_ui_789/stat_icon_attack.webp',
+  mui_stat_icon_crit:'assets/art/mobile_ui_789/stat_icon_crit.webp',
+  mui_stat_icon_cooldown:'assets/art/mobile_ui_789/stat_icon_cooldown.webp',
+  mui_stat_icon_hp:'assets/art/mobile_ui_789/stat_icon_hp.webp',
+  mui_stat_icon_defense:'assets/art/mobile_ui_789/stat_icon_defense.webp',
+  mui_stat_icon_regen:'assets/art/mobile_ui_789/stat_icon_regen.webp',
+  mui_stat_icon_speed:'assets/art/mobile_ui_789/stat_icon_speed.webp',
+  mui_stat_icon_info:'assets/art/mobile_ui_789/stat_icon_info.webp',
+  mui_gear_card_upgrade:'assets/art/mobile_ui_789/gear_card_upgrade.webp',
+  mui_gear_card_gear:'assets/art/mobile_ui_789/gear_card_gear.webp',
+  mui_gear_card_craft:'assets/art/mobile_ui_789/gear_card_craft.webp',
+  mui_gear_card_bazaar:'assets/art/mobile_ui_789/gear_card_bazaar.webp',
+  mui_gear_card_gearInbox:'assets/art/mobile_ui_789/gear_card_gearInbox.webp',
+  screen_gear_power_789:'assets/art/mobile_ui_789/gear_background.webp',
   hr_ui_back:'assets/art/hero_roster_ui/ui_back.webp',
   hr_ui_currency:'assets/art/hero_roster_ui/ui_currency.webp',
   hr_ui_tab_on:'assets/art/hero_roster_ui/ui_tab_on.webp',
@@ -2613,6 +2635,7 @@ function bootDeferred(url){return DEFER_RE.test(url||'');}
 function bootKeep(k){return /^hub_btn_|^hub_ui_|^menu_hub|^vfx_poof$|^replay_progress_art$|^chapter\d_cover$|^chapter_endgame_cover$|^tile___/.test(k);}
 // v6.43 (เจ้าของ: แยกโหลดเฉพาะหน้าที่เข้า) แต่ละหน้าเมนูรอแค่โฟลเดอร์ของตัวเอง · ที่เหลือโหลดเบื้องหลังตามเดิม
 const MENU_GROUPS=[
+  [/^gLoadout$/,/assets\/art\/mobile_ui_789\/gear_/],
   [/^hub$/,/assets\/art\/(?:hub_reference|menu_buttons)\//],
   [/^(upgrade|perks)$/,/assets\/(?:art\/temple\/|ui\/temple\/|art\/icons\/|ui\/currency\/)/],
   [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
@@ -2620,25 +2643,25 @@ const MENU_GROUPS=[
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
   [/^craft$/,/assets\/(?:gear\/|ui\/currency\/|art\/hero_roster_ui\/|art\/forge_ui\/)/],
   [/^(gear|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/|art\/hero_roster_ui\/)/],
-  [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster(?:_ui)?)\/)/],
+  [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster(?:_ui)?)\/|art\/mobile_ui_789\/stat_)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
-const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
+const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|mobile_ui_789|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
-const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|menu_buttons|icons|ui)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
+const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|menu_buttons|icons|ui|mobile_ui_789)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
 const ENDGAME_ART_RE=/assets\/art\/(?:biomes|delve_bosses|pinnacle)\//;
 // ของที่ต้องมีก่อนเข้าด่าน = tier1 ลบ (ของตัวละครอื่น + ของมาทีหลัง + อาร์ต endgame ถ้าไม่ใช่ endgame)
 function stageCritical(k,u,ch,endgame){
   const m=/^(?:char|bpx)_([a-z]+)/.exec(k); if(m&&m[1]!==ch)return false; if(k.startsWith('minion_')&&ch!=='yuzu')return false;
   if(!endgame&&['mini_jelly_animated','feast_target_animated'].includes(k))return false;
   if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
-const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig|forge_ui)\/|incoming\/|character_cards\/|ui\/temple\/)/;
+const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig|forge_ui|mobile_ui_789)\/|incoming\/|character_cards\/|ui\/temple\/)/;
 function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:temple|delve|talents|hero_roster(?:_ui)?|forge_ui)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -7446,7 +7469,23 @@ class Game extends Phaser.Scene {
     this.tapZones=[z,skip]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label);
     c.add(this.add.text(this.W-14,this.H-25,'Skip ›',{fontFamily:'sans-serif',fontSize:'12px',color:'#aaa0b8'}).setOrigin(1,0.5)); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
+  gearPowerLayout(){const w=this.W,h=this.H,portrait=w<=h,bw=Math.min(w-28,520),x=(w-bw)/2,gap=10,cols=portrait?2:4,tw=(bw-gap*(cols-1))/cols,top=portrait?112:90,powerH=bw*231/768,tileH=tw*267/384,gearY=top+powerH+36;return{portrait,bw,x,top,gap,cols,tw,powerH,tileH,gearY};}
+  buildGearPower(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Gear & Power','screen_gear_power_789','hub');
+    const L=this.gearPowerLayout(),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone,nxt=this.hubNextStep();
+    const label=(y,t,c)=>{this.hubText(L.x+3,y,t,12,c);const line=this.add.rectangle(L.x+60,y,L.bw-62,1,parseInt(c.slice(1),16),.45).setOrigin(0,.5);this.menu.add(line);};label(L.top-14,'POWER','#ffdc91');label(L.gearY-14,'GEAR','#9de4d6');
+    const rows=[['upgrade','Weave & Rank'],['gear','Equipment'],['craft','Affix Forge'],['bazaar','Bazaar'],['gearInbox','Inbox']];
+    rows.forEach(([target,title],i)=>{const primary=i===0,j=i-1,x=primary?L.x:L.x+(j%L.cols)*(L.tw+L.gap),y=primary?L.top:L.gearY+Math.floor(j/L.cols)*(L.tileH+L.gap),w=primary?L.bw:L.tw,h=primary?L.powerH:L.tileH,locked=!primary&&!afterS1,key='mui_gear_card_'+target;
+      if(this.textures.exists(key)){const art=this.add.image(x+w/2,y+h/2,key).setDisplaySize(w,h).setAlpha(locked?.42:1);this.menu.add(art);}else this.hubPanel(x,y,w,h,this.hubTone(primary?3:2));
+      const tx=primary?x+w*.75:x+w/2,ty=primary?y+h*.53:y+h*.89,room=primary?w*.42:w-16;
+      const name=this.hubText(tx,ty,locked?'Locked: '+title:title,primary?Math.min(22,w*.05):Math.max(12,Math.min(19,w*.084)),'#fff5e6',.5);let f=parseFloat(name.style.fontSize);while(name.width>room&&f>10)name.setFontSize(--f+'px');
+      this._zone(x,y,w,h,()=>{if(locked){Sfx.select();this.menuToast('Clear Stage 1 of Chapter 1 to unlock this','#ffb4c7');return;}this.menuScreen=target;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag=target;
+      if(!locked&&this.hasTargetBadge(target))this.drawBadgeDot(this.menu,x+12,y+12);
+      if(!locked&&this.hasClaimableTarget(target))this.hubGuideTag({x,y,w,h},'Reward ready');else if(!locked&&nxt&&nxt.group==='gLoadout'&&nxt.target===target)this.hubGuideTag({x,y,w,h},nxt.tag);
+    });this.menu.setVisible(true);
+  }
   buildHubGroup(key){
+    if(key==='gLoadout')return this.buildGearPower();
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
     const w=this.W,h=this.H,portrait=w<=h,rows=grp.rows;
     const bw=Math.min(w-28,440),x=(w-bw)/2,y0=portrait?116:92,gap=10,rh=Math.min(portrait?80:64,(h-y0-56-gap*(rows.length-1))/rows.length);
@@ -7617,14 +7656,14 @@ class Game extends Phaser.Scene {
     if(portrait){ const artH=Math.min(260,Math.max(0,this.H-y-rows.length*(40+gap)-40)); if(artH>120){ this._characterCardArt(Save.data.character,w/2,y+artH/2,w*0.7,artH); y+=artH+8; } }
     const rh=portrait?Phaser.Math.Clamp((this.H-y-36-gap*(rows.length-1))/rows.length,44,58):44;
     const keys=['dmgMul','critChance','cdMul','maxhp','dmgTakenMul','regen','baseSpeed'];   // v6.55.25: เรียงตามสูตร — โจมตี → ป้องกัน → เคลื่อนที่
-    rows.forEach((r,i)=>{const ry=y+i*(rh+gap),g=this.add.graphics();this._zone(14,ry,cardW,rh,()=>{Sfx.select&&Sfx.select();this.showStatSources(p,keys[i],r);});this.tapZones[this.tapZones.length-1].tag='stat_'+keys[i];
-      g.fillStyle(0x232738,.96).fillRoundedRect(14,ry,cardW,rh,12);g.lineStyle(1.2,r[4],.55).strokeRoundedRect(14,ry,cardW,rh,12);g.fillStyle(r[4],.24).fillRoundedRect(15,ry+1,6,rh-2,3);
-      const em=this.add.text(34,ry+rh/2,r[0],{fontSize:'21px'}).setOrigin(.5);
-      const nm=this.add.text(55,ry+rh/2,r[1],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#fff0e3'}).setOrigin(0,.5);
+    const statArt=['attack','crit','cooldown','hp','defense','regen','speed'];
+    rows.forEach((r,i)=>{const ry=y+i*(rh+gap),g=this.add.graphics(),frame=this.menuRasterPanel('mui_stat_frame_'+statArt[i],14,ry,cardW,rh);this._zone(14,ry,cardW,rh,()=>{Sfx.select&&Sfx.select();this.showStatSources(p,keys[i],r);});this.tapZones[this.tapZones.length-1].tag='stat_'+keys[i];
+      if(!frame){g.fillStyle(0x232738,.96).fillRoundedRect(14,ry,cardW,rh,12);g.lineStyle(1.2,r[4],.55).strokeRoundedRect(14,ry,cardW,rh,12);g.fillStyle(r[4],.24).fillRoundedRect(15,ry+1,6,rh-2,3);}
+      const em=this.menuRasterIcon('mui_stat_icon_'+statArt[i],36,ry+rh/2,34)||this.add.text(34,ry+rh/2,r[0],{fontSize:'21px'}).setOrigin(.5);
+      const nm=this.add.text(62,ry+rh/2,r[1],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#fff0e3'}).setOrigin(0,.5);
       const val=this.add.text(w-56,ry+rh/2,r[2],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff'}).setOrigin(1,.5);
-      let nf=13;while(nm.width>val.x-val.width-65&&nf>10)nm.setFontSize(--nf+'px');
-      g.lineStyle(1,0xb6a3d6,.85).strokeCircle(w-34,ry+rh/2,10);
-      const inf=this.add.text(w-34,ry+rh/2,'!',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ddd1ee'}).setOrigin(.5);this.menu.add([g,em,nm,val,inf]);});
+      let nf=13;while(nm.width>val.x-val.width-72&&nf>10)nm.setFontSize(--nf+'px');
+      const inf=this.menuRasterIcon('mui_stat_icon_info',w-34,ry+rh/2,24)||this.add.text(w-34,ry+rh/2,'!',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ddd1ee'}).setOrigin(.5);this.menu.add([g,em,nm,val,inf]);});
     this.menu.add(this.add.text(w/2,y+rows.length*(rh+gap)+6,'Tap a stat for sources',{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#cbbfd4'}).setOrigin(.5));
     this.menu.setVisible(true);
   }
@@ -8476,9 +8515,17 @@ class Game extends Phaser.Scene {
   }
   heroesContentTop(){const L=this.rosterTabLayout();return Math.max(this.W<=this.H?193*this.W/941:102,L.y+L.h+10);}
   rosterTabLayout(){const w=this.W,p=w/941,h=Math.max(36,Math.min(48,86*p)),gap=Math.max(8,18*p),tw=Math.min(w*.245,220),y=w<=this.H?Math.max(42,110*p):50;return{tw,h,gap,y,x0:(w-tw*3-gap*2)/2};}
+  heroTone(){const id=(this._heroesTab||'roster')==='roster'?(this._heroPreview||Save.data.character):Save.data.character;return({momo:{fill:0xa52f53,edge:0xffb99b},mint:{fill:0x22616b,edge:0x8bece5},cocoa:{fill:0x754327,edge:0xf5bd7c},taro:{fill:0x63398c,edge:0xd3a1ff},yuzu:{fill:0x756123,edge:0xffe67d},sesame:{fill:0x444552,edge:0xe9e3f6}})[id]||{fill:0xa52f53,edge:0xffb99b};}
+  menuRasterIcon(key,x,y,size){if(!this.textures.exists(key))return null;const im=this.add.image(x,y,key),scale=Math.min(size/im.width,size/im.height);im.setScale(scale);this.menu.add(im);return im;}
+  menuRasterPanel(key,x,y,w,h){
+    if(!this.textures.exists(key)||!this.textures.get||!this.add.container)return null;
+    const src=this.textures.get(key).getSourceImage(),sw=src.width,sh=src.height,cap=sh*.28,d=Math.min(h*.28,w/2),xs=[0,cap,sw-cap,sw],ys=[0,cap,sh-cap,sh],xd=[0,d,w-d,w],yd=[0,d,h-d,h],group=this.add.container(x,y);
+    // Cropped ordinary images preserve painted corners in Phaser Canvas and WebGL.
+    for(let r=0;r<3;r++)for(let c=0;c<3;c++){const sx=xs[c],sy=ys[r],cw=xs[c+1]-sx,ch=ys[r+1]-sy,dw=xd[c+1]-xd[c],dh=yd[r+1]-yd[r];if(dw<=0||dh<=0)continue;const ax=dw/cw,ay=dh/ch;group.add(this.add.image(xd[c]-sx*ax,yd[r]-sy*ay,key).setOrigin(0).setCrop(sx,sy,cw,ch).setScale(ax,ay));}this.menu.add(group);return group;
+  }
   rosterChrome(key,x,y,w,h){
     // Compact controls are drawn natively so ornaments cannot be stretched.
-    if(['tab_on','tab_off','footer','badge'].includes(key)){const g=this.add.graphics(),active=key==='tab_on'||key==='footer',r=Math.min(12,h/2);g.fillStyle(active?0xa52f53:0x27283a,.96).fillRoundedRect(x,y,w,h,r);g.lineStyle(active?2:1.2,active?0xffb99b:0x8b8fac,.85).strokeRoundedRect(x,y,w,h,r);this.menu.add(g);return g;}
+    if(['tab_on','tab_off','footer','badge'].includes(key)){const tone=this.heroTone(),g=this.add.graphics(),active=key==='tab_on'||key==='footer',r=Math.min(12,h/2);g.fillStyle(active?tone.fill:0x27283a,.96).fillRoundedRect(x,y,w,h,r);g.lineStyle(active?2:1.2,active?tone.edge:0x8b8fac,.85).strokeRoundedRect(x,y,w,h,r);this.menu.add(g);return g;}
     const k='hr_ui_'+key;if(this.textures.exists(k)){const im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;}
     const g=this.add.graphics();g.fillStyle(key==='footer'||key==='tab_on'?0xc93970:0x291733,.95).fillRoundedRect(x,y,w,h,Math.min(14,h/2));g.lineStyle(2,0xe5bb6b,.9).strokeRoundedRect(x,y,w,h,Math.min(14,h/2));this.menu.add(g);return g;
   }
@@ -8503,7 +8550,7 @@ class Game extends Phaser.Scene {
     });
   }
   buildChars(){
-    this.menu.y=0;this.menu.removeAll(true);this.tapZones=[];this._screenBg('Heroes','screen_heroes');this.drawRosterTabs();
+    this.menu.y=0;this.menu.removeAll(true);this.tapZones=[];if(!this._heroPreview)this._heroPreview=Save.data.character||'momo';this._screenBg('Heroes','screen_heroes');this.drawRosterTabs();
     if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
     const w=this.W,h=this.H,p=w/941,landscape=w>h,side=30*p,extra=landscape?0:Math.max(0,h-1672*p),gap=18*p,rowGap=Math.min(gap+extra*.20,26*p);
     const roster=CHAR_ORDER.filter(id=>id!=='sesame'||FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('sesame'));

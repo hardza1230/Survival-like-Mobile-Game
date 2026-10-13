@@ -1,17 +1,11 @@
 # Latest session checkpoint
 Updated: 2026-10-13 (Asia/Bangkok).
 
-## Complete — Hub / Heroes v7.8.8 live
-More moved to a 44px header gear beside version, retaining gMore / Settings / Guide. Five main Hub cards remain. Narrower 36–48px Heroes tabs and 44–60px Select footer use native panels to avoid stretched art. Role chip fits its text; Details becomes top-right !. Stats follows the ImageGen concept: larger one-line labels/values, category edges, source ! and one footer. Existing hero/castle art, formulas, preview/confirmation, locked guard and source modal preserved.
+## Active delivery — v7.8.9 painted mobile UI
+Owner approved compact tabs/Selected, requested hero colors, ImageGen Stats frames/icons and Gear & Power redesign + asset set. Implemented six palettes: preview hero in roster, equipped hero in Stats/Talents. Seven painted Stats frames + seven icons + info jewel; cropped-image nine slices keep corners proportional. Gear & Power now five illustrated cards, generated castle courtyard, proper aspect ratios, real guide/badge/lock routes. No save/formula/economy changes.
+21 WebP production assets + MANIFEST/PROMPTS in assets/art/mobile_ui_789. Stats assets transparent; Gear cards intentionally opaque illustrations+frame. Failed transparent Gear kits discarded; only final card sheet shipped. Selected ImageGen sources/prompts and asset ZIP saved in current chat outputs. Exact prompts in repository too.
 
-## Verified publication
-Runtime commit fa74d59806a673881e6c03db87953e3f31aa823c on claude/vampire-survival-mobile-game-yo9e8w. Uploaded/tested tree exactly matched 2d58ae5caab9d65bfd38deb2511bc4a7c2150812 before ref update. Pages run 38374228938 succeeded; published version.json / GAME_VERSION both 7.8.8, gear/tab/stat/footer and Details replacement verified in live source.
-Full npm check/build passed. Real Phaser Canvas Hub: seven viewports x normal/reduced motion (14 states), bounds, motion/rebuild cleanup. Heroes/Stats: seven viewports, six hero previews without equipping, explicit selection/idempotence, details and stat-source modals. Pointer taps where controls visible; callbacks for overflow. Existing scrolling suite passed; no headless combat simulation.
-
-## Recovery / references
-Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Logs in parent work heroes-788-check.log / heroes-788-build.log. Implementation: docs/HERO_MOBILE_POLISH.md; scripts/build-heroes-review.mjs + check-heroes-live-ui.cjs and existing Hub review. CLAUDE/history updated. Surrogate-pair upload workaround recorded in docs/AGENT_WORKFLOW.md.
-ImageGen built-in concept and exact prompt: C:/Users/Norrasates/Documents/Codex/2026-10-13/repository-hardza1230-survival-like-mobile-game/outputs/hero-stats-concept.png and hero-stats-prompt.txt. Real synthetic-menu screenshots alongside: hub-7.8.8.png, heroes-7.8.8.png, stats-7.8.8.png. Runtime uses original art and native UI, not the mockup as a bitmap screen.
-Previous Forge v7.8.6 and Hub v7.8.7 complete; do not redo.
-
-## Next action
-No unfinished implementation or deployment. Await owner's physical-phone feedback on proportions, touch feel and visual density, or new work. Read startup notes and confirm actual branch/status before edits.
+## State / next action
+Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game; remote base 2dcd9a94c78fcb046687971d8b239939951789f7 clean/confirmed before work. Full check/build passed; Heroes/Stats and Gear & Power native Canvas 7 sizes each passed, with six hero colors, frame/icon presence, text bounds, selection, detail/source routes and all five Gear routes/locks. Screenshots inspected. Weave label adjusted rightward and final check/build/Gear QA passed. Next: exact-tree publication and Pages verification. No v7.8.9 publish yet.
+Changed game.js, package.json, existing Hero/Talent tests + Heroes review, new tests/mobile-ui-art.test.cjs and scripts/build-gear-power-review.mjs + check-gear-power-ui.cjs, asset kit, CLAUDE/history and docs/MOBILE_PAINTED_UI.md. Logs parent work mobile-art-789-check.log / build.log. Current chat outputs stats-7.8.9.png, heroes-7.8.9.png, gear-power-7.8.9.png and mobile-ui-assets-7.8.9.zip.
+Previous v7.8.8 / Forge work complete; do not redo.

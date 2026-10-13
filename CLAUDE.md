@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.8 — Compact Heroes and header gear
+# Latest delivery: v7.8.9 — Painted Stats / Gear & Power
+
+Owner accepted compact Hero control proportions and asked for hero colors plus actual ImageGen artwork. Tabs/Selected now follow the preview hero in roster and equipped hero in Stats/Talents (six palettes). Stats uses seven real painted frames, seven stat icons and an info jewel; ordinary cropped-image slices retain corners in Canvas/WebGL. Gear & Power uses new five painted card textures and a generated courtyard background, preserving routes, locks, notifications and real guide badge rules. Source text remains live. 21 bounded WebP assets, manifest and exact selected prompts in assets/art/mobile_ui_789. See docs/MOBILE_PAINTED_UI.md.
+
+# Previous delivery: v7.8.8 — Compact Heroes and header gear
 
 Owner accepted the calm Hub theme. More is now a 44px gear beside version, retaining the Settings/Guide group; five cards remain below. Heroes tabs are narrower and at least 36px tall; native rounded controls avoid stretching ornate images. Select footer is at least 44px tall, role chip fits its text and Details is a top-right !. Stats uses the ImageGen concept direction: larger single-line labels/values, category-colored edges and source !; full formulas remain in the existing source modal. Hero/castle art, equipped stats and selection behavior preserved. See docs/HERO_MOBILE_POLISH.md.
 
@@ -21,10 +25,6 @@ Forge Back unwinds navigation to Gear & Power, then Hub, without returning to Fo
 # Previous delivery: v7.8.4 — Readable Forge mods
 
 Effect-first pool rows, semantic Canvas pictograms with individual catalog seals, cached per mod (150 catalog identities; only 78 runtime-backed mods remain rollable). Current rows and paid choices reuse the icons. Details expose full effect, value at preview tier, chance and replaced row. Existing costs, saves and effect implementations remain. Full check/build and seven-viewport Forge tests pass; see docs/FORGE_READABILITY.md for browser QA.
-
-# Previous delivery: v7.8.3 — Single-screen Forge
-
-Owner approved the mockups and exact spacing. Forge keeps its controls in one screen with real ranges, equipped tags, paged pools/families and recoverable paid choices. Approved ImageGen atlas is reused directly via 12 frame regions and Canvas-safe fixed-corner chrome. See docs/FORGE_SINGLE_SCREEN.md. Complete CI now gates Pages deployment; real-method menu QA is in forge-review.html (synthetic save, no combat). Full checks/build and 21 real-browser UI cases passed, including native Roll/Tier costs and paid Choose. Baseline proof screenshots are in docs/forge_ui/. Cached veil and Equipped alignment corrected. Phone feel/FPS remains owner QA.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
@@ -92,7 +92,7 @@ Owner approved the mockups and exact spacing. Forge keeps its controls in one sc
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.8 · 13 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.9 · 13 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)

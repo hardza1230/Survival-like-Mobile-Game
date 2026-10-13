@@ -1,0 +1,333 @@
+[
+  {
+    "file": "stat_frame_attack.webp",
+    "width": 768,
+    "height": 53,
+    "source": "exec-1a2c9013-f9cc-4cf3-ac91-40f585bfe2c4.png",
+    "crop": [
+      60,
+      0,
+      1720,
+      127
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_frame_crit.webp",
+    "width": 768,
+    "height": 54,
+    "source": "exec-1a2c9013-f9cc-4cf3-ac91-40f585bfe2c4.png",
+    "crop": [
+      60,
+      127,
+      1720,
+      253
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_frame_cooldown.webp",
+    "width": 768,
+    "height": 54,
+    "source": "exec-1a2c9013-f9cc-4cf3-ac91-40f585bfe2c4.png",
+    "crop": [
+      60,
+      253,
+      1720,
+      380
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_frame_hp.webp",
+    "width": 768,
+    "height": 54,
+    "source": "exec-1a2c9013-f9cc-4cf3-ac91-40f585bfe2c4.png",
+    "crop": [
+      60,
+      380,
+      1720,
+      507
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_frame_defense.webp",
+    "width": 768,
+    "height": 60,
+    "source": "exec-1a2c9013-f9cc-4cf3-ac91-40f585bfe2c4.png",
+    "crop": [
+      60,
+      507,
+      1720,
+      634
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_frame_regen.webp",
+    "width": 768,
+    "height": 59,
+    "source": "exec-1a2c9013-f9cc-4cf3-ac91-40f585bfe2c4.png",
+    "crop": [
+      60,
+      634,
+      1720,
+      760
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_frame_speed.webp",
+    "width": 768,
+    "height": 51,
+    "source": "exec-1a2c9013-f9cc-4cf3-ac91-40f585bfe2c4.png",
+    "crop": [
+      60,
+      760,
+      1720,
+      887
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_attack.webp",
+    "width": 128,
+    "height": 122,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      0,
+      0,
+      444,
+      444
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_crit.webp",
+    "width": 124,
+    "height": 128,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      444,
+      0,
+      887,
+      444
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_cooldown.webp",
+    "width": 121,
+    "height": 128,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      887,
+      0,
+      1330,
+      444
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_hp.webp",
+    "width": 128,
+    "height": 108,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      1330,
+      0,
+      1774,
+      444
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_defense.webp",
+    "width": 117,
+    "height": 128,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      0,
+      444,
+      444,
+      887
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_regen.webp",
+    "width": 128,
+    "height": 112,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      444,
+      444,
+      887,
+      887
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_speed.webp",
+    "width": 128,
+    "height": 120,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      887,
+      444,
+      1330,
+      887
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "stat_icon_info.webp",
+    "width": 127,
+    "height": 128,
+    "source": "exec-33494860-3267-4113-9019-260a03dca6ce.png",
+    "crop": [
+      1330,
+      444,
+      1774,
+      887
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "gear_card_upgrade.webp",
+    "width": 768,
+    "height": 231,
+    "source": "exec-70c8e302-3986-4429-a66b-587f0de13111.png",
+    "crop": [
+      0,
+      0,
+      1254,
+      377
+    ],
+    "alpha_extrema": [
+      255,
+      255
+    ]
+  },
+  {
+    "file": "gear_card_gear.webp",
+    "width": 384,
+    "height": 267,
+    "source": "exec-70c8e302-3986-4429-a66b-587f0de13111.png",
+    "crop": [
+      0,
+      381,
+      626,
+      816
+    ],
+    "alpha_extrema": [
+      255,
+      255
+    ]
+  },
+  {
+    "file": "gear_card_craft.webp",
+    "width": 384,
+    "height": 267,
+    "source": "exec-70c8e302-3986-4429-a66b-587f0de13111.png",
+    "crop": [
+      629,
+      381,
+      1254,
+      816
+    ],
+    "alpha_extrema": [
+      255,
+      255
+    ]
+  },
+  {
+    "file": "gear_card_bazaar.webp",
+    "width": 384,
+    "height": 266,
+    "source": "exec-70c8e302-3986-4429-a66b-587f0de13111.png",
+    "crop": [
+      0,
+      820,
+      626,
+      1254
+    ],
+    "alpha_extrema": [
+      255,
+      255
+    ]
+  },
+  {
+    "file": "gear_card_gearInbox.webp",
+    "width": 384,
+    "height": 267,
+    "source": "exec-70c8e302-3986-4429-a66b-587f0de13111.png",
+    "crop": [
+      629,
+      820,
+      1254,
+      1254
+    ],
+    "alpha_extrema": [
+      255,
+      255
+    ]
+  },
+  {
+    "file": "gear_background.webp",
+    "width": 768,
+    "height": 1657,
+    "source": "exec-ff04ba19-1573-411b-8fb2-d7c3df60f34f.png",
+    "crop": null,
+    "alpha_extrema": [
+      255,
+      255
+    ]
+  }
+]

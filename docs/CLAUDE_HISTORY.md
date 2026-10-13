@@ -1846,3 +1846,7 @@ Owner screenshot: Forge stops after the selected gear icon with `Cannot read pro
 # Older history
 
 Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archived verbatim in `docs/CLAUDE_HISTORY.md`. Search there (grep a function or version) when you need why something was done. When you finish work: add a new "# Latest delivery" block here, rename the previous one to "# Previous delivery", and keep only ~6 recent blocks in this file (move older ones to the end of docs/CLAUDE_HISTORY.md).
+
+# Previous delivery: v7.8.3 — Single-screen Forge
+
+Owner approved the mockups and exact spacing. Forge keeps its controls in one screen with real ranges, equipped tags, paged pools/families and recoverable paid choices. Approved ImageGen atlas is reused directly via 12 frame regions and Canvas-safe fixed-corner chrome. See docs/FORGE_SINGLE_SCREEN.md. Complete CI now gates Pages deployment; real-method menu QA is in forge-review.html (synthetic save, no combat). Full checks/build and 21 real-browser UI cases passed, including native Roll/Tier costs and paid Choose. Baseline proof screenshots are in docs/forge_ui/. Cached veil and Equipped alignment corrected. Phone feel/FPS remains owner QA.
