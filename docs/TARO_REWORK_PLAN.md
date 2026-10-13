@@ -1,6 +1,6 @@
 # Taro rework — work packages
 
-Status: T0/T1 complete; T2 Tempest implemented and checked in v7.8.11, publication pending. See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md) and [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md). T3 Chain is next; Chain/Smite currently retain legacy combat.
+Status: T0/T1/T2 complete; Tempest live in v7.8.11 (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md) and [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md). T3 Chain is next; Chain/Smite currently retain legacy combat.
 
 ## Goal and baseline
 
@@ -32,6 +32,6 @@ Current runtime already has path IDs storm/smite/tempest, path talents and capst
 
 #25 Taro Boba Capacitor is deferred optional work after the three paths are tuned. No fourth path, Toast Meter restoration, turret system or unrelated hero/UI rework in this plan.
 
-T0, T1 and T2 implementation are complete. T3 Chain is the next executable task after T2 publication and owner review. Recommended implementation order: T0 → T1 → T2 → T3 → T4 → T5 → T6 → T7. Prototype review happens after each path, not only at the end. All packages modifying game.js integrate sequentially to avoid conflicting edits. Separate art preparation can proceed after the mechanics/art contract stabilizes; this plan does not start agents or separate chats.
+T0, T1 and T2 implementation are complete. T3 Chain is the next implementation task; owner reviews real Tempest combat on phone. Recommended implementation order: T0 → T1 → T2 → T3 → T4 → T5 → T6 → T7. Prototype review happens after each path, not only at the end. All packages modifying game.js integrate sequentially to avoid conflicting edits. Separate art preparation can proceed after the mechanics/art contract stabilizes; this plan does not start agents or separate chats.
 
 After each package update SESSION_HANDOFF with completed package, changed files, real checks, unresolved decisions and exact next package. Save recoverable commits when appropriate. Do not deploy partial prototypes as a finished rework. Publish only within the owner's implementation scope.
