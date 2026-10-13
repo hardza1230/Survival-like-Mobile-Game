@@ -1,3 +1,7 @@
+# Previous delivery: v7.8.7 — Calmer, livelier home
+
+Owner requested less dense art, more color contrast and a little movement. Castle/Strawberry plate and logo preserved; quiet native Canvas cards replace repeated floral chrome. Coral Play, mint Heroes, indigo Gear, warm gold Activities, cyan Codex and neutral More; smaller icons and clearer lower backdrop. Eight faint drifting petals, 1.5px logo float and Play outline pulse use tracked tweens, stopped on navigation/rebuild/stage start/shutdown and disabled by reduced motion. Routes, unlocks, badges, guide/reward rules preserved. See docs/HUB_CALM_MOTION.md.
+
 # Previous delivery: v7.8.6 — Forge mobile readability
 
 Owner selected single-line mod results, larger touch controls and tier-only labels from the ImageGen preview. Main-page results show one effect name plus Tn; installed rows retain their effect value and display only Tn at right. Full ranges/chances remain in details and Odds. Roll/Tier/Auto are 44px tall; result-info controls are 44×44; current-mod info is 44px wide. Small portrait geometry rebalanced; no economy or save changes. See docs/FORGE_MOBILE_READABILITY.md.

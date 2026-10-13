@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.12 — Taro T3 Chain
+# Latest delivery: v7.8.13 — Taro T4 Smite
+
+Smite marks stable priority targets, strikes once and repeats once on surviving big targets after 0.22 active seconds. Arc/count investments become bounded terminal add splash/primary damage. Shared Unique prefers Rod/priority first target with existing formulas and escape rewards. Direct generation tickets isolate external procs and keep once-only rewards; selected Smite replaces legacy mob-charge Judgment. Chain/Tempest and saved progression preserved. Full check/build and real menu QA passed; release status in SESSION_HANDOFF. See docs/TARO_T4_SMITE.md; next T5 progression wording and owner combat feedback.
+
+# Previous delivery: v7.8.12 — Taro T3 Chain
 
 Chain now has bounded growing bounces and distinct victims shared across up to three roots. Direct Chain basic/Chain Bolt kills emit up to three terminal lightning shards, capped eight events per 0.25 active seconds. Direct entry tickets and pooled-victim revalidation prevent external procs stealing kill ownership or duplicate rewards. Shared Unique keeps its existing formula/escape effects. Tempest/Dash method bodies, saved progression and unrelated heroes preserved; Smite/pre-path remain legacy. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T3_CHAIN.md; next T4 Smite. Publication state is in SESSION_HANDOFF.
 
@@ -21,10 +25,6 @@ Owner accepted compact Hero control proportions and asked for hero colors plus a
 # Previous delivery: v7.8.8 — Compact Heroes and header gear
 
 Owner accepted the calm Hub theme. More is now a 44px gear beside version, retaining the Settings/Guide group; five cards remain below. Heroes tabs are narrower and at least 36px tall; native rounded controls avoid stretching ornate images. Select footer is at least 44px tall, role chip fits its text and Details is a top-right !. Stats uses the ImageGen concept direction: larger single-line labels/values, category-colored edges and source !; full formulas remain in the existing source modal. Hero/castle art, equipped stats and selection behavior preserved. See docs/HERO_MOBILE_POLISH.md.
-
-# Previous delivery: v7.8.7 — Calmer, livelier home
-
-Owner requested less dense art, more color contrast and a little movement. Castle/Strawberry plate and logo preserved; quiet native Canvas cards replace repeated floral chrome. Coral Play, mint Heroes, indigo Gear, warm gold Activities, cyan Codex and neutral More; smaller icons and clearer lower backdrop. Eight faint drifting petals, 1.5px logo float and Play outline pulse use tracked tweens, stopped on navigation/rebuild/stage start/shutdown and disabled by reduced motion. Routes, unlocks, badges, guide/reward rules preserved. See docs/HUB_CALM_MOTION.md.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
@@ -92,7 +92,7 @@ Owner requested less dense art, more color contrast and a little movement. Castl
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.12 · 13 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.13 · 13 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)

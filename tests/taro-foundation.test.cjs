@@ -7,7 +7,7 @@ vm.runInContext(src.slice(src.indexOf('// Taro T1: pure foundation.'),src.indexO
 const a=ctx.api,paths=[{id:'storm',upgrades:[{id:'p_squall',max:2,fx:{count:1}},{id:'p_static',max:3,fx:{dmg:1.08}}]},{id:'smite',upgrades:[{id:'p_overload',max:3,fx:{dmg:1.1}}]},{id:'tempest',upgrades:[{id:'p_gale',max:3,fx:{cd:.94}}]}];
 ctx.BASIC_PATHS={taro:paths};
 const Scene=vm.runInContext('class Foundation{'+['clearTaroCombat','syncTaroCombat','tagTaroEnemy','taroProfile','taroPickTarget','suspendTaroCombat','tickTaroCombat','taroSchedule','taroWithDamage','taroIsSecondary','taroCarryContext','taroDealDamage','modDmgMul','modOnHit','modOnKill','relicOnCrit','relicOnKill','fireRecipes'].map(method).join('\n')+'\n}Foundation',ctx);
-function scene(path='smite'){const s=new Scene();Object.assign(s,{character:'taro',state:'play',gameSpeed:1,elapsed:1,basicAttack:{path,character:'taro',ranks:{},lv:{}},player:{active:true,hp:100,maxhp:100,dmgMul:1,x:0,y:0},enemies:{getChildren:()=>[]}});s.syncTaroCombat();return s;}
+function scene(path=null){const s=new Scene();Object.assign(s,{character:'taro',state:'play',gameSpeed:1,elapsed:1,basicAttack:{path,character:'taro',ranks:{},lv:{}},player:{active:true,hp:100,maxhp:100,dmgMul:1,x:0,y:0},enemies:{getChildren:()=>[]}});s.syncTaroCombat();return s;}
 function enemy(id,x=0,y=0,hp=100,extra={}){return {_taroSpawnId:id,x,y,hp,maxhp:hp,active:true,...extra};}
 const origin={x:0,y:0};
 // Priority, stable Rod, phase/range rejection and pool reuse.
@@ -70,7 +70,7 @@ const origin={x:0,y:0};
 {
  const s=scene(),e=enemy(1),token=a.taroEnemyToken(e);let calls=0;s.damage=()=>{calls++;assert(s.taroIsSecondary());};
  assert(!s.taroDealDamage(token,10,'bomb'));s._taro.enabled=true;assert(s.taroDealDamage(token,10,'bomb'));assert.equal(calls,1);e._taroSpawnId++;assert(!s.taroDealDamage(token,10,'bomb'));
- const state=s._taro;state.charge=50;state.jobs.push({});s.basicAttack.path=null;s.syncTaroCombat();assert.equal(s._taro.charge,0);assert.equal(state.jobs.length,0);assert(!s._taro.enabled);const current=s._taro;s.syncTaroCombat();assert.equal(s._taro,current,'upgrade sync is idempotent');
+ const state=s._taro;state.charge=50;state.jobs.push({});s.basicAttack.path='unknown';s.syncTaroCombat();assert.equal(s._taro.charge,0);assert.equal(state.jobs.length,0);assert(!s._taro.enabled);const current=s._taro;s.syncTaroCombat();assert.equal(s._taro,current,'upgrade sync is idempotent');
  let destroyed=0;current.fx.add({active:true,destroy(){destroyed++;}});s.clearTaroCombat();s.clearTaroCombat();assert.equal(destroyed,1);
  const reused=enemy(10);s.tagTaroEnemy(reused);const old=a.taroEnemyToken(reused);s.tagTaroEnemy(reused);assert(!a.taroTargetValid(old,origin,520));
  let hooks=0,shutdown;const life=scene();life.events={on(){},off(){},once:(event,fn)=>{assert.equal(event,'shutdown');hooks++;shutdown=fn;}};life.syncTaroCombat();life.basicAttack.path='storm';life.syncTaroCombat();assert.equal(hooks,1);shutdown();assert.equal(life._taro,null);assert.equal(life._taroShutdownHook,false);
@@ -99,6 +99,9 @@ const origin={x:0,y:0};
 // Undo only explicit Tempest dispatch additions to verify the retained legacy bodies.
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/taro-t1-baseline.json','utf8'));
 function legacyMethod(name){return method(name)
+ .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite'){this.pulseSkill(key);this.castTaroSmiteBasic(lvl);return;}",'')
+ .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);",'')
+ .replace("\n    if(this.character==='taro'&&this.basicAttack?.path==='smite')return this.castTaroPathUnique(dm,ul);",'')
  .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='storm'){this.pulseSkill(key);this.castTaroChainBasic(lvl);return;}",'')
  .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='storm')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);",'')
  .replace("\n    if(this.character==='taro'&&this.basicAttack?.path==='storm')return this.castTaroPathUnique(dm,ul);",'')
@@ -111,7 +114,7 @@ function legacyMethod(name){return method(name)
  .replace("*(this.character==='taro'&&this.basicAttack?.path==='tempest'?Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0))):1)",'')
  .replace("    if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());\n",'');}
 for(const [name,hash] of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(legacyMethod(name)).digest('hex'),hash,name+' retained legacy branch');
-assert(scene('tempest')._taro.enabled,'Tempest opts in');assert(scene('storm')._taro.enabled,'Chain opts in');assert(!scene('smite')._taro.enabled,'Smite stays dormant');
+assert(scene('tempest')._taro.enabled,'Tempest opts in');assert(scene('storm')._taro.enabled,'Chain opts in');assert(scene('smite')._taro.enabled,'Smite opts in');assert(!scene()._taro.enabled,'Pre-path stays dormant');
 for(const n of ['resetRelics','clearArtVfx','die'])assert(method(n).includes('clearTaroCombat?.()'),n+' clears pending state');
 for(const n of ['spawnEnemy','spawnElite','spawnMiniBoss','spawnBossEscorts','spawnFinalBoss'])assert(method(n).includes('tagTaroEnemy?.('),n+' changes generation');
 assert(method('update').includes('suspendTaroCombat?.()'));assert(method('update').includes('tickTaroCombat?.(delta/1000)'));
