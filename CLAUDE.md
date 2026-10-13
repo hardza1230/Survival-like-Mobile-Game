@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.11 — Taro T2 Tempest
+# Latest delivery: v7.8.12 — Taro T3 Chain
+
+Chain now has bounded growing bounces and distinct victims shared across up to three roots. Direct Chain basic/Chain Bolt kills emit up to three terminal lightning shards, capped eight events per 0.25 active seconds. Direct entry tickets and pooled-victim revalidation prevent external procs stealing kill ownership or duplicate rewards. Shared Unique keeps its existing formula/escape effects. Tempest/Dash method bodies, saved progression and unrelated heroes preserved; Smite/pre-path remain legacy. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T3_CHAIN.md; next T4 Smite. Publication state is in SESSION_HANDOFF.
+
+# Previous delivery: v7.8.11 — Taro T2 Tempest
 
 Tempest now earns charge from intentional post-physics walking, adds 15 per accepted Dash, sweeps actual Dash segments, leaves a capped timed origin bomb and releases a held full-charge nova near damageable targets. One weak basic bolt; Gale affects Dash recharge. Tempest Chain Bolt keeps its formula/escape rewards with active-play pooled-target ownership. Pause/revival/exit cleanup, rewards/proc isolation and purchased progression preserved. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T2_TEMPEST.md; next T3 Chain. Publication state is in SESSION_HANDOFF.
 
@@ -21,10 +25,6 @@ Owner accepted the calm Hub theme. More is now a 44px gear beside version, retai
 # Previous delivery: v7.8.7 — Calmer, livelier home
 
 Owner requested less dense art, more color contrast and a little movement. Castle/Strawberry plate and logo preserved; quiet native Canvas cards replace repeated floral chrome. Coral Play, mint Heroes, indigo Gear, warm gold Activities, cyan Codex and neutral More; smaller icons and clearer lower backdrop. Eight faint drifting petals, 1.5px logo float and Play outline pulse use tracked tweens, stopped on navigation/rebuild/stage start/shutdown and disabled by reduced motion. Routes, unlocks, badges, guide/reward rules preserved. See docs/HUB_CALM_MOTION.md.
-
-# Previous delivery: v7.8.6 — Forge mobile readability
-
-Owner selected single-line mod results, larger touch controls and tier-only labels from the ImageGen preview. Main-page results show one effect name plus Tn; installed rows retain their effect value and display only Tn at right. Full ranges/chances remain in details and Odds. Roll/Tier/Auto are 44px tall; result-info controls are 44×44; current-mod info is 44px wide. Small portrait geometry rebalanced; no economy or save changes. See docs/FORGE_MOBILE_READABILITY.md.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
@@ -92,7 +92,7 @@ Owner selected single-line mod results, larger touch controls and tier-only labe
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.11 · 13 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.12 · 13 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)

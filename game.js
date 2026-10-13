@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.11';
+const GAME_VERSION = '7.8.12';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.12',date:'2026-10-13',title:'Taro Chain prototype',items:['Chain bolts grow stronger with each bounce and share distinct targets across the volley','Direct Chain and Chain Bolt kills release three bounded lightning shards','Tempest remains available; Smite keeps its current attacks']},
   {v:'7.8.11',date:'2026-10-13',title:'Taro Tempest prototype',items:['Walk to charge Static Discharge; Dash adds charge and sweeps enemies','Each Dash leaves a timed lightning bomb at its starting point','Tempest keeps one weak basic bolt; Gale improves Dash recharge']},
   {v:'7.8.10',date:'2026-10-13',title:'Taro combat foundation',items:['Prepared targeting and effect lifecycle support for the upcoming Taro paths','Current Taro attacks and progression remain unchanged']},
   {v:'7.8.9',date:'2026-10-13',title:'Painted Stats and Gear & Power',items:['Hero-colored tabs and selection controls','New illustrated stat frames and icons','New Gear & Power cards and castle workshop background']},
@@ -3359,8 +3360,8 @@ const BASIC_PATHS={
                 {id:'p_slamwave',iconKey:'ic_path_dashboxer',name:'Slam Wave',emoji:'💢',max:3,fx:{},headline:'+20% landing slam',desc:'Dash Leap landing slam is 20% wider and 10% stronger per rank'},
                 {id:'p_recharge',iconKey:'ic_path_dashboxer',name:'Rush Battery',emoji:'🔋',max:2,fx:{},headline:'Dash -0.5s Unique cd',desc:'Each Dash cuts an extra 0.5s off the Unique cooldown per rank'}]}],
   taro:[
-    {id:'storm',iconKey:'ic_path_storm',name:'Chain Build',emoji:'🌩️',base:{dmg:0.75,count:1},desc:'+1 strike, ×0.75 damage · swarm build',
-      upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Squall',emoji:'⚡',max:2,fx:{count:1},desc:'+1 strike per rank'},
+    {id:'storm',iconKey:'ic_path_storm',name:'Chain Build',emoji:'🌩️',base:{dmg:0.75,count:1},desc:'Growing chain bolts · direct kills release lightning shards',
+      upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Squall',emoji:'⚡',max:2,fx:{count:1},desc:'+1 chain root per rank · shared targets; max 3 roots'},
                 {id:'p_static',iconKey:'ic_path_p_static',name:'Static Build',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% lightning damage per rank'}]},
     {id:'smite',iconKey:'ic_path_smite',name:'Smite Build',emoji:'🔨',base:{dmg:1.8,cd:1.35},desc:'×1.8 damage per strike, but 35% slower · boss build',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Judgment',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
@@ -3507,7 +3508,7 @@ const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
   glacier:'Freeze and bloom · crowd control',barrage:'Rapid volleys · sustained damage',pierce:'Heavy lance · elite and boss damage',
   brawler:'Ranged fire fists · Rocket Gauntlet',titan:'Heavy wind-up · hold for Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
-  storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Walk to charge · Dash sweep and bomb',
+  storm:'Growing chains · lightning shards',smite:'Heavy lightning · bosses',tempest:'Walk to charge · Dash sweep and bomb',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
 };
 const TITAN_RAGE_MUL=[1,1.8,2.8,4.2,5.5],TITAN_RAGE_SEC=1.8,TITAN_RAGE_CD=[0,1.2,2.6,4.5];
@@ -6107,7 +6108,7 @@ const ACHIEVEMENTS=[
   {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
 
-// Taro T1: pure foundation. T2 enables only the completed Tempest resolver.
+// Taro T1: pure foundation. T2/T3 enable completed Tempest/Chain resolvers.
 const TARO_SOURCE_POLICY=Object.freeze({chain:false,unique:false,smite:false,tempestBasic:false,sweep:false,repeat:true,splash:true,shrapnel:true,nova:true,bomb:true});
 function taroSecondary(scene){return scene.character==='taro'&&scene._taroDamageContext?.terminal===true;}
 function taroEnemyToken(e){return e&&Number.isSafeInteger(e._taroSpawnId)?{enemy:e,id:e._taroSpawnId}:null;}
@@ -6868,6 +6869,7 @@ class Game extends Phaser.Scene {
 
   // Taro: สายฟ้า Arc — ยิงจากตัวไปเป้าใกล้สุด แล้วชิ่งลามไปศัตรูตัวถัด ๆ ไป (คล้าย Arc ใน PoE)
   castPathRecall(dm,ul){
+    if(this.character==='taro'&&this.basicAttack?.path==='storm')return this.castTaroPathUnique(dm,ul);
     if(this.character==='taro'&&this.basicAttack?.path==='tempest')return this.castTaroTempestUnique(dm,ul);
     ul=ul||1;const upgraded=!!this.player.echoPath;
     const jumps=4+ul+(upgraded?2:0), jumpRange=250+ul*16+(upgraded?40:0), forks=ul>=3?2:1;
@@ -12127,12 +12129,12 @@ class Game extends Phaser.Scene {
         if(e._aura){e._aura.destroy();e._aura=null;} if(e._dashTel){e._dashTel.destroy();e._dashTel=null;} e.setActive(false).setVisible(false).setAlpha(1); if(e.body)e.body.enable=false; }}); });
     if(n>0)this.showBanner('🏃 The swarm retreats!',this.enemies.countActive(true)>n?'Defeat the remaining Elites to advance':'The way ahead is clear',1300);
   }
-  // Tempest opts in; pre-path, Chain and Smite retain their legacy resolvers.
+  // Tempest and Chain opt in; pre-path and Smite retain their legacy resolvers.
   clearTaroCombat(){const t=this._taro;if(t){t.run=-1;t.pathEpoch=-1;t.jobs.length=0;for(const fx of t.fx){this.tweens?.killTweensOf(fx);if(fx.active)fx.destroy();}t.fx.clear();t.charge=0;t.sample=null;t.sweep=null;t.mark=null;}
     this._taroEpoch=(this._taroEpoch||0)+1;this._taro=null;this._taroDamageContext=null;
   }
   syncTaroCombat(){if(this.character!=='taro'||!this.player){if(this._taro)this.clearTaroCombat();return null;}const path=this.basicAttack?.path||null;
-    if(!this._taro||this._taro.path!==path||this._taro.player!==this.player){this.clearTaroCombat();this._taroPathEpoch=(this._taroPathEpoch||0)+1;this._taro=taroNewState(this._taroEpoch,this._taroPathEpoch,path,this.player);if(path==='tempest'){this._taro.enabled=true;this._taroCharge=0;}}
+    if(!this._taro||this._taro.path!==path||this._taro.player!==this.player){this.clearTaroCombat();this._taroPathEpoch=(this._taroPathEpoch||0)+1;this._taro=taroNewState(this._taroEpoch,this._taroPathEpoch,path,this.player);if(path==='tempest'||path==='storm'){this._taro.enabled=true;this._taroCharge=0;}}
     if(this.events&&!this._taroShutdownHook){this._taroShutdownHook=true;this.events.on('postupdate',this.taroPostPhysics,this);this.events.once('shutdown',()=>{this.events.off('postupdate',this.taroPostPhysics,this);this.clearTaroCombat();this._taroShutdownHook=false;});}
     return this._taro;
   }
@@ -12156,22 +12158,59 @@ class Game extends Phaser.Scene {
     return ()=>{if(this._taro===t&&t.run===context.run&&t.pathEpoch===context.pathEpoch)this.taroWithDamage(context.source,callback,context);};
   }
   taroDealDamage(token,amount,kind,meta={}){if(!this.player||!Number.isFinite(amount)||amount<=0||!taroTargetValid(token,this.player,meta.range??Infinity))return false;
-    let dealt=false;this.taroWithDamage(kind,()=>{const e=token.enemy;this.damage(e,amount,e.x,e.y);dealt=true;},{...meta,targetId:token.id});return dealt;
+    let dealt=false;this.taroWithDamage(kind,()=>{const e=token.enemy;this.damage(e,amount,e.x,e.y);dealt=true;},{...meta,targetId:token.id,directPending:true});return dealt;
   }
 
-  castTaroTempestUnique(dm,ul){
-    const t=this.syncTaroCombat();if(!t?.enabled||this.state!=='play')return;ul=Math.max(1,Math.min(4,ul||1));const upgraded=!!this.player.echoPath,jumps=4+ul+(upgraded?2:0),range=Math.min(400,250+ul*16+(upgraded?40:0)),forks=ul>=3?2:1,damage=(9+ul*7)*dm*(1+(ul-1)*.22),hit=new Set(),attackId=++t.attackSeq,candidates=this.taroCandidates(this.player,Infinity);
+  castTaroTempestUnique(dm,ul){return this.castTaroPathUnique(dm,ul);}
+  castTaroPathUnique(dm,ul){
+    const t=this.syncTaroCombat();if(!t?.enabled||this.state!=='play')return;ul=Math.max(1,Math.min(4,ul||1));const upgraded=!!this.player.echoPath,jumps=4+ul+(upgraded?2:0),range=Math.min(400,250+ul*16+(upgraded?40:0)),forks=ul>=3?2:1,damage=(9+ul*7)*dm*(1+(ul-1)*.22),hit=new Set(),attackId=++t.attackSeq,candidates=this.taroCandidates(this.player,Infinity),shrapnelD=t.path==='storm'?this.taroTempestProfile().unitD:0;
     const nearest=(origin,radius)=>candidates.filter(token=>!hit.has(token.id)&&taroTargetValid(token,origin,radius)).sort((a,b)=>Math.hypot(a.enemy.x-origin.x,a.enemy.y-origin.y)-Math.hypot(b.enemy.x-origin.x,b.enemy.y-origin.y)||a.id-b.id)[0];
     if(!nearest(this.player,760))this.taroRing(this.player.x,this.player.y,44);
     else for(let f=0;f<forks;f++)this.taroSchedule('unique',f*.09,()=>{
       let from={x:this.player.x,y:this.player.y},token=nearest(from,760);
       for(let j=0;j<jumps&&token&&hit.size<18;j++){
         if(this._taro!==t||this.state!=='play'||!taroTargetValid(token,from,j?range:760))break;
-        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);this.chainBolt(from.x,from.y,point.x,point.y);this.taroDealDamage(token,damage*Math.max(0,1-j*.045),'unique',{attackId});from=point;token=nearest(from,range);
+        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);this.chainBolt(from.x,from.y,point.x,point.y);this.taroDealDamage(token,damage*Math.max(0,1-j*.045),'unique',{attackId,shrapnelD});from=point;token=nearest(from,range);
       }
     },{attackId});
     this.dashReady=true;this.dashCd=0;this.pathHasteT=1+ul*.38+(upgraded?.55:0);this.player.iframe=Math.max(this.player.iframe||0,.32+ul*.06);
     this.showBanner('Chain Bolt Lv'+ul,'Chains up to '+Math.min(18,jumps*forks)+' · Dash ready',950);Sfx.bp?.('uq_taro_chain_cast',.6,.3)||Sfx.zap();
+  }
+
+  taroNearestUnused(candidates,origin,range,hit){return candidates.filter(token=>!hit.has(token.id)&&taroTargetValid(token,origin,range)).sort((a,b)=>Math.hypot(a.enemy.x-origin.x,a.enemy.y-origin.y)-Math.hypot(b.enemy.x-origin.x,b.enemy.y-origin.y)||a.id-b.id)[0]||null;}
+  castTaroChainBasic(level){
+    const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='storm'||this.state!=='play')return;
+    const f=this.taroTempestProfile(level),candidates=this.taroCandidates(this.player,Infinity),hit=new Set(),attackId=++t.attackSeq;
+    for(let root=0;root<f.roots;root++){
+      if(this._taro!==t||this.state!=='play')break;
+      let from={x:this.player.x,y:this.player.y},token=this.taroNearestUnused(candidates,from,f.rootRange,hit);
+      for(let j=0;j<f.victims&&token;j++){
+        if(this._taro!==t||this.state!=='play'||!taroTargetValid(token,from,j?f.jumpRange:f.rootRange))break;
+        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);
+        if(j)this.chainBolt(from.x,from.y,point.x,point.y);else this.zap(point.x,point.y);
+        this.taroDealDamage(token,f.primaryDamage*f.chainBonus*f.rootBonus*Math.min(1.6,1+.12*j),'chain',{attackId,shrapnelD:f.unitD});
+        from=point;token=this.taroNearestUnused(candidates,from,f.jumpRange,hit);
+      }
+    }
+    if(this._taro===t&&this.state==='play')this.hitCratesInRadius(this.player.x,this.player.y,f.rootRange,f.primaryDamage);Sfx.thunder();
+  }
+  // A one-shot entry ticket belongs only to the direct damage() call. Nested gear,
+  // infusion or recipe emissions cannot inherit a Chain kill, even on the same victim.
+  taroTakeDirect(e){
+    const c=this._taroDamageContext;if(!c?.directPending)return null;c.directPending=false;
+    const t=this._taro;if(!t?.enabled||t.path!=='storm'||c.terminal||!['chain','unique'].includes(c.source)||c.targetId!==e._taroSpawnId||!(c.shrapnelD>0))return null;
+    return {owner:t,run:t.run,pathEpoch:t.pathEpoch,token:taroEnemyToken(e),unitD:c.shrapnelD,attackId:c.attackId};
+  }
+  taroAfterDirect(ticket,e){
+    if(!ticket||ticket.used||ticket.owner!==this._taro||ticket.run!==this._taro.run||ticket.pathEpoch!==this._taro.pathEpoch||this.state!=='play'||!e.active||e.hp>0||e.isDummy||ticket.token?.enemy!==e||ticket.token.id!==e._taroSpawnId)return;
+    ticket.used=true;const origin={x:e.x,y:e.y},damage=.3*ticket.unitD,dead=ticket.token;
+    const job=this.taroSchedule('shrapnel',.08,()=>{
+      const hit=new Set([dead.id]),candidates=this.taroCandidates(origin,130).filter(token=>token.enemy!==dead.enemy),targets=[];
+      for(let i=0;i<3;i++){const token=this.taroNearestUnused(candidates,origin,130,hit);if(!token)break;hit.add(token.id);targets.push(token);}
+      this.taroRing(origin.x,origin.y,36,.16);
+      for(const token of targets){if(this._taro!==ticket.owner||this.state!=='play')break;if(!taroTargetValid(token,origin,130))continue;this.chainBolt(origin.x,origin.y,token.enemy.x,token.enemy.y);this.taroDealDamage(token,damage,'shrapnel',{attackId:ticket.attackId});}
+    },{attackId:ticket.attackId});
+    if(!job){const t=this._taro,bucket=Math.floor(t.time/.25);if(t.shrapnelOverflowBucket!==bucket){t.shrapnelOverflowBucket=bucket;this.taroRing(origin.x,origin.y,24,.12);}}
   }
 
   taroTempestProfile(level=this.skills?.thunder||1){
@@ -12878,6 +12917,7 @@ class Game extends Phaser.Scene {
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
   cdOf(key,lvl){
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='storm')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);
     if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);
     let base=lvl>=SKILL_AWAKEN_LV?this._cdBase(key,SKILL_AWAKEN_LV)*0.85:this._cdBase(key,lvl);
     const sw=this.signatureWeaponInfo(),b=this.basicAttackInfo()?.skill===key?this.basicAttack:null;
@@ -12922,6 +12962,7 @@ class Game extends Phaser.Scene {
     }
   }
   castSkill(key,lvl){
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='storm'){this.pulseSkill(key);this.castTaroChainBasic(lvl);return;}
     if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest'){this.pulseSkill(key);this.castTempestBasic(lvl);return;}
     if(key==='meteor'&&this.character==='cocoa'&&this.basicAttack&&(this._cc?.busy||this._cocoaFlicker||this.dashTime>0))return;
     const sw=this.signatureWeaponInfo(),weaponMul=sw.skill===key?(this.player.weaponDmgMul||1):1;
@@ -14341,7 +14382,7 @@ class Game extends Phaser.Scene {
     if(b.dragon)this.infusionOnHit(e,d,'spicy');
     if(b.lastMul&&(b.bounce||0)===0&&b._bounced)d*=1+b.lastMul;
     return d; }
-  damage(e,amount,x,y){ if(!e.active)return;
+  damage(e,amount,x,y){ if(!e.active)return;const taroDirect=this.taroTakeDirect?.(e);
     // Phase Gate: Lockedดาเมจทันทีที่ชนเส้นเลือด และInvincibleจนแอนิเมชันเปลี่ยนเฟสจบ
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;
@@ -14373,6 +14414,7 @@ class Game extends Phaser.Scene {
     if(crit&&!this.taroIsSecondary?.()&&this.player.gearCritArc&&!this._gmTick&&!this._infTick&&!e.isDummy)this.gearCritArc(e,amount);
     if(crit&&!this.taroIsSecondary?.()&&this.player._uqCritBurst&&!this._uqBursting){ this._uqBursting=true; const bx=e.x,by=e.y,bd=amount*this.player._uqCritBurst; this.burst(bx,by,0xc9a3ff);
       for(const o of this.enemies.getChildren()){ if(o.active&&o!==e&&Phaser.Math.Distance.Between(bx,by,o.x,o.y)<80)this.damage(o,bd); } this._uqBursting=false; }
+    if(taroDirect&&(taroDirect.owner!==this._taro||this.state!=='play'||!taroTargetValid(taroDirect.token,this.player,Infinity)))return;
     let gate=null;
     if(e.isBoss&&!e.delveBoss){
       const p2=this.stageIndex===4?0.72:(this.stageIndex===6?0.68:(this.stageIndex===7?0.70:(this.stageIndex===8?0.72:(this.stageIndex===9?0.75:(this.stageIndex===0?0.68:(this.stageIndex===1?0.65:0.50))))));
@@ -14381,7 +14423,7 @@ class Game extends Phaser.Scene {
     }else if(e.isMini&&!e.phase2)gate=0.50;
     if(gate!=null){const floor=e.maxhp*gate;if(e.hp>floor&&e.hp-amount<=floor){amount=e.hp-floor;e._phaseGateLocked=true;}}
     if(e._memoryToken)e._memoryStored=(e._memoryStored||0)+amount;
-    e.hp-=amount;
+    e.hp-=amount;this.taroAfterDirect?.(taroDirect,e);
     if(e.hp>0&&Math.random()<0.24)this.c3BossPose(e,5,240);
     if(RL&&RL.chill&&!this.taroIsSecondary?.()&&!e.isBoss&&!e.isMini&&e.hp>0&&Math.random()<0.10){ e.frozen=Math.max(e.frozen||0,1); e.setVelocity(0,0); e.setTint(COLORS.ice); }
     if(!e.isBoss&&!e.isMini&&e.hp>0)this.enemyAction(e,'hurt',120);
@@ -14392,7 +14434,7 @@ class Game extends Phaser.Scene {
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     if(this._sgHit)this.popDmg(Math.round(amount),x+Phaser.Math.Between(-16,16),y+Phaser.Math.Between(-12,8),crit,true);   // v6.50.1 เจ้าของ: เม็ด shotgun แสดงดาเมจทุกเม็ด (ไม่ติด throttle)
-    else this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0) this.killEnemy(e); }
+    else this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0&&(!taroDirect||(e.active&&e._taroSpawnId===taroDirect.token.id))) this.killEnemy(e); }
   killEnemy(e){ if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});

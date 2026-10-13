@@ -1,3 +1,8 @@
+# Previous delivery: v7.8.6 — Forge mobile readability
+
+Owner selected single-line mod results, larger touch controls and tier-only labels from the ImageGen preview. Main-page results show one effect name plus Tn; installed rows retain their effect value and display only Tn at right. Full ranges/chances remain in details and Odds. Roll/Tier/Auto are 44px tall; result-info controls are 44×44; current-mod info is 44px wide. Small portrait geometry rebalanced; no economy or save changes. See docs/FORGE_MOBILE_READABILITY.md.
+
+
 # Previous delivery: v7.8.5 — Simpler Affix Forge
 
 Forge Back unwinds navigation to Gear & Power, then Hub, without returning to Forge. All three rows now spend one corresponding currency for one immediate random compatible mod; Utility no longer selects a family. Auto rolls the selected row. Short effect labels in current/result rows; full conditions remain in details. Already-paid Sustain choices remain recoverable. See docs/FORGE_SIMPLIFICATION.md.
