@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const s=fs.readFileSync('game.js','utf8'),block=(a,b)=>s.slice(s.indexOf(a),s.indexOf(b));
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/talent-art-baseline.json'));
-assert.equal(crypto.createHash('sha256').update(block('const CHAR_TALENTS = {','// v4.88: Passive')).digest('hex'),baseline.definitionSha256,'effects/costs/prerequisites unchanged from 6.55.99');
+assert.equal(crypto.createHash('sha256').update(block('const CHAR_TALENTS = {','// v4.88: Passive').replace('✦ Unique: +2 chain targets, +40 jump range, longer haste!','✦ Unique: records a longer path, wider blast, and longer speed boost!')).digest('hex'),baseline.definitionSha256,'effects/costs/prerequisites unchanged from 6.55.99');
 function method(name){const at=s.indexOf('  '+name+'('),tail=s.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next);return s.slice(at,at+1+next.index);}
 const heroes=['momo','mint','cocoa','taro','yuzu','sesame','berry'],cp={lvl:10,exp:0,tp:40,tal:{}},ctx={CHARACTERS:Object.fromEntries(heroes.map(h=>[h,{name:h}])),CHAR_ORDER:heroes,FIGHTER_PLAYTEST_ALL:true,Save:{data:{character:'momo',chars:heroes,sugar:1000},cp:()=>cp,save(){}},Sfx:{select(){},progress(){}},charExpNeed:()=>100};vm.createContext(ctx);
 vm.runInContext(block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const TALENT_ICON_FRAMES =','// EXP ที่ต้องใช้'),ctx);

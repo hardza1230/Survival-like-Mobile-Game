@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.10';
+const GAME_VERSION = '7.8.11';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.11',date:'2026-10-13',title:'Taro Tempest prototype',items:['Walk to charge Static Discharge; Dash adds charge and sweeps enemies','Each Dash leaves a timed lightning bomb at its starting point','Tempest keeps one weak basic bolt; Gale improves Dash recharge']},
   {v:'7.8.10',date:'2026-10-13',title:'Taro combat foundation',items:['Prepared targeting and effect lifecycle support for the upcoming Taro paths','Current Taro attacks and progression remain unchanged']},
   {v:'7.8.9',date:'2026-10-13',title:'Painted Stats and Gear & Power',items:['Hero-colored tabs and selection controls','New illustrated stat frames and icons','New Gear & Power cards and castle workshop background']},
   {v:'7.8.8',date:'2026-10-13',title:'Cleaner Heroes and home controls',items:['More moved to a gear beside the version','Compact hero tabs, role labels and selection controls','Cleaner color-accented Stats with larger labels and source details']},
@@ -3364,8 +3365,8 @@ const BASIC_PATHS={
     {id:'smite',iconKey:'ic_path_smite',name:'Smite Build',emoji:'🔨',base:{dmg:1.8,cd:1.35},desc:'×1.8 damage per strike, but 35% slower · boss build',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Judgment',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_overload',iconKey:'ic_path_p_overload',name:'Overload',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% lightning damage per rank'}]},
-    {id:'tempest',iconKey:'ic_path_tempest',name:'Tempest Build',emoji:'🌪️',base:{dmg:0.65,cd:0.62},desc:'38% faster casts, ×0.65 damage · speed build',
-      upgrades:[{id:'p_gale',iconKey:'ic_path_p_gale',name:'Gale',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% cast cooldown per rank'},
+    {id:'tempest',iconKey:'ic_path_tempest',name:'Tempest Build',emoji:'🌪️',base:{dmg:0.65,cd:0.85},desc:'Walk to charge a nova · Dash sweeps and leaves a bomb',
+      upgrades:[{id:'p_gale',iconKey:'ic_path_p_gale',name:'Gale',emoji:'⏩',max:3,fx:{},desc:'-6% Dash recharge per rank'},
                 {id:'p_farstrike',iconKey:'ic_path_p_farstrike',name:'Far Strike',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% damage to enemies far from you per rank'}]}],
   sesame:[
     {id:'prism',iconKey:'ic_path_prism',name:'Prism Build',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
@@ -3506,7 +3507,7 @@ const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
   glacier:'Freeze and bloom · crowd control',barrage:'Rapid volleys · sustained damage',pierce:'Heavy lance · elite and boss damage',
   brawler:'Ranged fire fists · Rocket Gauntlet',titan:'Heavy wind-up · hold for Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
-  storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Rapid lightning · mobility',
+  storm:'More chains · clearing crowds',smite:'Heavy lightning · bosses',tempest:'Walk to charge · Dash sweep and bomb',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
 };
 const TITAN_RAGE_MUL=[1,1.8,2.8,4.2,5.5],TITAN_RAGE_SEC=1.8,TITAN_RAGE_CD=[0,1.2,2.6,4.5];
@@ -3858,7 +3859,7 @@ const CHAR_TALENTS = {
     { id:'spd', emoji:'👟', name:'Read the Rift', max:6, per:'+5% move speed', apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
     { id:'cdr', emoji:'⏱️', name:'Recall Rhythm', max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
     { id:'crit', emoji:'🎯', name:'Flavor Compass', max:4, per:'+5% crit chance', apply:(p,r)=>{ p.critChance+=0.05*r; } },
-    { id:'echoPath', emoji:'🧭', name:'Echo Map', max:1, per:'✦ Unique: records a longer path, wider blast, and longer speed boost!', apply:(p,r)=>{ p.echoPath=true; } },
+    { id:'echoPath', emoji:'🧭', name:'Echo Map', max:1, per:'✦ Unique: +2 chain targets, +40 jump range, longer haste!', apply:(p,r)=>{ p.echoPath=true; } },
   ],
   yuzu:[
     {id:'hp',emoji:'❤️',name:'Citrus Skin',max:5,per:'+8% max HP',apply:(p,r)=>{p.maxhp*=1+0.08*r;}},
@@ -6106,7 +6107,7 @@ const ACHIEVEMENTS=[
   {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
 
-// Taro T1: pure foundation. No new path resolver is enabled in this release.
+// Taro T1: pure foundation. T2 enables only the completed Tempest resolver.
 const TARO_SOURCE_POLICY=Object.freeze({chain:false,unique:false,smite:false,tempestBasic:false,sweep:false,repeat:true,splash:true,shrapnel:true,nova:true,bomb:true});
 function taroSecondary(scene){return scene.character==='taro'&&scene._taroDamageContext?.terminal===true;}
 function taroEnemyToken(e){return e&&Number.isSafeInteger(e._taroSpawnId)?{enemy:e,id:e._taroSpawnId}:null;}
@@ -6164,6 +6165,7 @@ function taroAdvanceQueue(t,dt,isValid){
   for(const job of batch){if(job.run!==t.run||job.pathEpoch!==t.pathEpoch)continue;job.remaining-=dt;if(job.remaining<=0)due.push(job);else t.jobs.push(job);}
   for(const job of due){if(job.run!==t.run||job.pathEpoch!==t.pathEpoch)continue;const valid=isValid(job);if(valid==='hold'){t.jobs.push(job);continue;}if(valid)job.callback(job);}
 }
+function taroSegmentDistance(point,from,to){const dx=to.x-from.x,dy=to.y-from.y,d2=dx*dx+dy*dy,k=d2?Math.max(0,Math.min(1,((point.x-from.x)*dx+(point.y-from.y)*dy)/d2)):0;return Math.hypot(point.x-from.x-k*dx,point.y-from.y-k*dy);}
 // End Taro T1 helpers.
 
 class Game extends Phaser.Scene {
@@ -6603,11 +6605,11 @@ class Game extends Phaser.Scene {
     const coc=this.character==='cocoa';
     if(coc&&this.state==='play')this.finishCocoaFlicker(true);   // v5.70 โกโก้สะสม Dash ได้หลายชาร์จ
     if(coc){ if(this.state!=='play'||(this.dashTime||0)>0.06)return; if(this._dpCh==null)this._dpCh=this.cocoaDashMax(); const temp=this._cocoaPhantom&&this._cocoaPhantom.t>0&&this._cocoaPhantom.charges>0;if(!temp&&this._dpCh<=0)return;if(temp)this._cocoaPhantom.charges--;else this._dpCh--; }
-    else if(!this.dashReady||this.state!=='play') return;
+    else if(!this.dashReady||this.state!=='play'||(this.character==='taro'&&this.basicAttack?.path==='tempest'&&this.dashTime>0)) return;
     if(this._impalerCharge)this.releaseImpalerCharge(false);if(this._berryCharge)this.releaseBerryCharge(false);
     if(this.player&&this.player._pt&&this.player._pt.hsDash)this._ptHsNext=true;
-    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(coc)this.cocoaOnDash(); this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
-    const d=this.moveDir.clone().normalize();
+    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1)*(this.character==='taro'&&this.basicAttack?.path==='tempest'?Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0))):1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(coc)this.cocoaOnDash(); this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
+    const d=this.moveDir.clone().normalize();if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(d);
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;if(this.player.forgeMods){const r=forgeState(this);r.dashUntil=(this.elapsed||0)+1.5;r.dashPrimed=true;}
     if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
     this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);this.cocoaEvoDash?.();if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-1-.5*(this.basicAttack.lv?.p_recharge||0)-this.ptv('dbRefund'));}
@@ -6865,6 +6867,7 @@ class Game extends Phaser.Scene {
 
   // Taro: สายฟ้า Arc — ยิงจากตัวไปเป้าใกล้สุด แล้วชิ่งลามไปศัตรูตัวถัด ๆ ไป (คล้าย Arc ใน PoE)
   castPathRecall(dm,ul){
+    if(this.character==='taro'&&this.basicAttack?.path==='tempest')return this.castTaroTempestUnique(dm,ul);
     ul=ul||1;const upgraded=!!this.player.echoPath;
     const jumps=4+ul+(upgraded?2:0), jumpRange=250+ul*16+(upgraded?40:0), forks=ul>=3?2:1;
     // ลดพลังช่วงต้น (Lv1 เคยขี้โกง) แต่โตชันขึ้นให้ปลายเกมยังสะใจ
@@ -12123,22 +12126,22 @@ class Game extends Phaser.Scene {
         if(e._aura){e._aura.destroy();e._aura=null;} if(e._dashTel){e._dashTel.destroy();e._dashTel=null;} e.setActive(false).setVisible(false).setAlpha(1); if(e.body)e.body.enable=false; }}); });
     if(n>0)this.showBanner('🏃 The swarm retreats!',this.enemies.countActive(true)>n?'Defeat the remaining Elites to advance':'The way ahead is clear',1300);
   }
-  // T1 state/dispatch stays dormant; T2 opts in only for its completed path.
+  // Tempest opts in; pre-path, Chain and Smite retain their legacy resolvers.
   clearTaroCombat(){const t=this._taro;if(t){t.run=-1;t.pathEpoch=-1;t.jobs.length=0;for(const fx of t.fx){this.tweens?.killTweensOf(fx);if(fx.active)fx.destroy();}t.fx.clear();t.charge=0;t.sample=null;t.sweep=null;t.mark=null;}
     this._taroEpoch=(this._taroEpoch||0)+1;this._taro=null;this._taroDamageContext=null;
   }
   syncTaroCombat(){if(this.character!=='taro'||!this.player){if(this._taro)this.clearTaroCombat();return null;}const path=this.basicAttack?.path||null;
-    if(!this._taro||this._taro.path!==path||this._taro.player!==this.player){this.clearTaroCombat();this._taroPathEpoch=(this._taroPathEpoch||0)+1;this._taro=taroNewState(this._taroEpoch,this._taroPathEpoch,path,this.player);}
-    if(this.events&&!this._taroShutdownHook){this._taroShutdownHook=true;this.events.once('shutdown',()=>{this.clearTaroCombat();this._taroShutdownHook=false;});}
+    if(!this._taro||this._taro.path!==path||this._taro.player!==this.player){this.clearTaroCombat();this._taroPathEpoch=(this._taroPathEpoch||0)+1;this._taro=taroNewState(this._taroEpoch,this._taroPathEpoch,path,this.player);if(path==='tempest'){this._taro.enabled=true;this._taroCharge=0;}}
+    if(this.events&&!this._taroShutdownHook){this._taroShutdownHook=true;this.events.on('postupdate',this.taroPostPhysics,this);this.events.once('shutdown',()=>{this.events.off('postupdate',this.taroPostPhysics,this);this.clearTaroCombat();this._taroShutdownHook=false;});}
     return this._taro;
   }
   tagTaroEnemy(e){if(e&&this.character==='taro'){e._taroSpawnId=this._taroSpawnSeq=(this._taroSpawnSeq||0)+1;}return e;}
   taroProfile(level,options={}){return this.character==='taro'&&this.basicAttack?taroCombatProfile(this.basicAttack,this.player,level,BASIC_PATHS.taro,options):null;}
   taroPickTarget(range){const t=this.syncTaroCombat();if(!t)return null;t.mark=taroPriorityTarget(this.enemies.getChildren(),this.player,range,t.mark);return t.mark;}
-  suspendTaroCombat(){if(this._taro)this._taro.sample=null;}
-  tickTaroCombat(wallDt){const t=this._taro;if(!t)return;if(this.character!=='taro'||t.player!==this.player||t.path!==(this.basicAttack?.path||null)){this.clearTaroCombat();return;}if(!t.enabled)return;
+  suspendTaroCombat(){const t=this._taro;if(t){t.sample=null;t.motion=null;if(t.sweep)t.sweep.from={x:this.player.x,y:this.player.y};t.hud?.setVisible(false);}}
+  tickTaroCombat(wallDt){this._taroWallDt=wallDt;this._taroFrameVelocity={x:this.player?.body?.velocity.x||0,y:this.player?.body?.velocity.y||0};const t=this._taro||(this.character==='taro'&&this.state==='play'?this.syncTaroCombat():null);if(!t)return;if(this.character!=='taro'||t.player!==this.player||t.path!==(this.basicAttack?.path||null)){this.clearTaroCombat();return;}if(!t.enabled)return;
     if(this.state!=='play'||!this.player?.active||!(this.player.hp>0)||!Number.isFinite(wallDt)||wallDt<=0||wallDt>.1){this.suspendTaroCombat();return;}
-    const dt=Math.min(.05,wallDt)*(this.gameSpeed||1);t.time+=dt;
+    const dt=Math.min(.05,wallDt)*(this.gameSpeed||1);t.time+=dt;for(const fx of t.fx){if(fx._taroLife>0){fx._taroLife-=dt;if(fx._taroLife<=0)this.taroRemoveFx(fx);else fx.setAlpha(fx._taroLife/fx._taroDuration);}}
     taroAdvanceQueue(t,dt,job=>{if(this._taro!==t||!t.enabled||!this.player.active||!(this.player.hp>0))return false;if(this.state!=='play')return 'hold';return !job.token||taroTargetValid(job.token,this.player,job.range);});
   }
   taroSchedule(kind,delay,callback,options={}){const t=this._taro;if(this.character!=='taro'||this.state!=='play'||!this.player?.active||!(this.player.hp>0)||!t||t.player!==this.player||t.path!==(this.basicAttack?.path||null))return null;return taroQueueEvent(t,kind,delay,callback,options);}
@@ -12153,6 +12156,83 @@ class Game extends Phaser.Scene {
   }
   taroDealDamage(token,amount,kind,meta={}){if(!this.player||!Number.isFinite(amount)||amount<=0||!taroTargetValid(token,this.player,meta.range??Infinity))return false;
     let dealt=false;this.taroWithDamage(kind,()=>{const e=token.enemy;this.damage(e,amount,e.x,e.y);dealt=true;},{...meta,targetId:token.id});return dealt;
+  }
+
+  castTaroTempestUnique(dm,ul){
+    const t=this.syncTaroCombat();if(!t?.enabled||this.state!=='play')return;ul=Math.max(1,Math.min(4,ul||1));const upgraded=!!this.player.echoPath,jumps=4+ul+(upgraded?2:0),range=Math.min(400,250+ul*16+(upgraded?40:0)),forks=ul>=3?2:1,damage=(9+ul*7)*dm*(1+(ul-1)*.22),hit=new Set(),attackId=++t.attackSeq,candidates=this.taroCandidates(this.player,Infinity);
+    const nearest=(origin,radius)=>candidates.filter(token=>!hit.has(token.id)&&taroTargetValid(token,origin,radius)).sort((a,b)=>Math.hypot(a.enemy.x-origin.x,a.enemy.y-origin.y)-Math.hypot(b.enemy.x-origin.x,b.enemy.y-origin.y)||a.id-b.id)[0];
+    if(!nearest(this.player,760))this.taroRing(this.player.x,this.player.y,44);
+    else for(let f=0;f<forks;f++)this.taroSchedule('unique',f*.09,()=>{
+      let from={x:this.player.x,y:this.player.y},token=nearest(from,760);
+      for(let j=0;j<jumps&&token&&hit.size<18;j++){
+        if(this._taro!==t||this.state!=='play'||!taroTargetValid(token,from,j?range:760))break;
+        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);this.chainBolt(from.x,from.y,point.x,point.y);this.taroDealDamage(token,damage*Math.max(0,1-j*.045),'unique',{attackId});from=point;token=nearest(from,range);
+      }
+    },{attackId});
+    this.dashReady=true;this.dashCd=0;this.pathHasteT=1+ul*.38+(upgraded?.55:0);this.player.iframe=Math.max(this.player.iframe||0,.32+ul*.06);
+    this.showBanner('Chain Bolt Lv'+ul,'Chains up to '+Math.min(18,jumps*forks)+' · Dash ready',950);Sfx.bp?.('uq_taro_chain_cast',.6,.3)||Sfx.zap();
+  }
+
+  taroTempestProfile(level=this.skills?.thunder||1){
+    const p=this.player,b=this.basicAttack,sw=this.signatureWeaponInfo(),f=p.forgeMods||{},r=p.forgeMods?forgeState(this):{};
+    const cadence=(1+(f[5]||0)/200)/(1+Math.min(.5,(f[2]||0)/100+((this.elapsed||0)<(r.breakHasteUntil||0)?(f[95]||0)/100:0)));
+    return this.taroProfile(level,{skillPower:BALANCE.skillPower.thunder,weaponDamage:sw.skill==='thunder'?(p.weaponDmgMul||1):1,weaponCooldown:sw.skill==='thunder'?(p.weaponCdMul||1):1,forgeCadence:cadence,infusionDirect:b.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===b.infusion)?.direct??1):1});
+  }
+  taroCandidates(origin,range){return this.enemies.getChildren().map(taroEnemyToken).filter(token=>taroTargetValid(token,origin,range));}
+  castTempestBasic(level){
+    const t=this.syncTaroCombat();if(!t?.enabled)return;const f=this.taroTempestProfile(level),p=this.player;
+    const targets=this.taroCandidates(p,f.rootRange).sort((a,b)=>Math.hypot(a.enemy.x-p.x,a.enemy.y-p.y)-Math.hypot(b.enemy.x-p.x,b.enemy.y-p.y)||a.id-b.id),token=targets[0];
+    if(token){this.zap(token.enemy.x,token.enemy.y);this.taroDealDamage(token,f.primaryDamage,'tempestBasic',{range:f.rootRange});}
+    this.hitCratesInRadius(p.x,p.y,f.rootRange,f.primaryDamage);Sfx.thunder();
+  }
+  taroRemoveFx(fx){const t=this._taro;if(!fx)return;t?.fx.delete(fx);if(fx.active)fx.destroy();}
+  taroRing(x,y,radius,duration=.3){
+    const t=this._taro;if(!t?.enabled)return;
+    const fx=this.camWorld(this.add.circle(x,y,radius,0xb9a0ff,.12).setStrokeStyle(3,0xabefff,.85).setDepth(90000));fx._taroLife=duration;fx._taroDuration=duration;t.fx.add(fx);return fx;
+  }
+  taroTempestDash(direction){
+    const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='tempest')return;const p=this.player,f=this.taroTempestProfile(),origin={x:p.x,y:p.y},attackId=++t.attackSeq;
+    t.charge=Math.min(100,t.charge+15);t.sample=null;t.motion=null;
+    t.sweep={from:origin,direction:{x:direction.x,y:direction.y},until:t.time+.2,hit:new Set(),damage:f.unitD*.35*(this._cpas?.s||1),attackId};
+    const job=this.taroSchedule('bomb',.45,()=>{this.taroRemoveFx(job.fx);this.taroAreaHit(origin,120,f.unitD*.65*f.extraStrikeBonus,'bomb',{attackId});},{attackId});
+    if(job){job.fx=this.taroRing(origin.x,origin.y,18,0);if(job.fx)job.fx.setFillStyle(0xa98cf0,.3);}
+  }
+  taroAreaHit(origin,radius,damage,kind,meta={}){
+    const candidates=this.taroCandidates(origin,radius);this.taroRing(origin.x,origin.y,radius);if(!candidates.length)return false;
+    for(const token of candidates){if(!taroTargetValid(token,origin,radius))continue;this.taroDealDamage(token,damage,kind,meta);}
+    return true;
+  }
+  taroTryNova(){
+    const t=this._taro;if(!t?.enabled||t.path!=='tempest'||t.charge<100||t.time<t.novaAt||this.state!=='play')return;
+    const f=this.taroTempestProfile(),origin={x:this.player.x,y:this.player.y};if(!this.taroCandidates(origin,f.novaRadius).length)return;
+    t.charge=0;t.novaAt=t.time+1.5;this.taroAreaHit(origin,f.novaRadius,f.unitD*1.4*f.extraStrikeBonus,'nova');
+  }
+  // POST_UPDATE runs after Arcade World.postUpdate copies collision-resolved body positions.
+  // The previous frame's command owns this displacement, not the newly issued command.
+  taroPostPhysics(){
+    const t=this._taro;if(!t?.enabled||t.path!=='tempest')return;const p=this.player,wallDt=this._taroWallDt;
+    if(this.state!=='play'||!p?.active||!(p.hp>0)||wallDt<=0||wallDt>.1||!Number.isFinite(wallDt)){this.suspendTaroCombat();return;}
+    const dt=Math.min(.05,wallDt)*(this.gameSpeed||1),v=p.body?.velocity||{x:0,y:0},m=t.motion;
+    const forced=!!(m&&Math.hypot((this._taroFrameVelocity?.x??v.x)-m.vx,(this._taroFrameVelocity?.y??v.y)-m.vy)>4),point={x:p.x,y:p.y};
+    const result=taroMovementSample(t.sample,point,{playing:true,intentional:!!m?.intentional,intentX:m?.ix,intentY:m?.iy,maxSpeed:m?.speed||0,dt,dashing:!!(m?.dashing||this.dashTime>0||t.sweep),forced});
+    t.charge=Math.min(100,t.charge+result.chargeGain);t.sample=result.sample;
+    const sweep=t.sweep;
+    if(sweep){
+      const dx=p.x-sweep.from.x,dy=p.y-sweep.from.y,len=Math.hypot(dx,dy),along=dx*sweep.direction.x+dy*sweep.direction.y;
+      if(!forced&&len>0&&len<=560*dt*1.25+2&&along>=len*.5&&t.time<=sweep.until+dt){
+        const candidates=this.taroCandidates(point,len+32).filter(token=>!sweep.hit.has(token.id)&&taroSegmentDistance(token.enemy,sweep.from,point)<=32);
+        for(const token of candidates){sweep.hit.add(token.id);if(this.taroDealDamage(token,sweep.damage,'sweep',{attackId:sweep.attackId})&&taroTargetValid(token,point,Infinity)&&!token.enemy.isBoss&&!token.enemy.isMini&&!token.enemy.isElite){token.enemy.frozen=Math.max(token.enemy.frozen||0,.35);token.enemy.setVelocity?.(0,0);}}
+      }
+      sweep.from=point;if(t.time>=sweep.until||this.dashTime<=0||forced)t.sweep=null;
+    }
+    if(this._taro!==t||this.state!=='play'){this.suspendTaroCombat();return;}
+    t.motion={vx:v.x,vy:v.y,speed:Math.hypot(v.x,v.y),ix:this.joy?.dx||0,iy:this.joy?.dy||0,intentional:!!(this.joy?.active&&Math.abs(this.joy.dx)+Math.abs(this.joy.dy)>.12),dashing:this.dashTime>0};
+    this.taroTryNova();this.drawTaroCharge();
+  }
+  drawTaroCharge(){
+    const t=this._taro;if(!t?.enabled||this.state!=='play')return;
+    if(!t.hud){const g=this.camWorld(this.add.container(0,0).setDepth(99000)),bar=this.add.rectangle(-28,10,0,4,0xabefff).setOrigin(0,.5),plate=this.add.rectangle(0,10,56,6,0x241c38,.9),label=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#e8e0ff',stroke:'#241c38',strokeThickness:3}).setOrigin(.5);g.add([plate,bar,label]);g._bar=bar;g._label=label;t.hud=g;t.fx.add(g);}
+    t.hud.setVisible(true).setPosition(this.player.x,this.player.y-63);t.hud._bar.width=56*t.charge/100;t.hud._label.setText(t.charge>=100?'STATIC READY':'STATIC '+Math.floor(t.charge));
   }
 
   // v4.89.0: Taro Storm Charge — เก็บ ⚡ จากมอนธรรมดา ครบ TARO_CHARGE_MAX แล้วฟาดบอส/มินิที่มีชีวิต (ไม่มีบอส = เก็บค้างเต็มไว้)
@@ -12797,6 +12877,7 @@ class Game extends Phaser.Scene {
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
   cdOf(key,lvl){
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);
     let base=lvl>=SKILL_AWAKEN_LV?this._cdBase(key,SKILL_AWAKEN_LV)*0.85:this._cdBase(key,lvl);
     const sw=this.signatureWeaponInfo(),b=this.basicAttackInfo()?.skill===key?this.basicAttack:null;
     if(b&&this.character==='cocoa'&&key==='meteor')base=0.64;
@@ -12840,6 +12921,7 @@ class Game extends Phaser.Scene {
     }
   }
   castSkill(key,lvl){
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest'){this.pulseSkill(key);this.castTempestBasic(lvl);return;}
     if(key==='meteor'&&this.character==='cocoa'&&this.basicAttack&&(this._cc?.busy||this._cocoaFlicker||this.dashTime>0))return;
     const sw=this.signatureWeaponInfo(),weaponMul=sw.skill===key?(this.player.weaponDmgMul||1):1;
     const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*0.12+(basic.ranks.overdrive||0)*0.05)*(basic._pm?basic._pm.dmg:1)*(basic.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===basic.infusion)||{direct:1}).direct:1):1;
@@ -15437,7 +15519,7 @@ class Game extends Phaser.Scene {
 
   charPassiveOnHurt(){ if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
     this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,px,py)<r){ e.frozen=Math.max(e.frozen||0,0.9*CP.s); if(e.setTint)e.setTint(COLORS.ice); } }); this.burst(px,py,0x8fe7ff); }
-  charPassiveOnDash(){ const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
+  charPassiveOnDash(){ if(this.character==='taro'&&this.basicAttack?.path==='tempest')return;const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
     this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
   charPassiveOnKill(e){ if(this._titanHold&&this.ptv('trLust')){const p=this.player;p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.01);} const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
   // v4.88: หน้า Talent ประจำตัวละคร — ใช้ TP จากเลเวลตัวละคร (Save.cp) + โชว์ passive ประจำตัว
