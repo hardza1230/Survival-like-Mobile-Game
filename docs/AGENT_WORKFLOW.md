@@ -49,3 +49,7 @@ Verified 2026-10-13 in Codex desktop on Windows:
 ## Heroes menu review (verified 2026-10-13)
 
 Build www, then scripts/build-heroes-review.mjs and scripts/check-heroes-live-ui.cjs with Playwright. Uses real Phaser Canvas, original art and synthetic menu data; verifies tabs, text bounds, all six previews, confirmation/idempotence and details/source overlays. Uses pointer taps for visible controls and direct route callbacks for overflow; existing scrolling is covered separately. No combat simulation. Screenshot paths HEROES_SHOT_PATH and STATS_SHOT_PATH are optional.
+
+### UTF-16 chunk boundaries for connector upload
+
+Windows .NET Substring / PowerShell JSON chunks can split an emoji surrogate pair; stdout then replaces both halves with U+FFFD. Verified with game.js upload: content length was equal but blob SHA differed. Pick chunk ends outside surrogate pairs (or use boundary-safe overlap/base64), normalize CRLF to LF as git does, and always require exact local/remote tree equality before updating the branch. If unequal, compare changed blob SHAs and locate differing code units; do not publish the mismatched tree.
