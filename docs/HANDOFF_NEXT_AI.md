@@ -1,3 +1,7 @@
+# v7.8.3 single-screen Forge
+
+Read docs/FORGE_SINGLE_SCREEN.md. Complete remote CI and real-method menu visual review; preserve 150 catalog / 78 active / 72 gated. Review page uses synthetic data and never saves user progress. Owner phone feel confirmation remains pending.
+
 # v7.8.2 Forge sparse-row hotfix
 
 Owner crash reproduced and fixed in `gearAffixName`: empty rows from `forgeLines` must be skipped when deriving item names. Renderer regression now includes gear with 0/1/2 mods on five viewport sizes. Save/economy unchanged. Owner phone confirmation pending.

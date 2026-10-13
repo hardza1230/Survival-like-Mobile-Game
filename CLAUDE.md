@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.2 — Forge sparse-row crash
+# Latest delivery: v7.8.3 — Single-screen Forge
+
+Owner approved the mockups and exact spacing. Forge keeps its controls in one screen with real ranges, equipped tags, paged pools/families and recoverable paid choices. Approved ImageGen atlas is reused directly via 12 frame regions and Canvas-safe fixed-corner chrome. See docs/FORGE_SINGLE_SCREEN.md. Complete CI now gates Pages deployment; real-method menu QA is in forge-review.html (synthetic save, no combat). Record CI/live visual verification before marking delivery complete.
+
+# Previous delivery: v7.8.2 — Forge sparse-row crash
 
 Owner screenshot: Forge stops after the selected gear icon with `Cannot read properties of null (reading 'id')`. Reproduced using the actual Forge renderer: `forgeLines()` intentionally returns three nullable rows, but `gearAffixName()` dereferenced every row. Skip empty rows when deriving prefixes/suffixes. Preserve the three-row structure, saves, existing mods and costs. Regression covers 0/1/2 mods, all selected rows and five portrait/landscape sizes, plus name equivalence with compact affixes. Full check/build passed; owner phone confirmation pending.
 
@@ -96,7 +100,7 @@ Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archiv
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.2 · 13 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.3 · 13 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)
