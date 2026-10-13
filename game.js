@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.6';
+const GAME_VERSION = '7.8.7';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.7',date:'2026-10-13',title:'A calmer, livelier home',items:['Cleaner menu cards with coral, mint, indigo and warm gold accents','Gentle drifting petals and subtle logo motion','Home effects stop when leaving the menu and respect reduced motion']},
   {v:'7.8.6',date:'2026-10-13',title:'Forge mobile readability',items:['One-line mod results with tier-only labels','Larger Roll, Tier and mod information controls','Full values and chances remain in mod details']},
   {v:'7.8.5',date:'2026-10-13',title:'Simpler Affix Forge',items:['Back leaves Forge without a navigation loop','All three rows roll one random mod with their currency','Short mod labels; full effects in details']},
   {v:'7.8.4',date:'2026-10-13',title:'Readable Forge mods',items:['Effect-first result rows and individual cached mod icons','Mod details show the full effect, current-tier value and replaced mod']},
@@ -7400,7 +7401,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._gearPinned=null;
+  buildMenuScreen(){ this.cancelMenuMotion(); const s=this.menuScreen||'hub';if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
     if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allComplete){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
@@ -8333,7 +8334,7 @@ class Game extends Phaser.Scene {
   hasActivityBadge(){return this.hasGroupBadge('gActivity');}
   hasNewsBadge(){ return Save.data.seenVersion!==GAME_VERSION; }
   drawBadgeDot(cont,x,y){ const g=this.add.graphics(); g.fillStyle(0x000000,0.4); g.fillCircle(x+1,y+1,7); g.fillStyle(0xff3b5c,1); g.fillCircle(x,y,6.5); g.lineStyle(1.5,0xffffff,0.95); g.strokeCircle(x,y,6.5); cont.add(g);
-    this.tweens.add({targets:g,alpha:{from:1,to:0.45},duration:640,yoyo:true,repeat:-1}); return g; }
+    const pulse={targets:g,alpha:{from:1,to:0.45},duration:640,yoyo:true,repeat:-1};if(this.menuScreen==='hub')this.hubTween(pulse);else this.tweens.add(pulse);return g; }
   hubChrome(key,x,y,w,h){
     const k='hub_ui_'+key;if(this.textures.exists(k)){
       if(this.add.container&&this.textures.get){
@@ -8353,49 +8354,78 @@ class Game extends Phaser.Scene {
   }
   hubGuideTag(B,label){
     const t=this.hubText(B.x+B.w-12,B.y+1,label,Math.max(9,Math.min(14,this.W*.027)),'#51300e',1),tw=t.width+16,th=Math.max(19,this.W*.043),x=B.x+B.w-tw-5,y=B.y-th*.38;
-    const g=this.add.graphics();g.fillStyle(0x5b330c,.55).fillRoundedRect(x,y+2,tw,th,5);g.fillGradientStyle(0xffeda8,0xffdc72,0xf4c65a,0xe7ae3e,1).fillRoundedRect(x,y,tw,th,5);g.lineStyle(1.5,0xfff0b8,1).strokeRoundedRect(x,y,tw,th,5);this.menu.add(g);t.setPosition(x+tw/2,y+th/2).setOrigin(.5);this.menu.remove(t);this.menu.add(t);
+    const g=this.add.graphics();g.fillStyle(0x5b330c,.55).fillRoundedRect(x,y+2,tw,th,5);g.fillStyle(0xffdc72,1).fillGradientStyle(0xffeda8,0xffdc72,0xf4c65a,0xe7ae3e,1).fillRoundedRect(x,y,tw,th,5);g.lineStyle(1.5,0xfff0b8,1).strokeRoundedRect(x,y,tw,th,5);this.menu.add(g);t.setPosition(x+tw/2,y+th/2).setOrigin(.5);this.menu.remove(t);this.menu.add(t);
   }
   hubText(x,y,value,size,color='#fff0df',originX=0,originY=.5){
     const t=this.add.text(x,y,value,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:size+'px',color,stroke:'#482139',strokeThickness:0}).setOrigin(originX,originY);this.menu.add(t);return t;
   }
+  hubTone(i){return [
+    {top:0xc53b58,bottom:0x8b2945,edge:0xffba8f,text:'#fff5e6'},
+    {top:0x234e4a,bottom:0x172f35,edge:0x86dcc3,text:'#c7f6e6'},
+    {top:0x373957,bottom:0x242a43,edge:0xa5b5f3,text:'#dce4ff'},
+    {top:0x534132,bottom:0x302e35,edge:0xf1c37c,text:'#ffe3b0'},
+    {top:0x204751,bottom:0x1c303e,edge:0x7acbdb,text:'#c9eff5'},
+    {top:0x333541,bottom:0x232633,edge:0x979cad,text:'#daddeb'}
+  ][i];}
+  hubPanel(x,y,w,h,tone=null){
+    const t=tone||{top:0x292839,bottom:0x1c1e2c,edge:0xaaa6b5},r=Math.min(16,h*.24),g=this.add.graphics();
+    g.fillStyle(0x0c101b,.38).fillRoundedRect(x,y+3,w,h,r);
+    g.fillStyle(t.top,.97).fillGradientStyle(t.top,t.top,t.bottom,t.bottom,.97).fillRoundedRect(x,y,w,h,r);
+    g.lineStyle(1.2,t.edge,tone?.65:.38).strokeRoundedRect(x+.5,y+.5,w-1,h-1,r);
+    if(tone)g.fillStyle(t.edge,.85).fillRoundedRect(x+7,y+h*.25,3,h*.5,1.5);
+    this.menu.add(g);return g;
+  }
+  hubMotionAllowed(){return !(typeof window!=='undefined'&&window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);}
+  hubTween(config){if(!this.hubMotionAllowed())return null;const t=this.tweens.add(config);if(t)(this._hubTweens||(this._hubTweens=[])).push(t);return t;}
+  stopHubMotion(){for(const t of this._hubTweens||[])t.remove();this._hubTweens=[];for(const n of this._hubMotes||[])if(n.active)n.destroy();this._hubMotes=[];}
+  startHubAmbience(logoY){
+    if(!this.hubMotionAllowed())return;
+    this._hubMotes=[];const w=this.W,h=this.H,land=w>h,span=land?w*.43:w,top=Math.max(64,h*.13),bottom=Math.max(top+32,logoY-18);
+    for(let i=0;i<8;i++){const x=span*(.08+((i*37)%83)/100),y=top+(bottom-top)*((i*29)%89)/100,r=1.8+(i%3)*.7,g=this.add.graphics();
+      g.fillStyle(i%3===0?0xffda9b:0xffb5c7,1).fillEllipse(-r,-r*.5,r*2,r*1.2);g.setPosition(x,y).setAlpha(.35);this.menu.add(g);this._hubMotes.push(g);
+      this.hubTween({targets:g,x:x+(i%2?12:-10),y:Math.min(bottom,y+18+i*2),angle:i%2?50:-40,alpha:.12,duration:4200+i*370,delay:i*190,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    }
+    if(this.events&&!this._hubShutdownHook){this._hubShutdownHook=true;this.events.once('shutdown',()=>{this.stopHubMotion();this._hubShutdownHook=false;});}
+  }
   hubLayout(){
-    const w=this.W,h=this.H,portrait=w<=h,side=Math.max(10,w*.026),gap=Math.max(5,w*.012),right=portrait?w-side:w*.97,left=portrait?side:w*.48;
-    const width=right-left,menuTop=portrait?h*.572:94,bottom=h-(portrait?Math.max(36,h*.065):12),unit=(bottom-menuTop-gap*3)/4.25;
-    const playH=unit*1.30,rowH=unit,moreH=unit*.95,half=(width-gap)/2;
+    const w=this.W,h=this.H,portrait=w<=h,side=Math.max(10,w*.026),gap=Math.max(9,w*.022),right=portrait?w-side:w*.97,left=portrait?side:w*.48;
+    const width=right-left,menuTop=portrait?h*(h<680?.55:.57):94,bottom=h-(portrait?Math.max(36,h*.065):12),unit=(bottom-menuTop-gap*3)/4.3;
+    const playH=unit*1.30,rowH=unit,moreH=unit,half=(width-gap)/2;
     return {portrait,side,gap,menuTop,boxes:[{x:left,y:menuTop,w:width,h:playH},{x:left,y:menuTop+playH+gap,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+gap,w:half,h:rowH},{x:left,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left,y:menuTop+playH+rowH*2+gap*3,w:width,h:moreH}]};
   }
   buildHub(){
-    this.claimReadyQuests();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
+    this.stopHubMotion();this.claimReadyQuests();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
     const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
     const bg=this.textures.exists(bgKey)?this._coverImage(0,0,w,h,bgKey):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
-    const shade=this.add.graphics();shade.fillGradientStyle(0x100817,0x100817,0x100817,0x100817,.02,.02,.15,.55);shade.fillRect(0,0,w,h);this.menu.add(shade);
+    const shade=this.add.graphics();for(let i=0;i<16;i++){const y=h*.40+i*h*.60/16;shade.fillStyle(0x111b2c,.04+i*.034).fillRect(0,y,w,h*.60/16+1);}this.menu.add(shade);
     // Subtle background motion stays behind every interactive UI element.
-    if(bg.type==='Image')this.tweens.add({targets:bg,scaleX:bg.scaleX*1.025,scaleY:bg.scaleY*1.025,duration:10000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    if(bg.type==='Image')this.hubTween({targets:bg,scaleX:bg.scaleX*1.012,scaleY:bg.scaleY*1.012,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const pillW=portrait?Math.max(112,w*.28):150,pillH=portrait?Math.max(34,h*.044):34,versionW=pillW*.76,top=portrait?Math.max(12,h*.016):10;
-    this.hubChrome('pill',side,top,pillW,pillH);const candySize=pillH*.60,candyX=side+pillH*.67;
+    this.hubPanel(side,top,pillW,pillH);const candySize=pillH*.60,candyX=side+pillH*.67;
     this.hubArt('candy',candyX,top+pillH/2,candySize,candySize);
     const sugar=this.hubText(side+pillW-pillH*.48,top+pillH/2,String(Save.data.sugar||0),Math.max(14,pillH*.46),'#ffe5aa',1);let sf=parseFloat(sugar.style.fontSize);while(sugar.width>pillW-pillH*1.45&&sf>10)sugar.setFontSize(--sf+'px');
-    this.hubChrome('pill',w-side-versionW,top,versionW,pillH);this.hubText(w-side-versionW/2,top+pillH/2,'v'+GAME_VERSION,Math.max(11,pillH*.34),'#fff0df',.5);
+    this.hubPanel(w-side-versionW,top,versionW,pillH);this.hubText(w-side-versionW/2,top+pillH/2,'v'+GAME_VERSION,Math.max(11,pillH*.34),'#fff0df',.5);
     this._zone(w-side-versionW,top,versionW,pillH,()=>{this.menuScreen='news';this.buildMenuScreen();});if(this.hasNewsBadge())this.drawBadgeDot(this.menu,w-side-7,top+6);
-    const logoW=portrait?w*.87:w*.43,logoH=logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?Math.min(h*.445,L.menuTop-Math.max(25,h*.03)-12-logoH):h*.40;
-    if(this.textures.exists('hub_ui_logo'))this.hubArt('logo',logoX,logoY+logoH/2,logoW,logoH);else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
+    const logoW=portrait?w*.82:w*.43,logoH=logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?Math.min(h*.445,L.menuTop-Math.max(25,h*.03)-12-logoH):h*.40;
+    this.startHubAmbience(logoY);if(this.textures.exists('hub_ui_logo')){const logo=this.hubArt('logo',logoX,logoY+logoH/2,logoW,logoH);this.hubTween({targets:logo,y:logo.y+1.5,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});}else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
     const ch=CHARACTERS[this.character||'momo'],heroW=portrait?w*.66:w*.42,heroH=portrait?Math.max(25,h*.03):28,heroY=portrait?L.menuTop-heroH-8:h*.65;
-    this.hubChrome('pill',logoX-heroW/2,heroY,heroW,heroH);const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');
+    const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');
     const items=[['Play','Choose a stage','chapter','hub_btn_play'],['Heroes','Choose & awaken','char','hub_btn_heroes'],['Gear & Power','Equipment · Craft','gLoadout','hub_btn_gear'],['Activities','Daily · Achievements','gActivity','hub_btn_activity'],['Codex','Skills · Bestiary','gCodex','hub_btn_codex'],['More','Settings · Guide','gMore','hub_btn_more']];
     const tutDone=!!Save.data.tutorialDone,us=Save.data.unlockedStage||0,need=[0,0,1,2,1,0],nxt=this.hubNextStep();
-    items.forEach(([label,sub,target,icon],i)=>{const B=L.boxes[i],locked=us<need[i]&&!tutDone,primary=i===0,art=this.hubChrome(primary?'play':'secondary',B.x,B.y,B.w,B.h);if(locked)art.setAlpha(.60);
-      const more=i===5,size=Math.min(B.h*.78,B.w*(primary||more?.19:.21)),cy=B.y+B.h/2,arrowSize=Math.max(17,B.h*.30),arrowX=B.x+B.w-Math.max(20,B.h*.38);
+    items.forEach(([label,sub,target,icon],i)=>{const B=L.boxes[i],locked=us<need[i]&&!tutDone,primary=i===0,tone=this.hubTone(i),art=this.hubPanel(B.x,B.y,B.w,B.h,tone);if(locked)art.setAlpha(.60);
+      if(primary){const glow=this.add.graphics();glow.lineStyle(2,tone.edge,.45).strokeRoundedRect(B.x+2,B.y+2,B.w-4,B.h-4,14);this.menu.add(glow);this.hubTween({targets:glow,alpha:.25,duration:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
+      const more=i===5,size=Math.min(B.h*.66,B.w*(primary||more?.16:.19)),cy=B.y+B.h/2,arrowSize=Math.max(17,B.h*.30),arrowX=B.x+B.w-Math.max(20,B.h*.38);
       const tx=more?B.x+B.w/2+size*.36:B.x+size*1.35,ix=more?B.x+B.w/2-size*.85:B.x+size*.72,room=more?B.w*.5:arrowX-tx-arrowSize*.65;
       if(!locked&&this.textures.exists(icon))this.menu.add(this.add.image(ix,cy,icon).setDisplaySize(size,size));else this.hubText(ix,cy,locked?'🔒':'✦',Math.max(18,size*.5),'#ffe3aa',.5);
       const fs=primary?Math.min(44,B.h*.43):more?Math.min(28,B.h*.35):Math.max(14,Math.min(23,w*.039));
       const title=this.hubText(tx,B.y+B.h*.40,label,fs,'#fff7ed',more?.5:0);let tf=fs;while(title.width>room&&tf>12)title.setFontSize(--tf+'px');
-      const st=this.hubText(tx,B.y+B.h*.69,locked?'Clear Stage '+need[i]+' to unlock':sub,primary||more?Math.max(10,Math.min(15,B.h*.18)):Math.max(9,Math.min(12,w*.024)),'#ead5e7',more?.5:0);let ss=parseFloat(st.style.fontSize);while(st.width>room&&ss>8)st.setFontSize(--ss+'px');
-      if(!this.hubArt('arrow',arrowX,cy,arrowSize*.72,arrowSize))this.hubText(arrowX,cy,'›',Math.max(28,arrowSize*1.5),'#ffe183',.5);
+      const st=this.hubText(tx,B.y+B.h*.69,locked?'Clear Stage '+need[i]+' to unlock':sub,primary||more?Math.max(10,Math.min(15,B.h*.18)):Math.max(9,Math.min(12,w*.024)),tone.text,more?.5:0);let ss=parseFloat(st.style.fontSize);while(st.width>room&&ss>8)st.setFontSize(--ss+'px');
+      this.hubText(arrowX,cy,'›',Math.max(26,arrowSize*1.4),tone.text,.5);
       this._zone(B.x,B.y,B.w,B.h,()=>{if(locked){this.menuToast('Locked — clear Stage '+need[i]+' first','#ff9bb5');return;}this.menuScreen=target;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag=target;
       if(!locked&&((i===1&&this.hasTargetBadge('char'))||(i===2&&this.hasGroupBadge('gLoadout'))||(i===3&&this.hasGroupBadge('gActivity'))))this.drawBadgeDot(this.menu,B.x+9,B.y+8);
       if(nxt&&nxt.hub===i)this.hubGuideTag(B,nxt.tag);
     });
-    if(portrait&&this.textures.exists('hub_ui_divider'))this.hubArt('divider',w/2,h-h*.031,w*.72,h*.038);
+
     // แจ้งเตือนเมื่อมีเมนูใหม่เพิ่งปลดLocked (ครั้งเดียว)
     const seen=Save.data.hubUnlockSeen||0;
     if(us>seen){ if(need.some(n=>n>seen&&n<=us))this.time.delayedCall(350,()=>{if(this.state==='menu'&&this.menuScreen==='hub'&&this.menuToast)this.menuToast('🔓 New menu unlocked! Go explore~','#8bd3a0');}); Save.data.hubUnlockSeen=us; Save.save(); }
@@ -9987,7 +10017,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){
+  startStage(i){this.stopHubMotion?.();
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
