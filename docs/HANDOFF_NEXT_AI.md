@@ -1,3 +1,7 @@
+# v7.8.1 scroll follow-up
+
+Read docs/MENU_SCROLL_7_8_1.md. Verify long-page feel on owner phone. Forge remains 150 catalog / 78 active / 72 gated.
+
 # Forge 150 rollout — v7.8.0
 
 150 catalog / 78 active / 72 gated. Read docs/FORGE_150_ROLLOUT.md for exact remaining consumers. Preserve legacy data and paid Sustain choices. Owner phone feel/FPS review pending.

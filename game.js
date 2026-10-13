@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.0';
+const GAME_VERSION = '7.8.1';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.1',date:'2026-10-13',title:'Long-menu scrolling',items:['Stable content bounds across redraws; painted backdrops stay fixed','Reversing a drag at the page edge responds immediately; shorter momentum and a slim scroll indicator','Missed taps no longer leave stale coordinate transforms; crafting overlays do not scroll']},
   {v:'7.8.0',date:'2026-10-13',title:'Three-row Forge and farming builds',items:['Spark rolls Power; Cream offers two saved Sustain choices; Jam rolls a selected Playstyle family','Replacing a mod preserves relative tier; Crystal Glaze keeps its existing tier reroll','150-mod catalog with 78 runtime-backed effects and 72 gated entries','Legacy mods and currency purchase value are preserved']},
   {v:'7.7.24',date:'2026-10-13',title:'Cached menu loading',items:['Prevent a completed menu loader from reopening when images are already cached','Keep Equipment and Forge background dimming consistent while art loads']},
   {v:'7.7.23',date:'2026-10-13',title:'Focused Affix Forge',items:['Clear selected-item and mod panels with shared menu controls','Optional odds and tier details with honest target tracking','Remove and Reset moved into Advanced with explicit consequences']},
@@ -6418,7 +6419,7 @@ class Game extends Phaser.Scene {
       this.joyBase.setPosition(p.x,p.y).setVisible(true);
       this.joyKnob.setPosition(p.x,p.y).setVisible(true);
     });
-    this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); else if(this.state==='menu'&&(this._mScrollMax||0)>0)this.setMenuScroll((this._mScroll||0)+dy*0.6); });
+    this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); else if(this.state==='menu'&&(this._mScrollMax||0)>0&&!this._craftRolling&&!this._bazBusy&&!this._gachaBusy){this._mVelocity=0;this.setMenuScroll((this._mScroll||0)+dy*0.6);} });
     this.input.on('pointermove',(p)=>{
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
@@ -7251,21 +7252,24 @@ class Game extends Phaser.Scene {
     cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
   // แตะเมนู: ตรงกรอบก่อน → ไม่โดนเลยค่อยขยายปุ่มเล็กให้ได้อย่างน้อย 44px (+slop) เลือกตัวที่ใกล้สุด
-  handleTap(px,py){ const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; if(_sc){ py+=_sc; const fb=this._tapFeedback; this._tapFeedback=(z,x,y)=>{ this._tapFeedback=fb; fb.call(this,{...z,y:z.y-_sc},x,y-_sc); }; }
-    { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ this._tapFeedback(bz,px,py); Sfx.uiAction('back',()=>bz.fn()); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
+  handleTap(px,py){ const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; py+=_sc;const feedback=(z,x,y)=>this._tapFeedback({...z,y:z.y-_sc},x,y-_sc);
+    { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ feedback(bz,px,py); Sfx.uiAction('back',()=>bz.fn()); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
     for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){hit=z;break;} }
     if(!hit){ let best=1e9; const MIN=44,SLOP=6;
       for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; const ew=Math.max(0,(MIN-z.w)/2)+SLOP,eh=Math.max(0,(MIN-z.h)/2)+SLOP;
         if(px>=z.x-ew&&px<=z.x+z.w+ew&&py>=z.y-eh&&py<=z.y+z.h+eh){ const d=Math.hypot(px-(z.x+z.w/2),py-(z.y+z.h/2)); if(d<best){best=d;hit=z;} } } }
-    if(!hit)return; this._tapFeedback(hit,px,py); Sfx.uiAction(hit.sound||'click',()=>hit.fn()); }
+    if(!hit)return; feedback(hit,px,py); Sfx.uiAction(hit.sound||'click',()=>hit.fn()); }
   // ไฟกระพริบบนปุ่ม + วงกระเพื่อมที่นิ้ว (อยู่นอก this.menu จึงไม่หายตอน rebuild)
   // v6.55.45: หน้าเมนูที่ยาวเกินจอ ลากเลื่อนขึ้นลงได้ (แตะ = ปล่อยนิ้วโดยไม่ลาก)
-  setupMenuScroll(s){ const m=this.menu; this._mScrollMax=0; if(!m||!m.list||s==='atlas'||s==='hub'){ if(m)m.y=0; this._mScroll=0; return; }
-    if(this._mScrollFor!==s){ this._mScroll=0; this._mScrollFor=s; }
-    if(s==='craft')m.y=0;let bot=0; for(const o of m.list){ if(!o||!o.visible||o===this._mScrollFill)continue; try{ const b=o.getBounds(); if(b&&b.height<this.H*1.5&&b.bottom>bot)bot=b.bottom; }catch(e){} }
-    const max=Math.max(0,Math.ceil(bot-this.H+24)); this._mScrollMax=max;
-    if(max>0){ const f=this.add.rectangle(0,this.H,this.W,max+40,0x1c1426,1).setOrigin(0,0); m.addAt(f,0); this._mScrollFill=f; }
-    this.setMenuScroll(this._mScroll||0); }
+  setupMenuScroll(s){const m=this.menu;this._mScrollMax=0;
+    if(!m||!m.list||s==='atlas'||s==='hub'){if(m)m.y=0;this._mScroll=0;this._mScrollFor=s;this.drawMenuScrollIndicator?.();return;}
+    if(this._mScrollFor!==s){this._mScroll=0;this._mVelocity=0;this._mScrollFor=s;}
+    // Measure content in its unscrolled coordinate system, including tall panels.
+    m.y=0;if(this._gearPinned)this._gearPinned.y=0;
+    if(this._mScrollFill){if(m.list.includes(this._mScrollFill))m.remove(this._mScrollFill,true);this._mScrollFill=null;}
+    let bottom=0;for(const o of m.list){if(!o||!o.visible||o._menuBackdrop||o===this._gearPinned)continue;try{const bounds=o.getBounds();if(bounds&&Number.isFinite(bounds.bottom))bottom=Math.max(bottom,bounds.bottom);}catch(e){}}
+    for(const z of this.tapZones||[])if(z.fixedY==null&&Number.isFinite(z.y+z.h))bottom=Math.max(bottom,z.y+z.h);
+    this._mScrollMax=Math.max(0,Math.ceil(bottom-this.H+24));this.setMenuScroll(this._mScroll||0);}
   cancelMenuMotion(){ this._mVelocity=0;this._mDrag=null;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;} }
   menuPointerDown(p){
     if(this._mDrag)return;const moving=Math.abs(this._mVelocity||0)>35;this._mVelocity=0;
@@ -7274,19 +7278,26 @@ class Game extends Phaser.Scene {
     if(!z)for(let i=zones.length-1;i>=0;i--){const q=zones[i];if(p.x>=q.x&&p.x<=q.x+q.w&&y>=q.y&&y<=q.y+q.h){z=q;break;}}
     if(z&&z.sound!=='none'){const g=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(139));g.fillStyle(0xffffff,.16).fillRoundedRect(z.x,z.y-(this._mScroll||0),z.w,z.h,Math.min(12,z.h/2));this._menuPress=g;}
   }
-  menuPointerMove(p){const d=this._mDrag;if(!d||d.id!==p.id)return;const now=performance.now(),dy=p.y-d.y0;
-    if(Math.hypot(p.x-d.x0,dy)>8){d.moved=true;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;}}
-    if(d.moved&&(this._mScrollMax||0)>0){const elapsed=Math.max(.008,(now-d.lastAt)/1000),v=(d.lastY-p.y)/elapsed;d.velocity=d.velocity*.35+Math.max(-2200,Math.min(2200,v))*.65;this.setMenuScroll(d.s0-dy);}
-    d.lastY=p.y;d.lastAt=now;
-  }
+  menuPointerMove(p){const d=this._mDrag;if(!d||d.id!==p.id)return;const now=performance.now(),dx=p.x-d.x0,dy=p.y-d.y0,wasMoved=d.moved;
+    if(Math.hypot(dx,dy)>8){d.moved=true;if(!d.axis)d.axis=Math.abs(dy)>=Math.abs(dx)?'vertical':'horizontal';if(this._menuPress){this._menuPress.destroy();this._menuPress=null;}}
+    if(d.moved&&d.axis==='vertical'&&(this._mScrollMax||0)>0&&!this._craftRolling&&!this._bazBusy&&!this._gachaBusy){
+      const delta=wasMoved?d.lastY-p.y:d.y0-p.y,before=this._mScroll||0;this.setMenuScroll(before+delta);
+      const applied=(this._mScroll||0)-before,elapsed=Math.max(.008,(now-d.lastAt)/1000),velocity=Math.max(-1600,Math.min(1600,applied/elapsed));
+      d.velocity=applied===0?0:d.velocity*.35+velocity*.65;
+    }d.lastY=p.y;d.lastAt=now;}
   menuPointerUp(p){const d=this._mDrag;if(!d||d.id!==p.id)return;this._mDrag=null;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;}
     if(d.moved){this._mVelocity=performance.now()-d.lastAt<100?d.velocity:0;return;}
     if(!d.stopped&&Math.hypot(p.x-d.x0,p.y-d.y0)<=8)this.handleTap(p.x,p.y);
   }
-  tickMenuMotion(dt){if(this.state!=='menu'){if(this._mDrag||this._mVelocity||this._menuPress)this.cancelMenuMotion();return;}if(this._mDrag||!(this._mScrollMax>0))return;
-    const v=this._mVelocity||0;if(Math.abs(v)<8){this._mVelocity=0;return;}dt=Math.min(.05,Math.max(0,dt));const decay=Math.exp(-7*dt),before=this._mScroll||0;this.setMenuScroll(before+v*(1-decay)/7);this._mVelocity=(this._mScroll<=0||this._mScroll>=this._mScrollMax)?0:v*decay;
+  tickMenuMotion(dt){if(this.state!=='menu'){if(this._mDrag||this._mVelocity||this._menuPress)this.cancelMenuMotion();this._menuScrollbar?.setVisible(false);return;}this.drawMenuScrollIndicator?.();if(this._mDrag||!(this._mScrollMax>0)||this._craftRolling||this._bazBusy||this._gachaBusy)return;
+    const v=this._mVelocity||0;if(Math.abs(v)<8){this._mVelocity=0;return;}dt=Math.min(.05,Math.max(0,dt));const decay=Math.exp(-9*dt),before=this._mScroll||0;this.setMenuScroll(before+v*(1-decay)/9);this._mVelocity=(this._mScroll<=0||this._mScroll>=this._mScrollMax)?0:v*decay;
   }
-  setMenuScroll(v){ const max=this._mScrollMax||0; this._mScroll=Math.max(0,Math.min(max,v)); if(this.menu)this.menu.y=-this._mScroll; if(this._gearPinned)this._gearPinned.y=this._mScroll;for(const z of this.tapZones||[])if(z.fixedY!=null)z.y=z.fixedY+this._mScroll; }
+  setMenuScroll(v){const max=this._mScrollMax||0;this._mScroll=Math.max(0,Math.min(max,Number.isFinite(v)?v:0));if(this.menu){this.menu.y=-this._mScroll;for(const o of this.menu.list||[])if(o&&o._menuBackdrop)o.y=o._menuFixedY+this._mScroll;}
+    if(this._gearPinned)this._gearPinned.y=this._mScroll;for(const z of this.tapZones||[])if(z.fixedY!=null)z.y=z.fixedY+this._mScroll;this.drawMenuScrollIndicator?.();}
+  drawMenuScrollIndicator(){if(!this.add||!this.camUI)return;const max=this._mScrollMax||0,visible=this.state==='menu'&&max>0&&!this._craftRolling&&!this._bazBusy&&!this._gachaBusy;
+    if(!visible){this._menuScrollbar?.setVisible(false);return;}if(!this._menuScrollbar)this._menuScrollbar=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(138));
+    const g=this._menuScrollbar,top=Math.min(100,this.H*.2),track=Math.max(40,this.H-top-24),thumb=Math.max(24,track*this.H/(this.H+max)),y=top+(track-thumb)*(this._mScroll||0)/max;
+    g.clear().setVisible(true);g.fillStyle(0xffffff,this._mDrag||Math.abs(this._mVelocity||0)>8?.6:.22).fillRoundedRect(this.W-6,y,3,thumb,1.5);}
   _tapFeedback(z,px,py){ try{
     const g=this.camUI(this.add.graphics().setScrollFactor(1).setDepth(140));
     const r=Math.min(14,z.h/2,z.w/2); g.fillStyle(0xffffff,0.22).fillRoundedRect(z.x,z.y,z.w,z.h,r);
@@ -7317,12 +7328,13 @@ class Game extends Phaser.Scene {
     const compact=w>h;
     const bg=artKey&&this.textures.exists(artKey)?this._coverImage(0,0,w,h,artKey):this.add.rectangle(0,0,w,h,0x1a1420,0.97).setOrigin(0,0);
     const veil=artKey&&this.textures.exists(artKey)?this.add.rectangle(0,0,w,h,0x110c19,0.54).setOrigin(0,0):null;
+    bg._menuBackdrop=true;bg._menuFixedY=bg.y;if(veil){veil._menuBackdrop=true;veil._menuFixedY=veil.y;}
     if(artKey&&!this.textures.exists(artKey)&&ASSET_IMAGES[artKey]){   // v7.4 พื้นหลังทุกหน้า (ไม่ใช่แค่ screen_) โหลดตอนเปิดหน้า
       const url=ASSET_IMAGES[artKey];
       this.load.once('filecomplete-image-'+artKey,()=>{
         if(!bg.active||this.state!=='menu'||!this.menu.list.includes(bg))return;
-        const art=this._coverImage(0,0,w,h,artKey).setAlpha(0);this.menu.addAt(art,0);
-        this.menu.remove(bg,true);this.menu.addAt(this.add.rectangle(0,0,w,h,0x110c19,(title==='Equipment'||title==='Affix Forge')?.84:.54).setOrigin(0,0),1);
+        const art=this._coverImage(0,0,w,h,artKey).setAlpha(0);art._menuBackdrop=true;art._menuFixedY=art.y;art.y=art._menuFixedY+(this._mScroll||0);this.menu.addAt(art,0);
+        this.menu.remove(bg,true);const tint=this.add.rectangle(0,this._mScroll||0,w,h,0x110c19,(title==='Equipment'||title==='Affix Forge')?.84:.54).setOrigin(0,0);tint._menuBackdrop=true;tint._menuFixedY=0;this.menu.addAt(tint,1);
         this.tweens.add({targets:art,alpha:1,duration:180});
       });
       this.load.image(artKey,verUrl(url));if(!this.load.isLoading())this.load.start();
