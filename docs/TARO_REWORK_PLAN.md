@@ -1,6 +1,6 @@
 # Taro rework — work packages
 
-Status: T0–T5 complete/live in v7.8.14; Pages and published source verified (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T6 presentation implemented in v7.8.15; T7 owner phone review is next; pre-path alone remains legacy. See [TARO_T4_SMITE.md](TARO_T4_SMITE.md) and [TARO_T5_PROGRESSION.md](TARO_T5_PROGRESSION.md).
+Status: T0–T6 complete/live in v7.8.15; Pages, published source and all six new assets verified (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T6 presentation complete; T7 owner phone review is next; pre-path alone remains legacy. See [TARO_T4_SMITE.md](TARO_T4_SMITE.md) and [TARO_T5_PROGRESSION.md](TARO_T5_PROGRESSION.md).
 
 ## Goal and baseline
 

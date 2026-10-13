@@ -61,3 +61,6 @@ Build www, then scripts/build-gear-power-review.mjs and scripts/check-gear-power
 ## Bounded base64 source upload (verified 2026-10-13, Taro T1)
 
 For already-LF UTF-8 files, including game.js and large history, byte chunks of 24000 (divisible by 3) can be captured without printing source. Independent batches of eight file reads worked here. Validate each base64 length and alphabet, concatenate in byte-offset order, then create blobs with base64 encoding. This avoids UTF-16 surrogate splits; exact remote/local tree equality remains mandatory before updating the branch. Normalize working files to Git's LF form first or use the existing boundary-safe text route.
+
+## Taro presentation review (verified 2026-10-13)
+Build www, then scripts/build-taro-feedback-review.mjs and scripts/check-taro-feedback-ui.cjs with Playwright/Chrome. This is a static Canvas gallery invoking production visual helpers only, not a combat simulation: no combat update, damage, target selection or enemy spawning. It checks reused charge HUD, pause visibility, three portrait sizes, real bomb texture and browser decoding of five short cues. Optional TARO_FEEDBACK_SHOT_PATH saves a preview. Runtime build omits asset metadata JSON; the browser reads MP3 files directly while contract tests audit manifests in the checkout. New gameplay changes still require owner phone playtests.
