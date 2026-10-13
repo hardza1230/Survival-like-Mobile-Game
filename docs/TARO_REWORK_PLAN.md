@@ -1,6 +1,6 @@
 # Taro rework — work packages
 
-Status: T0 completed, 2026-10-13. See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md) for the audited rules, initial tuning and compatibility contract. T1 is next; no runtime changes or release yet.
+Status: T1 implemented, 2026-10-13. See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md) for the audited rules, initial tuning and compatibility contract. See [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md) for the dormant foundation. T2 Tempest is next; current combat behavior remains unchanged.
 
 ## Goal and baseline
 
@@ -32,6 +32,6 @@ Current runtime already has path IDs storm/smite/tempest, path talents and capst
 
 #25 Taro Boba Capacitor is deferred optional work after the three paths are tuned. No fourth path, Toast Meter restoration, turret system or unrelated hero/UI rework in this plan.
 
-T0 is complete. T1 is the next executable task. Recommended implementation order: T0 → T1 → T2 → T3 → T4 → T5 → T6 → T7. Prototype review happens after each path, not only at the end. All packages modifying game.js integrate sequentially to avoid conflicting edits. Separate art preparation can proceed after the mechanics/art contract stabilizes; this plan does not start agents or separate chats.
+T0 and T1 are complete. T2 Tempest is the next executable task. Recommended implementation order: T0 → T1 → T2 → T3 → T4 → T5 → T6 → T7. Prototype review happens after each path, not only at the end. All packages modifying game.js integrate sequentially to avoid conflicting edits. Separate art preparation can proceed after the mechanics/art contract stabilizes; this plan does not start agents or separate chats.
 
 After each package update SESSION_HANDOFF with completed package, changed files, real checks, unresolved decisions and exact next package. Save recoverable commits when appropriate. Do not deploy partial prototypes as a finished rework. Publish only within the owner's implementation scope.

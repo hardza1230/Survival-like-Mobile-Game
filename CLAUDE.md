@@ -2,10 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Current design work: Taro T0 complete
+# Latest delivery: v7.8.10 — Taro T1 foundation
 
-Source audit and three-path combat contract completed; see docs/TARO_T0_CONTRACT.md and docs/TARO_REWORK_PLAN.md. Shared Chain Bolt Unique retained; selected paths replace universal Storm Charge with bounded Chain shrapnel, direct Smite repeat, or Tempest movement charge/Dash sweep/bomb. Existing progression keys/ranks retained. Initial numbers require owner phone playtesting. Documentation only: game remains v7.8.9. Next package T1 prepares helpers without switching live behavior.
-# Latest delivery: v7.8.9 — Painted Stats / Gear & Power
+Taro-only targeting, pooled-enemy identities, pure path profiles/movement, active-play queues, source/proc adapters and lifecycle cleanup are implemented. New path state starts disabled; existing Taro attacks, Dash passive, Unique, Storm Charge and progression remain live. Terminal adapters keep rewards/healing/shields and stop combat recursion; delayed recipe recovery retains source context. See docs/TARO_T1_FOUNDATION.md and docs/TARO_T0_CONTRACT.md. Next T2 enables and implements Tempest only; initialize opt-in consistently after retry/revival/path sync.
+
+# Previous delivery: v7.8.9 — Painted Stats / Gear & Power
 
 Owner accepted compact Hero control proportions and asked for hero colors plus actual ImageGen artwork. Tabs/Selected now follow the preview hero in roster and equipped hero in Stats/Talents (six palettes). Stats uses seven real painted frames, seven stat icons and an info jewel; ordinary cropped-image slices retain corners in Canvas/WebGL. Gear & Power uses new five painted card textures and a generated courtyard background, preserving routes, locks, notifications and real guide badge rules. Source text remains live. 21 bounded WebP assets, manifest and exact selected prompts in assets/art/mobile_ui_789. See docs/MOBILE_PAINTED_UI.md.
 
@@ -24,10 +25,6 @@ Owner selected single-line mod results, larger touch controls and tier-only labe
 # Previous delivery: v7.8.5 — Simpler Affix Forge
 
 Forge Back unwinds navigation to Gear & Power, then Hub, without returning to Forge. All three rows now spend one corresponding currency for one immediate random compatible mod; Utility no longer selects a family. Auto rolls the selected row. Short effect labels in current/result rows; full conditions remain in details. Already-paid Sustain choices remain recoverable. See docs/FORGE_SIMPLIFICATION.md.
-
-# Previous delivery: v7.8.4 — Readable Forge mods
-
-Effect-first pool rows, semantic Canvas pictograms with individual catalog seals, cached per mod (150 catalog identities; only 78 runtime-backed mods remain rollable). Current rows and paid choices reuse the icons. Details expose full effect, value at preview tier, chance and replaced row. Existing costs, saves and effect implementations remain. Full check/build and seven-viewport Forge tests pass; see docs/FORGE_READABILITY.md for browser QA.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

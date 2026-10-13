@@ -1850,3 +1850,7 @@ Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archiv
 # Previous delivery: v7.8.3 — Single-screen Forge
 
 Owner approved the mockups and exact spacing. Forge keeps its controls in one screen with real ranges, equipped tags, paged pools/families and recoverable paid choices. Approved ImageGen atlas is reused directly via 12 frame regions and Canvas-safe fixed-corner chrome. See docs/FORGE_SINGLE_SCREEN.md. Complete CI now gates Pages deployment; real-method menu QA is in forge-review.html (synthetic save, no combat). Full checks/build and 21 real-browser UI cases passed, including native Roll/Tier costs and paid Choose. Baseline proof screenshots are in docs/forge_ui/. Cached veil and Equipped alignment corrected. Phone feel/FPS remains owner QA.
+
+# Previous delivery: v7.8.4 — Readable Forge mods
+
+Effect-first pool rows, semantic Canvas pictograms with individual catalog seals, cached per mod (150 catalog identities; only 78 runtime-backed mods remain rollable). Current rows and paid choices reuse the icons. Details expose full effect, value at preview tier, chance and replaced row. Existing costs, saves and effect implementations remain. Full check/build and seven-viewport Forge tests pass; see docs/FORGE_READABILITY.md for browser QA.
