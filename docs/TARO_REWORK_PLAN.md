@@ -1,6 +1,6 @@
 # Taro rework — work packages
 
-Status: T0–T2 complete/live; T3 Chain implemented and checked in v7.8.12, publication next (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T4 Smite is next; Smite/pre-path remain legacy.
+Status: T0–T3 complete; T3 Chain verified live in v7.8.12 (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T4 Smite is next; Smite/pre-path remain legacy.
 
 ## Goal and baseline
 

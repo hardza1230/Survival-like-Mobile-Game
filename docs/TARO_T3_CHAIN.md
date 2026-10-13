@@ -38,3 +38,7 @@ Phone checklist:
 5. Compare saved talents/mutations/evolution and Tempest's walking/Dash loop; existing investment and Tempest behavior remain.
 
 Next implementation: T4 Smite only (#3/#29/#33), using stable priority targeting and a terminal repeat. Preserve completed Chain/Tempest and shared ownership/cleanup.
+
+## Verified publication
+
+Runtime v7.8.12 commit 1b5065447b1ab356b5778065b69195415b7ac6a0, tested/published tree 702bfda17dcff3d11f9fd5540fd1e1a75e8f110d. Pages run 38405672586 succeeded on 2026-10-13. Live version.json and complete runtime source verified (excluding only build-injected asset manifests). APK run 38405672798 is separate; this checkpoint does not claim APK completion. Owner phone combat review remains pending.
