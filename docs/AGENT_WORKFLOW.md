@@ -57,3 +57,7 @@ Windows .NET Substring / PowerShell JSON chunks can split an emoji surrogate pai
 ## Painted Gear menu review (verified 2026-10-13)
 
 Build www, then scripts/build-gear-power-review.mjs and scripts/check-gear-power-ui.cjs with Playwright/Chrome. Seven real Canvas viewports verify all five routes, lock guard, card aspect and text/touch bounds. Optional GEAR_POWER_SHOT_PATH saves the portrait screenshot. Asset manifest and selected prompts live beside production WebP files; validate actual alpha before accepting a transparent ImageGen output. Illustrated Gear cards intentionally use opaque complete card textures, while Stats frame/icon textures have transparent edges. After Pages succeeds, compare SHA-256 for published new assets against the tested local kit.
+
+## Bounded base64 source upload (verified 2026-10-13, Taro T1)
+
+For already-LF UTF-8 files, including game.js and large history, byte chunks of 24000 (divisible by 3) can be captured without printing source. Independent batches of eight file reads worked here. Validate each base64 length and alphabet, concatenate in byte-offset order, then create blobs with base64 encoding. This avoids UTF-16 surrogate splits; exact remote/local tree equality remains mandatory before updating the branch. Normalize working files to Git's LF form first or use the existing boundary-safe text route.

@@ -31,4 +31,4 @@ T2 must opt in ONLY the completed Tempest path, then implement its weak basic, a
 
 `tests/taro-foundation.test.cjs` covers pure profiles/movement/target priority, pooled identities, queue caps and active-time/pause behavior, context restoration/recursion, cleanup/idempotence, numeric versus combat modifiers, healing/shields, Forge counters and delayed recipe provenance. It also checks the legacy attack-method baseline and lifecycle/acquisition hook coverage. Included in npm check. No Phaser combat simulation or balance claims.
 
-Required check/build and real Canvas Hub/Heroes menu checks are recorded in SESSION_HANDOFF when complete. Runtime release must be verified by Pages success and published version before calling it live.
+Required full check/build passed (1306 assets). Real Canvas Heroes/Stats passed seven viewports/six previews; Hub passed seven sizes with normal/reduced motion. Pages run 38397981572 succeeded for runtime commit 5ef9937cfa920a24ea116f735fdffcaba1ab8f2a. Published version.json/GAME_VERSION 7.8.10 and dormant T1 helper/state/shutdown symbols were verified. See SESSION_HANDOFF for recovery.

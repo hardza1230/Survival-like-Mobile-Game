@@ -1,6 +1,6 @@
 # Taro rework — work packages
 
-Status: T1 implemented, 2026-10-13. See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md) for the audited rules, initial tuning and compatibility contract. See [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md) for the dormant foundation. T2 Tempest is next; current combat behavior remains unchanged.
+Status: T1 completed and live in v7.8.10, 2026-10-13. See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md) for the audited rules, initial tuning and compatibility contract. See [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md) for the dormant foundation. T2 Tempest is next; current combat behavior remains unchanged.
 
 ## Goal and baseline
 

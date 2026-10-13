@@ -1,7 +1,7 @@
 # Latest session checkpoint
 Updated: 2026-10-13 (Asia/Bangkok).
 
-## Taro T1 — implementation ready for publication
+## Taro T1 complete — v7.8.10 live
 Owner authorized T1 after completed T0. v7.8.10 implements dormant Taro state/epochs, stable pooled-enemy identities on all five acquisition routes, pure bounded profiles and movement samples, stable priority targeting, active-play queues, nested source context and cleanup (including independent shutdown and death before revival). No path is enabled. Existing basic attack, three path definitions, Unique, Dash and Storm Charge remain live; save keys/ranks/costs unchanged. Terminal adapters distinguish damage emissions from reward/heal/shield handling; delayed recipe recovery preserves source provenance and cancels on invalidated runs.
 
 ## Checks / changed files
@@ -9,7 +9,7 @@ Focused Taro contracts pass: profiles, movement, target/identity, queue caps, sp
 Changed game.js, package.json, tests/taro-foundation.test.cjs, tests/fixtures/taro-t1-baseline.json, docs/TARO_T1_FOUNDATION.md, docs/TARO_REWORK_PLAN.md, CLAUDE.md, docs/CLAUDE_HISTORY.md and this checkpoint. v7.8.4 delivery block archived to retain six recent releases. Prior v7.8.9 artwork/Forge/Hub work complete; do not redo.
 
 ## Publication / recovery
-Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Authorized branch claude/vampire-survival-mobile-game-yo9e8w. Baseline local and remote bd6f228213a222c642643475f727a1cb67b6c6db verified. v7.8.10 not yet published; complete final checks, require exact uploaded/local tree equality, update branch with expected head, then verify Pages success and live version/functions before marking live. Keep checkpoints before external waits.
+Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Authorized branch claude/vampire-survival-mobile-game-yo9e8w. Baseline local and remote bd6f228213a222c642643475f727a1cb67b6c6db verified. Runtime commit 5ef9937cfa920a24ea116f735fdffcaba1ab8f2a published. Uploaded tree exactly matched tested/local 8181f8c3ee3e13c51f38a36fd1b4a79fe04b23ae, then fetched origin verified and local aligned. All checks complete. Pages run 38397981572 succeeded. Published version.json and GAME_VERSION both 7.8.10; live profile/movement/queue helpers, independent shutdown hook, enabled:false and absence of any path-enabling assignment verified. APK run 38397981615 is separate and not part of this completion claim. Keep checkpoints before external waits.
 
 ## Exact next implementation task
 T2 Tempest only. See docs/TARO_T0_CONTRACT.md section 4 and docs/TARO_T1_FOUNDATION.md. Enable completed Tempest consistently on state initialization/revival/retry/path sync, replace only its weak basic and innate Dash shockwave, add accepted-Dash ownership, post-physics walking charge, sweep, origin bomb and full-charge nova. Clear legacy _taroCharge on first opt-in. Keep Chain/Smite/pre-path behavior until T3/T4. #25 Boba deferred. User tests actual combat after T2. T1 creates no artwork or new combat button.
