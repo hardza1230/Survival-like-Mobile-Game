@@ -1,0 +1,2669 @@
+[
+  {
+    "number": 1,
+    "id": "f_might",
+    "label": "Might",
+    "description": "Damage for every attack",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 16,
+    "weight": 100
+  },
+  {
+    "number": 2,
+    "id": "f_rapid_rhythm",
+    "label": "Rapid Rhythm",
+    "description": "Faster basic attack cycles",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 12,
+    "weight": 70
+  },
+  {
+    "number": 3,
+    "id": "f_precision",
+    "label": "Precision",
+    "description": "Critical hit chance",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 5,
+    "weight": 70
+  },
+  {
+    "number": 4,
+    "id": "f_deadly_sweet",
+    "label": "Deadly Sweet",
+    "description": "Critical hit damage",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 60,
+    "weight": 70
+  },
+  {
+    "number": 5,
+    "id": "f_heavy_batter",
+    "label": "Heavy Batter",
+    "description": "Stronger direct hits, slower basic attacks",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 25,
+    "weight": 70
+  },
+  {
+    "number": 6,
+    "id": "f_wide_recipe",
+    "label": "Wide Recipe",
+    "description": "Larger supported attack areas",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 12,
+    "weight": 70
+  },
+  {
+    "number": 7,
+    "id": "f_lingering_flavor",
+    "label": "Lingering Flavor",
+    "description": "Damage over time",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 8,
+    "id": "f_lingering_touch",
+    "label": "Lingering Touch",
+    "description": "Longer supported enemy statuses",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 9,
+    "id": "f_pack_leader",
+    "label": "Pack Leader",
+    "description": "Minion damage",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 10,
+    "id": "f_executioner",
+    "label": "Executioner",
+    "description": "Damage against enemies below 30% HP",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 11,
+    "id": "f_opening_bite",
+    "label": "Opening Bite",
+    "description": "Damage against enemies above 90% HP",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 24,
+    "weight": 70
+  },
+  {
+    "number": 12,
+    "id": "f_giant_slayer",
+    "label": "Giant Slayer",
+    "description": "Damage against elites, minibosses and bosses",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 21,
+    "weight": 70
+  },
+  {
+    "number": 13,
+    "id": "f_vital_dough",
+    "label": "Vital Dough",
+    "description": "Maximum HP",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 100,
+    "weight": 100
+  },
+  {
+    "number": 14,
+    "id": "f_hard_shell",
+    "label": "Hard Shell",
+    "description": "Armor rating",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 18,
+    "weight": 100
+  },
+  {
+    "number": 15,
+    "id": "f_slow_recovery",
+    "label": "Slow Recovery",
+    "description": "HP regeneration per second",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 14,
+    "weight": 100
+  },
+  {
+    "number": 16,
+    "id": "f_fresh_meal",
+    "label": "Fresh Meal",
+    "description": "HP recovered on kill, rate limited",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 5,
+    "weight": 70
+  },
+  {
+    "number": 17,
+    "id": "f_vampiric_bite",
+    "label": "Vampiric Bite",
+    "description": "Direct-hit recovery, rate limited",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 10,
+    "weight": 70
+  },
+  {
+    "number": 18,
+    "id": "f_critical_barrier",
+    "label": "Critical Barrier",
+    "description": "Critical hits grant a timed HP barrier",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 12,
+    "weight": 70
+  },
+  {
+    "number": 19,
+    "id": "f_quiet_recovery",
+    "label": "Quiet Recovery",
+    "description": "Extra regeneration after avoiding HP damage",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 12,
+    "weight": 70
+  },
+  {
+    "number": 20,
+    "id": "f_emergency_coating",
+    "label": "Emergency Coating",
+    "description": "Damage reduction below 40% HP",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 14,
+    "weight": 70
+  },
+  {
+    "number": 21,
+    "id": "f_dash_guard",
+    "label": "Dash Guard",
+    "description": "Damage reduction after a dash",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 12,
+    "weight": 70
+  },
+  {
+    "number": 22,
+    "id": "f_crowd_padding",
+    "label": "Crowd Padding",
+    "description": "Armor while surrounded",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 23,
+    "id": "f_elite_rations",
+    "label": "Elite Rations",
+    "description": "Recover HP after repeated hits on elites and bosses",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 8,
+    "weight": 70
+  },
+  {
+    "number": 24,
+    "id": "f_overflow_cream",
+    "label": "Overflow Cream",
+    "description": "Excess recovery becomes a capped timed barrier",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 25,
+    "id": "f_third_beat",
+    "label": "Third Beat",
+    "description": "Every third direct hit gains damage",
+    "row": "play",
+    "group": "rhythm",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 26,
+    "id": "f_patient_bite",
+    "label": "Patient Bite",
+    "description": "A direct hit after an attack gap gains damage",
+    "row": "play",
+    "group": "rhythm",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 27,
+    "id": "f_single_serving",
+    "label": "Single Serving",
+    "description": "Repeated direct hits on one enemy gain damage",
+    "row": "play",
+    "group": "rhythm",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 28,
+    "id": "f_critical_tempo",
+    "label": "Critical Tempo",
+    "description": "Critical hits grant temporary attack speed",
+    "row": "play",
+    "group": "rhythm",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 29,
+    "id": "f_dash_primer",
+    "label": "Dash Primer",
+    "description": "First direct hit after a dash gains damage",
+    "row": "play",
+    "group": "movement",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 30,
+    "id": "f_running_recipe",
+    "label": "Running Recipe",
+    "description": "Travel distance prepares the next attack",
+    "row": "play",
+    "group": "movement",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 31,
+    "id": "f_steady_hands",
+    "label": "Steady Hands",
+    "description": "Damage while standing still",
+    "row": "play",
+    "group": "movement",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 32,
+    "id": "f_close_quarters",
+    "label": "Close Quarters",
+    "description": "Damage to nearby enemies",
+    "row": "play",
+    "group": "movement",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 33,
+    "id": "f_brittle_shell",
+    "label": "Brittle Shell",
+    "description": "Damage to chilled or frozen enemies",
+    "row": "play",
+    "group": "status",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 34,
+    "id": "f_deep_flavor",
+    "label": "Deep Flavor",
+    "description": "Hits extend a damage-over-time status, capped",
+    "row": "play",
+    "group": "status",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 35,
+    "id": "f_mixed_recipe",
+    "label": "Mixed Recipe",
+    "description": "Damage per distinct enemy status, up to three",
+    "row": "play",
+    "group": "status",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 36,
+    "id": "f_aftertaste",
+    "label": "Aftertaste",
+    "description": "Damage window after an applied status expires",
+    "row": "play",
+    "group": "status",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 37,
+    "id": "f_marked_prey",
+    "label": "Marked Prey",
+    "description": "Mark a target to improve companion damage",
+    "row": "play",
+    "group": "companions",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 38,
+    "id": "f_pack_rhythm",
+    "label": "Pack Rhythm",
+    "description": "Companion hits prepare the owner attack",
+    "row": "play",
+    "group": "companions",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 39,
+    "id": "f_shared_feast",
+    "label": "Shared Feast",
+    "description": "Companion kills or repeated boss hits heal the owner",
+    "row": "play",
+    "group": "companions",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 40,
+    "id": "f_lone_companion",
+    "label": "Lone Companion",
+    "description": "Stronger companion while exactly one is active",
+    "row": "play",
+    "group": "companions",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 41,
+    "id": "f_last_bite",
+    "label": "Last Bite",
+    "description": "Damage below 40% HP",
+    "row": "play",
+    "group": "survival",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 42,
+    "id": "f_perfect_glaze",
+    "label": "Perfect Glaze",
+    "description": "Damage above 90% HP",
+    "row": "play",
+    "group": "survival",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 43,
+    "id": "f_shielded_strike",
+    "label": "Shielded Strike",
+    "description": "Direct-hit damage while a barrier is present",
+    "row": "play",
+    "group": "survival",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 44,
+    "id": "f_measured_revenge",
+    "label": "Measured Revenge",
+    "description": "HP damage prepares the next direct hit",
+    "row": "play",
+    "group": "survival",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 45,
+    "id": "f_gathering_pace",
+    "label": "Gathering Pace",
+    "description": "Collecting combat EXP grants temporary move speed",
+    "row": "play",
+    "group": "harvest",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 46,
+    "id": "f_stored_sweetness",
+    "label": "Stored Sweetness",
+    "description": "Collected EXP prepares a stronger direct hit",
+    "row": "play",
+    "group": "harvest",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 47,
+    "id": "f_fresh_delivery",
+    "label": "Fresh Delivery",
+    "description": "Healing pickups grant temporary healing effectiveness",
+    "row": "play",
+    "group": "harvest",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 48,
+    "id": "f_growing_appetite",
+    "label": "Growing Appetite",
+    "description": "Level-ups grant a temporary damage bonus",
+    "row": "play",
+    "group": "harvest",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 49,
+    "id": "f_distant_bite",
+    "label": "Distant Bite",
+    "description": "Damage against distant enemies",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 50,
+    "id": "f_point_blank",
+    "label": "Point Blank",
+    "description": "Direct-hit damage to close enemies",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 51,
+    "id": "f_armor_breaker",
+    "label": "Armor Breaker",
+    "description": "Partial enemy armor bypass",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 52,
+    "id": "f_focused_recipe",
+    "label": "Focused Recipe",
+    "description": "Damage with few nearby enemies",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 53,
+    "id": "f_crowd_appetite",
+    "label": "Crowd Appetite",
+    "description": "Damage while surrounded, capped",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 54,
+    "id": "f_charged_sugar",
+    "label": "Charged Sugar",
+    "description": "Charged attack damage",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 55,
+    "id": "f_combo_flour",
+    "label": "Combo Flour",
+    "description": "Combo finisher damage",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 56,
+    "id": "f_active_essence",
+    "label": "Active Essence",
+    "description": "Active skill damage",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 57,
+    "id": "f_quick_preparation",
+    "label": "Quick Preparation",
+    "description": "Active skill cooldown reduction",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 58,
+    "id": "f_persistent_zone",
+    "label": "Persistent Zone",
+    "description": "Longer damaging zones, same DPS",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 59,
+    "id": "f_companion_tempo",
+    "label": "Companion Tempo",
+    "description": "Companion attack speed",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 60,
+    "id": "f_patient_ferment",
+    "label": "Patient Ferment",
+    "description": "Damage over time ramps with status age",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 61,
+    "id": "f_barrier_capacity",
+    "label": "Barrier Capacity",
+    "description": "Higher maximum forge barrier",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 15,
+    "weight": 70
+  },
+  {
+    "number": 62,
+    "id": "f_lasting_coating",
+    "label": "Lasting Coating",
+    "description": "Longer forge barrier duration",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 25,
+    "weight": 70
+  },
+  {
+    "number": 63,
+    "id": "f_efficient_recovery",
+    "label": "Efficient Recovery",
+    "description": "Healing effectiveness",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 25,
+    "weight": 70
+  },
+  {
+    "number": 64,
+    "id": "f_boss_padding",
+    "label": "Boss Padding",
+    "description": "Damage reduction during boss and miniboss encounters",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 65,
+    "id": "f_crowd_filter",
+    "label": "Crowd Filter",
+    "description": "Damage reduction outside boss and miniboss encounters",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 66,
+    "id": "f_impact_cushion",
+    "label": "Impact Cushion",
+    "description": "Mitigate a large hit, with cooldown",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 67,
+    "id": "f_steady_shell",
+    "label": "Steady Shell",
+    "description": "Extra armor while stationary",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 68,
+    "id": "f_moving_cover",
+    "label": "Moving Cover",
+    "description": "Movement grants a small barrier, with cooldown",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 69,
+    "id": "f_control_resistance",
+    "label": "Control Resistance",
+    "description": "Shorter incoming control statuses",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 70,
+    "id": "f_clean_glaze",
+    "label": "Clean Glaze",
+    "description": "Dash cleanses one eligible harmful status",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 71,
+    "id": "f_broken_shell",
+    "label": "Broken Shell",
+    "description": "Barrier destruction grants temporary protection",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 72,
+    "id": "f_companion_shelter",
+    "label": "Companion Shelter",
+    "description": "Nearby companions grant capped armor",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 73,
+    "id": "f_long_flight",
+    "label": "Long Flight",
+    "description": "Projectile damage scales with distance travelled",
+    "row": "play",
+    "group": "projectile",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 74,
+    "id": "f_piercing_momentum",
+    "label": "Piercing Momentum",
+    "description": "Piercing distinct targets empowers a projectile",
+    "row": "play",
+    "group": "projectile",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 75,
+    "id": "f_ricochet_focus",
+    "label": "Ricochet Focus",
+    "description": "Bouncing to a new target grants damage",
+    "row": "play",
+    "group": "projectile",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 76,
+    "id": "f_clean_finish",
+    "label": "Clean Finish",
+    "description": "Projectile kills prepare the next basic attack",
+    "row": "play",
+    "group": "projectile",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 77,
+    "id": "f_combo_guard",
+    "label": "Combo Guard",
+    "description": "Combo finishers grant a barrier",
+    "row": "play",
+    "group": "melee",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 78,
+    "id": "f_closing_step",
+    "label": "Closing Step",
+    "description": "Entering melee range empowers the first melee attack",
+    "row": "play",
+    "group": "melee",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 79,
+    "id": "f_packed_punch",
+    "label": "Packed Punch",
+    "description": "A multi-target melee hit empowers the next attack",
+    "row": "play",
+    "group": "melee",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 80,
+    "id": "f_duel_rhythm",
+    "label": "Duel Rhythm",
+    "description": "Repeated melee hits grant temporary move speed",
+    "row": "play",
+    "group": "melee",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 81,
+    "id": "f_prepared_release",
+    "label": "Prepared Release",
+    "description": "Basic hits charge the next active skill",
+    "row": "play",
+    "group": "active",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 82,
+    "id": "f_follow_through",
+    "label": "Follow Through",
+    "description": "An active skill empowers the next three basic attacks",
+    "row": "play",
+    "group": "active",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 83,
+    "id": "f_emergency_cast",
+    "label": "Emergency Cast",
+    "description": "Casting at low HP grants a barrier",
+    "row": "play",
+    "group": "active",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 84,
+    "id": "f_patient_reserve",
+    "label": "Patient Reserve",
+    "description": "Holding a ready active skill builds a capped bonus",
+    "row": "play",
+    "group": "active",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 85,
+    "id": "f_settled_ground",
+    "label": "Settled Ground",
+    "description": "Zone damage ramps while an enemy stays inside",
+    "row": "play",
+    "group": "zones",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 86,
+    "id": "f_home_recipe",
+    "label": "Home Recipe",
+    "description": "Standing in an owner-created zone grants armor",
+    "row": "play",
+    "group": "zones",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 87,
+    "id": "f_crossing_flavors",
+    "label": "Crossing Flavors",
+    "description": "Two different overlapping zones gain damage",
+    "row": "play",
+    "group": "zones",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 88,
+    "id": "f_last_serving",
+    "label": "Last Serving",
+    "description": "An expired zone deals one final hit, with cooldown",
+    "row": "play",
+    "group": "zones",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 89,
+    "id": "f_hunter_s_mark",
+    "label": "Hunter\u2019s Mark",
+    "description": "Direct hits mark one target for increased owner damage",
+    "row": "play",
+    "group": "marks",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 90,
+    "id": "f_cash_out",
+    "label": "Cash Out",
+    "description": "Repeated hits consume a mark for bonus damage",
+    "row": "play",
+    "group": "marks",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 91,
+    "id": "f_claimed_reward",
+    "label": "Claimed Reward",
+    "description": "Marked kills or repeated boss hits grant a barrier",
+    "row": "play",
+    "group": "marks",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 92,
+    "id": "f_passing_target",
+    "label": "Passing Target",
+    "description": "Marked kills transfer the remaining mark duration",
+    "row": "play",
+    "group": "marks",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 93,
+    "id": "f_heavy_recipe",
+    "label": "Heavy Recipe",
+    "description": "Armor grants capped direct-hit damage",
+    "row": "play",
+    "group": "barrier",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 94,
+    "id": "f_stored_barrier",
+    "label": "Stored Barrier",
+    "description": "Spend part of a barrier to empower a direct hit",
+    "row": "play",
+    "group": "barrier",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 95,
+    "id": "f_breaking_point",
+    "label": "Breaking Point",
+    "description": "Barrier destruction grants attack speed",
+    "row": "play",
+    "group": "barrier",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 96,
+    "id": "f_guarded_focus",
+    "label": "Guarded Focus",
+    "description": "A maintained barrier grants critical chance",
+    "row": "play",
+    "group": "barrier",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 97,
+    "id": "f_earned_edge",
+    "label": "Earned Edge",
+    "description": "Kills build a temporary damage bonus",
+    "row": "play",
+    "group": "growth",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 98,
+    "id": "f_elite_lesson",
+    "label": "Elite Lesson",
+    "description": "Elite kills build a capped run-long damage bonus",
+    "row": "play",
+    "group": "growth",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 99,
+    "id": "f_adaptive_recipe",
+    "label": "Adaptive Recipe",
+    "description": "Collected EXP strengthens the most used attack tag",
+    "row": "play",
+    "group": "growth",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 100,
+    "id": "f_second_course",
+    "label": "Second Course",
+    "description": "Level-ups refund part of the active cooldown",
+    "row": "play",
+    "group": "growth",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 101,
+    "id": "f_reliable_batter",
+    "label": "Reliable Batter",
+    "description": "Raise the minimum of the gear attack damage range",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 40,
+    "weight": 70
+  },
+  {
+    "number": 102,
+    "id": "f_swift_delivery",
+    "label": "Swift Delivery",
+    "description": "Projectile travel speed",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 103,
+    "id": "f_firm_push",
+    "label": "Firm Push",
+    "description": "Strength of existing knockback",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 104,
+    "id": "f_sticky_flavor",
+    "label": "Sticky Flavor",
+    "description": "Chance to apply an existing supported status",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 105,
+    "id": "f_shield_cracker",
+    "label": "Shield Cracker",
+    "description": "Damage to enemy shields",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 106,
+    "id": "f_stagger_baker",
+    "label": "Stagger Baker",
+    "description": "Stagger accumulation",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 107,
+    "id": "f_thorn_glaze",
+    "label": "Thorn Glaze",
+    "description": "Rate-limited contact damage reflection",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 108,
+    "id": "f_clean_recipe",
+    "label": "Clean Recipe",
+    "description": "Damage to enemies without owner-applied statuses",
+    "row": "power",
+    "group": "power",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 109,
+    "id": "f_slow_burn_resistance",
+    "label": "Slow-Burn Resistance",
+    "description": "Incoming damage-over-time reduction",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 110,
+    "id": "f_projectile_padding",
+    "label": "Projectile Padding",
+    "description": "Incoming enemy projectile damage reduction",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 111,
+    "id": "f_safe_soles",
+    "label": "Safe Soles",
+    "description": "Incoming trap and ground hazard reduction",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 112,
+    "id": "f_firm_footing",
+    "label": "Firm Footing",
+    "description": "Incoming knockback distance reduction",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 113,
+    "id": "f_buffered_bite",
+    "label": "Buffered Bite",
+    "description": "Delay part of incoming HP damage without deleting it",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 114,
+    "id": "f_first_hit_guard",
+    "label": "First-Hit Guard",
+    "description": "Mitigate the first hit after a damage-free interval",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "weapon",
+      "gloves",
+      "armor",
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 115,
+    "id": "f_last_crumb",
+    "label": "Last Crumb",
+    "description": "Survive one lethal hit at 1 HP per run",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 1,
+    "weight": 70
+  },
+  {
+    "number": 116,
+    "id": "f_sweet_decoy",
+    "label": "Sweet Decoy",
+    "description": "Low HP creates a temporary enemy decoy",
+    "row": "sustain",
+    "group": "sustain",
+    "slots": [
+      "armor",
+      "gloves",
+      "amulet",
+      "boots",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 117,
+    "id": "f_treasure_aroma",
+    "label": "Treasure Aroma",
+    "description": "Additional chance for an eligible equipment drop",
+    "row": "play",
+    "group": "quantity",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 15,
+    "weight": 100
+  },
+  {
+    "number": 118,
+    "id": "f_currency_sprinkles",
+    "label": "Currency Sprinkles",
+    "description": "Additional chance for an eligible currency drop",
+    "row": "play",
+    "group": "quantity",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 15,
+    "weight": 100
+  },
+  {
+    "number": 119,
+    "id": "f_twin_parcel",
+    "label": "Twin Parcel",
+    "description": "An equipment drop can add an independently rolled box",
+    "row": "play",
+    "group": "quantity",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 12,
+    "weight": 70
+  },
+  {
+    "number": 120,
+    "id": "f_extra_pinch",
+    "label": "Extra Pinch",
+    "description": "A currency pickup can contain one extra unit",
+    "row": "play",
+    "group": "quantity",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 15,
+    "weight": 70
+  },
+  {
+    "number": 121,
+    "id": "f_elite_pockets",
+    "label": "Elite Pockets",
+    "description": "Elites and minibosses can grant an extra currency",
+    "row": "play",
+    "group": "quantity",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 15,
+    "weight": 70
+  },
+  {
+    "number": 122,
+    "id": "f_boss_pantry",
+    "label": "Boss Pantry",
+    "description": "Bosses can grant an extra currency parcel",
+    "row": "play",
+    "group": "quantity",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 25,
+    "weight": 70
+  },
+  {
+    "number": 123,
+    "id": "f_fine_ingredients",
+    "label": "Fine Ingredients",
+    "description": "Better base quality weights within the eligible table",
+    "row": "play",
+    "group": "quality",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 124,
+    "id": "f_polished_parcel",
+    "label": "Polished Parcel",
+    "description": "Better mod tiers on dropped equipment",
+    "row": "play",
+    "group": "quality",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 125,
+    "id": "f_careful_selection",
+    "label": "Careful Selection",
+    "description": "Avoid the lowest value rolls on dropped equipment",
+    "row": "play",
+    "group": "quality",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 126,
+    "id": "f_signature_scent",
+    "label": "Signature Scent",
+    "description": "More eligible special equipment bases",
+    "row": "play",
+    "group": "quality",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 127,
+    "id": "f_weapon_seeker",
+    "label": "Weapon Seeker",
+    "description": "Bias equipment toward weapons and gloves",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 128,
+    "id": "f_armor_seeker",
+    "label": "Armor Seeker",
+    "description": "Bias equipment toward armor and boots",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 129,
+    "id": "f_trinket_seeker",
+    "label": "Trinket Seeker",
+    "description": "Bias equipment toward amulets and rings",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 130,
+    "id": "f_spark_collector",
+    "label": "Spark Collector",
+    "description": "Bias currency toward Spark Sugar",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 50,
+    "weight": 70
+  },
+  {
+    "number": 131,
+    "id": "f_cream_collector",
+    "label": "Cream Collector",
+    "description": "Bias currency toward Twist Cream",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 50,
+    "weight": 70
+  },
+  {
+    "number": 132,
+    "id": "f_jam_collector",
+    "label": "Jam Collector",
+    "description": "Bias currency toward Wild Jam",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 50,
+    "weight": 70
+  },
+  {
+    "number": 133,
+    "id": "f_tier_collector",
+    "label": "Tier Collector",
+    "description": "Bias currency toward Crystal Glaze",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 50,
+    "weight": 70
+  },
+  {
+    "number": 134,
+    "id": "f_base_tracker",
+    "label": "Base Tracker",
+    "description": "Bias equipment toward one selected eligible base",
+    "row": "play",
+    "group": "target_farming",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 135,
+    "id": "f_clean_salvage",
+    "label": "Clean Salvage",
+    "description": "Drop-stamped bonus salvage materials",
+    "row": "play",
+    "group": "economy",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 136,
+    "id": "f_scrap_surprise",
+    "label": "Scrap Surprise",
+    "description": "Drop-stamped chance for currency when salvaged",
+    "row": "play",
+    "group": "economy",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 137,
+    "id": "f_trade_stamp",
+    "label": "Trade Stamp",
+    "description": "Drop-stamped bonus sale Sugar",
+    "row": "play",
+    "group": "economy",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 138,
+    "id": "f_patient_shopper",
+    "label": "Patient Shopper",
+    "description": "A stage clear grants one non-stacking supply discount",
+    "row": "play",
+    "group": "economy",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 139,
+    "id": "f_quick_pull",
+    "label": "Quick Pull",
+    "description": "Faster movement of already attracted loot",
+    "row": "play",
+    "group": "collection",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 40,
+    "weight": 100
+  },
+  {
+    "number": 140,
+    "id": "f_dash_retrieval",
+    "label": "Dash Retrieval",
+    "description": "Collect nearby drops along a dash path",
+    "row": "play",
+    "group": "collection",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 141,
+    "id": "f_magnet_reserve",
+    "label": "Magnet Reserve",
+    "description": "A redundant magnet grants a capped reserve charge",
+    "row": "play",
+    "group": "collection",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 142,
+    "id": "f_medic_s_choice",
+    "label": "Medic\u2019s Choice",
+    "description": "Low HP grants a rate-limited extra healing-drop chance",
+    "row": "play",
+    "group": "collection",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 10,
+    "weight": 70
+  },
+  {
+    "number": 143,
+    "id": "f_fresh_storage",
+    "label": "Fresh Storage",
+    "description": "A full-HP healing pickup stores capped recovery",
+    "row": "play",
+    "group": "collection",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "active",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 144,
+    "id": "f_field_organizer",
+    "label": "Field Organizer",
+    "description": "Merge nearby same-currency piles without changing totals",
+    "row": "play",
+    "group": "collection",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 145,
+    "id": "f_treasure_compass",
+    "label": "Treasure Compass",
+    "description": "Direction to an existing nearby treasure",
+    "row": "play",
+    "group": "exploration",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 146,
+    "id": "f_elite_radar",
+    "label": "Elite Radar",
+    "description": "Direction to an existing nearby elite",
+    "row": "play",
+    "group": "exploration",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 147,
+    "id": "f_hazard_survey",
+    "label": "Hazard Survey",
+    "description": "Reveal eligible hidden traps early",
+    "row": "play",
+    "group": "exploration",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 148,
+    "id": "f_secret_aroma",
+    "label": "Secret Aroma",
+    "description": "Chance for one additional eligible treasure location",
+    "row": "play",
+    "group": "exploration",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 149,
+    "id": "f_choice_parcel",
+    "label": "Choice Parcel",
+    "description": "Eligible gear chests can offer one of two items",
+    "row": "play",
+    "group": "exploration",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  },
+  {
+    "number": 150,
+    "id": "f_deep_preparation",
+    "label": "Deep Preparation",
+    "description": "One extra service choice at a Delve rest point",
+    "row": "play",
+    "group": "exploration",
+    "slots": [
+      "boots",
+      "amulet",
+      "ring"
+    ],
+    "status": "planned",
+    "maxValue": 20,
+    "weight": 70
+  }
+]
