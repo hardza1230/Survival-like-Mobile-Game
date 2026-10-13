@@ -1,6 +1,6 @@
 # Taro rework — work packages
 
-Status: T0–T5 complete/live in v7.8.14; Pages and published source verified (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T6 visual/sound/mobile feedback is next; pre-path alone remains legacy. See [TARO_T4_SMITE.md](TARO_T4_SMITE.md) and [TARO_T5_PROGRESSION.md](TARO_T5_PROGRESSION.md).
+Status: T0–T5 complete/live in v7.8.14; Pages and published source verified (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T6 presentation implemented in v7.8.15; T7 owner phone review is next; pre-path alone remains legacy. See [TARO_T4_SMITE.md](TARO_T4_SMITE.md) and [TARO_T5_PROGRESSION.md](TARO_T5_PROGRESSION.md).
 
 ## Goal and baseline
 
@@ -32,6 +32,6 @@ Current runtime already has path IDs storm/smite/tempest, path talents and capst
 
 #25 Taro Boba Capacitor is deferred optional work after the three paths are tuned. No fourth path, Toast Meter restoration, turret system or unrelated hero/UI rework in this plan.
 
-T0–T5 implementation are complete. T6 art/sound/mobile feedback is the next task; owner reviews all three paths on phone. Recommended implementation order: T0 → T1 → T2 → T3 → T4 → T5 → T6 → T7. Prototype review happens after each path, not only at the end. All packages modifying game.js integrate sequentially to avoid conflicting edits. Separate art preparation can proceed after the mechanics/art contract stabilizes; this plan does not start agents or separate chats.
+T0–T6 implementation are complete. T7 owner phone combat review and final tuning are next. T6 details: [TARO_T6_FEEDBACK.md](TARO_T6_FEEDBACK.md); publication verification is in SESSION_HANDOFF.md. Recommended implementation order: T0 → T1 → T2 → T3 → T4 → T5 → T6 → T7. Prototype review happens after each path, not only at the end. All packages modifying game.js integrate sequentially to avoid conflicting edits. Separate art preparation can proceed after the mechanics/art contract stabilizes; this plan does not start agents or separate chats.
 
 After each package update SESSION_HANDOFF with completed package, changed files, real checks, unresolved decisions and exact next package. Save recoverable commits when appropriate. Do not deploy partial prototypes as a finished rework. Publish only within the owner's implementation scope.

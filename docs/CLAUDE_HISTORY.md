@@ -1872,3 +1872,7 @@ Owner approved the mockups and exact spacing. Forge keeps its controls in one sc
 # Previous delivery: v7.8.4 — Readable Forge mods
 
 Effect-first pool rows, semantic Canvas pictograms with individual catalog seals, cached per mod (150 catalog identities; only 78 runtime-backed mods remain rollable). Current rows and paid choices reuse the icons. Details expose full effect, value at preview tier, chance and replaced row. Existing costs, saves and effect implementations remain. Full check/build and seven-viewport Forge tests pass; see docs/FORGE_READABILITY.md for browser QA.
+
+# Previous delivery: v7.8.9 — Painted Stats / Gear & Power
+
+Owner accepted compact Hero control proportions and asked for hero colors plus actual ImageGen artwork. Tabs/Selected now follow the preview hero in roster and equipped hero in Stats/Talents (six palettes). Stats uses seven real painted frames, seven stat icons and an info jewel; ordinary cropped-image slices retain corners in Canvas/WebGL. Gear & Power uses new five painted card textures and a generated courtyard background, preserving routes, locks, notifications and real guide badge rules. Source text remains live. 21 bounded WebP assets, manifest and exact selected prompts in assets/art/mobile_ui_789. See docs/MOBILE_PAINTED_UI.md.

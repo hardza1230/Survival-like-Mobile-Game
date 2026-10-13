@@ -1,0 +1,15 @@
+{
+  "castTaroChainBasic": "47084e3592ec4bd34ed3a812c4ceb9a09d21a35ece596a9695a3048085d1619a",
+  "castTaroSmiteBasic": "7c320386db594de54500c6f180c2dd33ffa293be18429585ae81a7ec2f4d996b",
+  "castTempestBasic": "dc211dea559b8b4b9a6b0fe70164193202fa311d897aeabcff59429ef31caf03",
+  "taroTempestDash": "b94598f69c75392e9df40825f91f011b4070ad2ad306123af2aeed84da125243",
+  "taroAreaHit": "78b75ef15bade7127f63f70ddec829863019599de9d869cc2d5ebacaa14d23cb",
+  "taroTryNova": "a639db1522376c9db8ab8a505c5368596de17dbdcaddacf7964c46e1cd7f8404",
+  "taroPostPhysics": "d336a205c29e491da8bdafda4718331186940b28db3806feb60e720205f73a4e",
+  "taroAfterSmite": "2e5d054e751ab4f82fc0fa1697bf71d5d71df3cdeb6aea8bce834526715e467b",
+  "taroAfterDirect": "df255c9e62ea82c560b72e10ffbc7be5968b40f8077c2d36ec63b72c5830f6dc",
+  "taroWithDamage": "032d377cbf4a520f9af13cb2c0fe72000f5939037e1e6a94373cd1dfc1181737",
+  "taroDealDamage": "e8e23b493135e686fd36c2673bf82a6dc3d224b357e69d8b7f4eb92094f75bfe",
+  "taroTempestProfile": "65cffd3f47fcb9f2745a95f638a054cd13e3fad1101a2bf4ddd71657f05a8fda",
+  "damage": "6b04a1d00a86614fad1754f845325ceb841ecf313909fb4c01652bfcb382f49f"
+}

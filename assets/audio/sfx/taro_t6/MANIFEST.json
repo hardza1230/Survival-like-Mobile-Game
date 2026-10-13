@@ -1,0 +1,46 @@
+{
+  "generator": "scripts/gen_sfx_jsfxr.cjs --taro-only <wav-output>",
+  "dependency": "jsfxr 1.4.1 (Unlicense)",
+  "encoder": "scripts/encode_mp3.py <wav-output> assets/audio/sfx/taro_t6 96",
+  "seed_policy": "Deterministic Park-Miller seeds 701/703/709/719; ready uses authored tri notes. See generator for exact envelope/note recipes.",
+  "sample_rate": 44100,
+  "channels": 1,
+  "bit_rate_kbps": 96,
+  "sounds": [
+    {
+      "key": "sfx_taro_bomb",
+      "file": "sfx_taro_bomb.mp3",
+      "wav_duration_s": 0.1432,
+      "bytes": 2194,
+      "sha256": "0f9dbad186d33f7d7c6d0c82f52022d1dc1378a08cc32e6c2ad4eb028a29a973"
+    },
+    {
+      "key": "sfx_taro_chain",
+      "file": "sfx_taro_chain.mp3",
+      "wav_duration_s": 0.0947,
+      "bytes": 1567,
+      "sha256": "510a9ce9b235508f0e2c0cbb11951eedde634ae1f35f4064b9ddcce0f11dd9ff"
+    },
+    {
+      "key": "sfx_taro_nova",
+      "file": "sfx_taro_nova.mp3",
+      "wav_duration_s": 0.1469,
+      "bytes": 2194,
+      "sha256": "0304efb8f57bef47f90f1033b2ddc22be2f62751e1c5293671d2885ef2f3565f"
+    },
+    {
+      "key": "sfx_taro_ready",
+      "file": "sfx_taro_ready.mp3",
+      "wav_duration_s": 0.1494,
+      "bytes": 2194,
+      "sha256": "1b691b881f9399e54105f94203e1ecee9f74e943871a1fc6fb957a7ecef32027"
+    },
+    {
+      "key": "sfx_taro_smite",
+      "file": "sfx_taro_smite.mp3",
+      "wav_duration_s": 0.1719,
+      "bytes": 2508,
+      "sha256": "2da6b7789d4043ba3b8457d0ff306634a801a59f0d60afd946fce3a269f4dba5"
+    }
+  ]
+}

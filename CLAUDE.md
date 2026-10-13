@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.14 — Taro T5 progression
+# Latest delivery: v7.8.15 — Taro T6 feedback
+
+Selected Taro paths have short violet links, gold priority brackets/strike, open cyan nova and violet diamond bomb burst. One new ImageGen painted bomb with actual alpha and attached fuse arc; five short deterministic jsfxr/MP3 cues. Charge HUD maintains screen size at camera zoom and signals READY once per transition. Transient FX capped at 20 plus three fixed pending bombs; active-time fade/fuse, pause visibility and epoch cleanup. Target/damage/progression resolvers retained except two sound dispatches; other heroes/pre-path untouched. Required check/build and Canvas presentation/hero checks recorded in SESSION_HANDOFF. See docs/TARO_T6_FEEDBACK.md. Next T7 owner phone combat review and final tuning; #25 deferred.
+
+# Previous delivery: v7.8.14 — Taro T5 progression
 
 Selected-path upgrades/mutations/evolution and Weapon Codex share immutable descriptors. Talent labels identify basic range/cadence and survival scope; all saved IDs/effects/costs/capstone gates retained. Rare scalar run-upgrades now use authored rolled potency in path D/conditional fields and Gale Dash cooldown; count ranks remain integer. Codex has three path views and complete mobile descriptions. Full check/build passed; final menu/publication status in SESSION_HANDOFF. See docs/TARO_T5_PROGRESSION.md; next T6 art/sound and owner combat feedback.
 
@@ -21,10 +25,6 @@ Tempest now earns charge from intentional post-physics walking, adds 15 per acce
 # Previous delivery: v7.8.10 — Taro T1 foundation
 
 Taro-only targeting, pooled-enemy identities, pure path profiles/movement, active-play queues, source/proc adapters and lifecycle cleanup are implemented. New path state starts disabled; existing Taro attacks, Dash passive, Unique, Storm Charge and progression remain live. Terminal adapters keep rewards/healing/shields and stop combat recursion; delayed recipe recovery retains source context. See docs/TARO_T1_FOUNDATION.md and docs/TARO_T0_CONTRACT.md. Next T2 enables and implements Tempest only; initialize opt-in consistently after retry/revival/path sync.
-
-# Previous delivery: v7.8.9 — Painted Stats / Gear & Power
-
-Owner accepted compact Hero control proportions and asked for hero colors plus actual ImageGen artwork. Tabs/Selected now follow the preview hero in roster and equipped hero in Stats/Talents (six palettes). Stats uses seven real painted frames, seven stat icons and an info jewel; ordinary cropped-image slices retain corners in Canvas/WebGL. Gear & Power uses new five painted card textures and a generated courtyard background, preserving routes, locks, notifications and real guide badge rules. Source text remains live. 21 bounded WebP assets, manifest and exact selected prompts in assets/art/mobile_ui_789. See docs/MOBILE_PAINTED_UI.md.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
@@ -92,7 +92,7 @@ Owner accepted compact Hero control proportions and asked for hero colors plus a
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.14 · 13 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.15 · 13 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)

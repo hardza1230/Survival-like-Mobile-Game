@@ -1,0 +1,21 @@
+{
+  "version": "7.8.15",
+  "assets": [
+    {
+      "key": "fx_taro_dash_bomb",
+      "file": "dash_bomb.webp",
+      "width": 128,
+      "height": 128,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bytes": 17278,
+      "sha256": "10a995846a5e4bdb0d92c84d5bbe58121438e9f42e921cb8f41c0a7a05147364",
+      "display_world_px": 40,
+      "max_pending": 3,
+      "blend": "NORMAL",
+      "reuse": "Existing Taro hero, path icons, talents and Unique assets retained."
+    }
+  ]
+}

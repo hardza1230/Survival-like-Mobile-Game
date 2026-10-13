@@ -1,0 +1,7 @@
+{
+  "tool": "image_gen",
+  "transparent_background": true,
+  "prompt": "Create ONE production game sprite for Mochi Mayhem mobile fantasy dessert action RPG: a small Thunder Dash Bomb left by violet hero Taro. Single centered round purple mochi crystal bomb with two short angular cyan lightning fins and a tiny glowing violet fuse nub on top. Charming richly painted anime game-item rendering, plum body, lavender highlights, restrained icy cyan electrical accent, dark ink edge so readable on bright and dark floors. Clear round silhouette readable at 36 pixels. Top-down three-quarter view, no ground shadow, no scenery, no text, no frame, no sheet, no other objects. Object occupies central 75% of square canvas with ample clean transparent margin. Actual transparent alpha background.",
+  "selected_source_sha256": "1fdfb58a7304f9a012b1335832b68034a395490862e25ab452243a41386c2994",
+  "processing": "Preserve alpha; Lanczos downsample to 128x128; lossless WebP. No background removal or recolor."
+}
