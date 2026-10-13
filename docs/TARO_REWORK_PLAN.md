@@ -1,6 +1,6 @@
 # Taro rework — work packages
 
-Status: T0–T3 complete/live; T4 Smite implemented and checked in v7.8.13, publication next (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T5 talents/progression is next; pre-path alone remains legacy. See [TARO_T4_SMITE.md](TARO_T4_SMITE.md).
+Status: T0–T4 complete; all three Taro paths verified live in v7.8.13 (2026-10-13). See [TARO_T0_CONTRACT.md](TARO_T0_CONTRACT.md), [TARO_T1_FOUNDATION.md](TARO_T1_FOUNDATION.md), [TARO_T2_TEMPEST.md](TARO_T2_TEMPEST.md) and [TARO_T3_CHAIN.md](TARO_T3_CHAIN.md). T5 talents/progression is next; pre-path alone remains legacy. See [TARO_T4_SMITE.md](TARO_T4_SMITE.md).
 
 ## Goal and baseline
 

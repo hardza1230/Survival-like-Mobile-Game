@@ -34,3 +34,7 @@ Full npm check passed. Pure formulas and isolated actual central-damage adapters
 6. Pause/level-up/resume, death/revive/retry, another path next run: no delayed pre-death hits or stale marks. Compare finished Chain/Tempest behavior.
 
 Next: T5 talents/progression descriptions, with owner combat feedback. No T6 artwork or #25 capacitor in this package.
+
+## Verified publication
+
+Runtime v7.8.13 commit 7c6f25d7d8a00af13523b67da42b3add64f37aea, tested/published tree 9a784ec01733c4496984fbf0c69d055d4af2be61. Pages run 38421993251 succeeded on 2026-10-13. Live version.json and complete runtime source verified, excluding only build-injected asset manifests. APK run 38421993666 is separate; owner phone combat review remains pending.
