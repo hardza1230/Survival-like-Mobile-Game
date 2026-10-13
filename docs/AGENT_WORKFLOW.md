@@ -53,3 +53,7 @@ Build www, then scripts/build-heroes-review.mjs and scripts/check-heroes-live-ui
 ### UTF-16 chunk boundaries for connector upload
 
 Windows .NET Substring / PowerShell JSON chunks can split an emoji surrogate pair; stdout then replaces both halves with U+FFFD. Verified with game.js upload: content length was equal but blob SHA differed. Pick chunk ends outside surrogate pairs (or use boundary-safe overlap/base64), normalize CRLF to LF as git does, and always require exact local/remote tree equality before updating the branch. If unequal, compare changed blob SHAs and locate differing code units; do not publish the mismatched tree.
+
+## Painted Gear menu review (verified 2026-10-13)
+
+Build www, then scripts/build-gear-power-review.mjs and scripts/check-gear-power-ui.cjs with Playwright/Chrome. Seven real Canvas viewports verify all five routes, lock guard, card aspect and text/touch bounds. Optional GEAR_POWER_SHOT_PATH saves the portrait screenshot. Asset manifest and selected prompts live beside production WebP files; validate actual alpha before accepting a transparent ImageGen output. Illustrated Gear cards intentionally use opaque complete card textures, while Stats frame/icon textures have transparent edges. After Pages succeeds, compare SHA-256 for published new assets against the tested local kit.

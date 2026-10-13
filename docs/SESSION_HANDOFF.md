@@ -1,11 +1,18 @@
 # Latest session checkpoint
 Updated: 2026-10-13 (Asia/Bangkok).
 
-## Active delivery — v7.8.9 painted mobile UI
-Owner approved compact tabs/Selected, requested hero colors, ImageGen Stats frames/icons and Gear & Power redesign + asset set. Implemented six palettes: preview hero in roster, equipped hero in Stats/Talents. Seven painted Stats frames + seven icons + info jewel; cropped-image nine slices keep corners proportional. Gear & Power now five illustrated cards, generated castle courtyard, proper aspect ratios, real guide/badge/lock routes. No save/formula/economy changes.
-21 WebP production assets + MANIFEST/PROMPTS in assets/art/mobile_ui_789. Stats assets transparent; Gear cards intentionally opaque illustrations+frame. Failed transparent Gear kits discarded; only final card sheet shipped. Selected ImageGen sources/prompts and asset ZIP saved in current chat outputs. Exact prompts in repository too.
+## Completed — v7.8.9 painted mobile UI live
+Owner approved compact Heroes tabs/Selected geometry, requested hero colors, actual ImageGen Stats frames/icons and Gear & Power design + new asset set. Six hero palettes: preview hero for roster, equipped hero for Stats/Talents. Seven painted Stats frames + seven stat icons + source-info jewel; cropped-image nine slices retain corners in Canvas/WebGL. Gear & Power has five illustrated card textures and generated courtyard background, natural artwork aspect, real badge/guide/lock rules. Routes, saves, formulas and economy preserved.
+21 bounded production WebP assets plus MANIFEST/PROMPTS committed in assets/art/mobile_ui_789. Stats has transparent edges. Gear cards intentionally combine opaque illustration and border. Extra transparent Gear atlas attempts were rejected, not shipped. Labels/values remain live game text. New artwork decodes per menu group, excluded from stage-critical art.
 
-## State / next action
-Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game; remote base 2dcd9a94c78fcb046687971d8b239939951789f7 clean/confirmed before work. Full check/build passed; Heroes/Stats and Gear & Power native Canvas 7 sizes each passed, with six hero colors, frame/icon presence, text bounds, selection, detail/source routes and all five Gear routes/locks. Screenshots inspected. Weave label adjusted rightward and final check/build/Gear QA passed. Next: exact-tree publication and Pages verification. No v7.8.9 publish yet.
-Changed game.js, package.json, existing Hero/Talent tests + Heroes review, new tests/mobile-ui-art.test.cjs and scripts/build-gear-power-review.mjs + check-gear-power-ui.cjs, asset kit, CLAUDE/history and docs/MOBILE_PAINTED_UI.md. Logs parent work mobile-art-789-check.log / build.log. Current chat outputs stats-7.8.9.png, heroes-7.8.9.png, gear-power-7.8.9.png and mobile-ui-assets-7.8.9.zip.
-Previous v7.8.8 / Forge work complete; do not redo.
+## Verified publication
+Runtime commit 2526456f1aa4a1bc4947d8c5315217fb3ee6896e on claude/vampire-survival-mobile-game-yo9e8w. Uploaded/tested tree matched be9c274f7c8387d6dbef4d3d5a5a7f0dc67b655d before ref update. Pages run 38380072663 succeeded. Published version.json and GAME_VERSION both 7.8.9; live hero colors, painted Stats and Gear builder/background verified. SHA-256 of all 21 published WebP files exactly matched local tested assets.
+Full npm check/build passed (1306 runtime assets). Real Canvas Heroes/Stats and Gear & Power: seven sizes each, six palettes, frame/icon presence, text/touch bounds, preview without equipping, explicit confirmation/idempotence, details/source overlays, five Gear routes and locked guard. Weave title moved right after visual inspection and final Gear checks passed. Existing Forge/scrolling suite passed; no headless combat simulation.
+
+## Recovery / references
+Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Logs in parent work mobile-art-789-check.log / mobile-art-789-build.log. See docs/MOBILE_PAINTED_UI.md, tests/mobile-ui-art.test.cjs, scripts/build-heroes-review.mjs + check-heroes-live-ui.cjs, scripts/build-gear-power-review.mjs + check-gear-power-ui.cjs. CLAUDE/history updated.
+Task outputs C:/Users/Norrasates/Documents/Codex/2026-10-13/repository-hardza1230-survival-like-mobile-game/outputs: gear-concept-789.png, stats-frames-789.png, stats-icons-789.png, gear-cards-789.png, gear-background-789.png, imagegen-prompts-789.json, mobile-ui-assets-7.8.9.zip. Actual synthetic-menu screenshots: heroes-7.8.9.png, stats-7.8.9.png, gear-power-7.8.9.png. Selected production prompts also in repository asset folder.
+Earlier Forge / v7.8.8 work complete; do not redo.
+
+## Next action
+No unfinished implementation or deployment. Await physical-phone visual/touch feedback or new work. Confirm actual branch/files/remote state before edits.
