@@ -1,17 +1,1 @@
-const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const source=fs.readFileSync('game.js','utf8');
-for(const [method,cue,currency] of [['promoteFocusedItem','capacity','regal'],['divineFocusedLine','reroll','divine'],['annulFocusedLine','remove','annul'],['scourFocusedItem','reset','scour']]){
- let wallet=10,rarity='magic',affixes=[{id:'a',v:2,t:5},{id:'b',v:3,t:5}],events=[];
- const item={uid:'test',locked:false},mod={label:'Power',fmt:v=>String(v),tiers:{5:[2,8]}};
- const context={FLAME_REROLL_COST:2,affixDef:()=>mod,rollOneAffix:(m,b)=>({id:m.id,t:b,v:1}),affixBestTierForItem:()=>3,Sfx:{craft:k=>events.push(k),error:()=>events.push('error')},Save:{currency:()=>wallet,spendCurrency:(key,n)=>{assert.equal(key,currency);wallet-=n;},gearAffixes:()=>affixes,setAffixes:(id,a)=>affixes=a,gearRarity:()=>rarity,setGearRarity:(id,r)=>rarity=r}};
- vm.createContext(context);const a=source.indexOf('  '+method+'(){'),b=source.indexOf('\n',a);const action=vm.runInContext('({'+source.slice(a,b)+'})',context)[method];
- const scene={_craftContext:()=>({item,base:{tier:'magic'}}),craftLineIndex:0,showBanner(){},buildCraftBench(){},screenFlash(){}};
- item.locked=true;action.call(scene);assert.equal(events.length,0);assert.equal(wallet,10);
- item.locked=false;wallet=0;action.call(scene);assert.deepEqual(events,['error']);assert.equal(wallet,0);
- events=[];wallet=10;action.call(scene);assert.deepEqual(events,[cue]);assert.equal(wallet,method==='divineFocusedLine'?8:9);
- if(cue==='capacity')assert.equal(rarity,'rare');
- if(cue==='remove')assert.equal(affixes.length,1);
- if(cue==='reset'){assert.equal(affixes.length,0);assert.equal(rarity,'common');}
- events=[];affixes=[];if(cue==='capacity')rarity='common';if(cue!=='reset'){action.call(scene);assert.equal(events.length,0);}
-}
-console.log('Affix sounds: saved success, costs, locked/invalid actions and resource errors passed');
+const assert=require('assert/strict'),vm=require('vm');const{fixture,method}=require('./forge-fixture.cjs');const{ctx}=fixture();let events=[],writes=0;ctx.Sfx={craft:k=>events.push(k),error:()=>events.push('error')};const item={uid:'test',slot:'weapon',baseId:'test',itemLevel:50,affixes:[{id:'f_might',line:0,v:8,t:5}]};ctx.Save={data:{currency:{divine:10}},currency:k=>ctx.Save.data.currency[k]||0,save(){writes++;}};const Scene=vm.runInContext('class S{'+['divineFocusedLine','annulFocusedLine','scourFocusedItem','promoteFocusedItem'].map(method).join('\n')+'\n}S',ctx),s=new Scene();Object.assign(s,{craftLineIndex:0,_craftContext:()=>({item,base:{tier:'rare'}}),showBanner(){},buildCraftBench(){},screenFlash(){}});item.locked=true;s.divineFocusedLine();assert.equal(writes,0);item.locked=false;ctx.Save.data.currency.divine=0;s.divineFocusedLine();assert.deepEqual(events,['error']);events=[];ctx.Save.data.currency.divine=10;s.divineFocusedLine();assert.deepEqual(events,['reroll']);assert.equal(writes,1);assert.equal(ctx.Save.data.currency.divine,9);assert.equal(item.affixes[0].id,'f_might');for(const n of ['annulFocusedLine','scourFocusedItem','promoteFocusedItem'])assert.equal(s[n](),false);console.log('Affix sounds: exact tier reroll cost, saved success, locked/error guards and retired destructive controls passed');

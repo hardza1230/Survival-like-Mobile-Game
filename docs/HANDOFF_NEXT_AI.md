@@ -1,3 +1,7 @@
+# Forge 150 rollout — v7.8.0
+
+150 catalog / 78 active / 72 gated. Read docs/FORGE_150_ROLLOUT.md for exact remaining consumers. Preserve legacy data and paid Sustain choices. Owner phone feel/FPS review pending.
+
 # Latest delivery: v6.58.0 — Chocolate Flicker and discoverable Unique controls
 
 Chocolate has a separate Flicker ON/OFF button beside Unique. A new run starts OFF; selection persists during the run and pause. ON auto-warps from 260/300/340 range (Titan/Brawler/Dash Boxer), punches 1/2/3 times with base power divided across the sequence, then returns to an anchor that follows player movement. Boss/Mini stays locked while active, phase-valid and in range; joystick heading selects ordinary targets. Retreat input prevents new chains and cancels an active chain; Dash cancels before its movement/Recipe triggers (even without a remaining charge, the chain still cancels). OFF finishes only the current primary punch. Hurt/reset/changed player/path/epoch cancel stale hits and restore camera follow. Warp destinations/anchors stay within world bounds; camera follows the anchor during attacks; visible punches grant no new iframe. Existing hit-phase checks, path effects/Evolutions, mutations, saved IDs/Talents and path Uniques are preserved. Actual primary punches use a windup/impact/recovery sequence from existing art. The auto-cast loop waits for an active chain without consuming another full cooldown, with 100ms visual recovery after a normal return. No kill/charge requirement against single bosses.

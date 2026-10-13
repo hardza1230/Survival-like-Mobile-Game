@@ -1,3 +1,5 @@
+> Historical document. Current currency/row rules: [FORGE_150_ROLLOUT.md](FORGE_150_ROLLOUT.md).
+
 # Focused Affix Forge — v7.7.23
 
 Owner approved the portrait concept and asked why Remove Affix / Reset Item are rarely useful.

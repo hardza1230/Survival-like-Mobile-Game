@@ -1,3 +1,5 @@
+> Historical document. Current currency/row rules: [FORGE_150_ROLLOUT.md](FORGE_150_ROLLOUT.md).
+
 # Mobile Affix Forge
 
 ## Player flow

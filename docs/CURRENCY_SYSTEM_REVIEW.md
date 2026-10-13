@@ -1,3 +1,5 @@
+> Historical document. Current currency/row rules: [FORGE_150_ROLLOUT.md](FORGE_150_ROLLOUT.md).
+
 # Currency review and work log (2026-09-27)
 
 ## Delivered in v5.85.0
