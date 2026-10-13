@@ -38,6 +38,7 @@ Verified 2026-10-13 in Codex desktop on Windows:
 
 ## Checks and context management
 
+- Forge browser review: run `node scripts/build-forge-review.mjs` after changing game.js. `npm run build:www` does not regenerate the standalone review; stale www/forge-review.js can make browser QA exercise old behavior. Use synthetic saves and inspect the generated source version before QA.
 - Runtime changes: use the required `npm run check` and `npm run build:www`, plus relevant real-menu/browser checks. Do not simulate headless combat; the user tests gameplay.
 - Documentation-only changes: check links, facts and the diff. Avoid rerunning the entire game suite or bumping the game version just for workflow notes.
 - Save concise checkpoints after a meaningful implementation milestone, after verification, and before publish/deploy. Mark intended, running, failed and verified operations separately.
