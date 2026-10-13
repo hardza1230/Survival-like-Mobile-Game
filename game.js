@@ -7890,6 +7890,7 @@ class Game extends Phaser.Scene {
     if(ch==='taro')for(const row of rows)row.stack=!row.head;
     const bottom=this._codexRows(top,rows,rh);
     this._codexNav(this._codexChar,pages,()=>{this._codexChar--;this.buildSkillArchive();},()=>{this._codexChar++;this.buildSkillArchive();},c.emoji+' '+c.name+'  ·  '+(this._codexChar+1)+' / '+pages,ch==='taro'?{y:Math.max(this.H-31,bottom+24),touch:true}:{});
+    this.setupMenuScroll?.('skills');
   }
   // 🔮 Relic ทั้งหมด + คู่ Synergy
   buildRelicCodex(top){
