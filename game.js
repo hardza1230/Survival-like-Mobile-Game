@@ -6608,8 +6608,9 @@ class Game extends Phaser.Scene {
     else if(!this.dashReady||this.state!=='play'||(this.character==='taro'&&this.basicAttack?.path==='tempest'&&this.dashTime>0)) return;
     if(this._impalerCharge)this.releaseImpalerCharge(false);if(this._berryCharge)this.releaseBerryCharge(false);
     if(this.player&&this.player._pt&&this.player._pt.hsDash)this._ptHsNext=true;
+    if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());
     this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1)*(this.character==='taro'&&this.basicAttack?.path==='tempest'?Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0))):1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(coc)this.cocoaOnDash(); this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
-    const d=this.moveDir.clone().normalize();if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(d);
+    const d=this.moveDir.clone().normalize();
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;if(this.player.forgeMods){const r=forgeState(this);r.dashUntil=(this.elapsed||0)+1.5;r.dashPrimed=true;}
     if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
     this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);this.cocoaEvoDash?.();if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-1-.5*(this.basicAttack.lv?.p_recharge||0)-this.ptv('dbRefund'));}

@@ -105,7 +105,7 @@ function legacyMethod(name){return method(name)
  .replace(" if(this.character==='taro'&&this.basicAttack?.path==='tempest')return;const CP=",' const CP=')
  .replace("||(this.character==='taro'&&this.basicAttack?.path==='tempest'&&this.dashTime>0)",'')
  .replace("*(this.character==='taro'&&this.basicAttack?.path==='tempest'?Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0))):1)",'')
- .replace("if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(d);",'');}
+ .replace("    if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());\n",'');}
 for(const [name,hash] of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(legacyMethod(name)).digest('hex'),hash,name+' retained legacy branch');
 assert(scene('tempest')._taro.enabled,'Tempest opts in');assert(!scene('smite')._taro.enabled,'Smite stays dormant');
 for(const n of ['resetRelics','clearArtVfx','die'])assert(method(n).includes('clearTaroCombat?.()'),n+' clears pending state');
