@@ -7362,7 +7362,7 @@ class Game extends Phaser.Scene {
       });
       this.load.image(artKey,verUrl(url));if(!this.load.isLoading())this.load.start();
     }
-    if(artKey==='screen_heroes'||title==='Equipment'||title==='Affix Forge'){if(title!=='Heroes'&&veil)veil.setAlpha(.84);this.menu.add(veil?[bg,veil]:[bg]);if(drawHeader)this.drawRosterHeader(backScreen,artKey==='screen_heroes'?'Heroes':title);return;}
+    if(artKey==='screen_heroes'||title==='Equipment'||title==='Affix Forge'){if(title==='Affix Forge'&&veil)veil.setFillStyle(0x110c19,.84).setAlpha(1);else if(title!=='Heroes'&&veil)veil.setAlpha(.84);this.menu.add(veil?[bg,veil]:[bg]);if(drawHeader)this.drawRosterHeader(backScreen,artKey==='screen_heroes'?'Heroes':title);return;}
     const headY=compact?27:52;
     const t=this.add.text(w/2,headY,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'20px':'22px',color:'#ff8fb5'}).setOrigin(0.5);
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'14px':'16px',color:'#ffe08a'}).setOrigin(1,0.5);
@@ -9309,7 +9309,7 @@ class Game extends Phaser.Scene {
   forgeButton(x,y,w,h,label,fn,{kind='secondary',cost=null,icon=null,tag=null,disabled=false}={}){
     const bg=this.forgeChrome(kind,x,y,w,h);if(disabled)bg.setAlpha(.45);const color=disabled?'#b9a7be':kind==='choice'?'#123b31':'#fff0df';
     if(cost){const lab=this.forgeText(0,y+(h-18)/2,label,13,color,true),lw=lab.width,total=16+4+8+5+lw,start=x+(w-total)/2;this.forgeIcon(currencyDef(cost)?.asset,start+8,y+h/2,16);this.forgeText(start+20,y+(h-16)/2,'1',12,color,true);lab.setX(start+33);}
-    else if(icon)this.forgeIcon(icon,x+w/2,y+h/2,22);
+    else if(icon){const im=this.forgeIcon(icon,x+w/2,y+h/2,22);if(disabled)im.setAlpha(.45);}
     else this.forgeText(x+w/2,y+(h-18)/2,label,13,color,true,w-12,.5);
     if(fn&&!disabled){this._zone(x,y,w,h,fn);this.tapZones[this.tapZones.length-1].tag=tag||label;}return bg;
   }
@@ -9337,7 +9337,7 @@ class Game extends Phaser.Scene {
     const ipage=Math.max(0,Math.min(ipages-1,this.craftPageBySlot[slot]||0));
     if(IL){const inset=ipages>1?28:0,iw=(IL.w-2*inset-12)/3;
       items.slice(ipage*3,ipage*3+3).forEach((it,i)=>{const x=IL.x+inset+i*(iw+6),b=GEAR_ALL.find(g=>g.id===it.baseId);this.forgeChrome(it.uid===selected.uid?'panel_on':'panel',x,IL.y,iw,IL.h);this.forgeIcon('gear_'+b.id,x+iw/2,IL.y+(IL.h-14)/2,Math.min(32,IL.h-18),b.emoji);this.forgeText(x+iw/2,IL.y+IL.h-15,'iLv '+(it.itemLevel||1),11,'#c5b6ce',true,iw-8,.5);
-        if(Save.isGearEquipped(it.uid)){this.forgeChrome('equipped',x+4,IL.y+3,Math.min(72,iw-8),18);this.forgeText(x+iw/2,IL.y+4,'✓ Equipped',10,'#123b31',true,iw-10,.5);}
+        if(Save.isGearEquipped(it.uid)){this.forgeChrome('equipped',x+4,IL.y+3,Math.min(72,iw-8),18);this.forgeText(x+4+Math.min(72,iw-8)/2,IL.y+4,'✓ Equipped',10,'#123b31',true,Math.min(72,iw-8)-8,.5);}
         this._zone(x,IL.y,iw,IL.h,()=>this.forgeSelectItem(it));this.tapZones[this.tapZones.length-1].tag='item_'+it.uid;});
       if(ipages>1){this.forgeButton(IL.x,IL.y,24,IL.h,'‹',()=>{this.craftPageBySlot[slot]=(ipage-1+ipages)%ipages;this.buildCraftBench();},{tag:'gear_previous'});this.forgeButton(IL.x+IL.w-24,IL.y,24,IL.h,'›',()=>{this.craftPageBySlot[slot]=(ipage+1)%ipages;this.buildCraftBench();},{tag:'gear_next'});}
     }

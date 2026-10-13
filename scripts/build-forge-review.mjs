@@ -8,6 +8,7 @@ function seedReview(){
  const weapons=['w_knife','w_chop','w_whisk'].map(id=>GEAR_ALL.find(b=>b.id===id)),owned=[];
  for(const sd of GEAR_SLOTS){const b=sd.slot==='weapon'?weapons[0]:GEAR_ALL.find(b=>b.slot===sd.slot&&b.tier!=='start'&&!b.unique);if(b)owned.push({uid:'review-'+sd.slot,baseId:b.id,slot:sd.slot,grade:b.tier,itemLevel:55,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]});}
  weapons.slice(1).forEach((b,i)=>owned.push({uid:'review-extra-'+i,baseId:b.id,slot:'weapon',grade:b.tier,itemLevel:16+i,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]}));
+ for(const it of owned)for(const a of it.affixes){const m=affixDef(a.id);a.t=Math.max(5,affixBestTierForItem(it,m));a.v=m.tiers[a.t][0];}
  Save.data={sugar:554,currency:{transmute:24,alt:18,chaos:12,divine:10},gearItems:owned,equippedGear:Object.fromEntries(owned.filter(i=>!i.uid.includes('extra')).map(i=>[i.slot,i.uid])),gear:Object.fromEntries(owned.map(i=>[i.slot,i.baseId])),gearLv:{},forgeEconomyVersion:1};
  Save.save=()=>{};for(const k of Object.keys(Sfx))if(typeof Sfx[k]==='function')Sfx[k]=()=>{};
 }
@@ -23,7 +24,7 @@ class ForgeReview extends Phaser.Scene{
   this.W=RW;this.H=RH;this.state='menu';this.menuScreen='craft';this.gearSlot='weapon';this.menu=this.add.container(0,0);this.tapZones=[];
   this.craftSelectedUid=reviewState==='power'?'review-weapon':'review-extra-0';this.craftLineIndex=reviewState==='sustain'?1:reviewState==='utility'?2:0;
   const item=Save.gearItem(this.craftSelectedUid),groups=[...new Set(forgePool(item,2).map(m=>m.group))];this.craftGroup=groups.includes('quantity')?'quantity':groups[0];
-  if(reviewState==='sustain')item.forgeChoice={line:1,paid:'alt',options:[{id:'f_vital_dough',v:30,t:5},{id:'f_slow_recovery',v:5,t:5}]};
+  if(reviewState==='sustain')item.forgeChoice={line:1,paid:'alt',options:['f_vital_dough','f_slow_recovery'].map(id=>{const m=affixDef(id),t=forgePreviewTier(item,1,m);return{id,t,v:m.tiers[t][0]};})};
   this._forgePanel=null;this.input.on('pointerup',p=>{const z=[...this.tapZones].reverse().find(z=>p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h);if(z)z.fn();this.status();});
   this.buildCraftBench();this.status();
  }
