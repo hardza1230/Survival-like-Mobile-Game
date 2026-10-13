@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.13';
+const GAME_VERSION = '7.8.14';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.14',date:'2026-10-13',title:'Taro progression clarity',items:['Taro upgrades, mutations and evolution now explain the selected path','Weapon Codex compares Chain, Smite and Tempest; Talent effects identify their scope','Rare scalar path upgrades now keep their rolled potency; saved ranks and costs stay intact']},
   {v:'7.8.13',date:'2026-10-13',title:'Taro Smite prototype',items:['Lightning Rod holds priority targets: bosses, elites, then ordinary enemies','Smite repeats once on big targets and converts arcs into bounded add splashes','All three Taro paths are available; progression polish and artwork follow']},
   {v:'7.8.12',date:'2026-10-13',title:'Taro Chain prototype',items:['Chain bolts grow stronger with each bounce and share distinct targets across the volley','Direct Chain and Chain Bolt kills release three bounded lightning shards','Tempest remains available; Smite keeps its current attacks']},
   {v:'7.8.11',date:'2026-10-13',title:'Taro Tempest prototype',items:['Walk to charge Static Discharge; Dash adds charge and sweeps enemies','Each Dash leaves a timed lightning bomb at its starting point','Tempest keeps one weak basic bolt; Gale improves Dash recharge']},
@@ -3173,7 +3174,7 @@ const SIGNATURE_WEAPONS = {
   jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
 };
 // v4.62: คำอธิบาย Evolution ต่อสกิล (ใช้ทั้งการ์ดเลเวลอัพและ Codex)
-const BASIC_EVO_DESC={yuzling:'Your selected crew evolves: Swarm hunts faster, Guardian slams wider, Workshop cooks stronger',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Evolves your selected path: Hailstorm Arsenal, Absolute Zero or Heaven Piercer; earlier upgrades remain active',meteor:'Evolves the chosen Chocolate path: Overdrive flurry, Colossus aftershock or a Phantom follow-up',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
+const BASIC_EVO_DESC={yuzling:'Your selected crew evolves: Swarm hunts faster, Guardian slams wider, Workshop cooks stronger',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Evolves the chosen Taro path: longer chains, stronger priority strikes or wider movement nova',frost:'Evolves your selected path: Hailstorm Arsenal, Absolute Zero or Heaven Piercer; earlier upgrades remain active',meteor:'Evolves the chosen Chocolate path: Overdrive flurry, Colossus aftershock or a Phantom follow-up',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
 const MINT_EVOLUTIONS={
   barrage:{name:'Hailstorm Arsenal',desc:'Every 4s, queue 6 compact lances at 70% power, 90ms apart. Normal volley stays capped at 3; excess lances still strengthen shards.'},
   glacier:{name:'Absolute Zero',desc:'Opening Shatter radius +65%; chain gains 1 step (max 3). Still at most 6 bursts per reaction; shard investment strengthens the frost bloom.'},
@@ -3290,6 +3291,26 @@ const BASIC_ATTACKS = {
       {id:'fortress',name:'Mirror Fortress',emoji:'🏰',desc:'+25% circle radius'},
       {id:'retaliate',name:'Retaliation',emoji:'💢',desc:'+30% pulse power and slows hit enemies'}]},
 };
+// Taro T5: presentation reads the selected path; saved upgrade identities stay unchanged.
+const TARO_PROGRESSION={
+  storm:{arc:['Chain Capacity','+1 chain target','+1 target per root; max 10. Excess: +3% bolt damage, max +15%.'],surge:['Extra Roots','+1 chain root','+1 root; max 3 shared-target roots. Excess: +5% bolt damage, max +25%.'],
+    chainlord:'+2 chain targets and +40% jump range; bounded by target/range caps.',stormcaller:'+2 roots and +20% attack damage; extra roots use the overflow bonus.',
+    evolution:'+20% attack damage, +3 chain targets, +2 roots and +50% jump range; existing caps remain.'},
+  smite:{arc:['Add Splash','+1 nearby splash','+1 nearby add hit at 25% power; max 3. Excess: +5% splash damage, max +25%.'],surge:['Strike Force','+8% strike and repeat','Each extra root adds 8% primary/repeat damage; max +40%. No extra full strike.'],
+    chainlord:'+2 add splash capacity; max 3. Excess boosts splash damage. No normal chain bounce.',stormcaller:'+20% attack damage and two extra-root damage steps; total root bonus max +40%.',
+    evolution:'+20% attack damage, +3 add splash capacity and two extra-root damage steps; existing caps remain.'},
+  tempest:{arc:['Nova Reach','+8px nova radius','+8px base nova radius per rank; added radius max +60px, final radius max 280px.'],surge:['Discharge Force','+8% nova and bomb','Each extra root adds 8% nova/bomb damage; max +40%. No extra bomb or nova.'],
+    chainlord:'+16px base nova radius and +15% final nova radius; max 280px.',stormcaller:'+20% attack damage and two extra-root nova/bomb damage steps; bonus max +40%.',
+    evolution:'+20% attack damage, +24px base nova radius, +15% final nova radius and two nova/bomb damage steps.'}
+};
+function taroAttackInfo(d,b){const path=TARO_PROGRESSION[b?.path];if(!d||!path)return d;
+  return {...d,evolutionDesc:path.evolution,upgrades:d.upgrades.map(u=>{
+    if(path[u.id]){const [name,headline,desc]=path[u.id];return {...u,name,headline,desc};}
+    if(u.id==='power')return {...u,headline:'+12% attack power',desc:'+12% base attack power per rank; strengthens this path’s basic and secondary effects, not Unique.'};
+    if(u.id==='rate')return {...u,headline:'-8% basic interval',desc:'Basic attacks fire 8% sooner per rank. Does not shorten Dash, repeat, bomb or nova timers.'};return u;
+  }),mutations:d.mutations.map(m=>({...m,desc:path[m.id]||m.desc}))};}
+function taroGaleCooldown(b){return Math.pow(.94,Math.max(0,Math.min(3*1.55,b?.ranks?.p_gale??b?.lv?.p_gale??0)));}
+
 // 🛤 Build Path (v4.94) — เลเวล 5 เลือก 1 ใน 3 สาย · ปิดอีก 2 สาย · สายเปลี่ยน "รูปแบบ" ดาเมจ ไม่ได้บวกเพิ่มรวม
 const BASIC_PATHS={
   yuzu:[
@@ -3516,7 +3537,7 @@ const TITAN_RAGE_MUL=[1,1.8,2.8,4.2,5.5],TITAN_RAGE_SEC=1.8,TITAN_RAGE_CD=[0,1.2
 function pathMods(b){ const m={dmg:1,cd:1,count:0,range:0,big:0,frozen:0,far:0,low:0,taken:0,dashc:0,dashm:0,wave:0}; if(!b||!b.path)return m;
   const pt=(BASIC_PATHS[b.character]||[]).find(x=>x.id===b.path); if(!pt||!pt.base)return m;
   const add=(fx,n)=>{ for(const k in fx){ if(k==='dmg'||k==='cd')m[k]*=Math.pow(fx[k],n); else m[k]+=fx[k]*n; } };
-  add(pt.base,1); for(const u of pt.upgrades)add(u.fx||{},b.lv[u.id]||0); return m; }
+  add(pt.base,1); for(const u of pt.upgrades){const count=Number.isFinite(u.fx?.count),rank=b.character==='taro'?Math.max(0,Math.min(u.max*(count?1:1.55),count?(b.lv?.[u.id]??b.ranks?.[u.id]??0):(b.ranks?.[u.id]??b.lv?.[u.id]??0))):b.lv[u.id]||0;add(u.fx||{},rank);} return m; }
 
 // Mint M1: classify existing mechanics; charge/Brittle/Impale arrive in M2/M3.
 const MINT_CARD_WEIGHTS={path:65,shared:20,universal:15};
@@ -3977,26 +3998,26 @@ const PATH_TALENTS={
   storm:{root:{emoji:'🌩️',name:'Charged Air',max:3,per:'+5% lightning damage',apply:_P({dmg:1.05})},
     a1:{emoji:'✨',name:'Static Build',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
     a2:{emoji:'👑',name:'Conductor',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
-    b1:{emoji:'⏱️',name:'Quick Spark',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
-    b2:{emoji:'📡',name:'Wide Arc',max:3,per:'+8% strike range',apply:_P({range:0.08})},
-    capA:{emoji:'⛈️',name:'Thunderhead',max:1,per:'+2 strikes',apply:_P({count:2})},
+    b1:{emoji:'⏱️',name:'Quick Spark',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
+    b2:{emoji:'📡',name:'Wide Arc',max:3,per:'+8% basic root and jump range',apply:_P({range:0.08})},
+    capA:{emoji:'⛈️',name:'Thunderhead',max:1,per:'+2 basic roots; excess adds bolt damage',apply:_P({count:2})},
     capB:{emoji:'⚡',name:'Overcharge',max:1,per:'+20% lightning damage',apply:_P({dmg:1.20})},
     capC:{emoji:'🧲',name:'Grounded',max:1,per:'While moving: −20% damage taken',apply:_K('moveGuard',0.20)}},
   smite:{root:{emoji:'🔨',name:'Heavy Bolt',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
     a1:{emoji:'🎯',name:'Judgment+',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
     a2:{emoji:'🩸',name:'Wrath',max:3,per:'+10% damage below 50% HP',apply:_P({low:0.10})},
-    b1:{emoji:'⏱️',name:'Steady Prayer',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
-    b2:{emoji:'📡',name:'Long Reach',max:3,per:'+8% strike range',apply:_P({range:0.08})},
+    b1:{emoji:'⏱️',name:'Steady Prayer',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
+    b2:{emoji:'📡',name:'Long Reach',max:3,per:'+8% priority target range',apply:_P({range:0.08})},
     capA:{emoji:'🌟',name:'Divine Hammer',max:1,per:'+40% damage to bosses/elites',apply:_P({big:0.40})},
-    capB:{emoji:'☁️',name:'Heavy Sky',max:1,per:'+30% damage · casts 10% slower',apply:_P({dmg:1.30,cd:1.10})},
+    capB:{emoji:'☁️',name:'Heavy Sky',max:1,per:'+30% attack power · basic 10% slower',apply:_P({dmg:1.30,cd:1.10})},
     capC:{emoji:'⛪',name:'Sanctuary',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}},
-  tempest:{root:{emoji:'🌪️',name:'Swift Storm',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
+  tempest:{root:{emoji:'🌪️',name:'Swift Storm',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
     a1:{emoji:'✨',name:'Sharp Wind',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
-    a2:{emoji:'🔭',name:'Far Strike+',max:3,per:'+10% damage beyond 300px',apply:_P({far:0.10})},
-    b1:{emoji:'⏩',name:'Gale+',max:3,per:'−4% cast cooldown',apply:_P({cd:0.96})},
-    b2:{emoji:'📡',name:'Wide Gust',max:3,per:'+8% strike range',apply:_P({range:0.08})},
-    capA:{emoji:'🌀',name:'Hurricane',max:1,per:'−25% cast cooldown',apply:_P({cd:0.75})},
-    capB:{emoji:'👁️',name:'Eye of the Storm',max:1,per:'+35% damage beyond 300px',apply:_P({far:0.35})},
+    a2:{emoji:'🔭',name:'Far Strike+',max:3,per:'+10% hit damage beyond 300px',apply:_P({far:0.10})},
+    b1:{emoji:'⏩',name:'Gale+',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
+    b2:{emoji:'📡',name:'Wide Gust',max:3,per:'+8% weak basic target range',apply:_P({range:0.08})},
+    capA:{emoji:'🌀',name:'Hurricane',max:1,per:'−25% weak basic interval',apply:_P({cd:0.75})},
+    capB:{emoji:'👁️',name:'Eye of the Storm',max:1,per:'+35% hit damage beyond 300px',apply:_P({far:0.35})},
     capC:{emoji:'💨',name:'Wind Step',max:1,per:'While moving: −20% damage taken',apply:_K('moveGuard',0.20)}}};
 const TAL_CAP_COST=5, TAL_SLOTS=['root','a1','a2','b1','b2','c1','c2','capA','capB','capC'];
 function _ptGeneric(pt){ return {
@@ -4026,7 +4047,7 @@ const CHAR_PASSIVES={
   momo:{emoji:'🍓',name:'Lucky Seeds',desc:'Critical hits heal you'},
   mint:{emoji:'❄️',name:'Frost Skin',desc:'Getting hit freezes nearby enemies'},
   cocoa:{emoji:'🐻',name:'Bear Grit',desc:'Below 40% HP: take less damage, deal more'},
-  taro:{emoji:'🧭',name:'Rift Step',desc:'Dashing leaves a shockwave that hits nearby enemies'},
+  taro:{emoji:'🧭',name:'Rift Step',desc:'Dash: shockwave / Tempest sweep'},
   yuzu:{emoji:'🍋',name:'Crew Leader',desc:'Nearby Yuzlings return to battle faster'},
   sesame:{emoji:'🪞',name:'Oath Focus',desc:'Standing still boosts your damage'},
   berry:{emoji:'💗',name:'Jam Heart',desc:'Kills have a chance to heal you'},
@@ -6126,7 +6147,7 @@ function taroPriorityTarget(enemies,origin,range,mark=null){
 function taroInvestments(b,p,paths){const out={dmg:1,cd:1,count:0,range:0};
   const add=(fx,n)=>{for(const k of ['dmg','cd','count','range'])if(Number.isFinite(fx?.[k])){if(k==='dmg'||k==='cd')out[k]*=Math.pow(fx[k],n);else out[k]+=fx[k]*n;}};
   const path=paths.find(x=>x.id===b.path);
-  for(const u of path?.upgrades||[]){const n=Math.max(0,Math.min(u.max,b.lv?.[u.id]||0));if(b.path==='tempest'&&u.id==='p_gale')continue;add(u.fx,n);}
+  for(const u of path?.upgrades||[]){const count=Number.isFinite(u.fx?.count),n=Math.max(0,Math.min(u.max*(count?1:1.55),count?(b.lv?.[u.id]??b.ranks?.[u.id]??0):(b.ranks?.[u.id]??b.lv?.[u.id]??0)));if(b.path==='tempest'&&u.id==='p_gale')continue;add(u.fx,n);}
   for(const [fx,n] of p._pt?.fx||[])add(fx,Math.max(0,n));
   out.count+=Math.max(0,p.gearCount||0);out.range+=Math.max(0,p.gearArea||0);return out;
 }
@@ -6144,7 +6165,7 @@ function taroCombatProfile(b,p,level,paths,options={}){
     jumpRange:Math.min(360,180*(chainlord?1.4:1)*(evo?1.5:1)*(1+inv.range)),rootRange:Math.min(900,(aw?760:520)*(1+inv.range)),
     extraStrikeBonus:1+Math.min(.4,Math.max(0,rawRoots-1)*.08),splashTargets:Math.min(3,arc),splashBonus:1+Math.min(.25,Math.max(0,arc-3)*.05),
     novaRadius:Math.min(280,(180+Math.min(60,arc*8))*(chainlord?1.15:1)*(evo?1.15:1)),
-    dashCooldownMul:Math.pow(.94,Math.max(0,Math.min(3,b.lv?.p_gale||0)))};
+    dashCooldownMul:taroGaleCooldown(b)};
 }
 function taroMovementSample(previous,point,options={}){
   const sample={x:point.x,y:point.y,playing:!!options.playing};let distance=0;
@@ -6611,7 +6632,7 @@ class Game extends Phaser.Scene {
     if(this._impalerCharge)this.releaseImpalerCharge(false);if(this._berryCharge)this.releaseBerryCharge(false);
     if(this.player&&this.player._pt&&this.player._pt.hsDash)this._ptHsNext=true;
     if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());
-    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1)*(this.character==='taro'&&this.basicAttack?.path==='tempest'?Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0))):1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(coc)this.cocoaOnDash(); this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
+    this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1)*(this.character==='taro'&&this.basicAttack?.path==='tempest'?taroGaleCooldown(this.basicAttack):1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(coc)this.cocoaOnDash(); this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;if(this.player.forgeMods){const r=forgeState(this);r.dashUntil=(this.elapsed||0)+1.5;r.dashPrimed=true;}
     if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
@@ -7832,40 +7853,43 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // ปุ่มเปลี่ยนหน้า (‹ / ›) ล่างจอ — ใช้ร่วม Bestiary / Weapons / Relics
-  _codexNav(page,pages,onPrev,onNext,label){
-    const w=this.W,h=this.H,portrait=w<=h,navY=h-(portrait?31:20),navW=92,navH=28;
+  _codexNav(page,pages,onPrev,onNext,label,options={}){
+    const w=this.W,h=this.H,portrait=w<=h,navY=options.y??h-(portrait?31:20),navW=92,navH=options.touch?44:28,spread=Math.min(120,(w-100)/2);
     const t=this.add.text(w/2,navY,label||('Page '+(page+1)+' / '+pages),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d8cce0'}).setOrigin(0.5);this.menu.add(t);
     const nav=(cx,lab,en,fn)=>{const g=this.add.graphics();g.fillStyle(en?0x463653:0x28212e,1);g.fillRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);g.lineStyle(1,en?0xa98cf0:0x44394d,1);g.strokeRoundedRect(cx-navW/2,navY-navH/2,navW,navH,9);const tt=this.add.text(cx,navY,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:en?'#f5eaff':'#665d70'}).setOrigin(0.5);this.menu.add([g,tt]);if(en)this._zone(cx-navW/2,navY-navH/2,navW,navH,()=>{Sfx.select&&Sfx.select();fn();});};
-    nav(w/2-120,'‹ Prev',page>0,onPrev);nav(w/2+120,'Next ›',page<pages-1,onNext);
+    nav(w/2-spread,'‹ Prev',page>0,onPrev);nav(w/2+spread,'Next ›',page<pages-1,onNext);
   }
   // แถวข้อมูลแบบลิสต์ (emoji · ชื่อ · คำอธิบาย) — rows: [{emoji,title,desc,color,head}]
   _codexRows(top,rows,rh){
     const w=this.W,x=14,cw=w-28,gap=4;let y=top;
     for(const r of rows){
       if(r.head){const t=this.add.text(x+4,y+rh*0.5,r.head,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:r.hex||'#ffe08a'}).setOrigin(0,0.5);this.menu.add(t);y+=rh*0.8+gap;continue;}
+      if(r.stack){const nm=this.add.text(x+36,y+12,r.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff7ed'}).setOrigin(0,0),ds=this.add.text(x+36,y+30,r.desc,{fontFamily:'sans-serif',fontSize:'11px',color:'#d8cce0',wordWrap:{width:cw-48}}).setOrigin(0,0),height=Math.max(58,ds.height+40),g=this.add.graphics();g.fillStyle(0x211929,.97).fillRoundedRect(x,y,cw,height,9);g.lineStyle(1.3,r.color,.75).strokeRoundedRect(x,y,cw,height,9);const em=this.add.text(x+18,y+16,r.emoji,{fontSize:'18px'}).setOrigin(.5);this.menu.add([g,em,nm,ds]);y+=height+gap;continue;}
       const g=this.add.graphics();g.fillStyle(0x211929,.97);g.fillRoundedRect(x,y,cw,rh,9);g.fillStyle(r.color,.12);g.fillRoundedRect(x+2,y+2,cw-4,rh-4,7);g.lineStyle(1.3,r.color,.75);g.strokeRoundedRect(x,y,cw,rh,9);
       const em=r.icon&&this.textures.exists(r.icon)?this.add.image(x+18,y+rh/2,r.icon).setDisplaySize(Math.min(28,rh*0.8),Math.min(28,rh*0.8)):this.add.text(x+18,y+rh/2,r.emoji,{fontSize:Math.round(Math.min(22,rh*0.6))+'px'}).setOrigin(.5);
       const nm=this.add.text(x+36,y+rh/2,r.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff7ed'}).setOrigin(0,.5);
       const ds=this.add.text(x+36+Math.max(120,nm.width+10),y+rh/2,r.desc,{fontFamily:'sans-serif',fontSize:'9.5px',color:'#c9bdd2',wordWrap:{width:cw-(36+Math.max(120,nm.width+10))-10},maxLines:2}).setOrigin(0,.5);
       this.menu.add([g,em,nm,ds]);y+=rh+gap;
-    }
+    }return y;
   }
   // ⚔️ อาวุธประจำตัวรายตัวละคร: อัพเกรด 4 · Mutation 2 · Evolution
   buildWeaponCodex(top){
     const ids=CHAR_ORDER.filter(c=>BASIC_ATTACKS[c]),pages=ids.length;this._codexChar=Phaser.Math.Clamp(this._codexChar||0,0,pages-1);
-    const ch=ids[this._codexChar],c=CHARACTERS[ch],d=BASIC_ATTACKS[ch],col=c.color||0xf0a54a,hex='#'+col.toString(16).padStart(6,'0');
+    const ch=ids[this._codexChar],c=CHARACTERS[ch],d=ch==='taro'?taroAttackInfo(BASIC_ATTACKS[ch],{path:this._codexTaroPath||'storm'}):BASIC_ATTACKS[ch],col=c.color||0xf0a54a,hex='#'+col.toString(16).padStart(6,'0');
+    if(ch==='taro'){const paths=BASIC_PATHS.taro,cw=(this.W-28)/3;paths.forEach((path,i)=>this.heroButton(10+i*(cw+4),top,cw,44,path.name.replace(/ Build$/,''),()=>{this._codexTaroPath=path.id;this.buildSkillArchive();},{active:path.id===(this._codexTaroPath||'storm'),fontSize:12}));top+=50;}
     const rows=[{head:c.emoji+' '+c.name+' — '+d.emoji+' '+d.name,hex}];
     for(const u of d.upgrades)rows.push({emoji:u.emoji,title:u.name+'  (max '+u.max+')',desc:u.desc,color:0xf0a54a});
-    rows.push({head:'⭐ Mutation — pick 1 of 2 around Lv 9 (the other locks)',hex:'#ffd08a'});
+    rows.push({head:ch==='taro'?'Mutation: mastery 10 · pick one':'⭐ Mutation — pick 1 of 2 around Lv 9 (the other locks)',hex:'#ffd08a'});
     for(const m of d.mutations)rows.push({emoji:m.emoji,title:m.name,desc:m.desc,color:0xffc857});
-    rows.push({head:'✨ Evolution — around Lv 15, then endless Power-Ups',hex:'#ffe98a'});
+    rows.push({head:ch==='taro'?'Evolution: mastery 16 · earlier ranks stay':'✨ Evolution — around Lv 15, then endless Power-Ups',hex:'#ffe98a'});
     if(ch==='momo')for(const e of Object.values(BERRY_EVOLUTIONS))rows.push({emoji:'✨',title:e.name,desc:e.desc,color:0xffd54a});
     else if(ch==='mint')for(const e of Object.values(MINT_EVOLUTIONS))rows.push({emoji:'✨',title:e.name,desc:e.desc,color:0xffd54a});
     else if(ch==='cocoa'){for(const e of Object.values(COCOA_EVOLUTIONS))rows.push({emoji:'✨',title:e.name,desc:e.desc,color:0xffd54a});for(const u of Object.values(COCOA_UNIQUES))rows.push({emoji:u.emoji,title:u.name,desc:u.desc,color:u.color});}
-    else rows.push({emoji:'✨',title:d.evolution,desc:BASIC_EVO_DESC[d.skill]||'Upgrades the whole Basic Attack',color:0xffd54a});
+    else rows.push({emoji:'✨',title:d.evolution,desc:d.evolutionDesc||BASIC_EVO_DESC[d.skill]||'Upgrades the whole Basic Attack',color:0xffd54a});
     const n=rows.filter(r=>!r.head).length,nh=rows.length-n,avail=this.H-top-(this.W<=this.H?54:42),rh=Math.max(24,Math.min(this.W<=this.H?46:34,(avail-nh*4-rows.length*4)/(n+nh*0.8)));
-    this._codexRows(top,rows,rh);
-    this._codexNav(this._codexChar,pages,()=>{this._codexChar--;this.buildSkillArchive();},()=>{this._codexChar++;this.buildSkillArchive();},c.emoji+' '+c.name+'  ·  '+(this._codexChar+1)+' / '+pages);
+    if(ch==='taro')for(const row of rows)row.stack=!row.head;
+    const bottom=this._codexRows(top,rows,rh);
+    this._codexNav(this._codexChar,pages,()=>{this._codexChar--;this.buildSkillArchive();},()=>{this._codexChar++;this.buildSkillArchive();},c.emoji+' '+c.name+'  ·  '+(this._codexChar+1)+' / '+pages,ch==='taro'?{y:Math.max(this.H-31,bottom+24),touch:true}:{});
   }
   // 🔮 Relic ทั้งหมด + คู่ Synergy
   buildRelicCodex(top){
@@ -11910,7 +11934,7 @@ class Game extends Phaser.Scene {
   }
   signatureWeaponInfo(){const ch=CHARACTERS[this.character]||CHARACTERS.momo;return SIGNATURE_WEAPONS[ch.weapon]||SIGNATURE_WEAPONS.berryBlaster;}
   usesBasicAttackBuild(){return !!BASIC_ATTACKS[this.character];}
-  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
+  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);if(this.character==='taro')return taroAttackInfo(d,b);const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){if(this.character==='taro')this.syncTaroCombat?.();const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
@@ -15635,7 +15659,7 @@ class Game extends Phaser.Scene {
     const N=C.nodes,root=N[0],isPath=C.key!=='core',chains=[[],[],[]],par={};
     if(isPath){ ['a','b','c'].forEach((br,k)=>{ const x1=N.find(n=>n.slot===br+'1'),x2=N.find(n=>n.slot===br+'2'),cp2=N.find(n=>n.slot==='cap'+br.toUpperCase()); chains[k]=[x1,x2,cp2]; par[x1.id]=root.id; par[x2.id]=x1.id; par[cp2.id]=x2.id; }); }
     else { N.slice(1).forEach((n,i)=>chains[i%3].push(n)); chains.forEach(ch2=>ch2.forEach((n,i)=>par[n.id]=i===0?root.id:ch2[i-1].id)); }
-    const detH=110,aTop=tTop+44,rows=1+Math.max(...chains.map(c=>c.length)),ns=Math.min(58,bw*0.16),rh2=Math.max(ns+20,Math.min(96,(this.H-aTop-detH-70)/rows));
+    const detH=id==='taro'?140:110,aTop=tTop+44,rows=1+Math.max(...chains.map(c=>c.length)),ns=Math.min(58,bw*0.16),rh2=Math.max(ns+20,Math.min(96,(this.H-aTop-detH-70)/rows));
     const area=this.add.graphics(); area.fillStyle(0x140f1c,0.82); area.fillRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); area.lineStyle(2,C.col,0.55); area.strokeRoundedRect(bx,aTop-4,bw,rows*rh2+8,14); this.menu.add(area);
     const pos={}; pos[root.id]={x:bx+bw/2,y:aTop+rh2/2}; chains.forEach((ch2,k)=>ch2.forEach((n,i)=>pos[n.id]={x:bx+bw*(k+0.5)/3,y:aTop+rh2*(i+1.5)}));
     const ln=this.add.graphics(); this.menu.add(ln); const okN=n=>isPath?talNodeOpen(N,tal,n):(n===root||n.free||(tal[par[n.id]]||0)>0),costN=(n,r)=>isPath?talNodeCost(n,r):n.costs?n.costs[r]:talCost(r);
@@ -15655,8 +15679,8 @@ class Game extends Phaser.Scene {
       this.menu.add(dg);this.talentIcon(id,n,bx+24,dy+17,24,ok);
       const t1=this.add.text(bx+42,dy+17,n.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0.5),t1b=this.add.text(bx+bw-14,dy+17,'Lv. '+r+' / '+n.max,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffd166'}).setOrigin(1,0.5);
       const titleRoom=Math.max(80,bw-64-t1b.width);if(t1.width>titleRoom)t1.setFontSize(Math.max(9,15*titleRoom/t1.width)+'px');
-      const t2=this.add.text(bx+14,dy+42,(n.cap?'Capstone · pick 1: ':'Each level: ')+n.per,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
-      const t3=this.add.text(bx+14,dy+70,C.key==='core'?'Always active':'Only in runs with '+C.name+' Build',{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#b7abc9',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
+      const t2=this.add.text(bx+14,dy+(id==='taro'?32:42),(n.cap?'Capstone · pick 1: ':'Each level: ')+n.per,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8ff0b0',wordWrap:{width:bw-150}}).setOrigin(0,id==='taro'?0:0.5);
+      const t3=this.add.text(bx+14,dy+(id==='taro'?112:70),C.key==='core'?'Always active':'Only in runs with '+C.name+' Build',{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#b7abc9',wordWrap:{width:bw-150}}).setOrigin(0,0.5);
       const pbw=118,pbh=58,pbx=bx+bw-pbw-10,pby=dy+30,pg=this.add.graphics(); this.rosterChrome(can?'tab_on':'tab_off',pbx,pby,pbw,pbh).setAlpha(can?1:.55);
       const pc=this.add.text(pbx+pbw/2,pby+15,mx?'':ok?cost+' Talent Point'+(cost>1?'s':''):'Locked',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe0bc'}).setOrigin(0.5),pt2=this.add.text(pbx+pbw/2,pby+38,mx?'MAX':ok?'Upgrade':'🔒',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#3a2400',strokeThickness:3}).setOrigin(0.5);
       this.menu.add([t1,t1b,t2,t3,pg,pc,pt2]);

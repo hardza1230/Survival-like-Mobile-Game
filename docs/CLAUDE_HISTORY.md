@@ -1,3 +1,7 @@
+# Previous delivery: v7.8.8 — Compact Heroes and header gear
+
+Owner accepted the calm Hub theme. More is now a 44px gear beside version, retaining the Settings/Guide group; five cards remain below. Heroes tabs are narrower and at least 36px tall; native rounded controls avoid stretching ornate images. Select footer is at least 44px tall, role chip fits its text and Details is a top-right !. Stats uses the ImageGen concept direction: larger single-line labels/values, category-colored edges and source !; full formulas remain in the existing source modal. Hero/castle art, equipped stats and selection behavior preserved. See docs/HERO_MOBILE_POLISH.md.
+
 # Previous delivery: v7.8.7 — Calmer, livelier home
 
 Owner requested less dense art, more color contrast and a little movement. Castle/Strawberry plate and logo preserved; quiet native Canvas cards replace repeated floral chrome. Coral Play, mint Heroes, indigo Gear, warm gold Activities, cyan Codex and neutral More; smaller icons and clearer lower backdrop. Eight faint drifting petals, 1.5px logo float and Play outline pulse use tracked tweens, stopped on navigation/rebuild/stage start/shutdown and disabled by reduced motion. Routes, unlocks, badges, guide/reward rules preserved. See docs/HUB_CALM_MOTION.md.

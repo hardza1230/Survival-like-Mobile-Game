@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8');
 function method(n){const at=src.indexOf('  '+n+'(',src.indexOf('class Game extends'));assert(at>=0,n);const m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(at+1));return src.slice(at,m?at+1+m.index:src.indexOf('\n}',at));}
-const ctx={Sfx:{dash(){},thunder(){},bp(){return true},zap(){}}};vm.createContext(ctx);
+const ctx={taroGaleCooldown:b=>Math.pow(.94,Math.max(0,Math.min(4.65,b?.ranks?.p_gale??b?.lv?.p_gale??0))),Sfx:{dash(){},thunder(){},bp(){return true},zap(){}}};vm.createContext(ctx);
 vm.runInContext(src.slice(src.indexOf('// Taro T1: pure foundation.'),src.indexOf('// End Taro T1 helpers.'))+'\nthis.api={taroSegmentDistance,taroNewState,taroAdvanceQueue};',ctx);
 const names=['doDash','charPassiveOnDash','clearTaroCombat','syncTaroCombat','suspendTaroCombat','tickTaroCombat','taroSchedule','taroWithDamage','taroDealDamage','taroCandidates','castTempestBasic','taroTempestDash','taroAreaHit','taroTryNova','taroPostPhysics','castTaroTempestUnique','castTaroPathUnique'];
 const Scene=vm.runInContext('class S{'+names.map(method).join('\n')+'}S',ctx);

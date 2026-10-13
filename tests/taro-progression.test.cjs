@@ -1,0 +1,20 @@
+// Pure definition/save contracts and descriptor adapters; no combat simulation.
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const src=fs.readFileSync('game.js','utf8'),block=(a,b)=>src.slice(src.indexOf(a),src.indexOf(b)),ctx={};vm.createContext(ctx);
+vm.runInContext(block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const BUILD_PATH_STYLES=','// Mint M1:')+block('const CHAR_TALENTS = {','// v4.88: Passive')+block('// Taro T1: pure foundation.','// End Taro T1 helpers.')+';this.a={BASIC_ATTACKS,BASIC_PATHS,taroAttackInfo,taroGaleCooldown,taroCombatProfile,pathMods,talentBranch,talNodeCost,talNodeOpen,talSpent,applyPathTalents};',ctx);
+const a=ctx.a,base=a.BASIC_ATTACKS.taro,saved=JSON.stringify(base),expected=JSON.parse(fs.readFileSync('tests/fixtures/taro-t4-talents.json'));
+for(const pt of a.BASIC_PATHS.taro){const b={character:'taro',path:pt.id,lv:{},ranks:{}},d=a.taroAttackInfo(base,b);assert.equal(d.evolution,'Stormstep Sovereign');assert(d.evolutionDesc&&!d.evolutionDesc.includes('Screen-wide'));assert.deepEqual(Array.from(d.upgrades,u=>u.id),Array.from(base.upgrades,u=>u.id));assert.deepEqual(Array.from(d.mutations,u=>u.id),['chainlord','stormcaller']);assert(d.upgrades.find(u=>u.id==='rate').desc.includes('Does not shorten Dash'));assert(d.upgrades.find(u=>u.id==='arc').headline!==a.taroAttackInfo(base,{path:pt.id==='storm'?'smite':'storm'}).upgrades.find(u=>u.id==='arc').headline);
+ const nodes=a.talentBranch(pt);for(let i=0;i<nodes.length;i++){const n=nodes[i],p={maxhp:100,hp:60,dmgTakenMul:1,_pt:{}};n.apply(p,n.max);assert.deepEqual(JSON.parse(JSON.stringify({id:n.id,slot:n.slot,max:n.max,cap:n.cap,effect:p,cost:a.talNodeCost(n,0)})),expected[pt.id][i]);}
+ const tal=Object.fromEntries(nodes.map(n=>[n.id,n.cap?0:n.max]));tal.pt_unknown_legacy=7;const before=JSON.stringify(tal);tal[nodes.find(n=>n.slot==='capA').id]=1;assert(!a.talNodeOpen(nodes,tal,nodes.find(n=>n.slot==='capB')));assert(!a.talNodeOpen(nodes,tal,nodes.find(n=>n.slot==='capC')));delete tal[nodes.find(n=>n.slot==='capA').id];tal[nodes.find(n=>n.slot==='capA').id]=0;assert.deepEqual(tal,JSON.parse(before));
+ // Repeated projection of fx never appends duplicate ranks or writes the saved talents.
+ const projection=Object.fromEntries(nodes.filter(n=>!['c1','c2'].includes(n.slot)).map(n=>[n.id,n.max]));const p={};a.applyPathTalents(p,'taro',pt.id,projection);const once=JSON.stringify(p._pt);a.applyPathTalents(p,'taro',pt.id,projection);assert.equal(JSON.stringify(p._pt),once);
+}
+assert.equal(JSON.stringify(base),saved);assert.equal(a.taroAttackInfo(base,{path:null}),base);
+// Rolled scalar rank, not purchase count, controls path power/conditional bonuses.
+for(const [path,id,factor]of [['storm','p_static',1.08],['smite','p_overload',1.1]]){const b={character:'taro',path,lv:{[id]:1},ranks:{[id]:1.55}},p={dmgMul:1};const f=a.taroCombatProfile(b,p,1,a.BASIC_PATHS.taro);assert(Math.abs(f.unitD/(14+4.2)-factor**1.55)<1e-10);assert(Math.abs(a.pathMods(b).dmg/(path==='storm'?.75:1.8)-factor**1.55)<1e-10);}
+{const b={character:'taro',path:'smite',lv:{p_judge:1},ranks:{p_judge:1.55}};assert(Math.abs(a.pathMods(b).big-.15*1.55)<1e-10);}
+{const b={character:'taro',path:'storm',lv:{p_squall:1},ranks:{p_squall:1.55}};assert.equal(a.pathMods(b).count,2);assert.equal(a.taroCombatProfile(b,{dmgMul:1},1,a.BASIC_PATHS.taro).rawRoots,3);}
+{const b={character:'taro',path:'tempest',lv:{p_gale:1},ranks:{p_gale:1.55}},f=a.taroCombatProfile(b,{dmgMul:1},1,a.BASIC_PATHS.taro);assert.equal(f.dashCooldownMul,.94**1.55);assert.equal(f.interval,2.12*.85);assert.equal(a.taroGaleCooldown({lv:{p_gale:3}}),.94**3);}
+assert.equal(a.talSpent({unique:3,pt_storm_capA:1,pt_smite_root:3}),27);
+assert(src.includes("if(this.character==='taro')return taroAttackInfo(d,b)"));assert(src.includes("this._codexTaroPath=path.id"));
+console.log('Taro T5: path descriptors, saved talent IDs/effects/costs/exclusivity, pure repeated projections, rare scalar versus integer count ranks, Gale scope and Codex integration passed');

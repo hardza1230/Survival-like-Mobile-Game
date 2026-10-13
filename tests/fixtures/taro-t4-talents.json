@@ -1,0 +1,594 @@
+{
+  "storm": [
+    {
+      "id": "pt_storm_root",
+      "slot": "root",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "dmg": 1.05
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_storm_a1",
+      "slot": "a1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "dmg": 1.06
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_storm_a2",
+      "slot": "a2",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "big": 0.1
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_storm_b1",
+      "slot": "b1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "cd": 0.96
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_storm_b2",
+      "slot": "b2",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "range": 0.08
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_storm_c1",
+      "slot": "c1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 118,
+        "hp": 70.8,
+        "dmgTakenMul": 1,
+        "_pt": {}
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_storm_c2",
+      "slot": "c2",
+      "max": 2,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 0.9,
+        "_pt": {}
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_storm_capA",
+      "slot": "capA",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "count": 2
+              },
+              1
+            ]
+          ]
+        }
+      },
+      "cost": 5
+    },
+    {
+      "id": "pt_storm_capB",
+      "slot": "capB",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "dmg": 1.2
+              },
+              1
+            ]
+          ]
+        }
+      },
+      "cost": 5
+    },
+    {
+      "id": "pt_storm_capC",
+      "slot": "capC",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "moveGuard": 0.2
+        }
+      },
+      "cost": 5
+    }
+  ],
+  "smite": [
+    {
+      "id": "pt_smite_root",
+      "slot": "root",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "dmg": 1.06
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_smite_a1",
+      "slot": "a1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "big": 0.1
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_smite_a2",
+      "slot": "a2",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "low": 0.1
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_smite_b1",
+      "slot": "b1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "cd": 0.96
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_smite_b2",
+      "slot": "b2",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "range": 0.08
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_smite_c1",
+      "slot": "c1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 118,
+        "hp": 70.8,
+        "dmgTakenMul": 1,
+        "_pt": {}
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_smite_c2",
+      "slot": "c2",
+      "max": 2,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 0.9,
+        "_pt": {}
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_smite_capA",
+      "slot": "capA",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "big": 0.4
+              },
+              1
+            ]
+          ]
+        }
+      },
+      "cost": 5
+    },
+    {
+      "id": "pt_smite_capB",
+      "slot": "capB",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "dmg": 1.3,
+                "cd": 1.1
+              },
+              1
+            ]
+          ]
+        }
+      },
+      "cost": 5
+    },
+    {
+      "id": "pt_smite_capC",
+      "slot": "capC",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "stillWall": 1
+        }
+      },
+      "cost": 5
+    }
+  ],
+  "tempest": [
+    {
+      "id": "pt_tempest_root",
+      "slot": "root",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "cd": 0.96
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_tempest_a1",
+      "slot": "a1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "dmg": 1.06
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_tempest_a2",
+      "slot": "a2",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "far": 0.1
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_tempest_b1",
+      "slot": "b1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "cd": 0.96
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_tempest_b2",
+      "slot": "b2",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "range": 0.08
+              },
+              3
+            ]
+          ]
+        }
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_tempest_c1",
+      "slot": "c1",
+      "max": 3,
+      "cap": false,
+      "effect": {
+        "maxhp": 118,
+        "hp": 70.8,
+        "dmgTakenMul": 1,
+        "_pt": {}
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_tempest_c2",
+      "slot": "c2",
+      "max": 2,
+      "cap": false,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 0.9,
+        "_pt": {}
+      },
+      "cost": 1
+    },
+    {
+      "id": "pt_tempest_capA",
+      "slot": "capA",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "cd": 0.75
+              },
+              1
+            ]
+          ]
+        }
+      },
+      "cost": 5
+    },
+    {
+      "id": "pt_tempest_capB",
+      "slot": "capB",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "fx": [
+            [
+              {
+                "far": 0.35
+              },
+              1
+            ]
+          ]
+        }
+      },
+      "cost": 5
+    },
+    {
+      "id": "pt_tempest_capC",
+      "slot": "capC",
+      "max": 1,
+      "cap": true,
+      "effect": {
+        "maxhp": 100,
+        "hp": 60,
+        "dmgTakenMul": 1,
+        "_pt": {
+          "moveGuard": 0.2
+        }
+      },
+      "cost": 5
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const src=fs.readFileSync('game.js','utf8');
 function method(n){const at=src.indexOf('  '+n+'(',src.indexOf('class Game extends'));assert(at>=0,n);const m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(at+1));return src.slice(at,m?at+1+m.index:src.indexOf('\n}',at));}
-const ctx={Sfx:{crit(){},thunder(){},bp(){return true},zap(){}},FLAT_EFF_PATH:{},FLAT_EFF:{},ATK_PCT:.01,gearAttackRoll:()=>0,STAT_CAPS:{critChance:1}};vm.createContext(ctx);
+const ctx={taroGaleCooldown:b=>Math.pow(.94,Math.max(0,Math.min(4.65,b?.ranks?.p_gale??b?.lv?.p_gale??0))),Sfx:{crit(){},thunder(){},bp(){return true},zap(){}},FLAT_EFF_PATH:{},FLAT_EFF:{},ATK_PCT:.01,gearAttackRoll:()=>0,STAT_CAPS:{critChance:1}};vm.createContext(ctx);
 vm.runInContext(src.slice(src.indexOf('// Taro T1: pure foundation.'),src.indexOf('// End Taro T1 helpers.'))+'\nthis.api={taroCombatProfile,taroEnemyToken,taroTargetValid,taroPriorityTarget};',ctx);
 const a=ctx.api,paths=[{id:'smite',upgrades:[{id:'p_judge',max:3,fx:{big:.15}},{id:'p_overload',max:3,fx:{dmg:1.1}}]}];
 const names=['clearTaroCombat','syncTaroCombat','suspendTaroCombat','tickTaroCombat','taroSchedule','taroWithDamage','taroIsSecondary','taroDealDamage','taroTakeDirect','taroAfterDirect','taroCandidates','taroNearestUnused','castTaroSmiteBasic','taroRefreshRod','taroPickTarget','taroAfterSmite','castTaroPathUnique','damage'];

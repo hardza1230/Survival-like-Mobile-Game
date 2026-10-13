@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const src=fs.readFileSync('game.js','utf8');
 function method(n){const a=src.indexOf('  '+n+'(',src.indexOf('class Game extends'));assert(a>=0,n);const m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));return src.slice(a,m?a+1+m.index:src.indexOf('\n}',a));}
-const ctx={};vm.createContext(ctx);
+const ctx={taroGaleCooldown:b=>Math.pow(.94,Math.max(0,Math.min(4.65,b?.ranks?.p_gale??b?.lv?.p_gale??0)))};vm.createContext(ctx);
 vm.runInContext(src.slice(src.indexOf('// Taro T1: pure foundation.'),src.indexOf('// End Taro T1 helpers.'))+'\nthis.api={taroEnemyToken,taroTargetValid,taroPriorityTarget,taroMovementSample,taroCombatProfile,taroNewState,taroQueueEvent,taroAdvanceQueue,taroSecondary};',ctx);
 const a=ctx.api,paths=[{id:'storm',upgrades:[{id:'p_squall',max:2,fx:{count:1}},{id:'p_static',max:3,fx:{dmg:1.08}}]},{id:'smite',upgrades:[{id:'p_overload',max:3,fx:{dmg:1.1}}]},{id:'tempest',upgrades:[{id:'p_gale',max:3,fx:{cd:.94}}]}];
 ctx.BASIC_PATHS={taro:paths};
@@ -98,7 +98,7 @@ const origin={x:0,y:0};
 }
 // Undo only explicit Tempest dispatch additions to verify the retained legacy bodies.
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/taro-t1-baseline.json','utf8'));
-function legacyMethod(name){return method(name)
+function legacyMethod(name){return method(name).replace('taroGaleCooldown(this.basicAttack)','Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0)))')
  .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite'){this.pulseSkill(key);this.castTaroSmiteBasic(lvl);return;}",'')
  .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);",'')
  .replace("\n    if(this.character==='taro'&&this.basicAttack?.path==='smite')return this.castTaroPathUnique(dm,ul);",'')

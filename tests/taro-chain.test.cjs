@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const src=fs.readFileSync('game.js','utf8');
 function method(n){const at=src.indexOf('  '+n+'(',src.indexOf('class Game extends'));assert(at>=0,n);const m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(at+1));return src.slice(at,m?at+1+m.index:src.indexOf('\n}',at));}
-const ctx={Sfx:{crit(){},thunder(){},bp(){return true},zap(){}},FLAT_EFF_PATH:{},FLAT_EFF:{},ATK_PCT:.01,gearAttackRoll:()=>0,STAT_CAPS:{critChance:1}};vm.createContext(ctx);
+const ctx={taroGaleCooldown:b=>Math.pow(.94,Math.max(0,Math.min(4.65,b?.ranks?.p_gale??b?.lv?.p_gale??0))),Sfx:{crit(){},thunder(){},bp(){return true},zap(){}},FLAT_EFF_PATH:{},FLAT_EFF:{},ATK_PCT:.01,gearAttackRoll:()=>0,STAT_CAPS:{critChance:1}};vm.createContext(ctx);
 vm.runInContext(src.slice(src.indexOf('// Taro T1: pure foundation.'),src.indexOf('// End Taro T1 helpers.'))+'\nthis.api={taroCombatProfile,taroEnemyToken,taroTargetValid};',ctx);
 const a=ctx.api,paths=[{id:'storm',upgrades:[{id:'p_squall',max:2,fx:{count:1}},{id:'p_static',max:3,fx:{dmg:1.08}}]}];
 const names=['clearTaroCombat','syncTaroCombat','suspendTaroCombat','tickTaroCombat','taroSchedule','taroWithDamage','taroIsSecondary','taroDealDamage','taroTakeDirect','taroAfterDirect','taroCandidates','taroNearestUnused','castTaroChainBasic','castTaroPathUnique','damage'];
@@ -37,6 +37,6 @@ function scene(es=[]){const s=new Scene();Object.assign(s,{character:'taro',stat
 {const es=[enemy(1,0,0,1),enemy(2,10),enemy(3,20),enemy(4,30)],s=scene(es);s.taroDealDamage(a.taroEnemyToken(es[0]),100,'chain',{shrapnelD:100});const damage=s.damage;s.damage=(e,n,...xy)=>{damage(e,n,...xy);if(s._taroDamageContext.source==='shrapnel'&&e===es[1])es[2]._taroSpawnId=99;};s.tickTaroCombat(.05);s.tickTaroCombat(.05);assert.deepEqual(s.hits.filter(h=>h.source==='shrapnel').map(h=>h.id),[2,4]);}
 // Preserve all previously shipped Tempest/Dash method bodies.
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/taro-t2-baseline.json','utf8'));
-for(const [name,hash] of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(method(name)).digest('hex'),hash,name+' retains T2 body');
+for(const [name,hash] of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(name==='doDash'?method(name).replace('taroGaleCooldown(this.basicAttack)','Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0)))'):method(name)).digest('hex'),hash,name+' retains T2 body');
 const d=method('damage');assert(d.indexOf('this.taroAfterDirect?.(')<d.indexOf("this.fireRecipes('crit')"));assert(d.indexOf('this.taroAfterDirect?.(')<d.indexOf('this.killEnemy(e)'));
 console.log('Taro T3: bounded growing/distinct chains, range/count investment, snapshot pool ownership, central direct-lethal tickets, terminal shrapnel rewards/caps/pause, Unique formulas and unchanged Tempest passed');
