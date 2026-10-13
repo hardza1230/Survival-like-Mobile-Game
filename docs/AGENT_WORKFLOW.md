@@ -45,3 +45,7 @@ Verified 2026-10-13 in Codex desktop on Windows:
 - Save concise checkpoints after a meaningful implementation milestone, after verification, and before publish/deploy. Mark intended, running, failed and verified operations separately.
 - A checkpoint should let another agent continue without this conversation. Include recoverable file/commit locations and the next action; do not copy full logs or speculation.
 - Checkpoints reduce lost progress after a stalled chat; they do not prevent app/network failures or guarantee that unsaved work survives.
+
+## Heroes menu review (verified 2026-10-13)
+
+Build www, then scripts/build-heroes-review.mjs and scripts/check-heroes-live-ui.cjs with Playwright. Uses real Phaser Canvas, original art and synthetic menu data; verifies tabs, text bounds, all six previews, confirmation/idempotence and details/source overlays. Uses pointer taps for visible controls and direct route callbacks for overflow; existing scrolling is covered separately. No combat simulation. Screenshot paths HEROES_SHOT_PATH and STATS_SHOT_PATH are optional.

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.7';
+const GAME_VERSION = '7.8.8';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.8',date:'2026-10-13',title:'Cleaner Heroes and home controls',items:['More moved to a gear beside the version','Compact hero tabs, role labels and selection controls','Cleaner color-accented Stats with larger labels and source details']},
   {v:'7.8.7',date:'2026-10-13',title:'A calmer, livelier home',items:['Cleaner menu cards with coral, mint, indigo and warm gold accents','Gentle drifting petals and subtle logo motion','Home effects stop when leaving the menu and respect reduced motion']},
   {v:'7.8.6',date:'2026-10-13',title:'Forge mobile readability',items:['One-line mod results with tier-only labels','Larger Roll, Tier and mod information controls','Full values and chances remain in mod details']},
   {v:'7.8.5',date:'2026-10-13',title:'Simpler Affix Forge',items:['Back leaves Forge without a navigation loop','All three rows roll one random mod with their currency','Short mod labels; full effects in details']},
@@ -7601,7 +7602,7 @@ class Game extends Phaser.Scene {
     const w=this.W,p=this.previewStats(),ch=CHARACTERS[Save.data.character]||CHARACTERS.momo,pow=Save.power(Save.data.character);
     let y=this.heroesContentTop()+18;
     const hd=this.add.text(w/2,y,ch.emoji+' '+ch.name+'  ·  ⚡ Power '+pow,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd9a8'}).setOrigin(0.5); y+=16;
-    const note=this.add.text(w/2,y,'Real loadout numbers (weapon + weave + gear + bestiary + perks)',{fontFamily:'NunitoUI, sans-serif',fontSize:'8.5px',color:'#9a90ab'}).setOrigin(0.5); this.menu.add([hd,note]); y+=22;
+    const note=this.add.text(w/2,y,'Your equipped loadout',{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#cbbfd4'}).setOrigin(0.5); this.menu.add([hd,note]); y+=22;
     const rows=[
       ['💥','Attack Power',Math.round(p.dmgMul*100)+'','Power ×'+(p.powerMul||1).toFixed(2)+' · ATK '+(p.gearAttackMin||0)+'-'+(p.gearAttackMax||0),0xff8f5a],
       ['🎯','Crit Chance',Math.round(p.critChance*100)+'%','×'+p.critMul.toFixed(2)+' crit damage',0xffd166],
@@ -7614,14 +7615,17 @@ class Game extends Phaser.Scene {
     // v4.65: แนวตั้งมีที่เหลือเยอะ → ใส่อาร์ตตัวละครด้านบน แล้วขยายแถวให้เต็มจอ
     const portrait=w<=this.H,gap=6,cardW=w-28;
     if(portrait){ const artH=Math.min(260,Math.max(0,this.H-y-rows.length*(40+gap)-40)); if(artH>120){ this._characterCardArt(Save.data.character,w/2,y+artH/2,w*0.7,artH); y+=artH+8; } }
-    const rh=portrait?Phaser.Math.Clamp((this.H-y-24-gap*(rows.length-1))/rows.length,40,58):40;
+    const rh=portrait?Phaser.Math.Clamp((this.H-y-36-gap*(rows.length-1))/rows.length,44,58):44;
     const keys=['dmgMul','critChance','cdMul','maxhp','dmgTakenMul','regen','baseSpeed'];   // v6.55.25: เรียงตามสูตร — โจมตี → ป้องกัน → เคลื่อนที่
-    rows.forEach((r,i)=>{ const ry=y+i*(rh+gap),g=this.add.graphics();this._zone(14,ry,cardW,rh,()=>{Sfx.select&&Sfx.select();this.showStatSources(p,keys[i],r);}); g.fillStyle(0x2c2338,1); g.fillRoundedRect(14,ry,cardW,rh,10); g.lineStyle(1.4,0x4a4059,1); g.strokeRoundedRect(14,ry,cardW,rh,10); g.fillStyle(r[4],0.16); g.fillRoundedRect(14,ry,5,rh,{tl:10,bl:10,tr:0,br:0});
-      const em=this.add.text(32,ry+rh/2,r[0],{fontSize:'19px'}).setOrigin(0.5);
-      const nm=this.add.text(54,ry+8,r[1],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e8dcf0'}).setOrigin(0,0);
-      const sub=this.add.text(54,ry+23,(r[3]?r[3]+' · ':'')+'tap for sources ›',{fontFamily:'NunitoUI, sans-serif',fontSize:'8px',color:'#9a90ab'}).setOrigin(0,0);
-      const val=this.add.text(w-24,ry+rh/2,r[2],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(1,0.5);
-      this.menu.add([g,em,nm,sub,val]); });
+    rows.forEach((r,i)=>{const ry=y+i*(rh+gap),g=this.add.graphics();this._zone(14,ry,cardW,rh,()=>{Sfx.select&&Sfx.select();this.showStatSources(p,keys[i],r);});this.tapZones[this.tapZones.length-1].tag='stat_'+keys[i];
+      g.fillStyle(0x232738,.96).fillRoundedRect(14,ry,cardW,rh,12);g.lineStyle(1.2,r[4],.55).strokeRoundedRect(14,ry,cardW,rh,12);g.fillStyle(r[4],.24).fillRoundedRect(15,ry+1,6,rh-2,3);
+      const em=this.add.text(34,ry+rh/2,r[0],{fontSize:'21px'}).setOrigin(.5);
+      const nm=this.add.text(55,ry+rh/2,r[1],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#fff0e3'}).setOrigin(0,.5);
+      const val=this.add.text(w-56,ry+rh/2,r[2],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff'}).setOrigin(1,.5);
+      let nf=13;while(nm.width>val.x-val.width-65&&nf>10)nm.setFontSize(--nf+'px');
+      g.lineStyle(1,0xb6a3d6,.85).strokeCircle(w-34,ry+rh/2,10);
+      const inf=this.add.text(w-34,ry+rh/2,'!',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ddd1ee'}).setOrigin(.5);this.menu.add([g,em,nm,val,inf]);});
+    this.menu.add(this.add.text(w/2,y+rows.length*(rh+gap)+6,'Tap a stat for sources',{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#cbbfd4'}).setOrigin(.5));
     this.menu.setVisible(true);
   }
   // v6.55.24: แผงที่มาของสแตต — จัดกลุ่ม + ไอคอน + % สัดส่วน (Pareto) + สูตรอ่านง่าย
@@ -8390,8 +8394,8 @@ class Game extends Phaser.Scene {
   hubLayout(){
     const w=this.W,h=this.H,portrait=w<=h,side=Math.max(10,w*.026),gap=Math.max(9,w*.022),right=portrait?w-side:w*.97,left=portrait?side:w*.48;
     const width=right-left,menuTop=portrait?h*(h<680?.55:.57):94,bottom=h-(portrait?Math.max(36,h*.065):12),unit=(bottom-menuTop-gap*3)/4.3;
-    const playH=unit*1.30,rowH=unit,moreH=unit,half=(width-gap)/2;
-    return {portrait,side,gap,menuTop,boxes:[{x:left,y:menuTop,w:width,h:playH},{x:left,y:menuTop+playH+gap,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+gap,w:half,h:rowH},{x:left,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left,y:menuTop+playH+rowH*2+gap*3,w:width,h:moreH}]};
+    const playH=unit*1.30,rowH=unit,half=(width-gap)/2;
+    return {portrait,side,gap,menuTop,boxes:[{x:left,y:menuTop,w:width,h:playH},{x:left,y:menuTop+playH+gap,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+gap,w:half,h:rowH},{x:left,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+rowH+gap*2,w:half,h:rowH}]};
   }
   buildHub(){
     this.stopHubMotion();this.claimReadyQuests();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
@@ -8400,17 +8404,20 @@ class Game extends Phaser.Scene {
     const shade=this.add.graphics();for(let i=0;i<16;i++){const y=h*.40+i*h*.60/16;shade.fillStyle(0x111b2c,.04+i*.034).fillRect(0,y,w,h*.60/16+1);}this.menu.add(shade);
     // Subtle background motion stays behind every interactive UI element.
     if(bg.type==='Image')this.hubTween({targets:bg,scaleX:bg.scaleX*1.012,scaleY:bg.scaleY*1.012,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    const pillW=portrait?Math.max(112,w*.28):150,pillH=portrait?Math.max(34,h*.044):34,versionW=pillW*.76,top=portrait?Math.max(12,h*.016):10;
+    const pillW=portrait?Math.max(112,w*.28):150,pillH=portrait?Math.max(34,h*.044):34,versionW=pillW*.76,gearW=44,versionX=w-side-gearW-8-versionW,top=portrait?Math.max(12,h*.016):10;
     this.hubPanel(side,top,pillW,pillH);const candySize=pillH*.60,candyX=side+pillH*.67;
     this.hubArt('candy',candyX,top+pillH/2,candySize,candySize);
     const sugar=this.hubText(side+pillW-pillH*.48,top+pillH/2,String(Save.data.sugar||0),Math.max(14,pillH*.46),'#ffe5aa',1);let sf=parseFloat(sugar.style.fontSize);while(sugar.width>pillW-pillH*1.45&&sf>10)sugar.setFontSize(--sf+'px');
-    this.hubPanel(w-side-versionW,top,versionW,pillH);this.hubText(w-side-versionW/2,top+pillH/2,'v'+GAME_VERSION,Math.max(11,pillH*.34),'#fff0df',.5);
-    this._zone(w-side-versionW,top,versionW,pillH,()=>{this.menuScreen='news';this.buildMenuScreen();});if(this.hasNewsBadge())this.drawBadgeDot(this.menu,w-side-7,top+6);
+    this.hubPanel(versionX,top,versionW,pillH);this.hubText(versionX+versionW/2,top+pillH/2,'v'+GAME_VERSION,Math.max(11,pillH*.34),'#fff0df',.5);
+    this._zone(versionX,top,versionW,pillH,()=>{this.menuScreen='news';this.buildMenuScreen();});if(this.hasNewsBadge())this.drawBadgeDot(this.menu,versionX+versionW-7,top+6);
+    const gearX=w-side-gearW,gearY=top+(pillH-44)/2;this.hubPanel(gearX,gearY,gearW,44);
+    const cog=this.add.graphics(),cx=gearX+22,cy=gearY+22;cog.fillStyle(0xe7e4ed,1);for(let i=0;i<8;i++){const a=i*Math.PI/4;cog.fillCircle(cx+Math.cos(a)*9,cy+Math.sin(a)*9,3);}cog.fillCircle(cx,cy,10).fillStyle(0x283041,1).fillCircle(cx,cy,4);this.menu.add(cog);
+    this._zone(gearX,gearY,gearW,44,()=>{this.menuScreen='gMore';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='gMore';
     const logoW=portrait?w*.82:w*.43,logoH=logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?Math.min(h*.445,L.menuTop-Math.max(25,h*.03)-12-logoH):h*.40;
     this.startHubAmbience(logoY);if(this.textures.exists('hub_ui_logo')){const logo=this.hubArt('logo',logoX,logoY+logoH/2,logoW,logoH);this.hubTween({targets:logo,y:logo.y+1.5,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});}else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
     const ch=CHARACTERS[this.character||'momo'],heroW=portrait?w*.66:w*.42,heroH=portrait?Math.max(25,h*.03):28,heroY=portrait?L.menuTop-heroH-8:h*.65;
     const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');
-    const items=[['Play','Choose a stage','chapter','hub_btn_play'],['Heroes','Choose & awaken','char','hub_btn_heroes'],['Gear & Power','Equipment · Craft','gLoadout','hub_btn_gear'],['Activities','Daily · Achievements','gActivity','hub_btn_activity'],['Codex','Skills · Bestiary','gCodex','hub_btn_codex'],['More','Settings · Guide','gMore','hub_btn_more']];
+    const items=[['Play','Choose a stage','chapter','hub_btn_play'],['Heroes','Choose & awaken','char','hub_btn_heroes'],['Gear & Power','Equipment · Craft','gLoadout','hub_btn_gear'],['Activities','Daily · Achievements','gActivity','hub_btn_activity'],['Codex','Skills · Bestiary','gCodex','hub_btn_codex']];
     const tutDone=!!Save.data.tutorialDone,us=Save.data.unlockedStage||0,need=[0,0,1,2,1,0],nxt=this.hubNextStep();
     items.forEach(([label,sub,target,icon],i)=>{const B=L.boxes[i],locked=us<need[i]&&!tutDone,primary=i===0,tone=this.hubTone(i),art=this.hubPanel(B.x,B.y,B.w,B.h,tone);if(locked)art.setAlpha(.60);
       if(primary){const glow=this.add.graphics();glow.lineStyle(2,tone.edge,.45).strokeRoundedRect(B.x+2,B.y+2,B.w-4,B.h-4,14);this.menu.add(glow);this.hubTween({targets:glow,alpha:.25,duration:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
@@ -8467,8 +8474,11 @@ class Game extends Phaser.Scene {
     let fs=fontSize;while(text.width>w-16&&fs>9){fs--;text.setFontSize(fs+'px');}this.menu.add(text);
     if(fn)this._zone(x,y,w,h,()=>{Sfx.select&&Sfx.select();fn();});return art;
   }
-  heroesContentTop(){return this.W<=this.H?193*this.W/941:102;}
+  heroesContentTop(){const L=this.rosterTabLayout();return Math.max(this.W<=this.H?193*this.W/941:102,L.y+L.h+10);}
+  rosterTabLayout(){const w=this.W,p=w/941,h=Math.max(36,Math.min(48,86*p)),gap=Math.max(8,18*p),tw=Math.min(w*.245,220),y=w<=this.H?Math.max(42,110*p):50;return{tw,h,gap,y,x0:(w-tw*3-gap*2)/2};}
   rosterChrome(key,x,y,w,h){
+    // Compact controls are drawn natively so ornaments cannot be stretched.
+    if(['tab_on','tab_off','footer','badge'].includes(key)){const g=this.add.graphics(),active=key==='tab_on'||key==='footer',r=Math.min(12,h/2);g.fillStyle(active?0xa52f53:0x27283a,.96).fillRoundedRect(x,y,w,h,r);g.lineStyle(active?2:1.2,active?0xffb99b:0x8b8fac,.85).strokeRoundedRect(x,y,w,h,r);this.menu.add(g);return g;}
     const k='hr_ui_'+key;if(this.textures.exists(k)){const im=this.add.image(x+w/2,y+h/2,k).setDisplaySize(w,h);this.menu.add(im);return im;}
     const g=this.add.graphics();g.fillStyle(key==='footer'||key==='tab_on'?0xc93970:0x291733,.95).fillRoundedRect(x,y,w,h,Math.min(14,h/2));g.lineStyle(2,0xe5bb6b,.9).strokeRoundedRect(x,y,w,h,Math.min(14,h/2));this.menu.add(g);return g;
   }
@@ -8486,8 +8496,8 @@ class Game extends Phaser.Scene {
     this.menu.add(this.add.text(w/2,cy,title,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(22,54*p)+'px',color:'#fff1d8',stroke:'#7b3248',strokeThickness:Math.max(1,3*p)}).setOrigin(.5));
   }
   drawRosterTabs(){
-    const w=this.W,p=w/941,portrait=w<=this.H,tw=258*p,h=66*p,y=portrait?110*p:50,x0=(w-(tw*3+12*p*2))/2;
-    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{const x=x0+i*(tw+12*p);this.rosterChrome(id===(this._heroesTab||'roster')?'tab_on':'tab_off',x,y,tw,h);
+    const w=this.W,p=w/941,{tw,h,y,x0,gap}=this.rosterTabLayout();
+    [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{const x=x0+i*(tw+gap);this.rosterChrome(id===(this._heroesTab||'roster')?'tab_on':'tab_off',x,y,tw,h);
       this.menu.add(this.add.text(x+tw/2,y+h/2,label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(13,31*p)+'px',color:'#fff3f3',stroke:'#482139',strokeThickness:Math.max(1,2*p)}).setOrigin(.5));
       this._zone(x,y,tw,h,()=>{this._heroesTab=id;this.menuScreen='char';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='tab_'+id;
     });
@@ -8501,22 +8511,23 @@ class Game extends Phaser.Scene {
     const id=this._heroPreview,c=CHARACTERS[id];
     const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Chain lightning.\nDash to reposition.',0xd1a0ff],yuzu:['Summoner','Summoner','Command a citrus crew.\nYour minions fight for you.',0xf5ec83],sesame:['Precision','Precision','Charged mirror beams.\nPrecise boss damage.',0xe4e0eb]};
     const detail=info[id],cols=landscape?Math.max(2,Math.min(4,Math.floor(w/215))):2;
-    const panelW=w-side*2,top=landscape?102:193*p,panelH=landscape?160:368*p+extra*.35,g=this.add.graphics();
+    const panelW=w-side*2,top=this.heroesContentTop(),panelH=landscape?160:368*p+extra*.35,g=this.add.graphics();
     this.rosterChrome('preview',side,top,panelW,panelH);this.menu.add(g);
     const aw=panelW*.53;
     if(!this._characterCardArt(id,side+aw*.50,top+panelH*.51,aw*.96,panelH*.96))this.menu.add(this.add.text(side+aw/2,top+panelH/2,c.emoji,{fontSize:'64px'}).setOrigin(.5));
     const tx=side+aw+5,rw=panelW-aw-18,fs=Math.max(18,58*p);
+    const infoSize=32,infoX=side+panelW-infoSize-9,infoY=top+9;
     const title=this.add.text(tx,top+14,c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#fff1de',stroke:'#692e43',strokeThickness:2});this.menu.add(title);
-    let nf=fs;while(title.width>rw&&nf>15){nf--;title.setFontSize(nf+'px');}
+    let nf=fs;while(title.width>rw-infoSize-6&&nf>12){nf--;title.setFontSize(nf+'px');}
     const badgeY=top+panelH*.27;
     g.lineStyle(1.5,detail[3],.9).lineBetween(tx,top+panelH*.23,tx+rw,top+panelH*.23);
-    this.rosterChrome('badge',tx,badgeY,rw,25*p*2);this.rosterIcon(detail[1].toLowerCase(),tx+28*p,badgeY+25*p,32*p);
-    this.menu.add(this.add.text(tx+rw*.55,badgeY+25*p,detail[0],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,24*p)+'px',color:'#ffe8ee'}).setOrigin(.5));
+    const badgeText=this.add.text(0,0,detail[0],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,24*p)+'px',color:'#ffe8ee'}),badgeH=Math.max(24,54*p),badgeW=Math.min(rw,badgeText.width+badgeH+12);
+    this.rosterChrome('badge',tx,badgeY,badgeW,badgeH);this.rosterIcon(detail[1].toLowerCase(),tx+badgeH*.5,badgeY+badgeH/2,badgeH*.65);
+    badgeText.setPosition(tx+badgeH+3,badgeY+badgeH/2).setOrigin(0,.5);let bf=parseFloat(badgeText.style.fontSize);while(badgeText.width>badgeW-badgeH-7&&bf>8)badgeText.setFontSize(--bf+'px');this.menu.add(badgeText);
     const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(tx,top+panelH*.47,sw.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(11,28*p)+'px',color:'#ffe5aa',wordWrap:{width:rw},maxLines:1});this.menu.add(weapon);
     const hint=this.add.text(tx,top+panelH*.60,detail[2],{fontFamily:'NunitoUI, sans-serif',fontSize:Math.max(10,25*p)+'px',color:'#ddd0e3',lineSpacing:2,wordWrap:{width:rw},maxLines:2});this.menu.add(hint);
-    const dy=top+panelH-42*p;
-    this.rosterChrome('details',tx,dy-27*p,rw,54*p);this.rosterIcon('next',tx+rw*.81,dy,25*p);
-    this.menu.add(this.add.text(tx+rw*.44,dy,'Details',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(11,25*p)+'px',color:'#fff1ee'}).setOrigin(.5));this._zone(tx,dy-27*p,rw,54*p,()=>this.showCharacterInfo(id));this.tapZones[this.tapZones.length-1].tag='hero_details';
+    this.rosterChrome('badge',infoX,infoY,infoSize,infoSize);this.menu.add(this.add.text(infoX+infoSize/2,infoY+infoSize/2,'!',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff1ee'}).setOrigin(.5));
+    this._zone(infoX,infoY,infoSize,infoSize,()=>this.showCharacterInfo(id));this.tapZones[this.tapZones.length-1].tag='hero_details';
 
     const labelY=top+panelH+49*p;
     this.rosterIcon('flower',w*.30,labelY,27*p);this.rosterIcon('flower',w*.70,labelY,27*p);
@@ -8533,11 +8544,11 @@ class Game extends Phaser.Scene {
       this.rosterIcon(meta[1].toLowerCase(),x+36*p,y+ch-28*p,32*p);if(chosen)this.rosterIcon('check',x+cw-34*p,y+34*p,59*p);
       this._zone(x,y,cw,ch,()=>{this._heroPreview=key;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='char_'+key;
     });
-    const rows=Math.ceil(roster.length/cols),fy=y0+rows*ch+(rows-1)*rowGap+87*p+Math.min(extra*.25,24*p),bw=Math.min(panelW*.78,390),owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,button=this.add.graphics();
-    this.rosterChrome('footer',w/2-bw/2,fy-46*p,bw,92*p);this.rosterIcon('blossom',w/2-bw*.31,fy,46*p);
-    this.menu.add(this.add.text(w/2+50*p,fy-2,chosen?'Selected: '+c.name:owned?'Select '+c.name:'Locked: '+c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(14,38*p)+'px',color:'#fff5ed',stroke:'#81334e',strokeThickness:1}).setOrigin(.5));
-    this._zone(w/2-bw/2,fy-46*p,bw,92*p,()=>{if(!owned){this.showCharacterInfo(id);return;}if(chosen)return;Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='hero_confirm';
-    this.menu.add(this.add.text(w/2,fy+70*p,'Tap a hero to preview',{fontFamily:'NunitoUI, sans-serif',fontSize:Math.max(10,24*p)+'px',color:'#cbb6d1'}).setOrigin(.5));this.menu.setVisible(true);
+    const rows=Math.ceil(roster.length/cols),fy=y0+rows*ch+(rows-1)*rowGap+70*p+Math.min(extra*.25,24*p),bw=Math.min(panelW*.78,390),buttonH=Math.max(44,Math.min(60,110*p)),owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,button=this.add.graphics();
+    this.rosterChrome('footer',w/2-bw/2,fy-buttonH/2,bw,buttonH);
+    this.menu.add(this.add.text(w/2,fy,chosen?'Selected: '+c.name:owned?'Select '+c.name:'Locked: '+c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(14,38*p)+'px',color:'#fff5ed',stroke:'#81334e',strokeThickness:1}).setOrigin(.5));
+    this._zone(w/2-bw/2,fy-buttonH/2,bw,buttonH,()=>{if(!owned){this.showCharacterInfo(id);return;}if(chosen)return;Save.data.character=id;Save.save();this.character=id;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='hero_confirm';
+    this.menu.add(this.add.text(w/2,fy+buttonH/2+13,'Tap a hero to preview',{fontFamily:'NunitoUI, sans-serif',fontSize:Math.max(10,24*p)+'px',color:'#cbb6d1'}).setOrigin(.5));this.menu.setVisible(true);
   }
   showCharacterInfo(id){const returnScroll=this._mScroll||0;this.cancelMenuMotion();this.setMenuScroll(0);const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-60,410),x=(w-bw)/2,y=(h-bh)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);

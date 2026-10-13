@@ -1,19 +1,11 @@
 # Latest session checkpoint
 Updated: 2026-10-13 (Asia/Bangkok).
 
-## Completed — Hub v7.8.7 live
-User requested subtle motion, less dense art and color contrast beyond pink. Castle/Strawberry plate and existing logo/icons retained. Calmer Canvas panels replace repeated floral frames: coral Play, mint Heroes, indigo Gear, warm gold Activities, cyan Codex, neutral More. Smaller icons, matte header pills, unframed hero caption, lower shade and no bottom floral divider.
-Eight faint petals above logo, 1.5px logo float, Play outline pulse and subtle background zoom. Hit zones stay fixed. Effects stop on rebuild/navigation/stage start/shutdown and respect reduced motion. Guide badge has gold Canvas fallback. Routes, unlocks, notifications, currency/rewards unchanged.
+## Active delivery — v7.8.8
+Owner likes Hub theme. More moved to header gear (44px) beside version; retains gMore / Settings / Guide route. Compact 36px+ Heroes tabs, 44px+ Select footer use native controls to prevent artwork stretching; role chip is text-sized, Details becomes top-right !. Stats follows generated concept with larger one-line labels, bold values, category accents and existing source modal. No save/economy/stat formula changes.
+ImageGen concept completed using owner Stats + Hub references. Exact prompt: current chat outputs/hero-stats-prompt.txt; image outputs/hero-stats-concept.png. Runtime uses original hero/background art and native panels, not the mockup as a screen image.
 
-## Verified publication
-Runtime commit 23f32b5fd41b4316ded0240b3503a60c9a8c995e on claude/vampire-survival-mobile-game-yo9e8w. Uploaded tree matched tested local tree 9232d227e83c4a42ad2b018b6d8e95f147c1e8a5 exactly.
-Full npm check/build and Hub route/lock/lifecycle fixtures passed. Real Phaser Canvas: seven viewports × normal/reduced motion (14 states), text/touch bounds, moving petals, four rebuilds without tween growth, navigation cleanup, no browser errors. No headless combat simulation.
-Pages run 38370661798 succeeded. Published version.json / GAME_VERSION both verified 7.8.7; live code verified palette, panels, ambience, cleanup and reduced-motion preference.
-
-## Recovery / references
-Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Logs in parent work directory: hub-787-check.log, hub-787-build.log, hub-787-ui.log. Screenshot: current chat outputs/hub-clean-7.8.7.png (synthetic menu data).
-Implementation/reproduction: docs/HUB_CALM_MOTION.md; scripts/build-hub-review.mjs; scripts/check-hub-live-ui.cjs. Tests: tests/hub-reference.test.cjs. Native code uses existing art; no new generated runtime raster assets.
-Previous Forge v7.8.6 is complete: single-line results, tier-only right labels and larger controls; Pages 38368604546 succeeded. Do not redo either release.
-
-## Next action
-No unfinished implementation/deployment. Await owner's physical-phone feedback on Hub density, palette, motion feel and FPS, or a new task. Read startup notes and confirm actual remote state before changing files.
+## State / next step
+Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Remote/local base c24e14db183ee04dd29e3785d82cd79460c46bc5 confirmed. Implementation done; Hub native Canvas QA 7 sizes x normal/reduced passed. Heroes/Stats 7 sizes plus preview/confirm/details/source routes passed. Full npm check/build and final screenshot review passed. Real pointer routes passed where visible; overflowing landscape/short-phone routes exercised directly. Next: exact-tree GitHub publish and Pages/version verification. No publish of v7.8.8 yet.
+Changed game.js, existing Hub/Hero/Talent tests, new scripts/build-heroes-review.mjs + check-heroes-live-ui.cjs, CLAUDE/history, docs/HERO_MOBILE_POLISH.md and checkpoint. Logs parent work heroes-788-check.log / build.log. Screenshots current chat outputs/hub-7.8.8.png, heroes-7.8.8.png, stats-7.8.8.png (synthetic menu data).
+Previous Forge v7.8.6 and Hub v7.8.7 are complete/live; do not redo.

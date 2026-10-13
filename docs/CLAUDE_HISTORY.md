@@ -1838,3 +1838,11 @@ Owner approved the incremental 150-mod plan. Catalog: 150 entries, 78 active, 72
 # Previous delivery: v7.8.1 — Stable long-menu scrolling
 
 Owner approved pushing the Forge work and reported strange long-page scrolling. Recovered Forge changes after scratch reset; new commit IDs supersede previous local-only SHAs. Shared scroll bounds now measure unscrolled content/tall panels/interactive extents and exclude viewport backdrops/fixed footers; filler removed. Painted backgrounds stay fixed including late loading. Incremental drag reverses immediately at bounds, locks direction and uses shorter inertia; roulette overlays cannot scroll. Missed taps cannot leak a coordinate-transform wrapper. Slim viewport scrollbar. See docs/MENU_SCROLL_7_8_1.md. Full check/build required; owner phone feel review pending. Forge remains 150 catalog / 78 active / 72 gated.
+
+# Previous delivery: v7.8.2 — Forge sparse-row crash
+
+Owner screenshot: Forge stops after the selected gear icon with `Cannot read properties of null (reading 'id')`. Reproduced using the actual Forge renderer: `forgeLines()` intentionally returns three nullable rows, but `gearAffixName()` dereferenced every row. Skip empty rows when deriving prefixes/suffixes. Preserve the three-row structure, saves, existing mods and costs. Regression covers 0/1/2 mods, all selected rows and five portrait/landscape sizes, plus name equivalence with compact affixes. Full check/build passed; owner phone confirmation pending.
+
+# Older history
+
+Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archived verbatim in `docs/CLAUDE_HISTORY.md`. Search there (grep a function or version) when you need why something was done. When you finish work: add a new "# Latest delivery" block here, rename the previous one to "# Previous delivery", and keep only ~6 recent blocks in this file (move older ones to the end of docs/CLAUDE_HISTORY.md).
