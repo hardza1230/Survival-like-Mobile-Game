@@ -3,7 +3,7 @@ const {chromium}=require('playwright');
 (async()=>{
  const root=path.resolve('www');
  const server=http.createServer((req,res)=>{const file=path.join(root,new URL(req.url,'http://localhost').pathname);try{const ext=path.extname(file),mime={'.html':'text/html','.js':'text/javascript','.png':'image/png','.webp':'image/webp','.ttf':'font/ttf'};res.setHeader('Content-Type',mime[ext]||'application/octet-stream');res.end(fs.readFileSync(file));}catch(e){res.statusCode=404;res.end('Not found');}});
- await new Promise(r=>server.listen(8088,'127.0.0.1',r));const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ await new Promise(r=>server.listen(8088,'127.0.0.1',r));const browser=await chromium.launch({...(process.env.FORGE_BROWSER_CHANNEL?{channel:process.env.FORGE_BROWSER_CHANNEL}:{}),headless:true,args:['--no-sandbox']});
  const sizes=[[320,568],[360,640],[390,844],[430,932],[691,1536],[768,1024],[844,390]];
  const shots=[];try{
  for(const [w,h]of sizes)for(const state of ['power','sustain','utility']){
@@ -11,6 +11,7 @@ const {chromium}=require('playwright');
   await page.goto('http://127.0.0.1:8088/forge-review.html?w='+w+'&h='+h+'&state='+state);
   await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Ready'),{timeout:30000});
   const metrics=await page.evaluate(()=>{const s=window.__forgeReviewGame.scene.getScene('ForgeReview'),texts=s.menu.list.filter(n=>n.type==='Text');return{scroll:s._mScrollMax,W:s.W,H:s.H,atlas:s.textures.exists('fg_ui_atlas'),zones:s.tapZones.map(z=>({x:z.x,y:z.y,w:z.w,h:z.h,tag:z.tag})),texts:texts.map(t=>({text:t.text,box:{x:t.getBounds().x,y:t.getBounds().y,w:t.getBounds().width,h:t.getBounds().height}}))};});
+  assert(!metrics.texts.some(t=>/^T\d+ \(/.test(t.text)));if(state!=='sustain'){assert(!metrics.texts.some(t=>/^\d+(\.\d+)?%$/.test(t.text)));assert(!metrics.texts.some(t=>t.text==='Might'));}for(const z of metrics.zones.filter(z=>z.tag?.startsWith('info_')))assert(z.w>=44&&z.h>=44);for(const z of metrics.zones.filter(z=>['roll','tier','auto'].includes(z.tag)))assert(z.h>=44);
   assert.equal(metrics.scroll,0);assert(metrics.atlas);assert.equal(errors.length,0,errors.join('\n'));
   for(const z of metrics.zones)assert(z.x>=0&&z.y>=0&&z.x+z.w<=w+.5&&z.y+z.h<=h+.5,JSON.stringify({w,h,state,z}));
   for(const t of metrics.texts)assert(t.box.x>=-.5&&t.box.y>=-.5&&t.box.x+t.box.w<=w+.5&&t.box.y+t.box.h<=h+.5,JSON.stringify({w,h,state,text:t}));
@@ -26,6 +27,6 @@ const {chromium}=require('playwright');
   assert.equal(errors.length,0,errors.join('\n'));console.log('Forge live menu passed '+w+'x'+h+' '+state);await page.close();
  }
  for(const shot of shots){const data=shot.bytes.toString('base64');console.log('FORGE_SHOT_BEGIN:'+shot.state);for(let i=0;i<data.length;i+=8000)console.log('FORGE_SHOT_CHUNK:'+data.slice(i,i+8000));console.log('FORGE_SHOT_END:'+shot.state);}
- console.log('Forge real-browser UI: 21 states, text/hit bounds, atlas loading, Equip, paid Choose, targets and modal/family navigation passed.');
+ console.log('Forge real-browser UI: 21 states, text/hit bounds, atlas loading, Equip, paid Choose, targets and tier-only labels, single-line results, enlarged controls and modal navigation passed.');
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

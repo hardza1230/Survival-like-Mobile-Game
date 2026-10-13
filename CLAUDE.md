@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.5 — Simpler Affix Forge
+# Latest delivery: v7.8.6 — Forge mobile readability
+
+Owner selected single-line mod results, larger touch controls and tier-only labels from the ImageGen preview. Main-page results show one effect name plus Tn; installed rows retain their effect value and display only Tn at right. Full ranges/chances remain in details and Odds. Roll/Tier/Auto are 44px tall; result-info controls are 44×44; current-mod info is 44px wide. Small portrait geometry rebalanced; no economy or save changes. See docs/FORGE_MOBILE_READABILITY.md.
+
+# Previous delivery: v7.8.5 — Simpler Affix Forge
 
 Forge Back unwinds navigation to Gear & Power, then Hub, without returning to Forge. All three rows now spend one corresponding currency for one immediate random compatible mod; Utility no longer selects a family. Auto rolls the selected row. Short effect labels in current/result rows; full conditions remain in details. Already-paid Sustain choices remain recoverable. See docs/FORGE_SIMPLIFICATION.md.
 
@@ -21,10 +25,6 @@ Owner screenshot: Forge stops after the selected gear icon with `Cannot read pro
 # Previous delivery: v7.8.1 — Stable long-menu scrolling
 
 Owner approved pushing the Forge work and reported strange long-page scrolling. Recovered Forge changes after scratch reset; new commit IDs supersede previous local-only SHAs. Shared scroll bounds now measure unscrolled content/tall panels/interactive extents and exclude viewport backdrops/fixed footers; filler removed. Painted backgrounds stay fixed including late loading. Incremental drag reverses immediately at bounds, locks direction and uses shorter inertia; roulette overlays cannot scroll. Missed taps cannot leak a coordinate-transform wrapper. Slim viewport scrollbar. See docs/MENU_SCROLL_7_8_1.md. Full check/build required; owner phone feel review pending. Forge remains 150 catalog / 78 active / 72 gated.
-
-# Previous delivery: v7.8.0 — Three-row Forge foundation
-
-Owner approved the incremental 150-mod plan. Catalog: 150 entries, 78 active, 72 gated/planned; do not claim 150 working effects. Spark rolls Power, Cream offers two persisted choices, Jam uses a selected family. Glaze retains tier reroll. Replacements preserve relative tier; legacy mods/implicit/UID and currency purchase value survive migration. Remove/Reset retired. Runtime supports barriers on contact/ranged damage, conditions/recovery/growth, snapshotted farm bonuses and target currencies. Registry: data/forge-mods.json; sync with scripts/sync-forge-catalog.mjs. Exact pending scope: docs/FORGE_150_ROLLOUT.md. Full check/build required; phone balance/FPS owner review; no headless gameplay simulation.
 
 # Older history
 
@@ -96,7 +96,7 @@ Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archiv
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.5 · 13 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.6 · 13 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)

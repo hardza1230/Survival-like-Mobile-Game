@@ -1,22 +1,20 @@
 # Latest session checkpoint
 Updated: 2026-10-13 (Asia/Bangkok).
 
-## Completed objective — v7.8.5 live
-Owner requested Forge Back loop fix, one random currency roll on all rows, and shorter mod text. All delivered.
-- Back exits Forge to Gear & Power; next Back reaches Hub without a loop.
-- Sustain installs one random result immediately. Utility rolls the full compatible row with no family selection. All-row Auto uses the selected row/currency.
-- Short effect labels in lists/current rows; full conditions stay in details. Old paid Sustain choices remain recoverable without another charge.
-- Existing mods, relative tiers, effects and balances preserved. Catalog remains 150 / 78 active / 72 gated.
+## v7.8.6 implemented and verified locally — publication next
+Owner approved one-line mod results and larger mobile controls, then requested only tier numbers on the right, removing percentages/ranges from the main page.
+- Possible mods: one short effect label plus Tn. Installed rows retain the actual value/effect and show only Tn at right. Full conditions, values, ranges and chances remain in Info/Odds.
+- Roll/Tier/Auto are 44px tall, result Info 44×44, installed Info 44px wide; Back/paging wider. Small portrait layout rebalanced. Landscape omits redundant footer explanation.
+- Existing v7.8.5 navigation, all-row random roll, tier preservation, Auto and old paid-choice recovery unchanged. No economy/save/effect changes; catalog stays 150 / 78 active / 72 gated.
 
-## Verified release
-Runtime commit: d70c63ff0469893a5dc6cd3bfc9e095163cef376 on claude/vampire-survival-mobile-game-yo9e8w. Uploaded tree exactly matched the tested local tree 4063e5a599ea8a461fb24acd38feace39f2adb8d.
-Full npm check/build passed. Real Phaser menu QA: 21 states across seven viewports, all-row Roll/Auto and currency charges, old paid choices, details and text/touch bounds. Separate native-menu navigation check confirmed Forge → Gear & Power → Hub. No headless combat simulation.
-Pages run 38364633891 completed successfully. Published version.json and game.js GAME_VERSION both report 7.8.5; live code also checked for Back fix, immediate Sustain roll, full Utility pool and short labels.
+## Verification completed
+Full npm check/build passed. Updated targeted Forge regression passed. Real Phaser menu QA: 21 states across seven viewports, text/touch bounds, all-row Roll/Auto and charges, paid-choice recovery, details and modal navigation. No headless combat simulation.
+Actual-menu screenshot: current chat outputs/affix-forge-7.8.6.png. Release notes: docs/FORGE_MOBILE_READABILITY.md.
 
-## Files and recovery
-Runtime files: game.js, tests/forge-150.test.cjs, tests/forge-redesign.test.cjs; release notes in CLAUDE.md, docs/CLAUDE_HISTORY.md and docs/FORGE_SIMPLIFICATION.md.
-Checkout reused: C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Local QA logs/scripts in parent work directory: forge-785-*.log, ui-check-785.cjs, ui-back-785.cjs. Durable code/release notes are on GitHub.
-New workflow observation: regenerate the standalone Forge review explicitly after source changes; see AGENT_WORKFLOW.md.
+## Files / recovery
+Changed game.js, tests/forge-redesign.test.cjs, scripts/check-forge-live-ui.cjs, CLAUDE.md, docs/CLAUDE_HISTORY.md, docs/FORGE_MOBILE_READABILITY.md and this checkpoint. CI UI runner now checks tier-only labels and enlarged buttons; optional FORGE_BROWSER_CHANNEL supports installed Chrome locally.
+Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game; QA script/logs in parent work directory (ui-check-786.cjs, forge-786-*.log).
+Branch claude/vampire-survival-mobile-game-yo9e8w; base d3fe142283a6c9d3d01579d2c3ecb5e84d5c7bc0; previous live v7.8.5. Changes currently local only.
 
-## Next action
-No unfinished Forge implementation or deployment. Await owner phone feedback on Back, repeated rolls and mod readability, or a new user task. Read startup instructions and verify actual remote state before changing anything; do not repeat this completed work.
+## Exact next action
+Commit and publish through connected GitHub tree/commit/ref tools after exact local/remote tree equality and expected-head check. Confirm Pages success and published version.json / GAME_VERSION 7.8.6. Update this checkpoint after publication. Then await phone feedback or the next task; no full ImageGen art redesign was requested.

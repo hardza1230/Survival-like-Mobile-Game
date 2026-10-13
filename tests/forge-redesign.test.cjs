@@ -11,9 +11,10 @@ function scene(W,H,{locked=false,line=0,pending=false,modCount=3,selected='u0',e
 }
 const screens=[[320,568],[360,640],[390,844],[430,932],[691,1536],[768,1024],[844,390]];
 for(const[W,H]of screens)for(const locked of[false,true])for(const line of[0,1,2])for(const pending of[false,true]){
- const s=scene(W,H,{locked,line,pending});s._buildCraftBenchRaw();assert(!s.nodes.some(n=>['1  Gear','2  Affix','3  Roll','Equip this item','Remove affix','Reset item'].includes(n.text)));assert(s.nodes.some(n=>n.text==='✓ Equipped'||n.text==='Equipped'));assert(s.nodes.some(n=>/^T5 \(/.test(n.text)));assert.equal(!!s.tapZones.find(z=>z.tag==='roll'),!locked&&!pending);assert.equal(!!s.tapZones.find(z=>z.tag==='tier'),!locked&&!pending);
+ const s=scene(W,H,{locked,line,pending});s._buildCraftBenchRaw();assert(!s.nodes.some(n=>['1  Gear','2  Affix','3  Roll','Equip this item','Remove affix','Reset item'].includes(n.text)));assert(s.nodes.some(n=>n.text==='✓ Equipped'||n.text==='Equipped'));assert(s.nodes.some(n=>/^T5$/.test(n.text)));assert.equal(!!s.tapZones.find(z=>z.tag==='roll'),!locked&&!pending);assert.equal(!!s.tapZones.find(z=>z.tag==='tier'),!locked&&!pending);
  if(pending){assert(s.nodes.some(n=>n.text==='Choose one · already paid'));if(s.tapZones.some(z=>z.tag==='choices_open'))s.tapZones.find(z=>z.tag==='choices_open').fn();assert.equal(s.tapZones.filter(z=>/^choose_\d/.test(z.tag)).length,locked?0:2);}
  else{const target=s.tapZones.find(z=>z.tag?.startsWith('target_'));assert(target);target.fn();assert.equal(Object.keys(s.craftTargets).length,1);assert.equal(writes,0);assert.equal(!!s.tapZones.find(z=>z.tag==='auto'),!locked);}
+ assert(!s.nodes.some(n=>/^T\d+ \(/.test(n.text)));if(!pending){assert(!s.nodes.some(n=>n.text==='Might'));for(const z of s.tapZones.filter(z=>z.tag?.startsWith('info_')))assert(z.w>=44&&z.h>=44);for(const tag of ['roll','tier','auto']){const z=s.tapZones.find(z=>z.tag===tag);if(z)assert(z.h>=44);}}
  assert.equal(s.menu.y,0);
 }
 for(const[W,H]of screens)for(const modCount of[0,1,2])for(const line of[0,1,2]){const s=scene(W,H,{modCount,line});s._buildCraftBenchRaw();assert(s.nodes.some(n=>n.text==='Empty'));assert(s.tapZones.some(z=>z.tag==='roll'));}
