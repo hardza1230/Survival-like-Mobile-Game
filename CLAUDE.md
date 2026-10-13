@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.4 — Readable Forge mods
+# Latest delivery: v7.8.5 — Simpler Affix Forge
+
+Forge Back unwinds navigation to Gear & Power, then Hub, without returning to Forge. All three rows now spend one corresponding currency for one immediate random compatible mod; Utility no longer selects a family. Auto rolls the selected row. Short effect labels in current/result rows; full conditions remain in details. Already-paid Sustain choices remain recoverable. See docs/FORGE_SIMPLIFICATION.md.
+
+# Previous delivery: v7.8.4 — Readable Forge mods
 
 Effect-first pool rows, semantic Canvas pictograms with individual catalog seals, cached per mod (150 catalog identities; only 78 runtime-backed mods remain rollable). Current rows and paid choices reuse the icons. Details expose full effect, value at preview tier, chance and replaced row. Existing costs, saves and effect implementations remain. Full check/build and seven-viewport Forge tests pass; see docs/FORGE_READABILITY.md for browser QA.
 
@@ -21,14 +25,6 @@ Owner approved pushing the Forge work and reported strange long-page scrolling. 
 # Previous delivery: v7.8.0 — Three-row Forge foundation
 
 Owner approved the incremental 150-mod plan. Catalog: 150 entries, 78 active, 72 gated/planned; do not claim 150 working effects. Spark rolls Power, Cream offers two persisted choices, Jam uses a selected family. Glaze retains tier reroll. Replacements preserve relative tier; legacy mods/implicit/UID and currency purchase value survive migration. Remove/Reset retired. Runtime supports barriers on contact/ranged damage, conditions/recovery/growth, snapshotted farm bonuses and target currencies. Registry: data/forge-mods.json; sync with scripts/sync-forge-catalog.mjs. Exact pending scope: docs/FORGE_150_ROLLOUT.md. Full check/build required; phone balance/FPS owner review; no headless gameplay simulation.
-
-# Previous delivery: v7.7.24 — Focused Affix Forge
-
-Owner approved minimal Forge concept and critique of rarely used Remove/Reset. Shared Heroes header/fonts/buttons; single selected-item summary; three mod rows; paged weighted results with explicit target tracking; tiers collapsed behind Odds & tiers. Reroll + reroll tier prominent; Remove/Reset in Advanced with consequences and original second-tap confirmation/locked guards. Legacy rarity upgrade omitted because all rarities already share three-mod cap; preserve old helper and currency balances. Existing weighted rolls, auto-roll Stop/thresholds, costs and roulette remain. Craft rebuilds refresh scroll bounds; direct primary callbacks preserve tutorial lookup. See docs/AFFIX_FORGE_REDESIGN.md. Actual-method tests/full check/build/live menu QA required; no headless combat simulation. v7.7.24 fixes a live-observed loader race: synchronous completion hid the overlay, then the queued show RAF restored opacity. Invalidate stale show callbacks on hide; retain .84 veil after late Equipment/Forge background loading.
-
-# Previous delivery: v7.7.22 — Selected minimal Equipment elements
-
-Owner approved curated Equipment changes: shared Heroes header/buttons, quieter background and thin slot borders, labeled six slots, four-column inventory with larger labels, separate management toolbar, grouped item title/rarity/base stats, Enhance as primary, Craft/Favorite/Lock as secondary and contextual protection message replacing duplicate disabled Protected buttons. Keep original save/gear/upgrade odds/cost/protected guards/crafted-item confirmation and mod comparison; landscape route preserved. Existing painted chrome loaded via gear menu group; no new art generation. v7.7.22 restricts gear menu loading to current portrait, owned/equipped icon keys and shared chrome actually used; balances loadout column widths and wraps narrow hero captions. Actual-method equipment action/filter tests plus full check/build and live menu QA required. No combat simulation.
 
 # Older history
 
@@ -100,7 +96,7 @@ Older delivery notes and the old "สถานะ" log (v1.x–v6.55) are archiv
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.4 · 13 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.5 · 13 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)

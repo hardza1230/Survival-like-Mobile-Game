@@ -1,32 +1,20 @@
 # Latest session checkpoint
+Updated: 2026-10-13 (Asia/Bangkok).
 
-Updated: 2026-10-13 (Asia/Bangkok). Replace this document with the latest checkpoint; keep it approximately one page. Permanent methods belong in `AGENT_WORKFLOW.md`; release history belongs in `CLAUDE.md` / its history.
+## Objective completed locally — publication next
+Forge v7.8.5: fix Back loop, use one random currency roll on all rows, shorten mod text.
+- Back now exits Forge to Gear & Power; next Back reaches Hub.
+- Sustain installs one result immediately. Utility rolls the whole compatible row without family selection. Auto uses selected row/currency.
+- Short effect labels; full conditions in details. Previously paid Sustain choices stay recoverable without another charge.
+- Existing mods, tier retention, effects and balances preserved; catalog remains 150 / 78 active / 72 gated.
 
-## Current objective
+## Verification completed
+Full npm check/build passed. Real Phaser menu: 21 states across seven viewports, all-row Roll/Auto, exact currency charges, old paid choices, text/touch bounds and details. Separate native-menu navigation check confirms Forge → Gear & Power → Hub. No headless combat simulation. Phone feel remains owner QA.
 
-Preserve working methods and task progress across new chats so the next agent can resume without repeating environment discovery. The current change adds this checkpoint, a workflow guide, and startup/checkpoint instructions in `AGENTS.md`.
+## Files and recovery
+Changed: game.js, tests/forge-150.test.cjs, tests/forge-redesign.test.cjs, CLAUDE.md, docs/CLAUDE_HISTORY.md, docs/FORGE_SIMPLIFICATION.md, this checkpoint.
+Checkout: C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Local QA logs/scripts in its parent work directory (ui-check-785.cjs, ui-back-785.cjs).
+Branch claude/vampire-survival-mobile-game-yo9e8w. Remote rechecked at a3fef4d2575cdeadbb5cea8e28a8b3cc894e3ce4; previous live v7.8.4.
 
-## Completed game work
-
-- Forge mod readability v7.8.4 is complete and live.
-- Runtime commit: `a5ec49911b2db82127e90ea4a7cf78a99124f88b`.
-- Added semantic Canvas icons with individual catalog seals, effect-first result rows, icons in installed rows and paid Sustain choices, and wrapped details with preview value/chance/replaced row.
-- Existing 150 catalog / 78 active / 72 gated split remains. No effect, currency or save behavior was changed.
-- Full check/build passed. Real-browser menu QA passed 21 states across seven viewports; active-mod detail bounds were checked on small portrait and landscape screens.
-- Pages run `38360737277` succeeded. Published `version.json` and `game.js` both reported `7.8.4`.
-- Relevant files: `game.js`, `tests/forge-readability.test.cjs`, `docs/FORGE_READABILITY.md`, `CLAUDE.md`.
-
-## Next action
-
-For a new user task: read `AGENTS.md`, the current rules/state in `CLAUDE.md`, and `AGENT_WORKFLOW.md`; verify current repository state, then work on the new request. There is no unfinished Forge implementation to resume. Physical-phone feedback remains with the user.
-
-## Working route and recovery
-
-- Connected GitHub tree/commit/ref tools successfully published the tested files. Prefer this over the local credential-manager push that stalled.
-- Do not assume local output files or a previous chat's temporary checkout exist on the next machine. Durable game source and these notes are in the repository.
-- Prior chat exported 150 PNG icons and a Forge screenshot as chat deliverables; they are not committed game assets. Runtime icons are generated/cached from code.
-- These notes do not authorize additional deployments or overwrite later user requests. Inspect the current remote head before any write.
-
-## Checkpoint format for future work
-
-Replace the sections above with: objective and latest user constraints; completed steps; remaining steps and the immediate next action; files/branch/recoverable commit; checks and their outcomes; external operations and their status; blockers. Save during work, not just at the end. Record "local only" when a checkpoint has not reached GitHub.
+## Exact next action
+Create recoverable local commit, upload with connected GitHub tree/commit/ref tools; require exact tree equality and expected remote head. Verify Pages success and published version.json / GAME_VERSION 7.8.5, then update this checkpoint. All changes currently local only; no publication claimed yet.
