@@ -1,0 +1,13 @@
+const assert=require('assert/strict'),vm=require('vm');
+const {fixture}=require('./forge-fixture.cjs');const {ctx,api}=fixture();
+const visuals=api.FORGE_DEFS.map(m=>vm.runInContext('forgeModVisual(affixDef('+JSON.stringify(m.id)+'))',ctx));
+assert.equal(new Set(visuals.map(v=>v.key)).size,150);
+assert.equal(new Set(visuals.map(v=>v.seal)).size,150);
+assert.notEqual(visuals[0].glyph,visuals[1].glyph);
+assert.notEqual(visuals[2].glyph,visuals[3].glyph);
+assert.notEqual(visuals[12].glyph,visuals[13].glyph);
+let creates=0,refreshes=0;const keys=new Set(),canvas=new Proxy({},{get:()=>()=>{}});
+ctx.iconScene={textures:{exists:k=>keys.has(k),createCanvas(k){creates++;keys.add(k);return{getContext:()=>canvas,refresh(){refreshes++;}};}},forgeIcon:k=>k};
+for(let i=0;i<2;i++)vm.runInContext("drawForgeModIcon(iconScene,affixDef('f_might'),10,10)",ctx);
+assert.equal(creates,1);assert.equal(refreshes,1);
+console.log('Forge readability: 150 distinct identities, semantic core icons and texture reuse passed');

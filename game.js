@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.3';
+const GAME_VERSION = '7.8.4';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.4',date:'2026-10-13',title:'Readable Forge mods',items:['Effect-first result rows and individual cached mod icons','Mod details show the full effect, current-tier value and replaced mod']},
   {v:'7.8.3',date:'2026-10-13',title:'Single-screen Affix Forge',items:['Compact Forge keeps Roll and Tier visible on one screen','Equipped tags, real tier ranges and paged result lists','New painted controls with fixed corners; paid Sustain choices recover safely']},
   {v:'7.8.2',date:'2026-10-13',title:'Forge empty-mod fix',items:['Gear with empty mod rows now opens in Affix Forge without crashing','Existing mods, item names and crafting costs are preserved']},
   {v:'7.8.1',date:'2026-10-13',title:'Long-menu scrolling',items:['Stable content bounds across redraws; painted backdrops stay fixed','Reversing a drag at the page edge responds immediately; shorter momentum and a slim scroll indicator','Missed taps no longer leave stale coordinate transforms; crafting overlays do not scroll']},
@@ -4527,6 +4528,24 @@ function forgeApply(p,n,v){p.forgeMods=p.forgeMods||{};p.forgeMods[n]=(p.forgeMo
 const FORGE_DEFS=FORGE_CATALOG.map(c=>({id:c.id,label:c.label,description:c.description,row:c.row,group:c.group,slots:c.slots,number:c.number,enabled:c.status==='active',kind:'mod',category:c.row==='power'?'offense':c.row==='sustain'?'defense':['quantity','quality','target_farming','economy','collection','exploration'].includes(c.group)?'utility':'play',emoji:c.row==='power'?'⚔️':c.row==='sustain'?'🛡️':'✦',pre:c.label,
   fmt:v=>c.number===115?'Once per run':c.number===13||c.number===14?'+'+v:c.number===15?'+'+(v/10)+' HP/s':'+'+v+'%',
   tiers:(()=>{const lo=Math.max(1,Math.round(c.maxValue*.2)),n=Math.min(11,c.maxValue-lo+1);return Array.from({length:n},(_,t)=>{const v=c.maxValue-Math.round((c.maxValue-lo)*t/Math.max(1,n-1));return[v,v];});})(),apply:(p,v)=>forgeApply(p,c.number,v)}));
+
+// Canvas icons are cached per mod; the pictogram describes the effect, the small seal identifies the mod.
+function forgeModVisual(mod){
+ const c=FORGE_CATALOG.find(c=>c.id===mod?.id),d=(mod?.description||mod?.label||'').toLowerCase();
+ const glyph=/critical.*chance/.test(d)?'◎':/critical.*damage/.test(d)?'✦':/barrier/.test(d)?'⬡':/armor|reduction|guard/.test(d)?'◇':/hp|heal|recovery|regeneration/.test(d)?'♥':/speed|faster|dash|cooldown/.test(d)?'➜':/area|range|radius/.test(d)?'⊕':/currency|sugar|cost|price/.test(d)?'$':/exp|level/.test(d)?'↑':/treasure|chest|gear|loot/.test(d)?'▣':/pickup|collect/.test(d)?'∩':/time|duration|second/.test(d)?'◷':/damage|hit|attack/.test(d)?'⚔':'✧';
+ return {key:'forge_mod_'+mod.id,glyph,seal:c?String(c.number):mod.label.slice(0,2).toUpperCase(),color:forgeRowForMod(mod)==='power'?'#ffc078':forgeRowForMod(mod)==='sustain'?'#91e5bd':'#b4c8ff'};
+}
+function drawForgeModIcon(scene,mod,x,y,size=26){
+ if(!mod)return;const v=forgeModVisual(mod),tm=scene.textures;
+ if(tm.createCanvas&&!tm.exists(v.key)){
+  const tex=tm.createCanvas(v.key,96,96),c=tex.getContext();
+  c.fillStyle='#24182f';c.beginPath();c.arc(48,48,44,0,Math.PI*2);c.fill();
+  c.strokeStyle=v.color;c.lineWidth=4;c.stroke();c.fillStyle=v.color;c.textAlign='center';c.textBaseline='middle';c.font='bold 53px sans-serif';c.fillText(v.glyph,47,42);
+  c.fillStyle='#422b51';c.fillRect(49,64,42,23);c.fillStyle='#fff0df';c.font='bold 19px sans-serif';c.fillText(v.seal,70,76);tex.refresh();
+ }
+ return scene.forgeIcon(tm.createCanvas?v.key:'',x,y,size,v.glyph);
+}
+
 function forgeRowForMod(m){return m&&m.row||((m&&m.category)==='offense'?'power':(m&&m.category)==='defense'?'sustain':'play');}
 function forgeLines(item){const out=[null,null,null],rest=[];for(const a of (item&&item.affixes)||[]){if(Number.isInteger(a.line)&&a.line>=0&&a.line<3&&!out[a.line])out[a.line]=a;else rest.push(a);}for(const a of rest){const row=['power','sustain','play'].indexOf(forgeRowForMod(affixDef(a.id))),i=row>=0&&!out[row]?row:out.indexOf(null);if(i>=0)out[i]=a;}return out;}
 function forgeSetLines(item,lines){item.affixes=lines.map((a,i)=>a?Object.assign({},a,{line:i}):null).filter(Boolean);item.forgeSchema=1;}
@@ -9350,13 +9369,13 @@ class Game extends Phaser.Scene {
     this.forgeChrome('panel',M.x,M.y,M.w,M.h);const compact=M.h<190,headingH=compact?22:30,impH=compact?22:26,rowH=L.rowH,rg=compact?4:6;
     this.forgeText(M.x+10,M.y+6,'Choose a mod',16,'#fff0df',true,M.w-20);
     const im=ensureImplicit(selected),imp=im&&implicitDef(im.id),iy=M.y+headingH;this.forgeChrome('chip',M.x+8,iy,M.w-16,impH);this.forgeText(M.x+16,iy+4,'Implicit · '+(imp?implicitText(selected):'None'),12,'#c5b6ce',false,M.w-78);this.forgeText(M.x+M.w-16,iy+4,'Fixed',11,'#9a8aa7',false,50,1);
-    let my=iy+impH+rg;affs.forEach((a,i)=>{const mod=a&&affixDef(a.id),on=i===this.craftLineIndex,rw=Math.min(126,M.w*.36);this.forgeChrome(on?'panel_on':'panel',M.x+8,my,M.w-16,rowH);this.forgeText(M.x+16,my+4,FORGE_ROWS[i],11,'#bfaecd',false,M.w-rw-46);this.forgeText(M.x+16,my+20,mod?mod.label+' '+mod.fmt(a.v):a?'Unknown mod':'Empty',12,'#fff0df',true,M.w-rw-46);this.forgeText(M.x+M.w-30,my+(rowH-16)/2,forgeTierRange(mod,a),12,'#c8b8d4',true,rw,1);this.forgeText(M.x+M.w-15,my+(rowH-18)/2,'›',14,'#c5b6ce',true,0,1);
-      this._zone(M.x+8,my,M.w-16,rowH,()=>{this.craftLineIndex=i;this.craftTargets={};this.craftTargetId=null;this.craftGroup=null;this._poolPage=0;this._familyPage=0;this._forgePanel=null;this.buildCraftBench();});this.tapZones[this.tapZones.length-1].tag='mod_'+i;my+=rowH+rg;});
+    let my=iy+impH+rg;affs.forEach((a,i)=>{const mod=a&&affixDef(a.id),on=i===this.craftLineIndex,rw=Math.min(126,M.w*.36);this.forgeChrome(on?'panel_on':'panel',M.x+8,my,M.w-16,rowH);this.forgeText(M.x+(mod?46:16),my+4,FORGE_ROWS[i],11,'#bfaecd',false,M.w-rw-46);if(mod)drawForgeModIcon(this,mod,M.x+28,my+rowH/2,24);this.forgeText(M.x+(mod?46:16),my+20,mod?mod.fmt(a.v)+' '+mod.description:a?'Unknown mod':'Empty',12,'#fff0df',true,M.w-rw-(mod?76:46));this.forgeText(M.x+M.w-30,my+(rowH-16)/2,forgeTierRange(mod,a),12,'#c8b8d4',true,rw,1);if(!mod)this.forgeText(M.x+M.w-15,my+(rowH-18)/2,'›',14,'#c5b6ce',true,0,1);
+      this._zone(M.x+8,my,M.w-44,rowH,()=>{this.craftLineIndex=i;this.craftTargets={};this.craftTargetId=null;this.craftGroup=null;this._poolPage=0;this._familyPage=0;this._forgePanel=null;this.buildCraftBench();});this.tapZones[this.tapZones.length-1].tag='mod_'+i;if(mod){this.forgeButton(M.x+M.w-32,my+4,22,rowH-8,'i',()=>{this.craftLineIndex=i;this.forgeOpenPanel('details',mod);},{tag:'current_info_'+i});}my+=rowH+rg;});
     const line=this.craftLineIndex,families=[...new Set(forgePool(selected,2).map(m=>m.group))];if(line===2&&!families.includes(this.craftGroup))this.craftGroup=families[0];
     const pool=forgePool(selected,line,line===2?this.craftGroup:null);this._forgeVisiblePool=pool;this.forgeChrome('panel',P.x,P.y,P.w,P.h);
     if(selected.forgeChoice&&P.h<132){this.forgeText(P.x+10,P.y+6,'Choose one · already paid',14,'#a2e1bc',true,P.w-20);this.forgeButton(P.x+10,P.y+36,96,36,'Choose',()=>this.forgeOpenPanel('choices',selected.forgeChoice.options),{kind:'choice',tag:'choices_open'});}
     else if(selected.forgeChoice){const options=selected.forgeChoice.options||[],hh=P.h>=180?64:40;this.forgeText(P.x+10,P.y+6,'Choose one · already paid',14,'#a2e1bc',true,P.w-20);
-      options.slice(0,2).forEach((a,i)=>{const mod=a&&affixDef(a.id),yy=P.y+30+i*(hh+6);this.forgeChrome('panel',P.x+8,yy,P.w-16,hh);this.forgeText(P.x+16,yy+4,mod?mod.label:'Unavailable result',13,'#fff0df',true,P.w-112);this.forgeText(P.x+16,yy+(hh>=64?29:21),mod?mod.fmt(a.v)+' · '+forgeTierRange(mod,a):'—',12,'#c5b6ce',false,P.w-112);this.forgeButton(P.x+P.w-82,yy+(hh-30)/2,66,30,'Choose',mod&&!selected.locked?()=>this.chooseForgeSustain(i):null,{kind:'choice',disabled:!mod||selected.locked,tag:'choose_'+i});});
+      options.slice(0,2).forEach((a,i)=>{const mod=a&&affixDef(a.id),yy=P.y+30+i*(hh+6);this.forgeChrome('panel',P.x+8,yy,P.w-16,hh);if(mod)drawForgeModIcon(this,mod,P.x+26,yy+hh/2,26);this.forgeText(P.x+(mod?44:16),yy+4,mod?mod.description:'Unavailable result',12,'#fff0df',true,P.w-140);this.forgeText(P.x+44,yy+(hh>=64?29:21),mod?mod.fmt(a.v)+' · '+forgeTierRange(mod,a):'—',12,'#c5b6ce',false,P.w-140);this.forgeButton(P.x+P.w-82,yy+(hh-30)/2,66,30,'Choose',mod&&!selected.locked?()=>this.chooseForgeSustain(i):null,{kind:'choice',disabled:!mod||selected.locked,tag:'choose_'+i});});
     }else{
       let py=P.y+4;const fullFamily=line===2&&P.h>=240;
       if(fullFamily){const fp=Math.max(0,Math.min(Math.ceil(families.length/6)-1,this._familyPage||0)),fw=(P.w-32)/3;this.forgeText(P.x+10,py,'Family',14,'#fff0df',true);this.forgeText(P.x+65,py+2,forgeFamilyLabel(this.craftGroup),12,'#c5b6ce',false,P.w-145);
@@ -9367,8 +9386,8 @@ class Game extends Phaser.Scene {
       if(line===2&&!fullFamily)this.forgeButton(P.x+P.w-142,py,78,24,'Family',()=>this.forgeOpenPanel('families',families),{kind:'chip',tag:'family_picker'});
       this.forgeButton(P.x+P.w-62,py,52,24,'Odds',()=>this.forgeOpenPanel('odds',pool),{tag:'odds'});py+=headH;
       const count=Math.max(1,Math.floor((P.y+P.h-pagerH-py-4)/44)),pages=Math.max(1,Math.ceil(pool.length/count)),page=Math.min(pages-1,Math.max(0,this._poolPage||0));this._forgePageSize=count;
-      pool.slice(page*count,page*count+count).forEach((mod,i)=>{const yy=py+i*44,tracked=mod.id in (this.craftTargets||{}),rw=Math.min(130,P.w*.36),last=mod.id===this._craftRolledId;this.forgeChrome(tracked?'panel_on':'panel',P.x+8,yy,P.w-16,42);this.forgeIcon(tracked?'fg_ui_target':line===0?'hr_ic_melee':line===1?'hr_ic_control':'hr_ic_precision',P.x+25,yy+21,22,mod.emoji);
-        this.forgeText(P.x+44,yy+4,mod.label,13,last?'#a2e1bc':'#fff0df',true,P.w-rw-64);this.forgeText(P.x+44,yy+22,mod.description,12,'#c5b6ce',false,P.w-rw-64);this.forgeText(P.x+P.w-38,yy+4,forgeTierRange(mod,{t:forgePreviewTier(selected,line,mod)}),12,'#c5b6ce',true,rw,1);this.forgeText(P.x+P.w-38,yy+22,affixChancePct(mod,pool)+'%',12,'#9fd4bc',true,rw,1);
+      pool.slice(page*count,page*count+count).forEach((mod,i)=>{const yy=py+i*44,tracked=mod.id in (this.craftTargets||{}),rw=Math.min(130,P.w*.36),last=mod.id===this._craftRolledId;this.forgeChrome(tracked?'panel_on':'panel',P.x+8,yy,P.w-16,42);drawForgeModIcon(this,mod,P.x+25,yy+21,28);if(tracked)this.forgeText(P.x+34,yy+1,'✓',10,'#a2e1bc',true);
+        this.forgeText(P.x+44,yy+4,mod.description,12,last?'#a2e1bc':'#fff0df',true,P.w-rw-64);this.forgeText(P.x+44,yy+22,mod.label,11,'#c5b6ce',false,P.w-rw-64);this.forgeText(P.x+P.w-38,yy+4,forgeTierRange(mod,{t:forgePreviewTier(selected,line,mod)}),12,'#c5b6ce',true,rw,1);this.forgeText(P.x+P.w-38,yy+22,affixChancePct(mod,pool)+'%',12,'#9fd4bc',true,rw,1);
         this._zone(P.x+8,yy,P.w-42,42,()=>{const T=this.craftTargets||(this.craftTargets={});if(mod.id in T){delete T[mod.id];if(this.craftTargetId===mod.id)this.craftTargetId=Object.keys(T)[0]||null;}else{T[mod.id]=null;this.craftTargetId=mod.id;}this.buildCraftBench();});this.tapZones[this.tapZones.length-1].tag='target_'+mod.id;
         this.forgeButton(P.x+P.w-32,yy+7,22,28,'i',()=>this.forgeOpenPanel('details',mod),{tag:'info_'+mod.id});
       });
@@ -9396,7 +9415,16 @@ class Game extends Phaser.Scene {
     if(type==='item'||type==='details'){
       const it=type==='item'?state.data:null,b=it&&GEAR_ALL.find(g=>g.id===it.baseId),content=it?gearAffixName(b?.name||'Unknown item',forgeLines(it)):mod.description;
       const text=this.add.text(x+16,y+65,content,{fontFamily:'NunitoUI, sans-serif',fontSize:'14px',color:'#fff0df',wordWrap:{width:pw-32}});this.menu.add(text);
-      if(mod){this.forgeText(x+16,y+135,'Chance: '+affixChancePct(mod,this._forgeVisiblePool)+'%',13,'#9fd4bc',true);this.forgeText(x+16,y+165,'Roll replaces the row; Tier keeps the mod.',12,'#c5b6ce',false,pw-32);}
+      if(mod){
+        drawForgeModIcon(this,mod,x+pw-36,y+84,40);
+        text.setWordWrapWidth(pw-86);const dy=y+65+Math.max(54,text.height||54)+16;
+        const tier=forgePreviewTier(selected,this.craftLineIndex,mod),band=mod.tiers[tier],current=forgeLines(selected)[this.craftLineIndex];
+        const detail=['Result at current tier: '+mod.fmt(band[0])+(band[1]!==band[0]?' to '+mod.fmt(band[1]):''),
+          'Chance to roll this mod: '+affixChancePct(mod,this._forgeVisiblePool)+'%',
+          'Replaces: '+(current?(affixDef(current.id)?.label||'Unknown mod'):'Empty row'),
+          'Roll changes the mod. Tier changes its strength.'];
+        this.menu.add(this.add.text(x+16,dy,detail.join('\n\n'),{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#c5b6ce',wordWrap:{width:pw-32}}));
+      }
       if(it)this.forgeButton(x+16,y+ph-62,110,40,'Equipment',()=>{this._forgePanel=null;this.gearSelectedUid=it.uid;this.menuScreen='gear';this.buildMenuScreen();});return;
     }
     const pages=Math.max(1,Math.ceil(rows.length/per)),p=Math.min(page,pages-1),top=y+(type==='odds'?82:60),rh=type==='choices'?70:type==='items'?54:type==='families'?44:40;
