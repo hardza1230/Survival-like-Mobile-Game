@@ -1,17 +1,19 @@
 # Latest session checkpoint
 Updated: 2026-10-13 (Asia/Bangkok).
 
-## Hub v7.8.7 implemented/verified — publication next
-User requested a little motion, less visual clutter and a contrasting palette rather than pink throughout. Castle/Strawberry plate and existing logo/icons retained. Native Canvas panels replace repeated floral button frames; coral Play, mint Heroes, indigo Gear, warm gold Activities, cyan Codex and neutral More. Smaller icons, matte top pills, unframed hero caption, stronger lower shade and no bottom floral divider.
-Motion: eight faint petals above the logo, 1.5px logo float, Play outline pulse and subtle background zoom. Static hit zones. Tracked effects stop on rebuild/navigation/stage start/shutdown, and respect prefers-reduced-motion. Guide badge has solid gold Canvas fallback. Routes, unlocks, notifications, currency/rewards unchanged.
+## Completed — Hub v7.8.7 live
+User requested subtle motion, less dense art and color contrast beyond pink. Castle/Strawberry plate and existing logo/icons retained. Calmer Canvas panels replace repeated floral frames: coral Play, mint Heroes, indigo Gear, warm gold Activities, cyan Codex, neutral More. Smaller icons, matte header pills, unframed hero caption, lower shade and no bottom floral divider.
+Eight faint petals above logo, 1.5px logo float, Play outline pulse and subtle background zoom. Hit zones stay fixed. Effects stop on rebuild/navigation/stage start/shutdown and respect reduced motion. Guide badge has gold Canvas fallback. Routes, unlocks, notifications, currency/rewards unchanged.
 
-## Verification completed
-Full npm check/build passed. Actual Hub route/lock and motion fixtures passed. Native Phaser Canvas browser: seven viewports × normal/reduced motion (14 states), text/touch bounds, moving petals, four rebuilds with no tween accumulation, navigation cleanup and no browser errors. No headless combat simulation. Screenshot in current chat outputs/hub-clean-7.8.7.png; phone feel/FPS remains owner QA.
-Reproducible scripts: scripts/build-hub-review.mjs and scripts/check-hub-live-ui.cjs. Review uses synthetic menu-only data; FORGE_BROWSER_CHANNEL=chrome selects installed Chrome. Details in docs/HUB_CALM_MOTION.md.
+## Verified publication
+Runtime commit 23f32b5fd41b4316ded0240b3503a60c9a8c995e on claude/vampire-survival-mobile-game-yo9e8w. Uploaded tree matched tested local tree 9232d227e83c4a42ad2b018b6d8e95f147c1e8a5 exactly.
+Full npm check/build and Hub route/lock/lifecycle fixtures passed. Real Phaser Canvas: seven viewports × normal/reduced motion (14 states), text/touch bounds, moving petals, four rebuilds without tween growth, navigation cleanup, no browser errors. No headless combat simulation.
+Pages run 38370661798 succeeded. Published version.json / GAME_VERSION both verified 7.8.7; live code verified palette, panels, ambience, cleanup and reduced-motion preference.
 
-## Previous work complete
-Forge v7.8.6 commit 28401d6aae0c7c67fe54dfc29dc1b914a8b392fb; Pages 38368604546 succeeded. Published version.json / GAME_VERSION verified 7.8.6. Do not redo Forge work.
+## Recovery / references
+Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game. Logs in parent work directory: hub-787-check.log, hub-787-build.log, hub-787-ui.log. Screenshot: current chat outputs/hub-clean-7.8.7.png (synthetic menu data).
+Implementation/reproduction: docs/HUB_CALM_MOTION.md; scripts/build-hub-review.mjs; scripts/check-hub-live-ui.cjs. Tests: tests/hub-reference.test.cjs. Native code uses existing art; no new generated runtime raster assets.
+Previous Forge v7.8.6 is complete: single-line results, tier-only right labels and larger controls; Pages 38368604546 succeeded. Do not redo either release.
 
-## Recovery / exact next action
-Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game; branch claude/vampire-survival-mobile-game-yo9e8w; base 28401d6aae0c7c67fe54dfc29dc1b914a8b392fb.
-Changed game.js, tests/hub-reference.test.cjs, the two Hub review scripts, CLAUDE.md, docs/CLAUDE_HISTORY.md, docs/HUB_CALM_MOTION.md and this checkpoint. All Hub changes local only. Commit/publish through connected GitHub tree/commit/ref tools after exact tree equality and expected-head verification, then confirm Pages and published v7.8.7. Update this checkpoint after publishing. No remaining Forge deployment work.
+## Next action
+No unfinished implementation/deployment. Await owner's physical-phone feedback on Hub density, palette, motion feel and FPS, or a new task. Read startup notes and confirm actual remote state before changing files.
