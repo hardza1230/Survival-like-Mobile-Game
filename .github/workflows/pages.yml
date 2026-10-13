@@ -51,3 +51,24 @@ jobs:
           path: www
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify published Forge
+        env:
+          FORGE_DEPLOY_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const expected=fs.readFileSync('game.js','utf8').match(/const GAME_VERSION = '([^']+)'/)[1];
+          const base=process.env.FORGE_DEPLOY_URL;
+          if(!base)throw Error('Missing deployment URL');
+          async function get(rel){const url=new URL(rel,base);url.searchParams.set('verify',process.env.GITHUB_SHA);const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error(url.pathname+' HTTP '+r.status);return r;}
+          (async()=>{let last;for(let i=0;i<6;i++){try{
+            const version=await (await get('version.json')).json();
+            if(version.version!==expected)throw Error('Live version '+version.version+' != '+expected);
+            const game=await (await get('game.js')).text();
+            if(!game.includes("const GAME_VERSION = '"+expected+"'")||!game.includes('assets/art/forge_ui/atlas.png'))throw Error('Live Forge code is stale');
+            const atlas=new Uint8Array(await (await get('assets/art/forge_ui/atlas.png')).arrayBuffer());
+            if(![137,80,78,71,13,10,26,10].every((v,j)=>atlas[j]===v))throw Error('Live atlas is not PNG');
+            console.log('Live Forge verified: v'+expected+'; published code and production atlas match');return;
+          }catch(e){last=e;if(i<5)await new Promise(r=>setTimeout(r,5000));}}throw last;})().catch(e=>{console.error(e);process.exitCode=1;});
+          JS
