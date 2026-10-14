@@ -22,3 +22,7 @@ New built-in ImageGen asset: assets/art/taro_swarm/sentry.webp, transparent128x1
 npm run check and npm run build:www passed (1313 assets). New taro-swarm test covers pure profiles, geometry and isolated actual adapters for caps, split terminality, orb hit gap, pooled identities, pause/epochs, cleanup and pre-path Beacon. Historical taro-tempest and taro-smite prototype suites remain in history but are retired from the required check because their live paths were replaced. Shared foundation, Arc, starter, saved Talent and unrelated-hero tests remain required; old isolation assertions now explicitly admit the approved Taro changes.
 
 Static real Canvas visual gallery passed320x740,390x844,430x932, actual texture alpha/visibility/lifecycle and decoding of five existing cues. Real Codex four views plus all path Talent scopes passed320x568,390x844,430x932,768x1024,844x390. These menu/static presentation checks do not simulate combat. Owner phone combat balance, touch readability and FPS remain pending. Publication status is in SESSION_HANDOFF.
+
+## Verified publication
+
+Runtime02432667de9863d7ad08aea3babd00dcac5a368a; exact tested/published tree ede68e7347d6e279fb05ef4fd2ff0db68370ed74. Pages38607096940 succeeded2026-10-15. Live version.json7.8.18, full source after removing only two build-injected asset manifests, and new Sentry SHA-256 b94cc0d07d24072edc8c34d3d0927ebd15ea6ad3a61406fb7b4c34074f6c2f84 match local. Owner phone review remains pending.
