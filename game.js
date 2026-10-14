@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.15';
+const GAME_VERSION = '7.8.16';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.16',date:'2026-10-14',title:'Taro lightning you can see',items:['Taro Unique Chain Bolt now fires reliably after picking a Build Path, with thick glowing bolts, hit rings and impact sound','Every link of Taro chain lightning now draws (no longer only the first one) and stays on screen longer','Taro combat keeps running during heavy slowdowns instead of pausing']},
   {v:'7.8.15',date:'2026-10-13',title:'Taro combat feedback',items:['Distinct violet chains, priority strike marker and open Static Discharge rings','Painted Dash bombs show their fuse; charge meter clearly signals READY','Short path-specific sounds and bounded effects keep mobile combat readable']},
   {v:'7.8.14',date:'2026-10-13',title:'Taro progression clarity',items:['Taro upgrades, mutations and evolution now explain the selected path','Weapon Codex compares Chain, Smite and Tempest; Talent effects identify their scope','Rare scalar path upgrades now keep their rolled potency; saved ranks and costs stay intact']},
   {v:'7.8.13',date:'2026-10-13',title:'Taro Smite prototype',items:['Lightning Rod holds priority targets: bosses, elites, then ordinary enemies','Smite repeats once on big targets and converts arcs into bounded add splashes','All three Taro paths are available; progression polish and artwork follow']},
@@ -12177,7 +12178,7 @@ class Game extends Phaser.Scene {
   taroPickTarget(range){const t=this.syncTaroCombat();if(!t)return null;t.mark=taroPriorityTarget(this.enemies.getChildren(),this.player,range,t.mark);return t.mark;}
   suspendTaroCombat(){const t=this._taro;if(t){t.sample=null;t.motion=null;if(t.sweep)t.sweep.from={x:this.player.x,y:this.player.y};for(const fx of t.fx){if(fx.visible){fx._taroSuspended=true;fx.setVisible(false);}}}}
   tickTaroCombat(wallDt){this._taroWallDt=wallDt;this._taroFrameVelocity={x:this.player?.body?.velocity.x||0,y:this.player?.body?.velocity.y||0};const t=this._taro||(this.character==='taro'&&this.state==='play'?this.syncTaroCombat():null);if(!t)return;if(this.character!=='taro'||t.player!==this.player||t.path!==(this.basicAttack?.path||null)){this.clearTaroCombat();return;}if(!t.enabled)return;
-    if(this.state!=='play'||!this.player?.active||!(this.player.hp>0)||!Number.isFinite(wallDt)||wallDt<=0||wallDt>.1){this.suspendTaroCombat();return;}
+    if(this.state!=='play'||!this.player?.active||!(this.player.hp>0)||!Number.isFinite(wallDt)||wallDt<=0||wallDt>.25){this.suspendTaroCombat();return;}   // v7.8.16 .1→.25: มือถือช่วงหนัก <10fps เคยหยุด Unique/ระเบิด/สะเก็ดทั้งหมด (dt ยัง clamp .05)
     const dt=Math.min(.05,wallDt)*(this.gameSpeed||1);t.time+=dt;for(const fx of t.fx){if(fx._taroLife>0){fx._taroLife-=dt;if(fx._taroLife<=0)this.taroRemoveFx(fx);else fx.setAlpha(fx._taroLife/fx._taroDuration);}}
     this.taroUpdateVisuals?.();
     taroAdvanceQueue(t,dt,job=>{if(this._taro!==t||!t.enabled||!this.player.active||!(this.player.hp>0))return false;if(this.state!=='play')return 'hold';return !job.token||taroTargetValid(job.token,this.player,job.range);});
@@ -12207,8 +12208,9 @@ class Game extends Phaser.Scene {
       let from={x:this.player.x,y:this.player.y},token=f===0&&t.path==='smite'?taroPriorityTarget(candidates.filter(candidate=>!hit.has(candidate.id)&&taroTargetValid(candidate,from,760)).map(candidate=>candidate.enemy),from,760,rod):nearest(from,760);
       for(let j=0;j<jumps&&token&&hit.size<18;j++){
         if(this._taro!==t||this.state!=='play'||!taroTargetValid(token,from,j?range:760))break;
-        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);this.chainBolt(from.x,from.y,point.x,point.y);this.taroDealDamage(token,damage*Math.max(0,1-j*.045),'unique',{attackId,shrapnelD});from=point;token=nearest(from,range);
+        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);this.chainBolt(from.x,from.y,point.x,point.y,true);this.vfxHitRing?.(point.x,point.y,0xd7b8ff,j===0);this.taroDealDamage(token,damage*Math.max(0,1-j*.045),'unique',{attackId,shrapnelD});from=point;token=nearest(from,range);
       }
+      if(hit.size)Sfx.bp?.('uq_taro_chain_hit',.4,.3)||Sfx.zap?.();
     },{attackId});
     this.dashReady=true;this.dashCd=0;this.pathHasteT=1+ul*.38+(upgraded?.55:0);this.player.iframe=Math.max(this.player.iframe||0,.32+ul*.06);
     this.showBanner('Chain Bolt Lv'+ul,'Chains up to '+Math.min(18,jumps*forks)+' · Dash ready',950);Sfx.bp?.('uq_taro_chain_cast',.6,.3)||Sfx.zap();
@@ -12296,7 +12298,7 @@ class Game extends Phaser.Scene {
   taroRemoveFx(fx){const t=this._taro;if(!fx)return;for(const child of fx._taroAttached||[])this.taroRemoveFx(child);t?.fx.delete(fx);if(fx.active)fx.destroy();}
   // Presentation owns no damage, targeting, charge or gameplay timers.
   taroTrackVisual(fx,duration=.2){const t=this._taro;if(!t?.enabled){fx?.destroy();return null;}fx._taroLife=duration;fx._taroDuration=duration;t.fx.add(fx);return fx;}
-  taroVisualBudget(){const t=this._taro;if(!t?.enabled||this.state!=='play')return false;return [...t.fx].filter(fx=>fx._taroLife>0).length<20&&this.fxOk();}
+  taroVisualBudget(own=false){const t=this._taro;if(!t?.enabled||this.state!=='play')return false;return [...t.fx].filter(fx=>fx._taroLife>0).length<20&&(own||this.fxOk());}
   taroSound(kind){Sfx.bp?.('taro_'+kind,kind==='ready'?.28:.32,kind==='chain'?.18:kind==='smite'?.22:.25,1);return true;}
   taroRing(x,y,radius,duration=.3){
     const t=this._taro;if(!t?.enabled)return;
@@ -12312,10 +12314,16 @@ class Game extends Phaser.Scene {
     else {g.lineStyle(2,t.path==='smite'?0xffda89:0xc6a2ed,.8);for(let i=0;i<3;i++){const a=i*Math.PI*2/3;g.lineBetween(Math.cos(a)*8,Math.sin(a)*8,Math.cos(a)*radius,Math.sin(a)*radius);}}
     return this.taroTrackVisual(g,duration);
   }
-  taroLightningVisual(x1,y1,x2,y2,strike=false){
-    if(!this.taroVisualBudget())return;
-    const t=this._taro,g=this.camWorld(this.add.graphics().setDepth(7)),smite=t.path==='smite'&&strike,points=strike?[{x:x2,y:y2-(smite?112:64)},{x:x2-7,y:y2-42},{x:x2+5,y:y2-25},{x:x2,y:y2}]:[{x:x1,y:y1},{x:x1+(x2-x1)*.33-4,y:y1+(y2-y1)*.33+4},{x:x1+(x2-x1)*.66+4,y:y1+(y2-y1)*.66-4},{x:x2,y:y2}];
-    g.lineStyle(smite?6:4,0x302348,.9);g.strokePoints(points);g.lineStyle(smite?3:2,smite?0xffda89:0xc6a2ed,.95);g.strokePoints(points);return this.taroTrackVisual(g,smite?.18:.14);
+  taroLightningVisual(x1,y1,x2,y2,strike=false,big=false){
+    // Lightning uses only Taro's own 20-live cap: the shared per-frame fxOk (2 in low-perf mode) dropped every link after the first in one chain.
+    if(!this.taroVisualBudget(true))return;
+    // v7.8.16 เส้นเดิม 2px/0.14วิ อยู่ depth 7 ใต้สไปรต์ → มองแทบไม่เห็น · วาดเรืองแสง+ขอบเข้ม+แกนขาว บน depth VFX (1 graphics/เส้น เคารพเพดาน 20)
+    const t=this._taro,g=this.camWorld(this.add.graphics().setDepth(90400)),smite=t.path==='smite',col=smite?0xffda89:t.path==='tempest'?0xa9e8ee:0xc6a2ed,k=big?1.6:1,points=[];
+    if(strike){const top=y2-(smite?150:110);points.push({x:x2,y:top});for(let i=1;i<5;i++)points.push({x:x2+(i%2?-9:8)*k,y:top+(y2-top)*i/5});points.push({x:x2,y:y2});}
+    else{const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len,n=Math.max(3,Math.min(7,Math.round(len/45)));points.push({x:x1,y:y1});for(let i=1;i<n;i++){const j=(Math.random()*2-1)*Math.min(16,len*.12)*k;points.push({x:x1+dx*i/n+nx*j,y:y1+dy*i/n+ny*j});}points.push({x:x2,y:y2});}
+    g.lineStyle(16*k,col,.28);g.strokePoints(points);g.lineStyle(7*k,0x302348,.9);g.strokePoints(points);g.lineStyle(3.5*k,col,1);g.strokePoints(points);g.lineStyle(1.5*k,0xffffff,.95);g.strokePoints(points);
+    g.lineStyle(3*k,col,.9);g.strokeCircle(x2,y2,(strike?20:12)*k);g.lineStyle(2*k,0xffffff,.9);g.strokeCircle(x2,y2,4*k);
+    return this.taroTrackVisual(g,big?.36:strike?.28:.24);
   }
   taroUpdateVisuals(){const t=this._taro;if(!t?.enabled||this.state!=='play')return;
     for(const fx of t.fx){if(fx._taroSuspended){fx._taroSuspended=false;fx.setVisible(true);}if(fx._taroFuse?.active){const left=Math.max(0,Math.min(1,(fx._taroBombAt-t.time)/.45)),g=fx._taroFuse;g.clear();g.lineStyle(4,0x241c38,1);g.strokeCircle(0,0,24);g.lineStyle(2,0xd9bfff,1);g.beginPath();g.arc(0,0,24,-Math.PI/2,-Math.PI/2+Math.PI*2*left);g.strokePath();}}
@@ -14264,8 +14272,8 @@ class Game extends Phaser.Scene {
     if(PERF.low>=3&&PERF.lvl<2){PERF.lvl++;PERF.low=0;this.applyPerfLive();}
     else if(PERF.high>=10&&PERF.lvl>0){PERF.lvl--;PERF.high=0;this.applyPerfLive();}
   }
-  chainBolt(x1,y1,x2,y2){
-    if(this.character==='taro'&&this._taro?.enabled){this.taroLightningVisual(x1,y1,x2,y2);return;}
+  chainBolt(x1,y1,x2,y2,big=false){
+    if(this.character==='taro'&&this._taro?.enabled){this.taroLightningVisual(x1,y1,x2,y2,false,big);return;}
     if(!this.fxOk())return;
     const len=this.dist(x1,y1,x2,y2), ang=Math.atan2(y2-y1,x2-x1);
     const bolt=this.camWorld(this.add.image(x1,y1,'vfx_chain_bolt').setOrigin(0,0.5).setDepth(7).setRotation(ang).setScale(len/256,0.42).setAlpha(0.95));

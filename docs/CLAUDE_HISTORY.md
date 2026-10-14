@@ -1876,3 +1876,7 @@ Effect-first pool rows, semantic Canvas pictograms with individual catalog seals
 # Previous delivery: v7.8.9 — Painted Stats / Gear & Power
 
 Owner accepted compact Hero control proportions and asked for hero colors plus actual ImageGen artwork. Tabs/Selected now follow the preview hero in roster and equipped hero in Stats/Talents (six palettes). Stats uses seven real painted frames, seven stat icons and an info jewel; ordinary cropped-image slices retain corners in Canvas/WebGL. Gear & Power uses new five painted card textures and a generated courtyard background, preserving routes, locks, notifications and real guide badge rules. Source text remains live. 21 bounded WebP assets, manifest and exact selected prompts in assets/art/mobile_ui_789. See docs/MOBILE_PAINTED_UI.md.
+
+# Previous delivery: v7.8.10 — Taro T1 foundation
+
+Taro-only targeting, pooled-enemy identities, pure path profiles/movement, active-play queues, source/proc adapters and lifecycle cleanup are implemented. New path state starts disabled; existing Taro attacks, Dash passive, Unique, Storm Charge and progression remain live. Terminal adapters keep rewards/healing/shields and stop combat recursion; delayed recipe recovery retains source context. See docs/TARO_T1_FOUNDATION.md and docs/TARO_T0_CONTRACT.md. Next T2 enables and implements Tempest only; initialize opt-in consistently after retry/revival/path sync.

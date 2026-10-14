@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.15 — Taro T6 feedback
+# Latest delivery: v7.8.16 — Taro Unique / lightning actually visible
+
+Owner phone test: Taro Unique "does nothing", rest looks like before. Root causes found in a real Chromium run: (1) tickTaroCombat suspended the whole Taro job queue on any frame with wallDt>.1, so Unique Chain Bolt/shrapnel/bombs never ran below 10fps → threshold .25 (dt still clamped .05); (2) taroLightningVisual went through shared per-frame fxOk (2/frame in PERF.lvl 2), so only the first link of a chain drew → lightning uses only Taro's own 20-live cap (taroVisualBudget(true)); (3) links were 2px/0.14s at depth 7 → glow+outline+core+white jagged bolt with endpoint ring at depth 90400, .24s (Unique big .36s). castTaroPathUnique adds hit ring per hit + uq_taro_chain_hit sound (not hash-locked). Pre-path (before Lv6 Build Path) is still the legacy Taro by design. No damage/targeting changes. Full check/build passed.
+
+# Previous delivery: v7.8.15 — Taro T6 feedback
 
 Selected Taro paths have short violet links, gold priority brackets/strike, open cyan nova and violet diamond bomb burst. One new ImageGen painted bomb with actual alpha and attached fuse arc; five short deterministic jsfxr/MP3 cues. Charge HUD maintains screen size at camera zoom and signals READY once per transition. Transient FX capped at 20 plus three fixed pending bombs; active-time fade/fuse, pause visibility and epoch cleanup. Target/damage/progression resolvers retained except two sound dispatches; other heroes/pre-path untouched. Required check/build and Canvas presentation/hero checks recorded in SESSION_HANDOFF. See docs/TARO_T6_FEEDBACK.md. Next T7 owner phone combat review and final tuning; #25 deferred.
 
@@ -21,10 +25,6 @@ Chain now has bounded growing bounces and distinct victims shared across up to t
 # Previous delivery: v7.8.11 — Taro T2 Tempest
 
 Tempest now earns charge from intentional post-physics walking, adds 15 per accepted Dash, sweeps actual Dash segments, leaves a capped timed origin bomb and releases a held full-charge nova near damageable targets. One weak basic bolt; Gale affects Dash recharge. Tempest Chain Bolt keeps its formula/escape rewards with active-play pooled-target ownership. Pause/revival/exit cleanup, rewards/proc isolation and purchased progression preserved. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T2_TEMPEST.md; next T3 Chain. Publication state is in SESSION_HANDOFF.
-
-# Previous delivery: v7.8.10 — Taro T1 foundation
-
-Taro-only targeting, pooled-enemy identities, pure path profiles/movement, active-play queues, source/proc adapters and lifecycle cleanup are implemented. New path state starts disabled; existing Taro attacks, Dash passive, Unique, Storm Charge and progression remain live. Terminal adapters keep rewards/healing/shields and stop combat recursion; delayed recipe recovery retains source context. See docs/TARO_T1_FOUNDATION.md and docs/TARO_T0_CONTRACT.md. Next T2 enables and implements Tempest only; initialize opt-in consistently after retry/revival/path sync.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
