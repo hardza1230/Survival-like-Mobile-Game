@@ -1880,3 +1880,7 @@ Owner accepted compact Hero control proportions and asked for hero colors plus a
 # Previous delivery: v7.8.10 — Taro T1 foundation
 
 Taro-only targeting, pooled-enemy identities, pure path profiles/movement, active-play queues, source/proc adapters and lifecycle cleanup are implemented. New path state starts disabled; existing Taro attacks, Dash passive, Unique, Storm Charge and progression remain live. Terminal adapters keep rewards/healing/shields and stop combat recursion; delayed recipe recovery retains source context. See docs/TARO_T1_FOUNDATION.md and docs/TARO_T0_CONTRACT.md. Next T2 enables and implements Tempest only; initialize opt-in consistently after retry/revival/path sync.
+
+# Previous delivery: v7.8.11 — Taro T2 Tempest
+
+Tempest now earns charge from intentional post-physics walking, adds 15 per accepted Dash, sweeps actual Dash segments, leaves a capped timed origin bomb and releases a held full-charge nova near damageable targets. One weak basic bolt; Gale affects Dash recharge. Tempest Chain Bolt keeps its formula/escape rewards with active-play pooled-target ownership. Pause/revival/exit cleanup, rewards/proc isolation and purchased progression preserved. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T2_TEMPEST.md; next T3 Chain. Publication state is in SESSION_HANDOFF.

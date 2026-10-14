@@ -11,16 +11,16 @@ class TaroFeedbackReview extends Phaser.Scene{
   this.add.tileSprite(0,0,RW,RH,'floor').setOrigin(0).setAlpha(.22);this.add.rectangle(RW/2,RH/2,RW,RH,0x211b30,.6);
   const text=(x,y,s,size=14,color='#eee1ff')=>this.add.text(x,y,s,{fontFamily:'NunitoUI',fontSize:size+'px',fontStyle:'bold',color,wordWrap:{width:RW-32}}).setOrigin(.5);
   text(RW/2,24,'Taro | feedback preview',20);text(RW/2,47,'Production art and presentation helpers',11,'#bdaccd');
-  this.add.sprite(RW/2,146,'taro',0).setDisplaySize(114,114);this.drawTaroCharge();text(RW/2,211,'STATIC: walk to charge | READY holds',12);
-  const y1=245,y2=395,y3=540;this._taro.path='storm';for(const x of [RW*.2,RW*.5,RW*.8])this.add.circle(x,y1,14,0x383049).setStrokeStyle(1,0x867690);this.taroLightningVisual(RW*.2,y1,RW*.5,y1);this.taroLightningVisual(RW*.5,y1,RW*.8,y1);text(RW/2,y1+34,'CHAIN | short violet links');
+  this.add.sprite(RW/2,146,'taro',0).setDisplaySize(114,114);this.drawTaroCharge();const needle=this.taroNeedleVisual(RW/2,146,RW*.80,185);this.tweens.killTweensOf(needle);text(RW/2,211,'STARTER | straight Rift Needle',12);
+  const y1=245,y2=455,y3=575;this._taro.path='storm';this.add.sprite(RW*.12,y1,'taro',0).setDisplaySize(54,54);for(const x of [RW*.38,RW*.65,RW*.86])this.add.circle(x,y1,14,0x383049).setStrokeStyle(1,0x867690);this.taroLightningVisual(RW*.12,y1,RW*.38,y1);this.taroLightningVisual(RW*.38,y1,RW*.65,y1);this.taroLightningVisual(RW*.65,y1,RW*.86,y1);text(RW/2,y1+34,'CHAIN | outgoing Arc from Taro');
   this._taro.path='smite';this.taroTempestProfile=()=>({rootRange:520});this.taroPickTarget=()=>({id:1,enemy:{x:RW/2,y:y2}});this.taroRefreshRod();this.add.circle(RW/2,y2,13,0x383049);this.taroLightningVisual(RW/2,y2-80,RW/2,y2,true);text(RW/2,y2+44,'SMITE | gold priority marker');
-  this._taro.path='tempest';const pulse=this.taroRing(RW*.28,y3,180);pulse.setScale(.45);this.add.circle(RW*.28,y3,24,0xa93b4e,.22).setStrokeStyle(2,0xf07979,.8);const burst=this.taroRing(RW*.76,y3,120);burst.setScale(.55);const marker=this.taroRing(RW*.76,y3,18,0);this.taroUpdateVisuals();text(RW*.28,y3+96,'NOVA',13,'#a9e8ee');text(RW*.76,y3+96,'DASH BOMB',13,'#d9bfff');
+  this._taro.path='tempest';const pulse=this.taroRing(RW*.28,y3,180);pulse.setScale(.35);this.add.circle(RW*.28,y3,24,0xa93b4e,.22).setStrokeStyle(2,0xf07979,.8);const burst=this.taroRing(RW*.76,y3,120);burst.setScale(.45);const marker=this.taroRing(RW*.76,y3,18,0);this.taroUpdateVisuals();text(RW*.28,y3+96,'NOVA',13,'#a9e8ee');text(RW*.76,y3+96,'DASH BOMB',13,'#d9bfff');
   text(RW/2,y3+128,'Open shapes keep floor hazards visible',12);text(RW/2,y3+154,'No extra combat button | bounded feedback',11,'#bdaccd');
   window.taroView=this;document.querySelector('#status').textContent='Ready';
  }
- camWorld(o){return o;}fxOk(){return true;}
+ camWorld(o){return o;}trackArtVfx(o){return o;}fxOk(){return true;}
 }
-for(const n of ['taroTrackVisual','taroVisualBudget','taroRing','taroLightningVisual','taroUpdateVisuals','taroRemoveFx','drawTaroCharge','taroSound','taroRefreshRod','suspendTaroCombat','clearTaroCombat'])TaroFeedbackReview.prototype[n]=Game.prototype[n];
+for(const n of ['taroNeedleVisual','taroTrackVisual','taroVisualBudget','taroRing','taroLightningVisual','taroUpdateVisuals','taroRemoveFx','drawTaroCharge','taroSound','taroRefreshRod','suspendTaroCombat','clearTaroCombat'])TaroFeedbackReview.prototype[n]=Game.prototype[n];
 async function boot(){await document.fonts.load('700 16px NunitoUI');window.__taroFeedbackGame=new Phaser.Game({type:Phaser.CANVAS,parent:'mount',width:RW,height:RH,scene:[TaroFeedbackReview]});}boot();
 `;
 writeFileSync('www/taro-feedback-review.js',src.slice(0,end)+tail);

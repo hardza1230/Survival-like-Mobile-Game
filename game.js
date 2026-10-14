@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.16';
+const GAME_VERSION = '7.8.17';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.17',date:'2026-10-14',title:'Taro needles and outgoing Arc',items:['Before choosing a build, Taro fires straight Rift Needles without chains or sky strikes','Chain launches jagged Arc directly from Taro into the enemy pack','Starter and Chain cards now explain needle reach, Arc links and extra streams']},
   {v:'7.8.16',date:'2026-10-14',title:'Taro lightning you can see',items:['Taro Unique Chain Bolt now fires reliably after picking a Build Path, with thick glowing bolts, hit rings and impact sound','Every link of Taro chain lightning now draws (no longer only the first one) and stays on screen longer','Taro combat keeps running during heavy slowdowns instead of pausing']},
   {v:'7.8.15',date:'2026-10-13',title:'Taro combat feedback',items:['Distinct violet chains, priority strike marker and open Static Discharge rings','Painted Dash bombs show their fuse; charge meter clearly signals READY','Short path-specific sounds and bounded effects keep mobile combat readable']},
   {v:'7.8.14',date:'2026-10-13',title:'Taro progression clarity',items:['Taro upgrades, mutations and evolution now explain the selected path','Weapon Codex compares Chain, Smite and Tempest; Talent effects identify their scope','Rare scalar path upgrades now keep their rolled potency; saved ranks and costs stay intact']},
@@ -3301,7 +3302,7 @@ const BASIC_ATTACKS = {
 };
 // Taro T5: presentation reads the selected path; saved upgrade identities stay unchanged.
 const TARO_PROGRESSION={
-  storm:{arc:['Chain Capacity','+1 chain target','+1 target per root; max 10. Excess: +3% bolt damage, max +15%.'],surge:['Extra Roots','+1 chain root','+1 root; max 3 shared-target roots. Excess: +5% bolt damage, max +25%.'],
+  storm:{arc:['Arc Links','+1 Arc target','+1 target per root; max 10. Excess: +3% bolt damage, max +15%.'],surge:['Arc Streams','+1 Arc stream','+1 root; max 3 shared-target roots. Excess: +5% bolt damage, max +25%.'],
     chainlord:'+2 chain targets and +40% jump range; bounded by target/range caps.',stormcaller:'+2 roots and +20% attack damage; extra roots use the overflow bonus.',
     evolution:'+20% attack damage, +3 chain targets, +2 roots and +50% jump range; existing caps remain.'},
   smite:{arc:['Add Splash','+1 nearby splash','+1 nearby add hit at 25% power; max 3. Excess: +5% splash damage, max +25%.'],surge:['Strike Force','+8% strike and repeat','Each extra root adds 8% primary/repeat damage; max +40%. No extra full strike.'],
@@ -3311,8 +3312,12 @@ const TARO_PROGRESSION={
     chainlord:'+16px base nova radius and +15% final nova radius; max 280px.',stormcaller:'+20% attack damage and two extra-root nova/bomb damage steps; bonus max +40%.',
     evolution:'+20% attack damage, +24px base nova radius, +15% final nova radius and two nova/bomb damage steps.'}
 };
-function taroAttackInfo(d,b){const path=TARO_PROGRESSION[b?.path];if(!d||!path)return d;
-  return {...d,evolutionDesc:path.evolution,upgrades:d.upgrades.map(u=>{
+function taroAttackInfo(d,b){if(!d)return d;
+  if(!b?.path)return {...d,name:'Rift Needle',upgrades:d.upgrades.map(u=>{
+    const info={power:['Needle Power','+12% needle damage','Straight needles gain +12% damage per rank.'],rate:['Quick Draw','-8% attack interval','Fire needles 8% sooner per rank.'],arc:['Needle Reach','+10% needle range','+10% needle targeting range per rank. Converts to Arc targets, Smite splash or Nova reach after choosing a build.'],surge:['Extra Needles','+1 needle','+1 needle at a different target; max 3. Excess: +5% needle damage, max +25%. Converts to the chosen build’s extra-root bonus.']}[u.id];return info?{...u,name:info[0],headline:info[1],desc:info[2],...(u.id==='arc'?{iconKey:'ic_path_p_farstrike'}:{})}:u;
+  }),mutations:d.mutations.map(m=>({...m,desc:m.id==='chainlord'?'+2 reach steps and +40% needle range.':'+2 needles and +20% damage; needle cap and overflow apply.'})),evolutionDesc:'+20% needle damage, +3 reach steps, +2 needles and +50% range; existing caps apply.'};
+  const path=TARO_PROGRESSION[b.path];if(!path)return d;
+  return {...d,...(b.path==='storm'?{name:'Arc Compass'}:{}),evolutionDesc:path.evolution,upgrades:d.upgrades.map(u=>{
     if(path[u.id]){const [name,headline,desc]=path[u.id];return {...u,name,headline,desc};}
     if(u.id==='power')return {...u,headline:'+12% attack power',desc:'+12% base attack power per rank; strengthens this path’s basic and secondary effects, not Unique.'};
     if(u.id==='rate')return {...u,headline:'-8% basic interval',desc:'Basic attacks fire 8% sooner per rank. Does not shorten Dash, repeat, bomb or nova timers.'};return u;
@@ -3390,9 +3395,9 @@ const BASIC_PATHS={
                 {id:'p_slamwave',iconKey:'ic_path_dashboxer',name:'Slam Wave',emoji:'💢',max:3,fx:{},headline:'+20% landing slam',desc:'Dash Leap landing slam is 20% wider and 10% stronger per rank'},
                 {id:'p_recharge',iconKey:'ic_path_dashboxer',name:'Rush Battery',emoji:'🔋',max:2,fx:{},headline:'Dash -0.5s Unique cd',desc:'Each Dash cuts an extra 0.5s off the Unique cooldown per rank'}]}],
   taro:[
-    {id:'storm',iconKey:'ic_path_storm',name:'Chain Build',emoji:'🌩️',base:{dmg:0.75,count:1},desc:'Growing chain bolts · direct kills release lightning shards',
-      upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Squall',emoji:'⚡',max:2,fx:{count:1},desc:'+1 chain root per rank · shared targets; max 3 roots'},
-                {id:'p_static',iconKey:'ic_path_p_static',name:'Static Build',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% lightning damage per rank'}]},
+    {id:'storm',iconKey:'ic_path_storm',name:'Chain Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Arc jumps from Taro through nearby enemies; grows per jump. Direct kills release shards.',
+      upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Forked Arc',emoji:'⚡',max:2,fx:{count:1},headline:'+1 Arc stream',desc:'+1 Arc stream from Taro; max 3. Streams share targets; excess boosts damage.'},
+                {id:'p_static',iconKey:'ic_path_p_static',name:'Arc Power',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc power',desc:'+8% Arc and shard damage per rank; Unique keeps its own power.'}]},
     {id:'smite',iconKey:'ic_path_smite',name:'Smite Build',emoji:'🔨',base:{dmg:1.8,cd:1.35},desc:'Priority target mark · big targets take one repeat strike',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Judgment',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_overload',iconKey:'ic_path_p_overload',name:'Overload',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% lightning damage per rank'}]},
@@ -3538,7 +3543,7 @@ const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
   glacier:'Freeze and bloom · crowd control',barrage:'Rapid volleys · sustained damage',pierce:'Heavy lance · elite and boss damage',
   brawler:'Ranged fire fists · Rocket Gauntlet',titan:'Heavy wind-up · hold for Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
-  storm:'Growing chains · lightning shards',smite:'Heavy lightning · bosses',tempest:'Walk to charge · Dash sweep and bomb',
+  storm:'Outgoing Arc · growing jumps and shards',smite:'Heavy lightning · bosses',tempest:'Walk to charge · Dash sweep and bomb',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
 };
 const TITAN_RAGE_MUL=[1,1.8,2.8,4.2,5.5],TITAN_RAGE_SEC=1.8,TITAN_RAGE_CD=[0,1.2,2.6,4.5];
@@ -6138,6 +6143,11 @@ const ACHIEVEMENTS=[
   {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
 
+// Taro pre-build needles: no chain/mark/charge loop, saved ranks keep their IDs.
+function taroNeedleProfile(b,p,level,dm){const r=b?.ranks||{},evo=!!b?.evolved,cl=b?.mutation==='chainlord',sc=b?.mutation==='stormcaller';
+  const reach=Math.max(0,r.arc||0)+Math.max(0,p.weaponChains||0)+(cl?2:0)+(evo?3:0),raw=(level>=6?3:level>=4?2:1)+Math.max(0,r.surge||0)+(sc?2:0)+(evo?2:0)+Math.max(0,p.gearCount||0);
+  return {shots:Math.min(3,raw),range:Math.min(900,(level>=6?760:520)*(1+reach*.1+Math.max(0,p.gearArea||0))*(cl?1.4:1)*(evo?1.5:1)),damage:(14+level*4.2)*dm*(level>=6?1.15:1)*(sc?1.2:1)*(evo?1.2:1)*(1+Math.min(.25,Math.max(0,raw-3)*.05))};
+}
 // Taro T1: pure foundation. T2/T3/T4 enable the three path resolvers.
 const TARO_SOURCE_POLICY=Object.freeze({chain:false,unique:false,smite:false,tempestBasic:false,sweep:false,repeat:true,splash:true,shrapnel:true,nova:true,bomb:true});
 function taroSecondary(scene){return scene.character==='taro'&&scene._taroDamageContext?.terminal===true;}
@@ -7883,8 +7893,8 @@ class Game extends Phaser.Scene {
   // ⚔️ อาวุธประจำตัวรายตัวละคร: อัพเกรด 4 · Mutation 2 · Evolution
   buildWeaponCodex(top){
     const ids=CHAR_ORDER.filter(c=>BASIC_ATTACKS[c]),pages=ids.length;this._codexChar=Phaser.Math.Clamp(this._codexChar||0,0,pages-1);
-    const ch=ids[this._codexChar],c=CHARACTERS[ch],d=ch==='taro'?taroAttackInfo(BASIC_ATTACKS[ch],{path:this._codexTaroPath||'storm'}):BASIC_ATTACKS[ch],col=c.color||0xf0a54a,hex='#'+col.toString(16).padStart(6,'0');
-    if(ch==='taro'){const paths=BASIC_PATHS.taro,cw=(this.W-28)/3;paths.forEach((path,i)=>this.heroButton(10+i*(cw+4),top,cw,44,path.name.replace(/ Build$/,''),()=>{this._codexTaroPath=path.id;this.buildSkillArchive();},{active:path.id===(this._codexTaroPath||'storm'),fontSize:12}));top+=50;}
+    const ch=ids[this._codexChar],c=CHARACTERS[ch],d=ch==='taro'?taroAttackInfo(BASIC_ATTACKS[ch],{path:this._codexTaroPath==='base'?null:this._codexTaroPath||'storm'}):BASIC_ATTACKS[ch],col=c.color||0xf0a54a,hex='#'+col.toString(16).padStart(6,'0');
+    if(ch==='taro'){const paths=[{id:'base',name:'Needle'},...BASIC_PATHS.taro],cw=(this.W-32)/4;paths.forEach((path,i)=>this.heroButton(10+i*(cw+4),top,cw,44,path.name.replace(/ Build$/,''),()=>{this._codexTaroPath=path.id;this.buildSkillArchive();},{active:path.id===(this._codexTaroPath||'storm'),fontSize:12}));top+=50;}
     const rows=[{head:c.emoji+' '+c.name+' — '+d.emoji+' '+d.name,hex}];
     for(const u of d.upgrades)rows.push({emoji:u.emoji,title:u.name+'  (max '+u.max+')',desc:u.desc,color:0xf0a54a});
     rows.push({head:ch==='taro'?'Mutation: mastery 10 · pick one':'⭐ Mutation — pick 1 of 2 around Lv 9 (the other locks)',hex:'#ffd08a'});
@@ -12245,6 +12255,17 @@ class Game extends Phaser.Scene {
   }
 
   taroNearestUnused(candidates,origin,range,hit){return candidates.filter(token=>!hit.has(token.id)&&taroTargetValid(token,origin,range)).sort((a,b)=>Math.hypot(a.enemy.x-origin.x,a.enemy.y-origin.y)-Math.hypot(b.enemy.x-origin.x,b.enemy.y-origin.y)||a.id-b.id)[0]||null;}
+  castTaroNeedle(level,dm){
+    if(this.character!=='taro'||this.basicAttack?.path||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;
+    const p=this.player,b=this.basicAttack,t=this._taro,f=taroNeedleProfile(b,p,level,dm),targets=this.taroCandidates(p,f.range).sort((a,b)=>Math.hypot(a.enemy.x-p.x,a.enemy.y-p.y)-Math.hypot(b.enemy.x-p.x,b.enemy.y-p.y)||a.id-b.id).slice(0,f.shots);
+    for(const token of targets){if(this.state!=='play'||this.player!==p||this._taro!==t||this.basicAttack!==b||b?.path)break;if(!taroTargetValid(token,p,f.range))continue;const e=token.enemy;this.taroNeedleVisual(p.x,p.y,e.x,e.y);this.damage(e,f.damage,e.x,e.y);}
+    if(this.state==='play'&&this.player===p&&!b?.path)this.hitCratesInRadius(p.x,p.y,f.range,f.damage);Sfx.bp?.('taro_chain',.22,.18,1.25);
+  }
+  taroNeedleVisual(x1,y1,x2,y2){
+    if(!this.fxOk())return;const g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(90400))),a=Math.atan2(y2-y1,x2-x1),dx=Math.cos(a),dy=Math.sin(a);
+    g.lineStyle(7,0x37234f,.85);g.lineBetween(x1,y1,x2,y2);g.lineStyle(2,0xeee1ff,1);g.lineBetween(x1,y1,x2,y2);g.fillStyle(0xeee1ff,1);g.fillPoints([{x:x2+dx*10,y:y2+dy*10},{x:x2-dy*4,y:y2+dx*4},{x:x2-dx*10,y:y2-dy*10},{x:x2+dy*4,y:y2-dx*4}],true);
+    this.tweens.add({targets:g,alpha:0,duration:150,onComplete:()=>g.destroy()});return g;
+  }
   castTaroChainBasic(level){
     const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='storm'||this.state!=='play')return;
     const f=this.taroTempestProfile(level),candidates=this.taroCandidates(this.player,Infinity),hit=new Set(),attackId=++t.attackSeq;
@@ -12254,7 +12275,7 @@ class Game extends Phaser.Scene {
       for(let j=0;j<f.victims&&token;j++){
         if(this._taro!==t||this.state!=='play'||!taroTargetValid(token,from,j?f.jumpRange:f.rootRange))break;
         const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);
-        if(j)this.chainBolt(from.x,from.y,point.x,point.y);else this.zap(point.x,point.y);
+        this.chainBolt(from.x,from.y,point.x,point.y);
         this.taroDealDamage(token,f.primaryDamage*f.chainBonus*f.rootBonus*Math.min(1.6,1+.12*j),'chain',{attackId,shrapnelD:f.unitD});
         from=point;token=this.taroNearestUnused(candidates,from,f.jumpRange,hit);
       }
@@ -13112,6 +13133,7 @@ class Game extends Phaser.Scene {
         if(path==='shotgun'&&PT.dbarrel&&_vol%4===0){idx=0;this.time.delayedCall(140,()=>{for(let s=0;s<shots;s++)fireOne();});}
         if(path==='shotgun'&&PT.recoil&&(this.elapsed||0)>=(this._ptRecoilAt||0)){this._ptRecoilAt=(this.elapsed||0)+1.2;const t=this.nearestEnemy(640);if(t){const a=Math.atan2(this.player.y-t.y,this.player.x-t.x);this.player.x+=Math.cos(a)*40;this.player.y+=Math.sin(a)*40;this.iframe=Math.max(this.iframe||0,0.15);}}} }
     else if(key==='thunder'){
+      if(this.character==='taro'&&!basic?.path){this.castTaroNeedle(lvl,dm);return;}
       // Basic Attack ของตาโร่ (Rift Bolt Compass): arc=จำนวนชิ่ง · surge=จำนวนจุดฟาด · chainlord/stormcaller=สายกลายรูป
       const tEvo=basic&&basic.evolved;   // EVO: พายุสายฟ้าทั้งจอ — ฟาดหลายจุด + ชิ่งไกล/ยาวขึ้นมาก
       const bArc=(basic?.ranks.arc||0)+(basic?.mutation==='chainlord'?2:0)+(tEvo?3:0), bSurge=(basic?.ranks.surge||0)+(basic?.mutation==='stormcaller'?2:0)+(tEvo?2:0);

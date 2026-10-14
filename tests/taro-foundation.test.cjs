@@ -98,7 +98,7 @@ const origin={x:0,y:0};
 }
 // Undo only explicit Tempest dispatch additions to verify the retained legacy bodies.
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/taro-t1-baseline.json','utf8'));
-function legacyMethod(name){return method(name).replace('taroGaleCooldown(this.basicAttack)','Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0)))')
+function legacyMethod(name){return method(name).replace("      if(this.character==='taro'&&!basic?.path){this.castTaroNeedle(lvl,dm);return;}\n",'').replace('taroGaleCooldown(this.basicAttack)','Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0)))')
  .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite'){this.pulseSkill(key);this.castTaroSmiteBasic(lvl);return;}",'')
  .replace("\n    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);",'')
  .replace("\n    if(this.character==='taro'&&this.basicAttack?.path==='smite')return this.castTaroPathUnique(dm,ul);",'')

@@ -9,7 +9,7 @@ for(const pt of a.BASIC_PATHS.taro){const b={character:'taro',path:pt.id,lv:{},r
  // Repeated projection of fx never appends duplicate ranks or writes the saved talents.
  const projection=Object.fromEntries(nodes.filter(n=>!['c1','c2'].includes(n.slot)).map(n=>[n.id,n.max]));const p={};a.applyPathTalents(p,'taro',pt.id,projection);const once=JSON.stringify(p._pt);a.applyPathTalents(p,'taro',pt.id,projection);assert.equal(JSON.stringify(p._pt),once);
 }
-assert.equal(JSON.stringify(base),saved);assert.equal(a.taroAttackInfo(base,{path:null}),base);
+assert.equal(JSON.stringify(base),saved);assert.equal(a.taroAttackInfo(base,{path:null}).name,'Rift Needle');assert.notEqual(a.taroAttackInfo(base,{path:null}),base);
 // Rolled scalar rank, not purchase count, controls path power/conditional bonuses.
 for(const [path,id,factor]of [['storm','p_static',1.08],['smite','p_overload',1.1]]){const b={character:'taro',path,lv:{[id]:1},ranks:{[id]:1.55}},p={dmgMul:1};const f=a.taroCombatProfile(b,p,1,a.BASIC_PATHS.taro);assert(Math.abs(f.unitD/(14+4.2)-factor**1.55)<1e-10);assert(Math.abs(a.pathMods(b).dmg/(path==='storm'?.75:1.8)-factor**1.55)<1e-10);}
 {const b={character:'taro',path:'smite',lv:{p_judge:1},ranks:{p_judge:1.55}};assert(Math.abs(a.pathMods(b).big-.15*1.55)<1e-10);}
