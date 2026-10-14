@@ -37,6 +37,9 @@ function scene(es=[]){const s=new Scene();Object.assign(s,{character:'taro',stat
 {const es=[enemy(1,0,0,1),enemy(2,10),enemy(3,20),enemy(4,30)],s=scene(es);s.taroDealDamage(a.taroEnemyToken(es[0]),100,'chain',{shrapnelD:100});const damage=s.damage;s.damage=(e,n,...xy)=>{damage(e,n,...xy);if(s._taroDamageContext.source==='shrapnel'&&e===es[1])es[2]._taroSpawnId=99;};s.tickTaroCombat(.05);s.tickTaroCombat(.05);assert.deepEqual(s.hits.filter(h=>h.source==='shrapnel').map(h=>h.id),[2,4]);}
 // Preserve Tempest/Dash mechanics. T6 replaces only the charge HUD; its old fixture remains tied to the T2 hash, and T6 tests validate the new presentation.
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/taro-t2-baseline.json','utf8'));
-for(const [name,hash] of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(name==='doDash'?method(name).replace('taroGaleCooldown(this.basicAttack)','Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0)))'):name==='drawTaroCharge'?JSON.parse(fs.readFileSync('tests/fixtures/taro-t5-charge-hud.json','utf8')):method(name)).digest('hex'),hash,name+' retains T2 body');
+// Retired Tempest remains historical; Dash itself changes only by removing its old path hook.
+assert.equal(method('doDash'),JSON.parse(fs.readFileSync('tests/fixtures/taro-v7817-dash.json','utf8')).replace("    if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());\n",''));
+assert.equal(crypto.createHash('sha256').update(method('taroTempestProfile')).digest('hex'),baseline.taroTempestProfile);
+
 const d=method('damage');assert(d.indexOf('this.taroAfterDirect?.(')<d.indexOf("this.fireRecipes('crit')"));assert(d.indexOf('this.taroAfterDirect?.(')<d.indexOf('this.killEnemy(e)'));
-console.log('Taro T3: bounded growing/distinct chains, range/count investment, snapshot pool ownership, central direct-lethal tickets, terminal shrapnel rewards/caps/pause, Unique formulas and unchanged Tempest passed');
+console.log('Taro T3: bounded growing/distinct chains, range/count investment, snapshot pool ownership, central direct-lethal tickets, terminal shrapnel rewards/caps/pause, Unique formulas and retained shared profile/Dash isolation passed');

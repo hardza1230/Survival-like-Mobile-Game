@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.17';
+const GAME_VERSION = '7.8.18';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.18',date:'2026-10-15',title:'Taro: Arc, Spark and Sentry',items:['Choose outgoing Arc, wandering Sparks or Ball Lightning Sentries','Storm Beacon summons a temporary special sentry on every build','Spark cards add projectiles, duration, speed, pierce and one-generation splits','Existing Talent ranks and TP remain intact; old Smite/Tempest slots become Spark/Sentry']},
   {v:'7.8.17',date:'2026-10-14',title:'Taro needles and outgoing Arc',items:['Before choosing a build, Taro fires straight Rift Needles without chains or sky strikes','Chain launches jagged Arc directly from Taro into the enemy pack','Starter and Chain cards now explain needle reach, Arc links and extra streams']},
   {v:'7.8.16',date:'2026-10-14',title:'Taro lightning you can see',items:['Taro Unique Chain Bolt now fires reliably after picking a Build Path, with thick glowing bolts, hit rings and impact sound','Every link of Taro chain lightning now draws (no longer only the first one) and stays on screen longer','Taro combat keeps running during heavy slowdowns instead of pausing']},
   {v:'7.8.15',date:'2026-10-13',title:'Taro combat feedback',items:['Distinct violet chains, priority strike marker and open Static Discharge rings','Painted Dash bombs show their fuse; charge meter clearly signals READY','Short path-specific sounds and bounded effects keep mobile combat readable']},
@@ -2010,6 +2011,8 @@ const ASSET_IMAGES = {
   // ไอคอนอัปเกรดเฉพาะตัว: Mint / Taro / Sesame
   ic_mint_power:'assets/icons/levelup/mint_power.png', ic_mint_rate:'assets/icons/levelup/mint_rate.png',
   ic_mint_chill:'assets/icons/levelup/mint_chill.png', ic_mint_linger:'assets/icons/levelup/mint_linger.png',
+  ic_taro_spark:'assets/icons/levelup/taro_arc.png',
+  fx_taro_sentry:'assets/art/taro_swarm/sentry.webp',
   fx_taro_dash_bomb:'assets/art/taro_t6/dash_bomb.webp',
   ic_taro_power:'assets/icons/levelup/taro_power.png', ic_taro_rate:'assets/icons/levelup/taro_rate.png',
   ic_taro_arc:'assets/icons/levelup/taro_arc.png', ic_taro_surge:'assets/icons/levelup/taro_surge.png',
@@ -3305,22 +3308,18 @@ const TARO_PROGRESSION={
   storm:{arc:['Arc Links','+1 Arc target','+1 target per root; max 10. Excess: +3% bolt damage, max +15%.'],surge:['Arc Streams','+1 Arc stream','+1 root; max 3 shared-target roots. Excess: +5% bolt damage, max +25%.'],
     chainlord:'+2 chain targets and +40% jump range; bounded by target/range caps.',stormcaller:'+2 roots and +20% attack damage; extra roots use the overflow bonus.',
     evolution:'+20% attack damage, +3 chain targets, +2 roots and +50% jump range; existing caps remain.'},
-  smite:{arc:['Add Splash','+1 nearby splash','+1 nearby add hit at 25% power; max 3. Excess: +5% splash damage, max +25%.'],surge:['Strike Force','+8% strike and repeat','Each extra root adds 8% primary/repeat damage; max +40%. No extra full strike.'],
-    chainlord:'+2 add splash capacity; max 3. Excess boosts splash damage. No normal chain bounce.',stormcaller:'+20% attack damage and two extra-root damage steps; total root bonus max +40%.',
-    evolution:'+20% attack damage, +3 add splash capacity and two extra-root damage steps; existing caps remain.'},
-  tempest:{arc:['Nova Reach','+8px nova radius','+8px base nova radius per rank; added radius max +60px, final radius max 280px.'],surge:['Discharge Force','+8% nova and bomb','Each extra root adds 8% nova/bomb damage; max +40%. No extra bomb or nova.'],
-    chainlord:'+16px base nova radius and +15% final nova radius; max 280px.',stormcaller:'+20% attack damage and two extra-root nova/bomb damage steps; bonus max +40%.',
-    evolution:'+20% attack damage, +24px base nova radius, +15% final nova radius and two nova/bomb damage steps.'}
+  smite:{arc:['Piercing Current','+1 Spark pierce','+1 enemy pierced per Spark; max 3. Excess: +5% Spark damage, max +25%.'],surge:['Extra Sparks','+1 Spark','+1 Spark per cast; max 10. Excess: +4% Spark damage, max +25%.'],chainlord:'+2 pierce steps and +40% targeting range; Spark pierce cap applies.',stormcaller:'+2 Sparks and +20% Spark damage; projectile cap applies.',evolution:'+20% Spark damage, +3 pierce steps, +2 Sparks and +50% targeting range; caps apply.'},
+  tempest:{arc:['Reserve Cell','+0.35s sentry life','+0.35 seconds sentry lifetime per rank; max 8 seconds.'],surge:['Wide Conductor','+8% orb radius','Each extra root adds 8% Ball Lightning radius; max +40%. No extra sentry.'],chainlord:'+0.7 seconds sentry lifetime; duration cap applies.',stormcaller:'+20% sentry damage and two orb-radius steps.',evolution:'+20% sentry damage, +1.05 seconds sentry lifetime and two orb-radius steps.'}
 };
 function taroAttackInfo(d,b){if(!d)return d;
   if(!b?.path)return {...d,name:'Rift Needle',upgrades:d.upgrades.map(u=>{
-    const info={power:['Needle Power','+12% needle damage','Straight needles gain +12% damage per rank.'],rate:['Quick Draw','-8% attack interval','Fire needles 8% sooner per rank.'],arc:['Needle Reach','+10% needle range','+10% needle targeting range per rank. Converts to Arc targets, Smite splash or Nova reach after choosing a build.'],surge:['Extra Needles','+1 needle','+1 needle at a different target; max 3. Excess: +5% needle damage, max +25%. Converts to the chosen build’s extra-root bonus.']}[u.id];return info?{...u,name:info[0],headline:info[1],desc:info[2],...(u.id==='arc'?{iconKey:'ic_path_p_farstrike'}:{})}:u;
+    const info={power:['Needle Power','+12% needle damage','Straight needles gain +12% damage per rank.'],rate:['Quick Draw','-8% attack interval','Fire needles 8% sooner per rank.'],arc:['Needle Reach','+10% needle range','+10% needle targeting range per rank. Converts to Arc links, Spark pierce or sentry lifetime after choosing a build.'],surge:['Extra Needles','+1 needle','+1 needle at a different target; max 3. Excess: +5% needle damage, max +25%. Converts to the chosen build’s extra-root bonus.']}[u.id];return info?{...u,name:info[0],headline:info[1],desc:info[2],...(u.id==='arc'?{iconKey:'ic_path_p_farstrike'}:{})}:u;
   }),mutations:d.mutations.map(m=>({...m,desc:m.id==='chainlord'?'+2 reach steps and +40% needle range.':'+2 needles and +20% damage; needle cap and overflow apply.'})),evolutionDesc:'+20% needle damage, +3 reach steps, +2 needles and +50% range; existing caps apply.'};
   const path=TARO_PROGRESSION[b.path];if(!path)return d;
-  return {...d,...(b.path==='storm'?{name:'Arc Compass'}:{}),evolutionDesc:path.evolution,upgrades:d.upgrades.map(u=>{
+  return {...d,name:({storm:'Arc Compass',smite:'Spark Compass',tempest:'Storm Sentry'})[b.path],evolutionDesc:path.evolution,upgrades:d.upgrades.map(u=>{
     if(path[u.id]){const [name,headline,desc]=path[u.id];return {...u,name,headline,desc};}
     if(u.id==='power')return {...u,headline:'+12% attack power',desc:'+12% base attack power per rank; strengthens this path’s basic and secondary effects, not Unique.'};
-    if(u.id==='rate')return {...u,headline:'-8% basic interval',desc:'Basic attacks fire 8% sooner per rank. Does not shorten Dash, repeat, bomb or nova timers.'};return u;
+    if(u.id==='rate')return {...u,headline:b.path==='tempest'?'-8% deployment and pulse':'-8% basic interval',desc:b.path==='tempest'?'Deploy sentries and fire their orbs 8% sooner per rank. Does not shorten Dash or Beacon timers.':'Basic attacks fire 8% sooner per rank. Does not shorten Dash or Beacon timers.'};return u;
   }),mutations:d.mutations.map(m=>({...m,desc:path[m.id]||m.desc}))};}
 function taroGaleCooldown(b){return Math.pow(.94,Math.max(0,Math.min(3*1.55,b?.ranks?.p_gale??b?.lv?.p_gale??0)));}
 
@@ -3395,15 +3394,19 @@ const BASIC_PATHS={
                 {id:'p_slamwave',iconKey:'ic_path_dashboxer',name:'Slam Wave',emoji:'💢',max:3,fx:{},headline:'+20% landing slam',desc:'Dash Leap landing slam is 20% wider and 10% stronger per rank'},
                 {id:'p_recharge',iconKey:'ic_path_dashboxer',name:'Rush Battery',emoji:'🔋',max:2,fx:{},headline:'Dash -0.5s Unique cd',desc:'Each Dash cuts an extra 0.5s off the Unique cooldown per rank'}]}],
   taro:[
-    {id:'storm',iconKey:'ic_path_storm',name:'Chain Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Arc jumps from Taro through nearby enemies; grows per jump. Direct kills release shards.',
+    {id:'storm',iconKey:'ic_path_storm',name:'Arc Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Arc jumps from Taro through nearby enemies; grows per jump. Direct kills release shards.',
       upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Forked Arc',emoji:'⚡',max:2,fx:{count:1},headline:'+1 Arc stream',desc:'+1 Arc stream from Taro; max 3. Streams share targets; excess boosts damage.'},
                 {id:'p_static',iconKey:'ic_path_p_static',name:'Arc Power',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc power',desc:'+8% Arc and shard damage per rank; Unique keeps its own power.'}]},
-    {id:'smite',iconKey:'ic_path_smite',name:'Smite Build',emoji:'🔨',base:{dmg:1.8,cd:1.35},desc:'Priority target mark · big targets take one repeat strike',
-      upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Judgment',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
-                {id:'p_overload',iconKey:'ic_path_p_overload',name:'Overload',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% lightning damage per rank'}]},
-    {id:'tempest',iconKey:'ic_path_tempest',name:'Tempest Build',emoji:'🌪️',base:{dmg:0.65,cd:0.85},desc:'Walk to charge a nova · Dash sweeps and leaves a bomb',
-      upgrades:[{id:'p_gale',iconKey:'ic_path_p_gale',name:'Gale',emoji:'⏩',max:3,fx:{},desc:'-6% Dash recharge per rank'},
-                {id:'p_farstrike',iconKey:'ic_path_p_farstrike',name:'Far Strike',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% damage to enemies far from you per rank'}]}],
+    {id:'smite',iconKey:'ic_taro_spark',name:'Spark Build',emoji:'✨',base:{dmg:1.8,cd:1.35},headline:'Release wandering sparks',desc:'Sparks spread through the pack, ricochet off solid props and pierce with upgrades.',
+      upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Charged Sparks',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% Spark damage to elites and bosses per rank'},
+                {id:'p_overload',iconKey:'ic_path_p_overload',name:'Spark Power',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% Spark power per rank'},
+                {id:'p_spark_life',iconKey:'ic_taro_rate',name:'Live Current',emoji:'⏳',max:3,fx:{},desc:'+15% Spark lifetime per rank; max 3 seconds'},
+                {id:'p_spark_speed',iconKey:'ic_taro_rate',name:'Fast Sparks',emoji:'💨',max:3,fx:{},desc:'+12% Spark movement speed per rank; max 440'},
+                {id:'p_spark_split',iconKey:'ic_taro_surge',name:'Split Spark',emoji:'🔱',max:1,fx:{},desc:'First hit splits into 2 small sparks at 35% power; small sparks cannot split'}]},
+    {id:'tempest',iconKey:'fx_taro_sentry',name:'Sentry Build',emoji:'🗼',base:{dmg:0.65,cd:0.85},headline:'Set Ball Lightning sentries',desc:'Automatically place up to 2 temporary sentries. They fire slow lightning orbs through enemies.',
+      upgrades:[{id:'p_gale',iconKey:'ic_path_p_gale',name:'Quick Reposition',emoji:'⏩',max:3,fx:{},desc:'-6% Dash recharge per rank; does not speed up sentries'},
+                {id:'p_farstrike',iconKey:'ic_path_p_farstrike',name:'Long-Range Current',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% hit damage beyond 300px from Taro per rank'},
+                {id:'p_sentry_pulse',iconKey:'ic_taro_rate',name:'Rapid Pulse',emoji:'⏱️',max:3,fx:{},desc:'Sentries fire 10% sooner per rank; minimum 0.35 seconds'}]}],
   sesame:[
     {id:'prism',iconKey:'ic_path_prism',name:'Prism Build',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
       upgrades:[{id:'p_facet',iconKey:'ic_path_p_facet',name:'Extra Facet',emoji:'💠',max:2,fx:{count:1},desc:'+1 beam per rank'},
@@ -3543,7 +3546,7 @@ const BUILD_PATH_STYLES={zestSwarm:'Many fast minions · crowds',citrusGuardian:
   sniper:'Charged precision · bosses',shotgun:'Close range · burst damage',ricochet:'Rapid shots · clearing crowds',
   glacier:'Freeze and bloom · crowd control',barrage:'Rapid volleys · sustained damage',pierce:'Heavy lance · elite and boss damage',
   brawler:'Ranged fire fists · Rocket Gauntlet',titan:'Heavy wind-up · hold for Colossus Fist',dashboxer:'Dash and punch · Phantom Rush',
-  storm:'Outgoing Arc · growing jumps and shards',smite:'Heavy lightning · bosses',tempest:'Walk to charge · Dash sweep and bomb',
+  storm:'Outgoing Arc · growing jumps and shards',smite:'Wandering Sparks · pierce and split',tempest:'Stationary sentries · Ball Lightning',
   prism:'More beams · clearing crowds',lens:'Focused beam · bosses',sentinel:'Defense · steady damage'
 };
 const TITAN_RAGE_MUL=[1,1.8,2.8,4.2,5.5],TITAN_RAGE_SEC=1.8,TITAN_RAGE_CD=[0,1.2,2.6,4.5];
@@ -3612,7 +3615,7 @@ const CHARACTER_UNIQUES = {
   mintSanctuary:{name:'Mint Gale',emoji:'🌬️',cd:10,color:0x8fd0ff,desc:'A cool gust wraps around you — run much faster for a few seconds, ignore slows and push nearby enemies away'},
   voidPull:{name:'Dark Chocolate Void',emoji:'🕳️',cd:13,color:0x8b5cf0,desc:'Opens a black hole that pulls enemies in for continuous damage, then implodes'},
   flickerStrike:{name:'Bear Slam',emoji:'🐻',cd:20,color:0x9f6bff,desc:'Tap once to slam nearby enemies. Brawler: moving Chocolate Cyclone. Titan: targeted Colossus Fist. Dash Boxer: Phantom Rush with temporary Dash charges'},
-  pathRecall:{name:'Taro Chain Bolt',emoji:'⚡',cd:8.5,color:0xb388ff,desc:'Fires lightning that chains from enemy to enemy, then refunds Dash and boosts speed'},
+  pathRecall:{name:'Storm Beacon',emoji:'🗼',cd:8.5,color:0xb388ff,desc:'Place one temporary special sentry that fires Ball Lightning. Works before choosing a build; recasting replaces it.'},
   oathMirror:{name:'Prism Barrage',emoji:'🔮',cd:12,color:0xc86bff,desc:'Channels the mirror, then unleashes sweeping prism beams with a heavy central beam that shreds bosses'},
   jamOverdrive:{name:'Jam Overdrive',emoji:'💗',cd:10.5,color:0xff5f88,desc:'Overdrives the heart-seed gun, firing lock-on barrages and adding barrels as it levels'},
 };
@@ -3624,7 +3627,7 @@ const UNIQUE_TIERS={
   mintSanctuary:{2:'Faster and longer gale',3:'Stronger push when it starts',4:'Tailwind — the longest, fastest gale'},
   voidPull:{2:'Wider hole that pulls harder',3:'Lasts longer + stronger DoT',4:'Singularity — a giant hole pulls the whole screen and ends in a violent blast'},
   flickerStrike:{2:'More power and wider Bear Slam',3:'Stronger impact',4:'Largest Bear Slam'},
-  pathRecall:{2:'More chains and jump range',3:'Bolt splits into two, spreading wider',4:'Storm Arc — chains across the field with max damage'},
+  pathRecall:{2:'Stronger Beacon, lasts 6 seconds',3:'Stronger Beacon, lasts 7 seconds',4:'Strongest Beacon, lasts 8 seconds'},
   oathMirror:{2:'More beams and volleys',3:'Longer, harder-hitting beams',4:'Perfect Oath — heals HP after the barrage'},
   jamOverdrive:{2:'More barrels and salvos',3:'Fires faster and pierces one enemy',4:'Berry Barrage — three barrels pierce the crowd at full power'},
 };
@@ -3895,7 +3898,7 @@ const CHAR_TALENTS = {
     { id:'spd', emoji:'👟', name:'Read the Rift', max:6, per:'+5% move speed', apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
     { id:'cdr', emoji:'⏱️', name:'Recall Rhythm', max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
     { id:'crit', emoji:'🎯', name:'Flavor Compass', max:4, per:'+5% crit chance', apply:(p,r)=>{ p.critChance+=0.05*r; } },
-    { id:'echoPath', emoji:'🧭', name:'Echo Map', max:1, per:'✦ Unique: +2 chain targets, +40 jump range, longer haste!', apply:(p,r)=>{ p.echoPath=true; } },
+    { id:'echoPath', emoji:'🧭', name:'Echo Map', max:1, per:'✦ Beacon: +2 seconds lifetime and +40 targeting range!', apply:(p,r)=>{ p.echoPath=true; } },
   ],
   yuzu:[
     {id:'hp',emoji:'❤️',name:'Citrus Skin',max:5,per:'+8% max HP',apply:(p,r)=>{p.maxhp*=1+0.08*r;}},
@@ -4045,7 +4048,7 @@ function _ptGeneric(pt){ return {
   capB:{emoji:'⚙️',name:'Mechanic Capstone',max:1,soon:true,per:'Coming soon'},
   capC:{emoji:'🛡️',name:'Survival Capstone',max:1,soon:true,per:'Coming soon'} }; }
 function talentBranch(pt){ const g=_ptGeneric(pt),o=PATH_TALENTS[pt.id]||{},b='pt_'+pt.id+'_';
-  return TAL_SLOTS.map(sl=>Object.assign({},g[sl],o[sl]||{},{id:b+sl,slot:sl,cap:sl.startsWith('cap')})); }
+  return TAL_SLOTS.map(sl=>{const node=Object.assign({},g[sl],o[sl]||{},{id:b+sl,slot:sl,cap:sl.startsWith('cap')});const overlay=pt.name==='Spark Build'?{root:['Charged Sparks','+6% Spark power'],b1:['Quick Sparks','−4% Spark cast interval'],b2:['Long Current','+8% Spark targeting/travel range'],capB:['Heavy Current','+30% Spark power · casts 10% slower']}:pt.name==='Sentry Build'?{root:['Quick Setup','−4% deployment and pulse interval'],b1:['Rapid Circuit','−4% deployment and pulse interval'],b2:['Long Conductor','+8% sentry targeting range'],capA:['Rapid Grid','−25% deployment and pulse interval']}:{};if(overlay[sl]){node.name=overlay[sl][0];node.per=overlay[sl][1];}return node;}); }
 function talNodeCost(n,r){ return n&&n.cap?TAL_CAP_COST:r+1; }
 // กติกาปลด: root เสมอ · x1 ต้อง root ≥1 · x2 ต้อง x1 ≥2 · cap ต้อง x2 ≥1 และยังไม่มี cap อื่น
 function talNodeOpen(nodes,tal,n){ const by={};for(const x of nodes)by[x.slot]=x;const r=s=>tal[by[s].id]||0;
@@ -4060,7 +4063,7 @@ const CHAR_PASSIVES={
   momo:{emoji:'🍓',name:'Lucky Seeds',desc:'Critical hits heal you'},
   mint:{emoji:'❄️',name:'Frost Skin',desc:'Getting hit freezes nearby enemies'},
   cocoa:{emoji:'🐻',name:'Bear Grit',desc:'Below 40% HP: take less damage, deal more'},
-  taro:{emoji:'🧭',name:'Rift Step',desc:'Dash: shockwave / Tempest sweep'},
+  taro:{emoji:'🧭',name:'Rift Step',desc:'Dash: lightning shockwave'},
   yuzu:{emoji:'🍋',name:'Crew Leader',desc:'Nearby Yuzlings return to battle faster'},
   sesame:{emoji:'🪞',name:'Oath Focus',desc:'Standing still boosts your damage'},
   berry:{emoji:'💗',name:'Jam Heart',desc:'Kills have a chance to heal you'},
@@ -6149,7 +6152,7 @@ function taroNeedleProfile(b,p,level,dm){const r=b?.ranks||{},evo=!!b?.evolved,c
   return {shots:Math.min(3,raw),range:Math.min(900,(level>=6?760:520)*(1+reach*.1+Math.max(0,p.gearArea||0))*(cl?1.4:1)*(evo?1.5:1)),damage:(14+level*4.2)*dm*(level>=6?1.15:1)*(sc?1.2:1)*(evo?1.2:1)*(1+Math.min(.25,Math.max(0,raw-3)*.05))};
 }
 // Taro T1: pure foundation. T2/T3/T4 enable the three path resolvers.
-const TARO_SOURCE_POLICY=Object.freeze({chain:false,unique:false,smite:false,tempestBasic:false,sweep:false,repeat:true,splash:true,shrapnel:true,nova:true,bomb:true});
+const TARO_SOURCE_POLICY=Object.freeze({spark:false,sparkChild:true,sentry:true,beacon:true,chain:false,unique:false,smite:false,tempestBasic:false,sweep:false,repeat:true,splash:true,shrapnel:true,nova:true,bomb:true});
 function taroSecondary(scene){return scene.character==='taro'&&scene._taroDamageContext?.terminal===true;}
 function taroEnemyToken(e){return e&&Number.isSafeInteger(e._taroSpawnId)?{enemy:e,id:e._taroSpawnId}:null;}
 function taroTargetValid(token,origin,range=Infinity){const e=token?.enemy;
@@ -6207,6 +6210,20 @@ function taroAdvanceQueue(t,dt,isValid){
   for(const job of due){if(job.run!==t.run||job.pathEpoch!==t.pathEpoch)continue;const valid=isValid(job);if(valid==='hold'){t.jobs.push(job);continue;}if(valid)job.callback(job);}
 }
 function taroSegmentDistance(point,from,to){const dx=to.x-from.x,dy=to.y-from.y,d2=dx*dx+dy*dy,k=d2?Math.max(0,Math.min(1,((point.x-from.x)*dx+(point.y-from.y)*dy)/d2)):0;return Math.hypot(point.x-from.x-k*dx,point.y-from.y-k*dy);}
+function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[id]??b?.lv?.[id]??0),count=base.rawRoots;
+  if(b.path==='smite'){const excess=Math.max(0,Math.floor(count+2)-10),pierce=base.arc,range=Math.min(900,base.rootRange*(b.mutation==='chainlord'?1.4:1)*(b.evolved?1.5:1));
+    return {interval:Math.max(.35,base.unitC),damage:base.unitD*.36*(1+Math.min(.25,excess*.04))*(1+Math.min(.25,Math.max(0,pierce-3)*.05)),count:Math.min(10,Math.floor(count+2)),pierce:Math.min(3,Math.floor(pierce)),speed:Math.min(440,260*(1+.12*rank('p_spark_speed'))),life:Math.min(3,1.5*(1+.15*rank('p_spark_life'))*range/520),range,split:rank('p_spark_split')>0?Math.min(.5,.25+.10*rank('p_spark_split')):0};}
+  const radius=Math.min(95,60*(1+Math.min(.4,Math.max(0,count-1)*.08))),range=base.rootRange;
+  return {interval:Math.max(.55,base.unitC),damage:base.unitD*.22,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/150)};
+}
+function taroBeaconProfile(dm,level,echo){const n=Math.max(1,Math.min(4,level||1));return {life:4+n+(echo?2:0),interval:1.02-n*.07,range:520+(echo?40:0),damage:(9+n*7)*dm*(1+(n-1)*.22)*.35,orbRadius:72,orbLife:4.2,speed:150};}
+// Swept first-contact reflection: thin solid props cannot be tunnelled through.
+function taroProjectileStep(p,dt,limit,boxes=[]){let x=p.x+Math.cos(p.angle)*p.speed*dt,y=p.y+Math.sin(p.angle)*p.speed*dt,angle=p.angle;const dx=x-p.x,dy=y-p.y;let first=null;
+  for(const box of boxes){let near=0,far=1,axis=null;for(const [v,d,lo,hi,key] of [[p.x,dx,box.left-3,box.right+3,'x'],[p.y,dy,box.top-3,box.bottom+3,'y']]){if(Math.abs(d)<1e-8){if(v<lo||v>hi){far=-1;break;}}else{let a=(lo-v)/d,b=(hi-v)/d;if(a>b)[a,b]=[b,a];if(a>near){near=a;axis=key;}far=Math.min(far,b);}}if(axis&&near>=0&&near<=far&&near<=1&&(!first||near<first.at))first={at:near,axis};}
+  if(first){x=p.x+dx*Math.max(0,first.at-.002);y=p.y+dy*Math.max(0,first.at-.002);angle=first.axis==='x'?Math.PI-angle:-angle;}
+  if(x>limit||x<-limit){x=Math.max(-limit,Math.min(limit,x));angle=Math.PI-angle;}if(y>limit||y<-limit){y=Math.max(-limit,Math.min(limit,y));angle=-angle;}return {x,y,angle};
+}
+
 // End Taro T1 helpers.
 
 class Game extends Phaser.Scene {
@@ -6649,7 +6666,6 @@ class Game extends Phaser.Scene {
     else if(!this.dashReady||this.state!=='play'||(this.character==='taro'&&this.basicAttack?.path==='tempest'&&this.dashTime>0)) return;
     if(this._impalerCharge)this.releaseImpalerCharge(false);if(this._berryCharge)this.releaseBerryCharge(false);
     if(this.player&&this.player._pt&&this.player._pt.hsDash)this._ptHsNext=true;
-    if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());
     this.charPassiveOnDash(); this.ancientEchoDash(); this.fireRecipes('dash'); if(!coc){ this.dashReady=false; this.dashCdMax=1.1*(this.player.dashCdMul||1)*(this.character==='taro'&&this.basicAttack?.path==='tempest'?taroGaleCooldown(this.basicAttack):1);this.dashCd=this.dashCdMax; } this.dashTime=0.16; this.cocoaDashBuff(); if(coc)this.cocoaOnDash(); this._coachDash=(this._coachDash||0)+1;   // v5.69 dash ตัดคอมโบ · v5.70.1 แก้ตัวนับ tutorial ที่หลุดเข้า comment
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;if(this.player.forgeMods){const r=forgeState(this);r.dashUntil=(this.elapsed||0)+1.5;r.dashPrimed=true;}
@@ -6909,6 +6925,7 @@ class Game extends Phaser.Scene {
 
   // Taro: สายฟ้า Arc — ยิงจากตัวไปเป้าใกล้สุด แล้วชิ่งลามไปศัตรูตัวถัด ๆ ไป (คล้าย Arc ใน PoE)
   castPathRecall(dm,ul){
+    if(this.character==='taro')return this.castStormBeacon(dm,ul);
     if(this.character==='taro'&&this.basicAttack?.path==='smite')return this.castTaroPathUnique(dm,ul);
     if(this.character==='taro'&&this.basicAttack?.path==='storm')return this.castTaroPathUnique(dm,ul);
     if(this.character==='taro'&&this.basicAttack?.path==='tempest')return this.castTaroTempestUnique(dm,ul);
@@ -8669,7 +8686,7 @@ class Game extends Phaser.Scene {
     const roster=CHAR_ORDER.filter(id=>id!=='sesame'||FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('sesame'));
     if(!roster.includes(this._heroPreview))this._heroPreview=roster.includes(Save.data.character)?Save.data.character:roster[0];
     const id=this._heroPreview,c=CHARACTERS[id];
-    const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Chain lightning.\nDash to reposition.',0xd1a0ff],yuzu:['Summoner','Summoner','Command a citrus crew.\nYour minions fight for you.',0xf5ec83],sesame:['Precision','Precision','Charged mirror beams.\nPrecise boss damage.',0xe4e0eb]};
+    const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Arc, Sparks and sentries.\nControl the battlefield.',0xd1a0ff],yuzu:['Summoner','Summoner','Command a citrus crew.\nYour minions fight for you.',0xf5ec83],sesame:['Precision','Precision','Charged mirror beams.\nPrecise boss damage.',0xe4e0eb]};
     const detail=info[id],cols=landscape?Math.max(2,Math.min(4,Math.floor(w/215))):2;
     const panelW=w-side*2,top=this.heroesContentTop(),panelH=landscape?160:368*p+extra*.35,g=this.add.graphics();
     this.rosterChrome('preview',side,top,panelW,panelH);this.menu.add(g);
@@ -12175,12 +12192,12 @@ class Game extends Phaser.Scene {
     if(n>0)this.showBanner('🏃 The swarm retreats!',this.enemies.countActive(true)>n?'Defeat the remaining Elites to advance':'The way ahead is clear',1300);
   }
   // All selected Taro paths opt in; pre-path retains its legacy resolver.
-  clearTaroCombat(){const t=this._taro;if(t){t.run=-1;t.pathEpoch=-1;t.jobs.length=0;for(const fx of t.fx){this.tweens?.killTweensOf(fx);if(fx.active)fx.destroy();}t.fx.clear();t.charge=0;t.sample=null;t.sweep=null;t.mark=null;}
+  clearTaroCombat(){const t=this._taro;if(t){t.run=-1;t.pathEpoch=-1;t.jobs.length=0;for(const fx of t.fx){this.tweens?.killTweensOf(fx);if(fx.active)fx.destroy();}t.fx.clear();t.charge=0;t.sample=null;t.sweep=null;t.mark=null;t.nodes=[];t.projectiles=[];}
     this._taroEpoch=(this._taroEpoch||0)+1;this._taro=null;this._taroDamageContext=null;
   }
   syncTaroCombat(){if(this.character!=='taro'||!this.player){if(this._taro)this.clearTaroCombat();return null;}const path=this.basicAttack?.path||null;
     if(!this._taro||this._taro.path!==path||this._taro.player!==this.player){this.clearTaroCombat();this._taroPathEpoch=(this._taroPathEpoch||0)+1;this._taro=taroNewState(this._taroEpoch,this._taroPathEpoch,path,this.player);if(path==='tempest'||path==='storm'||path==='smite'){this._taro.enabled=true;this._taroCharge=0;}}
-    if(this.events&&!this._taroShutdownHook){this._taroShutdownHook=true;this.events.on('postupdate',this.taroPostPhysics,this);this.events.once('shutdown',()=>{this.events.off('postupdate',this.taroPostPhysics,this);this.clearTaroCombat();this._taroShutdownHook=false;});}
+    if(this.events&&!this._taroShutdownHook){this._taroShutdownHook=true;this.events.once('shutdown',()=>{this.events.off('postupdate',this.taroPostPhysics,this);this.clearTaroCombat();this._taroShutdownHook=false;});}
     return this._taro;
   }
   tagTaroEnemy(e){if(e&&this.character==='taro'){e._taroSpawnId=this._taroSpawnSeq=(this._taroSpawnSeq||0)+1;}return e;}
@@ -12192,7 +12209,7 @@ class Game extends Phaser.Scene {
     const dt=Math.min(.05,wallDt)*(this.gameSpeed||1);t.time+=dt;for(const fx of t.fx){if(fx._taroLife>0){fx._taroLife-=dt;if(fx._taroLife<=0)this.taroRemoveFx(fx);else fx.setAlpha(fx._taroLife/fx._taroDuration);}}
     this.taroUpdateVisuals?.();
     taroAdvanceQueue(t,dt,job=>{if(this._taro!==t||!t.enabled||!this.player.active||!(this.player.hp>0))return false;if(this.state!=='play')return 'hold';return !job.token||taroTargetValid(job.token,this.player,job.range);});
-    if(this._taro===t&&this.state==='play'&&t.path==='smite')this.taroRefreshRod();
+    this.tickTaroDeployables?.(dt);
   }
   taroSchedule(kind,delay,callback,options={}){const t=this._taro;if(this.character!=='taro'||this.state!=='play'||!this.player?.active||!(this.player.hp>0)||!t||t.player!==this.player||t.path!==(this.basicAttack?.path||null))return null;return taroQueueEvent(t,kind,delay,callback,options);}
   taroWithDamage(kind,callback,meta={}){const t=this._taro;if(!t?.enabled||this.character!=='taro'||this.state!=='play'||!this.player?.active||!(this.player.hp>0)||t.player!==this.player||t.path!==(this.basicAttack?.path||null))return;
@@ -12206,6 +12223,45 @@ class Game extends Phaser.Scene {
   }
   taroDealDamage(token,amount,kind,meta={}){if(!this.player||!Number.isFinite(amount)||amount<=0||!taroTargetValid(token,this.player,meta.range??Infinity))return false;
     let dealt=false;this.taroWithDamage(kind,()=>{const e=token.enemy;this.damage(e,amount,e.x,e.y);dealt=true;},{...meta,targetId:token.id,directPending:true});return dealt;
+  }
+
+  taroSwarmProfile(level=this.skills?.thunder||1){return taroSwarmProfile(this.basicAttack,this.player,this.taroTempestProfile(level));}
+  castTaroSpark(level){const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='smite'||this.state!=='play')return;
+    const f=this.taroSwarmProfile(level),targets=this.taroCandidates(this.player,f.range);if(!targets.length)return;const token=this.taroNearestUnused(targets,this.player,f.range,new Set()),a=Math.atan2(token.enemy.y-this.player.y,token.enemy.x-this.player.x),attackId=++t.attackSeq;
+    for(let i=0;i<f.count;i++)this.taroSpawnProjectile({kind:'spark',x:this.player.x,y:this.player.y,angle:a+(i-(f.count-1)/2)*.28,speed:f.speed,life:f.life,damage:f.damage,pierce:f.pierce,split:f.split,range:f.range,attackId});
+    this.poseAttack?.(280);this.taroSound('spark');
+  }
+  castTaroSentry(level){const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='tempest'||this.state!=='play')return;const f=this.taroSwarmProfile(level);if(!this.taroCandidates(this.player,f.range).length)return;
+    const a=(++t.attackSeq%2?-.7:.7),x=this.player.x+Math.cos(a)*40,y=this.player.y+Math.sin(a)*40;this.taroPlaceNode({x,y,life:f.nodeLife,interval:f.pulse,range:f.range,damage:f.damage,orbRadius:f.radius,orbLife:f.orbLife,speed:150,beacon:false});this.poseAttack?.(300);this.taroSound('deploy');
+  }
+  castStormBeacon(dm,ul=1){if(this.character!=='taro'||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;const t=this.syncTaroCombat();t.enabled=true;const f=taroBeaconProfile(dm,ul,!!this.player.echoPath);
+    this.taroPlaceNode({x:this.player.x,y:this.player.y,...f,beacon:true});this.showBanner('Storm Beacon Lv'+Math.max(1,Math.min(4,ul)),'Temporary lightning sentry',1100);this.taroSound('beacon');
+  }
+  taroPlaceNode(options){const t=this._taro;if(!t?.enabled||this.state!=='play')return null;t.nodes=t.nodes||[];const same=t.nodes.filter(n=>n.beacon===options.beacon),cap=options.beacon?1:2;if(same.length>=cap)this.taroRemoveNode(same[0]);
+    const lim=WORLD/2-32,node={...options,x:Math.max(-lim,Math.min(lim,options.x)),y:Math.max(-lim,Math.min(lim,options.y)),left:options.life,next:0,run:t.run,pathEpoch:t.pathEpoch};
+    const blocked=(this.solidProps?.getChildren?.()||[]).some(o=>o.active&&o.body&&node.x>=o.body.left&&node.x<=o.body.right&&node.y>=o.body.top&&node.y<=o.body.bottom);if(blocked){node.x=this.player.x;node.y=this.player.y;}
+    node.fx=this.taroNodeVisual(node);t.nodes.push(node);return node;
+  }
+  taroRemoveNode(node){const t=this._taro;if(!t)return;this.taroRemoveFx(node.fx);t.nodes=(t.nodes||[]).filter(n=>n!==node);}
+  taroNodeVisual(node){const t=this._taro;if(!t?.enabled)return null;const c=this.camWorld(this.add.container(node.x,node.y).setDepth(89990)),ring=this.add.circle(0,0,28,0x241c38,.12).setStrokeStyle(2,node.beacon?0xffda89:0xc6a2ed,.9),art=this.textures.exists('fx_taro_sentry')?this.add.image(0,-14,'fx_taro_sentry').setDisplaySize(58,58):this.add.circle(0,-14,16,0xa98cf0,.9),bar=this.add.rectangle(-22,29,44,3,node.beacon?0xffda89:0xbba0ed).setOrigin(0,.5);c.add([ring,art,bar]);c._bar=bar;c._taroDuration=node.life;this.taroTrackVisual(c,0);return c;}
+  taroProjectileVisual(p){if(!this.taroVisualBudget(true))return null;const g=this.camWorld(this.add.graphics().setDepth(90400));if(p.kind==='spark'||p.kind==='sparkChild'){g.lineStyle(p.kind==='spark'?4:2,0x34234d,.9);g.strokePoints([{x:-14,y:3},{x:-5,y:-3},{x:0,y:0},{x:6,y:-2}]);g.lineStyle(p.kind==='spark'?2:1,0xc6e9ff,1);g.strokePoints([{x:-14,y:3},{x:-5,y:-3},{x:0,y:0},{x:6,y:-2}]);g.fillStyle(0xf4edff,1);g.fillCircle(0,0,2);}else{g.lineStyle(4,0x34234d,.85);g.strokeCircle(0,0,15);g.lineStyle(2,p.kind==='beacon'?0xffda89:0xc6a2ed,.95);g.strokeCircle(0,0,15);g.fillStyle(0xe9ddff,.8);g.fillCircle(0,0,7);}this.taroTrackVisual(g,0);g.setPosition(p.x,p.y).setRotation(p.angle);return g;}
+  taroSpawnProjectile(options){const t=this._taro;if(!t?.enabled||this.state!=='play')return null;t.projectiles=t.projectiles||[];const spark=options.kind==='spark'||options.kind==='sparkChild',cap=spark?36:12;if(t.projectiles.filter(p=>(p.kind==='spark'||p.kind==='sparkChild')===spark).length>=cap)return null;
+    const p={...options,origin:{x:options.x,y:options.y},left:options.life,hits:new Map(options.kind==='sparkChild'?(options.hits||[]):[]),seed:++t.attackSeq,run:t.run,pathEpoch:t.pathEpoch};p.fx=this.taroProjectileVisual(p);t.projectiles.push(p);return p;
+  }
+  taroProjectileHit(p,token){const t=this._taro;if(!t?.enabled||this.state!=='play'||p.run!==t.run||p.pathEpoch!==t.pathEpoch||!taroTargetValid(token,p,Infinity))return false;const spark=p.kind==='spark'||p.kind==='sparkChild';if(p.hits.has(token.id)&&(spark||t.time-p.hits.get(token.id)<.30))return false;p.hits.set(token.id,t.time);
+    const admitted=this.taroDealDamage(token,p.damage,p.kind,{attackId:p.attackId});if(!admitted)return false;
+    if(spark){if(p.kind==='spark'&&!p.didSplit&&p.split>0){p.didSplit=true;for(const side of [-1,1])this.taroSpawnProjectile({...p,kind:'sparkChild',angle:p.angle+side*.65,life:Math.min(.8,p.left),damage:p.damage*p.split,pierce:0,split:0,attackId:p.attackId});}p.pierce--;if(p.pierce<0)p.left=0;}
+    else this.taroLightningVisual(p.x,p.y,token.enemy.x,token.enemy.y);
+    return true;
+  }
+  tickTaroDeployables(dt){const t=this._taro;if(!t?.enabled||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;t.nodes=t.nodes||[];t.projectiles=t.projectiles||[];
+    for(const n of [...t.nodes]){if(this._taro!==t||this.state!=='play')return;if(n.run!==t.run||n.pathEpoch!==t.pathEpoch){this.taroRemoveNode(n);continue;}n.left-=dt;n.next-=dt;if(n.left<=0){this.taroRemoveNode(n);continue;}if(n.fx?._bar)n.fx._bar.width=44*Math.max(0,n.left/n.life);if(n.next<=0){n.next=n.interval;const target=this.taroNearestUnused(this.taroCandidates(n,n.range),n,n.range,new Set());if(target)this.taroSpawnProjectile({kind:n.beacon?'beacon':'sentry',x:n.x,y:n.y,angle:Math.atan2(target.enemy.y-n.y,target.enemy.x-n.x),speed:n.speed,life:n.orbLife,damage:n.damage,radius:n.orbRadius,range:n.range,attackId:++t.attackSeq});}}
+    const tokens=this.taroCandidates(this.player,Infinity);const boxes=(this.solidProps?.getChildren?.()||[]).filter(o=>o.active&&o.body).map(o=>({left:o.body.left,right:o.body.right,top:o.body.top,bottom:o.body.bottom}));
+    for(const p of [...t.projectiles]){if(this._taro!==t||this.state!=='play')return;if(p.run!==t.run||p.pathEpoch!==t.pathEpoch){p.left=0;}p.left-=dt;if(p.left<=0)continue;const from={x:p.x,y:p.y},spark=p.kind==='spark'||p.kind==='sparkChild';if(spark)p.angle+=Math.sin(p.seed+t.time*8)*dt*2;
+      const moved=taroProjectileStep(p,dt,spark?WORLD/2-12:Infinity,spark?boxes:[]);p.x=moved.x;p.y=moved.y;p.angle=moved.angle;if(Math.hypot(p.x-p.origin.x,p.y-p.origin.y)>Math.min(1000,p.range+80)){p.left=0;continue;}
+      p.fx?.setPosition(p.x,p.y).setRotation(p.angle);const radius=spark?28:p.radius,candidates=tokens.filter(token=>taroTargetValid(token,p,radius+(spark?p.speed*dt:0)));for(const token of candidates){if(this._taro!==t||this.state!=='play'||p.left<=0)break;if(spark&&taroSegmentDistance(token.enemy,from,p)>Math.max(10,Math.min(32,(token.enemy.displayWidth||40)*.3)))continue;this.taroProjectileHit(p,token);}
+    }
+    if(this._taro!==t)return;for(const p of t.projectiles)if(p.left<=0)this.taroRemoveFx(p.fx);t.projectiles=t.projectiles.filter(p=>p.left>0);
   }
 
   castTaroTempestUnique(dm,ul){return this.castTaroPathUnique(dm,ul);}
@@ -12320,7 +12376,7 @@ class Game extends Phaser.Scene {
   // Presentation owns no damage, targeting, charge or gameplay timers.
   taroTrackVisual(fx,duration=.2){const t=this._taro;if(!t?.enabled){fx?.destroy();return null;}fx._taroLife=duration;fx._taroDuration=duration;t.fx.add(fx);return fx;}
   taroVisualBudget(own=false){const t=this._taro;if(!t?.enabled||this.state!=='play')return false;return [...t.fx].filter(fx=>fx._taroLife>0).length<20&&(own||this.fxOk());}
-  taroSound(kind){Sfx.bp?.('taro_'+kind,kind==='ready'?.28:.32,kind==='chain'?.18:kind==='smite'?.22:.25,1);return true;}
+  taroSound(kind){Sfx.bp?.('taro_'+({spark:'chain',deploy:'smite',beacon:'ready'}[kind]||kind),kind==='ready'?.28:.32,kind==='chain'?.18:kind==='smite'?.22:.25,1);return true;}
   taroRing(x,y,radius,duration=.3){
     const t=this._taro;if(!t?.enabled)return;
     // Pending bombs are owned by the existing capped job, never a new fuse.
@@ -13038,9 +13094,9 @@ class Game extends Phaser.Scene {
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
   cdOf(key,lvl){
-    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite')return this.taroSwarmProfile(lvl).interval/(this.player.cdMul||1);
     if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='storm')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);
-    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest')return this.taroTempestProfile(lvl).interval/(this.player.cdMul||1);
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest')return this.taroSwarmProfile(lvl).interval/(this.player.cdMul||1);
     let base=lvl>=SKILL_AWAKEN_LV?this._cdBase(key,SKILL_AWAKEN_LV)*0.85:this._cdBase(key,lvl);
     const sw=this.signatureWeaponInfo(),b=this.basicAttackInfo()?.skill===key?this.basicAttack:null;
     if(b&&this.character==='cocoa'&&key==='meteor')base=0.64;
@@ -13084,9 +13140,9 @@ class Game extends Phaser.Scene {
     }
   }
   castSkill(key,lvl){
-    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite'){this.pulseSkill(key);this.castTaroSmiteBasic(lvl);return;}
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='smite'){this.pulseSkill(key);this.castTaroSpark(lvl);return;}
     if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='storm'){this.pulseSkill(key);this.castTaroChainBasic(lvl);return;}
-    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest'){this.pulseSkill(key);this.castTempestBasic(lvl);return;}
+    if(key==='thunder'&&this.character==='taro'&&this.basicAttack?.path==='tempest'){this.pulseSkill(key);this.castTaroSentry(lvl);return;}
     if(key==='meteor'&&this.character==='cocoa'&&this.basicAttack&&(this._cc?.busy||this._cocoaFlicker||this.dashTime>0))return;
     const sw=this.signatureWeaponInfo(),weaponMul=sw.skill===key?(this.player.weaponDmgMul||1):1;
     const basic=this.basicAttackInfo()?.skill===key?this.basicAttack:null,basicDmg=basic?(1+(basic.ranks.power||0)*0.12+(basic.ranks.overdrive||0)*0.05)*(basic._pm?basic._pm.dmg:1)*(basic.infusion?(FLAVOR_INFUSIONS.find(f=>f.id===basic.infusion)||{direct:1}).direct:1):1;
@@ -15688,7 +15744,7 @@ class Game extends Phaser.Scene {
 
   charPassiveOnHurt(){ if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
     this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,px,py)<r){ e.frozen=Math.max(e.frozen||0,0.9*CP.s); if(e.setTint)e.setTint(COLORS.ice); } }); this.burst(px,py,0x8fe7ff); }
-  charPassiveOnDash(){ if(this.character==='taro'&&this.basicAttack?.path==='tempest')return;const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
+  charPassiveOnDash(){ const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
     this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
   charPassiveOnKill(e){ if(this._titanHold&&this.ptv('trLust')){const p=this.player;p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.01);} const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
   // v4.88: หน้า Talent ประจำตัวละคร — ใช้ TP จากเลเวลตัวละคร (Save.cp) + โชว์ passive ประจำตัว

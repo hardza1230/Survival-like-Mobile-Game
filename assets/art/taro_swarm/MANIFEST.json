@@ -1,0 +1,21 @@
+{
+  "version": "7.8.18",
+  "assets": [
+    {
+      "key": "fx_taro_sentry",
+      "file": "sentry.webp",
+      "width": 128,
+      "height": 128,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bytes": 16508,
+      "sha256": "b94cc0d07d24072edc8c34d3d0927ebd15ea6ad3a61406fb7b4c34074f6c2f84",
+      "blend": "NORMAL",
+      "display_size": 58,
+      "max_regular": 2,
+      "max_beacon": 1
+    }
+  ]
+}

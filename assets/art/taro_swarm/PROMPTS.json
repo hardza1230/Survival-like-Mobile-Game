@@ -1,0 +1,7 @@
+{
+  "tool": "image_gen",
+  "transparent_background": true,
+  "prompt": "ONE isolated production sprite for Mochi Mayhem mobile anime fantasy dessert action RPG: Taro's Storm Sentry, a small squat magical lightning compass turret, front three-quarter top-down game view. Round plum mochi pedestal, three rounded lavender crystal prongs surrounding a floating violet compass crystal, tiny pale cyan lightning arcs within the prongs. Charming hand-painted glossy anime item style, strong dark violet outline, readable silhouette at 56 pixels, compact height, no long weapon barrel, no character face, no platform scenery, no text, no UI frame. Entire object centered within middle 75 percent of square canvas, clear margin all around. Actual transparent alpha background, no ground or cast shadow.",
+  "selected_source_sha256": "aa8211ba7e7bacc14afa9a8ca6509118acdf52f169fc962505d067b864030763",
+  "processing": "Preserve actual alpha, Lanczos downsample128, lossless WebP."
+}

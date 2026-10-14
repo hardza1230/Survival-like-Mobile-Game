@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.17 — Rift Needle starter and outgoing Chain Arc
+# Latest delivery: v7.8.18 — Taro Arc / Spark / Sentry
+
+Owner approved replacing Smite/Tempest with wandering Spark projectiles and temporary Ball Lightning sentries, plus all-build Storm Beacon Unique. Existing storm/smite/tempest IDs, original upgrade IDs/effects and Talent ranks/TP/costs stay compatible; labels and new run cards reflect the new mechanics. Arc/Rift Needle remain. Spark ricochets against solid props, can pierce and split once; cap10 per cast/36 live. Sentry cap2 + one independent Beacon, orbs cap12. Old charge/Dash-bomb/Rod hooks removed from live dispatch; legacy helpers retained dormant. New ImageGen transparent Sentry WebP, code-native sparks/orbs and reused T6 cues. Required check/build, static Canvas three sizes and Codex/Talent five sizes passed. See docs/TARO_ARC_SPARK_SENTRY.md; publication in SESSION_HANDOFF. Owner phone combat/balance/FPS review pending.
+
+# Previous delivery: v7.8.17 — Rift Needle starter and outgoing Chain Arc
 
 Owner requested distinct pre-build normal attack and PoE-like outgoing Arc. Before selecting a path, Taro fires straight instant Rift Needles at distinct nearby targets; no chain/sky strike or legacy Storm Charge. Arc rank gives reach, surge gives needles (cap3/overflow); saved IDs/ranks carry into each chosen path. Chain now draws every root directly from Taro using the same Arc as its jumps; target/growth/damage/shard rules unchanged. Starter/Chain cards and fourth Needle Codex tab explain the current mechanics. Required check/build and static Canvas/menu review passed; live status in SESSION_HANDOFF. See docs/TARO_NEEDLE_ARC.md. Owner phone combat review remains pending.
 
@@ -21,10 +25,6 @@ Selected-path upgrades/mutations/evolution and Weapon Codex share immutable desc
 # Previous delivery: v7.8.13 — Taro T4 Smite
 
 Smite marks stable priority targets, strikes once and repeats once on surviving big targets after 0.22 active seconds. Arc/count investments become bounded terminal add splash/primary damage. Shared Unique prefers Rod/priority first target with existing formulas and escape rewards. Direct generation tickets isolate external procs and keep once-only rewards; selected Smite replaces legacy mob-charge Judgment. Chain/Tempest and saved progression preserved. Full check/build and real menu QA passed; release status in SESSION_HANDOFF. See docs/TARO_T4_SMITE.md; next T5 progression wording and owner combat feedback.
-
-# Previous delivery: v7.8.12 — Taro T3 Chain
-
-Chain now has bounded growing bounces and distinct victims shared across up to three roots. Direct Chain basic/Chain Bolt kills emit up to three terminal lightning shards, capped eight events per 0.25 active seconds. Direct entry tickets and pooled-victim revalidation prevent external procs stealing kill ownership or duplicate rewards. Shared Unique keeps its existing formula/escape effects. Tempest/Dash method bodies, saved progression and unrelated heroes preserved; Smite/pre-path remain legacy. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T3_CHAIN.md; next T4 Smite. Publication state is in SESSION_HANDOFF.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

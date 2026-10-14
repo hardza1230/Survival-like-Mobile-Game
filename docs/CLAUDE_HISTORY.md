@@ -1884,3 +1884,7 @@ Taro-only targeting, pooled-enemy identities, pure path profiles/movement, activ
 # Previous delivery: v7.8.11 — Taro T2 Tempest
 
 Tempest now earns charge from intentional post-physics walking, adds 15 per accepted Dash, sweeps actual Dash segments, leaves a capped timed origin bomb and releases a held full-charge nova near damageable targets. One weak basic bolt; Gale affects Dash recharge. Tempest Chain Bolt keeps its formula/escape rewards with active-play pooled-target ownership. Pause/revival/exit cleanup, rewards/proc isolation and purchased progression preserved. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T2_TEMPEST.md; next T3 Chain. Publication state is in SESSION_HANDOFF.
+
+# Previous delivery: v7.8.12 — Taro T3 Chain
+
+Chain now has bounded growing bounces and distinct victims shared across up to three roots. Direct Chain basic/Chain Bolt kills emit up to three terminal lightning shards, capped eight events per 0.25 active seconds. Direct entry tickets and pooled-victim revalidation prevent external procs stealing kill ownership or duplicate rewards. Shared Unique keeps its existing formula/escape effects. Tempest/Dash method bodies, saved progression and unrelated heroes preserved; Smite/pre-path remain legacy. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T3_CHAIN.md; next T4 Smite. Publication state is in SESSION_HANDOFF.
