@@ -2,9 +2,13 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# Art delivery 18 extensions — Plasma, Shock and Static Arc
+
+14 PNG32 assets (E1–E3, F1–F2, G1–G2, H1–H2, I1–I5) stored in assets/incoming/taro_unique_needle/ with manifest, final prompts, QA and delivery notes. A/B/C retained; cancelled needle D1–D3/H3 omitted. Exact grids/alpha/black backgrounds checked, Shock1–5 counts and Arc endpoints verified. Storage only: no runtime wiring, game version or build output changed. Owner phone review and separately requested integration remain pending.
+
 # Art delivery 18 — Taro Spark + Ball Lightning
 
-16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. Exact grids/dimensions and alpha checked; black VFX and faint field retained. Art storage only; packing/runtime integration and phone visual/FPS review remain pending. Game version unchanged.
+16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
 # Latest delivery: v7.8.29 — C2-4 Season Storm softlock fix + art order 19
 

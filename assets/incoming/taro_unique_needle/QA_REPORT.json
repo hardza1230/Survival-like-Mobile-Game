@@ -1,0 +1,222 @@
+{
+  "assets": [
+    {
+      "id": "E1",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "rgba": true,
+      "frames": 4,
+      "sha256": "efdd2c64f546a02a72916b96890522e4cea0df6ef68407eea36907fb685195cf",
+      "opaqueBlackCorners": true,
+      "centerHalfDiameterMaxRGB": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "E2",
+      "dimensions": [
+        768,
+        512
+      ],
+      "rgba": true,
+      "frames": 6,
+      "sha256": "dc7f5ec86cc28a7c42298e90c1cceb9ce2e5d6eadb0081791108b9638528f0a9",
+      "opaqueBlackCorners": true
+    },
+    {
+      "id": "E3",
+      "dimensions": [
+        512,
+        128
+      ],
+      "rgba": true,
+      "frames": 4,
+      "sha256": "4b51777308d2e355609ffe3c01d9a1af62e5070b48b70059f7e20e41f2a6ece6",
+      "opaqueBlackCorners": true
+    },
+    {
+      "id": "F1",
+      "dimensions": [
+        1024,
+        512
+      ],
+      "rgba": true,
+      "frames": 8,
+      "sha256": "d9bc490b945c1194f212cbd6e428aa730883a11ae76fdd23ddb94fcc111dfe1d",
+      "opaqueBlackCorners": true
+    },
+    {
+      "id": "F2",
+      "dimensions": [
+        768,
+        512
+      ],
+      "rgba": true,
+      "frames": 6,
+      "sha256": "c4a077989c28d4fb6c9be366ae3ecaa6c6e4c891cc7ae95b611979f27f6f8cff",
+      "opaqueBlackCorners": true
+    },
+    {
+      "id": "G1",
+      "dimensions": [
+        320,
+        64
+      ],
+      "rgba": true,
+      "frames": 5,
+      "sha256": "334d62c8be7db327f4f0bd973e5acfc400c832856d0b535eea7e3bd451af83a4",
+      "opaqueBlackCorners": true,
+      "detectedBoltCounts": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "boltDetection": "BT.709 luminance >80, connected area >=3 pixels"
+    },
+    {
+      "id": "G2",
+      "dimensions": [
+        512,
+        128
+      ],
+      "rgba": true,
+      "frames": 4,
+      "sha256": "26c42b174ebc85415b570271d846d3c0b93b299ff2b4759251101c0f10c162e0",
+      "opaqueBlackCorners": true
+    },
+    {
+      "id": "H1",
+      "dimensions": [
+        256,
+        256
+      ],
+      "rgba": true,
+      "frames": 1,
+      "sha256": "ca4340fe004422dd85b6bc8b0a690e1ad033c8b58f7735f7f9d1970a54f76e77",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "id": "H2",
+      "dimensions": [
+        256,
+        256
+      ],
+      "rgba": true,
+      "frames": 1,
+      "sha256": "6a25addf29b9fad6667fb7fb2af2dc2ef01ec6cc3f187387e69ed15496563277",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "id": "I1",
+      "dimensions": [
+        512,
+        256
+      ],
+      "rgba": true,
+      "frames": 4,
+      "sha256": "899380aa2f121a66f2f9c9785f5b5690dabed4964a702ee5dbe795e61b61f53d",
+      "opaqueBlackCorners": true,
+      "endpointCoreY": [
+        [
+          31.508,
+          31.609
+        ],
+        [
+          31.433,
+          31.434
+        ],
+        [
+          31.453,
+          31.443
+        ],
+        [
+          31.407,
+          31.414
+        ]
+      ],
+      "targetEndpointY": 31.5
+    },
+    {
+      "id": "I2",
+      "dimensions": [
+        512,
+        128
+      ],
+      "rgba": true,
+      "frames": 4,
+      "sha256": "6e14992ac529e79eb303c06e549832098114729eb24fec9c0e4c96abc124cc62",
+      "opaqueBlackCorners": true
+    },
+    {
+      "id": "I3",
+      "dimensions": [
+        512,
+        384
+      ],
+      "rgba": true,
+      "frames": 4,
+      "sha256": "7291316972f023a1ddc22fa057c9a288eeac82334d74e9a0a49d2ba771dc1613",
+      "opaqueBlackCorners": true,
+      "endpointCoreY": [
+        [
+          47.251,
+          47.553
+        ],
+        [
+          47.416,
+          47.879
+        ],
+        [
+          47.574,
+          47.679
+        ],
+        [
+          47.592,
+          47.562
+        ]
+      ],
+      "targetEndpointY": 47.5
+    },
+    {
+      "id": "I4",
+      "dimensions": [
+        768,
+        512
+      ],
+      "rgba": true,
+      "frames": 6,
+      "sha256": "13cf50ec641a1c65dd79024f790232041f9343bec0345575dad149baf37042e9",
+      "opaqueBlackCorners": true
+    },
+    {
+      "id": "I5",
+      "dimensions": [
+        256,
+        256
+      ],
+      "rgba": true,
+      "frames": 1,
+      "sha256": "794514aa1f6d3d59a350ff0e0938ae3a776c9407de66e0dd2721e90ca9781d2a",
+      "alphaRange": [
+        0,
+        255
+      ]
+    }
+  ],
+  "verifiedCount": 14,
+  "checks": "PNG32/RGBA, exact dimensions and grids, actual icon alpha, opaque black VFX corners, G1 connected-component counts, E1 empty central half diameter",
+  "remaining": "Generated phase continuity, timing, endpoint anchoring after stretch, exact Plasma collision rim alignment after luminance conversion, mobile visibility and FPS require game-side review. No runtime integration performed."
+}

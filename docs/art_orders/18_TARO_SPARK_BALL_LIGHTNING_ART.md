@@ -209,3 +209,12 @@ Prompt (ต่อหัวร่วมเดิม):
 | I5 | single game card icon, a violet lightning bolt curling into a looping arrow back toward a target, isolated object, transparent alpha background, glossy candy style |
 
 ฝั่งโค้ด: `chainBolt` / `castTaroChainBasic` / `castTaroNeedle` (Static Arc) ใช้ I1 ยืดระหว่างจุด + I2 ที่ศัตรู · ส่วน Overload Loop (บล็อก `ov` ใน `castTaroChainBasic`, ลูปท้าย `castTaroNeedle`, `taroPlasmaArc`) ใช้ I3 + I4 · I5 ไปที่ `p_arc_overload`
+
+
+---
+
+## ส่งอาร์ตส่วนเพิ่ม — 16 ต.ค. 2026
+
+สร้างและเก็บครบ **14 ไฟล์**: E1–E3, F1–F2, G1–G2, H1–H2 และ I1–I5 ที่ `assets/incoming/taro_unique_needle/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` และ `DELIVERY_README.md` · **ยังไม่ผูกกับเกมตามคำสั่งเจ้าของ** · A/B/C ที่ผูกแล้วคงเดิม; D1–D3/H3 ที่ยกเลิกไม่สร้าง
+
+ตรวจขนาด/เฟรม/PNG32, alpha ไอคอน, พื้นดำ VFX, Shock1–5 ขีด และตำแหน่งปลาย Arc แล้ว · จังหวะภาพ การแปลง alpha/ระยะชน Plasma และมือถือ visual/FPS ยังรอตรวจตอนผูก
