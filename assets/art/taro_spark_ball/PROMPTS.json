@@ -1,0 +1,92 @@
+{
+  "tool": "built-in image_gen",
+  "common": "cute pastel confectionery fantasy game VFX for Mochi Mayhem mobile game, Taro purple taro storm-compass hero. Pale cyan #a9e8ee and white #f4edff lightning, lavender #c6a2ed edges and plum #4a2d6b outline, strong readable silhouette at small size. No text, watermark, labels, UI frame, grid lines or dividers. Exact equal-sized cells, consistent pivot, 8% safe padding.",
+  "assets": [
+    {
+      "file": "vfx_taro_spark.png",
+      "prompt": "4 frames one row loop. Sharp electric spark flying RIGHT, white cyan arrowhead at x70%, short zigzag tail 2\u20133 kinks reaching left. Tail changes each frame.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_spark_split.png",
+      "prompt": "4 frames one row. Spark flashes white then splits Y shape with branches up-right and down-right, short progression flash, fork, spread, fade.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_spark_bounce.png",
+      "prompt": "4 frames one row. Electric ricochet splash, half circle fan spraying RIGHT from impact point on left, cyan violet, flash expand disperse fade.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_spark_hit.png",
+      "prompt": "4 frames one row. Pierce impact, 4\u20135 thin white cyan sparks shooting RIGHT from center-left. Flash then forward spray then fade.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_spark_burst.png",
+      "prompt": "6 frames 3 columns 2 rows, reading order. Small lavender cyan expanding ring with exactly eight short compass ticks. Starts small, expands and fades.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_ball_core.png",
+      "prompt": "6 frames 3 columns 2 rows loop. COMPACT SPHERICAL ball lightning, solid bright white hot core, cyan violet rim. Sphere diameter 55% of cell, same center and size throughout. 3\u20135 tiny fine lightning tendrils just outside sphere moving every frame. NOT a hollow ring.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_ball_core_gold.png",
+      "prompt": "6 frames 3 columns 2 rows loop. Compact spherical white hot ball lightning, golden #ffda89 and violet glow, sphere diameter 55% same size and pivot throughout. 3\u20135 tiny tendrils change each frame, ONE thin gold orbital ring rotates around sphere.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_ball_field.png",
+      "prompt": "4 frames 2x2 loop. Extremely faint circular electric mist, tiny scattered cyan violet sparks at circle diameter 90% of cell, nearly empty black center. All RGB channels max 63 (brightness <=25%). Subtle radius indicator, no bright core.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_ball_zap.png",
+      "prompt": "4 frames stacked vertically 1 column. Each cell is 256 wide by 48 high. Thin horizontal lightning bolt left to right across cell with white core cyan violet glow, tiny impact at right end, seamless left. Different zigzags each frame. Narrow horizontal strip.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_ball_zap_hit.png",
+      "prompt": "4 frames one row. Tiny four-point cyan white electric star flash, bright small then expands then fades to nothing.",
+      "transparent_background": false
+    },
+    {
+      "file": "vfx_taro_ball_fade.png",
+      "prompt": "6 frames 3 columns 2 rows. Compact ball lightning expires, bright core shrinks continuously, few small tendrils scatter into tiny sparks and vanish. Last frame nearly black. No large explosion.",
+      "transparent_background": false
+    },
+    {
+      "file": "ic_taro_live_current.png",
+      "prompt": "Single isolated glossy candy game card icon: crystal hourglass with lavender caps, white cyan electric spark orbiting around it. Clear bold plum outline.",
+      "transparent_background": true
+    },
+    {
+      "file": "ic_taro_fast_sparks.png",
+      "prompt": "Single isolated glossy candy game card icon: THREE sharp white cyan sparks flying right with short violet speed lines. Bold clean plum contour.",
+      "transparent_background": true
+    },
+    {
+      "file": "ic_taro_split_spark.png",
+      "prompt": "Single isolated glossy candy game card icon: one white cyan electric spark splits into two bright forks in a strong Y silhouette, lavender glow plum contour.",
+      "transparent_background": true
+    },
+    {
+      "file": "ic_taro_piercing_current.png",
+      "prompt": "Single isolated glossy candy game card icon: cyan white electric spark flying right visibly pierces TWO cute small grumpy lavender mochi enemies arranged in a row, readable at 44px, no gore.",
+      "transparent_background": true
+    },
+    {
+      "file": "ic_path_smite_spark.png",
+      "prompt": "Single isolated glossy candy game card icon: purple candy compass with cyan white sparks bursting radially around it. Bold eight-direction silhouette, no letters.",
+      "transparent_background": true
+    }
+  ],
+  "edits": [
+    {
+      "file": "vfx_taro_ball_core_gold.png",
+      "prompt": "Preserve exact six-frame 3x2 layout and shapes. Recolor all cyan/blue regions to pale warm gold #ffda89, warm white core, lavender and plum edges; preserve one gold orbital ring. No cyan/blue, no new objects or text, opaque black background."
+    }
+  ]
+}

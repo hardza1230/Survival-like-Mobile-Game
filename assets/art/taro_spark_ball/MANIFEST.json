@@ -1,0 +1,162 @@
+[
+ {
+  "key": "vfx_taro_spark",
+  "file": "assets/art/taro_spark_ball/vfx_taro_spark.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "cd4da2b981c77277132a4bbf265e496d8cd3d23153116b8ac556bfd4a7435ad7"
+ },
+ {
+  "key": "vfx_taro_spark_split",
+  "file": "assets/art/taro_spark_ball/vfx_taro_spark_split.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "68824d3b3856f2e628cd3a1f2d797124dfc536501dcf7c1794c898eb418af97a"
+ },
+ {
+  "key": "vfx_taro_spark_bounce",
+  "file": "assets/art/taro_spark_ball/vfx_taro_spark_bounce.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "2cd6f328612f4bb380189504cb2eb609acaed1b9132adf6fc9464dccf93f9ea5"
+ },
+ {
+  "key": "vfx_taro_spark_hit",
+  "file": "assets/art/taro_spark_ball/vfx_taro_spark_hit.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "f42f1bf0be350d65a049f11325974fddc141c8d5f7c88889da1a8ef43fea45a0"
+ },
+ {
+  "key": "vfx_taro_spark_burst",
+  "file": "assets/art/taro_spark_ball/vfx_taro_spark_burst.webp",
+  "width": 768,
+  "height": 512,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 6,
+  "source_sha256": "ff12ea7dc480adae565701eda1293ec547c6ff0c7918ed279ac3e2f0c7286594"
+ },
+ {
+  "key": "vfx_taro_ball_core",
+  "file": "assets/art/taro_spark_ball/vfx_taro_ball_core.webp",
+  "width": 384,
+  "height": 256,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 6,
+  "source_sha256": "c64e539937e31bf2e25db1d6b10f1e7887f94e758db7eb1c7b9cec261b932f56"
+ },
+ {
+  "key": "vfx_taro_ball_core_gold",
+  "file": "assets/art/taro_spark_ball/vfx_taro_ball_core_gold.webp",
+  "width": 384,
+  "height": 256,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 6,
+  "source_sha256": "260c06ee7990a9f5dbae7ca3695a528c937c9bc84aa8552bf43193d7df7528f2"
+ },
+ {
+  "key": "vfx_taro_ball_field",
+  "file": "assets/art/taro_spark_ball/vfx_taro_ball_field.webp",
+  "width": 512,
+  "height": 512,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 4,
+  "source_sha256": "220e0d8ea1ef970600b87f5e8bc49d936969b2337c6323f16b8cc369bfd9f879"
+ },
+ {
+  "key": "vfx_taro_ball_zap",
+  "file": "assets/art/taro_spark_ball/vfx_taro_ball_zap.webp",
+  "width": 256,
+  "height": 192,
+  "frameWidth": 256,
+  "frameHeight": 48,
+  "frames": 4,
+  "source_sha256": "021d471798f809e884e5c7eebfcc5d7f8473919d3779020fab2656cb3c14e66f"
+ },
+ {
+  "key": "vfx_taro_ball_zap_hit",
+  "file": "assets/art/taro_spark_ball/vfx_taro_ball_zap_hit.webp",
+  "width": 256,
+  "height": 64,
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "frames": 4,
+  "source_sha256": "ac4dab720c0e9583f8e10a2801f4d1a25d05b41e238601b0ea28396fe76e16cb"
+ },
+ {
+  "key": "vfx_taro_ball_fade",
+  "file": "assets/art/taro_spark_ball/vfx_taro_ball_fade.webp",
+  "width": 384,
+  "height": 256,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 6,
+  "source_sha256": "2a27ceed925e1f075c188d511818ad212ec4050d11df6d26abc38cbf6ea29ca0"
+ },
+ {
+  "key": "ic_taro_live_current",
+  "file": "assets/art/build_paths/taro_live_current.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 1,
+  "source_sha256": "7f071dbc002f7b8f03b959eb46b2a7429b44a584692bf9d9b23f38c1adbcba80"
+ },
+ {
+  "key": "ic_taro_fast_sparks",
+  "file": "assets/art/build_paths/taro_fast_sparks.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 1,
+  "source_sha256": "adaf67377a1aa277629a60375daf2a14a2c97c446291cd9dfaa561eeca0b94fb"
+ },
+ {
+  "key": "ic_taro_split_spark",
+  "file": "assets/art/build_paths/taro_split_spark.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 1,
+  "source_sha256": "a481da15d855a7071f1747e9c0e4a34a1ba73ea3a72644b6ecbd95c8f13bcf5b"
+ },
+ {
+  "key": "ic_taro_piercing_current",
+  "file": "assets/art/build_paths/taro_piercing_current.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 1,
+  "source_sha256": "7750a75e3705fef07fac497564c4bf0cea605c095c59899674f7dffa84b18e87"
+ },
+ {
+  "key": "ic_path_smite_spark",
+  "file": "assets/art/build_paths/taro_spark_path.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 1,
+  "source_sha256": "bbe9979febd367c3c293ae2d8995e022e90158aab436899cf4b23043f777567c"
+ }
+]

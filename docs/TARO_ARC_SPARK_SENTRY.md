@@ -55,3 +55,11 @@ Owner: fire from all around Taro and bounce off the screen edge. castTaroSpark s
 ## v7.8.24 PoE Ball Lightning + lightning swing
 
 Owner: Taro cannot clear C1-4 (other heroes at C2-4); lightning should swing wide; Sentry orbs should be PoE Ball Lightning. Orbs (Sentry/Beacon) no longer hit on contact: taroOrbZap every TARO_BL_TICK 0.15s zaps up to 6 nearest foes within radius (Sentry 85→120 with Wide Conductor, Beacon 95), drawing max 2 bolts per tick; speed TARO_BL_SPEED 110; zap damage unitD×0.30 (was ×0.22 per contact hit). Spark power unitD×0.60 (was ×0.36). taroLightningRoll() 0.2–1.8 (mean 1) multiplies Spark/orb/Beacon strike/Overload/Tesla hits at the call sites (taroDealDamage body is hash-locked). Orb visual: small bright core + faint zap-radius field (old big ring sprite no longer used). New art order docs/art_orders/18_TARO_SPARK_BALL_LIGHTNING_ART.md.
+
+## v7.8.25 Plasma Field, Overcharge Detonation, Shock, spike needles, Spark/Ball art
+
+- Unique per build via TARO_UNIQUES + uniqueInfo: pre-path Plasma Field (castTaroPlasma/taroTickPlasma: ring 24→280+30(n−1)px in 0.9s and back, follows Taro, each foe once per direction, damage (1.5+.5n)dm→(6+2.5n)dm·(1+.22(n−1)) by distance, source unique); Sentry Overcharge Detonation (castTaroOvercharge: fill to 2 sentries, each fires 6 orbs and explodes 150px for (3+1.2n)dm·(1+.22(n−1)), then 2 fresh sentries, t.overUntil 4s pulses ×1.5); Arc/Spark keep Storm Beacon. Routed inside castStormBeacon (castPathRecall string kept).
+- Shock (Sentry only): orb/detonation hits add e._shock (max 5, 3s, reset on spawn); Sentry-family damage ×(1+.05·stacks) (taroShockMul/taroShockAdd).
+- Rift Needle: taroFireNeedle spawns a piercing bullet (getBullet, proj_frostlance tinted violet, 950px/s, seedPierce, life=range/speed, ×1.35 power) instead of an instant ray.
+- Spark/Ball art: 11 VFX + 5 icons packed by scripts/pack-taro-spark-ball-art.py to assets/art/taro_spark_ball/ (bpx_taro_spark*, bpx_taro_ball_*) and build_paths/taro_*.webp; spark sprite/split/bounce/hit/burst, ball core (gold for Beacon) + attached zap-radius field, zap bolt + zap hit, fade. All fall back to code visuals.
+- Art order additions D–H in docs/art_orders/18_TARO_SPARK_BALL_LIGHTNING_ART.md (incoming folder taro_unique_needle).

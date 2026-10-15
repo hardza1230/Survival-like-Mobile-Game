@@ -102,3 +102,79 @@ VFX ทั้งหมด **พื้นดำสนิท #000** (โค้ด�
 - Ball Lightning: `taroProjectileVisual` kind sentry/beacon ใช้ B1/B2 (~38px) + B3 ย่อขยาย `radius×2/0.9` · `taroOrbZap` วาด B4 ยืดจากลูกถึงศัตรู (สูงสุด 2 เส้น/รอบ) + B5 · หมดอายุปกติเล่น B6 (Overload ยังใช้ `bpx_taro_orb_burst`)
 - เพดาน: Spark 36 ลูก, Ball 16 ลูก, เส้นช็อต 2 เส้น/ลูก/0.15 วิ → ต้องเช็ค FPS บนมือถือหลังผูก
 - อาร์ตเก่า `vfx_taro_ball_lightning` (วงแหวนใหญ่) เลิกใช้ในเกมตั้งแต่ v7.8.24 เก็บไฟล์ไว้
+
+---
+
+# ส่วนเพิ่ม (15 ต.ค. 2026 · runtime v7.8.25) — Rift Needle, Plasma Field, Overcharge Detonation, Shock
+
+> สถานะชุด A/B/C ด้านบน: ✅ ส่งครบ 16 ไฟล์และผูกในเกมแล้ว v7.8.25 (`assets/art/taro_spark_ball/`, ไอคอน `assets/art/build_paths/taro_*.webp`, สคริปต์ `scripts/pack-taro-spark-ball-art.py`)
+> ส่งไฟล์ส่วนเพิ่มที่ `assets/incoming/taro_unique_needle/` · กฎเทคนิคเหมือนด้านบน (VFX พื้นดำ #000, เฟรมเรียงซ้าย→ขวา บน→ล่าง, ไม่มีตัวหนังสือ)
+
+## กลไกที่อาร์ตต้องรองรับ
+
+- **Rift Needle (การตีปกติก่อนเลือก Build):** หนามคริสตัลม่วงพุ่งตรงเร็วมาก (950 px/วิ) ไปหาศัตรูใกล้สุด 1–3 ตัว **ทะลุทุกตัวในแนว** · ตอนนี้ยืมภาพหอกน้ำแข็งของ Mint ย้อมม่วง
+- **Plasma Field (Unique ก่อนเลือก Build · แบบ Razor ใน Dota 2):** วงพลาสมารอบตัว Taro ขยายออกจนรัศมี 280–370px ใน 0.9 วิ แล้วหดกลับเข้าตัว 0.9 วิ · ตามตัว Taro ตลอด · ศัตรูที่วงผ่านโดนตอนออกครั้งหนึ่งและตอนกลับอีกครั้ง ยิ่งไกลยิ่งแรง · ตอนนี้วาดด้วยโค้ด
+- **Overcharge Detonation (Unique สาย Sentry):** ป้อมทุกตัวยิง Ball Lightning 6 ลูกเป็นวงพร้อมกัน แล้วระเบิดตัวเองรัศมี 150px · จากนั้นป้อมใหม่ 2 ตัวโผล่ข้าง Taro และยิงเร็วขึ้น 4 วิ · ตอนนี้ใช้ `vfx_taro_orb_burst` และออร่า overcharge เดิม
+- **Shock (สาย Sentry):** ศัตรูที่โดน Ball Lightning ติด stack 1–5 (อยู่ 3 วิ) แต่ละชั้นรับดาเมจจาก Sentry +5% · ตอนนี้ยังไม่มีภาพบอก
+
+## D — Rift Needle
+
+| # | key / ไฟล์ | ชนิด | grid · เฟรม | ขนาดเฟรม | บนจอ | รายละเอียด |
+|---|---|---|---|---|---|---|
+| D1 | `vfx_taro_needle.png` | VFX ดำ | 4×1 = 4 · loop | 256 (กว้าง) × 64 (สูง) | ยาว ~70px | หนามคริสตัลม่วงยาวแหลม หันขวา ปลายแหลมขาวสว่าง ตัวหนามลาเวนเดอร์มีเหลี่ยมผลึก หางเป็นประกายฟ้าสั้น · ความรู้สึกเหมือนหอกน้ำแข็ง/หนามพุ่ง ไม่ใช่สายฟ้า |
+| D2 | `vfx_taro_needle_muzzle.png` | VFX ดำ | 4×1 = 4 · ครั้งเดียว | 128 | ~56px ข้างตัว Taro | แฟลชตอนปล่อยหนาม: วงคริสตัลแตกเล็ก ๆ ชี้ไปข้างหน้า (หันขวา) |
+| D3 | `vfx_taro_needle_hit.png` | VFX ดำ | 4×1 = 4 · ครั้งเดียว | 128 | ~44px บนศัตรู | หนามทะลุ: เศษคริสตัลม่วงกระจายไปข้างหน้า 4–6 ชิ้น + ประกายฟ้า (หันขวา) |
+
+## E — Plasma Field
+
+| # | key / ไฟล์ | ชนิด | grid · เฟรม | ขนาดเฟรม | บนจอ | รายละเอียด |
+|---|---|---|---|---|---|---|
+| E1 | `vfx_taro_plasma_ring.png` | VFX ดำ | 2×2 = 4 · loop | 512 | 48–740px (โค้ดย่อขยายตามรัศมีวง) | **วงแหวนพลาสมา** มองจากบนลงล่าง: ขอบวงหนาราว 6% ของเฟรม อยู่ที่ 92% ของเฟรม · แกนขาว-ฟ้าสว่าง ขอบม่วง มีสายฟ้าเล็กวิ่งตามวงและแลบเข้า-ออกเล็กน้อย · **กลางวงโปร่งทั้งหมด** · ห้ามเป็นวงรี (โค้ดวาดเป็นวงกลม) |
+| E2 | `vfx_taro_plasma_cast.png` | VFX ดำ | 3×2 = 6 · ครั้งเดียว | 256 | ~160px รอบ Taro | ตอนกด: พลาสมาก่อตัวรอบตัว Taro เป็นลูกแสงฟ้า แล้วระเบิดออกเป็นวงเล็ก (ต่อกับ E1) |
+| E3 | `vfx_taro_plasma_hit.png` | VFX ดำ | 4×1 = 4 · ครั้งเดียว | 128 | ~48px บนศัตรู | ศัตรูโดนวงพลาสมา: ประกายพลาสมาฟ้า-ขาวกระเซ็นเป็นวงเล็ก |
+
+## F — Overcharge Detonation
+
+| # | key / ไฟล์ | ชนิด | grid · เฟรม | ขนาดเฟรม | บนจอ | รายละเอียด |
+|---|---|---|---|---|---|---|
+| F1 | `vfx_taro_sentry_overload.png` | VFX ดำ | 4×2 = 8 · ครั้งเดียว | 256 | ~180px บนป้อม | ป้อมโอเวอร์โหลด: แสงอัดเข้าคริสตัลป้อม (0–2) สายฟ้าแลบรอบป้อม (3–4) ระเบิดเป็นวงสายฟ้าม่วงทอง (5–7) |
+| F2 | `vfx_taro_sentry_detonate.png` | VFX ดำ | 3×2 = 6 · ครั้งเดียว | 256 | ~320px (= รัศมี 150) | คลื่นระเบิดแผ่บนพื้น: วงสายฟ้าฟ้า-ม่วงขยาย มีเศษคริสตัลกระเด็น · ขอบวงที่ 90% ของเฟรม |
+
+## G — Shock marker
+
+| # | key / ไฟล์ | ชนิด | grid · เฟรม | ขนาดเฟรม | บนจอ | รายละเอียด |
+|---|---|---|---|---|---|---|
+| G1 | `vfx_taro_shock_marker.png` | VFX ดำ | 5×1 = 5 · ไม่เล่น (เลือกเฟรมตามจำนวน stack) | 64 | ~26px เหนือหัวศัตรู | สัญลักษณ์สายฟ้าเล็ก เฟรม 0 = 1 ขีด ... เฟรม 4 = 5 ขีดเรียงเป็นพัด สว่างขึ้นตามจำนวน · อ่านออกที่ 26px |
+| G2 | `vfx_taro_shock_aura.png` | VFX ดำ | 4×1 = 4 · loop | 128 | ~60px รอบศัตรูที่ 5 stack | ประกายไฟฟ้าวิ่งรอบตัวศัตรูแบบเบา ๆ (บอกว่าเต็ม stack) |
+
+## H — ไอคอนปุ่ม Unique (alpha จริง, 256×256, โชว์ ~52px บนปุ่มกลม)
+
+| # | key | ใช้กับ | ภาพ |
+|---|---|---|---|
+| H1 | `ic_taro_plasma_field` | ปุ่ม Unique ก่อนเลือก Build | วงแหวนพลาสมาฟ้าล้อมเข็มทิศม่วงตรงกลาง |
+| H2 | `ic_taro_overcharge` | ปุ่ม Unique สาย Sentry | ป้อมคริสตัลระเบิดสายฟ้าออก 6 ทิศ |
+| H3 | `ic_taro_rift_needle` | ไอคอนการตีปกติก่อนเลือก Build / Codex | หนามคริสตัลม่วงพุ่งเฉียงขึ้นขวา 3 เล่ม |
+
+## Prompt ส่วนเพิ่ม (ใช้หัวร่วมเดิมด้านบน)
+
+| ชิ้น | prompt เฉพาะ |
+|---|---|
+| D1 | VFX sprite sheet 4 frames stacked in one row, each frame 256x64, a long sharp violet crystal spike flying to the right, bright white tip, faceted lavender crystal body, short cyan sparkle tail on the left, like an ice lance but purple crystal, on solid pure black background |
+| D2 | VFX sprite sheet 4 frames in one row, small forward-facing crystal muzzle flash, tiny violet crystal shards bursting to the right, on solid pure black background |
+| D3 | VFX sprite sheet 4 frames in one row, crystal spike impact, 4 to 6 violet crystal shards and cyan sparks scattering forward to the right, on solid pure black background |
+| E1 | VFX sprite sheet 4 frames 2x2 loop, perfect circle plasma ring seen from directly above, ring at 92 percent of the frame, thick bright white-cyan core line with violet edges, small lightning crackles running along and slightly in and out of the ring, completely empty transparent center, on solid pure black background |
+| E2 | VFX sprite sheet 6 frames 3x2, cyan plasma gathers into a glowing sphere at the center then bursts outward into a small plasma ring, violet edges, on solid pure black background |
+| E3 | VFX sprite sheet 4 frames in one row, small cyan-white plasma splash ring with sparks, on solid pure black background |
+| F1 | VFX sprite sheet 8 frames 4x2, magical lightning turret overload: light sucks into a crystal, lightning crackles around it, then it bursts into a violet and gold lightning explosion, on solid pure black background |
+| F2 | VFX sprite sheet 6 frames 3x2, flat electric shockwave ring expanding on the ground seen from above, cyan and violet lightning edge at 90 percent of the frame, scattered crystal shards, on solid pure black background |
+| G1 | VFX sprite sheet 5 frames in one row, each 64x64, tiny lightning symbol counter: frame 1 one small bolt, up to frame 5 five small bolts arranged in a fan, getting brighter, violet and cyan, on solid pure black background |
+| G2 | VFX sprite sheet 4 frames in one row loop, faint electric sparks circling around an empty center, cyan and violet, on solid pure black background |
+| H1–H3 | single game UI icon, isolated object, transparent alpha background, glossy candy style, (ใส่คำบรรยายจากตาราง H เป็นภาษาอังกฤษ) |
+
+## ฝั่งโค้ดจะผูกยังไง
+
+- D: `taroFireNeedle` ใช้ D1 เป็น texture กระสุน (`faceVel`) แทน `proj_frostlance` · D2 ตอนยิง · D3 ใน hit ของกระสุน `taroNeedle`
+- E: `taroTickPlasma` ใช้ E1 `setDisplaySize(r×2/0.92)` แทนวงที่วาดด้วยโค้ด · E2 ตอน `castTaroPlasma` · E3 ตอนโดน (คุมด้วย `taroVisualBudget`)
+- F: `castTaroOvercharge` เล่น F1 บนป้อมแต่ละตัว + F2 แทน `vfx_taro_orb_burst`
+- G: `taroShockAdd` แสดง G1 เฟรมตามจำนวน stack เหนือศัตรู (เพดาน 40 ตัวเหมือนเครื่องหมาย Tremor) · G2 ที่ 5 stack
+- H: `syncUniqueIcon` เลือกไอคอนตาม Build (`ic_taro_plasma_field` ก่อนเลือก, `ic_taro_overcharge` สาย Sentry, `ic_taro_storm_beacon` สาย Arc/Spark)
