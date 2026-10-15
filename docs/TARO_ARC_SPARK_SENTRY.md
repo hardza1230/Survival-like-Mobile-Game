@@ -51,3 +51,7 @@ Owner: orbs too big, want faster hits. Sentry orb radius 36→57 (was 60→95), 
 ## v7.8.23 Bouncing Sparks
 
 Owner: fire from all around Taro and bounce off the screen edge. castTaroSpark spreads count evenly over 360° from a random start (still needs a foe in range to cast). Sparks reflect off the camera worldView (10px inset, taroBounceView) in addition to solid props/world bounds; the travel-range cutoff now applies only to orbs. Life 3.5s base (cap 5). Fission unchanged.
+
+## v7.8.24 PoE Ball Lightning + lightning swing
+
+Owner: Taro cannot clear C1-4 (other heroes at C2-4); lightning should swing wide; Sentry orbs should be PoE Ball Lightning. Orbs (Sentry/Beacon) no longer hit on contact: taroOrbZap every TARO_BL_TICK 0.15s zaps up to 6 nearest foes within radius (Sentry 85→120 with Wide Conductor, Beacon 95), drawing max 2 bolts per tick; speed TARO_BL_SPEED 110; zap damage unitD×0.30 (was ×0.22 per contact hit). Spark power unitD×0.60 (was ×0.36). taroLightningRoll() 0.2–1.8 (mean 1) multiplies Spark/orb/Beacon strike/Overload/Tesla hits at the call sites (taroDealDamage body is hash-locked). Orb visual: small bright core + faint zap-radius field (old big ring sprite no longer used). New art order docs/art_orders/18_TARO_SPARK_BALL_LIGHTNING_ART.md.

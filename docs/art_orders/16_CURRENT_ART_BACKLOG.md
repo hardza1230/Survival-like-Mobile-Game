@@ -1,3 +1,4 @@
+> 15 ต.ค. 2026: งานใหม่ Taro Spark + Ball Lightning (แบบ PoE) ดู [18_TARO_SPARK_BALL_LIGHTNING_ART.md](18_TARO_SPARK_BALL_LIGHTNING_ART.md) · ส่งที่ `assets/incoming/taro_spark_ball/`
 > 15 ต.ค. 2026: งานใหม่ Taro Sentry Build (ป้อม/ลูกบอลสายฟ้า/Beacon/ไอคอน) ดู [17_TARO_SENTRY_ART.md](17_TARO_SENTRY_ART.md) · ส่งที่ `assets/incoming/taro_sentry/`
 
 > P1 ส่งใน v7.7.0: ชีต edge accents แยก 13 สกิล, Unique Mastery, Tremor/Frost Burn และแก้ Berry Core crop แล้ว ดู P1_DELIVERY_7_7.md สำหรับหลักฐานและข้อจำกัด QA; รีวิวเล่นจริงบนมือถือยังค้าง

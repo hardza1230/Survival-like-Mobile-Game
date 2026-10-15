@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.23 — Bouncing Sparks
+# Latest delivery: v7.8.24 — PoE Ball Lightning, Spark power, lightning swing
+
+Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightning: slow (110), zap up to 6 foes within 85–120px every 0.15s (taroOrbZap), unitD×0.30 per zap. Spark ×0.60 (was 0.36). taroLightningRoll 0.2–1.8 on Spark/Sentry/Beacon hits (applied at call sites; taroDealDamage hash-locked). Art order 18_TARO_SPARK_BALL_LIGHTNING_ART.md (incoming folder taro_spark_ball). Pending owner pick: Sentry damage mechanic, Sentry Unique, pre-path Unique.
+
+# Previous delivery: v7.8.23 — Bouncing Sparks
 
 Owner: Sparks burst out all around Taro (even 360° spread), bounce off the visible screen edge (taroBounceView on camera worldView), last 3.5s (Live Current cap 5s); travel-range cutoff only for orbs. Fission from v7.8.21 kept.
 
@@ -21,10 +25,6 @@ Owner delivered 19 Sentry assets to assets/incoming/taro_sentry/. Packed by scri
 # Previous delivery: v7.8.19 — Taro Sentry rework
 
 Owner approved every proposal in docs/art_orders/17_TARO_SENTRY_ART.md. Sentries place only when fewer than 2 or Taro is >350px from the farthest one (no more churn cutting lifetime); live nodes refresh card values; orb cap 16; orb visual = real hit radius; orbs and Sparks break crates. Storm Beacon strikes 200px around Taro on cast ((2.5+n)·dm·(1+.22(n−1)), source beacon) and overcharges regular pulses ×1.5 while standing. Quick Reposition (p_gale) replaced by Overload (p_sentry_overload) and Tesla Link (p_sentry_link). Details in docs/TARO_ARC_SPARK_SENTRY.md. taro-swarm test extended; full check/build passed. Art A/B/C generated: 19 PNGs and delivery metadata uploaded to assets/incoming/taro_sentry/. Owner explicitly requested storage only; runtime integration and phone review remain pending.
-
-# Previous delivery: v7.8.18 — Taro Arc / Spark / Sentry
-
-Owner approved replacing Smite/Tempest with wandering Spark projectiles and temporary Ball Lightning sentries, plus all-build Storm Beacon Unique. Existing storm/smite/tempest IDs, original upgrade IDs/effects and Talent ranks/TP/costs stay compatible; labels and new run cards reflect the new mechanics. Arc/Rift Needle remain. Spark ricochets against solid props, can pierce and split once; cap10 per cast/36 live. Sentry cap2 + one independent Beacon, orbs cap12. Old charge/Dash-bomb/Rod hooks removed from live dispatch; legacy helpers retained dormant. New ImageGen transparent Sentry WebP, code-native sparks/orbs and reused T6 cues. Required check/build, static Canvas three sizes and Codex/Talent five sizes passed. See docs/TARO_ARC_SPARK_SENTRY.md; publication in SESSION_HANDOFF. Owner phone combat/balance/FPS review pending.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
