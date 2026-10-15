@@ -2,6 +2,10 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# Art delivery 18 — Taro Spark + Ball Lightning
+
+16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. Exact grids/dimensions and alpha checked; black VFX and faint field retained. Art storage only; packing/runtime integration and phone visual/FPS review remain pending. Game version unchanged.
+
 # Latest delivery: v7.8.24 — PoE Ball Lightning, Spark power, lightning swing
 
 Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightning: slow (110), zap up to 6 foes within 85–120px every 0.15s (taroOrbZap), unitD×0.30 per zap. Spark ×0.60 (was 0.36). taroLightningRoll 0.2–1.8 on Spark/Sentry/Beacon hits (applied at call sites; taroDealDamage hash-locked). Art order 18_TARO_SPARK_BALL_LIGHTNING_ART.md (incoming folder taro_spark_ball). Pending owner pick: Sentry damage mechanic, Sentry Unique, pre-path Unique.

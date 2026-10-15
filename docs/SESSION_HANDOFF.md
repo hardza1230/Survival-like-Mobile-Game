@@ -1,6 +1,19 @@
 # Latest session checkpoint
 Updated 2026-10-15 Asia/Bangkok.
 
+## Taro Spark + Ball Lightning art — delivery 18
+
+Created all 16 PNG32 assets (A1–A5, B1–B6, C1–C5) under assets/incoming/taro_spark_ball/. Includes MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Built-in ImageGen; gold Beacon orb refined to gold/violet. Exact target sheet grids and dimensions; VFX retain opaque #000, icons retain generated alpha; field RGB capped at63.
+
+Verification: 16/16 PNG RGBA dimension/grid/hash/alpha/black-corner/field-brightness checks passed; all source sheets and final contact sheet visually reviewed. Runtime packing, registration and integration remain for the game-side task; no runtime/game version/build output changed. Generated frame continuity/pivots, normal-blend conversion, mobile readability and FPS still need integration/owner review.
+
+Prepared for one art/docs-only commit on claude/vampire-survival-mobile-game-yo9e8w from parent1a3728043535ed7bdde77bb2143904a9e486797b. Verify remote ref and exact local/remote tree before publishing.
+
+## Previous checkpoint (historical)
+
+# Latest session checkpoint
+Updated 2026-10-15 Asia/Bangkok.
+
 ## Taro Sentry art — uploaded, runtime integration explicitly deferred
 Owner requested uploading the generated art to GitHub only, without wiring it into the game. Added 19 PNG32 files under `assets/incoming/taro_sentry/` with `MANIFEST.json`, `PROMPTS.json` and `DELIVERY_README.md`. The manifest records exact grid/frame sizes and SHA-256 hashes. Actual alpha checked for turret/icon assets; black background retained for VFX.
 

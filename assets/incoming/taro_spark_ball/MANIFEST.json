@@ -1,0 +1,261 @@
+{
+  "art_order": "18_TARO_SPARK_BALL_LIGHTNING_ART.md",
+  "assets": [
+    {
+      "file": "vfx_taro_spark.png",
+      "width": 512,
+      "height": 128,
+      "columns": 4,
+      "rows": 1,
+      "frames": 4,
+      "frame_width": 128,
+      "frame_height": 128,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "cd4da2b981c77277132a4bbf265e496d8cd3d23153116b8ac556bfd4a7435ad7"
+    },
+    {
+      "file": "vfx_taro_spark_split.png",
+      "width": 512,
+      "height": 128,
+      "columns": 4,
+      "rows": 1,
+      "frames": 4,
+      "frame_width": 128,
+      "frame_height": 128,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "68824d3b3856f2e628cd3a1f2d797124dfc536501dcf7c1794c898eb418af97a"
+    },
+    {
+      "file": "vfx_taro_spark_bounce.png",
+      "width": 512,
+      "height": 128,
+      "columns": 4,
+      "rows": 1,
+      "frames": 4,
+      "frame_width": 128,
+      "frame_height": 128,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "2cd6f328612f4bb380189504cb2eb609acaed1b9132adf6fc9464dccf93f9ea5"
+    },
+    {
+      "file": "vfx_taro_spark_hit.png",
+      "width": 512,
+      "height": 128,
+      "columns": 4,
+      "rows": 1,
+      "frames": 4,
+      "frame_width": 128,
+      "frame_height": 128,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "f42f1bf0be350d65a049f11325974fddc141c8d5f7c88889da1a8ef43fea45a0"
+    },
+    {
+      "file": "vfx_taro_spark_burst.png",
+      "width": 768,
+      "height": 512,
+      "columns": 3,
+      "rows": 2,
+      "frames": 6,
+      "frame_width": 256,
+      "frame_height": 256,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "ff12ea7dc480adae565701eda1293ec547c6ff0c7918ed279ac3e2f0c7286594"
+    },
+    {
+      "file": "vfx_taro_ball_core.png",
+      "width": 384,
+      "height": 256,
+      "columns": 3,
+      "rows": 2,
+      "frames": 6,
+      "frame_width": 128,
+      "frame_height": 128,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "c64e539937e31bf2e25db1d6b10f1e7887f94e758db7eb1c7b9cec261b932f56"
+    },
+    {
+      "file": "vfx_taro_ball_core_gold.png",
+      "width": 384,
+      "height": 256,
+      "columns": 3,
+      "rows": 2,
+      "frames": 6,
+      "frame_width": 128,
+      "frame_height": 128,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "260c06ee7990a9f5dbae7ca3695a528c937c9bc84aa8552bf43193d7df7528f2"
+    },
+    {
+      "file": "vfx_taro_ball_field.png",
+      "width": 512,
+      "height": 512,
+      "columns": 2,
+      "rows": 2,
+      "frames": 4,
+      "frame_width": 256,
+      "frame_height": 256,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "220e0d8ea1ef970600b87f5e8bc49d936969b2337c6323f16b8cc369bfd9f879"
+    },
+    {
+      "file": "vfx_taro_ball_zap.png",
+      "width": 256,
+      "height": 192,
+      "columns": 1,
+      "rows": 4,
+      "frames": 4,
+      "frame_width": 256,
+      "frame_height": 48,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "021d471798f809e884e5c7eebfcc5d7f8473919d3779020fab2656cb3c14e66f"
+    },
+    {
+      "file": "vfx_taro_ball_zap_hit.png",
+      "width": 256,
+      "height": 64,
+      "columns": 4,
+      "rows": 1,
+      "frames": 4,
+      "frame_width": 64,
+      "frame_height": 64,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "ac4dab720c0e9583f8e10a2801f4d1a25d05b41e238601b0ea28396fe76e16cb"
+    },
+    {
+      "file": "vfx_taro_ball_fade.png",
+      "width": 384,
+      "height": 256,
+      "columns": 3,
+      "rows": 2,
+      "frames": 6,
+      "frame_width": 128,
+      "frame_height": 128,
+      "background": "#000000",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "sha256": "2a27ceed925e1f075c188d511818ad212ec4050d11df6d26abc38cbf6ea29ca0"
+    },
+    {
+      "file": "ic_taro_live_current.png",
+      "width": 256,
+      "height": 256,
+      "columns": 1,
+      "rows": 1,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "background": "transparent",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "sha256": "7f071dbc002f7b8f03b959eb46b2a7429b44a584692bf9d9b23f38c1adbcba80"
+    },
+    {
+      "file": "ic_taro_fast_sparks.png",
+      "width": 256,
+      "height": 256,
+      "columns": 1,
+      "rows": 1,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "background": "transparent",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "sha256": "adaf67377a1aa277629a60375daf2a14a2c97c446291cd9dfaa561eeca0b94fb"
+    },
+    {
+      "file": "ic_taro_split_spark.png",
+      "width": 256,
+      "height": 256,
+      "columns": 1,
+      "rows": 1,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "background": "transparent",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "sha256": "a481da15d855a7071f1747e9c0e4a34a1ba73ea3a72644b6ecbd95c8f13bcf5b"
+    },
+    {
+      "file": "ic_taro_piercing_current.png",
+      "width": 256,
+      "height": 256,
+      "columns": 1,
+      "rows": 1,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "background": "transparent",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "sha256": "7750a75e3705fef07fac497564c4bf0cea605c095c59899674f7dffa84b18e87"
+    },
+    {
+      "file": "ic_path_smite_spark.png",
+      "width": 256,
+      "height": 256,
+      "columns": 1,
+      "rows": 1,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "background": "transparent",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "sha256": "bbe9979febd367c3c293ae2d8995e022e90158aab436899cf4b23043f777567c"
+    }
+  ]
+}
