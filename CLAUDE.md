@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. Exact grids/dimensions and alpha checked; black VFX and faint field retained. Art storage only; packing/runtime integration and phone visual/FPS review remain pending. Game version unchanged.
 
-# Latest delivery: v7.8.28 — Starter cards never go to waste
+# Latest delivery: v7.8.29 — C2-4 Season Storm softlock fix + art order 19
+
+Owner: C2-4 sometimes stuck (screenshot: Season Storm 🌸 unpassed, ☀🍂❄ ✓, rest, Reserves 0). Cause: Spring trial needs 10 kills (stormRule) but story budget reserves were exhausted → no enemies → trial never passes → objective never completes. Fix in tickSeasonObjective idx 0: while in wave mode, every 1.2s top up to min(6, 10−kills) live non-boss foes via spawnEnemy('basic'). Art order docs/art_orders/19_C24_FOUR_SEASON_ART.md (season trials A1–A11 incl. Bloom Sprout enemy, Chronobloom boss attacks B1–B8) → incoming/c24_seasons_vfx. Boss-variety ideas given in chat, awaiting owner pick.
+
+# Previous delivery: v7.8.28 — Starter cards never go to waste
 
 Owner: starter cards picked before a Build Path should not become useless. Audit (momo/mint/cocoa/taro) found only Cocoa Earthbreaker on Fire Fist (dead) and Rushdown on Titan (follow-ups dead) truly wasted; fixed (Fire Fist fireball ×1.25 dmg/blast; Titan pound + 35% tremor wave). Earthbreaker +25% finisher now real; Taro Chainlord/Evolution really add Static Arc jumps (cap 10). Text fixes: Fireball Barrage (+18% combo speed), Mochi Reach on Fire Fist, Mint Shard Bloom on Impaler (Rupture Shards +8%), Momo Rate all builds, Petal Spread on Shotgun. New rule: Build Path cards show a '↪ Keeps:' line (pathCarryText → card o.carry, drawn in the stars line) listing owned starter cards and their name in that build. tests/starter-carry.test.cjs.
 
@@ -25,10 +29,6 @@ Owner picked 1 + A: Sentry Shock stacks (+5%/stack, max 5, 3s) and Overcharge De
 # Previous delivery: v7.8.24 — PoE Ball Lightning, Spark power, lightning swing
 
 Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightning: slow (110), zap up to 6 foes within 85–120px every 0.15s (taroOrbZap), unitD×0.30 per zap. Spark ×0.60 (was 0.36). taroLightningRoll 0.2–1.8 on Spark/Sentry/Beacon hits (applied at call sites; taroDealDamage hash-locked). Art order 18_TARO_SPARK_BALL_LIGHTNING_ART.md (incoming folder taro_spark_ball). Pending owner pick: Sentry damage mechanic, Sentry Unique, pre-path Unique.
-
-# Previous delivery: v7.8.23 — Bouncing Sparks
-
-Owner: Sparks burst out all around Taro (even 360° spread), bounce off the visible screen edge (taroBounceView on camera worldView), last 3.5s (Live Current cap 5s); travel-range cutoff only for orbs. Fission from v7.8.21 kept.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

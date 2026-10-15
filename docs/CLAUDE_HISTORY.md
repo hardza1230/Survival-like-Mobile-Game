@@ -1928,3 +1928,7 @@ Owner played Spark: wants longer, faster, piercing projectiles; nothing to bounc
 # Previous delivery: v7.8.22 — Smaller faster-hitting Ball Lightning
 
 Owner Sentry feedback: orbs too big, hit more often. Orb radius ×0.6 (36→57, Beacon 46), per-victim hit gap 0.2s (TARO_ORB_HIT_GAP). Damage/Unique/pre-path Unique ideas proposed in chat, awaiting owner pick.
+
+# Previous delivery: v7.8.23 — Bouncing Sparks
+
+Owner: Sparks burst out all around Taro (even 360° spread), bounce off the visible screen edge (taroBounceView on camera worldView), last 3.5s (Live Current cap 5s); travel-range cutoff only for orbs. Fission from v7.8.21 kept.

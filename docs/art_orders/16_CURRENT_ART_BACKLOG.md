@@ -1,3 +1,4 @@
+> 16 ต.ค. 2026: งานใหม่ C2-4 Four-Season Conservatory (บททดสอบฤดู + ท่าบอส Chronobloom) ดู [19_C24_FOUR_SEASON_ART.md](19_C24_FOUR_SEASON_ART.md) · ส่งที่ `assets/incoming/c24_seasons_vfx/`
 > 15 ต.ค. 2026: งานใหม่ Taro Spark + Ball Lightning (แบบ PoE) ดู [18_TARO_SPARK_BALL_LIGHTNING_ART.md](18_TARO_SPARK_BALL_LIGHTNING_ART.md) · ส่งที่ `assets/incoming/taro_spark_ball/`
 > 15 ต.ค. 2026: งานใหม่ Taro Sentry Build (ป้อม/ลูกบอลสายฟ้า/Beacon/ไอคอน) ดู [17_TARO_SENTRY_ART.md](17_TARO_SENTRY_ART.md) · ส่งที่ `assets/incoming/taro_sentry/`
 

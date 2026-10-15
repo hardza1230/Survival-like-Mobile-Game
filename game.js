@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.28';
+const GAME_VERSION = '7.8.29';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.29',date:'2026-10-16',title:'C2-4 Season Storm fix',items:['Fixed C2-4 sometimes getting stuck: the Spring trial needs 10 kills, but once the wave’s reserves ran out no enemies were left to kill. Spring now grows its own Bloom Sprouts until the trial can be finished']},
   {v:'7.8.28',date:'2026-10-16',title:'Starter cards never go to waste',items:['Build Path cards now list how the starter cards you already took carry over to that build','Chocolate Earthbreaker now really adds +25% finisher damage, and on Fire Fist boosts the big fireball and its blast','Chocolate Rushdown on Titan adds a tremor wave to every pound (its follow-up punches had no finisher to trigger)','Taro Chainlord and Evolution now really add Static Arc jumps','Card text fixes: Fireball Barrage, Mochi Reach on Fire Fist, Mint Shard Bloom on Crystal Impaler, Strawberry Rate and Petal Spread on Shotgun']},
   {v:'7.8.27',date:'2026-10-15',title:'Taro: Static Arc and Overload Loop',items:['Before choosing a build Taro casts Static Arc: a small chain that jumps 3 times','Arc chains with no new target loop their remaining jumps back into the last enemy, so lone bosses take every jump','New Arc Build card Overload: +15% loop damage per rank','Arc Build Unique is now Plasma Field: every enemy the ring touches fires an Arc jump','Plasma Field, Storm Beacon strike and Overcharge Detonation hit about 3 times harder (they were far too weak)','Sparks start with 1 more spark and fly faster (460)']},
   {v:'7.8.26',date:'2026-10-15',title:'Taro: Sparks hunt bosses',items:['Sparks within 260px of a boss or mini-boss curve toward it','Sparks pass through bosses without using up pierce and can hit the same boss again every 0.3s, so they swarm big targets']},
@@ -10871,7 +10872,8 @@ class Game extends Phaser.Scene {
     const idx=this._seasonState?this._seasonState.idx:0;let c=o.storm.cur;if(!c||c.idx!==idx){this.stormEndSeason(o);if(o.progress>=o.target){this.completeWaveObjective();return;}this.stormBeginSeason(o,idx,false);c=o.storm.cur;}
     if(o.storm.passed[idx]){return;}   // ฤดูที่ผ่านแล้ว = พัก ไม่มีภัย
     const pl=this.player,info=this.seasonInfo(idx),t=this.elapsed||0;
-    if(idx===0){ c.regen-=dt;if(c.regen<=0){c.regen=1;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.04);});} }
+    if(idx===0){ c.sprout=(c.sprout||0)-dt;if(c.sprout<=0&&this.mode==='wave'){c.sprout=1.2;let live=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)live++;});const want=Math.min(6,10-c.kills);for(let i=0;i<Math.min(2,want-live);i++)this.spawnEnemy('basic',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.55);}   /* v7.8.29 บั๊กค้าง: Reserves หมดแล้วด่านฤดูใบไม้ผลิต้องฆ่า 10 ตัวแต่ไม่มีศัตรูเกิด → เติม Bloom Sprout เอง */
+      c.regen-=dt;if(c.regen<=0){c.regen=1;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.04);});} }
     else if(idx===1){ const v=pl.body?pl.body.velocity.length():0;c.still=v<40?c.still+dt:Math.max(0,c.still-dt*2);const f=Phaser.Math.Clamp(c.still/1.4,0,1);
       if(f>0.05){g.lineStyle(4,0xff5a1f,.4+.5*f);g.strokeCircle(pl.x,pl.y,70-30*f);g.fillStyle(0xffb12b,.18*f);g.fillCircle(pl.x,pl.y,70-30*f);}
       if(c.still>=1.4){c.still=0;this.spawnFxAnim&&this.spawnFxAnim('fx_chilinova',pl.x,pl.y,{scale:.5});this.stormHit(o,.07);} }
