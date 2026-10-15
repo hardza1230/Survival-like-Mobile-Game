@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.27';
+const GAME_VERSION = '7.8.28';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.28',date:'2026-10-16',title:'Starter cards never go to waste',items:['Build Path cards now list how the starter cards you already took carry over to that build','Chocolate Earthbreaker now really adds +25% finisher damage, and on Fire Fist boosts the big fireball and its blast','Chocolate Rushdown on Titan adds a tremor wave to every pound (its follow-up punches had no finisher to trigger)','Taro Chainlord and Evolution now really add Static Arc jumps','Card text fixes: Fireball Barrage, Mochi Reach on Fire Fist, Mint Shard Bloom on Crystal Impaler, Strawberry Rate and Petal Spread on Shotgun']},
   {v:'7.8.27',date:'2026-10-15',title:'Taro: Static Arc and Overload Loop',items:['Before choosing a build Taro casts Static Arc: a small chain that jumps 3 times','Arc chains with no new target loop their remaining jumps back into the last enemy, so lone bosses take every jump','New Arc Build card Overload: +15% loop damage per rank','Arc Build Unique is now Plasma Field: every enemy the ring touches fires an Arc jump','Plasma Field, Storm Beacon strike and Overcharge Detonation hit about 3 times harder (they were far too weak)','Sparks start with 1 more spark and fly faster (460)']},
   {v:'7.8.26',date:'2026-10-15',title:'Taro: Sparks hunt bosses',items:['Sparks within 260px of a boss or mini-boss curve toward it','Sparks pass through bosses without using up pierce and can hit the same boss again every 0.3s, so they swarm big targets']},
   {v:'7.8.25',date:'2026-10-15',title:'Taro: Plasma Field, Overcharge Detonation, Shock, spike needles',items:['New painted Spark and Ball Lightning effects: sparks, splits, bounces, hits, ball cores, zap bolts and fade-outs, plus new Spark card icons','Before choosing a build, Taro’s Unique is Plasma Field: a plasma ring expands and returns, hitting enemies on the way out and back, harder at the edge','Sentry Build Unique is Overcharge Detonation: every sentry fires 6 Ball Lightning and explodes, then 2 fresh sentries fire 50% faster for 4s','Sentry hits apply Shock: each stack makes the enemy take +5% Sentry damage (up to 5 stacks, 3s)','Rift Needles are now real flying spikes that pierce every enemy in their line and hit 35% harder']},
@@ -3264,11 +3265,11 @@ function berryCardHeadline(b,id,lvl,player){
 function berryAttackInfo(d,b){
   const path=b?.path,e=BERRY_EVOLUTIONS[path];if(!e)return d;
   return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>{
-    if(u.id==='rate')return {...u,headline:'Basic interval −8%',desc:'Ricochet Basic fires 8% sooner per rank. Does not shorten manual Unique charge.'};
+    if(u.id==='rate')return {...u,headline:'Basic interval −8%',desc:'Basic Attack fires 8% sooner per rank on every build (offered again only on Ricochet). Does not shorten manual Unique charge.'};
     if(u.id==='volley')return {...u,name:path==='sniper'?'Dense Chamber':u.name,headline:path==='sniper'?'+12% Heavy Seed power':'+1 Basic seed / overflow power',desc:path==='sniper'?'+12% base Heavy Seed power per rank; remains one shot, including after Evolution.':'+1 Basic seed per rank. Cap '+(path==='shotgun'?12:8)+'; each excess seed adds +8% base volley power.'};
     if(u.id==='size')return {...u,headline:'Basic impact splash',desc:'Basic hits splash at 25% +12% per rank; radius 46px +14px per rank. Max 16 nearby targets per impact. Ricochet splashes each ordinary target once per seed; bosses and minibosses take direct hits.'};
     return u;
-  }),mutations:d.mutations.map(m=>path==='sniper'?{...m,name:m.id==='fan'?'Focused Chamber':'Fracture Seed',desc:m.id==='fan'?'+2 planned seeds convert to +24% base Heavy Seed power; no spread.':'+2 Heavy Seed penetrations; preserves Sniper precision instead of bouncing.'}:m)};
+  }),mutations:d.mutations.map(m=>path==='shotgun'&&m.id==='fan'?{...m,desc:'+2 pellets per blast (the Shotgun spread stays the same); past 12 pellets each extra adds +8% power.'}:path==='sniper'?{...m,name:m.id==='fan'?'Focused Chamber':'Fracture Seed',desc:m.id==='fan'?'+2 planned seeds convert to +24% base Heavy Seed power; no spread.':'+2 Heavy Seed penetrations; preserves Sniper precision instead of bouncing.'}:m)};
 }
 /* ---- BASIC ATTACK PROTOTYPE: ตัวละครเป็นแกน build แทนการสะสม auto-skill หลายชนิด ---- */
 const BASIC_ATTACKS = {
@@ -3299,8 +3300,8 @@ const BASIC_ATTACKS = {
       {id:'dashp',name:'Dash Stack',emoji:'🐾',max:3,desc:'+1 stored Dash charge per rank, and each Dash boosts combo damage +15% for 2.5s'},
       {id:'drum',name:'Drum Heart',emoji:'🥁',max:3,desc:'Landed punches and taking hits refund 15% more Unique cooldown per rank; minimum reuse time still applies'}],
     mutations:[
-      {id:'rush',name:'Rushdown',emoji:'💨',desc:'Finishers add 2 light follow-up punches; combo cooldown is 18% shorter'},
-      {id:'breaker',name:'Earthbreaker',emoji:'💢',desc:'Finishers deal +25% damage and make one aftershock; combines with Evolution into one stronger echo'},
+      {id:'rush',name:'Rushdown',emoji:'💨',desc:'Finishers add 2 light follow-up punches; combo cooldown is 18% shorter (Titan: every pound adds a 35% tremor wave)'},
+      {id:'breaker',name:'Earthbreaker',emoji:'💢',desc:'Finishers deal +25% damage and make one aftershock (Fire Fist: +25% fireball damage and blast; Titan: +12% pounds with a 25% aftershock)'},
       {id:'counter',name:'Counter Bear',emoji:'🔁',desc:'Dash recharges 40% faster and you take 30% less damage while the Dash buff is active'}]},
   berry:{name:'Jam Cannon',emoji:'💗',skill:'rocket',color:0xff5f88,evolution:'Jam Supernova',
     upgrades:[
@@ -3350,7 +3351,7 @@ const TARO_PROGRESSION={
 };
 function taroAttackInfo(d,b){if(!d)return d;
   if(!b?.path)return {...d,name:'Static Arc',upgrades:d.upgrades.map(u=>{
-    const info={power:['Arc Power','+12% Arc damage','Static Arc gains +12% damage per rank.'],rate:['Quick Arc','-8% attack interval','Cast Static Arc 8% sooner per rank.'],arc:['Arc Reach','+1 Arc jump','+1 jump per rank (max 6) and +10% reach. Converts to Arc links, Spark pierce or sentry lifetime after choosing a build.'],surge:['Extra Arcs','+1 Arc stream','+1 stream from Taro; max 3. Excess: +5% damage, max +25%. Converts to the chosen build’s extra-root bonus.']}[u.id];return info?{...u,name:info[0],headline:info[1],desc:info[2],...(u.id==='arc'?{iconKey:'ic_path_p_farstrike'}:{})}:u;
+    const info={power:['Arc Power','+12% Arc damage','Static Arc gains +12% damage per rank.'],rate:['Quick Arc','-8% attack interval','Cast Static Arc 8% sooner per rank.'],arc:['Arc Reach','+1 Arc jump','+1 jump per rank (base 3, +3 max) and +10% reach. Converts to Arc links, Spark pierce or sentry lifetime after choosing a build.'],surge:['Extra Arcs','+1 Arc stream','+1 stream from Taro; max 3. Excess: +5% damage, max +25%. Converts to the chosen build’s extra-root bonus.']}[u.id];return info?{...u,name:info[0],headline:info[1],desc:info[2],...(u.id==='arc'?{iconKey:'ic_path_p_farstrike'}:{})}:u;
   }),mutations:d.mutations.map(m=>({...m,desc:m.id==='chainlord'?'+2 Arc jumps and +40% reach.':'+2 Arc streams and +20% damage; stream cap and overflow apply.'})),evolutionDesc:'+20% Arc damage, +3 jumps, +2 streams and +50% reach; existing caps apply.'};
   const path=TARO_PROGRESSION[b.path];if(!path)return d;
   return {...d,name:({storm:'Arc Compass',smite:'Spark Compass',tempest:'Storm Sentry'})[b.path],evolutionDesc:path.evolution,upgrades:d.upgrades.map(u=>{
@@ -3637,7 +3638,7 @@ const COCOA_UNIQUES={
   dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 4 times onto the strongest enemy (boss first), slamming on each landing. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
 };
 const COCOA_PATH_MUTS={
-  brawler:[{id:'rush',name:'Fireball Barrage',emoji:'☄️',desc:'The 5th punch launches 3 fireballs instead of 1'},
+  brawler:[{id:'rush',name:'Fireball Barrage',emoji:'☄️',desc:'The 5th punch launches 3 fireballs instead of 1, and combos run 18% faster'},
     {id:'napalm',name:'Napalm',emoji:'🔥',desc:'Fireball explosions leave a big fire pool for 2s'},
     {id:'ricochet',name:'Ricochet Fists',emoji:'↪️',desc:'Normal fists bounce to 2 more enemies'}],
   titan:[{id:'breaker',name:'Earthbreaker',emoji:'💢',desc:'Ground Pounds deal +12% damage and make a 25%-power aftershock'},
@@ -3646,7 +3647,7 @@ const COCOA_PATH_MUTS={
   dashboxer:[{id:'counter',name:'Counter Bear',emoji:'🔁',desc:'Dash recharges 40% faster and you take 30% less damage while the Dash buff is active'},
     {id:'afterimage',name:'Afterimage',emoji:'👥',desc:'Dash Leap leaves a shadow that punches the landing spot 3 times over 2s'},
     {id:'chainleap',name:'Chain Leap',emoji:'⛓️',desc:'After a Dash Leap lands, bounce once more onto another enemy and slam again'}]};
-function cocoaAttackInfo(d,b){if(!d)return d;const e=COCOA_EVOLUTIONS[b?.path],m=COCOA_PATH_MUTS[b?.path];return {...d,...(m?{mutations:m}:{}),...(e?{evolution:e.name,evolutionDesc:e.desc}:{}),upgrades:d.upgrades.map(u=>u.id==='combo'&&b?.path==='titan'?{...u,desc:'+8% Ground Pound power and +1 max Tremor stack per rank'}:u.id==='combo'?{...u,desc:'+18% finisher power per rank; applies to all five-hit path combos'}:u)};}
+function cocoaAttackInfo(d,b){if(!d)return d;const e=COCOA_EVOLUTIONS[b?.path],m=COCOA_PATH_MUTS[b?.path];return {...d,...(m?{mutations:m}:{}),...(e?{evolution:e.name,evolutionDesc:e.desc}:{}),upgrades:d.upgrades.map(u=>u.id==='size'&&b?.path==='brawler'?{...u,headline:'+12% fist range & blast',desc:'+12% Fire Fist targeting range and fireball/meteor blast radius per rank.'}:u.id==='combo'&&b?.path==='titan'?{...u,desc:'+8% Ground Pound power and +1 max Tremor stack per rank'}:u.id==='combo'?{...u,desc:'+18% finisher power per rank; applies to all five-hit path combos'}:u)};}
 
 // v7.8.25 Taro Unique per build: pre-path Plasma Field (Razor-style), Sentry Overcharge Detonation, Arc/Spark keep Storm Beacon
 const TARO_UNIQUES={
@@ -11956,7 +11957,7 @@ class Game extends Phaser.Scene {
       roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       descT=this.add.text(textX,y+75,dd,{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
-      starsT=this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);
+      starsT=isPath&&o.carry?this.add.text(textX,y+h-20,o.carry,{fontFamily:'sans-serif',fontSize:'9px',color:'#9be8ff',wordWrap:{width:Math.max(60,textW-110)},maxLines:2}).setOrigin(0,0.5):this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);   /* v7.8.28 การ์ด Build Path: บรรทัดการ์ดเริ่มต้นที่พาไปด้วย */
       ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }else{
@@ -11968,7 +11969,7 @@ class Game extends Phaser.Scene {
       roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       descT=this.add.text(x+w/2,y+h*0.60,dd,{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
-      starsT=this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
+      starsT=isPath&&o.carry?this.add.text(x+w/2,y+h*0.85,o.carry,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9be8ff',align:'center',wordWrap:{width:textW},maxLines:2}).setOrigin(0.5):this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }
@@ -12024,7 +12025,13 @@ class Game extends Phaser.Scene {
   }
   signatureWeaponInfo(){const ch=CHARACTERS[this.character]||CHARACTERS.momo;return SIGNATURE_WEAPONS[ch.weapon]||SIGNATURE_WEAPONS.berryBlaster;}
   usesBasicAttackBuild(){return !!BASIC_ATTACKS[this.character];}
-  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);if(this.character==='taro')return taroAttackInfo(d,b);const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
+  /* v7.8.28 การ์ด Build Path บอกว่าการ์ดเริ่มต้นที่ลงไว้จะกลายเป็นอะไรในสายนั้น (การ์ดเริ่มต้นห้ามเสียเปล่า) */
+  pathCarryText(pt){const b=this.basicAttack,d0=BASIC_ATTACKS[this.character];if(!b||!d0||!pt)return '';const own=(d0.upgrades||[]).filter(u=>(b.lv?.[u.id]||0)>0);if(!own.length&&!b.mutation)return '';
+    const prev=b.path;let info=null;try{b.path=pt.id;info=this.basicAttackInfo();}catch(e){info=null;}finally{b.path=prev;}if(!info)return '';
+    const parts=own.map(u=>{const v=(info.upgrades||[]).find(x=>x.id===u.id)||u;return (v.name!==u.name?u.name+' → '+v.name:v.name)+' ×'+b.lv[u.id];});
+    if(b.mutation){const m=(info.mutations||[]).find(x=>x.id===b.mutation)||(d0.mutations||[]).find(x=>x.id===b.mutation);if(m)parts.push(m.name);}
+    return parts.length?'↪ Keeps: '+parts.slice(0,3).join(' · ')+(parts.length>3?' +'+(parts.length-3)+' more':''):'';}
+  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);if(this.character==='taro')return taroAttackInfo(d,b);const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='pierce'?{...u,name:'Rupture Shards',headline:'+8% Rupture damage',desc:'Crystal Impaler Rupture deals +8% damage per rank. Ranks taken before the build carry over.'}:u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){if(this.character==='taro')this.syncTaroCombat?.();const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
@@ -12420,7 +12427,7 @@ class Game extends Phaser.Scene {
     if(this.character!=='taro'||this.basicAttack?.path||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;
     const p=this.player,b=this.basicAttack,t=this._taro,f=taroNeedleProfile(b,p,level,dm),targets=this.taroCandidates(p,f.range).sort((a,b)=>Math.hypot(a.enemy.x-p.x,a.enemy.y-p.y)-Math.hypot(b.enemy.x-p.x,b.enemy.y-p.y)||a.id-b.id).slice(0,f.shots);
     /* v7.8.27 เจ้าของ: ก่อนเลือก Build = Static Arc เล็ก (สายละ 3 กระโดด + Arc Reach) · กระโดดไม่มีเป้าใหม่ = เด้งกลับเป้าเดิม 60% (Overload Loop) */
-    const jumps=Math.min(6,3+Math.max(0,b?.ranks?.arc||0)),hit=new Set(),all=this.taroCandidates(p,Infinity);
+    const jumps=Math.min(10,3+Math.min(3,Math.max(0,b?.ranks?.arc||0))+(b?.mutation==='chainlord'?2:0)+(b?.evolved?3:0)),hit=new Set(),all=this.taroCandidates(p,Infinity);
     for(const root of targets){if(this.state!=='play'||this.player!==p||this._taro!==t||this.basicAttack!==b||b?.path)break;if(!taroTargetValid(root,p,f.range)||hit.has(root.id))continue;let from={x:p.x,y:p.y},token=root,last=null,j=0;
       for(;j<jumps&&token;j++){if(this.state!=='play'||this.player!==p||!taroTargetValid(token,from,j?TARO_ARC_JUMP:f.range))break;const e=token.enemy;hit.add(token.id);this.chainBolt?.(from.x,from.y,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*Math.min(1.6,1+.12*j),e.x,e.y);from={x:e.x,y:e.y};last=token;token=this.taroNearestUnused(all,from,TARO_ARC_JUMP,hit);}
       for(let k=0;last&&!token&&j<jumps&&k<jumps;k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const e=last.enemy;if(k<2)this.chainBolt?.(p.x,p.y,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,e.x,e.y);}}
@@ -12845,7 +12852,7 @@ class Game extends Phaser.Scene {
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
-      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();this.playGrowthWorld?.('unlock');}}));
+      return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,carry:this.pathCarryText?.(pt)||'',headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();this.playGrowthWorld?.('unlock');}}));
     }
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
     if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
@@ -13549,7 +13556,7 @@ class Game extends Phaser.Scene {
       if(fire){this.cocoaFireFist(ang,unit*(fin?1.55*finMul:.85)*(1+Math.min(.4,cc.n*.01)),fin,reach,basic);cc.n=Math.min(40,cc.n+1);cc.t=0;cc.step=(beat+1)%5;this.cocoaBeatCharge(.25);return;}
       const r=ti?reach*.95:fin?reach*1.05:reach*.64;
       const rage=0,rr=r*(1+rage*.15);
-      const power=unit*(ti?1.15*(1+(basic.ranks.combo||0)*.08)*(basic.mutation==='breaker'?1.12:1):fin?1.55*finMul:.8)*(1+Math.min(.4,cc.n*.01))*(empowered?1.35:1)*TITAN_RAGE_MUL[rage];
+      const power=unit*(ti?1.15*(1+(basic.ranks.combo||0)*.08)*(basic.mutation==='breaker'?1.12:1):fin?1.55*finMul*(basic.mutation==='breaker'?1.25:1):.8)*(1+Math.min(.4,cc.n*.01))*(empowered?1.35:1)*TITAN_RAGE_MUL[rage];
       const landed=this.cocoaHit(x,y,rr,power,{push:ti?170:fin?340+rage*80:70,leech:true,bossMul:ti?1.4:1,tremor:ti?5+(basic.ranks.combo||0):0});   /* v7.6.5 Titan หมัดหนัก +40% ใส่บอส/มินิ */if(landed&&ti){this.bpFx?.('bpx_cocoa_shockwave',x,y,rr*2);this.bpFx?.('bpx_cocoa_crack',x,y,rr*1.6,{depth:5});this.screenShake?.(70,.0028);}if(landed&&fin){if(rage>0)this.titanRageImpact(x,y,rr,rage,basic);else{this.hitStop?.(40);this.screenShake?.(path==='titan'?150:110,path==='titan'?.007:.005);}}this.cocoaVisual(x,y,r,ti?'fist':'punch',path==='dashboxer'?0xc9a3ff:0xffb347);(ti&&Sfx.bp?.('cocoa_titan_slam',.52,.08))||Sfx.comboPunch(cc.n,fin?'heavy':'jab');
       if(!landed)return;cc.n=Math.min(40,cc.n+1);cc.t=0;cc.step=ti?0:(beat+1)%5;this.cocoaBeatCharge(.25);if(empowered)this._cocoaNextPunch=false;
       const live=()=>this._cc===cc&&(cc.gen||0)===gen;
@@ -13559,6 +13566,7 @@ class Game extends Phaser.Scene {
         if(evo)for(let i=0;i<2;i++)this.cocoaLater(.07+i*.09,()=>{if(!live())return;this.cocoaHit(p.x+Math.cos(ang)*reach*.6,p.y+Math.sin(ang)*reach*.6,reach*.65,unit*.55);this.cocoaVisual(p.x,p.y,reach*.65,'punch');});
       }
       if(ti?(basic.mutation==='breaker'||evo):fin&&basic.mutation==='breaker')this.cocoaLater(.28,()=>{if(!live())return;const mul=ti?(evo?.35:.25):.5;this.cocoaHit(x,y,r*1.15,power*mul,{push:180});this.cocoaVisual(x,y,r*1.15);});
+      if(ti&&basic.mutation==='rush')this.cocoaLater(.16,()=>{if(!live())return;this.cocoaHit(x,y,r*.85,power*.35,{push:120});this.cocoaVisual(x,y,r*.85,'wave',0xd59b65);});   /* v7.8.28 Rushdown บน Titan: ระลอก tremor ตาม (เดิมหมัดตามไม่ออกเพราะไม่มีหมัดที่ 5) */
       if(fin&&basic.mutation==='rush')for(let i=0;i<2;i++)this.cocoaLater(.08+i*.1,()=>{if(!live())return;this.cocoaHit(x,y,reach*.65,unit*.35);this.cocoaVisual(x,y,reach*.65,'punch');});
       if(empowered&&evo)this.cocoaLater(.14,()=>{if(!live())return;this.cocoaHit(x,y,r,power*.65);this.cocoaVisual(x,y,r,'shadow',0xc9a3ff);});
     });
@@ -13730,6 +13738,7 @@ class Game extends Phaser.Scene {
     if(!fin&&L.p_twin){this._ffN=(this._ffN||0)+1;if(this._ffN%(L.p_twin>=2?2:3)===0)n=2;}if(!fin&&n<2&&Math.random()<this.ptv('ffTwin'))n=2;const rng=1+this.ptv('ffRange');
     for(let i=0;i<n;i++){const a=ang+(i-(n-1)/2)*.22,b=this.getBullet(p.x+Math.cos(a)*24,p.y+Math.sin(a)*24,fin?0xff5a1f:0xff9a3c,fin?1.9:1.25);if(!b)continue;
       b.dmg=power*(n>1&&fin?.6:1);b.life=(fin?.9:.7)*rng;b.pierce=!!fin;b.explode=fin?Math.round(reach*.9*(1+(basic?._pm?.wave||1)*.12)*(1+.25*(L.p_shock||0)+this.ptv('ffBlast'))):0;b.knockback=fin?260:90;b.faceVel=true;
+      if(fin&&mut==='breaker'){b.dmg*=1.25;b.explode=Math.round(b.explode*1.25);}   /* v7.8.28 Earthbreaker บน Fire Fist: ลูกไฟ +25% และระเบิดกว้างขึ้น */
       if(fin&&mut==='napalm'){b.firePool=Math.round(b.explode*.8);b.firePoolT=2;}else if(!fin&&(L.p_ember||this.ptv('ffBurn'))){b.firePool=40;b.firePoolT=1.2;}
       if(!fin&&mut==='ricochet')b.bounce=2;
       if(this.textures?.exists?.('proj_rocket')){b.setTexture('proj_rocket').setTint(fin?0xff5a1f:0xffa040).setScale(fin?.95:.6);}

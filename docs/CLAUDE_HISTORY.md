@@ -1924,3 +1924,7 @@ Owner delivered 19 Sentry assets to assets/incoming/taro_sentry/. Packed by scri
 # Previous delivery: v7.8.21 — Taro Splitting Sparks
 
 Owner played Spark: wants longer, faster, piercing projectiles; nothing to bounce off, so sparks split by flight time instead. Life 2s (cap 3.5), speed 380 (cap 560), base pierce 2 (cap 5). Every 0.42s a Spark splits into 2 (gen 0→1→2, max 4 per original, 36 live cap), children ×0.55 power (Split Spark card ×0.75), smaller, inherit victims. On-hit split removed. Details in docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending (Sentry review also pending).
+
+# Previous delivery: v7.8.22 — Smaller faster-hitting Ball Lightning
+
+Owner Sentry feedback: orbs too big, hit more often. Orb radius ×0.6 (36→57, Beacon 46), per-victim hit gap 0.2s (TARO_ORB_HIT_GAP). Damage/Unique/pre-path Unique ideas proposed in chat, awaiting owner pick.
