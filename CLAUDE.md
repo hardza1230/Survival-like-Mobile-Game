@@ -121,6 +121,7 @@ Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightni
 
 
 ## 5. ถัดไป
+- **ออกแบบแล้ว รอเจ้าของเลือกลำดับ:** กลไกสนามบอสทุกตัว (15 story + Delve 2 + Pinnacle) + Counter Object ร่วม → `docs/BOSS_ARENA_MECHANICS.md`
 - รับ feedback หน้า Forge ใหม่: การอ่านม็อด, Track target/Auto-roll, Odds & tiers และ Advanced; การยุบ currency ต้องแยกเป็นงาน economy พร้อม migration
 - **เสร็จแล้ว:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A–F ตรวจสถานะแล้ว; คงส่วนที่ runtime ยังใช้) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
 - รอ feedback เจ้าของจากการเล่นจริง: Kitchen upkeep (v6.69), Story C2–C3 buff/Temple cost (v6.68), item mods (v6.67), Delve
