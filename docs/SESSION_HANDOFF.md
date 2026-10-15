@@ -7,7 +7,7 @@ Created all 16 PNG32 assets (A1–A5, B1–B6, C1–C5) under assets/incoming/ta
 
 Verification: 16/16 PNG RGBA dimension/grid/hash/alpha/black-corner/field-brightness checks passed; all source sheets and final contact sheet visually reviewed. Runtime packing, registration and integration remain for the game-side task; no runtime/game version/build output changed. Generated frame continuity/pivots, normal-blend conversion, mobile readability and FPS still need integration/owner review.
 
-Prepared for one art/docs-only commit on claude/vampire-survival-mobile-game-yo9e8w from parent1a3728043535ed7bdde77bb2143904a9e486797b. Verify remote ref and exact local/remote tree before publishing.
+Published art commit ab30c25b4ca63d7d5e074a313cbed72f2e52de67 on claude/vampire-survival-mobile-game-yo9e8w from parent1a3728043535ed7bdde77bb2143904a9e486797b. Exact remote/local tree6bd647da97b30ad86f78436ebc28a0e53040f63d verified before ref update; all20 incoming asset/metadata blobs verified afterward (16 PNGs). This checkpoint records successful storage delivery. Next: owner art review, then separately authorized runtime integration.
 
 ## Previous checkpoint (historical)
 
