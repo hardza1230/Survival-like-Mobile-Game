@@ -26,3 +26,12 @@ Static real Canvas visual gallery passed320x740,390x844,430x932, actual texture 
 ## Verified publication
 
 Runtime02432667de9863d7ad08aea3babd00dcac5a368a; exact tested/published tree ede68e7347d6e279fb05ef4fd2ff0db68370ed74. Pages38607096940 succeeded2026-10-15. Live version.json7.8.18, full source after removing only two build-injected asset manifests, and new Sentry SHA-256 b94cc0d07d24072edc8c34d3d0927ebd15ea6ad3a61406fb7b4c34074f6c2f84 match local. Owner phone review remains pending.
+
+## v7.8.19 Sentry rework (owner approved all proposals 2026-10-15)
+
+- Deploy: castTaroSentry places only when fewer than 2 regular nodes, or when the farthest node is more than TARO_SENTRY_LEASH (350px) from Taro (that node is replaced). Live nodes refresh pulse/damage/radius/range/overload/link from the current profile on every cast. Node lifetime is no longer cut by deploy cadence; rate cards/talents now read as pulse speed.
+- Orb cap TARO_ORB_CAP 16 (was 12). Orb visual outer ring = real hit radius.
+- Orbs (every 0.30s, hit radius) and Sparks (16px) call hitCratesInRadius.
+- Storm Beacon: on cast deals strike = (2.5+n)·dm·(1+0.22(n−1)) to every foe within TARO_BEACON_STRIKE_R (200px) as source 'beacon' (terminal), breaks crates, big strike visual + ring + shake. While a Beacon stands, regular nodes pulse TARO_OVERCHARGE (1.5×) faster.
+- Cards: p_gale (Quick Reposition) removed from the Sentry path list. New p_sentry_overload (max 2: regular sentry orbs burst on natural fade for 1.5×rank orb damage, radius ×1.4, once; never on epoch/run clear; Beacon orbs excluded) and p_sentry_link (max 2: two regular nodes within 420px link every 0.5s, foes within 26px(+size) of the segment take 0.8×rank orb damage). taroGaleCooldown still reads p_gale (now always 0 for Sentry).
+- Tests: tests/taro-swarm.test.cjs extended (leash/no churn/refresh, strike+overcharge, crates, Overload once-only, Tesla Link range/tick).

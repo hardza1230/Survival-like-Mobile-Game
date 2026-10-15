@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.18 — Taro Arc / Spark / Sentry
+# Latest delivery: v7.8.19 — Taro Sentry rework
+
+Owner approved every proposal in docs/art_orders/17_TARO_SENTRY_ART.md. Sentries place only when fewer than 2 or Taro is >350px from the farthest one (no more churn cutting lifetime); live nodes refresh card values; orb cap 16; orb visual = real hit radius; orbs and Sparks break crates. Storm Beacon strikes 200px around Taro on cast ((2.5+n)·dm·(1+.22(n−1)), source beacon) and overcharges regular pulses ×1.5 while standing. Quick Reposition (p_gale) replaced by Overload (p_sentry_overload) and Tesla Link (p_sentry_link). Details in docs/TARO_ARC_SPARK_SENTRY.md. taro-swarm test extended; full check/build passed. Art A/B/C pending; owner phone review pending.
+
+# Previous delivery: v7.8.18 — Taro Arc / Spark / Sentry
 
 Owner approved replacing Smite/Tempest with wandering Spark projectiles and temporary Ball Lightning sentries, plus all-build Storm Beacon Unique. Existing storm/smite/tempest IDs, original upgrade IDs/effects and Talent ranks/TP/costs stay compatible; labels and new run cards reflect the new mechanics. Arc/Rift Needle remain. Spark ricochets against solid props, can pierce and split once; cap10 per cast/36 live. Sentry cap2 + one independent Beacon, orbs cap12. Old charge/Dash-bomb/Rod hooks removed from live dispatch; legacy helpers retained dormant. New ImageGen transparent Sentry WebP, code-native sparks/orbs and reused T6 cues. Required check/build, static Canvas three sizes and Codex/Talent five sizes passed. See docs/TARO_ARC_SPARK_SENTRY.md; publication in SESSION_HANDOFF. Owner phone combat/balance/FPS review pending.
 
@@ -21,10 +25,6 @@ Selected Taro paths have short violet links, gold priority brackets/strike, open
 # Previous delivery: v7.8.14 — Taro T5 progression
 
 Selected-path upgrades/mutations/evolution and Weapon Codex share immutable descriptors. Talent labels identify basic range/cadence and survival scope; all saved IDs/effects/costs/capstone gates retained. Rare scalar run-upgrades now use authored rolled potency in path D/conditional fields and Gale Dash cooldown; count ranks remain integer. Codex has three path views and complete mobile descriptions. Full check/build passed; final menu/publication status in SESSION_HANDOFF. See docs/TARO_T5_PROGRESSION.md; next T6 art/sound and owner combat feedback.
-
-# Previous delivery: v7.8.13 — Taro T4 Smite
-
-Smite marks stable priority targets, strikes once and repeats once on surviving big targets after 0.22 active seconds. Arc/count investments become bounded terminal add splash/primary damage. Shared Unique prefers Rod/priority first target with existing formulas and escape rewards. Direct generation tickets isolate external procs and keep once-only rewards; selected Smite replaces legacy mob-charge Judgment. Chain/Tempest and saved progression preserved. Full check/build and real menu QA passed; release status in SESSION_HANDOFF. See docs/TARO_T4_SMITE.md; next T5 progression wording and owner combat feedback.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

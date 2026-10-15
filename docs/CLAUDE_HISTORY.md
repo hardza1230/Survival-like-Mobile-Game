@@ -1888,3 +1888,7 @@ Tempest now earns charge from intentional post-physics walking, adds 15 per acce
 # Previous delivery: v7.8.12 — Taro T3 Chain
 
 Chain now has bounded growing bounces and distinct victims shared across up to three roots. Direct Chain basic/Chain Bolt kills emit up to three terminal lightning shards, capped eight events per 0.25 active seconds. Direct entry tickets and pooled-victim revalidation prevent external procs stealing kill ownership or duplicate rewards. Shared Unique keeps its existing formula/escape effects. Tempest/Dash method bodies, saved progression and unrelated heroes preserved; Smite/pre-path remain legacy. Full check/build and real menu QA passed; owner tests combat. See docs/TARO_T3_CHAIN.md; next T4 Smite. Publication state is in SESSION_HANDOFF.
+
+# Previous delivery: v7.8.13 — Taro T4 Smite
+
+Smite marks stable priority targets, strikes once and repeats once on surviving big targets after 0.22 active seconds. Arc/count investments become bounded terminal add splash/primary damage. Shared Unique prefers Rod/priority first target with existing formulas and escape rewards. Direct generation tickets isolate external procs and keep once-only rewards; selected Smite replaces legacy mob-charge Judgment. Chain/Tempest and saved progression preserved. Full check/build and real menu QA passed; release status in SESSION_HANDOFF. See docs/TARO_T4_SMITE.md; next T5 progression wording and owner combat feedback.
