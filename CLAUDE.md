@@ -4,7 +4,7 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 # Latest delivery: v7.8.19 — Taro Sentry rework
 
-Owner approved every proposal in docs/art_orders/17_TARO_SENTRY_ART.md. Sentries place only when fewer than 2 or Taro is >350px from the farthest one (no more churn cutting lifetime); live nodes refresh card values; orb cap 16; orb visual = real hit radius; orbs and Sparks break crates. Storm Beacon strikes 200px around Taro on cast ((2.5+n)·dm·(1+.22(n−1)), source beacon) and overcharges regular pulses ×1.5 while standing. Quick Reposition (p_gale) replaced by Overload (p_sentry_overload) and Tesla Link (p_sentry_link). Details in docs/TARO_ARC_SPARK_SENTRY.md. taro-swarm test extended; full check/build passed. Art A/B/C pending; owner phone review pending.
+Owner approved every proposal in docs/art_orders/17_TARO_SENTRY_ART.md. Sentries place only when fewer than 2 or Taro is >350px from the farthest one (no more churn cutting lifetime); live nodes refresh card values; orb cap 16; orb visual = real hit radius; orbs and Sparks break crates. Storm Beacon strikes 200px around Taro on cast ((2.5+n)·dm·(1+.22(n−1)), source beacon) and overcharges regular pulses ×1.5 while standing. Quick Reposition (p_gale) replaced by Overload (p_sentry_overload) and Tesla Link (p_sentry_link). Details in docs/TARO_ARC_SPARK_SENTRY.md. taro-swarm test extended; full check/build passed. Art A/B/C generated: 19 PNGs and delivery metadata uploaded to assets/incoming/taro_sentry/. Owner explicitly requested storage only; runtime integration and phone review remain pending.
 
 # Previous delivery: v7.8.18 — Taro Arc / Spark / Sentry
 

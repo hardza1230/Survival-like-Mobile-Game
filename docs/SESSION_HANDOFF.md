@@ -1,6 +1,15 @@
 # Latest session checkpoint
 Updated 2026-10-15 Asia/Bangkok.
 
+## Taro Sentry art — uploaded, runtime integration explicitly deferred
+Owner requested uploading the generated art to GitHub only, without wiring it into the game. Added 19 PNG32 files under `assets/incoming/taro_sentry/` with `MANIFEST.json`, `PROMPTS.json` and `DELIVERY_README.md`. The manifest records exact grid/frame sizes and SHA-256 hashes. Actual alpha checked for turret/icon assets; black background retained for VFX.
+
+No runtime code, asset registration, sound, game version or build output changed. Generated animation continuity, pivot alignment, black-to-alpha conversion/rim matching, stretched Tesla Link endpoints and mobile readability/FPS remain pending. See DELIVERY_README.md. Do not integrate until separately requested.
+
+Checks: 19/19 local PNGs match the manifest names, dimensions and SHA-256; staged diff reviewed for art/docs-only scope. Next: owner review; runtime integration is not authorized by this upload request.
+
+## Previous runtime checkpoint (preserved)
+
 ## Taro Arc/Spark/Sentry + Storm Beacon — complete and live7.8.18
 Owner approved full proposal. Baseline fetched a5a7e83348122e99b8d50000fd3cfa2cc516e738, base tree2ae5183d23c8a8e0a0b49e1aa84fd3ba37249993. Sole branch claude/vampire-survival-mobile-game-yo9e8w. Checkout C:/Users/Norrasates/Documents/Codex/2026-10-13/new-chat-2/work/game.
 
