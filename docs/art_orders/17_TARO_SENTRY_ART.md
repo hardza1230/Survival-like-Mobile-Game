@@ -1,3 +1,5 @@
+> ✅ 15 ต.ค. 2026: ส่งครบ 19 ชิ้น (A1–A7, B1–B6, C1–C6) และผูกในเกมแล้วใน v7.8.20 · runtime อยู่ `assets/art/taro_sentry/` (ไอคอนอยู่ `assets/art/build_paths/taro_*.webp`) · แพ็กด้วย `scripts/pack-taro-sentry-art.py` · ต้นฉบับ PNG เก็บใน `assets/incoming/taro_sentry/` · เหลือเสียงใหม่ 4 เสียง + เจ้าของตรวจบนมือถือ
+
 # 17 — Taro Sentry Build (id `tempest`) · วิเคราะห์ build + ใบสั่งงานอาร์ต
 
 สถานะ: ร่าง 15 ต.ค. 2026 อิง runtime v7.8.18 · อ่าน `00_STYLE_GUIDE.md` ก่อน

@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.19 — Taro Sentry rework
+# Latest delivery: v7.8.20 — Taro Sentry art wired
+
+Owner delivered 19 Sentry assets to assets/incoming/taro_sentry/. Packed by scripts/pack-taro-sentry-art.py into assets/art/taro_sentry/ (bpx_taro_* ASSET_FX, Taro-only lazy class) + icons in assets/art/build_paths/taro_*.webp. Turret deploy→idle/fire/expire, Beacon tall idle + strike/ring + overcharge aura, Ball Lightning sized to hit radius, orb zap/launch, Overload burst, persistent Tesla beam, new path/card/Unique-button icons; all with code-drawn fallback. Helper taroArt(). Details in docs/TARO_ARC_SPARK_SENTRY.md. Check/build passed; static Chromium gallery only. Pending: 4 new Sentry sounds, owner phone review.
+
+# Previous delivery: v7.8.19 — Taro Sentry rework
 
 Owner approved every proposal in docs/art_orders/17_TARO_SENTRY_ART.md. Sentries place only when fewer than 2 or Taro is >350px from the farthest one (no more churn cutting lifetime); live nodes refresh card values; orb cap 16; orb visual = real hit radius; orbs and Sparks break crates. Storm Beacon strikes 200px around Taro on cast ((2.5+n)·dm·(1+.22(n−1)), source beacon) and overcharges regular pulses ×1.5 while standing. Quick Reposition (p_gale) replaced by Overload (p_sentry_overload) and Tesla Link (p_sentry_link). Details in docs/TARO_ARC_SPARK_SENTRY.md. taro-swarm test extended; full check/build passed. Art A/B/C generated: 19 PNGs and delivery metadata uploaded to assets/incoming/taro_sentry/. Owner explicitly requested storage only; runtime integration and phone review remain pending.
 
@@ -21,10 +25,6 @@ Owner phone test: Taro Unique "does nothing", rest looks like before. Root cause
 # Previous delivery: v7.8.15 — Taro T6 feedback
 
 Selected Taro paths have short violet links, gold priority brackets/strike, open cyan nova and violet diamond bomb burst. One new ImageGen painted bomb with actual alpha and attached fuse arc; five short deterministic jsfxr/MP3 cues. Charge HUD maintains screen size at camera zoom and signals READY once per transition. Transient FX capped at 20 plus three fixed pending bombs; active-time fade/fuse, pause visibility and epoch cleanup. Target/damage/progression resolvers retained except two sound dispatches; other heroes/pre-path untouched. Required check/build and Canvas presentation/hero checks recorded in SESSION_HANDOFF. See docs/TARO_T6_FEEDBACK.md. Next T7 owner phone combat review and final tuning; #25 deferred.
-
-# Previous delivery: v7.8.14 — Taro T5 progression
-
-Selected-path upgrades/mutations/evolution and Weapon Codex share immutable descriptors. Talent labels identify basic range/cadence and survival scope; all saved IDs/effects/costs/capstone gates retained. Rare scalar run-upgrades now use authored rolled potency in path D/conditional fields and Gale Dash cooldown; count ranks remain integer. Codex has three path views and complete mobile descriptions. Full check/build passed; final menu/publication status in SESSION_HANDOFF. See docs/TARO_T5_PROGRESSION.md; next T6 art/sound and owner combat feedback.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

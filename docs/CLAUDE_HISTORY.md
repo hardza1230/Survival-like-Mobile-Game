@@ -1892,3 +1892,7 @@ Chain now has bounded growing bounces and distinct victims shared across up to t
 # Previous delivery: v7.8.13 — Taro T4 Smite
 
 Smite marks stable priority targets, strikes once and repeats once on surviving big targets after 0.22 active seconds. Arc/count investments become bounded terminal add splash/primary damage. Shared Unique prefers Rod/priority first target with existing formulas and escape rewards. Direct generation tickets isolate external procs and keep once-only rewards; selected Smite replaces legacy mob-charge Judgment. Chain/Tempest and saved progression preserved. Full check/build and real menu QA passed; release status in SESSION_HANDOFF. See docs/TARO_T4_SMITE.md; next T5 progression wording and owner combat feedback.
+
+# Previous delivery: v7.8.14 — Taro T5 progression
+
+Selected-path upgrades/mutations/evolution and Weapon Codex share immutable descriptors. Talent labels identify basic range/cadence and survival scope; all saved IDs/effects/costs/capstone gates retained. Rare scalar run-upgrades now use authored rolled potency in path D/conditional fields and Gale Dash cooldown; count ranks remain integer. Codex has three path views and complete mobile descriptions. Full check/build passed; final menu/publication status in SESSION_HANDOFF. See docs/TARO_T5_PROGRESSION.md; next T6 art/sound and owner combat feedback.

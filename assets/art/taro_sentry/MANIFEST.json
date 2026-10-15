@@ -1,0 +1,192 @@
+[
+ {
+  "key": "ic_path_tempest_sentry",
+  "file": "assets/art/build_paths/taro_sentry_path.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 1,
+  "source_sha256": "d5a32d7206bed00d8a6e25e980b04eabb882e18a278e8e69b4e2b12062d0d596"
+ },
+ {
+  "key": "ic_taro_long_current",
+  "file": "assets/art/build_paths/taro_long_current.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 1,
+  "source_sha256": "62af4f9b071bfb96c6e5f6723becdeba62e336d073ead1c24a5cbf7963209e44"
+ },
+ {
+  "key": "ic_taro_rapid_pulse",
+  "file": "assets/art/build_paths/taro_rapid_pulse.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 1,
+  "source_sha256": "c6a51a1ffa21707df435dd763516850e975ecfd7eaef7e5812098d874356d083"
+ },
+ {
+  "key": "ic_taro_reserve_cell",
+  "file": "assets/art/build_paths/taro_reserve_cell.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 1,
+  "source_sha256": "5ce0decba8c95a703f5cf2a2e2393e8ea4df53fda014b554e51ecd048d49e602"
+ },
+ {
+  "key": "ic_taro_storm_beacon",
+  "file": "assets/art/build_paths/taro_storm_beacon.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 1,
+  "source_sha256": "06b1e3e49193d9205f9484ef0f832b78bb7c40130fa3ce3dbefe90982965ff37"
+ },
+ {
+  "key": "ic_taro_wide_conductor",
+  "file": "assets/art/build_paths/taro_wide_conductor.webp",
+  "width": 128,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 1,
+  "source_sha256": "6f2c589317f1901020695cefe90587f5126fc3d8d2f676366908f19b44d4b1a9"
+ },
+ {
+  "key": "taro_beacon_idle_sheet",
+  "file": "assets/art/taro_sentry/taro_beacon_idle_sheet.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "ed74ef19313c01ecced915881c9a8c9c19d7f363af05239ec6a5c86e99af2f36"
+ },
+ {
+  "key": "taro_sentry_deploy_sheet",
+  "file": "assets/art/taro_sentry/taro_sentry_deploy_sheet.webp",
+  "width": 384,
+  "height": 256,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 6,
+  "source_sha256": "360ee107c2a68fe0b74044cd41e77f311960fd3fb567de5cf070ab746f1bd486"
+ },
+ {
+  "key": "taro_sentry_expire_sheet",
+  "file": "assets/art/taro_sentry/taro_sentry_expire_sheet.webp",
+  "width": 384,
+  "height": 256,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 6,
+  "source_sha256": "cd0c34c2a2a43929c19bcac6aa850c9a1568c62d8ea8c65373acea4d7bffaf6a"
+ },
+ {
+  "key": "taro_sentry_fire_sheet",
+  "file": "assets/art/taro_sentry/taro_sentry_fire_sheet.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "c06c1a07bf9804c18e470348cba96a30207d72bea717940511a685801471c71e"
+ },
+ {
+  "key": "taro_sentry_idle_sheet",
+  "file": "assets/art/taro_sentry/taro_sentry_idle_sheet.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "6d316059fe853538a3da08e5db6021978d26b72f9dc8f9c873853e3d2aee1f23"
+ },
+ {
+  "key": "vfx_taro_ball_lightning",
+  "file": "assets/art/taro_sentry/vfx_taro_ball_lightning.webp",
+  "width": 768,
+  "height": 512,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 6,
+  "source_sha256": "97eee8333409e58e151341b828d39ea554003a7417a9361a28cebcb526b0c55c"
+ },
+ {
+  "key": "vfx_taro_beacon_ring",
+  "file": "assets/art/taro_sentry/vfx_taro_beacon_ring.webp",
+  "width": 768,
+  "height": 512,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 6,
+  "source_sha256": "9072b2d8fef75def0adeb1bcf788a04946c261f7a52bc8ad9c27838e1a22ad99"
+ },
+ {
+  "key": "vfx_taro_beacon_strike",
+  "file": "assets/art/taro_sentry/vfx_taro_beacon_strike.webp",
+  "width": 512,
+  "height": 512,
+  "frameWidth": 128,
+  "frameHeight": 256,
+  "frames": 8,
+  "source_sha256": "271e1f72ca53a6537efd94006f724d0ccf2541b5f13b6cab4a719ab21b02e1a9"
+ },
+ {
+  "key": "vfx_taro_orb_burst",
+  "file": "assets/art/taro_sentry/vfx_taro_orb_burst.webp",
+  "width": 768,
+  "height": 512,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 6,
+  "source_sha256": "172079c7ebae4cbeae673c56cfe3aaf4c742aebbe5d37a24a6536b02670f7de8"
+ },
+ {
+  "key": "vfx_taro_orb_launch",
+  "file": "assets/art/taro_sentry/vfx_taro_orb_launch.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "c4221a44721224ab1523144817aecec15284a7c6c7d785ffcac3264d5d50a94f"
+ },
+ {
+  "key": "vfx_taro_orb_zap",
+  "file": "assets/art/taro_sentry/vfx_taro_orb_zap.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "e7b3f428ad2faa0008dd47b73a1574b989e3bfe5e6b924e9ddf2447b80a4df26"
+ },
+ {
+  "key": "vfx_taro_overcharge_aura",
+  "file": "assets/art/taro_sentry/vfx_taro_overcharge_aura.webp",
+  "width": 512,
+  "height": 128,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "frames": 4,
+  "source_sha256": "3be72e2824b68bb45cddaa54f4b5cb851b2df574e1bd1cb547861ff54e2bde80"
+ },
+ {
+  "key": "vfx_taro_tesla_link",
+  "file": "assets/art/taro_sentry/vfx_taro_tesla_link.webp",
+  "width": 512,
+  "height": 256,
+  "frameWidth": 512,
+  "frameHeight": 64,
+  "frames": 4,
+  "source_sha256": "611d6a8d9b7387e8d398b96fd7ba252be851da4daed7f4f6d13361da5ab24222"
+ }
+]
