@@ -218,3 +218,5 @@ Prompt (ต่อหัวร่วมเดิม):
 สร้างและเก็บครบ **14 ไฟล์**: E1–E3, F1–F2, G1–G2, H1–H2 และ I1–I5 ที่ `assets/incoming/taro_unique_needle/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` และ `DELIVERY_README.md` · **ยังไม่ผูกกับเกมตามคำสั่งเจ้าของ** · A/B/C ที่ผูกแล้วคงเดิม; D1–D3/H3 ที่ยกเลิกไม่สร้าง
 
 ตรวจขนาด/เฟรม/PNG32, alpha ไอคอน, พื้นดำ VFX, Shock1–5 ขีด และตำแหน่งปลาย Arc แล้ว · จังหวะภาพ การแปลง alpha/ระยะชน Plasma และมือถือ visual/FPS ยังรอตรวจตอนผูก
+
+> ✅ ชุด E/F/G/H/I ผูกในเกมแล้ว v7.8.30 (`assets/art/taro_unique/`, ไอคอน `assets/art/build_paths/taro_{plasma_field,overcharge,arc_overload}.webp`, สคริปต์ `scripts/pack-taro-unique-art.py`) · เหลือเจ้าของตรวจภาพ/FPS บนมือถือ

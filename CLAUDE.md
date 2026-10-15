@@ -2,15 +2,15 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Art delivery 18 extensions — Plasma, Shock and Static Arc
-
-14 PNG32 assets (E1–E3, F1–F2, G1–G2, H1–H2, I1–I5) stored in assets/incoming/taro_unique_needle/ with manifest, final prompts, QA and delivery notes. A/B/C retained; cancelled needle D1–D3/H3 omitted. Exact grids/alpha/black backgrounds checked, Shock1–5 counts and Arc endpoints verified. Storage only: no runtime wiring, game version or build output changed. Owner phone review and separately requested integration remain pending.
-
 # Art delivery 18 — Taro Spark + Ball Lightning
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.29 — C2-4 Season Storm softlock fix + art order 19
+# Latest delivery: v7.8.30 — Taro Plasma, Arc and Shock art wired
+
+Order 18 E–I (14 files in incoming/taro_unique_needle) packed by scripts/pack-taro-unique-art.py → assets/art/taro_unique/*.webp + Unique icons assets/art/build_paths/taro_{plasma_field,overcharge,arc_overload}.webp. Plasma ring sprite (bpx_taro_plasma_ring, sized r×2/0.92) replaces the drawn ring, plus cast/hit FX; Overcharge plays sentry_overload per node then sentry_detonate; Shock marker shows stacks 1–5 above foes (aura at 5, cap 40, taroTickShockMarks); Static Arc/Arc chains use arc_bolt/arc_hit, loop jumps arc_loop/arc_overload_hit (taroArcBolt, chainBolt fallback). Unique button icon follows build (syncUniqueIcon). New taroFx helper works pre-path (cap 28). castTaroChainBasic hash fixtures updated. Check passed; owner phone visual/FPS review pending.
+
+# Previous delivery: v7.8.29 — C2-4 Season Storm softlock fix + art order 19
 
 Owner: C2-4 sometimes stuck (screenshot: Season Storm 🌸 unpassed, ☀🍂❄ ✓, rest, Reserves 0). Cause: Spring trial needs 10 kills (stormRule) but story budget reserves were exhausted → no enemies → trial never passes → objective never completes. Fix in tickSeasonObjective idx 0: while in wave mode, every 1.2s top up to min(6, 10−kills) live non-boss foes via spawnEnemy('basic'). Art order docs/art_orders/19_C24_FOUR_SEASON_ART.md (season trials A1–A11 incl. Bloom Sprout enemy, Chronobloom boss attacks B1–B8) → incoming/c24_seasons_vfx. Boss-variety ideas given in chat, awaiting owner pick.
 
@@ -29,10 +29,6 @@ Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it 
 # Previous delivery: v7.8.25 — Taro Uniques per build, Shock, spike needles, Spark/Ball art
 
 Owner picked 1 + A: Sentry Shock stacks (+5%/stack, max 5, 3s) and Overcharge Detonation Unique; pre-path Unique = Plasma Field (Razor-style ring out/back); Rift Needle is a piercing spike projectile. Arc/Spark keep Storm Beacon. Owner's 16 Spark/Ball art files wired (assets/art/taro_spark_ball). Art order additions D–H (needle, plasma, detonation, shock marker, Unique icons) in 18_TARO_SPARK_BALL_LIGHTNING_ART.md → incoming/taro_unique_needle. Details docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending.
-
-# Previous delivery: v7.8.24 — PoE Ball Lightning, Spark power, lightning swing
-
-Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightning: slow (110), zap up to 6 foes within 85–120px every 0.15s (taroOrbZap), unitD×0.30 per zap. Spark ×0.60 (was 0.36). taroLightningRoll 0.2–1.8 on Spark/Sentry/Beacon hits (applied at call sites; taroDealDamage hash-locked). Art order 18_TARO_SPARK_BALL_LIGHTNING_ART.md (incoming folder taro_spark_ball). Pending owner pick: Sentry damage mechanic, Sentry Unique, pre-path Unique.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

@@ -75,3 +75,10 @@ Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (2
 - Arc Build Unique = Plasma Field (arc variant): each ring hit fires one Arc jump (50% of the ring hit) to the nearest other foe; with none it loops twice at 0.6 into the same foe (taroPlasmaArc).
 - Bug: Unique damage used tiny dm multipliers. Plasma min/max (6+3n)/(18+8n)·dm·(1+.22(n−1)); Storm Beacon strike (8+4n)·dm; Overcharge boom (10+5n)·dm.
 - Spark: +1 base count (count+3), speed 460 (cap 640).
+
+## v7.8.30 Plasma, Arc and Shock art (order 18 E–I)
+- Plasma Field: persistent `bpx_taro_plasma_ring` sprite sized `r×2/0.92` each tick; `plasma_cast` on cast, `plasma_hit` per ring hit (visual budget).
+- Overcharge Detonation: `sentry_overload` on every node, then `sentry_detonate` (fallback `orb_burst` → ring).
+- Shock: `taroShockMark` shows `shock_marker` frame = stacks−1 above the foe, `shock_aura` loop at 5 stacks; cap 40, refreshed/removed in `taroTickShockMarks`.
+- Static Arc / Arc chains: `taroArcBolt` stretches `arc_bolt` (normal jump) or `arc_loop` (Overload Loop) + `arc_hit` / `arc_overload_hit`; falls back to `chainBolt`.
+- Unique icon per build: Plasma Field (pre-path/Arc), Overcharge (Sentry), Storm Beacon (Spark). Card icon `ic_taro_arc_overload`.

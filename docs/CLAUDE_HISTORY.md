@@ -1932,3 +1932,11 @@ Owner Sentry feedback: orbs too big, hit more often. Orb radius ×0.6 (36→57, 
 # Previous delivery: v7.8.23 — Bouncing Sparks
 
 Owner: Sparks burst out all around Taro (even 360° spread), bounce off the visible screen edge (taroBounceView on camera worldView), last 3.5s (Live Current cap 5s); travel-range cutoff only for orbs. Fission from v7.8.21 kept.
+
+# Previous delivery: v7.8.24 — PoE Ball Lightning, Spark power, lightning swing
+
+Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightning: slow (110), zap up to 6 foes within 85–120px every 0.15s (taroOrbZap), unitD×0.30 per zap. Spark ×0.60 (was 0.36). taroLightningRoll 0.2–1.8 on Spark/Sentry/Beacon hits (applied at call sites; taroDealDamage hash-locked). Art order 18_TARO_SPARK_BALL_LIGHTNING_ART.md (incoming folder taro_spark_ball). Pending owner pick: Sentry damage mechanic, Sentry Unique, pre-path Unique.
+
+# Art delivery 18 extensions — Plasma, Shock and Static Arc
+
+14 PNG32 assets (E1–E3, F1–F2, G1–G2, H1–H2, I1–I5) stored in assets/incoming/taro_unique_needle/ with manifest, final prompts, QA and delivery notes. A/B/C retained; cancelled needle D1–D3/H3 omitted. Exact grids/alpha/black backgrounds checked, Shock1–5 counts and Arc endpoints verified. Storage only: no runtime wiring, game version or build output changed. Owner phone review and separately requested integration remain pending.

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.29';
+const GAME_VERSION = '7.8.30';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.30',date:'2026-10-16',title:'Taro: Plasma, Arc and Shock art',items:['Painted Plasma Field ring, cast and hit effects','Painted Static Arc bolts and hits; Overload Loop bounces show a thick golden bolt and a big impact','Overcharge Detonation shows each sentry overloading and a ground shockwave','Shock stacks show a 1–5 bolt counter over enemies and a spark aura at full stacks','New Unique button icons for Plasma Field and Overcharge Detonation, and a card icon for Overload']},
   {v:'7.8.29',date:'2026-10-16',title:'C2-4 Season Storm fix',items:['Fixed C2-4 sometimes getting stuck: the Spring trial needs 10 kills, but once the wave’s reserves ran out no enemies were left to kill. Spring now grows its own Bloom Sprouts until the trial can be finished']},
   {v:'7.8.28',date:'2026-10-16',title:'Starter cards never go to waste',items:['Build Path cards now list how the starter cards you already took carry over to that build','Chocolate Earthbreaker now really adds +25% finisher damage, and on Fire Fist boosts the big fireball and its blast','Chocolate Rushdown on Titan adds a tremor wave to every pound (its follow-up punches had no finisher to trigger)','Taro Chainlord and Evolution now really add Static Arc jumps','Card text fixes: Fireball Barrage, Mochi Reach on Fire Fist, Mint Shard Bloom on Crystal Impaler, Strawberry Rate and Petal Spread on Shotgun']},
   {v:'7.8.27',date:'2026-10-15',title:'Taro: Static Arc and Overload Loop',items:['Before choosing a build Taro casts Static Arc: a small chain that jumps 3 times','Arc chains with no new target loop their remaining jumps back into the last enemy, so lone bosses take every jump','New Arc Build card Overload: +15% loop damage per rank','Arc Build Unique is now Plasma Field: every enemy the ring touches fires an Arc jump','Plasma Field, Storm Beacon strike and Overcharge Detonation hit about 3 times harder (they were far too weak)','Sparks start with 1 more spark and fly faster (460)']},
@@ -2025,7 +2026,7 @@ const ASSET_IMAGES = {
   ic_taro_spark:'assets/icons/levelup/taro_arc.png',
   fx_taro_sentry:'assets/art/taro_swarm/sentry.webp',
   ic_path_tempest_sentry:'assets/art/build_paths/taro_sentry_path.webp',ic_taro_reserve_cell:'assets/art/build_paths/taro_reserve_cell.webp',ic_taro_wide_conductor:'assets/art/build_paths/taro_wide_conductor.webp',
-  ic_taro_rapid_pulse:'assets/art/build_paths/taro_rapid_pulse.webp',ic_path_smite_spark:'assets/art/build_paths/taro_spark_path.webp',ic_taro_live_current:'assets/art/build_paths/taro_live_current.webp',ic_taro_fast_sparks:'assets/art/build_paths/taro_fast_sparks.webp',ic_taro_split_spark:'assets/art/build_paths/taro_split_spark.webp',ic_taro_piercing_current:'assets/art/build_paths/taro_piercing_current.webp',ic_taro_long_current:'assets/art/build_paths/taro_long_current.webp',ic_taro_storm_beacon:'assets/art/build_paths/taro_storm_beacon.webp',
+  ic_taro_rapid_pulse:'assets/art/build_paths/taro_rapid_pulse.webp',ic_path_smite_spark:'assets/art/build_paths/taro_spark_path.webp',ic_taro_plasma_field:'assets/art/build_paths/taro_plasma_field.webp',ic_taro_overcharge:'assets/art/build_paths/taro_overcharge.webp',ic_taro_arc_overload:'assets/art/build_paths/taro_arc_overload.webp',ic_taro_live_current:'assets/art/build_paths/taro_live_current.webp',ic_taro_fast_sparks:'assets/art/build_paths/taro_fast_sparks.webp',ic_taro_split_spark:'assets/art/build_paths/taro_split_spark.webp',ic_taro_piercing_current:'assets/art/build_paths/taro_piercing_current.webp',ic_taro_long_current:'assets/art/build_paths/taro_long_current.webp',ic_taro_storm_beacon:'assets/art/build_paths/taro_storm_beacon.webp',
   fx_taro_dash_bomb:'assets/art/taro_t6/dash_bomb.webp',
   ic_taro_power:'assets/icons/levelup/taro_power.png', ic_taro_rate:'assets/icons/levelup/taro_rate.png',
   ic_taro_arc:'assets/icons/levelup/taro_arc.png', ic_taro_surge:'assets/icons/levelup/taro_surge.png',
@@ -2245,6 +2246,18 @@ const ASSET_FX = {
   // v6.60.3 Build path art (assets/art/bp_fx · scripts/pack-build-path-art.py): luminance-alpha, NORMAL blend
   // v7.8.20 Taro Sentry art (assets/art/taro_sentry · scripts/pack-taro-sentry-art.py): turrets alpha 128px cells, VFX luminance-alpha, NORMAL blend
   // v7.8.25 Taro Spark + Ball Lightning art (assets/art/taro_spark_ball · scripts/pack-taro-spark-ball-art.py)
+  // v7.8.30 Taro Unique/Static Arc art (assets/art/taro_unique · scripts/pack-taro-unique-art.py)
+  bpx_taro_plasma_ring:{url:'assets/art/taro_unique/vfx_taro_plasma_ring.webp',fw:384,fh:384,frames:4,rate:12,anchor:'center',loop:true},
+  bpx_taro_plasma_cast:{url:'assets/art/taro_unique/vfx_taro_plasma_cast.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center'},
+  bpx_taro_plasma_hit:{url:'assets/art/taro_unique/vfx_taro_plasma_hit.webp',fw:128,fh:128,frames:4,rate:22,anchor:'center'},
+  bpx_taro_sentry_overload:{url:'assets/art/taro_unique/vfx_taro_sentry_overload.webp',fw:256,fh:256,frames:8,rate:20,anchor:'center'},
+  bpx_taro_sentry_detonate:{url:'assets/art/taro_unique/vfx_taro_sentry_detonate.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center'},
+  bpx_taro_shock_marker:{url:'assets/art/taro_unique/vfx_taro_shock_marker.webp',fw:64,fh:64,frames:5,rate:1,anchor:'center'},
+  bpx_taro_shock_aura:{url:'assets/art/taro_unique/vfx_taro_shock_aura.webp',fw:128,fh:128,frames:4,rate:10,anchor:'center',loop:true},
+  bpx_taro_arc_bolt:{url:'assets/art/taro_unique/vfx_taro_arc_bolt.webp',fw:512,fh:64,frames:4,rate:24,anchor:'left',loop:true},
+  bpx_taro_arc_hit:{url:'assets/art/taro_unique/vfx_taro_arc_hit.webp',fw:128,fh:128,frames:4,rate:22,anchor:'center'},
+  bpx_taro_arc_loop:{url:'assets/art/taro_unique/vfx_taro_arc_loop.webp',fw:512,fh:96,frames:4,rate:24,anchor:'left',loop:true},
+  bpx_taro_arc_overload_hit:{url:'assets/art/taro_unique/vfx_taro_arc_overload_hit.webp',fw:256,fh:256,frames:6,rate:20,anchor:'center'},
   bpx_taro_spark:{url:'assets/art/taro_spark_ball/vfx_taro_spark.webp',fw:128,fh:128,frames:4,rate:14,anchor:'center',loop:true},
   bpx_taro_spark_split:{url:'assets/art/taro_spark_ball/vfx_taro_spark_split.webp',fw:128,fh:128,frames:4,rate:26,anchor:'center'},
   bpx_taro_spark_bounce:{url:'assets/art/taro_spark_ball/vfx_taro_spark_bounce.webp',fw:128,fh:128,frames:4,rate:24,anchor:'center'},
@@ -3436,7 +3449,7 @@ const BASIC_PATHS={
     {id:'storm',iconKey:'ic_path_storm',name:'Arc Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Arc jumps from Taro through nearby enemies; grows per jump. With no new target, remaining jumps loop back into the last one, so bosses take every jump. Direct kills release shards.',
       upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Forked Arc',emoji:'⚡',max:2,fx:{count:1},headline:'+1 Arc stream',desc:'+1 Arc stream from Taro; max 3. Streams share targets; excess boosts damage.'},
                 {id:'p_static',iconKey:'ic_path_p_static',name:'Arc Power',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc power',desc:'+8% Arc and shard damage per rank; Unique keeps its own power.'},
-                {id:'p_arc_overload',iconKey:'ic_taro_surge',name:'Overload',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new targets, its remaining jumps loop back into the last target. +15% loop damage per rank (base 60%).'}]},
+                {id:'p_arc_overload',iconKey:'ic_taro_arc_overload',name:'Overload',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new targets, its remaining jumps loop back into the last target. +15% loop damage per rank (base 60%).'}]},
     {id:'smite',iconKey:'ic_path_smite_spark',name:'Spark Build',emoji:'✨',base:{dmg:1.8,cd:1.35},headline:'Release splitting sparks',desc:'Sparks burst out all around Taro, bounce off the screen edges, pierce enemies and split into smaller sparks. Near a boss they curve in and keep zapping it.',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Charged Sparks',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% Spark damage to elites and bosses per rank'},
                 {id:'p_overload',iconKey:'ic_path_p_overload',name:'Spark Power',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% Spark power per rank'},
@@ -7229,8 +7242,8 @@ class Game extends Phaser.Scene {
       g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false); g.strokePath();
     } else { g.lineStyle(2,0xbff3e8,0.35); g.strokeCircle(b.x,b.y,b.radius+4); }
   }
-  syncUniqueIcon(){const tx=this.uniqueTxt;if(!tx)return;const want=this.character==='taro'&&['smite'].includes(this.basicAttack?.path)&&this.textures?.exists?.('ic_taro_storm_beacon');   /* v7.8.20 Storm Beacon ใช้ไอคอนวาดแทนอีโมจิ */
-    if(want&&!this.uniqueImg?.active)this.uniqueImg=this.camUI(this.add.image(tx.x,tx.y,'ic_taro_storm_beacon').setScrollFactor(1).setDepth(51));
+  syncUniqueIcon(){const tx=this.uniqueTxt;if(!tx)return;const tp=this.basicAttack?.path,ik=this.character!=='taro'?null:tp==='smite'?'ic_taro_storm_beacon':tp==='tempest'?'ic_taro_overcharge':'ic_taro_plasma_field',want=!!ik&&this.textures?.exists?.(ik);   /* v7.8.30 ไอคอน Unique ตาม Build */
+    if(want&&!this.uniqueImg?.active)this.uniqueImg=this.camUI(this.add.image(tx.x,tx.y,ik).setScrollFactor(1).setDepth(51));if(want&&this.uniqueImg?.active&&this.uniqueImg.texture.key!==ik)this.uniqueImg.setTexture(ik);
     if(this.uniqueImg?.active){this.uniqueImg.setVisible(!!want&&tx.visible).setPosition(tx.x,tx.y+6*tx.scaleY).setDisplaySize(52*tx.scaleX,52*tx.scaleY);}tx.setAlpha(want&&this.uniqueImg?.active?0:1);}
   drawUniqueRing(){
     const g=this.uniqueRing,b=this.uniqueBtn;this.syncUniqueIcon?.();if(!g||!b)return;g.clear();if(!b.visible)return;const u=this.uniqueInfo();this.updateUniqueHint();this.refreshFlickerUI();
@@ -12313,6 +12326,9 @@ class Game extends Phaser.Scene {
   }
   taroRemoveNode(node,fade=false){const t=this._taro;if(!t)return;if(fade&&t.enabled&&this.state==='play')this.taroArt?.(node.beacon?'bpx_taro_orb_burst':'bpx_taro_sentry_expire',node.x,node.y-(node.beacon?24:14),node.beacon?100:58,{life:.45});this.taroRemoveFx(node.fx);t.nodes=(t.nodes||[]).filter(n=>n!==node);}
   // v7.8.20 Taro art sprite: anim from ASSET_FX, display size in px, tracked by Taro's own FX set (life 0 = persistent, owner removes)
+  /* v7.8.30 sprite FX ที่ไม่ต้องพึ่งสถานะ Taro (ใช้ก่อนเลือก Build ได้) · เพดาน 28 ชิ้น · จางเองแล้วลบ */
+  taroFx(key,x,y,w,o={}){if(!this.bpAnim?.(key)||(this._taroFxLive||0)>=28||!this.add)return null;const fd=ASSET_FX[key],s=this.camWorld(this.add.sprite(x,y,key,0)).setDepth(o.depth??90400);s.setOrigin(fd.anchor==='left'?0:.5,fd.anchor==='bottom'?1:.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);if(o.rot!=null)s.setRotation(o.rot);if(o.tint)s.setTint(o.tint);s.play(key);this._taroFxLive=(this._taroFxLive||0)+1;const life=o.life||.25;this.tweens.add({targets:s,alpha:0,delay:life*600,duration:life*400,onComplete:()=>{this._taroFxLive=Math.max(0,(this._taroFxLive||1)-1);s.destroy();}});return s;}
+  taroArcBolt(x1,y1,x2,y2,loop=false){const d=Math.hypot(x2-x1,y2-y1);if(d<4||!this.taroFx(loop?'bpx_taro_arc_loop':'bpx_taro_arc_bolt',x1,y1,d,{h:loop?40:26,rot:Math.atan2(y2-y1,x2-x1),life:.22}))return this.chainBolt?.(x1,y1,x2,y2);this.taroFx(loop?'bpx_taro_arc_overload_hit':'bpx_taro_arc_hit',x2,y2,loop?90:44,{life:.25});}
   taroArt(key,x,y,w,o={}){const t=this._taro;if(!t?.enabled||!this.bpAnim?.(key))return null;if(o.life>0&&!this.taroVisualBudget(true))return null;const fd=ASSET_FX[key],s=this.camWorld(this.add.sprite(x,y,key,0)).setDepth(o.depth??90400);
     s.setOrigin(fd.anchor==='left'?0:.5,fd.anchor==='bottom'?1:.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);if(o.tint)s.setTint(o.tint);if(o.rot!=null)s.setRotation(o.rot);if(o.alpha!=null)s.setAlpha(o.alpha);s.play(key);if(o.then&&this.bpAnim(o.then))s.chain(o.then);return o.track===false?s:this.taroTrackVisual(s,o.life||0);}
   taroNodeVisual(node){const t=this._taro;if(!t?.enabled)return null;const c=this.camWorld(this.add.container(node.x,node.y).setDepth(89990)),ring=this.add.circle(0,0,28,0x241c38,.12).setStrokeStyle(2,node.beacon?0xffda89:0xc6a2ed,.9),anim=this.bpAnim?.(node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy'),art=anim?this.add.sprite(0,node.beacon?-24:-14,node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy',0).setDisplaySize(node.beacon?80:58,node.beacon?80:58):this.textures.exists('fx_taro_sentry')?this.add.image(0,-14,'fx_taro_sentry').setDisplaySize(58,58):this.add.circle(0,-14,16,0xa98cf0,.9),bar=this.add.rectangle(-22,29,44,3,node.beacon?0xffda89:0xbba0ed).setOrigin(0,.5);c.add([ring,art,bar]);c._bar=bar;if(anim){c._art=art;art.play(node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy');if(!node.beacon&&this.bpAnim('bpx_taro_sentry_idle'))art.chain('bpx_taro_sentry_idle');}c._taroDuration=node.life;this.taroTrackVisual(c,0);return c;}
@@ -12328,7 +12344,7 @@ class Game extends Phaser.Scene {
     return true;
   }
   tickTaroDeployables(dt){const t=this._taro;if(!t?.enabled||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;t.nodes=t.nodes||[];t.projectiles=t.projectiles||[];
-    this.taroTickPlasma?.(dt);if(this._taro!==t||this.state!=='play')return;
+    this.taroTickPlasma?.(dt);this.taroTickShockMarks?.();if(this._taro!==t||this.state!=='play')return;
     const over=t.time<(t.overUntil||0)||t.nodes.some(n=>n.beacon&&n.run===t.run&&n.pathEpoch===t.pathEpoch);
     for(const n of [...t.nodes]){if(this._taro!==t||this.state!=='play')return;if(n.run!==t.run||n.pathEpoch!==t.pathEpoch){this.taroRemoveNode(n);continue;}n.left-=dt;n.next-=dt*(over&&!n.beacon?TARO_OVERCHARGE:1);if(!n.beacon&&n.fx?.active){if(over&&!n.fx._aura?.active&&this.bpAnim?.('bpx_taro_overcharge')){const au=this.add.sprite(0,-14,'bpx_taro_overcharge',0).setDisplaySize(84,84);au.play('bpx_taro_overcharge');n.fx.addAt?.(au,1);n.fx._aura=au;}n.fx._aura?.setVisible?.(over);}if(n.left<=0){this.taroRemoveNode(n,true);continue;}if(n.fx?._bar)n.fx._bar.width=44*Math.max(0,n.left/n.life);if(n.next<=0){n.next=n.interval;const target=this.taroNearestUnused(this.taroCandidates(n,n.range),n,n.range,new Set());if(target&&n.fx?._art?.active&&!n.beacon&&this.anims?.exists?.('bpx_taro_sentry_fire')){n.fx._art.play('bpx_taro_sentry_fire');if(this.anims.exists('bpx_taro_sentry_idle'))n.fx._art.chain('bpx_taro_sentry_idle');}if(target)this.taroArt?.('bpx_taro_orb_launch',n.x,n.y-(n.beacon?40:24),56,{life:.2});if(target)this.taroSpawnProjectile({kind:n.beacon?'beacon':'sentry',x:n.x,y:n.y,angle:Math.atan2(target.enemy.y-n.y,target.enemy.x-n.x),speed:n.speed,life:n.orbLife,damage:n.damage,radius:n.orbRadius,range:n.range,attackId:++t.attackSeq});}}
     this.taroTeslaLink?.(dt);
@@ -12350,25 +12366,30 @@ class Game extends Phaser.Scene {
     for(const {token} of near){if(this._taro!==t||this.state!=='play'||p.left<=0)break;if(this.taroProjectileHit(p,token,true)&&drawn<2){drawn++;const ex=token.enemy.x,ey=token.enemy.y,d=Math.hypot(ex-p.x,ey-p.y);if(!(d>8&&this.taroArt?.('bpx_taro_ball_zap',p.x,p.y,d,{h:26,life:.12,rot:Math.atan2(ey-p.y,ex-p.x)})))this.taroLightningVisual?.(p.x,p.y,ex,ey);else this.taroArt?.('bpx_taro_ball_zap_hit',ex,ey,28,{life:.15});}}}
   /* v7.8.25 Shock (Sentry): Ball Lightning/Unique hits add a stack (max 5, 3s); each stack = +5% damage from Sentry sources */
   taroShockMul(e){const t=this._taro;if(!t||!e||!(e._shock>0)||t.time-(e._shockAt??-1e9)>TARO_SHOCK_LIFE)return 1;return 1+TARO_SHOCK_PER*e._shock;}
-  taroShockAdd(e){const t=this._taro;if(!t||!e?.active||t.path!=='tempest')return;if(t.time-(e._shockAt??-1e9)>TARO_SHOCK_LIFE)e._shock=0;e._shock=Math.min(TARO_SHOCK_MAX,(e._shock||0)+1);e._shockAt=t.time;}
+  taroShockAdd(e){const t=this._taro;if(!t||!e?.active||t.path!=='tempest')return;if(t.time-(e._shockAt??-1e9)>TARO_SHOCK_LIFE)e._shock=0;e._shock=Math.min(TARO_SHOCK_MAX,(e._shock||0)+1);e._shockAt=t.time;this.taroShockMark?.(e);}
+  /* v7.8.30 เครื่องหมาย Shock เหนือหัว (เฟรม = จำนวนชั้น) + ออร่าตอนครบ 5 · เพดาน 40 ตัว */
+  taroShockMark(e){const t=this._taro;if(!t?.enabled||!this.add||!this.textures?.exists?.('bpx_taro_shock_marker'))return;t.shocked=t.shocked||new Set();if(!e._shockFx?.active){if(t.shocked.size>=40)return;e._shockFx=this.taroTrackVisual(this.camWorld(this.add.sprite(e.x,e.y,'bpx_taro_shock_marker',0).setDepth(90410).setDisplaySize(26,26)),0);t.shocked.add(e);}
+    e._shockFx?.setFrame(Math.max(0,Math.min(4,(e._shock||1)-1)));if(e._shock>=TARO_SHOCK_MAX&&!e._shockAura?.active&&this.bpAnim?.('bpx_taro_shock_aura')){e._shockAura=this.taroTrackVisual(this.camWorld(this.add.sprite(e.x,e.y,'bpx_taro_shock_aura',0).setDepth(90405).setDisplaySize(64,64)),0);e._shockAura?.play('bpx_taro_shock_aura');}}
+  taroTickShockMarks(){const t=this._taro;if(!t?.shocked?.size)return;for(const e of [...t.shocked]){const live=e.active&&e._shock>0&&t.time-(e._shockAt??-1e9)<=TARO_SHOCK_LIFE;if(!live){if(e._shockFx)this.taroRemoveFx(e._shockFx);if(e._shockAura)this.taroRemoveFx(e._shockAura);e._shockFx=e._shockAura=null;t.shocked.delete(e);continue;}const hy=e.y-(e.displayHeight||48)*.6-10;e._shockFx?.setPosition(e.x,hy);e._shockAura?.setPosition(e.x,e.y);}}
   /* v7.8.25 Sentry Unique: every regular sentry fires 6 orbs and explodes, then 2 fresh overcharged sentries appear */
   castTaroOvercharge(dm,ul=1){const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='tempest'||this.state!=='play')return;const n=Math.max(1,Math.min(4,ul||1)),p=this.player,f=this.taroSwarmProfile(),boom=(10+5*n)*dm*(1+(n-1)*.22),attackId=++t.attackSeq;
     t.nodes=t.nodes||[];const mk=a=>this.taroPlaceNode({x:p.x+Math.cos(a)*40,y:p.y+Math.sin(a)*40,life:f.nodeLife,interval:f.pulse,range:f.range,damage:f.damage,orbRadius:f.radius,orbLife:f.orbLife,overload:f.overload,link:f.link,speed:TARO_BL_SPEED,beacon:false});
     while(t.nodes.filter(x=>!x.beacon).length<2&&mk(t.nodes.length?.7:-.7)){}
     for(const node of t.nodes.filter(x=>!x.beacon)){for(let i=0;i<6;i++)this.taroSpawnProjectile({kind:'sentry',x:node.x,y:node.y,angle:i*Math.PI/3,speed:TARO_BL_SPEED*1.3,life:f.orbLife,damage:f.damage,radius:f.radius,range:f.range,overload:0,attackId});
       for(const token of this.taroCandidates(node,TARO_OVER_R)){this.taroDealDamage(token,boom*taroLightningRoll()*this.taroShockMul(token.enemy),'beacon',{attackId});this.taroShockAdd(token.enemy);}this.hitCratesInRadius?.(node.x,node.y,TARO_OVER_R,boom);
-      if(!this.taroArt?.('bpx_taro_orb_burst',node.x,node.y,TARO_OVER_R*2/.84,{life:.4}))this.taroRing?.(node.x,node.y,TARO_OVER_R,.4);this.taroRemoveNode(node,false);}
+      this.taroArt?.('bpx_taro_sentry_overload',node.x,node.y-14,180,{life:.45});if(!this.taroArt?.('bpx_taro_sentry_detonate',node.x,node.y,TARO_OVER_R*2/.9,{life:.42,depth:6})&&!this.taroArt?.('bpx_taro_orb_burst',node.x,node.y,TARO_OVER_R*2/.84,{life:.4}))this.taroRing?.(node.x,node.y,TARO_OVER_R,.4);this.taroRemoveNode(node,false);}
     mk(-.7);mk(.7);t.overUntil=t.time+TARO_OVER_TIME;this.screenShake?.(160,.007);this.showBanner?.('Overcharge Detonation Lv'+n,'Sentries explode · fresh sentries overcharged',1100);this.taroSound('beacon');}
   /* v7.8.25 Plasma Field (pre-path Unique, Dota 2 Razor style): ring grows to max radius then returns; hits each foe once each way, damage grows with distance */
   castTaroPlasma(dm,ul=1){const t=this.syncTaroCombat();if(!t)return;t.enabled=true;const n=Math.max(1,Math.min(4,ul||1)),max=280+30*(n-1)+(this.player.echoPath?40:0);if(t.plasma?.g)this.taroRemoveFx(t.plasma.g);
     t.plasma={r:24,dir:1,max,speed:max/.9,out:new Set(),back:new Set(),min:(6+3*n)*dm,top:(18+8*n)*dm*(1+(n-1)*.22),arc:t.path==='storm',attackId:++t.attackSeq,g:this.add?.graphics?this.taroTrackVisual(this.camWorld(this.add.graphics().setDepth(90390)),0):null};
-    this.screenShake?.(90,.004);this.showBanner?.('Plasma Field Lv'+n,'Plasma ring out and back',1000);this.taroSound('beacon');}
+    t.plasma.ring=this.taroArt?.('bpx_taro_plasma_ring',this.player.x,this.player.y,48,{depth:90390})||null;this.taroArt?.('bpx_taro_plasma_cast',this.player.x,this.player.y,190,{life:.4});this.screenShake?.(90,.004);this.showBanner?.('Plasma Field Lv'+n,'Plasma ring out and back',1000);this.taroSound('beacon');}
   /* v7.8.27 Plasma Field สาย Arc: ทุกตัวที่วงโดนปล่อย Arc 1 กระโดดไปหาตัวใกล้สุด · ไม่มีเป้าอื่น = เด้งกลับตัวเดิม 2 ครั้ง (Overload Loop) */
   taroPlasmaArc(token,dmg,pl){const t=this._taro;if(!t?.enabled||this.state!=='play'||!token?.enemy?.active)return;const e=token.enemy,used=new Set([token.id]),nx=this.taroNearestUnused(this.taroCandidates(e,TARO_ARC_JUMP),e,TARO_ARC_JUMP,used);
     if(nx){this.taroLightningVisual?.(e.x,e.y,nx.enemy.x,nx.enemy.y);this.taroDealDamage(nx,dmg,'unique',{attackId:pl.attackId});}else for(let i=0;i<2;i++){if(!taroTargetValid(token,e,Infinity))break;if(!i)this.taroLightningVisual?.(this.player.x,this.player.y,e.x,e.y);this.taroDealDamage(token,dmg*TARO_ARC_LOOP,'unique',{attackId:pl.attackId});}}
   taroTickPlasma(dt){const t=this._taro,pl=t?.plasma;if(!pl||this.state!=='play')return;const p=this.player;pl.r+=pl.dir*pl.speed*dt;if(pl.dir>0&&pl.r>=pl.max){pl.r=pl.max;pl.dir=-1;this.hitCratesInRadius?.(p.x,p.y,pl.max,pl.top);}
-    if(pl.dir<0&&pl.r<=20){this.taroRemoveFx(pl.g);t.plasma=null;return;}const set=pl.dir>0?pl.out:pl.back;
-    for(const token of this.taroCandidates(p,pl.r+40)){if(set.has(token.id))continue;const d=Math.hypot(token.enemy.x-p.x,token.enemy.y-p.y),band=26+Math.min(30,(token.enemy.displayWidth||40)*.3);if(Math.abs(d-pl.r)>band)continue;set.add(token.id);const k=Math.max(0,Math.min(1,d/pl.max));const pd=(pl.min+(pl.top-pl.min)*k)*taroLightningRoll();this.taroDealDamage(token,pd,'unique',{attackId:pl.attackId});if(this._taro!==t||!t.plasma)return;if(pl.arc)this.taroPlasmaArc(token,pd*.5,pl);}
+    if(pl.dir<0&&pl.r<=20){this.taroRemoveFx(pl.g);if(pl.ring)this.taroRemoveFx(pl.ring);t.plasma=null;return;}const set=pl.dir>0?pl.out:pl.back;
+    for(const token of this.taroCandidates(p,pl.r+40)){if(set.has(token.id))continue;const d=Math.hypot(token.enemy.x-p.x,token.enemy.y-p.y),band=26+Math.min(30,(token.enemy.displayWidth||40)*.3);if(Math.abs(d-pl.r)>band)continue;set.add(token.id);const k=Math.max(0,Math.min(1,d/pl.max));const pd=(pl.min+(pl.top-pl.min)*k)*taroLightningRoll();this.taroDealDamage(token,pd,'unique',{attackId:pl.attackId});this.taroArt?.('bpx_taro_plasma_hit',token.enemy.x,token.enemy.y,48,{life:.2});if(this._taro!==t||!t.plasma)return;if(pl.arc)this.taroPlasmaArc(token,pd*.5,pl);}
+    if(pl.ring?.active){pl.ring.setPosition(p.x,p.y).setDisplaySize(pl.r*2/.92,pl.r*2/.92);if(pl.g?.active)pl.g.clear();return;}
     const g=pl.g;if(g?.active){g.clear().setPosition(p.x,p.y);g.lineStyle(22,0x9ad8ff,.18).strokeCircle(0,0,pl.r);g.lineStyle(7,0x34234d,.75).strokeCircle(0,0,pl.r);g.lineStyle(4,0x9ad8ff,.95).strokeCircle(0,0,pl.r);g.lineStyle(1.5,0xffffff,.95).strokeCircle(0,0,pl.r);for(let i=0;i<10;i++){const a=i*Math.PI/5+t.time*3,j=(i%2?6:-6);g.lineStyle(2,0xe7f7ff,.9).lineBetween(Math.cos(a)*(pl.r-8),Math.sin(a)*(pl.r-8),Math.cos(a+.08)*(pl.r+j),Math.sin(a+.08)*(pl.r+j));}}}
   taroOrbFade(p){const t=this._taro;if(t?.enabled&&this.state==='play'&&!p._stale&&!p._fadeArt&&(p.kind==='sentry'||p.kind==='beacon')){p._fadeArt=true;this.taroArt?.('bpx_taro_ball_fade',p.x,p.y,p.kind==='beacon'?66:58,{life:.33,tint:p.kind==='beacon'?0xffe7a8:null});}if(!t?.enabled||this.state!=='play'||p._stale||p._faded||p.kind!=='sentry'||!(p.overload>0)||p.run!==t.run||p.pathEpoch!==t.pathEpoch)return;p._faded=true;
     const R=Math.round(p.radius*1.4),dmg=p.damage*p.overload;for(const token of this.taroCandidates(p,R))this.taroDealDamage(token,dmg*taroLightningRoll()*this.taroShockMul(token.enemy),'sentry',{attackId:p.attackId});this.hitCratesInRadius?.(p.x,p.y,R,dmg);if(!this.taroArt?.('bpx_taro_orb_burst',p.x,p.y,R*2/.84,{life:.33}))this.taroRing?.(p.x,p.y,R===120?121:R,.3);}
@@ -12431,8 +12452,8 @@ class Game extends Phaser.Scene {
     /* v7.8.27 เจ้าของ: ก่อนเลือก Build = Static Arc เล็ก (สายละ 3 กระโดด + Arc Reach) · กระโดดไม่มีเป้าใหม่ = เด้งกลับเป้าเดิม 60% (Overload Loop) */
     const jumps=Math.min(10,3+Math.min(3,Math.max(0,b?.ranks?.arc||0))+(b?.mutation==='chainlord'?2:0)+(b?.evolved?3:0)),hit=new Set(),all=this.taroCandidates(p,Infinity);
     for(const root of targets){if(this.state!=='play'||this.player!==p||this._taro!==t||this.basicAttack!==b||b?.path)break;if(!taroTargetValid(root,p,f.range)||hit.has(root.id))continue;let from={x:p.x,y:p.y},token=root,last=null,j=0;
-      for(;j<jumps&&token;j++){if(this.state!=='play'||this.player!==p||!taroTargetValid(token,from,j?TARO_ARC_JUMP:f.range))break;const e=token.enemy;hit.add(token.id);this.chainBolt?.(from.x,from.y,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*Math.min(1.6,1+.12*j),e.x,e.y);from={x:e.x,y:e.y};last=token;token=this.taroNearestUnused(all,from,TARO_ARC_JUMP,hit);}
-      for(let k=0;last&&!token&&j<jumps&&k<jumps;k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const e=last.enemy;if(k<2)this.chainBolt?.(p.x,p.y,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,e.x,e.y);}}
+      for(;j<jumps&&token;j++){if(this.state!=='play'||this.player!==p||!taroTargetValid(token,from,j?TARO_ARC_JUMP:f.range))break;const e=token.enemy;hit.add(token.id);(this.taroArcBolt||this.chainBolt)?.call(this,from.x,from.y,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*Math.min(1.6,1+.12*j),e.x,e.y);from={x:e.x,y:e.y};last=token;token=this.taroNearestUnused(all,from,TARO_ARC_JUMP,hit);}
+      for(let k=0;last&&!token&&j<jumps&&k<jumps;k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const e=last.enemy;if(k<2)(this.taroArcBolt?this.taroArcBolt(p.x,p.y,e.x,e.y,true):this.chainBolt?.(p.x,p.y,e.x,e.y));this.damage(e,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,e.x,e.y);}}
     Sfx.bp?.('taro_chain',.22,.18,1.25);
   }
   taroFireNeedle(p,a,f){const b=this.getBullet?.(p.x,p.y,0xd8c2ff,.5);if(!b)return null;b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xd8c2ff);b.faceVel=true;b.homing=0;b.dmg=f.damage*TARO_NEEDLE_POWER;b.life=f.range/TARO_NEEDLE_SPEED;b.pierce=true;b.seedPierce=true;b.hitTargets=new Set();b.hitGapV=.1;this.physics.velocityFromRotation(a,TARO_NEEDLE_SPEED,b.body.velocity);b.setRotation(a);return b;}
@@ -12450,13 +12471,13 @@ class Game extends Phaser.Scene {
       for(;j<f.victims&&token;j++){
         if(this._taro!==t||this.state!=='play'||!taroTargetValid(token,from,j?f.jumpRange:f.rootRange))break;
         const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);last=token;
-        this.chainBolt(from.x,from.y,point.x,point.y);
+        (this.taroArcBolt||this.chainBolt).call(this,from.x,from.y,point.x,point.y);
         this.taroDealDamage(token,f.primaryDamage*f.chainBonus*f.rootBonus*Math.min(1.6,1+.12*j),'chain',{attackId,shrapnelD:f.unitD});
         from=point;token=this.taroNearestUnused(candidates,from,f.jumpRange,hit);
       }
       /* v7.8.27 Overload Loop: remaining jumps loop back into the last target at 60% (+15% per Overload card) so a lone boss takes every jump */
       const ov=TARO_ARC_LOOP*(1+.15*Math.max(0,this.basicAttack?.lv?.p_arc_overload??this.basicAttack?.ranks?.p_arc_overload??0));
-      for(let k=0;last&&!token&&j<f.victims;k++,j++){if(this._taro!==t||this.state!=='play'||!taroTargetValid(last,this.player,Infinity))break;if(k<2)this.chainBolt(this.player.x,this.player.y,last.enemy.x,last.enemy.y);this.taroDealDamage(last,f.primaryDamage*f.chainBonus*f.rootBonus*ov*taroLightningRoll(),'chain',{attackId,shrapnelD:f.unitD});}
+      for(let k=0;last&&!token&&j<f.victims;k++,j++){if(this._taro!==t||this.state!=='play'||!taroTargetValid(last,this.player,Infinity))break;if(k<2)(this.taroArcBolt?this.taroArcBolt(this.player.x,this.player.y,last.enemy.x,last.enemy.y,true):this.chainBolt(this.player.x,this.player.y,last.enemy.x,last.enemy.y));this.taroDealDamage(last,f.primaryDamage*f.chainBonus*f.rootBonus*ov*taroLightningRoll(),'chain',{attackId,shrapnelD:f.unitD});}
     }
     if(this._taro===t&&this.state==='play')this.hitCratesInRadius(this.player.x,this.player.y,f.rootRange,f.primaryDamage);this.taroSound?.('chain')||Sfx.thunder();
   }
