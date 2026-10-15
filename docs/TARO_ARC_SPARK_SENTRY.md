@@ -47,3 +47,7 @@ Base life 2s (cap 3.5), speed 380 (cap 560), pierce 2 (+1 per Piercing Current, 
 ## v7.8.22 Ball Lightning size/cadence
 
 Owner: orbs too big, want faster hits. Sentry orb radius 36→57 (was 60→95), Beacon orb 46 (was 72); per-victim hit gap TARO_ORB_HIT_GAP 0.2s (was 0.30). Damage per hit unchanged.
+
+## v7.8.23 Bouncing Sparks
+
+Owner: fire from all around Taro and bounce off the screen edge. castTaroSpark spreads count evenly over 360° from a random start (still needs a foe in range to cast). Sparks reflect off the camera worldView (10px inset, taroBounceView) in addition to solid props/world bounds; the travel-range cutoff now applies only to orbs. Life 3.5s base (cap 5). Fission unchanged.

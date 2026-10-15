@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.22 — Smaller faster-hitting Ball Lightning
+# Latest delivery: v7.8.23 — Bouncing Sparks
+
+Owner: Sparks burst out all around Taro (even 360° spread), bounce off the visible screen edge (taroBounceView on camera worldView), last 3.5s (Live Current cap 5s); travel-range cutoff only for orbs. Fission from v7.8.21 kept.
+
+# Previous delivery: v7.8.22 — Smaller faster-hitting Ball Lightning
 
 Owner Sentry feedback: orbs too big, hit more often. Orb radius ×0.6 (36→57, Beacon 46), per-victim hit gap 0.2s (TARO_ORB_HIT_GAP). Damage/Unique/pre-path Unique ideas proposed in chat, awaiting owner pick.
 
@@ -21,10 +25,6 @@ Owner approved every proposal in docs/art_orders/17_TARO_SENTRY_ART.md. Sentries
 # Previous delivery: v7.8.18 — Taro Arc / Spark / Sentry
 
 Owner approved replacing Smite/Tempest with wandering Spark projectiles and temporary Ball Lightning sentries, plus all-build Storm Beacon Unique. Existing storm/smite/tempest IDs, original upgrade IDs/effects and Talent ranks/TP/costs stay compatible; labels and new run cards reflect the new mechanics. Arc/Rift Needle remain. Spark ricochets against solid props, can pierce and split once; cap10 per cast/36 live. Sentry cap2 + one independent Beacon, orbs cap12. Old charge/Dash-bomb/Rod hooks removed from live dispatch; legacy helpers retained dormant. New ImageGen transparent Sentry WebP, code-native sparks/orbs and reused T6 cues. Required check/build, static Canvas three sizes and Codex/Talent five sizes passed. See docs/TARO_ARC_SPARK_SENTRY.md; publication in SESSION_HANDOFF. Owner phone combat/balance/FPS review pending.
-
-# Previous delivery: v7.8.17 — Rift Needle starter and outgoing Chain Arc
-
-Owner requested distinct pre-build normal attack and PoE-like outgoing Arc. Before selecting a path, Taro fires straight instant Rift Needles at distinct nearby targets; no chain/sky strike or legacy Storm Charge. Arc rank gives reach, surge gives needles (cap3/overflow); saved IDs/ranks carry into each chosen path. Chain now draws every root directly from Taro using the same Arc as its jumps; target/growth/damage/shard rules unchanged. Starter/Chain cards and fourth Needle Codex tab explain the current mechanics. Required check/build and static Canvas/menu review passed; live status in SESSION_HANDOFF. See docs/TARO_NEEDLE_ARC.md. Owner phone combat review remains pending.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
