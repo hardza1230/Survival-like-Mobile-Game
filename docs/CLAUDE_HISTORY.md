@@ -1920,3 +1920,7 @@ Owner approved every proposal in docs/art_orders/17_TARO_SENTRY_ART.md. Sentries
 # Previous delivery: v7.8.20 — Taro Sentry art wired
 
 Owner delivered 19 Sentry assets to assets/incoming/taro_sentry/. Packed by scripts/pack-taro-sentry-art.py into assets/art/taro_sentry/ (bpx_taro_* ASSET_FX, Taro-only lazy class) + icons in assets/art/build_paths/taro_*.webp. Turret deploy→idle/fire/expire, Beacon tall idle + strike/ring + overcharge aura, Ball Lightning sized to hit radius, orb zap/launch, Overload burst, persistent Tesla beam, new path/card/Unique-button icons; all with code-drawn fallback. Helper taroArt(). Details in docs/TARO_ARC_SPARK_SENTRY.md. Check/build passed; static Chromium gallery only. Pending: 4 new Sentry sounds, owner phone review.
+
+# Previous delivery: v7.8.21 — Taro Splitting Sparks
+
+Owner played Spark: wants longer, faster, piercing projectiles; nothing to bounce off, so sparks split by flight time instead. Life 2s (cap 3.5), speed 380 (cap 560), base pierce 2 (cap 5). Every 0.42s a Spark splits into 2 (gen 0→1→2, max 4 per original, 36 live cap), children ×0.55 power (Split Spark card ×0.75), smaller, inherit victims. On-hit split removed. Details in docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending (Sentry review also pending).

@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. Exact grids/dimensions and alpha checked; black VFX and faint field retained. Art storage only; packing/runtime integration and phone visual/FPS review remain pending. Game version unchanged.
 
-# Latest delivery: v7.8.26 — Sparks hunt bosses
+# Latest delivery: v7.8.27 — Static Arc starter, Overload Loop, Arc Plasma Field
+
+Owner approved: pre-path attack = Static Arc (small chain, 3 jumps); Arc chains loop leftover jumps into the last target at 60% (Overload Loop, new card p_arc_overload +15%/rank) so lone bosses take every jump; Arc Build Unique = Plasma Field whose ring hits fire Arc jumps. Fixed Plasma/Beacon/Overcharge being far too weak (dm scaling ~3×). Spark +1 count, speed 460. Art order 18 updated: needle D/H3 cancelled, new set I (Arc bolt/hit/loop/overload hit/card icon). Hash fixtures for castTaroChainBasic updated. Details docs/TARO_ARC_SPARK_SENTRY.md.
+
+# Previous delivery: v7.8.26 — Sparks hunt bosses
 
 Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it (turn 5 rad/s), pass through bosses without using pierce, and re-hit the same boss every 0.3s. Normal foes unchanged.
 
@@ -25,10 +29,6 @@ Owner: Sparks burst out all around Taro (even 360° spread), bounce off the visi
 # Previous delivery: v7.8.22 — Smaller faster-hitting Ball Lightning
 
 Owner Sentry feedback: orbs too big, hit more often. Orb radius ×0.6 (36→57, Beacon 46), per-victim hit gap 0.2s (TARO_ORB_HIT_GAP). Damage/Unique/pre-path Unique ideas proposed in chat, awaiting owner pick.
-
-# Previous delivery: v7.8.21 — Taro Splitting Sparks
-
-Owner played Spark: wants longer, faster, piercing projectiles; nothing to bounce off, so sparks split by flight time instead. Life 2s (cap 3.5), speed 380 (cap 560), base pierce 2 (cap 5). Every 0.42s a Spark splits into 2 (gen 0→1→2, max 4 per original, 36 live cap), children ×0.55 power (Split Spark card ×0.75), smaller, inherit victims. On-hit split removed. Details in docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending (Sentry review also pending).
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

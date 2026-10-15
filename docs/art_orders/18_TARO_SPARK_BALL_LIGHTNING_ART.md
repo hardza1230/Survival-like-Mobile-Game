@@ -117,7 +117,9 @@ VFX ทั้งหมด **พื้นดำสนิท #000** (โค้ด�
 - **Overcharge Detonation (Unique สาย Sentry):** ป้อมทุกตัวยิง Ball Lightning 6 ลูกเป็นวงพร้อมกัน แล้วระเบิดตัวเองรัศมี 150px · จากนั้นป้อมใหม่ 2 ตัวโผล่ข้าง Taro และยิงเร็วขึ้น 4 วิ · ตอนนี้ใช้ `vfx_taro_orb_burst` และออร่า overcharge เดิม
 - **Shock (สาย Sentry):** ศัตรูที่โดน Ball Lightning ติด stack 1–5 (อยู่ 3 วิ) แต่ละชั้นรับดาเมจจาก Sentry +5% · ตอนนี้ยังไม่มีภาพบอก
 
-## D — Rift Needle
+> **15 ต.ค. 2026 (v7.8.27) ยกเลิก D1–D3 และ H3:** การตีก่อนเลือก Build เปลี่ยนจากเข็มเป็น Static Arc แล้ว ไม่ต้องทำภาพเข็ม ให้ทำชุด I (Arc) ท้ายใบแทน · Plasma Field ใช้กับสาย Arc ด้วย (H1 ใช้ปุ่ม Unique ทั้งก่อนเลือก Build และสาย Arc)
+
+## D — Rift Needle (ยกเลิก)
 
 | # | key / ไฟล์ | ชนิด | grid · เฟรม | ขนาดเฟรม | บนจอ | รายละเอียด |
 |---|---|---|---|---|---|---|
@@ -178,3 +180,32 @@ VFX ทั้งหมด **พื้นดำสนิท #000** (โค้ด�
 - F: `castTaroOvercharge` เล่น F1 บนป้อมแต่ละตัว + F2 แทน `vfx_taro_orb_burst`
 - G: `taroShockAdd` แสดง G1 เฟรมตามจำนวน stack เหนือศัตรู (เพดาน 40 ตัวเหมือนเครื่องหมาย Tremor) · G2 ที่ 5 stack
 - H: `syncUniqueIcon` เลือกไอคอนตาม Build (`ic_taro_plasma_field` ก่อนเลือก, `ic_taro_overcharge` สาย Sentry, `ic_taro_storm_beacon` สาย Arc/Spark)
+
+
+---
+
+# ส่วนเพิ่ม 2 (v7.8.27) — Static Arc + Overload Loop
+
+ส่งที่ `assets/incoming/taro_unique_needle/` เหมือนส่วนเพิ่ม 1 · VFX พื้นดำ #000
+
+กลไก: การตีก่อนเลือก Build = **Static Arc** สายฟ้าจาก Taro กระโดดผ่านศัตรู 3 ตัว (สาย Arc = สูงสุด 3 สาย 10 ตัว) · **Overload Loop:** กระโดดครั้งไหนไม่มีเป้าใหม่ สายฟ้าเด้งกลับตีเป้าสุดท้ายซ้ำ (แรง 60%) → บอสตัวเดียวโดนรัว · ตอนนี้ใช้เส้นสายฟ้าที่วาดด้วยโค้ด
+
+| # | key / ไฟล์ | grid · เฟรม | ขนาดเฟรม | บนจอ | รายละเอียด |
+|---|---|---|---|---|---|
+| I1 | `vfx_taro_arc_bolt.png` | 1×4 = 4 · loop | 512 (กว้าง) × 64 (สูง) | ยืด 40–360px | สายฟ้า Arc หลักระหว่าง 2 จุด (ซ้าย→ขวา) แกนขาว ขอบลาเวนเดอร์ ซิกแซกชัด 4–6 หยัก · ปลายซ้าย-ขวาต่อเนื่อง ยืดได้ไม่แตก · ต่างจาก Tesla (ฟ้าเส้นยาวเรียบ) ด้วยโทนม่วงและหยักใหญ่ |
+| I2 | `vfx_taro_arc_hit.png` | 4×1 = 4 · ครั้งเดียว | 128 | ~46px บนศัตรู | จุดที่ Arc กระโดดโดน: ดาวสายฟ้าม่วง-ขาวแวบ มีวงเล็กขยาย |
+| I3 | `vfx_taro_arc_loop.png` | 1×4 = 4 · loop | 512 × 96 | ยืด Taro→บอส | **Overload Loop:** สายฟ้าหนากว่า I1 สองเท่า แกนขาวจ้าขอบทอง-ม่วง ใช้ตอนเด้งกลับตีเป้าเดิมซ้ำ ให้รู้ว่ากำลังรวมพลัง |
+| I4 | `vfx_taro_arc_overload_hit.png` | 3×2 = 6 · ครั้งเดียว | 256 | ~110px บนบอส | จุดโดนตอน Loop: ประกายระเบิดทองม่วงใหญ่กว่า I2 มีเศษสายฟ้ากระจาย |
+| I5 | `ic_taro_arc_overload.png` | ไอคอน alpha 256 | — | 44–64px | ไอคอนการ์ด Overload: สายฟ้าวนเป็นวงลูกศรวนกลับเข้าหาเป้า |
+
+Prompt (ต่อหัวร่วมเดิม):
+
+| ชิ้น | prompt เฉพาะ |
+|---|---|
+| I1 | VFX sprite sheet 4 frames stacked vertically, each frame 512x64, jagged violet lightning arc from the left edge to the right edge with 4 to 6 sharp zigzags, white core, lavender glow, seamless ends, shape changes every frame, on solid pure black background |
+| I2 | VFX sprite sheet 4 frames in one row, small violet-white lightning star flash with a tiny expanding ring, on solid pure black background |
+| I3 | VFX sprite sheet 4 frames stacked vertically, each frame 512x96, thick overloaded lightning beam from left edge to right edge, blinding white core, gold and violet edges, crackling, seamless ends, on solid pure black background |
+| I4 | VFX sprite sheet 6 frames 3x2, big gold and violet lightning impact burst with scattered electric shards, on solid pure black background |
+| I5 | single game card icon, a violet lightning bolt curling into a looping arrow back toward a target, isolated object, transparent alpha background, glossy candy style |
+
+ฝั่งโค้ด: `chainBolt` / `castTaroChainBasic` / `castTaroNeedle` (Static Arc) ใช้ I1 ยืดระหว่างจุด + I2 ที่ศัตรู · ส่วน Overload Loop (บล็อก `ov` ใน `castTaroChainBasic`, ลูปท้าย `castTaroNeedle`, `taroPlasmaArc`) ใช้ I3 + I4 · I5 ไปที่ `p_arc_overload`

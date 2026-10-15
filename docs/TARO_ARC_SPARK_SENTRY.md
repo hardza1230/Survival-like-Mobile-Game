@@ -67,3 +67,11 @@ Owner: Taro cannot clear C1-4 (other heroes at C2-4); lightning should swing wid
 ## v7.8.26 Sparks vs bosses
 
 Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (260px) of a boss/mini steer toward it (TARO_SPARK_TURN 5 rad/s); boss/mini hits do not consume pierce and the same spark may re-hit that boss every TARO_SPARK_BOSS_GAP (0.3s). Normal foes still once per spark.
+
+## v7.8.27 Static Arc starter, Overload Loop, Arc Plasma Field, Spark buff, Unique power fix
+
+- Pre-path normal attack castTaroNeedle now casts Static Arc: roots = needle shots (1–3), each jumps up to 3 (+1 per Arc Reach rank, cap 6) within TARO_ARC_JUMP 180, power ×TARO_ARC_STARTER 0.75 growing +12%/jump, direct damage(). Spike-needle bullet (taroFireNeedle) is no longer called. Starter cards renamed Arc Power / Quick Arc / Arc Reach / Extra Arcs; skill name Static Arc; Codex tab Starter.
+- Overload Loop (starter + castTaroChainBasic): when a chain has no new target, remaining jumps hit the last target at TARO_ARC_LOOP 0.6 (Arc Build ×(1+0.15·p_arc_overload)), rolled. New Arc card p_arc_overload (max 3). Hash fixtures taro-t3-baseline / taro-t5-resolvers updated for castTaroChainBasic.
+- Arc Build Unique = Plasma Field (arc variant): each ring hit fires one Arc jump (50% of the ring hit) to the nearest other foe; with none it loops twice at 0.6 into the same foe (taroPlasmaArc).
+- Bug: Unique damage used tiny dm multipliers. Plasma min/max (6+3n)/(18+8n)·dm·(1+.22(n−1)); Storm Beacon strike (8+4n)·dm; Overcharge boom (10+5n)·dm.
+- Spark: +1 base count (count+3), speed 460 (cap 640).
