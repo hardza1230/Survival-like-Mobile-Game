@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.21 — Taro Splitting Sparks
+# Latest delivery: v7.8.22 — Smaller faster-hitting Ball Lightning
+
+Owner Sentry feedback: orbs too big, hit more often. Orb radius ×0.6 (36→57, Beacon 46), per-victim hit gap 0.2s (TARO_ORB_HIT_GAP). Damage/Unique/pre-path Unique ideas proposed in chat, awaiting owner pick.
+
+# Previous delivery: v7.8.21 — Taro Splitting Sparks
 
 Owner played Spark: wants longer, faster, piercing projectiles; nothing to bounce off, so sparks split by flight time instead. Life 2s (cap 3.5), speed 380 (cap 560), base pierce 2 (cap 5). Every 0.42s a Spark splits into 2 (gen 0→1→2, max 4 per original, 36 live cap), children ×0.55 power (Split Spark card ×0.75), smaller, inherit victims. On-hit split removed. Details in docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending (Sentry review also pending).
 
@@ -21,10 +25,6 @@ Owner approved replacing Smite/Tempest with wandering Spark projectiles and temp
 # Previous delivery: v7.8.17 — Rift Needle starter and outgoing Chain Arc
 
 Owner requested distinct pre-build normal attack and PoE-like outgoing Arc. Before selecting a path, Taro fires straight instant Rift Needles at distinct nearby targets; no chain/sky strike or legacy Storm Charge. Arc rank gives reach, surge gives needles (cap3/overflow); saved IDs/ranks carry into each chosen path. Chain now draws every root directly from Taro using the same Arc as its jumps; target/growth/damage/shard rules unchanged. Starter/Chain cards and fourth Needle Codex tab explain the current mechanics. Required check/build and static Canvas/menu review passed; live status in SESSION_HANDOFF. See docs/TARO_NEEDLE_ARC.md. Owner phone combat review remains pending.
-
-# Previous delivery: v7.8.16 — Taro Unique / lightning actually visible
-
-Owner phone test: Taro Unique "does nothing", rest looks like before. Root causes found in a real Chromium run: (1) tickTaroCombat suspended the whole Taro job queue on any frame with wallDt>.1, so Unique Chain Bolt/shrapnel/bombs never ran below 10fps → threshold .25 (dt still clamped .05); (2) taroLightningVisual went through shared per-frame fxOk (2/frame in PERF.lvl 2), so only the first link of a chain drew → lightning uses only Taro's own 20-live cap (taroVisualBudget(true)); (3) links were 2px/0.14s at depth 7 → glow+outline+core+white jagged bolt with endpoint ring at depth 90400, .24s (Unique big .36s). castTaroPathUnique adds hit ring per hit + uq_taro_chain_hit sound (not hash-locked). Pre-path (before Lv6 Build Path) is still the legacy Taro by design. No damage/targeting changes. Full check/build passed.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

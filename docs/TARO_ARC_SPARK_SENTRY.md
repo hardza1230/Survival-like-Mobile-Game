@@ -43,3 +43,7 @@ Runtime02432667de9863d7ad08aea3babd00dcac5a368a; exact tested/published tree ede
 ## v7.8.21 Splitting Sparks (owner phone feedback: longer, faster, pierce; nothing to bounce off)
 
 Base life 2s (cap 3.5), speed 380 (cap 560), pierce 2 (+1 per Piercing Current, cap 5; overflow damage past 5). On-hit split removed. Fission by flight time: every TARO_SPARK_SPLIT_AT (0.42s) a Spark of gen<TARO_SPARK_GENS (2) splits into 2 sparkChild at ±0.45 rad with the remaining life, power ×split (0.55, or 0.75 with Split Spark), inherited victim set and remaining pierce (min 1); parent ends only if at least one child spawned (36 live Spark cap). Gen scale 1.25/0.9/0.65 for visual and hit radius. Children stay terminal (no procs). taro-swarm test updated.
+
+## v7.8.22 Ball Lightning size/cadence
+
+Owner: orbs too big, want faster hits. Sentry orb radius 36→57 (was 60→95), Beacon orb 46 (was 72); per-victim hit gap TARO_ORB_HIT_GAP 0.2s (was 0.30). Damage per hit unchanged.
