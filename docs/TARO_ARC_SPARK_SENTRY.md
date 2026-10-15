@@ -63,3 +63,7 @@ Owner: Taro cannot clear C1-4 (other heroes at C2-4); lightning should swing wid
 - Rift Needle: taroFireNeedle spawns a piercing bullet (getBullet, proj_frostlance tinted violet, 950px/s, seedPierce, life=range/speed, ×1.35 power) instead of an instant ray.
 - Spark/Ball art: 11 VFX + 5 icons packed by scripts/pack-taro-spark-ball-art.py to assets/art/taro_spark_ball/ (bpx_taro_spark*, bpx_taro_ball_*) and build_paths/taro_*.webp; spark sprite/split/bounce/hit/burst, ball core (gold for Beacon) + attached zap-radius field, zap bolt + zap hit, fade. All fall back to code visuals.
 - Art order additions D–H in docs/art_orders/18_TARO_SPARK_BALL_LIGHTNING_ART.md (incoming folder taro_unique_needle).
+
+## v7.8.26 Sparks vs bosses
+
+Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (260px) of a boss/mini steer toward it (TARO_SPARK_TURN 5 rad/s); boss/mini hits do not consume pierce and the same spark may re-hit that boss every TARO_SPARK_BOSS_GAP (0.3s). Normal foes still once per spark.

@@ -50,6 +50,10 @@ assert(method('castSkill').includes('this.castTaroSpark(lvl)'));assert(method('c
 // v7.8.25 Shock: Sentry orb hits stack +5% (max 5, 3s) only on the Sentry build.
 {const e=enemy(1,20),s=view('tempest',[e]),token=a.taroEnemyToken(e),p=shot(s,'sentry',{damage:10});for(let i=0;i<7;i++){s._taro.time=i*.3;s.taroProjectileHit(p,token);}assert.equal(e._shock,5);assert(Math.abs(s.hits[6].d-12.5)<1e-9);s._taro.time+=3.5;assert.equal(s.taroShockMul(e),1);
   const q=view('storm',[enemy(2,20)]),pe=q.enemies.getChildren()[0];q.taroProjectileHit(shot(q,'beacon',{damage:10}),a.taroEnemyToken(pe));assert(!(pe._shock>0),'Shock is Sentry-only');}
+// v7.8.26 Sparks: bosses do not consume pierce and are re-hit every 0.3s; normal foes once per spark; sparks curve toward nearby bosses.
+{const boss=enemy(1,20),s=view('smite',[boss]);boss.isBoss=true;const tk=a.taroEnemyToken(boss),p=shot(s,'spark',{pierce:0,gen:2});assert(s.taroProjectileHit(p,tk));assert(p.left>0,'boss keeps the spark');assert(!s.taroProjectileHit(p,tk));s._taro.time=.31;assert(s.taroProjectileHit(p,tk));
+  const mob=enemy(2,20),q=view('smite',[mob]),pm=shot(q,'spark',{pierce:5,gen:2});const tm=a.taroEnemyToken(mob);assert(q.taroProjectileHit(pm,tm));q._taro.time=5;assert(!q.taroProjectileHit(pm,tm));
+  const b2=enemy(3,0),r=view('smite',[b2]);b2.y=200;b2.isBoss=true;const ps=shot(r,'spark',{gen:2,angle:0,speed:100,x:0,y:0,life:2});r.tickTaroDeployables(.1);assert(ps.angle>0,'curves toward boss');}
 console.log('Taro v7.8.25: Plasma Field out/back/edge, Overcharge Detonation, Shock stacks passed');
 console.log('Taro Sentry v7.8.19: leash deploy/no churn/live stat refresh, Beacon strike + overcharge, crate hits, once-only Overload, Tesla Link passed');
 console.log('Taro Arc/Spark/Sentry: profiles, swept solid/world bounce, count/life caps, separate Beacon ownership, once-only terminal children/orbs, pause/epoch/pool guards and replaced runtime entrypoints passed');

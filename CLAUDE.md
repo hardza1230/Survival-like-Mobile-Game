@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. Exact grids/dimensions and alpha checked; black VFX and faint field retained. Art storage only; packing/runtime integration and phone visual/FPS review remain pending. Game version unchanged.
 
-# Latest delivery: v7.8.25 — Taro Uniques per build, Shock, spike needles, Spark/Ball art
+# Latest delivery: v7.8.26 — Sparks hunt bosses
+
+Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it (turn 5 rad/s), pass through bosses without using pierce, and re-hit the same boss every 0.3s. Normal foes unchanged.
+
+# Previous delivery: v7.8.25 — Taro Uniques per build, Shock, spike needles, Spark/Ball art
 
 Owner picked 1 + A: Sentry Shock stacks (+5%/stack, max 5, 3s) and Overcharge Detonation Unique; pre-path Unique = Plasma Field (Razor-style ring out/back); Rift Needle is a piercing spike projectile. Arc/Spark keep Storm Beacon. Owner's 16 Spark/Ball art files wired (assets/art/taro_spark_ball). Art order additions D–H (needle, plasma, detonation, shock marker, Unique icons) in 18_TARO_SPARK_BALL_LIGHTNING_ART.md → incoming/taro_unique_needle. Details docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending.
 
@@ -25,10 +29,6 @@ Owner Sentry feedback: orbs too big, hit more often. Orb radius ×0.6 (36→57, 
 # Previous delivery: v7.8.21 — Taro Splitting Sparks
 
 Owner played Spark: wants longer, faster, piercing projectiles; nothing to bounce off, so sparks split by flight time instead. Life 2s (cap 3.5), speed 380 (cap 560), base pierce 2 (cap 5). Every 0.42s a Spark splits into 2 (gen 0→1→2, max 4 per original, 36 live cap), children ×0.55 power (Split Spark card ×0.75), smaller, inherit victims. On-hit split removed. Details in docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending (Sentry review also pending).
-
-# Previous delivery: v7.8.20 — Taro Sentry art wired
-
-Owner delivered 19 Sentry assets to assets/incoming/taro_sentry/. Packed by scripts/pack-taro-sentry-art.py into assets/art/taro_sentry/ (bpx_taro_* ASSET_FX, Taro-only lazy class) + icons in assets/art/build_paths/taro_*.webp. Turret deploy→idle/fire/expire, Beacon tall idle + strike/ring + overcharge aura, Ball Lightning sized to hit radius, orb zap/launch, Overload burst, persistent Tesla beam, new path/card/Unique-button icons; all with code-drawn fallback. Helper taroArt(). Details in docs/TARO_ARC_SPARK_SENTRY.md. Check/build passed; static Chromium gallery only. Pending: 4 new Sentry sounds, owner phone review.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
