@@ -2,7 +2,11 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Latest delivery: v7.8.20 — Taro Sentry art wired
+# Latest delivery: v7.8.21 — Taro Splitting Sparks
+
+Owner played Spark: wants longer, faster, piercing projectiles; nothing to bounce off, so sparks split by flight time instead. Life 2s (cap 3.5), speed 380 (cap 560), base pierce 2 (cap 5). Every 0.42s a Spark splits into 2 (gen 0→1→2, max 4 per original, 36 live cap), children ×0.55 power (Split Spark card ×0.75), smaller, inherit victims. On-hit split removed. Details in docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending (Sentry review also pending).
+
+# Previous delivery: v7.8.20 — Taro Sentry art wired
 
 Owner delivered 19 Sentry assets to assets/incoming/taro_sentry/. Packed by scripts/pack-taro-sentry-art.py into assets/art/taro_sentry/ (bpx_taro_* ASSET_FX, Taro-only lazy class) + icons in assets/art/build_paths/taro_*.webp. Turret deploy→idle/fire/expire, Beacon tall idle + strike/ring + overcharge aura, Ball Lightning sized to hit radius, orb zap/launch, Overload burst, persistent Tesla beam, new path/card/Unique-button icons; all with code-drawn fallback. Helper taroArt(). Details in docs/TARO_ARC_SPARK_SENTRY.md. Check/build passed; static Chromium gallery only. Pending: 4 new Sentry sounds, owner phone review.
 
@@ -21,10 +25,6 @@ Owner requested distinct pre-build normal attack and PoE-like outgoing Arc. Befo
 # Previous delivery: v7.8.16 — Taro Unique / lightning actually visible
 
 Owner phone test: Taro Unique "does nothing", rest looks like before. Root causes found in a real Chromium run: (1) tickTaroCombat suspended the whole Taro job queue on any frame with wallDt>.1, so Unique Chain Bolt/shrapnel/bombs never ran below 10fps → threshold .25 (dt still clamped .05); (2) taroLightningVisual went through shared per-frame fxOk (2/frame in PERF.lvl 2), so only the first link of a chain drew → lightning uses only Taro's own 20-live cap (taroVisualBudget(true)); (3) links were 2px/0.14s at depth 7 → glow+outline+core+white jagged bolt with endpoint ring at depth 90400, .24s (Unique big .36s). castTaroPathUnique adds hit ring per hit + uq_taro_chain_hit sound (not hash-locked). Pre-path (before Lv6 Build Path) is still the legacy Taro by design. No damage/targeting changes. Full check/build passed.
-
-# Previous delivery: v7.8.15 — Taro T6 feedback
-
-Selected Taro paths have short violet links, gold priority brackets/strike, open cyan nova and violet diamond bomb burst. One new ImageGen painted bomb with actual alpha and attached fuse arc; five short deterministic jsfxr/MP3 cues. Charge HUD maintains screen size at camera zoom and signals READY once per transition. Transient FX capped at 20 plus three fixed pending bombs; active-time fade/fuse, pause visibility and epoch cleanup. Target/damage/progression resolvers retained except two sound dispatches; other heroes/pre-path untouched. Required check/build and Canvas presentation/hero checks recorded in SESSION_HANDOFF. See docs/TARO_T6_FEEDBACK.md. Next T7 owner phone combat review and final tuning; #25 deferred.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
