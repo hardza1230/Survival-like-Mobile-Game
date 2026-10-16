@@ -1944,3 +1944,11 @@ Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightni
 # Previous delivery: v7.8.25 — Taro Uniques per build, Shock, spike needles, Spark/Ball art
 
 Owner picked 1 + A: Sentry Shock stacks (+5%/stack, max 5, 3s) and Overcharge Detonation Unique; pre-path Unique = Plasma Field (Razor-style ring out/back); Rift Needle is a piercing spike projectile. Arc/Spark keep Storm Beacon. Owner's 16 Spark/Ball art files wired (assets/art/taro_spark_ball). Art order additions D–H (needle, plasma, detonation, shock marker, Unique icons) in 18_TARO_SPARK_BALL_LIGHTNING_ART.md → incoming/taro_unique_needle. Details docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending.
+
+# Previous delivery: v7.8.26 — Sparks hunt bosses
+
+Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it (turn 5 rad/s), pass through bosses without using pierce, and re-hit the same boss every 0.3s. Normal foes unchanged.
+
+# Art delivery19 — C2-4 Four-Season Conservatory
+
+22 PNG32 sources (126 frames) stored in assets/incoming/c24_seasons_vfx/ with manifest, final prompts, QA and delivery notes. Includes four seasonal screen edges, Bloom Sprout, HUD states, trial VFX and Chronobloom attack/metamorph VFX. Exact grids, real alpha, complete PNG streams/hashes, black central screen window and enemy groundline verified. Incoming storage only: no runtime/game version/build changes; packing/integration and owner phone review remain pending.

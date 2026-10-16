@@ -2,15 +2,15 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
-# Art delivery19 — C2-4 Four-Season Conservatory
-
-22 PNG32 sources (126 frames) stored in assets/incoming/c24_seasons_vfx/ with manifest, final prompts, QA and delivery notes. Includes four seasonal screen edges, Bloom Sprout, HUD states, trial VFX and Chronobloom attack/metamorph VFX. Exact grids, real alpha, complete PNG streams/hashes, black central screen window and enemy groundline verified. Incoming storage only: no runtime/game version/build changes; packing/integration and owner phone review remain pending.
-
 # Art delivery 18 — Taro Spark + Ball Lightning
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.31 — Arc focus, hunt arrow, Plasma vs bosses
+# Latest delivery: v7.8.32 — C2-4 Four-Season art wired (order 19)
+
+22 files from incoming/c24_seasons_vfx packed by scripts/pack-c24-season-art.py → assets/art/c24_seasons/*.webp (screen edges 320 cells, Time Break/metamorph 384, projectiles upscaled to 128 cells = proj_foe body). All keys stage-lazy in STAGE_SHEETS[8]; stageArtKeys now includes ASSET_FX and stage loader passes fx:true. Helper c24Fx (keep/life/ui/must, cap 40, fallback to old code visuals), c24ClearCur, sweep of _c24Keep in tickSeasonArena. Wired: season-change screen edge (UI cam), spring heal petals, Bloom Sprout enemy (type 'sprout', Spring trial top-up, ×1.4 speed), summer burn ring/ignite, autumn lane/slash, winter patch/freeze, HUD season icons (syncSeasonIcons, text origin shifts), trial-pass bloom; Chronobloom vine fan/slash, solar rings, frost shard and leaf bullets (c24Bullet; foeShot stops anims on reuse), Time Break clock + 3 season seals, metamorph. Mechanics unchanged. Headless smoke render had no page errors. Owner phone visual/FPS review pending.
+
+# Previous delivery: v7.8.31 — Arc focus, hunt arrow, Plasma vs bosses
 
 Owner: Arc single-target still weak; arrow should find normal monsters when none on screen (spent long searching for a mini); Plasma Field weak on bosses. Arc build (castTaroChainBasic): if a boss/mini is within rootRange (taroArcFocus), every root × every jump hits it at 100% ×(1+.15×Overload ranks), else old chain. Objective arrow: when no other target and no enemy inside camera worldView, _offscreenHuntTarget points to nearest mini (orange) else nearest monster (pink). Plasma Field ×1.75 vs boss/mini (TARO_PLASMA_BOSS). castTaroChainBasic hash fixtures updated. Check passed; owner phone review pending.
 
@@ -29,10 +29,6 @@ Owner: starter cards picked before a Build Path should not become useless. Audit
 # Previous delivery: v7.8.27 — Static Arc starter, Overload Loop, Arc Plasma Field
 
 Owner approved: pre-path attack = Static Arc (small chain, 3 jumps); Arc chains loop leftover jumps into the last target at 60% (Overload Loop, new card p_arc_overload +15%/rank) so lone bosses take every jump; Arc Build Unique = Plasma Field whose ring hits fire Arc jumps. Fixed Plasma/Beacon/Overcharge being far too weak (dm scaling ~3×). Spark +1 count, speed 460. Art order 18 updated: needle D/H3 cancelled, new set I (Arc bolt/hit/loop/overload hit/card icon). Hash fixtures for castTaroChainBasic updated. Details docs/TARO_ARC_SPARK_SENTRY.md.
-
-# Previous delivery: v7.8.26 — Sparks hunt bosses
-
-Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it (turn 5 rad/s), pass through bosses without using pierce, and re-hit the same boss every 0.3s. Normal foes unchanged.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

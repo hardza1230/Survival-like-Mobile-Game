@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.31';
+const GAME_VERSION = '7.8.32';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.32',date:'2026-10-16',title:'C2-4 Four-Season art',items:['Season changes sweep in with seasonal screen edges; season HUD icons light up as trials pass','New Bloom Sprout fills the Spring trial; healing petals show which monsters regenerate','Sun burn rings, leaf-gust lanes and frost patches now use painted warnings and impacts','Chronobloom Orchid: vine fan, solar rings, frost shards, spinning leaves, Time Break clock, season seals and metamorph art']},
   {v:'7.8.31',date:'2026-10-16',title:'Arc focus, hunt arrow, Plasma vs bosses',items:['Taro Arc: with a boss or miniboss in range, every chain and every jump strikes it at full power','When no monster is on screen, the arrow points to the nearest miniboss (orange) or monster (pink)','Plasma Field deals ×1.75 damage to bosses and minibosses']},
   {v:'7.8.30',date:'2026-10-16',title:'Taro: Plasma, Arc and Shock art',items:['Painted Plasma Field ring, cast and hit effects','Painted Static Arc bolts and hits; Overload Loop bounces show a thick golden bolt and a big impact','Overcharge Detonation shows each sentry overloading and a ground shockwave','Shock stacks show a 1–5 bolt counter over enemies and a spark aura at full stacks','New Unique button icons for Plasma Field and Overcharge Detonation, and a card icon for Overload']},
   {v:'7.8.29',date:'2026-10-16',title:'C2-4 Season Storm fix',items:['Fixed C2-4 sometimes getting stuck: the Spring trial needs 10 kills, but once the wave’s reserves ran out no enemies were left to kill. Spring now grows its own Bloom Sprouts until the trial can be finished']},
@@ -2218,6 +2219,11 @@ const ASSET_SHEETS = {
   c24_equinox_animated:{url:'assets/art/ch2_seasons/c24_equinox_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
   c24_season_wisp_animated:{url:'assets/art/ch2_seasons/c24_season_wisp_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
   ch2_seasons_enemy_atlas:{ url:'assets/ch2_seasons_enemy_atlas.png', frame:256 },
+  // v7.8.32 art order 19 (assets/art/c24_seasons · scripts/pack-c24-season-art.py): Bloom Sprout, season HUD icons, boss projectiles (128 cells = proj_foe body)
+  c24_bloom_sprout_animated:{url:'assets/art/c24_seasons/c24_bloom_sprout_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{hurt:{frames:[6],rate:16},death:{frames:[7],rate:8}}},
+  ui_c24_season_icons:{url:'assets/art/c24_seasons/ui_c24_season_icons.webp',frame:64},
+  proj_c24_frost_shard:{url:'assets/art/c24_seasons/proj_c24_frost_shard.webp',frame:128,anim:{frames:4,rate:10}},
+  proj_c24_autumn_leaf:{url:'assets/art/c24_seasons/proj_c24_autumn_leaf.webp',frame:128,anim:{frames:4,rate:12}},
   mb9_season_keeper:{ url:'assets/mb9_season_keeper_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   boss9_chronobloom_orchid:{ url:'assets/boss9_chronobloom_orchid_sheet.png', frame:256, anim:{frames:2,rate:4,yoyo:true} },
   c25_rootling_animated:{url:'assets/art/ch2_root/c25_rootling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
@@ -2258,6 +2264,25 @@ const ASSET_FX = {
   bpx_taro_arc_bolt:{url:'assets/art/taro_unique/vfx_taro_arc_bolt.webp',fw:512,fh:64,frames:4,rate:24,anchor:'left',loop:true},
   bpx_taro_arc_hit:{url:'assets/art/taro_unique/vfx_taro_arc_hit.webp',fw:128,fh:128,frames:4,rate:22,anchor:'center'},
   bpx_taro_arc_loop:{url:'assets/art/taro_unique/vfx_taro_arc_loop.webp',fw:512,fh:96,frames:4,rate:24,anchor:'left',loop:true},
+  // v7.8.32 art order 19 C2-4 Four-Season VFX (stage-lazy via STAGE_SHEETS[8]) · luminance-alpha, NORMAL blend
+  vfx_c24_season_shift_spring:{url:'assets/art/c24_seasons/vfx_c24_season_shift_spring.webp',fw:320,fh:320,frames:8,rate:14,anchor:'center'},
+  vfx_c24_season_shift_summer:{url:'assets/art/c24_seasons/vfx_c24_season_shift_summer.webp',fw:320,fh:320,frames:8,rate:14,anchor:'center'},
+  vfx_c24_season_shift_autumn:{url:'assets/art/c24_seasons/vfx_c24_season_shift_autumn.webp',fw:320,fh:320,frames:8,rate:14,anchor:'center'},
+  vfx_c24_season_shift_winter:{url:'assets/art/c24_seasons/vfx_c24_season_shift_winter.webp',fw:320,fh:320,frames:8,rate:14,anchor:'center'},
+  vfx_c24_spring_heal:{url:'assets/art/c24_seasons/vfx_c24_spring_heal.webp',fw:128,fh:128,frames:4,rate:10,anchor:'center'},
+  vfx_c24_summer_burn:{url:'assets/art/c24_seasons/vfx_c24_summer_burn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true},
+  vfx_c24_summer_ignite:{url:'assets/art/c24_seasons/vfx_c24_summer_ignite.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
+  vfx_c24_trial_pass:{url:'assets/art/c24_seasons/vfx_c24_trial_pass.webp',fw:256,fh:256,frames:6,rate:10,anchor:'center'},
+  vfx_c24_autumn_lane:{url:'assets/art/c24_seasons/vfx_c24_autumn_lane.webp',fw:1024,fh:96,frames:4,rate:8,anchor:'center',loop:true},
+  vfx_c24_autumn_slash:{url:'assets/art/c24_seasons/vfx_c24_autumn_slash.webp',fw:1024,fh:128,frames:4,rate:16,anchor:'center'},
+  vfx_c24_winter_patch:{url:'assets/art/c24_seasons/vfx_c24_winter_patch.webp',fw:256,fh:256,frames:4,rate:6,anchor:'center',loop:true},
+  vfx_c24_winter_freeze:{url:'assets/art/c24_seasons/vfx_c24_winter_freeze.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
+  vfx_c24_vine_fan:{url:'assets/art/c24_seasons/vfx_c24_vine_fan.webp',fw:512,fh:256,frames:4,rate:8,anchor:'left',loop:true},
+  vfx_c24_vine_slash:{url:'assets/art/c24_seasons/vfx_c24_vine_slash.webp',fw:512,fh:256,frames:4,rate:14,anchor:'left'},
+  vfx_c24_solar_ring:{url:'assets/art/c24_seasons/vfx_c24_solar_ring.webp',fw:256,fh:256,frames:4,rate:4.2,anchor:'center'},
+  vfx_c24_time_break:{url:'assets/art/c24_seasons/vfx_c24_time_break.webp',fw:384,fh:384,frames:8,rate:9,anchor:'center'},
+  vfx_c24_season_seal:{url:'assets/art/c24_seasons/vfx_c24_season_seal.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true},
+  vfx_c24_metamorph:{url:'assets/art/c24_seasons/vfx_c24_metamorph.webp',fw:384,fh:384,frames:8,rate:10,anchor:'center'},
   bpx_taro_arc_overload_hit:{url:'assets/art/taro_unique/vfx_taro_arc_overload_hit.webp',fw:256,fh:256,frames:6,rate:20,anchor:'center'},
   bpx_taro_spark:{url:'assets/art/taro_spark_ball/vfx_taro_spark.webp',fw:128,fh:128,frames:4,rate:14,anchor:'center',loop:true},
   bpx_taro_spark_split:{url:'assets/art/taro_spark_ball/vfx_taro_spark_split.webp',fw:128,fh:128,frames:4,rate:26,anchor:'center'},
@@ -2689,7 +2714,7 @@ const STAGE_SHEETS=[
   ['c21_crown_sapling_animated','boss6_rootmother','mb6_sporewarden','ch2_enemy_atlas','ch2_prop_atlas','c21_sprout_animated','c21_vine_hunter_animated','c21_spore_lantern_animated','c21_fruit_pod_animated','c21_root_beetle_animated','c21_thorn_oracle_animated'],
   ['boss7_mycelium_behemoth','mb7_fungal_juggernaut','ch2_mycelium_enemy_atlas','ch2_prop_atlas','c22_drifter_animated','c22_hopper_animated','c22_sniper_animated','c22_mold_sac_animated','c22_bulwark_animated','c22_oracle_animated','c22_sporeling_animated'],
   ['boss8_hornet_queen','mb8_royal_stinger','ch2_nectar_enemy_atlas','ch2_prop_atlas','c23_drone_animated','c23_dartwing_animated','c23_pollen_sniper_animated','c23_honey_bomb_animated','c23_wax_guard_animated','c23_choir_moth_animated','c23_grub_animated'],
-  ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas','c24_budling_animated','c24_sunscarab_animated','c24_leafblade_animated','c24_frostbell_animated','c24_stormfruit_animated','c24_equinox_animated','c24_season_wisp_animated'],
+  ['boss9_chronobloom_orchid','mb9_season_keeper','ch2_seasons_enemy_atlas','c24_budling_animated','c24_sunscarab_animated','c24_leafblade_animated','c24_frostbell_animated','c24_stormfruit_animated','c24_equinox_animated','c24_season_wisp_animated','c24_bloom_sprout_animated','ui_c24_season_icons','proj_c24_frost_shard','proj_c24_autumn_leaf','vfx_c24_season_shift_spring','vfx_c24_season_shift_summer','vfx_c24_season_shift_autumn','vfx_c24_season_shift_winter','vfx_c24_spring_heal','vfx_c24_summer_burn','vfx_c24_summer_ignite','vfx_c24_trial_pass','vfx_c24_autumn_lane','vfx_c24_autumn_slash','vfx_c24_winter_patch','vfx_c24_winter_freeze','vfx_c24_vine_fan','vfx_c24_vine_slash','vfx_c24_solar_ring','vfx_c24_time_break','vfx_c24_season_seal','vfx_c24_metamorph'],
   ['boss10_true_rootmother','mb10_ancient_root_knight','ch2_root_enemy_atlas','c25_rootling_animated','c25_thorn_charger_animated','c25_bramble_assassin_animated','c25_sap_oracle_animated','c25_seed_bomb_animated','c25_bark_guard_animated','c25_root_choir_animated'],
   ...[1,2,3,4,5].map(n=>['c3_elite_animated','c3_mini'+n,'c3_boss'+n,'c3_e_basic_animated','c3_e_fast_animated','c3_e_shooter_animated','c3_e_bomber_animated','c3_e_tank_animated'])
 ];
@@ -6518,7 +6543,7 @@ class Game extends Phaser.Scene {
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'epilogue_s'+(idx+1),'result_victory','result_defeat'];
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
-    return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]);
+    return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]||ASSET_FX[k]);   // v7.8.32 ASSET_FX เฉพาะด่าน (C2-4) โหลดพร้อมด่าน
   }
   registerStageAnimations(keys){
     registerEnemyActionAnimations(this,keys);
@@ -6580,7 +6605,7 @@ class Game extends Phaser.Scene {
     if(!keys.some(k=>!this.textures.exists(k)||this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement)){this.registerStageAnimations(keys);this._stageArtReady.add(idx);done&&done();return;}
     this._stageArtWait.set(idx,done?[done]:[]);
     // v6.45: รอเฉพาะไฟล์ของด่านนี้ (เดิมรอ loader 'complete' = รอของเบื้องหลังทั้งหมด)
-    this.ensureGroup(k=>ks.has(k),()=>{this.registerStageAnimations(keys);this._stageArtReady.add(idx);const wait=this._stageArtWait.get(idx)||[];this._stageArtWait.delete(idx);for(const cb of wait)cb();},{all:true,quiet:!this._enteringStageArt,label:'Loading stage…'});
+    this.ensureGroup(k=>ks.has(k),()=>{this.registerStageAnimations(keys);this._stageArtReady.add(idx);const wait=this._stageArtWait.get(idx)||[];this._stageArtWait.delete(idx);for(const cb of wait)cb();},{all:true,fx:true,quiet:!this._enteringStageArt,label:'Loading stage…'});
   }
   ensureStageCards(chapter){
     if(!this._stageCardsQueued)this._stageCardsQueued=new Set();
@@ -10859,11 +10884,22 @@ class Game extends Phaser.Scene {
       {name:'Winter Crown',emoji:'❄️',color:0x8fdcff,sub:'Frost volleys close from the arena rim'}
     ][i&3];
   }
+  /* v7.8.32 อาร์ตใบสั่ง 19: sprite VFX ด่าน C2-4 · ไม่มีภาพ = null (ใช้ภาพโค้ดเดิม) · keep=ค้าง (คนเรียกต้องลบเอง) · ui=ติดจอ */
+  c24Fx(key,x,y,w,o={}){const fd=ASSET_FX[key];if(!fd||!this.add||!this.realTex?.(key))return null;if(!o.must&&(this.fxOk?.()===false||(this._c24Live||0)>=40))return null;
+    if(!this.anims.exists(key))this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:fd.frames-1}),frameRate:fd.rate,repeat:fd.loop?-1:0});
+    const s=this.add.sprite(x,y,key,0);if(o.ui){s.setScrollFactor(1);this.camUI(s);}else this.camWorld(s);s.setDepth(o.depth??90380).setOrigin(fd.anchor==='left'?0:.5,.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);
+    if(o.rot!=null)s.setRotation(o.rot);if(o.tint!=null)s.setTint(o.tint);if(o.alpha!=null)s.setAlpha(o.alpha);s.play(key);this.trackArtVfx(s);this._c24Live=(this._c24Live||0)+1;s.once('destroy',()=>{this._c24Live--;this._c24Keep?.delete(s);});
+    if(o.keep){(this._c24Keep||(this._c24Keep=new Set())).add(s);}else if(o.life>0)this.time.delayedCall(o.life*1000,()=>{if(s.active)this.tweens.add({targets:s,alpha:0,duration:220,onComplete:()=>s.destroy()});});else if(!fd.loop)s.once('animationcomplete',()=>s.destroy());return s;}
+  c24Drop(s){if(s?.active)s.destroy();return null;}
+  c24ClearCur(c){if(!c)return;c.burn=this.c24Drop(c.burn);for(const L of c.lines||[])L.s=this.c24Drop(L.s);for(const P of c.patches||[])P.s=this.c24Drop(P.s);}
+  c24HealFx(n){const wv=this.cameras?.main?.worldView;let k=0;this.enemies.children.iterate(e=>{if(k>=n||!e||!e.active||e.isBoss||e.isMini||(wv&&!wv.contains(e.x,e.y)))return;k++;this.c24Fx('vfx_c24_spring_heal',e.x,e.y-10,64);});}
+  c24Bullet(b,key){if(!b||!this.realTex?.(key))return b;b.setTexture(key,0);if(this.anims.exists(key+'_walk'))b.play(key+'_walk');return b;}
   tickSeasonArena(dt){
+    if(this._c24Keep?.size&&!(this.waveObjective?.type==='seasonCycle'&&this.waveObjective.storm&&!this.waveObjective.done))for(const k of [...this._c24Keep])k.destroy();
     if(this.stageIndex!==8||!['wave','mini','boss'].includes(this.mode))return;
     if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};const s=this._seasonState;s.t-=dt;if(s.t>0)return;
-    s.idx=(s.idx+1)%4;s.cycle++;s.t=this.mode==='boss'?8.2:10.0;const info=this.seasonInfo(s.idx);this.showBanner(info.emoji+' '+info.name,info.sub,720);this.screenFlash(info.color,.16,320);
-    if(s.idx===0){this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.055);});}
+    s.idx=(s.idx+1)%4;s.cycle++;s.t=this.mode==='boss'?8.2:10.0;const info=this.seasonInfo(s.idx);this.showBanner(info.emoji+' '+info.name,info.sub,720);if(!this.c24Fx(['vfx_c24_season_shift_spring','vfx_c24_season_shift_summer','vfx_c24_season_shift_autumn','vfx_c24_season_shift_winter'][s.idx],this.W/2,this.H/2,this.W,{ui:true,h:this.H,depth:81,must:true}))this.screenFlash(info.color,.16,320);
+    if(s.idx===0){this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.055);});this.c24HealFx(5);}
     const storm=this.waveObjective&&this.waveObjective.type==='seasonCycle';
     if(storm)return;
     else if(s.idx===1){for(let i=0;i<3;i++){const a=i*TAU/3+Math.random()*.5;this.spawnHazard(this.player.x+Math.cos(a)*Phaser.Math.Between(80,175),this.player.y+Math.sin(a)*Phaser.Math.Between(80,175),58,Math.round(10+this.stageIndex*2.1),info.color);}}
@@ -10876,37 +10912,37 @@ class Game extends Phaser.Scene {
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
     o.storm={passed:[false,false,false,false],cur:null}; this.stormBeginSeason(o,this._seasonState.idx,true); }
   stormRule(i){ return [{goal:'Defeat 10 — they heal!',need:10},{goal:'Keep moving — standing still burns',max:1},{goal:'Dodge the leaf gusts',max:1},{goal:'Dodge the frost patches on the ice',max:1}][i&3]; }
-  stormBeginSeason(o,idx,partial){ o.storm.cur={idx,kills:0,hits:0,still:0,ev:1.2,lines:[],patches:[],partial:!!partial,windA:Math.random()*TAU,regen:0};
+  stormBeginSeason(o,idx,partial){ this.c24ClearCur(o.storm.cur);o.storm.cur={idx,kills:0,hits:0,still:0,ev:1.2,lines:[],patches:[],partial:!!partial,windA:Math.random()*TAU,regen:0};
     if(!partial&&!o.storm.passed[idx]){const info=this.seasonInfo(idx);this.showBanner(info.emoji+' Trial: '+info.name,this.stormRule(idx).goal,1500);} }
   stormEndSeason(o){ const c=o.storm.cur;if(!c||c.partial||o.storm.passed[c.idx])return;const r=this.stormRule(c.idx),ok=r.need?c.kills>=r.need:c.hits<=r.max,info=this.seasonInfo(c.idx);
-    if(ok){o.storm.passed[c.idx]=true;o.progress=o.storm.passed.filter(Boolean).length;this.floatText(this.player.x,this.player.y-60,info.emoji+' TRIAL PASSED!',info.color);this.screenFlash(info.color,.22,260);Sfx.clear&&Sfx.clear();}
+    if(ok){o.storm.passed[c.idx]=true;o.progress=o.storm.passed.filter(Boolean).length;this.c24Fx('vfx_c24_trial_pass',this.player.x,this.player.y,190,{tint:info.color});this.floatText(this.player.x,this.player.y-60,info.emoji+' TRIAL PASSED!',info.color);this.screenFlash(info.color,.22,260);Sfx.clear&&Sfx.clear();}
     else this.floatText(this.player.x,this.player.y-60,info.emoji+' Trial failed — next cycle',0xbbbbbb); }
   stormHit(o,dmgMul){ const c=o.storm.cur;c.hits++;this.player.iframe=0;this.hurtPlayer(Math.max(4,Math.round((this.player.maxhp||100)*dmgMul)),.5);this.cameras.main.shake(120,.004); }
   tickSeasonObjective(dt){
     const o=this.waveObjective;if(!o||o.type!=='seasonCycle'||!o.storm)return;const g=this.objNodeG;if(!g)return;g.clear();
     const idx=this._seasonState?this._seasonState.idx:0;let c=o.storm.cur;if(!c||c.idx!==idx){this.stormEndSeason(o);if(o.progress>=o.target){this.completeWaveObjective();return;}this.stormBeginSeason(o,idx,false);c=o.storm.cur;}
-    if(o.storm.passed[idx]){return;}   // ฤดูที่ผ่านแล้ว = พัก ไม่มีภัย
+    if(o.storm.passed[idx]){this.c24ClearCur(c);return;}   // ฤดูที่ผ่านแล้ว = พัก ไม่มีภัย
     const pl=this.player,info=this.seasonInfo(idx),t=this.elapsed||0;
-    if(idx===0){ c.sprout=(c.sprout||0)-dt;if(c.sprout<=0&&this.mode==='wave'){c.sprout=1.2;let live=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)live++;});const want=Math.min(6,10-c.kills);for(let i=0;i<Math.min(2,want-live);i++)this.spawnEnemy('basic',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.55);}   /* v7.8.29 บั๊กค้าง: Reserves หมดแล้วด่านฤดูใบไม้ผลิต้องฆ่า 10 ตัวแต่ไม่มีศัตรูเกิด → เติม Bloom Sprout เอง */
-      c.regen-=dt;if(c.regen<=0){c.regen=1;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.04);});} }
+    if(idx===0){ c.sprout=(c.sprout||0)-dt;if(c.sprout<=0&&this.mode==='wave'){c.sprout=1.2;let live=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)live++;});const want=Math.min(6,10-c.kills);for(let i=0;i<Math.min(2,want-live);i++)this.spawnEnemy('sprout',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.55);}   /* v7.8.29 บั๊กค้าง: Reserves หมดแล้วด่านฤดูใบไม้ผลิต้องฆ่า 10 ตัวแต่ไม่มีศัตรูเกิด → เติม Bloom Sprout เอง */
+      c.regen-=dt;if(c.regen<=0){c.regen=1;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.04);});this.c24HealFx(4);} }
     else if(idx===1){ const v=pl.body?pl.body.velocity.length():0;c.still=v<40?c.still+dt:Math.max(0,c.still-dt*2);const f=Phaser.Math.Clamp(c.still/1.4,0,1);
-      if(f>0.05){g.lineStyle(4,0xff5a1f,.4+.5*f);g.strokeCircle(pl.x,pl.y,70-30*f);g.fillStyle(0xffb12b,.18*f);g.fillCircle(pl.x,pl.y,70-30*f);}
-      if(c.still>=1.4){c.still=0;this.spawnFxAnim&&this.spawnFxAnim('fx_chilinova',pl.x,pl.y,{scale:.5});this.stormHit(o,.07);} }
+      if(f>0.05){if(!c.burn?.active)c.burn=this.c24Fx('vfx_c24_summer_burn',pl.x,pl.y,140,{keep:true,must:true,depth:3});if(c.burn){const d=(70-30*f)*2.3;c.burn.setPosition(pl.x,pl.y).setDisplaySize(d,d).setAlpha(.35+.65*f).setVisible(true);}else{g.lineStyle(4,0xff5a1f,.4+.5*f);g.strokeCircle(pl.x,pl.y,70-30*f);g.fillStyle(0xffb12b,.18*f);g.fillCircle(pl.x,pl.y,70-30*f);}}else if(c.burn)c.burn.setVisible(false);
+      if(c.still>=1.4){c.still=0;if(!this.c24Fx('vfx_c24_summer_ignite',pl.x,pl.y,150,{must:true}))this.spawnFxAnim&&this.spawnFxAnim('fx_chilinova',pl.x,pl.y,{scale:.5});this.stormHit(o,.07);} }
     else if(idx===2){ c.windA+=dt*.35;if(pl.body&&!(this.dashTime>0)){pl.body.x+=Math.cos(c.windA)*75*dt;pl.body.y+=Math.sin(c.windA)*75*dt;}
       for(let k=0;k<3;k++){const a=c.windA,ox=pl.x+Math.cos(a+1.6)*(k-1)*60,oy=pl.y+Math.sin(a+1.6)*(k-1)*60;g.lineStyle(2,0xffd0a0,.35);g.lineBetween(ox-Math.cos(a)*30,oy-Math.sin(a)*30,ox+Math.cos(a)*30,oy+Math.sin(a)*30);}
       c.ev-=dt;if(c.ev<=0){c.ev=2.2;const a=Math.random()*Math.PI,v=pl.body?pl.body.velocity:{x:0,y:0};c.lines.push({x:pl.x+v.x*.85+Math.cos(c.windA)*75,y:pl.y+v.y*.85+Math.sin(c.windA)*75,a,t:1.0});}
-      for(const L of c.lines){L.t-=dt;const dx=Math.cos(L.a)*900,dy=Math.sin(L.a)*900;if(L.t>0){g.lineStyle(L.t<.35?10:4,0xff7040,L.t<.35?.85:.4);g.lineBetween(L.x-dx,L.y-dy,L.x+dx,L.y+dy);}
-        else if(!L.done){L.done=true;const px=pl.x-L.x,py=pl.y-L.y,perp=Math.abs(-px*Math.sin(L.a)+py*Math.cos(L.a));g.lineStyle(14,0xffe0b0,.9);g.lineBetween(L.x-dx,L.y-dy,L.x+dx,L.y+dy);if(perp<38)this.stormHit(o,.08);}}
-      c.lines=c.lines.filter(L=>L.t>-.2); }
+      for(const L of c.lines){L.t-=dt;const dx=Math.cos(L.a)*900,dy=Math.sin(L.a)*900;if(L.t>0){if(L.s===undefined)L.s=this.c24Fx('vfx_c24_autumn_lane',L.x,L.y,1800,{h:84,rot:L.a,keep:true,must:true,depth:3});if(L.s)L.s.setAlpha(L.t<.35?1:.6);else{g.lineStyle(L.t<.35?10:4,0xff7040,L.t<.35?.85:.4);g.lineBetween(L.x-dx,L.y-dy,L.x+dx,L.y+dy);}}
+        else if(!L.done){L.done=true;const px=pl.x-L.x,py=pl.y-L.y,perp=Math.abs(-px*Math.sin(L.a)+py*Math.cos(L.a));L.s=this.c24Drop(L.s);if(!this.c24Fx('vfx_c24_autumn_slash',L.x,L.y,1800,{h:110,rot:L.a,must:true})){g.lineStyle(14,0xffe0b0,.9);g.lineBetween(L.x-dx,L.y-dy,L.x+dx,L.y+dy);}if(perp<38)this.stormHit(o,.08);}}
+      c.lines=c.lines.filter(L=>{if(L.t>-.2)return true;L.s=this.c24Drop(L.s);return false;}); }
     else { // winter: ลื่น + แผ่นน้ำแข็ง
       if(pl.body&&!(this.dashTime>0)){const v=pl.body.velocity;if(c.vx===undefined){c.vx=v.x;c.vy=v.y;}c.vx+=(v.x-c.vx)*Math.min(1,dt*3.2);c.vy+=(v.y-c.vy)*Math.min(1,dt*3.2);pl.setVelocity(c.vx,c.vy);}
       c.ev-=dt;if(c.ev<=0){c.ev=1.6;const v=pl.body?pl.body.velocity:{x:0,y:0};c.patches.push({x:pl.x+v.x*.6,y:pl.y+v.y*.6,t:1.1,r:64});}
-      for(const P of c.patches){P.t-=dt;if(P.t>0){g.fillStyle(0x8fdcff,.12+.25*(1-P.t/1.1));g.fillCircle(P.x,P.y,P.r);g.lineStyle(3,0xd8f4ff,.8);g.strokeCircle(P.x,P.y,P.r*(P.t/1.1)+4);}
-        else if(!P.done){P.done=true;g.fillStyle(0xffffff,.7);g.fillCircle(P.x,P.y,P.r);if(this.dist(pl.x,pl.y,P.x,P.y)<P.r)this.stormHit(o,.08);}}
-      c.patches=c.patches.filter(P=>P.t>-.2); }
+      for(const P of c.patches){P.t-=dt;if(P.t>0){if(P.s===undefined)P.s=this.c24Fx('vfx_c24_winter_patch',P.x,P.y,P.r*2.15,{keep:true,must:true,depth:3});if(!P.s){g.fillStyle(0x8fdcff,.12+.25*(1-P.t/1.1));g.fillCircle(P.x,P.y,P.r);g.lineStyle(3,0xd8f4ff,.8);g.strokeCircle(P.x,P.y,P.r*(P.t/1.1)+4);}}
+        else if(!P.done){P.done=true;P.s=this.c24Drop(P.s);if(!this.c24Fx('vfx_c24_winter_freeze',P.x,P.y,P.r*2.6,{must:true})){g.fillStyle(0xffffff,.7);g.fillCircle(P.x,P.y,P.r);}if(this.dist(pl.x,pl.y,P.x,P.y)<P.r)this.stormHit(o,.08);}}
+      c.patches=c.patches.filter(P=>{if(P.t>-.2)return true;P.s=this.c24Drop(P.s);return false;}); }
   }
-  stormHudText(o){ if(!o.storm)return'';const c=o.storm.cur,marks=[0,1,2,3].map(i=>this.seasonInfo(i).emoji+(o.storm.passed[i]?'✓':'')).join(' ');if(!c||o.storm.passed[c.idx])return marks+' · rest';const r=this.stormRule(c.idx);
-    return marks+' · '+(c.partial?'next trial soon':(r.need?('kills '+c.kills+'/'+r.need):('hits '+c.hits+'/'+r.max+' max'))); }
+  stormHudText(o,noMarks){ if(!o.storm)return'';const c=o.storm.cur,marks=noMarks?'':[0,1,2,3].map(i=>this.seasonInfo(i).emoji+(o.storm.passed[i]?'✓':'')).join(' ')+' · ';if(!c||o.storm.passed[c.idx])return marks+'rest';const r=this.stormRule(c.idx);
+    return marks+(c.partial?'next trial soon':(r.need?('kills '+c.kills+'/'+r.need):('hits '+c.hits+'/'+r.max+' max'))); }
   spawnNectarGarden(){
     const o=this.waveObjective;if(!o||o.type!=='defendNectar')return;this._nectarFlowers=[];this._nectarPulse=0;
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
@@ -11219,13 +11255,20 @@ class Game extends Phaser.Scene {
     this.renderWaveObjectiveHUD();
   }
   renderWaveObjectiveHUD(){
-    const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);return;}
+    const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);this.syncSeasonIcons?.(null);return;}
     this.renderBonusHUD();
-    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o):Math.floor(o.progress)+' / '+o.target);
+    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o,this.realTex?.('ui_c24_season_icons')):Math.floor(o.progress)+' / '+o.target);
     const step=o._huntPhase?'Step '+(o.progress*2+(o._huntPhase==='clear'?1:2))+'/'+(o.target*2)+' · '+(o._huntPhase==='clear'?'Clear '+o._huntKills+'/'+o._huntKillGoal:'Defeat marked Elite'):(o.type==='fill'&&this.usesStoryBudget?.()?'Step 1/2 · Clear '+Math.floor(o.progress)+'/'+o.target:null);
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(step||((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value)).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
+    this.syncSeasonIcons?.(o);
     const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
+  /* v7.8.32 ไอคอนฤดู (อาร์ต A10) หน้าข้อความภารกิจ Season Storm: แถวบน=ยังไม่ผ่าน 0–3 · ผ่านแล้ว 4–7 */
+  syncSeasonIcons(o){const T=this.waveObjTxt;if(!T)return;const on=!!(o&&o.type==='seasonCycle'&&o.storm&&T.visible&&this.realTex?.('ui_c24_season_icons'));
+    if(!on){if(this._seasonIcons)for(const i of this._seasonIcons)i.setVisible(false);if(this._seasonIconsOn){this._seasonIconsOn=false;T.setOrigin(.5,0).setX(this.W/2);}return;}
+    if(!this._seasonIcons?.every(i=>i.active))this._seasonIcons=[0,1,2,3].map(()=>{const i=this.add.image(0,0,'ui_c24_season_icons',0).setScrollFactor(1).setDepth(54);this.camUI(i);return i;});
+    const sz=22,gap=3,iw=4*sz+3*gap,total=iw+6+T.width,x0=this.W/2-total/2,cy=T.y+T.height/2;this._seasonIconsOn=true;T.setOrigin(0,0).setX(x0+iw+6);
+    this._seasonIcons.forEach((im,k)=>{const cur=o.storm.cur&&o.storm.cur.idx===k&&!o.storm.passed[k];im.setTexture('ui_c24_season_icons',o.storm.passed[k]?4+k:k).setDisplaySize(cur?sz+4:sz,cur?sz+4:sz).setPosition(x0+sz/2+k*(sz+gap),cy).setVisible(true);});}
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;
     if(o.type==='hunt'&&o._huntPhase!=='clear')Sfx.rewardCue?.('sfx_event_hunt_threat_complete',.65);
@@ -11246,7 +11289,7 @@ class Game extends Phaser.Scene {
     for(const k of ['_captureZone','_captureRing','_captureFill','_cleanAirZone','_cleanAirRing','_cleanAirWisp']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
-    this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);
+    this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt])if(q)q.setVisible(false);this.syncSeasonIcons?.(null);
   }
   // ล้างมอนธรรมดาที่ค้าง (เก็บบอส/มินิไว้) — ใช้ตอนจบเวฟ/Waitดครบเวลา
   // v5.19.1 Hunt: ถ้าไม่ไล่ตามเป้า (ห่าง >460 นาน 2.5 วิ) โดนคำสาปเลือดลดเรื่อย ๆ จนกว่าจะเข้าใกล้
@@ -13080,7 +13123,7 @@ class Game extends Phaser.Scene {
     const key='c23_'+id+'_animated';return this.textures.exists(key)?key:'ch2_nectar_enemy_atlas';
   }
   seasonArtKey(type){
-    const id=({fast:'sunscarab',dasher:'leafblade',shooter:'frostbell',bomber:'stormfruit',tank:'equinox',siege:'season_wisp'})[type]||'budling';
+    const id=({sprout:'bloom_sprout',fast:'sunscarab',dasher:'leafblade',shooter:'frostbell',bomber:'stormfruit',tank:'equinox',siege:'season_wisp'})[type]||'budling';
     const key='c24_'+id+'_animated';return this.textures.exists(key)?key:'ch2_seasons_enemy_atlas';
   }
   rootArtKey(type){
@@ -13212,8 +13255,8 @@ class Game extends Phaser.Scene {
       e.roleName=role[0];e.mycoRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.mycoRole==='oracle'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.5,2.3);}if(e.mycoRole==='bulwark'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0x9ae66e).setDisplaySize(235,168).setAlpha(.34).setDepth(e.y-1));}}
     if(this.stageIndex===7){const role={basic:['Nectar Drone','drone',.37,43,85,85],fast:['Dartwing','dartwing',.36,42,86,86],dasher:['Dartwing','dartwing',.36,42,86,86],shooter:['Pollen Sniper','pollenSniper',.39,44,84,84],bomber:['Honey Bomb','honeyBomb',.42,47,81,81],tank:['Wax Shieldbearer','waxGuard',.47,53,75,75],siege:['Choir Moth','choirMoth',.43,48,80,80],grub:['Tiny Grub','grub',.25,34,94,94]}[type]||['Nectar Drone','drone',.37,43,85,85];
       e.roleName=role[0];e.nectarRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.nectarRole==='choirMoth'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.4,2.1);}if(e.nectarRole==='waxGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0xffc95c).setDisplaySize(225,160).setAlpha(.32).setDepth(e.y-1));}}
-    if(this.stageIndex===8){const role={basic:['Spring Budling','budling',.37,43,85,85],fast:['Summer Sunscarab','sunscarab',.35,41,87,87],dasher:['Autumn Leafblade','leafblade',.39,44,84,84],shooter:['Winter Frostbell','frostbell',.38,43,85,85],bomber:['Stormcloud Fruit','stormfruit',.43,47,81,81],tank:['Equinox Gardener','equinoxGuard',.48,54,74,74],siege:['Seasonal Wisp','seasonWisp',.42,47,81,81]}[type]||['Spring Budling','budling',.37,43,85,85];
-      e.roleName=role[0];e.seasonRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.seasonRole==='seasonWisp'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.35,2.0);}if(e.seasonRole==='equinoxGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0x8fdcff).setDisplaySize(230,165).setAlpha(.33).setDepth(e.y-1));}}
+    if(this.stageIndex===8){const role={basic:['Spring Budling','budling',.37,43,85,85],fast:['Summer Sunscarab','sunscarab',.35,41,87,87],dasher:['Autumn Leafblade','leafblade',.39,44,84,84],shooter:['Winter Frostbell','frostbell',.38,43,85,85],bomber:['Stormcloud Fruit','stormfruit',.43,47,81,81],tank:['Equinox Gardener','equinoxGuard',.48,54,74,74],siege:['Seasonal Wisp','seasonWisp',.42,47,81,81],sprout:['Bloom Sprout','bloomSprout',.3,40,88,88]}[type]||['Spring Budling','budling',.37,43,85,85];
+      e.roleName=role[0];e.seasonRole=role[1];scale=role[2];if(type==='sprout')e.spd*=1.4;e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.seasonRole==='seasonWisp'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.35,2.0);}if(e.seasonRole==='equinoxGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0x8fdcff).setDisplaySize(230,165).setAlpha(.33).setDepth(e.y-1));}}
     if(this.stageIndex===9){const role={basic:['Crown Rootling','rootling',.38,44,84,84],fast:['Thorn Charger','thornCharger',.39,44,84,84],dasher:['Bramble Assassin','brambleAssassin',.40,45,83,83],shooter:['Sap Oracle','sapOracle',.41,46,82,82],bomber:['Memory Seed Bomb','seedBomb',.44,48,80,80],tank:['Bark Bulwark','barkGuard',.49,55,73,73],siege:['Root Choir Leech','rootChoir',.44,49,79,79]}[type]||['Crown Rootling','rootling',.38,44,84,84];
       e.roleName=role[0];e.rootRole=role[1];scale=role[2];e.clearTint();e.setCircle(role[3],role[4],role[5]);if(e.rootRole==='rootChoir'){e.shooter=true;e.shootCd=Phaser.Math.FloatBetween(1.3,1.95);}if(e.rootRole==='barkGuard'){e._aura=this.camWorld(this.add.image(e.x,e.y,'vfx_ring').setTint(0xd56bff).setDisplaySize(235,168).setAlpha(.34).setDepth(e.y-1));}}
     if(this.stageIndex>=10&&key.startsWith('c3_e_')){
@@ -15469,6 +15512,7 @@ class Game extends Phaser.Scene {
     let b=this.foeBullets.getFirstDead(false);
     if(!b) b=this.foeBullets.create(x,y,'proj_enemy'); else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
     if(!b)return null;   // pool Full → ข้ามการยิง กัน null crash
+    if(b.anims?.isPlaying)b.anims.stop();   // v7.8.32 กระสุนอาร์ตบอส C2-4 เล่นอนิเมชัน → หยุดก่อนใช้ซ้ำ
     b.setTexture(this.textures.exists('proj_foe')?'proj_foe':'proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
     b.clearTint();   // v5.78 กระสุนศัตรูสีเดียวทั้งเกม (เขียวเรือง+ขอบเข้ม) ไม่ย้อมตามด่าน → อ่านง่ายบนทุกพื้น
     if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.frost=this.stageIndex===3; b.life=3.0; this.camWorld(b);
@@ -15773,16 +15817,16 @@ class Game extends Phaser.Scene {
     if(!b||!b.active||b.texture.key!=='boss9_chronobloom_orchid')return;frame=Phaser.Math.Clamp(frame|0,0,7);const token=b._chronoPoseToken=(b._chronoPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);this.time.delayedCall(ms,()=>{if(!b.active||b._chronoPoseToken!==token)return;if(this.anims.exists('boss9_chronobloom_orchid_walk'))b.play('boss9_chronobloom_orchid_walk',true);else b.setFrame(0);});
   }
   chronobloomMetamorph(b,phase){
-    const color=phase===3?0xffd166:0x8fdcff;this.chronobloomPose(b,phase===3?7:6,phase===3?2150:1750);for(let i=0;i<(phase===3?20:14);i++){const a=i*TAU/(phase===3?20:14),ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(this.seasonInfo(i%4).color).setScale(.08,.46).setAlpha(.92).setDepth(b.y+3));this.tweens.add({targets:ray,scaleX:phase===3?2.45:1.8,alpha:0,duration:900+i*28,onComplete:()=>ray.destroy()});}this.screenFlash(color,phase===3?.70:.45,phase===3?900:640);this.screenShake(phase===3?920:600,phase===3?.027:.018);Sfx.bossWarn();
+    const color=phase===3?0xffd166:0x8fdcff;this.chronobloomPose(b,phase===3?7:6,phase===3?2150:1750);for(let i=0;i<(phase===3?20:14);i++){const a=i*TAU/(phase===3?20:14),ray=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setTint(this.seasonInfo(i%4).color).setScale(.08,.46).setAlpha(.92).setDepth(b.y+3));this.tweens.add({targets:ray,scaleX:phase===3?2.45:1.8,alpha:0,duration:900+i*28,onComplete:()=>ray.destroy()});}this.screenFlash(color,phase===3?.70:.45,phase===3?900:640);this.screenShake(phase===3?920:600,phase===3?.027:.018);this.c24Fx('vfx_c24_metamorph',b.x,b.y,phase===3?520:420,{must:true,depth:b.y-1});Sfx.bossWarn();
   }
   chronobloomAttack(b){
     const fast=b.phase3?.60:b.phase2?.77:1,pool=b.phase3?['timebreak','spiral','crown','summon','cleave','timebreak']:b.phase2?['cleave','solar','crown','spiral','summon']:['cleave','solar','crown'],pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(19,Math.round(b.dmg*.47));
-    if(pick==='cleave'){this.chronobloomPose(b,1,1050);this.showBanner('🌿 Vine Cleave','A delayed fan follows the green line — cross the stem!',820);const a=Math.atan2(py-b.y,px-b.x);for(let i=-4;i<=4;i++)this.time.delayedCall(420,()=>{if(b.active)this.foeShot(b.x,b.y,a+i*.11,360,bd,0xff9fcf,1.08);});b.atkCd=2.45*fast;}
-    else if(pick==='solar'){this.chronobloomPose(b,2,1200);this.showBanner('☀️ Solar Bloom','Sun rings chase your last steps — keep changing direction!',840);for(let i=0;i<(b.phase2?7:5);i++)this.time.delayedCall(i*140,()=>{if(b.active)this.spawnHazard(this.player.x+Phaser.Math.Between(-85,85),this.player.y+Phaser.Math.Between(-85,85),58,bd,0xffb12b);});b.atkCd=2.8*fast;}
-    else if(pick==='crown'){this.chronobloomPose(b,3,1100);this.showBanner('❄️ Frost Crown','The rim closes inward; the wide wedge is safe!',850);const n=18,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if([gap,(gap+1)%n,(gap+2)%n].includes(i))continue;const a=i*TAU/n,x=px+Math.cos(a)*300,y=py+Math.sin(a)*300;this.foeShot(x,y,a+Math.PI,245,bd,0x8fdcff,1.06);}b.atkCd=2.7*fast;}
-    else if(pick==='spiral'){this.chronobloomPose(b,4,1250);this.showBanner('🍂 Autumn Spiral','Turn with the first leaf ring, then reverse through the second!',880);const n=24,off=Math.random()*TAU;for(let i=0;i<n;i++)this.foeShot(b.x,b.y,off+i*TAU/n,225+(i%2)*60,bd,i%2?0xff7040:0xffd166,1.1);b.atkCd=2.9*fast;}
+    if(pick==='cleave'){this.chronobloomPose(b,1,1050);this.showBanner('🌿 Vine Cleave','A delayed fan follows the green line — cross the stem!',820);const a=Math.atan2(py-b.y,px-b.x),fan=this.c24Fx('vfx_c24_vine_fan',b.x,b.y,520,{rot:a,keep:true,must:true,depth:3});for(let i=-4;i<=4;i++)this.time.delayedCall(420,()=>{if(b.active)this.foeShot(b.x,b.y,a+i*.11,360,bd,0xff9fcf,1.08);});this.time.delayedCall(420,()=>{this.c24Drop(fan);if(b.active)this.c24Fx('vfx_c24_vine_slash',b.x,b.y,520,{rot:a,must:true,depth:3});});b.atkCd=2.45*fast;}
+    else if(pick==='solar'){this.chronobloomPose(b,2,1200);this.showBanner('☀️ Solar Bloom','Sun rings chase your last steps — keep changing direction!',840);for(let i=0;i<(b.phase2?7:5);i++)this.time.delayedCall(i*140,()=>{if(!b.active)return;const hx=this.player.x+Phaser.Math.Between(-85,85),hy=this.player.y+Phaser.Math.Between(-85,85);this.spawnHazard(hx,hy,58,bd,0xffb12b);this.c24Fx('vfx_c24_solar_ring',hx,hy,150,{must:true,depth:3});});b.atkCd=2.8*fast;}
+    else if(pick==='crown'){this.chronobloomPose(b,3,1100);this.showBanner('❄️ Frost Crown','The rim closes inward; the wide wedge is safe!',850);const n=18,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if([gap,(gap+1)%n,(gap+2)%n].includes(i))continue;const a=i*TAU/n,x=px+Math.cos(a)*300,y=py+Math.sin(a)*300;this.c24Bullet(this.foeShot(x,y,a+Math.PI,245,bd,0x8fdcff,1.06),'proj_c24_frost_shard');}b.atkCd=2.7*fast;}
+    else if(pick==='spiral'){this.chronobloomPose(b,4,1250);this.showBanner('🍂 Autumn Spiral','Turn with the first leaf ring, then reverse through the second!',880);const n=24,off=Math.random()*TAU;for(let i=0;i<n;i++)this.c24Bullet(this.foeShot(b.x,b.y,off+i*TAU/n,225+(i%2)*60,bd,i%2?0xff7040:0xffd166,1.1),'proj_c24_autumn_leaf');b.atkCd=2.9*fast;}
     else if(pick==='summon'){this.chronobloomPose(b,5,1450);this.showBanner('🌦️ Fourfold Garden','Each season sends one specialist into the arena!',900);for(const t of ['tank','shooter','dasher','bomber']){const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-170,170),b.y+Phaser.Math.Between(-115,115));}b.atkCd=3.3*fast;}
-    else{this.chronobloomPose(b,7,1850);this.showBanner('⏳ TIME BREAK','The clock rewinds two shockwaves, then seals all but one season!',1200);this.screenFlash(0xffd166,.58,650);this.bossNovaWave(b.x,b.y,290,bd+3,320);this.bossNovaWave(b.x,b.y,410,bd+6,880);this.time.delayedCall(700,()=>{if(!b.active)return;const n=30,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++)if(![gap,(gap+1)%n,(gap+2)%n,(gap+3)%n,(gap+4)%n].includes(i))this.foeShot(b.x,b.y,i*TAU/n,285,bd,this.seasonInfo(i%4).color,1.18);});b.atkCd=4.15*fast;}
+    else{this.chronobloomPose(b,7,1850);this.showBanner('⏳ TIME BREAK','The clock rewinds two shockwaves, then seals all but one season!',1200);this.screenFlash(0xffd166,.58,650);this.c24Fx('vfx_c24_time_break',b.x,b.y,720,{must:true,depth:3});this.bossNovaWave(b.x,b.y,290,bd+3,320);this.bossNovaWave(b.x,b.y,410,bd+6,880);this.time.delayedCall(700,()=>{if(!b.active)return;const n=30,gap=Phaser.Math.Between(0,n-1),gc=(gap+2)*TAU/n;for(let q=1;q<4;q++)this.c24Fx('vfx_c24_season_seal',b.x,b.y,520,{rot:gc+q*Math.PI/2+Math.PI/4,tint:this.seasonInfo(q).color,life:1.3,must:true,depth:3});for(let i=0;i<n;i++)if(![gap,(gap+1)%n,(gap+2)%n,(gap+3)%n,(gap+4)%n].includes(i))this.foeShot(b.x,b.y,i*TAU/n,285,bd,this.seasonInfo(i%4).color,1.18);});b.atkCd=4.15*fast;}
   }
 
   rootKnightMotion(b){
