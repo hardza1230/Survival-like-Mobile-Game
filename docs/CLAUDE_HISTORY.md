@@ -1956,3 +1956,7 @@ Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it 
 # Previous delivery: v7.8.27 — Static Arc starter, Overload Loop, Arc Plasma Field
 
 Owner approved: pre-path attack = Static Arc (small chain, 3 jumps); Arc chains loop leftover jumps into the last target at 60% (Overload Loop, new card p_arc_overload +15%/rank) so lone bosses take every jump; Arc Build Unique = Plasma Field whose ring hits fire Arc jumps. Fixed Plasma/Beacon/Overcharge being far too weak (dm scaling ~3×). Spark +1 count, speed 460. Art order 18 updated: needle D/H3 cancelled, new set I (Arc bolt/hit/loop/overload hit/card icon). Hash fixtures for castTaroChainBasic updated. Details docs/TARO_ARC_SPARK_SENTRY.md.
+
+# Previous delivery: v7.8.28 — Starter cards never go to waste
+
+Owner: starter cards picked before a Build Path should not become useless. Audit (momo/mint/cocoa/taro) found only Cocoa Earthbreaker on Fire Fist (dead) and Rushdown on Titan (follow-ups dead) truly wasted; fixed (Fire Fist fireball ×1.25 dmg/blast; Titan pound + 35% tremor wave). Earthbreaker +25% finisher now real; Taro Chainlord/Evolution really add Static Arc jumps (cap 10). Text fixes: Fireball Barrage (+18% combo speed), Mochi Reach on Fire Fist, Mint Shard Bloom on Impaler (Rupture Shards +8%), Momo Rate all builds, Petal Spread on Shotgun. New rule: Build Path cards show a '↪ Keeps:' line (pathCarryText → card o.carry, drawn in the stars line) listing owned starter cards and their name in that build. tests/starter-carry.test.cjs.

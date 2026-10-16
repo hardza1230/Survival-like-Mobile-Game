@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.33';
+const GAME_VERSION = '7.8.34';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.34',date:'2026-10-16',title:'Spark Static Charge',items:['Every 10 Spark hits on the same boss or miniboss call down a lightning strike for 8× that Spark’s damage']},
   {v:'7.8.33',date:'2026-10-16',title:'Taro Spark Storm',items:['Spark Build Unique is now Spark Storm: a rapid spiral of Sparks that pierce, home on bosses and are forced to explode after about a second','Spark damage +25%']},
   {v:'7.8.32',date:'2026-10-16',title:'C2-4 Four-Season art',items:['Season changes sweep in with seasonal screen edges; season HUD icons light up as trials pass','New Bloom Sprout fills the Spring trial; healing petals show which monsters regenerate','Sun burn rings, leaf-gust lanes and frost patches now use painted warnings and impacts','Chronobloom Orchid: vine fan, solar rings, frost shards, spinning leaves, Time Break clock, season seals and metamorph art']},
   {v:'7.8.31',date:'2026-10-16',title:'Arc focus, hunt arrow, Plasma vs bosses',items:['Taro Arc: with a boss or miniboss in range, every chain and every jump strikes it at full power','When no monster is on screen, the arrow points to the nearest miniboss (orange) or monster (pink)','Plasma Field deals ×1.75 damage to bosses and minibosses']},
@@ -6305,7 +6306,7 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
   return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
 const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=4,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=110,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=16,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
-const TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=16,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
+const TARO_STATIC_HITS=10,TARO_STATIC_MUL=8,TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=16,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
 const TARO_SPARK_SEEK=260,TARO_SPARK_TURN=5,TARO_SPARK_BOSS_GAP=.3,TARO_SPARK_GENS=2,TARO_SPARK_SPLIT_AT=.42,TARO_SPARK_SCALE=[1.25,.9,.65];   // v7.8.21 Spark fission
 function taroBeaconProfile(dm,level,echo){const n=Math.max(1,Math.min(4,level||1));return {strike:(8+4*n)*dm*(1+(n-1)*.22),life:4+n+(echo?2:0),interval:1.02-n*.07,range:520+(echo?40:0),damage:(9+n*7)*dm*(1+(n-1)*.22)*.35,orbRadius:95,orbLife:4.2,speed:TARO_BL_SPEED};}
 // v7.8.24 Lightning damage swings wide (owner): uniform 0.2–1.8, mean 1.0, for Spark/Sentry/Beacon hits.
@@ -12396,9 +12397,12 @@ class Game extends Phaser.Scene {
   taroSpawnProjectile(options){const t=this._taro;if(!t?.enabled||this.state!=='play')return null;t.projectiles=t.projectiles||[];const spark=options.kind==='spark'||options.kind==='sparkChild',cap=spark?(options.storm?72:36):TARO_ORB_CAP;if(t.projectiles.filter(p=>(p.kind==='spark'||p.kind==='sparkChild')===spark).length>=cap)return null;
     const p={...options,origin:{x:options.x,y:options.y},left:options.life,hits:new Map(options.kind==='sparkChild'?(options.hits||[]):[]),seed:++t.attackSeq,run:t.run,pathEpoch:t.pathEpoch};p.fx=this.taroProjectileVisual(p);t.projectiles.push(p);return p;
   }
+  /* v7.8.34 เจ้าของเลือก A2 Static Charge: Spark โดนบอส/มินิครบ 10 ครั้ง = ฟ้าผ่าลงบอส ×8 ดาเมจ Spark ลูกนั้น (นับแยกต่อบอส รีเซ็ตทุกรอบเล่น) */
+  taroStaticCharge(token,p){const t=this._taro;if(!t?.enabled||this.state!=='play'||!token?.enemy?.active)return;t.charge=t.charge||new Map();const n=(t.charge.get(token.id)||0)+1;if(n<TARO_STATIC_HITS){t.charge.set(token.id,n);return;}t.charge.set(token.id,0);
+    const e=token.enemy;this.taroDealDamage(token,p.damage*TARO_STATIC_MUL*taroLightningRoll(),p.kind,{attackId:p.attackId});if(!this.taroArt?.('bpx_taro_beacon_strike',e.x,e.y+16,150,{h:300,life:.45}))this.taroLightningVisual?.(e.x,e.y,e.x,e.y,true,true);this.screenShake?.(80,.004);this.taroSound?.('beacon');}
   taroProjectileHit(p,token,quiet=false){const t=this._taro;if(!t?.enabled||this.state!=='play'||p.run!==t.run||p.pathEpoch!==t.pathEpoch||!taroTargetValid(token,p,Infinity))return false;const spark=p.kind==='spark'||p.kind==='sparkChild';const big=!!(token.enemy.isBoss||token.enemy.isMini);if(p.hits.has(token.id)&&(spark?!(big&&!p.storm&&t.time-p.hits.get(token.id)>=TARO_SPARK_BOSS_GAP):t.time-p.hits.get(token.id)<TARO_ORB_HIT_GAP))return false;p.hits.set(token.id,t.time);
     const admitted=this.taroDealDamage(token,p.damage*taroLightningRoll()*(spark?1:this.taroShockMul(token.enemy)),p.kind,{attackId:p.attackId});if(!admitted)return false;if(!spark)this.taroShockAdd(token.enemy);
-    if(spark){this.taroArt?.('bpx_taro_spark_hit',token.enemy.x,token.enemy.y,44,{life:.17,rot:p.angle});if(!big||p.storm){p.pierce--;if(p.pierce<0){p.left=0;if(p.blast)this.taroSparkBlast?.(p);}}}
+    if(spark){this.taroArt?.('bpx_taro_spark_hit',token.enemy.x,token.enemy.y,44,{life:.17,rot:p.angle});if(big)this.taroStaticCharge?.(token,p);if(!big||p.storm){p.pierce--;if(p.pierce<0){p.left=0;if(p.blast)this.taroSparkBlast?.(p);}}}
     else if(!quiet&&!this.taroArt?.('bpx_taro_orb_zap',token.enemy.x,token.enemy.y,48,{life:.2}))this.taroLightningVisual(p.x,p.y,token.enemy.x,token.enemy.y);
     return true;
   }

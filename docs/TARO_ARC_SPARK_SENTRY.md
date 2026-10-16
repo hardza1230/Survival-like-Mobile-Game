@@ -91,3 +91,6 @@ Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (2
 - Spark Build Unique replaces Storm Beacon: 16 (+4/Unique level, +4 Echo) Sparks every 0.05s in a spiral; each pierces, homes on bosses (one hit per boss) and is forced to detonate after 1.1s or when pierce runs out (radius 72, (5+2.5n)·dm). Spark hit (3+1.5n)·dm. No fission.
 - Spark basic damage ×0.75 unitD (was ×0.60).
 - `castTaroBeacon` keeps the old Storm Beacon (not bound to any button).
+
+## v7.8.34 Static Charge
+- Every 10 Spark hits on the same boss/mini → lightning strike for that Spark’s damage ×8 (per-boss counter, reset each run). Normal foes never reach 10, so clear speed is unchanged.

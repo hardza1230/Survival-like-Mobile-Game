@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.33 — Taro Spark Storm Unique, Spark +25%
+# Latest delivery: v7.8.34 — Spark Static Charge (owner pick A2)
+
+Spark boss fix without touching clear: taroStaticCharge counts Spark hits per boss/mini token (t.charge Map, per run); every 10th hit (TARO_STATIC_HITS) strikes for that Spark's damage ×8 (TARO_STATIC_MUL) × lightning roll, beacon_strike art. Spark Unique still Spark Storm; owner asked about a buff-style Unique instead — options proposed in chat, awaiting pick.
+
+# Previous delivery: v7.8.33 — Taro Spark Storm Unique, Spark +25%
 
 Owner: Spark damage up a bit; Spark Unique = rapid projectiles that are forced to explode after a while. Spark profile damage unitD×0.75 (was 0.60). Spark Build Unique (castStormBeacon smite → castTaroSparkStorm): t.storm emits 16 (+4/level, +4 Echo) Sparks every 0.05s in a 2.4-rad spiral (taroTickSparkStorm inside tickTaroDeployables), hit (3+1.5n)·dm, no fission, boss hit once, pierce = Spark pierce; fuse 1.1s or pierce spent → taroSparkBlast radius 72, (5+2.5n)·dm once. Storm cap 72 sparks. Old Storm Beacon kept as castTaroBeacon (unbound); tests point to it. Icon key ic_taro_spark_storm not drawn yet → emoji ⚡. Check passed; owner phone review pending.
 
@@ -25,10 +29,6 @@ Order 18 E–I (14 files in incoming/taro_unique_needle) packed by scripts/pack-
 # Previous delivery: v7.8.29 — C2-4 Season Storm softlock fix + art order 19
 
 Owner: C2-4 sometimes stuck (screenshot: Season Storm 🌸 unpassed, ☀🍂❄ ✓, rest, Reserves 0). Cause: Spring trial needs 10 kills (stormRule) but story budget reserves were exhausted → no enemies → trial never passes → objective never completes. Fix in tickSeasonObjective idx 0: while in wave mode, every 1.2s top up to min(6, 10−kills) live non-boss foes via spawnEnemy('basic'). Art order docs/art_orders/19_C24_FOUR_SEASON_ART.md (season trials A1–A11 incl. Bloom Sprout enemy, Chronobloom boss attacks B1–B8) → incoming/c24_seasons_vfx. Boss-variety ideas given in chat, awaiting owner pick.
-
-# Previous delivery: v7.8.28 — Starter cards never go to waste
-
-Owner: starter cards picked before a Build Path should not become useless. Audit (momo/mint/cocoa/taro) found only Cocoa Earthbreaker on Fire Fist (dead) and Rushdown on Titan (follow-ups dead) truly wasted; fixed (Fire Fist fireball ×1.25 dmg/blast; Titan pound + 35% tremor wave). Earthbreaker +25% finisher now real; Taro Chainlord/Evolution really add Static Arc jumps (cap 10). Text fixes: Fireball Barrage (+18% combo speed), Mochi Reach on Fire Fist, Mint Shard Bloom on Impaler (Rupture Shards +8%), Momo Rate all builds, Petal Spread on Shotgun. New rule: Build Path cards show a '↪ Keeps:' line (pathCarryText → card o.carry, drawn in the stars line) listing owned starter cards and their name in that build. tests/starter-carry.test.cjs.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
