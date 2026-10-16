@@ -2,6 +2,10 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# Art delivery19 — C2-4 Four-Season Conservatory
+
+22 PNG32 sources (126 frames) stored in assets/incoming/c24_seasons_vfx/ with manifest, final prompts, QA and delivery notes. Includes four seasonal screen edges, Bloom Sprout, HUD states, trial VFX and Chronobloom attack/metamorph VFX. Exact grids, real alpha, complete PNG streams/hashes, black central screen window and enemy groundline verified. Incoming storage only: no runtime/game version/build changes; packing/integration and owner phone review remain pending.
+
 # Art delivery 18 — Taro Spark + Ball Lightning
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.

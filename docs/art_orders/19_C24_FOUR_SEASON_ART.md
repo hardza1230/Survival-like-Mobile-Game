@@ -77,3 +77,12 @@ VFX = **พื้นดำสนิท #000** (โค้ดแปลง alpha �
 - A4–A9: แทนวงกลม/เส้นใน `tickSeasonObjective` (summer still ring, autumn `c.lines`, winter `c.patches`) · A10: `stormHudText` / HUD objective · A11: `stormEndSeason` ตอนผ่าน
 - B1–B8: `chronobloomAttack` (cleave / solar / crown / spiral / time break) และ `chronobloomMetamorph`
 - ทุกชิ้นต้องมี fallback เป็นภาพโค้ดเดิม · เช็ค FPS บนมือถือตอนฤดูหนาว+ฝูงเต็ม
+
+
+---
+
+## ส่งอาร์ต —16 ต.ค.2026
+
+สร้างและเก็บครบ **22 ไฟล์ /126เฟรม** ที่ `assets/incoming/c24_seasons_vfx/`: A1 แยก4ฤดู, A2–A11 และ B1–B8 พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`, `DELIVERY_README.md` · **ยังไม่ผูกเข้าเกมตามขอบเขตงานนี้**
+
+ตรวจขนาด/กริด/PNG32/alpha/ความสมบูรณ์ของข้อมูลภาพและ hash แล้ว · กลางขอบจอทั้ง32เฟรมเป็นดำสนิท · Bloom Sprout ใช้เดิน0–5 โดนตี6 ตาย7; HUD แถวบน0–3ยังไม่ผ่าน แถวล่าง4–7ผ่านแล้ว · รอตรวจการแปลง alpha, รูปทรงเขตอันตราย, จังหวะภาพ/การยืด/รอยต่อ และมือถือ visual/FPS ตอนผูก
