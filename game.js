@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.35';
+const GAME_VERSION = '7.8.36';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.36',date:'2026-10-16',title:'Taro Unique text fixes',items:['Unique level-up text now describes each build’s own Unique instead of the old Storm Beacon','Echo Map now says what it really does: Plasma Field reaches +40 further, Overcharge and Storm Mark last +1.5s longer','Echo Map now also extends Overcharge Detonation']},
   {v:'7.8.35',date:'2026-10-16',title:'Spark Unique: Storm Mark',items:['Spark Build Unique is now Storm Mark: lightning strikes the toughest enemy (bosses first) and marks it for 6s','Every Spark on screen homes in on the mark and deals +50% damage to it; the mark explodes with a second strike when it ends','Static Charge from 7.8.34 stacks with the mark']},
   {v:'7.8.34',date:'2026-10-16',title:'Spark Static Charge',items:['Every 10 Spark hits on the same boss or miniboss call down a lightning strike for 8× that Spark’s damage']},
   {v:'7.8.33',date:'2026-10-16',title:'Taro Spark Storm',items:['Spark Build Unique is now Spark Storm: a rapid spiral of Sparks that pierce, home on bosses and are forced to explode after about a second','Spark damage +25%']},
@@ -3694,10 +3695,10 @@ function cocoaAttackInfo(d,b){if(!d)return d;const e=COCOA_EVOLUTIONS[b?.path],m
 
 // v7.8.25 Taro Unique per build: pre-path Plasma Field (Razor-style), Sentry Overcharge Detonation, Arc/Spark keep Storm Beacon
 const TARO_UNIQUES={
-  plasma:{name:'Plasma Field',emoji:'🌀',cd:9,color:0x9ad8ff,desc:'A ring of plasma expands from Taro and then returns, zapping every enemy it crosses on the way out and on the way back. Enemies farther away take more damage. On the Arc Build, every enemy it touches also fires an Arc jump.'},
-  stormmark:{name:'Storm Mark',emoji:'🎯',cd:9,color:0xffe066,desc:'Lightning strikes the toughest enemy nearby and marks it for 6 seconds. Every Spark on screen homes in on the mark and deals +50% damage to it. When the mark ends, it explodes with a second strike.'},
-  sparkstorm:{name:'Spark Storm',emoji:'⚡',cd:9,color:0xffe066,desc:'Taro spins and sprays a rapid stream of Sparks all around. Each Spark pierces, homes on bosses and is forced to explode after about a second, blasting nearby enemies.'},
-  overcharge:{name:'Overcharge Detonation',emoji:'💥',cd:9,color:0xb388ff,desc:'Every sentry fires 6 Ball Lightning at once and explodes. Two fresh sentries appear beside Taro and fire 50% faster for 4 seconds.'}
+  plasma:{name:'Plasma Field',emoji:'🌀',cd:9,color:0x9ad8ff,desc:'A ring of plasma expands from Taro and then returns, zapping every enemy it crosses on the way out and on the way back. Enemies farther away take more damage. On the Arc Build, every enemy it touches also fires an Arc jump.',tiers:{2:'Wider ring that hits harder',3:'Even wider, stronger ring',4:'Widest, strongest Plasma Field'}},
+  stormmark:{name:'Storm Mark',emoji:'🎯',cd:9,color:0xffe066,desc:'Lightning strikes the toughest enemy nearby and marks it for 6 seconds. Every Spark on screen homes in on the mark and deals +50% damage to it. When the mark ends, it explodes with a second strike.',tiers:{2:'Stronger strike and blast',3:'Even stronger strike and blast',4:'Strongest Storm Mark'}},
+  sparkstorm:{name:'Spark Storm',emoji:'⚡',cd:9,color:0xffe066,desc:'Taro spins and sprays a rapid stream of Sparks all around. Each Spark pierces, homes on bosses and is forced to explode after about a second, blasting nearby enemies.',tiers:{2:'+4 Sparks, stronger blasts',3:'+8 Sparks, stronger blasts',4:'+12 Sparks, strongest blasts'}},
+  overcharge:{name:'Overcharge Detonation',emoji:'💥',cd:9,color:0xb388ff,desc:'Every sentry fires 6 Ball Lightning at once and explodes. Two fresh sentries appear beside Taro and fire 50% faster for 4 seconds.',tiers:{2:'Bigger detonations',3:'Even bigger detonations',4:'Strongest detonations'}}
 };
 const CHARACTER_UNIQUES = {
   citrusParade:{name:'Citrus Parade',emoji:'🍋',cd:13,color:0xffd85e,desc:'The crew attacks nearby threats faster and harder for a short time'},
@@ -3988,7 +3989,7 @@ const CHAR_TALENTS = {
     { id:'spd', emoji:'👟', name:'Read the Rift', max:6, per:'+5% move speed', apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
     { id:'cdr', emoji:'⏱️', name:'Recall Rhythm', max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
     { id:'crit', emoji:'🎯', name:'Flavor Compass', max:4, per:'+5% crit chance', apply:(p,r)=>{ p.critChance+=0.05*r; } },
-    { id:'echoPath', emoji:'🧭', name:'Echo Map', max:1, per:'✦ Beacon: +2 seconds lifetime and +40 targeting range!', apply:(p,r)=>{ p.echoPath=true; } },
+    { id:'echoPath', emoji:'🧭', name:'Echo Map', max:1, per:'✦ Unique: Plasma Field reaches +40 further · Overcharge and Storm Mark last +1.5s longer!', apply:(p,r)=>{ p.echoPath=true; } },
   ],
   yuzu:[
     {id:'hp',emoji:'❤️',name:'Citrus Skin',max:5,per:'+8% max HP',apply:(p,r)=>{p.maxhp*=1+0.08*r;}},
@@ -12454,7 +12455,7 @@ class Game extends Phaser.Scene {
     for(const node of t.nodes.filter(x=>!x.beacon)){for(let i=0;i<6;i++)this.taroSpawnProjectile({kind:'sentry',x:node.x,y:node.y,angle:i*Math.PI/3,speed:TARO_BL_SPEED*1.3,life:f.orbLife,damage:f.damage,radius:f.radius,range:f.range,overload:0,attackId});
       for(const token of this.taroCandidates(node,TARO_OVER_R)){this.taroDealDamage(token,boom*taroLightningRoll()*this.taroShockMul(token.enemy),'beacon',{attackId});this.taroShockAdd(token.enemy);}this.hitCratesInRadius?.(node.x,node.y,TARO_OVER_R,boom);
       this.taroArt?.('bpx_taro_sentry_overload',node.x,node.y-14,180,{life:.45});if(!this.taroArt?.('bpx_taro_sentry_detonate',node.x,node.y,TARO_OVER_R*2/.9,{life:.42,depth:6})&&!this.taroArt?.('bpx_taro_orb_burst',node.x,node.y,TARO_OVER_R*2/.84,{life:.4}))this.taroRing?.(node.x,node.y,TARO_OVER_R,.4);this.taroRemoveNode(node,false);}
-    mk(-.7);mk(.7);t.overUntil=t.time+TARO_OVER_TIME;this.screenShake?.(160,.007);this.showBanner?.('Overcharge Detonation Lv'+n,'Sentries explode · fresh sentries overcharged',1100);this.taroSound('beacon');}
+    mk(-.7);mk(.7);t.overUntil=t.time+TARO_OVER_TIME+(p.echoPath?1.5:0);this.screenShake?.(160,.007);this.showBanner?.('Overcharge Detonation Lv'+n,'Sentries explode · fresh sentries overcharged',1100);this.taroSound('beacon');}
   /* v7.8.25 Plasma Field (pre-path Unique, Dota 2 Razor style): ring grows to max radius then returns; hits each foe once each way, damage grows with distance */
   castTaroPlasma(dm,ul=1){const t=this.syncTaroCombat();if(!t)return;t.enabled=true;const n=Math.max(1,Math.min(4,ul||1)),max=280+30*(n-1)+(this.player.echoPath?40:0);if(t.plasma?.g)this.taroRemoveFx(t.plasma.g);
     t.plasma={r:24,dir:1,max,speed:max/.9,out:new Set(),back:new Set(),min:(6+3*n)*dm,top:(18+8*n)*dm*(1+(n-1)*.22),arc:t.path==='storm',attackId:++t.attackSeq,g:this.add?.graphics?this.taroTrackVisual(this.camWorld(this.add.graphics().setDepth(90390)),0):null};

@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.35 — Spark Unique Storm Mark (owner pick A2 + B1)
+# Latest delivery: v7.8.36 — Taro Unique text fixes
+
+TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u.tiers) instead of the old pathRecall "Stronger Beacon" lines. Echo Map talent text = real effects (Plasma +40 reach, Overcharge and Storm Mark +1.5s); Overcharge now honours Echo (overUntil +1.5s). talent-icons test normalizes the new Echo text. Pending Taro: Sentry/Unique sounds, Storm Mark icon art (order 18 J), owner phone review.
+
+# Previous delivery: v7.8.35 — Spark Unique Storm Mark (owner pick A2 + B1)
 
 Spark Build Unique (castStormBeacon smite → castTaroStormMark): picks toughest foe within 700 (boss > mini > highest HP), beacon_strike art strike (8+4n)·dm, marks 6s (+1.5 Echo) with gold shock_aura sprite following it. While marked (taroMarkToken) every Spark steers to it (turn 8 rad/s), passes through it without spending pierce and deals ×1.5 (TARO_MARK_BONUS). Expiry → second strike + blast r130: (14+7n)·dm on mark, 40% to others (taroEndMark/taroTickMark). No target → falls back to castTaroSparkStorm. Static Charge (v7.8.34) stacks. Icon key ic_taro_storm_mark not drawn → emoji 🎯.
 
@@ -25,10 +29,6 @@ Owner: Spark damage up a bit; Spark Unique = rapid projectiles that are forced t
 # Previous delivery: v7.8.31 — Arc focus, hunt arrow, Plasma vs bosses
 
 Owner: Arc single-target still weak; arrow should find normal monsters when none on screen (spent long searching for a mini); Plasma Field weak on bosses. Arc build (castTaroChainBasic): if a boss/mini is within rootRange (taroArcFocus), every root × every jump hits it at 100% ×(1+.15×Overload ranks), else old chain. Objective arrow: when no other target and no enemy inside camera worldView, _offscreenHuntTarget points to nearest mini (orange) else nearest monster (pink). Plasma Field ×1.75 vs boss/mini (TARO_PLASMA_BOSS). castTaroChainBasic hash fixtures updated. Check passed; owner phone review pending.
-
-# Previous delivery: v7.8.30 — Taro Plasma, Arc and Shock art wired
-
-Order 18 E–I (14 files in incoming/taro_unique_needle) packed by scripts/pack-taro-unique-art.py → assets/art/taro_unique/*.webp + Unique icons assets/art/build_paths/taro_{plasma_field,overcharge,arc_overload}.webp. Plasma ring sprite (bpx_taro_plasma_ring, sized r×2/0.92) replaces the drawn ring, plus cast/hit FX; Overcharge plays sentry_overload per node then sentry_detonate; Shock marker shows stacks 1–5 above foes (aura at 5, cap 40, taroTickShockMarks); Static Arc/Arc chains use arc_bolt/arc_hit, loop jumps arc_loop/arc_overload_hit (taroArcBolt, chainBolt fallback). Unique button icon follows build (syncUniqueIcon). New taroFx helper works pre-path (cap 28). castTaroChainBasic hash fixtures updated. Check passed; owner phone visual/FPS review pending.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
