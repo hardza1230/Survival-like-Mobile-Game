@@ -1,0 +1,482 @@
+{
+  "verifiedCount": 22,
+  "assets": [
+    {
+      "id": "A1_spring",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "c6ccf99cf20a42a074c4d564f086b780bd390a397469bfd87322bc8b9351a414",
+      "nearBlackCleanupPercent": 7,
+      "central64PercentMaxRGB": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "A1_summer",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "c46495893915105426224e4a5a86917999bd4b29eaa0b547ea67c61386550187",
+      "nearBlackCleanupPercent": 7,
+      "central64PercentMaxRGB": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "A1_autumn",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "50e6546bfba5e571d949b693c7c49a5d6c5c3f39bc6d45fe73b42e7b191d5484",
+      "nearBlackCleanupPercent": 7,
+      "central64PercentMaxRGB": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "A1_winter",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "875d3bf32c86542439540348628769df5cc8d72cbccbe492f2ff3d2f38991fe0",
+      "nearBlackCleanupPercent": 7,
+      "central64PercentMaxRGB": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "A3",
+      "dimensions": [
+        1024,
+        512
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "fca2e934d065f5bce1bc2faadebc9523c4780a2b6b8e5a7323f0c098417495f9",
+      "frameAlphaRanges": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "bodyGroundLines": [
+        236,
+        236,
+        236,
+        236,
+        236,
+        236,
+        236,
+        236
+      ],
+      "targetGroundLine": 236,
+      "poseMap": {
+        "run": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "hurt": 6,
+        "defeat": 7
+      }
+    },
+    {
+      "id": "A10",
+      "dimensions": [
+        256,
+        128
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "b7e6f693a3c4f213cd035b9f79ab46838711825e8f2e2bed7a161bd86dfdb586",
+      "frameAlphaRanges": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "visiblePixelMeanLuminance": {
+        "pending": [
+          160.88974542848496,
+          150.49852320173375,
+          120.42512444431217,
+          154.67367000230183
+        ],
+        "passed": [
+          166.54414745770464,
+          157.63029530062678,
+          115.34632074698467,
+          165.73180566409403
+        ]
+      },
+      "cellIntegratedBrightness": {
+        "pending": [
+          57.49581007716759,
+          40.42400016007966,
+          38.7373940245864,
+          42.4597349977022
+        ],
+        "passed": [
+          66.2287562030867,
+          49.67132109949449,
+          43.116054481655944,
+          54.0502308191636
+        ]
+      },
+      "stateMap": {
+        "pending": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "passed": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "seasons": [
+          "spring",
+          "summer",
+          "autumn",
+          "winter"
+        ]
+      }
+    },
+    {
+      "id": "B4",
+      "dimensions": [
+        256,
+        64
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "a038b7fd1b1d7c9e2efb459efa215545623a772f06b346c07c8062b33cc501a5",
+      "frameAlphaRanges": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ]
+    },
+    {
+      "id": "B5",
+      "dimensions": [
+        256,
+        64
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "5054a6d13aa576da069be79733d247aa347224949ab710ef9f61baa5f7d8f068",
+      "frameAlphaRanges": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ]
+    },
+    {
+      "id": "A2",
+      "dimensions": [
+        512,
+        128
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "cf91074abd048e7613870749f1bbe6512c7208c56b37e4520acf70a4a1f0f1a3",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "A4",
+      "dimensions": [
+        1024,
+        256
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "87eb27789f66b5f509b6d00873a9d31f56e4ccd570457938e2f4f45fc40efef0",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "A8",
+      "dimensions": [
+        1024,
+        256
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "e823886ac59d88e8baef32de77a33d57e050df10dbdb040d0b6e4fb759bce58c",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "A5",
+      "dimensions": [
+        768,
+        512
+      ],
+      "frames": 6,
+      "rgba": true,
+      "sha256": "ada4a5a0a3a271086164e245d56e7eb2bb2d0f7b18eebc80fa7fad83870c070c",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "A9",
+      "dimensions": [
+        768,
+        512
+      ],
+      "frames": 6,
+      "rgba": true,
+      "sha256": "a76ee6eaa5257758ca016c6e0ca6eb2f7f3900b51bfdf26249af750021aa27f8",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "A11",
+      "dimensions": [
+        768,
+        512
+      ],
+      "frames": 6,
+      "rgba": true,
+      "sha256": "d7b5a083ae06c9f037b501fbfbfdb6cad2f3c3a581a5ebc8ed62f4cbf44ad6fd",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "B3",
+      "dimensions": [
+        1024,
+        256
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "cba17564f2c61639e7d3b9de6c312b04db192382ae233875f4233bba19d545fa",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "A6",
+      "dimensions": [
+        1024,
+        384
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "4d9a698c391005fcc6ed13af3e5944cb357292be269806fb536afdcb372f51a7",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "A7",
+      "dimensions": [
+        1024,
+        512
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "9863df3c6871b9a8b4d7abe4a2594cc75b20de1a8269169227e8c863ce906f6e",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "B1",
+      "dimensions": [
+        512,
+        1024
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "ce29d853c149e7c6f1b2470881c4a0167e7462d97fce2335ff68c9f9734005fe",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "B2",
+      "dimensions": [
+        2048,
+        256
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "1d9d3668cb36b25fdfb5fbe0ecc07a05ee518cffc5132e7e96855d08937544a9",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "B6",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "c1b242f1b44c33eae6e449efd3d45a0b63731df8ec4b0f2fbdf66a32f0153d44",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    },
+    {
+      "id": "B7",
+      "dimensions": [
+        512,
+        512
+      ],
+      "frames": 4,
+      "rgba": true,
+      "sha256": "9a998dae23d86a8ea205911eef4ee0a2714e5f1a6e1e31ec7d709c557858445c",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0,
+      "unusedSouthwestQuadrantMaxRGB": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "B8",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "frames": 8,
+      "rgba": true,
+      "sha256": "fe4f57dc5706a73c7f2c3b2f9d88a3b23ee071e7f886632bd6e22689243d0d3a",
+      "nearBlackCleanupPercent": 2,
+      "blackCornerMaxRGB": 0
+    }
+  ],
+  "normalization": "Common crop/scale per event sheet. Direct cell mapping for screen edges, long lanes and quarter-seal pivot. Common enemy scale with body ground-line alignment. Fan origins aligned left-center; lane energy centered vertically. Near-black VFX pixels canonicalized; original icon/enemy/projectile alpha retained. PNG metadata stripped.",
+  "reviewed": "All generated sheets reviewed; summer edge regenerated to remove cross-season motifs. Final technical gallery review recorded in delivery notes.",
+  "remaining": "Game-side luminance-to-alpha conversion, exact telegraph/collision footprint matching (including projected60-degree fan), continuous tile seams, animation timings, readability at actual HUD/mobile sizes and FPS remain untested. No runtime integration.",
+  "pngStreamValidation": "22/22 PNG signatures, 8-bit RGBA IHDR, all chunk CRCs, complete IEND, full zlib decompression and exact scanline byte counts verified."
+}
