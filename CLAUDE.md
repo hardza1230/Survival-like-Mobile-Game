@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.30 — Taro Plasma, Arc and Shock art wired
+# Latest delivery: v7.8.31 — Arc focus, hunt arrow, Plasma vs bosses
+
+Owner: Arc single-target still weak; arrow should find normal monsters when none on screen (spent long searching for a mini); Plasma Field weak on bosses. Arc build (castTaroChainBasic): if a boss/mini is within rootRange (taroArcFocus), every root × every jump hits it at 100% ×(1+.15×Overload ranks), else old chain. Objective arrow: when no other target and no enemy inside camera worldView, _offscreenHuntTarget points to nearest mini (orange) else nearest monster (pink). Plasma Field ×1.75 vs boss/mini (TARO_PLASMA_BOSS). castTaroChainBasic hash fixtures updated. Check passed; owner phone review pending.
+
+# Previous delivery: v7.8.30 — Taro Plasma, Arc and Shock art wired
 
 Order 18 E–I (14 files in incoming/taro_unique_needle) packed by scripts/pack-taro-unique-art.py → assets/art/taro_unique/*.webp + Unique icons assets/art/build_paths/taro_{plasma_field,overcharge,arc_overload}.webp. Plasma ring sprite (bpx_taro_plasma_ring, sized r×2/0.92) replaces the drawn ring, plus cast/hit FX; Overcharge plays sentry_overload per node then sentry_detonate; Shock marker shows stacks 1–5 above foes (aura at 5, cap 40, taroTickShockMarks); Static Arc/Arc chains use arc_bolt/arc_hit, loop jumps arc_loop/arc_overload_hit (taroArcBolt, chainBolt fallback). Unique button icon follows build (syncUniqueIcon). New taroFx helper works pre-path (cap 28). castTaroChainBasic hash fixtures updated. Check passed; owner phone visual/FPS review pending.
 
@@ -25,10 +29,6 @@ Owner approved: pre-path attack = Static Arc (small chain, 3 jumps); Arc chains 
 # Previous delivery: v7.8.26 — Sparks hunt bosses
 
 Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it (turn 5 rad/s), pass through bosses without using pierce, and re-hit the same boss every 0.3s. Normal foes unchanged.
-
-# Previous delivery: v7.8.25 — Taro Uniques per build, Shock, spike needles, Spark/Ball art
-
-Owner picked 1 + A: Sentry Shock stacks (+5%/stack, max 5, 3s) and Overcharge Detonation Unique; pre-path Unique = Plasma Field (Razor-style ring out/back); Rift Needle is a piercing spike projectile. Arc/Spark keep Storm Beacon. Owner's 16 Spark/Ball art files wired (assets/art/taro_spark_ball). Art order additions D–H (needle, plasma, detonation, shock marker, Unique icons) in 18_TARO_SPARK_BALL_LIGHTNING_ART.md → incoming/taro_unique_needle. Details docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

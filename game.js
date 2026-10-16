@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.30';
+const GAME_VERSION = '7.8.31';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.31',date:'2026-10-16',title:'Arc focus, hunt arrow, Plasma vs bosses',items:['Taro Arc: with a boss or miniboss in range, every chain and every jump strikes it at full power','When no monster is on screen, the arrow points to the nearest miniboss (orange) or monster (pink)','Plasma Field deals ×1.75 damage to bosses and minibosses']},
   {v:'7.8.30',date:'2026-10-16',title:'Taro: Plasma, Arc and Shock art',items:['Painted Plasma Field ring, cast and hit effects','Painted Static Arc bolts and hits; Overload Loop bounces show a thick golden bolt and a big impact','Overcharge Detonation shows each sentry overloading and a ground shockwave','Shock stacks show a 1–5 bolt counter over enemies and a spark aura at full stacks','New Unique button icons for Plasma Field and Overcharge Detonation, and a card icon for Overload']},
   {v:'7.8.29',date:'2026-10-16',title:'C2-4 Season Storm fix',items:['Fixed C2-4 sometimes getting stuck: the Spring trial needs 10 kills, but once the wave’s reserves ran out no enemies were left to kill. Spring now grows its own Bloom Sprouts until the trial can be finished']},
   {v:'7.8.28',date:'2026-10-16',title:'Starter cards never go to waste',items:['Build Path cards now list how the starter cards you already took carry over to that build','Chocolate Earthbreaker now really adds +25% finisher damage, and on Fire Fist boosts the big fireball and its blast','Chocolate Rushdown on Titan adds a tremor wave to every pound (its follow-up punches had no finisher to trigger)','Taro Chainlord and Evolution now really add Static Arc jumps','Card text fixes: Fireball Barrage, Mochi Reach on Fire Fist, Mint Shard Bloom on Crystal Impaler, Strawberry Rate and Petal Spread on Shotgun']},
@@ -6277,6 +6278,7 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
   return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
 const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=4,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=110,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=16,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
+const TARO_PLASMA_BOSS=1.75;   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
 const TARO_SPARK_SEEK=260,TARO_SPARK_TURN=5,TARO_SPARK_BOSS_GAP=.3,TARO_SPARK_GENS=2,TARO_SPARK_SPLIT_AT=.42,TARO_SPARK_SCALE=[1.25,.9,.65];   // v7.8.21 Spark fission
 function taroBeaconProfile(dm,level,echo){const n=Math.max(1,Math.min(4,level||1));return {strike:(8+4*n)*dm*(1+(n-1)*.22),life:4+n+(echo?2:0),interval:1.02-n*.07,range:520+(echo?40:0),damage:(9+n*7)*dm*(1+(n-1)*.22)*.35,orbRadius:95,orbLife:4.2,speed:TARO_BL_SPEED};}
 // v7.8.24 Lightning damage swings wide (owner): uniform 0.2–1.8, mean 1.0, for Spark/Sentry/Beacon hits.
@@ -12386,9 +12388,10 @@ class Game extends Phaser.Scene {
   /* v7.8.27 Plasma Field สาย Arc: ทุกตัวที่วงโดนปล่อย Arc 1 กระโดดไปหาตัวใกล้สุด · ไม่มีเป้าอื่น = เด้งกลับตัวเดิม 2 ครั้ง (Overload Loop) */
   taroPlasmaArc(token,dmg,pl){const t=this._taro;if(!t?.enabled||this.state!=='play'||!token?.enemy?.active)return;const e=token.enemy,used=new Set([token.id]),nx=this.taroNearestUnused(this.taroCandidates(e,TARO_ARC_JUMP),e,TARO_ARC_JUMP,used);
     if(nx){this.taroLightningVisual?.(e.x,e.y,nx.enemy.x,nx.enemy.y);this.taroDealDamage(nx,dmg,'unique',{attackId:pl.attackId});}else for(let i=0;i<2;i++){if(!taroTargetValid(token,e,Infinity))break;if(!i)this.taroLightningVisual?.(this.player.x,this.player.y,e.x,e.y);this.taroDealDamage(token,dmg*TARO_ARC_LOOP,'unique',{attackId:pl.attackId});}}
+  taroArcFocus(list,range){const p=this.player;let best=null,bd=range;for(const k of list){const e=k.enemy;if(!(e?.isBoss||e?.isMini)||!e.active||!(e.hp>0))continue;const d=Math.hypot(e.x-p.x,e.y-p.y);if(d<=bd){bd=d;best=k;}}return best;}
   taroTickPlasma(dt){const t=this._taro,pl=t?.plasma;if(!pl||this.state!=='play')return;const p=this.player;pl.r+=pl.dir*pl.speed*dt;if(pl.dir>0&&pl.r>=pl.max){pl.r=pl.max;pl.dir=-1;this.hitCratesInRadius?.(p.x,p.y,pl.max,pl.top);}
     if(pl.dir<0&&pl.r<=20){this.taroRemoveFx(pl.g);if(pl.ring)this.taroRemoveFx(pl.ring);t.plasma=null;return;}const set=pl.dir>0?pl.out:pl.back;
-    for(const token of this.taroCandidates(p,pl.r+40)){if(set.has(token.id))continue;const d=Math.hypot(token.enemy.x-p.x,token.enemy.y-p.y),band=26+Math.min(30,(token.enemy.displayWidth||40)*.3);if(Math.abs(d-pl.r)>band)continue;set.add(token.id);const k=Math.max(0,Math.min(1,d/pl.max));const pd=(pl.min+(pl.top-pl.min)*k)*taroLightningRoll();this.taroDealDamage(token,pd,'unique',{attackId:pl.attackId});this.taroArt?.('bpx_taro_plasma_hit',token.enemy.x,token.enemy.y,48,{life:.2});if(this._taro!==t||!t.plasma)return;if(pl.arc)this.taroPlasmaArc(token,pd*.5,pl);}
+    for(const token of this.taroCandidates(p,pl.r+40)){if(set.has(token.id))continue;const d=Math.hypot(token.enemy.x-p.x,token.enemy.y-p.y),band=26+Math.min(30,(token.enemy.displayWidth||40)*.3);if(Math.abs(d-pl.r)>band)continue;set.add(token.id);const k=Math.max(0,Math.min(1,d/pl.max));const pd=(pl.min+(pl.top-pl.min)*k)*taroLightningRoll()*(token.enemy.isBoss||token.enemy.isMini?TARO_PLASMA_BOSS:1);this.taroDealDamage(token,pd,'unique',{attackId:pl.attackId});this.taroArt?.('bpx_taro_plasma_hit',token.enemy.x,token.enemy.y,48,{life:.2});if(this._taro!==t||!t.plasma)return;if(pl.arc)this.taroPlasmaArc(token,pd*.5,pl);}
     if(pl.ring?.active){pl.ring.setPosition(p.x,p.y).setDisplaySize(pl.r*2/.92,pl.r*2/.92);if(pl.g?.active)pl.g.clear();return;}
     const g=pl.g;if(g?.active){g.clear().setPosition(p.x,p.y);g.lineStyle(22,0x9ad8ff,.18).strokeCircle(0,0,pl.r);g.lineStyle(7,0x34234d,.75).strokeCircle(0,0,pl.r);g.lineStyle(4,0x9ad8ff,.95).strokeCircle(0,0,pl.r);g.lineStyle(1.5,0xffffff,.95).strokeCircle(0,0,pl.r);for(let i=0;i<10;i++){const a=i*Math.PI/5+t.time*3,j=(i%2?6:-6);g.lineStyle(2,0xe7f7ff,.9).lineBetween(Math.cos(a)*(pl.r-8),Math.sin(a)*(pl.r-8),Math.cos(a+.08)*(pl.r+j),Math.sin(a+.08)*(pl.r+j));}}}
   taroOrbFade(p){const t=this._taro;if(t?.enabled&&this.state==='play'&&!p._stale&&!p._fadeArt&&(p.kind==='sentry'||p.kind==='beacon')){p._fadeArt=true;this.taroArt?.('bpx_taro_ball_fade',p.x,p.y,p.kind==='beacon'?66:58,{life:.33,tint:p.kind==='beacon'?0xffe7a8:null});}if(!t?.enabled||this.state!=='play'||p._stale||p._faded||p.kind!=='sentry'||!(p.overload>0)||p.run!==t.run||p.pathEpoch!==t.pathEpoch)return;p._faded=true;
@@ -12465,6 +12468,10 @@ class Game extends Phaser.Scene {
   castTaroChainBasic(level){
     const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='storm'||this.state!=='play')return;
     const f=this.taroTempestProfile(level),candidates=this.taroCandidates(this.player,Infinity),hit=new Set(),attackId=++t.attackSeq;
+    /* v7.8.31 เจ้าของ: Arc ตีเป้าเดี่ยวเบา → มีบอส/มินิในระยะ = ทุกสายทุกกระโดดรวมเข้าบอส 100% (+15%/ใบ Overload) */
+    const focus=this.taroArcFocus?.(candidates,f.rootRange);if(focus){const fm=1+.15*Math.max(0,this.basicAttack?.lv?.p_arc_overload??this.basicAttack?.ranks?.p_arc_overload??0);
+      for(let root=0;root<f.roots;root++)for(let j=0;j<f.victims;j++){if(this._taro!==t||this.state!=='play'||!taroTargetValid(focus,this.player,Infinity))break;if(j<2)this.taroArcBolt?.(this.player.x,this.player.y,focus.enemy.x,focus.enemy.y,j>0);this.taroDealDamage(focus,f.primaryDamage*f.chainBonus*f.rootBonus*fm*taroLightningRoll(),'chain',{attackId,shrapnelD:f.unitD});}
+      if(this._taro===t&&this.state==='play')this.hitCratesInRadius(this.player.x,this.player.y,f.rootRange,f.primaryDamage);this.taroSound?.('chain')||Sfx.thunder();return;}
     for(let root=0;root<f.roots;root++){
       if(this._taro!==t||this.state!=='play')break;
       let from={x:this.player.x,y:this.player.y},token=this.taroNearestUnused(candidates,from,f.rootRange,hit),last=null,j=0;
@@ -16561,6 +16568,8 @@ class Game extends Phaser.Scene {
     if(this.showBanner)this.showBanner('✨ Revived!','Ad watched — back to the fight · HP 50%',1800);
   }
 
+  _offscreenHuntTarget(){const wv=this.cameras?.main?.worldView,p=this.player;if(!wv||!wv.width||!p||!this.enemies)return null;let mini=null,md=Infinity,any=null,ad=Infinity,seen=false;
+    this.enemies.children.iterate(e=>{if(seen||!e||!e.active||e.isDummy||!(e.hp>0))return;if(wv.contains(e.x,e.y)){seen=true;return;}const d=Math.hypot(e.x-p.x,e.y-p.y);if(e.isMini&&d<md){md=d;mini=e;}if(d<ad){ad=d;any=e;}});return seen?null:(mini||any);}
   _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   _nearestWaveObjective(){
     const o=this.waveObjective;if(!o)return null;if(o.type==='capture'&&this._captureZone)return this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal?null:this._captureZone;
@@ -16579,6 +16588,7 @@ class Game extends Phaser.Scene {
     if(!target&&this.mode==='wave'&&this._waveEvent){const ev=this._waveEvent;if(ev.type==='courier'&&ev.courier&&ev.courier.active)target=ev.courier;
       else if(ev.type==='cache'){let nearest=Infinity;for(const c of ev.crates||[]){if(!c.active)continue;const d=this.dist(this.player.x,this.player.y,c.x,c.y);if(d<nearest){nearest=d;target=c;}}}}
     if(!target && this.mode==='waveclear') target=this._nearestEnemy();   // ชี้ไปหาศัตรูที่เหลือตอนต้องเคลียร์
+    let hunt=false;if(!target){target=this._offscreenHuntTarget();hunt=!!target;}   // v7.8.31 เจ้าของ: ไม่มีศัตรูในจอ = ชี้หามินิ/ศัตรูใกล้สุด
     if(!target){if(this.objectiveArrow)this.objectiveArrow.setVisible(false);if(this.objectiveDist)this.objectiveDist.setVisible(false);return;}
     // ลูกศรหมุนWaitบ "screen center" → ต้องวัดมุมจากจุดกึ่งกลางกล้อง (โลก) ไม่ใช่Positionผู้เล่น (กล้อง lerp/deadzone ทำให้ผู้เล่นไม่อยู่กลางจอเป๊ะ = ลูกศรเพี้ยน)
     // v6.86 ลูกศรโคจรรอบตัวผู้เล่น (เจ้าของขอ ให้สังเกตง่าย) · ซ่อนเมื่อเป้าอยู่ใกล้ในจอ
@@ -16586,7 +16596,7 @@ class Game extends Phaser.Scene {
     const dx=target.x-p.x,dy=target.y-p.y,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
     const px=(p.x-wv.x)/wv.width*this.W,py=(p.y-wv.y)/wv.height*this.H-10,R=62,bob=Math.sin((this.elapsed||0)*6)*4;
     const near=d<140;
-    this.objectiveArrow.setPosition(px+Math.cos(a)*(R+bob),py+Math.sin(a)*(R+bob)).setRotation(a).setVisible(!near).setScale(.8).setColor(this.mode==='portal'?'#c99cff':'#ffef7a');
+    this.objectiveArrow.setPosition(px+Math.cos(a)*(R+bob),py+Math.sin(a)*(R+bob)).setRotation(a).setVisible(!near).setScale(.8).setColor(hunt?(target.isMini?'#ff9b6b':'#ffd0d0'):this.mode==='portal'?'#c99cff':'#ffef7a');
     this.objectiveDist.setVisible(false);   // บอกเฉพาะทิศ ไม่เปิดเผยระยะตามดีไซน์
   }
   /* ---------- UPDATE ---------- */

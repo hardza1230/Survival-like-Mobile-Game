@@ -1940,3 +1940,7 @@ Owner: Taro too weak (stuck C1-4). Sentry/Beacon orbs are PoE-style Ball Lightni
 # Art delivery 18 extensions — Plasma, Shock and Static Arc
 
 14 PNG32 assets (E1–E3, F1–F2, G1–G2, H1–H2, I1–I5) stored in assets/incoming/taro_unique_needle/ with manifest, final prompts, QA and delivery notes. A/B/C retained; cancelled needle D1–D3/H3 omitted. Exact grids/alpha/black backgrounds checked, Shock1–5 counts and Arc endpoints verified. Storage only: no runtime wiring, game version or build output changed. Owner phone review and separately requested integration remain pending.
+
+# Previous delivery: v7.8.25 — Taro Uniques per build, Shock, spike needles, Spark/Ball art
+
+Owner picked 1 + A: Sentry Shock stacks (+5%/stack, max 5, 3s) and Overcharge Detonation Unique; pre-path Unique = Plasma Field (Razor-style ring out/back); Rift Needle is a piercing spike projectile. Arc/Spark keep Storm Beacon. Owner's 16 Spark/Ball art files wired (assets/art/taro_spark_ball). Art order additions D–H (needle, plasma, detonation, shock marker, Unique icons) in 18_TARO_SPARK_BALL_LIGHTNING_ART.md → incoming/taro_unique_needle. Details docs/TARO_ARC_SPARK_SENTRY.md. Check passed; owner phone review pending.

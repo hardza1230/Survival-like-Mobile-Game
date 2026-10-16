@@ -82,3 +82,7 @@ Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (2
 - Shock: `taroShockMark` shows `shock_marker` frame = stacks−1 above the foe, `shock_aura` loop at 5 stacks; cap 40, refreshed/removed in `taroTickShockMarks`.
 - Static Arc / Arc chains: `taroArcBolt` stretches `arc_bolt` (normal jump) or `arc_loop` (Overload Loop) + `arc_hit` / `arc_overload_hit`; falls back to `chainBolt`.
 - Unique icon per build: Plasma Field (pre-path/Arc), Overcharge (Sentry), Storm Beacon (Spark). Card icon `ic_taro_arc_overload`.
+
+## v7.8.31 Arc focus + Plasma vs bosses
+- Arc build: boss/mini within root range → every root and every jump strikes it at 100% (× 1+0.15 per Overload Loop rank); no boss → normal chain + Overload Loop.
+- Plasma Field: ×1.75 damage to bosses/minis (`TARO_PLASMA_BOSS`).
