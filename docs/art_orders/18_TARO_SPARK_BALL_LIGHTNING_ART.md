@@ -220,3 +220,22 @@ Prompt (ต่อหัวร่วมเดิม):
 ตรวจขนาด/เฟรม/PNG32, alpha ไอคอน, พื้นดำ VFX, Shock1–5 ขีด และตำแหน่งปลาย Arc แล้ว · จังหวะภาพ การแปลง alpha/ระยะชน Plasma และมือถือ visual/FPS ยังรอตรวจตอนผูก
 
 > ✅ ชุด E/F/G/H/I ผูกในเกมแล้ว v7.8.30 (`assets/art/taro_unique/`, ไอคอน `assets/art/build_paths/taro_{plasma_field,overcharge,arc_overload}.webp`, สคริปต์ `scripts/pack-taro-unique-art.py`) · เหลือเจ้าของตรวจภาพ/FPS บนมือถือ
+
+---
+
+## J — ไอคอน Storm Mark (ส่วนเพิ่ม 16 ต.ค. 2026 · runtime v7.8.35)
+
+Unique สาย Spark เปลี่ยนเป็น **Storm Mark** แล้ว: ฟ้าผ่าใส่ศัตรูที่อึดสุด (บอสก่อน) แล้วมาร์กไว้ 6 วิ · Spark ทั้งจอพุ่งเข้าหาตัวที่ถูกมาร์กและแรงขึ้น +50% · หมดเวลามาร์กระเบิดด้วยฟ้าผ่าอีกครั้ง · ตัวฟ้าผ่าใช้อาร์ตเดิม (`bpx_taro_beacon_strike`) ตามที่เจ้าของสั่ง → ใบนี้ขอ **แค่ไอคอนปุ่ม** (ตอนนี้ปุ่มโชว์อีโมจิ 🎯)
+
+ส่งไฟล์ที่ `assets/incoming/taro_storm_mark/` · PNG32 alpha จริง
+
+| # | key / ไฟล์ | ใช้กับ | ขนาด | บนจอ | ภาพ |
+|---|---|---|---|---|---|
+| J1 | `ic_taro_storm_mark` · `ic_taro_storm_mark.png` | ปุ่ม Unique สาย Spark | 256×256 | ~52px บนปุ่มกลม | วงเป้าหมาย (crosshair) สีทองอ่อน มีสายฟ้าเหลืองทองผ่าลงตรงกลางวง + ประกาย Spark ม่วง-ฟ้า 3–4 ลูกวิ่งเข้าหาวงจากรอบ ๆ · อ่านออกที่ 52px: รูปทรงหลักคือ "วงเป้า + สายฟ้า" ไม่ใส่รายละเอียดเล็ก |
+
+ชุดสีเดียวกับไอคอน H (`ic_taro_plasma_field`, `ic_taro_overcharge`): เข็มทิศ/คริสตัลม่วงของ Taro · ทองอ่อน `#ffe066` = สีของมาร์ก · พื้นโปร่งใส ไม่มีกรอบปุ่ม ไม่มีตัวหนังสือ
+
+Prompt (หัวร่วมเดิมด้านบน):
+> single game UI icon, isolated object, transparent alpha background, glossy candy style, a golden target reticle ring with a bright yellow-gold lightning bolt striking down through its center, three or four small violet and cyan spark orbs flying inward toward the ring, bold simple silhouette readable at 52 pixels, no text, no frame
+
+ฝั่งโค้ด: แพ็ก 256→128 ไป `assets/art/build_paths/taro_storm_mark.webp` (แบบ `scripts/pack-taro-unique-art.py`) · เพิ่ม `ASSET_IMAGES.ic_taro_storm_mark` · `syncUniqueIcon` เรียก key นี้ให้สาย Spark อยู่แล้ว (ไม่มีภาพ = ใช้อีโมจิ)
