@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.38';
+const GAME_VERSION = '7.8.39';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.39',date:'2026-10-16',title:'Shorter stats copy',items:['Play Stats has a new Copy last 3 runs button so long histories are not cut off when pasted into chat']},
   {v:'7.8.38',date:'2026-10-16',title:'Combat Meter',items:['New Settings option Combat Meter: live DPS, boss DPS / time / HP%, FPS, foes, enemy shots and effects on screen','Every run now records damage dealt (boss/mini/elite/mobs, overkill, crits), peak 5s DPS, each boss and miniboss fight time and DPS, damage by skill, damage taken, dashes, Uniques, level and wave timings, FPS average/minimum, lag spikes and peak object counts','Play Stats → Copy to clipboard includes all of it, ready to paste']},
   {v:'7.8.37',date:'2026-10-16',title:'C2-4 Season Storm fix',items:['Fixed C2-4 getting stuck when the Spring trial needs kills after all Reserves are spent — Bloom Sprouts now really appear until the trial can be passed']},
   {v:'7.8.36',date:'2026-10-16',title:'Taro Unique text fixes',items:['Unique level-up text now describes each build’s own Unique instead of the old Storm Beacon','Echo Map now says what it really does: Plasma Field reaches +40 further, Overcharge and Storm Mark last +1.5s longer','Echo Map now also extends Overcharge Detonation']},
@@ -5513,7 +5514,7 @@ const Stats={
       const a=this.load(); a.push(c); this.saveAll(a); }catch(e){} },
   clear(){ try{ localStorage.removeItem('mochi_stats'); }catch(e){} },
   stageLab(i){ const st=(typeof STAGES!=='undefined')&&STAGES[i]; return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1)); },
-  toText(){ const a=this.load(),L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
+  toText(last){ const all=this.load(),a=last?all.slice(-last):all,L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
     a.forEach(r=>{ const d=new Date(r.t||0),dt=d.toISOString().slice(0,16).replace('T',' '),where=r.mode==='story'?this.stageLab(r.stage)+' ★'+r.diff:(r.mode+(r.depth!=null?' D'+r.depth:'')+' ('+this.stageLab(r.stage)+')');
       L.push([dt,r.result,r.mode,where,(r.hero||'?')+(r.path?' ('+r.path+')':''),Math.floor((r.sec||0)/60)+':'+String((r.sec||0)%60).padStart(2,'0'),'Lv'+r.level,r.kills+' kills','wave '+r.wave+(r.boss?' boss':''),r.cause||'-',(r.cards||[]).join(', ')].join(' | '));
       const k=r.kit; if(k){ L.push('   hero Lv'+(k.clv||'?')+' · Unique Lv'+(k.ulv||1)+' · power '+(k.pw||'?')+(r.pwEnd?'→'+r.pwEnd:'')+' · unspent TP '+(k.tp||0)+(k.st?' · '+k.st:''));
@@ -5522,7 +5523,7 @@ const Stats={
       if(r.mx&&typeof mxLines==='function')for(const q of mxLines(r.mx))L.push('   '+q); });
     try{ const d=Save.data; L.splice(1,0,'profile: sugar '+(d.sugar||0)+' · stage unlocked '+this.stageLab(d.unlockedStage||0)+' · heroes '+(typeof CHAR_ORDER!=='undefined'?CHAR_ORDER:(d.chars||[])).filter(h=>(d.chars||[]).includes(h)||((d.charProg||{})[h]||{}).lvl>1).map(h=>{ const cp=Save.cp(h)||{}; return h+' Lv'+(cp.lvl||1); }).join(', ')); }catch(e){}
     return L.join('\n'); },
-  copy(){ const t=this.toText(); const fb=()=>{ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok; }catch(e){ return false; } };
+  copy(last){ const t=this.toText(last); const fb=()=>{ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok; }catch(e){ return false; } };
     try{ if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t).then(()=>true,()=>fb()); }catch(e){} return Promise.resolve(fb()); }
 };
 const CLOUD_URL='https://tohsnflngkfoutqcfrwi.supabase.co';
@@ -8574,7 +8575,9 @@ class Game extends Phaser.Scene {
     runs.slice(-Math.max(2,Math.floor((h-y-96)/30))).reverse().forEach(r=>{ const where=r.mode==='story'?lab(r.stage)+' ★'+r.diff:r.mode+(r.depth!=null?' D'+r.depth:'');
       T(x0+6,y,(icon[r.result]||'?')+' '+where+' · '+((CHARACTERS[r.hero]||{}).name||r.hero)+(r.path?' ('+r.path+')':'')+' · '+fmt(r.sec||0)+' · Lv'+r.level+' · '+r.kills+' kills'+(r.cause?' · by '+r.cause:''),10,'#e6dcf0'); y+=14;
       if(r.cards&&r.cards.length){ const q=T(x0+18,y,'Cards: '+r.cards.slice(0,8).join(', ')+(r.cards.length>8?'…':''),9,'#9d93aa'); q.setWordWrapWidth(cw-24); if(q.height>13)q.setText(q.text.slice(0,Math.floor(q.text.length*13/q.height))+'…'); y+=16; } });
-    this.uiPillBtn(this.menu,w/2,h-62,Math.min(cw,240),36,COLORS.grape,'📋','Copy to clipboard',()=>{ Sfx.select(); Stats.copy().then(ok=>this.menuToast(ok?'📋 Stats copied — paste them anywhere':'Copy failed on this device',ok?'#8ff0b0':'#ff9bb5')); });
+    { const bw2=Math.min((cw-10)/2,200),cp=(n,msg)=>{ Sfx.select(); Stats.copy(n).then(ok=>this.menuToast(ok?msg:'Copy failed on this device',ok?'#8ff0b0':'#ff9bb5')); };   /* v7.8.39 แชทตัดข้อความยาว → ปุ่ม copy รอบล่าสุด */
+      this.uiPillBtn(this.menu,w/2-bw2/2-5,h-62,bw2,36,COLORS.mint,'📋','Copy last 3 runs',()=>cp(3,'📋 Last 3 runs copied — paste them anywhere'));
+      this.uiPillBtn(this.menu,w/2+bw2/2+5,h-62,bw2,36,COLORS.grape,'📋','Copy all',()=>cp(0,'📋 All stats copied')); }
     const ct=this._statsClear||0,clr=this.add.text(w/2,h-26,ct?'⚠️ Tap again to delete all stats':'🗑️ Clear stats',{fontFamily:'sans-serif',fontSize:'11px',color:ct?'#ff8fb5':'#6f6578'}).setOrigin(0.5);this.menu.add(clr);
     this._zone(w/2-110,h-40,220,28,()=>{ if(this._statsClear){ this._statsClear=0; Stats.clear(); this.menuToast('Stats cleared'); } else this._statsClear=1; Sfx.select(); this.buildPlayStats(); });
     this.menu.setVisible(true);
