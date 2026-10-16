@@ -68,3 +68,6 @@ console.log('Swarm director: actual tick loop across four stages, fast/slow clea
 assert(method('killEnemy').includes('this.storyEnemyXp(e)'));
 assert(method('onWaveCleared').includes('settleStoryBudget(!!fromMini,!!(this._replayMeter&&fromMini))'));
 assert(!method('dropOrb').includes('budget.combat'));assert(!method('settleStoryBudget').includes('b.total'));
+
+{const s=scene(2);s.beginStoryBudget(0);s._storyBudget.spawned=s._storyBudget.quota;assert(!s.storyCanSpawn());const o={type:'seasonCycle',storm:{passed:[false,true,true,true],cur:{idx:0,kills:3,partial:false}}};s.waveObjective=o;s.foes=[];assert(s.storyCanSpawn());s.foes=Array.from({length:7},()=>({active:true}));assert(!s.storyCanSpawn());s.foes=[];o.storm.passed[0]=true;assert(!s.storyCanSpawn());o.storm.passed[0]=false;o.storm.cur.idx=1;assert(!s.storyCanSpawn());}
+console.log('Story budget: C2-4 Spring trial refills foes after Reserves run out passed');

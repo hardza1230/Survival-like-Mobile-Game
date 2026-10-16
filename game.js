@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.36';
+const GAME_VERSION = '7.8.37';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.37',date:'2026-10-16',title:'C2-4 Season Storm fix',items:['Fixed C2-4 getting stuck when the Spring trial needs kills after all Reserves are spent — Bloom Sprouts now really appear until the trial can be passed']},
   {v:'7.8.36',date:'2026-10-16',title:'Taro Unique text fixes',items:['Unique level-up text now describes each build’s own Unique instead of the old Storm Beacon','Echo Map now says what it really does: Plasma Field reaches +40 further, Overcharge and Storm Mark last +1.5s longer','Echo Map now also extends Overcharge Detonation']},
   {v:'7.8.35',date:'2026-10-16',title:'Spark Unique: Storm Mark',items:['Spark Build Unique is now Storm Mark: lightning strikes the toughest enemy (bosses first) and marks it for 6s','Every Spark on screen homes in on the mark and deals +50% damage to it; the mark explodes with a second strike when it ends','Static Charge from 7.8.34 stacks with the mark']},
   {v:'7.8.34',date:'2026-10-16',title:'Spark Static Charge',items:['Every 10 Spark hits on the same boss or miniboss call down a lightning strike for 8× that Spark’s damage']},
@@ -10727,7 +10728,9 @@ class Game extends Phaser.Scene {
     if(this.enemies.countActive(true)>=cap)return false;
     if(type==='shooter'){let n=0;this.enemies.children.iterate(e=>{if(e?.active&&e.shooter)n++;});if(n>=2+Math.min(2,Math.floor(this.stageIndex/5)))return false;}
     const o=this.waveObjective,gateNeedsFoes=o?.type==='hunt'&&o._huntPhase==='clear'&&this.enemies.countActive(true)<Math.max(0,o._huntKillGoal-o._huntKills);
-    return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota||gateNeedsFoes));
+    /* v7.8.37 บั๊กค้าง C2-4: บททดสอบใบไม้ผลิต้องฆ่า 10 ตัว แต่ Reserves หมด → spawnEnemy ถูกบล็อกตรงนี้ (ฟิกซ์ v7.8.29 ไม่มีผล) · ยอมให้เติมเท่าที่ยังขาด */
+    const sc=o?.type==='seasonCycle'&&!o.done?o.storm?.cur:null,seasonNeedsFoes=!!(sc&&sc.idx===0&&!sc.partial&&!o.storm.passed[0]&&this.enemies.countActive(true)<Math.max(0,10-sc.kills));
+    return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota||gateNeedsFoes||seasonNeedsFoes));
   }
   storySpawned(objective=false){if(this.usesStoryBudget?.()&&this._storyBudget&&!objective)this._storyBudget.spawned++;}
   storyEnemyXp(e){

@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.36 — Taro Unique text fixes
+# Latest delivery: v7.8.37 — C2-4 Season Storm softlock really fixed
+
+Owner screenshot: Season Storm · rest, Reserves 0, stuck. v7.8.29 top-up never worked: spawnEnemy → storyCanSpawn returned false once story quota was spent. storyCanSpawn now allows spawns while the Spring trial (idx 0, not partial, not passed) has fewer live foes than 10−kills (seasonNeedsFoes). Test in tests/story-budget.test.cjs.
+
+# Previous delivery: v7.8.36 — Taro Unique text fixes
 
 TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u.tiers) instead of the old pathRecall "Stronger Beacon" lines. Echo Map talent text = real effects (Plasma +40 reach, Overcharge and Storm Mark +1.5s); Overcharge now honours Echo (overUntil +1.5s). talent-icons test normalizes the new Echo text. Pending Taro: Sentry/Unique sounds, Storm Mark icon art (order 18 J), owner phone review.
 
@@ -25,10 +29,6 @@ Owner: Spark damage up a bit; Spark Unique = rapid projectiles that are forced t
 # Previous delivery: v7.8.32 — C2-4 Four-Season art wired (order 19)
 
 22 files from incoming/c24_seasons_vfx packed by scripts/pack-c24-season-art.py → assets/art/c24_seasons/*.webp (screen edges 320 cells, Time Break/metamorph 384, projectiles upscaled to 128 cells = proj_foe body). All keys stage-lazy in STAGE_SHEETS[8]; stageArtKeys now includes ASSET_FX and stage loader passes fx:true. Helper c24Fx (keep/life/ui/must, cap 40, fallback to old code visuals), c24ClearCur, sweep of _c24Keep in tickSeasonArena. Wired: season-change screen edge (UI cam), spring heal petals, Bloom Sprout enemy (type 'sprout', Spring trial top-up, ×1.4 speed), summer burn ring/ignite, autumn lane/slash, winter patch/freeze, HUD season icons (syncSeasonIcons, text origin shifts), trial-pass bloom; Chronobloom vine fan/slash, solar rings, frost shard and leaf bullets (c24Bullet; foeShot stops anims on reuse), Time Break clock + 3 season seals, metamorph. Mechanics unchanged. Headless smoke render had no page errors. Owner phone visual/FPS review pending.
-
-# Previous delivery: v7.8.31 — Arc focus, hunt arrow, Plasma vs bosses
-
-Owner: Arc single-target still weak; arrow should find normal monsters when none on screen (spent long searching for a mini); Plasma Field weak on bosses. Arc build (castTaroChainBasic): if a boss/mini is within rootRange (taroArcFocus), every root × every jump hits it at 100% ×(1+.15×Overload ranks), else old chain. Objective arrow: when no other target and no enemy inside camera worldView, _offscreenHuntTarget points to nearest mini (orange) else nearest monster (pink). Plasma Field ×1.75 vs boss/mini (TARO_PLASMA_BOSS). castTaroChainBasic hash fixtures updated. Check passed; owner phone review pending.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
