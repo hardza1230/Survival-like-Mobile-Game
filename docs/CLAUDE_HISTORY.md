@@ -1960,3 +1960,7 @@ Owner approved: pre-path attack = Static Arc (small chain, 3 jumps); Arc chains 
 # Previous delivery: v7.8.28 — Starter cards never go to waste
 
 Owner: starter cards picked before a Build Path should not become useless. Audit (momo/mint/cocoa/taro) found only Cocoa Earthbreaker on Fire Fist (dead) and Rushdown on Titan (follow-ups dead) truly wasted; fixed (Fire Fist fireball ×1.25 dmg/blast; Titan pound + 35% tremor wave). Earthbreaker +25% finisher now real; Taro Chainlord/Evolution really add Static Arc jumps (cap 10). Text fixes: Fireball Barrage (+18% combo speed), Mochi Reach on Fire Fist, Mint Shard Bloom on Impaler (Rupture Shards +8%), Momo Rate all builds, Petal Spread on Shotgun. New rule: Build Path cards show a '↪ Keeps:' line (pathCarryText → card o.carry, drawn in the stars line) listing owned starter cards and their name in that build. tests/starter-carry.test.cjs.
+
+# Previous delivery: v7.8.29 — C2-4 Season Storm softlock fix + art order 19
+
+Owner: C2-4 sometimes stuck (screenshot: Season Storm 🌸 unpassed, ☀🍂❄ ✓, rest, Reserves 0). Cause: Spring trial needs 10 kills (stormRule) but story budget reserves were exhausted → no enemies → trial never passes → objective never completes. Fix in tickSeasonObjective idx 0: while in wave mode, every 1.2s top up to min(6, 10−kills) live non-boss foes via spawnEnemy('basic'). Art order docs/art_orders/19_C24_FOUR_SEASON_ART.md (season trials A1–A11 incl. Bloom Sprout enemy, Chronobloom boss attacks B1–B8) → incoming/c24_seasons_vfx. Boss-variety ideas given in chat, awaiting owner pick.

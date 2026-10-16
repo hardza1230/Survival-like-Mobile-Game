@@ -94,3 +94,6 @@ Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (2
 
 ## v7.8.34 Static Charge
 - Every 10 Spark hits on the same boss/mini → lightning strike for that Spark’s damage ×8 (per-boss counter, reset each run). Normal foes never reach 10, so clear speed is unchanged.
+
+## v7.8.35 Storm Mark (Spark Unique)
+- Strike + mark the toughest foe (boss first) for 6s; all Sparks home on it, ignore pierce on it and deal +50%; mark ends with a second strike and r130 blast. Uses the existing beacon strike art. Falls back to Spark Storm when no target.
