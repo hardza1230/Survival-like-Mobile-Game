@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.37 — C2-4 Season Storm softlock really fixed
+# Latest delivery: v7.8.38 — Combat Meter (owner: numbers for balance)
+
+Settings → 📈 Combat Meter (st.mx, also in pause settings) shows a live overlay (left, 36% height): 5s DPS / avg / total, current boss-mini DPS · fight time · HP%, FPS · foes · foe shots · FX. Every run records g._mx (mxReset in Stats.start; hooks: damage()→mxDeal before e.hp-=amount [damage hash fixture updated], killEnemy→mxKill, _noteHit taken, dash button→mxDash, castSkill caller sets _mxSrc=key, Unique paths set _mxSrc='unique', Taro context → 'taro.<source>', _infTick/_frDmg/_gmTick → infusion/recipe/gear). Stats.end saves c.mx=mxSummary(); Play Stats → Copy adds meter lines via mxLines(): dealt (no overkill)/overkill/crit, boss/mini/elite/mob split, peak 5s DPS, every boss & mini fight (HP, seconds, DPS, % left), top 10 sources, taken, dash taps, uniques, level & wave timings, FPS avg/min/low seconds/frames>50ms, peak foes/shots/FX, texture MB. Test tests/combat-meter.test.cjs. Next: owner plays 3 Taro builds + other heroes and pastes Play Stats.
+
+# Previous delivery: v7.8.37 — C2-4 Season Storm softlock really fixed
 
 Owner screenshot: Season Storm · rest, Reserves 0, stuck. v7.8.29 top-up never worked: spawnEnemy → storyCanSpawn returned false once story quota was spent. storyCanSpawn now allows spawns while the Spring trial (idx 0, not partial, not passed) has fewer live foes than 10−kills (seasonNeedsFoes). Test in tests/story-budget.test.cjs.
 
@@ -25,10 +29,6 @@ Spark boss fix without touching clear: taroStaticCharge counts Spark hits per bo
 # Previous delivery: v7.8.33 — Taro Spark Storm Unique, Spark +25%
 
 Owner: Spark damage up a bit; Spark Unique = rapid projectiles that are forced to explode after a while. Spark profile damage unitD×0.75 (was 0.60). Spark Build Unique (castStormBeacon smite → castTaroSparkStorm): t.storm emits 16 (+4/level, +4 Echo) Sparks every 0.05s in a 2.4-rad spiral (taroTickSparkStorm inside tickTaroDeployables), hit (3+1.5n)·dm, no fission, boss hit once, pierce = Spark pierce; fuse 1.1s or pierce spent → taroSparkBlast radius 72, (5+2.5n)·dm once. Storm cap 72 sparks. Old Storm Beacon kept as castTaroBeacon (unbound); tests point to it. Icon key ic_taro_spark_storm not drawn yet → emoji ⚡. Check passed; owner phone review pending.
-
-# Previous delivery: v7.8.32 — C2-4 Four-Season art wired (order 19)
-
-22 files from incoming/c24_seasons_vfx packed by scripts/pack-c24-season-art.py → assets/art/c24_seasons/*.webp (screen edges 320 cells, Time Break/metamorph 384, projectiles upscaled to 128 cells = proj_foe body). All keys stage-lazy in STAGE_SHEETS[8]; stageArtKeys now includes ASSET_FX and stage loader passes fx:true. Helper c24Fx (keep/life/ui/must, cap 40, fallback to old code visuals), c24ClearCur, sweep of _c24Keep in tickSeasonArena. Wired: season-change screen edge (UI cam), spring heal petals, Bloom Sprout enemy (type 'sprout', Spring trial top-up, ×1.4 speed), summer burn ring/ignite, autumn lane/slash, winter patch/freeze, HUD season icons (syncSeasonIcons, text origin shifts), trial-pass bloom; Chronobloom vine fan/slash, solar rings, frost shard and leaf bullets (c24Bullet; foeShot stops anims on reuse), Time Break clock + 3 season seals, metamorph. Mechanics unchanged. Headless smoke render had no page errors. Owner phone visual/FPS review pending.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
