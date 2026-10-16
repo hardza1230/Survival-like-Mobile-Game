@@ -86,3 +86,8 @@ Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (2
 ## v7.8.31 Arc focus + Plasma vs bosses
 - Arc build: boss/mini within root range → every root and every jump strikes it at 100% (× 1+0.15 per Overload Loop rank); no boss → normal chain + Overload Loop.
 - Plasma Field: ×1.75 damage to bosses/minis (`TARO_PLASMA_BOSS`).
+
+## v7.8.33 Spark Storm Unique + Spark +25%
+- Spark Build Unique replaces Storm Beacon: 16 (+4/Unique level, +4 Echo) Sparks every 0.05s in a spiral; each pierces, homes on bosses (one hit per boss) and is forced to detonate after 1.1s or when pierce runs out (radius 72, (5+2.5n)·dm). Spark hit (3+1.5n)·dm. No fission.
+- Spark basic damage ×0.75 unitD (was ×0.60).
+- `castTaroBeacon` keeps the old Storm Beacon (not bound to any button).

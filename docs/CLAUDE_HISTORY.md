@@ -1952,3 +1952,7 @@ Owner: Spark weak on bosses. Sparks within 260px of a boss/mini curve toward it 
 # Art delivery19 — C2-4 Four-Season Conservatory
 
 22 PNG32 sources (126 frames) stored in assets/incoming/c24_seasons_vfx/ with manifest, final prompts, QA and delivery notes. Includes four seasonal screen edges, Bloom Sprout, HUD states, trial VFX and Chronobloom attack/metamorph VFX. Exact grids, real alpha, complete PNG streams/hashes, black central screen window and enemy groundline verified. Incoming storage only: no runtime/game version/build changes; packing/integration and owner phone review remain pending.
+
+# Previous delivery: v7.8.27 — Static Arc starter, Overload Loop, Arc Plasma Field
+
+Owner approved: pre-path attack = Static Arc (small chain, 3 jumps); Arc chains loop leftover jumps into the last target at 60% (Overload Loop, new card p_arc_overload +15%/rank) so lone bosses take every jump; Arc Build Unique = Plasma Field whose ring hits fire Arc jumps. Fixed Plasma/Beacon/Overcharge being far too weak (dm scaling ~3×). Spark +1 count, speed 460. Art order 18 updated: needle D/H3 cancelled, new set I (Arc bolt/hit/loop/overload hit/card icon). Hash fixtures for castTaroChainBasic updated. Details docs/TARO_ARC_SPARK_SENTRY.md.
