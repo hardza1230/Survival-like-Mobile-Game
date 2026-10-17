@@ -10,6 +10,10 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
+# Art order 21 — Temple Weave UI (written, awaiting art)
+
+docs/art_orders/21_TEMPLE_WEAVE_UI.md: 34 text-free pieces (A Weave screen 14, B Flavor Passives 16, C shared 4) cut from the owner's two mockups (docs/art_orders/ref/21_temple_*_ref.webp) — backgrounds 1080×1920, 9-slice card/button/tab/bar sheets with nineSlice in MANIFEST, altar trio centerpiece. Delivery to assets/incoming/temple_weave_ui/. Hooks: buildUpgrade / buildRankPerks via Phaser nineslice, graphics fallback.
+
 # Latest delivery: v7.8.46 — C8 Cocoa landing dust wired
 
 Owner re-uploaded vfx_cocoa_landing_dust.png (282,702 bytes, sha matches QA). Packed to bpx_cocoa_landing_dust (6×256, once); cocoaLandingFx plays it (must, width max(160, r*2/.9)) and returns before the old crack/dust graphics (kept as fallback). Order 20 now 21/21 wired; phone visual/FPS QA pending.
