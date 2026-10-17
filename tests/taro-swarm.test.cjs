@@ -63,8 +63,8 @@ console.log('Taro Arc/Spark/Sentry: profiles, swept solid/world bounce, count/li
   const e=enemy(9,40);s.taroCandidates=()=>[{id:9,enemy:e}];const p=st[0];p._blasted=false;s.taroOrbFade(p);assert(p._blasted);s.taroOrbFade(p);}
 console.log('Taro v7.8.33: Spark Storm rapid spiral, no fission, forced once-only detonation passed');
 {const s=view('smite',[]);s.taroArt=()=>null;s.taroLightningVisual=()=>{};const boss={x:0,y:0,active:true,hp:1e6,isBoss:true},tok={id:77,enemy:boss},p={damage:2,kind:'spark',attackId:1};let dealt=[];s.taroDealDamage=(k,d)=>{dealt.push(d);return true;};const R=global.taroLightningRoll;
-  for(let i=0;i<9;i++)s.taroStaticCharge(tok,p);assert.equal(dealt.length,0);s.taroStaticCharge(tok,p);assert.equal(dealt.length,1);assert(dealt[0]>0);for(let i=0;i<9;i++)s.taroStaticCharge(tok,p);assert.equal(dealt.length,1);}
-console.log('Taro v7.8.34: Static Charge strikes once per 10 boss hits passed');
+  for(let i=0;i<39;i++)s.taroStaticCharge(tok,p);assert.equal(dealt.length,0);s.taroStaticCharge(tok,p);assert.equal(dealt.length,1);assert(dealt[0]>0);for(let i=0;i<39;i++)s.taroStaticCharge(tok,p);assert.equal(dealt.length,1);}
+console.log('Taro v7.8.34: Static Charge strikes once per 40 boss hits passed');
 {const mob=enemy(1,100),boss=enemy(2,300);boss.isBoss=true;const s=view('smite',[mob,boss]);s.taroArt=()=>null;s.taroLightningVisual=()=>{};s.castStormBeacon(1,1);assert(s._taro.mark);assert.equal(s._taro.mark.token.enemy,boss);assert(s.hits.some(h=>h.id===2));
   assert.equal(s.taroMarkToken().enemy,boss);s._taro.time=s._taro.mark.until+1;const before=s.hits.length;s.taroTickMark();assert.equal(s._taro.mark,null);assert(s.hits.length>before);s.taroTickMark();}
 console.log('Taro v7.8.35: Storm Mark targets bosses first, expires with one blast passed');

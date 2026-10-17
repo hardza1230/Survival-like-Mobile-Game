@@ -10,7 +10,15 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
-# Latest delivery: v7.8.52 — Taro Sentry vs bosses (owner picked A+B+C)
+# Latest delivery: v7.8.54 — Spark Static Charge 10→40 hits
+
+Owner: after v7.8.51 (hit size + homing) Spark hit bosses so often that Static Charge strikes melted them (meter v7.8.52 C2-3★1: Royal Stinger mini 5.0s at 5634 DPS vs Arc 14s, Sentry 49s). TARO_STATIC_HITS 10→40 (mul stays 13). Also Season Storm clarity (owner only learned seasons rotate after ~10 runs): HUD = current season trial + seconds left, or next untested trial + wait; intro banner explains rotation; failed-trial banner says it returns in 30s with the easier goal; HUD text no longer prefixed with objective name (overflowed at 360px).
+
+# Previous delivery: v7.8.53 — C2-4 Season Storm always finishes
+
+Owner: C2-4 stuck. Repro (browser sim, first clear): Season Storm wave — Spring passes, Summer/Autumn/Winter allow max 1 hit, a failed trial only returns 40s later with the same rule, and reserves run out so the field is empty → endless loop. stormRule(i,o): each failure of that season adds +1 allowed hit (Spring −3 kills, min 4); storyCanSpawn seasonNeedsFoes also keeps ≥6 live foes during the storm. Replay of C2-4 reached the boss fine in sim.
+
+# Previous delivery: v7.8.52 — Taro Sentry vs bosses (owner picked A+B+C)
 
 A: Shock cap on boss/mini TARO_SHOCK_MAX_BIG 15 (+75%), mobs stay 5 · B: taroDischarge — every TARO_DISCHARGE_HITS 25 orb zaps on the same boss/mini (Sentry or Beacon orbs) → strike ×TARO_DISCHARGE_MUL 10 zap dmg × shock, beacon_strike art · C: every Sentry orb bursts on fade dmg×(1+overload) radius×1.4 (was only with Overload card). Browser A/B (lv1 Sentry, 15s, boss + 16 mobs): boss dmg 2289→5463 (×2.4), mob 9764→13116 (+34%). Owner to re-run C2-1★1 benchmark.
 

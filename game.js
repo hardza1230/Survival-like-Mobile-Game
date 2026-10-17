@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.52';
+const GAME_VERSION = '7.8.54';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,8 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.54',date:'2026-10-17',title:'Spark Static Charge Rebalance',items:['Spark Static Charge now needs 40 hits on the same boss or miniboss per lightning strike (was 10) — sparks hit so often that bosses were melting','Season Storm explains itself: the HUD shows the current season’s trial with a countdown, or which trial comes next and when','A failed season trial tells you when it returns and what the easier goal will be']},
+  {v:'7.8.53',date:'2026-10-17',title:'C2-4 Season Storm Fix',items:['A failed season trial gets easier every cycle (one more hit allowed, or 3 fewer kills for Spring), so the Season Storm always finishes','The conservatory keeps a few monsters around during the storm instead of going empty']},
   {v:'7.8.52',date:'2026-10-17',title:'Taro Sentry vs Bosses',items:['Shock stacks up to 15 on bosses and minibosses (up to +75% damage); normal monsters stay at 5','Discharge: every 25 Ball Lightning zaps on the same boss call down a lightning strike for 10× zap damage','Every Ball Lightning now bursts when it fades (Overload cards make the burst stronger)']},
   {v:'7.8.51',date:'2026-10-17',title:'Taro Spark Hits More',items:['Spark hits a monster whenever the spark visibly touches it (hit size now matches the monster)','Sparks gently curve toward nearby monsters they have not hit yet','Combat Meter shows Spark hits per cast']},
   {v:'7.8.50',date:'2026-10-17',title:'Temple Polish',items:['Temple art keeps its full colour: lighter background veil, core glows sit behind the altar instead of washing it out','Flavor Weave Temple fits on one screen again (altar shrinks on shorter phones)']},
@@ -6427,7 +6429,7 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
   return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
 const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=4,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=110,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=16,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
-const TARO_MARK_RANGE=700,TARO_MARK_TIME=6,TARO_MARK_BONUS=1.5,TARO_MARK_TURN=8,TARO_MARK_BLAST_R=130,TARO_ORB_SEEK=360,TARO_ORB_TURN=2.6,TARO_ORB_LINGER=.3,TARO_ORB_BIG_GAP=.18,TARO_UQ_GROW=.12,TARO_STATIC_HITS=10,TARO_STATIC_MUL=13,TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=16,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
+const TARO_MARK_RANGE=700,TARO_MARK_TIME=6,TARO_MARK_BONUS=1.5,TARO_MARK_TURN=8,TARO_MARK_BLAST_R=130,TARO_ORB_SEEK=360,TARO_ORB_TURN=2.6,TARO_ORB_LINGER=.3,TARO_ORB_BIG_GAP=.18,TARO_UQ_GROW=.12,TARO_STATIC_HITS=40,TARO_STATIC_MUL=13,TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=16,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
 const TARO_SHOCK_MAX_BIG=15,TARO_DISCHARGE_HITS=25,TARO_DISCHARGE_MUL=10;   // v7.8.52 เจ้าของ A+B+C Sentry: Shock บนบอส/มินิ 15 ชั้น · ช็อตโดนตัวเดิมครบ 25 = ฟ้าผ่า ×10 · ลูกบอลระเบิดตอนหมดอายุเป็นพื้นฐาน
 const TARO_SPARK_HIT_R=10,TARO_SPARK_HOME_R=180,TARO_SPARK_HOME_TURN=2.4;   // v7.8.51 เจ้าของ A+B: ระยะโดน = ตัวมอนจริง + ประกาย · เลี้ยวหามอนธรรมดาที่ยังไม่โดนเบา ๆ
 const TARO_SPARK_SEEK=260,TARO_SPARK_TURN=5,TARO_SPARK_BOSS_GAP=.3,TARO_SPARK_GENS=2,TARO_SPARK_SPLIT_AT=.42,TARO_SPARK_SCALE=[1.25,.9,.65];   // v7.8.21 Spark fission
@@ -10948,7 +10950,7 @@ class Game extends Phaser.Scene {
     if(type==='shooter'){let n=0;this.enemies.children.iterate(e=>{if(e?.active&&e.shooter)n++;});if(n>=2+Math.min(2,Math.floor(this.stageIndex/5)))return false;}
     const o=this.waveObjective,gateNeedsFoes=o?.type==='hunt'&&o._huntPhase==='clear'&&this.enemies.countActive(true)<Math.max(0,o._huntKillGoal-o._huntKills);
     /* v7.8.37 บั๊กค้าง C2-4: บททดสอบใบไม้ผลิต้องฆ่า 10 ตัว แต่ Reserves หมด → spawnEnemy ถูกบล็อกตรงนี้ (ฟิกซ์ v7.8.29 ไม่มีผล) · ยอมให้เติมเท่าที่ยังขาด */
-    const sc=o?.type==='seasonCycle'&&!o.done?o.storm?.cur:null,seasonNeedsFoes=!!(sc&&sc.idx===0&&!sc.partial&&!o.storm.passed[0]&&this.enemies.countActive(true)<Math.max(0,10-sc.kills));
+    const sc=o?.type==='seasonCycle'&&!o.done?o.storm?.cur:null,seasonNeedsFoes=!!(sc&&((sc.idx===0&&!sc.partial&&!o.storm.passed[0]&&this.enemies.countActive(true)<Math.max(0,(this.stormRule?.(0,o)?.need??10)-sc.kills))||this.enemies.countActive(true)<6));   /* v7.8.53 พายุฤดู: Reserves หมดแล้วสนามว่างทั้งเวฟ → เติมเบา ๆ ให้มีมอนอย่างน้อย 6 ตัว */
     const rm=this._replayMeter,replayNeedsFoes=!!(rm&&!rm.done&&this.mode==='wave');   /* v7.8.48 replay ไม่มีตัดเวลา → เติมมอนจนหลอดเต็ม ไม่ให้ Reserves หมดแล้วค้าง */
     return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota||gateNeedsFoes||seasonNeedsFoes||replayNeedsFoes));
   }
@@ -11139,20 +11141,22 @@ class Game extends Phaser.Scene {
   spawnSeasonSanctuaries(){
     const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;this._seasonShrines=null;if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
-    o.storm={passed:[false,false,false,false],cur:null}; this.stormBeginSeason(o,this._seasonState.idx,true); }
-  stormRule(i){ return [{goal:'Defeat 10 — they heal!',need:10},{goal:'Keep moving — standing still burns',max:1},{goal:'Dodge the leaf gusts',max:1},{goal:'Dodge the frost patches on the ice',max:1}][i&3]; }
+    o.storm={passed:[false,false,false,false],cur:null}; this.stormBeginSeason(o,this._seasonState.idx,true); this.time.delayedCall(1700,()=>{ if(this.waveObjective===o&&!o.done)this.showBanner('🌦️ Season Storm','Seasons rotate every 10s · pass each season’s trial while it is active · failed trials come back easier',3200); }); }
+  stormRule(i,o){ const f=o?.storm?.fails?.[i&3]||0,r=[{goal:'Defeat 10 — they heal!',need:10},{goal:'Keep moving — standing still burns',max:1},{goal:'Dodge the leaf gusts',max:1},{goal:'Dodge the frost patches on the ice',max:1}][i&3];   /* v7.8.53 เจ้าของ: C2-4 ค้าง — ทดสอบที่พลาดง่ายขึ้นทุกรอบ (โดนได้ +1 / ฆ่าน้อยลง 3) จบได้แน่นอน */
+    return r.need?{...r,need:Math.max(4,r.need-3*f),goal:'Defeat '+Math.max(4,r.need-3*f)+' — they heal!'}:{...r,max:r.max+f}; }
   stormBeginSeason(o,idx,partial){ this.c24ClearCur(o.storm.cur);o.storm.cur={idx,kills:0,hits:0,still:0,ev:1.2,lines:[],patches:[],partial:!!partial,windA:Math.random()*TAU,regen:0};
-    if(!partial&&!o.storm.passed[idx]){const info=this.seasonInfo(idx);this.showBanner(info.emoji+' Trial: '+info.name,this.stormRule(idx).goal,1500);} }
-  stormEndSeason(o){ const c=o.storm.cur;if(!c||c.partial||o.storm.passed[c.idx])return;const r=this.stormRule(c.idx),ok=r.need?c.kills>=r.need:c.hits<=r.max,info=this.seasonInfo(c.idx);
+    if(!partial&&!o.storm.passed[idx]){const info=this.seasonInfo(idx);this.showBanner(info.emoji+' Trial: '+info.name,this.stormRule(idx,o).goal,1500);} }
+  stormEndSeason(o){ const c=o.storm.cur;if(!c||c.partial||o.storm.passed[c.idx])return;const r=this.stormRule(c.idx,o),ok=r.need?c.kills>=r.need:c.hits<=r.max,info=this.seasonInfo(c.idx);
     if(ok){o.storm.passed[c.idx]=true;o.progress=o.storm.passed.filter(Boolean).length;this.c24Fx('vfx_c24_trial_pass',this.player.x,this.player.y,190,{tint:info.color});this.floatText(this.player.x,this.player.y-60,info.emoji+' TRIAL PASSED!',info.color);this.screenFlash(info.color,.22,260);Sfx.clear&&Sfx.clear();}
-    else this.floatText(this.player.x,this.player.y-60,info.emoji+' Trial failed — next cycle',0xbbbbbb); }
+    else{o.storm.fails=o.storm.fails||[0,0,0,0];o.storm.fails[c.idx]++;this.floatText(this.player.x,this.player.y-60,info.emoji+' Trial failed — easier next cycle',0xbbbbbb);const r2=this.stormRule(c.idx,o);this.showBanner(info.emoji+' '+info.name+' trial failed','It returns in 30s · next time: '+(r2.need?'defeat '+r2.need:'up to '+r2.max+' hits'),2000);} }
   stormHit(o,dmgMul){ const c=o.storm.cur;c.hits++;this.player.iframe=0;this.hurtPlayer(Math.max(4,Math.round((this.player.maxhp||100)*dmgMul)),.5);this.cameras.main.shake(120,.004); }
   tickSeasonObjective(dt){
     const o=this.waveObjective;if(!o||o.type!=='seasonCycle'||!o.storm)return;const g=this.objNodeG;if(!g)return;g.clear();
+    this._stormHudT=(this._stormHudT||0)-dt;if(this._stormHudT<=0){this._stormHudT=.25;this.renderWaveObjectiveHUD();}
     const idx=this._seasonState?this._seasonState.idx:0;let c=o.storm.cur;if(!c||c.idx!==idx){this.stormEndSeason(o);if(o.progress>=o.target){this.completeWaveObjective();return;}this.stormBeginSeason(o,idx,false);c=o.storm.cur;}
     if(o.storm.passed[idx]){this.c24ClearCur(c);return;}   // ฤดูที่ผ่านแล้ว = พัก ไม่มีภัย
     const pl=this.player,info=this.seasonInfo(idx),t=this.elapsed||0;
-    if(idx===0){ c.sprout=(c.sprout||0)-dt;if(c.sprout<=0&&this.mode==='wave'){c.sprout=1.2;let live=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)live++;});const want=Math.min(6,10-c.kills);for(let i=0;i<Math.min(2,want-live);i++)this.spawnEnemy('sprout',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.55);}   /* v7.8.29 บั๊กค้าง: Reserves หมดแล้วด่านฤดูใบไม้ผลิต้องฆ่า 10 ตัวแต่ไม่มีศัตรูเกิด → เติม Bloom Sprout เอง */
+    if(idx===0){ c.sprout=(c.sprout||0)-dt;if(c.sprout<=0&&this.mode==='wave'){c.sprout=1.2;let live=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)live++;});const want=Math.min(6,this.stormRule(0,o).need-c.kills);for(let i=0;i<Math.min(2,want-live);i++)this.spawnEnemy('sprout',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.55);}   /* v7.8.29 บั๊กค้าง: Reserves หมดแล้วด่านฤดูใบไม้ผลิต้องฆ่า 10 ตัวแต่ไม่มีศัตรูเกิด → เติม Bloom Sprout เอง */
       c.regen-=dt;if(c.regen<=0){c.regen=1;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.04);});this.c24HealFx(4);} }
     else if(idx===1){ const v=pl.body?pl.body.velocity.length():0;c.still=v<40?c.still+dt:Math.max(0,c.still-dt*2);const f=Phaser.Math.Clamp(c.still/1.4,0,1);
       if(f>0.05){if(!c.burn?.active)c.burn=this.c24Fx('vfx_c24_summer_burn',pl.x,pl.y,140,{keep:true,must:true,depth:3});if(c.burn){const d=(70-30*f)*2.3;c.burn.setPosition(pl.x,pl.y).setDisplaySize(d,d).setAlpha(.35+.65*f).setVisible(true);}else{g.lineStyle(4,0xff5a1f,.4+.5*f);g.strokeCircle(pl.x,pl.y,70-30*f);g.fillStyle(0xffb12b,.18*f);g.fillCircle(pl.x,pl.y,70-30*f);}}else if(c.burn)c.burn.setVisible(false);
@@ -11170,8 +11174,10 @@ class Game extends Phaser.Scene {
         else if(!P.done){P.done=true;P.s=this.c24Drop(P.s);if(!this.c24Fx('vfx_c24_winter_freeze',P.x,P.y,P.r*2.6,{must:true})){g.fillStyle(0xffffff,.7);g.fillCircle(P.x,P.y,P.r);}if(this.dist(pl.x,pl.y,P.x,P.y)<P.r)this.stormHit(o,.08);}}
       c.patches=c.patches.filter(P=>{if(P.t>-.2)return true;P.s=this.c24Drop(P.s);return false;}); }
   }
-  stormHudText(o,noMarks){ if(!o.storm)return'';const c=o.storm.cur,marks=noMarks?'':[0,1,2,3].map(i=>this.seasonInfo(i).emoji+(o.storm.passed[i]?'✓':'')).join(' ')+' · ';if(!c||o.storm.passed[c.idx])return marks+'rest';const r=this.stormRule(c.idx);
-    return marks+(c.partial?'next trial soon':(r.need?('kills '+c.kills+'/'+r.need):('hits '+c.hits+'/'+r.max+' max'))); }
+  stormHudText(o,noMarks){ if(!o.storm)return'';const c=o.storm.cur,marks=noMarks?'':[0,1,2,3].map(i=>this.seasonInfo(i).emoji+(o.storm.passed[i]?'✓':'')).join(' ')+' · ';const s=this._seasonState,left=Math.max(0,Math.ceil(s?.t||0)),idx=s?.idx??0;   /* v7.8.54 เจ้าของ: เพิ่งรู้ว่าฤดูวนหลังเล่น 10 รอบ → บอกฤดูตอนนี้ + นับถอยหลัง + ฤดูถัดไป */
+    if(!c||o.storm.passed[c.idx]||c.partial){let n=-1;for(let k=1;k<=4;k++){const j=(idx+k)%4;if(!o.storm.passed[j]){n=j;break;}}const nx=n<0?null:this.seasonInfo(n),wait=n<0?0:left+((n-idx+4)%4-1)*10;return marks+(nx?'next trial '+nx.emoji+' '+nx.name.split(' ')[0]+' in '+wait+'s':'rest');}
+    const r=this.stormRule(c.idx,o),info=this.seasonInfo(c.idx);
+    return marks+info.emoji+' '+info.name.split(' ')[0]+' trial '+left+'s · '+(r.need?('kills '+c.kills+'/'+r.need):('hits '+c.hits+'/'+r.max)); }
   spawnNectarGarden(){
     const o=this.waveObjective;if(!o||o.type!=='defendNectar')return;this._nectarFlowers=[];this._nectarPulse=0;
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
@@ -11488,7 +11494,7 @@ class Game extends Phaser.Scene {
     this.renderBonusHUD();
     const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o,this.realTex?.('ui_c24_season_icons')):Math.floor(o.progress)+' / '+o.target);
     const step=o._huntPhase?'Step '+(o.progress*2+(o._huntPhase==='clear'?1:2))+'/'+(o.target*2)+' · '+(o._huntPhase==='clear'?'Clear '+o._huntKills+'/'+o._huntKillGoal:'Defeat marked Elite'):(o.type==='fill'&&this.usesStoryBudget?.()?'Step 1/2 · Clear '+Math.floor(o.progress)+'/'+o.target:null);
-    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(step||((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value)).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
+    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(step||(o.type==='seasonCycle'?value:((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value))).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
     this.syncSeasonIcons?.(o);
     const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
@@ -12637,7 +12643,7 @@ class Game extends Phaser.Scene {
   taroSpawnProjectile(options){const t=this._taro;if(!t?.enabled||this.state!=='play')return null;t.projectiles=t.projectiles||[];const spark=options.kind==='spark'||options.kind==='sparkChild',cap=spark?(options.storm?72:36):TARO_ORB_CAP;if(t.projectiles.filter(p=>(p.kind==='spark'||p.kind==='sparkChild')===spark).length>=cap)return null;
     const p={...options,origin:{x:options.x,y:options.y},left:options.life,hits:new Map(options.kind==='sparkChild'?(options.hits||[]):[]),seed:++t.attackSeq,run:t.run,pathEpoch:t.pathEpoch};p.fx=this.taroProjectileVisual(p);t.projectiles.push(p);return p;
   }
-  /* v7.8.34 เจ้าของเลือก A2 Static Charge: Spark โดนบอส/มินิครบ 10 ครั้ง = ฟ้าผ่าลงบอส ×8 ดาเมจ Spark ลูกนั้น (นับแยกต่อบอส รีเซ็ตทุกรอบเล่น) */
+  /* v7.8.54 ครบ 40 ครั้ง (เดิม 10 · หลัง v7.8.51 Spark โดนถี่ขึ้นมาก มินิ C2-3 ตายใน 5 วิ) · v7.8.34 เจ้าของเลือก A2 Static Charge: Spark โดนบอส/มินิครบ 10 ครั้ง = ฟ้าผ่าลงบอส ×8 ดาเมจ Spark ลูกนั้น (นับแยกต่อบอส รีเซ็ตทุกรอบเล่น) */
   taroStaticCharge(token,p){const t=this._taro;if(!t?.enabled||this.state!=='play'||!token?.enemy?.active)return;t.charge=t.charge||new Map();const n=(t.charge.get(token.id)||0)+1;if(n<TARO_STATIC_HITS){t.charge.set(token.id,n);return;}t.charge.set(token.id,0);
     const e=token.enemy;this.taroDealDamage(token,p.damage*TARO_STATIC_MUL*taroLightningRoll(),p.kind,{attackId:p.attackId});if(!this.taroArt?.('bpx_taro_beacon_strike',e.x,e.y+16,150,{h:300,life:.45}))this.taroLightningVisual?.(e.x,e.y,e.x,e.y,true,true);this.screenShake?.(80,.004);this.taroSound?.('beacon');}
   /* v7.8.52 B Discharge: ลูกบอล Sentry/Beacon ช็อตบอส/มินิตัวเดิมครบ 25 ครั้ง = ฟ้าผ่า ×10 ดาเมจช็อต (คูณ Shock) · นับแยกต่อบอส */
