@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.54';
+const GAME_VERSION = '7.8.55';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.55',date:'2026-10-17',title:'C2-4 Seasonal Harvest',items:['Season Storm is replaced by Seasonal Harvest: seasons change every 10s and every defeated monster drops a petal of the current season (Elites drop 3)','Fill all four seasons (12 petals each) to finish — no failed trials and no waiting; once a season is full its extra petals spill over to the emptiest season','Season hazards still roll in, and a full season becomes a calm rest']},
   {v:'7.8.54',date:'2026-10-17',title:'Spark Static Charge Rebalance',items:['Spark Static Charge now needs 40 hits on the same boss or miniboss per lightning strike (was 10) — sparks hit so often that bosses were melting','Season Storm explains itself: the HUD shows the current season’s trial with a countdown, or which trial comes next and when','A failed season trial tells you when it returns and what the easier goal will be']},
   {v:'7.8.53',date:'2026-10-17',title:'C2-4 Season Storm Fix',items:['A failed season trial gets easier every cycle (one more hit allowed, or 3 fewer kills for Spring), so the Season Storm always finishes','The conservatory keeps a few monsters around during the storm instead of going empty']},
   {v:'7.8.52',date:'2026-10-17',title:'Taro Sentry vs Bosses',items:['Shock stacks up to 15 on bosses and minibosses (up to +75% damage); normal monsters stay at 5','Discharge: every 25 Ball Lightning zaps on the same boss call down a lightning strike for 10× zap damage','Every Ball Lightning now bursts when it fades (Overload cards make the burst stronger)']},
@@ -6112,7 +6113,7 @@ const WAVE_OBJECTIVES = {
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
   capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the ring to purify it — the ring grows while enemies swarm in to stop you'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect and restore the three nectar flowers while the hive attacks'},
-  seasonCycle:{emoji:'🌦️',name:'Season Storm',desc:'Pass the trial of every season'},
+  seasonCycle:{emoji:'🌦️',name:'Seasonal Harvest',desc:'Monsters drop petals of the current season · fill all four seasons'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Stand next to every corrupted root anchor to sever it before the throne pulse closes in'},
   cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'}
 };
@@ -6430,6 +6431,7 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
 }
 const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=4,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=110,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=16,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
 const TARO_MARK_RANGE=700,TARO_MARK_TIME=6,TARO_MARK_BONUS=1.5,TARO_MARK_TURN=8,TARO_MARK_BLAST_R=130,TARO_ORB_SEEK=360,TARO_ORB_TURN=2.6,TARO_ORB_LINGER=.3,TARO_ORB_BIG_GAP=.18,TARO_UQ_GROW=.12,TARO_STATIC_HITS=40,TARO_STATIC_MUL=13,TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=16,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
+const SEASON_PETALS=12;   // v7.8.55 เจ้าของเลือก A: C2-4 Seasonal Harvest — ฆ่ามอน = กลีบของฤดูปัจจุบัน · 4 ฤดู × 12 · ไม่มีพลาด
 const TARO_SHOCK_MAX_BIG=15,TARO_DISCHARGE_HITS=25,TARO_DISCHARGE_MUL=10;   // v7.8.52 เจ้าของ A+B+C Sentry: Shock บนบอส/มินิ 15 ชั้น · ช็อตโดนตัวเดิมครบ 25 = ฟ้าผ่า ×10 · ลูกบอลระเบิดตอนหมดอายุเป็นพื้นฐาน
 const TARO_SPARK_HIT_R=10,TARO_SPARK_HOME_R=180,TARO_SPARK_HOME_TURN=2.4;   // v7.8.51 เจ้าของ A+B: ระยะโดน = ตัวมอนจริง + ประกาย · เลี้ยวหามอนธรรมดาที่ยังไม่โดนเบา ๆ
 const TARO_SPARK_SEEK=260,TARO_SPARK_TURN=5,TARO_SPARK_BOSS_GAP=.3,TARO_SPARK_GENS=2,TARO_SPARK_SPLIT_AT=.42,TARO_SPARK_SCALE=[1.25,.9,.65];   // v7.8.21 Spark fission
@@ -10950,7 +10952,7 @@ class Game extends Phaser.Scene {
     if(type==='shooter'){let n=0;this.enemies.children.iterate(e=>{if(e?.active&&e.shooter)n++;});if(n>=2+Math.min(2,Math.floor(this.stageIndex/5)))return false;}
     const o=this.waveObjective,gateNeedsFoes=o?.type==='hunt'&&o._huntPhase==='clear'&&this.enemies.countActive(true)<Math.max(0,o._huntKillGoal-o._huntKills);
     /* v7.8.37 บั๊กค้าง C2-4: บททดสอบใบไม้ผลิต้องฆ่า 10 ตัว แต่ Reserves หมด → spawnEnemy ถูกบล็อกตรงนี้ (ฟิกซ์ v7.8.29 ไม่มีผล) · ยอมให้เติมเท่าที่ยังขาด */
-    const sc=o?.type==='seasonCycle'&&!o.done?o.storm?.cur:null,seasonNeedsFoes=!!(sc&&((sc.idx===0&&!sc.partial&&!o.storm.passed[0]&&this.enemies.countActive(true)<Math.max(0,(this.stormRule?.(0,o)?.need??10)-sc.kills))||this.enemies.countActive(true)<6));   /* v7.8.53 พายุฤดู: Reserves หมดแล้วสนามว่างทั้งเวฟ → เติมเบา ๆ ให้มีมอนอย่างน้อย 6 ตัว */
+    const sc=o?.type==='seasonCycle'&&!o.done?o.storm?.cur:null,seasonNeedsFoes=!!(sc&&((sc.idx===0&&!sc.partial&&!o.storm.passed[0]&&this.enemies.countActive(true)<Math.max(0,(this.stormRule?.(0,o)?.need??10)-sc.kills))||this.enemies.countActive(true)<(o.storm?.harvest?10:6)));   /* v7.8.53 พายุฤดู: Reserves หมดแล้วสนามว่างทั้งเวฟ → เติมเบา ๆ ให้มีมอนอย่างน้อย 6 ตัว */
     const rm=this._replayMeter,replayNeedsFoes=!!(rm&&!rm.done&&this.mode==='wave');   /* v7.8.48 replay ไม่มีตัดเวลา → เติมมอนจนหลอดเต็ม ไม่ให้ Reserves หมดแล้วค้าง */
     return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota||gateNeedsFoes||seasonNeedsFoes||replayNeedsFoes));
   }
@@ -11059,7 +11061,7 @@ class Game extends Phaser.Scene {
     }else if(type==='defendNectar'){
       o.target=Math.max(34,Math.round((p.dur||52)*.74));o.desc='Keep at least one flower alive for '+o.target+' seconds';this.spawnNectarGarden();
     }else if(type==='seasonCycle'){
-      o.target=4;o.desc='Pass all 4 season trials · a failed trial just returns next cycle';this.spawnSeasonSanctuaries();
+      o.target=4;o.desc='Monsters drop petals of the current season · fill all 4 seasons ('+SEASON_PETALS+' each)';this.spawnSeasonSanctuaries();
     }else if(type==='breakRoots'){
       o.target=4;o.desc='Stand next to each of the '+o.target+' crown-root anchors to sever them';this.spawnRootAnchors(o.target);
     }else{
@@ -11141,12 +11143,21 @@ class Game extends Phaser.Scene {
   spawnSeasonSanctuaries(){
     const o=this.waveObjective;if(!o||o.type!=='seasonCycle')return;this._seasonShrines=null;if(!this._seasonState)this._seasonState={idx:0,t:2.5,cycle:0};
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
-    o.storm={passed:[false,false,false,false],cur:null}; this.stormBeginSeason(o,this._seasonState.idx,true); this.time.delayedCall(1700,()=>{ if(this.waveObjective===o&&!o.done)this.showBanner('🌦️ Season Storm','Seasons rotate every 10s · pass each season’s trial while it is active · failed trials come back easier',3200); }); }
+    o.storm={passed:[false,false,false,false],cur:null,harvest:[0,0,0,0]}; this.stormBeginSeason(o,this._seasonState.idx,true); this.time.delayedCall(1700,()=>{ if(this.waveObjective===o&&!o.done)this.showBanner('🌦️ Seasonal Harvest','Seasons change every 10s · defeated monsters drop petals of the current season · fill all four',3200); }); }
+  // v7.8.55 Seasonal Harvest: กลีบเข้าฤดูปัจจุบัน (Elite = 3) · ฤดูนี้เต็มแล้ว → ล้นไปฤดูที่ขาดมากสุดครึ่งเดียว ไม่ต้องรอ · ครบ 4 = จบ
+  seasonHarvest(o,e){ const H=o.storm.harvest,idx=this._seasonState?.idx??0;let k=idx,amt=e.isElite?3:1;
+    if(H[k]>=SEASON_PETALS){k=-1;let lo=1e9;for(let j=0;j<4;j++)if(H[j]<SEASON_PETALS&&H[j]<lo){lo=H[j];k=j;}if(k<0)return false;o._spill=(o._spill||0)+amt*.5;amt=Math.floor(o._spill);o._spill-=amt;if(!amt)return false;}
+    H[k]=Math.min(SEASON_PETALS,H[k]+amt);const info=this.seasonInfo(k);
+    if(this.add&&this.textures?.exists?.('sakura_petal')&&this.player){const p=this.camWorld(this.add.image(e.x,e.y,'sakura_petal').setTint(info.color).setDepth(90300).setScale(.7));this.tweens.add({targets:p,x:this.player.x,y:this.player.y-30,scale:.3,alpha:.2,duration:420,ease:'Quad.in',onComplete:()=>p.destroy()});}
+    if(H[k]>=SEASON_PETALS&&!o.storm.passed[k]){o.storm.passed[k]=true;this.c24Fx?.('vfx_c24_trial_pass',this.player.x,this.player.y,190,{tint:info.color});this.floatText?.(this.player.x,this.player.y-60,info.emoji+' '+info.name.split(' ')[0]+' harvest full!',info.color);this.screenFlash?.(info.color,.18,240);Sfx.clear&&Sfx.clear();}
+    o.progress=H.reduce((s,v)=>s+Math.min(SEASON_PETALS,v),0)/SEASON_PETALS;this.renderWaveObjectiveHUD();
+    if(o.storm.passed.every(Boolean)){o.progress=o.target;this.completeWaveObjective();return true;}
+    return false; }
   stormRule(i,o){ const f=o?.storm?.fails?.[i&3]||0,r=[{goal:'Defeat 10 — they heal!',need:10},{goal:'Keep moving — standing still burns',max:1},{goal:'Dodge the leaf gusts',max:1},{goal:'Dodge the frost patches on the ice',max:1}][i&3];   /* v7.8.53 เจ้าของ: C2-4 ค้าง — ทดสอบที่พลาดง่ายขึ้นทุกรอบ (โดนได้ +1 / ฆ่าน้อยลง 3) จบได้แน่นอน */
     return r.need?{...r,need:Math.max(4,r.need-3*f),goal:'Defeat '+Math.max(4,r.need-3*f)+' — they heal!'}:{...r,max:r.max+f}; }
   stormBeginSeason(o,idx,partial){ this.c24ClearCur(o.storm.cur);o.storm.cur={idx,kills:0,hits:0,still:0,ev:1.2,lines:[],patches:[],partial:!!partial,windA:Math.random()*TAU,regen:0};
-    if(!partial&&!o.storm.passed[idx]){const info=this.seasonInfo(idx);this.showBanner(info.emoji+' Trial: '+info.name,this.stormRule(idx,o).goal,1500);} }
-  stormEndSeason(o){ const c=o.storm.cur;if(!c||c.partial||o.storm.passed[c.idx])return;const r=this.stormRule(c.idx,o),ok=r.need?c.kills>=r.need:c.hits<=r.max,info=this.seasonInfo(c.idx);
+    if(!partial&&!o.storm.passed[idx]){const info=this.seasonInfo(idx);this.showBanner(info.emoji+' '+info.name,'Defeat monsters to collect '+info.name.split(' ')[0]+' petals · '+(o.storm.harvest?.[idx]||0)+'/'+SEASON_PETALS,1300);} }
+  stormEndSeason(o){ if(o.storm.harvest)return;   /* v7.8.55 Harvest: ไม่มีผ่าน/ไม่ผ่านตอนจบฤดู */ const c=o.storm.cur;if(!c||c.partial||o.storm.passed[c.idx])return;const r=this.stormRule(c.idx,o),ok=r.need?c.kills>=r.need:c.hits<=r.max,info=this.seasonInfo(c.idx);
     if(ok){o.storm.passed[c.idx]=true;o.progress=o.storm.passed.filter(Boolean).length;this.c24Fx('vfx_c24_trial_pass',this.player.x,this.player.y,190,{tint:info.color});this.floatText(this.player.x,this.player.y-60,info.emoji+' TRIAL PASSED!',info.color);this.screenFlash(info.color,.22,260);Sfx.clear&&Sfx.clear();}
     else{o.storm.fails=o.storm.fails||[0,0,0,0];o.storm.fails[c.idx]++;this.floatText(this.player.x,this.player.y-60,info.emoji+' Trial failed — easier next cycle',0xbbbbbb);const r2=this.stormRule(c.idx,o);this.showBanner(info.emoji+' '+info.name+' trial failed','It returns in 30s · next time: '+(r2.need?'defeat '+r2.need:'up to '+r2.max+' hits'),2000);} }
   stormHit(o,dmgMul){ const c=o.storm.cur;c.hits++;this.player.iframe=0;this.hurtPlayer(Math.max(4,Math.round((this.player.maxhp||100)*dmgMul)),.5);this.cameras.main.shake(120,.004); }
@@ -11156,7 +11167,7 @@ class Game extends Phaser.Scene {
     const idx=this._seasonState?this._seasonState.idx:0;let c=o.storm.cur;if(!c||c.idx!==idx){this.stormEndSeason(o);if(o.progress>=o.target){this.completeWaveObjective();return;}this.stormBeginSeason(o,idx,false);c=o.storm.cur;}
     if(o.storm.passed[idx]){this.c24ClearCur(c);return;}   // ฤดูที่ผ่านแล้ว = พัก ไม่มีภัย
     const pl=this.player,info=this.seasonInfo(idx),t=this.elapsed||0;
-    if(idx===0){ c.sprout=(c.sprout||0)-dt;if(c.sprout<=0&&this.mode==='wave'){c.sprout=1.2;let live=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)live++;});const want=Math.min(6,this.stormRule(0,o).need-c.kills);for(let i=0;i<Math.min(2,want-live);i++)this.spawnEnemy('sprout',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.55);}   /* v7.8.29 บั๊กค้าง: Reserves หมดแล้วด่านฤดูใบไม้ผลิต้องฆ่า 10 ตัวแต่ไม่มีศัตรูเกิด → เติม Bloom Sprout เอง */
+    if(idx===0){ c.sprout=(c.sprout||0)-dt;if(c.sprout<=0&&this.mode==='wave'){c.sprout=1.2;let live=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)live++;});const want=o.storm.harvest?6:Math.min(6,this.stormRule(0,o).need-c.kills);for(let i=0;i<Math.min(2,want-live);i++)this.spawnEnemy('sprout',Math.random()*TAU,Math.max(this.W,this.H)/this.viewZoom*.55);}   /* v7.8.29 บั๊กค้าง: Reserves หมดแล้วด่านฤดูใบไม้ผลิต้องฆ่า 10 ตัวแต่ไม่มีศัตรูเกิด → เติม Bloom Sprout เอง */
       c.regen-=dt;if(c.regen<=0){c.regen=1;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.04);});this.c24HealFx(4);} }
     else if(idx===1){ const v=pl.body?pl.body.velocity.length():0;c.still=v<40?c.still+dt:Math.max(0,c.still-dt*2);const f=Phaser.Math.Clamp(c.still/1.4,0,1);
       if(f>0.05){if(!c.burn?.active)c.burn=this.c24Fx('vfx_c24_summer_burn',pl.x,pl.y,140,{keep:true,must:true,depth:3});if(c.burn){const d=(70-30*f)*2.3;c.burn.setPosition(pl.x,pl.y).setDisplaySize(d,d).setAlpha(.35+.65*f).setVisible(true);}else{g.lineStyle(4,0xff5a1f,.4+.5*f);g.strokeCircle(pl.x,pl.y,70-30*f);g.fillStyle(0xffb12b,.18*f);g.fillCircle(pl.x,pl.y,70-30*f);}}else if(c.burn)c.burn.setVisible(false);
@@ -11175,6 +11186,7 @@ class Game extends Phaser.Scene {
       c.patches=c.patches.filter(P=>{if(P.t>-.2)return true;P.s=this.c24Drop(P.s);return false;}); }
   }
   stormHudText(o,noMarks){ if(!o.storm)return'';const c=o.storm.cur,marks=noMarks?'':[0,1,2,3].map(i=>this.seasonInfo(i).emoji+(o.storm.passed[i]?'✓':'')).join(' ')+' · ';const s=this._seasonState,left=Math.max(0,Math.ceil(s?.t||0)),idx=s?.idx??0;   /* v7.8.54 เจ้าของ: เพิ่งรู้ว่าฤดูวนหลังเล่น 10 รอบ → บอกฤดูตอนนี้ + นับถอยหลัง + ฤดูถัดไป */
+    if(o.storm.harvest){const H=o.storm.harvest,info=this.seasonInfo(idx),full=o.storm.passed.filter(Boolean).length;return marks+info.emoji+' '+info.name.split(' ')[0]+' '+H[idx]+'/'+SEASON_PETALS+(o.storm.passed[idx]?' ✓':'')+' · next season '+left+'s · '+full+'/4 full';}
     if(!c||o.storm.passed[c.idx]||c.partial){let n=-1;for(let k=1;k<=4;k++){const j=(idx+k)%4;if(!o.storm.passed[j]){n=j;break;}}const nx=n<0?null:this.seasonInfo(n),wait=n<0?0:left+((n-idx+4)%4-1)*10;return marks+(nx?'next trial '+nx.emoji+' '+nx.name.split(' ')[0]+' in '+wait+'s':'rest');}
     const r=this.stormRule(c.idx,o),info=this.seasonInfo(c.idx);
     return marks+info.emoji+' '+info.name.split(' ')[0]+' trial '+left+'s · '+(r.need?('kills '+c.kills+'/'+r.need):('hits '+c.hits+'/'+r.max)); }
@@ -11279,7 +11291,7 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective;if(!o||o.done)return;
     if(o.type==='hunt'&&o._huntPhase==='clear'&&e&&!e.isBoss&&!e.isMini&&!e._waveObjectiveTarget){o._huntKills=Math.min(o._huntKillGoal,o._huntKills+1);if(o._huntKills>=o._huntKillGoal){o._huntPhase='elite';o._huntSpawnAt=this.time.now;this.showBanner('Elite revealed','Follow the marker and defeat the Elite',1500);}this.renderWaveObjectiveHUD();}
     if(o.type==='fill'&&e&&!e.isBoss&&!e.isMini){o.progress=Math.min(o.target,o.progress+1);this.renderWaveObjectiveHUD();if(o.progress>=o.target){this.completeWaveObjective();return;}}
-    if(o.type==='seasonCycle'&&o.storm&&o.storm.cur&&o.storm.cur.idx===0&&e&&!e.isBoss&&!e.isMini)o.storm.cur.kills++;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
+    if(o.type==='seasonCycle'&&o.storm?.harvest&&e&&!e.isBoss&&!e.isMini&&this.seasonHarvest(o,e))return;const b=this._bonus;if(b&&!b.failed&&b.id==='kills'){b.kills++;this.renderBonusHUD();}
   }
   // ประเมินโจทย์เสริมตอนภารกิจสำเร็จ (เรียกก่อน clearWaveObjective)
   resolveBonusChallenge(){

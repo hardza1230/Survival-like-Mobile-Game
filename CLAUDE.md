@@ -10,7 +10,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
-# Latest delivery: v7.8.54 — Spark Static Charge 10→40 hits
+# Latest delivery: v7.8.55 — C2-4 Seasonal Harvest (owner picked A, replaces Season Storm trials)
+
+Same objective type 'seasonCycle' (renamed Seasonal Harvest) · o.storm.harvest[4], SEASON_PETALS 12 · objOnKill → seasonHarvest: non-boss kill = 1 petal (Elite 3) into the current season; full season → spill 50% into the emptiest season · passed[k] when full (icons ✓, full season = no hazard) · all 4 full → complete · stormEndSeason no-op in harvest · HUD 'emoji Season n/12 · next season Ns · k/4 full' · storm keeps ≥10 live foes. Browser sim: first clear C2-4 finished (harvest → hunt → boss → reward).
+
+# Previous delivery: v7.8.54 — Spark Static Charge 10→40 hits
 
 Owner: after v7.8.51 (hit size + homing) Spark hit bosses so often that Static Charge strikes melted them (meter v7.8.52 C2-3★1: Royal Stinger mini 5.0s at 5634 DPS vs Arc 14s, Sentry 49s). TARO_STATIC_HITS 10→40 (mul stays 13). Also Season Storm clarity (owner only learned seasons rotate after ~10 runs): HUD = current season trial + seconds left, or next untested trial + wait; intro banner explains rotation; failed-trial banner says it returns in 30s with the easier goal; HUD text no longer prefixed with objective name (overflowed at 360px).
 
