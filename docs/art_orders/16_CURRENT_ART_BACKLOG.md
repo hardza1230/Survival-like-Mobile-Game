@@ -1,4 +1,4 @@
-> 17 ต.ค. 2026: งานใหม่ Temple Weave UI (หน้า Weave + Flavor Passives · 34 ไฟล์ ไม่มีตัวหนังสือในภาพ) ดู [21_TEMPLE_WEAVE_UI.md](21_TEMPLE_WEAVE_UI.md) · ส่งที่ `assets/incoming/temple_weave_ui/`
+> 17 ต.ค. 2026: Temple Weave UI (34 ไฟล์) ส่งครบและผูกเข้าเกมแล้ว v7.8.49 ดู [21_TEMPLE_WEAVE_UI.md](21_TEMPLE_WEAVE_UI.md) · รอดู visual บนมือถือ
 > 17 ต.ค. 2026: งานใหม่ Hero VFX gaps (Chocolate / Strawberry / Mint / Taro · 21 ไฟล์) ดู [20_HERO_VFX_GAPS.md](20_HERO_VFX_GAPS.md) · ส่งแล้ว ผูกครบ 21/21 แล้ว (v7.8.45–v7.8.46) รอดู visual/FPS บนมือถือ
 > 16 ต.ค. 2026: งานใหม่ C2-4 Four-Season Conservatory (บททดสอบฤดู + ท่าบอส Chronobloom) ดู [19_C24_FOUR_SEASON_ART.md](19_C24_FOUR_SEASON_ART.md) · ส่งที่ `assets/incoming/c24_seasons_vfx/`
 > 15 ต.ค. 2026: งานใหม่ Taro Spark + Ball Lightning (แบบ PoE) ดู [18_TARO_SPARK_BALL_LIGHTNING_ART.md](18_TARO_SPARK_BALL_LIGHTNING_ART.md) · ส่งที่ `assets/incoming/taro_spark_ball/`

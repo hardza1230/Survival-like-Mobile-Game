@@ -10,11 +10,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
-# Art order 21 — Temple Weave UI (34 sources delivered)
+# Latest delivery: v7.8.49 — Temple Weave UI (art order 21) wired
 
-docs/art_orders/21_TEMPLE_WEAVE_UI.md: 34 text-free PNG32 sources (A 14, B 16, C 4) delivered to assets/incoming/temple_weave_ui/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json, DELIVERY_README.md and qa/ previews. Two 1080×1920 backgrounds, 31 real-alpha UI sheets/pieces and one black-background sparkle VFX sheet. Twenty 9-slice assets tested horizontally at 0.6× and 2.2× with identical corner pixels; all 64 source states/frames reviewed. Runtime packing/registration and phone QA remain pending; this source delivery leaves the latest gameplay release unchanged.
+34 pieces packed by scripts/pack-temple-weave-ui.py → assets/art/temple/ui/ (bg 720×1280, UI 50% of 2× source, MANIFEST with scaled nineSlice) · lazy with upgrade/perks group (art/temple/). TEMPLE_UI const = [cellW,cellH,cols,nineSlice]. Helpers: tuHas / tuFrames (cellN + c{cell}_{0..8} slice frames) / tuImg / tuPanel (own 9-slice from images, corners scale k=h/cellH, canvas-safe — no Phaser NineSlice) / tuTab / tuHeader / tuSparkle. _screenBg skins header (back, title frame, currency chip) when artKey starts screen_temple_. buildUpgrade: altar trio + per-core glow (portrait with room), tabs, power bar, core cards (portrait only; landscape keeps graphics), stars, buy buttons, knot, Weave Up. buildRankPerks: tier banners/line, req chip, perk cards/pips/buttons, Special Cores banner + compass, Ancient 2 columns (page scrolls), reset button. drawBadgeDot uses ui_notify_dot when loaded. All with old graphics fallback. Phone visual QA pending.
 
-# Latest delivery: v7.8.48 — Replay = kills only
+# Previous delivery: v7.8.48 — Replay = kills only
 
 Owner: no timer skip on replays. tickReplayProgress: mini only at kills ≥ goal/2, boss only at kills ≥ goal (REPLAY_TIME_CAP removed). storyCanSpawn adds replayNeedsFoes (meter not done & mode wave) so spawns never run out after the 340 quota.
 

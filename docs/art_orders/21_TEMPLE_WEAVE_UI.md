@@ -1,6 +1,6 @@
 # 21 — Temple Weave UI (หน้า Flavor Weave Temple + Flavor Passives) · ใบสั่งงานอาร์ต
 
-สถานะ: ส่งต้นฉบับ PNG32 ครบ 34 ไฟล์แล้ว (17 ต.ค. 2026) — รอแพ็ก/ผูก runtime · ดู `assets/incoming/temple_weave_ui/DELIVERY_README.md` · อิง runtime v7.8.46 · อ่าน `00_STYLE_GUIDE.md` ก่อน
+สถานะ: 🟩 ส่งครบ 34/34 · ผูกแล้ว v7.8.49 (scripts/pack-temple-weave-ui.py → assets/art/temple/ui/) · รอเจ้าของดูบนมือถือ
 ส่งไฟล์ที่ `assets/incoming/temple_weave_ui/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 20)
 
 ## ภาพอ้างอิง (mood / layout เป้าหมาย)
